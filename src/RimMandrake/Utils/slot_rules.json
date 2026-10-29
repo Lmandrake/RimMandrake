@@ -5,12 +5,13 @@
   "seats": ["BENCH", "FOUNDRY"],
   "enforce_seats": ["BENCH", "FOUNDRY"],
   "split": {
-    "FOUNDRY_share": 0.25,
-    "_doc": "[A] FOUNDRY gets floor(total x share), BENCH the rest: total 4 -> BENCH 3 + FOUNDRY 1 (the 13:05 hand pick); total 1 -> BENCH only (ALMOST_OUT: FOUNDRY asleep, operating_modes §2.2)."
+    "rule": "v3",
+    "conductor_session_n": 3,
+    "_doc": "v3 (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER; design/RimMandrake/rimflow_v3_2026-10-26.md §2: no BENCH seat, the Conductor's helpers are session only, FOUNDRY is the one autonomous builder): FOUNDRY gets the whole machine total (the pace fit above); the Conductor (allocator key BENCH = the owner's window, published by the Dispatcher as CONDUCTOR) gets conductor_session_n, never above the total, only while he wrote in its window in the last presence.bench_min minutes, and every Conductor helper-hour is owed (base 0) and paid back from FOUNDRY once he has left and his word has lapsed. His word (slot_override.json) stands over both. conductor_session_n 3 is [A]: the 13:05 hand baseline for BENCH. Rollback to v2: \"rule\": \"share\", \"FOUNDRY_share\": 0.25 (FOUNDRY floor(total x share), BENCH the rest)."
   },
   "total_max": 10,
   "_total_max": "[A] operating_modes §3.1: more than about 10 at once never paid.",
-  "fallback_n": {"BENCH": 3, "FOUNDRY": 1, "_doc": "used by the hook only when no allocation can be computed or read: the 13:05 hand baseline."},
+  "fallback_n": {"BENCH": 3, "FOUNDRY": 1, "_doc": "used by the hook only when no Dispatcher budget, allocation or computation can be read: the 13:05 hand baseline (BENCH = the Conductor's window)."},
   "burn_account": "auto",
   "_burn_account": "auto = the account whose latest MEASURED reading came from THIS machine's own live login (account_usage.py `machine`); name an account here to pin it.",
   "token": {

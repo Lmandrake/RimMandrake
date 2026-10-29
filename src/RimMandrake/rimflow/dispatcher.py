@@ -81,6 +81,7 @@ import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
 import seat_restart as SR  # noqa: E402
 import account_pick as AP  # noqa: E402
+import helper_budget as HB  # noqa: E402
 import schema as S  # noqa: E402  (testq: dump, utcnow, parse_ts)
 
 DEFAULT_SCHEDULE = os.path.join(HERE, "dispatcher_schedule.json")
@@ -299,7 +300,10 @@ def message(seat, cfg, ticket, owner_line, ring_id):
              "Seat %s: you are idle and your queue has work. Run `python3 src/RimMandrake/rimflow/cli.py next "
              "--seat %s --ringed`, which gives you the item under a lease, and work it; renew the lease every 10 min "
              "(`rimflow renew`). The peeked next item is %s." % (seat, seat, ticket.get("id")),
-             "If you are mid-task, finish it first; if the queue is wrong, say so on the item with `rimflow note`."]
+             "If you are mid-task, finish it first; if the queue is wrong, say so on the item with `rimflow note`.",
+             "Before you end the turn on it, ledger-only work too: commit your shard "
+             "infrastructure/state/ledger/events/%s.jsonl by explicit path and run ./publish; events left in your "
+             "clone are invisible to every other seat." % seat]
     if owner_line:
         lines.append(owner_line)
     if cfg.get("extra"):
@@ -1382,6 +1386,10 @@ def tick(sch, apply, obs=None, now=None, fx=None):
                 if dry:
                     acts.append(dry)
             execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline)
+            # the helper budget every seat's spawn hook reads (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER); never raises
+            bud = HB.tick_step(sch, st, root, now, journal=lambda rec: journal(root, rec))
+            if bud:
+                acts.append(bud)
             if apply:
                 # a reservation no executed launch accounted for is given back on a tick that worked too (r2 #5)
                 back = unreserve(st)

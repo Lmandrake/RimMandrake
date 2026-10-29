@@ -1088,34 +1088,52 @@ def decide(inp, state, rules, now):
     total = max(0, min(total, rules["total_max"]))
     total, ops_advice = _ops(inp, rules, total, why)
     # split per seat
-    share = rules["split"]["FOUNDRY_share"]
-    per = split_total(total, seats, share)
-    if "FOUNDRY" in per:
-        why.append(f"total {total} split BENCH {per['BENCH']} / FOUNDRY {per['FOUNDRY']} (FOUNDRY {share:.0%}, rounded down)")
     presence, pwhy = _presence(inp, rules)
+    # v3: the Conductor's session is HIS window (the BENCH transcripts), not any window: FOUNDRY's tile, where the
+    # Dispatcher's rings land, must never grant the Conductor helpers (review r2 #2). owner_window_t is the last
+    # owner message in the BENCH window only; presence stays machine-wide for payback and the sitting.
+    cpres = presence
+    if rules["split"].get("rule") == "v3" and presence == "BENCH":
+        bt = _num(inp.get("owner_window_t"), None)
+        if bt is None or (now - bt) / 60 > rules["presence"]["bench_min"]:
+            cpres, pwhy = "ELSEWHERE", pwhy + ", not in the Conductor's window"
+    split = lambda t, m=mode: split_seats(t, seats, rules, cpres, m)  # noqa: E731
+    per = split(total)
+    if rules["split"].get("rule") == "v3":
+        why.append(f"v3: machine total {total} -> FOUNDRY {per.get('FOUNDRY', 0)}; CONDUCTOR "
+                   + (f"{per['BENCH']} while he is in its window ({pwhy}; owed, paid back from FOUNDRY after he leaves)"
+                      if cpres == "BENCH" else f"0 (session-only: he is not in its window; {pwhy})"))
+    elif "FOUNDRY" in per:
+        why.append(f"total {total} split BENCH {per['BENCH']} / FOUNDRY {per['FOUNDRY']} "
+                   f"(FOUNDRY {rules['split']['FOUNDRY_share']:.0%}, rounded down)")
     queue_mode, qwhy = _queue(inp, state, rules)
     if queue_mode == "PAYDOWN":
         why.append(f"PAYDOWN ({qwhy}): no new art or owner-facing design, half the slots enact and close")
     label = mode
     base = dict(per)
+    if rules["split"].get("rule") == "v3" and "BENCH" in base:
+        base["BENCH"] = 0  # the machine budget is FOUNDRY's: every Conductor helper-hour is owed (his rule, presence._doc)
     ov = _override_live(inp.get("override"), now)
     if ov:
         if isinstance(ov.get("mode"), str) and isinstance(tk.get(ov["mode"]), dict) and "n" in tk[ov["mode"]]:
             label = ov["mode"]
             if ov.get("n") is None and ov.get("seats") is None:
                 total = tk[ov["mode"]]["n"]
-                per = split_total(total, seats, share)
+                # his mode stands for the split too: DARK lifted to CRUISE gives the Conductor its session helpers
+                per = split(total, ov["mode"])
         if isinstance(ov.get("seats"), dict) and ov["seats"]:
-            # a seat key we do not place (e.g. "bench") is folded to its seat, never added beside it
-            per.update({str(k).upper(): _count(v, per.get(str(k).upper(), 0)) for k, v in ov["seats"].items()
-                        if str(k).upper() in per})
+            # a seat key we do not place (e.g. "bench", "CONDUCTOR") is folded to its seat, never added beside it
+            per.update({seat_key(k): _count(v, per.get(seat_key(k), 0)) for k, v in ov["seats"].items()
+                        if seat_key(k) in per})
         elif ov.get("n") is not None:
             per["BENCH"] = _count(ov["n"], per["BENCH"])
         label = f"{label}+OWNER"
         why.insert(0, f"his word: \"{ov['ownerSaid']}\"" + (f" until {ov['until']}" if ov.get("until") else ""))
         if ops_advice["disk"] == "BRAKE":
             why.append("his word stands over the disk brake")
-    pre_cut_total = sum(per.values())
+    # the remembered machine total (the next check's raise_step base): under v3 FOUNDRY's share IS the machine fit; the
+    # Conductor's session helpers are on top of it and owed, never part of it (review r1 #1)
+    pre_cut_total = per.get("FOUNDRY", 0) if rules["split"].get("rule") == "v3" else sum(per.values())
     per_before = dict(per)
     try:
         overage = _overage(inp, state, rules, now, base, per, ov, presence, why, blind=blind)
@@ -1145,7 +1163,7 @@ def decide(inp, state, rules, now):
     held_n = state.get("bench_n")
     # his word stands over the cap only where it speaks for BENCH: a FOUNDRY-only override leaves BENCH's cap in force
     ov_bench = bool(ov) and not (isinstance(ov.get("seats"), dict) and ov["seats"]
-                                 and "BENCH" not in {str(k).upper() for k in ov["seats"]})
+                                 and "BENCH" not in {seat_key(k) for k in ov["seats"]})
     if cap is not None and live and "BENCH" in per and not ov_bench:
         if drop is not None and drop >= cap:
             per["BENCH"] = 0
@@ -1178,6 +1196,36 @@ def decide(inp, state, rules, now):
             "presence": presence, "presence_why": pwhy, "n_total": sum(per.values()), "seats": per,
             "n": per.get(inp.get("seat") or "BENCH"), "why": "; ".join(why), "inputs": inputs,
             "overage": overage, "override": ov, "ops": ops_advice, "state": new_state}
+
+
+SEAT_NAMES = {"BENCH": "CONDUCTOR", "FOUNDRY": "FOUNDRY"}  # allocator key -> v3 seat name (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER)
+
+
+def seat_label(key):
+    """The allocator's seat key -> its v3 name: "BENCH" is the owner's window, which v3 calls the Conductor."""
+    return SEAT_NAMES.get(str(key).upper(), str(key).upper())
+
+
+def seat_key(name):
+    """A seat name as a person, a hook or an override file writes it (CONDUCTOR, BENCH, bench) -> the allocator key."""
+    n = str(name).strip().upper()
+    return {v: k for k, v in SEAT_NAMES.items()}.get(n, n)
+
+
+def split_seats(total, seats, rules, presence, mode):
+    """Total helpers -> per seat by rules["split"]["rule"].
+    v3: FOUNDRY, the one autonomous builder, gets the whole machine total; the Conductor ("BENCH") gets
+    conductor_session_n, never above the total, only while he is in the window (presence BENCH), and nothing in DARK.
+    share (v2, kept for rollback): FOUNDRY floor(total x FOUNDRY_share), BENCH the rest."""
+    sp = rules["split"]
+    if sp.get("rule") != "v3":
+        return split_total(total, seats, sp["FOUNDRY_share"])
+    per = {s: 0 for s in seats}
+    if "FOUNDRY" in per:
+        per["FOUNDRY"] = total
+    if "BENCH" in per and presence == "BENCH" and mode != "DARK":
+        per["BENCH"] = max(0, min(_count(sp.get("conductor_session_n"), 0), total))
+    return per
 
 
 def split_total(total, seats, share):
@@ -1303,7 +1351,7 @@ def main(argv=None):
         print(why, file=sys.stdout if ok else sys.stderr)
         return 0 if ok else 2
     if a.cmd == "now":
-        dec = publish(seat=a.seat) if a.write else compute(seat=a.seat)
+        dec = publish(seat=seat_key(a.seat)) if a.write else compute(seat=seat_key(a.seat))
         print(json.dumps(dec, indent=1, sort_keys=True, default=str) if a.json else line(dec))
         return 0
     if a.cmd == "clear":
@@ -1347,10 +1395,10 @@ def main(argv=None):
     ov = {"ownerSaid": a.owner_said.strip(), "set_at": iso_local(now), "until": until, "mode": a.mode}
     if a.n is not None:
         if a.seat:
-            if a.seat.upper() not in rules["seats"]:
+            if seat_key(a.seat) not in rules["seats"]:
                 print(f"refused: seat must be one of {rules['seats']}", file=sys.stderr)
                 return 2
-            ov["seats"] = {a.seat.upper(): a.n}
+            ov["seats"] = {seat_key(a.seat): a.n}  # CONDUCTOR is stored as its allocator key BENCH
         else:
             ov["n"] = a.n
     d = streams_dir()

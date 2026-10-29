@@ -47,6 +47,8 @@ for name, recs, age in (("run1", [U, A("tool_use")], 20), ("run2", [U, A("tool_u
     os.utime(p, (now - age, now - age))
 streams = tmp / "streams"
 streams.mkdir()
+disp = tmp / "dispatcher"
+disp.mkdir()
 au = tmp / "au"
 au.mkdir()
 iso = SA.iso_local
@@ -66,6 +68,7 @@ def alloc(seats, age=60, mode="CRUISE"):
 def run(seat="BENCH", stdin=None, cwd=None):
     env = dict(os.environ, RM_SLOT_PROJECTS=str(projects), RM_STREAMS_DIR=str(streams), RM_ACCOUNT_USAGE_DIR=str(au),
                RM_SLOT_MACHINE="testhost", RM_SLOT_OWNER_LEDGER=str(tmp / "none.jsonl"), AGENT_SEAT=seat,
+               RM_DISPATCHER_STATE=str(disp),
                CLAUDE_PROJECT_DIR=str(ROOT))
     body = stdin if stdin is not None else json.dumps({"tool_name": "Agent", "cwd": cwd or "/x",
                                                        "tool_input": {"prompt": "p", "model": "sonnet"}})
@@ -83,7 +86,7 @@ rc, dec, why = run()
 check("3 running (one between calls, one not yet answered) against N=3 -> deny", dec == "deny", (rc, dec, why[:200]))
 check("the refusal names N, the mode and the why", "N=3" in why and "CRUISE" in why and "fits 4.1" in why, why[:400])
 check("the refusal points at the override flag and says not to cancel",
-      "--owner-said" in why and "slot_allocator.py set --seat BENCH" in why and "Do not cancel" in why, why[:600])
+      "--owner-said" in why and "slot_allocator.py set --seat CONDUCTOR" in why and "Do not cancel" in why, why[:600])
 alloc({"BENCH": 4, "FOUNDRY": 1})
 rc, dec, why = run()
 check("3 running against N=4 -> allow", dec is None and rc == 0, (dec, why[:200]))
@@ -102,8 +105,10 @@ rc, dec, why = run(stdin="not json")
 check("broken input fails open", rc == 0 and dec is None, (rc, dec))
 alloc({"BENCH": 3, "FOUNDRY": 1}, age=3 * H)
 rc, dec, why = run()
-check("a stale allocation.json is recomputed live (CRUISE 6 total -> BENCH 5, 3 running -> allow)",
-      dec is None, (dec, why[:300]))
+check("a stale allocation.json is recomputed live (v3: he is absent -> CONDUCTOR 0, 3 running -> deny)",
+      dec == "deny" and "N=0" in why and "computed now" in why, (dec, why[:300]))
+rc, dec, why = run("FOUNDRY")
+check("... and FOUNDRY, computed live, gets the machine total (CRUISE 6 -> allow)", dec is None, (dec, why[:300]))
 alloc({"BENCH": 3, "FOUNDRY": 1})
 time.sleep(0.05)
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(now + H), "n": 9}))
@@ -112,6 +117,42 @@ check("his word newer than the allocation is honoured at once (N 9 -> allow)", d
 (streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "just two", "until": iso(now + H), "n": 2}))
 rc, dec, why = run()
 check("his word can lower it too (N 2 -> deny, quoting him)", dec == "deny" and "just two" in why, (dec, why[:300]))
+
+# ---- v3: the Dispatcher's published budget comes first (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER)
+(streams / "slot_override.json").unlink()
+alloc({"BENCH": 3, "FOUNDRY": 1})
+
+
+def budget(seats, age=30):
+    (disp / "helper_budget.json").write_text(json.dumps({"t": now - age, "at": iso(now - age), "by": "dispatcher",
+                                                         "seats": seats, "mode": "CRUISE", "why": "budget why: v3"}))
+
+
+budget({"CONDUCTOR": 5, "FOUNDRY": 0})
+rc, dec, why = run()
+check("a fresh Dispatcher budget beats allocation.json (CONDUCTOR 5, 3 running -> allow)", dec is None, (dec, why[:300]))
+rc, dec, why = run("FOUNDRY")
+check("FOUNDRY reads its budget under its own name (FOUNDRY 0 -> deny, citing the Dispatcher)",
+      dec == "deny" and "N=0" in why and "Dispatcher budget" in why and "budget why" in why, (dec, why[:300]))
+budget({"CONDUCTOR": 2, "FOUNDRY": 4})
+rc, dec, why = run()
+check("the window seat BENCH reads the CONDUCTOR budget and is refused under the Conductor's name",
+      dec == "deny" and "N=2" in why and "CONDUCTOR" in why, (dec, why[:300]))
+budget({"CONDUCTOR": 9, "FOUNDRY": 4}, age=3 * H)
+rc, dec, why = run()
+check("a stale Dispatcher budget is ignored (falls back to allocation.json N=3 -> deny)",
+      dec == "deny" and "allocation.json" in why, (dec, why[:300]))
+budget({"CONDUCTOR": 9, "FOUNDRY": 4})
+time.sleep(0.05)
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "just one", "until": iso(now + H), "n": 1}))
+rc, dec, why = run()
+check("his word newer than the budget still acts at once (N 1 -> deny, quoting him)",
+      dec == "deny" and "just one" in why, (dec, why[:300]))
+(disp / "helper_budget.json").write_text("{torn")
+(streams / "slot_override.json").unlink()
+rc, dec, why = run()
+check("a torn budget file falls back, never fails the spawn open by accident (allocation.json N=3 -> deny)",
+      dec == "deny" and "allocation.json" in why, (dec, why[:300]))
 
 ids = sorted(x["id"] for x in SA.running_helpers([projects / "-home-mandrake-rm-bench"], now, SA.load_rules()))
 check("a helper whose last record is an end_turn report is finished at once, not counted for minutes",

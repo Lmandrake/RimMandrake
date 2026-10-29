@@ -11,6 +11,7 @@
  "recover_verify_s": 300,
  "owner_idle_s": 1200,
  "alarm_every_s": 21600,
+ "helper_budget": {"enabled": true, "_doc": "HELPER_BUDGET_MIGRATE_INTO_DISPATCHER: every tick the Dispatcher publishes the helper budget (helper_budget.py -> <state>/helper_budget.json, seats CONDUCTOR/FOUNDRY) that the spawn hook reads first. false = the hook falls back to allocation.json/compute."},
  "ledger_notes": true,
  "publish": true,
  "alarm_item": "RIMFLOW_V3_BUILD_DISPATCHER_FIRST",

@@ -5,9 +5,12 @@ Owner, 2026-10-26: "Let's drop to 5 max subagents for Bench at a time (complete 
 cancel) to preserve. We should make this a semi-automated process going forward, so I don't have to stare at it and
 guess." Then at 13:05: "...please use it to determine the number of Foundry and Bench agents yourself. My 5 was a guess."
 
-So N is not fixed here. It is the allocator's per-seat N (src/RimMandrake/Utils/slot_allocator.py, rules in
-slot_rules.json), read from allocation.json when that is under 40 min old and newer than his last word, computed
-live otherwise, and the rules file's fallback_n if neither works. Running helpers are counted from this seat's
+So N is not fixed here. v3 (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER): the Dispatcher is the source. It publishes the
+per-seat budget every tick (src/RimMandrake/rimflow/helper_budget.py -> <dispatcher state>/helper_budget.json, seats
+CONDUCTOR and FOUNDRY); the window seat AGENT_SEAT=BENCH reads the CONDUCTOR budget. When that file is missing, stale
+(10 min) or older than his last word, the hook falls back to the allocator's per-seat N
+(src/RimMandrake/Utils/slot_allocator.py, rules in slot_rules.json): allocation.json when that is under 40 min old
+and newer than his last word, computed live otherwise, and the rules file's fallback_n if neither works. Running helpers are counted from this seat's
 subagent transcripts (slot_allocator.running_helpers: written in the last 15 min and not cleanly ended; when in doubt
 a helper counts as running). Nothing here cancels a helper: the refusal only says to wait.
 
@@ -23,6 +26,7 @@ from pathlib import Path
 
 ROOT = Path(os.environ.get("CLAUDE_PROJECT_DIR") or Path(__file__).resolve().parents[2])
 UTILS = ROOT / "src" / "RimMandrake" / "Utils"
+RIMFLOW = ROOT / "src" / "RimMandrake" / "rimflow"
 FRESH_S = 40 * 60
 
 
@@ -38,7 +42,17 @@ def seat_of(payload):
 
 
 def allowed_n(SA, rules, seat, now):
-    """(N, mode, why, source) for this seat."""
+    """(N, mode, why, source) for this seat (the allocator's key: BENCH is the Conductor's window)."""
+    try:
+        if str(RIMFLOW) not in sys.path:
+            sys.path.insert(0, str(RIMFLOW))
+        import helper_budget as HB
+        bud = HB.read(now=now)
+        name = HB.budget_seat(SA.seat_label(seat))
+        if bud and name in bud["seats"]:
+            return int(bud["seats"][name]), bud.get("mode"), bud.get("why", ""), f"Dispatcher budget of {bud.get('at')}"
+    except Exception:  # noqa: BLE001  the budget is one source; the allocator below is the fallback
+        pass
     d = SA.streams_dir()
     al = SA.read_json(d / "allocation.json")
     try:
@@ -69,17 +83,18 @@ def decide(payload, now=None):
     if seat not in (rules.get("enforce_seats") or []) or seat not in SA.SEAT_PROJECT:
         return None
     n, mode, why, src = allowed_n(SA, rules, seat, now)
+    label = SA.seat_label(seat)
     running = SA.running_helpers([SA.projects_dir() / SA.SEAT_PROJECT[seat]], now, rules)
     if len(running) < n:
         return None
     ids = ", ".join(x["id"][:10] for x in running[:8])
     return (
-        f"Blocked: {seat} already has {len(running)} helper(s) running and the allocator allows N={n} now "
+        f"Blocked: {label} already has {len(running)} helper(s) running and the allocator allows N={n} now "
         f"(mode {mode}, {src}).\n\nWhy N={n}: {why}\n\nRunning: {ids}\n\n"
-        "Do not cancel a running helper to make room. Wait for one to finish, then spawn. The allocator re-checks every "
-        "15 min (RimPulse, rm-pulse-streams.timer); `python3 src/RimMandrake/Utils/slot_allocator.py now` shows it.\n"
+        "Do not cancel a running helper to make room. Wait for one to finish, then spawn. The Dispatcher republishes the "
+        "budget every tick; `python3 src/RimMandrake/rimflow/helper_budget.py show` shows it.\n"
         "Only the owner's word raises N (the override flag):\n"
-        f"    python3 src/RimMandrake/Utils/slot_allocator.py set --seat {seat} --n <N> --owner-said \"<his exact words>\"\n"
+        f"    python3 src/RimMandrake/Utils/slot_allocator.py set --seat {label} --n <N> --owner-said \"<his exact words>\"\n"
         "(it holds until the burn account's weekly reset; `slot_allocator.py clear` drops it)."
     )
 
