@@ -183,3 +183,4 @@
 {"seat":"DISPATCHER","event":"note","id":"FLOWWORKS_MODCHECK_FIX_SIX_STANDING_FAILS","text":"dispatcher woke_no_handoff FOUNDRY: doorbell consumed but no lease/claim/start by FOUNDRY in 600 s","ts":"2026-10-29T19:40:50Z","tsn":1793302850049888707}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Auditor run run: launched","ts":"2026-10-29T20:01:29Z","tsn":1793304089492716161}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Auditor run run: completed","ts":"2026-10-29T20:05:38Z","tsn":1793304338375791122}
+{"seat":"DISPATCHER","event":"note","id":"RAISE_ORDER_FIX_FILING_DATE_OUTRANKS_PLAN","text":"dispatcher verified FOUNDRY: lease take at 2026-10-29T20:42:29Z","ts":"2026-10-29T20:44:27Z","tsn":1793306667158362592}
