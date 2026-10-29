@@ -1,6 +1,7 @@
-# Operations role: instructions (v3.2, written, NOT enabled)
+# Operations role: instructions (v3.2, enabled)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Operations]`, `enabled: false`.
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Operations]`, `enabled: true` since
+Dispatcher wave 1, 2026-10-28 (e35afe1dcc, with the Conductor).
 Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Operations, `design/RimMandrake/rimflow_v3_2026-10-26.md` §3.
 Item: `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE` (your own: every other role is token-blind and reads
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`, so no reading, runway, budget or token figure goes there; review U N2).
@@ -33,7 +34,7 @@ burning tokens gathering it all up for every question considered."
 |---|---|---|
 | 19:30 local (`runs_local`) | the running check: alarms, flags, anything UNMEASURED that was MEASURED yesterday | `run_token_cap` |
 | an ops_watch alarm OPEN and not yet run: an alarm item filed (`OPS_*` under the parent item) or an Operations-only alarm (`alarm:<aid>`, in `alarms.json`); one run covers every such alarm (the trigger names them), runs are at least `alarm_run_gap_s` apart, an alarm runs again only after it cleared and re-crossed, and alarms already open when you are first enabled run once | diagnose each alarm the trigger names: cause, owner, fix or a filed item; note each alarm item (an Operations-only alarm: your own item) | `run_token_cap` |
-| 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below; a band without the economy pass skips this whole run (its running check too: the 19:30 check covers the day) | `economy_token_cap` |
+| 07:30 local (`runs_local`, `economy_pass_local`) | the running check, then the economy pass below (no band skips it while the bands are neutralised, see Throttle) | `economy_token_cap` |
 
 Every cap and budget is in WEIGHTED tokens (input-equivalent, `role_launch.TOKEN_WEIGHTS`): input 1, cache write 1.25 (5m)
 or 2 (1h), cache read 0.1, output 5, so a cap measures cost, not how often the context was re-read. Values (schedule,
@@ -42,19 +43,16 @@ or 2 (1h), cache read 0.1, output 5, so a cap measures cost, not how often the c
 the 19:30 run and one alarm run a day, with headroom; scheduled runs are reserved first. The run record keeps
 `raw_tokens` beside `tokens` for comparison.
 
-## Throttle (same runway bands as the Conductor)
+## Throttle: runway bands, neutralised
 
-Read by the Dispatcher from `accounts.<account>.runway` in ops_watch's `status.json` before every launch.
-
-| band | reading | what runs |
-|---|---|---|
-| GREEN | runway ≥ 1.5 | everything: the 07:30 run (running check + economy pass), the 19:30 check, alarm runs |
-| AMBER | 1.0 ≤ runway < 1.5 | quick runs only: the 19:30 running check and alarm runs; no 07:30 run |
-| RED | runway < 1.0 | one quick run a day (the 19:30 running check, cap × 0.75 = 337,500); no 07:30 run, no alarm runs |
-| FLOOR | `week_left_pct` < 10 | nothing |
+Read by the Dispatcher from `accounts.<account>.runway` in ops_watch's `status.json` before every launch. The bands
+(GREEN runway ≥ 1.5, AMBER ≥ 1.0, RED below, FLOOR `week_left_pct` < 10) are still computed and journaled, but since
+2026-10-28 every band, FLOOR included, runs like GREEN: `slots: "all"`, `quick_cap_x` 1.0 (d92c4c825e, owner: *"Stop
+the whole account rated RED on runeway crap. Just do the checkout."*). So the 07:30 run, the 19:30 check and alarm
+runs all go whatever the band. Restoring a band is the owner's.
 
 A missing, stale (older than 45 min) or UNMEASURED reading is refused loudly with an alarm, not treated as a band;
-ops_watch's death is covered by the dead-man timer. Loosening this table is the owner's.
+ops_watch's death is covered by the dead-man timer.
 
 How the caps really bind (code, `role_launch.py`): `claude -p` cannot be stopped at a token budget. A run is
 REFUSED at launch when today's spend plus its budget would pass `daily_token_cap`; its usage is counted after it
@@ -80,7 +78,7 @@ do nothing, exit.
 ## The economy pass (daily)
 
 You are the ONLY AI that analyses token burn (owner, 2026-10-27): every other role is token-blind and the Dispatcher
-(a program) enforces caps and picks the account for new work. For every account including Codex: runway, the week's
+(a program) checks caps at launch, alarms on overruns after the fact, and picks the account for new work. For every account including Codex: runway, the week's
 slope, what spent it, any surprising bleed or trend, and a **forecast against the plan** (the Producer's plan with the
 work it lists, at the measured burn, to each account's reset). When the forecast misses the plan, say so in your note (on your own item)
 and hand the Producer a replan request: a `rimflow note` on the Producer's ledger item

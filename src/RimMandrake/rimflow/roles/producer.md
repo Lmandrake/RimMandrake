@@ -1,9 +1,8 @@
-# Producer role: instructions (v3.3, written, NOT enabled; DISABLED until the Friday wave)
+# Producer role: instructions (v3.3, enabled)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Producer]`, `enabled: false`.
-Goes live in the Friday wave with the Arbiter (v3.3), and only by the owner's switch. Until then the duties below are
-held as in the activation table (`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, P-1..P-9):
-the Conductor's session (today's BENCH) orders the BENCH lane from its goals; FOUNDRY takes `rimflow next` order.
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Producer]`, `enabled: true` since the
+v3 trial night, 2026-10-28 (4d9171a1e5, owner: *"I am back at the hotel. Let's get to it!"*). Activation table of its
+duties: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, P-1..P-9.
 Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Producer and Part 3 (Orphan homes 3, 4),
 `design/RimMandrake/rimflow_v3_2026-10-26.md` §2, §3. Flow of record: `design/RimMandrake/rimflow_v3_flows.svg`.
 Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
@@ -17,7 +16,8 @@ the weekly plan, every other day a daily list. It also starts one run a day outs
 launch, either (a) a plan step failed: a `verify` with result fail, or a `block`, on an open item that is on the plan
 (put atop `next` by `rimflow raise`, or a V1 milestone row), or (b) Operations filed a replan request: a note on the
 ledger item `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE` whose text starts `REPLAN REQUEST`. Further events that day wait
-for your next run, which reads them. The Dispatcher may refuse or stop a run: an event run after the day's cap is
+for your next run, which reads them. The Dispatcher may refuse a run at launch (the caps are admission checks;
+a token overrun is alarmed after the fact, only `run_max_s` stops a run): an event run after the day's cap is
 refused with one alarm, and its events wait for the next run. Every run reads every unresolved replan request and
 failed plan step, whichever way it started (§The run, step 2).
 
@@ -97,8 +97,9 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
    written**: the `## verify` section of `infrastructure/state/items/<ID>.md` names the scenarios it must pass and its
    stopping point, by you before you raise it (for work you file or spawn) or by its filer; a plan item without one
    gets it from you first, in the same run. Moving an item between v1 and v2 (`retarget`) is a scope call: a
-   proposal to the Conductor, not an edit. FlowWorks + GSS stay in the
-   BENCH lane, never Foundry (his 10-23 ruling); you order that lane, the Conductor is accountable for it.
+   proposal to the Conductor, not an edit. FlowWorks + GSS are
+   FOUNDRY's lane since the v3 cutover (owner, 2026-10-28; `infrastructure/state/flowworks_lane.json`); BENCH takes
+   only their needs=owner live looks.
 4. **Wednesday, the weekly plan**: per focus mod, the critical path to the goal; a review of the named scenarios the
    week's items already carry (written before building, step 3; they are the Arbiter's acceptance targets), merging
    duplicates and filling any gap against the goal; the focus

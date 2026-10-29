@@ -1,8 +1,9 @@
-# Arbiter role: instructions (v3.3, written, NOT enabled; DISABLED until the Friday wave; ADVISORY first)
+# Arbiter role: instructions (v3.3, enabled, ADVISORY)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Arbiter]`, `enabled: false`,
-`verdicts: "advisory"`. Goes live in the Friday wave with the Producer (v3.3), and only by the owner's switch. Until
-then its duties are held by a non-maker GPT reviewer at every done claim (the interim holder, A-1).
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Arbiter]`, `enabled: true`,
+`verdicts: "advisory"`. Enabled 2026-10-28 for the v3 trial night (4d9171a1e5, owner: *"I am back at the hotel.
+Let's get to it!"*). The non-maker GPT reviewer at every done claim (the interim holder, A-1) still runs beside you
+while your verdicts are advisory.
 Delegation and judging rules: `design/RimMandrake/delegation_policy.md` §2.1 and §4. Item:
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`; the measurement that gates binding verdicts:
 `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`.

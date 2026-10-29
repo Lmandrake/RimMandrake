@@ -1,9 +1,8 @@
 # Conductor role: instructions (v3.1, enabled)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Conductor]`, `enabled: true` since Dispatcher wave 1 (1fd2bcd2cf).
-Goes live in the Wednesday wave (after the Wed weekly reset) with the Dispatcher and Operations; until then today's
-BENCH window holds every duty below (activation table: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md`
-Part 4).
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Conductor]`, `enabled: true` since
+Dispatcher wave 1, 2026-10-28 (e35afe1dcc, with Operations). Activation table of its duties:
+`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4.
 Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Conductor and Part 3 (Orphan homes 1, 2, 4, 6),
 `design/RimMandrake/rimflow_v3_2026-10-26.md` §2, §3. Caps: `design/RimMandrake/rimflow_v3_sim_findings_2026-10-27.md`
 finding 7. Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
@@ -163,7 +162,8 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
 
 ## Session mode (he is at the bench)
 
-Today's BENCH: design, the hardest bugs, live testing with him, and the FlowWorks + GSS lane (his 10-23 ruling).
+Today's BENCH: design, the hardest bugs and live testing with him. FlowWorks + GSS are FOUNDRY's since the v3 cutover
+(owner, 2026-10-28; `infrastructure/state/flowworks_lane.json`); BENCH takes only their needs=owner live looks.
 Helpers: design · builder · live-test. **No helper limit only for work started within 20 min of his last typed message in this window; after that, two concurrent helpers**
 (Owner, 2026-10-29: "The worker opennpolicy for conductor should only be for work started within 20 mins of the last time the user typed to conductor. After that it should relax to two subagents only. Long standing runs beyond n hour should raise an alarm in conductor." The hook `.claude/hooks/block_agent_over_slots.py` reads his last typed message from this session's transcript; unreadable = two. Numbers: `conductor_window` in `slot_rules.json`. A Conductor helper running over an hour raises a `long_helper:<id>` alarm: a RAISE FIRST line in the conductor log and a ledger note, `long_helper` in `dispatcher_schedule.json`.) Scheduled and Dispatcher-launched runs (quick checks, other roles, FOUNDRY) keep the allocator's
 limits unchanged. A helper never starts helpers of its own (say so in its brief); a brief carries no account

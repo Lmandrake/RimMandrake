@@ -1,10 +1,9 @@
-# Innovator role: instructions (v3.4, written, NOT enabled; DISABLED until the Sunday wave)
+# Innovator role: instructions (v3.4, enabled)
 
-Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Innovator]`, `enabled: false`. Goes
-live in the Sunday wave with the Auditor (v3.4), and only by the owner's switch. Until then its duties are held as in
-the activation table (`design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, I-1..I-4): trials and
-the game review are deferred (nobody runs them today), cadence proposals sit with Operations' economy pass, any seat
-tends the idea bank, and any seat may add a `proposed` line to the innovations list.
+Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Innovator]`, `enabled: true` since the
+v3 trial night, 2026-10-28 (4d9171a1e5, owner: *"I am back at the hotel. Let's get to it!"*). Activation table of its
+duties: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` Part 4, I-1..I-4. Any seat may still tend the
+idea bank and add a `proposed` line to the innovations list.
 Design: that doc's §Innovator and Part 3 (Orphan homes 2 and 3), `design/RimMandrake/rimflow_v3_2026-10-26.md` §2-§3.
 Item: `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`.
 
@@ -59,7 +58,8 @@ you to probation at once, on its own.
 
 **His, always (probation or not):** a new game concept, a new mod, a mod merge or split (game content is the
 vision's); any bar, check threshold or verify level; the vision, a north-star section, canon; `CLAUDE.md` or a
-charter; silencing or moving a role; anything that takes the bridge or the game; FlowWorks and GSS work (BENCH's).
+charter; silencing or moving a role; anything that takes the bridge or the game; FlowWorks and GSS work (FOUNDRY's since the
+v3 cutover).
 After probation those go to him as proposals exactly as now; only reversible `agent` and `opportunity` trials
 (a role's working order, a template, a prompt, a helper brief, a review layout, a script's defaults, a trial role
 behind a flag) apply on your decision.
