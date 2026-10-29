@@ -2,6 +2,8 @@
  "_doc": "Rules for findings_fold.py, the no-AI findings sorter (FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X; design/RimMandrake/findings_curation_design_2026-10-29.md option B, chosen by the owner by card 2026-10-29: \"Program folds, FOUNDRY judges\"). It runs as the last step of testq-tick.service (testq.py UNITS), after ingest.py.",
  "out": "D:\\ClaudeWork\\rimmandrake\\findings_fold",
  "_out_why": "standing.json (the standing-failures table, every raw text kept) and curation.md (FOUNDRY's daily residue) land here: agent scratch, read by FOUNDRY and the Auditor. The one source of this path; FINDINGS_FOLD_OUT overrides it (selftests)",
+ "live_notes": false,
+ "_live_notes_why": "DRY until a fresh blind review is CLEAN (coordinator 2026-10-29, after the blind GPT review v3_review/blind/findings/review.md found 7 P1s): the run computes and writes standing.json and curation.md but writes NO ledger notes (no merges, retirements, routes or contradictions on the ledger). Absent = false (fails safe)",
  "finding_types": ["UNTRIAGED"],
  "_finding_types_why": "the sorter folds what the testq ingest files (type UNTRIAGED, design section 2); hand-filed findings of other types were already judged by the seat that filed them",
  "lane_item": "STEVE_LANE_MONITOR_PAUSE_FINDINGS",

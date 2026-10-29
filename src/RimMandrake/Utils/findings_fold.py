@@ -463,7 +463,11 @@ def cmd_run(a):
     recs = read_done(queue_dir())
     decs = read_decisions(decisions_path(rules))
     t = fold(events, states, recs, decs, prev, rules, utcnow())
-    if not a.no_notes and t["actions"]:
+    t["dry"] = bool(a.no_notes or not rules.get("live_notes", False))
+    if t["dry"]:
+        print("findings_fold: DRY (rules live_notes false or --no-notes): %d note(s) computed, none written"
+              % len(t["actions"]))
+    if not t["dry"] and t["actions"]:
         n, errs, pub = apply_notes(t["actions"], os.environ.get("FINDINGS_FOLD_PUSH", "1") != "0")
         t["notes"] = {"written": n, "errors": errs, "publish": pub}
     write_atomic(std, json.dumps(t, indent=1, sort_keys=True))
