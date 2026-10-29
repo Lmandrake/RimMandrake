@@ -2800,13 +2800,29 @@ def test_golive_b1_busy_until_ended():
             RL.SCAN_RETRIES = _r
     mk = "selftest-marker-%d" % os.getpid()
     t_run = time.time()      # a run's `at`: this user's older unreadable processes (systemd, sd-pam) predate it
+    # The real /proc is shared with every co-running selftest: their young same-uid children (python3, git,
+    # reg.exe mid-exec) are unreadable for a moment, and a scan that meets one past SCAN_RETRIES is blind (None),
+    # which the Dispatcher treats as UNMEASURED and rescans next tick. Measured under testq+contracts load
+    # 2026-10-29: 11/489 single scans blind with no re-read (the old code; 1 in 14 runs FAILed "none once it is
+    # gone"), 0/479 with it. These rows test what a live scan SEES, so a blind scan is rescanned (bounded) like
+    # the next tick would, and its reason is printed (DISPATCHER_HUNT_SELFTEST_PARALLEL_FLAKE).
+    def live(mk_, since_):
+        for _ in range(10):
+            pids, blind = RL.scan_marked(mk_, since=since_)
+            if not blind:
+                return pids, None
+            time.sleep(0.2)
+        return None, blind
     p = subprocess.Popen(["sleep", "30"], env=dict(os.environ, RM_ROLE_UNIT=mk))
     try:
-        check(RL.procs_of(mk, since=t_run) == [p.pid], "B1 procs_of on the real /proc sees a live marked process")
+        got, blind = live(mk, t_run)
+        check(got == [p.pid], "B1 procs_of on the real /proc sees a live marked process (%s, blind: %s)"
+              % (got, blind))
     finally:
         p.kill()
         p.wait()
-    check(RL.procs_of(mk, since=t_run) == [], "B1 procs_of: none once it is gone")
+    got, blind = live(mk, t_run)
+    check(got == [], "B1 procs_of: none once it is gone (%s, blind: %s)" % (got, blind))
     # execute: the scope and marker are on disk BEFORE systemd-run, and a launcher's own scope cannot replace them
     sch = sched(roles=[conductor()])
     act = {"do": "role_launch", "role": "Conductor", "unit": "UB1", "message": "m", "ticket": "ROLES_ITEM_X",
@@ -3318,6 +3334,10 @@ def main():
             import traceback
             traceback.print_exc()
             check(False, "%s crashed: %s" % (t.__name__, e))
+    # Re-list the failures last: run_selftests keeps only the last 40 lines of a FAIL, and the
+    # failing check is otherwise scrolled out of that tail (DISPATCHER_HUNT_SELFTEST_PARALLEL_FLAKE).
+    for msg in FAILS:
+        print("FAILED: " + msg)
     print("%d failure(s)" % len(FAILS))
     return 1 if FAILS else 0
 

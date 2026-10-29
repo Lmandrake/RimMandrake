@@ -1,0 +1,2 @@
+A selftest that scans the real /proc shares it with every co-running selftest: their young same-uid children (python3/git/reg.exe mid-exec) have an unreadable environ for a moment. role_launch.scan_marked with no re-read went blind on 11/489 scans under testq+contracts load (0/479 with SCAN_RETRIES=3); selftest_dispatcher's B1 live rows ('none once it is gone', 'sees a live marked process') failed ~1-2 in 14 parallel runs. Live-/proc assertions must rescan while blind and print the blind reason (DISPATCHER_HUNT_SELFTEST_PARALLEL_FLAKE).
+home: NONE
