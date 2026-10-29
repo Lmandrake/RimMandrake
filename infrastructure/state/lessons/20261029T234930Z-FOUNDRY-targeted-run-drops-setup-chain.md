@@ -1,0 +1,2 @@
+modcheck targeting has no cross-chain prerequisites: a --chains X run never runs a setup chain (e.g. Contagion 'site' retile), so any chain that depends on state another chain creates goes UNMEASURED (J20261029T213415Z-a65f87, 10x UNMEASURED on RM_TheRot). A chain's setup must live in the chain (Contagion _need_contagion now self-retiles, 7df198868f). Audit other suites for chains reading state set by an earlier chain.
+home: live-debugging-proof-harness
