@@ -238,7 +238,7 @@ It runs after every switch and on ops_watch's 15-minute tick.
 
 | | build half: historical replay | live half: crossover on two machines | production control |
 |---|---|---|---|
-| what it compares | how each arm BUILDS and self-checks: `ralph_a` (no critic), `trio` (builder + blind critic, round limit 3), `v3` (today's FOUNDRY procedure: a seat brief, helpers, self-verify), `v3c` (`v3` + done gate + a GPT review per sha) | how each arm LIVE-TESTS: the `trio` TestPilot (fixes in place, written reload rule) against the `ralph_c` fixed-SHA runner | v3 on the real queue, judged by sampling |
+| what it compares | how each arm BUILDS and self-checks: `ralph_a` (no critic), `trio` (builder + blind critic, round cap per testpilot_merged §2.1 L4), `v3` (today's FOUNDRY procedure: a seat brief, helpers, self-verify), `v3c` (`v3` + done gate + a GPT review per sha) | how each arm LIVE-TESTS: the `trio` TestPilot (fixes in place, written reload rule) against the `ralph_c` fixed-SHA runner | v3 on the real queue, judged by sampling |
 | where | throwaway clones, no game | SteveDesktop and Archmagi | today's seats |
 | tasks | past items with a known outcome | real candidates from the verify backlog (M11: 521 built items waiting at 10-26), plus planted known defects | its normal queue |
 | why this split | `ralph_c` builds exactly as `ralph_a` does, twice over, so it is not replayed separately | the live half is the only place `trio` and `ralph_c` differ from the others | free: it runs anyway |
@@ -501,7 +501,7 @@ next starts. Hours are ESTIMATES of builder working time, including the review r
 | | *Substrate subtotal* | *32* | *plus the day-0 failure drill* |
 | 8 | **`ralph_a`:** `loop.sh`, `PROMPT.md`, `POLICY.md`, and the owed small parts (`run_selftests --quick`, `bridge release --mine`, runway check) | 7 | Ralph §8's planted failing check and killed pass |
 | 9 | **The `v3` replay procedure** (today's FOUNDRY brief, in a throwaway clone) and **`v3c`** (plus the done gate and a GPT review per sha, reusing collapse step 1 if it has landed) | 6 | v3c refuses a close without a review record bound to the sha |
-| 10 | **`trio` builder and critic:** Ralph builder and blind critic subagents, round limit 3, simplify-or-split on non-convergence | 6 | a task built to never satisfy the critic ends in split or escalate at round 3, not a loop |
+| 10 | **`trio` builder and critic:** Ralph builder and blind critic subagents, round cap and simplify-or-split per `testpilot_merged_2026-10-29.md` §2.1 L4 (2 rounds, one simplify/split, 2 more, then park) | 6 | a task built to never satisfy the critic ends in simplify/split after round 2 and park after round 4, not a loop |
 | | **Build-half path: steps 1-10** | **51** | **then days 1-2 of replay can run** |
 | 11 | **The formal model** of the live-resource handoff (section 7) | 8 | TLC finds the known goodbye interleaving in the unfixed model |
 | 12 | **The `ralph_c` fixed-SHA runner and the lane wrapper** (`arena_lane.py`: canary, `modlist_swap` restore, take/release logging) | 6 | a result for a stale sha is refused; a dead colony gives `invalid` |
@@ -583,7 +583,7 @@ be enforced is the protocol shape:
 
 - the round counter is at most 3;
 - every accept is bound to the sha the critic actually saw;
-- round 3 without an accept ends in `split` or `escalate`, never another round.
+- round 2 without an accept ends in one `simplify`/`split`; round 4 without an accept ends in `park`, never another round (testpilot_merged §2.1 L4).
 
 Those are three invariants. A forced-failure test (step 10) covers them, and a model would add nothing. About 1
 hour if it is written as a small extra TLA+ module anyway.
