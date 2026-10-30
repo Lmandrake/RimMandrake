@@ -475,19 +475,31 @@ def arm_order(freeze_hash: str, arm: str, tasks, salt: int = 0) -> list[str]:
     return order
 
 
-def schedule(freeze_hash: str, arms, tasks) -> dict:
-    """-> {"orders": {arm: [task...]}, "slots": [(arm, task)...]} (slots = interleaved across arms)."""
+def arm_chrono_order(freeze_hash: str, arm: str, tasks, contains: dict, salt: int = 0) -> list[str]:
+    """As arm_order, but a seeded linear extension of the sibling relation (arena_rounds.chrono_order): every task
+    whose fix another task's base holds comes first. Random only where the relation leaves a choice."""
+    import arena_rounds as RD                    # arena_rounds imports arena_tasks, not this module: no cycle
+    return RD.chrono_order(sorted(set(tasks)), contains, seed=arm_seed(freeze_hash, arm, salt))
+
+
+def schedule(freeze_hash: str, arms, tasks, contains=None) -> dict:
+    """-> {"orders": {arm: [task...]}, "slots": [(arm, task)...]} (slots = interleaved across arms).
+    contains (arena_tasks.base_contains over these tasks) given: each arm's order is chrono-ordered and checked
+    (ARENA_PLANNERS_ENFORCE_SIBLING_ORDER). The near-linear relation of a real pool leaves few or no distinct orders,
+    so arms MAY share an order then (the collision rule still salts, but a collision is no longer an error);
+    "sibling_order" in the result says which rule made the orders."""
     freeze_hash = norm_freeze(freeze_hash)
     arms = sorted(set(arms))
     orders: dict[str, list[str]] = {}
-    can_differ = math.factorial(len(set(tasks))) >= len(arms)
+    chrono = contains is not None
+    can_differ = math.factorial(len(set(tasks))) >= len(arms) and not chrono
     taken: set = set()
     for a in arms:                                   # sorted, so the result never depends on the caller's arm order
         # COLLISION RULE (documented, deterministic): normally each arm's order is sha256(freeze|arm) alone. If it equals the
         # order of an earlier arm (sorted by name), THAT later arm's salt is incremented (1, 2, ...) until it is unique.
-        for salt in range(0, 1000):
-            o = arm_order(freeze_hash, a, tasks, salt)
-            if tuple(o) not in taken or not can_differ:
+        for salt in range(0, 50 if chrono else 1000):
+            o = arm_chrono_order(freeze_hash, a, tasks, contains, salt) if chrono else arm_order(freeze_hash, a, tasks, salt)
+            if tuple(o) not in taken or not (can_differ or chrono):
                 break
         orders[a] = o
         taken.add(tuple(o))
@@ -499,7 +511,11 @@ def schedule(freeze_hash: str, arms, tasks) -> dict:
         rnd = arms[:]
         rng.shuffle(rnd)
         slots += [(a, orders[a][i]) for a in rnd]
-    return {"orders": orders, "slots": slots}
+    if chrono:
+        import arena_rounds as RD
+        for o in orders.values():
+            RD.check_rounds(o, contains)         # raises TaskRefused: never run an order that judges a task too early
+    return {"orders": orders, "slots": slots, "sibling_order": chrono}
 
 
 # ---------------------------------------------------------------- run
@@ -577,11 +593,16 @@ def run_one(arm: str, task: str, base_sha: str, fix_sha: str, work, judge, sourc
                 _delete_own(clone, root)
 
 
-def run_schedule(freeze_hash: str, tasks: dict, arms, work, judge, source=DEFAULT_SOURCE, root=None) -> list[dict]:
+def run_schedule(freeze_hash: str, tasks: dict, arms, work, judge, source=DEFAULT_SOURCE, root=None,
+                 contains=None) -> list[dict]:
     """tasks = {task_id: {"base_sha":..., "fix_sha":...}}. Runs the interleaved slots; one failure is recorded and the
-    run goes on (its clone is already gone)."""
+    run goes on (its clone is already gone). Sibling order is always enforced: `contains` defaults to
+    arena_tasks.base_contains over `tasks` in `source` (a refused order raises before anything runs)."""
+    if contains is None:
+        import arena_rounds as RD
+        contains = RD.contains_for(tasks, source)
     results = []
-    for arm, task in schedule(freeze_hash, arms, tasks)["slots"]:
+    for arm, task in schedule(freeze_hash, arms, tasks, contains)["slots"]:
         t = tasks[task]
         rec = {"arm": arm, "task": task}
         try:
