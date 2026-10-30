@@ -96,6 +96,8 @@ SEAT = "RUNNER"
 # the machine this worker runs on, named in every result: the testq Archmagi backfill runs this same worker locally
 HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
+PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
+PROBE_GAP_S = 15        # between its two tries, so a game mid-autosave is not mistaken for a wedged one
 SHEET_DIR = os.environ.get("TESTQ_SHEET_DIR") or os.path.join(RUNNER, "Transient", "modcheck")
 
 
@@ -569,6 +571,28 @@ class Attempt:
             return self.fail("INVALID", "LOAD", "game load failed: " + tail)
         m = re.search(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
         if not m:
+            wedged = re.search(r"already running \(pid \d+\)", tail) and self.kept_game_wedged()
+            if wedged:
+                # STEVE_LANE_FIX_WEDGED_KEPT_GAME: 2026-10-30 08:10Z the kept game (pid 7460, 17 h old, 27 maps, 21 GB)
+                # stopped answering; `up --wait` only sees the process, so five jobs each reused it (load 1 s), died in
+                # ensure_playing_map on the same 30 s timeout, braked the filler and left the lane dark 14 h. We hold
+                # the guard: restart it. A wedged game cannot run a job, so this needs no once-only memory.
+                self.res["bounced_unresponsive"] = wedged
+                self.say("kept game does not answer the bridge (%s): restarting it" % wedged)
+                rc, tail = self.sh(self.cmd_down(), timeout=300)
+                if rc != 0:
+                    return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
+                                     "kept game does not answer the bridge (%s); game down failed: %s"
+                                     % (wedged, refused_line(tail) or tail))
+                since = S.utcnow()
+                rc, tail = self.sh(cmd, timeout=900)
+                if rc != 0:
+                    return self.fail("INVALID", "LOAD", "game reload after the wedged-game restart failed: " + tail)
+                m = re.search(r"started pid (\d+)", tail)
+                if not m:
+                    return self.fail("INVALID", "LOAD", "restarted a wedged game, but load did not report a fresh "
+                                     "process: %s" % tail[-200:])
+        if not m:
             stale = self.pending_markers(since)
             if stale:
                 # STEVE_RIG_FIX_OUTOFBAND_DRIVER_MARKER: a game kept from before this attempt carries a mutating call
@@ -615,6 +639,37 @@ class Attempt:
 
     def bridge_cmd(self):
         return os.environ.get("TESTQ_CMD_BRIDGE") or "python.exe src/RimMandrake/Utils/rimbridge_client.py"
+
+    def kept_game_wedged(self):
+        """-> why the game load kept does not answer the bridge, or None (it answers, or the probe cannot tell).
+
+        `rw_game.sh up --wait` proves a process, not a game that serves calls. A read-only call answered, or a refused
+        one, is a live bridge; only a call that ran and got no answer, twice, is a wedged game. A probe that could not
+        run at all (no client here: rc 126/127) keeps the old behaviour: the job's own calls will say if it matters."""
+        if HOST != "stevedesktop" and not os.environ.get("TESTQ_CMD_PROBE"):
+            return None                     # the archmagi lane's kept game is the owner's: never probed, never stopped
+        cmd = os.environ.get("TESTQ_CMD_PROBE") or (self.bridge_cmd()
+                                                    + " --timeout %d --call rimworld/get_ui_state" % PROBE_TIMEOUT_S)
+        why = None
+        for attempt_no in (1, 2):
+            if attempt_no == 2:
+                time.sleep(float(os.environ.get("TESTQ_PROBE_GAP_S") or PROBE_GAP_S))
+            try:
+                r = subprocess.run(["bash", "-c", cmd], cwd=RUNNER, capture_output=True, text=True,
+                                   timeout=PROBE_TIMEOUT_S + 30)
+            except OSError as e:
+                self.say("could not probe the kept game: %s" % e)
+                return None
+            except subprocess.TimeoutExpired:
+                why = "bridge probe hung past %ds" % (PROBE_TIMEOUT_S + 30)
+                continue
+            if r.returncode == 0:
+                return None
+            if r.returncode in (126, 127):
+                self.say("could not probe the kept game: rc %s" % r.returncode)
+                return None
+            why = "bridge probe rc %s: %s" % (r.returncode, ((r.stderr or "") + (r.stdout or "")).strip()[-160:])
+        return why
 
     def pending_markers(self, before):
         """-> cids of the bridge client's unresolved UNKNOWN-outcome markers sent before `before` ([] if none or the

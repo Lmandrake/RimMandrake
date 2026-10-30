@@ -94,6 +94,7 @@ def main():
         env = {k: v for k, v in os.environ.items() if k not in ("RM_HOST_GUARD_GEN", "RIMFLOW_SEAT")}
         env.update(TESTQ_HOME=home, TESTQ_SHEET_DIR=sheets, TESTQ_MODS_DIR=mods, TESTQ_SKIP_PULL="1",
                    TESTQ_NO_SYSTEMD="1", TESTQ_CMD_DEPLOY="true", TESTQ_CMD_LOAD="true", TESTQ_CMD_DOWN="true",
+                   TESTQ_CMD_PROBE="true", TESTQ_PROBE_GAP_S="0",  # the kept game answers unless a case says not
                    TESTQ_CMD_RUN="%s %s run" % (sys.executable, mock), RIMFLOW_DRIVER_LOCK=lock,
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
                    RM_HOST="stevedesktop", RM_GAME_USERDATA=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "ev.jsonl"))
@@ -254,6 +255,40 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "DONE" and "liveness unknown" in (res.get("note") or ""),
               "a status that cannot tell keeps the verdict and says so: %s" % res.get("note"))
+
+        # 3d. the kept game stopped answering (STEVE_LANE_FIX_WEDGED_KEPT_GAME, 10-30: 5 jobs on one hung game, 14 h dark)
+        wdowns, wprobes, wlog = (os.path.join(tmp, n) for n in ("wedge_downs", "wedge_probes", "wedge_load"))
+        kept = "echo 'already running (pid 4242)'"
+        flaky = os.path.join(tmp, "wedge_load.sh")          # a file: the worker logs the command, and sh() tails that log
+        open(flaky, "w").write("if [ -f %s ]; then echo 'started pid 4242'; else %s; fi\n" % (wdowns, kept))
+        flaky = "bash " + flaky
+        deaf = "echo x >> %s; echo 'bridge error: timed out after 30.0s' >&2; exit 1" % wprobes
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=flaky, TESTQ_CMD_DOWN="echo down >> %s" % wdowns,
+                  TESTQ_CMD_PROBE=deaf, TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and "timed out" in (res.get("bounced_unresponsive") or "")
+              and len(open(wdowns).read().split()) == 1 and len(open(wprobes).read().split()) == 2,
+              "a kept game deaf to two probes is restarted once and the job runs: %s %s %s"
+              % (res.get("outcome"), res.get("cause"), res.get("bounced_unresponsive")))
+        os.remove(wdowns)
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=kept, TESTQ_CMD_DOWN="echo down >> %s; exit 1" % wdowns,
+                  TESTQ_CMD_PROBE=deaf)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "LOAD" and not res.get("rows")
+              and res.get("modcheck_exit") is None,
+              "a wedged game that cannot be stopped -> INVALID/LOAD, no run: %s %s" % (res.get("cause"), res.get("note")))
+        os.remove(wdowns)
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=kept, TESTQ_CMD_DOWN="echo down >> %s" % wdowns,
+                  TESTQ_CMD_PROBE="exit 127")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and not os.path.exists(wdowns),
+              "a probe that cannot run keeps the game: %s %s" % (res.get("outcome"), res.get("note")))
+        answered = "if [ -f %s ]; then exit 0; else touch %s; exit 1; fi" % (wlog, wlog)
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD=kept, TESTQ_CMD_DOWN="echo down >> %s" % wdowns,
+                  TESTQ_CMD_PROBE=answered, TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and not os.path.exists(wdowns),
+              "one missed probe (autosave) keeps the game: %s %s" % (res.get("outcome"), res.get("note")))
 
         cdowns = os.path.join(tmp, "canary_downs")
         rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
