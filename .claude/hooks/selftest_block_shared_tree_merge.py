@@ -85,6 +85,7 @@ def main():
         (ALLOW, "git checkout-index -f -- infrastructure/state/ledger/events/BENCH.jsonl", S),
         (ALLOW, "git merge --ff-only origin/main", S),
         (ALLOW, "git merge --abort", S),
+        (ALLOW, "cd /home/mandrake/rm/scratch/BENCH/merge-calib && git merge feature", S),  # the route the refusal names
         (ALLOW, "git merge --continue", S),
         (ALLOW, "git pull --ff-only", S),
         (ALLOW, "git pull --rebase", S),

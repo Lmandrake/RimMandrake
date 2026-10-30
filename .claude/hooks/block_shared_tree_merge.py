@@ -70,10 +70,13 @@ import sys
 TAKES_ARG = {"-C", "-c", "--git-dir", "--work-tree", "--namespace", "--exec-path"}
 MERGE_SAFE = {"--ff-only", "--abort", "--continue", "--quit"}
 PULL_SAFE = {"--ff-only", "--rebase", "-r"}
+SCRATCH_ROOT = "/home/mandrake/rm/scratch"
 
 
 def is_shared_tree(path):
     """True when `path` is inside the repo's MAIN worktree (not a linked one)."""
+    if (os.path.realpath(path) + "/").startswith(SCRATCH_ROOT + "/"):
+        return False                         # a scratch clone has one writer: the route the refusal text sends you to
     try:
         out = subprocess.run(
             ["git", "-C", path, "rev-parse", "--absolute-git-dir",
