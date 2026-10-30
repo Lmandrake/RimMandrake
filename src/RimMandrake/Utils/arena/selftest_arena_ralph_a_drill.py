@@ -188,6 +188,27 @@ def sc_gate_process_killed(tmp, mod, tag):
     return rec.get("verdict") == "invalid" and not mod.final_gate_ok(rec)[0] and not mod.build_gate_ok(rec)[0]
 
 
+def sc_wip_diverged(tmp, mod, tag):
+    """F: main advances while an unpublished failed try survives on wip; the ff cannot happen. The next pass must
+    not silently build on a wip that cannot merge: it keeps the old try on a backup branch, restarts wip at main,
+    records a defect event, and publishes a result that contains main's new commit."""
+    w = World(tmp, "dW" + tag, mod, builder=S.repairs, tester=PASS_ALL)
+    first = w.loop.step()
+    ok = first.startswith("failed") and not w.pubs()
+    S.sh(w.root, "git", "switch", "-q", "main")
+    (w.root / "other.txt").write_text("someone else published\n")
+    S.sh(w.root, "git", "add", "other.txt")
+    S.sh(w.root, "git", "commit", "-q", "-m", "main advanced")
+    S.sh(w.root, "git", "switch", "-q", "ralph/wip")
+    reopen(w, mod)
+    out = S.run_steps(w)
+    drill_note(w, "wip_diverged", out[-1])
+    ev = [r for r in w.writer.records() if (r.get("detail") or {}).get("kind") == "wip_diverged"]
+    bk = S.sh(w.root, "git", "branch", "--list", "ralph/wip-diverged-*")
+    return ok and bool(ev) and bool(bk.strip()) and out[-1].startswith("published") and w.main_src() == GOOD \
+        and (w.root / "other.txt").exists() and len(w.pubs()) == 1
+
+
 def tester_killed_world(tmp, mod, name, lose_state):
     """A World whose first tester pass dies after test_start; returns (world, builds_before_restart)."""
     w = World(tmp, name, mod)
@@ -284,6 +305,7 @@ SCENARIOS = [
     ("T tester pass killed: the next pass is the tester, builder blocked", sc_tester_killed),
     ("T killed tester RETRY after an ended attempt: builder still blocked", sc_tester_retry_killed),
     ("T tester pass killed AND state.json lost: builder still blocked", sc_tester_killed_lost_state),
+    ("F main advanced under an unpublished wip try: loud recovery, not a silent failed ff", sc_wip_diverged),
 ]
 
 MUTATIONS = [
@@ -297,6 +319,9 @@ MUTATIONS = [
     ("T guard matches per attempt: a killed attempt a later attempt finished blocks the builder forever", sc_tester_killed,
      'last[d["build_id"]] = r["event"]', 'last[d["build_id"]] = max(last.get(d["build_id"], ""), r["event"])'),
     ("T both guards removed: the builder runs ahead", sc_tester_killed_lost_state, None, None),
+    ("F diverged wip left in place (silent failed ff)", sc_wip_diverged,
+     "        if subprocess.run([\"git\", \"-C\", str(self.root), \"merge-base\", \"--is-ancestor\", MAIN, \"HEAD\"],\n                          capture_output=True).returncode == 0:\n            return",
+     "        return"),
     ("P build-phase gate bypassed", sc_planted, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("R leftover commit of a killed pass read as an empty candidate", sc_build_killed,
      "if head == base else (None, None)", "if True else (None, None)"),
@@ -346,7 +371,7 @@ def main():
                     detail={"drill": name, "outcome": outcome})
         got = [(r["detail"]["drill"]) for r in sw.records() if r.get("event") == "defect"]
         want = sorted(n for n, _ in DRILL)
-        check(len(want) == 8 and sorted(got) == want and len(set(want)) == 8,
+        check(len(want) == 9 and sorted(got) == want and len(set(want)) == 9,
               "the drill is recorded in the signed event log (%d records): %s" % (len(got), sorted(got)))
     finally:
         for k, v in saved.items():

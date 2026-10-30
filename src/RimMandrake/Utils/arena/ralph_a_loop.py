@@ -706,6 +706,21 @@ class Loop:
             lockf.close()
         return out
 
+    def _sync_wip(self, task):
+        """wip must contain main before a build. A wip that diverged from main (main advanced while an unpublished
+        try survived) cannot fast-forward: LOUD recovery - the old try is kept on a backup branch, wip restarts
+        at main, an event records it. Never a silent failed ff (candidates that could not merge)."""
+        self.git("merge", "-q", "--ff-only", MAIN, check=False)
+        if subprocess.run(["git", "-C", str(self.root), "merge-base", "--is-ancestor", MAIN, "HEAD"],
+                          capture_output=True).returncode == 0:
+            return
+        old = self.git("rev-parse", "HEAD")
+        backup = "ralph/wip-diverged-%s" % old[:12]
+        self.git("branch", "-f", backup, old)
+        self.git("switch", "-q", "-C", WIP, MAIN)
+        self.emit("defect", task, detail={"kind": "wip_diverged", "old_wip": old, "backup": backup,
+                                          "main": self.git("rev-parse", MAIN)})
+
     # ---- build
     def build_pass(self, task):
         require_tested(self.writer.records())                     # HARD CHECK: before anything else of the pass
@@ -719,7 +734,7 @@ class Loop:
             self.git("switch", "-q", WIP)
         else:
             self.git("switch", "-q", "-c", WIP, MAIN)
-        self.git("merge", "-q", "--ff-only", MAIN, check=False)
+        self._sync_wip(task)
         base = self.git("merge-base", MAIN, "HEAD")      # main, not wip: an unpublished try stays in the diff
         n = self.state["n"]
         pre = self.precheck(self.log / ("pre.%d" % n))

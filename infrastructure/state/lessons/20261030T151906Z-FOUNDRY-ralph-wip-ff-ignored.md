@@ -1,0 +1,2 @@
+ralph_a_loop.build_pass: 'git merge --ff-only main' on wip uses check=False, so if main advanced while an unpublished WIP commit survives, the ff silently fails and the loop may keep testing a candidate that cannot merge (GPT drill review, UNVERIFIED, partial answer saved at /mnt/d/ClaudeWork/rimmandrake/scratch/codex/consult-20261030-080904-1261974). Outside ARENA_DRILL criteria; needs its own red-proven scenario.
+home: NONE
