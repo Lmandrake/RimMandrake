@@ -22,10 +22,17 @@ FAIL CLOSED. No bwrap, a non-x86_64 kernel ABI (the seccomp program is x86_64-on
 or a PREFLIGHT that finds anything visible that must not be (run inside the very same sandbox before every launch)
 -> SandboxRefused. There is no unisolated override.
 
+NETWORK (items ARENA_SANDBOX_HARDEN_LOOPBACK_STILL_OPEN, ARENA_SANDBOX_HARDEN_GITHUB_PUBLIC_FETCH). Every sandbox
+gets its own network namespace (--unshare-net: lo only), so RimPulse :8765, the account page :8790, the Windows host's
+ports via the WSL NAT gateway and the public internet (the public repo's future history) are gone. net="model" (an arm
+model pass, the default) adds ONE route: arena_critic_relay's host-side unix socket, bound in, which honours only
+`CONNECT host:port` on the allow-list read from the environment ($ARENA_CRITIC_RELAY_ALLOW, else the machine-local
+~/.config/rimmandrake/critic_relay_allow; never from code); the arm runs under the relay's BRIDGE, which points
+HTTPS_PROXY at it. No allow-list -> SandboxRefused (never a shared network). net="none" (the harness running clone
+code: precheck, release) has no route at all. The preflight refuses when any interface but lo is visible.
+
 RESIDUALS (stated, not solved here):
-  - NETWORK is shared (the model API needs it): loopback services are reachable (RimPulse :8765 serves the ledger
-    unauthenticated; the account page :8790), the Windows host's ports and the internet too. No credentials are
-    visible (~/.ssh, ~/.config/gh, git credential store are under the /home tmpfs).
+  - An allowed host is a channel out; the relay sees host:port, never content.
   - Same uid outside the sandbox: a kernel/bwrap escape is out of scope.
   - Auth: the real ~/.claude/.credentials.json is NOT bound by default (an OAuth refresh inside could rotate the
     owner's token). Give the arm CLAUDE_CODE_OAUTH_TOKEN / ANTHROPIC_API_KEY in its env, or opt in with
@@ -54,6 +61,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 
+import arena_critic_relay as RELAY  # noqa: E402
+
 BWRAP = "/usr/bin/bwrap"
 PY = "/usr/bin/python3"
 CONTAINERS = ("/home", "/mnt", "/tmp", "/var/tmp", "/run", "/root", "/srv", "/opt", "/media", "/usr/lib/wsl/drivers")
@@ -73,6 +82,7 @@ DROP_ENV = ("LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT",
             "WAYLAND_DISPLAY", "PULSE_SERVER", "GIT_DIR", "GIT_WORK_TREE", "GIT_ALTERNATE_OBJECT_DIRECTORIES",
             "GIT_OBJECT_DIRECTORY", "GIT_COMMON_DIR", "GIT_INDEX_FILE", "OLDPWD")
 AF_VSOCK = 40
+NETS = ("model", "none")       # model: the allow-listed relay route only; none: no route out at all
 
 
 class SandboxRefused(Exception):
@@ -244,8 +254,22 @@ def _prereq():
         raise SandboxRefused("refused: %s missing: the preflight cannot run" % PY)
 
 
-def plan(*, cwd, rw, home, ro=(), _drop=()):
-    """The mount plan: dict with the checked bind lists. `_drop` (selftest mutations only) omits named protections."""
+def relay_base() -> Path:
+    """Where the host-side relay socket lives: a 0700 dir under the literal /tmp (an AF_UNIX path holds 107 bytes; the
+    scratch roots and $TMPDIR can be longer), never inside an arm's rw dir. An arm sees only the socket file bound
+    in, not its siblings."""
+    d = Path("/tmp") / ("rm-arm-relay-%d" % os.getuid())
+    d.mkdir(mode=0o700, exist_ok=True)
+    if d.is_symlink() or d.stat().st_uid != os.getuid() or d.stat().st_mode & 0o077:
+        raise SandboxRefused("refused: relay dir %s is not a private 0700 directory of this uid" % d)
+    return d
+
+
+def plan(*, cwd, rw, home, ro=(), _drop=(), net="model"):
+    """The mount plan: dict with the checked bind lists. `_drop` (selftest mutations only) omits named protections.
+    `net`: "model" (the allow-listed model route) or "none"; see NETWORK in the module doc."""
+    if net not in NETS:
+        raise SandboxRefused("refused: net=%r is not one of %s" % (net, NETS))
     deny = deny_paths()
     check_mounts()
     rw_r = [check_bind(p, deny, "rw") for p in rw]
@@ -282,8 +306,15 @@ def plan(*, cwd, rw, home, ro=(), _drop=()):
         r = _real(f)
         if r != f and os.path.exists(r) and any(_under(r, c) for c in CONTAINERS):
             files.append(check_bind(r, deny, "resolver"))
+    relay = None
+    if net == "model":
+        try:
+            relay = RELAY.relay(relay_base()).path
+        except (RELAY.RelayRefused, OSError) as e:
+            raise SandboxRefused("refused: no model route: %s" % e)
+        relay = check_bind(relay, deny, "relay socket")
     return {"deny": deny, "rw": rw_r, "home": home_r, "cwd": cwd_r, "tools": tools, "seeds": seeds,
-            "files": files, "drop": set(_drop)}
+            "files": files, "drop": set(_drop), "net": net, "relay": relay}
 
 
 def bwrap_argv(pl, bpf_path=None) -> list[str]:
@@ -291,6 +322,7 @@ def bwrap_argv(pl, bpf_path=None) -> list[str]:
     a = [BWRAP]
     a += ["--unshare-user", "--disable-userns"] if "userns" not in d else []
     a += ["--unshare-pid"] if "pidns" not in d else []
+    a += ["--unshare-net"] if "net" not in d else []
     a += ["--unshare-ipc", "--unshare-uts", "--die-with-parent", "--new-session",
           "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc"]
     for c in CONTAINERS:
@@ -304,6 +336,8 @@ def bwrap_argv(pl, bpf_path=None) -> list[str]:
         a += ["--bind", r, r]
     for src, dst in pl["seeds"]:
         a += ["--ro-bind", src, dst]
+    if pl.get("relay"):
+        a += ["--ro-bind", pl["relay"], pl["relay"]]
     if bpf_path and "seccomp" not in d:
         a += ["--seccomp", "3"]
     a += ["--chdir", pl["cwd"]]
@@ -370,6 +404,13 @@ for d, allowed in spec.get("only", {}).items():
         leaks.append(["unexpected entries in " + d, extra[:20]])
 if os.environ.get("WSL_INTEROP"):
     leaks.append(["env", "WSL_INTEROP"])
+try:                                    # own network namespace: lo only (no host loopback, NAT gateway or internet)
+    nics = sorted(n for _, n in socket.if_nameindex())
+except OSError as e:
+    nics = ["if_nameindex failed: %s" % e]
+info["nics"] = nics
+if nics != ["lo"]:
+    leaks.append(["network namespace shared", nics[:10]])
 try:
     init = open("/proc/1/cmdline", "rb").read().split(b"\0")[0]
 except OSError:
@@ -465,6 +506,7 @@ def probe_spec(pl, full=False, **kw):
     $HOME that is not on the way to a bind; and the rw dirs it MUST be able to write."""
     h = str(_home())
     binds = pl["rw"] + pl["tools"] + pl["files"] + [d for _, d in pl["seeds"]]
+    binds += [pl["relay"]] if pl.get("relay") else []
     masked = list(pl["deny"])
     for top in (h, "/mnt", RM_ROOT, "/run", "/tmp"):
         try:
@@ -507,25 +549,28 @@ def preflight(pl, env):
     return res
 
 
-def wrap(argv, env, *, cwd, rw, home, ro=(), _drop=(), _preflight=True):
+def wrap(argv, env, *, cwd, rw, home, ro=(), net="model", _drop=(), _preflight=True):
     """THE choke point: (argv, env) for subprocess.Popen that runs `argv` sandboxed. Raises SandboxRefused (the
     launch must not happen) on any doubt. `rw`: the arm clone and/or scratch dir(s); `home`: the private HOME (inside
-    a rw dir, created and seeded here); `cwd` must be inside a rw dir. `_drop`/`_preflight` are selftest-only."""
+    a rw dir, created and seeded here); `cwd` must be inside a rw dir; `net`: "model" (an arm model pass: the
+    allow-listed relay, argv runs under its BRIDGE) or "none". `_drop`/`_preflight` are selftest-only.
+    The relay serves from a thread of THIS process: the caller must outlive the launched process."""
     _prereq()
-    pl = plan(cwd=cwd, rw=rw, home=home, ro=ro, _drop=_drop)
+    pl = plan(cwd=cwd, rw=rw, home=home, ro=ro, _drop=_drop, net=net)
     _seed_home(pl["home"])
     if _preflight:
         preflight(pl, env)
-    return bwrap_argv(pl, _bpf_file(pl["drop"])) + list(argv), sandbox_env(env, pl["home"], pl["drop"])
+    pre = [PY, "-I", "-c", RELAY.BRIDGE, pl["relay"]] if pl["relay"] else []
+    return bwrap_argv(pl, _bpf_file(pl["drop"])) + pre + list(argv), sandbox_env(env, pl["home"], pl["drop"])
 
 
-def probe(*, clone, scratch, absent=(), pe=(), tools=(), _drop=(), env=None, full=True):
+def probe(*, clone, scratch, absent=(), pe=(), tools=(), _drop=(), env=None, full=True, net="none"):
     """The ATTACK probe (selftest + CLI): launches a real sandboxed process exactly like wrap() and tries cat / ls /
     git -C / git --git-dir / grep -r / python open / symlink / /proc/*/root on every masked path, Windows interop on
     every PE given, and checks the clone (git log works, `absent` shas are not there) and `tools` still work."""
     _prereq()
     home = os.path.join(scratch, "home")
-    pl = plan(cwd=clone, rw=[clone, scratch], home=home, _drop=_drop)
+    pl = plan(cwd=clone, rw=[clone, scratch], home=home, _drop=_drop, net=net)
     _seed_home(pl["home"])
     spec = probe_spec(pl, full=full, clone=_real(clone), absent=list(absent), pe=list(pe),
                       tools=[list(t) for t in tools])
@@ -565,7 +610,7 @@ def scratch_dir(cwd, role) -> Path:
     return d
 
 
-MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "pidns", "seccomp", "uring", "env")
+MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "pidns", "seccomp", "uring", "env", "net")
 
 
 def main(argv=None):
