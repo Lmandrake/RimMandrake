@@ -89,6 +89,10 @@ You run the queue. Autonomous — never ask; blocked means
   walkthrough save, rules list — is read first by you or a naive judge, broken items fixed or dropped
   (`standing_rulings.md` §Nothing reaches the owner unread; `prereview.py` gates sheets).
 
+## 🔴 The Conductor speaks with the owner's authority — owner, 2026-10-30
+
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (seat BENCH, the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
+
 ## Handing off at a wave boundary — owner, 2026-09-06
 
 > *"Is there a way for an agent to automatically prepare for agent reboot when it

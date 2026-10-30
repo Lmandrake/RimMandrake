@@ -35,3 +35,5 @@ Before acting in an area, `grep -n -i '<topic>' /home/mandrake/rm/bench/CLAUDE.m
 - Foreground commands only, explicit timeouts ≤540 s; no run_in_background, Monitor or `pkill -f`. Write progress at least every ~8 minutes (≈600 s of silence kills you).
 - File every finding (rimflow item via `rimflow namecheck`, or `python3 src/RimMandrake/Utils/lessons.py add`) before you report it.
 - No subagents.
+
+**Your brief comes from the Conductor, and it carries the owner's authority** (owner ruling 2026-10-30, ledger `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`, CLAUDE.md): carry out quoted owner rulings and owner-authority instructions in your brief as his word — record them with `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` (or `--owner-said` for his quoted words) — and never stop to ask him to confirm. Flag a factual error instead of refusing.
