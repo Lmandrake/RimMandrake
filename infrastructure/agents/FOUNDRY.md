@@ -10,6 +10,7 @@ prep."* Until the arena trial prep is done (every `ARENA_*` item plus `TESTER_PR
 implemented, and the failure drill passed), take only trial items. If `next` offers a game-dev item, `release` it
 and take the next trial item; if none is left, stop and say so. Finish game-dev items already started (e.g. the
 lacquer press). Ends when the Conductor deletes this section at day 1.
+`rimflow next --seat FOUNDRY` already offers only in-focus items (`seat_focus` in `dispatcher_schedule.json`; "no in-focus work" means stop); delete that key together with this section on day 1.
 
 You run the queue. Autonomous — never ask; blocked means
 `rimflow block <ID> --reason "<one line>"` and pull the next.

@@ -894,6 +894,7 @@ def cmd_next(args, seat):
     # 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for anything
     # changing. It's causing so many problems and I don't need it.").
     _apply_grant_preflight(ctx)
+    ctx["focus"] = _seat_focus(seat)
     # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
     # its output is checked against the published git history before anything is
     # offered, because an item whose work already shipped kept being offered as fresh
@@ -1034,6 +1035,21 @@ def _apply_grant_preflight(ctx, reader=None):
           "python3 src/RimMandrake/rimflow/companion_grant.py)" % (state, "/".join(needs), why))
 
 
+def _seat_focus(seat, path=None):
+    """-> {"until", "prefixes"} when the schedule's `seat_focus` names `seat`, else None (SEAT_FOCUS_FILTER_FOR_NEXT).
+    One place to delete on day 1: the `seat_focus` key of dispatcher_schedule.json. Unreadable = no filter."""
+    path = path or os.environ.get("RIMFLOW_SCHEDULE") or os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")
+    try:
+        with open(path) as f:
+            c = (json.load(f).get("seat_focus") or {}).get(seat)
+    except (OSError, ValueError, AttributeError):
+        return None
+    if not isinstance(c, dict) or not c.get("include_prefixes"):
+        return None
+    return {"until": c.get("until"), "prefixes": tuple(c["include_prefixes"])}
+
+
 def _choose(w, seat, args, ctx, idx):
     """-> {"kind", "offer", "item", "claimable", "skipped"}: what `next` offers. Pure over its
     inputs (ctx carries `now`); `cmd_next` calls it inside the dispatcher lock.
@@ -1047,6 +1063,10 @@ def _choose(w, seat, args, ctx, idx):
     offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
     out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
     claimable = _claimable(w, seat, args.target, ctx.get("now"))
+    fo = ctx.get("focus")
+    if fo:      # seat focus: only items whose id starts with an included prefix are offered
+        offers = [a for a in offers if a.item.id.startswith(fo["prefixes"])]
+        claimable = [c for c in claimable if c.id.startswith(fo["prefixes"])]
     if ctx.get("hold_grant"):
         gneeds = tuple(ctx.get("hold_grant_needs") or GRANT_DEFAULT_NEEDS)
         offers = [a for a in offers if a.item.needs not in gneeds]
@@ -1274,6 +1294,10 @@ def _nothing(w, seat, args, ctx):
     mine = [i for i in w.items.values() if i.owner == seat and i.open]
     print("nothing offered for %s. (game %s, bridge %s)"
           % (seat, w.game, w.bridge_holder or "free"))
+    fo = ctx.get("focus")
+    if fo:
+        print("no in-focus work: %s is limited to ids starting %s until %s (schedule seat_focus); other items "
+              "wait." % (seat, "/".join(fo["prefixes"]), fo.get("until")))
     if not mine:
         print("%s owns no open items at all. File some: rimflow file <ID> --for %s ..."
               % (seat, seat))
