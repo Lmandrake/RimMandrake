@@ -124,6 +124,16 @@ REPO = UTILS.parent.parent.parent
 
 WINDOW = ("2026-10-12", "2026-10-27")
 ESCAPE_DAYS = 7
+# ARENA_CENSUS_FIXSHA_WRONG_COMMIT: words of an item id/title that say nothing about which change this is
+RELATED_STOP = frozenset("this that with from into when then have does each only must fix fixes fixed item rework "
+                         "build wire harden prove".split())
+# the subject of a later commit that repaired code, whether or not anyone filed the repair as rework
+LATER_FIX_RE = re.compile(r"\b(?:fix|fixes|fixed|restores?|restored|repairs?|repaired|regress\w*|wrong|bugs?|back)\b",
+                          re.I)
+# Hand-read 2026-10-30, not repairs of the fix they follow: the two later worker.py commits of the sanity item
+# (STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS): a canary-stops-the-game feature, a runner-clone heal. "restore" there
+# is a feature word.
+LATER_FIX_CLEARED = frozenset({"59ba780056", "589859a8d6"})
 MAX_FILES = 8
 LIVE_OK = ("none", "minimal", "minimal+deps")
 KINDS = ("python-util", "xml-def-patch", "csharp", "live-verify", "tooling")
@@ -618,6 +628,33 @@ def _public_bytes(task: dict) -> bytes:
 
 # ---------------------------------------------------------------- census
 
+def _related_tokens(text: str) -> set:
+    return set(re.findall(r"[a-z]{4,}", (text or "").replace("_", " ").lower())) - RELATED_STOP
+
+
+def close_sha_unrelated(repo: Path, fix: str, iid: str, title: str) -> bool:
+    """The close named a commit that is about something else: its message neither names the item nor shares one
+    meaningful word with the item's id or title. Measured 2026-10-30 on the 239-task pool: score 0 is FINDMOD and two
+    art items; a shared word already holds for terse real fixes, so nothing stricter is safe."""
+    msg = _git(repo, "log", "-1", "--format=%B", fix)
+    return iid not in msg and not (_related_tokens(iid + " " + title) & _related_tokens(msg))
+
+
+def later_fixes(repo: Path, fix: str, files: list, t_close: float) -> list:
+    """Commits up to ESCAPE_DAYS after the close that touch the fix's code with a repair-shaped subject: rework
+    nobody filed (TANK_SETTLE's 1d77c17651), which makes a Clean label unsafe. The fix's own selftests do not count
+    unless they are all it changed. Author time, in Python: a rewrite moves committer dates, and --since uses those."""
+    code = [f for f in files if not is_selftest(f)] or files
+    out = _git(repo, "log", "--abbrev=10", "--format=%h%x00%at%x00%s", "%s..HEAD" % fix, "--", *code)
+    hits = []
+    for line in out.splitlines():
+        sha, at, subject = line.split("\0", 2)
+        if (t_close < int(at) <= t_close + ESCAPE_DAYS * 86400 and LATER_FIX_RE.search(subject)
+                and sha[:10] not in LATER_FIX_CLEARED):
+            hits.append({"sha": sha, "subject": subject[:120]})
+    return hits
+
+
 def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, old_history=None, vet=None,
            vet_missing: list | None = None):
     """-> (pool, report). Pool entries are (task, hidden). Raises SanityFail when the sanity item is not kept.
@@ -689,6 +726,10 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         # fix changed or added (not deleted) is required
         if not any(is_selftest(d[0]) and d[2] != "D" for d in diff):
             reject(iid, "build-only proof (no fix selftest beyond the build/validate)"); continue
+        filed = next((e for e in evs if e.get("event") == "file"), {})
+        title = filed.get("title") or it.title or iid
+        if close_sha_unrelated(repo, fix, iid, title):
+            reject(iid, "close sha unrelated to the item"); continue
         t_close = _epoch(close["ts"])
         rw, pending, considered = [], [], []
         for r, depth in _descendants(iid, reworks):
@@ -709,11 +750,12 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                        and _epoch(e["ts"]) > prev for e in evs)
         # the label is optional metadata (ruling): an unlabelled item stays in the pool with label null
         label = "Escaped" if rw else ("Clean" if verified else None)
+        suspect = later_fixes(repo, fix, files, t_close) if label == "Clean" else []
+        if suspect:                     # unfiled rework: not Escaped (nothing proves it), but no longer Clean either
+            label = None
 
         lines = sum(d[1] for d in diff)
         prose = _prose_at(repo, base, iid)
-        filed = next((e for e in evs if e.get("event") == "file"), {})
-        title = filed.get("title") or it.title or iid
         prompt = title + ("\n\n" + prose.strip() if prose else "")
         crit = _section(prose, "criteria") if prose else None
         crit_src = "prose ## criteria at base_sha"
@@ -787,6 +829,7 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                   "reworks": rw_out, "rework_candidates": considered,
                   # an open fix-type rework filed in the window: Clean is provisional until it closes or dies
                   "label_pending": sorted(pending),
+                  "label_suspect": suspect,
                   # a fixed instant, not a now-dependent boolean, so a re-census reproduces the frozen bytes; a label
                   # read before this instant can still flip to Escaped
                   "label_window_ends": dt.datetime.fromtimestamp(t_close + ESCAPE_DAYS * 86400, dt.timezone.utc)
