@@ -563,6 +563,8 @@ def sc_homoglyph(tmp, mod, tag):
                 detail={"builder": "ralph_a-build-x", "build_id": "T.c"})
         lw.emit(R.ARM, "test_start", lane="build", run_id="x", task="T", sha="c" * 40,
                 detail={"tester": fake, "build_id": "T.c"})
+        lw.emit(R.ARM, "test_end", lane="build", run_id="x", task="T", sha="c" * 40, verdict="pass",
+                detail={"tester": fake, "build_id": "T.c"})     # ended: only the same-agent rule can refuse
         try:
             mod.require_tested(lw.records())
             ok = False
@@ -578,6 +580,8 @@ def sc_dup_build_end(tmp, mod, tag):
         lw.emit(R.ARM, "build_end", lane="build", run_id="x", task="T", sha="d" * 40,
                 detail={"builder": "b1", "build_id": "T.d"})
     lw.emit(R.ARM, "test_start", lane="build", run_id="x", task="T", sha="d" * 40,
+            detail={"tester": "t1", "build_id": "T.d"})
+    lw.emit(R.ARM, "test_end", lane="build", run_id="x", task="T", sha="d" * 40, verdict="pass",
             detail={"tester": "t1", "build_id": "T.d"})
     mod.require_tested(lw.records())
     return True

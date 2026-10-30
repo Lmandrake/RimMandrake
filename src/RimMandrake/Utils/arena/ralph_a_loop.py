@@ -203,6 +203,12 @@ def require_tested(recs):
     same = L.flagged_same_agent(mine)
     if same:
         raise NotTested("refused: test_start by the builder itself (%s)" % (same[0].get("detail") or {}).get("tester"))
+    ended = {(r.get("detail") or {}).get("build_id") for r in mine if r.get("event") == "test_end"}
+    for r in mine:                                # DRILL: a tester pass killed after test_start leaves the builder blocked
+        d = r.get("detail") or {}
+        if r.get("event") == "test_start" and d.get("build_id") and d["build_id"] not in ended:
+            raise NotTested("refused: the tester pass of build %s started and never ended (killed?); it must be "
+                            "re-run before the next build pass" % d["build_id"])
 
 
 def build_gate_ok(rec):
@@ -645,9 +651,9 @@ class Loop:
         b = recs[last]
         d = b.get("detail") or {}
         bid = d.get("build_id")
-        if any(r.get("event") in ("test_start", "test_end") and (r.get("detail") or {}).get("build_id") == bid
+        if any(r.get("event") == "test_end" and (r.get("detail") or {}).get("build_id") == bid
                for r in recs[last + 1:]):
-            return None
+            return None                       # a tester pass FINISHED (a test_start alone is a killed tester pass)
         sha = b.get("sha")
         if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or \
                 subprocess.run(["git", "-C", str(self.root), "cat-file", "-e", sha + "^{commit}"],
@@ -700,7 +706,6 @@ class Loop:
             self.git("switch", "-q", "-c", WIP, MAIN)
         self.git("merge", "-q", "--ff-only", MAIN, check=False)
         base = self.git("merge-base", MAIN, "HEAD")      # main, not wip: an unpublished try stays in the diff
-        before = self.git("rev-parse", "HEAD")
         n = self.state["n"]
         pre = self.precheck(self.log / ("pre.%d" % n))
         green, pre_note = pre if isinstance(pre, tuple) else (bool(pre), "pre-check %s" % ("green" if pre else "red"))
@@ -724,7 +729,7 @@ class Loop:
         head = self.git("rev-parse", "HEAD")
         self.state["n"] = n + 1
         ok, why = (False, "model exit %r (killed or failed)" % rc) if rc != 0 else (False, "empty candidate") \
-            if head == before else (None, None)
+            if head == base else (None, None)         # DRILL: a leftover unchecked commit of a killed pass IS gated
         if ok is None:
             g = self.gate(task, base, head, "build", self.log / ("gate.build.%d" % n))
             ok, why = build_gate_ok(g)
