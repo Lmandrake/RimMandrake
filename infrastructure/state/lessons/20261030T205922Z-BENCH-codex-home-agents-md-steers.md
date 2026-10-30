@@ -1,0 +1,2 @@
+Isolating codex.exe in its own CODEX_HOME is not a lockdown unless the home is allow-listed: codex loads $CODEX_HOME/AGENTS.md as global instructions, so a file planted there steered the arena GPT judge (reasons began 'PINEAPPLE') with 0 tools, a clean --json transcript and verify_home passing. Verify a locked home by its full entry list, not just config/auth. (BENCH 2026-10-30, ARENA_GPTJUDGE_HOME_FIX_AGENTS_MD_STEERS)
+home: skills/chatgpt-consult
