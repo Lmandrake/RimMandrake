@@ -473,6 +473,34 @@ def t_rules():
     check(R.pending(po)[0]["item"] == "OLD" and ("restore",) in do.calls,
           "rules: the aborted candidate stays first in line and the swapped list is restored")
     check(not any(c[0] == "launch" for c in do.calls), "rules: nothing launched after the owner came back")
+    # TESTPILOT_FIX_OWNER_CHECK_DURING_LAUNCH: he returns WHILE the launch blocks; the wait is aborted
+    import threading
+    pw = fresh("owner_launch", owner_playing=True)
+    pub(pw, item="WAITER")
+    dw = FakeDriver()
+    gate = threading.Event()
+    real_launch = dw.launch_and_wait
+
+    def blocking_launch():
+        dw.calls.append(("launch_blocking",))
+        gate.wait(20)                       # a launch that would run ~100 s live
+        return real_launch()
+    dw.launch_and_wait = blocking_launch
+    real_stop = dw.stop_game
+
+    def stop_and_unblock():
+        real_stop()
+        gate.set()
+    dw.stop_game = stop_and_unblock
+    dw.owner_returned = lambda: ("launch_blocking",) in dw.calls     # only back once the launch is waiting
+    L.Lane.WATCH_POLL_S = 0.01
+    r = R.run_one(pw, "archmagi", dw, "/c")
+    check(r["verdict"] == "aborted" and gate.is_set(), "launch: owner return mid-launch aborts the run")
+    check(("stop",) in dw.calls and ("restore",) in dw.calls and any(c[0] == "release" for c in dw.calls),
+          "launch: the game is stopped, his list restored and the bridge released")
+    check([e.get("verdict") for e in events(pw, "reload")] == ["yielded"],
+          "launch: the step is recorded as yielded, not failed")
+    check(R.pending(pw)[0]["item"] == "WAITER", "launch: the candidate stays first in line")
     de = FakeDriver(owner_back=True)
     pub(po, item="NEWEST", sha="c" * 40)
     r = R.run_one(po, "archmagi", de, "/c")

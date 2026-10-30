@@ -408,6 +408,37 @@ class Lane:
         if LANES[self.lane]["idle_rule"] and self.cfg["owner_playing"] and self.d.owner_returned():
             raise OwnerReturned("owner input on %s: yielding" % self.host)
 
+    WATCH_POLL_S = 10.0     # how often a launch / quicktest wait looks for the owner's return
+
+    def _wait_watching(self, fn):
+        """Run a blocking driver wait (launch, quicktest) while polling the owner-return probe every WATCH_POLL_S.
+        On his return: stop the game (which ends the wait), then raise OwnerReturned; the caller's `with` releases
+        the lane and restores his list. Not the idle-rule lane / not playing: just runs `fn`."""
+        if not (LANES[self.lane]["idle_rule"] and self.cfg["owner_playing"]):
+            return fn()
+        import threading
+        box, done = {}, threading.Event()
+
+        def work():
+            try:
+                box["r"] = fn()
+            except BaseException as e:  # noqa: BLE001 - re-raised in the caller's thread (SystemExit included)
+                box["e"] = e
+            finally:
+                done.set()
+        th = threading.Thread(target=work, daemon=True)
+        th.start()
+        while not done.wait(self.WATCH_POLL_S):
+            if self.d.owner_returned():
+                try:
+                    self.d.stop_game()
+                finally:
+                    done.wait(30)       # the stop ends the wait; release() restores either way
+                raise OwnerReturned("owner input on %s during launch: yielding" % self.host)
+        if "e" in box:
+            raise box["e"]
+        return box["r"]
+
     # -- profile, deploy, reload
     def check_profile(self, profile: str, tier: str | None):
         if profile == "full" or profile not in PROFILES:
@@ -493,9 +524,15 @@ class Lane:
         deploys = self.deploy(list(mods), has_dll, clone, sha) if mods else []
         self.check_owner()
         t0 = self.d.clock()
-        ok, out = self.d.launch_and_wait()
-        if ok:
-            ok, out = self.d.start_quicktest()
+        try:
+            ok, out = self._wait_watching(self.d.launch_and_wait)
+            if ok:
+                ok, out = self._wait_watching(self.d.start_quicktest)
+        except OwnerReturned:
+            self._ev("reload", rule=rule, minutes=round((self.d.clock() - t0) / 60.0, 3), verdict="yielded",
+                     sha=self.deployed["sha"], detail={"profile": profile, "tier": tier, "why": why,
+                                                       "out": "owner returned during launch/quicktest"})
+            raise
         t1 = self.d.clock()
         self.launched_at = t0
         self.loaded_save = None
