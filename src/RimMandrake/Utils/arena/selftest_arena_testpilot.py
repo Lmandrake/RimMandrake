@@ -2417,7 +2417,7 @@ def t_check_live_plan():
 
 def main():
     for t in (t_check_live_plan, t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
-              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_enqueue_vets_plan, t_ladder, t_review1, t_review2, t_review2b,
+              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_enqueue_vets_plan, t_absolute_proof_path, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,
               t_resolve_after_crashed_pass, t_enqueue_single_record, t_wake_interrupt_crash, t_reload_crash,
