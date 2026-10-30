@@ -15,6 +15,7 @@ asserted against a target: the thresholds are the owner's, not tuned here).
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import math
 import random
@@ -57,7 +58,7 @@ def arm_log(arm, rows, offset=0, drop=(), extra=()):
     recs = []
     for i, (task, acc) in enumerate(rows):
         t = T0 + offset + i * 600
-        rid, b, sha = "%s.%d" % (arm, i), "b-%s-%d" % (arm, i), "%040x" % (hash((arm, task)) & (2 ** 160 - 1))
+        rid, b, sha = "%s.%d" % (arm, i), "b-%s-%d" % (arm, i), hashlib.sha1(("%s/%s" % (arm, task)).encode()).hexdigest()
         ev = [("assign", t, {}), ("pass_start", t + 10, {"detail": {"role": "build", "agent": b}}),
               ("build_end", t + 100, {"sha": sha, "detail": {"builder": b, "build_id": "bid%d" % i}}),
               ("test_start", t + 110, {"detail": {"tester": "q-%s-%d" % (arm, i), "build_id": "bid%d" % i}}),
@@ -284,12 +285,12 @@ def t_fluke():
     logs = {a: {"recs": arm_log(a, [(t, True) for t in ids], offset=j)} for j, a in enumerate(("trio", "v3"))}
     sp = {"trio": spend_for((t, 1e4) for t in ids), "v3": spend_for((t, 1e5) for t in ids)}
     r = AA.analyse(logs, tasks, sp, draws=DRAWS)
-    check("early fluke (10x after 5 tasks): block 1 UNMEASURED(below minimum), no stop",
-          r["blocks"] and r["blocks"][0]["verdict"] == "UNMEASURED" and r["final"]["verdict"] == "CONTINUE",
+    check("early fluke (10x after 5 tasks): block 1 UNMEASURED(below minimum), final UNMEASURED, no stop",
+          r["blocks"] and r["blocks"][0]["verdict"] == "UNMEASURED" and r["final"]["verdict"] == "UNMEASURED",
           (r["blocks"][0].get("verdict") if r["blocks"] else None, r["final"]["verdict"]))
     r = AA.analyse(logs, tasks, sp, draws=DRAWS, final=True)
-    check("early fluke at the hard cap: HARD_CAP_NO_DIFFERENCE, never DECIDE",
-          r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE" and "intervals" in r["final"], r["final"]["verdict"])
+    check("early fluke at the hard cap: UNMEASURED(below minimum), never DECIDE or HARD_CAP",
+          r["final"]["verdict"] == "UNMEASURED" and "below_minimum" in r["final"]["detail"], r["final"]["verdict"])
 
 
 def t_loser():
@@ -415,6 +416,182 @@ def t_dq():
           [(b["block"], b.get("disqualified")) for b in r["blocks"]])
 
 
+# ---------------------------------------------------------------- (5b) review round 1: boundaries, malformed data, chronology
+
+def t_exact_boundaries():
+    v = AA.rule_verdict(probs({"trio": 0.99}, {"trio": 0.2}), True)[0]
+    check("no DECIDE at P(accept worse) exactly 0.2 (strict <)", v == "CONTINUE", v)
+    v = AA.rule_verdict(probs(futile={"trio": 0.05}), True)[0]
+    check("not futile at exactly 0.05 (strict <)", v == "CONTINUE", v)
+    v = AA.rule_verdict(probs(tie=0.9), True)[0]
+    check("no TIE at exactly 0.9 (strict >)", v == "CONTINUE", v)
+
+
+def winner_logs(n=20, drop=None, extra_trio=(), tasks=None, spend_patch=None):
+    tasks = tasks or make_tasks(n)
+    ids = sorted(tasks)[:n]
+    rng = random.Random(11)
+    base = {t: math.log(1e5) + rng.gauss(0, 1.0) for t in ids}
+    logs = {"trio": {"recs": arm_log("trio", [(t, True) for t in ids], drop=drop or (), extra=extra_trio)},
+            "v3": {"recs": arm_log("v3", [(t, True) for t in ids], offset=7)}}
+    sp = {"trio": spend_for((t, math.exp(base[t]) * 0.25) for t in ids), "v3": spend_for((t, math.exp(base[t]))
+                                                                                        for t in ids)}
+    if spend_patch:
+        spend_patch(sp)
+    return logs, tasks, sp
+
+
+def t_malformed():
+    logs, tasks, sp = winner_logs()
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("baseline for malformed cases decides for trio", r["final"]["verdict"] == "DECIDE_FOR_trio",
+          r["final"]["verdict"])
+
+    def huge(s):
+        s["trio"]["T003"] = {"claude_ite": 1e308, "gpt_ite": 1e308, "gpt_ite_est": 0}
+    logs, tasks, sp = winner_logs(spend_patch=huge)
+    r = AA.analyse(logs, tasks, sp, draws=500)
+    check("overflowing spend (1e308 + 1e308) -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED",
+          r["final"].get("why"))
+    for bad in ("accpet", None):
+        logs, tasks, sp = winner_logs()
+        for x in logs["trio"]["recs"]:
+            if x["event"] == "judge" and x["task"] == "T019":
+                x["verdict"] = bad
+        r = AA.analyse(logs, tasks, sp, draws=500)
+        check("judge verdict %r -> arm UNMEASURED, not silently dropped" % bad,
+              r["final"]["verdict"] == "UNMEASURED", r["final"].get("why"))
+    logs, tasks, sp = winner_logs()
+    for x in logs["trio"]["recs"]:
+        if x["task"] == "T019" and x["event"] in ("gate", "judge"):
+            x["task"] = None
+    r = AA.analyse(logs, tasks, sp, draws=500)
+    check("judge with no task -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED", r["final"].get("why"))
+    t2 = make_tasks(20, kinds=lambda i: "python-util" if i % 2 else "not-a-kind")
+    logs, tasks, sp = winner_logs(tasks=t2)
+    r = AA.analyse(logs, tasks, sp, draws=500)
+    check("a kind outside arena_tasks.KINDS -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED",
+          r["final"].get("why"))
+    t3 = make_tasks(20)
+    t3["T004"]["size"] = True
+    logs, tasks, sp = winner_logs(tasks=t3)
+    r = AA.analyse(logs, tasks, sp, draws=500)
+    check("a boolean task size -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED", r["final"].get("why"))
+
+
+def t_chronology():
+    logs, tasks, sp = winner_logs(drop={(18, "gate")})
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("violation after the stop: the stop stands, reported as violations_after_stop, not disqualified",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and "trio" not in r["final"]["disqualified"]
+          and r["final"].get("violations_after_stop") == {"trio": ["publish"]},
+          (r["final"]["verdict"], r["final"]["disqualified"], r["final"].get("violations_after_stop")))
+    # v3c violates early and then stops completing: the others' blocks are not held up, v3c is out at block 1
+    tasks = make_tasks(20)
+    ids = sorted(tasks)
+    logs, sp = {}, {}
+    for j, a in enumerate(ARMS3):
+        n = 3 if a == "v3c" else 20
+        logs[a] = {"recs": arm_log(a, [(t, True) for t in ids[:n]], offset=j, drop={(1, "gate")} if a == "v3c" else ())}
+        sp[a] = spend_for((t, 1e5 * (0.25 if a == "trio" else 1.0)) for t in ids[:n])
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("an arm short of data that violated earlier does not hold up the blocks",
+          r["blocks"] and r["blocks"][0]["disqualified"] == {"v3c": ["publish"]}
+          and r["final"]["verdict"] == "DECIDE_FOR_trio",
+          ([b.get("disqualified") for b in r["blocks"]], r["final"]["verdict"]))
+    # an arm short of data with NO violation is waited for: no block evaluates without it
+    logs["v3c"] = {"recs": arm_log("v3c", [(t, True) for t in ids[:3]], offset=2)}
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("an arm short of data with no violation is waited for (no block, no decision)",
+          not r["blocks"] and not r["final"]["verdict"].startswith("DECIDE"), (len(r["blocks"]), r["final"]["verdict"]))
+
+
+def t_dq_identity():
+    recs = arm_log("trio", [("T000", True)])
+    for x in recs:
+        if x["event"] == "gate":
+            x["detail"]["steps"]["scope"] = "ERROR"
+    r = AA.dq_scope(AA.L.ordered(recs))
+    check("scope: a status other than PASS/FAIL -> UNMEASURED", r["status"] == "UNMEASURED", r)
+    recs = arm_log("trio", [("T000", True), ("T001", True)], drop={(0, "pass_start")})
+    r = AA.dq_tester(AA.L.ordered(recs))
+    check("tester: one build_end without its pass_start -> UNMEASURED", r["status"] == "UNMEASURED", r)
+    recs = arm_log("trio", [("T000", True), ("T001", True)], drop={(0, "test_start")})
+    for x in recs:
+        x.pop("run_id", None)
+    r = AA.dq_tester(AA.L.ordered(recs))
+    check("tester: no run_id -> UNMEASURED, not a violation", r["status"] == "UNMEASURED", r)
+    recs = [{"ts": iso(T0 + k), "arm": "trio", "task": "T000", "event": e, "verdict": v}
+            for k, (e, v) in enumerate([("live_take", "ok"), ("canary", "pass"), ("live_release", None)])]
+    r = AA.dq_lane(AA.L.ordered(recs))
+    check("lane: a hold with no lane/run_id -> UNMEASURED, not CLEAN", r["status"] == "UNMEASURED", r)
+    recs = arm_log("trio", [("T000", True)])
+    for x in recs:
+        if x["event"] == "gate":
+            x["sha"] = x["sha"][:7]
+    r = AA.dq_publish(AA.L.ordered(recs))
+    check("publish: a 7-char gate sha prefix does not identify the judged commit -> VIOLATED", r["status"] == "VIOLATED",
+          r)
+    recs = arm_log("trio", [("T000", True)])
+    for x in recs:
+        if x["event"] == "judge":
+            x["sha"] = "not-a-sha"
+    r = AA.dq_publish(AA.L.ordered(recs))
+    check("publish: a malformed judge sha -> UNMEASURED", r["status"] == "UNMEASURED", r)
+
+
+def t_nig_oracle():
+    """nig_fit (task block eliminated by Schur complement) against the full-design conjugate posterior."""
+    arms = ["trio", "v3", "ralph_a"]
+    obs = [("trio", "a", 1.0), ("v3", "a", 1.4), ("ralph_a", "a", 2.2), ("trio", "b", 0.3), ("v3", "b", 0.9),
+           ("trio", "c", 2.5), ("trio", "c", 2.7), ("v3", "d", -0.4), ("ralph_a", "d", 0.8), ("ralph_a", "e", 1.1)]
+    pm = AA.prior_means(arms)
+    fit = AA.nig_fit(obs, arms, pm)
+    tasks = sorted({t for _, t, _ in obs})
+    k = 1 + len(arms) + len(tasks)
+    v0a = (AA.ARM_PRIOR_SD / AA.SIGMA_REF) ** 2
+    v0t = (AA.TASK_PRIOR_SD / AA.SIGMA_REF) ** 2
+    prec = [AA.C_PREC] + [1 / v0a] * len(arms) + [1 / v0t] * len(tasks)
+    m0 = [0.0] + [pm[a] for a in arms] + [0.0] * len(tasks)
+    q = [[prec[i] if i == j else 0.0 for j in range(k)] for i in range(k)]
+    b = [prec[i] * m0[i] for i in range(k)]
+    yy = 0.0
+    for a, t, y in obs:
+        x = [0.0] * k
+        x[0] = 1.0
+        x[1 + arms.index(a)] = 1.0
+        x[1 + len(arms) + tasks.index(t)] = 1.0
+        for i in range(k):
+            b[i] += x[i] * y
+            for j in range(k):
+                q[i][j] += x[i] * x[j]
+        yy += y * y
+    qi = AA._inv_spd(q)
+    mean = [sum(qi[i][j] * b[j] for j in range(k)) for i in range(k)]
+    bn = AA.IG_B0 + 0.5 * (yy + sum(prec[i] * m0[i] ** 2 for i in range(k))
+                           - sum(mean[i] * sum(q[i][j] * mean[j] for j in range(k)) for i in range(k)))
+    m_err = max(abs(fit["mean"][i] - mean[i]) for i in range(1 + len(arms)))
+    lo = fit["chol"]
+    cov = [[sum(lo[i][r] * lo[j][r] for r in range(len(lo))) for j in range(len(lo))] for i in range(len(lo))]
+    c_err = max(abs(cov[i][j] - qi[i][j]) for i in range(len(lo)) for j in range(len(lo)))
+    check("NIG oracle: Schur posterior mean of (c, mu) equals the full-design mean (unbalanced design)",
+          m_err < 1e-6, m_err)
+    check("NIG oracle: Schur covariance equals the full-design covariance block", c_err < 1e-6, c_err)
+    check("NIG oracle: bn equals the full-design bn", abs(fit["bn"] - bn) < 1e-6, (fit["bn"], bn))
+    check("NIG oracle: an = a0 + n/2", fit["an"] == AA.IG_A0 + len(obs) / 2)
+    rng = random.Random(5)
+    ds = [AA.nig_draw(fit, rng) for _ in range(20000)]
+    d = [x["trio"] - x["v3"] for x in ds]
+    mu_d = sum(d) / len(d)
+    var_d = sum((x - mu_d) ** 2 for x in d) / (len(d) - 1)
+    i, j = 1 + arms.index("trio"), 1 + arms.index("v3")
+    want_var = fit["bn"] / (fit["an"] - 1) * (qi[i][i] + qi[j][j] - 2 * qi[i][j])
+    check("NIG draws: E[mu_trio - mu_v3] matches the posterior mean", abs(mu_d - (mean[i] - mean[j])) <
+          4 * math.sqrt(want_var / len(d)), (mu_d, mean[i] - mean[j]))
+    check("NIG draws: Var[mu_trio - mu_v3] matches the Student-t variance (within 5%)",
+          abs(var_d / want_var - 1) < 0.05, (var_d, want_var))
+
+
 # ---------------------------------------------------------------- (6) simulations: calibration and power
 
 def sim(arms, n, seed, sigma_d=0.8, draws=1000, block_kinds=True):
@@ -471,7 +648,7 @@ def t_small_sims():
 # ---------------------------------------------------------------- runner
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
-        t_hardcap_determinism, t_dq)
+        t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),

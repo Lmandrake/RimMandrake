@@ -111,6 +111,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import arena_eventlog as L  # noqa: E402
+import arena_tasks as A  # noqa: E402
 
 # ---------------------------------------------------------------- the rule (owner's thresholds; section 4.1)
 BLOCK = 5
@@ -145,6 +146,7 @@ SPEND_FIELDS = ("claude_ite", "gpt_ite", "gpt_ite_est")
 DRAWS = 4000
 SEED = 20261030
 JUDGE_DONE = ("accept", "reject")
+JUDGE_ALL = ("accept", "reject", "invalid")
 
 
 # ================================================================ small linear algebra (stdlib)
@@ -295,7 +297,6 @@ def load_raw(dirpath):
 
 def load_verified(p=None, token=None, external=None, allow_untrusted=False):
     """Signed logs through arena_eventlog.report(): refused / rejected-line / untrusted arms are UNMEASURED."""
-    import arena_tasks as A
     p = p or A.paths()
     rep = L.report(p, token, external)
     out = {}
@@ -315,7 +316,6 @@ def load_verified(p=None, token=None, external=None, allow_untrusted=False):
 
 
 def load_tasks(p=None):
-    import arena_tasks as A
     p = p or A.paths()
     out = {}
     for f in sorted(Path(p["tasks"]).glob("*.json")):
@@ -341,22 +341,32 @@ def task_tokens(row, conv):
         if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) or v < 0:
             return None, "spend %s=%r invalid" % (k, v)
         tot += conv[k] * float(v)
+    if not math.isfinite(tot):
+        return None, "converted tokens overflow"
     if tot <= 0:
         return None, "zero tokens"
     return tot, None
 
 
+def _spec_ok(spec):
+    return (isinstance(spec, dict) and type(spec.get("size")) is int and spec["size"] in (1, 2, 4)
+            and spec.get("kind") in A.KINDS)
+
+
 def completions(recs, tasks, spend_arm, conv, cap=None):
-    """-> (list of completed-task dicts sorted by completion time, problem or None)."""
+    """-> (list of completed-task dicts sorted by completion time, problem or None). A judge record with no task or
+    a verdict outside accept/reject/invalid makes the whole arm a problem (never silently dropped)."""
     seq = [r for r in L.ordered(recs) if cap is None or _ep(r) <= cap]
     last, start = {}, {}
     for r in seq:
         t = _tkey(r.get("task"))
-        if not t:
-            continue
         if r["event"] == "judge":
+            if not t:
+                return [], "judge record at %s has no task" % r.get("ts")
+            if r.get("verdict") not in JUDGE_ALL:
+                return [], "judge record at %s has verdict %r" % (r.get("ts"), r.get("verdict"))
             last[t] = r
-        elif r["event"] in ("assign", "pass_start"):
+        elif t and r["event"] in ("assign", "pass_start"):
             cur = start.get(t)
             if cur is None or (cur["event"] == "pass_start" and r["event"] == "assign"):
                 start[t] = r
@@ -365,8 +375,8 @@ def completions(recs, tasks, spend_arm, conv, cap=None):
         if j.get("verdict") not in JUDGE_DONE:
             continue
         spec = tasks.get(t)
-        if not spec or spec.get("size") not in (1, 2, 4) or not isinstance(spec.get("kind"), str):
-            return [], "completed task %s has no frozen spec (kind/size)" % t
+        if not _spec_ok(spec):
+            return [], "completed task %s has no valid frozen spec (kind in KINDS, size 1/2/4)" % t
         tok, why = task_tokens((spend_arm or {}).get(t), conv)
         if tok is None:
             return [], "task %s: %s" % (t, why)
@@ -382,11 +392,23 @@ def completions(recs, tasks, spend_arm, conv, cap=None):
 
 # ================================================================ disqualification
 
+_HEX = re.compile(r"^[0-9a-f]{7,64}$")
+SHA_MIN_PREFIX = 12   # an abbreviated sha shorter than this is not accepted as identifying a commit
+
+
+def _sha(x):
+    s = x.strip().lower() if isinstance(x, str) else ""
+    return s if _HEX.match(s) else None
+
+
 def _sha_eq(a, b):
-    a, b = (x.strip().lower() if isinstance(x, str) else "" for x in (a, b))
-    if len(a) < 7 or len(b) < 7:
+    a, b = _sha(a), _sha(b)
+    if not a or not b:
         return False
-    return a.startswith(b) or b.startswith(a)
+    if a == b:
+        return True
+    short, long_ = sorted((a, b), key=len)
+    return len(short) >= SHA_MIN_PREFIX and long_.startswith(short)
 
 
 def dq_publish(seq):
@@ -394,12 +416,12 @@ def dq_publish(seq):
     if not judges:
         return {"status": "VACUOUS", "why": "no judge event"}
     gates = [(i, r) for i, r in enumerate(seq) if r["event"] == "gate" and r.get("verdict") == "pass"]
-    viol, nosha = [], 0
+    viol, unid = [], 0
     for i, j in enumerate(seq):
         if j["event"] != "judge":
             continue
-        if not isinstance(j.get("sha"), str) or not j["sha"].strip():
-            nosha += 1
+        if not _sha(j.get("sha")) or (len(_sha(j["sha"])) < SHA_MIN_PREFIX) or not _tkey(j.get("task")):
+            unid += 1
             continue
         if not any(gi < i and _tkey(g.get("task")) == _tkey(j.get("task")) and _sha_eq(g.get("sha"), j["sha"])
                    for gi, g in gates):
@@ -407,8 +429,8 @@ def dq_publish(seq):
     if viol:
         return {"status": "VIOLATED", "ts": viol[0]["ts"], "why": "judged (published) work with no earlier gate pass",
                 "evidence": viol[:5]}
-    if nosha:
-        return {"status": "UNMEASURED", "why": "%d judge event(s) carry no sha" % nosha}
+    if unid:
+        return {"status": "UNMEASURED", "why": "%d judge event(s) with no usable sha or task" % unid}
     return {"status": "CLEAN"}
 
 
@@ -416,35 +438,43 @@ def dq_scope(seq):
     gates = [r for r in seq if r["event"] == "gate"]
     if not gates:
         return {"status": "UNMEASURED", "why": "no gate event: no edit was scope-checked"}
-    viol, missing = [], 0
+    viol, unknown = [], 0
     for g in gates:
         steps = (g.get("detail") or {}).get("steps") if isinstance(g.get("detail"), dict) else None
         st = steps.get("scope") if isinstance(steps, dict) else None
-        if st is None:
-            missing += 1
-        elif str(st).upper() == "FAIL":
+        st = st.upper() if isinstance(st, str) else None
+        if st == "FAIL":
             viol.append({"ts": g["ts"], "task": g.get("task"), "sha": g.get("sha")})
+        elif st != "PASS":
+            unknown += 1
     if viol:
         return {"status": "VIOLATED", "ts": viol[0]["ts"], "why": "gate scope FAIL: edit outside the task area",
                 "evidence": viol[:5]}
-    if missing:
-        return {"status": "UNMEASURED", "why": "%d gate event(s) with no scope step" % missing}
+    if unknown:
+        return {"status": "UNMEASURED", "why": "%d gate event(s) whose scope step is not PASS or FAIL" % unknown}
     return {"status": "CLEAN"}
+
+
+def _ident(x):
+    return x.strip() if isinstance(x, str) and x.strip() else None
 
 
 def dq_lane(seq):
     takes = [i for i, r in enumerate(seq) if r["event"] == "live_take" and r.get("verdict") == "ok"]
     if not takes:
         return {"status": "VACUOUS", "why": "no live_take"}
-    viol, pending = [], 0
+    viol, pending, unid = [], 0, 0
     for i in takes:
-        key = (seq[i].get("lane"), seq[i].get("run_id"))
-        end = next((k for k in range(i + 1, len(seq)) if seq[k]["event"] == "live_release"
-                    and (seq[k].get("lane"), seq[k].get("run_id")) == key), None)
+        key = (_ident(seq[i].get("lane")), _ident(seq[i].get("run_id")))
+        if None in key:
+            unid += 1
+            continue
+
+        def same(k):
+            return (_ident(seq[k].get("lane")), _ident(seq[k].get("run_id"))) == key
+        end = next((k for k in range(i + 1, len(seq)) if seq[k]["event"] == "live_release" and same(k)), None)
         stop = end if end is not None else len(seq)
-        canary = any(seq[k]["event"] == "canary" and (seq[k].get("lane"), seq[k].get("run_id")) == key
-                     for k in range(i + 1, stop))
-        if canary:
+        if any(seq[k]["event"] == "canary" and same(k) for k in range(i + 1, stop)):
             continue
         if end is None:
             pending += 1
@@ -453,11 +483,14 @@ def dq_lane(seq):
     if viol:
         return {"status": "VIOLATED", "ts": viol[0]["ts"], "why": "lane held and released with no canary",
                 "evidence": viol[:5]}
+    if unid:
+        return {"status": "UNMEASURED", "why": "%d live_take(s) with no lane or run_id" % unid}
     return {"status": "CLEAN", "pending_open_holds": pending} if pending else {"status": "CLEAN"}
 
 
 def stream_of(run_id):
-    return re.sub(r"\d+$", "", run_id) if isinstance(run_id, str) else None
+    r = _ident(run_id)
+    return re.sub(r"\d+$", "", r) if r else None
 
 
 def dq_tester(seq):
@@ -466,8 +499,14 @@ def dq_tester(seq):
               and (r.get("detail") or {}).get("role") == "build"]
     if not builds and not starts:
         return {"status": "VACUOUS", "why": "no build"}
-    if builds and not starts:
-        return {"status": "UNMEASURED", "why": "build_end records but no build pass_start"}
+    unid = [seq[i]["ts"] for i in builds + starts if not stream_of(seq[i].get("run_id"))]
+    if unid:
+        return {"status": "UNMEASURED", "why": "%d build record(s) with no run_id (stream unknown)" % len(unid)}
+    orphan = [seq[j]["ts"] for j in builds
+              if not any(p < j and _ident(seq[p].get("run_id")) == _ident(seq[j].get("run_id")) for p in starts)]
+    if orphan:
+        return {"status": "UNMEASURED", "why": "%d build_end(s) with no earlier build pass_start of the same run"
+                % len(orphan)}
     first = L._first_different_test(seq)      # {build index: first different-agent test_start index}
     viol = []
     for p in starts:
@@ -679,17 +718,21 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     while True:
         k += 1
         n_need = BLOCK * k
-        # an arm that violates a condition at some time is not waited for: it is disqualified when its time comes
-        need = [a for a in contention if dq_at[a] is None]
-        if not need or any(len(data[a]) < n_need for a in need):
+        # ONE chronological cutoff: block k is at the time the last arm in contention reaches 5k completions. An arm
+        # short of 5k is waited for, unless it had violated a condition by that time (then it is disqualified now).
+        have = [a for a in contention if len(data[a]) >= n_need]
+        lacking = [a for a in contention if a not in have]
+        if not have:
             break
-        use = {a: data[a][:n_need] if a in contention else data[a][:dropped.get(a, n_need)] for a in arms}
-        t_block = max(use[a][-1]["t"] for a in need)
+        t_block = max(data[a][n_need - 1]["t"] for a in have)
+        if any(dq_at[a] is None or dq_at[a] > t_block for a in lacking):
+            break
         blk = {"block": k, "tasks_per_arm": n_need, "ts_epoch": t_block}
         new_dq = sorted(a for a in arms if a not in disq and dq_at[a] is not None and dq_at[a] <= t_block)
         for a in new_dq:
             disq[a] = dq_reason[a]
         contention = [a for a in contention if a not in disq]
+        use = {a: data[a][:n_need] if a in contention else data[a][:dropped.get(a, 0)] for a in arms}
         blk["disqualified"] = {a: disq[a] for a in new_dq}
         blk["dq_unmeasured"] = {a: v for a, v in rep["dq_unmeasured"].items() if v}
         if new_dq:
@@ -723,18 +766,32 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
             stop = dict(blk, verdict=v)
             break
     # final
-    late_dq = sorted(a for a in arms if a not in disq and dq_at[a] is not None)
+    later = sorted(a for a in arms if a not in disq and dq_at[a] is not None)
+    if stop is not None:
+        post_stop, late_dq = later, []      # the trial ended at the stop; later violations are reported, not applied
+    else:
+        post_stop, late_dq = [], later      # no stop: a violation at any time disqualifies
     keep = [a for a in arms if a not in disq and a not in late_dq]
     fin = {"disqualified": dict({a: disq[a] for a in disq}, **{a: dq_reason[a] for a in late_dq}),
            "futile": sorted(dropped), "dq_unmeasured": {a: v for a, v in rep["dq_unmeasured"].items() if v}}
+    if post_stop:
+        fin["violations_after_stop"] = {a: dq_reason[a] for a in post_stop}
     if keep:
         post = posterior({a: data[a] for a in keep}, keep, _block_seed(seed, "final"), draws, control)
         fin["intervals"] = arm_summary(post, data, keep, control)
         fin["time_to_acceptance"] = tta_summary(data, keep, control)
+    live = [a for a in keep if a not in dropped]
+    below = {a: [len(data[a]), len({c["kind"] for c in data[a]})] for a in live
+             if len(data[a]) < MIN_TASKS or len({c["kind"] for c in data[a]}) < MIN_KINDS}
     if stop is not None:
         fin["verdict"] = stop["verdict"]
         fin["block"] = stop["block"]
         fin["detail"] = stop.get("detail") or {"why": stop.get("why")}
+    elif below:
+        fin["verdict"] = "UNMEASURED"
+        fin["detail"] = {"why": "below the minimum (%d tasks, %d kinds per arm in contention)%s" %
+                         (MIN_TASKS, MIN_KINDS, " at the hard cap" if (final or beyond_cap) else ""),
+                         "below_minimum": below}
     elif final or beyond_cap:
         fin["verdict"] = "HARD_CAP_NO_DIFFERENCE"
         fin["detail"] = {"why": "nothing fired by the hard cap (%s)" %
@@ -742,7 +799,7 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     else:
         fin["verdict"] = "CONTINUE"
         fin["detail"] = {"next_block_tasks_per_arm": BLOCK * k, "in_contention": contention}
-    if late_dq and stop is None:
+    if late_dq:
         fin["verdict_note"] = "arm(s) %s violated a condition after the last complete block" % late_dq
     rep["final"] = fin
     return rep
