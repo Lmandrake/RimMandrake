@@ -829,6 +829,47 @@ def refs_snapshot(cfg: dict, arm: str, remote: bool = True) -> dict[str, dict[st
     return out
 
 
+def _baseline_source(st: dict, arm: str) -> str:
+    """Where the stored refs baseline of `arm` came from: "remote" (ls-remote), "local" (offline switch), or
+    "unknown" (a state written before refs_source existed and with no allow_offline marker: fail closed)."""
+    src = st.get("refs_source")
+    if isinstance(src, dict):       # a switch writes an entry for every stopped arm; a dict without this arm = no gap
+        return src.get(arm, "remote") if src.get(arm, "remote") in ("remote", "local") else "unknown"
+    if st.get("allow_offline") is True:
+        return "local"
+    return "unknown"
+
+
+def _gap_pushed(cfg, arm, ts, st, snap, source, d) -> list[str]:
+    """A stopped arm whose baseline is not an ls-remote one. The first ONLINE who takes a late remote baseline
+    (stored in switch_state.json as refs_late_baseline, with the time) and compares against it from then on; the
+    reflog half covers the gap before it. Origin unreachable: the old like-with-like local comparison."""
+    lb = st.get("refs_late_baseline") if isinstance(st.get("refs_late_baseline"), dict) else None
+    late = (lb.get("refs") or {}).get(arm) if lb else None
+    if late is None:
+        try:
+            cur = d.refs_snapshot(cfg, arm)
+        except RemoteUnreachable:
+            return pushed_since(cfg, arm, ts, snapshot=snap, snapshot_source="local")
+        lb = lb or {"refs": {}}
+        lb.setdefault("refs", {})[arm] = cur
+        lb["ts"] = now_iso(d.clock)
+        lb["epoch"] = d.clock()
+        st["refs_late_baseline"] = lb
+        write_json(d.state_file(), st)
+        late = cur
+    return pushed_since(cfg, arm, ts, snapshot=late, snapshot_source="remote")
+
+
+def _gap_report(gaps: dict, st: dict) -> dict:
+    lb = st.get("refs_late_baseline") if isinstance(st.get("refs_late_baseline"), dict) else {}
+    return {"arms": gaps, "late_baseline_ts": lb.get("ts"),
+            "state": "UNVERIFIED BASELINE: the switch's refs baseline is not an origin (ls-remote) baseline "
+                     "(offline switch or an old state file); a push by URL between the switch and the first online "
+                     "who is observable only by reflog. Re-baseline with an ONLINE `arena switch <current mode>` "
+                     "(writes a remote baseline) to clear this bit."}
+
+
 def pushed_since(cfg: dict, arm: str, ts: float, snapshot: dict | None = None, snapshot_source: str = "remote") -> list[str]:
     """Item 8: refs of a stopped arm that MOVED since the switch, by two timestamp-free-of-commits methods:
     (1) compare the arm clone's tracking refs now with the snapshot the switch stored (new / moved / deleted ref);
@@ -1364,7 +1405,7 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
                               % (type(e).__name__, e))
         write_json(d.state_file(), {"ts": now_iso(d.clock), "epoch": d.clock(), "mode": mode, "from": cfg["mode"],
                                     "stopped": stopped_now, "refs": snap,
-                                    "refs_source": snap_src})
+                                    "refs_source": snap_src, "allow_offline": True if snapshot_offline else None})
         set_mode(cfg_path, mode)
         steps.append("arm.toml mode = %s" % mode)
         clear = live_arms(new) | set(mode_targets(new))
@@ -1392,7 +1433,8 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
     res = (d.who_fn or who)(cfg, d)
     summary["who"] = res
     dchk = res["checks"].get("d", {})
-    if res["exit"] == 8 and snapshot_offline and dchk.get("remote_unreachable") and \
+    if res["exit"] == 8 and snapshot_offline and (dchk.get("remote_unreachable") or dchk.get("baseline_gap")) and \
+            not dchk.get("pushed_since_switch") and \
             isinstance(dchk.get("events_since_switch"), dict) and not dchk["events_since_switch"]:
         # tolerated: ONLY the remote-refs half of (d), ONLY when this switch's snapshot was taken offline, and only
         # with the events half measured and empty (a stopped-arm event after the switch still exits 8)
@@ -1456,8 +1498,17 @@ def who(cfg: dict, d: Deps, bridge_locks=None, cwds=None, events=None, pushed=No
             ev = {a: (events or events_since)(d.root, a, ts) for a in stopped_arms}
             ev = {a: n for a, n in ev.items() if n}
             snaps = st.get("refs") if isinstance(st.get("refs"), dict) else {}
-            pushed_fn = pushed or (lambda c, a, t: pushed_since(
-                c, a, t, snapshot=snaps.get(a), snapshot_source=(st.get("refs_source") or {}).get(a, "remote")))
+            gaps = {}
+            if pushed is None:
+                gaps = {a: _baseline_source(st, a) for a in stopped_arms if a not in PRODUCTION_ARMS}
+                gaps = {a: s_ for a, s_ in gaps.items() if s_ != "remote"}
+
+            def pushed_fn(c, a, t):
+                if a in gaps:
+                    return _gap_pushed(c, a, t, st, snaps.get(a), gaps[a], d)
+                if pushed:
+                    return pushed(c, a, t)
+                return pushed_since(c, a, t, snapshot=snaps.get(a), snapshot_source=_baseline_source(st, a))
             try:
                 pu = {a: pushed_fn(cfg, a, ts) for a in stopped_arms}
             except RemoteUnreachable as e:
@@ -1465,10 +1516,15 @@ def who(cfg: dict, d: Deps, bridge_locks=None, cwds=None, events=None, pushed=No
                 # remote-refs half (recorded offline switch) cannot also forgive a stopped-arm event
                 checks["d"] = {"ok": False, "error": "RemoteUnreachable: %s" % e, "remote_unreachable": True,
                                "events_since_switch": ev}
+                if gaps:
+                    checks["d"]["baseline_gap"] = _gap_report(gaps, st)
                 pu = None
             if pu is not None:
                 pu = {a: r for a, r in pu.items() if r}
-                checks["d"] = {"ok": not ev and not pu, "events_since_switch": ev, "pushed_since_switch": pu}
+                checks["d"] = {"ok": not ev and not pu and not gaps, "events_since_switch": ev,
+                               "pushed_since_switch": pu}
+                if gaps:
+                    checks["d"]["baseline_gap"] = _gap_report(gaps, st)
     except Exception as e:  # noqa: BLE001
         checks["d"] = {"ok": False, "error": "%s: %s" % (type(e).__name__, e)}
     try:

@@ -490,7 +490,7 @@ def t_who():
     def lboom(): raise RuntimeError("lock file unreadable")
     r = AR.who(w.cfg, d, **dict(ok_kw, bridge_locks=lboom)); check(r["exit"] == 4, "FORCED (c) unreadable lock fails the check")
     # (d)
-    AR.write_json(d.state_file(), {"epoch": d.clock() - 600, "ts": "x", "mode": "ralph_a"})
+    AR.write_json(d.state_file(), {"epoch": d.clock() - 600, "ts": "x", "mode": "ralph_a", "refs_source": {"trio": "remote"}})
     r = AR.who(w.cfg, d, **dict(ok_kw, events=lambda root, a, ts: 2 if a == "trio" else 0))
     check(r["exit"] == 8 and r["checks"]["d"]["events_since_switch"] == {"trio": 2}, "FORCED (d) stopped arm wrote an event since the switch -> exit 8")
     r = AR.who(w.cfg, d, **dict(ok_kw, pushed=lambda cfg, a, ts: ["refs/remotes/origin/arena/v3c/x"] if a == "v3c" else []))
@@ -1174,7 +1174,7 @@ def t_who_d_fail_closed():
     check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "FORCED corrupt switch_state.json fails (d)")
     AR.write_json(d.state_file(), {"ts": "x", "mode": "ralph_a"})
     check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "FORCED switch_state.json without an epoch fails (d)")
-    AR.write_json(d.state_file(), {"ts": "x", "epoch": d.clock() - 600, "mode": "ralph_a", "refs": {}})
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": d.clock() - 600, "mode": "ralph_a", "refs": {}, "refs_source": {}})
     check(who_quiet(w, d, **real)["checks"]["d"]["ok"], "a sound state with nothing since: (d) ok")
     (w.arena / "events" / "trio.jsonl").mkdir(parents=True)
     check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "FORCED an unreadable events file (a directory) fails (d)")
@@ -1226,7 +1226,7 @@ def t_cli_bits():
     lf.write_text("[not json"); r = rc(); check(r & 4 == 4, "FORCED CLI who: an unreadable lock file sets bit 4 (rc %d)" % r)
     lf.write_text("[]")
     now = time.time()
-    AR.write_json(w.arena / "switch_state.json", {"ts": "x", "epoch": now - 600, "mode": "ralph_a", "refs": {}})
+    AR.write_json(w.arena / "switch_state.json", {"ts": "x", "epoch": now - 600, "mode": "ralph_a", "refs": {}, "refs_source": {}})
     check(rc() & 8 == 0, "CLI who: a recorded switch with nothing since leaves bit 8 clear")
     (w.arena / "events").mkdir(exist_ok=True)
     (w.arena / "events" / "trio.jsonl").write_text(json.dumps(
@@ -1354,7 +1354,7 @@ def t_who_d_remote_refs():
     d = w.deps()
     c = w.clone("trio")
     snap = AR.refs_snapshot(w.cfg, "trio")
-    AR.write_json(d.state_file(), {"ts": "x", "epoch": d.clock() - 600, "mode": "ralph_a", "refs": {"trio": snap}})
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": d.clock() - 600, "mode": "ralph_a", "refs": {"trio": snap}, "refs_source": {"trio": "remote"}})
     real = dict(events=None, pushed=None)
     check(who_quiet(w, d, **real)["checks"]["d"]["ok"], "nothing pushed: (d) ok")
     url = subprocess.run(["git", "-C", str(c), "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
@@ -1424,8 +1424,9 @@ def t_who_d_baseline_source():
     AR.write_json(d.state_file(), {"ts": "x", "epoch": time.time() + 3600, "mode": "ralph_a",
                                    "refs": {"trio": local}, "refs_source": {"trio": "local"}})
     r = who_quiet(w, d, **real)
-    check(r["checks"]["d"]["ok"], "offline-recorded LOCAL baseline is compared with local refs: no push nobody made (%s)"
-          % r["checks"]["d"])
+    dd = r["checks"]["d"]
+    check(not dd.get("pushed_since_switch") and dd.get("baseline_gap"),
+          "offline-recorded LOCAL baseline: no push nobody made is reported, but the gap state is loud (%s)" % dd)
     AR.write_json(d.state_file(), {"ts": "x", "epoch": time.time() + 3600, "mode": "ralph_a",
                                    "refs": {"trio": local}, "refs_source": {"trio": "remote"}})
     check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "control: the same baseline labelled remote does differ from origin")
@@ -1445,11 +1446,61 @@ def t_who_d_baseline_source():
           "production/v3 arms: pushed_since returns early (reflog loop unreachable)")
 
 
+def t_who_d_gap_fail_closed():
+    """Opus review of 01e31446bd: after an --allow-offline switch (or an old state file) a stopped arm's push by URL
+    must not pass who (d) once origin is back; a clean online recovery must not loop on false positives."""
+    import time
+    w = World("gap", mode="ralph_a", active=("ralph_a",))
+    c = w.clone("trio")
+    d = w.deps()
+    url = subprocess.run(["git", "-C", str(c), "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+    git(c, "push", "-q", "--no-verify", "origin", "HEAD:refs/heads/arena/trio/x")
+    local = AR.refs_snapshot(w.cfg, "trio", remote=False)
+    ts = time.time() + 3600
+
+    def put(**kw):
+        AR.write_json(d.state_file(), dict({"ts": "x", "epoch": ts, "mode": "ralph_a", "refs": {"trio": local}}, **kw))
+    real = dict(events=None, pushed=None)
+    put(refs_source={"trio": "local"}, allow_offline=True)
+    r1 = who_quiet(w, d, **real)
+    dd = r1["checks"]["d"]
+    check(r1["exit"] & 8 and dd.get("baseline_gap") and not dd.get("pushed_since_switch"),
+          "offline baseline, origin back, nothing pushed: loud gap state, bit 8, no false push (%s)" % dd)
+    st = AR.read_state(d)
+    check(st.get("refs_late_baseline", {}).get("ts"), "first online who stored refs_late_baseline with a time")
+    # a stopped arm pushes BY URL (moves neither tracking ref nor reflog)
+    git(c, "commit", "-q", "--allow-empty", "-m", "sneak")
+    git(c, "push", "-q", "--no-verify", url, "HEAD:refs/heads/arena/trio/x")
+    dd = who_quiet(w, d, **real)["checks"]["d"]
+    check(not dd["ok"] and any("arena/trio/x moved" in x for x in dd["pushed_since_switch"].get("trio", [])),
+          "URL push after the late baseline is caught as a moved ref (%s)" % dd)
+    # old state file without refs_source / allow_offline: unknown -> fail closed, same loud state
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": ts, "mode": "ralph_a", "refs": {"trio": local}})
+    dd = who_quiet(w, d, **real)["checks"]["d"]
+    check(not dd["ok"] and dd.get("baseline_gap", {}).get("arms", {}).get("trio") == "unknown",
+          "state written before refs_source: unknown baseline fails closed (%s)" % dd)
+    # clean online recovery: a remote baseline (what an online `arena switch <mode>` writes) passes
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": ts, "mode": "ralph_a", "refs": {"trio": AR.refs_snapshot(w.cfg, "trio")},
+                                   "refs_source": {"trio": "remote"}})
+    dd = who_quiet(w, d, **real)["checks"]["d"]
+    check(dd["ok"] and "baseline_gap" not in dd, "re-baselined (remote) state: who (d) passes, no gap state (%s)" % dd)
+    # offline switch records the allow_offline marker
+    w2 = World("gap2", mode="ralph_a", active=("ralph_a",))
+    c2 = w2.clone("ralph_a")
+    for a in ("bench", "foundry"):
+        w2.clone(a)
+    idle_status(w2, "ralph_a", "idle")
+    git(c2, "remote", "set-url", "origin", str(w2.root / "gone.git"))
+    AR.switch("trio", w2.toml, w2.deps(unpushed=AR.clone_dirt, who_fn=lambda cfg, d2: AR.who(
+        cfg, d2, bridge_locks=lambda: [], cwds=lambda: [(1, "/")], events=lambda root, a, t_: 0)), allow_offline=True)
+    check(AR.read_state(w2.deps()).get("allow_offline") is True, "offline switch writes the allow_offline marker")
+
+
 def main():
     try:
         for t in (t_two_targets, t_graph, t_switch_production, t_switch_forced, t_who, t_push, t_installer, t_ops_watch,
                   t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety, t_unknown_and_live,
-                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_who_d_offline_partial, t_who_d_baseline_source, t_cli_bits,
+                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_who_d_offline_partial, t_who_d_baseline_source, t_who_d_gap_fail_closed, t_cli_bits,
                   t_fsd_parity, t_round2_gpt):
             print("== %s" % t.__name__)
             t()
