@@ -203,12 +203,22 @@ def require_tested(recs):
     same = L.flagged_same_agent(mine)
     if same:
         raise NotTested("refused: test_start by the builder itself (%s)" % (same[0].get("detail") or {}).get("tester"))
-    ended = {(r.get("detail") or {}).get("build_id") for r in mine if r.get("event") == "test_end"}
-    for r in mine:                                # DRILL: a tester pass killed after test_start leaves the builder blocked
+    bid = open_tester_build(mine)                 # DRILL: a tester pass killed after test_start leaves the builder blocked
+    if bid:
+        raise NotTested("refused: a tester pass of build %s started and never ended (killed?); it must be "
+                        "re-run before the next build pass" % bid)
+
+
+def open_tester_build(recs):
+    """The build_id of a test_start (same build, same tester) with no later test_end, else None. Per ATTEMPT, so a
+    retry killed after an earlier attempt ended is still open (GPT review r1)."""
+    done = {((r.get("detail") or {}).get("build_id"), (r.get("detail") or {}).get("tester"))
+            for r in recs if r.get("event") == "test_end"}
+    for r in recs:
         d = r.get("detail") or {}
-        if r.get("event") == "test_start" and d.get("build_id") and d["build_id"] not in ended:
-            raise NotTested("refused: the tester pass of build %s started and never ended (killed?); it must be "
-                            "re-run before the next build pass" % d["build_id"])
+        if r.get("event") == "test_start" and d.get("build_id") and (d["build_id"], d.get("tester")) not in done:
+            return d["build_id"]
+    return None
 
 
 def build_gate_ok(rec):
@@ -651,8 +661,9 @@ class Loop:
         b = recs[last]
         d = b.get("detail") or {}
         bid = d.get("build_id")
-        if any(r.get("event") == "test_end" and (r.get("detail") or {}).get("build_id") == bid
-               for r in recs[last + 1:]):
+        if open_tester_build(recs[last + 1:]) != bid and any(
+                r.get("event") == "test_end" and (r.get("detail") or {}).get("build_id") == bid
+                for r in recs[last + 1:]):
             return None                       # a tester pass FINISHED (a test_start alone is a killed tester pass)
         sha = b.get("sha")
         if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or \

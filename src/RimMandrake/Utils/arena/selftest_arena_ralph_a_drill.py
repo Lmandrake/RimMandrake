@@ -240,6 +240,35 @@ def sc_tester_killed_lost_state(tmp, mod, tag):
     return refused and not ran_ahead and roles == ["test"] and out[-1].startswith("published") and len(w.pubs()) == 1
 
 
+def sc_tester_retry_killed(tmp, mod, tag):
+    """T: attempt 1 ended with no verdict, attempt 2 killed: the earlier test_end must not satisfy the guard."""
+    n = []
+    w = World(tmp, "dI" + tag, mod)
+    real_model = w.model
+
+    def model(role, prompt, **kw):
+        if role == "test":
+            n.append(1)
+            if len(n) == 1:
+                return {"rc": 0, "text": "no verdict given"}
+            if len(n) == 2:
+                raise Killed()
+        return real_model(role, prompt, **kw)
+    w.model = model
+    reopen(w, mod, model=model)
+    try:
+        w.loop.step()
+        return False
+    except Killed:
+        pass
+    (w.ctl / "state.json").unlink()
+    reopen(w, mod, model=model)
+    c = len(w.calls)
+    out = S.run_steps(w)
+    drill_note(w, "tester_retry_killed", out[-1])
+    return [x[0] for x in w.calls[c:]][:1] == ["test"] and out[-1].startswith("published")
+
+
 SCENARIOS = [
     ("P planted failing check never reaches main; the repair does", sc_planted),
     ("P a check failing only at the final gate is never published", sc_planted_final),
@@ -248,16 +277,18 @@ SCENARIOS = [
     ("R final gate killed after a tester PASS: main unmoved, restart publishes", sc_final_gate_killed),
     ("P gate process SIGKILLed: invalid verdict, never a pass", sc_gate_process_killed),
     ("T tester pass killed: the next pass is the tester, builder blocked", sc_tester_killed),
+    ("T killed tester RETRY after an ended attempt: builder still blocked", sc_tester_retry_killed),
     ("T tester pass killed AND state.json lost: builder still blocked", sc_tester_killed_lost_state),
 ]
 
 MUTATIONS = [
     ("T recover counts a bare test_start as tested", sc_tester_killed_lost_state,
-     'if any(r.get("event") == "test_end" and (r.get("detail") or {}).get("build_id") == bid',
-     'if any(r.get("event") in ("test_start", "test_end") and (r.get("detail") or {}).get("build_id") == bid'),
+     '        if open_tester_build(recs[last + 1:]) != bid and any(\n                r.get("event") == "test_end"',
+     '        if any(\n                r.get("event") in ("test_start", "test_end")'),
     ("T build_pass lets a started-never-ended tester pass through", sc_tester_killed_lost_state,
-     'if r.get("event") == "test_start" and d.get("build_id") and d["build_id"] not in ended:',
-     'if False:'),
+     '    if bid:\n        raise NotTested("refused: a tester', '    if False:\n        raise NotTested("refused: a tester'),
+    ("T guard matches by build only, not attempt", sc_tester_retry_killed,
+     'not in done:\n            return d["build_id"]', 'not in done and d["build_id"] not in {k[0] for k in done}:\n            return d["build_id"]'),
     ("T both guards removed: the builder runs ahead", sc_tester_killed_lost_state, None, None),
     ("P build-phase gate bypassed", sc_planted, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("R leftover commit of a killed pass read as an empty candidate", sc_build_killed,
@@ -297,10 +328,9 @@ def main():
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             if old is None:
                 mod = double_variant([
-                    ('if any(r.get("event") == "test_end" and (r.get("detail") or {}).get("build_id") == bid',
-                     'if any(r.get("event") in ("test_start", "test_end") and (r.get("detail") or {}).get("build_id") == bid'),
-                    ('if r.get("event") == "test_start" and d.get("build_id") and d["build_id"] not in ended:',
-                     'if False:')], None)
+                    ('        if open_tester_build(recs[last + 1:]) != bid and any(\n                r.get("event") == "test_end"',
+                     '        if any(\n                r.get("event") in ("test_start", "test_end")'),
+                    ('    if bid:\n        raise NotTested("refused: a tester', '    if False:\n        raise NotTested("refused: a tester')], None)
             else:
                 mod = variant(old, new)
             check(not guarded(fn, tmp, mod, "_m%d" % i), "mutation goes RED: " + name)
@@ -309,7 +339,7 @@ def main():
                     detail={"drill": name, "outcome": outcome})
         got = [(r["detail"]["drill"]) for r in sw.records() if r.get("event") == "defect"]
         want = sorted(n for n, _ in DRILL)
-        check(len(want) == 7 and sorted(got) == want and len(set(want)) == 7,
+        check(len(want) == 8 and sorted(got) == want and len(set(want)) == 8,
               "the drill is recorded in the signed event log (%d records): %s" % (len(got), sorted(got)))
     finally:
         for k, v in saved.items():
