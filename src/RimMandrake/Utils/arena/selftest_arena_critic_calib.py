@@ -387,6 +387,24 @@ def t_sandbox(repo, base, head, root):
         shutil.rmtree(os.environ.get("ARENA_CRITIC_WORK", "/nonexistent"), ignore_errors=True)
 
 
+def t_persist(repo, base, head):
+    """ARENA_TESTER_SPEND_ENFORCE_METERED_HOME: calibration keeps --no-session-persistence; trio's critic
+    (persist_sessions=True) keeps its transcript so helper_capture can meter it."""
+    seen, real = [], C.sandbox_argv
+    C.sandbox_argv = lambda argv, work, cwd: (seen.append(list(argv)), ["true"])[1]
+    os.environ["ARENA_CRITIC_WORK"] = "/var/tmp/rm_critic_calib_persist_%d" % os.getpid()
+    try:
+        c = synth_set(base, head, n_good=1, n_bad=0)["candidates"][0]
+        C.run_one(c, C.L4OpusCritic(exe=["claude"]), repo=repo)
+        C.run_one(c, C.L4OpusCritic(exe=["claude"], persist_sessions=True), repo=repo)
+    finally:
+        C.sandbox_argv = real
+        shutil.rmtree(os.environ["ARENA_CRITIC_WORK"], ignore_errors=True)
+    check("calibration critic runs --no-session-persistence; persist_sessions=True drops it",
+          len(seen) == 2 and "--no-session-persistence" in seen[0] and "--no-session-persistence" not in seen[1],
+          str(seen)[:300])
+
+
 def t_adjudicate(repo, base, head):
     doc = synth_set(base, head)
     good = [c["cid"] for c in doc["candidates"] if c["role"] == "good"]
@@ -475,6 +493,7 @@ def t_tree_and_hidden(root):
 
 def main() -> int:
     root = Path(tempfile.mkdtemp(prefix="selftest_critic_calib_"))
+    os.environ["ARENA_METER_HELPERS"] = str(root / "meter_helpers")      # tester captures: not the live arena root
     try:
         repo, base, head = make_repo(root)
         t_maths()
@@ -483,6 +502,7 @@ def main() -> int:
         t_blind(repo, base, head, root)
         t_resume(repo, base, head, root)
         t_sandbox(repo, base, head, root)
+        t_persist(repo, base, head)
         t_adjudicate(repo, base, head)
         t_tree_and_hidden(root)
     finally:

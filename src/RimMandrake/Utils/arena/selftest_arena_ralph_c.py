@@ -857,6 +857,7 @@ def t_runner_git_trust2(tmp):
 
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_c_"))
+    os.environ["ARENA_METER_HELPERS"] = str(tmp / "meter_helpers")      # tester captures: not the live arena root
     os.environ["RM_ARM_SANDBOX_SCRATCH"] = str(tmp / "armscratch")     # builder scratch: not the live arena root
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
                                              "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM", "RALPH_C_MAX_SUBAGENTS",

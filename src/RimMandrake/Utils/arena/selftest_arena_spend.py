@@ -46,6 +46,7 @@ import arena_spend as SP  # noqa: E402
 import arena_tasks as A  # noqa: E402
 import selftest_arena_judge as SJ  # noqa: E402   fixtures only (make_clone, task_for, hidden_for, Fake, ans)
 import spend_census as S  # noqa: E402
+import helper_capture as HC  # noqa: E402
 
 FAILS = []
 OPUS = "claude-opus-5-5"
@@ -112,6 +113,10 @@ def t_units():
           "calls in no span, and harness spend, are overhead", doc["overhead"])
     check(any("ambiguous" in f for f in doc["flags"]) and any("v3" in f and "UNMEASURED" in f for f in doc["flags"]),
           "ambiguity and an UNMEASURED arm log are flagged", doc["flags"])
+    # BENCH B2: a span's end is INCLUSIVE (a call stamped exactly at pass_end is the task's, not overhead)
+    d = SP.attribute({"trio": {"recs": recs}}, [("trio", cc(5100, **{"in": 13}))], [])
+    check(d["arms"].get("trio", {}).get("C", {}).get("claude", {}).get(OPUS, {}).get("input") == 13,
+          "B2: a call exactly at pass_end belongs to the task (span end inclusive)", d)
     t_units_r1(recs, cc)
 
 
@@ -176,12 +181,14 @@ def t_units_r1(recs, cc):
     check(tok is None, "r2#5: an explicit gpt=null section is refused", (tok, why))
     # r2#2: Claude spend under the arena root that the meter could not put on one arm is blocking; spend outside
     # the arena root (an unrelated session) stays overhead
+    nots = [r for r in recs if r["event"] != "test_start"]
     real = S.claude_spend_by_arm
-    for reasons, blocks in (({"unlisted": 5.0}, True), ({"ambiguous": 5.0}, True), ({"outside": 5.0}, False)):
+    for reasons, blocks in (({"unlisted": 5.0}, True), ({"ambiguous": 5.0}, True), ({"outside": 5.0}, False),
+                            ({"tester_outside": 5.0}, True), ({"sandbox_foreign": 5.0}, True)):
         S.claude_spend_by_arm = lambda *a, _r=reasons, **k: {S.UNATTRIBUTED: {"ite": 5.0, "calls": 1, "reasons": _r}}
         try:
-            d = SP.meter({"trio": {"recs": recs}}, projects="/nonexistent", clones_root="/nonexistent",
-                         gpt_log="/nonexistent/g.jsonl")
+            d = SP.meter({"trio": {"recs": nots}}, projects="/nonexistent", clones_root="/nonexistent",
+                         gpt_log="/nonexistent/g.jsonl", helpers="/nonexistent", sandbox_root="/nonexistent")
         finally:
             S.claude_spend_by_arm = real
         check(bool(d["blocking"]) == blocks, "r2#2: UNATTRIBUTED Claude spend for reason %s is %s" % (
@@ -195,13 +202,139 @@ def t_units_r1(recs, cc):
             return {}
         S.claude_spend_by_arm = fake
         try:
-            d = SP.meter({"trio": {"recs": recs}}, projects="/nonexistent", clones_root="/nonexistent",
-                         gpt_log="/nonexistent/g.jsonl")
+            d = SP.meter({"trio": {"recs": nots}}, projects="/nonexistent", clones_root="/nonexistent",
+                         gpt_log="/nonexistent/g.jsonl", helpers="/nonexistent", sandbox_root="/nonexistent")
         finally:
             S.claude_spend_by_arm = real
-        prob = AA.spend_doc_problem(d, {"trio": {"recs": recs}})
+        prob = AA.spend_doc_problem(d, {"trio": {"recs": nots}})
         check(any(key in b for b in d.get("blocking", ())) and prob and key in prob,
               "r1#3: meter %s is blocking and the analysis refuses the spend doc" % key, (d.get("blocking"), prob))
+
+
+def t_census(tmp):
+    """spend_census pins (BENCH B13) and helper_capture's refusals, at unit level."""
+    pj = tmp / "census" / "projects" / "-x"
+    pj.mkdir(parents=True)
+    mine = "/arena/replay/trio/T005"
+    owner = "T005-%s-%s" % (hashlib.sha256(mine.encode()).hexdigest()[:8], "0" * 16)
+    check(S._owns(owner, mine + "/src") and not S._owns(owner, "/arena/replay/v3/T005")
+          and not S._owns(owner, "/elsewhere"), "sandbox owner: a scratch HOME is owned by its clone path (basename AND "
+          "path hash); another arm's clone of the same task is not the owner", owner)
+    line = lambda t, mid: json.dumps({"type": "assistant", "timestamp": iso(t), "message": {   # noqa: E731
+        "id": mid, "model": OPUS, "usage": {"input_tokens": 10, "output_tokens": 0}}}) + "\n"
+    (pj / "s.jsonl").write_text(line(1000, "in") + line(3000, "late"))
+    seen = []
+    S.claude_spend_by_arm(projects=str(pj.parent), arena_root="/nonexistent", since=500, until=2000,
+                          sink=lambda a, c: seen.append(c["t"]))
+    check(seen == [1000.0], "B13: the census sink sees only calls inside the window (filter before the sink)", seen)
+    # capture: a symlinked projects dir / a symlinked HOME/.claude is never followed, and is reported as skipped
+    rec = {"arm": "trio", "run_id": "r", "task": "T", "ts": iso(1000), "event": "test_start",
+           "detail": {"tester": "x"}}
+    base = tmp / "census" / "helpers"
+    outside = tmp / "census" / "foreign"
+    write_tester(outside, outside / "g", 1000, "trio", 0)
+    for what, plant in (("projects", lambda h: (h / ".claude").mkdir(parents=True) or
+                         (h / ".claude" / "projects").symlink_to(outside / ".claude" / "projects")),
+                        (".claude", lambda h: h.mkdir(parents=True) or (h / ".claude").symlink_to(outside / ".claude"))):
+        h = tmp / "census" / ("home_" + what)
+        plant(h)
+        HC.capture(rec, home=h, gpt_dir=None, base=base)
+        man, d = HC.load(rec, base)
+        check(man and man["skipped"] and not man["claude_files"] and not list((d / "claude").rglob("*.jsonl")),
+              "capture: a symlinked %s is skipped (reported), its target never copied" % what, man)
+    lane = dict(rec, arm="ralph_c", detail={"tester": "runner-1", "model": False})
+    _e, _g, blk = SP.tester_captures({"ralph_c": {"recs": [lane]}}, base, 0, float("inf"))
+    _e, _g, blk2 = SP.tester_captures({"ralph_c": {"recs": [dict(lane, detail={"tester": "runner-1"})]}}, base, 0,
+                                      float("inf"))
+    check(blk == [] and len(blk2) == 1, "a test_start marked model:false (ralph_c lane runner, no model) needs no "
+          "capture; the same record without the mark blocks", (blk, blk2))
+    man, why = HC.load(dict(rec, ts=iso(1001)), base)
+    check(man is None and "no capture" in why, "capture: another test_start (other ts) has no capture", why)
+    (HC.cdir(rec, base) / "manifest.json").write_text(json.dumps(dict(json.loads(
+        (HC.cdir(rec, base) / "manifest.json").read_text()), tester="y")))
+    man, why = HC.load(rec, base)
+    check(man is None and "does not match" in why, "capture: a manifest naming another tester is refused", why)
+    # GPT r1: a session that STARTS elsewhere and later works in a tester root is still tester_outside
+    pj2 = tmp / "census" / "projects2" / "-home-u-elsewhere"
+    pj2.mkdir(parents=True)
+    l2 = lambda t, mid, cwd: json.dumps({"type": "assistant", "timestamp": iso(t), "cwd": cwd, "message": {  # noqa: E731
+        "id": mid, "model": OPUS, "usage": {"input_tokens": 10, "output_tokens": 0}}}) + "\n"
+    (pj2 / "s.jsonl").write_text(l2(1000, "a", "/home/u/elsewhere") + l2(1001, "b", "/tmp/rt-abcdefgh/tree"))
+    out = S.claude_spend_by_arm(projects=str(pj2.parent), arena_root="/nonexistent", since=500, until=2000)
+    rs = (out.get(S.UNATTRIBUTED) or {}).get("reasons", {})
+    check("tester_outside" in rs, "census: a session whose LATER cwd is a tester root is tester_outside", rs)
+    # GPT r2: in an arm-written root (sandbox HOME / capture) a symlinked or unreadable dir blocks (unreadable_files)
+    ar = tmp / "census" / "armroot"
+    (ar / "-s").mkdir(parents=True)
+    (ar / "-s" / "ok.jsonl").write_text(l2(1000, "c", "/x"))
+    (ar / "-lnk").symlink_to(pj2)
+    (ar / "-ro").mkdir()
+    os.chmod(ar / "-ro", 0)
+    try:
+        dg = {}
+        S.claude_spend_by_arm(projects=str(tmp / "census" / "none"), arena_root="/nonexistent", since=500, until=2000,
+                              diag=dg, extra=[(str(ar), "trio", None)])
+        uf = dg.get("unreadable_files") or []
+        check(any("-lnk" in x for x in uf) and (any("-ro" in x for x in uf) or os.access(ar / "-ro", os.R_OK)),
+              "census: a symlinked / unreadable dir in an arm-written transcript root is unreadable_files (blocking)",
+              uf)
+    finally:
+        os.chmod(ar / "-ro", 0o755)
+    # GPT r2: an arm session whose LATER cwd leaves the arm's clone is cwd_mismatch (every cwd checked)
+    cr = tmp / "census" / "clones"
+    pj3 = tmp / "census" / "projects3" / S.path_slug(str(cr / "trio"))
+    pj3.mkdir(parents=True)
+    (pj3 / "s.jsonl").write_text(l2(1000, "d", str(cr / "trio")) + l2(1001, "e", "/tmp/rt-abcdefgh/tree"))
+    dg = {}
+    out = S.claude_spend_by_arm(projects=str(pj3.parent), arms=["trio"], arena_root=str(cr), since=500, until=2000,
+                                diag=dg)
+    check(dg.get("cwd_mismatch") and "trio" not in out, "census: an arm session that later works outside its clone "
+          "is cwd_mismatch, not charged to the arm", (dg.get("cwd_mismatch"), dict(out)))
+    # GPT r2: HOME itself a symlink is never followed (fd walk from the tester root, O_NOFOLLOW at every component)
+    hr = tmp / "census" / "troot"
+    hr.mkdir()
+    (hr / "home").symlink_to(outside)
+    HC.capture(dict(rec, ts=iso(1003)), home=hr / "home", gpt_dir=None, base=base)
+    man, _ = HC.load(dict(rec, ts=iso(1003)), base)
+    check(man and man["skipped"] and not man["claude_files"], "capture: a symlinked HOME is skipped, never followed",
+          man)
+    # GPT r1: an unreadable directory under the tester's projects is reported as skipped, not silently lost
+    h = tmp / "census" / "home_unreadable"
+    write_tester(h, h / "g", 1000, "trio", 0)
+    locked = h / ".claude" / "projects" / "-locked"
+    locked.mkdir()
+    (locked / "x.jsonl").write_text("{}\n")
+    os.chmod(locked, 0)
+    try:
+        man = None
+        if not os.access(locked, os.R_OK):              # root ignores modes: then the probe cannot see, say so
+            HC.capture(dict(rec, ts=iso(1002)), home=h, gpt_dir=None, base=base)
+            man, _ = HC.load(dict(rec, ts=iso(1002)), base)
+        check(man is not None and any("-locked" in x for x in man["skipped"]) and man["claude_files"],
+              "capture: an unreadable transcript dir is a blocking skip (os.walk errors are not swallowed)", man)
+    finally:
+        os.chmod(locked, 0o755)
+    # GPT r1: a tester that started shortly BEFORE the window still needs its capture; one far before does not
+    old = dict(rec, ts=iso(1000 - 60), detail={"tester": "pre"})
+    _e, _g, b1 = SP.tester_captures({"trio": {"recs": [old]}}, base, 1000, 2000)
+    _e, _g, b2 = SP.tester_captures({"trio": {"recs": [dict(old, ts=iso(1000 - SP.PRE_WINDOW_S - 60))]}}, base,
+                                    1000, 2000)
+    check(len(b1) == 1 and b2 == [], "a tester started just before the window is metered (missing capture blocks); "
+          "one PRE_WINDOW_S earlier is not", (b1, b2))
+    # GPT r1: a symlinked sandbox HOME component blocks instead of vanishing
+    sb = tmp / "census" / "sandbox"
+    (sb / "c-00000000-x" / "build").mkdir(parents=True)
+    (sb / "c-00000000-x" / "build" / "home").symlink_to(outside)
+    homes, hb = SP.sandbox_homes(sb)
+    check(homes == [] and len(hb) == 1 and "symlinked" in hb[0], "a symlinked sandbox HOME is blocking", (homes, hb))
+    empty = tmp / "census" / "empty_projects"
+    empty.mkdir()
+    (tmp / "census" / "gpt_empty.jsonl").write_text("")
+    doc = SP.meter({"trio": {"recs": [{"event": "assign", "arm": "trio", "task": "T", "run_id": "r", "lane": "build",
+                                       "ts": iso(1000)}]}}, projects=str(empty), clones_root="/nonexistent",
+                   gpt_log=str(tmp / "census" / "gpt_empty.jsonl"), helpers=base, sandbox_root=sb)
+    check(any("symlinked" in x for x in doc["blocking"]), "meter: the sandbox-home blocking reaches the doc",
+          doc["blocking"])
 
 
 # ------------------------------------------------------------------ e2e
@@ -212,7 +345,8 @@ def setup_env(tmp, name):
                ARENA_JUDGE_WORK=str(root / "work"), ARENA_EVENT_TOKEN_FILE=str(root / "secret" / "event_token"),
                ARENA_ANCHOR_FILE=str(root / "secret" / "anchors.jsonl"),
                ARENA_WITNESS=str(root / "secret" / "witness.jsonl"), ARENA_JUDGE_OPUS_MODEL="fake-model-for-selftest",
-               RM_GPT_CALL_LOG=str(root / "gpt_calls.jsonl"))
+               RM_GPT_CALL_LOG=str(root / "gpt_calls.jsonl"), ARENA_METER_HELPERS=str(root / "helpers"),
+               RM_ARM_SANDBOX_SCRATCH=str(root / "sandbox"))
     os.environ.update(env)
     for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_JUDGE_WORK"):
         Path(env[k]).mkdir(parents=True)
@@ -230,8 +364,33 @@ def task_cost():
     return {"T%03d" % i: math.exp(math.log(1e5) + rng.gauss(0, 1.0)) for i in range(N)}
 
 
+TESTER_IN, TESTER_GPT, SANDBOX_IN = 500, 7, 300
+
+
+def write_tester(home, gdir, t, arm, i, *, transcript=True, tokens=TESTER_IN):
+    """What an arm tester leaves in its private root: a Claude transcript under HOME, a GPT record under
+    RM_GPT_CALL_LOG=<root>/gpt/ (tagged with the WRONG arm: the capture's place decides, never the record)."""
+    if transcript:
+        d = Path(home) / ".claude" / "projects" / "-tmp-rt-x-tree"
+        d.mkdir(parents=True, exist_ok=True)
+        (d / "t.jsonl").write_text(json.dumps({"type": "assistant", "timestamp": iso(t), "cwd": "/tmp/rt-x/tree",
+                                               "message": {"id": "q-%s-%d" % (arm, i), "model": OPUS,
+                                                           "usage": {"input_tokens": tokens, "output_tokens": 0}}})
+                                   + "\n")
+    Path(gdir).mkdir(parents=True, exist_ok=True)
+    (Path(gdir) / "c1.jsonl").write_text(json.dumps({"t": t + 5, "arm": "someone-else", "tokens_used": TESTER_GPT})
+                                        + "\n")
+
+
+def scratch_home(clone, role="build"):
+    """An arm_sandbox private HOME's projects dir for `clone` (arm_sandbox.scratch_dir's naming)."""
+    c = os.path.realpath(str(clone))
+    name = "%s-%s-%s" % (os.path.basename(c), hashlib.sha256(c.encode()).hexdigest()[:8], "0123456789abcdef")
+    return Path(os.environ["RM_ARM_SANDBOX_SCRATCH"]) / name / role / "home" / ".claude" / "projects"
+
+
 def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True, pending=False, id_conflict=False,
-          stale=False, since_cut=False):
+          stale=False, since_cut=False, capture="ok", foreign=False, tester_out=False):
     """One miniature arena run through the real writers. -> dict with the analysis report and paths."""
     root, p = setup_env(tmp, name)
     w = L.HarnessWriter(p)                                  # the selftest's implicit harness pass
@@ -244,7 +403,7 @@ def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True, pending=
     for arm in ARMS:
         c, base, head = SJ.make_clone(clones_root / "repl", arm, 2, plant=False)
         heads[arm] = (c, base, head)
-    gpt_lines, tr = [], {}
+    gpt_lines, tr, starts = [], {}, []
     for arm in ARMS:
         off = 0 if arm == "trio" else 7
         for i in range(N):
@@ -258,7 +417,9 @@ def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True, pending=
                                                                   "build_id": "bid%d" % i}}),
                                   ("pass_end", 150, {"sha": sha, "verdict": "pass"}),
                                   ("gate", 200, {"sha": sha, "verdict": "pass", "detail": {"steps": {"scope": "PASS"}}})):
-                w.emit(arm, ev, lane="build", run_id=rid, ts=iso(t + dt_), task=task, **more)
+                er = w.emit(arm, ev, lane="build", run_id=rid, ts=iso(t + dt_), task=task, **more)
+                if ev == "test_start":
+                    starts.append((arm, i, t, er))
             tok = cost[task] * (0.25 if arm == "trio" else 1.0)
             tr.setdefault(arm, []).append({"type": "assistant", "timestamp": iso(t + 50),
                                            "message": {"id": "m-%s-%d" % (arm, i), "model": OPUS,
@@ -274,6 +435,36 @@ def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True, pending=
         lines = tr[arm] + ([tr["trio"][10]] if (id_conflict and arm == "v3") else [])   # one id under two arms
         (d / "s.jsonl").write_text("".join(json.dumps(x) + "\n" for x in lines))
     Path(os.environ["RM_GPT_CALL_LOG"]).write_text("".join(json.dumps(x) + "\n" for x in gpt_lines))
+    # every tester the logs say ran is captured (helper_capture.py) the way the loops do it before the rmtree
+    for arm, i, t, er in starts:
+        troot = Path(tempfile.mkdtemp(prefix="rt-", dir=str(root)))
+        odd = arm == "trio" and i == 4
+        write_tester(troot / "home", troot / "gpt", t + 120, arm, i, transcript=not (odd and capture == "empty"))
+        if odd and capture == "symlink":
+            pj = troot / "home" / ".claude" / "projects" / "-tmp-rt-x-tree"
+            (pj / "t.jsonl").rename(troot / "elsewhere.jsonl")
+            (pj / "t.jsonl").symlink_to(troot / "elsewhere.jsonl")
+        if not (odd and capture == "missing"):
+            HC.capture(er, home=troot / "home", gpt_dir=troot / "gpt", rc=0)
+        shutil.rmtree(troot)
+    # trio's builder ran in arm_sandbox: its transcripts live in the clone's private scratch HOME, not ~/.claude
+    sh = scratch_home(clones_root / "trio")
+    sl = sh / S.path_slug(os.path.realpath(str(clones_root / "trio")))
+    sl.mkdir(parents=True)
+    lines = [{"type": "assistant", "timestamp": iso(T0 + i * 600 + 70), "cwd": os.path.realpath(str(clones_root / "trio")),
+              "message": {"id": "sb-trio-%d" % i, "model": OPUS, "usage": {"input_tokens": SANDBOX_IN, "output_tokens": 0}}}
+             for i in range(N)]
+    if foreign:          # a session of the v3 clone planted in trio's scratch HOME: not trio's to carry
+        lines.append(dict(lines[0], cwd=os.path.realpath(str(clones_root / "v3")),
+                          message=dict(lines[0]["message"], id="foreign-1")))
+    (sl / "s.jsonl").write_text("".join(json.dumps(x) + "\n" for x in lines))
+    if tester_out:       # BENCH bfeed d1: a 10M-token tester session written outside every arena path, in T003's span
+        d = projects / S.path_slug("/tmp/rt-x/tree")
+        d.mkdir(parents=True)
+        (d / "o.jsonl").write_text(json.dumps({"type": "assistant", "timestamp": iso(T0 + 3 * 600 + 120),
+                                               "cwd": "/tmp/rt-x/tree", "message": {
+                                                   "id": "d1", "model": OPUS,
+                                                   "usage": {"input_tokens": 10 ** 7, "output_tokens": 0}}}) + "\n")
     # judging: T000 of each arm through the real judge(), the rest through the same recorder main() uses
     for arm in ARMS:
         c, base, head = heads[arm]
@@ -335,8 +526,13 @@ def t_e2e(tmp):
           {a: len(rows.get(a, {})) for a in ARMS})
     one = rows.get("trio", {}).get("T005", {})
     check(set(one.get("claude", {})) == {OPUS} and one["claude"][OPUS]["input"] == int(task_cost()["T005"] * 0.25)
-          and one["gpt"]["tokens"] == 100 and one.get("ambiguous_calls") == 0,
-          "a task row holds the raw per-model Claude input and the raw GPT tokens of that task only", one)
+          + TESTER_IN + SANDBOX_IN and one["gpt"]["tokens"] == 100 + TESTER_GPT and one.get("ambiguous_calls") == 0,
+          "a task row holds the raw per-model Claude input (builder from its sandbox HOME + captured tester) and the "
+          "raw GPT tokens (arm log + captured tester log, on the capture's arm) of that task only", one)
+    v5 = rows.get("v3", {}).get("T005", {})
+    check(v5.get("claude", {}).get(OPUS, {}).get("input") == int(task_cost()["T005"]) + TESTER_IN
+          and v5.get("gpt", {}).get("tokens") == 100 + TESTER_GPT,
+          "v3's captured tester spend is v3's (no sandbox HOME for v3 here)", v5)
     check(r["doc"]["overhead"].get("trio", {}).get("claude", {}).get(OPUS, {}).get("input") == 999 * N,
           "calls between tasks land in the arm's overhead, not in a task", r["doc"]["overhead"].get("trio"))
     check(r["doc"].get("schema") == "arena_task_spend/2" and r["doc"].get("blocking") == []
@@ -366,6 +562,13 @@ def t_e2e(tmp):
           and rep2.get("spend_overhead", {}).get("trio"),
           "CLI: arena_analysis.py run on it decides, and reports the overhead", (rc2, rep2.get("final")))
     check(rc3 == 3, "mutation: no spend file -> UNMEASURED, exit 3", rc3)
+    with contextlib.redirect_stdout(io.StringIO()):
+        rc4 = SP.main(["--out", str(out), "--allow-untrusted", "--projects", str(r["projects"]),
+                       "--clones-root", str(r["clones_root"]), "--helpers", str(r["root"] / "nohelpers"),
+                       "--sandbox-root", str(r["root"] / "nosandbox")])
+    d4 = json.loads(out.read_text())
+    check(rc4 == 0 and any("not captured" in b for b in d4.get("blocking", ())),
+          "CLI --helpers is honoured: an empty capture dir blocks every tester", (rc4, d4.get("blocking", [])[:2]))
 
 
 def t_main_wiring(tmp):
@@ -452,6 +655,16 @@ def t_mutations(tmp):
         r = build(tmp, "m_" + next(iter(kw)), **kw)
         check(r["rep"]["final"]["verdict"].startswith("UNMEASURED"), "mutation: %s -> UNMEASURED" % what,
               r["rep"]["final"])
+    for kw, what, needle in (({"capture": "missing"}, "a tester ran and was never captured", "not captured"),
+                             ({"capture": "empty"}, "a tester capture holds no transcript", "no Claude transcript"),
+                             ({"capture": "symlink"}, "a tester planted a symlinked transcript", "skipped"),
+                             ({"foreign": True}, "another clone's session in an arm's sandbox HOME", "sandbox_foreign"),
+                             ({"tester_out": True}, "BENCH d1: a 10M tester session outside every arena path",
+                              "tester_outside")):
+        r = build(tmp, "c_" + needle, **kw)
+        check(r["rep"]["final"]["verdict"].startswith("UNMEASURED")
+              and any(needle in b for b in r["doc"]["blocking"]),
+              "tester spend: %s -> blocking (%s), UNMEASURED" % (what, needle), (r["rep"]["final"], r["doc"]["blocking"]))
     r = build(tmp, "noraw", raw_counts=False)
     check(r["rep"]["final"]["verdict"] == "UNMEASURED",
           "mutation: raw counts dropped (derived claude_ite only) -> UNMEASURED", r["rep"]["final"])
@@ -463,13 +676,14 @@ def main():
         return 1
     keys = ("ARENA_ROOT", "ARENA_CLONES", "ARENA_PRIVATE", "ARENA_JUDGE_WORK", "ARENA_JUDGE_OPUS_MODEL",
             "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_GPT_CALL_LOG", "ARENA_ARMS",
-            "ARENA_ARM_TOKENS", "ANTHROPIC_DEFAULT_OPUS_MODEL")
+            "ARENA_ARM_TOKENS", "ANTHROPIC_DEFAULT_OPUS_MODEL", "ARENA_METER_HELPERS", "RM_ARM_SANDBOX_SCRATCH")
     saved = {k: os.environ.get(k) for k in keys}
     tmp = Path(tempfile.mkdtemp(prefix="arena_spend_st_"))
     try:
         for k in ("ARENA_ARMS", "ARENA_ARM_TOKENS"):
             os.environ.pop(k, None)
         t_units()
+        t_census(tmp)
         t_e2e(tmp)
         t_main_wiring(tmp)
         t_mutations(tmp)

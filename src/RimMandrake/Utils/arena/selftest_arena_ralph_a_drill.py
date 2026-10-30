@@ -425,6 +425,7 @@ def double_variant(a, b):
 
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_drill_"))
+    os.environ["ARENA_METER_HELPERS"] = str(tmp / "meter_helpers")      # tester captures: not the live arena root
     TBASE[0] = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_drill_rt_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
                                              "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM")}

@@ -24,6 +24,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 TMP = Path(tempfile.mkdtemp(prefix="selftest_arena_testpilot_"))
+os.environ["ARENA_METER_HELPERS"] = str(TMP / "meter_helpers")      # tester captures: not the live arena root
 os.environ["ARENA_ROOT"] = str(TMP / "arena")
 import arena_lane as L  # noqa: E402
 import testpilot as T  # noqa: E402

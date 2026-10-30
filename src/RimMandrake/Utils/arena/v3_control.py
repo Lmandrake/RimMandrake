@@ -59,6 +59,7 @@ is not the real ledger.
 from __future__ import annotations
 
 import argparse
+import functools
 import fcntl
 import hashlib
 import json
@@ -304,16 +305,18 @@ class CmdModel(RA.CmdModel):
         return self.result(log, rc)
 
 
-def gpt_reviewer(task, sha, diff, *, log):
+def gpt_reviewer(task, sha, diff, *, log, arm=None):
     """The default v3c reviewer: gpt_consult.py from the HARNESS checkout, a fresh context that sees REVIEW.md, the
-    item's criteria and the diff, nothing else. -> {"verdict": pass|fail|None, "text"}."""
+    item's criteria and the diff, nothing else. -> {"verdict": pass|fail|None, "text"}. Its GPT call is the arm's
+    spend: the call is tagged RM_ARM=<arm> (the procedure binds it), so spend_census attributes it to the arm."""
     with tempfile.TemporaryDirectory(prefix="v3c-review-") as td:
         q, df, out = Path(td) / "q.md", Path(td) / "diff.patch", Path(td) / "a.md"
         q.write_text((BRIEF_DIR / "REVIEW.md").read_text() + "\n## CRITERIA\n%s\n" % task.get("criteria"))
         df.write_text(diff)
         r = subprocess.run([sys.executable, str(pinned_harness_file("src/RimMandrake/Utils/gpt_consult.py")),
                             "--prompt-file", str(q), "-f", str(df), "--out", str(out), "--effort", "medium",
-                            "--timeout", "500"], capture_output=True, text=True, timeout=600)
+                            "--timeout", "500"], capture_output=True, text=True, timeout=600,
+                           env=dict(os.environ, RM_ARM=arm) if arm else None)
         text = out.read_text() if out.is_file() else ""
         Path(log).write_text("rc=%s\n%s\n--- stderr\n%s" % (r.returncode, text, r.stderr[-4000:]))
     return {"verdict": RA.parse_verdict(text) if r.returncode == 0 else None, "text": text}
@@ -328,7 +331,7 @@ class Procedure:
             raise Refused("unknown arm %r (want one of %s)" % (arm, ARMS))
         self.arm, self.root, self.ctl = arm, Path(clone), Path(ctl)
         self.model, self.writer = model, writer
-        self.reviewer = reviewer or gpt_reviewer
+        self.reviewer = reviewer or functools.partial(gpt_reviewer, arm=arm)
         self.runway = runway or RA.default_runway
         self.new_id = new_id or (lambda role: "%s-%s-%s" % (arm, role, uuid.uuid4().hex[:12]))
         self.timeout_s, self.tester_tmp, self.procs = timeout_s, tester_tmp, procs
@@ -444,17 +447,19 @@ class Procedure:
             if not RA.agent_key(tester) or RA.agent_key(tester) == RA.agent_key(pend["builder"]):
                 raise Refused("tester id %r equals the builder's: refused" % tester)
             troot = self._tester_root()
+            rec, res = None, {}
             try:
                 work = self.tester_workdir(pend["head"], troot / "tree")
                 sandbox = {"root": troot}             # the tester's only rw dir (arm_sandbox: all else masked)
                 pf = getattr(self.model, "preflight", None)       # a refused tester never ran: before test_start
                 if pf:
                     pf(sandbox, work)
-                self.emit("test_start", task, sha=pend["head"],
-                          detail={"tester": tester, "build_id": pend["build_id"]})
+                rec = self.emit("test_start", task, sha=pend["head"],
+                                detail={"tester": tester, "build_id": pend["build_id"]})
                 res = self.model("test", prompt, cwd=work, agent_id=tester, run_id=self.n, sandbox=sandbox,
                                  timeout_s=self.timeout_s, log=self.log / ("test.%d.%s.out" % (self.n, tester)))
             finally:
+                RA.capture_tester(rec, troot, res.get("rc"))     # the meter reads the copy; the root dies next
                 RA.shutil.rmtree(troot, ignore_errors=True)
             text = res.get("text") or ""
             verdict = RA.parse_verdict(text) if res.get("rc") == 0 else None

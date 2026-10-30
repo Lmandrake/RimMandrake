@@ -221,7 +221,7 @@ def precheck_t(root, log):
 
 def default_critic():
     import arena_critic_calib as CC
-    return CC.L4OpusCritic()
+    return CC.L4OpusCritic(persist_sessions=True)   # its transcript is captured for the spend meter
 
 
 def critic_base():
@@ -629,9 +629,10 @@ class TrioLoop(RA.Loop):
             if agent_key(critic) == agent_key(pend["builder"]) or not agent_key(critic):
                 raise Refused("critic id %r equals the builder's: refused" % critic)
             work = self._tester_root()                 # fresh per attempt, never nested with ctl/clone/harness
+            rec, v = None, None                         # never a previous attempt's verdict/rc
             try:
                 tree = self.tester_workdir(pend["head"], work / "tree")
-                self.emit("test_start", task, sha=pend["head"], detail={
+                rec = self.emit("test_start", task, sha=pend["head"], detail={
                     "tester": critic, "build_id": pend["build_id"], "role": "critic"})
                 self.status("critic pass running (%s on %s)" % (critic, pend["build_id"]))
                 try:
@@ -643,6 +644,7 @@ class TrioLoop(RA.Loop):
                 finally:
                     self.release()
             finally:
+                RA.capture_tester(rec, work, (getattr(v, "meta", None) or {}).get("rc"))  # before rmtree
                 shutil.rmtree(work, ignore_errors=True)
             verdict = getattr(v, "verdict", None)
             verdict = verdict if verdict in ("accept", "reject") else "invalid"

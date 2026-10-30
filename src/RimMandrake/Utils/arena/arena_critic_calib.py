@@ -498,8 +498,11 @@ class L4OpusCritic:
     name, needs_tree = "l4-opus", True
 
     def __init__(self, model: str | None = None, timeout: int = CALL_TIMEOUT, max_usd: float = MAX_USD,
-                 exe: list | None = None):
+                 exe: list | None = None, persist_sessions: bool = False):
         self.model = model or os.environ.get("ARENA_CRITIC_MODEL", "opus")
+        # True (trio's arena critic): the session transcript is kept in work/home/.claude/projects, where
+        # helper_capture copies it for the spend meter before trio deletes the work dir
+        self.persist_sessions = bool(persist_sessions)
         self.timeout, self.max_usd = timeout, max_usd
         self.deadline: float | None = None       # set by run(): no call outlives the invocation's wall budget
         self.exe = exe or [shutil.which("claude") or "claude"]
@@ -518,10 +521,12 @@ class L4OpusCritic:
         prompt = L4_PROMPT.format(prompt=c.prompt.strip(), criteria=c.criteria.strip(), diff=diff)
         argv = self.exe + ["-p", "--model", self.model, "--output-format", "json",
                            "--tools", "Bash,Read,Grep,Glob", "--dangerously-skip-permissions", "--strict-mcp-config",
-                           "--disable-slash-commands", "--no-session-persistence",
+                           "--disable-slash-commands"] + ([] if self.persist_sessions else ["--no-session-persistence"]) + [
                            "--max-budget-usd", str(self.max_usd)]
         env = {"PATH": "/usr/local/bin:/usr/bin:/bin:" + str(Path.home() / ".local" / "bin"), "HOME": str(home),
-               "LANG": "C.UTF-8", "USER": os.environ.get("USER", "u"), "TERM": "dumb"}
+               "LANG": "C.UTF-8", "USER": os.environ.get("USER", "u"), "TERM": "dumb",
+               "RM_GPT_CALL_LOG": str(c.work / "gpt") + "/"}   # a GPT call it makes lands where helper_capture reads
+        (c.work / "gpt").mkdir(exist_ok=True)
         for k, v in os.environ.items():            # proxy / CA settings only; never ARENA_*, RM_*, or a session id
             if k in ("SSL_CERT_FILE", "SSL_CERT_DIR", "HTTPS_PROXY", "HTTP_PROXY", "NO_PROXY", "https_proxy",
                      "http_proxy", "no_proxy"):

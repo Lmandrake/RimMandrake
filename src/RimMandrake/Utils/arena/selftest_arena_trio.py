@@ -249,6 +249,29 @@ def sc_split_parks(tmp, mod, tag):
     return ok
 
 
+def sc_capture(tmp, mod, tag):
+    """ARENA_TESTER_SPEND_ENFORCE_METERED_HOME: the critic's transcripts (work/home, kept: trio's critic persists its
+    session) are copied to the meter's helper store keyed by its test_start record before the work dir is deleted."""
+    works = []
+
+    def decide(k, c):
+        works.append(Path(c.work))
+        pj = Path(c.work) / "home" / ".claude" / "projects" / "-crit"
+        pj.mkdir(parents=True, exist_ok=True)
+        (pj / "s.jsonl").write_text('{"type": "assistant"}\n')
+        (Path(c.work) / "gpt").mkdir(exist_ok=True)          # the real critic's RM_GPT_CALL_LOG dir
+        (Path(c.work) / "gpt" / "g.jsonl").write_text("{}\n")
+        return "accept"
+    w = World(tmp, "CAP" + tag, mod, critic=Critic(decide))
+    w.run()
+    starts = w.recs("test_start")
+    mans = [mod.RA.HC.load(r)[0] for r in starts]
+    return (bool(starts) and len(works) == len(starts) and not any(x.exists() for x in works)
+            and all(m and m["claude_files"] == ["-crit/s.jsonl"] and m["gpt_files"] == ["g.jsonl"]
+                    and m["arm"] == mod.ARM for m in mans)
+            and mod.default_critic().persist_sessions is True)
+
+
 def sc_bound(tmp, mod, tag):
     """Accept at round 1: the published sha is the accepted sha, the critic saw that sha's tree."""
     w = World(tmp, "C" + tag, mod, critic=Critic(lambda k, c: "accept"))
@@ -668,8 +691,13 @@ MUTATIONS = [
      "        require_tested(self.recs())                                # HARD CHECK (trio records)",
      "        pass"),
     ("D critic test_start skipped", sc_test_follows,
-     "                self.emit(\"test_start\", task, sha=pend[\"head\"], detail={",
-     "                dict(sha=pend[\"head\"], detail={"),
+     "                rec = self.emit(\"test_start\", task, sha=pend[\"head\"], detail={",
+     "                rec = dict(sha=pend[\"head\"], detail={"),
+    ("A2 critic capture skipped", sc_capture, "                RA.capture_tester(rec, work,",
+     "                (lambda *a, **k: None)(rec, work,"),
+    ("A2 critic GPT log not captured", sc_capture, "(rec, work, (getattr(v, \"meta\", None) or {}).get(\"rc\"))",
+     "(rec, work, (getattr(v, \"meta\", None) or {}).get(\"rc\"), gpt=False)"),
+    ("A2 critic sessions not persisted", sc_capture, "CC.L4OpusCritic(persist_sessions=True)", "CC.L4OpusCritic()"),
     ("E recovery from the log removed", sc_killed_before_critic, "        self._recover(task)\n", "        pass\n"),
     ("F invalid counted as accept", sc_invalid_critic,
      "verdict = verdict if verdict in (\"accept\", \"reject\") else \"invalid\"",
@@ -713,6 +741,7 @@ SCENARIOS = [
     ("B split: parts share the budget; the last part publishes once", sc_split),
     ("BP a split that keeps failing parks at 4", sc_split_parks),
     ("C the accept is bound to the published sha and tree", sc_bound),
+    ("A2 critic spend captured before its work dir is deleted", sc_capture),
     ("C a work branch moved after the accept is not published", sc_bound_moved),
     ("CF main already past the accepted sha: nothing published", sc_main_ahead),
     ("H killed after a part's accept: the restart builds the next part", sc_killed_after_part_accept),
@@ -751,6 +780,7 @@ def t_parse_simplify():
 
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_trio_"))
+    os.environ["ARENA_METER_HELPERS"] = str(tmp / "meter_helpers")      # tester captures: not the live arena root
     TBASE[0] = Path(tempfile.mkdtemp(prefix="selftest_trio_rt_"))
     saved = os.environ.pop("RM_ARM", None)
     try:

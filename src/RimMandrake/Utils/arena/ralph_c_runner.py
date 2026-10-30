@@ -294,7 +294,7 @@ def _run_claimed(p, lane, driver, clone, c, run_id, runner_id):
            "tester": runner_id, "builder": c["builder"], "profile": c["profile"], "tier": c["tier"],
            "mods": c["mods"], "has_dll": c["has_dll"], "proof": c["proof"], "canary": None, "verdict": "invalid",
            "logs": []}
-    ev("test_start", detail={"tester": runner_id, "builder": c["builder"]})
+    ev("test_start", detail={"tester": runner_id, "builder": c["builder"], "model": False})  # no model: no spend to meter
     outcome = None                      # refused: nothing recorded
     try:
         ok, out = driver.checkout(clone, c["sha"])

@@ -119,7 +119,8 @@ def translate_testq(results: list[dict], jobs: dict | None = None) -> list[dict]
         base = {"arm": ARM, "lane": job.get("lane") or LANE, "run_id": jid, "task": item}
         common = {"tester": who, "runner": runner, "submitted_by": sub, "job": jid, "attempt": aid}
         if r.get("started"):
-            out.append(dict(base, event="test_start", ts=r["started"], detail=dict(common, src="testq:%s:start" % aid)))
+            out.append(dict(base, event="test_start", ts=r["started"],     # a testq runner runs no model
+                            detail=dict(common, src="testq:%s:start" % aid, model=False)))
         if r.get("finished"):
             out.append(dict(base, event="test_end", ts=r["finished"], verdict=r.get("outcome"),
                             detail=dict(common, cause=r.get("cause"), counts=r.get("counts"),

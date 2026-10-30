@@ -251,6 +251,30 @@ def sc_tester_catches(tmp, mod, tag):
             and roles.count("build") == 2 and WEAK not in (w.main_src() or ""))
 
 
+def sc_capture(tmp, mod, tag):
+    """ARENA_TESTER_SPEND_ENFORCE_METERED_HOME: the tester's Claude transcripts (HOME inside its root) and GPT call
+    log (RM_GPT_CALL_LOG inside its root) are copied to the meter's helper store, keyed by its test_start record,
+    BEFORE the root is deleted; the root is still deleted."""
+    roots = []
+
+    def t(prompt, cwd):
+        root = cwd.parent
+        roots.append(root)
+        pj = root / "home" / ".claude" / "projects" / "-rt-tree"
+        pj.mkdir(parents=True, exist_ok=True)
+        (pj / "s.jsonl").write_text('{"type": "assistant"}\n')
+        (root / "gpt").mkdir(exist_ok=True)
+        (root / "gpt" / "c.jsonl").write_text('{"tokens_used": 1}\n')
+        return default_tester(prompt, cwd)
+    w = World(tmp, "CAP" + tag, mod, tester=t)
+    run_steps(w)
+    starts = [r for r in w.writer.records() if r["event"] == "test_start"]
+    mans = [mod.HC.load(r)[0] for r in starts]
+    return (bool(starts) and len(roots) == len(starts) and all(m and m["claude_files"] == ["-rt-tree/s.jsonl"]
+            and m["gpt_files"] == ["c.jsonl"] and m["arm"] == R.ARM for m in mans)
+            and not any(r.exists() for r in roots))
+
+
 def sc_refuses_untested(tmp, mod, tag):
     ok = True
     # (1) a build_end with no test_start at all
@@ -566,9 +590,10 @@ def sc_bwrap(tmp, mod, tag):
 def sc_env(tmp, mod, tag):
     """M4: the tester's env is an allow-list with a NEUTRAL id: no RM_ARM / RALPH_A_* / ARENA_*, no arm name in any
     value, a fresh HOME."""
-    saved = {k: os.environ.get(k) for k in ("RM_ARM", "RALPH_A_TASKS", "RALPH_A_ROOT", "ARENA_X", "SECRET_X")}
+    saved = {k: os.environ.get(k) for k in ("RM_ARM", "RALPH_A_TASKS", "RALPH_A_ROOT", "ARENA_X", "SECRET_X",
+                                            "RM_GPT_CALL_LOG")}
     os.environ.update(RM_ARM="ralph_a", RALPH_A_TASKS="/x/tasks", RALPH_A_ROOT="/x/clone", ARENA_X="1",
-                      SECRET_X="ralph_a")
+                      SECRET_X="ralph_a", RM_GPT_CALL_LOG="/x/shared/gpt_calls.jsonl")
     troot = Path(tempfile.mkdtemp(prefix="rt-"))
     try:
         m = mod.CmdModel("%s -c \"import os, json, sys; sys.stdin.read(); print(json.dumps(dict(os.environ)))\""
@@ -579,7 +604,9 @@ def sc_env(tmp, mod, tag):
         env.pop("PWD", None)
         bad = [k for k in env if k.startswith(("RALPH_A", "ARENA_", "RM_ARM")) or "ralph_a" in env[k].lower()]
         return (r["rc"] == 0 and not bad and env.get("TESTER_ID") == R.neutral_id("ralph_a-test-abc")
-                and env.get("HOME") == str(troot / "home") and "SECRET_X" not in env)
+                and env.get("HOME") == str(troot / "home") and "SECRET_X" not in env
+                # spend metering: the tester's GPT log is a dir in ITS root (captured before rmtree), never inherited
+                and env.get("RM_GPT_CALL_LOG") == str(troot / "gpt") + "/" and (troot / "gpt").is_dir())
     finally:
         for k, v in saved.items():
             if v is None:
@@ -1298,8 +1325,14 @@ MUTATIONS = [
     ("A1 builder launched unsandboxed", sc_builder_sandboxed, "        argv, env = self.wrap(list(argv), env, cwd=cwd, rw=rw, home=home)\n", "        pass\n"),
     ("M4 real id passed", sc_env, "TESTER_ID=neutral_id(agent_id))", "TESTER_ID=agent_id)"),
     ("M4 env not allow-listed", sc_env,
-     "           if (k in keep or k.startswith(\"LC_\")) and not k.startswith((\"RALPH_A\", \"ARENA_\", \"RM_ARM\"))}",
+     "           if (k in keep or k.startswith(\"LC_\")) and not k.startswith((\"RALPH_A\", \"ARENA_\", \"RM_ARM\", \"RM_GPT_CALL_LOG\"))}",
      "           if True}"),
+    ("A tester GPT log not set", sc_env, "    if gpt:\n", "    if False:\n"),
+    ("A2 tester capture skipped", sc_capture, "                capture_tester(rec, troot, res.get(\"rc\"))", "                pass"),
+    ("A2 tester capture after rmtree", sc_capture,
+     "                capture_tester(rec, troot, res.get(\"rc\"))     # the meter reads the copy; the root dies next\n"
+     "                shutil.rmtree(troot, ignore_errors=True)",
+     "                shutil.rmtree(troot, ignore_errors=True)\n                capture_tester(rec, troot, res.get(\"rc\"))"),
     ("L1 norm_id only", sc_homoglyph, "                r = dict(r, detail=dict(d, **{k: agent_key(d[k])}))",
      "                pass"),
     ("L2 duplicate build_end kept", sc_dup_build_end, "                if key in seen:\n", "                if False:\n"),
@@ -1644,15 +1677,17 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_"))
     TBASE[0] = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_rt_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
-                                             "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM")}
+                                             "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM", "ARENA_METER_HELPERS")}
     os.environ.pop("RM_ARM", None)
     os.environ["RM_ARM_SANDBOX_SCRATCH"] = str(tmp / "armscratch")     # builder scratch: not the live arena root
+    os.environ["ARENA_METER_HELPERS"] = str(tmp / "meter_helpers")      # tester captures: not the live arena root
     try:
         for name, fn in (("A planted failing check recovers", sc_planted_check),
                          ("B killed pass is not published and recovers", sc_killed_after_commit),
                          ("K loop killed before the tester: restart tests first", sc_loop_killed),
                          ("C planted defect the gate passes is caught by the tester", sc_tester_catches),
                          ("D build pass refused without a different-agent test_start", sc_refuses_untested),
+                         ("A2 tester spend captured before its root is deleted", sc_capture),
                          ("E live task waits on the lane", sc_lane_wait),
                          ("F runway low/UNMEASURED refuses", sc_runway),
                          ("I tester is blind", sc_blind),

@@ -59,7 +59,7 @@ def ts(s):
 
 def scan_file(path, cutoff, seen, stats=None):
     """Per-call dicts and compaction events for one transcript. `stats` (dict) receives bad_lines (unparseable
-    JSON lines, skipped) and cwd (first recorded cwd). A message id enters `seen` only after its usage is counted."""
+    JSON lines, skipped), cwd (first recorded cwd) and cwds (every recorded cwd). A message id enters `seen` only after its usage is counted."""
     stats = stats if stats is not None else {}
     calls, compacts, reads = [], [], []
     res_size = {}            # tool_use_id -> tool_result tokens (chars/4)
@@ -74,8 +74,9 @@ def scan_file(path, cutoff, seen, stats=None):
         if not isinstance(d, dict):
             stats["bad_lines"] = stats.get("bad_lines", 0) + 1
             continue
-        if d.get("cwd") and "cwd" not in stats:
-            stats["cwd"] = d["cwd"]
+        if d.get("cwd"):
+            stats.setdefault("cwd", d["cwd"])
+            stats.setdefault("cwds", set()).add(str(d["cwd"]))
         t = d.get("type")
         if t == "system" and d.get("subtype") == "compact_boundary":
             md = d.get("compactMetadata") or {}
@@ -358,29 +359,69 @@ def check_arm_names(names):
                                % "; ".join(bad))
 
 
-def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, until=None, diag=None, sink=None):
+# an arm tester's private root (ralph_a_loop.Loop._tester_root: mkdtemp prefix "rt-", cwd <root>/tree): a session
+# recorded there but found outside every arena path is an arm's tester whose spend escaped the capture -> blocking
+TESTER_CWD = re.compile(r"(^|/)rt-[^/]+/tree(/|$)")
+TESTER_SLUG = re.compile(r"-rt-[A-Za-z0-9_-]*-tree(-|$)")
+SCRATCH_NAME = re.compile(r"(.+)-([0-9a-f]{8})-([0-9a-f]{16})")
+
+
+def _owns(scratch_name, cwd) -> bool:
+    """Does the arm_sandbox scratch dir `scratch_name` (<clone basename>-<sha256(clone realpath)[:8]>-<tag>) belong
+    to the clone the session recorded as its cwd (the cwd or one of its ancestors)?"""
+    import hashlib
+    m = SCRATCH_NAME.fullmatch(scratch_name or "")
+    if not m or not cwd:
+        return False
+    p = os.path.normpath(str(cwd))
+    while p and p != "/":
+        if os.path.basename(p) == m.group(1) and hashlib.sha256(p.encode()).hexdigest()[:8] == m.group(2):
+            return True
+        p = os.path.dirname(p)
+    return False
+
+
+def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, until=None, diag=None, sink=None,
+                        extra=()):
     """{arm: {"ite","calls","files"}} over every transcript (subagents included), each API call once, only calls
     with since <= t < until. UNATTRIBUTED carries "reasons" {reason: ite}. `sink(arm, call)`, if given, sees every
     counted call (raw fields model/in/cr/c5/c1/out/t; arena_spend.py attributes them to tasks). `diag` (dict) receives
     unreadable_files and id_conflicts (message ids found under two arm folders: earliest transcript mtime wins,
-    then lexicographic path)."""
+    then lexicographic path).
+    `extra` = [(root, forced_arm, scratch_name)] more transcript roots walked with the same id dedup:
+      forced_arm set   -> every call there is that arm's (a tester capture, helper_capture.py: placed by the harness);
+      scratch_name set -> an arm_sandbox private HOME's projects dir: classified by slug like `projects`, and the
+                          EVERY recorded cwd must lie in the clone that scratch belongs to (a file with none, or one
+                          foreign line, is UNATTRIBUTED sandbox_foreign), and the slug's arm must match it as usual.
+    An UNATTRIBUTED "outside" session any of whose cwds (or its slug) is an arm tester's root (rt-*/tree) is reason
+    tester_outside."""
     projects = projects or PROJECTS
     until = float("inf") if until is None else until
     diag = diag if diag is not None else {}
     diag.setdefault("unreadable_files", [])
     out, seen = defaultdict(lambda: {"ite": 0.0, "calls": 0, "files": 0}), _Seen()
     paths = []
-    for root, _d, files in os.walk(projects):
-        for f in files:
-            if f.endswith(".jsonl"):
-                p = os.path.join(root, f)
-                try:
-                    mt = os.path.getmtime(p)
-                except OSError:
-                    mt = 0.0
-                paths.append((mt, p))
-    for _mt, p in sorted(paths):
-        arm, why = classify_slug(os.path.relpath(p, projects).split(os.sep)[0], arms, arena_root)
+    for src in [(projects, None, None)] + [tuple(x) for x in extra]:
+        def walk_err(e, top=src[0]):        # an unreadable dir would otherwise drop its transcripts silently
+            if not (isinstance(e, FileNotFoundError) and os.path.normpath(e.filename or "") == os.path.normpath(top)):
+                diag["unreadable_files"].append("%s: %s" % (e.filename, e.strerror or e))
+        for root, dns, files in os.walk(src[0], onerror=walk_err):
+            if src[1] is not None or src[2] is not None:      # an arm-writable root (capture / sandbox HOME):
+                for d in dns:                                  # a symlinked dir there is never followed, and blocks
+                    if os.path.islink(os.path.join(root, d)):
+                        diag["unreadable_files"].append("%s: symlinked dir in an arm-written transcript root"
+                                                        % os.path.join(root, d))
+            for f in files:
+                if f.endswith(".jsonl"):
+                    p = os.path.join(root, f)
+                    try:
+                        mt = os.path.getmtime(p)
+                    except OSError:
+                        mt = 0.0
+                    paths.append((mt, p, src))
+    for _mt, p, (sroot, forced, owner) in sorted(paths):
+        top = os.path.relpath(p, sroot).split(os.sep)[0]
+        arm, why = (forced, "") if forced else classify_slug(top, arms, arena_root)
         seen.begin_file(arm)
         st = {}
         try:
@@ -391,9 +432,18 @@ def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, unti
             continue
         if st.get("bad_lines"):
             diag.setdefault("bad_lines", {})[p] = st["bad_lines"]
-        if arm not in (UNATTRIBUTED, HARNESS) and st.get("cwd") and not _cwd_under(st["cwd"], arena_root, arm):
-            diag.setdefault("cwd_mismatch", []).append("%s: recorded cwd %s is not under arm %s" % (p, st["cwd"], arm))
+        if forced:
+            pass
+        elif owner and not (st.get("cwds") and all(_owns(owner, c) for c in st["cwds"])):
+            arm, why = UNATTRIBUTED, "sandbox_foreign"
+        elif arm not in (UNATTRIBUTED, HARNESS) and st.get("cwds") and \
+                not all(_cwd_under(c, arena_root, arm) for c in st["cwds"]):    # EVERY cwd, not just the first
+            bad = sorted(c for c in st["cwds"] if not _cwd_under(c, arena_root, arm))
+            diag.setdefault("cwd_mismatch", []).append("%s: recorded cwd %s is not under arm %s" % (p, bad[0], arm))
             arm, why = UNATTRIBUTED, "cwd_mismatch"
+        elif why == "outside" and (any(TESTER_CWD.search(str(c)) for c in (st.get("cwds") or ()))
+                                   or TESTER_SLUG.search(top)):
+            why = "tester_outside"
         calls = [c for c in calls if since <= c["t"] < until]
         if calls and sink is not None:
             for c in calls:
@@ -419,7 +469,7 @@ def gpt_ite_of(d):
     return float((d.get("in_tok_est") or 0) + 5 * (d.get("out_tok_est") or 0)), True
 
 
-def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None, sink=None):
+def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None, sink=None, forced_arm=None):
     """{arm: {"ite","ite_est","calls","est_calls"}} from the gpt call log (file and/or per-call directory),
     only calls with since <= t < until. "ite" is REAL codex tokens; "ite_est" the chars/4 fallback. Untagged
     calls stay under UNTAGGED; unreadable lines are counted into diag["gpt_unreadable"] and arm UNREADABLE.
@@ -442,7 +492,7 @@ def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None, sink=None):
             continue
         if not (since <= t < until):
             continue
-        arm = (d.get("arm") or "").strip() or "UNTAGGED"
+        arm = forced_arm or (d.get("arm") or "").strip() or "UNTAGGED"   # forced: a capture placed by the harness
         ite, est = gpt_ite_of(d)
         if sink is not None:
             sink(arm, d)

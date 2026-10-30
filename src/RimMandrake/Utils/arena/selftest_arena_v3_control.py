@@ -312,6 +312,34 @@ def sc_review_pass_done(tmp, mod, tag):
     return out["outcome"] == "done" and [r["verdict"] for r in closes] == ["done"] and roles == ["build", "test"]
 
 
+def sc_capture(tmp, mod, tag):
+    """ARENA_TESTER_SPEND_ENFORCE_METERED_HOME: the tester's transcripts + GPT log (both inside its root) are copied
+    to the meter's helper store keyed by its test_start before the root is deleted; the default GPT reviewer's call
+    is tagged with the arm."""
+    roots = []
+
+    def t(prompt, cwd):
+        root = Path(cwd).parent
+        roots.append(root)
+        pj = root / "home" / ".claude" / "projects" / "-t"
+        pj.mkdir(parents=True, exist_ok=True)
+        (pj / "s.jsonl").write_text('{"type": "assistant"}\n')
+        (root / "gpt").mkdir(exist_ok=True)
+        (root / "gpt" / "c.jsonl").write_text("{}\n")
+        return real_tester(prompt, cwd)
+    w = World(tmp, "CAP" + tag, mod, arm="v3c", tester=t)
+    w.p.work(w.task)
+    starts = w.ev("test_start")
+    mans = [mod.RA.HC.load(r)[0] for r in starts]
+    p2 = mod.Procedure("v3c", w.root, w.ctl, model=w, writer=w.writer, reviewer=None,
+                       runway=lambda: {"state": "MEASURED", "runway": 0.9}, tester_tmp=TBASE[0], procs=None,
+                       lock_dir=w.d / "lk2")
+    return (bool(starts) and len(roots) == len(starts) and not any(r.exists() for r in roots)
+            and all(m and m["claude_files"] == ["-t/s.jsonl"] and m["gpt_files"] == ["c.jsonl"] and m["arm"] == "v3c"
+                    for m in mans)
+            and getattr(p2.reviewer, "keywords", {}).get("arm") == "v3c")
+
+
 def sc_tester_fail_no_review(tmp, mod, tag):
     w = World(tmp, "W3" + tag, mod, arm="v3c", builder=lambda p: WEAK)
     out = w.p.work(w.task)
@@ -612,6 +640,10 @@ MUTATIONS += [
     ("RR replace refs honoured", sc_replace_ref, [("import arena_safe_git as SG  # noqa: E402\n",
                                                     "class SG:  # plain git: no replace-object pin (the pins live in arena_safe_git)\n"
                                                     "    git_run = staticmethod(lambda root, *a, **kw: subprocess.run(['git', '-C', str(root), *a], **kw))\n")]),
+    ("A2 tester capture skipped", sc_capture,
+     [("                RA.capture_tester(rec, troot, res.get(\"rc\"))", "                pass")]),
+    ("A2 reviewer untagged", sc_capture,
+     [("reviewer or functools.partial(gpt_reviewer, arm=arm)", "reviewer or gpt_reviewer")]),
     ("PIN reviewer pin removed", sc_pinned,
      [("    if want.returncode or have.returncode or want.stdout.strip() != have.stdout.strip():", "    if False:")]),
 ]
@@ -619,6 +651,7 @@ MUTATIONS += [
 
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_v3_control_"))
+    os.environ["ARENA_METER_HELPERS"] = str(tmp / "meter_helpers")      # tester captures: not the live arena root
     TBASE[0] = Path(tempfile.mkdtemp(prefix="selftest_v3_control_rt_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
                                              "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM")}
@@ -637,7 +670,8 @@ def main():
                          ("PIN a rewritten reviewer script is refused", sc_pinned),
                          ("EA builder attributes do not change the tested tree", sc_export_attrs),
                          ("RT v3c review requires the tester record", sc_review_needs_tester),
-                         ("LK one lock per arm", sc_one_lock_per_arm)):
+                         ("LK one lock per arm", sc_one_lock_per_arm),
+                         ("A2 tester spend captured before its root is deleted", sc_capture)):
             check(guarded(fn, tmp, V, ""), "green: " + name)
         for i, (name, fn, muts) in enumerate(MUTATIONS):
             check(not guarded(fn, tmp, variant(muts), "_m%d" % i), "mutation goes RED: " + name)

@@ -82,6 +82,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import arm_sandbox as AS  # noqa: E402
+import helper_capture as HC  # noqa: E402
 import arena_eventlog as L  # noqa: E402
 import arena_safe_git as SG  # noqa: E402
 
@@ -269,16 +270,35 @@ def test_plan(task):
 TESTER_ENV = ("PATH", "LANG", "LANGUAGE", "TERM", "TZ", "SHELL", "USER", "LOGNAME")
 
 
-def tester_env(agent_id, home, tmp):
+def tester_env(agent_id, home, tmp, *, gpt=None):
     """The tester's WHOLE environment (review M4): an allow-list (TESTER_ENV, LC_*, and the names listed in
     $RALPH_A_TESTER_ENV_KEEP, e.g. the model CLI's auth variable), a fresh HOME/TMPDIR inside the tester root, and a
     NEUTRAL id TESTER_ID = tester-<sha256(real id)[:12]>. No RM_ARM, no RALPH_A_*, no ARENA_*, no clone path: the
-    real id appears only in the harness's own events."""
+    real id appears only in the harness's own events. Spend metering (ARENA_TESTER_SPEND_ENFORCE_METERED_HOME):
+    RM_GPT_CALL_LOG=<gpt> (a directory inside the tester root) is SET by the harness, so the tester's GPT calls land
+    where capture_tester copies them before the root is deleted; an inherited RM_GPT_CALL_LOG never passes. The arm
+    stays hidden from the tester: its spend is attributed by WHERE the harness files the capture (the arm of the
+    test_start record), never by a name the tester writes."""
     keep = set(TESTER_ENV) | {k for k in os.environ.get("RALPH_A_TESTER_ENV_KEEP", "").split(",") if k.strip()}
     env = {k: v for k, v in os.environ.items()
-           if (k in keep or k.startswith("LC_")) and not k.startswith(("RALPH_A", "ARENA_", "RM_ARM"))}
+           if (k in keep or k.startswith("LC_")) and not k.startswith(("RALPH_A", "ARENA_", "RM_ARM", "RM_GPT_CALL_LOG"))}
     env.update(HOME=str(home), TMPDIR=str(tmp), TESTER_ID=neutral_id(agent_id))
+    if gpt:
+        env["RM_GPT_CALL_LOG"] = str(gpt).rstrip("/") + "/"
     return env
+
+
+def capture_tester(rec, troot, rc=None, *, home=None, gpt=True):
+    """Before a tester root is deleted: copy its Claude transcripts and GPT call log to the meter's helper store
+    (helper_capture), keyed by the test_start record `rec`. Never raises: a failed capture leaves no manifest, and
+    arena_spend.meter() then BLOCKS that tester (UNMEASURED), which is the fail-closed outcome."""
+    if not rec:
+        return None
+    try:
+        return HC.capture(rec, home=home or Path(troot) / "home", gpt_dir=(Path(troot) / "gpt") if gpt else None, rc=rc)
+    except Exception as e:                       # noqa: BLE001 - the meter blocks on the missing manifest
+        print("helper capture failed for %s: %s" % (HC.ident(rec), e), file=sys.stderr)
+        return None
 
 
 def neutral_id(agent_id):
@@ -429,7 +449,8 @@ class CmdModel:
             root = Path((sandbox or {}).get("root") or cwd)
             (root / "home").mkdir(exist_ok=True)
             (root / "tmp").mkdir(exist_ok=True)
-            env = tester_env(agent_id, root / "home", "/tmp")
+            (root / "gpt").mkdir(exist_ok=True)
+            env = tester_env(agent_id, root / "home", "/tmp", gpt=root / "gpt")
         else:
             env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "RALPH_A_CTL"))}
             env.update(RALPH_A_ROLE=role, RALPH_A_AGENT_ID=agent_id, RM_ARM=ARM)
@@ -984,13 +1005,15 @@ class Loop:
             if agent_key(tester) == agent_key(pend["builder"]) or not agent_key(tester):
                 raise Refused("tester id %r equals the builder's: refused" % tester)
             troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT
+            rec, res = None, {}
             try:
                 work = self.tester_workdir(pend["head"], troot / "tree")
                 sandbox = {"root": troot}             # the tester's only rw dir (arm_sandbox: all else masked)
                 pf = getattr(self.model, "preflight", None)    # refusal must precede test_start (a refused tester never ran)
                 if pf:
                     pf(sandbox, work)
-                self.emit("test_start", task, sha=pend["head"], detail={"tester": tester, "build_id": pend["build_id"]})
+                rec = self.emit("test_start", task, sha=pend["head"],
+                                detail={"tester": tester, "build_id": pend["build_id"]})
                 self.status("tester pass running (%s on %s)" % (tester, pend["build_id"]))
                 try:
                     res = self.model("test", prompt, cwd=work, agent_id=tester, run_id=n, sandbox=sandbox,
@@ -998,6 +1021,7 @@ class Loop:
                 finally:
                     self.release()
             finally:
+                capture_tester(rec, troot, res.get("rc"))     # the meter reads the copy; the root dies next
                 shutil.rmtree(troot, ignore_errors=True)
             text = res.get("text") or ""
             verdict = parse_verdict(text) if res.get("rc") == 0 else None

@@ -3,7 +3,7 @@
 
     python3 src/RimMandrake/Utils/arena/arena_spend.py --out SPEND.json [--raw-dir DIR] [--allow-untrusted]
             [--projects ~/.claude/projects] [--clones-root /home/mandrake/rm/arena] [--gpt-log PATH]
-            [--since ISO] [--until ISO]
+            [--helpers DIR] [--sandbox-root DIR] [--since ISO] [--until ISO]
 
 WHAT IT DOES. The meter (sim/spend_census.py) knows each Claude API call (from the transcripts, attributed to an
 arm by the clone path the session ran in) and each GPT call (gpt_call_log, tagged by RM_ARM), with a time. The
@@ -25,6 +25,10 @@ arm's signed event log knows when the arm worked on which task. This script join
     unreadable gpt log lines, a message id under two arm folders), and UNATTRIBUTED Claude spend under the arena root
     that the meter could not put on one arm (BLOCKING_UNATTRIBUTED). GPT calls with no RM_ARM tag (UNTAGGED) stay
     overhead: the log cannot tell an untagged arm call from unrelated GPT use in the same window (residual).
+  - TESTERS (helpers): every model tester an arm's log says ran (`test_start`) must have a helper_capture.py capture
+    (its transcripts + GPT records, copied by the loop before the tester's private root is deleted); those calls are
+    the ARM's. A missing capture, skipped files or a capture with no transcript is BLOCKING: an arm never wins on
+    spend the meter cannot see. Builders' transcripts are read from their arm_sandbox private HOMEs (sandbox_homes).
   - a null count is invalid; for GPT, tokens_used null/0 means "no usage line" and both chars/4 estimates must be
     present counts.
 
@@ -61,12 +65,16 @@ sys.path.insert(0, str(HERE.parent))
 import arena_eventlog as L  # noqa: E402
 import spend_census as S  # noqa: E402
 import arena_analysis as AA  # noqa: E402
+import helper_capture as HC  # noqa: E402
 
 SCHEMA = "arena_task_spend/2"
 # meter diagnostics that mean spend was LOST or may be on the wrong arm: blocking, the analysis reads UNMEASURED
 # UNATTRIBUTED Claude spend that may be an arm's (under the arena root, arm not decidable); "outside" (a session
 # outside the arena root) and cwd_mismatch (already in BLOCKING_DIAG) are not listed here
-BLOCKING_UNATTRIBUTED = ("ambiguous", "unlisted")
+# tester_outside: an arm tester's session (cwd rt-*/tree) outside the capture; sandbox_foreign: a transcript in one
+# clone's private sandbox HOME that ran in another clone (spend_census.claude_spend_by_arm)
+PRE_WINDOW_S = 4 * 3600     # a tester started this long before the window is still metered (> 2x a pass timeout)
+BLOCKING_UNATTRIBUTED = ("ambiguous", "unlisted", "tester_outside", "sandbox_foreign")
 BLOCKING_DIAG = ("unreadable_files", "bad_lines", "cwd_mismatch", "gpt_unreadable", "id_conflicts")
 SPAN_EXCLUDED_EVENTS = ("gate", "judge")
 SPAN_END_EVENT = "pass_end"
@@ -203,8 +211,79 @@ def attribute(arm_logs, claude_calls, gpt_calls):
             "flags": flags, "blocking": blocking}
 
 
-def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None, until=None):
-    """Run the meter over the window with sinks. Window defaults to the logs' first..last event (inclusive)."""
+def sandbox_homes(sandbox_root):
+    """-> ([(projects dir, None, scratch name)], blocking) for every arm_sandbox private HOME under the scratch base
+    (<base>/<clone>-<sha8>-<tag>/<role>/home/.claude/projects): builders' transcripts live there, not in ~/.claude.
+    A symlinked or unreadable component on that path is BLOCKING (an arm could hide its home or point it at another's).
+    Residual: a scratch dir deleted outright is not seen (the harness does not yet register its launches)."""
+    out, blocking = [], []
+    base = Path(sandbox_root)
+    if not base.is_dir():
+        return out, blocking
+    try:
+        scs = sorted(base.iterdir())
+    except OSError as e:
+        return out, ["sandbox scratch base %s unreadable (%s): builder spend UNMEASURED" % (base, e)]
+    for sc in scs:
+        if sc.is_symlink() or not sc.is_dir():
+            blocking.append("sandbox scratch %s is a symlink or not a directory: UNMEASURED" % sc)
+            continue
+        try:
+            roles = sorted(sc.iterdir())
+        except OSError as e:
+            blocking.append("sandbox scratch %s unreadable (%s): UNMEASURED" % (sc, e))
+            continue
+        for role in roles:
+            pj = role / "home" / ".claude" / "projects"
+            chain = (role, role / "home", role / "home" / ".claude", pj)
+            if any(x.is_symlink() for x in chain):
+                blocking.append("sandbox home %s has a symlinked component: UNMEASURED" % pj)
+            elif pj.is_dir():
+                out.append((str(pj), None, sc.name))
+    return out, blocking
+
+
+def tester_captures(arm_logs, helpers, since, until):
+    """For every MODEL tester the arms' logs say started in the window or up to PRE_WINDOW_S before it (test_start; a detail "model": false runner such as
+    ralph_c's live-lane proof runner is exempt): its helper_capture manifest. -> (claude extra roots, gpt dirs
+    [(dir, arm)], blocking). A missing/foreign manifest, skipped files or no Claude transcript at all is BLOCKING."""
+    extra, gdirs, blocking = [], [], []
+    for arm, lg in sorted((arm_logs or {}).items()):
+        for r in lg.get("recs", ()):
+            if r.get("event") != "test_start":
+                continue
+            det = r.get("detail") if isinstance(r.get("detail"), dict) else {}
+            if det.get("model") is False:
+                continue
+            try:
+                t = L.ts_epoch(r.get("ts"))
+            except (ValueError, TypeError):
+                t = None
+            if t is not None and t >= until:
+                continue
+            if t is not None and since - t > PRE_WINDOW_S:
+                continue                     # a start up to PRE_WINDOW_S before the window may spend inside it
+            who = "arm %s tester %s (test_start %s, task %s)" % (arm, det.get("tester"), r.get("ts"), r.get("task"))
+            man, d = HC.load(r, helpers)
+            if man is None:
+                blocking.append("%s ran but its spend is not captured (%s): UNMEASURED" % (who, d))
+                continue
+            if man.get("skipped"):
+                blocking.append("%s: capture skipped %d file(s) (%s): UNMEASURED"
+                                % (who, len(man["skipped"]), "; ".join(man["skipped"])[:300]))
+            if not man.get("claude_files"):
+                blocking.append("%s: capture holds no Claude transcript: UNMEASURED" % who)
+            extra.append((str(d / "claude"), arm, None))
+            if man.get("gpt_files"):
+                gdirs.append((str(d / "gpt") + "/", arm))
+    return extra, gdirs, blocking
+
+
+def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None, until=None, helpers=None,
+          sandbox_root=None):
+    """Run the meter over the window with sinks. Window defaults to the logs' first..last event (inclusive).
+    helpers: tester captures (default helper_capture.root()); sandbox_root: arm_sandbox scratch base (default
+    $RM_ARM_SANDBOX_SCRATCH or <arena root>/sandbox)."""
     if since is None or until is None:
         ts = [L.ts_epoch(r["ts"]) for lg in arm_logs.values() for r in lg.get("recs", ())
               if isinstance(r.get("ts"), str)]
@@ -212,11 +291,26 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
         until = (max(ts) + 1e-3) if until is None and ts else until
     if since is None or until is None:
         raise ValueError("no event times to derive a window from: pass --since and --until")
+    if helpers is None:
+        helpers = HC.root()
+    if sandbox_root is None:
+        import arena_replay as R
+        sandbox_root = os.environ.get("RM_ARM_SANDBOX_SCRATCH") or (R.arena_root() / "sandbox")
+    extra, gdirs, cap_blocking = tester_captures(arm_logs, helpers, since, until)
+    homes, home_blocking = sandbox_homes(sandbox_root)
     cl, gp, diag = [], [], {}
     by_arm = S.claude_spend_by_arm(projects=projects, arms=sorted(arm_logs), arena_root=clones_root, since=since,
-                          until=until, diag=diag, sink=lambda arm, c: cl.append((arm, c)))
+                                   until=until, diag=diag, sink=lambda arm, c: cl.append((arm, c)),
+                                   extra=extra + homes)
     S.gpt_spend_by_arm(gpt_log, since=since, until=until, diag=diag, sink=lambda arm, d: gp.append((arm, d)))
+    for gdir, arm in gdirs:
+        gd = {}
+        S.gpt_spend_by_arm(gdir, since=since, until=until, diag=gd, sink=lambda a, d: gp.append((a, d)),
+                           forced_arm=arm)
+        if gd.get("gpt_unreadable"):
+            diag["gpt_unreadable"] = (diag.get("gpt_unreadable") or 0) + gd["gpt_unreadable"]
     doc = attribute(arm_logs, cl, gp)
+    doc["blocking"].extend(cap_blocking + home_blocking)
     doc["window"] = {"since": since, "until": until}
     for k in BLOCKING_DIAG:
         v = diag.get(k)
@@ -238,12 +332,15 @@ def main(argv=None):
     ap.add_argument("--projects", help="Claude transcripts root (default ~/.claude/projects)")
     ap.add_argument("--clones-root", help="arm clones root (default $RM_ARENA_ROOT or %s)" % S.ARENA_ROOT)
     ap.add_argument("--gpt-log", help="gpt call log file/dir (default gpt_call_log's)")
+    ap.add_argument("--helpers", help="tester spend captures (default $ARENA_METER_HELPERS or <arena root>/meter_helpers)")
+    ap.add_argument("--sandbox-root", help="arm_sandbox scratch base (default $RM_ARM_SANDBOX_SCRATCH or <arena root>/sandbox)")
     ap.add_argument("--since", help="ISO-8601 with zone (default: first event)")
     ap.add_argument("--until", help="ISO-8601 with zone (default: last event)")
     a = ap.parse_args(argv)
     logs = AA.load_raw(a.raw_dir) if a.raw_dir else AA.load_verified(allow_untrusted=a.allow_untrusted)
     try:
-        doc = meter(logs, projects=a.projects, clones_root=a.clones_root, gpt_log=a.gpt_log,
+        doc = meter(logs, projects=a.projects, clones_root=a.clones_root, gpt_log=a.gpt_log, helpers=a.helpers,
+                    sandbox_root=a.sandbox_root,
                     since=L.ts_epoch(a.since) if a.since else None, until=L.ts_epoch(a.until) if a.until else None)
     except ValueError as e:
         print("arena_spend: %s" % e, file=sys.stderr)

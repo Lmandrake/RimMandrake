@@ -1285,7 +1285,8 @@ class Pilot:
             s["game"].get("canary_red", {}).pop(_red_key(c, scn["id"]), None)   # green and running: the blip is over
             self._save(s)
         self._ev("test_start", task=c["item"], sha=c["sha"],
-                 detail={"tester": self.id, "builder": c["builder"], "cand": c["cand"], "scenario": scn["id"]})
+                 detail={"tester": self.id, "builder": c["builder"], "cand": c["cand"], "scenario": scn["id"],
+                         "model": False})       # the pilot is deterministic: no model spend for the meter to capture
         self._check_live()
         timed_out = False
         self._canary_ctx = {"last": self.d.clock(), "sha": self._expect_sha(s), "red": None, "runs": 0}
