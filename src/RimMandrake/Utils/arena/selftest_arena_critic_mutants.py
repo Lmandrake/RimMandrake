@@ -18,6 +18,8 @@ model is called (a fake matcher call stands in), git runs only in a throwaway re
   small n       (CRITIC_CALIB_FIX_SMALL_N_INTERVAL, red against the old percentile bootstrap) 0/8 false rejects gives
                 a non-zero-width interval; 4 discordant labelled originals are not a call; no discordance is still not
                 a zero-width interval; a large consistent difference is still detected; intervals bracket the point
+  exact pins    cp matches closed forms at k=0,1,n-1,n; MOVER pairs the right bounds; the paired box corners; sign_flip_p
+                equals brute-force enumeration over originals (the small-n checks above prove only shape)
   equivalent    (CRITIC_MUTANTS_DELETE_EQUIVALENT_M30) an EQUIVALENT mutant (m30) never enters the catch term
   seed          copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
                 does not match its recorded sha, and a target run of another critic
@@ -232,6 +234,48 @@ def t_small_n():
     check("the paired interval brackets the paired point", lo <= -0.5 <= hi, "%s %s" % (lo, hi))
 
 
+def t_exact_pins():
+    """Independent check 2026-10-30: the small-n tests above prove only SHAPE (non-zero width, brackets the point), so a
+    wrong tail alpha in cp, a swapped MOVER bound or a mis-weighted sign-flip passed them. Pin each primitive to a
+    closed form or a brute-force enumeration."""
+    import itertools
+    import math
+    near = lambda x, y: abs(x - y) < 1e-9   # noqa: E731
+    for n in (2, 8, 31):
+        check("cp(0,%d) upper = 1-(a/2)^(1/n)" % n, near(M.cp(0, n)[1], 1 - 0.025 ** (1 / n)) and M.cp(0, n)[0] == 0,
+              str(M.cp(0, n)))
+        check("cp(%d,%d) lower = (a/2)^(1/n)" % (n, n), near(M.cp(n, n)[0], 0.025 ** (1 / n)), str(M.cp(n, n)))
+        check("cp(1,%d) lower = 1-(1-a/2)^(1/n)" % n, near(M.cp(1, n)[0], 1 - 0.975 ** (1 / n)), str(M.cp(1, n)))
+        check("cp(%d,%d) upper = (1-a/2)^(1/n)" % (n - 1, n), near(M.cp(n - 1, n)[1], 0.975 ** (1 / n)),
+              str(M.cp(n - 1, n)))
+    lo, hi = M._mover(0.5, (0.3, 0.7), 0.2, (0.1, 0.4))
+    check("MOVER uses t1's lower with t2's upper for the lower bound",
+          near(lo, 0.3 - math.hypot(0.2, 0.2)) and near(hi, 0.3 + math.hypot(0.2, 0.1)), "%s %s" % (lo, hi))
+    pt, (plo, phi) = M._paired_term(0, 1, 2)
+    h = math.sqrt(0.9875)                    # cp(1,2,0.025) upper; direction cp(0,1,0.025) = [0, 0.9875]
+    check("paired term box = exact 97.5% corners", near(pt, -0.5) and near(plo, -h) and near(phi, h * 0.975),
+          "%s %s %s" % (pt, plo, phi))
+    # sign-flip p against brute force over originals, with unequal cluster weights (catch and false-reject mixed)
+    # weights matter here (nm=9, no=5): an unweighted sum of per-original differences gives 0.9375, not 1.0
+    ra = {"o0": ("accept", [("reject", True)] * 4), "o4": ("accept", [("reject", True), ("accept", False)])}
+    rb = {"o0": ("accept", [("accept", False)] * 4), "o4": ("accept", [("accept", False), ("accept", False)])}
+    for o in ("o1", "o2", "o3"):
+        ra[o], rb[o] = ("reject", [("accept", False)]), ("accept", [("accept", False)])
+    a, b = tab_of(ra), tab_of(rb)
+    nm, no = 9, 5
+    ks = []
+    for o in ra:
+        dc = sum((x[0] == "reject" and x[1]) - (y[0] == "reject" and y[1]) for x, y in zip(ra[o][1], rb[o][1]))
+        df = (ra[o][0] == "reject") - (rb[o][0] == "reject")
+        ks.append(dc * no - df * nm)
+    obs = abs(sum(ks))
+    want = sum(abs(sum(s * k for s, k in zip(sg, ks))) >= obs
+               for sg in itertools.product((1, -1), repeat=len(ks))) / 2 ** len(ks)
+    got = M.sign_flip_p(a, b, "reason")
+    check("sign_flip_p equals brute-force enumeration over originals", got is not None and near(got, want),
+          "%s vs %s (ks %s)" % (got, want, ks))
+
+
 def t_review_findings():
     """GPT review of CRITIC_CALIB_FIX_SMALL_N_INTERVAL (smalln/gpt.txt), each finding as a test."""
     # 1: the paired difference lives on [-2, 2]; clipping at 1 inverted the bounds
@@ -391,6 +435,7 @@ def main() -> int:
         t_writeup()
         t_scoring()
         t_small_n()
+        t_exact_pins()
         t_equivalent()
         t_review_findings()
         t_equivalent_decoys()
