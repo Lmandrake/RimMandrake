@@ -2667,6 +2667,18 @@ def cmd_bridge(args, seat):
         hk = model.bridge_host_key(getattr(args, "host", None))
     except model.SchemaError as e:          # a typo'd --host: a refusal naming the known hosts, not a traceback
         die(str(e))
+    if getattr(args, "mine", False):
+        # `release --mine` (ralph_a loop, ralph_loop_design §1.2): free the bridge ONLY if this seat holds it. A
+        # plain release frees anyone's hold (recorded); a loop's after-every-pass release must never cut across
+        # another window, so a hold that is not ours is left alone and nothing is written.
+        if args.action != "release":
+            die("--mine is a `bridge release` flag (got `bridge %s --mine`)" % args.action)
+        _, w2 = load()                       # re-derive right before deciding, as _bridge_release does
+        now = (w2.bridge_hosts.get(hk) or {}).get("holder") if hk != model.DEFAULT_BRIDGE_HOST else w2.bridge_holder
+        if now != seat:
+            print("bridge release --mine: %s does not hold the %s bridge (holder: %s) - nothing released"
+                  % (seat, hk, now or "nobody"))
+            return 0
     if hk != model.DEFAULT_BRIDGE_HOST:
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
@@ -3265,6 +3277,9 @@ def build_parser():
                         "`bridge idle` alone reports TAKEABLE or not, taking nothing.")
     s.add_argument("--host", default=None,
                    help="which machine's game: archmagi (default) | stevedesktop. Each host has its own lock.")
+    s.add_argument("--mine", action="store_true",
+                   help="release only: free the bridge only if THIS seat holds it; another's hold is left alone "
+                        "and nothing is written (exit 0). For loops that release after every pass")
 
     s = add("game", "OWNER only — announce the game state", cmd_game)
     s.add_argument("state", nargs="?", choices=model.GAME_STATES,

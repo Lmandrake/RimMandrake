@@ -21,6 +21,11 @@ TIERS. `--tier default` (the default) runs every unit test; tests tagged
 Data) and print SKIPPED there. Run `--tier deployed` after a deploy, a game update, or a
 mod subscribe/unsubscribe — that is when their answer can change. `--tier all` runs both.
 
+QUICK. `--quick` (the ralph_a loop's pre-pass check, ralph_loop_design_2026-10-29.md §1.2) is the default-tier
+run minus every test whose LAST measured run (the timings file) took longer than `$RM_SELFTEST_QUICK_S` seconds
+(default 20). A test with no recorded timing still runs (a new test is never skipped for being unknown). It says
+how many it left out; a green quick run is not a full-suite green. Refused with --only.
+
 LOCK. A full suite (anything but --only) holds an flock on /home/mandrake/rm/.selftest-suite.lock
 shared by every clone on the machine; a second suite waits and prints who holds it.
 
@@ -595,7 +600,28 @@ def _parser():
     ap.add_argument("--no-cache", dest="no_cache", action="store_true",
                     help="ignore the declared-input PASS cache (selftest_cache.py) and run every test; a PASS still "
                          "refreshes its entry. The nightly full sweep runs with this. --full implies it")
+    ap.add_argument("--quick", action="store_true",
+                    help="leave out tests whose last measured run took > $RM_SELFTEST_QUICK_S s (default 20); "
+                         "untimed tests still run. Not with --only")
     return ap
+
+
+def quick_s() -> float:
+    try:
+        return float(os.environ.get("RM_SELFTEST_QUICK_S", "20"))
+    except ValueError:
+        return 20.0
+
+
+def quick_select(tests, prior: dict, limit: float, rel=None):
+    """--quick: -> (kept, dropped). Dropped = tests whose last recorded timing exceeds `limit`; untimed tests are
+    kept (a new test is never skipped for being unknown)."""
+    rel = rel or _rel
+    kept, dropped = [], []
+    for t in tests:
+        s = prior.get(rel(t))
+        (dropped if isinstance(s, (int, float)) and s > limit else kept).append(t)
+    return kept, dropped
 
 
 # --- the machine-wide suite lock -------------------------------------------------------
@@ -734,6 +760,13 @@ def _suite(args) -> int:
             return 1
     else:
         off_tier = []
+    if args.quick:
+        if args.only:
+            print("--quick and --only do not mix: --only already names exactly what runs")
+            return 1
+        tests, dropped = quick_select(tests, load_timings(), quick_s())
+        print(f"--quick: {len(dropped)} test(s) slower than {quick_s():g}s on their last run are NOT run; "
+              f"a green quick run is not a full-suite green", flush=True)
 
     stale = set() if args.only else set(NOT_STANDALONE) - {p.relative_to(REPO_ROOT).as_posix()
                                    for p, _ in excluded}
