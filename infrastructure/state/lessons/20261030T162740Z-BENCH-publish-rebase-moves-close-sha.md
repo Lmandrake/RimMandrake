@@ -1,0 +1,1 @@
+./publish rebases local commits onto origin, so a rimflow close --sha taken from the local HEAD before publishing records a sha that never lands on main (edeef00b69 became 003240fec7, 2026-10-30). Publish the fix first, then close with the sha publish prints, or note the landed sha afterwards.
