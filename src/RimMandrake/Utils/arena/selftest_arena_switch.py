@@ -344,7 +344,7 @@ def t_switch_forced():
     check(ok and "NOT started" in msg and w.active() == [] and AR.load_config(w.toml)["mode"] == "ralph_a",
           "FORCED signer refused: nothing is live, the new target was not started (%s)" % w.active())
     import arena_eventlog as L
-    check("arena.py" not in L.ENTRYPOINTS, "OWED: arena_eventlog.ENTRYPOINTS does not yet allow arena.py (the real signer is refused until it does)")
+    check("arena.py" in L.ENTRYPOINTS, "arena_eventlog.ENTRYPOINTS allows arena.py (the real signer can sign switch events)")
     # bridge release failure
     w = World("sw_bridge")
     for a in ("ralph_a", "bench", "foundry"):
