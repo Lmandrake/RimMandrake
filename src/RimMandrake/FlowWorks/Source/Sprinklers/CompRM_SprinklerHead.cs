@@ -60,6 +60,11 @@ namespace RimMandrake.FlowWorks.Sprinklers
 		/// load (<see cref="SprayPlan"/>).</summary>
 		public List<IntVec3> sprayCells;
 
+		/// <summary>The cells the last PAID pulse sprayed, kept through later unpaid pulses (No pressure, Dry) while those cells
+		/// may still be wet; only a paid pulse replaces it. Not saved: null after a load until the next paid pulse. Read by the
+		/// `sprinkler:` probe verb (HoseNetProbe).</summary>
+		public List<IntVec3> lastPaidCells;
+
 		private List<RM_SprayDrop>[] sprayPlan;
 		private bool sprayCellsRebuilt;
 
@@ -69,6 +74,7 @@ namespace RimMandrake.FlowWorks.Sprinklers
 			RM_Sprinkle.Result r = RM_Sprinkle.Pulse(parent, cells, FeatureEnabled, SwitchOn);
 			Record(r);
 			sprayCells = r.state == RM_SprinklerState.Spraying ? cells : null;
+			if (sprayCells != null) lastPaidCells = sprayCells;
 			sprayPlan = null;
 			return r;
 		}

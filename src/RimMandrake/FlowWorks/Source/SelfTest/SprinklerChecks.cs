@@ -284,6 +284,60 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Src("Sprinklers/RM_MapComponent_Sprinklers.cs").Contains("RM_SprinklerSprayFx.Tick(map, heads, now)"), "the map's tick drives the spray");
                 Assert(Src("Sprinklers/CompRM_SprinklerHead.cs").Contains("sprayCells = r.state == RM_SprinklerState.Spraying ? cells : null"), "the plan is the pulse's own cells");
             });
+            // design §6 step 2 + §8.1: the `sprinkler:x,z` probe verb (state, pump, litres last pulse, cells, wetUntil sample)
+            Case("Sprinkler_probe_row_reads_the_head", () =>
+            {
+                var prior = System.Globalization.CultureInfo.CurrentCulture;
+                var hostile = (System.Globalization.CultureInfo)new System.Globalization.CultureInfo("de-DE").Clone();   // decimal comma
+                hostile.NumberFormat.NegativeSign = "\u2212";   // a non-ASCII minus (GPT review 1): the -1 sentinels must stay "-1"
+                System.Globalization.CultureInfo.CurrentCulture = hostile;
+                string json;
+                RM_SprinklerProbeRow row;
+                try
+                {
+                    row = new RM_SprinklerProbeRow
+                    {
+                        cmd = "sprinkler:5,7", id = 42, def = "RM_SprinklerHead", x = 5, z = 7, now = 1000, state = "NoPressure",
+                        status = "No \"pressure\"\n\\ tab\t\u0001", featureEnabled = true, switchOn = true, pumpOnNet = false, radius = 2.9f,
+                        liquid = null, lastUnits = 145, lastCells = 29, sprayCells = 20, wetOwnCells = 3, nextPulseTick = -1,
+                    };
+                    for (int i = 0; i < 20; i++)
+                        row.AddSample(new RM_SprinkledSample { x = i, z = 0, wetUntil = i == 0 ? 1001 : i == 1 ? 1000 : 0, owner = 42, liquid = "RM_Fluid_Water" });
+                    json = row.ToJson();
+                }
+                finally { System.Globalization.CultureInfo.CurrentCulture = prior; }
+                System.Text.Json.JsonElement d;
+                try { d = System.Text.Json.JsonDocument.Parse(json).RootElement; }
+                catch (Exception e) { throw new Exception("probe row is not valid JSON: " + e.Message + " :: " + json); }
+                Assert(d.GetProperty("success").GetBoolean() && d.GetProperty("state").GetString() == "NoPressure", "state as its enum name");
+                Assert(d.GetProperty("status").GetString() == row.status, "hostile status text round-trips");
+                Assert(d.GetProperty("pumpOnNet").ValueKind == System.Text.Json.JsonValueKind.False, "pump read carried");
+                Assert(d.GetProperty("liquid").ValueKind == System.Text.Json.JsonValueKind.Null, "no liquid is JSON null");
+                Assert(d.GetProperty("lastLitres").GetDouble() == 14.5 && d.GetProperty("lastUnits").GetInt32() == 145, "145 dL reads 14.5 L");
+                Assert(d.GetProperty("radius").GetDouble() == 2.9, "invariant decimal point under a decimal-comma culture");
+                var s = d.GetProperty("sample");
+                Assert(s.GetArrayLength() == RM_SprinklerProbeRow.MaxSample && RM_SprinklerProbeRow.MaxSample == 8, "sample capped at 8 of 20");
+                Assert(s[0].GetProperty("wet").GetBoolean() && !s[1].GetProperty("wet").GetBoolean(), "wet = now < wetUntil (expiry tick itself is dry)");
+                Assert(s[0].GetProperty("wetUntil").GetInt32() == 1001 && s[0].GetProperty("liquid").GetString() == "RM_Fluid_Water", "sample carries tick and key");
+                Assert(d.GetProperty("nextPulseTick").GetInt32() == -1, "negative ints in ASCII under a culture with a non-ASCII minus");
+                Assert(d.GetProperty("sprayCells").GetInt32() == 20 && d.GetProperty("wetOwnCells").GetInt32() == 3, "counts are not the capped sample");
+                string probe = Src("Hose/HoseNetProbe.cs");
+                Assert(probe.Contains("case \"sprinkler\":") && probe.Contains("SprinklerRow(map, h, cmd).ToJson()"), "verb wired on the hose probe channel");
+                int a = probe.IndexOf("RM_SprinklerProbeRow SprinklerRow(", StringComparison.Ordinal);
+                int b = a < 0 ? -1 : probe.IndexOf("private static string Fail(", a, StringComparison.Ordinal);
+                Assert(a >= 0 && b > a, "SprinklerRow found");
+                string body = probe.Substring(a, b - a);
+                Assert(!body.Contains("DoPulse") && !body.Contains("CellsForPulse") && !body.Contains("SprayPlan("), "the probe is read only: it never pulses or recomputes cells");
+                Assert(body.Contains("RM_Sprinkle.HasPressure(p)") && body.Contains("mc.Sample(c)"), "pump and grid read from the live state");
+                Assert(body.Contains("h.lastPaidCells") && !body.Contains("h.sprayCells"),
+                    "the sample is the last PAID pulse's cells, never SprayPlan's post-load rebuild (GPT review 1)");
+                string comp = Src("Sprinklers/CompRM_SprinklerHead.cs");
+                int dp = comp.IndexOf("public RM_Sprinkle.Result DoPulse()", StringComparison.Ordinal);
+                string doPulse = dp < 0 ? "" : comp.Substring(dp, comp.IndexOf("return r;", dp, StringComparison.Ordinal) - dp);
+                Assert(doPulse.Contains("if (sprayCells != null) lastPaidCells = sprayCells;"),
+                    "only a paid pulse replaces it, so a later No pressure / Dry pulse keeps the sample (GPT review 2)");
+                Assert(System.Text.RegularExpressions.Regex.Matches(comp, @"lastPaidCells\s*=").Count == 1, "nothing else writes it");
+            });
         }
 
         /// <summary>Offsets (dx, dz) within <paramref name="r"/> of the head, kept by <paramref name="keep"/>.</summary>

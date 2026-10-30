@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using System.Globalization;
 using HarmonyLib;
 using System.Linq;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimMandrake.FlowWorks.Machinery;
+using RimMandrake.FlowWorks.Sprinklers;
 using RimWorld;
 using Verse;
 
@@ -17,6 +19,8 @@ namespace RimMandrake.FlowWorks.Hose
     ///   flick:x,z=on|off                a CompFlickable's switch (the pump's power switch)
     ///   pump:x,z                        a pump: powered, on, pour mode, last moved units and tick, Moved
     ///   net:x,z                         every tank the machine/tank at x,z reaches, with the reels on each route
+    ///   sprinkler:x,z                   a sprinkler head (native or VFE): state, pump on its net, last pulse (units, litres,
+    ///                                   cells), and a wetUntil sample of the cells it last sprayed (RM_SprinklerProbeRow)
     /// </summary>
     public static class HoseNetProbe
     {
@@ -87,6 +91,15 @@ namespace RimMandrake.FlowWorks.Hose
                            ",\"lastMovedUnits\":" + p.lastMovedUnits + ",\"lastMovedTick\":" + p.lastMovedTick + ",\"moved\":" + p.Moved +
                            ",\"tick\":" + Find.TickManager.TicksGame + "}";
                 }
+                case "sprinkler":
+                {
+                    IntVec3 c = Cell(arg);
+                    CompRM_SprinklerBase h = c.InBounds(map)
+                        ? c.GetThingList(map).OfType<ThingWithComps>().Select(x => x.GetComp<CompRM_SprinklerBase>()).FirstOrDefault(x => x != null)
+                        : null;
+                    if (h == null) return Fail(cmd, "no sprinkler head there");
+                    return SprinklerRow(map, h, cmd).ToJson();
+                }
                 case "net":
                 {
                     Thing o = Cell(arg).InBounds(map) ? Cell(arg).GetThingList(map).FirstOrDefault(x => RM_LiquidNet.RoleOfThing(x) != RM_NetRole.None) : null;
@@ -105,6 +118,36 @@ namespace RimMandrake.FlowWorks.Hose
                 }
             }
             return null;
+        }
+
+        /// <summary>SPRINKLER_HEADS_BUILD_PUMP_REQUIRED §6.2: a head's state, its last pulse and a sample of the cells it sprayed.
+        /// Read only: no pulse is run and the head's cell list is not recomputed.</summary>
+        private static RM_SprinklerProbeRow SprinklerRow(Map map, CompRM_SprinklerBase h, string cmd)
+        {
+            int now = Find.TickManager.TicksGame;
+            Thing p = h.parent;
+            RM_MapComponent_Sprinklers mc = RM_MapComponent_Sprinklers.Of(map);
+            var row = new RM_SprinklerProbeRow
+            {
+                cmd = cmd, id = p.thingIDNumber, def = p.def.defName, x = p.Position.x, z = p.Position.z, now = now,
+                state = h.state.ToString(), status = h.StatusLine(), featureEnabled = h.FeatureEnabled, switchOn = h.SwitchOn,
+                pumpOnNet = RM_Sprinkle.HasPressure(p), radius = h.CoverRadius, liquid = h.lastLiquid?.defName,
+                lastUnits = h.lastUnits, lastCells = h.lastCells, lastNeed = h.lastNeed, lastAvailable = h.lastAvailable,
+                totalUnits = h.totalUnits, nextPulseTick = h.nextPulseTick,
+                liveCellsMap = mc?.LiveCells(now) ?? 0, pulses = RM_MapComponent_Sprinklers.Pulses, sprayedUnits = RM_MapComponent_Sprinklers.SprayedUnits,
+            };
+            List<IntVec3> paid = h.lastPaidCells;   // the last PAID pulse's cells (not SprayPlan's post-load rebuild)
+            if (paid != null && mc != null)
+            {
+                row.sprayCells = paid.Count;
+                foreach (IntVec3 c in paid)
+                {
+                    RM_SprinkledSample s = mc.Sample(c);
+                    if (s.owner == p.thingIDNumber && RM_SprinklerKernel.IsWet(s.wetUntil, now)) row.wetOwnCells++;
+                    row.AddSample(s);
+                }
+            }
+            return row;
         }
 
         private static string Fail(string cmd, string why) => "{\"success\":false,\"cmd\":" + S(cmd) + ",\"error\":" + S(why) + "}";

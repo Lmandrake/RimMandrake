@@ -467,6 +467,7 @@
     <Compile Include="Sprinklers\RM_PipeSeatMath.cs" />
     <Compile Include="Sprinklers\Building_RM_SprinklerHead.cs" />
     <Compile Include="Sprinklers\RM_SprayPlan.cs" />
+    <Compile Include="Sprinklers\RM_SprinklerProbeJson.cs" />
     <Compile Include="Sprinklers\RM_SprinklerSprayFx.cs" />
   </ItemGroup>
 

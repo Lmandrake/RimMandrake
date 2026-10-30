@@ -186,6 +186,15 @@ def main(argv=None, bridge=None):
         r = B.hp("tank:%d,%d" % (x, z))
         return r.get("units") if r.get("success") else None
 
+    def head_probe(x, z):
+        """The `sprinkler:x,z` probe verb (HoseNetProbe, design 6.2): the head's own state, pump read, last pulse and a
+        wetUntil sample. Evidence only, never gating: a build without the verb answers success false and this reads None."""
+        try:
+            r = B.hp("sprinkler:%d,%d" % (x, z))
+        except Exception as e:   # the probe is extra detail; its failure must not cost the row
+            return {"error": str(e)[:200]}
+        return r if r.get("success") else None
+
     def soaked(x, z):
         r = B.call("jawa/static_call", type="RimMandrake.ExplosiveGrowth.ExplosiveGrowthAPI", method="IsSoaked",
                    args="current|%d,%d" % (x, z)) or {}
@@ -248,7 +257,8 @@ def main(argv=None, bridge=None):
                 cells = int(m.group(1)) if m else None
                 wet_c, wet_f = soaked(*n["covered"]), soaked(*n["far"])
                 det = {"units": [u0, u1], "drop": (u0 - u1) if None not in (u0, u1) else None, "cells": cells, "inspect": line,
-                       "pulseAfterTicks": spent, "sprayedUnits": [s0, s1], "soakedCovered": wet_c, "soakedFar": wet_f}
+                       "pulseAfterTicks": spent, "sprayedUnits": [s0, s1], "soakedCovered": wet_c, "soakedFar": wet_f,
+                       "probe": head_probe(hx, hz)}
                 if spent is None or None in (u0, u1, cells, wet_c):
                     row("sprinkler.draws_and_wets", "UNMEASURED", EG_CLS if wet_c is None else "HARNESS", det)
                 else:
@@ -269,6 +279,7 @@ def main(argv=None, bridge=None):
                     until_pulse()
                     line = inspect(n["headId"])
                     u1 = units(*n["tank"])
+                    probe_off = head_probe(*n["head"])
                 finally:
                     sfield(S_FW, "liquidPumpEnabled", saved[(S_FW, "liquidPumpEnabled")])
                 until_pulse()
@@ -284,7 +295,7 @@ def main(argv=None, bridge=None):
                 if "Spraying" not in (line2 or ""):
                     bad.append("pump back on but the next pulse reads %r" % line2)
                 row("sprinkler.no_pressure", "FAIL" if bad else "PASS", "MOD",
-                    {"pumpOff": line, "units": [u0, u1], "pumpBackOn": line2, "bad": bad,
+                    {"pumpOff": line, "units": [u0, u1], "pumpBackOn": line2, "bad": bad, "probePumpOff": probe_off,
                      "how": "the pump stops through liquidPumpEnabled (Building_LiquidPump.Running), not a despawn: a despawn "
                             "by cell also destroys the pipe under it"})
             if want("switch"):

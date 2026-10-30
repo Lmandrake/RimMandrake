@@ -87,6 +87,19 @@ namespace RimMandrake.FlowWorks.Sprinklers
 
 		public int LiveCells(int now) => grid?.LiveCells(now) ?? 0;
 
+		/// <summary>The probe's read of one cell (the `sprinkler:` verb): wet-until tick, paying head, liquid key; zeros when
+		/// never sprinkled. Read only -- the liquid key is the last one written, wet or not.</summary>
+		public RM_SprinkledSample Sample(IntVec3 c)
+		{
+			var s = new RM_SprinkledSample { x = c.x, z = c.z };
+			if (grid == null || !c.InBounds(map)) return s;
+			int i = map.cellIndices.CellToIndex(c);
+			s.wetUntil = grid.wetUntil[i];
+			s.owner = grid.owner[i];
+			s.liquid = grid.palette[grid.liquid[i]];
+			return s;
+		}
+
 		// ---------------------------------------------------------------- the read seam (ExplosiveGrowth, reflection-soft)
 		/// <summary>Is <paramref name="c"/> sprinkled now? <paramref name="liquidKey"/> = the FluidDef defName of what wets it.
 		/// False while sprinklersEnabled is off.</summary>
