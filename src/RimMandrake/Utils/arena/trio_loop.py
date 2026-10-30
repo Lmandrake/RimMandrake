@@ -213,10 +213,8 @@ def cmd_gate_t(task, base, head, phase, *, root, log):
 
 
 def precheck_t(root, log):
-    r = subprocess.run([sys.executable, "src/RimMandrake/Utils/run_selftests.py", "--quick"], cwd=str(root),
-                       capture_output=True, text=True, timeout=3600, env=dict(os.environ, RM_ARM=ARM))
-    Path(log).write_text(r.stdout + r.stderr)
-    return RA.precheck_verdict(r.returncode, r.stdout)
+    rc, out = RA.precheck_run(root, log, ARM)          # sandboxed: the clone's selftests are builder-written code
+    return RA.baseline_verdict(rc, out, log)
 
 
 def default_critic():
@@ -744,13 +742,13 @@ class TrioLoop(RA.Loop):
             (self.ctl / "STOP").touch()
             return self.status("STOP: %s is %s after the merge, not the accepted %s; nothing published" % (
                 RA.MAIN, now[:12], pend["head"][:12]))
-        pub =subprocess.run(shlex.split(self.publish_cmd), cwd=str(self.root), capture_output=True, text=True)
+        ok, why = self._publish()                                  # harness push, never the clone's ./publish
         self.git("switch", "-q", RA.WIP)
-        if pub.returncode != 0:
+        if not ok:
             self.state["pending"] = None
             self._save()
             (self.ctl / "STOP").touch()
-            return self.status("STOP: publish failed after a passed gate (%s)" % pub.stderr.strip()[:200])
+            return self.status("STOP: publish failed after a passed gate (%s)" % why[:200])
         return self._advance(task, "published %s %s" % (task["id"], pend["head"][:12]))
 
 

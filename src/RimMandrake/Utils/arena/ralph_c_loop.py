@@ -302,10 +302,8 @@ def cmd_gate_c(task, base, head, phase, *, root, log):
 
 
 def precheck_c(root, log):
-    r = subprocess.run([sys.executable, "src/RimMandrake/Utils/run_selftests.py", "--quick"], cwd=str(root),
-                       capture_output=True, text=True, timeout=3600, env=dict(os.environ, RM_ARM=ARM))
-    Path(log).write_text(r.stdout + r.stderr)
-    return r.returncode == 0
+    rc, out = RA.precheck_run(root, log, ARM)          # sandboxed: the clone's selftests are builder-written code
+    return RA.baseline_verdict(rc, out, log)
 
 
 # ------------------------------------------------------------------------------------------------ the builder loop

@@ -92,6 +92,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import arena_eventlog as L  # noqa: E402
+import arm_sandbox as AS  # noqa: E402
 import arena_tasks as A  # noqa: E402
 import arena_safe_git as SG  # noqa: E402
 
@@ -543,7 +544,7 @@ class Gate:
         if self.work.exists():
             shutil.rmtree(self.work)
         self.work.mkdir(parents=True)
-        for d in (self.hdir, self.fake_home):
+        for d in (self.hdir, self.fake_home, self.work / "data"):
             d.mkdir()
         (self.hdir / GATE_RUNNER_NAME).write_text(RUNNER_SRC, encoding="utf-8")
         (self.hdir / "gate_collect.py").write_text(COLLECT_SRC, encoding="utf-8")
@@ -670,12 +671,47 @@ class Gate:
         return tp, ""
 
     # ------------------------------------------------------------ sandbox
-    def sandbox_argv(self, argv, cwd, rw_dir=None, data_rw=True, interop=False):
+    STRICT_EXTRA = ("/var/log", "/var/lib/systemd", "/var/spool", "/var/mail")   # + AS.CONTAINERS: masked wholesale
+
+    def game_ro(self):
+        """The read-only game inputs of the xml / deploy_plan steps: the def roots and the game's LocalLow dir (the
+        def dump, Config/ModsConfig.xml). Nothing of D:\\ClaudeWork, the repos or $HOME."""
+        out = [r for r in self.defs_roots if os.path.isdir(r)]
+        if self.dump and os.path.isdir(os.path.dirname(os.path.abspath(self.dump))):
+            out.append(os.path.dirname(os.path.abspath(self.dump)))
+        return out
+
+    def strict_binds(self, rw_dir=None, ro_extra=()):
+        """-> [(kind, path)] bound back over the strict masks, in order (item ARENA_SANDBOX_HARDEN_HARNESS_RUNS_ARM_CODE)."""
+        out = [("ro", self.clone)] + ([("rw", rw_dir)] if rw_dir else []) + [("ro", self.base_clone), ("ro", self.hdir)]
+        return out + [("ro", x) for x in ro_extra]
+
+    def sandbox_argv(self, argv, cwd, rw_dir=None, data_rw=True, interop=False, ro_extra=()):
         """Both checkouts and the runner dir are read-only (only `rw_dir`, the C# build's throwaway copy of head, is
-        writable); HOME is a fresh tmpfs per step; the data root is read-only while tests run."""
+        writable); HOME is a fresh tmpfs per step; the data root is read-only while tests run.
+        Every non-interop step is STRICT (item ARENA_SANDBOX_HARDEN_HARNESS_RUNS_ARM_CODE): tmpfs over every
+        container of arm_sandbox (/home, /mnt, /tmp, /run, ...) and the logs, then only the checkouts, the runner dir,
+        a fresh private data root (work/data: the real one is D:\\ClaudeWork, an answer holder) and `ro_extra` (the
+        game inputs) bound back. The interop step (the C# build: Windows dotnet through /init) keeps the legacy
+        deny-list sandbox: a stated residual."""
         bw = shutil.which("bwrap")
         if not bw:
             return None
+        if not interop:
+            out = [bw, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--unshare-pid", "--unshare-ipc",
+                   "--die-with-parent", "--new-session"]
+            for c in AS.CONTAINERS + self.STRICT_EXTRA:
+                if os.path.isdir(c) and not os.path.islink(c):
+                    out += ["--tmpfs", c]
+            if os.path.isfile(WSL_INIT):
+                out += ["--ro-bind", str(self.hdir / "noinit"), WSL_INIT]
+            data = os.path.realpath(self.work / "data")
+            out += ["--bind" if data_rw else "--ro-bind", data, data]
+            for kind, pth in self.strict_binds(rw_dir, ro_extra):
+                r = os.path.realpath(pth)
+                out += ["--bind" if kind == "rw" else "--ro-bind", r, r]
+            out += ["--tmpfs", os.path.realpath(self.fake_home), "--chdir", os.path.realpath(cwd)]
+            return out + ["--"] + list(argv)
         out = [bw, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--unshare-pid", "--unshare-ipc",
                "--die-with-parent", "--new-session"]
         if self.data_root and os.path.isdir(self.data_root):
@@ -712,18 +748,21 @@ class Gate:
         e = {k: os.environ[k] for k in ENV_ALLOW + (WSL_ENV if interop else ()) if k in os.environ}
         e.update(HOME=str(self.fake_home), TMPDIR="/tmp", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
                  RM_ARM="harness")
-        if self.data_root:
+        if interop and self.data_root:
             e["RM_DATA_ROOT"] = self.data_root
+        elif not interop:
+            e["RM_DATA_ROOT"] = os.path.realpath(self.work / "data")   # strict: the private data root
         return e
 
     def srun(self, argv, log, cwd=None, timeout=STEP_TIMEOUT, stdin=None, pass_fds=(), rw_dir=None, data_rw=True,
-             interop=False, extra_env=None):
+             interop=False, extra_env=None, ro_extra=()):
         """Run checkout code sandboxed. -> (rc|None, text)."""
         if self.sandbox_why:
             log.parent.mkdir(parents=True, exist_ok=True)
             log.write_text("[not run: %s]\n" % self.sandbox_why, encoding="utf-8")
             return None, self.sandbox_why
-        full = self.sandbox_argv(argv, cwd or self.clone, rw_dir=rw_dir, data_rw=data_rw, interop=interop)
+        full = self.sandbox_argv(argv, cwd or self.clone, rw_dir=rw_dir, data_rw=data_rw, interop=interop,
+                                 ro_extra=ro_extra)
         if full is None:
             return None, "no sandbox (bwrap absent): arm code would run beside the signing key"
         env = self.env(interop=interop)
@@ -753,6 +792,33 @@ class Gate:
         got = json.loads(m.group(0))
         if got["seen"] or got["env"] or got.get("interop") or got["home"] != str(self.fake_home):
             self.sandbox_why = "sandbox probe still sees %s: refusing to run arm code" % (got,)
+            return
+        leaks = self.deny_probe()
+        if leaks:
+            self.sandbox_why = "sandbox probe sees masked path(s) %s: refusing to run arm code" % leaks[:6]
+
+    def deny_probe(self):
+        """-> the arm_sandbox deny paths (retired trees, the other clones, D:\\ClaudeWork, $HOME leaks) a STRICT step
+        can see. A deny path that is an ancestor of a bind may show only the names leading to the binds (the gate's
+        own work dir sits under <arena>/judge). [] = blind; an unrunnable probe is a leak."""
+        binds = [os.path.realpath(p) for _, p in self.strict_binds(ro_extra=self.game_ro())] + [
+            os.path.realpath(self.work / "data"), os.path.realpath(self.fake_home)]
+        spec = []
+        for d in AS.deny_paths():
+            kids = sorted({b[len(d) + 1:].split("/")[0] for b in binds if b.startswith(d.rstrip("/") + "/")})
+            if any(b == d or d.startswith(b.rstrip("/") + "/") for b in binds):
+                return ["%s (a bind covers it)" % d]
+            spec.append([d, kids])
+        code = ("import os,sys,json\nout=[]\nfor d,k in json.loads(sys.argv[1]):\n"
+                " try:\n  if os.path.isdir(d):\n   x=sorted(set(os.listdir(d))-set(k))\n   x and out.append([d,x[:4]])\n"
+                "  elif os.path.lexists(d): out.append([d,'file'])\n except OSError: pass\n"
+                "print(json.dumps(out))")
+        rc, text = self.srun([self.python, "-I", "-c", code, json.dumps(spec)], self.logdir / "deny_probe.log",
+                             timeout=60)
+        m = re.search(r"^\[.*\]$", text or "", re.M)
+        if rc != 0 or not m:
+            return ["deny probe did not run (rc=%s)" % rc]
+        return json.loads(m.group(0))
 
     # ------------------------------------------------------------ steps
     def s_scope(self):
@@ -1041,7 +1107,7 @@ class Gate:
         argv = [self.python, str(tp), *xml, "--live", self.dump]
         for r in self.defs_roots:
             argv += ["--defs", r]
-        rc, text = self.srun(argv, self.logdir / "xml.log")
+        rc, text = self.srun(argv, self.logdir / "xml.log", ro_extra=self.game_ro())
         log = str(self.logdir / "xml.log")
         if rc is None:
             return unmeasured("validate_patch could not run: " + text, log=log)
@@ -1128,7 +1194,7 @@ class Gate:
         seen = set()
         for m in mods:
             log = self.logdir / ("deploy_%s.log" % m)
-            rc, text = self.srun([self.python, str(tp), "--mod", m], log)
+            rc, text = self.srun([self.python, str(tp), "--mod", m], log, ro_extra=self.game_ro())
             if rc is None:
                 return unmeasured("deploy plan could not run for %s: %s" % (m, text), log=str(log))
             heads = re.findall(r"^(\S+)\s{2,}mandrake\.\S+", text, re.M)

@@ -519,11 +519,65 @@ def precheck_verdict(rc, out):
         "pre-check green"
 
 
-def default_precheck(root, log):
-    r = subprocess.run([sys.executable, "src/RimMandrake/Utils/run_selftests.py", "--quick"], cwd=str(root),
-                       capture_output=True, text=True, timeout=3600, env=dict(os.environ, RM_ARM=ARM))
+def run_clone_code(root, argv, *, env=None, timeout=3600, role="harness"):
+    """EVERY execution of clone-controlled code by a loop harness goes through HERE (item
+    ARENA_SANDBOX_HARDEN_HARNESS_RUNS_ARM_CODE): the builder can rewrite run_selftests.py, every selftest, rimflow's
+    cli.py, ./publish in its clone, so the harness runs them inside arm_sandbox.wrap exactly like a model pass (rw: the
+    clone + a scratch outside it; everything else masked). -> CompletedProcess (text). A refused sandbox raises
+    Refused: the code does not run unsandboxed."""
+    rw, home = sandbox_plan(role, root, None)
+    env = dict(os.environ if env is None else env)
+    data = Path(rw[-1]) / "data"                       # the real data root (D:\ClaudeWork) is masked: a private one
+    data.mkdir(parents=True, exist_ok=True)
+    env["RM_DATA_ROOT"] = str(data)
+    env.pop("AGENT_STORAGE_ROOT", None)
+    a, e = CmdModel.wrap(list(argv), env, cwd=root, rw=rw, home=home)
+    return subprocess.run(a, cwd=str(root), env=e, capture_output=True, text=True, errors="replace",
+                          timeout=timeout, stdin=subprocess.DEVNULL)
+
+
+def precheck_run(root, log, arm):
+    """The clone's `run_selftests.py --quick`, sandboxed. -> (rc, stdout); a refused sandbox is red (rc None)."""
+    try:
+        r = run_clone_code(root, [AS.PY, "src/RimMandrake/Utils/run_selftests.py", "--quick"],
+                           env=dict(os.environ, RM_ARM=arm))
+    except Refused as e:
+        Path(log).write_text("precheck not run: %s\n" % e)
+        return None, ""
     Path(log).write_text(r.stdout + r.stderr)
-    return precheck_verdict(r.returncode, r.stdout)
+    return r.returncode, r.stdout
+
+
+SANDBOX_RED_RE = re.compile(r"^\[\d+/\d+\]\s+(?:FAIL|CRASH)\s+\S+\s+(\S+)\s*$", re.M)
+
+
+def baseline_verdict(rc, out, log):
+    """-> (green, note) for a SANDBOXED quick pre-check. The repo's suite was written for the host: some selftests
+    are red in the arm sandbox whatever the clone holds (the game dirs, the bench clone, nested bwrap are masked).
+    The first red run of a loop (its ctl/log dir) records those tests as the environment baseline
+    (log-dir/sandbox_red.json, harness-side, outside every arm bind) and is green, LOUDLY; later runs are green when
+    nothing beyond the baseline is red. A refused sandbox or a run with no RESULT line is red. Delete the file to
+    rebaseline (e.g. after the owner's main adds a host-only test)."""
+    v = precheck_verdict(rc, out)
+    if v[0] or rc is None or not RESULT_RE.findall(out or ""):
+        return v
+    red = set(SANDBOX_RED_RE.findall(out or ""))
+    if not red:
+        return v
+    b = Path(log).parent / "sandbox_red.json"
+    if not b.exists():
+        b.write_text(json.dumps({"red": sorted(red), "at": time.strftime("%Y-%m-%dT%H:%M:%S")}, indent=1) + "\n")
+        return True, ("quick pre-check: %d selftests red in the arm sandbox, recorded as its environment baseline "
+                      "(%s); later pre-checks fail on anything beyond it" % (len(red), b))
+    new = sorted(red - set(json.loads(b.read_text()).get("red") or ()))
+    if new:
+        return False, "pre-check red in the arm sandbox beyond its baseline (%s): %s" % (b, ", ".join(new[:8]))
+    return True, "quick pre-check only: green but for %d sandbox-environment reds (%s)" % (len(red), b)
+
+
+def default_precheck(root, log):
+    rc, out = precheck_run(root, log, ARM)
+    return baseline_verdict(rc, out, log)
 
 
 def default_sync(root, sleep=time.sleep, tries=3, pin=None, report=None):
@@ -591,8 +645,49 @@ def default_sync(root, sleep=time.sleep, tries=3, pin=None, report=None):
 
 
 def default_release(root):
-    subprocess.run([sys.executable, "src/RimMandrake/rimflow/cli.py", "bridge", "release", "--mine"],
-                   cwd=str(root), capture_output=True, timeout=120)
+    """The clone's own `rimflow bridge release --mine`, sandboxed (its lock lives in the clone's .git; inside the
+    sandbox a builder's take never reached the real bridge either). Best effort, as before."""
+    try:
+        run_clone_code(root, [AS.PY, "src/RimMandrake/rimflow/cli.py", "bridge", "release", "--mine"], timeout=120)
+    except (Refused, subprocess.TimeoutExpired) as e:
+        print("bridge release not run in %s: %s" % (root, e), file=sys.stderr)
+
+
+def clone_relative_cmd(root, argv) -> str:
+    """-> the first argv word that names clone-controlled code (./publish, `python3 publish.py` run from the clone, any
+    existing path inside the clone), else ''. A bare word with no slash is a PATH lookup (python3, git) unless it
+    exists in the clone (then `python3 publish.py` with cwd=clone would run it)."""
+    c = os.path.realpath(str(root))
+    for a in argv or ():
+        p = a if os.path.isabs(a) else os.path.join(c, a)
+        if "/" not in a and not os.path.lexists(p):
+            continue
+        r = os.path.realpath(p)
+        if (r == c or r.startswith(c + os.sep)) and os.path.lexists(p):
+            return a
+    return ""
+
+
+def harness_publish(root, pin=None):
+    """The default publish (item ARENA_SANDBOX_HARDEN_HARNESS_RUNS_ARM_CODE): the HARNESS pushes the tested main to
+    the pinned origin URL with arena_safe_git (hooks off, no clone-local transport config), never the clone's
+    ./publish (builder-rewritable code). The url: the pin file default_sync wrote, else the clone's remote.origin.url
+    (checked by SG.net_cfg, then pinned). -> (ok, why)."""
+    url = Path(pin).read_text().strip() if pin and Path(pin).exists() else \
+        git_run(root, "config", "--get", "remote.origin.url", capture_output=True, text=True).stdout.strip()
+    if not url:  # never push to the literal name "origin" (its section is the clone's)
+        return False, "no origin url to publish to (no pin, no remote.origin.url)"
+    try:
+        SG.net_cfg(root, url)
+        if pin and not Path(pin).exists():
+            Path(pin).write_text(url + "\n")
+        r = SG.git_run(root, "push", "-q", url, "%s:%s" % (MAIN, MAIN),
+                       transport=True, url=url, capture_output=True, text=True, timeout=600)
+    except SG.CloneRefused as e:
+        return False, "refused: %s" % e
+    except subprocess.TimeoutExpired:
+        return False, "push timed out"
+    return r.returncode == 0, (r.stderr or r.stdout).strip()[:300]
 
 
 class RalphCLane:
@@ -690,7 +785,7 @@ def export_tree(root, sha, dest):
 # ------------------------------------------------------------------------------------------------ the loop
 class Loop:
     def __init__(self, root, ctl, tasks, *, model, gate=None, writer=None, lane=None, runway=None, precheck=None,
-                 release=None, publish_cmd="./publish", sync="default", new_id=None, tester_workdir=None,
+                 release=None, publish_cmd=None, sync="default", new_id=None, tester_workdir=None,
                  timeout_s=PASS_TIMEOUT_S, poll_s=60.0, sleep=time.sleep, procs=procs_in, tester_tmp=None):
         self.root, self.ctl = Path(root), Path(ctl)
         self.tasks = list(tasks)
@@ -700,7 +795,11 @@ class Loop:
         self.runway = runway or default_runway
         self.precheck = precheck or (lambda log: default_precheck(self.root, log))
         self.release = release or (lambda: default_release(self.root))
-        self.publish_cmd = publish_cmd
+        bad = clone_relative_cmd(self.root, shlex.split(publish_cmd)) if publish_cmd else ""
+        if bad:      # item ARENA_SANDBOX_HARDEN_HARNESS_RUNS_ARM_CODE: the builder can rewrite any file of its clone
+            raise Refused("refused: publish_cmd runs %r from the clone (builder-writable code); leave it unset to "
+                          "publish with the harness's own push" % bad)
+        self.publish_cmd = publish_cmd                            # None: harness_publish (the default)
         self._sync_notes = []                                     # defect details default_sync reports; drained per pass
         self.sync = (lambda: default_sync(self.root, self.sleep, pin=self.ctl / "origin.url",
                                           report=self._sync_notes.append)) if sync == "default" else sync   # None: no pull
@@ -1058,6 +1157,14 @@ class Loop:
                 r.get("verdict"), r.get("why") or r.get("run_id")), self.state["n"], record=r.get("verdict") == "fail")
         return self._final(task, lw, self.state["n"])
 
+    def _publish(self):
+        """-> (ok, why). Default: harness_publish (never the clone's ./publish). A test or owner publish_cmd (vetted
+        at construction: nothing from the clone) runs as given."""
+        if not self.publish_cmd:
+            return harness_publish(self.root, self.ctl / "origin.url")
+        pub = subprocess.run(shlex.split(self.publish_cmd), cwd=str(self.root), capture_output=True, text=True)
+        return pub.returncode == 0, pub.stderr.strip()
+
     def _final(self, task, pend, n):
         if git_run(self.root, "merge-base", "--is-ancestor", MAIN, pend["head"], capture_output=True).returncode != 0:
             # main moved under a tested-but-unpublished build (killed between build_end and publish, then a pull): the
@@ -1075,13 +1182,13 @@ class Loop:
         self.git("merge", "-q", "--ff-only", pend["head"])    # GPT r2: the TESTED sha, never the mutable WIP ref
         if self.git("rev-parse", "HEAD") != pend["head"]:
             raise Refused("refused: main is not at the tested sha %s after the merge" % pend["head"])
-        pub = subprocess.run(shlex.split(self.publish_cmd), cwd=str(self.root), capture_output=True, text=True)
+        ok, why = self._publish()
         self.git("switch", "-q", WIP)
-        if pub.returncode != 0:
+        if not ok:
             self.state["pending"] = None
             self._save()
             (self.ctl / "STOP").touch()
-            return self.status("STOP: publish failed after a passed gate (%s)" % pub.stderr.strip()[:200])
+            return self.status("STOP: publish failed after a passed gate (%s)" % why[:200])
         self.state.update(pending=None, task_i=self.state["task_i"] + 1)
         self.state["tries"].pop(task["id"], None)
         self._clear_notes()

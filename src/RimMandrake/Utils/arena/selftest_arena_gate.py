@@ -874,8 +874,8 @@ def t_round3_build(tmp):
     os.environ.setdefault("WINBUILD_DOTNET", "stub")
     real_argv, real_fp = G.Gate.sandbox_argv, G.Gate.fingerprint
 
-    def old_argv(self, argv, cwd, rw_dir=None, data_rw=True, interop=False):   # round 2: head writable to the build
-        out = real_argv(self, argv, cwd, rw_dir=rw_dir, data_rw=data_rw, interop=interop)
+    def old_argv(self, argv, cwd, rw_dir=None, data_rw=True, interop=False, ro_extra=()):   # round 2: head writable
+        out = real_argv(self, argv, cwd, rw_dir=rw_dir, data_rw=data_rw, interop=interop, ro_extra=ro_extra)
         if rw_dir:
             r = os.path.realpath(self.clone); i = out.index("--")
             out[i:i] = ["--bind", r, r]

@@ -315,6 +315,9 @@ def bwrap_argv(pl, bpf_path=None) -> list[str]:
 def sandbox_env(env, home, drop=()):
     e = {k: v for k, v in dict(env).items() if k not in DROP_ENV or ("env" in drop and k == "WSL_INTEROP")}
     e.update(HOME=home, TMPDIR="/tmp")
+    # the user's python packages (PIL, numpy) are bound ro at their real path (TOOL_RO .local/lib), but python finds
+    # them through $HOME/.local: point the user base at the real one, or every test needing them is red in here
+    e.setdefault("PYTHONUSERBASE", str(_home() / ".local"))
     return e
 
 
