@@ -173,6 +173,7 @@ HERE = Path(__file__).resolve().parent
 UTILS = HERE.parent
 sys.path.insert(0, str(HERE))
 import arena_tasks as A  # noqa: E402
+import judge_codex_home as JH  # noqa: E402
 
 ARMS = ("ralph_a", "ralph_c", "trio", "v3", "v3c")              # testpilot_merged §6.2; $ARENA_ARMS overrides
 FAMILY_TOKENS = ("ralph",)                                     # family words that name an arm group
@@ -374,20 +375,32 @@ ENV_MODEL = ("SHELL", "CLAUDE_CONFIG_DIR", "SSL_CERT_FILE", "SSL_CERT_DIR", "REQ
 ENV_MODEL_PREFIX = ("ANTHROPIC_", "CLAUDE_CODE_USE_", "OPENAI_", "CODEX_", "WSL", "RM_GPT_")
 
 
-def judge_env(extra: dict | None, priv: Path | None, kind: str = "model", base: dict | None = None) -> dict:
+def judge_env(extra: dict | None, priv: Path | None, kind: str = "model", base: dict | None = None,
+              own: Path | None = None) -> dict:
     """The judge's environment, built from an allow-list over `base` (default os.environ): `check` -> ENV_BASIC only;
     `model` -> also what claude / gpt_consult / codex.exe need (auth, proxy, WSL interop, codex scratch). Then `extra`
     (the caller's own explicit settings). Any value naming the private dir or the clone root is dropped; RM_ARM=harness
-    (§1.6: judge spend is the harness's)."""
+    (§1.6: judge spend is the harness's). EXCEPT (ARENA_JUDGE_GPT_METER_STRIPPED_BY_ENV): an `extra` value that is a
+    path inside `own`, the call's own workspace, survives the clone-root filter -- the default work root sits under
+    clones_root, so the filter used to drop GptConsult's RM_GPT_CALL_LOG=<work>/calls.jsonl and no judge GPT call was
+    ever metered. The call already holds that dir read-write, so naming it leaks nothing."""
     src = dict(os.environ if base is None else base)
     names, prefixes = ENV_BASIC, ENV_BASIC_PREFIX
     if kind == "model":
         names, prefixes = names + ENV_MODEL, prefixes + ENV_MODEL_PREFIX
     e = {k: v for k, v in src.items() if k in names or k.startswith(prefixes)}
     e.update(extra or {})
-    bad = [os.path.realpath(Path(priv) if priv else private_dir()), os.path.realpath(clones_root())]
+    pv, cr = os.path.realpath(Path(priv) if priv else private_dir()), os.path.realpath(clones_root())
+    ownr = os.path.realpath(own) if own else None
+
+    def owned(k):
+        if not ownr or k not in (extra or {}):
+            return False
+        v = os.path.realpath(str(extra[k]))
+        return v == ownr or v.startswith(ownr + os.sep)
     for k in list(e):
-        if k.startswith("ARENA_") or any(b and b in str(e[k]) for b in bad):
+        v = str(e[k])
+        if k.startswith("ARENA_") or (pv and pv in v) or (cr and cr in v and not owned(k)):
             e.pop(k, None)
     e["RM_ARM"] = "harness"
     return e
@@ -402,7 +415,7 @@ def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | 
     keep = [work] if rw is None else list(rw)
     full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work, proc=kind != "check")
     proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind),
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind, own=work),
                             start_new_session=True)
     try:
         out, err = proc.communicate(stdin, timeout=timeout)
@@ -1158,6 +1171,7 @@ PROMPT = """You are an acceptance judge for one code change in a RimWorld mod re
 You see the task's acceptance criteria, the mechanical gate record, the results of hidden checks, and the change as
 an anonymised diff. Decide whether the change meets the criteria. Be strict: accept only work that does what the
 criteria ask, without placeholders, and without breaking what it touches. Judge the change, not its style.
+{no_tools}
 
 The change was made by one of several anonymous build procedures, labelled: {labels}. Identifying strings were
 redacted to <ARM>, <MODEL>, <REPO>, <SHA>, <BRANCH>, <TRAILER>. Also guess which procedure made it ("unknown" if you cannot
@@ -1186,7 +1200,7 @@ def build_prompt(criteria: str, gate: dict, hidden_res: list[dict], diff: str, l
     g = json.dumps(gate, indent=1, sort_keys=True)
     h = json.dumps([{k: v for k, v in r.items() if k != "tail"} for r in hidden_res], indent=1) if hidden_res \
         else "(none for this task)"
-    return PROMPT.format(labels=", ".join(labels), labels_json=json.dumps(list(labels)), criteria=criteria.strip(),
+    return PROMPT.format(no_tools=JH.PROMPT_NO_TOOLS, labels=", ".join(labels), labels_json=json.dumps(list(labels)), criteria=criteria.strip(),
                          gate=g, hidden=h, diff=diff)
 
 
@@ -1254,14 +1268,43 @@ class OpusCLI:
         return r.stdout.decode("utf-8", "replace")
 
 
+class JudgeTripwire(JudgeError):
+    """The GPT judge's transcript shows it reached outside its own job folder (or the web, or a tool we cannot vet),
+    or its home kept per-call state: the vote is not a vote. `.meta` is the tool record for the vote."""
+
+    def __init__(self, msg: str, meta: dict):
+        super().__init__(msg)
+        self.meta = meta
+
+
+class JudgeAnswer(str):
+    """A judge's answer text carrying `.meta` (the GPT judge's tool record) into its vote."""
+    meta: dict | None = None
+
+
 class GptConsult:
-    """gpt_consult.py, a fresh codex run, from the judge work dir, inside the judge sandbox."""
+    """gpt_consult.py, a fresh codex run, from the judge work dir, inside the judge sandbox -- HARDENED, with no
+    bypass (ARENA_GPTJUDGE_HARDEN_ISOLATED_CODEX_HOME, see judge_codex_home.py): codex.exe is a Windows process the
+    bubblewrap sandbox does not confine, so it runs in the judge's OWN Codex home (verified before every call), with
+    every tool feature and web search off (--lockdown), and its --json transcript (--events) goes through the
+    tripwire: a web call, a tool item we cannot vet, or a command naming any path outside its job folder makes the
+    vote INVALID. The home's per-call state is wiped after the call (JH.CallSession)."""
 
     def __init__(self, prefix: list[str] | None = None, priv: Path | None = None, timeout: int = MODEL_TIMEOUT):
         self.prefix, self.priv, self.timeout = prefix, priv, timeout
 
     def preflight(self) -> None:
-        return None
+        """The judge home must already be set up (one-time `judge_codex_home.py setup`); never seeded mid-run."""
+        self._home()
+
+    @staticmethod
+    def _home() -> tuple[Path, Path]:
+        try:
+            home, base = JH.judge_home(), JH.base_home()
+            JH.verify_home(home, base)
+        except JH.HomeError as ex:
+            raise JudgeUnavailable("gpt judge home: %s" % ex) from ex
+        return home, base
 
     @staticmethod
     def _scratch_paths() -> list[Path]:
@@ -1290,17 +1333,24 @@ class GptConsult:
         # `work` is this judge's OWN fresh private workspace (judge() makes one per call and deletes it after): the
         # prompt file is a copy of the neutralised prompt; gpt_consult hands codex.exe the TEXT on stdin from its own
         # job dir, so no tree or workspace path reaches the Windows process
+        home, base = self._home()
         pf = work / "prompt.md"
         out = work / "answer.md"
+        events = work / "events.jsonl"
         pf.write_text(prompt, encoding="utf-8")
         exe = self.prefix or [sys.executable, str(UTILS / "gpt_consult.py")]
         # the call log lives under the (masked) arena root: meter into the work dir, the harness appends it after
         local_log = work / "calls.jsonl"
         env = {"RM_GPT_CALL_LOG": str(local_log)}
         real_log = Path(os.environ.get("RM_GPT_CALL_LOG") or "/mnt/d/ClaudeWork/rimmandrake/arena/gpt_calls.jsonl")
-        r = run_sandboxed(exe + ["--prompt-file", str(pf), "--out", str(out), "--timeout", str(self.timeout)],
-                          work=work, priv=self.priv, timeout=self.timeout + 60, env=env,
-                          rw=[work] + self._scratch_paths())
+        with JH.CallSession(home, base) as sess:
+            try:
+                r = run_sandboxed(exe + ["--prompt-file", str(pf), "--out", str(out), "--timeout", str(self.timeout),
+                                         "--codex-home", str(home), "--lockdown", "--events", str(events)],
+                                  work=work, priv=self.priv, timeout=self.timeout + 60, env=env,
+                                  rw=[work] + self._scratch_paths())
+            finally:
+                post = sess.after()
         if local_log.is_file():
             try:
                 real_log.parent.mkdir(parents=True, exist_ok=True)
@@ -1308,9 +1358,30 @@ class GptConsult:
                     f.write(local_log.read_text(encoding="utf-8"))
             except OSError:
                 pass
-        if r.returncode or not out.is_file():
+        try:
+            meta = json.loads(Path(str(events) + ".meta.json").read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            meta = {}
+        try:
+            etext = events.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            etext = None
+        trip = JH.tripwire(etext, meta.get("job_win") if isinstance(meta, dict) else None)
+        info = {"n_tools": trip["n_tools"], "web": trip["web"], "commands": [c[:200] for c in trip["commands"][:3]],
+                "refused_tool_calls": meta.get("refused_tool_calls") if isinstance(meta, dict) else None,
+                "tripwire": trip["why"][:5], "wiped": post["wiped"], "leftover": post["leftover"]}
+        failed = r.returncode or not out.is_file()
+        # a failed call with no tool use is a failed call (JudgeError); tool use, or a bad transcript on a call that
+        # answered, is a tripwire. Both are invalid votes.
+        if not trip["valid"] and (trip["n_tools"] or trip["web"] or not failed):
+            raise JudgeTripwire("gpt judge tripwire: %s" % "; ".join(trip["why"][:3]), info)
+        if post["leftover"]:
+            raise JudgeTripwire("gpt judge home kept per-call state after the wipe: %s" % post["leftover"], info)
+        if failed:
             raise JudgeError("gpt judge exit %d: %s" % (r.returncode, r.stderr.decode("utf-8", "replace")[-300:]))
-        return out.read_text(encoding="utf-8")
+        ans = JudgeAnswer(out.read_text(encoding="utf-8"))
+        ans.meta = info
+        return ans
 
 
 @dataclass
@@ -1349,12 +1420,16 @@ def _ask(name: str, call: ModelCall, prompt: str, labels: tuple) -> dict:
     ws = judge_workspace()
     try:
         text = call(prompt, ws)
+    except JudgeTripwire as ex:                              # the judge reached outside: not a vote (fail closed)
+        return {"judge": name, "verdict": "invalid", "why": str(ex)[:300], "arm_guess": "unknown", "tools": ex.meta}
     except Exception as ex:                                  # a failed call is invalid, never accept
         return {"judge": name, "verdict": "invalid", "why": str(ex)[:300], "arm_guess": "unknown"}
     finally:
         shutil.rmtree(ws, ignore_errors=True)
     out = parse_answer(text, labels)
     out["judge"] = name
+    if getattr(text, "meta", None) is not None:
+        out["tools"] = text.meta
     return out
 
 

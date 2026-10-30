@@ -1,0 +1,2 @@
+codex exec --json shows a command_execution's command with every backslash doubled (C:\\\\WINDOWS...) and a refused tool under disabled features appears only as an 'error' item ('Code Mode is unavailable...') plus stderr 'tools::router: error='. Never vet what shell code touched by regexing that string: a transcript vetting tool must treat ANY command_execution as a violation when tools are meant to be off (GPT review of ARENA_GPTJUDGE_HARDEN_ISOLATED_CODEX_HOME).
+home: chatgpt-consult

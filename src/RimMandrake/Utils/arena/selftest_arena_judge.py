@@ -250,6 +250,11 @@ if readable and m:
            if not os.path.exists(os.path.join(d, "verdict.json"))]
     guess = (m[cur[0]] if cur and cur[0] in m else next(iter(m.values())))["arm"]
 out = json.dumps({"verdict": "accept", "reasons": ["map_readable=%%s" %% readable], "arm_guess": guess})
+if "--events" in sys.argv:          # the hardened GptConsult reads a --json transcript: a clean one, no tool use
+    _ev = sys.argv[sys.argv.index("--events") + 1]
+    open(_ev, "w").write('{"type": "thread.started"}\n{"type": "turn.started"}\n{"type": "item.completed", "item": {"id": "i0", "type": '
+                         '"agent_message", "text": "ok"}}\n{"type": "turn.completed", "usage": {}}\n')
+    open(_ev + ".meta.json", "w").write('{"job_win": "D:/fakejob", "rc": 0, "refused_tool_calls": 0}')
 if "--prompt-file" in sys.argv:
     open(sys.argv[sys.argv.index("--out") + 1], "w").write(out)
 else:
@@ -696,6 +701,11 @@ prompt = open(sys.argv[sys.argv.index("--prompt-file") + 1]).read() if "--prompt
 dump = {"argv": sys.argv, "cwd": os.getcwd(), "env": dict(os.environ), "prompt": prompt, "ls": sorted(os.listdir("."))}
 open("spy_dump.json", "w").write(json.dumps(dump))
 out = json.dumps({"verdict": "accept", "reasons": ["r"], "arm_guess": "unknown"})
+if "--events" in sys.argv:          # the hardened GptConsult reads a --json transcript: a clean one, no tool use
+    _ev = sys.argv[sys.argv.index("--events") + 1]
+    open(_ev, "w").write('{"type": "thread.started"}\n{"type": "turn.started"}\n{"type": "item.completed", "item": {"id": "i0", "type": '
+                         '"agent_message", "text": "ok"}}\n{"type": "turn.completed", "usage": {}}\n')
+    open(_ev + ".meta.json", "w").write('{"job_win": "D:/fakejob", "rc": 0, "refused_tool_calls": 0}')
 if "--out" in sys.argv:
     open(sys.argv[sys.argv.index("--out") + 1], "w").write(out)
 else:
@@ -1006,13 +1016,139 @@ def t_mi(tmp):
     check(rep["tests"] == 2, "the secondary statistic does not change the Bonferroni count")
 
 
+# ------------------------------------------------------------------ GPT judge hardening (ARENA_GPTJUDGE_HARDEN_...)
+
+def fake_judge_home(tmp):
+    """The hardened GptConsult refuses without a set-up judge Codex home: give the run a fake one (outside the masks)."""
+    import judge_codex_home as JH                                   # noqa: PLC0415
+    base, home = tmp / "codex_base", tmp / "codex_judge"
+    base.mkdir()
+    (base / "auth.json").write_text('{"last_refresh": "2026-10-30T00:00:00Z"}')
+    os.environ.update(ARENA_JUDGE_CODEX_HOME=str(home), ARENA_JUDGE_CODEX_BASE=str(base),
+                      ARENA_JUDGE_LOCK_DIR=str(tmp / "locks"))
+    JH.setup(home, base, machine_check=False)
+
+
+HARDEN_MODEL = r'''
+import json, os, sys
+a = sys.argv
+scen = open(%r).read()
+ev = a[a.index("--events") + 1] if "--events" in a else None
+dump = {"argv": a, "env_log": os.environ.get("RM_GPT_CALL_LOG"), "prompt": open(a[a.index("--prompt-file") + 1]).read()}
+open("harden_dump.json", "w").write(json.dumps(dump))
+if os.environ.get("RM_GPT_CALL_LOG"):
+    open(os.environ["RM_GPT_CALL_LOG"], "a").write(json.dumps({"job": "fake", "arm": os.environ.get("RM_ARM")}) + "\n")
+if ev:
+    open(ev, "w").write(scen)
+    open(ev + ".meta.json", "w").write(json.dumps({"job_win": "D:/fakejob", "rc": 0, "refused_tool_calls": 0}))
+open(a[a.index("--out") + 1], "w").write(json.dumps({"verdict": "accept", "reasons": ["r"], "arm_guess": "unknown"}))
+'''
+
+
+def _events(*items):
+    ev = [{"type": "thread.started"}, {"type": "turn.started"}] + [{"type": "item.completed", "item": dict(it, id="i%d" % i)}
+                                          for i, it in enumerate(items)]
+    ev += [{"type": "item.completed", "item": {"id": "m", "type": "agent_message", "text": "{}"}},
+           {"type": "turn.completed", "usage": {"input_tokens": 1, "output_tokens": 1}}]
+    return "".join(json.dumps(e) + "\n" for e in ev)
+
+
+def t_gpt_harden(tmp):
+    """ARENA_GPTJUDGE_HARDEN_ISOLATED_CODEX_HOME: own home, lockdown flags, no-tools prompt line, tripwire -> invalid
+    vote, per-call wipe; ARENA_JUDGE_GPT_METER_STRIPPED_BY_ENV: the judge's GPT call is metered."""
+    import judge_codex_home as JH                                   # noqa: PLC0415
+    home = Path(os.environ["ARENA_JUDGE_CODEX_HOME"])
+    scen = tmp / "harden_scenario.jsonl"
+    fake = tmp / "harden_model.py"
+    fake.write_text(HARDEN_MODEL % str(scen))
+    call = J.GptConsult(prefix=[sys.executable, str(fake)])
+    real_log = tmp / "real_gpt_calls.jsonl"
+    os.environ["RM_GPT_CALL_LOG"] = str(real_log)
+    prompt = J.build_prompt("crit", GATE, [], "diff --git a/x b/x", J.ARMS)
+    check(JH.PROMPT_NO_TOOLS in prompt, "the judge prompt carries the no-commands/no-files/no-web line")
+    # clean transcript -> a vote, with its tool record; flags on argv; prompt line reaches GPT; meter lands
+    scen.write_text(_events())
+    (home / "sessions" / "2026").mkdir(parents=True)
+    (home / "sessions" / "2026" / "rollout.jsonl").write_text("x")
+    (home / "history.jsonl").write_text("x")
+    (home / "logs_2.sqlite").write_text("x")
+    # production layout: the judge work root sits INSIDE the clone root (the cause of the stripped meter)
+    work = J.clones_root() / "judge" / ".jw" / "harden"
+    work.mkdir(parents=True)
+    text = call(prompt, work)
+    d = json.loads((work / "harden_dump.json").read_text())
+    a = d["argv"]
+    check(a[a.index("--codex-home") + 1] == str(home) and "--lockdown" in a and "--events" in a,
+          "the GPT judge runs with --codex-home <judge home> --lockdown --events")
+    check(JH.PROMPT_NO_TOOLS in d["prompt"], "the prompt GPT receives carries the no-tools line")
+    check(getattr(text, "meta", None) and text.meta["n_tools"] == 0 and text.meta["tripwire"] == [],
+          "clean transcript -> an answer with a tool record (0 tools, no trips): %s" % getattr(text, "meta", None))
+    check(not (home / "sessions").exists() and not (home / "history.jsonl").exists()
+          and not (home / "logs_2.sqlite").exists() and (home / "auth.json").is_file()
+          and (home / "config.toml").is_file(), "the judge home's per-call state is wiped; login and config stay")
+    check(d["env_log"] == str(work / "calls.jsonl"), "RM_GPT_CALL_LOG reaches gpt_consult inside the sandbox "
+          "(ARENA_JUDGE_GPT_METER_STRIPPED_BY_ENV) (%s)" % d["env_log"])
+    recs = [json.loads(x) for x in real_log.read_text().splitlines()] if real_log.is_file() else []
+    check(len(recs) == 1 and recs[0]["arm"] == "harness", "the judge's GPT call is metered, as harness spend (%s)" % recs)
+    cr = J.clones_root()
+    own = cr / "judge" / ".jw" / "x"
+    e = J.judge_env({"RM_GPT_CALL_LOG": str(own / "calls.jsonl"), "OTHER": str(cr / "v3" / "f")}, None, own=own)
+    check(e.get("RM_GPT_CALL_LOG") == str(own / "calls.jsonl") and "OTHER" not in e,
+          "judge_env: a path inside the call's own work dir survives the clone-root filter; any other clone path does not")
+    e = J.judge_env({"RM_GPT_CALL_LOG": str(own / "calls.jsonl")}, None)
+    check("RM_GPT_CALL_LOG" not in e, "judge_env without own= still drops it (the filter is unchanged elsewhere)")
+    pv = J.private_dir()
+    e = J.judge_env({"X": str(pv / "m.json")}, None, own=pv)
+    check("X" not in e, "judge_env: the private dir is dropped even when it is passed as own=")
+    # tripwire scenarios through _ask: an invalid vote, never a verdict
+    for name, items in (("command outside its job folder", [{"type": "command_execution",
+                                                              "command": "Get-Content C:\\Windows\\win.ini"}]),
+                        ("web call", [{"type": "web_search", "query": "x"}]),
+                        ("unknown tool item", [{"type": "mcp_tool_call", "tool": "read"}])):
+        scen.write_text(_events(*items))
+        v = J._ask("gpt", call, prompt, J.ARMS)
+        check(v["verdict"] == "invalid" and "tripwire" in v.get("why", "") and v.get("tools", {}).get("n_tools") == 1,
+              "%s -> INVALID vote with its tool record (%s)" % (name, v.get("why", "")[:70]))
+    scen.write_text(_events({"type": "command_execution", "command": "Get-Content D:\\fakejob\\prompt.md"}))
+    v = J._ask("gpt", call, prompt, J.ARMS)
+    check(v["verdict"] == "invalid" and (v.get("tools") or {}).get("n_tools") == 1 and (v.get("tools") or {}).get("commands"),
+          "ANY command, even one inside its own job folder -> INVALID (tools are off), recorded (%s)"
+          % (v.get("why") or "")[:60])
+    scen.write_text("")
+    v = J._ask("gpt", call, prompt, J.ARMS)
+    check(v["verdict"] == "invalid", "no transcript -> INVALID vote (fail closed): %s" % v.get("why", "")[:60])
+    scen.write_text(_events())
+    real_wipe = JH.wipe_call_state
+    try:
+        JH.wipe_call_state = lambda h: []
+        (home / "history.jsonl").write_text("x")
+        v = J._ask("gpt", call, prompt, J.ARMS)
+        check(v["verdict"] == "invalid" and "per-call state" in v.get("why", ""),
+              "forced: wipe disabled -> the home keeps history -> INVALID vote")
+    finally:
+        JH.wipe_call_state = real_wipe
+        JH.wipe_call_state(home)
+    # no judge home -> unavailable before any judge call
+    os.environ["ARENA_JUDGE_CODEX_HOME"] = str(tmp / "no_such_home")
+    try:
+        c, b, h = make_clone(Path(os.environ["ARENA_CLONES"]) / "nohome", "trio", 2, plant=False)
+        o = Fake(ans("accept"))
+        r = J.judge(task=task_for("T_H"), hidden=None, clone=c, base=b, head=h, arm="trio", gate=GATE,
+                    judges=J.Judges(o, call, Fake(ans("accept"))))
+        check(r["verdict"] == "invalid" and o.calls == 0 and "unavailable" in r.get("why", ""),
+              "judge home not set up -> invalid before ANY judge call (%s)" % r.get("why", "")[:80])
+    finally:
+        os.environ["ARENA_JUDGE_CODEX_HOME"] = str(home)
+
+
 def main():
     if not shutil.which("bwrap"):
         print("FAIL  bwrap not installed: the judge cannot run, and this test cannot prove the map is hidden")
         return 1
     tmp = Path(tempfile.mkdtemp(prefix="arena_judge_st_"))
     keys = ("ARENA_ROOT", "ARENA_CLONES", "ARENA_PRIVATE", "ARENA_JUDGE_WORK", "ARENA_JUDGE_OPUS_MODEL",
-            "ANTHROPIC_DEFAULT_OPUS_MODEL", "ARENA_ARMS", "ARENA_ARM_TOKENS")
+            "ANTHROPIC_DEFAULT_OPUS_MODEL", "ARENA_ARMS", "ARENA_ARM_TOKENS", "ARENA_JUDGE_CODEX_HOME",
+            "ARENA_JUDGE_CODEX_BASE", "ARENA_JUDGE_LOCK_DIR", "RM_GPT_CALL_LOG")
     saved = {k: os.environ.get(k) for k in keys}
     try:
         for k in ("ARENA_ARMS", "ARENA_ARM_TOKENS"):
@@ -1021,6 +1157,7 @@ def main():
                           ARENA_PRIVATE=str(tmp / "private"), ARENA_JUDGE_WORK=str(tmp / "work"))
         for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_JUDGE_WORK"):
             Path(os.environ[k]).mkdir(parents=True)
+        fake_judge_home(tmp)
         t_neutraliser(tmp)
         t_replay(tmp)
         t_arm_map(tmp)
@@ -1046,6 +1183,7 @@ def main():
         t_binary(tmp)
         t_one_verdict(tmp)
         t_mi(tmp)
+        t_gpt_harden(tmp)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)

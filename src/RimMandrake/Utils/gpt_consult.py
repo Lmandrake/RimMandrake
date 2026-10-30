@@ -60,7 +60,31 @@ def real_tokens(codex_log_text):
     return int(m[-1].replace(",", "")) if m else None
 
 
-def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None):
+# --lockdown (ARENA_GPTJUDGE_HARDEN_ISOLATED_CODEX_HOME): every tool-bearing feature of codex-cli 0.164 (`codex features
+# list`, read 2026-10-30). code_mode_host is the `text(await tools.exec_command(...))` path the arena judge used.
+LOCKDOWN_FEATURES = ("shell_tool", "unified_exec", "code_mode_host", "browser_use", "browser_use_external",
+                     "in_app_browser", "computer_use", "apps", "plugins", "multi_agent", "image_generation",
+                     "view_image", "hooks", "skill_search", "tool_suggest", "memories")
+LOCKDOWN_ARGS = ["--ephemeral", "--ignore-rules", "--strict-config", "-c", 'web_search="disabled"'] + \
+    [x for f in LOCKDOWN_FEATURES for x in ("--disable", f)]
+REFUSED_TOOL_RE = re.compile(r"tools::router: error=")
+
+
+def events_tokens(events_text):
+    """Real token use from a --json event stream: the last turn.completed usage (input + output), or None."""
+    tok = None
+    for line in (events_text or "").splitlines():
+        try:
+            ev = json.loads(line)
+        except ValueError:
+            continue
+        if isinstance(ev, dict) and ev.get("type") == "turn.completed" and isinstance(ev.get("usage"), dict):
+            u = ev["usage"]
+            tok = int(u.get("input_tokens") or 0) + int(u.get("output_tokens") or 0)
+    return tok
+
+
+def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None, tokens=None):
     """One record per call in the arm-metering log (gpt_call_log: atomic file-per-call on drvfs), tagged from
     RM_ARM (absent -> arm null = flagged UNTAGGED by spend_census). tokens_used is the REAL codex figure when the
     codex log has it; in/out_tok_est are chars/4 ESTIMATES kept as a labelled fallback. Never fails the consult."""
@@ -68,7 +92,7 @@ def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None):
         import gpt_call_log
         rec = {"t": time.time(), "arm": os.environ.get("RM_ARM") or None, "job": job, "model": model, "rc": rc,
                "in_tok_est": len(prompt) // 4, "out_tok_est": len(answer_text) // 4,
-               "tokens_used": real_tokens(codex_log_text)}
+               "tokens_used": tokens if tokens is not None else real_tokens(codex_log_text)}
         gpt_call_log.write_record(rec)
     except Exception as e:                                  # noqa: BLE001
         print("[consult] WARN: call not metered: %s" % e, file=sys.stderr)
@@ -98,7 +122,18 @@ def main(argv=None):
     ap.add_argument("--effort", default="high", help="model_reasoning_effort (default high)")
     ap.add_argument("--timeout", type=int, default=1500)
     ap.add_argument("--keep", action="store_true", help="keep the scratch job dir")
+    ap.add_argument("--codex-home", help="run codex with this CODEX_HOME (must already hold a login; never seeded here)")
+    ap.add_argument("--lockdown", action="store_true",
+                    help="no tools: --ephemeral, every tool feature disabled, web search off, strict config")
+    ap.add_argument("--events", help="run codex --json and write its event stream (the transcript) here, plus "
+                                     "<EVENTS>.meta.json naming the job dir and home")
     a = ap.parse_args(argv)
+    env = None
+    if a.codex_home:
+        home = Path(a.codex_home)
+        if not (home / "auth.json").is_file():
+            sys.exit("--codex-home %s has no auth.json (set it up first; gpt_consult never seeds a home)" % home)
+        env = codex_image.child_env(home)
     if a.prompt_file:
         question = Path(a.prompt_file).read_text()
     elif a.question:
@@ -117,6 +152,10 @@ def main(argv=None):
            "-c", 'model_reasoning_effort="%s"' % a.effort]
     if a.model and a.model != "inherit":
         cmd += ["-m", a.model]
+    if a.lockdown:
+        cmd += LOCKDOWN_ARGS + ["-C", codex_image.wsl_to_win(job)]
+    if a.events:
+        cmd.append("--json")
     for i, img in enumerate(a.image):                       # codex reads Windows paths; stage beside the prompt
         src = Path(img)
         if not src.is_file():
@@ -130,10 +169,14 @@ def main(argv=None):
     print("[consult] %d chars, %d file(s), %d image(s), model %s, job %s" % (
         len(prompt), len(a.file), len(a.image), a.model, codex_image.wsl_to_win(job)), file=sys.stderr)
     started = time.time()
+    events = Path(a.events) if a.events else None
+    if events:
+        events.parent.mkdir(parents=True, exist_ok=True)
     try:
-        with open(job / "prompt.md", "rb") as fin, open(job / "codex.log", "wb") as log:
-            rc = subprocess.run(cmd, cwd=str(job), stdin=fin, stdout=log, stderr=subprocess.STDOUT,
-                                timeout=a.timeout).returncode
+        with open(job / "prompt.md", "rb") as fin, open(job / "codex.log", "wb") as log, \
+                (open(events, "wb") if events else open(os.devnull, "wb")) as evf:
+            rc = subprocess.run(cmd, cwd=str(job), stdin=fin, stdout=evf if events else log,
+                                stderr=log if events else subprocess.STDOUT, timeout=a.timeout, env=env).returncode
     except subprocess.TimeoutExpired:
         rc = 124
     answered = answer.is_file() and bool(answer.read_text().strip())
@@ -142,7 +185,14 @@ def main(argv=None):
         clog = (job / "codex.log").read_text(errors="replace")
     except OSError:
         clog = None
-    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc, clog)
+    etok = None
+    if events:
+        etok = events_tokens(events.read_text(encoding="utf-8", errors="replace") if events.is_file() else "")
+        meta = {"job_win": codex_image.wsl_to_win(job), "job": str(job), "rc": rc, "lockdown": bool(a.lockdown),
+                "codex_home_win": env["CODEX_HOME"] if env else None,
+                "refused_tool_calls": len(REFUSED_TOOL_RE.findall(clog or ""))}
+        Path(str(events) + ".meta.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8")
+    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc, clog, etok)
     if not answered:
         tail = (job / "codex.log").read_text(errors="replace")[-2000:]
         print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (

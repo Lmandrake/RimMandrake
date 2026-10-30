@@ -1,0 +1,2 @@
+ARENA_JUDGE_GPT_METER_STRIPPED_BY_ENV was the same env-cleaning bug: judge_env drops every value naming clones_root, and the judge work root sits under clones_root, so RM_GPT_CALL_LOG=<work>/calls.jsonl was dropped and no judge GPT call was ever metered. Fixed with judge_env(own=work): a caller-supplied value inside the call's own workspace survives. An allow/deny env filter must be tested with the production directory layout, not a tmp dir outside the filtered root.
+home: src/RimMandrake/Utils/arena/arena_judge.py
