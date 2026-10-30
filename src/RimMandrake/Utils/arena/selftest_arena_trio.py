@@ -16,6 +16,7 @@ fix reverted), and must go RED there: that is the forced-failure proof.
 """
 import json
 import os
+import shlex
 import shutil
 import subprocess
 import sys
@@ -483,6 +484,17 @@ print("filed")
 """
 
 
+# A scenario that parks without fake_rimflow must never reach the real rimflow: sc_never_satisfied once filed the
+# fixture TRIO_ABSDIFF_VET_PARKED into the live ledger (TRIO_ABSDIFF_VET_PARKED, closed as this leak).
+RF_INERT = "%s -c \"raise SystemExit(3)\"" % shlex.quote(sys.executable)
+LEDGER_SHARDS = Path(__file__).resolve().parents[4] / "infrastructure" / "state" / "ledger" / "events"
+
+
+def real_ledger_mentions():
+    """How many real ledger lines name the fixture's park item: a selftest run must not move this number."""
+    return sum(f.read_bytes().count(b"TRIO_ABSDIFF_VET_PARKED") for f in sorted(LEDGER_SHARDS.glob("*.jsonl")))
+
+
 def fake_rimflow(w, tmp):
     d = Path(tmp) / ("rf_" + w.ctl.parent.name + w.ctl.name)
     d.mkdir(parents=True, exist_ok=True)
@@ -512,7 +524,7 @@ def sc_park_files_item(tmp, mod, tag):
         w.run(4)
         calls2 = len((d / "store.json.calls").read_text()) if (d / "store.json.calls").exists() else 0
     finally:
-        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+        os.environ["TRIO_RIMFLOW_CMD"] = RF_INERT
     a = next(iter(have.values()), [])
     notes = (d / "store.json.notes").read_text() if (d / "store.json.notes").exists() else ""   # verdict/why/sha/branch ride in a note
     print("     PF%s: items %s calls %s/%s" % (tag, list(have), calls1, calls2))
@@ -537,7 +549,7 @@ def sc_park_filing_fails(tmp, mod, tag):
         w.run(4)
         have = json.loads((d / "store.json").read_text()) if (d / "store.json").exists() else {}
     finally:
-        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+        os.environ["TRIO_RIMFLOW_CMD"] = RF_INERT
     print("     PX%s: out %s / %s items %s" % (tag, out[-1][:30], out2[-1][:30], list(have)))
     return (out[-1].startswith("parked") and pk1 == 1 and len(parks(w)) == 1 and list(have) == ["TRIO_ABSDIFF_VET_PARKED"]
             and len(w.recs("critic_round", "park")) == 1)
@@ -562,7 +574,7 @@ def sc_park_names(tmp, mod, tag):
         w.run(4)
         have = json.loads((d / "store.json").read_text())
     finally:
-        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+        os.environ["TRIO_RIMFLOW_CMD"] = RF_INERT
     mine = [n for n in have if n != "TRIO_ABSDIFF_VET_PARKED"]
     print("     PN%s: names %s items %s" % (tag, names, list(have)))
     return ok and mine == [mod.park_item_name("TRIO_ABSDIFF", force_hash=True)] and len(have) == 2
@@ -606,7 +618,7 @@ def _live_park(tmp, mod, tag, name, task, want):
     try:
         out = w.run(6)
     finally:
-        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+        os.environ["TRIO_RIMFLOW_CMD"] = RF_INERT
     pk = parks(w)
     br = subprocess.run(["git", "rev-parse", "--verify", "-q", T.FAILED_BRANCH % task["id"]], cwd=str(w.root),
                         capture_output=True, text=True).stdout.strip()
@@ -783,6 +795,9 @@ def main():
     os.environ["ARENA_METER_HELPERS"] = str(tmp / "meter_helpers")      # tester captures: not the live arena root
     TBASE[0] = Path(tempfile.mkdtemp(prefix="selftest_trio_rt_"))
     saved = os.environ.pop("RM_ARM", None)
+    os.environ["TRIO_RIMFLOW_CMD"] = RF_INERT
+    ledger0 = real_ledger_mentions()
+    check(ledger0 > 0, "the real-ledger probe can see the shards")
     try:
         t_parse_simplify()
         for name, fn in SCENARIOS:
@@ -791,7 +806,9 @@ def main():
             m = variant(old, new)
             check(not guarded(fn, tmp, m, ".m%d" % i), "RED with the fix reverted: " + name)
         check("trio_loop.py" in __import__("arena_eventlog").ENTRYPOINTS, "trio_loop.py is a harness entrypoint")
+        check(real_ledger_mentions() == ledger0, "no scenario wrote the fixture park into the real ledger")
     finally:
+        os.environ.pop("TRIO_RIMFLOW_CMD", None)
         if saved is not None:
             os.environ["RM_ARM"] = saved
         shutil.rmtree(tmp, ignore_errors=True)
