@@ -512,9 +512,13 @@ def default_precheck(root, log):
     return precheck_verdict(r.returncode, r.stdout)
 
 
-def default_sync(root, sleep=time.sleep, tries=3, pin=None):
+def default_sync(root, sleep=time.sleep, tries=3, pin=None, report=None):
     """The Ralph doc's pull (ralph_loop_design §1.2: `for n in 1 2 3; do git pull --rebase -q && break; sleep
-    $((n*30)); done`), on main, before every build pass (review L6). -> True when a pull succeeded."""
+    $((n*30)); done`), on main, before every build pass (review L6). -> True when a pull succeeded.
+    A merge driver in the clone's config (`merge.<name>.driver`, builder-set) is never run: the pull pins it to
+    `false`, which turns even a clean merge of a `merge=<name>` file into a conflict. Refusing to run it is right;
+    wedging the loop on it is not, so: `report` gets a defect detail, the half-done rebase is aborted, the driver
+    keys are unset in the clone (git then merges those files as plain text, running nothing) and the pull is retried."""
     top = git_run(root, "rev-parse", "--show-toplevel", capture_output=True, text=True)
     if top.returncode != 0 or os.path.realpath(top.stdout.strip()) != os.path.realpath(str(root)):
         return False                                              # never touch a tree that is not the loop's own clone
@@ -540,12 +544,31 @@ def default_sync(root, sleep=time.sleep, tries=3, pin=None):
         except SG.CloneRefused:
             return False
         Path(pin).write_text(url + "\n")
-    for n in range(1, tries + 1):
+    def pull():
         try:
-            ok = SG.git_run(root, "pull", "--rebase", "-q", "--upload-pack=git-upload-pack", url, MAIN,
-                            transport=True, url=url, capture_output=True, timeout=600).returncode == 0
+            return SG.git_run(root, "pull", "--rebase", "-q", "--upload-pack=git-upload-pack", url, MAIN,
+                              transport=True, url=url, capture_output=True, timeout=600).returncode == 0
         except SG.CloneRefused:                       # url.*.insteadOf / a remote section named like the pin
+            return None
+    recovered = False
+    for n in range(1, tries + 1):
+        ok = pull()
+        if ok is None:
             return False
+        if not ok and not recovered:
+            drivers = SG.merge_drivers(root)
+            if drivers:                               # the pinned-false driver is the likely cause: recover, retry now
+                recovered = True
+                if report:
+                    report({"kind": "sync_merge_driver_refused", "drivers": drivers,
+                            "note": "builder-set merge drivers are never run; unset in the clone, pull retried"})
+                for a in (["rebase", "--abort"], ["merge", "--abort"]):
+                    git_run(root, *a, capture_output=True)
+                for k in drivers:
+                    git_run(root, "config", "--local", "--unset-all", k, capture_output=True)
+                ok = pull()
+                if ok is None:
+                    return False
         if ok:
             return True
         if n < tries:
@@ -664,7 +687,9 @@ class Loop:
         self.precheck = precheck or (lambda log: default_precheck(self.root, log))
         self.release = release or (lambda: default_release(self.root))
         self.publish_cmd = publish_cmd
-        self.sync = (lambda: default_sync(self.root, self.sleep, pin=self.ctl / "origin.url")) if sync == "default" else sync   # None: no pull
+        self._sync_notes = []                                     # defect details default_sync reports; drained per pass
+        self.sync = (lambda: default_sync(self.root, self.sleep, pin=self.ctl / "origin.url",
+                                          report=self._sync_notes.append)) if sync == "default" else sync   # None: no pull
         self.new_id = new_id or (lambda role: "ralph_a-%s-%s" % (role, uuid.uuid4().hex[:12]))
         self.tester_workdir = tester_workdir or self._export_tree
         self.timeout_s, self.poll_s, self.sleep = timeout_s, poll_s, sleep
@@ -826,7 +851,11 @@ class Loop:
         if busy:
             raise Refused("refused: process(es) %s have their cwd in the clone %s; no build pass beside them"
                           % ([(b, proc_cmd(b)) for b in busy[:8]], self.root))
-        if self.sync is not None and not self.sync():
+        synced = self.sync is None or self.sync()
+        for d in self._sync_notes:
+            self.emit("defect", task, detail=d)
+        self._sync_notes.clear()
+        if not synced:
             return self.status("sync failed")
         if self.git("rev-parse", "--verify", "-q", WIP, check=False):
             self.git("switch", "-q", WIP)

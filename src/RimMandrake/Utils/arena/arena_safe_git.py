@@ -88,10 +88,13 @@ def _clone_lines(root, argv):
     return [x for x in r.stdout.split(b"\0") if x]
 
 
-def merge_driver_keys(root):
-    """the `merge.<name>.driver` config keys the clone defines (a builder-set driver would run as the harness)"""
-    return [kv.decode("utf-8", "replace").partition("\n")[0]
-            for kv in _clone_lines(root, ["config", "-z", "--get-regexp", r"^merge\..*\.driver$"])]
+def merge_drivers(root):
+    """{`merge.<name>.driver`: command} the clone's config defines (a builder-set driver would run as the harness)"""
+    out = {}
+    for kv in _clone_lines(root, ["config", "-z", "--get-regexp", r"^merge\..*\.driver$"]):
+        k, _, v = kv.decode("utf-8", "replace").partition("\n")
+        out[k] = v
+    return out
 
 
 def net_cfg(root, url=None):
@@ -122,7 +125,7 @@ def net_cfg(root, url=None):
         for v in vs:
             out += ["-c", "%s=%s" % (k, v)]
     if root is not None:
-        for k in merge_driver_keys(root):
+        for k in merge_drivers(root):
             out += ["-c", k + "=false"]
     return out
 

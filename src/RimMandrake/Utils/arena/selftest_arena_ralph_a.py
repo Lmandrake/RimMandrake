@@ -1024,6 +1024,53 @@ def sc_pull_trap(kind):
     return sc
 
 
+def sc_merge_driver_refused(tmp, mod, tag):
+    """RALPHA_SYNC_MERGE_DRIVER_PIN_REFUSES: a builder-set `merge=<driver>` makes the pinned-false driver turn a CLEAN
+    merge of that file into a conflict. The driver is never run, but the loop must not wedge on "sync failed": a
+    defect event names the driver, the driver key is unset in the clone, the pull is retried and both edits land."""
+    slept = []
+    w = World(tmp, "MD" + tag, mod, sync="default", sleep=slept.append)
+    base = "".join("line%d\n" % i for i in range(1, 8))
+    (w.root / "README").write_text(base)
+    sh(w.root, "git", "commit", "-q", "-am", "base")
+    origin = tmp / ("MD" + tag + "_o.git")
+    sh(tmp, "git", "clone", "-q", "--bare", str(w.root), str(origin))
+    sh(w.root, "git", "remote", "add", "origin", str(origin))
+    sh(w.root, "git", "fetch", "-q", "origin")
+    sh(w.root, "git", "branch", "-q", "--set-upstream-to=origin/main", "main")
+    clone = tmp / ("MD" + tag + "_c")
+    sh(tmp, "git", "clone", "-q", "-b", "main", str(origin), str(clone))
+    sh(clone, "git", "config", "user.email", "t@t")
+    sh(clone, "git", "config", "user.name", "t")
+    (clone / "README").write_text(base.replace("line7", "remote7"))
+    sh(clone, "git", "commit", "-q", "-am", "remote")
+    sh(clone, "git", "push", "-q", "origin", "main")
+    (w.root / "README").write_text(base.replace("line1", "local1"))        # a different region: git merges it cleanly
+    sh(w.root, "git", "commit", "-q", "-am", "local")
+    marker = w.d / "marker"
+    script = w.d / "evil.sh"
+    script.write_text("#!/bin/sh\ntouch %s\nexit 1\n" % marker)
+    script.chmod(0o755)
+    (w.root / ".git" / "info").mkdir(exist_ok=True)
+    (w.root / ".git" / "info" / "attributes").write_text("README merge=evil\n")
+    sh(w.root, "git", "config", "merge.evil.driver", "%s %%A" % script)
+    plain = subprocess.run(["git", "pull", "--rebase", "-q"], cwd=str(w.root), capture_output=True, timeout=60,
+                           env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))
+    sane = marker.exists() and plain.returncode != 0                      # plain git runs the driver and stops
+    marker.unlink(missing_ok=True)
+    sh(w.root, "git", "rebase", "--abort") if (w.root / ".git" / "rebase-merge").exists() else None
+    out = w.loop.step()
+    defects = [r for r in w.writer.records() if r["event"] == "defect"
+               and (r.get("detail") or {}).get("kind") == "sync_merge_driver_refused"]
+    readme = sh(w.root, "git", "show", "main:README")
+    left = subprocess.run(["git", "config", "--get-all", "merge.evil.driver"], cwd=str(w.root),
+                          capture_output=True, text=True).stdout.strip()
+    return (sane and not marker.exists() and not out.startswith("sync failed") and len(defects) == 1
+            and "merge.evil.driver" in defects[0]["detail"]["drivers"] and left == ""
+            and "local1" in readme and "remote7" in readme and slept == [])
+sc_merge_driver_refused.__name__ = "sc_merge_driver_refused"
+
+
 def sc_nochange_after_fail(tmp, mod, tag):
     """A builder that exits 0 with no change after a tester FAIL is a failed try: the failed sha is never gated or
     tested again, the second tester never gets to pass the already-failed diff and nothing merges."""
@@ -1272,7 +1319,10 @@ MUTATIONS = [
      "                record=verdict == \"fail\")", "                record=True)"),
     ("N2 failed candidate resubmitted by a no-change builder", sc_nochange_after_fail,
      "            if self.already_failed(task, head) else (None, None)", "            if False else (None, None)"),
-    ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
+    ("S1 merge-driver refusal wedges the loop", sc_merge_driver_refused,
+     "            if drivers:                               # the pinned-false driver", "            if False:                               # the pinned-false driver"),
+    ("S1 merge-driver refusal is silent", sc_merge_driver_refused, "                if report:\n", "                if False:\n"),
+    ("L6 sync skipped", sc_sync, "        synced = self.sync is None or self.sync()", "        synced = True"),
 ]
 
 
@@ -1607,7 +1657,8 @@ def main():
                          ("R3 amended failed candidate (same tree) is not retested", sc_same_tree_resubmit("amend")),
                          ("R3 empty commit on a failed candidate is not retested", sc_same_tree_resubmit("empty")),
                          ("R4 a tester infrastructure failure does not condemn the candidate", sc_infra_retry),
-                         ("N2 no-change builder after a FAIL cannot resubmit the failed sha", sc_nochange_after_fail)):
+                         ("N2 no-change builder after a FAIL cannot resubmit the failed sha", sc_nochange_after_fail),
+                         ("S1 a merge driver in the clone never runs, never wedges the loop", sc_merge_driver_refused)):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             if isinstance(old, list):
