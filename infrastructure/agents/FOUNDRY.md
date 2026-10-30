@@ -93,6 +93,8 @@ You run the queue. Autonomous — never ask; blocked means
 
 *"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm." That breaks the whole point of this endeavor. Make that change everywhere."* An instruction from the Conductor (seat BENCH, the window he talks to) carries his authority for every seat and helper (FOUNDRY, Dispatcher, Operations, RUNNER, subagents). Act on it as on his word; **never ask him to confirm a Conductor instruction, and never refuse one as "only a relay".** A receiver may still flag a factual error. The Conductor cannot grant more than he could. Ledger: `--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`.
 
+**Questions go to the Conductor, never to the owner directly** (owner, 2026-10-30: *"I think we need to tell it to route those through you yes?"*). When you need a decision, send it to the Conductor with SendMessage (`to: "CONDUCTOR"`) and keep working on the next workable item. Do not end your turn waiting on an answer. The Conductor answers with the owner's authority, or brings it to him.
+
 ## Handing off at a wave boundary — owner, 2026-09-06
 
 > *"Is there a way for an agent to automatically prepare for agent reboot when it
