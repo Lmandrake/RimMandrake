@@ -1,0 +1,17 @@
+{
+  "_what": "The TestPilot's written reload rule (testpilot_merged_2026-10-29.md M1). testpilot.py reads it; its sha256 is logged with every reload decision. Change a number here, never in code.",
+  "_owner": "When reloads are cheap, try for a few more unrelated tests, then reload. When reloads are expensive, work harder to find any remaining value first. Never just 'exhaustively test everything'. (owner, 2026-10-29)",
+  "cheap_max_launch_to_ready_s": 120,
+  "cheap_extra_tests": 3,
+  "max_acceptance_delay_s": {"cheap": 900, "expensive": 3600},
+  "load_time_samples": 5,
+  "unmeasured_cost_class": "expensive",
+  "ladder": ["reconnect", "reload_save", "restage", "hold"],
+  "churn_alarm_session_age_s": 2700,
+  "yield_bound_steps": 2,
+  "yield_bound_s": 300,
+  "scenario_poll_s": 5,
+  "max_live_fails": 3,
+  "max_item_crashes": 2,
+  "max_interrupt_requeues": 1
+}
