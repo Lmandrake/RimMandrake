@@ -305,11 +305,14 @@ def check_live_plan(plan) -> dict:
     ids = {s["id"] for s in plan["scenarios"]}
     for s in plan["scenarios"]:
         sid = s["id"]
+        if any(c in sid for c in "/\\\0") or sid in (".", ".."):   # the id is part of the scenario's log file name
+            raise PilotRefused("scenario id %r cannot name a log file (path separator, NUL or dot name)" % sid)
         extra = sorted(set(s) - set(SCENARIO_KEYS))
         if extra:
             raise PilotRefused("scenario %s has keys testpilot does not read: %s" % (sid, extra))
-        if not all(isinstance(a, str) for a in s["argv"]) or not s["argv"][0]:   # "" is a real argument, not a program
-            raise PilotRefused("scenario %s argv must be strings with a non-empty program: %r" % (sid, s["argv"]))
+        if not all(isinstance(a, str) and "\0" not in a for a in s["argv"]) or not s["argv"][0]:   # "" is an argument
+            raise PilotRefused("scenario %s argv must be NUL-free strings with a non-empty program: %r"
+                               % (sid, s["argv"]))
         if "footprint" in s:
             fp = s["footprint"]
             if not isinstance(fp, dict) or set(fp) - set(FOOTPRINT_KEYS):
