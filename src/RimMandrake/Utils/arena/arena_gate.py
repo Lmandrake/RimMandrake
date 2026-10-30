@@ -47,9 +47,13 @@ SANDBOX: every step that runs code from the checkout (tests, xml, csharp, deploy
 `--ro-bind / /`, a fresh /tmp, tmpfs over the real HOME, the event-token and anchor directories
 (~/.local/state/rimmandrake/arena_harness, $ARENA_EVENT_TOKEN_FILE's dir), the private map dir
 (~/.local/state/rm_arena_private, $ARENA_PRIVATE) and `<arena>/judge`; writable: the data root (bound before the
-masks), the two clones and an empty HOME; pid namespace unshared; cwd the clean checkout; an allow-listed
-environment only (PATH, locale, USER, WSL interop, WINBUILD_DOTNET) plus RM_DATA_ROOT resolved by the parent. Before
-the steps a probe inside the sandbox must fail to see the token file, else every sandboxed step is UNMEASURED. No
+masks) and an empty HOME; both clones are READ-ONLY (the C# build writes a throwaway copy of head, and the
+checkouts are fingerprinted before/after it: a change is a FAIL and stops every later sandboxed step); pid namespace
+unshared; cwd the clean checkout; an allow-listed environment only (PATH, locale, USER, WINBUILD_DOTNET) plus
+RM_DATA_ROOT resolved by the parent. WSL interop (WSL_INTEROP/WSL_DISTRO_NAME/WSLENV, /run/WSL, /init) is given to
+the C# build alone; every other step gets the variables scrubbed, a tmpfs over /run/WSL and an empty file over /init.
+Before the steps a probe inside the sandbox must fail to see the token file, any ARENA*/WSL* variable or a live
+interop path, else every sandboxed step is UNMEASURED. No
 bwrap -> UNMEASURED (the gate never runs arm code beside the key). Signing happens only in THIS parent process,
 after every step has finished.
 
@@ -108,8 +112,13 @@ TOOL_SEARCH = ("src/RimMandrake/Utils", "skills/rimworld-modding/scripts", "src/
 HARNESS_PREFIXES = ("src/RimMandrake/Utils/arena/", "src/RimMandrake/rimflow/")
 SPECIAL_TESTS = ("src/RimMandrake/Utils/rimplace/selftest.py", "skills/generating-rimworld-sprites/scripts/selftest.py")
 SHADOW_NAMES = frozenset(sys.stdlib_module_names) | {"sitecustomize", "usercustomize"}
-ENV_ALLOW = ("PATH", "LANG", "LC_ALL", "LC_CTYPE", "TERM", "USER", "LOGNAME", "TZ", "WSL_INTEROP", "WSL_DISTRO_NAME",
-             "WSLENV", "WINBUILD_DOTNET")
+ENV_ALLOW = ("PATH", "LANG", "LC_ALL", "LC_CTYPE", "TERM", "USER", "LOGNAME", "TZ", "WINBUILD_DOTNET")
+# WSL interop (running a Windows .exe, or wsl.exe to start a process OUTSIDE bubblewrap's namespaces) is the C# build's
+# alone: every other step gets none of these variables, a tmpfs over the interop socket dir and an empty file over the
+# /init interpreter. Best-effort: binfmt_misc is kernel-wide and the build itself still runs Windows-side.
+WSL_ENV = ("WSL_INTEROP", "WSL_DISTRO_NAME", "WSLENV")
+WSL_RUN_DIRS = ("/run/WSL",)
+WSL_INIT = "/init"
 GAME = "/mnt/c/Program Files (x86)/Steam/steamapps"
 DEFS_ROOTS = (GAME + "/common/RimWorld/Data", GAME + "/workshop/content/294100", GAME + "/common/RimWorld/Mods")
 DUMP_DEFAULT = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump"
@@ -299,15 +308,21 @@ def _main(_write=os.write, _close=os.close, _exit=os._exit, _run=runpy.run_path,
           _get_tool=sys.monitoring.get_tool, _get_events=sys.monitoring.get_events,
           _set_events=sys.monitoring.set_events, _register=sys.monitoring.register_callback,
           _DISABLE=sys.monitoring.DISABLE, _LINE=sys.monitoring.events.LINE, _START=sys.monitoring.events.PY_START,
-          _fullmatch=re.fullmatch):
+          _RET=sys.monitoring.events.PY_RETURN, _fullmatch=re.fullmatch, _realpath=os.path.realpath,
+          _stdlib=os.path.realpath(os.path.dirname(os.__file__)), _self=os.path.realpath(__file__)):
     fd = int(sys.argv[1]); path = os.path.realpath(sys.argv[2]); os.set_inheritable(fd, False)
     nonce = sys.stdin.readline().strip()
+    entries = sys.stdin.readline().strip()   # the harness's collection pass, made BEFORE this process started
     nul = os.open(os.devnull, os.O_RDONLY); os.dup2(nul, 0); os.close(nul)
-    if not _fullmatch(r"[0-9a-f]{32}", nonce):
+    if not _fullmatch(r"[0-9a-f]{32}", nonce) or not _fullmatch(r"ENTRIES [\w,]*", entries):
         _exit(3)
+    want = frozenset(x for x in entries[8:].split(",") if x)
     cnt = [0, 0, 0, 0]                       # asserts, checks, tests, lines
+    done = set(); _done = done.add           # entry names (t_*/test_*/main) that RETURNED normally
+    mod = [0]                                # 1 once the selftest's module body ran to its own end / own sys.exit
     def out(status, tampered):
-        line = "ARENAGATE2 %%s %%s %%d %%d %%d %%d %%d\n" %% (nonce, status, cnt[0], cnt[1], cnt[2], cnt[3], tampered)
+        line = "ARENAGATE2 %%s %%s %%d %%d %%d %%d %%d %%d %%d\n" %% (nonce, status, cnt[0], cnt[1], cnt[2], cnt[3],
+                                                             tampered, len(done) + mod[0], len(want) + 1)
         _write(fd, line.encode("ascii")); _close(fd)
     try:
         src = open(path, encoding="utf-8", errors="replace").read()
@@ -333,18 +348,37 @@ def _main(_write=os.write, _close=os.close, _exit=os._exit, _run=runpy.run_path,
             cnt[2] += 1
         else:
             return _DISABLE
+    def on_return(code, off, val):
+        if code.co_filename != path:
+            return _DISABLE
+        n = code.co_name
+        if n in want:
+            _done(n)
+        return _DISABLE
     _M.use_tool_id(TOOL, "arena_gate")
-    _register(TOOL, _LINE, on_line); _register(TOOL, _START, on_start)
+    EV = EV | _RET
+    _register(TOOL, _LINE, on_line); _register(TOOL, _START, on_start); _register(TOOL, _RET, on_return)
     sys.argv = [path]; sys.path.insert(0, os.path.dirname(path))
     ok, err = True, None
     _set_events(TOOL, EV)
     try:
         _run(path, run_name="__main__")
+        mod[0] = 1
     except _BE as e:
         ok = False
         if _type(e) is _SE:
             c = e.code
             ok = c is None or c is False or (_type(c) is _int and c == 0)
+            # the exit is the selftest's own only when the innermost frame outside the stdlib (sys.exit, unittest.main
+            # ...) is the selftest file: an exit from candidate code (import time, mid-test) leaves the module undone
+            tb, last = e.__traceback__, None
+            while tb is not None:
+                f = _realpath(tb.tb_frame.f_code.co_filename)
+                if not (f == _stdlib or f.startswith(_stdlib + "/") or f == _self):
+                    last = f
+                tb = tb.tb_next
+            if last == path:
+                mod[0] = 1
         if not ok:
             err = e
     tampered = 0
@@ -352,7 +386,8 @@ def _main(_write=os.write, _close=os.close, _exit=os._exit, _run=runpy.run_path,
         if _get_tool(TOOL) != "arena_gate" or _get_events(TOOL) != EV:
             tampered = 1
         _set_events(TOOL, 0)
-        if _register(TOOL, _LINE, None) is not on_line or _register(TOOL, _START, None) is not on_start:
+        if _register(TOOL, _LINE, None) is not on_line or _register(TOOL, _START, None) is not on_start or \
+                _register(TOOL, _RET, None) is not on_return:
             tampered = 1
     except _BE:
         tampered = 1
@@ -369,12 +404,61 @@ def _main(_write=os.write, _close=os.close, _exit=os._exit, _run=runpy.run_path,
     _exit(0 if ok else 1)
 _main()
 """ % {"check": CHECK_NAME.pattern}
-REC_RE = re.compile(rb"ARENAGATE2 ([0-9a-f]{32}) (pass|fail) (\d{1,9}) (\d{1,9}) (\d{1,9}) (\d{1,9}) ([01])\n")
+REC_RE = re.compile(rb"ARENAGATE2 ([0-9a-f]{32}) (pass|fail) (\d{1,9}) (\d{1,9}) (\d{1,9}) (\d{1,9}) ([01]) (\d{1,9}) "
+                    rb"(\d{1,9})\n")
 RESIDUAL_FORGERY = ("the candidate shares the runner's interpreter: code that reaches the runner's frame or closure "
                     "(gc.get_referrers/get_objects, frame f_back/f_locals, closure cells, ctypes) can read the nonce "
                     "and fd, write a forged pass line and exit 0. TAMPER_RE refuses the obvious spellings; a "
                     "sufficiently obfuscated one is caught only by a separate-process tracer, which this gate does "
-                    "not have.")
+                    "not have. The completion counts (done/expected) live in the same interpreter and can be forged "
+                    "the same way.")
+RESIDUAL_INTEROP = ("WSL interop is closed best-effort only: binfmt_misc's WSLInterop entry is kernel-wide and the "
+                    "/init socket protocol is undocumented, so a sandboxed step that finds another route to the "
+                    "Windows side (or the C# build, which keeps interop, via a csproj Exec target) runs outside "
+                    "bubblewrap as the same OS user. The build's damage to the checkouts is detected (fingerprint "
+                    "before/after), not prevented; the signing token is protected only by being outside the sandbox.")
+
+
+# The collection pass: a SEPARATE child, run before the runner, that only parses the selftest (no candidate code runs)
+# and names the entries a finished run must have returned from: every t_*/test_* function and a top-level main. The
+# runner adds the module body itself, so expected = len(entries) + 1.
+COLLECT_SRC = r"""
+import ast, re, sys
+tree = ast.parse(open(sys.argv[1], encoding="utf-8", errors="replace").read())
+tst = re.compile(r"(?:t|test)_\w+$").match
+names = {n.name for n in ast.walk(tree) if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and tst(n.name)}
+names |= {n.name for n in tree.body if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name == "main"}
+print("ENTRIES " + ",".join(sorted(names)))
+"""
+# The marker arena_eventlog's entrypoint check may accept (see gate_runner_selftest): set ONLY in the env of the
+# runner step, value = sha256 of the runner file the harness wrote.
+GATE_RUNNER_ENV = "RM_GATE_RUNNER"
+GATE_RUNNER_NAME = "gate_runner.py"
+
+
+def runner_sha256(src: str | None = None) -> str:
+    return hashlib.sha256((RUNNER_SRC if src is None else src).encode("utf-8")).hexdigest()
+
+
+def gate_runner_selftest(cmdline: list, env=None) -> str | None:
+    """-> realpath of the selftest when THIS process is arena_gate's harness runner, else None. For arena_eventlog's
+    `_check_entrypoint`, which today refuses every entry script but a harness one / selftest_arena_*.py itself.
+    Needs ALL of: argv exactly `<python> -I <dir>/gate_runner.py <fd> <selftest.py>`; the runner file byte-identical
+    to this module's RUNNER_SRC; the env marker equal to its sha256. It grants nothing by itself: the caller must
+    still apply its selftest rules (a selftest_arena_* name in its own directory, a temp non-default token) to the
+    returned path, and its main-frame check to the RUNNER file (the main frame runs the runner)."""
+    env = os.environ if env is None else env
+    try:
+        if len(cmdline) != 5 or cmdline[1] != "-I" or os.path.basename(cmdline[2]) != GATE_RUNNER_NAME:
+            return None
+        if not re.fullmatch(r"\d{1,6}", cmdline[3]) or not cmdline[4].endswith(".py"):
+            return None
+        want = runner_sha256()
+        if env.get(GATE_RUNNER_ENV) != want or hashlib.sha256(Path(cmdline[2]).read_bytes()).hexdigest() != want:
+            return None
+        return os.path.realpath(cmdline[4])
+    except (OSError, TypeError, IndexError):
+        return None
 
 
 def parse_record(buf: bytes, nonce: str):
@@ -382,13 +466,16 @@ def parse_record(buf: bytes, nonce: str):
     m = REC_RE.fullmatch(buf or b"")
     if not m or m.group(1).decode() != nonce:
         return None
-    a, c, t, l = (int(m.group(i)) for i in (3, 4, 5, 6))
+    a, c, t, l, d, e = (int(m.group(i)) for i in (3, 4, 5, 6, 8, 9))
     return {"status": m.group(2).decode(), "asserts": a, "checks": c, "tests": t, "lines": l,
-            "tampered": m.group(7) == b"1"}
+            "tampered": m.group(7) == b"1", "done": d, "expected": e}
 
 
-def verdict_from(rc, rec) -> tuple[str, str]:
-    """PASS only on exit 0 plus a pass record; FAIL when the test said so; everything else UNMEASURED."""
+def verdict_from(rc, rec, expected=None) -> tuple[str, str]:
+    """PASS only on exit 0 plus a pass record whose completed-entry count reaches the expected total (which must equal
+    the harness's own collection, `expected`, when given); FAIL when the test said so; everything else UNMEASURED. A
+    zero exit before every collected entry (t_*/test_* functions, main, the module body) completed is UNMEASURED: a
+    SystemExit(0) from candidate code at import, mid-test or in a check helper is not a finished selftest."""
     if rc is None:
         return "UNMEASURED", "timed out (a record written before a hang is not a pass)"
     if rec is None:
@@ -399,6 +486,11 @@ def verdict_from(rc, rec) -> tuple[str, str]:
         return "FAIL", "the test failed (rc=%s)" % rc
     if rc != 0:
         return "FAIL", "record says pass but the runner exited %s" % rc
+    if expected is not None and rec["expected"] != expected:
+        return "UNMEASURED", "runner expected %d entries, the harness collected %d" % (rec["expected"], expected)
+    if rec["expected"] < 1 or rec["done"] < rec["expected"]:
+        return "UNMEASURED", ("exited 0 before its checks completed: %d of %d collected entries (tests, main, module "
+                              "body) returned" % (rec["done"], rec["expected"]))
     return "PASS", ""
 
 
@@ -438,7 +530,9 @@ class Gate:
         self.work.mkdir(parents=True)
         for d in (self.hdir, self.fake_home):
             d.mkdir()
-        (self.hdir / "gate_runner.py").write_text(RUNNER_SRC, encoding="utf-8")
+        (self.hdir / GATE_RUNNER_NAME).write_text(RUNNER_SRC, encoding="utf-8")
+        (self.hdir / "gate_collect.py").write_text(COLLECT_SRC, encoding="utf-8")
+        (self.hdir / "noinit").write_bytes(b"")     # bound over /init in the sandbox: no WSL interop interpreter
         for dest in (self.clone, self.base_clone):
             subprocess.run(["git", "clone", "--quiet", "--no-checkout", str(self.repo), str(dest)],
                            capture_output=True, text=True, timeout=300, check=True)
@@ -542,8 +636,8 @@ class Gate:
     def tool_path(self, key):
         """The instrument as it is in the head checkout, which must be BYTE-IDENTICAL to the base checkout's copy
         (the tool and every repo file it imports) at the moment it runs. Real instruments find the repo from their
-        own __file__, so they must run from head; the head checkout is read-only to every sandboxed step except the
-        C# build, and this re-check catches anything that rewrote one anyway (a build target, a missed mount)."""
+        own __file__, so they must run from head; the head checkout is read-only to every sandboxed step (the C#
+        build writes a throwaway copy), and this re-check catches anything that rewrote one anyway (a build target, a missed mount)."""
         tp = self.clone / TOOLS[key]
         why = self.tool_tainted(key)
         if why:
@@ -556,9 +650,9 @@ class Gate:
         return tp, ""
 
     # ------------------------------------------------------------ sandbox
-    def sandbox_argv(self, argv, cwd, head_rw=False, data_rw=True):
-        """Both checkouts and the runner dir are read-only (the head checkout is writable only to the C# build,
-        which writes obj/bin); HOME is a fresh tmpfs per step; the data root is read-only while tests run."""
+    def sandbox_argv(self, argv, cwd, rw_dir=None, data_rw=True, interop=False):
+        """Both checkouts and the runner dir are read-only (only `rw_dir`, the C# build's throwaway copy of head, is
+        writable); HOME is a fresh tmpfs per step; the data root is read-only while tests run."""
         bw = shutil.which("bwrap")
         if not bw:
             return None
@@ -577,32 +671,44 @@ class Gate:
                 continue
             done.append(r)
             out += ["--tmpfs", r]
+        if not interop:
+            for d in WSL_RUN_DIRS:
+                if os.path.isdir(d):
+                    out += ["--tmpfs", d]
+            if os.path.isfile(WSL_INIT):
+                out += ["--ro-bind", str(self.hdir / "noinit"), WSL_INIT]
         r = os.path.realpath(self.clone)
-        out += ["--bind" if head_rw else "--ro-bind", r, r]
+        out += ["--ro-bind", r, r]
+        if rw_dir:
+            r = os.path.realpath(rw_dir)                        # a throwaway build copy: the only writable tree
+            out += ["--bind", r, r]
         r = os.path.realpath(self.base_clone)
         out += ["--ro-bind", r, r, "--tmpfs", os.path.realpath(self.fake_home)]
         r = os.path.realpath(self.hdir)
         out += ["--ro-bind", r, r, "--chdir", os.path.realpath(cwd)]
         return out + ["--"] + list(argv)
 
-    def env(self):
-        e = {k: os.environ[k] for k in ENV_ALLOW if k in os.environ}
+    def env(self, interop=False):
+        e = {k: os.environ[k] for k in ENV_ALLOW + (WSL_ENV if interop else ()) if k in os.environ}
         e.update(HOME=str(self.fake_home), TMPDIR="/tmp", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
                  RM_ARM="harness")
         if self.data_root:
             e["RM_DATA_ROOT"] = self.data_root
         return e
 
-    def srun(self, argv, log, cwd=None, timeout=STEP_TIMEOUT, stdin=None, pass_fds=(), head_rw=False, data_rw=True):
+    def srun(self, argv, log, cwd=None, timeout=STEP_TIMEOUT, stdin=None, pass_fds=(), rw_dir=None, data_rw=True,
+             interop=False, extra_env=None):
         """Run checkout code sandboxed. -> (rc|None, text)."""
         if self.sandbox_why:
             log.parent.mkdir(parents=True, exist_ok=True)
             log.write_text("[not run: %s]\n" % self.sandbox_why, encoding="utf-8")
             return None, self.sandbox_why
-        full = self.sandbox_argv(argv, cwd or self.clone, head_rw=head_rw, data_rw=data_rw)
+        full = self.sandbox_argv(argv, cwd or self.clone, rw_dir=rw_dir, data_rw=data_rw, interop=interop)
         if full is None:
             return None, "no sandbox (bwrap absent): arm code would run beside the signing key"
-        return run(full, cwd or self.clone, log, timeout=timeout, env=self.env(), stdin=stdin, pass_fds=pass_fds)
+        env = self.env(interop=interop)
+        env.update(extra_env or {})
+        return run(full, cwd or self.clone, log, timeout=timeout, env=env, stdin=stdin, pass_fds=pass_fds)
 
     def sandbox_probe(self):
         """The instrument must be able to see: a process in the sandbox must NOT reach the token or anchors, nor
@@ -614,8 +720,10 @@ class Gate:
         code = ("import os,sys,json\nt=json.loads(sys.argv[1]);seen=[]\nfor x in t:\n"
                 " try:\n  ok=os.path.isfile(x) or (os.path.isdir(x) and bool(os.listdir(x)))\n"
                 " except OSError:\n  ok=False\n if ok: seen.append(x)\n"
-                "print(json.dumps({'seen':seen,'env':[k for k in os.environ if k.startswith('ARENA')],"
-                "'home':os.environ.get('HOME')}))")
+                "w=[d for d in %r if os.path.isdir(d) and os.listdir(d)]\n"
+                "i=os.path.isfile(%r) and os.path.getsize(%r)>0\n"
+                "print(json.dumps({'seen':seen,'env':[k for k in os.environ if k.startswith(('ARENA','WSL'))],"
+                "'interop':w+(['/init'] if i else []),'home':os.environ.get('HOME')}))") % (WSL_RUN_DIRS, WSL_INIT, WSL_INIT)
         rc, text = self.srun([self.python, "-I", "-c", code, json.dumps(targets)], self.logdir / "sandbox_probe.log",
                              timeout=60)
         m = re.search(r"^\{.*\}$", text or "", re.M)
@@ -623,7 +731,7 @@ class Gate:
             self.sandbox_why = "sandbox probe did not run (rc=%s): no step runs arm code unsandboxed" % rc
             return
         got = json.loads(m.group(0))
-        if got["seen"] or got["env"] or got["home"] != str(self.fake_home):
+        if got["seen"] or got["env"] or got.get("interop") or got["home"] != str(self.fake_home):
             self.sandbox_why = "sandbox probe still sees %s: refusing to run arm code" % (got,)
 
     # ------------------------------------------------------------ steps
@@ -747,8 +855,9 @@ class Gate:
         return out
 
     def selftests_for(self):
-        """-> (sorted selftest paths existing in head, deleted python no selftest maps to). Changed/added selftests
-        + head siblings of every changed python file, DELETED ones included (a deletion is a code change)."""
+        """-> (sorted selftest paths existing in head, changed python no selftest maps to). Changed/added selftests
+        + head siblings of every changed python file, DELETED ones included (a deletion is a code change). EVERY
+        changed non-selftest .py must map to a selftest of its own: one covered file must not hide an uncovered one."""
         tests, orphans = {f for f in self.alive() if A.is_selftest(f)}, []
         for f in self.paths():
             if f.endswith(".py") and not A.is_selftest(f):
@@ -760,19 +869,40 @@ class Gate:
                         continue
                     if stem in t.name or re.search(r"\b(import|from)\s+%s\b" % re.escape(stem), txt):
                         tests.add(str(t.relative_to(self.clone))); hit = True
-                if not hit and f not in self.alive():
+                if not hit:
                     orphans.append(f)
         return sorted(tests), orphans
+
+    def uncovered(self):
+        """-> changed code files (.py/.cs/.xml, deletions included) no step measures: a .py with no mapped selftest,
+        a .cs outside src/RimMandrake/<mod>/ (no build), an .xml that is neither Defs/Patches (xml step) nor inside
+        a deployable mod (deploy_plan step)."""
+        _, orphans = self.selftests_for()
+        out = list(orphans)
+        for f in self.paths():
+            if f.endswith(".cs") and not (f.startswith("src/RimMandrake/") and A._mod_of(f)):
+                out.append(f)
+            elif f.endswith(".xml") and not A.is_defxml(f) and not (A._mod_of(f) and self.deployable(A._mod_of(f))):
+                out.append(f)
+        return sorted(set(out))
 
     def run_test(self, root: Path, rel: str, tag: str):
         """-> (record dict | None, text). The record is the runner's fixed line, parsed HERE (parse_record) with the
         nonce this process holds, plus "rc" and the parent's own "verdict" (verdict_from). None = no valid line."""
+        log = self.logdir / ("tests_%s_%s.log" % (tag, re.sub(r"[^\w.]+", "_", rel)))
+        crc, ctext = self.srun([self.python, "-I", str(self.hdir / "gate_collect.py"), str(root / rel)],
+                               log.with_name(log.stem + "_collect.log"), cwd=root, timeout=60, data_rw=False)
+        m = re.search(r"^ENTRIES ([\w,]*)$", ctext or "", re.M)
+        if crc != 0 or not m:
+            return None, "the collection pass found no entry list (rc=%s): %s" % (crc, (ctext or "")[-120:])
+        entries = m.group(1)
+        expected = len([x for x in entries.split(",") if x]) + 1
         rfd, wfd = os.pipe()
         nonce = secrets.token_hex(16)
-        log = self.logdir / ("tests_%s_%s.log" % (tag, re.sub(r"[^\w.]+", "_", rel)))
         try:
-            rc, text = self.srun([self.python, "-I", str(self.hdir / "gate_runner.py"), str(wfd), str(root / rel)],
-                                 log, cwd=root, stdin=nonce + "\n", pass_fds=(wfd,), data_rw=False)
+            rc, text = self.srun([self.python, "-I", str(self.hdir / GATE_RUNNER_NAME), str(wfd), str(root / rel)],
+                                 log, cwd=root, stdin=nonce + "\nENTRIES " + entries + "\n", pass_fds=(wfd,),
+                                 data_rw=False, extra_env={GATE_RUNNER_ENV: runner_sha256()})
             os.close(wfd); wfd = None
             os.set_blocking(rfd, False)
             buf = b""
@@ -794,17 +924,21 @@ class Gate:
         if rec is None:
             return None, "rc=%s; %s" % (rc, text or "")
         rec["rc"] = rc
-        rec["verdict"], rec["why"] = verdict_from(rc, rec)
+        rec["verdict"], rec["why"] = verdict_from(rc, rec, expected)
+        rec["incomplete"] = rec["verdict"] == "UNMEASURED" and rec["done"] < rec["expected"]
         return rec, text
 
     def s_tests(self):
         changed_py = [f for f in self.alive() if f.endswith(".py")]
         tests, orphans = self.selftests_for()
+        unc = self.uncovered()
+        if unc:
+            return unmeasured("%d changed code file(s) no selftest or step measures (each needs its own; a covered "
+                              "file does not cover them): %s" % (len(unc), ", ".join(unc[:8])), changed=unc[:20])
         if not changed_py and not tests and not orphans:
             return step(NA, "no python changed")
-        if not tests or orphans:
-            return unmeasured("python changed (or was deleted) but no selftest maps to it",
-                              changed=(orphans or changed_py)[:10])
+        if not tests:
+            return unmeasured("python changed (or was deleted) but no selftest maps to it", changed=changed_py[:10])
         why = self.tool_tainted("tests")
         if why:
             return unmeasured(why)
@@ -827,12 +961,21 @@ class Gate:
                 unm.append("%s: no positive record from the harness runner (%s)" % (t, (text or "")[-120:].strip()))
                 continue
             row = {k: rec.get(k) for k in ("verdict", "rc", "status", "asserts", "checks", "tests", "lines", "why",
-                                           "tampered")}
+                                           "tampered", "done", "expected")}
             rows[t] = row
             if rec["verdict"] == FAIL:
                 fails.append("%s: %s" % (t, rec["why"]))
                 continue
             if rec["verdict"] != PASS:
+                if rec.get("incomplete") and t in changed_set and (self.base_clone / t).is_file():
+                    brec, _ = self.run_test(self.base_clone, t, "base")     # an edited selftest that stops early:
+                    if brec is not None and brec["verdict"] == PASS:        # weakened vs base is a FAIL, not a gap
+                        nb = brec["asserts"] + brec["checks"] + brec["tests"]
+                        nh = rec["asserts"] + rec["checks"] + rec["tests"]
+                        if nh < nb or rec["lines"] < LINES_FLOOR * brec["lines"]:
+                            fails.append("%s: stopped before its checks completed and executed less than base "
+                                         "(checks %d -> %d, lines %d -> %d)" % (t, nb, nh, brec["lines"], rec["lines"]))
+                            continue
                 unm.append("%s: %s" % (t, rec["why"]))
                 continue
             if UNMEASURED_PHRASE in text:
@@ -905,10 +1048,26 @@ class Gate:
         tp, why = self.tool_path("csharp")
         if tp is None:
             return unmeasured(why)
+        # The build gets a THROWAWAY copy of head (the only writable tree; head and base stay read-only) and the
+        # checkouts are fingerprinted before and after: MSBuild runs Windows-side, outside bubblewrap, so a csproj
+        # Exec target could still reach the real paths. Any change = the evaluated sha is no longer what is on disk.
+        build = self.work / "build"
+        if build.exists():
+            shutil.rmtree(build)
+        subprocess.run(["git", "clone", "--quiet", "--no-checkout", str(self.clone), str(build)],
+                       capture_output=True, text=True, timeout=300, check=True)
+        git(build, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.head_full)
+        btp = build / TOOLS["csharp"]
+        before = self.fingerprint()
         res = {}
         for m in mods:
             log = self.logdir / ("csharp_%s.log" % m)
-            rc, text = self.srun([self.python, str(tp), m], log, head_rw=True)
+            rc, text = self.srun([self.python, str(btp), m], log, cwd=build, rw_dir=str(build), interop=True)
+            after = self.fingerprint()
+            if after != before:
+                self.sandbox_why = "the C# build rewrote a checkout: nothing later runs on a tree that moved"
+                return step(FAIL, "the build for %s rewrote the head/base checkout or runner dir (%s)"
+                            % (m, ", ".join(k for k in before if before[k] != after.get(k))), log=str(log))
             if rc is None:
                 return unmeasured("winbuild could not run for %s: %s" % (m, text), log=str(log))
             if rc != 0 and re.search(r"dotnet\.exe not found|no such csproj|no csproj under|WINBUILD_DOTNET", text):
@@ -920,6 +1079,23 @@ class Gate:
         if bad:
             return step(FAIL, "build failed: " + ", ".join(bad), log=str(self.logdir))
         return step(PASS, "built " + ", ".join(mods))
+
+    def fingerprint(self) -> dict:
+        """-> {name: digest} of the head and base checkouts (HEAD + status incl. untracked and ignored) and the runner
+        dir (bytes): equal before and after a step = the step changed none of them."""
+        out = {}
+        for name, root in (("head", self.clone), ("base", self.base_clone)):
+            st = subprocess.run(["git", "-C", str(root), "status", "--porcelain=v1", "-uall", "--ignored", "-z"],
+                                capture_output=True, timeout=300)
+            hd = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, timeout=60)
+            out[name] = hashlib.sha256(hd.stdout + b"\0" + st.stdout + bytes([st.returncode & 255])).hexdigest()
+        h = hashlib.sha256()
+        for f in sorted(self.hdir.rglob("*")):
+            h.update(str(f.relative_to(self.hdir)).encode() + b"\0")
+            if f.is_file():
+                h.update(f.read_bytes())
+        out["runner"] = h.hexdigest()
+        return out
 
     def s_deploy_plan(self):
         touched = self.mods_changed()
@@ -1048,19 +1224,29 @@ class Gate:
             return step(INVALID, "no passing head canary with a signed time")
         c = passes[-1]
         d = c.get("detail") or {}
-        if d.get("modcheck") is not True:
+        # Two record shapes: the gate's own (detail.modcheck true; live_release sha + verdict pass/fail) and the
+        # real arena_lane one (canary detail {problems, facts}: a lane canary with no problems includes the in-game
+        # modcheck validity.canary, which it otherwise lists as a problem; live_release verdict ok/error, NO sha,
+        # bound to the canary by (lane, run_id)). Only signed records reach here; the lane's `writer` field is not in
+        # the signed schema, so the shape (not a self-declared writer) is what is checked.
+        lane_shape = d.get("problems") == [] and isinstance(d.get("facts"), dict)
+        if d.get("modcheck") is not True and not lane_shape:
             return step(INVALID, "no modcheck recorded with this deploy")
-        rel = [r for r in mine if r["event"] == "live_release" and sha_match(r.get("sha"), self.head_full)
+        rel = [r for r in mine if r["event"] == "live_release"
+               and (sha_match(r.get("sha"), self.head_full) or ("sha" not in r or r.get("sha") is None))
                and _same_run(r, c) and (r.get("detail") or {}).get("build") == d.get("build")
                and _t(r) is not None and _t(r) >= _t(c)]
         if not rel:
             return unmeasured("canary passed (run %s) but that run recorded no live verdict" % c.get("run_id"))
-        v = rel[-1].get("verdict")
-        if v == "pass":
-            return step(PASS, "live verdict pass, canary and modcheck recorded for head in run %s" % c.get("run_id"))
+        r = rel[-1]
+        v, rd = r.get("verdict"), r.get("detail") or {}
+        if v == "pass" or (v == "ok" and rd.get("aborted") in (None, False, "")):
+            return step(PASS, "live verdict %s, canary and modcheck recorded for head in run %s" % (v, c.get("run_id")))
         if v == "fail":
             return step(FAIL, "live verdict fail")
-        return unmeasured("live verdict %r is neither pass nor fail" % v)
+        if v == "ok":
+            return unmeasured("the live hold of run %s was aborted (%s)" % (c.get("run_id"), rd.get("aborted")))
+        return unmeasured("live verdict %r is neither pass/ok nor fail" % v)
 
     def s_test_record(self, recs, why):
         if recs is None:

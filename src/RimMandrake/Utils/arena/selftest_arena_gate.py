@@ -20,10 +20,17 @@ FAILURE against a throwaway git repo whose gate instruments (run_selftests/valid
                  records bound to one run and ordered (replay, cross-run, supersedes), zero-exit UNMEASURED proof/build,
                  deletions, `pass; return None`, .js placeholders, native shadows, unknown statuses, glob depth,
                  code under bookkeeping paths, binary-only diffs, and the REAL run_selftests.py --only path.
+  round 3        sys.exit(0) from candidate code at import / mid-test / atexit under an UNCHANGED selftest is never a
+                 pass (collected entries must all return); a covered change does not hide an uncovered .py/.xml; the
+                 C# build cannot rewrite the evaluated checkout (sandboxed: refused; unsandboxed: detected, FAIL);
+                 sandboxed code cannot reach WSL interop (cmd.exe) while the build can; the eventlog runner marker;
+                 a live_release in the real arena_lane shape (verdict ok, no sha, keyed by run id).
+  Each round-3 fix is shown RED first: the same scenario with the fix disabled (monkeypatched) reads PASS / leaks.
 Writes only under a temp dir.
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -67,6 +74,12 @@ src = open(os.path.join("src/RimMandrake", m, "Source", "A.cs")).read()
 if "NODOTNET" in src: sys.exit("dotnet.exe not found; set WINBUILD_DOTNET")
 if "BUILDFAIL" in src: print("error CS1002"); sys.exit(1)
 if "UNMPHRASE" in src: print("UNMEASURED, not a pass or a fail"); sys.exit(0)
+if "REWRITE" in src:   # a csproj Exec target reaching the REAL head checkout (sibling of the build dir) by absolute path
+    t = os.path.join(os.path.dirname(os.getcwd()), "co", "src/RimMandrake/Utils/proof_bad.py")
+    try:
+        open(t, "w").write("import sys\\nimport foo\\nsys.exit(0)\\n"); print("REWROTE " + t)
+    except OSError as e:
+        print("rewrite refused: %s" % e)
 print("BUILT")
 '''
 STUB_DEPLOY = '''import os, sys
@@ -608,13 +621,15 @@ def t_rc(tmp):
     ok = vf is not None and pr is not None
     if ok:
         n = "ab" * 16
-        good = ("ARENAGATE2 %s pass 1 2 3 4 0\n" % n).encode()
+        good = ("ARENAGATE2 %s pass 1 2 3 4 0 2 2\n" % n).encode()
+        short = ("ARENAGATE2 %s pass 1 2 3 4 0 1 2\n" % n).encode()
         rec = pr(good, n)
         ok = (rec is not None and vf(0, rec)[0] == "PASS" and vf(1, rec)[0] == "FAIL" and vf(None, rec)[0] == "UNMEASURED"
               and vf(0, None)[0] == "UNMEASURED" and pr(good + good, n) is None and pr(good, "cd" * 16) is None
-              and pr(good[:-1], n) is None and vf(0, pr(good.replace(b" 0\n", b" 1\n"), n))[0] == "UNMEASURED")
+              and pr(good[:-1], n) is None and vf(0, pr(good.replace(b" 0 2 2\n", b" 1 2 2\n"), n))[0] == "UNMEASURED"
+              and vf(0, pr(short, n))[0] == "UNMEASURED" and vf(0, rec, 3)[0] == "UNMEASURED" and vf(0, rec, 2)[0] == "PASS")
     check(ok, "parent-side parse: pass needs rc 0 + the one exact line with this nonce; rc!=0 FAIL, timeout/extra/"
-          "wrong nonce/tampered UNMEASURED")
+          "wrong nonce/tampered/fewer entries done than collected/expected count not the collector's UNMEASURED")
 
 
 def t_signfail(tmp):
@@ -699,7 +714,8 @@ def t_phrase_deletes(tmp):
     c = Ctx(tmp, "ph_cs"); h = c.commit(dict(GOOD, **{"src/RimMandrake/ModA/Source/A.cs": "class A { /* UNMPHRASE */ }\n"}))
     c.records(h); r = c.gate(h)
     check(st(r, "csharp") == "UNMEASURED" and r["verdict"] == "invalid",
-          "a build printing the unmeasured phrase and exiting 0 is UNMEASURED (%s)" % st(r, "csharp"))
+          "a build printing the unmeasured phrase and exiting 0 is UNMEASURED (%s: %s)" % (st(r, "csharp"),
+                                                                                 r["steps"]["csharp"]["why"][:200]))
     c = Ctx(tmp, "del_py"); h = c.commit({UT + "foo_extra.py": None, UT + "foo_data.txt": "rows\n"}); c.records(h); r = c.gate(h)
     check(st(r, "tests") == "UNMEASURED" and r["verdict"] != "pass",
           "a deleted .py (plus an added data file) with no selftest mapping: tests UNMEASURED, not NA (%s)" % st(r, "tests"))
@@ -752,19 +768,198 @@ def t_real(tmp):
           "the real run_selftests.py --only passes %s (rc %s)" % (target.name, out.returncode))
     runner = tmp / "real_runner.py"; runner.write_text(G.RUNNER_SRC)
 
+    collector = tmp / "real_collect.py"; collector.write_text(G.COLLECT_SRC)
+
     def via_runner(path):
+        col = subprocess.run([sys.executable, "-I", str(collector), str(path)], capture_output=True, text=True,
+                             env=env, timeout=60)
+        ent = col.stdout.strip().splitlines()[-1] if col.returncode == 0 and col.stdout.strip() else "ENTRIES "
+        names = [x for x in ent.split(" ", 1)[1].split(",") if x] if " " in ent else []
         rfd, wfd = os.pipe(); n = secrets.token_hex(16)
-        p = subprocess.run([sys.executable, "-I", str(runner), str(wfd), str(path)], input=n + "\n", text=True,
-                           capture_output=True, pass_fds=(wfd,), env=env, timeout=300, cwd=str(Path(path).parent))
+        p = subprocess.run([sys.executable, "-I", str(runner), str(wfd), str(path)], input=n + "\n" + ent + "\n",
+                           text=True, capture_output=True, pass_fds=(wfd,), env=env, timeout=300,
+                           cwd=str(Path(path).parent))
         os.close(wfd); buf = os.read(rfd, 4096); os.close(rfd)
         rec = G.parse_record(buf, n) if hasattr(G, "parse_record") else None
-        return (G.verdict_from(p.returncode, rec)[0] if rec else "NONE"), rec
+        return (G.verdict_from(p.returncode, rec, len(names) + 1)[0] if rec else "NONE"), rec
     v, rec = via_runner(target)
     check(v == "PASS" and rec and rec["lines"] > 0,
           "the harness runner passes the same real selftest, lines counted (%s %s)" % (v, rec))
     red = tmp / "selftest_red_real.py"; red.write_text("def t_a():\n    assert 1 == 2\n\nt_a()\n")
     v, rec = via_runner(red)
     check(v == "FAIL", "the harness runner reports a real red selftest as FAIL (%s)" % v)
+
+
+FOO_EXIT_MID = "import sys\n\ndef foo():\n    sys.exit(0)\n"
+FOO_EXIT_IMPORT = "import sys\nsys.exit(0)\n\ndef foo():\n    return 2\n"
+FOO_ATEXIT_RED = "import atexit, sys\natexit.register(lambda: sys.exit(0))\n\ndef foo():\n    return 0\n"
+
+
+def t_round3_exit(tmp):
+    """GPT r2 (3): SystemExit(0) from candidate code before the unchanged selftest's checks complete."""
+    def tests_of(tag, changes, mutate=False):
+        real = G.verdict_from
+        if mutate:      # the fix disabled: completion ignored (the round-2 behaviour)
+            G.verdict_from = lambda rc, rec, expected=None: real(rc, dict(rec, done=rec["expected"]) if rec else rec)
+        try:
+            c = Ctx(tmp, "r3x_" + tag); h = c.commit(changes); c.records(h); r = c.gate(h)
+        finally:
+            G.verdict_from = real
+        return st(r, "tests"), r["verdict"], r["steps"]["tests"]
+    s, v, _ = tests_of("mid_red", {UT + "foo.py": FOO_EXIT_MID}, mutate=True)
+    check(s == "PASS", "RED first: with completion ignored, foo() calling sys.exit(0) under the unchanged selftest "
+          "reads tests PASS (the false pass GPT found) (%s)" % s)
+    s, v, d = tests_of("mid", {UT + "foo.py": FOO_EXIT_MID})
+    check(s == "UNMEASURED" and v != "pass", "sys.exit(0) mid-test from candidate code: tests UNMEASURED, never pass "
+          "(%s %s %s)" % (s, v, str(d.get("findings"))[:160]))
+    s, v, _ = tests_of("imp", {UT + "foo.py": FOO_EXIT_IMPORT})
+    check(s == "UNMEASURED" and v != "pass", "sys.exit(0) at import of candidate code: tests UNMEASURED (%s %s)" % (s, v))
+    s, v, _ = tests_of("atexit", {UT + "foo.py": FOO_ATEXIT_RED})
+    check(s == "FAIL", "an atexit sys.exit(0) cannot turn a red selftest green (the runner never runs atexit) (%s)" % s)
+    ok = dict(GOOD); ok[UT + "selftest_foo.py"] = "import sys\n" + GOOD[UT + "selftest_foo.py"] + "sys.exit(0)\n"
+    s, v, _ = tests_of("ctl", ok)
+    check(s == "PASS" and v == "pass", "control: a selftest that itself ends with sys.exit(0) after its checks passes "
+          "(%s %s)" % (s, v))
+    c = tmp / "r3_collect.py"; c.write_text(G.COLLECT_SRC)
+    f = tmp / "selftest_r3c.py"; f.write_text("def t_a():\n    pass\n\ndef helper():\n    def test_in():\n        pass\n"
+                                             "\ndef main():\n    t_a()\n")
+    out = subprocess.run([sys.executable, "-I", str(c), str(f)], capture_output=True, text=True, timeout=60).stdout
+    check(out.strip() == "ENTRIES main,t_a,test_in", "the collector names t_*/test_* (nested too) + top-level main and "
+          "runs no candidate code (%r)" % out.strip())
+
+
+def t_round3_cover(tmp):
+    """GPT r2 (4): one covered change must not hide an uncovered one."""
+    mixed = dict(GOOD, **{UT + "foo_extra.py": "def extra():\n    return 9\n"})
+    real = G.Gate.uncovered
+    G.Gate.uncovered = lambda self: [f for f in self.selftests_for()[1] if f not in self.alive()]  # round-2 rule
+    try:
+        c = Ctx(tmp, "r3c_red"); h = c.commit(mixed); c.records(h); r = c.gate(h)
+    finally:
+        G.Gate.uncovered = real
+    check(st(r, "tests") == "PASS", "RED first: under the round-2 rule GOOD + a modified unmapped foo_extra.py reads "
+          "tests PASS (%s)" % st(r, "tests"))
+    c = Ctx(tmp, "r3c"); h = c.commit(mixed); c.records(h); r = c.gate(h)
+    check(st(r, "tests") == "UNMEASURED" and "foo_extra.py" in r["steps"]["tests"]["why"] and r["verdict"] != "pass",
+          "GOOD + a modified unmapped foo_extra.py: tests UNMEASURED naming it (%s: %s)"
+          % (st(r, "tests"), r["steps"]["tests"]["why"][:120]))
+    c = Ctx(tmp, "r3c_xml"); h = c.commit(dict(GOOD, **{UT + "foo_cfg.xml": "<cfg/>\n"})); c.records(h); r = c.gate(h)
+    check(st(r, "tests") == "UNMEASURED" and r["verdict"] != "pass",
+          "GOOD + an .xml no step measures (not Defs/Patches, no deployable mod): tests UNMEASURED (%s)" % st(r, "tests"))
+    c = Ctx(tmp, "r3c_ok"); h = c.commit(dict(GOOD, **{"src/RimMandrake/ModA/About/About.xml": "<ModMetaData><x/></ModMetaData>\n"}))
+    c.records(h); r = c.gate(h)
+    check(st(r, "tests") == "PASS", "control: an About.xml of a deployable mod is covered by deploy_plan (%s: %s)"
+          % (st(r, "tests"), r["steps"]["tests"]["why"][:100]))
+
+
+def t_round3_build(tmp):
+    """GPT r2 (5): the C# build must not rewrite the checkout later steps evaluate."""
+    task = {"id": "T1", "area": AREA, "proof": "python3 src/RimMandrake/Utils/proof_bad.py", "live": "none"}
+    ch = dict(GOOD, **{"src/RimMandrake/ModA/Source/A.cs": "class A { /* REWRITE */ }\n"})
+    os.environ.setdefault("WINBUILD_DOTNET", "stub")
+    real_argv, real_fp = G.Gate.sandbox_argv, G.Gate.fingerprint
+
+    def old_argv(self, argv, cwd, rw_dir=None, data_rw=True, interop=False):   # round 2: head writable to the build
+        out = real_argv(self, argv, cwd, rw_dir=rw_dir, data_rw=data_rw, interop=interop)
+        if rw_dir:
+            r = os.path.realpath(self.clone); i = out.index("--")
+            out[i:i] = ["--bind", r, r]
+        return out
+    G.Gate.sandbox_argv, G.Gate.fingerprint = old_argv, lambda self: {}
+    try:
+        c = Ctx(tmp, "r3b_red"); h = c.commit(ch); c.records(h); r = c.gate(h, task=task)
+    finally:
+        G.Gate.sandbox_argv, G.Gate.fingerprint = real_argv, real_fp
+    check(st(r, "proof") == "PASS", "RED first: with head writable to the build and no fingerprint, a csproj target "
+          "rewrites the failing proof and proof reads PASS (%s)" % st(r, "proof"))
+    c = Ctx(tmp, "r3b"); h = c.commit(ch); c.records(h); r = c.gate(h, task=task)
+    check(st(r, "proof") == "FAIL" and st(r, "csharp") == "PASS" and r["verdict"] == "fail",
+          "the build runs in a throwaway copy: its write to the real head is refused, the proof stays FAIL "
+          "(csharp %s proof %s)" % (st(r, "csharp"), st(r, "proof")))
+    G.Gate.sandbox_argv = old_argv      # a Windows-side Exec that bypasses bwrap: prevention gone, detection left
+    try:
+        c = Ctx(tmp, "r3b_det"); h = c.commit(ch); c.records(h); r = c.gate(h, task=task)
+    finally:
+        G.Gate.sandbox_argv = real_argv
+    check(st(r, "csharp") == "FAIL" and st(r, "proof") != "PASS" and r["verdict"] == "fail",
+          "a build that does reach the head checkout is DETECTED: csharp FAIL, nothing later passes (csharp %s, proof "
+          "%s)" % (st(r, "csharp"), st(r, "proof")))
+
+
+def t_round3_interop(tmp):
+    """GPT r2 (1): sandboxed candidate code cannot reach WSL interop; only the build keeps it."""
+    cmd = "/mnt/c/Windows/System32/cmd.exe"
+    try:
+        outside = subprocess.run([cmd, "/c", "echo", "R3MARK"], capture_output=True, text=True, timeout=30).stdout
+    except (OSError, subprocess.SubprocessError):
+        outside = ""
+    if "R3MARK" not in outside:
+        print("note  WSL interop unavailable on this host: the cmd.exe probe has nothing to prove (not counted)")
+        return
+    c = Ctx(tmp, "r3i"); h = c.commit(GOOD)
+    g = G.Gate(c.task, c.base, h, "armx", c.repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+    g.logdir.mkdir(parents=True, exist_ok=True)
+    g.checkout(); g.sandbox_probe()
+    check(g.sandbox_why == "", "the sandbox probe accepts the scrubbed sandbox (%s)" % g.sandbox_why)
+    rc, text = g.srun([cmd, "/c", "echo", "R3MARK"], g.logdir / "r3_interop_build.log", timeout=30, interop=True)
+    check(re.search(r"^R3MARK\s*$", text or "", re.M) is not None, "RED first / instrument sees: with interop (the build's sandbox) cmd.exe runs "
+          "from inside bwrap")
+    rc, text = g.srun([cmd, "/c", "echo", "R3MARK"], g.logdir / "r3_interop.log", timeout=30)
+    check(re.search(r"^R3MARK\s*$", text or "", re.M) is None, "every other sandboxed step: cmd.exe cannot run (rc %s, %s)"
+          % (rc, (text or "").strip().splitlines()[-2:] if text else text))
+    py = "import os,json;print(json.dumps(sorted(k for k in os.environ if k.startswith('WSL'))))"
+    rc, text = g.srun([g.python, "-I", "-c", py], g.logdir / "r3_env.log", timeout=30)
+    check(rc == 0 and re.search(r"^\[\]$", text or "", re.M) is not None, "no WSL_* variable reaches a non-build step")
+
+
+def t_round3_marker(tmp):
+    """The eventlog fold-in: the gate-side marker arena_eventlog can check, from the REAL runner argv and env."""
+    c = Ctx(tmp, "r3m")
+    probe = ("import os,sys,json\nprint('R3ARGV '+json.dumps({'argv':open('/proc/self/cmdline','rb').read()"
+             ".decode().split('\\0')[:-1],'env':os.environ.get('%s')}))\n\ndef t_a():\n    assert 1\n\nt_a()\n"
+             % G.GATE_RUNNER_ENV)
+    h = c.commit({UT + "selftest_foo.py": probe})
+    g = G.Gate(c.task, c.base, h, "armx", c.repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+    g.logdir.mkdir(parents=True, exist_ok=True)
+    g.checkout(); g.sandbox_probe()
+    rec, text = g.run_test(g.clone, UT + "selftest_foo.py", "head")
+    line = [l for l in (text or "").splitlines() if l.startswith("R3ARGV ")]
+    got = json.loads(line[-1][7:]) if line else {"argv": [], "env": None}
+    want = os.path.realpath(g.clone / UT / "selftest_foo.py")
+    env = {G.GATE_RUNNER_ENV: got["env"]} if got["env"] else {}
+    check(rec is not None and rec["verdict"] == "PASS" and G.gate_runner_selftest(got["argv"], env) == want,
+          "the runner's real /proc/self/cmdline + env identify the selftest it runs (%s)"
+          % (G.gate_runner_selftest(got["argv"], env),))
+    bad = []
+    if got["argv"]:
+        bad = [G.gate_runner_selftest(got["argv"], {}), G.gate_runner_selftest(got["argv"], {G.GATE_RUNNER_ENV: "0" * 64}),
+               G.gate_runner_selftest(got["argv"] + ["x"], env), G.gate_runner_selftest(got["argv"][:3] + ["a", got["argv"][4]], env)]
+        fake = tmp / G.GATE_RUNNER_NAME; fake.write_text(G.RUNNER_SRC + "#\n")
+        bad.append(G.gate_runner_selftest(got["argv"][:2] + [str(fake)] + got["argv"][3:], env))
+    check(bad and all(b is None for b in bad), "no marker / wrong marker / extra arg / bad fd / an edited runner file: "
+          "not the gate runner (%s)" % bad)
+
+
+def t_round3_live(tmp):
+    """The live step accepts the REAL arena_lane record shape (copied from arena_lane.py's _ev calls)."""
+    def lv(tag, rel_verdict="ok", aborted=False, problems=()):
+        c = Ctx(tmp, "r3l_" + tag, live="minimal"); h = c.commit(GOOD); c.records(h)
+        c.w.emit("armx", "canary", lane="L", run_id="run7", task="T1", sha=h, verdict="pass" if not problems else "fail",
+                 detail={"problems": list(problems), "facts": {"active_mods": ["ludeon.rimworld"], "world": {"name": "w",
+                         "seed": "s"}, "deployed_sha": h}})
+        c.w.emit("armx", "live_release", lane="L", run_id="run7", task="T1", verdict=rel_verdict, minutes=0.2,
+                 detail={"restored": True, "restore_ok": True, "restore_s": 12.0, "charged_to": "armx",
+                         "aborted": aborted, "why": "", "inherited_swap": None, "restore_out": "", "release_out": "",
+                         "mods_restored": [], "mods_restore_ok": True, "main_sha": "f" * 40, "mods_restore_out": ""})
+        return st(c.gate(h), "live")
+    s = lv("ok")
+    check(s == "PASS", "a real lane canary (problems []) + live_release verdict ok with no sha, same run: live PASS (%s)" % s)
+    s = lv("err", rel_verdict="error")
+    check(s == "UNMEASURED", "a real lane live_release verdict error: live UNMEASURED (%s)" % s)
+    s = lv("abort", aborted="watchdog")
+    check(s == "UNMEASURED", "a real lane release of an aborted hold: live UNMEASURED (%s)" % s)
+    s = lv("red", problems=("deployed mod(s) not active: x",))
+    check(s == "INVALID", "a real lane canary with problems: live INVALID (%s)" % s)
 
 
 def main():
@@ -774,7 +969,8 @@ def main():
     try:
         for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
                   t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
-                  t_signfail, t_records, t_phrase_deletes, t_static, t_real):
+                  t_signfail, t_records, t_phrase_deletes, t_static, t_real, t_round3_exit, t_round3_cover,
+                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live):
             t(tmp)
     finally:
         for k, v in saved.items():
