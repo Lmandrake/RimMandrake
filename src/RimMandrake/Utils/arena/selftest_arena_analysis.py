@@ -821,6 +821,16 @@ def t_spend_missing_field():
           r["final"]["verdict"])
 
 
+def t_refused_spend_doc_withholds_blocks():
+    """GPT r1 #3: a refused spend doc leaves no decisive verdict anywhere in the report."""
+    logs, tasks, sp = winner_logs()
+    doc = {"schema": AA.SPEND_SCHEMA, "arms": sp, "blocking": ["meter lost spend"]}
+    r = AA.analyse_spend_doc(logs, tasks, doc, draws=DRAWS)
+    check("refused spend doc -> final UNMEASURED and per-block verdicts withheld (no DECIDE anywhere)",
+          r["final"]["verdict"] == "UNMEASURED" and r["blocks"] == [] and r.get("blocks_withheld", 0) > 0
+          and "DECIDE_FOR" not in json.dumps(r), (r["final"], len(r["blocks"]), r.get("blocks_withheld")))
+
+
 def _mut_recs(logs, arm, event, fn):
     for x in logs[arm]["recs"]:
         if x["event"] == event:
@@ -860,6 +870,21 @@ def t_dq_measured_for_winner():
     v = AA.rule_verdict(probs(tie=0.95), True, {"v3": ["tester"]})
     check("rule_verdict: the TIE loser's unmeasured check does not block the simpler winner",
           v[0] == "TIE" and v[1]["winner"] == "trio", v)
+    # GPT r1 #2: an early unidentifiable gate (scope SKIP) masked by a LATER scope FAIL dated after the decision
+    skip = {"ts": iso(T0 + 5), "event": "gate", "sha": "c" * 40, "verdict": "pass",
+            "detail": {"steps": {"scope": "SKIP"}}}
+    fail = {"ts": iso(T0 + 40 * 600), "event": "gate", "sha": "d" * 40, "verdict": "pass",
+            "detail": {"steps": {"scope": "FAIL"}}}
+    logs, tasks, sp = winner_logs(extra_trio=(skip, fail))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("early scope SKIP + scope FAIL after the decisive block -> no DECIDE_FOR_trio (the check was unmeasured "
+          "when the decision would fire)", r["final"]["verdict"] != "DECIDE_FOR_trio"
+          and r["dq"]["trio"]["scope"].get("unmeasured"), (r["final"]["verdict"], r["dq"]["trio"]["scope"]))
+    logs, tasks, sp = winner_logs(extra_trio=(fail,))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("a later scope FAIL alone (all earlier gates measured) -> DECIDE_FOR_trio stands, violation after stop",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and "trio" in r["final"].get("violations_after_stop", {}),
+          (r["final"]["verdict"], r["final"].get("violations_after_stop")))
 
 
 def t_control_absent():
@@ -872,6 +897,11 @@ def t_control_absent():
     r = scenario(arms, 20)
     check("control absent mid-trial -> UNMEASURED, not CONTINUE", r["final"]["verdict"] == "UNMEASURED",
           r["final"]["verdict"])
+    v = AA.rule_verdict(probs(tie=0.95, leaders=("trio", "v3c")), False)
+    check("rule_verdict: TIE with the control absent -> UNMEASURED (GPT r1 #1)", v[0] == "UNMEASURED", v)
+    r = scenario({"trio": (1.0, all_acc, 0.01), "v3c": (1.0, all_acc, 0.01)}, 20)
+    check("control absent, two identical arms -> UNMEASURED, never TIE", r["final"]["verdict"] == "UNMEASURED",
+          (r["final"]["verdict"], [b.get("rule_verdict") for b in r["blocks"]]))
     r = dq_run({"v3": {"drop": {(1, "gate")}}}, final=True)
     check("control disqualified, two arms left, --final -> UNMEASURED(control), DQ still listed",
           r["final"]["verdict"] == "UNMEASURED" and "v3" in r["final"]["disqualified"]
@@ -962,6 +992,14 @@ def t_hardcap_pick_scenario():
     r = scenario({"trio": (0.85, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}, 15)
     check("no hard cap yet -> CONTINUE (the pick fires only at the cap)", r["final"]["verdict"] == "CONTINUE",
           r["final"]["verdict"])
+    skip = {"ts": iso(T0 + 5), "event": "gate", "sha": "c" * 40, "verdict": "pass",
+            "detail": {"steps": {"scope": "SKIP"}}}
+    r = scenario({"trio": (0.85, all_acc, 0.3), "v3c": (0.85, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}, 15,
+                 final=True, trio={"extra": (skip,)})
+    c = {x["arm"]: x for x in (r["final"].get("detail") or {}).get("candidates", [])}
+    check("hard cap end-to-end: the simplest arm with an unmeasured scope check is skipped, the next qualifying wins",
+          r["final"]["verdict"] == "HARD_CAP_PICK" and r["final"]["detail"]["winner"] == "v3c"
+          and "skipped" in c.get("trio", {}), (r["final"]["verdict"], r["final"].get("detail")))
     half = lambda i: i % 2 == 0  # noqa: E731
     r = scenario({"trio": (1.0, half, 0.8), "v3": (1.0, all_acc, 0.8)}, 15, final=True)
     check("hard cap, trio accepts credibly less -> control stays (HARD_CAP_NO_DIFFERENCE, winner v3)",
@@ -1057,7 +1095,8 @@ def t_small_sims():
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
-        t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario)
+        t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
+        t_refused_spend_doc_withholds_blocks)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),

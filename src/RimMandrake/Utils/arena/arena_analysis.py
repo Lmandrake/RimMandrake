@@ -39,7 +39,8 @@ WHAT IT READS (only fields some harness code writes, or the section 1.7 schema n
     WHOLE spend file is refused (spend_doc_problem: UNMEASURED) when its `blocking` list is not empty (the meter lost
     spend or may have put it on the wrong arm), when its `logs` binding (record count + digest per arm) differs from
     the logs analysed (stale: the log moved on after metering), or when its `window` does not cover every analysed
-    record. A task whose LAST judge event (by time, or among live lane-"judge" events by append order) is
+    record (and the report then carries no per-block verdicts: `blocks_withheld` counts them). A task whose LAST judge
+    event (by time, or among live lane-"judge" events by append order) is
     arena_judge.py's pending marker (detail.pending: a judgment started and its verdict was never appended) makes its
     arm UNMEASURED, as do live judge events whose append order and time order disagree (a clock ran backwards). Any record `ite` is ignored, counted in
     `merged_ite_records`.
@@ -75,8 +76,9 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
     disqualification check: HARD_CAP_PICK, detail.winner = X. None qualifies: HARD_CAP_NO_DIFFERENCE, detail.winner
     = the control (the control stays). Every candidate's two probabilities and 90% intervals are in detail.candidates,
     the per-arm intervals alongside. A futile arm is a candidate, on its frozen data.
-  - CONTROL: a decision or hard-cap pick needs the control. Control absent or disqualified and no stop fired:
-    UNMEASURED (never CONTINUE, never "no difference").
+  - CONTROL: a decision, TIE or hard-cap pick needs the control. A TIE that fires with the control absent or
+    disqualified: UNMEASURED. Control absent or disqualified and no stop fired: UNMEASURED (never CONTINUE, never "no
+    difference"); with fewer than two survivors the verdict stays DISQUALIFIED (a non-decision naming the violation).
   - A decision needs the winner's OWN disqualification checks measured: a DECIDE_FOR_X or TIE won by X while X has an
     UNMEASURED check not in DQ_EXEMPT stops the trial as UNMEASURED (the checks are whole-trial, so more data cannot
     measure them).
@@ -112,7 +114,9 @@ DISQUALIFICATION CONDITIONS, AND WHAT THE LOG CAN SHOW:
   An UNMEASURED condition never passes silently: every verdict lists the arms and conditions that were unmeasured
   (`dq_unmeasured`). EXEMPTION, stated in full (DQ_EXEMPT): only `ruling`, because it is UNMEASURED for every arm in
   every trial (requiring it would forbid every decision); it stays listed, and standing rulings are enforced by review.
-  Every other check of the winning arm must be measured (`dq_blocking`) or there is no decision. Only the WINNER's
+  Every other check of the winning arm must be measured (`dq_blocking`) or there is no decision; a VIOLATED check
+  that also had unidentifiable records carries `unmeasured` and blocks too (its violation may be dated after the
+  decision). Only the WINNER's
   checks gate: an unmeasured check of a losing arm or of the control is listed, not blocking.
 
 LIMITS, STATED PLAINLY:
@@ -143,8 +147,8 @@ LIMITS, STATED PLAINLY:
     near 0.09).
     HARD-CAP PICK (selftest_arena_analysis.py --hardcap 1000, 2026-10-30; --final at 40 tasks/arm, accept 0.64 unless
     stated, sigma_d 0.8, 1000 seeds each, 1000 draws; thresholds NOT tuned):
-      3 equal arms (trio/v3c/v3): pick 496 (trio 349, v3c 154 when trio narrowly failed), control stays 497, false
-        DECIDE 7. Half the time an equal simpler arm is NOT picked: P(eff < 0.9x) < 0.2 needs a log-efficiency SD near
+      3 equal arms (trio/v3c/v3): pick 496 (trio 343, v3c 153 when trio narrowly failed), control stays 497, false
+        DECIDE 7 (trio 6, v3c 1). Half the time an equal simpler arm is NOT picked: P(eff < 0.9x) < 0.2 needs a log-efficiency SD near
         0.12, and 40 tasks give 0.17 or more (above), so "not credibly worse" is often unproven between equal arms.
       trio truly 1.5x: DECIDE_FOR_trio 386 + pick 206 = trio 592; control stays 408; no wrong stop.
       WRONG PICKS (a truly worse simpler arm picked): trio 1.5x LESS efficient: 13 picks + 2 false DECIDE (1.5%);
@@ -546,6 +550,9 @@ def analyse_spend_doc(arm_logs, tasks, doc, **kw):
     rep["spend_overhead"] = doc.get("overhead") if isinstance(doc, dict) else None
     rep["spend_flags"] = doc.get("flags") if isinstance(doc, dict) else None
     if why:
+        # a refused doc yields no verdict anywhere: per-block verdicts computed from it are withheld, not reported
+        rep["blocks_withheld"] = len(rep.get("blocks") or [])
+        rep["blocks"] = []
         rep["final"] = {"verdict": "UNMEASURED", "why": why}
     return rep
 
@@ -634,6 +641,14 @@ def _sha_eq(a, b):
     return len(short) >= SHA_MIN_PREFIX and long_.startswith(short)
 
 
+def _also(res, unmeasured_why):
+    """A VIOLATED check that ALSO had unidentifiable records keeps that fact: the violation may be dated after a
+    decision, and until then the check was unmeasured (dq_blocking reads `unmeasured`)."""
+    if unmeasured_why:
+        res["unmeasured"] = unmeasured_why
+    return res
+
+
 def dq_publish(seq):
     judges = [r for r in seq if r["event"] == "judge"]
     if not judges:
@@ -650,8 +665,8 @@ def dq_publish(seq):
                    for gi, g in gates):
             viol.append({"ts": j["ts"], "task": j.get("task"), "sha": j["sha"]})
     if viol:
-        return {"status": "VIOLATED", "ts": viol[0]["ts"], "why": "judged (published) work with no earlier gate pass",
-                "evidence": viol[:5]}
+        return _also({"status": "VIOLATED", "ts": viol[0]["ts"], "why": "judged (published) work with no earlier "
+                      "gate pass", "evidence": viol[:5]}, unid and "%d judge event(s) with no usable sha or task" % unid)
     if unid:
         return {"status": "UNMEASURED", "why": "%d judge event(s) with no usable sha or task" % unid}
     return {"status": "CLEAN"}
@@ -671,8 +686,8 @@ def dq_scope(seq):
         elif st != "PASS":
             unknown += 1
     if viol:
-        return {"status": "VIOLATED", "ts": viol[0]["ts"], "why": "gate scope FAIL: edit outside the task area",
-                "evidence": viol[:5]}
+        return _also({"status": "VIOLATED", "ts": viol[0]["ts"], "why": "gate scope FAIL: edit outside the task area",
+                      "evidence": viol[:5]}, unknown and "%d gate event(s) whose scope step is not PASS or FAIL" % unknown)
     if unknown:
         return {"status": "UNMEASURED", "why": "%d gate event(s) whose scope step is not PASS or FAIL" % unknown}
     return {"status": "CLEAN"}
@@ -704,8 +719,8 @@ def dq_lane(seq):
         else:
             viol.append({"ts": seq[end]["ts"], "lane": key[0], "run_id": key[1]})
     if viol:
-        return {"status": "VIOLATED", "ts": viol[0]["ts"], "why": "lane held and released with no canary",
-                "evidence": viol[:5]}
+        return _also({"status": "VIOLATED", "ts": viol[0]["ts"], "why": "lane held and released with no canary",
+                      "evidence": viol[:5]}, unid and "%d live_take(s) with no lane or run_id" % unid)
     if unid:
         return {"status": "UNMEASURED", "why": "%d live_take(s) with no lane or run_id" % unid}
     return {"status": "CLEAN", "pending_open_holds": pending} if pending else {"status": "CLEAN"}
@@ -741,9 +756,11 @@ def dq_tester(seq):
             viol.append({"ts": seq[p]["ts"], "stream": st, "untested_build_task": seq[j].get("task"),
                          "build_sha": seq[j].get("sha")})
     if viol:
-        return {"status": "VIOLATED", "ts": viol[0]["ts"],
-                "why": "new build pass before a different agent began testing the last candidate",
-                "evidence": viol[:5]}
+        return _also({"status": "VIOLATED", "ts": viol[0]["ts"],
+                      "why": "new build pass before a different agent began testing the last candidate",
+                      "evidence": viol[:5]},
+                     (unid or orphan) and "%d build record(s) with no run_id; %d orphan build_end(s)" %
+                     (len(unid), len(orphan)))
     if unid or orphan:
         return {"status": "UNMEASURED", "why": "%d build record(s) with no run_id (stream unknown); %d build_end(s) "
                 "with no earlier build pass_start of the same run" % (len(unid), len(orphan))}
@@ -768,10 +785,11 @@ DQ_EXEMPT = {
 
 
 def dq_blocking(dq):
-    """{arm: [non-exempt UNMEASURED checks]} for arms with at least one: these arms may not be decided for."""
+    """{arm: [non-exempt UNMEASURED checks]} for arms with at least one: these arms may not be decided for. A VIOLATED
+    check that also had unidentifiable records counts (its violation can be dated after the decision)."""
     out = {}
     for a, d in (dq or {}).items():
-        v = [n for n, c in d.items() if c["status"] == "UNMEASURED" and n not in DQ_EXEMPT]
+        v = [n for n, c in d.items() if (c["status"] == "UNMEASURED" or c.get("unmeasured")) and n not in DQ_EXEMPT]
         if v:
             out[a] = v
     return out
@@ -864,6 +882,9 @@ def rule_verdict(probs, control_present, blocked=None):
         w = simpler(a, b)
         if w is None:
             return "UNMEASURED", {"why": "tie between %s and %s but one is not in the simpler-arm order" % (a, b)}
+        if not control_present:
+            return "UNMEASURED", {"why": "TIE between %s and %s but the control is absent or disqualified: no "
+                                         "reference, no decision" % (a, b), "p_tie": probs["tie"]}
         if w in blocked:
             return "UNMEASURED", {"why": "TIE would go to %s but its own disqualification check(s) %s are UNMEASURED"
                                          % (w, blocked[w]), "arm": w, "dq_unmeasured": blocked[w], "p_tie": probs["tie"]}
@@ -879,6 +900,8 @@ def hardcap_pick(post, arms, control, blocked):
     present in `arms`, not in `blocked`, with P(accept rate worse than control by >= HARDCAP_ACCEPT_MARGIN) <
     HARDCAP_ACCEPT_P AND P(accepted points per token < HARDCAP_EFF_RATIO x control) < HARDCAP_EFF_P. None: control."""
     le, th = post["le"], post["theta"]
+    if control not in th:
+        return None, {"candidates": [], "picked": False, "why": "the control (%s) has no posterior: no pick" % control}
     n = len(th[control])
     lr = math.log(HARDCAP_EFF_RATIO)
     cands = []
@@ -1098,7 +1121,8 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     elif len(keep) < 2:
         fin["verdict"] = "DISQUALIFIED" if fin["disqualified"] else "UNMEASURED"
         fin["detail"] = {"why": "fewer than two measured arms survive disqualification: no comparison and no "
-                         "automatic winner", "surviving": keep}
+                         "automatic winner%s" % ("" if control in keep else "; the control (%s) is not among them"
+                                                 % control), "surviving": keep}
     elif control not in keep:
         # without the control there is no reference: never "no difference" and never "keep going"
         # (ARENA_CONTROL_HARDEN_ABSENT_NOT_NO_DIFF)
