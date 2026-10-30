@@ -741,9 +741,226 @@ def t_review2b():
     check(T.read_session(p, "steve")["status"] == "closed", "the retried close publishes `closed`")
 
 
+# ---------------------------------------------------------------- independent-test defects (2026-10-30)
+def t_taint_keeps_fail():
+    """TESTPILOT_FIX_TAINT_ERASING_FAIL: a taint note (the `taint` CLI) annotates a FAIL, it never replaces it."""
+    root, p = fresh("arena")            # the CLI's own paths: ARENA_ROOT
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_TN", SHA[0], "B1", plan("s1", "s2", "s3", s1={"taints": []}))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()                           # R0, s1 FAILS
+    check(T.scenario_status(p, c)["s1"]["status"] == "fail", "taint: s1 fails first")
+    rc = T.main(["taint", "--cand", c["cand"], "--scenario", "s1", "--names", "s2"])
+    e = T.scenario_status(p, c)["s1"]
+    check(rc == 0 and e["status"] == "fail" and e.get("taint") == ["s2"],
+          "the taint CLI keeps s1's FAIL and attaches the note: %s %s" % (e["status"], e.get("taint")))
+    note = [x for x in T.evidence(p) if x["status"] == "note"]
+    check(len(note) == 1 and note[0].get("note_on") == e["ts"],
+          "the note names the result it was checked against: %s" % [x.get("note_on") for x in note])
+    d.rc["s1"] = 0                      # flaky: it would pass on a re-run
+    steps = pl.run_pass()
+    check(ran(d).count("s1") == 1 and T.states(p)[c["cand"]].get("verdict") == "fail",
+          "the FAIL stands: s1 is not re-run and the candidate resolves FAIL: %s %s"
+          % (actions(steps), T.states(p)[c["cand"]]))
+    why = raises(SystemExit, T.main, ["taint", "--cand", c["cand"], "--scenario", "s3", "--names", "s2"])
+    check(why is not None and T.scenario_status(p, c)["s3"]["status"] == "pass",
+          "a taint note on a scenario with no FAIL/invalid result is refused: %s" % why)
+
+
+def t_canary_blip():
+    """TESTPILOT_FIX_CANARY_BLIP_RELOAD: one red pre-canary cured by a reconnect is re-checked, never reloaded (M1)."""
+    root, p = fresh("blip")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_BL", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()                           # R0
+    d.t += 1.0
+    d.colonists = 0
+    st = pl.step()
+    check(st["result"]["status"] == "invalid", "blip: the red pre-canary invalidates s1 (not run)")
+    d.colonists = 3                     # the blip is over
+    steps = pl_run(pl, False)
+    acts = actions(steps)
+    check(not [a for a in acts if a[0] == "reload"] and d.calls.count(("launch",)) == 1,
+          "a canary blip cured by the ladder spends no reload: %s" % acts)
+    check(ran(d).count("s1") == 1 and T.states(p)[c["cand"]].get("verdict") == "pass",
+          "s1 is re-checked on the same game and the item resolves PASS: %s %s" % (ran(d), T.states(p)[c["cand"]]))
+    check(not T.read_session(p, "steve")["game"].get("canary_red"),
+          "a re-checked scenario that ran green leaves no red history behind: %s"
+          % T.read_session(p, "steve")["game"].get("canary_red"))
+    # the red history is the candidate's own: another candidate's stuck s1 does not block this one's s1
+    other = T.enqueue(p, "ITEM_BX", SHA[1], "B1", plan("s1"))
+    T.add_evidence(p, other, "s1", "invalid", "steve", "P1", t=d.t, why="canary red", taint=None)
+    sess = {"game": {"reset_t": 0, "canary_red": {c["cand"] + "|s1": "stuck"}}}
+    check(T._pending(p, other, sess) == (["s1"], []),
+          "another candidate's stuck canary history does not block this one: %s" % (T._pending(p, other, sess),))
+    sess["game"]["canary_red"] = {other["cand"] + "|s1": "stuck"}
+    check(T._pending(p, other, sess) == ([], ["s1"]), "its own stuck history does: %s" % (T._pending(p, other, sess),))
+    # a canary that stays flapping still ends (no endless re-check loop)
+    root, p = fresh("flap")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_FL", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    real = d.game_facts
+    n = {"k": 0}
+
+    def flap():                         # red at every pre-canary of a test, green at every ladder canary
+        f = real()
+        n["k"] += 1
+        f["ingame_canary"]["ok"] = n["k"] % 2 == 0
+        f["live_colonists"] = 3 if n["k"] % 2 == 0 else 0
+        return f
+    d.game_facts = flap
+    steps = []
+    can = None
+    for _ in range(12):
+        r = pl.step(can)
+        steps.append(r)
+        if r["decision"]["action"] in ("reload", "idle", "yield"):
+            break
+        res = r.get("result") or {}
+        can = res.get("canary_ok") if isinstance(res, dict) else None
+    reds = [e for e in T.evidence(p) if e["scenario"] == "s1" and e.get("why") == "canary red"]
+    check(len(reds) == 2 and ran(d) == [],
+          "a canary red again on the re-check is not re-checked a third time on this game: %d reds, %s"
+          % (len(reds), actions(steps)))
+
+
+def pl_run(pl, canary_ok, n=20):
+    out = []
+    for _ in range(n):
+        r = pl.step(canary_ok)
+        out.append(r)
+        if r["decision"]["action"] in ("idle", "yield"):
+            break
+        res = r.get("result") or {}
+        canary_ok = res.get("canary_ok") if isinstance(res, dict) else None
+    return out
+
+
+def t_carried_rebuild():
+    """TESTPILOT_CARRIED_REBUILD_WASTES_RELOAD: a rebuild whose every scenario is carried spends no reload."""
+    root, p = fresh("carry_noreload")
+    d = FakeDriver()
+    fp = {"s1": {"footprint": {"files": ["src/RimMandrake/A/Defs/*.xml"]}},
+          "s2": {"footprint": {"files": ["src/RimMandrake/B/Defs/*.xml"]}}}
+    a = T.enqueue(p, "ITEM_CR", SHA[0], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/A/Defs/x.xml"])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.run_pass()
+    check(T.states(p)[a["cand"]].get("verdict") == "pass", "carry: attempt 1 passes")
+    b = T.enqueue(p, "ITEM_CR", SHA[1], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/C/Defs/y.xml"])
+    n0, r0 = d.calls.count(("launch",)), len(ev(root, "reload"))
+    steps = pl_run(pl, None)
+    check(d.calls.count(("launch",)) == n0 and len(ev(root, "reload")) == r0 and
+          not [x for x in actions(steps) if x[0] == "reload"],
+          "an all-carried rebuild launches nothing and logs no reload: %s" % actions(steps))
+    check(T.states(p)[b["cand"]].get("verdict") == "pass" and
+          {e["status"] for e in T.scenario_status(p, b).values()} == {"carried"},
+          "it resolves PASS on carried records alone: %s" % T.states(p)[b["cand"]])
+    check(any(x["decision"]["action"] == "carry" for x in steps) and decisions(p, "carry"),
+          "the carry is a logged decision")
+    # a target superseded after the decision is not carried: nothing is published for it
+    e = T.enqueue(p, "ITEM_CR", SHA[2], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/C/Defs/z.xml"])
+    dec = pl.decide()
+    T.set_state(p, e["cand"], "superseded", why="test: superseded after the decision")
+    why = raises(T.PilotRefused, pl.carry, dec)
+    check(dec["action"] == "carry" and why and "superseded" in why and not T.scenario_status(p, e),
+          "a carry whose target was superseded after the decision writes nothing: %s %s" % (dec["action"], why))
+    # a pilot taken over after the decision publishes nothing either
+    f = T.enqueue(p, "ITEM_CR", SHA[3], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  parent=b["cand"], changed_files=["src/RimMandrake/C/Defs/w.xml"])
+    dec = pl.decide()
+    pilot(root, d, "P2").wake(takeover_dead=True)
+    why = raises(T.StalePilot, pl.carry, dec)
+    check(dec["action"] == "carry" and why and not T.scenario_status(p, f),
+          "a carry by a taken-over pilot writes nothing: %s %s" % (dec["action"], why))
+
+
+def t_mutant_guards():
+    """TESTPILOT_HARDEN_SELFTEST_MUTANTS: the guards the mutation run showed no check could see."""
+    # c2: the reload decision record itself carries the cost it used
+    root, p = fresh("m_cost")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_MC", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    st = pl.step()
+    rec = decisions(p, "reload")
+    check(rec and rec[0]["cost"] == st["decision"]["cost"] and
+          {"cost_s", "basis", "class", "threshold_s"} <= set(rec[0]["cost"]),
+          "the logged reload decision names the cost it used: %s" % (rec[0].get("cost") if rec else None))
+    # c5: a same-id pilot superseded by a newer wake (generation) is refused, all else matching
+    p2 = pilot(root, d, "P1")
+    p2.wake(takeover_dead=True)
+    s = T.read_session(p, "steve")
+    check(s["pilot"] == pl.id and s["epoch"] == pl.epoch and s["generation"] == pl.gen + 1,
+          "probe: only the generation tells the old P1 from the new one")
+    why = raises(T.StalePilot, pl.step)
+    check(why is not None and "generation" in why, "a stale same-id pilot is refused by its generation: %s" % why)
+    # c5: a retired pilot is refused even if the session file still reads it live
+    p2.retired = True
+    why = raises(T.StalePilot, p2.step)
+    check(why is not None and "handed off" in why, "a retired pilot makes no act on a still-live session: %s" % why)
+    # c6: a footprint glob alone forces a re-run (the parent PASSED both scenarios)
+    root, p = fresh("m_fp")
+    d = FakeDriver()
+    fp = {"s1": {"footprint": {"files": ["src/RimMandrake/A/Defs/*.xml"]}},
+          "s2": {"footprint": {"files": ["src/RimMandrake/B/Defs/*.xml"]}}}
+    a = T.enqueue(p, "ITEM_FP", SHA[0], "B1", plan("s1", "s2", **fp), mods=["Slime"])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.run_pass()
+    b = T.enqueue(p, "ITEM_FP", SHA[1], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/A/Defs/x.xml"])
+    pre = T.plan_retest(p, b, write=False)
+    check(T.states(p)[a["cand"]].get("verdict") == "pass" and set(pre["run"]) == {"s1"} and
+          "footprint" in pre["run"]["s1"] and set(pre["carried"]) == {"s2"},
+          "a changed file matching only s1's footprint glob re-runs s1, carries s2: %s" % pre)
+
+
+def t_killpg():
+    """c4: a yield kills the proof's whole process group, grandchildren included (real PilotDriver)."""
+    import time as _t
+    drv = T.PilotDriver.__new__(T.PilotDriver)
+    pidf = TMP / "grandchild.pid"
+
+    def poll():
+        if pidf.is_file() and pidf.read_text().strip():
+            raise L.OwnerReturned("owner back")
+    t0 = _t.time()
+    why = raises(L.OwnerReturned, drv.run_scenario, ["bash", "-c", "sleep 60 & echo $! > %s; wait" % pidf],
+                 str(TMP), poll, 0.2)
+    dt = _t.time() - t0
+    gpid = int(pidf.read_text().strip())
+    for _ in range(50):                 # SIGKILL is async: give the kernel a moment to reap
+        try:
+            stat = Path("/proc/%d/stat" % gpid).read_text()
+        except OSError:
+            stat = ""
+        if not stat or stat.split(") ", 1)[1][:1] in ("Z", "X"):
+            break
+        _t.sleep(0.1)
+    check(why is not None and dt < 5 and (not stat or stat.split(") ", 1)[1][:1] in ("Z", "X")),
+          "the owner yield kills the proof's grandchild too, in %.1fs (state %r)"
+          % (dt, stat.split(") ", 1)[1][:1] if stat else "gone"))
+    if stat and stat.split(") ", 1)[1][:1] not in ("Z", "X"):
+        os.kill(gpid, 9)
+
+
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_owner_yield, t_handoff,
-              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b):
+              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
+              t_taint_keeps_fail, t_canary_blip, t_carried_rebuild, t_mutant_guards, t_killpg):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run

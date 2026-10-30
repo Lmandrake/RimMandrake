@@ -325,12 +325,12 @@ def scn_hash(cand: dict, scenario: str) -> str:
 def add_evidence(p: dict, cand: dict, scenario: str, status: str, lane: str, pilot: str, t: float | None = None,
                  nolock: bool = False, **kw) -> dict:
     """Append one immutable record keyed (item, fingerprint, scenario, plan entry, tier, rep); rep counts up."""
-    if status not in ("pass", "fail", "invalid", "carried"):
+    if status not in ("pass", "fail", "invalid", "carried", "note"):
         raise ValueError("evidence status %r" % status)
     sh = scn_hash(cand, scenario)
     with (contextlib.nullcontext() if nolock else locked(p)):
-        rep = 1 + sum(1 for e in evidence(p) if (e["item"], e["fingerprint"], e["scenario"], e.get("scn_hash"),
-                                                 e.get("tier")) ==
+        rep = 1 + sum(1 for e in evidence(p) if not _is_note(e) and
+                      (e["item"], e["fingerprint"], e["scenario"], e.get("scn_hash"), e.get("tier")) ==
                       (cand["item"], cand["fingerprint"], scenario, sh, cand["tier"]))
         rec = dict(item=cand["item"], cand=cand["cand"], fingerprint=cand["fingerprint"], scenario=scenario,
                    scn_hash=sh,
@@ -339,16 +339,38 @@ def add_evidence(p: dict, cand: dict, scenario: str, status: str, lane: str, pil
         return _append(p["evidence"], rec)
 
 
+def _is_note(e: dict) -> bool:
+    """A taint note (the `taint` CLI) is an annotation, not a result. `why == "taint note"` reads the old records."""
+    return e.get("status") == "note" or e.get("why") == "taint note"
+
+
 def scenario_status(p: dict, cand: dict) -> dict:
     """scenario id -> its newest evidence record at this candidate's fingerprint AND this plan entry (a changed
-    argv or footprint at the same sha is a new test: old results do not count for it)."""
+    argv or footprint at the same sha is a new test: old results do not count for it). A taint note never
+    replaces a result: it sets the taint of the FAIL/invalid result it follows."""
     out = {}
     hs = {x["id"]: scn_hash(cand, x["id"]) for x in cand["plan"]["scenarios"]}
     for e in evidence(p):
         if e["item"] == cand["item"] and e["fingerprint"] == cand["fingerprint"] and \
                 e.get("scn_hash") == hs.get(e["scenario"]):
+            if _is_note(e):
+                prev = out.get(e["scenario"])
+                if prev is not None and prev["status"] in ("fail", "invalid"):
+                    out[e["scenario"]] = dict(prev, taint=e.get("taint"), taint_note=e.get("ts"))
+                continue
             out[e["scenario"]] = e
     return out
+
+
+def taint_note(p: dict, cand: dict, scenario: str, names, pilot: str = "pilot-note") -> dict:
+    """The pilot's written taint note on a FAIL/invalid result (L8). Refused on a scenario with no such result."""
+    with locked(p):                     # the check and the note: one critical section, bound to the checked result
+        cur = scenario_status(p, cand).get(scenario)
+        if cur is None or cur["status"] not in ("fail", "invalid"):
+            raise PilotRefused("taint note on %s %s: its newest result is %s, not a FAIL or invalid"
+                               % (cand["cand"], scenario, cur and cur["status"]))
+        return add_evidence(p, cand, scenario, "note", "-", pilot, nolock=True, why="taint note", taint=names,
+                            note_on=cur["ts"])
 
 
 SCRIPT_EXT = (".py", ".sh", ".ps1", ".json", ".xml", ".txt", ".yaml", ".yml", ".toml")
@@ -415,7 +437,7 @@ def parent_taint(p: dict, parent: dict):
 
 
 def plan_retest(p: dict, cand: dict, pilot: str = "plan", lane: str = "-", write: bool = True,
-                t: float | None = None) -> dict:
+                t: float | None = None, nolock: bool = False) -> dict:
     """L9a. Carry every untouched parent PASS (one `carried` record each) and list what must run. Idempotent."""
     byid = cand_by_id(p)
     parent = byid.get(cand.get("parent") or "")
@@ -444,7 +466,7 @@ def plan_retest(p: dict, cand: dict, pilot: str = "plan", lane: str = "-", write
         src = pe.get("source_fingerprint") or parent["fingerprint"]
         out["carried"][s["id"]] = src
         if write:
-            add_evidence(p, cand, s["id"], "carried", lane, pilot, t=t, source_fingerprint=src,
+            add_evidence(p, cand, s["id"], "carried", lane, pilot, t=t, nolock=nolock, source_fingerprint=src,
                          source_cand=pe.get("source_cand") or parent["cand"])
     return out
 
@@ -480,9 +502,12 @@ def hot_appliable(cand: dict, game: dict | None, byid: dict) -> bool:
 
 def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
     """(valuable scenario ids, blocked ones) of a candidate on the current state. Blocked = named by a taint note or
-    hot-fixed since the last state reset: a reset (fixture reload or reload) restores them."""
+    hot-fixed since the last state reset: a reset (fixture reload or reload) restores them. A scenario whose
+    pre-canary was red is blocked only until a green canary (M1: a red canary is re-checked, not reloaded); red again
+    on that re-check, it stays blocked until a reset."""
     have = scenario_status(p, cand)
     reset_t = (sess.get("game") or {}).get("reset_t", 0)
+    red = (sess.get("game") or {}).get("canary_red") or {}
     taint, uncertain = set(), False
     for e in have.values():
         if e["status"] in ("fail", "invalid") and e.get("t", 0) > reset_t and e.get("taint") is not None:
@@ -499,7 +524,8 @@ def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
             blocked.append(s["id"])
         elif (uncertain or s["id"] in taint) and not (e and e["status"] in ("fail", "invalid")):
             blocked.append(s["id"])
-        elif e and e["status"] == "invalid" and e.get("t", 0) > reset_t and e.get("why") == "canary red":
+        elif e and e["status"] == "invalid" and e.get("why") == "canary red" and \
+                red.get(_red_key(cand, s["id"])) in ("red", "stuck"):
             blocked.append(s["id"])
         else:
             val.append(s["id"])
@@ -515,6 +541,13 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
     base = {"rule": None, "lane": lane}
     if facts.get("hold"):
         return dict(base, action="hold", why=facts["hold"])
+    for c in q:                         # L9a: a rebuild that carries every scenario needs no game at all
+        if c.get("parent"):
+            pre = plan_retest(p, c, write=False)
+            if not pre["run"] and set(pre["carried"]) == {s["id"] for s in c["plan"]["scenarios"]}:
+                return dict(base, action="carry", cand=c["cand"],
+                            why="every scenario of %s is carried from %s (L9a): it resolves with no reload and no "
+                                "test" % (c["cand"], c["parent"]))
     if game and facts.get("process_alive") and facts.get("canary_ok") is False:
         tried = set(sess.get("ladder_tried") or [])
         for rung in rule["ladder"]:
@@ -594,6 +627,18 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
                        % (len(blocked), "sealed repair" if sealed else "candidate", tgt["cand"],
                           ": the drain is spent" if sealed else ""), drain=drain)
     return dict(base, action="idle", why="nothing valuable left and nothing queued that needs a reload")
+
+
+def _red_key(cand: dict, sid: str) -> str:
+    return "%s|%s" % (cand["cand"], sid)
+
+
+def _canary_green(sess: dict):
+    """A green canary: every scenario blocked by a red pre-canary gets its one re-check."""
+    red = (sess.get("game") or {}).get("canary_red") or {}
+    for k, v in red.items():
+        if v == "red":
+            red[k] = "recheck"
 
 
 def _target(q, game, byid):
@@ -828,6 +873,8 @@ class Pilot:
                 raise L.OwnerReturned(dec["why"])
             if dec["action"] == "reload":
                 return {"decision": dec, "result": self.reload(dec)}
+            if dec["action"] == "carry":
+                return {"decision": dec, "result": self.carry(dec)}
             if dec["action"] == "ladder":
                 return {"decision": dec, "result": self.ladder(dec)}
             if dec["action"] in ("test", "hot_apply"):
@@ -856,6 +903,26 @@ class Pilot:
         return out
 
     # -- acts
+    def carry(self, dec: dict) -> dict:
+        """L9a: an all-carried rebuild writes its carried records and resolves; the game is not touched."""
+        self._check_live()
+        c = cand_by_id(self.p)[dec["cand"]]
+        rec = self._decision({"kind": "carry", "cand": c["cand"], "why": dec["why"]})
+        with locked(self.p):            # ownership, the target's state, the carried records and the verdict: one
+            self._check_live()          # critical section, so a stale pilot or a superseded target publishes nothing
+            cur = states(self.p).get(c["cand"], {}).get("state")
+            if cur not in ("queued", "testing"):
+                raise PilotRefused("%s is %s (changed since the decision): not carried" % (c["cand"], cur))
+            retest = plan_retest(self.p, c, pilot=self.id, lane=self.lane_name, t=self.d.clock(), nolock=True)
+            if retest["run"]:
+                raise PilotRefused("carry of %s: %s must run" % (c["cand"], sorted(retest["run"])))
+            self._resolve(c, nolock=True)   # an all-carried rebuild resolves here: no test would ever run for it
+            st = states(self.p).get(c["cand"], {})
+            if st.get("state") not in TERMINAL:
+                raise PilotRefused("carry of %s did not resolve it (%s)" % (c["cand"], st.get("state")))
+        self._supersede_older(c)
+        return {"decision": rec, "retest": retest, "state": st}
+
     def reload(self, dec: dict) -> dict:
         """The one way this pilot reloads. Refused without a rule (S4). The decision is logged before the reload."""
         if not dec.get("rule") or dec.get("rule") not in L.RELOAD_RULES:
@@ -894,7 +961,7 @@ class Pilot:
         self.epoch = s["epoch"]
         self._supersede_older(c)
         retest = plan_retest(self.p, c, pilot=self.id, lane=self.lane_name, t=self.d.clock())
-        self._resolve(c)                # an all-carried rebuild resolves here: no test would ever run for it
+        self._resolve(c)
         return {"reload_event": ev, "decision": rec, "retest": retest}
 
     def ladder(self, dec: dict) -> dict:
@@ -923,6 +990,7 @@ class Pilot:
             if ok and rung == "reload_save" and s.get("game"):
                 s["game"]["reset_t"] = self.d.clock()
                 s["game"]["loaded_save"] = self.lane.loaded_save
+                s["game"]["canary_red"] = {}
             self._save(s)
         self._decision({"kind": "ladder", "rung": rung, "ok": ok, "out": (out or "")[-200:], "why": dec["why"]})
         if rung == "reload_save" and not ok:   # its blocked scenarios cannot be restored: a failed one resolves
@@ -934,6 +1002,7 @@ class Pilot:
             with locked(self.p):
                 s = self._check_live()
                 s["ladder_tried"] = [] if rung != "reload_save" else s.get("ladder_tried", [])
+                _canary_green(s)
                 self._save(s)
         return {"rung": rung, "ok": ok, "canary_ok": can["ok"]}
 
@@ -1003,8 +1072,14 @@ class Pilot:
         self._owner_check()
         can = self.lane.canary(self._expect_sha(s))
         if not can["ok"]:
-            add_evidence(self.p, c, scn["id"], "invalid", self.lane_name, self.id, t=self.d.clock(), why="canary red",
-                         problems=can["problems"][:5], taint=None)
+            with locked(self.p):        # re-checked once after a green canary; red again, blocked until a reset
+                s = self._check_live()
+                red = s["game"].setdefault("canary_red", {})
+                k = _red_key(c, scn["id"])
+                red[k] = "stuck" if red.get(k) == "recheck" else "red"
+                self._save(s)
+                add_evidence(self.p, c, scn["id"], "invalid", self.lane_name, self.id, t=self.d.clock(),
+                             nolock=True, why="canary red", problems=can["problems"][:5], taint=None)
             return {"canary_ok": False, "status": "invalid"}
         with locked(self.p):            # the open-state check, the transition and in_flight: one critical section
             s = self._check_live()
@@ -1015,6 +1090,8 @@ class Pilot:
                 set_state(self.p, c["cand"], "testing", nolock=True, pilot=self.id)
             s["in_flight"] = {"cand": c["cand"], "scenario": scn["id"], "t": self.d.clock()}
             s["ladder_tried"] = []
+            _canary_green(s)
+            s["game"].get("canary_red", {}).pop(_red_key(c, scn["id"]), None)   # green and running: the blip is over
             self._save(s)
         self._ev("test_start", task=c["item"], sha=c["sha"],
                  detail={"tester": self.id, "builder": c["builder"], "cand": c["cand"], "scenario": scn["id"]})
@@ -1063,7 +1140,7 @@ class Pilot:
             set_state(self.p, c["cand"], "quarantined", why="%d crashes on %s (M5)" % (n, c["item"]),
                       item_parked=c["item"])
 
-    def _resolve(self, c):
+    def _resolve(self, c, nolock: bool = False):
         """A candidate resolves when every scenario has a counted, non-hot-fixed result at its fingerprint."""
         if states(self.p).get(c["cand"], {}).get("state") in TERMINAL:
             return
@@ -1072,17 +1149,18 @@ class Pilot:
         if any(have.get(i, {}).get("status") == "fail" for i in ids):
             fails = len({e["cand"] for e in evidence(self.p) if e["item"] == c["item"] and e["status"] == "fail"})
             if fails >= int(self.rule.get("max_live_fails", 3)):
-                set_state(self.p, c["cand"], "parked", why="%d live failures (L10)" % fails, item_parked=c["item"])
+                set_state(self.p, c["cand"], "parked", nolock=nolock, why="%d live failures (L10)" % fails,
+                          item_parked=c["item"])
                 return
             s = self._sess()
             valuable, blocked = _pending(self.p, c, s)
             restorable = bool(blocked) and bool(c["plan"].get("fixture_save")) and \
                 "reload_save" not in (s.get("ladder_tried") or [])
             if not valuable and not restorable:   # a failed candidate keeps its other scenarios while any can run
-                set_state(self.p, c["cand"], "resolved", verdict="fail",
+                set_state(self.p, c["cand"], "resolved", nolock=nolock, verdict="fail",
                           **({"unrun_blocked": blocked} if blocked else {}))
         elif all(have.get(i, {}).get("status") in COUNTED and not have[i].get("hotfix") for i in ids):
-            set_state(self.p, c["cand"], "resolved", verdict="pass")
+            set_state(self.p, c["cand"], "resolved", nolock=nolock, verdict="pass")
 
 
 # ---------------------------------------------------------------- the real driver (live only)
@@ -1195,7 +1273,10 @@ def main(argv=None):
         if c is None:
             raise SystemExit("unknown candidate %s" % a.cand)
         names = "uncertain" if a.names == "uncertain" else [x for x in a.names.split(",") if x]
-        add_evidence(p, c, a.scenario, "invalid", "-", a.pilot, why="taint note", taint=names)
+        try:
+            taint_note(p, c, a.scenario, names, a.pilot)
+        except PilotRefused as e:
+            raise SystemExit(str(e))
         return 0
     pilot = Pilot(a.lane, PilotDriver(), a.pilot, clone=a.clone)
     pilot.wake(takeover_dead=a.takeover_dead)
