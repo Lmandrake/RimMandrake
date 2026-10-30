@@ -697,9 +697,9 @@ class Gate:
         bw = shutil.which("bwrap")
         if not bw:
             return None
-        if not interop:
+        if not interop:     # own network namespace too: no loopback service, NAT gateway or internet from a step
             out = [bw, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--unshare-pid", "--unshare-ipc",
-                   "--die-with-parent", "--new-session"]
+                   "--unshare-net", "--die-with-parent", "--new-session"]
             for c in AS.CONTAINERS + self.STRICT_EXTRA:
                 if os.path.isdir(c) and not os.path.islink(c):
                     out += ["--tmpfs", c]

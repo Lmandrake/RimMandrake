@@ -14,6 +14,12 @@ Item ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE. Each check launches REAL sandbo
       `git for-each-ref refs/arena/old/` in a retired tree fails (harness-side it lists refs); with no bwrap every one
       is refused before anything starts.
   S7  static: subprocess.Popen of a model happens only inside RA.CmdModel.spawn (the one sandboxed choke point).
+  S8  network (ARENA_SANDBOX_HARDEN_LOOPBACK_STILL_OPEN, ARENA_SANDBOX_HARDEN_GITHUB_PUBLIC_FETCH): two host loopback
+      servers stand in for the model API (allow-listed) and RimPulse (not); harness-side both answer (control).
+      Inside wrap(net="model") only lo exists, neither is reachable directly, CONNECT to the API answers through the
+      relay, CONNECT to the RimPulse stand-in / github.com is 403, and `git ls-remote` of the public repo fails;
+      net="none" reaches nothing at all. The live RimPulse port and the REAL allow-list (a TLS handshake with the
+      model API through the relay) are checked when harness-side they work.
 """
 from __future__ import annotations
 
@@ -336,6 +342,203 @@ def shlex_quote(s):
     return shlex.quote(s)
 
 
+# ------------------------------------------------------------------------------------------------ S8
+NET_PROBE = r'''
+import json, os, socket, ssl, subprocess, sys
+sys.stdin.read()
+a = json.loads(sys.argv[1])
+out = {"nics": sorted(n for _, n in socket.if_nameindex()), "direct": {}, "connect": {}, "tls": {}}
+def direct(port):
+    try:
+        s = socket.create_connection(("127.0.0.1", port), 3)
+        s.settimeout(3)
+        d = s.recv(64).decode("latin-1")
+        s.close()
+        return "OPEN " + d
+    except OSError as e:
+        return "closed " + type(e).__name__
+proxy = os.environ.get("HTTPS_PROXY", "")
+def connect(target):
+    if not proxy:
+        return None, "no proxy"
+    host, port = proxy.rsplit("/", 1)[-1].rsplit(":", 1)
+    s = socket.create_connection((host, int(port)), 5)
+    s.settimeout(15)
+    s.sendall(("CONNECT %s HTTP/1.1\r\nHost: %s\r\n\r\n" % (target, target)).encode())
+    head = b""
+    while b"\r\n\r\n" not in head:
+        d = s.recv(4096)
+        if not d:
+            break
+        head += d
+    return s, head.split(b"\r\n", 1)[0].decode("latin-1")
+for name, port in a["ports"].items():
+    out["direct"][name] = direct(port)
+for name, target in a["targets"].items():
+    try:
+        s, status = connect(target)
+        body = ""
+        if s is not None and " 200 " in status + " ":
+            body = s.recv(64).decode("latin-1")
+        if s is not None:
+            s.close()
+        out["connect"][name] = [status, body]
+    except OSError as e:
+        out["connect"][name] = ["error " + type(e).__name__, ""]
+for target in a.get("tls", []):
+    try:
+        s, status = connect(target)
+        if s is None or " 200 " not in status + " ":
+            out["tls"][target] = "refused: " + status
+            continue
+        host = target.rsplit(":", 1)[0]
+        t = ssl.create_default_context().wrap_socket(s, server_hostname=host)
+        out["tls"][target] = "ok " + str(t.version())
+        t.close()
+    except (OSError, ssl.SSLError) as e:
+        out["tls"][target] = "error %s: %s" % (type(e).__name__, str(e)[:80])
+r = subprocess.run(["git", "ls-remote", a["repo"], "HEAD"], capture_output=True, text=True, timeout=60,
+                   stdin=subprocess.DEVNULL)
+out["git"] = [r.returncode, (r.stdout + r.stderr).strip()[-160:]]
+out["proxy"] = bool(proxy)
+print("NETPROBE " + json.dumps(out))
+'''
+PUBLIC_REPO = "https://github.com/Lmandrake/RimMandrake.git"
+RIMPULSE_PORT = 8765
+
+
+def _server(reply: bytes):
+    import socket
+    import threading
+    srv = socket.socket()
+    srv.bind(("127.0.0.1", 0))
+    srv.listen(16)
+
+    def serve():
+        while True:
+            try:
+                c, _ = srv.accept()
+            except OSError:
+                return
+            try:
+                c.sendall(reply)
+            except OSError:
+                pass
+            c.close()
+    threading.Thread(target=serve, daemon=True).start()
+    return srv, srv.getsockname()[1]
+
+
+def _direct(port):
+    import socket
+    try:
+        s = socket.create_connection(("127.0.0.1", port), 3)
+        s.settimeout(3)
+        d = s.recv(64)
+        s.close()
+        return "OPEN " + d.decode("latin-1")
+    except OSError as e:
+        return "closed " + type(e).__name__
+
+
+def _tls_host(target):
+    import socket
+    import ssl
+    host, port = target.rsplit(":", 1)
+    try:
+        with socket.create_connection((host, int(port)), 10) as s:
+            with ssl.create_default_context().wrap_socket(s, server_hostname=host):
+                return True
+    except (OSError, ssl.SSLError):
+        return False
+
+
+def _netprobe(tmp, name, net, arg):
+    d = tmp / ("net_" + name)
+    (d / "home").mkdir(parents=True)
+    pb = tmp / "netbin"
+    pb.mkdir(exist_ok=True)
+    (pb / "netprobe.py").write_text(NET_PROBE)
+    old = os.environ.get("RM_ARM_SANDBOX_RO")
+    os.environ["RM_ARM_SANDBOX_RO"] = str(pb)
+    try:
+        argv, env = AS.wrap([AS.PY, "-I", str(pb / "netprobe.py"), json.dumps(arg)], dict(os.environ), cwd=d,
+                            rw=[d], home=d / "home", net=net)
+    finally:
+        if old is None:
+            os.environ.pop("RM_ARM_SANDBOX_RO", None)
+        else:
+            os.environ["RM_ARM_SANDBOX_RO"] = old
+    r = subprocess.run(argv, env=env, cwd=str(d), input="", capture_output=True, text=True, timeout=180)
+    for line in r.stdout.splitlines():
+        if line.startswith("NETPROBE "):
+            return json.loads(line[len("NETPROBE "):])
+    raise RuntimeError("netprobe %s did not report (rc %s): %s" % (name, r.returncode, (r.stdout + r.stderr)[-400:]))
+
+
+def s8_network(tmp):
+    import arena_critic_relay as RELAY
+    api, api_port = _server(b"API-OK")
+    pulse, pulse_port = _server(b"SECRET-LEDGER")
+    try:
+        check(_direct(api_port).startswith("OPEN API-OK") and _direct(pulse_port).startswith("OPEN SECRET"),
+              "S8 control: harness-side both loopback stand-ins answer")
+        real_allow = None
+        try:
+            saved = os.environ.pop(RELAY.ALLOW_ENV, None)
+            real_allow = sorted(RELAY.allow_list())
+        except RELAY.RelayRefused:
+            pass
+        finally:
+            if saved is not None:
+                os.environ[RELAY.ALLOW_ENV] = saved
+        os.environ[RELAY.ALLOW_ENV] = "127.0.0.1:%d" % api_port
+        arg = {"ports": {"api": api_port, "pulse": pulse_port, "rimpulse": RIMPULSE_PORT},
+               "targets": {"api": "127.0.0.1:%d" % api_port, "pulse": "127.0.0.1:%d" % pulse_port,
+                           "github": "github.com:443"}, "repo": PUBLIC_REPO}
+        m = _netprobe(tmp, "model", "model", arg)
+        check(m["nics"] == ["lo"], "S8 model: own network namespace, lo only (%s)" % m["nics"])
+        check(all(v.startswith("closed") for v in m["direct"].values()),
+              "S8 model: no host loopback port reachable directly (%s)" % m["direct"])
+        check(m["proxy"] and m["connect"]["api"] == ["HTTP/1.1 200 Connection Established", "API-OK"],
+              "S8 model: CONNECT to the allow-listed API answers through the relay (%s)" % m["connect"]["api"])
+        check(m["connect"]["pulse"][0].startswith("HTTP/1.1 403") and m["connect"]["github"][0].startswith(
+            "HTTP/1.1 403"), "S8 model: CONNECT to the RimPulse stand-in and github.com is 403 (%s)" % m["connect"])
+        check(m["git"][0] != 0, "S8 model: git ls-remote of the public repo fails (%s)" % m["git"])
+        rel = RELAY.relay(AS.relay_base())
+        check("github.com:443" in rel.denied and "127.0.0.1:%d" % pulse_port in rel.denied,
+              "S8 model: the relay recorded the refused targets (%s)" % rel.denied[-6:])
+        n = _netprobe(tmp, "none", "none", arg)
+        check(n["nics"] == ["lo"] and not n["proxy"] and all(v.startswith("closed") for v in n["direct"].values())
+              and n["git"][0] != 0, "S8 none: lo only, no proxy, nothing reachable, git ls-remote fails (%s)" % n)
+        if _direct(RIMPULSE_PORT).startswith("OPEN"):
+            check(m["direct"]["rimpulse"].startswith("closed"),
+                  "S8 live: RimPulse :%d answers harness-side, not from the sandbox" % RIMPULSE_PORT)
+        else:
+            print("  [unmeasured] S8 live RimPulse :%d is not up harness-side" % RIMPULSE_PORT)
+        os.environ.pop(RELAY.ALLOW_ENV, None)
+        keep, RELAY.ALLOW_FILE = RELAY.ALLOW_FILE, tmp / "no_allow_file"
+        try:
+            check(refused(lambda: _netprobe(tmp, "noallow", "model", arg)),
+                  "S8 no allow-list (env unset, no file) -> the model sandbox is refused, never a shared network")
+        finally:
+            RELAY.ALLOW_FILE = keep
+        if real_allow and not all(_tls_host(t) for t in real_allow):
+            print("  [unmeasured] S8 live: harness-side TLS to the allow-listed model hosts fails (offline?)")
+        elif not real_allow:
+            print("  [unmeasured] S8 live: no machine allow-list configured")
+        else:
+            os.environ[RELAY.ALLOW_ENV] = ",".join(real_allow)
+            t = _netprobe(tmp, "real", "model", dict(arg, tls=real_allow))
+            check(all(v.startswith("ok") for v in t["tls"].values()),
+                  "S8 live: TLS handshake with every allow-listed model host through the relay (%d hosts: %s)"
+                  % (len(real_allow), sorted(set(v.split(":")[0] for v in t["tls"].values()))))
+    finally:
+        os.environ.pop(RELAY.ALLOW_ENV, None)
+        api.close()
+        pulse.close()
+
+
 # ------------------------------------------------------------------------------------------------ S7
 def s7_static():
     bad = []
@@ -373,6 +576,11 @@ def main():
         except Exception as e:  # noqa: BLE001
             check(False, "s4/s5 crashed: %s: %s" % (type(e).__name__, e))
         try:
+            s8_network(tmp)
+        except Exception as e:  # noqa: BLE001
+            check(False, "s8 crashed: %s: %s" % (type(e).__name__, e))
+        try:
+            os.environ["ARENA_CRITIC_RELAY_ALLOW"] = "127.0.0.1:9"      # the launch sites need a model route
             s6_launch_sites(tmp)
         except Exception as e:  # noqa: BLE001
             check(False, "s6 crashed: %s: %s" % (type(e).__name__, e))

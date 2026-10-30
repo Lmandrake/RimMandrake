@@ -410,10 +410,11 @@ class CmdModel:
         self.wrap(["true"], dict(os.environ), cwd=cwd, rw=rw, home=home)
 
     @staticmethod
-    def wrap(argv, env, *, cwd, rw, home):
-        """arm_sandbox.wrap (THE choke point; item ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE): no sandbox, no launch."""
+    def wrap(argv, env, *, cwd, rw, home, net="model"):
+        """arm_sandbox.wrap (THE choke point; item ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE): no sandbox, no launch.
+        net="model": own network namespace whose only route is the allow-listed model API relay; "none": no route."""
         try:
-            return AS.wrap(argv, env, cwd=cwd, rw=rw, home=home)
+            return AS.wrap(argv, env, cwd=cwd, rw=rw, home=home, net=net)
         except AS.SandboxRefused as e:
             raise Refused(str(e))
 
@@ -531,7 +532,7 @@ def run_clone_code(root, argv, *, env=None, timeout=3600, role="harness"):
     data.mkdir(parents=True, exist_ok=True)
     env["RM_DATA_ROOT"] = str(data)
     env.pop("AGENT_STORAGE_ROOT", None)
-    a, e = CmdModel.wrap(list(argv), env, cwd=root, rw=rw, home=home)
+    a, e = CmdModel.wrap(list(argv), env, cwd=root, rw=rw, home=home, net="none")    # clone code needs no network
     return subprocess.run(a, cwd=str(root), env=e, capture_output=True, text=True, errors="replace",
                           timeout=timeout, stdin=subprocess.DEVNULL)
 

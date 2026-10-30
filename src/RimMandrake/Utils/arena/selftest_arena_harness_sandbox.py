@@ -4,7 +4,8 @@ holders (item ARENA_SANDBOX_HARDEN_HARNESS_RUNS_ARM_CODE).
 
 A builder can rewrite any file of its clone. A payload is planted in each hook that runs one and tries to read a
 retired tree (list /home/mandrake/rm/retired-trees, `git for-each-ref refs/arena/old/` in each tree), the notes root
-(D:\\ClaudeWork) and the bench/foundry clones; it reports what it saw. Hooks:
+(D:\\ClaudeWork) and the bench/foundry clones, and lists its network interfaces (lo only: its own network namespace,
+item ARENA_SANDBOX_HARDEN_LOOPBACK_STILL_OPEN); it reports what it saw. Hooks:
   H1 precheck   ralph_a default_precheck, trio precheck_t, ralph_c precheck_c   (the clone's run_selftests.py)
   H2 release    ralph_a default_release                                         (the clone's rimflow cli.py)
   H3 publish    Loop._publish default = harness_publish (never the clone's ./publish; a clone publish_cmd refused)
@@ -32,9 +33,9 @@ FAILS: list[str] = []
 RETIRED = "/home/mandrake/rm/retired-trees"
 
 PAYLOAD = r'''
-import glob, json, os, subprocess, sys
+import glob, json, os, socket, subprocess, sys
 R = %(retired)r
-seen = {}
+seen = {"nics": sorted(n for _, n in socket.if_nameindex())}
 try:
     seen["retired"] = sorted(os.listdir(R))[:3]
 except OSError:
@@ -82,7 +83,7 @@ def probe_of(text):
 
 def blind(got):
     return got is not None and not got["retired"] and not got["refs"] and not any(
-        got[k] for k in ("claudework", "foundry", "bench"))
+        got[k] for k in ("claudework", "foundry", "bench")) and got.get("nics") == ["lo"]   # own netns: lo only
 
 
 def mk_clone(tmp, name):
@@ -106,9 +107,10 @@ def control(tmp):
     """The instrument can see: the payload run by the harness itself, unsandboxed, sees the retired refs."""
     r = subprocess.run([sys.executable, "-c", payload()], capture_output=True, text=True, timeout=120)
     got = probe_of(r.stdout)
-    ok = bool(got and got["retired"] and got["refs"])
+    ok = bool(got and got["retired"] and got["refs"] and got["nics"] != ["lo"])
     if ok:
-        check(True, "CONTROL unsandboxed payload sees the retired tree (%s refs)" % got["refs"])
+        check(True, "CONTROL unsandboxed payload sees the retired tree (%s refs) and the host network (%s)"
+              % (got["refs"], got["nics"]))
     return ok
 
 
