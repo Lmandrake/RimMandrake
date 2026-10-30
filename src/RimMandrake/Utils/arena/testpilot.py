@@ -1125,8 +1125,12 @@ class Pilot:
         self._ev("test_start", task=c["item"], sha=c["sha"],
                  detail={"tester": self.id, "builder": c["builder"], "cand": c["cand"], "scenario": scn["id"]})
         self._check_live()
-        rc, txt = self.d.run_scenario(scn["argv"], self.clone, self._poll,
-                                      float(self.rule.get("scenario_poll_s", 5)))
+        timed_out = False
+        try:
+            rc, txt = self.d.run_scenario(scn["argv"], self.clone, self._poll,
+                                          float(self.rule.get("scenario_poll_s", 5)))
+        except TimeoutError as e:   # the driver already killed the proof's group: a hang is a logged result, not a crash
+            rc, txt, timed_out = None, "TIMEOUT: %s" % e, True
         self._check_live()              # S6: a pilot taken over mid-proof records nothing; the taker logged it
         self.steps_since_owner += 1
         self.p["logs"].mkdir(parents=True, exist_ok=True)
@@ -1139,6 +1143,8 @@ class Pilot:
         crash = False
         if not alive:
             status, why, crash = "invalid", "the game died during the scenario", True
+        elif timed_out:
+            status, why = "invalid", "the proof timed out (%s): killed, not judged" % txt
         elif not after["ok"]:
             status, why = "invalid", "canary red after the scenario"
         elif rc == 0:
@@ -1199,6 +1205,8 @@ class Pilot:
 class PilotDriver(RC.RunnerDriver):
     """RunnerDriver plus the pilot's acts. run_scenario polls `poll` (the owner check) while the proof runs."""
 
+    LIMIT_S = 1800
+
     def run_scenario(self, argv, clone, poll, poll_s):
         try:
             proc = subprocess.Popen(list(argv), cwd=clone or str(L.REPO), stdout=subprocess.PIPE,
@@ -1215,8 +1223,8 @@ class PilotDriver(RC.RunnerDriver):
                 pass
             try:
                 poll()
-                if time.time() - t0 > 1800:
-                    raise TimeoutError("scenario over 1800 s")
+                if time.time() - t0 > self.LIMIT_S:
+                    raise TimeoutError("scenario over %g s" % self.LIMIT_S)
             except BaseException:
                 try:
                     os.killpg(proc.pid, signal.SIGKILL)

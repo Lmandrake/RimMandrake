@@ -972,6 +972,41 @@ def t_mutant_guards():
           "a changed file matching only s1's footprint glob re-runs s1, carries s2: %s" % pre)
 
 
+def t_proof_timeout():
+    """A proof past its limit is a logged, non-crash result; the pass survives (was: TimeoutError aborted it)."""
+    root, p = fresh("proof_timeout")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_TO", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+
+    def hang():
+        raise TimeoutError("scenario over 1800 s")
+    d.during["s1"] = hang
+    r = pl.step()
+    s = T.read_session(p, "steve")
+    ev = [e for e in T.evidence(p) if e["scenario"] == "s1"]
+    check(r["decision"]["action"] == "test" and (r["result"] or {}).get("status") == "invalid",
+          "the timeout step returns a recorded invalid result, not a raise: %r" % (r,))
+    check(len(ev) == 1 and ev[0]["status"] == "invalid" and "timed out" in (ev[0].get("why") or ""),
+          "one evidence record says the proof timed out: %r" % ev)
+    check(not ev[0].get("crash"), "a timeout is not a pilot crash (no M5 quarantine count)")
+    check(s["status"] == "live" and s["pilot"] == "P1" and not s.get("in_flight"),
+          "session still P1's and in_flight is cleared: %r" % s.get("in_flight"))
+    d.during.clear()
+    r = pl.step()
+    check((r["result"] or {}).get("status") in ("pass", "invalid") and r["decision"]["action"] != "idle",
+          "the pass goes on after the timeout: %r" % r["decision"])
+    # the real driver: past its limit it raises TimeoutError and kills the group
+    import time as _t
+    drv = T.PilotDriver.__new__(T.PilotDriver)
+    drv.LIMIT_S = 0.5
+    t0 = _t.time()
+    why = raises(TimeoutError, drv.run_scenario, ["bash", "-c", "sleep 60 & wait"], str(TMP), lambda: None, 0.1)
+    check(why is not None and _t.time() - t0 < 8, "the real driver times out and returns promptly")
+
+
 def t_killpg():
     """c4: a yield kills the proof's whole process group, grandchildren included (real PilotDriver)."""
     import time as _t
@@ -1004,7 +1039,7 @@ def t_killpg():
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_owner_yield, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
-              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg):
+              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run
