@@ -214,12 +214,52 @@ def t_file_claim_start_close():
     assert "closed at deadbee" in out, out
 
 
+def _git_fixture():
+    """-> (clone_dir, published_sha, local_sha): origin/main holds the first commit, the clone one more."""
+    base = os.path.join(_tmp(), "gitfx")
+    os.makedirs(base)
+    def g(cwd, *a):
+        return subprocess.check_output(("git",) + a, cwd=cwd, stderr=subprocess.STDOUT).decode().strip()
+    g(base, "init", "-q", "--bare", "-b", "main", "origin.git")
+    g(base, "clone", "-q", "origin.git", "clone")
+    c = os.path.join(base, "clone")
+    for k, v in (("user.name", "t"), ("user.email", "t@t")):
+        g(c, "config", k, v)
+    open(os.path.join(c, "a"), "w").write("1")
+    g(c, "add", "a"); g(c, "commit", "-q", "-m", "one"); g(c, "push", "-q", "origin", "HEAD:main")
+    g(c, "fetch", "-q", "origin")
+    pub = g(c, "rev-parse", "HEAD")
+    open(os.path.join(c, "a"), "w").write("2")
+    g(c, "commit", "-q", "-am", "two")
+    return c, pub, g(c, "rev-parse", "HEAD")
+
+
+def t_close_refuses_unpublished_sha_and_head_fallback():
+    """CLOSE_SHAS_AUDIT_NAME_NO_COMMIT: publish rebases local commits, so a close citing one cites a ghost."""
+    fresh()
+    c, pub, loc = _git_fixture()
+    e = env("BUILD"); e["RIMFLOW_GIT_CWD"] = c
+    ok("file", "GHOST_SHA_CLOSE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    prose("GHOST_SHA_CLOSE_PROBE_FIXTURE")
+    ok("claim", "GHOST_SHA_CLOSE_PROBE_FIXTURE")
+    rc, out, err = run("close", "GHOST_SHA_CLOSE_PROBE_FIXTURE", "--sha", loc[:10], env=e)
+    assert rc != 0 and "Publish FIRST" in (out + err), (rc, out, err)
+    rc, out, err = run("close", "GHOST_SHA_CLOSE_PROBE_FIXTURE", env=e)       # HEAD fallback = local commit
+    assert rc != 0 and "implicit HEAD" in (out + err), (rc, out, err)
+    rc, out, err = run("close", "GHOST_SHA_CLOSE_PROBE_FIXTURE", "--sha", pub[:10], env=e)
+    assert rc == 0 and "closed at" in out, (rc, out, err)
+
+
 def t_close_takes_git_head_when_no_sha_given():
     fresh()
+    c, pub, loc = _git_fixture()
+    subprocess.check_call(("git", "push", "-q", "origin", "HEAD:main"), cwd=c)
+    subprocess.check_call(("git", "fetch", "-q", "origin"), cwd=c)
+    e = env("BUILD"); e["RIMFLOW_GIT_CWD"] = c
     ok("file", "SHA_FROM_GIT_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
     prose("SHA_FROM_GIT_PROBE_FIXTURE")
     ok("claim", "SHA_FROM_GIT_PROBE_FIXTURE")
-    out = ok("close", "SHA_FROM_GIT_PROBE_FIXTURE")
+    out = ok("close", "SHA_FROM_GIT_PROBE_FIXTURE", env=e)
     assert "closed at" in out and len(out.split("closed at ")[1].strip(" .\n")) >= 7, (
         "a close with no commit behind it is a claim, not a close: %s" % out)
 

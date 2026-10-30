@@ -450,7 +450,7 @@ def _rerender_queue_views():
 
 def git(*args):
     try:
-        return subprocess.check_output(("git",) + args, cwd=model.ROOT,
+        return subprocess.check_output(("git",) + args, cwd=os.environ.get("RIMFLOW_GIT_CWD") or model.ROOT,
                                        stderr=subprocess.DEVNULL).decode().strip()
     except (subprocess.CalledProcessError, OSError):
         return ""
@@ -1844,9 +1844,39 @@ def _announce_unblocks(target):
         print("     %s" % (f[0].blocked_reason or "")[:140])
 
 
+def _unpublished_commit(sha):
+    """-> the full sha when `sha` is a real commit in THIS clone that origin/main does not contain.
+
+    Such a sha is a rebase victim: `./publish` rebases local commits onto origin, the recorded
+    sha stops existing, and the close cites a commit nobody can find (CLOSE_SHAS_AUDIT_NAME_NO_COMMIT).
+    A sha that does not resolve here (a foreign clone's, a fixture's) or a missing origin/main is
+    NOT judged: unknown is not unpublished."""
+    full = git("rev-parse", "--verify", "-q", sha + "^{commit}")
+    ref = gitindex_ref()
+    if not full or not git("rev-parse", "--verify", "-q", ref):
+        return None
+    try:
+        subprocess.check_call(("git", "merge-base", "--is-ancestor", full, ref),
+                              cwd=os.environ.get("RIMFLOW_GIT_CWD") or model.ROOT,
+                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    except subprocess.CalledProcessError:
+        return full
+    except OSError:
+        return None
+    return None
+
+
 def cmd_close(args, seat):
     _, w = load()
     sha = args.sha or head_sha()
+    bad = _unpublished_commit(sha) if sha else None
+    if bad:
+        die("close: %s (%s) is a local commit that %s does not contain.\n\n"
+            "`./publish` rebases local commits onto origin, so this sha will NOT exist after you\n"
+            "publish and the close would cite a commit nobody can find. Publish FIRST, then close\n"
+            "with the sha `./publish` prints (PUBLISHED <sha>); if you named no --sha, HEAD was the\n"
+            "fallback and is not what you meant. If origin/main is merely stale: git fetch origin."
+            % (sha, "implicit HEAD" if not args.sha else "--sha", gitindex_ref()))
     if not sha:
         die("`close` needs a sha and `git rev-parse --short HEAD` gave nothing — you are "
             "probably\nin a repo with no commits yet, or outside one.\n\n"
