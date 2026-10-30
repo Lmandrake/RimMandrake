@@ -11,6 +11,7 @@
   "ladder": ["reconnect", "reload_save", "restage", "hold"],
   "churn_alarm_session_age_s": 2700,
   "scenario_poll_s": 5,
+  "scenario_canary_every_s": 120,
   "max_live_fails": 3,
   "max_item_crashes": 2,
   "max_interrupt_requeues": 1

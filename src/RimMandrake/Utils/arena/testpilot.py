@@ -219,9 +219,20 @@ def cand_by_id(p: dict) -> dict:
 
 
 def states(p: dict) -> dict:
-    """cand -> its newest transition record."""
+    """cand -> its current transition record. The baseline comes from the queue, so enqueue is ONE record
+    (TESTPILOT_FIX_CRASH_WINDOWS_IN_LEDGER_WRITES, F4): every sealed candidate starts `queued`, and the prior attempts a
+    queue record `supersedes` are `superseded` by it. The state records fold on top, terminal-sticky (the rule
+    set_state enforces on write), so a crash can never leave half an enqueue. Files from before the change (explicit
+    queued/superseded state records, no `supersedes`) fold to the same states."""
     out = {}
+    for c in candidates(p):
+        out[c["cand"]] = {"cand": c["cand"], "state": "queued", "ts": c.get("sealed_at")}
+        for o in c.get("supersedes") or ():
+            if out.get(o, {}).get("state") not in TERMINAL:
+                out[o] = {"cand": o, "state": "superseded", "by": c["cand"], "ts": c.get("sealed_at")}
     for r in _read(p["state"]):
+        if out.get(r["cand"], {}).get("state") in TERMINAL:
+            continue
         out[r["cand"]] = r
     return out
 
@@ -312,11 +323,8 @@ def enqueue(p: dict, item: str, sha: str, builder: str, plan: dict, mods=(), has
                "class": cls, "fingerprint": fingerprint(sha, mods, has_dll, profile, tier),
                "sealed_at": L._now_iso(), "sealed_t": time.time() if now is None else float(now)}
         st = states(p)
-        for c in prior:
-            if st.get(c["cand"], {}).get("state") == "queued":
-                set_state(p, c["cand"], "superseded", nolock=True, by=rec["cand"])
-        _append(p["queue"], rec)
-        set_state(p, rec["cand"], "queued", nolock=True)
+        rec["supersedes"] = [c["cand"] for c in prior if st.get(c["cand"], {}).get("state") == "queued"]
+        _append(p["queue"], rec)        # the ONE record: the candidate, its `queued` state and its supersessions (F4)
     return rec
 
 
@@ -554,12 +562,13 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
             pre = plan_retest(p, c, write=False)
             have = scenario_status(p, c)
             ids = {s["id"] for s in c["plan"]["scenarios"]}
-            counted = {i for i in ids if have.get(i, {}).get("status") in ("pass", "carried")
-                       and not have[i].get("hotfix")}
+            # F1: a FAIL at this fingerprint is as final as a pass: a rebuild whose every scenario is counted (pass,
+            # fail or carried) resolves to its verdict without a reload, never re-runs the failing scenario
+            counted = {i for i in ids if have.get(i, {}).get("status") in COUNTED and not have[i].get("hotfix")}
             if not pre["run"] and (set(pre["carried"]) == ids or counted == ids):
                 return dict(base, action="carry", cand=c["cand"],
-                            why="every scenario of %s is carried from %s or already counted at its fingerprint "
-                                "(L9a): it resolves with no reload and no test" % (c["cand"], c["parent"]))
+                            why="every scenario of %s is carried from %s or already counted (pass/fail) at its "
+                                "fingerprint (L9a): it resolves with no reload and no test" % (c["cand"], c["parent"]))
     if game and facts.get("process_alive") and facts.get("canary_ok") is False:
         tried = set(sess.get("ladder_tried") or [])
         spent = int(sess.get("red_rungs") or 0)       # survive a green blip and a reload: only a finished test clears
@@ -604,22 +613,31 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
     need = [c for c in q if (loaded is None or c["cand"] != loaded["cand"]) and not hot_appliable(c, game, byid)]
     sealed = [c for c in need if c["kind"] == "repair"]
     if valuable:
-        if sealed:
-            rep = sealed[0]
-            cost = reload_cost(p, rule, lane, rep["profile"], rep["tier"])
-            age = now - rep["sealed_t"]
-            max_delay = rule["max_acceptance_delay_s"][cost["class"]]
-            since = sum(1 for e in evidence(p) if e.get("lane") == lane and e["status"] in ("pass", "fail")
-                        and e.get("t", 0) > rep["sealed_t"])
-            drain = {"class": cost["class"], "age_s": round(age, 1), "max_delay_s": max_delay,
-                     "tests_since_sealed": since, "extra_tests": rule["cheap_extra_tests"],
-                     "valuable_left": len(valuable)}
-            spent = None
-            if age >= max_delay:
-                spent = "the maximum acceptance delay (%ss, %s) has passed" % (max_delay, cost["class"])
-            elif cost["class"] == "cheap" and since >= rule["cheap_extra_tests"]:
-                spent = "cheap reload: %d more tests run since the repair was sealed" % since
-            if spent:
+        if sealed:                      # F8: every sealed repair's drain is checked, not only the first queued
+            ev_all = evidence(p)
+            overdue, cheap_spent = [], None
+            for rep in sealed:
+                cost = reload_cost(p, rule, lane, rep["profile"], rep["tier"])
+                age = now - rep["sealed_t"]
+                max_delay = rule["max_acceptance_delay_s"][cost["class"]]
+                since = sum(1 for e in ev_all if e.get("lane") == lane and e["status"] in ("pass", "fail")
+                            and e.get("t", 0) > rep["sealed_t"])
+                drain = {"class": cost["class"], "age_s": round(age, 1), "max_delay_s": max_delay,
+                         "tests_since_sealed": since, "extra_tests": rule["cheap_extra_tests"],
+                         "valuable_left": len(valuable)}
+                if age >= max_delay:
+                    overdue.append((age - max_delay, rep, drain, "the maximum acceptance delay (%ss, %s) has passed"
+                                    % (max_delay, cost["class"])))
+                elif cheap_spent is None and cost["class"] == "cheap" and since >= rule["cheap_extra_tests"]:
+                    cheap_spent = (rep, drain, "cheap reload: %d more tests run since the repair was sealed" % since)
+            pick = None
+            if overdue:                 # the most overdue first; else the first cheap one whose test count is spent
+                _, rep, drain, spent = max(overdue, key=lambda x: x[0])
+                pick = (rep, drain, spent)
+            elif cheap_spent:
+                pick = cheap_spent
+            if pick:
+                rep, drain, spent = pick
                 return _reload(p, rule, lane, base, "R3", rep, now, sess, "sealed %s repair %s is waiting; %s"
                                % (rep["class"], rep["cand"], spent), drain=drain)
         c, s = valuable[0]
@@ -651,6 +669,11 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
                        % (len(blocked), "sealed repair" if sealed else "candidate", tgt["cand"],
                           ": the drain is spent" if sealed else ""), drain=drain)
     return dict(base, action="idle", why="nothing valuable left and nothing queued that needs a reload")
+
+
+def _inf_key(inf: dict) -> str:
+    """The identity of one in-flight test: its id, or (records from before ids) cand|scenario|start time."""
+    return inf.get("id") or "%s|%s|%s" % (inf.get("cand"), inf.get("scenario"), inf.get("t"))
 
 
 def _red_key(cand: dict, sid: str) -> str:
@@ -698,6 +721,7 @@ class Pilot:
         self.lane = None
         self.epoch = None
         self.gen = None                 # the session generation this pilot woke into: its ownership token
+        self._canary_ctx = None         # F2: the periodic in-proof canary of the running test, else None
         self.retired = False
         self._ev0 = None                # evidence length at the start of the current step (abort reads past it)
 
@@ -741,15 +765,39 @@ class Pilot:
                 raise PilotRefused("pilot %s is live on %s: it hands off at a test boundary first" % (prev,
                                                                                                     self.lane_name))
             interrupted = s.get("in_flight") if s.get("status") == "live" else None
+            # F6: the interruption moves to a durable `recovering` list in the same write that clears in_flight, and
+            # leaves it only once processed: a replacement pilot dying in this wake leaves it for the next one
+            recovering = list(s.get("recovering") or [])
+            if interrupted and _inf_key(interrupted) not in {_inf_key(x) for x in recovering}:
+                # an in_flight from before ids gets one here, so two interruptions never share a key
+                recovering.append(dict(interrupted, why="pilot %s died mid-test" % prev,
+                                       id=interrupted.get("id") or "f-%s" % uuid.uuid4().hex[:10]))
             s.update({"lane": self.lane_name, "pilot": self.id, "status": "live",
                       "generation": int(s.get("generation") or 0) + 1, "woken_at": L._now_iso()})
             s.setdefault("epoch", 0)
             s.setdefault("started_t", self.d.clock())
             s["in_flight"] = None
+            s["recovering"] = recovering
+            pend = s.get("pending_reload")
+            if pend:                    # F7: the outcome of that reload is unknown, so the session game is not adopted
+                rec = self._decision({"kind": "reconcile", "pending_reload": pend, "was_game": (s.get("game") or {})
+                                      .get("cand"), "why": "pilot %s died during reload decision %s of %s: what the "
+                                      "game runs is unknown (the canary's sha check reads the session, not the "
+                                      "game), so the session game is dropped and the next load is a ruled R0"
+                                      % (prev, pend.get("decision"), pend.get("cand"))})
+                s["game"], s["pending_reload"] = None, None
+                s["epoch"] = int(s.get("epoch") or 0) + 1
+                s["reconciled_reload"] = rec["id"]
             self._save(s)
         self.epoch, self.gen = s["epoch"], s["generation"]
-        if interrupted:                 # the old pilot died mid-test (M5): invalid, requeued once, crash kept
-            self._interrupted(interrupted, "pilot %s died mid-test" % prev)
+        for inf in recovering:          # the old pilot died mid-test (M5): invalid, requeued once, crash kept
+            self._interrupted(inf, inf.get("why") or "pilot %s died mid-test" % prev)
+            with locked(self.p):
+                s2 = self._sess()
+                if s2.get("generation") == self.gen:
+                    s2["recovering"] = [x for x in (s2.get("recovering") or []) if _inf_key(x) != _inf_key(inf)]
+                    self._save(s2)
+        self._reconcile()               # F5: durable evidence -> candidate state, before any scheduling
         self.lane = L.Lane(self.lane_name, ARM, self.d, "trio pilot %s" % self.id, task=None, root=self.root)
         try:
             self.lane.take()
@@ -816,17 +864,31 @@ class Pilot:
         return s
 
     def _interrupted(self, inflight: dict, why: str):
+        """Idempotent per interruption (F6): its invalid record and its requeue/park carry the in_flight key, and a
+        step already recorded is not recorded again by a later wake."""
         byid = cand_by_id(self.p)
         c = byid.get(inflight.get("cand"))
         if c is None:
             return
-        add_evidence(self.p, c, inflight["scenario"], "invalid", self.lane_name, self.id, t=self.d.clock(), why=why,
-                     crash=True, taint=None)
+        key = _inf_key(inflight)
+        if not any(e.get("interrupt") == key for e in evidence(self.p)):
+            add_evidence(self.p, c, inflight["scenario"], "invalid", self.lane_name, self.id, t=self.d.clock(),
+                         why=why, crash=True, taint=None, interrupt=key)
         self._crashed(c)                # a second crash on the item quarantines it, whichever way it crashed (M5)
+        if any(r.get("interrupt") == key for r in _read(self.p["state"])):
+            return
         if _requeues(self.p, c["cand"]) >= int(self.rule.get("max_interrupt_requeues", 1)):
-            set_state(self.p, c["cand"], "parked", why="interrupted again: %s" % why)
+            set_state(self.p, c["cand"], "parked", why="interrupted again: %s" % why, interrupt=key)
         else:
-            set_state(self.p, c["cand"], "queued", requeued=True, why=why)
+            set_state(self.p, c["cand"], "queued", requeued=True, why=why, interrupt=key)
+
+    def _reconcile(self):
+        """F5: a pilot that died between saving a result and _crashed/_resolve left the candidate open with the
+        evidence that decides it. Both are idempotent (a terminal state is never left): re-run them for every open
+        candidate, so a wake after a clean pass changes nothing."""
+        for c in queued(self.p):
+            self._crashed(c)
+            self._resolve(c)
 
     # -- facts, the loop
     def facts(self, canary_ok=None) -> dict:
@@ -898,7 +960,8 @@ class Pilot:
                     self.lane.release(aborted=True, why="act failed: %s" % why)
                 except Exception as e:  # noqa: BLE001 - RestoreFailed or worse: logged, the session still ends
                     err = str(e)
-                s.update({"status": "aborted", "game": None, "in_flight": None, "aborted_by": self.id})
+                s.update({"status": "aborted", "game": None, "in_flight": None, "aborted_by": self.id,
+                          "pending_reload": None})
                 self._save(s)
         self.retired = True
         rec = self._decision({"kind": "abort", "why": why, "cand": (dec or {}).get("cand"), "restore_error": err})
@@ -976,7 +1039,10 @@ class Pilot:
         why = ("decision=%s rule=%s %s; cost_used=%s s (%s) class=%s threshold=%s s rule_sha=%s"
                % (rec["id"], dec["rule"], dec["why"], cost.get("cost_s"), cost.get("basis"), cost.get("class"),
                   cost.get("threshold_s"), dec.get("rule_sha")))
-        self._check_live()              # S6: last check before touching the game (a takeover is of a DEAD pilot only)
+        with locked(self.p):            # F7: the reload is recorded pending BEFORE the game is touched
+            s = self._check_live()      # S6: last check before touching the game (a takeover is of a DEAD pilot only)
+            s["pending_reload"] = {"decision": rec["id"], "cand": c["cand"], "sha": c["sha"], "t": self.d.clock()}
+            self._save(s)
         ev = self.lane.reload(c["profile"], c["tier"], rule=dec["rule"], mods=c["mods"], has_dll=c["has_dll"],
                               clone=self.clone if c["mods"] else None, sha=c["sha"] if c["mods"] else None, why=why)
         now = self.d.clock()
@@ -990,6 +1056,7 @@ class Pilot:
                          "expected_active": sorted(self.lane.expected_active)
                          if self.lane.expected_active is not None else None,
                          "loaded_save": None, "hot_applied_t": None, "reload_decision": rec["id"]}
+            s["pending_reload"] = None  # F7: published in the same write that clears the pending marker
             s["ladder_tried"] = []
             if dec.get("red"):
                 s["red_reloads"] = int(s.get("red_reloads") or 0) + 1   # a reload does not forgive a red canary
@@ -1070,8 +1137,18 @@ class Pilot:
         return head
 
     def _poll(self):
-        """Polled while a proof runs: this pilot still owns the lane (S6)."""
+        """Polled while a proof runs: this pilot still owns the lane (S6), and (F2, L8) the canary runs every
+        scenario_canary_every_s, so a game that breaks and recovers inside a long proof does not read green at both
+        ends. The first red is kept and makes the result invalid; the proof itself is not stopped."""
         self._check_live()
+        every = float(self.rule.get("scenario_canary_every_s", 120))
+        if every <= 0 or self._canary_ctx is None or self.d.clock() - self._canary_ctx["last"] < every:
+            return
+        self._canary_ctx["last"] = self.d.clock()
+        can = self.lane.canary(self._canary_ctx["sha"])
+        self._canary_ctx["runs"] += 1
+        if not can["ok"] and self._canary_ctx["red"] is None:
+            self._canary_ctx["red"] = {"t": self.d.clock(), "problems": list(can.get("problems") or [])[:5]}
 
     def _expect_sha(self, s):
         g = s.get("game") or {}
@@ -1123,7 +1200,8 @@ class Pilot:
                 raise PilotRefused("%s is %s (changed since the decision): not tested" % (c["cand"], cur))
             if cur == "queued":
                 set_state(self.p, c["cand"], "testing", nolock=True, pilot=self.id)
-            s["in_flight"] = {"cand": c["cand"], "scenario": scn["id"], "t": self.d.clock()}
+            s["in_flight"] = {"cand": c["cand"], "scenario": scn["id"], "t": self.d.clock(),
+                              "id": "f-%s" % uuid.uuid4().hex[:10]}
             s["ladder_tried"] = []
             _canary_green(s)
             s["game"].get("canary_red", {}).pop(_red_key(c, scn["id"]), None)   # green and running: the blip is over
@@ -1132,11 +1210,14 @@ class Pilot:
                  detail={"tester": self.id, "builder": c["builder"], "cand": c["cand"], "scenario": scn["id"]})
         self._check_live()
         timed_out = False
+        self._canary_ctx = {"last": self.d.clock(), "sha": self._expect_sha(s), "red": None, "runs": 0}
         try:
             rc, txt = self.d.run_scenario(scn["argv"], self.clone, self._poll,
                                           float(self.rule.get("scenario_poll_s", 5)))
         except TimeoutError as e:   # the driver already killed the proof's group: a hang is a logged result, not a crash
             rc, txt, timed_out = None, "TIMEOUT: %s" % e, True
+        finally:
+            mid, self._canary_ctx = self._canary_ctx, None
         self._check_live()              # S6: a pilot taken over mid-proof records nothing; the taker logged it
         self.p["logs"].mkdir(parents=True, exist_ok=True)
         log = self.p["logs"] / ("%s-%s-%s.log" % (c["cand"].replace("@", "_"), scn["id"], uuid.uuid4().hex[:6]))
@@ -1152,6 +1233,9 @@ class Pilot:
             status, why = "invalid", "the proof timed out (%s): killed, not judged" % txt
         elif not after["ok"]:
             status, why = "invalid", "canary red after the scenario"
+        elif mid["red"] is not None:
+            status, why = "invalid", "canary red during the scenario at t=%s (%s): the endpoints were green" % (
+                mid["red"]["t"], "; ".join(mid["red"]["problems"]) or "no problem text")
         elif rc == 0:
             status, why = "pass", None
         elif rc == fail_rc and RC._crashed(txt):
