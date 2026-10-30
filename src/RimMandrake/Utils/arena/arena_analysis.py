@@ -53,23 +53,34 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
   - FUTILE(X), X not the control: P(eff X >= 1.1 x control) < 0.05 -> X gets no new tasks;
   - HARD_CAP_NO_DIFFERENCE: nothing fired and either --final is given or a record is later than --hard-cap (end of
     day 3; records after it are ignored). Deterministic: the wall clock is never read. Reported with the intervals.
-  - an arm that will be disqualified is not waited for; if fewer than two arms remain in contention the block is
-    CONTINUE with a note (the rule names no automatic winner).
+  - CHRONOLOGY: block k sits at the time the last arm in contention reaches 5k completions. Violations are walked in
+    time order first: an arm that violated before that time, or while it was still being waited for, leaves at its
+    violation time and the block time is recomputed without it (block times never go backwards). An arm short of 5k
+    with no violation is waited for. Fewer than two arms left in contention: CONTINUE with a note (no automatic
+    winner). After a stop, later violations are reported (`violations_after_stop`), not applied; with no stop, any
+    violation disqualifies. Each arm's reasons are split by each condition's own first time.
+  - final intervals come from the trial's own snapshot: the stopping block's data, or (no stop) all data with each
+    futile arm frozen where it was dropped. No stop and fewer than two measured arms survive disqualification:
+    DISQUALIFIED (or UNMEASURED), never HARD_CAP_NO_DIFFERENCE; a live arm below the minimum: UNMEASURED.
 FAIL CLOSED: no arms, fewer than two measured arms, an UNMEASURED arm anywhere in the roster, a completed task with
-no frozen spec or no spend row, zero tokens -> UNMEASURED, never a decision.
+no frozen spec (kind in arena_tasks.KINDS, int size 1/2/4) or no spend row, zero or overflowing tokens, a judge record
+with no task or an unknown verdict -> UNMEASURED, never a decision.
 
 DISQUALIFICATION CONDITIONS, AND WHAT THE LOG CAN SHOW:
   publish   a judge event (the judge reads only published arena/* work) on (task, sha) with no earlier gate event
-            verdict 'pass' on the same task and sha. A judge event with no sha: UNMEASURED. Publication that never
+            verdict 'pass' on the same task and sha (shas of >= 12 hex; a shorter prefix never matches). A judge event
+            with no usable sha or task: UNMEASURED. Publication that never
             reached the judge is not in the log (arena.py prepush alarms are not arm events): not seen here.
   scope     a gate event whose detail.steps.scope is FAIL (a changed path outside the task area or forbidden).
-            Only edits that reached the gate are seen; no gate event at all: UNMEASURED.
+            Only edits that reached the gate are seen; no gate event, or a scope status other than PASS/FAIL:
+            UNMEASURED.
   lane      a live_take (verdict ok) whose hold (same lane and run_id, up to its live_release) had no canary event.
-            An open hold with no canary yet is `pending`, not a violation. No live_take: VACUOUS.
+            An open hold with no canary yet is `pending`, not a violation. A take with no lane or run_id:
+            UNMEASURED. No live_take: VACUOUS.
   tester    per build stream (run_id minus its trailing pass counter, e.g. ralph_c.<member>.): a build pass_start
             (detail.role 'build') before the first test_start, by a DIFFERENT agent (arena_eventlog's matching and
-            normalisation), of the stream's latest earlier build_end. build_end records with no build pass_start:
-            UNMEASURED.
+            normalisation), of the stream's latest earlier build_end. A proven violation stands; otherwise build
+            records with no run_id, or a build_end with no earlier build pass_start of its run: UNMEASURED.
   ruling    breaking a standing ruling: the event log records no ruling check. ALWAYS UNMEASURED.
   An UNMEASURED condition never passes silently: every verdict lists the arms and conditions that were unmeasured
   (`dq_unmeasured`), and a decision carries them.
@@ -338,9 +349,14 @@ def task_tokens(row, conv):
     tot = 0.0
     for k in SPEND_FIELDS:
         v = row.get(k, 0.0)
-        if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v) or v < 0:
+        try:
+            ok = not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(float(v)) and v >= 0
+            if ok:
+                tot += conv[k] * float(v)
+        except OverflowError:
+            ok = False
+        if not ok:
             return None, "spend %s=%r invalid" % (k, v)
-        tot += conv[k] * float(v)
     if not math.isfinite(tot):
         return None, "converted tokens overflow"
     if tot <= 0:
@@ -387,6 +403,8 @@ def completions(recs, tasks, spend_arm, conv, cap=None):
         out.append({"task": t, "t": _ep(j), "accepted": j["verdict"] == "accept", "kind": spec["kind"],
                     "points": spec["size"], "tokens": tok, "tta_min": tta})
     out.sort(key=lambda c: (c["t"], c["task"]))
+    if not math.isfinite(sum(c["tokens"] for c in out)):
+        return [], "the arm's token total overflows"
     return out, None
 
 
@@ -499,14 +517,12 @@ def dq_tester(seq):
               and (r.get("detail") or {}).get("role") == "build"]
     if not builds and not starts:
         return {"status": "VACUOUS", "why": "no build"}
-    unid = [seq[i]["ts"] for i in builds + starts if not stream_of(seq[i].get("run_id"))]
-    if unid:
-        return {"status": "UNMEASURED", "why": "%d build record(s) with no run_id (stream unknown)" % len(unid)}
-    orphan = [seq[j]["ts"] for j in builds
+    # unidentifiable records are set aside and reported, never allowed to mask a violation proven elsewhere
+    unid = [i for i in builds + starts if not stream_of(seq[i].get("run_id"))]
+    builds = [i for i in builds if i not in unid]
+    starts = [i for i in starts if i not in unid]
+    orphan = [j for j in builds
               if not any(p < j and _ident(seq[p].get("run_id")) == _ident(seq[j].get("run_id")) for p in starts)]
-    if orphan:
-        return {"status": "UNMEASURED", "why": "%d build_end(s) with no earlier build pass_start of the same run"
-                % len(orphan)}
     first = L._first_different_test(seq)      # {build index: first different-agent test_start index}
     viol = []
     for p in starts:
@@ -523,6 +539,9 @@ def dq_tester(seq):
         return {"status": "VIOLATED", "ts": viol[0]["ts"],
                 "why": "new build pass before a different agent began testing the last candidate",
                 "evidence": viol[:5]}
+    if unid or orphan:
+        return {"status": "UNMEASURED", "why": "%d build record(s) with no run_id (stream unknown); %d build_end(s) "
+                "with no earlier build pass_start of the same run" % (len(unid), len(orphan))}
     return {"status": "CLEAN"}
 
 
@@ -702,36 +721,47 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     rep["dq_unmeasured"] = {a: [n for n, c in d.items() if c["status"] == "UNMEASURED"] for a, d in dq.items()}
     for a, why in problems.items():
         rep["arms"][a] = {"status": "UNMEASURED", "why": why}
-    # disqualification fires at any time, even with an unmeasured roster
-    dq_at = {a: min((_ep(c) for c in d.values() if c["status"] == "VIOLATED"), default=None) for a, d in dq.items()}
-    dq_reason = {a: [n for n, c in d.items() if c["status"] == "VIOLATED"] for a, d in dq.items()}
+    # disqualification fires at any time, even with an unmeasured roster. Each condition carries its own first time.
+    viols = {a: sorted((_ep(c), n) for n, c in d.items() if c["status"] == "VIOLATED") for a, d in dq.items()}
+    dq_at = {a: (v[0][0] if v else None) for a, v in viols.items()}
+
+    def reasons(a, lo=None, hi=None):
+        return [n for t, n in viols.get(a, ()) if (lo is None or t > lo) and (hi is None or t <= hi)]
     if problems or len(data) < 2:
         why = ("arm(s) UNMEASURED: %s" % problems) if problems else "fewer than two measured arms"
-        dqs = sorted(a for a, t in dq_at.items() if t is not None)
         rep["final"] = {"verdict": "UNMEASURED", "why": why,
-                        "disqualified": {a: dq_reason[a] for a in dqs}}
+                        "disqualified": {a: reasons(a) for a in sorted(a for a in dq_at if dq_at[a] is not None)}}
         return rep
     arms = sorted(data)
-    disq, dropped, contention = {}, {}, list(arms)
+    disq, disq_t, dropped, contention = {}, {}, {}, list(arms)
     k = 0
     stop = None
+    floor = -math.inf          # block times never go backwards
     while True:
         k += 1
         n_need = BLOCK * k
-        # ONE chronological cutoff: block k is at the time the last arm in contention reaches 5k completions. An arm
-        # short of 5k is waited for, unless it had violated a condition by that time (then it is disqualified now).
-        have = [a for a in contention if len(data[a]) >= n_need]
-        lacking = [a for a in contention if a not in have]
-        if not have:
-            break
-        t_block = max(data[a][n_need - 1]["t"] for a in have)
-        if any(dq_at[a] is None or dq_at[a] > t_block for a in lacking):
-            break
-        blk = {"block": k, "tasks_per_arm": n_need, "ts_epoch": t_block}
-        new_dq = sorted(a for a in arms if a not in disq and dq_at[a] is not None and dq_at[a] <= t_block)
-        for a in new_dq:
-            disq[a] = dq_reason[a]
-        contention = [a for a in contention if a not in disq]
+        # ONE chronological cutoff. Block k is at the time the last arm in contention reaches 5k completions. Walk
+        # the violations in time order first: an arm whose violation comes before that cutoff (or while it is still
+        # being waited for) leaves contention at its violation time, and the cutoff is recomputed without it, so a
+        # disqualified arm's later completions never set the cutoff and a silent short arm never blocks forever.
+        new_dq = []
+        while True:
+            cand = max((data[a][n_need - 1]["t"] if len(data[a]) >= n_need else math.inf) for a in contention) \
+                if contention else math.inf
+            t_eff = max(cand, floor)
+            pend = [a for a in arms if a not in disq and dq_at[a] is not None and dq_at[a] <= t_eff]
+            if not pend:
+                break
+            e = min(dq_at[a] for a in pend)
+            for a in sorted(a for a in pend if dq_at[a] == e):
+                disq[a], disq_t[a] = reasons(a, hi=e), e
+                new_dq.append(a)
+            contention = [a for a in contention if a not in disq]
+            floor = max(floor, e)
+        if len(contention) >= 2 and t_eff == math.inf:
+            break          # an arm in contention is short of 5k completions and has not violated: wait for it
+        blk = {"block": k, "tasks_per_arm": n_need, "ts_epoch": (None if t_eff == math.inf else t_eff)}
+        floor = max(floor, t_eff) if t_eff != math.inf else floor
         use = {a: data[a][:n_need] if a in contention else data[a][:dropped.get(a, 0)] for a in arms}
         blk["disqualified"] = {a: disq[a] for a in new_dq}
         blk["dq_unmeasured"] = {a: v for a, v in rep["dq_unmeasured"].items() if v}
@@ -763,23 +793,31 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
             contention = [a for a in contention if a not in det["arms"]]
         rep["blocks"].append(blk)
         if v.startswith("DECIDE_FOR_") or v == "TIE" or v == "UNMEASURED":
-            stop = dict(blk, verdict=v)
+            stop = dict(blk, verdict=v, _use={a: use[a] for a in nondq})
             break
-    # final
-    later = sorted(a for a in arms if a not in disq and dq_at[a] is not None)
+    # final. With a stop, the trial ended at the stop's time: later violations are reported, not applied. With no
+    # stop, a violation at any time disqualifies. Reasons are always split by their own times.
     if stop is not None:
-        post_stop, late_dq = later, []      # the trial ended at the stop; later violations are reported, not applied
+        cut = stop["ts_epoch"]
+        late_dq = []
+        after = {a: reasons(a, lo=(max(disq_t[a], cut) if a in disq_t else cut)) for a in arms}
     else:
-        post_stop, late_dq = [], later      # no stop: a violation at any time disqualifies
+        late_dq = sorted(a for a in arms if a not in disq and dq_at[a] is not None)
+        after = {a: reasons(a, lo=disq_t[a]) for a in disq}
     keep = [a for a in arms if a not in disq and a not in late_dq]
-    fin = {"disqualified": dict({a: disq[a] for a in disq}, **{a: dq_reason[a] for a in late_dq}),
+    fin = {"disqualified": dict({a: disq[a] for a in disq}, **{a: reasons(a) for a in late_dq}),
            "futile": sorted(dropped), "dq_unmeasured": {a: v for a, v in rep["dq_unmeasured"].items() if v}}
-    if post_stop:
-        fin["violations_after_stop"] = {a: dq_reason[a] for a in post_stop}
+    after = {a: v for a, v in after.items() if v}
+    if after:
+        fin["violations_after_stop" if stop is not None else "later_violations_of_disqualified"] = after
+    # intervals come from the trial's own snapshot: the stop's data, or every arm frozen where the rule left it
+    snap = stop["_use"] if stop is not None else {a: (data[a][:dropped[a]] if a in dropped else data[a]) for a in keep}
+    keep = [a for a in keep if a in snap]
     if keep:
-        post = posterior({a: data[a] for a in keep}, keep, _block_seed(seed, "final"), draws, control)
-        fin["intervals"] = arm_summary(post, data, keep, control)
-        fin["time_to_acceptance"] = tta_summary(data, keep, control)
+        post = posterior({a: snap[a] for a in keep}, keep, _block_seed(seed, "final"), draws, control)
+        fin["intervals"] = arm_summary(post, snap, keep, control)
+        fin["intervals_snapshot"] = ("block %d" % stop["block"]) if stop is not None else "all data (futile arms frozen)"
+        fin["time_to_acceptance"] = tta_summary(snap, keep, control)
     live = [a for a in keep if a not in dropped]
     below = {a: [len(data[a]), len({c["kind"] for c in data[a]})] for a in live
              if len(data[a]) < MIN_TASKS or len({c["kind"] for c in data[a]}) < MIN_KINDS}
@@ -792,6 +830,10 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
         fin["detail"] = {"why": "below the minimum (%d tasks, %d kinds per arm in contention)%s" %
                          (MIN_TASKS, MIN_KINDS, " at the hard cap" if (final or beyond_cap) else ""),
                          "below_minimum": below}
+    elif len(keep) < 2:
+        fin["verdict"] = "DISQUALIFIED" if fin["disqualified"] else "UNMEASURED"
+        fin["detail"] = {"why": "fewer than two measured arms survive disqualification: no comparison and no "
+                         "automatic winner", "surviving": keep}
     elif final or beyond_cap:
         fin["verdict"] = "HARD_CAP_NO_DIFFERENCE"
         fin["detail"] = {"why": "nothing fired by the hard cap (%s)" %

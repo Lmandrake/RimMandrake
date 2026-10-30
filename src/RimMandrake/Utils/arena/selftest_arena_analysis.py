@@ -221,12 +221,14 @@ def t_tokens_and_inputs():
     with tempfile.TemporaryDirectory() as d:
         Path(d, "trio.jsonl").write_text("\n".join(json.dumps(x) for x in logs["trio"]["recs"]) + "\n")
         Path(d, "v3.jsonl").write_text(json.dumps(logs["v3"]["recs"][0]) + "\n{not json\n")
-        Path(d, "v3c.jsonl").write_text(json.dumps(dict(logs["v3"]["recs"][0], ts="2026-11-01T00:00:00")) + "\n")
+        Path(d, "v3c.jsonl").write_text(json.dumps(dict(logs["v3"]["recs"][0], arm="v3c", ts="2026-11-01T00:00:00"))
+                                        + "\n")
         raw = AA.load_raw(d)
     check("load_raw: a good arm loads", "recs" in raw.get("trio", {}) and len(raw["trio"]["recs"]) == 60,
           {k: list(v) for k, v in raw.items()})
     check("load_raw: an unparseable line -> arm UNMEASURED", "unmeasured" in raw.get("v3", {}), raw.get("v3"))
-    check("load_raw: a zoneless ts -> arm UNMEASURED", "unmeasured" in raw.get("v3c", {}), raw.get("v3c"))
+    check("load_raw: a zoneless ts -> arm UNMEASURED (for the ts, not an arm mismatch)",
+          "unmeasured" in raw.get("v3c", {}) and "record arm" not in raw["v3c"]["unmeasured"], raw.get("v3c"))
 
 
 def t_cli():
@@ -592,6 +594,104 @@ def t_nig_oracle():
           abs(var_d / want_var - 1) < 0.05, (var_d, want_var))
 
 
+# ---------------------------------------------------------------- (5c) review round 2: chronology, masking, snapshots
+
+def t_ratio_boundaries():
+    """The owner's ratios are inclusive (>=): a draw exactly at 1.25x / 1.1x / a 0.10 drop counts."""
+    le = {"trio": [math.log(1.25)] * 4, "v3": [0.0] * 4}
+    th = {"trio": [0.0] * 4, "v3": [0.1] * 4}
+    p = AA.rule_probs({"le": le, "theta": th}, ["trio", "v3"], ["trio", "v3"])
+    check("a draw exactly at 1.25x counts for DECIDE (>=)", p["decide"]["trio"] == 1.0, p["decide"])
+    check("an accept drop of exactly 0.10 counts as worse (>=)", p["accept_worse"]["trio"] == 1.0, p["accept_worse"])
+    le = {"trio": [math.log(1.1)] * 4, "v3": [0.0] * 4}
+    p = AA.rule_probs({"le": le, "theta": th}, ["trio", "v3"], ["trio", "v3"])
+    check("a draw exactly at 1.1x control counts against futility (>=)", p["futile"]["trio"] == 1.0, p["futile"])
+
+
+def scope_fail(ts):
+    return {"ts": iso(ts), "event": "gate", "sha": "ab" * 20, "verdict": "fail", "detail": {"steps": {"scope": "FAIL"}}}
+
+
+def t_chronology_r2():
+    # (1) a short arm that violates AFTER block 1's would-be time is removed at its violation, not waited for forever
+    logs, tasks, sp = winner_logs()
+    ids = sorted(tasks)
+    logs["v3c"] = {"recs": arm_log("v3c", [(t, True) for t in ids[:3]], offset=3, extra=[scope_fail(T0 + 3500)])}
+    sp["v3c"] = spend_for((t, 1e5) for t in ids[:3])
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("a short arm violating after the block-1 time is disqualified then; the trial proceeds",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["blocks"][0]["disqualified"] == {"v3c": ["scope"]}
+          and r["blocks"][0]["ts_epoch"] == T0 + 3500,
+          (r["final"]["verdict"], [(b["block"], b.get("disqualified"), b.get("ts_epoch")) for b in r["blocks"]]))
+    # (2) an arm disqualified early must not set the cutoff with its late completions; (4) reasons split by time
+    logs, tasks, sp = winner_logs(extra_trio=[scope_fail(T0 + 50000)])
+    late_judge = {"ts": iso(T0 + 60000), "event": "judge", "task": ids[0], "sha": "cd" * 20, "verdict": "invalid"}
+    logs["v3c"] = {"recs": arm_log("v3c", [(t, True) for t in ids[:5]], offset=10 ** 6,
+                                   extra=[scope_fail(T0 + 100), late_judge])}
+    sp["v3c"] = spend_for((t, 1e5) for t in ids[:5])
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    f = r["final"]
+    check("an early-disqualified arm's late completions do not push the cutoff past the winner's later violation",
+          f["verdict"] == "DECIDE_FOR_trio" and "trio" not in f["disqualified"],
+          (f["verdict"], f["disqualified"], [(b["block"], b.get("ts_epoch")) for b in r["blocks"]]))
+    check("violation reasons are split by their own times (v3c out for scope; publish reported after the stop)",
+          f["disqualified"].get("v3c") == ["scope"]
+          and f.get("violations_after_stop") == {"trio": ["scope"], "v3c": ["publish"]},
+          (f["disqualified"], f.get("violations_after_stop")))
+    check("block times never go backwards", all(a["ts_epoch"] <= b["ts_epoch"] for a, b in
+                                                 zip(r["blocks"], r["blocks"][1:])),
+          [b["ts_epoch"] for b in r["blocks"]])
+
+
+def t_tester_masking():
+    def rec(ev, run, k, **kw):
+        return dict({"ts": iso(T0 + k), "arm": "trio", "task": "T000", "event": ev, "run_id": run}, **kw)
+    b = {"detail": {"role": "build"}}
+    seq = [rec("pass_start", "trio.0", 1, **b), rec("build_end", "trio.0", 2, detail={"build_id": "x0"}),
+           rec("pass_start", "trio.1", 3, **b), rec("build_end", "trio.2", 4, detail={"build_id": "x2"})]
+    r = AA.dq_tester(AA.L.ordered(seq))
+    check("tester: an orphan build_end does not mask a proven violation", r["status"] == "VIOLATED", r)
+    seq2 = seq[:3] + [dict(rec("build_end", None, 4, detail={"build_id": "x2"}))]
+    seq2[-1].pop("run_id")
+    r = AA.dq_tester(AA.L.ordered(seq2))
+    check("tester: a record with no run_id does not mask a proven violation", r["status"] == "VIOLATED", r)
+    r = AA.dq_tester(AA.L.ordered(seq[:2] + seq2[3:]))
+    check("tester: with no provable violation, an unidentified record -> UNMEASURED", r["status"] == "UNMEASURED", r)
+
+
+def t_final_r2():
+    tasks = make_tasks(4)
+    logs = {a: {"recs": arm_log(a, [("T000", True)], offset=j, drop={(0, "gate")})} for j, a in enumerate(("trio", "v3"))}
+    sp = {a: spend_for([("T000", 1e5)]) for a in ("trio", "v3")}
+    r = AA.analyse(logs, tasks, sp, draws=300, final=True)
+    check("final: every arm disqualified -> DISQUALIFIED, never HARD_CAP_NO_DIFFERENCE",
+          r["final"]["verdict"] == "DISQUALIFIED" and sorted(r["final"]["disqualified"]) == ["trio", "v3"],
+          (r["final"]["verdict"], r["final"]["disqualified"]))
+    r = scenario({"ralph_a": (4.0, all_acc, 0.1), "trio": (1.0, all_acc, 0.1), "v3": (1.0, all_acc, 0.1)}, 20)
+    iv = r["final"].get("intervals", {})
+    check("final intervals keep a futile arm frozen at its drop (10 tasks, not 20)",
+          iv.get("ralph_a", {}).get("completed") == 10 and iv.get("trio", {}).get("completed") == 20,
+          {a: v.get("completed") for a, v in iv.items()})
+    logs, tasks, sp = winner_logs()
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("a stop's intervals are the stop's snapshot (10 tasks at block 2, not all 20)",
+          r["final"]["intervals"]["trio"]["completed"] == 10 and r["final"]["intervals_snapshot"] == "block 2",
+          (r["final"]["intervals"]["trio"]["completed"], r["final"].get("intervals_snapshot")))
+
+
+def t_overflow_r2():
+    tok, why = AA.task_tokens({"claude_ite": 10 ** 400}, {k: 1.0 for k in AA.SPEND_FIELDS})
+    check("an int too big for a float is refused, not raised", tok is None and "invalid" in why, (tok, why))
+
+    def big(s):
+        for t in s["trio"]:
+            s["trio"][t] = {"claude_ite": 1e308, "gpt_ite": 0, "gpt_ite_est": 0}
+    logs, tasks, sp = winner_logs(spend_patch=big)
+    r = AA.analyse(logs, tasks, sp, draws=300)
+    check("rows each finite but summing past float range -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED",
+          r["final"].get("why"))
+
+
 # ---------------------------------------------------------------- (6) simulations: calibration and power
 
 def sim(arms, n, seed, sigma_d=0.8, draws=1000, block_kinds=True):
@@ -648,7 +748,8 @@ def t_small_sims():
 # ---------------------------------------------------------------- runner
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
-        t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle)
+        t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
+        t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
