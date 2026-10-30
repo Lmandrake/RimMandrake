@@ -45,9 +45,8 @@ THE RULES THIS FILE ADDS, each enforced in code:
     ralph_c_loop.py board    [--tasks ...]                 print who holds what and what each member would get
     ralph_c_loop.py check-tested --member a1|a2
 
-OWED (other owners): "ralph_c_loop.py" in arena_eventlog.ENTRYPOINTS before `run`/`check-tested` can sign events
-(the same debt as ralph_a_loop.py); the rm-ralph-loop@ / rm-runner@ unit files that arm.toml already names (ExecStart
-ralph_c/loop.sh %i and ralph_c/runner.sh %i).
+WIRED (ARENA_RALPHC_WIRE_ENTRYPOINT_AND_UNITS): "ralph_c_loop.py" is in arena_eventlog.ENTRYPOINTS; the rm-ralph-loop@ and
+rm-runner@ unit templates are infrastructure/arena/systemd/*.service.tmpl, planned by arena_install.py units.
 """
 from __future__ import annotations
 
@@ -572,7 +571,7 @@ def main(argv=None):
         ap.error("%s needs --member" % a.action)
     import arena_tasks as A
     p = A.paths()
-    with L.harness_pass(p) as cap:                 # Rejected until ENTRYPOINTS lists ralph_c_loop.py (owed)
+    with L.harness_pass(p) as cap:
         w = SignedWriterC(p, cap)
         if a.action == "check-tested":
             require_tested(w.records(), a.member)

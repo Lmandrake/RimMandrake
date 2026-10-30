@@ -583,6 +583,26 @@ def t_signed_writer(tmp):
           "signed HarnessWriter: both loops' events accepted under arm ralph_c, every build tested")
 
 
+def t_wired(tmp):
+    """ARENA_RALPHC_WIRE_ENTRYPOINT_AND_UNITS: the signer lists ralph_c_loop.py, and the installer plans the unit
+    templates the arm.toml names (rm-ralph-loop@ and rm-runner@), whose ExecStart reaches the real entry scripts."""
+    import arena as AR
+    import arena_install as INS
+    check("ralph_c_loop.py" in L.ENTRYPOINTS, "arena_eventlog.ENTRYPOINTS lists ralph_c_loop.py (a harness pass can open)")
+    check("ralph_c_runner.py" not in L.ENTRYPOINTS, "the runner module is not an entrypoint (runner.sh execs ralph_c_loop.py)")
+    cfg = AR.load_config(AR.TEMPLATES / "arm.toml.template")
+    ud = tmp / "units"
+    plan = {p.name: t for p, t in INS.plan_units(cfg, ud) if p.parent == ud}
+    for nm in ("rm-ralph-loop@.service", "rm-runner@.service"):
+        check(nm in plan, "installer plan writes the unit template %s" % nm)
+    loop, run = plan.get("rm-ralph-loop@.service", ""), plan.get("rm-runner@.service", "")
+    check("@ARENA_DIR@" not in loop + run, "no unrendered @ARENA_DIR@ left in a rendered unit")
+    check("ralph_c/loop.sh" in loop and "ralph_c/runner.sh" in run and "%i" in loop and "%i" in run,
+          "ExecStart passes the instance to ralph_c/loop.sh (member) and ralph_c/runner.sh (lane)")
+    check((HERE / "ralph_c" / "loop.sh").exists() and (HERE / "ralph_c" / "runner.sh").exists(), "both entry scripts exist")
+    check(str(HERE) in loop and str(HERE) in run, "ExecStart paths point at this arena directory")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_c_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
@@ -604,7 +624,7 @@ def main():
             check(guarded(fn, tmp, variant(old, new), "_m%d" % i) is False,
                   "mutation goes RED (a False verdict, not a crash): " + name)
         for fn, a in ((t_areas, ()), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)), (t_cmdmodel_tester_sandbox, (tmp,)),
-                      (t_signed_writer, (tmp,))):
+                      (t_signed_writer, (tmp,)), (t_wired, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

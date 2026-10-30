@@ -30,6 +30,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import arena as AR  # noqa: E402
 
+INSTANCE_TEMPLATES = ("rm-ralph-loop", "rm-runner")   # base names, each with systemd/<base>@.service.tmpl
 DEFAULT_UNIT_DIR = Path.home() / ".config" / "systemd" / "user"
 
 
@@ -43,6 +44,11 @@ def plan_units(cfg: dict, unit_dir: Path) -> list[tuple[Path, str]]:
             out.append((unit_dir / (u + ".d") / "10-arm.conf", AR.render_dropin(arm)))
     if AR.REPLAY_UNIT in cfg["units"].get(AR.TRIAL, []):
         out.append((unit_dir / AR.REPLAY_UNIT, AR.render_replay_unit(cfg["path"])))
+    # the base units of the template instances the arm sets name (rm-ralph-loop@a1 -> rm-ralph-loop@.service)
+    for base in INSTANCE_TEMPLATES:
+        if any(u.startswith(base + "@") for us in cfg["units"].values() for u in us):
+            t = (AR.TEMPLATES / "systemd" / (base + "@.service.tmpl")).read_text(encoding="utf-8")
+            out.append((unit_dir / (base + "@.service"), t.replace("@ARENA_DIR@", AR._unit_safe(str(HERE)))))
     # a unit may belong to exactly one arm: refuse a plan that lists it twice
     seen = {}
     for p, _ in out:

@@ -1,0 +1,13 @@
+# rm-ralph-loop@.service - the builder-loop supervisor of ralph_a (instance a) and ralph_c (instances a1, a2).
+# Rendered by arena_install.py. Harness code runs OUTSIDE every arm clone. The member's drop-in (10-arm.conf) makes it
+# PartOf= its arm target and gates the start on the arm marker; this template adds nothing about arms.
+# Environment (clone roots, frozen task ids, model command) comes from the env file, never from this repo.
+[Unit]
+Description=RimMandrake arena builder loop %i
+
+[Service]
+Type=simple
+EnvironmentFile=-%h/.config/rm-arena/ralph-%i.env
+ExecStart=/usr/bin/bash -c 'case "$0" in a) exec bash @ARENA_DIR@/ralph_a/loop.sh;; a1|a2) exec bash @ARENA_DIR@/ralph_c/loop.sh "$0";; *) echo "unknown ralph member $0"; exit 2;; esac' %i
+Restart=on-failure
+RestartSec=60

@@ -1,0 +1,12 @@
+# rm-runner@.service - the ralph_c fixed-SHA live runner; the instance is the lane (steve | archmagi).
+# Rendered by arena_install.py. The lane's drop-in (10-arm.conf) makes it PartOf= rm-arm-ralph_c.target and gates the
+# start on the arm marker. Clone paths (RALPH_C_RUNNER_CLONE_<LANE>) come from the env file, never from this repo.
+[Unit]
+Description=RimMandrake arena ralph_c live runner %i
+
+[Service]
+Type=simple
+EnvironmentFile=-%h/.config/rm-arena/runner-%i.env
+ExecStart=/usr/bin/bash @ARENA_DIR@/ralph_c/runner.sh %i
+Restart=on-failure
+RestartSec=60
