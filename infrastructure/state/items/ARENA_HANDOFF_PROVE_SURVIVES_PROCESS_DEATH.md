@@ -24,3 +24,12 @@ Done when: each of the three deaths is an action, and either the fixed protocol 
 the real gap, which is then filed against seat_restart.py.
 
 Review text: D:\ClaudeWork\rimmandrake\build\tla\review1.md
+
+## verify
+- L0: `check_models.py` run on `LiveHandoff.tla` with the three deaths as environment actions and the new liveness
+  property (every sent message is eventually handled or read); the TLC output kept. Either S5 and the liveness
+  property pass, or each counterexample is filed as its own item against `seat_restart.py`.
+- Stopping point: finish. Not on the trial's day-0 path: after the trial prep items.
+
+## criteria
+- A1 L0: three death actions modelled, TLC result recorded; any gap filed against seat_restart.py
