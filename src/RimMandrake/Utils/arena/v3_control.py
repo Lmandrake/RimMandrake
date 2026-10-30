@@ -226,6 +226,9 @@ def export_tree(root, sha, dest):
     """A history-less copy of exactly `sha`'s tree, read object by object (ls-tree + cat-file): replace refs and
     grafts are ignored, and no attribute applies (`git archive` would honour the builder's export-ignore and
     export-subst, review r2). Submodule entries are skipped; a symlink is kept only if it stays inside dest."""
+    ok, why = SG.verify_tree(root, sha)                         # a builder can store other bytes under an object's name
+    if not ok:
+        raise Refused("refused: tree of %s does not verify: %s" % (sha, why))
     if dest.exists():
         RA.shutil.rmtree(dest)
     dest.mkdir(parents=True)

@@ -152,6 +152,27 @@ def main():
             V3.export_tree(rv, b7, dest)
             check((dest / "f.txt").read_text() == "beta\n", "v3_control.export_tree exports the real tree under replace/graft")
             check("ls-tree" in calls and "cat-file" in calls, "v3_control git calls go through SG.git_run (%s)" % sorted(set(calls)))
+            # a forged loose blob (other bytes under f.txt's object name): export_tree must refuse, as ralph_a's does
+            import zlib
+            rf, a8, b8 = T.make_repo(td, "v3forge")
+            blob = T.git(rf, "rev-parse", b8 + ":f.txt").strip()
+            op = rf / ".git" / "objects" / blob[:2] / blob[2:]
+            op.chmod(0o644)
+            op.write_bytes(zlib.compress(b"blob 6\0EVIL!\n"))
+            try:
+                V3.export_tree(rf, b8, td / "v3_forged")
+                refused = False
+            except V3.Refused:
+                refused = True
+            check(refused, "v3_control.export_tree refuses a tree holding a forged blob")
+            # a filter planted in the clone: v3 safe_git status must not run it
+            rs, a9, b9 = T.make_repo(td, "v3filt")
+            mks = T.plant(rs, a9, b9, ("filter",))
+            (rs / "f.txt").write_text("dirty\n")
+            for f in Path(mks).iterdir():
+                f.unlink()
+            V3.safe_git(rs, "status", "--porcelain")
+            check(not T.fired(mks), "v3_control.safe_git status runs no planted filter (fired: %s)" % T.fired(mks))
             calls.clear()
             lp = TL.RA.SG.git_run(rv, "cat-file", "-e", b7 + "^{commit}", capture_output=True)
             check(lp.returncode == 0, "SG.git_run cat-file -e works on the trio root")
