@@ -389,8 +389,15 @@ trial stops the moment a rule fires. Fixed-length trials waste days once the ans
   lane without a canary, lets a builder start a new build pass before a different agent has started testing its
   last candidate (section 1.8), or breaks a standing ruling. A loop that publishes unchecked work is not a candidate at
   any speed.
-- **Hard cap:** the end of day 3. Whatever has not separated by then is reported as "no difference detectable
-  in days", with the intervals.
+- **Hard cap:** the end of day 3. If no rule fired by then, the winner is the SIMPLEST arm (ralph_a < ralph_c < trio
+  < v3c < v3) whose judge accept rate is not credibly worse than the control's (P(worse by >= 0.10) < 0.2) AND whose
+  accepted points per token are not credibly worse (P(< 0.9x control) < 0.2), and whose own disqualification checks
+  were measured; if none qualifies, the control stays ("no difference detectable in days"). Reported with the
+  intervals either way. (Conductor ruling 2026-10-30 under owner authority; arena_analysis.py HARD_CAP_PICK, with
+  measured pick rates in its docstring.)
+- **No decision on unmeasured inputs:** a winner whose own disqualification checks are UNMEASURED gets no decision
+  (only the structurally unmeasurable "standing ruling" check is exempt, and is enforced by review); with the control
+  absent or disqualified the result is UNMEASURED, never "no difference".
 
 ### 4.2 Day 0: build and freeze (not a trial day)
 

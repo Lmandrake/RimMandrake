@@ -10,8 +10,8 @@ design/RimMandrake/architecture_switch_harness_2026-10-29.md section 4.1 (rule),
             [--raw-dir DIR] [--allow-untrusted] [--blind SALT] [--out OUT.json]
 
 Prints one JSON report: a verdict per 5-task block and a final verdict, each one of
-    DECIDE_FOR_X | FUTILE(X) | TIE(simpler wins) | CONTINUE | DISQUALIFIED(X, reason) | HARD_CAP_NO_DIFFERENCE
-    | UNMEASURED(reason)
+    DECIDE_FOR_X | FUTILE(X) | TIE(simpler wins) | CONTINUE | DISQUALIFIED(X, reason) | HARD_CAP_PICK(X)
+    | HARD_CAP_NO_DIFFERENCE(control stays) | UNMEASURED(reason)
 plus per-arm intervals and every disqualification condition as VIOLATED / CLEAN / VACUOUS / UNMEASURED.
 
 WHAT IT READS (only fields some harness code writes, or the section 1.7 schema names):
@@ -31,7 +31,9 @@ WHAT IT READS (only fields some harness code writes, or the section 1.7 schema n
         total_ite_mixed = claude + GPT_TO_ITE*gpt.tokens + GPT_EST_IN_TO_ITE*gpt.in_est + GPT_EST_OUT_TO_ITE*gpt.out_est
     (named constants, overridable on the command line, so a new conversion needs no re-metering; the defaults
     reproduce sim/spend_census's ITE). Refused (UNMEASURED for that task): a row with no raw counts (derived or merged
-    total only), a Claude model of no known family carrying tokens, an unweighted token field, a task whose calls
+    total only), a row missing its claude or gpt section, a gpt section missing tokens/in_est/out_est, a claude model
+    entry missing any raw field (the meter always writes them all: a missing field is never read as 0), a Claude model
+    of no known family carrying tokens, an unweighted token field, a task whose calls
     overlapped another task's span (ambiguous_calls > 0), a task with a metered call whose raw count was invalid
     (invalid_calls > 0), a claude or gpt section present but not a dict, and any bool/negative/non-finite/overflowing count. The
     WHOLE spend file is refused (spend_doc_problem: UNMEASURED) when its `blocking` list is not empty (the meter lost
@@ -65,8 +67,19 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
   - TIE: P(|eff1/eff2 - 1| < 0.15) > 0.9 for the two leading arms in contention (by posterior mean log eff) -> the
     simpler of the two wins, order ralph_a < ralph_c < trio < v3c < v3;
   - FUTILE(X), X not the control: P(eff X >= 1.1 x control) < 0.05 -> X gets no new tasks;
-  - HARD_CAP_NO_DIFFERENCE: nothing fired and either --final is given or a record is later than --hard-cap (end of
-    day 3; records after it are ignored). Deterministic: the wall clock is never read. Reported with the intervals.
+  - HARD CAP: nothing fired and either --final is given or a record is later than --hard-cap (end of day 3; records
+    after it are ignored). Deterministic: the wall clock is never read. Clause added by the Conductor 2026-10-30
+    (owner authority): from the final posterior, walk the simpler-arm order (control excluded) and pick the FIRST arm
+    with P(accept[control] - accept[X] >= HARDCAP_ACCEPT_MARGIN=0.10) < HARDCAP_ACCEPT_P=0.2 AND P(accepted points
+    per token X < HARDCAP_EFF_RATIO=0.9 x control) < HARDCAP_EFF_P=0.2 (both strict) and no non-exempt UNMEASURED
+    disqualification check: HARD_CAP_PICK, detail.winner = X. None qualifies: HARD_CAP_NO_DIFFERENCE, detail.winner
+    = the control (the control stays). Every candidate's two probabilities and 90% intervals are in detail.candidates,
+    the per-arm intervals alongside. A futile arm is a candidate, on its frozen data.
+  - CONTROL: a decision or hard-cap pick needs the control. Control absent or disqualified and no stop fired:
+    UNMEASURED (never CONTINUE, never "no difference").
+  - A decision needs the winner's OWN disqualification checks measured: a DECIDE_FOR_X or TIE won by X while X has an
+    UNMEASURED check not in DQ_EXEMPT stops the trial as UNMEASURED (the checks are whole-trial, so more data cannot
+    measure them).
   - CHRONOLOGY: block k sits at the time the last arm in contention reaches 5k completions. Violations are walked in
     time order first: an arm that violated before that time, or while it was still being waited for, leaves at its
     violation time and the block time is recomputed without it (block times never go backwards). An arm short of 5k
@@ -75,7 +88,7 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
     violation disqualifies. Each arm's reasons are split by each condition's own first time.
   - final intervals come from the trial's own snapshot: the stopping block's data, or (no stop) all data with each
     futile arm frozen where it was dropped. No stop and fewer than two measured arms survive disqualification:
-    DISQUALIFIED (or UNMEASURED), never HARD_CAP_NO_DIFFERENCE; a live arm below the minimum: UNMEASURED.
+    DISQUALIFIED (or UNMEASURED), never a hard-cap verdict; a live arm below the minimum: UNMEASURED.
 FAIL CLOSED: no arms, fewer than two measured arms, an UNMEASURED arm anywhere in the roster, a completed task with
 no frozen spec (kind in arena_tasks.KINDS, int size 1/2/4) or no spend row, zero or overflowing tokens, a judge record
 with no task or an unknown verdict -> UNMEASURED, never a decision.
@@ -97,7 +110,10 @@ DISQUALIFICATION CONDITIONS, AND WHAT THE LOG CAN SHOW:
             records with no run_id, or a build_end with no earlier build pass_start of its run: UNMEASURED.
   ruling    breaking a standing ruling: the event log records no ruling check. ALWAYS UNMEASURED.
   An UNMEASURED condition never passes silently: every verdict lists the arms and conditions that were unmeasured
-  (`dq_unmeasured`), and a decision carries them.
+  (`dq_unmeasured`). EXEMPTION, stated in full (DQ_EXEMPT): only `ruling`, because it is UNMEASURED for every arm in
+  every trial (requiring it would forbid every decision); it stays listed, and standing rulings are enforced by review.
+  Every other check of the winning arm must be measured (`dq_blocking`) or there is no decision. Only the WINNER's
+  checks gate: an unmeasured check of a losing arm or of the control is listed, not blocking.
 
 LIMITS, STATED PLAINLY:
   - `judge` events are written by arena_judge.py (`judge` command, signed, lane "judge") and per-task spend by
@@ -125,6 +141,14 @@ LIMITS, STATED PLAINLY:
     in the accept rate at p = 0.64 alone gives the log-efficiency difference an SD near 0.17 at 37 tasks per arm.
     Equal arms practically never TIE inside 40 tasks per arm for the same reason (a 15% band at P > 0.9 needs an SD
     near 0.09).
+    HARD-CAP PICK (selftest_arena_analysis.py --hardcap 1000, 2026-10-30; --final at 40 tasks/arm, accept 0.64 unless
+    stated, sigma_d 0.8, 1000 seeds each, 1000 draws; thresholds NOT tuned):
+      3 equal arms (trio/v3c/v3): pick 496 (trio 349, v3c 154 when trio narrowly failed), control stays 497, false
+        DECIDE 7. Half the time an equal simpler arm is NOT picked: P(eff < 0.9x) < 0.2 needs a log-efficiency SD near
+        0.12, and 40 tasks give 0.17 or more (above), so "not credibly worse" is often unproven between equal arms.
+      trio truly 1.5x: DECIDE_FOR_trio 386 + pick 206 = trio 592; control stays 408; no wrong stop.
+      WRONG PICKS (a truly worse simpler arm picked): trio 1.5x LESS efficient: 13 picks + 2 false DECIDE (1.5%);
+        trio accept 0.49 vs 0.64: 39 picks + 8 DECIDE (4.7%).
 """
 from __future__ import annotations
 
@@ -155,6 +179,11 @@ FUTILE_P = 0.05
 TIE_BAND = 0.15
 TIE_P = 0.9
 SIMPLER = ("ralph_a", "ralph_c", "trio", "v3c", "v3")
+# day-3 hard-cap clause (Conductor 2026-10-30): when nothing fired by the cap, the simplest arm not credibly worse
+HARDCAP_ACCEPT_MARGIN = 0.10   # accept rate worse than control by at least this ...
+HARDCAP_ACCEPT_P = 0.2         # ... with probability below this
+HARDCAP_EFF_RATIO = 0.9        # accepted points per token below this x control ...
+HARDCAP_EFF_P = 0.2            # ... with probability below this
 CONTROL = "v3"
 
 # ---------------------------------------------------------------- priors (weak, centred on the simulator)
@@ -402,6 +431,18 @@ def task_tokens(row, conv):
     for sec in ("claude", "gpt"):
         if sec in row and not isinstance(row[sec], dict):
             return None, "spend %s section is %s, not a dict" % (sec, type(row[sec]).__name__)
+    # arena_spend.new_row() always writes BOTH sections, every GPT field and (per model) every raw Claude field, so a
+    # missing one is a row the meter did not write: UNMEASURED, never read as 0 (ARENA_SPEND_ROW_HARDEN_MISSING_GPT_FIELD)
+    for sec in ("claude", "gpt"):
+        if sec not in row:
+            return None, "spend row has no %s section (the meter always writes one)" % sec
+    miss = [k for k in GPT_FIELDS if k not in gpt]
+    if miss:
+        return None, "spend gpt section is missing field(s) %s (never read as 0)" % miss
+    for model, toks in claude.items():
+        miss = [k for k in CLAUDE_TOKEN_WEIGHT if isinstance(toks, dict) and k not in toks]
+        if miss:
+            return None, "spend claude[%r] is missing raw field(s) %s (never read as 0)" % (model, miss)
     inv = row.get("invalid_calls", 0)
     if _count(inv) is None or inv > 0:
         return None, "spend has %r invalid metered call(s) (a bad raw count)" % (inv,)
@@ -715,6 +756,25 @@ def dq_ruling(_seq):
 
 DQ_CHECKS = (("publish", dq_publish), ("scope", dq_scope), ("lane", dq_lane), ("tester", dq_tester),
              ("ruling", dq_ruling))
+# A decision (DECIDE_FOR_X, a TIE won by X, a hard-cap pick of X) needs every one of X's OWN disqualification checks
+# MEASURED (CLEAN or VACUOUS), except the checks listed here, each with its reason. UNMEASURED inputs never yield a
+# decision (ARENA_WINNER_ENFORCE_MEASURED_DQ_CHECKS); this is the whole, stated exemption list.
+DQ_EXEMPT = {
+    "ruling": "structurally UNMEASURED: no harness code writes a standing-ruling check into the arm event log, so it "
+              "is UNMEASURED for every arm in every trial; requiring it would make the rule unable to decide at all. "
+              "Breaking a standing ruling stays a disqualification, enforced outside this script (review), and the "
+              "check is still listed in dq_unmeasured on every verdict.",
+}
+
+
+def dq_blocking(dq):
+    """{arm: [non-exempt UNMEASURED checks]} for arms with at least one: these arms may not be decided for."""
+    out = {}
+    for a, d in (dq or {}).items():
+        v = [n for n, c in d.items() if c["status"] == "UNMEASURED" and n not in DQ_EXEMPT]
+        if v:
+            out[a] = v
+    return out
 
 
 def disqualifications(recs, cap=None):
@@ -783,25 +843,63 @@ def simpler(a, b):
     return a if SIMPLER.index(a) < SIMPLER.index(b) else b
 
 
-def rule_verdict(probs, control_present):
-    """-> (verdict, detail). Pure: thresholds compared to probabilities. Order: DECIDE, TIE, FUTILE, CONTINUE."""
+def rule_verdict(probs, control_present, blocked=None):
+    """-> (verdict, detail). Pure: thresholds compared to probabilities. Order: DECIDE, TIE, FUTILE, CONTINUE.
+    blocked: {arm: [non-exempt UNMEASURED DQ checks]} (dq_blocking): a decision that would go to such an arm is
+    UNMEASURED instead (its own disqualification was never measured)."""
+    blocked = blocked or {}
     for x, p in sorted(probs["decide"].items()):
         if p > DECIDE_P:
             if not control_present or x not in probs["accept_worse"]:
                 return "CONTINUE", {"note": "%s passes the efficiency test but the control's accept rate is "
                                             "UNMEASURED: no decision" % x}
             if probs["accept_worse"][x] < ACCEPT_P:
+                if x in blocked:
+                    return "UNMEASURED", {"why": "%s passes the decision test but its own disqualification check(s) %s "
+                                                 "are UNMEASURED: no decision" % (x, blocked[x]),
+                                          "arm": x, "dq_unmeasured": blocked[x], "p_decide": p}
                 return "DECIDE_FOR_%s" % x, {"arm": x, "p_decide": p, "p_accept_worse": probs["accept_worse"][x]}
     if probs["tie"] is not None and probs["tie"] > TIE_P:
         a, b = probs["leaders"]
         w = simpler(a, b)
         if w is None:
             return "UNMEASURED", {"why": "tie between %s and %s but one is not in the simpler-arm order" % (a, b)}
+        if w in blocked:
+            return "UNMEASURED", {"why": "TIE would go to %s but its own disqualification check(s) %s are UNMEASURED"
+                                         % (w, blocked[w]), "arm": w, "dq_unmeasured": blocked[w], "p_tie": probs["tie"]}
         return "TIE", {"leaders": [a, b], "winner": w, "p_tie": probs["tie"]}
     fut = sorted(x for x, p in probs["futile"].items() if p < FUTILE_P)
     if fut:
         return "FUTILE", {"arms": fut}
     return "CONTINUE", {}
+
+
+def hardcap_pick(post, arms, control, blocked):
+    """Day-3 hard-cap clause: -> (winner, detail). Walk SIMPLER (simplest first, control excluded); pick the first arm
+    present in `arms`, not in `blocked`, with P(accept rate worse than control by >= HARDCAP_ACCEPT_MARGIN) <
+    HARDCAP_ACCEPT_P AND P(accepted points per token < HARDCAP_EFF_RATIO x control) < HARDCAP_EFF_P. None: control."""
+    le, th = post["le"], post["theta"]
+    n = len(th[control])
+    lr = math.log(HARDCAP_EFF_RATIO)
+    cands = []
+    for a in [x for x in SIMPLER if x != control and x in arms] + sorted(x for x in arms if x not in SIMPLER and
+                                                                         x != control):
+        c = {"arm": a}
+        if a not in SIMPLER:
+            c["skipped"] = "not in the simpler-arm order"
+        elif a in blocked:
+            c["skipped"] = "own disqualification check(s) %s UNMEASURED" % blocked[a]
+        d = [th[a][i] - th[control][i] for i in range(n)]
+        r = [math.exp(le[a][i] - le[control][i]) for i in range(n)]
+        c["p_accept_worse"] = sum(1 for i in range(n) if th[control][i] - th[a][i] >= HARDCAP_ACCEPT_MARGIN) / n
+        c["p_eff_below"] = sum(1 for i in range(n) if le[a][i] - le[control][i] < lr) / n
+        c["accept_diff_vs_control_90"] = [_q(d, 0.05), _q(d, 0.5), _q(d, 0.95)]
+        c["eff_vs_control_90"] = [_q(r, 0.05), _q(r, 0.5), _q(r, 0.95)]
+        c["qualifies"] = ("skipped" not in c and c["p_accept_worse"] < HARDCAP_ACCEPT_P
+                          and c["p_eff_below"] < HARDCAP_EFF_P)
+        cands.append(c)
+    win = next((c["arm"] for c in cands if c["qualifies"]), None)
+    return (win or control), {"candidates": cands, "picked": win is not None}
 
 
 def arm_summary(post, data, arms, control=None):
@@ -883,6 +981,8 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     rep["merged_ite_records"] = merged
     rep["dq"] = dq
     rep["dq_unmeasured"] = {a: [n for n, c in d.items() if c["status"] == "UNMEASURED"] for a, d in dq.items()}
+    blocked = dq_blocking(dq)
+    rep["dq_blocking"] = blocked
     for a, why in problems.items():
         rep["arms"][a] = {"status": "UNMEASURED", "why": why}
     # disqualification fires at any time, even with an unmeasured roster. Each condition carries its own first time.
@@ -946,7 +1046,7 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
         nondq = [a for a in arms if a not in disq]
         post = posterior({a: use[a] for a in nondq}, nondq, _block_seed(seed, k), draws, control)
         probs = rule_probs(post, contention, nondq, control)
-        v, det = rule_verdict(probs, control in nondq)
+        v, det = rule_verdict(probs, control in nondq, blocked)
         blk["probs"] = probs
         blk["rule_verdict"] = v
         blk["detail"] = det
@@ -977,6 +1077,7 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     # intervals come from the trial's own snapshot: the stop's data, or every arm frozen where the rule left it
     snap = stop["_use"] if stop is not None else {a: (data[a][:dropped[a]] if a in dropped else data[a]) for a in keep}
     keep = [a for a in keep if a in snap]
+    post = None
     if keep:
         post = posterior({a: snap[a] for a in keep}, keep, _block_seed(seed, "final"), draws, control)
         fin["intervals"] = arm_summary(post, snap, keep, control)
@@ -998,10 +1099,24 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
         fin["verdict"] = "DISQUALIFIED" if fin["disqualified"] else "UNMEASURED"
         fin["detail"] = {"why": "fewer than two measured arms survive disqualification: no comparison and no "
                          "automatic winner", "surviving": keep}
+    elif control not in keep:
+        # without the control there is no reference: never "no difference" and never "keep going"
+        # (ARENA_CONTROL_HARDEN_ABSENT_NOT_NO_DIFF)
+        fin["verdict"] = "UNMEASURED"
+        fin["detail"] = {"why": "the control (%s) is %s: no reference to compare against, no hard-cap pick" %
+                         (control, "disqualified" if control in fin["disqualified"] else "absent"),
+                         "surviving": keep}
     elif final or beyond_cap:
-        fin["verdict"] = "HARD_CAP_NO_DIFFERENCE"
-        fin["detail"] = {"why": "nothing fired by the hard cap (%s)" %
-                         ("--final" if final else "a record is later than the hard cap")}
+        win, pick = hardcap_pick(post, keep, control, blocked)
+        cap = "--final" if final else "a record is later than the hard cap"
+        if pick["picked"]:
+            fin["verdict"] = "HARD_CAP_PICK"
+            fin["detail"] = dict(pick, winner=win, why="nothing fired by the hard cap (%s): %s is the simplest arm "
+                                 "not credibly worse than the control" % (cap, win))
+        else:
+            fin["verdict"] = "HARD_CAP_NO_DIFFERENCE"
+            fin["detail"] = dict(pick, winner=control, why="nothing fired by the hard cap (%s) and no simpler arm "
+                                 "qualifies: the control stays" % cap)
     else:
         fin["verdict"] = "CONTINUE"
         fin["detail"] = {"next_block_tasks_per_arm": BLOCK * k, "in_contention": contention}
@@ -1015,13 +1130,15 @@ def rule_constants():
     return {k: globals()[k] for k in ("BLOCK", "MIN_TASKS", "MIN_KINDS", "DECIDE_RATIO", "DECIDE_P", "ACCEPT_MARGIN",
                                       "ACCEPT_P", "FUTILE_RATIO", "FUTILE_P", "TIE_BAND", "TIE_P", "SIMPLER",
                                       "CONTROL", "RALPH_A_CAPACITY", "ARM_PRIOR_SD", "TASK_PRIOR_SD", "SIGMA_REF",
-                                      "IG_A0", "IG_B0", "ACCEPT_PRIOR_MEAN", "ACCEPT_PRIOR_WEIGHT")}
+                                      "IG_A0", "IG_B0", "ACCEPT_PRIOR_MEAN", "ACCEPT_PRIOR_WEIGHT",
+                                      "HARDCAP_ACCEPT_MARGIN", "HARDCAP_ACCEPT_P", "HARDCAP_EFF_RATIO",
+                                      "HARDCAP_EFF_P")}
 
 
 def blind(rep, salt):
     """Hash arm names in the output (section 3.4) unless a stop fired."""
     v = rep.get("final", {}).get("verdict", "")
-    if v.startswith("DECIDE_FOR_") or v == "TIE":
+    if v.startswith("DECIDE_FOR_") or v in ("TIE", "HARD_CAP_PICK"):
         return rep
     names = set(rep.get("arms", {})) | set(rep.get("dq", {})) | set(SIMPLER)
     text = json.dumps(rep, sort_keys=True)

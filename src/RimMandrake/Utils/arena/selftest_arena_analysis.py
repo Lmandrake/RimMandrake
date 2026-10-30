@@ -87,6 +87,16 @@ def raw_row(opus_input=0.0, **kw):
     return row
 
 
+def R(claude=None, gpt=None, **kw):
+    """A FULL raw row as the meter writes it (every Claude field per model, every GPT field), partial counts filled
+    with 0: since ARENA_SPEND_ROW_HARDEN_MISSING_GPT_FIELD a missing field is refused, never read as 0."""
+    row = {"claude": {m: dict({f: 0 for f in AA.CLAUDE_TOKEN_WEIGHT}, **v) for m, v in (claude or {}).items()},
+           "gpt": dict({"tokens": 0, "in_est": 0, "out_est": 0, "calls": 0, "est_calls": 0}, **(gpt or {})),
+           "ambiguous_calls": 0}
+    row.update(kw)
+    return row
+
+
 def spend_for(rows_tokens):
     return {t: raw_row(tok) for t, tok in rows_tokens}
 
@@ -207,41 +217,41 @@ def t_tokens_and_inputs():
                               "output": 10}}, "gpt": {"tokens": 50, "in_est": 0, "out_est": 0}}
     tok, why = AA.task_tokens(full, conv)
     check("raw opus 100 in + 0.1x1000 read + 1.25x8 + 2x5 + 5x10 out = 270, + 50 gpt = 320", tok == 320.0, (tok, why))
-    tok, why = AA.task_tokens({"claude": {"claude-sonnet-4-5": {"input": 1000}}}, conv)
+    tok, why = AA.task_tokens(R({"claude-sonnet-4-5": {"input": 1000}}), conv)
     check("sonnet raw 1000 in -> 600 (model weight 0.6)", tok == 600.0, (tok, why))
-    tok, why = AA.task_tokens({"claude": {"claude-haiku-4-5": {"output": 100}}}, conv)
+    tok, why = AA.task_tokens(R({"claude-haiku-4-5": {"output": 100}}), conv)
     check("haiku raw 100 out -> 100 (0.2 x 5)", tok == 100.0, (tok, why))
-    tok, why = AA.task_tokens({"gpt": {"tokens": 0, "in_est": 40, "out_est": 10}}, conv)
+    tok, why = AA.task_tokens(R(gpt={"tokens": 0, "in_est": 40, "out_est": 10}), conv)
     check("gpt estimate 40 in + 5x10 out = 90", tok == 90.0, (tok, why))
     c2 = dict(conv, gpt_tokens=2.0, claude_scale=3.0)
-    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 10}}, "gpt": {"tokens": 50}}, c2)
+    tok, why = AA.task_tokens(R({OPUS: {"input": 10}}, {"tokens": 50}), c2)
     check("conversion factors apply at analysis time: 3x10 + 2x50 = 130", tok == 130.0, (tok, why))
     c3 = dict(conv, claude_model=dict(conv["claude_model"], sonnet=0.5))
-    tok, why = AA.task_tokens({"claude": {"claude-sonnet-4-5": {"input": 1000}}}, c3)
+    tok, why = AA.task_tokens(R({"claude-sonnet-4-5": {"input": 1000}}), c3)
     check("a model weight is changed without re-metering: sonnet 0.5 -> 500", tok == 500.0, (tok, why))
-    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 100}}, "claude_ite": 99999}, conv)
+    tok, why = AA.task_tokens(R({OPUS: {"input": 100}}, claude_ite=99999), conv)
     check("the derived claude_ite column is ignored (raw wins)", tok == 100.0, (tok, why))
     tok, why = AA.task_tokens({"claude_ite": 500, "gpt_ite": 0, "gpt_ite_est": 0}, conv)
     check("a row with only derived/merged ITE (no raw per-model counts) is refused", tok is None and "raw" in why,
           why)
     tok, why = AA.task_tokens({"total_ite_mixed": 500}, conv)
     check("merged-only spend row refused", tok is None and "raw" in why, why)
-    tok, why = AA.task_tokens({"claude": {"gemini-x": {"input": 10}}}, conv)
+    tok, why = AA.task_tokens(R({"gemini-x": {"input": 10}}), conv)
     check("an unknown Claude model with tokens is refused (no silent weight)", tok is None and "model" in why, why)
-    tok, why = AA.task_tokens({"claude": {"<synthetic>": {"input": 0, "output": 0}, OPUS: {"input": 7}}}, conv)
+    tok, why = AA.task_tokens(R({"<synthetic>": {"input": 0, "output": 0}, OPUS: {"input": 7}}), conv)
     check("an unknown model with zero tokens is harmless", tok == 7.0, (tok, why))
-    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 10, "reasoning": 5}}}, conv)
+    tok, why = AA.task_tokens(R({OPUS: {"input": 10, "reasoning": 5}}), conv)
     check("an unweighted token field is refused", tok is None and "reasoning" in why, why)
     tok, why = AA.task_tokens(raw_row(100, ambiguous_calls=2), conv)
     check("a task with calls that overlapped another task's span is refused", tok is None and "ambiguous" in why,
           why)
-    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 0}}, "gpt": {"tokens": 0}}, conv)
+    tok, why = AA.task_tokens(R({OPUS: {"input": 0}}), conv)
     check("zero tokens refused", tok is None and "zero" in why, why)
-    tok, why = AA.task_tokens({"claude": {OPUS: {"input": -5}}}, conv)
+    tok, why = AA.task_tokens(R({OPUS: {"input": -5}}), conv)
     check("negative tokens refused", tok is None, why)
-    tok, why = AA.task_tokens({"claude": {OPUS: {"input": True}}}, conv)
+    tok, why = AA.task_tokens(R({OPUS: {"input": True}}), conv)
     check("boolean tokens refused", tok is None, why)
-    tok, why = AA.task_tokens({"gpt": {"tokens": float("nan")}}, conv)
+    tok, why = AA.task_tokens(R(gpt={"tokens": float("nan")}), conv)
     check("non-finite gpt tokens refused", tok is None, why)
     r = AA.analyse({}, {}, {})
     check("empty log -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED", r["final"])
@@ -398,13 +408,13 @@ def t_tie():
 def t_hardcap_determinism():
     rng_acc = lambda i: (i * 7) % 10 < 6  # noqa: E731
     r = scenario({"trio": (1.0, rng_acc, 0.8), "v3": (1.0, rng_acc, 0.8)}, 15, final=True)
-    check("noisy equal arms at the hard cap: HARD_CAP_NO_DIFFERENCE with intervals",
-          r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE" and "eff_vs_control_90" in r["final"]["intervals"]["trio"],
+    check("noisy equal arms at the hard cap: a hard-cap verdict (pick or no difference) with intervals",
+          r["final"]["verdict"] in ("HARD_CAP_PICK", "HARD_CAP_NO_DIFFERENCE") and "eff_vs_control_90" in r["final"]["intervals"]["trio"],
           r["final"]["verdict"])
     cap = T0 + 12 * 600
     r = scenario({"trio": (1.0, rng_acc, 0.8), "v3": (1.0, rng_acc, 0.8)}, 15, hard_cap=cap)
     check("records after --hard-cap are ignored and the cap counts as passed",
-          r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE"
+          r["final"]["verdict"] in ("HARD_CAP_PICK", "HARD_CAP_NO_DIFFERENCE")
           and r["final"]["intervals"]["trio"]["completed"] <= 12, r["final"].get("intervals", {}).get("trio"))
     a = json.dumps(scenario({"trio": (0.8, rng_acc, 0.5), "v3": (1.0, rng_acc, 0.5)}, 20, seed=3), sort_keys=True)
     b = json.dumps(scenario({"trio": (0.8, rng_acc, 0.5), "v3": (1.0, rng_acc, 0.5)}, 20, seed=3), sort_keys=True)
@@ -760,7 +770,7 @@ def t_final_r2():
 
 
 def t_overflow_r2():
-    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 10 ** 400}}}, AA.default_conv())
+    tok, why = AA.task_tokens(R({OPUS: {"input": 10 ** 400}}), AA.default_conv())
     check("an int too big for a float is refused, not raised", tok is None and "invalid" in why, (tok, why))
 
     def big(s):
@@ -772,9 +782,196 @@ def t_overflow_r2():
           r["final"].get("why"))
 
 
+# ---------------------------------------------------------------- (5c) BENCH verify 2026-10-30 findings (red first)
+
+def t_spend_missing_field():
+    """ARENA_SPEND_ROW_HARDEN_MISSING_GPT_FIELD: the meter always writes every field, so a missing one is UNMEASURED,
+    never 0 (BENCH probe a_spend_missing_gpt_fields decided for trio)."""
+    conv = AA.default_conv()
+    for k in ("tokens", "in_est", "out_est"):
+        row = R({OPUS: {"input": 100}})
+        del row["gpt"][k]
+        tok, why = AA.task_tokens(row, conv)
+        check("missing gpt.%s -> refused, not read as 0" % k, tok is None and k in (why or ""), (tok, why))
+    tok, why = AA.task_tokens({"claude": R({OPUS: {"input": 100}})["claude"], "ambiguous_calls": 0}, conv)
+    check("missing gpt section -> refused", tok is None and "gpt" in (why or ""), (tok, why))
+    tok, why = AA.task_tokens({"gpt": R()["gpt"], "ambiguous_calls": 0}, conv)
+    check("missing claude section -> refused", tok is None and "claude" in (why or ""), (tok, why))
+    row = R({OPUS: {"input": 100}})
+    del row["claude"][OPUS]["output"]
+    tok, why = AA.task_tokens(row, conv)
+    check("a Claude model missing a raw field -> refused", tok is None and "output" in (why or ""), (tok, why))
+    tok, why = AA.task_tokens(R({OPUS: {"input": 100}}), conv)
+    check("a full row still converts (100)", tok == 100.0, (tok, why))
+
+    def strip(sp):
+        for t in sp["trio"]:
+            sp["trio"][t] = {"claude": sp["trio"][t]["claude"], "ambiguous_calls": 0}
+    logs, tasks, sp = winner_logs(spend_patch=strip)
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("winner whose rows lack the gpt section -> UNMEASURED, not DECIDE_FOR_trio",
+          r["final"]["verdict"] == "UNMEASURED", r["final"]["verdict"])
+
+    def strip1(sp):
+        for t in sp["trio"]:
+            del sp["trio"][t]["gpt"]["out_est"]
+    logs, tasks, sp = winner_logs(spend_patch=strip1)
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("winner whose rows lack gpt.out_est -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED",
+          r["final"]["verdict"])
+
+
+def _mut_recs(logs, arm, event, fn):
+    for x in logs[arm]["recs"]:
+        if x["event"] == event:
+            fn(x)
+
+
+def t_dq_measured_for_winner():
+    """ARENA_WINNER_ENFORCE_MEASURED_DQ_CHECKS: no decision for an arm whose own non-exempt DQ check is UNMEASURED."""
+    ex = getattr(AA, "DQ_EXEMPT", {})
+    check("the exemption list is stated and is exactly {ruling}", set(ex) == {"ruling"}
+          and all(isinstance(v, str) and v for v in ex.values()), ex)
+    logs, tasks, sp = winner_logs()
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("ruling-only UNMEASURED (the stated exemption) still decides", r["final"]["verdict"] == "DECIDE_FOR_trio"
+          and r["final"]["dq_unmeasured"].get("trio") == ["ruling"], (r["final"]["verdict"], r["final"]["dq_unmeasured"]))
+    logs, tasks, sp = winner_logs()
+    _mut_recs(logs, "trio", "gate", lambda x: x["detail"]["steps"].update(scope="SKIP"))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS, final=True)
+    check("winner's scope check UNMEASURED (scope=SKIP) -> UNMEASURED, not DECIDE_FOR_trio",
+          r["final"]["verdict"] == "UNMEASURED" and "scope" in json.dumps(r["final"]), r["final"]["verdict"])
+    logs, tasks, sp = winner_logs()
+    _mut_recs(logs, "trio", "judge", lambda x: x.update(sha=x["sha"][:8]))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS, final=True)
+    check("winner's publish check UNMEASURED (8-hex judge shas) -> UNMEASURED, not DECIDE_FOR_trio",
+          r["final"]["verdict"] == "UNMEASURED" and "publish" in json.dumps(r["final"]), r["final"]["verdict"])
+    logs, tasks, sp = winner_logs()
+    _mut_recs(logs, "v3", "gate", lambda x: x["detail"]["steps"].update(scope="SKIP"))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("only the WINNER's own checks gate its decision (control's scope UNMEASURED: still DECIDE, listed)",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and "scope" in r["final"]["dq_unmeasured"].get("v3", []),
+          r["final"]["verdict"])
+    v = AA.rule_verdict(probs({"trio": 0.99}, {"trio": 0.0}), True, {"trio": ["scope"]})
+    check("rule_verdict: DECIDE blocked by the arm's unmeasured check -> UNMEASURED naming it",
+          v[0] == "UNMEASURED" and v[1].get("dq_unmeasured") == ["scope"], v)
+    v = AA.rule_verdict(probs(tie=0.95), True, {"trio": ["tester"]})
+    check("rule_verdict: TIE winner with an unmeasured check -> UNMEASURED", v[0] == "UNMEASURED", v)
+    v = AA.rule_verdict(probs(tie=0.95), True, {"v3": ["tester"]})
+    check("rule_verdict: the TIE loser's unmeasured check does not block the simpler winner",
+          v[0] == "TIE" and v[1]["winner"] == "trio", v)
+
+
+def t_control_absent():
+    """ARENA_CONTROL_HARDEN_ABSENT_NOT_NO_DIFFERENCE: no control -> UNMEASURED, never HARD_CAP_NO_DIFFERENCE."""
+    arms = {"trio": (1 / 3.0, all_acc, 0.1), "v3c": (1.0, all_acc, 0.1)}
+    r = scenario(arms, 20, final=True)
+    check("control absent, trio 3x v3c, --final -> UNMEASURED(control), not HARD_CAP_NO_DIFFERENCE",
+          r["final"]["verdict"] == "UNMEASURED" and "control" in json.dumps(r["final"].get("detail")),
+          (r["final"]["verdict"], r["final"].get("detail")))
+    r = scenario(arms, 20)
+    check("control absent mid-trial -> UNMEASURED, not CONTINUE", r["final"]["verdict"] == "UNMEASURED",
+          r["final"]["verdict"])
+    r = dq_run({"v3": {"drop": {(1, "gate")}}}, final=True)
+    check("control disqualified, two arms left, --final -> UNMEASURED(control), DQ still listed",
+          r["final"]["verdict"] == "UNMEASURED" and "v3" in r["final"]["disqualified"]
+          and "control" in json.dumps(r["final"].get("detail")), (r["final"]["verdict"], r["final"].get("detail")))
+
+
+def t_judge_gate_order():
+    """ARENA_ANALYSIS_WIDEN_JUDGE_GATE_ORDER_TESTS: which judge verdict counts, and a gate pass AFTER the judge."""
+    logs, tasks, sp = winner_logs()
+    for x in [x for x in logs["trio"]["recs"] if x["event"] == "judge"]:
+        logs["trio"]["recs"].append(dict(x, verdict="reject", ts=iso(AA._ep(x) - 50)))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("an EARLIER reject before each accept: the last (accept) counts -> DECIDE_FOR_trio, all accepted",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["final"]["intervals"]["trio"]["accepted"] == 10,
+          (r["final"]["verdict"], r["final"].get("intervals", {}).get("trio", {}).get("accepted")))
+    logs, tasks, sp = winner_logs()
+    for x in [x for x in logs["trio"]["recs"] if x["event"] == "judge"]:
+        logs["trio"]["recs"].append(dict(x, verdict="reject", ts=iso(AA._ep(x) + 50)))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS, final=True)
+    check("a LATER reject after each accept: the last (reject) counts -> trio accepts nothing, never DECIDE_FOR_trio",
+          r["final"]["verdict"] != "DECIDE_FOR_trio"
+          and r["final"].get("intervals", {}).get("trio", {}).get("accepted") == 0,
+          (r["final"]["verdict"], r["final"].get("intervals", {}).get("trio")))
+    recs = arm_log("trio", [("T000", True)])
+    g = next(x for x in recs if x["event"] == "gate")
+    g["ts"] = iso(AA._ep(g) + 500)
+    check("publish: a gate pass recorded AFTER the judge -> VIOLATED", AA.dq_publish(AA.L.ordered(recs))["status"]
+          == "VIOLATED", AA.dq_publish(AA.L.ordered(recs)))
+    logs, tasks, sp = winner_logs()
+    g = [x for x in logs["trio"]["recs"] if x["event"] == "gate"][3]
+    g["ts"] = iso(AA._ep(g) + 500)
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("gate-after-judge on one trio task -> trio DISQUALIFIED(publish), never DECIDE_FOR_trio",
+          r["final"]["disqualified"].get("trio") == ["publish"] and r["final"]["verdict"] != "DECIDE_FOR_trio",
+          (r["final"]["verdict"], r["final"]["disqualified"]))
+
+
+def t_hardcap_pick_unit():
+    """Day-3 hard-cap clause (Conductor 2026-10-30): simplest arm not credibly worse than control on accept rate
+    (P(worse by >= 0.10) < 0.2) AND on accepted points per token (P(< 0.9x control) < 0.2); else the control stays."""
+    want = {"HARDCAP_ACCEPT_MARGIN": 0.10, "HARDCAP_ACCEPT_P": 0.2, "HARDCAP_EFF_RATIO": 0.9, "HARDCAP_EFF_P": 0.2}
+    bad = {k: getattr(AA, k, None) for k, v in want.items() if getattr(AA, k, None) != v}
+    check("hard-cap pick thresholds are the Conductor's numbers", not bad, bad)
+    n = 100
+    eq = [0.0] * n
+
+    def pick(le, th, arms=None, blocked=None):
+        arms = arms or sorted(le)
+        return AA.hardcap_pick(fake(le, th), arms, "v3", blocked or {})
+    th = {a: [0.7] * n for a in ("trio", "v3c", "v3", "ralph_c")}
+    w, det = pick({"trio": eq, "v3c": eq, "v3": eq}, th)
+    check("equal arms: the simplest (trio) is picked over v3c", w == "trio", (w, det))
+    w, _ = pick({"ralph_c": eq, "trio": eq, "v3": eq}, th)
+    check("order: ralph_c before trio", w == "ralph_c", w)
+    worse = [math.log(0.9 * 0.97)] * n
+    w, _ = pick({"trio": worse, "v3c": eq, "v3": eq}, th)
+    check("eff 0.873x control (credibly < 0.9x) is skipped -> next simplest (v3c)", w == "v3c", w)
+    w, _ = pick({"trio": [math.log(0.9 * 1.03)] * n, "v3": eq}, th)
+    check("eff 0.927x control is not credibly < 0.9x -> picked", w == "trio", w)
+    w, _ = pick({"trio": eq, "v3": eq}, dict(th, trio=[0.7 - 0.105] * n))
+    check("accept 0.105 below control (>= 0.10) -> not picked, control stays", w == "v3", w)
+    w, _ = pick({"trio": eq, "v3": eq}, dict(th, trio=[0.7 - 0.095] * n))
+    check("accept 0.095 below control -> picked", w == "trio", w)
+    # probability boundaries: 20 of 100 draws worse is P = 0.2 (not < 0.2); 19 of 100 is
+    mix = lambda k, bad_v, good_v: [bad_v] * k + [good_v] * (n - k)  # noqa: E731
+    w, _ = pick({"trio": mix(20, math.log(0.85), 0.0), "v3": eq}, th)
+    check("P(eff < 0.9x) exactly 0.2 -> not picked (strict <)", w == "v3", w)
+    w, _ = pick({"trio": mix(19, math.log(0.85), 0.0), "v3": eq}, th)
+    check("P(eff < 0.9x) 0.19 -> picked", w == "trio", w)
+    w, _ = pick({"trio": eq, "v3": eq}, dict(th, trio=mix(20, 0.5, 0.7)))
+    check("P(accept worse) exactly 0.2 -> not picked (strict <)", w == "v3", w)
+    w, _ = pick({"trio": eq, "v3": eq}, dict(th, trio=mix(19, 0.5, 0.7)))
+    check("P(accept worse) 0.19 -> picked", w == "trio", w)
+    w, _ = pick({"trio": eq, "v3c": eq, "v3": eq}, th, blocked={"trio": ["scope"]})
+    check("an arm with an unmeasured non-exempt DQ check is never picked", w == "v3c", w)
+    w, det = pick({"trio": eq, "v3": eq}, th)
+    c = det["candidates"][0]
+    check("the pick reports both probabilities and intervals per candidate",
+          {"p_accept_worse", "p_eff_below", "eff_vs_control_90", "accept_diff_vs_control_90"} <= set(c), c)
+
+
+def t_hardcap_pick_scenario():
+    # trio 1.18x as efficient (below the 1.25x decision ratio), same accepts: nothing fires, trio not credibly worse
+    r = scenario({"trio": (0.85, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}, 15, final=True)
+    check("hard cap, nothing fired, trio not credibly worse -> HARD_CAP_PICK trio, intervals alongside",
+          r["final"]["verdict"] == "HARD_CAP_PICK" and r["final"]["detail"].get("winner") == "trio"
+          and "eff_vs_control_90" in r["final"]["intervals"]["trio"], (r["final"]["verdict"], r["final"].get("detail")))
+    r = scenario({"trio": (0.85, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}, 15)
+    check("no hard cap yet -> CONTINUE (the pick fires only at the cap)", r["final"]["verdict"] == "CONTINUE",
+          r["final"]["verdict"])
+    half = lambda i: i % 2 == 0  # noqa: E731
+    r = scenario({"trio": (1.0, half, 0.8), "v3": (1.0, all_acc, 0.8)}, 15, final=True)
+    check("hard cap, trio accepts credibly less -> control stays (HARD_CAP_NO_DIFFERENCE, winner v3)",
+          r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE" and r["final"]["detail"].get("winner") == "v3",
+          (r["final"]["verdict"], r["final"].get("detail")))
+
+
 # ---------------------------------------------------------------- (6) simulations: calibration and power
 
-def sim(arms, n, seed, sigma_d=0.8, draws=1000, block_kinds=True):
+def sim(arms, n, seed, sigma_d=0.8, draws=1000, block_kinds=True, final=False, full=False):
     """arms: {arm: (tokens_factor, p_accept)}; same tasks in every arm (replay). -> final verdict, block."""
     rng = random.Random(seed)
     tasks = make_tasks(n)
@@ -786,7 +983,9 @@ def sim(arms, n, seed, sigma_d=0.8, draws=1000, block_kinds=True):
         rows = [(t, rng.random() < p) for t in ids]
         logs[a] = {"recs": arm_log(a, rows, offset=j)}
         sp[a] = spend_for((t, math.exp(base[t] + rng.gauss(0, s)) * fac) for t in ids)
-    r = AA.analyse(logs, tasks, sp, draws=draws, seed=seed)
+    r = AA.analyse(logs, tasks, sp, draws=draws, seed=seed, final=final)
+    if full:
+        return r
     return r["final"]["verdict"], r["final"].get("block"), [b.get("rule_verdict") for b in r["blocks"]]
 
 
@@ -816,6 +1015,34 @@ def power(nseeds, n=60, draws=1000, start=0):
             "by_40": sum(w <= 40 for w in when), "tasks_when_decided": sorted(when)}
 
 
+HARDCAP_SCENARIOS = {
+    # name: (arms {arm: (tokens_factor, p_accept)}, seed base, the right answer at the cap)
+    "equal3": ({"trio": (1.0, 0.64), "v3c": (1.0, 0.64), "v3": (1.0, 0.64)}, 1000, "trio"),
+    "trio_1.5x": ({"trio": (1 / 1.5, 0.64), "v3": (1.0, 0.64)}, 5000, "trio"),
+    "trio_1.5x_worse": ({"trio": (1.5, 0.64), "v3": (1.0, 0.64)}, 7000, "v3"),
+    "trio_accept_-0.15": ({"trio": (1.0, 0.49), "v3": (1.0, 0.64)}, 9000, "v3"),
+}
+
+
+def hardcap_sim(name, nseeds, n=40, draws=1000, start=0):
+    """Final verdict at the hard cap (--final after n tasks/arm, sigma_d 0.8) over seeds; same harness as --calib/--power.
+    "off_target" = a stop or pick for an arm other than the scenario's right answer (control staying is a miss, not wrong,
+    unless the control is the right answer)."""
+    arms, base, right = HARDCAP_SCENARIOS[name]
+    out = {"scenario": name, "arms": {a: list(v) for a, v in arms.items()}, "right": right, "seeds": nseeds,
+           "tasks_per_arm": n, "draws": draws, "verdicts": {}, "winner": {}, "off_target": 0, "off_target_seeds": []}
+    for s in range(start, start + nseeds):
+        f = sim(arms, n, base + s, draws=draws, final=True, full=True)["final"]
+        v = f["verdict"]
+        w = (v[len("DECIDE_FOR_"):] if v.startswith("DECIDE_FOR_") else (f.get("detail") or {}).get("winner"))
+        out["verdicts"][v] = out["verdicts"].get(v, 0) + 1
+        out["winner"][str(w)] = out["winner"].get(str(w), 0) + 1
+        if w is not None and w != right and not (v == "HARD_CAP_NO_DIFFERENCE" and right != AA.CONTROL):
+            out["off_target"] += 1
+            out["off_target_seeds"].append([base + s, v, w])
+    return out
+
+
 def t_small_sims():
     c = calib(6, n=30, draws=600)
     check("null calibration (small, 6 seeds x 30 tasks): no false DECIDE", c["decide"] == 0, c)
@@ -829,7 +1056,8 @@ def t_small_sims():
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
-        t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2)
+        t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
+        t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
@@ -869,6 +1097,15 @@ def main(argv):
         n = int(argv[argv.index("--calib") + 1])
         start = int(argv[argv.index("--start") + 1]) if "--start" in argv else 0
         print(json.dumps(calib(n, start=start)))
+        return 0
+    if "--hardcap" in argv:
+        i = argv.index("--hardcap")
+        n = int(argv[i + 1])
+        names = argv[i + 2].split(",") if len(argv) > i + 2 and not argv[i + 2].startswith("-") else \
+            list(HARDCAP_SCENARIOS)
+        st = int(argv[argv.index("--start") + 1]) if "--start" in argv else 0
+        for nm in names:
+            print(json.dumps(hardcap_sim(nm, n, start=st)), flush=True)
         return 0
     if "--power" in argv:
         n = int(argv[argv.index("--power") + 1])

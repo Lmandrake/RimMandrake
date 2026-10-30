@@ -421,7 +421,9 @@ def t_main_wiring(tmp):
         return {"ts": iso(ts), "arm": "trio", "lane": "judge", "run_id": "judge", "task": "T1", "event": "judge",
                 "sha": "a" * 40, "verdict": verdict, "detail": dict({"base": "b"}, **({"pending": True} if pending
                                                                                       else {}))}
-    row = {"T1": {"claude": {OPUS: {"input": 10}}, "gpt": {}}}
+    # a complete meter row (the reader refuses a missing field: ARENA_SPEND_ROW_HARDEN_MISSING_GPT_FIELD)
+    row = {"T1": {"claude": {OPUS: dict({k: 0 for k in AA.CLAUDE_TOKEN_WEIGHT}, input=10)},
+                  "gpt": {k: 0 for k in AA.GPT_FIELDS}}}
     for seq, ok, what in (([jr(200, "accept"), jr(190, "invalid", True)], False,
                            "an earlier accept, then a pending re-judgment stamped EARLIER (clock back) and never "
                            "recorded"),
