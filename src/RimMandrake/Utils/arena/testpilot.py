@@ -287,7 +287,7 @@ FOOTPRINT_KEYS = ("files", "defs")
 
 def check_live_plan(plan) -> dict:
     """The strict shape of a plan as a FROZEN task carries it (`live_plan`, L3): everything _check_plan demands, plus
-    only keys this module reads, every argv token a non-empty string, footprint lists of strings, taints naming
+    only keys this module reads, every argv token a string (the program non-empty), footprint lists of strings, taints naming
     scenarios of this plan (or "uncertain"), fail_rc a non-zero int, fixture_save a non-empty string.
     PilotRefused names the first fault."""
     if not isinstance(plan, dict):
@@ -295,19 +295,21 @@ def check_live_plan(plan) -> dict:
     extra = sorted(set(plan) - set(PLAN_KEYS))
     if extra:
         raise PilotRefused("live_plan has keys testpilot does not read: %s" % extra)
+    if isinstance(plan.get("scenarios"), list):
+        for s in plan["scenarios"]:
+            if not isinstance(s, dict):     # before _check_plan, whose s.get() would raise AttributeError
+                raise PilotRefused("a live_plan scenario is not an object: %r" % (s,))
     _check_plan(plan)
     if "fixture_save" in plan and not (isinstance(plan["fixture_save"], str) and plan["fixture_save"].strip()):
         raise PilotRefused("live_plan fixture_save must be a non-empty string: %r" % (plan["fixture_save"],))
     ids = {s["id"] for s in plan["scenarios"]}
     for s in plan["scenarios"]:
-        if not isinstance(s, dict):
-            raise PilotRefused("a live_plan scenario is not an object: %r" % (s,))
         sid = s["id"]
         extra = sorted(set(s) - set(SCENARIO_KEYS))
         if extra:
             raise PilotRefused("scenario %s has keys testpilot does not read: %s" % (sid, extra))
-        if not all(isinstance(a, str) and a for a in s["argv"]):
-            raise PilotRefused("scenario %s argv must be non-empty strings: %r" % (sid, s["argv"]))
+        if not all(isinstance(a, str) for a in s["argv"]) or not s["argv"][0]:   # "" is a real argument, not a program
+            raise PilotRefused("scenario %s argv must be strings with a non-empty program: %r" % (sid, s["argv"]))
         if "footprint" in s:
             fp = s["footprint"]
             if not isinstance(fp, dict) or set(fp) - set(FOOTPRINT_KEYS):

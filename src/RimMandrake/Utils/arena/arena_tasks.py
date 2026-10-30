@@ -931,6 +931,8 @@ def live_plan_refusal(task: dict) -> str | None:
         TP.check_live_plan(task["live_plan"])
     except TP.PilotRefused as e:
         return "live_plan invalid: %s" % e
+    except (TypeError, AttributeError, KeyError) as e:   # a shape the validator missed still refuses, never crashes
+        return "live_plan malformed (%s: %s)" % (type(e).__name__, e)
     return None
 
 

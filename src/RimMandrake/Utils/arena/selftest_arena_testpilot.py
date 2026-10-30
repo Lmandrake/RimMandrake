@@ -2152,11 +2152,15 @@ def t_check_live_plan():
                                               "taints": ["s2"], "fail_rc": 2}, s2={"taints": "uncertain"})
     check(raises(T.PilotRefused, T.check_live_plan, full) is None, "check_live_plan accepts every read key")
     T._check_plan(full)
+    check(raises(T.PilotRefused, T.check_live_plan, {"scenarios": [dict(id="e", argv=["p", "--expect", ""])]})
+          is None, "check_live_plan accepts an empty argument after the program (testpilot can run it)")
     sc = {"id": "s1", "argv": ["x"]}
     for why, bad in (("not a plan object", ["s1"]), ("does not read", {"scenarios": [sc], "timeout": 1}),
                      ("does not read", {"scenarios": [dict(sc, cwd="/")]}), ("no scenarios", {"scenarios": []}),
                      ("unique", {"scenarios": [sc, sc]}), ("no argv", {"scenarios": [{"id": "s1", "argv": []}]}),
-                     ("argv", {"scenarios": [dict(sc, argv=["x", ""])]}),
+                     ("argv", {"scenarios": [dict(sc, argv=["", "x"])]}),
+                     ("argv", {"scenarios": [dict(sc, argv=["x", 3])]}),
+                     ("not an object", {"scenarios": [None]}), ("not an object", {"scenarios": [sc, "s2"]}),
                      ("footprint", {"scenarios": [dict(sc, footprint={"globs": ["a"]})]}),
                      ("footprint.files", {"scenarios": [dict(sc, footprint={"files": "a/*"})]}),
                      ("taints", {"scenarios": [dict(sc, taints=["nope"])]}),
