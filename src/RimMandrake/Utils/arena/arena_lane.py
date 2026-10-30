@@ -66,6 +66,7 @@ UTILS = HERE.parent
 REPO = UTILS.parent.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(UTILS))
+import arena_safe_git as SG  # noqa: E402  (every git call on a clone the lane does not own the .git of)
 import arena_tasks  # noqa: E402  (arena_root, the one arena path resolver)
 
 LANES = {"steve": {"host": "stevedesktop"},
@@ -602,6 +603,18 @@ def _sh(argv, timeout=600, cwd=None):
         return 99, "%s: %s" % (type(e).__name__, e)
 
 
+def _sg(clone, *a, timeout=600, transport=False, both=True):
+    """git on `clone` through arena_safe_git (no replace refs, grafts, hooks, fsmonitor, filter/diff drivers, the
+    clone's ssh/credential commands): the clone's .git is a build helper's. -> (rc, output). `both`: stdout+stderr
+    (False: stdout only, for an answer a caller compares)."""
+    try:
+        p = SG.git_run(clone, *a, transport=transport, capture_output=True, text=True, timeout=timeout,
+                       encoding="utf-8", errors="replace")
+        return p.returncode, (p.stdout or "") + ((p.stderr or "") if both else "")
+    except (OSError, subprocess.SubprocessError) as e:      # CloneRefused is an OSError
+        return 99, "%s: %s" % (type(e).__name__, e)
+
+
 class RealDriver:
     """The existing tools, called as they are. Runs on the lane's own machine, from WSL, repo root as cwd.
 
@@ -665,12 +678,12 @@ class RealDriver:
         return rc == 0, out
 
     def clone_head(self, clone):
-        rc, out = _sh(["git", "-C", clone, "rev-parse", "HEAD"], timeout=60)
+        rc, out = _sg(clone, "rev-parse", "HEAD", timeout=60, both=False)
         return out.strip() if rc == 0 else None
 
     def clone_dirty(self, clone):
         """'' when the clone is clean (tracked and untracked, ignored files aside); else what differs."""
-        rc, out = _sh(["git", "-C", clone, "status", "--porcelain"], timeout=120)
+        rc, out = _sg(clone, "status", "--porcelain", timeout=120, both=False)    # stdout only: stderr is not "dirty"
         return out.strip() if rc == 0 else ("git status failed: " + out.strip())
 
     def deploy(self, mod, clone):
@@ -687,13 +700,13 @@ class RealDriver:
         if is_seat_clone(clone):
             return False, "clone %s is a seat clone: main is never checked out there by a lane" % clone, None
         out = ""
-        for argv in (["git", "-C", clone, "fetch", "-q", "origin"],
-                     ["git", "-C", clone, "checkout", "-q", "--detach", "origin/main"],
-                     ["git", "-C", clone, "clean", "-fdq"]):
-            rc, txt = _sh(argv, timeout=300)
+        for argv, tr in ((["fetch", "-q", "origin"], True),
+                         (["checkout", "-q", "--detach", "origin/main"], False),
+                         (["clean", "-fdq"], False)):
+            rc, txt = _sg(clone, *argv, timeout=300, transport=tr)
             out += txt
             if rc != 0:
-                return False, out + " (%s rc %d)" % (" ".join(argv[3:]), rc), None
+                return False, out + " (%s rc %d)" % (" ".join(argv), rc), None
         head = self.clone_head(clone)
         for m in mods:
             rc, txt = _sh(["python3", os.path.join(clone, "src", "RimMandrake", "Utils", "deploy_custom_mods.py"),

@@ -824,7 +824,72 @@ def t_review():
     check([x["item"] for x in R.pending(p)] == ["Y", "X"], "queue: a republished item goes behind older ones")
 
 
-for t in (t_stale, t_dead, t_full, t_loadtime, t_restore, t_mods_restore, t_rules, t_canary, t_verdicts, t_review):
+def t_realdriver_git():
+    """RALPHA_GIT_DEDUPE_REALDRIVER_PLAIN_GIT: RealDriver.restore_mods / clone_head / clone_dirty run git through
+    arena_safe_git, so a core.fsmonitor or core.hooksPath planted in the candidate clone's .git runs nothing."""
+    import subprocess
+    import types
+    d = TMP / "rdgit"
+    d.mkdir()
+
+    def g(*a, cwd=None):
+        return subprocess.run(["git"] + list(a), cwd=str(cwd or d), capture_output=True, text=True,
+                              env=dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t",
+                                       GIT_COMMITTER_EMAIL="t@t"))
+    g("init", "-q", "-b", "main", "src")
+    src = d / "src"
+    (src / "f").write_text("x\n")
+    g("add", "f", cwd=src)
+    g("commit", "-q", "-m", "i", cwd=src)
+    g("clone", "-q", str(src), "runner_clone")
+    clone = d / "runner_clone"
+    g("checkout", "-q", "-b", "main", "origin/main", cwd=clone)
+    g("remote", "set-url", "origin", str(src), cwd=clone)
+    g("branch", "-q", "-u", "origin/main", cwd=clone)
+    mark = d / "mark"
+    hook = d / "hook.sh"
+    hook.write_text("#!/bin/sh\ntouch %s\n" % mark)
+    hook.chmod(0o755)
+    hdir = d / "hooks"
+    hdir.mkdir()
+    (hdir / "post-checkout").write_text("#!/bin/sh\ntouch %s\n" % mark)
+    (hdir / "post-checkout").chmod(0o755)
+    g("config", "core.fsmonitor", str(hook), cwd=clone)
+    g("config", "core.hooksPath", str(hdir), cwd=clone)
+    g("status", "--porcelain", cwd=clone)
+    g("checkout", "-q", "--detach", "origin/main", cwd=clone)
+    sane = mark.exists()                                      # plain git runs the planted command
+    mark.unlink(missing_ok=True)
+
+    def probe(mod):
+        rd = mod.RealDriver()
+        head, dirty = rd.clone_head(str(clone)), rd.clone_dirty(str(clone))
+        ok, out, mhead = rd.restore_mods([], str(clone))
+        return head, dirty, ok, mhead, mark.exists()
+    want = g("rev-parse", "HEAD", cwd=src).stdout.strip()
+    head, dirty, ok, mhead, ran = probe(L)
+    check(sane and not ran and head == want and dirty == "" and ok and mhead == want,
+          "RealDriver git: head/dirty/restore_mods run no planted fsmonitor or hook (got %s)" % ((head, dirty, ok, ran),))
+    (clone / "u").write_text("z\n")
+    check(L.RealDriver().clone_dirty(str(clone)) == "?? u", "RealDriver.clone_dirty reports an untracked file (stdout only)")
+    (clone / "u").unlink()
+    mark.unlink(missing_ok=True)
+    text = (HERE / "arena_lane.py").read_text()
+    anchor = "p = SG.git_run(clone, *a, transport=transport, capture_output=True,"
+    assert text.count(anchor) == 1
+    m = types.ModuleType("arena_lane_plain")
+    m.__file__ = str(HERE / "arena_lane.py")
+    exec(compile(text.replace(anchor, "p = subprocess.run(['git', '-C', str(clone)] + list(a), capture_output=True,"
+                              ).replace("transport=transport, capture_output", "capture_output"), m.__file__, "exec"), m.__dict__)
+    try:
+        ran2 = probe(m)[4]
+    except Exception:  # noqa: BLE001
+        ran2 = True
+    check(ran2, "RealDriver git mutation (plain git) runs the planted command: the test goes RED")
+
+
+for t in (t_stale, t_dead, t_full, t_loadtime, t_restore, t_mods_restore, t_rules, t_canary, t_verdicts, t_review,
+          t_realdriver_git):
     t()
 shutil.rmtree(TMP, ignore_errors=True)
 print("\n%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
