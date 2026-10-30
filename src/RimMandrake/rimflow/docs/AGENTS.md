@@ -130,7 +130,7 @@ do not give exclusive assignment across clones.
 `release` the moment you stop. The bridge holder record is overridable: a holder silent for 45
 minutes is stale, and `--force` works and is recorded. A separate process-keyed driver lock
 (b821520446) is what actually refuses a second driver process. Check `rimflow bridge who` rather
-than waiting to be told; agents do not message each other.
+than waiting to be told.
 
 ## Do not (RimMandrake workflow policy)
 

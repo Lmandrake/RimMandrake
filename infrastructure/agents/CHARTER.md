@@ -170,9 +170,7 @@ the game down (OS lock).
 **BENCH** (with the owner, permanent bench) and **FOUNDRY** (autonomous, pulls the
 queue) — `BENCH.md` / `FOUNDRY.md`; every model choice, seat and subagent alike:
 `Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
-is evidence, never a finding, and no subagent writes shared state. Windows never
-message each other — the queue and the owner are the only channels; your own
-subagents are not peers. Queue views render on every `rimflow` write — no loop, no
+is evidence, never a finding, and no subagent writes shared state. Queue views render on every `rimflow` write — no loop, no
 publisher, no staleness.
 
 **Rebooting a window is prepared, not improvised** (owner, 2026-09-06). At a real

@@ -41,7 +41,7 @@ decision in this conversation)
 - The ledger is the only source of work state; every queue view is derived from it, item prose
   and git history (since 2026-08-20).
 - Per-seat shards merged by git as a line union (2026-09-23 and 2026-10-02).
-- Agents never message each other; worktrees are off (charter, `infrastructure/agents/CHARTER.md`).
+- Worktrees are off (charter, `infrastructure/agents/CHARTER.md`).
 - An event *may* record one of three asserted bases for owner authority (owner's words,
   question-card choice, standing ruling), and separately the agent's own reason, which grants no
   owner authority. Owner quotes are not checked against transcripts (2026-10-11).

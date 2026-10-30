@@ -227,6 +227,6 @@ lockout**: a `take` is refused only while the holder is provably alive — an
 event within the last 45 minutes; after that the lock is stale (event
 silence, not game activity — the game can sit idle for hours while the
 holder is still working) and the next window simply takes it, saying so.
-`--force` always works and is recorded. Nobody announces a release across
-windows — that channel is off — so if you want the bridge, check `bridge
+`--force` always works and is recorded. Nothing announces a release,
+so if you want the bridge, check `bridge
 who` again rather than waiting to be told.

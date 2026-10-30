@@ -729,7 +729,7 @@ does.
 | S18 | **`./game` from a seat stamps the ledger only** and never broadcasts to windows | owner 2026-09-29 | code (`broadcast.py`) |
 | S19 | **Prefer state reads to screenshots**; screenshot your own graphics before asking him to look; review visuals in game, not browser sheets | owner 2026-10-05 | convention |
 | S20 | **A subagent waiting on a cold load must block in a foreground loop**, never end its turn to wait for a notification. A background agent dies after 600 s of silence | skill §0b; CLAUDE.md | convention (brief text) |
-| S21 | **Never message the other window about the bridge**; read `BRIDGE` / `bridge who` | CLAUDE.md | `block_peer_messages.py` hook |
+| S21 | **Read `BRIDGE` / `bridge who`** to see whether the bridge is free | CLAUDE.md | convention |
 | S22 | **Never assume the bridge is unavailable**; check `bridge who` before briefing "no bridge" | owner 2026-09-26 | convention |
 
 ---

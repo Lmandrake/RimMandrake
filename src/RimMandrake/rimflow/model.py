@@ -1214,7 +1214,7 @@ def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
     """Mirror the bridge lock into one glanceable line at infrastructure/state/BRIDGE.
 
     🔑 A MIRROR, NOT A SECOND TRUTH. The ledger stays the only record; this file exists
-    because the two windows cannot message each other and should not have to replay a
+    because the two windows should not have to replay a
     ledger to answer "is the bridge free yet". `rimflow bridge who` re-derives it, so a
     stale mirror is always one command from being corrected rather than something to
     believe. Written here rather than in cli.py because every write in this system goes
@@ -2160,8 +2160,7 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.owner = ev["to"]
         # 🔴 A `doing` item handed to another seat was INVISIBLE to them.
         # `priority.rank()` only offers `ready`, so `rimflow next` never showed it,
-        # and agents do not message each other — so nobody could tell the receiving
-        # seat the id, and nothing would. Owner, 2026-08-21, shown the bug:
+        # so nothing told the receiving seat the id. Owner, 2026-08-21, shown the bug:
         # *"Capture that reassign bug and pass it to BUILD to fix! That's horrible!"*
         #
         # 🔑 Only `doing` moves, and that is deliberate. `proposed` and `ready` are

@@ -17,7 +17,6 @@ about the cycle, this file wins; fix the window file in the same commit.
    mutual lockout. A stale (45-minute-idle) hold is simply taken, saying so;
    `take --force` always works and is recorded; `infrastructure/state/BRIDGE` is
    the one-glance mirror; `./bridge bench|foundry|free` is the owner's override.
-   Do not message the other window about it — that channel is off.
 
 ## The states
 

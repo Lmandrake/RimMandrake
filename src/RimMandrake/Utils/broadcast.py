@@ -29,13 +29,6 @@ state the moment it looks. Window messaging happens only when the OWNER runs thi
 himself. (This narrows the 2026-08-22 "IDENTICAL to !./game" ruling: the command an
 agent runs is unchanged; the cross-window announcement half no longer fires from a
 seat.)
-Owner's ruling, 2026-08-19: agents do not message each other, at all. `SendMessage`
-and `ListAgents` are DENIED to them in `.claude/settings.json`, so an agent has no
-way to reach a peer through the supported channel. This script deliberately goes
-around that — it writes the peer socket directly, which permission rules do not
-gate — and that is exactly why **only the owner may run it.** An agent that runs
-this to talk to another agent is breaking the ruling by the back door.
-
 WHAT IT IS FOR, and nothing else: announcing a change of GAME STATE that every
 seat must know at the same moment — *game is up* · *game is loading* · *WRAP is
 initiated*. Not findings, not specs, not handoffs. Those are queue items.
@@ -122,12 +115,6 @@ there — but it cannot grant delivery. Nothing about it was changed for this fi
     the sender's permission-mode class
   * the `selfSent` route — `pFl()` grants it for a presented CHILD token, and
     `~/.claude/sessions/<pid>.<sha>.key` publishes only `peerToken`/`procStart`
-
-✅ AND THE SAFETY PROPERTY SURVIVES THE FIX, which is why the fix is worth making.
-Auto-delivery does NOT open agent-to-agent messaging: agents are blocked at the
-SENDING end by `.claude/hooks/block_peer_messages.py`, and an agent running THIS
-script is already the violation. Nothing about inbound needs to distinguish the
-owner, because nothing else can legitimately reach the socket.
 
 🔑 By DEFAULT this only reaches windows whose cwd is this repo, so the owner's
 other projects never get fleet traffic. `--all` overrides that.

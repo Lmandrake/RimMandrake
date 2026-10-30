@@ -21,7 +21,7 @@ I want your honest, adversarial judgment, not reassurance. Please disagree with 
 ### The project and its real flow
 - RimMandrake: a RimWorld mod project. One git repo, ~28,500 tracked files, 3.2 GiB packed, ~180-270 commits/day, pushed to GitHub over SSH.
 - Machine: Windows desktop; all agents run in WSL2 (Ubuntu). The canonical checkout lives on the Windows drive (`D:\` = `/mnt/d`, drvfs/9p): `git status` takes ~2 s normally, 52 s measured under load. WSL ext4 home has 870 GB free and is fast. `/tmp` is an 18 GB tmpfs. 14 cores, 35 GB RAM.
-- Agents: two long-lived Claude Code windows ("seats"): BENCH (orchestrator, sits with the owner) and FOUNDRY (pulls a work queue autonomously, owns `src/`, builds, deploys into the one live RimWorld game). Plus subagents spawned freely by both: often 4+ concurrent writers. Seats never message each other; coordination goes through an append-only event ledger in git (`infrastructure/state/ledger/events/<SEAT>.jsonl`, sharded per seat) plus append-only markdown inboxes such as `LESSONS_INBOX.md`.
+- Agents: two long-lived Claude Code windows ("seats"): BENCH (orchestrator, sits with the owner) and FOUNDRY (pulls a work queue autonomously, owns `src/`, builds, deploys into the one live RimWorld game). Plus subagents spawned freely by both: often 4+ concurrent writers. Coordination goes through an append-only event ledger in git (`infrastructure/state/ledger/events/<SEAT>.jsonl`, sharded per seat) plus append-only markdown inboxes such as `LESSONS_INBOX.md`.
 - One shared physical game: a lock (`rimflow bridge take/release`) guards the live game and its mod config. Build output is deployed while the game is down.
 - No `.gitattributes` exists, so there is no union merge driver on the append-only files.
 
@@ -76,7 +76,7 @@ The established practices support this architecture:
 | Stacked diffs | Express dependencies between tasks. They help when B requires unpublished A; they do not isolate concurrent filesystem writers. [Graphite documentation](https://graphite.com/docs/restack-branches) |
 | GitButler virtual branches | Separate changes within a shared checkout, but retain shared filesystem, generated files, dependencies, and runtime state. Its agent documentation recommends worktrees where those need isolation. [GitButler parallel agents](https://docs.gitbutler.com/ai-agents/parallel-agents) |
 
-You do not need a PR for every microcommit. Queue completed tasks or sensible batches. GitHub’s native merge queue has repository eligibility restrictions; a local integrator can implement the same principle. Neither implementation requires the seats to message each other directly.
+You do not need a PR for every microcommit. Queue completed tasks or sensible batches. GitHub’s native merge queue has repository eligibility restrictions; a local integrator can implement the same principle.
 
 **The publisher is salvageable, and changed SHAs are not evidence of an architectural dead end.** Patch application, rebasing, and squash merging routinely change commit identity. Your defect is that publication and acceptance tracking disagree about what constitutes saved work.
 

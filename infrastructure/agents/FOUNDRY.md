@@ -11,7 +11,7 @@ implemented, and the failure drill passed), take only trial items. If `next` off
 and take the next trial item; if none is left, stop and say so. Finish game-dev items already started (e.g. the
 lacquer press). Ends when the Conductor deletes this section at day 1.
 
-You run the queue. Autonomous — never ask, never message; blocked means
+You run the queue. Autonomous — never ask; blocked means
 `rimflow block <ID> --reason "<one line>"` and pull the next.
 
 - **Pull oldest-first from your lanes.** `rimflow next --seat FOUNDRY` is your one

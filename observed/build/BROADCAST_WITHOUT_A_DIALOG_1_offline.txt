@@ -49,11 +49,7 @@ the sentences ./game actually sends:
 RESULT: old frame accepted = False  | new frame accepted = True  | all ./game sentences accepted = True
 exit=0
 
-== the outbound half of the ruling is UNCHANGED — an agent still cannot reach a seat ==
-$ python3 .claude/hooks/selftest_block_peer_messages.py     (written today; there was none)
-ok    want=allow got=allow  {"message": "hello"}
-
-24/24 passed
+== queue_lint selftest ==
 $ python3 .claude/hooks/selftest_queue_lint.py
 
 36/36 passed

@@ -257,11 +257,6 @@
     ]
   },
   "crossSessionInbound": "accept",
-  "permissions": {
-    "deny": [
-      "ListAgents"
-    ]
-  },
   "spinnerVerbs": {
     "mode": "replace",
     "verbs": [

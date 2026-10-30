@@ -818,8 +818,7 @@ def t_torn_line_is_reported_not_skipped():
 # was shown it live: *"Capture that reassign bug and pass it to BUILD to fix!
 # That's horrible!"* `reassign` set `item.owner` and nothing else, so an item that
 # was `doing` stayed `doing` under its new seat — and `rank()` only offers `ready`.
-# The receiving seat could not find it with `next`, and agents do not message each
-# other, so nobody could hand them the id either.
+# The receiving seat could not find it with `next`, so nothing handed them the id.
 
 def _complete_item(iid):
     os.makedirs(model.ITEMS, exist_ok=True)

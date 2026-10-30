@@ -440,7 +440,7 @@ rimflow bridge release                    the moment you stop. Not at the end of
 A take is refused only while the holder is provably alive — an event within 45
 minutes; after that the lock is stale and the next window simply takes it, saying so.
 `take --force` always works and is recorded. **Nobody is coming to tell you it freed:
-if you want it, look again.** ⚠️ Do not message the other window — that channel is off.
+if you want it, look again.**
 
 ⭐ **The owner overrides both of you with `./bridge bench|foundry|free`**, and his word
 lands in the same file you already read.

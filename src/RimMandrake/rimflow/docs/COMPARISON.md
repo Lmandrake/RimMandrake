@@ -149,13 +149,8 @@ handoffs and git worktrees, on top of Beads, and describes running 20 to 30 agen
 agent teams (research preview, 2026-02) coordinate several Claude sessions. General multi-agent
 frameworks (CrewAI, AutoGen, LangGraph) were not reviewed for this document.
 
-RimMandrake makes **different choices on two axes**:
+RimMandrake makes **a different choice on one axis**:
 
-- **No agent-to-agent messages.** The charter (`infrastructure/agents/CHARTER.md`) says windows
-  never message each other; a hook enforces it. Coordination goes through the ledger and the
-  owner, which concentrates the coordination record in those channels. The cost is latency: one
-  agent cannot ask another a quick question. The failures that motivated the rule, and a
-  comparison with retained, attributed messaging such as Gas Town's mail, are not documented here.
 - **No worktrees.** Worktrees were turned off on 2026-10-02. Agents share one working directory;
   explicit-path commits (`./publish`) and hooks that refuse `git add -A`, `stash` and
   `checkout --` address selected hazards. They do not handle two agents editing the same file, or

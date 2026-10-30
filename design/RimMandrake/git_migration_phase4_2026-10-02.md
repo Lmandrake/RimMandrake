@@ -69,8 +69,7 @@ scratch repo.
   source), nothing writes it. `.gitignore` negates it.
 
 **Consumers repointed:** `statusline.py` (re-renders when any ledger file is newer than the view),
-`whats_new.py` (queue glob dropped from DOCTRINE — no history to diff), `block_peer_messages.py`
-message, CHARTER § Queue + § worktrees, CLAUDE.md (ledger-key trap line), `skills/using-rimflow`
+`whats_new.py` (queue glob dropped from DOCTRINE — no history to diff), CHARTER § Queue + § worktrees, CLAUDE.md (ledger-key trap line), `skills/using-rimflow`
 (commit + reading-projections sections, which also described the old order), `facts/operations.md`,
 and one auto-memory file. `publish.py` / `shared_sync.py` still list the health paths as
 "regenerated, take either side" — harmless now (untracked); left alone because another agent

@@ -76,8 +76,7 @@ that single carve-out.
 **PAIR** (with the owner, permanent bench) and **FACTORY** (autonomous, pulls the
 queue by lane) — see WINDOWS.md. Subagents: spawn freely, always with `model`
 (haiku enumerate · sonnet interpret · opus/fable only when the return is acted on
-unverified). Windows never message each other; the queue and the owner are the only
-channels. Board and queue views render by script, not by seat.
+unverified). Board and queue views render by script, not by seat.
 
 ## Facts you cannot guess
 

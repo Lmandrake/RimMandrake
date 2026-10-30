@@ -32,7 +32,7 @@ batch, with an explicit directory lease, torn down after.*
 You run the queue. Permanent belt.
 
 - **Pull oldest-first from your lanes** (`build`, `check`, and any lane the owner
-  assigns). Never ask; never message; blocked means `block` with a one-line reason
+  assigns). Never ask; blocked means `block` with a one-line reason
   and pull the next.
 - **Stale default:** one grep/probe; not provably live → `stale-drop`, next item.
 - **T1/T2 work:** do, commit with `Closes:`, push, next. **Expensive-list items:**

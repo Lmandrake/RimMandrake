@@ -247,7 +247,7 @@ identity. Every miss raises an alarm, and the manifest responsible loses reuse u
   - No `/login` while Remote Control is in use: it drops every window on the machine.
   - Pinned per-account config dirs are the real fix, but they mean a 3-day migration. This week they are tested in a
     disposable session only (card Q4).
-- **Seats don't message each other.** FOUNDRY's live needs become `testq submit` jobs, and the queue is the only channel.
+- FOUNDRY's live needs become `testq submit` jobs.
 
 ## 8. Owner-away mode, Mon 10-26 to Wed 10-28 15:00 PDT (Work Laptop and iPhone)
 - Only the reserved list (delegation_policy section 2) blocks on him. Everything else follows the charter: act first,

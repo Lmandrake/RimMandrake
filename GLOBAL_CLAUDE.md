@@ -105,38 +105,6 @@ silently obeying it.
   slow mounts or where a single call would time out.
 - `~/.claude/settings.json` also allows `Agent` and `Task` explicitly.
 
-## ⛔ Agents do not message each other. At all. — owner's ruling, 2026-08-19
-
-**This is the counterweight to the section above, and the two must not be confused.**
-
-| | |
-|---|---|
-| ✅ **Subagents you spawn** | authorized and encouraged, per the section above. Spawn them freely, resume them with `SendMessage` to collect findings. Your own worker, your own context, nobody else's tokens |
-| ⛔ **Other agent windows / peer sessions** | **OFF.** Not rationed, not for emergencies — off |
-
-**Waking another session is a USER function.** The owner sends the rare cross-window
-message himself — *game is up*, *game is loading*, *WRAP is initiated* — to each window.
-You do not relay one and you do not send one because you inferred it.
-
-⛔ **No exception for** urgency · a reversed ruling · a peer about to destroy work · a
-spec · a handoff · a finding · a status · a summary · reasoning. **If it is genuinely
-urgent, tell the OWNER in your own reply** — he is reading you, and he is the one with
-the authority to interrupt anyone. Everything else is written where they already read.
-
-⚠️ **There is no broadcast.** `SendMessage` names exactly one target; the `@` typeahead
-is an affordance in the **owner's own prompt**, not a fan-out operator, and there is no
-`@all`.
-
-🔑 **Where a project enforces this**, enforce it at the SENDING end, with a `PreToolUse`
-hook on `SendMessage` that refuses a target naming another window. ⛔ **Do NOT reach for
-`permissions.deny: ["SendMessage"]`** — Claude Code's docs are explicit that denying it
-"also removes messaging to subagents, since the same tool serves both", and there is no
-scoped syntax to separate them, so the deny silently breaks every subagent resume as
-well. ⚠️ **And do not set `crossSessionInbound: "refuse"` to get there**: the owner's own
-broadcast reaches windows through that same inbound socket, so `refuse` drops HIS
-game-state announcements too — the one class of message that must get through. Working
-example: `D:\Luke\dev\RimMandrake\.claude\hooks\block_peer_messages.py`.
-
 ## Remote Control (the phone) is a protocol, and it lives in one skill — owner, 2026-09-19
 
 `claude-remote-control` (`D:\Luke\dev\claude-remote-control`, symlinked into

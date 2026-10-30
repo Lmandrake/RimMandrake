@@ -177,8 +177,7 @@ worker keeps its item, and a dead worker's lease stops being renewed and lapses.
 | engine news → BENCH | **new:** a `UserPromptSubmit` hook prints at most 3 lines ("since your last turn: 6 closed, 1 blocked, 2 cards") from `results.jsonl` | on your next turn. It is read, like `bench_mode.py` and `im_back_hook.py`; nothing is sent |
 
 ### 3.2 No message passes between windows
-There is only one window, so there is no peer to message. `block_peer_messages.py` and the 2026-08-19 ruling stay as
-they are. Workers are not windows: nobody types into them and they take no messages. Each reads its brief and exits.
+There is only one window, so there is no peer to message. Workers are not windows: nobody types into them and they take no messages. Each reads its brief and exits.
 
 ### 3.3 One ruling is needed: may a program start AI sessions?
 Today waking a seat is your act. Your card at 12:31 PDT today made one exception (recorded on `STEVE_STEWARD_BUILD_NO_LLM_OWNER`): the steward may start one capped headless session

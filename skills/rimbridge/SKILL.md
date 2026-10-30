@@ -67,10 +67,8 @@ Release it the moment you stop — a borrower who goes quiet has taken the
 bridge indefinitely and blocks whoever needs it next, same hazard as before,
 just enforced by `rimflow` state rather than a chat handshake. If `bridge
 take` refuses because someone else holds it, that is your answer: wait for
-their release, or check with the owner if it looks abandoned. **Do not** use
-cross-session messaging to ask another window for the bridge — that channel
-is off entirely (`no-agent-to-agent-messaging`); `rimflow`'s own take/release
-state is the only handshake that exists now.
+their release, or check with the owner if it looks abandoned. `rimflow`'s own
+take/release state is the handshake.
 
 🔴 **`rimflow bridge`'s 45-minute staleness rule measures EVENT SILENCE, not game
 activity.** Driving the bridge does not by itself refresh the lock — only a `rimflow`
