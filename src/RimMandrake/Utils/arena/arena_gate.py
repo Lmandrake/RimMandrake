@@ -93,6 +93,7 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import arena_eventlog as L  # noqa: E402
 import arena_tasks as A  # noqa: E402
+import arena_safe_git as SG  # noqa: E402
 
 PASS, FAIL, INVALID, UNMEASURED, NA = "PASS", "FAIL", "INVALID", "UNMEASURED", "NA"
 VERDICTS = ("pass", "fail", "invalid")
@@ -212,10 +213,24 @@ def run(argv, cwd, log: Path, timeout=STEP_TIMEOUT, env=None, stdin=None, pass_f
 
 
 def git(repo: Path, *args, check=True) -> str:
-    r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, timeout=120, errors="replace")
+    """git on a clone the builder may have written: replace refs, grafts, drivers, hooks, fsmonitor are off
+    (arena_safe_git); a diff also never runs an external diff or textconv."""
+    if "diff" in args:
+        i = args.index("diff")
+        args = args[:i + 1] + SG.NO_DRIVER + args[i + 1:]
+    r = SG.git_run(repo, *args, capture_output=True, text=True, timeout=120, errors="replace")
     if check and r.returncode != 0:
         raise GateError("git %s: %s" % (" ".join(args), r.stderr.strip()[:200]))
     return r.stdout if r.returncode == 0 else ""
+
+
+def git_clone(src: Path, dest: Path):
+    """--no-checkout clone of `src` (the builder's repo, or a clone of it) with replace objects/grafts off on the
+    source side and no repo-local transport command; the new clone's own config is the fresh default."""
+    r = SG.git_run(None, "clone", "--quiet", "--no-checkout", str(src), str(dest), transport=True,
+                   capture_output=True, text=True, timeout=300)
+    if r.returncode != 0:
+        raise GateError("git clone %s: %s" % (src, r.stderr.strip()[:200]))
 
 
 def is_bookkeeping(path: str) -> bool:
@@ -534,8 +549,7 @@ class Gate:
         (self.hdir / "gate_collect.py").write_text(COLLECT_SRC, encoding="utf-8")
         (self.hdir / "noinit").write_bytes(b"")     # bound over /init in the sandbox: no WSL interop interpreter
         for dest in (self.clone, self.base_clone):
-            subprocess.run(["git", "clone", "--quiet", "--no-checkout", str(self.repo), str(dest)],
-                           capture_output=True, text=True, timeout=300, check=True)
+            git_clone(self.repo, dest)
         git(self.clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.head)
         got = git(self.clone, "rev-parse", "HEAD").strip()
         if not got.startswith(self.head.lower()) and not self.head.lower().startswith(got[:len(self.head)]):
@@ -1054,8 +1068,7 @@ class Gate:
         build = self.work / "build"
         if build.exists():
             shutil.rmtree(build)
-        subprocess.run(["git", "clone", "--quiet", "--no-checkout", str(self.clone), str(build)],
-                       capture_output=True, text=True, timeout=300, check=True)
+        git_clone(self.clone, build)
         git(build, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.head_full)
         btp = build / TOOLS["csharp"]
         before = self.fingerprint()
@@ -1085,9 +1098,8 @@ class Gate:
         dir (bytes): equal before and after a step = the step changed none of them."""
         out = {}
         for name, root in (("head", self.clone), ("base", self.base_clone)):
-            st = subprocess.run(["git", "-C", str(root), "status", "--porcelain=v1", "-uall", "--ignored", "-z"],
-                                capture_output=True, timeout=300)
-            hd = subprocess.run(["git", "-C", str(root), "rev-parse", "HEAD"], capture_output=True, timeout=60)
+            st = SG.git_run(root, "status", "--porcelain=v1", "-uall", "--ignored", "-z", capture_output=True, timeout=300)
+            hd = SG.git_run(root, "rev-parse", "HEAD", capture_output=True, timeout=60)
             out[name] = hashlib.sha256(hd.stdout + b"\0" + st.stdout + bytes([st.returncode & 255])).hexdigest()
         h = hashlib.sha256()
         for f in sorted(self.hdir.rglob("*")):

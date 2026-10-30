@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -39,6 +40,7 @@ import arena_tasks as A  # noqa: E402
 import ralph_a_loop as RA  # noqa: E402
 import ralph_c_loop as C  # noqa: E402
 import ralph_c_runner as RC  # noqa: E402
+import arena_safe_git_traps as T  # noqa: E402
 
 FAILS = []
 SRC = (HERE / "ralph_c_loop.py").read_text()
@@ -644,6 +646,59 @@ def t_envfiles(tmp):
     check(r.returncode == 2 and "MODEL_CMD" in r.stdout, "ralph_a without a model command exits 2 naming it")
 
 
+def _plain_git_run(root, *a, transport=False, **kw):
+    """The reverted fix: bare git, no safe env or config."""
+    return subprocess.run(["git", "-C", str(root)] + list(a), **kw)
+
+
+def t_runner_git_trust(tmp):
+    """ARENA_EXPORT_FIX_BUILDER_GIT_TRUST: RunnerDriver.checkout fetches/checks out/cleans a clone whose .git the build
+    helper wrote. Every trap is planted in a throwaway clone: bare git is fooled or runs its code, the driver is not;
+    with arena_safe_git swapped for bare git (fix reverted) the same run is fooled again."""
+    def clone_with(tag, traps, origin_url=None):
+        origin, a, b = T.make_repo(tmp / ("rg_origin_" + tag), "origin")
+        k = tmp / ("rg_clone_" + tag) / "tclone"
+        k.parent.mkdir()
+        subprocess.run(["git", "clone", "-q", str(origin), str(k)], check=True, env=T.ENV, capture_output=True)
+        mk = T.plant(k, b, b, traps) if "replace" not in traps else T.plant(k, a, b, traps)
+        for f in Path(mk).iterdir():
+            f.unlink()
+        if origin_url:
+            T.git(k, "remote", "set-url", "origin", origin_url)
+        return k, a, b, mk
+    base = ("replace", "graft", "fsmonitor", "hooksPath", "filter", "textconv", "external")
+
+    def run(tag, traps, sha_of, origin_url=None):
+        k, a, b, mk = clone_with(tag, traps, origin_url)
+        ok, out = RC.RunnerDriver().checkout(str(k), sha_of(a, b))
+        head = T.git(k, "-c", "core.fsmonitor=false", "rev-parse", "HEAD", check=False, env=dict(T.ENV, GIT_NO_REPLACE_OBJECTS="1"))
+        text = (k / "f.txt").read_text().strip() if (k / "f.txt").exists() else None
+        return ok, out, head, text, T.fired(mk), (a, b)
+    ok, out, head, text, fired, (a, b) = run("safe", base, lambda a, b: b)
+    check(ok and head == b and text == "beta" and not fired,
+          "checkout of a clone with replace/graft/fsmonitor/hooksPath/filter/textconv/diff.external planted: true sha, true "
+          "content, none of the builder's code ran (%s %s %s %s)" % (ok, text, fired, out[:80]))
+    real = RC.SG.git_run
+    RC.SG.git_run = _plain_git_run
+    try:
+        ok, out, head, text, fired, (a, b) = run("plain", base, lambda a, b: b)
+    finally:
+        RC.SG.git_run = real
+    check(text != "beta" or bool(fired),
+          "RED: with the fix reverted (bare git) the same checkout is fooled (content %r) or runs builder code (%s)" % (text, fired))
+    # fetch: core.sshCommand and remote.origin.uploadpack are the builder's commands too
+    for trap, url in (("sshCommand", "ssh://nohost.invalid/x"), ("uploadpack", None)):
+        ok, out, head, text, fired, _ = run("s_" + trap, (trap,), lambda a, b: b, url)
+        check(trap not in fired, "fetch with %s planted in the clone: its command did not run (%s, ok=%s)" % (trap, fired, ok))
+        k, a, b, mk = clone_with("p_" + trap, (trap,), url)      # the fix reverted: a bare `git fetch origin`
+        subprocess.run(["git", "-C", str(k), "fetch", "-q", "origin"], capture_output=True, timeout=60, env=T.ENV)
+        check(trap in T.fired(mk), "RED: a bare git fetch (fix reverted) runs the builder's %s as the harness (%s)" % (trap, T.fired(mk)))
+    # a non-empty .git/info/attributes changes what a checkout writes (eol/ident/filter): refused
+    ok, out, head, text, fired, _ = run("attr", ("attributes",), lambda a, b: b)
+    check(not ok and "info/attributes" in out, "a clone with a non-empty .git/info/attributes is refused (%s)" % out[:80])
+    check(not re.search(r"[\"']archive[\"']", (HERE / "ralph_c_runner.py").read_text()), "the runner never calls git archive")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_c_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
@@ -665,7 +720,7 @@ def main():
             check(guarded(fn, tmp, variant(old, new), "_m%d" % i) is False,
                   "mutation goes RED (a False verdict, not a crash): " + name)
         for fn, a in ((t_areas, ()), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)), (t_cmdmodel_tester_sandbox, (tmp,)),
-                      (t_signed_writer, (tmp,)), (t_wired, (tmp,)), (t_envfiles, (tmp,))):
+                      (t_signed_writer, (tmp,)), (t_wired, (tmp,)), (t_envfiles, (tmp,)), (t_runner_git_trust, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

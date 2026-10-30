@@ -376,14 +376,14 @@ class LoopC(RA.Loop):
                 "scope": {"status": "FAIL", "why": "ralph_c area guard: " + self._guard_why}}}
         return rec
 
-    def _failed(self, task, base, head, why, n):
+    def _failed(self, task, base, head, why, n, **kw):
         """The area guard's reasons ride in the failure note the next build pass reads (the gate's own `why` names
         only the failed step)."""
         g, self._guard_why = getattr(self, "_guard_why", None), None
         if g:
             why = "%s\nralph_c area guard refused: %s\n(remove these paths from the candidate; it is diffed against "\
                   "main, so an unpublished try's files stay in it until deleted)" % (why, g)
-        return super()._failed(task, base, head, why, n)
+        return super()._failed(task, base, head, why, n, **kw)
 
     # ---- R5 then ralph_a's build pass
     def build_pass(self, task):

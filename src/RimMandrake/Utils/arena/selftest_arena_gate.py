@@ -43,6 +43,8 @@ sys.path.insert(0, str(HERE.parent))
 import arena_eventlog as L  # noqa: E402
 import arena_gate as G  # noqa: E402
 import arena_tasks as A  # noqa: E402
+import arena_safe_git as SG  # noqa: E402
+import arena_safe_git_traps as T  # noqa: E402
 
 FAILS = []
 TD = "TO" + "DO"
@@ -975,6 +977,79 @@ def t_round3_live(tmp):
     check(s == "INVALID", "a real lane canary with problems: live INVALID (%s)" % s)
 
 
+def _plain_git_run(root, *a, transport=False, **kw):
+    """The reverted fix: bare git, no safe env or config (what arena_gate did before arena_safe_git)."""
+    return subprocess.run((["git", "-C", str(root)] if root is not None else ["git"]) + list(a), **kw)
+
+
+def t_round4_git_trust(tmp):
+    """ARENA_EXPORT_FIX_BUILDER_GIT_TRUST: the gate's git runs against a .git the builder wrote. Each trap is planted in a
+    throwaway builder clone; plain git is fooled (or runs the builder's code), G.git / the gate checkout is not. The
+    same run with arena_safe_git swapped for bare git (the fix reverted) is fooled again: the test is red."""
+    def probe(trap, g):
+        """-> (result, fooled) for one trap; g(repo, *args) is the git under test."""
+        repo, a, b = T.make_repo(tmp / ("gt_" + trap + str(id(g))))
+        mk = T.plant(repo, a, b, (trap,))
+        for f in Path(mk).iterdir():
+            f.unlink()                        # the plant itself may fire a driver: only what the probe causes counts
+        if trap == "replace":
+            out = g(repo, "show", b + ":f.txt"); return out, out.strip() != "beta"
+        if trap == "graft":
+            out = g(repo, "rev-list", "--count", b); return out, out.strip() != "2"
+        if trap == "attributes":
+            r = subprocess.run("git -C %s archive %s | tar -t" % (repo, a), shell=True, capture_output=True, text=True, env=T.ENV)
+            return r.stdout, "g.txt" not in r.stdout     # export-ignore: only `git archive` is fooled
+        if trap in ("textconv", "external"):
+            out = g(repo, "diff", "--no-renames", "-U0", a, b, "--", "f.txt")
+            return out, ("-alpha" not in out or "+beta" not in out)
+        if trap == "hooksPath":
+            g(repo, "checkout", "-q", "--detach", a)
+        elif trap == "fsmonitor":
+            g(repo, "status")
+        elif trap == "filter":
+            (repo / "f.txt").write_text("changed\n"); g(repo, "add", "f.txt")
+        return "", bool(T.fired(mk))
+    plain = lambda repo, *a: T.plain(repo, *a)
+    for trap in ("replace", "graft", "attributes", "textconv", "external", "hooksPath", "fsmonitor", "filter"):
+        out, fooled = probe(trap, plain)
+        check(fooled, "trap %s: plain git on the builder's .git is fooled (%r)" % (trap, out.strip()[:40]))
+        if trap == "attributes":
+            continue                       # the gate never calls `git archive`: pinned by the source check below
+        out, fooled = probe(trap, lambda repo, *a: G.git(repo, *a))
+        check(not fooled, "trap %s: G.git on the builder's .git is not fooled (%r)" % (trap, out.strip()[:40]))
+    src = " ".join((HERE / n).read_text() for n in ("arena_gate.py", "ralph_c_runner.py", "arena_safe_git.py"))
+    check(not re.search(r"[\"']archive[\"']", src), "no `git archive` anywhere in the gate/runner/safe-git: export-ignore/subst cannot change a tree")
+
+    def e2e(tag):                          # the gate pointed at a builder repo with every trap planted
+        c = Ctx(tmp, "gt_e2e_" + tag)
+        repo, a, b = T.make_repo(tmp / ("gt_e2e_repo_" + tag))
+        mk = T.plant(repo, a, b)
+        for f in Path(mk).iterdir():
+            f.unlink()
+        g = G.Gate(c.task, a, b, "armx", repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+        try:
+            g.checkout()
+            seen = (g.paths(), (g.clone / "f.txt").read_text().strip(), (g.clone / "g.txt").exists())
+            g.fingerprint()
+        except Exception as e:           # a fooled checkout may simply fail: that also is not the clean result
+            seen = ("error", str(e)[:80], None)
+        return seen, T.fired(mk)
+    seen, fired = e2e("safe")
+    check(seen == (["f.txt"], "beta", True) and not fired,
+          "gate checkout/diff/fingerprint on a fully trapped builder repo: the true diff (f.txt), true content, no builder code ran (%s %s)" % (seen, fired))
+    # RED: the same G.git probes with the fix reverted (arena_safe_git replaced by bare git) are fooled again. (The
+    # end-to-end run above is not fooled by plain git either: `git clone` copies no replace ref, graft, config or
+    # attributes of the builder, so the gate's own clones were already insulated; the exposure was G.git and the clone
+    # source, now hardened as well.)
+    real, real_nd = G.SG.git_run, G.SG.NO_DRIVER
+    G.SG.git_run, G.SG.NO_DRIVER = _plain_git_run, ()
+    try:
+        for trap in ("replace", "graft", "textconv", "external", "hooksPath", "fsmonitor", "filter"):
+            out, fooled = probe(trap, lambda repo, *a: G.git(repo, *a, check=False))
+            check(fooled, "RED trap %s: with the fix reverted G.git is fooled again (%r)" % (trap, out.strip()[:40]))
+    finally:
+        G.SG.git_run, G.SG.NO_DRIVER = real, real_nd
+
 def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}
     os.environ["ARENA_GATE_TEST"] = "1"
@@ -983,7 +1058,7 @@ def main():
         for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
                   t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
                   t_signfail, t_records, t_phrase_deletes, t_static, t_real, t_round3_exit, t_round3_cover,
-                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live):
+                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust):
             t(tmp)
     finally:
         for k, v in saved.items():

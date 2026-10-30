@@ -43,6 +43,7 @@ import fcntl
 import json
 import os
 import re
+import subprocess
 import sys
 import time
 import uuid
@@ -51,6 +52,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import arena_lane as L  # noqa: E402
+import arena_safe_git as SG  # noqa: E402
 
 ARM = "ralph_c"
 MAX_FAIL_ROUNDS = 3
@@ -362,6 +364,16 @@ def _run_claimed(p, lane, driver, clone, c, run_id, runner_id):
     return res
 
 
+def _safe(clone, args, timeout, transport=False):
+    """-> (returncode, stdout+stderr) like L._sh, through arena_safe_git."""
+    try:
+        p = SG.git_run(clone, *args, transport=transport, capture_output=True, text=True, timeout=timeout,
+                       encoding="utf-8", errors="replace")
+        return p.returncode, (p.stdout or "") + (p.stderr or "")
+    except (OSError, subprocess.SubprocessError) as e:
+        return 99, "%s: %s" % (type(e).__name__, e)
+
+
 class RunnerDriver(L.RealDriver):
     """RealDriver plus the two runner-only acts. UNPROVEN LIVE (owed)."""
 
@@ -370,13 +382,18 @@ class RunnerDriver(L.RealDriver):
         ignored build output stays). Refused on a seat's own clone: the runner tests in a clone of its own."""
         if Path(clone).resolve() == L.REPO.resolve() or Path(clone).name in ("bench", "foundry"):
             return False, "clone %s is a seat clone; ralph_c tests only in its own clone" % clone
-        rc, out = L._sh(["git", "-C", clone, "fetch", "-q", "origin"], timeout=300)
+        # the clone's .git is written by the build helper that works in it: every git call here ignores replace refs and
+        # grafts and runs none of its hooks / filters / fsmonitor / ssh command (arena_safe_git)
+        attr = Path(clone) / ".git" / "info" / "attributes"
+        if attr.exists() and attr.stat().st_size:
+            return False, "refused: %s is non-empty (it changes what a checkout writes)" % attr
+        rc, out = _safe(clone, ["fetch", "-q", "--upload-pack=git-upload-pack", "origin"], 300, transport=True)  # option beats a repo-local remote.origin.uploadpack
         if rc != 0:
             return False, out
-        rc, out2 = L._sh(["git", "-C", clone, "checkout", "-q", "--detach", sha], timeout=120)
+        rc, out2 = _safe(clone, ["checkout", "-q", "--detach", sha], 120)
         if rc != 0:
             return False, out + out2
-        rc, out3 = L._sh(["git", "-C", clone, "clean", "-fdq"], timeout=120)
+        rc, out3 = _safe(clone, ["clean", "-fdq"], 120)
         return rc == 0, out + out2 + out3
 
     def run_proof(self, argv, clone):
