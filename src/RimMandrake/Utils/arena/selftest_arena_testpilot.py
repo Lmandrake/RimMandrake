@@ -196,19 +196,72 @@ def actions(steps):
     return [(s["decision"]["action"], s["decision"].get("rule"), s["decision"].get("scenario")) for s in steps]
 
 
-def every_reload_has_a_rule(root, p, label):
-    """The invariant behind 'no reload logged without a rule', checked on every run's own log."""
-    rel = ev(root, "reload")
+def _why_decision(why):
+    return why.split()[0].split("=", 1)[1] if (why or "").startswith("decision=") else None
+
+
+DECISION_LOGGED_AT_RELOAD = {}          # decision id -> was it in the decisions log when the lane reloaded?
+_lane_reload = L.Lane.reload
+
+
+def _spy_lane_reload(self, *a, **k):
+    did = _why_decision(k.get("why"))
+    DECISION_LOGGED_AT_RELOAD[did] = any(x.get("id") == did for x in T._read(T.ppaths(self.p["root"])["decisions"]))
+    return _lane_reload(self, *a, **k)
+
+
+L.Lane.reload = _spy_lane_reload
+
+
+def reload_rule_problems(root, p):
+    """The reload events of a run that break 'a rule and a decision logged before them'."""
     ids = {d["id"]: d for d in decisions(p, "reload")}
     bad = []
-    for e in rel:
-        why = (e.get("detail") or {}).get("why") or ""
-        did = why.split()[0].split("=", 1)[1] if why.startswith("decision=") else None
-        if e.get("rule") not in L.RELOAD_RULES or did not in ids or ids[did]["rule"] != e["rule"]:
+    for e in ev(root, "reload"):
+        did = _why_decision((e.get("detail") or {}).get("why"))
+        if e.get("rule") not in L.RELOAD_RULES or did not in ids or ids[did]["rule"] != e["rule"] or \
+                not DECISION_LOGGED_AT_RELOAD.get(did):
             bad.append(e)
+    return bad
+
+
+def every_reload_has_a_rule(root, p, label):
+    """The invariant behind 'no reload logged without a rule', checked on every run's own log."""
+    rel, bad = ev(root, "reload"), reload_rule_problems(root, p)
     check(rel and not bad, "%s: all %d reload events name a rule and the decision logged before them" %
           (label, len(rel)))
     return bad
+
+
+def t_reload_oracle_order():
+    """TESTPILOT_RELOAD_ORDER_VERIFY_BEFORE: the oracle sees a decision logged AFTER its reload (timestamps tie at
+    one second, so the order is taken at the moment of the reload, not from the two logs)."""
+    root, p = fresh("order_clean")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_O", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    check(ev(root, "reload") and not reload_rule_problems(root, p), "a normal reload satisfies the oracle")
+    root, p = fresh("order_mutant")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_O", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    held, real = [], pl._decision
+
+    def late(rec):                      # the regression: the decision reaches the log only after the act
+        rec = dict(rec, id="d-late", pilot=pl.id, ts=L._now_iso(), t=d.clock())
+        held.append(rec)
+        return rec
+    pl._decision = late
+    pl.step()
+    pl._decision = real
+    for rec in held:
+        T._append(p["decisions"], rec)
+    check(ev(root, "reload") and any(d_["id"] == "d-late" for d_ in decisions(p, "reload")),
+          "the mutant left a matching decision in the log, later")
+    check(len(reload_rule_problems(root, p)) == 1, "the oracle catches the decision logged after its reload")
 
 
 # ---------------------------------------------------------------- 1. no reload without a rule
@@ -2416,8 +2469,8 @@ def t_check_live_plan():
         check(bool(e) and why in e, "check_live_plan refuses (%s): %s" % (why, (e or "NOT REFUSED")[:100]))
 
 def main():
-    for t in (t_check_live_plan, t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
-              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_enqueue_vets_plan, t_ladder, t_review1, t_review2, t_review2b,
+    for t in (t_check_live_plan, t_reload_oracle_order, t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
+              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_enqueue_vets_plan, t_absolute_proof_path, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,
               t_resolve_after_crashed_pass, t_enqueue_single_record, t_wake_interrupt_crash, t_reload_crash,

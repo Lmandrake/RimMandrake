@@ -149,6 +149,7 @@ class Relay:
                 return
             host, _, port = target.rpartition(":")
             up = socket.create_connection((host, int(port)), CONNECT_TIMEOUT)
+            up.settimeout(None)      # CONNECT_TIMEOUT bounds the connect: a model silent for 30 s is not a dead link
             c.settimeout(None)
             c.sendall(b"HTTP/1.1 200 Connection Established\r\n\r\n")
             t = threading.Thread(target=_pipe, args=(up, c), daemon=True)

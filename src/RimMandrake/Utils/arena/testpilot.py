@@ -463,8 +463,13 @@ def _argv_files(scn: dict) -> set:
 
 def _names_file(changed: str, argf: str) -> bool:
     """A changed repo path is the argv file: equal, or the argv token is a relative tail of it (bare name or
-    cwd-relative path; the proof's cwd is unknown, so a tail match errs toward re-running)."""
-    return changed == argf or changed.endswith("/" + argf)
+    cwd-relative path; the proof's cwd is unknown, so a tail match errs toward re-running). A token that cannot be a
+    tail (absolute, or climbing with ..) is tied by its file name, which errs the same way."""
+    if changed == argf or changed.endswith("/" + argf):
+        return True
+    if argf.startswith("/") or argf[1:3] == ":/" or ".." in argf.split("/"):
+        return argf.rsplit("/", 1)[-1] == changed.rsplit("/", 1)[-1]
+    return False
 
 
 def touched(scn: dict, parent_scn: dict | None, cand: dict, parent: dict, taint_named) -> str | None:

@@ -91,21 +91,21 @@ def build_repos(tmp):
     s = {}
     s["good"] = commit(repo, {TOOL: "def f():\n    return 2\n",
                               TEST: "from tool import f\nassert f() == 2  # pinned by the good fix, a long line\n"},
-                       "fix good", "2026-10-14T10:03:00+00:00")
+                       "change good", "2026-10-14T10:03:00+00:00")
     s["esc"] = commit(repo, {TOOL: "def f():\n    return 3\n",
                              NEWT: "from tool import f\nassert f() == 3  # added by the escaped fix, hidden body\n"},
-                      "fix esc", "2026-10-16T10:03:00+00:00")
+                      "change esc FIXTURE_ESC_FIX_TWO", "2026-10-16T10:03:00+00:00")
     # the rework changes the parent's file (tool.py): only such a fix makes its parent Escaped (pool ruling)
     s["rework"] = commit(repo, {TOOL: "def f():\n    return 3  # reworked\n",
                                 RWT: "from tool import f\nassert f() != 0  # the rework's own pin, hidden too\n"},
-                         "fix rework", "2026-10-18T10:03:00+00:00")
+                         "change rework", "2026-10-18T10:03:00+00:00")
     s["nostart"] = commit(repo, {TOOL: "def f():\n    return 4\n",
                                  TEST: "assert True  # nostart change to the test, long enough to count\n"},
-                          "fix nostart", "2026-10-19T10:03:00+00:00")
+                          "change nostart", "2026-10-19T10:03:00+00:00")
     # the "rewritten" pair: same author date + author + subject in both repos, different trees -> different shas
     s["remap_new"] = commit(repo, {TOOL: "def f():\n    return 5\n",
                                    TEST: "assert True  # remapped fix, rewritten side, long enough\n"},
-                            "fix remap", "2026-10-20T10:03:00+00:00")
+                            "change remap", "2026-10-20T10:03:00+00:00")
     # the old side's parent holds the same tool/test as the new side's (a rewrite keeps every non-excised file), so
     # the remap's own change is the same and its patch-id check (ARENA_RESOLVER_VERIFY_REMAP_BY_PATCH_ID) passes
     commit(old, {TOOL: "def f():\n    return 4\n",
@@ -113,12 +113,13 @@ def build_repos(tmp):
            "old side catch-up", "2026-10-19T11:03:00+00:00")
     s["remap_old"] = commit(old, {TOOL: "def f():\n    return 5\n", "work/excised.bin": "x" * 50,
                                   TEST: "assert True  # remapped fix, rewritten side, long enough\n"},
-                            "fix remap", "2026-10-20T10:03:00+00:00")
+                            "change remap", "2026-10-20T10:03:00+00:00")
     s["excised_old"] = commit(old, {"work/excised.bin": "y" * 50}, "excised only", "2026-10-21T10:03:00+00:00")
     return repo, old, s
 
 
-def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_bug=False, late_close=False):
+def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_bug=False, late_close=False,
+           wrong_sha=False):
     E, n = [], [0]
 
     def ev(**k):
@@ -129,8 +130,8 @@ def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_
         k["tsn"] = str(n[0])
         E.append(k)
 
-    def item(iid, day, sha, start=True, verify=True, kind="task"):
-        ev(event="file", id=iid, title="title of " + iid, kind=kind, needs="offline", ts=day + "T10:00:00Z")
+    def item(iid, day, sha, start=True, verify=True, kind="task", title=None):
+        ev(event="file", id=iid, title=title or "change of " + iid, kind=kind, needs="offline", ts=day + "T10:00:00Z")
         if start:
             ev(event="claim", id=iid, ts=day + "T10:01:00Z")
             ev(event="start", id=iid, ts=day + "T10:01:30Z")
@@ -141,7 +142,7 @@ def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_
 
     item("FIXTURE_GOOD_FIX_ONE", "2026-10-14", s["good"])
     item("FIXTURE_ESC_FIX_TWO", "2026-10-16", s["esc"], verify=False)
-    ev(event="file", id="FIXTURE_ESC_REWORK_THREE", title="rework of esc", kind="bug", needs="offline",
+    ev(event="file", id="FIXTURE_ESC_REWORK_THREE", title="change of esc", kind="bug", needs="offline",
        caused_by="FIXTURE_ESC_FIX_TWO", ts="2026-10-18T10:00:00Z")
     if rework_in_pool:                    # the rework is itself a started, verified item: a pool candidate
         ev(event="claim", id="FIXTURE_ESC_REWORK_THREE", ts="2026-10-18T10:01:00Z")
@@ -153,6 +154,8 @@ def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_
     item("FIXTURE_REMAP_FIX_FIVE", "2026-10-20", s["remap_old"])
     item("FIXTURE_EXCISED_FIX_SIX", "2026-10-21", s["excised_old"])
     item("FIXTURE_LATE_FIX_SEVEN", "2026-10-28", s["good"])            # out of window: not scanned
+    if wrong_sha:                                                       # "change good" says nothing about this item
+        item("FIXTURE_PUMP_FIX_NINE", "2026-10-15", s["good"], title="pumping stations")
     if children:        # caused_by children of the good fix that are NOT closed code fixes: no escape
         ev(event="file", id="FIXTURE_GOOD_DESIGN_KID", title="design a follow-up", kind="design", needs="offline",
            caused_by="FIXTURE_GOOD_FIX_ONE", ts="2026-10-15T10:00:00Z")
@@ -168,6 +171,46 @@ def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_
 
 
 # ---------------------------------------------------------------- tests
+
+def t_wrong_commit(tmp, repo, s):
+    """ARENA_CENSUS_FIXSHA_WRONG_COMMIT: FINDMOD's close named an unrelated JawaBench commit; TANK_SETTLE stayed Clean
+    though 1d77c17651 repaired its file days later, unfiled."""
+    pool, rep = A.census(ledger(s, wrong_sha=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", vet=stub_vet)
+    check("FIXTURE_PUMP_FIX_NINE" not in {t["source_item"] for t, _ in pool}
+          and rep["rejects"].get("close sha unrelated to the item") == 1,
+          "a close on a commit about something else is rejected (%s)" % rep["rejects"])
+    check("FIXTURE_GOOD_FIX_ONE" in {t["source_item"] for t, _ in pool}, "the same commit stays for its own item")
+    check(not A.close_sha_unrelated(repo, s["good"], "OTHER_THING_X", "the good change"),
+          "one shared title word is related")
+    check(not A.close_sha_unrelated(repo, s["esc"], "FIXTURE_ESC_FIX_TWO", "nothing shared"),
+          "the id in the message is related")
+    lab = tmp / "later"
+    lab.mkdir()
+    git(lab, "init", "-q", "-b", "main")
+    commit(lab, {TOOL: "1\n", TEST: "1\n"}, "base", "2026-10-13T09:00:00+00:00")
+    f = commit(lab, {TOOL: "2\n"}, "the fix", "2026-10-14T10:00:00+00:00")
+    commit(lab, {TEST: "2\n"}, "fix the selftest", "2026-10-14T11:00:00+00:00")
+    commit(lab, {"other.py": "2\n"}, "fix another file", "2026-10-14T12:00:00+00:00")
+    commit(lab, {TOOL: "3\n"}, "tool grows a flag", "2026-10-14T13:00:00+00:00")
+    commit(lab, {TOOL: "4\n"}, "RM_Patch gets its attributes back", "2026-10-15T10:00:00+00:00")
+    commit(lab, {TOOL: "5\n"}, "fix tool again", "2026-10-30T10:00:00+00:00")
+    t0 = A._epoch("2026-10-14T10:00:00Z")
+    check([h["subject"] for h in A.later_fixes(lab, f, [TOOL, TEST], t0)] == ["RM_Patch gets its attributes back"],
+          "only a repair of the fix's code, inside the window, is suspect (%s)" % A.later_fixes(lab, f, [TOOL, TEST], t0))
+    check(len(A.later_fixes(lab, f, [TEST], t0)) == 1, "a test-only fix counts its test")
+    good = ledger(s)
+    pool, _ = A.census(good, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", vet=stub_vet)
+    check({t["source_item"]: h["label_suspect"] for t, h in pool}["FIXTURE_GOOD_FIX_ONE"] == [],
+          "no repair-shaped later commit: no suspect")
+    real = A.later_fixes
+    A.later_fixes = lambda *a: [{"sha": "abc", "subject": "fix"}]
+    try:
+        pool, _ = A.census(good, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", vet=stub_vet)
+    finally:
+        A.later_fixes = real
+    h = next(h for t, h in pool if t["source_item"] == "FIXTURE_GOOD_FIX_ONE")
+    check(h["label"] is None and h["label_suspect"], "a suspect Clean is demoted, and says why (%s)" % h["label"])
+
 
 def t_census(tmp, repo, old, s):
     pool, rep = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
@@ -984,12 +1027,12 @@ def t_multi_old(tmp, repo, old, s):
     subprocess.run(["git", "clone", "-q", str(old), str(old2)], check=True, capture_output=True, timeout=60)
     s2 = {"new": commit(repo, {TOOL: "def f():\n    return 8\n",
                                TEST: "assert True  # second-old fix, rewritten side, long enough\n"},
-                        "fix second old", "2026-10-22T10:03:00+00:00"),
+                        "change second old", "2026-10-22T10:03:00+00:00"),
           "old": commit(old2, {TOOL: "def f():\n    return 8\n", "work/only_in_old2.bin": "z" * 50,
                                TEST: "assert True  # second-old fix, rewritten side, long enough\n"},
-                        "fix second old", "2026-10-22T10:03:00+00:00")}
+                        "change second old", "2026-10-22T10:03:00+00:00")}
     E = ledger(s)
-    for k in (dict(event="file", id="FIXTURE_OLD2_FIX_EIGHT", title="t", kind="task", needs="offline",
+    for k in (dict(event="file", id="FIXTURE_OLD2_FIX_EIGHT", title="change second", kind="task", needs="offline",
                    ts="2026-10-22T10:00:00Z", **{"for": "FOUNDRY"}),
               dict(event="close", id="FIXTURE_OLD2_FIX_EIGHT", sha=s2["old"][:10], reason="r",
                    ts="2026-10-22T10:04:00Z")):
@@ -1043,7 +1086,7 @@ def t_review_2026_10_30(tmp):
     s = {"sane": commit(repo, {TOOL: "def f():\n    return 2\n",
                                TEST: "from tool import f\nassert f() == 2  # rv sanity fix pins f, long line\n"},
                         "rv fix sane", "2026-10-14T10:03:00+00:00"),
-         "cs": commit(repo, {CS: "class X { int v = 2; }\n"}, "rv fix cs only", "2026-10-15T10:03:00+00:00"),
+         "cs": commit(repo, {CS: "class X { int v = 2; }\n"}, "rv change cs only", "2026-10-15T10:03:00+00:00"),
          "xml": commit(repo, {DX: "<Defs><ThingDef><defName>RM_X</defName><label>x</label></ThingDef></Defs>\n"},
                        "rv fix xml only", "2026-10-15T11:03:00+00:00"),
          "cs_t": commit(repo, {CS: "class X { int v = 3; }\n",
@@ -1076,7 +1119,7 @@ def t_review_2026_10_30(tmp):
         E.append(k)
 
     def item(iid, day, sha, verify=True, **kw):
-        ev(event="file", id=iid, title="title of " + iid, kind=kw.get("kind", "task"), needs="offline",
+        ev(event="file", id=iid, title="title of %s, a test" % iid, kind=kw.get("kind", "task"), needs="offline",
            ts=day + "T10:00:00Z", **({"caused_by": kw["caused_by"]} if kw.get("caused_by") else {}))
         if verify:
             ev(event="verify", id=iid, result="pass", config="c", evidence="e", sha=sha[:10], ts=day + "T10:03:30Z")
@@ -1154,7 +1197,7 @@ def t_vet_siblings(tmp):
     commit(old, base_files, "vt base", "2026-10-13T09:00:00+00:00")
     disc_files = {TOOL: "def f():\n    return 2\n",
                   TEST: "from tool import f\nassert f() == 2  # vt discriminating fix pins f, long line\n"}
-    s = {"disc": commit(repo, disc_files, "vt fix disc", "2026-10-14T10:03:00+00:00"),
+    s = {"disc": commit(repo, disc_files, "vt change disc", "2026-10-14T10:03:00+00:00"),
          "nondisc": commit(repo, {TOOL: "def f():\n    return 3\n",
                                   TEST: "assert True  # vt comment-only change to the selftest, long line\n"},
                            "vt fix nondisc", "2026-10-15T10:03:00+00:00"),
@@ -1178,11 +1221,11 @@ def t_vet_siblings(tmp):
     # content: one changes f differently, one also changes a path the rewritten commit leaves alone (not excised:
     # it exists in the rewritten trees). A third, with only an excised path extra, is the positive control.
     collide = commit(old, {TOOL: "def f():\n    return 22\n", TEST: disc_files[TEST]},
-                     "vt fix disc", "2026-10-14T10:03:00+00:00")
+                     "vt change disc", "2026-10-14T10:03:00+00:00")
     git(old, "checkout", "-q", "-b", "b2", git(old, "rev-parse", "HEAD^"))
-    extra = commit(old, dict(disc_files, **{OTHER: "X = 2\n"}), "vt fix disc", "2026-10-14T10:03:00+00:00")
+    extra = commit(old, dict(disc_files, **{OTHER: "X = 2\n"}), "vt change disc", "2026-10-14T10:03:00+00:00")
     git(old, "checkout", "-q", "-b", "b3", git(old, "rev-parse", "HEAD^"))
-    excised = commit(old, dict(disc_files, **{"work/excised.bin": "z" * 40}), "vt fix disc",
+    excised = commit(old, dict(disc_files, **{"work/excised.bin": "z" * 40}), "vt change disc",
                      "2026-10-14T10:03:00+00:00")
     R = A.Resolver(repo, [old])
     rc, why = R(collide)
@@ -1202,10 +1245,10 @@ def t_vet_siblings(tmp):
         commit(r, {OTHER: "X = 1\n", **({"work/gone.txt": "excised\n"} if r == bold else {})}, "vt bin base",
                "2026-10-13T09:00:00+00:00")                  # trees differ (an excised file), so shas differ
     BIN = "src/RimMandrake/Utils/blob.dat"
-    bnew = commit(brepo, {BIN: "\0bin\0same" * 8}, "vt bin fix", "2026-10-14T10:03:00+00:00")
-    bsame = commit(bold, {BIN: "\0bin\0same" * 8}, "vt bin fix", "2026-10-14T10:03:00+00:00")
+    bnew = commit(brepo, {BIN: "\0bin\0same" * 8}, "vt bin change", "2026-10-14T10:03:00+00:00")
+    bsame = commit(bold, {BIN: "\0bin\0same" * 8}, "vt bin change", "2026-10-14T10:03:00+00:00")
     git(bold, "checkout", "-q", "-b", "b2", git(bold, "rev-parse", "HEAD^"))
-    bdiff = commit(bold, {BIN: "\0bin\0diff" * 8}, "vt bin fix", "2026-10-14T10:03:00+00:00")
+    bdiff = commit(bold, {BIN: "\0bin\0diff" * 8}, "vt bin change", "2026-10-14T10:03:00+00:00")
     RB = A.Resolver(brepo, [bold])
     check(RB(bsame) == (bnew, "remapped"), "remap: same triple, same binary -> remapped (%s)" % (RB(bsame),))
     rb, whyb = RB(bdiff)
@@ -1444,6 +1487,7 @@ def main():
     try:
         repo, old, s = build_repos(tmp)
         pool = t_census(tmp, repo, old, s)
+        t_wrong_commit(tmp, repo, s)
         t_hash(tmp, pool)
         t_live(tmp, pool)
         t_live_plan(tmp, pool)
