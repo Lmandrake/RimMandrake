@@ -156,7 +156,10 @@ class JudgeCritic:
         verdict = rec.get("verdict")
         votes = rec.get("votes") or []
         meta = {"judge_id": rec.get("judge_id"), "wall_s": round(time.time() - t0, 1), "calls": log,
-                "votes": [{"judge": v.get("judge"), "verdict": v.get("verdict"), "why": v.get("why")} for v in votes],
+                # `tools`: the GPT vote's tool record (n_tools/web/refused_tool_calls/tripwire/wiped), kept so an
+                # invalid or tool-using vote stays visible in the calibration results (ARENA_JUDGE_OWNPATH_TEST_PREFIX_SIBLING)
+                "votes": [{"judge": v.get("judge"), "verdict": v.get("verdict"), "why": v.get("why"),
+                           "tools": v.get("tools")} for v in votes],
                 "binaries_not_shown": len(binaries), "opus_model": self.opus_model}
         if rec.get("why"):
             meta["why"] = rec["why"]

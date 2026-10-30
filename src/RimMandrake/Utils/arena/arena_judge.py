@@ -396,8 +396,7 @@ def judge_env(extra: dict | None, priv: Path | None, kind: str = "model", base: 
     def owned(k):
         if not ownr or k not in (extra or {}):
             return False
-        v = os.path.realpath(str(extra[k]))
-        return v == ownr or v.startswith(ownr + os.sep)
+        return JH.posix_within(extra[k], ownr)               # separator-aware: <own>_evil is not inside <own>
     for k in list(e):
         v = str(e[k])
         if k.startswith("ARENA_") or (pv and pv in v) or (cr and cr in v and not owned(k)):
@@ -1302,7 +1301,11 @@ class GptConsult:
         try:
             home, base = JH.judge_home(), JH.base_home()
             JH.verify_home(home, base)
-        except JH.HomeError as ex:
+            ci = JH.codex_image()
+            win = ci.windows_home()
+            Path(ci.CODEX_SCRATCH).mkdir(parents=True, exist_ok=True)
+            JH.verify_cwd(ci.CODEX_SCRATCH, user_home=win)       # gpt_consult's job dirs live under CODEX_SCRATCH
+        except (JH.HomeError, OSError) as ex:
             raise JudgeUnavailable("gpt judge home: %s" % ex) from ex
         return home, base
 
@@ -1350,7 +1353,12 @@ class GptConsult:
                                   work=work, priv=self.priv, timeout=self.timeout + 60, env=env,
                                   rw=[work] + self._scratch_paths())
             finally:
-                post = sess.after()
+                try:
+                    pre_wipe = JH.home_violations(home)              # before the last-out wipe can erase a plant
+                except Exception as ex:                              # noqa: BLE001 -- fail closed, still leave
+                    pre_wipe = ["home scan failed (%s)" % ex.__class__.__name__]
+                finally:
+                    post = sess.after()
         if local_log.is_file():
             try:
                 real_log.parent.mkdir(parents=True, exist_ok=True)
@@ -1377,6 +1385,10 @@ class GptConsult:
             raise JudgeTripwire("gpt judge tripwire: %s" % "; ".join(trip["why"][:3]), info)
         if post["leftover"]:
             raise JudgeTripwire("gpt judge home kept per-call state after the wipe: %s" % post["leftover"], info)
+        # the allow-list again AFTER the call: an entry planted between the pre-call check and codex's start shows here
+        info["home_after"] = sorted(set(pre_wipe) | set(JH.home_violations(home)))
+        if info["home_after"]:
+            raise JudgeTripwire("gpt judge home off its allow-list after the call: %s" % info["home_after"][:5], info)
         if failed:
             raise JudgeError("gpt judge exit %d: %s" % (r.returncode, r.stderr.decode("utf-8", "replace")[-300:]))
         ans = JudgeAnswer(out.read_text(encoding="utf-8"))

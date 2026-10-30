@@ -15,7 +15,9 @@ C:\Users\<u>\.codex (sessions, history) with the arms' own gpt_consult calls, an
      codex. Each call only VERIFIES the home (verify_home: file compares, no machine query) and refuses otherwise.
   2. LOCKDOWN per call (gpt_consult.py --codex-home H --lockdown --events F): --ephemeral (no session files),
      --disable for every tool feature (gpt_consult.LOCKDOWN_FEATURES), -c web_search="disabled", --ignore-rules, and the prompt
-     line PROMPT_NO_TOOLS (arena_judge.PROMPT carries it). After each call wipe_call_state() deletes the per-call state
+     line PROMPT_NO_TOOLS (arena_judge.PROMPT carries it). The home is ALLOW-LISTED (home_violations: anything else, at
+     any depth, refuses the call -- a planted AGENTS.md or skill steered real votes) and the cwd chain must hold no
+     instruction file (verify_cwd); both checked before every call and the home again after it. After each call wipe_call_state() deletes the per-call state
      (WIPE_NAMES: sessions, history, logs, snapshots, sqlite thread/log stores); config, auth and sandbox state stay.
   3. TRIPWIRE. codex runs with --json; its event stream is the transcript. tripwire() marks the vote INVALID (not a
      vote; fail closed) when the stream is missing/unreadable/incomplete, shows ANY web call, any tool item it cannot
@@ -34,6 +36,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import ntpath
 import os
 import re
 import shutil
@@ -56,9 +59,35 @@ PROMPT_NO_TOOLS = ("Judge ONLY from the text of this message. Do not run any com
 WIPE_NAMES = ("sessions", "archived_sessions", "history.jsonl", "session_index.jsonl", "log", "shell_snapshots",
               "tmp", ".tmp", "generated_images", "rollout-migrations", "thread-writer-locks", "memories")
 WIPE_PREFIXES = ("logs_", "state_", "thread_history_", "goals_", "queue_", "memories_")   # sqlite stores (+ -wal/-shm)
-# codex install / machine sandbox state (cap_sid: the sandbox capability SID; skills/.system: codex's bundled skills)
+# codex install / machine sandbox state (cap_sid: the sandbox capability SID; skills: kept EMPTY, see HOME_DIRS)
 KEEP_NAMES = ("auth.json", "config.toml", "models_cache.json", "version.json", "installation_id", ".sandbox",
               ".sandbox-bin", ".sandbox-secrets", ".sandbox_migration", "cap_sid", "skills")
+# THE ALLOW-LIST (ARENA_GPTJUDGE_HOME_FIX_AGENTS_MD_STEERS). codex reads instructions from its home -- an AGENTS.md /
+# AGENTS.override.md there steered a real locked-down judge vote (BENCH agents_probe), and a skills/<x>/SKILL.md there
+# steered one too (FOUNDRY cfgprobe C2, 2026-10-30) -- and the arms run as the same Windows user, so they can write the
+# home. verify_home therefore refuses ANY entry, at any depth, that is not listed here: files must be regular files,
+# dirs real dirs, no symlink/junction anywhere. Names below are every entry of the shared and judge homes as listed
+# 2026-10-30 that a locked-down call needs.
+HOME_FILES = ("auth.json", "config.toml", "models_cache.json", "version.json", "installation_id", "cap_sid",
+              ".sandbox_migration")
+# dir -> regex its FILES must match (no subdirs allowed in any of them). skills/ must be EMPTY: the template turns the
+# bundled skills off (skills.bundled.enabled=false: measured, codex then writes no skills/.system) and setup removes
+# the old .system copy, so nothing a skill could say ever reaches the judge.
+HOME_DIRS = {
+    ".sandbox": re.compile(r"^(?:deny_read_acl_state\.json|setup_marker\.json|sandbox\.\d{4}-\d{2}-\d{2}\.log)$"),
+    ".sandbox-bin": re.compile(r"^(?:codex\.exe|codex-command-runner-[0-9][0-9A-Za-z.\-]*\.exe)$"),
+    ".sandbox-secrets": re.compile(r"^sandbox_users\.json$"),
+    "skills": None,
+}
+# per-call state allowed at verify time (a concurrent call may be in flight) is _is_call_state() MINUS these: codex
+# READS them as context when their feature is on, and a locked-down call never writes them (measured: a lockdown run
+# leaves only tmp, .tmp and the sqlite stores)
+CALL_STATE_REFUSED = ("memories",)
+# Instruction / config files codex discovers from its cwd and the dirs above it (codex 0.164: AGENTS.override.md,
+# AGENTS.md, configured fallback names, project root found by project_root_markers [".git"]; project .codex/ config and
+# .agents/skills). The template sets project_doc_max_bytes=0 (measured: a cwd AGENTS.md then no longer steers,
+# cfgprobe C0/C1); verify_cwd ALSO refuses any of these names in the judge's cwd parent chain. Compared case-folded.
+CWD_INSTRUCTION_NAMES = ("agents.md", "agents.override.md", ".git", ".codex", ".agents")
 
 
 def gpt_consult():
@@ -118,9 +147,14 @@ def _windows_sandbox_mode(base: Path) -> str | None:
 
 
 def config_template(base: Path) -> str:
+    # project_doc_max_bytes=0: no project AGENTS.md is read (cfgprobe C1); [skills] include_instructions=false: no skill
+    # list reaches the model (cfgprobe C3); [skills.bundled] enabled=false: codex writes no skills/.system. All three
+    # keys are accepted by codex 0.164 --strict-config (an unknown key is a hard error there).
     lines = ["# The arena GPT judge's own Codex config. Written by judge_codex_home.py setup; edits are refused.",
-             'web_search = "disabled"', 'sandbox_mode = "read-only"', 'approval_policy = "never"', "",
-             "[history]", 'persistence = "none"', ""]
+             'web_search = "disabled"', 'sandbox_mode = "read-only"', 'approval_policy = "never"',
+             "project_doc_max_bytes = 0", "",
+             "[history]", 'persistence = "none"', "",
+             "[skills]", "include_instructions = false", "", "[skills.bundled]", "enabled = false", ""]
     mode = _windows_sandbox_mode(base)
     if mode:
         lines += ["[windows]", 'sandbox = "%s"' % mode, ""]
@@ -136,10 +170,104 @@ def _runner_fp(root: Path) -> str | None:
     return codex_image().sandbox_bin_fingerprint(root)
 
 
+def home_violations(home: Path) -> list[str]:
+    """Every entry of the judge home, at any depth, that the allow-list (HOME_FILES / HOME_DIRS / per-call state) does
+    not admit. [] = clean. A home that cannot be listed is itself a violation (fail closed)."""
+    bad: list[str] = []
+    if os.path.islink(home):
+        return ["the home itself is a link"]
+    try:
+        entries = sorted(os.scandir(home), key=lambda e: e.name)
+    except OSError as ex:
+        return ["cannot list the home (%s)" % ex.__class__.__name__]
+    for e in entries:
+        try:
+            bad += _entry_violations(e)
+        except FileNotFoundError:
+            if not _is_call_state(e.name):                           # a concurrent last-out wipe removes call state
+                bad.append("%s vanished while listed" % e.name)
+        except OSError as ex:
+            bad.append("cannot inspect %s (%s)" % (e.name, ex.__class__.__name__))
+    return bad
+
+
+def _entry_violations(e) -> list[str]:
+    """Why one top-level home entry is off the allow-list ([] = admitted). May raise OSError (the caller decides)."""
+    n = e.name
+    if e.is_symlink():
+        return ["%s is a link" % n]
+    if n in HOME_FILES:
+        return [] if e.is_file(follow_symlinks=False) else ["%s is not a regular file" % n]
+    if n in HOME_DIRS:
+        if not e.is_dir(follow_symlinks=False):
+            return ["%s is not a directory" % n]
+        rx = HOME_DIRS[n]
+        return ["%s/%s" % (n, s.name) for s in sorted(os.scandir(e.path), key=lambda s: s.name)
+                if s.is_symlink() or not s.is_file(follow_symlinks=False) or rx is None or not rx.match(s.name)]
+    if _is_call_state(n) and n not in CALL_STATE_REFUSED:
+        return _call_state_hits(Path(e.path), n) if e.is_dir(follow_symlinks=False) else []
+    return [n]
+
+
+# names refused anywhere inside an admitted per-call-state dir (GPT review r1: those subtrees were unchecked). Only
+# instruction-shaped names: the content codex itself writes there (tmp, sessions, sqlite) was not measured, so links
+# and other files are not refused (a false refusal would make every concurrent judge call invalid).
+CALL_STATE_INSTRUCTION_NAMES = ("agents.md", "agents.override.md", "skill.md")
+
+
+def _call_state_hits(d: Path, top: str) -> list[str]:
+    hits = []
+
+    def err(ex):                                                     # a concurrent wipe deleting it is not a plant
+        if not isinstance(ex, FileNotFoundError):
+            hits.append("cannot list %s/ (%s)" % (top, ex.__class__.__name__))
+    for root, dirs, files in os.walk(d, onerror=err):
+        hits += ["%s/%s" % (top, os.path.relpath(os.path.join(root, n), d)) for n in sorted(dirs + files)
+                 if n.casefold() in CALL_STATE_INSTRUCTION_NAMES]
+    return hits
+
+
+def cwd_hits(chain: list, user_home: Path | None = None) -> list[str]:
+    """Each instruction/config entry (CWD_INSTRUCTION_NAMES, case-folded) in the dirs of `chain`, plus `.agents` in
+    `user_home`. An unlistable dir is a hit (fail closed)."""
+    hits = []
+    for p, want in [(Path(c), CWD_INSTRUCTION_NAMES) for c in chain] + \
+            ([(Path(user_home), (".agents",))] if user_home is not None else []):
+        try:
+            names = [e.name for e in os.scandir(p)]
+        except OSError as ex:
+            hits.append("%s unlistable (%s)" % (p, ex.__class__.__name__))
+            continue
+        hits += [str(p / n) for n in sorted(names) if n.casefold() in want]
+    return hits
+
+
+def cwd_chain(start: Path) -> list[Path]:
+    """`start` (resolved) and every dir above it up to the root: where codex looks for project instructions."""
+    d = Path(os.path.realpath(start))
+    return [d] + list(d.parents)
+
+
+def verify_cwd(start: Path, user_home: Path | None = None) -> None:
+    """The judge's codex cwd (gpt_consult makes a fresh job dir UNDER `start`) and every dir above it must hold no file
+    codex reads as instructions or project config, and the Windows user home no .agents (user skills). Raises
+    HomeError naming each hit."""
+    hits = cwd_hits(cwd_chain(start), user_home)
+    if hits:
+        raise HomeError("the GPT judge's working directory chain holds instruction/config files codex would read: %s;"
+                        " remove them (they are not the judge's)" % ", ".join(hits[:8]))
+
+
 def verify_home(home: Path | None = None, base: Path | None = None) -> None:
-    """Per-call check, file compares only (never launches codex, never queries the machine). Raises HomeError."""
+    """Per-call check, file compares only (never launches codex, never queries the machine). Raises HomeError.
+    First the ALLOW-LIST (home_violations): anything else in the home refuses the call."""
     home, base = home or judge_home(), base or base_home()
     fix = "run: python3 src/RimMandrake/Utils/arena/judge_codex_home.py setup"
+    bad = home_violations(home)
+    if bad:
+        raise HomeError("judge Codex home %s holds entries not on its allow-list: %s; inspect and delete them by hand "
+                        "(setup never deletes them: they may be a planted instruction), then %s"
+                        % (home, ", ".join(bad[:12]), fix))
     if not (home / "auth.json").is_file():
         raise HomeError("judge Codex home %s has no login; %s" % (home, fix))
     try:
@@ -181,6 +309,12 @@ def setup(home: Path | None = None, base: Path | None = None, *, machine_check: 
                 raise HomeError(why)
         elif _sandbox_blob(home) != _sandbox_blob(base) or _runner_fp(home) != _runner_fp(base):
             ci._copy_sandbox_state(base, home)                       # noqa: SLF001 -- same copy ensure_home_sandbox does
+    # the template turns codex's bundled skills off; drop the copy an older template let codex write (only that dir:
+    # anything else off the allow-list is left for verify_home to refuse and a human to inspect)
+    sysk = home / "skills" / ".system"
+    if sysk.is_dir() and not sysk.is_symlink():
+        shutil.rmtree(sysk)
+        copied.append("skills/.system removed")
     verify_home(home, base)
     return "judge Codex home %s ready (%s)" % (home, ", ".join(copied) or "already set up")
 
@@ -306,10 +440,34 @@ def _norm_win(p: str) -> str:
     return re.sub(r"\\+", r"\\", p.replace("/", "\\")).rstrip("\\").lower()
 
 
+def win_within(path: str, parent: str) -> bool:
+    """Is Windows path `path` the folder `parent` or inside it? Separator-aware (C:\\job_evil is NOT inside C:\\job),
+    case-insensitive, / and \\ alike, doubled separators collapsed, `.` and `..` resolved lexically (C:\\job\\..\\x is
+    outside). A relative path, another drive, a \\\\?\\ or 8.3 spelling is never inside (fail closed)."""
+    p = ntpath.normpath(_norm_win(parent)) if parent else ""
+    q = ntpath.normpath(_norm_win(path)) if path else ""
+    if not p or not q or not ntpath.isabs(p) or not ntpath.isabs(q):
+        return False
+    return q == p or q.startswith(p.rstrip("\\") + "\\")
+
+
+def posix_within(path, parent) -> bool:
+    """Is `path` the dir `parent` or inside it, after resolving symlinks and `..` (realpath)? Separator-aware via
+    commonpath (/judge_evil is NOT inside /judge). Case-SENSITIVE everywhere, /mnt/<x> included: a drvfs dir can be
+    case-sensitive and casefold() equates names Windows does not (GPT review r1), so a case variant is outside (fail
+    closed: at worst a meter path is dropped)."""
+    try:
+        q, p = os.path.realpath(str(path)), os.path.realpath(str(parent))
+    except (OSError, ValueError, TypeError):
+        return False
+    try:
+        return os.path.commonpath([q, p]) == p
+    except ValueError:
+        return False
+
+
 def _inside(path: str, job_win: str) -> bool:
-    j = _norm_win(job_win)
-    q = _norm_win(path.strip().strip("'\"`"))
-    return bool(j) and (q == j or q.startswith(j + "\\"))
+    return win_within(path.strip().strip("'\"`"), job_win)
 
 
 def command_violations(command: str, job_win: str) -> list[str]:
@@ -447,6 +605,18 @@ class CallSession:
         except OSError:
             first = False
         if first:
+            # models_cache.json carries per-model instruction templates (models[].model_messages.instructions_template,
+            # read 2026-10-30) and the arms can write the home: the first call of a cohort drops it so codex fetches
+            # the list fresh instead of trusting a file anyone could have edited (GPT review r1)
+            try:
+                (self.home / "models_cache.json").unlink()
+            except FileNotFoundError:
+                pass
+            except OSError as ex:                                     # fail closed, and let go of the lock
+                os.close(self.fd)
+                self.fd = None
+                raise HomeError("cannot drop %s (%s): the judge would trust a cache anyone could edit"
+                                % (self.home / "models_cache.json", ex)) from ex
             hsha = _sha(self.home / "auth.json")
             bsha = sync_auth_in(self.home, self.base)
             # The snapshot is the login state at the last reconciliation and ALWAYS exists once written, so an

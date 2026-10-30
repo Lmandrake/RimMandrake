@@ -53,6 +53,12 @@ def fake(kind_answers):
             a = kind_answers.pop(0) if kind_answers else "no json"
             if a == "DIE":
                 raise J.JudgeError("timed out after %ss" % self.timeout)
+            if isinstance(a, tuple) and a[0] == "TRIP":            # the hardened GPT judge's tripwire fired
+                raise J.JudgeTripwire("gpt judge tripwire: command executed with tools off", a[1])
+            if isinstance(a, tuple) and a[0] == "META":            # an answer carrying the GPT tool record
+                out = J.JudgeAnswer(a[1])
+                out.meta = a[2]
+                return out
             if a == "SLOW_DIE":
                 time.sleep(self.timeout)          # the shortened timeout elapses, then the call dies
                 raise J.JudgeError("timed out after %ss" % self.timeout)
@@ -83,6 +89,17 @@ def t_review(JC):
     v = review(JC, [ans("accept", ["fine"]), ans("reject", ["tie says no"])], [ans("reject", ["B"])])
     check(v.verdict == "reject" and [x["judge"] for x in v.meta["votes"]] == ["opus", "gpt", "opus_tiebreak"]
           and v.reasons == ["B", "tie says no"], "split goes to the tie-break: %s %s" % (v.verdict, v.reasons))
+    # ARENA_JUDGE_OWNPATH_TEST_PREFIX_SIBLING: the GPT vote's tool record survives into the calibration record, for a
+    # clean vote AND for a tripwire (invalid) vote, so tool attempts stay countable from results.jsonl
+    rec = {"n_tools": 0, "web": 0, "refused_tool_calls": 2, "tripwire": [], "wiped": ["tmp"]}
+    v = review(JC, [ans("accept", ["fine"])], [("META", ans("accept", ["ok"]), rec)])
+    g = [x for x in v.meta["votes"] if x["judge"] == "gpt"]
+    check(len(g) == 1 and g[0].get("tools") == rec, "a clean GPT vote keeps its tools record in meta.votes: %s" % g)
+    trip = {"n_tools": 1, "web": 0, "commands": ["dir"], "tripwire": ["command executed with tools off: 'dir'"]}
+    v = review(JC, [ans("accept", ["fine"]), ans("accept", ["tie ok"])], [("TRIP", trip)])
+    g = [x for x in v.meta["votes"] if x["judge"] == "gpt"]
+    check(len(g) == 1 and g[0]["verdict"] == "invalid" and g[0].get("tools") == trip,
+          "a tripwire (invalid) GPT vote keeps its tools record in meta.votes: %s" % g)
     v = review(JC, ["garbage"], [ans("accept", ["ok"])])
     check(v.verdict == "invalid", "garbage answer is invalid, got %s" % v.verdict)
     check(not v.meta.get("budget_cut"), "a garbage answer is not a budget cut")
