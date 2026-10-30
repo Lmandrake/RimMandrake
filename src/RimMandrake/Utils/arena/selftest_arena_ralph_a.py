@@ -707,6 +707,38 @@ def sc_retry_fresh(tmp, mod, tag):
     return len(seen) == 2 and seen[0][0] != seen[1][0] and not seen[1][1]
 
 
+def sc_refused_no_start(tmp, mod, tag):
+    """GPT r2 (tester pass): a tester refused for lack of isolation never ran, so it leaves NO test_start (a false
+    'tester started' record would satisfy require_tested if pending were lost); retries add none either."""
+    keys = ("RALPH_A_TESTER_SANDBOX", mod.UNISOLATED_OK_ENV)
+    saved = {k: os.environ.get(k) for k in keys}
+    try:
+        os.environ["RALPH_A_TESTER_SANDBOX"] = "none"
+        os.environ.pop(mod.UNISOLATED_OK_ENV, None)
+        w = World(tmp, "NS" + tag, mod)
+        real, pre = w.model, mod.CmdModel("true").preflight
+
+        class M:
+            preflight = staticmethod(pre)
+            __call__ = staticmethod(real)
+        w.loop.model = M()
+        for _ in range(3):
+            try:
+                w.loop.step()
+            except mod.Refused:
+                pass
+        recs = w.writer.records()
+        return (not any(r.get("event") in ("test_start", "test_end") for r in recs)
+                and not any(c[0] == "test" for c in w.calls)
+                and any(r.get("event") == "build_end" for r in recs))
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
 MUTATIONS = [
     ("A gate bypass", sc_planted_check, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("A failure note not fed", sc_planted_check, "            if self._note(name):\n", "            if False:\n"),
@@ -759,6 +791,8 @@ MUTATIONS = [
     ("P2 tester context shared across retries", sc_retry_fresh,
      "            troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT",
      "            troot = self.__dict__.setdefault('_tr', self._tester_root())"),
+    ("R2 test_start before isolation check", sc_refused_no_start,
+     "                    pf(sandbox, work)\n", "                    pass\n"),
     ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
 ]
 
@@ -1056,6 +1090,7 @@ def main():
                          ("L6 pull main first, 3 tries", sc_sync),
                          ("P1 dirty tree after killed build is parked", sc_dirty_sync),
                          ("P1 unisolated tester refused without override", sc_unisolated),
+                         ("R2 refused tester logs no test_start", sc_refused_no_start),
                          ("P2 retried tester gets fresh context", sc_retry_fresh)):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):

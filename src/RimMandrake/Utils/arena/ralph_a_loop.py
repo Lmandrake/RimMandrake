@@ -369,6 +369,10 @@ class CmdModel:
         self.argv = shlex.split(cmd)
         self.pidfile = None
 
+    def preflight(self, sandbox, cwd):
+        """Raise Refused now, before the loop logs test_start, when the tester could not be isolated."""
+        bwrap_argv(sandbox, cwd)
+
     def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
         argv = self.argv
         warn = ""
@@ -803,6 +807,9 @@ class Loop:
             try:
                 work = self.tester_workdir(pend["head"], troot / "tree")
                 sandbox = {"root": troot, "hide": [self.ctl, self.root, HARNESS_REPO, Path.home() / ".claude"]}
+                pf = getattr(self.model, "preflight", None)    # refusal must precede test_start (a refused tester never ran)
+                if pf:
+                    pf(sandbox, work)
                 self.emit("test_start", task, sha=pend["head"], detail={"tester": tester, "build_id": pend["build_id"]})
                 self.status("tester pass running (%s on %s)" % (tester, pend["build_id"]))
                 try:
