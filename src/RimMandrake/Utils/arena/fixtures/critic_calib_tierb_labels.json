@@ -1,0 +1,49 @@
+{
+ "labelled_by": "BENCH builder, CRITIC_CALIB_WIDEN_TIER_A_GOOD, 2026-10-30",
+ "labels": {
+  "c30fce24719": {
+   "evidence": "Later commits on both files are the AB_/RM_ rename and sweep stale-test repairs, not the pin; the item stayed done.",
+   "finding": "good"
+  },
+  "c5806db2c16": {
+   "evidence": "This item added the static_call with args=\"\" (validation.py:256); 887bc73244 finds it binds the 0-param overload and every bar read UNMEASURED.",
+   "finding": "true_defect"
+  },
+  "c65a3de243c": {
+   "evidence": "0e060b0a5a (no such field read as UNMEASURED) is a row from ff5977f9665, older than this item; 79365c3bdf is an owner content cut.",
+   "finding": "good"
+  },
+  "c8b12b8c68d": {
+   "evidence": "The item is art; the diff is one def file and the textures are outside it (tree_probe.txt). Not blind: this verdict was read in the TREE probe.",
+   "finding": "bad_candidate"
+  },
+  "cd08704258d": {
+   "evidence": "Later commits to human_review.py and COVERAGE.md are path repoints and unrelated cord work; none restores or repairs a hose station, no rework item.",
+   "finding": "good"
+  },
+  "cd27ca7b560": {
+   "evidence": "1d77c17651 restores the Harmony attributes this head had moved; already in critic_calib_adjudication.json, so this label was NOT blind to the verdict.",
+   "finding": "true_defect"
+  },
+  "cd630d1c903": {
+   "evidence": "428a243f6e finds the real cause after this head; already in critic_calib_adjudication.json, so this label was NOT blind to the verdict.",
+   "finding": "true_defect"
+  },
+  "ce81b098b9c": {
+   "evidence": "This item wired swimmingGraphicData without graphicClass; 5a6eba24b3 finds GraphicData.Graphic null, an NRE every frame, and adds the class to those LongShade blocks.",
+   "finding": "true_defect"
+  },
+  "cf20a65d08a": {
+   "evidence": "Only later touch is the bulk Transient untrack e7dbf83868; the selftest is unchanged since.",
+   "finding": "good"
+  },
+  "cf4128fcd1d": {
+   "evidence": "Head 1d7cce3e99 is a 30-line stage-2 fix inside a multi-stage item, not the item's delivery.",
+   "finding": "bad_candidate"
+  }
+ },
+ "n": 10,
+ "rule": "First n of tier B ordered by sha256(seed+cid), whatever the verdict. Label from later git history: good = no later fix of this work; true_defect = a later commit fixes what this work delivered; bad_candidate = the diff is not the item's delivery.",
+ "seed": "critic-tierb-label-2026-10-30",
+ "set_sha256": "3e41df0638518c7fff09903d2474fae664bcd96ae45b78d0baed066f17bc10a3"
+}

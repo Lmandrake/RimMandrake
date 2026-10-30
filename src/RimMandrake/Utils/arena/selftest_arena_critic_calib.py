@@ -425,6 +425,31 @@ print(json.dumps(out))
 """
 
 
+def t_tierb_labels(base, head):
+    doc = synth_set(base, head, n_good=6, n_bad=0)
+    for i, c in enumerate(doc["candidates"]):
+        c["tier"] = "B" if i < 3 else "A"
+    draw = C.tierb_sample(doc, "s", 2)
+    check("the draw depends on the seed", draw != C.tierb_sample(doc, "other", 2) or len(set(draw)) == 2)
+    lab = {"set_sha256": doc["set_sha256"], "seed": "s", "n": 2,
+           "labels": {draw[0]: {"finding": "good", "evidence": "e"}, draw[1]: {"finding": "true_defect", "evidence": "e"}}}
+    res = [{"cid": c["cid"], "verdict": "reject"} for c in doc["candidates"]]
+    s = C.score(doc, res, lab)
+    check("a labelled good joins false reject, a labelled defect does not",
+          s["false_reject"]["n"] == 4 and s["false_reject_tierA_only"]["n"] == 3, str(s["false_reject"]))
+    check("another set's labels change nothing", C.score(doc, res, dict(lab, set_sha256="x"))["false_reject"]["n"] == 3)
+    other = next(c["cid"] for c in doc["candidates"][:3] if c["cid"] not in draw)
+    picked = dict(lab, labels={draw[0]: lab["labels"][draw[0]], other: {"finding": "good", "evidence": "e"}})
+    try:
+        C.score(doc, res, picked)
+        check("a hand-picked label set is refused", False)
+    except A.ArenaError:
+        check("a hand-picked label set is refused", True)
+    real = C.load_set()
+    got = C.tierb_labels(real)
+    check("the shipped labels are the seeded draw of the shipped set", len(got) == 10, str(got))
+
+
 def t_network():
     if not shutil.which("bwrap"):
         check("network (bwrap absent: UNMEASURED)", False, "bwrap not installed")
@@ -649,6 +674,7 @@ def main() -> int:
         t_resume(repo, base, head, root)
         t_sandbox(repo, base, head, root)
         t_network()
+        t_tierb_labels(base, head)
         t_persist(repo, base, head)
         t_adjudicate(repo, base, head)
         t_tree_and_hidden(root)

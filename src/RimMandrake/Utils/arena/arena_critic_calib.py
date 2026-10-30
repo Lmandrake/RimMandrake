@@ -53,7 +53,7 @@ Bash/Read/Grep/Glob in the sandboxed tree). The trio critic plugs in through the
 `--critic package.module:attr`, where attr is a Critic instance or a zero-argument factory; its review(CriticInput)
 returns a CriticVerdict. Re-measure with it once it lands; until then the numbers are for L4-as-specified.
 
-DECISION (reliability()). False reject is measured on tier A only; miss on the predeclared planted set. More than
+DECISION (reliability()). False reject is measured on tier A plus the tier-B goods of a seeded both-outcomes label draw; miss on the predeclared planted set. More than
 MAX_INVALID_FRAC invalid is UNMEASURED. Each measure FAILS when its Wilson-95 LOWER bound reaches the threshold (any
 n), or, with at least MIN_GOOD / MIN_BAD valid verdicts, when its point estimate does; it is UNMEASURED below that
 count, PASSES when its upper bound is under the threshold, else INCONCLUSIVE. Any FAIL is UNRELIABLE; RELIABLE needs
@@ -190,11 +190,35 @@ def verdict_of(results: list[dict], cids) -> dict:
     return out
 
 
-def score(set_doc: dict, results: list[dict]) -> dict:
+def tierb_sample(set_doc: dict, seed: str, n: int) -> list[str]:
+    """The labelled tier-B draw: it depends on the seed alone, so it cannot have been chosen by outcome."""
+    cids = [c["cid"] for c in set_doc["candidates"] if c.get("tier") == "B"]
+    return sorted(cids, key=lambda c: hashlib.sha256((seed + c).encode()).hexdigest())[:n]
+
+
+def tierb_labels(set_doc: dict, labels: dict | None = None) -> dict:
+    """{cid: finding} of the shipped both-outcomes tier-B labels ({} on another set). Unlike a reject-side adjudication
+    this covers accepts too, so a sampled good joins the false-reject denominator; a sampled true_defect or
+    bad_candidate is simply not a labelled good. A label set that is not exactly the seeded draw is refused."""
+    if labels is None:
+        labels = json.loads(TIERB_LABELS_PATH.read_text())
+    if labels.get("set_sha256") != set_doc.get("set_sha256"):
+        return {}
+    got = labels["labels"]
+    if sorted(got) != sorted(tierb_sample(set_doc, labels["seed"], labels["n"])):
+        raise A.ArenaError("tier-B labels are not the seeded draw: an unbiased sample cannot be edited")
+    for cid, row in got.items():
+        if row.get("finding") not in TIERB_FINDINGS or not row.get("evidence"):
+            raise A.ArenaError("tier-B label %s: finding must be one of %s, with evidence" % (cid, TIERB_FINDINGS))
+    return {cid: row["finding"] for cid, row in got.items()}
+
+
+def score(set_doc: dict, results: list[dict], labels: dict | None = None) -> dict:
     """First valid verdict per candidate counts; a candidate with no valid verdict counts as invalid."""
     by = {c["cid"]: c for c in set_doc["candidates"]}
     latest = verdict_of(results, by)
-    cells = {"good": [], "good_A": [], "good_B": [], "planted": [], "planted_strong": []}
+    found = tierb_labels(set_doc, labels)
+    cells = {"good": [], "good_A": [], "good_B": [], "good_labelled": [], "planted": [], "planted_strong": []}
     invalid = []
     false_rejects, misses = [], []
     for cid, c in by.items():
@@ -206,6 +230,8 @@ def score(set_doc: dict, results: list[dict]) -> dict:
             bad = r["verdict"] == "reject"
             cells["good"].append(bad)
             cells["good_" + c["tier"]].append(bad)
+            if c["tier"] == "A" or found.get(cid) == "good":
+                cells["good_labelled"].append(bad)
             if bad:
                 false_rejects.append({"cid": cid, "task": c["task"], "tier": c["tier"], "reasons": r.get("reasons")})
         else:
@@ -215,7 +241,9 @@ def score(set_doc: dict, results: list[dict]) -> dict:
                 cells["planted_strong"].append(bad)
             if bad:
                 misses.append({"cid": cid, "task": c["task"], "grade": c["grade"], "rework": c["rework_items"]})
-    out = {"false_reject": rate(sum(cells["good_A"]), len(cells["good_A"]), FR_MAX),   # tier A: labelled good
+    out = {"false_reject": rate(sum(cells["good_labelled"]), len(cells["good_labelled"]), FR_MAX),   # tier A + labelled
+           "false_reject_tierA_only": rate(sum(cells["good_A"]), len(cells["good_A"]), FR_MAX),
+           "tierb_labels": {f: sum(v == f for v in found.values()) for f in TIERB_FINDINGS},
            "reject_rate_tierB_unlabelled": rate(sum(cells["good_B"]), len(cells["good_B"]), FR_MAX),
            "reject_rate_all_good_nominal": rate(sum(cells["good"]), len(cells["good"]), FR_MAX),
            "miss": rate(sum(cells["planted"]), len(cells["planted"]), MISS_MAX),
@@ -227,6 +255,8 @@ def score(set_doc: dict, results: list[dict]) -> dict:
 
 
 ADJ_PATH = HERE / "fixtures" / "critic_calib_adjudication.json"
+TIERB_LABELS_PATH = HERE / "fixtures" / "critic_calib_tierb_labels.json"
+TIERB_FINDINGS = ("good", "true_defect", "bad_candidate")
 ADJ_FINDINGS = ("true_defect", "bad_candidate", "false_reject")
 
 
@@ -288,7 +318,7 @@ def _measure(m: dict, thr: float, need: int) -> tuple:
 
 
 def reliability(s: dict) -> dict:
-    """False reject is measured on tier A only (census-labelled good): a tier-B rejection rate is neither a bound
+    """False reject is measured on labelled goods (tier A, tier-B label draw): a tier-B rejection rate is neither a bound
     nor an estimate of it, because a defective unlabelled candidate moves numerator and denominator alike."""
     total = s["candidates"]
     if total and s["invalid"] / total > MAX_INVALID_FRAC:
