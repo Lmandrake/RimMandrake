@@ -10,4 +10,6 @@ Type=simple
 EnvironmentFile=-%h/.config/rm-arena/ralph-%i.env
 ExecStart=/usr/bin/bash -c 'case "$0" in a) exec bash @ARENA_DIR@/ralph_a/loop.sh;; a1|a2) exec bash @ARENA_DIR@/ralph_c/loop.sh "$0";; *) echo "unknown ralph member $0"; exit 2;; esac' %i
 Restart=on-failure
+# exit 2 = refused for missing/invalid configuration (env file unset): retrying cannot help, so do not respin
+RestartPreventExitStatus=2
 RestartSec=60

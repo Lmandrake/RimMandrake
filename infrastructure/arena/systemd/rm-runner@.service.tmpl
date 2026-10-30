@@ -9,4 +9,6 @@ Type=simple
 EnvironmentFile=-%h/.config/rm-arena/runner-%i.env
 ExecStart=/usr/bin/bash @ARENA_DIR@/ralph_c/runner.sh %i
 Restart=on-failure
+# exit 2 = refused for missing/invalid configuration (env file unset): retrying cannot help, so do not respin
+RestartPreventExitStatus=2
 RestartSec=60

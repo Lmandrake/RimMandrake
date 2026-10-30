@@ -603,6 +603,38 @@ def t_wired(tmp):
     check(str(HERE) in loop and str(HERE) in run, "ExecStart paths point at this arena directory")
 
 
+def t_envfiles(tmp):
+    """ARENA_UNIT_ENVFILES_WIRE_RALPH_RUNNER: env templates are planned (and never overwrite), carry no secrets and
+    leave the refusal intact; the units do not respin on exit 2; the entry scripts really exit 2 when unconfigured."""
+    import arena as AR
+    import arena_install as INS
+    cfg = AR.load_config(AR.TEMPLATES / "arm.toml.template")
+    ed = tmp / "envd"
+    plan = INS.plan_envfiles(cfg, ed)
+    names = {p.name: t for _k, p, t in plan}
+    check({"ralph-a1.env", "ralph-a2.env", "runner-steve.env", "runner-archmagi.env"} <= set(names),
+          "env templates planned for every ralph_c loop and runner instance: %s" % sorted(names))
+    check(all(k == "file_if_absent" for k, _p, _t in plan), "env files are written only when absent")
+    check(all(not any(l.strip() and not l.startswith("#") for l in t.splitlines()) for t in names.values()),
+          "templates are all comments: an untouched file stays an unset (refusing) configuration")
+    check("RALPH_C_ROOT_A1" in names.get("ralph-a1.env", "") and "RALPH_C_RUNNER_CLONE_ARCHMAGI" in names.get("runner-archmagi.env", ""),
+          "templates name the variables the entry scripts read")
+    ed.mkdir(parents=True, exist_ok=True)
+    (ed / "ralph-a1.env").write_text("MINE=1\n")
+    INS.apply_plan(plan, True, out=lambda *_: None)
+    check((ed / "ralph-a1.env").read_text() == "MINE=1\n" and (ed / "runner-steve.env").exists(),
+          "apply keeps an existing env file and writes the missing ones")
+    for nm in ("rm-ralph-loop@.service.tmpl", "rm-runner@.service.tmpl"):
+        check("RestartPreventExitStatus=2" in (AR.TEMPLATES / "systemd" / nm).read_text(), "%s stops restarting on exit 2" % nm)
+    env = {k: v for k, v in os.environ.items() if not k.startswith("RALPH_") and k != "RM_ARM"}
+    for args in (["ralph_a/loop.sh"], ["ralph_c/loop.sh", "a1"], ["ralph_c/runner.sh", "steve"]):
+        r = subprocess.run(["bash", str(HERE / args[0])] + args[1:], env=env, capture_output=True, text=True, timeout=60)
+        check(r.returncode == 2, "%s unconfigured exits 2 (got %s)" % (" ".join(args), r.returncode))
+    e2 = dict(env, RALPH_A_ROOT="/x", RALPH_A_TASKS="T")
+    r = subprocess.run(["bash", str(HERE / "ralph_a/loop.sh")], env=e2, capture_output=True, text=True, timeout=60)
+    check(r.returncode == 2 and "MODEL_CMD" in r.stdout, "ralph_a without a model command exits 2 naming it")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_c_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
@@ -624,7 +656,7 @@ def main():
             check(guarded(fn, tmp, variant(old, new), "_m%d" % i) is False,
                   "mutation goes RED (a False verdict, not a crash): " + name)
         for fn, a in ((t_areas, ()), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)), (t_cmdmodel_tester_sandbox, (tmp,)),
-                      (t_signed_writer, (tmp,)), (t_wired, (tmp,))):
+                      (t_signed_writer, (tmp,)), (t_wired, (tmp,)), (t_envfiles, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

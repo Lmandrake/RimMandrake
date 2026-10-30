@@ -11,7 +11,8 @@ case "$member" in a1|a2) ;; *) echo "member must be a1 or a2, got '$member'"; ex
 rootvar="RALPH_C_ROOT_${member^^}"
 root="${!rootvar:-}"
 [ -n "$root" ] || { echo "set $rootvar to the $member arm clone"; exit 2; }
-: "${RALPH_C_TASKS:?set RALPH_C_TASKS to the frozen task ids}"
+[ -n "${RALPH_C_TASKS:-}" ] || { echo "set RALPH_C_TASKS to the frozen task ids"; exit 2; }
+[ -n "${RALPH_C_MODEL_CMD:-}" ] || { echo "set RALPH_C_MODEL_CMD to the model invocation"; exit 2; }
 ctl="${RALPH_C_CTL:-/mnt/d/ClaudeWork/rimmandrake/ralph_c}/$member"
 mkdir -p "$ctl"
 cd "$here" || exit 2

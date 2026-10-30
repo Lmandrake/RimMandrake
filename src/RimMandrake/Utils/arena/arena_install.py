@@ -32,6 +32,45 @@ import arena as AR  # noqa: E402
 
 INSTANCE_TEMPLATES = ("rm-ralph-loop", "rm-runner")   # base names, each with systemd/<base>@.service.tmpl
 DEFAULT_UNIT_DIR = Path.home() / ".config" / "systemd" / "user"
+DEFAULT_ENV_DIR = Path.home() / ".config" / "rm-arena"   # where the unit templates' EnvironmentFile=-%h/.config/rm-arena/...
+
+_ENV_HEAD = ("# %s - environment of %s, written once by arena_install.py (never overwritten: your edits stay).\n"
+             "# No secrets belong here. Until every required line below is set and uncommented the entry script\n"
+             "# exits 2 (a refusal) and systemd does NOT restart the unit (RestartPreventExitStatus=2).\n")
+
+
+def env_template(unit: str) -> str | None:
+    """The commented env template for an instance unit name (rm-ralph-loop@a | a1 | a2, rm-runner@steve | archmagi),
+    or None for a unit that has no env file. Placeholders are commented out, so an untouched file stays a refusal."""
+    base, _, inst = unit.removesuffix(".service").partition("@")
+    if base == "rm-ralph-loop" and inst == "a":
+        body = ("# RALPH_A_ROOT=<path of the ralph_a arm clone>\n# RALPH_A_TASKS=<comma-separated frozen task ids>\n"
+                "# RALPH_A_MODEL_CMD=<model invocation argv; prompt on stdin>\n"
+                "# optional: RALPH_A_CTL RALPH_A_RUNWAY_MIN RALPH_A_PASS_TIMEOUT_S RALPH_A_TESTER_TMP RALPH_A_TESTER_SANDBOX\n")
+    elif base == "rm-ralph-loop" and inst in ("a1", "a2"):
+        body = ("# RALPH_C_ROOT_%s=<path of the %s arm clone>\n# RALPH_C_TASKS=<comma-separated frozen task ids>\n"
+                "# RALPH_C_MODEL_CMD=<model invocation argv; prompt on stdin>\n# optional: RALPH_C_AREAS RALPH_C_CTL\n"
+                % (inst.upper(), inst))
+    elif base == "rm-runner" and inst in ("steve", "archmagi"):
+        body = "# RALPH_C_RUNNER_CLONE_%s=<path of the %s runner clone>\n" % (inst.upper(), inst)
+    else:
+        return None
+    fn = ("ralph-%s.env" if base == "rm-ralph-loop" else "runner-%s.env") % inst
+    return _ENV_HEAD % (fn, unit) + body
+
+
+def plan_envfiles(cfg: dict, env_dir: Path) -> list[tuple]:
+    """[("file_if_absent", path, text)] for every instance unit the arm sets name."""
+    out, seen = [], set()
+    for us in cfg["units"].values():
+        for u in us:
+            t = env_template(u)
+            if t is None or u in seen:
+                continue
+            seen.add(u)
+            base, _, inst = u.removesuffix(".service").partition("@")
+            out.append(("file_if_absent", env_dir / (("ralph-%s.env" if base == "rm-ralph-loop" else "runner-%s.env") % inst), t))
+    return out
 
 
 def plan_units(cfg: dict, unit_dir: Path) -> list[tuple[Path, str]]:
@@ -85,6 +124,9 @@ def apply_plan(plan, apply: bool, out=print) -> int:
                 subprocess.run(["git", "-C", str(p), "config", "--local", "core.hooksPath", str(val)], check=True,
                                capture_output=True, timeout=60)
             continue
+        if kind == "file_if_absent" and Path(p).exists():
+            out("keep %s (exists, not overwritten)" % p)
+            continue
         out("%s %s (%d bytes)" % ("WRITE" if apply else "would write", p, len(val)))
         if apply:
             p.parent.mkdir(parents=True, exist_ok=True)
@@ -100,13 +142,14 @@ def main(argv=None):
     ap = argparse.ArgumentParser()
     ap.add_argument("what", choices=("units", "hooks"))
     ap.add_argument("--unit-dir", type=Path, default=DEFAULT_UNIT_DIR)
+    ap.add_argument("--env-dir", type=Path, default=DEFAULT_ENV_DIR)
     ap.add_argument("--arm-toml", type=Path)
     ap.add_argument("--apply", action="store_true", help="write the files (default: print the plan only)")
     a = ap.parse_args(argv)
     toml = a.arm_toml or AR.arm_toml_path()
     cfg = AR.load_config(toml)
     notes = []
-    plan = plan_units(cfg, a.unit_dir) if a.what == "units" else plan_hooks(cfg, str(toml), notes=notes)
+    plan = plan_units(cfg, a.unit_dir) + plan_envfiles(cfg, a.env_dir) if a.what == "units" else plan_hooks(cfg, str(toml), notes=notes)
     for n in notes:
         print(n)
     apply_plan(plan, a.apply)

@@ -11,8 +11,10 @@
 #                      from the tester; RALPH_A_TESTER_ENV_KEEP comma-separated extra env names the tester keeps
 set -uo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-: "${RALPH_A_ROOT:?set RALPH_A_ROOT to the ralph_a arm clone}"
-: "${RALPH_A_TASKS:?set RALPH_A_TASKS to the frozen task ids}"
+# a missing setting exits 2 (not bash's 127 from ${v:?}): the unit template stops restarting on 2 (RestartPreventExitStatus)
+[ -n "${RALPH_A_ROOT:-}" ] || { echo "set RALPH_A_ROOT to the ralph_a arm clone"; exit 2; }
+[ -n "${RALPH_A_TASKS:-}" ] || { echo "set RALPH_A_TASKS to the frozen task ids"; exit 2; }
+[ -n "${RALPH_A_MODEL_CMD:-}" ] || { echo "set RALPH_A_MODEL_CMD to the model invocation"; exit 2; }
 ctl="${RALPH_A_CTL:-/mnt/d/ClaudeWork/rimmandrake/ralph_a}"
 mkdir -p "$ctl"
 cd "$here" || exit 2                       # never inside the arm clone: the event writer refuses that
