@@ -646,6 +646,37 @@ def sc_sync(tmp, mod, tag):
     return failed and pulled
 
 
+def sc_sync_user_config(tmp, mod, tag):
+    """The pull keeps the OWNER's git config (an insteadOf alias, as ssh/credential settings are) whether it lives in
+    ~/.gitconfig or in the file $GIT_CONFIG_GLOBAL names: the alias URL only resolves through that config."""
+    w = World(tmp, "L6u" + tag, mod)
+    origin = tmp / ("L6uo" + tag + ".git")
+    sh(tmp, "git", "clone", "-q", "--bare", str(w.root), str(origin))
+    clone = tmp / ("L6uc" + tag)
+    sh(tmp, "git", "clone", "-q", "-b", "main", str(origin), str(clone))
+    sh(clone, "git", "config", "user.email", "t@t")
+    sh(clone, "git", "config", "user.name", "t")
+    gc = tmp / ("L6ugc" + tag)
+    gc.write_text('[url "%s"]\n\tinsteadOf = fake://origin\n' % origin)
+    sh(w.root, "git", "remote", "add", "origin", str(origin))
+    sh(w.root, "git", "fetch", "-q", "origin")
+    sh(w.root, "git", "branch", "-q", "--set-upstream-to=origin/main", "main")
+    sh(w.root, "git", "remote", "set-url", "origin", "fake://origin")
+    (clone / "NEW").write_text("x\n")
+    sh(clone, "git", "add", "NEW")
+    sh(clone, "git", "commit", "-q", "-m", "new")
+    sh(clone, "git", "push", "-q", "origin", "main")
+    saved = os.environ.get("GIT_CONFIG_GLOBAL")
+    os.environ["GIT_CONFIG_GLOBAL"] = str(gc)
+    try:
+        return bool(mod.default_sync(w.root, lambda s: None, tries=1)) and (w.root / "NEW").exists()
+    finally:
+        if saved is None:
+            os.environ.pop("GIT_CONFIG_GLOBAL", None)
+        else:
+            os.environ["GIT_CONFIG_GLOBAL"] = saved
+
+
 def sc_dirty_sync(tmp, mod, tag):
     """GPT r1 P1: a builder killed mid-edit leaves a dirty tree (tracked edit + untracked file); the next sync must
     park it in the loop's own clone and still pull, instead of failing with `sync failed`."""
@@ -846,6 +877,11 @@ def _exec_marker(w, kind):
         (w.root / ".gitattributes").write_text("*.py diff=evil\n")
     elif kind == "external":
         cfg("diff.external", str(script))
+    elif kind == "filter":
+        cfg("filter.evil.clean", str(script))
+        cfg("filter.evil.smudge", str(script))
+        (w.root / ".git" / "info").mkdir(exist_ok=True)
+        (w.root / ".git" / "info" / "attributes").write_text("*.py filter=evil\n")
     elif kind == "hooks":
         hd = w.d / "hooks"
         hd.mkdir()
@@ -865,8 +901,13 @@ def sc_git_exec(kind):
         marker = _exec_marker(w, kind)
         runs = {"fsmonitor": [("status",)] * 2, "textconv": [("diff", first, second)] * 2,
                 "external": [("diff", first, second)] * 2,
-                "hooks": [("switch", "-q", "-c", "other_s"), ("switch", "-q", "-c", "other_g")]}[kind]
+                "hooks": [("switch", "-q", "-c", "other_s"), ("switch", "-q", "-c", "other_g")],
+                "filter": [("add", "mod.py"), ("add", "mod.py")]}[kind]
+        if kind == "filter":                              # a dirty file: `git add` runs the clean filter on it
+            (w.root / "mod.py").write_text(GOOD + "# dirty one\n")
         subprocess.run(["git", *runs[0]], cwd=str(w.root), capture_output=True)    # sanity: plain git runs it
+        if kind == "filter":
+            (w.root / "mod.py").write_text(GOOD + "# dirty two, longer\n")
         sane = marker.exists()
         marker.unlink(missing_ok=True)
         extra = mod.NO_DRIVER if kind in ("textconv", "external") else ()
@@ -895,6 +936,8 @@ MUTATIONS = [
     ("T4 textconv run by the diff", sc_git_exec("textconv"), "NO_DRIVER = (\"--no-ext-diff\", \"--no-textconv\")",
      "NO_DRIVER = ()"),
     ("T4 diff.external run by the diff", sc_git_exec("external"), None, None),
+    ("T4 filter clean/smudge drivers not neutralised", sc_git_exec("filter"),
+     "GIT_SAFE_CFG + no_filter_cfg(root) + list(a)", "GIT_SAFE_CFG + list(a)"),
     ("A gate bypass", sc_planted_check, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("A failure note not fed", sc_planted_check, "            if self._note(name):\n", "            if False:\n"),
     ("B rc ignored", sc_killed_after_commit, "if rc != 0 else", "if False else"),
@@ -949,6 +992,8 @@ MUTATIONS = [
      "                    pf(sandbox, work)\n", "                    pass\n"),
     ("R2 publish merges WIP not the tested sha", sc_publish_tested_sha,
      "self.git(\"merge\", \"-q\", \"--ff-only\", pend[\"head\"])", "self.git(\"merge\", \"-q\", \"--ff-only\", WIP)"),
+    ("L6 pull drops the owner's $GIT_CONFIG_GLOBAL", sc_sync_user_config,
+     "            if k in os.environ:                      # the owner's own GIT_CONFIG_GLOBAL file is the user config\n                env[k] = os.environ[k]\n", ""),
     ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
 ]
 
@@ -1244,6 +1289,7 @@ def main():
                          ("L4 runway re-checked before the tester", sc_runway_tester),
                          ("L5 negative runway threshold refuses", sc_runway_neg),
                          ("L6 pull main first, 3 tries", sc_sync),
+                         ("L6 the pull keeps the owner's $GIT_CONFIG_GLOBAL", sc_sync_user_config),
                          ("P1 dirty tree after killed build is parked", sc_dirty_sync),
                          ("P1 unisolated tester refused without override", sc_unisolated),
                          ("R2 refused tester logs no test_start", sc_refused_no_start),
@@ -1255,7 +1301,8 @@ def main():
                          ("T4 builder fsmonitor does not run", sc_git_exec("fsmonitor")),
                          ("T4 builder core.hooksPath hooks do not run", sc_git_exec("hooks")),
                          ("T4 builder textconv driver does not run", sc_git_exec("textconv")),
-                         ("T4 builder diff.external does not run", sc_git_exec("external"))):
+                         ("T4 builder diff.external does not run", sc_git_exec("external")),
+                         ("T4 builder filter.* clean/smudge drivers do not run", sc_git_exec("filter"))):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             if old is None:        # diff.external: remove every layer (env, -c, flags)

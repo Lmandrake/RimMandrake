@@ -209,6 +209,37 @@ def sc_wip_diverged(tmp, mod, tag):
         and (w.root / "other.txt").exists() and len(w.pubs()) == 1
 
 
+def sc_pending_main_advanced(tmp, mod, tag):
+    """F: a build is tested-pending (loop killed before the tester), then main advances. The restart must not die
+    on a failed ff-only merge for ever: it records a defect, fails the try, the next build rebuilds on the new main
+    and publishes."""
+    w = World(tmp, "dM" + tag, mod, tester=PASS_ALL)
+    real = w.model
+    hit = []
+
+    def model(role, prompt, **kw):
+        if role == "test" and not hit:
+            hit.append(1)
+            raise Killed()
+        return real(role, prompt, **kw)
+    reopen(w, mod, model=model)
+    try:
+        w.loop.step()
+    except Killed:
+        pass
+    S.sh(w.root, "git", "switch", "-q", "main")
+    (w.root / "other.txt").write_text("someone else published\n")
+    S.sh(w.root, "git", "add", "other.txt")
+    S.sh(w.root, "git", "commit", "-q", "-m", "main advanced")
+    S.sh(w.root, "git", "switch", "-q", "ralph/wip")
+    reopen(w, mod, model=real)
+    out = S.run_steps(w, 10)
+    drill_note(w, "pending_main_advanced", out[-1])
+    ev = [r for r in w.writer.records() if (r.get("detail") or {}).get("kind") == "tested_build_main_advanced"]
+    return bool(ev) and out[-1].startswith("published") and w.main_src() == GOOD and len(w.pubs()) == 1 \
+        and (w.root / "other.txt").exists()
+
+
 def tester_killed_world(tmp, mod, name, lose_state):
     """A World whose first tester pass dies after test_start; returns (world, builds_before_restart)."""
     w = World(tmp, name, mod)
@@ -341,6 +372,8 @@ SCENARIOS = [
     ("T tester pass killed AND state.json lost: builder still blocked", sc_tester_killed_lost_state),
     ("T killed between two tester tries, state lost: still untested, builder not ahead", sc_tester_between_tries_killed),
     ("F main advanced under an unpublished wip try: loud recovery, not a silent failed ff", sc_wip_diverged),
+    ("F main advanced under a tested-pending build: loud recovery, not a Refused on every restart",
+     sc_pending_main_advanced),
 ]
 
 MUTATIONS = [
@@ -359,6 +392,9 @@ MUTATIONS = [
     ("F diverged wip left in place (silent failed ff)", sc_wip_diverged,
      "        if git_run(self.root, \"merge-base\", \"--is-ancestor\", MAIN, \"HEAD\", capture_output=True).returncode == 0:\n            return",
      "        return"),
+    ("F tested-pending build on a moved main goes straight to the ff merge", sc_pending_main_advanced,
+     '        if git_run(self.root, "merge-base", "--is-ancestor", MAIN, pend["head"], capture_output=True).returncode != 0:',
+     '        if False:'),
     ("P build-phase gate bypassed", sc_planted, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("R leftover commit of a killed pass read as an empty candidate", sc_build_killed,
      "if head == base else (None, None)", "if True else (None, None)"),
@@ -408,7 +444,7 @@ def main():
                     detail={"drill": name, "outcome": outcome})
         got = [(r["detail"]["drill"]) for r in sw.records() if r.get("event") == "defect"]
         want = sorted(n for n, _ in DRILL)
-        check(len(want) == 10 and sorted(got) == want and len(set(want)) == 10,
+        check(len(want) == 11 and sorted(got) == want and len(set(want)) == 11,
               "the drill is recorded in the signed event log (%d records): %s" % (len(got), sorted(got)))
     finally:
         for k, v in saved.items():

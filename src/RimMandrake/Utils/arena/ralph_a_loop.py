@@ -571,7 +571,24 @@ def git_run(root, *a, keep_user_config=False, **kw):
     if keep_user_config:
         for k in ("GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL"):
             env.pop(k, None)
-    return subprocess.run(["git", "-C", str(root)] + GIT_SAFE_CFG + list(a), env=env, **kw)
+            if k in os.environ:                      # the owner's own GIT_CONFIG_GLOBAL file is the user config
+                env[k] = os.environ[k]
+    return subprocess.run(["git", "-C", str(root)] + GIT_SAFE_CFG + no_filter_cfg(root) + list(a), env=env, **kw)
+
+
+def no_filter_cfg(root):
+    """`-c` overrides that turn every filter.<name> driver the clone's config defines into plain `cat` (clean and
+    smudge) or nothing (process): .gitattributes `filter=` plus .git/config otherwise runs the builder's command as
+    the harness on status/add/switch/merge/stash. Names are read with the same safe env (reading runs nothing)."""
+    env = dict(os.environ, **GIT_SAFE_ENV)
+    r = subprocess.run(["git", "-C", str(root), "config", "-z", "--get-regexp", r"^filter\..*\.(clean|smudge|process)$"],
+                       env=env, capture_output=True)
+    out = []
+    for kv in r.stdout.split(b"\0"):
+        key = kv.split(b"\n", 1)[0].decode("utf-8", "replace")
+        if key:
+            out += ["-c", key + ("=" if key.endswith(".process") else "=cat")]
+    return out
 
 
 def export_tree(root, sha, dest):
@@ -954,6 +971,14 @@ class Loop:
         return self._final(task, lw, self.state["n"])
 
     def _final(self, task, pend, n):
+        if git_run(self.root, "merge-base", "--is-ancestor", MAIN, pend["head"], capture_output=True).returncode != 0:
+            # main moved under a tested-but-unpublished build (killed between build_end and publish, then a pull): the
+            # ff-only merge can never succeed, and raising here would refuse on every restart. LOUD: a defect event,
+            # the build counts as a failed try, and the next build pass restarts wip at the new main (_sync_wip).
+            self.emit("defect", task, sha=pend["head"], detail={
+                "kind": "tested_build_main_advanced", "main": self.git("rev-parse", MAIN), "base": pend["base"]})
+            return self._failed(task, pend["base"], pend["head"], "main advanced past the tested build's base; "
+                                "rebuild on the new main", n)
         g = self.gate(task, pend["base"], pend["head"], "final", self.log / ("gate.final.%d" % n))
         ok, why = final_gate_ok(g)
         if not ok:
