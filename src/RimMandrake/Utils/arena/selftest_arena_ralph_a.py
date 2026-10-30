@@ -1563,7 +1563,13 @@ def t_bridge_mine(tmp):
     s = mc.read_text()
     anchor = "            now2, tok2 = _bridge_hold(hk)\n"
     check(s.count(anchor) == 1, "M5 mutation anchor present once in cli.py")
-    mc.write_text(s.replace(anchor, "            now2, tok2 = now, None\n"))
+    # Since 003240fec7 the check is made TWICE under the lock (here, and again in _bridge_release with expect_token),
+    # and the first mutation (tok2 = None) was refused by the token compare, so it stopped being unsafe. The mutant
+    # must remove BOTH re-checks to be the real race: the stale values from before the lock are trusted.
+    anchor2 = "        holder, tok = _bridge_hold(model.DEFAULT_BRIDGE_HOST)\n        if holder != seat or tok != expect_token:\n"
+    check(s.count(anchor2) == 1, "M5 second mutation anchor (_bridge_release re-check) present once in cli.py")
+    mc.write_text(s.replace(anchor, "            now2, tok2 = now, tok\n")
+                   .replace(anchor2, "        tok = expect_token\n        if holder != seat or tok != expect_token:\n"))
     for label, clip, want_safe in (("real", cli, True), ("mutant (no re-check inside the lock)", mc, False)):
         led = tmp / ("rf_race_%s" % want_safe)
         os.makedirs(led / "items")
