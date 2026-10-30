@@ -266,6 +266,40 @@ def sc_tester_killed_lost_state(tmp, mod, tag):
     return refused and not ran_ahead and roles == ["test"] and out[-1].startswith("published") and len(w.pubs()) == 1
 
 
+def sc_tester_between_tries_killed(tmp, mod, tag):
+    """T: attempt 1 ended with no verdict; the loop dies BEFORE attempt 2's test_start, and state.json is lost:
+    the build is still untested (a try is left), so the builder is blocked and the tester runs."""
+    w = World(tmp, "dJ" + tag, mod, tester=lambda prompt, cwd: "no verdict given")
+    calls = []
+
+    def wd(sha, dest):
+        calls.append(1)
+        if len(calls) == 2:
+            raise Killed()
+        return w.loop._export_tree(sha, dest)
+    reopen(w, mod, tester_workdir=wd)
+    try:
+        w.loop.step()
+        return False
+    except Killed:
+        pass
+    (w.ctl / "state.json").unlink()
+    w.tester = PASS_ALL
+    n = len(w.calls)
+    reopen(w, mod)
+    try:
+        w.loop.build_pass(TASK)
+        refused = False
+    except mod.NotTested:
+        refused = True
+    except Exception:  # noqa: BLE001
+        refused = False
+    out = S.run_steps(w)
+    drill_note(w, "tester_between_tries_killed", out[-1])
+    return refused and not any(c[0] == "build" for c in w.calls[n:]) and [c[0] for c in w.calls[n:]][:1] == ["test"] \
+        and out[-1].startswith("published") and len(w.pubs()) == 1
+
+
 def sc_tester_retry_killed(tmp, mod, tag):
     """T: attempt 1 ended with no verdict, attempt 2 killed: the earlier test_end must not satisfy the guard."""
     n = []
@@ -305,6 +339,7 @@ SCENARIOS = [
     ("T tester pass killed: the next pass is the tester, builder blocked", sc_tester_killed),
     ("T killed tester RETRY after an ended attempt: builder still blocked", sc_tester_retry_killed),
     ("T tester pass killed AND state.json lost: builder still blocked", sc_tester_killed_lost_state),
+    ("T killed between two tester tries, state lost: still untested, builder not ahead", sc_tester_between_tries_killed),
     ("F main advanced under an unpublished wip try: loud recovery, not a silent failed ff", sc_wip_diverged),
 ]
 
@@ -314,10 +349,12 @@ MUTATIONS = [
      '        if any(\n                r.get("event") in ("test_start", "test_end")'),
     ("T build_pass lets a started-never-ended tester pass through", sc_tester_killed_lost_state,
      '    if bid:\n        raise NotTested("refused: a tester', '    if False:\n        raise NotTested("refused: a tester'),
-    ("T guard matches by build only, not attempt", sc_tester_retry_killed,
-     'last[d["build_id"]] = r["event"]', 'last[d["build_id"]] = min(last.get(d["build_id"], "z"), r["event"])'),
+    ("T open-tester guard never fires: a killed retry after an ended attempt lets the builder run", sc_tester_retry_killed,
+     'if ev == "test_start" or (bid not in verdict and ends.get(bid, 0) < TESTER_TRIES):', 'if False:'),
     ("T guard matches per attempt: a killed attempt a later attempt finished blocks the builder forever", sc_tester_killed,
      'last[d["build_id"]] = r["event"]', 'last[d["build_id"]] = max(last.get(d["build_id"], ""), r["event"])'),
+    ("T an invalid tester try counts as a finished pass on recovery", sc_tester_between_tries_killed,
+     'ev == "test_start" or (bid not in verdict and ends.get(bid, 0) < TESTER_TRIES)', 'ev == "test_start"'),
     ("T both guards removed: the builder runs ahead", sc_tester_killed_lost_state, None, None),
     ("F diverged wip left in place (silent failed ff)", sc_wip_diverged,
      "        if subprocess.run([\"git\", \"-C\", str(self.root), \"merge-base\", \"--is-ancestor\", MAIN, \"HEAD\"],\n                          capture_output=True).returncode == 0:\n            return",
@@ -371,7 +408,7 @@ def main():
                     detail={"drill": name, "outcome": outcome})
         got = [(r["detail"]["drill"]) for r in sw.records() if r.get("event") == "defect"]
         want = sorted(n for n, _ in DRILL)
-        check(len(want) == 9 and sorted(got) == want and len(set(want)) == 9,
+        check(len(want) == 10 and sorted(got) == want and len(set(want)) == 10,
               "the drill is recorded in the signed event log (%d records): %s" % (len(got), sorted(got)))
     finally:
         for k, v in saved.items():

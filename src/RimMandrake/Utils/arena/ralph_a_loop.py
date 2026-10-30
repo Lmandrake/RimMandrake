@@ -210,17 +210,22 @@ def require_tested(recs):
 
 
 def open_tester_build(recs):
-    """The build_id whose LAST tester event is a test_start (a pass started and never ended), else None. Ordered per
-    build, not per (build, tester): a retry killed after an earlier attempt ended is open (GPT r1), and a killed
-    attempt that a LATER attempt of the same build finished is closed, or the builder stays blocked forever (tester
-    drill: the per-attempt match deadlocked every recovered tester pass)."""
-    last = {}
+    """The build_id whose tester pass is UNFINISHED, else None. Per build, not per (build, tester): a retry killed
+    after an earlier attempt ended is open (GPT r1), and a killed attempt that a LATER attempt of the same build
+    finished is closed, or the builder stays blocked forever (tester drill: the per-attempt match deadlocked every
+    recovered tester pass). Unfinished = the last tester event is a test_start, OR no pass/fail verdict yet and fewer
+    than TESTER_TRIES attempts ended (killed between two tries: GPT drill r3)."""
+    last, verdict, ends = {}, set(), {}
     for r in recs:
         d = r.get("detail") or {}
         if r.get("event") in ("test_start", "test_end") and d.get("build_id"):
             last[d["build_id"]] = r["event"]
+            if r["event"] == "test_end":
+                ends[d["build_id"]] = ends.get(d["build_id"], 0) + 1
+                if r.get("verdict") in ("pass", "fail"):
+                    verdict.add(d["build_id"])
     for bid, ev in last.items():
-        if ev == "test_start":
+        if ev == "test_start" or (bid not in verdict and ends.get(bid, 0) < TESTER_TRIES):
             return bid
     return None
 
@@ -668,7 +673,7 @@ class Loop:
         if open_tester_build(recs[last + 1:]) != bid and any(
                 r.get("event") == "test_end" and (r.get("detail") or {}).get("build_id") == bid
                 for r in recs[last + 1:]):
-            return None                       # a tester pass FINISHED (a test_start alone is a killed tester pass)
+            return None                       # a tester pass FINISHED (a start alone, or an unfinished try sequence, is not)
         sha = b.get("sha")
         if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or \
                 subprocess.run(["git", "-C", str(self.root), "cat-file", "-e", sha + "^{commit}"],
