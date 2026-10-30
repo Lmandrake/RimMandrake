@@ -41,8 +41,8 @@ writable; /run is hidden and pid/ipc/uts are unshared. The critic therefore cann
 the rework. The network is its own namespace with one allow-listed route to the model API (arena_critic_relay); that route is a stated residual. The item text is refused when it
 names the candidate's rework item, its arena task id, its base/head sha or a role word (ROLE_WORDS); the
 source item's own name is allowed (a builder sees it). The work base is masked so no call sees another's work dir. A plug-in critic runs in-process and is only as blind
-as its own review() makes it. A run is bound to its critic fingerprint (name, model, class source, prompt, sandbox)
-and its set; a resume with a different one is refused, and one process holds a run's lock at a time. score marks a
+as its own review() makes it. A run is bound to its critic fingerprint (name, model, class source, prompt, sandbox, seccomp program, the
+allow-list's hash, neutraliser, tree builders and their limits, answer parser) and its set; a resume with a different one is refused, and one process holds a run's lock at a time. score marks a
 run made before fingerprinting UNVERIFIED in its provenance field.
 
 THE L4 CRITIC (testpilot_merged §2.1 L4; harness §2.1 `trio` row). The trio arm's critic
@@ -65,7 +65,7 @@ sampled blind review. Forced failure: accept-all (miss 1.0) and reject-all (fals
 RESIDUAL (stated). The tree is TREE_PATHS + the changed areas, not the whole repo: a test that needs a path outside
 it, the game, Windows or the network fails for the environment, and the critic is told so; every false reject is
 listed with its reasons for a human to read. C# cannot be compiled in the sandbox (no Windows build), so C#
-candidates are judged by reading. Results are written under the calibration dir and noted to the rimflow ledger;
+candidates are judged by reading. Results are written under the calibration dir; whoever runs it notes them to the rimflow ledger (the tool does not);
 the signed arena event log (arena_eventlog.py) admits only its own ENTRYPOINTS, which this module is not.
 """
 from __future__ import annotations
@@ -213,14 +213,16 @@ def tierb_labels(set_doc: dict, labels: dict | None = None) -> dict:
     return {cid: row["finding"] for cid, row in got.items()}
 
 
-def score(set_doc: dict, results: list[dict], labels: dict | None = None) -> dict:
-    """First valid verdict per candidate counts; a candidate with no valid verdict counts as invalid."""
+def score(set_doc: dict, results: list[dict], labels: dict | None = None, found: dict | None = None) -> dict:
+    """First valid verdict per candidate counts; a candidate with no valid verdict counts as invalid. `found` passes
+    labels already validated against the full set (an adjudicated set is smaller, so its draw would not reproduce)."""
     by = {c["cid"]: c for c in set_doc["candidates"]}
     latest = verdict_of(results, by)
-    found = tierb_labels(set_doc, labels)
+    found = tierb_labels(set_doc, labels) if found is None else found
     cells = {"good": [], "good_A": [], "good_B": [], "good_labelled": [], "planted": [], "planted_strong": []}
     invalid = []
-    false_rejects, misses = [], []
+    false_rejects, misses, tierb_rejects = [], [], []
+    cells_b: dict = {}
     for cid, c in by.items():
         r = latest.get(cid)
         if r is None or r["verdict"] not in J.VERDICTS:
@@ -230,10 +232,15 @@ def score(set_doc: dict, results: list[dict], labels: dict | None = None) -> dic
             bad = r["verdict"] == "reject"
             cells["good"].append(bad)
             cells["good_" + c["tier"]].append(bad)
-            if c["tier"] == "A" or found.get(cid) == "good":
+            if c["tier"] == "B":
+                cells_b[cid] = bad
+            labelled = c["tier"] == "A" or found.get(cid) == "good"
+            if labelled:
                 cells["good_labelled"].append(bad)
-            if bad:
-                false_rejects.append({"cid": cid, "task": c["task"], "tier": c["tier"], "reasons": r.get("reasons")})
+            if bad:                              # a reject of an unlabelled or labelled-bad tier B is not a false reject
+                (false_rejects if labelled else tierb_rejects).append(
+                    {"cid": cid, "task": c["task"], "tier": c["tier"], "label": found.get(cid),
+                     "reasons": r.get("reasons")})
         else:
             bad = r["verdict"] == "accept"
             cells["planted"].append(bad)
@@ -241,15 +248,17 @@ def score(set_doc: dict, results: list[dict], labels: dict | None = None) -> dic
                 cells["planted_strong"].append(bad)
             if bad:
                 misses.append({"cid": cid, "task": c["task"], "grade": c["grade"], "rework": c["rework_items"]})
+    unlabelled = [r for cid, r in cells_b.items() if cid not in found]
     out = {"false_reject": rate(sum(cells["good_labelled"]), len(cells["good_labelled"]), FR_MAX),   # tier A + labelled
            "false_reject_tierA_only": rate(sum(cells["good_A"]), len(cells["good_A"]), FR_MAX),
            "tierb_labels": {f: sum(v == f for v in found.values()) for f in TIERB_FINDINGS},
-           "reject_rate_tierB_unlabelled": rate(sum(cells["good_B"]), len(cells["good_B"]), FR_MAX),
+           "reject_rate_tierB_unlabelled": rate(sum(unlabelled), len(unlabelled), FR_MAX),
+           "reject_rate_tierB_all": rate(sum(cells["good_B"]), len(cells["good_B"]), FR_MAX),
            "reject_rate_all_good_nominal": rate(sum(cells["good"]), len(cells["good"]), FR_MAX),
            "miss": rate(sum(cells["planted"]), len(cells["planted"]), MISS_MAX),
            "miss_strong_only": rate(sum(cells["planted_strong"]), len(cells["planted_strong"]), MISS_MAX),
            "invalid": len(invalid), "invalid_cids": sorted(invalid), "candidates": len(by),
-           "false_rejects": false_rejects, "misses": misses}
+           "false_rejects": false_rejects, "tierb_rejects_not_false": tierb_rejects, "misses": misses}
     out["reliability"] = reliability(out)
     return out
 
@@ -297,7 +306,7 @@ def adjudicate(set_doc: dict, adj: dict, results: list[dict]) -> dict:
 def score_adjudicated(set_doc: dict, results: list[dict], adj: dict) -> dict:
     """A favourable SENSITIVITY reading, never a verdict: the true defects it adds to the planted side were selected
     because the critic caught them, so its intervals are not calibrated for the predeclared planted population."""
-    s = score(adjudicate(set_doc, adj, results), results)
+    s = score(adjudicate(set_doc, adj, results), results, found=tierb_labels(set_doc))
     n = {f: sum(1 for a in adj["cids"].values() if a["finding"] == f) for f in ADJ_FINDINGS}
     s["adjudication"] = dict(n, scope=adj.get("scope", ""), biased_toward_critic=True)
     s["reliability"] = {"verdict": "SENSITIVITY-ONLY", "why": "outcome-selected adjudication; the decision is the "
@@ -499,6 +508,16 @@ End your answer with exactly one JSON object and nothing after it:
 """
 
 
+def refuse_unmasked(named) -> None:
+    """sandbox_argv's root bind shows everything but the masked directories, so a repo or results dir elsewhere holds
+    the history the critic must not read."""
+    home = os.path.realpath(Path.home())
+    masked = ("/home/", "/mnt/", "/var/tmp/", "/tmp/", home + "/")
+    for what, p in named:
+        if not (os.path.realpath(p) + "/").startswith(masked):
+            raise J.JudgeUnavailable("the %s %s is outside every masked directory: the critic could read it" % (what, p))
+
+
 def sandbox_argv(argv: list, work: Path, cwd: Path, model_route: bool = True) -> list:
     """bwrap: read-only root, fresh /tmp, own pid/ipc/uts/net namespaces; tmpfs over /home (clones, mirror, ~/.claude),
     /mnt (D:, C:, the arena root), /var/tmp (the other candidates) and /run (host service sockets); the claude binary
@@ -514,10 +533,7 @@ def sandbox_argv(argv: list, work: Path, cwd: Path, model_route: bool = True) ->
            "--tmpfs", "/home", "--tmpfs", "/mnt", "--tmpfs", "/var/tmp", "--tmpfs", "/run"]
     if not str(home).startswith("/home/"):
         out += ["--tmpfs", str(home)]
-    masked = ("/home/", "/mnt/", "/var/tmp/", "/tmp/", str(home) + "/")
-    for what, p in (("repo", A.REPO), ("arena root", A.arena_root())):
-        if not (os.path.realpath(p) + "/").startswith(masked):
-            raise J.JudgeUnavailable("the %s %s is outside every masked directory: the critic could read it" % (what, p))
+    refuse_unmasked((("repo", A.REPO), ("arena root", A.arena_root())))
     out += ["--tmpfs", str(work_base())]          # the other candidates' work dirs, wherever ARENA_CRITIC_WORK points
     try:
         AS._prereq()
@@ -624,10 +640,16 @@ def critic_fingerprint(critic: Critic) -> str:
     scalar = (str, int, float, bool, type(None))
     config = sorted((k, repr(v)) for k, v in vars(critic).items()     # configuration, not mutable run state
                     if k not in ("deadline", "exe") and isinstance(v, scalar)) if hasattr(critic, "__dict__") else []
-    parts = [critic.name, getattr(critic, "model", "") or "", str(getattr(critic, "max_usd", "")), L4_PROMPT,
-             inspect.getsource(sandbox_argv), inspect.getsource(prepare), inspect.getsource(critic_tree_files),
-             inspect.getsource(unchanged_assets), inspect.getsource(asset_roots), inspect.getsource(RELAY), exe_id,
-             repr(config)]
+    try:
+        allow = hashlib.sha256(repr(sorted(RELAY.allow_list())).encode()).hexdigest()   # a hash: no host in a run.json
+    except (RELAY.RelayRefused, OSError):
+        allow = ""                               # a stand-in critic needs no route; a real one is refused at the sandbox
+    parts = [critic.name, getattr(critic, "model", "") or "", str(getattr(critic, "max_usd", "")), L4_PROMPT, allow,
+             repr((TREE_BLOB_MAX, TREE_TOTAL_MAX, SIBLING_ROOTS, SIBLING_TEXT, SIBLING_DIR_MAX, INLINE_DIFF_MAX))]
+    parts += [inspect.getsource(f) for f in (sandbox_argv, refuse_unmasked, prepare, critic_tree_files, unchanged_assets,
+                                             asset_roots, text_area, referenced_sibling_dirs, RELAY, J.neutralise,
+                                             J.materialise, J.parse_answer, AS.seccomp_program, AS._bpf_file)]
+    parts += [exe_id, repr(config)]
     try:
         parts.append(inspect.getsource(type(critic)))
     except (OSError, TypeError):
@@ -805,13 +827,17 @@ def prepare(c: dict, critic: Critic, repo: Path = A.REPO) -> CriticInput:
     if critic.needs_tree:
         work = work_base() / secrets.token_hex(8)
         work.mkdir(parents=True, mode=0o700)
-        paths = critic_tree_files(repo, c["head"], text)
-        tree = J.materialise(repo, c["head"], [], work / "tree", tree_paths=paths)
-        rest = [J.scrub(n)[0] for n in unchanged_assets(repo, c["head"], text, paths)]
-        if rest:
-            leaks = J.find_leaks("\n".join(rest), clone=Path(repo), shas=(c["base"], c["head"]))
+        try:
+            paths = critic_tree_files(repo, c["head"], text)
+            tree = J.materialise(repo, c["head"], [], work / "tree", tree_paths=paths)
+            rest = [J.scrub(n)[0] for n in unchanged_assets(repo, c["head"], text, paths)]
+            leaks = rest and J.find_leaks("\n".join(rest), clone=Path(repo), shas=(c["base"], c["head"]))
             if leaks:
                 raise J.NeutraliserLeak("unchanged file names identify the arm: " + "; ".join(leaks[:5]))
+        except BaseException:                    # no CriticInput comes back, so run_one could not remove this tree
+            shutil.rmtree(work, ignore_errors=True)
+            raise
+        if rest:
             (work / ASSET_LIST).write_text("\n".join(rest) + "\n", "utf-8", "surrogateescape")
             diff = ("=== FILES NOT IN YOUR TREE (they exist at this head) ===\nYour tree leaves out %d unchanged files "
                     "of the changed mods: textures, sounds and other binaries, and text it does not need. An absent "
@@ -824,6 +850,10 @@ def run_one(c: dict, critic: Critic, repo: Path = A.REPO) -> dict:
     rec = {"cid": c["cid"], "critic": critic.name, "ts": dt.datetime.now(dt.timezone.utc).strftime(
         "%Y-%m-%dT%H:%M:%SZ")}
     ci = None
+    deadline = getattr(critic, "deadline", None)
+    if deadline is not None and time.time() >= deadline:     # before prepare: a queued job builds no tree
+        return dict(rec, verdict="invalid", reasons=["skipped: the invocation's wall budget is spent"],
+                    meta={"skipped": True})
     try:
         ci = prepare(c, critic, repo)
         v = critic.review(ci)
@@ -849,11 +879,22 @@ def read_results(path: Path) -> list[dict]:
     return out
 
 
+def append_record(path: Path, rec: dict) -> None:
+    """One JSON line. A killed writer may have left a partial line: this record starts a new one, so read_results
+    loses only the partial."""
+    with open(path, "a+b") as fh:
+        fh.seek(0, os.SEEK_END)
+        torn = fh.tell() > 0 and (fh.seek(-1, os.SEEK_END) or fh.read(1) != b"\n")
+        fh.write((b"\n" if torn else b"") + json.dumps(rec, sort_keys=True).encode() + b"\n")
+
+
 def run(set_doc: dict, critic: Critic, run_id: str, concurrency: int = 8, max_n: int | None = None,
         attempts: int = 2, root: Path | None = None, repo: Path = A.REPO, budget_s: float | None = None) -> dict:
     """Resumable: a candidate with a valid verdict in this run is skipped; an invalid one is retried until it has
     `attempts` records. Order is shuffled per run (seeded by the run id), never by role."""
     d = (root or calib_root()) / run_id
+    if critic.needs_tree:
+        refuse_unmasked((("repo", repo), ("calibration root", d)))
     d.mkdir(parents=True, exist_ok=True)
     with open(d / ".lock", "w") as lk:
         try:
@@ -889,16 +930,15 @@ def _run_locked(d, set_doc, critic, run_id, concurrency, max_n, attempts, repo, 
     random.Random(run_id).shuffle(todo)
     if max_n is not None:
         todo = todo[:max_n]
-    if budget_s is not None and hasattr(critic, "deadline"):
-        critic.deadline = time.time() + budget_s
+    if hasattr(critic, "deadline"):              # a plug-in without one is not cut: its own review() must bound itself
+        critic.deadline = None if budget_s is None else time.time() + budget_s
     with cf.ThreadPoolExecutor(max_workers=max(1, concurrency)) as ex:
         futs = [ex.submit(run_one, c, critic, repo) for c in todo]
         for f in cf.as_completed(futs):
             rec = f.result()
             if rec.get("meta", {}).get("skipped"):
                 continue                         # not attempted: never counts as a try
-            with open(res_path, "a") as fh:
-                fh.write(json.dumps(rec, sort_keys=True) + "\n")
+            append_record(res_path, rec)
     allres = read_results(res_path)
     left = [c["cid"] for c in set_doc["candidates"] if c["cid"] not in {r["cid"] for r in allres
                                                                           if r["verdict"] in J.VERDICTS}]
@@ -963,7 +1003,8 @@ def main(argv=None) -> int:
         if block is None:
             continue
         print("==", label)
-        for k in ("false_reject", "reject_rate_tierB_unlabelled", "reject_rate_all_good_nominal", "miss",
+        for k in ("false_reject", "reject_rate_tierB_unlabelled", "reject_rate_tierB_all",
+                  "reject_rate_all_good_nominal", "miss",
                   "miss_strong_only"):
             v = block[k]
             print("%-32s %s/%s = %s  95%% [%s, %s]  P(>=%.2f)=%s" % (k, v["k"], v["n"], None if v["rate"] is None

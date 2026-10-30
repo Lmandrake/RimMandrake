@@ -176,7 +176,7 @@ def t_rule(repo, base, head, root):
           and s["reject_rate_tierB_unlabelled"]["k"] == 15, json.dumps(s["reliability"]))
     res.append({"cid": a_cids[0]["cid"], "verdict": "invalid"})          # a later invalid never overrides a verdict
     check("a later invalid record does not erase a valid verdict", C.score(doc, res)["false_reject"]["k"] == 2)
-    check("false rejects are listed with task and reasons", len(s["false_rejects"]) == 17
+    check("false rejects are listed with task and reasons", len(s["false_rejects"]) == 2 and len(s["tierb_rejects_not_false"]) == 15
           and all("task" in x for x in s["false_rejects"]))
     few = synth_set(base, head, n_good=30, n_bad=4)       # 4/4 missed: below MIN_BAD, but Wilson lower .51 >= .5
     s = C.score(few, [{"cid": c["cid"], "verdict": "accept"} for c in few["candidates"]])
@@ -448,6 +448,16 @@ def t_tierb_labels(base, head):
     real = C.load_set()
     got = C.tierb_labels(real)
     check("the shipped labels are the seeded draw of the shipped set", len(got) == 10, str(got))
+    check("rejects of a labelled defect or an unlabelled tier B are not listed as false rejects",
+          sorted(r["cid"] for r in s["false_rejects"]) == sorted([draw[0]] + [c["cid"] for c in doc["candidates"][3:]])
+          and len(s["tierb_rejects_not_false"]) == 2, str(s["tierb_rejects_not_false"]))
+    check("the unlabelled tier-B rate leaves the labelled draw out",
+          s["reject_rate_tierB_unlabelled"]["n"] == 1 and s["reject_rate_tierB_all"]["n"] == 3)
+    bad = next(c for c, f in got.items() if f == "good")
+    res = [{"cid": c["cid"], "verdict": "reject"} for c in real["candidates"]]
+    adj = {"set_sha256": real["set_sha256"], "cids": {bad: {"finding": "bad_candidate", "evidence": "e"}}}
+    check("adjudicating a drawn candidate out does not break the draw check",
+          C.score_adjudicated(real, res, adj)["candidates"] == len(real["candidates"]) - 1)
 
 
 def t_network():
@@ -571,6 +581,99 @@ def t_adjudicate(repo, base, head):
           and all(a["finding"] in C.ADJ_FINDINGS and a["evidence"] for a in real["cids"].values()))
 
 
+def t_review_fixes(root):
+    """Findings of the CRITIC_CALIB_REPAIR_RATES_OF_OLD_SANDBOX review; each fails on the code before it."""
+    import socket as S
+    import time as T
+    RELAY = C.RELAY
+    root.mkdir(parents=True, exist_ok=True)
+    # a model silent for longer than the connect timeout keeps its link
+    up = S.socket(); up.bind(("127.0.0.1", 0)); up.listen(1)
+    port = up.getsockname()[1]
+
+    def slow():
+        c, _ = up.accept()
+        T.sleep(0.8)
+        c.sendall(b"late")
+        c.close()
+    threading.Thread(target=slow, daemon=True).start()
+    old, RELAY.CONNECT_TIMEOUT = RELAY.CONNECT_TIMEOUT, 0.2
+    r = RELAY.Relay({"127.0.0.1:%d" % port}, root / "relay")
+    try:
+        u = S.socket(S.AF_UNIX); u.connect(r.path); u.settimeout(5)
+        u.sendall(b"CONNECT 127.0.0.1:%d HTTP/1.1\r\n\r\n" % port)
+        got = b""
+        while True:
+            d = u.recv(4096)
+            if not d:
+                break
+            got += d
+        check("relay: a silent upstream outlives CONNECT_TIMEOUT", got.endswith(b"late"), repr(got[-40:]))
+    finally:
+        RELAY.CONNECT_TIMEOUT = old
+        r.close()
+    # a torn last line costs only itself
+    p = root / "torn.jsonl"
+    p.write_text('{"cid": "a"}\n{"cid": "to')
+    C.append_record(p, {"cid": "b"})
+    C.append_record(p, {"cid": "c"})
+    check("append after a torn line keeps both records", [x["cid"] for x in C.read_results(p)] == ["a", "b", "c"])
+    # an unmasked repo is refused before a critic sees it
+    try:
+        C.run({"candidates": [], "set_sha256": "x"}, C.L4OpusCritic(exe=["claude"]), "r", root=root / "rr",
+              repo=Path("/usr/share"))
+        check("unmasked repo refused", False)
+    except C.J.JudgeUnavailable:
+        check("unmasked repo refused", True)
+    # the fingerprint binds what the verdict depends on
+    fp = C.critic_fingerprint(C.AcceptAll())
+    real = C.TREE_BLOB_MAX
+    C.TREE_BLOB_MAX = real + 1
+    check("a tree limit changes the fingerprint", C.critic_fingerprint(C.AcceptAll()) != fp)
+    C.TREE_BLOB_MAX = real
+    saved = os.environ.get(RELAY.ALLOW_ENV)
+    os.environ[RELAY.ALLOW_ENV] = "a.example:443"
+    fa = C.critic_fingerprint(C.AcceptAll())
+    os.environ[RELAY.ALLOW_ENV] = "b.example:443"
+    check("the allow-list changes the fingerprint", C.critic_fingerprint(C.AcceptAll()) != fa)
+    os.environ.pop(RELAY.ALLOW_ENV) if saved is None else os.environ.__setitem__(RELAY.ALLOW_ENV, saved)
+    # a refused preparation leaves no tree
+    os.environ.setdefault("ARENA_CRITIC_WORK", str(root / "w"))
+    before = set(C.work_base().glob("*")) if C.work_base().exists() else set()
+    real_mat, C.J.materialise = C.J.materialise, lambda *a, **k: (_ for _ in ()).throw(C.J.JudgeError("x"))
+    real_ta, C.text_area, real_neu, C.J.neutralise = C.text_area, lambda *a: (["a.py"], []), C.J.neutralise, \
+        lambda *a, **k: type("N", (), {"text": "diff"})()
+
+    class Tree:
+        name, needs_tree = "t", True
+    try:
+        C.prepare({"prompt": "p", "criteria": "c", "cid": "x", "head": "h", "base": "b"}, Tree())
+        check("failed tree refused", False)
+    except C.J.JudgeError:
+        left = set(C.work_base().glob("*")) - before
+        check("a failed tree build leaves no work dir", not left, str(left))
+    finally:
+        C.J.materialise, C.text_area, C.J.neutralise = real_mat, real_ta, real_neu
+    # a spent budget builds no tree; a later unbudgeted invocation is not cut by the old deadline
+    calls = []
+
+    class Crit:
+        name, needs_tree, deadline = "d", False, 1.0
+
+        def review(self, c):
+            calls.append(c)
+            return C.CriticVerdict("accept", [], {})
+    real_prep, C.prepare = C.prepare, lambda *a: calls.append("prep") or (_ for _ in ()).throw(RuntimeError("x"))
+    try:
+        rec = C.run_one({"cid": "z"}, Crit())
+    finally:
+        C.prepare = real_prep
+    check("spent budget: no prepare", rec["meta"].get("skipped") is True and not calls, str(rec))
+    cr = Crit()
+    C.run({"candidates": [], "set_sha256": "x"}, cr, "dl", root=root / "dl")
+    check("no budget clears an old deadline", cr.deadline is None)
+
+
 def t_tree_and_hidden(root):
     repo = root / "repo2"
     (repo / "pkg").mkdir(parents=True)
@@ -678,6 +781,7 @@ def main() -> int:
         t_persist(repo, base, head)
         t_adjudicate(repo, base, head)
         t_tree_and_hidden(root)
+        t_review_fixes(root / "rf")
     finally:
         shutil.rmtree(root, ignore_errors=True)
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

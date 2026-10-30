@@ -36,7 +36,7 @@ they never enter the false-reject term (their reject rate is reported apart, as 
 planted mutant - of either tier - stays a labelled defect in the catch term. This mirrors arena_critic_calib's rule
 (false reject on tier A only).
   decision      = discrimination(critic) - discrimination(baseline), on candidates both judged validly
-95% intervals (CRITIC_CALIB_FIX_SMALL_N_INTERVAL) are exact, not bootstrapped: at 8 labelled originals a percentile
+95% intervals (CRITIC_CALIB_FIX_SMALL_N_INTERVAL) are built from exact terms, not bootstrapped (the MOVER combination itself is approximate and ignores the covariance of the two terms, so it can under-cover; the sign-flip test is the guard on a call): at 8 labelled originals a percentile
 bootstrap was anti-conservative and collapsed to zero width at 0/n. See INTERVAL_METHOD: Clopper-Pearson terms combined
 by MOVER; the paired difference uses exact bounds on the discordant pairs, so a handful of them is never a call.
 An EQUIVALENT mutant (changes no behaviour) stays in the set as a decoy description but is never a labelled defect. Numbers are MEASURED only from fingerprinted runs on this set's sha.
@@ -49,11 +49,13 @@ from __future__ import annotations
 
 import argparse
 import concurrent.futures as cf
+import fcntl
 import hashlib
 import json
 import math
 import os
 import random
+import re
 import secrets
 import shutil
 import signal
@@ -79,7 +81,7 @@ MATCH_TIMEOUT = 300
 MATCH_FP_MAX = 0.10      # decoy hit rate above this: the matcher cannot tell defects apart; reason scores UNMEASURED
 INTERVAL_ALPHA = 0.05
 SIGN_FLIP_ALPHA = 0.05   # a call needs the interval to exclude 0 AND the exact cluster sign-flip test (sign_flip_p)
-INTERVAL_METHOD = ("exact Clopper-Pearson terms combined by MOVER (Zou & Donner 2008); the paired difference bounds each "
+INTERVAL_METHOD = ("exact Clopper-Pearson terms combined by MOVER (Zou & Donner 2008; approximate, not exact coverage); the paired difference bounds each "
                    "term by the box of exact 97.5% bounds on the discordance rate and on the direction among discordant "
                    "pairs (exact McNemar, Bonferroni-joined); the interval treats mutants as independent, so a call also needs the "
                    "exact sign-flip test over originals (sign_flip_p), which respects clustering and term correlation")
@@ -108,9 +110,10 @@ def mutate_text(text: str, m: dict) -> str:
     nth = m.get("nth", 1)
     if not isinstance(nth, int) or isinstance(nth, bool) or not 1 <= nth <= n:
         raise A.ArenaError("%s: nth %r is outside 1..%d in %s" % (m["mid"], nth, n, m["path"]))
-    i = -1
-    for _ in range(nth):
-        i = text.index(find, i + 1)
+    i, start = -1, 0
+    for _ in range(nth):                        # non-overlapping, as str.count above counted them
+        i = text.index(find, start)
+        start = i + len(find)
     return text[:i] + m["replace"] + text[i + len(find):]
 
 
@@ -305,6 +308,18 @@ def latest(recs: list, doc: dict) -> dict:
 # ---------------------------------------------------------------- runs (with seeded originals)
 
 def seed(doc: dict, critic, run_id: str, from_run: str, from_set: dict, root: Path | None = None) -> dict:
+    """_seed under the run's lock (the one C.run holds): two critics cannot both start a new run's run.json."""
+    d = (root or C.calib_root()) / run_id
+    d.mkdir(parents=True, exist_ok=True)
+    with open(d / ".lock", "w") as lk:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            raise SystemExit("run %s is being run by another process; refusing to seed into it" % run_id)
+        return _seed(doc, critic, run_id, from_run, from_set, root)
+
+
+def _seed(doc: dict, critic, run_id: str, from_run: str, from_set: dict, root: Path | None = None) -> dict:
     """Copy `from_run`'s valid verdicts into run `run_id` for every candidate of this set that is BYTE-IDENTICAL in
     `from_set`, only if `from_run` was made on `from_set` (its recorded sha, which must also be from_set's own content
     hash) by a critic with THIS critic's fingerprint. `from_set` is the shipped base set (originals) or an earlier build
@@ -341,18 +356,17 @@ def seed(doc: dict, critic, run_id: str, from_run: str, from_set: dict, root: Pa
         if r["verdict"] in J.VERDICTS:
             valid[r["cid"]] = r
     n = 0
-    with open(d / "results.jsonl", "a") as fh:
-        for c in doc["candidates"]:
-            if c["cid"] in have or c["cid"] not in valid or from_by.get(c["cid"]) != c:
-                continue                     # absent there, or changed since: this run must judge it itself
-            r = dict(valid[c["cid"]])
-            m = dict(r.get("meta") or {})
-            m["seeded_from"] = list(m.get("seeded_from") or []) if isinstance(m.get("seeded_from"), list) else (
-                [m["seeded_from"]] if m.get("seeded_from") else [])
-            m["seeded_from"].append(from_run)
-            r["meta"] = m
-            fh.write(json.dumps(r, sort_keys=True) + "\n")
-            n += 1
+    for c in doc["candidates"]:
+        if c["cid"] in have or c["cid"] not in valid or from_by.get(c["cid"]) != c:
+            continue                         # absent there, or changed since: this run must judge it itself
+        r = dict(valid[c["cid"]])
+        m = dict(r.get("meta") or {})
+        m["seeded_from"] = list(m.get("seeded_from") or []) if isinstance(m.get("seeded_from"), list) else (
+            [m["seeded_from"]] if m.get("seeded_from") else [])
+        m["seeded_from"].append(from_run)
+        r["meta"] = m
+        C.append_record(d / "results.jsonl", r)
+        n += 1
     return {"seeded": n, "from": from_run}
 
 
@@ -381,6 +395,10 @@ MATCH_MODEL = "opus"
 MATCHER_ID = hashlib.sha256((MATCH_PROMPT + "\0" + MATCH_MODEL).encode()).hexdigest()[:12]
 
 
+VERDICT_LINE = re.compile(r"(?im)^[\s*#_]*VERDICT\b[\s*_:=-]*(?:(?:PASS|FAIL|ACCEPT|REJECT)\w*)?[\s*_:.\u2014-]*")
+VERDICT_JSON = re.compile(r'(?i)"verdict"\s*:\s*"(?:reject|accept)"')
+
+
 def writeup_of(rec: dict) -> str:
     """The reviewer's own words, without the verdict token, the reviewer's name or anything else about the run; the
     last WRITEUP_MAX chars of writeup_full (score() counts every reject that this cap cut)."""
@@ -399,8 +417,8 @@ def writeup_full(rec: dict) -> str:
     elif tail:
         parts = [tail] + [p for p in parts if p not in tail]
     text = "\n".join(parts)
-    text = "\n".join(ln for ln in text.splitlines() if not ln.strip().upper().startswith(("VERDICT", "**VERDICT")))
-    return text.replace('"verdict": "reject"', "").replace('"verdict": "accept"', "")
+    text = VERDICT_LINE.sub("", text)           # the token only: a finding may share its line
+    return VERDICT_JSON.sub("", text)
 
 
 def match_jobs(doc: dict, runs: dict) -> list:

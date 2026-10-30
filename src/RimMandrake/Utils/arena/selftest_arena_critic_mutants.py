@@ -142,6 +142,15 @@ def tab_of(rows):
                 "muts": [("%s-m%d" % (o, i), v, h) for i, (v, h) in enumerate(ms)]} for o, (ov, ms) in rows.items()}
 
 
+def t_review_fixes():
+    w = M.writeup_of({"meta": {"answer": "VERDICT: reject \u2014 foo.py uses > for >=\n**VERDICT: FAIL**"}})
+    check("a finding on the verdict line survives, the token does not", w.strip() == "foo.py uses > for >=", repr(w))
+    w = M.writeup_of({"reasons": ['{"verdict":"reject","reasons":["x"]}']})
+    check("compact verdict JSON is stripped", "reject" not in w, w)
+    check("nth counts what occurrences counted", M.mutate_text(
+        "aaa aa", {"mid": "m", "path": "p", "find": "aa", "replace": "X", "occurrences": 2, "nth": 2}) == "aaa X")
+
+
 def t_scoring():
     t = tab_of({"o1": ("accept", [("reject", True), ("reject", False)]), "o2": ("reject", [("accept", False)])})
     check("verdict discrimination = 2/3 - 1/2", abs(M._disc(t, list(t), "verdict") - (2 / 3 - 1 / 2)) < 1e-9)
@@ -471,6 +480,7 @@ def main() -> int:
         t_commit(root)
         t_matcher()
         t_writeup()
+        t_review_fixes()
         t_scoring()
         t_small_n()
         t_exact_pins()
