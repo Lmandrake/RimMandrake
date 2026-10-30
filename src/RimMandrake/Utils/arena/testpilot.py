@@ -550,12 +550,24 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
                                 "test" % (c["cand"], c["parent"]))
     if game and facts.get("process_alive") and facts.get("canary_ok") is False:
         tried = set(sess.get("ladder_tried") or [])
+        spent = int(sess.get("red_rungs") or 0)       # survive a green blip and a reload: only a finished test clears
+        max_rungs = int(rule.get("max_red_rungs", 6))
+        if spent >= max_rungs:
+            return dict(base, action="park", cand=(_target(q, game, byid) or {}).get("cand"),
+                        why="the canary keeps flapping: %d recovery rungs spent without one finished test "
+                            "(max %d): parked for escalation, no further ladder (M1)" % (spent, max_rungs))
         for rung in rule["ladder"]:
             if rung != "hold" and rung not in tried:
                 return dict(base, action="ladder", rung=rung, why="canary red on a live process: recovery ladder "
                             "before any reload (a red canary alone is no restart)")
+        if int(sess.get("red_reloads") or 0) >= int(rule.get("max_red_reloads", 1)):
+            return dict(base, action="park", cand=(_target(q, game, byid) or {}).get("cand"),
+                        why="the canary is red again after the ladder and %d reload(s) spent on a red canary "
+                            "(max %d): parked for escalation, not reloaded again (M1)"
+                            % (int(sess.get("red_reloads") or 0), int(rule.get("max_red_reloads", 1))))
         return _reload(p, rule, lane, base, "R1", _target(q, game, byid), now, sess,
-                       "the canary is still red after every ladder rung (%s)" % ", ".join(sorted(tried)))
+                       "the canary is still red after every ladder rung (%s)" % ", ".join(sorted(tried)),
+                       red=True)
     if not game:
         if not q:
             return dict(base, action="idle", why="no game and nothing queued")
@@ -648,13 +660,13 @@ def _target(q, game, byid):
     return q[0] if q else None
 
 
-def _reload(p, rule, lane, base, r, cand, now, sess, why, drain=None):
+def _reload(p, rule, lane, base, r, cand, now, sess, why, drain=None, red=False):
     if cand is None:
         return dict(base, action="idle", why="%s would apply but no candidate is queued" % r)
     cost = reload_cost(p, rule, lane, cand["profile"], cand["tier"])
     started = (sess or {}).get("started_t")
     churn = bool(started and now - started > rule.get("churn_alarm_session_age_s", 2700))
-    return dict(base, action="reload", rule=r, cand=cand["cand"], why=why, cost=cost, drain=drain,
+    return dict(base, action="reload", rule=r, cand=cand["cand"], why=why, cost=cost, drain=drain, red=red,
                 rule_sha=rule["_sha"], churn_alarm=churn)
 
 
@@ -875,6 +887,8 @@ class Pilot:
                 return {"decision": dec, "result": self.reload(dec)}
             if dec["action"] == "carry":
                 return {"decision": dec, "result": self.carry(dec)}
+            if dec["action"] == "park":
+                return {"decision": dec, "result": self.park(dec)}
             if dec["action"] == "ladder":
                 return {"decision": dec, "result": self.ladder(dec)}
             if dec["action"] in ("test", "hot_apply"):
@@ -903,6 +917,18 @@ class Pilot:
         return out
 
     # -- acts
+    def park(self, dec: dict) -> dict:
+        """M1: a canary that will not stay green is escalated, not looped: the target is parked, the decision logged."""
+        self._check_live()
+        rec = self._decision({"kind": "park", "cand": dec.get("cand"), "why": dec["why"]})
+        if dec.get("cand"):
+            set_state(self.p, dec["cand"], "parked", why=dec["why"])
+        with locked(self.p):
+            s = self._check_live()
+            s["red_rungs"], s["red_reloads"], s["ladder_tried"] = 0, 0, []
+            self._save(s)
+        return {"decision": rec, "parked": dec.get("cand")}
+
     def carry(self, dec: dict) -> dict:
         """L9a: an all-carried rebuild writes its carried records and resolves; the game is not touched."""
         self._check_live()
@@ -957,6 +983,8 @@ class Pilot:
                          if self.lane.expected_active is not None else None,
                          "loaded_save": None, "hot_applied_t": None, "reload_decision": rec["id"]}
             s["ladder_tried"] = []
+            if dec.get("red"):
+                s["red_reloads"] = int(s.get("red_reloads") or 0) + 1   # a reload does not forgive a red canary
             self._save(s)
         self.epoch = s["epoch"]
         self._supersede_older(c)
@@ -987,6 +1015,7 @@ class Pilot:
         with locked(self.p):
             s = self._check_live()
             s["ladder_tried"] = sorted(set(s.get("ladder_tried") or []) | {rung})
+            s["red_rungs"] = int(s.get("red_rungs") or 0) + 1
             if ok and rung == "reload_save" and s.get("game"):
                 s["game"]["reset_t"] = self.d.clock()
                 s["game"]["loaded_save"] = self.lane.loaded_save
@@ -1126,6 +1155,8 @@ class Pilot:
                               rc=rc, log=str(log), crash=crash, hotfix=hot and status == "pass",
                               taint=taint if status in ("fail", "invalid") else None, nolock=True)
             s["in_flight"] = None
+            if status in ("pass", "fail"):      # a finished, judging test is the proof the game is usable again
+                s["red_rungs"], s["red_reloads"] = 0, 0
             self._save(s)
         self._ev("test_end", task=c["item"], sha=c["sha"], verdict=status,
                  detail={"tester": self.id, "cand": c["cand"], "scenario": scn["id"], "why": why})

@@ -832,6 +832,50 @@ def t_canary_blip():
           % (len(reds), actions(steps)))
 
 
+def t_ladder_remembers_reloads():
+    """TESTPILOT_FIX_LADDER_FORGETS_RELOAD: a canary that stays red (or flaps) reaches a bounded end: a logged park,
+    never an endless ladder -> reload -> ladder cycle (M1)."""
+    _ladder_bound("ladder_forgets", False)
+    _ladder_bound("ladder_flaps", True)
+
+
+def _ladder_bound(name, flap):
+    root, p = fresh(name)
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_LF", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    real = d.game_facts
+    # each guard is proved alone: the red canary by the reload memory, the flapping one by the rung count
+    pl.rule = dict(pl.rule, **({"max_red_reloads": 99} if flap else {"max_red_rungs": 99}))
+
+    n = {"k": 0}
+
+    def red():
+        f = real()
+        n["k"] += 1
+        ok = flap and n["k"] % 2 == 0     # a flapping canary is green on every other probe
+        f["ingame_canary"]["ok"] = ok
+        f["live_colonists"] = 3 if ok else 0
+        return f
+    d.game_facts = red
+    acts = []
+    can = None
+    for _ in range(60):
+        r = pl.step(can)
+        a = r["decision"]["action"]
+        acts.append(a)
+        if a in ("idle", "yield", "park"):
+            break
+        res = r.get("result") or {}
+        can = False if a in ("ladder", "test", "hot_apply") else None
+    check(acts and acts[-1] in ("idle", "park") and acts.count("reload") <= 1,
+          "%s: a red canary ends in a bounded way: %s" % (name, acts))
+    check(any(x.get("kind") == "park" for x in T._read(p["decisions"])), "the park is a logged decision")
+    check(T.states(p)[c["cand"]]["state"] == "parked", "the candidate is parked: %s" % T.states(p)[c["cand"]])
+
+
 def pl_run(pl, canary_ok, n=20):
     out = []
     for _ in range(n):
@@ -960,7 +1004,7 @@ def t_killpg():
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_owner_yield, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
-              t_taint_keeps_fail, t_canary_blip, t_carried_rebuild, t_mutant_guards, t_killpg):
+              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run
