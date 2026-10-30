@@ -700,7 +700,8 @@ class RealDriver:
         if is_seat_clone(clone):
             return False, "clone %s is a seat clone: main is never checked out there by a lane" % clone, None
         out = ""
-        for argv, tr in ((["fetch", "-q", "origin"], True),
+        # --upload-pack on the command line: it beats a clone-local remote.origin.uploadpack (a config -c does not)
+        for argv, tr in ((["fetch", "-q", "--upload-pack=git-upload-pack", "origin"], True),
                          (["checkout", "-q", "--detach", "origin/main"], False),
                          (["clean", "-fdq"], False)):
             rc, txt = _sg(clone, *argv, timeout=300, transport=tr)

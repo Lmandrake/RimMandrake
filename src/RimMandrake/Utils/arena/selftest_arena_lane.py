@@ -886,6 +886,19 @@ def t_realdriver_git():
     except Exception:  # noqa: BLE001
         ran2 = True
     check(ran2, "RealDriver git mutation (plain git) runs the planted command: the test goes RED")
+    # a clone-local remote.origin.uploadpack must not run on restore_mods' fetch (the fetch passes --upload-pack itself)
+    g("config", "remote.origin.uploadpack", str(hook), cwd=clone)
+    mark.unlink(missing_ok=True)
+    ok3 = L.RealDriver().restore_mods([], str(clone))[0]
+    check(ok3 and not mark.exists(), "RealDriver.restore_mods fetch runs no clone-local remote.origin.uploadpack (ok=%s)" % ok3)
+    mark.unlink(missing_ok=True)
+    plain = text.replace('"fetch", "-q", "--upload-pack=git-upload-pack", "origin"', '"fetch", "-q", "origin"')
+    assert plain != text
+    m2 = types.ModuleType("arena_lane_noup")
+    m2.__file__ = str(HERE / "arena_lane.py")
+    exec(compile(plain, m2.__file__, "exec"), m2.__dict__)
+    m2.RealDriver().restore_mods([], str(clone))
+    check(mark.exists(), "dropping --upload-pack from the fetch runs the planted uploadpack: the test goes RED")
 
 
 for t in (t_stale, t_dead, t_full, t_loadtime, t_restore, t_mods_restore, t_rules, t_canary, t_verdicts, t_review,
