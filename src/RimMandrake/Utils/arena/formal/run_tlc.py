@@ -7,7 +7,8 @@ handoff and the arena switch. The matrix below is the item's criteria, each row 
   known_race   Mode goodbye, Bugs {dead_session_drop}: TLC must find the known goodbye interleaving, i.e. an S5
                violation whose trace sends an owner message while the handoff is in phase `killed` (old window
                dead, fresh one not yet up: conductor_briefing_2026-10-28 B4 row 2).
-  fixed_*      Bugs {} in each mode: S1-S6 hold and L1, L2 hold under weak fairness at the stated bounds.
+  fixed_*      Bugs {} in each mode: S1-S6 hold at BOUNDS (goodbye: L2 too).
+  live_*       Bugs {} in testpilot and arena: S1-S6 and L1, L2 hold under weak fairness with one candidate.
   m_*          one planted defect per invariant / liveness property: TLC must report exactly that property
                violated (a property that cannot fail proves nothing).
 
@@ -35,22 +36,27 @@ SPEC = HERE / "Handoff.tla"
 INVS = ["S1", "S2", "S3", "S4", "S5", "S6"]
 PROPS = ["L1", "L2"]
 
-# Bounds: 2 owner messages, 2 candidates, 2 fixes, 1 crash, 1 owner return, any number of cancels.
+# Bounds: 2 owner messages, 2 candidates, 2 fixes, 1 crash, 1 owner return, 1 failed relaunch, any number of
+# cancels. Liveness rows check one candidate (LIVE): with two, the fair-cycle search exceeds the 480 s row budget
+# (3.7M states, about 7 min, in testpilot); safety holds at two candidates in the safety rows.
 BOUNDS = {"Msgs": ["m1", "m2"], "Cands": ["c1", "c2"], "MaxFix": 2}
+LIVE = {"Cands": ["c1"]}
 
 # name: (mode, bugs, invariants, properties, expect) ; expect = "pass" or the property TLC must report violated
 MATRIX = {
     "known_race":        ("goodbye",   ["dead_session_drop"], INVS, [], "S5"),
     "fixed_goodbye":     ("goodbye",   [], INVS, ["L2"], "pass"),     # no candidates in goodbye: L1 is vacuous
-    "fixed_testpilot":   ("testpilot", [], INVS, PROPS, "pass"),
-    "fixed_arena":       ("arena",     [], INVS, PROPS, "pass"),
+    "fixed_testpilot":   ("testpilot", [], INVS, [], "pass"),
+    "fixed_arena":       ("arena",     [], INVS, [], "pass"),
+    "live_testpilot":    ("testpilot", [], INVS, PROPS, "pass", LIVE),
+    "live_arena":        ("arena",     [], INVS, PROPS, "pass", LIVE),
     "m_S1_overlap":      ("arena",     ["overlap"], ["S1"], [], "S1"),
     "m_S2_stale":        ("testpilot", ["stale_verdict"], ["S2"], [], "S2"),
     "m_S3_cs_up":        ("testpilot", ["cs_while_up"], ["S3"], [], "S3"),
     "m_S4_no_rule":      ("testpilot", ["reload_no_rule"], ["S4"], [], "S4"),
     "m_S5_mem_queue":    ("testpilot", ["mem_queue"], ["S5"], [], "S5"),
     "m_S6_straggler":    ("arena",     ["straggler"], ["S6"], [], "S6"),
-    "m_L1_mem_queue":    ("testpilot", ["mem_queue"], [], ["L1"], "L1"),
+    "m_L1_mem_queue":    ("testpilot", ["mem_queue"], [], ["L1"], "L1", LIVE),
     "m_L2_dead_session": ("goodbye",   ["dead_session_drop"], [], ["L2"], "L2"),
 }
 
@@ -70,17 +76,23 @@ def find_jar():
     return None
 
 
-def cfg_text(mode, bugs, invs, props):
+def row(name):
+    """-> (mode, bugs, invariants, properties, expect, bounds) with the row's bound overrides applied."""
+    r = MATRIX[name]
+    return r[:5] + ({**BOUNDS, **(r[5] if len(r) > 5 else {})},)
+
+
+def cfg_text(mode, bugs, invs, props, bounds=BOUNDS):
     def mset(xs):
         return "{" + ", ".join(xs) + "}"
     lines = ["SPECIFICATION Spec" if props else "INIT Init\nNEXT Next",
              "CONSTANTS",
              '  Mode = "%s"' % mode,
-             "  Msgs = %s" % mset(BOUNDS["Msgs"]),
-             "  Cands = %s" % mset([] if mode == "goodbye" else BOUNDS["Cands"]),
-             "  MaxFix = %d" % BOUNDS["MaxFix"],
+             "  Msgs = %s" % mset(bounds["Msgs"]),
+             "  Cands = %s" % mset([] if mode == "goodbye" else bounds["Cands"]),
+             "  MaxFix = %d" % bounds["MaxFix"],
              "  Bugs = {%s}" % ", ".join('"%s"' % b for b in bugs)]
-    lines += ["  %s = %s" % (v, v) for v in BOUNDS["Msgs"] + ([] if mode == "goodbye" else BOUNDS["Cands"])]
+    lines += ["  %s = %s" % (v, v) for v in bounds["Msgs"] + ([] if mode == "goodbye" else bounds["Cands"])]
     lines += ["INVARIANT TypeOK"] + ["INVARIANT %s" % i for i in invs] + ["PROPERTY %s" % p for p in props]
     return "\n".join(lines) + "\n"
 
@@ -124,11 +136,11 @@ def is_known_goodbye_race(trace) -> tuple[bool, str]:
 
 
 def run_row(name, java, jar, out_dir: Path, timeout_s=480):
-    mode, bugs, invs, props, expect = MATRIX[name]
+    mode, bugs, invs, props, expect, bounds = row(name)
     d = out_dir / name
     d.mkdir(parents=True, exist_ok=True)
     shutil.copy(SPEC, d / "Handoff.tla")
-    (d / "Handoff.cfg").write_text(cfg_text(mode, bugs, invs, props))
+    (d / "Handoff.cfg").write_text(cfg_text(mode, bugs, invs, props, bounds))
     # TLC's state files on a drvfs mount (D:) slow it 30x or more: they go to a local temp dir, deleted after
     meta = Path(tempfile.mkdtemp(prefix="tlc_%s_" % name))
     cmd = [java, "-XX:+UseParallelGC", "-cp", jar, "tlc2.TLC", "-deadlock", "-workers", "auto",
@@ -151,6 +163,7 @@ def run_row(name, java, jar, out_dir: Path, timeout_s=480):
         lost = any('"lost"' in (var_of(s, "msg") or "") + (var_of(s, "cand") or "") for s in r["trace"])
         ok, why = lost, ("counter-example loses an input" if lost else "counter-example loses nothing: wrong cause")
     return {"name": name, "mode": mode, "bugs": bugs, "invariants": invs, "properties": props, "expect": expect,
+            "bounds": bounds,
             "result": r["result"], "violated": r["prop"], "states": r["states"], "trace_len": len(r["trace"]),
             "ok": ok, "why": why, "log": str(d / "tlc.log")}
 
@@ -163,7 +176,8 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.list:
         for k, v in MATRIX.items():
-            print("%-18s mode=%-9s bugs=%-22s expect=%s" % (k, v[0], ",".join(v[1]) or "-", v[4]))
+            print("%-18s mode=%-9s bugs=%-22s expect=%-4s cands=%s" % (k, v[0], ",".join(v[1]) or "-", v[4],
+                  len(row(k)[5]["Cands"])))
         return 0
     names = [n for n in a.only.split(",") if n] or list(MATRIX)
     bad = [n for n in names if n not in MATRIX]

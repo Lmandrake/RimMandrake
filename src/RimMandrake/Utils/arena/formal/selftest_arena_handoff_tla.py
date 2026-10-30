@@ -6,7 +6,7 @@ ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE criteria, each by forced failure:
               calls a run that never finished (no "0 states left on queue") an error, never a pass
   race        the unfixed goodbye (Bugs {dead_session_drop}) violates S5, and the trace is the known interleaving:
               a message sent while phase = killed is lost; is_known_goodbye_race refuses a trace without that step
-  fixed       Bugs {} in goodbye, testpilot and arena: S1-S6 and L1, L2 hold
+  fixed       Bugs {} in goodbye, testpilot and arena: S1-S6 hold (2 candidates); L1, L2 hold (1 candidate)
   mutants     each of S1..S6, L1, L2 is violated by its own planted defect (a property that cannot fail proves nothing)
 Exit 2 (UNMEASURED) when java or tla2tools.jar is absent. Evidence goes to a temp dir, deleted on success.
 """
@@ -74,8 +74,8 @@ def t_model():
         rows[name] = r = R.run_row(name, java, jar, out)
         check(r["ok"], "%s: expect %s, got %s%s (%s states) %s" % (name, r["expect"], r["result"],
               "(%s)" % r["violated"] if r["violated"] else "", r["states"], r["why"]))
-    fixed = [r for n, r in rows.items() if n.startswith("fixed_")]
-    check(len(fixed) == 3 and all(r["states"] and r["states"] > 40 for r in fixed),
+    fixed = [r for n, r in rows.items() if n.startswith(("fixed_", "live_"))]
+    check(len(fixed) == 5 and all(r["states"] and r["states"] > 40 for r in fixed),
           "fixed rows explored a real state space (not a vacuous init-only model)")
     covered = {r["expect"] for n, r in rows.items() if n.startswith("m_")}
     check(covered == set(R.INVS + R.PROPS), "every S1-S6, L1, L2 has its own mutant: %s" % sorted(covered))
