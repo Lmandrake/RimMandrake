@@ -1,0 +1,2 @@
+testpilot: a run_pass that does nothing (idle) leaves the pilot's session live, so a second Pilot's wake() in a multi-pass probe raises 'pilot P? is live' unless the harness hands off between passes (pl.handoff when not pl.retired). The indep6 probe_defects.py had this harness gap; fix7/probes/probe_defects_h.py is the corrected copy. Without it a probe can mistake a harness refusal for a product defect.
+home: src/RimMandrake/Utils/arena/selftest_arena_testpilot.py
