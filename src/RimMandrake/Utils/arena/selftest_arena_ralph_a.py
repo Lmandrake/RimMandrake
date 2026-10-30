@@ -106,6 +106,8 @@ class World:
         sh(self.root, "git", "init", "-q", "-b", "main")
         sh(self.root, "git", "config", "user.email", "t@t")
         sh(self.root, "git", "config", "user.name", "t")
+        sh(self.root, "git", "config", "maintenance.auto", "false")    # a detached `git maintenance` outlives the commit
+        sh(self.root, "git", "config", "gc.auto", "0")                 # and trips the loop's no-process-beside-it check
         (self.root / "README").write_text("arm\n")
         sh(self.root, "git", "add", "README")
         sh(self.root, "git", "commit", "-q", "-m", "init")
@@ -1308,6 +1310,17 @@ def t_cmdmodel_kill(tmp):
     r = m("build", "PROMPTBODY", cwd=tmp, agent_id="a", run_id=0, timeout_s=30, log=log)
     check(r["rc"] == 0 and r["text"].split() == ["build", "ralph_a", "False", "PROMPTBODY"],
           "CmdModel: prompt on stdin, builder role + RM_ARM set, arena token path not passed to the agent")
+    # a builder's `git commit` must not leave a detached `git maintenance` with its cwd in the clone: the loop's next
+    # "no process beside the build" check would refuse on it (ARENA_DRILL_SYNC_FLAKY_PENDING_MAIN, seen under load)
+    sh(tmp, "git", "init", "-q", "-b", "main", "mnt")
+    m = R.CmdModel("%s -c \"import subprocess; print(subprocess.run(['git','config','--get-all','maintenance.auto'],"
+                   "capture_output=True,text=True).stdout.split(), subprocess.run(['git','config','--get','gc.auto'],"
+                   "capture_output=True,text=True).stdout.split())\"" % sys.executable)
+    r = m("build", "x", cwd=tmp / "mnt", agent_id="a", run_id=0, timeout_s=30, log=log)
+    check(r["rc"] == 0 and r["text"].strip() == "['false'] ['0']",
+          "CmdModel builder env pins maintenance.auto=false and gc.auto=0 (no detached git maintenance beside the pass)")
+    check("maintenance.auto=false" in R.GIT_SAFE_CFG and "gc.auto=0" in R.GIT_SAFE_CFG,
+          "the loop's own git calls pin maintenance.auto=false and gc.auto=0")
     m = R.CmdModel("%s -c \"import os,sys; d=sys.stdin.read(); print(os.environ.get('RALPH_A_ROLE'), "
                    "os.environ.get('RM_ARM'), os.environ['TESTER_ID'][:7], d)\"" % sys.executable)
     r = m("test", "PROMPTBODY", cwd=tmp, agent_id="a", run_id=0, timeout_s=30, log=log)

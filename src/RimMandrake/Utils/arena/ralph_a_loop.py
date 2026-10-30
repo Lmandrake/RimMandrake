@@ -365,6 +365,14 @@ def reap_stale_pass(pidfile, kill=os.killpg, wait_s=5.0):
     return pgid
 
 
+def proc_cmd(pid):
+    """what a pid is running, for a refusal message (the process may already be gone)"""
+    try:
+        return open("/proc/%s/cmdline" % pid, "rb").read().replace(b"\0", b" ").decode("utf-8", "replace")[:120]
+    except OSError:
+        return "?"
+
+
 def procs_in(root, me=None):
     """pids (not this process) whose cwd is inside `root` (review M2: nothing may be working in the clone when a
     build pass starts). /proc/*/cwd that cannot be read (another user's process) are skipped."""
@@ -416,6 +424,8 @@ class CmdModel:
         else:
             env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "RALPH_A_CTL"))}
             env.update(RALPH_A_ROLE=role, RALPH_A_AGENT_ID=agent_id, RM_ARM=ARM)
+            env.update(GIT_CONFIG_COUNT="2", GIT_CONFIG_KEY_0="maintenance.auto", GIT_CONFIG_VALUE_0="false",
+                       GIT_CONFIG_KEY_1="gc.auto", GIT_CONFIG_VALUE_1="0")      # the builder's own commits too
         with open(log, "w") as out:
             out.write(warn)
             out.flush()
@@ -618,7 +628,10 @@ class RalphCLane:
 GIT_SAFE_ENV = {"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull, "GIT_CONFIG_NOSYSTEM": "1",
                 "GIT_CONFIG_GLOBAL": os.devnull, "GIT_EXTERNAL_DIFF": "", "GIT_PAGER": "cat"}
 GIT_SAFE_CFG = ["-c", "core.fsmonitor=false", "-c", "core.hooksPath=" + os.devnull, "-c", "diff.external=",
-                "-c", "core.attributesFile=" + os.devnull]
+                "-c", "core.attributesFile=" + os.devnull,
+                # a commit starts `git maintenance run --auto --detach`, which outlives it with its cwd in the clone and
+                # trips the "no process beside a build pass" refusal (ARENA_DRILL_SYNC_FLAKY_PENDING_MAIN)
+                "-c", "maintenance.auto=false", "-c", "gc.auto=0"]
 NO_DRIVER = ("--no-ext-diff", "--no-textconv")
 
 
@@ -877,7 +890,7 @@ class Loop:
         busy = self.procs(self.root) if self.procs else []
         if busy:
             raise Refused("refused: process(es) %s have their cwd in the clone %s; no build pass beside them"
-                          % (busy[:8], self.root))
+                          % ([(b, proc_cmd(b)) for b in busy[:8]], self.root))
         if self.sync is not None and not self.sync():
             return self.status("sync failed")
         if self.git("rev-parse", "--verify", "-q", WIP, check=False):
