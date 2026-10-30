@@ -1014,6 +1014,106 @@ def t_multi_old(tmp, repo, old, s):
           "the default old history includes the retired pre-rewrite clones: %s" % (A.OLD_HISTORY_DEFAULT,))
 
 
+CS = "src/RimMandrake/ModX/Source/X.cs"
+DX = "src/RimMandrake/ModX/Defs/X.xml"
+
+
+def t_review_2026_10_30(tmp):
+    """REVIEW 2026-10-30 (BENCH, of 67094dc0f6). Its own repo, so the main fixture's counts do not move.
+    - CONDUCTOR DECISION (owner authority, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): a replay task must carry at
+      least one objective check beyond "the build succeeds"; build-only tasks are excluded. A C#-only or XML-only
+      fix (proof = winbuild / validate_patch alone, no fix selftest) is rejected; C# WITH a fix selftest stays.
+    - a "current" sha HEAD cannot reach (a dangling object in the store) is not current history;
+    - a verify pass from an EARLIER close cycle does not make the final close Clean;
+    - a rework on a divergent branch (not a descendant of the parent's fix) is not an escape;
+    - pin_old does not count a pin that points at a different commit as already pinned."""
+    repo, empty = tmp / "rv_repo", tmp / "rv_empty_old"
+    for r in (repo, empty):
+        r.mkdir()
+        git(r, "init", "-q", "-b", "main")
+    base = commit(repo, {TOOL: "def f():\n    return 1\n", TEST: "assert True  # rv base body of the selftest\n",
+                         CS: "class X { int v = 1; }\n",
+                         DX: "<Defs><ThingDef><defName>RM_X</defName></ThingDef></Defs>\n"},
+                  "rv base", "2026-10-13T09:00:00+00:00")
+    s = {"sane": commit(repo, {TOOL: "def f():\n    return 2\n",
+                               TEST: "from tool import f\nassert f() == 2  # rv sanity fix pins f, long line\n"},
+                        "rv fix sane", "2026-10-14T10:03:00+00:00"),
+         "cs": commit(repo, {CS: "class X { int v = 2; }\n"}, "rv fix cs only", "2026-10-15T10:03:00+00:00"),
+         "xml": commit(repo, {DX: "<Defs><ThingDef><defName>RM_X</defName><label>x</label></ThingDef></Defs>\n"},
+                       "rv fix xml only", "2026-10-15T11:03:00+00:00"),
+         "cs_t": commit(repo, {CS: "class X { int v = 3; }\n",
+                               TEST: "from tool import f\nassert f() == 2  # rv csharp fix with a selftest too\n"},
+                        "rv fix cs with test", "2026-10-16T10:03:00+00:00")}
+    stale1 = commit(repo, {TOOL: "def f():\n    return 6\n",
+                           TEST: "from tool import f\nassert f() == 6  # rv stale first cycle, long line\n"},
+                    "rv stale first", "2026-10-17T10:03:00+00:00")
+    stale2 = commit(repo, {TOOL: "def f():\n    return 7\n",
+                           TEST: "from tool import f\nassert f() == 7  # rv stale second cycle, long line\n"},
+                    "rv stale second", "2026-10-18T10:03:00+00:00")
+    # a divergent rework: on a side branch off cs_t's parent, then joined with `merge -s ours` (reachable from
+    # HEAD, never a descendant of cs_t); it changes cs_t's file X.cs
+    git(repo, "checkout", "-q", "-b", "side", s["cs"])
+    side = commit(repo, {CS: "class X { int v = 9; }\n", RWT: "assert 1  # rv side rework pin, long enough line\n"},
+                  "rv side rework", "2026-10-19T10:03:00+00:00")
+    git(repo, "checkout", "-q", "main")
+    git(repo, "merge", "-q", "-s", "ours", "-m", "rv join side", "side", date="2026-10-19T12:00:00+00:00")
+    # a dangling commit: in the object store, on no ref, unreachable from HEAD
+    dangling = git(repo, "commit-tree", git(repo, "rev-parse", "HEAD^{tree}"), "-p", base, "-m", "rv dangling",
+                   date="2026-10-20T10:03:00+00:00")
+    E, n = [], [0]
+
+    def ev(**k):
+        n[0] += 1
+        k.setdefault("seat", "FOUNDRY")
+        if k["event"] == "file":
+            k.setdefault("for", "FOUNDRY")
+        k["tsn"] = "rv%d" % n[0]
+        E.append(k)
+
+    def item(iid, day, sha, verify=True, **kw):
+        ev(event="file", id=iid, title="title of " + iid, kind=kw.get("kind", "task"), needs="offline",
+           ts=day + "T10:00:00Z", **({"caused_by": kw["caused_by"]} if kw.get("caused_by") else {}))
+        if verify:
+            ev(event="verify", id=iid, result="pass", config="c", evidence="e", sha=sha[:10], ts=day + "T10:03:30Z")
+        ev(event="close", id=iid, sha=sha[:10], reason="r", ts=day + "T10:04:00Z")
+
+    item("RV_SANE_FIX_ONE", "2026-10-14", s["sane"])
+    item("RV_CSONLY_FIX_TWO", "2026-10-15", s["cs"])
+    item("RV_XMLONLY_FIX_THREE", "2026-10-15", s["xml"])
+    item("RV_CSTEST_FIX_FOUR", "2026-10-16", s["cs_t"])
+    item("RV_STALE_FIX_FIVE", "2026-10-17", stale1)                     # verified + closed on the first cycle ...
+    ev(event="close", id="RV_STALE_FIX_FIVE", sha=stale2[:10], reason="again", ts="2026-10-18T10:04:00Z")
+    item("RV_SIDE_REWORK_SIX", "2026-10-19", side, verify=False, kind="bug", caused_by="RV_CSTEST_FIX_FOUR")
+    item("RV_DANGLING_FIX_SEVEN", "2026-10-20", dangling)
+    pool, rep = A.census(E, repo=repo, sanity="RV_SANE_FIX_ONE", old_history=[empty])
+    got = {t["source_item"]: (t, h) for t, h in pool}
+    bo = [k for k in rep["rejects"] if k.startswith("build-only")]
+    check("RV_CSONLY_FIX_TWO" not in got and "RV_XMLONLY_FIX_THREE" not in got and bo
+          and rep["rejects"][bo[0]] >= 2,
+          "decision: a C#-only and an XML-only fix (build/validate proof alone) are rejected as build-only (%s)"
+          % rep["rejects"])
+    check("RV_CSTEST_FIX_FOUR" in got and got["RV_CSTEST_FIX_FOUR"][0]["kind"] == "csharp"
+          and any(c["type"] == "fix_test" for c in got["RV_CSTEST_FIX_FOUR"][1]["checks"]),
+          "decision: a C# fix that also changes a selftest stays in the pool (%s)" % sorted(got))
+    check("RV_DANGLING_FIX_SEVEN" not in got,
+          "a close sha that is only a dangling object (unreachable from HEAD) is not current history (%s)"
+          % (got.get("RV_DANGLING_FIX_SEVEN", (None, {}))[1].get("sha_resolution"),))
+    st = got.get("RV_STALE_FIX_FIVE")
+    check(st is not None and st[1]["fix_sha"] == stale2 and st[1]["label"] is None,
+          "a verify pass from an earlier close cycle does not label the final close Clean (%s)"
+          % (st and st[1]["label"],))
+    c4 = got.get("RV_CSTEST_FIX_FOUR", (None, {}))[1]
+    check(c4.get("label") == "Clean" and not c4.get("reworks"),
+          "a rework on a divergent branch (not a descendant of the parent's fix) is not an escape (%s)"
+          % [r.get("verdict") for r in c4.get("rework_candidates", [])])
+    # pin_old: a pin ref that already exists but points elsewhere is a conflict, not "already"
+    git(repo, "update-ref", A.PIN_PREFIX + s["xml"], s["cs"])
+    out = A.pin_old([s["xml"], s["sane"]], old=[repo])
+    check(out.get("already") == 0 and out.get("pinned") == 1 and out.get("conflict") == [s["xml"]]
+          and git(repo, "rev-parse", A.PIN_PREFIX + s["xml"]) == s["cs"],
+          "pin_old reports a pin pointing at another commit as a conflict and leaves it (%s)" % out)
+
+
 def t_real_ledger():
     check(A.arena_root().name == "arena" and A.paths()["judge"].parent.name == "judge",
           "with ARENA_ROOT unset the root comes from rmpaths/agent_storage: %s" % A.arena_root())
@@ -1049,6 +1149,7 @@ def main():
         t_whitelist(tmp, pool, s)
         t_freeze_round2(tmp, pool)
         t_round3(tmp, repo, old, s, pool)
+        t_review_2026_10_30(tmp)                # its own repo
         t_multi_old(tmp, repo, old, s)          # last: it adds a commit to the fixture repo
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)

@@ -22,13 +22,16 @@ instrument_traps.md). An item is kept when ALL hold:
   - the close sha resolves to a commit with exactly one parent (base_sha = that parent), and the diff
     (bookkeeping stripped: ledger, queue projections, item prose) touches 1-8 files;
   - its `needs` is `offline` and its files hold code the gate judges offline (Python, XML defs/patches, C#);
-  - an objective proof exists: the diff adds or changes a selftest, a Defs/Patches XML, or C#.
+  - an objective proof exists: the diff adds or changes a selftest, a Defs/Patches XML, or C#;
+  - CONDUCTOR DECISION 2026-10-30 (owner authority): the proof goes beyond "the build succeeds": the fix adds or
+    changes at least one selftest. A C#-only (winbuild) or XML-only (validate_patch) fix is build-only: excluded.
 BENCH POOL RULING (note 2026-10-30T01:59:10Z): no start event is required, and the label is OPTIONAL metadata. An
 item is ESCAPED when a caused_by DESCENDANT (children, and their children: a review's findings are grandchildren),
-filed no later than 7 days after the close, is a closed code fix whose commit lands after the parent's fix and
+filed no later than 7 days after the close, is a closed code fix whose commit descends from the parent's fix and
 changes at least one of the parent's files (a "remaining half" split that fixes other files is not an escape); CLEAN
-with a `verify` pass and no such rework; otherwise unlabelled (label null), still in the pool. Escaped-defect
-analysis uses the labelled subset only. A child filed seconds BEFORE the close counts like one filed after it.
+with a `verify` pass in the final close cycle and no such rework; otherwise unlabelled (label null), still in
+the pool. Escaped-defect analysis uses the labelled subset only. A child filed seconds BEFORE the close counts
+like one filed after it.
 The census reports its pool with a SANITY PROBE: a hand-picked item that must be found. A missing sanity item is a
 blind instrument, not a small pool: the census exits 2 and writes nothing.
 
@@ -211,6 +214,11 @@ def _resolve(repo: Path, sha: str):
     return out or None
 
 
+def _is_ancestor(repo: Path, a: str, b: str) -> bool:
+    return subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", a, b],
+                          capture_output=True, timeout=60).returncode == 0
+
+
 def old_history_repos(old=None) -> list[Path]:
     """The pre-rewrite history, as an ordered list of existing git dirs. `old` (else $ARENA_OLD_HISTORY, else
     OLD_HISTORY_DEFAULT) is a list, or one string of os.pathsep-separated entries; each entry may be a glob.
@@ -258,7 +266,9 @@ class Resolver:
         if not re.fullmatch(r"[0-9a-fA-F]{4,40}", sha):
             return None, "close sha missing or not hex"
         cur = _resolve(self.repo, sha)
-        if cur:
+        # REVIEW 2026-10-30: an object in the store that HEAD cannot reach (dangling, a stale ref's) is not current
+        # history; it falls through to the old-history lookup like any other pre-rewrite sha
+        if cur and _is_ancestor(self.repo, cur, "HEAD"):
             return cur, "current"
         if not self.old:
             return None, "close sha does not resolve (no old-history repo)"
@@ -280,12 +290,13 @@ class Resolver:
 def pin_old(shas, old=None) -> dict:
     """Point refs/arena/old/<sha> at each pre-rewrite commit so gc cannot drop it. `shas` is {repo: [sha]} (the
     census report's old_history_pins: each pinned in the repo that resolved it) or a list (each pinned in the first
-    old_history_repos(old) entry holding it). update-ref only (no push, no force); an existing pin is left alone.
-    -> {pinned, already, missing, repo}."""
+    old_history_repos(old) entry holding it). update-ref only (no push, no force); an existing pin is left alone, and
+    one that points at a DIFFERENT commit is reported in `conflict` (never counted as pinned, never moved).
+    -> {pinned, already, conflict, missing, repo}."""
     repos = old_history_repos(old)
     groups = ({Path(r): list(v) for r, v in shas.items()} if isinstance(shas, dict) else {None: list(shas)})
     out = {"repo": os.pathsep.join(str(r) for r in (repos if None in groups else groups)), "pinned": 0,
-           "already": 0, "missing": []}
+           "already": 0, "conflict": [], "missing": []}
     have = {}
     for where, group in groups.items():
         for s in sorted(set(group)):
@@ -293,13 +304,17 @@ def pin_old(shas, old=None) -> dict:
                 if not r.is_dir() or _resolve(r, s) != s:
                     continue
                 if r not in have:
-                    have[r] = set(_git(r, "for-each-ref", "--format=%(refname)", PIN_PREFIX, check=False).split())
+                    have[r] = dict(ln.split(" ", 1)[::-1] for ln in _git(
+                        r, "for-each-ref", "--format=%(objectname) %(refname)", PIN_PREFIX, check=False).splitlines())
                 ref = PIN_PREFIX + s
                 if ref in have[r]:
-                    out["already"] += 1
+                    if have[r][ref] == s:
+                        out["already"] += 1
+                    else:
+                        out["conflict"].append(s)
                 else:
                     _git(r, "update-ref", ref, s)
-                    have[r].add(ref)
+                    have[r][ref] = s
                     out["pinned"] += 1
                 break
             else:
@@ -438,7 +453,7 @@ def _prompt_hints(repo: Path, fix: str, iid: str, start_ts, base_prose) -> bool:
 
 
 def _rework_verdict(r, by_id, resolve, repo, parent_fix=None, parent_files=frozenset()):
-    """-> (verdict, fix commit). verdict 'counts' (a closed code fix that lands after the parent's fix and changes
+    """-> (verdict, fix commit). verdict 'counts' (a closed code fix that descends from the parent's fix and changes
     one of the parent's files: the parent escaped), 'pending' (an open fix-type descendant: the parent's Clean is
     provisional), or why it does not count."""
     kind = (r.kind or "").lower()
@@ -457,10 +472,12 @@ def _rework_verdict(r, by_id, resolve, repo, parent_fix=None, parent_files=froze
     files = [d[0] for d in _numstat(repo, _parents(repo, rfix)[0], rfix) if not is_bookkeeping(d[0])]
     if not classify(files):
         return "its close commit changes no code", None
-    if parent_fix and (rfix == parent_fix or subprocess.run(
-            ["git", "-C", str(repo), "merge-base", "--is-ancestor", rfix, parent_fix],
-            capture_output=True, timeout=60).returncode == 0):
+    if parent_fix and (rfix == parent_fix or _is_ancestor(repo, rfix, parent_fix)):
         return "its fix landed at or before the parent's fix", None
+    # REVIEW 2026-10-30: "lands after" means DESCENDS from the parent's fix; a commit on a divergent branch never
+    # had the parent's fix under it, so changing the same file there is not an escape of that fix
+    if parent_fix and not _is_ancestor(repo, parent_fix, rfix):
+        return "its fix does not descend from the parent's fix (divergent branch)", None
     if parent_files and not set(files) & set(parent_files):
         return "its fix changes none of the parent's files (%s)" % ", ".join(sorted(files)[:3]), None
     return "counts", rfix
@@ -557,6 +574,12 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         proof = proof_for(files, {d[0] for d in diff if d[2] == "A"}, {d[0] for d in diff if d[2] == "D"})
         if not proof:
             reject(iid, "no objective proof"); continue
+        # CONDUCTOR DECISION 2026-10-30 (owner authority, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): a task must carry
+        # at least one objective check beyond "the build succeeds". winbuild and validate_patch are build-class; a
+        # rework's test is not the fix's own check (the original fix fails it by definition). So >= 1 selftest the
+        # fix changed or added (not deleted) is required
+        if not any(is_selftest(d[0]) and d[2] != "D" for d in diff):
+            reject(iid, "build-only proof (no fix selftest beyond the build/validate)"); continue
         t_close = _epoch(close["ts"])
         rw, pending, considered = [], [], []
         for r, depth in _descendants(iid, reworks):
@@ -570,7 +593,11 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                 rw.append((r, rfix))
             elif verdict == "pending":
                 pending.append(r.id)
-        verified = any(e.get("event") == "verify" and e.get("result") == "pass" for e in evs)
+        # REVIEW 2026-10-30: only a verify pass in the FINAL close cycle (after the previous close, if any) labels it:
+        # a pass recorded before an earlier close verified other code
+        prev = _epoch(closes[-2]["ts"]) if len(closes) > 1 else float("-inf")
+        verified = any(e.get("event") == "verify" and e.get("result") == "pass" and e.get("ts")
+                       and _epoch(e["ts"]) > prev for e in evs)
         # the label is optional metadata (ruling): an unlabelled item stays in the pool with label null
         label = "Escaped" if rw else ("Clean" if verified else None)
 
