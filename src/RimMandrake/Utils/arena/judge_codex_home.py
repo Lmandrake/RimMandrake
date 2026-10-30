@@ -235,6 +235,8 @@ SYSTEM_LAYER_PARTS = ("OpenAI", "Codex")
 SYSTEM_DEFAULT_ROOT = "C:\\ProgramData"
 POLICY_KEYS = (r"HKLM\SOFTWARE\Policies\OpenAI\Codex", r"HKCU\SOFTWARE\Policies\OpenAI\Codex")
 PROFILE_LIST_KEY = r"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList"
+# English reg.exe text: on a non-English Windows an ABSENT key reads as unqueryable and every call refuses (GPT review
+# r1). Accepted: it fails closed, and this machine is English; a localised box needs a numeric-status query instead.
 REG_ABSENT = "ERROR: The system was unable to find the specified registry key or value."
 ENV_REFUSED_PREFIXES = ("CODEX_", "OPENAI_")
 ENV_ALLOWED = ("CODEX_HOME",)                     # the judge's own home, set by codex_image.child_env
@@ -285,41 +287,61 @@ def windows_facts(run=_run_win, to_local=win_to_local) -> dict:
         roots.append(prof)
     else:
         bad.append("cannot resolve the ProgramData known folder from %s (fail closed)" % PROFILE_LIST_KEY)
-    seen, out = set(), []
+    seen, out, native = set(), [], {}
     for w in roots:
         k = w.strip().rstrip("\\").casefold()
         if k not in seen:
             seen.add(k)
             out.append((w, to_local(w)))
-    return {"env": env, "keys": keys, "roots": out, "bad": bad}
+            if out[-1][1] is not None:                                 # a refused root is never handed to cmd.exe
+                native[w] = run(native_probe_argv(w))
+    return {"env": env, "keys": keys, "roots": out, "native": native, "bad": bad}
+
+
+# Windows' own view of <root>\OpenAI\Codex: it resolves what a WSL listing cannot match by long name, e.g. an NTFS
+# 8.3 short name OPENAI on a folder called something else (GPT review r2). Anything but a clean ABSENT refuses.
+# One argv token per cmd word, the path its own token: WSL interop quotes a token holding spaces itself, and a single
+# pre-quoted 'if exist "<path>" ...' token arrives with escaped quotes and reads ABSENT on a real plant (measured).
+def native_probe_argv(win: str) -> list:
+    return ["cmd.exe", "/d", "/c", "if", "exist", native_layer_path(win), "(echo", "PRESENT)", "else", "(echo", "ABSENT)"]
+
+
+
+def native_layer_path(win: str) -> str:
+    return win.strip().rstrip("\\") + "\\" + "\\".join(SYSTEM_LAYER_PARTS)
 
 
 def _layer_hits(win: str, local: Path) -> list[str]:
     """Hits for one ProgramData root: <root>\\OpenAI\\Codex in any form, matched case-insensitively (NTFS). A root that
     is missing or unlistable, an OpenAI that is a link or unlistable: hits (fail closed)."""
-    d, shown = local, win.rstrip("\\")
     if not os.path.isdir(local):
         return ["%s does not exist or is not a folder (the check cannot see it)" % win]
-    for i, part in enumerate(SYSTEM_LAYER_PARTS):
-        try:
-            ents = list(os.scandir(d))
-        except OSError as ex:
-            return ["%s unlistable (%s)" % (shown, ex.__class__.__name__)]
-        ent = next((e for e in ents if e.name.casefold() == part.casefold()), None)
-        if ent is None:
-            return []
-        shown = shown + "\\" + ent.name
+    return _part_hits(local, win.rstrip("\\"), 0)
+
+
+def _part_hits(d: Path, shown: str, i: int) -> list[str]:
+    """Hits below `d` for SYSTEM_LAYER_PARTS[i:]. EVERY case-insensitive match is followed, not just the first: a
+    case-sensitive folder can hold `openai` and `OpenAI` side by side (GPT review r1)."""
+    try:
+        ents = list(os.scandir(d))
+    except OSError as ex:
+        return ["%s unlistable (%s)" % (shown, ex.__class__.__name__)]
+    hits: list[str] = []
+    for ent in sorted((e for e in ents if e.name.casefold() == SYSTEM_LAYER_PARTS[i].casefold()), key=lambda e: e.name):
+        here = shown + "\\" + ent.name
         if ent.is_symlink():
-            return ["%s is a link/junction" % shown]
-        if i == len(SYSTEM_LAYER_PARTS) - 1:
-            return ["%s exists" % shown]
-        try:
-            if not ent.is_dir(follow_symlinks=False):
-                return []                                              # a plain file: nothing below it can be read
-        except OSError as ex:
-            return ["%s uninspectable (%s)" % (shown, ex.__class__.__name__)]
-        d = Path(ent.path)
-    return []
+            hits.append("%s is a link/junction" % here)
+        elif i == len(SYSTEM_LAYER_PARTS) - 1:
+            hits.append("%s exists" % here)
+        else:
+            try:
+                is_dir = ent.is_dir(follow_symlinks=False)
+            except OSError as ex:
+                hits.append("%s uninspectable (%s)" % (here, ex.__class__.__name__))
+                continue
+            if is_dir:                                                 # a plain file: nothing below it can be read
+                hits += _part_hits(Path(ent.path), here, i + 1)
+    return hits
 
 
 def system_layer_violations(facts: dict | None = None) -> list[str]:
@@ -343,6 +365,10 @@ def system_layer_violations(facts: dict | None = None) -> list[str]:
             bad.append("%s is not a local drive path (the check cannot see it)" % win)
         else:
             bad += _layer_hits(win, local)
+            r = f.get("native", {}).get(win)
+            if r is None or r[0] != 0 or r[1].strip() != "ABSENT":
+                bad.append("Windows itself does not report %s absent (%s)"
+                           % (native_layer_path(win), "cmd.exe did not run" if r is None else r[1].strip()[:60]))
     return bad
 
 

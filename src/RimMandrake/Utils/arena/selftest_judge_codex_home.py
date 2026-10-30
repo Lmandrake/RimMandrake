@@ -615,14 +615,20 @@ CLEAN_ENV = {"ALLUSERSPROFILE": r"C:\ProgramData", "ProgramData": r"C:\ProgramDa
 REG_ABSENT_OUT = "ERROR: The system was unable to find the specified registry key or value.\r\n"
 
 
-def fake_runner(env=None, keys=None, profile="%SystemDrive%\\ProgramData", fail=()):
-    """A stand-in for the Windows side: `cmd.exe /d /c set` and `reg.exe query`. keys: {key: (rc, text)}."""
+def fake_runner(env=None, keys=None, profile="%SystemDrive%\\ProgramData", fail=(), native=None):
+    """A stand-in for the Windows side: `cmd.exe /d /c set`, the native `if exist` probe and `reg.exe query`.
+    keys: {key: (rc, text)}; native: {<root>\\OpenAI\\Codex (casefolded): (rc, text) | None} (default ABSENT)."""
     env = dict(CLEAN_ENV if env is None else env)
     keys = keys or {}
+    native = native or {}
 
     def run(argv):
         if argv[0] in fail:
             return None
+        if argv[0] == "cmd.exe" and argv[3] != "set":
+            assert argv[:5] == ["cmd.exe", "/d", "/c", "if", "exist"] and argv[6:] == [
+                "(echo", "PRESENT)", "else", "(echo", "ABSENT)"] and '"' not in argv[5], argv
+            return native.get(argv[5].casefold(), (0, "ABSENT\r\n"))
         if argv[0] == "cmd.exe":
             return 0, "".join("%s=%s\r\n" % kv for kv in env.items())
         if argv[0] == "reg.exe" and argv[2] == JH.PROFILE_LIST_KEY:
@@ -714,6 +720,30 @@ def t_system(tmp, M=JH, record=check):
             record(len(hits()) == 1, "%s: an unreadable ProgramData root is refused" % name)
         finally:
             os.chmod(root, 0o755)
+    # a case-sensitive folder can hold two case variants side by side: every one is inspected (GPT review r1)
+    for empty, full in (("OpenAI", "openai"), ("openai", "OpenAI")):
+        (roots["pd_default"] / empty).mkdir()
+        (roots["pd_default"] / full / "Codex").mkdir(parents=True)
+        h = hits()
+        record(len(h) == 1 and (full + "\\Codex") in h[0],
+               "an empty %s beside %s\\Codex does not hide it (%s)" % (empty, full, h))
+        shutil.rmtree(roots["pd_default"] / empty)
+        shutil.rmtree(roots["pd_default"] / full)
+    # the real Windows->WSL path mapping (every other check here substitutes it; GPT review r1)
+    for w, want in ((r"E:\PD", "/mnt/e/PD"), ("c:\\ProgramData\\", "/mnt/c/ProgramData"),
+                    (r"G:\Prof\PD", "/mnt/g/Prof/PD"), ("D:\\", "/mnt/d")):
+        got = M.win_to_local(w)
+        record(got == Path(want), "win_to_local(%r) -> %s (%s)" % (w, want, got))
+    for w in (r"\\server\share\pd", r"%ProgramData%", r"PD\x", r"C:/ProgramData"):
+        record(M.win_to_local(w) is None, "win_to_local(%r) is not a local drive path: None" % w)
+    # Windows' own resolution (8.3 short-name alias the WSL listing cannot match; GPT review r2)
+    for w in winmap:
+        p = (w + r"\OpenAI\Codex").casefold()
+        for label, ans in (("PRESENT", (0, "PRESENT\r\n")), ("garbled", (0, "")), ("cmd.exe failing", None),
+                           ("nonzero exit", (1, "ABSENT\r\n"))):
+            h = hits(native={p: ans})
+            record(len(h) == 1 and "Windows itself" in h[0] and w.casefold() in h[0].casefold(),
+                   "%s: a native probe reading %s refuses with a clean listing (%s)" % (w, label, h))
     shutil.rmtree(roots["pd_env"])
     record(len(hits()) == 1, "a ProgramData root that does not exist is refused (the instrument cannot see)")
     roots["pd_env"].mkdir()
@@ -771,12 +801,17 @@ SYSTEM_MUTANTS = (
     ("unreadable env passes", 'bad.append("cannot read the Windows environment', '(lambda *_: None)("cannot read the Windows environment'),
     ("link not refused", "if ent.is_symlink():", "if False:"),
     ("unlistable passes", 'return ["%s unlistable', 'return [] #'),
-    ("case-sensitive names", "e.name.casefold() == part.casefold()", "e.name == part"),
-    ("Codex refused only as a folder", 'return ["%s exists" % shown]', 'return ["%s exists" % shown] if ent.is_dir() else []'),
+    ("case-sensitive names", "e.name.casefold() == SYSTEM_LAYER_PARTS[i].casefold()", "e.name == SYSTEM_LAYER_PARTS[i]"),
+    ("first case variant only", "key=lambda e: e.name):", "key=lambda e: e.name)[:1]:"),
+    ("every drive maps to C:\\ProgramData", 'return Path("/mnt/%s" % m.group(1).lower(), ', 'return Path("/mnt/c/ProgramData") or Path('),
+    ("Codex refused only as a folder", 'hits.append("%s exists" % here)', 'hits.append("%s exists" % here) if ent.is_dir() else None'),
     ("CODEX_HOME refused too", 'ENV_ALLOWED = ("CODEX_HOME",)', 'ENV_ALLOWED = ()'),
     ("policy key absent text not checked", "or REG_ABSENT not in r[1]", ""),
     ("missing root passes", 'return ["%s does not exist', 'return [] #'),
     ("non-drive root passes", 'bad.append("%s is not a local drive path', '(lambda *_: None)("%s is not a local drive path'),
+    ("native probe dropped", 'r = f.get("native", {}).get(win)', 'r = (0, "ABSENT")'),
+    ("native probe only for the default root", 'if out[-1][1] is not None:', 'if w == SYSTEM_DEFAULT_ROOT:'),
+    ("native probe output not checked", ' or r[1].strip() != "ABSENT"', ''),
     ("system check not in home_violations", "+ system_layer_violations()", ""),
     ("verify_home skips the system check", "sysbad = system_layer_violations()", "sysbad = []"),
 )
