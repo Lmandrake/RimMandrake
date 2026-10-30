@@ -125,7 +125,8 @@ GENESIS = "0" * 64
 FLAG_SAME_AGENT = "tester_is_builder"
 UNATTRIBUTED = "unattributed:"
 # the only scripts that may open a pass capability (run as __main__ from THIS directory)
-ENTRYPOINTS = ("arena_eventlog.py", "arena_v3_adapter.py", "arena_gate.py", "arena_judge.py")
+ENTRYPOINTS = ("arena_eventlog.py", "arena_v3_adapter.py", "arena_gate.py", "arena_judge.py",
+               "arena.py")
 SELFTEST_ENTRY_PREFIX = "selftest_arena_"
 CAP_TTL_S = 12 * 3600
 
@@ -596,6 +597,13 @@ def validate_record(rec: dict):
                        % (ev, d.get("tester")))
     if ev in ("card", "owner_touch") and not _minutes_ok(rec.get("minutes")):
         raise Rejected("%s needs finite, non-negative, numeric (non-bool) minutes (got %r)" % (ev, rec.get("minutes")))
+    if ev == "switch":      # what arena.py writes: detail.from / detail.to (modes), stopped (list of arms)
+        for k in ("from", "to"):
+            if not (isinstance(d.get(k), str) and d[k].strip()):
+                raise Rejected("switch needs a non-empty string detail.%s (got %r)" % (k, d.get(k)))
+        if "stopped" in d and (not isinstance(d["stopped"], list)
+                               or any(not (isinstance(a, str) and a.strip()) for a in d["stopped"])):
+            raise Rejected("switch detail.stopped must be a list of non-empty arm names (got %r)" % (d["stopped"],))
     if ev == "card":
         cid, un = d.get("card_id"), d.get("unblocked")
         if not (isinstance(cid, str) and cid.strip()) or not isinstance(un, list):

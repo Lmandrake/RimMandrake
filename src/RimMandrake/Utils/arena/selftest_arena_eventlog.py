@@ -987,6 +987,50 @@ def t_gate_runner(tmp):
         L._gate_runner_sel = saved
 
 
+def t_switch_entry(tmp):
+    import subprocess
+    p, _ = fresh(tmp, "sw", writer=False)
+    kw = dict(lane="none", run_id="switch-1")
+    det = {"from": "ralph_a", "to": "stopped", "stopped": ["ralph_a"], "waited_s": 1.0}
+    real_entry, real_code = L._entrypoint, L._main_code_ok
+    L._main_code_ok = lambda e: None
+    try:
+        L._entrypoint = lambda: str(L.HERE / "arena.py")
+        with L.harness_pass(p) as cap:
+            rec = L.HarnessWriter(p, cap=cap).emit("stopped", "switch", detail=det, **kw)
+        L.validate_record(rec)
+        check(rec["prov"]["entry"] == "arena.py", "SW-1 arena.py's entry path signs a valid switch event")
+        for nm, ent in (("other name", L.HERE / "arena_x.py"), ("other dir", tmp / "arena.py"),
+                        ("subdir copy", L.HERE / "sub" / "arena.py")):
+            L._entrypoint = lambda e=ent: str(e)
+            check(raises(L.Rejected, L.harness_pass, p) is not None, "SW-2 %s: refused" % nm)
+    finally:
+        L._entrypoint, L._main_code_ok = real_entry, real_code
+    # a real copy of arena.py outside the arena dir, and a spoofed __main__.__file__, run as real processes
+    forge = ("import sys, __main__; sys.path.insert(0, %r); __main__.__file__ = %r; sys.argv[0] = __main__.__file__\n"
+             "import arena_eventlog as L, arena_tasks as A\n"
+             "try:\n    L.harness_pass(A.paths()); print('OPENED')\nexcept L.Rejected as e:\n    print('REFUSED', e)\n"
+             % (str(L.HERE), str(L.HERE / "arena.py")))
+    out = subprocess.run([sys.executable, "-c", forge], capture_output=True, text=True, env=dict(os.environ),
+                         cwd=str(tmp), timeout=120)
+    check(out.stdout.startswith("REFUSED"), "SW-3 spoofed __main__.__file__ = arena.py refused (%s)"
+          % (out.stdout.strip() or out.stderr.strip())[-100:])
+    cp = tmp / "arena.py"
+    cp.write_text(forge)
+    out = subprocess.run([sys.executable, str(cp)], capture_output=True, text=True, env=dict(os.environ),
+                         cwd=str(tmp), timeout=120)
+    check(out.stdout.startswith("REFUSED"), "SW-4 a copy named arena.py in another dir refused (%s)"
+          % (out.stdout.strip() or out.stderr.strip())[-100:])
+    base = {"ts": "2026-10-29T00:00:00Z", "arm": "stopped", "event": "switch", "lane": "none", "run_id": "r"}
+    check(raises(L.Rejected, L.validate_record, dict(base, detail=det)) is None, "SW-5 a complete switch validates")
+    for k in ("from", "to"):
+        check(raises(L.Rejected, L.validate_record, dict(base, detail={a: b for a, b in det.items() if a != k}))
+              is not None, "SW-6 switch missing detail.%s rejected" % k)
+    check(raises(L.Rejected, L.validate_record, dict(base)) is not None, "SW-6 switch with no detail rejected")
+    check(raises(L.Rejected, L.validate_record, dict(base, detail=dict(det, stopped="ralph_a"))) is not None,
+          "SW-6 switch with non-list stopped rejected")
+
+
 def main():
     if os.environ.get("RM_EVLOG_GATE_PROBE"):
         return _gate_probe()
@@ -1013,7 +1057,7 @@ def main():
         for t in (t_d1_token, t_d2_tail, t_d3_partial, t_d4_ids, t_d5_idem, t_d6_minutes, t_d8_verdict, t_d7_recover,
                   t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
                   t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg, t_r3_b1_tail, t_r3_b2_forged_note, t_r3_b3_roster,
-                  t_r3_b4_note_tokens, t_r3_entrypoint, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
+                  t_r3_b4_note_tokens, t_r3_entrypoint, t_switch_entry, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
                   t_r3_analysis, t_r3_cards, t_r4_small, t_gate_runner):
             try:
                 t(tmp)
