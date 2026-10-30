@@ -44,7 +44,7 @@ import time
 from pathlib import Path
 
 HOME = Path.home()
-DEFAULT_ROOTS = [Path("/home/mandrake/rm/scratch"), HOME / ".seat-tmp"]
+DEFAULT_ROOTS = [Path("/home/mandrake/rm/scratch"), HOME / ".seat-tmp", Path("/home/mandrake/rm/arena/replay")]
 DEFAULT_CORPUS = [Path("/home/mandrake/rm/bench"), Path("/home/mandrake/rm/foundry")]
 NEVER = {Path("/home/mandrake/rm/bench"), Path("/home/mandrake/rm/foundry"), Path("/home/mandrake/rm/store.git"),
          Path("/home/mandrake/rm/mirror.git"), Path("/mnt/d/Luke/dev/RimMandrake"), HOME}
