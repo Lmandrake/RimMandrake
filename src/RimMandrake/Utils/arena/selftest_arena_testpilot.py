@@ -808,6 +808,91 @@ def t_review2b():
     check(T.read_session(p, "steve")["status"] == "closed", "the retried close publishes `closed`")
 
 
+def _hot_child(name, **kw):
+    """A fails s1 (taints s2 by default) on the running game; a live build of the same item, its child, is sealed."""
+    root, p = fresh(name)
+    d = FakeDriver()
+    ex = kw.pop("ex", {"s1": {"taints": ["s2"]}})
+    fx = kw.pop("fixture", "fx")
+    a = T.enqueue(p, "ITEM_HT", SHA[0], "B1", plan("s1", "s2", fixture=fx, **ex))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    d.rc["s1"] = 0
+    b = T.enqueue(p, "ITEM_HT", SHA[1], "B1", plan("s1", "s2", fixture=fx, **ex), parent=a["cand"],
+                  changed_files=["src/RimMandrake/Utils/proofs/proof_v.py"])
+    acts = [pl.step()["decision"]["action"] for _ in range(2 if not ex["s1"]["taints"] else 1)]
+    check(b["class"] == "live" and acts[-1] == "hot_apply",
+          "%s: the child is hot-applied onto the failed parent: %s" % (name, acts))
+    return root, p, d, pl, a, b
+
+
+def t_hotapply_taint_carries():
+    """TESTPILOT_HOTAPPLY_TAINT_FIX_CARRY: a hot-apply resets nothing, so the parent's taint still blocks the child."""
+    # the decision: a live child that was never applied sees the taint on the loaded parent, before its first act
+    root, p = fresh("hot_taint_decide")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_HD", SHA[0], "B1", plan("s1", "s2", s1={"taints": ["s2"]}))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    b = T.enqueue(p, "ITEM_HD", SHA[1], "B1", plan("s1", "s2", s1={"taints": ["s2"]}), parent=a["cand"],
+                  changed_files=["src/RimMandrake/Utils/proofs/proof_v.py"])
+    check(T._pending(p, b, pl._sess()) == (["s1"], ["s2"]),
+          "the parent's taint blocks s2 of a child still waiting to be hot-applied: %s"
+          % (T._pending(p, b, pl._sess()),))
+    # the run: s2 of the child waits for the state reset and its PASS comes after it
+    root, p, d, pl, a, b = _hot_child("hot_taint_run")
+    pl.run_pass()
+    order = [c[:2] for c in d.calls if c[0] in ("scenario", "load_save")]
+    check(order == [("scenario", "s1"), ("scenario", "s1"), ("load_save", "fx"), ("scenario", "s2")],
+          "the child's s1 runs on the live state, s2 only after the fixture reload: %s" % order)
+    check(T.states(p)[b["cand"]].get("verdict") == "pass", "the child resolves after the reset: %s"
+          % T.states(p)[b["cand"]])
+    # two hot-applies in a row: the taint is the state's, the grandparent's note still blocks the grandchild
+    root, p, d, pl, a, b = _hot_child("hot_taint_chain")
+    c = T.enqueue(p, "ITEM_HT", SHA[2], "B1", plan("s1", "s2", fixture="fx", s1={"taints": ["s2"]}), parent=b["cand"],
+                  changed_files=["src/RimMandrake/Utils/proofs/proof_v.py"])
+    check(T._pending(p, c, pl._sess())[1] == ["s2"], "a second hot-apply still sees the first parent's taint: %s"
+          % (T._pending(p, c, pl._sess()),))
+    pl.step()
+    s = pl._sess()
+    check(s["game"]["cand"] == c["cand"] and T._pending(p, c, s)[1] == ["s2"],
+          "the taint survives the grandchild's own hot-apply: %s %s" % (s["game"]["cand"], T._pending(p, c, s),))
+    # a taint note written on the parent AFTER the hot-apply counts too, and `uncertain` blocks everything
+    root, p, d, pl, a, b = _hot_child("hot_taint_late_note", ex={"s1": {"taints": []}})
+    check(T._pending(p, b, pl._sess())[1] == [], "a parent failure tainting nothing blocks nothing")
+    T.taint_note(p, a, "s1", ["s2"])
+    check(T._pending(p, b, pl._sess())[1] == ["s2"], "a late note on the parent blocks the child's s2")
+    root, p = fresh("hot_taint_uncertain")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_HU", SHA[0], "B1", plan("s1", "s2"))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    d.rc["s1"] = 0
+    b = T.enqueue(p, "ITEM_HU", SHA[1], "B1", plan("s1", "s2"), parent=a["cand"],
+                  changed_files=["src/RimMandrake/Utils/proofs/proof_v.py"])
+    check(T._pending(p, b, pl._sess()) == ([], ["s1", "s2"]),
+          "an uncertain parent taint blocks the whole child: %s" % (T._pending(p, b, pl._sess()),))
+    n = len(ran(d))
+    pl.run_pass()
+    check(len(ev(root, "reload")) == 2 and ran(d)[n:] == ["s1", "s2"],
+          "no fixture to restore it: the child gets a reload, then runs: %s" % ran(d)[n:])
+    # a real reset ends it: the same taint no longer blocks once reset_t is past the failure
+    root, p, d, pl, a, b = _hot_child("hot_taint_reset")
+    pl.step()                           # s1 ran on B; only the blocked s2 is left: the reset rung
+    s = pl._sess()
+    check(s["game"].get("hot_from") == [] and T._pending(p, b, s)[1] == [],
+          "a state reset clears the chain and the block: %s %s" % (s["game"].get("hot_from"), T._pending(p, b, s),))
+
+
 # ---------------------------------------------------------------- independent-test defects (2026-10-30)
 def t_taint_keeps_fail():
     """TESTPILOT_FIX_TAINT_ERASING_FAIL: a taint note (the `taint` CLI) annotates a FAIL, it never replaces it."""
@@ -2300,7 +2385,7 @@ def t_check_live_plan():
 
 def main():
     for t in (t_check_live_plan, t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
-              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
+              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,
               t_resolve_after_crashed_pass, t_enqueue_single_record, t_wake_interrupt_crash, t_reload_crash,

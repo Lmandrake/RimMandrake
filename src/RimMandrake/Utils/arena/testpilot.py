@@ -578,16 +578,26 @@ def hot_appliable(cand: dict, game: dict | None, byid: dict) -> bool:
     return loaded is not None and cand.get("parent") == loaded["cand"] and cand["mods"] == loaded["mods"]
 
 
+def _state_cands(game: dict) -> list:
+    """Every candidate that has run on the current game state: the ones hot-applied over, then the loaded one."""
+    return list(game.get("hot_from") or []) + ([game["cand"]] if game.get("cand") else [])
+
+
 def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
     """(valuable scenario ids, blocked ones) of a candidate on the current state. Blocked = named by a taint note or
-    hot-fixed since the last state reset: a reset (fixture reload or reload) restores them. A scenario whose
-    pre-canary was red is blocked only until a green canary (M1: a red canary is re-checked, not reloaded); red again
-    on that re-check, it stays blocked until a reset."""
+    hot-fixed since the last state reset: a reset (fixture reload or reload) restores them. The taint is the game
+    state's, not the candidate's: a hot-apply resets nothing, so the notes of every candidate on this game since the
+    reset count (_state_cands). A scenario whose pre-canary was red is blocked only until a green canary (M1: a red
+    canary is re-checked, not reloaded); red again on that re-check, it stays blocked until a reset."""
     have = scenario_status(p, cand)
-    reset_t = (sess.get("game") or {}).get("reset_t", 0)
-    red = (sess.get("game") or {}).get("canary_red") or {}
+    game = sess.get("game") or {}
+    reset_t = game.get("reset_t", 0)
+    red = game.get("canary_red") or {}
     taint, uncertain = set(), False
-    for e in have.values():
+    byid = cand_by_id(p)
+    sources = [have] + [scenario_status(p, byid[c]) for c in _state_cands(game)
+                        if c != cand["cand"] and c in byid]
+    for e in (e for src in sources for e in src.values()):
         if e["status"] in ("fail", "invalid") and e.get("t", 0) > reset_t and e.get("taint") is not None:
             if e["taint"] == "uncertain":
                 uncertain = True
@@ -1171,6 +1181,7 @@ class Pilot:
             s["red_rungs"] = int(s.get("red_rungs") or 0) + 1
             if ok and rung == "reload_save" and s.get("game"):
                 s["game"]["reset_t"] = self.d.clock()
+                s["game"]["hot_from"] = []
                 s["game"]["loaded_save"] = self.lane.loaded_save
                 s["game"]["canary_red"] = {}
             self._save(s)
@@ -1246,6 +1257,7 @@ class Pilot:
             self._at_rev(c)
             with locked(self.p):
                 s = self._check_live()
+                s["game"]["hot_from"] = _state_cands(s["game"])    # a hot-apply is no reset: their taints still hold
                 s["game"]["cand"], s["game"]["fingerprint"] = c["cand"], c["fingerprint"]
                 if c["kind"] == "repair" and c["fault"] in ("HARNESS", "SITE"):
                     s["game"]["hot_applied_t"] = self.d.clock()
