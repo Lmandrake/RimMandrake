@@ -63,10 +63,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import driver_lock, host_guard, lease, model, priority, probe, reconcile
+    from . import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import driver_lock, host_guard, lease, model, priority, probe, reconcile   # noqa: F401
+    from rimflow import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -2436,8 +2436,29 @@ def _bridge_release(seat, w, holder, expect_token=None):
                   "nothing released" % (holder or "nobody"))
             return 0
     else:
-        _, w2 = load()
-        holder = w2.bridge_holder
+        with _bridge_lock():
+            return _bridge_release_locked(seat, w)
+    return _bridge_release_write(seat, w, holder)
+
+
+def _bridge_release_locked(seat, w):
+    """A plain release, decided on a fresh replay under the bridge lock. 🔴 A seat may not release his OWNER hold
+    until 45 min after his last interaction (owner, by card 2026-10-30): release-then-take would cut it otherwise."""
+    evs, w2 = load()
+    holder = w2.bridge_holder
+    if holder == "OWNER" and seat != "OWNER":
+        owner = _owner_verdict([("his hold's own event", w2.bridge_since)], evs)
+        if not owner[0]:
+            die(_owner_refusal(owner).replace("His hold is takeable", "A seat may release or take his hold", 1))
+        sh = model.read_shared_bridge()
+        if sh and sh.get("holder") == "OWNER":      # the write below clears his shared lock too: his rule for it
+            owner = _shared_owner_verdict(sh, evs)
+            if not owner[0]:
+                die(_owner_refusal(owner).replace("His hold is takeable", "A seat may release or take his hold", 1))
+    return _bridge_release_write(seat, w, holder)
+
+
+def _bridge_release_write(seat, w, holder):
     _driver_release(seat)
     ev = {"seat": seat, "event": "bridge", "state": "released"}
     crossed = bool(holder and holder != seat)
@@ -2456,7 +2477,47 @@ def _bridge_release(seat, w, holder, expect_token=None):
     return 0
 
 
-def _take_decision(holder, seat, idle, force, purpose):
+def _owner_verdict(holds, evs=None):
+    """-> (takeable, text) for an OWNER hold: takeable only when every interaction of his is 45+ min old and none
+    is UNMEASURED (owner_interaction.py names the sources). holds: [(label, ts)] the hold's own events (a None or
+    unreadable ts is UNMEASURED). evs: the replayed ledger (read here when None). Reads transcripts: call it only
+    when the holder IS the OWNER."""
+    if evs is None:
+        evs, _ = load()
+    problems, ledger = [], None
+    for ev in evs:
+        if ev.get("seat") == "OWNER" or str(ev.get("override") or "").startswith("the OWNER "):
+            e = _epoch(ev.get("ts"))
+            if not e:
+                problems.append("an OWNER ledger event has an unreadable ts %r" % (ev.get("ts"),))
+            elif ledger is None or e > ledger:
+                ledger = e
+    times = {"OWNER ledger event": ledger}
+    for label, ts in holds:
+        e = _epoch(ts) if ts else 0.0
+        if not e:
+            problems.append("%s has no readable time (%r)" % (label, ts))
+        else:
+            times[label] = e
+    t, prob = owner_interaction.read_stamp()
+    times["./bridge"] = t
+    if prob:
+        problems.append(prob)
+    t, prob = owner_interaction.last_chat()
+    times["chat prompt"] = t
+    if prob:
+        problems.append(prob)
+    return owner_interaction.verdict(times, problems[:4])
+
+
+def _owner_refusal(owner):
+    return ("refused: the OWNER holds the bridge. His hold is takeable only 45 min after his last interaction, or "
+            "when he releases it (owner, by card 2026-10-30: \"45 minutes after my last interaction, or I "
+            "deliberately release it\"); --force does not cut it.\n  %s\n  check again  rimflow bridge idle --for "
+            "\"<what for>\"" % (owner[1] if owner else "his last interaction is UNMEASURED (not computed)"))
+
+
+def _take_decision(holder, seat, idle, force, purpose, owner=None):
     """-> (why, refusal). `why` is what to stamp on the event; `refusal` is a message.
 
     🔑 ERR ON THE SIDE OF ALLOWING (owner, 2026-09-02). One driver at a time is about
@@ -2471,10 +2532,18 @@ def _take_decision(holder, seat, idle, force, purpose):
     answers None rather than `_epoch`'s 1970 sentinel precisely so this branch can be
     written that way round; inverting it would wedge the bridge on a bad timestamp.
 
+    🔴 HIS OWNER HOLD IS THE EXCEPTION, --force included. OWNER, by question card 2026-10-30 ("Should agents ever
+    be allowed to take your hold?"), typed: "45 minutes after my last interaction, or I deliberately release it".
+    `owner` is `_owner_verdict(...)`'s (takeable, text); None (not computed) refuses, as UNMEASURED does.
+
     Pure, so the whole staleness rule is testable without two processes racing.
     """
     if holder in (None, seat):
         return None, None
+    if holder == "OWNER":
+        if owner and owner[0]:
+            return "the OWNER's hold: %s" % owner[1], None
+        return None, _owner_refusal(owner)
     if force:
         return "forced", None
     if idle is None or idle >= model.BRIDGE_STALE_SECONDS:
@@ -2499,31 +2568,43 @@ def flight_purpose(text):
     return bool(_FLIGHT_RE.search(text or ""))
 
 
-def _delegated_gate(holder, seat, holder_idle, purpose, flyer):
+def _delegated_gate(holder, seat, holder_idle, purpose, flyer, owner=None):
     """The delegated take (`--idle-ok`, kept as the name callers use; owner card 2026-10-26 19:06): -> (event fields,
-    refusal). Allowed whenever the bridge is free / ours / its holder is stale by the existing rule (an OWNER hold
-    never counts as free) and the purpose is not a flyer's flight. The owner's presence at the machine is NOT read
-    (owner 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for anything
-    changing. It's causing so many problems and I don't need it."). `why` starts `delegated:` so the daily digest
-    lists it."""
-    if holder == "OWNER":
-        return None, "refused: the OWNER holds the bridge; a delegated take never takes his hold"
-    if holder not in (None, seat) and not (holder_idle is None or holder_idle >= model.BRIDGE_STALE_SECONDS):
+    refusal). Allowed whenever the bridge is free / ours / its holder is stale by the existing rule and the purpose is
+    not a flyer's flight. His OWNER hold counts as stale only by HIS rule, 45 min after his last interaction (owner,
+    by card 2026-10-30: "45 minutes after my last interaction, or I deliberately release it"): `owner` is
+    `_owner_verdict(...)`'s (takeable, text), None (not computed) refusing. The owner's presence at the machine is NOT
+    read (owner 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for
+    anything changing. It's causing so many problems and I don't need it."). `why` starts `delegated:` so the daily
+    digest lists it."""
+    if holder == "OWNER" and not (owner and owner[0]):
+        return None, _owner_refusal(owner)
+    if holder not in (None, seat, "OWNER") and not (holder_idle is None or holder_idle >= model.BRIDGE_STALE_SECONDS):
         return None, ("refused: %s holds the bridge and is still working (%d min ago); a delegated take takes only "
                       "a free or stale bridge" % (holder, holder_idle // 60))
     if flyer or flight_purpose(purpose):
         return None, "refused: flyer flight is never delegated (needs a human present)"
-    return {"why": "delegated: bridge free (%s)" % ("held by %s, stale" % holder if holder not in (None, seat)
-                                                     else "ours" if holder == seat else "free")}, None
+    return {"why": "delegated: bridge free (%s)" % (
+        "the OWNER's hold: %s" % owner[1] if holder == "OWNER" and holder != seat
+        else "held by %s, stale" % holder if holder not in (None, seat)
+        else "ours" if holder == seat else "free")}, None
 
 
-def _shared_delegated_refusal(seat):
+def _shared_owner_verdict(shared, evs=None):
+    """The verdict on an OWNER hold seen in the shared (cross-clone) lock: his rule, with the lock's `touched` as the
+    hold's own last event."""
+    return _owner_verdict([("the shared lock's OWNER hold", (shared or {}).get("touched"))], evs)
+
+
+def _shared_delegated_refusal(seat, evs=None):
     """The cross-clone half of the delegated gate: another clone's take is not in this ledger until it is pushed.
-    His OWNER hold there refuses at any age; another seat's refuses while its shared lock is fresh (45-min rule)."""
+    His OWNER hold there refuses until 45 min after his last interaction; another seat's refuses while its shared lock
+    is fresh (45-min rule)."""
     shared = model.read_shared_bridge()
     holder = (shared or {}).get("holder")
     if holder == "OWNER":               # before the own-seat exemption, as in _delegated_gate
-        return "refused: the OWNER holds the bridge in another clone; a delegated take never takes his hold"
+        ok, txt = _shared_owner_verdict(shared, evs)
+        return None if ok else _owner_refusal((ok, txt)).replace("holds the bridge", "holds the bridge in another clone", 1)
     if holder in (None, seat):
         return None
     age = model.shared_bridge_age_seconds(shared)
@@ -2534,19 +2615,33 @@ def _shared_delegated_refusal(seat):
 
 
 def _bridge_take(args, seat, w, holder, purpose):
-    """`bridge take` — the contended path, and the only one with a race in it."""
-    why, refusal = _take_decision(
-        holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
-        args.force, purpose)
+    """`bridge take` — the contended path, and the only one with a race in it.
+
+    🔴 THE WHOLE DECISION IS TAKEN UNDER THE BRIDGE LOCK, ON A FRESH REPLAY (BRIDGE_FIX_RECHECK_LIVENESS_UNDER_LOCK).
+    It used to be taken against the world `load()` read at the TOP of the command, with only the holder's NAME
+    re-checked under the lock: a holder that wrote a fresh event in between (same name) still lost the bridge as
+    "stale". Now the holder, its liveness, his OWNER-hold verdict and the delegated gate are all re-derived after the
+    lock is held, so the decision and the append are atomic against every other take and `release --mine` in this
+    clone. `w`, `holder` and `purpose` (the command's first read) are not used for the decision. The other clone is
+    not under this lock: the shared lock below is what it can see at once."""
+    if getattr(args, "idle_ok", False) and args.force:
+        die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
+    with _bridge_lock():
+        evs, w = load()
+        return _bridge_take_locked(args, seat, evs, w)
+
+
+def _bridge_take_locked(args, seat, evs, w):
+    holder = w.bridge_holder
+    idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
+    owner = _owner_verdict([("his hold's own event", w.bridge_since)], evs) if holder == "OWNER" else None
+    why, refusal = _take_decision(holder, seat, idle, args.force, w.bridge_purpose, owner=owner)
     if refusal:
         die(refusal)
     idle_ev = None
     if getattr(args, "idle_ok", False):
-        if args.force:
-            die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
-        idle_ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
-                                           args.purpose, getattr(args, "flyer", False))
-        refusal = refusal or _shared_delegated_refusal(seat)
+        idle_ev, refusal = _delegated_gate(holder, seat, idle, args.purpose, getattr(args, "flyer", False), owner=owner)
+        refusal = refusal or _shared_delegated_refusal(seat, evs)
         if refusal:
             die(refusal)
     ev = {"seat": seat, "event": "bridge", "state": "taken"}
@@ -2561,25 +2656,19 @@ def _bridge_take(args, seat, w, holder, purpose):
     # across a live window". Same field as the owner override above, deliberately.
     if why:
         ev["override"] = (
-            "took the bridge with --force while %s still held it" % holder
+            "took the bridge with --force while %s still held it (%s)" % (holder, why)
             if args.force else "took the bridge: %s" % why)
-    # 🔴 RE-DERIVE THE HOLDER RIGHT BEFORE WRITING. The decision above was taken
-    # against the world `load()` read at the TOP of this command, and nothing
-    # holds a lock across that decision — two windows racing `bridge take` at
-    # the same instant could both see `holder is None` and both append a "taken"
-    # event, the exact double-driver failure this whole mechanism exists to
-    # prevent. This does not make the check-then-write atomic (that needs a lock
-    # held across the full decision, which is a larger change than a review pass
-    # should make to the core ledger primitives) — but it collapses the race
-    # window from "the time between two windows' load() calls" down to "the time
-    # between this re-check and _emit's own write", which is what actually
-    # matters: the loser of the original race now sees the winner's
-    # already-recorded event here and backs off with a clear message, rather
-    # than silently colliding.
     # 🔴 BRIDGE_LOCK_CROSS_CLONE_RACE_1: the OTHER clone's take is not in this clone's ledger
     # until it is pushed. The shared lock on the common drive is what it can see at once.
     shared = model.read_shared_bridge()
-    if shared and shared.get("holder") not in (None, seat):
+    if shared and shared.get("holder") == "OWNER" and seat != "OWNER":
+        # his rule, --force included (owner, by card 2026-10-30)
+        ok, txt = _shared_owner_verdict(shared, evs)
+        if not ok:
+            die(_owner_refusal((ok, txt)).replace("holds the bridge", "holds the bridge in another clone (%s)"
+                                                  % (shared.get("clone") or "?"), 1))
+        ev["override"] = "took the OWNER's hold in another clone: %s" % txt
+    elif shared and shared.get("holder") not in (None, seat):
         age = model.shared_bridge_age_seconds(shared)
         alive = age is not None and age < model.BRIDGE_STALE_SECONDS
         if alive and not args.force:
@@ -2592,23 +2681,6 @@ def _bridge_take(args, seat, w, holder, purpose):
                    model.shared_bridge_path()))
         if alive and args.force:
             ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
-    lk = _bridge_lock()                    # re-check + append atomic against `release --mine` (review M5)
-    lk.__enter__()
-    try:
-        return _bridge_take_locked(args, seat, w, holder, why, ev)
-    finally:
-        lk.__exit__(None, None, None)
-
-
-def _bridge_take_locked(args, seat, w, holder, why, ev):
-    if not args.force:
-        _, w2 = load()
-        fresh_holder = w2.bridge_holder
-        if fresh_holder not in (None, seat) and fresh_holder != holder:
-            die("bridge was just taken by %s (a moment ago) — someone else won this race.\n"
-                "  check again    rimflow bridge who\n"
-                "  cut across it  rimflow bridge take --force --for \"<what for>\""
-                % fresh_holder)
     dl = _archmagi_lock_path()
     if dl:
         got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(),
@@ -2626,8 +2698,8 @@ def _bridge_take_locked(args, seat, w, holder, why, ev):
     if won == seat:
         model.write_shared_bridge(seat, args.purpose)
     if won != seat:
-        # A take landed between our re-check above and our own append. Both events are
-        # in the ledger, the later one holds, and the mirror now says so.
+        # Another clone's ledger write cannot race this lock, but a write that bypasses it can (a hand-run
+        # `_emit`, an older rimflow). Both events are in the ledger, the later one holds, and the mirror says so.
         print("bridge is held by %s — they took it in the same instant you did.\n"
               "  your take IS on the ledger; theirs landed after it, so it stands.\n"
               "  cut across it  rimflow bridge take --force --for \"<what for>\"" % won)
@@ -2668,6 +2740,16 @@ def _bridge_other_host(args, seat, w, hk):
     lane can never both drive it. Taken from another machine, the lock holds this window's identity, which the far
     side cannot inspect: it lives on its heartbeat (45 min). Run `take` again to refresh it; `release` when done.
     """
+    if args.action not in ("give", "who"):
+        # 🔴 decided on a fresh replay under the bridge lock (GPT review of the owner-hold change): the command-start
+        # world can miss a take or his fresh interaction that landed since, as on the Archmagi path
+        with _bridge_lock():
+            _, w = load()
+            return _bridge_other_host_locked(args, seat, w, hk)
+    return _bridge_other_host_locked(args, seat, w, hk)
+
+
+def _bridge_other_host_locked(args, seat, w, hk):
     ent = w.bridge_hosts.get(hk) or {}
     holder = ent.get("holder")
     ident = json.dumps(driver_lock.my_identity())
@@ -2683,6 +2765,11 @@ def _bridge_other_host(args, seat, w, hk):
                                                       ("  for: " + ent["purpose"]) if ent.get("purpose") else ""))
         return 0
     if args.action == "release":
+        if holder == "OWNER" and seat != "OWNER":
+            # his rule for release too: release-then-take would cut his hold (owner, by card 2026-10-30)
+            owner = _owner_verdict([("his %s hold's own event" % hk, ent.get("since"))])
+            if not owner[0]:
+                die(_owner_refusal(owner).replace("His hold is takeable", "A seat may release or take his hold", 1))
         rc, out = _guard_call(hk, ["release", "--seat", seat, "--identity-json", ident])
         if rc != 0:
             print("⚠️  %s guard not released (exit %d): %s" % (hk, rc, out))
@@ -2693,11 +2780,14 @@ def _bridge_other_host(args, seat, w, hk):
         print("%s bridge released by %s" % (hk, seat))
         return 0
     holder_idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
+    # his OWNER hold on this host: takeable only 45 min after his last interaction (owner, by card 2026-10-30)
+    owner = _owner_verdict([("his %s hold's own event" % hk, ent.get("since"))]) if holder == "OWNER" else None
     delegated = None
     if args.action == "idle" or getattr(args, "idle_ok", False):
         # the delegated gate holds on every host (review of 9456c1f533): `idle` is report-only here too (it used to
         # fall through to a real take), and --idle-ok keeps its OWNER-hold and flight refusals off Archmagi
-        delegated, refusal = _delegated_gate(holder, seat, holder_idle, args.purpose, getattr(args, "flyer", False))
+        delegated, refusal = _delegated_gate(holder, seat, holder_idle, args.purpose, getattr(args, "flyer", False),
+                                             owner=owner)
         if args.action == "idle":
             print(("NOT TAKEABLE  " + refusal) if refusal else ("TAKEABLE  %s" % delegated["why"]))
             return 1 if refusal else 0
@@ -2705,7 +2795,7 @@ def _bridge_other_host(args, seat, w, hk):
             die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
         if refusal:
             die(refusal)
-    why, refusal = _take_decision(holder, seat, holder_idle, args.force, args.purpose)
+    why, refusal = _take_decision(holder, seat, holder_idle, args.force, args.purpose, owner=owner)
     if refusal:
         die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hk))
     take = ["take", "--seat", seat, "--for", args.purpose or "(no purpose given)", "--identity-json", ident]
@@ -2734,7 +2824,7 @@ def _bridge_other_host(args, seat, w, hk):
 def cmd_bridge(args, seat):
     """Dispatch only. Each action is its own function so the take rule — the one piece
     with a real race in it — can be read and tested without the other three."""
-    _, w = load()
+    evs, w = load()
     holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
 
     # ⛔ `to` is a `give`-only positional that argparse accepts for every action.
@@ -2758,7 +2848,7 @@ def cmd_bridge(args, seat):
         # another window, so a hold that is not ours is left alone and nothing is written.
         if args.action != "release":
             die("--mine is a `bridge release` flag (got `bridge %s --mine`)" % args.action)
-        now, _ = _bridge_hold(hk)            # fast path: not ours -> nothing to lock for
+        now, tok = _bridge_hold(hk)          # fast path: not ours -> nothing to lock for
         if now != seat:
             print("bridge release --mine: %s does not hold the %s bridge (holder: %s) - nothing released"
                   % (seat, hk, now or "nobody"))
@@ -2769,25 +2859,40 @@ def cmd_bridge(args, seat):
         # take event) that the check saw.
         with _bridge_lock():
             now2, tok2 = _bridge_hold(hk)
-            if now2 != seat:
+            # the SAME take the check saw, not just our seat's name: another window of this seat may have re-taken it
+            # in the gap, and an old loop's cleanup must not release the new window's hold (GPT review 2026-10-30)
+            if now2 != seat or tok2 != tok:
                 print("bridge release --mine: the %s bridge changed hands before the release (holder now: %s) - "
                       "nothing released" % (hk, now2 or "nobody"))
                 return 0
             if hk != model.DEFAULT_BRIDGE_HOST:
                 return _bridge_other_host(args, seat, w, hk)
             return _bridge_release(seat, w, holder, expect_token=tok2)
+    if args.action == "who" and seat == "OWNER":
+        # a bare `./bridge` is one of his deliberate acts and writes no ledger event: stamp it, so his hold's
+        # 45-min clock restarts (owner, by card 2026-10-30: "45 minutes after my last interaction, ...")
+        try:
+            owner_interaction.write_stamp("./bridge (bridge who)")
+        except OSError as e:
+            print("⚠️  could not record this ./bridge as your last interaction (%s: %s); your hold's clock runs from "
+                  "your last other interaction" % (type(e).__name__, e))
     if hk != model.DEFAULT_BRIDGE_HOST:
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
         return _bridge_who(w, holder, since, purpose)
     if args.action == "give":
-        return _bridge_give(args, seat, w, holder)
+        # under the bridge lock on a fresh replay, like take and release: his handover must not interleave with a
+        # take's driver-lock acquire + append (GPT review 2026-10-30)
+        with _bridge_lock():
+            _, w = load()
+            return _bridge_give(args, seat, w, w.bridge_holder)
     if args.action == "release":
         return _bridge_release(seat, w, holder)
     if args.action == "idle":
+        owner = _owner_verdict([("his hold's own event", since)], evs) if holder == "OWNER" else None
         ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
-                                      args.purpose, args.flyer)
-        refusal = refusal or _shared_delegated_refusal(seat)
+                                      args.purpose, args.flyer, owner=owner)
+        refusal = refusal or _shared_delegated_refusal(seat, evs)
         if refusal:
             print("NOT TAKEABLE  " + refusal)
             return 1
@@ -3368,7 +3473,8 @@ def build_parser():
                         "Records that you did.")
     s.add_argument("--idle-ok", dest="idle_ok", action="store_true",
                    help="delegated take (owner card 2026-10-26 19:06): succeeds without his word whenever the bridge "
-                        "is free/ours/stale (never an OWNER hold, never flyer flight); his presence is not read "
+                        "is free/ours/stale (his OWNER hold only 45 min after his last interaction, owner card 2026-10-30; never flyer "
+                        "flight); his presence at the machine is not read "
                         "(owner 2026-10-30)")
     s.add_argument("--flyer", action="store_true",
                    help="the purpose is a flyer's flight: --idle-ok refuses (flight needs a human present). "

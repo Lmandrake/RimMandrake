@@ -227,6 +227,9 @@ lockout**: a `take` is refused only while the holder is provably alive — an
 event within the last 45 minutes; after that the lock is stale (event
 silence, not game activity — the game can sit idle for hours while the
 holder is still working) and the next window simply takes it, saying so.
-`--force` always works and is recorded. Nothing announces a release,
+`--force` works on any seat's hold and is recorded. 🔴 **His OWNER hold is the exception** (owner, by card
+2026-10-30: *"45 minutes after my last interaction, or I deliberately release it"*): no take, `--force` or
+release by a seat until 45 min after his last deliberate interaction (OWNER ledger event, `./bridge`, `./game`,
+his chat prompt to any seat); an unmeasured signal refuses (`rimflow/owner_interaction.py`). Nothing announces a release,
 so if you want the bridge, check `bridge
 who` again rather than waiting to be told.

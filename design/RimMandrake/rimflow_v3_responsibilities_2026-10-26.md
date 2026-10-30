@@ -545,7 +545,7 @@ Rules of the table:
 | D-1 | wake a stalled builder, hand the ticket, verify, retry, record | Lukas's keep-going messages; `dispatcher.py` dry-run journal | every 2 min | D1 wake success (journal); outside dead-man heartbeat owed (`DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT`) | Wed (`--apply`) |
 | D-2 | lease-based "doing" | `lease.py` through `rimflow next` (live) | per take | ops_watch `flow.lapsed_leases` | live now |
 | D-3 | enforce caps (slot allocator N) and the throttle order | `slot_allocator.py` hook | per launch | D4 cap breaches (owed) | Wed |
-| D-4 | one bridge holder; never his OWNER hold | `rimflow bridge` | per take | the bridge record | live now |
+| D-4 | one bridge holder; his OWNER hold only 45 min after his last interaction (card 2026-10-30) | `rimflow bridge` | per take | the bridge record | live now |
 | D-5 | verify a woken seat consumed its handoff | each seat's `handoff.py` ritual | per wake | dispatcher journal | Wed |
 | D-6 | test lane (testq tick / steward / ingest) | RUNNER on SteveDesktop (live) | timers | ops_watch `steve` family | live now |
 | D-7 | measuring arm (`ops_watch.py`) | `rm-ops-watch.timer` (live since 2026-10-27) | 15 min | Operations reads it; silent flag | live now |

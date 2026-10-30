@@ -234,7 +234,7 @@ weak, the gate is weak. Section 3 counts this as the biggest loss.
 
 - **Game:** the only route is `rimflow bridge take --idle-ok --for "<item>"`. It refuses a live other holder, his
   OWNER hold, and any flyer or flight wording; his presence at the machine is not an event (owner 2026-10-30). A refusal means the
-  pass takes a different item. An OWNER hold is never taken. Only one copy of the loop can run (flock), so variant
+  pass takes a different item. An OWNER hold is taken only 45 min after his last interaction (owner card 2026-10-30). Only one copy of the loop can run (flock), so variant
   A cannot hold the bridge twice.
 - **Deploy:** plan first, then `--apply`, with `validate_patch.py --live --defs` after. No C# deploy while the
   game runs (the DLL is locked).

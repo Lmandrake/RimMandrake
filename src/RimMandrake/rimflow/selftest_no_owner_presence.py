@@ -98,7 +98,8 @@ def test_delegated_reach():
     """Review of 9456c1f533: the delegated take keeps its kept-by-design refusals on every path it can reach."""
     import argparse
     import time
-    # (a) `bridge idle --host <other>` is report-only and the delegated gate applies there too
+    # (a) `bridge idle --host <other>` is report-only and the delegated gate applies there too. The `_locked` half is
+    # the decision on a given world (the outer half re-reads the ledger under the bridge lock first)
     calls, emitted = [], []
     keep = cli._guard_call, cli._emit
     cli._guard_call = lambda hk, a: (calls.append(a), (0, "ok"))[1]
@@ -107,31 +108,34 @@ def test_delegated_reach():
         w = argparse.Namespace(bridge_hosts={"stevedesktop": {"holder": "OWNER", "since": "x"}}, last_seen={})
         mk = lambda action, **kw: argparse.Namespace(**dict(dict(action=action, purpose="deploy", force=False,
                                                                  idle_ok=False, flyer=False), **kw))
-        rc = cli._bridge_other_host(mk("idle"), "BENCH", w, "stevedesktop")
+        rc = cli._bridge_other_host_locked(mk("idle"), "BENCH", w, "stevedesktop")
         check(rc == 1 and not calls and not emitted, "idle --host: OWNER hold -> NOT TAKEABLE, nothing taken "
               "(rc=%s calls=%s emitted=%s)" % (rc, calls, emitted))
         w.bridge_hosts = {}
         del calls[:], emitted[:]
-        rc = cli._bridge_other_host(mk("idle"), "BENCH", w, "stevedesktop")
+        rc = cli._bridge_other_host_locked(mk("idle"), "BENCH", w, "stevedesktop")
         check(rc == 0 and not any(c and c[0] == "take" for c in calls) and not emitted,
               "idle --host on a free bridge reports TAKEABLE and takes nothing (calls=%s)" % calls)
         del calls[:], emitted[:]
         try:
-            cli._bridge_other_host(mk("take", idle_ok=True, flyer=True), "BENCH", w, "stevedesktop")
+            cli._bridge_other_host_locked(mk("take", idle_ok=True, flyer=True), "BENCH", w, "stevedesktop")
             refused = False
         except SystemExit:
             refused = True
         check(refused and not emitted, "take --host --idle-ok --flyer -> refused")
     finally:
         cli._guard_call, cli._emit = keep
-    # (b) a stale OWNER hold in the shared (cross-clone) lock refuses a delegated take; a live one refuses `idle`
+    # (b) his OWNER hold in the shared (cross-clone) lock: takeable only 45 min after his last deliberate interaction
+    # (owner, by card 2026-10-30: "45 minutes after my last interaction, or I deliberately release it"). The hold's
+    # own touch counts as one; nothing about his presence at the machine is read. A live seat hold refuses `idle`.
     tmp = tempfile.mkdtemp(prefix="rf_nopres2_")
     try:
         os.makedirs(os.path.join(tmp, "items"))
         shared = os.path.join(tmp, "shared.json")
         env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
         env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
-                   RIMFLOW_SHARED_BRIDGE=shared, RIMFLOW_SEAT="BENCH")
+                   RIMFLOW_SHARED_BRIDGE=shared, RIMFLOW_SEAT="BENCH", RIMFLOW_OWNER_CHAT_DIRS="",
+                   RIMFLOW_OWNER_ACT_STAMP=os.path.join(tmp, "OWNER_LAST_ACT.json"))
 
         def rf(*a):
             return subprocess.run([sys.executable, os.path.join(HERE, "cli.py")] + list(a), env=env,
@@ -141,13 +145,17 @@ def test_delegated_reach():
             t = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - age_s))
             with open(shared, "w") as f:
                 json.dump({"holder": holder, "since": t, "touched": t, "clone": "/other"}, f)
-        put("OWNER", 3 * 3600)
+        put("OWNER", 10 * 60)
         r = rf("bridge", "take", "--idle-ok", "--for", "deploy")
-        check(r.returncode != 0 and "OWNER" in (r.stderr + r.stdout), "shared stale OWNER hold -> --idle-ok refused "
-              "(%s)" % (r.stderr + r.stdout).strip()[:120])
+        check(r.returncode != 0 and "OWNER" in (r.stderr + r.stdout), "shared OWNER hold touched 10 min ago -> "
+              "--idle-ok refused (%s)" % (r.stderr + r.stdout).strip()[:120])
         r = rf("bridge", "idle", "--for", "deploy")
-        check(r.returncode == 1 and r.stdout.startswith("NOT TAKEABLE"), "shared stale OWNER hold -> bridge idle "
-              "NOT TAKEABLE (%s)" % r.stdout.strip()[:120])
+        check(r.returncode == 1 and r.stdout.startswith("NOT TAKEABLE"), "shared OWNER hold touched 10 min ago -> "
+              "bridge idle NOT TAKEABLE (%s)" % r.stdout.strip()[:120])
+        put("OWNER", 3 * 3600)
+        r = rf("bridge", "idle", "--for", "deploy")
+        check(r.returncode == 0 and r.stdout.startswith("TAKEABLE"), "shared OWNER hold, no interaction for 3 h -> "
+              "bridge idle TAKEABLE (%s)" % r.stdout.strip()[:120])
         put("FOUNDRY", 60)
         r = rf("bridge", "idle", "--for", "deploy")
         check(r.returncode == 1 and r.stdout.startswith("NOT TAKEABLE"), "shared live FOUNDRY hold -> bridge idle "

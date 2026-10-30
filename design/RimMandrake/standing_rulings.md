@@ -439,7 +439,7 @@ rimflow bridge release                    the moment you stop. Not at the end of
 🔑 **It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02).
 A take is refused only while the holder is provably alive — an event within 45
 minutes; after that the lock is stale and the next window simply takes it, saying so.
-`take --force` always works and is recorded. **Nobody is coming to tell you it freed:
+`take --force` works on any seat's hold and is recorded. **Nobody is coming to tell you it freed:
 if you want it, look again.**
 
 ⭐ **The owner overrides both of you with `./bridge bench|foundry|free`**, and his word
@@ -450,8 +450,16 @@ keyboard or mouse clock, and his touching, leaving or returning to the machine n
 requeues or aborts anything: a bridge take, deploy, restart, dispatcher ring, seat restart, arena lane, TestPilot or
 runner. A seat MAY take the bridge, deploy and restart the game on its own when it is free, ours, or stale by the
 45-minute rule, and lists each act in his daily digest (`delegation_policy.md` §2.6). Still binding: his OWNER hold
-and `./bridge` override are never taken, never a flyer's flight, and the game is never fullscreened or focused, so
+(below) and `./bridge` override, never a flyer's flight, and the game is never fullscreened or focused, so
 it does not steal his screen. The arena lane config key `owner_playing` is ignored and dropped.
+
+🔴 **His OWNER hold is takeable 45 minutes after his last interaction** (owner, by question card 2026-10-30, "Should
+agents ever be allowed to take your hold?", typed: *"45 minutes after my last interaction, or I deliberately release
+it"*). Interaction means his deliberate acts only: any OWNER-attributed ledger event (his `./game`, his
+`./bridge bench|foundry|free`, anything run on his words, card or ruling), a bare `./bridge`, his chat prompt to any
+seat window (the human-input signal `block_agent_over_slots.py` uses), and the hold's own events. Never his keyboard,
+mouse or presence. Until then every take refuses, `--force` included, naming his last interaction; an unmeasured
+signal refuses. Code: `src/RimMandrake/rimflow/owner_interaction.py`, gate in `rimflow/cli.py` `_take_decision`.
 
 🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
 2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch

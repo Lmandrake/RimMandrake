@@ -801,8 +801,8 @@ def t_review():
     r = R.run_one(p, "archmagi", d, "/c")
     check(r["verdict"] != "aborted" and r.get("restore_failed") and ("owner_probe",) not in d.calls,
           "M8: owner back + failed restore -> not aborted, restore_failed carried (got %s)" % r.get("verdict"))
-    # review of 9456c1f533: the real driver's take is the delegated one, so his OWNER hold (any age) and flight
-    # wording refuse at the bridge too, not only while fresh
+    # review of 9456c1f533: the real driver's take is the delegated one, so his OWNER hold (until 45 min after his
+    # last interaction, owner card 2026-10-30) and flight wording refuse at the bridge too
     rd = L.RealDriver()
     seen = []
     rd._rf = lambda *a: (seen.append(a), (0, "taken"))[1]

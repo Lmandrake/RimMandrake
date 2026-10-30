@@ -332,14 +332,17 @@ python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click fo
 One window drives the live game at a time. Who holds it is `infrastructure/state/BRIDGE`,
 written only by `rimflow bridge who | take --for "<what for>" | release` (release the moment
 you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale and simply
-taken; `take --force` always works. ⭐ The owner overrides with `./bridge bench|foundry|free`.
+taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge bench|foundry|free`.
+🔴 **His OWNER hold** (owner, by card 2026-10-30: *"45 minutes after my last interaction, or I deliberately release
+it"*): takeable only 45 min after his last deliberate interaction (any OWNER ledger event, a `./bridge`, a `./game`,
+his chat prompt to any seat), `--force` included; an unmeasured signal refuses (`rimflow/owner_interaction.py`).
 🔴 **His presence at the machine is not an event** (owner, 2026-10-30: *"I really, really need you to strip "when I come
 back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*): nothing
 reads his input clock, and his touching, leaving or returning to the machine never gates, delays, yields, requeues or
 aborts a take, deploy, restart, ring, arena lane, TestPilot or runner. A seat MAY take the bridge, deploy and restart the
 game when the bridge is free, ours, or stale by the 45-min rule (`rimflow bridge idle --for "<what>"` reports it;
 `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it; each act goes in his
-daily digest, `delegation_policy.md` §2.6). Still binding: his OWNER hold and `./bridge` override, never a flyer's
+daily digest, `delegation_policy.md` §2.6). Still binding: his OWNER hold (above) and `./bridge` override, never a flyer's
 flight (`--flyer` or flight wording refuses), never fullscreen or focus the game.
 🔴 **Holding the bridge is blanket authorization** — *"Never ask that. If you have bridge, you may
 start steam, launch game, anything you need."* Game-state relays are STAMP-ONLY (*"burn tokens

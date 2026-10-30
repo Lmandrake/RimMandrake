@@ -88,7 +88,7 @@ functional script and is debugged through it*. The bridge is what those scripts 
    cold-load, kill and relaunch, all without asking.
 5. **A reboot is the seat's to call** (owner 2026-09-02). It is gated only on the bridge
    being free or yours, and on the ~15–25 min cost. With the game up, a seat may take the free bridge,
-   deploy and restart when the bridge is free, ours or stale (45 min), never his OWNER hold, never for flyer
+   deploy and restart when the bridge is free, ours or stale (45 min), his OWNER hold only 45 min after his last interaction (owner card 2026-10-30), never for flyer
    flight, each act in his digest (`delegation_policy.md` §2.6). His presence at the machine is not an event
    (owner 2026-10-30): nothing waits on his input clock.
 6. **`success: true` is not evidence.** Write → read back the raw field → look

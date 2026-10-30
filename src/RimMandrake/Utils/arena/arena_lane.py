@@ -28,8 +28,9 @@ ENFORCED HERE (each one a refusal, LaneRefused, before anything is touched):
   * his presence at the machine never gates, delays, yields or aborts a lane (owner 2026-10-30: "I really, really
     need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many
     problems and I don't need it."). There is no owner probe and no owner-return abort; a lane config's old
-    `owner_playing` key is ignored. His explicit OWNER bridge hold still refuses the take, at any
-    age (the lane's take is the delegated `--idle-ok` one).
+    `owner_playing` key is ignored. His explicit OWNER bridge hold refuses the take until 45 min after his
+    last deliberate interaction (owner, by card 2026-10-30: "45 minutes after my last interaction, or I
+    deliberately release it"; rimflow/owner_interaction.py lists what counts). The lane's take is `--idle-ok`.
 
 THE CANARY (§1.2 step 8): a live colonist and the vanilla spawn probe (modcheck/validity.canary, reused, not copied);
 a Player.log written since this lane's own launch; the expected game version (lane config `game_version`, pinned once
@@ -632,8 +633,8 @@ class RealDriver:
 
     def bridge_take(self, host, purpose, idle_ok=False):
         """`idle_ok` is accepted and ignored. A lane take is always the delegated take (`--idle-ok`): free, ours or
-        45-min stale, never his OWNER hold at any age, never flight wording. It reads nothing about his presence
-        (owner 2026-10-30); a plain take would cut a stale OWNER hold (review of 9456c1f533)."""
+        45-min stale, his OWNER hold only 45 min after his last interaction (owner card 2026-10-30), never flight
+        wording. It reads nothing about his presence at the machine (owner 2026-10-30)."""
         rc, out = self._rf("bridge", "take", "--host", host, "--idle-ok", "--for", purpose)
         return rc == 0, out
 

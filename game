@@ -74,7 +74,7 @@ case "${1}" in
         echo "  --said \"…\"          the owner's words (light tidying fine, meaning unchanged)"
         echo "  --by-card \"…\"       he decided it by question card (the label is ours, not his words)"
         echo "  --per-ruling <id>    a standing ruling of his, cited by item id or ledger event"
-        echo "  --idle-ok            delegated restart: bridge free/ours/stale, never his OWNER hold (needs --why; never --flyer)"
+        echo "  --idle-ok            delegated restart: bridge free/ours/stale, his OWNER hold only 45 min after his last interaction (needs --why; never --flyer)"
         echo "  --why \"…\"           YOUR own reason — a self-initiated restart uses this, never --said"
         echo
         echo "Stamps the ledger; run by the OWNER it also announces to every agent window."
@@ -98,7 +98,8 @@ while [ $# -gt 0 ]; do
 done
 [ $# -eq 0 ] && { echo "a flag takes its text, then the state: ./game --why \"reloading for X\" down" >&2; exit 2; }
 # ⭐ --idle-ok (delegation_policy 2.6): a seat restarts the game on its own when the bridge is free, ours or
-# stale (45 min), never his OWNER hold, never for a flyer's flight. His input is NOT read (owner 2026-10-30:
+# stale (45 min), his OWNER hold only 45 min after his last interaction (owner card 2026-10-30), never for a
+# flyer's flight. His keyboard/mouse input is NOT read (owner 2026-10-30:
 # "I really, really need you to strip "when I come back to the machine" as an event for anything changing.").
 # The flag keeps its old name for callers. The event carries `why` = "delegated: ..." so the digest lists it.
 if [ "$idle_ok" = 1 ]; then

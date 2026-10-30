@@ -106,7 +106,7 @@ Each line is reserved by a ruling of his that says so; nothing else is.
 6. **Presence-bound acts his rulings name.** Live flight tests of a flyer — *"do not do live testing of flyers
    without a human present"* (CLAUDE.md, flight); `broadcast.py` is his; `./bridge bench|foundry|free` is his
    except as delegated here. **Delegated:** a seat MAY take the bridge, deploy and restart the game on its own
-   when the bridge is free, ours, or stale by the 45-minute rule, never his OWNER hold, and never for a flyer's
+   when the bridge is free, ours, or stale by the 45-minute rule, his OWNER hold only 45 min after his last interaction (owner card 2026-10-30), and never for a flyer's
    flight. Each take and restart is listed in his daily digest. His presence at the machine plays no part (owner,
    2026-10-30, verbatim: *"I really, really need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*): nothing reads his input clock. Tooling: `rimflow bridge idle` reports TAKEABLE or
    not; `bridge take --idle-ok` and `./game --idle-ok` take it; the events carry `why` `delegated: ...`. The flyer
