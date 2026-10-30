@@ -38,6 +38,9 @@ SHA_A = "a" * 40
 SHA_B = "b" * 40
 CANON = "CANON_START_SAVE"
 L.canonical_saves = lambda: {CANON}          # canon.yml is read live; the selftest pins its own name
+CANON_WORLD = {"name": "Canon'World", "seed": "canonseed"}
+REAL_CANONICAL_WORLDS = L.canonical_worlds
+L.canonical_worlds = lambda: [dict(CANON_WORLD)]   # the .rws is read live; the selftest pins its own world
 
 
 def check(ok, msg):
@@ -155,7 +158,7 @@ class FakeDriver:
         f = {"ingame_canary": {"ok": self.colonists > 0,
                                "problems": [] if self.colonists > 0 else ["no live colonist"]},
              "live_colonists": self.colonists, "player_log_mtime": self.log_mtime, "game_version": self.version,
-             "active_mods": list(self.active), "save_name": None}
+             "active_mods": list(self.active), "world": {"name": "Quick-IX", "seed": "wulan"}}
         f.update(self.facts_override)
         return f
 
@@ -487,7 +490,14 @@ def t_canary():
         ("colonist count unreadable", lambda d: d.facts_override.update(live_colonists=None), "UNMEASURED"),
         ("deployed mod not active", lambda d: d.facts_override.update(active_mods=["ludeon.rimworld"]), "not active"),
         ("in-game probe missing", lambda d: d.facts_override.update(ingame_canary=None), "in-game canary"),
-        ("on the canonical save", lambda d: d.facts_override.update(save_name=CANON + ".rws"), "canonical"),
+        ("on the canonical world (name)", lambda d: d.facts_override.update(
+            world={"name": "canon'world", "seed": "other"}), "canonical world"),
+        ("on the canonical world (seed)", lambda d: d.facts_override.update(
+            world={"name": "Other", "seed": "CanonSeed"}), "canonical world"),
+        ("world identity partial", lambda d: d.facts_override.update(world={"name": "Quick-IX"}), "UNMEASURED"),
+        ("world identity blank", lambda d: d.facts_override.update(world={"name": " ", "seed": "x"}), "UNMEASURED"),
+        ("world identity not text", lambda d: d.facts_override.update(world={"name": {"error": 1}, "seed": "x"}),
+         "UNMEASURED"),
     ]
     for name, plant, needle in cases:
         d = FakeDriver()
@@ -587,16 +597,16 @@ def t_review():
         res = lane.canary(None)
     check(not res["ok"] and any("expected mod set is UNMEASURED" in x for x in res["problems"]),
           "H4: an unmeasured expected set -> red")
-    # H3: a dirty clone is refused; a missing save_name is red; version pin is exact
+    # H3: a dirty clone is refused; a missing world identity is red; version pin is exact
     d = FakeDriver()
     d.head["/c"] = SHA_A
     d.dirty = [" M Source/x.cs"]
     with L.Lane("steve", R.ARM, d, "dirty", root=p["root"]) as lane:
         check(raises(L.LaneRefused, lane.deploy, ["Slime"], False, "/c", SHA_A) is not None
               and not any(c[0] == "deploy" for c in d.calls), "H3: a dirty clone is never deployed")
-    for name, plant, needle in (("save name unmeasured", lambda d: d.facts_override.update({}) or
+    for name, plant, needle in (("world identity unmeasured", lambda d: d.facts_override.update({}) or
                                  d.__setattr__("game_facts", lambda f=FakeDriver.game_facts, dd=d:
-                                               {k: v for k, v in f(dd).items() if k != "save_name"}), "save name"),
+                                               {k: v for k, v in f(dd).items() if k != "world"}), "world identity"),
                                 ("version prefix only", lambda d: d.facts_override.update(game_version="1.6.4633"),
                                  "expected")):
         d = FakeDriver()
@@ -605,6 +615,49 @@ def t_review():
             plant(d)
             res = lane.canary(None)
         check(not res["ok"] and any(needle in x for x in res["problems"]), "H3/L3: %s -> red" % name)
+    # the canon save's world cannot be read -> red; a quicktest world is green (control)
+    keep = L.canonical_worlds
+    for name, fn, want_ok in (("canon world unreadable", lambda: (_ for _ in ()).throw(OSError("no rws")), False),
+                              ("quicktest world control", keep, True)):
+        L.canonical_worlds = fn
+        try:
+            d = FakeDriver()
+            with L.Lane("steve", R.ARM, d, name, root=p["root"]) as lane:
+                lane.reload("minimal", None, "R0")
+                res = lane.canary(None)
+        finally:
+            L.canonical_worlds = keep
+        check(res["ok"] == want_ok and (want_ok or any("unreadable" in x for x in res["problems"])),
+              "world canary: %s -> %s" % (name, "green" if want_ok else "red"))
+    # canonical_worlds reads the .rws with an XML parser: named and numeric character references decode
+    import game_paths
+    keep_saves, keep_cs = game_paths.SAVES, L.canonical_saves
+    with tempfile.TemporaryDirectory() as td:
+        (Path(td) / "C1.rws").write_bytes(b"<savegame><game><world>\r\n<planetType>T</planetType><info>\r\n"
+                                          b"<name>Ash&apos;&#107;arr</name><planetCoverage>1</planetCoverage>"
+                                          b"<seedString>&#115;afety</seedString></info></world></game></savegame>")
+        (Path(td) / "C2.rws").write_bytes(b"<savegame><game><world><info><name>N</name></info></world></game>")
+        game_paths.SAVES, L.canonical_saves = td, (lambda: {"C1"})
+        try:
+            got = REAL_CANONICAL_WORLDS()
+            L.canonical_saves = lambda: {"C2"}
+            bad = raises(ValueError, REAL_CANONICAL_WORLDS)
+        finally:
+            game_paths.SAVES, L.canonical_saves = keep_saves, keep_cs
+    check(got == [{"name": "Ash'karr", "seed": "safety"}], "canonical_worlds: references decode (%s)" % got)
+    check(bad is not None, "canonical_worlds: a save with no seedString raises (-> red), never an empty identity")
+    # package_ids reads src/<Tier>/<Mod>/About/About.xml (deploy_custom_mods' bare folder name), exactly one hit
+    with tempfile.TemporaryDirectory() as td:
+        a = Path(td) / "src" / "RimMandrake" / "Vis" / "About"
+        a.mkdir(parents=True)
+        (a / "About.xml").write_text("<ModMetaData><packageId> mandrake.rm.vis </packageId></ModMetaData>")
+        for t in ("RimA", "RimB"):
+            b = Path(td) / "src" / t / "Twin" / "About"
+            b.mkdir(parents=True)
+            (b / "About.xml").write_text("<ModMetaData><packageId>x.%s</packageId></ModMetaData>" % t)
+        got = L.RealDriver().package_ids(["Vis", "Nope", "Twin"], td)
+    check(got == ["mandrake.rm.vis", "<unreadable:Nope>", "<unreadable:Twin>"],
+          "package_ids: tier-nested About.xml read; missing and ambiguous are unreadable (%s)" % got)
     # M7: canonical save in any case or path
     for n in ("canon_start_save", "Saves\\CANON_START_SAVE.rws", "C:/x/Canon_Start_Save.RWS"):
         check(L.is_canonical(n), "M7: %r is the canonical save" % n)

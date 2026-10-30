@@ -211,6 +211,42 @@ def is_canonical(name) -> bool:
     return bool(name) and save_base(name) in {save_base(c) for c in canonical_saves()}
 
 
+def canonical_worlds() -> list[dict]:
+    """{name, seed} of each canonical save's world, read from the .rws itself (Saves/ via game_paths). Raises when a
+    save cannot be read: the caller turns that into a red canary.
+
+    Why the world and not the save name: measured live 2026-10-30, rimworld/get_game_info carries no key naming the
+    loaded save, so the map is identified by jawa/world_info_get's world name + seedString instead. In the canon
+    start save the one <seedString> sits in <world><info> (measured: Ash'karr / safety)."""
+    import re
+    import xml.etree.ElementTree as ET
+    from game_paths import SAVES
+    out = []
+    for n in sorted(canonical_saves()):
+        b = (Path(SAVES) / (n + ".rws")).read_bytes()
+        i = b.find(b"<world>")
+        m = re.search(rb"<info>.*?</info>", b[i:i + 20000], re.S) if i >= 0 else None
+        info = ET.fromstring(m.group(0)) if m else None           # an XML parser: entities and &#NN; decode
+        w = {"name": info.findtext("name") if info is not None else None,
+             "seed": info.findtext("seedString") if info is not None else None}
+        if not (is_ident(w["name"]) and is_ident(w["seed"])):
+            raise ValueError("no <world><info> name/seedString in %s.rws" % n)
+        out.append(w)
+    return out
+
+
+def is_ident(v) -> bool:
+    """A world name or seed that can be compared: a non-blank string (an error object or blank is unmeasured)."""
+    return isinstance(v, str) and bool(v.strip())
+
+
+def on_canonical_world(world, canon) -> bool:
+    """A live world matching a canonical world on name OR seed counts as canonical (errs toward red)."""
+    cf = lambda s: str(s or "").strip().casefold()  # noqa: E731
+    return any((cf(world.get("name")) and cf(world.get("name")) == cf(c["name"]))
+               or (cf(world.get("seed")) and cf(world.get("seed")) == cf(c["seed"])) for c in canon)
+
+
 def is_seat_clone(clone) -> bool:
     """A seat's working clone (this repo, or one named bench/foundry): never checked out or reset by a lane."""
     try:
@@ -542,12 +578,19 @@ class Lane:
             if extra:
                 problems.append("%d mod(s) active beyond the %s profile (not a trial list): %s"
                                 % (len(extra), (self.profile or {}).get("profile"), ", ".join(extra[:5])))
-        if "save_name" not in f:
-            problems.append("the loaded map's save name is UNMEASURED")
+        if self.loaded_save and is_canonical(self.loaded_save):
+            problems.append("the map is the canonical world save %s" % self.loaded_save)
+        w = f.get("world")
+        if not isinstance(w, dict) or not is_ident(w.get("name")) or not is_ident(w.get("seed")):
+            problems.append("the loaded map's world identity is UNMEASURED (no jawa/world_info_get name+seed)")
         else:
-            save = f.get("save_name") or self.loaded_save
-            if is_canonical(save):
-                problems.append("the map is the canonical world save %s" % save)
+            try:
+                canon = canonical_worlds()
+            except Exception as e:  # noqa: BLE001 - cannot read the canon save: cannot prove we are not on it
+                problems.append("the canonical world's identity is unreadable: %s: %s" % (type(e).__name__, e))
+            else:
+                if on_canonical_world(w, canon):
+                    problems.append("the map is on the canonical world (%s / %s)" % (w.get("name"), w.get("seed")))
         res = {"ok": not problems, "problems": problems,
                "facts": {k: v for k, v in f.items() if k != "ingame_canary"},
                "ingame": probe if isinstance(probe, dict) else None}
@@ -671,9 +714,13 @@ class RealDriver:
         import xml.etree.ElementTree as ET
         out = []
         for m in mods:
-            about = Path(clone) / "src" / m / "About" / "About.xml"
+            # deploy_custom_mods names a mod by its bare folder, which sits one tier down: src/<Tier>/<Mod>
+            # (src/RimMandrake/Visibility). Found live 2026-10-30: src/<Mod>/About never exists.
+            hits = sorted((Path(clone) / "src").glob("*/%s/About/About.xml" % m))
             try:
-                out.append(ET.parse(about).getroot().findtext("packageId").strip())
+                if len(hits) != 1:
+                    raise OSError("%d About.xml for %s" % (len(hits), m))
+                out.append(ET.parse(hits[0]).getroot().findtext("packageId").strip())
             except (OSError, ET.ParseError, AttributeError):
                 out.append("<unreadable:%s>" % m)       # the canary then reports it not active: red, never silent
         return out
