@@ -765,7 +765,7 @@ def events_since(root: Path, arm: str, ts: float) -> int:
         except (ValueError, KeyError, TypeError):
             n += 1                      # a line we cannot read after the switch is written by SOMEONE: count it
             continue
-        if t > ts and r.get("event") not in ("switch", "stop"):
+        if t >= int(ts) and r.get("event") not in ("switch", "stop"):   # event stamps are whole seconds: floor ts
             n += 1
     return n
 
@@ -1268,6 +1268,11 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
         summary["offline"] = sorted(set(summary["offline"]) | set(late_offline))
         steps.append("clone state re-checked clean after the writers stopped")
         rel = {}
+        try:
+            to_release = releasable_locks(cfg, new, d.bridge_locks())   # re-read: a hold taken after the first read
+        except Exception as e:  # noqa: BLE001
+            raise SwitchError("bridge locks unreadable after the writers stopped (%s: %s); the new target was NOT "
+                              "started" % (type(e).__name__, e))
         for l in to_release:
             host = l.get("host") or LANES.get(l.get("lane"), l.get("lane"))
             ok, out = d.bridge_release(host)
@@ -1310,7 +1315,10 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
                                     "stopped": stopped_now, "refs": snap})
         set_mode(cfg_path, mode)
         steps.append("arm.toml mode = %s" % mode)
-        for a in sorted(live_arms(new) | set(mode_targets(new))):
+        clear = live_arms(new) | set(mode_targets(new))
+        if new["mode"] in PRODUCTION_MODES:
+            clear |= set(PRODUCTION_ARMS)       # the production clones run as v3 or production: both aliases clear
+        for a in sorted(clear):
             try:
                 d.stop_file(a).unlink()
             except FileNotFoundError:

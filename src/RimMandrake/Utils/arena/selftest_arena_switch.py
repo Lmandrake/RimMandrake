@@ -1311,12 +1311,49 @@ def t_fsd_parity():
           "condition, fsd starts it) ours %s fsd %s" % (a, b))
 
 
+def t_round2_gpt():
+    """GPT review round 2 findings: stale STOP alias, whole-second event stamps, late bridge hold."""
+    w = World("r2b")
+    for a in ("ralph_a", "bench", "foundry"):
+        w.clone(a)
+    idle_status(w, "ralph_a", "idle")
+    AR.switch("production", w.toml, w.deps())
+    idle_status(w, "production", "idle")
+    AR.switch("v3", w.toml, w.deps())
+    check(not (w.arena / "STOP.production").exists() and not (w.arena / "STOP.v3").exists(),
+          "FORCED production -> v3: no STOP alias is left on the production clones (it would refuse their pushes)")
+    d = w.deps()
+    check(AR.switch_in_progress(d, "production") == [], "production clone push is not refused after the switch")
+    # whole-second event stamps against a fractional switch epoch
+    import datetime as dt
+    ev = w.arena / "events"; ev.mkdir(exist_ok=True)
+    t0 = 1_800_000_000.8
+    (ev / "trio.jsonl").write_text(json.dumps({"ts": dt.datetime.fromtimestamp(int(t0) + 0.0, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "event": "pass_start"}) + "\n")
+    check(AR.events_since(w.arena, "trio", t0) == 1, "FORCED an event stamped in the switch's own second (switch at .8) is counted")
+    # a bridge hold taken after the first read is released once the writers stopped
+    w2 = World("r2c")
+    for a in ("ralph_a", "bench", "foundry"):
+        w2.clone(a)
+    idle_status(w2, "ralph_a", "idle")
+    calls = {"n": 0}
+    late = {"lane": "archmagi", "host": "archmagi", "purpose": "arena ralph_a archmagi r9: late"}
+    d2 = w2.deps()
+    def locks():
+        calls["n"] += 1
+        if calls["n"] == 2:
+            w2.locks = [late]                   # the arm took the hold between the first read and the stop
+        return list(w2.locks)
+    d2.bridge_locks = locks
+    AR.switch("production", w2.toml, d2)
+    check(w2.released == ["archmagi"], "FORCED a hold taken by the stopping arm after the first lock read is released (%s)" % w2.released)
+
+
 def main():
     try:
         for t in (t_two_targets, t_graph, t_switch_production, t_switch_forced, t_who, t_push, t_installer, t_ops_watch,
                   t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety, t_unknown_and_live,
                   t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_cli_bits,
-                  t_fsd_parity):
+                  t_fsd_parity, t_round2_gpt):
             print("== %s" % t.__name__)
             t()
     finally:
