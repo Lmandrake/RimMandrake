@@ -1,0 +1,1 @@
+A new read-modify-write of arena switch_state.json must hold the switch lock (flock on switch.lock), re-read the file under it and add only its own keys; never write back a copy read earlier, and do slow network calls outside the lock (who _gap_pushed clobbered a concurrent switch, fixed with _store_late_baseline).
