@@ -14,6 +14,7 @@ and written to --out when given. Default model: gpt-6.1-sol at high effort (owne
 import argparse
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -50,16 +51,25 @@ def build_prompt(question, files, inlined=None):
     return "\n".join(parts) + "\n"
 
 
-def _log_call(job, model, prompt, answer_text, rc):
-    """One line per call in the arm-metering log, tagged from RM_ARM (absent -> arm null = flagged UNTAGGED
-    by spend_census). Token counts are chars/4 ESTIMATES. A log that cannot be written never fails the consult."""
+TOKENS_RE = re.compile(r"tokens used\s*[:\n]\s*([0-9][0-9,]*)", re.I)
+
+
+def real_tokens(codex_log_text):
+    """The real 'tokens used' figure codex prints (last one wins), or None."""
+    m = TOKENS_RE.findall(codex_log_text or "")
+    return int(m[-1].replace(",", "")) if m else None
+
+
+def _log_call(job, model, prompt, answer_text, rc, codex_log_text=None):
+    """One record per call in the arm-metering log (gpt_call_log: atomic file-per-call on drvfs), tagged from
+    RM_ARM (absent -> arm null = flagged UNTAGGED by spend_census). tokens_used is the REAL codex figure when the
+    codex log has it; in/out_tok_est are chars/4 ESTIMATES kept as a labelled fallback. Never fails the consult."""
     try:
-        log = os.environ.get("RM_GPT_CALL_LOG", "/mnt/d/ClaudeWork/rimmandrake/arena/gpt_calls.jsonl")
-        Path(log).parent.mkdir(parents=True, exist_ok=True)
+        import gpt_call_log
         rec = {"t": time.time(), "arm": os.environ.get("RM_ARM") or None, "job": job, "model": model, "rc": rc,
-               "in_tok_est": len(prompt) // 4, "out_tok_est": len(answer_text) // 4}
-        with open(log, "a") as f:
-            f.write(json.dumps(rec) + "\n")
+               "in_tok_est": len(prompt) // 4, "out_tok_est": len(answer_text) // 4,
+               "tokens_used": real_tokens(codex_log_text)}
+        gpt_call_log.write_record(rec)
     except Exception as e:                                  # noqa: BLE001
         print("[consult] WARN: call not metered: %s" % e, file=sys.stderr)
 
@@ -128,7 +138,11 @@ def main(argv=None):
         rc = 124
     answered = answer.is_file() and bool(answer.read_text().strip())
     _receipt(job.name, a.model, answered, inlined, rc)
-    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc)
+    try:
+        clog = (job / "codex.log").read_text(errors="replace")
+    except OSError:
+        clog = None
+    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc, clog)
     if not answered:
         tail = (job / "codex.log").read_text(errors="replace")[-2000:]
         print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (

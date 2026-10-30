@@ -15,6 +15,7 @@ Writes OUT_DIR/spend_census.json; prints a short summary.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import re
@@ -95,6 +96,9 @@ def scan_file(path, cutoff, seen):
                     reads.append((len(calls), fp, c.get("id")))
         u = m.get("usage")
         mid = m.get("id")
+        if mid is None and u:     # no message id: key on content so distinct calls never collapse into one
+            mid = "nohash:" + hashlib.sha1(json.dumps([d.get("timestamp"), m.get("model"), u],
+                                                      sort_keys=True).encode()).hexdigest()
         if not u or not d.get("timestamp") or mid in seen:
             continue
         seen.add(mid)
@@ -225,10 +229,10 @@ def main():
 
 
 # ---- per-arm metering (architecture_switch_harness §1.6) ------------------------------------------------
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))   # Utils/ for gpt_call_log
 ARENA_ROOT = os.environ.get("RM_ARENA_ROOT", "/home/mandrake/rm/arena")
 HARNESS = "HARNESS"          # judge, gate and anything else run from <ARENA_ROOT>/judge bill here, never to an arm
 UNATTRIBUTED = "UNATTRIBUTED"
-GPT_CALL_LOG = os.environ.get("RM_GPT_CALL_LOG", "/mnt/d/ClaudeWork/rimmandrake/arena/gpt_calls.jsonl")
 
 
 class ZeroSpendRefused(Exception):
@@ -240,92 +244,220 @@ def path_slug(path: str) -> str:
     return re.sub(r"[^A-Za-z0-9]", "-", path)
 
 
-def arm_of_slug(slug: str, arms=(), arena_root: str = None) -> str:
-    """Attribute a transcript project slug (helpers/subagent transcripts live under their parent's slug).
-    <root>/judge[/...] -> HARNESS; <root>/<arm>[/...] -> arm (longest known arm name first, else the whole
-    remainder); anything outside the arena root -> UNATTRIBUTED (not an arm)."""
-    pre = path_slug(arena_root or ARENA_ROOT) + "-"
+def _root(arena_root=None) -> str:
+    return (arena_root or ARENA_ROOT).rstrip("/") or "/"
+
+
+def _desc_exists(base: str, rem: str, depth=0) -> bool:
+    """Does a directory chain under `base` exist whose slugs spell `rem` (without its leading '-')?"""
+    if not rem or depth > 12:
+        return True
+    try:
+        kids = [k for k in os.listdir(base) if os.path.isdir(os.path.join(base, k))]
+    except OSError:
+        return False
+    for k in kids:
+        sk = path_slug(k)
+        if rem == sk or (rem.startswith(sk + "-") and _desc_exists(os.path.join(base, k), rem[len(sk) + 1:], depth + 1)):
+            return True
+    return False
+
+
+def classify_slug(slug: str, arms=(), arena_root: str = None):
+    """-> (arm, reason). arm is a directory name directly under the arena root, HARNESS, or UNATTRIBUTED.
+    The slug must start with the arena root's slug + '-' EXACTLY; the arm is then the NEXT path component:
+    matched against the real directory listing under the root when it exists, else the explicit `arms` list
+    ('judge' is always the harness). A slug that fits several names (ralph/a vs ralph-a) is settled by the
+    real tree when possible, else UNATTRIBUTED with reason 'ambiguous'; a name not listed is 'unlisted'."""
+    root = _root(arena_root)
+    pre = path_slug(root) + "-"
     if not slug.startswith(pre):
-        return UNATTRIBUTED
+        return UNATTRIBUTED, "outside"
     rest = slug[len(pre):]
-    if rest == "judge" or rest.startswith("judge-"):
-        return HARNESS
-    for a in sorted(arms, key=len, reverse=True):
-        sa = path_slug(a)
-        if rest == sa or rest.startswith(sa + "-"):
-            return a
-    return rest or UNATTRIBUTED
+    have_fs = os.path.isdir(root)
+    names = sorted(d for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))) if have_fs else \
+        sorted({a.strip("/") for a in arms if a})
+    names = sorted(set(names) | {"judge"})
+    cands = [n for n in names if rest == path_slug(n) or rest.startswith(path_slug(n) + "-")]
+    if len(cands) > 1 and have_fs:
+        ok = [n for n in cands if (rest == path_slug(n)) or
+              _desc_exists(os.path.join(root, n), rest[len(path_slug(n)) + 1:])]
+        if ok:
+            cands = ok
+    if len(cands) > 1:
+        # several directories spell the same slug (arm-3 / arm_3) or one is a prefix of another (ralph, ralph-a)
+        return UNATTRIBUTED, "ambiguous"
+    if not cands:
+        return UNATTRIBUTED, "unlisted"
+    return (HARNESS if cands[0] == "judge" else cands[0]), ""
 
 
-def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0):
-    """{arm: {"ite","calls","files"}} over every transcript (subagents included), each API call once."""
+def arm_of_slug(slug: str, arms=(), arena_root: str = None) -> str:
+    return classify_slug(slug, arms, arena_root)[0]
+
+
+class _Seen(set):
+    """Message-id set that also notes an id met under two different arm folders (deterministic order is the
+    caller's job: files are fed earliest mtime first)."""
+    def __init__(self):
+        super().__init__()
+        self.owner, self.cur, self.conflicts = {}, None, {}
+
+    def __contains__(self, mid):
+        hit = super().__contains__(mid)
+        if hit and self.owner.get(mid) not in (None, self.cur):
+            self.conflicts[mid] = (self.owner[mid], self.cur)
+        return hit
+
+    def add(self, mid):
+        super().add(mid)
+        self.owner.setdefault(mid, self.cur)
+
+
+def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, until=None, diag=None):
+    """{arm: {"ite","calls","files"}} over every transcript (subagents included), each API call once, only calls
+    with since <= t < until. UNATTRIBUTED carries "reasons" {reason: ite}. `diag` (dict) receives
+    unreadable_files and id_conflicts (message ids found under two arm folders: earliest transcript mtime wins,
+    then lexicographic path)."""
     projects = projects or PROJECTS
-    out, seen = defaultdict(lambda: {"ite": 0.0, "calls": 0, "files": 0}), set()
+    until = float("inf") if until is None else until
+    diag = diag if diag is not None else {}
+    diag.setdefault("unreadable_files", [])
+    out, seen = defaultdict(lambda: {"ite": 0.0, "calls": 0, "files": 0}), _Seen()
+    paths = []
     for root, _d, files in os.walk(projects):
-        for f in sorted(files):
-            if not f.endswith(".jsonl"):
-                continue
-            p = os.path.join(root, f)
-            arm = arm_of_slug(os.path.relpath(p, projects).split(os.sep)[0], arms, arena_root)
+        for f in files:
+            if f.endswith(".jsonl"):
+                p = os.path.join(root, f)
+                try:
+                    mt = os.path.getmtime(p)
+                except OSError:
+                    mt = 0.0
+                paths.append((mt, p))
+    for _mt, p in sorted(paths):
+        arm, why = classify_slug(os.path.relpath(p, projects).split(os.sep)[0], arms, arena_root)
+        seen.cur = arm
+        try:
             calls = scan_file(p, since, seen)[0]
-            calls = [c for c in calls if c["t"] >= since]
-            if calls:
-                r = out[arm]
-                r["ite"] += sum(c["ite"] for c in calls)
-                r["calls"] += len(calls)
-                r["files"] += 1
+        except Exception as e:                              # noqa: BLE001  unreadable: counted, flagged
+            diag["unreadable_files"].append("%s: %s" % (p, e))
+            continue
+        calls = [c for c in calls if since <= c["t"] < until]
+        if calls:
+            r = out[arm]
+            r["ite"] += sum(c["ite"] for c in calls)
+            r["calls"] += len(calls)
+            r["files"] += 1
+            if arm == UNATTRIBUTED:
+                rs = r.setdefault("reasons", {})
+                rs[why] = rs.get(why, 0.0) + sum(c["ite"] for c in calls)
+    diag["id_conflicts"] = dict(seen.conflicts)
     return dict(out)
 
 
-def gpt_spend_by_arm(log=None):
-    """{arm: {"ite","calls"}} from gpt_consult's call log. ITE here is an ESTIMATE from prompt/answer chars/4
-    (codex reports no tokens): in + 5*out, Opus-input-equivalents at weight 1. Untagged calls are
-    kept under UNTAGGED and counted, never dropped or folded into an arm."""
-    out = defaultdict(lambda: {"ite": 0.0, "calls": 0})
-    try:
-        lines = open(log or GPT_CALL_LOG, errors="replace").read().splitlines()
-    except FileNotFoundError:
-        return {}
-    for ln in lines:
-        try:
-            d = json.loads(ln)
-        except Exception:
-            out["UNREADABLE"]["calls"] += 1
+def gpt_ite_of(d):
+    """(ite, is_estimate). Real codex 'tokens used' when logged (counted 1:1, labelled gpt_ite);
+    else chars/4 in + 5*out (labelled gpt_ite_est)."""
+    tu = d.get("tokens_used")
+    if isinstance(tu, (int, float)) and tu > 0:
+        return float(tu), False
+    return float((d.get("in_tok_est") or 0) + 5 * (d.get("out_tok_est") or 0)), True
+
+
+def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None):
+    """{arm: {"ite","ite_est","calls","est_calls"}} from the gpt call log (file and/or per-call directory),
+    only calls with since <= t < until. "ite" is REAL codex tokens; "ite_est" the chars/4 fallback. Untagged
+    calls stay under UNTAGGED; unreadable lines are counted into diag["gpt_unreadable"] and arm UNREADABLE."""
+    import gpt_call_log
+    until = float("inf") if until is None else until
+    out = defaultdict(lambda: {"ite": 0.0, "ite_est": 0.0, "calls": 0, "est_calls": 0})
+    recs, bad = gpt_call_log.read_records(log)
+    if diag is not None:
+        diag["gpt_unreadable"] = bad
+    if bad:
+        out["UNREADABLE"]["calls"] += bad
+    for d in recs:
+        t = d.get("t")
+        if isinstance(t, (int, float)) and not (since <= t < until):
             continue
-        arm = d.get("arm") or "UNTAGGED"
-        out[arm]["ite"] += (d.get("in_tok_est") or 0) + 5 * (d.get("out_tok_est") or 0)
+        arm = (d.get("arm") or "").strip() or "UNTAGGED"
+        ite, est = gpt_ite_of(d)
+        out[arm]["ite_est" if est else "ite"] += ite
+        out[arm]["est_calls"] += est
         out[arm]["calls"] += 1
     return dict(out)
 
 
-def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, since=0.0):
-    """Combined per-arm ITE. `ran` names arms that did run; any with zero spend raises ZeroSpendRefused.
-    Flags: untagged GPT calls and unattributed Claude spend are reported, not hidden."""
-    arms = list(arms or ran)
-    cl = claude_spend_by_arm(projects, arms, arena_root, since)
-    gp = gpt_spend_by_arm(gpt_log)
+def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, since=0.0, until=None,
+               gpt_only_arms=(), idle_arms=()):
+    """Combined per-arm ITE within [since, until). Declared arms: `ran` (must show Claude spend), `gpt_only_arms`
+    (ran, GPT only: must show GPT spend), `idle_arms` (ran, legitimately did nothing: zero accepted). A declared arm
+    that fails its test, or no declared arms at all, raises ZeroSpendRefused. Flags report untagged GPT,
+    unattributed / unreadable spend and ids found under two arm folders -- nothing is silently dropped."""
+    ran, gpt_only_arms, idle_arms = list(ran), list(gpt_only_arms), list(idle_arms)
+    if not (ran or gpt_only_arms or idle_arms):
+        raise ZeroSpendRefused("no arms declared (--ran / --gpt-only-arms / --idle-arms): nothing to check, so no "
+                               "result is reported -- an empty arm list must not pass")
+    arms = list(arms or (ran + gpt_only_arms + idle_arms))
+    diag = {}
+    cl = claude_spend_by_arm(projects, arms, arena_root, since, until, diag)
+    gp = gpt_spend_by_arm(gpt_log, since, until, diag)
     rep = {}
     for k in set(cl) | set(gp):
-        rep[k] = {"claude_ite": cl.get(k, {}).get("ite", 0.0), "gpt_ite_est": gp.get(k, {}).get("ite", 0.0),
-                  "claude_calls": cl.get(k, {}).get("calls", 0), "gpt_calls": gp.get(k, {}).get("calls", 0)}
-        rep[k]["ite"] = rep[k]["claude_ite"] + rep[k]["gpt_ite_est"]
-    dead = [a for a in ran if rep.get(a, {}).get("ite", 0) <= 0]
+        c, g = cl.get(k, {}), gp.get(k, {})
+        rep[k] = {"claude_ite": c.get("ite", 0.0), "gpt_ite": g.get("ite", 0.0), "gpt_ite_est": g.get("ite_est", 0.0),
+                  "claude_calls": c.get("calls", 0), "gpt_calls": g.get("calls", 0),
+                  "gpt_calls_estimated": g.get("est_calls", 0)}
+        rep[k]["ite"] = rep[k]["claude_ite"] + rep[k]["gpt_ite"] + rep[k]["gpt_ite_est"]
+    dead = [a for a in ran if rep.get(a, {}).get("claude_ite", 0) <= 0]
+    dead += ["%s (declared GPT-only)" % a for a in gpt_only_arms if rep.get(a, {}).get("gpt_ite", 0) + rep.get(a, {}).get("gpt_ite_est", 0) <= 0]
     if dead:
-        raise ZeroSpendRefused("arm(s) ran but the meter sees zero ITE: %s -- a zero is not a result" % ", ".join(dead))
+        raise ZeroSpendRefused("arm(s) ran but the meter sees zero spend in the window: %s -- a zero is not a result "
+                               "(GPT rows alone do not satisfy a Claude arm; declare --gpt-only-arms / --idle-arms)"
+                               % ", ".join(dead))
     flags = []
     if "UNTAGGED" in rep:
         flags.append("%d untagged gpt_consult call(s)" % rep["UNTAGGED"]["gpt_calls"])
-    return {"arms": rep, "flags": flags}
+    if UNATTRIBUTED in cl:
+        flags.append("UNATTRIBUTED claude spend %.0f ITE in %d call(s), by reason %s" % (
+            cl[UNATTRIBUTED]["ite"], cl[UNATTRIBUTED]["calls"], json.dumps(cl[UNATTRIBUTED].get("reasons", {}))))
+    if diag.get("unreadable_files"):
+        flags.append("%d unreadable transcript file(s): %s" % (len(diag["unreadable_files"]), diag["unreadable_files"][:3]))
+    if diag.get("gpt_unreadable"):
+        flags.append("%d unreadable gpt call log line(s)/file(s)" % diag["gpt_unreadable"])
+    if diag.get("id_conflicts"):
+        flags.append("%d message id(s) found under two arm folders (earliest transcript mtime won)" % len(diag["id_conflicts"]))
+    for a in idle_arms:
+        if rep.get(a, {}).get("ite", 0) > 0:
+            flags.append("arm %s declared idle but shows %.0f ITE" % (a, rep[a]["ite"]))
+    known = set(arms) | {"UNTAGGED", "UNREADABLE", HARNESS, UNATTRIBUTED}
+    for k in sorted(set(gp) - known):
+        flags.append("gpt arm %r is not a declared/listed arm" % k)
+    if gpt_only_arms:
+        flags.append("GPT-only arms (declared): %s" % ", ".join(gpt_only_arms))
+    return {"arms": rep, "flags": flags, "since": since, "until": until}
+
+
+def _iso(s):
+    return datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp()
 
 
 def arm_main(argv):
     import argparse
     ap = argparse.ArgumentParser(description="per-arm ITE by clone path (harness 1.6)")
     ap.add_argument("--arm-report", action="store_true", required=True)
-    ap.add_argument("--ran", nargs="*", default=[], help="arms that ran; zero spend for one is refused")
+    ap.add_argument("--ran", nargs="*", default=[], help="arms that ran; zero Claude spend for one is refused")
+    ap.add_argument("--gpt-only-arms", nargs="*", default=[], help="arms that ran with GPT calls only")
+    ap.add_argument("--idle-arms", nargs="*", default=[], help="arms that ran and legitimately did nothing")
+    ap.add_argument("--arms", nargs="*", default=None, help="explicit arm names when the arena root has no directory")
+    ap.add_argument("--since", help="ISO UTC start of the run window (default: no lower bound)")
+    ap.add_argument("--until", help="ISO UTC end of the run window")
+    ap.add_argument("--projects"); ap.add_argument("--arena-root"); ap.add_argument("--gpt-log")
     a = ap.parse_args(argv)
     try:
-        r = arm_report(ran=a.ran)
+        r = arm_report(ran=a.ran, arms=a.arms, projects=a.projects, arena_root=a.arena_root, gpt_log=a.gpt_log,
+                       since=_iso(a.since) if a.since else 0.0, until=_iso(a.until) if a.until else None,
+                       gpt_only_arms=a.gpt_only_arms, idle_arms=a.idle_arms)
     except ZeroSpendRefused as e:
         print("REFUSED:", e)
         return 2

@@ -1,0 +1,2 @@
+O_APPEND on /mnt/d (WSL drvfs) is NOT atomic across processes: 20 concurrent python open(path,'a').write(one_json_line) calls left 15-16 lines with 1-3 corrupt fragments (60 calls -> 49 lines, 4 corrupt); the same test on ext4 was clean (40/40). Any shared JSONL log written by concurrent processes (gpt_consult _log_call default /mnt/d/ClaudeWork/rimmandrake/arena/gpt_calls.jsonl, arena event logs) must live on ext4 or take an fcntl/flock lock. Evidence: foundry_arena/meter_test_report.md probe 3.
+home: skills/wsl-windows-plumbing
