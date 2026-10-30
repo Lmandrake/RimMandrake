@@ -66,6 +66,17 @@ source history, a judge link). load_frozen(T) refuses only on scope T or `*`; fr
 scoped leak and freezes the rest. The token scan (sha prefixes, ids, test paths, test-text anchors) stays as the
 secondary check on the task specs and the event log.
 
+PROMPT PROVENANCE. Every task carries `prompt_source: "base_parent"`: the prose in the prompt and criteria is the
+item file at base_sha (the parent of the closing sha), per the Conductor's 2026-10-30 01:59Z pool ruling. The
+claim-time prose (the item file at the commit nearest before the item's start event, `git log -1 --before=<ts>`,
+when a start event exists) is derivable but intentionally NOT used. When the prose at base_sha holds a non-blank
+line the claim-time prose lacks (text added after the claim, a possible hint), the task is flagged
+`prompt_may_hold_hints: true`; that is metadata only and changes no behaviour.
+
+RESIDUAL (same OS user). Everything above is tamper-EVIDENT, not tamper-PROOF against an arm that runs as the same
+OS user as the judge: such an arm can open the judge directory and rewrite the hashes and the log together. Only a
+different OS user, or a sandbox that does not mount the judge directory, closes it. This module does not claim to.
+
 Replay tasks are `live: none`: the build half runs in throwaway clones with no game (§3.1).
 """
 from __future__ import annotations
@@ -73,6 +84,11 @@ from __future__ import annotations
 import argparse
 import base64
 import binascii
+import bz2
+import io
+import lzma
+import zipfile
+import zlib
 import contextlib
 import datetime as dt
 import difflib
@@ -363,6 +379,25 @@ def _prose_at(repo: Path, sha: str, iid: str):
     return None
 
 
+def _prompt_hints(repo: Path, fix: str, iid: str, start_ts, base_prose) -> bool:
+    """Metadata only: does the prose at base_sha hold a non-blank line the claim-time prose lacks? The claim-time
+    prose is the item file at the commit nearest before the start event (git log -1 --before=<ts>); no start event
+    -> False (nothing to compare against)."""
+    if not start_ts or not base_prose:
+        return False
+    try:
+        claim = _git(repo, "log", "-1", "--format=%H", "--before=" + str(start_ts), fix, check=False).strip()
+    except ArenaError:
+        return False
+    if not claim:
+        return True                       # the item had no history before the claim: all of it came later
+    cp = _prose_at(repo, claim, iid)
+    if cp is None:
+        return True
+    have = {ln.strip() for ln in cp.splitlines() if ln.strip()}
+    return any(ln.strip() and ln.strip() not in have for ln in base_prose.splitlines())
+
+
 def _rework_verdict(r, by_id, resolve, repo, parent_fix=None, parent_files=frozenset()):
     """-> (verdict, fix commit). verdict 'counts' (a closed code fix that lands after the parent's fix and changes
     one of the parent's files: the parent escaped), 'pending' (an open fix-type descendant: the parent's Clean is
@@ -541,7 +576,9 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         task = {"id": tid, "source_item": iid, "kind": kind, "size": size_points(len(diff), lines),
                 "size_basis": {"files": len(diff), "lines": lines}, "area": area_for(files), "prompt": prompt,
                 "criteria": crit, "criteria_source": crit_src, "proof": proof, "live": "none",
-                "hidden_checks": None, "base_sha": base}
+                "hidden_checks": None, "base_sha": base, "prompt_source": "base_parent",
+                "prompt_may_hold_hints": _prompt_hints(repo, fix, iid, next(
+                    (e.get("ts") for e in evs if e.get("event") == "start"), None), prose)}
         own = Matcher([hidden]).hits(_public_bytes(task))
         if own:                           # this one task is rejected; the census goes on
             reject(iid, "task would carry its own hidden check (%s)" % own[0][1]); continue
@@ -911,10 +948,55 @@ def _unescape(s: str) -> str:
     return _JESC.sub(lambda m: chr(int(m.group(1)[1:], 16)) if m.group(1)[0] == "u" else _JMAP[m.group(1)], s)
 
 
-def _decodings(raw: bytes) -> list[str]:
+_UNPACK_CAP = 8 * 1024 * 1024          # decoded bytes per container; a bomb is truncated here, never expanded
+
+
+def _capped(dec_factory, raw: bytes) -> bytes | None:
+    """One bounded decompress call (max_length): never more than _UNPACK_CAP bytes come out, whatever the ratio."""
+    try:
+        b = dec_factory().decompress(raw, _UNPACK_CAP)
+        return b or None
+    except (OSError, EOFError, ValueError, zlib.error, lzma.LZMAError):
+        return None
+
+
+def _unpack(raw: bytes) -> list[bytes]:
+    """The payloads of gzip / zlib / bz2 / xz-lzma / zip containers in `raw` (each capped at _UNPACK_CAP)."""
+    got = []
+    if raw[:2] == b"\x1f\x8b":
+        got.append(_capped(lambda: zlib.decompressobj(31), raw))
+    if raw[:1] == b"\x78":
+        got.append(_capped(lambda: zlib.decompressobj(15), raw))
+    if raw[:3] == b"BZh":
+        got.append(_capped(bz2.BZ2Decompressor, raw))
+    if raw[:6] == b"\xfd7zXZ\x00" or raw[:1] == b"\x5d":
+        got.append(_capped(lambda: lzma.LZMADecompressor(), raw))
+    if raw[:2] == b"PK":
+        try:
+            with zipfile.ZipFile(io.BytesIO(raw)) as z:
+                budget = _UNPACK_CAP
+                for zi in z.infolist()[:256]:
+                    if zi.is_dir() or budget <= 0:
+                        continue
+                    with z.open(zi) as f:
+                        b = f.read(min(budget, _UNPACK_CAP) + 1)[:budget]
+                    budget -= len(b)
+                    got.append(b)
+        except (zipfile.BadZipFile, OSError, EOFError, ValueError, zlib.error, lzma.LZMAError, NotImplementedError,
+                RuntimeError):
+            pass
+    return [g for g in got if g]
+
+
+def _decodings(raw: bytes, _depth: int = 0) -> list[str]:
     """Every text an arm could recover from these bytes without a key: UTF-8, UTF-16 (either byte order, either
-    alignment), JSON/string escapes (two levels) and base64 runs (standard and urlsafe, wrapped or not)."""
+    alignment), JSON/string escapes (two levels), base64 runs (standard and urlsafe, wrapped or not), and the
+    payload of a gzip / zlib / bz2 / xz / zip container (8 MiB cap, bomb-safe), recursively (3 levels), so a gzip of
+    base64 or a base64 of a gzip is read too."""
     out = [raw.decode("utf-8", "replace")]
+    if _depth < 3:
+        for b in _unpack(raw):
+            out += _decodings(b, _depth + 1)
     if b"\x00" in raw[:65536] or raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
         for off in (0, 1):
             for enc in ("utf-16-le", "utf-16-be"):
@@ -938,6 +1020,9 @@ def _decodings(raw: bytes) -> list[str]:
                 if b"\x00" in b:
                     out += [b.decode("utf-16-le", "replace"), b.decode("utf-16-be", "replace")]
                 out.append(b.decode("utf-8", "replace"))
+                if _depth < 3:
+                    for u in _unpack(b):
+                        out += _decodings(u, _depth + 1)
     return out
 
 

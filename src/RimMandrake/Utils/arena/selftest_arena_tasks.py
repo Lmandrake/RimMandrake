@@ -868,6 +868,58 @@ def t_freeze_round2(tmp, pool):
     check(bool(e) and "assign" in e, "no refreeze after an assignment")
 
 
+def t_round3(tmp, repo, old, s, pool):
+    """Round 3: archive decodings after assignment; prompt provenance + hints flag."""
+    import bz2, gzip, io, lzma, zipfile, zlib
+    body = git(tmp / "repo", "show", "%s:%s" % (s["esc"], NEWT)) + "\n"
+    b = body.encode()
+    b64 = base64.b64encode(b)
+    zb = io.BytesIO()
+    with zipfile.ZipFile(zb, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("inner/notes.txt", body)
+    plants = [("notes.gz", gzip.compress(b)), ("notes.bz2", bz2.compress(b)), ("notes.xz", lzma.compress(b)),
+              ("notes.zip", zb.getvalue()), ("notes.z", zlib.compress(b)),
+              ("notes.b64.gz", gzip.compress(b64)), ("notes.gz.b64", base64.b64encode(gzip.compress(b)))]
+    m = A.Matcher([{"task": "RP_X", "fix_sha": "0" * 40, "reworks": [],
+                    "checks": [{"path": "src/a/selftest_x.py", "added": True, "body": body, "novel": [body]}]}])
+    for name, raw in plants:
+        check(bool(m.hits(raw)), "matcher reads the %s container" % name)
+    check(not m.hits(gzip.compress(b"def other():\n    return 1\n" * 50)), "a gzip of unrelated text stays quiet")
+    bomb = gzip.compress(b"\0" * (64 * 1024 * 1024))
+    mx = max(len(t) for t in A._decodings(bomb))
+    check(mx <= A._UNPACK_CAP + 16, "a decompression bomb is capped (%d chars)" % mx)
+    for i, (name, raw) in enumerate(plants):
+        p, c, good = _registered(tmp, "r3%d" % i, pool, True)
+        before = A.find_leaks(p)
+        (c / name).write_bytes(raw)
+        got = A.find_leaks(p)
+        check(before == [] and bool(got), "after hand-over a hidden body in %s is caught: %s"
+              % (name, (got or ["NOT CAUGHT"])[0][:90]))
+    pool2, _ = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    check(all(t["prompt_source"] == "base_parent" and isinstance(t["prompt_may_hold_hints"], bool) for t, _ in pool2),
+          "every census task records prompt_source base_parent and a boolean hints flag")
+    # hints: prose gains a line after the claim
+    r = tmp / "hintrepo"
+    r.mkdir()
+    rel = "infrastructure/state/items/HINT_ITEM.md"
+    git(r, "init", "-q")
+    for d, text, ts in (("a", "# item\nplain ask\n", "2026-10-01T10:00:00"),
+                        ("b", "# item\nplain ask\nHINT: use approach X\n", "2026-10-03T10:00:00")):
+        (r / rel).parent.mkdir(parents=True, exist_ok=True)
+        (r / rel).write_text(text)
+        git(r, "add", rel)
+        env = dict(os.environ, GIT_AUTHOR_DATE=ts + "Z", GIT_COMMITTER_DATE=ts + "Z")
+        subprocess.run(["git", "-C", str(r), "-c", "user.name=a", "-c", "user.email=a@a", "commit", "-q", "-m", d],
+                       check=True, env=env, capture_output=True, timeout=60)
+    head = git(r, "rev-parse", "HEAD").strip()
+    prose = A._prose_at(r, head, "HINT_ITEM")
+    check(A._prompt_hints(r, head, "HINT_ITEM", "2026-10-02T00:00:00Z", prose) is True,
+          "prose that gained a line after the claim is flagged prompt_may_hold_hints")
+    check(A._prompt_hints(r, head, "HINT_ITEM", "2026-10-04T00:00:00Z", prose) is False,
+          "unchanged since the claim: not flagged")
+    check(A._prompt_hints(r, head, "HINT_ITEM", None, prose) is False, "no start event: not flagged")
+
+
 def t_real_ledger():
     check(A.arena_root().name == "arena" and A.paths()["judge"].parent.name == "judge",
           "with ARENA_ROOT unset the root comes from rmpaths/agent_storage: %s" % A.arena_root())
@@ -901,6 +953,7 @@ def main():
         t_pool_ruling(tmp, repo, old, s)
         t_whitelist(tmp, pool, s)
         t_freeze_round2(tmp, pool)
+        t_round3(tmp, repo, old, s, pool)
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
         t_real_ledger()
