@@ -11,8 +11,18 @@ Mapping (accepted ledger events only; refused ones are skipped, via model.replay
                           event moved the item into `done` (rimflow_metrics.flow["done"] counts that transition,
                           whichever verb caused it: close, verify-of-last-criterion, implemented)
   verify  -> test_end     task=id, sha, verdict=result, detail.tester=seat (the ledger names the seat, not the helper), detail.done as above
-testq (result records, jobs for the item): started -> test_start, finished -> test_end, tester "testq:<host>",
-  task = job.item, verdict = outcome, detail.job. A testq run is a different agent from any builder by construction.
+testq (result records, jobs for the item): started -> test_start, finished -> test_end, task = job.item, verdict =
+  outcome, detail.job. TESTER = the seat that SUBMITTED the job (job.requested_by; `by` accepted), detail.runner =
+  "testq:<host>" (the machine that ran it, NOT an agent). A testq run requested by the builder's own seat is the
+  builder testing its own work and is flagged. A job with no submitter gets tester "unattributed:testq:<host>",
+  which never counts as a different agent. V3 LIMIT, stated plainly: the ledger and testq name SEATS, not the
+  helper agent/session inside a seat, so v3's different-agent rule is measured at seat granularity: two helpers of
+  one seat look like one agent (a seat-internal handoff is flagged as self-test), and nothing here can tell them
+  apart.
+Output: the adapter writes NO judge events. A ledger close is self-accepted, not judge-accepted, so report() shows
+  v3's points as None / output_comparable False with ledger_done = the done transitions; run arena_judge on v3's
+  tasks to give it comparable accepted points.
+Day counts: done_count(lo, hi) is a half-open UTC window [lo, hi).
 Every record carries detail.src = the SOURCE event id ("ledger:<tsn>", or "ledger:h<sha256 of the event>" for
 old events without tsn; "testq:<job>:start|end"). write() skips a record whose src is already in the arm's
 accepted log, so --apply run twice writes nothing the second time.
@@ -83,14 +93,17 @@ def translate_testq(results: list[dict], jobs: dict | None = None) -> list[dict]
         item = (jobs.get(jid) or {}).get("item") or r.get("item")
         if not (jid and item):
             continue                       # no task to attach it to: not invented
-        who = "testq:%s" % (r.get("host") or "unknown")
+        job = jobs.get(jid) or {}
+        runner = "testq:%s" % (r.get("host") or "unknown")
+        sub = job.get("requested_by") or job.get("by")
+        who = sub if L.norm_id(sub) else L.UNATTRIBUTED + runner
         base = {"arm": ARM, "lane": (jobs.get(jid) or {}).get("lane") or LANE, "run_id": jid, "task": item}
         if r.get("started"):
-            out.append(dict(base, event="test_start", ts=r["started"], detail={"tester": who, "job": jid,
-                                                                         "src": "testq:%s:start" % jid}))
+            out.append(dict(base, event="test_start", ts=r["started"], detail={"tester": who, "runner": runner, "submitted_by": sub,
+                                                                         "job": jid, "src": "testq:%s:start" % jid}))
         if r.get("finished"):
             out.append(dict(base, event="test_end", ts=r["finished"], verdict=r.get("outcome"),
-                            detail={"tester": who, "job": jid, "cause": r.get("cause"), "counts": r.get("counts"),
+                            detail={"tester": who, "runner": runner, "submitted_by": sub, "job": jid, "cause": r.get("cause"), "counts": r.get("counts"),
                                     "src": "testq:%s:end" % jid}))
     return out
 
@@ -111,7 +124,7 @@ def load_testq(directory) -> tuple[list[dict], dict]:
 
 
 def sorted_by_ts(recs):
-    return sorted(recs, key=lambda r: A._epoch(r["ts"]))
+    return sorted(recs, key=lambda r: L.ts_epoch(r["ts"]))
 
 
 def write(writer: "L.HarnessWriter", recs: list[dict]) -> int:
@@ -136,8 +149,9 @@ def write(writer: "L.HarnessWriter", recs: list[dict]) -> int:
 
 
 def done_count(recs: list[dict], lo: float, hi: float, via: str | None = None) -> int:
-    """Records that moved an item into done, ts in [lo, hi] epoch seconds. via="close" counts only the close verb."""
-    return sum(1 for r in recs if r["detail"].get("done") and lo <= A._epoch(r["ts"]) <= hi
+    """Records that moved an item into done, ts in the HALF-OPEN UTC window [lo, hi) epoch seconds. via="close"
+    counts only the close verb."""
+    return sum(1 for r in recs if r["detail"].get("done") and lo <= L.ts_epoch(r["ts"]) < hi
                and (via is None or r["detail"].get("via") == via))
 
 
@@ -152,7 +166,9 @@ def main(argv=None):
         recs += translate_testq(*load_testq(a.testq_dir))
     print("%d records" % len(recs))
     if a.apply:
-        print("wrote %d" % write(L.HarnessWriter(), recs))
+        p = A.paths()
+        with L.harness_pass(p):               # this entrypoint is the signer for the pass; capability gone after
+            print("wrote %d" % write(L.HarnessWriter(p), recs))
     return 0
 
 

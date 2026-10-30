@@ -51,14 +51,16 @@ def raises(exc, fn, *a, **k):
     return None
 
 
-def fresh(tmp, name):
+def fresh(tmp, name, writer=True):
     root = tmp / name
     os.environ["ARENA_ROOT"] = str(root)
     os.environ["ARENA_CLONES"] = str(root / "clones")
     os.environ["ARENA_EVENT_TOKEN_FILE"] = str(tmp / (name + "_secret") / "event_token")
+    os.environ["ARENA_ANCHOR_FILE"] = str(tmp / (name + "_secret") / "anchors.jsonl")   # never an inherited store
     p = A.paths()
+    assert A._inside(L.anchor_path(p), tmp) and A._inside(L.token_path(p), tmp)
     L.init_token(p)
-    return p, L.HarnessWriter(p)
+    return p, (L.HarnessWriter(p) if writer else None)
 
 
 def t_agent_write(tmp):
@@ -123,6 +125,25 @@ def t_agent_write(tmp):
     check(raises(L.Rejected, w.emit, "a", "stop", lane="L", run_id="r", bogus_field=1) is not None, "unknown field rejected")
 
 
+def _metrics_close_done(M, ev, lo, hi):
+    """Independent close count: done transitions per rimflow_metrics.timelines in [lo, hi), attributed to the
+    close verb when the raw ledger events of that item in that second include a close and no other done verb."""
+    _, tl = M.timelines(ev)
+    trans = set()
+    for iid, rows in tl.items():
+        for (t, st, *_), prev in zip(rows[1:], rows[:-1]):
+            if st != prev[1] and st == "done" and lo <= t < hi:
+                trans.add((iid, t))
+    verbs = {}
+    for e in ev:
+        k = (e.get("id"), L.ts_epoch(e["ts"]))
+        if k in trans:
+            verbs.setdefault(k, set()).add(e.get("event"))
+    close = sum(1 for k in trans if "close" in verbs.get(k, ()) and not verbs[k] & {"verify", "implemented"})
+    amb = sum(1 for k in trans if "close" in verbs.get(k, ()) and verbs[k] & {"verify", "implemented"})
+    return close, amb
+
+
 def t_adapter(tmp):
     sys.path.insert(0, str(HERE.parent))
     sys.path.insert(0, str(HERE.parent.parent))
@@ -133,17 +154,25 @@ def t_adapter(tmp):
     day = "2026-10-24"
     d0 = model.epoch(day + "T00:00:00Z")
     f = lambda now: M.compute(ev, now=now, window_days=1, mods={}, heat=None)["flow"].get("done", 0)
-    # metrics' window has a lower bound only (t >= now-1d); one day = the difference of two windows [d0-1, d0+86399)
-    met = f(d0 + 86399) - f(d0 + 2 * 86400 - 1)
-    ad = V.done_count(recs, d0 - 1, d0 + 86398)
-    ad_close = V.done_count(recs, d0, d0 + 86399, "close")
-    print("      %s: rimflow_metrics flow.done=%d  adapter done=%d (of which close verb=%d)" % (day, met, ad, ad_close))
-    check(met > 10 and ad == met, "adapter done-count equals rimflow_metrics flow.done for %s (%d)" % (day, met))
-    check(0 < ad_close < ad, "close-verb share is a proper part (close=%d of %d; the rest verify/implemented)" % (ad_close, ad))
-    # forced failure: drop one done-making build_end
-    drop = next(r for r in recs if r["detail"].get("done") and d0 <= A._epoch(r["ts"]) < d0 + 86400)
+    # metrics' window is t >= now-1d (no upper bound), so the UTC day [d0, d0+86400) = f(d0+86400) - f(d0+2*86400)
+    hi = d0 + 86400
+    met = f(hi) - f(hi + 86400)
+    ad = V.done_count(recs, d0, hi)
+    ad_close = V.done_count(recs, d0, hi, "close")
+    met_close, amb = _metrics_close_done(M, ev, d0, hi)
+    print("      %s UTC [00:00, 24:00): rimflow_metrics flow.done=%d adapter done=%d | close verb: metrics timelines=%d "
+          "adapter=%d (ambiguous same-second=%d)" % (day, met, ad, met_close, ad_close, amb))
+    check(met > 10 and ad == met, "R2-8 adapter done-count equals rimflow_metrics flow.done for UTC %s (%d = %d)"
+          % (day, ad, met))
+    check(met_close > 10 and ad_close == met_close and amb == 0,
+          "R2-8 adapter close-verb done-count equals the close count from rimflow_metrics.timelines (%d = %d)"
+          % (ad_close, met_close))
+    # forced failure: drop one close-verb done-making build_end: BOTH comparisons break
+    drop = next(r for r in recs if r["detail"].get("done") and r["detail"].get("via") == "close"
+                and d0 <= L.ts_epoch(r["ts"]) < hi)
     short = [r for r in recs if r is not drop]
-    check(V.done_count(short, d0 - 1, d0 + 86398) != met, "dropping one close from the adapter output breaks the match")
+    check(V.done_count(short, d0, hi) != met and V.done_count(short, d0, hi, "close") != met_close,
+          "dropping one close from the adapter output breaks both the done and the close match")
     # records are schema-valid and carry task/sha
     bad = 0
     for r in recs[:2000]:
@@ -158,14 +187,15 @@ def t_adapter(tmp):
     check(V.write(w, sample) == len(sample) and len(L.verify(p, "v3")["accepted"]) == len(sample),
           "adapter writes %d records via the token writer; all verify" % len(sample))
     # testq
-    jobs = {"J1": {"id": "J1", "item": "ITEM_A", "lane": "stevedesktop", "schema": "testq.job/1"}}
+    jobs = {"J1": {"id": "J1", "item": "ITEM_A", "lane": "stevedesktop", "schema": "testq.job/1", "requested_by": "BENCH"}}
     res = [{"schema": "testq.result/1", "job": "J1", "host": "stevedesktop", "started": "2026-10-29T10:00:00Z",
             "finished": "2026-10-29T10:20:00Z", "outcome": "DONE", "counts": {"PASS": 3}},
            {"job": "J-unknown", "host": "h", "started": "2026-10-29T10:00:00Z"}]
     t = V.translate_testq(res, jobs)
     check([r["event"] for r in t] == ["test_start", "test_end"] and t[0]["task"] == "ITEM_A"
-          and t[0]["detail"]["tester"] == "testq:stevedesktop" and t[1]["verdict"] == "DONE",
-          "testq result -> test_start + test_end by 'testq:<host>'; a result with no item is not invented")
+          and t[0]["detail"]["tester"] == "BENCH" and t[0]["detail"]["runner"] == "testq:stevedesktop"
+          and t[1]["verdict"] == "DONE",
+          "testq result -> test_start + test_end, tester = submitting seat, runner = testq:<host>; no item: not invented")
 
 
 def t_same_agent(tmp):
@@ -267,8 +297,12 @@ def t_d1_token(tmp):
           "D1 local anchor: report REFUSES the re-signed arm (%s)" % (r.get("refused"),))
     # the forger also wipes the local anchor store; a ledger-published anchor still catches it
     honest = L.make_anchor("ralph_a", [json.loads(l) for l in out[:3]], tok)   # unchanged prefix: no violation
-    L.anchor_path(p).unlink()
-    check(not L.report(p)["ralph_a"].get("refused"), "D1 control: with the local anchors deleted the forgery is invisible")
+    ap = L.anchor_path(p)
+    assert A._inside(ap, tmp), ap                # R2-9: the selftest only ever deletes its own temp store
+    ap.unlink()
+    r = L.report(p)["ralph_a"]
+    check(bool(r.get("refused")) and "UNMEASURED" in r["refused"][0] and "points_with_unblocked" not in r,
+          "R2-2 local anchors deleted, log non-empty: report FAILS CLOSED (UNMEASURED), the forgery is not reported")
     ext = L.ledger_anchors([{"event": "note", "id": "X", "text": published}, {"event": "note", "id": "Y", "text": "chat"}])
     check(bool(L.report(p, external=ext)["ralph_a"].get("refused")), "D1 ledger-published anchor refuses it again")
     ext2 = L.ledger_anchors([{"event": "note", "text": L.anchor_note_text([honest])}])
@@ -386,23 +420,279 @@ def t_d7_recover(tmp):
     check(r["recoverable"] == 2 and bool(r.get("refused")), "D7 report shows recoverable=2 and refuses the arm")
 
 
+# ---------------------------------------------------------------- fix round 2: one forced failure per GPT finding
+
+def t_r2_1_capability(tmp):
+    p, _ = fresh(tmp, "r21", writer=False)
+    kw = dict(lane="L", run_id="r")
+    real_entry = L._entrypoint
+    try:
+        # GPT's attack: RM_ARM cleared, cwd outside every clone, token readable, library imported from an agent script
+        check(not os.environ.get("RM_ARM") and not A._inside(os.getcwd(), os.environ["ARENA_CLONES"]),
+              "R2-1 setup: RM_ARM unset and cwd outside the clone root (the env/cwd checks pass)")
+        L._entrypoint = lambda: str(Path(os.environ["ARENA_CLONES"]) / "ralph_a" / "forge.py")
+        check(raises(L.Rejected, L.HarnessWriter, p) is not None, "R2-1 library use from an agent script: no writer")
+        check(raises(L.Rejected, L.harness_pass, p) is not None, "R2-1 an agent script cannot open a pass capability")
+        L._entrypoint = lambda: ""
+        check(raises(L.Rejected, L.harness_pass, p) is not None, "R2-1 python3 -c / REPL cannot open a pass")
+        L._entrypoint = lambda: str(L.HERE / "my_tool.py")
+        check(raises(L.Rejected, L.harness_pass, p) is not None, "R2-1 a non-allowlisted script in the arena dir refused")
+        L._entrypoint = lambda: str(L.HERE / "arena_v3_adapter.py")
+        with L.harness_pass(p) as cap:
+            w = L.HarnessWriter(p)
+            rec = w.emit("ralph_a", "judge", task="T1", verdict="accept", **kw)
+            pv = rec["prov"]
+            st = os.stat(cap.path)
+            check(pv["pid"] == os.getpid() and isinstance(pv["pid_start"], int) and pv["chain"][0][0] == os.getpid()
+                  and len(pv["chain"]) >= 2 and len(pv["env_sha"]) == 16 and pv["entry"] == "arena_v3_adapter.py"
+                  and pv["cap"] == cap.cap_id and pv["uid"] == os.getuid(),
+                  "R2-1 signed record carries prov: pid, pid start, parent chain (%d), uid, entry, env_sha, cap id"
+                  % len(pv["chain"]))
+            check(st.st_mode & 0o777 == 0o600 and os.stat(cap.path.parent).st_mode & 0o777 == 0o700
+                  and A._inside(cap.path, L.token_path(p).parent) and cap._nonce not in cap.path.read_text(),
+                  "R2-1 capability file 0600 in a 0700 dir beside the token; the nonce itself is never on disk")
+            check(raises(L.Rejected, w.emit, "ralph_a", "stop", prov={"pid": 1}, **kw) is not None,
+                  "R2-1 a caller cannot pass its own prov")
+            cap.path.unlink()
+            check(raises(L.Rejected, w.emit, "ralph_a", "stop", **kw) is not None,
+                  "R2-1 capability file deleted mid-pass: emit refused")
+        check(raises(L.Rejected, w.emit, "ralph_a", "stop", **kw) is not None and not cap.path.exists(),
+              "R2-1 after pass end the capability is gone and the writer refuses")
+        with L.harness_pass(p) as cap2:
+            w2 = L.HarnessWriter(p)
+            body = cap2.path.read_bytes()
+            cap2.path.write_bytes(body.replace(b'"pid"', b'"pjd"'))
+            check(raises(L.Rejected, w2.emit, "ralph_a", "stop", **kw) is not None, "R2-1 capability content edited: refused")
+        with L.harness_pass(p) as cap3:
+            w3 = L.HarnessWriter(p)
+            cap3.pid += 1
+            check(raises(L.Rejected, w3.emit, "ralph_a", "stop", **kw) is not None, "R2-1 capability of another pid refused")
+        with L.harness_pass(p, ttl_s=-1) as cap4:
+            check(raises(L.Rejected, L.HarnessWriter, p, cap=cap4) is not None, "R2-1 expired capability refused")
+        # selftest entrypoints: only with a temp, non-default token
+        L._entrypoint = lambda: str(L.HERE / "selftest_arena_x.py")
+        real_dflt = L._default_token_path
+        L._default_token_path = lambda: L.token_path(p)
+        try:
+            check(raises(L.Rejected, L.harness_pass, p) is not None, "R2-1 a selftest entrypoint may not use the real token")
+        finally:
+            L._default_token_path = real_dflt
+        saved = os.environ["ARENA_EVENT_TOKEN_FILE"]
+        os.environ["ARENA_EVENT_TOKEN_FILE"] = str(Path.home() / ".local" / "state" / "rm_st_none" / "event_token")
+        try:
+            check(raises(L.Rejected, L.harness_pass, p) is not None, "R2-1 a selftest entrypoint with a non-temp token refused")
+        finally:
+            os.environ["ARENA_EVENT_TOKEN_FILE"] = saved
+    finally:
+        L._entrypoint = real_entry
+    # RESIDUAL, shown not hidden: the raw token + _sign() still forges a valid line; prov makes it visible only
+    f = L.arm_file(p, "ralph_a")
+    acc = L.verify(p, "ralph_a")["accepted"]
+    tok = L.token_path(p).read_text().strip()
+    forged = {"ts": "2026-10-30T00:00:00Z", "arm": "ralph_a", "lane": "L", "run_id": "r", "event": "judge",
+              "task": "FAKE", "verdict": "accept"}
+    forged["sig"] = L._sign(tok, acc[-1]["sig"], forged)
+    with open(f, "a") as fh:
+        fh.write(json.dumps(forged, sort_keys=True) + "\n")
+    v = L.verify(p, "ralph_a")
+    check(v["accepted"][-1]["task"] == "FAKE", "R2-1 RESIDUAL (not closed): a same-uid token reader calling _sign() "
+          "directly still writes a verifying line")
+    r = L.report(p)["ralph_a"]
+    check(r["unprovenanced"] == 1 and not r["trusted"], "R2-1 ... and report shows it as unprovenanced=1, arm untrusted")
+
+
+def t_r2_2_trust(tmp):
+    p, w = fresh(tmp, "r22")
+    _three(w)
+    r = L.report(p)
+    check(not r["ralph_a"].get("refused") and r["ralph_a"]["trusted"] is False and r["_trust"]["trusted"] is False
+          and "trust_note" in r["ralph_a"], "R2-2 local anchors only: reported but NOT trusted")
+    tok = L.token_path(p).read_text().strip()
+    ext = L.ledger_anchors([{"event": "note", "text": L.anchor_note_text(
+        [L.make_anchor("ralph_a", L.verify(p, "ralph_a")["accepted"], tok)])}])
+    r = L.report(p, external=ext)
+    check(r["ralph_a"]["trusted"] and r["_trust"]["trusted"], "R2-2 a ledger anchor covering the whole log: trusted")
+    w.emit("ralph_a", "stop", lane="L1", run_id="r1")
+    r = L.report(p, external=ext)["ralph_a"]
+    check(not r["trusted"] and r["external_anchored_upto"] == 4 and r["accepted"] == 5,
+          "R2-2 a record after the newest ledger anchor makes the arm untrusted again (4 of 5 covered)")
+    # the token holder deletes the anchor store and writes a fresh, validly signed one: still never trusted
+    L.anchor_path(p).unlink()
+    L.append_anchor(p, L.make_anchor("ralph_a", L.verify(p, "ralph_a")["accepted"], tok))
+    r = L.report(p)["ralph_a"]
+    check(not r.get("refused") and not r["trusted"], "R2-2 a re-made local anchor store passes but is not trusted")
+    L.anchor_path(p).unlink()
+    r = L.report(p)
+    check(bool(r["ralph_a"].get("refused")) and not r["_trust"]["trusted"],
+          "R2-2 anchor store missing + non-empty log: refused UNMEASURED")
+
+
+def t_r2_3_v3_output(tmp):
+    from rimflow import model
+    recs = [r for r in V.translate_ledger(model.read()) if r["detail"].get("done") and r["detail"].get("via") == "close"][:1]
+    p, w = fresh(tmp, "r23")
+    V.write(w, recs)
+    r = L.report(p)["v3"]
+    check(r["ledger_done"] == 1 and r["output_comparable"] is False and r["points_with_unblocked"] is None
+          and "arena_judge" in r["output_note"],
+          "R2-3 one accepted v3 close: ledger_done=1, output NOT COMPARABLE (points None), never a silent 0")
+    w.emit("v3", "judge", task=recs[0]["task"], verdict="accept", lane="v3", run_id="j")
+    r = L.report(p)["v3"]
+    check(r["output_comparable"] and r["points_with_unblocked"] == 1, "R2-3 control: once judged, v3 scores 1 point")
+
+
+def t_r2_4_build_id(tmp):
+    p, w = fresh(tmp, "r24")
+    kw = dict(lane="L", run_id="r")
+    w.emit("trio", "build_end", task="T", sha="s1", ts="2026-10-30T01:00:00Z", detail={"builder": "A"}, **kw)
+    w.emit("trio", "build_end", task="T", sha="s2", ts="2026-10-30T01:10:00Z", detail={"builder": "B"}, **kw)
+    s = w.emit("trio", "test_start", task="T", sha="s2", ts="2026-10-30T01:20:00Z", detail={"tester": "B"}, **kw)
+    recs = L.verify(p, "trio")["accepted"]
+    check(s.get("rule") == L.FLAG_SAME_AGENT and len(L.flagged_same_agent(recs)) == 1,
+          "R2-4 B testing its own build s2 is flagged")
+    check(sorted(r["sha"] for r in L.untested_builds(recs)) == ["s1", "s2"] and L.latency_minutes(recs) == [],
+          "R2-4 that test does NOT clear build s1 (A's): both untested, no latency credited")
+    w.emit("trio", "test_start", task="T", sha="s1", ts="2026-10-30T01:30:00Z", detail={"tester": "C"}, **kw)
+    recs = L.verify(p, "trio")["accepted"]
+    check([r["sha"] for r in L.untested_builds(recs)] == ["s2"] and [round(x) for x in L.latency_minutes(recs)] == [30],
+          "R2-4 control: C testing s1 clears s1 only, latency 30 min from s1's build")
+    w.emit("trio", "build_end", task="U", ts="2026-10-30T02:00:00Z", detail={"builder": "A", "build_id": "b9"}, **kw)
+    w.emit("trio", "test_start", task="U", ts="2026-10-30T02:05:00Z", detail={"tester": "A"}, **kw)
+    check(len(L.flagged_same_agent(L.verify(p, "trio")["accepted"])) == 2,
+          "R2-4 a test naming no build falls back to the latest build of the task")
+
+
+def t_r2_5_order(tmp):
+    p, w = fresh(tmp, "r25")
+    t = [{"arm": "v3", "lane": "v3", "run_id": "J", "event": "test_start", "task": "T", "ts": "2026-10-30T10:05:00Z",
+          "detail": {"tester": "A", "src": "x:1"}}]
+    b = [{"arm": "v3", "lane": "v3", "run_id": "J", "event": "build_end", "task": "T", "ts": "2026-10-30T10:00:00Z",
+          "detail": {"builder": "A", "src": "x:2"}}]
+    V.write(w, t)
+    V.write(w, b)                               # a later import of the EARLIER build
+    r = L.report(p)["v3"]
+    check(r["flagged_same_agent"] == 1 and r["out_of_order"] == 1 and r["untested_builds"] == 1,
+          "R2-5 late import of an earlier build: time order restored, self-test flagged, out_of_order=1")
+    t2 = [dict(t[0], task="U", ts="2026-10-30T11:00:00Z", detail={"tester": "B", "src": "x:3"})]
+    b2 = [dict(b[0], task="U", ts="2026-10-30T11:30:00Z", detail={"builder": "A", "src": "x:4"})]
+    V.write(w, t2 + b2)
+    r = L.report(p)["v3"]
+    check(r["test_before_build"] == 1 and r["untested_builds"] == 2,
+          "R2-5 a test that happened before its build is test_before_build=1 and does not clear the build")
+
+
+def t_r2_6_schema(tmp):
+    p, w = fresh(tmp, "r26")
+    kw = dict(lane="L", run_id="r")
+    for name, args in (("list card_id", ("card", {"minutes": 1, "detail": {"card_id": ["C"], "unblocked": []}})),
+                       ("unblocked=[{}]", ("card", {"minutes": 1, "detail": {"card_id": "C", "unblocked": [{}]}})),
+                       ("unblocked=['']", ("card", {"minutes": 1, "detail": {"card_id": "C", "unblocked": [""]}})),
+                       ("blank card_id", ("card", {"minutes": 1, "detail": {"card_id": " ", "unblocked": []}})),
+                       ("naive ts", ("stop", {"ts": "2026-10-30T10:00:00"})),
+                       ("garbage ts", ("stop", {"ts": "yesterday"})),
+                       ("numeric task", ("judge", {"task": 5, "verdict": "accept"})),
+                       ("list verdict", ("judge", {"task": "T", "verdict": ["accept"]})),
+                       ("bad minutes on any event", ("defect", {"minutes": "5"})),
+                       ("NaN inside detail", ("defect", {"detail": {"x": float("nan")}})),
+                       ("blank build_id", ("build_end", {"task": "T", "detail": {"builder": "A", "build_id": ""}}))):
+        check(raises(L.Rejected, w.emit, "a", args[0], **kw, **args[1]) is not None, "R2-6 schema rejects " + name)
+    w.emit("a", "stop", ts="2026-10-30T12:00:00+02:00", **kw)
+    check(L.ts_epoch(L.verify(p, "a")["accepted"][-1]["ts"]) == L.ts_epoch("2026-10-30T10:00:00Z"),
+          "R2-6 control: an offset ts is accepted and compared in UTC")
+    old = [{"event": "card", "minutes": 1, "detail": {"card_id": ["C"], "unblocked": []}},
+           {"event": "card", "minutes": 1, "detail": {"card_id": "D", "unblocked": [{}]}},
+           {"event": "card", "minutes": 2, "detail": {"card_id": "E", "unblocked": ["T"]}}]
+    om = raises(Exception, L.owner_minutes, old)
+    check(om is None and L.owner_minutes(old)["malformed_cards"] == 2 and L.owner_minutes(old)["minutes"] == 2,
+          "R2-6 malformed cards already in a log are skipped and counted, owner_minutes does not crash")
+
+
+def t_r2_7_testq(tmp):
+    p, w = fresh(tmp, "r27")
+    kw = dict(lane="v3", run_id="v3-ledger")
+    for t in ("I1", "I2", "I3"):
+        w.emit("v3", "build_end", task=t, ts="2026-10-30T09:00:00Z", detail={"builder": "FOUNDRY", "src": "b" + t}, **kw)
+    jobs = {"J1": {"item": "I1", "requested_by": "FOUNDRY"}, "J2": {"item": "I2", "requested_by": "BENCH"},
+            "J3": {"item": "I3"}}
+    res = [{"job": j, "host": "stevedesktop", "started": "2026-10-30T10:00:00Z"} for j in ("J1", "J2", "J3")]
+    recs = V.translate_testq(res, jobs)
+    check([r["detail"]["tester"] for r in recs] == ["FOUNDRY", "BENCH", "unattributed:testq:stevedesktop"]
+          and all(r["detail"]["runner"] == "testq:stevedesktop" for r in recs)
+          and [r["detail"]["submitted_by"] for r in recs] == ["FOUNDRY", "BENCH", None],
+          "R2-7 testq tester = submitting seat; runner host and submitter both recorded")
+    V.write(w, recs)
+    acc = L.verify(p, "v3")["accepted"]
+    check([r["task"] for r in L.flagged_same_agent(acc)] == ["I1"],
+          "R2-7 builder FOUNDRY running its own testq is flagged (was cleared as 'testq:<host>')")
+    check(sorted(r["task"] for r in L.untested_builds(acc)) == ["I1", "I3"],
+          "R2-7 only BENCH's run clears a build; an unattributed run never counts as a different agent")
+
+
+def t_r2_8_window(tmp):
+    d0 = L.ts_epoch("2026-10-24T00:00:00Z")
+    mk = lambda ts: {"ts": ts, "detail": {"done": True, "via": "close"}}
+    recs = [mk("2026-10-23T23:59:59Z"), mk("2026-10-24T00:00:00Z"), mk("2026-10-24T23:59:59Z"),
+            mk("2026-10-25T00:00:00Z"), mk("2026-10-24T01:30:00+02:00")]   # the last is 23:30 on the 23rd UTC
+    check(V.done_count(recs, d0, d0 + 86400) == 2 and V.done_count(recs, d0, d0 + 86400, "close") == 2,
+          "R2-8 day window is half-open UTC [00:00, 24:00): boundary seconds land on exactly one day, offsets in UTC")
+
+
+def t_r2_9_anchor_neg(tmp):
+    p, w = fresh(tmp, "r29")
+    _three(w)
+    ext = L.ledger_anchors([{"event": "note", "tsn": 7, "text": "ARENA_ANCHOR ralph_a:-1:%s ralph_a:0:%s" % ("a" * 64, "b" * 64)}])
+    crash = raises(Exception, L.report, p, external=ext)
+    r = L.report(p, external=ext)["ralph_a"] if crash is None else {}
+    check(crash is None and len(r.get("anchor_errors", [])) == 2 and not r.get("refused") and not r["trusted"],
+          "R2-9 negative / inconsistent external anchors: report does not crash, both listed in anchor_errors, unused")
+    check(raises(Exception, L.check_anchors, [], [{"n": -1, "head": "x"}]) is None,
+          "R2-9 check_anchors([], n=-1) (the partial-log probe) does not raise")
+
+
+def _stat(path):
+    try:
+        s = os.stat(path)
+        return (s.st_size, s.st_mtime_ns)
+    except OSError:
+        return None
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="arena_eventlog_st_"))
-    saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "RM_ARM")}
+    keys = ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "RM_ARM")
+    saved = {k: os.environ.get(k) for k in keys}
+    # R2-9: whatever anchor store this process inherited, and the real default one, must come out untouched. A
+    # decoy stands in for an inherited ARENA_ANCHOR_FILE (round 1's selftest deleted whatever that pointed at).
+    decoy_dir = Path(tempfile.mkdtemp(prefix="arena_eventlog_decoy_"))
+    decoy = decoy_dir / "anchors.jsonl"
+    decoy.write_text('{"decoy": true}\n')
+    inherited = saved["ARENA_ANCHOR_FILE"]
+    os.environ["ARENA_ANCHOR_FILE"] = str(decoy)
+    os.environ.pop("ARENA_EVENT_TOKEN_FILE", None)
+    dflt_anchor = L._default_token_path().parent / "anchors.jsonl"
+    guard = {str(decoy): _stat(decoy), str(dflt_anchor): _stat(dflt_anchor)}
+    if inherited:
+        guard[inherited] = _stat(inherited)
     try:
         t_agent_write(tmp)
         t_same_agent(tmp)
         t_owner(tmp)
         t_adapter(tmp)
-        for t in (t_d1_token, t_d2_tail, t_d3_partial, t_d4_ids, t_d5_idem, t_d6_minutes, t_d8_verdict, t_d7_recover):
+        for t in (t_d1_token, t_d2_tail, t_d3_partial, t_d4_ids, t_d5_idem, t_d6_minutes, t_d8_verdict, t_d7_recover,
+                  t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
+                  t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg):
             try:
                 t(tmp)
             except Exception as e:          # a crash is a failure of that test, not of the run
                 check(False, "%s crashed: %s: %s" % (t.__name__, type(e).__name__, e))
+        after = {k: _stat(k) for k in guard}
+        check(after == guard and decoy.read_text() == '{"decoy": true}\n',
+              "R2-9 the inherited anchor store (decoy) and the default store %s were never touched" % dflt_anchor)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
         shutil.rmtree(tmp, ignore_errors=True)
+        shutil.rmtree(decoy_dir, ignore_errors=True)
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 
