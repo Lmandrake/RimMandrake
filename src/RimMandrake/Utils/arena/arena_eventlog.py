@@ -232,6 +232,27 @@ def _entrypoint() -> str:
     return _ENTRY
 
 
+def _gate_runner_sel(cmdline=None, env=None) -> str | None:
+    """arena_gate's say-so that this process is its harness runner step: the selftest path it runs, else None. Lazy
+    import (arena_gate imports this module). Needs the real /proc/self/cmdline and the runner-sha env marker."""
+    try:
+        if cmdline is None:
+            raw = Path("/proc/self/cmdline").read_bytes().split(b"\0")
+            if raw and raw[-1] == b"":
+                raw.pop()
+            cmdline = [os.fsdecode(a) for a in raw]
+        import arena_gate
+        return arena_gate.gate_runner_selftest(cmdline, env)
+    except (OSError, ImportError, AttributeError):
+        return None
+
+
+def _entry_name() -> str:
+    """Basename recorded as the entry: the gate runner's selftest when running under it, else the entry script."""
+    sel = _gate_runner_sel()
+    return os.path.basename(sel) if sel else os.path.basename(_entrypoint())
+
+
 def _code_shape(co) -> tuple:
     return (co.co_code, co.co_names, tuple(_code_shape(c) if isinstance(c, types.CodeType) else repr(c)
                                            for c in co.co_consts))
@@ -273,7 +294,7 @@ def provenance(cap=None) -> dict:
     except OSError:
         cwd = None
     return {"pid": os.getpid(), "pid_start": (chain[0][1] if chain else None), "chain": chain, "uid": os.getuid(),
-            "cwd": cwd, "entry": os.path.basename(_entrypoint()) or None,
+            "cwd": cwd, "entry": _entry_name() or None,
             "env_sha": hashlib.sha256(env.encode()).hexdigest()[:16],
             "cap": cap.cap_id if cap is not None else None}
 
@@ -334,16 +355,26 @@ def _default_token_path() -> Path:
 def _check_entrypoint(p: dict):
     """Only a harness entrypoint run as __main__ from this directory opens a pass. A selftest_arena_* entrypoint
     only with a temp token that is not the default token (path, inode and content all differ)."""
-    e = _entrypoint()
-    name = os.path.basename(e)
-    if not e or os.path.dirname(e) != str(HERE):
-        raise Rejected("signing needs a harness entrypoint run from %s as __main__ (got %r): library use from "
-                       "another script, -c or a REPL is refused" % (HERE, e or None))
-    why = _main_code_ok(e)
-    if why:
-        raise Rejected("entrypoint check: %s" % why)
-    if name in ENTRYPOINTS:
-        return
+    sel = _gate_runner_sel()
+    if sel:     # arena_gate's runner step: the main frame runs the (verified) runner, the selftest is the entry
+        name = os.path.basename(sel)
+        if os.path.dirname(sel) != str(HERE) or not name.startswith(SELFTEST_ENTRY_PREFIX):
+            raise Rejected("gate runner entry %r is not a %s* selftest in %s" % (sel, SELFTEST_ENTRY_PREFIX, HERE))
+        e = _entrypoint()
+        why = _main_code_ok(e)
+        if why:
+            raise Rejected("entrypoint check: %s" % why)
+    else:
+        e = _entrypoint()
+        name = os.path.basename(e)
+        if not e or os.path.dirname(e) != str(HERE):
+            raise Rejected("signing needs a harness entrypoint run from %s as __main__ (got %r): library use from "
+                           "another script, -c or a REPL is refused" % (HERE, e or None))
+        why = _main_code_ok(e)
+        if why:
+            raise Rejected("entrypoint check: %s" % why)
+        if name in ENTRYPOINTS:
+            return
     if name.startswith(SELFTEST_ENTRY_PREFIX) and name.endswith(".py"):
         tp, dflt = token_path(p), _default_token_path()
         if not A._inside(tp, tempfile.gettempdir()):
@@ -383,7 +414,7 @@ class PassCapability:
         self.expires = time.time() + ttl_s
         self.path = d / ("%d-%s" % (self.pid, secrets.token_hex(8)))
         body = json.dumps({"pid": self.pid, "pid_start": self.pid_start, "expires": self.expires,
-                           "entry": os.path.basename(_entrypoint()), "cap_id": self.cap_id,
+                           "entry": _entry_name(), "cap_id": self.cap_id,
                            "nonce_sha": hashlib.sha256(self._nonce.encode()).hexdigest()}, sort_keys=True).encode()
         self._fd = os.open(str(self.path), os.O_RDWR | os.O_CREAT | os.O_EXCL, 0o600)
         os.write(self._fd, body)
@@ -453,7 +484,7 @@ def _active_cap(p: dict):
             and os.path.realpath(c.p["root"]) == os.path.realpath(p["root"])]
     if live:
         return live[-1]
-    e = os.path.basename(_entrypoint())
+    e = _entry_name()
     if e.startswith(SELFTEST_ENTRY_PREFIX):     # selftests: an implicit pass, only with a temp non-default token
         cap = harness_pass(p)
         atexit.register(cap.close)

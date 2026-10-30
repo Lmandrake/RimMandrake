@@ -910,7 +910,86 @@ def _stat(path):
         return None
 
 
+def _gate_probe():
+    """Run only when RM_EVLOG_GATE_PROBE is set (by t_gate_runner, under a real gate runner command line)."""
+    try:
+        L.harness_pass(A.paths())
+        print("OPENED entry=%s" % L._entry_name())
+    except L.Rejected as e:
+        print("REFUSED", e)
+    return 0
+
+
+def t_gate_runner(tmp):
+    import hashlib
+    import subprocess
+    import arena_gate as G
+    sha = G.runner_sha256()
+    rd = tmp / "gr"
+    rd.mkdir(exist_ok=True)
+    runner = rd / G.GATE_RUNNER_NAME
+    runner.write_text(G.RUNNER_SRC, encoding="utf-8")
+    sel = str(L.HERE / "selftest_arena_eventlog.py")
+    base = dict(os.environ, RM_EVLOG_GATE_PROBE="1", ARENA_EVENT_TOKEN_FILE=str(tmp / "gr_token"))
+    base.pop("RM_ARM", None)
+
+    def launch(env, rpath=runner, target=sel):
+        r, w = os.pipe()
+        try:
+            pr = subprocess.run([sys.executable, "-I", str(rpath), str(w), target], capture_output=True, text=True,
+                                input="0123456789abcdef0123456789abcdef\nENTRIES main\n", env=env, cwd=str(tmp),
+                                timeout=120, pass_fds=(w,))
+        finally:
+            os.close(w)
+            os.close(r)
+        return pr.stdout.strip() or pr.stderr.strip()
+    out = launch(dict(base, RM_GATE_RUNNER=sha))
+    check(out.startswith("OPENED") and "entry=selftest_arena_eventlog.py" in out,
+          "GR-a the real gate runner command line + env marker passes the entrypoint check (%s)" % out[-110:])
+    out = launch(base)
+    check("REFUSED" in out and "OPENED" not in out, "GR-b1 no env marker: refused (%s)" % out[-110:])
+    out = launch(dict(base, RM_GATE_RUNNER="0" * 64))
+    check("REFUSED" in out and "OPENED" not in out, "GR-b2 wrong sha in the env marker: refused (%s)" % out[-110:])
+    alt = rd / "alt"
+    alt.mkdir(exist_ok=True)
+    (alt / G.GATE_RUNNER_NAME).write_text(G.RUNNER_SRC + "\n# edited copy\n", encoding="utf-8")
+    out = launch(dict(base, RM_GATE_RUNNER=sha), rpath=alt / G.GATE_RUNNER_NAME)
+    check("REFUSED" in out and "OPENED" not in out, "GR-b3 a runner copy that is not byte-identical: refused (%s)" % out[-110:])
+    out = launch(dict(base, RM_GATE_RUNNER=hashlib.sha256((G.RUNNER_SRC + "\n# edited copy\n").encode()).hexdigest()),
+                 rpath=alt / G.GATE_RUNNER_NAME)
+    check("REFUSED" in out and "OPENED" not in out, "GR-b3b ... even with the marker set to the copy's own sha (%s)" % out[-110:])
+    (rd / "cp").mkdir(exist_ok=True)
+    cp = rd / "cp" / "selftest_arena_eventlog.py"
+    shutil.copyfile(sel, cp)
+    out = launch(dict(base, RM_GATE_RUNNER=sha), target=str(cp))
+    check("OPENED" not in out, "GR-b4 the selftest copied outside the arena dir does not open a pass (%s)" % out[-110:])
+    forge = ("import sys, __main__; sys.path.insert(0, %r); __main__.__file__ = %r; sys.argv[0] = __main__.__file__\n"
+             "import arena_eventlog as L, arena_tasks as A\n"
+             "try:\n    L.harness_pass(A.paths()); print('OPENED')\nexcept L.Rejected as e:\n    print('REFUSED', e)\n"
+             % (str(L.HERE), sel))
+    pr = subprocess.run([sys.executable, "-c", forge], capture_output=True, text=True,
+                        env=dict(base, RM_GATE_RUNNER=sha), cwd=str(tmp), timeout=120)
+    check(pr.stdout.startswith("REFUSED"), "GR-b5 a spoofed __main__.__file__ with the marker set is refused (%s)"
+          % (pr.stdout.strip() or pr.stderr.strip())[-120:])
+    saved = L._gate_runner_sel
+    try:
+        for bad, why in ((str(L.HERE / "arena_eventlog.py"), "name outside the selftest_arena_ prefix"),
+                         (str(L.HERE / "arena_gate.py"), "a harness module that is not a selftest"),
+                         (str(tmp / "selftest_arena_x.py"), "right prefix, wrong dir")):
+            L._gate_runner_sel = lambda cmdline=None, env=None, b=bad: b
+            try:
+                L._check_entrypoint(A.paths())
+                got = "accepted"
+            except L.Rejected as e:
+                got = "rejected: %s" % str(e)[:60]
+            check(got.startswith("rejected"), "GR-b6 gate says %s: %s" % (why, got))
+    finally:
+        L._gate_runner_sel = saved
+
+
 def main():
+    if os.environ.get("RM_EVLOG_GATE_PROBE"):
+        return _gate_probe()
     tmp = Path(tempfile.mkdtemp(prefix="arena_eventlog_st_"))
     keys = ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM")
     saved = {k: os.environ.get(k) for k in keys}
@@ -935,7 +1014,7 @@ def main():
                   t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
                   t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg, t_r3_b1_tail, t_r3_b2_forged_note, t_r3_b3_roster,
                   t_r3_b4_note_tokens, t_r3_entrypoint, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
-                  t_r3_analysis, t_r3_cards, t_r4_small):
+                  t_r3_analysis, t_r3_cards, t_r4_small, t_gate_runner):
             try:
                 t(tmp)
             except Exception as e:          # a crash is a failure of that test, not of the run
