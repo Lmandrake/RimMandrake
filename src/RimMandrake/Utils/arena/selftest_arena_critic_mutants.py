@@ -149,6 +149,24 @@ def t_scoring():
     ru = M.restrict(u, v)
     check("paired restriction keeps only candidates valid for both",
           ru["o2"]["orig"] is None and ru["o1"]["muts"][0][1] is None and ru["o1"]["muts"][1][1] == "reject", str(ru))
+    # CRITIC_CALIB_REMEASURE_TIERB_AS_UNLABELLED: a tier-B original is unlabelled - its reject is not a false reject,
+    # its mutants still count as labelled defects.
+    tb = tab_of({"oA": ("accept", [("reject", True)]), "oB": ("reject", [("reject", True), ("accept", False)])})
+    tb["oB"]["labelled"] = False
+    r = M._rates(tb, "reason")
+    check("an unlabelled (tier-B) reject is not a false reject; its mutants still count",
+          r["false_reject"] == [0, 1] and r["unlabelled_reject"] == [1, 1] and r["catch"] == [2, 3], str(r))
+    check("discrimination ignores the unlabelled original's verdict",
+          abs(M._disc(tb, list(tb), "reason") - (2 / 3 - 0)) < 1e-9)
+    tb["oB"]["orig"] = None
+    check("an unlabelled original with no valid verdict still contributes its mutants",
+          M._rates(tb, "reason")["catch"] == [2, 3])
+    check("restrict carries the label", M.restrict(tb, tb)["oB"]["labelled"] is False)
+    doc = {"candidates": [{"cid": "a", "role": "good", "tier": "A"}, {"cid": "b", "role": "good", "tier": "B"},
+                          {"cid": "ma", "role": "mutant", "pair": "a", "mid": "m1"},
+                          {"cid": "mb", "role": "mutant", "pair": "b", "mid": "m2"}]}
+    rt = M.reviewer_table(doc, {}, {})
+    check("reviewer_table labels tier A and unlabels tier B", rt["a"]["labelled"] and not rt["b"]["labelled"], str(rt))
     sc = {"detect": {"unproved": 0}, "reviewers": {"critic": {"run": "r", "critic_fingerprint": "fp", "invalid": 0, "candidates": 10, "matcher_decoy_hits": [0, 5],
                                    "rejects_without_valid_match": 1}},
           "paired": {"reason": {"ci95": [0.1, 0.4]}}}

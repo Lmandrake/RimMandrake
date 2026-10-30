@@ -7,12 +7,12 @@ WHY. The census-planted set (arena_critic_calib.py) scored a reject as a catch w
 defects were mostly not findable from the diff plus offline tests. Here every defect is planted BY CONSTRUCTION:
 
 THE SET (fixtures/critic_mutant_set.json, built by `build` from fixtures/critic_mutants.json). Each mutant is one
-known-good candidate of the shipped calibration set (an unmutated "original": tier A or a clean tier B, never one the
-adjudication marked bad) with ONE realistic defect injected into a file of its own diff (inverted guard, wrong
+good-role candidate of the shipped calibration set (an unmutated "original": tier A, or a tier B the adjudication did
+not mark bad - tier B is NOT known good, see LABELS) with ONE realistic defect injected into a file of its own diff (inverted guard, wrong
 variable, dropped statement, off-by-one, swallowed error, wrong default ...), recorded as an exact find/replace and a
 written defect description. The mutated head is a deterministic commit object in the repo (fixed author, dates and
 message, parent = the original head, no ref): `build` re-creates it and refuses if the sha moved. The originals are
-copied verbatim (same cid) as the paired good controls.
+copied verbatim (same cid) as the paired controls (good controls only when tier A).
 
 OFFLINE PROOF (`proofs`): the original's and the mutant's trees are materialised exactly as a critic sees them and the
 selftests the change touches are run in the critic sandbox. detect=test when one passes on the original and fails on
@@ -28,7 +28,13 @@ and a shuffled list of defect descriptions - the true one plus a decoy from a di
 the write-up identifies. Rejects of originals are matched against their mutants' defects too (control). The decoy hit
 rate is the matcher's false-match rate; above MATCH_FP_MAX the reason-matched numbers are UNMEASURED.
 
-  discrimination = P(catch | mutant) - P(reject | original)       (reason-matched; verdict-only reported alongside)
+  discrimination = P(catch | mutant) - P(reject | LABELLED original)  (reason-matched; verdict-only alongside)
+LABELS (CRITIC_CALIB_REMEASURE_TIERB_AS_UNLABELLED). Only a tier-A original is labelled good (census CLEAN: verify
+pass, no rework); a tier-B original is a seeded draw nobody adjudicated, so a reject of it may be a true find (an
+independent check found 13 of 17 such tester rejects were real defects). Tier-B originals are therefore UNLABELLED:
+they never enter the false-reject term (their reject rate is reported apart, as `unlabelled_reject`), while every
+planted mutant - of either tier - stays a labelled defect in the catch term. This mirrors arena_critic_calib's rule
+(false reject on tier A only).
   decision      = discrimination(critic) - discrimination(baseline), on candidates both judged validly
 95% intervals are percentile bootstraps clustered by ORIGINAL (a resampled original brings all its mutants), paired
 across reviewers for the difference. Numbers are MEASURED only from fingerprinted runs on this set's sha.
@@ -523,14 +529,15 @@ def match(doc: dict, run_ids: list, budget_s: float, concurrency: int = 8, call=
 # ---------------------------------------------------------------- scoring
 
 def reviewer_table(doc: dict, recs: dict, matches: dict) -> dict:
-    """original cid -> {"orig": verdict, "orig_match": bool|None, "muts": [(mid, verdict, matched|None)]}.
+    """original cid -> {"labelled": bool (False = tier B), "orig": verdict, "orig_match": bool|None, "muts": [(mid, verdict, matched|None)]}.
     verdict None = no valid verdict; matched None = a reject whose match is missing/invalid."""
     tab = {}
+    tier_of = {c["cid"]: c.get("tier") for c in doc["candidates"] if c.get("role") != "mutant"}
     for o, ms in pairs(doc).items():
         ro = recs.get(o)
         vo = ro["verdict"] if ro and ro["verdict"] in J.VERDICTS else None
         mo = matches.get(o)
-        row = {"orig": vo, "orig_match": (bool(mo["true_hit"]) if mo else None) if vo == "reject" else False,
+        row = {"labelled": tier_of.get(o) != "B", "orig": vo, "orig_match": (bool(mo["true_hit"]) if mo else None) if vo == "reject" else False,
                "muts": []}
         for m in ms:
             r = recs.get(m["cid"])
@@ -544,11 +551,14 @@ def reviewer_table(doc: dict, recs: dict, matches: dict) -> dict:
 
 def _disc(tab: dict, keys: list, mode: str) -> float | None:
     """mode verdict: P(reject|mut) - P(reject|orig); reason: P(reject & match|mut) - P(reject|orig).
-    Only mutants whose own verdict AND whose original's verdict are valid (and, in reason mode, matched) count."""
+    Only mutants whose own verdict is valid (and, in reason mode, matched) count; a LABELLED original's mutants count
+    only when the original's verdict is valid too (the pair). An unlabelled (tier-B) original adds its mutants to the
+    catch term and nothing to the false-reject term."""
     cm = nm = co = no = 0
     for k in keys:
         row = tab[k]
-        if row["orig"] is None:
+        lab = row.get("labelled", True)
+        if lab and row["orig"] is None:
             continue
         used = False
         for _mid, v, hit in row["muts"]:
@@ -557,7 +567,7 @@ def _disc(tab: dict, keys: list, mode: str) -> float | None:
             nm += 1
             cm += (v == "reject") if mode == "verdict" else (v == "reject" and hit)
             used = True
-        if used:
+        if used and lab:
             no += 1
             co += row["orig"] == "reject"
     if not nm or not no:
@@ -567,19 +577,24 @@ def _disc(tab: dict, keys: list, mode: str) -> float | None:
 
 def _rates(tab: dict, mode: str) -> dict:
     keys = list(tab)
-    cm = nm = co = no = 0
+    cm = nm = co = no = cu = nu = 0
     for k in keys:
         row = tab[k]
-        if row["orig"] is None:
+        lab = row.get("labelled", True)
+        if not lab and row["orig"] is not None:
+            nu += 1
+            cu += row["orig"] == "reject"
+        if lab and row["orig"] is None:
             continue
         ok = [(v, hit) for _m, v, hit in row["muts"] if v is not None and not (mode == "reason" and hit is None)]
         if not ok:
             continue
-        no += 1
-        co += row["orig"] == "reject"
+        if lab:
+            no += 1
+            co += row["orig"] == "reject"
         nm += len(ok)
         cm += sum((v == "reject") if mode == "verdict" else (v == "reject" and hit) for v, hit in ok)
-    return {"catch": [cm, nm], "false_reject": [co, no]}
+    return {"catch": [cm, nm], "false_reject": [co, no], "unlabelled_reject": [cu, nu]}
 
 
 def boot(tabs: list, keys: list, mode: str, reps: int = BOOT, seed: str = BOOT_SEED) -> list:
@@ -614,7 +629,7 @@ def restrict(tab: dict, other: dict) -> dict:
         for (mid, v, hit), (_m2, v2, hit2) in zip(row["muts"], o["muts"]):
             ok = v is not None and v2 is not None
             muts.append((mid, v if ok else None, hit if ok and hit2 is not None else (None if ok else hit)))
-        out[k] = {"orig": orig, "orig_match": row["orig_match"], "muts": muts}
+        out[k] = {"labelled": row.get("labelled", True), "orig": orig, "orig_match": row["orig_match"], "muts": muts}
     return out
 
 
@@ -629,7 +644,11 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
             mrec[(r["run"], r["cid"])] = r
     n_mut = sum(1 for c in doc["candidates"] if c.get("role") == "mutant")
     n_orig = len(pairs(doc))
+    tiers = [c.get("tier") for c in doc["candidates"] if c.get("role") != "mutant" and c["cid"] in pairs(doc)]
     out = {"set_sha256": doc["set_sha256"], "mutants": n_mut, "originals": n_orig,
+           "labels": {"false_reject_on": "tier-A originals only; tier-B originals unlabelled",
+                      "labelled_originals": sum(t != "B" for t in tiers),
+                      "unlabelled_originals": sum(t == "B" for t in tiers)},
            "kinds": sorted({c["mutant_kind"] for c in doc["candidates"] if c.get("role") == "mutant"}),
            "detect": {"test": sum(1 for p in proofs_by.values() if p["detect"] == "test"),
                       "read": sum(1 for p in proofs_by.values() if p["detect"] == "read"),
@@ -660,6 +679,7 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
             r = _rates(tab, mode)
             d = _disc(tab, list(tab), mode)
             blk[mode] = {"catch": r["catch"], "false_reject": r["false_reject"],
+                         "unlabelled_reject": r["unlabelled_reject"],
                          "discrimination": None if d is None else round(d, 3),
                          "ci95": boot([tab], list(tab), mode, reps)[:2]}
         by_detect = {}
@@ -750,6 +770,7 @@ def main(argv=None) -> int:
     s.add_argument("--critic-run", required=True)
     s.add_argument("--baseline-run", required=True)
     s.add_argument("--json", action="store_true")
+    s.add_argument("--out", help="write score.json here instead of the evidence root")
     a = ap.parse_args(argv)
     base = C.load_set()
     if a.cmd == "build":
@@ -787,7 +808,9 @@ def main(argv=None) -> int:
     pr = latest(C.read_results(evidence_root() / "proofs.jsonl"), doc)
     proofs_by = {r["mid"]: r for r in pr.values()}
     sc = score(doc, runs, C.read_results(evidence_root() / "match.jsonl"), proofs_by)
-    (evidence_root() / "score.json").write_text(json.dumps(sc, indent=1) + "\n")
+    out_p = Path(a.out) if a.out else evidence_root() / "score.json"
+    out_p.parent.mkdir(parents=True, exist_ok=True)
+    out_p.write_text(json.dumps(sc, indent=1) + "\n")
     if a.json:
         print(json.dumps(sc, indent=1))
         return 0
@@ -802,14 +825,15 @@ def main(argv=None) -> int:
             blk["rejects_without_valid_match"], WRITEUP_MAX, blk["writeups_truncated"]))
         for mode in ("verdict", "reason"):
             x = blk[mode]
-            print("  %-7s catch %d/%d  false-reject %d/%d  discrimination %s  95%% %s" % (
-                mode, x["catch"][0], x["catch"][1], x["false_reject"][0], x["false_reject"][1], x["discrimination"],
-                x["ci95"]))
+            print("  %-7s catch %d/%d  false-reject (tier A) %d/%d  unlabelled reject (tier B) %d/%d  "
+                  "discrimination %s  95%% %s" % (
+                      mode, x["catch"][0], x["catch"][1], x["false_reject"][0], x["false_reject"][1],
+                      x["unlabelled_reject"][0], x["unlabelled_reject"][1], x["discrimination"], x["ci95"]))
     for mode, x in (sc.get("paired") or {}).items():
         print("paired %-7s critic %s  baseline %s  difference %s  95%% %s" % (mode, x["critic"], x["baseline"],
                                                                           x["difference"], x["ci95"]))
     print("verdict:", json.dumps(sc["verdict"]))
-    print("score:", evidence_root() / "score.json")
+    print("score:", out_p)
     return 0
 
 
