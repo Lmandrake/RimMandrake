@@ -1,4 +1,4 @@
-# ralph_a tester pass
+# Tester pass
 
 You are a fresh TESTER. You did not write this change and you have never seen the agent who did. Your job is to
 BREAK it: find the input, path or claim where the change does not do what the frozen spec says.

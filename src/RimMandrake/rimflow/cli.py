@@ -2378,7 +2378,49 @@ def _driver_release(seat, force=None):
         print("⚠️  %s - the driver lock stays; another take is refused while its holder process lives" % r["why"])
 
 
-def _bridge_release(seat, w, holder):
+def _bridge_lock_path():
+    """The bridge lock: beside the dispatcher lock of the ledger in use (a test ledger locks beside itself)."""
+    return os.environ.get("RIMFLOW_BRIDGE_LOCK") or os.path.join(os.path.dirname(lease.lock_path()),
+                                                                  ".rimflow-bridge.lock")
+
+
+class _bridge_lock:
+    """flock(LOCK_EX) on _bridge_lock_path() for a check+write that must be atomic against another bridge write in
+    this clone (release --mine; take's re-check + append). The kernel drops it if the holder dies. Re-entrant within
+    one process (a nested use is a no-op), so a take called under it cannot deadlock on itself."""
+    _depth = 0
+
+    def __enter__(self):
+        self.fd = None
+        if _bridge_lock._depth == 0:
+            path = _bridge_lock_path()
+            os.makedirs(os.path.dirname(path) or ".", exist_ok=True)
+            self.fd = os.open(path, os.O_RDWR | os.O_CREAT, 0o644)
+            import fcntl
+            fcntl.flock(self.fd, fcntl.LOCK_EX)
+        _bridge_lock._depth += 1
+        return self
+
+    def __exit__(self, *exc):
+        _bridge_lock._depth -= 1
+        if self.fd is not None:
+            os.close(self.fd)               # closing the only fd drops the flock
+
+
+def _bridge_hold(hk):
+    """-> (holder, take_token) of bridge `hk` from a FRESH replay. take_token identifies the take that made the
+    current hold (its ts/seat/purpose), so 'still mine' means 'still the take I saw', not just 'my seat's name'."""
+    evs, w2 = load()
+    holder = (w2.bridge_hosts.get(hk) or {}).get("holder") if hk != model.DEFAULT_BRIDGE_HOST else w2.bridge_holder
+    tok = None
+    for ev in evs:
+        if ev.get("event") == "bridge" and ev.get("state") in ("taken", "given") and \
+                (ev.get("host") or model.DEFAULT_BRIDGE_HOST) == hk:
+            tok = json.dumps([ev.get(k) for k in ("ts", "tsn", "seat", "to", "purpose")], default=str)
+    return holder, tok
+
+
+def _bridge_release(seat, w, holder, expect_token=None):
     """`bridge release` — allowed even on someone else's lock, but never unrecorded.
 
     ⚠️ `_apply` clears the holder for ANY `released` event, whoever sent it — so a
@@ -2396,8 +2438,15 @@ def _bridge_release(seat, w, holder):
     either way (a `released` event unconditionally clears it), so this only fixes the
     audit trail, not a lockout (found in the 2026-09-05 code review wave).
     """
-    _, w2 = load()
-    holder = w2.bridge_holder
+    if expect_token is not None:
+        holder, tok = _bridge_hold(model.DEFAULT_BRIDGE_HOST)
+        if holder != seat or tok != expect_token:
+            print("bridge release --mine: the bridge changed hands before the release (holder now: %s) - "
+                  "nothing released" % (holder or "nobody"))
+            return 0
+    else:
+        _, w2 = load()
+        holder = w2.bridge_holder
     _driver_release(seat)
     ev = {"seat": seat, "event": "bridge", "state": "released"}
     crossed = bool(holder and holder != seat)
@@ -2530,6 +2579,15 @@ def _bridge_take(args, seat, w, holder, purpose):
                    model.shared_bridge_path()))
         if alive and args.force:
             ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
+    lk = _bridge_lock()                    # re-check + append atomic against `release --mine` (review M5)
+    lk.__enter__()
+    try:
+        return _bridge_take_locked(args, seat, w, holder, why, ev)
+    finally:
+        lk.__exit__(None, None, None)
+
+
+def _bridge_take_locked(args, seat, w, holder, why, ev):
     if not args.force:
         _, w2 = load()
         fresh_holder = w2.bridge_holder
@@ -2673,12 +2731,24 @@ def cmd_bridge(args, seat):
         # another window, so a hold that is not ours is left alone and nothing is written.
         if args.action != "release":
             die("--mine is a `bridge release` flag (got `bridge %s --mine`)" % args.action)
-        _, w2 = load()                       # re-derive right before deciding, as _bridge_release does
-        now = (w2.bridge_hosts.get(hk) or {}).get("holder") if hk != model.DEFAULT_BRIDGE_HOST else w2.bridge_holder
+        now, _ = _bridge_hold(hk)            # fast path: not ours -> nothing to lock for
         if now != seat:
             print("bridge release --mine: %s does not hold the %s bridge (holder: %s) - nothing released"
                   % (seat, hk, now or "nobody"))
             return 0
+        # 🔴 CHECK + RELEASE ATOMICALLY (review M5, TOCTOU): a take landing between the check above and the release
+        # used to be released out from under its seat. Under the bridge lock (which every take's re-check + append
+        # also holds) the hold is RE-READ, and released only while it is still THIS seat's take (same holder, same
+        # take event) that the check saw.
+        with _bridge_lock():
+            now2, tok2 = _bridge_hold(hk)
+            if now2 != seat:
+                print("bridge release --mine: the %s bridge changed hands before the release (holder now: %s) - "
+                      "nothing released" % (hk, now2 or "nobody"))
+                return 0
+            if hk != model.DEFAULT_BRIDGE_HOST:
+                return _bridge_other_host(args, seat, w, hk)
+            return _bridge_release(seat, w, holder, expect_token=tok2)
     if hk != model.DEFAULT_BRIDGE_HOST:
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":

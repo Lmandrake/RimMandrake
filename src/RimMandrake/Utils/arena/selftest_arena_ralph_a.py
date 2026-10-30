@@ -34,6 +34,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 import types
 from pathlib import Path
 
@@ -77,11 +78,14 @@ WEAK = "def absdiff(a, b):\n    return a - b\n"           # passes the gate's ch
 BROKEN = "def absdiff(a, b):\n    return 0\n"           # fails the gate's check
 
 
+TBASE = [None]      # the testers' temp base: a sibling of the World dirs, never their ancestor (main sets it)
+
+
 class World:
     """A temp arm clone + control dir + fakes. `builder(prompt) -> (source or None, rc)`, `tester(prompt, cwd)`."""
 
     def __init__(self, tmp, name, mod=R, builder=None, tester=None, writer=None, task=TASK, lane=None,
-                 runway=None, precheck=None, new_id=None, tester_workdir=None):
+                 runway=None, precheck=None, new_id=None, tester_workdir=None, **kw):
         self.d = tmp / name
         self.root, self.ctl = self.d / "arm", self.d / "ctl"
         self.root.mkdir(parents=True)
@@ -104,10 +108,11 @@ class World:
                              lane=lane, runway=runway or (lambda: {"state": "MEASURED", "runway": 0.9}),
                              precheck=precheck or (lambda log: True), release=lambda: None,
                              publish_cmd="%s %s %s" % (sys.executable, pub, self.publog), new_id=new_id,
-                             tester_workdir=tester_workdir)
+                             tester_workdir=tester_workdir, **dict(dict(sync=None, tester_tmp=TBASE[0]), **kw))
 
-    def model(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log):
+    def model(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
         self.calls.append((role, agent_id, str(cwd)))
+        self.sandbox = sandbox
         self.prompts.append((role, prompt))
         if role == "build":
             src, rc = self.builder(prompt)
@@ -255,7 +260,7 @@ def sc_loop_killed(tmp, mod, tag):
     # restart: a new Loop over the same control dir and the same event log
     w.loop = mod.Loop(w.root, w.ctl, [TASK], model=w.model, gate=w.gate, writer=w.writer, release=lambda: None,
                       runway=lambda: {"state": "MEASURED", "runway": 0.9}, precheck=lambda log: True,
-                      publish_cmd=w.loop.publish_cmd)
+                      publish_cmd=w.loop.publish_cmd, sync=None, tester_tmp=TBASE[0])
     try:
         w.loop.build_pass(TASK)                  # asked directly for a build pass: refused by the hard check
         return False
@@ -321,6 +326,7 @@ def sc_blind(tmp, mod, tag):
     p = seen.get("prompt", "")
     root = str(w.root.resolve())
     return (bool(p) and "BUILDER-TRANSCRIPT" not in p and "LAST FAILURE" not in p and "## TASK" not in p
+            and "ralph" not in p.lower() and R.ARM not in p                       # L3: the prompt never names the arm
             and (R.ARM_DIR / "PROMPT.md").read_text()[:60] not in p and "## DIFF" in p and "## FROZEN SPEC" in p
             and "## TEST PLAN" in p and "+    return abs(a - b)" in p and not seen["git"]
             and not str(Path(seen["cwd"]).resolve()).startswith(root) and seen["files"] == ["README", "mod.py"])
@@ -333,6 +339,293 @@ def sc_same_id(tmp, mod, tag):
         return False
     except R.Refused as e:
         return "equals the builder" in str(e) and [c[0] for c in w.calls] == ["build"]
+
+
+def sc_recover(tmp, mod, tag):
+    """M1: killed after build_end was logged, before state.json was saved -> the restart runs the tester (from the
+    log), never wedges; _recover is idempotent."""
+    class Killed(BaseException):
+        pass
+    w = World(tmp, "M1" + tag, mod)
+    real = w.loop._save
+
+    def boom():
+        if w.loop.state.get("pending"):
+            raise Killed()
+        real()
+    w.loop._save = boom
+    try:
+        w.loop.step()
+        return False
+    except Killed:
+        pass
+    if (w.ctl / "state.json").exists():
+        return False
+    w.loop = mod.Loop(w.root, w.ctl, [TASK], model=w.model, gate=w.gate, writer=w.writer, release=lambda: None,
+                      runway=lambda: {"state": "MEASURED", "runway": 0.9}, precheck=lambda log: True,
+                      publish_cmd=w.loop.publish_cmd, sync=None, tester_tmp=TBASE[0])
+    n = len(w.calls)
+    out = w.loop.step()
+    again = w.loop._recover(TASK)                # the build is tested and on main now: nothing to recover
+    return (out.startswith("published") and [c[0] for c in w.calls[n:]] == ["test"] and len(w.pubs()) == 1
+            and again is None)
+
+
+def _arena_env(tmp, tag):
+    root = tmp / ("arena" + tag)
+    os.environ["ARENA_ROOT"] = str(root)
+    os.environ["ARENA_CLONES"] = str(root / "clones")
+    os.environ["ARENA_EVENT_TOKEN_FILE"] = str(tmp / ("secret" + tag) / "event_token")
+    os.environ["ARENA_ANCHOR_FILE"] = str(tmp / ("secret" + tag) / "anchors.jsonl")
+    os.environ["ARENA_WITNESS"] = str(tmp / ("secret" + tag) / "witness.jsonl")
+    p = A.paths()
+    L.init_token(p)
+    return p
+
+
+def sc_anchor(tmp, mod, tag):
+    """M6: the signed log truncated below its anchor (state.json lost too) refuses before any pass; so does a log
+    deleted outright."""
+    ok = True
+    for how in ("truncate", "delete"):
+        p = _arena_env(tmp, "M6" + how + tag)
+        sw = mod.SignedWriter(p)
+        w = World(tmp, "M6" + how + tag, mod, writer=sw)
+        if not run_steps(w)[-1].startswith("published"):
+            return False
+        logf = p["events"] / ("%s.jsonl" % R.ARM)
+        lines = logf.read_text().splitlines(keepends=True)
+        if how == "truncate":
+            logf.write_text("".join(lines[:1]))
+        else:
+            logf.unlink()
+        (w.ctl / "state.json").unlink()
+        w2 = World(tmp, "M6b" + how + tag, mod, writer=mod.SignedWriter(p), task=dict(TASK, id="RA_NEXT"))
+        try:
+            w2.loop.step()
+            ok = False
+        except mod.Refused as e:
+            ok = ok and "anchor" in str(e) and w2.calls == []
+    return ok
+
+
+def _orphan_cleanup(pgid):
+    try:
+        os.killpg(pgid, 9)
+    except (ProcessLookupError, PermissionError):
+        pass
+
+
+def sc_orphan(tmp, mod, tag):
+    """M2: a loop SIGKILLed mid-pass leaves its model group running; the next Loop.run kills that group (pidfile)
+    before any step."""
+    w = World(tmp, "M2" + tag, mod)
+    log = w.d / "orphan.out"
+    child = ("import sys; sys.path.insert(0, %r); import ralph_a_loop as R\n"
+             "m = R.CmdModel(%r); m.pidfile = sys.argv[1]\n"
+             "m('build', 'x', cwd=sys.argv[2], agent_id='a', run_id=0, timeout_s=300, log=sys.argv[3])\n"
+             % (str(HERE), "%s -c \"import time; time.sleep(300)\"" % sys.executable))
+    pr = subprocess.Popen([sys.executable, "-c", child, str(w.loop.pidfile), str(w.d), str(log)], cwd=str(w.d))
+    t0 = time.time()
+    while not w.loop.pidfile.exists() and time.time() - t0 < 30:
+        time.sleep(0.1)
+    try:
+        pgid = json.loads(w.loop.pidfile.read_text())["pgid"]
+    except (OSError, ValueError):
+        pr.kill()
+        return False
+    pr.kill()                                    # the loop dies; its model's session lives on
+    pr.wait()
+    try:
+        if not R.group_alive(pgid):
+            return False
+        (w.ctl / "STOP").touch()
+        out = w.loop.run(1)
+        t0 = time.time()
+        while R.group_alive(pgid) and time.time() - t0 < 3:
+            time.sleep(0.1)
+        return out == ["STOP"] and not R.group_alive(pgid) and not w.loop.pidfile.exists()
+    finally:
+        _orphan_cleanup(pgid)
+
+
+def sc_busy_clone(tmp, mod, tag):
+    """M2: a process with its cwd in the clone -> the build pass refuses, no model runs."""
+    w = World(tmp, "M2b" + tag, mod)
+    pr = subprocess.Popen([sys.executable, "-c", "import time; time.sleep(60)"], cwd=str(w.root))
+    try:
+        time.sleep(0.3)
+        try:
+            w.loop.step()
+            return False
+        except mod.Refused as e:
+            return "cwd in the clone" in str(e) and w.calls == [] and pr.pid in R.procs_in(w.root)
+    finally:
+        pr.kill()
+        pr.wait()
+
+
+def sc_blind_root(tmp, mod, tag):
+    """M3: no ancestor of the tester's cwd is (or is inside) the control dir, the clone or the World dir, and the
+    tester root is gone after the pass."""
+    seen = {}
+
+    def t(prompt, cwd):
+        seen["cwd"] = Path(cwd).resolve()
+        anc = [seen["cwd"]] + list(seen["cwd"].parents)
+        seen["leak"] = [str(a) for a in anc for b in (w.ctl, w.root, w.d)
+                        if a == b.resolve() or a.is_relative_to(b.resolve())]
+        seen["up"] = sorted(os.listdir(seen["cwd"].parent))
+        return default_tester(prompt, cwd)
+    w = World(tmp, "M3" + tag, mod, tester=t)
+    out = run_steps(w)
+    return (out[-1].startswith("published") and seen.get("leak") == [] and "last_failure.md" not in seen["up"]
+            and "log" not in seen["up"] and not seen["cwd"].exists() and w.sandbox
+            and str(w.ctl) in map(str, w.sandbox["hide"]) and str(w.root) in map(str, w.sandbox["hide"]))
+
+
+SANDBOX_PROBE = (
+    "import os, sys, json\n"
+    "res = {}\n"
+    "for name, p in [('abs_note', sys.argv[1]), ('abs_clone', sys.argv[2]), ('up_note', '../ctl/last_failure.md'),"
+    " ('upup', '../../ctl/last_failure.md')]:\n"
+    "    try:\n"
+    "        res[name] = open(p).read()\n"
+    "    except OSError as e:\n"
+    "        res[name] = 'ERR'\n"
+    "res['write_own'] = open('mine.txt', 'w').write('x')\n"
+    "print(json.dumps(res))\n")
+
+
+def sc_bwrap(tmp, mod, tag):
+    """M3: the tester model under bubblewrap cannot read the builder's notes or the clone by ABSOLUTE path, nor by
+    ../ (needs /usr/bin/bwrap: none -> red, fail closed)."""
+    if not (shutil.which("bwrap") or os.path.exists("/usr/bin/bwrap")):
+        print("     (no bwrap on this machine: the M3 sandbox cannot be shown)")
+        return False
+    d = tmp / ("M3b" + tag)
+    ctl, clone = d / "ctl", d / "arm"
+    ctl.mkdir(parents=True)
+    clone.mkdir()
+    (ctl / "last_failure.md").write_text("BUILDER-NOTE")
+    (clone / "secret.py").write_text("BUILDER-CLONE")
+    troot = Path(tempfile.mkdtemp(prefix="rt-"))
+    try:
+        work = troot / "tree"
+        work.mkdir()
+        probe = troot / "probe.py"
+        probe.write_text(SANDBOX_PROBE)
+        m = mod.CmdModel("%s %s %s %s" % (sys.executable, probe, ctl / "last_failure.md", clone / "secret.py"))
+        r = m("test", "P", cwd=work, agent_id="x-test-1", run_id=0, timeout_s=60, log=troot / "out.txt",
+              sandbox={"root": troot, "hide": [ctl, clone]})
+        res = json.loads(r["text"].strip().splitlines()[-1])
+        return (r["rc"] == 0 and res["abs_note"] == "ERR" and res["abs_clone"] == "ERR" and res["up_note"] == "ERR"
+                and res["upup"] == "ERR" and (work / "mine.txt").exists())
+    except (ValueError, IndexError, KeyError) as e:
+        print("     (sandbox probe output unreadable: %s)" % e)
+        return False
+    finally:
+        shutil.rmtree(troot, ignore_errors=True)
+
+
+def sc_env(tmp, mod, tag):
+    """M4: the tester's env is an allow-list with a NEUTRAL id: no RM_ARM / RALPH_A_* / ARENA_*, no arm name in any
+    value, a fresh HOME."""
+    saved = {k: os.environ.get(k) for k in ("RM_ARM", "RALPH_A_TASKS", "RALPH_A_ROOT", "ARENA_X", "SECRET_X")}
+    os.environ.update(RM_ARM="ralph_a", RALPH_A_TASKS="/x/tasks", RALPH_A_ROOT="/x/clone", ARENA_X="1",
+                      SECRET_X="ralph_a")
+    troot = Path(tempfile.mkdtemp(prefix="rt-"))
+    try:
+        m = mod.CmdModel("%s -c \"import os, json, sys; sys.stdin.read(); print(json.dumps(dict(os.environ)))\""
+                         % sys.executable)
+        r = m("test", "P", cwd=troot, agent_id="ralph_a-test-abc", run_id=0, timeout_s=30, log=troot / "o.txt",
+              sandbox=None)
+        env = json.loads(r["text"].strip().splitlines()[-1])
+        env.pop("PWD", None)
+        bad = [k for k in env if k.startswith(("RALPH_A", "ARENA_", "RM_ARM")) or "ralph_a" in env[k].lower()]
+        return (r["rc"] == 0 and not bad and env.get("TESTER_ID") == R.neutral_id("ralph_a-test-abc")
+                and env.get("HOME") == str(troot / "home") and "SECRET_X" not in env)
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(troot, ignore_errors=True)
+
+
+def sc_homoglyph(tmp, mod, tag):
+    """L1: a tester id that is the builder's with a Cyrillic look-alike or a combining accent is the SAME agent."""
+    ok = True
+    for i, fake in enumerate(("r\u0430lph_a-build-x", "ralph_a-bui\u0301ld-x", "RALPH_A-BUILD-\u0445")):
+        lw = R.ListWriter()
+        lw.emit(R.ARM, "build_end", lane="build", run_id="x", task="T", sha="c" * 40,
+                detail={"builder": "ralph_a-build-x", "build_id": "T.c"})
+        lw.emit(R.ARM, "test_start", lane="build", run_id="x", task="T", sha="c" * 40,
+                detail={"tester": fake, "build_id": "T.c"})
+        try:
+            mod.require_tested(lw.records())
+            ok = False
+        except mod.NotTested:
+            pass
+    return ok and mod.agent_key("ralph_a-test-1") != mod.agent_key("ralph_a-build-1")
+
+
+def sc_dup_build_end(tmp, mod, tag):
+    """L2: a duplicated build_end then one test_start of that build does not wedge the (in-memory) log."""
+    lw = R.ListWriter()
+    for _ in range(2):
+        lw.emit(R.ARM, "build_end", lane="build", run_id="x", task="T", sha="d" * 40,
+                detail={"builder": "b1", "build_id": "T.d"})
+    lw.emit(R.ARM, "test_start", lane="build", run_id="x", task="T", sha="d" * 40,
+            detail={"tester": "t1", "build_id": "T.d"})
+    mod.require_tested(lw.records())
+    return True
+
+
+def sc_runway_tester(tmp, mod, tag):
+    """L4: runway good at the build, gone by the tester -> the tester pass does not start."""
+    seq = iter([{"state": "MEASURED", "runway": 0.9}] + [{"state": "MEASURED", "runway": 0.01}] * 5)
+    w = World(tmp, "L4" + tag, mod, runway=lambda: next(seq))
+    out = w.loop.step()
+    return out.startswith("runway") and w.roles() == ["build"] and w.loop.state.get("pending")
+
+
+def sc_runway_neg(tmp, mod, tag):
+    """L5: a negative / NaN threshold refuses instead of waving runway 0.0 through."""
+    ok = True
+    for v in ("-1", "nan", "-inf"):
+        os.environ["RALPH_A_RUNWAY_MIN"] = v
+        try:
+            w = World(tmp, "L5%s%s" % (v.strip("-"), tag), mod, runway=lambda: {"state": "MEASURED", "runway": 0.0})
+            ok = ok and w.loop.step().startswith("runway") and w.calls == []
+        finally:
+            os.environ.pop("RALPH_A_RUNWAY_MIN", None)
+    return ok
+
+
+def sc_sync(tmp, mod, tag):
+    """L6: the build pass pulls main first (3 tries, 30/60 s apart); a pull that keeps failing stops the step before
+    any model runs; a working origin is pulled."""
+    slept = []
+    w = World(tmp, "L6" + tag, mod, sync="default", sleep=slept.append)     # no upstream: every pull fails
+    out = w.loop.step()
+    failed = out.startswith("sync failed") and slept == [30, 60] and w.calls == []
+    origin = tmp / ("L6o" + tag + ".git")
+    sh(tmp, "git", "clone", "-q", "--bare", str(w.root), str(origin))
+    clone = tmp / ("L6c" + tag)
+    sh(tmp, "git", "clone", "-q", "-b", "main", str(origin), str(clone))
+    sh(clone, "git", "config", "user.email", "t@t")
+    sh(clone, "git", "config", "user.name", "t")
+    (clone / "NEW").write_text("x\n")
+    sh(clone, "git", "add", "NEW")
+    sh(clone, "git", "commit", "-q", "-m", "new")
+    sh(clone, "git", "push", "-q", "origin", "main")
+    sh(w.root, "git", "remote", "add", "origin", str(origin))
+    sh(w.root, "git", "fetch", "-q", "origin")
+    sh(w.root, "git", "branch", "-q", "--set-upstream-to=origin/main", "main")
+    pulled = mod.default_sync(w.root, slept.append) and (w.root / "NEW").exists()
+    return failed and pulled
 
 
 MUTATIONS = [
@@ -351,12 +644,34 @@ MUTATIONS = [
      "        require_tested(self.writer.records())                     # HARD CHECK",
      "        pass                                                      # HARD CHECK"),
     ("E lane wait removed", sc_lane_wait, "        if self.state.get(\"lane_wait\"):\n", "        if False:\n"),
-    ("F runway check removed", sc_runway, "        if why:\n            return self.status(\"runway: \" + why)",
-     "        if False:\n            return self.status(\"runway: \" + why)"),
-    ("I tester cwd = the clone", sc_blind, "        work = self.tester_workdir(pend[\"head\"], bundle / \"tree\")",
+    ("F runway check removed", sc_runway,
+     "        if why:\n            return self.status(\"runway: \" + why)\n        self._recover(task)",
+     "        if False:\n            return self.status(\"runway: \" + why)\n        self._recover(task)"),
+    ("I tester cwd = the clone", sc_blind, "        work = self.tester_workdir(pend[\"head\"], troot / \"tree\")",
      "        work = self.root"),
-    ("S tester id check removed", sc_same_id, "            if L.norm_id(tester) == L.norm_id(pend[\"builder\"]):",
+    ("S tester id check removed", sc_same_id, "            if agent_key(tester) == agent_key(pend[\"builder\"]) or not agent_key(tester):",
      "            if False:"),
+    ("M1 recovery from the log removed", sc_recover, "        self._recover(task)\n", "        pass\n"),
+    ("M6 anchor check removed", sc_anchor, "        if rep.get(\"refused\"):\n", "        if False:\n"),
+    ("M2 stale pass not reaped", sc_orphan, "            reap_stale_pass(self.pidfile)", "            pass"),
+    ("M2 busy-clone check removed", sc_busy_clone, "        busy = self.procs(self.root) if self.procs else []",
+     "        busy = []"),
+    ("M3 tester root under ctl", sc_blind_root, "        troot = self._tester_root()\n",
+     "        troot = self.ctl / \"tester\"; troot.mkdir(exist_ok=True)\n"),
+    ("M3 no sandbox", sc_bwrap, "                argv = bwrap_argv(sandbox, cwd) + argv\n", "                pass\n"),
+    ("M4 real id passed", sc_env, "TESTER_ID=neutral_id(agent_id))", "TESTER_ID=agent_id)"),
+    ("M4 env not allow-listed", sc_env,
+     "           if (k in keep or k.startswith(\"LC_\")) and not k.startswith((\"RALPH_A\", \"ARENA_\", \"RM_ARM\"))}",
+     "           if True}"),
+    ("L1 norm_id only", sc_homoglyph, "                r = dict(r, detail=dict(d, **{k: agent_key(d[k])}))",
+     "                pass"),
+    ("L2 duplicate build_end kept", sc_dup_build_end, "                if key in seen:\n", "                if False:\n"),
+    ("L4 tester runway unchecked", sc_runway_tester,
+     "        why = self.runway_refusal()                               # re-checked here too",
+     "        why = None                               # re-checked here too"),
+    ("L5 negative threshold accepted", sc_runway_neg,
+     "    return v if math.isfinite(v) and v >= 0 else float(\"inf\")", "    return v"),
+    ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
 ]
 
 
@@ -410,9 +725,36 @@ def t_cmdmodel_kill(tmp):
           "CmdModel kills a pass at its timeout (process group SIGKILL, rc -9)")
     m = R.CmdModel("%s -c \"import os,sys; d=sys.stdin.read(); print(os.environ['RALPH_A_ROLE'], "
                    "os.environ['RM_ARM'], 'ARENA_EVENT_TOKEN_FILE' in os.environ, d)\"" % sys.executable)
+    os.environ["ARENA_EVENT_TOKEN_FILE"] = "/nonexistent/token"
+    r = m("build", "PROMPTBODY", cwd=tmp, agent_id="a", run_id=0, timeout_s=30, log=log)
+    check(r["rc"] == 0 and r["text"].split() == ["build", "ralph_a", "False", "PROMPTBODY"],
+          "CmdModel: prompt on stdin, builder role + RM_ARM set, arena token path not passed to the agent")
+    m = R.CmdModel("%s -c \"import os,sys; d=sys.stdin.read(); print(os.environ.get('RALPH_A_ROLE'), "
+                   "os.environ.get('RM_ARM'), os.environ['TESTER_ID'][:7], d)\"" % sys.executable)
     r = m("test", "PROMPTBODY", cwd=tmp, agent_id="a", run_id=0, timeout_s=30, log=log)
-    check(r["rc"] == 0 and r["text"].split() == ["test", "ralph_a", "False", "PROMPTBODY"],
-          "CmdModel: prompt on stdin, role + RM_ARM set, arena token path not passed to the agent")
+    check(r["rc"] == 0 and r["text"].split() == ["None", "None", "tester-", "PROMPTBODY"],
+          "CmdModel tester role: prompt on stdin, no role/arm variables, a neutral TESTER_ID")
+    pf = tmp / "pass.pid"
+    # an orphan: not our child (its parent exits), so a killed one is reaped by init, as after a SIGKILLed loop
+    gpid = int(subprocess.run([sys.executable, "-c", "import subprocess, sys; print(subprocess.Popen([sys.executable, "
+                               "'-c', 'import time; time.sleep(60)'], start_new_session=True, stdout=subprocess.DEVNULL, "
+                               "stderr=subprocess.DEVNULL).pid)"],
+                              capture_output=True, text=True, timeout=30).stdout.strip())
+    try:
+        time.sleep(0.2)
+        pf.write_text(json.dumps({"pgid": gpid, "start": "1"}))           # the pid now names another process
+        check(R.reap_stale_pass(pf) is None and R.group_alive(gpid) and not pf.exists(),
+              "M2 a pidfile whose pid was reused (start time differs) is dropped; that process is not killed")
+        pf.write_text(json.dumps({"pgid": gpid, "start": R.proc_start(gpid)}))
+        try:
+            R.reap_stale_pass(pf, kill=lambda g, s: None, wait_s=0.2)
+            check(False, "M2 an orphan group that will not die refuses the loop start")
+        except R.Refused:
+            check(R.group_alive(gpid), "M2 an orphan group that will not die refuses the loop start")
+        check(R.reap_stale_pass(pf) == gpid and not R.group_alive(gpid) and not pf.exists(),
+              "M2 reap_stale_pass kills the orphan's process group and drops the pidfile")
+    finally:
+        _orphan_cleanup(gpid)
     try:
         R.CmdModel("")
         check(False, "no model command refuses")
@@ -446,18 +788,86 @@ def t_signed_writer(tmp):
           "signed HarnessWriter log: every build_end tested by a different agent before the next build: %s" % ev)
 
 
-def t_quick():
-    sys.path.insert(0, str(HERE.parent))
-    import run_selftests as RS
-    tests = [Path("a/selftest_fast.py"), Path("a/selftest_slow.py"), Path("a/selftest_new.py")]
-    prior = {"a/selftest_fast.py": 2.0, "a/selftest_slow.py": 99.0}
-    kept, dropped = RS.quick_select(tests, prior, 20.0, rel=lambda t: str(t))
-    check([str(t) for t in kept] == ["a/selftest_fast.py", "a/selftest_new.py"]
-          and [str(t) for t in dropped] == ["a/selftest_slow.py"],
-          "run_selftests --quick drops only tests whose last timing exceeds the limit (untimed kept)")
-    r = subprocess.run([sys.executable, str(HERE.parent / "run_selftests.py"), "--quick", "--only", "x.py"],
-                       capture_output=True, text=True, timeout=120)
-    check(r.returncode != 0, "--quick with --only is refused")
+QUICK_FIX = {
+    "src/a/selftest_slow_ok.py": "import time; time.sleep(1.5); print('ok')\n",
+    "src/b/selftest_slow_chg.py": "import time; time.sleep(1.5); print('ok')\n",
+    "src/c/selftest_slow_red.py": "import time, sys; time.sleep(1.5); sys.exit(1)\n",
+    "src/d/selftest_fast.py": "print('fast')\n",
+}
+
+
+def _quick_run(root, *args):
+    env = {k: v for k, v in os.environ.items() if not k.startswith("RM_SELFTEST_") and k != "PYTHONPATH"}
+    env.update(RM_SELFTEST_REPO_ROOT=str(root), RM_SELFTEST_STATE_DIR=str(root / ".state"),
+               RM_SELFTEST_LOCK=str(root / ".lock"), RM_SELFTEST_NO_HARNESS="1", RM_SELFTEST_QUICK_S="1.0",
+               SELFTEST_TIMINGS_FILE=str(root / ".state" / "timings.json"))
+    r = subprocess.run([sys.executable, str(HERE.parent / "run_selftests.py"), *args], cwd=str(root), env=env,
+                       capture_output=True, text=True, timeout=300)
+    return r.returncode, r.stdout + r.stderr
+
+
+def _rs_variant(old=None, new=None):
+    src = (HERE.parent / "run_selftests.py").read_text()
+    if old is not None:
+        assert src.count(old) == 1, "run_selftests mutation anchor: %r" % old
+        src = src.replace(old, new)
+    m = types.ModuleType("run_selftests_mut")
+    m.__file__ = str(HERE.parent / "run_selftests.py")
+    sys.modules["run_selftests_mut"] = m
+    exec(compile(src, m.__file__, "exec"), m.__dict__)
+    return m
+
+
+def _quick_unit(RS):
+    """quick_select over a fake state: only the unchanged slow PASS is skipped."""
+    tests = [Path(x) for x in ("ok.py", "chg.py", "red.py", "fast.py", "new.py")]
+    st = {"ok.py": {"state": "PASS", "secs": 50, "hash": "h"}, "chg.py": {"state": "PASS", "secs": 50, "hash": "old"},
+          "red.py": {"state": "FAIL", "secs": 50, "hash": "h"}, "fast.py": {"state": "PASS", "secs": 1, "hash": "h"}}
+    kept, skipped = RS.quick_select(tests, st, 20.0, rel=str, hash_of=lambda t: "h")
+    return ([str(t) for t in kept] == ["chg.py", "red.py", "fast.py", "new.py"]
+            and [str(t) for t, _ in skipped] == ["ok.py"] and skipped[0][1].startswith(RS.QUICK_TAG))
+
+
+def t_quick(tmp):
+    """H1: --quick skips ONLY a slow test that last PASSED with an unchanged source/dependency hash; every skip is
+    printed SKIPPED(quick), counted, and named on the RESULT line; a changed-now-red or last-red slow test runs."""
+    RS = _rs_variant()
+    check(_quick_unit(RS), "H1 quick_select skips only the unchanged slow last-PASS test")
+    for name, old, new in (
+            ("hash ignored", "        if h is None or h != e[\"hash\"]:\n", "        if False:\n"),
+            ("last state ignored", "        if not (slow and e.get(\"state\") == \"PASS\" and isinstance(e.get(\"hash\"), str)):",
+             "        if not (slow and isinstance(e.get(\"hash\"), str)):")):
+        check(not _quick_unit(_rs_variant(old, new)), "H1 mutation goes RED: quick_select %s" % name)
+    root = tmp / "quickfix"
+    for rel, body in QUICK_FIX.items():
+        (root / rel).parent.mkdir(parents=True, exist_ok=True)
+        (root / rel).write_text(body)
+    (root / ".state").mkdir()
+    rc1, o1 = _quick_run(root, "--quick")
+    (root / "src/b/selftest_slow_chg.py").write_text("import time, sys; time.sleep(1.5); sys.exit(1)\n")
+    rc2, o2 = _quick_run(root, "--quick")
+    (Path(tmp) / "quick2.out").write_text(o2)
+    ran2 = [ln.split()[0] for ln in o2.splitlines() if "selftest_slow_chg.py" in ln or "selftest_slow_red.py" in ln]
+    check(rc2 != 0 and "RESULT: RED" in o2 and "QUICK: 1 skipped" in o2 and "SKIPPED(quick)" in o2
+          and any("SKIPPED(quick)" in ln and "selftest_slow_ok.py" in ln for ln in o2.splitlines())
+          and ran2.count("FAIL") >= 2,
+          "H1 --quick: the changed-now-red and the last-red slow tests RUN and fail the run; the unchanged slow PASS "
+          "is SKIPPED(quick) and counted (rc1 %s, rc2 %s): %s" % (rc1, rc2, o2.strip()[-600:]))
+    green, note = R.precheck_verdict(rc2, o2)
+    check(not green, "H1 the loop's pre-check reads that quick run as red: %s" % note)
+    for rel in ("src/b/selftest_slow_chg.py", "src/c/selftest_slow_red.py"):
+        (root / rel).write_text("import time; time.sleep(1.5); print('ok')\n")
+    rc3, o3 = _quick_run(root, "--quick")
+    green, note = R.precheck_verdict(rc3, o3)
+    check(rc3 == 0 and green and "pre-check only" in note and "QUICK: 1 skipped" in note,
+          "H1 a quick green is logged as a pre-check only, with its skip count: %r rc %s %s" % (note, rc3,
+                                                                                               o3.strip()[-300:]))
+    check(R.precheck_verdict(0, "no result line")[0] is False and R.precheck_verdict(0, "RESULT: RED (x)")[0] is False
+          and R.precheck_verdict(1, "RESULT: GREEN (x)")[0] is False
+          and R.precheck_verdict(0, "RESULT: GREEN (x)") == (True, "pre-check green"),
+          "H1 precheck_verdict: green needs rc 0 AND a RESULT: GREEN line")
+    rc4, o4 = _quick_run(root, "--quick", "--only", "src/d/selftest_fast.py")
+    check(rc4 != 0, "--quick with --only is refused")
 
 
 def t_bridge_mine(tmp):
@@ -481,10 +891,56 @@ def t_bridge_mine(tmp):
           "bridge release --mine by the holder releases it: %r / who %r" % (r.stdout.strip(), who.strip()))
     r = rf("FOUNDRY", "bridge", "take", "--mine", "--for", "x")
     check(r.returncode != 0, "--mine on another bridge verb is refused")
+    # M5: a take that lands between --mine's check and its release must survive. The test holds the bridge lock,
+    # `release --mine` passes its fast check and blocks on the lock, BENCH's take is appended, the lock is dropped.
+    base["RIMFLOW_BRIDGE_LOCK"] = str(tmp / "rf" / "bridge.lock")
+    src = HERE.parents[1] / "rimflow"
+    mut = tmp / "rf_mut" / "rimflow"
+    shutil.copytree(src, mut, ignore=shutil.ignore_patterns("__pycache__"))
+    mc = mut / "cli.py"
+    s = mc.read_text()
+    anchor = "            now2, tok2 = _bridge_hold(hk)\n"
+    check(s.count(anchor) == 1, "M5 mutation anchor present once in cli.py")
+    mc.write_text(s.replace(anchor, "            now2, tok2 = now, None\n"))
+    for label, clip, want_safe in (("real", cli, True), ("mutant (no re-check inside the lock)", mc, False)):
+        led = tmp / ("rf_race_%s" % want_safe)
+        os.makedirs(led / "items")
+        env = dict(base, RIMFLOW_LEDGER=str(led / "events.jsonl"), RIMFLOW_ITEMS=str(led / "items"),
+                   RIMFLOW_SHARED_BRIDGE=str(led / "shared.json"),
+                   PYTHONPATH=os.pathsep.join([str(HERE.parent)] + [x for x in [base.get("PYTHONPATH")] if x]))
+        evp = led / "events" / "FOUNDRY.jsonl"
+        subprocess.run([sys.executable, str(clip), "bridge", "take", "--for", "race"],
+                       env=dict(env, RIMFLOW_SEAT="FOUNDRY"), capture_output=True, text=True, timeout=120)
+        import fcntl
+        fd = os.open(base["RIMFLOW_BRIDGE_LOCK"], os.O_RDWR | os.O_CREAT, 0o644)
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            p = subprocess.Popen([sys.executable, str(clip), "bridge", "release", "--mine"],
+                                 env=dict(env, RIMFLOW_SEAT="FOUNDRY"), stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT, text=True)
+            time.sleep(3.0)                     # let it pass the fast check and block on the lock
+            evs = [json.loads(x) for x in evp.read_text().splitlines() if x.strip()]
+            take = dict(evs[-1], seat="BENCH", ts=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                        purpose="interleaved")
+            take.pop("tsn", None)
+            with open(led / "events" / "BENCH.jsonl", "a") as f:
+                f.write(json.dumps(take) + "\n")
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+            os.close(fd)
+        out = p.communicate(timeout=120)[0]
+        who = subprocess.run([sys.executable, str(cli), "bridge", "who"], env=dict(env, RIMFLOW_SEAT="BENCH"),
+                             capture_output=True, text=True, timeout=120).stdout
+        crossed = any("out from under" in str(json.loads(x).get("override", ""))
+                      for x in evp.read_text().splitlines() if x.strip())
+        safe = "BENCH" in who and not crossed and "nothing released" in out
+        check(safe == want_safe, "M5 interleaved take (%s): BENCH still holds=%s, no override=%s; out %r who %r"
+              % (label, "BENCH" in who, not crossed, out.strip()[-160:], who.strip()[-160:]))
 
 
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_"))
+    TBASE[0] = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_rt_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
                                              "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM")}
     os.environ.pop("RM_ARM", None)
@@ -497,11 +953,23 @@ def main():
                          ("E live task waits on the lane", sc_lane_wait),
                          ("F runway low/UNMEASURED refuses", sc_runway),
                          ("I tester is blind", sc_blind),
-                         ("S tester id never the builder's", sc_same_id)):
+                         ("S tester id never the builder's", sc_same_id),
+                         ("M1 killed after build_end: the restart tests that build (from the log)", sc_recover),
+                         ("M6 signed log shorter than its anchor / deleted: refused before any pass", sc_anchor),
+                         ("M2 an orphaned model group of a killed loop is killed on loop start", sc_orphan),
+                         ("M2 a process working in the clone blocks the build pass", sc_busy_clone),
+                         ("M3 tester root: no ancestor holds builder material", sc_blind_root),
+                         ("M3 tester under bwrap cannot read builder paths", sc_bwrap),
+                         ("M4 tester env allow-listed, neutral id", sc_env),
+                         ("L1 homoglyph / accent builder id is the same agent", sc_homoglyph),
+                         ("L2 duplicate build_end does not wedge", sc_dup_build_end),
+                         ("L4 runway re-checked before the tester", sc_runway_tester),
+                         ("L5 negative runway threshold refuses", sc_runway_neg),
+                         ("L6 pull main first, 3 tries", sc_sync)):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             check(not guarded(fn, tmp, variant(old, new), "_m%d" % i), "mutation goes RED: " + name)
-        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, ()),
+        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)),
                       (t_bridge_mine, (tmp,)), (t_signed_writer, (tmp,))):
             try:
                 fn(*a)
@@ -514,6 +982,7 @@ def main():
             else:
                 os.environ[k] = v
         shutil.rmtree(tmp, ignore_errors=True)
+        shutil.rmtree(TBASE[0], ignore_errors=True)
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
 

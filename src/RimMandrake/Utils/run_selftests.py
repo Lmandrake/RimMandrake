@@ -22,9 +22,14 @@ Data) and print SKIPPED there. Run `--tier deployed` after a deploy, a game upda
 mod subscribe/unsubscribe — that is when their answer can change. `--tier all` runs both.
 
 QUICK. `--quick` (the ralph_a loop's pre-pass check, ralph_loop_design_2026-10-29.md §1.2) is the default-tier
-run minus every test whose LAST measured run (the timings file) took longer than `$RM_SELFTEST_QUICK_S` seconds
-(default 20). A test with no recorded timing still runs (a new test is never skipped for being unknown). It says
-how many it left out; a green quick run is not a full-suite green. Refused with --only.
+run minus the slow tests that are SAFE to skip: a test is skipped only when ALL of (i) its last run (the quick-state
+file beside the timings, written by every run) was PASS, (ii) the hash of its source and dependencies (the test file,
+every file in its directory, and the repo .py files it imports or names, transitively) is the hash recorded at that
+PASS (hashes are taken only by --quick runs; any other run records none, so only a quick run's PASS can
+license a later skip), and (iii) that run took longer than `$RM_SELFTEST_QUICK_S` seconds (default 20). A changed, never-run,
+unhashable or last-red test always runs. Each skipped test is printed `SKIPPED(quick)` and counted in the SKIPPED
+denominator, and the RESULT line ends `QUICK: N skipped (pre-check only, not a full-suite green)` even when N is 0,
+so a quick green can never be read as a full GREEN. Refused with --only.
 
 LOCK. A full suite (anything but --only) holds an flock on /home/mandrake/rm/.selftest-suite.lock
 shared by every clone on the machine; a second suite waits and prints who holds it.
@@ -601,8 +606,9 @@ def _parser():
                     help="ignore the declared-input PASS cache (selftest_cache.py) and run every test; a PASS still "
                          "refreshes its entry. The nightly full sweep runs with this. --full implies it")
     ap.add_argument("--quick", action="store_true",
-                    help="leave out tests whose last measured run took > $RM_SELFTEST_QUICK_S s (default 20); "
-                         "untimed tests still run. Not with --only")
+                    help="leave out slow tests (last run > $RM_SELFTEST_QUICK_S s, default 20) ONLY when their "
+                         "last run PASSED and their source/dependency hash is unchanged since; each is printed "
+                         "SKIPPED(quick) and RESULT says 'QUICK: N skipped'. Not with --only")
     return ap
 
 
@@ -613,15 +619,134 @@ def quick_s() -> float:
         return 20.0
 
 
-def quick_select(tests, prior: dict, limit: float, rel=None):
-    """--quick: -> (kept, dropped). Dropped = tests whose last recorded timing exceeds `limit`; untimed tests are
-    kept (a new test is never skipped for being unknown)."""
+QUICK_FILE = TIMINGS_FILE.with_name("selftest_quick.json")
+QUICK_TAG = "quick:"                     # a SKIPPED detail starting with this prints as SKIPPED(quick)
+_IMPORT_DIRS = ("src/RimMandrake/Utils", "src/RimMandrake/rimflow", "src/RimMandrake/Utils/arena")
+_PY_PATH_RE = re.compile(r"""["']([\w./-]+\.py)["']""")
+
+
+_DIRECT: dict = {}       # memo: .py file -> the repo .py files it imports or names (one parse per file per run)
+_FHASH: dict = {}        # memo: file -> sha256 of its bytes (one read per file per run)
+
+
+def _direct_deps(f: Path, root: Path) -> set:
+    if f in _DIRECT:
+        return _DIRECT[f]
+    import ast
+    deps = set()
+    try:
+        src = f.read_text(errors="replace")
+        tree = ast.parse(src)
+    except (OSError, SyntaxError, ValueError):
+        _DIRECT[f] = deps
+        return deps
+    names = set()
+    for n in ast.walk(tree):
+        if isinstance(n, ast.Import):
+            names |= {a.name for a in n.names}
+        elif isinstance(n, ast.ImportFrom) and n.module:
+            names.add(n.module)
+            names |= {"%s.%s" % (n.module, a.name) for a in n.names}
+    dirs = [f.parent, f.parent.parent] + [root / d for d in _IMPORT_DIRS]
+    cands = []
+    for nm in names:
+        rel = Path(*nm.split("."))
+        for d in dirs:
+            cands += [d / (str(rel) + ".py"), d / rel / "__init__.py"]
+    for m in _PY_PATH_RE.findall(src):
+        cands += [root / m, f.parent / m]
+    for c in cands:
+        try:
+            c = c.resolve()
+        except OSError:
+            continue
+        if c.suffix == ".py" and c.is_file() and c.is_relative_to(root):
+            deps.add(c)
+    _DIRECT[f] = deps
+    return deps
+
+
+def _dep_files(test: Path, root: Path) -> set:
+    """The files a test's verdict is taken to depend on: the test, every file in its directory, and (transitively)
+    every repo .py module it imports or names as a path string. Conservative, never exact: an input it reads by a
+    computed path is not seen (so --quick is a pre-check, never a full green)."""
+    root = root.resolve()
+    t = test.resolve()
+    out, parsed, todo = {t}, set(), [t]
+    try:
+        out |= {f.resolve() for f in t.parent.iterdir() if f.is_file()}
+    except OSError:
+        pass
+    while todo:
+        f = todo.pop()
+        if f in parsed:
+            continue
+        parsed.add(f)
+        out.add(f)
+        todo += [c for c in _direct_deps(f, root) if c not in parsed]
+    return out
+
+
+def dep_hash(test: Path, root: Path = None) -> str | None:
+    """sha256 over (path, content) of _dep_files; None when any of them cannot be read (then it never skips)."""
+    import hashlib
+    root = (root or REPO_ROOT).resolve()
+    h = hashlib.sha256()
+    try:
+        for f in sorted(_dep_files(Path(test), root)):
+            if f not in _FHASH:
+                _FHASH[f] = hashlib.sha256(f.read_bytes()).hexdigest()
+            h.update(str(f).encode() + b"\0" + _FHASH[f].encode() + b"\n")
+    except OSError:
+        return None
+    return h.hexdigest()
+
+
+def load_quick() -> dict:
+    try:
+        d = json.loads(QUICK_FILE.read_text())
+        return d if isinstance(d, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def save_quick(results, hashes: dict) -> None:
+    """After EVERY run: per test that ran, its state and the dependency hash taken BEFORE it ran (a source edited
+    during the run therefore never matches)."""
+    if _OUTER[0] is False:
+        return
+    old = load_quick()
+    for path, status, elapsed, _ in results:
+        rel = _rel(path)
+        if rel:
+            old[rel] = {"state": status, "secs": round(elapsed, 1), "hash": hashes.get(rel)}
+    try:
+        QUICK_FILE.write_text(json.dumps(old, indent=0, sort_keys=True))
+    except OSError:
+        pass
+
+
+def quick_select(tests, state: dict, limit: float, rel=None, hash_of=None):
+    """--quick: -> (kept, skipped[(test, why)]). A test is skipped ONLY when its recorded last run was PASS, took
+    longer than `limit`, and its current dependency hash equals the one recorded at that PASS. Never-run, last-red
+    (FAIL/CRASH/UNMEASURED/TIMEOUT), changed or unhashable tests are kept."""
     rel = rel or _rel
-    kept, dropped = [], []
+    hash_of = hash_of or dep_hash
+    kept, skipped = [], []
     for t in tests:
-        s = prior.get(rel(t))
-        (dropped if isinstance(s, (int, float)) and s > limit else kept).append(t)
-    return kept, dropped
+        e = state.get(rel(t)) if rel(t) else None
+        secs = e.get("secs") if isinstance(e, dict) else None
+        slow = isinstance(secs, (int, float)) and not isinstance(secs, bool) and secs > limit
+        if not (slow and e.get("state") == "PASS" and isinstance(e.get("hash"), str)):
+            kept.append(t)
+            continue
+        h = hash_of(t)
+        if h is None or h != e["hash"]:
+            kept.append(t)
+            continue
+        skipped.append((t, "%s last run PASS in %.1fs > %gs and its source/dependency hash is unchanged" % (
+            QUICK_TAG, secs, limit)))
+    return kept, skipped
 
 
 # --- the machine-wide suite lock -------------------------------------------------------
@@ -764,9 +889,14 @@ def _suite(args) -> int:
         if args.only:
             print("--quick and --only do not mix: --only already names exactly what runs")
             return 1
-        tests, dropped = quick_select(tests, load_timings(), quick_s())
-        print(f"--quick: {len(dropped)} test(s) slower than {quick_s():g}s on their last run are NOT run; "
-              f"a green quick run is not a full-suite green", flush=True)
+        tests, quick_skipped = quick_select(tests, load_quick(), quick_s())
+        print(f"--quick: {len(quick_skipped)} test(s) SKIPPED(quick) (last run PASS, slower than {quick_s():g}s, "
+              f"source unchanged); a green quick run is a pre-check, not a full-suite green", flush=True)
+    else:
+        quick_skipped = None
+    # hashed only under --quick (about 10 s for the whole suite): a run without the flag records hash None, which
+    # never matches, so its PASS can never be the one a later --quick skips on; the plain run costs nothing extra.
+    run_hashes = {_rel(t): dep_hash(t) for t in tests if _rel(t)} if args.quick else {}
 
     stale = set() if args.only else set(NOT_STANDALONE) - {p.relative_to(REPO_ROOT).as_posix()
                                    for p, _ in excluded}
@@ -877,16 +1007,17 @@ def _suite(args) -> int:
     wall_elapsed = time.monotonic() - wall_start
 
     save_timings(results)
+    save_quick(results, run_hashes)
     if _PEAK_SEEN:
         try:
             PEAKS_FILE.write_text(json.dumps({**load_peaks(), **_PEAK_SEEN}, indent=0, sort_keys=True))
         except OSError:
             pass
-    skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded + off_tier + reused]
+    skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded + off_tier + reused + (quick_skipped or [])]
     _evidence_summary(_EVID, reused, len(elig), args.full)
     print(f"cache: {len(cached_res)} CACHED PASS, {len(cache_keys) - len(cached_res)} declared test(s) ran")
     return report(results + cached_res, skipped, len(tests) + len(cached_res) + len(skipped), wall_elapsed, contain_note,
-                  ISOLATED, args.timings)
+                  ISOLATED, args.timings, quick=None if quick_skipped is None else len(quick_skipped))
 
 
 def _evidence_summary(ev, reused, n_elig, full) -> None:
@@ -910,16 +1041,18 @@ def _show(p: Path) -> str:
 
 
 def report(results, skipped, discovered, wall_elapsed, contain_note, isolated=frozenset(),
-           timings=False) -> int:
+           timings=False, quick=None) -> int:
     """Print every result and the per-state N/N; return the exit code. Green iff
-    FAIL + CRASH == 0 and every discovered test is accounted for."""
+    FAIL + CRASH == 0 and every discovered test is accounted for. `quick` (a --quick run: the number of tests it
+    skipped) marks the RESULT line `QUICK: N skipped` so a quick green is never read as a full green."""
     allr = sorted(results + skipped, key=lambda r: str(r[0]))
     by = {s: [r for r in allr if r[1] == s] for s in STATES}
     for path, status, elapsed, detail in allr:
         note = "  (isolated)" if path.name in isolated else (
             "  (heavy lane)" if path.name in MEMORY_HEAVY else "")
         if status == "SKIPPED":
-            print(f"{status:10s} {'':6s}   {_show(path)}  — {detail}")
+            shown = "SKIPPED(quick)" if str(detail).startswith(QUICK_TAG) else status
+            print(f"{shown:10s} {'':6s}   {_show(path)}  — {detail}")
             continue
         print(f"{status:10s} {elapsed:6.1f}s  {_show(path)}{note}")
         if status != "PASS" and detail:
@@ -952,7 +1085,8 @@ def report(results, skipped, discovered, wall_elapsed, contain_note, isolated=fr
     if len(allr) != n:
         print(f"DROPPED: discovered {n} selftests but only {len(allr)} results came back "
               "— the sweep is NOT a clean signal")
-    print("RESULT: " + ("GREEN" if green else "RED") + " (green = FAIL 0 and CRASH 0)")
+    print("RESULT: " + ("GREEN" if green else "RED") + " (green = FAIL 0 and CRASH 0)"
+          + ("" if quick is None else " QUICK: %d skipped (pre-check only, not a full-suite green)" % quick))
     return 0 if green else 1
 
 
