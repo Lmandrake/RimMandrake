@@ -383,8 +383,9 @@ def t_mods_restore():
     dn = FakeDriver()
     with L.Lane("steve", "other_arm", dn, "next", root=pf["root"]):
         pass
+    rel = [e for e in L.read_events(pf, "other_arm") if e["event"] == "live_release"]
     check(("restore_mods", ("Slime",), "/c", False) in dn.calls and not mk.is_file()
-          and events(pf, "live_release")[-1]["detail"]["charged_to"] == R.ARM,
+          and len(rel) == 1 and rel[-1]["detail"]["charged_to"] == R.ARM and rel[-1]["detail"].get("mods_restored"),
           "N11: the next hold inherits the mods from the marker and redeploys main (charged to the arm that swapped)")
     # a deploy that dies half way still restores: the marker is written before the first copy
     pk = fresh("modsrestore_killed")
