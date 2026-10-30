@@ -427,6 +427,17 @@ def t_launch_failures():
     pl2.step()
     check(T.states(p)["ITEM_P@1"]["state"] == "parked", "C: a second launch failure parks the candidate, not a loop")
 
+    # C1b: run_pass stops after an abort (no StalePilot from a further step) and reports the abort
+    d = DC()
+    root, p, pl = _ml_setup("lfC1b", "steve", d)
+    try:
+        steps = pl.run_pass()
+        ab = steps[-1]["result"]
+        check(len(steps) == 1 and T._aborted(ab) and ab.get("id") and "no bridge token" in ab.get("why", ""),
+              "C1b: run_pass stops after the abort and returns it with the launch error and decision id")
+    except BaseException as e:  # noqa: BLE001
+        check(False, "C1b: run_pass kept stepping after an abort: %s: %s" % (type(e).__name__, e))
+
     # C2: the pass CLI path: an exception out of run_pass still restores and releases
     d = DC()
     root, p, pl = _ml_setup("lfC2", "steve", d)

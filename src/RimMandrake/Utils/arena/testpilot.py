@@ -951,6 +951,8 @@ class Pilot:
             if a in ("idle", "yield"):
                 break
             res = r.get("result") or {}
+            if _aborted(res):           # abort ended the session and retired this pilot: no further step
+                break
             canary_ok = res.get("canary_ok") if isinstance(res, dict) else None
             if a in ("test", "hot_apply"):
                 first = first or r["decision"]["cand"]
@@ -1297,6 +1299,11 @@ def _status(p, lane):
     return out
 
 
+def _aborted(res) -> bool:
+    """True when a step's result is the abort record (or the retired pilot's abort stub)."""
+    return isinstance(res, dict) and (res.get("kind") == "abort" or "abort" in res)
+
+
 def run_pass_guarded(pilot, max_steps: int = 50) -> list[dict]:
     """The pass with one try/finally: whatever escapes, his list is restored and the bridge released."""
     try:
@@ -1379,6 +1386,11 @@ def main(argv=None):
         dec = r["decision"]
         print(json.dumps({k: dec.get(k) for k in ("action", "rule", "cand", "scenario", "rung", "why")},
                          default=str))
+    ab = next((r.get("result") for r in steps if _aborted(r.get("result"))), None)
+    if ab:
+        print("PASS ABORTED: %s (abort decision %s)" % (ab.get("why") or ab.get("abort"), ab.get("id")),
+              file=sys.stderr)
+        return 1
     if not pilot.retired:
         if a.close:
             pilot.close()
