@@ -84,6 +84,9 @@ with other values is counted in `card_conflicts`. Reported per arm, and output (
 verdict) reported with and without owner-unblocked work. An arm with NO judge events but ledger done transitions
 (the v3 adapter) reports points as None and output_comparable False: a self-closed ledger item is not a
 judge-accepted point (run arena_judge on its tasks to make it comparable).
+Critic calibration: `calib` (arena_critic_calib.py score) on arm CALIB_ARM only, verdict = the reliability verdict,
+detail.critic, set_sha256, invalid/candidates and false_reject/miss as {k, n, wilson95, threshold}. That arm is in
+NON_ARENA_ARMS: signed, anchored and reported like an arm, never analysed as one.
 A partial final line (no newline: a crashed writer or a hand edit) is newline-terminated before the next write, so
 it stays one rejected line and never swallows the next record. After a gap (a deleted line), later lines that still
 chain to each other are reported as `recoverable` (valid signatures, not counted).
@@ -116,7 +119,7 @@ import arena_tasks as A  # noqa: E402
 
 EVENTS = ("freeze", "assign", "pass_start", "pass_end", "build_end", "test_start", "test_end", "gate", "judge",
           "critic_round", "live_take", "live_release", "reload", "canary", "card", "owner_touch", "defect",
-          "invalid", "switch", "stop")
+          "invalid", "switch", "stop", "calib")
 FIELDS = ("ts", "arm", "lane", "run_id", "task", "event", "sha", "verdict", "ite", "minutes", "rule", "detail",
           "prov")
 REQUIRED = ("ts", "arm", "lane", "run_id", "event")
@@ -126,7 +129,15 @@ FLAG_SAME_AGENT = "tester_is_builder"
 UNATTRIBUTED = "unattributed:"
 # the only scripts that may open a pass capability (run as __main__ from THIS directory)
 ENTRYPOINTS = ("arena_eventlog.py", "arena_v3_adapter.py", "arena_gate.py", "arena_judge.py",
-               "arena.py", "ralph_a_loop.py", "ralph_c_loop.py", "v3_control.py", "trio_loop.py")
+               "arena.py", "ralph_a_loop.py", "ralph_c_loop.py", "v3_control.py", "trio_loop.py",
+               "arena_critic_calib.py")
+# Logs in the signed store that are not competing arms: report() still verifies, anchors and rosters them (a deleted
+# calibration log is refused like any other), but arena_analysis never counts them as an arm. CALIB_ARM holds only
+# `calib` events and a `calib` event lives only there (ARENA_EVENTLOG_WIRE_CALIB_ENTRYPOINT).
+CALIB_ARM = "critic_calib"
+NON_ARENA_ARMS = (CALIB_ARM,)
+CALIB_VERDICTS = ("RELIABLE", "UNRELIABLE", "UNMEASURED", "INCONCLUSIVE")
+CALIB_MEASURES = ("false_reject", "miss")
 SELFTEST_ENTRY_PREFIX = "selftest_arena_"
 CAP_TTL_S = 12 * 3600
 
@@ -557,6 +568,38 @@ def _minutes_ok(m) -> bool:
     return math.isfinite(f) and f >= 0
 
 
+def _calib_measure(name: str, m) -> str | None:
+    """Why `m` is not a calibration count {k, n, wilson95: [lo, hi], threshold}, else None."""
+    if not isinstance(m, dict):
+        return "detail.%s must be an object" % name
+    k, n, w, thr = m.get("k"), m.get("n"), m.get("wilson95"), m.get("threshold")
+    if not all(type(x) is int for x in (k, n)) or not 0 <= k <= n:
+        return "detail.%s needs integer counts 0 <= k <= n (got k=%r n=%r)" % (name, k, n)
+    if not (isinstance(w, list) and len(w) == 2 and all(type(x) in (int, float) and math.isfinite(x) for x in w)
+            and 0 <= w[0] <= w[1] <= 1):
+        return "detail.%s.wilson95 must be [lo, hi] with 0 <= lo <= hi <= 1 (got %r)" % (name, w)
+    if not (type(thr) in (int, float) and math.isfinite(thr) and 0 < thr <= 1):
+        return "detail.%s.threshold must be in (0, 1] (got %r)" % (name, thr)
+    return None
+
+
+def _check_calib(rec: dict, d: dict):
+    """A critic calibration result (arena_critic_calib.py score): who was measured, on which set, the counts with
+    their Wilson-95 intervals, and the reliability verdict they decide."""
+    if rec.get("verdict") not in CALIB_VERDICTS:
+        raise Rejected("calib verdict must be one of %s (got %r)" % (CALIB_VERDICTS, rec.get("verdict")))
+    for k in ("critic", "set_sha256"):
+        if not (isinstance(d.get(k), str) and d[k].strip()):
+            raise Rejected("calib needs a non-empty string detail.%s (got %r)" % (k, d.get(k)))
+    for k in CALIB_MEASURES:
+        why = _calib_measure(k, d.get(k))
+        if why:
+            raise Rejected("calib " + why)
+    inv, tot = d.get("invalid"), d.get("candidates")
+    if not (type(inv) is int and type(tot) is int and 0 <= inv <= tot):
+        raise Rejected("calib needs integer detail.invalid <= detail.candidates (got %r, %r)" % (inv, tot))
+
+
 def validate_record(rec: dict):
     if not isinstance(rec, dict):
         raise Rejected("record is not an object")
@@ -604,6 +647,11 @@ def validate_record(rec: dict):
         if "stopped" in d and (not isinstance(d["stopped"], list)
                                or any(not (isinstance(a, str) and a.strip()) for a in d["stopped"])):
             raise Rejected("switch detail.stopped must be a list of non-empty arm names (got %r)" % (d["stopped"],))
+    if (ev == "calib") != (rec["arm"] == CALIB_ARM):
+        raise Rejected("a calib event belongs on arm %s and that arm holds only calib events (got %s on %s)"
+                       % (CALIB_ARM, ev, rec["arm"]))
+    if ev == "calib":
+        _check_calib(rec, d)
     if ev == "card":
         cid, un = d.get("card_id"), d.get("unblocked")
         if not (isinstance(cid, str) and cid.strip()) or not isinstance(un, list):

@@ -348,7 +348,7 @@ def load_raw(dirpath):
     out = {}
     for f in sorted(Path(dirpath).glob("*.jsonl")):
         arm = f.stem
-        if arm == "harness":
+        if arm == "harness" or arm in L.NON_ARENA_ARMS:     # critic calibration is not a competing arm
             continue
         try:
             text = f.read_text(encoding="utf-8")
@@ -380,7 +380,7 @@ def load_verified(p=None, token=None, external=None, allow_untrusted=False):
     rep = L.report(p, token, external)
     out = {}
     for arm, v in sorted(rep.items()):
-        if arm.startswith("_"):
+        if arm.startswith("_") or arm in L.NON_ARENA_ARMS:     # critic calibration is not a competing arm
             continue
         if v.get("refused"):
             out[arm] = {"unmeasured": "eventlog refused: %s" % "; ".join(map(str, v["refused"]))[:300]}

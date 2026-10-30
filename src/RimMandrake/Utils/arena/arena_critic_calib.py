@@ -65,8 +65,10 @@ sampled blind review. Forced failure: accept-all (miss 1.0) and reject-all (fals
 RESIDUAL (stated). The tree is TREE_PATHS + the changed areas, not the whole repo: a test that needs a path outside
 it, the game, Windows or the network fails for the environment, and the critic is told so; every false reject is
 listed with its reasons for a human to read. C# cannot be compiled in the sandbox (no Windows build), so C#
-candidates are judged by reading. Results are written under the calibration dir and noted to the rimflow ledger;
-the signed arena event log (arena_eventlog.py) admits only its own ENTRYPOINTS, which this module is not.
+candidates are judged by reading. Results are written under the calibration dir (score.json) and `score` also
+signs them into the arena event log as a `calib` event on arm arena_eventlog.CALIB_ARM (this file is one of its
+ENTRYPOINTS; the arm is never analysed as a competing arm). A log the harness cannot sign (no token, an arm
+process) is reported and exits 3 after score.json is written; --no-eventlog skips the signed record.
 """
 from __future__ import annotations
 
@@ -905,6 +907,30 @@ def _run_locked(d, set_doc, critic, run_id, concurrency, max_n, attempts, repo, 
     return {"run": run_id, "ran": len(todo), "results": str(res_path), "without_valid_verdict": len(left)}
 
 
+CALIB_EVENT_RATES = ("false_reject", "false_reject_tierA_only", "reject_rate_tierB_unlabelled",
+                     "reject_rate_all_good_nominal", "miss", "miss_strong_only")
+
+
+def calib_detail(sc: dict) -> dict:
+    """The `calib` event detail for a raw score: counts and Wilson-95 intervals (no per-candidate lists)."""
+    d = {k: {f: sc[k][f] for f in ("k", "n", "wilson95", "threshold")} for k in CALIB_EVENT_RATES}
+    d.update(critic=sc.get("critic"), critic_fingerprint=sc.get("critic_fingerprint"), set_sha256=sc["set_sha256"],
+             invalid=sc["invalid"], candidates=sc["candidates"], why=sc["reliability"]["why"],
+             provenance=sc.get("provenance"))
+    if sc.get("adjudicated"):
+        d["adjudicated_sensitivity"] = sc["adjudicated"]["reliability"]["why"]
+    return d
+
+
+def record_calib(sc: dict, p: dict | None = None) -> dict:
+    """Sign the score into the arena event log. Raises arena_eventlog.EventLogError when the harness cannot sign."""
+    import arena_eventlog as L
+    p = p or A.paths()
+    with L.harness_pass(p) as cap:
+        return L.HarnessWriter(p, cap=cap).emit(L.CALIB_ARM, "calib", lane="calib", run_id=sc["run"],
+                                                verdict=sc["reliability"]["verdict"], detail=calib_detail(sc))
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -921,6 +947,7 @@ def main(argv=None) -> int:
     s.add_argument("--run", required=True)
     s.add_argument("--json", action="store_true")
     s.add_argument("--adjudication", help="also score with a reject-side adjudication JSON (e.g. %s)" % ADJ_PATH)
+    s.add_argument("--no-eventlog", action="store_true", help="do not sign a calib event into the arena event log")
     a = ap.parse_args(argv)
     if a.cmd == "build-set":
         if a.pool:
@@ -955,9 +982,20 @@ def main(argv=None) -> int:
             raise SystemExit("adjudication %s is for run %s, not %s" % (a.adjudication, adj.get("run"), a.run))
         sc["adjudicated"] = score_adjudicated(doc, res, adj)
     (calib_root() / a.run / "score.json").write_text(json.dumps(sc, indent=1) + "\n")
+    signed = None
+    if not a.no_eventlog:
+        import arena_eventlog as L
+        try:
+            signed = record_calib(sc)
+        except L.EventLogError as e:
+            print("eventlog: NOT SIGNED (%s); score.json was written" % e, file=sys.stderr)
+            signed = False
+    rc = 3 if signed is False else 0
+    if signed:
+        print("eventlog: signed calib event on arm %s (sig %s)" % (L.CALIB_ARM, signed["sig"][:12]), file=sys.stderr)
     if a.json:
         print(json.dumps(sc, indent=1))
-        return 0
+        return rc
     for label, block in (("RAW (the decision)", sc), ("ADJUDICATED (reject side only, sensitivity, not a verdict)",
                                        sc.get("adjudicated"))):
         if block is None:
@@ -974,7 +1012,7 @@ def main(argv=None) -> int:
                                                           block["reliability"]["why"]))
     print("provenance:", sc["provenance"])
     print("score:", calib_root() / a.run / "score.json")
-    return 0
+    return rc
 
 
 if __name__ == "__main__":

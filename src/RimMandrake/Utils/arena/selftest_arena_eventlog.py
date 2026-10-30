@@ -1035,6 +1035,98 @@ def t_switch_entry(tmp):
           "SW-6 switch with non-list stopped rejected")
 
 
+def _calib_detail(**over):
+    m = lambda k, n, thr: {"k": k, "n": n, "wilson95": [0.1, 0.6], "threshold": thr}
+    d = {"critic": "critic_x", "set_sha256": "ab" * 32, "invalid": 0, "candidates": 39,
+         "false_reject": m(2, 9, 0.25), "miss": m(8, 9, 0.5)}
+    d.update(over)
+    return d
+
+
+def t_calib_entry(tmp):
+    """ARENA_EVENTLOG_WIRE_CALIB_ENTRYPOINT: arena_critic_calib.py score, run as a real process, signs its counts and
+    intervals as a `calib` event; an arm process cannot; the calibration arm is never analysed as a competing arm."""
+    import subprocess
+    import arena_analysis as AN
+    import arena_critic_calib as CC
+    p, _ = fresh(tmp, "cal", writer=False)
+    run = "st-run"
+    rd = CC.calib_root() / run
+    rd.mkdir(parents=True)
+    sha = CC.load_set()["set_sha256"]
+    (rd / "run.json").write_text(json.dumps({"run": run, "critic": "critic_st", "critic_fingerprint": "f" * 16,
+                                             "set_sha256": sha}))
+    (rd / "results.jsonl").write_text("")
+    script = str(L.HERE / "arena_critic_calib.py")
+    out = subprocess.run([sys.executable, script, "score", "--run", run], capture_output=True, text=True,
+                         env=dict(os.environ), cwd=str(tmp), timeout=300)
+    acc = L.verify(p, L.CALIB_ARM)["accepted"]
+    r = acc[-1] if acc else {}
+    d = r.get("detail") or {}
+    check(out.returncode == 0 and len(acc) == 1 and r.get("event") == "calib"
+          and (r.get("prov") or {}).get("entry") == "arena_critic_calib.py",
+          "CAL-1 arena_critic_calib.py score (real process) signs one calib event (rc %s, %d accepted; %s)"
+          % (out.returncode, len(acc), (out.stderr.strip() or out.stdout.strip())[-160:]))
+    sc = json.loads((rd / "score.json").read_text())
+    check(r.get("verdict") == sc["reliability"]["verdict"] and d.get("set_sha256") == sha
+          and d.get("critic") == "critic_st" and d.get("candidates") == sc["candidates"] > 0
+          and d.get("invalid") == sc["invalid"]
+          and all(d.get(k) == {f: sc[k][f] for f in ("k", "n", "wilson95", "threshold")}
+                  for k in CC.CALIB_EVENT_RATES),
+          "CAL-2 the signed counts/intervals/verdict equal score.json (%s, %d candidates)"
+          % (r.get("verdict"), sc["candidates"]))
+    out = subprocess.run([sys.executable, script, "score", "--run", run], capture_output=True, text=True,
+                         env=dict(os.environ, RM_ARM="ralph_a"), cwd=str(tmp), timeout=300)
+    check(out.returncode == 3 and "NOT SIGNED" in out.stderr and len(L.verify(p, L.CALIB_ARM)["accepted"]) == 1,
+          "CAL-3 an arm process (RM_ARM) is refused loudly (rc 3) and signs nothing (rc %s)" % out.returncode)
+    out = subprocess.run([sys.executable, script, "score", "--run", run, "--no-eventlog"], capture_output=True,
+                         text=True, env=dict(os.environ, RM_ARM="ralph_a"), cwd=str(tmp), timeout=300)
+    check(out.returncode == 0, "CAL-4 --no-eventlog writes score.json only (rc %s)" % out.returncode)
+    # schema: the calib arm holds only calib events, a calib event lives only there, counts and intervals are sane
+    base = {"ts": "2026-10-30T00:00:00Z", "arm": L.CALIB_ARM, "event": "calib", "lane": "calib", "run_id": "r",
+            "verdict": "UNRELIABLE"}
+    check(raises(L.Rejected, L.validate_record, dict(base, detail=_calib_detail())) is None,
+          "CAL-5 a complete calib event validates")
+    m = lambda **kw: dict({"k": 1, "n": 9, "wilson95": [0.1, 0.6], "threshold": 0.5}, **kw)
+    bad = (("on another arm", dict(base, arm="ralph_a", detail=_calib_detail())),
+           ("other event on the calib arm", dict(base, event="switch", detail={"from": "a", "to": "b"})),
+           ("no verdict", {k: v for k, v in dict(base, detail=_calib_detail()).items() if k != "verdict"}),
+           ("unknown verdict", dict(base, verdict="GOOD", detail=_calib_detail())),
+           ("no critic", dict(base, detail=_calib_detail(critic=""))),
+           ("no set", dict(base, detail=_calib_detail(set_sha256=None))),
+           ("no miss", dict(base, detail={k: v for k, v in _calib_detail().items() if k != "miss"})),
+           ("k > n", dict(base, detail=_calib_detail(miss=m(k=10)))),
+           ("bool count", dict(base, detail=_calib_detail(miss=m(k=True)))),
+           ("float count", dict(base, detail=_calib_detail(false_reject=m(n=9.0)))),
+           ("lo > hi", dict(base, detail=_calib_detail(miss=m(wilson95=[0.7, 0.2])))),
+           ("interval > 1", dict(base, detail=_calib_detail(miss=m(wilson95=[0.1, 1.2])))),
+           ("no threshold", dict(base, detail=_calib_detail(miss=m(threshold=None)))),
+           ("invalid > candidates", dict(base, detail=_calib_detail(invalid=40))))
+    for nm, rec in bad:
+        check(raises(L.Rejected, L.validate_record, rec) is not None, "CAL-6 calib %s rejected" % nm)
+    # analysis: the calibration arm is verified and reported, never analysed as an arm
+    real_entry, real_code, real_sel = L._entrypoint, L._main_code_ok, L._gate_runner_sel
+    L._gate_runner_sel = lambda cmdline=None, env=None: None
+    L._main_code_ok = lambda e: None
+    try:
+        L._entrypoint = lambda: str(L.HERE / "arena.py")
+        with L.harness_pass(p) as cap:
+            L.HarnessWriter(p, cap=cap).emit("stopped", "switch", lane="none", run_id="sw",
+                                             detail={"from": "ralph_a", "to": "stopped"})
+    finally:
+        L._entrypoint, L._main_code_ok, L._gate_runner_sel = real_entry, real_code, real_sel
+    rep = L.report(p)
+    logs = AN.load_verified(p, allow_untrusted=True)
+    check(L.CALIB_ARM in rep and rep[L.CALIB_ARM].get("accepted") == 1 and "stopped" in logs
+          and L.CALIB_ARM not in logs,
+          "CAL-7 report() verifies the calib arm; arena_analysis.load_verified skips it (arms %s)" % sorted(logs))
+    raw = tmp / "cal_raw"
+    raw.mkdir()
+    shutil.copy(L.arm_file(p, L.CALIB_ARM), raw)
+    shutil.copy(L.arm_file(p, "stopped"), raw)
+    check(sorted(AN.load_raw(raw)) == ["stopped"], "CAL-8 arena_analysis.load_raw skips the calib arm too")
+
+
 def main():
     if os.environ.get("RM_EVLOG_GATE_PROBE"):
         return _gate_probe()
@@ -1062,7 +1154,7 @@ def main():
                   t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
                   t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg, t_r3_b1_tail, t_r3_b2_forged_note, t_r3_b3_roster,
                   t_r3_b4_note_tokens, t_r3_entrypoint, t_switch_entry, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
-                  t_r3_analysis, t_r3_cards, t_r4_small, t_gate_runner):
+                  t_r3_analysis, t_r3_cards, t_r4_small, t_gate_runner, t_calib_entry):
             try:
                 t(tmp)
             except Exception as e:          # a crash is a failure of that test, not of the run
