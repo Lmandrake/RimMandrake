@@ -36,8 +36,10 @@ they never enter the false-reject term (their reject rate is reported apart, as 
 planted mutant - of either tier - stays a labelled defect in the catch term. This mirrors arena_critic_calib's rule
 (false reject on tier A only).
   decision      = discrimination(critic) - discrimination(baseline), on candidates both judged validly
-95% intervals are percentile bootstraps clustered by ORIGINAL (a resampled original brings all its mutants), paired
-across reviewers for the difference. Numbers are MEASURED only from fingerprinted runs on this set's sha.
+95% intervals (CRITIC_CALIB_FIX_SMALL_N_INTERVAL) are exact, not bootstrapped: at 8 labelled originals a percentile
+bootstrap was anti-conservative and collapsed to zero width at 0/n. See INTERVAL_METHOD: Clopper-Pearson terms combined
+by MOVER; the paired difference uses exact bounds on the discordant pairs, so a handful of them is never a call.
+An EQUIVALENT mutant (changes no behaviour) stays in the set as a decoy description but is never a labelled defect. Numbers are MEASURED only from fingerprinted runs on this set's sha.
 
 CLI: build [--write] | proofs [--budget S] | run --critic SPEC --run ID [--seed-from RUN] [--concurrency N]
      [--budget S] | match --runs A,B [--budget S] | score --critic-run A --baseline-run B [--json]
@@ -49,6 +51,7 @@ import argparse
 import concurrent.futures as cf
 import hashlib
 import json
+import math
 import os
 import random
 import secrets
@@ -74,9 +77,16 @@ COMMIT_ENV = {"GIT_AUTHOR_NAME": "candidate", "GIT_AUTHOR_EMAIL": "candidate@inv
 PROOF_TIMEOUT = 180
 MATCH_TIMEOUT = 300
 MATCH_FP_MAX = 0.10      # decoy hit rate above this: the matcher cannot tell defects apart; reason scores UNMEASURED
-BOOT = 10000
-BOOT_SEED = "critic-mutants-boot-v1"
-BOOT_KEPT_MIN = 0.95     # fewer resamples with a defined term than this: the interval conditions on luck; UNMEASURED
+INTERVAL_ALPHA = 0.05
+SIGN_FLIP_ALPHA = 0.05   # a call needs the interval to exclude 0 AND the exact cluster sign-flip test (sign_flip_p)
+INTERVAL_METHOD = ("exact Clopper-Pearson terms combined by MOVER (Zou & Donner 2008); the paired difference bounds each "
+                   "term by the box of exact 97.5% bounds on the discordance rate and on the direction among discordant "
+                   "pairs (exact McNemar, Bonferroni-joined); the interval treats mutants as independent, so a call also needs the "
+                   "exact sign-flip test over originals (sign_flip_p), which respects clustering and term correlation")
+# CRITIC_MUTANTS_DELETE_EQUIVALENT_M30: mutants that change no behaviour are not labelled defects. They stay in the
+# set (removing one changes every matcher decoy draw, hence every match key) but never enter a catch term or a count.
+EQUIVALENT = {"m30": "zip(a[2:], b[2:]) is only in the assert MESSAGE of _assert_same_world; `assert a[1:] == b[1:]` "
+                     "still compares every projection, so the mutant changes no behaviour"}
 WRITEUP_MAX = 12000     # chars of write-up the matcher sees (the END is kept: findings precede the verdict)
 
 
@@ -539,9 +549,12 @@ def reviewer_table(doc: dict, recs: dict, matches: dict) -> dict:
         vo = ro["verdict"] if ro and ro["verdict"] in J.VERDICTS else None
         mo = matches.get(o)
         # only tier A is labelled good: a tier that is missing or unknown is unlabelled, never silently "good"
-        row = {"labelled": tier_of.get(o) == "A", "orig": vo, "orig_match": (bool(mo["true_hit"]) if mo else None) if vo == "reject" else False,
+        named = [h for h in (mo or {}).get("true_hit") or [] if h not in EQUIVALENT]
+        row = {"labelled": tier_of.get(o) == "A", "orig": vo, "orig_match": (bool(named) if mo else None) if vo == "reject" else False,
                "muts": []}
         for m in ms:
+            if m["mid"] in EQUIVALENT:
+                continue
             r = recs.get(m["cid"])
             v = r["verdict"] if r and r["verdict"] in J.VERDICTS else None
             mm = matches.get(m["cid"])
@@ -599,26 +612,121 @@ def _rates(tab: dict, mode: str) -> dict:
     return {"catch": [cm, nm], "false_reject": [co, no], "unlabelled_reject": [cu, nu]}
 
 
-def boot(tabs: list, keys: list, mode: str, reps: int = BOOT, seed: str = BOOT_SEED) -> list:
-    """Percentile 95% interval of disc(tabs[0]) (one table) or disc(tabs[0]) - disc(tabs[1]) (paired), resampling
-    originals with replacement; a resample where a term is undefined is dropped (counted)."""
-    rng = random.Random(seed + mode + str(len(tabs)))
-    vals = []
-    for _ in range(reps):
-        ks = [rng.choice(keys) for _ in keys]
-        exp = []
-        for t in tabs:
-            tt = {}
-            for i, k in enumerate(ks):
-                tt["%s#%d" % (k, i)] = t[k]
-            exp.append(_disc(tt, list(tt), mode))
-        if any(x is None for x in exp):
+def cp(k: int, n: int, alpha: float = 0.05) -> tuple:
+    """Exact (Clopper-Pearson) two-sided interval for k/n, by bisection on the binomial tail; n=0 -> (0, 1)."""
+    if n == 0:
+        return (0.0, 1.0)
+
+    def tail_ge(p):   # P(X >= k)
+        return sum(math.comb(n, i) * p ** i * (1 - p) ** (n - i) for i in range(k, n + 1))
+
+    def bis(f, want, increasing):
+        lo, hi = 0.0, 1.0
+        for _ in range(60):
+            mid = (lo + hi) / 2
+            if (f(mid) < want) == increasing:
+                lo = mid
+            else:
+                hi = mid
+        return (lo + hi) / 2
+    lo = 0.0 if k == 0 else bis(tail_ge, alpha / 2, True)
+    hi = 1.0 if k == n else bis(lambda p: 1 - tail_ge(p) + math.comb(n, k) * p ** k * (1 - p) ** (n - k),
+                                alpha / 2, False)
+    return (lo, hi)
+
+
+def _mover(t1: float, i1: tuple, t2: float, i2: tuple) -> tuple:
+    """MOVER interval (Zou & Donner 2008) for t1 - t2 from each term's own interval."""
+    d = t1 - t2
+    return (d - math.sqrt((t1 - i1[0]) ** 2 + (i2[1] - t2) ** 2), d + math.sqrt((i1[1] - t1) ** 2 + (t2 - i2[0]) ** 2))
+
+
+def _paired_term(b: int, c: int, n: int) -> tuple:
+    """(b - c)/n for n paired observations, b discordant one way and c the other, with an interval that is the box of
+    exact bounds on the discordance rate (b+c)/n and on the direction b/(b+c) (the exact McNemar construction, which
+    conditions on the discordant pairs), each at 97.5% so the box holds >= 95% (Bonferroni)."""
+    pi = cp(b + c, n, INTERVAL_ALPHA / 2)
+    th = cp(b, b + c, INTERVAL_ALPHA / 2)
+    corners = [p * (2 * t - 1) for p in pi for t in th]
+    return (b - c) / n, (min(corners), max(corners))
+
+
+def _paired_counts(a: dict, b: dict, mode: str, per: dict | None = None) -> dict:
+    """Discordant counts between two RESTRICTED tables (same valid candidates): catch term over mutants, false-reject
+    term over labelled originals, with _disc's inclusion rules. `per`, if given, receives original -> [catch a-b,
+    false-reject a-b] (the cluster contributions sign_flip_p permutes)."""
+    out = {"catch": [0, 0, 0], "false_reject": [0, 0, 0]}   # [only a, only b, n]
+    for k, ra in a.items():
+        before = (out["catch"][0] - out["catch"][1], out["false_reject"][0] - out["false_reject"][1])
+        rb = b[k]
+        lab = ra.get("labelled", True)
+        if lab and (ra["orig"] is None or rb["orig"] is None):
             continue
-        vals.append(exp[0] if len(exp) == 1 else exp[0] - exp[1])
-    if not vals:
-        return [None, None, 0]
-    vals.sort()
-    return [round(vals[int(0.025 * (len(vals) - 1))], 3), round(vals[int(0.975 * (len(vals) - 1))], 3), len(vals)]
+        used = False
+        for (_m, va, ha), (_m2, vb, hb) in zip(ra["muts"], rb["muts"]):
+            if va is None or vb is None or (mode == "reason" and (ha is None or hb is None)):
+                continue
+            ca = va == "reject" and (mode == "verdict" or ha)
+            cb = vb == "reject" and (mode == "verdict" or hb)
+            out["catch"][0] += ca and not cb
+            out["catch"][1] += cb and not ca
+            out["catch"][2] += 1
+            used = True
+        if used and lab:
+            fa, fb = ra["orig"] == "reject", rb["orig"] == "reject"
+            out["false_reject"][0] += fa and not fb
+            out["false_reject"][1] += fb and not fa
+            out["false_reject"][2] += 1
+        if per is not None:
+            per[k] = [out["catch"][0] - out["catch"][1] - before[0],
+                      out["false_reject"][0] - out["false_reject"][1] - before[1]]
+    return out
+
+
+def sign_flip_p(a: dict, b: dict, mode: str) -> float | None:
+    """Exact two-sided cluster randomization p for the paired difference: under 'the reviewers are exchangeable'
+    swapping critic and baseline on one ORIGINAL (with all its mutants) flips the sign of that original's whole
+    contribution to nm*no*difference, so the null distribution is the 2^k sign-flips, enumerated exactly by DP over
+    integer sums. It keeps catch and false-reject of one original together (they correlate) and never treats one
+    original's many mutants as independent."""
+    per: dict = {}
+    pc = _paired_counts(a, b, mode, per)
+    nm, no = pc["catch"][2], pc["false_reject"][2]
+    if not nm or not no:
+        return None
+    ks = [dc * no - df * nm for dc, df in per.values()]
+    obs = abs(sum(ks))
+    dist = {0: 1}
+    for k in ks:
+        if not k:
+            continue
+        nxt: dict = {}
+        for v, w in dist.items():
+            nxt[v + k] = nxt.get(v + k, 0) + w
+            nxt[v - k] = nxt.get(v - k, 0) + w
+        dist = nxt
+    tot = sum(dist.values())
+    return sum(w for v, w in dist.items() if abs(v) >= obs) / tot
+
+
+def interval(tabs: list, mode: str) -> list:
+    """95% interval of disc(tabs[0]) (one table) or of disc(tabs[0]) - disc(tabs[1]) (two RESTRICTED tables, paired),
+    as [lo, hi] (rounded), or [None, None] when a term has no observation. See INTERVAL_METHOD."""
+    if len(tabs) == 1:
+        r = _rates(tabs[0], mode)
+        (cm, nm), (co, no) = r["catch"], r["false_reject"]
+        if not nm or not no:
+            return [None, None]
+        lo, hi = _mover(cm / nm, cp(cm, nm, INTERVAL_ALPHA), co / no, cp(co, no, INTERVAL_ALPHA))
+    else:
+        pc = _paired_counts(tabs[0], tabs[1], mode)
+        if not pc["catch"][2] or not pc["false_reject"][2]:
+            return [None, None]
+        tc, ic = _paired_term(*pc["catch"])
+        tf, if_ = _paired_term(*pc["false_reject"])
+        lo, hi = _mover(tc, ic, tf, if_)
+    lim = float(len(tabs))   # one discrimination lives on [-1, 1], a difference of two on [-2, 2]
+    return [round(max(-lim, lo), 3), round(min(lim, hi), 3)]
 
 
 def restrict(tab: dict, other: dict) -> dict:
@@ -635,7 +743,7 @@ def restrict(tab: dict, other: dict) -> dict:
     return out
 
 
-def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = BOOT) -> dict:
+def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
     """runs: {"critic": (run_id, recs, fingerprint), "baseline": (...)}"""
     # Only a match made for the CURRENT job counts: same matcher, run, candidate, write-up and defect list (the key);
     # a record for an older write-up, fixture or matcher is ignored, so its reject reads as unmatched.
@@ -644,14 +752,18 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
     for r in match_recs:
         if r.get("valid") and r.get("key") in current:
             mrec[(r["run"], r["cid"])] = r
-    n_mut = sum(1 for c in doc["candidates"] if c.get("role") == "mutant")
+    proofs_by = {mid: p for mid, p in proofs_by.items() if mid not in EQUIVALENT}
+    n_mut = sum(1 for c in doc["candidates"] if c.get("role") == "mutant" and c["mid"] not in EQUIVALENT)
     n_orig = len(pairs(doc))
     tiers = [c.get("tier") for c in doc["candidates"] if c.get("role") != "mutant" and c["cid"] in pairs(doc)]
-    out = {"set_sha256": doc["set_sha256"], "mutants": n_mut, "originals": n_orig,
+    out = {"set_sha256": doc["set_sha256"], "mutants": n_mut, "originals": n_orig, "interval_method": INTERVAL_METHOD,
+           "excluded_equivalent": sorted(m for m in EQUIVALENT
+                                         if any(c.get("mid") == m for c in doc["candidates"])),
            "labels": {"false_reject_on": "tier-A originals only; tier-B (or untiered) originals unlabelled",
                       "labelled_originals": sum(t == "A" for t in tiers),
                       "unlabelled_originals": sum(t != "A" for t in tiers)},
-           "kinds": sorted({c["mutant_kind"] for c in doc["candidates"] if c.get("role") == "mutant"}),
+           "kinds": sorted({c["mutant_kind"] for c in doc["candidates"] if c.get("role") == "mutant"
+                            and c["mid"] not in EQUIVALENT}),
            "detect": {"test": sum(1 for p in proofs_by.values() if p["detect"] == "test"),
                       "read": sum(1 for p in proofs_by.values() if p["detect"] == "read"),
                       "unproved": n_mut - len(proofs_by)},
@@ -661,7 +773,8 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
         matches = {cid: r for (rr, cid), r in mrec.items() if rr == run_id}
         tab = reviewer_table(doc, recs, matches)
         tabs[role] = tab
-        jobs = [r for (rr, _c), r in mrec.items() if rr == run_id]
+        equiv_cids = {c["cid"] for c in doc["candidates"] if c.get("mid") in EQUIVALENT}
+        jobs = [r for (rr, c), r in mrec.items() if rr == run_id and c not in equiv_cids]   # m30's own job is no measure
         invalid = sum(1 for c in doc["candidates"]
                       if not (recs.get(c["cid"]) and recs[c["cid"]]["verdict"] in J.VERDICTS))
         unmatched = sum(1 for row in tab.values() for _m, v, hit in row["muts"] if v == "reject" and hit is None)
@@ -680,11 +793,10 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
         for mode in ("verdict", "reason"):
             r = _rates(tab, mode)
             d = _disc(tab, list(tab), mode)
-            bt = boot([tab], list(tab), mode, reps)
             blk[mode] = {"catch": r["catch"], "false_reject": r["false_reject"],
                          "unlabelled_reject": r["unlabelled_reject"],
                          "discrimination": None if d is None else round(d, 3),
-                         "ci95": bt[:2], "boot_kept": [bt[2], reps]}
+                         "ci95": interval([tab], mode)}
         by_detect = {}
         for det in ("test", "read", "unproved"):
             hits = [(v, hit) for row in tab.values() for mid, v, hit in row["muts"] if v is not None
@@ -711,11 +823,12 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
         out["paired"] = {}
         for mode in ("verdict", "reason"):
             da, db = _disc(a, list(a), mode), _disc(b, list(b), mode)
-            bt = boot([a, b], list(a), mode, reps)
             out["paired"][mode] = {"critic": da if da is None else round(da, 3),
                                    "baseline": db if db is None else round(db, 3),
                                    "difference": None if da is None or db is None else round(da - db, 3),
-                                   "ci95": bt[:2], "boot_kept": [bt[2], reps]}
+                                   "ci95": interval([a, b], mode),
+                                   "discordant": _paired_counts(a, b, mode),   # [only critic, only baseline, n]
+                                   "sign_flip_p": sign_flip_p(a, b, mode)}
     out["verdict"] = decision(out)
     return out
 
@@ -739,11 +852,11 @@ def decision(sc: dict) -> dict:
     p = (sc.get("paired") or {}).get("reason")
     if not p or p["ci95"][0] is None:
         return {"grade": "UNMEASURED", "why": ["no paired comparison"]}
-    kept, reps = p.get("boot_kept") or [1, 1]
-    if kept < BOOT_KEPT_MIN * reps:
-        return {"grade": "UNMEASURED", "why": ["only %d/%d bootstrap resamples had a defined discrimination" % (kept, reps)]}
     lo, hi = p["ci95"]
-    if lo > 0:
+    sp = p.get("sign_flip_p")
+    if (lo > 0 or hi < 0) and (sp is None or sp >= SIGN_FLIP_ALPHA):
+        call = "not distinguishable at this n (interval excludes 0 but the cluster sign-flip test p=%s does not)" % sp
+    elif lo > 0:
         call = "critic discriminates better than the baseline"
     elif hi < 0:
         call = "critic discriminates worse than the baseline"
@@ -838,8 +951,8 @@ def main(argv=None) -> int:
                       mode, x["catch"][0], x["catch"][1], x["false_reject"][0], x["false_reject"][1],
                       x["unlabelled_reject"][0], x["unlabelled_reject"][1], x["discrimination"], x["ci95"]))
     for mode, x in (sc.get("paired") or {}).items():
-        print("paired %-7s critic %s  baseline %s  difference %s  95%% %s" % (mode, x["critic"], x["baseline"],
-                                                                          x["difference"], x["ci95"]))
+        print("paired %-7s critic %s  baseline %s  difference %s  95%% %s  discordant %s  cluster sign-flip p %s" % (
+            mode, x["critic"], x["baseline"], x["difference"], x["ci95"], x["discordant"], x["sign_flip_p"]))
     print("verdict:", json.dumps(sc["verdict"]))
     print("score:", out_p)
     return 0

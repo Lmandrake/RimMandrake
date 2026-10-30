@@ -10,11 +10,15 @@ model is called (a fake matcher call stands in), git runs only in a throwaway re
   writeup       a kept full answer is used whole (not an 800-char tail), verdict lines are stripped, the cap keeps the END
   scoring       discrimination = catch(mut) - reject(orig); reason mode counts an unmatched reject as a miss; a reject
                 with no valid match drops out (and the grade is UNMEASURED); the paired restriction keeps only
-                candidates valid for both reviewers; an always-reject reviewer scores 0; the bootstrap is reproducible;
+                candidates valid for both reviewers; an always-reject reviewer scores 0; the interval is reproducible;
                 a match record whose key is not the current job's (other write-up, fixture or matcher) is ignored;
-                an unproved mutant, a run without a critic fingerprint or too few defined bootstrap resamples grades
+                an unproved mutant, a run without a critic fingerprint or an undefined paired interval grades
                 UNMEASURED; only tier A is labelled good (tier B and untiered are not); a reject awaiting its match is
                 not a subgroup (by_kind / by_detect) miss
+  small n       (CRITIC_CALIB_FIX_SMALL_N_INTERVAL, red against the old percentile bootstrap) 0/8 false rejects gives
+                a non-zero-width interval; 4 discordant labelled originals are not a call; no discordance is still not
+                a zero-width interval; a large consistent difference is still detected; intervals bracket the point
+  equivalent    (CRITIC_MUTANTS_DELETE_EQUIVALENT_M30) an EQUIVALENT mutant (m30) never enters the catch term
   seed          copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
                 does not match its recorded sha, and a target run of another critic
   proofs        latest() accepts a proof made on this set OR on exactly this mutant's and original's heads, and
@@ -143,9 +147,9 @@ def t_scoring():
     check("an always-reject reviewer scores 0", M._disc(allrej, list(allrej), "reason") == 0)
     t3 = tab_of({"o%d" % i: ("accept" if i % 3 else "reject", [("reject", i % 2 == 0), (None, False)])
                  for i in range(12)})
-    b1, b2 = M.boot([t3], list(t3), "reason", 400), M.boot([t3], list(t3), "reason", 400)
+    b1, b2 = M.interval([t3], "reason"), M.interval([t3], "reason")
     d = M._disc(t3, list(t3), "reason")
-    check("bootstrap is reproducible and brackets the point", b1 == b2 and b1[0] <= d <= b1[1], "%s %s" % (b1, d))
+    check("the interval is reproducible and brackets the point", b1 == b2 and b1[0] <= d <= b1[1], "%s %s" % (b1, d))
     u = tab_of({"o1": ("accept", [("reject", True), ("reject", True)]), "o2": ("accept", [("accept", False)])})
     v = tab_of({"o1": ("accept", [(None, False), ("reject", True)]), "o2": (None, [("accept", False)])})
     ru = M.restrict(u, v)
@@ -173,7 +177,7 @@ def t_scoring():
     check("reviewer_table never labels an untiered original good", rt["n"]["labelled"] is False, str(rt))
     sc = {"detect": {"unproved": 0}, "reviewers": {"critic": {"run": "r", "critic_fingerprint": "fp", "invalid": 0, "candidates": 10, "matcher_decoy_hits": [0, 5],
                                    "rejects_without_valid_match": 1}},
-          "paired": {"reason": {"ci95": [0.1, 0.4]}}}
+          "paired": {"reason": {"ci95": [0.1, 0.4], "sign_flip_p": 0.01}}}
     check("a reject without a valid match grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
     sc["reviewers"]["critic"]["rejects_without_valid_match"] = 0
     sc["reviewers"]["critic"]["matcher_decoy_hits"] = [2, 5]
@@ -187,11 +191,114 @@ def t_scoring():
     sc["reviewers"]["critic"]["critic_fingerprint"] = None
     check("a run without a critic fingerprint grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
     sc["reviewers"]["critic"]["critic_fingerprint"] = "fp"
-    sc["paired"]["reason"]["boot_kept"] = [900, 1000]
-    check("an interval from too few defined resamples grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
-    sc["paired"]["reason"]["boot_kept"] = [1000, 1000]
+    sc["paired"]["reason"]["ci95"] = [None, None]
+    check("an undefined paired interval grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
     sc["paired"]["reason"]["ci95"] = [-0.1, 0.4]
     check("an interval spanning 0 is not a call", "spans 0" in M.decision(sc).get("call", ""))
+
+
+def ci(tabs, mode):
+    """The interval under test (one table: discrimination; two: the paired difference)."""
+    return M.interval(tabs, mode)
+
+
+def t_small_n():
+    """CRITIC_CALIB_FIX_SMALL_N_INTERVAL: at 8 labelled originals the interval must stay honest."""
+    # 0/8 false rejects, 16/16 catches: a percentile bootstrap returns [1.0, 1.0]
+    z = tab_of({"o%d" % i: ("accept", [("reject", True), ("reject", True)]) for i in range(8)})
+    lo, hi = ci([z], "reason")
+    check("0/n false rejects gives a non-zero-width interval", lo is not None and hi - lo > 0.1, "%s %s" % (lo, hi))
+    # paired: both catch every mutant; the baseline false-rejects 4 of 8 originals, the critic none -> 4 discordant
+    a = tab_of({"o%d" % i: ("accept", [("reject", True), ("reject", True)]) for i in range(8)})
+    b = tab_of({"o%d" % i: ("reject" if i < 4 else "accept", [("reject", True), ("reject", True)]) for i in range(8)})
+    lo, hi = ci([a, b], "reason")
+    check("4 discordant labelled originals are not called a difference", lo is not None and lo <= 0 <= hi,
+          "%s %s" % (lo, hi))
+    # identical reviewers, no discordance at all: still a non-zero-width interval around 0
+    lo, hi = ci([a, a], "reason")
+    check("no discordant pair still gives a non-zero-width interval", lo < 0 < hi, "%s %s" % (lo, hi))
+    # a large, consistent difference is still detected: the interval is not uselessly wide
+    big_a = tab_of({"o%d" % i: ("accept", [("reject", True)] * 3) for i in range(12)})
+    big_b = tab_of({"o%d" % i: ("reject", [("accept", False)] * 3) for i in range(12)})
+    lo, hi = ci([big_a, big_b], "reason")
+    check("a large consistent difference is detected", lo is not None and lo > 0, "%s %s" % (lo, hi))
+    # the interval brackets the point estimate
+    t3 = tab_of({"o%d" % i: ("accept" if i % 3 else "reject", [("reject", i % 2 == 0), (None, False)])
+                 for i in range(12)})
+    d = M._disc(t3, list(t3), "reason")
+    lo, hi = ci([t3], "reason")
+    check("the interval brackets the point", lo <= d <= hi, "%s %s %s" % (lo, d, hi))
+    lo, hi = ci([b, a], "reason")
+    check("the paired interval brackets the paired point", lo <= -0.5 <= hi, "%s %s" % (lo, hi))
+
+
+def t_review_findings():
+    """GPT review of CRITIC_CALIB_FIX_SMALL_N_INTERVAL (smalln/gpt.txt), each finding as a test."""
+    # 1: the paired difference lives on [-2, 2]; clipping at 1 inverted the bounds
+    a = tab_of({"o%d" % i: ("accept", [("reject", True)] * 4) for i in range(8)})
+    b = tab_of({"o%d" % i: ("reject", [("accept", False)] * 4) for i in range(8)})
+    lo, hi = ci([a, b], "reason")
+    check("a maximal paired difference (2) is inside a non-inverted interval", lo <= 2.0 <= hi, "%s %s" % (lo, hi))
+    # 2: catch and false-reject discordance move together within an original: 1 row one way, 7 the other
+    ra = {"o0": ("accept", [("reject", True)])}
+    rb = {"o0": ("reject", [("accept", False)])}
+    for i in range(1, 8):
+        ra["o%d" % i], rb["o%d" % i] = ("reject", [("accept", False)]), ("accept", [("reject", True)])
+    a2, b2 = tab_of(ra), tab_of(rb)
+    p = M.sign_flip_p(a2, b2, "reason")
+    check("1-vs-7 correlated originals are not significant by the cluster test", p > 0.05, str(p))
+    # 3: one original with 24 mutants carries the whole difference: one cluster is never a call
+    rc = {"big": ("accept", [("reject", True)] * 24)}
+    rd = {"big": ("accept", [("accept", False)] * 24)}
+    for i in range(7):
+        rc["s%d" % i] = rd["s%d" % i] = ("accept", [("accept", False)])
+    p = M.sign_flip_p(tab_of(rc), tab_of(rd), "reason")
+    check("a difference carried by one original is not significant", p > 0.5, str(p))
+    # the cluster test can still detect: 12 originals all one way
+    p = M.sign_flip_p(big_tabs()[0], big_tabs()[1], "reason")
+    check("12 concordant originals are significant by the cluster test", p < 0.01, str(p))
+    sc = {"detect": {"unproved": 0}, "reviewers": {}, "paired": {"reason": {"ci95": [0.1, 0.4], "sign_flip_p": 0.07}}}
+    check("an interval above 0 with cluster p >= 0.05 is not a call", "better" not in M.decision(sc).get("call", ""),
+          str(M.decision(sc)))
+    # 4: an original's reject that names only the equivalent mutant does not count as naming its paired defect
+    doc = {"candidates": [{"cid": "o", "role": "good", "tier": "A"},
+                          {"cid": "m1c", "role": "mutant", "pair": "o", "mid": "m1"},
+                          {"cid": "mqc", "role": "mutant", "pair": "o", "mid": "m30"}]}
+    recs = {"o": {"verdict": "reject"}, "m1c": {"verdict": "accept"}, "mqc": {"verdict": "accept"}}
+    rt = M.reviewer_table(doc, recs, {"o": {"true_hit": ["m30"]}})
+    check("an original naming only the equivalent mutant is not orig_match", rt["o"]["orig_match"] is False, str(rt))
+
+
+def t_equivalent_decoys():
+    """GPT round 2: an equivalent mutant's own match job does not enter the matcher decoy-hit rate."""
+    doc = {"set_sha256": "x", "candidates": [{"cid": "o", "role": "good", "tier": "A"},
+           {"cid": "m1c", "role": "mutant", "pair": "o", "mid": "m1", "mutant_kind": "k", "mutant_defect": "d1"},
+           {"cid": "mqc", "role": "mutant", "pair": "o", "mid": "m30", "mutant_kind": "k", "mutant_defect": "d30"},
+           {"cid": "p", "role": "good", "tier": "A"},
+           {"cid": "m2c", "role": "mutant", "pair": "p", "mid": "m2", "mutant_kind": "k", "mutant_defect": "d2"}]}
+    recs = {c: {"cid": c, "verdict": "accept"} for c in ("o", "m1c", "p", "m2c")}
+    recs["mqc"] = {"cid": "mqc", "verdict": "reject", "reasons": ["x"]}
+    job = M.match_jobs(doc, {"r": recs})[0]
+    rec = {"valid": True, "key": job["key"], "run": "r", "cid": "mqc", "true_hit": ["m30"], "decoy_hit": False}
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [rec], {})
+    check("an equivalent mutant's match job is not in matcher_decoy_hits",
+          sc["reviewers"]["critic"]["matcher_decoy_hits"] == [0, 0], str(sc["reviewers"]["critic"]["matcher_decoy_hits"]))
+
+
+def big_tabs():
+    a = tab_of({"o%d" % i: ("accept", [("reject", True)] * 3) for i in range(12)})
+    b = tab_of({"o%d" % i: ("reject", [("accept", False)] * 3) for i in range(12)})
+    return a, b
+
+
+def t_equivalent():
+    """CRITIC_MUTANTS_DELETE_EQUIVALENT_M30: an equivalent mutant is not a labelled defect."""
+    doc = {"candidates": [{"cid": "a", "role": "good", "tier": "A"},
+                          {"cid": "ma", "role": "mutant", "pair": "a", "mid": "m1"},
+                          {"cid": "mq", "role": "mutant", "pair": "a", "mid": "m30"}]}
+    recs = {"a": {"verdict": "accept"}, "ma": {"verdict": "accept"}, "mq": {"verdict": "accept"}}
+    rt = M.reviewer_table(doc, recs, {})
+    check("an equivalent mutant (m30) is not in the catch term", [m[0] for m in rt["a"]["muts"]] == ["m1"], str(rt))
 
 
 def t_stale_match():
@@ -207,10 +314,10 @@ def t_stale_match():
     good = {"key": job[0]["key"], "run": "r", "cid": "m1", "valid": True, "true_hit": ["m1"], "decoy_hit": False}
     stale = dict(good, key="0" * 16)
     proved = {"m1": {"detect": "read"}, "m2": {"detect": "test"}}
-    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [good], proved, reps=50)
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [good], proved)
     check("a current match counts as a catch", sc["reviewers"]["critic"]["reason"]["catch"] == [1, 2]
           and sc["reviewers"]["critic"]["rejects_without_valid_match"] == 0, str(sc["reviewers"]["critic"]))
-    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [stale], proved, reps=50)
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [stale], proved)
     check("a stale match (other write-up, fixture or matcher) is ignored",
           sc["reviewers"]["critic"]["rejects_without_valid_match"] == 1 and sc["verdict"]["grade"] == "UNMEASURED",
           str(sc["reviewers"]["critic"]))
@@ -283,6 +390,10 @@ def main() -> int:
         t_matcher()
         t_writeup()
         t_scoring()
+        t_small_n()
+        t_equivalent()
+        t_review_findings()
+        t_equivalent_decoys()
         t_stale_match()
         t_seed(root)
         t_proofs()
