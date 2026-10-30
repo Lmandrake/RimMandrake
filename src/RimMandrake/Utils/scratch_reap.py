@@ -86,10 +86,12 @@ def replay_clone_marked(c: Path, now: float) -> bool:
         if m.is_symlink() or not m.is_file():
             return False
         d = json.loads(m.read_text())
+        if not isinstance(d, dict) or d.get("state", "ready") not in ("building", "ready"):
+            return False                              # a list / scalar / unknown state is not a marker
         if not (isinstance(d.get("nonce"), str) and re.fullmatch(r"[0-9a-f]{32}", d["nonce"])):
             return False
         return now - float(d["created"]) >= replay_ttl_s()
-    except (OSError, ValueError, TypeError, KeyError):
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
         return False
 
 

@@ -16,6 +16,13 @@ A replay task re-does work that already exists, so the clone an arm works in mus
                       round-robin (arm order re-shuffled each round from the same seed) into one slot list.
   run_one             build -> work -> judge -> delete, deletion in `finally`, so a failure also leaves nothing.
   leftovers / sweep   clones still on disk; `rm-scratch-reap` also has the replay tree among its roots.
+
+RESIDUAL (known, accepted, not fixed here):
+  - sandbox_masks() is a CONTRACT: the caller (judge / sandbox layer) must hide those paths from the arm. This module cannot.
+  - the clone directory is checked by dev/inode and lstat, but a same-user adversary racing a rename between check and
+    rmtree (dirfd-relative delete) is not defended against.
+  - the on-disk marker is plain JSON a same-user process can forge; the reaper and sweep accept a well-formed marker knowingly.
+    In-process cleanup does not rely on it (it keeps its own inode + nonce).
 Tests use a temp root: RM_ARENA_ROOT or the root= argument. Nothing here touches the source repo except `git fetch` reads.
 """
 from __future__ import annotations
@@ -25,6 +32,7 @@ import contextlib
 import fcntl
 import hashlib
 import json
+import math
 import os
 import random
 import re
@@ -33,6 +41,7 @@ import shutil
 import stat
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -198,12 +207,8 @@ def _delete_own(dest: Path, root=None):
         return
     if stat.S_ISLNK(st.st_mode) or not stat.S_ISDIR(st.st_mode) or (st.st_dev, st.st_ino) != (rec["dev"], rec["ino"]):
         raise ReplayError("not deleting %s: it is no longer the clone this run created" % dest)
-    try:
-        mk = json.loads((dest / MARKER).read_text())
-        if mk.get("nonce") != rec["nonce"]:
-            raise ReplayError("not deleting %s: marker nonce is not ours" % dest)
-    except (OSError, ValueError):
-        pass
+    # the on-disk marker is NOT consulted: this process recorded the inode + nonce itself, and an unreadable, mutated or
+    # mistyped marker must not leave a judged clone behind.
     _contained(dest, root)
     rmtree(dest)
     _CREATED.pop(str(dest), None)
@@ -213,13 +218,42 @@ def _delete_own(dest: Path, root=None):
         pass
 
 
+def _lock_name(arm: str, task: str) -> str:
+    """Unambiguous: a__b + c and a + b__c must not share a lock, so hash the NUL-joined names."""
+    return hashlib.sha256((arm + "\0" + task).encode()).hexdigest() + ".lock"
+
+
+def _marker_ok(clone: Path):
+    """-> the marker dict when clone/.git/rm_arena_replay.json is a regular file holding a well-formed marker, else None."""
+    try:
+        m = clone / MARKER
+        if m.is_symlink() or not m.is_file():
+            return None
+        d = json.loads(m.read_text())
+    except (OSError, ValueError):
+        return None
+    if not isinstance(d, dict) or not isinstance(d.get("nonce"), str) or not re.fullmatch(r"[0-9a-f]{32}", d["nonce"]):
+        return None
+    if d.get("state") not in ("building", "ready") or isinstance(d.get("created"), bool) or not isinstance(d.get("created"), (int, float)):
+        return None
+    return d
+
+
+def _write_marker(clone: Path, rec: dict):
+    tmp = clone / (MARKER + ".tmp")
+    tmp.write_text(json.dumps(rec))
+    os.replace(tmp, clone / MARKER)
+
+
 @contextlib.contextmanager
 def _lock(arm: str, task: str, root=None):
+    _name("arm", arm)                                # validate BEFORE any path is built
+    _name("task", task)
     ld = arena_root(root) / "locks"
     if ld.is_symlink():
         raise ReplayError("%s is a symlink: refused" % ld)
     ld.mkdir(parents=True, exist_ok=True)
-    fd = os.open(str(ld / ("%s__%s.lock" % (arm, task))), os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    fd = os.open(str(ld / _lock_name(arm, task)), os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
     try:
         try:
             fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -267,11 +301,20 @@ def audit_clone(clone: Path, forbidden, masked=()) -> list[str]:
     if not gd.is_dir() or gd.is_symlink():
         return ["no real .git directory"]
     for f in sorted(forbidden):
-        if _run(clone, "cat-file", "-e", f).returncode == 0:
+        r = _run(clone, "cat-file", "-e", f)
+        if r.returncode == 0:
             out.append("git cat-file -e finds %s" % f)
-        if _run(clone, "show", "-s", f).returncode == 0:
-            out.append("git show finds %s" % f)
-    allobj = _git(clone, "cat-file", "--batch-all-objects", "--batch-check", check=False).split("\n")
+        elif r.returncode != 1:                       # 1 = absent; anything else means we could not tell: fail closed
+            out.append("audit failure: git cat-file -e %s exited %d: %s" % (f, r.returncode, r.stderr.decode(errors="replace").strip()[:120]))
+        r = _run(clone, "rev-parse", "--verify", "-q", f + "^{commit}")
+        if r.returncode == 0:
+            out.append("git rev-parse finds commit %s" % f)
+        elif r.returncode != 1:
+            out.append("audit failure: git rev-parse %s exited %d: %s" % (f, r.returncode, r.stderr.decode(errors="replace").strip()[:120]))
+    ro = _run(clone, "cat-file", "--batch-all-objects", "--batch-check")
+    if ro.returncode:
+        return out + ["audit failure: git cat-file --batch-all-objects exited %d" % ro.returncode]
+    allobj = ro.stdout.decode(errors="replace").split("\n")
     have = {ln.split(" ")[0] for ln in allobj if ln}
     out += ["object store (loose/packed) holds %s" % f for f in sorted(forbidden & have)]
     for borrow in ("objects/info/alternates", "objects/info/http-alternates", "commondir"):
@@ -285,13 +328,22 @@ def audit_clone(clone: Path, forbidden, masked=()) -> list[str]:
         for p in (gd / sub).rglob("*") if (gd / sub).is_dir() else []:
             if p.is_file() and any(n in p.read_bytes() for n in needles):
                 out.append("%s names a forbidden sha" % p.relative_to(clone))
-    refs = _git(clone, "for-each-ref", "--format=%(refname) %(objectname)", check=False).split("\n")
+    rr = _run(clone, "for-each-ref", "--format=%(refname) %(objectname)")
+    if rr.returncode:
+        return out + ["audit failure: git for-each-ref exited %d" % rr.returncode]
+    refs = rr.stdout.decode(errors="replace").split("\n")
     out += ["ref %s" % r for r in refs if r and any(f in r for f in forbidden)]
     cfg = (gd / "config").read_text(errors="replace") if (gd / "config").exists() else ""
     if re.search(r"^\s*\[\s*(remote|branch|submodule|include|includeIf)\b", cfg, re.M | re.I):
         out.append("config has a remote/branch/submodule/include section: the clone can reach its source")
     if re.search(r"^\s*(url|pushurl|path)\s*=", cfg, re.M | re.I):
         out.append("config names a url/path")
+    if re.search(r"^\s*(hookspath|fsmonitor|textconv|clean|smudge|process|sshcommand|pager|editor|attributesfile)\s*=", cfg, re.M | re.I) \
+            or re.search(r"^\s*\[\s*(filter|diff|merge|credential|alias|url)\b", cfg, re.M | re.I):
+        out.append("config sets hooksPath/fsmonitor/filter/textconv/driver/credential keys: arm tooling could run code or reach elsewhere")
+    hk = gd / "hooks"
+    if hk.is_dir() and any(not h.name.endswith('.sample') for h in hk.iterdir()):
+        out.append(".git/hooks holds an active hook")
     for m in masked:                                  # D4: nothing inside .git may name the source / mirror
         mb = str(m).encode()
         for dp, dns, fns in os.walk(gd):
@@ -342,6 +394,10 @@ def build_replay_clone(arm: str, task: str, base_sha: str, fix_sha: str, source=
     nonce = secrets.token_hex(16)
     _CREATED[str(dest)] = {"dev": st.st_dev, "ino": st.st_ino, "nonce": nonce}
     try:
+        # the marker goes in FIRST (atomic), so a SIGKILL anywhere after this line leaves a clone the reaper can recognise
+        os.mkdir(dest / ".git")
+        rec = {"nonce": nonce, "created": time.time(), "arm": arm, "task": task, "pid": os.getpid(), "state": "building"}
+        _write_marker(dest, rec)
         _git(dest, "init", "-q", "--template=")
         _git(dest, "config", "gc.auto", "0")
         _git(dest, "fetch", "-q", "--no-tags", "--no-write-fetch-head", str(fetch_from), base)
@@ -354,8 +410,8 @@ def build_replay_clone(arm: str, task: str, base_sha: str, fix_sha: str, source=
         findings = audit_clone(dest, [fix, *forb], masked=[source, fetch_from, private_dir()])
         if findings:
             raise ReplayLeak("replay clone %s/%s can reach the future: %s" % (arm, task, "; ".join(findings)))
-        (dest / MARKER).write_text(json.dumps({"nonce": nonce, "created": time.time(), "arm": arm, "task": task,
-                                               "pid": os.getpid()}))
+        rec["state"] = "ready"
+        _write_marker(dest, rec)
         return dest
     except BaseException:
         _delete_own(dest, root)
@@ -371,21 +427,21 @@ def norm_freeze(freeze_hash) -> str:
     return h
 
 
-def arm_seed(freeze_hash: str, arm: str) -> int:
+_HASH = hashlib.sha256            # swappable by the selftest to force a collision
+
+
+def arm_seed(freeze_hash: str, arm: str, salt: int = 0) -> int:
+    """seed = sha256(freeze_hash|arm); salt 0 is the only normal case. A salt n>0 appends |n (collision handling only)."""
     freeze_hash = norm_freeze(freeze_hash)
-    return int.from_bytes(hashlib.sha256(("%s|%s" % (freeze_hash, arm)).encode()).digest()[:8], "big")
+    msg = "%s|%s" % (freeze_hash, arm) + ("|%d" % salt if salt else "")
+    return int.from_bytes(_HASH(msg.encode()).digest()[:8], "big")
 
 
-def arm_order(freeze_hash: str, arm: str, tasks, taken=()) -> list[str]:
-    """Seeded shuffle of the task ids for one arm. Deterministic from (freeze_hash, arm, tasks). If the draw equals an
-    order already given to another arm (`taken`) it is redrawn from the same stream, so arms differ whenever they can."""
-    ts = sorted(set(tasks))
-    rng = random.Random(arm_seed(freeze_hash, arm))
-    order = ts[:]
-    for _ in range(64):
-        rng.shuffle(order)
-        if tuple(order) not in taken or len(ts) < 2:
-            break
+def arm_order(freeze_hash: str, arm: str, tasks, salt: int = 0) -> list[str]:
+    """Seeded shuffle of the task ids for ONE arm, a function of (freeze_hash, arm, tasks, salt) alone: it does not depend
+    on which other arms exist."""
+    order = sorted(set(tasks))
+    random.Random(arm_seed(freeze_hash, arm, salt)).shuffle(order)
     return order
 
 
@@ -394,10 +450,19 @@ def schedule(freeze_hash: str, arms, tasks) -> dict:
     freeze_hash = norm_freeze(freeze_hash)
     arms = sorted(set(arms))
     orders: dict[str, list[str]] = {}
+    can_differ = math.factorial(len(set(tasks))) >= len(arms)
     taken: set = set()
     for a in arms:                                   # sorted, so the result never depends on the caller's arm order
-        orders[a] = arm_order(freeze_hash, a, tasks, taken)
-        taken.add(tuple(orders[a]))
+        # COLLISION RULE (documented, deterministic): normally each arm's order is sha256(freeze|arm) alone. If it equals the
+        # order of an earlier arm (sorted by name), THAT later arm's salt is incremented (1, 2, ...) until it is unique.
+        for salt in range(0, 1000):
+            o = arm_order(freeze_hash, a, tasks, salt)
+            if tuple(o) not in taken or not can_differ:
+                break
+        orders[a] = o
+        taken.add(tuple(o))
+    if can_differ and len({tuple(v) for v in orders.values()}) != len(orders):      # verification, never reached normally
+        raise ReplayError("arm orders still collide after salting")
     slots: list = []
     rng = random.Random(arm_seed(freeze_hash, "#interleave"))
     for i in range(len(orders[arms[0]]) if arms else 0):
@@ -421,10 +486,49 @@ def leftovers(root=None) -> list[Path]:
 
 
 def sweep(root=None) -> list[Path]:
-    gone = leftovers(root)
-    for p in gone:
-        rmtree(p)
+    """Delete clones nobody is running: each must be a real directory under real (non-symlink) replay/<arm> dirs, carry a
+    well-formed marker, and its run lock must be FREE (non-blocking flock) while we delete. Anything else is left alone."""
+    base = replay_dir(root)
+    gone = []
+    if base.is_symlink() or not base.is_dir():
+        return gone
+    for arm_d in sorted(base.iterdir()):
+        if arm_d.is_symlink() or not arm_d.is_dir() or not NAME.fullmatch(arm_d.name):
+            continue
+        for p in sorted(arm_d.iterdir()):
+            if p.is_symlink() or not p.is_dir() or not NAME.fullmatch(p.name) or _marker_ok(p) is None:
+                continue
+            try:
+                with _lock(arm_d.name, p.name, root):       # held by a live run -> ReplayExists -> skipped
+                    if p.is_symlink() or _marker_ok(p) is None:
+                        continue
+                    _contained(p, root)
+                    rmtree(p)
+                    gone.append(p)
+            except ReplayExists:
+                continue
+        try:
+            arm_d.rmdir()
+        except OSError:
+            pass
     return gone
+
+
+@contextlib.contextmanager
+def _arm_environ():
+    """work() and judge() run with a scrubbed process environment: no inherited GIT_* (GIT_DIR, GIT_OBJECT_DIRECTORY,
+    GIT_ALTERNATE_OBJECT_DIRECTORIES ...), no system/global git config, a private empty HOME. Restored afterwards."""
+    saved = dict(os.environ)
+    home = tempfile.mkdtemp(prefix="arm_home_")
+    try:
+        for k in [k for k in os.environ if k.startswith("GIT_")]:
+            del os.environ[k]
+        os.environ.update(GIT_CONFIG_NOSYSTEM="1", GIT_CONFIG_GLOBAL="/dev/null", GIT_TERMINAL_PROMPT="0", HOME=home)
+        yield
+    finally:
+        os.environ.clear()
+        os.environ.update(saved)
+        shutil.rmtree(home, ignore_errors=True)
 
 
 def run_one(arm: str, task: str, base_sha: str, fix_sha: str, work, judge, source=DEFAULT_SOURCE, root=None,
@@ -435,8 +539,9 @@ def run_one(arm: str, task: str, base_sha: str, fix_sha: str, work, judge, sourc
         clone = None
         try:
             clone = build_replay_clone(arm, task, base_sha, fix_sha, source, root, also_forbidden, use_mirror, True)
-            work(clone)
-            return judge(clone)
+            with _arm_environ():
+                work(clone)
+                return judge(clone)
         finally:
             if clone is not None:
                 _delete_own(clone, root)

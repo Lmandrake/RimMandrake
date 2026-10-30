@@ -184,7 +184,8 @@ def t_deleted(tmp, src, A, B, C):
     (root / "replay" / "a3" / "stray").mkdir()
     check(len(R.leftovers(root)) == 3, "any stray entry under replay/ counts as left behind")
     gone = R.sweep(root)
-    check(len(gone) == 3 and R.leftovers(root) == [], "sweep removes the leftovers")
+    check(len(gone) == 2 and [x.name for x in R.leftovers(root)] == ["stray"], "sweep removes the marked leftovers and leaves the unmarked stray dir")
+    R.rmtree(root / "replay" / "a3")
 
     tasks = {"T1": {"base_sha": A, "fix_sha": B}, "T2": {"base_sha": "e" * 40, "fix_sha": B}}
     res = R.run_schedule(H3, {k: v for k, v in tasks.items()}, ["a", "b"], lambda a, t, c: None, lambda a, t, c: "ok", src, root)
@@ -384,13 +385,157 @@ def t_rmtree(tmp):
     R.rmtree(d)
 
 
+def t_round2(tmp, src, A, B, C):
+    import json
+    import signal
+    import hashlib
+    import scratch_reap as S
+    root = tmp / "r4"
+    rep = root / "replay"
+
+    # (2) sweep: symlinked replay / arm dirs, unmarked dirs, a live run's clone
+    victim = tmp / "victim"
+    (victim / "k" / "t").mkdir(parents=True)
+    (victim / "k" / "t" / "keep.txt").write_text("x")
+    root.mkdir()
+    os.symlink(victim, rep)
+    R.sweep(root)
+    check((victim / "k" / "t" / "keep.txt").exists(), "R2-2 FORCED: symlinked replay dir: sweep deletes nothing behind it")
+    os.unlink(rep)
+    rep.mkdir()
+    os.symlink(victim / "k", rep / "linkarm")
+    R.sweep(root)
+    check((victim / "k" / "t" / "keep.txt").exists(), "R2-2 FORCED: symlinked arm dir: sweep deletes nothing behind it")
+    os.unlink(rep / "linkarm")
+    seen = {}
+
+    def w(c):
+        seen["gone"] = R.sweep(root)
+        seen["alive"] = c.is_dir() and (c / ".git" / "rm_arena_replay.json").is_file()
+    R.run_one("live", "T1", A, B, w, lambda c: 0, src, root)
+    check(seen.get("gone") == [] and seen.get("alive"), "R2-2 FORCED: sweep during a live run (lock held) leaves the active clone: %s" % seen)
+
+    # (3) marker mutated / mistyped: the run still removes its own clone
+    for label, payload in (("list", "[1,2]"), ("garbage", "\x00not json"), ("other nonce", '{"nonce":"%s","created":1}' % ("0" * 32))):
+        def w3(c, payload=payload):
+            (c / ".git" / "rm_arena_replay.json").write_text(payload)
+        res = raises(Exception, R.run_one, "mk", "T1", A, B, w3, lambda c: 0, src, root)
+        check(res is None and not (rep / "mk" / "T1").exists(), "R2-3 FORCED: marker %s: run removes its own clone, no crash (%s)" % (label, res))
+    # reaper side: a list marker is just 'not a marker', not an AttributeError
+    c = rep / "mk2" / "T1"
+    (c / ".git").mkdir(parents=True)
+    (c / ".git" / "rm_arena_replay.json").write_text("[1]")
+    os.environ["SCRATCH_REAP_REPLAY_ROOTS"] = str(rep)
+    try:
+        check(S.replay_clone_marked(c, time.time() + 99 * 3600) is False, "R2-3 FORCED: scratch_reap on a list marker -> False, no AttributeError")
+    finally:
+        os.environ.pop("SCRATCH_REAP_REPLAY_ROOTS", None)
+    shutil.rmtree(rep / "mk2")
+    # a clone renamed away mid-run: nothing at the path -> run neither crashes nor deletes anything else; replaced dir refused
+    def w3b(c):
+        os.rename(c, c.parent / "moved")
+        os.mkdir(c)
+        (c / "other.txt").write_text("not ours")
+    res = raises(R.ReplayError, R.run_one, "rn", "T1", A, B, w3b, lambda c: 0, src, root)
+    check(res is not None and (rep / "rn" / "T1" / "other.txt").exists(), "R2-3 FORCED: dir swapped in at the clone path is NOT deleted (%s)" % res)
+    R.rmtree(rep / "rn")
+
+    # (4) SIGKILL during the build: the marker is already there ('building'), reaper takes it after the TTL
+    code = ("import sys,os,signal\nsys.path.insert(0,%r)\nimport arena_replay as R\n"
+            "orig=R._git\n"
+            "def g(repo,*a,**k):\n    if 'fetch' in a and '--no-write-fetch-head' in a: os.kill(os.getpid(),signal.SIGKILL)\n    return orig(repo,*a,**k)\n"
+            "R._git=g\nR.build_replay_clone('kb','T1',%r,%r,%r,%r)\n") % (str(HERE), A, B, str(src), str(root))
+    pr = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True, env=dict(os.environ))
+    left = rep / "kb" / "T1"
+    mk = left / ".git" / "rm_arena_replay.json"
+    check(pr.returncode == -signal.SIGKILL and mk.is_file(), "R2-4 FORCED: SIGKILL mid-build (rc=%s) leaves a clone WITH a marker" % pr.returncode)
+    d = json.loads(mk.read_text()) if mk.is_file() else {}
+    check(d.get("state") == "building", "R2-4 marker state is 'building'")
+    os.environ["SCRATCH_REAP_REPLAY_ROOTS"] = str(rep)
+    try:
+        now = time.time()
+        check(S.replay_clone_marked(left, now + 7 * 3600) is True, "R2-4 reaper takes a 'building' clone older than the TTL")
+        check(S.replay_clone_marked(left, now + 60) is False, "R2-4 reaper leaves a 'building' clone younger than the TTL")
+    finally:
+        os.environ.pop("SCRATCH_REAP_REPLAY_ROOTS", None)
+    check(R.sweep(root) == [left], "R2-4 sweep (lock free, marker valid) removes the dead build")
+    ok = R.build_replay_clone("kc", "T1", A, B, src, root)
+    check(json.loads((ok / ".git" / "rm_arena_replay.json").read_text())["state"] == "ready", "R2-4 finished build is state 'ready'")
+    R.rmtree(ok)
+
+    # (6) work()/judge() get a scrubbed environment
+    os.environ["GIT_DIR"] = "/nonexistent"
+    os.environ["GIT_ALTERNATE_OBJECT_DIRECTORIES"] = str(src / ".git" / "objects")
+    envs = []
+    try:
+        R.run_one("en", "T1", A, B, lambda c: envs.append(dict(os.environ)), lambda c: envs.append(dict(os.environ)), src, root)
+    finally:
+        os.environ.pop("GIT_DIR", None)
+        os.environ.pop("GIT_ALTERNATE_OBJECT_DIRECTORIES", None)
+    check(len(envs) == 2 and all(not any(k.startswith("GIT_") and k not in ("GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL", "GIT_TERMINAL_PROMPT") for k in e)
+                                 and e.get("GIT_CONFIG_NOSYSTEM") == "1" and e.get("GIT_CONFIG_GLOBAL") == "/dev/null"
+                                 and e.get("HOME") != os.environ.get("HOME") for e in envs),
+          "R2-6 FORCED: work/judge see no inherited GIT_*, nosystem/global config, private HOME")
+    check("GIT_DIR" not in os.environ, "R2-6 environment restored afterwards")
+
+    # (7) audit: git errors fail closed; hooksPath / filter / fsmonitor / includeIf refused
+    c = R.build_replay_clone("au", "T1", A, B, src, root)
+    check(R.audit_clone(c, [B]) == [], "R2-7 control: clean clone audits clean")
+    (c / ".git" / "HEAD").write_text("garbage\n")
+    f = R.audit_clone(c, [B])
+    check(any("audit failure" in x or "no real" in x for x in f), "R2-7 FORCED: broken repo (git errors) -> audit failure, not 'absent': %s" % f[:1])
+    R.rmtree(c)
+    for label, extra in (("hooksPath", "[core]\n\thooksPath = /x\n"), ("filter", "[filter \"x\"]\n\tclean = cat\n"),
+                         ("fsmonitor", "[core]\n\tfsmonitor = /x\n"), ("includeIf", "[includeIf \"gitdir:/\"]\n\tpath = /x\n"),
+                         ("textconv", "[diff \"y\"]\n\ttextconv = cat\n")):
+        c = R.build_replay_clone("au", "T1", A, B, src, root)
+        with open(c / ".git" / "config", "a") as fh:
+            fh.write(extra)
+        f = R.audit_clone(c, [B])
+        check(len(f) > 0, "R2-7 FORCED: config with %s refused: %s" % (label, f[:1]))
+        R.rmtree(c)
+
+    # (9) orders independent of the arm set; collision path via a fake hash
+    tasks = ["T%02d" % i for i in range(8)]
+    o_full = R.schedule(H1, ["a", "b", "c", "d"], tasks)["orders"]
+    o_one = R.schedule(H1, ["c"], tasks)["orders"]
+    check(o_full["c"] == o_one["c"] == R.arm_order(H1, "c", tasks), "R2-9 an arm's order does not depend on the other arms")
+    check(R.arm_seed(H1, "c") == int.from_bytes(hashlib.sha256(("%s|c" % H1).encode()).digest()[:8], "big"), "R2-9 seed is sha256(freeze|arm)")
+    real = R._HASH
+    R._HASH = lambda b: real(b"same") if b.count(b"|") == 1 else real(b)     # every unsalted seed collides
+    try:
+        s1 = R.schedule(H1, ["a", "b", "c"], tasks)["orders"]
+        s2 = R.schedule(H1, ["c", "b", "a"], tasks)["orders"]
+        check(len({tuple(v) for v in s1.values()}) == 3 and s1 == s2, "R2-9 FORCED collision: deterministic salt increment makes the orders distinct and reproducible")
+        check(s1["a"] == R.arm_order(H1, "a", tasks), "R2-9 first arm keeps its unsalted order")
+        R._HASH = lambda b: real(b"always")                                      # even salted seeds collide: must raise, not duplicate
+        m = raises(R.ReplayError, R.schedule, H1, ["a", "b"], tasks)
+        check(m is not None, "R2-9 FORCED: a collision salting cannot resolve raises instead of duplicating an order")
+    finally:
+        R._HASH = real
+    # (10) lock naming
+    root5 = tmp / "r5"
+    check(raises(R.ReplayError, R._lock(" bad", "t", root5).__enter__) is not None and not (root5 / "locks").exists(),
+          "R2-10 FORCED: bad name refused before any lock path/dir is built")
+    with R._lock("a__b", "c", root5):
+        try:
+            with R._lock("a", "b__c", root5):
+                ok = True
+        except R.ReplayExists:
+            ok = False
+    check(ok, "R2-10 FORCED: a__b+c and a+b__c use different locks")
+    with R._lock("a", "b", root5):
+        check(raises(R.ReplayExists, R._lock("a", "b", root5).__enter__) is not None, "R2-10 same pair still excluded")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_replay_"))
     os.environ["RM_ARENA_PRIVATE"] = str(tmp / "private")
     try:
         src, (A, B, C) = mk_source(tmp)
         for fn, a in ((t_no_future, (tmp, src, A, B, C)), (t_order, (tmp,)), (t_deleted, (tmp, src, A, B, C)), (t_reap, ()),
-                      (t_round1, (tmp, src, A, B, C)), (t_reaper_marker, (tmp, src, A, B)), (t_rmtree, (tmp,))):
+                      (t_round1, (tmp, src, A, B, C)), (t_reaper_marker, (tmp, src, A, B)), (t_rmtree, (tmp,)),
+                      (t_round2, (tmp, src, A, B, C))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001
