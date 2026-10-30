@@ -848,17 +848,47 @@ def _gap_pushed(cfg, arm, ts, st, snap, source, d) -> list[str]:
     late = (lb.get("refs") or {}).get(arm) if lb else None
     if late is None:
         try:
-            cur = d.refs_snapshot(cfg, arm)
+            cur = d.refs_snapshot(cfg, arm)          # slow network call: OUTSIDE the lock
         except RemoteUnreachable:
-            return pushed_since(cfg, arm, ts, snapshot=snap, snapshot_source="local")
-        lb = lb or {"refs": {}}
-        lb.setdefault("refs", {})[arm] = cur
+            if source == "local":                    # like with like: a local baseline against local tracking refs
+                return pushed_since(cfg, arm, ts, snapshot=snap, snapshot_source="local")
+            # baseline is not local (unknown/remote) and origin cannot be asked: a local snapshot cannot be set
+            # against it. Reflog half runs, then RemoteUnreachable (never a false push).
+            return pushed_since(cfg, arm, ts, snapshot=snap, snapshot_source="remote")
+        lb = dict(lb or {"refs": {}})
+        lb["refs"] = dict(lb.get("refs") or {}); lb["refs"][arm] = cur
         lb["ts"] = now_iso(d.clock)
         lb["epoch"] = d.clock()
         st["refs_late_baseline"] = lb
-        write_json(d.state_file(), st)
+        _store_late_baseline(d, st, arm, cur, lb)
         late = cur
     return pushed_since(cfg, arm, ts, snapshot=late, snapshot_source="remote")
+
+
+def _store_late_baseline(d: Deps, st: dict, arm: str, cur: dict, lb: dict) -> None:
+    """Read-modify-write of switch_state.json under the switch lock: re-read the CURRENT file and add only the
+    late-baseline keys, never write back the stale copy `who` read earlier. A switch in progress (lock held) or one
+    that finished since (different epoch) means the baseline is not stored (this who still uses it in memory)."""
+    p = d.lock_file()
+    p.parent.mkdir(parents=True, exist_ok=True)
+    with open(p, "a+") as fh:
+        try:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return
+        try:
+            fresh = read_state(d)
+            if fresh is None or fresh.get("epoch") != st.get("epoch"):
+                return
+            flb = fresh.get("refs_late_baseline") if isinstance(fresh.get("refs_late_baseline"), dict) else {"refs": {}}
+            flb = dict(flb); flb["refs"] = dict(flb.get("refs") or {})
+            flb["refs"].setdefault(arm, cur)
+            flb["ts"] = flb.get("ts") or lb["ts"]
+            flb["epoch"] = flb.get("epoch") or lb["epoch"]
+            fresh["refs_late_baseline"] = flb
+            write_json(d.state_file(), fresh)
+        finally:
+            fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
 
 
 def _gap_report(gaps: dict, st: dict) -> dict:

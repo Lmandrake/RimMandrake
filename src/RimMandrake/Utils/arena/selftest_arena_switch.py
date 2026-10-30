@@ -1496,11 +1496,65 @@ def t_who_d_gap_fail_closed():
     check(AR.read_state(w2.deps()).get("allow_offline") is True, "offline switch writes the allow_offline marker")
 
 
+def t_who_d_gap_rmw_and_source():
+    """Opus review of a09ae34062: (1) the late-baseline write must not clobber a concurrent switch's state;
+    (2) offline fallback honours the baseline source (no local-vs-origin false push)."""
+    import time
+    w = World("gaprmw", mode="ralph_a", active=("ralph_a",))
+    c = w.clone("trio")
+    d = w.deps()
+    git(c, "push", "-q", "--no-verify", "origin", "HEAD:refs/heads/arena/trio/x")
+    local = AR.refs_snapshot(w.cfg, "trio", remote=False)
+    ts = time.time() + 3600
+    real = dict(events=None, pushed=None)
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": ts, "mode": "ralph_a", "refs": {"trio": local},
+                                   "refs_source": {"trio": "local"}, "allow_offline": True})
+    orig = d.refs_snapshot
+    fresh = {"ts": "y", "epoch": ts, "mode": "ralph_a", "refs": {"trio": local}, "refs_source": {"trio": "remote"},
+             "stopped": ["trio"], "marker": 42}
+
+    def racing(cfg, arm, remote=True):
+        r = orig(cfg, arm, remote=remote)
+        AR.write_json(d.state_file(), fresh)          # a concurrent locked switch lands between read and write
+        return r
+    d.refs_snapshot = racing
+    who_quiet(w, d, **real)
+    st = AR.read_state(d)
+    check(st.get("marker") == 42 and st.get("stopped") == ["trio"] and st.get("refs_source") == {"trio": "remote"},
+          "concurrent switch state survives the late-baseline write (%s)" % st)
+    check((st.get("refs_late_baseline") or {}).get("refs", {}).get("trio"), "late baseline added onto the fresh state")
+    # a held switch lock: the baseline is not stored at all, the state file is untouched
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": ts, "mode": "ralph_a", "refs": {"trio": local}, "refs_source": {"trio": "local"}})
+    d.refs_snapshot = orig
+    with AR.switch_lock(d):
+        who_quiet(w, d, **real)
+    check("refs_late_baseline" not in AR.read_state(d), "switch lock held: no state write")
+    # (2) origin unreachable, old state with no refs_source, baseline = origin snapshot
+    remote_snap = AR.refs_snapshot(w.cfg, "trio")
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": ts, "mode": "ralph_a", "refs": {"trio": remote_snap}})
+    git(c, "commit", "-q", "--allow-empty", "-m", "localonly")
+    git(c, "update-ref", "refs/remotes/origin/arena/trio/x", "HEAD")      # local tracking differs from the origin snapshot
+
+    def down(cfg, arm, remote=True):
+        if remote:
+            raise AR.RemoteUnreachable("down")
+        return orig(cfg, arm, remote=False)
+    d.refs_snapshot = down
+    real_rs = AR.refs_snapshot
+    AR.refs_snapshot = down
+    try:
+        dd = who_quiet(w, d, **real)["checks"]["d"]
+    finally:
+        AR.refs_snapshot = real_rs
+    check(dd.get("remote_unreachable") and not dd.get("pushed_since_switch"),
+          "unknown-source baseline + origin down: unreachable, no false moved/new/deleted (%s)" % dd)
+
+
 def main():
     try:
         for t in (t_two_targets, t_graph, t_switch_production, t_switch_forced, t_who, t_push, t_installer, t_ops_watch,
                   t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety, t_unknown_and_live,
-                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_who_d_offline_partial, t_who_d_baseline_source, t_who_d_gap_fail_closed, t_cli_bits,
+                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_who_d_offline_partial, t_who_d_baseline_source, t_who_d_gap_fail_closed, t_who_d_gap_rmw_and_source, t_cli_bits,
                   t_fsd_parity, t_round2_gpt):
             print("== %s" % t.__name__)
             t()
