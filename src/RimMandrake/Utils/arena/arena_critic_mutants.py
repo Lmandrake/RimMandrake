@@ -24,7 +24,7 @@ candidates, byte for byte) instead of paying for them again; each seeded record 
 
 SCORING. A reject of a mutant counts as a CATCH only if its reasons identify the injected defect, judged by a blind
 Opus matcher (`match`, no tools, sandboxed): it sees the reviewer's write-up (no verdict, no reviewer name, no role)
-and a shuffled list of defect descriptions - the true one plus a decoy from a different candidate - and says which
+and a shuffled list of defect descriptions - the true one plus a decoy (a sibling mutant of the same original when there is one, else another original's) - and says which
 the write-up identifies. Rejects of originals are matched against their mutants' defects too (control). The decoy hit
 rate is the matcher's false-match rate; above MATCH_FP_MAX the reason-matched numbers are UNMEASURED.
 
@@ -404,7 +404,9 @@ def writeup_full(rec: dict) -> str:
 
 
 def match_jobs(doc: dict, runs: dict) -> list:
-    """One job per valid reject: a mutant's true defect + a decoy; an original's mutants' defects + a decoy."""
+    """One job per valid reject: a mutant's true defect + a decoy; an original's mutants' defects + a decoy. A mutant
+    with a sibling on its original draws the sibling (a near-miss about the very same code, absent from this head);
+    every other job has no such defect to draw and takes one from another original."""
     mts = [c for c in doc["candidates"] if c.get("role") == "mutant"]
     pr = pairs(doc)
     jobs = []
@@ -420,12 +422,14 @@ def match_jobs(doc: dict, runs: dict) -> list:
                 if not truths:
                     continue
             rng = random.Random("%s|%s|decoy" % (run_id, cid))
-            decoy = rng.choice([m for m in mts if m["pair"] != home])
+            near = [m for m in mts if c.get("role") == "mutant" and m["pair"] == home and m["mid"] != c["mid"]]
+            decoy = rng.choice(near or [m for m in mts if m["pair"] != home])
             items = [("true", m["mid"], m["mutant_defect"]) for m in truths] + [("decoy", decoy["mid"], decoy["mutant_defect"])]
             random.Random("%s|%s|order" % (run_id, cid)).shuffle(items)
             w = writeup_of(r)
             key = hashlib.sha256(json.dumps([MATCHER_ID, run_id, cid, w, items]).encode()).hexdigest()[:16]
-            jobs.append({"key": key, "run": run_id, "cid": cid, "role": c.get("role"), "items": items, "writeup": w})
+            jobs.append({"key": key, "run": run_id, "cid": cid, "role": c.get("role"), "items": items, "writeup": w,
+                         "near_decoy": bool(near)})
     return jobs
 
 
@@ -752,7 +756,7 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
     """runs: {"critic": (run_id, recs, fingerprint), "baseline": (...)}"""
     # Only a match made for the CURRENT job counts: same matcher, run, candidate, write-up and defect list (the key);
     # a record for an older write-up, fixture or matcher is ignored, so its reject reads as unmatched.
-    current = {j["key"] for j in match_jobs(doc, {rid: recs for rid, recs, _fp in runs.values()})}
+    current = {j["key"]: j for j in match_jobs(doc, {rid: recs for rid, recs, _fp in runs.values()})}
     mrec = {}
     for r in match_recs:
         if r.get("valid") and r.get("key") in current:
@@ -780,6 +784,7 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
         tabs[role] = tab
         equiv_cids = {c["cid"] for c in doc["candidates"] if c.get("mid") in EQUIVALENT}
         jobs = [r for (rr, c), r in mrec.items() if rr == run_id and c not in equiv_cids]   # m30's own job is no measure
+        near = [r for r in jobs if current[r["key"]]["near_decoy"]]
         invalid = sum(1 for c in doc["candidates"]
                       if not (recs.get(c["cid"]) and recs[c["cid"]]["verdict"] in J.VERDICTS))
         unmatched = sum(1 for row in tab.values() for _m, v, hit in row["muts"] if v == "reject" and hit is None)
@@ -793,6 +798,7 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
                "writeups_truncated": sum(1 for r in recs.values() if r["verdict"] == "reject"
                                          and len(writeup_full(r)) > WRITEUP_MAX),
                "matcher_decoy_hits": [sum(1 for j in jobs if j["decoy_hit"]), len(jobs)],
+               "matcher_near_decoy_hits": [sum(1 for j in near if j["decoy_hit"]), len(near)],
                "orig_rejects_naming_paired_defect": sum(1 for row in tab.values() if row["orig"] == "reject"
                                                         and row["orig_match"])}
         for mode in ("verdict", "reason"):
@@ -847,9 +853,10 @@ def decision(sc: dict) -> dict:
             why.append("%s: run %s records no critic fingerprint" % (role, blk["run"]))
         if blk["invalid"] > C.MAX_INVALID_FRAC * blk["candidates"]:
             why.append("%s: %d/%d invalid" % (role, blk["invalid"], blk["candidates"]))
-        k, n = blk["matcher_decoy_hits"]
-        if n and k / n > MATCH_FP_MAX:
-            why.append("%s: matcher decoy hits %d/%d" % (role, k, n))
+        for key, label in (("matcher_decoy_hits", "decoy"), ("matcher_near_decoy_hits", "near-decoy")):
+            k, n = blk.get(key) or (0, 0)
+            if n and k / n > MATCH_FP_MAX:               # near-misses alone: the easy decoys must not dilute them
+                why.append("%s: matcher %s hits %d/%d" % (role, label, k, n))
         if blk["rejects_without_valid_match"]:
             why.append("%s: %d mutant rejects without a valid match" % (role, blk["rejects_without_valid_match"]))
     if why:
@@ -947,6 +954,7 @@ def main(argv=None) -> int:
         print("== %s (%s) invalid %d/%d, seeded %d originals + %d mutants, decoy hits %s" % (
             role, blk["run"], blk["invalid"], blk["candidates"], blk["seeded"]["good"], blk["seeded"]["mutant"],
             blk["matcher_decoy_hits"]))
+        print("  near-decoy hits (sibling defect of the same original) %s" % blk["matcher_near_decoy_hits"])
         print("  rejects without a valid current match %d, write-ups cut at %d chars %d" % (
             blk["rejects_without_valid_match"], WRITEUP_MAX, blk["writeups_truncated"]))
         for mode in ("verdict", "reason"):

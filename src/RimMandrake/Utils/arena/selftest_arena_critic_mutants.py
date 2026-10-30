@@ -20,6 +20,7 @@ model is called (a fake matcher call stands in), git runs only in a throwaway re
                 a zero-width interval; a large consistent difference is still detected; intervals bracket the point
   exact pins    cp matches closed forms at k=0,1,n-1,n; MOVER pairs the right bounds; the paired box corners; sign_flip_p
                 equals brute-force enumeration over originals (the small-n checks above prove only shape)
+  near decoy    (CRITIC_DECOYS_WIDEN_SAME_ORIGINAL) a sibling mutant is the decoy; near hits gate the grade on their own
   equivalent    (CRITIC_MUTANTS_DELETE_EQUIVALENT_M30) an EQUIVALENT mutant (m30) never enters the catch term
   seed          run.json lists every source once; copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
                 does not match its recorded sha, and a target run of another critic
@@ -332,6 +333,32 @@ def t_equivalent_decoys():
           sc["reviewers"]["critic"]["matcher_decoy_hits"] == [0, 0], str(sc["reviewers"]["critic"]["matcher_decoy_hits"]))
 
 
+def t_near_decoy():
+    """CRITIC_DECOYS_WIDEN_SAME_ORIGINAL: a sibling is the decoy, a job without one keeps its cross-original decoy."""
+    doc = {"set_sha256": "x", "candidates": [{"cid": "o", "role": "good", "tier": "A"}, {"cid": "p", "role": "good", "tier": "A"},
+           {"cid": "m1c", "role": "mutant", "pair": "o", "mid": "m1", "mutant_kind": "k", "mutant_defect": "d1"},
+           {"cid": "m2c", "role": "mutant", "pair": "o", "mid": "m2", "mutant_kind": "k", "mutant_defect": "d2"},
+           {"cid": "m3c", "role": "mutant", "pair": "p", "mid": "m3", "mutant_kind": "k", "mutant_defect": "d3"}]}
+    recs = {c: {"cid": c, "verdict": "reject", "reasons": ["x"]} for c in ("o", "m1c", "m2c", "m3c")}
+    recs["p"] = {"cid": "p", "verdict": "accept"}
+    jobs = {j["cid"]: j for j in M.match_jobs(doc, {"r": recs})}
+    decoy = lambda cid: [i[1] for i in jobs[cid]["items"] if i[0] == "decoy"]
+    check("a mutant's decoy is its sibling on the same original", decoy("m1c") == ["m2"] and decoy("m2c") == ["m1"],
+          str(jobs))
+    check("a mutant without a sibling keeps a cross-original decoy", decoy("m3c") in (["m1"], ["m2"])
+          and not jobs["m3c"]["near_decoy"] and jobs["m1c"]["near_decoy"], str(jobs["m3c"]))
+    check("an original's decoy never comes from its own mutants", decoy("o") == ["m3"] and not jobs["o"]["near_decoy"])
+    recm = lambda cid, hit: {"valid": True, "key": jobs[cid]["key"], "run": "r", "cid": cid, "true_hit": [], "decoy_hit": hit}
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [recm(c, c == "m1c") for c in jobs], {})
+    blk = sc["reviewers"]["critic"]
+    check("near-decoy hits are counted apart", blk["matcher_near_decoy_hits"] == [1, 2] and blk["matcher_decoy_hits"] == [1, 4],
+          str(blk))
+    fake = {"detect": {"unproved": 0}, "reviewers": {"critic": dict(blk, matcher_decoy_hits=[1, 40])}}
+    v = M.decision(fake)
+    check("a near-decoy rate over the limit is UNMEASURED however many easy decoys dilute it",
+          v["grade"] == "UNMEASURED" and any("near-decoy" in w for w in v["why"]), str(v))
+
+
 def big_tabs():
     a = tab_of({"o%d" % i: ("accept", [("reject", True)] * 3) for i in range(12)})
     b = tab_of({"o%d" % i: ("reject", [("accept", False)] * 3) for i in range(12)})
@@ -450,6 +477,7 @@ def main() -> int:
         t_equivalent()
         t_review_findings()
         t_equivalent_decoys()
+        t_near_decoy()
         t_stale_match()
         t_seed(root)
         t_proofs()
