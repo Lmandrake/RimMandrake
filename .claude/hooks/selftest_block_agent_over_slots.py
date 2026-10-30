@@ -199,5 +199,22 @@ ids = sorted(x["id"] for x in SA.running_helpers([projects / "-home-mandrake-rm-
 check("a helper whose last record is an end_turn report is finished at once, not counted for minutes",
       "justended" not in ids and "ended" not in ids and ids == ["run1", "run2", "run3"], ids)
 
+rc, dec, why = run(session=True)
+check("his window with the owner silent stays capped at two (3 running -> deny)",
+      dec == "deny" and "CONDUCTOR_WINDOW" in why, (dec, why[:300]))
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() + H),
+                                                        "seats": {"BENCH": 9}}))
+rc, dec, why = run(session=True)
+check("his word for BENCH lifts the window cap", dec is None, (dec, why[:300]))
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() + H),
+                                                        "seats": {"FOUNDRY": 9}}))
+rc, dec, why = run(session=True)
+check("his word for FOUNDRY alone leaves the window cap on", dec == "deny", (dec, why[:300]))
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() - H),
+                                                        "seats": {"BENCH": 9}}))
+rc, dec, why = run(session=True)
+check("a lapsed word no longer lifts it", dec == "deny", (dec, why[:300]))
+(streams / "slot_override.json").unlink()
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

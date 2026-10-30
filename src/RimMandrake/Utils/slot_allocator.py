@@ -1398,7 +1398,9 @@ def main(argv=None):
             if seat_key(a.seat) not in rules["seats"]:
                 print(f"refused: seat must be one of {rules['seats']}", file=sys.stderr)
                 return 2
-            ov["seats"] = {seat_key(a.seat): a.n}  # CONDUCTOR is stored as its allocator key BENCH
+            prior = _override_live(read_json(streams_dir() / "slot_override.json"), now) or {}
+            # CONDUCTOR is stored as its allocator key BENCH; a live word for the other seat is kept, not overwritten
+            ov["seats"] = {**(prior.get("seats") or {}), seat_key(a.seat): a.n}
         else:
             ov["n"] = a.n
     d = streams_dir()

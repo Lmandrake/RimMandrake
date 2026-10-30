@@ -124,7 +124,12 @@ def decide(payload, now=None):
     if session_exempt(seat, payload, rules, now):
         return None
     n, mode, why, src = allowed_n(SA, rules, seat, now)
-    if seat == "BENCH" and not (os.environ.get("RM_ROLE_UNIT") or "").strip():
+    ov = SA._override_live(SA.read_json(SA.streams_dir() / "slot_override.json"), now) or {}
+    his_n = (ov.get("seats") or {}).get(seat, ov.get("n"))
+    if seat == "BENCH" and his_n is not None:  # his word outranks the window cap, as the refusal text promises
+        n, mode, src = int(his_n), "OWNER_WORD", "slot_override.json"
+        why = f"his word: \"{ov['ownerSaid']}\""
+    elif seat == "BENCH" and not (os.environ.get("RM_ROLE_UNIT") or "").strip():
         open_min, cap_n = conductor_window(rules)
         n, mode, src = cap_n, "CONDUCTOR_WINDOW", f"owner silent {open_min:g}+ min or unreadable (slot_rules.json conductor_window)"
         why = "the open policy lapsed (owner, 2026-10-29): two helpers until he types to this window again"
