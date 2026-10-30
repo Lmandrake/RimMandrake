@@ -105,17 +105,13 @@ Each line is reserved by a ruling of his that says so; nothing else is.
    GUI he must look at, a purchase (`~/.claude/CLAUDE.md`, "RUN IT YOURSELF" ③).
 6. **Presence-bound acts his rulings name.** Live flight tests of a flyer — *"do not do live testing of flyers
    without a human present"* (CLAUDE.md, flight); `broadcast.py` is his; `./bridge bench|foundry|free` is his
-   except as delegated here. **Delegated (owner card 2026-10-26 19:06, *"Free bridge + 20 min idle
-   (Recommended)"*):** a seat MAY take the bridge, deploy and restart the game on its own when BOTH hold — a
-   watcher shows no other seat holds the bridge (it is free), AND he has not touched the game for 20 minutes —
-   and never for a flyer's flight. Each take and restart is listed in his daily digest. Ruled words: *"May a seat
-   take the free bridge, deploy and restart the game on its own when a watcher shows no other seat holds it and
-   you haven't touched the game for 20 minutes, never for flyer flight?"* Watcher and idle probe:
-   `BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH`, landed: `rimflow bridge idle`, `bridge take --idle-ok`, `./game --idle-ok`;
-   the events carry `why` `delegated: bridge idle ...` and the probe reading. The flyer refusal is
-   self-declared: the probe refuses `--flyer` and any purpose that names flying, but it cannot know what the
-   seat will actually drive. A seat that will fly anything passes `--flyer`. A probe that cannot tell (no
-   input since boot, a failed call) reads UNMEASURED and refuses.
+   except as delegated here. **Delegated:** a seat MAY take the bridge, deploy and restart the game on its own
+   when the bridge is free, ours, or stale by the 45-minute rule, never his OWNER hold, and never for a flyer's
+   flight. Each take and restart is listed in his daily digest. His presence at the machine plays no part (owner,
+   2026-10-30, verbatim: *"I really, really need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*): nothing reads his input clock. Tooling: `rimflow bridge idle` reports TAKEABLE or
+   not; `bridge take --idle-ok` and `./game --idle-ok` take it; the events carry `why` `delegated: ...`. The flyer
+   refusal is self-declared: `--flyer` and any purpose that names flying refuse, but the tool cannot know what the
+   seat will actually drive. A seat that will fly anything passes `--flyer`.
 
 A reserved call is asked as a card (the `question-card` skill) or filed `--for OWNER --kind decision`, and the
 work waits on it. It never times out into a decision.

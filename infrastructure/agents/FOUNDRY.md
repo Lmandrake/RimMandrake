@@ -172,7 +172,7 @@ Do the steps in one turn:
    more than one if it's context is ok"):
    - **`CONTEXT OK`** — your window's context is under the backstop (`seat_restart.seats.FOUNDRY.backstop_ctx_tokens`,
      110000 tokens). No restart is requested. **Do not end the turn:** run
-     `python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY --ringed` and work the item it gives you, then this
+     `python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY` and work the item it gives you, then this
      same close-out again. Only an empty queue (or a ticket that needs the owner) ends the turn. One ring per ticket
      spent the hourly wake cap on sub-minute tickets and left you at a bare prompt; this is the fix.
      🔴 **Waiting on a lane job or a test result is NOT idle** (FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS; owner
@@ -191,8 +191,7 @@ Do the steps in one turn:
      - a helper is alive;
      - you hold the bridge or the driver lock;
      - your last game event is a deploy, load or shutdown;
-     - PAUSE is on;
-     - the owner touched the machine in the last 2 minutes.
+     - PAUSE is on.
 
 **First turn of a fresh window** (its first prompt says so):
 `python3 src/RimMandrake/rimflow/seat_restart.py wake --seat FOUNDRY`. It prints the seat log

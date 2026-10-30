@@ -890,15 +890,9 @@ def cmd_next(args, seat):
         sync_game_state(w, seat)
     _warn_contested_claims(w, seat)
     ctx = _ctx(args)
-    # 🔴 RINGED WINDOW, OWNER BACK (DISPATCHER_HARDEN_OWNER_RETURN_AFTER_RING). The Dispatcher measured the
-    # owner when it rang; this `next` runs minutes later. A ringed call (`--ringed`) re-measures and, unless
-    # the owner is MEASURED idle, withholds every item that needs the game.
-    if getattr(args, "ringed", False):
-        from rimflow import idle_probe
-        ok, why = idle_probe.idle_verdict(idle_probe.measure())
-        if not ok:
-            ctx["hold_game"] = why
-            print("(owner present: items needing the game are withheld from this ringed `next` - %s)" % why)
+    # ⛔ `--ringed` is accepted and ignored: the owner's presence at the machine withholds nothing (owner
+    # 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for anything
+    # changing. It's causing so many problems and I don't need it.").
     _apply_grant_preflight(ctx)
     # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
     # its output is checked against the published git history before anything is
@@ -1053,9 +1047,6 @@ def _choose(w, seat, args, ctx, idx):
     offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
     out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
     claimable = _claimable(w, seat, args.target, ctx.get("now"))
-    if ctx.get("hold_game"):
-        offers = [a for a in offers if a.item.needs not in HOLD_GAME_NEEDS]
-        claimable = [c for c in claimable if c.needs not in HOLD_GAME_NEEDS]
     if ctx.get("hold_grant"):
         gneeds = tuple(ctx.get("hold_grant_needs") or GRANT_DEFAULT_NEEDS)
         offers = [a for a in offers if a.item.needs not in gneeds]
@@ -2499,26 +2490,31 @@ def _take_decision(holder, seat, idle, force, purpose):
            model.BRIDGE_STALE_SECONDS // 60))
 
 
-def _idle_gate(holder, seat, holder_idle, purpose, flyer, reading=None):
-    """The delegated take (owner card 2026-10-26 19:06; delegation_policy 2.6): -> (event fields, refusal).
-    Allowed only when the bridge is free / ours / its holder is stale by the existing rule (an OWNER hold
-    never counts as free), the owner's input has been idle >= 20 min, and the purpose is not a flyer's
-    flight. UNMEASURED refuses. The readings go on the event; `why` starts `delegated:` so the daily digest
+# Self-declared and fail-safe: any form of fly/flies/flew/flown/flight/flyer (also inside "butterfly", which only
+# costs a refusal), take off/takeoff, airborne, glide, soar, aloft, wingspan. Not "flow" (FlowWorks).
+_FLIGHT_RE = re.compile(r"fl(?:y|ie|ew|own|ight)|take[-\s]*offs?|airborne|glid|soar|aloft|wingspan", re.I)
+
+
+def flight_purpose(text):
+    return bool(_FLIGHT_RE.search(text or ""))
+
+
+def _delegated_gate(holder, seat, holder_idle, purpose, flyer):
+    """The delegated take (`--idle-ok`, kept as the name callers use; owner card 2026-10-26 19:06): -> (event fields,
+    refusal). Allowed whenever the bridge is free / ours / its holder is stale by the existing rule (an OWNER hold
+    never counts as free) and the purpose is not a flyer's flight. The owner's presence at the machine is NOT read
+    (owner 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for anything
+    changing. It's causing so many problems and I don't need it."). `why` starts `delegated:` so the daily digest
     lists it."""
-    from rimflow import idle_probe
     if holder == "OWNER":
-        return None, "refused: the OWNER holds the bridge; --idle-ok never takes his hold"
+        return None, "refused: the OWNER holds the bridge; a delegated take never takes his hold"
     if holder not in (None, seat) and not (holder_idle is None or holder_idle >= model.BRIDGE_STALE_SECONDS):
-        return None, ("refused: %s holds the bridge and is still working (%d min ago); --idle-ok takes only a "
-                      "free or stale bridge" % (holder, holder_idle // 60))
-    if reading is None:
-        reading = idle_probe.measure()
-    ok, reason = idle_probe.decide(reading, purpose, flyer)
-    if not ok:
-        return None, "refused: " + reason
-    return {"why": "delegated: bridge idle (%s)" % reason,
-            "idleProbe": "state=%s idle_seconds=%s foreground=%s rimworld_foreground=%s" % tuple(
-                reading.get(k) for k in ("state", "idle_seconds", "foreground", "rimworld_foreground"))}, None
+        return None, ("refused: %s holds the bridge and is still working (%d min ago); a delegated take takes only "
+                      "a free or stale bridge" % (holder, holder_idle // 60))
+    if flyer or flight_purpose(purpose):
+        return None, "refused: flyer flight is never delegated (needs a human present)"
+    return {"why": "delegated: bridge free (%s)" % ("held by %s, stale" % holder if holder not in (None, seat)
+                                                     else "ours" if holder == seat else "free")}, None
 
 
 def _bridge_take(args, seat, w, holder, purpose):
@@ -2532,7 +2528,7 @@ def _bridge_take(args, seat, w, holder, purpose):
     if getattr(args, "idle_ok", False):
         if args.force:
             die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
-        idle_ev, refusal = _idle_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
+        idle_ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
                                       args.purpose, getattr(args, "flyer", False))
         if refusal:
             die(refusal)
@@ -2758,12 +2754,12 @@ def cmd_bridge(args, seat):
     if args.action == "release":
         return _bridge_release(seat, w, holder)
     if args.action == "idle":
-        ev, refusal = _idle_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
-                                 args.purpose, args.flyer)
+        ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
+                                      args.purpose, args.flyer)
         if refusal:
             print("NOT TAKEABLE  " + refusal)
             return 1
-        print("TAKEABLE  %s\n  probe: %s" % (ev["why"], ev["idleProbe"]))
+        print("TAKEABLE  %s" % ev["why"])
         return 0
     return _bridge_take(args, seat, w, holder, purpose)
 
@@ -3138,8 +3134,7 @@ def build_parser():
                    help="REP/OWNER only: the whole board triaged — per-seat "
                         "counts, RIPE, IN TROUBLE, and what needs him")
     s.add_argument("--ringed", action="store_true",
-                   help="set by the Dispatcher's wake message: re-measure the owner now and withhold "
-                        "items that need the game unless he is MEASURED idle")
+                   help="accepted and ignored (owner 2026-10-30: his presence at the machine withholds nothing)")
     s.add_argument("--peek", action="store_true",
                    help="read-only: writes nothing (no measured game-state stamp, no "
                         "git-index cache write); shows the recorded game state")
@@ -3340,11 +3335,12 @@ def build_parser():
                    help="take it even though another window holds it and is awake. "
                         "Records that you did.")
     s.add_argument("--idle-ok", dest="idle_ok", action="store_true",
-                   help="delegated take (owner card 2026-10-26 19:06): succeeds without his word only if the bridge "
-                        "is free/stale AND his input has been idle >= 20 min; logs the probe; never for flyer flight")
+                   help="delegated take (owner card 2026-10-26 19:06): succeeds without his word whenever the bridge "
+                        "is free/ours/stale (never an OWNER hold, never flyer flight); his presence is not read "
+                        "(owner 2026-10-30)")
     s.add_argument("--flyer", action="store_true",
                    help="the purpose is a flyer's flight: --idle-ok refuses (flight needs a human present). "
-                        "`bridge idle` alone reports TAKEABLE or not, taking nothing.")
+                        "`bridge idle` alone reports whether a delegated take would succeed, taking nothing.")
     s.add_argument("--host", default=None,
                    help="which machine's game: archmagi (default) | stevedesktop. Each host has its own lock.")
     s.add_argument("--mine", action="store_true",

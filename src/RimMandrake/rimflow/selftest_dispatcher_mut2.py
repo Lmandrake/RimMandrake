@@ -196,7 +196,8 @@ def test_default_obs():
         sch = {"seats": {"A": {"clone": "/c/a"}}}
         o = D.default_obs(sch, "ROOT", {"s": 1})
         check(o["paused"] == "P" and o["agents"] == "AG" and o["roles"] == "ROLES", "plain keys")
-        check(o["owner"] is D.owner_reading and o["alive"] is D.pid_alive, "owner/alive bound")
+        check("owner" not in o and "peek_offline" not in o and not hasattr(D, "owner_reading")
+              and o["alive"] is D.pid_alive, "no owner-presence observer (owner 2026-10-30); alive bound")
         check(o["peek"]("A") == "PK" and rec[-1] == ("peek", "/c/a", "A"), "peek: %r" % (rec[-1],))
         check(o["events"]("A", 5) == "EV" and rec[-1] == ("ev", "/c/a", "A", 5, ("skip", "ROOT", {"s": 1})), "events: %r" % (rec[-1],))
         check(o["consumed"]("A", "R1") == "CO" and rec[-1] == ("cons", "SD", "A", "R1"), "consumed: %r" % (rec[-1],))

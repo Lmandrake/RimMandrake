@@ -6,8 +6,9 @@ Covers the §6 acceptance list with SIMULATED windows (no real Claude window is 
                            lease in its fake clone's shard, and the next tick VERIFIES the hand-off and notes it
   recover a dead one       a seat missing from `claude agents` is resumed (fake runner sees `--resume <session>` and
                            AGENT_SEAT), and the next tick sees it back
-  never take the game      a bridge/game-up/deploy ticket is HELD while the owner is present or UNMEASURED; every
-                           other ring carries the "owner present" line; the dispatcher has no game call at all
+  never read his presence  a bridge/game-up/deploy ticket is rung exactly as with him away (owner 2026-10-30), no
+                           ring carries an owner line, and an `owner` observer that raises is never called; the
+                           dispatcher has no game call at all
 plus retry/give-up, caps, PAUSE, blind instrument, dry-run writes nothing, doorbell supersede/orphan, and the
 DISPATCHER seat's ledger rule (note only). Nothing outside a temp dir is touched.
 """
@@ -57,18 +58,17 @@ def sess(name="AGENT FOUNDRY", status="idle", sid="sid-1"):
     return {"name": name, "status": status, "sessionId": sid, "kind": "interactive", "pid": 1}
 
 
-IDLE_OWNER = {"state": "MEASURED", "idle_seconds": 3600, "foreground": "x", "rimworld_foreground": False}
-PRESENT = {"state": "MEASURED", "idle_seconds": 30, "foreground": "RimWorldWin64", "rimworld_foreground": True}
-BLIND = {"state": "UNMEASURED", "idle_seconds": None, "why": "test"}
+def _no_presence():
+    raise AssertionError("the dispatcher read the owner's presence (owner 2026-10-30: never)")
 
 
-def obs(sessions=None, owner=IDLE_OWNER, ticket=None, armed=True, events=(), consumed=None, agents_ok=True,
+def obs(sessions=None, ticket=None, armed=True, events=(), consumed=None, agents_ok=True,
         paused=None):
     return {"paused": paused,
             "agents": {"state": "MEASURED", "sessions": sessions if sessions is not None
                        else [sess(), sess("AGENT BENCH", "busy", "b")]}
             if agents_ok else {"state": "UNMEASURED", "why": "x"},
-            "owner": lambda: owner,
+            "owner": _no_presence,          # the retired presence observer: calling it fails the test
             "peek": lambda seat: {"id": "SOME_ITEM_DO_IT", "needs": "offline"} if ticket is None else ticket,
             "events": lambda seat, since: [e for e in events if e.get("ts", "") >= since],
             "consumed": lambda seat, rid: consumed,
@@ -109,28 +109,12 @@ def test_wake_and_owner():
     check(not any(a.get("seat") == "BENCH" for a in acts), "BENCH (wake false) is never rung")
     check(st["seats"]["FOUNDRY"]["ring"]["ticket"] == "SOME_ITEM_DO_IT", "ring is pending verification")
 
-    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
-    r = [a for a in stall(sch, st, obs(owner=PRESENT)) if a["do"] == "ring"]
-    check(len(r) == 1 and "owner present: do not take the bridge" in r[0]["message"],
-          "owner present + offline ticket: ring carries the owner-present line")
     for need in D.GAME_NEEDS:
-        for who, rd in (("present", PRESENT), ("UNMEASURED", BLIND)):
-            st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
-            acts = stall(sch, st, obs(owner=rd, ticket={"id": "GAME_THING_DO_IT", "needs": need}))
-            check(kinds(acts) == ["hold"], "ticket needs %s, owner %s: HELD, not rung" % (need, who))
-    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
-    check("ring" in kinds(stall(sch, st, obs(ticket={"id": "GAME_THING_DO_IT", "needs": "bridge"}))),
-          "ticket needs bridge, owner MEASURED idle 60 min: rung")
-    # 2026-10-28: FOUNDRY sat idle for 15+ min behind one bridge item while offline work waited below it.
-    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
-    o = obs(owner=PRESENT, ticket={"id": "GAME_THING_DO_IT", "needs": "bridge"})
-    o["peek_offline"] = lambda seat: {"id": "DESK_THING_DO_IT", "needs": "offline"}
-    r = [a for a in stall(sch, st, o) if a["do"] == "ring"]
-    check(len(r) == 1 and st["seats"]["FOUNDRY"]["ring"]["ticket"] == "DESK_THING_DO_IT",
-          "top item needs the game, owner present: the next offline item is rung instead of holding the seat")
-    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
-    o["peek_offline"] = lambda seat: {}
-    check(kinds(stall(sch, st, o)) == ["hold"], "game item on top and no offline item below: HELD")
+        st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+        r = [a for a in stall(sch, st, obs(ticket={"id": "GAME_THING_DO_IT", "needs": need})) if a["do"] == "ring"]
+        check(len(r) == 1 and st["seats"]["FOUNDRY"]["ring"]["ticket"] == "GAME_THING_DO_IT"
+              and "owner" not in r[0]["message"].lower(),
+              "ticket needs %s: rung like any other, no owner line, presence never read" % need)
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
     check(kinds(stall(sch, st, obs(ticket={}))) == [], "empty queue: an idle window is left alone")
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
@@ -266,7 +250,7 @@ def test_no_handoff_rering_and_escalation():
     check([x.get("kind") for x in a if x["do"] == "alarm"] == ["decide:FOUNDRY"] and "ring" in st4["seats"]["FOUNDRY"],
           "malformed no_handoff.rering_s: a decide alarm, the ring kept for the next tick (%r)" % a)
     # the ring text says waiting on a lane is not idle (the FOUNDRY 2026-10-29 answer)
-    m = D.message("FOUNDRY", {}, {"id": "X_Y_Z"}, None, "FOUNDRY-1-1")
+    m = D.message("FOUNDRY", {}, {"id": "X_Y_Z"}, "FOUNDRY-1-1")
     check("NOT idle" in m and "lane job" in m and "rimflow note` on X_Y_Z" in m,
           "ring message: waiting on a lane/test is not idle; a no-claim answer says why in a note")
 
@@ -335,9 +319,9 @@ def test_never_adopt_or_resume_a_stranger():
     gone = [sess("AGENT BENCH", "busy", "b")]
     D.decide(sch, st, obs(), 1000.0, True)
     D.decide(sch, st, obs(sessions=gone), 1100.0, True)
-    a = D.decide(sch, st, obs(sessions=gone, owner=PRESENT), 1100.0 + sch["dead_after_s"], True)
-    check(kinds(a) == ["recover"] and "owner present: do not take the bridge" in a[0]["message"],
-          "recover while the owner is present: the resumed session is told not to take the game")
+    a = D.decide(sch, st, obs(sessions=gone), 1100.0 + sch["dead_after_s"], True)
+    check(kinds(a) == ["recover"] and "owner" not in a[0]["message"].lower(),
+          "recover: the resumed session gets no owner-presence line")
     a = D.decide(sch, st, obs(sessions=[sess(sid="other")]), 1100.0 + sch["dead_after_s"] + 60, True)
     check("recovered" not in kinds(a), "another session under the seat's name is not the recovered one")
 
@@ -645,15 +629,17 @@ def test_seat_rule():
         check(msg is not None and "DISPATCHER" in msg, "ledger: DISPATCHER may not %s (%s)" % (verb, (msg or "accepted")[:60]))
 
 
-def test_ringed_next_rechecks_owner():
-    """DISPATCHER_HARDEN_OWNER_RETURN_AFTER_RING: the wake message says --ringed, and a ringed `next` withholds
-    game-needing items (ranked and claimable) once the owner is back, while offline items still flow."""
+def test_ringed_next_withholds_nothing():
+    """Owner 2026-10-30 ("strip "when I come back to the machine" as an event for anything changing"): the wake
+    message no longer says --ringed, `next --ringed` still parses, and `_choose` offers game work first as before."""
     import types
-    from rimflow import cli, idle_probe
+    from rimflow import cli
     sch = sched()
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
     r = [a for a in stall(sch, st, obs()) if a["do"] == "ring"]
-    check(r and "next --seat FOUNDRY --ringed" in r[0]["message"], "wake message tells the window to run next --ringed")
+    check(r and "next --seat FOUNDRY" in r[0]["message"] and "--ringed" not in r[0]["message"],
+          "wake message runs plain next, no --ringed")
+    check(cli.build_parser().parse_args(["next", "--ringed"]).ringed is True, "next --ringed still parses (no-op)")
     A = lambda needs: types.SimpleNamespace(item=types.SimpleNamespace(id="X_" + needs, needs=needs, raised=None),
                                             kind="build")
     C = lambda needs: types.SimpleNamespace(id="C_" + needs, needs=needs, raised=None)
@@ -664,20 +650,15 @@ def test_ringed_next_rechecks_owner():
         cli._claimable = lambda *a, **k: [C("game-up"), C("offline")]
         cli.reconcile.assess = lambda it, idx: types.SimpleNamespace(kind="build", item=it)
         args = types.SimpleNamespace(target=None)
-        free = cli._choose(None, "FOUNDRY", args, {}, None)
-        check(free["item"].id == "X_bridge", "no hold: game item offered first (control)")
-        held = cli._choose(None, "FOUNDRY", args, {"hold_game": "owner back"}, None)
-        check(held["kind"] == "offer" and held["item"].id == "X_offline", "owner back: first offer skips bridge/deploy")
-        cli.priority.rank = lambda *a, **k: [A("bridge")]
-        held = cli._choose(None, "FOUNDRY", args, {"hold_game": "owner back"}, None)
-        check(held["kind"] == "claimable" and [c.id for c in held["claimable"]] == ["C_offline"],
-              "owner back: claimable list drops game-up")
-        cli._claimable = lambda *a, **k: [C("bridge")]
-        held = cli._choose(None, "FOUNDRY", args, {"hold_game": "owner back"}, None)
-        check(held["kind"] == "nothing", "owner back and only game work: nothing offered")
+        for ctx in ({}, {"hold_game": "owner back"}):
+            got = cli._choose(None, "FOUNDRY", args, ctx, None)
+            check(got["item"].id == "X_bridge", "ctx %s: the game item is still offered first" % sorted(ctx))
+        cli.priority.rank = lambda *a, **k: []
+        got = cli._choose(None, "FOUNDRY", args, {"hold_game": "owner back"}, None)
+        check(got["kind"] == "claimable" and [c.id for c in got["claimable"]] == ["C_game-up", "C_offline"],
+              "a stale hold_game key drops nothing from the claimable list")
     finally:
         cli.priority.rank, cli.reconcile.guard, cli._claimable, cli.reconcile.assess = saved
-    check(not idle_probe.idle_verdict(idle_probe.unmeasured("x"))[0], "UNMEASURED owner is not idle (so withheld)")
 
 
 # ---------------------------------------------------------------- role launch (role_launch.py)
@@ -3415,7 +3396,7 @@ def test_long_helper_alarm():
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_dead_recover,
-              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_rechecks_owner,
+              test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,

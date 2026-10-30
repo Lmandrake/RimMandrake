@@ -8,7 +8,7 @@ the rule it met and the measured reload cost it used). Build ticket ARENA_LANE_B
 There are two lanes, one game each: `steve` (SteveDesktop) and `archmagi` (the owner's machine). Whichever arm holds a
 lane does every live act through a `Lane` so that each act is logged once, by harness code, in the §1.7 schema:
 
-    live_take     rimflow bridge take --host <h> --for "arena <arm> ..."   (--idle-ok on archmagi while he plays)
+    live_take     rimflow bridge take --host <h> --for "arena <arm> ..."
     reload        stop, profile swap, deploy, launch, quicktest; detail carries the deploy and the MEASURED
                   launch-to-ready seconds; `rule` is the M1 rule the caller says it met (R0..R3)
     canary        pass | fail; a failed canary also writes `invalid` (never `fail`: the run is re-queued)
@@ -20,14 +20,14 @@ lane does every live act through a `Lane` so that each act is logged once, by ha
 ENFORCED HERE (each one a refusal, LaneRefused, before anything is touched):
   * profile `full` is refused in trial mode (owner 2026-10-29: no full-list profile in the trial). Only `minimal`
     (modlist_swap --minimal, modlist_swap.MINIMAL, 26 mods measured 2026-10-30) and `minimal+deps` (modset_builder --tier <tier>) exist.
-  * never a flyer's flight (standing ruling; `bridge take --idle-ok` refuses it too, but the lane refuses first).
+  * never a flyer's flight (standing ruling; `bridge take` refuses flight wording too, but the lane refuses first).
   * never a canonical world save: loading a save whose name is the canon start save (canon_save.py) is refused, and
     the canary is red on such a map.
   * no C# deploy while the game runs (the DLL is locked).
-  * his input never gates, delays or yields a lane (owner 2026-10-30: "I want you to disable the relationship between
-    me touching the machine and the live checker. It needs to live beside me."). `owner_playing` true is only his
-    explicit "I'm playing the game" switch (idle-ok take, owner-return polling); the default, and a missing flag, is
-    NOT playing: a plain take, no owner probe. The 20-minute idle rule for other seat work is unchanged.
+  * his presence at the machine never gates, delays, yields or aborts a lane (owner 2026-10-30: "I really, really
+    need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many
+    problems and I don't need it."). There is no owner probe and no owner-return abort; a lane config's old
+    `owner_playing` key is ignored. His explicit OWNER bridge hold still refuses the take.
 
 THE CANARY (§1.2 step 8): a live colonist and the vanilla spawn probe (modcheck/validity.canary, reused, not copied);
 a Player.log written since this lane's own launch; the expected game version (lane config `game_version`, pinned once
@@ -35,12 +35,11 @@ with `pin-version`); the deployed sha equal to the candidate sha and every deplo
 canonical save. Any check that cannot be read is a red canary (UNMEASURED is never a pass: instrument_traps).
 
     python3 src/RimMandrake/Utils/arena/arena_lane.py status   [--lane L]
-    python3 src/RimMandrake/Utils/arena/arena_lane.py config   --lane archmagi --owner-playing false
     python3 src/RimMandrake/Utils/arena/arena_lane.py pin-version --lane L --version "1.6.4871 rev591"   # the exact Player.log build line
     python3 src/RimMandrake/Utils/arena/arena_lane.py load-times [--lane L]
 
 Files (all under <arena> = arena_tasks.arena_root(), outside git):
-    <arena>/lanes/config.json          {lane: {owner_playing, game_version, trial}}
+    <arena>/lanes/config.json          {lane: {game_version, trial}}
     <arena>/lanes/load_times.jsonl     one line per measured reload: lane, profile, tier, launch_to_ready_s
     <arena>/events/<arm>.jsonl         the §1.7 log (through `emit`, the thin adapter below)
 
@@ -67,8 +66,8 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(UTILS))
 import arena_tasks  # noqa: E402  (arena_root, the one arena path resolver)
 
-LANES = {"steve": {"host": "stevedesktop", "idle_rule": False},
-         "archmagi": {"host": "archmagi", "idle_rule": True}}
+LANES = {"steve": {"host": "stevedesktop"},
+         "archmagi": {"host": "archmagi"}}
 PROFILES = ("minimal", "minimal+deps")
 EVENTS = ("freeze", "assign", "pass_start", "pass_end", "build_end", "test_start", "test_end", "gate", "judge",
           "critic_round", "live_take", "live_release", "reload", "canary", "card", "owner_touch", "defect", "invalid",
@@ -88,10 +87,6 @@ class LaneRefused(Exception):
 
 class RestoreFailed(LaneRefused):
     """The owner's mod list could not be put back. Loud, but it says nothing about the candidate under test."""
-
-
-class OwnerReturned(Exception):
-    """Archmagi: the owner came back. The run aborts, the lane is released, the candidate goes back first in line."""
 
 
 # ---------------------------------------------------------------- paths, config, event log
@@ -127,10 +122,10 @@ def write_config(p: dict, cfg: dict):
 
 
 def lane_config(p: dict, lane: str) -> dict:
-    """The lane's settings with defaults: the owner is not playing (his touch never gates a lane), the trial is on,
-    no version pinned."""
+    """The lane's settings with defaults: the trial is on, no version pinned. An old `owner_playing` key is dropped
+    (owner 2026-10-30: his coming back to the machine is not an event)."""
     c = dict(read_config(p).get(lane) or {})
-    c.setdefault("owner_playing", False)
+    c.pop("owner_playing", None)
     c.setdefault("trial", True)
     c.setdefault("game_version", None)
     return c
@@ -300,15 +295,12 @@ class Lane:
         self.release(aborted=et is not None, why=("%s: %s" % (et.__name__, ev)) if et else None)
         return False
 
-    def idle_ok(self) -> bool:
-        return bool(LANES[self.lane]["idle_rule"] and self.cfg["owner_playing"])
-
     def take(self):
         ok, out = self.d.bridge_take(self.host, "arena %s %s %s: %s" % (self.arm, self.lane, self.run_id,
-                                                                          self.purpose), self.idle_ok())
+                                                                          self.purpose), False)
+        # the third argument is the retired idle-ok flag, always False (owner 2026-10-30): drivers still take it
         self._ev("live_take", verdict="ok" if ok else "refused",
-                 detail={"host": self.host, "idle_ok": self.idle_ok(), "owner_playing": self.cfg["owner_playing"],
-                         "out": (out or "")[-300:]})
+                 detail={"host": self.host, "out": (out or "")[-300:]})
         if not ok:
             raise LaneRefused("bridge take refused on %s: %s" % (self.host, (out or "").strip()[-200:]))
         self.held = True
@@ -406,49 +398,6 @@ class Lane:
         if not self.held:
             raise LaneRefused("lane %s is not held by this run" % self.lane)
 
-    def check_owner(self):
-        """Archmagi while he plays: yield the moment he is back (the caller re-queues the candidate first)."""
-        if LANES[self.lane]["idle_rule"] and self.cfg["owner_playing"] and self.d.owner_returned():
-            raise OwnerReturned("owner input on %s: yielding" % self.host)
-
-    WATCH_POLL_S = 10.0     # how often a launch / quicktest wait looks for the owner's return
-
-    def _wait_watching(self, fn):
-        """Run a blocking driver wait (launch, quicktest) while polling the owner-return probe every WATCH_POLL_S.
-        On his return: stop the game (which ends the wait), then raise OwnerReturned; the caller's `with` releases
-        the lane and restores his list. Not the idle-rule lane / not playing: just runs `fn`."""
-        if not (LANES[self.lane]["idle_rule"] and self.cfg["owner_playing"]):
-            return fn()
-        import threading
-        box, done = {}, threading.Event()
-
-        def work():
-            try:
-                box["r"] = fn()
-            except BaseException as e:  # noqa: BLE001 - re-raised in the caller's thread (SystemExit included)
-                box["e"] = e
-            finally:
-                done.set()
-        th = threading.Thread(target=work, daemon=True)
-        th.start()
-        while not done.wait(self.WATCH_POLL_S):
-            if self.d.owner_returned():
-                seen = self.d.clock()   # the yield clock starts HERE, before the stop and the wait
-                stop_err = None
-                try:
-                    self.d.stop_game()
-                except Exception as e:  # noqa: BLE001 - a failed stop must not replace the owner's return
-                    stop_err = "%s: %s" % (type(e).__name__, e)
-                finally:
-                    done.wait(30)       # the stop ends the wait; release() restores either way
-                exc = OwnerReturned("owner input on %s during launch: yielding%s" % (
-                    self.host, "; stop_game failed: " + stop_err if stop_err else ""))
-                exc.seen_t, exc.stop_error = seen, stop_err
-                raise exc
-        if "e" in box:
-            raise box["e"]
-        return box["r"]
-
     # -- profile, deploy, reload
     def check_profile(self, profile: str, tier: str | None):
         if profile == "full" or profile not in PROFILES:
@@ -518,7 +467,6 @@ class Lane:
             if len(exp - base) > TRIAL_MAX_EXTRA:
                 raise LaneRefused("tier %r adds %d mods to the minimal list (trial cap %d): not an item's load "
                                   "dependencies" % (tier, len(exp - base), TRIAL_MAX_EXTRA))
-        self.check_owner()
         if self.d.game_running():
             self.d.stop_game()
         if self.d.game_running():
@@ -532,17 +480,10 @@ class Lane:
         self.profile = {"profile": profile, "tier": tier}
         self.expected_active = exp
         deploys = self.deploy(list(mods), has_dll, clone, sha) if mods else []
-        self.check_owner()
         t0 = self.d.clock()
-        try:
-            ok, out = self._wait_watching(self.d.launch_and_wait)
-            if ok:
-                ok, out = self._wait_watching(self.d.start_quicktest)
-        except OwnerReturned:
-            self._ev("reload", rule=rule, minutes=round((self.d.clock() - t0) / 60.0, 3), verdict="yielded",
-                     sha=self.deployed["sha"], detail={"profile": profile, "tier": tier, "why": why,
-                                                       "out": "owner returned during launch/quicktest"})
-            raise
+        ok, out = self.d.launch_and_wait()
+        if ok:
+            ok, out = self.d.start_quicktest()
         t1 = self.d.clock()
         self.launched_at = t0
         self.loaded_save = None
@@ -674,8 +615,9 @@ class RealDriver:
     def clock(self):
         return time.time()
 
-    def bridge_take(self, host, purpose, idle_ok):
-        rc, out = self._rf("bridge", "take", "--host", host, "--for", purpose, *(["--idle-ok"] if idle_ok else []))
+    def bridge_take(self, host, purpose, idle_ok=False):
+        """`idle_ok` is accepted and ignored: a lane take is always a plain take (owner 2026-10-30)."""
+        rc, out = self._rf("bridge", "take", "--host", host, "--for", purpose)
         return rc == 0, out
 
     def bridge_release(self, host):
@@ -787,12 +729,6 @@ class RealDriver:
     def load_save(self, name):
         return False, "load_save is not wired in the real driver yet (no task needs a fixture save)"
 
-    def owner_returned(self):
-        # `bridge idle` with no --host is Archmagi's (model.DEFAULT_BRIDGE_HOST), the one idle-rule lane; it exits 1
-        # with "NOT TAKEABLE" when his input is < 20 min old. A query that fails counts as "he is back" (fail closed).
-        rc, out = self._rf("bridge", "idle")
-        return rc != 0 or not out.lstrip().startswith("TAKEABLE")
-
     def game_facts(self):
         from game_paths import PLAYER_LOG, MODS_CONFIG
         import modlist_swap
@@ -833,7 +769,6 @@ def main(argv=None):
     s.add_argument("--lane", choices=sorted(LANES))
     c = sub.add_parser("config")
     c.add_argument("--lane", required=True, choices=sorted(LANES))
-    c.add_argument("--owner-playing", choices=("true", "false"))
     pv = sub.add_parser("pin-version")
     pv.add_argument("--lane", required=True, choices=sorted(LANES))
     pv.add_argument("--version", required=True)
@@ -849,8 +784,7 @@ def main(argv=None):
     elif a.cmd in ("config", "pin-version"):
         cfg = read_config(p)
         ent = cfg.setdefault(a.lane, {})
-        if a.cmd == "config" and a.owner_playing:
-            ent["owner_playing"] = a.owner_playing == "true"
+        ent.pop("owner_playing", None)
         if a.cmd == "pin-version":
             ent["game_version"] = a.version
         write_config(p, cfg)

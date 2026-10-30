@@ -61,7 +61,7 @@ hole. NO = it is broken or absent. OFF = it is built but switched off. DES = it 
 | F25 | Decide whether v3 beats v2 (the kill criterion) | `v3_vs_v2.py`, health check | OFF | The timer does not exist; the primary measures are UNMEASURED |
 | F26 | Daily health check, planted faults, process model | designed | DES | 3 items `doing` |
 | F27 | Spend control: token caps, helper caps, account choice | role_launch caps, helper_budget plus hook, account_pick | PART | Token caps are alarms after the fact (Arbiter used 1.02M against 500k). Helper caps are enforced. account_pick only recommends |
-| F28 | Serialize the live game and respect the owner at the machine | bridge lock, idle_probe | YES | |
+| F28 | Serialize the live game; never take his OWNER hold | bridge lock | YES | |
 | F29 | Check the game grant before live work | by hand | **NO** | 5 tickets bounced when the grant lapsed |
 | F30 | One config truth | `dispatcher_schedule.json`, role files, selftests | PART | Role headers and `_why` text drift from the config (AB §8.1-5) |
 | F31 | Pause everything | Dispatcher `PAUSE` file, OFF files | YES | |
@@ -137,7 +137,7 @@ Each invariant has one enforcing program and one forced-failure test (§6).
 | **rimflow** | CLI (no timer) | on call | The ledger. **I1 and I2 live here**: `next` enforces focus; `close` and `verify` enforce honest done and call `review_gate`. |
 
 Kept as they are, outside the roster because they are plumbing that decides no work: pulse (phone brief and digest),
-deadman and timer-guard, mirror, telemetry, scratch-reap, nightly selftests, the bridge lock, idle_probe and
+deadman and timer-guard, mirror, telemetry, scratch-reap, nightly selftests, the bridge lock and
 helper_budget with its hook.
 
 From **six scheduled AI roles to two**. From about 11 scheduled role runs a day to **2 plus at most 2 event runs**.

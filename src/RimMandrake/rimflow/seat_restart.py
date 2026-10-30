@@ -59,7 +59,7 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "intile_window_s": 90, "backstop_ctx_tokens": 110_000, "backstop_idle_s": 1800,
             "helper_stale_s": 3600, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
-            "owner_idle_s": 120, "backstop_owner_idle_s": 1200, "fence_s": 1020, "ring_hold_s": 600,
+            "fence_s": 1020, "ring_hold_s": 600,
             "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
@@ -844,26 +844,6 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 rs.get("new_session"), cfg["arm_s"]), now, act)
 
 
-def owner_ok(obs, need):
-    """idle_probe's verdict on obs["owner"]() (the machine's last-input clock: MEASURED idle >= need, else hold).
-    Typing into the window shows here before it reaches the transcript; a Remote Control draft on the phone does not."""
-    import idle_probe
-    try:
-        reading = obs["owner"]() if callable(obs.get("owner")) else None
-    except Exception as e:  # noqa: BLE001 - an unreadable owner clock holds
-        reading = {"state": "UNMEASURED", "why": "%s: %s" % (type(e).__name__, e)}
-    return idle_probe.idle_verdict(reading, need)
-
-
-def owner_need(cfg, rs):
-    """Seconds the machine's input clock must read idle before a kill: owner_idle_s (backstop_owner_idle_s for the
-    backstop), and for a Conductor never less than goodbye_quiet_s."""
-    need = cfg["backstop_owner_idle_s" if rs.get("source") == "backstop" else "owner_idle_s"]
-    if cfg.get("kind") == "conductor":
-        need = max(need, cfg.get("goodbye_quiet_s") or 0)
-    return need
-
-
 def cursor_verdict(cfg, rs, sc, now, track=True):
     """Judge one full read of the window's transcript from rs's byte cursor (cursor_scan's dict, or None).
     -> ("cancel", why) | ("hold", why) | ("ok", None).
@@ -873,8 +853,10 @@ def cursor_verdict(cfg, rs, sc, now, track=True):
     parsed cleanly, and ANY input at all since the goodbye cancels — his, a ring, a task notification, a peer; a
     malformed record cancels; a torn last record holds. Quiet is judged on two clocks: the newest record timestamp
     after the cursor, and the Dispatcher's own clock since it last saw the file grow (rs seen_size / quiet_since, so a
-    transcript clock that runs backwards cannot shorten it, review 2 P0-3). The owner's machine idle clock must also
-    read >= goodbye_quiet_s (owner_need). That turns the final-fence race into a ten-minute margin.
+    transcript clock that runs backwards cannot shorten it, review 2 P0-3). That turns the final-fence race into a
+    ten-minute margin. The owner's machine idle clock is never read (owner 2026-10-30: "I really, really need you to
+    strip "when I come back to the machine" as an event for anything changing."; and 2026-10-29: "If I'm typing at
+    the same time it's an acceptable risk.").
     A doorbell seat keeps the old rule: only his input cancels; no cursor -> its tail check alone."""
     conductor = cfg.get("kind") == "conductor"
     off = rs.get("tx_offset")
@@ -982,10 +964,6 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         act(do="restart_hold", seat=seat, why="; ".join(holds))
         return
     rs.pop("held_since", None)
-    ok, owner_why = owner_ok(obs, owner_need(cfg, rs))
-    if not ok:                           # the owner may be typing into the window: never counts toward the held alarm
-        act(do="restart_hold", seat=seat, why=owner_why)
-        return
     quiet = (cur.get("status") == "idle" and tx and tx.get("last_kind") == "assistant_end"
              and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
     if not quiet:
@@ -1181,8 +1159,8 @@ def execute(a, sch, st, apply, now, fx=None):
     # the final fence (blind review 2026-10-29 P0-3; review 2 P0-1): the killed record is on disk, so anything the old
     # window accepts from here on is still recovered by the new window's wake (it reads from the record's cursor). In
     # this order, each read AFTER the one before: the transcript from the cursor (it must not have grown since the
-    # tick that claimed), the owner's machine idle clock, and last the window's status. A Conductor got here only
-    # after goodbye_quiet_s of silence on all of them (cursor_verdict), so the gap left between the status read and the
+    # tick that claimed), and last the window's status. A Conductor got here only
+    # after goodbye_quiet_s of transcript silence (cursor_verdict), so the gap left between the status read and the
     # signal (milliseconds) needs him to submit within it after ten silent minutes: a margin, not a proof (no Claude
     # Code API admits input atomically against a kill).
     late = fx.get("final", final_fence)(seat, sch, rs, sf)
@@ -1205,12 +1183,10 @@ def execute(a, sch, st, apply, now, fx=None):
     return "killed pid %s (%s)" % (a["pid"], how)
 
 
-def final_fence(seat, sch, rs, sf, path=None, owner=None, now=None):
+def final_fence(seat, sch, rs, sf, path=None, now=None):
     """-> holds from a full read of the window's transcript from rs's cursor (cursor_verdict without moving the quiet
-    clock: any growth since the claiming tick holds), then — for a Conductor, measured AFTER that read — the owner's
-    machine idle clock against owner_need. [] = go. A seat without a cursor and not a Conductor passes (its tail check
+    clock: any growth since the claiming tick holds). [] = go. A seat without a cursor and not a Conductor passes (its tail check
     stands)."""
-    import idle_probe
     cfg = config(sch).get(seat) or dict(DEFAULTS)
     if path is None:
         path = rs.get("tx_path") or transcript_for(sf, cfg)
@@ -1218,10 +1194,6 @@ def final_fence(seat, sch, rs, sf, path=None, owner=None, now=None):
     verdict, why = cursor_verdict(cfg, rs, sc, time.time() if now is None else now, track=False)
     if verdict != "ok":
         return ["%s at the fence: %s" % (verdict, why)]
-    if cfg.get("kind") == "conductor":
-        ok, owhy = owner_ok({"owner": owner or idle_probe.measure}, owner_need(cfg, rs))
-        if not ok:
-            return ["owner at the fence: %s" % owhy]
     return []
 
 
@@ -1237,11 +1209,10 @@ def paused_now():
         return "PAUSE unreadable: %s" % e
 
 
-def recheck_at_kill(seat, sch, rs, sf, owner=None, paused=paused_now, work=None):
-    """-> the holds found by reading transcript, helpers, bridge, the owner's idle clock and PAUSE again at the kill
+def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None):
+    """-> the holds found by reading transcript, helpers, bridge and PAUSE again at the kill
     (empty = go). Between this and the signal there is no barrier: that gap is one /proc start read, the killed-record
     write, the pidfd open and its start re-check (milliseconds)."""
-    import idle_probe
     cfg = config(sch).get(seat) or dict(DEFAULTS)
     path = transcript_for(sf, cfg)
     tx = tx_summary(path or "")
@@ -1252,7 +1223,7 @@ def recheck_at_kill(seat, sch, rs, sf, owner=None, paused=paused_now, work=None)
         holds.append("new input at %s" % _iso(tx["last_user_at"]))
     elif tx.get("last_kind") != "assistant_end":
         holds.append("turn not ended (%s)" % tx.get("last_kind"))
-    holds += final_fence(seat, sch, rs, sf, path=rs.get("tx_path") or path, owner=owner)
+    holds += final_fence(seat, sch, rs, sf, path=rs.get("tx_path") or path)
     hs = helpers_of(path, time.time())
     if hs is None:
         holds.append("helper inventory UNMEASURED")
@@ -1261,9 +1232,6 @@ def recheck_at_kill(seat, sch, rs, sf, owner=None, paused=paused_now, work=None)
     br = bridge_reading(seat)
     if br.get("state") != "MEASURED" or seat in (br.get("holders") or []):
         holds.append("bridge %s" % (br.get("why") or "held by %s" % seat))
-    ok, why = owner_ok({"owner": owner or idle_probe.measure}, owner_need(cfg, rs))
-    if not ok:
-        holds.append(why)
     pz = paused()
     if pz:
         holds.append("PAUSE: %s" % pz)
@@ -1409,7 +1377,7 @@ def cmd_request(args):
     limit = cfg["backstop_ctx_tokens"]
     if not args.fresh and ctx is not None and ctx < limit:
         print("CONTEXT OK for %s: %d tokens < %d (backstop_ctx_tokens). No restart requested. Do NOT end the turn: "
-              "run `python3 src/RimMandrake/rimflow/cli.py next --seat %s --ringed` and work the item it gives you, "
+              "run `python3 src/RimMandrake/rimflow/cli.py next --seat %s` and work the item it gives you, "
               "with the same close-out after it. Waiting on a lane job, a test result or a helper is NOT idle: take the "
               "next item and read those results between items. Only an empty queue ends the turn; if `next` gives you "
               "nothing workable, say why in a `rimflow note` before you end it." % (seat, ctx, limit, seat))

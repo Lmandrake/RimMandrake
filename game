@@ -74,7 +74,7 @@ case "${1}" in
         echo "  --said \"…\"          the owner's words (light tidying fine, meaning unchanged)"
         echo "  --by-card \"…\"       he decided it by question card (the label is ours, not his words)"
         echo "  --per-ruling <id>    a standing ruling of his, cited by item id or ledger event"
-        echo "  --idle-ok            delegated restart: bridge free/ours + his input idle >= 20 min (needs --why; never --flyer)"
+        echo "  --idle-ok            delegated restart: bridge free/ours/stale, never his OWNER hold (needs --why; never --flyer)"
         echo "  --why \"…\"           YOUR own reason — a self-initiated restart uses this, never --said"
         echo
         echo "Stamps the ledger; run by the OWNER it also announces to every agent window."
@@ -97,15 +97,16 @@ while [ $# -gt 0 ]; do
     esac
 done
 [ $# -eq 0 ] && { echo "a flag takes its text, then the state: ./game --why \"reloading for X\" down" >&2; exit 2; }
-# ⭐ --idle-ok (owner card 2026-10-26 19:06, delegation_policy 2.6): a seat restarts the game on its own
-# when the bridge is free or ours AND his input has been idle >= 20 min (probe read, UNMEASURED refuses);
-# never for a flyer's flight. The event carries `why` = "delegated: bridge idle ..." so the digest lists it.
+# ⭐ --idle-ok (delegation_policy 2.6): a seat restarts the game on its own when the bridge is free, ours or
+# stale (45 min), never his OWNER hold, never for a flyer's flight. His input is NOT read (owner 2026-10-30:
+# "I really, really need you to strip "when I come back to the machine" as an event for anything changing.").
+# The flag keeps its old name for callers. The event carries `why` = "delegated: ..." so the digest lists it.
 if [ "$idle_ok" = 1 ]; then
     [ -n "$why" ] || { echo "--idle-ok needs --why \"<what for>\"" >&2; exit 2; }
     [ -z "$said$by_card$per_ruling" ] || { echo "--idle-ok is the delegated path: no --said/--by-card/--per-ruling" >&2; exit 2; }
     verdict="$(python3 "$here/src/RimMandrake/rimflow/cli.py" bridge idle --for "$why" "${flyer[@]}")" || { echo "$verdict" >&2; exit 1; }
     echo "$verdict" | head -1
-    why="delegated: bridge idle — $why [$(echo "$verdict" | sed -n 's/^TAKEABLE  delegated: bridge idle (\(.*\))$/\1/p')]"
+    why="delegated: $why [$(echo "$verdict" | sed -n 's/^TAKEABLE  delegated: \(.*\)$/\1/p')]"
 fi
 export RIMFLOW_OWNER_SAID="$said" RIMFLOW_WHY="$why" RIMFLOW_BY_CARD="$by_card" RIMFLOW_PER_RULING="$per_ruling"
 

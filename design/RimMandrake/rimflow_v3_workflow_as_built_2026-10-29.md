@@ -211,7 +211,6 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - Its doorbell is armed with a matching session id.
   - A peek at the queue finds a ticket for it.
   - The caps allow it.
-  - **Owner gate.** A ticket that needs the bridge, the running game or a deploy (GAME_NEEDS) is held unless the owner has been MEASURED idle ≥ `owner_idle_s` 1200 (`sched:12`) by `idle_probe`.
   - The account gate passes.
 - **Caps** [LIVE, `sched:20`]:
   - `wakes_per_seat_hour` 12, `wakes_per_seat_day` 96, `wakes_per_day` 120, `recovers_per_seat_day` 3.
@@ -259,8 +258,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   | backstop_idle_s | 1800 | helper_stale_s | 3600 |
   | game_hold_s | 3600 | cooldown_s | 1800 |
   | hold_alarm_s | 3600 | request_max_age_s | 3600 |
-  | claimed_max_s | 300 | owner_idle_s | 120 |
-  | backstop_owner_idle_s | 1200 | fence_s | 1020 |
+  | claimed_max_s | 300 | fence_s | 1020 |
   | ring_hold_s | 600 | | |
 
 - **Kill and relaunch** [LIVE]:
@@ -548,7 +546,6 @@ SteveDesktop is a second Windows machine. It runs RimWorld test jobs over SSH. T
   - The item that would automate it, `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME`, is `proposed` [DESIGNED].
   - [LIVE, `src/RimMandrake/Utils/modcheck/runner.py:104-110`] modcheck refuses to start a suite when the companion is not in its TEST profile or the grant lapses within `PROFILE_MIN_MINUTES` = 45.
   - UNVERIFIED: the grant file's path and current expiry. I did not find or open the live file.
-- **Owner idle gate** [LIVE]: tickets needing the game, the bridge or a deploy are rung only when `idle_probe` MEASURES the owner idle ≥1200 s (`sched:12`).
 
 ### 2.17 Interim GPT reviewer
 
@@ -720,7 +717,6 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | cooldown_s | 3600 | sched:9 | owner (P4 L-1) | |
 | dead_after_s | 600 | sched:10 | owner (P4 L-1) | |
 | recover_verify_s | 300 | sched:11 | owner (P4 L-1) | unused (recovery off) |
-| owner_idle_s | 1200 | sched:12 | owner (P4 L-1) | game/bridge tickets wait for an idle owner |
 | alarm_every_s | 21600 | sched:13 | owner (P4 L-1) | |
 | HOLD_ALARM_EVERY_S | 21600 | disp:573 | code | |
 | ops_stale_s / OPS_STALE_S | 2700 | sched:3, rl:116-165 | owner (P4 L-1) | |
@@ -736,7 +732,6 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | seat_restart defaults | see §2.4 table | seat_restart.py DEFAULTS | code | |
 | lease length / renew | 45 min / every 10 min | `lease.py:72-73` `LEASE_TTL_S`, `RENEW_EVERY_S` | code | [LIVE] |
 | helper_budget MAX_AGE_S / FUTURE_SLACK_S | 600 s / 5 s | `helper_budget.py:32-33` | code | [LIVE] |
-| owner idle required / boot slack | 1200 s / 60 s | `idle_probe.py` `IDLE_REQUIRED_SECONDS`, `BOOT_SLACK_MS`; owner card 2026-10-26 19:06 | owner (card) | [LIVE]; any probe failure is UNMEASURED, never idle |
 | slot_rules modes, caps and lent-account limits | see §2.14 | `slot_rules.json` | code | [LIVE] |
 | slot_late_s | 3600 (every role) | sched:59,76,92,108,123,136 | owner (schedule) | |
 | run_max_s | Conductor 1800, Arbiter 2700, Auditor 2700, Operations 1800, Producer 1800, Innovator 2700 | same lines | owner | the only hard stop |

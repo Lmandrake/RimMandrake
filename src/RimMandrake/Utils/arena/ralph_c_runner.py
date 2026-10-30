@@ -15,8 +15,9 @@ THE PROTOCOL
   * Verdicts: pass | fail from the proof's exit code (0 / the candidate's fail_rc, default 1). A red canary
     before OR after the proof, any other exit code, a Python traceback with the fail code (the harness crashed, it
     did not judge), or a harness fault is `invalid`: never a fail, and the candidate stays pending (re-queued).
-    An owner return on Archmagi (checked before and after the proof) aborts the run with no result, so the
-    candidate stays first in line.
+    The owner coming back to the machine is not an event: nothing checks for it and nothing aborts on it (owner
+    2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for anything
+    changing.").
   * A result counts only for its sha AND its publication (`cand`): republishing an old sha after another is a new
     candidate and is tested again. `record_result` refuses a result that is not the item's CURRENT candidate (a
     stale sha), and `lane_record` (what arena_gate reads, §1.2 step 8) refuses one whose sha is not the gate's
@@ -266,7 +267,7 @@ def _crashed(txt) -> bool:
 
 def run_one(p: dict, lane: str, driver, clone: str, runner_id: str | None = None) -> dict | None:
     """Test the oldest unclaimed pending candidate once. Returns the result written, or a dict with verdict
-    `aborted` / `refused` / `stale` and nothing counted, or None when nothing is free to test."""
+    `refused` / `stale` and nothing counted, or None when nothing is free to test."""
     run_id = "%s-%s-%s" % (ARM, lane, uuid.uuid4().hex[:10])
     c = next((x for x in pending(p) if claim(p, x["cand"], run_id)), None)
     if c is None:
@@ -292,7 +293,7 @@ def _run_claimed(p, lane, driver, clone, c, run_id, runner_id):
            "mods": c["mods"], "has_dll": c["has_dll"], "proof": c["proof"], "canary": None, "verdict": "invalid",
            "logs": []}
     ev("test_start", detail={"tester": runner_id, "builder": c["builder"]})
-    outcome = None                      # aborted | refused: nothing recorded
+    outcome = None                      # refused: nothing recorded
     try:
         ok, out = driver.checkout(clone, c["sha"])
         if not ok:
@@ -313,14 +314,12 @@ def _run_claimed(p, lane, driver, clone, c, run_id, runner_id):
             if not can["ok"]:
                 res["verdict"], res["why"], res["_invalid_logged"] = "invalid", "canary red", True   # canary logged it
             else:
-                lane_h.check_owner()
                 rc, txt = driver.run_proof(c["proof"], clone)
                 p["logs"].mkdir(parents=True, exist_ok=True)
                 log = p["logs"] / ("%s.log" % run_id)
                 log.write_text(txt or "", encoding="utf-8")
                 res["logs"].append(str(log))
                 res["proof_rc"] = rc
-                lane_h.check_owner()          # he came back during the proof: no result
                 after = lane_h.canary(c["sha"])   # the world the proof ran in must still be valid when it ends
                 res["canary_after"] = {"ok": after["ok"], "problems": after["problems"]}
                 fail_rc = c.get("fail_rc", 1)
@@ -337,12 +336,8 @@ def _run_claimed(p, lane, driver, clone, c, run_id, runner_id):
                     invalid("proof exit %r is neither pass (0) nor fail (%r)" % (rc, fail_rc))
     except L.RestoreFailed as e:
         res["restore_failed"] = str(e)          # the verdict stands; the lane is flagged (the live_release says error)
-        if isinstance(e.__context__, L.OwnerReturned):
-            outcome = {"verdict": "aborted", "why": str(e.__context__)}
-        elif isinstance(e.__context__, Exception) and res["verdict"] == "invalid":
+        if isinstance(e.__context__, Exception) and res["verdict"] == "invalid":
             invalid("%s (and the restore failed)" % e.__context__)
-    except L.OwnerReturned as e:
-        outcome = {"verdict": "aborted", "why": str(e)}
     except L.LaneRefused as e:
         if res["canary"] is None and "take refused" in str(e):
             outcome = {"verdict": "refused", "why": str(e)}       # the lane was busy: not this candidate's round

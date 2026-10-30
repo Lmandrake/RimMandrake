@@ -376,7 +376,8 @@ class RalphSim(S.Sim):
             S.Sim.close(self, t, tk)
 
     # ---- variant C: two live runners. S owns SteveDesktop's game; A may use Archmagi's game only when the owner
-    # is not holding it and has been away 20 min (rimflow bridge take --idle-ok), and loses it when he comes back.
+    # is not holding it and has been away 20 min, and loses it when he comes back. This models the away-20-min rule
+    # as it stood when the sim was written; rimflow no longer has it (owner 2026-10-30: presence is not an event).
     def busy_h(self, h):
         return self.owner_busy[min(h, len(self.owner_busy) - 1)]
 

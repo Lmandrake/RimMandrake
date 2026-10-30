@@ -232,8 +232,8 @@ weak, the gate is weak. Section 3 counts this as the biggest loss.
 
 ### 1.7 The live game, deploys and owner-only acts
 
-- **Game:** the only route is `rimflow bridge take --idle-ok --for "<item>"`. The idle probe refuses when the
-  owner is at the machine, when the state is UNMEASURED, or for any flyer or flight wording. A refusal means the
+- **Game:** the only route is `rimflow bridge take --idle-ok --for "<item>"`. It refuses a live other holder, his
+  OWNER hold, and any flyer or flight wording; his presence at the machine is not an event (owner 2026-10-30). A refusal means the
   pass takes a different item. An OWNER hold is never taken. Only one copy of the loop can run (flock), so variant
   A cannot hold the bridge twice.
 - **Deploy:** plan first, then `--apply`, with `validate_patch.py --live --defs` after. No C# deploy while the
@@ -290,10 +290,9 @@ A trial beside v3 needs exclusive source scope (one mod each) and its own deploy
 - **Builders never take the bridge.** Every live test goes through the runners.
 - **Runner S, on SteveDesktop**, is always available. It follows section 2's fixed-SHA protocol.
 - **Runner A, on Archmagi**, uses the owner's own game. It takes the bridge only through `bridge take --idle-ok`,
-  and only after the owner has left the game for 20 minutes (the existing idle rule). When he comes back, it
-  yields at once: it aborts the run, frees the bridge and puts the candidate back at the front of the queue. The
-  next time it takes the game after he played, it pays a cold load (`c_cold_min`, 0.5-25 min). The endpoints are
-  the measured 22 s for the 13-mod minimal list and about 25 min for his full list.
+  when the bridge is free, ours or stale. His coming back to the machine is not an event (owner 2026-10-30): the
+  run is never aborted or yielded for it. A take after another holder pays a cold load (`c_cold_min`, 0.5-25 min);
+  the endpoints are the measured 22 s for the 13-mod minimal list and about 25 min for his full list.
 - **Both runners pull from one test queue**, oldest candidate first, and write results under the same rules.
 
 ### 3.2 The conflicts the owner's question raises

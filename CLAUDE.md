@@ -333,13 +333,14 @@ One window drives the live game at a time. Who holds it is `infrastructure/state
 written only by `rimflow bridge who | take --for "<what for>" | release` (release the moment
 you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale and simply
 taken; `take --force` always works. ⭐ The owner overrides with `./bridge bench|foundry|free`.
-⭐ **Free bridge + 20 min idle is yours (owner card 2026-10-26 19:06):** a seat MAY take the
-bridge, deploy and restart the game on its own when a watcher shows no other seat holds it AND
-he has not touched the game for 20 minutes — never for a flyer's flight; each act goes in his
-daily digest (`delegation_policy.md` §2.6). Tooling LANDED: `rimflow bridge idle --for "<what>"` reports TAKEABLE
-or not; `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" down|loading|...` do it
-(probe `rimflow/idle_probe.py`; UNMEASURED refuses; `--flyer` or flight wording refuses; an OWNER hold is never taken).
-🔴 **The arena live checker lives beside him** (owner, 2026-10-30: *"I want you to disable the relationship between me touching the machine and the live checker. It needs to live beside me."*): his input on the machine never gates, delays or yields an arena lane, TestPilot or runner (lane config `owner_playing` false; no `bridge idle` check). Still binding: a free bridge (or `./bridge` override), never an OWNER hold, never a flyer's flight, never fullscreen or focus the game.
+🔴 **His presence at the machine is not an event** (owner, 2026-10-30: *"I really, really need you to strip "when I come
+back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*): nothing
+reads his input clock, and his touching, leaving or returning to the machine never gates, delays, yields, requeues or
+aborts a take, deploy, restart, ring, arena lane, TestPilot or runner. A seat MAY take the bridge, deploy and restart the
+game when the bridge is free, ours, or stale by the 45-min rule (`rimflow bridge idle --for "<what>"` reports it;
+`rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" ...` do it; each act goes in his
+daily digest, `delegation_policy.md` §2.6). Still binding: his OWNER hold and `./bridge` override, never a flyer's
+flight (`--flyer` or flight wording refuses), never fullscreen or focus the game.
 🔴 **Holding the bridge is blanket authorization** — *"Never ask that. If you have bridge, you may
 start steam, launch game, anything you need."* Game-state relays are STAMP-ONLY (*"burn tokens
 unnecessarily and rarely inform"*). Detail: `standing_rulings.md`.

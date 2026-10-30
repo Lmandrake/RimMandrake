@@ -137,9 +137,8 @@ There are two live lanes, one per machine: SteveDesktop and Archmagi. Each lane 
 driver, through the existing `rimflow bridge take/release`. Each lane has a wrapper, `arena_lane.py`, that logs
 take, release, deploy, reload and canary for whichever arm holds it. The wrapper also enforces:
 
-- **Archmagi:** the 20-minute idle rule (`--idle-ok`) whenever the owner plays. He said "I don't play right now so
-  no need to wait", so while he is not playing it is a config flag, `owner_playing=false`. The rule comes back
-  the moment he plays.
+- **Archmagi:** no idle rule and no owner-presence check (owner 2026-10-30, verbatim: "I really, really need you to
+  strip "when I come back to the machine" as an event for anything changing."); the `owner_playing` key is ignored.
 - **Never a flyer's flight.** Never a canonical world save.
 - **No C# deploy while the game runs:** the DLL is locked.
 - **Restore the owner's mod list after a test:** `modlist_swap.py restore`. Ralph §3.2 left this uncharged; the
@@ -595,7 +594,6 @@ Safety invariants to check:
 Liveness properties, under weak fairness:
 
 - **L1:** every candidate is eventually resolved, marked invalid or parked.
-- **L2:** an owner return frees the Archmagi game within the bound.
 
 The model's first job is to reproduce today's goodbye interleaving in the unfixed protocol. A model that cannot
 find a bug we already know cannot be trusted to find new ones. Then it checks the fixed protocol. Cost: about 8

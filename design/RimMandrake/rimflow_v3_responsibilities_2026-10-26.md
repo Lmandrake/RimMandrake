@@ -529,7 +529,7 @@ Rules of the table:
 | O-4 | north-star skepticism: propose check cuts and merges | BENCH (none run on a cadence today) | weekly, batched per mod | Arbiter verifies detection kept (GPT reviewer until Fri); bar cuts → Lukas | Wed |
 | O-5 | disk and scratch (`scratch_reap.py`, `scratch_clone.py sample`) | `rm-scratch-reap` / `rm-objstore` timers; BENCH on `DISK_LOW` | timers; per alarm | ops_watch `disk` family | Wed |
 | O-6 | git health: locks, `mirror.py`, publish failures, torn ledger | each seat on sight; `rm-mirror` timer | on sight | `ledger_lint.py` push guard; ops_watch `timers` | Wed |
-| O-7 | game restarts and speed (D4), never while he plays | any seat under the bridge-idle delegation | on need | `idle_probe` gate; `rimflow bridge` record | Wed |
+| O-7 | game restarts and speed (D4); his presence is not an event (owner 2026-10-30) | any seat under the free-bridge delegation | on need | `rimflow bridge` record | Wed |
 | O-8 | health of timers and services (pulse, telemetry, `artpiped`, memwatch, testq on SteveDesktop) | the timers themselves; SteveDesktop steward; BENCH on `TIMER_FAILED` | 15 min program | ops_watch `timers` / `steve` families | Wed |
 | O-9 | nightly selftest reds → tickets | BENCH reads `Transient/selftests_nightly.log` each sitting | daily | Auditor from Sun; until then the next nightly run | Wed |
 | O-10 | leftovers archive-then-delete | any seat | on sight | an independent usage census before delete | Wed |
@@ -545,7 +545,7 @@ Rules of the table:
 | D-1 | wake a stalled builder, hand the ticket, verify, retry, record | Lukas's keep-going messages; `dispatcher.py` dry-run journal | every 2 min | D1 wake success (journal); outside dead-man heartbeat owed (`DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT`) | Wed (`--apply`) |
 | D-2 | lease-based "doing" | `lease.py` through `rimflow next` (live) | per take | ops_watch `flow.lapsed_leases` | live now |
 | D-3 | enforce caps (slot allocator N) and the throttle order | `slot_allocator.py` hook | per launch | D4 cap breaches (owed) | Wed |
-| D-4 | one bridge holder; never the game while he plays | `rimflow bridge` + `idle_probe` | per take | the bridge record | live now |
+| D-4 | one bridge holder; never his OWNER hold | `rimflow bridge` | per take | the bridge record | live now |
 | D-5 | verify a woken seat consumed its handoff | each seat's `handoff.py` ritual | per wake | dispatcher journal | Wed |
 | D-6 | test lane (testq tick / steward / ingest) | RUNNER on SteveDesktop (live) | timers | ops_watch `steve` family | live now |
 | D-7 | measuring arm (`ops_watch.py`) | `rm-ops-watch.timer` (live since 2026-10-27) | 15 min | Operations reads it; silent flag | live now |

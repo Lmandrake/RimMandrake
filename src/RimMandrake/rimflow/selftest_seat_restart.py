@@ -15,6 +15,7 @@ killed or launched, nothing outside the temp dir is written. Covered:
 plus: kill only after sessions/<pid>.json names the session, dry-run never kills, busy -> failed, the backstop
 threshold, the in-tile claim fires once per kill, and the Dispatcher neither rings nor 'recovers' a seat mid-restart.
 """
+import inspect
 import json
 import time
 import subprocess
@@ -62,13 +63,17 @@ def sess(sid="sid-old", status="idle", pid=4242, name="AGENT FOUNDRY"):
             "procStart": "77"}
 
 
+def _no_presence():
+    raise AssertionError("seat_restart read the owner's presence (owner 2026-10-30: never)")
+
+
 def obs(sessions=None, request=None, tx=None, helpers=(), bridge=None, game=None, armed=None, intile=None,
-        paused=None, owner=None, killed=None, work=(), human_since=(), cursor=(), last_human=(None, None, None, 0)):
+        paused=None, killed=None, work=(), human_since=(), cursor=(), last_human=(None, None, None, 0)):
     """One tick's reading. Defaults: the window idle and quiet (ended its turn long ago), nothing held."""
     tx = dict({"last_kind": "assistant_end", "last_at": T0 - 600, "last_user_at": T0 - 900, "ctx_tokens": 50_000},
               **(tx or {}))
     return {"paused": paused,
-            "owner": lambda: owner or {"state": "MEASURED", "idle_seconds": 99_999},
+            "owner": _no_presence,      # owner 2026-10-30: never read; calling it fails the tick
             "agents": {"state": "MEASURED", "sessions": [sess()] if sessions is None else sessions},
             "seat_restart": {"request": lambda seat: request,
                         "tx": lambda seat, s: tx,
@@ -427,7 +432,7 @@ def test_dispatcher_holds_seat_mid_restart():
     st = killed_state(fresh())
     st["seats"]["FOUNDRY"] = {"session_id": "sid-old", "dead_since": T0 - 10_000}
     o = obs(sessions=[])
-    o.update({"owner": lambda: {"state": "MEASURED", "idle_seconds": 99999}, "peek": lambda seat: None,
+    o.update({"peek": lambda seat: None,
               "events": lambda seat, since: [], "consumed": lambda seat, rid: None, "alive": lambda pid: True})
     acts = D.decide(sch, st, o, T0 + 220, True)
     check("recover" not in dos(acts) and "ring" not in dos(acts),
@@ -442,7 +447,7 @@ def test_dispatcher_holds_seat_mid_restart():
     st2 = fresh()
     run(sch, st2, obs(request=req()), T0 + 1)
     o2 = obs()
-    o2.update({k: o[k] for k in ("owner", "peek", "events", "consumed", "alive")})
+    o2.update({k: o[k] for k in ("peek", "events", "consumed", "alive")})
     acts = D.decide(sch, st2, o2, T0 + SR.DEFAULTS["grace_s"] + 5, False)
     D.execute(acts, sch, st2, os.path.join(TMP, "dry"), False, T0 + SR.DEFAULTS["grace_s"] + 5, fx)
     check("restart_kill" in dos(acts) and calls == [], "dispatcher dry-run decides the kill and kills nothing")
@@ -465,7 +470,7 @@ def test_dry_key_under_live_apply():
                            "consume": lambda seat, **k: calls.append("consume") or None,
                            "fallback": lambda argv: calls.append(argv) or "ran"},
           "lock": lambda: None}
-    o = {"owner": lambda: {"state": "MEASURED", "idle_seconds": 99999}, "peek": lambda seat: None,
+    o = {"owner": _no_presence, "peek": lambda seat: None,
          "events": lambda seat, since: [], "consumed": lambda seat, rid: None, "alive": lambda pid: True}
     st = fresh()
     root = os.path.join(TMP, "livedry")
@@ -544,13 +549,18 @@ def test_r1_recheck_at_the_kill():
     check(calls == [] and state(st2) != "killed", "R1 a session file without status is not idle: no kill")
 
 
-def test_r2_owner_active_holds():
+def test_r2_owner_presence_never_holds():
+    """Owner 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for
+    anything changing." obs()'s owner observer raises if read; the restart goes ahead with no owner hold."""
     sch, st = sched(), fresh()
     run(sch, st, obs(request=req()), T0 + 1)
-    acts = run(sch, st, obs(owner={"state": "MEASURED", "idle_seconds": 20}), T0 + SR.DEFAULTS["grace_s"] + 5)
-    check(dos(acts) == ["restart_hold"] and "owner" in acts[0]["why"], "R2 the owner at the keyboard holds (%s)" % acts)
-    acts = run(sch, st, obs(owner={"state": "UNMEASURED"}), T0 + SR.DEFAULTS["grace_s"] + 10)
-    check(dos(acts) == ["restart_hold"], "R2 owner presence unmeasured holds")
+    acts = run(sch, st, obs(), T0 + SR.DEFAULTS["grace_s"] + 5)
+    check("restart_kill" in dos(acts) and not any("owner" in (a.get("why") or "").lower() and a["do"] == "restart_hold"
+                                                  for a in acts),
+          "R2 presence is never read and never holds: grace over -> kill (%s)" % dos(acts))
+    check(not hasattr(SR, "owner_ok") and not hasattr(SR, "owner_need")
+          and "owner_idle_s" not in SR.DEFAULTS and "backstop_owner_idle_s" not in SR.DEFAULTS,
+          "R2 the owner-idle gate and its knobs are gone")
 
 
 def test_r3_helpers_unreadable_hold_and_never_age_out():
@@ -648,15 +658,16 @@ def test_m10_consume_only_the_request_read():
 
 # ---- GPT confirmation round 2026-10-28 (foundry_fresh/gpt/review2.md)
 
-def test_c1_recheck_reads_owner_and_pause():
+def test_c1_recheck_reads_pause_not_owner():
     sch, st = sched(), fresh()
     rs = {"ts": T0, "session_id": "sid-old"}
     pdir = os.path.join(TMP, "state")
     os.makedirs(pdir, exist_ok=True)
     holds = SR.recheck_at_kill("FOUNDRY", sch, rs, {"pid": 1, "sessionId": "sid-old", "cwd": CLONE},
-                               owner=lambda: {"state": "MEASURED", "idle_seconds": 3}, paused=lambda: "owner said stop")
-    check(any("owner" in h for h in holds) and any("PAUSE" in h for h in holds),
-          "C1 the kill-time recheck reads the owner clock and PAUSE again (%s)" % holds)
+                               paused=lambda: "owner said stop")
+    check(any("PAUSE" in h for h in holds) and not any("idle" in h for h in holds),
+          "C1 the kill-time recheck reads PAUSE again, never an owner idle clock (%s)" % holds)
+    check("owner" not in inspect.signature(SR.recheck_at_kill).parameters, "C1 recheck_at_kill takes no owner reader")
 
 
 def test_c3_unlistable_subagents_dir_is_unmeasured():
@@ -999,7 +1010,7 @@ def test_v3_close_out_continues_while_context_is_ok():
     fmd = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), "infrastructure", "agents", "FOUNDRY.md")
     with open(fmd, encoding="utf-8") as f:
         doc = f.read()
-    check("CONTEXT OK" in doc and "next --seat FOUNDRY --ringed" in doc and "110000" in doc.replace(",", "").replace(" ", ""),
+    check("CONTEXT OK" in doc and "next --seat FOUNDRY" in doc and "--ringed" not in doc and "110000" in doc.replace(",", "").replace(" ", ""),
           "V3 FOUNDRY.md's close-out tells the seat to continue on CONTEXT OK and names the 110000 backstop")
 
 
@@ -1058,12 +1069,12 @@ def test_w1_new_work_after_the_request_voids_it():
     # the kill-time re-check reads it again
     holds = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "ticket": "SOME_TICKET_DONE", "session_id": "sid-old"},
                                {"pid": 1, "sessionId": "sid-old", "cwd": CLONE},
-                               owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999}, paused=lambda: None,
+                               paused=lambda: None,
                                work=lambda seat, ts: [_ev("lease", "NEW_TICKET_1", later, action="take")])
     check(any("new work" in h for h in holds), "W1 the kill-time re-check holds on new work (%s)" % holds)
     holds = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "ticket": "SOME_TICKET_DONE", "session_id": "sid-old"},
                                {"pid": 1, "sessionId": "sid-old", "cwd": CLONE},
-                               owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999}, paused=lambda: None,
+                               paused=lambda: None,
                                work=lambda seat, ts: None)
     check(any("UNMEASURED" in h for h in holds), "W1 the kill-time re-check holds on an unreadable shard (%s)" % holds)
 
@@ -1154,8 +1165,6 @@ def test_g2_bench_restart_holds_on_helpers_input_owner_and_reply():
           and any("helper" in (x.get("why") or "") for x in a), "G2 a live helper of the Conductor holds the kill (%s)" % a[-1:])
     a = run(sch, st, obs(sessions=[bsess()], helpers=None), late)
     check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 helper inventory UNMEASURED holds the kill")
-    a = run(sch, st, obs(sessions=[bsess()], owner={"state": "MEASURED", "idle_seconds": 5}), late)
-    check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 the owner at the keyboard holds the kill")
     a = run(sch, st, obs(sessions=[bsess(status="busy")], tx={"last_kind": "assistant_tool", "last_at": late - 1}), late)
     check(bstate(st) == "pending" and "restart_kill" not in dos(a), "G2 the window mid-reply is never killed (%s)" % dos(a))
     a = run(sch, st, obs(sessions=[bsess()], tx={"last_user_at": T0 + 90, "last_kind": "assistant_end",
@@ -1434,7 +1443,7 @@ def test_h2_cancel_evidence_survives_a_long_tail():
     a = run(sch, st, o, T0 + 700)
     check("restart_kill" not in dos(a), "H2 a Conductor request with no cursor never reaches the kill (%s)" % dos(a))
     rs = {"ts": T0, "cancel_after": GB_T, "tx_offset": ends[0], "source": "request"}
-    holds = SR.recheck_at_kill("BENCH", sch, rs, bsess(), owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999},
+    holds = SR.recheck_at_kill("BENCH", sch, rs, bsess(),
                                paused=lambda: None, work=lambda s_, ts: [])
     check(any("keep going" in h or "new input" in h for h in holds), "H2 the kill-time re-check reads the cursor (%s)"
           % holds)
@@ -1548,15 +1557,9 @@ def test_j1_conductor_waits_a_quiet_window_not_the_grace():
     a = run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250, last_at=T0 + 500)), T0 + 905)
     check(bstate(st) == "pending" and "restart_kill" not in dos(a),
           "J1 a record stamped +500 s anchors the quiet window: no kill at +905 (%s)" % dos(a))
-    a = run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250, last_at=T0 + 500),
-                         owner={"state": "MEASURED", "idle_seconds": 400}), T0 + 1105)
-    check(bstate(st) == "pending" and "restart_kill" not in dos(a),
-          "J1 the owner idle only 400 s (< goodbye_quiet_s) holds the kill (%s)" % dos(a))
     a = run(sch, st, obs(sessions=[bsess()], cursor=clean_scan(size=250, last_at=T0 + 500)), T0 + 1105)
     check([x for x in a if x["do"] == "restart_kill"], "J1 control: ten silent minutes on every clock -> one kill (%s)"
           % dos(a))
-    cfg = SR.config(sch)["BENCH"]
-    check(SR.owner_need(cfg, {"source": "request"}) >= 600, "J1 a Conductor needs the owner idle >= goodbye_quiet_s")
 
 
 def test_j2_any_input_after_the_goodbye_cancels_a_conductor():
@@ -1701,8 +1704,8 @@ def test_j6_wake_is_bound_to_one_restart():
     check("wake --seat BENCH --gen abc123" in argv[-1], "J6 the relaunch prompt carries the generation (%r)" % argv[-1])
 
 
-def test_j7_fence_reads_owner_after_the_scan_and_status_last():
-    # P0-1: the order of the final fence: transcript scan, then the owner clock, then the window status
+def test_j7_fence_scans_then_status_last():
+    # P0-1: the order of the final fence: transcript scan, then the window status (no owner clock since 2026-10-30)
     order = []
     p, ends = _bt("sid-old", [_hu(GB, "goodbye"), _ha("1970-01-12T13:45:10Z")])
     real = SR.cursor_scan
@@ -1710,16 +1713,14 @@ def test_j7_fence_reads_owner_after_the_scan_and_status_last():
         SR.cursor_scan = lambda *a, **k: order.append("scan") or real(*a, **k)
         rs = {"cancel_after": GB_T, "tx_offset": ends[1], "tx_path": p, "seen_size": os.path.getsize(p),
               "quiet_since": T0 - 5000, "ts": T0 - 5000}
-        f = SR.final_fence("BENCH", bsched(), rs, bsess(), now=T0 + 5000,
-                           owner=lambda: order.append("owner") or {"state": "MEASURED", "idle_seconds": 99_999})
+        f = SR.final_fence("BENCH", bsched(), rs, bsess(), now=T0 + 5000)
     finally:
         SR.cursor_scan = real
-    check(f == [] and order == ["scan", "owner"], "J7 the fence scans, then reads the owner clock (%s, %s)" % (order, f))
+    check(f == [] and order == ["scan"] and "owner" not in inspect.signature(SR.final_fence).parameters,
+          "J7 the fence scans and reads no owner clock (%s, %s)" % (order, f))
     rs2 = dict(rs, seen_size=rs["seen_size"] - 1)
-    f = SR.final_fence("BENCH", bsched(), rs2, bsess(), now=T0 + 5000, owner=lambda: {"state": "MEASURED", "idle_seconds": 99_999})
+    f = SR.final_fence("BENCH", bsched(), rs2, bsess(), now=T0 + 5000)
     check(f and "grew" in f[0], "J7 any growth since the claiming tick holds at the fence (%s)" % f)
-    f = SR.final_fence("BENCH", bsched(), rs, bsess(), now=T0 + 5000, owner=lambda: {"state": "MEASURED", "idle_seconds": 30})
-    check(f and "owner" in f[0], "J7 the owner at the keyboard holds at the fence (%s)" % f)
     sch, st = bsched(), fresh()
     order2, kills = [], []
     fx = {"session_file": lambda pid: order2.append("status") or {"pid": pid, "sessionId": "sid-old",

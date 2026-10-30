@@ -707,7 +707,7 @@ def test_decide_recover():
     acts, ss = rv_case("sid-1", [bench], 10)
     check(not acts_of(acts, "recovered", "alarm") and "recover" in ss, "recover pending and the seat still dead: waits")
     # dead window
-    def dead(dead_age=None, cfg=None, st_extra=None, owner=T.IDLE_OWNER, apply=True, now=NOW, rec=None):
+    def dead(dead_age=None, cfg=None, st_extra=None, apply=True, now=NOW, rec=None):
         sch = sched()
         sch["seats"]["FOUNDRY"].update(cfg or {})
         st = fresh()
@@ -717,7 +717,7 @@ def test_decide_recover():
         ss.update(st_extra or {})
         st["seats"]["FOUNDRY"] = ss
         st["recovers"] = rec or []
-        acts, st, _ = dec(st, sessions=[bench], sch=sch, owner=owner, apply=apply, now=now)
+        acts, st, _ = dec(st, sessions=[bench], sch=sch, apply=apply, now=now)
         return acts, st
     acts, st = dead()
     ss = st["seats"]["FOUNDRY"]
@@ -744,11 +744,10 @@ def test_decide_recover():
     acts, st = dead(600, st_extra={"session_id": "sid-1"}, apply=False)
     ss = st["seats"]["FOUNDRY"]
     check(one(acts, "recover") and "recover" not in ss and ss["cooldown_until"] == NOW + 3600 and st["recovers"], "dry: cooldown instead of a recover record")
-    acts, st = dead(600, st_extra={"session_id": "sid-1"}, owner=T.PRESENT)
+    acts, st = dead(600, st_extra={"session_id": "sid-1"})
     m = one(acts, "recover")[0]["message"]
-    check(m.startswith("[RimFlow Dispatcher] Your window") and m.endswith("`python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY` and continue."
-          "\nowner present: do not take the bridge, restart the game or deploy (%s)." % m.split("(", 1)[1].rsplit(")", 1)[0])
-          and m.count("owner present") == 1 and "\nowner present: do not take the bridge, restart the game or deploy (" in m, "recover message tells a resumed window the owner is present")
+    check(m.startswith("[RimFlow Dispatcher] Your window") and m.endswith("`python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY` and continue.")
+          and "owner" not in m.lower(), "recover message carries no owner-presence line (owner 2026-10-30)")
     # the daily recover cap: 3 in the last day, others and older ones do not count
     mk = lambda seat, age: {"seat": seat, "at": NOW - age}  # noqa: E731
     acts, st = dead(600, st_extra={"session_id": "s"}, rec=[mk("FOUNDRY", 10), mk("FOUNDRY", 86399), mk("OTHER", 5), mk("FOUNDRY", 86400)])
@@ -783,14 +782,14 @@ def test_decide_recover():
 
 
 def test_decide_ring_path():
-    def stalled(idle_age=240, ticket="default", armed="default", cfg=None, owner=T.IDLE_OWNER, apply=True, now=NOW, wakes=None, sid="sid-1",
+    def stalled(idle_age=240, ticket="default", armed="default", cfg=None, apply=True, now=NOW, wakes=None, sid="sid-1",
                 st_extra=None):
         sch = sched()
         sch["seats"]["FOUNDRY"].update(cfg or {})
         st = fresh()
         st["seats"]["FOUNDRY"] = dict({"idle_since": now - idle_age}, **(st_extra or {}))
         st["wakes"] = wakes or []
-        o = obs(sessions=[T.sess(sid=sid), T.sess("AGENT BENCH", "busy", "b")], owner=owner)
+        o = obs(sessions=[T.sess(sid=sid), T.sess("AGENT BENCH", "busy", "b")])
         if ticket != "default":
             o["peek"] = lambda seat: ticket
         if armed != "default":
@@ -804,7 +803,8 @@ def test_decide_ring_path():
     ss = st["seats"]["FOUNDRY"]
     check(len(r) == 1 and r[0]["ring_id"] == "FOUNDRY-%d-2" % int(NOW) and r[0]["attempt"] == 2 and r[0]["ticket"] == "SOME_ITEM_DO_IT"
           and r[0]["session_id"] == "sid-1" and r[0]["account"] is None and r[0]["idle_since"] == NOW + 0.75 - 240
-          and "cli.py next --seat FOUNDRY --ringed" in r[0]["message"] and "owner present" not in r[0]["message"],
+          and "cli.py next --seat FOUNDRY`" in r[0]["message"] and "--ringed" not in r[0]["message"]
+          and "owner" not in r[0]["message"].lower(),
           "ring at stall_after_s: id SEAT-int(now)-attempt, attempt+1, ticket, session, idle_since (%r)" % r[:1])
     check(st["wakes"] == [{"seat": "FOUNDRY", "at": NOW + 0.75}] and ss["ring"] == {
         "ring_id": r[0]["ring_id"], "rung_at": NOW + 0.75, "rung_iso": D.iso(NOW + 0.75), "ticket": "SOME_ITEM_DO_IT", "attempt": 2}
@@ -812,8 +812,6 @@ def test_decide_ring_path():
     acts, st = stalled(240, apply=False)
     check(one(acts, "ring") and "ring" not in st["seats"]["FOUNDRY"] and st["wakes"] and st["seats"]["FOUNDRY"]["idle_since"] == NOW,
           "dry ring: the wake counts, but no ring is recorded")
-    acts, st = stalled(240, owner=T.PRESENT)
-    check("owner present: do not take the bridge, restart the game or deploy (" in one(acts, "ring")[0]["message"], "ring with the owner present tells the window")
     acts, st = stalled(240, cfg={"wake": False})
     check(not acts_of(acts, "ring", "alarm"), "wake off: an idle stalled window is left alone")
     acts, st = stalled(240, armed=None)
@@ -856,17 +854,13 @@ def test_decide_ring_path():
           and not one(acts, "ring"), "wake cap -> alarm with the cap's reason")
     acts, st = stalled(240, wakes=wk(2))
     check(one(acts, "ring"), "under the wake cap -> ring")
-    acts, st = stalled(240, ticket={"id": "GAMEY", "needs": "bridge"}, owner=T.PRESENT)
-    h = one(acts, "hold")
-    check(len(h) == 1 and h[0]["ticket"] == "GAMEY" and h[0]["seat"] == "FOUNDRY" and h[0]["why"].startswith("ticket needs bridge; ")
-          and not one(acts, "ring"), "game-need ticket with the owner present -> hold")
-    for need in ("game-up", "deploy"):
-        acts, st = stalled(240, ticket={"id": "G", "needs": need}, owner=T.PRESENT)
-        check(one(acts, "hold"), "needs %s with the owner present -> hold" % need)
-    acts, st = stalled(240, ticket={"id": "G", "needs": "bridge"})
-    check(one(acts, "ring") and not one(acts, "hold"), "game-need ticket with the owner away -> ring")
-    acts, st = stalled(240, ticket={"id": "G", "needs": "offline"}, owner=T.PRESENT)
-    check(one(acts, "ring") and not one(acts, "hold"), "offline ticket with the owner present -> ring (with the owner line)")
+    # owner 2026-10-30: his presence is not an event; a game-need ticket rings like any other (T.obs's owner
+    # observer raises if anything calls it)
+    for need in ("bridge", "game-up", "deploy", "offline"):
+        acts, st = stalled(240, ticket={"id": "G", "needs": need})
+        r = one(acts, "ring")
+        check(r and not one(acts, "hold") and r[0]["ticket"] == "G" and "owner" not in r[0]["message"].lower(),
+              "needs %s -> ring, never hold, no owner line" % need)
     # held ring for the account switch
     sch = sched(account_pick=T.PICK_RULE)
     st = fresh()
@@ -1014,14 +1008,14 @@ def test_decide_misc():
     # seat_restart
     sr_calls = []
     saved_sr = D.SR.decide
-    D.SR.decide = lambda sch_, st_, o_, now, apply, act: sr_calls.append((apply, o_["owner"]())) or None
-    o = obs(owner=T.IDLE_OWNER)
+    D.SR.decide = lambda sch_, st_, o_, now, apply, act: sr_calls.append(apply) or None
+    o = obs()
     o["seat_restart"] = True
     try:
         D.decide(sched(), fresh(), o, NOW, False)
     finally:
         D.SR.decide = saved_sr
-    check(sr_calls == [(False, T.IDLE_OWNER)], "seat_restart.decide gets apply and the owner reader")
+    check(sr_calls == [False], "seat_restart.decide gets apply")
 
     def bad_sr(*a, **k):
         raise RuntimeError("r" * 300)

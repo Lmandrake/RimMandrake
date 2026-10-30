@@ -11,8 +11,9 @@ the bridge and the swap tools; nothing live is touched):
   loadtime    a minimal+deps reload records its MEASURED launch-to-ready seconds in the reload event and load_times
   restore     the owner's list is restored on release, its minutes charged to the arm, also when the body raised;
               a failed restore is loud (RestoreFailed) and the release event says error
-plus: C# deploy while the game runs, a flyer's flight and the canonical save are refused; archmagi's idle rule follows
-owner_playing (missing = not playing, owner 2026-10-30); an owner return aborts with no result and the candidate stays first; every canary
+plus: C# deploy while the game runs, a flyer's flight and the canonical save are refused; his presence is never
+read (owner 2026-10-30): owner_playing in the config, an owner-return probe answering "back" before, during the launch or
+during the proof change nothing and the probe is never called; every canary
 check (stale log, wrong/unpinned version, wrong deployed sha, mod not active, unreadable facts) turns it red; a proof
 exit code other than 0/1 is invalid; 3 failed rounds park an item; an event outside the schema is refused.
 t_review replays every confirmed finding of the two blind reviews (Transient-free: ClaudeWork arena_lane_build/review
@@ -152,6 +153,9 @@ class FakeDriver:
         return True, "loaded"
 
     def owner_returned(self):
+        # the retired presence probe: no harness code may call it (owner 2026-10-30). It answers "back" when
+        # owner_back is set, so a call that changed anything would show.
+        self.calls.append(("owner_probe",))
         return self.owner_back
 
     def game_facts(self):
@@ -443,16 +447,18 @@ def t_rules():
           is not None, "rules: a flyer's flight is refused before any take")
     check(raises(R.CandidateRefused, R.publish, p, "F", SHA_A, "A1", ["Slime"], False, "minimal", None, ["x"], True)
           is not None, "rules: a flyer-flight candidate is refused at publish")
-    for cfg, want in ((None, False), (True, True), (False, False)):
+    for cfg in (None, True, False):
         pp = fresh("idle_%s" % cfg, owner_playing=cfg)
-        dd = FakeDriver()
+        dd = FakeDriver(owner_back=True)
         with L.Lane("archmagi", R.ARM, dd, "idle", root=pp["root"]):
             pass
-        check(("take", "archmagi", want) in dd.calls, "rules: archmagi owner_playing=%s -> idle_ok %s" % (cfg, want))
+        check(("take", "archmagi", False) in dd.calls and ("owner_probe",) not in dd.calls,
+              "rules: archmagi owner_playing=%s -> a plain take, the presence probe never called" % cfg)
+        check("owner_playing" not in L.lane_config(pp, "archmagi"), "rules: an old owner_playing key is dropped")
     ds = FakeDriver()
     with L.Lane("steve", R.ARM, ds, "steve", root=p["root"]):
         pass
-    check(("take", "stevedesktop", False) in ds.calls, "rules: steve never uses the idle rule")
+    check(("take", "stevedesktop", False) in ds.calls, "rules: steve takes plainly too")
     # take refused: no hold, no release, a refused live_take
     pr = fresh("take_refused")
     pub(pr)
@@ -460,52 +466,17 @@ def t_rules():
     r = R.run_one(pr, "steve", dr, "/c")
     check(r["verdict"] == "refused" and not any(c[0] == "release" for c in dr.calls)
           and events(pr, "live_take")[-1]["verdict"] == "refused", "rules: a refused take holds and releases nothing")
-    # owner returns on archmagi: aborted, no result, still first
+    # owner 2026-10-30: his coming back is not an event. With the probe answering "back" from the start and
+    # owner_playing set, the archmagi run swaps, launches, proves and records exactly as if he were away.
     po = fresh("owner", owner_playing=True)
     pub(po, item="OLD")
-    pub(po, item="NEWER", sha=SHA_B)
-    do = FakeDriver()
-    seen = []
-    do.owner_returned = lambda: seen.append(1) or len(seen) >= 2     # back AFTER the list was swapped
+    do = FakeDriver(owner_back=True)
     r = R.run_one(po, "archmagi", do, "/c")
-    check(r["verdict"] == "aborted" and not list(po["results"].glob("*.json")) if po["results"].is_dir()
-          else r["verdict"] == "aborted", "rules: an owner return aborts the run with no result")
-    check(R.pending(po)[0]["item"] == "OLD" and ("restore",) in do.calls,
-          "rules: the aborted candidate stays first in line and the swapped list is restored")
-    check(not any(c[0] == "launch" for c in do.calls), "rules: nothing launched after the owner came back")
-    # TESTPILOT_FIX_OWNER_CHECK_DURING_LAUNCH: he returns WHILE the launch blocks; the wait is aborted
-    import threading
-    pw = fresh("owner_launch", owner_playing=True)
-    pub(pw, item="WAITER")
-    dw = FakeDriver()
-    gate = threading.Event()
-    real_launch = dw.launch_and_wait
-
-    def blocking_launch():
-        dw.calls.append(("launch_blocking",))
-        gate.wait(20)                       # a launch that would run ~100 s live
-        return real_launch()
-    dw.launch_and_wait = blocking_launch
-    real_stop = dw.stop_game
-
-    def stop_and_unblock():
-        real_stop()
-        gate.set()
-    dw.stop_game = stop_and_unblock
-    dw.owner_returned = lambda: ("launch_blocking",) in dw.calls     # only back once the launch is waiting
-    L.Lane.WATCH_POLL_S = 0.01
-    r = R.run_one(pw, "archmagi", dw, "/c")
-    check(r["verdict"] == "aborted" and gate.is_set(), "launch: owner return mid-launch aborts the run")
-    check(("stop",) in dw.calls and ("restore",) in dw.calls and any(c[0] == "release" for c in dw.calls),
-          "launch: the game is stopped, his list restored and the bridge released")
-    check([e.get("verdict") for e in events(pw, "reload")] == ["yielded"],
-          "launch: the step is recorded as yielded, not failed")
-    check(R.pending(pw)[0]["item"] == "WAITER", "launch: the candidate stays first in line")
-    de = FakeDriver(owner_back=True)
-    pub(po, item="NEWEST", sha="c" * 40)
-    r = R.run_one(po, "archmagi", de, "/c")
-    check(r["verdict"] == "aborted" and ("minimal",) not in de.calls and ("restore",) not in de.calls,
-          "rules: an owner already back yields before any swap, so there is nothing to restore")
+    check(r["verdict"] == "pass" and r["item"] == "OLD", "rules: owner 'back' before the swap -> the run still passes "
+          "(got %s)" % r.get("verdict"))
+    check(("minimal",) in do.calls and any(c[0] == "launch" for c in do.calls) and ("owner_probe",) not in do.calls,
+          "rules: the list is swapped and the game launched; the presence probe is never called")
+    check([e.get("verdict") for e in events(po, "reload")] == ["ok"], "rules: the reload is ok, never yielded")
     check(raises(ValueError, L.emit, p, {"event": "deploy", "arm": "x", "lane": "steve", "run_id": "r"}) is not None,
           "events: an event outside the §1.7 schema is refused")
 
@@ -725,15 +696,15 @@ def t_review():
     r = R.run_one(p, "steve", FakeDriver(), "/c")
     check(r["item"] == "TWO", "M2: the second runner skips the claimed candidate (got %s)" % r["item"])
     check(R.run_one(p, "steve", FakeDriver(), "/c") is None, "M2: nothing free while ONE is claimed")
-    # M4: owner returns during the proof -> aborted, no result
+    # M4: owner "returns" during the proof -> nothing changes, the result is recorded (owner 2026-10-30)
     p = fresh("m4", owner_playing=True)
     pub(p)
     d = FakeDriver()
     d.on_proof = lambda: setattr(d, "owner_back", True)
     r = R.run_one(p, "archmagi", d, "/c")
-    check(r["verdict"] == "aborted" and not (p["results"].is_dir() and list(p["results"].glob("*.json")))
-          and events(p, "test_end")[-1]["verdict"] == "aborted",
-          "M4/M8: an owner back during the proof aborts with no result and a test_end aborted")
+    check(r["verdict"] == "pass" and p["results"].is_dir() and list(p["results"].glob("*.json"))
+          and ("owner_probe",) not in d.calls,
+          "M4: an owner back during the proof changes nothing: a pass is recorded, the probe never called")
     # M5: a non-LaneRefused harness fault is invalid with an invalid event and a test_end
     p = fresh("m5")
     pub(p)
@@ -822,15 +793,14 @@ def t_review():
         L.swap_marker = real_marker
     check(raised is not None and any(c[0] == "release" for c in d.calls), "N9: a take that fails after the bridge "
           "was taken releases it")
-    # owner back + restore failed -> aborted, no result, restore_failed reported
+    # owner back + restore failed -> the verdict stands (owner back is not an event), restore_failed carried
     p = fresh("own_rf", owner_playing=True)
     pub(p)
     d = FakeDriver(restore_ok=False)
     d.on_proof = lambda: setattr(d, "owner_back", True)
     r = R.run_one(p, "archmagi", d, "/c")
-    check(r["verdict"] == "aborted" and r.get("restore_failed") and not (p["results"].is_dir() and
-                                                                          list(p["results"].glob("*.json"))),
-          "M8: owner back + failed restore -> aborted, no result, restore_failed carried")
+    check(r["verdict"] != "aborted" and r.get("restore_failed") and ("owner_probe",) not in d.calls,
+          "M8: owner back + failed restore -> not aborted, restore_failed carried (got %s)" % r.get("verdict"))
     # N10: unclaim drops only our own claim
     p = fresh("n10")
     R.claim(p, "cand1", "runnerA")

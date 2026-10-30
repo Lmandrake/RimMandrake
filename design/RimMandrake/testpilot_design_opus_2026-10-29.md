@@ -32,8 +32,8 @@ range names a measurement.
 - F9. One bridge driver per machine, taken and released through `rimflow bridge take/release`.
   `.claude/skills/rimbridge/SKILL.md:48-58`; modcheck refuses when the companion grant lapses within 45 min
   (`src/RimMandrake/Utils/modcheck/runner.py:104-110`).
-- F10. Archmagi idle rule: 20 min (`src/RimMandrake/rimflow/idle_probe.py:19`). The owner waived it while he is not
-  playing (brief, 2026-10-29).
+- F10. Archmagi has no idle rule: his presence at the machine is not an event (owner 2026-10-30); `idle_probe.py`
+  is deleted.
 - F11. testq already has a canary (default on, `src/RimMandrake/Utils/testq/schema.py`), PAUSE_ON canary red
   (`src/RimMandrake/Utils/testq/testq.py:103`), a filler
   ("Steve never idles"), a steward that escalates at 10/30/120 min, and a nightly sweep at 01:30.

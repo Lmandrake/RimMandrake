@@ -1,2 +1,0 @@
-An arena lane on archmagi with owner_playing true aborts every run whenever any seat holds the bridge or the owner touched the machine: rimflow bridge idle answered 'NOT TAKEABLE ... touched 0 min 38 s ago' (2026-10-30) while BENCH held the bridge. Set it with arena_lane.py config --lane archmagi --owner-playing false while he is not playing; re-arm it the day he plays.
-home: src/RimMandrake/Utils/arena/arena_lane.py

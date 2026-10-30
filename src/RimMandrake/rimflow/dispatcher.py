@@ -23,10 +23,10 @@ Every tick (the rm-dispatcher.timer, every 2 min) it, for each seat in the sched
      seat DISPATCHER (note-only, model.DISPATCHER_VERBS), committed and pushed with the testq RUNNER's publisher
      (ingest.publish, given the DISPATCHER shard).
 
-Never takes the game while the owner plays: it never calls the bridge, `./game` or a deploy itself, and before a ring
-it reads idle_probe (the `rimflow bridge idle` rule): a ticket that needs bridge/game-up/deploy is HELD unless the owner
-is MEASURED idle >= 20 min (UNMEASURED holds too), and every ring sent while he is not idle carries the line
-"owner present: do not take the bridge, restart the game or deploy".
+It never calls the bridge, `./game` or a deploy itself. The owner's presence at the machine is NOT an input
+(owner 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for anything
+changing. It's causing so many problems and I don't need it."): no idle probe, no hold, no "owner present" line; a
+ticket that needs the game is rung like any other, and the bridge lock (`rimflow bridge take`) decides who drives.
 
 Caps/budgets (schedule "caps"): wakes per seat per hour and per day, wakes per day overall, recoveries per seat per
 day, a cooldown after a give-up, and a PAUSE file (state/PAUSE) that stops everything. §3's roles are listed in the
@@ -53,7 +53,7 @@ Dry-run is the DEFAULT. Without --apply it rings nobody, recovers nothing, write
 bookkeeping under state/dry/ only, so a dry week shows what it would have done.
 
 Reused, not copied: testq's tick.lock flock pattern (testq.cmd_tick), schema.dump/utcnow, ingest.publish (commit +
-pull --rebase + ledger lint + push of one shard), idle_probe.measure/decide, lease.py's leases via `rimflow next`.
+pull --rebase + ledger lint + push of one shard), lease.py's leases via `rimflow next`.
 
     dispatcher.py tick [--apply] [--schedule PATH] [--json]
     dispatcher.py status [--schedule PATH]
@@ -94,7 +94,7 @@ OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")   # model.OPE
 HANDOFF = ("claim", "start")            # plus a lease event with action take
 
 DEFAULTS = {"tick_s": 120, "stall_after_s": 240, "verify_s": 300, "handoff_s": 600, "max_retries": 2,
-            "cooldown_s": 3600, "dead_after_s": 600, "recover_verify_s": 300, "owner_idle_s": 20 * 60,
+            "cooldown_s": 3600, "dead_after_s": 600, "recover_verify_s": 300,
             "ledger_notes": True, "publish": True, "tick_budget_s": 420}
 # tick_budget_s: rm-dispatcher.service is a oneshot with TimeoutStartSec=600; past this budget a tick writes no more
 # ledger notes and kills its publish, so systemd never SIGTERMs it mid-tick (review round R, A).
@@ -183,12 +183,12 @@ def observe_agents(timeout=60):
         return {"state": "UNMEASURED", "why": "%s: %s" % (type(e).__name__, str(e)[:160])}
 
 
-def peek_ticket(clone, seat, timeout=120, ringed=False):
+def peek_ticket(clone, seat, timeout=120):
     """-> {"id", "needs"} of the seat's next item per `rimflow next --peek` in its clone, {} when its queue is empty,
-    None when unreadable. ringed=True peeks as a ringed window would (game items withheld unless he is idle)."""
+    None when unreadable."""
     cli = os.path.join(clone, "src", "RimMandrake", "rimflow", "cli.py")
     try:
-        r = subprocess.run([sys.executable, cli, "next", "--seat", seat, "--peek"] + (["--ringed"] if ringed else []),
+        r = subprocess.run([sys.executable, cli, "next", "--seat", seat, "--peek"],
                            cwd=clone, capture_output=True,
                            text=True, timeout=timeout, env=dict(os.environ, RIMFLOW_SEAT=seat),
                            stdin=subprocess.DEVNULL)
@@ -251,11 +251,6 @@ def consumed_ring(root, seat, ring_id):
         if rec.get("ring_id") == ring_id:
             return rec
     return None
-
-
-def owner_reading():
-    import idle_probe
-    return idle_probe.measure()
 
 
 def pid_alive(pid):
@@ -326,10 +321,10 @@ def caps_ok(st, sch, seat, now):
     return True, ""
 
 
-def message(seat, cfg, ticket, owner_line, ring_id):
+def message(seat, cfg, ticket, ring_id):
     lines = ["[RimFlow Dispatcher — a program, not a person; ring %s]" % ring_id,
              "Seat %s: you are idle and your queue has work. Run `python3 src/RimMandrake/rimflow/cli.py next "
-             "--seat %s --ringed`, which gives you the item under a lease, and work it; renew the lease every 10 min "
+             "--seat %s`, which gives you the item under a lease, and work it; renew the lease every 10 min "
              "(`rimflow renew`). The peeked next item is %s." % (seat, seat, ticket.get("id")),
              "If you are mid-task, finish it first; if the queue is wrong, say so on the item with `rimflow note`.",
              # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: 2026-10-29 FOUNDRY answered rings with "nothing for me to do
@@ -341,15 +336,13 @@ def message(seat, cfg, ticket, owner_line, ring_id):
              "Before you end the turn on it, ledger-only work too: commit your shard "
              "infrastructure/state/ledger/events/%s.jsonl by explicit path and run ./publish; events left in your "
              "clone are invisible to every other seat." % seat]
-    if owner_line:
-        lines.append(owner_line)
     if cfg.get("extra"):
         lines.append(cfg["extra"])
     return "\n".join(lines)
 
 
 def decide(sch, st, obs, now, apply, out=None):
-    """-> actions. Mutates st (the seat bookkeeping). Pure except for the lazy calls in obs (owner(), peek(seat),
+    """-> actions. Mutates st (the seat bookkeeping). Pure except for the lazy calls in obs (peek(seat),
     events(seat, since), consumed(seat, ring_id), armed(seat), alive(pid)) so a selftest can drive every path.
     out: the list to append to (tick passes its own, so a decide killed part-way still leaves the caller every
     action it already recorded in st: night review N3)."""
@@ -415,16 +408,9 @@ def decide(sch, st, obs, now, apply, out=None):
             if role.get("enabled"):
                 act(do="alarm", kind="role:" + role.get("name", "?"),
                     why="role %s is enabled but this tick has no role observer" % role.get("name"))
-    owner_cache = {}
-
-    def owner():
-        if "r" not in owner_cache:
-            owner_cache["r"] = obs["owner"]()
-        return owner_cache["r"]
-
     if obs.get("seat_restart"):        # seat_restart.py: a fresh window per ticket (off unless seat_restart.enabled)
         try:
-            SR.decide(sch, st, dict(obs, owner=owner), now, sr_apply(sch, apply), act)
+            SR.decide(sch, st, obs, now, sr_apply(sch, apply), act)
         except Exception as e:  # noqa: BLE001
             act(do="alarm", kind="restart:decide", note=True,
                 why="seat restart NOT decided: %s: %s" % (type(e).__name__, str(e)[:200]))
@@ -532,12 +518,8 @@ def decide(sch, st, obs, now, apply, out=None):
                 act(do="alarm", kind="cap:recover:" + seat, seat=seat,
                     why="cap: %d recovers/day for %s" % (sch["caps"]["recovers_per_seat_day"], seat))
                 return
-            import idle_probe
-            owner_ok, owner_why = idle_probe.decide(owner(), "", need=sch["owner_idle_s"])
             msg = ("[RimFlow Dispatcher] Your window was found dead and resumed in the background. Run "
                    "`python3 src/RimMandrake/rimflow/cli.py next --seat %s` and continue." % seat)
-            if not owner_ok:     # the resumed session may have died mid bridge/deploy work: tell it not to resume that
-                msg += "\nowner present: do not take the bridge, restart the game or deploy (%s)." % owner_why
             go, pk = gate("recover")
             if not go:
                 act(do="hold", seat=seat, why="recover held for the account switch: %s" % pk["why"])
@@ -582,19 +564,6 @@ def decide(sch, st, obs, now, apply, out=None):
         if not ok:
             act(do="alarm", kind="cap:" + seat, seat=seat, why=why)
             return
-        import idle_probe
-        owner_ok, owner_why = idle_probe.decide(owner(), ticket.get("id") or "", need=sch["owner_idle_s"])
-        if ticket.get("needs") in GAME_NEEDS and not owner_ok:
-            # The top item needs the game and he is not idle: offer the seat its next item that does not (the
-            # ringed `next` withholds game items the same way), and hold only when there is none.
-            alt = obs["peek_offline"](seat) if obs.get("peek_offline") else None
-            if not alt or alt.get("needs") in GAME_NEEDS:
-                act(do="hold", seat=seat, ticket=ticket["id"],
-                    why="ticket needs %s; %s" % (ticket["needs"], owner_why))
-                return
-            ticket = alt
-        owner_line = None if owner_ok else (
-            "owner present: do not take the bridge, restart the game or deploy (%s)." % owner_why)
         go, pk = gate("ring")
         if not go:
             act(do="hold", seat=seat, ticket=ticket["id"], why="ring held for the account switch: %s" % pk["why"])
@@ -602,7 +571,7 @@ def decide(sch, st, obs, now, apply, out=None):
         attempt = ss.get("attempt", 0) + 1
         ring_id = "%s-%d-%d" % (seat, int(now), attempt)
         act(do="ring", seat=seat, ring_id=ring_id, ticket=ticket["id"], attempt=attempt,
-            session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, owner_line, ring_id),
+            session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, ring_id),
             account=pk.get("account"), idle_since=ss.get("idle_since"))
         st["wakes"].append({"seat": seat, "at": now})
         if apply:
@@ -1333,9 +1302,7 @@ def default_obs(sch, root, st=None):
     return {
         "paused": paused_now(),
         "agents": observe_agents(),
-        "owner": owner_reading,
         "peek": lambda seat: peek_ticket(seats[seat]["clone"], seat),
-        "peek_offline": lambda seat: peek_ticket(seats[seat]["clone"], seat, ringed=True),
         "events": lambda seat, since: seat_events_since(seats[seat]["clone"], seat, since, on_skip=_skip_journal(root, st)),
         "consumed": lambda seat, rid: consumed_ring(doorbell.state_dir(), seat, rid),
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),

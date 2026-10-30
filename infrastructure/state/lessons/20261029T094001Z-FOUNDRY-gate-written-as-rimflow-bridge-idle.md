@@ -1,1 +1,1 @@
-A gate written as 'rimflow bridge idle --for x | head -1 && <kill>' does not gate: the pipeline's exit is head's (0), so the kill runs on NOT TAKEABLE. Test the verdict text (grep -q '^TAKEABLE') before any game close. FOUNDRY 2026-10-29 closed the game ~3 min after the owner returned this way.
+A gate written as 'rimflow bridge idle --for x | head -1 && <kill>' does not gate: the pipeline's exit is head's (0), so the kill runs on NOT TAKEABLE. Test the verdict text (grep -q '^TAKEABLE') before any game close. FOUNDRY 2026-10-29 closed the game on a NOT TAKEABLE this way.
