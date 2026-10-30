@@ -5,7 +5,7 @@
      and every `reload` event in every run names a rule and a decision logged before it);
   2. a C# fix forces a logged reload naming its rule and the reload cost used: cheap = a few more tests then R3,
      expensive = drain every valuable test first, either = the maximum acceptance delay; unmeasured = expensive;
-  3. an owner return mid-test yields within the bound, keeps completed evidence and requeues the in-flight test;
+  3. (removed 2026-10-30, owner: his return to the machine is no event, so no yield path exists to test);
   4. a pilot handoff loses no queued candidate (one queued before, one during the handoff), the game stays up, the
      stale pilot is refused every act;
   5. a rebuild touching one scenario's footprint re-runs only that scenario plus the ones the taint note names;
@@ -60,7 +60,8 @@ class FakeDriver:
         self.head = {}
         self.calls = []
         self.rc = {}                    # scenario id -> proof rc (default 0)
-        self.during = {}                # scenario id -> callable run inside the proof (before the owner poll)
+        self.during = {}                # scenario id -> callable run inside the proof (before the poll)
+        self.out = {}                   # scenario id -> proof output text (default "scenario <id> rc=<rc>")
         self.colonists = 3
 
     def clock(self):
@@ -151,7 +152,7 @@ class FakeDriver:
         if sid in self.during:
             self.during[sid]()
         poll()
-        return self.rc.get(sid, 0), "scenario %s rc=%d" % (sid, self.rc.get(sid, 0))
+        return self.rc.get(sid, 0), self.out.get(sid, "scenario %s rc=%d" % (sid, self.rc.get(sid, 0)))
 
     def reconnect(self):
         return True, "reconnected"
@@ -314,47 +315,9 @@ def t_unmeasured():
           "no measured load time: treated as expensive and logged UNMEASURED, never 22 s: %s" % c)
 
 
-# ---------------------------------------------------------------- 3. the owner's return
-def t_owner_yield():
-    root, p = fresh("owner", owner_playing=True)
-    d = FakeDriver()
-    T.enqueue(p, "ITEM_O", SHA[0], "B1", plan("s1", "s2", "s3"))
-    pl = pilot(root, d, "P1", lane="archmagi")
-    pl.wake()
-    take = [c for c in d.calls if c[0] == "take"]
-    check(take and take[-1][2] is True, "Archmagi while he plays: the take is --idle-ok")
-    pl.step()                           # R0
-    r1 = pl.step()                      # s1 passes
-    d.during["s2"] = lambda: setattr(d, "owner_back", True)
-    r2 = pl.step()                      # he comes back mid-s2
-    check(r1["result"]["status"] == "pass" and r2["decision"]["action"] == "yield", "owner return mid-test: yield")
-    y = r2["result"]
-    check(y["within"] and y["steps"] <= 2 and y["seconds"] <= 300,
-          "yield within the bound: %s steps, %s s (bound 2 steps, 300 s)" % (y["steps"], y["seconds"]))
-    st = T.scenario_status(p, T.cand_by_id(p)["ITEM_O@1"])
-    check(st["s1"]["status"] == "pass" and st["s2"]["status"] == "invalid" and "owner" in st["s2"]["why"],
-          "completed evidence kept (s1 pass), the in-flight test is invalid (s2)")
-    check(T.states(p)["ITEM_O@1"]["state"] == "queued", "the candidate is requeued (M4)")
-    check(("restore",) in d.calls and d.calls[-1][0] == "release" and not d.running,
-          "the game is stopped, his list restored and the bridge released")
-    check(raises(T.StalePilot, pl.step) is not None or pl.step()["decision"]["action"] == "yield",
-          "the yielded pilot makes no further act")
-    why = raises(T.PilotRefused, pilot(root, d, "P2", lane="archmagi").wake)
-    check(why and "owner" in why, "no new take while he is home: %s" % why)
-    d.owner_back = False
-    d.during.clear()
-    p3 = pilot(root, d, "P3", lane="archmagi")
-    p3.wake()
-    steps = p3.run_pass()
-    ran = [c[1] for c in d.calls if c[0] == "scenario"]
-    check(ran.count("s1") == 1 and ran.count("s2") == 2 and T.states(p)["ITEM_O@1"].get("verdict") == "pass",
-          "after he leaves, s2 re-runs, s1 is not re-run, and the item resolves PASS: %s" % actions(steps))
-    every_reload_has_a_rule(root, p, "owner")
-
-
-# ---------------------------------------------------------------- launch failure / mid-launch yield (indep3 B, C, D)
+# ---------------------------------------------------------------- launch failure (indep3 C)
 def _ml_setup(name, lane, drv):
-    root, p = fresh(name, owner_playing=True)
+    root, p = fresh(name)
     T.enqueue(p, "ITEM_P", SHA[0], "B1", plan("s1"))
     pl = pilot(root, drv, "P1", lane=lane)
     pl.wake()
@@ -370,34 +333,6 @@ def _ml_state(root, p, d):
 def t_launch_failures():
     L.Lane.WATCH_POLL_S = 0.05
 
-    class DA(FakeDriver):
-        lane = "archmagi"
-
-        def launch_and_wait(self):
-            self.owner_back = True
-            time.sleep(0.3)
-            return super().launch_and_wait()
-
-    class DB(DA):                       # B: the stop fails during the owner's mid-launch yield
-        def stop_game(self):
-            if self.owner_back:
-                self.calls.append(("stop_fail",))
-                raise L.LaneRefused("[1 stop] game still running after 90 s (not force-killing)")
-            return super().stop_game()
-    d = DB()
-    root, p, pl = _ml_setup("lfB", "archmagi", d)
-    r = None
-    try:
-        r = pl.step()
-    except BaseException as e:  # noqa: BLE001
-        check(False, "B: a failed stop escaped Pilot.step: %s" % e)
-    check(r is not None and r["decision"]["action"] == "yield", "B: a failed mid-launch stop is still a yield: %s" % (r,))
-    rel, rest, status, marker = _ml_state(root, p, d)
-    check(status == "yielded" and rel == 1 and marker and r["result"]["restore_error"],
-          "B: bridge released, session yielded, the owed restore is kept in the swap marker and reported "
-          "(releases=%s status=%s marker=%s)" % (rel, status, marker))
-    check(r is not None and r["result"].get("stop_error") and decisions(p, "yield"), "B: the yield is logged with the stop error")
-
     class DC(FakeDriver):               # C: the launch fails (no bridge token)
         lane = "steve"
 
@@ -412,7 +347,7 @@ def t_launch_failures():
     except BaseException as e:  # noqa: BLE001
         check(False, "C: a launch failure escaped Pilot.step: %s" % e)
     rel, rest, status, marker = _ml_state(root, p, d)
-    check(rel == 1 and rest >= 1 and not marker and status == "yielded",
+    check(rel == 1 and rest >= 1 and not marker and status == "aborted",
           "C: launch failure restores his list, releases the bridge, ends the session (rel=%s restore=%s status=%s "
           "marker=%s)" % (rel, rest, status, marker))
     check(decisions(p, "abort") and any(e["status"] == "invalid" for e in T.evidence(p)),
@@ -447,41 +382,17 @@ def t_launch_failures():
     except RuntimeError:
         pass
     rel, rest, status, marker = _ml_state(root, p, d)
-    check(rel == 1 and not marker and status == "yielded", "C2: an exception out of the pass restores and releases "
+    check(rel == 1 and not marker and status == "aborted", "C2: an exception out of the pass restores and releases "
           "(rel=%s status=%s marker=%s)" % (rel, status, marker))
 
-    class DD(DA):                       # D: the stop costs 60 s of clock; the yield seconds must include it
-        def stop_game(self):
-            if self.owner_back and self.running is False:
-                self.t += 60.0
-                self.calls.append(("stop",))
-                return
-            return super().stop_game()
-    d = DD()
-    root, p, pl = _ml_setup("lfD", "archmagi", d)
-    r = pl.step()
-    y = r["result"]
-    check(y["seconds"] >= 60 and y["within"],
-          "D: the yield clock starts at the return and includes the 60 s stop: seconds=%s within=%s (bound %s)" % (
-              y["seconds"], y["within"], y["bound_s"]))
-
-    class DE(DD):                       # a stop that costs 400 s is over the 300 s bound, and says so
-        def stop_game(self):
-            if self.owner_back and self.running is False:
-                self.t += 400.0
-                return
-            return super().stop_game()
-    d = DE()
-    root, p, pl = _ml_setup("lfE", "archmagi", d)
-    y = pl.step()["result"]
-    check(y["seconds"] >= 400 and y["within"] is False, "D2: a 400 s stop logs the true elapsed time and within=False: "
-          "seconds=%s within=%s" % (y["seconds"], y["within"]))
-
-
 def t_default_never_consults_owner():
+    """Owner 2026-10-30: his return to the machine is no event for testpilot (no probe, no yield, no hold)."""
+    src = Path(T.__file__).read_text(encoding="utf-8")
+    hits = [w for w in ("owner_returned", "OwnerReturned", "check_owner", "_yield", "owner_t", 'get("hold")', '"action": "hold"')
+            if w in src]
+    check(not hits, "testpilot.py has no owner-return probe, yield or hold path: %s" % hits)
     L.Lane.WATCH_POLL_S = 0.05
-    root, p = fresh("noown")           # no owner_playing config: the default
-    check(L.lane_config(p, "archmagi")["owner_playing"] is False, "default config: owner_playing is False")
+    root, p = fresh("noown")
 
     class D(FakeDriver):
         lane = "archmagi"
@@ -499,11 +410,11 @@ def t_default_never_consults_owner():
     pl = pilot(root, d, "P1", lane="archmagi")
     pl.wake()
     take = [c for c in d.calls if c[0] == "take"]
-    check(take and take[-1][2] is False, "default config: the take is a plain take, not --idle-ok")
+    check(take and take[-1][2] is False, "the take is a plain take, not --idle-ok")
     r = pl.step()
     check(r["decision"]["action"] == "reload" and pl.step()["decision"]["action"] != "yield",
-          "default config: launch and quicktest run, no yield")
-    check(D.probed == 0, "default config: owner_returned() was never consulted (%d calls)" % D.probed)
+          "launch and quicktest run, no yield")
+    check(D.probed == 0, "owner_returned() was never consulted (%d calls)" % D.probed)
 
 
 # ---------------------------------------------------------------- 4. the handoff
@@ -848,15 +759,15 @@ def t_review2():
           "no fixture: the failed save reset is followed by an R2 reload and a clean repass: %s" % acts)
     every_reload_has_a_rule(root, p, "nofixture")
 
-    # R2.c: a yield kills the proof's whole process group (a child holding the pipe cannot stall it)
+    # R2.c: a poll failure kills the proof's whole process group (a child holding the pipe cannot stall it)
     import time as _t
     drv = T.PilotDriver.__new__(T.PilotDriver)
 
     def poll():
-        raise L.OwnerReturned("owner back")
+        raise T.StalePilot("taken over")
     t0 = _t.time()
-    why = raises(L.OwnerReturned, drv.run_scenario, ["bash", "-c", "sleep 60 & sleep 60"], str(TMP), poll, 0.2)
-    check(why is not None and _t.time() - t0 < 15, "the owner yield stops a proof with a child in %.1fs"
+    why = raises(T.StalePilot, drv.run_scenario, ["bash", "-c", "sleep 60 & sleep 60"], str(TMP), poll, 0.2)
+    check(why is not None and _t.time() - t0 < 15, "a poll failure stops a proof with a child in %.1fs"
           % (_t.time() - t0))
 
 
@@ -1127,6 +1038,211 @@ def t_mutant_guards():
           "a changed file matching only s1's footprint glob re-runs s1, carries s2: %s" % pre)
 
 
+def t_abort_scenario():
+    """TESTPILOT_FIX_ABORT_WRONG_SCENARIO (independent probe_abort.py case A)."""
+    # A: s1 is invalid (rc 7); its re-test fails inside the driver -> the invalid lands on s1, never on unrun s2
+    root, p = fresh("ab_scn")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_Q", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    d.rc["s1"] = 7
+    pl.step()
+    r1 = pl.step()
+    check(r1["decision"]["action"] == "test" and r1["result"]["status"] == "invalid", "A: probe: s1 is invalid")
+    d.rc["s1"] = 0
+
+    def boom():
+        raise RuntimeError("driver lost the proof pipe")
+    d.during["s1"] = boom
+    r2 = pl.step()
+    evs = [(e["scenario"], e["status"], e.get("why") or "") for e in T.evidence(p)]
+    check(r2["decision"].get("scenario") == "s1" and T._aborted(r2["result"]), "A: probe: the s1 re-test aborts")
+    check([x for x in evs if "proof pipe" in x[2]] == [("s1", "invalid", "RuntimeError: driver lost the proof pipe")]
+          and not any(x[0] == "s2" for x in evs),
+          "A: the abort's invalid is on the scenario that was running (s1), s2 never ran and has none: %s" % evs)
+    # A2: an exception out of the pass with no decision in hand (run_pass_guarded) still records the in-flight test
+    root, p = fresh("ab_inflight")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_Q2", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()                           # s1 PASSes; s2 is next
+
+    def kb():
+        raise KeyboardInterrupt()
+    d.during["s2"] = kb
+    try:
+        T.run_pass_guarded(pl)
+    except KeyboardInterrupt:
+        pass
+    evs = [(e["scenario"], e["status"]) for e in T.evidence(p)]
+    s = T.read_session(p, "steve")
+    check(evs == [("s1", "pass"), ("s2", "invalid")] and not s.get("in_flight") and s["status"] == "aborted",
+          "A2: a BaseException mid-s2 records s2 invalid from the session's in_flight (no decision passed): %s" % evs)
+    # A3: a launch failure (reload decision, no scenario) marks the scenario the next test would run, not a resulted one
+    root, p = fresh("ab_launch")
+
+    class DL(FakeDriver):
+        fail = False
+
+        def launch_and_wait(self):
+            if self.fail:
+                self.t += 30
+                return False, "[4 launch] no bridge token"
+            return super().launch_and_wait()
+    d = DL()
+    T.enqueue(p, "ITEM_Q3", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    d.rc["s1"] = 7
+    pl.step()                           # s1 invalid: still valuable, the next test runs s1 again
+    d.running, d.fail = False, True
+    r = pl.step()
+    last = T.evidence(p)[-1]
+    check(r["decision"].get("rule") == "R1" and last["scenario"] == "s1" and "LaneRefused" in (last.get("why") or ""),
+          "A3: a relaunch failure marks the scenario the next test would run (s1): %s %s"
+          % (r["decision"].get("rule"), last["scenario"]))
+
+
+
+def t_mutant_guards2():
+    """TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND2: the guards the independent mutants (indep5 e2..e31) showed unseen."""
+    rule = T.load_rule()
+    # e2: the cost is the median of the NEWEST load_time_samples rows, not of every row
+    root, p = fresh("m2_cost")
+    p["load_times"].parent.mkdir(parents=True, exist_ok=True)
+    rows = [{"lane": "steve", "ok": True, "profile": "minimal", "tier": None, "launch_to_ready_s": v}
+            for v in [900.0] * 6 + [20.0] * 5]
+    p["load_times"].write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+    c = T.reload_cost(p, dict(rule, load_time_samples=5), "steve", "minimal", None)
+    check(c["cost_s"] == 20.0 and c["class"] == "cheap" and "of 5" in c["basis"],
+          "e2: reload cost = median of the newest 5 rows (20 s cheap), old slow rows aged out: %s" % c)
+    # e12 / e4 / e28 on one live lane
+    root, p = fresh("m2_live")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_E", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    e0 = T.read_session(p, "steve").get("epoch")
+    pl.step()
+    e1 = T.read_session(p, "steve")["epoch"]
+    check(e0 == 0 and e1 == 1 and pl.epoch == 1, "e12: a reload starts a new epoch (0 -> 1): %s -> %s" % (e0, e1))
+    d.running = False
+    dd = pl.decide()
+    check(dd["action"] == "reload" and dd["rule"] == "R1" and "dead" in dd["why"],
+          "e4: a dead game process with a queued candidate decides R1: %s %s" % (dd["action"], dd.get("rule")))
+    pl.step()
+    check(T.read_session(p, "steve")["epoch"] == 2, "e12: the R1 reload starts epoch 2")
+    dt = pl.decide()
+    T.set_state(p, "ITEM_E@1", "parked", why="test: parked between decision and act")
+    n = len(ran(d))
+    why = raises(T.PilotRefused, pl.test, dt)
+    check(dt["action"] == "test" and why is not None and "changed since the decision" in why and len(ran(d)) == n,
+          "e28: a candidate made terminal after the decision is not tested: %s" % why)
+    # e27: no reload without the pilot's own clone
+    root, p = fresh("m2_clone")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_C", SHA[0], "B1", plan("s1"))
+    pl = T.Pilot("steve", d, "P1", clone=None, root=root)
+    pl.wake()
+    why = raises(T.PilotRefused, pl.step)
+    check(why is not None and "own clone" in why and not [c for c in d.calls if c[0] == "launch"],
+          "e27: a pilot with no clone refuses the reload before launching: %s" % why)
+    # e13 + e7: a game that dies mid-scenario is a crash; max_item_crashes crashes quarantine the item
+    root, p = fresh("m2_crash")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_K", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.rule = dict(pl.rule, max_item_crashes=1)
+    pl.wake()
+    pl.step()
+
+    def die():
+        d.running = False
+    d.during["s1"] = die
+    pl.step()
+    e = T.evidence(p)[-1]
+    check(e["status"] == "invalid" and e.get("crash") is True, "e13: a game death mid-scenario is a crash: %s" % e.get("crash"))
+    check(T.states(p)["ITEM_K@1"]["state"] == "quarantined", "e7: max_item_crashes crashes quarantine the candidate: %s"
+          % T.states(p)["ITEM_K@1"]["state"])
+    # e14: rc == fail_rc with a non-assertion traceback is an invalid crash-of-the-proof, not a FAIL
+    root, p = fresh("m2_tb")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_TB", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    d.rc["s1"] = 1
+    d.out["s1"] = "Traceback (most recent call last):\n  File \"proof.py\", line 3\nKeyError: 'x'\n"
+    r = pl.step()
+    check(r["result"]["status"] == "invalid" and "traceback" in (T.evidence(p)[-1].get("why") or ""),
+          "e14: a proof that died on a traceback is invalid, not judged FAIL: %s" % r["result"]["status"])
+    # e6: max_live_fails failed candidates of one item park it (L10)
+    root, p = fresh("m2_lf")
+    d = FakeDriver()
+    d.rc["s1"] = 1
+    T.enqueue(p, "ITEM_LF", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.rule = dict(pl.rule, max_live_fails=2)
+    pl.wake()
+    pl.run_pass()
+    s1 = T.states(p)["ITEM_LF@1"]
+    T.enqueue(p, "ITEM_LF", SHA[1], "B1", plan("s1"))
+    pl.run_pass()
+    s2 = T.states(p)["ITEM_LF@2"]
+    check(s1.get("verdict") == "fail" and s2["state"] == "parked" and "L10" in (s2.get("why") or ""),
+          "e6: the first FAIL resolves, the max_live_fails-th parks the item: %s / %s" % (s1, s2.get("state")))
+    # e16: a newer attempt supersedes an older queued one
+    root, p = fresh("m2_sup")
+    a = T.enqueue(p, "ITEM_S", SHA[0], "B1", plan("s1"))
+    b = T.enqueue(p, "ITEM_S", SHA[1], "B1", plan("s1"))
+    st = T.states(p)
+    check(st[a["cand"]]["state"] == "superseded" and st[a["cand"]].get("by") == b["cand"]
+          and st[b["cand"]]["state"] == "queued", "e16: enqueue supersedes the older queued attempt")
+    # e20 e22 e23 e31: touched() carry guards, each in isolation (a footprint that matches nothing otherwise)
+    scn = {"id": "s1", "argv": ["python3", "proof.py", "s1"], "footprint": {"files": ["nomatch/*.xml"],
+                                                                         "defs": ["RM_Foot"]}}
+    par = {"mods": ["A"], "profile": "minimal", "tier": None, "has_dll": False, "changed_files": [],
+           "changed_defs": []}
+    base = dict(par, changed_files=["src/RimMandrake/Other/x.xml"])
+    check(T.touched(scn, scn, base, par, set()) is None, "touched probe: an unrelated change carries")
+    for k, v in (("mods", ["B"]), ("profile", "minimal_deps"), ("tier", "slime"), ("has_dll", True)):
+        w = T.touched(scn, scn, dict(base, **{k: v}), par, set())
+        check(w == "%s changed" % k, "e20: a %s change re-runs: %s" % (k, w))
+    w = T.touched(scn, scn, dict(base, changed_defs=["RM_Foot"]), par, set())
+    check(w is not None and "changed def RM_Foot" in w, "e22: a changed def in the footprint re-runs: %s" % w)
+    bare = {"id": "s1", "argv": ["python3", "proof.py", "s1"]}
+    w = T.touched(bare, bare, base, par, set())
+    check(w == "no declared footprint", "e23: no declared footprint re-runs: %s" % w)
+    w = T.touched(scn, scn, base, par, "uncertain")
+    check(w is not None and "uncertain" in w, "e31: an uncertain parent taint re-runs: %s" % w)
+    # e26: hot-apply only onto the same mod set
+    game = {"cand": "X@1", "profile": "minimal", "tier": None, "mods": ["A"]}
+    byid = {"X@1": {"cand": "X@1", "mods": ["A"]}}
+    live = {"class": "live", "profile": "minimal", "tier": None, "mods": ["A"], "parent": "X@1"}
+    check(T.hot_appliable(live, game, byid) and not T.hot_appliable(dict(live, mods=["A", "B"]), game, byid)
+          and not T.hot_appliable(dict(live, parent="Y@1"), game, byid),
+          "e26: a live candidate hot-applies only onto its parent's loaded mod set")
+    # e29: a hot-fixed parent PASS is never carried
+    root, p = fresh("m2_hfc")
+    fp = {"s1": {"footprint": {"files": ["nomatch/*.xml"]}}}
+    a = T.enqueue(p, "ITEM_HC", SHA[0], "B1", plan("s1", **fp))
+    T.add_evidence(p, a, "s1", "pass", "steve", "P1", hotfix=True)
+    b = T.enqueue(p, "ITEM_HC", SHA[1], "B1", plan("s1", **fp), parent=a["cand"], changed_files=[])
+    pre = T.plan_retest(p, b, write=False)
+    check("s1" in pre["run"] and "clean PASS" in pre["run"]["s1"] and not pre["carried"],
+          "e29: a hot-fixed parent PASS re-runs, it is not carried: %s" % pre)
+    # e30: a rule file missing a required key is refused
+    bad = {k: v for k, v in json.loads(T.RULE_FILE.read_text(encoding="utf-8")).items() if k != "ladder"}
+    rp = TMP / "bad_rule.json"
+    rp.write_text(json.dumps(bad), encoding="utf-8")
+    why = raises(T.PilotRefused, T.load_rule, rp)
+    check(why is not None and "'ladder'" in why, "e30: a reload rule file with no 'ladder' is refused: %s" % why)
+
+
 def t_proof_timeout():
     """A proof past its limit is a logged, non-crash result; the pass survives (was: TimeoutError aborted it)."""
     root, p = fresh("proof_timeout")
@@ -1163,16 +1279,16 @@ def t_proof_timeout():
 
 
 def t_killpg():
-    """c4: a yield kills the proof's whole process group, grandchildren included (real PilotDriver)."""
+    """c4: a poll failure (S6 takeover) kills the proof's whole process group, grandchildren included (real PilotDriver)."""
     import time as _t
     drv = T.PilotDriver.__new__(T.PilotDriver)
     pidf = TMP / "grandchild.pid"
 
     def poll():
         if pidf.is_file() and pidf.read_text().strip():
-            raise L.OwnerReturned("owner back")
+            raise T.StalePilot("taken over")
     t0 = _t.time()
-    why = raises(L.OwnerReturned, drv.run_scenario, ["bash", "-c", "sleep 60 & echo $! > %s; wait" % pidf],
+    why = raises(T.StalePilot, drv.run_scenario, ["bash", "-c", "sleep 60 & echo $! > %s; wait" % pidf],
                  str(TMP), poll, 0.2)
     dt = _t.time() - t0
     gpid = int(pidf.read_text().strip())
@@ -1185,16 +1301,17 @@ def t_killpg():
             break
         _t.sleep(0.1)
     check(why is not None and dt < 5 and (not stat or stat.split(") ", 1)[1][:1] in ("Z", "X")),
-          "the owner yield kills the proof's grandchild too, in %.1fs (state %r)"
+          "a poll failure kills the proof's grandchild too, in %.1fs (state %r)"
           % (dt, stat.split(") ", 1)[1][:1] if stat else "gone"))
     if stat and stat.split(") ", 1)[1][:1] not in ("Z", "X"):
         os.kill(gpid, 9)
 
 
 def main():
-    for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_owner_yield, t_handoff,
+    for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
-              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner):
+              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
+              t_abort_scenario, t_mutant_guards2):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run

@@ -3,17 +3,16 @@ r"""testpilot.py — the `trio` TestPilot (harness step 13; build ticket ARENA_T
 
 Design: design/RimMandrake/testpilot_merged_2026-10-29.md §2.1 L6-L13 (machine-owned game, fresh pilot passes, script
 canary, keyed evidence, L9a affected-scenario re-test, fix-now by class, what needs what), §2.2 M1 (the reload rule
-scaled by measured reload cost), M4 (the owner's return), M5 (crashes); architecture_switch_harness_2026-10-29.md §6
+scaled by measured reload cost), M5 (crashes); architecture_switch_harness_2026-10-29.md §6
 step 13 and §7 (the live-resource handoff, modelled in src/RimMandrake/arena/models/LiveHandoff.tla: this is the
 FIXED protocol of that model: hand off only at a test boundary, a durable queue, a rule logged before every reload,
-no C# deploy while the game runs, a verdict only for the sha that is loaded, no act from a context after its switch,
-and the owner's return frees the game within YieldBound pilot steps).
+no C# deploy while the game runs, a verdict only for the sha that is loaded, no act from a context after its switch).
+The owner's return to the machine is NOT an event here (owner 2026-10-30: strip it): no presence probe, no yield.
 
 Every live act goes through arena_lane.Lane (bridge take/release, profile, deploy, reload, canary). This module
 decides WHEN, and logs WHY. A pilot agent drives it through the CLI; the decisions are code, not the agent's opinion.
 
 THE RELOAD RULE (M1), checked in this order by decide(); the numbers live in testpilot_reload_rule.json:
-  hold     the owner is back (Archmagi) or the grant expired: yield, never a reload (L12).
   ladder   a red canary on a live process: reconnect, then reload a fixture save, then restage. Not a reload.
   R0       no game in this lane's session (cold start).
   R1       the process is dead, or the canary is still red after every ladder rung.
@@ -106,7 +105,7 @@ class PilotRefused(Exception):
 
 
 class StalePilot(PilotRefused):
-    """This pilot no longer drives the lane (it handed off, yielded, or another pilot woke): S6."""
+    """This pilot no longer drives the lane (it handed off, aborted, or another pilot woke): S6."""
 
 
 # ---------------------------------------------------------------- paths, files, rule
@@ -153,8 +152,7 @@ def load_rule(path: Path | None = None) -> dict:
     raw = Path(path or RULE_FILE).read_bytes()
     rule = json.loads(raw)
     rule["_sha"] = hashlib.sha256(raw).hexdigest()[:16]
-    for k in ("cheap_max_launch_to_ready_s", "cheap_extra_tests", "max_acceptance_delay_s", "yield_bound_steps",
-              "yield_bound_s", "ladder"):
+    for k in ("cheap_max_launch_to_ready_s", "cheap_extra_tests", "max_acceptance_delay_s", "ladder"):
         if k not in rule:
             raise PilotRefused("reload rule file %s has no %r" % (path or RULE_FILE, k))
     return rule
@@ -219,6 +217,11 @@ def states(p: dict) -> dict:
     for r in _read(p["state"]):
         out[r["cand"]] = r
     return out
+
+
+def _requeues(p: dict, cand: str) -> int:
+    """Requeues already spent on this candidate (a dead pilot, a failed act): the retry budget."""
+    return sum(1 for r in _read(p["state"]) if r["cand"] == cand and r.get("requeued"))
 
 
 def set_state(p: dict, cand: str, state: str, nolock: bool = False, only_from=None, **kw) -> dict | None:
@@ -533,14 +536,12 @@ def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
 
 
 def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: float) -> dict:
-    """The one decision function. facts: process_alive, canary_ok (None = not run), hold (reason or None)."""
+    """The one decision function. facts: process_alive, canary_ok (None = not run)."""
     sess = sess or {}
     game = sess.get("game")
     byid = cand_by_id(p)
     q = queued(p)
     base = {"rule": None, "lane": lane}
-    if facts.get("hold"):
-        return dict(base, action="hold", why=facts["hold"])
     for c in q:                         # L9a: a rebuild that carries every scenario needs no game at all
         if c.get("parent"):
             pre = plan_retest(p, c, write=False)
@@ -687,8 +688,7 @@ class Pilot:
         self.epoch = None
         self.gen = None                 # the session generation this pilot woke into: its ownership token
         self.retired = False
-        self.owner_t = None             # driver clock when his return was first seen
-        self.steps_since_owner = 0
+        self._ev0 = None                # evidence length at the start of the current step (abort reads past it)
 
     # -- logging
     def _ev(self, event, **kw):
@@ -709,7 +709,7 @@ class Pilot:
     def _check_live(self) -> dict:
         """S6: refuse every act once this pilot no longer drives the lane."""
         if self.retired:
-            raise StalePilot("pilot %s has handed off or yielded: no further act" % self.id)
+            raise StalePilot("pilot %s has handed off or aborted: no further act" % self.id)
         s = self._sess()
         if s.get("pilot") != self.id or s.get("status") != "live":
             raise StalePilot("pilot %s does not drive lane %s (session: pilot %s, %s)"
@@ -722,11 +722,7 @@ class Pilot:
         return s
 
     def wake(self, takeover_dead: bool = False) -> dict:
-        """Take the lane from the session file. Refused while another pilot is live unless it is known dead, and on
-        Archmagi while the owner is home (the model's TakeGame guard)."""
-        if L.LANES[self.lane_name]["idle_rule"] and L.lane_config(self.p, self.lane_name)["owner_playing"] \
-                and self.d.owner_returned():
-            raise PilotRefused("the owner is at %s: no take until he is idle" % L.LANES[self.lane_name]["host"])
+        """Take the lane from the session file. Refused while another pilot is live unless it is known dead."""
         with locked(self.p):
             s = self._sess()
             prev = s.get("pilot")
@@ -808,70 +804,21 @@ class Pilot:
         self._ev("pass_end", detail={"pilot": self.id, "closed": True, "why": why})
         return s
 
-    # -- the owner's return (M4, model L2)
-    def _owner_check(self):
-        if self.lane is not None and L.LANES[self.lane_name]["idle_rule"]:
-            try:
-                self.lane.check_owner()
-            except L.OwnerReturned:
-                if self.owner_t is None:
-                    self.owner_t = self.d.clock()
-                raise
-
-    def _yield(self, why: str, stop_error: str | None = None) -> dict:
-        """He is back: the in-flight test is invalid and requeued, completed evidence stays, the lane is freed."""
-        t0 = self.owner_t if self.owner_t is not None else self.d.clock()   # the return (set from the lane), not the stop
-        s = self._sess()
-        steps = 0
-        if s.get("in_flight") and s.get("pilot") == self.id and s.get("generation") == self.gen:
-            self._interrupted(s["in_flight"], "owner returned", crash=False)
-            steps += 1
-        err = None
-        with locked(self.p):            # released before published, and only by the pilot that still owns it
-            s = self._sess()
-            mine = s.get("pilot") == self.id and s.get("generation") == self.gen
-            if mine:
-                try:
-                    self.lane.release(aborted=True, why="owner returned: %s" % why)
-                except L.RestoreFailed as e:
-                    err = str(e)
-                s.update({"status": "yielded", "game": None, "in_flight": None, "yielded_by": self.id})
-                self._save(s)
-            else:
-                err = "superseded: the lane is pilot %s's (generation %s); nothing released" % (
-                    s.get("pilot"), s.get("generation"))
-        self.retired = True
-        steps += 1
-        dt = self.d.clock() - t0
-        rec = self._decision({"kind": "yield", "why": why, "steps": steps, "seconds": round(dt, 1),
-                              "bound_steps": self.rule["yield_bound_steps"], "bound_s": self.rule["yield_bound_s"],
-                              "within": steps <= self.rule["yield_bound_steps"] and dt <= self.rule["yield_bound_s"],
-                              "restore_error": err, "stop_error": stop_error})
-        self._ev("pass_end", detail={"pilot": self.id, "yield": True, "decision": rec["id"], "steps": steps,
-                                     "seconds": rec["seconds"], "within": rec["within"]})
-        return rec
-
-    def _interrupted(self, inflight: dict, why: str, crash: bool = True):
+    def _interrupted(self, inflight: dict, why: str):
         byid = cand_by_id(self.p)
         c = byid.get(inflight.get("cand"))
         if c is None:
             return
         add_evidence(self.p, c, inflight["scenario"], "invalid", self.lane_name, self.id, t=self.d.clock(), why=why,
-                     crash=crash,
-                     taint=None)
-        n = sum(1 for r in _read(self.p["state"]) if r["cand"] == c["cand"] and r.get("requeued"))
-        if n >= int(self.rule.get("max_interrupt_requeues", 1)) and crash:
+                     crash=True, taint=None)
+        if _requeues(self.p, c["cand"]) >= int(self.rule.get("max_interrupt_requeues", 1)):
             set_state(self.p, c["cand"], "parked", why="interrupted again: %s" % why)
         else:
             set_state(self.p, c["cand"], "queued", requeued=True, why=why)
 
     # -- facts, the loop
     def facts(self, canary_ok=None) -> dict:
-        hold = None
-        if self.lane is not None and L.LANES[self.lane_name]["idle_rule"] and self.lane.cfg["owner_playing"] \
-                and self.d.owner_returned():
-            hold = "owner returned to %s" % self.lane.host
-        return {"process_alive": bool(self.d.game_running()), "canary_ok": canary_ok, "hold": hold}
+        return {"process_alive": bool(self.d.game_running()), "canary_ok": canary_ok}
 
     def decide(self, canary_ok=None) -> dict:
         s = self._check_live()
@@ -879,10 +826,9 @@ class Pilot:
 
     def step(self, canary_ok=None) -> dict:
         """One decision and its act. Returns {decision, result}."""
+        self._ev0 = len(evidence(self.p))  # abort reads only what this step recorded
         try:
             dec = self.decide(canary_ok)
-            if dec["action"] == "hold":
-                raise L.OwnerReturned(dec["why"])
             if dec["action"] == "reload":
                 return {"decision": dec, "result": self.reload(dec)}
             if dec["action"] == "carry":
@@ -894,13 +840,6 @@ class Pilot:
             if dec["action"] in ("test", "hot_apply"):
                 return {"decision": dec, "result": self.test(dec)}
             return {"decision": dec, "result": None}
-        except L.OwnerReturned as e:
-            seen = getattr(e, "seen_t", None)
-            if seen is not None and (self.owner_t is None or seen < self.owner_t):
-                self.owner_t = seen
-            if self.owner_t is None:
-                self.owner_t = self.d.clock()
-            return {"decision": {"action": "yield"}, "result": self._yield(str(e), getattr(e, "stop_error", None))}
         except (StalePilot, PilotRefused):
             raise                       # not this pilot's lane (or refused before any act): nothing of ours to release
         except Exception as e:  # noqa: BLE001 - a launch failure/timeout or any act failing: end the pass cleanly
@@ -913,14 +852,27 @@ class Pilot:
         why = "%s: %s" % (type(exc).__name__, str(exc)[-300:])
         if self.retired:
             return {"abort": why, "released": False}
-        c = cand_by_id(self.p).get((dec or {}).get("cand"))
+        s = self._sess()
+        inf = s.get("in_flight") if s.get("pilot") == self.id and s.get("generation") == self.gen else None
+        c = cand_by_id(self.p).get((inf or {}).get("cand") or (dec or {}).get("cand"))
         if c is not None:
-            done = scenario_status(self.p, c)
-            scn = next((x["id"] for x in c["plan"]["scenarios"] if x["id"] not in done), None)
+            # the invalid record goes on the scenario that was running (in_flight), else the one this decision
+            # chose, else (a reload/launch failure) the one the next test would run -- never "the first with no
+            # evidence", which is a different scenario once any result exists (TESTPILOT_FIX_ABORT_WRONG_SCENARIO)
+            if inf and inf.get("cand") == c["cand"]:
+                scn = inf.get("scenario")
+            elif (dec or {}).get("scenario") and (dec or {}).get("cand") == c["cand"]:
+                scn = dec["scenario"]
+                if any(e["scenario"] == scn and e.get("pilot") == self.id and e.get("cand") == c["cand"]
+                       and not _is_note(e) for e in (evidence(self.p)[self._ev0:] if self._ev0 is not None else [])):
+                    scn = None          # this act already recorded its result: the failure came after it
+            else:
+                v, _b = _pending(self.p, c, s)
+                scn = v[0] if v else None
             if scn:
                 add_evidence(self.p, c, scn, "invalid", self.lane_name, self.id, t=self.d.clock(), why=why,
                              crash=False, taint=None)
-            n = sum(1 for r in _read(self.p["state"]) if r["cand"] == c["cand"] and r.get("requeued"))
+            n = _requeues(self.p, c["cand"])
             if n >= int(self.rule.get("max_interrupt_requeues", 1)):
                 set_state(self.p, c["cand"], "parked", why="act failed again: %s" % why)
             else:
@@ -934,7 +886,7 @@ class Pilot:
                     self.lane.release(aborted=True, why="act failed: %s" % why)
                 except Exception as e:  # noqa: BLE001 - RestoreFailed or worse: logged, the session still ends
                     err = str(e)
-                s.update({"status": "yielded", "game": None, "in_flight": None, "yielded_by": self.id})
+                s.update({"status": "aborted", "game": None, "in_flight": None, "aborted_by": self.id})
                 self._save(s)
         self.retired = True
         rec = self._decision({"kind": "abort", "why": why, "cand": (dec or {}).get("cand"), "restore_error": err})
@@ -942,13 +894,13 @@ class Pilot:
         return rec
 
     def run_pass(self, max_steps: int = 50) -> list[dict]:
-        """Steps until idle, a yield, or the first candidate it tested resolves (one item per pass, L7)."""
+        """Steps until idle, an abort, or the first candidate it tested resolves (one item per pass, L7)."""
         out, first, canary_ok = [], None, None
         for _ in range(max_steps):
             r = self.step(canary_ok)
             out.append(r)
             a = r["decision"]["action"]
-            if a in ("idle", "yield"):
+            if a == "idle":
                 break
             res = r.get("result") or {}
             if _aborted(res):           # abort ended the session and retired this pilot: no further step
@@ -1106,8 +1058,7 @@ class Pilot:
         return head
 
     def _poll(self):
-        """Polled while a proof runs: the owner's return (M4) and this pilot still owning the lane (S6)."""
-        self._owner_check()
+        """Polled while a proof runs: this pilot still owns the lane (S6)."""
         self._check_live()
 
     def _expect_sha(self, s):
@@ -1115,7 +1066,7 @@ class Pilot:
         return g.get("deployed_sha") if g.get("mods") else None
 
     def test(self, dec: dict) -> dict:
-        """Run one scenario: canary, in-flight record, the proof (owner polled), canary, one evidence record."""
+        """Run one scenario: canary, in-flight record, the proof (ownership polled), canary, one evidence record."""
         s = self._check_live()
         byid = cand_by_id(self.p)
         c = byid[dec["cand"]]
@@ -1142,7 +1093,6 @@ class Pilot:
         hot = bool(g.get("hot_applied_t") and g["hot_applied_t"] > g.get("reset_t", 0))
         scn = next(x for x in c["plan"]["scenarios"] if x["id"] == dec["scenario"])
         self._at_rev(c)
-        self._owner_check()
         can = self.lane.canary(self._expect_sha(s))
         if not can["ok"]:
             with locked(self.p):        # re-checked once after a green canary; red again, blocked until a reset
@@ -1176,7 +1126,6 @@ class Pilot:
         except TimeoutError as e:   # the driver already killed the proof's group: a hang is a logged result, not a crash
             rc, txt, timed_out = None, "TIMEOUT: %s" % e, True
         self._check_live()              # S6: a pilot taken over mid-proof records nothing; the taker logged it
-        self.steps_since_owner += 1
         self.p["logs"].mkdir(parents=True, exist_ok=True)
         log = self.p["logs"] / ("%s-%s-%s.log" % (c["cand"].replace("@", "_"), scn["id"], uuid.uuid4().hex[:6]))
         log.write_text(txt or "", encoding="utf-8")
@@ -1247,7 +1196,7 @@ class Pilot:
 # ---------------------------------------------------------------- the real driver (live only)
 
 class PilotDriver(RC.RunnerDriver):
-    """RunnerDriver plus the pilot's acts. run_scenario polls `poll` (the owner check) while the proof runs."""
+    """RunnerDriver plus the pilot's acts. run_scenario polls `poll` (the S6 ownership check) while the proof runs."""
 
     LIMIT_S = 1800
 
@@ -1255,7 +1204,7 @@ class PilotDriver(RC.RunnerDriver):
         try:
             proc = subprocess.Popen(list(argv), cwd=clone or str(L.REPO), stdout=subprocess.PIPE,
                                     stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace",
-                                    start_new_session=True)     # its own group: a yield kills every child too
+                                    start_new_session=True)     # its own group: a kill reaches every child too
         except OSError as e:
             return 99, "%s: %s" % (type(e).__name__, e)
         t0 = time.time()
@@ -1275,7 +1224,7 @@ class PilotDriver(RC.RunnerDriver):
                 except OSError:
                     proc.kill()
                 try:
-                    proc.communicate(timeout=10)    # a grandchild holding the pipe cannot stall the yield
+                    proc.communicate(timeout=10)    # a grandchild holding the pipe cannot stall the kill
                 except subprocess.TimeoutExpired:
                     pass
                 raise
@@ -1366,7 +1315,7 @@ def main(argv=None):
     if a.cmd == "decide":
         dr = PilotDriver()
         sess = read_session(p, a.lane)
-        facts = {"process_alive": bool(dr.game_running()), "canary_ok": None, "hold": None}
+        facts = {"process_alive": bool(dr.game_running()), "canary_ok": None}
         print(json.dumps(decide(p, a.lane, sess, facts, load_rule(), dr.clock()), indent=1, default=str))
         return 0
     if a.cmd == "taint":
