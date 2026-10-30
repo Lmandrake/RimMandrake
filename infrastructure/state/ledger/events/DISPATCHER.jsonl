@@ -239,3 +239,4 @@
 {"seat":"DISPATCHER","event":"note","id":"EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-30T17:31:34Z","ts":"2026-10-30T17:33:29Z","tsn":1793381609927880113}
 {"seat":"DISPATCHER","event":"note","id":"EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS","text":"dispatcher woke_no_handoff FOUNDRY: doorbell consumed but no lease/claim/start by FOUNDRY in 600 s; re-ring in 300 s (no-hand-off streak 1)","ts":"2026-10-30T17:45:56Z","tsn":1793382356154511137}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Arbiter run run: launched","ts":"2026-10-30T18:00:24Z","tsn":1793383224944796562}
+{"seat":"DISPATCHER","event":"note","id":"EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS","text":"dispatcher woke_no_handoff FOUNDRY: doorbell consumed but no lease/claim/start by FOUNDRY in 600 s; re-ring in 900 s (no-hand-off streak 2)","ts":"2026-10-30T18:02:33Z","tsn":1793383353074761001}
