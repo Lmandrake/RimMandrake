@@ -59,6 +59,40 @@ def roots() -> list[Path]:
     return [Path(x) for x in v.split(os.pathsep) if x] if v else DEFAULT_ROOTS
 
 
+REPLAY_MARKER = ".git/rm_arena_replay.json"       # written by arena/arena_replay.py (nonce + created time)
+DEFAULT_REPLAY_ROOTS = [Path("/home/mandrake/rm/arena/replay")]
+
+
+def replay_roots() -> list[Path]:
+    v = os.environ.get("SCRATCH_REAP_REPLAY_ROOTS")
+    return [Path(x) for x in v.split(os.pathsep) if x] if v else DEFAULT_REPLAY_ROOTS
+
+
+def replay_ttl_s() -> float:
+    return float(os.environ.get("SCRATCH_REAP_REPLAY_TTL_HOURS", "6")) * 3600
+
+
+def replay_clone_marked(c: Path, now: float) -> bool:
+    """True only for an arena replay clone: exactly <replay root>/<arm>/<task>, a real .git directory, and a regular
+    marker file (nonce + created) older than the replay TTL. Such a clone never holds unpushed work by construction
+    (it has no remote and the arm's work is discarded), so the remote/unpushed checks do not apply to it."""
+    try:
+        rp = c.resolve()
+        if c.is_symlink() or not (c / ".git").is_dir() or (c / ".git").is_symlink():
+            return False
+        if not any(r.exists() and rp.parent.parent == r.resolve() for r in replay_roots()):
+            return False
+        m = c / REPLAY_MARKER
+        if m.is_symlink() or not m.is_file():
+            return False
+        d = json.loads(m.read_text())
+        if not (isinstance(d.get("nonce"), str) and re.fullmatch(r"[0-9a-f]{32}", d["nonce"])):
+            return False
+        return now - float(d["created"]) >= replay_ttl_s()
+    except (OSError, ValueError, TypeError, KeyError):
+        return False
+
+
 def corpus_roots() -> list[Path]:
     v = os.environ.get("SCRATCH_REAP_CORPUS")
     return [Path(x) for x in v.split(os.pathsep) if x] if v else DEFAULT_CORPUS
@@ -338,13 +372,16 @@ def judge(kind: str, p: Path, repos: list[Path], now: float) -> dict:
     if capped:
         row.update(verdict="REFUSE", why=[f"more than {WALK_CAP} entries — too big to age safely; inspect by hand"])
         return row
-    if now - newest < ttl_s():
+    replay = kind == "clone" and replay_clone_marked(p, now)
+    row["replay"] = replay
+    if now - newest < (replay_ttl_s() if replay else ttl_s()):
         row["verdict"] = "YOUNG"
         return row
     why = []
     clones = [p] if kind == "clone" else find_clones(p, depth=8)
     for c in clones:
-        why += clone_problems(c)
+        if not replay:
+            why += clone_problems(c)
         why += borrowers_of(c, repos)
     why += ledger_mentions(p, kind)
     for c in clones:
@@ -387,6 +424,16 @@ def main(argv=None) -> int:
         if again["verdict"] != "DELETE":
             r.update(verdict="REFUSE", why=["changed since the scan: "] + again["why"])
             continue
+        if again.get("replay"):                       # a judge may have left chmod-000 directories
+            stack = [r["path"]]
+            while stack:
+                d = stack.pop()
+                try:
+                    if not os.path.islink(d):
+                        os.chmod(d, 0o700)
+                        stack += [e.path for e in os.scandir(d) if e.is_dir(follow_symlinks=False)]
+                except OSError:
+                    pass
         shutil.rmtree(r["path"])
         r["verdict"] = "DELETED"
         deleted += 1
