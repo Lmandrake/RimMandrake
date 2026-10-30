@@ -51,9 +51,11 @@ print("PASS %d/%d  FAIL %d/%d  UNMEASURED 0/%d  CRASH 0/%d  SKIPPED 0/%d" % (n -
 sys.exit(1 if bad else 0)
 '''
 STUB_VALIDATE = '''import sys
+import vhelper
 t = "".join(open(a).read() for a in sys.argv[1:] if a.endswith(".xml"))
 if "BADXML" in t: print("1 error"); sys.exit(1)
 if "UNMEAS" in t: print("UNMEASURED - empty def type"); sys.exit(0)
+if "SILENT" in t: sys.exit(0)
 print("OK - 0 errors")
 '''
 STUB_WINBUILD = '''import os, sys
@@ -72,15 +74,17 @@ if os.path.exists("src/RimMandrake/%s/BLOCK" % m): print("  ! VANISHED ThingDef 
 BASE = {
     UT + "run_selftests.py": STUB_SELFTESTS,
     "skills/rimworld-modding/scripts/validate_patch.py": STUB_VALIDATE,
+    "skills/rimworld-modding/scripts/vhelper.py": "X = 1\n",
     UT + "winbuild.py": STUB_WINBUILD,
     UT + "deploy_custom_mods.py": STUB_DEPLOY,
     UT + "foo.py": "def foo():\n    return 1\n",
-    UT + "selftest_foo.py": "import sys\n\ndef t_a():\n    return 1\n\nsys.exit(0)\n",
-    UT + "proof_ok.py": "import sys\nsys.exit(0)\n",
-    UT + "proof_bad.py": "import sys\nsys.exit(3)\n",
+    UT + "selftest_foo.py": "import foo\n\ndef t_a():\n    assert foo.foo() >= 1\n\nt_a()\n",
+    UT + "proof_ok.py": "import sys\nimport foo\nsys.exit(0)\n",
+    UT + "proof_bad.py": "import sys\nimport foo\nsys.exit(3)\n",
+    UT + "unrelated.py": "import sys\nsys.exit(0)\n",
     "src/RimMandrake/ModA/Patches/p.xml": "<Patch/>\n",
     "src/RimMandrake/ModA/Source/A.cs": "class A {}\n",
-    "src/RimMandrake/ModA/About/x.txt": "x\n",
+    "src/RimMandrake/ModA/About/About.xml": "<ModMetaData/>\n",
 }
 AREA = [UT + "foo*", UT + "selftest_foo*", "src/RimMandrake/ModA/*"]
 ENV = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
@@ -136,8 +140,8 @@ class Ctx:
         return g.execute()
 
 
-GOOD = {UT + "foo.py": "def foo():\n    return 2\n", UT + "selftest_foo.py": "import sys\n\ndef t_a():\n    return 1\n\n"
-        "def t_b():\n    return 2\n\nsys.exit(0)\n"}
+GOOD = {UT + "foo.py": "def foo():\n    return 2\n", UT + "selftest_foo.py": "import foo\n\ndef t_a():\n    assert foo.foo() >= 1\n\n"
+        "def t_b():\n    assert foo.foo() == 2\n\nt_a()\nt_b()\n"}
 
 
 def st(rec, s):
@@ -152,6 +156,7 @@ def t_control(tmp):
     check(r["verdict"] == "pass" and r["passed"], "control: clean candidate with different-agent test record passes (%s)"
           % {s: st(r, s) for s in G.STEPS})
     check(r["verdict"] in G.VERDICTS and set(r["steps"]) == set(G.STEPS), "output is one record, verdict in {pass,fail,invalid}")
+    check(st(r, "deploy_plan") == "NA", "a Utils-only diff has deploy_plan NA, not UNMEASURED (%s)" % r["steps"]["deploy_plan"]["why"])
     check(r["recorded"] and any(x["event"] == "gate" and x["verdict"] == "pass" for x in L.verify(c.p, "armx")["accepted"]),
           "gate result is a SIGNED gate event")
     f = L.arm_file(c.p, "armx")
@@ -259,7 +264,14 @@ def t_unmeasured(tmp):
         return r
     one("no_selftest_maps", {UT + "lonely.py": "def f():\n    return 1\n"}, expect_step="tests",
         task=lambda c: dict(c.task, area=[UT + "lonely*"]))
-    one("runner_absent", GOOD, mutate=lambda c: c.commit({UT + "run_selftests.py": None}), expect_step="tests")
+    src = G.RUNNER_SRC                    # the harness runner starts but leaves no record (as os._exit(0) would)
+    G.RUNNER_SRC = "import os\nos._exit(0)\n"
+    try:
+        one("runner_no_record", GOOD, expect_step="tests")
+    finally:
+        G.RUNNER_SRC = src
+    one("checkout_runner_absent_is_irrelevant", GOOD, mutate=lambda c: c.commit({UT + "run_selftests.py": None}),
+        expect_step=None, records=False)
     one("tool_edited_by_diff", dict(GOOD, **{UT + "run_selftests.py": "import sys\nprint('PASS 9/9')\nsys.exit(0)\n"}),
         expect_step="tests", task=lambda c: dict(c.task, area=c.task["area"] + [UT + "run_selftests.py"]))
     one("dump_absent", dict(GOOD, **{"src/RimMandrake/ModA/Patches/p.xml": "<Patch>1</Patch>\n"}), expect_step="xml",
@@ -321,12 +333,199 @@ def t_cli_location(tmp):
     check(out.returncode == 2 and rec.get("verdict") == "invalid" and rec.get("passed") is False,
           "CLI: an unfrozen task -> invalid, exit 2 (%s)" % out.stdout[:80])
 
+def t_sandbox(tmp):
+    """(1) arm code the gate runs cannot reach the signing key, the harness env or the real HOME."""
+    c = Ctx(tmp, "sb")
+    tok = str(L.token_path(c.p))
+    probe = ("import os, foo\n\ndef t_a():\n    assert foo.foo() == 2\n\ndef t_env():\n"
+             "    assert not any(k.startswith('ARENA') for k in os.environ), 'harness env leaked'\n"
+             "    assert os.environ.get('HOME') != %r, 'real HOME'\n"
+             "    assert not os.path.exists(%r), 'token visible'\n"
+             "    assert not os.path.exists(os.path.expanduser('~/.local/state/rimmandrake/arena_harness/event_token'))\n"
+             "    assert not os.path.isdir(%r) or not os.listdir(%r), 'arena judge dir visible'\n\nt_a()\nt_env()\n"
+             % (str(Path.home()), tok, str(c.p["root"] / "judge" / "gate"), str(c.p["root"] / "judge" / "gate")))
+    h = c.commit({UT + "foo.py": "def foo():\n    return 2\n", UT + "selftest_foo.py": probe}); c.records(h); r = c.gate(h)
+    check(r["verdict"] == "pass" and st(r, "tests") == "PASS",
+          "sandboxed selftest sees no token, no ARENA_* env, no real HOME (%s %s)" % (st(r, "tests"),
+                                                                                   r["steps"]["tests"].get("findings")))
+    saved = shutil.which
+    G.shutil.which = lambda n, _s=saved: None if n == "bwrap" else _s(n)
+    try:
+        c2 = Ctx(tmp, "sb2"); h2 = c2.commit(GOOD); c2.records(h2); r2 = c2.gate(h2)
+    finally:
+        G.shutil.which = saved
+    check(r2["verdict"] == "invalid" and st(r2, "tests") == "UNMEASURED" and st(r2, "proof") == "UNMEASURED",
+          "no bwrap: sandboxed steps UNMEASURED, arm code never runs beside the key")
+
+
+def t_runner(tmp):
+    """(2) code under test cannot turn red green: excepthook, stdlib shadows, harness/instrument-import edits."""
+    hook = ("import os, sys\nsetattr(sys, 'excepth' + 'ook', lambda *a: getattr(os, '_ex' + 'it')(0))\n\n"
+            "def foo():\n    return 2\n")
+    red = "import foo\n\ndef t_a():\n    assert foo.foo() == 3\n\nt_a()\n"
+    c = Ctx(tmp, "rn1"); h = c.commit({UT + "foo.py": hook, UT + "selftest_foo.py": red}); c.records(h); r = c.gate(h)
+    check(r["verdict"] == "fail" and st(r, "tests") == "FAIL",
+          "an (obfuscated) excepthook exiting 0 does not hide a red selftest: tests FAIL (%s)" % st(r, "tests"))
+    plain = "import os, sys\nsys.excepthook = lambda *a: os._exit(0)\n\ndef foo():\n    return 2\n"
+    c = Ctx(tmp, "rn2"); h = c.commit({UT + "foo.py": plain, UT + "selftest_foo.py": red}); c.records(h); r = c.gate(h)
+    check(r["verdict"] != "pass" and st(r, "tests") != "PASS", "a plain excepthook in the diff is never a pass")
+    shadow = "import os\nprint('PASS 1/1  FAIL 0/1')\nos._exit(0)\n"
+    task = {"id": "T1", "area": [UT + "*"], "proof": "python3 src/RimMandrake/Utils/proof_ok.py", "live": "none"}
+    for k, path in (("cf", UT + "concurrent/futures.py"), ("js", UT + "json.py"), ("sc", UT + "sitecustomize.py"),
+                    ("pth", UT + "x.pth")):
+        c = Ctx(tmp, "rn_" + k); h = c.commit({UT + "foo.py": "def foo():\n    return 2\n", UT + "selftest_foo.py": red,
+                                               path: shadow}); c.records(h); r = c.gate(h, task=task)
+        check(r["verdict"] == "fail" and st(r, "scope") == "FAIL" and st(r, "tests") != "PASS",
+              "a new stdlib/hook shadow %s FAILS scope and the red test stays red (%s)" % (path, st(r, "tests")))
+    task2 = dict(task, area=task["area"] + ["skills/*", "src/RimMandrake/ModA/*"])
+    for k, extra in (("vh", {"skills/rimworld-modding/scripts/vhelper.py": "X = 2\n"}),
+                     ("ar", {UT + "arena/x.py": "X = 1\n"})):
+        c = Ctx(tmp, "rn_" + k)
+        h = c.commit(dict(GOOD, **extra, **{"src/RimMandrake/ModA/Patches/p.xml": "<Patch>fine</Patch>\n"}))
+        c.records(h); r = c.gate(h, task=task2)
+        check(st(r, "xml") == "UNMEASURED" and r["verdict"] != "pass",
+              "a diff editing %s (instrument import / harness code) leaves xml UNMEASURED" % list(extra)[0])
+
+
+def t_ids(tmp):
+    """(4) builder ids are compared normalised; every builder of the task is excluded; confusables refused."""
+    for k, tester in (("case", "buildera"), ("space", "BuilderA "), ("cyr", "ВuilderA"), ("full", "ＢuilderA"),
+                      ("zw", "Builder​A"), ("zero", "Bui1derA")):
+        c = Ctx(tmp, "id_" + k); h = c.commit(GOOD); c.records(h, builder="BuilderA", tester=tester); r = c.gate(h)
+        check(r["verdict"] == "fail" and st(r, "test_record") == "FAIL",
+              "tester %r vs builder 'BuilderA' is the same agent: FAIL" % tester)
+    c = Ctx(tmp, "id_many"); h = c.commit(GOOD)
+    c.emit("build_end", h, detail={"builder": "A1"}); c.emit("build_end", h, detail={"builder": "C1"})
+    c.emit("test_start", h, detail={"tester": "A1"}); c.emit("test_end", h, verdict="pass", detail={"tester": "A1"})
+    r = c.gate(h)
+    check(r["verdict"] == "fail" and st(r, "test_record") == "FAIL", "an EARLIER builder of the task testing it: FAIL")
+    c = Ctx(tmp, "id_short"); h = c.commit(GOOD)
+    c.emit("build_end", h[:12], detail={"builder": "B1"}); c.emit("test_start", h[:12], detail={"tester": "T9"})
+    c.emit("test_end", h[:12], verdict="pass", detail={"tester": "T9"}); r = c.gate(h)
+    check(r["verdict"] == "pass", "records naming head by a 12-char prefix count (control; %s)" % st(r, "test_record"))
+    check(G.sha_match(h[:12], h) and not G.sha_match(h[:11], h) and not G.sha_match("", h), "sha prefix needs >= 12 chars")
+
+
+def t_weakened(tmp):
+    """(5) a changed selftest may not lose executed checks; constant assertions are refused."""
+    base_st = "import foo\n\ndef t_a():\n    assert foo.foo() >= 1\n\ndef t_b():\n    assert foo.foo() < 9\n\nt_a()\nt_b()\n"
+    cases = {
+        "assert_true": ("import foo\n\ndef t_a():\n    assert True\n\ndef t_b():\n    assert foo.foo() < 9\n\nt_a()\nt_b()\n",
+                        "placeholders"),
+        "not_called": ("import foo\n\ndef t_a():\n    assert foo.foo() >= 1\n\ndef t_b():\n    assert foo.foo() < 9\n", "tests"),
+        "early_exit": ("import sys, foo\nsys.exit(0)\n\ndef t_a():\n    assert foo.foo() >= 1\n\ndef t_b():\n"
+                       "    assert foo.foo() < 9\n\nt_a()\nt_b()\n", "tests"),
+        "check_true": ("import foo\n\ndef check(ok, m):\n    assert ok, m\n\ndef t_a():\n    check(True, 'x')\n\ndef t_b():\n"
+                       "    assert foo.foo() < 9\n\nt_a()\nt_b()\n", "placeholders"),
+    }
+    for k, (head, where) in cases.items():
+        c = Ctx(tmp, "wk_" + k); c.commit({UT + "selftest_foo.py": base_st}); c.base = git(c.repo, "rev-parse", "HEAD")
+        h = c.commit({UT + "foo.py": "def foo():\n    return 2\n", UT + "selftest_foo.py": head}); c.records(h); r = c.gate(h)
+        check(r["verdict"] == "fail" and st(r, where) == "FAIL", "weakened selftest (%s) FAILS %s (%s)" % (k, where, st(r, where)))
+    c = Ctx(tmp, "wk_new"); h = c.commit(dict(GOOD, **{UT + "selftest_foo2.py": "assert True\n"})); c.records(h); r = c.gate(h)
+    check(r["verdict"] == "fail" and st(r, "placeholders") == "FAIL", "a new `assert True`-only selftest FAILS")
+    c = Ctx(tmp, "wk_empty"); h = c.commit(dict(GOOD, **{UT + "selftest_foo2.py": "print('fine')\n"})); c.records(h); r = c.gate(h)
+    check(r["verdict"] == "invalid" and st(r, "tests") == "UNMEASURED", "a new selftest executing no check is UNMEASURED")
+
+
+def t_med(tmp):
+    c = Ctx(tmp, "md_x"); h = c.commit(dict(GOOD, **{"src/RimMandrake/ModA/Patches/p.xml": "<Patch>SILENT</Patch>\n"}))
+    c.records(h); r = c.gate(h)
+    check(r["verdict"] == "invalid" and st(r, "xml") == "UNMEASURED", "a validator exiting 0 with no OK marker: xml UNMEASURED")
+    for k, ch in (("doc", {UT + "foo.py": '"""doc."""\ndef foo():\n    """says one."""\n    return 1\n'}),
+                  ("ws", {UT + "foo.py": "def foo():\n\n    return   1\n\n"}),
+                  ("cm", {UT + "foo.py": "# note\ndef foo():\n    return 1  # one\n"}),
+                  ("xmlcm", {"src/RimMandrake/ModA/Patches/p.xml": "<!-- c -->\n<Patch/>\n"})):
+        c = Ctx(tmp, "md_" + k); h = c.commit(ch); c.records(h); r = c.gate(h)
+        check(r["verdict"] == "fail" and st(r, "placeholders") == "FAIL", "a %s-only diff counts as empty: FAIL" % k)
+    c = Ctx(tmp, "md_ln"); (c.repo / UT).mkdir(parents=True, exist_ok=True)
+    os.symlink("run_selftests.py", c.repo / UT / "foo_link.py"); h = c.commit(GOOD); c.records(h); r = c.gate(h)
+    check(r["verdict"] == "fail" and st(r, "scope") == "FAIL", "an in-area symlink FAILS scope")
+    c = Ctx(tmp, "md_sub")
+    git(c.repo, "update-index", "--add", "--cacheinfo", "160000,%s,%s" % (c.base, UT + "foo_sub"))
+    git(c.repo, "commit", "-q", "-m", "sub"); h = git(c.repo, "rev-parse", "HEAD"); c.records(h); r = c.gate(h)
+    check(r["verdict"] == "fail" and st(r, "scope") == "FAIL", "a submodule gitlink-only diff FAILS scope")
+    c = Ctx(tmp, "md_rec"); h = c.commit(GOOD); c.records(h); r = c.gate(h)
+    rf = r.get("record_file")
+    try:
+        ok = G.load_verified(c.p, "armx", rf)["verdict"] == "pass"
+    except G.GateError:
+        ok = False
+    check(ok, "gate.json verifies against the sha256 in its signed gate event (control)")
+    body = json.loads(Path(rf).read_text()); body["verdict"] = "pass"; body["steps"]["tests"]["why"] = "edited"
+    Path(rf).write_text(json.dumps(body, indent=1, sort_keys=True))
+    try:
+        G.load_verified(c.p, "armx", rf); ok = False
+    except G.GateError:
+        ok = True
+    check(ok, "an edited gate.json is refused at read (hash differs from the signed event)")
+
+
+def t_low(tmp):
+    for k, proof in (("c", "python3 -c pass"), ("missing", "python3 src/RimMandrake/Utils/nope.py"),
+                     ("unrelated", "python3 src/RimMandrake/Utils/unrelated.py")):
+        c = Ctx(tmp, "lw_" + k, proof=proof); h = c.commit(GOOD); c.records(h); r = c.gate(h)
+        check(r["verdict"] == "invalid" and st(r, "proof") == "UNMEASURED", "proof %r is UNMEASURED, not pass/fail" % proof)
+    for k, ch in (("todo", {UT + "foo.py": "def foo():\n    # " + TD.lower() + ": later\n    return 2\n"}),
+                  ("retnone", {UT + "foo.py": "def foo():\n    return 1\n\ndef bar():\n    return None\n"})):
+        c = Ctx(tmp, "lw_" + k); h = c.commit(ch); c.records(h); r = c.gate(h)
+        check(r["verdict"] == "fail" and st(r, "placeholders") == "FAIL", "%s FAILS placeholders" % k)
+    r = None
+    c = Ctx(tmp, "lw_can", live="minimal"); h = c.commit(GOOD); c.records(h)
+    c.emit("canary", h[:1], verdict="pass", detail={"modcheck": True}); c.emit("live_release", h[:1], verdict="pass")
+    r = c.gate(h)
+    check(r["verdict"] != "pass" and st(r, "live") != "PASS", "a 1-char canary sha prefix does not name head")
+    env = {"ARENA_CLONES": str(tmp / "elsewhere")}
+    try:
+        G.refuse_arm_location(G.__file__, env=env); ok = False
+    except G.GateError:
+        ok = True
+    check(ok, "an ARENA_CLONES override without ARENA_GATE_TEST is refused")
+    try:
+        G.refuse_arm_location(G.__file__, env=dict(env, ARENA_GATE_TEST="1")); ok = True
+    except G.GateError:
+        ok = False
+    check(ok, "the override is honoured under ARENA_GATE_TEST=1 (control)")
+
+
+def t_signing(tmp):
+    """finish() signs only inside an explicit harness_pass opened in the parent, closed before it returns."""
+    opened, used = [], []
+    real_pass, real_writer = L.harness_pass, L.HarnessWriter
+
+    def spy_pass(*a, **k):
+        cap = real_pass(*a, **k); opened.append(cap); return cap
+
+    class SpyWriter(real_writer):
+        def emit(self, *a, **k):
+            used.append((self._cap, self._cap in opened, self._cap.closed)); return super().emit(*a, **k)
+    L.harness_pass, L.HarnessWriter = spy_pass, SpyWriter
+    try:
+        c = Ctx(tmp, "sg"); h = c.commit(GOOD); c.records(h)
+        g = G.Gate(c.task, c.base, h, "armx", c.repo, c.p, dump=str(c.dump), defs_roots=[]); r = g.execute()
+    finally:
+        L.harness_pass, L.HarnessWriter = real_pass, real_writer
+    gate_uses = used[-1:] if r.get("recorded") else []
+    check(r["verdict"] == "pass" and r["recorded"] and gate_uses and gate_uses[0][1] and not gate_uses[0][2],
+          "finish() emits the gate event through a capability it opened with harness_pass (%s)" % (used[-1][1:] if used else None,))
+    check(bool(gate_uses) and gate_uses[0][0].closed, "the signing pass is closed when finish() returns")
+    c = Ctx(tmp, "sg2"); h = c.commit(GOOD); c.records(h)
+    L.harness_pass = lambda *a, **k: (_ for _ in ()).throw(L.Rejected("no pass"))
+    try:
+        r = G.Gate(c.task, c.base, h, "armx", c.repo, c.p, dump=str(c.dump), defs_roots=[]).execute()
+    finally:
+        L.harness_pass = real_pass
+    check(not r["recorded"] and "no pass" in r.get("record_error", ""),
+          "without a harness pass finish() does not sign (record_error set)")
+
 
 def main():
-    saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE")}
+    saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}
+    os.environ["ARENA_GATE_TEST"] = "1"
     tmp = Path(tempfile.mkdtemp(prefix="arena_gate_st_"))
     try:
-        for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location):
+        for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
+                  t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing):
             t(tmp)
     finally:
         for k, v in saved.items():

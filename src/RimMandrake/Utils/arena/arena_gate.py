@@ -5,33 +5,65 @@ ARENA_GATE_BUILD_UNMEASURED_NEVER_PASSES; design/RimMandrake/architecture_switch
 testpilot_merged_2026-10-29.md §2.3. Usage:
 
     python3 src/RimMandrake/Utils/arena/arena_gate.py --task T --base <sha> --head <sha> --arm X [--repo DIR]
+    python3 src/RimMandrake/Utils/arena/arena_gate.py --verify-record <gate.json> --arm X
 
-A SEPARATE process, run from the judge's own checkout (the script refuses to run from inside an arm clone,
-`$ARENA_CLONES`), checks out `head` into a fresh clone under `<arena>/judge/gate_work/` and runs, in order:
-  1 scope        every changed path inside the task's `area` (arm bookkeeping stripped first, not refused)
-  2 placeholders non-empty diff; no TODO/FIXME/NotImplemented, no stub function (pass/.../raise NotImplementedError)
-                 in changed code; no deleted selftest, no selftest def dropped
-  3 tests        run_selftests.py --only <selftests of the changed paths + every selftest the diff added>
-  4 xml          validate_patch.py --live <dump> --defs <Data, workshop, Mods> on changed Defs/Patches
+A SEPARATE process, run from the judge's own checkout (the script refuses to run from inside an arm clone - the
+default clone root is ALWAYS checked, and an `$ARENA_CLONES` override is refused unless `ARENA_GATE_TEST=1`), checks
+out `head` (and `base`) into fresh clones under `<arena>/judge/gate_work/` and runs, in order:
+  1 scope        every changed path inside the task's `area` (arm bookkeeping stripped first, not refused); a symlink or
+                 a submodule gitlink in the diff FAILS; a NEW file shadowing a stdlib module name (`concurrent/futures.py`,
+                 `json.py`), a `sitecustomize`/`usercustomize` or a `.pth` FAILS
+  2 placeholders non-empty diff, where a docstring/comment/whitespace/mode-only change counts as empty; no TODO/FIXME
+                 (any case)/XXX/NotImplemented, no stub function (pass / ... / raise NotImplementedError / bare
+                 `return None`) in changed code; no deleted selftest, no selftest def dropped; a changed selftest
+                 may not lose assertion/check sites, and may not add a constant `assert True` / `check(True, ...)`
+  3 tests        the HARNESS-OWNED runner (source held in this file, never the checkout's run_selftests.py) runs each
+                 selftest of the changed paths + every selftest the diff added, one `python3 -I` process each, and
+                 counts what executed (sys.monitoring: assert statements, check*/expect*/verify*/assert*() calls,
+                 t_*/test_*() calls, distinct lines of the selftest). PASS comes only from the runner's positive
+                 record (nonce-bound, written to a pipe the parent holds), never from exit code or printed text: an
+                 `os._exit(0)` leaves no record -> UNMEASURED; an exception swallowed by a custom excepthook is caught
+                 by the runner -> FAIL. A selftest the diff changed is run at base too: its check count may not drop
+                 and its executed lines may not fall below 80% of base (FAIL). A new selftest executing no
+                 recognisable check is UNMEASURED. Printed text can only downgrade (the UNMEASURED phrase).
+  4 xml          validate_patch.py --live <dump> --defs <Data, workshop, Mods> on changed Defs/Patches; PASS needs the
+                 positive `OK - 0 errors` marker (exit 0 with no marker is UNMEASURED)
   5 csharp       winbuild.py <mod> for each mod with a changed .cs
-  6 deploy_plan  deploy_custom_mods.py --mod <m> (plan only); a plan naming a mod outside the area, or BLOCKING, fails
+  6 deploy_plan  deploy_custom_mods.py --mod <m> (plan only) for each DEPLOYABLE mod changed (one with
+                 `src/RimMandrake/<m>/About/About.xml`); a diff touching no deployable mod (Utils, rimflow, tooling)
+                 is NA by design, not UNMEASURED. A plan naming a mod outside the area, or BLOCKING, fails
   7 proof        the task's own `proof` (each `python3 ...` segment; prose segments such as the held-back note are
-                 the judge's business and are skipped; a proof with no runnable segment is UNMEASURED)
-  8 live         live tasks only: records in the arm's SIGNED event log: canary (sha == head, verdict pass, detail
-                 modcheck true) and live_release (verdict). A failed canary or a record for another sha is INVALID.
-  9 test_record  a `test_start` for this sha from an agent id other than the builder's (build_end.detail.builder),
-                 and a test_end verdict by that tester. No test_start refuses (FAIL).
+                 the judge's business and are skipped). A segment must run a file that exists (missing -> UNMEASURED)
+                 and that is in the diff, is a selftest, is a held-back check, or imports a changed module; `-c`
+                 code or a script touching nothing of the diff is UNMEASURED. No runnable segment -> UNMEASURED
+  8 live         live tasks only: records in the arm's SIGNED event log: canary (sha == head by a >=12-char prefix,
+                 verdict pass, detail modcheck true) and live_release (verdict). A failed canary or another sha: INVALID
+  9 test_record  a `test_start` for this sha from an agent id other than EVERY builder of the task (all build_end
+                 records), compared after NFKC + casefold + stripping format (Cf) characters and whitespace; a non-
+                 ASCII tester id or one confusable with a builder (skeleton collision: Cyrillic/Greek lookalikes,
+                 0/o, 1/l, rn/m) is refused; then a test_end verdict by that tester. No test_start refuses (FAIL)
 
-Step results: PASS | FAIL | INVALID | UNMEASURED | NA (not applicable to this diff; NA is decided only from the diff).
-A step that cannot run (missing tool, dump absent, timeout, unparsable output, tool edited by this very diff,
-no signed log, no token) is UNMEASURED. UNMEASURED NEVER PASSES.
-Overall verdict is exactly one of pass | fail | invalid:
+SANDBOX: every step that runs code from the checkout (tests, xml, csharp, deploy_plan, proof) runs under bubblewrap:
+`--ro-bind / /`, a fresh /tmp, tmpfs over the real HOME, the event-token and anchor directories
+(~/.local/state/rimmandrake/arena_harness, $ARENA_EVENT_TOKEN_FILE's dir), the private map dir
+(~/.local/state/rm_arena_private, $ARENA_PRIVATE) and `<arena>/judge`; writable: the data root (bound before the
+masks), the two clones and an empty HOME; pid namespace unshared; cwd the clean checkout; an allow-listed
+environment only (PATH, locale, USER, WSL interop, WINBUILD_DOTNET) plus RM_DATA_ROOT resolved by the parent. Before
+the steps a probe inside the sandbox must fail to see the token file, else every sandboxed step is UNMEASURED. No
+bwrap -> UNMEASURED (the gate never runs arm code beside the key). Signing happens only in THIS parent process,
+after every step has finished.
+
+Step results: PASS | FAIL | INVALID | UNMEASURED | NA (not applicable to this diff; NA is decided only from the diff
+and the repo layout). A step that cannot run (missing tool, dump absent, timeout, unparsable output, no positive
+record, instrument or a module it imports edited by this diff, no signed log, no token, no sandbox) is UNMEASURED.
+UNMEASURED NEVER PASSES. Overall verdict is exactly one of pass | fail | invalid:
   fail    any step FAIL;  else invalid   any step INVALID or UNMEASURED (the run is re-queued, the arm is not blamed);
   else pass  (every step PASS or NA, and steps 1, 2 and 9 are PASS).
 NOT SELF-REPORTABLE: the result is a signed `gate` event appended through arena_eventlog.HarnessWriter (HMAC token
-outside every arm-readable root) and a JSON record under `<arena>/judge/gate/`, which is outside them too. An arm
-cannot sign a line, so a hand-written "gate pass" is rejected by verify(). An arm's edit of a gate instrument
-(run_selftests/validate_patch/winbuild/deploy_custom_mods/arena_*) makes that tool's step UNMEASURED.
+outside every arm-readable root) whose detail carries the sha256 of the JSON record written under
+`<arena>/judge/gate/`; `load_verified()` / `--verify-record` refuses a record whose hash no signed gate event holds.
+An arm's edit of a gate instrument, of any module the instrument imports (AST closure, base and head), or of
+`Utils/arena/` / `rimflow/` makes the step that would run that instrument UNMEASURED.
 Output: one JSON record on stdout. Exit 0 only for `pass`.
 """
 from __future__ import annotations
@@ -40,13 +72,16 @@ import argparse
 import ast
 import datetime as dt
 import fnmatch
+import hashlib
 import json
 import os
 import re
+import secrets
 import shlex
 import shutil
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -60,6 +95,7 @@ VERDICTS = ("pass", "fail", "invalid")
 STEPS = ("scope", "placeholders", "tests", "xml", "csharp", "deploy_plan", "proof", "live", "test_record")
 MUST_PASS = ("scope", "placeholders", "test_record")
 STEP_TIMEOUT = 480
+DEFAULT_CLONES = "/home/mandrake/rm/arena"
 
 ARM_BOOKKEEPING = ("*/AGENTS.md", "IMPLEMENTATION_PLAN.md", "fix_plan.md", "PLAN.md", "plan.md")
 TOOLS = {                                   # relative to the clone; the arm may not have edited them
@@ -68,13 +104,26 @@ TOOLS = {                                   # relative to the clone; the arm may
     "csharp": "src/RimMandrake/Utils/winbuild.py",
     "deploy_plan": "src/RimMandrake/Utils/deploy_custom_mods.py",
 }
+TOOL_SEARCH = ("src/RimMandrake/Utils", "skills/rimworld-modding/scripts", "src/RimMandrake")
+HARNESS_PREFIXES = ("src/RimMandrake/Utils/arena/", "src/RimMandrake/rimflow/")
+SPECIAL_TESTS = ("src/RimMandrake/Utils/rimplace/selftest.py", "skills/generating-rimworld-sprites/scripts/selftest.py")
+SHADOW_NAMES = frozenset(sys.stdlib_module_names) | {"sitecustomize", "usercustomize"}
+ENV_ALLOW = ("PATH", "LANG", "LC_ALL", "LC_CTYPE", "TERM", "USER", "LOGNAME", "TZ", "WSL_INTEROP", "WSL_DISTRO_NAME",
+             "WSLENV", "WINBUILD_DOTNET")
 GAME = "/mnt/c/Program Files (x86)/Steam/steamapps"
 DEFS_ROOTS = (GAME + "/common/RimWorld/Data", GAME + "/workshop/content/294100", GAME + "/common/RimWorld/Mods")
 DUMP_DEFAULT = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump"
+UNMEASURED_PHRASE = "UNMEASURED, not a pass or a fail"       # run_selftests.py's phrase: text can only downgrade
 # built from parts so this file does not trip its own scan
-PLACEHOLDER_RE = re.compile(r"\b(TO" + r"DO|FIX" + r"ME|XX" + r"X)\b|Not" + r"Implemented")
+PLACEHOLDER_RE = re.compile(r"\b(?i:TO" + r"DO|FIX" + r"ME)\b|\bXX" + r"X\b|Not" + r"Implemented")
+TAMPER_RE = re.compile(r"excepthook|sys\.settrace|sys\.setprofile|sys\.monitoring|threading\.settrace|"
+                       r"gc\.get_(?:objects|referrers|referents)|sys\._getframe|_current_frames|/proc/self/(?:fd|mem)|"
+                       r"\bos\._exit\b|\bctypes\b")
 CODE_EXT = (".py", ".cs", ".xml", ".sh", ".json")
 DEF_RE = re.compile(r"^\s*(?:def|async def)\s+(\w+)")
+CHECK_NAME = re.compile(r"(?:(?:check|expect|verify|assert)(?:_\w*)?|ok)$")
+LINES_FLOOR = 0.8
+SHA_MIN = 12
 
 
 class GateError(Exception):
@@ -91,14 +140,51 @@ def unmeasured(why, **extra):
     return step(UNMEASURED, why, **extra)
 
 
+def NA_STEP(why):
+    return step(NA, why)
+
+
+# ---------------------------------------------------------------- agent ids
+
+_CONFUSE = {  # lookalikes NFKC does not fold -> latin; applied after norm_id (lower case)
+    "а": "a", "в": "b", "е": "e", "ё": "e", "к": "k", "м": "m", "н": "h", "о": "o", "р": "p", "с": "c", "т": "t",
+    "у": "y", "х": "x", "ѕ": "s", "і": "i", "ї": "i", "ј": "j", "һ": "h", "ԁ": "d", "ԛ": "q", "ԝ": "w", "ɡ": "g",
+    "α": "a", "β": "b", "ε": "e", "η": "n", "ι": "i", "κ": "k", "ν": "v", "ο": "o", "ρ": "p", "τ": "t", "υ": "u",
+    "χ": "x", "ω": "w", "ϲ": "c", "ӏ": "l", "ı": "i", "ℓ": "l",
+    "0": "o", "1": "l", "|": "l", "i": "l", "5": "s", "_": "-", ".": "-",
+}
+
+
+def norm_id(x) -> str | None:
+    """An agent id for comparison: NFKC, drop format (Cf) characters such as zero-width space, casefold, NFKC again,
+    collapse whitespace. None for anything that is not a usable id."""
+    if not isinstance(x, str):
+        return None
+    s = unicodedata.normalize("NFKC", x)
+    s = "".join(ch for ch in s if unicodedata.category(ch) != "Cf")
+    s = unicodedata.normalize("NFKC", s.casefold())
+    s = " ".join(s.split())
+    return s or None
+
+
+def skeleton(x) -> str | None:
+    """norm_id with confusables folded: two ids with one skeleton are the same agent for the different-agent rule."""
+    n = norm_id(x)
+    if n is None:
+        return None
+    s = "".join(ch for ch in unicodedata.normalize("NFD", n) if unicodedata.category(ch) != "Mn")
+    s = "".join(_CONFUSE.get(ch, ch) for ch in s)
+    return s.replace("rn", "m").replace("vv", "w").replace(" ", "").replace("-", "")
+
+
 # ---------------------------------------------------------------- process / git helpers
 
-def run(argv, cwd, log: Path, timeout=STEP_TIMEOUT, env=None):
+def run(argv, cwd, log: Path, timeout=STEP_TIMEOUT, env=None, stdin=None, pass_fds=()):
     """-> (rc or None when it could not run / timed out, text). Always writes the log."""
     log.parent.mkdir(parents=True, exist_ok=True)
     try:
         r = subprocess.run(argv, cwd=str(cwd), capture_output=True, text=True, timeout=timeout, env=env,
-                           errors="replace")
+                           errors="replace", input=stdin, pass_fds=tuple(pass_fds))
         text = "$ %s\n%s%s\n[rc=%s]\n" % (" ".join(shlex.quote(a) for a in argv), r.stdout, r.stderr, r.returncode)
         log.write_text(text, encoding="utf-8")
         return r.returncode, text
@@ -125,25 +211,137 @@ def in_area(path: str, area) -> bool:
     return any(fnmatch.fnmatch(path, g) or path == g for g in area)
 
 
+def sha_match(rec_sha, head_full: str) -> bool:
+    """A record names head when its sha is a hex prefix of head of at least SHA_MIN characters."""
+    s = str(rec_sha or "").strip().lower()
+    return len(s) >= SHA_MIN and bool(re.fullmatch(r"[0-9a-f]+", s)) and head_full.lower().startswith(s)
+
+
+def shadow_name(path: str) -> str | None:
+    """The stdlib / interpreter-hook name a path would shadow on sys.path, or None."""
+    parts = path.split("/")
+    if path.endswith(".pth"):
+        return parts[-1]
+    if not path.endswith(".py"):
+        return None
+    for c in parts[:-1] + [parts[-1][:-3]]:
+        if c in SHADOW_NAMES:
+            return c
+    return None
+
+
+def _token_dirs(p: dict) -> list[Path]:
+    home = Path.home()
+    out = [home / ".local" / "state" / "rimmandrake" / "arena_harness", home / ".local" / "state" / "rm_arena_private"]
+    for f in (lambda: L.token_path(p), lambda: L.anchor_path(p)):
+        try:
+            out.append(Path(f()).parent)
+        except Exception:  # noqa: BLE001
+            pass
+    env = os.environ.get("ARENA_PRIVATE", "").strip()
+    if env:
+        out.append(Path(env))
+    return out
+
+
+def _data_root() -> str | None:
+    try:
+        import rmpaths
+        return str(rmpaths.rm_data_root())
+    except Exception:  # noqa: BLE001 - steps needing it then fail visibly, never silently pass
+        return os.environ.get("RM_DATA_ROOT") or None
+
+
+# ---------------------------------------------------------------- the harness-owned selftest runner
+# Written to <work>/h/ (read-only inside the sandbox) and run as `python3 -I runner.py <fd> <selftest>`. It reads a
+# nonce from stdin, puts the selftest's dir on sys.path exactly as `python3 selftest.py` would, runs it with runpy
+# under sys.monitoring, and writes ONE json record (nonce, status, counts) to the pipe fd. No record -> UNMEASURED.
+RUNNER_SRC = r'''
+import ast, json, os, re, runpy, sys, traceback
+def _main():
+    fd = int(sys.argv[1]); path = os.path.realpath(sys.argv[2]); os.set_inheritable(fd, False)
+    nonce = sys.stdin.readline().strip()
+    nul = os.open(os.devnull, os.O_RDONLY); os.dup2(nul, 0); os.close(nul)
+    rec = {"nonce": nonce, "path": path, "asserts": 0, "checks": 0, "tests": 0, "lines": 0}
+    try:
+        src = open(path, encoding="utf-8", errors="replace").read()
+        alines = {n.lineno for n in ast.walk(ast.parse(src)) if isinstance(n, ast.Assert)}
+    except (OSError, SyntaxError, ValueError) as e:
+        rec.update(status="fail", why="unparsable: %%s" %% e)
+        os.write(fd, json.dumps(rec).encode()); os.close(fd); os._exit(1)
+    M = sys.monitoring; TOOL = 4; EV = M.events.LINE | M.events.PY_START
+    seen = set(); C = rec
+    chk = re.compile(%(check)r); tst = re.compile(r"(?:t|test)_\w+$")
+    def on_line(code, line):
+        if code.co_filename != path:
+            return M.DISABLE
+        if line in alines:
+            C["asserts"] += 1
+        elif (code, line) not in seen:
+            seen.add((code, line)); C["lines"] += 1
+            return M.DISABLE
+    def on_start(code, off):
+        n = code.co_name
+        if chk.match(n):
+            C["checks"] += 1
+        elif code.co_filename == path and tst.match(n):
+            C["tests"] += 1
+        else:
+            return M.DISABLE
+    M.use_tool_id(TOOL, "arena_gate")
+    M.register_callback(TOOL, M.events.LINE, on_line); M.register_callback(TOOL, M.events.PY_START, on_start)
+    sys.argv = [path]; sys.path.insert(0, os.path.dirname(path))
+    status, why = "pass", ""
+    M.set_events(TOOL, EV)
+    try:
+        runpy.run_path(path, run_name="__main__")
+    except SystemExit as e:
+        if e.code not in (None, 0):
+            status, why = "fail", "SystemExit(%%r)" %% (e.code,)
+    except BaseException as e:
+        status, why = "fail", "%%s: %%s" %% (type(e).__name__, str(e)[:200])
+        traceback.print_exc()
+    tampered = M.get_tool(TOOL) != "arena_gate" or M.get_events(TOOL) != EV
+    try:
+        M.set_events(TOOL, 0)
+    except Exception:
+        tampered = True
+    rec.update(status=status, why=why, tampered=tampered)
+    try:
+        sys.stdout.flush(); sys.stderr.flush()
+    except Exception:
+        pass
+    os.write(fd, json.dumps(rec).encode()); os.close(fd)
+    os._exit(0 if status == "pass" else 1)
+_main()
+''' % {"check": CHECK_NAME.pattern}
+
+
 # ---------------------------------------------------------------- the gate
 
 class Gate:
     def __init__(self, task: dict, base: str, head: str, arm: str, repo: Path, p: dict, workdir: Path | None = None,
                  dump: str | None = None, defs_roots=DEFS_ROOTS, writer=None, run_id: str | None = None,
-                 lane: str = "gate"):
+                 lane: str = "gate", python: str | None = None):
         self.task, self.base, self.head, self.arm, self.repo, self.p = task, base, head, arm, Path(repo), p
         self.dump = dump if dump is not None else os.environ.get("ARENA_GATE_DUMP", DUMP_DEFAULT)
         self.defs_roots = tuple(defs_roots)
         self.writer, self.lane = writer, lane
+        self.python = python or sys.executable
         self.stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ")
         self.run_id = run_id or "gate-%s-%s" % (task.get("id"), self.stamp)
         tag = "%s_%s_%s_%s" % (arm, task.get("id"), head[:12], self.stamp)
         self.logdir = p["root"] / "judge" / "gate" / tag
         self.work = Path(workdir) if workdir else p["root"] / "judge" / "gate_work" / tag
         self.clone = self.work / "co"
-        self.files: list[dict] = []        # {"path","status"} after stripping bookkeeping
+        self.base_clone = self.work / "base"
+        self.hdir = self.work / "h"          # runner source (read-only in the sandbox)
+        self.fake_home = self.work / "home"  # empty HOME for every sandboxed step
+        self.files: list[dict] = []          # {"path","status","old_mode","new_mode"} after stripping bookkeeping
         self.stripped: list[str] = []
         self.results: dict = {}
+        self.sandbox_why = ""                # non-empty: no sandboxed step may run
+        self.data_root = _data_root()
 
     # ------------------------------------------------------------ checkout and diff
     def checkout(self):
@@ -153,21 +351,30 @@ class Gate:
         if self.work.exists():
             shutil.rmtree(self.work)
         self.work.mkdir(parents=True)
-        subprocess.run(["git", "clone", "--quiet", "--no-checkout", str(self.repo), str(self.clone)],
-                       capture_output=True, text=True, timeout=300, check=True)
+        for d in (self.hdir, self.fake_home):
+            d.mkdir()
+        (self.hdir / "gate_runner.py").write_text(RUNNER_SRC, encoding="utf-8")
+        for dest in (self.clone, self.base_clone):
+            subprocess.run(["git", "clone", "--quiet", "--no-checkout", str(self.repo), str(dest)],
+                           capture_output=True, text=True, timeout=300, check=True)
         git(self.clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.head)
         got = git(self.clone, "rev-parse", "HEAD").strip()
         if not got.startswith(self.head.lower()) and not self.head.lower().startswith(got[:len(self.head)]):
             raise GateError("checkout is %s, not head %s" % (got, self.head))
         self.head_full = got
         self.base_full = git(self.clone, "rev-parse", "--verify", self.base + "^{commit}").strip()
-        out = git(self.clone, "diff", "--no-renames", "--name-status", self.base_full, self.head_full)
+        git(self.base_clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.base_full)
+        out = git(self.clone, "diff", "--no-renames", "--raw", "--no-abbrev", self.base_full, self.head_full)
         for line in out.splitlines():
-            st, _, path = line.partition("\t")
+            meta, _, path = line.partition("\t")
+            f = meta.lstrip(":").split()
+            if len(f) < 5:
+                continue
+            rec = {"path": path, "status": f[4][:1], "old_mode": f[0], "new_mode": f[1]}
             if is_bookkeeping(path):
                 self.stripped.append(path)
             else:
-                self.files.append({"path": path, "status": st[:1]})
+                self.files.append(rec)
 
     def paths(self, *statuses):
         return [f["path"] for f in self.files if not statuses or f["status"] in statuses]
@@ -175,11 +382,13 @@ class Gate:
     def alive(self):
         return [f["path"] for f in self.files if f["status"] != "D"]
 
+    def _diff(self, path):
+        return git(self.clone, "diff", "--no-renames", "-U0", self.base_full, self.head_full, "--", path, check=False)
+
     def added_lines(self, path):
         """-> {lineno: text} of lines added in head for `path`."""
-        out = git(self.clone, "diff", "--no-renames", "-U0", self.base_full, self.head_full, "--", path, check=False)
         res, ln = {}, 0
-        for l in out.splitlines():
+        for l in self._diff(path).splitlines():
             m = re.match(r"@@ -\S+ \+(\d+)", l)
             if m:
                 ln = int(m.group(1)); continue
@@ -188,35 +397,187 @@ class Gate:
         return res
 
     def removed_lines(self, path):
-        out = git(self.clone, "diff", "--no-renames", "-U0", self.base_full, self.head_full, "--", path, check=False)
-        return [l[1:] for l in out.splitlines() if l.startswith("-") and not l.startswith("---")]
+        return [l[1:] for l in self._diff(path).splitlines() if l.startswith("-") and not l.startswith("---")]
 
-    def tool_edited(self, key):
-        return TOOLS[key] in self.paths()
+    def read(self, which, path):
+        root = self.clone if which == "head" else self.base_clone
+        try:
+            return (root / path).read_bytes()
+        except OSError:
+            return None
+
+    # ------------------------------------------------------------ instruments and what they import
+    def import_closure(self, rel) -> set:
+        """Repo paths a checkout instrument imports (AST, recursive), in head and in base."""
+        out = set()
+        for root in (self.clone, self.base_clone):
+            todo, seen = [rel], set()
+            while todo:
+                f = todo.pop()
+                if f in seen:
+                    continue
+                seen.add(f)
+                try:
+                    tree = ast.parse((root / f).read_text(encoding="utf-8", errors="replace"))
+                except (OSError, SyntaxError, ValueError):
+                    continue
+                dirs = [os.path.dirname(f)] + list(TOOL_SEARCH)
+                for n in ast.walk(tree):
+                    names = []
+                    if isinstance(n, ast.Import):
+                        names = [a.name for a in n.names]
+                    elif isinstance(n, ast.ImportFrom) and n.module and not n.level:
+                        names = [n.module] + ["%s.%s" % (n.module, a.name) for a in n.names]
+                    for name in names:
+                        parts = name.split(".")
+                        for d in dirs:
+                            for k in range(1, len(parts) + 1):
+                                stem = "/".join([d] + parts[:k]) if d else "/".join(parts[:k])
+                                for cand in (stem + ".py", stem + "/__init__.py"):
+                                    if (root / cand).is_file():
+                                        todo.append(cand)
+            out |= seen
+        return out
+
+    def tool_tainted(self, key):
+        """-> reason the diff makes this instrument unable to judge it, or ''."""
+        changed = set(self.paths())
+        if TOOLS[key] in changed:
+            return "the diff edits the instrument %s: it cannot judge itself" % TOOLS[key]
+        if key == "tests":
+            return ""
+        hit = sorted(changed & self.import_closure(TOOLS[key]))
+        if hit:
+            return "the diff edits %s, which the instrument %s imports" % (", ".join(hit[:5]), TOOLS[key])
+        hp = sorted(c for c in changed if c.startswith(HARNESS_PREFIXES))
+        if hp:
+            return "the diff edits harness code %s" % ", ".join(hp[:5])
+        return ""
 
     def tool_path(self, key):
         tp = self.clone / TOOLS[key]
-        if self.tool_edited(key):
-            return None, "the diff edits the instrument %s: it cannot judge itself" % TOOLS[key]
+        why = self.tool_tainted(key)
+        if why:
+            return None, why
         if not tp.is_file():
             return None, "instrument %s is absent from the checkout" % TOOLS[key]
         return tp, ""
+
+    # ------------------------------------------------------------ sandbox
+    def sandbox_argv(self, argv, cwd):
+        bw = shutil.which("bwrap")
+        if not bw:
+            return None
+        out = [bw, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--unshare-pid", "--unshare-ipc",
+               "--die-with-parent", "--new-session"]
+        if self.data_root and os.path.isdir(self.data_root):
+            r = os.path.realpath(self.data_root)
+            out += ["--bind", r, r]                      # before the masks: the masks below win inside it
+        hides = [Path("/tmp"), Path.home()] + _token_dirs(self.p) + [self.p["root"] / "judge"]
+        done = []
+        for h in hides:
+            if not h.exists():
+                continue
+            r = os.path.realpath(h)
+            if any(r == d or r.startswith(d.rstrip("/") + "/") for d in done):
+                continue
+            done.append(r)
+            out += ["--tmpfs", r]
+        for k in (self.clone, self.base_clone, self.fake_home):
+            r = os.path.realpath(k)
+            out += ["--bind", r, r]
+        r = os.path.realpath(self.hdir)
+        out += ["--ro-bind", r, r, "--chdir", os.path.realpath(cwd)]
+        return out + ["--"] + list(argv)
+
+    def env(self):
+        e = {k: os.environ[k] for k in ENV_ALLOW if k in os.environ}
+        e.update(HOME=str(self.fake_home), TMPDIR="/tmp", PYTHONDONTWRITEBYTECODE="1", PYTHONNOUSERSITE="1",
+                 RM_ARM="harness")
+        if self.data_root:
+            e["RM_DATA_ROOT"] = self.data_root
+        return e
+
+    def srun(self, argv, log, cwd=None, timeout=STEP_TIMEOUT, stdin=None, pass_fds=()):
+        """Run checkout code sandboxed. -> (rc|None, text)."""
+        if self.sandbox_why:
+            log.parent.mkdir(parents=True, exist_ok=True)
+            log.write_text("[not run: %s]\n" % self.sandbox_why, encoding="utf-8")
+            return None, self.sandbox_why
+        full = self.sandbox_argv(argv, cwd or self.clone)
+        if full is None:
+            return None, "no sandbox (bwrap absent): arm code would run beside the signing key"
+        return run(full, cwd or self.clone, log, timeout=timeout, env=self.env(), stdin=stdin, pass_fds=pass_fds)
+
+    def sandbox_probe(self):
+        """The instrument must be able to see: a process in the sandbox must NOT reach the token or anchors, nor
+        inherit any ARENA_* variable. Sets sandbox_why on any doubt."""
+        if not shutil.which("bwrap"):
+            self.sandbox_why = "no sandbox (bwrap absent): arm code would run beside the signing key"
+            return
+        targets = [str(L.token_path(self.p)), str(L.anchor_path(self.p))] + [str(d) for d in _token_dirs(self.p)]
+        code = ("import os,sys,json\nt=json.loads(sys.argv[1]);seen=[]\nfor x in t:\n"
+                " try:\n  ok=os.path.isfile(x) or (os.path.isdir(x) and bool(os.listdir(x)))\n"
+                " except OSError:\n  ok=False\n if ok: seen.append(x)\n"
+                "print(json.dumps({'seen':seen,'env':[k for k in os.environ if k.startswith('ARENA')],"
+                "'home':os.environ.get('HOME')}))")
+        rc, text = self.srun([self.python, "-I", "-c", code, json.dumps(targets)], self.logdir / "sandbox_probe.log",
+                             timeout=60)
+        m = re.search(r"^\{.*\}$", text or "", re.M)
+        if rc != 0 or not m:
+            self.sandbox_why = "sandbox probe did not run (rc=%s): no step runs arm code unsandboxed" % rc
+            return
+        got = json.loads(m.group(0))
+        if got["seen"] or got["env"] or got["home"] != str(self.fake_home):
+            self.sandbox_why = "sandbox probe still sees %s: refusing to run arm code" % (got,)
 
     # ------------------------------------------------------------ steps
     def s_scope(self):
         area = self.task.get("area") or []
         if not area:
             return unmeasured("task has no area")
+        bad = []
+        for f in self.files:
+            modes = {f["old_mode"], f["new_mode"]}
+            if "160000" in modes:
+                bad.append("%s: submodule gitlink" % f["path"])
+            elif f["new_mode"] == "120000":
+                bad.append("%s: symlink (code it reaches is outside review)" % f["path"])
+            if f["status"] == "A" and shadow_name(f["path"]):
+                bad.append("%s: new file shadows the module/hook %r" % (f["path"], shadow_name(f["path"])))
         out = [f["path"] for f in self.files if not in_area(f["path"], area)]
-        if out:
-            return step(FAIL, "%d path(s) outside area" % len(out), outside=out[:20])
+        if out or bad:
+            return step(FAIL, "%d path(s) outside area, %d forbidden path(s)" % (len(out), len(bad)),
+                        outside=out[:20], forbidden=bad[:20])
         return step(PASS, "%d path(s), all inside area; %d bookkeeping stripped" % (len(self.files), len(self.stripped)))
+
+    def noop(self, f) -> bool:
+        """True when the change is docstring/comment/whitespace/mode only (or an added file holding nothing)."""
+        path = f["path"]
+        if f["status"] == "D":
+            return False
+        new = self.read("head", path)
+        old = self.read("base", path) if f["status"] != "A" else b""
+        if new is None or old is None:
+            return False
+        if new == old:
+            return True
+        if path.endswith(".py"):
+            try:
+                return _ast_core(old) == _ast_core(new)
+            except (SyntaxError, ValueError):
+                return False
+        if b"\0" in new or b"\0" in old:
+            return False
+        return _text_core(path, old) == _text_core(path, new)
 
     def s_placeholders(self):
         if not self.files:
             return step(FAIL, "empty diff (nothing outside bookkeeping)")
         if not self.alive():
             return step(FAIL, "the diff only deletes files")
+        if all(self.noop(f) for f in self.files):
+            return step(FAIL, "empty diff: every change is docstring/comment/whitespace/mode only")
         bad = []
         for f in self.files:
             path, st = f["path"], f["status"]
@@ -230,13 +591,41 @@ class Gate:
                     bad.append("%s:%d: %s" % (path, ln, text.strip()[:60]))
             if path.endswith(".py"):
                 bad += self.stub_functions(path, added)
+            if A.is_selftest(path):
+                bad += self.neutered(path, added, st)
             if A.is_selftest(path) and st == "M":
                 dropped = {m.group(1) for m in map(DEF_RE.match, self.removed_lines(path)) if m} - \
                     {m.group(1) for m in map(DEF_RE.match, added.values()) if m}
                 bad += ["%s: selftest def %s dropped" % (path, d) for d in sorted(dropped)]
         if bad:
-            return step(FAIL, "%d placeholder/empty/deleted-test finding(s)" % len(bad), findings=bad[:20])
-        return step(PASS, "non-empty; no placeholder, stub or dropped test in %d file(s)" % len(self.alive()))
+            return step(FAIL, "%d placeholder/empty/weakened-test finding(s)" % len(bad), findings=bad[:20])
+        return step(PASS, "non-empty; no placeholder, stub or weakened test in %d file(s)" % len(self.alive()))
+
+    def neutered(self, path, added, st):
+        """Constant assertions added, or assertion/check sites lost, in a selftest."""
+        out = []
+        try:
+            head = ast.parse((self.clone / path).read_text(encoding="utf-8", errors="replace"))
+        except (OSError, SyntaxError, ValueError):
+            return out                                 # stub_functions already reports unparsable python
+        for n in ast.walk(head):
+            if getattr(n, "lineno", None) not in added:
+                continue
+            if isinstance(n, ast.Assert) and isinstance(n.test, ast.Constant) and n.test.value:
+                out.append("%s:%d: constant assert" % (path, n.lineno))
+            if isinstance(n, ast.Call) and _call_name(n) and CHECK_NAME.match(_call_name(n)) and n.args and \
+                    isinstance(n.args[0], ast.Constant) and n.args[0].value is True:
+                out.append("%s:%d: %s(True, ...) checks nothing" % (path, n.lineno, _call_name(n)))
+        if st == "M":
+            old = self.read("base", path)
+            try:
+                nb = _check_sites(ast.parse(old or b""))
+            except (SyntaxError, ValueError):
+                nb = 0
+            nh = _check_sites(head)
+            if nh < nb:
+                out.append("%s: assertion/check sites dropped %d -> %d" % (path, nb, nh))
+        return out
 
     def stub_functions(self, path, added):
         try:
@@ -258,6 +647,9 @@ class Gate:
             if len(body) == 1 and isinstance(body[0], ast.Raise):
                 src = ast.dump(body[0].exc) if body[0].exc is not None else ""
                 stub = stub or "Not" + "ImplementedError" in src
+            if len(body) == 1 and isinstance(body[0], ast.Return) and (
+                    body[0].value is None or (isinstance(body[0].value, ast.Constant) and body[0].value.value is None)):
+                stub = True
             if stub:
                 out.append("%s:%d: stub function %s" % (path, n.lineno, n.name))
         return out
@@ -277,6 +669,38 @@ class Gate:
                         tests.add(str(t.relative_to(self.clone)))
         return sorted(tests)
 
+    def run_test(self, root: Path, rel: str, tag: str):
+        """-> (record dict | None, text). The record is the runner's, nonce-checked; None = no positive record."""
+        rfd, wfd = os.pipe()
+        nonce = secrets.token_hex(16)
+        log = self.logdir / ("tests_%s_%s.log" % (tag, re.sub(r"[^\w.]+", "_", rel)))
+        try:
+            rc, text = self.srun([self.python, "-I", str(self.hdir / "gate_runner.py"), str(wfd), str(root / rel)],
+                                 log, cwd=root, stdin=nonce + "\n", pass_fds=(wfd,))
+            os.close(wfd); wfd = None
+            os.set_blocking(rfd, False)
+            buf = b""
+            while True:
+                try:
+                    chunk = os.read(rfd, 65536)
+                except BlockingIOError:
+                    break
+                if not chunk:
+                    break
+                buf += chunk
+        finally:
+            if wfd is not None:
+                os.close(wfd)
+            os.close(rfd)
+        try:
+            rec = json.loads(buf.decode("utf-8", "replace")) if buf else None
+        except ValueError:
+            rec = None
+        if not isinstance(rec, dict) or rec.get("nonce") != nonce or rec.get("status") not in ("pass", "fail"):
+            return None, text
+        rec["rc"] = rc
+        return rec, text
+
     def s_tests(self):
         changed_py = [f for f in self.alive() if f.endswith(".py")]
         tests = self.selftests_for()
@@ -284,23 +708,61 @@ class Gate:
             return step(NA, "no python changed")
         if not tests:
             return unmeasured("python changed but no selftest maps to it", changed=changed_py[:10])
-        tp, why = self.tool_path("tests")
-        if tp is None:
+        why = self.tool_tainted("tests")
+        if why:
             return unmeasured(why)
-        rc, text = run([sys.executable, str(tp), "--no-cache", "--only", *tests], self.clone, self.logdir / "tests.log")
-        if rc is None:
-            return unmeasured("run_selftests could not run: " + text, log=str(self.logdir / "tests.log"))
-        m = re.search(r"PASS (\d+)/(\d+)\s+FAIL (\d+)/\d+\s+UNMEASURED (\d+)/\d+\s+CRASH (\d+)/\d+\s+SKIPPED (\d+)/\d+", text)
-        if not m:
-            return unmeasured("run_selftests summary unparsable (rc=%s)" % rc, log=str(self.logdir / "tests.log"))
-        ps, n, fl, um, cr, sk = map(int, m.groups())
-        if n != len(tests):
-            return unmeasured("ran %d test(s), asked for %d" % (n, len(tests)))
-        if fl or cr:
-            return step(FAIL, "%d FAIL, %d CRASH of %d" % (fl, cr, n), tests=tests)
-        if um or sk or ps != n or rc != 0:
-            return unmeasured("%d PASS of %d (UNMEASURED %d, SKIPPED %d, rc=%s)" % (ps, n, um, sk, rc), tests=tests)
-        return step(PASS, "%d/%d selftests pass" % (ps, n), tests=tests)
+        sh = sorted(f["path"] for f in self.files if f["status"] == "M" and shadow_name(f["path"]))
+        if sh:
+            return unmeasured("the diff edits interpreter-hook / stdlib-named file(s) %s: needs a human look" % sh)
+        tamper = sorted({"%s:%d" % (f, ln) for f in changed_py for ln, t in self.added_lines(f).items()
+                         if TAMPER_RE.search(t)})
+        if tamper:
+            return unmeasured("changed code can hijack the runner (excepthook/_exit/trace/frames/ctypes): %s"
+                              % ", ".join(tamper[:8]))
+        special = [t for t in tests if t in SPECIAL_TESTS]
+        if special:
+            return unmeasured("selftest(s) %s need run_selftests' special invocation" % special)
+        changed_set = set(self.paths("M"))
+        fails, unm, rows = [], [], {}
+        for t in tests:
+            rec, text = self.run_test(self.clone, t, "head")
+            if rec is None:
+                unm.append("%s: no positive record from the harness runner (%s)" % (t, (text or "")[-120:].strip()))
+                continue
+            row = {k: rec.get(k) for k in ("status", "asserts", "checks", "tests", "lines", "why", "tampered")}
+            rows[t] = row
+            if rec["status"] == "fail":
+                fails.append("%s: %s" % (t, rec.get("why")))
+                continue
+            if rec.get("tampered"):
+                unm.append("%s: the selftest switched off the runner's monitoring" % t)
+                continue
+            if UNMEASURED_PHRASE in text:
+                unm.append("%s: printed the unmeasured phrase" % t)
+                continue
+            n_head = rec["asserts"] + rec["checks"] + rec["tests"]
+            if t in changed_set and (self.base_clone / t).is_file():
+                brec, _ = self.run_test(self.base_clone, t, "base")
+                if brec is None:
+                    unm.append("%s: base run gave no record, the check count cannot be compared" % t)
+                    continue
+                n_base = brec["asserts"] + brec["checks"] + brec["tests"]
+                row["base"] = {k: brec.get(k) for k in ("status", "asserts", "checks", "tests", "lines")}
+                if n_head < n_base:
+                    fails.append("%s: executed checks dropped %d -> %d vs base" % (t, n_base, n_head)); continue
+                if rec["lines"] < LINES_FLOOR * brec["lines"]:
+                    fails.append("%s: executed lines dropped %d -> %d vs base" % (t, brec["lines"], rec["lines"]))
+                    continue
+            elif n_head == 0:
+                unm.append("%s: executed no recognisable check (assert / check*() / t_*())" % t)
+        if fails:
+            return step(FAIL, "%d of %d selftest(s) fail or were weakened" % (len(fails), len(tests)),
+                        findings=fails[:20], tests=tests, counts=rows)
+        if unm:
+            return unmeasured("%d of %d selftest(s) gave no positive result" % (len(unm), len(tests)),
+                              findings=unm[:20], tests=tests, counts=rows)
+        return step(PASS, "%d/%d selftests pass (harness runner, counted)" % (len(tests), len(tests)),
+                    tests=tests, counts=rows)
 
     def s_xml(self):
         xml = [f for f in self.alive() if A.is_defxml(f)]
@@ -311,21 +773,26 @@ class Gate:
             return unmeasured(why)
         if not Path(self.dump).is_dir():
             return unmeasured("--live dump %s is absent" % self.dump)
-        argv = [sys.executable, str(tp), *xml, "--live", self.dump]
+        argv = [self.python, str(tp), *xml, "--live", self.dump]
         for r in self.defs_roots:
             argv += ["--defs", r]
-        rc, text = run(argv, self.clone, self.logdir / "xml.log")
+        rc, text = self.srun(argv, self.logdir / "xml.log")
         log = str(self.logdir / "xml.log")
         if rc is None:
             return unmeasured("validate_patch could not run: " + text, log=log)
-        if rc == 0 and "UNMEASURED" not in text:
-            return step(PASS, "validate_patch --live --defs clean on %d file(s)" % len(xml), log=log)
-        if rc == 1:
+        if rc == 1 or re.search(r"^FAIL - \d+ error", text, re.M):
             return step(FAIL, "validate_patch reported errors", log=log)
-        return unmeasured("validate_patch rc=%s%s" % (rc, " with UNMEASURED in its output" if "UNMEASURED" in text else ""), log=log)
+        if rc == 0 and "UNMEASURED" not in text and re.search(r"^OK - 0 errors", text, re.M):
+            return step(PASS, "validate_patch --live --defs clean on %d file(s)" % len(xml), log=log)
+        return unmeasured("validate_patch rc=%s%s" % (rc, " with UNMEASURED in its output" if "UNMEASURED" in text
+                                                      else " without its positive `OK - 0 errors` marker"), log=log)
 
     def mods_changed(self, ext=None):
         return sorted({A._mod_of(f) for f in self.alive() if (ext is None or f.endswith(ext))} - {None})
+
+    def deployable(self, mod) -> bool:
+        return any((root / "src" / "RimMandrake" / mod / "About" / "About.xml").is_file()
+                   for root in (self.clone, self.base_clone))
 
     def s_csharp(self):
         mods = self.mods_changed(".cs")
@@ -339,7 +806,7 @@ class Gate:
         res = {}
         for m in mods:
             log = self.logdir / ("csharp_%s.log" % m)
-            rc, text = run([sys.executable, str(tp), m], self.clone, log)
+            rc, text = self.srun([self.python, str(tp), m], log)
             if rc is None:
                 return unmeasured("winbuild could not run for %s: %s" % (m, text), log=str(log))
             if rc != 0 and re.search(r"dotnet\.exe not found|no such csproj|no csproj under|WINBUILD_DOTNET", text):
@@ -351,9 +818,11 @@ class Gate:
         return step(PASS, "built " + ", ".join(mods))
 
     def s_deploy_plan(self):
-        mods = self.mods_changed()
+        touched = self.mods_changed()
+        mods = [m for m in touched if self.deployable(m)]
         if not mods:
-            return NA_STEP("no mod file changed")
+            return NA_STEP("no deployable mod changed (no src/RimMandrake/<m>/About/About.xml for %s): nothing to deploy"
+                           % (", ".join(touched) or "any path"))
         tp, why = self.tool_path("deploy_plan")
         if tp is None:
             return unmeasured(why)
@@ -361,7 +830,7 @@ class Gate:
         seen = set()
         for m in mods:
             log = self.logdir / ("deploy_%s.log" % m)
-            rc, text = run([sys.executable, str(tp), "--mod", m], self.clone, log)
+            rc, text = self.srun([self.python, str(tp), "--mod", m], log)
             if rc is None:
                 return unmeasured("deploy plan could not run for %s: %s" % (m, text), log=str(log))
             heads = re.findall(r"^(\S+)\s{2,}mandrake\.\S+", text, re.M)
@@ -373,7 +842,43 @@ class Gate:
         out = sorted(seen - allowed)
         if out:
             return step(FAIL, "plan touches mod(s) outside the task area: " + ", ".join(out))
-        return step(PASS, "plan touches only " + ", ".join(sorted(seen)))
+        return step(PASS, "plan touches only " + ", ".join(sorted(seen)),
+                    not_deployable=sorted(set(touched) - set(mods)))
+
+    def proof_target(self, argv):
+        """-> (repo-relative script path | None, why)."""
+        i = 1
+        while i < len(argv) and argv[i].startswith("-"):
+            if argv[i] == "-c":
+                return None, "proof runs inline `-c` code, not a file"
+            if argv[i] == "-m":
+                if i + 1 >= len(argv):
+                    return None, "proof `-m` names no module"
+                mod = argv[i + 1].replace(".", "/")
+                for cand in [mod + ".py", mod + "/__main__.py"] + ["%s/%s.py" % (d, mod) for d in TOOL_SEARCH]:
+                    if (self.clone / cand).is_file():
+                        return cand, ""
+                return None, "proof module %s is not in the checkout" % argv[i + 1]
+            i += 1
+        if i >= len(argv):
+            return None, "proof runs no file"
+        rel = os.path.normpath(argv[i])
+        if rel.startswith("..") or os.path.isabs(rel) or not (self.clone / rel).is_file():
+            return None, "proof script %s is missing from the checkout" % argv[i]
+        return rel, ""
+
+    def proof_touches(self, rel) -> bool:
+        if rel in self.paths() or A.is_selftest(rel):
+            return True
+        hidden = json.dumps(self.task.get("hidden_checks") or "")
+        if rel in hidden:
+            return True
+        try:
+            txt = (self.clone / rel).read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            return False
+        stems = {Path(f).stem for f in self.paths() if f.endswith(".py")}
+        return any(re.search(r"\b(import|from)\s+%s\b" % re.escape(s), txt) for s in stems)
 
     def s_proof(self):
         proof = (self.task.get("proof") or "").strip()
@@ -386,9 +891,15 @@ class Gate:
                 argv = shlex.split(s)
             except ValueError:
                 return unmeasured("proof segment unparsable: " + s[:80])
-            argv[0] = sys.executable
+            rel, why = self.proof_target(argv)
+            if rel is None:
+                return unmeasured(why, segment=s[:120])
+            if not self.proof_touches(rel):
+                return unmeasured("proof script %s exercises nothing of the diff (not changed, not a selftest, "
+                                  "imports no changed module)" % rel)
+            argv[0] = self.python
             log = self.logdir / ("proof_%d.log" % i)
-            rc, text = run(argv, self.clone, log)
+            rc, text = self.srun(argv, log)
             if rc is None:
                 return unmeasured("proof could not run: " + text, log=str(log))
             if rc != 0:
@@ -414,14 +925,13 @@ class Gate:
             return unmeasured("no signed canary record for this task")
         c = can[-1]
         d = c.get("detail") or {}
-        cs = str(c.get("sha") or "")
-        if not cs or not (self.head_full.startswith(cs) or cs.startswith(self.head_full)):
-            return step(INVALID, "canary record is for sha %s, not head" % c.get("sha"))
+        if not sha_match(c.get("sha"), self.head_full):
+            return step(INVALID, "canary record is for sha %s, not head (>=%d hex chars needed)" % (c.get("sha"), SHA_MIN))
         if c.get("verdict") != "pass":
             return step(INVALID, "canary %s: the run is re-queued, not failed" % c.get("verdict"), detail=d)
         if d.get("modcheck") is not True:
             return step(INVALID, "no modcheck recorded with this deploy")
-        rel = [r for r in mine if r["event"] == "live_release" and r.get("sha") == c.get("sha")]
+        rel = [r for r in mine if r["event"] == "live_release" and sha_match(r.get("sha"), self.head_full)]
         if not rel:
             return unmeasured("canary passed but the lane recorded no live verdict")
         v = rel[-1].get("verdict")
@@ -435,25 +945,42 @@ class Gate:
         if recs is None:
             return unmeasured(why)
         t = self.task["id"]
-        builds = [r for r in recs if r["event"] == "build_end" and r.get("task") == t and r.get("sha") == self.head_full]
-        builder = ((builds[-1].get("detail") or {}).get("builder")) if builds else None
-        if not builder:
+        mine = [r for r in recs if r.get("task") == t]
+        head_builds = [r for r in mine if r["event"] == "build_end" and sha_match(r.get("sha"), self.head_full)
+                       and norm_id((r.get("detail") or {}).get("builder"))]
+        if not head_builds:
             return unmeasured("no signed build_end (with builder) for head: the tester cannot be compared")
-        starts = [r for r in recs if r["event"] == "test_start" and r.get("task") == t and r.get("sha") == self.head_full]
+        raw_builders = [(r.get("detail") or {}).get("builder") for r in mine if r["event"] == "build_end"]
+        builders = {norm_id(b) for b in raw_builders} - {None}
+        bskel = {skeleton(b) for b in raw_builders} - {None}
+        starts = [r for r in mine if r["event"] == "test_start" and sha_match(r.get("sha"), self.head_full)]
         if not starts:
             return step(FAIL, "no test_start for this sha: no different-agent test record")
-        # the stamped rule is a convenience; recompute from the detail ids
-        others = [r for r in starts if (r.get("detail") or {}).get("tester") not in (None, "", builder)]
-        if not others:
-            return step(FAIL, "every test_start is by the builder %r (or has no tester id)" % builder)
-        testers = {(r.get("detail") or {}).get("tester") for r in others}
-        ends = [r for r in recs if r["event"] == "test_end" and r.get("task") == t and r.get("sha") == self.head_full
-                and (r.get("detail") or {}).get("tester") in testers]
+        testers, refused = set(), []
+        for r in starts:
+            raw = (r.get("detail") or {}).get("tester")
+            n = norm_id(raw)
+            if n is None:
+                refused.append("%r: no tester id" % (raw,))
+            elif not n.isascii():
+                refused.append("%r: non-ASCII after normalisation (homoglyph risk)" % (raw,))
+            elif n in builders:
+                refused.append("%r: is a builder of this task" % (raw,))
+            elif skeleton(raw) in bskel:
+                refused.append("%r: confusable with a builder of this task" % (raw,))
+            else:
+                testers.add(n)
+        if not testers:
+            return step(FAIL, "no test_start by an agent other than the builder(s) %s" % sorted(builders),
+                        refused=refused[:10])
+        ends = [r for r in mine if r["event"] == "test_end" and sha_match(r.get("sha"), self.head_full)
+                and norm_id((r.get("detail") or {}).get("tester")) in testers]
         if not ends:
             return unmeasured("test_start by %s but no test_end yet" % ", ".join(sorted(testers)))
         v = ends[-1].get("verdict")
         if v == "pass":
-            return step(PASS, "tester %s (builder %s) verdict pass" % ((ends[-1].get("detail") or {}).get("tester"), builder))
+            return step(PASS, "tester %s (builders %s) verdict pass" % ((ends[-1].get("detail") or {}).get("tester"),
+                                                                       ", ".join(sorted(builders))))
         if v == "fail":
             return step(FAIL, "different-agent tester verdict fail")
         return unmeasured("tester verdict %r" % v)
@@ -466,14 +993,21 @@ class Gate:
         except (GateError, subprocess.SubprocessError, OSError) as e:
             self.results = {s: unmeasured("no checkout: %s" % str(e)[:160]) for s in STEPS}
             return self.finish()
-        recs, why = self.accepted()
+        self.sandbox_probe()
         fns = {"scope": self.s_scope, "placeholders": self.s_placeholders, "tests": self.s_tests, "xml": self.s_xml,
-               "csharp": self.s_csharp, "deploy_plan": self.s_deploy_plan, "proof": self.s_proof,
-               "live": lambda: self.s_live(recs, why), "test_record": lambda: self.s_test_record(recs, why)}
-        for s in STEPS:
+               "csharp": self.s_csharp, "deploy_plan": self.s_deploy_plan, "proof": self.s_proof}
+        for s in STEPS:                           # every step that runs arm code finishes before any log is read
+            if s not in fns:
+                continue
             try:
                 self.results[s] = fns[s]()
             except Exception as e:  # noqa: BLE001 - a step that crashed is UNMEASURED, never a pass
+                self.results[s] = unmeasured("step crashed: %s: %s" % (type(e).__name__, str(e)[:160]))
+        recs, why = self.accepted()               # parent process only, after the sandboxed steps
+        for s, fn in (("live", lambda: self.s_live(recs, why)), ("test_record", lambda: self.s_test_record(recs, why))):
+            try:
+                self.results[s] = fn()
+            except Exception as e:  # noqa: BLE001
                 self.results[s] = unmeasured("step crashed: %s: %s" % (type(e).__name__, str(e)[:160]))
         return self.finish()
 
@@ -481,8 +1015,40 @@ class Gate:
         return finish(self.results, self.task.get("id"), self.arm, self.base, self.head, self.logdir, self)
 
 
-def NA_STEP(why):
-    return step(NA, why)
+def _strip_docstrings(tree):
+    for n in ast.walk(tree):
+        if isinstance(n, (ast.Module, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)) and n.body and \
+                isinstance(n.body[0], ast.Expr) and isinstance(getattr(n.body[0], "value", None), ast.Constant) and \
+                isinstance(n.body[0].value.value, str):
+            n.body = n.body[1:] or [ast.Pass()]
+    return tree
+
+
+def _ast_core(src: bytes) -> str:
+    return ast.dump(_strip_docstrings(ast.parse(src)), annotate_fields=False)
+
+
+def _text_core(path: str, b: bytes) -> str:
+    t = b.decode("utf-8", "replace")
+    if path.endswith((".xml", ".html", ".csproj", ".props")):
+        t = re.sub(r"<!--.*?-->", "", t, flags=re.S)
+    elif path.endswith((".cs", ".js", ".ts", ".java", ".c", ".h", ".cpp")):
+        t = re.sub(r"/\*.*?\*/", "", t, flags=re.S)
+        t = re.sub(r"//[^\n]*", "", t)
+    elif path.endswith((".sh", ".toml", ".yaml", ".yml", ".cfg", ".ini")):
+        t = re.sub(r"(?m)^\s*#[^\n]*", "", t)
+    return "".join(t.split())
+
+
+def _call_name(n):
+    f = n.func
+    return f.id if isinstance(f, ast.Name) else (f.attr if isinstance(f, ast.Attribute) else None)
+
+
+def _check_sites(tree) -> int:
+    return sum(1 for n in ast.walk(tree) if isinstance(n, ast.Assert) and not (isinstance(n.test, ast.Constant)
+               and n.test.value)) + sum(1 for n in ast.walk(tree) if isinstance(n, ast.Call) and _call_name(n)
+                                        and CHECK_NAME.match(_call_name(n)))
 
 
 def verdict_of(results: dict) -> str:
@@ -502,38 +1068,82 @@ def finish(results, task_id, arm, base, head, logdir, gate=None) -> dict:
     rec = {"verdict": v, "passed": v == "pass", "task": task_id, "arm": arm, "base": base, "head": head,
            "ts": L.now_ts(), "steps": {s: results.get(s) or unmeasured("step missing") for s in STEPS},
            "unmeasured": [s for s in STEPS if (results.get(s) or {}).get("status", UNMEASURED) == UNMEASURED],
-           "log_dir": str(logdir), "recorded": False}
+           "log_dir": str(logdir)}
     if gate is not None:
+        rf = logdir / "gate.json"
+        rec["record_file"] = str(rf)
+        body = json.dumps(rec, indent=1, sort_keys=True).encode("utf-8")
+        digest = hashlib.sha256(body).hexdigest()
+        rec["recorded"] = False
         try:
-            rec["record_file"] = str(logdir / "gate.json")
-            (logdir / "gate.json").write_text(json.dumps(rec, indent=1, sort_keys=True), encoding="utf-8")
-            w = gate.writer or L.HarnessWriter(gate.p)
-            w.emit(arm, "gate", lane=gate.lane, run_id=gate.run_id, task=task_id, sha=head, verdict=v,
-                   detail={"steps": {s: rec["steps"][s]["status"] for s in STEPS}, "log_dir": str(logdir)})
-            rec["recorded"] = True
+            rf.write_bytes(body)
+            detail = {"steps": {s: rec["steps"][s]["status"] for s in STEPS}, "log_dir": str(logdir),
+                      "record_file": str(rf), "record_sha256": digest}
+            if gate.writer is not None:            # selftests that plant a writer (wrong token etc.)
+                gate.writer.emit(arm, "gate", lane=gate.lane, run_id=gate.run_id, task=task_id, sha=head, verdict=v,
+                                 detail=detail)
+            else:
+                # the signing pass opens HERE, in the parent, after every sandboxed step has ended; it is closed
+                # (capability file deleted) before this function returns
+                with L.harness_pass(gate.p) as cap:
+                    L.HarnessWriter(gate.p, cap=cap).emit(arm, "gate", lane=gate.lane, run_id=gate.run_id,
+                                                          task=task_id, sha=head, verdict=v, detail=detail)
+            rec["recorded"], rec["record_sha256"] = True, digest
         except Exception as e:  # noqa: BLE001 - not signable: still report, say so, and never upgrade the verdict
             rec["record_error"] = str(e)[:200]
         if gate.work.exists():
             shutil.rmtree(gate.work, ignore_errors=True)
+    else:
+        rec["recorded"] = False
     return rec
 
 
-def refuse_arm_location(file=__file__):
-    clones = Path(os.environ.get("ARENA_CLONES", "/home/mandrake/rm/arena"))
-    if A._inside(Path(file), clones):
-        raise GateError("the gate is running from inside an arm clone (%s): the judge runs it from its own checkout"
-                        % clones)
+def load_verified(p: dict, arm: str, record_file) -> dict:
+    """The gate record at `record_file`, only if a SIGNED gate event of `arm` carries its sha256. Else GateError."""
+    rf = str(record_file)
+    try:
+        body = Path(rf).read_bytes()
+    except OSError as e:
+        raise GateError("gate record unreadable: %s" % e)
+    digest = hashlib.sha256(body).hexdigest()
+    events = [r for r in L.verify(p, arm)["accepted"] if r.get("event") == "gate"
+              and (r.get("detail") or {}).get("record_file") == rf]
+    if not events:
+        raise GateError("no signed gate event names %s" % rf)
+    if not any((r.get("detail") or {}).get("record_sha256") == digest for r in events):
+        raise GateError("%s does not match the sha256 its signed gate event carries: edited after signing" % rf)
+    rec = json.loads(body)
+    ev = [r for r in events if (r.get("detail") or {}).get("record_sha256") == digest][-1]
+    if ev.get("verdict") != rec.get("verdict"):
+        raise GateError("record verdict %r differs from the signed verdict %r" % (rec.get("verdict"), ev.get("verdict")))
+    return rec
+
+
+def refuse_arm_location(file=__file__, env=None):
+    env = os.environ if env is None else env
+    roots = [Path(DEFAULT_CLONES)]
+    ov = (env.get("ARENA_CLONES") or "").strip()
+    if ov and os.path.realpath(ov) != os.path.realpath(DEFAULT_CLONES):
+        if env.get("ARENA_GATE_TEST") != "1":
+            raise GateError("ARENA_CLONES is overridden (%s) outside a gate selftest: the clone-root check cannot be "
+                            "moved" % ov)
+        roots.append(Path(ov))
+    for clones in roots:
+        if A._inside(Path(file), clones):
+            raise GateError("the gate is running from inside an arm clone (%s): the judge runs it from its own "
+                            "checkout" % clones)
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--task", required=True)
-    ap.add_argument("--base", required=True)
-    ap.add_argument("--head", required=True)
+    ap.add_argument("--task")
+    ap.add_argument("--base")
+    ap.add_argument("--head")
     ap.add_argument("--arm", required=True)
     ap.add_argument("--repo", default=None, help="repo holding head (default: the arm's clone under $ARENA_CLONES, "
                                                  "else this checkout)")
     ap.add_argument("--lane", default="gate")
+    ap.add_argument("--verify-record", default=None, help="check a gate.json against its signed gate event")
     a = ap.parse_args(argv)
     try:
         refuse_arm_location()
@@ -541,7 +1151,17 @@ def main(argv=None):
         print(json.dumps({"verdict": "invalid", "passed": False, "error": str(e)}))
         return 2
     p = A.paths()
-    clones = Path(os.environ.get("ARENA_CLONES", "/home/mandrake/rm/arena"))
+    if a.verify_record:
+        try:
+            rec = load_verified(p, a.arm, a.verify_record)
+        except (GateError, ValueError, L.Rejected) as e:
+            print(json.dumps({"verified": False, "error": str(e)}))
+            return 2
+        print(json.dumps({"verified": True, "verdict": rec.get("verdict")}))
+        return 0
+    if not (a.task and a.base and a.head):
+        ap.error("--task, --base and --head are required")
+    clones = Path(os.environ.get("ARENA_CLONES", DEFAULT_CLONES))
     repo = Path(a.repo) if a.repo else (clones / a.arm if (clones / a.arm / ".git").exists() else A.REPO)
     try:
         task = A.load_frozen(a.task, p)
