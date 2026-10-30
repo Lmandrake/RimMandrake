@@ -339,6 +339,7 @@ he has not touched the game for 20 minutes — never for a flyer's flight; each 
 daily digest (`delegation_policy.md` §2.6). Tooling LANDED: `rimflow bridge idle --for "<what>"` reports TAKEABLE
 or not; `rimflow bridge take --idle-ok --for "<what>"` and `./game --idle-ok --why "<what>" down|loading|...` do it
 (probe `rimflow/idle_probe.py`; UNMEASURED refuses; `--flyer` or flight wording refuses; an OWNER hold is never taken).
+🔴 **The arena live checker lives beside him** (owner, 2026-10-30: *"I want you to disable the relationship between me touching the machine and the live checker. It needs to live beside me."*): his input on the machine never gates, delays or yields an arena lane, TestPilot or runner (lane config `owner_playing` false; no `bridge idle` check). Still binding: a free bridge (or `./bridge` override), never an OWNER hold, never a flyer's flight, never fullscreen or focus the game.
 🔴 **Holding the bridge is blanket authorization** — *"Never ask that. If you have bridge, you may
 start steam, launch game, anything you need."* Game-state relays are STAMP-ONLY (*"burn tokens
 unnecessarily and rarely inform"*). Detail: `standing_rulings.md`.

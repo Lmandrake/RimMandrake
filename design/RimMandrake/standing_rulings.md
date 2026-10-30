@@ -451,6 +451,8 @@ AND he has not touched the game for 20 minutes, a seat MAY take it, deploy and r
 game on its own — never for a flyer's flight — and lists each act in his daily digest.
 Detail: `delegation_policy.md` §2.6; watcher BRIDGE_IDLE_BUILD_TWENTY_MINUTE_WATCH.
 
+🔴 **The arena live checker lives beside him, not after him** (owner, 2026-10-30, verbatim: *"I want you to disable the relationship between me touching the machine and the live checker. It needs to live beside me."*). His keyboard and mouse activity on Archmagi never gates, delays or yields an arena lane, the TestPilot or a runner: the lane config keeps `owner_playing` false and no live check consults `rimflow bridge idle`. The 20-minute idle rule above still governs other seat work on the game. What still binds the checker: the bridge must be free (or his `./bridge` override), an OWNER hold is never taken, never a flyer's flight, and the game is never fullscreened or focused, so it does not steal his screen. `owner_playing` true stays only as his explicit switch for when he is playing the game himself.
+
 🔴 **Holding the bridge is blanket authorization — never ask what to do with it** (owner,
 2026-09-19, verbatim: *"Never ask that. If you have bridge, you may start steam, launch
 game, anything you need."*). Once `bridge who`/`bridge take` says it's yours, starting
