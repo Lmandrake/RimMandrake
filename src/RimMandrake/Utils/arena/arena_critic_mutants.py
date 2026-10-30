@@ -632,9 +632,13 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
         invalid = sum(1 for c in doc["candidates"]
                       if not (recs.get(c["cid"]) and recs[c["cid"]]["verdict"] in J.VERDICTS))
         unmatched = sum(1 for row in tab.values() for _m, v, hit in row["muts"] if v == "reject" and hit is None)
-        seeded = sum(1 for r in recs.values() if (r.get("meta") or {}).get("seeded_from"))
+        role_of = {c["cid"]: c.get("role", "good") for c in doc["candidates"]}
+        seeded = {"good": 0, "mutant": 0}
+        for cid, r in recs.items():
+            if (r.get("meta") or {}).get("seeded_from") and cid in role_of:
+                seeded["mutant" if role_of[cid] == "mutant" else "good"] += 1
         blk = {"run": run_id, "critic_fingerprint": fp, "invalid": invalid, "candidates": len(doc["candidates"]),
-               "seeded_originals": seeded, "rejects_without_valid_match": unmatched,
+               "seeded": seeded, "rejects_without_valid_match": unmatched,
                "matcher_decoy_hits": [sum(1 for j in jobs if j["decoy_hit"]), len(jobs)],
                "orig_rejects_naming_paired_defect": sum(1 for row in tab.values() if row["orig"] == "reject"
                                                         and row["orig_match"])}
@@ -773,8 +777,9 @@ def main(argv=None) -> int:
         sc["set_sha256"][:12], sc["mutants"], sc["originals"], sc["detect"]["test"], sc["detect"]["read"],
         sc["detect"]["unproved"]))
     for role, blk in sc["reviewers"].items():
-        print("== %s (%s) invalid %d/%d, seeded originals %d, decoy hits %s" % (
-            role, blk["run"], blk["invalid"], blk["candidates"], blk["seeded_originals"], blk["matcher_decoy_hits"]))
+        print("== %s (%s) invalid %d/%d, seeded %d originals + %d mutants, decoy hits %s" % (
+            role, blk["run"], blk["invalid"], blk["candidates"], blk["seeded"]["good"], blk["seeded"]["mutant"],
+            blk["matcher_decoy_hits"]))
         for mode in ("verdict", "reason"):
             x = blk[mode]
             print("  %-7s catch %d/%d  false-reject %d/%d  discrimination %s  95%% %s" % (

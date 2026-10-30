@@ -7951,3 +7951,6 @@
 {"seat":"BENCH","event":"lease","id":"CRITIC_CALIB_FIX_MISS_IGNORES_REASON","action":"renew","token":"BENCH.pid92877.60a9a50f","ts":"2026-10-30T14:24:25Z","expires":"2026-10-30T15:09:25Z","tsn":1793370265995419376}
 {"seat":"BENCH","event":"lease","id":"CRITIC_CALIB_FIX_PLANTED_NOT_DETECTABLE","action":"renew","token":"BENCH.pid92893.f666c69f","ts":"2026-10-30T14:24:26Z","expires":"2026-10-30T15:09:26Z","tsn":1793370267227012014}
 {"seat":"BENCH","event":"lease","id":"CRITIC_CALIB_MEASURE_AGAINST_TESTER_BASELINE","action":"renew","token":"BENCH.pid92901.2e0958ce","ts":"2026-10-30T14:24:27Z","expires":"2026-10-30T15:09:27Z","tsn":1793370268399095065}
+{"seat":"BENCH","event":"lease","id":"CRITIC_CALIB_FIX_MISS_IGNORES_REASON","action":"renew","token":"BENCH.pid92877.60a9a50f","ts":"2026-10-30T14:26:39Z","expires":"2026-10-30T15:11:39Z","tsn":1793370399860040195}
+{"seat":"BENCH","event":"lease","id":"CRITIC_CALIB_FIX_PLANTED_NOT_DETECTABLE","action":"renew","token":"BENCH.pid92893.f666c69f","ts":"2026-10-30T14:26:40Z","expires":"2026-10-30T15:11:40Z","tsn":1793370401013560730}
+{"seat":"BENCH","event":"lease","id":"CRITIC_CALIB_MEASURE_AGAINST_TESTER_BASELINE","action":"renew","token":"BENCH.pid92901.2e0958ce","ts":"2026-10-30T14:26:41Z","expires":"2026-10-30T15:11:41Z","tsn":1793370402173497839}
