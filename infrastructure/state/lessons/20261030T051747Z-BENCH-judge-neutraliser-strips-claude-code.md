@@ -1,0 +1,2 @@
+arena_judge.neutralise drops arm-bookkeeping paths including .claude/, which also holds real CODE (.claude/hooks/*.py). A blind reviewer given a candidate whose work lives there sees an empty or partial diff and rejects for 'no change'. ARENA_CRITIC_MEASURE_PLANTED_DEFECTS_FIRST excludes such candidates via hidden_code(); any other consumer of neutralise() must do the same or judge blind work as missing.
+home: src/RimMandrake/Utils/arena/arena_judge.py

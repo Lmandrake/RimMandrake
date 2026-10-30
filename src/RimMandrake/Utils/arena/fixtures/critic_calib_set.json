@@ -1,0 +1,785 @@
+{
+ "built": "2026-10-30T04:39:12Z",
+ "candidates": [
+  {
+   "area": [
+    "src/RimMandrake/Utils/art_eval/*",
+    "src/RimMandrake/Utils/systemd/*"
+   ],
+   "base": "d9c11a03f446722fd614c62a0497e66048d25e98",
+   "cid": "c1a42961939",
+   "criteria": "Nothing chains a finished art-eval regen render to its judge: no timer/daemon runs fauna_drive candidates --auto + runner.py run (or facing batch drv.py spec + judge.sh); judging happens only when an agent session does it by hand, so renders wait across handoffs (Surrik s2r1 4 days, facing-audit r3 2 days). Wire an idle-time judge pass with the subagent_budget caps",
+   "defect": "a compare-vetoed ACCEPT is stuck: nothing installs/refiles",
+   "grade": "medium",
+   "head": "bd999305cd2e34ff6bec7ff38ac74d31de5afe1b",
+   "kind": "python-util",
+   "prompt": "Nothing chains a finished art-eval regen render to its judge: no timer/daemon runs fauna_drive candidates --auto + runner.py run (or facing batch drv.py spec + judge.sh); judging happens only when an agent session does it by hand, so renders wait across handoffs (Surrik s2r1 4 days, facing-audit r3 2 days). Wire an idle-time judge pass with the subagent_budget caps",
+   "rework_fix_shas": [
+    "3436893d19e681ef3b54d59fcb72086b82f5d207"
+   ],
+   "rework_items": [
+    "ARTEVAL_COMPARE_VETO_FIX_ACCEPT_LIMBO"
+   ],
+   "role": "planted",
+   "size": 4,
+   "source_item": "ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE",
+   "task": "RP_ARTEVAL_FINISHED_RENDERS_WIRE_AUTO_JUDGE"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Utils/art_eval/*"
+   ],
+   "base": "0b00f024c8d1a63cf35b3276ff5258cbabd7111b",
+   "cid": "ce887bcc1f3",
+   "criteria": "Pyrelands fauna regens (FireHawk r2, FireWasp r2, Flamefang r3) judged REGEN by auto-judge pass fauna_auto_20261028_1101 were REFUSED_UNCONFIRMED by fill_queue: rows name no install_to/target_texpath (runner --file-regens and fauna_drive rows both). Add the target to these defs' specs/rows and file round 2/3; FurnaceBeast r2 ACCEPT install owed",
+   "defect": "regen rows took CLI error text as the image prompt",
+   "grade": "medium",
+   "head": "54b50eca5e837414ac1ce84438c8e8c9bddb130a",
+   "kind": "python-util",
+   "prompt": "Pyrelands fauna regens (FireHawk r2, FireWasp r2, Flamefang r3) judged REGEN by auto-judge pass fauna_auto_20261028_1101 were REFUSED_UNCONFIRMED by fill_queue: rows name no install_to/target_texpath (runner --file-regens and fauna_drive rows both). Add the target to these defs' specs/rows and file round 2/3; FurnaceBeast r2 ACCEPT install owed",
+   "rework_fix_shas": [
+    "50710f361128044898d9c6e2b7da5f2374f84fb0"
+   ],
+   "rework_items": [
+    "ARTEVAL_REGEN_PROMPT_FIX_LIMIT_TEXT"
+   ],
+   "role": "planted",
+   "size": 4,
+   "source_item": "ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET",
+   "task": "RP_ARTEVAL_REGEN_ROWS_FIX_MISSING_TARGET"
+  },
+  {
+   "area": [
+    "infrastructure/state/lessons/*",
+    "src/RimMandrake/DivingInteraction/Assemblies/*",
+    "src/RimMandrake/DivingInteraction/Source/*"
+   ],
+   "base": "b7dc96e0e5989ba25883868545e0cab878af0eb0",
+   "cid": "cfcf9b08d14",
+   "criteria": "A banned (unlit) torch, brazier or fuelled heater on the Chill seabed still burns fuel every tick, so pawns refuel a dark, cold building forever",
+   "defect": "fuel-freeze also froze powered machines for free",
+   "grade": "strong",
+   "head": "3b7aa3e070d02b3fbe49a45bb84c86bb6a25b4ec",
+   "kind": "csharp",
+   "prompt": "A banned (unlit) torch, brazier or fuelled heater on the Chill seabed still burns fuel every tick, so pawns refuel a dark, cold building forever",
+   "rework_fix_shas": [
+    "a30d4728a7be9c1e46de1afc5c9a447e9cb7fe32"
+   ],
+   "rework_items": [
+    "CHILLFIREBAN_FIX_POWERED_MACHINE_FREE_FUEL"
+   ],
+   "role": "planted",
+   "size": 4,
+   "source_item": "CHILLFIREBAN_FIX_UNLIT_REFUELABLE_BURNS_FUEL",
+   "task": "RP_CHILLFIREBAN_FIX_UNLIT_REFUELABLE_BURNS_FUEL"
+  },
+  {
+   "area": [
+    "infrastructure/state/lessons/*",
+    "src/RimMandrake/DivingInteraction/Assemblies/*",
+    "src/RimMandrake/DivingInteraction/Defs/ThingDefs_Buildings/*",
+    "src/RimMandrake/DivingInteraction/Source/*"
+   ],
+   "base": "7be229000cbf5819a88d0694959df6e93a303f38",
+   "cid": "cba1eef46f9",
+   "criteria": "Chill footprints machine 'polished shadow' never deposits: DepositAt needs Standable, false under every PassThroughOnly/Impassable powered building (heater, lamp, electrojet mast), so the machine branch of RM_MapComponent_ChillFootprints.Scan laid nothing",
+   "defect": "capped deposit propagates via TryMakeFilth default",
+   "grade": "strong",
+   "head": "b1214e0135cc97f74caf5e7f8c7febe6db40a063",
+   "kind": "csharp",
+   "prompt": "Chill footprints machine 'polished shadow' never deposits: DepositAt needs Standable, false under every PassThroughOnly/Impassable powered building (heater, lamp, electrojet mast), so the machine branch of RM_MapComponent_ChillFootprints.Scan laid nothing",
+   "rework_fix_shas": [
+    "28ea8d973d0aba81031dbc086bb6c0eb3bacb9f1"
+   ],
+   "rework_items": [
+    "CHILLPRINTS_FIX_SATURATED_DEPOSIT_PROPAGATES"
+   ],
+   "role": "planted",
+   "size": 4,
+   "source_item": "CHILLPRINTS_FIX_MACHINE_SHADOW_NO_DEPOSIT",
+   "task": "RP_CHILLPRINTS_FIX_MACHINE_SHADOW_NO_DEPOSIT"
+  },
+  {
+   "area": [
+    "design/RimMandrake/*",
+    "infrastructure/state/lessons/*",
+    "src/RimMandrake/rimflow/*",
+    "src/RimMandrake/rimflow/roles/*"
+   ],
+   "base": "95f1602e417768c576a9f089921726e097cc7519",
+   "cid": "cc49ff780fc",
+   "criteria": "delegation_policy.md \u00a75 daily digest of delegated calls has never been written: no Transient/delegated_digest_*.md in either clone while infrastructure/state/delegated/2026-10-23/ holds 295 verdicts; RimPulse has no channel for it either (rimpulse_redesign_2026-10-23.md \u00a73)",
+   "defect": "free text reaches the blind digest; backlog lost on failure",
+   "grade": "strong",
+   "head": "a45f9b296ec11cfeccee9c7994854608fa09a58a",
+   "kind": "tooling",
+   "prompt": "delegation_policy.md \u00a75 daily digest of delegated calls has never been written: no Transient/delegated_digest_*.md in either clone while infrastructure/state/delegated/2026-10-23/ holds 295 verdicts; RimPulse has no channel for it either (rimpulse_redesign_2026-10-23.md \u00a73)",
+   "rework_fix_shas": [
+    "efc4ce8956599a145d4fc3a6257389ae22c22cdd"
+   ],
+   "rework_items": [
+    "DIGEST_BLIND_HARDEN_REASONS_SLIP_THROUGH"
+   ],
+   "role": "planted",
+   "size": 4,
+   "source_item": "DELEGATED_DIGEST_FIX_NEVER_WRITTEN",
+   "task": "RP_DELEGATED_DIGEST_FIX_NEVER_WRITTEN"
+  },
+  {
+   "area": [
+    "src/RimMandrake/rimflow/*"
+   ],
+   "base": "b925b01238c03135381613a1927d4b7fa5b0fd22",
+   "cid": "c5b21497fcd",
+   "criteria": "GPT full review of dispatcher.py/role_launch.py (D:\\ClaudeWork\\rimmandrake\\reviews\\gpt_review_dispatcher_full_2026-10-27.md): 3 BLOCK wave 1 \u2014 unconfirmed Claude scope retired without stop so runs overlap; blind note templates carry raw reasons/errors (need fixed outcome texts); runbook step 14 selftest asserts all roles disabled so it can't pass after enabling. Plus 5 MED (disabled Operations doesn't hold Conductor; malformed observation consumes launches; weekday slot keys; DST yesterday; ring rollback/PAUSE recheck) and 1 LOW test",
+   "defect": "stop() timeout skips the kill; force never SIGKILLs",
+   "grade": "strong",
+   "head": "59678c60e245274939d98d1eedfc93a513386310",
+   "kind": "tooling",
+   "prompt": "GPT full review of dispatcher.py/role_launch.py (D:\\ClaudeWork\\rimmandrake\\reviews\\gpt_review_dispatcher_full_2026-10-27.md): 3 BLOCK wave 1 \u2014 unconfirmed Claude scope retired without stop so runs overlap; blind note templates carry raw reasons/errors (need fixed outcome texts); runbook step 14 selftest asserts all roles disabled so it can't pass after enabling. Plus 5 MED (disabled Operations doesn't hold Conductor; malformed observation consumes launches; weekday slot keys; DST yesterday; ring rollback/PAUSE recheck) and 1 LOW test",
+   "rework_fix_shas": [
+    "d012a5825b879331250118ecfa2dca3fc1cf2fe6"
+   ],
+   "rework_items": [
+    "DISPATCHER_STOP_HARDEN_HANGS_SKIP_THE_KILL"
+   ],
+   "role": "planted",
+   "size": 4,
+   "source_item": "DISPATCHER_GOLIVE_FIX_THREE_BLOCKERS_FOUND",
+   "task": "RP_DISPATCHER_GOLIVE_FIX_THREE_BLOCKERS_FOUND"
+  },
+  {
+   "area": [
+    "infrastructure/state/code_review/*",
+    "infrastructure/state/lessons/*",
+    "src/RimMandrake/Utils/art/*"
+   ],
+   "base": "c81be110fe0afb331a36f904ae8a289346a50403",
+   "cid": "ceba0e19c89",
+   "criteria": "Review 8035b30ec0: keyed schema-1 picks through stale-lane/same-pictures guard; donor lane routed only when clicked snapshot res==old lane, defs now name today's lane, same pictures (else refused); ruled_snapshot = max built<=click over the window (unreadable rev refuses). enact.py + selftest_enact_{stale_lane,snaprev_git,slot_membership}.py DIRTY",
+   "defect": "installs a pick at a lane no def draws; raw raise on missing snapshot",
+   "grade": "medium",
+   "head": "8eacac6b765e555e0419721071e61aafb9106d82",
+   "kind": "python-util",
+   "prompt": "Review 8035b30ec0: keyed schema-1 picks through stale-lane/same-pictures guard; donor lane routed only when clicked snapshot res==old lane, defs now name today's lane, same pictures (else refused); ruled_snapshot = max built<=click over the window (unreadable rev refuses). enact.py + selftest_enact_{stale_lane,snaprev_git,slot_membership}.py DIRTY",
+   "rework_fix_shas": [
+    "7a507b2ad5aa3b7cf2640fc63a37bda5f70d9626",
+    "91fd554e9e2ba1f4ea38075bdd619cec6288e101"
+   ],
+   "rework_items": [
+    "ENACT_MISSING_SNAPSHOT_HARDEN_NAMED_REFUSAL",
+    "ENACT_UNDRAWN_LANE_FIX_ORPHAN_INSTALL"
+   ],
+   "role": "planted",
+   "size": 2,
+   "source_item": "ENACT_KEYED_FIX_UNREVIEWED",
+   "task": "RP_ENACT_KEYED_FIX_UNREVIEWED"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Utils/modcheck/*"
+   ],
+   "base": "8474c4468e90fd70befaae642cbbbe0e0411841e",
+   "cid": "c58b153a3dc",
+   "criteria": "modcheck drivers.run shrinks the last driver's timeout to the leftover shared budget (drivers.py ~L118: min(timeout, left), only skipping under 60 s), so testq J20261026T083309Z-a1c268 killed suspension_bridge_proof after 112 s mid rimworld/step_game_ticks (cid 41fde42b836e4e4b, no end event); the orphaned UNKNOWN-outcome marker then refused the same run's companion_handshake (INVALID/HARNESS) and two later jobs. Fix: skip a driver whose leftover budget is below its own declared timeout (SKIPPED_BUDGET) instead of starting it to kill it, and/or after a TIMEOUT kill restart the game before the chains. Evidence: Steve /mnt/d/RimTest/testq/attempts/J20261026T083309Z-a1c268.a1/modcheck.log lines 1-10; bridge_calls.jsonl line 55877",
+   "defect": "driver still hard-killed mid call at its own timeout",
+   "grade": "strong",
+   "head": "fc883924977a8e8eb860224d9eb8d2b76b55c64a",
+   "kind": "python-util",
+   "prompt": "modcheck drivers.run shrinks the last driver's timeout to the leftover shared budget (drivers.py ~L118: min(timeout, left), only skipping under 60 s), so testq J20261026T083309Z-a1c268 killed suspension_bridge_proof after 112 s mid rimworld/step_game_ticks (cid 41fde42b836e4e4b, no end event); the orphaned UNKNOWN-outcome marker then refused the same run's companion_handshake (INVALID/HARNESS) and two later jobs. Fix: skip a driver whose leftover budget is below its own declared timeout (SKIPPED_BUDGET) instead of starting it to kill it, and/or after a TIMEOUT kill restart the game before the chains. Evidence: Steve /mnt/d/RimTest/testq/attempts/J20261026T083309Z-a1c268.a1/modcheck.log lines 1-10; bridge_calls.jsonl line 55877",
+   "rework_fix_shas": [
+    "9f37f82c217cefb6518198d1824b26072eafd5c8"
+   ],
+   "rework_items": [
+    "MODCHECK_DRIVERS_HARDEN_OWN_TIMEOUT_MIDCALL"
+   ],
+   "role": "planted",
+   "size": 1,
+   "source_item": "MODCHECK_DRIVERS_FIX_BUDGET_KILL_MIDCALL",
+   "task": "RP_MODCHECK_DRIVERS_FIX_BUDGET_KILL_MIDCALL"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Utils/northstar_driver/*"
+   ],
+   "base": "54cd602333c71f35f71fb1ee7b694c6cf3d13fe6",
+   "cid": "c7bebb1e13c",
+   "criteria": "The report runs, utilization for 2026-10-01 is computed and recorded in the item, and the idle gaps are attributable to a stated cause (cold load, site build, waiting for a script, owner away).",
+   "defect": "ad-hoc bridge scripts leave no log, metric reads 3.1%",
+   "grade": "medium",
+   "head": "4f5762a066ed5164ad4efdb79461523bdcade74f",
+   "kind": "python-util",
+   "prompt": "Track live bridge utilization (active driving time over held time) as the program's throughput metric\n\n# NORTHSTAR_BRIDGE_UTILIZATION_1\n\nOwner, 2026-10-01 (typed): *\"Multitasking to keep the bridge active is a good idea. That's what we want to maximize. Live bridge usage. In fact that's a great metric to track.\"*\n\n## spec\nMeasure live bridge utilization: active time (bridge calls plus game ticks advanced by the driver) divided by time the bridge was held (`rimflow bridge take` to `release`, from the ledger), per day and per run. The driver's call log (`TimedTransport.log`, `northstar_driver/transport.py`) already times every call; add tick-advance wall time, write both into each results JSON's `timing`, and add a small report (`python3 src/RimMandrake/Utils/northstar_driver/bridge_utilization.py`) that joins results JSONs with the bridge take/release events and prints held minutes, active minutes, utilization, and the idle gaps over 5 minutes with who held the bridge. Process rule it supports: author scripts offline behind a live run, never hold the bridge idle (`design/RimMandrake/debug_process.md`).\n\n## verify\nSelftest over a fixture ledger plus two fake results JSONs; one live day's report checked by hand against the ledger events.\n\n## criteria\nThe report runs, utilization for 2026-10-01 is computed and recorded in the item, and the idle gaps are attributable to a stated cause (cold load, site build, waiting for a script, owner away).",
+   "rework_fix_shas": [
+    "f300f217ea7b6e0cc18e11a26fc1a1e92c8c4406"
+   ],
+   "rework_items": [
+    "ADHOC_BRIDGE_CALL_LOG_1"
+   ],
+   "role": "planted",
+   "size": 2,
+   "source_item": "NORTHSTAR_BRIDGE_UTILIZATION_1",
+   "task": "RP_NORTHSTAR_BRIDGE_UTILIZATION_1"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "95fa1200c7c067f3a38b56613be9c8130d9241a0",
+   "cid": "caf6334d203",
+   "criteria": "FlowWorks: source-fed canals wet only their first cell since the level solve (5 validation_v2 fill rows FAIL, oracle agrees)",
+   "head": "147e059020fef4f3be1baafc48c28e393488baf0",
+   "kind": "csharp",
+   "prompt": "FlowWorks: source-fed canals wet only their first cell since the level solve (5 validation_v2 fill rows FAIL, oracle agrees)",
+   "role": "good",
+   "size": 2,
+   "source_item": "CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY",
+   "task": "RP_CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/*",
+    "src/RimMandrake/ColdStorage/Languages/English/Keyed/*",
+    "src/RimMandrake/ColdStorage/Source/*",
+    "src/RimStarWars/Cuisine/Defs/*"
+   ],
+   "base": "38cdc75a019035493a3f9694ee5a80f3c20c187f",
+   "cid": "c9445b621c8",
+   "criteria": "No WorkGiverDef lists RSW_CarbonFreezingPress, so no pawn ever runs its bills",
+   "head": "36d19ef5726354c3cf047017566351d368dd7cc3",
+   "kind": "csharp",
+   "prompt": "No WorkGiverDef lists RSW_CarbonFreezingPress, so no pawn ever runs its bills",
+   "role": "good",
+   "size": 2,
+   "source_item": "CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS",
+   "task": "RP_CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/Assemblies/*",
+    "src/RimMandrake/ColdStorage/Source/*"
+   ],
+   "base": "b16f7e591be65d2cb7fd2350ebc95693f2995f4d",
+   "cid": "c503b1f032d",
+   "criteria": "MOD: carbon-freeze meals recipe counts 18 meals but the pack encases every carried stack whole (20 and 21 meals live)",
+   "head": "aa958c199052419f05bf925ec47b9e58ac561453",
+   "kind": "csharp",
+   "prompt": "MOD: carbon-freeze meals recipe counts 18 meals but the pack encases every carried stack whole (20 and 21 meals live)",
+   "role": "good",
+   "size": 2,
+   "source_item": "CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS",
+   "task": "RP_CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/*",
+    "src/RimMandrake/ColdStorage/Languages/English/Keyed/*",
+    "src/RimMandrake/ColdStorage/Source/*",
+    "src/RimStarWars/Cuisine/Defs/*"
+   ],
+   "base": "38cdc75a019035493a3f9694ee5a80f3c20c187f",
+   "cid": "c3e76b564ba",
+   "criteria": "Partial stasis inspect says 'nothing inside spoils' then 'spoil at 80%'",
+   "head": "36d19ef5726354c3cf047017566351d368dd7cc3",
+   "kind": "csharp",
+   "prompt": "Partial stasis inspect says 'nothing inside spoils' then 'spoil at 80%'",
+   "role": "good",
+   "size": 2,
+   "source_item": "COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
+   "task": "RP_COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/bridgetools/JawaBench.BridgeTools/*"
+   ],
+   "base": "643a4e6b75636810e8f30cee6803f218aca9e115",
+   "cid": "c25589d0a59",
+   "criteria": "PatchOperationFindMod names a folded mod by its old NAME, which the compose step never rewrites: FlowWorks RM_LiquidWorksScatter_Register.xml guards on 'RimMandrake: Environmental Hazards Kit' (now inside 'RimMandrake: Baroque Biomes'), so the 4 liquid-works ruins are never added to Base_Player even though their GenStepDefs now resolve. Sweep every FindMod <li> in src for names of the 30 folded mods (deploy-time rewrite like d50a88e6a5, or guard on the composed name) and extend selftest_mayrequire_folded.py. Live evidence Transient/bench_live_20261014_r3/live/mayreq_defs.json",
+   "head": "d36cecd06a7a52687cf46de0bf9e5202cc10f0cf",
+   "kind": "csharp",
+   "prompt": "PatchOperationFindMod names a folded mod by its old NAME, which the compose step never rewrites: FlowWorks RM_LiquidWorksScatter_Register.xml guards on 'RimMandrake: Environmental Hazards Kit' (now inside 'RimMandrake: Baroque Biomes'), so the 4 liquid-works ruins are never added to Base_Player even though their GenStepDefs now resolve. Sweep every FindMod <li> in src for names of the 30 folded mods (deploy-time rewrite like d50a88e6a5, or guard on the composed name) and extend selftest_mayrequire_folded.py. Live evidence Transient/bench_live_20261014_r3/live/mayreq_defs.json",
+   "role": "good",
+   "size": 2,
+   "source_item": "FINDMOD_GUARDS_REPAIR_GHOSTS_BY_NAME_TOO",
+   "task": "RP_FINDMOD_GUARDS_REPAIR_GHOSTS_BY_NAME_TOO",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/Hose/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*"
+   ],
+   "base": "47128e4575fdf693fef0e453e8dd0557a474d9c8",
+   "cid": "c8fca6c0c30",
+   "criteria": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "head": "75480171c2b08ac1f21fdf5e6e6ab41c39d6013f",
+   "kind": "csharp",
+   "prompt": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "role": "good",
+   "size": 4,
+   "source_item": "HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "task": "RP_HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Utils/*",
+    "src/RimStarWars/Cuisine/About/*",
+    "src/RimStarWars/Cuisine/Assemblies/*",
+    "src/RimStarWars/Cuisine/Source/Cuisine/*"
+   ],
+   "base": "3554fc232dc9a86be49f6d2480ca9081a0fcdb7c",
+   "cid": "c00dd92142d",
+   "criteria": "Roast-on-a-stick by a Cooking-incapable pawn hits vanilla's dev-mode 'disabled stat' ErrorOnce twice: CookSpeed (recipe workSpeedStat, skillNeedOffsets Cooking) each work tick, FoodPoisonChance (RSW_RoastOnAStick inherits CompFoodPoisonable from MealBaseIngredientless; Notify_RecipeProduced reads pawn FoodPoisonChance, skillNeedFactors Cooking). StatWorker.GetValueUnfinalized logs when Prefs.DevMode && IsDisabledFor. Gameplay is fine (level 0: 5% poison, base speed); fix = workSpeedStat not tied to Cooking (or none) plus a Cuisine guard/Harmony for the poison roll, or document as accepted.",
+   "head": "05366d9ad4205cae749b443baef108a87d09a39f",
+   "kind": "csharp",
+   "prompt": "Roast-on-a-stick by a Cooking-incapable pawn hits vanilla's dev-mode 'disabled stat' ErrorOnce twice: CookSpeed (recipe workSpeedStat, skillNeedOffsets Cooking) each work tick, FoodPoisonChance (RSW_RoastOnAStick inherits CompFoodPoisonable from MealBaseIngredientless; Notify_RecipeProduced reads pawn FoodPoisonChance, skillNeedFactors Cooking). StatWorker.GetValueUnfinalized logs when Prefs.DevMode && IsDisabledFor. Gameplay is fine (level 0: 5% poison, base speed); fix = workSpeedStat not tied to Cooking (or none) plus a Cuisine guard/Harmony for the poison roll, or document as accepted.",
+   "role": "good",
+   "size": 4,
+   "source_item": "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+   "task": "RP_ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "infrastructure/stevedesktop/*"
+   ],
+   "base": "9b4000f5c2a91a4eac21706f3e434a3fa0eeb96e",
+   "cid": "c3648d5fead",
+   "criteria": "SteveDesktop worker: one detached attempt per job (pinned runner sha, unique attempt dir, heartbeat, outbox result JSON, watchdog), whole attempt under host_guard; plan test_orchestration_two_machines_2026-10-25 helper #3",
+   "head": "310ad7f95342cd05e982229c57753a26ad27cfb6",
+   "kind": "tooling",
+   "prompt": "SteveDesktop worker: one detached attempt per job (pinned runner sha, unique attempt dir, heartbeat, outbox result JSON, watchdog), whole attempt under host_guard; plan test_orchestration_two_machines_2026-10-25 helper #3\n\n# STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS\n\nPlan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md, section 4 helper #3 (H-A).\n\n## spec\n- `infrastructure/stevedesktop/worker.py` runs on SteveDesktop in ~/rm/runner, started over ssh by the testq dispatcher.\n- `start` takes a job (testq/schema.py `testq.job/1`) on stdin, makes a unique attempt dir `<job>.a<n>`, and detaches the\n  attempt as a transient systemd user unit (fallback: a new session), so a dropped ssh never kills it.\n- The attempt runs under `host_guard.held(\"RUNNER\", ...)`, pins the runner HEAD (refuses SOURCE_SHA_MISSING), deploys,\n  loads the game, runs modcheck, writes a heartbeat every 15 s and one `testq.result/1` JSON into the outbox.\n- Watchdog: a run that outlasts `timeout_s` is killed, the game restarted once, and the run retried once (section 6).\n- Duplicate delivery: `start` for a job with a live or finished attempt returns that attempt, never a second run.\n\n## verify\n- selftest_steve_worker.py (mock phases): DONE, INVALID, HANG -> retry, duplicate start, guard held.\n- One real attempt on SteveDesktop with a result JSON in the outbox.",
+   "role": "good",
+   "size": 1,
+   "source_item": "STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS",
+   "task": "RP_STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "a5a6211e7306d262cdf4f7f69c8dc53fb2dd19b1",
+   "cid": "cb98216ed6f",
+   "criteria": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "head": "7a68931d8a6d7041aa0b434674a086e4559dd93d",
+   "kind": "python-util",
+   "prompt": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "role": "good",
+   "size": 1,
+   "source_item": "TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "task": "RP_TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*",
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "88bde3c6d6915f88c8dabebd2e7c425463754354",
+   "cid": "c9f99444b35",
+   "criteria": "FlowWorks: a canal dug east or north from its water source never fills (water oscillates between cells forever); west/south fill normally",
+   "head": "64ff430d93db69a2bfa5aa3c155d1ce93053e198",
+   "kind": "csharp",
+   "prompt": "FlowWorks: a canal dug east or north from its water source never fills (water oscillates between cells forever); west/south fill normally",
+   "role": "good",
+   "size": 4,
+   "source_item": "FLOWWORKS_CHANNEL_OSCILLATION_1",
+   "task": "RP_FLOWWORKS_CHANNEL_OSCILLATION_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/MessyConduit/*",
+    "src/RimMandrake/MessyConduit/Source/*",
+    "src/RimMandrake/MessyConduit/Source/Aerial/*"
+   ],
+   "base": "78e071a49df4de3763fcd77f4bd5117bcafbdd11",
+   "cid": "cf4128fcd1d",
+   "criteria": "Build per-build art style choice (stage 1 poles end to end, 2 conduit runs, 3 reels and hoses, 4 art fill) per design/RimMandrake/messyconduit_style_per_build_design.md and the owner's four decisions",
+   "head": "1d7cce3e99dfaed400cdc3a1fefb41063f9ee835",
+   "kind": "csharp",
+   "prompt": "Build per-build art style choice (stage 1 poles end to end, 2 conduit runs, 3 reels and hoses, 4 art fill) per design/RimMandrake/messyconduit_style_per_build_design.md and the owner's four decisions",
+   "role": "good",
+   "size": 4,
+   "source_item": "MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1",
+   "task": "RP_MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/*"
+   ],
+   "base": "621796e96b6ef0535cfa27b61d336dd55f66fb63",
+   "cid": "c493b07aee0",
+   "criteria": "Raider trench: ReachVetoed lets a trench-floor raider reach the far bank, loops on no path",
+   "head": "a1cfcb760018c931eec9bfa3ec01b1eed373712d",
+   "kind": "csharp",
+   "prompt": "Raider trench: ReachVetoed lets a trench-floor raider reach the far bank, loops on no path\n\nReview 2026-10-19 (BENCH helper). HIGH: RM_PocketGridMath.cs ReachVetoed (~186-195): start in a pocket with any way out + dest on a surface component clears the veto even if the way out leads to a different surface; raider on trench floor with only the near-wall ladder gets CanReach(far bank)==true, TryCross returns null, GotoNearestHostile loops. Fix: require JoinedByLadders(cs,cd) when exactly one end is a pocket and other a surface (unless narrow-pocket exemption); add a RaiderTrenchChecks case. MEDIUM: RM_RaiderTrench.cs 451-460 checks reachability of only the nearest colonist/building (island target starts ladders despite reachable colonists); 469-477 fill only when ladders infeasible, LadderJob null (unreachable slot) stalls - fall back to FillJob. LOW: no reservation on fill cell (579); lordLips/warned statics survive load and ProofDecision has side effects (546); RM_FallRails.cs:82 eng null check. Files stay DIRTY.",
+   "role": "good",
+   "size": 4,
+   "source_item": "RAIDER_TRENCH_FIX_REACH_BOUNCE",
+   "task": "RP_RAIDER_TRENCH_FIX_REACH_BOUNCE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/DivingInteraction/*",
+    "src/RimMandrake/DivingInteraction/Assemblies/*",
+    "src/RimMandrake/DivingInteraction/Source/*"
+   ],
+   "base": "1a4737b42c7d041fe9089e9ae2ca82f09487d18e",
+   "cid": "c301c81547c",
+   "criteria": "Scald Immersion Berth: a parked ship's rooms slowly heat; compact ships cheap to cool; never seals doors or blocks launch",
+   "head": "f2e1d811c50514920ec9f33590fdd08be9cb562e",
+   "kind": "csharp",
+   "prompt": "Scald Immersion Berth: a parked ship's rooms slowly heat; compact ships cheap to cool; never seals doors or blocks launch",
+   "role": "good",
+   "size": 4,
+   "source_item": "SCALD_IMMERSION_BERTH_1",
+   "task": "RP_SCALD_IMMERSION_BERTH_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/SeaShores/*",
+    "src/RimMandrake/SeaShores/Assemblies/*",
+    "src/RimMandrake/SeaShores/Source/*"
+   ],
+   "base": "52edfee240dad7e415c4b54091f34e8c4d4bc0e6",
+   "cid": "cd75ac961d4",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "d56058eb7d01836a74ed1877ea577b5c64b4a5d5",
+   "kind": "csharp",
+   "prompt": "SeaShores north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# SEASHORES_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `SeaShores` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe SeaShores `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nseasCountAsCoast (World.CoastDirectionAt postfix makes land beside a modded sea IsCoastal); generateSeaShores (RM_SeaCoast substituted for vanilla Coast in TryAddMutator); seaCatchTables (rare-catch transpiler on FishingUtility.GetCatchesFor); healFrozenWorldOnLoad count (healed tiles deliberately not asserted); none of the 4 settings flipped\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "good",
+   "size": 4,
+   "source_item": "SEASHORES_COVERAGE_GAPS_1",
+   "task": "RP_SEASHORES_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Source/Machinery/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*"
+   ],
+   "base": "3ed954f9dc3c2b43691a0097a7630e5d1afa14b9",
+   "cid": "cd27ca7b560",
+   "criteria": "- Each CONFIRMED finding: a SelfTest/python case (or a live state read where the row says so) that goes red on today's code, then green with the fix.\n- Each PLAUSIBLE finding: run the check written in its row first; close it as not-a-bug with the evidence if it stays green.",
+   "head": "121eb90aa35e44e2e034acf7060484d33e3ee96e",
+   "kind": "csharp",
+   "prompt": "FlowWorks: a tank in two net components is settled twice per cycle\n\n# TANK_SETTLE_FIX_DOUBLE_DIPPED\n\nFlowWorks: a tank in two net components is settled twice per cycle\n\nSource: FlowWorks pre-release GPT consult, BENCH 2026-10-15 \u2014 `Transient/release_push_2026-10-15/gpt_FlowWorks/TRIAGE.md` (full rows) and the `answer_<slice>.md` named by each finding id.\n\n## findings\n\n- **C1-F5** CONFIRMED MEDIUM \u2014 A tank in two net components is settled twice per cycle (budget and epoch-stock rule broken). SettleTick snapshots per component (RM_LiquidNet.cs ~710: view built per c from live storedUnits) while ComponentsOf(mover) can return several components for one tank. Rate not mass issue.\n\n## criteria\n\n- Each CONFIRMED finding: a SelfTest/python case (or a live state read where the row says so) that goes red on today's code, then green with the fix.\n- Each PLAUSIBLE finding: run the check written in its row first; close it as not-a-bug with the evidence if it stays green.",
+   "role": "good",
+   "size": 2,
+   "source_item": "TANK_SETTLE_FIX_DOUBLE_DIPPED",
+   "task": "RP_TANK_SETTLE_FIX_DOUBLE_DIPPED",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/*",
+    "src/RimMandrake/GimmeSomeSlack/*",
+    "src/RimMandrake/GimmeSomeSlack/review/*"
+   ],
+   "base": "e23a8847943e6d1de78fccf463f959cee1e773aa",
+   "cid": "cd08704258d",
+   "criteria": "Remove every hose from the GSS walkthrough (hoses live in FlowWorks): the live walk save and human_review.py, with the hose review stations moved to the FlowWorks review map",
+   "head": "df89a17560a5921c4582b7a5eb37e54e43109454",
+   "kind": "python-util",
+   "prompt": "Remove every hose from the GSS walkthrough (hoses live in FlowWorks): the live walk save and human_review.py, with the hose review stations moved to the FlowWorks review map",
+   "role": "good",
+   "size": 4,
+   "source_item": "GSS_WALK_HOSES_EXCISE_REELED_IN",
+   "task": "RP_GSS_WALK_HOSES_EXCISE_REELED_IN",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimUtinni/*",
+    "src/RimUtinni/PawnFlavor/*",
+    "src/RimUtinni/PawnFlavor/About/*"
+   ],
+   "base": "746195ce5eb269ca882feb7701084838edf95c3e",
+   "cid": "cc62de5bf67",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "ac550d82d39b1a23798d28c23afe3893d151fe27",
+   "kind": "python-util",
+   "prompt": "PawnFlavor north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# PAWNFLAVOR_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `PawnFlavor` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe PawnFlavor `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\n9 of 11 faction filter patches (all RUT_Jawa_* factions) unverified live (needs mandrake.rut.patches); pirate-leak containment (Blackstar not reaching Junkers); Pirate pawn draw; any trait actually doing something; About.xml count stale (50/5 vs 77/13)\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.\n\n## progress 2026-10-03 (r34)\n- `every_shipped_def_reads_back` wired (77 backstories by title/titleShort/slot, 13 traits loaded). About.xml count corrected (was 50/5 + \"droid backstories absent\"; measured 77 = 30 childhood + 47 adulthood across 13 faction categories, 13 traits, FDE droid sets present). Still open: faction filters live, pirate-leak containment, traits doing anything.",
+   "role": "good",
+   "size": 4,
+   "source_item": "PAWNFLAVOR_COVERAGE_GAPS_1",
+   "task": "RP_PAWNFLAVOR_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/RimMandrake/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "c08b5af599491ac363e3b370323a0b9e8b4dfff2",
+   "cid": "c8ae1a591bb",
+   "criteria": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "head": "bcc85dd859ec0b38d88f808dd2873dfeac221017",
+   "kind": "python-util",
+   "prompt": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "role": "good",
+   "size": 2,
+   "source_item": "PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "task": "RP_PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimMandrake/*",
+    "src/RimMandrake/Pyrinth/*"
+   ],
+   "base": "93fd9e84012dc68b333af2377c6147c765b4a5f5",
+   "cid": "c65a3de243c",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "f840dac106e60a03bb4d16f5ea8b282339337002",
+   "kind": "python-util",
+   "prompt": "Pyrinth north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# PYRINTH_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `Pyrinth` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe Pyrinth `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nglow/heat/meditation of DV_PyrinthLamp/WallLamp/Brazier/Heater (UNMEASURED); DV_MeleeWeapon_PyrinthBlade stats; spark mote effects DV_PyrinthSparkingEffect*; Royalty throne-room patch; whether this pack (vs donor det.epochspyrinth) is the loaded copy\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.\n\n## progress 2026-10-03 (r34)\n- `every_shipped_def_reads_back` wired: all 13 DV_ defs loaded and labelled as this pack says (a donor det.epochspyrinth copy with other labels would read as drift). Still open: lamp/brazier glow/heat/meditation, blade stats, spark motes, throne-room patch.",
+   "role": "good",
+   "size": 4,
+   "source_item": "PYRINTH_COVERAGE_GAPS_1",
+   "task": "RP_PYRINTH_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimStarWars/*",
+    "src/RimStarWars/StarWarsPatches/*"
+   ],
+   "base": "7aa049f479548961befbc112c7820f119f3f2682",
+   "cid": "c6359d298ca",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "cdc1b33470d6db431bbf9c183dc48634da53339c",
+   "kind": "python-util",
+   "prompt": "StarWarsPatches north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# STARWARSPATCHES_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `StarWarsPatches` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe StarWarsPatches `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\n~23 Patches/*.xml asserted nowhere live (delegated to \"def dump\"): BodySizeIsReal, EggLayersLayEggs, JawaCombatViability_Tuning, JawaXenotype_Repoint, WeaponTags_Renormalise (tag loss disarms kinds), VanillaFaction_Xenotypes, SWDesertWeather_Attach + SWDesertWeather def, PsychicToForceDisturbance; no static xpath-matches-target check like Shokk has; blast door open/close behaviour\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "good",
+   "size": 4,
+   "source_item": "STARWARSPATCHES_COVERAGE_GAPS_1",
+   "task": "RP_STARWARSPATCHES_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/night_20261013/*",
+    "skills/rimworld-load-round/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "291ce4b30684e77905f375ea9c71c83bb0cc8611",
+   "cid": "cf46ef7da35",
+   "criteria": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "head": "7de700be437714700c63a4240f23d8921a2869e8",
+   "kind": "python-util",
+   "prompt": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "role": "good",
+   "size": 2,
+   "source_item": "TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "task": "RP_TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Pyrelands/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "a6743835e7afb272c30a0b799d04e7167710ec0b",
+   "cid": "c653e75c524",
+   "criteria": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "head": "ff922e8c37bae7001c50f76897caa2a458c13826",
+   "kind": "python-util",
+   "prompt": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "role": "good",
+   "size": 2,
+   "source_item": "TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "task": "RP_TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimUtinni/ResearchRetag/*",
+    "src/RimUtinni/ResearchRetag/About/*"
+   ],
+   "base": "62bf42bd04a2e40b75906558ee84b94183e2f1dc",
+   "cid": "cd630d1c903",
+   "criteria": "13 VFE Tribals retag rows (techLevel Neolithic, tab RUT_Tree_Scavenging) are unpatched in the load-14 dump",
+   "head": "e2910dfc0ad78a45a3382111488e4b8fc938cd2d",
+   "kind": "python-util",
+   "prompt": "13 VFE Tribals retag rows (techLevel Neolithic, tab RUT_Tree_Scavenging) are unpatched in the load-14 dump",
+   "role": "good",
+   "size": 2,
+   "source_item": "VFET_RETAG_ROWS_NOT_HELD_1",
+   "task": "RP_VFET_RETAG_ROWS_NOT_HELD_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/HugeThings/*"
+   ],
+   "base": "9c661a6dc7db410ec53f8cd78c06031dbb5109b5",
+   "cid": "c30fce24719",
+   "criteria": "selftest_hugethings_footprint.py FAILs measured_masks_are_pinned: AB_WitchesOyster masks moved (WitchesOyster vs WitchesOyster_A, 9 contact cells) after the 80b9b9f7c art install; rerun measure_huge_plant_masks.py and re-pin, or fix the variant name",
+   "head": "72ce23f23ee788b1f17485ad8e4b29f72db2da4d",
+   "kind": "python-util",
+   "prompt": "selftest_hugethings_footprint.py FAILs measured_masks_are_pinned: AB_WitchesOyster masks moved (WitchesOyster vs WitchesOyster_A, 9 contact cells) after the 80b9b9f7c art install; rerun measure_huge_plant_masks.py and re-pin, or fix the variant name",
+   "role": "good",
+   "size": 1,
+   "source_item": "WITCHES_OYSTER_MASK_RESTORE_PIN_DRIFTED",
+   "task": "RP_WITCHES_OYSTER_MASK_RESTORE_PIN_DRIFTED",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/RaidRedesigner/*",
+    "src/RimMandrake/RaidRedesigner/Assemblies/*",
+    "src/RimMandrake/RaidRedesigner/Source/*"
+   ],
+   "base": "a37209d067f70c1b251bdf1f1bff106bbe524c74",
+   "cid": "c5806db2c16",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "b8202d7cd41a906a7739995f71f33fed93d40f4c",
+   "kind": "csharp",
+   "prompt": "RaidRedesigner north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# RAIDREDESIGNER_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `RaidRedesigner` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe RaidRedesigner `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nGameComponent_OldFriends actually recording an Encounter for any of the hooks (flee, captain leave, prisoner escape/release, kidnap, caravan robbed, NAMED_HUNTER); 24-living-entry cap/notability pruning (RosterPruning); world-pawn KeepForever pinning effect; maxLivingEntries/grudgeNotabilityMultiplier tuning; scribe round-trip of roster\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "good",
+   "size": 4,
+   "source_item": "RAIDREDESIGNER_COVERAGE_GAPS_1",
+   "task": "RP_RAIDREDESIGNER_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/experiment_2026-10-14/*",
+    "src/RimMandrake/rimflow/*"
+   ],
+   "base": "3119925b31ee4f700b6f0d54ae391be80715ed2a",
+   "cid": "cf20a65d08a",
+   "criteria": "selftest_reader_invariant t_real_ledger_projects_as_before fails: the OLD (ts, file rank) baseline orders BENCH's claim before OWNER's same-second reassign of PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP and logs a lease error the new reader correctly avoids; the baseline, not the reader, is wrong for same-second cross-shard causal pairs",
+   "head": "c62c4c31974a6b3de3e877c6d7b03934f3bad959",
+   "kind": "tooling",
+   "prompt": "selftest_reader_invariant t_real_ledger_projects_as_before fails: the OLD (ts, file rank) baseline orders BENCH's claim before OWNER's same-second reassign of PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP and logs a lease error the new reader correctly avoids; the baseline, not the reader, is wrong for same-second cross-shard causal pairs",
+   "role": "good",
+   "size": 2,
+   "source_item": "READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
+   "task": "RP_READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Contagion/Defs/ThingDefs/*"
+   ],
+   "base": "183ad9a2f722347adce6d8e79bcde191ed078513",
+   "cid": "c8b12b8c68d",
+   "criteria": "Art for Pillar Arm and Lash (replace Anomaly placeholder textures) plus item icons; check _artsrc and artpipe done first",
+   "head": "1577df90907695f8c4c22c8ab46757dad3efc29d",
+   "kind": "xml-def-patch",
+   "prompt": "Art for Pillar Arm and Lash (replace Anomaly placeholder textures) plus item icons; check _artsrc and artpipe done first",
+   "role": "good",
+   "size": 1,
+   "source_item": "CONTAGION_GROWN_LIMBS_ART_1",
+   "task": "RP_CONTAGION_GROWN_LIMBS_ART_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/GelatinousSlime/Defs/ThingDefs_Races/*",
+    "src/RimMandrake/GelatinousSlime/Textures/Things/Pawn/Animal/Gappo/*",
+    "src/RimMandrake/Pyrelands/Defs/ThingDefs_Races/*",
+    "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/*",
+    "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/*"
+   ],
+   "base": "ccd51fa7311e3e02988e91eeb402738733eab893",
+   "cid": "c76a09efeab",
+   "criteria": "- `jawa/get_defs` `ThingDef/RM_<gappo names>` `foundCount` 3; `ThingDef/RUT_SlimeGrazer` `notFound`.\n- No `RUT_SlimeGrazer` string left in `src/` (offline parse).\n- Art: gappo from the artpipe `v2`; lesser and greater from `gelatinousslime_turn1_2026-10-02.csv`.",
+   "head": "1c953152348786a9dcbef451f3232c2de76d0463",
+   "kind": "xml-def-patch",
+   "prompt": "Slime: the gappo family (grazer moved to RM_ with its v2 art, plus lesser and greater gappo); RUT_SlimeGrazer out\n\n# GELATINOUSSLIME_GAPPO_FAMILY_1 \u2014 the gappo family: the slime grazer moved to RM_, plus a lesser and a greater gappo\n\n**Free tier**, `mandrake.rm.gelatinousslime`. Design: `design/Jawa/worldbuilding/biomes/gelatinousslime_bedazzle_review_2026-10-02.md` \u00a71 (a) 1 and (b), \u00a73 (filter-feeder row), \u00a74 row 0a, \u00a78.\nCaused by `GELATINOUSSLIME_SCORING_SITTING_1` (turn 1). Ruling: build first, land what was decided (decision taken by question card 2026-10-02 ~14:25 PDT). Underlying rulings: sheet `the_slime.md` \u00a74 (owner's rulings on the filter-feeder family, the flying aristocracy, the resistant characters), Q14 of `design/RimMandrake/biome_mod_architecture.md` \u00a77 (by card 2026-09-23: the free def stays donor-free, holes filled with creatures of ours), Q11a (every `RM_` roster rich enough to stand alone).\n\n## What exists\n\n- `RUT_SlimeGrazer` (`src/RimUtinni/UtinniPatches/Defs/ThingDefs_Races/RUT_SlimeGrazer.xml`): invented, no canon\n  claim, wired **only** to the frozen twin `RUT_Slime` (0.5), deleted with the twin at the repaint. Wrong tier\n  under Q11a. Its texPath resolves to nothing: no PNG in `src/`.\n- Art: two finished generations in the artpipe, `done/rutslimegrazer_v1_*` and `done/rutslimegrazer_v2_*`\n  (`artpipe_state.py find rutslimegrazer`: 20 hits, 2026-10-02). No owner ruling on either found in\n  `Transient/*.decisions.json`.\n- `RM_GelatinousSlime/wildAnimals`: two rows (`RM_Gelatid` 3.0, `RM_Titanoslime` 0.12).\n\n## spec\n\n1. Port the grazer to `RM_` as the **gappo** (the family's middle size), wiring the `v2` art (show v1/v2 side by\n   side in the item's close note; the owner has not ruled between them). Label under the 2026-09-24 slime law\n   (a scoop-mouthed solid body takes the -o/-um endings); drafted names passed `check_pseudo_sw_name.py` (\u00a73).\n2. Add the **lesser gappo** (a skimming swarm) and the **greater gappo** (slow, bs about 3, a bulk feeder whose\n   scoop leaves a clean channel behind it). One stem, three sizes (the oomb precedent). Numbers `// INVENTED`.\n3. Wire all three inline on `RM_GelatinousSlime/wildAnimals`; delete `RUT_SlimeGrazer` and its twin row.\n4. Correct the BiomeDef's *\"deliberately thin\u2026 Spike C\"* header (Q14 overruled it; the visitors stay as the\n   trace tail).\n5. Each a one-home species (the Slime only). Resistant by identity (filter-feeders on the body), per sheet \u00a73.\n\n## criteria\n\n- `jawa/get_defs` `ThingDef/RM_<gappo names>` `foundCount` 3; `ThingDef/RUT_SlimeGrazer` `notFound`.\n- No `RUT_SlimeGrazer` string left in `src/` (offline parse).\n- Art: gappo from the artpipe `v2`; lesser and greater from `gelatinousslime_turn1_2026-10-02.csv`.",
+   "role": "good",
+   "size": 4,
+   "source_item": "GELATINOUSSLIME_GAPPO_FAMILY_1",
+   "task": "RP_GELATINOUSSLIME_GAPPO_FAMILY_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/Miasma/*",
+    "src/RimMandrake/Miasma/Defs/BiomeDefs/*",
+    "src/RimMandrake/Miasma/Defs/TerrainDefs/*"
+   ],
+   "base": "f400547af3cd3792c6f2a4d083350dcccc2f9c94",
+   "cid": "c525896c317",
+   "criteria": "- Offline: no `RUT_` defName referenced from `src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml`'s gradient and pool extensions.\n- Live, on a tier **without** `mandrake.rut.patches`: no `Could not resolve` for a salt crust; a surge's recede repaints land\n  to the free crust. This is also a bar for `MIASMA_FIRST_SCRIPT_1` (the salt crust painting with the campaign absent).",
+   "head": "44c730e63a1b0388caa9672f4ea8c4027c890957",
+   "kind": "xml-def-patch",
+   "prompt": "Miasma free tier: its own salt crust so the salt line paints without the campaign\n\n# MIASMA_FREE_SALT_CRUST_1 \u2014 the free Miasma gets its own salt crust, so the salt line paints without the campaign\n\n**Free tier**, `mandrake.rm.miasma`. Design: `design/Jawa/worldbuilding/biomes/miasma_bedazzle_review_2026-10-02.md` \u00a71 (b\u2032), \u00a74 row 0a. Caused by `MIASMA_SCORING_SITTING_1` (turn 1).\nDecision taken by question card (owner, 2026-10-02 15:39 PDT, item 1, *Build first*): land everything the card's first option listed, plus the giant's choice in the same batch.\n\n## The defect\n`RM_Miasma`'s gradient axis (`landTerrain`) and stranding pools (`dryTerrain`) name `RUT_Jawa_SaltCrust`, defined only in\n`src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml`, with no guard. Without the campaign the biome's signature\nmechanic (the salt line moving over the land) has no terrain to paint: a cross-reference error at load and a dead repaint.\n\n## What exists (reuse first)\n- `RM_SaltCrustShore` (`src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_GreySeaTerrains.xml`, `mandrake.rm.terminalbiomes`):\n  a free salt-crust terrain, but its description is the Grey Sea's (*\"Every shore of this sea\"*), and `mandrake.rm.miasma`\n  does not depend on that mod. Reuse it only if that dependency is acceptable and the text is made biome-neutral; otherwise\n  author `RM_MiasmaSaltCrust` in the Miasma mod (FOUNDRY's call; say which in the close).\n\n## spec\n1. Point `landTerrain` and `dryTerrain` on `RM_Miasma` at the free terrain.\n2. The campaign twin `RUT_Miasma` keeps `RUT_Jawa_SaltCrust`.\n\n## criteria\n- Offline: no `RUT_` defName referenced from `src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml`'s gradient and pool extensions.\n- Live, on a tier **without** `mandrake.rut.patches`: no `Could not resolve` for a salt crust; a surge's recede repaints land\n  to the free crust. This is also a bar for `MIASMA_FIRST_SCRIPT_1` (the salt crust painting with the campaign absent).",
+   "role": "good",
+   "size": 2,
+   "source_item": "MIASMA_FREE_SALT_CRUST_1",
+   "task": "RP_MIASMA_FREE_SALT_CRUST_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "infrastructure/state/art/events/*",
+    "src/RimMandrake/LongShade/Defs/ThingDefs_Races/*",
+    "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Vosska/*"
+   ],
+   "base": "b0494cf3dd0ac072f05576c172c46ad6b4e06100",
+   "cid": "ce81b098b9c",
+   "criteria": "Wire RM_Vosska's sand-swim graphic (swimmingGraphicData + RM_SandBuriedGraphicExtension, thraia precedent) once art job stillsand_RM_Vosska_sandswim_v1 lands at LongShade Textures RM_Vosska_Swimming_{facing}.png",
+   "head": "05ba942d2a418c08e02074124ec5f8a0988226ce",
+   "kind": "xml-def-patch",
+   "prompt": "Wire RM_Vosska's sand-swim graphic (swimmingGraphicData + RM_SandBuriedGraphicExtension, thraia precedent) once art job stillsand_RM_Vosska_sandswim_v1 lands at LongShade Textures RM_Vosska_Swimming_{facing}.png",
+   "role": "good",
+   "size": 4,
+   "source_item": "VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+   "task": "RP_VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+   "tier": "B"
+  }
+ ],
+ "census_window": [
+  "2026-09-15",
+  "2026-10-29"
+ ],
+ "counts": {
+  "good_A": 9,
+  "good_B": 21,
+  "planted": 9,
+  "planted_strong": 5
+ },
+ "excluded_escaped": {
+  "RP_ART_SHEET_REFTEX_FIX_UNREVIEWED": "rework is a further full-file review, not a named defect",
+  "RP_DISPATCHER_BUILD_ROLE_LAUNCH_FROM_SCHEDULE": "reworks are cap tuning and a seat/gate decision",
+  "RP_EVIDENCE_SEALS_HARDEN_STRIPPED_LOOKS_DELETED": "rework is a cutover clone-sync operation",
+  "RP_SUMP_CAPSTAN_DRAWJOINT_RESEARCH_1": "rework is a recipe design choice",
+  "RP_THIRST_ROWS_HARDEN_FALSE_PASS_ROUTES": "rework diagnoses a game behaviour the hardened row exposed"
+ },
+ "item": "ARENA_CRITIC_MEASURE_PLANTED_DEFECTS_FIRST",
+ "set_sha256": "3e41df0638518c7fff09903d2474fae664bcd96ae45b78d0baed066f17bc10a3",
+ "tier_b_cutoff": "2026-10-30T00:00:00Z",
+ "tier_b_replaced_hidden": {
+  "RP_OWNER_SAID_GUARD_MIDTURN_BLIND_1": [
+   ".claude/hooks/block_forged_owner_said.py",
+   ".claude/hooks/selftest_block_forged_owner_said.py"
+  ]
+ },
+ "tier_b_seed": "critic-calib-2026-10-30"
+}

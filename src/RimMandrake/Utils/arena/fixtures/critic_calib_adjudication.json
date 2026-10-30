@@ -1,0 +1,58 @@
+{
+ "set_sha256": "3e41df0638518c7fff09903d2474fae664bcd96ae45b78d0baed066f17bc10a3",
+ "run": "l4-main",
+ "scope": "reject side only: every good candidate the L4 critic rejected in l4-main was checked against later git history. Accepted good candidates were NOT adjudicated, so the adjudicated false-reject rate is biased toward the critic.",
+ "adjudicated_by": "BENCH builder, ARENA_CRITIC_MEASURE_PLANTED_DEFECTS_FIRST, 2026-10-30",
+ "cids": {
+  "cd27ca7b560": {
+   "task": "RP_TANK_SETTLE_FIX_DOUBLE_DIPPED",
+   "finding": "true_defect",
+   "evidence": "1d77c17651 (2026-10-15) restores the Harmony attributes on RM_Patch_NetTopologySpawn; at head 121eb90aa3 they sit on RM_MapComponent_FlowStatics, as the critic said. Not filed as rework, so the census missed it."
+  },
+  "cd630d1c903": {
+   "task": "RP_VFET_RETAG_ROWS_NOT_HELD_1",
+   "finding": "true_defect",
+   "evidence": "428a243f6e (2026-10-04, after head e2910dfc0a) finds the real cause (VFE Tribals rows are VFETribals.TribalResearchProjectDef elements). The head's load-order cause was wrong, as the critic said."
+  },
+  "c30fce24719": {
+   "task": "RP_WITCHES_OYSTER_MASK_RESTORE_PIN_DRIFTED",
+   "finding": "true_defect",
+   "evidence": "b83797c02f (2026-10-10, after head 72ce23f23e) regenerates RotGiants_HugeFootprint.xml for the Witches Oyster and Pale Tree variants. The head hand-edited the pins without regenerating the patch, as the critic said."
+  },
+  "c25589d0a59": {
+   "task": "RP_FINDMOD_GUARDS_REPAIR_GHOSTS_BY_NAME_TOO",
+   "finding": "bad_candidate",
+   "evidence": "The census head d36cecd06a only adds JawaBenchStorytellerCompsTools.cs, which belongs to another item. The census resolved the wrong fix commit, so the critic correctly rejected a diff that is not this item's work."
+  },
+  "c8b12b8c68d": {
+   "task": "RP_CONTAGION_GROWN_LIMBS_ART_1",
+   "finding": "bad_candidate",
+   "evidence": "The census head 1577df9090 only rewrites a header comment. The Pillar Arm and Lash art and both item icons are already present at base 183ad9a2f7 (e0823872a5, f14cc2b5a6), so the item's work predates this diff. The critic's tree holds no unchanged texture directory, which is why it asserted the art was missing."
+  },
+  "c76a09efeab": {
+   "task": "RP_GELATINOUSSLIME_GAPPO_FAMILY_1",
+   "finding": "bad_candidate",
+   "evidence": "RM_GappoGreater_{east,north,south}.png already exist at base ccd51fa731. The critic's tree holds only the directories of changed TEXT files (critic_tree_files), so the texture directory was absent and its 'greater gappo renders magenta' claim comes from harness blindness, not from the change."
+  },
+  "c8fca6c0c30": {
+   "task": "RP_HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "finding": "false_reject",
+   "evidence": "Clean in the census. No later commit touches RanksMoved, so the root-cause critique is unproven and the reject is kept against the critic."
+  },
+  "cc62de5bf67": {
+   "task": "RP_PAWNFLAVOR_COVERAGE_GAPS_1",
+   "finding": "false_reject",
+   "evidence": "A coverage-criteria judgement call. No later rework was found, so the reject is kept against the critic."
+  },
+  "c6359d298ca": {
+   "task": "RP_STARWARSPATCHES_COVERAGE_GAPS_1",
+   "finding": "false_reject",
+   "evidence": "A coverage-criteria judgement call (generic static rules were judged insufficient). No later rework was found, so the reject is kept against the critic."
+  },
+  "c301c81547c": {
+   "task": "RP_SCALD_IMMERSION_BERTH_1",
+   "finding": "false_reject",
+   "evidence": "A tuning and design critique rather than a criterion failure, so the reject is kept against the critic."
+  }
+ }
+}
