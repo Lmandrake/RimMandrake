@@ -275,6 +275,57 @@ def t_live(tmp, pool):
     check(any("RP_FIXTURE_ESC_FIX_TWO" in x for x in A.check(p)), "a frozen task edited to live: full is refused")
 
 
+
+def t_live_plan(tmp, pool):
+    """TRIO_FROZEN_TASKS_WIRE_LIVE_PLAN: live_plan is a frozen, hashed task field. The census writes null for every
+    (offline) replay task; a live task needs a plan testpilot.check_live_plan accepts; an offline task may not carry
+    one; a task frozen before the field existed loads only if it is live: none (no silent proof fallback)."""
+    check(all("live_plan" in t and t["live_plan"] is None and t["live"] == "none" for t, _ in pool),
+          "census: every replay task carries live_plan null explicitly")
+    plan = {"scenarios": [{"id": "s1", "argv": ["python3", "proof.py"], "footprint": {"files": ["a/*.xml"]},
+                           "taints": ["s1"], "fail_rc": 1}], "fixture_save": "fx"}
+    p = fresh_arena(tmp, "arena_live_plan")
+    A.write_pool(pool, p)
+    tf = p["tasks"] / "RP_FIXTURE_ESC_FIX_TWO.json"
+    hp = p["judge"] / tf.name
+    t0 = json.loads(tf.read_text())
+    for why, t in (("no live_plan field", {k: v for k, v in dict(t0, live="minimal").items() if k != "live_plan"}),
+                   ("live_plan null", dict(t0, live="minimal")),
+                   ("does not read", dict(t0, live="minimal", live_plan=dict(plan, timeout=3))),
+                   ("does not read", dict(t0, live="minimal",
+                                          live_plan={"scenarios": [dict(plan["scenarios"][0], timeout_s=9)]})),
+                   ("no scenarios", dict(t0, live="minimal", live_plan={"scenarios": []})),
+                   ("argv", dict(t0, live="minimal", live_plan={"scenarios": [{"id": "s1", "argv": ["x", 3]}]})),
+                   ("taints", dict(t0, live="minimal", live_plan={"scenarios": [{"id": "s1", "argv": ["x"],
+                                                                                  "taints": ["s9"]}]})),
+                   ("fail_rc", dict(t0, live="minimal", live_plan={"scenarios": [{"id": "s1", "argv": ["x"],
+                                                                                   "fail_rc": 0}]})),
+                   ("live: none task", dict(t0, live_plan=plan))):
+        e = raises(A.TaskRefused, A.validate_task, t, hp, p)
+        check(bool(e) and why in e, "validate_task refuses (%s): %s" % (why, (e or "NOT REFUSED")[:110]))
+    check(raises(A.TaskRefused, A.validate_task, dict(t0, live="minimal", live_plan=plan), hp, p) is None,
+          "validate_task accepts a live task with a valid plan")
+    check(raises(A.TaskRefused, A.validate_task, dict(t0, live="minimal+deps", live_plan=plan), hp, p) is None,
+          "validate_task accepts a minimal+deps task with a valid plan")
+    tf.write_bytes(A._dump(dict(t0, live="minimal")))
+    e = raises(A.TaskRefused, A.freeze, p)
+    check(bool(e) and "live_plan" in e and A.frozen_hashes(p) == {}, "freeze refuses a live task with live_plan "
+          "null and freezes nothing")
+    tf.write_bytes(A._dump(dict(t0, live="minimal", live_plan=plan)))
+    old = p["tasks"] / "RP_FIXTURE_GOOD_FIX_ONE.json"          # an offline task frozen before the field existed
+    old.write_bytes(A._dump({k: v for k, v in json.loads(old.read_text()).items() if k != "live_plan"}))
+    A.freeze(p)
+    check(A.check(p) == [], "a live task with a valid plan and an old offline task without the key both freeze")
+    got = A.load_frozen("RP_FIXTURE_ESC_FIX_TWO", p)
+    check(got["live_plan"] == plan, "load_frozen returns the frozen plan verbatim")
+    check("live_plan" not in A.load_frozen("RP_FIXTURE_GOOD_FIX_ONE", p),
+          "an old live: none task without live_plan still loads (it is never published)")
+    tf.write_bytes(A._dump(dict(t0, live="minimal", live_plan=dict(plan, fixture_save="other"))))
+    probs = A.check(p)
+    check(any("RP_FIXTURE_ESC_FIX_TWO" in x and "hash" in x for x in probs),
+          "editing a frozen live_plan changes the hash and is refused")
+    check(bool(raises(A.TaskRefused, A.load_frozen, "RP_FIXTURE_ESC_FIX_TWO", p)), "load_frozen refuses it too")
+
 def t_hidden(tmp, pool, s):
     p = fresh_arena(tmp, "arena_hidden")
     A.write_pool(pool, p)
@@ -940,6 +991,7 @@ def main():
         pool = t_census(tmp, repo, old, s)
         t_hash(tmp, pool)
         t_live(tmp, pool)
+        t_live_plan(tmp, pool)
         t_hidden(tmp, pool, s)
         t_census2(tmp, repo, old, s)
         t_census3(tmp, repo, old, s)

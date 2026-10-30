@@ -2139,8 +2139,36 @@ def t_drain_most_overdue():
           % (y2["cand"], x2["cand"], dec["action"], dec.get("rule"), dec.get("cand")))
 
 
+
+def t_check_live_plan():
+    """check_live_plan (the frozen task's live_plan shape, TRIO_FROZEN_TASKS_WIRE_LIVE_PLAN) accepts every key this
+    module reads, including the documented plan.json example, and refuses keys it does not read."""
+    import re
+    m = re.search(r"plan\.json: (\{.*?\"fixture_save\": \"name\"\})", T.__doc__, re.S)
+    doc = json.loads(m.group(1)) if m else None
+    check(doc is not None and raises(T.PilotRefused, T.check_live_plan, doc) is None,
+          "check_live_plan accepts the documented plan.json example")
+    full = plan("s1", "s2", fixture="fx", s1={"footprint": {"files": ["a/*.xml"], "defs": ["RM_X"]},
+                                              "taints": ["s2"], "fail_rc": 2}, s2={"taints": "uncertain"})
+    check(raises(T.PilotRefused, T.check_live_plan, full) is None, "check_live_plan accepts every read key")
+    T._check_plan(full)
+    sc = {"id": "s1", "argv": ["x"]}
+    for why, bad in (("not a plan object", ["s1"]), ("does not read", {"scenarios": [sc], "timeout": 1}),
+                     ("does not read", {"scenarios": [dict(sc, cwd="/")]}), ("no scenarios", {"scenarios": []}),
+                     ("unique", {"scenarios": [sc, sc]}), ("no argv", {"scenarios": [{"id": "s1", "argv": []}]}),
+                     ("argv", {"scenarios": [dict(sc, argv=["x", ""])]}),
+                     ("footprint", {"scenarios": [dict(sc, footprint={"globs": ["a"]})]}),
+                     ("footprint.files", {"scenarios": [dict(sc, footprint={"files": "a/*"})]}),
+                     ("taints", {"scenarios": [dict(sc, taints=["nope"])]}),
+                     ("taints", {"scenarios": [dict(sc, taints="all")]}),
+                     ("fail_rc", {"scenarios": [dict(sc, fail_rc=True)]}),
+                     ("fail_rc", {"scenarios": [dict(sc, fail_rc=0)]}),
+                     ("fixture_save", {"scenarios": [sc], "fixture_save": ""})):
+        e = raises(T.PilotRefused, T.check_live_plan, bad)
+        check(bool(e) and why in e, "check_live_plan refuses (%s): %s" % (why, (e or "NOT REFUSED")[:100]))
+
 def main():
-    for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
+    for t in (t_check_live_plan, t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,

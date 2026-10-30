@@ -78,6 +78,9 @@ OS user as the judge: such an arm can open the judge directory and rewrite the h
 different OS user, or a sandbox that does not mount the judge directory, closes it. This module does not claim to.
 
 Replay tasks are `live: none`: the build half runs in throwaway clones with no game (§3.1).
+Every task carries `live_plan` (the TestPilot plan, L3), hashed with the rest of the file: null for `live: none`
+(the census writes null for every replay task); a live task must carry a plan testpilot.check_live_plan accepts, or
+validate_task/freeze/load_frozen refuse it. A file frozen before the field existed loads only if it is `live: none`.
 """
 from __future__ import annotations
 
@@ -578,7 +581,9 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         task = {"id": tid, "source_item": iid, "kind": kind, "size": size_points(len(diff), lines),
                 "size_basis": {"files": len(diff), "lines": lines}, "area": area_for(files), "prompt": prompt,
                 "criteria": crit, "criteria_source": crit_src, "proof": proof, "live": "none",
-                "hidden_checks": None, "base_sha": base, "prompt_source": "base_parent",
+                # replay is needs=offline by construction (rejected above otherwise): no live TestPilot plan exists
+                # for it, and null says so explicitly (live_plan_refusal); never the proof standing in for one
+                "live_plan": None, "hidden_checks": None, "base_sha": base, "prompt_source": "base_parent",
                 "prompt_may_hold_hints": _prompt_hints(repo, fix, iid, next(
                     (e.get("ts") for e in evs if e.get("event") == "start"), None), prose)}
         own = Matcher([hidden]).hits(_public_bytes(task))
@@ -905,6 +910,30 @@ def _append_authority(p: dict, recs: list[dict]):
 
 # ---------------------------------------------------------------- validation
 
+def live_plan_refusal(task: dict) -> str | None:
+    """Why this task's `live_plan` may not run, or None. The live TestPilot plan is part of the frozen task (L3, the
+    test plan is written before the build): a task with `live` other than "none" MUST carry a plan that
+    testpilot.check_live_plan accepts; a `live: none` task carries `live_plan: null` (the census writes it) or, if
+    frozen before the field existed, no key at all - it is never published to TestPilot, so there is nothing to run.
+    An offline task carrying a plan is refused too: the plan would be silently ignored."""
+    live = task.get("live", "none")
+    if live == "none":
+        if task.get("live_plan") is not None:
+            return "live_plan given for a live: none task (it would never run): set live or drop the plan"
+        return None
+    if "live_plan" not in task:
+        return ("live %s task has no live_plan field (frozen before the field existed?): it needs a refreeze with "
+                "a TestPilot plan, never the offline proof as a stand-in" % live)
+    if task["live_plan"] is None:
+        return "live %s task has live_plan null: a live task needs a TestPilot plan (L3)" % live
+    import testpilot as TP                  # the consumer owns the schema; lazy: testpilot imports the lane stack
+    try:
+        TP.check_live_plan(task["live_plan"])
+    except TP.PilotRefused as e:
+        return "live_plan invalid: %s" % e
+    return None
+
+
 def validate_task(task: dict, hidden_path: Path, p: dict, hidden_bytes: bytes | None = None):
     """Refuse a task spec the trial may not run. Raises TaskRefused."""
     tid = task.get("id")
@@ -914,6 +943,9 @@ def validate_task(task: dict, hidden_path: Path, p: dict, hidden_bytes: bytes | 
     if not isinstance(task["live"], str) or task["live"] not in LIVE_OK:
         raise TaskRefused("%s: live %r refused: the trial runs on the minimal list only (owner 2026-10-29); "
                           "allowed %s" % (tid, task["live"], ", ".join(LIVE_OK)))
+    bad = live_plan_refusal(task)
+    if bad:
+        raise TaskRefused("%s: %s" % (tid, bad))
     if task["kind"] not in KINDS:
         raise TaskRefused("%s: kind %r unknown" % (tid, task["kind"]))
     if type(task["size"]) is not int or task["size"] not in (1, 2, 4):     # True == 1, so test the type

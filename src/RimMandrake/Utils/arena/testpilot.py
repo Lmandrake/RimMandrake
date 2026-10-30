@@ -63,7 +63,9 @@ release with the owner's list restored.
     python3 src/RimMandrake/Utils/arena/testpilot.py status [--lane steve]
 
 plan.json: {"scenarios": [{"id": "s1", "argv": ["python3", "proof.py", "--case", "a"], "footprint": {"files":
-["src/RimMandrake/Foo/Defs/*.xml"], "defs": ["RM_Foo"]}, "taints": ["s2"], "fail_rc": 1}], "fixture_save": "name"}
+["src/RimMandrake/Foo/Defs/*.xml"], "defs": ["RM_Foo"]}, "taints": ["s2"], "fail_rc": 1},
+{"id": "s2", "argv": ["python3", "proof.py", "--case", "b"]}], "fixture_save": "name"}
+(taints name scenarios of the same plan: check_live_plan refuses an unknown id, which would silently block nothing)
 Files (under <arena> = arena_tasks.arena_root(), outside git; written only by this code):
   trio/pilot/queue.jsonl (candidates, append-only), state.jsonl (transitions), evidence.jsonl (keyed, append-only),
   decisions.jsonl (every decision that moved the game), <lane>/session.json, logs/<run>.log
@@ -271,6 +273,59 @@ def _check_plan(plan: dict) -> dict:
     for s in scns:
         if not isinstance(s.get("argv"), list) or not s["argv"]:
             raise PilotRefused("scenario %s has no argv" % s["id"])
+    return plan
+
+
+# The plan keys this module reads, and nothing else (a frozen task's `live_plan` is checked against these, so a
+# misspelt or invented key is refused instead of silently ignored): plan.fixture_save (the reload_save rung),
+# scenario id/argv (run_scenario), footprint{files,defs} (L9a touched), taints (L8, a list of ids or "uncertain"),
+# fail_rc (the exit code that means FAIL; 0 is a PASS, so it is never 0).
+PLAN_KEYS = ("scenarios", "fixture_save")
+SCENARIO_KEYS = ("id", "argv", "footprint", "taints", "fail_rc")
+FOOTPRINT_KEYS = ("files", "defs")
+
+
+def check_live_plan(plan) -> dict:
+    """The strict shape of a plan as a FROZEN task carries it (`live_plan`, L3): everything _check_plan demands, plus
+    only keys this module reads, every argv token a non-empty string, footprint lists of strings, taints naming
+    scenarios of this plan (or "uncertain"), fail_rc a non-zero int, fixture_save a non-empty string.
+    PilotRefused names the first fault."""
+    if not isinstance(plan, dict):
+        raise PilotRefused("live_plan is %s, not a plan object" % type(plan).__name__)
+    extra = sorted(set(plan) - set(PLAN_KEYS))
+    if extra:
+        raise PilotRefused("live_plan has keys testpilot does not read: %s" % extra)
+    _check_plan(plan)
+    if "fixture_save" in plan and not (isinstance(plan["fixture_save"], str) and plan["fixture_save"].strip()):
+        raise PilotRefused("live_plan fixture_save must be a non-empty string: %r" % (plan["fixture_save"],))
+    ids = {s["id"] for s in plan["scenarios"]}
+    for s in plan["scenarios"]:
+        if not isinstance(s, dict):
+            raise PilotRefused("a live_plan scenario is not an object: %r" % (s,))
+        sid = s["id"]
+        extra = sorted(set(s) - set(SCENARIO_KEYS))
+        if extra:
+            raise PilotRefused("scenario %s has keys testpilot does not read: %s" % (sid, extra))
+        if not all(isinstance(a, str) and a for a in s["argv"]):
+            raise PilotRefused("scenario %s argv must be non-empty strings: %r" % (sid, s["argv"]))
+        if "footprint" in s:
+            fp = s["footprint"]
+            if not isinstance(fp, dict) or set(fp) - set(FOOTPRINT_KEYS):
+                raise PilotRefused("scenario %s footprint must be {files: [...], defs: [...]}: %r" % (sid, fp))
+            for k in FOOTPRINT_KEYS:
+                v = fp.get(k, [])
+                if not isinstance(v, list) or not all(isinstance(x, str) and x for x in v):
+                    raise PilotRefused("scenario %s footprint.%s must be a list of non-empty strings: %r"
+                                       % (sid, k, v))
+        if "taints" in s:
+            t = s["taints"]
+            if t != "uncertain" and not (isinstance(t, list) and all(isinstance(x, str) and x in ids for x in t)):
+                raise PilotRefused("scenario %s taints must be \"uncertain\" or a list of this plan's scenario "
+                                   "ids: %r" % (sid, t))
+        if "fail_rc" in s:
+            rc = s["fail_rc"]
+            if isinstance(rc, bool) or not isinstance(rc, int) or rc == 0:
+                raise PilotRefused("scenario %s fail_rc must be a non-zero int: %r" % (sid, rc))
     return plan
 
 

@@ -251,6 +251,13 @@ def _critic_input(**kw):
         return type("CriticInput", (), kw)()
 
 
+def live_plan_refusal(task):
+    """Why a task's live TestPilot step may not run (arena_tasks.live_plan_refusal: a live task without a valid
+    frozen `live_plan`), or None. Fail closed: the offline proof is never substituted for a live plan."""
+    import arena_tasks as A                   # lazy: the census module pulls in the ledger model
+    return A.live_plan_refusal(task)
+
+
 class TestPilotLane:
     """The live half: a critic-accepted candidate of a live task is enqueued on TestPilot; the result is the newest
     record of that item's candidate for this sha (resolved verdict; parked/quarantined count as a fail)."""
@@ -261,8 +268,10 @@ class TestPilotLane:
         self.p = TP.ppaths(root) if root else TP.ppaths()
 
     def publish(self, task, sha, builder, files):
-        plan = task.get("live_plan") or {"scenarios": [{"id": "proof", "argv": ["sh", "-c", task["proof"]]}]}
-        self.TP.enqueue(self.p, task["id"], sha, builder, plan, changed_files=files)
+        bad = live_plan_refusal(task)
+        if bad or task.get("live", "none") == "none":
+            raise Refused("refused: %s not published to TestPilot: %s" % (task["id"], bad or "it is live: none"))
+        self.TP.enqueue(self.p, task["id"], sha, builder, task["live_plan"], changed_files=files)
 
     def result(self, task, sha):
         mine = [c for c in self.TP.candidates(self.p) if c.get("item") == task["id"] and c.get("sha") == sha]
@@ -390,6 +399,9 @@ class TrioLoop(RA.Loop):
         task = self.task()
         if task is None:
             return self.status("done: no task left")
+        bad = live_plan_refusal(task)
+        if bad and not self.state.get("lane_wait"):    # before any round is spent: no plan, no live verdict, ever
+            return self._park(task, "no valid live_plan: " + bad)
         if self.state.get("lane_wait"):
             return self._lane_step(task)
         why = self.runway_refusal()
@@ -529,13 +541,13 @@ class TrioLoop(RA.Loop):
             return self._advance(task, "parked %s" % tid)
         vs = verdicts(recs, tid)
         lastv = vs[-1] if vs else {}
-        wip = self.git("rev-parse", "--verify", "-q", RA.WIP, check=False)
+        k = rounds_used(recs, tid)
+        wip = self.git("rev-parse", "--verify", "-q", RA.WIP, check=False) if k else None   # no round: no candidate
         if wip:
             self.git("branch", "-f", FAILED_BRANCH % tid, wip)
             if self.git("rev-parse", "--abbrev-ref", "HEAD", check=False) == RA.WIP:
                 self.git("switch", "-q", RA.MAIN)
             self.git("branch", "-f", RA.WIP, RA.MAIN)
-        k = rounds_used(recs, tid)
         line = {"ts": L.now_ts(), "task": tid, "priority": self.frozen().get("priority"), "rounds": k,
                 "last_verdict": lastv.get("verdict"), "last_why": ((lastv.get("detail") or {}).get("why") or why)[:1500],
                 "last_sha": lastv.get("sha"), "evidence": FAILED_BRANCH % tid if wip else None,
@@ -546,9 +558,9 @@ class TrioLoop(RA.Loop):
             with open(pf, "a") as fh:
                 fh.write(json.dumps(line, sort_keys=True) + "\n")
         self.emit("critic_round", task, verdict="park", sha=wip or None, detail={
-            "kind": "park", "rounds": k, "last_verdict": lastv.get("verdict"), "to": "conductor"})
+            "kind": "park", "rounds": k, "last_verdict": lastv.get("verdict"), "to": "conductor", "why": why[:600]})
         self._file_park_item(tid)
-        return self._advance(task, "parked %s after %d rounds (evidence %s)" % (tid, k, FAILED_BRANCH % tid))
+        return self._advance(task, "parked %s after %d rounds (evidence %s): %s" % (tid, k, line["evidence"], why[:200]))
 
     def _file_park_item(self, tid):
         """File the park as a rimflow item for the Conductor's queue (the Conductor works through rimflow items;
@@ -689,6 +701,9 @@ class TrioLoop(RA.Loop):
             return self.status("accepted %s %s at %s; the next part builds next" % (
                 task["id"], task["_part_label"], pend["head"][:12]))
         if task.get("live", "none") != "none":
+            bad = live_plan_refusal(task)
+            if bad:                                   # step() parks it first; this is the last line of defence
+                raise Refused("refused: %s accepted but not published to TestPilot: %s" % (task["id"], bad))
             if self.lane is None:
                 raise Refused("task %s needs a live lane and none is configured" % task["id"])
             files = self.git("diff", *RA.NO_DRIVER, "--name-only", pend["base"], pend["head"]).splitlines()

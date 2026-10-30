@@ -559,6 +559,93 @@ def sc_spec_tamper(tmp, mod, tag):
         return "not the one the log recorded" in str(e)
 
 
+# ---- live_plan (TRIO_FROZEN_TASKS_WIRE_LIVE_PLAN): a live task runs ITS frozen TestPilot plan or parks; never the proof
+PLAN = {"scenarios": [{"id": "s1", "argv": ["python3", "proof_live.py", "--case", "a"],
+                       "footprint": {"files": ["mod.py"], "defs": []}, "fail_rc": 1}], "fixture_save": "fx"}
+
+
+class FakeLane:
+    def __init__(self, verdict="pass"):
+        self.published, self.verdict = [], verdict
+
+    def publish(self, task, sha, builder, files):
+        self.published.append((task.get("live_plan"), sha))
+
+    def result(self, task, sha):
+        return {"verdict": self.verdict, "run_id": "fake"} if self.published else None
+
+
+def _live_park(tmp, mod, tag, name, task, want):
+    lane = FakeLane()
+    w = World(tmp, name + tag, mod, task=task, critic=Critic(lambda k, c: "accept"), lane=lane)
+    sh(w.root, "git", "branch", T.RA.WIP)                       # a work branch left by an earlier task: not evidence
+    fake_rimflow(w, tmp)
+    try:
+        out = w.run(6)
+    finally:
+        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+    pk = parks(w)
+    br = subprocess.run(["git", "rev-parse", "--verify", "-q", T.FAILED_BRANCH % task["id"]], cwd=str(w.root),
+                        capture_output=True, text=True).stdout.strip()
+    pr = w.recs("critic_round", "park")
+    print("     %s%s: out %s, builds %d, published %d, why %r" % (name, tag, out[-1][:90], w.calls.count("build"),
+                                                                 len(lane.published), (pk[0]["last_why"] if pk else "")[:90]))
+    return (out[0].startswith("parked") and w.calls.count("build") == 0 and not lane.published and not w.pubs()
+            and len(pk) == 1 and want in pk[0]["last_why"] and "live_plan" in pk[0]["last_why"]
+            and pk[0]["rounds"] == 0 and pk[0]["evidence"] is None and not br
+            and len(pr) == 1 and want in pr[0]["detail"]["why"])
+
+
+def sc_live_no_plan(tmp, mod, tag):
+    """A live task frozen with no live_plan key parks at once with a named reason: no build round, no publish."""
+    return _live_park(tmp, mod, tag, "LN", dict(TASK, live="minimal"), "no live_plan field")
+
+
+def sc_live_null_plan(tmp, mod, tag):
+    return _live_park(tmp, mod, tag, "LZ", dict(TASK, live="minimal", live_plan=None), "live_plan null")
+
+
+def sc_live_bad_plan(tmp, mod, tag):
+    """A plan key TestPilot does not read (a guessed schema field) is refused, not ignored."""
+    bad = {"scenarios": [{"id": "s1", "argv": ["sh", "-c", "x"], "timeout_s": 5}]}
+    return _live_park(tmp, mod, tag, "LB", dict(TASK, live="minimal", live_plan=bad), "timeout_s")
+
+
+def sc_live_plan_published(tmp, mod, tag):
+    """A valid frozen plan is what reaches the lane (not the proof); a lane pass then publishes."""
+    lane = FakeLane()
+    task = dict(TASK, live="minimal", live_plan=PLAN)
+    w = World(tmp, "LP" + tag, mod, task=task, critic=Critic(lambda k, c: "accept"), lane=lane)
+    out = w.run()
+    print("     LP%s: out %s, published %s" % (tag, out[-1][:60], [p[0] for p in lane.published]))
+    return (out[-1].startswith("published") and len(lane.published) == 1 and lane.published[0][0] == PLAN
+            and len(w.pubs()) == 1)
+
+
+def sc_pilot_lane_no_fallback(tmp, mod, tag):
+    """TestPilotLane.publish enqueues the frozen plan verbatim and refuses (Refused, nothing enqueued) a live task
+    with no valid plan or an offline task: the proof is never wrapped into a stand-in scenario."""
+    got = []
+
+    class TP:
+        @staticmethod
+        def enqueue(p, item, sha, builder, plan, changed_files=None):
+            got.append(plan)
+    lane = mod.TestPilotLane.__new__(mod.TestPilotLane)
+    lane.TP, lane.p = TP, {}
+    refused = []
+    for t in (dict(TASK, live="minimal"), dict(TASK, live="minimal", live_plan=None),
+              dict(TASK, live="minimal", live_plan={"scenarios": []}), dict(TASK)):
+        try:
+            lane.publish(t, "a" * 40, "b", ["mod.py"])
+        except mod.Refused as e:
+            refused.append(str(e))
+    n_bad = len(got)
+    lane.publish(dict(TASK, live="minimal", live_plan=PLAN), "a" * 40, "b", ["mod.py"])
+    print("     LT%s: refused %d of 4, enqueued %s" % (tag, len(refused), got))
+    return len(refused) == 4 and n_bad == 0 and got == [PLAN] and all(TASK["id"] in r for r in refused)
+
+
 MUTATIONS = [
     ("A cap off by one", sc_never_satisfied, "ROUND_CAP = 4\n", "ROUND_CAP = 5\n"),
     ("A simplify trigger removed", sc_never_satisfied,
@@ -607,6 +694,14 @@ MUTATIONS = [
      "        except KeyboardInterrupt as e:  # noqa: BLE001  a filing"),
     ("PX failed filing not retried from the log", sc_park_filing_fails,
      "            self._file_park_item(fz[\"id\"])                       # a filing", "            pass                                                 # a filing"),
+    ("LN live task without a plan builds anyway", sc_live_no_plan,
+     "        bad = live_plan_refusal(task)\n        if bad and not", "        bad = None\n        if bad and not"),
+    ("LT proof fallback restored in TestPilotLane.publish", sc_pilot_lane_no_fallback,
+     "        if bad or task.get(\"live\", \"none\") == \"none\":\n            raise Refused(\"refused: %s not published",
+     "        if False:\n            raise Refused(\"refused: %s not published"),
+    ("LN park keeps an evidence branch with no round", sc_live_no_plan,
+     "self.git(\"rev-parse\", \"--verify\", \"-q\", RA.WIP, check=False) if k else None",
+     "self.git(\"rev-parse\", \"--verify\", \"-q\", RA.WIP, check=False)"),
     ("G spec integrity check removed", sc_spec_tamper,
      "            if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != want:",
      "            if False:"),
@@ -632,6 +727,11 @@ SCENARIOS = [
     ("PN park item names are valid and never adopt an unrelated item", sc_park_names),
     ("PO a killed park writes one parks.jsonl line", sc_park_once),
     ("G a tampered simplified spec refuses", sc_spec_tamper),
+    ("LN a live task with no live_plan key parks before any round, named reason", sc_live_no_plan),
+    ("LZ a live task with live_plan null parks, named reason", sc_live_null_plan),
+    ("LB a live_plan with a key TestPilot does not read parks", sc_live_bad_plan),
+    ("LP a valid frozen live_plan reaches the lane verbatim", sc_live_plan_published),
+    ("LT TestPilotLane.publish never substitutes the proof", sc_pilot_lane_no_fallback),
 ]
 
 
