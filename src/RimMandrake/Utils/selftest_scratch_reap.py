@@ -156,6 +156,27 @@ def main() -> int:
         check(git(unpushed, "log", "-1", "--format=%s") == "only here", "the unpushed commit survives")
         alarms = (td / "state" / "alarms.log").read_text()
         check("unpushed_clone" in alarms and "crackedlands_rename_clone" in alarms, "refusals are written as alarm lines")
+    # ledger_mentions must substring-prefilter: the lookaround regex over the whole corpus per needle hit the 1800 s
+    # unit timeout (SCRATCHREAP_FIX_THIRTY_MINUTES_OF_HOMEWORK). Count regex searches against a corpus with no needle.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import scratch_reap as sr
+    class _Rx:
+        n = 0
+        def __init__(self, rx): self.rx = rx
+        def search(self, t):
+            _Rx.n += 1
+            return self.rx.search(t)
+    sr._CORPUS = [("a.md", "x" * 1000 + "\nnames /tmp/hit/dir here\n"), ("b.md", "nothing relevant")]
+    real_compile = sr.re.compile
+    sr.re.compile = lambda pat, *a: _Rx(real_compile(pat, *a))
+    try:
+        hit = sr.ledger_mentions(Path("/tmp/hit/dir"), "clone")
+        miss = sr.ledger_mentions(Path("/tmp/absent/zzzdir"), "clone")
+    finally:
+        sr.re.compile = real_compile
+        sr._CORPUS = None
+    check(len(hit) >= 1 and "a.md" in hit[0], "ledger_mentions still finds a real mention")
+    check(miss == [] and _Rx.n == 1, f"ledger_mentions skips the regex when the needle is absent (regex runs={_Rx.n}, want 1)")
     print("ALL PASS" if not FAILS else f"{len(FAILS)} FAIL")
     return 1 if FAILS else 0
 

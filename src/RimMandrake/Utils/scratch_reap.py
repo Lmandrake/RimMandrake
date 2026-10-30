@@ -334,6 +334,8 @@ def ledger_mentions(p: Path, kind: str) -> list[str]:
     for nd in needles(p, kind):
         rx = re.compile(r"(?<![A-Za-z0-9_.-])" + re.escape(nd) + r"(?![A-Za-z0-9_-])")
         for f, text in corpus():
+            if nd not in text:      # C-speed substring prefilter: the lookaround regex over ~100 MB x every needle hit the 1800 s timeout
+                continue
             m = rx.search(text)
             if m:
                 line = text[text.rfind("\n", 0, m.start()) + 1: text.find("\n", m.end())][:160]
