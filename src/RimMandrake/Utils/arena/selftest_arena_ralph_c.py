@@ -46,6 +46,9 @@ MA, MB = "src/RimMandrake/ModA", "src/RimMandrake/ModB"
 AREAS = {"a1": [MA + "/**"], "a2": [MB + "/**"]}
 
 
+SKIPS = []
+
+
 def check(ok, msg):
     print(("ok   " if ok else "FAIL ") + msg)
     if not ok:
@@ -124,12 +127,12 @@ class World:
                        "'HEAD'],capture_output=True,text=True).stdout)\n")
         self.prompts = []
         self.loop = arena.mod.LoopC(member, self.root, self.ctl, arena.board, arena=arena.aroot, model=self.model,
-                                    gate=self.gate, writer=arena.writer, lane=RA.RalphCLane(),
+                                    gate=self.gate, writer=arena.writer, lane=RA.RalphCLane(), sync=None, tester_tmp=str(arena.d / ('tt_' + member)),
                                     runway=lambda: {"state": "MEASURED", "runway": 0.9},
                                     precheck=lambda log: True, release=lambda: None,
                                     publish_cmd="%s %s %s" % (sys.executable, pub, self.publog))
 
-    def model(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log):
+    def model(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
         self.a.calls.append((self.member, role, agent_id))
         self.prompts.append((role, prompt))
         st = self.a.aroot / "status" / "ralph_c.json"
@@ -539,7 +542,27 @@ def t_cmdmodel_env(tmp):
           "its member and the subagent bound: %r" % r["text"])
 
 
+def t_cmdmodel_tester_sandbox(tmp):
+    """A tester pass through the REAL call signature (sandbox= as Loop passes it): no TypeError, scrubbed env (no
+    RM_ARM / RALPH_*), run under the sandbox when bwrap is usable."""
+    troot = tmp / "tsb"
+    troot.mkdir()
+    m = C.CmdModelC("%s -c \"import os;print(os.environ.get('RM_ARM'), os.environ.get('RALPH_C_MEMBER'), "
+                    "os.environ.get('TESTER_ID','')[:7], os.environ['HOME'])\"" % sys.executable, "a2")
+    r = m("test", "", cwd=troot, agent_id="x", run_id=0, timeout_s=30, log=troot / "t.log",
+          sandbox={"root": troot, "hide": []})
+    check(r["rc"] == 0 and r["text"].split() == ["None", "None", "tester-", str(troot / "home")],
+          "CmdModelC tester pass takes sandbox= and runs in ralph_a's scrubbed tester env: %r" % r["text"])
+    check(C.RA.bwrap_argv({"root": troot, "hide": []}, troot) == [] or "--bind" in
+          C.RA.bwrap_argv({"root": troot, "hide": []}, troot), "bwrap_argv is reachable from the tester path")
+
+
 def t_signed_writer(tmp):
+    if not hasattr(L, "harness_pass"):
+        SKIPS.append("t_signed_writer: arena_eventlog.harness_pass absent (ARENA_RALPHC_WIRE_ENTRYPOINT_AND_UNITS)")
+        print("EXPECTED SKIP t_signed_writer: needs arena_eventlog.harness_pass, owed by "
+              "ARENA_RALPHC_WIRE_ENTRYPOINT_AND_UNITS")
+        return
     root = tmp / "signed"
     os.environ["ARENA_CLONES"] = str(root / "clones")
     os.environ["ARENA_EVENT_TOKEN_FILE"] = str(tmp / "secret" / "event_token")
@@ -580,7 +603,7 @@ def main():
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             check(guarded(fn, tmp, variant(old, new), "_m%d" % i) is False,
                   "mutation goes RED (a False verdict, not a crash): " + name)
-        for fn, a in ((t_areas, ()), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)),
+        for fn, a in ((t_areas, ()), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)), (t_cmdmodel_tester_sandbox, (tmp,)),
                       (t_signed_writer, (tmp,))):
             try:
                 fn(*a)

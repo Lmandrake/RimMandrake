@@ -505,7 +505,10 @@ class CmdModelC(RA.CmdModel):
         super().__init__(cmd)
         self.member = member
 
-    def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log):
+    def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
+        if role == "test":     # the tester pass: ralph_a's sandboxed, scrubbed-env path (bwrap, own home/tmp, pidfile)
+            return super().__call__(role, prompt, cwd=cwd, agent_id=agent_id, run_id=run_id, timeout_s=timeout_s,
+                                    log=log, sandbox=sandbox)
         env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "RALPH_A_CTL", "RALPH_C_CTL"))}
         env.update(RALPH_A_ROLE=role, RALPH_A_AGENT_ID=agent_id, RM_ARM=ARM, RALPH_C_MEMBER=self.member,
                    RALPH_C_MAX_SUBAGENTS=str(max_subagents()))
