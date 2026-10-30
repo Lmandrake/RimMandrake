@@ -631,11 +631,46 @@ def text_area(repo: Path, c: dict) -> tuple:
     return sorted(text), sorted(binaries)
 
 
+SIBLING_ROOTS = ("src/RimMandrake", "src")   # where a changed selftest's other mods live (mods/TheSump, ../RimStarWars)
+SIBLING_TEXT = (".xml", ".cs", ".py", ".json", ".txt", ".md", ".csv")
+SIBLING_DIR_MAX = 30_000_000   # bytes of one referenced sibling directory (RimStarWars is far bigger: text only, to this)
+
+
+def referenced_sibling_dirs(repo: Path, head: str, changed: list) -> set:
+    """Directories a changed text file names by quoted path component ("TheSump", "RimStarWars") that sit under
+    SIBLING_ROOTS. A selftest reads its neighbours' defs and sources; without them it crashes on FileNotFoundError and
+    the tester rejects a sound change for a gap in its own sandbox (TESTER_PROMPT_TUNE_REJECTS_MOST_GOOD_WORK)."""
+    names = {}
+    with J.SafeRepo(Path(repo)) as g:
+        for root in SIBLING_ROOTS:
+            out = g.git("ls-tree", "-d", "--name-only", "-z", head, root + "/")
+            for rec in out.split(b"\0"):
+                if rec:
+                    d = rec.decode("utf-8", "surrogateescape")
+                    if d != "src/RimMandrake":
+                        names.setdefault(d.rsplit("/", 1)[-1], d)
+        found = set()
+        for path in changed:
+            if not path.endswith(SIBLING_TEXT):
+                continue
+            try:
+                body = g.git("show", "%s:%s" % (head, path)).decode("utf-8", "replace")
+            except Exception:
+                continue
+            for n in names:
+                if n not in found and re.search(r"""["'/\\]%s["'/\\]""" % re.escape(n), body):
+                    found.add(n)
+    return {names[n] for n in found}
+
+
 def critic_tree_files(repo: Path, head: str, changed: list) -> list:
     """The files the critic's tree holds: the tooling packages (TREE_PATHS) and the directory of each changed text
     file, minus blobs over TREE_BLOB_MAX and anything under Transient/ or deployed/ (savegames, meshes: gigabytes
     no reviewer reads). The changed files themselves are always kept. Capped at TREE_TOTAL_MAX bytes."""
     dirs = set(J.TREE_PATHS) | {str(Path(p).parent) for p in changed if str(Path(p).parent) not in ("", ".")}
+    sib = referenced_sibling_dirs(repo, head, changed)
+    dirs |= sib
+    sib_used = {d: 0 for d in sib}
     with J.SafeRepo(Path(repo)) as g:
         out = g.git("ls-tree", "-r", "-l", "-z", "--full-tree", head, "--", *sorted(dirs))
     keep, total = set(changed), 0
@@ -649,6 +684,13 @@ def critic_tree_files(repo: Path, head: str, changed: list) -> list:
             continue
         if size == "-" or int(size) > TREE_BLOB_MAX or total + int(size) > TREE_TOTAL_MAX:
             continue
+        sd = next((d for d in sib if path.startswith(d + "/")), None)
+        if sd is not None and not any(path.startswith(t + "/") for t in J.TREE_PATHS):
+            near = any(path.startswith(str(Path(p).parent) + "/") for p in changed)
+            if not near:
+                if not path.endswith(SIBLING_TEXT) or sib_used[sd] + int(size) > SIBLING_DIR_MAX:
+                    continue
+                sib_used[sd] += int(size)
         keep.add(path)
         total += int(size)
     return sorted(keep)

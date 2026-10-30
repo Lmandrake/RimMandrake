@@ -451,6 +451,22 @@ def t_tree_and_hidden(root):
     check("critic tree keeps the changed file and its small neighbours, drops big blobs and Transient/ extras",
           "pkg/a.py" in files and "pkg/small.txt" in files and "pkg/big.bin" not in files
           and not any(f.startswith("Transient/") and f != "Transient/a.py" for f in files), str(files))
+    # sandbox gap: a changed selftest that names a sibling mod must find that mod's defs in the critic tree
+    sd = repo / "src" / "RimMandrake"
+    (sd / "Mine").mkdir(parents=True)
+    (sd / "TheSump" / "Defs").mkdir(parents=True)
+    (sd / "Other").mkdir()
+    (sd / "Mine" / "selftest_mine.py").write_text('import os\np = os.path.join(mods, "TheSump", "Defs", "a.xml")\n')
+    (sd / "TheSump" / "Defs" / "a.xml").write_text("<Defs/>\n")
+    (sd / "TheSump" / "icon.png").write_bytes(b"\x89PNG")
+    (sd / "Other" / "x.xml").write_text("<Defs/>\n")
+    git(repo, "add", "src")
+    git(repo, "commit", "-q", "-m", "sib")
+    head2 = git(repo, "rev-parse", "HEAD")
+    f2 = C.critic_tree_files(repo, head2, ["src/RimMandrake/Mine/selftest_mine.py"])
+    check("critic tree holds the sibling mod a changed selftest names (text only), not unnamed mods",
+          "src/RimMandrake/TheSump/Defs/a.xml" in f2 and "src/RimMandrake/TheSump/icon.png" not in f2
+          and "src/RimMandrake/Other/x.xml" not in f2, str(f2))
     hid = C.hidden_code(repo, base, head, ["pkg/**", ".claude/**"])
     check("hidden_code finds stripped bookkeeping CODE, not bookkeeping prose",
           hid == [".claude/hooks/guard.py"], str(hid))
