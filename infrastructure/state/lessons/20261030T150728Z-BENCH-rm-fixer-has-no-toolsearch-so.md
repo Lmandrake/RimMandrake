@@ -1,1 +1,1 @@
-rm-fixer has no ToolSearch, so it cannot reach Artifact/ArtifactData; board/artifact row updates go to rm-builder (model sonnet), and general-purpose is hook-blocked.
+No subagent can reach Artifact/ArtifactData (rm-fixer lacks ToolSearch; rm-builder's ToolSearch finds neither; general-purpose is hook-blocked), MEASURED 2026-10-30. Board/artifact row writes stay in the top-level window; a helper only gathers the data into a file.
