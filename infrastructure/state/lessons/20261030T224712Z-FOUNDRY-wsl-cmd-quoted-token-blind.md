@@ -1,0 +1,2 @@
+From WSL, passing a Windows command as ONE pre-quoted argv token (cmd.exe /d /c 'if exist "C:\x" (echo P) else (echo A)') silently reads the negative answer: interop escapes the embedded quotes, so cmd tests a literal path with backslash-quotes and answers ABSENT even on a real plant. Pass one token per cmd word with the path its own token (interop quotes spaces itself), and prove any Windows-side probe against a real plant before trusting a clean result (ARENA_JUDGE_PROGRAMDATA_CONFIG_STEERS, 131b52b09f).
+home: wsl-windows-plumbing
