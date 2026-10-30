@@ -1,4 +1,34 @@
 #!/bin/sh
-# pre-push hook for arm @ARM@ (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY). A push outside arena/@ARM@/*, or from a stopped
-# arm, is refused AND alarmed. Fails closed: if arena cannot run, the push is refused.
-ARENA_ARM_TOML="@ARM_TOML@" exec python3 "@ARENA_PY@" prepush --arm "@ARM@" --remote "$1" --url "$2"
+# ARENA-HOOK pre-push arm=@ARM@ clone=@CLONE@ (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY). Installed in <git-common-dir>/arena-hooks,
+# which core.hooksPath points at. A push from a stopped arm, outside arena/@ARM@/*, or from a production clone outside
+# [production] scope is refused AND alarmed. Fails CLOSED: if arena crashes (any exit but 0/10) the push is refused
+# and PUSH_HOOK_CRASH is alarmed. Every value below is single-quoted: nothing in a path is expanded.
+# Client-side only: `git push --no-verify` skips every hook (arena.py SERVER_SIDE_REQUIREMENTS).
+ARENA_ARM_TOML=@ARM_TOML_Q@
+ARENA_ALARM_FILE=@ALARM_Q@
+ARENA_PY=@ARENA_PY_Q@
+CHAIN=@CHAIN_Q@
+export ARENA_ARM_TOML ARENA_ALARM_FILE
+rc=99
+tmp=""
+on_exit() {
+    if [ "$rc" != 0 ] && [ "$rc" != 10 ] && [ "$rc" != chain ]; then
+        mkdir -p "$(dirname "$ARENA_ALARM_FILE")" 2>/dev/null
+        printf '{"arm": "%s", "clone": "%s", "kind": "PUSH_HOOK_CRASH", "rc": "%s", "ts": "%s"}\n' \
+            @ARM_Q@ @CLONE_Q@ "$rc" "$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$ARENA_ALARM_FILE" 2>/dev/null
+        echo "arena pre-push: REFUSED: the arena check crashed (rc $rc); alarmed PUSH_HOOK_CRASH" >&2
+    fi
+    [ -n "$tmp" ] && rm -f "$tmp"
+}
+trap on_exit EXIT
+trap 'exit 1' INT TERM HUP
+tmp=$(mktemp) || exit 1
+cat > "$tmp" || exit 1
+python3 "$ARENA_PY" prepush --arm @ARM_Q@ --clone @CLONE_Q@ --remote "$1" --url "$2" < "$tmp"
+rc=$?
+[ "$rc" = 0 ] || exit 1
+rc=chain
+if [ -n "$CHAIN" ]; then
+    "$CHAIN" "$@" < "$tmp" || exit $?
+fi
+exit 0

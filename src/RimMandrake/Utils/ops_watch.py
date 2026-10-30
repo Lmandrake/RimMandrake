@@ -894,8 +894,10 @@ def c_companion(now, rules, ctx):
 
 
 def c_arena(now, rules, ctx):
-    """arena.two_live: 0 when `arena who` passes, else the failed-check bitmask (ARENA_TWO_LIVE). No arm.toml (the arena
-    switch is not installed) or an arena module that cannot run is UNMEASURED, never 0."""
+    """arena.two_live: 0 when `arena who` passes, else the failed-check bitmask (ARENA_TWO_LIVE).
+    arena.push_refused_24h: alarm lines (PUSH_REFUSED / PUSH_HOOK_CRASH) in <arena>/alarms/arena.jsonl in the last 24 h
+    (ARENA_PUSH_REFUSED) - the reader of the hook's alarm file. No arm.toml (the arena switch is not installed) or an
+    arena module that cannot run is UNMEASURED, never 0."""
     ad = str(HERE / "arena")
     if ad not in sys.path:
         sys.path.insert(0, ad)
@@ -903,11 +905,19 @@ def c_arena(now, rules, ctx):
     try:
         tp = AR.arm_toml_path()
     except Exception as e:  # noqa: BLE001
-        return {"arena.two_live": U("arena root unresolved: %s" % e)}
+        return {"arena.two_live": U("arena root unresolved: %s" % e), "arena.push_refused_24h": U("arena root unresolved")}
     if not tp.exists():
-        return {"arena.two_live": U("no arm.toml at %s: the arena switch is not installed" % tp)}
+        why = "no arm.toml at %s: the arena switch is not installed" % tp
+        return {"arena.two_live": U(why), "arena.push_refused_24h": U(why)}
     r = AR.ops_two_live(tp)
-    return {"arena.two_live": M(r["value"], "failed-check bitmask (0 = one arm live)", why=r["why"], mode=r.get("mode"))}
+    out = {"arena.two_live": M(r["value"], "failed-check bitmask (0 = one arm live)", why=r["why"], mode=r.get("mode"))}
+    af = AR.alarm_path()
+    try:
+        n = AR.alarms_since(af, time.time() - 86400)
+        out["arena.push_refused_24h"] = M(n, "pre-push refusals/crashes alarmed in the last 24 h", file=str(af))
+    except OSError as e:
+        out["arena.push_refused_24h"] = U("alarm file %s unreadable: %s" % (af, e))
+    return out
 
 
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve, "flow": c_flow, "testing": c_testing,

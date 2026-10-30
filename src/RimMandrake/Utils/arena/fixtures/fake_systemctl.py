@@ -1,16 +1,23 @@
 #!/usr/bin/env python3
 """fake_systemctl.py - a stand-in for `systemctl --user` used ONLY by the arena selftests. It never talks to systemd,
-dbus or a cgroup. It reads unit files from a directory and keeps its "active" set in a JSON state file.
+dbus or a cgroup. It reads unit files from a directory and keeps its state in a JSON file.
 
     fake_systemctl.py --state S.json --unit-dir D <verb> [args]
-verbs: start U...  stop U...  is-active U  list-units PATTERN  daemon-reload  show-conflicts
+verbs: start U...  stop U...  restart U...  is-active U  is-enabled U  enable U...  disable U...  list-units PATTERN
+       reset-failed  daemon-reload  boot (test verb: a fresh boot - everything inactive, then every enabled unit starts)
 
-Semantics emulated (systemd's, for Conflicts=/PartOf=/Wants=):
-  - `start A B` is ONE transaction: if any two requested units conflict (either side lists the other) it fails with
-    "Transaction contains conflicting jobs" and changes nothing.
-  - `start B` alone starts B and STOPS every active unit that B Conflicts= (or that lists B in Conflicts=); stopping a
-    target also stops the units that are PartOf= it; starting a target starts its Wants=.
-  - `stop T` stops T and its PartOf= members.
+State {"active": [...], "failed": [...], "enabled": [...], "fail_start": [...], "log": [...]}; a state file holding
+only "active" is fine (the rest default to empty).
+
+Semantics emulated (systemd's, after the tester's fsd.py, switch_test/fsd.py):
+  - units = every file in D (*.target, *.service, *.timer) plus `<unit>.d/*.conf` drop-ins merged by name (a unit
+    known only through a drop-in exists); an empty assignment `Key=` resets that list.
+  - `start A B` is ONE transaction: Wants=/Requires= are pulled in recursively; if any two EXPLICIT units conflict
+    (either side lists the other: Conflicts= is symmetric) it fails with "Transaction contains conflicting jobs" and
+    changes nothing; a pulled-in unit that conflicts with an explicit one is dropped from the transaction.
+  - starting a unit STOPS every active unit it conflicts with; stopping a unit stops (recursively) the units PartOf= it.
+  - a unit in fail_start fails to start (lands in failed; rc 1 when it was explicit). is-active: active rc0,
+    failed rc3, inactive rc3. is-enabled: enabled rc0, disabled rc1.
 """
 import fnmatch
 import json
@@ -19,95 +26,172 @@ import sys
 from pathlib import Path
 
 
-def parse(text):
-    d, sec = {}, None
+def parse(text, d=None):
+    d = d if d is not None else {}
+    sec = None
     for raw in text.splitlines():
         ln = raw.strip()
         if not ln or ln[0] in "#;":
             continue
         m = re.match(r"^\[(\w+)\]$", ln)
         if m:
-            sec = m.group(1); continue
+            sec = m.group(1); d.setdefault(sec, {}); continue
         if "=" in ln and sec:
             k, v = ln.split("=", 1)
-            d.setdefault(k.strip(), []).extend(v.split())
+            if not v.strip():
+                d[sec][k.strip()] = []
+            else:
+                d[sec].setdefault(k.strip(), []).extend(v.split())
     return d
 
 
 def load_units(ud):
-    out = {}
-    for f in Path(ud).glob("*.target"):
-        out[f.name] = parse(f.read_text())
+    u = {}
+    for f in Path(ud).glob("*"):
+        if f.is_file():
+            u[f.name] = parse(f.read_text())
     for dd in Path(ud).glob("*.d"):
-        unit = dd.name[:-2]
-        if unit.startswith("rm-arm-"):
+        if not dd.is_dir():
             continue
-        merged = {}
+        d = u.setdefault(dd.name[:-2], {})
         for c in sorted(dd.glob("*.conf")):
-            for k, v in parse(c.read_text()).items():
-                merged.setdefault(k, []).extend(v)
-        out.setdefault(unit, {}).update(merged)
-    return out
+            parse(c.read_text(), d)
+    return u
 
 
-def conflicts(units, a, b):
-    return b in units.get(a, {}).get("Conflicts", []) or a in units.get(b, {}).get("Conflicts", [])
+def g(u, n, k, sec="Unit"):
+    return set(((u.get(n) or {}).get(sec) or {}).get(k, []))
 
 
-def members(units, t):
-    return [u for u, d in units.items() if t in d.get("PartOf", [])]
+def conflicts(u, a):
+    return g(u, a, "Conflicts") | {n for n in u if a in g(u, n, "Conflicts")}
 
 
-def stop(units, active, u):
-    active.discard(u)
-    for m in members(units, u):
-        active.discard(m)
+def partof_children(u, a):
+    return {n for n in u if a in g(u, n, "PartOf")}
+
+
+def do_stop(u, s, a, seen=None):
+    seen = seen if seen is not None else set()
+    if a in seen:
+        return
+    seen.add(a)
+    for ch in sorted(partof_children(u, a)):
+        do_stop(u, s, ch, seen)
+    if a in s["active"]:
+        s["active"].remove(a); s["log"].append("stop " + a)
+
+
+def do_start(u, s, names):
+    jobs, order = set(), []
+
+    def pull(n):
+        if n in jobs:
+            return
+        jobs.add(n); order.append(n)
+        for w in sorted(g(u, n, "Wants") | g(u, n, "Requires")):
+            if w in u:
+                pull(w)
+    explicit = list(names)
+    for n in explicit:
+        if n not in u:
+            return 5, "Failed to start %s: Unit %s not found." % (n, n)
+    for i, a in enumerate(explicit):
+        for b in explicit[i + 1:]:
+            if b in conflicts(u, a):
+                return 1, ("Failed to start %s: Transaction contains conflicting jobs 'start' and 'stop' for %s. "
+                           "Probably contradicting requirement dependencies configured." % (a, b))
+    for n in explicit:
+        pull(n)
+    order = [n for n in order if n in explicit or not any(n in conflicts(u, e) for e in explicit)]
+    for n in order:
+        for c in sorted(conflicts(u, n)):
+            if c in s["active"]:
+                do_stop(u, s, c)
+    rc = 0
+    for n in order:
+        if n in s["fail_start"]:
+            if n not in s["failed"]:
+                s["failed"].append(n)
+            if n in explicit:
+                rc = 1
+            continue
+        if n not in s["active"]:
+            s["active"].append(n); s["log"].append("start " + n)
+        if n in s["failed"]:
+            s["failed"].remove(n)
+    return rc, "" if rc == 0 else "Job for unit failed."
 
 
 def main(argv):
-    state = Path(argv[argv.index("--state") + 1]); ud = argv[argv.index("--unit-dir") + 1]
-    rest = [a for i, a in enumerate(argv) if i not in (argv.index("--state"), argv.index("--state") + 1,
-                                                        argv.index("--unit-dir"), argv.index("--unit-dir") + 1)]
+    i_s, i_u = argv.index("--state"), argv.index("--unit-dir")
+    state, ud = Path(argv[i_s + 1]), argv[i_u + 1]
+    rest = [a for i, a in enumerate(argv) if i not in (i_s, i_s + 1, i_u, i_u + 1)]
+    while rest and rest[0].startswith("--user"):
+        rest = rest[1:]
     verb, args = rest[0], rest[1:]
-    units = load_units(ud)
-    active = set(json.loads(state.read_text())["active"]) if state.exists() else set()
-
-    def save():
-        state.write_text(json.dumps({"active": sorted(active)}))
+    u = load_units(ud)
+    s = json.loads(state.read_text()) if state.exists() else {}
+    for k in ("active", "failed", "enabled", "fail_start", "log"):
+        s.setdefault(k, [])
+    s["log"].append("CMD " + " ".join(rest))
+    out, err, rc = "", "", 0
     if verb == "start":
-        for i, a in enumerate(args):
-            for b in args[i + 1:]:
-                if conflicts(units, a, b):
-                    print("Failed to start %s: Transaction contains conflicting jobs 'start' and 'stop' for %s. "
-                          "Probably contradicting requirement dependencies configured." % (a, b), file=sys.stderr)
-                    return 1
-        for u in args:
-            if u not in units:
-                print("Failed to start %s: Unit not found." % u, file=sys.stderr); return 5
-        for u in args:
-            for other in sorted(active):
-                if conflicts(units, u, other):
-                    stop(units, active, other)
-            active.add(u)
-            for w in units[u].get("Wants", []):
-                active.add(w)
-        save(); return 0
-    if verb == "stop":
-        for u in args:
-            stop(units, active, u)
-        save(); return 0
-    if verb == "is-active":
-        on = args[0] in active
-        print("active" if on else "inactive"); return 0 if on else 3
-    if verb == "list-units":
-        pat = [a for a in args if not a.startswith("-")][0]
-        for u in sorted(units):
-            if fnmatch.fnmatch(u, pat):
-                print("%s loaded %s running %s" % (u, "active" if u in active else "inactive", u))
-        return 0
-    if verb == "daemon-reload":
-        return 0
-    print("fake_systemctl: unsupported verb %s" % verb, file=sys.stderr); return 2
+        rc, err = do_start(u, s, args)
+    elif verb == "stop":
+        for a in args:
+            do_stop(u, s, a)
+    elif verb == "restart":
+        for a in args:
+            do_stop(u, s, a)
+            r, e = do_start(u, s, [a])
+            rc, err = rc or r, err or e
+    elif verb == "is-active":
+        a = args[0]
+        if a in s["active"]:
+            out = "active"
+        elif a in s["failed"]:
+            out, rc = "failed", 3
+        else:
+            out, rc = "inactive", 3
+    elif verb == "is-enabled":
+        if args[0] in s["enabled"]:
+            out = "enabled"
+        elif args[0] in u:
+            out, rc = "disabled", 1
+        else:
+            out, rc = "not-found", 1
+    elif verb == "enable":
+        for a in args:
+            if a not in s["enabled"]:
+                s["enabled"].append(a)
+    elif verb == "disable":
+        s["enabled"] = [x for x in s["enabled"] if x not in args]
+    elif verb == "list-units":
+        pats = [x for x in args if not x.startswith("-")]
+        for n in sorted(set(u) | set(s["active"])):
+            if pats and not any(fnmatch.fnmatch(n, p) for p in pats):
+                continue
+            st = "active" if n in s["active"] else ("failed" if n in s["failed"] else "inactive")
+            out += "%s loaded %s %s fake\n" % (n, st, {"active": "running", "failed": "failed",
+                                                       "inactive": "dead"}[st])
+    elif verb == "reset-failed":
+        s["failed"] = []
+    elif verb == "boot":
+        s["active"], s["failed"] = [], []
+        for n in list(s["enabled"]):
+            if n in u:
+                do_start(u, s, [n])
+    elif verb == "daemon-reload":
+        pass
+    else:
+        err, rc = "fake_systemctl: unsupported verb %s" % verb, 2
+    state.write_text(json.dumps(s, sort_keys=True))
+    if out:
+        sys.stdout.write(out if out.endswith("\n") else out + "\n")
+    if err:
+        sys.stderr.write(err + "\n")
+    return rc
 
 
 if __name__ == "__main__":
