@@ -1348,11 +1348,31 @@ def t_round2_gpt():
     check(w2.released == ["archmagi"], "FORCED a hold taken by the stopping arm after the first lock read is released (%s)" % w2.released)
 
 
+def t_who_d_remote_refs():
+    """ARENA_WHO_REMOTE_REFS_HARDEN_SNEAKY_PUSH: (d) reads the remote's refs (ls-remote), not local tracking refs."""
+    w = World("rr", mode="ralph_a", active=("ralph_a",))
+    d = w.deps()
+    c = w.clone("trio")
+    snap = AR.refs_snapshot(w.cfg, "trio")
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": d.clock() - 600, "mode": "ralph_a", "refs": {"trio": snap}})
+    real = dict(events=None, pushed=None)
+    check(who_quiet(w, d, **real)["checks"]["d"]["ok"], "nothing pushed: (d) ok")
+    url = subprocess.run(["git", "-C", str(c), "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+    subprocess.run(["git", "-C", str(c), "push", "-q", "--no-verify", url, "HEAD:refs/heads/arena/trio/sneaky"],
+                   check=True, capture_output=True, env=GENV)
+    r = who_quiet(w, d, **real)
+    check(r["exit"] & 8 and any("arena/trio/sneaky new" in x for x in r["checks"]["d"]["pushed_since_switch"].get("trio", [])),
+          "FORCED sneaky push by URL (tracking refs untouched) -> (d) fails (%s)" % r["checks"]["d"])
+    subprocess.run(["git", "-C", str(c), "remote", "set-url", "origin", str(w.root / "gone.git")], check=True)
+    r = who_quiet(w, d, **real)
+    check(r["exit"] & 8 and "RemoteUnreachable" in str(r["checks"]["d"]), "FORCED unreachable remote -> (d) fails loud, never passes")
+
+
 def main():
     try:
         for t in (t_two_targets, t_graph, t_switch_production, t_switch_forced, t_who, t_push, t_installer, t_ops_watch,
                   t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety, t_unknown_and_live,
-                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_cli_bits,
+                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_cli_bits,
                   t_fsd_parity, t_round2_gpt):
             print("== %s" % t.__name__)
             t()

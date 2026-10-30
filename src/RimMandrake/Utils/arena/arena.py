@@ -778,13 +778,10 @@ def arm_ref_prefix(arm: str) -> str:
     return "refs/remotes/origin/arena/%s/" % arm
 
 
-def refs_snapshot(cfg: dict, arm: str) -> dict[str, dict[str, str]]:
-    """{clone: {tracking ref: sha}} of the arm's namespace in each of its clones (arena arms only: production and v3
-    push to main, which is not theirs alone). A clone path that is not a clone is recorded as absent (None); a git
-    failure RAISES."""
+def _local_refs(cfg: dict, arm: str) -> dict:
+    """{clone: {tracking ref: sha}} from the clone's LOCAL tracking refs (stale by construction: a push by URL or
+    --no-verify from another path never updates them). Used for the reflog method only."""
     out = {}
-    if arm in PRODUCTION_ARMS:
-        return out
     for c in arm_clones(cfg, arm):
         if not is_clone(c):
             out[str(c)] = None
@@ -795,6 +792,40 @@ def refs_snapshot(cfg: dict, arm: str) -> dict[str, dict[str, str]]:
             if ref:
                 refs[ref] = sha
         out[str(c)] = refs
+    return out
+
+
+def remote_arm_refs(clone, arm: str, timeout=60) -> dict[str, str]:
+    """The AUTHORITATIVE refs of the arm's namespace on origin: `git ls-remote origin refs/heads/arena/<arm>/*`,
+    keyed by the tracking-ref name they would have (refs/remotes/origin/arena/<arm>/x). Any failure (no origin,
+    unreachable, auth, timeout) raises RemoteUnreachable: who (d) must fail loud, never pass."""
+    try:
+        r = subprocess.run(["git", "-C", str(clone), "ls-remote", "--refs", "origin", "refs/heads/arena/%s/*" % arm],
+                           capture_output=True, text=True, timeout=timeout, env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))
+    except (OSError, subprocess.TimeoutExpired) as e:
+        raise RemoteUnreachable("git ls-remote in %s: %s" % (clone, e))
+    if r.returncode != 0:
+        raise RemoteUnreachable("git ls-remote exit %d in %s: %s" % (r.returncode, clone, (r.stderr or r.stdout).strip()[:200]))
+    out = {}
+    for ln in r.stdout.splitlines():
+        sha, _, ref = ln.strip().partition("\t")
+        if ref.startswith("refs/heads/"):
+            out["refs/remotes/origin/" + ref[len("refs/heads/"):]] = sha
+    return out
+
+
+def refs_snapshot(cfg: dict, arm: str, remote: bool = True) -> dict[str, dict[str, str]]:
+    """{clone: {ref: sha}} of the arm's namespace as ORIGIN holds it now (git ls-remote, names mapped to tracking-ref
+    form), per clone (arena arms only: production and v3 push to main, which is not theirs alone). A clone path that
+    is not a clone is recorded as absent (None); a git or remote failure RAISES. remote=False reads the local
+    tracking refs instead (only the recorded --allow-offline switch uses it)."""
+    out = {}
+    if arm in PRODUCTION_ARMS:
+        return out
+    if not remote:
+        return _local_refs(cfg, arm)
+    for c in arm_clones(cfg, arm):
+        out[str(c)] = remote_arm_refs(c, arm) if is_clone(c) else None
     return out
 
 
@@ -819,7 +850,7 @@ def pushed_since(cfg: dict, arm: str, ts: float, snapshot: dict | None = None) -
                 if (refs or {}).get(ref) != then.get(ref):
                     out.append("%s %s" % (ref, "deleted" if ref not in (refs or {}) else
                                           ("new" if ref not in then else "moved")))
-    for c, refs in now.items():
+    for c, refs in _local_refs(cfg, arm).items():
         for ref in sorted(refs or {}):
             log = _git(c, "reflog", "show", "--date=unix", "--format=%gd", ref, "--")
             for ln in log.splitlines()[:1]:
@@ -1307,7 +1338,12 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
         steps.append("signed the switch event")
         stopped_now = sorted(set(ARMS) - live_arms(new))
         try:
-            snap = {a: d.refs_snapshot(new, a) for a in stopped_now}
+            try:
+                snap = {a: d.refs_snapshot(new, a) for a in stopped_now}
+            except RemoteUnreachable:
+                if not allow_offline:
+                    raise
+                snap = {a: d.refs_snapshot(new, a, remote=False) for a in stopped_now}   # recorded offline switch
         except Exception as e:  # noqa: BLE001 - who (d) must have a baseline; without one it would fail open
             raise SwitchError("tracking refs of the stopped arms unreadable (%s: %s); the new target was NOT started"
                               % (type(e).__name__, e))
@@ -1339,6 +1375,10 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
     cfg = load_config(cfg_path)
     res = (d.who_fn or who)(cfg, d)
     summary["who"] = res
+    if res["exit"] == 8 and summary.get("offline") and \
+            str(res["checks"].get("d", {}).get("error", "")).startswith("RemoteUnreachable"):
+        res = dict(res, exit=0, offline_d="origin unreachable under the recorded --allow-offline switch")
+        summary["who"] = res
     _record_last(d, result="ok" if res["exit"] == 0 else "who_failed", mode_from=summary["from"], mode_to=mode,
                  steps=steps, who=res["exit"])
     if res["exit"] != 0:
