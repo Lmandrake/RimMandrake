@@ -877,11 +877,15 @@ def t_dq_measured_for_winner():
             "detail": {"steps": {"scope": "FAIL"}}}
     logs, tasks, sp = winner_logs(extra_trio=(skip, fail))
     r = AA.analyse(logs, tasks, sp, draws=DRAWS)
-    check("early scope SKIP + scope FAIL after the decisive block -> no DECIDE_FOR_trio (the check was unmeasured "
-          "when the decision would fire)", r["final"]["verdict"] != "DECIDE_FOR_trio"
-          and r["dq"]["trio"]["scope"].get("unmeasured"), (r["final"]["verdict"], r["dq"]["trio"]["scope"]))
+    r0 = r
     logs, tasks, sp = winner_logs(extra_trio=(fail,))
     r = AA.analyse(logs, tasks, sp, draws=DRAWS)
+    check("early scope SKIP + scope FAIL after the decisive block -> UNMEASURED(trio, scope) at the block the "
+          "decision would have fired (the check was unmeasured then)",
+          r0["final"]["verdict"] == "UNMEASURED" and r0["final"]["detail"].get("arm") == "trio"
+          and r0["final"]["detail"].get("dq_unmeasured") == ["scope"] and r0["final"].get("block") is not None
+          and r0["final"].get("block") == r["final"].get("block") and r0["dq"]["trio"]["scope"].get("unmeasured"),
+          (r0["final"]["verdict"], r0["final"].get("detail"), r0["final"].get("block"), r["final"].get("block")))
     check("a later scope FAIL alone (all earlier gates measured) -> DECIDE_FOR_trio stands, violation after stop",
           r["final"]["verdict"] == "DECIDE_FOR_trio" and "trio" in r["final"].get("violations_after_stop", {}),
           (r["final"]["verdict"], r["final"].get("violations_after_stop")))
@@ -900,8 +904,19 @@ def t_control_absent():
     v = AA.rule_verdict(probs(tie=0.95, leaders=("trio", "v3c")), False)
     check("rule_verdict: TIE with the control absent -> UNMEASURED (GPT r1 #1)", v[0] == "UNMEASURED", v)
     r = scenario({"trio": (1.0, all_acc, 0.01), "v3c": (1.0, all_acc, 0.01)}, 20)
-    check("control absent, two identical arms -> UNMEASURED, never TIE", r["final"]["verdict"] == "UNMEASURED",
+    check("control absent, two identical arms -> UNMEASURED, never TIE; no block carries a comparison verdict",
+          r["final"]["verdict"] == "UNMEASURED" and r["blocks"]
+          and all(b.get("rule_verdict") in (None, "UNMEASURED") for b in r["blocks"]),
           (r["final"]["verdict"], [b.get("rule_verdict") for b in r["blocks"]]))
+    late = {"ts": iso(T0 + 10 ** 7), "event": "gate", "sha": "e" * 40, "verdict": "pass",
+            "detail": {"steps": {"scope": "FAIL"}}}
+    eq = {"trio": (1.0, all_acc, 0.3), "v3c": (1.0, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}
+    r = scenario(eq, 20, final=True, v3={"extra": (late,)})
+    check("control disqualified only AFTER the last block, --final -> UNMEASURED(control disqualified), never a "
+          "hard-cap pick or NO_DIFFERENCE", r["final"]["verdict"] == "UNMEASURED"
+          and "v3" in r["final"]["disqualified"] and "disqualified" in r["final"]["detail"].get("why", "")
+          and all(b.get("rule_verdict") != "UNMEASURED" for b in r["blocks"]),
+          (r["final"]["verdict"], r["final"].get("detail"), [b.get("rule_verdict") for b in r["blocks"]]))
     r = dq_run({"v3": {"drop": {(1, "gate")}}}, final=True)
     check("control disqualified, two arms left, --final -> UNMEASURED(control), DQ still listed",
           r["final"]["verdict"] == "UNMEASURED" and "v3" in r["final"]["disqualified"]

@@ -76,9 +76,11 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
     disqualification check: HARD_CAP_PICK, detail.winner = X. None qualifies: HARD_CAP_NO_DIFFERENCE, detail.winner
     = the control (the control stays). Every candidate's two probabilities and 90% intervals are in detail.candidates,
     the per-arm intervals alongside. A futile arm is a candidate, on its frozen data.
-  - CONTROL: a decision, TIE or hard-cap pick needs the control. A TIE that fires with the control absent or
-    disqualified: UNMEASURED. Control absent or disqualified and no stop fired: UNMEASURED (never CONTINUE, never "no
-    difference"); with fewer than two survivors the verdict stays DISQUALIFIED (a non-decision naming the violation).
+  - CONTROL: a decision, TIE or hard-cap pick needs the control. The first block (with two or more arms in
+    contention) at which the control is absent or already disqualified stops the trial UNMEASURED and carries no
+    comparison verdict. A control disqualified only after the last block: final verdict UNMEASURED (never CONTINUE,
+    never "no difference", never a hard-cap pick); with fewer than two survivors the verdict stays DISQUALIFIED (a
+    non-decision naming the violation).
   - A decision needs the winner's OWN disqualification checks measured: a DECIDE_FOR_X or TIE won by X while X has an
     UNMEASURED check not in DQ_EXEMPT stops the trial as UNMEASURED (the checks are whole-trial, so more data cannot
     measure them).
@@ -1059,6 +1061,17 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
             blk["why"] = "fewer than two arms left in contention: the rule cannot compare (no automatic winner)"
             rep["blocks"].append(blk)
             break
+        nondq = [a for a in arms if a not in disq]
+        if control not in nondq:
+            # no reference arm: no block verdict can be a comparison; the trial ends UNMEASURED here
+            # (ARENA_CONTROL_HARDEN_ABSENT_NOT_NO_DIFF; GPT r2 #1)
+            det = {"why": "the control (%s) is %s: no reference to compare against" %
+                   (control, "disqualified" if control in disq else "absent")}
+            blk.update(rule_verdict="UNMEASURED", detail=det)
+            blk.setdefault("verdict", "UNMEASURED")
+            rep["blocks"].append(blk)
+            stop = dict(blk, verdict="UNMEASURED", _use={a: use[a] for a in nondq})
+            break
         below = {a: [len(use[a]), len({c["kind"] for c in use[a]})] for a in contention
                  if len(use[a]) < MIN_TASKS or len({c["kind"] for c in use[a]}) < MIN_KINDS}
         if below:
@@ -1066,7 +1079,6 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
             blk["below_minimum"] = below
             rep["blocks"].append(blk)
             continue
-        nondq = [a for a in arms if a not in disq]
         post = posterior({a: use[a] for a in nondq}, nondq, _block_seed(seed, k), draws, control)
         probs = rule_probs(post, contention, nondq, control)
         v, det = rule_verdict(probs, control in nondq, blocked)
