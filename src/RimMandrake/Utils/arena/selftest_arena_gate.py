@@ -1049,6 +1049,31 @@ def t_round4_git_trust(tmp):
             check(fooled, "RED trap %s: with the fix reverted G.git is fooled again (%r)" % (trap, out.strip()[:40]))
     finally:
         G.SG.git_run, G.SG.NO_DRIVER = real, real_nd
+    # a forged object in the builder's store (local clones copy objects as they are): the gate refuses it
+    import zlib
+    repo, a, b = T.make_repo(tmp / "gt_forge_repo")
+    oid = T.git(repo, "rev-parse", b + ":f.txt")
+    pth = repo / ".git" / "objects" / oid[:2] / oid[2:]
+    pth.chmod(0o644)
+    pth.write_bytes(zlib.compress(b"blob 5\0EVIL\n"))
+    def forged_run(n=[0]):
+        n[0] += 1
+        c = Ctx(tmp, "gt_forge%d" % n[0])
+        g = G.Gate(c.task, a, b, "armx", repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+        try:
+            g.checkout()
+            return "accepted", (g.clone / "f.txt").read_text()
+        except G.GateError as e:
+            return "refused", str(e)
+    how, what = forged_run()
+    check(how == "refused" and "forged" in what, "gate refuses a head whose blob object was forged in the builder's store (%s %s)" % (how, what[:60]))
+    real_vt = G.SG.verify_tree
+    G.SG.verify_tree = lambda root, rev: (True, "")
+    try:
+        how, what = forged_run()
+    finally:
+        G.SG.verify_tree = real_vt
+    check(how == "accepted" and what.strip() == "EVIL", "RED: without verify_tree the gate checks the forged head out as sha B with EVIL content (%s %r)" % (how, what))
 
 def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}

@@ -699,6 +699,160 @@ def t_runner_git_trust(tmp):
     check(not re.search(r"[\"']archive[\"']", (HERE / "ralph_c_runner.py").read_text()), "the runner never calls git archive")
 
 
+def t_runner_git_trust2(tmp):
+    """Opus review of b78de728b0: every git call of RunnerDriver (not only checkout), credential/askpass/insteadOf pins,
+    ssh fallback, worktree/sparse/crlf/gitdir-file layouts, a forged object. Each trap is planted in a throwaway clone;
+    the reverted fix (bare git / no verify) is fooled again."""
+    import threading
+    import http.server
+    import zlib
+
+    def mk_clone(tag, traps=()):
+        origin, a, b = T.make_repo(tmp / ("r2_origin_" + tag), "origin")
+        T.git(origin, "branch", "-M", "main")
+        k = tmp / ("r2_clone_" + tag) / "tclone"
+        k.parent.mkdir()
+        subprocess.run(["git", "clone", "-q", str(origin), str(k)], check=True, env=T.ENV, capture_output=True)
+        mk = T.plant(k, b, b, traps)
+        for f in Path(mk).iterdir():
+            f.unlink()
+        return k, a, b, mk, origin
+    drv = RC.RunnerDriver()
+    real = RC.SG.git_run
+    # (1) clone_head / clone_dirty / restore_mods run no builder code (fsmonitor + post-checkout hook planted)
+    traps = ("fsmonitor", "hooksPath")
+    k, a, b, mk, _ = mk_clone("calls", traps)
+    h = drv.clone_head(str(k))
+    d = drv.clone_dirty(str(k))
+    ok, out, head = drv.restore_mods([], str(k))
+    check(h == b and d == "" and ok and head == b and not T.fired(mk),
+          "clone_head/clone_dirty/restore_mods on a clone with fsmonitor+hooksPath planted: true answers, no builder code (%s %r %s %s)" % (h == b, d, ok, T.fired(mk)))
+    k, a, b, mk, _ = mk_clone("calls_red", traps)
+    RC.SG.git_run = _plain_git_run
+    try:
+        drv.clone_dirty(str(k))
+        drv.restore_mods([], str(k))
+    finally:
+        RC.SG.git_run = real
+    check(bool(T.fired(mk)), "RED: with the fix reverted (bare git) clone_dirty/restore_mods run the builder's code (%s)" % T.fired(mk))
+    # (2) credential.helper / core.askPass against an https origin answering 401; url.insteadOf refused
+    class H(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):
+            self.send_response(401)
+            self.send_header("WWW-Authenticate", 'Basic realm="x"')
+            self.send_header("Content-Length", "0")
+            self.end_headers()
+        log_message = lambda *a: None
+    os.environ["GIT_CONFIG_GLOBAL"] = os.devnull       # the owner's own credential manager is not under test
+    srv = http.server.HTTPServer(("127.0.0.1", 0), H)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    url = "http://127.0.0.1:%d/x.git" % srv.server_port
+    try:
+        k, a, b, mk, _ = mk_clone("cred")
+        sc = k.parent / "cred_scripts"
+        sc.mkdir()
+        helper = T._script(sc / "helper", "touch '%s/credential'\n" % mk)
+        ask = T._script(sc / "ask", "touch '%s/askpass'\nexit 1\n" % mk)
+        T.git(k, "remote", "set-url", "origin", url)
+        T.git(k, "config", "credential.helper", "!" + helper)
+        T.git(k, "config", "core.askPass", ask)
+        drv.checkout(str(k), b)
+        check(not T.fired(mk), "fetch from a 401 origin with credential.helper/core.askPass planted: neither ran (%s)" % T.fired(mk))
+        try:
+            subprocess.run(["git", "-C", str(k), "fetch", "-q", "origin"], capture_output=True, timeout=20, env=dict(T.ENV, GIT_TERMINAL_PROMPT="0", GIT_CONFIG_GLOBAL=os.devnull))
+        except subprocess.TimeoutExpired:
+            pass
+        check("credential" in T.fired(mk) or "askpass" in T.fired(mk), "RED: a bare git fetch (fix reverted) runs the planted credential helper/askpass (%s)" % T.fired(mk))
+    finally:
+        srv.shutdown()
+        os.environ.pop("GIT_CONFIG_GLOBAL", None)
+    k, a, b, mk, origin = mk_clone("insteadof")
+    T.git(k, "config", "url.%s/.insteadOf" % (tmp / "nowhere"), str(tmp) + "/")
+    ok, out = drv.checkout(str(k), b)
+    check(not ok and "insteadOf" in out, "a clone with url.*.insteadOf is refused for a fetch (%s)" % out[:80])
+    # (3) no global core.sshCommand: plain `ssh` (an empty value fails every ssh origin); the fake ssh proves it is run
+    gc = tmp / "empty_gitconfig"
+    gc.write_text("")
+    bin_ = tmp / "fakebin"
+    bin_.mkdir(exist_ok=True)
+    T._script(bin_ / "ssh", "touch '%s/ssh_used'\nexit 1\n" % tmp)
+    saved = {k_: os.environ.get(k_) for k_ in ("GIT_CONFIG_GLOBAL", "PATH")}
+    os.environ["GIT_CONFIG_GLOBAL"] = str(gc)
+    os.environ["PATH"] = str(bin_) + os.pathsep + os.environ["PATH"]
+    try:
+        check(RC.SG.user_ssh_cfg() == ["-c", "core.sshCommand=ssh"], "no global core.sshCommand: falls back to plain ssh, not an empty value (%s)" % RC.SG.user_ssh_cfg())
+        k, a, b, mk, _ = mk_clone("ssh")
+        T.git(k, "remote", "set-url", "origin", "ssh://nohost.invalid/x")
+        (tmp / "ssh_used").unlink(missing_ok=True)
+        drv.checkout(str(k), b)
+        check((tmp / "ssh_used").exists(), "an ssh origin fetch really runs `ssh` when the owner configured no sshCommand")
+    finally:
+        for k_, v in saved.items():
+            if v is None:
+                os.environ.pop(k_, None)
+            else:
+                os.environ[k_] = v
+    # (4) core.worktree, sparse checkout, autocrlf, a gitdir: file
+    k, a, b, mk, _ = mk_clone("wt")
+    decoy = tmp / "decoy_tree"
+    decoy.mkdir()
+    (decoy / "precious.txt").write_text("keep me\n")
+    T.git(k, "config", "core.worktree", str(decoy))
+    ok, out = drv.checkout(str(k), b)
+    check(not ok and "core.worktree" in out and (decoy / "precious.txt").exists(), "core.worktree planted: refused, decoy untouched (%s)" % out[:80])
+    subprocess.run(["git", "-C", str(k), "clean", "-fdq"], env=T.ENV, capture_output=True)
+    check(not (decoy / "precious.txt").exists(), "RED: a bare `git clean -fd` (fix reverted) deletes the decoy tree's files")
+    (decoy / "precious.txt").write_text("keep me\n")
+    r = RC.SG.git_run(k, "clean", "-fdq", capture_output=True, text=True)
+    check((decoy / "precious.txt").exists(), "arena_safe_git itself pins the worktree: clean with core.worktree planted left the decoy alone (rc %s)" % r.returncode)
+    def sparse_run(tag):
+        k, a, b, mk, _ = mk_clone(tag)
+        T.git(k, "config", "core.sparseCheckout", "true")
+        (k / ".git" / "info" / "sparse-checkout").write_text("f.txt\n")
+        T.git(k, "config", "core.autocrlf", "true")
+        (k / "g.txt").unlink()
+        ok, out = drv.checkout(str(k), b)
+        return ok, out, (k / "g.txt").read_bytes() if (k / "g.txt").exists() else None
+    ok, out, g = sparse_run("sparse")
+    check(ok and g == b"keep\n", "sparseCheckout+autocrlf planted: g.txt is written, with the blob's bytes (%s %r %s)" % (ok, g, out[:60]))
+    keep, RC.SG.WORKTREE_CFG = RC.SG.WORKTREE_CFG, []
+    try:
+        ok, out, g = sparse_run("sparse_red")
+    finally:
+        RC.SG.WORKTREE_CFG = keep
+    check(g != b"keep\n", "RED: with the layout pins reverted the same clone loses g.txt (sparse) or gets CRLF (%r)" % g)
+    k, a, b, mk, _ = mk_clone("gitfile")
+    real_git = tmp / "gitfile_realgit"
+    os.rename(k / ".git", real_git)
+    (k / ".git").write_text("gitdir: %s\n" % real_git)
+    ok, out = drv.checkout(str(k), b)
+    check(not ok and "not a real directory" in out, "a `gitdir:` file in place of .git is refused (%s)" % out[:80])
+    # (5) a forged object: the blob of f.txt@B stored with other content
+    def forge(k, b):
+        oid = T.git(k, "rev-parse", b + ":f.txt")
+        pth = k / ".git" / "objects" / oid[:2] / oid[2:]
+        pth.chmod(0o644)
+        pth.write_bytes(zlib.compress(b"blob 5\0EVIL\n"))
+        (k / "f.txt").unlink()                         # so the checkout has to write it from the object store
+        return oid
+    k, a, b, mk, _ = mk_clone("forge")
+    forge(k, b)
+    ok, out = drv.checkout(str(k), b)
+    check(not ok and "forged" in out and not (k / "f.txt").exists(), "a forged blob object is detected before checkout (%s)" % out[:90])
+    k, a, b, mk, _ = mk_clone("forge_red")
+    forge(k, b)
+    keepv = RC.SG.verify_tree
+    RC.SG.verify_tree = lambda root, rev: (True, "")
+    try:
+        ok, out = drv.checkout(str(k), b)
+    finally:
+        RC.SG.verify_tree = keepv
+    check(ok and (k / "f.txt").read_text() == "EVIL\n", "RED: without the verification the forged blob checks out and the tree reads sha B with EVIL content")
+    k, a, b, mk, _ = mk_clone("honest")
+    ok, out = drv.checkout(str(k), b)
+    check(ok and (k / "f.txt").read_text() == "beta\n", "an honest clone still checks out (%s)" % out[:80])
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_c_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
@@ -720,7 +874,7 @@ def main():
             check(guarded(fn, tmp, variant(old, new), "_m%d" % i) is False,
                   "mutation goes RED (a False verdict, not a crash): " + name)
         for fn, a in ((t_areas, ()), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)), (t_cmdmodel_tester_sandbox, (tmp,)),
-                      (t_signed_writer, (tmp,)), (t_wired, (tmp,)), (t_envfiles, (tmp,)), (t_runner_git_trust, (tmp,))):
+                      (t_signed_writer, (tmp,)), (t_wired, (tmp,)), (t_envfiles, (tmp,)), (t_runner_git_trust, (tmp,)), (t_runner_git_trust2, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

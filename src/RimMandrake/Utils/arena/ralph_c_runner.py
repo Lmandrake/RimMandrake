@@ -364,12 +364,13 @@ def _run_claimed(p, lane, driver, clone, c, run_id, runner_id):
     return res
 
 
-def _safe(clone, args, timeout, transport=False):
-    """-> (returncode, stdout+stderr) like L._sh, through arena_safe_git."""
+def _safe(clone, args, timeout, transport=False, stdout_only=False):
+    """-> (returncode, stdout+stderr) like L._sh, through arena_safe_git (stdout_only: git's own hints on stderr, e.g.
+    the deprecated-grafts one the safe env provokes, stay out of a value the caller parses)."""
     try:
         p = SG.git_run(clone, *args, transport=transport, capture_output=True, text=True, timeout=timeout,
                        encoding="utf-8", errors="replace")
-        return p.returncode, (p.stdout or "") + (p.stderr or "")
+        return p.returncode, (p.stdout or "") + ("" if stdout_only and p.returncode == 0 else (p.stderr or ""))
     except (OSError, subprocess.SubprocessError) as e:
         return 99, "%s: %s" % (type(e).__name__, e)
 
@@ -377,24 +378,73 @@ def _safe(clone, args, timeout, transport=False):
 class RunnerDriver(L.RealDriver):
     """RealDriver plus the two runner-only acts. UNPROVEN LIVE (owed)."""
 
-    def checkout(self, clone, sha):
-        """Fetch, detach at sha, then remove untracked files a previous proof left (git clean -fd: untracked only,
-        ignored build output stays). Refused on a seat's own clone: the runner tests in a clone of its own."""
-        if Path(clone).resolve() == L.REPO.resolve() or Path(clone).name in ("bench", "foundry"):
-            return False, "clone %s is a seat clone; ralph_c tests only in its own clone" % clone
+    def _guard(self, clone):
+        """'' when the runner may run git in `clone`, else why not (a seat clone; a layout the builder redirects)."""
+        if L.is_seat_clone(clone):
+            return "clone %s is a seat clone; ralph_c tests only in its own clone" % clone
+        return SG.check_clone(clone)
+
+    def _git(self, clone, args, timeout, transport=False, stdout_only=False):
         # the clone's .git is written by the build helper that works in it: every git call here ignores replace refs and
-        # grafts and runs none of its hooks / filters / fsmonitor / ssh command (arena_safe_git)
-        attr = Path(clone) / ".git" / "info" / "attributes"
-        if attr.exists() and attr.stat().st_size:
-            return False, "refused: %s is non-empty (it changes what a checkout writes)" % attr
-        rc, out = _safe(clone, ["fetch", "-q", "--upload-pack=git-upload-pack", "origin"], 300, transport=True)  # option beats a repo-local remote.origin.uploadpack
+        # grafts and runs none of its hooks / filters / fsmonitor / ssh / credential command (arena_safe_git)
+        try:
+            return _safe(clone, args, timeout, transport=transport, stdout_only=stdout_only)
+        except SG.CloneRefused as e:
+            return 98, str(e)
+
+    def checkout(self, clone, sha):
+        """Fetch, verify the objects hash to their names, detach at sha, then remove untracked files a previous proof
+        left (git clean -fd: untracked only, ignored build output stays). Refused on a seat's own clone."""
+        why = self._guard(clone)
+        if why:
+            return False, why
+        rc, out = self._git(clone, ["fetch", "-q", "--upload-pack=git-upload-pack", "origin"], 300, transport=True)  # option beats a repo-local remote.origin.uploadpack
         if rc != 0:
             return False, out
-        rc, out2 = _safe(clone, ["checkout", "-q", "--detach", sha], 120)
+        ok, txt = SG.verify_tree(clone, sha)
+        if not ok:
+            return False, "refused: " + txt
+        rc, out2 = self._git(clone, ["checkout", "-q", "-f", "--detach", sha], 120)
         if rc != 0:
             return False, out + out2
-        rc, out3 = _safe(clone, ["clean", "-fdq"], 120)
+        rc, out3 = self._git(clone, ["clean", "-fdq"], 120)
         return rc == 0, out + out2 + out3
+
+    def clone_head(self, clone):
+        rc, out = self._git(clone, ["rev-parse", "HEAD"], 60, stdout_only=True)
+        return out.strip() if rc == 0 else None
+
+    def clone_dirty(self, clone):
+        rc, out = self._git(clone, ["status", "--porcelain"], 120, stdout_only=True)
+        return out.strip() if rc == 0 else ("git status failed: " + out.strip())
+
+    def restore_mods(self, mods, clone):
+        """As RealDriver.restore_mods, with every git call through arena_safe_git (and the layout/objects checks)."""
+        why = self._guard(clone)
+        if why:
+            return False, why, None
+        out = ""
+        rc, txt = self._git(clone, ["fetch", "-q", "--upload-pack=git-upload-pack", "origin"], 300, transport=True)
+        out += txt
+        if rc == 0:
+            ok, vt = SG.verify_tree(clone, "origin/main")
+            rc, txt = (0, "") if ok else (97, "refused: " + vt)
+            out += txt
+        for args in ((["checkout", "-q", "-f", "--detach", "origin/main"], ["clean", "-fdq"]) if rc == 0 else ()):
+            rc, txt = self._git(clone, args, 300)
+            out += txt
+            if rc != 0:
+                break
+        if rc != 0:
+            return False, out + " (git rc %d)" % rc, None
+        head = self.clone_head(clone)
+        for m in mods:
+            rc, txt = L._sh(["python3", os.path.join(clone, "src", "RimMandrake", "Utils", "deploy_custom_mods.py"),
+                             "--mod", m, "--apply", "--prune"], timeout=600, cwd=clone)
+            out += txt[-400:]
+            if rc != 0:
+                return False, out + " (deploy %s rc %d)" % (m, rc), head
+        return True, out, head
 
     def run_proof(self, argv, clone):
         rc, out = L._sh(list(argv), timeout=1800, cwd=clone)

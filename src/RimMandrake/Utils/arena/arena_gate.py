@@ -556,6 +556,12 @@ class Gate:
             raise GateError("checkout is %s, not head %s" % (got, self.head))
         self.head_full = got
         self.base_full = git(self.clone, "rev-parse", "--verify", self.base + "^{commit}").strip()
+        # the builder can write the object store and a local clone copies objects as they are: re-hash the commit, its
+        # trees and blobs so a forged object cannot build/test as the sha it is named for (arena_safe_git.verify_tree)
+        for root, rev in ((self.clone, self.head_full), (self.clone, self.base_full)):
+            ok, why = SG.verify_tree(root, rev)
+            if not ok:
+                raise GateError("refused: %s" % why)
         git(self.base_clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.base_full)
         out = git(self.clone, "diff", "--no-renames", "--raw", "--no-abbrev", self.base_full, self.head_full)
         for line in out.splitlines():
