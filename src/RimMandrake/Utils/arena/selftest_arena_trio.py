@@ -404,6 +404,38 @@ def sc_killed_build(tmp, mod, tag):
     return ok
 
 
+def sc_parked_spec_lost(tmp, mod, tag):
+    """Parked, then the specs dir and state.json are lost: the log says parked, so no spec is needed and no build runs."""
+    w = World(tmp, "PL" + tag, mod)
+    w.run()
+    shutil.rmtree(w.ctl / "specs")
+    (w.ctl / "specs").mkdir()
+    w.reopen(drop_state=True)
+    out = w.loop.step()
+    print("     PL%s: %s" % (tag, out[:60]))
+    return out.startswith("parked") and w.calls.count("build") == 4
+
+
+def sc_park_once(tmp, mod, tag):
+    """Killed after the parks.jsonl line, before the park record: the restart parks again but writes no second line."""
+    w = World(tmp, "PO" + tag, mod)
+    real = w.loop.emit
+
+    def em(event, task, **kw):
+        if event == "critic_round" and kw.get("verdict") == "park":
+            raise Killed()
+        return real(event, task, **kw)
+    w.loop.emit = em
+    try:
+        w.run()
+    except Killed:
+        pass
+    w.reopen(drop_state=True)
+    w.run()
+    print("     PO%s: park lines %d" % (tag, len(parks(w))))
+    return len(parks(w)) == 1 and len(w.recs("critic_round", "park")) == 1 and w.calls.count("build") == 4
+
+
 def sc_spec_tamper(tmp, mod, tag):
     w = World(tmp, "G" + tag, mod, simplifier=lambda p: SIMPLE)
     for _ in range(3):
@@ -423,7 +455,7 @@ MUTATIONS = [
     ("A simplify trigger removed", sc_never_satisfied,
      "        if k >= SIMPLIFY_AFTER and simplify_rec(self.recs(), task[\"id\"]) is None:\n", "        if False:\n"),
     ("A park record not read on restart", sc_never_satisfied,
-     "        if parked(self.recs(), task[\"id\"]):", "        if False:"),
+     "        if fz is not None and parked(self.recs(), fz[\"id\"]):", "        if False:"),
     ("R rounds from loop memory", sc_restart_counts,
      "    return sum(1 for r in _task_recs(recs, tid, \"pass_start\") if (r.get(\"detail\") or {}).get(\"role\") == "
      "\"build\")", "    return 0"),
@@ -449,6 +481,10 @@ MUTATIONS = [
     ("FK killed pass not a round", sc_killed_build,
      "        if self._round_open(task[\"id\"]):                           # a build-side failure ends the round\n"
      "            self._verdict(", "        if False:\n            self._verdict("),
+    ("PL parked check after the spec load", sc_parked_spec_lost,
+     "        fz = self.frozen()\n        if fz is not None and parked(", "        fz = self.frozen()\n        task = self.task()\n        if fz is not None and parked("),
+    ("PO park line written twice", sc_park_once, "        if not any(json.loads(x).get(\"task\") == tid for x in have if x.strip()):",
+     "        if True:"),
     ("G spec integrity check removed", sc_spec_tamper,
      "            if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != want:",
      "            if False:"),
@@ -468,6 +504,8 @@ SCENARIOS = [
     ("E killed between build_end and the critic: the restart runs the critic", sc_killed_before_critic),
     ("F a critic with no verdict spends the round", sc_invalid_critic),
     ("FK a killed build pass spends the round; the simplified spec reaches round 3", sc_killed_build),
+    ("PL a parked item with its spec file lost still advances", sc_parked_spec_lost),
+    ("PO a killed park writes one parks.jsonl line", sc_park_once),
     ("G a tampered simplified spec refuses", sc_spec_tamper),
 ]
 

@@ -351,11 +351,12 @@ class TrioLoop(RA.Loop):
     def step(self):
         if (self.ctl / "STOP").exists():
             return self.status("STOP")
+        fz = self.frozen()
+        if fz is not None and parked(self.recs(), fz["id"]):   # killed after the park record, before state was saved
+            return self._advance(fz, "parked %s (from the log)" % fz["id"])   # before task(): a lost spec file cannot wedge it
         task = self.task()
         if task is None:
             return self.status("done: no task left")
-        if parked(self.recs(), task["id"]):                # killed after the park record, before state was saved
-            return self._advance(task, "parked %s (from the log)" % task["id"])
         if self.state.get("lane_wait"):
             return self._lane_step(task)
         why = self.runway_refusal()
@@ -505,8 +506,11 @@ class TrioLoop(RA.Loop):
                 "last_verdict": lastv.get("verdict"), "last_why": ((lastv.get("detail") or {}).get("why") or why)[:1500],
                 "last_sha": lastv.get("sha"), "evidence": FAILED_BRANCH % tid if wip else None,
                 "critic_note": self._note("last_verdict.md")[-3000:]}
-        with open(self.ctl / "parks.jsonl", "a") as fh:
-            fh.write(json.dumps(line, sort_keys=True) + "\n")
+        pf = self.ctl / "parks.jsonl"
+        have = pf.read_text().splitlines() if pf.is_file() else []
+        if not any(json.loads(x).get("task") == tid for x in have if x.strip()):   # killed before the record: once only
+            with open(pf, "a") as fh:
+                fh.write(json.dumps(line, sort_keys=True) + "\n")
         self.emit("critic_round", task, verdict="park", sha=wip or None, detail={
             "kind": "park", "rounds": k, "last_verdict": lastv.get("verdict"), "to": "conductor"})
         return self._advance(task, "parked %s after %d rounds (evidence %s)" % (tid, k, FAILED_BRANCH % tid))
