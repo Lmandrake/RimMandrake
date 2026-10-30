@@ -1,0 +1,2 @@
+A same-uid HMAC-chained log cannot detect tail truncation or whole-file deletion from files alone: anything in files the attacker can write (local anchors, an arm list) can be trimmed consistently. Detection needs an append-only store the uid cannot edit (journald via /run/systemd/journal/socket, root-owned journal files) plus a signed roster of expected arms; ledger notes used as anchors must carry an HMAC or anyone can post one. Found in ARENA_EVENTLOG_BUILD_AGENTS_MAY_NOT_WRITE round-2 test (B1-B3), fixed round 3.
+home: NONE

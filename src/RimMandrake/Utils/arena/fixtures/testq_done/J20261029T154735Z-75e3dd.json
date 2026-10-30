@@ -1,0 +1,125 @@
+{
+ "attempts": [
+  "J20261029T154735Z-75e3dd.a1"
+ ],
+ "cancelled": false,
+ "finished": "2026-10-29T15:57:17Z",
+ "ingested": {
+  "at": "2026-10-29T15:57:49Z",
+  "note": true
+ },
+ "job": {
+  "canary": true,
+  "deploy": [
+   "Droidworks"
+  ],
+  "gate": null,
+  "id": "J20261029T154735Z-75e3dd",
+  "item": "DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL",
+  "lane": "stevedesktop",
+  "mod": "FlowWorks",
+  "not_before": null,
+  "owner_gate": null,
+  "priority": 50,
+  "profile": "targeted",
+  "purpose": "fix",
+  "requested_by": "FOUNDRY",
+  "row_items": {},
+  "schema": "testq.job/1",
+  "selector": {
+   "chains": [
+    "droid_dig"
+   ]
+  },
+  "source_sha": "dc37d3803fb7be59b6fcdce4a1eabb553f6a68a5",
+  "submitted": "2026-10-29T15:47:35Z",
+  "supersedes": null,
+  "timeout_s": 2700,
+  "validity": true
+ },
+ "result": {
+  "artifacts": [
+   {
+    "bytes": 3742,
+    "name": "FlowWorks_20261029T155637Z.json",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261029T155637Z.json",
+    "sha256": "335decc9a9b8a522df3489139c5813f6314514a637d30a0eeca54765b97953f3"
+   },
+   {
+    "bytes": 1192,
+    "name": "FlowWorks_20261029T155637Z.html",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261029T155637Z.html",
+    "sha256": "94cd436e17acf6f5105d2a3a8eb5796922acf80a8de1d7d67aba47be1ef58e03"
+   },
+   {
+    "bytes": 1946,
+    "name": "modcheck.log",
+    "path": "/mnt/d/RimTest/testq/attempts/J20261029T154735Z-75e3dd.a1/modcheck.log",
+    "sha256": "f05a16f3b9f1b0b844abbc65f8e86a0ed1062f122f6733a2924afe2d7f980be3"
+   }
+  ],
+  "attempt": "J20261029T154735Z-75e3dd.a1",
+  "cause": "CANARY",
+  "counts": {
+   "NOT_RUN": 2,
+   "UNMEASURED": 1
+  },
+  "deployed": {
+   "mods": {
+    "Droidworks": {
+     "defs_sha256": "50926acc281b9d677444bdb9ff1d299f0735792e92262f3bc7a7b336d06240ef",
+     "dll_sha256": "52c94c2363ec800ed67effd33fca12c695075cbe40928f8ff86fbff4d568cf17",
+     "files": 562
+    },
+    "FlowWorks": {
+     "defs_sha256": "2bd384c201e2f62b22bdc7a7533f974f527192ad607e0aeed61145cedfadeff5",
+     "dll_sha256": "1a1e8dd97cfa732b48033b2c91b1f6ccb4b899bbf6172d6f903a3e33ecabe01d",
+     "files": 770
+    }
+   },
+   "modsconfig_sha256_prerun": "3096f10578576792da5112be1a88f6df0a3ed5c646e30dc872209b1f9b58f3fd"
+  },
+  "finished": "2026-10-29T15:56:38Z",
+  "host": "stevedesktop",
+  "job": "J20261029T154735Z-75e3dd",
+  "modcheck_exit": 1,
+  "note": "the vanilla canary was red: no mod row ran",
+  "outcome": "INVALID",
+  "phase_s": {
+   "attest": 7,
+   "deploy": 45,
+   "load": 85,
+   "run": 358
+  },
+  "retries": 0,
+  "rows": [
+   {
+    "chain": "droid_dig",
+    "detail": "canary red, chain body not run -- the session is HARNESS, not a verdict on the mod: no live colonist",
+    "freshness": "fresh",
+    "row": "<canary red: HARNESS>",
+    "validity": "invalid",
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "DD_colonist_held_at_2m",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "DD_droid_digs_past_2m",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   }
+  ],
+  "runner_sha": "dc37d3803fb7be59b6fcdce4a1eabb553f6a68a5",
+  "schema": "testq.result/1",
+  "started": "2026-10-29T15:48:21Z"
+ }
+}

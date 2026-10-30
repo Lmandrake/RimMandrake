@@ -1,0 +1,719 @@
+{
+ "attempts": [
+  "J20261026T053203Z-3edf44.a1"
+ ],
+ "cancelled": false,
+ "finished": "2026-10-26T05:36:23Z",
+ "ingested": {
+  "at": "2026-10-26T05:36:24Z",
+  "skipped": "the job names no item"
+ },
+ "job": {
+  "canary": true,
+  "deploy": [],
+  "id": "J20261026T053203Z-3edf44",
+  "item": null,
+  "lane": "stevedesktop",
+  "mod": "FlowWorks",
+  "not_before": null,
+  "owner_gate": null,
+  "priority": 20,
+  "profile": "targeted",
+  "purpose": "guard",
+  "requested_by": "BENCH.filler",
+  "schema": "testq.job/1",
+  "selector": {
+   "chains": [
+    "all_off_still_digs",
+    "canal_spikes",
+    "container_styles",
+    "core_live_rows"
+   ]
+  },
+  "source_sha": "a41f653988",
+  "submitted": "2026-10-26T05:32:03Z",
+  "supersedes": null,
+  "timeout_s": 7200,
+  "validity": true
+ },
+ "result": {
+  "artifacts": [
+   {
+    "bytes": 134077,
+    "name": "FlowWorks_20261026T053621Z.json",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261026T053621Z.json",
+    "sha256": "82a94b1241da1db72029822bf8fa388cf5868b3ad3f75048563a835a6ffdb1a1"
+   },
+   {
+    "bytes": 68681,
+    "name": "FlowWorks_20261026T053621Z.html",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261026T053621Z.html",
+    "sha256": "bb31a3eb456d84a99f636df3d8b9bf631d1f327a814662b9c8516b58cc786114"
+   },
+   {
+    "bytes": 4046,
+    "name": "modcheck.log",
+    "path": "/mnt/d/RimTest/testq/attempts/J20261026T053203Z-3edf44.a1/modcheck.log",
+    "sha256": "abed8f88a56fa15f8c3ebf22f1bd0753a9bb35630384d1ecc4a38d6c51497b03"
+   }
+  ],
+  "attempt": "J20261026T053203Z-3edf44.a1",
+  "cause": null,
+  "counts": {
+   "PASS": 14,
+   "UNMEASURED": 64
+  },
+  "deployed": {
+   "mods": {
+    "FlowWorks": {
+     "defs_sha256": "b59898d5b7f5921d0ad2426c93535c75a8b7346dda8004f801a625ea430d3c57",
+     "dll_sha256": "45dca7290f367031303de4c1556a1f5c663445c8310011ef40d3a9f9c457d5dd",
+     "files": 772
+    }
+   },
+   "modsconfig_sha256_prerun": "e273a06c890b5fa24ffe3a66528072ccb250d01fd88fceb7ec769b5122a5c049"
+  },
+  "finished": "2026-10-26T05:36:22Z",
+  "host": "stevedesktop",
+  "job": "J20261026T053203Z-3edf44",
+  "modcheck_exit": 1,
+  "note": "modcheck exit 1; {'UNMEASURED': 64, 'PASS': 14}",
+  "outcome": "DONE",
+  "phase_s": {
+   "attest": 4,
+   "deploy": 11,
+   "load": 1,
+   "run": 173
+  },
+  "retries": 0,
+  "rows": [
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "L1_fresh_map",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "L2_tier_live",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "L3_defs_live",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E1a_cadence_shipped",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "L4_site_ready",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S1_dig_ladder",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S1n_superdeep_is_max",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S1p_pit_is_grid_only",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S2_fill_clamp",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S3_classification",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S4_sink_band",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S5_sticky_limitless",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "S6_digToDepth_gate",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "A0_instrument",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E2_twins_identical",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E2_channels_fill_every_direction",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E2_dry_ring",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E3b_recession_shipped",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E5_sink_drains",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E5_inner_holds",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E2s_shared_source_both_fill",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E3_budget_exhaustion",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E3n_budget_off_supplies",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E5n_sinks_off",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E5_sinks_back_on",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E2_rerun_determinism",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "G_every_cell_vs_oracle",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "J_workgiver_selection",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "J_orders_accepted",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E4_engine_off",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E1b_pulse_clamp",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E1c_cadence_real_scheduler",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E4_engine_on_scheduled",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E6n_rain_toggle_off",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E7a_fillin_displaces",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E7b_overflow_sanctioned",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E8_player_dig",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E6_roof_readback",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E6_rain_fills_unroofed",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P1_width_matrix",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P2_fillin_releases_large",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P3_walk_in_held",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P3f_forced_entry_falls",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P4_ladder_frees",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P4f_ladder_frees_forced",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P4b_ladder_raised_strands",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "P5n_own_faction_carveout",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X1_pawn_height_ladder",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X2_pawn_lowers_walking_in",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X3_pawn_rises_walking_out",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X4_pit_wall_over_head",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X5_slime_occupant_below_surface",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X7_tar_front_lags_water",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X6_two_fluids_distinct",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X7n_viscosity_off",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X8_cover_hides_pit",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X9_cover_deck_uniform",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X8b_cover_occupant_stays_below",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X8c_lid_walker_drawn_at_ground",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "X10_canal_fire",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "T0n_fluid_switch_refused",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "E9_log_budget",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "core_live_rows",
+    "detail": "UNMEASURED: no v2 live result at the current mod hash: run `python.exe src/RimMandrake/FlowWorks/northstar/validation_v2.py --live --fresh-map`, then `modcheck record FlowWorks --result <json> --tier flowworks`",
+    "freshness": "fresh",
+    "row": "Z_settings_restored",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "container_style_selftest_ran",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_looks_and_names",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_tech_default",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_stacks_keep_looks_apart",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_window_colours",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_shipped_style_defs",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_item_bases_wired",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_dbh_bottles_masked",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "ContainerStyle_call_sites",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "container_art_installed",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "container_styles",
+    "detail": "ExpectationFailed: UNMEASURED: live check owed -- review map station containers_styles: each look drawn, window = liquid colour, trim = steel, body untinted; bill Style button -> Modern makes Modern bottles; fill/drink/wash keeps the look; two looks never merge on one cell (LIQUID_CONTAINERS_REDRAW_",
+    "freshness": "fresh",
+    "row": "container_styles_live",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "all_off_still_digs",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "all_off_digs_dry_channel",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "canal_spikes",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "spikes_only_on_superdeep",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "canal_spikes",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "descent_onto_spikes_stabs",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "canal_spikes",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "spikes_off_harmless",
+    "validity": null,
+    "verdict": "PASS"
+   }
+  ],
+  "runner_sha": "ee2e8c9105327b7f2e93203e149948d98e10a59d",
+  "schema": "testq.result/1",
+  "started": "2026-10-26T05:33:12Z"
+ }
+}

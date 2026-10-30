@@ -11,9 +11,10 @@ Mapping (accepted ledger events only; refused ones are skipped, via model.replay
                           event moved the item into `done` (rimflow_metrics.flow["done"] counts that transition,
                           whichever verb caused it: close, verify-of-last-criterion, implemented)
   verify  -> test_end     task=id, sha, verdict=result, detail.tester=seat (the ledger names the seat, not the helper), detail.done as above
-testq (result records, jobs for the item): started -> test_start, finished -> test_end, task = job.item, verdict =
-  outcome, detail.job. TESTER = the seat that SUBMITTED the job (job.requested_by; `by` accepted), detail.runner =
-  "testq:<host>" (the machine that ran it, NOT an agent). A testq run requested by the builder's own seat is the
+testq (real store: done/*.json wrapped {job, result, attempts}; bare job/result files too): started -> test_start,
+  finished -> test_end, task = job.item, verdict = outcome, detail.job, detail.attempt. TESTER = the SEAT that
+  SUBMITTED the job (first usable of job.requested_by, `by`; `BENCH.filler` is seat BENCH, raw value kept in
+  detail.submitted_by), detail.runner = "testq:<host>" (the machine that ran it, NOT an agent). A testq run requested by the builder's own seat is the
   builder testing its own work and is flagged. A job with no submitter gets tester "unattributed:testq:<host>",
   which never counts as a different agent. V3 LIMIT, stated plainly: the ledger and testq name SEATS, not the
   helper agent/session inside a seat, so v3's different-agent rule is measured at seat granularity: two helpers of
@@ -24,7 +25,7 @@ Output: the adapter writes NO judge events. A ledger close is self-accepted, not
   tasks to give it comparable accepted points.
 Day counts: done_count(lo, hi) is a half-open UTC window [lo, hi).
 Every record carries detail.src = the SOURCE event id ("ledger:<tsn>", or "ledger:h<sha256 of the event>" for
-old events without tsn; "testq:<job>:start|end"). write() skips a record whose src is already in the arm's
+old events without tsn; "testq:<attempt>:start|end", attempt = result.attempt, so a re-run is its own source). write() skips a record whose src is already in the arm's
 accepted log, so --apply run twice writes nothing the second time.
 Not derivable from the ledger: lane (set "v3"), run_id ("v3-ledger" / the testq job id), a test_start for a ledger
 verify. The adapter invents nothing for them.
@@ -85,41 +86,70 @@ def translate_ledger(events=None) -> list[dict]:
     return out
 
 
+def seat_of(x) -> str | None:
+    """The SEAT a testq submitter names: `BENCH.filler` (a seat's filler/helper lane) is seat BENCH. None if unusable."""
+    if not L.norm_id(x):
+        return None
+    return x.strip().split(".", 1)[0].strip() or None
+
+
+def _attempt_id(r: dict) -> str:
+    """One source id per testq ATTEMPT: result.attempt ("<job>.a2"), else the job id plus a hash of the result."""
+    a = r.get("attempt")
+    if isinstance(a, str) and a.strip():
+        return a.strip()
+    return "%s:h%s" % (r.get("job"), hashlib.sha256(json.dumps(r, sort_keys=True, separators=(",", ":"),
+                                                                 default=str).encode()).hexdigest()[:16])
+
+
 def translate_testq(results: list[dict], jobs: dict | None = None) -> list[dict]:
     jobs = jobs or {}
     out = []
     for r in results:
         jid = r.get("job")
-        item = (jobs.get(jid) or {}).get("item") or r.get("item")
+        job = jobs.get(jid) or {}
+        item = job.get("item") or r.get("item")
         if not (jid and item):
             continue                       # no task to attach it to: not invented
-        job = jobs.get(jid) or {}
         runner = "testq:%s" % (r.get("host") or "unknown")
-        sub = job.get("requested_by") or job.get("by")
-        who = sub if L.norm_id(sub) else L.UNATTRIBUTED + runner
-        base = {"arm": ARM, "lane": (jobs.get(jid) or {}).get("lane") or LANE, "run_id": jid, "task": item}
+        sub = next((x for x in (job.get("requested_by"), job.get("by")) if L.norm_id(x)), None)
+        who = seat_of(sub) or (L.UNATTRIBUTED + runner)
+        aid = _attempt_id(r)
+        base = {"arm": ARM, "lane": job.get("lane") or LANE, "run_id": jid, "task": item}
+        common = {"tester": who, "runner": runner, "submitted_by": sub, "job": jid, "attempt": aid}
         if r.get("started"):
-            out.append(dict(base, event="test_start", ts=r["started"], detail={"tester": who, "runner": runner, "submitted_by": sub,
-                                                                         "job": jid, "src": "testq:%s:start" % jid}))
+            out.append(dict(base, event="test_start", ts=r["started"], detail=dict(common, src="testq:%s:start" % aid)))
         if r.get("finished"):
             out.append(dict(base, event="test_end", ts=r["finished"], verdict=r.get("outcome"),
-                            detail={"tester": who, "runner": runner, "submitted_by": sub, "job": jid, "cause": r.get("cause"), "counts": r.get("counts"),
-                                    "src": "testq:%s:end" % jid}))
+                            detail=dict(common, cause=r.get("cause"), counts=r.get("counts"),
+                                        src="testq:%s:end" % aid)))
     return out
 
 
 def load_testq(directory) -> tuple[list[dict], dict]:
-    """Scan a directory tree for testq.job/1 and testq.result/1 json files."""
+    """Scan a directory tree for testq records. Real store shape (testq/done/*.json): a WRAPPED record
+    {job: testq.job/1, result: testq.result/1, attempts, ...}; bare top-level job / result files are read too.
+    Every result is kept (a re-run is another attempt, not a duplicate)."""
     results, jobs = [], {}
+
+    def take(d):
+        if not isinstance(d, dict):
+            return
+        if d.get("schema") == "testq.result/1":
+            results.append(d)
+        elif d.get("schema") == "testq.job/1" and isinstance(d.get("id"), str):
+            jobs.setdefault(d["id"], d)
+
     for f in sorted(Path(directory).rglob("*.json")):
         try:
             d = json.loads(f.read_text(encoding="utf-8"))
         except (OSError, ValueError):
             continue
-        if isinstance(d, dict) and d.get("schema") == "testq.result/1":
-            results.append(d)
-        elif isinstance(d, dict) and d.get("schema") == "testq.job/1":
-            jobs[d["id"]] = d
+        if isinstance(d, dict) and "schema" not in d and ("job" in d or "result" in d):
+            take(d.get("job"))
+            take(d.get("result"))
+        else:
+            take(d)
     return results, jobs
 
 

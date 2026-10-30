@@ -57,6 +57,7 @@ def fresh(tmp, name, writer=True):
     os.environ["ARENA_CLONES"] = str(root / "clones")
     os.environ["ARENA_EVENT_TOKEN_FILE"] = str(tmp / (name + "_secret") / "event_token")
     os.environ["ARENA_ANCHOR_FILE"] = str(tmp / (name + "_secret") / "anchors.jsonl")   # never an inherited store
+    os.environ["ARENA_WITNESS"] = str(tmp / (name + "_secret") / "witness.jsonl")   # stand-in for journald
     p = A.paths()
     assert A._inside(L.anchor_path(p), tmp) and A._inside(L.token_path(p), tmp)
     L.init_token(p)
@@ -301,6 +302,10 @@ def t_d1_token(tmp):
     assert A._inside(ap, tmp), ap                # R2-9: the selftest only ever deletes its own temp store
     ap.unlink()
     r = L.report(p)["ralph_a"]
+    check(bool(r.get("refused")) and "UNMEASURED" not in r["refused"][0],
+          "R3 local anchors deleted: the witness still REFUSES the re-signed arm (%s)" % (r.get("refused"),))
+    Path(os.environ["ARENA_WITNESS"]).unlink()    # selftest stand-in: a journald witness cannot be deleted
+    r = L.report(p)["ralph_a"]
     check(bool(r.get("refused")) and "UNMEASURED" in r["refused"][0] and "points_with_unblocked" not in r,
           "R2-2 local anchors deleted, log non-empty: report FAILS CLOSED (UNMEASURED), the forgery is not reported")
     ext = L.ledger_anchors([{"event": "note", "id": "X", "text": published}, {"event": "note", "id": "Y", "text": "chat"}])
@@ -425,7 +430,8 @@ def t_d7_recover(tmp):
 def t_r2_1_capability(tmp):
     p, _ = fresh(tmp, "r21", writer=False)
     kw = dict(lane="L", run_id="r")
-    real_entry = L._entrypoint
+    real_entry, real_code = L._entrypoint, L._main_code_ok
+    L._main_code_ok = lambda e: None     # this test swaps the entry NAME; the code-shape check has its own R3 test
     try:
         # GPT's attack: RM_ARM cleared, cwd outside every clone, token readable, library imported from an agent script
         check(not os.environ.get("RM_ARM") and not A._inside(os.getcwd(), os.environ["ARENA_CLONES"]),
@@ -484,7 +490,7 @@ def t_r2_1_capability(tmp):
         finally:
             os.environ["ARENA_EVENT_TOKEN_FILE"] = saved
     finally:
-        L._entrypoint = real_entry
+        L._entrypoint, L._main_code_ok = real_entry, real_code
     # RESIDUAL, shown not hidden: the raw token + _sign() still forges a valid line; prov makes it visible only
     f = L.arm_file(p, "ralph_a")
     acc = L.verify(p, "ralph_a")["accepted"]
@@ -522,6 +528,7 @@ def t_r2_2_trust(tmp):
     r = L.report(p)["ralph_a"]
     check(not r.get("refused") and not r["trusted"], "R2-2 a re-made local anchor store passes but is not trusted")
     L.anchor_path(p).unlink()
+    Path(os.environ["ARENA_WITNESS"]).unlink()
     r = L.report(p)
     check(bool(r["ralph_a"].get("refused")) and not r["_trust"]["trusted"],
           "R2-2 anchor store missing + non-empty log: refused UNMEASURED")
@@ -649,6 +656,209 @@ def t_r2_9_anchor_neg(tmp):
           "R2-9 check_anchors([], n=-1) (the partial-log probe) does not raise")
 
 
+# ---------------------------------------------------------------- fix round 3: one forced failure per tester finding
+
+def _mk(w, arm, n):
+    for i in range(n):
+        w.emit(arm, "judge", lane="l", run_id="r", task="J%d" % i, verdict="accept", ts="2026-10-21T00:%02d:00Z" % i)
+    return L.verify(w.p, arm)["accepted"]
+
+
+def _trim_anchors(p, keep):
+    af = L.anchor_path(p)
+    al = [l for l in af.read_text().splitlines() if l.strip()]
+    af.write_text("".join(l + "\n" for l in al if keep(json.loads(l))))
+
+
+def t_r3_b1_tail(tmp):
+    p, w = fresh(tmp, "r3b1")
+    tok = L.token_path(p).read_text().strip()
+    acc = _mk(w, "b", 8)
+    ext = L.ledger_anchors([{"event": "note", "tsn": 1, "text": L.anchor_note_text([L.make_anchor("b", acc[:5], tok)])}])
+    fb = L.arm_file(p, "b")
+    fb.write_text("".join(l + "\n" for l in fb.read_text().splitlines()[:5]))
+    _trim_anchors(p, lambda a: not (a["arm"] == "b" and a["n"] > 5))
+    r = L.report(p, external=ext)
+    check(r["b"]["accepted"] == 5 and r["b"].get("refused") and not r["b"]["trusted"] and not r["_trust"]["trusted"],
+          "R3-B1 tokenless: tail past the newest ledger anchor deleted + local anchors trimmed -> REFUSED by the "
+          "witness (%s)" % (r["b"].get("refused"),))
+    os.environ["ARENA_WITNESS"] = "off"
+    r = L.report(p, external=ext)["b"]
+    check(not r["trusted"] and "witness off" in r.get("trust_note", ""),
+          "R3-B1 witness off: never trusted (fails closed), says why")
+
+
+def t_r3_b2_forged_note(tmp):
+    p, w = fresh(tmp, "r3b2")
+    tok = L.token_path(p).read_text().strip()
+    acc = _mk(w, "c", 6)
+    good = L.anchor_note_text([L.make_anchor("c", acc, tok)])
+    r = L.report(p, external=L.ledger_anchors([{"event": "note", "tsn": 1, "text": good}]))
+    check(r["c"]["trusted"] and r["_trust"]["trusted"], "R3-B2 control: a harness-signed note covering the log: trusted")
+    head = acc[5]["sig"]
+    for name, text in (("unsigned", "ARENA_ANCHOR c:6:%s" % head),
+                       ("bad hmac", "ARENA_ANCHOR c:6:%s:%s" % (head, "0" * 64)),
+                       ("lsig of another anchor", "ARENA_ANCHOR c:6:%s:%s" % (head, L.make_anchor("c", acc[:2], tok)["lsig"]))):
+        ext = L.ledger_anchors([{"event": "note", "id": "SOME_UNRELATED_ITEM", "seat": "ARM_AGENT", "tsn": 2, "text": text}])
+        r = L.report(p, external=ext)["c"]
+        check(not r["trusted"] and len(r.get("anchor_errors", [])) == 1 and "ARM_AGENT" in r["anchor_errors"][0]
+              and r["external_anchored_upto"] == 0,
+              "R3-B2 forged ARENA_ANCHOR (%s) from another seat/item: listed in anchor_errors, confers no trust" % name)
+
+
+def t_r3_b3_roster(tmp):
+    p, w = fresh(tmp, "r3b3")
+    tok = L.token_path(p).read_text().strip()
+    _mk(w, "b", 2)
+    _mk(w, "d", 3)
+    ext = L.ledger_anchors([{"event": "note", "tsn": 1, "text": L.anchor_note_command(p).split("--text '")[1].rstrip("'")}])
+    r = L.report(p, external=ext)
+    check(r["_trust"]["trusted"] and r["_trust"]["rostered_arms"] == ["b", "d"],
+          "R3-B3 control: both arms rostered, signed note incl. @roster: trusted")
+    L.arm_file(p, "d").unlink()
+    _trim_anchors(p, lambda a: a["arm"] != "d")
+    r = L.report(p, external=ext)
+    check("d" in r and r["d"].get("refused") and not r["_trust"]["trusted"] and "d" in r["_trust"]["untrusted_arms"],
+          "R3-B3 tokenless: rostered arm d deleted (log + anchors): still reported, REFUSED, _trust False")
+    rf = L.roster_path(p)
+    rl = rf.read_text().splitlines()
+    rf.write_text(rl[0] + "\n")                                  # drop d's roster line too
+    r = L.report(p, external=ext)
+    check(not r["_trust"]["trusted"] and r["_trust"].get("roster_problems") and r.get("d", {}).get("refused"),
+          "R3-B3 roster line removed as well: witness + published @roster still name d (%s)" % r["_trust"].get("roster_problems"))
+    rf.write_text(rl[1] + "\n")                                  # drop the FIRST line: chain break
+    check(L.read_roster(p, tok)["bad"] and not L.report(p, external=ext)["_trust"]["trusted"],
+          "R3-B3 a middle/first roster line removed: chain break listed, untrusted")
+
+
+def t_r3_b4_note_tokens(tmp):
+    p, w = fresh(tmp, "r3b4")
+    acc = _mk(w, "b", 5)
+    h = acc[-1]["sig"]
+    for k, t in (("5.0", "ARENA_ANCHOR b:5.0:%s" % h), ("5e0", "ARENA_ANCHOR b:5e0:%s" % h),
+                 ("extra colon", "ARENA_ANCHOR b:5:%s:x" % h), ("arabic digit", "ARENA_ANCHOR b:\u0665:%s" % h),
+                 ("leading space", " ARENA_ANCHOR b:99:%s" % h), ("fullwidth digit", "ARENA_ANCHOR b:\uff15:%s:%s" % (h, h))):
+        r = L.report(p, external=L.ledger_anchors([{"event": "note", "tsn": 9, "text": t}]))["b"]
+        check(len(r.get("anchor_errors", [])) == 1 and not r.get("refused") and not r["trusted"],
+              "R3-B4 anchor note token %s: listed in anchor_errors, not dropped, not applied" % k)
+
+
+def t_r3_entrypoint(tmp):
+    import subprocess
+    import __main__
+    p, _ = fresh(tmp, "r3ep", writer=False)
+    saved = (getattr(__main__, "__file__", None), sys.argv[0], L._ENTRY)
+    try:
+        __main__.__file__ = str(L.HERE / "arena_eventlog.py")
+        sys.argv[0] = str(L.HERE / "arena_v3_adapter.py")
+        L._ENTRY = None
+        e = L._entrypoint()
+    finally:
+        __main__.__file__, sys.argv[0], L._ENTRY = saved
+    check(os.path.basename(e) == "selftest_arena_eventlog.py",
+          "R3-A2 forging __main__.__file__ / sys.argv[0] does not change the entrypoint (%s)" % os.path.basename(e))
+    forge = ("import sys, __main__; sys.path.insert(0, %r); __main__.__file__ = %r; sys.argv[0] = __main__.__file__\n"
+             "import arena_eventlog as L, arena_tasks as A\n"
+             "try:\n    L.harness_pass(A.paths()); print('OPENED')\nexcept L.Rejected as e:\n    print('REFUSED', e)\n"
+             % (str(L.HERE), str(L.HERE / "arena_eventlog.py")))
+    env = dict(os.environ)
+    out = subprocess.run([sys.executable, "-c", forge], capture_output=True, text=True, env=env, cwd=str(tmp), timeout=120)
+    check(out.stdout.startswith("REFUSED"), "R3-A2 `python3 -c` with forged __main__.__file__ cannot open a pass (%s)"
+          % (out.stdout.strip() or out.stderr.strip())[-120:])
+    sc = tmp / "arena_eventlog.py"
+    sc.write_text(forge)
+    out = subprocess.run([sys.executable, str(sc)], capture_output=True, text=True, env=env, cwd=str(tmp), timeout=120)
+    check(out.stdout.startswith("REFUSED"), "R3-A2 a script NAMED arena_eventlog.py outside the arena dir is refused (%s)"
+          % (out.stdout.strip() or out.stderr.strip())[-120:])
+    out = subprocess.run([sys.executable, str(sc)], capture_output=True, text=True, env=dict(env, PWD=str(L.HERE)),
+                         cwd=str(tmp), timeout=120)
+    check(out.stdout.startswith("REFUSED"), "R3-A2 ... also with PWD spoofed to the arena dir (%s)"
+          % (out.stdout.strip() or out.stderr.strip())[-120:])
+
+
+def t_r3_a4c_fd_reuse(tmp):
+    p, _ = fresh(tmp, "r3a4", writer=False)
+    cap = L.harness_pass(p)
+    w = L.HarnessWriter(p, cap=cap)
+    cap.close(); L._ACTIVE.discard(cap)
+    cap.closed = False
+    fd = os.open(str(cap.path), os.O_RDWR | os.O_CREAT, 0o600)
+    os.write(fd, cap._body)
+    try:
+        check(raises(L.Rejected, w.emit, "a", "stop", lane="l", run_id="r") is not None,
+              "R3-A4c cap file recreated on fd %d (was %d) after pass end: emit refused" % (fd, cap._fd))
+    finally:
+        os.close(fd); os.unlink(cap.path); cap.closed = True
+
+
+def t_r3_testq_real(tmp):
+    fx = HERE / "fixtures" / "testq_done"
+    res, jobs = V.load_testq(fx)
+    recs = V.translate_testq(res, jobs)
+    check(len(list(fx.glob("*.json"))) == 5 and len(res) == 5 and len(jobs) == 5,
+          "R3-T1 5 real wrapped done records {job, result, attempts}: 5 results + 5 jobs parsed (was 0)")
+    check(len(recs) == 6 and sorted({r["detail"]["tester"] for r in recs}) == ["BENCH", "FOUNDRY"]
+          and all(r["detail"]["src"].startswith("testq:J") and ".a" in r["detail"]["src"] for r in recs),
+          "R3-T1 the 3 records with an item -> 6 records, tester = seat, src per attempt (item-less canary jobs skip)")
+    rerun = [j for j in jobs.values() if j["requested_by"] == "BENCH.filler"]
+    check(rerun and V.seat_of("BENCH.filler") == "BENCH" and any(r.get("attempt", "").endswith(".a2") for r in res),
+          "R3-T1 fixture holds a BENCH.filler job and a 2-attempt job; BENCH.filler -> seat BENCH")
+
+
+def t_r3_testq_attempts(tmp):
+    p, w = fresh(tmp, "r3d3")
+    kw = dict(lane="v3", run_id="v3-ledger")
+    w.emit("v3", "build_end", task="I1", ts="2026-10-30T09:00:00Z", detail={"builder": "BENCH", "src": "b1"}, **kw)
+    jobs = {"J1": {"id": "J1", "item": "I1", "requested_by": "BENCH.filler"}}
+    res = [{"job": "J1", "attempt": "J1.a1", "host": "h", "started": "2026-10-30T10:00:00Z", "finished": "2026-10-30T10:05:00Z", "outcome": "FAIL"},
+           {"job": "J1", "attempt": "J1.a2", "host": "h", "started": "2026-10-30T11:00:00Z", "finished": "2026-10-30T11:05:00Z", "outcome": "PASS"}]
+    check(V.write(w, V.translate_testq(res, jobs)) == 4, "R3-D3 a testq re-run (attempt a2) is kept: 4 records written, not 2")
+    acc = L.verify(p, "v3")["accepted"]
+    check(len(L.flagged_same_agent(acc)) == 2 and len(L.untested_builds(acc)) == 1,
+          "R3-D4 BENCH.filler testing a BENCH build: flagged as the builder's own seat, build stays untested")
+
+
+def _B(ts, who, sha=None, d=None):
+    return {"ts": ts, "event": "build_end", "task": "T", "sha": sha, "detail": dict(d or {}, builder=who)}
+
+
+def _T(ts, who, sha=None, d=None):
+    return {"ts": ts, "event": "test_start", "task": "T", "sha": sha, "detail": dict(d or {}, tester=who)}
+
+
+def t_r3_analysis(tmp):
+    cases = (("C2 test names the sha of a build that has build_id", [_B("2026-10-29T10:00:00Z", "X", "s1", {"build_id": "b1"}), _T("2026-10-29T10:10:00Z", "X", "s1")]),
+             ("C3 test names a nonexistent build_id", [_B("2026-10-29T10:00:00Z", "X", d={"build_id": "b1"}), _T("2026-10-29T10:10:00Z", "X", d={"build_id": "nope"})]),
+             ("C3b build has no id, test names one", [_B("2026-10-29T10:00:00Z", "X"), _T("2026-10-29T10:10:00Z", "X", d={"build_id": "b1"})]),
+             ("C4 test 30 s before its build (skew)", [_B("2026-10-29T10:00:30Z", "X"), _T("2026-10-29T10:00:00Z", "X")]),
+             ("C5 test earlier in UTC via +02:00", [_B("2026-10-29T10:00:00Z", "X"), _T("2026-10-29T11:30:00+02:00", "X")]),
+             ("C6 equal ts, test line first", [_T("2026-10-29T10:00:00Z", "X"), _B("2026-10-29T10:00:00Z", "X")]),
+             ("C7 zero-width tester", [_B("2026-10-29T10:00:00Z", "agentx"), _T("2026-10-29T10:10:00Z", "agentx\u200b")]),
+             ("C7 fullwidth tester", [_B("2026-10-29T10:00:00Z", "agentx"), _T("2026-10-29T10:10:00Z", "\uff41gentx")]))
+    for name, recs in cases:
+        check(len(L.flagged_same_agent(recs)) == 1, "R3 %s: same-agent test flagged" % name)
+    c2 = cases[0][1]
+    check(len(L.untested_builds(c2)) == 1 and len(L.untested_builds(cases[1][1])) == 1,
+          "R3 a same-agent test of a non-matching id earns no 'tested' credit")
+    check(len(L.ambiguous_order(cases[3][1])) == 1 and len(L.ambiguous_order(cases[5][1])) == 1
+          and not L.ambiguous_order(c2), "R3 C4/C6 clock skew / equal ts reported as ambiguous_order")
+    other = [_B("2026-10-29T10:00:00Z", "X", "s1", {"build_id": "b1"}), _T("2026-10-29T10:10:00Z", "Y", "s1")]
+    check(not L.flagged_same_agent(other) and not L.untested_builds(other),
+          "R3 control: a DIFFERENT agent naming the sha tests the build (credited, not flagged)")
+
+
+def t_r3_cards(tmp):
+    mk = lambda ts, cid, m, un: {"ts": ts, "event": "card", "minutes": m, "detail": {"card_id": cid, "unblocked": un}}
+    recs = [mk("2026-10-29T12:00:00Z", "C1", 9, ["T9"]), mk("2026-10-29T10:00:00Z", "c1 ", 5, [" T1 "]),
+            mk("2026-10-29T11:00:00Z", "C\u200b1", 5, ["T1"])]
+    om = L.owner_minutes(recs)
+    check(om["cards"] == 1 and om["card_minutes"] == 5 and om["unblocked_tasks"] == ["T1"] and om["card_conflicts"] == 1,
+          "R3-C9 card ids C1 / 'c1 ' / C<zwsp>1 are one card; the EARLIEST by time wins; conflicting dup counted (%s)" % om)
+    check(not L._minutes_ok(10 ** 309) and raises(L.Rejected, L.validate_record, {
+        "ts": "2026-10-29T10:00:00Z", "arm": "a", "lane": "l", "run_id": "r", "event": "owner_touch", "minutes": 10 ** 309}) is not None,
+          "R3-C9 minutes = 10**309 refused (Rejected), not an OverflowError crash")
+
+
 def _stat(path):
     try:
         s = os.stat(path)
@@ -659,7 +869,7 @@ def _stat(path):
 
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="arena_eventlog_st_"))
-    keys = ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "RM_ARM")
+    keys = ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM")
     saved = {k: os.environ.get(k) for k in keys}
     # R2-9: whatever anchor store this process inherited, and the real default one, must come out untouched. A
     # decoy stands in for an inherited ARENA_ANCHOR_FILE (round 1's selftest deleted whatever that pointed at).
@@ -680,7 +890,9 @@ def main():
         t_adapter(tmp)
         for t in (t_d1_token, t_d2_tail, t_d3_partial, t_d4_ids, t_d5_idem, t_d6_minutes, t_d8_verdict, t_d7_recover,
                   t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
-                  t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg):
+                  t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg, t_r3_b1_tail, t_r3_b2_forged_note, t_r3_b3_roster,
+                  t_r3_b4_note_tokens, t_r3_entrypoint, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
+                  t_r3_analysis, t_r3_cards):
             try:
                 t(tmp)
             except Exception as e:          # a crash is a failure of that test, not of the run

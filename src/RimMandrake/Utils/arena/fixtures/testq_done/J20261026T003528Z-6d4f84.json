@@ -1,0 +1,142 @@
+{
+ "attempts": [
+  "J20261026T003528Z-6d4f84.a1"
+ ],
+ "cancelled": false,
+ "finished": "2026-10-26T00:45:02Z",
+ "ingested": {
+  "at": "2026-10-26T00:45:08Z",
+  "findings": [],
+  "result": "partial",
+  "run": "TESTQ_DISPATCHER_BUILD_SSH_NO_LLM/run-1@steve-targeted"
+ },
+ "job": {
+  "canary": true,
+  "deploy": [],
+  "id": "J20261026T003528Z-6d4f84",
+  "item": "TESTQ_DISPATCHER_BUILD_SSH_NO_LLM",
+  "lane": "stevedesktop",
+  "mod": "FlowWorks",
+  "not_before": null,
+  "owner_gate": null,
+  "priority": 50,
+  "profile": "targeted",
+  "purpose": "commission",
+  "requested_by": "BENCH",
+  "schema": "testq.job/1",
+  "selector": {
+   "chains": [
+    "pump_ports_one_per_side"
+   ]
+  },
+  "source_sha": "c3d6bf78bd",
+  "submitted": "2026-10-26T00:35:28Z",
+  "supersedes": null,
+  "timeout_s": 2700,
+  "validity": true
+ },
+ "result": {
+  "artifacts": [
+   {
+    "bytes": 8930,
+    "name": "FlowWorks_20261026T004447Z.json",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261026T004447Z.json",
+    "sha256": "0508186166b9e441f1783cfde32787fd0bc4e27a44ad576a1d263bae57272355"
+   },
+   {
+    "bytes": 2027,
+    "name": "FlowWorks_20261026T004447Z.html",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261026T004447Z.html",
+    "sha256": "ba0db12592f17a20a1cfc2c71f5b714cd546a968a4b43a4a0dff36d93e8513f3"
+   },
+   {
+    "bytes": 1311,
+    "name": "modcheck.log",
+    "path": "/mnt/d/RimTest/testq/attempts/J20261026T003528Z-6d4f84.a1/modcheck.log",
+    "sha256": "f9d24afb64fd29bf393edc2495d51e6af23e885dc3043293dcff1dfda13ba0d8"
+   }
+  ],
+  "attempt": "J20261026T003528Z-6d4f84.a1",
+  "cause": null,
+  "counts": {
+   "PASS": 5,
+   "UNMEASURED": 1
+  },
+  "deployed": {
+   "mods": {
+    "FlowWorks": {
+     "defs_sha256": "b59898d5b7f5921d0ad2426c93535c75a8b7346dda8004f801a625ea430d3c57",
+     "dll_sha256": "bec1ddd2a685bd910ab860a0c2b847fb781d98f95bc9f952d46df3330f54bbeb",
+     "files": 772
+    }
+   },
+   "modsconfig_sha256_prerun": "e273a06c890b5fa24ffe3a66528072ccb250d01fd88fceb7ec769b5122a5c049"
+  },
+  "finished": "2026-10-26T00:44:47Z",
+  "host": "stevedesktop",
+  "job": "J20261026T003528Z-6d4f84",
+  "modcheck_exit": 1,
+  "note": "modcheck exit 1; {'PASS': 5, 'UNMEASURED': 1}",
+  "outcome": "DONE",
+  "phase_s": {
+   "attest": 5,
+   "deploy": 11,
+   "load": 1,
+   "run": 483
+  },
+  "retries": 0,
+  "rows": [
+   {
+    "chain": "pump_ports_one_per_side",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "pump_ports_selftest_ran",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "pump_ports_one_per_side",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "PumpPorts_hose_at_a_side_port",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "pump_ports_one_per_side",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "PumpPorts_pipes_join_adjacent_hoses_at_ports",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "pump_ports_one_per_side",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "PipeStub_corner_adjacent_runs_under_to_centre",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "pump_ports_one_per_side",
+    "detail": "",
+    "freshness": "fresh",
+    "row": "PipeStub_tank_corner_joins_and_runs_under",
+    "validity": null,
+    "verdict": "PASS"
+   },
+   {
+    "chain": "pump_ports_one_per_side",
+    "detail": "ExpectationFailed: UNMEASURED: live check owed -- a powered RM_LiquidPump with a reel on its north port and a hose end laid at its east port (hose net probe reads both linked); a second reel at the north port and a hose end at a corner read uncoupled; a pipe at a corner and one on a side are both on",
+    "freshness": "fresh",
+    "row": "pump_ports_live",
+    "validity": null,
+    "verdict": "UNMEASURED"
+   }
+  ],
+  "runner_sha": "4f6a40766549daee7a9e59be52f1926cd357363a",
+  "schema": "testq.result/1",
+  "started": "2026-10-26T00:36:25Z"
+ }
+}

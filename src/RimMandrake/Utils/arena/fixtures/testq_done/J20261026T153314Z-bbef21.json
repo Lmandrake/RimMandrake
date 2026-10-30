@@ -1,0 +1,627 @@
+{
+ "attempts": [
+  "J20261026T153314Z-bbef21.a1",
+  "J20261026T153314Z-bbef21.a2"
+ ],
+ "cancelled": false,
+ "finished": "2026-10-26T15:43:06Z",
+ "ingested": {
+  "at": "2026-10-26T15:43:11Z",
+  "lane_finding": "STEVE_LANE_CANARY_RED_BBEF21",
+  "skipped": "the job names no item"
+ },
+ "job": {
+  "canary": true,
+  "deploy": [],
+  "gate": null,
+  "id": "J20261026T153314Z-bbef21",
+  "item": null,
+  "lane": "stevedesktop",
+  "mod": "FlowWorks",
+  "not_before": null,
+  "owner_gate": null,
+  "priority": 20,
+  "profile": "targeted",
+  "purpose": "guard",
+  "requested_by": "BENCH.filler",
+  "row_items": {},
+  "schema": "testq.job/1",
+  "selector": {
+   "chains": [
+    "core_offline",
+    "rivers_switch_flips",
+    "drawbridges",
+    "current"
+   ]
+  },
+  "source_sha": "438ecc959d",
+  "submitted": "2026-10-26T15:33:14Z",
+  "supersedes": null,
+  "timeout_s": 7200,
+  "validity": true
+ },
+ "result": {
+  "artifacts": [
+   {
+    "bytes": 12516,
+    "name": "FlowWorks_20261026T154210Z.json",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261026T154210Z.json",
+    "sha256": "119794a25ed7ffc5e05c4cce06562027cf2462299af7aed27eeec03338e981f6"
+   },
+   {
+    "bytes": 1811,
+    "name": "FlowWorks_20261026T154210Z.html",
+    "path": "/home/mandrake/rm/runner/Transient/modcheck/FlowWorks_20261026T154210Z.html",
+    "sha256": "0ca2993c7667ebb98aaa10d877397dae44d708e7116c72cbc4e70c952980fec2"
+   },
+   {
+    "bytes": 4340,
+    "name": "modcheck.log",
+    "path": "/mnt/d/RimTest/testq/attempts/J20261026T153314Z-bbef21.a2/modcheck.log",
+    "sha256": "73070b2bbc560b67b36acb0f9dde70883f876b8fc22ae39cd1788f4f211b50fa"
+   }
+  ],
+  "attempt": "J20261026T153314Z-bbef21.a2",
+  "cause": "CANARY",
+  "counts": {
+   "NOT_RUN": 64,
+   "UNMEASURED": 2
+  },
+  "deployed": {
+   "mods": {
+    "FlowWorks": {
+     "defs_sha256": "f38ba3a3e84fee008f99e985ffb0995249707e6400b97ad9a05231421924c3c8",
+     "dll_sha256": "6f2a068f06ad65025692873b35638e967d057f00768ccd062876e83146fb384c",
+     "files": 773
+    }
+   },
+   "modsconfig_sha256_prerun": "e273a06c890b5fa24ffe3a66528072ccb250d01fd88fceb7ec769b5122a5c049"
+  },
+  "finished": "2026-10-26T15:42:11Z",
+  "host": "stevedesktop",
+  "job": "J20261026T153314Z-bbef21",
+  "modcheck_exit": 1,
+  "note": "the vanilla canary was red: no mod row ran",
+  "outcome": "INVALID",
+  "phase_s": {
+   "attest": 5,
+   "deploy": 11,
+   "load": 48,
+   "run": 206
+  },
+  "retries": 0,
+  "rows": [
+   {
+    "chain": "drawbridges",
+    "detail": "canary red, chain body not run -- the session is HARNESS, not a verdict on the mod: no live colonist",
+    "freshness": "fresh",
+    "row": "<canary red: HARNESS>",
+    "validity": "invalid",
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": "current",
+    "detail": "canary red, chain body not run -- the session is HARNESS, not a verdict on the mod: no live colonist",
+    "freshness": "fresh",
+    "row": "<canary red: HARNESS>",
+    "validity": "invalid",
+    "verdict": "UNMEASURED"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "drawbridge_selftest_ran",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_materials_timber_and_steel_only",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_split_one_leaf_or_two_each_hinged_on_its_own_bank",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_leaf_is_rigid_off_its_seat_and_reversible",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_decked_reads_raised_and_only_drawbridge_decks_raise",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_structure_reads_see_a_raised_leaf",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_toggle_forces_pocket_rebuild_and_repath",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_raise_never_collapses",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_leaf_record_saves_per_leaf_versioned",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P2_tip_order_nearest_hinge_then_cell",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P2_six_riders_one_free_square_one_lands_five_fall",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P2_landings_never_through_a_wall_and_within_reach",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P2_tip_wiring_once_per_raise_band_aware_overflow_falls",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P3_sides_raise_either_lower_winch_only",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P3_drive_timber_hands_steel_power_freezes",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P3_winch_lost_crashes_down_and_hits",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P3_winch_gone_any_way_crashes_and_unlinks",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P1_tower_mid_span_refused",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P3_one_winch_per_leaf_on_its_own_bank",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P3_peace_auto_lowers_free_hostiles_lock",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P4_raid_plank_fits_and_commits_once",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P4_raiders_trench_hand_off_and_winch",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P5_hoses_on_a_leaf_cut_while_raised_rejoin_lowered",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P5_gravship_edge_bridge_collapses_at_launch",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P5_length_by_material_from_settings",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P6_gate_never_open_on_a_raised_leaf_locked_only_by_order",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P6_real_build_buttons",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_P6_art_contract_paths_with_stand_ins",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Looks_paths_look_first_then_material",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Looks_raid_plank_pieces",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Looks_wired_at_the_draw_sites",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_raised_leaf_draws_without_its_winch",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Cables_lowered_reach_deck_raised_slack_vs_art",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Cables_canfail_old_stop_short_and_moved_attach",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Cables_raised_leaf_edge_crops_the_stiff_rope",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Cables_call_sites",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Cables_ropes_for_unmeasured_print_is_null_not_throw",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_Cables_slack_coil_lies_flat_canfail_old_hook",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_BaseAnchors_upright_multi_per_facing",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_StyledHeavyAnchors_upright_per_facing",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_hose_cut_by_a_raised_leaf_carries_no_liquid",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_raid_plank_between_sunken_banks_lies_at_their_depth",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_OneDrag_hinge_bank_is_where_the_drag_started",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_OneDrag_every_planned_winch_is_beside_its_own_hinge",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "Drawbridge_OneDrag_designator_plans_and_places_the_whole_package",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "RAISE_PATH",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "RAISE_TIPS_RIDERS",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "RAISE_SPARES_UNDERPASS",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "LOWER_ONLY_FROM_WINCH",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "TWO_LEAF_TIPS_OWN_HINGE",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "HOSTILE_LOCKS",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "STEEL_UNPOWERED_FREEZES",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "WINCH_LOST_CRASHES",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "WINCH_DESPAWN_CRASHES",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "RAID_UP",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "RAID_PLANK",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "ONE_DRAG_PACKAGE",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "ONE_DRAG_FOUR_WIDE",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "SAVE_MIDRAISE",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "defs_core",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "grid_from_river",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "shoves",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "ford_exempt",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   },
+   {
+    "chain": null,
+    "detail": "in modcheck's preview plan, absent from the sheet",
+    "freshness": null,
+    "row": "exemptions",
+    "validity": null,
+    "verdict": "NOT_RUN"
+   }
+  ],
+  "runner_sha": "438ecc959d267cd6a9a151f1935b95e26c0152f9",
+  "schema": "testq.result/1",
+  "started": "2026-10-26T15:37:39Z"
+ }
+}

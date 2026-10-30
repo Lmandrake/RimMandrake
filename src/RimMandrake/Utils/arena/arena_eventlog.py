@@ -34,29 +34,53 @@ agent that goes looking for it, so the token is a speed bump, not a secret. What
   - every signed record carries `prov`: pid, pid start time, the parent chain (pid, start time, comm), uid, cwd,
     entrypoint and an environment fingerprint, so a forged line written by some other process shape can be told
     apart forensically. report() counts records with no or non-entrypoint prov as `unprovenanced`.
-  - report() FAILS CLOSED: an arm with records but no anchor at all (local store deleted) is refused UNMEASURED, and
-    an arm is `trusted` only when a ledger-published (external) anchor covers its whole accepted log.
+  - (fix round 3) the entrypoint is the process's REAL script: /proc/self/cmdline (argv as exec'd; -c / -m / stdin
+    refused), resolved against the exec-time PWD from /proc/self/environ, and the main thread's outermost frame must
+    run that file with the same bytecode shape as compiling it fresh, so `__main__.__file__ = ...` or `sys.argv[0] =
+    ...` changes nothing. A closed capability forgets its nonce and remembers its file's inode + ctime.
+  - (fix round 3) WITNESS: every anchor and roster entry is also sent, HMAC-signed, to systemd journald
+    (SYSLOG_IDENTIFIER rm_arena_witness, field RM_ARENA_ROOT = hash of the arena root). The journal files are root
+    owned: uid 1000 can append but not delete or edit, so a tail deleted AFTER the newest ledger anchor is still
+    witnessed. `$ARENA_WITNESS` = journal (default) | off | a file path (selftests only: same-uid editable).
+  - (fix round 3) ROSTER: `<token dir>/roster.jsonl`, a signed append-only chain naming every arm at its first write
+    (witnessed, and published as the `@roster` token of anchor-note). report() reports every rostered arm and refuses
+    one whose log is gone; a roster that lost a line (chain break, or an arm the witness/ledger knows) is untrusted.
+  - (fix round 3) ledger anchor tokens are `arm:n:head:lsig`, lsig = HMAC(token, "ledger-anchor:arm:n:head"); a note
+    from any seat/item is accepted ONLY if lsig verifies. Unsigned, forged or malformed tokens (5.0, 5e0, non-ASCII
+    digits, extra fields) are listed in `anchor_errors` with the note's tsn/seat/item, never applied.
+  - report() FAILS CLOSED: an arm with records but no anchor at all (local store and witness gone) is refused
+    UNMEASURED, and an arm is `trusted` only when a SIGNED ledger anchor covers its whole accepted log AND the witness
+    is readable and its newest anchor for that arm is the same count. Witness off/unreadable: never trusted.
 RESIDUAL SAME-UID RISK, NOT CLOSED: an agent running as uid 1000 that reads the token can call _sign() directly (or
 copy this file and delete the checks) and write any record, `prov` included, with a valid signature; it can ptrace
 or read /proc of a live harness process. The capability, prov and cwd/RM_ARM checks stop the casual path (library
 use from an arm) and leave forensic traces; they are not a boundary. Only a separate OS user (or a signer outside
 the arm's machine) closes this. Ledger-published anchors bound what it can rewrite: history before the newest
-external anchor; events forged AFTER it pass every check here. Publish anchors at every pass end. An agent can also
-post a bogus ARENA_ANCHOR note: that can only make report() refuse an honest arm (loud, investigated).
+external anchor; events forged AFTER it pass every check here. Publish anchors at every pass end. A token holder can
+also mint signed ledger notes and witness lines. The entrypoint check is beaten by an exec with a spoofed PWD AND an
+identical copy of an allowlisted file, by PYTHONPATH/site/.pth injection or ptrace (same uid). A TOKENLESS attacker
+can flood the journal so journald rotates the witness lines away (then the witness reads short: untrusted, not a
+false trust, unless the log was cut to exactly the surviving witness count) and can make report() refuse an honest
+arm by deleting its files (loud, investigated).
 
 Event record: {ts, arm, lane, run_id, task, event, sha?, verdict?, ite?, minutes?, rule?, detail?, prov, sig}.
 ts is ISO-8601 WITH a zone (Z or +hh:mm), compared in UTC. Analysis orders records by event time across the whole
 log (stable on file order), never by append order, so a late import of an earlier event is placed where it happened.
 Different-agent rule: build_end.detail.builder, test_start.detail.tester; a test_start targets ONE build: the latest
 earlier build_end of the same task with the same build id (detail.build_id, else sha) when the test names one, else
-the latest earlier build_end of the task. It is FLAGGED when its tester is that build's builder (recomputed; the
-stamped rule="tester_is_builder" is a convenience, never trusted). A test_start earlier than every matching build
-is reported as `test_before_build`. Agent ids are compared NORMALISED (strip + casefold); a builder/tester id that
+the latest earlier build_end of the task (fix round 3: a test MATCHES a build when it names no id or shares one of
+the build's ids {build_id, sha}; only a matched build is credited as tested). It is FLAGGED when its tester is the
+builder of any build it may be testing: the matched one, the latest earlier build when the id it names matches
+nothing, the first later matching build, or any matching build at/after it within SKEW_S (recomputed; the stamped
+rule="tester_is_builder" is a convenience, never trusted). A test_start earlier than every matching build is
+reported as `test_before_build`, one within SKEW_S of a matching build as `ambiguous_order`. Agent ids are compared
+NORMALISED (NFKC, Unicode format chars dropped, whitespace collapsed, casefold); a builder/tester id that
 is not a string, is blank, or is all digits is refused at write; an id starting `unattributed:` never counts as a
 different agent.
 Owner minutes: `card` (minutes = rm-pulse dwell, detail.card_id, detail.unblocked = tasks the answer unblocked) and
 `owner_touch` (minutes); minutes are finite, >= 0, never bool; card_id a non-empty string, unblocked a list of
-non-empty strings. A card_id seen twice counts once. Reported per arm, and output (each task by its LAST judge
+non-empty strings. A card_id seen twice (normalised as ids are) counts once, the earliest by event time; a duplicate
+with other values is counted in `card_conflicts`. Reported per arm, and output (each task by its LAST judge
 verdict) reported with and without owner-unblocked work. An arm with NO judge events but ledger done transitions
 (the v3 adapter) reports points as None and output_comparable False: a self-closed ledger item is not a
 judge-accepted point (run arena_judge on its tasks to make it comparable).
@@ -74,10 +98,16 @@ import hmac
 import json
 import math
 import os
+import re
 import secrets
+import socket
+import subprocess
 import sys
 import tempfile
+import threading
 import time
+import types
+import unicodedata
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -135,10 +165,96 @@ def _proc_stat(pid: int):
     return int(rest[1]), int(rest[19]), comm          # fields 4 (ppid) and 22 (starttime)
 
 
+def _initial_pwd() -> str:
+    """PWD as the process was EXECUTED (/proc/self/environ is the exec-time environment; os.environ edits do not
+    change it). '' if absent."""
+    try:
+        for kv in Path("/proc/self/environ").read_bytes().split(b"\0"):
+            if kv.startswith(b"PWD="):
+                return os.fsdecode(kv[4:])
+    except OSError:
+        pass
+    return ""
+
+
+def _cmdline_script() -> str:
+    """The script the interpreter was EXECUTED with, from /proc/self/cmdline and /proc/self/exe - never from a
+    module attribute (`__main__.__file__`, sys.argv: both one assignment away from a lie). '' for -c, -m, stdin, a
+    REPL, a non-python executable or a relative path with no exec-time PWD."""
+    try:
+        raw = Path("/proc/self/cmdline").read_bytes()
+        exe = os.path.basename(os.path.realpath("/proc/self/exe"))
+    except OSError:
+        return ""
+    if not exe.startswith("python"):
+        return ""
+    args = [os.fsdecode(a) for a in raw.split(b"\0")]
+    if args and args[-1] == "":
+        args.pop()
+    i = 1
+    while i < len(args):
+        a = args[i]
+        if a == "--":
+            i += 1
+            break
+        if a == "-" or not a.startswith("-"):
+            break
+        if a.startswith("--"):
+            i += 2 if a == "--check-hash-based-pycs" else 1
+            continue
+        skip_next = False
+        for k, ch in enumerate(a[1:]):
+            if ch in "cm":
+                return ""                       # -c CODE / -m MODULE: no script file
+            if ch in "XW":
+                skip_next = k == len(a) - 2     # the option's value is the next argument
+                break
+        i += 2 if skip_next else 1
+    if i >= len(args) or args[i] == "-":
+        return ""
+    s = args[i]
+    if not os.path.isabs(s):
+        base = _initial_pwd()
+        if not base:
+            return ""
+        s = os.path.join(base, s)
+    return os.path.realpath(s)
+
+
+_ENTRY = None
+
+
 def _entrypoint() -> str:
-    """Real path of the running __main__ script ('' for -c, a REPL or an embedded interpreter)."""
-    f = getattr(sys.modules.get("__main__"), "__file__", None)
-    return os.path.realpath(f) if f else ""
+    """Real path of the script this process was executed with ('' for -c, -m, a REPL). Cached: cmdline is fixed."""
+    global _ENTRY
+    if _ENTRY is None:
+        _ENTRY = _cmdline_script()
+    return _ENTRY
+
+
+def _code_shape(co) -> tuple:
+    return (co.co_code, co.co_names, tuple(_code_shape(c) if isinstance(c, types.CodeType) else repr(c)
+                                           for c in co.co_consts))
+
+
+def _main_code_ok(entry: str) -> str | None:
+    """None when the main thread's outermost frame runs code compiled from `entry` itself, else why not. Catches a
+    .pyc (or any code object) carrying a spoofed co_filename: its bytecode is not the entrypoint's."""
+    frame = sys._current_frames().get(threading.main_thread().ident)
+    while frame is not None and frame.f_back is not None:
+        frame = frame.f_back
+    if frame is None:
+        return "no main-thread frame"
+    co = frame.f_code
+    if os.path.realpath(co.co_filename) != entry:
+        return "the main frame runs %s, not %s" % (co.co_filename, entry)
+    try:
+        want = compile(Path(entry).read_bytes(), co.co_filename, "exec", dont_inherit=True)
+    except (OSError, SyntaxError, ValueError) as e:
+        return "cannot compile %s: %s" % (entry, e)
+    if _code_shape(want) != _code_shape(co):
+        return "the main frame's bytecode is not %s's (a code object with a borrowed filename)" % entry
+    return None
 
 
 def provenance(cap=None) -> dict:
@@ -223,6 +339,9 @@ def _check_entrypoint(p: dict):
     if not e or os.path.dirname(e) != str(HERE):
         raise Rejected("signing needs a harness entrypoint run from %s as __main__ (got %r): library use from "
                        "another script, -c or a REPL is refused" % (HERE, e or None))
+    why = _main_code_ok(e)
+    if why:
+        raise Rejected("entrypoint check: %s" % why)
     if name in ENTRYPOINTS:
         return
     if name.startswith(SELFTEST_ENTRY_PREFIX) and name.endswith(".py"):
@@ -268,11 +387,14 @@ class PassCapability:
                            "nonce_sha": hashlib.sha256(self._nonce.encode()).hexdigest()}, sort_keys=True).encode()
         self._fd = os.open(str(self.path), os.O_RDWR | os.O_CREAT | os.O_EXCL, 0o600)
         os.write(self._fd, body)
+        held = os.fstat(self._fd)
+        self._ident = (held.st_ino, held.st_dev, held.st_ctime_ns)   # THIS pass's file (inode numbers get reused)
         self._body = body
         self.closed = False
+        self.last_anchor = {}                        # arm -> newest anchor of this pass, re-witnessed at close
 
     def check(self):
-        if self.closed:
+        if self.closed or not self._nonce:
             raise Rejected("pass capability %s is closed (pass ended)" % self.cap_id)
         if os.getpid() != self.pid:
             raise Rejected("pass capability %s belongs to pid %d, not %d" % (self.cap_id, self.pid, os.getpid()))
@@ -285,7 +407,8 @@ class PassCapability:
             on_disk, held = os.stat(self.path), os.fstat(self._fd)
         except OSError:
             raise Rejected("pass capability file %s is gone" % self.path)
-        if (on_disk.st_ino, on_disk.st_dev) != (held.st_ino, held.st_dev) or on_disk.st_mode & 0o077:
+        if (on_disk.st_ino, on_disk.st_dev) != (held.st_ino, held.st_dev) or on_disk.st_mode & 0o077 \
+                or (held.st_ino, held.st_dev, held.st_ctime_ns) != self._ident:
             raise Rejected("pass capability file %s was replaced or opened up" % self.path)
         if os.pread(self._fd, len(self._body) + 1, 0) != self._body or \
                 json.loads(self._body)["nonce_sha"] != hashlib.sha256(self._nonce.encode()).hexdigest():
@@ -295,6 +418,9 @@ class PassCapability:
         if self.closed:
             return
         self.closed = True
+        self._nonce = None                           # the secret dies with the pass: no later check() can succeed
+        for a in list(self.last_anchor.values()):    # a witness line dropped mid-pass (rate limit) is re-sent here
+            witness_append(self.p, dict(a, kind="anchor"))
         try:
             os.close(self._fd)
         except OSError:
@@ -368,15 +494,35 @@ def _sign(token: str, prev: str, rec: dict) -> str:
 
 
 def norm_id(x) -> str | None:
-    """An agent id for comparison: strip + casefold. None for anything that is not a usable id."""
-    if not isinstance(x, str):
-        return None
-    n = x.strip().casefold()
+    """An id for comparison: NFKC (fullwidth -> ASCII), format characters (Cf: zero-width space/joiner, BOM, bidi
+    marks) dropped, whitespace collapsed, casefold. None for anything that is not a usable id."""
+    n = _fold(x)
     return n if n and not n.isdigit() else None
 
 
+def _fold(x) -> str | None:
+    if not isinstance(x, str):
+        return None
+    n = unicodedata.normalize("NFKC", x)
+    n = "".join(c for c in n if unicodedata.category(c) != "Cf")
+    return unicodedata.normalize("NFKC", " ".join(n.split()).casefold()) or None
+
+
+def _norm_key(x) -> str | None:
+    """norm_id's folding for build ids / card ids, where an all-digit value IS a usable key."""
+    if isinstance(x, (int, float)) and not isinstance(x, bool):
+        x = str(x)
+    return _fold(x)
+
+
 def _minutes_ok(m) -> bool:
-    return isinstance(m, (int, float)) and not isinstance(m, bool) and math.isfinite(m) and m >= 0
+    if not isinstance(m, (int, float)) or isinstance(m, bool):
+        return False
+    try:
+        f = float(m)                    # an int too large for a float (10**309) is refused, not a crash
+    except OverflowError:
+        return False
+    return math.isfinite(f) and f >= 0
 
 
 def validate_record(rec: dict):
@@ -445,10 +591,137 @@ def _anchor_sign(token: str, a: dict) -> str:
     return hmac.new(token.encode(), ("anchor:" + _canon(a)).encode(), hashlib.sha256).hexdigest()
 
 
+def _ledger_sig(token: str, arm: str, n: int, head: str) -> str:
+    """The HMAC a published (ledger note) anchor token carries: only a token holder can mint a note that counts."""
+    return hmac.new(token.encode(), ("ledger-anchor:%s:%d:%s" % (arm, n, head)).encode(), hashlib.sha256).hexdigest()
+
+
 def make_anchor(arm: str, accepted: list[dict], token: str, ts: str | None = None) -> dict:
     a = {"ts": ts or now_ts(), "arm": arm, "n": len(accepted), "head": accepted[-1]["sig"] if accepted else GENESIS}
+    a["lsig"] = _ledger_sig(token, arm, a["n"], a["head"])
     a["sig"] = _anchor_sign(token, a)
     return a
+
+
+# ---------------------------------------------------------------- witness (append-only store the arm uid cannot edit)
+WITNESS_ID = "rm_arena_witness"
+JOURNAL_SOCKET = "/run/systemd/journal/socket"
+
+
+def _witness_mode() -> str:
+    """ARENA_WITNESS: `journal` (default: systemd journald; its files are root-owned, uid 1000 can append through
+    the socket but cannot delete or edit), `off`, or a file path (selftests only: a file the same uid CAN edit)."""
+    return (os.environ.get("ARENA_WITNESS") or "journal").strip() or "journal"
+
+
+def _root_key(p: dict) -> str:
+    return hashlib.sha256(os.path.realpath(str(p["root"])).encode()).hexdigest()[:16]
+
+
+def witness_append(p: dict, entry: dict) -> bool:
+    """Send one signed anchor/roster entry to the witness. Never raises (a missing witness makes report() untrusted,
+    it never stops the harness)."""
+    mode = _witness_mode()
+    if mode == "off":
+        return False
+    key = _root_key(p)
+    line = json.dumps(dict(entry, root=key), sort_keys=True)
+    try:
+        if mode == "journal":
+            msg = "SYSLOG_IDENTIFIER=%s\nRM_ARENA_ROOT=%s\nMESSAGE=%s\n" % (WITNESS_ID, key, line)
+            with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as s:
+                s.sendto(msg.encode(), JOURNAL_SOCKET)
+        else:
+            with open(mode, "a", encoding="utf-8") as fh:
+                fh.write(line + "\n")
+        return True
+    except OSError:
+        return False
+
+
+def witness_read(p: dict, token: str) -> dict:
+    """-> {"status": "ok" | "off" | "unreadable: ...", "anchors": {arm: [anchor]}, "roster": [entry], "bad": n}.
+    Entries whose sig fails (written without the token) are counted in `bad`, never used."""
+    mode, key = _witness_mode(), _root_key(p)
+    out = {"status": "ok", "anchors": {}, "roster": [], "bad": 0}
+    if mode == "off":
+        return dict(out, status="off")
+    try:
+        if mode == "journal":
+            cp = subprocess.run(["journalctl", "-t", WITNESS_ID, "RM_ARENA_ROOT=" + key, "-o", "cat", "--no-pager",
+                                 "-q"], capture_output=True, text=True, timeout=60)
+            if cp.returncode != 0:
+                return dict(out, status="unreadable: journalctl exit %d %s" % (cp.returncode, cp.stderr.strip()[:120]))
+            lines = cp.stdout.splitlines()
+        else:
+            lines = _read_lines(Path(mode))
+    except (OSError, subprocess.SubprocessError) as e:
+        return dict(out, status="unreadable: %s" % e)
+    for raw in lines:
+        try:
+            e = json.loads(raw)
+            if e.get("root") != key:
+                continue
+            kind = e.pop("kind", None)
+            e.pop("root", None)
+            if kind == "anchor" and hmac.compare_digest(str(e.get("sig")), _anchor_sign(token, e)):
+                out["anchors"].setdefault(e["arm"], []).append(dict(e, witness=True))
+            elif kind == "roster" and hmac.compare_digest(str(e.get("sig")), _roster_sign(token, e)):
+                out["roster"].append(e)
+            else:
+                out["bad"] += 1
+        except (ValueError, AttributeError, TypeError, KeyError):
+            out["bad"] += 1
+    return out
+
+
+# ---------------------------------------------------------------- arm roster (every arm ever written to)
+
+def roster_path(p: dict) -> Path:
+    return anchor_path(p).parent / "roster.jsonl"
+
+
+def _roster_sign(token: str, e: dict) -> str:
+    return hmac.new(token.encode(), ("roster:" + str(e.get("prev")) + _canon(e)).encode(), hashlib.sha256).hexdigest()
+
+
+def read_roster(p: dict, token: str) -> dict:
+    """-> {"arms": [arm], "n": entries in the unbroken chain, "head": last sig, "bad": [raw]}. Append-only chain:
+    removing or editing a middle line breaks it (listed in `bad`); removing the LAST line is caught by the witness
+    and by a published `@roster` anchor."""
+    arms, prev, bad = [], GENESIS, []
+    for raw in _read_lines(roster_path(p)):
+        try:
+            e = json.loads(raw)
+            ok = e.get("prev") == prev and hmac.compare_digest(str(e.get("sig")), _roster_sign(token, e))
+        except (ValueError, AttributeError, TypeError):
+            ok = False
+        if ok and not bad:
+            arms.append(e["arm"]); prev = e["sig"]
+        else:
+            bad.append(raw)
+    return {"arms": arms, "n": len(arms), "head": prev, "bad": bad}
+
+
+def _roster_add(p: dict, token: str, arm: str):
+    """Roster `arm` (idempotent). Called by emit at the arm's first write, under the roster file lock."""
+    f = roster_path(p)
+    f.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    with open(f, "a+", encoding="utf-8") as fh:
+        fcntl.flock(fh, fcntl.LOCK_EX)
+        r = read_roster(p, token)
+        if arm in r["arms"]:
+            return
+        e = {"ts": now_ts(), "arm": arm, "seq": r["n"] + 1, "prev": r["head"]}
+        e["sig"] = _roster_sign(token, e)
+        fh.write(json.dumps(e, sort_keys=True) + "\n")
+        fh.flush(); os.fsync(fh.fileno())
+    witness_append(p, dict(e, kind="roster"))
+
+
+def roster_anchor(p: dict, token: str) -> dict:
+    r = read_roster(p, token)
+    return {"arm": "@roster", "n": r["n"], "head": r["head"], "lsig": _ledger_sig(token, "@roster", r["n"], r["head"])}
 
 
 def append_anchor(p: dict, a: dict):
@@ -480,20 +753,35 @@ NOTE_PREFIX = "ARENA_ANCHOR"
 
 
 def anchor_note_text(anchors: list[dict]) -> str:
-    """One `rimflow note --text` body publishing the current head of each arm (external, git-ledger anchor)."""
-    return NOTE_PREFIX + " " + " ".join("%s:%d:%s" % (a["arm"], a["n"], a["head"]) for a in anchors)
+    """One `rimflow note --text` body publishing the current head of each arm (external, git-ledger anchor).
+    Token `arm:n:head:lsig`, lsig = HMAC(token, "ledger-anchor:arm:n:head"); the roster is token `@roster:...`."""
+    return NOTE_PREFIX + " " + " ".join("%s:%d:%s:%s" % (a["arm"], a["n"], a["head"], a.get("lsig") or "unsigned")
+                                        for a in anchors)
+
+
+_NOTE_TOKEN = re.compile(r"(@roster|[A-Za-z0-9_-]+):([0-9]+):([0-9a-f]{64}):([0-9a-f]{64})", re.ASCII)
 
 
 def parse_anchor_note(text: str) -> list[dict]:
-    if not isinstance(text, str) or not text.startswith(NOTE_PREFIX + " "):
+    """Strict: every token must be `arm:<ASCII digits>:<64 lowercase hex>:<64 lowercase hex>`. A token that is not
+    (5.0, 5e0, a non-ASCII digit, an extra field, no signature) is RETURNED with an `error`, never dropped."""
+    if not isinstance(text, str) or not text.lstrip().startswith(NOTE_PREFIX):
         return []
+    body = text.lstrip()[len(NOTE_PREFIX):]
+    if body and not body[0].isspace():
+        return []                                      # ARENA_ANCHORX...: some other note
     out = []
-    for tok in text[len(NOTE_PREFIX) + 1:].split():
-        try:
-            arm, n, head = tok.split(":")
-            out.append({"arm": arm, "n": int(n), "head": head, "external": True})
-        except ValueError:
+    for tok in body.split():
+        m = _NOTE_TOKEN.fullmatch(tok)
+        if m:
+            out.append({"arm": m.group(1), "n": int(m.group(2)), "head": m.group(3), "lsig": m.group(4),
+                        "external": True})
             continue
+        arm = tok.split(":", 1)[0]
+        arm = arm if re.fullmatch(r"@roster|[A-Za-z0-9_-]+", arm, re.ASCII) else "?"
+        parts = tok.split(":")
+        why = ("unsigned anchor token (no harness HMAC)" if len(parts) == 3 else "malformed anchor token")
+        out.append({"arm": arm, "external": True, "error": "%s %r" % (why, tok[:100])})
     return out
 
 
@@ -518,12 +806,31 @@ def ledger_anchors(events) -> dict:
     by = {}
     for ev in events:
         if ev.get("event") == "note":
+            src = "note tsn=%s seat=%s item=%s" % (ev.get("tsn", "?"), ev.get("seat") or ev.get("who") or "?",
+                                                   ev.get("id", "?"))
             for a in parse_anchor_note(ev.get("text")):
-                err = anchor_error(a)
+                err = a.get("error") or anchor_error(a)
+                a["note"] = src
                 if err:
-                    a["error"] = "%s (note %s)" % (err, ev.get("tsn", ev.get("id", "?")))
+                    a["error"] = "%s (%s)" % (err, src)
                 by.setdefault(a["arm"], []).append(a)
     return by
+
+
+def verify_ledger_anchors(external: dict, token: str) -> dict:
+    """Copy of `external` in which every anchor whose lsig is not the harness HMAC carries an `error` (forged or
+    unsigned: listed, never applied, confers no trust)."""
+    out = {}
+    for arm, lst in (external or {}).items():
+        for a in lst:
+            a = dict(a)
+            if not a.get("error") and not anchor_error(a):
+                want = _ledger_sig(token, arm, a["n"], a["head"])
+                if not (isinstance(a.get("lsig"), str) and hmac.compare_digest(a["lsig"], want)):
+                    a["error"] = "anchor note signature invalid: not minted with the harness token (%s)" % a.get(
+                        "note", "ledger")
+            out.setdefault(arm, []).append(a)
+    return out
 
 
 def check_anchors(accepted: list[dict], anchors: list[dict], errors: list | None = None) -> list[str]:
@@ -585,16 +892,16 @@ class HarnessWriter:
             tail = verify_lines(lines, self._token, arm)
             # forged lines already in the file are tolerated (they stay REJECTED on read; refusing to write would
             # let an agent stop the harness by appending junk); the chain continues from the last accepted line
-            if event == "test_start":
-                seq = ordered(tail["accepted"] + [rec])
-                j = _target_build(seq, next(i for i, x in enumerate(seq) if x is rec))
-                b = norm_id((seq[j].get("detail") or {}).get("builder")) if j is not None else None
-                if b and b == norm_id((rec.get("detail") or {}).get("tester")):
-                    rec["rule"] = FLAG_SAME_AGENT
+            if event == "test_start" and any(x is rec for x in flagged_same_agent(tail["accepted"] + [rec])):
+                rec["rule"] = FLAG_SAME_AGENT
+            _roster_add(self.p, self._token, arm)        # rostered BEFORE its first record exists
             rec["sig"] = _sign(self._token, tail["prev"], rec)
             fh.write(json.dumps(rec, sort_keys=True) + "\n")
             fh.flush(); os.fsync(fh.fileno())
-            append_anchor(self.p, make_anchor(arm, tail["accepted"] + [rec], self._token))
+            a = make_anchor(arm, tail["accepted"] + [rec], self._token)
+            append_anchor(self.p, a)
+            witness_append(self.p, dict(a, kind="anchor"))
+            self._cap.last_anchor[arm] = a
         return rec
 
 
@@ -653,16 +960,59 @@ def build_id(r: dict):
     return (r.get("detail") or {}).get("build_id") or r.get("sha")
 
 
+SKEW_S = 300        # a build of the task at or up to 5 min AFTER a test_start is ambiguous (clock skew, equal ts)
+
+
+def build_ids(r: dict) -> set:
+    """Every id a record names for its build: detail.build_id and sha (normalised)."""
+    return {n for n in (_norm_key((r.get("detail") or {}).get("build_id")), _norm_key(r.get("sha"))) if n}
+
+
+def _matches(test: dict, build: dict) -> bool:
+    """A test of the same task matches a build when it names no id, or shares one of the build's ids (a test that
+    names the sha of a build that also has a build_id is still that build)."""
+    if build["event"] != "build_end" or build.get("task") != test.get("task"):
+        return False
+    want = build_ids(test)
+    return not want or bool(want & build_ids(build))
+
+
 def _target_build(seq: list[dict], i: int) -> int | None:
     """Index in time-ordered `seq` of the build the test_start at i tests: the latest earlier build_end of the
-    same task with the same build id when the test names one, else the latest earlier build_end of the task."""
-    t = seq[i]
-    want = build_id(t)
+    same task that matches it (see _matches). Only a matched build is ever credited as tested."""
     for j in range(i - 1, -1, -1):
-        r = seq[j]
-        if r["event"] == "build_end" and r.get("task") == t.get("task") and (want is None or build_id(r) == want):
+        if _matches(seq[i], seq[j]):
             return j
     return None
+
+
+def _suspect_builds(seq: list[dict], i: int) -> list[int]:
+    """Builds the test at i may really be testing, for the SAME-AGENT FLAG only (never credit): the matched build;
+    when the test names an id no build has, the latest earlier build of the task; when nothing earlier matches, the
+    first later matching build (test_before_build); and every matching build at/after the test within SKEW_S
+    (ambiguous order)."""
+    t, out = seq[i], []
+    j = _target_build(seq, i)
+    if j is not None:
+        out.append(j)
+    elif build_ids(t):
+        k = next((k for k in range(i - 1, -1, -1) if seq[k]["event"] == "build_end"
+                  and seq[k].get("task") == t.get("task")), None)
+        if k is not None:
+            out.append(k)
+    later = [k for k in range(i + 1, len(seq)) if _matches(t, seq[k])]
+    if j is None and later:
+        out.append(later[0])
+    out += [k for k in later if _t(seq[k]) - _t(t) <= SKEW_S and k not in out]
+    return out
+
+
+def ambiguous_order(recs: list[dict]) -> list[dict]:
+    """test_start records with a matching build of the task at or up to SKEW_S after them: which came first cannot
+    be told from the clocks (skew, equal ts)."""
+    seq = ordered(recs)
+    return [seq[i] for i, r in enumerate(seq) if r["event"] == "test_start"
+            and any(_matches(r, seq[k]) and _t(seq[k]) - _t(r) <= SKEW_S for k in range(i + 1, len(seq)))]
 
 
 def _tests(seq: list[dict]):
@@ -685,20 +1035,19 @@ def _different(tester: str | None, builder: str | None) -> bool:
 
 
 def flagged_same_agent(recs: list[dict]) -> list[dict]:
-    """test_start records whose tester is the builder of the build they test (per task AND build id)."""
+    """test_start records whose tester is the builder of a build they may be testing (_suspect_builds: the matched
+    build, the build behind a non-matching id, a later or clock-ambiguous build of the task)."""
     seq = ordered(recs)
-    return [seq[i] for i, j in _tests(seq) if j is not None and _builder(seq[j]) and _builder(seq[j]) == _tester(seq[i])]
+    return [seq[i] for i, r in enumerate(seq) if r["event"] == "test_start" and _tester(r)
+            and any(_builder(seq[k]) == _tester(r) for k in _suspect_builds(seq, i))]
 
 
 def test_before_build(recs: list[dict]) -> list[dict]:
     """test_start with no earlier matching build_end although a matching one exists LATER in time."""
     seq, out = ordered(recs), []
     for i, j in _tests(seq):
-        if j is None:
-            t, want = seq[i], build_id(seq[i])
-            if any(r["event"] == "build_end" and r.get("task") == t.get("task") and (want is None or build_id(r) == want)
-                   for r in seq[i + 1:]):
-                out.append(t)
+        if j is None and any(_matches(seq[i], r) for r in seq[i + 1:]):
+            out.append(seq[i])
     return out
 
 
@@ -726,27 +1075,32 @@ def latency_minutes(recs: list[dict]) -> list[float]:
 
 
 def owner_minutes(recs: list[dict]) -> dict:
-    """Cards deduped by card_id (first record wins); a card whose minutes, card_id or unblocked list is malformed
+    """Cards deduped by NORMALISED card_id (NFKC, format chars dropped, whitespace collapsed, casefold): the
+    EARLIEST by event time wins; a duplicate with other minutes or another unblocked list is counted in
+    `card_conflicts`. unblocked task ids are stripped. A card whose minutes, card_id or unblocked list is malformed
     (pre-validation line) is skipped and counted in `malformed`, never crashes the report."""
-    cards, seen, malformed = [], set(), 0
-    for r in recs:
+    cards, seen, malformed, conflicts = [], {}, 0, 0
+    for r in ordered(recs):
         if r["event"] != "card":
             continue
         d = r.get("detail") or {}
         cid, un = d.get("card_id"), d.get("unblocked")
-        if not (_minutes_ok(r.get("minutes")) and isinstance(cid, str) and isinstance(un, list)
-                and all(isinstance(t, str) for t in un)):
+        key = _norm_key(cid)
+        if not (_minutes_ok(r.get("minutes")) and key and isinstance(un, list)
+                and all(isinstance(t, str) and t.strip() for t in un)):
             malformed += 1
             continue
-        if cid in seen:
+        c = (float(r["minutes"]), sorted({t.strip() for t in un}))
+        if key in seen:
+            conflicts += seen[key] != c
             continue
-        seen.add(cid); cards.append(r)
+        seen[key] = c; cards.append(c)
     touch = [r for r in recs if r["event"] == "owner_touch" and _minutes_ok(r.get("minutes"))]
-    unblocked = sorted({t for r in cards for t in r["detail"]["unblocked"]})
-    cm = sum(r["minutes"] for r in cards)
-    tm = sum(r["minutes"] for r in touch)
+    unblocked = sorted({t for c in cards for t in c[1]})
+    cm = sum(c[0] for c in cards)
+    tm = sum(float(r["minutes"]) for r in touch)
     return {"cards": len(cards), "card_minutes": cm, "touch_minutes": tm, "minutes": cm + tm,
-            "unblocked_tasks": unblocked, "malformed_cards": malformed}
+            "unblocked_tasks": unblocked, "malformed_cards": malformed, "card_conflicts": conflicts}
 
 
 def accepted_tasks(recs: list[dict]) -> set:
@@ -772,7 +1126,8 @@ def output_report(recs: list[dict], points: dict | None = None) -> dict:
     un = set(om["unblocked_tasks"])
     judged = any(r["event"] == "judge" for r in recs)
     ld = ledger_done(recs)
-    base = {"owner_minutes": om["minutes"], "malformed_cards": om["malformed_cards"], "ledger_done": ld}
+    base = {"owner_minutes": om["minutes"], "malformed_cards": om["malformed_cards"],
+            "card_conflicts": om["card_conflicts"], "ledger_done": ld}
     if not judged and ld:
         return dict(base, output_comparable=False, points_with_unblocked=None, points_without_unblocked=None,
                     owner_unblocked_accepted=[], minutes_per_point_with=None, minutes_per_point_without=None,
@@ -794,17 +1149,27 @@ def unprovenanced(recs: list[dict]) -> int:
 
 def report(p: dict, token: str | None = None, external: dict | None = None) -> dict:
     """Per arm. FAILS CLOSED:
-      - an arm whose log contradicts a usable anchor (local store, or `external` = ledger_anchors()) is REFUSED;
+      - an arm whose log contradicts a usable anchor (local store, witness, or `external` = ledger_anchors()) is
+        REFUSED;
       - an arm with accepted records but NO usable anchor at all (local store deleted, nothing published) is
         REFUSED as UNMEASURED: its history cannot be told from a re-signed one;
-      - `trusted` is True only when a ledger-published anchor covers the arm's WHOLE accepted log (n == accepted);
-        `_trust` summarises: trusted only if every arm is.
-    Unusable anchors (negative count, bad head) are listed in `anchor_errors`, never applied, never a crash."""
+      - every ROSTERED arm (roster file, witness, published @roster) is reported; a rostered arm whose log is gone
+        or empty is REFUSED, and a roster that lost entries makes `_trust` False;
+      - `trusted` is True only when a SIGNED ledger anchor covers the arm's WHOLE accepted log (n == accepted) AND
+        the witness is readable and its newest anchor for the arm is that same n (a tail deleted after the newest
+        ledger anchor is still in the witness); `_trust` summarises: trusted only if every arm is.
+    Unusable anchors (negative count, bad head, malformed or unsigned token, forged signature) are listed in
+    `anchor_errors`, never applied, never a crash."""
     token = token or _read_token(p)
     an = read_anchors(p, token)
-    external = external or {}
-    arms = {f.stem for f in p["events"].glob("*.jsonl")} | set(an["by_arm"]) | set(external)
-    arms.discard("harness")
+    external = verify_ledger_anchors(external or {}, token)
+    wit = witness_read(p, token)
+    ros = read_roster(p, token)
+    wit_roster = {e.get("arm") for e in wit["roster"]}
+    rostered = set(ros["arms"]) | wit_roster | set(wit["anchors"])
+    arms = {f.stem for f in p["events"].glob("*.jsonl")} | set(an["by_arm"]) | set(external) | rostered
+    non_arm = {k for k in arms if not re.fullmatch(r"[A-Za-z0-9_-]+", str(k), re.ASCII) or k == "harness"}
+    arms -= non_arm
     out = {}
     for arm in sorted(arms):
         try:
@@ -812,37 +1177,65 @@ def report(p: dict, token: str | None = None, external: dict | None = None) -> d
         except Rejected:
             continue                        # not an arm name (stray file); never a reason to drop a real arm
         recs = v["accepted"]
-        loc, ext = an["by_arm"].get(arm, []), external.get(arm, [])
+        loc, ext, wan = an["by_arm"].get(arm, []), external.get(arm, []), wit["anchors"].get(arm, [])
         errors = []
-        bad = check_anchors(recs, loc + ext, errors)
+        bad = check_anchors(recs, loc + ext + wan, errors)
         usable_ext = [a for a in ext if not (a.get("error") or anchor_error(a))]
         usable_loc = [a for a in loc if not anchor_error(a)]
+        usable_wit = [a for a in wan if not anchor_error(a)]
         upto = max((a["n"] for a in usable_ext), default=0)
+        wmax = max((a["n"] for a in usable_wit), default=0)
+        witness_ok = wit["status"] == "ok" and wmax == len(recs)
         base = {"accepted": len(recs), "rejected": len(v["rejected"]), "recoverable": len(v["recoverable"]),
                 "anchors": len(usable_loc) + len(usable_ext), "external_anchored_upto": upto,
-                "trusted": bool(not bad and recs and usable_ext and upto == len(recs))}
+                "witness_anchored_upto": wmax, "rostered": arm in rostered,
+                "trusted": bool(not bad and recs and usable_ext and upto == len(recs) and witness_ok)}
         if errors:
             base["anchor_errors"] = errors
-        if not bad and recs and not usable_loc and not usable_ext:
+        if arm in rostered and not recs:
+            bad = bad or ["rostered arm has no accepted record (log deleted or emptied)"]
+        if not bad and recs and not usable_loc and not usable_ext and not usable_wit:
             bad = ["UNMEASURED: %d accepted record(s) and no anchor at all (local anchor store missing or emptied, "
                    "none published): history cannot be told from a re-signed one" % len(recs)]
         if bad:
             out[arm] = dict(base, refused=bad, trusted=False)
             continue
         if recs and not base["trusted"]:
-            base["trust_note"] = ("local anchors only: a token holder can rewrite them; publish with `anchor-note` and "
-                                  "report --ledger-anchors for a trusted report" if not usable_ext else
-                                  "records %d..%d are after the newest ledger anchor" % (upto + 1, len(recs)))
+            base["trust_note"] = (
+                "local anchors only: a token holder can rewrite them; publish with `anchor-note` and "
+                "report --ledger-anchors for a trusted report" if not usable_ext else
+                "records %d..%d are after the newest ledger anchor" % (upto + 1, len(recs)) if upto != len(recs) else
+                "witness %s, newest witness anchor n=%d of %d" % (wit["status"], wmax, len(recs)))
+        if arm not in rostered:
+            base["trusted"] = False
+            base["trust_note"] = "arm log exists but the arm is not in the roster"
         out[arm] = dict(base, flagged_same_agent=len(flagged_same_agent(recs)),
                         untested_builds=len(untested_builds(recs)), latency_min=latency_minutes(recs),
-                        test_before_build=len(test_before_build(recs)), out_of_order=out_of_order(recs),
-                        unprovenanced=unprovenanced(recs), **output_report(recs))
+                        test_before_build=len(test_before_build(recs)), ambiguous_order=len(ambiguous_order(recs)),
+                        out_of_order=out_of_order(recs), unprovenanced=unprovenanced(recs), **output_report(recs))
     if an["bad"]:
         out["_anchor_store"] = {"bad_anchor_lines": len(an["bad"])}
+    roster_problems = ["roster line(s) unverifiable or out of chain: %d" % len(ros["bad"])] if ros["bad"] else []
+    lost = sorted(a for a in (wit_roster | set(wit["anchors"])) if a not in ros["arms"])
+    if lost:
+        roster_problems.append("witness knows arm(s) missing from the roster file: %s" % lost)
+    rerrs = []
+    for ra in external.get("@roster", []):
+        err = ra.get("error") or anchor_error(ra)
+        if err:
+            rerrs.append(err)
+        elif ra["n"] > ros["n"] or (ra["n"] and ra["n"] == ros["n"] and ra["head"] != ros["head"]):
+            roster_problems.append("published roster anchor n=%d contradicts the roster file (n=%d)" % (ra["n"], ros["n"]))
+    other = [a.get("error") or "anchor for non-arm %r" % k for k in non_arm - {"@roster"} for a in external.get(k, [])]
     arms_out = [k for k in out if not k.startswith("_")]
-    out["_trust"] = {"trusted": bool(arms_out) and all(out[k]["trusted"] for k in arms_out),
-                     "external_anchors": bool(external),
+    out["_trust"] = {"trusted": bool(arms_out) and all(out[k]["trusted"] for k in arms_out) and not roster_problems,
+                     "external_anchors": bool(external), "witness": wit["status"], "witness_bad_entries": wit["bad"],
+                     "rostered_arms": sorted(rostered),
                      "untrusted_arms": sorted(k for k in arms_out if not out[k]["trusted"])}
+    if roster_problems:
+        out["_trust"]["roster_problems"] = roster_problems
+    if rerrs + other:
+        out["_trust"]["ledger_anchor_errors"] = rerrs + other
     return out
 
 
@@ -853,6 +1246,7 @@ def anchor_note_command(p: dict, item: str = "ARENA_EVENTLOG_BUILD_AGENTS_MAY_NO
              for f in sorted(p["events"].glob("*.jsonl")) if f.stem != "harness"]
     if not heads:
         return None
+    heads.append(roster_anchor(p, token))
     return ("python3 src/RimMandrake/rimflow/cli.py note %s --seat FOUNDRY --why 'arena harness anchor: event-log "
             "heads published so a deleted or forged event is caught at report time' --text '%s'"
             % (item, anchor_note_text(heads)))
