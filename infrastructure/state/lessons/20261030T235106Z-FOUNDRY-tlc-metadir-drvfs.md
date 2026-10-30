@@ -1,0 +1,2 @@
+TLC on WSL: put -metadir on a local tmp dir, never under /mnt/d. With the state files on drvfs, a liveness run of Handoff.tla went past 480 s; on local tmp the same run took 15 s. run_tlc.py now uses tempfile.mkdtemp. Also, fair-cycle (liveness) checking grows much faster than safety: 2 candidates is 2.5M states for safety in about 60 s, but liveness at 2 candidates exceeded 8 min, so it is checked at 1 candidate.
+home: NONE
