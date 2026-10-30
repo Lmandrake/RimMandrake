@@ -15,6 +15,11 @@ FAILURE against a throwaway git repo whose gate instruments (run_selftests/valid
                  the overall verdict is never `pass`; verdict_of() with a missing step is not `pass`
   xml/csharp/deploy  bad xml fails; build failure fails; blocked plan fails; plan naming a mod outside the area fails
   location       running from inside an arm clone is refused
+  round 2        runner isolation (json.dumps / conftest / sitecustomize / PYTHONSTARTUP forgeries stay red), a test
+                 rewriting a later instrument, a valid record then a hang (UNMEASURED), signing failure (main() nonzero),
+                 records bound to one run and ordered (replay, cross-run, supersedes), zero-exit UNMEASURED proof/build,
+                 deletions, `pass; return None`, .js placeholders, native shadows, unknown statuses, glob depth,
+                 code under bookkeeping paths, binary-only diffs, and the REAL run_selftests.py --only path.
 Writes only under a temp dir.
 """
 import json
@@ -43,12 +48,10 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
-STUB_SELFTESTS = '''import re, subprocess, sys
-files = sys.argv[sys.argv.index("--only") + 1:]
-bad = sum(1 for f in files if subprocess.run([sys.executable, f]).returncode != 0)
-n = len(files)
-print("PASS %d/%d  FAIL %d/%d  UNMEASURED 0/%d  CRASH 0/%d  SKIPPED 0/%d" % (n - bad, n, bad, n, n, n, n))
-sys.exit(1 if bad else 0)
+# the gate never runs the checkout's run_selftests.py (its own runner does the counting): a tripwire, so a gate that
+# did would fail every control
+STUB_SELFTESTS = '''import sys
+sys.exit("the gate ran the checkout's run_selftests.py")
 '''
 STUB_VALIDATE = '''import sys
 import vhelper
@@ -63,6 +66,7 @@ m = sys.argv[1]
 src = open(os.path.join("src/RimMandrake", m, "Source", "A.cs")).read()
 if "NODOTNET" in src: sys.exit("dotnet.exe not found; set WINBUILD_DOTNET")
 if "BUILDFAIL" in src: print("error CS1002"); sys.exit(1)
+if "UNMPHRASE" in src: print("UNMEASURED, not a pass or a fail"); sys.exit(0)
 print("BUILT")
 '''
 STUB_DEPLOY = '''import os, sys
@@ -81,12 +85,14 @@ BASE = {
     UT + "selftest_foo.py": "import foo\n\ndef t_a():\n    assert foo.foo() >= 1\n\nt_a()\n",
     UT + "proof_ok.py": "import sys\nimport foo\nsys.exit(0)\n",
     UT + "proof_bad.py": "import sys\nimport foo\nsys.exit(3)\n",
+    UT + "proof_unm.py": "import foo\nprint('UNMEASURED, not a pass or a fail')\n",
+    UT + "foo_extra.py": "def extra():\n    return 1\n",
     UT + "unrelated.py": "import sys\nsys.exit(0)\n",
     "src/RimMandrake/ModA/Patches/p.xml": "<Patch/>\n",
     "src/RimMandrake/ModA/Source/A.cs": "class A {}\n",
     "src/RimMandrake/ModA/About/About.xml": "<ModMetaData/>\n",
 }
-AREA = [UT + "foo*", UT + "selftest_foo*", "src/RimMandrake/ModA/*"]
+AREA = [UT + "foo*", UT + "selftest_foo*", "src/RimMandrake/ModA/**"]
 ENV = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t")
 
 
@@ -118,20 +124,20 @@ class Ctx:
                 f.unlink()
             else:
                 f.parent.mkdir(parents=True, exist_ok=True)
-                f.write_text(content)
+                f.write_bytes(content) if isinstance(content, bytes) else f.write_text(content)
         git(self.repo, "add", "-A", "--", ".")
         git(self.repo, "commit", "-q", "-m", msg)
         return git(self.repo, "rev-parse", "HEAD")
 
-    def emit(self, event, sha, **kw):
-        return self.w.emit("armx", event, lane="L", run_id="r", task="T1", sha=sha, **kw)
+    def emit(self, event, sha, lane="L", run_id="r", **kw):
+        return self.w.emit("armx", event, lane=lane, run_id=run_id, task="T1", sha=sha, **kw)
 
-    def records(self, head, builder="B1", tester="T9", test="pass"):
-        self.emit("build_end", head, detail={"builder": builder})
+    def records(self, head, builder="B1", tester="T9", test="pass", run_id="r"):
+        self.emit("build_end", head, run_id=run_id, detail={"builder": builder})
         if tester:
-            self.emit("test_start", head, detail={"tester": tester})
+            self.emit("test_start", head, run_id=run_id, detail={"tester": tester})
             if test:
-                self.emit("test_end", head, verdict=test, detail={"tester": tester})
+                self.emit("test_end", head, run_id=run_id, verdict=test, detail={"tester": tester})
 
     def gate(self, head, task=None, **kw):
         kw.setdefault("defs_roots", [])
@@ -519,13 +525,256 @@ def t_signing(tmp):
           "without a harness pass finish() does not sign (record_error set)")
 
 
+RED = "import foo\n\ndef t_a():\n    assert foo.foo() == 3\n\nt_a()\n"
+FOO2 = "def foo():\n    return 2\n"
+
+
+def t_isolation(tmp):
+    """round 2 (1): the candidate shares the runner's process, so nothing it can patch decides the record."""
+    check("json" not in G.RUNNER_SRC and "ARENAGATE2" in G.RUNNER_SRC,
+          "the runner imports no json (a module the candidate could patch) and writes the fixed ARENAGATE2 line")
+    forge = ("import json\n_o = json.dumps\njson.dumps = lambda r, *a, **k: _o(dict(r, status='pass', tampered=False, "
+             "asserts=99, checks=99, tests=99, lines=99), *a, **k)\n\n" + FOO2)
+    c = Ctx(tmp, "iso_js"); h = c.commit({UT + "foo.py": forge, UT + "selftest_foo.py": RED}); c.records(h); r = c.gate(h)
+    check(st(r, "tests") == "FAIL" and r["verdict"] == "fail",
+          "a planted json.dumps monkeypatch does not turn a red test into a pass (tests %s)" % st(r, "tests"))
+    conf = ("import os, builtins\n_w, _e = os.write, getattr(os, '_ex' + 'it')\n"
+            "def w(fd, b):\n    return _w(fd, b.replace(b'\"fail\"', b'\"pass\"').replace(b' fail ', b' pass '))\n"
+            "os.write = w\nsetattr(os, '_ex' + 'it', lambda c: _e(0))\nbuiltins.isinstance = lambda *a: True\n"
+            "m = getattr(__import__('sys'), 'moni' + 'toring')\n")
+    task = dict(id="T1", area=AREA + [UT + "conftest.py"], proof="python3 src/RimMandrake/Utils/proof_ok.py", live="none")
+    c = Ctx(tmp, "iso_cf"); h = c.commit({UT + "foo.py": FOO2, UT + "conftest.py": conf,
+                                          UT + "selftest_foo.py": "import conftest\n" + RED})
+    c.records(h); r = c.gate(h, task=task)
+    check(st(r, "tests") == "FAIL" and r["verdict"] == "fail",
+          "a conftest the red test imports, patching os.write/os._exit/builtins, cannot forge a pass (tests %s)" % st(r, "tests"))
+    sc = conf.replace("builtins.isinstance = lambda *a: True\n", "")
+    task_sc = dict(task, area=AREA + [UT + "sitecustomize.py"])
+    c = Ctx(tmp, "iso_sc"); h = c.commit({UT + "foo.py": FOO2, UT + "sitecustomize.py": sc,
+                                          UT + "selftest_foo.py": "import sitecustomize\n" + RED})
+    c.records(h); r = c.gate(h, task=task_sc)
+    check(st(r, "tests") == "FAIL" and st(r, "scope") == "FAIL" and r["verdict"] == "fail",
+          "a sitecustomize that patches the runner: scope FAIL and the red test stays FAIL (tests %s)" % st(r, "tests"))
+    evil = tmp / "evil_env"; evil.mkdir(exist_ok=True)
+    (evil / "startup.py").write_text(sc); (evil / "sitecustomize.py").write_text(sc)
+    saved = {k: os.environ.get(k) for k in ("PYTHONSTARTUP", "PYTHONPATH", "PYTHONINSPECT")}
+    os.environ.update(PYTHONSTARTUP=str(evil / "startup.py"), PYTHONPATH=str(evil), PYTHONINSPECT="1")
+    try:
+        c = Ctx(tmp, "iso_env"); h = c.commit({UT + "foo.py": FOO2, UT + "selftest_foo.py": RED}); c.records(h)
+        r = c.gate(h)
+    finally:
+        for k, v in saved.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+    check(st(r, "tests") == "FAIL", "PYTHONSTARTUP/PYTHONPATH/PYTHONINSPECT in the gate's env do not reach the runner "
+          "(red test FAIL, got %s)" % st(r, "tests"))
+
+
+def t_instruments(tmp):
+    """round 2 (2): a candidate test cannot rewrite a later instrument (head or base copy) at run time."""
+    rw = ("import os, foo\n\ndef t_a():\n    assert foo.foo() == 2\n\n"
+          "for root in ('.', '../base'):\n    for rel in ('skills/rimworld-modding/scripts/validate_patch.py', "
+          "'src/RimMandrake/Utils/deploy_custom_mods.py'):\n        try:\n"
+          "            open(os.path.join(root, rel), 'w').write(\"print('OK - 0 errors')\\n\")\n"
+          "        except OSError:\n            pass\nt_a()\n")
+    c = Ctx(tmp, "ins_rw")
+    h = c.commit({UT + "foo.py": FOO2, UT + "selftest_foo.py": rw, "src/RimMandrake/ModA/Patches/p.xml": "<Patch>BADXML</Patch>\n"})
+    c.records(h); r = c.gate(h)
+    check(st(r, "xml") == "FAIL" and r["verdict"] == "fail",
+          "a selftest that rewrites validate_patch.py at run time does not launder bad xml (xml %s)" % st(r, "xml"))
+    c = Ctx(tmp, "ins_ctl")
+    h = c.commit({UT + "foo.py": FOO2, UT + "selftest_foo.py": rw, "src/RimMandrake/ModA/Patches/p.xml": "<Patch>fine</Patch>\n"})
+    c.records(h); r = c.gate(h)
+    check(st(r, "tests") == "PASS" and st(r, "xml") == "PASS",
+          "control: the same selftest passes when its writes are refused, and good xml still PASSES (%s/%s)"
+          % (st(r, "tests"), st(r, "xml")))
+
+
+def t_rc(tmp):
+    """round 2 (3): a valid record followed by a hang, or by a nonzero exit, is never a pass."""
+    src, real_run = G.RUNNER_SRC, G.run
+    lines = src.split("\n")
+    i = max(k for k, l in enumerate(lines) if "_exit(" in l)
+    ind = len(lines[i]) - len(lines[i].lstrip())
+    lines[i] = lines[i][:ind] + '__import__("time").sleep(30); ' + lines[i][ind:]
+    G.RUNNER_SRC = "\n".join(lines)
+    G.run = lambda *a, timeout=G.STEP_TIMEOUT, **k: real_run(*a, timeout=min(timeout, 8), **k)
+    try:
+        c = Ctx(tmp, "rc_hang"); h = c.commit(GOOD); c.records(h); r = c.gate(h)
+    finally:
+        G.RUNNER_SRC, G.run = src, real_run
+    check(st(r, "tests") == "UNMEASURED" and r["verdict"] == "invalid",
+          "a runner that writes a valid pass record then hangs past the timeout: tests UNMEASURED (%s)" % st(r, "tests"))
+    vf, pr = getattr(G, "verdict_from", None), getattr(G, "parse_record", None)
+    ok = vf is not None and pr is not None
+    if ok:
+        n = "ab" * 16
+        good = ("ARENAGATE2 %s pass 1 2 3 4 0\n" % n).encode()
+        rec = pr(good, n)
+        ok = (rec is not None and vf(0, rec)[0] == "PASS" and vf(1, rec)[0] == "FAIL" and vf(None, rec)[0] == "UNMEASURED"
+              and vf(0, None)[0] == "UNMEASURED" and pr(good + good, n) is None and pr(good, "cd" * 16) is None
+              and pr(good[:-1], n) is None and vf(0, pr(good.replace(b" 0\n", b" 1\n"), n))[0] == "UNMEASURED")
+    check(ok, "parent-side parse: pass needs rc 0 + the one exact line with this nonce; rc!=0 FAIL, timeout/extra/"
+          "wrong nonce/tampered UNMEASURED")
+
+
+def t_signfail(tmp):
+    """round 2 (4): signing failure -> verdict invalid, main() exits nonzero."""
+    import contextlib
+    import io
+    c = Ctx(tmp, "sf"); h = c.commit(GOOD); c.records(h)
+    real_load, real_pass = G.A.load_frozen, L.harness_pass
+    os.environ["ARENA_GATE_DUMP"] = str(c.dump)
+    argv = ["--task", "T1", "--base", c.base, "--head", h, "--arm", "armx", "--repo", str(c.repo)]
+    out = {}
+    try:
+        G.A.load_frozen = lambda *a, **k: c.task
+        for k in ("ctl", "nosign"):
+            if k == "nosign":
+                L.harness_pass = lambda *a, **kw: (_ for _ in ()).throw(L.Rejected("no pass"))
+            buf = io.StringIO()
+            with contextlib.redirect_stdout(buf):
+                rc = G.main(argv)
+            try:
+                out[k] = (rc, json.loads(buf.getvalue().strip().splitlines()[-1]))
+            except (ValueError, IndexError):
+                out[k] = (rc, {})
+    finally:
+        G.A.load_frozen, L.harness_pass = real_load, real_pass
+        os.environ.pop("ARENA_GATE_DUMP", None)
+    rc, rec = out["ctl"]
+    check(rc == 0 and rec.get("verdict") == "pass" and rec.get("recorded"), "control: main() on a clean signed pass exits 0 (%s %s)"
+          % (rc, rec.get("verdict")))
+    rc, rec = out["nosign"]
+    check(rc != 0 and rec.get("verdict") == "invalid" and rec.get("passed") is False and not rec.get("recorded"),
+          "a pass that cannot be signed: verdict invalid, main() exits %s (nonzero)" % rc)
+
+
+def t_records(tmp):
+    """round 2 (5): records are bound to one run and ordered by signed time; any unsuperseded failure counts."""
+    def tr(tag, fn):
+        c = Ctx(tmp, "rec_" + tag); h = c.commit(GOOD); fn(c, h); return st(c.gate(h), "test_record")
+    s = tr("oldpass_newstart", lambda c, h: (c.records(h, run_id="r1"), c.emit("test_start", h, run_id="r2", detail={"tester": "T9"})))
+    check(s == "UNMEASURED", "an old passing test_end then a NEW test_start: the new run has no verdict -> UNMEASURED (%s)" % s)
+    s = tr("mismatch", lambda c, h: (c.emit("build_end", h, detail={"builder": "B1"}),
+                                     c.emit("test_start", h, run_id="ra", detail={"tester": "T9"}),
+                                     c.emit("test_end", h, run_id="rb", verdict="pass", detail={"tester": "T9"})))
+    check(s == "UNMEASURED", "a test_end from another run_id does not answer a test_start -> UNMEASURED (%s)" % s)
+
+    def fail_then_pass(sup, early=False):
+        def fn(c, h):
+            c.records(h, test="fail", run_id="r1")
+            ts = "2000-01-01T00:00:00+00:00" if early else None
+            c.emit("test_start", h, run_id="r2", detail={"tester": "T9"})
+            d = {"tester": "T9"}
+            if sup:
+                d["supersedes"] = "r1"
+            c.emit("test_end", h, run_id="r2", verdict="pass", detail=d, ts=ts)
+        return fn
+    s = tr("fp", fail_then_pass(False))
+    check(s == "FAIL", "a failed test run then a passing one that does not name it -> FAIL (%s)" % s)
+    s = tr("fps", fail_then_pass(True))
+    check(s == "PASS", "control: a later signed re-run whose detail.supersedes names the failed run -> PASS (%s)" % s)
+    s = tr("fpe", fail_then_pass(True, early=True))
+    check(s != "PASS", "a 'superseding' pass signed with a time BEFORE the failure supersedes nothing (%s)" % s)
+
+    def lv(tag, fn):
+        c = Ctx(tmp, "lv2_" + tag, live="minimal"); h = c.commit(GOOD); c.records(h); fn(c, h); return st(c.gate(h), "live")
+    can = lambda c, h, v, run, **d: c.emit("canary", h, run_id=run, verdict=v, detail=dict({"modcheck": True}, **d))  # noqa: E731
+    rel = lambda c, h, run: c.emit("live_release", h, run_id=run, verdict="pass")  # noqa: E731
+    s = lv("fp", lambda c, h: (can(c, h, "fail", "r1"), can(c, h, "pass", "r2"), rel(c, h, "r2")))
+    check(s == "INVALID", "a failed canary is not erased by a later passing canary of another run -> INVALID (%s)" % s)
+    s = lv("fps", lambda c, h: (can(c, h, "fail", "r1"), can(c, h, "pass", "r2", supersedes=["r1"]), rel(c, h, "r2")))
+    check(s == "PASS", "control: a later passing canary naming the failed run in supersedes -> PASS (%s)" % s)
+    s = lv("xrun", lambda c, h: (rel(c, h, "r1"), can(c, h, "pass", "r2")))
+    check(s == "UNMEASURED", "a live_release from another run (and older than the canary) is not paired -> UNMEASURED (%s)" % s)
+    s = lv("build", lambda c, h: (can(c, h, "pass", "r2", build="b2"), rel(c, h, "r2")))
+    check(s == "UNMEASURED", "a live_release whose build id differs from the canary's is not paired (%s)" % s)
+
+
+def t_phrase_deletes(tmp):
+    """round 2 (6)+(7): exit 0 with the unmeasured phrase is UNMEASURED; deleted code files are code changes."""
+    c = Ctx(tmp, "ph_proof", proof="python3 src/RimMandrake/Utils/proof_unm.py"); h = c.commit(GOOD); c.records(h); r = c.gate(h)
+    check(st(r, "proof") == "UNMEASURED" and r["verdict"] == "invalid",
+          "a proof printing the unmeasured phrase and exiting 0 is UNMEASURED (%s)" % st(r, "proof"))
+    c = Ctx(tmp, "ph_cs"); h = c.commit(dict(GOOD, **{"src/RimMandrake/ModA/Source/A.cs": "class A { /* UNMPHRASE */ }\n"}))
+    c.records(h); r = c.gate(h)
+    check(st(r, "csharp") == "UNMEASURED" and r["verdict"] == "invalid",
+          "a build printing the unmeasured phrase and exiting 0 is UNMEASURED (%s)" % st(r, "csharp"))
+    c = Ctx(tmp, "del_py"); h = c.commit({UT + "foo_extra.py": None, UT + "foo_data.txt": "rows\n"}); c.records(h); r = c.gate(h)
+    check(st(r, "tests") == "UNMEASURED" and r["verdict"] != "pass",
+          "a deleted .py (plus an added data file) with no selftest mapping: tests UNMEASURED, not NA (%s)" % st(r, "tests"))
+    c = Ctx(tmp, "del_cs"); h = c.commit(dict(GOOD, **{"src/RimMandrake/ModA/Source/A.cs": None, "src/RimMandrake/ModA/d.txt": "x\n"}))
+    c.records(h); r = c.gate(h)
+    check(st(r, "csharp") != "NA" and r["verdict"] != "pass", "a deleted .cs: csharp runs, not NA (%s)" % st(r, "csharp"))
+    c = Ctx(tmp, "del_xml"); h = c.commit(dict(GOOD, **{"src/RimMandrake/ModA/Patches/p.xml": None, "src/RimMandrake/ModA/d.txt": "x\n"}))
+    c.records(h); r = c.gate(h)
+    check(st(r, "xml") == "UNMEASURED" and r["verdict"] != "pass", "a deleted Patches xml: xml UNMEASURED, not NA (%s)" % st(r, "xml"))
+
+
+def t_static(tmp):
+    """round 2 (8)+(9) and the round-1 leftovers p3f/p3g/p3h."""
+    c = Ctx(tmp, "stb"); h = c.commit({UT + "foo.py": FOO2 + "\ndef bar():\n    pass\n    return None\n"}); c.records(h); r = c.gate(h)
+    check(st(r, "placeholders") == "FAIL", "`def bar(): pass; return None` is a stub: placeholders FAIL (%s)" % st(r, "placeholders"))
+    c = Ctx(tmp, "js"); h = c.commit(dict(GOOD, **{UT + "foo.js": "// " + TD + ": later\nexport const x = 1;\n"})); c.records(h); r = c.gate(h)
+    check(st(r, "placeholders") == "FAIL", "a placeholder in an added .js is found (%s)" % st(r, "placeholders"))
+    wide = dict(id="T1", area=[UT + "*", "src/RimMandrake/ModA/**"], proof="python3 src/RimMandrake/Utils/proof_ok.py", live="none")
+    for k, path in (("so", UT + "socket.cpython-312-x86_64-linux-gnu.so"), ("pyd", UT + "foo_native.pyd")):
+        c = Ctx(tmp, "nat_" + k); h = c.commit(dict(GOOD, **{path: b"\x7fELF\x00\x01binary"})); c.records(h); r = c.gate(h, task=wide)
+        check(st(r, "scope") == "FAIL" and r["verdict"] == "fail", "a native %s in the diff FAILS scope (%s)" % (path, st(r, "scope")))
+    for bad in (None, "BROKEN"):
+        res = {s: {"status": "PASS"} for s in G.STEPS}
+        res["proof"] = {"status": bad}
+        check(G.verdict_of(res) == "invalid", "verdict_of(): a step status %r is invalid, never pass" % (bad,))
+    check(G.verdict_of({**{s: {"status": "PASS"} for s in G.STEPS}, "xml": {"status": "NA"}}) == "pass",
+          "verdict_of(): PASS plus NA passes (control)")
+    c = Ctx(tmp, "glob"); h = c.commit(dict(GOOD, **{UT + "foo_dir/evil.py": "X = 1\n"})); c.records(h); r = c.gate(h)
+    check(st(r, "scope") == "FAIL", "p3g: area glob foo* does not reach into foo_dir/ (scope %s)" % st(r, "scope"))
+    c = Ctx(tmp, "bkq"); h = c.commit(dict(GOOD, **{"infrastructure/state/queue/evil.py": "X = 1\n"})); c.records(h); r = c.gate(h)
+    check(st(r, "scope") == "FAIL", "p3h: code under a bookkeeping path is not stripped: scope FAIL (%s)" % st(r, "scope"))
+    c = Ctx(tmp, "bkq_ok"); h = c.commit(dict(GOOD, **{"infrastructure/state/queue/notes.md": "x\n"})); c.records(h); r = c.gate(h)
+    check(st(r, "scope") == "PASS" and r["verdict"] == "pass", "control: a bookkeeping .md note is still stripped (%s)" % st(r, "scope"))
+    c = Ctx(tmp, "bin"); h = c.commit({"src/RimMandrake/ModA/Textures/t.png": b"\x89PNG\x00\x00data"}); c.records(h); r = c.gate(h)
+    check(st(r, "placeholders") == "UNMEASURED" and r["verdict"] != "pass",
+          "p3f: a binary-only diff: placeholders UNMEASURED (%s)" % st(r, "placeholders"))
+
+
+def t_real(tmp):
+    """The real `run_selftests.py --only` and the harness runner agree on a real selftest; the runner sees red."""
+    import secrets
+    root = HERE.parents[3]
+    env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA", "PYTHON"))}
+    # a real selftest that needs no harness capability (selftest_arena_eventlog refuses any entrypoint but its own
+    # /proc/self/cmdline script, so under the gate's runner it reads FAIL by design: a known residual)
+    target = HERE.parent / "selftest_about_dependency_urls.py"
+    out = subprocess.run([sys.executable, str(root / UT / "run_selftests.py"), "--only", str(target), "--no-cache"],
+                         cwd=str(root), capture_output=True, text=True, env=env, timeout=300)
+    check(out.returncode == 0 and "RESULT: GREEN" in out.stdout,
+          "the real run_selftests.py --only passes %s (rc %s)" % (target.name, out.returncode))
+    runner = tmp / "real_runner.py"; runner.write_text(G.RUNNER_SRC)
+
+    def via_runner(path):
+        rfd, wfd = os.pipe(); n = secrets.token_hex(16)
+        p = subprocess.run([sys.executable, "-I", str(runner), str(wfd), str(path)], input=n + "\n", text=True,
+                           capture_output=True, pass_fds=(wfd,), env=env, timeout=300, cwd=str(Path(path).parent))
+        os.close(wfd); buf = os.read(rfd, 4096); os.close(rfd)
+        rec = G.parse_record(buf, n) if hasattr(G, "parse_record") else None
+        return (G.verdict_from(p.returncode, rec)[0] if rec else "NONE"), rec
+    v, rec = via_runner(target)
+    check(v == "PASS" and rec and rec["lines"] > 0,
+          "the harness runner passes the same real selftest, lines counted (%s %s)" % (v, rec))
+    red = tmp / "selftest_red_real.py"; red.write_text("def t_a():\n    assert 1 == 2\n\nt_a()\n")
+    v, rec = via_runner(red)
+    check(v == "FAIL", "the harness runner reports a real red selftest as FAIL (%s)" % v)
+
+
 def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}
     os.environ["ARENA_GATE_TEST"] = "1"
     tmp = Path(tempfile.mkdtemp(prefix="arena_gate_st_"))
     try:
         for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
-                  t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing):
+                  t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
+                  t_signfail, t_records, t_phrase_deletes, t_static, t_real):
             t(tmp)
     finally:
         for k, v in saved.items():

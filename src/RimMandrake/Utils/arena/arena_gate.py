@@ -119,7 +119,13 @@ PLACEHOLDER_RE = re.compile(r"\b(?i:TO" + r"DO|FIX" + r"ME)\b|\bXX" + r"X\b|Not"
 TAMPER_RE = re.compile(r"excepthook|sys\.settrace|sys\.setprofile|sys\.monitoring|threading\.settrace|"
                        r"gc\.get_(?:objects|referrers|referents)|sys\._getframe|_current_frames|/proc/self/(?:fd|mem)|"
                        r"\bos\._exit\b|\bctypes\b")
-CODE_EXT = (".py", ".cs", ".xml", ".sh", ".json")
+TAMPER_RE = re.compile(TAMPER_RE.pattern + r"|\b(?:tb_frame|f_back|f_locals|f_globals|gi_frame|cr_frame|ag_frame|"
+                       r"cell_contents|__closure__)\b")
+CODE_EXT = (".py", ".cs", ".xml", ".sh", ".json", ".js", ".mjs", ".cjs", ".ts", ".tsx", ".jsx", ".ps1", ".bat", ".cmd",
+            ".c", ".h", ".cpp", ".java", ".rs", ".go", ".lua", ".csproj", ".props", ".targets")
+# python-loadable compiled code: nothing in the diff can be reviewed, it can shadow any module and runs in-process
+NATIVE_EXT = (".so", ".pyd", ".pyc", ".pyo", ".dylib")
+BOOKKEEPING_EXT = (".md", ".jsonl", ".txt")    # a stripped bookkeeping path must be notes, never code (p3h)
 DEF_RE = re.compile(r"^\s*(?:def|async def)\s+(\w+)")
 CHECK_NAME = re.compile(r"(?:(?:check|expect|verify|assert)(?:_\w*)?|ok)$")
 LINES_FLOOR = 0.8
@@ -204,11 +210,36 @@ def git(repo: Path, *args, check=True) -> str:
 
 
 def is_bookkeeping(path: str) -> bool:
+    """Arm notes stripped before every step. Only note-shaped files: code under a bookkeeping glob is NOT stripped
+    (it is then an ordinary path, judged by scope and every other step)."""
+    if not path.endswith(BOOKKEEPING_EXT):
+        return False
     return A.is_bookkeeping(path) or any(fnmatch.fnmatch(path, g) for g in ARM_BOOKKEEPING)
 
 
+_GLOB_CACHE: dict = {}
+
+
+def glob_match(path: str, g: str) -> bool:
+    """Path glob: `*` and `?` stay inside one path segment, `**` crosses directories (p3g: `dir/*` is dir's files)."""
+    rx = _GLOB_CACHE.get(g)
+    if rx is None:
+        out, i = [], 0
+        while i < len(g):
+            if g.startswith("**", i):
+                out.append(".*"); i += 2
+            elif g[i] == "*":
+                out.append("[^/]*"); i += 1
+            elif g[i] == "?":
+                out.append("[^/]"); i += 1
+            else:
+                out.append(re.escape(g[i])); i += 1
+        rx = _GLOB_CACHE[g] = re.compile("".join(out) + r"\Z")
+    return bool(rx.match(path))
+
+
 def in_area(path: str, area) -> bool:
-    return any(fnmatch.fnmatch(path, g) or path == g for g in area)
+    return any(path == g or glob_match(path, g) for g in area)
 
 
 def sha_match(rec_sha, head_full: str) -> bool:
@@ -222,9 +253,9 @@ def shadow_name(path: str) -> str | None:
     parts = path.split("/")
     if path.endswith(".pth"):
         return parts[-1]
-    if not path.endswith(".py"):
+    if not path.endswith((".py", ".pyw") + NATIVE_EXT):
         return None
-    for c in parts[:-1] + [parts[-1][:-3]]:
+    for c in parts[:-1] + [parts[-1].split(".")[0]]:       # socket.cpython-312-x86_64-linux-gnu.so -> socket
         if c in SHADOW_NAMES:
             return c
     return None
@@ -255,66 +286,120 @@ def _data_root() -> str | None:
 # ---------------------------------------------------------------- the harness-owned selftest runner
 # Written to <work>/h/ (read-only inside the sandbox) and run as `python3 -I runner.py <fd> <selftest>`. It reads a
 # nonce from stdin, puts the selftest's dir on sys.path exactly as `python3 selftest.py` would, runs it with runpy
-# under sys.monitoring, and writes ONE json record (nonce, status, counts) to the pipe fd. No record -> UNMEASURED.
-RUNNER_SRC = r'''
-import ast, json, os, re, runpy, sys, traceback
-def _main():
+# under sys.monitoring, and writes ONE fixed ASCII line to the pipe fd. The PARENT decides: pass needs that exact line
+# (parse_record) AND exit status 0 (verdict_from); a timeout, a missing/extra/garbled line -> UNMEASURED.
+# The candidate runs in this process, so nothing it can patch is used after it starts: no json (or any other module
+# the runner shares with it); every primitive (os.write, os._exit, the monitoring calls, type, int ...) is bound to a
+# local BEFORE runpy, and the record is built with %-formatting of exact ints/strs. What same-process code can still do
+# is listed in RESIDUAL_FORGERY.
+RUNNER_SRC = r"""
+import ast, os, re, runpy, sys, traceback
+def _main(_write=os.write, _close=os.close, _exit=os._exit, _run=runpy.run_path, _ptb=traceback.print_exception,
+          _type=type, _int=int, _str=str, _BE=BaseException, _SE=SystemExit, _M=sys.monitoring,
+          _get_tool=sys.monitoring.get_tool, _get_events=sys.monitoring.get_events,
+          _set_events=sys.monitoring.set_events, _register=sys.monitoring.register_callback,
+          _DISABLE=sys.monitoring.DISABLE, _LINE=sys.monitoring.events.LINE, _START=sys.monitoring.events.PY_START,
+          _fullmatch=re.fullmatch):
     fd = int(sys.argv[1]); path = os.path.realpath(sys.argv[2]); os.set_inheritable(fd, False)
     nonce = sys.stdin.readline().strip()
     nul = os.open(os.devnull, os.O_RDONLY); os.dup2(nul, 0); os.close(nul)
-    rec = {"nonce": nonce, "path": path, "asserts": 0, "checks": 0, "tests": 0, "lines": 0}
+    if not _fullmatch(r"[0-9a-f]{32}", nonce):
+        _exit(3)
+    cnt = [0, 0, 0, 0]                       # asserts, checks, tests, lines
+    def out(status, tampered):
+        line = "ARENAGATE2 %%s %%s %%d %%d %%d %%d %%d\n" %% (nonce, status, cnt[0], cnt[1], cnt[2], cnt[3], tampered)
+        _write(fd, line.encode("ascii")); _close(fd)
     try:
         src = open(path, encoding="utf-8", errors="replace").read()
         alines = {n.lineno for n in ast.walk(ast.parse(src)) if isinstance(n, ast.Assert)}
-    except (OSError, SyntaxError, ValueError) as e:
-        rec.update(status="fail", why="unparsable: %%s" %% e)
-        os.write(fd, json.dumps(rec).encode()); os.close(fd); os._exit(1)
-    M = sys.monitoring; TOOL = 4; EV = M.events.LINE | M.events.PY_START
-    seen = set(); C = rec
-    chk = re.compile(%(check)r); tst = re.compile(r"(?:t|test)_\w+$")
+    except (OSError, SyntaxError, ValueError):
+        out("fail", 0); _exit(1)
+    TOOL = 4; EV = _LINE | _START
+    seen = set(); _add = seen.add
+    chk = re.compile(%(check)r).match; tst = re.compile(r"(?:t|test)_\w+$").match
     def on_line(code, line):
         if code.co_filename != path:
-            return M.DISABLE
+            return _DISABLE
         if line in alines:
-            C["asserts"] += 1
+            cnt[0] += 1
         elif (code, line) not in seen:
-            seen.add((code, line)); C["lines"] += 1
-            return M.DISABLE
+            _add((code, line)); cnt[3] += 1
+            return _DISABLE
     def on_start(code, off):
         n = code.co_name
-        if chk.match(n):
-            C["checks"] += 1
-        elif code.co_filename == path and tst.match(n):
-            C["tests"] += 1
+        if chk(n):
+            cnt[1] += 1
+        elif code.co_filename == path and tst(n):
+            cnt[2] += 1
         else:
-            return M.DISABLE
-    M.use_tool_id(TOOL, "arena_gate")
-    M.register_callback(TOOL, M.events.LINE, on_line); M.register_callback(TOOL, M.events.PY_START, on_start)
+            return _DISABLE
+    _M.use_tool_id(TOOL, "arena_gate")
+    _register(TOOL, _LINE, on_line); _register(TOOL, _START, on_start)
     sys.argv = [path]; sys.path.insert(0, os.path.dirname(path))
-    status, why = "pass", ""
-    M.set_events(TOOL, EV)
+    ok, err = True, None
+    _set_events(TOOL, EV)
     try:
-        runpy.run_path(path, run_name="__main__")
-    except SystemExit as e:
-        if e.code not in (None, 0):
-            status, why = "fail", "SystemExit(%%r)" %% (e.code,)
-    except BaseException as e:
-        status, why = "fail", "%%s: %%s" %% (type(e).__name__, str(e)[:200])
-        traceback.print_exc()
-    tampered = M.get_tool(TOOL) != "arena_gate" or M.get_events(TOOL) != EV
+        _run(path, run_name="__main__")
+    except _BE as e:
+        ok = False
+        if _type(e) is _SE:
+            c = e.code
+            ok = c is None or c is False or (_type(c) is _int and c == 0)
+        if not ok:
+            err = e
+    tampered = 0
     try:
-        M.set_events(TOOL, 0)
-    except Exception:
-        tampered = True
-    rec.update(status=status, why=why, tampered=tampered)
+        if _get_tool(TOOL) != "arena_gate" or _get_events(TOOL) != EV:
+            tampered = 1
+        _set_events(TOOL, 0)
+        if _register(TOOL, _LINE, None) is not on_line or _register(TOOL, _START, None) is not on_start:
+            tampered = 1
+    except _BE:
+        tampered = 1
+    out("pass" if ok else "fail", tampered)
+    if err is not None:                      # cosmetic only: the record is already written and closed
+        try:
+            _ptb(err)
+        except _BE:
+            pass
     try:
         sys.stdout.flush(); sys.stderr.flush()
-    except Exception:
+    except _BE:
         pass
-    os.write(fd, json.dumps(rec).encode()); os.close(fd)
-    os._exit(0 if status == "pass" else 1)
+    _exit(0 if ok else 1)
 _main()
-''' % {"check": CHECK_NAME.pattern}
+""" % {"check": CHECK_NAME.pattern}
+REC_RE = re.compile(rb"ARENAGATE2 ([0-9a-f]{32}) (pass|fail) (\d{1,9}) (\d{1,9}) (\d{1,9}) (\d{1,9}) ([01])\n")
+RESIDUAL_FORGERY = ("the candidate shares the runner's interpreter: code that reaches the runner's frame or closure "
+                    "(gc.get_referrers/get_objects, frame f_back/f_locals, closure cells, ctypes) can read the nonce "
+                    "and fd, write a forged pass line and exit 0. TAMPER_RE refuses the obvious spellings; a "
+                    "sufficiently obfuscated one is caught only by a separate-process tracer, which this gate does "
+                    "not have.")
+
+
+def parse_record(buf: bytes, nonce: str):
+    """The one record line, or None. Anything else in the pipe (a second line, junk, a short write) -> None."""
+    m = REC_RE.fullmatch(buf or b"")
+    if not m or m.group(1).decode() != nonce:
+        return None
+    a, c, t, l = (int(m.group(i)) for i in (3, 4, 5, 6))
+    return {"status": m.group(2).decode(), "asserts": a, "checks": c, "tests": t, "lines": l,
+            "tampered": m.group(7) == b"1"}
+
+
+def verdict_from(rc, rec) -> tuple[str, str]:
+    """PASS only on exit 0 plus a pass record; FAIL when the test said so; everything else UNMEASURED."""
+    if rc is None:
+        return "UNMEASURED", "timed out (a record written before a hang is not a pass)"
+    if rec is None:
+        return "UNMEASURED", "no valid runner record (rc=%s)" % rc
+    if rec["tampered"]:
+        return "UNMEASURED", "measurement hooks were tampered with"
+    if rec["status"] == "fail":
+        return "FAIL", "the test failed (rc=%s)" % rc
+    if rc != 0:
+        return "FAIL", "record says pass but the runner exited %s" % rc
+    return "PASS", ""
 
 
 # ---------------------------------------------------------------- the gate
@@ -455,16 +540,25 @@ class Gate:
         return ""
 
     def tool_path(self, key):
+        """The instrument as it is in the head checkout, which must be BYTE-IDENTICAL to the base checkout's copy
+        (the tool and every repo file it imports) at the moment it runs. Real instruments find the repo from their
+        own __file__, so they must run from head; the head checkout is read-only to every sandboxed step except the
+        C# build, and this re-check catches anything that rewrote one anyway (a build target, a missed mount)."""
         tp = self.clone / TOOLS[key]
         why = self.tool_tainted(key)
         if why:
             return None, why
         if not tp.is_file():
             return None, "instrument %s is absent from the checkout" % TOOLS[key]
+        for rel in sorted({TOOLS[key]} | self.import_closure(TOOLS[key])):
+            if self.read("head", rel) != self.read("base", rel):
+                return None, "instrument file %s differs from the base checkout at run time" % rel
         return tp, ""
 
     # ------------------------------------------------------------ sandbox
-    def sandbox_argv(self, argv, cwd):
+    def sandbox_argv(self, argv, cwd, head_rw=False, data_rw=True):
+        """Both checkouts and the runner dir are read-only (the head checkout is writable only to the C# build,
+        which writes obj/bin); HOME is a fresh tmpfs per step; the data root is read-only while tests run."""
         bw = shutil.which("bwrap")
         if not bw:
             return None
@@ -472,7 +566,7 @@ class Gate:
                "--die-with-parent", "--new-session"]
         if self.data_root and os.path.isdir(self.data_root):
             r = os.path.realpath(self.data_root)
-            out += ["--bind", r, r]                      # before the masks: the masks below win inside it
+            out += ["--bind" if data_rw else "--ro-bind", r, r]   # before the masks: the masks below win inside it
         hides = [Path("/tmp"), Path.home()] + _token_dirs(self.p) + [self.p["root"] / "judge"]
         done = []
         for h in hides:
@@ -483,9 +577,10 @@ class Gate:
                 continue
             done.append(r)
             out += ["--tmpfs", r]
-        for k in (self.clone, self.base_clone, self.fake_home):
-            r = os.path.realpath(k)
-            out += ["--bind", r, r]
+        r = os.path.realpath(self.clone)
+        out += ["--bind" if head_rw else "--ro-bind", r, r]
+        r = os.path.realpath(self.base_clone)
+        out += ["--ro-bind", r, r, "--tmpfs", os.path.realpath(self.fake_home)]
         r = os.path.realpath(self.hdir)
         out += ["--ro-bind", r, r, "--chdir", os.path.realpath(cwd)]
         return out + ["--"] + list(argv)
@@ -498,13 +593,13 @@ class Gate:
             e["RM_DATA_ROOT"] = self.data_root
         return e
 
-    def srun(self, argv, log, cwd=None, timeout=STEP_TIMEOUT, stdin=None, pass_fds=()):
+    def srun(self, argv, log, cwd=None, timeout=STEP_TIMEOUT, stdin=None, pass_fds=(), head_rw=False, data_rw=True):
         """Run checkout code sandboxed. -> (rc|None, text)."""
         if self.sandbox_why:
             log.parent.mkdir(parents=True, exist_ok=True)
             log.write_text("[not run: %s]\n" % self.sandbox_why, encoding="utf-8")
             return None, self.sandbox_why
-        full = self.sandbox_argv(argv, cwd or self.clone)
+        full = self.sandbox_argv(argv, cwd or self.clone, head_rw=head_rw, data_rw=data_rw)
         if full is None:
             return None, "no sandbox (bwrap absent): arm code would run beside the signing key"
         return run(full, cwd or self.clone, log, timeout=timeout, env=self.env(), stdin=stdin, pass_fds=pass_fds)
@@ -543,6 +638,8 @@ class Gate:
                 bad.append("%s: submodule gitlink" % f["path"])
             elif f["new_mode"] == "120000":
                 bad.append("%s: symlink (code it reaches is outside review)" % f["path"])
+            if f["status"] != "D" and f["path"].endswith(NATIVE_EXT):
+                bad.append("%s: compiled/native python-loadable code (unreviewable, can shadow any module)" % f["path"])
             if f["status"] == "A" and shadow_name(f["path"]):
                 bad.append("%s: new file shadows the module/hook %r" % (f["path"], shadow_name(f["path"])))
         out = [f["path"] for f in self.files if not in_area(f["path"], area)]
@@ -578,6 +675,9 @@ class Gate:
             return step(FAIL, "the diff only deletes files")
         if all(self.noop(f) for f in self.files):
             return step(FAIL, "empty diff: every change is docstring/comment/whitespace/mode only")
+        if not any(f["status"] == "D" for f in self.files) and all(
+                b"\0" in (self.read("head", f["path"]) or b"\0") for f in self.files):
+            return unmeasured("binary-only diff: nothing in it can be read for placeholders or stubs")
         bad = []
         for f in self.files:
             path, st = f["path"], f["status"]
@@ -642,41 +742,37 @@ class Gate:
             if body and isinstance(body[0], ast.Expr) and isinstance(getattr(body[0], "value", None), ast.Constant) \
                     and isinstance(body[0].value.value, str):
                 body = body[1:]
-            stub = not body or all(isinstance(b, ast.Pass) or (isinstance(b, ast.Expr) and isinstance(
-                getattr(b, "value", None), ast.Constant) and b.value.value is Ellipsis) for b in body)
-            if len(body) == 1 and isinstance(body[0], ast.Raise):
-                src = ast.dump(body[0].exc) if body[0].exc is not None else ""
-                stub = stub or "Not" + "ImplementedError" in src
-            if len(body) == 1 and isinstance(body[0], ast.Return) and (
-                    body[0].value is None or (isinstance(body[0].value, ast.Constant) and body[0].value.value is None)):
-                stub = True
-            if stub:
+            if all(_inert(b) for b in body):          # `pass; return None`, `...`, `raise NotImplementedError` ...
                 out.append("%s:%d: stub function %s" % (path, n.lineno, n.name))
         return out
 
     def selftests_for(self):
-        """-> sorted selftest paths (existing in head): changed/added selftests + siblings of changed python."""
-        tests = {f for f in self.alive() if A.is_selftest(f)}
-        for f in self.alive():
+        """-> (sorted selftest paths existing in head, deleted python no selftest maps to). Changed/added selftests
+        + head siblings of every changed python file, DELETED ones included (a deletion is a code change)."""
+        tests, orphans = {f for f in self.alive() if A.is_selftest(f)}, []
+        for f in self.paths():
             if f.endswith(".py") and not A.is_selftest(f):
-                d, stem = (self.clone / f).parent, Path(f).stem
-                for t in sorted(d.glob("selftest*.py")):
+                d, stem, hit = (self.clone / f).parent, Path(f).stem, False
+                for t in sorted(d.glob("selftest*.py")) if d.is_dir() else []:
                     try:
                         txt = t.read_text(encoding="utf-8", errors="replace")
                     except OSError:
                         continue
                     if stem in t.name or re.search(r"\b(import|from)\s+%s\b" % re.escape(stem), txt):
-                        tests.add(str(t.relative_to(self.clone)))
-        return sorted(tests)
+                        tests.add(str(t.relative_to(self.clone))); hit = True
+                if not hit and f not in self.alive():
+                    orphans.append(f)
+        return sorted(tests), orphans
 
     def run_test(self, root: Path, rel: str, tag: str):
-        """-> (record dict | None, text). The record is the runner's, nonce-checked; None = no positive record."""
+        """-> (record dict | None, text). The record is the runner's fixed line, parsed HERE (parse_record) with the
+        nonce this process holds, plus "rc" and the parent's own "verdict" (verdict_from). None = no valid line."""
         rfd, wfd = os.pipe()
         nonce = secrets.token_hex(16)
         log = self.logdir / ("tests_%s_%s.log" % (tag, re.sub(r"[^\w.]+", "_", rel)))
         try:
             rc, text = self.srun([self.python, "-I", str(self.hdir / "gate_runner.py"), str(wfd), str(root / rel)],
-                                 log, cwd=root, stdin=nonce + "\n", pass_fds=(wfd,))
+                                 log, cwd=root, stdin=nonce + "\n", pass_fds=(wfd,), data_rw=False)
             os.close(wfd); wfd = None
             os.set_blocking(rfd, False)
             buf = b""
@@ -688,26 +784,27 @@ class Gate:
                 if not chunk:
                     break
                 buf += chunk
+                if len(buf) > 4096:
+                    break
         finally:
             if wfd is not None:
                 os.close(wfd)
             os.close(rfd)
-        try:
-            rec = json.loads(buf.decode("utf-8", "replace")) if buf else None
-        except ValueError:
-            rec = None
-        if not isinstance(rec, dict) or rec.get("nonce") != nonce or rec.get("status") not in ("pass", "fail"):
-            return None, text
+        rec = parse_record(buf, nonce)
+        if rec is None:
+            return None, "rc=%s; %s" % (rc, text or "")
         rec["rc"] = rc
+        rec["verdict"], rec["why"] = verdict_from(rc, rec)
         return rec, text
 
     def s_tests(self):
         changed_py = [f for f in self.alive() if f.endswith(".py")]
-        tests = self.selftests_for()
-        if not changed_py and not tests:
+        tests, orphans = self.selftests_for()
+        if not changed_py and not tests and not orphans:
             return step(NA, "no python changed")
-        if not tests:
-            return unmeasured("python changed but no selftest maps to it", changed=changed_py[:10])
+        if not tests or orphans:
+            return unmeasured("python changed (or was deleted) but no selftest maps to it",
+                              changed=(orphans or changed_py)[:10])
         why = self.tool_tainted("tests")
         if why:
             return unmeasured(why)
@@ -729,13 +826,14 @@ class Gate:
             if rec is None:
                 unm.append("%s: no positive record from the harness runner (%s)" % (t, (text or "")[-120:].strip()))
                 continue
-            row = {k: rec.get(k) for k in ("status", "asserts", "checks", "tests", "lines", "why", "tampered")}
+            row = {k: rec.get(k) for k in ("verdict", "rc", "status", "asserts", "checks", "tests", "lines", "why",
+                                           "tampered")}
             rows[t] = row
-            if rec["status"] == "fail":
-                fails.append("%s: %s" % (t, rec.get("why")))
+            if rec["verdict"] == FAIL:
+                fails.append("%s: %s" % (t, rec["why"]))
                 continue
-            if rec.get("tampered"):
-                unm.append("%s: the selftest switched off the runner's monitoring" % t)
+            if rec["verdict"] != PASS:
+                unm.append("%s: %s" % (t, rec["why"]))
                 continue
             if UNMEASURED_PHRASE in text:
                 unm.append("%s: printed the unmeasured phrase" % t)
@@ -743,7 +841,7 @@ class Gate:
             n_head = rec["asserts"] + rec["checks"] + rec["tests"]
             if t in changed_set and (self.base_clone / t).is_file():
                 brec, _ = self.run_test(self.base_clone, t, "base")
-                if brec is None:
+                if brec is None or brec["rc"] is None or brec["tampered"]:
                     unm.append("%s: base run gave no record, the check count cannot be compared" % t)
                     continue
                 n_base = brec["asserts"] + brec["checks"] + brec["tests"]
@@ -766,6 +864,10 @@ class Gate:
 
     def s_xml(self):
         xml = [f for f in self.alive() if A.is_defxml(f)]
+        gone = [f for f in self.paths("D") if A.is_defxml(f)]
+        if gone:
+            return unmeasured("Def/Patch xml deleted (%s): validate_patch checks files, not what a removal breaks"
+                              % ", ".join(gone[:5]))
         if not xml:
             return NA_STEP("no Defs/Patches xml changed")
         tp, why = self.tool_path("xml")
@@ -788,7 +890,7 @@ class Gate:
                                                       else " without its positive `OK - 0 errors` marker"), log=log)
 
     def mods_changed(self, ext=None):
-        return sorted({A._mod_of(f) for f in self.alive() if (ext is None or f.endswith(ext))} - {None})
+        return sorted({A._mod_of(f) for f in self.paths() if (ext is None or f.endswith(ext))} - {None})
 
     def deployable(self, mod) -> bool:
         return any((root / "src" / "RimMandrake" / mod / "About" / "About.xml").is_file()
@@ -796,7 +898,7 @@ class Gate:
 
     def s_csharp(self):
         mods = self.mods_changed(".cs")
-        if not [f for f in self.alive() if f.endswith(".cs")]:
+        if not [f for f in self.paths() if f.endswith(".cs")]:      # a deleted .cs is a C# change too
             return NA_STEP("no .cs changed")
         if not mods:
             return unmeasured(".cs changed outside src/RimMandrake/<mod>/")
@@ -806,11 +908,13 @@ class Gate:
         res = {}
         for m in mods:
             log = self.logdir / ("csharp_%s.log" % m)
-            rc, text = self.srun([self.python, str(tp), m], log)
+            rc, text = self.srun([self.python, str(tp), m], log, head_rw=True)
             if rc is None:
                 return unmeasured("winbuild could not run for %s: %s" % (m, text), log=str(log))
             if rc != 0 and re.search(r"dotnet\.exe not found|no such csproj|no csproj under|WINBUILD_DOTNET", text):
                 return unmeasured("winbuild cannot run: " + text.strip().splitlines()[-2][:120], log=str(log))
+            if rc == 0 and UNMEASURED_PHRASE in text:
+                return unmeasured("winbuild exited 0 but printed the unmeasured phrase for %s" % m, log=str(log))
             res[m] = rc
         bad = [m for m, rc in res.items() if rc != 0]
         if bad:
@@ -839,6 +943,8 @@ class Gate:
             seen |= set(heads)
             if rc != 0 or "BLOCKING" in text:
                 return step(FAIL, "deploy plan for %s is blocked (rc=%s)" % (m, rc), log=str(log))
+            if UNMEASURED_PHRASE in text:
+                return unmeasured("deploy plan for %s printed the unmeasured phrase" % m, log=str(log))
         out = sorted(seen - allowed)
         if out:
             return step(FAIL, "plan touches mod(s) outside the task area: " + ", ".join(out))
@@ -904,6 +1010,8 @@ class Gate:
                 return unmeasured("proof could not run: " + text, log=str(log))
             if rc != 0:
                 return step(FAIL, "proof segment %d exited %s" % (i, rc), log=str(log))
+            if UNMEASURED_PHRASE in text:
+                return unmeasured("proof segment %d exited 0 but printed the unmeasured phrase" % i, log=str(log))
         return step(PASS, "%d proof segment(s) exit 0" % len(runnable),
                     skipped_prose=[s for s in segs if s not in runnable])
 
@@ -915,28 +1023,41 @@ class Gate:
             return None, "signed event log unreadable: %s" % e
 
     def s_live(self, recs, why):
+        """Bound to ONE run: the latest passing head canary, and a live_release of the SAME (lane, run_id, build)
+        signed no earlier than it. Any failed head canary in any run is INVALID unless a later passing canary's
+        detail.supersedes names that run."""
         if self.task.get("live", "none") == "none":
             return NA_STEP("task is live: none")
         if recs is None:
             return unmeasured(why)
-        mine = [r for r in recs if r.get("task") == self.task["id"]]
-        can = [r for r in mine if r["event"] == "canary"]
-        if not can:
+        mine = _ordered(r for r in recs if r.get("task") == self.task["id"])
+        allcan = [r for r in mine if r["event"] == "canary"]
+        if not allcan:
             return unmeasured("no signed canary record for this task")
-        c = can[-1]
-        d = c.get("detail") or {}
-        if not sha_match(c.get("sha"), self.head_full):
+        can = [r for r in allcan if sha_match(r.get("sha"), self.head_full)]
+        if not can:
+            c = allcan[-1]
             return step(INVALID, "canary record is for sha %s, not head (>=%d hex chars needed)" % (c.get("sha"), SHA_MIN))
-        if c.get("verdict") != "pass":
-            return step(INVALID, "canary %s: the run is re-queued, not failed" % c.get("verdict"), detail=d)
+        open_fail = _unsuperseded_failures(can, lambda r: r.get("verdict") == "pass")
+        if open_fail:
+            c = open_fail[0]
+            return step(INVALID, "canary %s in run %s: the run is re-queued, not failed (no later signed re-run "
+                        "supersedes it)" % (c.get("verdict"), c.get("run_id")), detail=c.get("detail") or {})
+        passes = [r for r in can if r.get("verdict") == "pass" and _t(r) is not None]
+        if not passes:
+            return step(INVALID, "no passing head canary with a signed time")
+        c = passes[-1]
+        d = c.get("detail") or {}
         if d.get("modcheck") is not True:
             return step(INVALID, "no modcheck recorded with this deploy")
-        rel = [r for r in mine if r["event"] == "live_release" and sha_match(r.get("sha"), self.head_full)]
+        rel = [r for r in mine if r["event"] == "live_release" and sha_match(r.get("sha"), self.head_full)
+               and _same_run(r, c) and (r.get("detail") or {}).get("build") == d.get("build")
+               and _t(r) is not None and _t(r) >= _t(c)]
         if not rel:
-            return unmeasured("canary passed but the lane recorded no live verdict")
+            return unmeasured("canary passed (run %s) but that run recorded no live verdict" % c.get("run_id"))
         v = rel[-1].get("verdict")
         if v == "pass":
-            return step(PASS, "live verdict pass, canary and modcheck recorded for head")
+            return step(PASS, "live verdict pass, canary and modcheck recorded for head in run %s" % c.get("run_id"))
         if v == "fail":
             return step(FAIL, "live verdict fail")
         return unmeasured("live verdict %r is neither pass nor fail" % v)
@@ -945,7 +1066,7 @@ class Gate:
         if recs is None:
             return unmeasured(why)
         t = self.task["id"]
-        mine = [r for r in recs if r.get("task") == t]
+        mine = _ordered(r for r in recs if r.get("task") == t)
         head_builds = [r for r in mine if r["event"] == "build_end" and sha_match(r.get("sha"), self.head_full)
                        and norm_id((r.get("detail") or {}).get("builder"))]
         if not head_builds:
@@ -956,7 +1077,7 @@ class Gate:
         starts = [r for r in mine if r["event"] == "test_start" and sha_match(r.get("sha"), self.head_full)]
         if not starts:
             return step(FAIL, "no test_start for this sha: no different-agent test record")
-        testers, refused = set(), []
+        testers, refused, ok_starts = set(), [], []
         for r in starts:
             raw = (r.get("detail") or {}).get("tester")
             n = norm_id(raw)
@@ -969,18 +1090,31 @@ class Gate:
             elif skeleton(raw) in bskel:
                 refused.append("%r: confusable with a builder of this task" % (raw,))
             else:
-                testers.add(n)
+                testers.add(n); ok_starts.append(r)
         if not testers:
             return step(FAIL, "no test_start by an agent other than the builder(s) %s" % sorted(builders),
                         refused=refused[:10])
+        tid = lambda r: norm_id((r.get("detail") or {}).get("tester"))  # noqa: E731
         ends = [r for r in mine if r["event"] == "test_end" and sha_match(r.get("sha"), self.head_full)
-                and norm_id((r.get("detail") or {}).get("tester")) in testers]
-        if not ends:
-            return unmeasured("test_start by %s but no test_end yet" % ", ".join(sorted(testers)))
-        v = ends[-1].get("verdict")
+                and tid(r) in testers]
+        open_fail = _unsuperseded_failures(ends, lambda r: r.get("verdict") == "pass")
+        if open_fail:
+            return step(FAIL, "different-agent tester verdict %s in run %s (no later signed re-run supersedes it)"
+                        % (open_fail[0].get("verdict"), open_fail[0].get("run_id")))
+        timed = [r for r in ok_starts if _t(r) is not None]
+        if not timed:
+            return unmeasured("no test_start with a signed time")
+        last = timed[-1]                         # the latest test of head decides; older runs cannot answer for it
+        mine_ends = [r for r in ends if _same_run(r, last) and tid(r) == tid(last) and _t(r) is not None
+                     and _t(r) >= _t(last)]
+        if not mine_ends:
+            return unmeasured("latest test_start (tester %s, run %s) has no test_end in that run yet"
+                              % (tid(last), last.get("run_id")))
+        e = mine_ends[-1]
+        v = e.get("verdict")
         if v == "pass":
-            return step(PASS, "tester %s (builders %s) verdict pass" % ((ends[-1].get("detail") or {}).get("tester"),
-                                                                       ", ".join(sorted(builders))))
+            return step(PASS, "tester %s (builders %s) verdict pass in run %s"
+                        % ((e.get("detail") or {}).get("tester"), ", ".join(sorted(builders)), e.get("run_id")))
         if v == "fail":
             return step(FAIL, "different-agent tester verdict fail")
         return unmeasured("tester verdict %r" % v)
@@ -1013,6 +1147,65 @@ class Gate:
 
     def finish(self) -> dict:
         return finish(self.results, self.task.get("id"), self.arm, self.base, self.head, self.logdir, self)
+
+
+def _t(r):
+    """Signed event time (epoch) or None when the record's ts cannot be ordered."""
+    try:
+        return L.ts_epoch(r.get("ts"))
+    except (ValueError, TypeError):
+        return None
+
+
+def _ordered(recs) -> list:
+    """Records in signed-time order (log order breaks ties); unorderable ones first, so they are never 'latest'."""
+    recs = list(recs)
+    return [r for _, _, r in sorted(((_t(r) if _t(r) is not None else float("-inf")), i, r)
+                                    for i, r in enumerate(recs))]
+
+
+def _same_run(a, b) -> bool:
+    return a.get("lane") == b.get("lane") and a.get("run_id") is not None and a.get("run_id") == b.get("run_id")
+
+
+def _supersedes(r) -> set:
+    s = (r.get("detail") or {}).get("supersedes")
+    if isinstance(s, str):
+        return {s}
+    if isinstance(s, list):
+        return {x for x in s if isinstance(x, str)}
+    return set()
+
+
+def _unsuperseded_failures(rs, is_pass) -> list:
+    """Every non-pass record not named by the detail.supersedes of a passing record that comes AFTER it in signed
+    order: signed ts first (second resolution), the hash-chained log position breaking ties. A pass signed with an
+    earlier ts sorts before the failure and supersedes nothing; an unorderable ts supersedes nothing."""
+    rs = _ordered(rs)
+    out = []
+    for i, f in enumerate(rs):
+        if is_pass(f):
+            continue
+        tf = _t(f)
+        if tf is None or not any(is_pass(p) and _t(p) is not None and f.get("run_id") in _supersedes(p)
+                                 for p in rs[i + 1:]):
+            out.append(f)
+    return out
+
+
+def _inert(b) -> bool:
+    """A statement that does nothing a stub would not: pass, `...`/constant, bare return/return None,
+    raise NotImplementedError."""
+    if isinstance(b, ast.Pass):
+        return True
+    if isinstance(b, ast.Expr) and isinstance(b.value, ast.Constant):
+        return True
+    if isinstance(b, ast.Return):
+        return b.value is None or (isinstance(b.value, ast.Constant) and b.value.value is None)
+    if isinstance(b, ast.Raise) and b.exc is not None:
+        e = b.exc.func if isinstance(b.exc, ast.Call) else b.exc
+        return isinstance(e, ast.Name) and e.id == "Not" + "ImplementedError"
+    return False
 
 
 def _strip_docstrings(tree):
@@ -1052,11 +1245,12 @@ def _check_sites(tree) -> int:
 
 
 def verdict_of(results: dict) -> str:
-    """The whole rule in one place. UNMEASURED and missing steps can never produce `pass`."""
+    """The whole rule in one place. Every step must be PASS or NA (MUST_PASS steps PASS); UNMEASURED, a missing
+    step or ANY unknown status (None, "BROKEN" ...) can never produce `pass`."""
     st = {s: (results.get(s) or {}).get("status", UNMEASURED) for s in STEPS}
     if FAIL in st.values():
         return "fail"
-    if INVALID in st.values() or UNMEASURED in st.values():
+    if any(v not in (PASS, NA) for v in st.values()):
         return "invalid"
     if any(st[s] != PASS for s in MUST_PASS):
         return "invalid"
@@ -1089,8 +1283,14 @@ def finish(results, task_id, arm, base, head, logdir, gate=None) -> dict:
                     L.HarnessWriter(gate.p, cap=cap).emit(arm, "gate", lane=gate.lane, run_id=gate.run_id,
                                                           task=task_id, sha=head, verdict=v, detail=detail)
             rec["recorded"], rec["record_sha256"] = True, digest
-        except Exception as e:  # noqa: BLE001 - not signable: still report, say so, and never upgrade the verdict
+        except Exception as e:  # noqa: BLE001 - not signable: an unsigned result is never a pass
             rec["record_error"] = str(e)[:200]
+            if rec["verdict"] == "pass":
+                rec.update(verdict="invalid", passed=False, unsigned_pass=True)
+            try:
+                rf.write_bytes(json.dumps(rec, indent=1, sort_keys=True).encode("utf-8"))
+            except OSError:
+                pass
         if gate.work.exists():
             shutil.rmtree(gate.work, ignore_errors=True)
     else:
@@ -1172,7 +1372,7 @@ def main(argv=None):
         return 2
     rec = Gate(task, a.base, a.head, a.arm, repo, p, lane=a.lane).execute()
     print(json.dumps(rec, sort_keys=True))
-    return 0 if rec["verdict"] == "pass" else 1
+    return 0 if rec["verdict"] == "pass" and rec.get("passed") is True and rec.get("recorded") is True else 1
 
 
 if __name__ == "__main__":
