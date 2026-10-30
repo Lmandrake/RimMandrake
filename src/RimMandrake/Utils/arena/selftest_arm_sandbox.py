@@ -84,16 +84,25 @@ def s1_deny():
     for p in (RETIRED, AS.CLAUDEWORK, str(Path.home() / ".claude" / "projects"), "/home/mandrake/rm/bench",
               "/home/mandrake/rm/foundry", MIRROR):
         check(AS._real(p) in deny, "S1 DENY holds %s" % p)
-    refused = []
+    nref = []
     for p in ("/home/mandrake/rm/bench", "/home/mandrake/rm/foundry", "/home/mandrake/rm", "/home/mandrake",
               "/", RETIRED + "/x", AS.CLAUDEWORK + "/foundry_arena", str(Path.home() / ".claude" / "projects" / "a"),
               "/mnt/d/Luke", "/mnt/d"):
         try:
             AS.check_bind(p, deny, "rw")
         except AS.SandboxRefused:
-            refused.append(p)
-    check(len(refused) == 10, "S1 check_bind refuses binds equal to / above / inside DENY (%d/10)" % len(refused))
+            nref.append(p)
+    check(len(nref) == 10, "S1 check_bind refuses binds equal to / above / inside DENY (%d/10)" % len(nref))
+    for p in ("/mnt/d/Luke/dev/rimmandrake", "/mnt/D/Luke/dev/RimMandrake", "/mnt/c/Users"):
+        check(refused(lambda: AS.check_bind(p, deny, "ro")),
+              "S1 GPT r1: a Windows-filesystem bind (case alias of the mirror) is refused: %s" % p)
     t = tempfile.mkdtemp(prefix="asb_ok_")
+    real_m = AS._mounts
+    AS._mounts = lambda: real_m() + [(os.path.join(t, "sub"), "ext4")]
+    try:
+        check(refused(lambda: AS.check_bind(t, deny, "rw")), "S1 GPT r1: a bind with a mount inside it is refused")
+    finally:
+        AS._mounts = real_m
     try:
         AS.check_bind(t, deny, "rw")
         check(True, "S1 check_bind accepts a plain temp dir")
@@ -152,6 +161,56 @@ def s3_fail_closed(tmp):
               "S3 an honest launch is allowed (rc %s, private HOME, no WSL_INTEROP)" % r.returncode)
     except AS.SandboxRefused as e:
         check(False, "S3 an honest launch is allowed (%s)" % e)
+
+
+def s3_scratch_fresh(tmp):
+    """GPT r1: a rebuilt clone (new .git) gets a fresh scratch HOME; an arm-written marker never steers the path."""
+    c = mk_clone(tmp, "sfc")
+    a = AS.scratch_dir(c, "build")
+    (a / "home").mkdir(parents=True, exist_ok=True)
+    (a / "home" / "old_transcript").write_text("x")
+    check(AS.scratch_dir(c, "build") == a, "S3 the same clone keeps its scratch across passes")
+    shutil.rmtree(c)
+    c = mk_clone(tmp, "sfc")
+    b = AS.scratch_dir(c, "build")
+    check(b != a and not (b / "home" / "old_transcript").exists(), "S3 a rebuilt clone gets a fresh scratch")
+    (c / ".git" / "arm_sandbox_id").write_text("../../../../etc\n")
+    d = AS.scratch_dir(c, "build")
+    base = Path(os.environ["RM_ARM_SANDBOX_SCRATCH"]).resolve()
+    check(d.resolve().parent.parent == base and d != b, "S3 a junk marker is replaced, the scratch stays under base")
+    sentinel = tmp / "sentinel_outside"
+    sentinel.write_text("SECRET")
+    mk = c / ".git" / "arm_sandbox_id"
+    mk.unlink()
+    mk.symlink_to(sentinel)
+    e = AS.scratch_dir(c, "build")
+    check(sentinel.read_text() == "SECRET" and not mk.is_symlink() and e != d,
+          "S3 GPT r2: a planted marker symlink is replaced, its target untouched")
+    hd = e / "home"
+    hd.mkdir(exist_ok=True)
+    (hd / ".claude.json").unlink(missing_ok=True)
+    (hd / ".claude.json").symlink_to(sentinel)
+    AS._seed_home(str(hd))
+    check(sentinel.read_text() == "SECRET", "S3 GPT r2: seeding HOME never writes through a planted .claude.json link")
+    w = tmp / "sfw"
+    w.mkdir()
+    (w / ".git").write_text("gitdir: /home/mandrake/rm/foundry/.git\n")
+    check(refused(lambda: AS.scratch_dir(w, "build")), "S3 GPT r2: a worktree-style .git file is refused")
+    n = tmp / "sfn"
+    n.mkdir()
+    f1 = AS.scratch_dir(n, "build")
+    shutil.rmtree(n)
+    n.mkdir()
+    check(AS.scratch_dir(n, "build") != f1, "S3 GPT r2: a recreated non-git workspace gets a fresh scratch")
+    mi = tmp / "mountinfo"
+    mi.write_text(open("/proc/self/mountinfo").read() + "999 1 8:1 /home/mandrake/rm/foundry /usr/share/alias rw - "
+                  "ext4 /dev/sdc rw\n")
+    check(refused(lambda: AS.check_mounts(str(mi))), "S3 GPT r2: an inherited subtree bind outside the masked "
+          "containers (alias of a masked tree) is refused")
+    check(not refused(AS.check_mounts), "S3 this machine's own mounts pass check_mounts")
+    check("/bin/rm -f" in " ".join(AS.bwrap_argv({"drop": set(), "files": [], "tools": [], "rw": [], "seeds": [],
+                                                  "cwd": "/"}, "/x.bpf")),
+          "S3 GPT r1: the pre-bwrap shell uses an absolute /bin/rm (no PATH lookup)")
 
 
 # ------------------------------------------------------------------------------------------------ S4 / S5
@@ -302,7 +361,8 @@ def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_arm_sandbox_"))
     os.environ["RM_ARM_SANDBOX_SCRATCH"] = str(tmp / "armscratch")
     try:
-        for fn, a in ((s1_deny, ()), (s2_seccomp, ()), (s3_fail_closed, (tmp,)), (s7_static, ())):
+        for fn, a in ((s1_deny, ()), (s2_seccomp, ()), (s3_fail_closed, (tmp,)), (s3_scratch_fresh, (tmp,)),
+                      (s7_static, ())):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

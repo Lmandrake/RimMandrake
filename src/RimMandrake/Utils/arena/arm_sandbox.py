@@ -43,6 +43,7 @@ import glob
 import json
 import os
 import platform
+import re
 import shutil
 import struct
 import subprocess
@@ -67,7 +68,8 @@ HOME_DENY = (".claude/projects", ".claude/file-history", ".claude/history.jsonl"
              ".claude/.credentials.json", ".claude.json", ".codex", ".claude-accounts", ".config", ".ssh",
              ".local/state", "dev", "checkout", "src", "crash_backup_*", ".zsh_history",
              ".bash_history", ".remember", ".cache")
-DROP_ENV = ("WSL_INTEROP", "XDG_RUNTIME_DIR", "DBUS_SESSION_BUS_ADDRESS", "SSH_AUTH_SOCK", "DISPLAY",
+DROP_ENV = ("LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT",
+            "WSL_INTEROP", "XDG_RUNTIME_DIR", "DBUS_SESSION_BUS_ADDRESS", "SSH_AUTH_SOCK", "DISPLAY",
             "WAYLAND_DISPLAY", "PULSE_SERVER", "GIT_DIR", "GIT_WORK_TREE", "GIT_ALTERNATE_OBJECT_DIRECTORIES",
             "GIT_OBJECT_DIRECTORY", "GIT_COMMON_DIR", "GIT_INDEX_FILE", "OLDPWD")
 AF_VSOCK = 40
@@ -116,10 +118,61 @@ def deny_paths() -> list[str]:
     return seen
 
 
+WIN_FS = ("9p", "drvfs", "virtiofs", "v9fs")      # case-insensitive Windows filesystems: a path compare is no identity
+
+
+def _mounts():
+    """[(mount point, fstype)] from /proc/self/mountinfo (octal escapes decoded)."""
+    out = []
+    with open("/proc/self/mountinfo") as f:
+        for line in f:
+            a, b = line.split(" - ", 1)
+            mp = re.sub(r"\\([0-7]{3})", lambda m: chr(int(m.group(1), 8)), a.split()[4])
+            out.append((mp, b.split()[0]))
+    return out
+
+
+def check_mounts(mountinfo="/proc/self/mountinfo"):
+    """GPT r2: a bind-mount alias of a denied tree OUTSIDE the masked containers would be inherited through the ro root
+    bind. Refuse any visible Windows-filesystem mount or subtree bind (mountinfo root != /) there (/init excepted)."""
+    with open(mountinfo) as f:
+        for line in f:
+            a, b = line.split(" - ", 1)
+            root, mp, fs = a.split()[3], a.split()[4], b.split()[0]
+            if any(_under(mp, c) for c in CONTAINERS):
+                continue
+            if fs in WIN_FS or (root != "/" and mp != "/init"):
+                raise SandboxRefused("refused: mount %s (%s, root %s) would be visible in the sandbox: possible alias"
+                                     % (mp, fs, root))
+
+
+def _host_root(mp):
+    """mountinfo root of the TOP mount at `mp` ("/" = a whole filesystem, else a subtree bind)."""
+    root = "/"
+    with open("/proc/self/mountinfo") as f:
+        for line in f:
+            a = line.split(" - ", 1)[0].split()
+            if a[4] == mp:
+                root = a[3]           # later lines are mounted on top
+    return root
+
+
 def check_bind(path: str, deny: list[str], what: str) -> str:
     r = _real(path)
     if r in ("/", "") or not os.path.isabs(r):
         raise SandboxRefused("refused: %s bind %r is the root or relative" % (what, path))
+    ms = _mounts()
+    host = max((m for m in ms if _under(r, m[0])), key=lambda m: len(m[0]), default=("/", "?"))
+    if host[1] in WIN_FS or re.match(r"^/mnt/[A-Za-z](/|$)", r):
+        raise SandboxRefused("refused: %s bind %s is on a Windows filesystem (%s at %s): case aliases defeat DENY"
+                             % (what, r, host[1], host[0]))
+    if host[0] != "/" and _host_root(host[0]) != "/":
+        raise SandboxRefused("refused: %s bind %s lies in the subtree bind mount %s: possible alias of a masked tree"
+                             % (what, r, host[0]))
+    nested = [m[0] for m in ms if m[0] != r and _under(m[0], r)]
+    if nested:
+        raise SandboxRefused("refused: %s bind %s has mounts inside it (%s): bwrap would expose them"
+                             % (what, r, nested[:3]))
     for d in deny:
         if _under(r, d) or _under(d, r):
             raise SandboxRefused("refused: %s bind %s overlaps the masked path %s (the arm would see the answer)"
@@ -128,14 +181,14 @@ def check_bind(path: str, deny: list[str], what: str) -> str:
 
 
 # ------------------------------------------------------------------------------------------------ seccomp
-def seccomp_program() -> bytes:
+def seccomp_program(drop=()) -> bytes:
     """classic BPF for x86_64: KILL on a foreign ABI (i386 / x32: their socketcall would dodge the socket rule),
     EAFNOSUPPORT for socket(AF_VSOCK, ...) (family = low 32 bits of args[0], the kernel takes an int), ENOSYS for
     io_uring_setup/enter/register (425-427), allow the rest."""
-    return b"".join(struct.pack("=HBBI", *i) for i in _resolve())
+    return b"".join(struct.pack("=HBBI", *i) for i in _resolve(drop))
 
 
-def _resolve():
+def _resolve(drop=()):
     """Assemble the seccomp program from labels (jump offsets are computed, never hand-counted)."""
     LD, JEQ, JGE, RET = 0x20, 0x15, 0x35, 0x06
     ALLOW, KILL = 0x7FFF0000, 0x80000000
@@ -148,6 +201,8 @@ def _resolve():
             ("L", "kill"), ("ret", KILL),
             ("L", "uring"), ("ret", 0x00050000 | 38),
             ("L", "noaf"), ("ret", 0x00050000 | 97)]
+    if "uring" in drop:                 # selftest mutation only
+        code = [c for c in code if not (c[0] == "jeq" and c[1] in (425, 426, 427))]
     labels, pc = {}, 0
     for c in code:
         if c[0] == "L":
@@ -172,10 +227,10 @@ def _resolve():
     return out
 
 
-def _bpf_file() -> str:
+def _bpf_file(drop=()) -> str:
     fd, path = tempfile.mkstemp(prefix="arm_sandbox_", suffix=".bpf")
     with os.fdopen(fd, "wb") as f:
-        f.write(seccomp_program())
+        f.write(seccomp_program(drop))
     return path
 
 
@@ -192,6 +247,7 @@ def _prereq():
 def plan(*, cwd, rw, home, ro=(), _drop=()):
     """The mount plan: dict with the checked bind lists. `_drop` (selftest mutations only) omits named protections."""
     deny = deny_paths()
+    check_mounts()
     rw_r = [check_bind(p, deny, "rw") for p in rw]
     if not rw_r:
         raise SandboxRefused("refused: no rw dir (the arm clone / scratch)")
@@ -252,7 +308,7 @@ def bwrap_argv(pl, bpf_path=None) -> list[str]:
         a += ["--seccomp", "3"]
     a += ["--chdir", pl["cwd"]]
     if bpf_path and "seccomp" not in d:     # fd 3 = the filter, opened by sh, the file unlinked before bwrap runs
-        a = ["/bin/sh", "-c", 'exec 3<"$1" && rm -f "$1" && shift && exec "$@"', "sh", bpf_path] + a
+        a = ["/bin/sh", "-c", 'exec 3<"$1" && /bin/rm -f "$1" && shift && exec "$@"', "sh", bpf_path] + a
     return a + ["--"]
 
 
@@ -263,10 +319,14 @@ def sandbox_env(env, home, drop=()):
 
 
 def _seed_home(home):
+    """Called AFTER plan() proved realpath(home) is inside a rw dir; never follows an arm-planted symlink."""
     Path(home).mkdir(parents=True, exist_ok=True)
-    cj = Path(home) / ".claude.json"
-    if not cj.exists():
-        cj.write_text(json.dumps({"hasCompletedOnboarding": True, "autoUpdates": False}) + "\n")
+    try:
+        fd = os.open(os.path.join(home, ".claude.json"), os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+    except FileExistsError:          # kept as is (a planted symlink dangles inside the sandbox; the harness never reads it)
+        return
+    with os.fdopen(fd, "w") as f:
+        f.write(json.dumps({"hasCompletedOnboarding": True, "autoUpdates": False}) + "\n")
 
 
 # ------------------------------------------------------------------------------------------------ probe (runs INSIDE)
@@ -318,6 +378,17 @@ if os.path.exists("/run/WSL"):
 try:
     socket.socket(40, socket.SOCK_STREAM).close()
     leaks.append(["socket", "AF_VSOCK creatable"])
+except OSError:
+    pass
+try:                                    # io_uring would issue socket ops behind the seccomp socket rule
+    import ctypes
+    _l = ctypes.CDLL(None, use_errno=True)
+    _fd = _l.syscall(425, 1, ctypes.create_string_buffer(120))
+    if _fd >= 0:
+        os.close(_fd)
+        leaks.append(["io_uring", "io_uring_setup succeeded"])
+    elif ctypes.get_errno() != 38:
+        leaks.append(["io_uring", "io_uring_setup errno %d, not the filter's ENOSYS" % ctypes.get_errno()])
 except OSError:
     pass
 for p in spec["rw"]:
@@ -407,7 +478,7 @@ def probe_spec(pl, full=False, **kw):
 
 
 def _run_probe(pl, spec, env, timeout=300):
-    bpf = _bpf_file()
+    bpf = _bpf_file(pl["drop"])
     try:
         argv = bwrap_argv(pl, bpf) + [PY, "-I", "-c", PROBE, json.dumps(spec)]
         r = subprocess.run(argv, capture_output=True, text=True, errors="replace",
@@ -438,11 +509,11 @@ def wrap(argv, env, *, cwd, rw, home, ro=(), _drop=(), _preflight=True):
     launch must not happen) on any doubt. `rw`: the arm clone and/or scratch dir(s); `home`: the private HOME (inside
     a rw dir, created and seeded here); `cwd` must be inside a rw dir. `_drop`/`_preflight` are selftest-only."""
     _prereq()
-    _seed_home(home)
     pl = plan(cwd=cwd, rw=rw, home=home, ro=ro, _drop=_drop)
+    _seed_home(pl["home"])
     if _preflight:
         preflight(pl, env)
-    return bwrap_argv(pl, _bpf_file()) + list(argv), sandbox_env(env, pl["home"], pl["drop"])
+    return bwrap_argv(pl, _bpf_file(pl["drop"])) + list(argv), sandbox_env(env, pl["home"], pl["drop"])
 
 
 def probe(*, clone, scratch, absent=(), pe=(), tools=(), _drop=(), env=None, full=True):
@@ -451,8 +522,8 @@ def probe(*, clone, scratch, absent=(), pe=(), tools=(), _drop=(), env=None, ful
     every PE given, and checks the clone (git log works, `absent` shas are not there) and `tools` still work."""
     _prereq()
     home = os.path.join(scratch, "home")
-    _seed_home(home)
     pl = plan(cwd=clone, rw=[clone, scratch], home=home, _drop=_drop)
+    _seed_home(pl["home"])
     spec = probe_spec(pl, full=full, clone=_real(clone), absent=list(absent), pe=list(pe),
                       tools=[list(t) for t in tools])
     return _run_probe(pl, spec, dict(os.environ if env is None else env))
@@ -462,15 +533,36 @@ def scratch_dir(cwd, role) -> Path:
     """A builder's persistent scratch (its private HOME lives here): $RM_ARM_SANDBOX_SCRATCH or <arena root>/sandbox,
     then <clone name>-<sha256(clone realpath)[:8]>/<role>, mode 0700. Never inside the clone (git status stays clean)."""
     import hashlib
+    import secrets
     import arena_replay as R
     base = Path(os.environ.get("RM_ARM_SANDBOX_SCRATCH") or (R.arena_root() / "sandbox"))
     c = _real(cwd)
-    d = base / ("%s-%s" % (os.path.basename(c), hashlib.sha256(c.encode()).hexdigest()[:8])) / str(role)
+    gd = Path(c) / ".git"
+    if os.path.lexists(gd) and not (gd.is_dir() and not gd.is_symlink()):
+        raise SandboxRefused("refused: %s/.git is not a plain directory (worktree/symlink): no fresh-scratch id" % c)
+    # a rebuilt clone (new .git) or a new workspace gets a FRESH scratch: no HOME carried from an earlier replay
+    mk = str(gd / "arm_sandbox_id") if gd.is_dir() else os.path.join(c, ".arm_sandbox_id")
+    tag = ""
+    try:
+        fd = os.open(mk, os.O_RDONLY | os.O_NOFOLLOW)
+        with os.fdopen(fd) as f:
+            tag = f.read(64).strip()
+    except OSError:          # absent, a planted symlink (ELOOP) or not readable
+        pass
+    if not re.fullmatch(r"[0-9a-f]{32}", tag):               # absent or arm-written junk: a new id, never a path
+        if os.path.lexists(mk):
+            os.unlink(mk)                                     # removes a symlink itself, never its target
+        tag = secrets.token_hex(16)
+        fd = os.open(mk, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o600)
+        with os.fdopen(fd, "w") as f:
+            f.write(tag + "\n")
+    tag = "-" + tag[:16]
+    d = base / ("%s-%s%s" % (os.path.basename(c), hashlib.sha256(c.encode()).hexdigest()[:8], tag)) / str(role)
     d.mkdir(parents=True, exist_ok=True, mode=0o700)
     return d
 
 
-MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "pidns", "seccomp", "env")
+MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "pidns", "seccomp", "uring", "env")
 
 
 def main(argv=None):
