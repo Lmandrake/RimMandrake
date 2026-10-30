@@ -610,8 +610,204 @@ def t_consult(tmp):
                                                                                              old_log)
 
 
+CLEAN_ENV = {"ALLUSERSPROFILE": r"C:\ProgramData", "ProgramData": r"C:\ProgramData", "SystemDrive": "C:",
+             "PATH": r"C:\WINDOWS", "CODEX_HOME": r"C:\Users\u\.codex_arena_judge"}
+REG_ABSENT_OUT = "ERROR: The system was unable to find the specified registry key or value.\r\n"
+
+
+def fake_runner(env=None, keys=None, profile="%SystemDrive%\\ProgramData", fail=()):
+    """A stand-in for the Windows side: `cmd.exe /d /c set` and `reg.exe query`. keys: {key: (rc, text)}."""
+    env = dict(CLEAN_ENV if env is None else env)
+    keys = keys or {}
+
+    def run(argv):
+        if argv[0] in fail:
+            return None
+        if argv[0] == "cmd.exe":
+            return 0, "".join("%s=%s\r\n" % kv for kv in env.items())
+        if argv[0] == "reg.exe" and argv[2] == JH.PROFILE_LIST_KEY:
+            if profile is None:
+                return 1, REG_ABSENT_OUT
+            return 0, "\r\n%s\r\n    ProgramData    REG_EXPAND_SZ    %s\r\n\r\n" % (JH.PROFILE_LIST_KEY, profile)
+        if argv[0] == "reg.exe":
+            return keys.get(argv[2], (1, REG_ABSENT_OUT))
+        raise AssertionError(argv)
+    return run
+
+
+def t_system(tmp, M=JH, record=check):
+    """ARENA_JUDGE_PROGRAMDATA_CONFIG_STEERS: anything at codex.exe's SYSTEM config layer refuses the call. Measured
+    2026-10-30 (codex debug prompt-input, FOUNDRY probe_sys): %ProgramData%\\OpenAI\\Codex\\{config.toml,
+    requirements.toml, skills/} are read. Every root is a FAKE dir here (no real C:\\ProgramData is touched)."""
+    roots = {n: tmp / n for n in ("pd_default", "pd_env", "pd_all", "pd_profile")}
+    for r in roots.values():
+        r.mkdir(parents=True, exist_ok=True)
+    winmap = {r"C:\ProgramData": roots["pd_default"], r"E:\PD": roots["pd_env"], r"F:\AUP": roots["pd_all"],
+              r"G:\Prof\PD": roots["pd_profile"]}
+    env = dict(CLEAN_ENV, ProgramData=r"E:\PD", ALLUSERSPROFILE=r"F:\AUP", SystemDrive="G:")
+
+    def to_local(w):
+        for k, v in winmap.items():
+            if w.casefold() == k.casefold():
+                return v
+        return None
+
+    def facts(**kw):
+        kw.setdefault("env", env)
+        kw.setdefault("profile", r"%SystemDrive%\Prof\PD")
+        return M.windows_facts(run=fake_runner(**kw), to_local=to_local)
+
+    def hits(**kw):
+        return M.system_layer_violations(facts(**kw))
+    f0 = facts()
+    record(sorted(str(p) for _, p in f0["roots"]) == sorted(str(p) for p in roots.values()),
+           "four ProgramData roots: codex's default, %%ProgramData%%, %%ALLUSERSPROFILE%%, ProfileList (%s)"
+           % [w for w, _ in f0["roots"]])
+    record(hits() == [], "a clean machine has no system-layer hit (%s)" % hits())
+    # every root, every shape of <root>\OpenAI\Codex
+    for name, root in roots.items():
+        for label, make in (
+                ("config.toml", lambda c: (c.mkdir(parents=True), (c / "config.toml").write_text("x = 1\n"))),
+                ("requirements.toml", lambda c: (c.mkdir(parents=True), (c / "requirements.toml").write_text("x"))),
+                ("skills/x/SKILL.md", lambda c: ((c / "skills" / "x").mkdir(parents=True),
+                                                 (c / "skills" / "x" / "SKILL.md").write_text("x"))),
+                ("an empty folder", lambda c: c.mkdir(parents=True)),
+                ("a plain file named Codex", lambda c: (c.parent.mkdir(parents=True), c.write_text("x"))),
+                ("a link (junction) to a folder", lambda c: (c.parent.mkdir(parents=True),
+                                                            c.symlink_to(tmp / "elsewhere", target_is_directory=True))),
+                ("a dangling link", lambda c: (c.parent.mkdir(parents=True), c.symlink_to(tmp / "nowhere"))),
+                ("other case openai\\CODEX", None)):
+            (tmp / "elsewhere").mkdir(exist_ok=True)
+            c = root / "OpenAI" / "Codex"
+            if make is None:
+                c = root / "openai" / "CODEX"
+                c.mkdir(parents=True)
+            else:
+                make(c)
+            h = hits()
+            win = next(w for w, r in winmap.items() if r == root)
+            record(len(h) == 1 and h[0].casefold().startswith((win + "\\OpenAI\\Codex").casefold()),
+                   "system layer at %s: %s is refused (%s)" % (name, label, h))
+            shutil.rmtree(c.parent)
+    # OpenAI itself
+    for name, root in roots.items():
+        oa = root / "OpenAI"
+        oa.symlink_to(tmp / "elsewhere", target_is_directory=True)
+        record(len(hits()) == 1, "%s: OpenAI that is a link (junction), even to a folder without Codex, is refused" % name)
+        oa.unlink()
+        oa.mkdir()
+        record(hits() == [], "%s: an OpenAI folder without Codex is not a hit" % name)
+        (oa / "ChatGPT").mkdir()
+        record(hits() == [], "%s: another OpenAI product's folder is not a hit" % name)
+        os.chmod(oa, 0)
+        try:
+            h = hits()
+            record(len(h) == 1 and "unlistable" in h[0], "%s: an unreadable OpenAI folder is refused (%s)" % (name, h))
+        finally:
+            os.chmod(oa, 0o755)
+        shutil.rmtree(oa)
+        oa.write_text("x")
+        record(hits() == [], "%s: a plain FILE named OpenAI holds nothing codex reads: not a hit" % name)
+        oa.unlink()
+        os.chmod(root, 0)
+        try:
+            record(len(hits()) == 1, "%s: an unreadable ProgramData root is refused" % name)
+        finally:
+            os.chmod(root, 0o755)
+    shutil.rmtree(roots["pd_env"])
+    record(len(hits()) == 1, "a ProgramData root that does not exist is refused (the instrument cannot see)")
+    roots["pd_env"].mkdir()
+    record(len(hits(env=dict(env, ProgramData=r"\\server\share\pd"))) == 1,
+           "a ProgramData root that is not a local drive path is refused")
+    # the Windows environment codex.exe inherits (interop env + WSLENV-named vars)
+    for k, bad in (("CODEX_SQLITE_HOME", True), ("CODEX_CA_CERTIFICATE", True), ("codex_url", True),
+                   ("OPENAI_BASE_URL", True), ("openai_api_key", True), ("CODEX_HOME", False), ("CODEXX", False)):
+        h = hits(env=dict(env, **{k: r"C:\x"}))
+        record((len(h) == 1 and k in h[0]) if bad else h == [],
+               "env %s reaching codex.exe is %s (%s)" % (k, "refused" if bad else "allowed", h))
+    h = hits(fail=("cmd.exe",))
+    record(any("environment" in x for x in h), "an unreadable Windows environment is refused (fail closed) (%s)" % h)
+    # the enterprise policy registry keys
+    for key in (r"HKLM\SOFTWARE\Policies\OpenAI\Codex", r"HKCU\SOFTWARE\Policies\OpenAI\Codex"):
+        h = hits(keys={key: (0, "\r\n%s\r\n    x    REG_SZ    y\r\n" % key)})
+        record(len(h) == 1 and key in h[0], "policy key %s present is refused (%s)" % (key, h))
+        h = hits(keys={key: (1, "ERROR: Access is denied.\r\n")})
+        record(len(h) == 1 and key in h[0], "policy key %s unqueryable is refused (%s)" % (key, h))
+    record(len(hits(fail=("reg.exe",))) >= 3, "reg.exe failing to run refuses (keys and the ProfileList root)")
+    record(len(hits(profile=None)) == 1, "an unresolvable ProfileList ProgramData is refused")
+    # wiring: refused before the call (verify_home) and after it (home_violations, which the judge re-runs)
+    (roots["pd_profile"] / "OpenAI" / "Codex").mkdir(parents=True)
+    saved, f_hit = M.windows_facts, facts()
+    try:
+        M.windows_facts = lambda: f_hit
+        hv = M.home_violations(tmp / "no_such_home")
+        record(any("Prof\\PD\\OpenAI\\Codex" in x for x in hv), "home_violations carries the system-layer hit (the post-call check)")
+        try:
+            M.verify_home(tmp / "no_such_home", tmp / "no_such_base")
+            record(False, "verify_home refuses a system-layer config")
+        except M.HomeError as ex:
+            record("system" in str(ex) and "Prof\\PD\\OpenAI\\Codex" in str(ex) and "NOT deleted" in str(ex),
+                   "verify_home refuses a system-layer config and names it (%s)" % str(ex)[:160])
+        existed = (roots["pd_profile"] / "OpenAI" / "Codex").is_dir()
+        record(existed, "the refusal deletes nothing someone else put there")
+    finally:
+        M.windows_facts = saved
+    shutil.rmtree(roots["pd_profile"] / "OpenAI")
+
+
+# Each mutant is one branch or one candidate of the system-layer check removed; t_system must fail under every one.
+SYSTEM_MUTANTS = (
+    ("drop codex's default root", 'roots = [SYSTEM_DEFAULT_ROOT]', 'roots = []'),
+    ("drop %ProgramData%", '("ProgramData", "ALLUSERSPROFILE")', '("ALLUSERSPROFILE",)'),
+    ("drop %ALLUSERSPROFILE%", '("ProgramData", "ALLUSERSPROFILE")', '("ProgramData",)'),
+    ("drop the ProfileList root", "roots.append(prof)", "pass"),
+    ("ProfileList failure not fatal", 'bad.append("cannot resolve', '(lambda *_: None)("cannot resolve'),
+    ("drop HKLM policy key", 'r"HKLM\\SOFTWARE\\Policies\\OpenAI\\Codex", ', ''),
+    ("drop HKCU policy key", ', r"HKCU\\SOFTWARE\\Policies\\OpenAI\\Codex"', ''),
+    ("policy key unqueryable passes", 'bad.append("cannot query', '(lambda *_: None)("cannot query'),
+    ("drop CODEX_ env", '("CODEX_", "OPENAI_")', '("OPENAI_",)'),
+    ("drop OPENAI_ env", '("CODEX_", "OPENAI_")', '("CODEX_",)'),
+    ("env case-sensitive", "n.upper().startswith", "n.startswith"),
+    ("unreadable env passes", 'bad.append("cannot read the Windows environment', '(lambda *_: None)("cannot read the Windows environment'),
+    ("link not refused", "if ent.is_symlink():", "if False:"),
+    ("unlistable passes", 'return ["%s unlistable', 'return [] #'),
+    ("case-sensitive names", "e.name.casefold() == part.casefold()", "e.name == part"),
+    ("Codex refused only as a folder", 'return ["%s exists" % shown]', 'return ["%s exists" % shown] if ent.is_dir() else []'),
+    ("CODEX_HOME refused too", 'ENV_ALLOWED = ("CODEX_HOME",)', 'ENV_ALLOWED = ()'),
+    ("policy key absent text not checked", "or REG_ABSENT not in r[1]", ""),
+    ("missing root passes", 'return ["%s does not exist', 'return [] #'),
+    ("non-drive root passes", 'bad.append("%s is not a local drive path', '(lambda *_: None)("%s is not a local drive path'),
+    ("system check not in home_violations", "+ system_layer_violations()", ""),
+    ("verify_home skips the system check", "sysbad = system_layer_violations()", "sysbad = []"),
+)
+
+
+def t_system_mutants(tmp):
+    import types                                                       # noqa: PLC0415
+    src = (HERE / "judge_codex_home.py").read_text(encoding="utf-8")
+    for label, old, new in SYSTEM_MUTANTS:
+        if src.count(old) != 1:
+            check(False, "mutant '%s': its target occurs %d times (must be exactly 1)" % (label, src.count(old)))
+            continue
+        m = types.ModuleType("judge_codex_home_mutant")
+        m.__file__ = str(HERE / "judge_codex_home.py")
+        exec(compile(src.replace(old, new), m.__file__, "exec"), m.__dict__)   # noqa: S102
+        fails = []
+        d = tmp / ("mut_%d" % SYSTEM_MUTANTS.index((label, old, new)))
+        d.mkdir(parents=True)
+        try:
+            t_system(d, m, lambda ok, msg: fails.append(msg) if not ok else None)
+        except Exception as ex:                                        # noqa: BLE001 -- a crash also kills it
+            fails.append("crash %r" % ex)
+        check(bool(fails), "mutant killed: %s (%s)" % (label, fails[:1]))
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="judge_codex_home_st_"))
+    real_facts = JH.windows_facts
+    (tmp / "clean_pd").mkdir()
+    clean = real_facts(run=fake_runner(), to_local=lambda w: tmp / "clean_pd")
+    JH.windows_facts = lambda: clean                                   # the other tests assume a clean system layer
     saved = {k: os.environ.get(k) for k in ("ARENA_JUDGE_LOCK_DIR", "ARENA_JUDGE_CODEX_HOME", "ARENA_JUDGE_CODEX_BASE")}
     try:
         os.environ["ARENA_JUDGE_CODEX_HOME"] = str(tmp / "unused_home")
@@ -626,7 +822,11 @@ def main():
         t_auth(tmp)
         t_session(tmp)
         t_consult(tmp)
+        JH.windows_facts = real_facts
+        t_system(tmp / "sys")
+        t_system_mutants(tmp / "sysmut")
     finally:
+        JH.windows_facts = real_facts
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
         shutil.rmtree(tmp, ignore_errors=True)

@@ -172,7 +172,13 @@ def _runner_fp(root: Path) -> str | None:
 
 def home_violations(home: Path) -> list[str]:
     """Every entry of the judge home, at any depth, that the allow-list (HOME_FILES / HOME_DIRS / per-call state) does
-    not admit. [] = clean. A home that cannot be listed is itself a violation (fail closed)."""
+    not admit, then every SYSTEM-layer hit (system_layer_violations: codex reads that layer whatever the home holds).
+    [] = clean. arena_judge runs this before and after each call, so both checks run on both sides of it."""
+    return _home_only_violations(home) + system_layer_violations()
+
+
+def _home_only_violations(home: Path) -> list[str]:
+    """The home allow-list half of home_violations. A home that cannot be listed is itself a violation (fail closed)."""
     bad: list[str] = []
     if os.path.islink(home):
         return ["the home itself is a link"]
@@ -207,6 +213,137 @@ def _entry_violations(e) -> list[str]:
     if _is_call_state(n) and n not in CALL_STATE_REFUSED:
         return _call_state_hits(Path(e.path), n) if e.is_dir(follow_symlinks=False) else []
     return [n]
+
+
+# --- the SYSTEM config layer (ARENA_JUDGE_PROGRAMDATA_CONFIG_STEERS) ---------------------------------------------
+# codex.exe layers config as system < user (CODEX_HOME) < project < flags, plus enterprise requirements/managed config.
+# The judge locks down only the user layer (its own home) and the flags, so a system-layer file steered a VALID vote
+# (BENCH, C:\ProgramData\OpenAI\Codex\config.toml) and any Windows user may create that folder (BUILTIN\Users: create
+# folders on C:\ProgramData). What codex 0.164 reads at system level, and how each was established (FOUNDRY 2026-10-30,
+# `codex debug prompt-input` with a marker plant + a positive control; every plant removed):
+#   MEASURED read : <ProgramData>\OpenAI\Codex\config.toml, ...\requirements.toml (a parse error fails codex),
+#                   ...\skills\<x>\SKILL.md (admin-scope skill)
+#   MEASURED not  : ...\Codex\managed_config.toml, ...\Codex\AGENTS.md, <ProgramData>\Codex\, <ProgramData>\OpenAI\
+#                   config.toml, C:\etc\codex\, codex.exe's own folder (config/requirements/AGENTS.md)
+#   DOCUMENTED    : <ProgramData> is SHGetKnownFolderPath(FOLDERID_ProgramData) with C:\ProgramData as fallback (binary
+#                   strings) -> roots below; registry SOFTWARE\Policies\OpenAI\Codex (enterprise-managed, admin-only to
+#                   write, absent here, not measurable) -> POLICY_KEYS; CODEX_*/OPENAI_* env (115 CODEX_* names in the
+#                   binary, e.g. CODEX_CA_CERTIFICATE, *_BASE_URL) -> ENV_REFUSED_PREFIXES.
+# So the WHOLE <root>\OpenAI\Codex entry is refused in any form (file, empty folder, link/junction, dangling link):
+# a future codex reading one more file there is covered too. Nothing is ever deleted: the check only names the path.
+SYSTEM_LAYER_PARTS = ("OpenAI", "Codex")
+SYSTEM_DEFAULT_ROOT = "C:\\ProgramData"
+POLICY_KEYS = (r"HKLM\SOFTWARE\Policies\OpenAI\Codex", r"HKCU\SOFTWARE\Policies\OpenAI\Codex")
+PROFILE_LIST_KEY = r"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList"
+REG_ABSENT = "ERROR: The system was unable to find the specified registry key or value."
+ENV_REFUSED_PREFIXES = ("CODEX_", "OPENAI_")
+ENV_ALLOWED = ("CODEX_HOME",)                     # the judge's own home, set by codex_image.child_env
+WIN_TIMEOUT = 30
+
+
+def _run_win(argv: list) -> tuple | None:
+    """Run a Windows program from WSL with this process's env (a superset of what the judge passes codex.exe, so its
+    WSLENV-named variables reach it too). (rc, text) or None if it could not run."""
+    import subprocess                                                  # noqa: PLC0415
+    try:
+        r = subprocess.run(argv, capture_output=True, cwd="/mnt/c/Windows", timeout=WIN_TIMEOUT,
+                           env=dict(os.environ))
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return r.returncode, (r.stdout + r.stderr).decode("utf-8", "replace")
+
+
+def win_to_local(w: str) -> Path | None:
+    """`X:\\a\\b` -> /mnt/x/a/b; anything else (UNC, relative, unexpanded %VAR%) -> None (the caller fails closed)."""
+    m = re.fullmatch(r"([A-Za-z]):((?:\\[^\\/:*?\"<>|%]+)*)\\?", w.strip())
+    if not m:
+        return None
+    return Path("/mnt/%s" % m.group(1).lower(), *[x for x in m.group(2).split("\\") if x])
+
+
+def windows_facts(run=_run_win, to_local=win_to_local) -> dict:
+    """What the Windows side looks like to codex.exe: its env, the policy keys, and every ProgramData root.
+    {"env": {name: value} | None, "keys": {key: (rc, text) | None}, "roots": [(win, local | None)], "bad": [str]}."""
+    bad: list[str] = []
+    r = run(["cmd.exe", "/d", "/c", "set"])
+    env = None
+    if r is not None and r[0] == 0:
+        env = dict(ln.split("=", 1) for ln in r[1].splitlines() if "=" in ln and not ln.startswith("="))
+    keys = {k: run(["reg.exe", "query", k, "/reg:64"]) for k in POLICY_KEYS}
+    roots = [SYSTEM_DEFAULT_ROOT]
+    for n in ("ProgramData", "ALLUSERSPROFILE"):
+        v = next((val for k, val in (env or {}).items() if k.upper() == n.upper()), None)
+        if v:
+            roots.append(v)
+    prof = None
+    r = run(["reg.exe", "query", PROFILE_LIST_KEY, "/v", "ProgramData", "/reg:64"])
+    m = re.search(r"^\s*ProgramData\s+REG_(?:EXPAND_)?SZ\s+(.+?)\s*$", r[1], re.M) if r and r[0] == 0 else None
+    if m:
+        prof = re.sub(r"%([^%]+)%", lambda x: next((val for k, val in (env or {}).items()
+                                                    if k.upper() == x.group(1).upper()), x.group(0)), m.group(1))
+    if prof:
+        roots.append(prof)
+    else:
+        bad.append("cannot resolve the ProgramData known folder from %s (fail closed)" % PROFILE_LIST_KEY)
+    seen, out = set(), []
+    for w in roots:
+        k = w.strip().rstrip("\\").casefold()
+        if k not in seen:
+            seen.add(k)
+            out.append((w, to_local(w)))
+    return {"env": env, "keys": keys, "roots": out, "bad": bad}
+
+
+def _layer_hits(win: str, local: Path) -> list[str]:
+    """Hits for one ProgramData root: <root>\\OpenAI\\Codex in any form, matched case-insensitively (NTFS). A root that
+    is missing or unlistable, an OpenAI that is a link or unlistable: hits (fail closed)."""
+    d, shown = local, win.rstrip("\\")
+    if not os.path.isdir(local):
+        return ["%s does not exist or is not a folder (the check cannot see it)" % win]
+    for i, part in enumerate(SYSTEM_LAYER_PARTS):
+        try:
+            ents = list(os.scandir(d))
+        except OSError as ex:
+            return ["%s unlistable (%s)" % (shown, ex.__class__.__name__)]
+        ent = next((e for e in ents if e.name.casefold() == part.casefold()), None)
+        if ent is None:
+            return []
+        shown = shown + "\\" + ent.name
+        if ent.is_symlink():
+            return ["%s is a link/junction" % shown]
+        if i == len(SYSTEM_LAYER_PARTS) - 1:
+            return ["%s exists" % shown]
+        try:
+            if not ent.is_dir(follow_symlinks=False):
+                return []                                              # a plain file: nothing below it can be read
+        except OSError as ex:
+            return ["%s uninspectable (%s)" % (shown, ex.__class__.__name__)]
+        d = Path(ent.path)
+    return []
+
+
+def system_layer_violations(facts: dict | None = None) -> list[str]:
+    """Every reason codex.exe's SYSTEM config layer might not be empty. [] = clean; anything else refuses the call."""
+    f = facts if facts is not None else windows_facts()
+    bad = list(f.get("bad", []))
+    env = f.get("env")
+    if env is None:
+        bad.append("cannot read the Windows environment codex.exe inherits (fail closed)")
+    else:
+        bad += ["env %s reaches codex.exe" % n for n in sorted(env)
+                if n.upper().startswith(ENV_REFUSED_PREFIXES) and n.upper() not in ENV_ALLOWED]
+    for k in POLICY_KEYS:
+        r = f.get("keys", {}).get(k)
+        if r is None or r[0] == 0 or REG_ABSENT not in r[1]:
+            bad.append("cannot query policy key %s or it exists (%s)" % (k, "no reg.exe" if r is None else r[1].strip()[:80]))
+    if not f.get("roots"):
+        bad.append("no ProgramData root resolved (fail closed)")
+    for win, local in f.get("roots", []):
+        if local is None:
+            bad.append("%s is not a local drive path (the check cannot see it)" % win)
+        else:
+            bad += _layer_hits(win, local)
+    return bad
 
 
 # names refused anywhere inside an admitted per-call-state dir (GPT review r1: those subtrees were unchecked). Only
@@ -259,11 +396,16 @@ def verify_cwd(start: Path, user_home: Path | None = None) -> None:
 
 
 def verify_home(home: Path | None = None, base: Path | None = None) -> None:
-    """Per-call check, file compares only (never launches codex, never queries the machine). Raises HomeError.
-    First the ALLOW-LIST (home_violations): anything else in the home refuses the call."""
+    """Per-call check (never launches codex). Raises HomeError. First the SYSTEM layer (system_layer_violations: one
+    cmd.exe and three reg.exe queries), then the home ALLOW-LIST: anything else in the home refuses the call."""
     home, base = home or judge_home(), base or base_home()
     fix = "run: python3 src/RimMandrake/Utils/arena/judge_codex_home.py setup"
-    bad = home_violations(home)
+    sysbad = system_layer_violations()
+    if sysbad:
+        raise HomeError("codex.exe reads a system-level config layer the judge cannot lock down, and something is there:"
+                        " %s; the judge refuses every call while it exists. It was NOT deleted (it may be someone"
+                        " else's): inspect it by hand" % "; ".join(sysbad[:12]))
+    bad = _home_only_violations(home)
     if bad:
         raise HomeError("judge Codex home %s holds entries not on its allow-list: %s; inspect and delete them by hand "
                         "(setup never deletes them: they may be a planted instruction), then %s"
