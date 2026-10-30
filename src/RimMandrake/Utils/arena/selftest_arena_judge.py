@@ -24,16 +24,32 @@ Fix round 1 (judge_test_report.md), one forced failure per defect:
   gate view     the raw gate record trips the leak scan on head12 (red); the whitelist view carries no folder, time,
                 task, sha or step note; the arena event log and gate folders are unreadable in the sandbox
   glued names   RalphLoop / ralphs / myRalph / V3Arm / trioJudge / look-alike unicode / \\wsl$ / model names and
-                Assisted-by trip the raw leak scan (red) and are gone after the scrub; `import trio`, 'v3.2' and
-                'trioxide' survive; agent config (CLAUDE.md, .claude/, specs/, .ralph/) is bookkeeping
+                Assisted-by trip the raw leak scan (red) and are gone after the scrub; `import trio` and 'v3.2'
+                survive (reported ambiguous); agent config (CLAUDE.md, .claude/, specs/, .ralph/) is bookkeeping
   chance model  an always-the-majority guesser beats 1/len(labels) on the binomial (red) but is not LEAKY; exact
-                hand cases 1/6
+                hand cases p_high 1/6, two-sided 1/3
   model unset   with the preflight bypassed the GPT call is spent (red); with it, 0 model calls
   bad verdict   a corrupt verdict.json is skipped and counted, the report still written
+ fix round 2 (GPT review of round 1; every case below failed against round-1 code):
+  exits         sys.exit(0) / SystemExit(None) / atexit+exit / a forged marker raised in an IMPORTED arm module never
+                pass; controls: sys.exit(main()) returning 0 passes, sys.exit(1) fails
+  git drivers   a planted textconv / diff.external / filter / fsmonitor in the arm clone's .git/config and attributes
+                RUNS under plain `git diff` (red) and never under neutralise + materialise
+  odd names     tab, newline, non-ASCII, leading-dash, space and glob-star filenames: git quotes them (red); every one
+                reaches the diff and the materialised tree
+  replay miss   a replay task with no hidden-check file -> invalid, 0 model calls
+  glued 2       xralph_afoo / trioxide / PREv3cSUFFIX refused and reported ambiguous; the human allowlist covers
+                only what it lists
+  isolation     real CLI runners with a spy model: no submission dir, raw tree, clone or judge id in argv/env/prompt/
+                cwd; raw tree deleted before the call; planted env var and ARENA_* absent; a fresh empty workspace
+                per judge, deleted after
+  guess         seeded arm-independent random guesses are not leaky; consistently naming the next arm is LEAKY on
+                the low tail; binomial at n=5000 does not overflow; the report states its decision rule
 Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES / ARENA_PRIVATE / ARENA_JUDGE_WORK point there).
 """
 import json
 import os
+import random
 import shutil
 import subprocess
 import sys
@@ -214,7 +230,12 @@ except OSError as ex:
 import os
 guess = "unknown"
 if readable and m:
-    guess = (m.get(os.path.basename(os.getcwd())) or next(iter(m.values())))["arm"]
+    # a judge with the masks gone finds its submission as the one sibling dir with no verdict yet (its own cwd is
+    # now an anonymous workspace), then reads that judge id's arm from the map
+    import glob
+    cur = [os.path.basename(d) for d in glob.glob(os.path.join(os.path.dirname(os.path.dirname(MAP)), "guess_*", "J*"))
+           if not os.path.exists(os.path.join(d, "verdict.json"))]
+    guess = (m[cur[0]] if cur and cur[0] in m else next(iter(m.values())))["arm"]
 out = json.dumps({"verdict": "accept", "reasons": ["map_readable=%%s" %% readable], "arm_guess": guess})
 if "--prompt-file" in sys.argv:
     open(sys.argv[sys.argv.index("--out") + 1], "w").write(out)
@@ -296,14 +317,29 @@ def t_guess(tmp):
     check(abs(J.binom_sf(3, 3, 0.5) - 0.125) < 1e-12, "binomial tail sanity: 3/3 at q=.5 is .125")
     amap = {"J%d" % i: {"arm": J.ARMS[i % 5]} for i in range(30)}
     leaky = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": a["arm"]}]} for j, a in amap.items()]
-    blind = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": J.ARMS[(i + 1) % 5] if i % 5 else
-                                        amap[j]["arm"]}]} for i, j in enumerate(amap)]
-    rl, rb = J.guess_report(leaky, amap), J.guess_report(blind, amap)
-    floor = 1.0 / (J.MC_DRAWS + 1)
+    rng = random.Random(20261029)                # GPT review #10: blind = guesses drawn WITHOUT looking at the arm
+    blind = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": rng.choice(J.ARMS)}]} for j in amap]
+    wrong = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": J.ARMS[(J.ARMS.index(a["arm"]) + 1) % 5]}]}
+             for j, a in amap.items()]
+    rl, rb, rw = J.guess_report(leaky, amap), J.guess_report(blind, amap), J.guess_report(wrong, amap)
+    floor = 2.0 / (J.MC_DRAWS + 1)               # two-sided: twice the one-sided Monte Carlo floor
     check(rl["blinding"] == "LEAKY" and rl["pooled"]["p_value"] <= floor + 1e-12,
-          "forced: 30/30 correct guesses -> LEAKY (p=%.1e, the permutation floor)" % rl["pooled"]["p_value"])
-    check(rb["blinding"] == "not shown leaky" and rb["pooled"]["correct"] == 6,
-          "chance-rate guesses (6/30 at q=.2) -> not shown leaky (p=%.2f)" % rb["pooled"]["p_value"])
+          "forced: 30/30 correct guesses -> LEAKY (p=%.1e, the two-sided permutation floor)" % rl["pooled"]["p_value"])
+    check(rb["blinding"] == "not shown leaky",
+          "arm-independent seeded random guesses (%d/30) -> not shown leaky (p=%.2f)"
+          % (rb["pooled"]["correct"], rb["pooled"]["p_value"]))
+    check(rw["blinding"] == "LEAKY" and rw["pooled"]["correct"] == 0 and rw["pooled"]["p_high"] == 1.0,
+          "forced: consistently naming the NEXT arm (0/30) -> LEAKY on the low tail (p=%.1e; one-sided p_high=1)"
+          % rw["pooled"]["p_value"])
+    check("PERMUTATION" in rl["decision"] and "binomial" in rl["decision"] and "binom_p" in rl["pooled"],
+          "report states LEAKY is the permutation test, not the naive binomial, and still prints binom_p")
+    big = J.binom_sf(1200, 5000, 0.2)
+    check(0.0 < big < 1.0 and abs(J.binom_sf(1000, 5000, 0.2) - 0.5) < 0.02 and J.binom_sf(2500, 5000, 0.2) == 0.0,
+          "binomial at n=5000 does not overflow and is sane (P(X>=1200)=%.1e, P(X>=1000)~.5)" % big)
+    many = {"J%d" % i: {"arm": J.ARMS[i % 5]} for i in range(5000)}
+    rbig = J.guess_report([{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": J.ARMS[0]}]} for j in many], many)
+    check(rbig["pooled"]["guesses"] == 5000 and 0.0 <= rbig["pooled"]["binom_p"] <= 1.0,
+          "a 5000-submission report is produced (binom_p=%.2f)" % rbig["pooled"]["binom_p"])
     check(J.guess_report([], {})["blinding"] == "UNMEASURED", "no guesses -> UNMEASURED, not 'not leaky'")
     # end to end: a judge that can read the map (masks removed) is caught by the report; a sandboxed one is not
     fake = tmp / "fake_model.py"
@@ -465,7 +501,7 @@ GLUED = {"camel suffix": "class RalphLoop:", "plural": "the ralphs ran", "camel 
          "cyrillic": "rаlph was here", "zero width": "ral​ph was here",
          "model": "reviewed with GPT and Claude", "assisted": "# Assisted-by: Claude", "generated": "# Generated-by: Codex",
          "opus": "ask Opus first", "wsl$": None}
-KEEP = ("import trio\n", "from trio.lowlevel import x\n", "VERSION = 'v3.2'\n", "trioxide = 1\n")
+KEEP = ("import trio\n", "from trio.lowlevel import x\n", "VERSION = 'v3.2'\n")
 
 
 def t_glued(tmp):
@@ -493,6 +529,216 @@ def t_glued(tmp):
     check(not J.is_arm_bookkeeping("src/RimMandrake/Utils/demo/mod.py"), "real code is not bookkeeping")
 
 
+# ------------------------------------------------------------------ fix round 2 (GPT review of round 1)
+
+def clone_files(root: Path, files: dict, msg="head") -> tuple:
+    """A clone whose head adds/changes `files` (relpath -> text) over a base holding demo/mod.py returning 0."""
+    c = root
+    d = c / "src/RimMandrake/Utils/demo"
+    d.mkdir(parents=True)
+    git(c, "init", "-q", "-b", "main")
+    git(c, "config", "user.email", "t@example.invalid")
+    git(c, "config", "user.name", "t")
+    (d / "mod.py").write_text("def value():\n    return 0\n")
+    git(c, "add", "-A")
+    git(c, "commit", "-q", "-m", "base")
+    base = git(c, "rev-parse", "HEAD")
+    for rel, text in files.items():
+        f = c / rel
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(text)
+    git(c, "add", "-A")
+    git(c, "commit", "-q", "-m", msg)
+    return c, base, git(c, "rev-parse", "HEAD")
+
+
+DEMO = "src/RimMandrake/Utils/demo/"
+UNFINISHED = ("import sys, os\nsys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))\nimport mod\n"
+              "assert False, 'the check never got past the import'\n")
+
+
+def t_exits(tmp):
+    """GPT review #2: an exit raised INSIDE an imported arm module must not finish the check."""
+    mods = {"sys.exit(0) in arm module": "import sys\nsys.exit(0)\n",
+            "SystemExit(None) in arm module": "raise SystemExit(None)\n",
+            "os._exit(0) in arm module": "import os\nos._exit(0)\n",
+            "atexit + sys.exit(0) in arm module": "import atexit, os, sys\natexit.register(lambda: os._exit(0))\n"
+                                                  "sys.exit(0)\n",
+            "exit inside an atexit handler": "import atexit, sys\natexit.register(sys.exit, 0)\nsys.exit(0)\n",
+            "forged marker without the nonce": "import sys\nprint('ARENA_CHECK_DONE')\nprint('ARENA_CHECK_DONE ' + "
+                                               "'0' * 32)\nsys.stdout.flush()\nsys.exit(0)\n"}
+    hidden = {"checks": [{"type": "fix_test", "path": DEMO + "selftest_unfinished.py", "body": UNFINISHED}],
+              "reworks": []}
+    for i, (what, body) in enumerate(mods.items()):
+        c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "exits" / str(i), {DEMO + "mod.py": body})
+        fs = [Fake(ans("accept")) for _ in range(3)]
+        r = J.judge(task=task_for("T_X"), hidden=hidden, clone=c, base=b, head=h, arm="v3", gate=GATE,
+                    judges=J.Judges(*fs))
+        res = r["hidden"][0]["result"] if r["hidden"] else r.get("why", "")[:40]
+        check(res in ("fail", "no_marker") and r["verdict"] in ("reject", "invalid") and fs[0].calls == 0,
+              "forced: %s is never a pass (%s -> %s, 0 model calls)" % (what, res, r["verdict"]))
+    c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "exits" / "ok",
+                          {DEMO + "mod.py": "def value():\n    return 2\n"})
+    for what, body, want in (
+            ("sys.exit(main()) returning 0", "import sys, os\nsys.path.insert(0, os.path.dirname("
+             "os.path.abspath(__file__)))\ndef main():\n    import mod\n    return 0 if mod.value() == 2 else 1\n"
+             "sys.exit(main())\n", "pass"),
+            ("sys.exit(1) from the check itself", "import sys\nsys.exit(1)\n", "fail")):
+        hd = {"checks": [{"type": "fix_test", "path": DEMO + "selftest_ctl.py", "body": body}], "reworks": []}
+        r = J.judge(task=task_for("T_X"), hidden=hd, clone=c, base=b, head=h, arm="v3", gate=GATE,
+                    judges=J.Judges(Fake(ans("accept")), Fake(ans("accept")), Fake(ans("accept"))))
+        check(r["hidden"][0]["result"] == want, "control: %s -> %s (%s)" % (what, want, r["hidden"][0]["result"]))
+
+
+EVIL = "#!/bin/sh\ntouch %s/ran_$$\n[ -n \"$1\" ] && [ -f \"$1\" ] && cat \"$1\" || cat\n"
+
+
+def t_git_drivers(tmp):
+    """GPT review #3: an arm clone's .git/config + attributes naming commands must never run as the harness."""
+    sent = tmp / "sentinel"
+    sent.mkdir()
+    evil = tmp / "evil.sh"
+    evil.write_text(EVIL % sent)
+    evil.chmod(0o755)
+    c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "drivers" / "v3",
+                          {DEMO + "mod.py": "def value():\n    return 2\n", ".gitattributes": "* diff=evil filter=evil\n"})
+    (c / ".git" / "info").mkdir(exist_ok=True)
+    (c / ".git" / "info" / "attributes").write_text("* diff=evil filter=evil export-subst\n")
+    with open(c / ".git" / "config", "a") as f:
+        f.write('[diff "evil"]\n\ttextconv = %s\n[diff]\n\texternal = %s\n[filter "evil"]\n\tsmudge = %s\n'
+                '\tclean = %s\n\trequired = true\n[core]\n\tfsmonitor = %s\n' % ((evil,) * 5))
+    subprocess.run(["git", "-C", str(c), "diff", b, h, "--", "src"], capture_output=True)
+    n1 = len(list(sent.iterdir()))
+    subprocess.run(["git", "-C", str(c), "diff", "--no-ext-diff", b, h, "--", "src"], capture_output=True)
+    n2 = len(list(sent.iterdir())) - n1
+    check(n1 > 0 and n2 > 0, "forced: plain `git diff` in the arm clone RUNS the planted external diff (%d) and, "
+                             "with --no-ext-diff, the textconv (%d)" % (n1, n2))
+    for f in sent.iterdir():
+        f.unlink()
+    nd = J.neutralise(c, b, h, AREA)
+    tree = J.materialise(c, h, AREA, tmp / "drivers_tree")
+    ran = sorted(x.name for x in sent.iterdir())
+    check(not ran and "+    return 2" in nd.text and (tree / DEMO / "mod.py").read_text().endswith("return 2\n"),
+          "neutralise + materialise run NO planted textconv/external/filter/fsmonitor command (%d ran) and still "
+          "produce the real diff and tree" % len(ran))
+
+
+ODD = {"tab": DEMO + "a\tb.py", "newline": DEMO + "new\nline.py", "non-ascii": DEMO + "naïve_été.py",
+       "leading dash": DEMO + "-dash.py", "spaces": DEMO + "sp ace s.py", "star": DEMO + "st*r.py"}
+
+
+def t_odd_names(tmp):
+    """GPT review #7: filenames git would quote are diffed and materialised, not silently dropped."""
+    files = {rel: "TOKEN_%d = 1\n" % i for i, rel in enumerate(ODD.values())}
+    files[DEMO + "mod.py"] = "def value():\n    return 2\n"
+    c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "odd" / "v3", files)
+    plain = subprocess.run(["git", "-C", str(c), "diff", "--name-only", b, h], capture_output=True, text=True).stdout
+    check(any(l.startswith('"') for l in plain.splitlines()),
+          "forced: git's default --name-only QUOTES such names (the round-1 reader's input)")
+    nd = J.neutralise(c, b, h, AREA)
+    for i, (what, rel) in enumerate(ODD.items()):
+        check("TOKEN_%d = 1" % i in nd.text, "%s in a filename: the file's change reaches the diff" % what)
+    check(len(nd.files) == len(files), "every changed file is listed (%d of %d)" % (len(nd.files), len(files)))
+    tree = J.materialise(c, h, AREA, tmp / "odd_tree")
+    got = [rel for rel in ODD.values() if (tree / rel).is_file()]
+    check(len(got) == len(ODD), "every odd name is materialised for the hidden checks (%d of %d)" % (len(got), len(ODD)))
+
+
+def t_replay_missing(tmp):
+    """GPT review #8: a replay task with its hidden-check file missing fails CLOSED."""
+    c, b, h = make_clone(Path(os.environ["ARENA_CLONES"]) / "replaymiss", "v3", 1, plant=False)
+    fs = [Fake(ans("accept")) for _ in range(3)]
+    task = dict(task_for("RP_T_MISSING"), source_item="SOME_ITEM_FIXED")
+    r = J.judge(task=task, hidden=None, clone=c, base=b, head=h, arm="v3", gate=GATE, judges=J.Judges(*fs))
+    check(r["verdict"] == "invalid" and fs[0].calls == fs[1].calls == 0 and "hidden-check" in r.get("why", ""),
+          "forced: replay task without its hidden-check file -> invalid, 0 model calls (%s)" % r["verdict"])
+
+
+def t_glued2(tmp):
+    """GPT review #6: an arm name glued inside a longer identifier is refused unless a human allowlisted it."""
+    for s in ("xralph_afoo = 1\n", "trioxide = 1\n", "PREv3cSUFFIX = 2\n"):
+        amb = []
+        hits = J.find_leaks(s, ambiguous=amb, allow=())
+        check(bool(hits) and any(a.startswith("glued:") for a in amb),
+              "forced: glued arm name refused and reported ambiguous: %r (%s)" % (s.strip(), hits[:1]))
+    check(not J.find_leaks("xralph_afoo = 1\n", allow=("xralph_afoo",)), "an allowlisted identifier is accepted")
+    al = A.paths()["root"] / "glued_allowlist.txt"
+    al.write_text("# human-ruled: not arm names\ntrioxide\n")
+    try:
+        check(not J.find_leaks("trioxide = 1\n") and bool(J.find_leaks("xralph_afoo = 1\n")),
+              "the allowlist FILE covers only what it lists")
+    finally:
+        al.unlink()
+    check(not J.find_leaks("value() returns 2\nimport trio\nVERSION = 'v3.2'\n", allow=()),
+          "glued scan is quiet on clean text and on the reported import/version exemptions")
+    c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "glued" / "v3", {DEMO + "mod.py": "xralph_afoo = 2\n"})
+    fs = [Fake(ans("accept")) for _ in range(3)]
+    r = J.judge(task=task_for("T_GL"), hidden=None, clone=c, base=b, head=h, arm="v3", gate=GATE, judges=J.Judges(*fs))
+    check(r["verdict"] == "invalid" and fs[0].calls == 0, "a submission carrying a glued arm name is invalid, unjudged")
+
+
+SPY_MODEL = r"""
+import json, os, sys
+prompt = open(sys.argv[sys.argv.index("--prompt-file") + 1]).read() if "--prompt-file" in sys.argv else sys.stdin.read()
+dump = {"argv": sys.argv, "cwd": os.getcwd(), "env": dict(os.environ), "prompt": prompt, "ls": sorted(os.listdir("."))}
+open("spy_dump.json", "w").write(json.dumps(dump))
+out = json.dumps({"verdict": "accept", "reasons": ["r"], "arm_guess": "unknown"})
+if "--out" in sys.argv:
+    open(sys.argv[sys.argv.index("--out") + 1], "w").write(out)
+else:
+    print(out)
+"""
+
+
+class Spy:
+    """Wraps a real CLI runner; after the call reads what the fake model saw, and what existed while it ran."""
+    def __init__(self, inner, wb):
+        self.inner, self.wb, self.seen = inner, wb, []
+
+    def __call__(self, prompt, work):
+        raw_left = [str(x) for x in self.wb.glob("J*/tree")] + [str(x) for x in self.wb.glob("J*/check_*")]
+        text = self.inner(prompt, work)
+        d = json.loads((work / "spy_dump.json").read_text())
+        d["raw_left"], d["work"] = raw_left, str(work)
+        self.seen.append(d)
+        return text
+
+
+def t_isolation(tmp):
+    """GPT review #1/#4/#5: models see only the prompt; no raw-tree path; a fresh empty workspace each; allow-listed env."""
+    os.environ["ARENA_JUDGE_OPUS_MODEL"] = "fake-model-for-selftest"
+    os.environ["PLANTED_HARNESS_SECRET"] = "planted-value-xyz"
+    spy = tmp / "spy_model.py"
+    spy.write_text(SPY_MODEL)
+    wb = tmp / "iso_work"
+    c, b, h = make_clone(Path(os.environ["ARENA_CLONES"]) / "iso", "v3", 2, plant=False)
+    call = [sys.executable, str(spy)]
+    so, sg = Spy(J.OpusCLI(prefix=call), wb), Spy(J.GptConsult(prefix=call), wb)
+    try:
+        r = J.judge(task=task_for("T_I"), hidden=hidden_for("T_I"), clone=c, base=b, head=h, arm="v3", gate=GATE,
+                    judges=J.Judges(so, sg, Spy(J.OpusCLI(prefix=call), wb)), work_base=wb)
+    finally:
+        os.environ.pop("PLANTED_HARNESS_SECRET", None)
+    jdir = wb / r["judge_id"]
+    seen = so.seen + sg.seen
+    check(r["hidden"] and r["hidden"][0]["result"] == "pass" and len(seen) == 2,
+          "isolation fixture ran: hidden check passed, 2 model calls (%s)" % r["verdict"])
+    forbidden = [str(jdir), os.path.realpath(jdir), str(jdir / "tree"), str(c), r["judge_id"]]
+    for d in seen:
+        blob = json.dumps([d["argv"], d["env"], d["prompt"], d["cwd"]])
+        bad = [f for f in forbidden if f in blob]
+        check(not bad, "%s: no submission dir / raw tree / clone / judge id in its argv, env, prompt or cwd (%s)"
+              % (d["argv"][1] if "--prompt-file" in d["argv"] else "opus", bad))
+        check(not d["raw_left"], "the raw tree and check copies were deleted before the model call (%s)" % d["raw_left"])
+        check("PLANTED_HARNESS_SECRET" not in d["env"] and not any(k.startswith("ARENA_") for k in d["env"]),
+              "a planted harness env var and every ARENA_* var are absent from the judge env")
+        check(set(d["ls"]) <= {"prompt.md"} and Path(d["work"]).parent == J.work_root() / ".jw",
+              "the call ran in a fresh private workspace holding only its own prompt (%s)" % d["ls"])
+        check(not Path(d["work"]).exists(), "the workspace is deleted after the call")
+    check(len({d["cwd"] for d in seen}) == 2, "each judge got its OWN workspace (no shared directory)")
+    check(not (jdir / "tree").exists() and not list(jdir.glob("check_*")), "no raw tree left in the submission dir")
+
+
 def t_chance(tmp):
     labels = ("a", "b", "c", "d")
     amap = {"J%d" % i: {"arm": "a" if i < 6 else "b"} for i in range(10)}
@@ -506,12 +752,15 @@ def t_chance(tmp):
     amap3 = {"J0": {"arm": "a"}, "J1": {"arm": "b"}, "J2": {"arm": "c"}}
     recs3 = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": m["arm"]}]} for j, m in amap3.items()]
     r3 = J.guess_report(recs3, amap3, labels)
-    check(r3["per_judge"]["opus"]["method"] == "exact" and abs(r3["per_judge"]["opus"]["p_value"] - 1 / 6) < 1e-12,
-          "hand case: 3/3 on arms a,b,c -> exact p = 1/3! = 1/6")
+    o3 = r3["per_judge"]["opus"]
+    check(o3["method"] == "exact" and abs(o3["p_high"] - 1 / 6) < 1e-12 and abs(o3["p_value"] - 1 / 3) < 1e-12,
+          "hand case: 3/3 on arms a,b,c -> exact p_high = 1/3! = 1/6, two-sided 1/3")
     amap4 = {"J%d" % i: {"arm": "aabb"[i]} for i in range(4)}
     recs4 = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": m["arm"]}]} for j, m in amap4.items()]
     r4 = J.guess_report(recs4, amap4, labels)
-    check(abs(r4["per_judge"]["opus"]["p_value"] - 4 / 24) < 1e-12, "hand case: 4/4 on a,a,b,b -> 2!2!/4! = 1/6")
+    o4 = r4["per_judge"]["opus"]
+    check(abs(o4["p_high"] - 4 / 24) < 1e-12 and abs(o4["p_value"] - 1 / 3) < 1e-12,
+          "hand case: 4/4 on a,a,b,b -> p_high = 2!2!/4! = 1/6, two-sided 1/3")
     check(rep["tests"] == 2 and abs(rep["alpha_per_test"] - 0.025) < 1e-12, "Bonferroni: 1 judge + pooled -> 0.05/2")
 
 
@@ -579,6 +828,12 @@ def main():
         t_marker(tmp)
         t_gate_view(tmp)
         t_glued(tmp)
+        t_exits(tmp)
+        t_git_drivers(tmp)
+        t_odd_names(tmp)
+        t_replay_missing(tmp)
+        t_glued2(tmp)
+        t_isolation(tmp)
         t_chance(tmp)
         t_model_unset(tmp)
         t_bad_verdict(tmp)

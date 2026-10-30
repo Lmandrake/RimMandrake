@@ -16,14 +16,37 @@ hidden checks. Every judge-side process is started inside a bubblewrap sandbox: 
 (`--ro-bind / /`), its own pid namespace and session, a fresh /tmp, and empty tmpfs laid OVER the harness-private
 directory's generic parent, the arm clone root, the judge work root, the arena root (event log, gate records, other
 tasks' hidden checks) and ~/.claude/projects. Only the process's own scratch is writable: a hidden check gets a fresh
-copy of the tree per check (it cannot tamper with the next check, the judge code or the host); the Opus run gets
-$HOME too (claude rewrites its config; it runs no tools and no arm code); the GPT run gets the work dir plus codex
-scratch and the consult receipts. A timeout SIGKILLs the whole process group and the pid namespace with it. No bwrap
--> the judge refuses; it never runs unsandboxed.
+copy of the tree per check (it cannot tamper with the next check, the judge code or the host); each MODEL call gets a
+FRESH private workspace <work root>/.jw/<random> (0700, empty, its cwd, deleted after the call), so no two judges
+share a directory and none can leave the next a note; the Opus run gets $HOME too (claude rewrites its config; it
+runs no tools, no arm code, --no-session-persistence); the GPT run gets codex scratch and the consult receipts.
+The environment is an ALLOW-LIST (judge_env: locale/PATH/HOME basics, plus for a model call only its own CLI/auth
+variables), never the harness's inherited environment; ARENA_* and any value naming the private dir or clone root are
+dropped. A timeout SIGKILLs the whole process group and the pid namespace with it. No bwrap -> the judge refuses.
+
+NO JUDGE SEES THE RAW TREE (fix round 2, GPT review #1/#4). The head tree is materialised only for the hidden checks
+and is DELETED (with every per-check copy) before any model is asked; a model receives the neutralised diff and the
+whitelisted gate view in its prompt on stdin, never a path to anything. The prompt, argv and env of a model call name
+no submission directory (selftest t_isolation).
+
+GIT IS NEVER RUN ON ARM-CONTROLLED CONFIG (GPT review #3). The arm owns its clone's .git/config, info/attributes and
+.gitattributes, any of which can name a textconv / external diff / filter / fsmonitor / hook COMMAND that git would
+run as the harness. So the harness never runs git in the clone: SafeRepo makes a throwaway bare repo whose object
+store BORROWS the clone's objects (GIT_ALTERNATE_OBJECT_DIRECTORIES, read-only), with GIT_CONFIG_NOSYSTEM,
+GIT_CONFIG_GLOBAL=/dev/null, core.attributesFile=/dev/null, core.hooksPath=/dev/null, core.fsmonitor= and
+diff.external= forced, and every diff `--no-ext-diff --no-textconv --no-renames`. The tree is read by
+`ls-tree -z` + `cat-file --batch` (no `git archive`: no export-subst, no filters, no commit timestamps). Names are
+NUL-delimited with core.quotepath=off and passed as --literal-pathspecs (GPT review #7: a tab, newline, non-ASCII or
+leading-dash name is diffed, not silently dropped); a changed file whose diff comes back empty fails CLOSED.
 
 HIDDEN-CHECK PASS needs proof the check ran to its end: each check runs under a harness-owned runner that reads a
-fresh nonce on stdin, runs the test file as __main__, and only after it returns writes `ARENA_CHECK_DONE <nonce>` to a
-private dup of stdout. rc 0 without that line (os._exit(0), a hooked excepthook) is `no_marker` -> invalid.
+fresh nonce on stdin, compiles and runs the test file as __main__, and only after it returns writes
+`ARENA_CHECK_DONE <nonce>` to a private dup of stdout. EVERY pass needs that marker. A SystemExit(0/None) counts as
+the check finishing only when it was raised by the check file's OWN code (the deepest traceback frame is one of the
+test file's code objects, so `sys.exit(main())` works); raised inside an imported arm module (GPT review #2) it is
+"raised outside the check body" -> fail. rc 0 without the line (os._exit(0), atexit, a hooked excepthook, a forged
+marker without the nonce) is `no_marker` -> invalid. A REPLAY task with no hidden-check file fails CLOSED -> invalid
+(GPT review #8).
 
 WHERE THINGS LIVE
   $ARENA_PRIVATE (default ~/.local/state/rm_arena_private, dir 0700, files 0600)
@@ -31,7 +54,7 @@ WHERE THINGS LIVE
                             arm-readable root, the judge work root or the arena judge dir.
   $ARENA_JUDGE_WORK (default <clone root>/judge, i.e. /home/mandrake/rm/arena/judge: §1.6 bills it to the harness)
       <judge_id>/diff.patch     the neutralised diff (head minus base over `area`)
-      <judge_id>/tree/          git archive of head (TREE_PATHS + area dirs), hidden check bodies written over it
+      <judge_id>/tree/          head (TREE_PATHS + area dirs) for the hidden checks; deleted before any model call
       <judge_id>/prompt.md      the one prompt every judge gets (no judge sees another's answer)
       <judge_id>/verdict.json   the blind verdict record: no arm field
   <arena>/judge/hidden/<T>.json  the hidden checks (arena_tasks.py); read by the harness side, never shown to an arm
@@ -48,7 +71,9 @@ look-alike letters folded, zero-width dropped), case- and separator-insensitive,
 V3Arm) and plural. Agent config is stripped as bookkeeping (CLAUDE.md, .claude/, .codex/, .ralph/, specs/, GEMINI.md).
 Two exemptions keep code intact and are reported as `ambiguous_kept`: a version ('v3.2') and the module of an import
 (`import trio`). Then a leak scan with the SAME matcher re-runs over the result; anything left refuses the submission
-(NeutraliserLeak). The gate record reaches the prompt only as a whitelist: its verdict and each step's status (never
+(NeutraliserLeak). A second, boundary-blind scan (glued_residue, GPT review #6) looks for an arm name glued inside a
+longer identifier (`xralph_afoo`, `trioxide`) that the boundary matcher cannot see; any such identifier refuses the
+submission unless a human listed it in <arena>/glued_allowlist.txt (one identifier per line). The gate record reaches the prompt only as a whitelist: its verdict and each step's status (never
 its folder, time, task, shas or step notes).
 
 VERDICT. Hidden checks first: one failing -> reject (a known-bad replay output never reaches a model); one that could
@@ -64,7 +89,13 @@ sandbox: it costs nothing.
 
 GUESS REPORT. Each judge also guesses the arm. Chance is the day's own mix: a permutation test permutes which arm made
 which submission (exact up to 8 submissions, else 20000 seeded draws), per judge and pooled (a submission's votes kept
-together), Bonferroni over the tests. An always-the-majority guesser is therefore never LEAKY.
+together), Bonferroni over the tests. The test is TWO-SIDED (GPT review #10): consistently naming the wrong arm is
+knowledge too. An always-the-majority guesser is therefore never LEAKY.
+DECISION RULE, deliberately NOT the spec's (GPT review #9): the spec asked for "binomial p<0.05 vs 1/len(arms)". That
+binomial assumes every arm equally likely on every submission (the day's mix is unequal) and, pooled, treats the
+correlated votes on one submission as independent trials; it calls a blind majority-guesser leaky. LEAKY is decided by
+the permutation p_value; `binom_p` (log-space, safe at any n) is still printed in every row for reference, and the
+report carries this rule as its `decision` field.
 
 RESIDUAL (stated, not hidden):
   - gpt_consult runs codex.exe, a WINDOWS process the Linux sandbox does not confine. It gets only the neutralised
@@ -73,7 +104,15 @@ RESIDUAL (stated, not hidden):
     gate folders arena_gate.py names <arm>_<task>_<head12>_<stamp>. Setting ARENA_PRIVATE to an unpublished path
     narrows the map; nothing here can stop a model that goes looking. The guess-rate report is the detector.
   - arm code inside a hidden check shares the runner's interpreter, so deliberate frame/gc introspection could still
-    find the nonce. The marker defeats early exits and hooked exits, not a targeted attack on the runner.
+    find the nonce, and a check that CALLS an arm-supplied C callable (functools.partial(sys.exit, 0)) raises from its
+    own frame; an arm object with a lying __eq__ can satisfy an assert. The marker and the own-code rule defeat early
+    exits from imports and hooked exits, not a targeted attack on the runner.
+  - the Opus run's writable $HOME means claude still auto-loads the user's own ~/.claude config/CLAUDE.md (it names
+    no arm); the model has no tools to read further.
+  - the guess test assumes exchangeable submissions (no task/replay-family/time structure), uses accuracy as its only
+    statistic (a truth-dependent mapping that keeps accuracy at chance is not caught), and alpha is per report, not
+    across repeated daily reports.
+  - glued_residue refuses legitimate words that contain an arm name until a human allowlists them (fail closed).
   - the real `claude -p` / codex.exe have not been run inside this sandbox by the selftests (they cost money).
 """
 from __future__ import annotations
@@ -82,7 +121,6 @@ import argparse
 import datetime as dt
 import fcntl
 import fnmatch
-import io
 import json
 import math
 import os
@@ -93,7 +131,6 @@ import shutil
 import signal
 import subprocess
 import sys
-import tarfile
 import unicodedata
 from itertools import permutations
 from dataclasses import dataclass, field
@@ -151,6 +188,21 @@ def private_dir() -> Path:
 def work_root() -> Path:
     env = os.environ.get("ARENA_JUDGE_WORK", "").strip()
     return Path(env) if env else clones_root() / "judge"
+
+
+GLUED_ALLOW_FILE = "<arena root>/glued_allowlist.txt"
+
+
+def glued_allowlist(p: dict | None = None) -> tuple:
+    """Identifiers a HUMAN has ruled are not arm names although one is glued inside (`trioxide`): one per line in
+    <arena root>/glued_allowlist.txt, '#' comments. Harness-side only (the arena root is masked from judges). No file
+    -> empty: every glued residue refuses."""
+    try:
+        f = (p or A.paths())["root"] / "glued_allowlist.txt"
+        lines = f.read_text(encoding="utf-8").splitlines() if f.is_file() else []
+    except Exception:                                # noqa: BLE001 -- no arena root configured: nothing allowed
+        return ()
+    return tuple(x.split("#", 1)[0].strip() for x in lines if x.split("#", 1)[0].strip())
 
 
 def opus_model() -> str:
@@ -277,16 +329,30 @@ def judge_masks(priv: Path | None = None, p: dict | None = None) -> list[Path]:
     return out
 
 
-SAFE_ENV_DROP = ("ARENA_", "RM_ARM", "OLDPWD", "PWD")
+# The judge-side environment is an ALLOW-LIST (fix round 2): nothing the harness inherited reaches a judge unless it
+# is named here. `check` (a hidden check: arm code runs in it) gets only the basics, never a model credential.
+ENV_BASIC = ("PATH", "HOME", "USER", "LOGNAME", "LANG", "LANGUAGE", "TZ", "TERM")
+ENV_BASIC_PREFIX = ("LC_",)
+ENV_MODEL = ("SHELL", "CLAUDE_CONFIG_DIR", "SSL_CERT_FILE", "SSL_CERT_DIR", "REQUESTS_CA_BUNDLE", "http_proxy",
+             "https_proxy", "no_proxy", "HTTP_PROXY", "HTTPS_PROXY", "NO_PROXY", "RM_DATA_ROOT", "AGENT_STORAGE_ROOT",
+             "RM_CONSULT_RECEIPTS", "XDG_RUNTIME_DIR")
+ENV_MODEL_PREFIX = ("ANTHROPIC_", "CLAUDE_CODE_USE_", "OPENAI_", "CODEX_", "WSL", "RM_GPT_")
 
 
-def judge_env(env: dict | None, priv: Path | None) -> dict:
-    """The judge's environment: no ARENA_* variable, no variable whose value names the private dir or the clone root,
-    RM_ARM=harness (§1.6: judge spend is the harness's)."""
-    e = dict(os.environ if env is None else env)
+def judge_env(extra: dict | None, priv: Path | None, kind: str = "model", base: dict | None = None) -> dict:
+    """The judge's environment, built from an allow-list over `base` (default os.environ): `check` -> ENV_BASIC only;
+    `model` -> also what claude / gpt_consult / codex.exe need (auth, proxy, WSL interop, codex scratch). Then `extra`
+    (the caller's own explicit settings). Any value naming the private dir or the clone root is dropped; RM_ARM=harness
+    (§1.6: judge spend is the harness's)."""
+    src = dict(os.environ if base is None else base)
+    names, prefixes = ENV_BASIC, ENV_BASIC_PREFIX
+    if kind == "model":
+        names, prefixes = names + ENV_MODEL, prefixes + ENV_MODEL_PREFIX
+    e = {k: v for k, v in src.items() if k in names or k.startswith(prefixes)}
+    e.update(extra or {})
     bad = [os.path.realpath(Path(priv) if priv else private_dir()), os.path.realpath(clones_root())]
     for k in list(e):
-        if k.startswith(SAFE_ENV_DROP) or any(b and b in str(e[k]) for b in bad):
+        if k.startswith("ARENA_") or any(b and b in str(e[k]) for b in bad):
             e.pop(k, None)
     e["RM_ARM"] = "harness"
     return e
@@ -294,13 +360,14 @@ def judge_env(env: dict | None, priv: Path | None) -> dict:
 
 def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | None = None,
                   timeout: int = CHECK_TIMEOUT, env: dict | None = None, cwd: Path | None = None,
-                  rw: list[Path] | None = None):
-    """`rw` defaults to [work]; a hidden check passes its own per-check scratch copy instead. On timeout the whole
-    process group is SIGKILLed (bwrap --die-with-parent then takes the pid namespace, grandchildren included)."""
+                  rw: list[Path] | None = None, kind: str = "model"):
+    """`rw` defaults to [work]; a hidden check passes its own per-check scratch copy instead. `env` holds only the
+    caller's EXTRA variables (the rest is judge_env's allow-list for `kind`). On timeout the whole process group is
+    SIGKILLed (bwrap --die-with-parent then takes the pid namespace, grandchildren included)."""
     keep = [work] if rw is None else list(rw)
     full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work)
     proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv),
+                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind),
                             start_new_session=True)
     try:
         out, err = proc.communicate(stdin, timeout=timeout)
@@ -363,12 +430,12 @@ def _skeleton(text: str):
     return "".join(out), idx
 
 
-def _find_tokens(text: str, tokens) -> tuple:
-    """-> (spans, ambiguous): non-overlapping (start, end) spans in the ORIGINAL text naming a token, and the
-    exempted (version / import) occurrences, as strings."""
+def _find_tokens_sk(text: str, tokens) -> tuple:
+    """-> (skeleton, idx, spans, ambiguous, exempt): `spans` in the ORIGINAL text, `ambiguous` the exempted (version /
+    import) occurrences as strings, `exempt` their (start, end) in the SKELETON."""
     sk, idx = _skeleton(text)
     pat = re.compile("|".join("(?:%s)" % _token_re(t) for t in tokens))
-    spans, amb = [], []
+    spans, amb, exempt = [], [], []
     for m in pat.finditer(sk):
         s, e = m.start(), m.end()
         word = m.group(0)
@@ -378,6 +445,7 @@ def _find_tokens(text: str, tokens) -> tuple:
         if single and word.islower() and IMPORT_PREFIX_RE.match(sk[ls:s]) and \
                 not re.match(r"[A-Za-z0-9_]", sk[e:e + 1]):
             amb.append(word)
+            exempt.append((s, e))
             continue
         if idx is not None:
             s, e = idx[s], idx[e - 1] + 1
@@ -386,8 +454,43 @@ def _find_tokens(text: str, tokens) -> tuple:
     if vers:                                         # the version exemption, reported (never silently passed)
         vpat = re.compile("|".join("(?:%s)" % (_LEFT + _token_re(t)[len(_LEFT):].split("(?!")[0] + r"\.\d+")
                                    for t in vers))
-        amb += [m.group(0) for m in vpat.finditer(sk)]
+        for m in vpat.finditer(sk):
+            amb.append(m.group(0))
+            exempt.append((m.start(), m.end()))
+    return sk, idx, spans, amb, exempt
+
+
+def _find_tokens(text: str, tokens) -> tuple:
+    """-> (spans, ambiguous): non-overlapping (start, end) spans in the ORIGINAL text naming a token, and the
+    exempted (version / import) occurrences, as strings."""
+    _, _, spans, amb, _ = _find_tokens_sk(text, tokens)
     return spans, amb
+
+
+def glued_residue(text: str, tokens, allow=()) -> list[str]:
+    """Fix round 2 (GPT review #6): an arm name GLUED inside a longer identifier with no seam (`xralph_afoo`,
+    `trioxide`) escapes the boundary matcher, so the scrub leaves it and the matcher-based scan cannot see it. This
+    scan looks for the bare token (separator-insensitive, case-insensitive, on the skeleton) ANYWHERE, minus the
+    reported version/import exemptions; each hit names its whole enclosing identifier, which is refused unless a
+    human-listed allowlist (`allow`: identifiers, case-insensitive) covers it. Returns the refused identifiers."""
+    sk, _, _, _, exempt = _find_tokens_sk(text, tokens)
+    allow = {a.lower() for a in allow}
+    out = []
+    for t in tokens:
+        parts = [re.escape(x) for x in re.split(r"[_\-\s.]+", t) if x]
+        for m in re.finditer(r"[_\-\s.]*".join(parts), sk, re.IGNORECASE):
+            s, e = m.start(), m.end()
+            if any(a <= s and e <= b for a, b in exempt):
+                continue
+            ws, we = s, e
+            while ws > 0 and (sk[ws - 1].isalnum() or sk[ws - 1] == "_"):
+                ws -= 1
+            while we < len(sk) and (sk[we].isalnum() or sk[we] == "_"):
+                we += 1
+            word = sk[ws:we]
+            if word.lower() not in allow and word not in out:
+                out.append(word)
+    return out
 
 
 def _sub_tokens(text: str, tokens, repl: str) -> tuple:
@@ -478,10 +581,12 @@ def scrub(text: str, *, clone: Path | None = None, shas=(), branch: str | None =
     return t, counts
 
 
-def find_leaks(text: str, *, clone: Path | None = None, extra_tokens=(), shas=(), ambiguous: list | None = None
-               ) -> list[str]:
+def find_leaks(text: str, *, clone: Path | None = None, extra_tokens=(), shas=(), ambiguous: list | None = None,
+               allow=None) -> list[str]:
     """The SAME token matcher as scrub (skeleton, glued, plural): anything it finds refuses. Exempted occurrences
-    (version, import of a real module) are not hits; they are appended to `ambiguous` when a list is passed."""
+    (version, import of a real module) are not hits; they are appended to `ambiguous` when a list is passed. Then the
+    glued-residue scan (glued_residue): an arm name inside a longer identifier the scrub could not cut refuses unless
+    `allow` (default: glued_allowlist()) lists that identifier; the refused identifier is also reported ambiguous."""
     hits = []
     for what, toks in (("arm token", arm_tokens(extra_tokens)), ("model name", MODEL_TOKENS)):
         spans, amb = _find_tokens(text, toks)
@@ -490,6 +595,12 @@ def find_leaks(text: str, *, clone: Path | None = None, extra_tokens=(), shas=()
             hits.append("%s %r at %d" % (what, text[s:e], s))
         if ambiguous is not None:
             ambiguous += amb
+    glued = glued_residue(text, arm_tokens(extra_tokens), glued_allowlist() if allow is None else allow)
+    if glued:
+        hits.append("glued arm name in identifier(s) %s (ambiguous: refused; a human may list the identifier in %s)"
+                    % (", ".join(repr(g) for g in glued[:5]), GLUED_ALLOW_FILE))
+        if ambiguous is not None:
+            ambiguous += ["glued:" + g for g in glued]
     sk = _skeleton(text)[0]
     if clone is not None:
         for f in _path_forms(Path(clone)):
@@ -508,11 +619,87 @@ def find_leaks(text: str, *, clone: Path | None = None, extra_tokens=(), shas=()
     return hits
 
 
-def _git(repo: Path, *args) -> str:
-    r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True)
-    if r.returncode:
-        raise JudgeError("git %s: %s" % (" ".join(args[:3]), r.stderr.strip()[:300]))
-    return r.stdout
+# ---- git, harness side, against an ARM-CONTROLLED clone (fix round 2, GPT review #3/#7). The clone's own
+# .git/config, .gitattributes, hooks and fsmonitor are never consulted: every git call runs in a throwaway BARE
+# repository the harness creates (its own empty config, no templates) that borrows the arm's object store through
+# GIT_ALTERNATE_OBJECT_DIRECTORIES. On top of that each call carries the hardening flags and a scrubbed environment
+# (no system/global config or attributes, no inherited GIT_*), diffs run with --no-ext-diff --no-textconv, and the
+# tree is written from `ls-tree -z` + `cat-file --batch` blobs (git archive would apply in-tree attributes:
+# export-subst, filters). Filenames are consumed NUL-delimited (-z), with --literal-pathspecs and core.quotepath=off.
+GIT_HARDEN = ("-c", "diff.external=", "-c", "core.fsmonitor=", "-c", "core.hooksPath=/dev/null",
+              "-c", "core.quotepath=off", "-c", "core.attributesFile=/dev/null", "-c", "protocol.allow=never",
+              "--literal-pathspecs", "--no-replace-objects")
+DIFF_SAFE = ("--no-color", "--no-ext-diff", "--no-textconv", "--no-renames")
+
+
+def _arm_gitdirs(clone: Path) -> tuple:
+    """-> (gitdir holding HEAD, objects dir) of a clone, read from the filesystem without running git in it."""
+    clone = Path(clone)
+    g = clone / ".git"
+    if g.is_file():                                          # a linked worktree / submodule: `gitdir: X`
+        m = re.match(r"gitdir:\s*(.+)", g.read_text(encoding="utf-8", errors="replace").strip())
+        if not m:
+            raise JudgeError("unreadable .git file in %s" % clone)
+        g = (clone / m.group(1).strip()).resolve()
+    elif not g.is_dir():
+        if (clone / "objects").is_dir() and (clone / "HEAD").is_file():
+            g = clone                                        # a bare clone
+        else:
+            raise JudgeError("%s is not a git clone" % clone)
+    common = g
+    if (g / "commondir").is_file():
+        common = (g / (g / "commondir").read_text(encoding="utf-8").strip()).resolve()
+    objs = common / "objects"
+    if not objs.is_dir():
+        raise JudgeError("no object store under %s" % common)
+    return g, objs.resolve()
+
+
+class SafeRepo:
+    """A harness-owned bare repo over the arm clone's objects. Use as a context manager; `git()` returns bytes."""
+
+    def __init__(self, clone: Path):
+        import tempfile                                      # noqa: PLC0415
+        self.gitdir, objs = _arm_gitdirs(clone)
+        self.tmp = Path(tempfile.mkdtemp(prefix="arena_git_"))
+        self.env = {"PATH": os.environ.get("PATH", "/usr/bin:/bin"), "HOME": str(self.tmp), "LC_ALL": "C",
+                    "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": "/dev/null", "GIT_ATTR_NOSYSTEM": "1",
+                    "GIT_TERMINAL_PROMPT": "0", "GIT_NO_REPLACE_OBJECTS": "1", "GIT_DIR": str(self.tmp),
+                    "GIT_ALTERNATE_OBJECT_DIRECTORIES": str(objs), "XDG_CONFIG_HOME": str(self.tmp / "xdg")}
+        r = subprocess.run(["git", *GIT_HARDEN, "init", "-q", "--bare", "--template=", str(self.tmp)],
+                           capture_output=True, env=self.env, cwd=str(self.tmp))
+        if r.returncode:
+            self.close()
+            raise JudgeError("git init (shadow): %s" % r.stderr.decode("utf-8", "replace")[:300])
+
+    def git(self, *args, stdin: bytes | None = None) -> bytes:
+        r = subprocess.run(["git", *GIT_HARDEN, *args], input=stdin, capture_output=True, env=self.env,
+                           cwd=str(self.tmp))
+        if r.returncode:
+            raise JudgeError("git %s: %s" % (" ".join(args[:3]), r.stderr.decode("utf-8", "replace").strip()[:300]))
+        return r.stdout
+
+    def branch(self) -> str | None:
+        """The clone's checked-out branch name, read from its HEAD file (no git run in the clone)."""
+        try:
+            h = (self.gitdir / "HEAD").read_text(encoding="utf-8", errors="replace").strip()
+        except OSError:
+            return None
+        return h[len("ref: refs/heads/"):] if h.startswith("ref: refs/heads/") else None
+
+    def close(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *a):
+        self.close()
+
+
+def _z(out: bytes) -> list[str]:
+    """NUL-delimited git output -> names (surrogateescape keeps the exact bytes for reuse as a pathspec)."""
+    return [x.decode("utf-8", "surrogateescape") for x in out.split(b"\0") if x]
 
 
 def in_area(path: str, area: list[str]) -> bool:
@@ -523,25 +710,29 @@ def is_arm_bookkeeping(path: str) -> bool:
     return A.is_bookkeeping(path) or any(fnmatch.fnmatch(path, g) for g in ARM_BOOKKEEPING)
 
 
-def neutralise(clone: Path, base: str, head: str, area: list[str], *, extra_tokens=(), do_scrub=True) -> Neutral:
+def neutralise(clone: Path, base: str, head: str, area: list[str], *, extra_tokens=(), do_scrub=True,
+               allow=None) -> Neutral:
     """Head minus base over `area`, stripped and re-rooted. Raises NeutraliserLeak when anything arm-identifying is
     left. `do_scrub=False` exists only so the selftest can prove the leak scan catches an unscrubbed diff."""
     clone = Path(clone)
-    names = [x for x in _git(clone, "diff", "--no-renames", "--name-only", base, head).splitlines() if x]
-    stripped = [x for x in names if is_arm_bookkeeping(x) or not in_area(x, area)]
-    files = [x for x in names if x not in stripped]
-    raw = _git(clone, "diff", "--no-color", "--no-ext-diff", "--no-renames", "--src-prefix=a/", "--dst-prefix=b/",
-               base, head, "--", *files) if files else ""
-    try:
-        branch = _git(clone, "rev-parse", "--abbrev-ref", "HEAD").strip()
-    except JudgeError:
-        branch = None
+    with SafeRepo(clone) as g:
+        names = _z(g.git("diff", *DIFF_SAFE, "--name-only", "-z", base, head, "--"))
+        stripped = [x for x in names if is_arm_bookkeeping(x) or not in_area(x, area)]
+        files = [x for x in names if x not in stripped]
+        parts = []
+        for f in files:                       # one diff per changed file: a file that yields nothing fails CLOSED
+            d = g.git("diff", *DIFF_SAFE, "--src-prefix=a/", "--dst-prefix=b/", base, head, "--", f)
+            if not d.strip():
+                raise JudgeError("changed file %r produced no diff: a partial diff is never judged" % f)
+            parts.append(d.decode("utf-8", "replace"))
+        branch = g.branch()
+    raw = "".join(parts)
     counts = {}
     text = raw
     if do_scrub:
         text, counts = scrub(raw, clone=clone, shas=(base, head), branch=branch, extra_tokens=extra_tokens)
     amb = []
-    leaks = find_leaks(text, clone=clone, extra_tokens=extra_tokens, shas=(base, head), ambiguous=amb)
+    leaks = find_leaks(text, clone=clone, extra_tokens=extra_tokens, shas=(base, head), ambiguous=amb, allow=allow)
     if leaks:
         raise NeutraliserLeak("neutralised diff still identifies the arm: " + "; ".join(leaks[:5]))
     if amb:
@@ -553,20 +744,56 @@ def neutralise(clone: Path, base: str, head: str, area: list[str], *, extra_toke
 # ---------------------------------------------------------------- hidden checks (judge side, sandboxed)
 
 def materialise(clone: Path, head: str, area: list[str], dest: Path, tree_paths=TREE_PATHS) -> Path:
-    """git archive of head (no .git, no branch, no commit message) into dest."""
+    """head's blobs under TREE_PATHS + the area dirs, written into dest (no .git, no branch, no commit message, no
+    commit timestamps, no in-tree attribute processing). Read from a SafeRepo: `ls-tree -r -z` then `cat-file
+    --batch`. A symlink is kept only when relative and resolving inside dest; submodules are skipped; a path with a
+    `..`/`.git` component, or one reaching through a symlink, refuses (JudgeError)."""
     want = set(tree_paths)
     for g in area:
         d = g.split("*", 1)[0].rstrip("/")
         if d and d != ".":
             want.add(d)
-    present = [w for w in sorted(want) if _git(Path(clone), "ls-tree", "--name-only", head, w).strip()]
     dest.mkdir(parents=True, exist_ok=True)
-    if not present:
-        return dest
-    data = subprocess.run(["git", "-C", str(clone), "archive", "--format=tar", head, *present],
-                          capture_output=True, check=True).stdout
-    with tarfile.open(fileobj=io.BytesIO(data)) as tf:
-        tf.extractall(dest, filter="data")
+    root = os.path.realpath(dest)
+    with SafeRepo(Path(clone)) as g:
+        entries = []
+        for rec in g.git("ls-tree", "-r", "-z", "--full-tree", head, "--", *sorted(want)).split(b"\0"):
+            if not rec:
+                continue
+            meta, _, name = rec.partition(b"\t")
+            mode, typ, sha = meta.decode().split()
+            if typ == "blob":
+                entries.append((mode, sha, name.decode("utf-8", "surrogateescape")))
+        if not entries:
+            return dest
+        out = g.git("cat-file", "--batch", stdin="".join(s + "\n" for _, s, _ in entries).encode())
+    pos = 0
+    for mode, sha, name in entries:
+        nl = out.index(b"\n", pos)
+        hdr = out[pos:nl].split()
+        if len(hdr) != 3 or hdr[0].decode() != sha:
+            raise JudgeError("cat-file --batch out of step at %s" % name)
+        size = int(hdr[2])
+        body = out[nl + 1:nl + 1 + size]
+        pos = nl + 1 + size + 1
+        parts = name.split("/")
+        if any(x in ("", ".", "..") or x.lower() == ".git" for x in parts):
+            raise JudgeError("tree path %r has an unsafe component" % name)
+        target = Path(root, *parts)
+        anc = target.parent
+        while not anc.exists() and not anc.is_symlink():
+            anc = anc.parent
+        if not _inside(anc, Path(root)):
+            raise JudgeError("tree path %r reaches outside the tree through a symlink" % name)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        if mode == "120000":
+            link = body.decode("utf-8", "surrogateescape")
+            if not os.path.isabs(link) and _inside(Path(os.path.normpath(target.parent / link)), Path(root)):
+                os.symlink(link, target)
+            continue
+        fd = os.open(target, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW, 0o755 if mode == "100755" else 0o644)
+        with os.fdopen(fd, "wb") as f:
+            f.write(body)
     return dest
 
 
@@ -589,8 +816,20 @@ def hidden_checks(hidden: dict) -> list[dict]:
 # generated and handed over on stdin (never in argv, env or a file); the runner writes it to a dup of the ORIGINAL
 # stdout only after the check body returned (or exited 0) under its own try/except. `-P` keeps the arm's tree off
 # sys.path until the runner's own imports are done.
+#
+# Fix round 2 (GPT review #2): `raise SystemExit(0)` / `sys.exit(0)` / `sys.exit()` inside an IMPORTED arm module
+# unwinds the check body early; the round-1 runner counted it as success. Now a SystemExit with code 0/None counts
+# only when the frame that raised it is a code object COMPILED FROM THE CHECK FILE ITSELF (identity, not filename:
+# the runner compiles the file and collects every nested code object), i.e. the check's own `sys.exit(main())`.
+# Raised anywhere else (an arm module, an exec'd string) it is `no_marker`. atexit handlers never run (os._exit).
 RUNNER = r'''
-import os, sys, runpy, traceback
+import os, sys, traceback, types
+def _codes(co, acc):
+    acc.add(id(co))
+    for c in co.co_consts:
+        if isinstance(c, types.CodeType):
+            _codes(c, acc)
+    return acc
 def _main():
     nonce = sys.stdin.readline().strip()
     sys.stdin = open(os.devnull)
@@ -599,13 +838,25 @@ def _main():
     sys.argv = [test]
     sys.path.insert(0, os.path.dirname(test))
     ok = False
+    with open(test, "rb") as f:
+        code = compile(f.read(), test, "exec", dont_inherit=True)
+    own = _codes(code, set())
+    keep = [code]
+    mod = types.ModuleType("__main__")
+    mod.__file__ = test
+    mod.__builtins__ = __builtins__
+    sys.modules["__main__"] = mod
     try:
-        runpy.run_path(test, run_name="__main__")
+        exec(code, mod.__dict__)
         ok = True
     except SystemExit as e:
-        ok = e.code in (None, 0)
+        tb = e.__traceback__
+        while tb is not None and tb.tb_next is not None:
+            tb = tb.tb_next
+        mine = tb is not None and id(tb.tb_frame.f_code) in own
+        ok = e.code in (None, 0) and mine
         if not ok:
-            print("SystemExit(%r)" % (e.code,), file=sys.stderr)
+            print("SystemExit(%r)%s" % (e.code, "" if mine else " raised outside the check body"), file=sys.stderr)
     except BaseException:
         traceback.print_exc()
     try:
@@ -670,7 +921,7 @@ def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None 
         nonce = secrets.token_hex(16)
         r = run_sandboxed([sys.executable, "-P", "-c", RUNNER, str(target)], work=work, priv=priv,
                           stdin=(nonce + "\n").encode(), timeout=timeout, cwd=scratch, rw=[scratch],
-                          env=dict(os.environ, PYTHONDONTWRITEBYTECODE="1"))
+                          env={"PYTHONDONTWRITEBYTECODE": "1"}, kind="check")
         result = _check_result(r.returncode, r.stdout, nonce)
         tail = (r.stdout + r.stderr).decode("utf-8", "replace").replace(nonce, "<NONCE>")[-1500:]
         row = {"kind": c["kind"], "path": c["path"], "rc": r.returncode, "result": result, "tail": tail}
@@ -761,7 +1012,7 @@ class OpusCLI:
     def __call__(self, prompt: str, work: Path) -> str:
         exe = self.prefix or [shutil.which("claude") or "claude"]
         argv = exe + ["-p", "--model", opus_model(), "--tools", "", "--strict-mcp-config", "--disable-slash-commands",
-                      "--output-format", "text"]
+                      "--no-session-persistence", "--output-format", "text"]
         r = run_sandboxed(argv, work=work, priv=self.priv, stdin=prompt.encode("utf-8"), timeout=self.timeout,
                           rw=self.rw(work))
         if r.returncode:
@@ -802,13 +1053,16 @@ class GptConsult:
         return out
 
     def __call__(self, prompt: str, work: Path) -> str:
-        pf = work / ("gpt_prompt_%s.md" % secrets.token_hex(3))
-        out = work / (pf.stem + "_answer.md")
+        # `work` is this judge's OWN fresh private workspace (judge() makes one per call and deletes it after): the
+        # prompt file is a copy of the neutralised prompt; gpt_consult hands codex.exe the TEXT on stdin from its own
+        # job dir, so no tree or workspace path reaches the Windows process
+        pf = work / "prompt.md"
+        out = work / "answer.md"
         pf.write_text(prompt, encoding="utf-8")
         exe = self.prefix or [sys.executable, str(UTILS / "gpt_consult.py")]
         # the call log lives under the (masked) arena root: meter into the work dir, the harness appends it after
-        local_log = work / (pf.stem + "_calls.jsonl")
-        env = dict(os.environ, RM_GPT_CALL_LOG=str(local_log))
+        local_log = work / "calls.jsonl"
+        env = {"RM_GPT_CALL_LOG": str(local_log)}
         real_log = Path(os.environ.get("RM_GPT_CALL_LOG") or "/mnt/d/ClaudeWork/rimmandrake/arena/gpt_calls.jsonl")
         r = run_sandboxed(exe + ["--prompt-file", str(pf), "--out", str(out), "--timeout", str(self.timeout)],
                           work=work, priv=self.priv, timeout=self.timeout + 60, env=env,
@@ -836,11 +1090,35 @@ class Judges:
         return cls(opus=OpusCLI(priv=priv), gpt=GptConsult(priv=priv), tie=OpusCLI(priv=priv))
 
 
-def _ask(name: str, call: ModelCall, prompt: str, work: Path, labels: tuple) -> dict:
+def judge_workspace() -> Path:
+    """A FRESH private workspace for ONE model call (fix round 2, GPT review #5): <work root>/.jw/<random>, mode 0700,
+    empty. It is the call's cwd and its only writable judge dir; the submission's own dir (diff, prompt, verdict) and
+    every sibling are under the masked work root, so judges share no directory and none can leave the next a note.
+    The name is random, so it says nothing about the submission."""
+    d = work_root() / ".jw" / secrets.token_hex(8)
+    d.mkdir(parents=True, mode=0o700)
+    os.chmod(d, 0o700)
+    return d
+
+
+def remove_raw_tree(work: Path) -> None:
+    for d in [work / "tree"] + sorted(work.glob("check_*")):
+        shutil.rmtree(d, ignore_errors=True)
+
+
+def is_replay(task: dict) -> bool:
+    """A replay task (arena_tasks census): it carries a source item / an RP_ id, and always has a judge file."""
+    return bool(task.get("source_item")) or str(task.get("id", "")).startswith("RP_")
+
+
+def _ask(name: str, call: ModelCall, prompt: str, labels: tuple) -> dict:
+    ws = judge_workspace()
     try:
-        text = call(prompt, work)
+        text = call(prompt, ws)
     except Exception as ex:                                  # a failed call is invalid, never accept
         return {"judge": name, "verdict": "invalid", "why": str(ex)[:300], "arm_guess": "unknown"}
+    finally:
+        shutil.rmtree(ws, ignore_errors=True)
     out = parse_answer(text, labels)
     out["judge"] = name
     return out
@@ -898,9 +1176,14 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
     gstat = str((gate or {}).get("verdict", "")).lower()
     if gstat != "pass":
         return done("reject" if gstat == "fail" else "invalid", "gate verdict %r" % (gstat or None))
+    if hidden is None and is_replay(task):
+        # fix round 2 (GPT review #8): a replay task's hidden checks are part of its definition; a missing judge file
+        # fails CLOSED (the known-bad output it exists to catch would otherwise reach the models)
+        return done("invalid", "replay task %s has no hidden-check file: refusing to judge without it" % task["id"])
+    allow = glued_allowlist(p)
     try:
-        nd = neutralise(clone, base, head, task.get("area") or [], extra_tokens=extra_tokens)
-    except NeutraliserLeak as ex:
+        nd = neutralise(clone, base, head, task.get("area") or [], extra_tokens=extra_tokens, allow=allow)
+    except JudgeError as ex:                         # a leak, or git could not produce a complete diff
         return done("invalid", str(ex))
     rec["neutraliser"] = {"files": nd.files, "stripped": len(nd.stripped), "redactions": nd.redactions}
     (work / "diff.patch").write_text(nd.text, encoding="utf-8")
@@ -912,8 +1195,13 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
         return done("invalid", "judge sandbox did not start: " + probe.stderr.decode("utf-8", "replace")[-200:])
     checks = hidden_checks(hidden or {})
     if checks:
-        tree = materialise(clone, head, task.get("area") or [], work / "tree", tree_paths)
-        rec["hidden"] = run_hidden(checks, tree, work, priv=priv)
+        try:
+            tree = materialise(clone, head, task.get("area") or [], work / "tree", tree_paths)
+            rec["hidden"] = run_hidden(checks, tree, work, priv=priv)
+        finally:
+            # fix round 2 (GPT review #1/#4): the raw head tree and the per-check copies are gone BEFORE any model
+            # is asked, so no judge (codex.exe included, which the Linux sandbox does not confine) can read them
+            remove_raw_tree(work)
         if any(h["result"] in ("error", "no_marker") for h in rec["hidden"]):
             return done("invalid", "a hidden check could not finish: " +
                         ", ".join("%s (%s)" % (h["path"], h["result"]) for h in rec["hidden"]
@@ -928,7 +1216,7 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
     # the criteria and hidden-check paths come from the frozen task, identical for every arm; the gate record and
     # the diff come from the arm, so those are what must be clean
     leaks = find_leaks(json.dumps(gview, sort_keys=True) + "\n" + nd.text, clone=clone, extra_tokens=extra_tokens,
-                       shas=(base, head))
+                       shas=(base, head), allow=allow)
     if leaks:
         return done("invalid", "prompt leaks the arm: " + "; ".join(leaks[:3]))
     (work / "prompt.md").write_text(prompt, encoding="utf-8")
@@ -938,9 +1226,9 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
             getattr(call, "preflight", lambda: None)()
         except JudgeError as ex:
             return done("invalid", "judge unavailable before any call: %s" % ex)
-    votes = [_ask("opus", js.opus, prompt, work, labels), _ask("gpt", js.gpt, prompt, work, labels)]
+    votes = [_ask("opus", js.opus, prompt, labels), _ask("gpt", js.gpt, prompt, labels)]
     if {v["verdict"] for v in votes} == {"accept", "reject"}:
-        votes.append(_ask("opus_tiebreak", js.tie, prompt, work, labels))
+        votes.append(_ask("opus_tiebreak", js.tie, prompt, labels))
     rec["votes"] = votes
     return done(combine(votes))
 
@@ -959,26 +1247,48 @@ def judge_task(task_id: str, *, clone: Path, base: str, head: str, arm: str, gat
 # ---------------------------------------------------------------- arm-guess report (harness side)
 
 def binom_sf(k: int, n: int, q: float) -> float:
-    """P(X >= k), X ~ Binomial(n, q): exact."""
-    return min(1.0, float(sum(math.comb(n, i) * q ** i * (1 - q) ** (n - i) for i in range(k, n + 1)))) if n else 1.0
+    """P(X >= k), X ~ Binomial(n, q), summed in LOG space (lgamma + log-sum-exp), so a large report cannot overflow
+    math.comb * float powers (fix round 2, GPT review #11). Reference statistic only (see guess_report)."""
+    if k <= 0 or not n:
+        return 1.0
+    if k > n:
+        return 0.0
+    if q <= 0.0:
+        return 0.0
+    if q >= 1.0:
+        return 1.0
+    lq, l1q, lgn = math.log(q), math.log1p(-q), math.lgamma(n + 1)
+    terms = [lgn - math.lgamma(i + 1) - math.lgamma(n - i + 1) + i * lq + (n - i) * l1q for i in range(k, n + 1)]
+    mx = max(terms)
+    return max(0.0, min(1.0, math.exp(mx) * sum(math.exp(t - mx) for t in terms)))
 
 
+DECISION_NOTE = ("LEAKY is decided by a TWO-SIDED PERMUTATION test (p_value < alpha_per_test, Bonferroni over this "
+                 "report's tests), NOT by the spec's naive binomial p<0.05 against 1/len(arms): that binomial assumes "
+                 "every arm is equally likely on every submission (the day's arm mix is unequal) and, pooled, treats "
+                 "the correlated votes on one submission as independent trials, so it calls a majority-guessing blind "
+                 "judge leaky. binom_p is printed for reference only. Residual: the permutation null assumes "
+                 "submissions are exchangeable (no task/replay-family/time structure), accuracy is the only statistic "
+                 "(a truth-dependent mapping that keeps accuracy at chance is not detected), and alpha is per report, "
+                 "not across repeated daily reports.")
 EXACT_MAX = 8            # n! permutations enumerated exactly up to this many submissions
 MC_DRAWS = 20000
 
 
 def _perm_p(pairs_by_sub: list[list[tuple]], seed: int = 0) -> tuple:
-    """One-sided permutation test of 'the guesses track the arm'. `pairs_by_sub` is one list per submission of
+    """TWO-SIDED permutation test of 'the guesses depend on the arm' (fix round 2, GPT review #10: a judge that
+    consistently names the WRONG arm knows the arm just as well as one that names the right one). `pairs_by_sub` is one list per submission of
     (guess, truth) -- one pair per judge vote on it. Under the null the guesses are independent of which arm made
     which submission, so the submission truths are PERMUTED (jointly for all votes on a submission) and the statistic
     (total correct) recomputed. This conditions on the day's real arm mix AND on each judge's own guess mix, so an
     uninformed judge that always names the majority arm scores exactly its null and is never LEAKY.
-    Returns (p_value, expected_correct_under_null, method)."""
+    p_high = P(stat >= obs), p_low = P(stat <= obs) under the null; p_value = min(1, 2 * min(p_high, p_low)).
+    Returns (p_value, expected_correct_under_null, method, p_high, p_low)."""
     truths = [ps[0][1] for ps in pairs_by_sub]
     guesses = [[g for g, _ in ps] for ps in pairs_by_sub]
     n = len(truths)
     if not n:
-        return 1.0, 0.0, "none"
+        return 1.0, 0.0, "none", 1.0, 1.0
 
     def stat(ts):
         return sum(g == t for gs, t in zip(guesses, ts) for g in gs)
@@ -988,17 +1298,23 @@ def _perm_p(pairs_by_sub: list[list[tuple]], seed: int = 0) -> tuple:
     tc = Counter(truths)
     expected = sum(tc[g] / n for gs in guesses for g in gs)
     if n <= EXACT_MAX:
-        tot = ge = 0
+        tot = ge = le = 0
         for perm in permutations(truths):
             tot += 1
-            ge += stat(perm) >= obs
-        return ge / tot, expected, "exact"
-    rng = random.Random(seed)
-    ts, ge = list(truths), 0
-    for _ in range(MC_DRAWS):
-        rng.shuffle(ts)
-        ge += stat(ts) >= obs
-    return (ge + 1) / (MC_DRAWS + 1), expected, "monte_carlo_%d" % MC_DRAWS
+            s_ = stat(perm)
+            ge += s_ >= obs
+            le += s_ <= obs
+        hi, lo, how = ge / tot, le / tot, "exact"
+    else:
+        rng = random.Random(seed)
+        ts, ge, le = list(truths), 0, 0
+        for _ in range(MC_DRAWS):
+            rng.shuffle(ts)
+            s_ = stat(ts)
+            ge += s_ >= obs
+            le += s_ <= obs
+        hi, lo, how = (ge + 1) / (MC_DRAWS + 1), (le + 1) / (MC_DRAWS + 1), "monte_carlo_%d" % MC_DRAWS
+    return min(1.0, 2 * min(hi, lo)), expected, how, hi, lo
 
 
 def guess_report(records: list[dict], amap: dict, labels: tuple | None = None, alpha: float = 0.05) -> dict:
@@ -1006,7 +1322,7 @@ def guess_report(records: list[dict], amap: dict, labels: tuple | None = None, a
     _perm_p), not 1/len(labels). 'unknown' counts as a wrong guess (a judge cannot lower its rate by abstaining).
     Records with no map entry are skipped and counted. Multiplicity: per-judge tests plus the pooled one are judged
     at Bonferroni alpha/m. The pooled test keeps each submission's votes together (they are not independent).
-    `binom_p` (vs 1/len(labels)) is reported for reference only; it is NOT the decision."""
+    `binom_p` (vs 1/len(labels)) is reported for reference only; it is NOT the decision: see DECISION_NOTE."""
     labels = tuple(labels or arms())
     q = 1.0 / len(labels)
     per, subs, unmapped = {}, [], 0
@@ -1029,15 +1345,18 @@ def guess_report(records: list[dict], amap: dict, labels: tuple | None = None, a
     for name, ps in sorted(per.items()):
         n = len(ps)
         k = sum(g == t for (g, t), in ps)
-        pv, ex, how = _perm_p(ps)
+        pv, ex, how, hi, lo = _perm_p(ps)
         rows[name] = {"correct": k, "guesses": n, "rate": k / n if n else None, "chance": ex / n if n else None,
-                      "p_value": pv, "method": how, "binom_p": binom_sf(k, n, q), "leaky": pv < a_m}
+                      "p_value": pv, "p_high": hi, "p_low": lo, "method": how, "binom_p": binom_sf(k, n, q),
+                      "leaky": pv < a_m}
     N = sum(len(ps) for ps in subs)
     K = sum(g == t for ps in subs for g, t in ps)
-    pp, ex, how = _perm_p(subs)
+    pp, ex, how, hi, lo = _perm_p(subs)
     pooled = {"correct": K, "guesses": N, "rate": K / N if N else None, "chance": ex / N if N else None,
-              "p_value": pp, "method": how, "binom_p": binom_sf(K, N, q), "leaky": pp < a_m}
-    return {"chance": pooled["chance"], "q_plugin": q, "alpha": alpha, "alpha_per_test": a_m, "tests": m,
+              "p_value": pp, "p_high": hi, "p_low": lo, "method": how, "binom_p": binom_sf(K, N, q),
+              "leaky": pp < a_m}
+    return {"decision": DECISION_NOTE, "chance": pooled["chance"], "q_plugin": q, "alpha": alpha,
+            "alpha_per_test": a_m, "tests": m,
             "arms": list(labels), "per_judge": rows, "pooled": pooled,
             "submissions": len(records) - unmapped, "unmapped": unmapped,
             "blinding": "UNMEASURED" if not N else ("LEAKY" if pooled["leaky"] or any(r["leaky"] for r in rows.values())
