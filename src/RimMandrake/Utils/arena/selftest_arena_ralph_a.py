@@ -628,6 +628,85 @@ def sc_sync(tmp, mod, tag):
     return failed and pulled
 
 
+def sc_dirty_sync(tmp, mod, tag):
+    """GPT r1 P1: a builder killed mid-edit leaves a dirty tree (tracked edit + untracked file); the next sync must
+    park it in the loop's own clone and still pull, instead of failing with `sync failed`."""
+    w = World(tmp, "Q1dirty" + tag, mod)
+    origin = tmp / ("P1do" + tag + ".git")
+    sh(tmp, "git", "clone", "-q", "--bare", str(w.root), str(origin))
+    sh(w.root, "git", "remote", "add", "origin", str(origin))
+    sh(w.root, "git", "fetch", "-q", "origin")
+    sh(w.root, "git", "branch", "-q", "--set-upstream-to=origin/main", "main")
+    clone = tmp / ("P1dc" + tag)
+    sh(tmp, "git", "clone", "-q", "-b", "main", str(origin), str(clone))
+    sh(clone, "git", "config", "user.email", "t@t")
+    sh(clone, "git", "config", "user.name", "t")
+    (clone / "NEW").write_text("x\n")
+    sh(clone, "git", "add", "NEW")
+    sh(clone, "git", "commit", "-q", "-m", "new")
+    sh(clone, "git", "push", "-q", "origin", "main")
+    (w.root / "README").write_text("half-written by a killed builder\n")
+    (w.root / "junk.tmp").write_text("x")
+    ok = mod.default_sync(w.root, lambda s: None)
+    clean = sh(w.root, "git", "status", "--porcelain") == ""
+    kept = "ralph-a dirty" in sh(w.root, "git", "stash", "list")
+    got = (bool(ok), clean, kept, (w.root / "NEW").exists())
+    if not all(got):
+        print("     (dirty sync: synced, clean, stashed, pulled = %s)" % (got,))
+    return all(got)
+
+
+def sc_unisolated(tmp, mod, tag):
+    """GPT r1 P1: no real isolation (no bwrap / SANDBOX=none) refuses the tester unless the named override is set,
+    and the override is logged in the tester log."""
+    keys = ("RALPH_A_TESTER_SANDBOX", mod.UNISOLATED_OK_ENV)
+    saved = {k: os.environ.get(k) for k in keys}
+    try:
+        os.environ["RALPH_A_TESTER_SANDBOX"] = "none"
+        os.environ.pop(mod.UNISOLATED_OK_ENV, None)
+        sb = {"root": tmp, "hide": []}
+        try:
+            mod.bwrap_argv(sb, tmp)
+            return False
+        except mod.Refused as e:
+            if "not be blind" not in str(e):
+                return False
+        d = tmp / ("U1" + tag)
+        d.mkdir()
+        os.environ[mod.UNISOLATED_OK_ENV] = "1"
+        m = mod.CmdModel("%s -c pass" % sys.executable)
+        log = d / "t.out"
+        r = m("test", "P", cwd=d, agent_id="x-test-1", run_id=0, timeout_s=60, log=log,
+              sandbox={"root": d, "hide": []})
+        return r["rc"] == 0 and "UNISOLATED" in log.read_text()
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
+def sc_retry_fresh(tmp, mod, tag):
+    """GPT r1 P2: a retried tester gets a fresh export, sandbox root and HOME, not the first tester's leftovers."""
+    seen = []
+
+    def t(prompt, cwd):
+        root = cwd.parent
+        leak = (root / "home" / "m1").exists() or (cwd / "mod.py").read_text() != GOOD or (root / "m1").exists()
+        seen.append((str(root), leak))
+        if len(seen) == 1:
+            (root / "home").mkdir(exist_ok=True)
+            (root / "home" / "m1").write_text("x")
+            (root / "m1").write_text("x")
+            (cwd / "mod.py").write_text("tampered\n")
+            return "crashed without a verdict"
+        return default_tester(prompt, cwd)
+    w = World(tmp, "P2r" + tag, mod, tester=t)
+    run_steps(w)
+    return len(seen) == 2 and seen[0][0] != seen[1][0] and not seen[1][1]
+
+
 MUTATIONS = [
     ("A gate bypass", sc_planted_check, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("A failure note not fed", sc_planted_check, "            if self._note(name):\n", "            if False:\n"),
@@ -656,9 +735,10 @@ MUTATIONS = [
     ("M2 stale pass not reaped", sc_orphan, "            reap_stale_pass(self.pidfile)", "            pass"),
     ("M2 busy-clone check removed", sc_busy_clone, "        busy = self.procs(self.root) if self.procs else []",
      "        busy = []"),
-    ("M3 tester root under ctl", sc_blind_root, "        troot = self._tester_root()\n",
-     "        troot = self.ctl / \"tester\"; troot.mkdir(exist_ok=True)\n"),
-    ("M3 no sandbox", sc_bwrap, "                argv = bwrap_argv(sandbox, cwd) + argv\n", "                pass\n"),
+    ("M3 tester root under ctl", sc_blind_root,
+     "            troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT\n",
+     "            troot = self.ctl / \"tester\"; troot.mkdir(exist_ok=True)\n"),
+    ("M3 no sandbox", sc_bwrap, "                argv = pre + argv\n", "                pass\n"),
     ("M4 real id passed", sc_env, "TESTER_ID=neutral_id(agent_id))", "TESTER_ID=agent_id)"),
     ("M4 env not allow-listed", sc_env,
      "           if (k in keep or k.startswith(\"LC_\")) and not k.startswith((\"RALPH_A\", \"ARENA_\", \"RM_ARM\"))}",
@@ -671,6 +751,14 @@ MUTATIONS = [
      "        why = None                               # re-checked here too"),
     ("L5 negative threshold accepted", sc_runway_neg,
      "    return v if math.isfinite(v) and v >= 0 else float(\"inf\")", "    return v"),
+    ("P1 dirty tree not parked", sc_dirty_sync,
+     "    if subprocess.run([\"git\", \"-C\", str(root), \"status\", \"--porcelain\"], capture_output=True,\n"
+     "                      text=True).stdout.strip():", "    if False:"),
+    ("P1 unisolated tester allowed", sc_unisolated, "        if os.environ.get(UNISOLATED_OK_ENV) != \"1\":",
+     "        if False:"),
+    ("P2 tester context shared across retries", sc_retry_fresh,
+     "            troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT",
+     "            troot = self.__dict__.setdefault('_tr', self._tester_root())"),
     ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
 ]
 
@@ -965,7 +1053,10 @@ def main():
                          ("L2 duplicate build_end does not wedge", sc_dup_build_end),
                          ("L4 runway re-checked before the tester", sc_runway_tester),
                          ("L5 negative runway threshold refuses", sc_runway_neg),
-                         ("L6 pull main first, 3 tries", sc_sync)):
+                         ("L6 pull main first, 3 tries", sc_sync),
+                         ("P1 dirty tree after killed build is parked", sc_dirty_sync),
+                         ("P1 unisolated tester refused without override", sc_unisolated),
+                         ("P2 retried tester gets fresh context", sc_retry_fresh)):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             check(not guarded(fn, tmp, variant(old, new), "_m%d" % i), "mutation goes RED: " + name)

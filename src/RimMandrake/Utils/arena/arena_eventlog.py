@@ -126,7 +126,7 @@ FLAG_SAME_AGENT = "tester_is_builder"
 UNATTRIBUTED = "unattributed:"
 # the only scripts that may open a pass capability (run as __main__ from THIS directory)
 ENTRYPOINTS = ("arena_eventlog.py", "arena_v3_adapter.py", "arena_gate.py", "arena_judge.py",
-               "arena.py")
+               "arena.py", "ralph_a_loop.py")
 SELFTEST_ENTRY_PREFIX = "selftest_arena_"
 CAP_TTL_S = 12 * 3600
 

@@ -89,6 +89,7 @@ ARM = "ralph_a"
 ARM_DIR = HERE / "ralph_a"
 HARNESS_REPO = HERE.parents[3]
 WIP, MAIN = "ralph/wip", "main"
+UNISOLATED_OK_ENV = "RALPH_A_ALLOW_UNISOLATED_TESTER"
 MAX_TRIES = 3
 TESTER_TRIES = 2
 PASS_TIMEOUT_S = 90 * 60
@@ -270,6 +271,13 @@ def bwrap_argv(sandbox, cwd):
     if mode == "none" or not exe:
         if mode == "bwrap":
             raise Refused("RALPH_A_TESTER_SANDBOX=bwrap and no bwrap on PATH")
+        # GPT r1 P1: no real isolation = the tester can read the clone, ctl and transcripts by absolute path, so it is
+        # not blind. Fail loud unless the owner named the override; the override is logged by the caller.
+        if os.environ.get(UNISOLATED_OK_ENV) != "1":
+            raise Refused("refused: no bubblewrap isolation for the tester (%s); the tester would not be blind. "
+                          "Install bwrap, or set %s=1 to run it unisolated (logged)." % (
+                              "RALPH_A_TESTER_SANDBOX=none" if mode == "none" else "bwrap not found",
+                              UNISOLATED_OK_ENV))
         return []
     hide = [str(x) for x in sandbox.get("hide", ())]
     hide += [x for x in os.environ.get("RALPH_A_TESTER_HIDE", "").split(":") if x]
@@ -363,6 +371,7 @@ class CmdModel:
 
     def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
         argv = self.argv
+        warn = ""
         if role == "test":
             sb = sandbox or {}
             root = Path(sb.get("root") or cwd)
@@ -370,11 +379,18 @@ class CmdModel:
             (root / "tmp").mkdir(exist_ok=True)
             env = tester_env(agent_id, root / "home", root / "tmp")
             if sandbox:
-                argv = bwrap_argv(sandbox, cwd) + argv
+                pre = bwrap_argv(sandbox, cwd)
+                if not pre:                                       # only reachable with the named override set
+                    msg = "WARNING: tester running UNISOLATED (%s=1): not blind\n" % UNISOLATED_OK_ENV
+                    sys.stderr.write(msg)
+                    warn = msg
+                argv = pre + argv
         else:
             env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "RALPH_A_CTL"))}
             env.update(RALPH_A_ROLE=role, RALPH_A_AGENT_ID=agent_id, RM_ARM=ARM)
         with open(log, "w") as out:
+            out.write(warn)
+            out.flush()
             pr = subprocess.Popen(argv, cwd=str(cwd), env=env, stdin=subprocess.PIPE, stdout=out,
                                   stderr=subprocess.STDOUT, text=True, start_new_session=True)
             if self.pidfile:
@@ -461,6 +477,18 @@ def default_precheck(root, log):
 def default_sync(root, sleep=time.sleep, tries=3):
     """The Ralph doc's pull (ralph_loop_design §1.2: `for n in 1 2 3; do git pull --rebase -q && break; sleep
     $((n*30)); done`), on main, before every build pass (review L6). -> True when a pull succeeded."""
+    top = subprocess.run(["git", "-C", str(root), "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    if top.returncode != 0 or os.path.realpath(top.stdout.strip()) != os.path.realpath(str(root)):
+        return False                                              # never touch a tree that is not the loop's own clone
+    # GPT r1 P1: a builder killed mid-edit leaves a dirty tree that blocks switch/pull --rebase. Park it (evidence
+    # kept in the stash, untracked files too) in the loop's own clone, abort any half-done rebase, then sync.
+    for a in (["rebase", "--abort"], ["merge", "--abort"]):
+        subprocess.run(["git", "-C", str(root), *a], capture_output=True)
+    if subprocess.run(["git", "-C", str(root), "status", "--porcelain"], capture_output=True,
+                      text=True).stdout.strip():
+        if subprocess.run(["git", "-C", str(root), "stash", "push", "-u", "-q", "-m", "ralph-a dirty after killed build"],
+                          capture_output=True).returncode != 0:
+            return False
     if subprocess.run(["git", "-C", str(root), "switch", "-q", MAIN], capture_output=True).returncode != 0:
         return False
     for n in range(1, tries + 1):
@@ -762,28 +790,28 @@ class Loop:
         pend = self.state["pending"]
         n = self.state["n"]
         diff = self.git("diff", pend["base"], pend["head"])
-        troot = self._tester_root()
-        try:
-            return self._tester_in(task, pend, n, diff, troot)
-        finally:
-            shutil.rmtree(troot, ignore_errors=True)
+        return self._tester_in(task, pend, n, diff)
 
-    def _tester_in(self, task, pend, n, diff, troot):
-        work = self.tester_workdir(pend["head"], troot / "tree")
-        sandbox = {"root": troot, "hide": [self.ctl, self.root, HARNESS_REPO, Path.home() / ".claude"]}
+    def _tester_in(self, task, pend, n, diff):
         prompt = self.tester_prompt(task, diff)
         verdict, text, tester = None, "", None
         for _ in range(TESTER_TRIES):
             tester = self.new_id("test")
             if agent_key(tester) == agent_key(pend["builder"]) or not agent_key(tester):
                 raise Refused("tester id %r equals the builder's: refused" % tester)
-            self.emit("test_start", task, sha=pend["head"], detail={"tester": tester, "build_id": pend["build_id"]})
-            self.status("tester pass running (%s on %s)" % (tester, pend["build_id"]))
+            troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT
             try:
-                res = self.model("test", prompt, cwd=work, agent_id=tester, run_id=n, sandbox=sandbox,
-                                 timeout_s=self.timeout_s, log=self.log / ("test.%d.%s.out" % (n, tester)))
+                work = self.tester_workdir(pend["head"], troot / "tree")
+                sandbox = {"root": troot, "hide": [self.ctl, self.root, HARNESS_REPO, Path.home() / ".claude"]}
+                self.emit("test_start", task, sha=pend["head"], detail={"tester": tester, "build_id": pend["build_id"]})
+                self.status("tester pass running (%s on %s)" % (tester, pend["build_id"]))
+                try:
+                    res = self.model("test", prompt, cwd=work, agent_id=tester, run_id=n, sandbox=sandbox,
+                                     timeout_s=self.timeout_s, log=self.log / ("test.%d.%s.out" % (n, tester)))
+                finally:
+                    self.release()
             finally:
-                self.release()
+                shutil.rmtree(troot, ignore_errors=True)
             text = res.get("text") or ""
             verdict = parse_verdict(text) if res.get("rc") == 0 else None
             self.emit("test_end", task, sha=pend["head"], verdict=verdict or "invalid",
