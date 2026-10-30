@@ -1,0 +1,2 @@
+An isolated CODEX_HOME does not isolate codex: codex 0.164 on Windows also reads %ProgramData%\OpenAI\Codex\config.toml (defaults) and requirements.toml (enforced), and BUILTIN\Users may create that folder. A developer_instructions line there steered a fully allow-listed arena judge to a VALID vote (BENCH real call 2026-10-30, D:\ClaudeWork\rimmandrake\arena\verify_judge_homefix\probe_results.jsonl). When locking down codex, enumerate every config layer from the binary's own strings (system, home, project, cwd), not only the home.
+home: skills/chatgpt-consult
