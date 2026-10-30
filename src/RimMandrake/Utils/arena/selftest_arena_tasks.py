@@ -95,7 +95,9 @@ def build_repos(tmp):
     s["esc"] = commit(repo, {TOOL: "def f():\n    return 3\n",
                              NEWT: "from tool import f\nassert f() == 3  # added by the escaped fix, hidden body\n"},
                       "fix esc", "2026-10-16T10:03:00+00:00")
-    s["rework"] = commit(repo, {RWT: "from tool import f\nassert f() != 0  # the rework's own pin, hidden too\n"},
+    # the rework changes the parent's file (tool.py): only such a fix makes its parent Escaped (pool ruling)
+    s["rework"] = commit(repo, {TOOL: "def f():\n    return 3  # reworked\n",
+                                RWT: "from tool import f\nassert f() != 0  # the rework's own pin, hidden too\n"},
                          "fix rework", "2026-10-18T10:03:00+00:00")
     s["nostart"] = commit(repo, {TOOL: "def f():\n    return 4\n",
                                  TEST: "assert True  # nostart change to the test, long enough to count\n"},
@@ -165,11 +167,17 @@ def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_
 def t_census(tmp, repo, old, s):
     pool, rep = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
     got = {t["source_item"]: (t, h) for t, h in pool}
-    check(set(got) == {"FIXTURE_GOOD_FIX_ONE", "FIXTURE_ESC_FIX_TWO", "FIXTURE_REMAP_FIX_FIVE"},
-          "census keeps exactly good, escaped, remapped (got %s)" % sorted(got))
-    check(rep["sanity"]["found"] and rep["pool"] == 3, "report: pool 3 with the sanity item found")
+    # BENCH pool ruling: no start event needed, unlabelled items stay (label null); the rework is a candidate too,
+    # rejected only because its public file names the escaped task's hidden check (the chain rule)
+    check(set(got) == {"FIXTURE_GOOD_FIX_ONE", "FIXTURE_ESC_FIX_TWO", "FIXTURE_NOSTART_FIX_FOUR",
+                       "FIXTURE_REMAP_FIX_FIVE"},
+          "census keeps good, escaped, nostart, remapped (got %s)" % sorted(got))
+    check(rep["sanity"]["found"] and rep["pool"] == 4, "report: pool 4 with the sanity item found")
     check(rep["scanned_closed_in_window"] == 6, "the out-of-window close is not scanned (6 scanned)")
-    check(rep["rejects"].get("no start before close") == 2, "the closes with no start (nostart, rework) are rejected (%s)" % rep["rejects"])
+    check("no start before close" not in rep["rejects"] and "FIXTURE_NOSTART_FIX_FOUR" in got,
+          "forced (ruling): a close with no start event is NOT rejected (%s)" % rep["rejects"])
+    check(any(k.startswith("would expose") for k in rep["rejects"]) and "FIXTURE_ESC_REWORK_THREE" not in got,
+          "the rework, now a candidate, is chain-rejected (%s)" % rep["rejects"])
     check(rep["rejects"].get("close sha excised by the history rewrite") == 1, "an excised-only sha is rejected")
     check(got["FIXTURE_GOOD_FIX_ONE"][1]["label"] == "Clean" and got["FIXTURE_ESC_FIX_TWO"][1]["label"] == "Escaped",
           "labels: verified + no rework = Clean; a caused_by rework in 7 days = Escaped")
@@ -196,7 +204,7 @@ def t_census(tmp, repo, old, s):
           "a chained later task naming an earlier task's hidden check is rejected, the earlier kept (%s)" % rc["rejects"])
     # forced failures of the sanity probe
     for name, kw in (("absent item", dict(sanity="FIXTURE_NEVER_FILED")),
-                     ("rejected item", dict(sanity="FIXTURE_NOSTART_FIX_FOUR"))):
+                     ("rejected item", dict(sanity="FIXTURE_EXCISED_FIX_SIX"))):
         e = raises(A.SanityFail, A.census, ledger(s), repo=repo, old_history=old, **kw)
         check(bool(e), "SanityFail on a %s: %s" % (name, (e or "NOT RAISED")[:90]))
     e = raises(A.SanityFail, A.census, ledger(s, drop_good_close=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE",
@@ -218,7 +226,7 @@ def t_hash(tmp, pool):
     A.write_pool(pool, p)
     check(A.check(p) != [] and any("not frozen" in x for x in A.check(p)), "before freeze, check refuses (not frozen)")
     r = A.freeze(p, now="2026-10-30T00:00:00Z")
-    check(r["frozen_new"] == 3 and len(r["pool_sha256"]) == 64, "freeze hashes 3 tasks and a pool hash")
+    check(r["frozen_new"] == 4 and len(r["pool_sha256"]) == 64, "freeze hashes 4 tasks and a pool hash")
     check(A.check(p) == [], "frozen and unchanged: check passes")
     again = A.freeze(p, now="2026-10-30T00:00:01Z")
     check(again["frozen_new"] == 0, "re-freezing an unchanged pool writes nothing")
@@ -233,7 +241,7 @@ def t_hash(tmp, pool):
     check(bool(raises(A.TaskRefused, A.load_frozen, "RP_FIXTURE_GOOD_FIX_ONE", p)), "load_frozen refuses it too")
     check(bool(raises(A.TaskRefused, A.freeze, p)), "a re-freeze cannot launder the change")
     w = A.write_pool(pool, p)
-    check(w["unchanged_frozen"] == 3 and w["wrote"] == 0 and w["refused_frozen_changed"] == [],
+    check(w["unchanged_frozen"] == 4 and w["wrote"] == 0 and w["refused_frozen_changed"] == [],
           "a re-census reproduces every frozen task byte-for-byte and rewrites none")
     check(tf.read_bytes() != orig and any("RP_FIXTURE_GOOD_FIX_ONE" in x for x in A.check(p)),
           "the re-census did not launder the edited file: it is still refused")
@@ -271,6 +279,10 @@ def t_hidden(tmp, pool, s):
     p = fresh_arena(tmp, "arena_hidden")
     A.write_pool(pool, p)
     A.freeze(p)
+    # a REGISTERED arm clone (the whitelist): a plant inside it is a deviation from its build manifest
+    good = {t["source_item"]: t for t, _ in pool}["FIXTURE_GOOD_FIX_ONE"]   # ESC's base holds GOOD's fix: not clean
+    A.build_arm_clone(good["base_sha"], Path(os.environ["ARENA_CLONES"]) / "ralph_a", src=Path(tmp) / "repo",
+                      p=p)
     toks = set()
     for hf in p["judge"].glob("*.json"):
         toks.update(A.leak_tokens(json.loads(hf.read_text())))
@@ -340,7 +352,7 @@ def t_census2(tmp, repo, old, s):
     e = raises(A.TaskRefused, A.freeze, p, now="2026-10-20T00:00:00Z")
     check(bool(e) and "window ends 2026-10-21" in e, "freeze refuses a Clean label before its 7-day rework window "
           "ends: %s" % (e or "NOT REFUSED")[:70])
-    check(A.freeze(p, now="2026-10-28T00:00:00Z")["frozen_new"] == 3, "after every window ends the pool freezes")
+    check(A.freeze(p, now="2026-10-28T00:00:00Z")["frozen_new"] == 4, "after every window ends the pool freezes")
     _, rep = A.census(ledger(s, late_close=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
     check(rep["scanned_closed_in_window"] == 6 and rep["rejects"].get("last close falls outside the window") == 1,
           "an item whose last close is outside the window is scanned and rejected with a reason (%s)" % rep["rejects"])
@@ -424,26 +436,34 @@ def t_clone(tmp, pool, s):
     (cl / "stash.txt").unlink()
     check(any("git blob" in x for x in A.find_leaks(p)), "a hidden check only in the clone's object store is caught")
     shutil.rmtree(cl)
+    # WHITELIST: a tree the harness did not build is unverified, whatever it says about itself
     shutil.copytree(tmp / "repo", clones / "full")
     lk = A.find_leaks(p)
-    check(any("git object" in x for x in lk) and any("marker" in x for x in lk),
-          "a full-history copy is flagged (hidden objects present, no marker): %s" % lk[:1])
+    check(any("[*]" in x and "unregistered directory" in x for x in lk),
+          "a full-history copy (not built by build_arm_clone) refuses every task: %s" % lk[:1])
     gd = clones / "full" / ".git"
-    (gd / A.MARKER).write_text(json.dumps({"task": tg["id"], "base_sha": tg["base_sha"],
-                                           "source": str(tmp / "repo")}))
+    (gd / "arena_clone.json").write_text(json.dumps({"task": tg["id"], "base_sha": tg["base_sha"],
+                                                     "source": str(tmp / "repo")}))
     git(clones / "full", "checkout", "-q", "--detach", tg["base_sha"])
-    check(any("after base_sha" in x for x in A.find_leaks(p)), "a full clone checked out at base with a forged "
-          "marker is still flagged for its later commits")
+    check(any("unregistered" in x for x in A.find_leaks(p)), "a marker forged inside .git buys nothing (the "
+          "registry is harness-owned, keyed by path + nonce)")
     shutil.rmtree(clones / "full")
     A.build_arm_clone(s["esc"], clones / "atfix", src=tmp / "repo", task=tg["id"])
     lk = A.find_leaks(p)
-    check(any("marker base" in x for x in lk) and any(s["esc"][:12] in x for x in lk),
-          "a clone at the fix sha is flagged (fix commit present, base mismatch): %s" % lk[:1])
+    check(any("starts at base_sha" in x for x in lk) and any(s["esc"][:12] in x for x in lk),
+          "a clone built at the fix sha is flagged (fix commit in its build, base mismatch): %s" % lk[:1])
     shutil.rmtree(clones / "atfix")
-    subprocess.run(["git", "clone", "-q", "--shared", "--no-checkout", str(tmp / "repo"), str(clones / "shared")],
-                   check=True, capture_output=True)
-    check(any("alternates" in x for x in A.find_leaks(p)), "a --shared clone (alternates) is flagged")
-    shutil.rmtree(clones / "shared")
+    cl = A.build_arm_clone(tg["base_sha"], clones / "ralph_b", src=tmp / "repo", task=tg["id"])
+    (cl / ".git" / "objects" / "info").mkdir(parents=True, exist_ok=True)
+    (cl / ".git" / "objects" / "info" / "alternates").write_text(str(tmp / "repo" / ".git" / "objects") + "\n")
+    check(any("alternates" in x and "[*]" in x for x in A.find_leaks(p)), "alternates in a registered clone are "
+          "flagged for every task")
+    shutil.rmtree(cl)
+    cl = A.build_arm_clone(tg["base_sha"], clones / "ralph_b", src=tmp / "repo", task=tg["id"])
+    git(cl, "fetch", "-q", "--no-tags", "file://" + str(tmp / "repo"), "main")
+    check(any("commit/tag object" in x and "[*]" in x for x in A.find_leaks(p)),
+          "a registered clone that fetched later history is flagged for every task")
+    shutil.rmtree(cl)
     te = {t["source_item"]: t for t, _ in pool}["FIXTURE_ESC_FIX_TWO"]
     A.build_arm_clone(te["base_sha"], clones / "chain", src=tmp / "repo", task=te["id"])
     check(any("RP_FIXTURE_GOOD_FIX_ONE" in x for x in A.find_leaks(p)), "a clone whose base holds ANOTHER pool "
@@ -457,6 +477,11 @@ def t_links(tmp, pool):
     p = fresh_arena(tmp, "arena_links")
     A.write_pool(pool, p)
     clones = Path(os.environ["ARENA_CLONES"])
+    # a registered clone already handed to its arm (assign logged): the arm's own files are its work
+    good = {t["source_item"]: t for t, _ in pool}["FIXTURE_GOOD_FIX_ONE"]
+    A.build_arm_clone(good["base_sha"], clones / "ralph_l", src=tmp / "repo", task=good["id"], p=p)
+    p["events"].mkdir(parents=True, exist_ok=True)
+    (p["events"] / "harness.jsonl").write_text(json.dumps({"event": "assign", "task": good["id"]}) + "\n")
     (clones / "ralph_l" / "sub").mkdir(parents=True)
     links = [(clones / "ralph_l" / "h", str(p["judge"])), (p["tasks"] / "h", "../judge/hidden"),
              (clones / "ralph_l" / "etc", "/etc"), (clones / "ralph_l" / "jf", str(p["judge"] / os.listdir(p["judge"])[0]))]
@@ -631,6 +656,218 @@ def t_order(tmp, pool):
     check(bool(e) and "assign" in e, "freeze after an assign event is refused")
 
 
+# ---------------------------------------------------------------- fix round 2 (pool ruling, whitelist clone check)
+
+def _ev_of(E, iid, event="file"):
+    return next(e for e in E if e.get("id") == iid and e.get("event") == event)
+
+
+def t_pool_ruling(tmp, repo, old, s):
+    """Pool ruling: descendants are followed transitively; a child filed seconds BEFORE the close counts; a rework
+    counts only if its fix changes one of the parent's files; pre-rewrite shas are pinned (never pushed)."""
+    from types import SimpleNamespace as NS
+    kids = {"P": [NS(id="C")], "C": [NS(id="G")], "G": [NS(id="GG"), NS(id="P")], "GG": [NS(id="GGG")]}
+    got = [(c.id, g) for c, g in A._descendants("P", kids)]
+    check(got == [("C", 1), ("G", 2), ("GG", 3)], "descendants: grandchildren followed, a cycle stops, depth 3: %s"
+          % got)
+    # a grandchild rework (ESC -> design MID -> REWORK) still makes ESC Escaped
+    E = ledger(s)
+    E.insert(E.index(_ev_of(E, "FIXTURE_ESC_REWORK_THREE")), {
+        "event": "file", "id": "FIXTURE_ESC_MID_REVIEW", "title": "review of esc", "kind": "review",
+        "needs": "offline", "caused_by": "FIXTURE_ESC_FIX_TWO", "seat": "FOUNDRY", "for": "FOUNDRY",
+        "ts": "2026-10-17T10:00:00Z", "tsn": "m1"})
+    _ev_of(E, "FIXTURE_ESC_REWORK_THREE")["caused_by"] = "FIXTURE_ESC_MID_REVIEW"
+    pool2, _ = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    lab = {t["source_item"]: h["label"] for t, h in pool2}
+    check(lab.get("FIXTURE_ESC_FIX_TWO") == "Escaped", "a grandchild rework (via a review child) counts: %s" % lab)
+    # a child filed 10 s BEFORE the parent's close (the close and the finding raced) still counts
+    E = ledger(s)
+    _ev_of(E, "FIXTURE_ESC_REWORK_THREE")["ts"] = "2026-10-16T10:03:50Z"
+    pool3, _ = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    lab = {t["source_item"]: h["label"] for t, h in pool3}
+    check(lab.get("FIXTURE_ESC_FIX_TWO") == "Escaped", "a child filed seconds before the close counts: %s" % lab)
+    # the file-intersection rule: a 'remaining half' whose fix touches none of the parent's files is no escape
+    r = NS(id="R", kind="bug", title="remaining half of esc", state="done")
+    by_id = {"R": [{"event": "close", "sha": s["rework"][:10]}]}
+    res = lambda sha: (s["rework"],)
+    v1 = A._rework_verdict(r, by_id, res, repo, parent_fix=s["esc"], parent_files=frozenset({"other/elsewhere.py"}))
+    v2 = A._rework_verdict(r, by_id, res, repo, parent_fix=s["esc"], parent_files=frozenset({TOOL}))
+    v3 = A._rework_verdict(r, by_id, res, repo, parent_fix=s["rework"], parent_files=frozenset({TOOL}))
+    check(v1[0].startswith("its fix changes none of the parent's files") and v2 == ("counts", s["rework"])
+          and v3[0].startswith("its fix landed at or before"),
+          "a rework counts only if its fix is later and changes a parent file: %s / %s / %s" % (v1[0], v2[0], v3[0]))
+    # pins: refs/arena/old/<sha> in a scratch copy of the old-history repo; idempotent; a missing sha reported
+    pin = tmp / "pin.git"
+    subprocess.run(["git", "clone", "-q", "--bare", str(old), str(pin)], check=True, capture_output=True, timeout=60)
+    a = A.pin_old([s["remap_old"], "f" * 40], old=pin)
+    b = A.pin_old([s["remap_old"]], old=pin)
+    refs = git(pin, "for-each-ref", "--format=%(refname) %(objectname)", A.PIN_PREFIX)
+    check(a["pinned"] == 1 and a["missing"] == ["f" * 40] and b == dict(b, pinned=0, already=1)
+          and refs == A.PIN_PREFIX + s["remap_old"] + " " + s["remap_old"],
+          "pin_old pins once, reports a missing sha, never repins: %s %s" % (a, b))
+
+
+def _registered(tmp, name, pool, post=False, item="FIXTURE_GOOD_FIX_ONE"):
+    p = fresh_arena(tmp, name)
+    A.write_pool(pool, p)
+    good = {t["source_item"]: t for t, _ in pool}[item]
+    c = A.build_arm_clone(good["base_sha"], Path(os.environ["ARENA_CLONES"]) / "arm", src=tmp / "repo",
+                          task=good["id"], p=p)
+    if post:
+        p["events"].mkdir(parents=True, exist_ok=True)
+        (p["events"] / "harness.jsonl").write_text(json.dumps({"event": "assign", "task": good["id"]}) + "\n")
+    return p, Path(c), good
+
+
+def t_whitelist(tmp, pool, s):
+    """Each leak route tester 2 found, planted in a REGISTERED clone; the check must see every one."""
+    body = git(tmp / "repo", "show", "%s:%s" % (s["esc"], NEWT)) + "\n"
+    import gzip
+    tag_env = ["-c", "user.name=a", "-c", "user.email=a@a"]
+
+    def bare_in(c, cl):
+        subprocess.run(["git", "clone", "-q", "--bare", str(tmp / "repo"), str(c / "stuff.git")], check=True,
+                       capture_output=True, timeout=60)
+
+    def bare_root(c, cl):
+        subprocess.run(["git", "clone", "-q", "--bare", str(tmp / "repo"), str(cl / "cache.git")], check=True,
+                       capture_output=True, timeout=60)
+
+    def commit_msg(c, cl):
+        tree = git(c, "rev-parse", "HEAD^{tree}")
+        cm = git(c, *tag_env, "commit-tree", tree, "-p", "HEAD", "-m", body)
+        git(c, "update-ref", "refs/heads/notes", cm)
+
+    def tag_msg(c, cl):
+        git(c, *tag_env, "tag", "-a", "t1", "-m", body)
+
+    def pack_txt(c, cl):
+        (c / ".git/objects/pack" / ("pack-" + "ab" * 20 + ".txt")).write_text(body)
+
+    def fake_loose(c, cl):
+        (c / ".git/objects/ab").mkdir(parents=True, exist_ok=True)
+        (c / ".git/objects/ab" / ("cd" * 19)).write_text(body)
+
+    def gz(c, cl):
+        (c / "n.gz").write_bytes(gzip.compress(body.encode()))
+
+    def name(c, cl):
+        (c / NEWT.replace("/", "_")).write_text("x")
+
+    def tasks_json(c, cl):
+        (c / "tasks").mkdir()
+        (c / "tasks" / "x.json").write_text('{"base_sha": "%s"}\n' % s["esc"])
+
+    def forged_fetch(c, cl):
+        git(c, "fetch", "-q", "--depth", "1", "--no-tags", "file://" + str(tmp / "repo"), s["esc"])
+        git(c, "checkout", "-q", "--detach", s["esc"])
+        (c / ".git" / "FETCH_HEAD").unlink()
+        (c / ".git" / "arena_clone.json").write_text(json.dumps({"task": None, "base_sha": s["esc"]}))
+
+    routes = [("bare repo in the clone", bare_in, True), ("bare repo at the clone root", bare_root, True),
+              ("commit message", commit_msg, True), ("annotated tag message", tag_msg, True),
+              ("text file named like a pack", pack_txt, True), ("fake loose object", fake_loose, True),
+              ("gzip copy", gz, False), ("path in a file name", name, False),
+              ("tasks/x.json inside a clone", tasks_json, True), ("forged fetch of a later commit", forged_fetch, True)]
+    for i, (what, plant, after) in enumerate(routes):
+        for post in ((False, True) if after else (False,)):
+            p, c, good = _registered(tmp, "wl%d%s" % (i, "post" if post else "pre"), pool, post)
+            before = A.find_leaks(p)
+            plant(c, Path(os.environ["ARENA_CLONES"]))
+            got = A.find_leaks(p)
+            check(before == [] and bool(got), "whitelist (%s): %s caught: %s"
+                  % ("handed over" if post else "before hand-over", what, (got or ["NOT CAUGHT"])[0][:110]))
+    # scoping (FP2): the arm's own notes naming its own test path, after hand-over, are its work
+    # ESC's hidden check ADDS a test file (a path literal); alone in its pool (its base holds GOOD's fix objects)
+    esc_only = [x for x in pool if x[0]["source_item"] == "FIXTURE_ESC_FIX_TWO"]
+    p, c, good = _registered(tmp, "fp2post", esc_only, post=True, item="FIXTURE_ESC_FIX_TWO")
+    gh = json.loads((p["judge"] / (good["id"] + ".json")).read_text())
+    paths_ = sorted(A._path_lits(gh))
+    (c / "SUMMARY.md").write_text("I changed " + " and ".join(paths_) + "\n")
+    check(bool(paths_) and A.find_leaks(p) == [], "after hand-over an arm naming its own test paths is not a leak "
+          "(%s)" % paths_)
+    p, c, good = _registered(tmp, "fp2pre", pool, post=False)
+    paths_ = sorted(A._path_lits(json.loads((p["judge"] / (good["id"] + ".json")).read_text()))) or [TEST]
+    (c / "SUMMARY.md").write_text("I changed " + " and ".join(paths_) + "\n")
+    other = [t["id"] for t, _ in pool if t["id"] != good["id"]]
+    mine = A.find_leaks(p, good["id"])
+    check(bool(mine) and mine[0].startswith("[%s]" % good["id"]) and all(A.find_leaks(p, o) == [] for o in other),
+          "before hand-over a stray file is scoped to its clone's task only: %s" % (mine or ["NONE"])[0][:80])
+    r = A.freeze(p, now="2026-11-10T00:00:00Z")
+    fz = A.frozen_hashes(p)
+    check(good["id"] in r["withheld"] and good["id"] not in fz and set(other) <= set(fz),
+          "freeze withholds the task with a scoped leak and freezes the rest: %s" % sorted(r["withheld"]))
+
+
+def t_freeze_round2(tmp, pool):
+    """Symlinked task file refused; assign records under other names seen; TOCTOU re-read; refreeze procedure."""
+    p = fresh_arena(tmp, "fz_link")
+    A.write_pool(pool, p)
+    tid = "RP_FIXTURE_GOOD_FIX_ONE"
+    tf = p["tasks"] / (tid + ".json")
+    elsewhere = Path(os.environ["ARENA_CLONES"]).parent / "fz_link_copy.json"
+    elsewhere.write_bytes(tf.read_bytes())
+    tf.unlink()
+    os.symlink(elsewhere, tf)
+    e = raises(A.TaskRefused, A.freeze, p, now="2026-11-10T00:00:00Z")
+    check(bool(e) and A.frozen_hashes(p) == {}, "a symlinked task file is refused: %s" % (e or "NOT REFUSED")[:70])
+    variants = [("assign.json", {"event": "assign", "task": tid}), ("sub/x.jsonl", {"event": "assign", "task": tid}),
+                ("harness.jsonl", {"event": "Assign", "task": tid}), ("harness.jsonl", {"type": "assign", "task": tid}),
+                ("harness.jsonl", {"action": "ASSIGN ", "task": tid})]
+    for i, (rel, rec) in enumerate(variants):
+        p = fresh_arena(tmp, "fz_as%d" % i)
+        A.write_pool(pool, p)
+        (p["events"] / rel).parent.mkdir(parents=True, exist_ok=True)
+        (p["events"] / rel).write_text(json.dumps(rec) + "\n")
+        e = raises(A.TaskRefused, A.freeze, p, now="2026-11-10T00:00:00Z")
+        check(bool(e) and A.frozen_hashes(p) == {}, "an assign as events/%s %s refuses the freeze: %s"
+              % (rel, rec, (e or "NOT REFUSED")[:50]))
+    # TOCTOU: a task swapped while the leak scan runs
+    p = fresh_arena(tmp, "fz_toctou")
+    A.write_pool(pool, p)
+    tf = p["tasks"] / (tid + ".json")
+    real = A.scoped_leaks
+
+    def swapping(p_):
+        out = real(p_)
+        t = json.loads(tf.read_text())
+        tf.write_bytes(A._dump(dict(t, prompt=t["prompt"] + " (swapped)")))
+        return out
+    A.scoped_leaks = swapping
+    try:
+        e = raises(A.TaskRefused, A.freeze, p, now="2026-11-10T00:00:00Z")
+    finally:
+        A.scoped_leaks = real
+    check(bool(e) and "while the leak scan ran" in e and A.frozen_hashes(p) == {},
+          "a task file swapped during the scan refuses the whole freeze: %s" % (e or "NOT REFUSED")[:60])
+    # refreeze: the appended, reasoned recovery
+    p = fresh_arena(tmp, "fz_refreeze")
+    A.write_pool(pool, p)
+    A.freeze(p, now="2026-11-10T00:00:00Z")
+    tf = p["tasks"] / (tid + ".json")
+    old_h = A.frozen_hashes(p)[tid]["sha256"]
+    t = json.loads(tf.read_text())
+    tf.write_bytes(A._dump(dict(t, prompt=t["prompt"] + " (re-census)")))
+    e = raises(A.TaskRefused, A.freeze, p, now="2026-11-10T00:00:01Z")
+    check(bool(e) and "refreeze" in e, "a changed frozen task is refused and the refusal names the recovery")
+    check(bool(raises(A.TaskRefused, A.refreeze, p, tid, "  ", now="2026-11-10T00:00:02Z")),
+          "refreeze without a reason is refused")
+    check(bool(raises(A.TaskRefused, A.load_frozen, tid, p)), "before the refreeze, load_frozen refuses the edit")
+    before = p["freeze"].read_bytes()
+    r = A.refreeze(p, tid, "re-census after the pool ruling", now="2026-11-10T00:00:03Z")
+    after = p["freeze"].read_bytes()
+    check(r["replaces"] == old_h and after.startswith(before) and b'"refreeze"' in after[len(before):],
+          "refreeze appends (old freeze kept) a record naming the replaced hash and the reason")
+    check(A.load_frozen(tid, p)["id"] == tid and A.check(p) == [], "after the refreeze the task loads and check is "
+          "clean")
+    check(bool(raises(A.TaskRefused, A.refreeze, p, tid, "again", now="2026-11-10T00:00:04Z")),
+          "refreezing an unchanged task is refused")
+    tf.write_bytes(A._dump(dict(t, prompt=t["prompt"] + " (third)")))
+    A._append(p, [{"ts": "2026-11-10T00:00:05Z", "arm": "ralph_a", "task": tid, "event": "assign"}])
+    e = raises(A.TaskRefused, A.refreeze, p, tid, "late", now="2026-11-10T00:00:06Z")
+    check(bool(e) and "assign" in e, "no refreeze after an assignment")
+
+
 def t_real_ledger():
     check(A.arena_root().name == "arena" and A.paths()["judge"].parent.name == "judge",
           "with ARENA_ROOT unset the root comes from rmpaths/agent_storage: %s" % A.arena_root())
@@ -661,6 +898,9 @@ def main():
         t_auth2(tmp, pool)
         t_lock(tmp, pool)
         t_order(tmp, pool)
+        t_pool_ruling(tmp, repo, old, s)
+        t_whitelist(tmp, pool, s)
+        t_freeze_round2(tmp, pool)
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
         t_real_ledger()
