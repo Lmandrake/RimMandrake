@@ -1,0 +1,2 @@
+The round-two mineral matrix gave sand a second biome, RUT_ExtremeDesert, which is the frozen twin of its own home (RM_Stillsand). D3's 'home plus one minor second' was met on paper by counting one biome twice. Once the twin rows are dropped, sand is home-only, so a D3 check must treat a frozen twin and its RM_ successor as one biome. RM_TheScald likewise sat on the D4 'ruled empty' list while its floor row held 8 minerals, so the sea-merge removed it from D4.
+home: design/RimMandrake/biome_name_provenance_audit_2026-10-28.md
