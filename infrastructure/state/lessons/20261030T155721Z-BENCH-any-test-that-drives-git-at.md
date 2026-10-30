@@ -1,0 +1,1 @@
+Any test that drives git at a fake http server must pin credential.helper= and GIT_TERMINAL_PROMPT=0: ~/.gitconfig's helper is Windows Git Credential Manager, so a 401 pops a GCM login dialog on the owner's desktop (FOUNDRY selftest_arena_ralph_c, 2026-10-30 08:49-08:51, three orphaned dialogs; pinned in e5684911b6).
