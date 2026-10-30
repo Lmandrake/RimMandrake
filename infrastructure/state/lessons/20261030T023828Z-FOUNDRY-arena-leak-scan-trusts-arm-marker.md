@@ -1,0 +1,2 @@
+A leak scanner that trusts a marker file the arm can write (arena_clone.json) or that only inspects dirs named .git is beaten by forging the marker or dropping a bare repo anywhere in the clone root; scope history checks by object-store discovery (any dir git rev-parse --git-dir accepts), keep the base in harness-owned state, and scan commit/tag messages. Evidence: D:\ClaudeWork\rimmandrake\foundry_arena\test2_report.md (L1, L9, L10).
+home: NONE
