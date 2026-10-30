@@ -501,7 +501,42 @@ def default_precheck(root, log):
     return precheck_verdict(r.returncode, r.stdout)
 
 
-def default_sync(root, sleep=time.sleep, tries=3):
+def _cfg_lines(argv, **kw):
+    r = subprocess.run(["git"] + argv, capture_output=True, **kw)
+    return [x for x in r.stdout.split(b"\0") if x]
+
+
+def net_cfg(root):
+    """`-c` overrides for everything the builder's own .git/config could use to run its command when the harness talks
+    to a remote: core.sshCommand, core.askPass and every credential*.helper are pinned to the OWNER's value (read from
+    outside any repo, so the clone's config is never consulted) or to nothing. Merge drivers (a rebase runs them) are
+    neutralised. -> list of argv, or None when the clone redirects URLs (url.*.insteadOf) and must not be pulled."""
+    out = []
+    here = tempfile.gettempdir()                      # not inside any repo: only the owner's global/system config
+    if _cfg_lines(["-C", str(root), "config", "--local", "-z", "--name-only", "--get-regexp",
+                   r"^url\..*\.(push)?insteadof$"]):
+        return None
+    for k, default in (("core.sshCommand", "ssh"), ("core.askPass", "")):
+        vals = _cfg_lines(["config", "--get-all", "-z", k], cwd=here)
+        out += ["-c", k + "=" + (vals[-1].decode("utf-8", "replace") if vals else default)]
+    rx = r"^credential\..*helper$"
+    keys = {}
+    for kv in _cfg_lines(["config", "-z", "--get-regexp", rx], cwd=here):
+        k, _, v = kv.decode("utf-8", "replace").partition("\n")
+        keys.setdefault(k, []).append(v)
+    for kv in _cfg_lines(["-C", str(root), "config", "--local", "-z", "--get-regexp", rx]):
+        keys.setdefault(kv.decode("utf-8", "replace").partition("\n")[0], [])
+    for k, vals in keys.items():
+        out += ["-c", k + "="]                        # an empty value resets the list
+        for v in vals:
+            out += ["-c", "%s=%s" % (k, v)]
+    for kv in _cfg_lines(["-C", str(root), "config", "-z", "--get-regexp", r"^merge\..*\.driver$"],
+                         env=dict(os.environ, **GIT_SAFE_ENV)):
+        out += ["-c", kv.decode("utf-8", "replace").partition("\n")[0] + "=false"]
+    return out
+
+
+def default_sync(root, sleep=time.sleep, tries=3, pin=None):
     """The Ralph doc's pull (ralph_loop_design §1.2: `for n in 1 2 3; do git pull --rebase -q && break; sleep
     $((n*30)); done`), on main, before every build pass (review L6). -> True when a pull succeeded."""
     top = git_run(root, "rev-parse", "--show-toplevel", capture_output=True, text=True)
@@ -517,9 +552,18 @@ def default_sync(root, sleep=time.sleep, tries=3):
             return False
     if git_run(root, "switch", "-q", MAIN, capture_output=True).returncode != 0:
         return False
+    # The builder owns .git/config: the pull never reads the remote from it. The URL is pinned on first sight (file
+    # `pin`, harness-owned), the ssh/credential/askpass keys are the owner's, the protocols are allow-listed.
+    url = Path(pin).read_text().strip() if pin and Path(pin).exists() else \
+        git_run(root, "config", "--get", "remote.origin.url", capture_output=True, text=True).stdout.strip() or "origin"
+    cfg = net_cfg(root)
+    if cfg is None:
+        return False
+    if pin and not Path(pin).exists():
+        Path(pin).write_text(url + "\n")
     for n in range(1, tries + 1):
-        if git_run(root, "pull", "--rebase", "-q", capture_output=True, timeout=600, keep_user_config=True) \
-                .returncode == 0:               # the network needs the owner's ssh/credential config; hooks stay off
+        if git_run(root, *cfg, "pull", "--rebase", "-q", url, MAIN, capture_output=True, timeout=600,
+                   keep_user_config=True).returncode == 0:   # the owner's ssh/credential config; hooks stay off
             return True
         if n < tries:
             sleep(n * 30)
@@ -569,6 +613,7 @@ def git_run(root, *a, keep_user_config=False, **kw):
     keeps the user's global config (its ssh/credential settings): still no replace objects, hooks or fsmonitor."""
     env = dict(os.environ, **GIT_SAFE_ENV)
     if keep_user_config:
+        env["GIT_ALLOW_PROTOCOL"] = "file:https:ssh"          # no ext:: or helper protocol, whatever the clone's config says
         for k in ("GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL"):
             env.pop(k, None)
             if k in os.environ:                      # the owner's own GIT_CONFIG_GLOBAL file is the user config
@@ -654,7 +699,7 @@ class Loop:
         self.precheck = precheck or (lambda log: default_precheck(self.root, log))
         self.release = release or (lambda: default_release(self.root))
         self.publish_cmd = publish_cmd
-        self.sync = (lambda: default_sync(self.root, self.sleep)) if sync == "default" else sync   # None: no pull
+        self.sync = (lambda: default_sync(self.root, self.sleep, pin=self.ctl / "origin.url")) if sync == "default" else sync   # None: no pull
         self.new_id = new_id or (lambda role: "ralph_a-%s-%s" % (role, uuid.uuid4().hex[:12]))
         self.tester_workdir = tester_workdir or self._export_tree
         self.timeout_s, self.poll_s, self.sleep = timeout_s, poll_s, sleep
@@ -761,7 +806,7 @@ class Loop:
                 for r in recs[last + 1:]):
             return None                       # a tester pass FINISHED (a start alone, or an unfinished try sequence, is not)
         sha = b.get("sha")
-        if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or \
+        if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or self.already_failed(task, sha) or \
                 git_run(self.root, "cat-file", "-e", sha + "^{commit}", capture_output=True).returncode != 0 or \
                 git_run(self.root, "merge-base", "--is-ancestor", sha, MAIN, capture_output=True).returncode == 0:
             return None
@@ -847,22 +892,37 @@ class Loop:
         head = self.git("rev-parse", "HEAD")
         self.state["n"] = n + 1
         ok, why = (False, "model exit %r (killed or failed)" % rc) if rc != 0 else (False, "empty candidate") \
-            if head == base else (None, None)         # DRILL: a leftover unchecked commit of a killed pass IS gated
+            if head == base else (False, "no new commit: wip still holds the candidate that already FAILED") \
+            if self.already_failed(task, head) else (None, None)  # DRILL: a leftover unchecked commit of a killed pass IS gated
+        gated = ok is None                            # only a candidate the gate actually judged is remembered as failed
         if ok is None:
             g = self.gate(task, base, head, "build", self.log / ("gate.build.%d" % n))
             ok, why = build_gate_ok(g)
         self.emit("pass_end", task, sha=head, verdict="pass" if ok else "fail",
                   detail={"role": "build", "agent": builder, "rc": rc, "why": why})
         if not ok:
-            return self._failed(task, base, head, "build pass: " + why, n)
+            return self._failed(task, base, head, "build pass: " + why, n, record=gated)
         bid = "%s.%s" % (task["id"], head[:12])
         self.emit("build_end", task, sha=head, detail={"builder": builder, "build_id": bid, "base": base})
         self.state["pending"] = {"build_id": bid, "base": base, "head": head, "builder": builder}
         self._save()
         return self.tester_pass(task)                             # AT ONCE: no other work between build and test
 
-    def _failed(self, task, base, head, why, n):
+    def already_failed(self, task, sha):
+        """True when this sha of this task already FAILED a gate, the tester, the lane or the final gate: it is never
+        gated or tested again, so a builder that changes nothing after a FAIL cannot resubmit the failed diff."""
+        if sha in (self.state.get("failed_heads") or {}).get(task["id"], []):
+            return True
+        tid = L.norm_id(task["id"])
+        return any(r.get("event") == "test_end" and r.get("verdict") == "fail" and r.get("sha") == sha
+                   and L.norm_id(r.get("task")) == tid for r in canon_records(self.writer.records()))
+
+    def _failed(self, task, base, head, why, n, record=True):
         k = task["id"]
+        if record and head != base:
+            fh = self.state.setdefault("failed_heads", {}).setdefault(k, [])
+            if head not in fh:
+                fh.append(head)
         t = self.state["tries"].get(k, 0) + 1
         self.state["tries"][k] = t
         self.state["pending"] = None
@@ -874,6 +934,7 @@ class Loop:
             self.git("branch", "-f", WIP, MAIN)
             self._clear_notes()
             self.state["tries"].pop(k, None)
+            self.state.get("failed_heads", {}).pop(k, None)
             self.state["task_i"] += 1
             self._save()
             return self.status("parked %s after %d tries (evidence ralph/failed/%s)" % (k, t, k))

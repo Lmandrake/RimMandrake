@@ -918,6 +918,90 @@ def sc_git_exec(kind):
 
 
 
+# ---- RALPHA_GIT_TRUST_NET: the pull and the failed-candidate resubmission (opus blind review of ralph_a)
+def _pull_world(tmp, name, mod):
+    """-> (w, origin path): an arm clone whose origin has one commit (NEW) the clone lacks."""
+    w = World(tmp, name, mod)
+    origin = tmp / (name + "_o.git")
+    sh(tmp, "git", "clone", "-q", "--bare", str(w.root), str(origin))
+    sh(w.root, "git", "remote", "add", "origin", str(origin))
+    sh(w.root, "git", "fetch", "-q", "origin")
+    sh(w.root, "git", "branch", "-q", "--set-upstream-to=origin/main", "main")
+    clone = tmp / (name + "_c")
+    sh(tmp, "git", "clone", "-q", "-b", "main", str(origin), str(clone))
+    sh(clone, "git", "config", "user.email", "t@t")
+    sh(clone, "git", "config", "user.name", "t")
+    (clone / "NEW").write_text("x\n")
+    sh(clone, "git", "add", "NEW")
+    sh(clone, "git", "commit", "-q", "-m", "new")
+    sh(clone, "git", "push", "-q", "origin", "main")
+    return w, origin
+
+
+def sc_pull_trap(kind):
+    def sc(tmp, mod, tag):
+        w, origin = _pull_world(tmp, "NP" + kind + tag, mod)
+        marker = w.d / "marker"
+        script = w.d / "evil.sh"
+        script.write_text("#!/bin/sh\ntouch %s\nexit 1\n" % marker)
+        script.chmod(0o755)
+        cfg = lambda *a: sh(w.root, "git", "config", *a)                  # noqa: E731
+        ok_extra = True
+        if kind == "ssh":
+            cfg("remote.origin.url", "ssh://nohost.invalid/x")
+            cfg("core.sshCommand", str(script))
+        elif kind == "uploadpack":
+            cfg("remote.origin.uploadpack", str(script))
+        elif kind == "ext":
+            cfg("remote.origin.url", "ext::" + str(script))
+            cfg("protocol.ext.allow", "always")
+        elif kind == "merge":
+            (w.root / "README").write_text("local edit\n")
+            sh(w.root, "git", "commit", "-q", "-am", "local")
+            (w.root / ".git" / "info").mkdir(exist_ok=True)
+            (w.root / ".git" / "info" / "attributes").write_text("README merge=evil\n")
+            cfg("merge.evil.driver", "%s %%A" % script)
+            clone = tmp / ("NP" + kind + tag + "_c")
+            (clone / "README").write_text("remote edit\n")
+            sh(clone, "git", "commit", "-q", "-am", "remote")
+            sh(clone, "git", "push", "-q", "origin", "main")
+        elif kind == "insteadof":
+            other = tmp / ("NP" + kind + tag + "_x.git")
+            sh(tmp, "git", "clone", "-q", "--bare", str(origin), str(other))
+            cfg("url.%s.insteadOf" % other, str(origin))
+            ok_extra = False
+        subprocess.run(["git", "pull", "--rebase", "-q"], cwd=str(w.root), capture_output=True, timeout=60,
+                       env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))       # sanity: plain git runs the planted command
+        sane = marker.exists() or kind == "insteadof"
+        marker.unlink(missing_ok=True)
+        sh(w.root, "git", "rebase", "--abort") if (w.root / ".git" / "rebase-merge").exists() else None
+        got = mod.default_sync(w.root, lambda s: None, tries=1)
+        if kind == "insteadof":
+            return not got            # the plain pull above followed the redirect; the loop refuses to pull at all
+        return sane and not marker.exists()
+    sc.__name__ = "sc_pull_trap_" + kind
+    return sc
+
+
+def sc_nochange_after_fail(tmp, mod, tag):
+    """A builder that exits 0 with no change after a tester FAIL is a failed try: the failed sha is never gated or
+    tested again, the second tester never gets to pass the already-failed diff and nothing merges."""
+    seen = []
+
+    def tester(prompt, cwd):
+        seen.append(1)
+        return "VERDICT: FAIL" if len(seen) == 1 else "VERDICT: PASS"
+    builds = []
+
+    def b(prompt):
+        builds.append(1)
+        return (WEAK, 0) if len(builds) == 1 else (None, 0)
+    w = World(tmp, "NF" + tag, mod, builder=b, tester=tester)
+    out = [w.loop.step(), w.loop.step()]
+    return ("tester pass FAIL" in out[0] and out[1].startswith("failed") and len(seen) == 1
+            and not w.pubs() and w.main_src() is None and w.roles() == ["build", "test", "build"])
+
+
 MUTATIONS = [
     ("T1 replace refs honoured", sc_git_replace_ref, "\"GIT_NO_REPLACE_OBJECTS\": \"1\", ", ""),
     ("T1/T2 export read with git archive", sc_git_export_attrs,
@@ -994,6 +1078,16 @@ MUTATIONS = [
      "self.git(\"merge\", \"-q\", \"--ff-only\", pend[\"head\"])", "self.git(\"merge\", \"-q\", \"--ff-only\", WIP)"),
     ("L6 pull drops the owner's $GIT_CONFIG_GLOBAL", sc_sync_user_config,
      "            if k in os.environ:                      # the owner's own GIT_CONFIG_GLOBAL file is the user config\n                env[k] = os.environ[k]\n", ""),
+    ("N1 ssh command from the clone's config", sc_pull_trap("ssh"),
+     '("core.sshCommand", "ssh"), ', ""),
+    ("N1 remote.origin.uploadpack from the clone's config", sc_pull_trap("uploadpack"),
+     '"-q", url, MAIN', '"-q", "origin", MAIN'),
+    ("N1 ext:: remote helper allowed", sc_pull_trap("ext"),
+     '        env["GIT_ALLOW_PROTOCOL"] = "file:https:ssh"', "        pass"),
+    ("N1 merge driver run by the rebase", sc_pull_trap("merge"), 'r"^merge\\..*\\.driver$"', 'r"^nomatch$"'),
+    ("N1 url.insteadOf redirect followed", sc_pull_trap("insteadof"), 'r"^url\\..*\\.(push)?insteadof$"', 'r"^nomatch$"'),
+    ("N2 failed candidate resubmitted by a no-change builder", sc_nochange_after_fail,
+     "            if self.already_failed(task, head) else (None, None)", "            if False else (None, None)"),
     ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
 ]
 
@@ -1302,7 +1396,13 @@ def main():
                          ("T4 builder core.hooksPath hooks do not run", sc_git_exec("hooks")),
                          ("T4 builder textconv driver does not run", sc_git_exec("textconv")),
                          ("T4 builder diff.external does not run", sc_git_exec("external")),
-                         ("T4 builder filter.* clean/smudge drivers do not run", sc_git_exec("filter"))):
+                         ("T4 builder filter.* clean/smudge drivers do not run", sc_git_exec("filter")),
+                         ("N1 pull ignores the clone's core.sshCommand", sc_pull_trap("ssh")),
+                         ("N1 pull ignores the clone's remote.origin.uploadpack", sc_pull_trap("uploadpack")),
+                         ("N1 pull refuses an ext:: remote helper", sc_pull_trap("ext")),
+                         ("N1 rebase runs no builder merge driver", sc_pull_trap("merge")),
+                         ("N1 pull refuses a url.insteadOf redirect", sc_pull_trap("insteadof")),
+                         ("N2 no-change builder after a FAIL cannot resubmit the failed sha", sc_nochange_after_fail)):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             if old is None:        # diff.external: remove every layer (env, -c, flags)

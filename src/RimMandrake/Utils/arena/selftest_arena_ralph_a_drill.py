@@ -80,7 +80,12 @@ def sc_planted(tmp, mod, tag):
 
 def sc_planted_final(tmp, mod, tag):
     """P: a check that fails only at the FINAL gate (tester passed it) is never published."""
-    w = World(tmp, "dA2" + tag, mod, tester=PASS_ALL)
+    calls = []
+
+    def builder(prompt):                  # the retry must CHANGE the code: an unchanged failed sha is never gated again
+        calls.append(1)
+        return (GOOD if len(calls) == 1 else GOOD + "# fixed after the final gate\n"), 0
+    w = World(tmp, "dA2" + tag, mod, tester=PASS_ALL, builder=builder)
     real = w.gate
     seen = []
 
@@ -397,7 +402,7 @@ MUTATIONS = [
      '        if False:'),
     ("P build-phase gate bypassed", sc_planted, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("R leftover commit of a killed pass read as an empty candidate", sc_build_killed,
-     "if head == base else (None, None)", "if True else (None, None)"),
+     "if self.already_failed(task, head) else (None, None)", "if True else (None, None)"),
     ("P gate with no JSON read as pass", sc_gate_process_killed,
      '        return {"verdict": "invalid", "steps": {}, "why": "gate printed no JSON record (rc %s)" % r.returncode}',
      '        return {"verdict": "pass", "steps": {}, "why": "x"}'),
