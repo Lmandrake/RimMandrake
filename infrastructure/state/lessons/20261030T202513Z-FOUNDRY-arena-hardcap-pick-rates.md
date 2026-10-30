@@ -1,2 +1,5 @@
 Arena day-3 hard-cap pick (simplest arm with P(accept worse>=0.10)<0.2 and P(eff<0.9x control)<0.2) is conservative at n=40, sigma_d 0.8: with three EQUAL arms it picks a simpler arm only ~50% of seeds (496/1000; control stays 497, false DECIDE 7), because 'not credibly worse' needs a posterior SD of about 0.12 on log-efficiency. With trio truly 1.5x better: trio wins 592/1000 (386 DECIDE + 206 pick), no wrong stop. Wrong picks: trio truly 1.5x WORSE gets picked 1.5% (13 picks + 2 DECIDE), trio accept 0.49 vs 0.64 gets picked 4.7% (39 + 8). Evidence D:\ClaudeWork\rimmandrake\arena_hardcap_20261030\hardcap_sim_1000.jsonl. Residuals: only the WINNER's own unmeasured DQ checks block a decision (the control's do not); a control disqualified with fewer than two survivors stays DISQUALIFIED rather than UNMEASURED (both non-decisions).
 home: src/RimMandrake/Utils/arena/arena_analysis.py
+
+
+CORRECTION (Conductor independent test, 2026-10-30): the "trio truly 1.5x better/worse" and "accept 0.49 vs 0.64" figures above are 2-ARM runs (trio vs control), not the 3-arm setup of the equal-arms figures. Evidence: D:\ClaudeWork\rimmandrake\arena_verify2_20261030.
