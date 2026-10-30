@@ -371,10 +371,11 @@ def writeup_full(rec: dict) -> str:
     if full:                                    # a reviewer that keeps its whole answer (the tester): use all of it
         parts = []
     tail = str(full or (rec.get("meta") or {}).get("answer_tail") or "")
-    if tail and not any(p and p[-200:] in tail for p in parts):
+    # a reason is dropped only when the tail holds ALL of it: a long reason whose start precedes the tail is kept whole
+    if tail and not any(p in tail for p in parts):
         parts.append(tail)
     elif tail:
-        parts = [tail] + [p for p in parts if p[-200:] not in tail]
+        parts = [tail] + [p for p in parts if p not in tail]
     text = "\n".join(parts)
     text = "\n".join(ln for ln in text.splitlines() if not ln.strip().upper().startswith(("VERDICT", "**VERDICT")))
     return text.replace('"verdict": "reject"', "").replace('"verdict": "accept"', "")
@@ -662,9 +663,9 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
                          "discrimination": None if d is None else round(d, 3),
                          "ci95": boot([tab], list(tab), mode, reps)[:2]}
         by_detect = {}
-        for det in ("test", "read"):
+        for det in ("test", "read", "unproved"):
             hits = [(v, hit) for row in tab.values() for mid, v, hit in row["muts"] if v is not None
-                    and (proofs_by.get(mid) or {}).get("detect", "read") == det]
+                    and (proofs_by.get(mid) or {}).get("detect", "unproved") == det]
             by_detect[det] = {"verdict_catch": [sum(v == "reject" for v, _h in hits), len(hits)],
                               "reason_catch": [sum(v == "reject" and bool(h) for v, h in hits), len(hits)]}
         blk["by_detect"] = by_detect
@@ -696,7 +697,11 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
 
 def decision(sc: dict) -> dict:
     why = []
+    if sc["detect"]["unproved"]:
+        why.append("%d mutants have no proof on these heads" % sc["detect"]["unproved"])
     for role, blk in sc["reviewers"].items():
+        if not blk.get("critic_fingerprint"):
+            why.append("%s: run %s records no critic fingerprint" % (role, blk["run"]))
         if blk["invalid"] > C.MAX_INVALID_FRAC * blk["candidates"]:
             why.append("%s: %d/%d invalid" % (role, blk["invalid"], blk["candidates"]))
         k, n = blk["matcher_decoy_hits"]

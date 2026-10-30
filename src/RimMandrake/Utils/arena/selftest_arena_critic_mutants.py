@@ -11,7 +11,8 @@ model is called (a fake matcher call stands in), git runs only in a throwaway re
   scoring       discrimination = catch(mut) - reject(orig); reason mode counts an unmatched reject as a miss; a reject
                 with no valid match drops out (and the grade is UNMEASURED); the paired restriction keeps only
                 candidates valid for both reviewers; an always-reject reviewer scores 0; the bootstrap is reproducible;
-                a match record whose key is not the current job's (other write-up, fixture or matcher) is ignored
+                a match record whose key is not the current job's (other write-up, fixture or matcher) is ignored;
+                an unproved mutant or a run without a critic fingerprint grades UNMEASURED
   seed          copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
                 does not match its recorded sha, and a target run of another critic
   proofs        latest() accepts a proof made on this set OR on exactly this mutant's and original's heads, and
@@ -115,6 +116,9 @@ def t_writeup():
     check("writeup strips the verdict line", "VERDICT" not in w)
     w = M.writeup_of({"reasons": ["r1 found"], "meta": {"answer_tail": "tail text"}})
     check("writeup without a kept answer joins reasons and tail", "r1 found" in w and "tail text" in w, w)
+    lng = "START the off-by-one in f.py " + "z" * 400
+    w = M.writeup_of({"reasons": [lng], "meta": {"answer_tail": lng[-300:] + " VERDICT: reject"}})
+    check("writeup keeps a long reason whose start precedes the tail", "START the off-by-one" in w, w[:80])
     huge = "HEAD" + "y" * (M.WRITEUP_MAX + 500) + "END"
     w = M.writeup_of({"meta": {"answer": huge}})
     check("writeup cap keeps the end", w.endswith("END") and "HEAD" not in w and len(w) == M.WRITEUP_MAX)
@@ -145,7 +149,7 @@ def t_scoring():
     ru = M.restrict(u, v)
     check("paired restriction keeps only candidates valid for both",
           ru["o2"]["orig"] is None and ru["o1"]["muts"][0][1] is None and ru["o1"]["muts"][1][1] == "reject", str(ru))
-    sc = {"reviewers": {"critic": {"invalid": 0, "candidates": 10, "matcher_decoy_hits": [0, 5],
+    sc = {"detect": {"unproved": 0}, "reviewers": {"critic": {"run": "r", "critic_fingerprint": "fp", "invalid": 0, "candidates": 10, "matcher_decoy_hits": [0, 5],
                                    "rejects_without_valid_match": 1}},
           "paired": {"reason": {"ci95": [0.1, 0.4]}}}
     check("a reject without a valid match grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
@@ -155,6 +159,12 @@ def t_scoring():
     sc["reviewers"]["critic"]["matcher_decoy_hits"] = [0, 5]
     check("a clean paired interval above 0 is MEASURED better", M.decision(sc).get("call", "").startswith(
         "critic discriminates better"), str(M.decision(sc)))
+    sc["detect"]["unproved"] = 1
+    check("a mutant without a proof grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
+    sc["detect"]["unproved"] = 0
+    sc["reviewers"]["critic"]["critic_fingerprint"] = None
+    check("a run without a critic fingerprint grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
+    sc["reviewers"]["critic"]["critic_fingerprint"] = "fp"
     sc["paired"]["reason"]["ci95"] = [-0.1, 0.4]
     check("an interval spanning 0 is not a call", "spans 0" in M.decision(sc).get("call", ""))
 
@@ -171,10 +181,11 @@ def t_stale_match():
     check("one match job per valid reject", [j["cid"] for j in job] == ["m1"], str(job))
     good = {"key": job[0]["key"], "run": "r", "cid": "m1", "valid": True, "true_hit": ["m1"], "decoy_hit": False}
     stale = dict(good, key="0" * 16)
-    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [good], {}, reps=50)
+    proved = {"m1": {"detect": "read"}, "m2": {"detect": "test"}}
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [good], proved, reps=50)
     check("a current match counts as a catch", sc["reviewers"]["critic"]["reason"]["catch"] == [1, 2]
           and sc["reviewers"]["critic"]["rejects_without_valid_match"] == 0, str(sc["reviewers"]["critic"]))
-    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [stale], {}, reps=50)
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [stale], proved, reps=50)
     check("a stale match (other write-up, fixture or matcher) is ignored",
           sc["reviewers"]["critic"]["rejects_without_valid_match"] == 1 and sc["verdict"]["grade"] == "UNMEASURED",
           str(sc["reviewers"]["critic"]))
