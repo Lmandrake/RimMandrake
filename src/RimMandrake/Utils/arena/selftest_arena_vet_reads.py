@@ -167,7 +167,7 @@ def t_wiring(tmp):
 
 
 def t_sanity():
-    check(A.SANITY_ITEM == "TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+    check(A.SANITY_ITEM == "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
           "sanity default is the item that discriminates under the judge route (ARENA_SANITY_ITEM_FIX_NOT_DISCRIMINATING)")
     cache = A.vet_cache_path()
     recs = [r for r in A.read_vet_cache(cache).values() if r.get("task") == "RP_" + A.SANITY_ITEM
@@ -177,6 +177,8 @@ def t_sanity():
         return
     check(any(A.vet_verdict(r)[0] for r in recs), "the sanity item's vet record discriminates (%s)"
           % [(r["fix_result"], r["base_result"]) for r in recs])
+    check(any("src/RimStarWars/Cuisine/Defs" in (r.get("reads") or []) for r in recs),
+          "the sanity item discriminates through its traced read (src/RimStarWars/Cuisine/Defs)")
 
 
 def main():

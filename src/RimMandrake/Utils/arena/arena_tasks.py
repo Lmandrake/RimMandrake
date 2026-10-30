@@ -142,8 +142,10 @@ KINDS = ("python-util", "xml-def-patch", "csharp", "live-verify", "tooling")
 # instrument can see). Since the vet gates the pool it must also DISCRIMINATE under the judge route (pass at the fix,
 # fail at base). FOUNDRY 2026-10-30 (ARENA_SANITY_ITEM_FIX_NOT_DISCRIMINATING): the old pick
 # STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS fails at the fix too (its check reads source_sha from git; the judge tree
-# has no .git), so the probe moved to RP_TANKS_ROW's item, pass/fail in the vet cache under the judge runner.
-SANITY_ITEM = "TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE"
+# has no .git). TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE discriminates but is now label_suspect (unlabelled), so the
+# probe is ROAST_STICK's item: Clean, and pass/fail only with its traced reads (src/RimStarWars/Cuisine/Defs), so a
+# broken read trace also trips the probe.
+SANITY_ITEM = "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS"
 BOOKKEEPING = ("infrastructure/state/ledger/*", "infrastructure/state/queue/*", "infrastructure/state/items/*",
                "AGENTS.md")
 # size points from the original diff (counted files, added+deleted lines); fixed at freeze

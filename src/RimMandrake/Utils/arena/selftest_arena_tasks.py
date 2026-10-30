@@ -1475,10 +1475,10 @@ def t_real_ledger():
           % (A.SANITY_ITEM, rep["pool"], rep["labels"]))
     check(rep["pool"] > 0 and all(t["live"] in A.LIVE_OK for t, _ in pool), "real ledger: no task has live: full")
     h = {t["source_item"]: hh for t, hh in pool}[A.SANITY_ITEM]
-    check(h["fix_sha"].startswith("7a68931d8a") and h["label"] == "Clean"
-          and any(c.get("path") == "src/RimMandrake/FlowWorks/northstar/selftest_walk_gaps_proof.py"
+    check(h["fix_sha"].startswith("05366d9ad4") and h["label"] == "Clean"
+          and any(c.get("path") == "src/RimMandrake/Utils/selftest_roast_stick_no_cook_stat.py"
                   for c in h["checks"]),
-          "real ledger: the sanity item remaps to 7a68931d8a, is Clean and holds its discriminating walk-gaps check")
+          "real ledger: the sanity item is fix 05366d9ad4, is Clean and holds its discriminating roast-stick check")
 
 
 def main():
