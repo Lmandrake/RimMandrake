@@ -210,16 +210,12 @@ def done_gate(recs, arm, task_id, sha, review_dir):
 # The build helper owns the clone's .git: a replace ref or graft would make `git archive`/`git diff` of sha A show
 # commit B (review r1), and a diff driver or fsmonitor in .git/config would run its code as the harness. Every git
 # call on the clone ignores replace objects and grafts and disables those execution hooks.
-GIT_SAFE_ENV = {"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull, "GIT_CONFIG_NOSYSTEM": "1",
-                "GIT_CONFIG_GLOBAL": os.devnull, "GIT_EXTERNAL_DIFF": "", "GIT_PAGER": "cat"}
-GIT_SAFE_CFG = ["-c", "core.fsmonitor=false", "-c", "core.hooksPath=" + os.devnull, "-c", "diff.external=",
-                "-c", "core.attributesFile=" + os.devnull]
+# (the env/config pins live in arena_safe_git, one copy: ARENA_GIT_FETCHES_AUDIT_STRAGGLERS)
+import arena_safe_git as SG  # noqa: E402
 
 
 def safe_git(root, *a, binary=False):
-    env = dict(os.environ, **GIT_SAFE_ENV)
-    r = subprocess.run(["git", "-C", str(root)] + GIT_SAFE_CFG + list(a), capture_output=True, env=env,
-                       text=not binary)
+    r = SG.git_run(root, *a, capture_output=True, text=not binary)
     if r.returncode != 0:
         err = r.stderr.decode(errors="replace") if binary else r.stderr
         raise Refused("git %s failed: %s" % (" ".join(a), err.strip()[:300]))
@@ -244,9 +240,7 @@ def export_tree(root, sha, dest):
             ents.append((mode, obj, path.decode("utf-8", "surrogateescape")))
     if not ents:
         return dest
-    env = dict(os.environ, **GIT_SAFE_ENV)
-    r = subprocess.run(["git", "-C", str(root)] + GIT_SAFE_CFG + ["cat-file", "--batch"], env=env,
-                       input="".join(o + "\n" for _, o, _ in ents).encode(), capture_output=True)
+    r = SG.git_run(root, "cat-file", "--batch", input="".join(o + "\n" for _, o, _ in ents).encode(), capture_output=True)
     if r.returncode != 0:
         raise Refused("git cat-file failed: %s" % r.stderr.decode(errors="replace")[:300])
     buf, pos = r.stdout, 0

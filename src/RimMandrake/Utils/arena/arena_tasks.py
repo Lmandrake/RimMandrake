@@ -108,6 +108,8 @@ UTILS = HERE.parent
 sys.path.insert(0, str(UTILS.parent))       # src/RimMandrake -> `rimflow`
 sys.path.insert(0, str(UTILS))              # rmpaths
 from rimflow import model  # noqa: E402
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import arena_safe_git as SG  # noqa: E402  (git on an arm-written .git)
 
 REPO = UTILS.parent.parent.parent
 
@@ -1248,15 +1250,11 @@ def _deviations(top: Path, entries: dict) -> tuple[list, list, list, dict, list]
     return new, changed, sorted(set(entries) - set(cur)), cur, errs
 
 
-_GIT_ENV = {"GIT_OPTIONAL_LOCKS": "0", "GIT_CONFIG_NOSYSTEM": "1", "GIT_CONFIG_GLOBAL": os.devnull,
-            "GIT_TERMINAL_PROMPT": "0"}
-
-
 def _git_in(gitdir: Path, *args, inp: bytes | None = None) -> bytes:
-    """git against an ARM-controlled git dir: no hooks, no fsmonitor, no global/system config, no optional locks."""
-    r = subprocess.run(["git", "-c", "core.fsmonitor=false", "-c", "core.hooksPath=" + os.devnull,
-                        "--git-dir", str(gitdir), *args], input=inp, capture_output=True, timeout=300,
-                       env=dict(os.environ, **_GIT_ENV))
+    """git against an ARM-controlled git dir: arena_safe_git's pins (no replace refs/grafts: a replace ref would make
+    `cat-file --batch` show other content than the object holds; no hooks, no fsmonitor, no global/system config)."""
+    r = subprocess.run(["git"] + SG.GIT_SAFE_CFG + ["--git-dir", str(gitdir), *args], input=inp, capture_output=True,
+                       timeout=300, env=dict(SG.safe_env(), GIT_OPTIONAL_LOCKS="0"))
     if r.returncode != 0:
         raise ArenaError("git %s in %s: %s" % (args[0], gitdir, r.stderr.decode("utf-8", "replace").strip()[:200]))
     return r.stdout

@@ -49,6 +49,8 @@ DEFAULT_ROOT = "/home/mandrake/rm/arena"
 DEFAULT_SOURCE = "/home/mandrake/rm/bench"
 DEFAULT_PRIVATE = "~/.local/state/rm_arena_private"
 NAME = re.compile(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,100}")
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import arena_safe_git as SG  # noqa: E402  (git on a clone an arm wrote into)
 SHA = re.compile(r"[0-9a-f]{40}")
 SHA_IN = re.compile(r"[0-9a-fA-F]{7,40}")
 HASH64 = re.compile(r"[0-9a-f]{64}")
@@ -142,7 +144,12 @@ def _env() -> dict:
 
 
 def _run(repo: Path, *args, check=False) -> subprocess.CompletedProcess:
-    return subprocess.run(["git", "-C", str(repo)] + list(args), capture_output=True, env=_env(), timeout=300)
+    """git on a clone an ARM worked in (builder-controlled .git: replace refs, config): through arena_safe_git, with
+    the inherited GIT_* scrubbed as _env does (ARENA_GIT_FETCHES_AUDIT_STRAGGLERS)."""
+    env = SG._env(repo, False)
+    for k in [k for k in env if k.startswith("GIT_") and k not in SG.GIT_SAFE_ENV and k != "GIT_WORK_TREE"]:
+        del env[k]
+    return subprocess.run(SG.git_argv(repo, *args), capture_output=True, env=env, timeout=300)
 
 
 def _git(repo: Path, *args, env=None, check=True) -> str:

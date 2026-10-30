@@ -609,7 +609,9 @@ MUTATIONS += [
      [("        if not ok:                                                # the review requires", "        if False:  #")]),
     ("LK lock follows --ctl", sc_one_lock_per_arm,
      [('self.lock_dir = Path(lock_dir or os.environ.get("V3_LOCK_DIR") or DEFAULT_CTL)', "self.lock_dir = self.ctl")]),
-    ("RR replace refs honoured", sc_replace_ref, [('"GIT_NO_REPLACE_OBJECTS": "1", ', "")]),
+    ("RR replace refs honoured", sc_replace_ref, [("import arena_safe_git as SG  # noqa: E402\n",
+                                                    "class SG:  # plain git: no replace-object pin (the pins live in arena_safe_git)\n"
+                                                    "    git_run = staticmethod(lambda root, *a, **kw: subprocess.run(['git', '-C', str(root), *a], **kw))\n")]),
     ("PIN reviewer pin removed", sc_pinned,
      [("    if want.returncode or have.returncode or want.stdout.strip() != have.stdout.strip():", "    if False:")]),
 ]

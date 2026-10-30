@@ -425,10 +425,10 @@ class TrioLoop(RA.Loop):
             return None
         sha = b.get("sha")
         if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or \
-                subprocess.run(["git", "-C", str(self.root), "cat-file", "-e", sha + "^{commit}"],
-                               capture_output=True).returncode != 0 or \
-                subprocess.run(["git", "-C", str(self.root), "merge-base", "--is-ancestor", sha, RA.MAIN],
-                               capture_output=True).returncode == 0:
+                RA.SG.git_run(self.root, "cat-file", "-e", sha + "^{commit}",
+                              capture_output=True).returncode != 0 or \
+                RA.SG.git_run(self.root, "merge-base", "--is-ancestor", sha, RA.MAIN,
+                              capture_output=True).returncode == 0:
             return None
         self.state["pending"] = {"build_id": bid, "base": d["base"], "head": sha, "builder": d["builder"],
                                  "recovered": True}

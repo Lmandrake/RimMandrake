@@ -73,6 +73,7 @@ REPO = UTILS.parent.parent.parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(UTILS))
 import arena_tasks as A  # noqa: E402
+import arena_safe_git as SG  # noqa: E402  (every git call on an arm's clone: its .git is builder-written)
 
 ARMS = ("v3", "v3c", "ralph_a", "ralph_c", "trio", "production")
 TRIAL = "trial"
@@ -607,6 +608,19 @@ def _git(clone, *args, timeout=60) -> str:
     return r.stdout
 
 
+def _sgit(clone, *args, timeout=60, transport=False) -> str:
+    """As _git, through arena_safe_git: the arm's clone .git is builder-written (fsmonitor/filter/uploadpack...).
+    hook_dirs/chain_dir keep plain _git: they must READ the clone's core.hooksPath, which the safe pins override, and
+    `rev-parse --git-path` runs nothing."""
+    try:
+        r = SG.git_run(clone, *args, transport=transport, capture_output=True, text=True, timeout=timeout)
+    except SG.CloneRefused as e:
+        raise SwitchError("git %s in %s refused: %s" % (" ".join(args[:3]), clone, e))
+    if r.returncode != 0:
+        raise SwitchError("git %s in %s failed: %s" % (" ".join(args[:3]), clone, r.stderr.strip()[:200]))
+    return r.stdout
+
+
 def is_clone(p) -> bool:
     return (Path(p) / ".git").exists()
 
@@ -787,7 +801,7 @@ def _local_refs(cfg: dict, arm: str) -> dict:
             out[str(c)] = None
             continue
         refs = {}
-        for ln in _git(c, "for-each-ref", "--format=%(objectname) %(refname)", arm_ref_prefix(arm)).splitlines():
+        for ln in _sgit(c, "for-each-ref", "--format=%(objectname) %(refname)", arm_ref_prefix(arm)).splitlines():
             sha, _, ref = ln.strip().partition(" ")
             if ref:
                 refs[ref] = sha
@@ -800,9 +814,9 @@ def remote_arm_refs(clone, arm: str, timeout=60) -> dict[str, str]:
     keyed by the tracking-ref name they would have (refs/remotes/origin/arena/<arm>/x). Any failure (no origin,
     unreachable, auth, timeout) raises RemoteUnreachable: who (d) must fail loud, never pass."""
     try:
-        r = subprocess.run(["git", "-C", str(clone), "ls-remote", "--refs", "origin", "refs/heads/arena/%s/*" % arm],
-                           capture_output=True, text=True, timeout=timeout, env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))
-    except (OSError, subprocess.TimeoutExpired) as e:
+        r = SG.git_run(clone, "ls-remote", "--upload-pack=git-upload-pack", "--refs", "origin",
+                       "refs/heads/arena/%s/*" % arm, transport=True, capture_output=True, text=True, timeout=timeout)
+    except (OSError, subprocess.TimeoutExpired, SG.CloneRefused) as e:
         raise RemoteUnreachable("git ls-remote in %s: %s" % (clone, e))
     if r.returncode != 0:
         raise RemoteUnreachable("git ls-remote exit %d in %s: %s" % (r.returncode, clone, (r.stderr or r.stdout).strip()[:200]))
@@ -932,7 +946,7 @@ def pushed_since(cfg: dict, arm: str, ts: float, snapshot: dict | None = None, s
                                           ("new" if ref not in then else "moved")))
     for c, refs in _local_refs(cfg, arm).items():
         for ref in sorted(refs or {}):
-            log = _git(c, "reflog", "show", "--date=unix", "--format=%gd", ref, "--")
+            log = _sgit(c, "reflog", "show", "--date=unix", "--format=%gd", ref, "--")
             for ln in log.splitlines()[:1]:
                 m = re.search(r"@\{(\d+)\}$", ln.strip())
                 if m and int(m.group(1)) > ts and not any(o.startswith(ref + " ") for o in out):
@@ -947,12 +961,11 @@ def remote_refresh(clone: Path, timeout=120) -> dict[str, str]:
     force-replaced or deleted is updated/removed locally, so a commit that only the stale tracking ref held counts as
     unpushed again), then `git ls-remote --tags --refs origin` -> {refs/tags/x: sha} (tags are not judged by the
     tracking refs at all). Any failure (no origin, unreachable, auth) raises RemoteUnreachable: fail closed."""
-    for args in (["fetch", "--quiet", "--prune", "--no-tags", "origin"],
-                 ["ls-remote", "--tags", "--refs", "origin"]):
+    for args in (["fetch", "--quiet", "--prune", "--no-tags", "--upload-pack=git-upload-pack", "origin"],
+                 ["ls-remote", "--upload-pack=git-upload-pack", "--tags", "--refs", "origin"]):
         try:
-            r = subprocess.run(["git", "-C", str(clone)] + args, capture_output=True, text=True, timeout=timeout,
-                               env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))
-        except (OSError, subprocess.TimeoutExpired) as e:
+            r = SG.git_run(clone, *args, transport=True, capture_output=True, text=True, timeout=timeout)
+        except (OSError, subprocess.TimeoutExpired, SG.CloneRefused) as e:
             raise RemoteUnreachable("git %s: %s" % (args[0], e))
         if r.returncode != 0:
             raise RemoteUnreachable("git %s exit %d: %s" % (args[0], r.returncode, (r.stderr or r.stdout).strip()[:200]))
@@ -982,35 +995,32 @@ def clone_dirt(clone: Path, _prefix: str = "", refresh: bool = True, remote=None
     out = []
     if refresh:
         rtags = (remote or remote_refresh)(clone)
-        for ln in _git(clone, "for-each-ref", "--format=%(objectname) %(refname)", "refs/tags/").splitlines():
+        for ln in _sgit(clone, "for-each-ref", "--format=%(objectname) %(refname)", "refs/tags/").splitlines():
             sha, _, ref = ln.strip().partition(" ")
             if ref and rtags.get(ref) != sha:
                 out.append({"kind": "tag", "what": "%s: %s (%s)" % (
                     tag, ref, "not on origin" if ref not in rtags else "origin holds another object")})
-    for ref in _git(clone, "for-each-ref", "--format=%(refname)", "refs/heads/").split():
-        n = int(_git(clone, "rev-list", "--count", ref, "--not", "--remotes=origin").strip() or "0")
+    for ref in _sgit(clone, "for-each-ref", "--format=%(refname)", "refs/heads/").split():
+        n = int(_sgit(clone, "rev-list", "--count", ref, "--not", "--remotes=origin").strip() or "0")
         if n:
             out.append({"kind": "unpushed", "what": "%s: %s (%d commits not on origin)" % (tag, ref, n)})
-    sym = subprocess.run(["git", "-C", str(clone), "symbolic-ref", "-q", "HEAD"], capture_output=True, text=True,
-                         timeout=60)
-    has_head = subprocess.run(["git", "-C", str(clone), "rev-parse", "-q", "--verify", "HEAD"], capture_output=True,
-                              text=True, timeout=60).returncode == 0
+    sym = SG.git_run(clone, "symbolic-ref", "-q", "HEAD", capture_output=True, text=True, timeout=60)
+    has_head = SG.git_run(clone, "rev-parse", "-q", "--verify", "HEAD", capture_output=True, text=True, timeout=60).returncode == 0
     if sym.returncode != 0 and has_head:
-        n = int(_git(clone, "rev-list", "--count", "HEAD", "--not", "--remotes=origin").strip() or "0")
+        n = int(_sgit(clone, "rev-list", "--count", "HEAD", "--not", "--remotes=origin").strip() or "0")
         if n:
             out.append({"kind": "detached", "what": "%s: detached HEAD with %d commits not on origin" % (tag, n)})
-    st = subprocess.run(["git", "-C", str(clone), "rev-parse", "-q", "--verify", "refs/stash"], capture_output=True,
-                        text=True, timeout=60)
+    st = SG.git_run(clone, "rev-parse", "-q", "--verify", "refs/stash", capture_output=True, text=True, timeout=60)
     if st.returncode == 0:
-        n = len(_git(clone, "stash", "list").splitlines())
+        n = len(_sgit(clone, "stash", "list").splitlines())
         out.append({"kind": "stash", "what": "%s: %d stash entries" % (tag, n)})
-    for ln in _git(clone, "status", "--porcelain=v1", "--untracked-files=all", "--ignore-submodules=none").splitlines():
+    for ln in _sgit(clone, "status", "--porcelain=v1", "--untracked-files=all", "--ignore-submodules=none").splitlines():
         if not ln.strip():
             continue
         kind = "untracked" if ln.startswith("??") else "dirty"
         out.append({"kind": kind, "what": "%s: %s" % (tag, ln.strip())})
     if (clone / ".gitmodules").exists():
-        subs = _git(clone, "submodule", "status", "--recursive")
+        subs = _sgit(clone, "submodule", "status", "--recursive")
         for ln in subs.splitlines():
             f = ln[1:].split()
             if len(f) >= 2 and (clone / f[1]).exists() and is_clone(clone / f[1]):
