@@ -444,11 +444,16 @@ if os.path.exists(st + ".fail"):
     sys.exit(3)
 if a[0] == "file":
     open(st + ".calls", "a").write("x")
-if a[0] == "namecheck" and os.path.exists(st + ".blind"):
-    sys.exit(1)
-if a[0] == "namecheck":
-    print(a[1] + " exists: state proposed" if a[1] in have else "OK")
-    sys.exit(0 if a[1] not in have else 0) if a[1] in have else sys.exit(0)
+if a[0] == "namecheck":     # like the real one: exit 0 for a free name too; only the word 'exists:' says it is taken
+    print(a[1] + " exists: state proposed, owner X" if a[1] in have and not os.path.exists(st + ".blind") else "OK")
+    sys.exit(0)
+if a[0] == "show":
+    x = have.get(a[1], [])      # like the real show: a history line carrying caused_by=<id> and a following field
+    print(a[1], "history:", ("caused_by=%s for=BENCH" % x[x.index("--caused-by") + 1]) if "--caused-by" in x else "")
+    sys.exit(0)
+if a[0] == "note":
+    open(st + ".notes", "a").write(" ".join(a))
+    sys.exit(0)
 have[a[1]] = a
 json.dump(have, open(st, "w"))
 print("filed")
@@ -458,8 +463,7 @@ print("filed")
 def fake_rimflow(w, tmp):
     d = Path(tmp) / ("rf_" + w.ctl.parent.name + w.ctl.name)
     d.mkdir(parents=True, exist_ok=True)
-    (d / "rf.py").write_text(FAKE_RIMFLOW.replace('sys.exit(0 if a[1] not in have else 0) if a[1] in have else sys.exit(0)',
-                                                  'sys.exit(1 if a[1] not in have else 0)'))
+    (d / "rf.py").write_text(FAKE_RIMFLOW)
     os.environ["TRIO_RIMFLOW_CMD"] = "%s %s" % (sys.executable, d / "rf.py")
     os.environ["FAKE_RF_STORE"] = str(d / "store.json")
     return d
@@ -487,9 +491,10 @@ def sc_park_files_item(tmp, mod, tag):
     finally:
         os.environ.pop("TRIO_RIMFLOW_CMD", None)
     a = next(iter(have.values()), [])
+    notes = (d / "store.json.notes").read_text() if (d / "store.json.notes").exists() else ""   # verdict/why/sha/branch ride in a note
     print("     PF%s: items %s calls %s/%s" % (tag, list(have), calls1, calls2))
     return (first and calls1 == 1 and calls2 == 1 and list(have) == ["TRIO_ABSDIFF_VET_PARKED"] and len(parks(w)) == 1 and "BENCH" in a and "TRIO_ABSDIFF" in a
-            and any(T.FAILED_BRANCH % TASK["id"] in x for x in a) and a[a.index("--caused-by") + 1] == "TRIO_ABSDIFF")
+            and T.FAILED_BRANCH % TASK["id"] in notes and "reject" in notes and a[a.index("--caused-by") + 1] == "TRIO_ABSDIFF")
 
 
 def sc_park_filing_fails(tmp, mod, tag):
@@ -513,6 +518,31 @@ def sc_park_filing_fails(tmp, mod, tag):
     print("     PX%s: out %s / %s items %s" % (tag, out[-1][:30], out2[-1][:30], list(have)))
     return (out[-1].startswith("parked") and pk1 == 1 and len(parks(w)) == 1 and list(have) == ["TRIO_ABSDIFF_VET_PARKED"]
             and len(w.recs("critic_round", "park")) == 1)
+
+
+def sc_park_names(tmp, mod, tag):
+    """Park item names pass the real namecheck shape: <=44 chars, <=7 words, no trailing number, long ids shortened and
+    still distinct; and a plain name already held by an UNRELATED item is never adopted (a different park is filed under
+    the hashed variant, once)."""
+    import re
+    ids = ["TRIO_ABSDIFF", "ARENA_TRIO_BUILD_CRITIC_ROUND_CAP_PARKS", "ARENA_TRIO_BUILD_CRITIC_ROUND_CAP_PARKX",
+           "ARENA_DRILL_PROVE_KILLED_PASS_RECOVERS", "TRIO_PARKS_WIRE_CONDUCTOR_INBOX", "TRIO_ABSDIFF_2", "ARENA_TRIO_FIX_THE_BAR_NOW"]
+    names = [mod.park_item_name(i) for i in ids]
+    ok = all(len(n) <= 44 and len(n.split("_")) <= 7 and n.endswith("_VET_PARKED") and not n.split("_")[0].isdigit() for n in names)
+    ok = ok and len(set(names[1:3])) == 2
+    w = World(tmp, "PN" + tag, mod)
+    d = fake_rimflow(w, tmp)
+    (d / "store.json").write_text(json.dumps({"TRIO_ABSDIFF_VET_PARKED": ["file", "TRIO_ABSDIFF_VET_PARKED", "--caused-by", "OTHER_TASK_9"]}))
+    try:
+        w.run()
+        w.reopen(drop_state=True)
+        w.run(4)
+        have = json.loads((d / "store.json").read_text())
+    finally:
+        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+    mine = [n for n in have if n != "TRIO_ABSDIFF_VET_PARKED"]
+    print("     PN%s: names %s items %s" % (tag, names, list(have)))
+    return ok and mine == [mod.park_item_name("TRIO_ABSDIFF", force_hash=True)] and len(have) == 2
 
 
 def sc_spec_tamper(tmp, mod, tag):
@@ -562,6 +592,10 @@ MUTATIONS = [
      "            self._verdict(", "        if False:\n            self._verdict("),
     ("PL parked check after the spec load", sc_parked_spec_lost,
      "        fz = self.frozen()\n        if fz is not None and parked(", "        fz = self.frozen()\n        task = self.task()\n        if fz is not None and parked("),
+    ("PF free name (namecheck exit 0) never filed", sc_park_files_item, "            if \" exists:\" not in have.stdout:",
+     "            if have.returncode != 0 and \" exists:\" not in have.stdout:"),
+    ("PN long name over the word cap", sc_park_names, "or len(words) > 5 ", ""),
+    ("PN unrelated item adopted", sc_park_names, "(\"caused_by=%s \" % tid) not in self._rimflow(\"show\", name).stdout", "False"),
     ("PO park line written twice", sc_park_once, "        if not any(json.loads(x).get(\"task\") == tid for x in have if x.strip()):",
      "        if True:"),
     ("PF filing not remembered", sc_park_files_item, "            if tid in done:\n                return done[tid]\n",
@@ -595,6 +629,7 @@ SCENARIOS = [
     ("PL a parked item with its spec file lost still advances", sc_parked_spec_lost),
     ("PF a park files one Conductor item, once", sc_park_files_item),
     ("PX a failed or crashing filing loses nothing and is retried", sc_park_filing_fails),
+    ("PN park item names are valid and never adopt an unrelated item", sc_park_names),
     ("PO a killed park writes one parks.jsonl line", sc_park_once),
     ("G a tampered simplified spec refuses", sc_spec_tamper),
 ]

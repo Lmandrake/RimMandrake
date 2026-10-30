@@ -127,19 +127,21 @@ RIMFLOW_CLI = Path(__file__).resolve().parents[2] / "rimflow" / "cli.py"
 PARK_FOR = "BENCH"          # the Conductor's ledger seat (infrastructure/agents/CONDUCTOR.md: still seat BENCH)
 
 
-def park_item_name(tid):
-    """PARKED-style rimflow name for a park: the task's subject words + _VET_PARKED (intent VET), within the 44-char cap,
-    no trailing number (the retired legacy form); a hash tail keeps a truncated name unique."""
+def park_item_name(tid, force_hash=False):
+    """PARKED-style rimflow name for a park: the task's subject words + _VET_PARKED (intent VET), within the 44-char cap
+    and namecheck's 3-7 word cap (so at most 5 task words), no trailing number (the retired legacy form); a hash tail
+    keeps a truncated name unique. force_hash gives the disambiguated variant used when the plain name belongs to
+    another item (two ids differing only in a trailing number share the plain name)."""
     import re
     words = [w for w in re.sub(r"[^A-Z0-9]+", "_", tid.upper()).split("_") if w]
     while words and words[-1].isdigit():
         words.pop()
     suffix, name = "VET_PARKED", "_".join(words)
-    if len(name) + 1 + len(suffix) > 44:
+    if force_hash or len(words) > 5 or len(name) + 1 + len(suffix) > 44:
         h = hashlib.sha1(tid.encode()).hexdigest()[:3].upper()
         keep = []
         for w in words:
-            if len("_".join(keep + [w])) + 1 + len(h) + 1 + len(suffix) > 44:
+            if len(keep) >= 4 or len("_".join(keep + [w])) + 1 + len(h) + 1 + len(suffix) > 44:
                 break
             keep.append(w)
         name = "_".join(keep + [h])
@@ -554,7 +556,10 @@ class TrioLoop(RA.Loop):
         item that already exists counts as filed. Never raises: a failed filing is retried on the next visit."""
         try:
             mark = self.ctl / "parks_filed.json"
-            done = json.loads(mark.read_text()) if mark.is_file() else {}
+            try:
+                done = json.loads(mark.read_text()) if mark.is_file() else {}
+            except ValueError:
+                done = {}          # a torn marker file: the exists-check keeps a re-filing idempotent
             if tid in done:
                 return done[tid]
             pf = self.ctl / "parks.jsonl"
@@ -564,16 +569,23 @@ class TrioLoop(RA.Loop):
                 return None
             name = park_item_name(tid)
             have = self._rimflow("namecheck", name)
-            if have.returncode != 0 and " exists:" not in have.stdout:
+            if " exists:" in have.stdout and ("caused_by=%s " % tid) not in self._rimflow("show", name).stdout:
+                name = park_item_name(tid, force_hash=True)       # the plain name is another task's item: never adopt it
+                have = self._rimflow("namecheck", name)
+            if " exists:" not in have.stdout:   # real namecheck exits 0 for a free name too: only "exists:" means filed
                 have = self._rimflow("file", name, "--for", PARK_FOR, "--kind", "task", "--needs", "offline",
                                      "--title", "Trio parked %s after %s rounds: look at trio/failed branch, then retry, "
                                      "split or drop" % (tid, line.get("rounds")),
-                                     "--spec", park_item_text(line), "--caused-by", tid, "--why",
+                                     "--spec", str(self._park_spec(tid, line)), "--caused-by", tid, "--why",
                                      "trio_loop park: the Conductor works through rimflow items (delegated design default)")
                 if have.returncode != 0 and "caused" in (have.stdout + have.stderr).lower():
                     have = self._rimflow("file", name, "--for", PARK_FOR, "--kind", "task", "--needs", "offline",
-                                         "--title", "Trio parked %s" % tid, "--spec", park_item_text(line),
+                                         "--title", "Trio parked %s" % tid, "--spec", str(self._park_spec(tid, line)),
                                          "--why", "trio_loop park (caused-by %s is not an item)" % tid)
+                if have.returncode == 0:   # --spec is only a provenance path: the verdict/why/sha/branch go in a note the Conductor sees
+                    nt = self._rimflow("note", name, "--text", park_item_text(line), "--why", "trio_loop park detail")
+                    if nt.returncode != 0:
+                        print("trio: park note for %s not added: %s" % (name, (nt.stdout + nt.stderr)[-300:]), file=sys.stderr)
                 if have.returncode != 0:
                     print("trio: park item %s not filed: %s" % (name, (have.stdout + have.stderr)[-300:]), file=sys.stderr)
                     return None
@@ -583,6 +595,14 @@ class TrioLoop(RA.Loop):
         except Exception as e:  # noqa: BLE001  a filing failure never loses the park or stops the loop
             print("trio: park item for %s not filed: %s: %s" % (tid, type(e).__name__, e), file=sys.stderr)
             return None
+
+    def _park_spec(self, tid, line):
+        """The park text as a file (rimflow --spec takes a path): <ctl>/parks/<tid>.md."""
+        d = self.ctl / "parks"
+        d.mkdir(parents=True, exist_ok=True)
+        f = d / ("%s.md" % tid)
+        f.write_text(park_item_text(line) + "\n")
+        return f
 
     def _rimflow(self, *argv):
         cmd = shlex.split(os.environ.get("TRIO_RIMFLOW_CMD") or "") or [sys.executable, str(RIMFLOW_CLI)]
