@@ -971,6 +971,49 @@ def t_round3(tmp, repo, old, s, pool):
     check(A._prompt_hints(r, head, "HINT_ITEM", None, prose) is False, "no start event: not flagged")
 
 
+def t_multi_old(tmp, repo, old, s):
+    """POOL DIAG 2026-10-30: 107 of 123 'resolves nowhere' close shas live in a SECOND pre-rewrite git dir (the
+    retired local clones under retired-trees/), not in the mirror. The old history is a LIST of repos: a sha found
+    only in the second one remaps, and is pinned there, not in the first."""
+    old2 = tmp / "old2"
+    subprocess.run(["git", "clone", "-q", str(old), str(old2)], check=True, capture_output=True, timeout=60)
+    s2 = {"new": commit(repo, {TOOL: "def f():\n    return 8\n",
+                               TEST: "assert True  # second-old fix, rewritten side, long enough\n"},
+                        "fix second old", "2026-10-22T10:03:00+00:00"),
+          "old": commit(old2, {TOOL: "def f():\n    return 8\n", "work/only_in_old2.bin": "z" * 50,
+                               TEST: "assert True  # second-old fix, rewritten side, long enough\n"},
+                        "fix second old", "2026-10-22T10:03:00+00:00")}
+    E = ledger(s)
+    for k in (dict(event="file", id="FIXTURE_OLD2_FIX_EIGHT", title="t", kind="task", needs="offline",
+                   ts="2026-10-22T10:00:00Z", **{"for": "FOUNDRY"}),
+              dict(event="close", id="FIXTURE_OLD2_FIX_EIGHT", sha=s2["old"][:10], reason="r",
+                   ts="2026-10-22T10:04:00Z")):
+        E.append(dict(k, seat="FOUNDRY", tsn="o2" + k["event"]))
+    _, r1 = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    check(r1["rejects"].get("close sha resolves nowhere") == 1,
+          "forced: with only the first old-history repo the second-old sha resolves nowhere (%s)" % r1["rejects"])
+    for form in ([old, old2], os.pathsep.join([str(old), str(old2)])):
+        p2, r2 = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=form)
+        h = {t["source_item"]: hh for t, hh in p2}.get("FIXTURE_OLD2_FIX_EIGHT")
+        check(bool(h) and h["fix_sha"] == s2["new"] and h["sha_resolution"] == "remapped"
+              and r2["old_history_pins"].get(str(old2)) == [s2["old"]],
+              "old history as %s: a sha only in the second repo remaps and is attributed to it"
+              % type(form).__name__)
+    pins = A.pin_old(r2["old_history_pins"])
+    check(pins["pinned"] == sum(len(v) for v in r2["old_history_pins"].values()) and not pins["missing"]
+          and git(old2, "for-each-ref", "--format=%(objectname)", A.PIN_PREFIX).split() == [s2["old"]]
+          and s["remap_old"] in git(old, "for-each-ref", "--format=%(objectname)", A.PIN_PREFIX).split(),
+          "pin_old pins each sha in the repo that resolved it: %s" % pins)
+    ret = tmp / "retired"
+    for n in ("bench-git-1", "foundry-git-2", "notes"):
+        (ret / n).mkdir(parents=True)
+    got = A.old_history_repos(os.pathsep.join([str(old), str(ret / "*-git-*"), str(tmp / "absent.git")]))
+    check(got == [old, ret / "bench-git-1", ret / "foundry-git-2"],
+          "old_history_repos expands globs, keeps order, drops absent paths: %s" % got)
+    check(any("retired-trees" in g for g in A.OLD_HISTORY_DEFAULT),
+          "the default old history includes the retired pre-rewrite clones: %s" % (A.OLD_HISTORY_DEFAULT,))
+
+
 def t_real_ledger():
     check(A.arena_root().name == "arena" and A.paths()["judge"].parent.name == "judge",
           "with ARENA_ROOT unset the root comes from rmpaths/agent_storage: %s" % A.arena_root())
@@ -1006,6 +1049,7 @@ def main():
         t_whitelist(tmp, pool, s)
         t_freeze_round2(tmp, pool)
         t_round3(tmp, repo, old, s, pool)
+        t_multi_old(tmp, repo, old, s)          # last: it adds a commit to the fixture repo
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
         t_real_ledger()

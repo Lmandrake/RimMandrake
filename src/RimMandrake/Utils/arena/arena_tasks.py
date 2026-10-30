@@ -32,9 +32,11 @@ analysis uses the labelled subset only. A child filed seconds BEFORE the close c
 The census reports its pool with a SANITY PROBE: a hand-picked item that must be found. A missing sanity item is a
 blind instrument, not a small pool: the census exits 2 and writes nothing.
 
-PINNING. The pre-rewrite commits the census resolves through `$ARENA_OLD_HISTORY` are unreachable there, so a gc
-would blind the next census. `census` (not --dry-run) and `pin` point refs/arena/old/<sha> at each of them in that
-repo (update-ref only: never pushed, never forced; mirror.py's `fetch --prune` touches refs/remotes/origin only).
+PINNING. The census resolves pre-rewrite commits through an ordered LIST of old-history git dirs (old_history_repos:
+`$ARENA_OLD_HISTORY`, os.pathsep-separated globs, else the mirror then retired-trees/*-git-*). They are unreachable
+there, so a gc would blind the next census. `census` (not --dry-run) and `pin` point refs/arena/old/<sha> at each
+of them in the repo that resolved it (update-ref only: never pushed, never forced; mirror.py's `fetch --prune`
+touches refs/remotes/origin only).
 
 FREEZE (§1.1). Writes one `freeze` event per task (sha256 of the task file and of its judge file) plus one batch
 event whose `pool_sha256` seeds the stratified draw, BEFORE any `assign` event exists; with an assign-like record
@@ -97,6 +99,7 @@ import datetime as dt
 import difflib
 import fcntl
 import fnmatch
+import glob
 import hashlib
 import json
 import os
@@ -146,6 +149,8 @@ SCAN_OVERLAP = 64 << 10
 ANCHOR = 60                             # every 120-char window of a hidden body contains one aligned 60-char anchor
 SHORT_BODY = 12                         # a novel block shorter than 2*ANCHOR (but >= this) is matched exactly
 REWORK_DEPTH = 3                        # caused_by generations followed (child, grandchild, great-grandchild)
+# the pre-rewrite history, searched in order (old_history_repos; $ARENA_OLD_HISTORY overrides, os.pathsep-separated)
+OLD_HISTORY_DEFAULT = ("/home/mandrake/rm/mirror.git", "/home/mandrake/rm/retired-trees/*-git-*")
 PIN_PREFIX = "refs/arena/old/"          # gc pins for pre-rewrite commits in $ARENA_OLD_HISTORY (never pushed)
 ALL = "*"                               # leak scope: every task
 
@@ -206,22 +211,39 @@ def _resolve(repo: Path, sha: str):
     return out or None
 
 
+def old_history_repos(old=None) -> list[Path]:
+    """The pre-rewrite history, as an ordered list of existing git dirs. `old` (else $ARENA_OLD_HISTORY, else
+    OLD_HISTORY_DEFAULT) is a list, or one string of os.pathsep-separated entries; each entry may be a glob.
+    POOL DIAG 2026-10-30: of the 123 in-window close shas the mirror alone could not find, 107 live in the retired
+    pre-rewrite clones (retired-trees/<seat>-git-<ts>): with one repo a real commit read as 'resolves nowhere'."""
+    if old is None:
+        old = os.environ.get("ARENA_OLD_HISTORY") or list(OLD_HISTORY_DEFAULT)
+    entries = [str(e) for e in old] if isinstance(old, (list, tuple)) else str(old).split(os.pathsep)
+    out = []
+    for e in (e.strip() for e in entries):
+        if not e:
+            continue
+        for p in (sorted(glob.glob(e)) if glob.has_magic(e) else [e]):
+            if Path(p).is_dir() and Path(p) not in out:
+                out.append(Path(p))
+    return out
+
+
 class Resolver:
     """A ledger sha -> (a commit in `repo`'s current history, how), or (None, why not).
 
     🔴 origin/main was REWRITTEN on 2026-10-28/29 (RIMMANDRAKE_EXCISE_WORK_HISTORY; lesson
     20261029T140946Z-BENCH-history-rewrite-origin-main-rimmandrake-excise.md): measured 2026-10-30, 0 of the
     in-window close shas resolve in bench or foundry. The old objects survive, unreachable, in the old-history
-    repo (`$ARENA_OLD_HISTORY`, default the mirror). A rewritten commit keeps its author date, author and subject,
+    repos (old_history_repos: the mirror, then the retired pre-rewrite clones). A rewritten commit keeps its author date, author and subject,
     so an old sha maps to the one current commit with the same triple; a commit the rewrite excised maps to none.
     """
 
     def __init__(self, repo: Path, old=None):
         self.repo = Path(repo)
-        old = old if old is not None else os.environ.get("ARENA_OLD_HISTORY", "/home/mandrake/rm/mirror.git")
-        self.old = Path(old) if old and Path(old).exists() else None
+        self.old = old_history_repos(old)
         self._index = None
-        self.old_used = set()       # full pre-rewrite shas a resolution read from the old-history repo (pin these)
+        self.old_used = {}          # full pre-rewrite sha -> the old-history repo it was read from (pin it there)
 
     def _key_index(self):
         if self._index is None:
@@ -240,12 +262,15 @@ class Resolver:
             return cur, "current"
         if not self.old:
             return None, "close sha does not resolve (no old-history repo)"
-        r = subprocess.run(["git", "-C", str(self.old), "log", "-1", "--format=%H%x09%aI%x09%an%x09%s",
-                            sha + "^{commit}"], capture_output=True, text=True, timeout=60)
-        if r.returncode != 0 or not r.stdout.strip():
+        for old in self.old:                # first repo that holds the commit wins
+            r = subprocess.run(["git", "-C", str(old), "log", "-1", "--format=%H%x09%aI%x09%an%x09%s",
+                                sha + "^{commit}"], capture_output=True, text=True, timeout=60)
+            if r.returncode == 0 and r.stdout.strip():
+                break
+        else:
             return None, "close sha resolves nowhere"
         full, key = r.stdout.rstrip("\n").split("\t", 1)
-        self.old_used.add(full)
+        self.old_used.setdefault(full, str(old))
         hits = self._key_index().get(tuple(key.split("\t", 2)), [])
         if len(hits) == 1:
             return hits[0], "remapped"
@@ -253,23 +278,32 @@ class Resolver:
 
 
 def pin_old(shas, old=None) -> dict:
-    """Point refs/arena/old/<sha> at each pre-rewrite commit in the old-history repo so gc cannot drop it. update-ref
-    only (no push, no force); an existing pin is left alone. -> {pinned, already, missing, repo}."""
-    old = Path(old if old is not None else os.environ.get("ARENA_OLD_HISTORY", "/home/mandrake/rm/mirror.git"))
-    out = {"repo": str(old), "pinned": 0, "already": 0, "missing": []}
-    if not old.exists():
-        out["missing"] = sorted(shas)
-        return out
-    have = set(_git(old, "for-each-ref", "--format=%(refname)", PIN_PREFIX, check=False).split())
-    for s in sorted(set(shas)):
-        ref = PIN_PREFIX + s
-        if ref in have:
-            out["already"] += 1
-        elif _resolve(old, s) == s:
-            _git(old, "update-ref", ref, s)
-            out["pinned"] += 1
-        else:
-            out["missing"].append(s)
+    """Point refs/arena/old/<sha> at each pre-rewrite commit so gc cannot drop it. `shas` is {repo: [sha]} (the
+    census report's old_history_pins: each pinned in the repo that resolved it) or a list (each pinned in the first
+    old_history_repos(old) entry holding it). update-ref only (no push, no force); an existing pin is left alone.
+    -> {pinned, already, missing, repo}."""
+    repos = old_history_repos(old)
+    groups = ({Path(r): list(v) for r, v in shas.items()} if isinstance(shas, dict) else {None: list(shas)})
+    out = {"repo": os.pathsep.join(str(r) for r in (repos if None in groups else groups)), "pinned": 0,
+           "already": 0, "missing": []}
+    have = {}
+    for where, group in groups.items():
+        for s in sorted(set(group)):
+            for r in ([where] if where is not None else repos):
+                if not r.is_dir() or _resolve(r, s) != s:
+                    continue
+                if r not in have:
+                    have[r] = set(_git(r, "for-each-ref", "--format=%(refname)", PIN_PREFIX, check=False).split())
+                ref = PIN_PREFIX + s
+                if ref in have[r]:
+                    out["already"] += 1
+                else:
+                    _git(r, "update-ref", ref, s)
+                    have[r].add(ref)
+                    out["pinned"] += 1
+                break
+            else:
+                out["missing"].append(s)
     return out
 
 
@@ -618,6 +652,8 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
     kept = {t["source_item"] for t, _ in pool}
     report = {"window": list(window), "scanned_closed_in_window": scanned, "pool": len(pool), "labels": labels,
               "labelled": labels["Clean"] + labels["Escaped"], "old_history_shas": sorted(resolve.old_used),
+              "old_history_pins": {r: sorted(h for h, rr in resolve.old_used.items() if rr == r)
+                                   for r in sorted(set(resolve.old_used.values()))},
               "rejects": dict(sorted(rejects.items(), key=lambda kv: -kv[1])),
               "sanity": {"item": sanity, "found": sanity in kept, "reason_if_not": reasons.get(sanity)},
               "kinds": _count(t["kind"] for t, _ in pool), "sizes": _count(str(t["size"]) for t, _ in pool)}
@@ -1471,7 +1507,7 @@ def _clone_findings(cx: _Ctx, top: Path, rec: dict):
         cx.add(cx.objs[o], "%s: hidden check of %s readable at %s (git object %s present)"
                % (cx.objs[o], cx.objs[o], top, o[:12]))
     hist = [o for o, t in unexpected.items() if t in ("commit", "tag")]
-    for repo in (rec.get("source"), os.environ.get("ARENA_OLD_HISTORY", "/home/mandrake/rm/mirror.git")):
+    for repo in (rec.get("source"), *old_history_repos()):
         got = _present(repo, hist)
         if got:
             cx.add(ALL, "%s: holds %d commit/tag object(s) of %s besides base_sha (e.g. %s): its history is readable"
@@ -1934,7 +1970,7 @@ def main(argv=None) -> int:
             if not a.dry_run:
                 rep["write"] = write_pool(pool, p, replace=a.replace)
                 if not a.no_pin:
-                    rep["pins"] = pin_old(rep.get("old_history_shas") or [])
+                    rep["pins"] = pin_old(rep.get("old_history_pins") or rep.get("old_history_shas") or [])
                 p["census"].mkdir(parents=True, exist_ok=True)
                 rp = p["census"] / ("census_%s.json" % dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
                 rp.write_bytes(_dump(rep))
@@ -1971,7 +2007,8 @@ def main(argv=None) -> int:
             reps = sorted(p["census"].glob("census_*.json")) if p["census"].is_dir() else []
             if not reps:
                 raise ArenaError("no census report under %s" % p["census"])
-            out = pin_old(_loads(reps[-1].read_bytes(), str(reps[-1])).get("old_history_shas") or [])
+            last = _loads(reps[-1].read_bytes(), str(reps[-1]))
+            out = pin_old(last.get("old_history_pins") or last.get("old_history_shas") or [])
             print(json.dumps({k: (len(v) if isinstance(v, list) else v) for k, v in out.items()}))
             return 1 if out.get("missing") else 0
         probs = check(p, a.task)
