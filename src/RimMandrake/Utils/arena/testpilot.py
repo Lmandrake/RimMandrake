@@ -552,10 +552,14 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
     for c in q:                         # L9a: a rebuild that carries every scenario needs no game at all
         if c.get("parent"):
             pre = plan_retest(p, c, write=False)
-            if not pre["run"] and set(pre["carried"]) == {s["id"] for s in c["plan"]["scenarios"]}:
+            have = scenario_status(p, c)
+            ids = {s["id"] for s in c["plan"]["scenarios"]}
+            counted = {i for i in ids if have.get(i, {}).get("status") in ("pass", "carried")
+                       and not have[i].get("hotfix")}
+            if not pre["run"] and (set(pre["carried"]) == ids or counted == ids):
                 return dict(base, action="carry", cand=c["cand"],
-                            why="every scenario of %s is carried from %s (L9a): it resolves with no reload and no "
-                                "test" % (c["cand"], c["parent"]))
+                            why="every scenario of %s is carried from %s or already counted at its fingerprint "
+                                "(L9a): it resolves with no reload and no test" % (c["cand"], c["parent"]))
     if game and facts.get("process_alive") and facts.get("canary_ok") is False:
         tried = set(sess.get("ladder_tried") or [])
         spent = int(sess.get("red_rungs") or 0)       # survive a green blip and a reload: only a finished test clears

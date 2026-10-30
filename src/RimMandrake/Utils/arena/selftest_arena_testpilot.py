@@ -950,6 +950,26 @@ def pl_run(pl, canary_ok, n=20):
     return out
 
 
+def t_same_fingerprint_rebuild():
+    """TESTPILOT_FIX_RELOAD_FOR_COUNTED_REBUILD: a rebuild at its parent's own sha is already counted: no reload."""
+    root, p = fresh("samefp_noreload")
+    d = FakeDriver()
+    fp = {"s1": {"footprint": {"files": ["src/RimMandrake/A/Defs/*.xml"]}}}
+    a = T.enqueue(p, "ITEM_SF", SHA[0], "B1", plan("s1", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/A/Defs/x.xml"])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.run_pass()
+    b = T.enqueue(p, "ITEM_SF", SHA[0], "B1", plan("s1", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/A/Defs/x.xml"])
+    check(b["fingerprint"] == a["fingerprint"], "same sha gives the same fingerprint")
+    r0 = len(ev(root, "reload"))
+    steps = pl_run(pl, None)
+    check(len(ev(root, "reload")) == r0 and not [x for x in actions(steps) if x[0] == "reload"],
+          "a same-fingerprint rebuild spends no reload: %s" % actions(steps))
+    check(T.states(p)[b["cand"]].get("verdict") == "pass", "it resolves with the parent's verdict")
+
+
 def t_carried_rebuild():
     """TESTPILOT_CARRIED_REBUILD_WASTES_RELOAD: a rebuild whose every scenario is carried spends no reload."""
     root, p = fresh("carry_noreload")
@@ -1756,7 +1776,7 @@ def t_mutant_guards4():
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
-              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
+              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4):
         try:
             t()
