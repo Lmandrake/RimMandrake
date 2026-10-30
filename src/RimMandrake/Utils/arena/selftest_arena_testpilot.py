@@ -54,7 +54,6 @@ class FakeDriver:
     def __init__(self, launch_s=22.0):
         self.t = 1000.0
         self.running, self.launch_s = False, launch_s
-        self.owner_back = False
         self.log_mtime = 0.0
         self.active = ["ludeon.rimworld"]
         self.head = {}
@@ -133,9 +132,6 @@ class FakeDriver:
         self.calls.append(("load_save", name))
         return True, "loaded"
 
-    def owner_returned(self):
-        return self.owner_back
-
     def game_facts(self):
         return {"ingame_canary": {"ok": self.colonists > 0, "problems": []}, "live_colonists": self.colonists,
                 "player_log_mtime": self.log_mtime, "game_version": "1.6.4633 rev1", "active_mods": list(self.active),
@@ -161,12 +157,10 @@ class FakeDriver:
         return False, "no restage"
 
 
-def fresh(name, owner_playing=None):
+def fresh(name):
     root = TMP / name
     p = T.ppaths(root)
     cfg = {"steve": {"game_version": "1.6.4633 rev1"}, "archmagi": {"game_version": "1.6.4633 rev1"}}
-    if owner_playing is not None:
-        cfg["archmagi"]["owner_playing"] = owner_playing
     L.write_config(p, cfg)
     return root, p
 
@@ -414,8 +408,8 @@ def t_default_never_consults_owner():
     take = [c for c in d.calls if c[0] == "take"]
     check(take and take[-1][2] is False, "the take is a plain take, not --idle-ok")
     r = pl.step()
-    check(r["decision"]["action"] == "reload" and pl.step()["decision"]["action"] != "yield",
-          "launch and quicktest run, no yield")
+    check(r["decision"]["action"] == "reload" and pl.step()["decision"]["action"] == "test",
+          "launch and quicktest run, then the test runs")
     check(D.probed == 0, "owner_returned() was never consulted (%d calls)" % D.probed)
 
 
@@ -890,7 +884,7 @@ def t_canary_blip():
     for _ in range(12):
         r = pl.step(can)
         steps.append(r)
-        if r["decision"]["action"] in ("reload", "idle", "yield"):
+        if r["decision"]["action"] in ("reload", "idle"):
             break
         res = r.get("result") or {}
         can = res.get("canary_ok") if isinstance(res, dict) else None
@@ -934,7 +928,7 @@ def _ladder_bound(name, flap):
         r = pl.step(can)
         a = r["decision"]["action"]
         acts.append(a)
-        if a in ("idle", "yield", "park"):
+        if a in ("idle", "park"):
             break
         res = r.get("result") or {}
         can = False if a in ("ladder", "test", "hot_apply") else None
@@ -949,7 +943,7 @@ def pl_run(pl, canary_ok, n=20):
     for _ in range(n):
         r = pl.step(canary_ok)
         out.append(r)
-        if r["decision"]["action"] in ("idle", "yield"):
+        if r["decision"]["action"] in ("idle",):
             break
         res = r.get("result") or {}
         canary_ok = res.get("canary_ok") if isinstance(res, dict) else None
@@ -1617,11 +1611,153 @@ def t_mutant_guards3():
           % ([e.get("hotfix") for e in recs], T.states(p)[rep["cand"]].get("state")))
 
 
+def t_mutant_guards4():
+    """TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND4: the guards the indep7 mutants (g1-g30) showed unseen. g10 (a note
+    over a PASS: taint_note refuses it and a note only attaches to a newest fail/invalid) and g27 (in_flight is
+    already None whenever status is not live: wake/handoff/close/abort clear it) are equivalent."""
+    ex = {"s1": {"taints": []}}
+    cs_file = ["src/RimMandrake/Slime/Source/Slime.cs"]
+    # g1: an unterminated tail line is a write in progress, not a record
+    root, p = fresh("m4_torn")
+    jf = TMP / "m4_torn.jsonl"
+    jf.write_text('{"a": 1}\n{"b": 2}', encoding="utf-8")
+    check(T._read(jf) == [{"a": 1}], "g1: an unterminated tail is not read: %s" % (T._read(jf),))
+    # g3/g4: classes by path
+    check(T.classify(["Mods/X/Assemblies/Foo.bin"], False, ["X"]) == "cs", "g3: an Assemblies/ path is class cs")
+    check(T.classify(["Mods/X/Defs/notes.txt"], False, ["X"]) == "reload", "g4: a /Defs/ path without .xml reloads")
+    check(T.classify(None, False, []) == "live" and T.classify(None, False, ["X"]) == "reload",
+          "unknown changes: reload when a mod is loaded, live only when there are no mods")
+    # g12: argv flags are no footprint files
+    got = T._argv_files({"argv": ["python3", "proof.py", "--cfg=x/y.json", "-v"]})
+    check(got == {"proof.py"}, "g12: only non-flag tokens name files: %s" % sorted(got))
+    # g29: duplicate scenario ids refused
+    root, p = fresh("m4_dup")
+    check(raises(T.PilotRefused, T.enqueue, p, "ITEM_G29", SHA[0], "B1", plan("s1", "s1")),
+          "g29: duplicate scenario ids are refused")
+    # g6 / g8: parent from another item refused; the auto parent is the newest attempt
+    a = T.enqueue(p, "ITEM_G6A", SHA[0], "B1", plan("s1"))
+    check(raises(T.PilotRefused, T.enqueue, p, "ITEM_G6B", SHA[1], "B1", plan("s1"), parent=a["cand"]),
+          "g6: a parent that is another item's candidate is refused")
+    T.enqueue(p, "ITEM_G8", SHA[0], "B1", plan("s1"))
+    T.enqueue(p, "ITEM_G8", SHA[1], "B1", plan("s1"))
+    c3 = T.enqueue(p, "ITEM_G8", SHA[2], "B1", plan("s1"))
+    check(c3["parent"] == "ITEM_G8@2", "g8: the auto parent is the newest attempt: %s" % c3["parent"])
+    # g9: the repetition count is per plan entry
+    root, p = fresh("m4_rep")
+    c1 = T.enqueue(p, "ITEM_G9", SHA[0], "B1", plan("s1"))
+    c2 = T.enqueue(p, "ITEM_G9", SHA[0], "B1", {"scenarios": [{"id": "s1", "argv": ["python3", "other.py", "s1"]}]})
+    e1 = T.add_evidence(p, c1, "s1", "pass", "steve", "P1")
+    e2 = T.add_evidence(p, c2, "s1", "pass", "steve", "P1")
+    check(c1["fingerprint"] == c2["fingerprint"] and e1["rep"] == 1 and e2["rep"] == 1 and
+          e1["scn_hash"] != e2["scn_hash"], "g9: a changed plan entry restarts rep: %s %s" % (e1["rep"], e2["rep"]))
+    # g11: an uncertain taint on any failed scenario of the parent wins over named ones
+    root, p = fresh("m4_pt")
+    c1 = T.enqueue(p, "ITEM_G11", SHA[0], "B1", plan("s1", "s2"))
+    T.add_evidence(p, c1, "s1", "fail", "steve", "P1", taint=["s2"])
+    T.add_evidence(p, c1, "s2", "fail", "steve", "P1", taint="uncertain")
+    check(T.parent_taint(p, c1) == "uncertain", "g11: uncertain wins: %s" % (T.parent_taint(p, c1),))
+    # g13 / g14: the reload cost is the lane+profile+tier's own, and exactly the threshold is cheap
+    root, p = fresh("m4_cost")
+    rule = T.load_rule()
+    thr = rule["cheap_max_launch_to_ready_s"]
+    p["load_times"].parent.mkdir(parents=True, exist_ok=True)
+    rows = [{"lane": "steve", "profile": "minimal", "tier": None, "ok": True, "launch_to_ready_s": thr}]
+    rows += [{"lane": "steve", "profile": "other", "tier": None, "ok": True, "launch_to_ready_s": 9000}] * 3
+    rows += [{"lane": "steve", "profile": "minimal", "tier": "slime", "ok": True, "launch_to_ready_s": 9000}] * 3
+    p["load_times"].write_text("\n".join(json.dumps(r) for r in rows) + "\n", encoding="utf-8")
+    c = T.reload_cost(p, rule, "steve", "minimal", None)
+    check(c["cost_s"] == float(thr) and c["class"] == "cheap",
+          "g13/g14: another profile or tier is no sample, and cost == threshold is cheap: %s" % c)
+    # g17 / g18 / g26: the drain
+    root, p, d, pl, a, rep = _cs_setup("m4_drain", 22.0)
+    for i in range(3):
+        T.add_evidence(p, a, "zz%d" % i, "pass", "archmagi", "PX", t=d.t + 1)
+    st = pl.step()
+    check(st["decision"]["action"] == "test",
+          "g18: another lane's tests do not spend this lane's drain: %s" % actions([st]))
+    root, p, d, pl, a, rep = _cs_setup("m4_churn", 22.0)
+    steps = [pl.step() for _ in range(4)]
+    check(steps[3]["decision"]["rule"] == "R3" and steps[3]["decision"]["churn_alarm"] is False,
+          "g26: a young session raises no churn alarm")
+    root, p, d, pl, a, rep = _cs_setup("m4_churn2", 300.0)
+    pl.step()
+    d.t += 3600.0
+    dec = pl.step()["decision"]
+    check(dec["rule"] == "R3" and dec["churn_alarm"] is True, "g26: an old session raises the churn alarm: %s" % dec)
+    root, p = fresh("m4_unsealed")
+    d = FakeDriver(launch_s=300.0)
+    T.enqueue(p, "ITEM_A17", SHA[0], "B1", plan("s1", "s2", "s3", **ex), mods=["Slime"], has_dll=True,
+              changed_files=cs_file, now=d.t)
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    T.enqueue(p, "ITEM_B17", SHA[1], "B1", plan("t1"), mods=["Slime"], has_dll=True, changed_files=cs_file, now=d.t)
+    d.t += 7200.0
+    st = pl.step()
+    check(st["decision"]["action"] == "test", "g17: a queued BUILD is not a sealed repair; no forced R3: %s"
+          % actions([st]))
+    # g21: a scenario with no taints key fails with an uncertain taint
+    root, p = fresh("m4_taint")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_G21", SHA[0], "B1", plan("s1", "s2"))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    fe = [e for e in T.evidence(p) if e["status"] == "fail"]
+    check(fe and fe[0]["taint"] == "uncertain", "g21: the default taint is uncertain: %s" % [e.get("taint") for e in fe])
+    # g24: live fails are counted per distinct candidate
+    root, p = fresh("m4_fails")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_G24", SHA[0], "B1", plan("s1", "s2", "s3", s1={"taints": []}, s2={"taints": []},
+                                                    s3={"taints": []}))
+    d.rc.update({"s1": 1, "s2": 1, "s3": 1})
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    for _ in range(4):
+        pl.step()
+    check(T.states(p)[c["cand"]].get("state") == "resolved" and not T.item_parked(p, "ITEM_G24"),
+          "g24: three failed scenarios of ONE candidate are one live failure, not a park: %s"
+          % T.states(p)[c["cand"]].get("state"))
+    # g19: a successful reload_save forgets the red history
+    root, p = fresh("m4_rs")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_G19", SHA[0], "B1", plan("s1", "s2", fixture="fx"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    d.colonists = 0
+    pl.step()
+    check(T.read_session(p, "steve")["game"].get("canary_red"), "g19: setup: a red history exists")
+    rungs = []
+    for _ in range(2):
+        rungs.append(pl.step(canary_ok=False)["decision"].get("rung"))
+    check(rungs == ["reconnect", "reload_save"] and not T.read_session(p, "steve")["game"].get("canary_red"),
+          "g19: reload_save clears canary_red: %s %s" % (rungs, T.read_session(p, "steve")["game"].get("canary_red")))
+    # g20: a FAILED reload_save resolves the loaded candidate (its blocked scenarios cannot be restored)
+    root, p = fresh("m4_rsfail")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_G20", SHA[0], "B1", plan("s1", "s2", fixture="fx", s1={"taints": ["s2"]}))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    check(T.states(p)[c["cand"]].get("state") != "resolved", "g20: setup: not resolved while a restore is possible")
+    d.load_save = lambda name: (False, "cannot load")
+    d.colonists = 0                     # the canary stays red: the ladder climbs
+    rungs = [pl.step(canary_ok=False)["decision"].get("rung") for _ in range(2)]
+    stt = T.states(p)[c["cand"]]
+    check(rungs == ["reconnect", "reload_save"] and stt.get("state") == "resolved" and stt.get("verdict") == "fail",
+          "g20: a failed reload_save resolves the fail: %s %s" % (rungs, stt))
+
+
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
-              t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3):
+              t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run

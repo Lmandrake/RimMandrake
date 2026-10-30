@@ -180,7 +180,8 @@ def write_session(p: dict, lane: str, sess: dict):
 # ---------------------------------------------------------------- candidates and their state
 
 def classify(changed_files, has_dll: bool, mods) -> str:
-    """The hot-load class the change needs (L11). Unknown changes are never `live`."""
+    """The hot-load class the change needs (L11). Unknown changes (None) are `reload` when any mod is loaded and
+    `live` only when there are no mods (nothing loaded to reload)."""
     if has_dll:
         return "cs"
     if changed_files is None:
