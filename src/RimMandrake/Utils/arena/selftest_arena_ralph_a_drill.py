@@ -357,7 +357,7 @@ MUTATIONS = [
      'ev == "test_start" or (bid not in verdict and ends.get(bid, 0) < TESTER_TRIES)', 'ev == "test_start"'),
     ("T both guards removed: the builder runs ahead", sc_tester_killed_lost_state, None, None),
     ("F diverged wip left in place (silent failed ff)", sc_wip_diverged,
-     "        if subprocess.run([\"git\", \"-C\", str(self.root), \"merge-base\", \"--is-ancestor\", MAIN, \"HEAD\"],\n                          capture_output=True).returncode == 0:\n            return",
+     "        if git_run(self.root, \"merge-base\", \"--is-ancestor\", MAIN, \"HEAD\", capture_output=True).returncode == 0:\n            return",
      "        return"),
     ("P build-phase gate bypassed", sc_planted, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("R leftover commit of a killed pass read as an empty candidate", sc_build_killed,

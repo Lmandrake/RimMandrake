@@ -72,9 +72,7 @@ import shutil
 import signal
 import subprocess
 import sys
-import tarfile
 import tempfile
-import io
 import time
 import unicodedata
 import uuid
@@ -506,23 +504,22 @@ def default_precheck(root, log):
 def default_sync(root, sleep=time.sleep, tries=3):
     """The Ralph doc's pull (ralph_loop_design §1.2: `for n in 1 2 3; do git pull --rebase -q && break; sleep
     $((n*30)); done`), on main, before every build pass (review L6). -> True when a pull succeeded."""
-    top = subprocess.run(["git", "-C", str(root), "rev-parse", "--show-toplevel"], capture_output=True, text=True)
+    top = git_run(root, "rev-parse", "--show-toplevel", capture_output=True, text=True)
     if top.returncode != 0 or os.path.realpath(top.stdout.strip()) != os.path.realpath(str(root)):
         return False                                              # never touch a tree that is not the loop's own clone
     # GPT r1 P1: a builder killed mid-edit leaves a dirty tree that blocks switch/pull --rebase. Park it (evidence
     # kept in the stash, untracked files too) in the loop's own clone, abort any half-done rebase, then sync.
     for a in (["rebase", "--abort"], ["merge", "--abort"]):
-        subprocess.run(["git", "-C", str(root), *a], capture_output=True)
-    if subprocess.run(["git", "-C", str(root), "status", "--porcelain"], capture_output=True,
-                      text=True).stdout.strip():
-        if subprocess.run(["git", "-C", str(root), "stash", "push", "-u", "-q", "-m", "ralph-a dirty after killed build"],
-                          capture_output=True).returncode != 0:
+        git_run(root, *a, capture_output=True)
+    if git_run(root, "status", "--porcelain", capture_output=True, text=True).stdout.strip():
+        if git_run(root, "-c", "user.name=ralph_a", "-c", "user.email=ralph_a@localhost", "stash", "push", "-u", "-q",
+                   "-m", "ralph-a dirty after killed build", capture_output=True).returncode != 0:
             return False
-    if subprocess.run(["git", "-C", str(root), "switch", "-q", MAIN], capture_output=True).returncode != 0:
+    if git_run(root, "switch", "-q", MAIN, capture_output=True).returncode != 0:
         return False
     for n in range(1, tries + 1):
-        if subprocess.run(["git", "-C", str(root), "pull", "--rebase", "-q"], capture_output=True,
-                          timeout=600).returncode == 0:
+        if git_run(root, "pull", "--rebase", "-q", capture_output=True, timeout=600, keep_user_config=True) \
+                .returncode == 0:               # the network needs the owner's ssh/credential config; hooks stay off
             return True
         if n < tries:
             sleep(n * 30)
@@ -552,6 +549,78 @@ class RalphCLane:
             return self.R.lane_record(self.p, task["id"], sha)
         except (LookupError, self.R.StaleResult):
             return None
+
+
+# ------------------------------------------------------------------------------------------------ git the builder cannot steer
+# The build helper owns the clone's .git (v3_control has the same hardening; it imports this module, so the copy
+# lives here). A replace ref or graft makes `git archive`/`git diff` of sha A show commit B, export-ignore /
+# export-subst in its .gitattributes change an archive, and a diff driver, textconv, fsmonitor or hooksPath in
+# .git/config runs its code as the harness. Every git call on the clone ignores replace objects and grafts, loads no
+# system/global/attributes file and disables those execution hooks; diffs also pass --no-ext-diff --no-textconv.
+GIT_SAFE_ENV = {"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull, "GIT_CONFIG_NOSYSTEM": "1",
+                "GIT_CONFIG_GLOBAL": os.devnull, "GIT_EXTERNAL_DIFF": "", "GIT_PAGER": "cat"}
+GIT_SAFE_CFG = ["-c", "core.fsmonitor=false", "-c", "core.hooksPath=" + os.devnull, "-c", "diff.external=",
+                "-c", "core.attributesFile=" + os.devnull]
+NO_DRIVER = ("--no-ext-diff", "--no-textconv")
+
+
+def git_run(root, *a, keep_user_config=False, **kw):
+    """subprocess.run of git on the clone with the safe env and config; kw goes to subprocess.run. Only `pull`
+    keeps the user's global config (its ssh/credential settings): still no replace objects, hooks or fsmonitor."""
+    env = dict(os.environ, **GIT_SAFE_ENV)
+    if keep_user_config:
+        for k in ("GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL"):
+            env.pop(k, None)
+    return subprocess.run(["git", "-C", str(root)] + GIT_SAFE_CFG + list(a), env=env, **kw)
+
+
+def export_tree(root, sha, dest):
+    """A history-less copy of exactly `sha`'s tree, read object by object (ls-tree + cat-file): replace refs and
+    grafts are ignored and no attribute applies (`git archive` honours the builder's export-ignore/export-subst).
+    Submodule entries are skipped; a symlink is kept only if it stays inside dest; a path may not escape dest."""
+    if dest.exists():
+        shutil.rmtree(dest)
+    dest.mkdir(parents=True)
+    top = dest.resolve()
+    r = git_run(root, "ls-tree", "-r", "-z", "--full-tree", sha, capture_output=True)
+    if r.returncode != 0:
+        raise Refused("git ls-tree failed: %s" % r.stderr.decode(errors="replace").strip()[:300])
+    ents = []
+    for e in r.stdout.split(b"\0"):
+        if not e:
+            continue
+        meta, path = e.split(b"\t", 1)
+        mode, kind, obj = meta.decode().split()
+        if kind == "blob":
+            ents.append((mode, obj, path.decode("utf-8", "surrogateescape")))
+    if not ents:
+        return dest
+    r = git_run(root, "cat-file", "--batch", input="".join(o + "\n" for _, o, _ in ents).encode(),
+                capture_output=True)
+    if r.returncode != 0:
+        raise Refused("git cat-file failed: %s" % r.stderr.decode(errors="replace")[:300])
+    buf, pos = r.stdout, 0
+    for mode, obj, path in ents:
+        nl = buf.index(b"\n", pos)
+        head = buf[pos:nl].split()
+        if len(head) != 3 or head[0].decode() != obj:
+            raise Refused("git cat-file: unexpected header %r for %s" % (buf[pos:nl][:80], path))
+        size = int(head[2])
+        data = buf[nl + 1:nl + 1 + size]
+        pos = nl + 1 + size + 1
+        f = dest / path
+        if ".." in Path(path).parts or not f.resolve().is_relative_to(top):
+            raise Refused("refused: tree path %r escapes the export" % path)
+        f.parent.mkdir(parents=True, exist_ok=True)
+        if mode == "120000":
+            tgt = data.decode("utf-8", "surrogateescape")
+            if not os.path.isabs(tgt) and (f.parent / tgt).resolve().is_relative_to(top):
+                os.symlink(tgt, f)
+            continue
+        f.write_bytes(data)
+        if mode == "100755":
+            f.chmod(0o755)
+    return dest
 
 
 # ------------------------------------------------------------------------------------------------ the loop
@@ -603,7 +672,7 @@ class Loop:
                                 task=task["id"], **kw)
 
     def git(self, *a, check=True):
-        r = subprocess.run(["git", "-C", str(self.root)] + list(a), capture_output=True, text=True)
+        r = git_run(self.root, *a, capture_output=True, text=True)
         if check and r.returncode != 0:
             raise Refused("git %s failed: %s" % (" ".join(a), r.stderr.strip()[:300]))
         return r.stdout.strip()
@@ -676,10 +745,8 @@ class Loop:
             return None                       # a tester pass FINISHED (a start alone, or an unfinished try sequence, is not)
         sha = b.get("sha")
         if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or \
-                subprocess.run(["git", "-C", str(self.root), "cat-file", "-e", sha + "^{commit}"],
-                               capture_output=True).returncode != 0 or \
-                subprocess.run(["git", "-C", str(self.root), "merge-base", "--is-ancestor", sha, MAIN],
-                               capture_output=True).returncode == 0:
+                git_run(self.root, "cat-file", "-e", sha + "^{commit}", capture_output=True).returncode != 0 or \
+                git_run(self.root, "merge-base", "--is-ancestor", sha, MAIN, capture_output=True).returncode == 0:
             return None
         self.state["pending"] = {"build_id": bid, "base": d["base"], "head": sha, "builder": d["builder"],
                                  "recovered": True}
@@ -716,8 +783,7 @@ class Loop:
         try survived) cannot fast-forward: LOUD recovery - the old try is kept on a backup branch, wip restarts
         at main, an event records it. Never a silent failed ff (candidates that could not merge)."""
         self.git("merge", "-q", "--ff-only", MAIN, check=False)
-        if subprocess.run(["git", "-C", str(self.root), "merge-base", "--is-ancestor", MAIN, "HEAD"],
-                          capture_output=True).returncode == 0:
+        if git_run(self.root, "merge-base", "--is-ancestor", MAIN, "HEAD", capture_output=True).returncode == 0:
             return
         old = self.git("rev-parse", "HEAD")
         backup = "ralph/wip-diverged-%s" % old[:12]
@@ -799,15 +865,9 @@ class Loop:
 
     # ---- tester
     def _export_tree(self, sha, dest):
-        """A history-less copy of the candidate tree (git archive): no commit messages, no reflog, no transcript."""
-        if dest.exists():
-            shutil.rmtree(dest)
-        dest.mkdir(parents=True)
-        data = subprocess.run(["git", "-C", str(self.root), "archive", "--format=tar", sha], capture_output=True,
-                              check=True).stdout
-        with tarfile.open(fileobj=io.BytesIO(data)) as tf:
-            tf.extractall(dest, filter="data")
-        return dest
+        """A history-less copy of the candidate tree: no commit messages, no reflog, no transcript, and nothing of
+        the builder's .git steers it (export_tree)."""
+        return export_tree(self.root, sha, dest)
 
     def tester_prompt(self, task, diff):
         return ((ARM_DIR / "TESTER.md").read_text() + "\n## FROZEN SPEC\n" +
@@ -833,7 +893,7 @@ class Loop:
             return self.status("runway: " + why)
         pend = self.state["pending"]
         n = self.state["n"]
-        diff = self.git("diff", pend["base"], pend["head"])
+        diff = self.git("diff", *NO_DRIVER, pend["base"], pend["head"])
         return self._tester_in(task, pend, n, diff)
 
     def _tester_in(self, task, pend, n, diff):
@@ -874,7 +934,7 @@ class Loop:
         if task.get("live", "none") != "none":
             if self.lane is None:
                 raise Refused("task %s needs a live lane and none is configured" % task["id"])
-            files = self.git("diff", "--name-only", pend["base"], pend["head"]).splitlines()
+            files = self.git("diff", *NO_DRIVER, "--name-only", pend["base"], pend["head"]).splitlines()
             self.lane.publish(task, pend["head"], pend["builder"], files)
             self.state["lane_wait"] = dict(pend)
             self.state["pending"] = None

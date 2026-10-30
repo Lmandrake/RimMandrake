@@ -36,6 +36,8 @@ import sys
 import tempfile
 import time
 import types
+import io
+import tarfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -63,6 +65,18 @@ def variant(old=None, new=None):
     m = types.ModuleType("ralph_a_loop_mut")
     m.__file__ = str(HERE / "ralph_a_loop.py")
     exec(compile(SRC.replace(old, new), m.__file__, "exec"), m.__dict__)
+    return m
+
+
+def variant_multi(pairs):
+    """The loop module with SEVERAL lines mutated (defence in depth: every layer of one trap must be removed)."""
+    src = SRC
+    for old, new in pairs:
+        assert src.count(old) == 1, "mutation anchor not unique/absent: %r" % old
+        src = src.replace(old, new)
+    m = types.ModuleType("ralph_a_loop_mut_multi")
+    m.__file__ = str(HERE / "ralph_a_loop.py")
+    exec(compile(src, m.__file__, "exec"), m.__dict__)
     return m
 
 
@@ -763,7 +777,124 @@ def sc_publish_tested_sha(tmp, mod, tag):
     return bool(tested) and main in tested and not leaked
 
 
+# ---- RALPHA_EXPORT_FIX_BUILDER_GIT_TRUST: the builder owns .git; what the tester sees is the logged sha
+def _git_world(tmp, name, mod):
+    w = World(tmp, name, mod)
+    (w.root / "mod.py").write_text(GOOD)
+    sh(w.root, "git", "add", "mod.py")
+    sh(w.root, "git", "commit", "-q", "-m", "good")
+    return w
+
+
+def sc_git_replace_ref(tmp, mod, tag):
+    """T1: a replace ref the builder planted does not change the tester's tree or the diff of the sha."""
+    w = _git_world(tmp, "GR" + tag, mod)
+    good = sh(w.root, "git", "rev-parse", "HEAD")
+    (w.root / "mod.py").write_text(BROKEN)
+    sh(w.root, "git", "commit", "-q", "-am", "broken")
+    bad = sh(w.root, "git", "rev-parse", "HEAD")
+    sh(w.root, "git", "replace", bad, good)
+    sane = sh(w.root, "git", "diff", "--stat", good, bad) == ""         # the trap is real: plain git sees no change
+    dest = w.loop._export_tree(bad, tmp / ("GRx" + tag))
+    diff = w.loop.git("diff", *mod.NO_DRIVER, good, bad)
+    return sane and (dest / "mod.py").read_text() == BROKEN and "mod.py" in diff and "return" in diff \
+        and GOOD.splitlines()[1] in diff
+
+
+def sc_git_export_attrs(tmp, mod, tag):
+    """T2: export-ignore / export-subst in the builder's .gitattributes do not change the tester's tree."""
+    w = _git_world(tmp, "GE" + tag, mod)
+    (w.root / "v.txt").write_text("$Format:%H$\n")
+    (w.root / ".gitattributes").write_text("mod.py export-ignore\nv.txt export-subst\n")
+    sh(w.root, "git", "add", "v.txt", ".gitattributes")
+    sh(w.root, "git", "commit", "-q", "-m", "attrs")
+    sha = sh(w.root, "git", "rev-parse", "HEAD")
+    arch = subprocess.run(["git", "archive", "--format=tar", sha], cwd=str(w.root), capture_output=True).stdout
+    lost = "mod.py" not in tarfile.open(fileobj=io.BytesIO(arch)).getnames()      # sanity: git archive loses it
+    dest = w.loop._export_tree(sha, tmp / ("GEx" + tag))
+    return lost and (dest / "mod.py").read_text() == GOOD and (dest / "v.txt").read_text() == "$Format:%H$\n"
+
+
+def sc_git_grafts(tmp, mod, tag):
+    """T3: a graft (info/grafts) does not rewrite the history the loop reads (merge-base of main and the head)."""
+    w = _git_world(tmp, "GG" + tag, mod)
+    main = sh(w.root, "git", "rev-parse", "HEAD")
+    sh(w.root, "git", "switch", "-q", "-c", "feat")
+    (w.root / "mod.py").write_text(BROKEN)
+    sh(w.root, "git", "commit", "-q", "-am", "b")
+    (w.root / "mod.py").write_text(GOOD + "# c\n")
+    sh(w.root, "git", "commit", "-q", "-am", "c")
+    head = sh(w.root, "git", "rev-parse", "HEAD")
+    (w.root / ".git" / "info").mkdir(exist_ok=True)
+    (w.root / ".git" / "info" / "grafts").write_text(head + "\n")        # head becomes a parentless commit
+    plain = subprocess.run(["git", "merge-base", "main", head], cwd=str(w.root), capture_output=True, text=True)
+    sane = plain.stdout.strip() != main                                  # sanity: plain git is fooled
+    return sane and w.loop.git("merge-base", "main", head) == main
+
+
+def _exec_marker(w, kind):
+    """Plant a builder-owned execution hook (script touching `marker`); -> marker path."""
+    marker = w.d / ("marker_" + kind)
+    script = w.d / ("hook_" + kind + ".sh")
+    script.write_text("#!/bin/sh\ntouch %s\n" % marker)
+    script.chmod(0o755)
+    cfg = lambda *a: sh(w.root, "git", "config", *a)                      # noqa: E731
+    if kind == "fsmonitor":
+        cfg("core.fsmonitor", str(script))
+    elif kind == "textconv":
+        cfg("diff.evil.textconv", str(script))
+        (w.root / ".gitattributes").write_text("*.py diff=evil\n")
+    elif kind == "external":
+        cfg("diff.external", str(script))
+    elif kind == "hooks":
+        hd = w.d / "hooks"
+        hd.mkdir()
+        (hd / "post-checkout").write_text("#!/bin/sh\ntouch %s\n" % marker)
+        (hd / "post-checkout").chmod(0o755)
+        cfg("core.hooksPath", str(hd))
+    return marker
+
+
+def sc_git_exec(kind):
+    def sc(tmp, mod, tag):
+        w = _git_world(tmp, "GX" + kind + tag, mod)
+        first = sh(w.root, "git", "rev-parse", "HEAD")
+        (w.root / "mod.py").write_text(GOOD + "# more\n")
+        sh(w.root, "git", "commit", "-q", "-am", "more")
+        second = sh(w.root, "git", "rev-parse", "HEAD")
+        marker = _exec_marker(w, kind)
+        runs = {"fsmonitor": [("status",)] * 2, "textconv": [("diff", first, second)] * 2,
+                "external": [("diff", first, second)] * 2,
+                "hooks": [("switch", "-q", "-c", "other_s"), ("switch", "-q", "-c", "other_g")]}[kind]
+        subprocess.run(["git", *runs[0]], cwd=str(w.root), capture_output=True)    # sanity: plain git runs it
+        sane = marker.exists()
+        marker.unlink(missing_ok=True)
+        extra = mod.NO_DRIVER if kind in ("textconv", "external") else ()
+        w.loop.git(runs[1][0], *extra, *runs[1][1:])
+        return sane and not marker.exists()
+    sc.__name__ = "sc_git_exec_" + kind
+    return sc
+
+
+
 MUTATIONS = [
+    ("T1 replace refs honoured", sc_git_replace_ref, "\"GIT_NO_REPLACE_OBJECTS\": \"1\", ", ""),
+    ("T1/T2 export read with git archive", sc_git_export_attrs,
+     "        return export_tree(self.root, sha, dest)",
+     "        subprocess.run(['git', '-C', str(self.root), 'archive', '--format=tar', '-o', str(dest) + '.tar', sha], "
+     "check=True)\n        dest.mkdir(parents=True, exist_ok=True)\n        import tarfile\n"
+     "        tarfile.open(str(dest) + '.tar').extractall(dest)\n        return dest"),
+    ("T1 export via git archive honours replace refs", sc_git_replace_ref,
+     "        return export_tree(self.root, sha, dest)",
+     "        subprocess.run(['git', '-C', str(self.root), 'archive', '--format=tar', '-o', str(dest) + '.tar', sha], "
+     "env=dict(os.environ), check=True)\n        dest.mkdir(parents=True, exist_ok=True)\n        import tarfile\n"
+     "        tarfile.open(str(dest) + '.tar').extractall(dest)\n        return dest"),
+    ("T3 grafts honoured", sc_git_grafts, "\"GIT_GRAFT_FILE\": os.devnull, ", ""),
+    ("T4 fsmonitor not disabled", sc_git_exec("fsmonitor"), "\"-c\", \"core.fsmonitor=false\", ", ""),
+    ("T4 hooksPath not disabled", sc_git_exec("hooks"), "\"-c\", \"core.hooksPath=\" + os.devnull, ", ""),
+    ("T4 textconv run by the diff", sc_git_exec("textconv"), "NO_DRIVER = (\"--no-ext-diff\", \"--no-textconv\")",
+     "NO_DRIVER = ()"),
+    ("T4 diff.external run by the diff", sc_git_exec("external"), None, None),
     ("A gate bypass", sc_planted_check, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("A failure note not fed", sc_planted_check, "            if self._note(name):\n", "            if False:\n"),
     ("B rc ignored", sc_killed_after_commit, "if rc != 0 else", "if False else"),
@@ -808,8 +939,7 @@ MUTATIONS = [
     ("L5 negative threshold accepted", sc_runway_neg,
      "    return v if math.isfinite(v) and v >= 0 else float(\"inf\")", "    return v"),
     ("P1 dirty tree not parked", sc_dirty_sync,
-     "    if subprocess.run([\"git\", \"-C\", str(root), \"status\", \"--porcelain\"], capture_output=True,\n"
-     "                      text=True).stdout.strip():", "    if False:"),
+     "    if git_run(root, \"status\", \"--porcelain\", capture_output=True, text=True).stdout.strip():", "    if False:"),
     ("P1 unisolated tester allowed", sc_unisolated, "        if os.environ.get(UNISOLATED_OK_ENV) != \"1\":",
      "        if False:"),
     ("P2 tester context shared across retries", sc_retry_fresh,
@@ -1118,10 +1248,22 @@ def main():
                          ("P1 unisolated tester refused without override", sc_unisolated),
                          ("R2 refused tester logs no test_start", sc_refused_no_start),
                          ("R2 publishes the tested sha, not WIP", sc_publish_tested_sha),
-                         ("P2 retried tester gets fresh context", sc_retry_fresh)):
+                         ("P2 retried tester gets fresh context", sc_retry_fresh),
+                         ("T1 a planted replace ref does not change the tested tree or diff", sc_git_replace_ref),
+                         ("T2 export-ignore / export-subst do not change the tested tree", sc_git_export_attrs),
+                         ("T3 a planted graft does not rewrite the history read", sc_git_grafts),
+                         ("T4 builder fsmonitor does not run", sc_git_exec("fsmonitor")),
+                         ("T4 builder core.hooksPath hooks do not run", sc_git_exec("hooks")),
+                         ("T4 builder textconv driver does not run", sc_git_exec("textconv")),
+                         ("T4 builder diff.external does not run", sc_git_exec("external"))):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
-            check(not guarded(fn, tmp, variant(old, new), "_m%d" % i), "mutation goes RED: " + name)
+            if old is None:        # diff.external: remove every layer (env, -c, flags)
+                mod = variant_multi([("\"GIT_EXTERNAL_DIFF\": \"\", ", ""), ("\"-c\", \"diff.external=\",", ""),
+                                     ("NO_DRIVER = (\"--no-ext-diff\", \"--no-textconv\")", "NO_DRIVER = ()")])
+            else:
+                mod = variant(old, new)
+            check(not guarded(fn, tmp, mod, "_m%d" % i), "mutation goes RED: " + name)
         for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)),
                       (t_bridge_mine, (tmp,)), (t_signed_writer, (tmp,))):
             try:
