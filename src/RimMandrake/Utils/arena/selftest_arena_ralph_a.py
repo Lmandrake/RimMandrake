@@ -516,8 +516,7 @@ def sc_blind_root(tmp, mod, tag):
     w = World(tmp, "M3" + tag, mod, tester=t)
     out = run_steps(w)
     return (out[-1].startswith("published") and seen.get("leak") == [] and "last_failure.md" not in seen["up"]
-            and "log" not in seen["up"] and not seen["cwd"].exists() and w.sandbox
-            and str(w.ctl) in map(str, w.sandbox["hide"]) and str(w.root) in map(str, w.sandbox["hide"]))
+            and "log" not in seen["up"] and not seen["cwd"].exists() and w.sandbox and w.sandbox.get("root"))
 
 
 SANDBOX_PROBE = (
@@ -728,35 +727,75 @@ def sc_dirty_sync(tmp, mod, tag):
     return all(got)
 
 
-def sc_unisolated(tmp, mod, tag):
-    """GPT r1 P1: no real isolation (no bwrap / SANDBOX=none) refuses the tester unless the named override is set,
-    and the override is logged in the tester log."""
-    keys = ("RALPH_A_TESTER_SANDBOX", mod.UNISOLATED_OK_ENV)
-    saved = {k: os.environ.get(k) for k in keys}
-    try:
-        os.environ["RALPH_A_TESTER_SANDBOX"] = "none"
-        os.environ.pop(mod.UNISOLATED_OK_ENV, None)
-        sb = {"root": tmp, "hide": []}
-        try:
-            mod.bwrap_argv(sb, tmp)
-            return False
-        except mod.Refused as e:
-            if "not be blind" not in str(e):
-                return False
-        d = tmp / ("U1" + tag)
-        d.mkdir()
-        os.environ[mod.UNISOLATED_OK_ENV] = "1"
-        m = mod.CmdModel("%s -c pass" % sys.executable)
-        log = d / "t.out"
-        r = m("test", "P", cwd=d, agent_id="x-test-1", run_id=0, timeout_s=60, log=log,
-              sandbox={"root": d, "hide": []})
-        return r["rc"] == 0 and "UNISOLATED" in log.read_text()
-    finally:
-        for k, v in saved.items():
+RETIRED_OVERRIDES = {"RALPH_A_ALLOW_UNISOLATED_TESTER": "1", "RALPH_A_TESTER_SANDBOX": "none"}
+
+
+class NoBwrap:
+    """arm_sandbox sees no bubblewrap; the retired unisolated overrides are SET (they must change nothing)."""
+
+    def __init__(self, mod, tmp):
+        self.mod, self.tmp = mod, tmp
+
+    def __enter__(self):
+        self.bw = self.mod.AS.BWRAP
+        self.env = {k: os.environ.get(k) for k in RETIRED_OVERRIDES}
+        self.mod.AS.BWRAP = str(self.tmp / "no-such-bwrap")
+        os.environ.update(RETIRED_OVERRIDES)
+
+    def __exit__(self, *a):
+        self.mod.AS.BWRAP = self.bw
+        for k, v in self.env.items():
             if v is None:
                 os.environ.pop(k, None)
             else:
                 os.environ[k] = v
+
+
+def sc_unisolated(tmp, mod, tag):
+    """GPT r1 P1 + ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE: no bubblewrap -> the tester AND the builder are
+    refused before anything is launched (no log written), and no env override brings an unisolated launch back."""
+    d = tmp / ("U1" + tag)
+    d.mkdir()
+    m = mod.CmdModel("%s -c pass" % sys.executable)
+    with NoBwrap(mod, tmp):
+        for role in ("test", "build"):
+            log = d / ("%s.out" % role)
+            try:
+                m(role, "P", cwd=d, agent_id="x-%s-1" % role, run_id=0, timeout_s=60, log=log, sandbox={"root": d})
+                return False
+            except mod.Refused as e:
+                if "bwrap" not in str(e) or log.exists():
+                    return False
+    return True
+
+
+def sc_builder_sandboxed(tmp, mod, tag):
+    """ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE: the BUILDER pass runs sandboxed too: the harness checkout, the
+    retired pre-rewrite clones and the D:\\ mirror are invisible; its clone and scratch HOME are writable."""
+    d = tmp / ("AB" + tag)
+    d.mkdir()
+    probe = d / "probe.py"
+    probe.write_text("import os, json, sys\nsys.stdin.read()\n"
+                     "seen = [p for p in sys.argv[1:] if os.path.exists(p)]\n"
+                     "open('built.txt', 'w').write('x')\nopen(os.path.join(os.environ['HOME'], 'h'), 'w').write('x')\n"
+                     "print(json.dumps({'seen': seen, 'home': os.environ['HOME']}))\n")
+    hidden = [str(mod.HARNESS_REPO), "/home/mandrake/rm/retired-trees", "/mnt/d/Luke/dev/RimMandrake",
+              str(Path.home() / ".claude" / "projects")]
+    sanity = [p for p in hidden if os.path.exists(p)]
+    m = mod.CmdModel("%s %s %s" % (sys.executable, probe, " ".join(hidden)))
+    r = m("build", "P", cwd=d, agent_id="x-build-1", run_id=0, timeout_s=60, log=tmp / ("AB%s.out" % tag))
+    try:
+        res = json.loads(r["text"].strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        print("     (builder probe output unreadable: %r)" % r["text"][-300:])
+        return False
+    if not sanity:
+        print("     (none of the hidden paths exists on this machine: the probe cannot see a leak)")
+        return False
+    ok = r["rc"] == 0 and res["seen"] == [] and (d / "built.txt").exists() and res["home"] != str(Path.home())
+    if not ok:
+        print("     (builder probe: rc %s %r)" % (r["rc"], res))
+    return ok
 
 
 def sc_retry_fresh(tmp, mod, tag):
@@ -782,11 +821,9 @@ def sc_retry_fresh(tmp, mod, tag):
 def sc_refused_no_start(tmp, mod, tag):
     """GPT r2 (tester pass): a tester refused for lack of isolation never ran, so it leaves NO test_start (a false
     'tester started' record would satisfy require_tested if pending were lost); retries add none either."""
-    keys = ("RALPH_A_TESTER_SANDBOX", mod.UNISOLATED_OK_ENV)
-    saved = {k: os.environ.get(k) for k in keys}
+    nb = NoBwrap(mod, tmp)
+    nb.__enter__()
     try:
-        os.environ["RALPH_A_TESTER_SANDBOX"] = "none"
-        os.environ.pop(mod.UNISOLATED_OK_ENV, None)
         w = World(tmp, "NS" + tag, mod)
         real, pre = w.model, mod.CmdModel("true").preflight
 
@@ -804,11 +841,7 @@ def sc_refused_no_start(tmp, mod, tag):
                 and not any(c[0] == "test" for c in w.calls)
                 and any(r.get("event") == "build_end" for r in recs))
     finally:
-        for k, v in saved.items():
-            if v is None:
-                os.environ.pop(k, None)
-            else:
-                os.environ[k] = v
+        nb.__exit__()
 
 
 def sc_publish_tested_sha(tmp, mod, tag):
@@ -1261,7 +1294,8 @@ MUTATIONS = [
     ("M3 tester root under ctl", sc_blind_root,
      "            troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT\n",
      "            troot = self.ctl / \"tester\"; troot.mkdir(exist_ok=True)\n"),
-    ("M3 no sandbox", sc_bwrap, "                argv = pre + argv\n", "                pass\n"),
+    ("M3 no sandbox", sc_bwrap, "        argv, env = self.wrap(list(argv), env, cwd=cwd, rw=rw, home=home)\n", "        pass\n"),
+    ("A1 builder launched unsandboxed", sc_builder_sandboxed, "        argv, env = self.wrap(list(argv), env, cwd=cwd, rw=rw, home=home)\n", "        pass\n"),
     ("M4 real id passed", sc_env, "TESTER_ID=neutral_id(agent_id))", "TESTER_ID=agent_id)"),
     ("M4 env not allow-listed", sc_env,
      "           if (k in keep or k.startswith(\"LC_\")) and not k.startswith((\"RALPH_A\", \"ARENA_\", \"RM_ARM\"))}",
@@ -1276,8 +1310,8 @@ MUTATIONS = [
      "    return v if math.isfinite(v) and v >= 0 else float(\"inf\")", "    return v"),
     ("P1 dirty tree not parked", sc_dirty_sync,
      "    if git_run(root, \"status\", \"--porcelain\", capture_output=True, text=True).stdout.strip():", "    if False:"),
-    ("P1 unisolated tester allowed", sc_unisolated, "        if os.environ.get(UNISOLATED_OK_ENV) != \"1\":",
-     "        if False:"),
+    ("P1 unisolated launch allowed", sc_unisolated, "            raise Refused(str(e))\n",
+     "            return argv, env\n"),
     ("P2 tester context shared across retries", sc_retry_fresh,
      "            troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT",
      "            troot = self.__dict__.setdefault('_tr', self._tester_root())"),
@@ -1612,6 +1646,7 @@ def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
                                              "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM")}
     os.environ.pop("RM_ARM", None)
+    os.environ["RM_ARM_SANDBOX_SCRATCH"] = str(tmp / "armscratch")     # builder scratch: not the live arena root
     try:
         for name, fn in (("A planted failing check recovers", sc_planted_check),
                          ("B killed pass is not published and recovers", sc_killed_after_commit),
@@ -1636,7 +1671,8 @@ def main():
                          ("L6 pull main first, 3 tries", sc_sync),
                          ("L6 the pull keeps the owner's $GIT_CONFIG_GLOBAL", sc_sync_user_config),
                          ("P1 dirty tree after killed build is parked", sc_dirty_sync),
-                         ("P1 unisolated tester refused without override", sc_unisolated),
+                         ("P1 no bwrap: tester and builder refused, no override", sc_unisolated),
+                         ("A1 the builder pass is sandboxed (no harness/retired/mirror)", sc_builder_sandboxed),
                          ("R2 refused tester logs no test_start", sc_refused_no_start),
                          ("R2 publishes the tested sha, not WIP", sc_publish_tested_sha),
                          ("P2 retried tester gets fresh context", sc_retry_fresh),

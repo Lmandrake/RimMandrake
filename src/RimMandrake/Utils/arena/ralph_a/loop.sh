@@ -6,9 +6,10 @@
 #   RALPH_A_MODEL_CMD  the model invocation (argv; prompt on stdin). No default: unset refuses.
 #   RALPH_A_RUNWAY_MIN runway floor (default 0.15); RALPH_A_PASS_TIMEOUT_S per-pass kill (default 5400 s)
 #   RALPH_A_TESTER_TMP base of the tester's fresh private root (default the system temp dir; never inside
-#                      the ctl dir, the clone or the harness checkout); RALPH_A_TESTER_SANDBOX auto|bwrap|none
-#                      (bubblewrap; auto uses it when present); RALPH_A_TESTER_HIDE extra :-separated paths hidden
-#                      from the tester; RALPH_A_TESTER_ENV_KEEP comma-separated extra env names the tester keeps
+#                      the ctl dir, the clone or the harness checkout); RALPH_A_TESTER_ENV_KEEP comma-separated
+#                      extra env names the tester keeps. Every model pass (builder AND tester) runs in arm_sandbox
+#                      (bubblewrap, fail closed, no override): RM_ARM_SANDBOX_SCRATCH builder scratch base,
+#                      RM_ARM_SANDBOX_RO extra :-separated read-only paths, RM_ARM_SANDBOX_HOME_RO home-relative seeds
 set -uo pipefail
 here="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # a missing setting exits 2 (not bash's 127 from ${v:?}): the unit template stops restarting on 2 (RestartPreventExitStatus)

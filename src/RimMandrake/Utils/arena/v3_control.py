@@ -299,32 +299,9 @@ class CmdModel(RA.CmdModel):
                                     log=log, sandbox=sandbox)
         env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "V3_", "RALPH_A_"))}
         env.update(RM_ARM=self.arm, V3_ROLE=role)
-        with open(log, "w") as out:
-            pr = subprocess.Popen(self.argv, cwd=str(cwd), env=env, stdin=subprocess.PIPE, stdout=out,
-                                  stderr=subprocess.STDOUT, text=True, start_new_session=True)
-            if self.pidfile:
-                Path(self.pidfile).write_text(json.dumps({"pgid": pr.pid, "start": RA.proc_start(pr.pid),
-                                                          "role": role, "agent": agent_id}))
-            try:
-                pr.communicate(prompt, timeout=timeout_s)
-                rc = pr.returncode
-            except subprocess.TimeoutExpired:
-                rc = -9
-            finally:
-                try:
-                    os.killpg(pr.pid, signal.SIGKILL)
-                except (ProcessLookupError, PermissionError):
-                    pass
-                pr.wait()
-                if self.pidfile and not RA.group_alive(pr.pid):
-                    Path(self.pidfile).unlink(missing_ok=True)
-        raw = Path(log).read_text(errors="replace")
-        try:
-            j = json.loads(raw)
-            text = j.get("result") if isinstance(j, dict) and isinstance(j.get("result"), str) else raw
-        except ValueError:
-            text = raw
-        return {"rc": rc, "text": text}
+        rc = self.spawn(role, self.argv, env, cwd=cwd, sandbox=sandbox, agent_id=agent_id, log=log, prompt=prompt,
+                        timeout_s=timeout_s)               # sandboxed: arm_sandbox via RA.CmdModel.spawn
+        return self.result(log, rc)
 
 
 def gpt_reviewer(task, sha, diff, *, log):
@@ -469,7 +446,7 @@ class Procedure:
             troot = self._tester_root()
             try:
                 work = self.tester_workdir(pend["head"], troot / "tree")
-                sandbox = {"root": troot, "hide": [self.ctl, self.root, HARNESS_REPO, Path.home() / ".claude"]}
+                sandbox = {"root": troot}             # the tester's only rw dir (arm_sandbox: all else masked)
                 pf = getattr(self.model, "preflight", None)       # a refused tester never ran: before test_start
                 if pf:
                     pf(sandbox, work)

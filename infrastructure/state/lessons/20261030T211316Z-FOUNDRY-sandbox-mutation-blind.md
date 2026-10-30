@@ -1,0 +1,2 @@
+A sandbox mutation test can be blind: under bwrap --unshare-user, /proc/<host pid>/root is already EACCES, so dropping --unshare-pid changed nothing the probe looked at. Every mutation must be shown to produce a leak (here: /proc/1/cmdline must be bwrap) before a clean probe counts. Likewise a Windows interop probe must run the PE with NO args (whoami with args exits nonzero and hid a live interop).
+home: infrastructure/state/facts/instrument_traps.md

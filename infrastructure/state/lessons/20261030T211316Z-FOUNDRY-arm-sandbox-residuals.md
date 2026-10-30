@@ -1,0 +1,2 @@
+arm_sandbox.wrap is the one choke point for every arm model launch (RA.CmdModel.spawn). It cannot cover: codex.exe (the v3 gpt_reviewer, a Windows binary - interop is blocked inside), Windows dotnet builds/deploys (/mnt/c masked), or auth from ~/.claude/.credentials.json (masked; set CLAUDE_CODE_OAUTH_TOKEN/ANTHROPIC_API_KEY or opt in with RM_ARM_SANDBOX_HOME_RO=.claude/.credentials.json). Arm clones must live outside DENY (e.g. /home/mandrake/rm/arena/replay); a clone under bench/foundry/ClaudeWork is refused.
+home: src/RimMandrake/Utils/arena/arm_sandbox.py

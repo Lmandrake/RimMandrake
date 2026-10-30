@@ -81,6 +81,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+import arm_sandbox as AS  # noqa: E402
 import arena_eventlog as L  # noqa: E402
 import arena_safe_git as SG  # noqa: E402
 
@@ -88,7 +89,6 @@ ARM = "ralph_a"
 ARM_DIR = HERE / "ralph_a"
 HARNESS_REPO = HERE.parents[3]
 WIP, MAIN = "ralph/wip", "main"
-UNISOLATED_OK_ENV = "RALPH_A_ALLOW_UNISOLATED_TESTER"
 MAX_TRIES = 3
 TESTER_TRIES = 2
 PASS_TIMEOUT_S = 90 * 60
@@ -285,31 +285,14 @@ def neutral_id(agent_id):
     return "tester-" + hashlib.sha256(str(agent_id).encode()).hexdigest()[:12]
 
 
-def bwrap_argv(sandbox, cwd):
-    """bubblewrap prefix for the tester (review M3), or [] when $RALPH_A_TESTER_SANDBOX=none or no working bwrap.
-    The whole filesystem read-only, a tmpfs over every builder-side path (ctl, the arm clone, the harness checkout,
-    ~/.claude transcripts, $RALPH_A_TESTER_HIDE), the private tester root bound read-write, a fresh /proc and pid
-    namespace (no /proc/<pid>/cwd of the builder), killed with its parent."""
-    mode = os.environ.get("RALPH_A_TESTER_SANDBOX", "auto")
-    exe = shutil.which("bwrap") or ("/usr/bin/bwrap" if os.path.exists("/usr/bin/bwrap") else None)
-    if mode == "none" or not exe:
-        if mode == "bwrap":
-            raise Refused("RALPH_A_TESTER_SANDBOX=bwrap and no bwrap on PATH")
-        # GPT r1 P1: no real isolation = the tester can read the clone, ctl and transcripts by absolute path, so it is
-        # not blind. Fail loud unless the owner named the override; the override is logged by the caller.
-        if os.environ.get(UNISOLATED_OK_ENV) != "1":
-            raise Refused("refused: no bubblewrap isolation for the tester (%s); the tester would not be blind. "
-                          "Install bwrap, or set %s=1 to run it unisolated (logged)." % (
-                              "RALPH_A_TESTER_SANDBOX=none" if mode == "none" else "bwrap not found",
-                              UNISOLATED_OK_ENV))
-        return []
-    hide = [str(x) for x in sandbox.get("hide", ())]
-    hide += [x for x in os.environ.get("RALPH_A_TESTER_HIDE", "").split(":") if x]
-    argv = [exe, "--ro-bind", "/", "/", "--dev", "/dev", "--unshare-pid", "--proc", "/proc", "--die-with-parent"]
-    for h in sorted({os.path.realpath(h) for h in hide if os.path.isdir(h)}):
-        argv += ["--tmpfs", h]
-    root = str(sandbox["root"])
-    return argv + ["--bind", root, root, "--chdir", str(cwd), "--"]
+def sandbox_plan(role, cwd, sandbox):
+    """(rw dirs, private HOME) for arm_sandbox.wrap. The tester: its fresh private root only (review M3: no builder
+    material: ctl, the clone, transcripts). Every other role: the arm clone + a persistent scratch outside it."""
+    if role == "test":
+        root = Path((sandbox or {}).get("root") or cwd)
+        return [root], root / "home"
+    scratch = AS.scratch_dir(cwd, role)
+    return [Path(cwd), scratch], scratch / "home"
 
 
 def proc_start(pid):
@@ -403,32 +386,23 @@ class CmdModel:
 
     def preflight(self, sandbox, cwd):
         """Raise Refused now, before the loop logs test_start, when the tester could not be isolated."""
-        bwrap_argv(sandbox, cwd)
+        rw, home = sandbox_plan("test", cwd, sandbox)
+        self.wrap(["true"], dict(os.environ), cwd=cwd, rw=rw, home=home)
 
-    def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
-        argv = self.argv
-        warn = ""
-        if role == "test":
-            sb = sandbox or {}
-            root = Path(sb.get("root") or cwd)
-            (root / "home").mkdir(exist_ok=True)
-            (root / "tmp").mkdir(exist_ok=True)
-            env = tester_env(agent_id, root / "home", root / "tmp")
-            if sandbox:
-                pre = bwrap_argv(sandbox, cwd)
-                if not pre:                                       # only reachable with the named override set
-                    msg = "WARNING: tester running UNISOLATED (%s=1): not blind\n" % UNISOLATED_OK_ENV
-                    sys.stderr.write(msg)
-                    warn = msg
-                argv = pre + argv
-        else:
-            env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "RALPH_A_CTL"))}
-            env.update(RALPH_A_ROLE=role, RALPH_A_AGENT_ID=agent_id, RM_ARM=ARM)
-            env.update(GIT_CONFIG_COUNT="2", GIT_CONFIG_KEY_0="maintenance.auto", GIT_CONFIG_VALUE_0="false",
-                       GIT_CONFIG_KEY_1="gc.auto", GIT_CONFIG_VALUE_1="0")      # the builder's own commits too
+    @staticmethod
+    def wrap(argv, env, *, cwd, rw, home):
+        """arm_sandbox.wrap (THE choke point; item ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE): no sandbox, no launch."""
+        try:
+            return AS.wrap(argv, env, cwd=cwd, rw=rw, home=home)
+        except AS.SandboxRefused as e:
+            raise Refused(str(e))
+
+    def spawn(self, role, argv, env, *, cwd, sandbox, agent_id, log, prompt, timeout_s):
+        """Every arm model pass of every loop (ralph_a, ralph_c, trio, v3) launches HERE, sandboxed: own session and
+        process group, recorded in the pidfile, the group killed at the timeout and after the pass. Returns rc."""
+        rw, home = sandbox_plan(role, cwd, sandbox)
+        argv, env = self.wrap(list(argv), env, cwd=cwd, rw=rw, home=home)
         with open(log, "w") as out:
-            out.write(warn)
-            out.flush()
             pr = subprocess.Popen(argv, cwd=str(cwd), env=env, stdin=subprocess.PIPE, stdout=out,
                                   stderr=subprocess.STDOUT, text=True, start_new_session=True)
             if self.pidfile:
@@ -448,6 +422,25 @@ class CmdModel:
                     pass
                 if self.pidfile and not group_alive(pr.pid):
                     Path(self.pidfile).unlink(missing_ok=True)
+        return rc
+
+    def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
+        if role == "test":
+            root = Path((sandbox or {}).get("root") or cwd)
+            (root / "home").mkdir(exist_ok=True)
+            (root / "tmp").mkdir(exist_ok=True)
+            env = tester_env(agent_id, root / "home", "/tmp")
+        else:
+            env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "RALPH_A_CTL"))}
+            env.update(RALPH_A_ROLE=role, RALPH_A_AGENT_ID=agent_id, RM_ARM=ARM)
+            env.update(GIT_CONFIG_COUNT="2", GIT_CONFIG_KEY_0="maintenance.auto", GIT_CONFIG_VALUE_0="false",
+                       GIT_CONFIG_KEY_1="gc.auto", GIT_CONFIG_VALUE_1="0")      # the builder's own commits too
+        rc = self.spawn(role, self.argv, env, cwd=cwd, sandbox=sandbox, agent_id=agent_id, log=log, prompt=prompt,
+                        timeout_s=timeout_s)
+        return self.result(log, rc)
+
+    @staticmethod
+    def result(log, rc):
         raw = Path(log).read_text(errors="replace")
         try:
             j = json.loads(raw)
@@ -993,7 +986,7 @@ class Loop:
             troot = self._tester_root()          # GPT r1 P2: export, sandbox root and HOME are fresh PER ATTEMPT
             try:
                 work = self.tester_workdir(pend["head"], troot / "tree")
-                sandbox = {"root": troot, "hide": [self.ctl, self.root, HARNESS_REPO, Path.home() / ".claude"]}
+                sandbox = {"root": troot}             # the tester's only rw dir (arm_sandbox: all else masked)
                 pf = getattr(self.model, "preflight", None)    # refusal must precede test_start (a refused tester never ran)
                 if pf:
                     pf(sandbox, work)

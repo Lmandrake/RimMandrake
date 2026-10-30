@@ -552,11 +552,13 @@ def t_cmdmodel_tester_sandbox(tmp):
     m = C.CmdModelC("%s -c \"import os;print(os.environ.get('RM_ARM'), os.environ.get('RALPH_C_MEMBER'), "
                     "os.environ.get('TESTER_ID','')[:7], os.environ['HOME'])\"" % sys.executable, "a2")
     r = m("test", "", cwd=troot, agent_id="x", run_id=0, timeout_s=30, log=troot / "t.log",
-          sandbox={"root": troot, "hide": []})
+          sandbox={"root": troot})
     check(r["rc"] == 0 and r["text"].split() == ["None", "None", "tester-", str(troot / "home")],
           "CmdModelC tester pass takes sandbox= and runs in ralph_a's scrubbed tester env: %r" % r["text"])
-    check(C.RA.bwrap_argv({"root": troot, "hide": []}, troot) == [] or "--bind" in
-          C.RA.bwrap_argv({"root": troot, "hide": []}, troot), "bwrap_argv is reachable from the tester path")
+    m = C.CmdModelC("%s -c \"import os;print(os.path.exists(%r))\"" % (sys.executable, str(C.RA.HARNESS_REPO)), "a2")
+    r = m("build", "", cwd=troot, agent_id="x", run_id=0, timeout_s=30, log=troot / "b.log")
+    check(r["rc"] == 0 and r["text"].split() == ["False"] and C.RA.HARNESS_REPO.exists(),
+          "CmdModelC builder pass is sandboxed (arm_sandbox): the harness checkout is invisible: %r" % r["text"])
 
 
 def t_signed_writer(tmp):
@@ -855,6 +857,7 @@ def t_runner_git_trust2(tmp):
 
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_c_"))
+    os.environ["RM_ARM_SANDBOX_SCRATCH"] = str(tmp / "armscratch")     # builder scratch: not the live arena root
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
                                              "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM", "RALPH_C_MAX_SUBAGENTS",
                                              "RALPH_C_GATE_CMD")}

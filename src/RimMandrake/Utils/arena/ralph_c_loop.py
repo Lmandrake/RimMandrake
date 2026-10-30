@@ -505,29 +505,15 @@ class CmdModelC(RA.CmdModel):
         self.member = member
 
     def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
-        if role == "test":     # the tester pass: ralph_a's sandboxed, scrubbed-env path (bwrap, own home/tmp, pidfile)
+        if role == "test":     # the tester pass: ralph_a's scrubbed-env tester path (arm_sandbox, own home, pidfile)
             return super().__call__(role, prompt, cwd=cwd, agent_id=agent_id, run_id=run_id, timeout_s=timeout_s,
                                     log=log, sandbox=sandbox)
         env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA_", "RALPH_A_CTL", "RALPH_C_CTL"))}
         env.update(RALPH_A_ROLE=role, RALPH_A_AGENT_ID=agent_id, RM_ARM=ARM, RALPH_C_MEMBER=self.member,
                    RALPH_C_MAX_SUBAGENTS=str(max_subagents()))
-        with open(log, "w") as out:
-            pr = subprocess.Popen(self.argv, cwd=str(cwd), env=env, stdin=subprocess.PIPE, stdout=out,
-                                  stderr=subprocess.STDOUT, text=True, start_new_session=True)
-            try:
-                pr.communicate(prompt, timeout=timeout_s)
-                rc = pr.returncode
-            except subprocess.TimeoutExpired:
-                os.killpg(pr.pid, signal.SIGKILL)
-                pr.wait()
-                rc = -9
-        raw = Path(log).read_text(errors="replace")
-        try:
-            j = json.loads(raw)
-            text = j.get("result") if isinstance(j, dict) and isinstance(j.get("result"), str) else raw
-        except ValueError:
-            text = raw
-        return {"rc": rc, "text": text}
+        rc = self.spawn(role, self.argv, env, cwd=cwd, sandbox=sandbox, agent_id=agent_id, log=log, prompt=prompt,
+                        timeout_s=timeout_s)               # sandboxed: arm_sandbox via RA.CmdModel.spawn
+        return self.result(log, rc)
 
 
 def make_board(task_ids, areas_path, p=None):

@@ -284,7 +284,40 @@ def t_round1(tmp, src, A, B, C):
     check(any("names the source" in x for x in R.audit_clone(c, [B], masked=[str(src)])), "D4 FORCED: a .git file naming the source caught")
     m = R.sandbox_masks(src)
     check(str(src) in m and str(tmp / "private") in m and "/home/mandrake/rm/bench" in m, "D4: sandbox_masks lists source, private dir, bench")
+    t_masks_cover_old_history(tmp)
     R.rmtree(c)
+
+
+def covered(path, masks):
+    p = str(path).rstrip("/")
+    return any(p == x or p.startswith(x.rstrip("/") + "/") for x in masks)
+
+
+def t_masks_cover_old_history(tmp):
+    """ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE: every old-history repo (the pinned replay fixes) is masked."""
+    import arena_tasks as T
+    m = R.sandbox_masks()
+    for e in T.OLD_HISTORY_DEFAULT:
+        check(covered(R.glob_dir(e), m), "D5: OLD_HISTORY_DEFAULT entry %s masked at %s" % (e, R.glob_dir(e)))
+    repos = T.old_history_repos()
+    check(len(repos) >= 1, "D5 sanity: old_history_repos() sees at least one repo (%d)" % len(repos))
+    for p in repos:
+        check(str(p) in m, "D5: old-history repo %s listed in sandbox_masks" % p)
+    check(R.RETIRED_TREES in m and R.CLAUDEWORK_ROOT in m, "D5: retired-trees root and ClaudeWork notes root masked")
+    check(not covered(str(R.arena_root() / "tasks"), m), "D5: the arena root itself is not masked (arms read tasks)")
+    # FORCED: a NEW default entry (a glob and a plain dir) appears in the masks without touching sandbox_masks
+    new_glob, new_dir = tmp / "oldh" / "*-git-*", tmp / "oldh2"
+    (tmp / "oldh" / "x-git-1").mkdir(parents=True)
+    new_dir.mkdir()
+    saved = T.OLD_HISTORY_DEFAULT
+    try:
+        T.OLD_HISTORY_DEFAULT = saved + (str(new_glob), str(new_dir))
+        m2 = R.sandbox_masks()
+    finally:
+        T.OLD_HISTORY_DEFAULT = saved
+    check(covered(tmp / "oldh" / "x-git-1", m2) and str(tmp / "oldh") in m2 and str(new_dir) in m2,
+          "D5 FORCED: a new OLD_HISTORY_DEFAULT glob + dir are masked with no edit to sandbox_masks")
+    check(not covered(tmp / "oldh" / "x-git-1", m), "D5 FORCED sanity: the new entry was not masked before")
 
 
 def t_reaper_marker(tmp, src, A, B):

@@ -83,13 +83,35 @@ def private_dir() -> Path:
     return Path(os.path.expanduser(os.environ.get("RM_ARENA_PRIVATE") or DEFAULT_PRIVATE))
 
 
+RETIRED_TREES = "/home/mandrake/rm/retired-trees"
+
+
+def glob_dir(pat: str) -> str:
+    """The fixed directory a glob lives in ('/a/b/*-git-*' -> '/a/b'); a plain path is returned as is."""
+    import glob as _glob
+    if not _glob.has_magic(pat):
+        return pat.rstrip("/") or "/"
+    cut = min(i for i, ch in enumerate(pat) if ch in "*?[")
+    return os.path.dirname(pat[:cut]) or "/"
+CLAUDEWORK_ROOT = "/mnt/d/ClaudeWork/rimmandrake"
+
+
 def sandbox_masks(source=DEFAULT_SOURCE) -> list[str]:
-    """Paths a sandbox must hide from an arm (it can read them as the same user otherwise)."""
+    """Paths a sandbox must hide from an arm (it can read them as the same user otherwise): the answer holders.
+    Derived from arena_tasks.old_history_repos() AND the literal OLD_HISTORY_DEFAULT prefixes (a glob that matches
+    nothing today is still masked at its fixed prefix), so a new old-history repo cannot drift out of the list.
+    arm_sandbox.deny_paths() is the full list it enforces (this + every sibling under RM_ROOT + $HOME leaks).
+    Item ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE."""
+    import arena_tasks as T                      # arena_tasks does not import arena_replay: no cycle
     out = [str(Path(source)), str(private_dir()), "/home/mandrake/rm/bench", "/home/mandrake/rm/foundry",
-           "/home/mandrake/rm/store.git", "/home/mandrake/rm/mirror.git", "/mnt/d/Luke/dev/RimMandrake"]
+           "/home/mandrake/rm/store.git", "/home/mandrake/rm/mirror.git", "/mnt/d/Luke/dev/RimMandrake",
+           RETIRED_TREES, CLAUDEWORK_ROOT]
+    for pat in T.OLD_HISTORY_DEFAULT:
+        out.append(glob_dir(pat))
+    out += [str(p) for p in T.old_history_repos()]
     seen = []
     for x in out:
-        if x not in seen:
+        if x and x not in seen:
             seen.append(x)
     return seen
 

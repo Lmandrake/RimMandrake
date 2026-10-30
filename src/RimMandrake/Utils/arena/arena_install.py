@@ -46,7 +46,7 @@ def env_template(unit: str) -> str | None:
     if base == "rm-ralph-loop" and inst == "a":
         body = ("# RALPH_A_ROOT=<path of the ralph_a arm clone>\n# RALPH_A_TASKS=<comma-separated frozen task ids>\n"
                 "# RALPH_A_MODEL_CMD=<model invocation argv; prompt on stdin>\n"
-                "# optional: RALPH_A_CTL RALPH_A_RUNWAY_MIN RALPH_A_PASS_TIMEOUT_S RALPH_A_TESTER_TMP RALPH_A_TESTER_SANDBOX\n")
+                "# optional: RALPH_A_CTL RALPH_A_RUNWAY_MIN RALPH_A_PASS_TIMEOUT_S RALPH_A_TESTER_TMP RM_ARM_SANDBOX_SCRATCH RM_ARM_SANDBOX_RO\n")
     elif base == "rm-ralph-loop" and inst in ("a1", "a2"):
         body = ("# RALPH_C_ROOT_%s=<path of the %s arm clone>\n# RALPH_C_TASKS=<comma-separated frozen task ids>\n"
                 "# RALPH_C_MODEL_CMD=<model invocation argv; prompt on stdin>\n# optional: RALPH_C_AREAS RALPH_C_CTL\n"
