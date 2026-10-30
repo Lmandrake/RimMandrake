@@ -550,6 +550,23 @@ def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
     return val, blocked
 
 
+def carry_why(p: dict, c: dict) -> str | None:
+    """L9a: why the rebuild `c` resolves by carry with no reload and no test, else None. The one predicate: decide
+    and the wake's reconcile both route a carry-ready rebuild through Pilot.carry."""
+    if not c.get("parent"):
+        return None
+    pre = plan_retest(p, c, write=False)
+    have = scenario_status(p, c)
+    ids = {s["id"] for s in c["plan"]["scenarios"]}
+    # F1: a FAIL at this fingerprint is as final as a pass: a rebuild whose every scenario is counted (pass,
+    # fail or carried) resolves to its verdict without a reload, never re-runs the failing scenario
+    counted = {i for i in ids if have.get(i, {}).get("status") in COUNTED and not have[i].get("hotfix")}
+    if not pre["run"] and (set(pre["carried"]) == ids or counted == ids):
+        return ("every scenario of %s is carried from %s or already counted (pass/fail) at its fingerprint (L9a): "
+                "it resolves with no reload and no test" % (c["cand"], c["parent"]))
+    return None
+
+
 def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: float) -> dict:
     """The one decision function. facts: process_alive, canary_ok (None = not run)."""
     sess = sess or {}
@@ -558,17 +575,9 @@ def decide(p: dict, lane: str, sess: dict | None, facts: dict, rule: dict, now: 
     q = queued(p)
     base = {"rule": None, "lane": lane}
     for c in q:                         # L9a: a rebuild that carries every scenario needs no game at all
-        if c.get("parent"):
-            pre = plan_retest(p, c, write=False)
-            have = scenario_status(p, c)
-            ids = {s["id"] for s in c["plan"]["scenarios"]}
-            # F1: a FAIL at this fingerprint is as final as a pass: a rebuild whose every scenario is counted (pass,
-            # fail or carried) resolves to its verdict without a reload, never re-runs the failing scenario
-            counted = {i for i in ids if have.get(i, {}).get("status") in COUNTED and not have[i].get("hotfix")}
-            if not pre["run"] and (set(pre["carried"]) == ids or counted == ids):
-                return dict(base, action="carry", cand=c["cand"],
-                            why="every scenario of %s is carried from %s or already counted (pass/fail) at its "
-                                "fingerprint (L9a): it resolves with no reload and no test" % (c["cand"], c["parent"]))
+        why = carry_why(p, c)
+        if why:
+            return dict(base, action="carry", cand=c["cand"], why=why)
     if game and facts.get("process_alive") and facts.get("canary_ok") is False:
         tried = set(sess.get("ladder_tried") or [])
         spent = int(sess.get("red_rungs") or 0)       # survive a green blip and a reload: only a finished test clears
@@ -885,8 +894,17 @@ class Pilot:
     def _reconcile(self):
         """F5: a pilot that died between saving a result and _crashed/_resolve left the candidate open with the
         evidence that decides it. Both are idempotent (a terminal state is never left): re-run them for every open
-        candidate, so a wake after a clean pass changes nothing."""
+        candidate, so a wake after a clean pass changes nothing. A carry-ready rebuild (L9a) goes through carry() --
+        its decision, its carried records, the supersede of older attempts -- never through a bare _resolve on its
+        parent's evidence (TESTPILOT_FIX_WAKE_RECONCILE_SKIPS_CARRY)."""
         for c in queued(self.p):
+            why = carry_why(self.p, c)
+            if why:
+                try:
+                    self.carry({"action": "carry", "cand": c["cand"], "why": why})
+                except PilotRefused:    # changed under us (superseded, closed): left to the scheduler, not resolved
+                    pass
+                continue
             self._crashed(c)
             self._resolve(c)
 

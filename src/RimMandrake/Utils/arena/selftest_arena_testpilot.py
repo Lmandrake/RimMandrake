@@ -92,9 +92,11 @@ class FakeDriver:
 
     def apply_minimal(self):
         self.calls.append(("minimal",))
+        self.active = ["ludeon.rimworld"]   # a real swap copies ModsConfig.MINIMAL.xml over the live list wholesale
         return True, "swapped"
 
     def apply_tier(self, tier):
+        self.active = ["ludeon.rimworld"]   # likewise: the tier list replaces activeMods, it never appends
         return True, "wrote"
 
     def restore_modlist(self):
@@ -347,6 +349,8 @@ def t_launch_failures():
     check(decisions(p, "abort") and any(e["status"] == "invalid" for e in T.evidence(p)),
           "C: the failed step is logged (abort decision, invalid evidence)")
     check(T.states(p)["ITEM_P@1"]["state"] == "queued", "C: the candidate is requeued once")
+    check(not T.read_session(p, "steve").get("pending_reload"),
+          "C: the abort knows the failed reload's outcome: no pending reload is left for a wake to reconcile")
     n_rel = len([c for c in d.calls if c[0] == "release"])
     pl.abort(RuntimeError("again"), {"cand": "ITEM_P@1"})
     check(len([c for c in d.calls if c[0] == "release"]) == n_rel and len(decisions(p, "abort")) == 1,
@@ -1006,9 +1010,11 @@ def t_carried_rebuild():
     f = T.enqueue(p, "ITEM_CR", SHA[3], "B1", plan("s1", "s2", **fp), mods=["Slime"],
                   parent=b["cand"], changed_files=["src/RimMandrake/C/Defs/w.xml"])
     dec = pl.decide()
-    pilot(root, d, "P2").wake(takeover_dead=True)
+    pilot(root, d, "P2").wake(takeover_dead=True)    # P2's wake carries f itself (reconcile routes L9a to carry)
+    n_ev, n_dec = len(T.evidence(p)), len(decisions(p))
     why = raises(T.StalePilot, pl.carry, dec)
-    check(dec["action"] == "carry" and why and not T.scenario_status(p, f),
+    check(dec["action"] == "carry" and why and len(T.evidence(p)) == n_ev and len(decisions(p)) == n_dec and
+          not [e for e in T.evidence(p) if e["cand"] == f["cand"] and e.get("pilot") == pl.id],
           "a carry by a taken-over pilot writes nothing: %s %s" % (dec["action"], why))
 
 
@@ -1928,7 +1934,6 @@ def t_reload_crash():
     check(dec["action"] == "reload" and dec["rule"] == "R0" and dec["cand"] == b["cand"],
           "F7: the next act is a ruled R0 reload of %s: %s" % (b["cand"], (dec["action"], dec.get("rule"),
                                                                           dec.get("cand"))))
-    d.active = ["ludeon.rimworld"]      # the fake's apply_minimal keeps P1's deploys active; a real list swap does not
     steps = pl_run(p2, None, n=6)
     check(T.states(p)[b["cand"]].get("verdict") == "pass", "F7: then it tests and resolves: %s" % actions(steps))
     every_reload_has_a_rule(root, p, "F7")
@@ -1955,9 +1960,11 @@ def t_periodic_canary():
     def run(argv, clone, poll, poll_s):
         n["in"] = True
         try:
-            for i in range(5):          # a long scenario: five polls 100 s apart; the colony is dead at poll 2 only
+            for i in range(7):          # seven polls 100 s apart, the 120 s canary runs at i=1,3,5: red, red, green
                 d.t += 100.0
-                d.colonists = 0 if i == 1 else 3
+                d.colonists = 0 if i in (1, 3) else 3
+                if i == 1:
+                    n["first_red_t"] = d.t
                 poll()
             return 0, "ok"
         finally:
@@ -1970,6 +1977,8 @@ def t_periodic_canary():
     check(e["status"] == "invalid" and "during" in (e.get("why") or ""),
           "F2: a red mid-proof canary makes the rc-0 result invalid: %s %s" % (e["status"], e.get("why")))
     check(r["result"].get("canary_ok") is True, "F2: (the endpoint canary itself was green)")
+    check("t=%s " % n.get("first_red_t") in (e.get("why") or ""),
+          "F2: the FIRST mid-proof red is the one recorded (t=%s): %s" % (n.get("first_red_t"), e.get("why")))
 
 
 def t_drain_every_sealed():
@@ -2032,13 +2041,112 @@ def t_samefp_failed_rebuild():
           % T.states(p)[b["cand"]])
 
 
+def t_wake_reconcile_carries():
+    """TESTPILOT_FIX_WAKE_RECONCILE_SKIPS_CARRY: a same-fingerprint rebuild queued between passes resolves at the
+    next wake through the L9a carry path (carry decision, carried records), not silently on the parent's evidence."""
+    root, p = fresh("fix_wake_carry")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_WC", SHA[0], "B1", plan("s1", "s2"), mods=["Slime"], changed_files=["x/y.xml"])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.run_pass()
+    pl.handoff()
+    check(T.states(p)[a["cand"]].get("verdict") == "pass", "wake-carry: the parent resolved pass")
+    b = T.enqueue(p, "ITEM_WC", SHA[0], "B1", plan("s1", "s2"), mods=["Slime"], changed_files=["x/y.xml"])
+    p2 = pilot(root, d, "P2")
+    p2.wake()
+    st = T.states(p)[b["cand"]]
+    cd = [r for r in decisions(p, "carry") if r.get("cand") == b["cand"]]
+    # same fingerprint: the parent's results are counted AT this fingerprint, so carry() writes no `carried` record
+    # here -- exactly what the step-driven carry does (t_same_fingerprint_rebuild); the decision is what was missing
+    cr = [e for e in T.evidence(p) if e["cand"] == b["cand"]]
+    check(st.get("verdict") == "pass" and len(cd) == 1 and "L9a" in (cd[0].get("why") or "") and not cr,
+          "wake-carry: child=%s/%s carry_decisions=%d own_ev=%d (want resolved/pass, 1 L9a decision, 0)"
+          % (st.get("state"), st.get("verdict"), len(cd), len(cr)))
+    p2.handoff()
+    pilot(root, d, "P3").wake()         # idempotent: a later wake carries nothing again
+    check(len([r for r in decisions(p, "carry") if r.get("cand") == b["cand"]]) == 1,
+          "wake-carry: a second wake writes no second carry decision")
+
+
+def t_wake_interrupt_dedup():
+    """F6 dedup (survivors M06/M07): a replacement pilot that finished _interrupted but died before clearing the
+    recovering marker leaves the next wake nothing to record again: one invalid record, one requeue, not parked."""
+    root, p = fresh("fix_wake_dedup")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_WD", SHA[8], "B1", plan("s1", "s2"), mods=["Slime"], changed_files=["x/y.xml"])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()                           # R0
+    d.during["s1"] = lambda: (_ for _ in ()).throw(SystemExit("P1 dies mid-proof"))
+    try:
+        pl.step()
+    except SystemExit:
+        pass
+    d.during.pop("s1")
+    orig = T.Pilot._interrupted
+
+    def done_then_die(self, inf, why):
+        orig(self, inf, why)
+        raise SystemExit("P2 dies after recording the interruption")
+    T.Pilot._interrupted = done_then_die
+    try:
+        pilot(root, d, "P2").wake(takeover_dead=True)
+    except SystemExit:
+        pass
+    finally:
+        T.Pilot._interrupted = orig
+    check(bool(T.read_session(p, "steve").get("recovering")), "F6-dedup: the marker outlives P2's death")
+    pilot(root, d, "P3").wake(takeover_dead=True)
+    inv = [e for e in T.evidence(p) if e["cand"] == a["cand"] and e["status"] == "invalid" and e.get("crash")]
+    rq = T._requeues(p, a["cand"])
+    stt = T.states(p)[a["cand"]]["state"]
+    check(len(inv) == 1, "F6-dedup: one invalid crash record after the re-run (%d)" % len(inv))
+    check(rq == 1 and stt == "queued" and not T.read_session(p, "steve").get("recovering"),
+          "F6-dedup: one requeue, still queued, marker cleared (requeues=%d state=%s)" % (rq, stt))
+
+
+def t_drain_most_overdue():
+    """F8 ordering (survivor M18): of two overdue sealed repairs the MOST overdue reloads first, even queued second."""
+    root, p = fresh("fix_overdue")
+    d = FakeDriver()
+    x1 = T.enqueue(p, "ITEM_X", SHA[3], "B1", plan(*["s%d" % i for i in range(1, 7)], **{"s1": {"taints": []}}),
+                   mods=["Slime"], has_dll=True, changed_files=["a/b.cs"], now=d.t)
+    y1 = T.enqueue(p, "ITEM_Y", SHA[4], "B1", plan("s1"), mods=["Slime"], tier="T2", has_dll=True,
+                   changed_files=["a/c.cs"], now=d.t)
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()                           # R0 X@1
+    pl.step()                           # X@1 s1 fails; s2..s6 stay valuable
+    t0 = d.t
+    x2 = T.enqueue(p, "ITEM_X", SHA[5], "F", plan(*["s%d" % i for i in range(1, 7)]), mods=["Slime"], has_dll=True,
+                   parent=x1["cand"], changed_files=["a/b.cs"], kind="repair", fault="MOD", review="r", now=t0)
+    y2 = T.enqueue(p, "ITEM_Y", SHA[6], "F", plan("s1"), mods=["Slime"], tier="T2", has_dll=True,
+                   parent=y1["cand"], changed_files=["a/c.cs"], kind="repair", fault="MOD", review="r",
+                   now=t0 - 300)
+    real = T.reload_cost
+    T.reload_cost = lambda p_, rule, lane, profile, tier: {"cost_s": 20.0, "basis": "probe", "class": "cheap",
+                                                           "threshold_s": 120}
+    try:
+        md = pl.rule["max_acceptance_delay_s"]["cheap"]
+        dec = T.decide(p, "steve", T.read_session(p, "steve"), {"process_alive": True, "canary_ok": None},
+                       dict(pl.rule, cheap_extra_tests=99), t0 + md + 100)
+    finally:
+        T.reload_cost = real
+    check(dec["action"] == "reload" and dec.get("rule") == "R3" and dec.get("cand") == y2["cand"],
+          "F8-order: both overdue, %s by 400 s beats %s by 100 s: %s %s %s"
+          % (y2["cand"], x2["cand"], dec["action"], dec.get("rule"), dec.get("cand")))
+
+
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,
               t_resolve_after_crashed_pass, t_enqueue_single_record, t_wake_interrupt_crash, t_reload_crash,
-              t_periodic_canary, t_drain_every_sealed, t_samefp_failed_rebuild):
+              t_periodic_canary, t_drain_every_sealed, t_samefp_failed_rebuild,
+              t_wake_reconcile_carries, t_wake_interrupt_dedup, t_drain_most_overdue):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run
