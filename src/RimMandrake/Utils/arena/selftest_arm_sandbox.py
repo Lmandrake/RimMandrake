@@ -183,6 +183,22 @@ def s3_fail_closed(tmp):
     check(refused(lambda: w(rw=["/home/mandrake/rm/foundry"], cwd="/home/mandrake/rm/foundry",
                             home="/home/mandrake/rm/foundry")), "S3 the harness repo as rw -> refused")
     check(refused(lambda: w(_drop=("/home",))), "S3 preflight on a weakened sandbox (/home unmasked) -> refused")
+    old = os.environ.get("RM_ARM_SANDBOX_HOME_RO")
+    try:   # M8: only the exact credentials file is an opt-in; every other HOME_DENY seed stays refused
+        for rel in (".claude/projects", ".claude/history.jsonl", ".ssh"):
+            if (AS._home() / rel).exists():
+                os.environ["RM_ARM_SANDBOX_HOME_RO"] = rel
+                check(refused(lambda: AS.plan(cwd=d, rw=[d], home=d / "home")),
+                      "S3 M8: RM_ARM_SANDBOX_HOME_RO=%s (a HOME_DENY path) -> refused" % rel)
+        if (AS._home() / ".claude/.credentials.json").exists():
+            os.environ["RM_ARM_SANDBOX_HOME_RO"] = ".claude/.credentials.json"
+            check(not refused(lambda: AS.plan(cwd=d, rw=[d], home=d / "home")),
+                  "S3 M8: the exact .claude/.credentials.json opt-in is allowed")
+    finally:
+        if old is None:
+            os.environ.pop("RM_ARM_SANDBOX_HOME_RO", None)
+        else:
+            os.environ["RM_ARM_SANDBOX_HOME_RO"] = old
     try:
         argv, env = w()
         r = subprocess.run(argv, env=env, capture_output=True, text=True, timeout=60)
@@ -215,6 +231,16 @@ def s3_scratch_fresh(tmp):
     e = AS.scratch_dir(c, "build")
     check(sentinel.read_text() == "SECRET" and not mk.is_symlink() and e != d,
           "S3 GPT r2: a planted marker symlink is replaced, its target untouched")
+    # M10: a link to a file holding a VALID id (another scratch's marker) must not adopt that id (O_NOFOLLOW read)
+    other = tmp / "other_marker"
+    tag = mk.read_text()
+    other.write_text(tag)
+    mk.unlink()
+    mk.symlink_to(other)
+    e2 = AS.scratch_dir(c, "build")
+    check(e2 != e and not mk.is_symlink() and other.read_text() == tag,
+          "S3 M10: a marker symlink to a valid id is not followed (no inherited scratch HOME)")
+    e = e2
     hd = e / "home"
     hd.mkdir(exist_ok=True)
     (hd / ".claude.json").unlink(missing_ok=True)
@@ -236,6 +262,9 @@ def s3_scratch_fresh(tmp):
                   "ext4 /dev/sdc rw\n")
     check(refused(lambda: AS.check_mounts(str(mi))), "S3 GPT r2: an inherited subtree bind outside the masked "
           "containers (alias of a masked tree) is refused")
+    mi.write_text(open("/proc/self/mountinfo").read() + "998 1 0:77 / /usr/share/winalias rw - 9p drvfs rw\n")
+    check(refused(lambda: AS.check_mounts(str(mi))), "S3 M7: a whole Windows filesystem (9p, root /) outside the "
+          "masked containers is refused")
     check(not refused(AS.check_mounts), "S3 this machine's own mounts pass check_mounts")
     check("/bin/rm -f" in " ".join(AS.bwrap_argv({"drop": set(), "files": [], "tools": [], "rw": [], "seeds": [],
                                                   "cwd": "/"}, "/x.bpf")),
@@ -276,6 +305,8 @@ def s5_mutations(tmp, clone, scratch, pe, absent):
     for m in AS.MUTATIONS:
         res = AS.probe(clone=str(clone), scratch=str(scratch), absent=absent, pe=pe, _drop=(m,), full=False)
         check(len(res["leaks"]) > 0, "S5 mutation drop %-8s -> the probe sees %d leak(s)" % (m, len(res["leaks"])))
+        if m == "userns":   # M3: the nested-userns check itself must fire, not a side effect of the dropped flags
+            check(any(lk[0] == "userns" for lk in res["leaks"]), "S5 M3: --disable-userns dropped -> userns leak")
         d = tmp / ("mut" + re.sub(r"\W", "_", m))
         (d / "home").mkdir(parents=True)
         check(refused(lambda: AS.wrap(["true"], dict(os.environ), cwd=d, rw=[d], home=d / "home", _drop=(m,))),

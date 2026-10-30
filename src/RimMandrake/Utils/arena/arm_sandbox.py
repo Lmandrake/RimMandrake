@@ -17,7 +17,7 @@ The host's logs are masked too (VAR_MASK: /var/log syslog + systemd journal, /va
 /var/crash; item ARENA_SANDBOX_HARDEN_JOURNAL_SYSLOG_READABLE). The ENV is an allow-list (ENV_ALLOW, LC_*, the
 harness's GIT_CONFIG_* pins, MODEL_AUTH on a model pass, $RM_ARM_SANDBOX_ENV_KEEP; item
 ARENA_SANDBOX_HARDEN_ENV_PASSED_WHOLESALE): no seat name, session or messaging token, GH or OpenAI key crosses.
-Own user/pid/ipc/uts namespaces, nested user namespaces disabled, a fresh /proc (no /proc/<harness pid>/root),
+Own user/pid/ipc/uts namespaces, nested user namespaces disabled (the probe tries unshare(CLONE_NEWUSER)), a fresh /proc (no /proc/<harness pid>/root),
 --new-session, --die-with-parent. A seccomp filter refuses socket(AF_VSOCK) and io_uring (the raw channel to the
 Windows host). /run is a tmpfs and WSL_INTEROP is dropped: Windows interop (binfmt -> /init -> /run/WSL/*_interop) is
 dead, so no codex.exe / powershell.exe / dotnet.exe can be spawned to read D:\\ from the Windows side.
@@ -341,7 +341,7 @@ def plan(*, cwd, rw, home, ro=(), _drop=(), net="model"):
 def bwrap_argv(pl, bpf_path=None) -> list[str]:
     d = pl["drop"]
     a = [BWRAP]
-    a += ["--unshare-user", "--disable-userns"] if "userns" not in d else []
+    a += ["--unshare-user"] + (["--disable-userns"] if "userns" not in d else [])
     a += ["--unshare-pid"] if "pidns" not in d else []
     a += ["--unshare-net"] if "net" not in d else []
     a += ["--unshare-ipc", "--unshare-uts", "--die-with-parent", "--new-session",
@@ -478,6 +478,16 @@ try:                                    # io_uring would issue socket ops behind
         leaks.append(["io_uring", "io_uring_setup succeeded"])
     elif ctypes.get_errno() != 38:
         leaks.append(["io_uring", "io_uring_setup errno %d, not the filter's ENOSYS" % ctypes.get_errno()])
+except OSError:
+    pass
+try:                                    # a nested user namespace re-grants caps (mount, net) inside: must fail
+    import ctypes
+    _l = ctypes.CDLL(None, use_errno=True)
+    _pid = os.fork()
+    if _pid == 0:
+        os._exit(0 if _l.unshare(0x10000000) == 0 else 1)
+    if os.waitpid(_pid, 0)[1] == 0:
+        leaks.append(["userns", "unshare(CLONE_NEWUSER) succeeded: nested user namespace"])
 except OSError:
     pass
 for p in spec["rw"]:
@@ -657,7 +667,7 @@ def scratch_dir(cwd, role) -> Path:
     return d
 
 
-MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "/var/log", "pidns", "seccomp", "uring", "env", "net")
+MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "/var/log", "pidns", "userns", "seccomp", "uring", "env", "net")
 
 
 def main(argv=None):
