@@ -1980,6 +1980,32 @@ def t_periodic_canary():
     check(r["result"].get("canary_ok") is True, "F2: (the endpoint canary itself was green)")
     check("t=%s " % n.get("first_red_t") in (e.get("why") or ""),
           "F2: the FIRST mid-proof red is the one recorded (t=%s): %s" % (n.get("first_red_t"), e.get("why")))
+    # TESTPILOT_FIX_MID_CANARY_COUNT_IN_EVIDENCE: the row itself says how many canaries ran inside the proof
+    check(e.get("mid_canaries") == n["inside"] == 3,
+          "mid-count: the red row records the 3 mid-proof canaries, endpoints excluded: %s (seen %d)"
+          % (e.get("mid_canaries"), n["inside"]))
+    done = [x for x in ev(root, "test_end") if (x.get("detail") or {}).get("cand") == a["cand"]]
+    check(len(done) == 1 and done[0]["detail"].get("mid_canaries") == 3,
+          "mid-count: test_end carries the same count: %s" % [x.get("detail") for x in done])
+    # a GREEN in-proof check is the case only the count can show: no why, no red, status pass
+    g = T.enqueue(p, "ITEM_PC2", SHA[8], "B1", plan("s9"), mods=["Slime"], changed_files=["x/y.xml"])
+
+    def run_green(argv, clone, poll, poll_s):
+        for _ in range(5):              # five polls 130 s apart: every one is past the 120 s window
+            d.t += 130.0
+            poll()
+        return 0, "ok"
+    d.run_scenario = run_green
+    pl_run(pl, None)
+    e = T.scenario_status(p, g)["s9"]
+    check(e["status"] == "pass" and e.get("why") is None and e.get("mid_canaries") == 5,
+          "mid-count: a green proof's PASS row shows its 5 canaries: %s %s" % (e["status"], e.get("mid_canaries")))
+    d.run_scenario = FakeDriver.run_scenario.__get__(d)
+    h = T.enqueue(p, "ITEM_PC3", SHA[6], "B1", plan("s8"), mods=["Slime"], changed_files=["x/y.xml"])
+    pl_run(pl, None)
+    e = T.scenario_status(p, h)["s8"]
+    check(e["status"] == "pass" and e.get("mid_canaries") == 0,
+          "mid-count: a proof shorter than the window records 0, not absent: %r" % (e.get("mid_canaries"),))
 
 
 def t_drain_every_sealed():
@@ -2068,6 +2094,99 @@ def t_wake_reconcile_carries():
     pilot(root, d, "P3").wake()         # idempotent: a later wake carries nothing again
     check(len([r for r in decisions(p, "carry") if r.get("cand") == b["cand"]]) == 1,
           "wake-carry: a second wake writes no second carry decision")
+
+
+def t_wake_reconcile_hardening():
+    """TESTPILOT_SELFTEST_HARDEN_RECONCILE_CARRY: what the carry decision alone does not prove (carry() logs it before
+    its refusal checks), so each guard is held by an outcome."""
+    fp = {"s1": {"footprint": {"files": ["src/RimMandrake/A/Defs/*.xml"]}},
+          "s2": {"footprint": {"files": ["src/RimMandrake/B/Defs/*.xml"]}}}
+
+    def base(name, item):
+        """A resolved parent, then an open different-fingerprint attempt that must run, then a carry-ready rebuild at
+        the parent's own fingerprint: the older attempt is what only a real carry() supersedes."""
+        root, p = fresh(name)
+        d = FakeDriver()
+        a = T.enqueue(p, item, SHA[0], "B1", plan("s1", "s2"), mods=["Slime"], changed_files=["x/y.xml"])
+        pl = pilot(root, d, "P1")
+        pl.wake()
+        pl.run_pass()
+        pl.handoff()
+        check(T.states(p)[a["cand"]].get("verdict") == "pass", "reconcile: the parent %s resolved pass" % item)
+        mid = T.enqueue(p, item, SHA[1], "B1", plan("s1", "s2"), mods=["Slime"], changed_files=["x/y.xml"])
+        T.set_state(p, mid["cand"], "testing", pilot="P1")  # enqueue supersedes a `queued` attempt, not a `testing` one
+        top = T.enqueue(p, item, SHA[0], "B1", plan("s1", "s2"), mods=["Slime"], changed_files=["x/y.xml"],
+                        parent=a["cand"])
+        check(top["fingerprint"] == a["fingerprint"] != mid["fingerprint"] and
+              T.states(p)[mid["cand"]].get("state") == "testing", "reconcile: the fixture has an older open attempt")
+        return root, p, d, a, mid, top
+
+    # N01: carry() ran, not a bare _resolve on the parent's evidence: only carry supersedes the older open attempt
+    root, p, d, a, mid, top = base("rec_superseded", "ITEM_RS")
+    pilot(root, d, "P2").wake()
+    st = T.states(p)
+    check(st[top["cand"]].get("verdict") == "pass" and st[mid["cand"]].get("state") == "superseded" and
+          st[mid["cand"]].get("by") == top["cand"],
+          "reconcile: the wake's carry supersedes the older open attempt: mid=%s" % st[mid["cand"]])
+
+    # N02: a sibling closed earlier in the SAME loop (the crash quarantine) refuses carry; the wake survives that
+    root, p, d, a, mid, top = base("rec_refused", "ITEM_RR")
+    for rep in (1, 2):
+        T.add_evidence(p, mid, "s1", "invalid", "steve", "P1", why="the game died %d" % rep, crash=True, taint=None)
+    p2 = pilot(root, d, "P2")
+    why = raises(T.PilotRefused, p2.wake)
+    st = T.states(p)
+    check(why is None and st[mid["cand"]].get("state") == "quarantined" and
+          st[top["cand"]].get("state") == "quarantined" and not st[top["cand"]].get("verdict"),
+          "reconcile: a carry refused in the loop neither kills the wake nor publishes: %s mid=%s top=%s"
+          % (why, st[mid["cand"]], st[top["cand"]]))
+    check(raises(T.StalePilot, p2._check_live) is None, "reconcile: the pilot finished its wake and drives the lane")
+
+    # N12: a takeover in the window after the first live check: the check under the lock publishes nothing
+    root, p = fresh("rec_stale")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_RT", SHA[0], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/A/Defs/x.xml"])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.run_pass()
+    b = T.enqueue(p, "ITEM_RT", SHA[1], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/C/Defs/y.xml"])
+    dec = pl.decide()
+    real = pl._decision
+
+    def takeover_in_window(rec):
+        taker = pilot(root, d, "P2")
+        taker._reconcile = lambda: None  # the taker leaves b queued: its state must not be what refuses the carry
+        taker.wake(takeover_dead=True)
+        return real(rec)
+    pl._decision = takeover_in_window
+    n_ev = len(T.evidence(p))
+    why = raises(T.StalePilot, pl.carry, dec)
+    check(dec["action"] == "carry" and why and len(T.evidence(p)) == n_ev and
+          T.states(p)[b["cand"]].get("state") == "queued",
+          "reconcile: a pilot taken over inside carry's window publishes nothing: %s %s" % (why, T.states(p)[b["cand"]]))
+
+    # N15: a DIFFERENT-fingerprint carry-ready rebuild resolves at the wake on carried records, not at the next step
+    root, p = fresh("rec_difffp")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_RD", SHA[0], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/A/Defs/x.xml"])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.run_pass()
+    pl.handoff()
+    b = T.enqueue(p, "ITEM_RD", SHA[1], "B1", plan("s1", "s2", **fp), mods=["Slime"],
+                  changed_files=["src/RimMandrake/C/Defs/y.xml"])
+    check(b["fingerprint"] != a["fingerprint"], "reconcile: the rebuild's fingerprint differs from its parent's")
+    p2 = pilot(root, d, "P2")
+    p2.wake()
+    have = T.scenario_status(p, b)
+    check(T.states(p)[b["cand"]].get("verdict") == "pass" and set(have) == {"s1", "s2"} and
+          {e["status"] for e in have.values()} == {"carried"} and
+          len([r for r in decisions(p, "carry") if r.get("cand") == b["cand"]]) == 1,
+          "reconcile: the wake itself carries it, records under its own cand: %s %s"
+          % (T.states(p)[b["cand"]], {k: v["status"] for k, v in have.items()}))
 
 
 def t_wake_interrupt_dedup():
@@ -2186,7 +2305,7 @@ def main():
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,
               t_resolve_after_crashed_pass, t_enqueue_single_record, t_wake_interrupt_crash, t_reload_crash,
               t_periodic_canary, t_drain_every_sealed, t_samefp_failed_rebuild,
-              t_wake_reconcile_carries, t_wake_interrupt_dedup, t_drain_most_overdue):
+              t_wake_reconcile_carries, t_wake_reconcile_hardening, t_wake_interrupt_dedup, t_drain_most_overdue):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run

@@ -1327,13 +1327,15 @@ class Pilot:
             s = self._check_live()
             ev = add_evidence(self.p, c, scn["id"], status, self.lane_name, self.id, t=self.d.clock(), why=why,
                               rc=rc, log=str(log), crash=crash, hotfix=hot and status == "pass",
+                              mid_canaries=mid["runs"],     # a green in-proof check leaves no other trace on the row
                               taint=taint if status in ("fail", "invalid") else None, nolock=True)
             s["in_flight"] = None
             if status in ("pass", "fail"):      # a finished, judging test is the proof the game is usable again
                 s["red_rungs"], s["red_reloads"] = 0, 0
             self._save(s)
         self._ev("test_end", task=c["item"], sha=c["sha"], verdict=status,
-                 detail={"tester": self.id, "cand": c["cand"], "scenario": scn["id"], "why": why})
+                 detail={"tester": self.id, "cand": c["cand"], "scenario": scn["id"], "why": why,
+                         "mid_canaries": mid["runs"]})
         if crash:
             self._crashed(c)
         self._resolve(c)
