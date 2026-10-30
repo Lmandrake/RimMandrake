@@ -1392,7 +1392,7 @@ def t_who_d_offline_partial():
         except AR.SwitchError as e:
             return None, str(e)
     res, err = run("a", 0, True)
-    check(res is not None and res["exit"] == 0 and res.get("offline_d"),
+    check(res is not None and res["exit"] == 0,
           "offline snapshot + origin unreachable + no stopped-arm event: only the remote-refs half is tolerated (%s)" % err)
     res, err = run("b", 2, True)
     check(res is None and err and '"events_since_switch": {"ralph_a": 2}' in err,
@@ -1403,11 +1403,53 @@ def t_who_d_offline_partial():
           "FORCED origin unreachable at who although the snapshot was taken ONLINE -> not tolerated (%s)" % err)
 
 
+def t_who_d_baseline_source():
+    """ARENA_WHO_REMOTE_REFS_HARDEN_SNEAKY_PUSH follow-up: (1) an offline switch's local baseline is compared with
+    local refs, not origin; (2) offline, the reflog half still runs; (3) production arms never reach the reflog."""
+    import time
+    w = World("bs", mode="ralph_a", active=("ralph_a",))
+    c = w.clone("trio")
+    d = w.deps()
+    real = dict(events=None, pushed=None)
+    # origin moves ahead of the stale local tracking refs (a push by someone else): local at A, origin at B
+    url = subprocess.run(["git", "-C", str(c), "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+    subprocess.run(["git", "-C", str(c), "push", "-q", "--no-verify", "origin", "HEAD:refs/heads/arena/trio/x"],
+                   check=True, capture_output=True, env=GENV)
+    local = AR.refs_snapshot(w.cfg, "trio", remote=False)
+    subprocess.run(["git", "-C", str(c), "commit", "-q", "--allow-empty", "-m", "b"], check=True, env=GENV)
+    subprocess.run(["git", "-C", str(c), "push", "-q", "--no-verify", url, "HEAD:refs/heads/arena/trio/x"],
+                   check=True, capture_output=True, env=GENV)
+    subprocess.run(["git", "-C", str(c), "push", "-q", "--no-verify", url, "HEAD:refs/heads/arena/trio/onlyorigin"],
+                   check=True, capture_output=True, env=GENV)
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": time.time() + 3600, "mode": "ralph_a",
+                                   "refs": {"trio": local}, "refs_source": {"trio": "local"}})
+    r = who_quiet(w, d, **real)
+    check(r["checks"]["d"]["ok"], "offline-recorded LOCAL baseline is compared with local refs: no push nobody made (%s)"
+          % r["checks"]["d"])
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": time.time() + 3600, "mode": "ralph_a",
+                                   "refs": {"trio": local}, "refs_source": {"trio": "remote"}})
+    check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "control: the same baseline labelled remote does differ from origin")
+    # (2) origin unreachable now, snapshot remote: a reflog move after ts is still found
+    snap = AR.refs_snapshot(w.cfg, "trio")
+    git(c, "remote", "set-url", "origin", str(w.root / "gone.git"))
+    r = AR.pushed_since(w.cfg, "trio", time.time() - 3600, snapshot=snap)
+    check(any("reflog" in x for x in r), "FORCED offline: the reflog half runs and flags a stopped arm's own push (%s)" % r)
+    raised = False
+    try:
+        AR.pushed_since(w.cfg, "trio", time.time() + 3600, snapshot=snap)
+    except AR.RemoteUnreachable:
+        raised = True
+    check(raised, "offline with nothing in the reflog still raises RemoteUnreachable (never passes)")
+    # (3) production arms return before any ref is read
+    check(AR.pushed_since(w.cfg, "production", 0, snapshot=None) == [] and AR.pushed_since(w.cfg, "v3", 0) == [],
+          "production/v3 arms: pushed_since returns early (reflog loop unreachable)")
+
+
 def main():
     try:
         for t in (t_two_targets, t_graph, t_switch_production, t_switch_forced, t_who, t_push, t_installer, t_ops_watch,
                   t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety, t_unknown_and_live,
-                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_who_d_offline_partial, t_cli_bits,
+                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_who_d_offline_partial, t_who_d_baseline_source, t_cli_bits,
                   t_fsd_parity, t_round2_gpt):
             print("== %s" % t.__name__)
             t()

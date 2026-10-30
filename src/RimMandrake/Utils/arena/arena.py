@@ -829,18 +829,27 @@ def refs_snapshot(cfg: dict, arm: str, remote: bool = True) -> dict[str, dict[st
     return out
 
 
-def pushed_since(cfg: dict, arm: str, ts: float, snapshot: dict | None = None) -> list[str]:
+def pushed_since(cfg: dict, arm: str, ts: float, snapshot: dict | None = None, snapshot_source: str = "remote") -> list[str]:
     """Item 8: refs of a stopped arm that MOVED since the switch, by two timestamp-free-of-commits methods:
     (1) compare the arm clone's tracking refs now with the snapshot the switch stored (new / moved / deleted ref);
     (2) the reflog of each tracking ref: an update recorded locally after `ts` (reflog times are when the ref moved
     here, not commit dates, so an old commit pushed late is caught). A git failure RAISES; a clone recorded in the
     snapshot that is no longer readable raises. No snapshot for an arena arm (a pre-round-2 state) is flagged, not
-    passed."""
+    passed. snapshot_source says where the baseline came from ("remote" ls-remote, or "local" cached tracking refs
+    of an --allow-offline switch): the comparison is like with like, so a stale local baseline is never set against
+    origin (that would report a push nobody made). If origin cannot be asked, the reflog half (no network) still
+    runs: a move it finds is returned, otherwise RemoteUnreachable is raised."""
     out = []
     if arm in PRODUCTION_ARMS:
         return out
-    now = refs_snapshot(cfg, arm)
-    if snapshot is None:
+    unreachable = None
+    try:
+        now = refs_snapshot(cfg, arm, remote=(snapshot_source != "local"))
+    except RemoteUnreachable as e:
+        unreachable, now = e, {}
+    if unreachable is not None:
+        pass
+    elif snapshot is None:
         if any(v for v in now.values()):
             out.append("(no refs snapshot recorded by the switch for %s: cannot prove nothing moved)" % arm)
     else:
@@ -857,6 +866,8 @@ def pushed_since(cfg: dict, arm: str, ts: float, snapshot: dict | None = None) -
                 m = re.search(r"@\{(\d+)\}$", ln.strip())
                 if m and int(m.group(1)) > ts and not any(o.startswith(ref + " ") for o in out):
                     out.append("%s updated %s (reflog)" % (ref, m.group(1)))
+    if unreachable is not None and not out:
+        raise unreachable
     return out
 
 
@@ -1341,16 +1352,19 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
         try:
             try:
                 snap = {a: d.refs_snapshot(new, a) for a in stopped_now}
+                snap_src = {a: "remote" for a in stopped_now}
             except RemoteUnreachable:
                 if not allow_offline:
                     raise
                 snap = {a: d.refs_snapshot(new, a, remote=False) for a in stopped_now}   # recorded offline switch
                 snapshot_offline = True
+                snap_src = {a: "local" for a in stopped_now}
         except Exception as e:  # noqa: BLE001 - who (d) must have a baseline; without one it would fail open
             raise SwitchError("tracking refs of the stopped arms unreadable (%s: %s); the new target was NOT started"
                               % (type(e).__name__, e))
         write_json(d.state_file(), {"ts": now_iso(d.clock), "epoch": d.clock(), "mode": mode, "from": cfg["mode"],
-                                    "stopped": stopped_now, "refs": snap})
+                                    "stopped": stopped_now, "refs": snap,
+                                    "refs_source": snap_src})
         set_mode(cfg_path, mode)
         steps.append("arm.toml mode = %s" % mode)
         clear = live_arms(new) | set(mode_targets(new))
@@ -1442,7 +1456,8 @@ def who(cfg: dict, d: Deps, bridge_locks=None, cwds=None, events=None, pushed=No
             ev = {a: (events or events_since)(d.root, a, ts) for a in stopped_arms}
             ev = {a: n for a, n in ev.items() if n}
             snaps = st.get("refs") if isinstance(st.get("refs"), dict) else {}
-            pushed_fn = pushed or (lambda c, a, t: pushed_since(c, a, t, snapshot=snaps.get(a)))
+            pushed_fn = pushed or (lambda c, a, t: pushed_since(
+                c, a, t, snapshot=snaps.get(a), snapshot_source=(st.get("refs_source") or {}).get(a, "remote")))
             try:
                 pu = {a: pushed_fn(cfg, a, ts) for a in stopped_arms}
             except RemoteUnreachable as e:
