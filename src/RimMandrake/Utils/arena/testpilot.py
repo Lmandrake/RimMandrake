@@ -447,6 +447,10 @@ def taint_note(p: dict, cand: dict, scenario: str, names, pilot: str = "pilot-no
         if cur is None or cur["status"] not in ("fail", "invalid"):
             raise PilotRefused("taint note on %s %s: its newest result is %s, not a FAIL or invalid"
                                % (cand["cand"], scenario, cur and cur["status"]))
+        ids = {s["id"] for s in cand["plan"]["scenarios"]}
+        if names != "uncertain" and not (isinstance(names, list) and set(names) <= ids):
+            raise PilotRefused("taint note on %s %s must be \"uncertain\" or this plan's scenario ids: %r"
+                               % (cand["cand"], scenario, names))
         return add_evidence(p, cand, scenario, "note", "-", pilot, nolock=True, why="taint note", taint=names,
                             note_on=cur["ts"])
 
@@ -588,6 +592,31 @@ def _state_cands(game: dict) -> list:
     return list(game.get("hot_from") or []) + ([game["cand"]] if game.get("cand") else [])
 
 
+def _state_taints(p: dict, cand: dict, game: dict) -> list:
+    """[(the candidate's own scenario that wrote it or None, its taint)] of every FAIL/invalid on this game state since
+    the reset, this candidate's and those of every candidate on the state. All of them, not the newest per scenario: a
+    retry that passes proves that scenario, it does not undo what the failed run did to the game. A note replaces
+    the taint of the result it follows."""
+    byid = cand_by_id(p)
+    own = (cand["item"], cand["fingerprint"])
+    keys = {own} | {(byid[c]["item"], byid[c]["fingerprint"]) for c in _state_cands(game) if c in byid}
+    recs, last = [], {}
+    for e in evidence(p):
+        k = (e["item"], e["fingerprint"])
+        if k not in keys:
+            continue
+        sid = (k, e["scenario"])
+        if _is_note(e):
+            if sid in last:
+                last[sid]["taint"] = e.get("taint")
+        elif e["status"] in ("fail", "invalid"):
+            last[sid] = {"t": e.get("t", 0), "taint": e.get("taint"), "own": e["scenario"] if k == own else None}
+            recs.append(last[sid])
+        else:
+            last.pop(sid, None)
+    return [(r["own"], r["taint"]) for r in recs if r["t"] > game.get("reset_t", 0) and r["taint"] is not None]
+
+
 def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
     """(valuable scenario ids, blocked ones) of a candidate on the current state. Blocked = named by a taint note or
     hot-fixed since the last state reset: a reset (fixture reload or reload) restores them. The taint is the game
@@ -598,16 +627,7 @@ def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
     game = sess.get("game") or {}
     reset_t = game.get("reset_t", 0)
     red = game.get("canary_red") or {}
-    taint, uncertain = set(), False
-    byid = cand_by_id(p)
-    sources = [have] + [scenario_status(p, byid[c]) for c in _state_cands(game)
-                        if c != cand["cand"] and c in byid]
-    for e in (e for src in sources for e in src.values()):
-        if e["status"] in ("fail", "invalid") and e.get("t", 0) > reset_t and e.get("taint") is not None:
-            if e["taint"] == "uncertain":
-                uncertain = True
-            else:
-                taint |= set(e["taint"])
+    taints = _state_taints(p, cand, game)
     val, blocked = [], []
     for s in cand["plan"]["scenarios"]:
         e = have.get(s["id"])
@@ -615,7 +635,7 @@ def _pending(p: dict, cand: dict, sess: dict) -> tuple[list, list]:
             continue
         if e and e.get("hotfix") and e.get("t", 0) > reset_t:
             blocked.append(s["id"])
-        elif (uncertain or s["id"] in taint) and not (e and e["status"] in ("fail", "invalid")):
+        elif any(own != s["id"] and (t == "uncertain" or s["id"] in t) for own, t in taints):
             blocked.append(s["id"])
         elif e and e["status"] == "invalid" and e.get("why") == "canary red" and \
                 red.get(_red_key(cand, s["id"])) in ("red", "stuck"):
@@ -1020,9 +1040,10 @@ class Pilot:
         if self.retired:
             return {"abort": why, "released": False}
         s = self._sess()
-        inf = s.get("in_flight") if s.get("pilot") == self.id and s.get("generation") == self.gen else None
+        mine = s.get("pilot") == self.id and s.get("generation") == self.gen
+        inf = s.get("in_flight") if mine else None
         c = cand_by_id(self.p).get((inf or {}).get("cand") or (dec or {}).get("cand"))
-        if c is not None:
+        if c is not None and mine:      # S6: a taken-over lane's evidence and queue are its new pilot's
             # the invalid record goes on the scenario that was running (in_flight), else the one this decision
             # chose, else (a reload/launch failure) the one the next test would run -- never "the first with no
             # evidence", which is a different scenario once any result exists (TESTPILOT_FIX_ABORT_WRONG_SCENARIO)
@@ -1134,6 +1155,9 @@ class Pilot:
                   cost.get("threshold_s"), dec.get("rule_sha")))
         with locked(self.p):            # F7: the reload is recorded pending BEFORE the game is touched
             s = self._check_live()      # S6: last check before touching the game (a takeover is of a DEAD pilot only)
+            cur = states(self.p).get(c["cand"], {}).get("state")
+            if cur not in ("queued", "testing"):
+                raise PilotRefused("%s is %s (changed since the decision): not reloaded" % (c["cand"], cur))
             s["pending_reload"] = {"decision": rec["id"], "cand": c["cand"], "sha": c["sha"], "t": self.d.clock()}
             self._save(s)
         ev = self.lane.reload(c["profile"], c["tier"], rule=dec["rule"], mods=c["mods"], has_dll=c["has_dll"],

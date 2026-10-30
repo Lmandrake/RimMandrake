@@ -578,10 +578,12 @@ def t_l9a():
           {"s1", "s2", "s3"}, "unknown changed files: everything re-runs")
     c3 = dict(b, cand="y", fingerprint="yy", parent=a["cand"], changed_files=[T.HARNESS_FILES[0]])
     check(set(T.plan_retest(p, c3, write=False)["run"]) >= {"s2"}, "a harness change re-runs a carried scenario")
-    c4 = dict(b, cand="z", fingerprint="ww", parent=a["cand"], changed_files=["src/RimMandrake/Other/x.xml"],
-              changed_defs=["RM_Baz"])
-    r4 = T.plan_retest(p, c4, write=False)["run"]
-    check("s3" in r4 and "s2" not in r4, "a changed def re-runs the scenario naming it: %s" % r4)
+    # parent b, not a: a's s1 taints s3, which would put s3 in the list whatever the changed defs say
+    c4 = dict(b, cand="z", fingerprint="ww", parent=b["cand"], changed_files=["src/RimMandrake/Other/x.xml"],
+              changed_defs=[])
+    check(not T.plan_retest(p, c4, write=False)["run"], "the control: no changed def, nothing re-runs")
+    r4 = T.plan_retest(p, dict(c4, changed_defs=["RM_Baz"]), write=False)["run"]
+    check(set(r4) == {"s3"}, "a changed def re-runs only the scenario naming it: %s" % r4)
     every_reload_has_a_rule(root, p, "l9a")
 
 
@@ -976,6 +978,73 @@ def t_absolute_proof_path():
     why = T.touched(scn, scn, mk(p_), mk(p_), set())
     check(why and "proof file" in why, "editing the absolute-argv proof forces its re-run: %s" % why)
     check(T.touched(scn, scn, mk("src/Unrelated/x.py"), mk(p_), set()) is None, "an unrelated change still carries")
+
+
+def t_review_round_2():
+    """Codex full-file review after the taint fixes."""
+    # an invalid retried to a PASS replaced the result that held the taint: the state stayed contaminated
+    root, p = fresh("rr_invalid_retry")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_R1", SHA[0], "B1", plan("s1", "s2", fixture="fx", s1={"taints": ["s2"]}))
+    d.rc["s1"] = 7
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    d.rc["s1"] = 0
+    pl.run_pass()
+    order = [x[:2] for x in d.calls if x[0] in ("scenario", "load_save")]
+    check(order == [("scenario", "s1"), ("scenario", "s1"), ("load_save", "fx"), ("scenario", "s2")],
+          "a retried s1 keeps its taint: s2 waits for the reset: %s" % order)
+    # an invalid scenario named by ANOTHER scenario's taint is blocked; its own taint does not stop its own retry
+    root, p = fresh("rr_invalid_named")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_R2", SHA[0], "B1", plan("s1", "s2", fixture="fx", s1={"taints": ["s2"]}))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    T.add_evidence(p, c, "s2", "invalid", "steve", "P1", t=d.clock() + 1, why="canary red", taint=None)
+    pl.step()
+    check(T._pending(p, c, pl._sess()) == ([], ["s2"]), "an invalid s2 named by s1's taint is blocked: %s"
+          % (T._pending(p, c, pl._sess()),))
+    # a superseded pilot's abort writes nothing: the lane, its evidence and its queue are the new pilot's
+    root, p = fresh("rr_abort_stale")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_R3", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    s = T.read_session(p, "steve")
+    s["pilot"], before = "P2", (len(T.evidence(p)), T.states(p)[c["cand"]]["state"])
+    T.write_session(p, "steve", s)
+    pl.abort(RuntimeError("late"), {"action": "test", "cand": c["cand"], "scenario": "s1"})
+    check((len(T.evidence(p)), T.states(p)[c["cand"]]["state"]) == before and
+          T.read_session(p, "steve")["pilot"] == "P2" and T.read_session(p, "steve")["status"] == "live",
+          "a superseded pilot's abort leaves the evidence, the state and the session alone")
+    # a taint note naming no scenario of the plan would replace `uncertain` and block nothing
+    root, p = fresh("rr_note_ids")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_R4", SHA[0], "B1", plan("s1", "s2"))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    e = raises(T.PilotRefused, T.taint_note, p, c, "s1", ["s22"])
+    check(bool(e) and "s22" in e and T.scenario_status(p, c)["s1"]["taint"] == "uncertain",
+          "a taint note with an unknown id is refused: %s" % e)
+    check(raises(T.PilotRefused, T.taint_note, p, c, "s1", ["s2"]) is None, "a note naming the plan's ids is taken")
+    check(raises(T.PilotRefused, T.taint_note, p, c, "s1", "uncertain") is None, "`uncertain` is taken")
+    # a reload decision whose target was superseded before the act loads nothing
+    root, p = fresh("rr_reload_stale")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_R5", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    T.enqueue(p, "ITEM_R5", SHA[1], "B1", plan("s1"))
+    e = raises(T.PilotRefused, pl.reload, {"rule": "R0", "cand": a["cand"], "why": "stale"})
+    check(bool(e) and "superseded" in e and not ev(root, "reload"), "a superseded target is not reloaded: %s" % e)
 
 
 # ---------------------------------------------------------------- independent-test defects (2026-10-30)
@@ -2470,7 +2539,7 @@ def t_check_live_plan():
 
 def main():
     for t in (t_check_live_plan, t_reload_oracle_order, t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
-              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_enqueue_vets_plan, t_absolute_proof_path, t_ladder, t_review1, t_review2, t_review2b,
+              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_enqueue_vets_plan, t_absolute_proof_path, t_review_round_2, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,
               t_resolve_after_crashed_pass, t_enqueue_single_record, t_wake_interrupt_crash, t_reload_crash,
