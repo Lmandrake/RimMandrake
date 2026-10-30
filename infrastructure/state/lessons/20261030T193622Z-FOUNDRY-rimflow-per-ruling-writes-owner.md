@@ -1,0 +1,1 @@
+rimflow note/any verb with --per-ruling or --by-card is written as seat OWNER into OWNER.jsonl (cli.py ~3707), even with RIMFLOW_SEAT set: use --why for a builder's own result notes; per-ruling only when the act itself is the owner's authority.
