@@ -54,7 +54,7 @@ WHERE THINGS LIVE
                             arm-readable root, the judge work root or the arena judge dir.
   $ARENA_JUDGE_WORK (default <clone root>/judge, i.e. /home/mandrake/rm/arena/judge: §1.6 bills it to the harness)
       <judge_id>/diff.patch     the neutralised diff (head minus base over `area`)
-      <judge_id>/tree/          head (TREE_PATHS + area dirs) for the hidden checks; deleted before any model call
+      <judge_id>/tree/          head (TREE_PATHS + area dirs + hidden reads) for the hidden checks; deleted pre-model
       <judge_id>/prompt.md      the one prompt every judge gets (no judge sees another's answer)
       <judge_id>/verdict.json   the blind verdict record: no arm field
   <arena>/judge/hidden/<T>.json  the hidden checks (arena_tasks.py); read by the harness side, never shown to an arm
@@ -1560,7 +1560,9 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
     checks = hidden_checks(hidden or {})
     if checks:
         try:
-            tree = materialise(clone, head, task.get("area") or [], work / "tree", tree_paths)
+            # + the judge-only read set the vet traced at the fix (ARENA_TREE_FIX_OMITS_CHECK_READ_PATHS)
+            tree = materialise(clone, head, task.get("area") or [], work / "tree",
+                               A.VR.judge_tree_paths(hidden, tree_paths))
             rec["hidden"] = run_hidden(checks, tree, work, priv=priv)
         finally:
             # fix round 2 (GPT review #1/#4): the raw head tree and the per-check copies are gone BEFORE any model

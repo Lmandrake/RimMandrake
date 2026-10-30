@@ -119,6 +119,7 @@ sys.path.insert(0, str(UTILS))              # rmpaths
 from rimflow import model  # noqa: E402
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import arena_safe_git as SG  # noqa: E402  (git on an arm-written .git)
+import arena_vet_reads as VR  # noqa: E402  (the paths a hidden check reads outside the tree)
 
 REPO = UTILS.parent.parent.parent
 
@@ -127,12 +128,12 @@ ESCAPE_DAYS = 7
 MAX_FILES = 8
 LIVE_OK = ("none", "minimal", "minimal+deps")
 KINDS = ("python-util", "xml-def-patch", "csharp", "live-verify", "tooling")
-# Hand-picked and checked by hand (2026-10-30, git + ledger, not this tool): claimed and started 2026-10-26T00:00:18Z,
-# verify pass and close 00:21:32Z at ledger sha 6a925e0b57, which the rewrite turned into 310ad7f953 (the ledger
-# commit 05c8baefa6 says "close ... at 310ad7f953"): 2 files, worker.py + selftest_steve_worker.py, needs offline,
-# no rework. If the census cannot see it, the census is blind (instrument_traps: a count is a query bug until a
-# sanity probe proves the instrument can see).
-SANITY_ITEM = "STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS"
+# Hand-picked: an item the census must keep (instrument_traps: a count is a query bug until a sanity probe proves the
+# instrument can see). Since the vet gates the pool it must also DISCRIMINATE under the judge route (pass at the fix,
+# fail at base). FOUNDRY 2026-10-30 (ARENA_SANITY_ITEM_FIX_NOT_DISCRIMINATING): the old pick
+# STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS fails at the fix too (its check reads source_sha from git; the judge tree
+# has no .git), so the probe moved to RP_TANKS_ROW's item, pass/fail in the vet cache under the judge runner.
+SANITY_ITEM = "TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE"
 BOOKKEEPING = ("infrastructure/state/ledger/*", "infrastructure/state/queue/*", "infrastructure/state/items/*",
                "AGENTS.md")
 # size points from the original diff (counted files, added+deleted lines); fixed at freeze
@@ -728,6 +729,7 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
             if is_selftest(path) and st != "D":
                 checks.append(_test_entry(repo, fix, base, path, st, type="fix_test",
                                           command="python3 src/RimMandrake/Utils/run_selftests.py --only " + path))
+        reads: set = set()             # judge-only: what the checks read outside the tree (arena_vet_reads)
         if vet is not None:
             # FOUNDRY 2026-10-30 (ARENA_TASKS_VET_CHECK_FAILS_AT_BASE): a hidden check that also passes at base
             # proves nothing. Each fix_test carries its measured base/fix exit codes; one that does not FAIL at base
@@ -741,6 +743,7 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                     c["vet"] = None
                     continue
                 ok, why = vet_verdict(rec)
+                reads.update(rec.get("reads") or [])
                 vstat[why] += 1
                 vstat["checks"] += 1
                 c["vet"] = {"key": vet_key(base, fix, c["path"], c["body"]), "runner": _runner_id(),
@@ -783,7 +786,7 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
             rw_out.append(entry)
             checks.append({"type": "escape_rework", "rework_item": r.id, "needs_authoring": not entry["tests"]})
         hidden = {"task": tid, "source_item": iid, "label": label, "fix_sha": fix, "ledger_sha": close.get("sha"),
-                  "sha_resolution": how, "checks": checks,
+                  "sha_resolution": how, "checks": checks, **({"reads": sorted(reads)} if reads else {}),
                   "reworks": rw_out, "rework_candidates": considered,
                   # an open fix-type rework filed in the window: Clean is provisional until it closes or dies
                   "label_pending": sorted(pending),
@@ -876,7 +879,7 @@ def _count(xs):
 # checks); the census reads the cache and never runs code.
 
 VET_BUDGET = 480                        # seconds: one `vet` call stays inside a foreground command window
-VET_RUNNER = "arena_judge.materialise+run_hidden/1"
+VET_RUNNER = "arena_judge.materialise+run_hidden+trace_reads/2"
 
 
 def vet_runner_id(judge_src: bytes | None = None) -> str:
@@ -890,6 +893,7 @@ def vet_runner_id(judge_src: bytes | None = None) -> str:
     h = hashlib.sha256(src)
     for f in (paths, J.JH.posix_within):
         h.update(b"\0" + inspect.getsource(f).encode("utf-8"))
+    h.update(b"\0" + Path(VR.__file__).read_bytes() + b"\0" + inspect.getsource(_vet_task).encode("utf-8"))
     return VET_RUNNER + "@" + h.hexdigest()[:16]
 
 
@@ -965,24 +969,43 @@ def _vet_task(job: dict, repo: Path, work: Path, timeout: int) -> list[dict]:
     import arena_judge as J            # lazy: arena_judge imports this module
     checks = [{"kind": "fix_test", "path": c["path"], "body": c["body"]} for c in job["checks"]]
     res = {}
-    for side in ("fix", "base"):
+
+    def run(side, reads):
         d = work / side
         if d.exists():
             shutil.rmtree(d)
         d.mkdir(parents=True)
         try:
-            tree = J.materialise(repo, job[side], job.get("area") or [], d / "tree")
+            tree = J.materialise(repo, job[side], job.get("area") or [], d / "tree", J.TREE_PATHS + tuple(reads))
             res[side] = J.run_hidden(checks, tree, d, timeout=timeout)
         except J.JudgeError as e:
             raise ArenaError("vet: %s side: %s" % (side, e))
         finally:
             shutil.rmtree(d, ignore_errors=True)
+
+    # ARENA_TREE_FIX_OMITS_CHECK_READ_PATHS: a check failing at the fix is traced for what it reads outside the tree;
+    # the fix side is rerun and the base side run with that read set, which the judge then materialises too
+    run("fix", ())
+    trace = {"reads": []}
+    failing = [c for c, r in zip(checks, res["fix"]) if r.get("result") != "pass"]
+    if failing:
+        try:
+            trace = VR.trace_reads(repo, job["fix"], job.get("area") or [], failing, work / "trace", timeout)
+        except J.JudgeError as e:
+            raise ArenaError("vet: trace: %s" % e)
+        finally:
+            shutil.rmtree(work / "trace", ignore_errors=True)
+        if trace["reads"]:
+            run("fix", trace["reads"])
+    run("base", trace["reads"])
     recs = []
     for c, fr, br in zip(job["checks"], res["fix"], res["base"]):
         recs.append({"key": c["key"], "task": job["task"], "path": c["path"], "base": job["base"], "fix": job["fix"],
                      "runner": _runner_id(), "fix_result": fr.get("result"), "base_result": br.get("result"),
                      "fix_rc": fr.get("rc"), "base_rc": br.get("rc"), "fix_tail": (fr.get("tail") or "")[-600:],
-                     "base_tail": (br.get("tail") or "")[-600:], "timeout": timeout,
+                     "base_tail": (br.get("tail") or "")[-600:], "timeout": timeout, "reads": trace["reads"],
+                     **({"reads_trace": {k: trace[k] for k in ("too_wide", "rounds", "converged")}}
+                        if failing else {}),
                      "at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
     return recs
 
