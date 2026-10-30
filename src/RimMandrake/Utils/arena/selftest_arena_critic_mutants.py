@@ -10,7 +10,8 @@ model is called (a fake matcher call stands in), git runs only in a throwaway re
   writeup       a kept full answer is used whole (not an 800-char tail), verdict lines are stripped, the cap keeps the END
   scoring       discrimination = catch(mut) - reject(orig); reason mode counts an unmatched reject as a miss; a reject
                 with no valid match drops out (and the grade is UNMEASURED); the paired restriction keeps only
-                candidates valid for both reviewers; an always-reject reviewer scores 0; the bootstrap is reproducible
+                candidates valid for both reviewers; an always-reject reviewer scores 0; the bootstrap is reproducible;
+                a match record whose key is not the current job's (other write-up, fixture or matcher) is ignored
   seed          copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
                 does not match its recorded sha, and a target run of another critic
   proofs        latest() accepts a proof made on this set OR on exactly this mutant's and original's heads, and
@@ -158,6 +159,29 @@ def t_scoring():
     check("an interval spanning 0 is not a call", "spans 0" in M.decision(sc).get("call", ""))
 
 
+def t_stale_match():
+    doc = {"set_sha256": "S", "candidates": [
+        {"cid": "o1", "role": "good"}, {"cid": "o2", "role": "good"},
+        {"cid": "m1", "role": "mutant", "pair": "o1", "mid": "m1", "mutant_kind": "k", "mutant_defect": "d1"},
+        {"cid": "m2", "role": "mutant", "pair": "o2", "mid": "m2", "mutant_kind": "k", "mutant_defect": "d2"}]}
+    recs = {"o1": {"cid": "o1", "verdict": "accept"}, "o2": {"cid": "o2", "verdict": "accept"},
+            "m1": {"cid": "m1", "verdict": "reject", "reasons": ["the d1 defect"]},
+            "m2": {"cid": "m2", "verdict": "accept"}}
+    job = M.match_jobs(doc, {"r": recs})
+    check("one match job per valid reject", [j["cid"] for j in job] == ["m1"], str(job))
+    good = {"key": job[0]["key"], "run": "r", "cid": "m1", "valid": True, "true_hit": ["m1"], "decoy_hit": False}
+    stale = dict(good, key="0" * 16)
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [good], {}, reps=50)
+    check("a current match counts as a catch", sc["reviewers"]["critic"]["reason"]["catch"] == [1, 2]
+          and sc["reviewers"]["critic"]["rejects_without_valid_match"] == 0, str(sc["reviewers"]["critic"]))
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [stale], {}, reps=50)
+    check("a stale match (other write-up, fixture or matcher) is ignored",
+          sc["reviewers"]["critic"]["rejects_without_valid_match"] == 1 and sc["verdict"]["grade"] == "UNMEASURED",
+          str(sc["reviewers"]["critic"]))
+    j2 = M.match_jobs(doc, {"r": dict(recs, m1=dict(recs["m1"], reasons=["another write-up"]))})
+    check("a changed write-up changes the match key", j2[0]["key"] != job[0]["key"])
+
+
 class FakeCritic:
     name = "fake"
 
@@ -219,6 +243,7 @@ def main() -> int:
         t_matcher()
         t_writeup()
         t_scoring()
+        t_stale_match()
         t_seed(root)
         t_proofs()
     finally:

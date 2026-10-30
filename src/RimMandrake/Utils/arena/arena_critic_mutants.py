@@ -354,9 +354,18 @@ Answer with exactly one JSON object and nothing after it: {{"identified": [list 
 empty]}}
 """
 
+MATCH_MODEL = "opus"
+# The matcher's identity is part of every match key: a changed prompt or model never reuses an old judgment.
+MATCHER_ID = hashlib.sha256((MATCH_PROMPT + "\0" + MATCH_MODEL).encode()).hexdigest()[:12]
+
 
 def writeup_of(rec: dict) -> str:
-    """The reviewer's own words, without the verdict token, the reviewer's name or anything else about the run."""
+    """The reviewer's own words, without the verdict token, the reviewer's name or anything else about the run; the
+    last WRITEUP_MAX chars of writeup_full (score() counts every reject that this cap cut)."""
+    return writeup_full(rec)[-WRITEUP_MAX:]
+
+
+def writeup_full(rec: dict) -> str:
     parts = [str(x) for x in (rec.get("reasons") or []) if x]
     full = (rec.get("meta") or {}).get("answer")
     if full:                                    # a reviewer that keeps its whole answer (the tester): use all of it
@@ -368,8 +377,7 @@ def writeup_of(rec: dict) -> str:
         parts = [tail] + [p for p in parts if p[-200:] not in tail]
     text = "\n".join(parts)
     text = "\n".join(ln for ln in text.splitlines() if not ln.strip().upper().startswith(("VERDICT", "**VERDICT")))
-    text = text.replace('"verdict": "reject"', "").replace('"verdict": "accept"', "")
-    return text[-WRITEUP_MAX:]
+    return text.replace('"verdict": "reject"', "").replace('"verdict": "accept"', "")
 
 
 def match_jobs(doc: dict, runs: dict) -> list:
@@ -393,7 +401,7 @@ def match_jobs(doc: dict, runs: dict) -> list:
             items = [("true", m["mid"], m["mutant_defect"]) for m in truths] + [("decoy", decoy["mid"], decoy["mutant_defect"])]
             random.Random("%s|%s|order" % (run_id, cid)).shuffle(items)
             w = writeup_of(r)
-            key = hashlib.sha256(json.dumps([run_id, cid, w, items]).encode()).hexdigest()[:16]
+            key = hashlib.sha256(json.dumps([MATCHER_ID, run_id, cid, w, items]).encode()).hexdigest()[:16]
             jobs.append({"key": key, "run": run_id, "cid": cid, "role": c.get("role"), "items": items, "writeup": w})
     return jobs
 
@@ -426,7 +434,7 @@ def parse_identified(text: str, n: int) -> list | None:
     return sorted(set(out))
 
 
-def opus_call(prompt: str, timeout: int, model: str = "opus", max_usd: float = 2.0) -> tuple:
+def opus_call(prompt: str, timeout: int, model: str = MATCH_MODEL, max_usd: float = 2.0) -> tuple:
     """No tools, fresh HOME, sandboxed: the matcher sees the prompt and nothing else."""
     work = C.work_base() / ("match-" + secrets.token_hex(6))
     (work / "home" / ".claude").mkdir(parents=True, mode=0o700)
@@ -611,9 +619,12 @@ def restrict(tab: dict, other: dict) -> dict:
 
 def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = BOOT) -> dict:
     """runs: {"critic": (run_id, recs, fingerprint), "baseline": (...)}"""
+    # Only a match made for the CURRENT job counts: same matcher, run, candidate, write-up and defect list (the key);
+    # a record for an older write-up, fixture or matcher is ignored, so its reject reads as unmatched.
+    current = {j["key"] for j in match_jobs(doc, {rid: recs for rid, recs, _fp in runs.values()})}
     mrec = {}
     for r in match_recs:
-        if r.get("valid"):
+        if r.get("valid") and r.get("key") in current:
             mrec[(r["run"], r["cid"])] = r
     n_mut = sum(1 for c in doc["candidates"] if c.get("role") == "mutant")
     n_orig = len(pairs(doc))
@@ -639,6 +650,8 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
                 seeded["mutant" if role_of[cid] == "mutant" else "good"] += 1
         blk = {"run": run_id, "critic_fingerprint": fp, "invalid": invalid, "candidates": len(doc["candidates"]),
                "seeded": seeded, "rejects_without_valid_match": unmatched,
+               "writeups_truncated": sum(1 for r in recs.values() if r["verdict"] == "reject"
+                                         and len(writeup_full(r)) > WRITEUP_MAX),
                "matcher_decoy_hits": [sum(1 for j in jobs if j["decoy_hit"]), len(jobs)],
                "orig_rejects_naming_paired_defect": sum(1 for row in tab.values() if row["orig"] == "reject"
                                                         and row["orig_match"])}
@@ -780,6 +793,8 @@ def main(argv=None) -> int:
         print("== %s (%s) invalid %d/%d, seeded %d originals + %d mutants, decoy hits %s" % (
             role, blk["run"], blk["invalid"], blk["candidates"], blk["seeded"]["good"], blk["seeded"]["mutant"],
             blk["matcher_decoy_hits"]))
+        print("  rejects without a valid current match %d, write-ups cut at %d chars %d" % (
+            blk["rejects_without_valid_match"], WRITEUP_MAX, blk["writeups_truncated"]))
         for mode in ("verdict", "reason"):
             x = blk[mode]
             print("  %-7s catch %d/%d  false-reject %d/%d  discrimination %s  95%% %s" % (
