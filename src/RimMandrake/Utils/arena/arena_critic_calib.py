@@ -317,15 +317,16 @@ def score_adjudicated(set_doc: dict, results: list[dict], adj: dict) -> dict:
 
 
 def _measure(m: dict, thr: float, need: int) -> tuple:
-    if m["n"] and m["wilson95"][0] >= thr:
-        return "FAIL", "lower bound %.3f >= %.2f (%d/%d)" % (m["wilson95"][0], thr, m["k"], m["n"])
+    lo, hi = wilson(m["k"], m["n"])           # the gate reads the bounds themselves; "wilson95" is rounded for display
+    if m["n"] and lo >= thr:
+        return "FAIL", "lower bound %.3f >= %.2f (%d/%d)" % (lo, thr, m["k"], m["n"])
     if m["n"] >= need and m["rate"] >= thr:
         return "FAIL", "point %.3f >= %.2f (%d/%d)" % (m["rate"], thr, m["k"], m["n"])
     if m["n"] < need:
         return "UNMEASURED", "%d valid (need %d)" % (m["n"], need)
-    if m["wilson95"][1] < thr:
-        return "PASS", "upper bound %.3f < %.2f" % (m["wilson95"][1], thr)
-    return "INCONCLUSIVE", "point %.3f < %.2f but upper bound %.3f is not" % (m["rate"], thr, m["wilson95"][1])
+    if hi < thr:
+        return "PASS", "upper bound %.3f < %.2f" % (hi, thr)
+    return "INCONCLUSIVE", "point %.3f < %.2f but upper bound %.3f is not" % (m["rate"], thr, hi)
 
 
 def reliability(s: dict) -> dict:
@@ -647,10 +648,11 @@ def critic_fingerprint(critic: Critic) -> str:
     except (RELAY.RelayRefused, OSError):
         allow = ""                               # a stand-in critic needs no route; a real one is refused at the sandbox
     parts = [critic.name, getattr(critic, "model", "") or "", str(getattr(critic, "max_usd", "")), L4_PROMPT, allow,
-             repr((TREE_BLOB_MAX, TREE_TOTAL_MAX, SIBLING_ROOTS, SIBLING_TEXT, SIBLING_DIR_MAX, INLINE_DIFF_MAX))]
+             repr((TREE_BLOB_MAX, TREE_TOTAL_MAX, SIBLING_ROOTS, SIBLING_TEXT, SIBLING_DIR_MAX, INLINE_DIFF_MAX,
+                   J.TREE_PATHS))]
     parts += [inspect.getsource(f) for f in (sandbox_argv, refuse_unmasked, prepare, critic_tree_files, unchanged_assets,
                                              asset_roots, text_area, referenced_sibling_dirs, RELAY, J.neutralise,
-                                             J.materialise, J.parse_answer, AS.seccomp_program, AS._bpf_file)]
+                                             J.scrub, J.materialise, J.parse_answer, AS.seccomp_program, AS._bpf_file)]
     parts += [exe_id, repr(config)]
     try:
         parts.append(inspect.getsource(type(critic)))
@@ -911,6 +913,9 @@ def _run_locked(d, set_doc, critic, run_id, concurrency, max_n, attempts, repo, 
     meta_path = d / "run.json"
     fp = critic_fingerprint(critic)
     if not meta_path.exists():
+        if res_path.exists() and res_path.stat().st_size:
+            raise SystemExit("run %s has results but no run.json: whose they are is unknown; refusing to adopt them"
+                             % run_id)
         meta_path.write_text(json.dumps({"run": run_id, "critic": critic.name, "critic_fingerprint": fp,
                                          "set_sha256": set_doc["set_sha256"],
                                          "started": dt.datetime.now(dt.timezone.utc).isoformat()}, indent=1))

@@ -587,6 +587,37 @@ def t_review_fixes(root):
     import time as T
     RELAY = C.RELAY
     root.mkdir(parents=True, exist_ok=True)
+    # second review: the gate reads the true bound, not the display rounding; bytes sent with CONNECT are forwarded;
+    # results without a run.json are nobody's
+    m = C.rate(10, 68, 0.25)
+    check("rate: a bound just under the threshold passes though it displays as the threshold",
+          m["wilson95"][1] == 0.25 and C._measure(m, 0.25, 8)[0] == "PASS", repr(C._measure(m, 0.25, 8)))
+    orphan = root / "orphan"
+    orphan.mkdir()
+    (orphan / "results.jsonl").write_text('{"cid": "x"}\n')
+    try:
+        C.run({"candidates": [], "set_sha256": "0" * 64}, C.RejectAll(), "orphan", root=root)
+        check("run: orphaned results are refused", False)
+    except SystemExit as e:
+        check("run: orphaned results are refused", "no run.json" in str(e), str(e))
+    sink = S.socket(); sink.bind(("127.0.0.1", 0)); sink.listen(1)
+    got = []
+
+    def take():
+        c, _ = sink.accept()
+        got.append(c.recv(16))
+        c.close()
+    threading.Thread(target=take, daemon=True).start()
+    r0 = RELAY.Relay({"127.0.0.1:%d" % sink.getsockname()[1]}, root / "early")
+    u = S.socket(S.AF_UNIX); u.settimeout(5); u.connect(r0.path)
+    u.sendall(b"CONNECT 127.0.0.1:%d HTTP/1.1\r\n\r\nhello" % sink.getsockname()[1])
+    u.recv(256)
+    for _ in range(50):
+        if got:
+            break
+        T.sleep(0.05)
+    u.close(); r0.close()
+    check("relay: bytes sent with the CONNECT reach the model", got == [b"hello"], repr(got))
     # a model silent for longer than the connect timeout keeps its link
     up = S.socket(); up.bind(("127.0.0.1", 0)); up.listen(1)
     port = up.getsockname()[1]

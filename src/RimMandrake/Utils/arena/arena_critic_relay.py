@@ -152,6 +152,9 @@ class Relay:
             up.settimeout(None)      # CONNECT_TIMEOUT bounds the connect: a model silent for 30 s is not a dead link
             c.settimeout(None)
             c.sendall(b"HTTP/1.1 200 Connection Established\r\n\r\n")
+            early = head.split(b"\r\n\r\n", 1)[-1] if b"\r\n\r\n" in head else b""
+            if early:                    # a client may send its first tunnel bytes with the CONNECT
+                up.sendall(early)
             t = threading.Thread(target=_pipe, args=(up, c), daemon=True)
             t.start()
             _pipe(c, up)
