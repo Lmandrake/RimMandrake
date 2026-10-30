@@ -123,8 +123,8 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
   - A C# DLL can be built while the game runs, but replacing a loaded DLL needs close, deploy and relaunch.
   - Full-list loads take about 15-30 minutes. The one measured run took 13-19 minutes (Opus A1). Measure each
     profile from launch to ready before trusting any figure.
-- **L12. Grant expiry or the owner's presence is a hold, not a reload.** A bridge timeout means reconnect and
-  reconcile, not restart (Opus A2, GPT C16).
+- **L12. Grant expiry is not a reload.** A bridge timeout means reconnect and reconcile, not restart (Opus A2,
+  GPT C16).
 - **L13. Saves are protected at the capability boundary, not by prompt.** The pilot's game uses a test save
   directory, and keeper and canonical saves are write-denied where the OS allows it, checked at session start
   (Opus A5, GPT C35). A full-list session loads a compatible scratch save. It never starts a quicktest world, which
@@ -170,13 +170,11 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
   absent. Such an item's tier is the 13-mod minimal list plus only the mods it cannot load without, built with
   `modset_builder.py --tier` after its output is checked. Its real profile and load time are recorded, and it never
   inherits the 22-second figure (Opus D7, GPT point 11).
-- **M4. Two pilots, and the owner's return to Archmagi.**
+- **M4. Two pilots.**
   - One shared ready queue with claims. An item is taken by one pilot, and each machine has its own lock.
   - SteveDesktop runs as the executor through testq (canary, steward, PAUSE_ON).
   - Archmagi runs only behind an explicit owner switch, since a pilot on his gaming machine changes its mod list
     (Opus X4).
-  - When he returns, the pilot stops safely. Completed valid evidence is kept and unfinished obligations are requeued
-    (GPT point 23). Opus's "the session is lost, the batch returns" threw away valid evidence.
 - **M5. Crashes.**
   - Relaunch, then canary.
   - The interrupted test is INVALID and re-queued once, but the crash itself is kept as possible product-defect
@@ -283,7 +281,6 @@ How to read the table:
 | O1 | Opus X1: TP+ optimises a non-bottleneck. The pilot is idle 62% and every pilot parameter moves output by under 0.3/day. | **Partly.** The merge stops designing reload tactics and keeps the simplest rule (M1). TP+'s value is quality, not throughput, and the trial must show that quality is worth its cost. |
 | O2 | Opus X2: the critic's false-reject rate is unmeasured and is the largest lever (about 6/day across its range). | **No, by design work.** It gets measured first: critic calibration on day 2 (section 6). |
 | O3 | Opus X3: full-list batch failures need attribution, and a crash voids the whole batch. | **Out of the trial.** The trial has no full-list check (M2), so this applies only to production after the switch. Crash evidence is kept (M5). |
-| O4 | Opus X4: the owner may return mid-session on Archmagi, where a pilot changes his mod list. | **In design.** An explicit switch and a safe yield that keeps evidence (M4). Untested until the live crossover. |
 | O5 | Opus X5: the simulator is uncalibrated. Only the invalid-run rate (0.09) and reload times are measured. | **Replaced, not fixed.** The harness measures real numbers. The simulator is trusted afterwards only if it predicts day-2 numbers (Harness section 4.4). |
 | O6 | Opus R2's critical flaw: TP+ buys its lead with tokens, on a metric only it can score, and loses on sound output to C+sub in 80% of members (98% at 1.0G). | **Partly.** The common charged check (M7) makes every design scorable. The steady budget is set from the trial's measured cost per accepted item (section 5, decision 2). If the critic rejects a quarter of good small items, the honest answer is C+sub plus a sampled blind review. |
 | G1 | GPT C40 and point 35: the pilot's taint and dependency judgment may be too weak. If handled conservatively, it erases continuation's benefit, leaving a complex system that gains little over a simple runner. | **No.** The script canary gates and uncertainty blocks acceptance (L8). That is safe but may erase the benefit. The trial measures valid extra evidence gathered after failures against the cost of the machinery. |

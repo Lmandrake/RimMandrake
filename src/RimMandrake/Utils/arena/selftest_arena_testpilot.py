@@ -391,6 +391,8 @@ def t_default_never_consults_owner():
     hits = [w for w in ("owner_returned", "OwnerReturned", "check_owner", "_yield", "owner_t", 'get("hold")', '"action": "hold"')
             if w in src]
     check(not hits, "testpilot.py has no owner-return probe, yield or hold path: %s" % hits)
+    knobs = [k for k in json.loads(T.RULE_FILE.read_text(encoding="utf-8")) if "yield" in k.lower()]
+    check(not knobs, "the reload rule file has no yield knob (TESTPILOT_FIX_STALE_YIELD_KNOBS): %s" % knobs)
     L.Lane.WATCH_POLL_S = 0.05
     root, p = fresh("noown")
 
@@ -1307,11 +1309,319 @@ def t_killpg():
         os.kill(gpid, 9)
 
 
+def _die(d):
+    def f():
+        d.running = False
+    return f
+
+
+def t_checkout_refusal():
+    """TESTPILOT_FIX_CHECKOUT_REFUSAL_LOOPS: a checkout that fails after the reload decision is an act failure: the
+    candidate is requeued once then parked, never re-decided forever (indep6 probe_defects case 1)."""
+    root, p = fresh("co_loop")
+    d = FakeDriver()
+    d.checkout = lambda clone, sha: (False, "fatal: reference is not a tree")
+    T.enqueue(p, "ITEM_CO", SHA[0], "B1", plan("s1"))
+    seen = []
+    for i in range(4):
+        pl = pilot(root, d, "P%d" % i)
+        pl.wake()
+        try:
+            T.run_pass_guarded(pl, 5)
+            err = None
+            if not pl.retired:
+                pl.handoff("test: pass end")
+        except Exception as e:  # noqa: BLE001
+            err = "%s: %s" % (type(e).__name__, e)
+        seen.append((T.states(p)["ITEM_CO@1"]["state"], len(decisions(p, "reload")), err))
+    check(seen[0][0] == "queued" and T._requeues(p, "ITEM_CO@1") >= 1 and seen[0][2] is None,
+          "checkout: the first failure requeues the candidate inside the pass (no escape): %s" % seen[0:1])
+    check(seen[1][0] == "parked", "checkout: the second failure parks it: %s" % seen)
+    check(seen[2][1] == seen[1][1] == seen[3][1] == 2,
+          "checkout: no reload is decided for it once parked (2 reload decisions, not one per pass): %s" % seen)
+    check(len(decisions(p, "abort")) == 2 and any("checkout" in (e.get("why") or "") for e in T.evidence(p)),
+          "checkout: each failure is a logged abort with invalid evidence naming the checkout")
+    s = T.read_session(p, "steve")
+    check(s["status"] == "aborted" or s["status"] in ("handoff", "closed"), "checkout: the session ended: %s"
+          % s["status"])
+
+
+def t_quarantine_item():
+    """TESTPILOT_FIX_QUARANTINE_SPARES_SIBLING: a quarantine (2 crashes) and the 3-live-fail park cover the whole
+    item (M5, L10): its other open candidates close with it and are never tested."""
+    root, p = fresh("qq_item")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_QQ", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "Q1")
+    pl.wake()
+    pl.step()
+    d.during["s1"] = _die(d)
+    pl.step()                                       # crash 1 on @1 (testing)
+    b = T.enqueue(p, "ITEM_QQ", SHA[1], "FIX", plan("s1", "s2"), kind="repair", fault="SITE", parent=a["cand"])
+    for _ in range(6):
+        if pl.retired:
+            break
+        r = pl.step()
+        if r["decision"]["action"] == "idle":
+            break
+    st = {k: v["state"] for k, v in T.states(p).items()}
+    runs = [c for c in d.calls if c[0] == "scenario"]
+    check(st == {a["cand"]: "quarantined", b["cand"]: "quarantined"} and T.item_parked(p, "ITEM_QQ"),
+          "quarantine: the second crash quarantines the item, its open sibling %s too: %s" % (b["cand"], st))
+    check(runs == [("scenario", "s1"), ("scenario", "s1")], "quarantine: the sibling is never tested: %s" % runs)
+    # the 3-live-fail park (L10): the third failing candidate parks the item and its open sibling
+    root, p = fresh("lf_item")
+    d = FakeDriver()
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "L1")
+    pl.wake()
+    for i in range(2):
+        T.enqueue(p, "ITEM_LF3", SHA[i], "B1", plan("s1", s1={"taints": []}))
+        pl.run_pass()
+    c3 = T.enqueue(p, "ITEM_LF3", SHA[2], "B1", plan("s0", "s1", s1={"taints": []}))
+    pl.step()                                       # @3 hot-applies (live, same mods): s0 passes, @3 testing
+    c4 = T.enqueue(p, "ITEM_LF3", SHA[3], "B1", plan("s0", "s1", s1={"taints": []}), changed_files=None)
+    r = pl.step()                                   # @3's s1 fails: the third failing candidate
+    st = T.states(p)
+    check(r["decision"].get("cand") == c3["cand"] and st[c3["cand"]]["state"] == "parked" and
+          st[c4["cand"]]["state"] == "parked" and T.item_parked(p, "ITEM_LF3"),
+          "live-fail park: the third failure parks the item and its open sibling %s: %s"
+          % (c4["cand"], {k: v["state"] for k, v in st.items()}))
+    n = len([c for c in d.calls if c[0] == "scenario"])
+    pl.run_pass()
+    check(len([c for c in d.calls if c[0] == "scenario"]) == n, "live-fail park: the parked sibling is never tested")
+
+
+def t_mutant_guards3():
+    """TESTPILOT_HARDEN_SELFTEST_MUTANTS_ROUND3: the guards the indep6 mutants (n1-n5, n7-n10, n12, n17, n18) showed
+    unseen."""
+    ex = {"s1": {"taints": []}}
+    # n1: the abort's invalid goes on the in-flight scenario (s2), not the first pending one (s1)
+    root, p = fresh("m3_inflight")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_N1", SHA[0], "B1", plan("s1", "s2", **ex))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+
+    def kb():
+        raise KeyboardInterrupt()
+    d.during["s2"] = kb
+    try:
+        pl.test({"action": "test", "cand": c["cand"], "scenario": "s2", "why": "test: s2 first"})
+    except KeyboardInterrupt as e:
+        pl.abort(e)
+    evs = [(e["scenario"], e["status"]) for e in T.evidence(p)]
+    check(evs == [("s2", "invalid")], "n1: an abort with no decision marks the in-flight s2, not pending s1: %s" % evs)
+    # n5: a stale pilot's abort never reads the live pilot's in_flight
+    root, p = fresh("m3_stale")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_N5", SHA[0], "B1", plan("s1", "s2"))
+    p1 = pilot(root, d, "P1")
+    p1.wake()
+    p1.step()
+    p2 = pilot(root, d, "P2")
+    p2.wake(takeover_dead=True)
+    d.during["s1"] = lambda: p1.abort(RuntimeError("stale pilot failed"))
+    p2.step()
+    evs = [(e["scenario"], e["status"], e["pilot"]) for e in T.evidence(p)]
+    check(evs == [("s1", "pass", "P2")] and T._requeues(p, c["cand"]) == 0,
+          "n5: the stale P1's abort records nothing on P2's in-flight test: %s" % evs)
+    # n2: a failure after the act recorded its result does not re-mark that result invalid
+    root, p = fresh("m3_after")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_N2", SHA[0], "B1", plan("s1", "s2"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+
+    def bad_resolve(*a, **k):
+        raise RuntimeError("resolve failed after the evidence")
+    pl._resolve = bad_resolve
+    r = pl.step()
+    evs = [(e["scenario"], e["status"]) for e in T.evidence(p)]
+    check(T._aborted(r["result"]) and evs == [("s1", "pass")],
+          "n2: an act failing after its PASS was recorded leaves that PASS alone: %s" % evs)
+    # n3: a relaunch failure marks the FIRST pending scenario (s1), not the last (s2)
+    root, p = fresh("m3_first")
+
+    class DL(FakeDriver):
+        fail = False
+
+        def launch_and_wait(self):
+            if self.fail:
+                self.t += 30
+                return False, "[4 launch] no bridge token"
+            return super().launch_and_wait()
+    d = DL()
+    c = T.enqueue(p, "ITEM_N3", SHA[0], "B1", plan("s1", "s2", **ex))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    d.rc["s1"] = 7
+    pl.step()
+    v, _b = T._pending(p, c, T.read_session(p, "steve"))
+    d.running, d.fail = False, True
+    pl.step()
+    check(v == ["s1", "s2"] and T.evidence(p)[-1]["scenario"] == "s1",
+          "n3: with s1 and s2 both pending a relaunch failure marks s1: %s -> %s" % (v, T.evidence(p)[-1]["scenario"]))
+    # n4: an act failure is not a crash: one abort plus one game death does not quarantine
+    root, p = fresh("m3_abortcrash")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_N4", SHA[0], "B1", plan("s1", "s2", **ex))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+
+    def boom():
+        raise RuntimeError("driver lost the proof pipe")
+    d.during["s1"] = boom
+    pl.step()
+    pl = pilot(root, d, "P2")
+    pl.wake()
+    d.during["s1"] = _die(d)
+    for _ in range(3):
+        r = pl.step()
+        if r["decision"]["action"] == "test":
+            break
+    crashes = [e for e in T.evidence(p) if e.get("crash")]
+    check(len(crashes) == 1 and T.states(p)[c["cand"]]["state"] != "quarantined" and not T.item_parked(p, "ITEM_N4"),
+          "n4: an abort is no crash: one game death after it does not quarantine (%d crash records, %s)"
+          % (len(crashes), T.states(p)[c["cand"]]["state"]))
+    # n7 + n9: a dead pilot's interrupted test is a crash; with one game death that is 2: the item is quarantined
+    # and parked (a new attempt is refused)
+    root, p = fresh("m3_deadcrash")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_N7", SHA[0], "B1", plan("s1", "s2", **ex))
+    p1 = pilot(root, d, "P1")
+    p1.wake()
+    p1.step()
+    s = T.read_session(p, "steve")
+    s["in_flight"] = {"cand": c["cand"], "scenario": "s1", "t": d.t}
+    T.write_session(p, "steve", s)
+    p2 = pilot(root, d, "P2")
+    p2.wake(takeover_dead=True)
+    d.during["s1"] = _die(d)
+    r = p2.step()
+    check(r["decision"]["action"] == "test" and T.states(p)[c["cand"]]["state"] == "quarantined",
+          "n7: a dead pilot's interrupted test counts as a crash: one game death after it quarantines: %s"
+          % T.states(p)[c["cand"]]["state"])
+    check(T.item_parked(p, "ITEM_N7") and raises(T.PilotRefused, T.enqueue, p, "ITEM_N7", SHA[1], "B1", plan("s1")),
+          "n9: the quarantine parks the item: a new attempt is refused")
+    # f5: two dead-pilot interruptions are two crashes: the second quarantines the item at the takeover, before any
+    # run (not merely parks the attempt on its requeue budget)
+    root, p = fresh("m3_twodead")
+    d = FakeDriver()
+    c = T.enqueue(p, "ITEM_F5", SHA[0], "B1", plan("s1", **ex))
+    p1 = pilot(root, d, "P1")
+    p1.wake()
+    p1.step()
+    for nxt in ("P2", "P3"):
+        s = T.read_session(p, "steve")
+        s["in_flight"] = {"cand": c["cand"], "scenario": "s1", "t": d.t}
+        T.write_session(p, "steve", s)
+        pilot(root, d, nxt).wake(takeover_dead=True)
+    crashes = [e for e in T.evidence(p) if e.get("crash")]
+    check(len(crashes) == 2 and T.states(p)[c["cand"]]["state"] == "quarantined" and T.item_parked(p, "ITEM_F5"),
+          "f5: two dead-pilot interruptions quarantine the item at the takeover (%d crashes, %s)"
+          % (len(crashes), T.states(p)[c["cand"]]["state"]))
+    # n8: crashes count per item, across its attempts
+    root, p = fresh("m3_peritem")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_N8", SHA[0], "B1", plan("s1", "s2", **ex))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    d.during["s1"] = _die(d)
+    pl.step()                                       # crash 1, on @1
+    b = T.enqueue(p, "ITEM_N8", SHA[1], "B1", plan("s1", "s2", **ex))
+    T.set_state(p, a["cand"], "superseded", by=b["cand"], why="test: a newer attempt")
+    for _ in range(3):
+        r = pl.step()
+        if r["decision"]["action"] == "test":
+            break
+    check(r["decision"].get("cand") == b["cand"] and T.states(p)[b["cand"]]["state"] == "quarantined",
+          "n8: one crash on @1 and one on @2 quarantine the item (crashes count per item): %s"
+          % T.states(p)[b["cand"]]["state"])
+    # n10: a park resets the canary rung counters
+    root, p = fresh("m3_park")
+    d = FakeDriver()
+    T.enqueue(p, "ITEM_N10", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    s = T.read_session(p, "steve")
+    s["red_rungs"], s["red_reloads"], s["ladder_tried"] = 6, 1, ["reconnect"]
+    T.write_session(p, "steve", s)
+    pl.park({"cand": None, "why": "test: canary flapping"})
+    s = T.read_session(p, "steve")
+    check((s["red_rungs"], s["red_reloads"], s["ladder_tried"]) == (0, 0, []),
+          "n10: a park resets red_rungs, red_reloads and the tried ladder: %s"
+          % ((s["red_rungs"], s["red_reloads"], s["ladder_tried"]),))
+    # n12: a carry supersedes the item's older open attempts
+    root, p = fresh("m3_carry")
+    d = FakeDriver()
+    fp = {"s1": {"footprint": {"files": ["src/RimMandrake/A/Defs/*.xml"]}, "taints": []},
+          "s2": {"footprint": {"files": ["src/RimMandrake/B/Defs/*.xml"]}}}
+    a = T.enqueue(p, "ITEM_N12", SHA[0], "B1", plan("s1", "s2", **fp), mods=["Slime"], changed_files=[])
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.run_pass()
+    b = T.enqueue(p, "ITEM_N12", SHA[1], "B1", plan("s1", "s2", **fp), mods=["Slime"], parent=a["cand"],
+                  changed_files=["src/RimMandrake/A/Defs/x.xml"])
+    d.rc["s1"] = 7
+    pl.step()                                       # reload @2
+    pl.step()                                       # @2's s1 invalid: @2 testing
+    c = T.enqueue(p, "ITEM_N12", SHA[2], "B1", plan("s1", "s2", **fp), mods=["Slime"], parent=a["cand"],
+                  changed_files=["src/RimMandrake/C/Defs/y.xml"])
+    pre = T.states(p)[b["cand"]]["state"]
+    r = pl.step()
+    st = T.states(p)
+    check(pre == "testing" and r["decision"]["action"] == "carry" and st[c["cand"]].get("verdict") == "pass" and
+          st[b["cand"]]["state"] == "superseded",
+          "n12: the carried @3 resolves and supersedes the older open @2: %s %s %s"
+          % (pre, r["decision"]["action"], st[b["cand"]]["state"]))
+    # n17: a live-class repair for another profile is not hot-applied: it waits for a reload
+    root, p = fresh("m3_profile")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_N17", SHA[0], "B1", plan("s1", s1={"taints": []}))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    rep = T.enqueue(p, "ITEM_N17", SHA[1], "FIX", plan("s1", s1={"taints": []}), parent=a["cand"], kind="repair",
+                    fault="HARNESS", changed_files=["src/RimMandrake/Utils/proofs/proof_f.py"],
+                    profile="minimal+deps")
+    dec = pl.decide()
+    check(rep["class"] == "live" and dec["action"] == "reload" and dec["cand"] == rep["cand"],
+          "n17: a live repair on another profile reloads, it is not hot-applied: %s" % dec["action"])
+    # n18: a MOD repair hot-applied is no hot-fix: its PASS counts at once (no state-reset repass)
+    root, p = fresh("m3_modhot")
+    d = FakeDriver()
+    a = T.enqueue(p, "ITEM_N18", SHA[0], "B1", plan("s1", fixture="fixture_m", s1={"taints": []}))
+    d.rc["s1"] = 1
+    pl = pilot(root, d, "P1")
+    pl.wake()
+    pl.step()
+    pl.step()
+    rep = T.enqueue(p, "ITEM_N18", SHA[1], "FIX", plan("s1", fixture="fixture_m", s1={"taints": []}),
+                    parent=a["cand"], kind="repair", fault="MOD", review="reviews/n18.md",
+                    changed_files=["src/RimMandrake/Utils/proofs/proof_m.py"])
+    d.rc["s1"] = 0
+    r = pl.step()
+    recs = [e for e in T.evidence(p) if e["cand"] == rep["cand"]]
+    check(r["decision"]["action"] == "hot_apply" and len(recs) == 1 and not recs[0].get("hotfix") and
+          T.states(p)[rep["cand"]].get("verdict") == "pass",
+          "n18: a hot-applied MOD repair's PASS is no hot-fix and resolves it: %s %s"
+          % ([e.get("hotfix") for e in recs], T.states(p)[rep["cand"]].get("state")))
+
+
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
-              t_abort_scenario, t_mutant_guards2):
+              t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run

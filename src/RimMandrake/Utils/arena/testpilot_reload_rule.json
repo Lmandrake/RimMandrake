@@ -10,8 +10,6 @@
   "max_red_reloads": 1,
   "ladder": ["reconnect", "reload_save", "restage", "hold"],
   "churn_alarm_session_age_s": 2700,
-  "yield_bound_steps": 2,
-  "yield_bound_s": 300,
   "scenario_poll_s": 5,
   "max_live_fails": 3,
   "max_item_crashes": 2,

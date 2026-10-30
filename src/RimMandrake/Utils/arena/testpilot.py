@@ -108,6 +108,12 @@ class StalePilot(PilotRefused):
     """This pilot no longer drives the lane (it handed off, aborted, or another pilot woke): S6."""
 
 
+class CheckoutFailed(RuntimeError):
+    """The clone could not be put at the candidate's revision. Raised inside an act (after its decision was logged),
+    so it is an act failure, not a refusal: the step aborts and the candidate spends its requeue budget, then parks
+    (TESTPILOT_FIX_CHECKOUT_REFUSAL_LOOPS)."""
+
+
 # ---------------------------------------------------------------- paths, files, rule
 
 def ppaths(root: Path | None = None) -> dict:
@@ -811,6 +817,7 @@ class Pilot:
             return
         add_evidence(self.p, c, inflight["scenario"], "invalid", self.lane_name, self.id, t=self.d.clock(), why=why,
                      crash=True, taint=None)
+        self._crashed(c)                # a second crash on the item quarantines it, whichever way it crashed (M5)
         if _requeues(self.p, c["cand"]) >= int(self.rule.get("max_interrupt_requeues", 1)):
             set_state(self.p, c["cand"], "parked", why="interrupted again: %s" % why)
         else:
@@ -1051,10 +1058,10 @@ class Pilot:
         if not at(head):
             ok, out = self.d.checkout(self.clone, c["sha"])
             if not ok:
-                raise PilotRefused("checkout of %s failed: %s" % (c["sha"], (out or "")[-200:]))
+                raise CheckoutFailed("checkout of %s failed: %s" % (c["sha"], (out or "")[-200:]))
             head = self.d.clone_head(self.clone)
             if not at(head):
-                raise PilotRefused("clone %s is at %s after checking out %s" % (self.clone, head, c["sha"]))
+                raise CheckoutFailed("clone %s is at %s after checking out %s" % (self.clone, head, c["sha"]))
         return head
 
     def _poll(self):
@@ -1169,6 +1176,17 @@ class Pilot:
         if n >= int(self.rule.get("max_item_crashes", 2)):
             set_state(self.p, c["cand"], "quarantined", why="%d crashes on %s (M5)" % (n, c["item"]),
                       item_parked=c["item"])
+            self._close_item(c, "quarantined", "%d crashes on %s (M5)" % (n, c["item"]))
+
+    def _close_item(self, c, state, why, nolock: bool = False):
+        """A quarantine or a live-fail park is of the ITEM (M5, L10): its other open candidates close with it. The
+        item_parked record is written first, so an enqueue racing this sweep is refused or already in the queue."""
+        st = states(self.p)
+        for o in candidates(self.p):
+            if o["item"] == c["item"] and o["cand"] != c["cand"] and \
+                    st.get(o["cand"], {}).get("state") in ("queued", "testing"):
+                set_state(self.p, o["cand"], state, nolock=nolock, only_from=("queued", "testing"), by=c["cand"],
+                          item_parked=c["item"], why="the item is %s with %s: %s" % (state, c["cand"], why))
 
     def _resolve(self, c, nolock: bool = False):
         """A candidate resolves when every scenario has a counted, non-hot-fixed result at its fingerprint."""
@@ -1181,6 +1199,7 @@ class Pilot:
             if fails >= int(self.rule.get("max_live_fails", 3)):
                 set_state(self.p, c["cand"], "parked", nolock=nolock, why="%d live failures (L10)" % fails,
                           item_parked=c["item"])
+                self._close_item(c, "parked", "%d live failures (L10)" % fails, nolock=nolock)
                 return
             s = self._sess()
             valuable, blocked = _pending(self.p, c, s)
