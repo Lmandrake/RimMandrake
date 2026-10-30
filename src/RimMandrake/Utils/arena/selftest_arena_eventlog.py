@@ -859,6 +859,49 @@ def t_r3_cards(tmp):
           "R3-C9 minutes = 10**309 refused (Rejected), not an OverflowError crash")
 
 
+def t_r4_small(tmp):
+    check(V.seat_of("BENCH\uff0efiller") == "BENCH" and V.seat_of("BENCH.filler") == "BENCH" and V.seat_of(" ") is None,
+          "R4-a fullwidth-dot submitter 'BENCH<U+FF0E>filler' is seat BENCH (NFKC before the split)")
+    jobs = {"J1": {"item": "I1", "requested_by": "BENCH\uff0efiller"}}
+    r = V.translate_testq([{"job": "J1", "host": "h", "started": "2026-10-30T10:00:00Z"}], jobs)
+    check(r[0]["detail"]["tester"] == "BENCH", "R4-a translate_testq tester is BENCH for a fullwidth-dot submitter")
+    # b: judge task key is stripped like card tasks
+    mk = lambda ts, task, v: {"ts": ts, "event": "judge", "task": task, "verdict": v}
+    acc = L.accepted_tasks([mk("2026-10-29T10:00:00Z", "T1", "reject"), mk("2026-10-29T11:00:00Z", " T1 ", "accept")])
+    check(acc == {"T1"}, "R4-b judge task ' T1 ' is task T1 (later accept wins over an earlier reject)")
+    cards = [{"ts": "2026-10-29T09:00:00Z", "event": "card", "minutes": 5, "detail": {"card_id": "C", "unblocked": ["T1"]}},
+             mk("2026-10-29T11:00:00Z", "T1 ", "accept")]
+    check(L.output_report(cards)["owner_unblocked_accepted"] == ["T1"], "R4-b padded judge task still counts as owner-unblocked")
+    b = {"ts": "2026-10-29T10:00:00Z", "event": "build_end", "task": "T ", "detail": {"builder": "X"}}
+    t = {"ts": "2026-10-29T10:10:00Z", "event": "test_start", "task": "T", "detail": {"tester": "Y"}}
+    check(not L.untested_builds([b, t]), "R4-b a padded build task matches its test")
+    # c: unattributed builder never makes a different agent
+    ub = {"ts": "2026-10-29T10:00:00Z", "event": "build_end", "task": "T", "detail": {"builder": "unattributed:ledger"}}
+    check(len(L.untested_builds([ub, t])) == 1, "R4-c unattributed builder + tester Y: build stays untested")
+    check(len(L.untested_builds([dict(ub, detail={"builder": "  "}), t])) == 1, "R4-c blank builder: build stays untested")
+    # d: invalid UTF-8 append costs one line
+    p, w = fresh(tmp, "r4d")
+    for i in range(2):
+        w.emit("a", "build_end", task="T%d" % i, ts="2026-10-30T09:0%d:00Z" % i, detail={"builder": "X", "src": "s%d" % i}, lane="l", run_id="r")
+    f = L.arm_file(p, "a")
+    with open(f, "ab") as fh:
+        fh.write(b'{"bad": "\xff\xfe"}\n')
+    L.init_roster(p, ["a"]) if hasattr(L, "init_roster") else None
+    try:
+        rep = L.report(p)
+        check(rep["a"]["accepted"] == 2 and rep["a"]["undecodable_lines"] == 1 and rep["a"]["rejected"] == 1,
+              "R4-d invalid UTF-8 line: report() survives, 2 accepted, 1 rejected, undecodable_lines=1")
+    except UnicodeDecodeError:
+        check(False, "R4-d report() crashed on invalid UTF-8")
+    # e: synthetic wrapper with attempts (id strings) + result: latest result ingested
+    d = Path(tmp) / "r4e"; d.mkdir()
+    (d / "x.json").write_text(json.dumps({"job": {"schema": "testq.job/1", "id": "J9", "item": "I9"},
+        "result": {"schema": "testq.result/1", "job": "J9", "attempt": "J9.a2", "host": "h"}, "attempts": ["J9.a1", "J9.a2"]}))
+    res, jobs = V.load_testq(d)
+    check(len(res) == 1 and res[0]["attempt"] == "J9.a2" and "J9" in jobs,
+          "R4-e wrapper with attempts=[ids] + result: the one real result is ingested (attempts hold no results)")
+
+
 def _stat(path):
     try:
         s = os.stat(path)
@@ -892,7 +935,7 @@ def main():
                   t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
                   t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg, t_r3_b1_tail, t_r3_b2_forged_note, t_r3_b3_roster,
                   t_r3_b4_note_tokens, t_r3_entrypoint, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
-                  t_r3_analysis, t_r3_cards):
+                  t_r3_analysis, t_r3_cards, t_r4_small):
             try:
                 t(tmp)
             except Exception as e:          # a crash is a failure of that test, not of the run

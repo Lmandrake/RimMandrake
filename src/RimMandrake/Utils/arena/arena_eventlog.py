@@ -575,14 +575,32 @@ def validate_record(rec: dict):
             raise Rejected("card detail.unblocked must hold non-empty task-id strings (bad: %r)" % (bad[:3],))
 
 
+def _read_lines_bad(f: Path) -> tuple[list[str], int]:
+    """(non-blank lines, number of lines that were not valid UTF-8). Read as BYTES and decode per line, so one bad
+    append (invalid UTF-8) costs only its own line: it is kept as a U+FFFD-replaced line, which can never verify
+    (rejected, counted) instead of aborting the whole read."""
+    if not f.exists():
+        return [], 0
+    out, bad = [], 0
+    for b in f.read_bytes().splitlines():
+        try:
+            t = b.decode("utf-8")
+        except UnicodeDecodeError:
+            t, bad = b.decode("utf-8", errors="replace"), bad + 1
+        if t.strip():
+            out.append(t)
+    return out, bad
+
+
 def _read_lines(f: Path) -> list[str]:
-    return [l for l in f.read_text(encoding="utf-8").splitlines() if l.strip()] if f.exists() else []
+    return _read_lines_bad(f)[0]
 
 
 def verify(p: dict, arm: str, token: str | None = None) -> dict:
     """-> {"accepted": [rec], "rejected": [(lineno, raw)], "recoverable": [(lineno, rec)]}. Needs the token."""
-    v = verify_lines(_read_lines(arm_file(p, arm)), token or _read_token(p), arm)
-    return {k: v[k] for k in ("accepted", "rejected", "recoverable")}
+    lines, bad = _read_lines_bad(arm_file(p, arm))
+    v = verify_lines(lines, token or _read_token(p), arm)
+    return dict({k: v[k] for k in ("accepted", "rejected", "recoverable")}, undecodable=bad)
 
 
 # ---------------------------------------------------------------- anchors
@@ -963,6 +981,11 @@ def build_id(r: dict):
 SKEW_S = 300        # a build of the task at or up to 5 min AFTER a test_start is ambiguous (clock skew, equal ts)
 
 
+def _task_key(x):
+    """A task id for matching: stripped (as card `unblocked` tasks are). Non-strings pass through unchanged."""
+    return x.strip() if isinstance(x, str) else x
+
+
 def build_ids(r: dict) -> set:
     """Every id a record names for its build: detail.build_id and sha (normalised)."""
     return {n for n in (_norm_key((r.get("detail") or {}).get("build_id")), _norm_key(r.get("sha"))) if n}
@@ -971,7 +994,7 @@ def build_ids(r: dict) -> set:
 def _matches(test: dict, build: dict) -> bool:
     """A test of the same task matches a build when it names no id, or shares one of the build's ids (a test that
     names the sha of a build that also has a build_id is still that build)."""
-    if build["event"] != "build_end" or build.get("task") != test.get("task"):
+    if build["event"] != "build_end" or _task_key(build.get("task")) != _task_key(test.get("task")):
         return False
     want = build_ids(test)
     return not want or bool(want & build_ids(build))
@@ -997,7 +1020,7 @@ def _suspect_builds(seq: list[dict], i: int) -> list[int]:
         out.append(j)
     elif build_ids(t):
         k = next((k for k in range(i - 1, -1, -1) if seq[k]["event"] == "build_end"
-                  and seq[k].get("task") == t.get("task")), None)
+                  and _task_key(seq[k].get("task")) == _task_key(t.get("task"))), None)
         if k is not None:
             out.append(k)
     later = [k for k in range(i + 1, len(seq)) if _matches(t, seq[k])]
@@ -1031,7 +1054,8 @@ def _builder(r: dict) -> str | None:
 def _different(tester: str | None, builder: str | None) -> bool:
     """A test counts as by a different agent only when both ids are usable, the tester is attributed, and they
     differ after normalisation."""
-    return bool(tester and builder and not tester.startswith(UNATTRIBUTED) and tester != builder)
+    return bool(tester and builder and not tester.startswith(UNATTRIBUTED) and not builder.startswith(UNATTRIBUTED)
+                and tester != builder)
 
 
 def flagged_same_agent(recs: list[dict]) -> list[dict]:
@@ -1108,7 +1132,7 @@ def accepted_tasks(recs: list[dict]) -> set:
     last = {}
     for r in ordered(recs):
         if r["event"] == "judge" and isinstance(r.get("task"), str):
-            last[r["task"]] = r.get("verdict")
+            last[r["task"].strip()] = r.get("verdict")
     return {t for t, v in last.items() if v == "accept"}
 
 
@@ -1187,6 +1211,7 @@ def report(p: dict, token: str | None = None, external: dict | None = None) -> d
         wmax = max((a["n"] for a in usable_wit), default=0)
         witness_ok = wit["status"] == "ok" and wmax == len(recs)
         base = {"accepted": len(recs), "rejected": len(v["rejected"]), "recoverable": len(v["recoverable"]),
+                "undecodable_lines": v["undecodable"],
                 "anchors": len(usable_loc) + len(usable_ext), "external_anchored_upto": upto,
                 "witness_anchored_upto": wmax, "rostered": arm in rostered,
                 "trusted": bool(not bad and recs and usable_ext and upto == len(recs) and witness_ok)}

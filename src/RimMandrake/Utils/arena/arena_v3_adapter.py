@@ -90,7 +90,8 @@ def seat_of(x) -> str | None:
     """The SEAT a testq submitter names: `BENCH.filler` (a seat's filler/helper lane) is seat BENCH. None if unusable."""
     if not L.norm_id(x):
         return None
-    return x.strip().split(".", 1)[0].strip() or None
+    seat = L.unicodedata.normalize("NFKC", x).split(".", 1)[0].strip()      # NFKC FIRST: a fullwidth dot splits too
+    return seat if L.norm_id(seat) else None
 
 
 def _attempt_id(r: dict) -> str:
@@ -129,7 +130,9 @@ def translate_testq(results: list[dict], jobs: dict | None = None) -> list[dict]
 def load_testq(directory) -> tuple[list[dict], dict]:
     """Scan a directory tree for testq records. Real store shape (testq/done/*.json): a WRAPPED record
     {job: testq.job/1, result: testq.result/1, attempts, ...}; bare top-level job / result files are read too.
-    Every result is kept (a re-run is another attempt, not a duplicate)."""
+    Every result is kept (a re-run is another attempt, not a duplicate). NOTE (checked against testq/done, 451 files):
+    a wrapper's `attempts` is a list of attempt-id STRINGS (6 files hold two), never of results; the wrapper carries
+    only the LATEST `result`, so earlier attempts' results are not on disk to ingest."""
     results, jobs = [], {}
 
     def take(d):
