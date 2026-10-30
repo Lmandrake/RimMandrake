@@ -1388,8 +1388,11 @@ def _gate_view(gate: dict | None, **kw) -> dict:
 
 def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str, arm: str, gate: dict | None,
           judges: Judges | None = None, p: dict | None = None, priv: Path | None = None,
-          work_base: Path | None = None, extra_tokens=(), tree_paths=TREE_PATHS) -> dict:
-    """Harness side. Returns the blind verdict record (no arm in it); the arm goes only to the arm map."""
+          work_base: Path | None = None, extra_tokens=(), tree_paths=TREE_PATHS,
+          record: Callable[[dict], object] | None = None) -> dict:
+    """Harness side. Returns the blind verdict record (no arm in it); the arm goes only to the arm map.
+    `record(rec)`, if given, is called with every final verdict right after verdict.json is written (main() passes
+    record_judge_event: the signed `judge` event arena_analysis.py reads). If it raises, the error propagates."""
     p = p or A.paths()
     amap = ArmMap(p, priv)
     labels = arms()
@@ -1405,6 +1408,8 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
         if why:
             rec["why"] = why
         (work / "verdict.json").write_text(json.dumps(rec, indent=1, sort_keys=True), encoding="utf-8")
+        if record is not None:
+            record(rec)
         return rec
 
     gstat = str((gate or {}).get("verdict", "")).lower()
@@ -1489,6 +1494,15 @@ def judge_task(task_id: str, *, clone: Path, base: str, head: str, arm: str, gat
     hidden = json.loads(hp.read_text(encoding="utf-8")) if hp.is_file() else None
     return judge(task=task, hidden=hidden, clone=clone, base=base, head=head, arm=arm, gate=gate, judges=judges, p=p,
                  **kw)
+
+
+def record_judge_event(writer, *, arm: str, base: str, head: str, rec: dict) -> dict:
+    """Append the signed `judge` event to the arm's log through an open arena_eventlog.HarnessWriter: the record
+    arena_analysis.py reads (task, verdict, ts, sha = the judged head). Deliberately NOT in it: votes, arm guesses,
+    reasons and the judge_id (the log names the arm; joining judge ids to arms there would publish the private arm
+    map)."""
+    return writer.emit(arm, "judge", lane="judge", run_id="judge", task=rec["task"], sha=head,
+                       verdict=rec["verdict"], detail={"base": base})
 
 
 # ---------------------------------------------------------------- arm-guess report (harness side)
@@ -1700,7 +1714,14 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     if a.cmd == "judge":
         gate = json.loads(Path(a.gate).read_text(encoding="utf-8"))
-        rec = judge_task(a.task, clone=Path(a.clone), base=a.base, head=a.head, arm=a.arm, gate=gate)
+        import arena_eventlog as L
+        p = A.paths()
+        # the signed writer is opened BEFORE any model call: a log the harness cannot sign stops the judging, rather
+        # than spending judge tokens on a verdict arena_analysis.py would never see
+        with L.harness_pass(p) as cap:
+            w = L.HarnessWriter(p, cap=cap)
+            rec = judge_task(a.task, clone=Path(a.clone), base=a.base, head=a.head, arm=a.arm, gate=gate, p=p,
+                             record=lambda r: record_judge_event(w, arm=a.arm, base=a.base, head=a.head, rec=r))
         print(json.dumps({k: rec[k] for k in ("judge_id", "task", "verdict")}, sort_keys=True))
         return 0 if rec["verdict"] != "invalid" else 2
     print(write_report(a.day))

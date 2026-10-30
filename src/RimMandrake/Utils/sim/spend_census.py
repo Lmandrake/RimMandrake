@@ -122,7 +122,7 @@ def scan_file(path, cutoff, seen, stats=None):
         out = u.get("output_tokens") or 0
         x = model_x(m.get("model"))
         calls.append({"t": t0, "gap": (t0 - last_t) if last_t else None, "model": m.get("model") or "?",
-                      "ctx": it + cr + c5 + c1, "cr": cr, "cw": c5 + c1, "out": out,
+                      "ctx": it + cr + c5 + c1, "in": it, "cr": cr, "cw": c5 + c1, "out": out,
                       "raw": it + cr + c5 + c1 + out,
                       "ite": x * (it + 0.1 * cr + 1.25 * c5 + 2.0 * c1 + 5.0 * out),
                       "ite_write": x * (1.25 * c5 + 2.0 * c1), "in_window": t0 >= cutoff, "c5": c5, "c1": c1, "x": x,
@@ -358,9 +358,10 @@ def check_arm_names(names):
                                % "; ".join(bad))
 
 
-def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, until=None, diag=None):
+def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, until=None, diag=None, sink=None):
     """{arm: {"ite","calls","files"}} over every transcript (subagents included), each API call once, only calls
-    with since <= t < until. UNATTRIBUTED carries "reasons" {reason: ite}. `diag` (dict) receives
+    with since <= t < until. UNATTRIBUTED carries "reasons" {reason: ite}. `sink(arm, call)`, if given, sees every
+    counted call (raw fields model/in/cr/c5/c1/out/t; arena_spend.py attributes them to tasks). `diag` (dict) receives
     unreadable_files and id_conflicts (message ids found under two arm folders: earliest transcript mtime wins,
     then lexicographic path)."""
     projects = projects or PROJECTS
@@ -394,6 +395,9 @@ def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, unti
             diag.setdefault("cwd_mismatch", []).append("%s: recorded cwd %s is not under arm %s" % (p, st["cwd"], arm))
             arm, why = UNATTRIBUTED, "cwd_mismatch"
         calls = [c for c in calls if since <= c["t"] < until]
+        if calls and sink is not None:
+            for c in calls:
+                sink(arm, c)
         if calls:
             r = out[arm]
             r["ite"] += sum(c["ite"] for c in calls)
@@ -415,10 +419,11 @@ def gpt_ite_of(d):
     return float((d.get("in_tok_est") or 0) + 5 * (d.get("out_tok_est") or 0)), True
 
 
-def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None):
+def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None, sink=None):
     """{arm: {"ite","ite_est","calls","est_calls"}} from the gpt call log (file and/or per-call directory),
     only calls with since <= t < until. "ite" is REAL codex tokens; "ite_est" the chars/4 fallback. Untagged
-    calls stay under UNTAGGED; unreadable lines are counted into diag["gpt_unreadable"] and arm UNREADABLE."""
+    calls stay under UNTAGGED; unreadable lines are counted into diag["gpt_unreadable"] and arm UNREADABLE.
+    `sink(arm, record)`, if given, sees every counted record (arena_spend.py attributes them to tasks)."""
     import gpt_call_log
     until = float("inf") if until is None else until
     out = defaultdict(lambda: {"ite": 0.0, "ite_est": 0.0, "calls": 0, "est_calls": 0})
@@ -439,6 +444,8 @@ def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None):
             continue
         arm = (d.get("arm") or "").strip() or "UNTAGGED"
         ite, est = gpt_ite_of(d)
+        if sink is not None:
+            sink(arm, d)
         out[arm]["ite_est" if est else "ite"] += ite
         out[arm]["est_calls"] += est
         out[arm]["calls"] += 1

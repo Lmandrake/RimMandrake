@@ -5,7 +5,8 @@ design/RimMandrake/architecture_switch_harness_2026-10-29.md section 4.1 (rule),
 1.7 (event log), 1.8 / testpilot_merged_2026-10-29.md 2.3 (a different agent tests promptly).
 
     python3 src/RimMandrake/Utils/arena/arena_analysis.py run --spend SPEND.json [--hard-cap ISO] [--final]
-            [--seed N] [--draws N] [--gpt-to-ite F] [--gpt-est-to-ite F] [--claude-ite-scale F]
+            [--seed N] [--draws N] [--gpt-to-ite F] [--gpt-est-in-to-ite F] [--gpt-est-out-to-ite F]
+            [--claude-ite-scale F] [--claude-model-weight FAMILY=W ...] [--claude-token-weight FIELD=W ...]
             [--raw-dir DIR] [--allow-untrusted] [--blind SALT] [--out OUT.json]
 
 Prints one JSON report: a verdict per 5-task block and a final verdict, each one of
@@ -21,12 +22,18 @@ WHAT IT READS (only fields some harness code writes, or the section 1.7 schema n
   - judge events: task, verdict ('accept' | 'reject' | 'invalid'; the LAST by event time counts, as
     arena_eventlog.accepted_tasks), ts, sha. A task is COMPLETED when its last judge verdict is accept or reject.
   - the frozen task specs <arena>/tasks/<id>.json: kind (arena_tasks.KINDS) and size (1/2/4 = points).
-  - TOKENS, from a spend file (--spend), never from the record `ite` field: {arm: {task: {claude_ite, gpt_ite,
-    gpt_ite_est}}}, the field names of sim/spend_census.arm_report. Owner ruling (ARENA_METER_BUILD_SPEND_BY_CLONE_PATH,
-    2026-10-30): raw GPT and Claude spend are stored separately and THIS script converts:
-        total_ite_mixed = CLAUDE_ITE_SCALE*claude_ite + GPT_TO_ITE*gpt_ite + GPT_EST_TO_ITE*gpt_ite_est
-    (named constants, overridable on the command line, so a new conversion needs no re-metering). A row that carries
-    only a merged total is refused (UNMEASURED), and any record `ite` is ignored and counted in `merged_ite_records`.
+  - TOKENS, from a spend file (--spend, schema arena_task_spend/1, written by arena_spend.py), never from the record
+    `ite` field: {"schema", "arms": {arm: {task: row}}, "overhead", "flags"}, row = {"claude": {model: {input,
+    cache_read, cache_write_5m, cache_write_1h, output}}, "gpt": {tokens, in_est, out_est, ...}, "ambiguous_calls",
+    "claude_ite" (derived, IGNORED here)}. Owner ruling (ARENA_METER_BUILD_SPEND_BY_CLONE_PATH, 2026-10-30) and
+    Conductor refinement: RAW Claude tokens per model and RAW GPT tokens are stored separately and THIS script weights:
+        claude = CLAUDE_ITE_SCALE * sum_model CLAUDE_MODEL_WEIGHT[family(model)] * sum_f CLAUDE_TOKEN_WEIGHT[f]*n_f
+        total_ite_mixed = claude + GPT_TO_ITE*gpt.tokens + GPT_EST_IN_TO_ITE*gpt.in_est + GPT_EST_OUT_TO_ITE*gpt.out_est
+    (named constants, overridable on the command line, so a new conversion needs no re-metering; the defaults
+    reproduce sim/spend_census's ITE). Refused (UNMEASURED for that task): a row with no raw counts (derived or merged
+    total only), a Claude model of no known family carrying tokens, an unweighted token field, a task whose calls
+    overlapped another task's span (ambiguous_calls > 0), and any bool/negative/non-finite/overflowing count. Any
+    record `ite` is ignored and counted in `merged_ite_records`.
 
 THE MODEL (all small-n safe: exact conjugate posteriors, Monte Carlo FROM the posterior, fixed seed; no bootstrap):
   - log tokens per completed task: y[a,t] = c + mu[a] + tau[t] + e, e ~ N(0, s2); normal-inverse-gamma conjugate
@@ -86,10 +93,12 @@ DISQUALIFICATION CONDITIONS, AND WHAT THE LOG CAN SHOW:
   (`dq_unmeasured`), and a decision carries them.
 
 LIMITS, STATED PLAINLY:
-  - As of this commit NO harness code writes `judge` events into the arm logs (arena_judge writes verdict.json; the
-    replay driving loop in arena.py trial-runner is OWED), and the meter (spend_census) reports spend per arm per
-    window, not per task. Until both exist every real run here is UNMEASURED. spend_census's claude_ite is already
-    Opus-input-equivalent weighted (model x token type), not raw Claude tokens; CLAUDE_ITE_SCALE multiplies it.
+  - `judge` events are written by arena_judge.py (`judge` command, signed, lane "judge") and per-task spend by
+    arena_spend.py, which attributes each metered call to the task whose signed-event span [first, last event of a
+    (run_id, task)] contains it. A call inside spans of two different tasks of one arm (concurrent members, e.g.
+    ralph_c) is AMBIGUOUS and makes those tasks UNMEASURED; calls outside every span are reported as `overhead` and are
+    NOT in the efficiency. GPT real tokens are a total (codex reports no in/out split), so GPT_TO_ITE weights them
+    flat; only estimated GPT tokens carry an in/out split.
   - Points per token assumes acceptance is independent of task size within an arm and that arms draw from the same
     task pool (true for replay); a size-acceptance interaction is not modelled.
   - Tokens of tasks never completed (all judge verdicts invalid, or never judged) are not in the efficiency.
@@ -149,10 +158,25 @@ C_PREC = 1e-6                  # intercept prior precision (flat)
 ACCEPT_PRIOR_MEAN, ACCEPT_PRIOR_WEIGHT = 0.64, 2.0
 
 # ---------------------------------------------------------------- token conversion (owner ruling 2026-10-30)
+SPEND_SCHEMA = "arena_task_spend/1"
+# Claude model family -> Opus-input-equivalent weight (sim/spend_census.MODEL_X), matched as a substring of the
+# lower-cased model id. A model of no listed family that carries tokens is REFUSED, never silently weighted.
+CLAUDE_MODEL_WEIGHT = {"opus": 1.0, "sonnet": 0.6, "haiku": 0.2}
+# raw Claude token field -> weight relative to one input token (spend_census.ite)
+CLAUDE_TOKEN_WEIGHT = {"input": 1.0, "cache_read": 0.1, "cache_write_5m": 1.25, "cache_write_1h": 2.0,
+                       "output": 5.0}
 CLAUDE_ITE_SCALE = 1.0
 GPT_TO_ITE = 1.0               # raw codex tokens -> ITE: OPEN owner question; 1.0 matches spend_census's 1:1 sum
-GPT_EST_TO_ITE = 1.0
-SPEND_FIELDS = ("claude_ite", "gpt_ite", "gpt_ite_est")
+GPT_EST_IN_TO_ITE = 1.0        # estimated GPT tokens (no usage line): spend_census.gpt_ite_of = in + 5*out
+GPT_EST_OUT_TO_ITE = 5.0
+GPT_FIELDS = {"tokens": "gpt_tokens", "in_est": "gpt_in_est", "out_est": "gpt_out_est"}
+GPT_INFO_FIELDS = ("calls", "est_calls")
+
+
+def default_conv():
+    return {"claude_model": dict(CLAUDE_MODEL_WEIGHT), "claude_token": dict(CLAUDE_TOKEN_WEIGHT),
+            "claude_scale": CLAUDE_ITE_SCALE, "gpt_tokens": GPT_TO_ITE, "gpt_in_est": GPT_EST_IN_TO_ITE,
+            "gpt_out_est": GPT_EST_OUT_TO_ITE}
 
 DRAWS = 4000
 SEED = 20261030
@@ -340,23 +364,72 @@ def load_tasks(p=None):
 
 # ================================================================ per-arm extraction
 
+def _count(v):
+    """A raw token count: a non-bool finite number >= 0, else None."""
+    try:
+        if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(float(v)) or v < 0:
+            return None
+        return float(v)
+    except OverflowError:
+        return None
+
+
+def model_family(model, weights):
+    m = str(model).lower()
+    hits = sorted((f for f in weights if f and f.lower() in m), key=len, reverse=True)
+    if not hits or (len(hits) > 1 and len(hits[0]) == len(hits[1])):
+        return None                        # no family, or two equally specific ones: refuse, never guess
+    return hits[0]                         # the most specific family wins ('opus-4' over 'opus')
+
+
 def task_tokens(row, conv):
-    """A spend row -> total_ite_mixed, or (None, why). Fields are spend_census's; a merged-only row is refused."""
+    """A raw spend row -> total_ite_mixed, or (None, why). The derived claude_ite column is ignored: the weighting
+    happens HERE from the raw per-model counts, with the factors in `conv` (default_conv())."""
     if not isinstance(row, dict):
         return None, "no spend row"
-    if not any(k in row for k in SPEND_FIELDS):
-        return None, "spend row has no split fields %s (merged total only?)" % (SPEND_FIELDS,)
+    claude, gpt = row.get("claude"), row.get("gpt")
+    if not isinstance(claude, dict) and not isinstance(gpt, dict):
+        return None, "spend row has no raw per-model counts (derived claude_ite / merged total only?)"
+    amb = row.get("ambiguous_calls", 0)
+    if _count(amb) is None:
+        return None, "spend ambiguous_calls=%r invalid" % (amb,)
+    if amb > 0:
+        return None, "%d metered call(s) overlapped another task's span (ambiguous attribution)" % amb
     tot = 0.0
-    for k in SPEND_FIELDS:
-        v = row.get(k, 0.0)
-        try:
-            ok = not isinstance(v, bool) and isinstance(v, (int, float)) and math.isfinite(float(v)) and v >= 0
-            if ok:
-                tot += conv[k] * float(v)
-        except OverflowError:
-            ok = False
-        if not ok:
-            return None, "spend %s=%r invalid" % (k, v)
+    try:
+        for model, toks in (claude or {}).items():
+            if not isinstance(toks, dict):
+                return None, "spend claude[%r] not a dict" % (model,)
+            sub = 0.0
+            for k, v in toks.items():
+                if k not in conv["claude_token"]:
+                    return None, "spend claude[%r] has unweighted token field %r" % (model, k)
+                n = _count(v)
+                if n is None:
+                    return None, "spend claude[%r].%s=%r invalid" % (model, k, v)
+                sub += conv["claude_token"][k] * n
+            if sub == 0:
+                continue
+            fam = model_family(model, conv["claude_model"])
+            if fam is None:
+                return None, "spend claude model %r has tokens but no known family %s" % (
+                    model, sorted(conv["claude_model"]))
+            tot += conv["claude_scale"] * conv["claude_model"][fam] * sub
+        if gpt is not None and not isinstance(gpt, dict):
+            return None, "spend gpt not a dict"
+        for k, v in (gpt or {}).items():
+            if k in GPT_INFO_FIELDS:
+                if _count(v) is None:
+                    return None, "spend gpt.%s=%r invalid" % (k, v)
+                continue
+            if k not in GPT_FIELDS:
+                return None, "spend gpt has unweighted field %r" % (k,)
+            n = _count(v)
+            if n is None:
+                return None, "spend gpt.%s=%r invalid" % (k, v)
+            tot += conv[GPT_FIELDS[k]] * n
+    except OverflowError:
+        return None, "converted tokens overflow"
     if not math.isfinite(tot):
         return None, "converted tokens overflow"
     if tot <= 0:
@@ -686,7 +759,7 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     """arm_logs: {arm: {"recs": [...]} | {"unmeasured": why}}; tasks: {id: {kind, size}}; spend: {arm: {task: row}};
     hard_cap: UTC epoch or None. -> report dict with `blocks` and `final`."""
     control = control or CONTROL
-    conv = conv or {"claude_ite": CLAUDE_ITE_SCALE, "gpt_ite": GPT_TO_ITE, "gpt_ite_est": GPT_EST_TO_ITE}
+    conv = conv or default_conv()
     rep = {"rule": rule_constants(), "conversion": conv, "seed": seed, "draws": draws, "arms": {}, "blocks": []}
     if not isinstance(arm_logs, dict) or not arm_logs:
         rep["final"] = {"verdict": "UNMEASURED", "why": "no arm logs"}
@@ -871,8 +944,8 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("run")
-    r.add_argument("--spend", required=True, help="per-(arm,task) spend JSON: {arm: {task: {%s}}}" %
-                   ", ".join(SPEND_FIELDS))
+    r.add_argument("--spend", required=True, help="per-(arm,task) raw spend JSON, schema %s (arena_spend.py)" %
+                   SPEND_SCHEMA)
     r.add_argument("--raw-dir", help="read unsigned <arm>.jsonl from this dir instead of the signed log")
     r.add_argument("--tasks-dir", help="frozen task specs dir (default <arena>/tasks)")
     r.add_argument("--allow-untrusted", action="store_true")
@@ -882,27 +955,51 @@ def main(argv=None):
     r.add_argument("--draws", type=int, default=DRAWS)
     r.add_argument("--claude-ite-scale", type=float, default=CLAUDE_ITE_SCALE)
     r.add_argument("--gpt-to-ite", type=float, default=GPT_TO_ITE)
-    r.add_argument("--gpt-est-to-ite", type=float, default=GPT_EST_TO_ITE)
+    r.add_argument("--gpt-est-in-to-ite", type=float, default=GPT_EST_IN_TO_ITE)
+    r.add_argument("--gpt-est-out-to-ite", type=float, default=GPT_EST_OUT_TO_ITE)
+    r.add_argument("--claude-model-weight", action="append", default=[], metavar="FAMILY=W",
+                   help="override/add a Claude model family weight (default %s)" % CLAUDE_MODEL_WEIGHT)
+    r.add_argument("--claude-token-weight", action="append", default=[], metavar="FIELD=W",
+                   help="override a raw Claude token-field weight (default %s)" % CLAUDE_TOKEN_WEIGHT)
     r.add_argument("--blind", metavar="SALT")
     r.add_argument("--out")
     a = ap.parse_args(argv)
-    for f in ("claude_ite_scale", "gpt_to_ite", "gpt_est_to_ite"):
+    for f in ("claude_ite_scale", "gpt_to_ite", "gpt_est_in_to_ite", "gpt_est_out_to_ite"):
         if not (math.isfinite(getattr(a, f)) and getattr(a, f) >= 0):
             ap.error("--%s must be finite and >= 0" % f.replace("_", "-"))
+    conv = default_conv()
+    conv.update(claude_scale=a.claude_ite_scale, gpt_tokens=a.gpt_to_ite, gpt_in_est=a.gpt_est_in_to_ite,
+                gpt_out_est=a.gpt_est_out_to_ite)
+    for opt, key in ((a.claude_model_weight, "claude_model"), (a.claude_token_weight, "claude_token")):
+        for kv in opt:
+            name, _, w = kv.partition("=")
+            try:
+                wf = float(w)
+            except ValueError:
+                wf = float("nan")
+            if not name or not math.isfinite(wf) or wf < 0:
+                ap.error("bad weight %r (want NAME=W, W finite >= 0)" % kv)
+            if key == "claude_token" and name not in CLAUDE_TOKEN_WEIGHT:
+                ap.error("unknown Claude token field %r (have %s)" % (name, sorted(CLAUDE_TOKEN_WEIGHT)))
+            conv[key][name.lower() if key == "claude_model" else name] = wf
+    spend, overhead, flags = {}, None, None
     try:
-        spend = json.loads(Path(a.spend).read_text(encoding="utf-8"))
+        doc = json.loads(Path(a.spend).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
-        spend, spend_err = {}, str(e)
+        spend_err = "spend file unreadable: %s" % e
     else:
-        spend_err = None
+        if not isinstance(doc, dict) or doc.get("schema") != SPEND_SCHEMA or not isinstance(doc.get("arms"), dict):
+            spend_err = "spend file is not schema %s (write it with arena_spend.py)" % SPEND_SCHEMA
+        else:
+            spend_err, spend, overhead, flags = None, doc["arms"], doc.get("overhead"), doc.get("flags")
     logs = load_raw(a.raw_dir) if a.raw_dir else load_verified(allow_untrusted=a.allow_untrusted)
     tasks = load_tasks({"tasks": Path(a.tasks_dir)} if a.tasks_dir else None)
     cap = L.ts_epoch(a.hard_cap) if a.hard_cap else None
-    conv = {"claude_ite": a.claude_ite_scale, "gpt_ite": a.gpt_to_ite, "gpt_ite_est": a.gpt_est_to_ite}
     rep = analyse(logs, tasks, spend if isinstance(spend, dict) else {}, seed=a.seed, draws=a.draws, hard_cap=cap,
                   final=a.final, conv=conv)
+    rep["spend_overhead"], rep["spend_flags"] = overhead, flags   # reported, not in the statistics
     if spend_err:
-        rep["final"] = {"verdict": "UNMEASURED", "why": "spend file unreadable: %s" % spend_err}
+        rep["final"] = {"verdict": "UNMEASURED", "why": spend_err}
     if a.blind:
         rep = blind(rep, a.blind)
     text = json.dumps(rep, indent=1, sort_keys=True, default=str)

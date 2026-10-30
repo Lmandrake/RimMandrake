@@ -75,8 +75,24 @@ def arm_log(arm, rows, offset=0, drop=(), extra=()):
     return recs
 
 
+OPUS = "claude-opus-5-5"
+
+
+def raw_row(opus_input=0.0, **kw):
+    """A per-task spend row in the meter's RAW shape (arena_spend.py, schema arena_task_spend/1)."""
+    row = {"claude": {OPUS: {"input": opus_input, "cache_read": 0, "cache_write_5m": 0, "cache_write_1h": 0,
+                             "output": 0}},
+           "gpt": {"tokens": 0, "in_est": 0, "out_est": 0, "calls": 0, "est_calls": 0}, "ambiguous_calls": 0}
+    row.update(kw)
+    return row
+
+
 def spend_for(rows_tokens):
-    return {t: {"claude_ite": tok, "gpt_ite": 0, "gpt_ite_est": 0} for t, tok in rows_tokens}
+    return {t: raw_row(tok) for t, tok in rows_tokens}
+
+
+def spend_file(spend):
+    return {"schema": "arena_task_spend/1", "arms": spend, "overhead": {}, "flags": []}
 
 
 def scenario(arms, n, tasks=None, draws=DRAWS, seed=7, **kw):
@@ -183,17 +199,47 @@ def t_rule_verdict():
 # ---------------------------------------------------------------- (3) tokens and fail-closed input
 
 def t_tokens_and_inputs():
-    conv = {"claude_ite": 1.0, "gpt_ite": 2.0, "gpt_ite_est": 3.0}
-    tok, why = AA.task_tokens({"claude_ite": 100, "gpt_ite": 50, "gpt_ite_est": 10}, conv)
-    check("conversion: 100 + 2x50 + 3x10 = 230", tok == 230.0, (tok, why))
+    conv = AA.default_conv()
+    full = {"claude": {OPUS: {"input": 100, "cache_read": 1000, "cache_write_5m": 8, "cache_write_1h": 5,
+                              "output": 10}}, "gpt": {"tokens": 50, "in_est": 0, "out_est": 0}}
+    tok, why = AA.task_tokens(full, conv)
+    check("raw opus 100 in + 0.1x1000 read + 1.25x8 + 2x5 + 5x10 out = 270, + 50 gpt = 320", tok == 320.0, (tok, why))
+    tok, why = AA.task_tokens({"claude": {"claude-sonnet-4-5": {"input": 1000}}}, conv)
+    check("sonnet raw 1000 in -> 600 (model weight 0.6)", tok == 600.0, (tok, why))
+    tok, why = AA.task_tokens({"claude": {"claude-haiku-4-5": {"output": 100}}}, conv)
+    check("haiku raw 100 out -> 100 (0.2 x 5)", tok == 100.0, (tok, why))
+    tok, why = AA.task_tokens({"gpt": {"tokens": 0, "in_est": 40, "out_est": 10}}, conv)
+    check("gpt estimate 40 in + 5x10 out = 90", tok == 90.0, (tok, why))
+    c2 = dict(conv, gpt_tokens=2.0, claude_scale=3.0)
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 10}}, "gpt": {"tokens": 50}}, c2)
+    check("conversion factors apply at analysis time: 3x10 + 2x50 = 130", tok == 130.0, (tok, why))
+    c3 = dict(conv, claude_model=dict(conv["claude_model"], sonnet=0.5))
+    tok, why = AA.task_tokens({"claude": {"claude-sonnet-4-5": {"input": 1000}}}, c3)
+    check("a model weight is changed without re-metering: sonnet 0.5 -> 500", tok == 500.0, (tok, why))
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 100}}, "claude_ite": 99999}, conv)
+    check("the derived claude_ite column is ignored (raw wins)", tok == 100.0, (tok, why))
+    tok, why = AA.task_tokens({"claude_ite": 500, "gpt_ite": 0, "gpt_ite_est": 0}, conv)
+    check("a row with only derived/merged ITE (no raw per-model counts) is refused", tok is None and "raw" in why,
+          why)
     tok, why = AA.task_tokens({"total_ite_mixed": 500}, conv)
-    check("merged-only spend row refused", tok is None and "merged" in why, why)
-    tok, why = AA.task_tokens({"claude_ite": 0, "gpt_ite": 0}, conv)
+    check("merged-only spend row refused", tok is None and "raw" in why, why)
+    tok, why = AA.task_tokens({"claude": {"gemini-x": {"input": 10}}}, conv)
+    check("an unknown Claude model with tokens is refused (no silent weight)", tok is None and "model" in why, why)
+    tok, why = AA.task_tokens({"claude": {"<synthetic>": {"input": 0, "output": 0}, OPUS: {"input": 7}}}, conv)
+    check("an unknown model with zero tokens is harmless", tok == 7.0, (tok, why))
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 10, "reasoning": 5}}}, conv)
+    check("an unweighted token field is refused", tok is None and "reasoning" in why, why)
+    tok, why = AA.task_tokens(raw_row(100, ambiguous_calls=2), conv)
+    check("a task with calls that overlapped another task's span is refused", tok is None and "ambiguous" in why,
+          why)
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 0}}, "gpt": {"tokens": 0}}, conv)
     check("zero tokens refused", tok is None and "zero" in why, why)
-    tok, why = AA.task_tokens({"claude_ite": -5}, conv)
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": -5}}}, conv)
     check("negative tokens refused", tok is None, why)
-    tok, why = AA.task_tokens({"claude_ite": True}, conv)
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": True}}}, conv)
     check("boolean tokens refused", tok is None, why)
+    tok, why = AA.task_tokens({"gpt": {"tokens": float("nan")}}, conv)
+    check("non-finite gpt tokens refused", tok is None, why)
     r = AA.analyse({}, {}, {})
     check("empty log -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED", r["final"])
     tasks = make_tasks(10)
@@ -242,7 +288,9 @@ def t_cli():
         td.mkdir()
         for t, v in tasks.items():
             Path(td, t + ".json").write_text(json.dumps(dict(v, id=t)))
-        Path(d, "spend.json").write_text(json.dumps({a: spend_for((t, 1e5) for t in ids) for a in ("trio", "v3")}))
+        sp = {a: spend_for((t, 1e5) for t in ids) for a in ("trio", "v3")}
+        Path(d, "spend.json").write_text(json.dumps(spend_file(sp)))
+        Path(d, "bare.json").write_text(json.dumps(sp))
         import contextlib
         import io
         buf = io.StringIO()
@@ -251,10 +299,19 @@ def t_cli():
                           "--draws", "300", "--out", str(Path(d, "out.json"))])
             rc2 = AA.main(["run", "--spend", str(Path(d, "nope.json")), "--raw-dir", d, "--tasks-dir", str(td),
                            "--draws", "300"])
+            rc3 = AA.main(["run", "--spend", str(Path(d, "bare.json")), "--raw-dir", d, "--tasks-dir", str(td),
+                           "--draws", "300"])
+            rc4 = AA.main(["run", "--spend", str(Path(d, "spend.json")), "--raw-dir", d, "--tasks-dir", str(td),
+                           "--draws", "300", "--claude-model-weight", "opus=0.5", "--gpt-est-out-to-ite", "4",
+                           "--out", str(Path(d, "out4.json"))])
         out = json.loads(Path(d, "out.json").read_text())
+        out4 = json.loads(Path(d, "out4.json").read_text()) if Path(d, "out4.json").is_file() else {}
     check("CLI: runs end to end on raw logs and writes the report", rc == 0 and "final" in out and out["blocks"],
           (rc, out.get("final", {}).get("verdict")))
     check("CLI: unreadable spend file -> UNMEASURED, exit 3", rc2 == 3, rc2)
+    check("CLI: a spend file without the arena_task_spend/1 schema -> UNMEASURED, exit 3", rc3 == 3, rc3)
+    check("CLI: conversion overrides reach the report", rc4 == 0 and out4["conversion"]["claude_model"]["opus"] == 0.5
+          and out4["conversion"]["gpt_out_est"] == 4.0, out4.get("conversion"))
 
 
 # ---------------------------------------------------------------- (4) scenarios
@@ -450,7 +507,7 @@ def t_malformed():
           r["final"]["verdict"])
 
     def huge(s):
-        s["trio"]["T003"] = {"claude_ite": 1e308, "gpt_ite": 1e308, "gpt_ite_est": 0}
+        s["trio"]["T003"] = raw_row(1e308, gpt={"tokens": 1e308, "in_est": 0, "out_est": 0})
     logs, tasks, sp = winner_logs(spend_patch=huge)
     r = AA.analyse(logs, tasks, sp, draws=500)
     check("overflowing spend (1e308 + 1e308) -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED",
@@ -680,12 +737,12 @@ def t_final_r2():
 
 
 def t_overflow_r2():
-    tok, why = AA.task_tokens({"claude_ite": 10 ** 400}, {k: 1.0 for k in AA.SPEND_FIELDS})
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 10 ** 400}}}, AA.default_conv())
     check("an int too big for a float is refused, not raised", tok is None and "invalid" in why, (tok, why))
 
     def big(s):
         for t in s["trio"]:
-            s["trio"][t] = {"claude_ite": 1e308, "gpt_ite": 0, "gpt_ite_est": 0}
+            s["trio"][t] = raw_row(1e308)
     logs, tasks, sp = winner_logs(spend_patch=big)
     r = AA.analyse(logs, tasks, sp, draws=300)
     check("rows each finite but summing past float range -> UNMEASURED", r["final"]["verdict"] == "UNMEASURED",
