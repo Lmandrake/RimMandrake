@@ -106,6 +106,11 @@ def build_repos(tmp):
     s["remap_new"] = commit(repo, {TOOL: "def f():\n    return 5\n",
                                    TEST: "assert True  # remapped fix, rewritten side, long enough\n"},
                             "fix remap", "2026-10-20T10:03:00+00:00")
+    # the old side's parent holds the same tool/test as the new side's (a rewrite keeps every non-excised file), so
+    # the remap's own change is the same and its patch-id check (ARENA_RESOLVER_VERIFY_REMAP_BY_PATCH_ID) passes
+    commit(old, {TOOL: "def f():\n    return 4\n",
+                 TEST: "assert True  # nostart change to the test, long enough to count\n"},
+           "old side catch-up", "2026-10-19T11:03:00+00:00")
     s["remap_old"] = commit(old, {TOOL: "def f():\n    return 5\n", "work/excised.bin": "x" * 50,
                                   TEST: "assert True  # remapped fix, rewritten side, long enough\n"},
                             "fix remap", "2026-10-20T10:03:00+00:00")
@@ -165,7 +170,7 @@ def ledger(s, drop_good_close=False, rework_in_pool=False, children=False, open_
 # ---------------------------------------------------------------- tests
 
 def t_census(tmp, repo, old, s):
-    pool, rep = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pool, rep = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     got = {t["source_item"]: (t, h) for t, h in pool}
     # BENCH pool ruling: no start event needed, unlabelled items stay (label null); the rework is a candidate too,
     # rejected only because its public file names the escaped task's hidden check (the chain rule)
@@ -197,7 +202,7 @@ def t_census(tmp, repo, old, s):
               for r in he["reworks"]), "the rework's added test becomes the Escaped item's hidden check")
     check(all(t["live"] in A.LIVE_OK for t, _ in pool), "every census task has an allowed live tier")
     # forced: a pool candidate that is an earlier pool task's rework would expose that task's hidden check
-    pc, rc = A.census(ledger(s, rework_in_pool=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pc, rc = A.census(ledger(s, rework_in_pool=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     ids = {t["source_item"] for t, _ in pc}
     check("FIXTURE_ESC_FIX_TWO" in ids and "FIXTURE_ESC_REWORK_THREE" not in ids and any(
           k.startswith("would expose") for k in rc["rejects"]),
@@ -382,13 +387,13 @@ def t_hidden(tmp, pool, s):
 
 def t_census2(tmp, repo, old, s):
     """(4) labels need a closed code-fix rework; (e) provisional Clean; (g) reasons; (h) deleted test; (6) own leak."""
-    pool, rep = A.census(ledger(s, children=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pool, rep = A.census(ledger(s, children=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     h = {t["source_item"]: hh for t, hh in pool}["FIXTURE_GOOD_FIX_ONE"]
     v = {c["item"]: c["verdict"] for c in h.get("rework_candidates", [])}
     check(h["label"] == "Clean" and v.get("FIXTURE_GOOD_DESIGN_KID", "").startswith("not a fix")
           and "review" in v.get("FIXTURE_GOOD_REVIEW_KID", ""),
           "a design child and a closed 'Review ...' child do not make the fix Escaped (%s, %s)" % (h["label"], v))
-    pool, rep = A.census(ledger(s, open_bug=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pool, rep = A.census(ledger(s, open_bug=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     h = {t["source_item"]: hh for t, hh in pool}["FIXTURE_GOOD_FIX_ONE"]
     check(h["label"] == "Clean" and h.get("label_pending") == ["FIXTURE_GOOD_BUG_KID"],
           "an open bug child leaves Clean provisional (label_pending %s)" % h.get("label_pending"))
@@ -397,14 +402,14 @@ def t_census2(tmp, repo, old, s):
     e = raises(A.TaskRefused, A.freeze, p, now="2026-11-10T00:00:00Z")
     check(bool(e) and "provisional" in e and A.frozen_hashes(p) == {},
           "freeze refuses a Clean label with an open fix-type rework: %s" % (e or "NOT REFUSED")[:70])
-    pool, _ = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pool, _ = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     p = fresh_arena(tmp, "arena_early")
     A.write_pool(pool, p)
     e = raises(A.TaskRefused, A.freeze, p, now="2026-10-20T00:00:00Z")
     check(bool(e) and "window ends 2026-10-21" in e, "freeze refuses a Clean label before its 7-day rework window "
           "ends: %s" % (e or "NOT REFUSED")[:70])
     check(A.freeze(p, now="2026-10-28T00:00:00Z")["frozen_new"] == 4, "after every window ends the pool freezes")
-    _, rep = A.census(ledger(s, late_close=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    _, rep = A.census(ledger(s, late_close=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     check(rep["scanned_closed_in_window"] == 6 and rep["rejects"].get("last close falls outside the window") == 1,
           "an item whose last close is outside the window is scanned and rejected with a reason (%s)" % rep["rejects"])
 
@@ -417,7 +422,7 @@ def t_census3(tmp, repo, old, s):
         return ("## spec\nsee " + NEWT + "\n") if iid == "FIXTURE_ESC_FIX_TWO" else real(repo_, sha, iid)
     A._prose_at = leaky
     try:
-        pool2, rep2 = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+        pool2, rep2 = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
         ids = {t["source_item"] for t, _ in pool2}
         check("FIXTURE_ESC_FIX_TWO" not in ids and "FIXTURE_GOOD_FIX_ONE" in ids and any(
               "its own hidden check" in k for k in rep2["rejects"]),
@@ -728,13 +733,13 @@ def t_pool_ruling(tmp, repo, old, s):
         "needs": "offline", "caused_by": "FIXTURE_ESC_FIX_TWO", "seat": "FOUNDRY", "for": "FOUNDRY",
         "ts": "2026-10-17T10:00:00Z", "tsn": "m1"})
     _ev_of(E, "FIXTURE_ESC_REWORK_THREE")["caused_by"] = "FIXTURE_ESC_MID_REVIEW"
-    pool2, _ = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pool2, _ = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     lab = {t["source_item"]: h["label"] for t, h in pool2}
     check(lab.get("FIXTURE_ESC_FIX_TWO") == "Escaped", "a grandchild rework (via a review child) counts: %s" % lab)
     # a child filed 10 s BEFORE the parent's close (the close and the finding raced) still counts
     E = ledger(s)
     _ev_of(E, "FIXTURE_ESC_REWORK_THREE")["ts"] = "2026-10-16T10:03:50Z"
-    pool3, _ = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pool3, _ = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     lab = {t["source_item"]: h["label"] for t, h in pool3}
     check(lab.get("FIXTURE_ESC_FIX_TWO") == "Escaped", "a child filed seconds before the close counts: %s" % lab)
     # the file-intersection rule: a 'remaining half' whose fix touches none of the parent's files is no escape
@@ -946,7 +951,7 @@ def t_round3(tmp, repo, old, s, pool):
         got = A.find_leaks(p)
         check(before == [] and bool(got), "after hand-over a hidden body in %s is caught: %s"
               % (name, (got or ["NOT CAUGHT"])[0][:90]))
-    pool2, _ = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    pool2, _ = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     check(all(t["prompt_source"] == "base_parent" and isinstance(t["prompt_may_hold_hints"], bool) for t, _ in pool2),
           "every census task records prompt_source base_parent and a boolean hints flag")
     # hints: prose gains a line after the claim
@@ -989,11 +994,11 @@ def t_multi_old(tmp, repo, old, s):
               dict(event="close", id="FIXTURE_OLD2_FIX_EIGHT", sha=s2["old"][:10], reason="r",
                    ts="2026-10-22T10:04:00Z")):
         E.append(dict(k, seat="FOUNDRY", tsn="o2" + k["event"]))
-    _, r1 = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old)
+    _, r1 = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     check(r1["rejects"].get("close sha resolves nowhere") == 1,
           "forced: with only the first old-history repo the second-old sha resolves nowhere (%s)" % r1["rejects"])
     for form in ([old, old2], os.pathsep.join([str(old), str(old2)])):
-        p2, r2 = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=form)
+        p2, r2 = A.census(E, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=form, vet=stub_vet)
         h = {t["source_item"]: hh for t, hh in p2}.get("FIXTURE_OLD2_FIX_EIGHT")
         check(bool(h) and h["fix_sha"] == s2["new"] and h["sha_resolution"] == "remapped"
               and r2["old_history_pins"].get(str(old2)) == [s2["old"]],
@@ -1085,7 +1090,7 @@ def t_review_2026_10_30(tmp):
     ev(event="close", id="RV_STALE_FIX_FIVE", sha=stale2[:10], reason="again", ts="2026-10-18T10:04:00Z")
     item("RV_SIDE_REWORK_SIX", "2026-10-19", side, verify=False, kind="bug", caused_by="RV_CSTEST_FIX_FOUR")
     item("RV_DANGLING_FIX_SEVEN", "2026-10-20", dangling)
-    pool, rep = A.census(E, repo=repo, sanity="RV_SANE_FIX_ONE", old_history=[empty])
+    pool, rep = A.census(E, repo=repo, sanity="RV_SANE_FIX_ONE", old_history=[empty], vet=stub_vet)
     got = {t["source_item"]: (t, h) for t, h in pool}
     bo = [k for k in rep["rejects"] if k.startswith("build-only")]
     check("RV_CSONLY_FIX_TWO" not in got and "RV_XMLONLY_FIX_THREE" not in got and bo
@@ -1112,6 +1117,311 @@ def t_review_2026_10_30(tmp):
     check(out.get("already") == 0 and out.get("pinned") == 1 and out.get("conflict") == [s["xml"]]
           and git(repo, "rev-parse", A.PIN_PREFIX + s["xml"]) == s["cs"],
           "pin_old reports a pin pointing at another commit as a conflict and leaves it (%s)" % out)
+
+
+OTHER = "src/RimMandrake/Utils/other.py"
+NEW2 = "src/RimMandrake/Utils/selftest_vt_added.py"
+SLOW = "src/RimMandrake/Utils/selftest_vt_slow.py"
+
+
+def stub_vet(base, fix, path, body):
+    """Fixture pools: every hidden check discriminates (the vet itself is proven in t_vet_siblings)."""
+    return {"base_rc": 1, "fix_rc": 0, "fix_result": "pass", "base_result": "fail"}
+
+
+def t_vet_siblings(tmp):
+    """FOUNDRY 2026-10-30, four BENCH review findings of 67094dc0f6. Its own repos, so the main fixture's counts
+    do not move.
+    - ARENA_TASKS_VET_CHECK_FAILS_AT_BASE: a fix_test must FAIL at base (its hidden body overlaid, alone, like the
+      judge's run_hidden) and PASS at the fix, measured by the judge's own materialise + run_hidden. A check that passes
+      at base, fails at the fix or times out is unscored; a task left with none is rejected; a never-vetted check
+      rejects its task (fail closed) and freeze refuses any scored fix_test without a passing vet record.
+    - ARENA_POOL_HARDEN_SIBLING_FIX_IN_BASE: the report lists, per task, the pool tasks whose fix is in its base;
+      schedule_conflicts refuses an order that judges such a task before (or with) the one its base contains.
+    - ARENA_TASKS_FIX_CRITERIA_FROM_LATER_LEDGER: criteria never come from the ledger manifest (written by the
+      `implemented` event, i.e. after the fix): prose at base, else the title.
+    - ARENA_RESOLVER_VERIFY_REMAP_BY_PATCH_ID: a triple remap whose content differs is rejected."""
+    repo, old = tmp / "vt_repo", tmp / "vt_old"
+    for r in (repo, old):
+        r.mkdir()
+        git(r, "init", "-q", "-b", "main")
+    base_files = {TOOL: "def f():\n    return 1\n", TEST: "assert True  # vt base body of the selftest\n",
+                  OTHER: "X = 1\n",
+                  "infrastructure/state/items/VT_DISC_FIX_ONE.md": "# VT_DISC_FIX_ONE\n\n## spec\nmake f 2\n",
+                  "infrastructure/state/items/VT_MIXED_FIX_THREE.md":
+                      "# VT_MIXED_FIX_THREE\n\n## spec\npin f\n\n## criteria\nBASE CRITERIA: f is pinned by a test\n"}
+    b0 = commit(repo, base_files, "vt base", "2026-10-13T09:00:00+00:00")
+    commit(old, base_files, "vt base", "2026-10-13T09:00:00+00:00")
+    disc_files = {TOOL: "def f():\n    return 2\n",
+                  TEST: "from tool import f\nassert f() == 2  # vt discriminating fix pins f, long line\n"}
+    s = {"disc": commit(repo, disc_files, "vt fix disc", "2026-10-14T10:03:00+00:00"),
+         "nondisc": commit(repo, {TOOL: "def f():\n    return 3\n",
+                                  TEST: "assert True  # vt comment-only change to the selftest, long line\n"},
+                           "vt fix nondisc", "2026-10-15T10:03:00+00:00"),
+         "mixed": commit(repo, {TOOL: "def f():\n    return 4\n",
+                                TEST: "from tool import f\nassert f() == 4  # vt mixed fix pins f, long line\n",
+                                NEW2: "assert True  # vt added test that passes anywhere, long line\n"},
+                         "vt fix mixed", "2026-10-16T10:03:00+00:00"),
+         "fixfail": commit(repo, {TOOL: "def f():\n    return 5\n",
+                                  TEST: "from tool import f\nassert f() == 99  # vt fails even at its own fix\n"},
+                           "vt fix fixfail", "2026-10-17T10:03:00+00:00"),
+         "slow": commit(repo, {TOOL: "def f():\n    return 6\n",
+                               SLOW: "import time\ntime.sleep(30)  # vt never finishes inside the vet timeout\n"},
+                        "vt fix slow", "2026-10-18T10:03:00+00:00")}
+    # one discriminating test and one the judge cannot finish: the whole task is out (fail closed)
+    s["mixslow"] = commit(repo, {TOOL: "def f():\n    return 7\n",
+                                 TEST: "from tool import f\nassert f() == 7  # vt mixslow fix pins f, long line\n",
+                                 "src/RimMandrake/Utils/selftest_vt_hang.py":
+                                     "import time\ntime.sleep(31)  # vt mixslow adds a test that hangs, long line\n"},
+                          "vt fix mixslow", "2026-10-19T08:03:00+00:00")
+    # old history: two pre-rewrite commits with the SAME triple as vt fix disc (date, author, subject) but other
+    # content: one changes f differently, one also changes a path the rewritten commit leaves alone (not excised:
+    # it exists in the rewritten trees). A third, with only an excised path extra, is the positive control.
+    collide = commit(old, {TOOL: "def f():\n    return 22\n", TEST: disc_files[TEST]},
+                     "vt fix disc", "2026-10-14T10:03:00+00:00")
+    git(old, "checkout", "-q", "-b", "b2", git(old, "rev-parse", "HEAD^"))
+    extra = commit(old, dict(disc_files, **{OTHER: "X = 2\n"}), "vt fix disc", "2026-10-14T10:03:00+00:00")
+    git(old, "checkout", "-q", "-b", "b3", git(old, "rev-parse", "HEAD^"))
+    excised = commit(old, dict(disc_files, **{"work/excised.bin": "z" * 40}), "vt fix disc",
+                     "2026-10-14T10:03:00+00:00")
+    R = A.Resolver(repo, [old])
+    rc, why = R(collide)
+    check(rc is None and "content differs" in why,
+          "remap: same triple, different content -> rejected (%s, %s)" % (rc, why))
+    rx, whyx = R(extra)
+    check(rx is None and "content differs" in whyx,
+          "remap: same triple, an extra non-excised path changed -> rejected (%s, %s)" % (rx, whyx))
+    ro, whyo = R(excised)
+    check(ro == s["disc"] and whyo == "remapped",
+          "remap: same triple, only an excised path extra -> remapped (%s, %s)" % (ro, whyo))
+    # binary content: patch-id does not see it, so the resulting blobs are compared
+    brepo, bold = tmp / "vt_bin", tmp / "vt_bin_old"
+    for r in (brepo, bold):
+        r.mkdir()
+        git(r, "init", "-q", "-b", "main")
+        commit(r, {OTHER: "X = 1\n", **({"work/gone.txt": "excised\n"} if r == bold else {})}, "vt bin base",
+               "2026-10-13T09:00:00+00:00")                  # trees differ (an excised file), so shas differ
+    BIN = "src/RimMandrake/Utils/blob.dat"
+    bnew = commit(brepo, {BIN: "\0bin\0same" * 8}, "vt bin fix", "2026-10-14T10:03:00+00:00")
+    bsame = commit(bold, {BIN: "\0bin\0same" * 8}, "vt bin fix", "2026-10-14T10:03:00+00:00")
+    git(bold, "checkout", "-q", "-b", "b2", git(bold, "rev-parse", "HEAD^"))
+    bdiff = commit(bold, {BIN: "\0bin\0diff" * 8}, "vt bin fix", "2026-10-14T10:03:00+00:00")
+    RB = A.Resolver(brepo, [bold])
+    check(RB(bsame) == (bnew, "remapped"), "remap: same triple, same binary -> remapped (%s)" % (RB(bsame),))
+    rb, whyb = RB(bdiff)
+    check(rb is None and "binary" in whyb, "remap: same triple, a different binary -> rejected (%s, %s)" % (rb, whyb))
+
+    # the change, not just its result: A->C vs B->C, deleting A vs deleting B, and a mode flip patch-id cannot see
+    def pair(tag, new_base, old_base, new_fix, old_fix, chmod_old=False, chmod_new=False):
+        nr, orr = tmp / ("vt_%s" % tag), tmp / ("vt_%s_old" % tag)
+        out = []
+        for r, b, f, x in ((nr, new_base, new_fix, chmod_new), (orr, old_base, old_fix, chmod_old)):
+            r.mkdir()
+            git(r, "init", "-q", "-b", "main")
+            commit(r, dict(b, **({"work/gone.txt": "excised\n"} if r == orr else {})), "vt %s base" % tag,
+                   "2026-10-13T09:00:00+00:00")
+            for rel, body in f.items():
+                if body is not None:
+                    (r / rel).parent.mkdir(parents=True, exist_ok=True)
+                    (r / rel).write_text(body)
+                if x:
+                    (r / rel).chmod(0o755)
+            out.append(commit(r, f, "vt %s fix" % tag, "2026-10-14T10:03:00+00:00"))
+        return A.Resolver(nr, [orr])(out[1]), out[0]
+
+    BA, BB, BC = "\0bin\0A" * 8, "\0bin\0B" * 8, "\0bin\0C" * 8
+    (rp, why), _ = pair("b2c", {BIN: BA}, {BIN: BB}, {BIN: BC}, {BIN: BC})
+    check(rp is None and "binary" in why, "remap: A->C vs B->C (same result blob) -> rejected (%s, %s)" % (rp, why))
+    (rp, why), _ = pair("bdel", {BIN: BA}, {BIN: BB}, {BIN: None}, {BIN: None})
+    check(rp is None and "binary" in why, "remap: deleting different binaries -> rejected (%s, %s)" % (rp, why))
+    (rp, why), want = pair("bdel_ok", {BIN: BA}, {BIN: BA}, {BIN: None}, {BIN: None})
+    check(rp == want, "remap: deleting the same binary -> remapped (%s, %s)" % (rp, why))
+    TX = "src/RimMandrake/Utils/run_me.py"
+    (rp, why), _ = pair("mode", {TX: "a = 1\n"}, {TX: "a = 1\n"}, {TX: "a = 2\n"}, {TX: "a = 2\n"}, chmod_old=True)
+    check(rp is None and "differs" in why, "remap: same text change, only the old side made it executable -> rejected "
+          "(%s, %s)" % (rp, why))
+    (rp, why), want = pair("mode_ok", {TX: "a = 1\n"}, {TX: "a = 1\n"}, {TX: "a = 2\n"}, {TX: "a = 2\n"},
+                           chmod_old=True, chmod_new=True)
+    check(rp == want, "remap: same text change and the same mode flip -> remapped (%s, %s)" % (rp, why))
+
+    E, n = [], [0]
+
+    def ev(**k):
+        n[0] += 1
+        k.setdefault("seat", "FOUNDRY")
+        if k["event"] == "file":
+            k.setdefault("for", "FOUNDRY")
+        k["tsn"] = "vt%d" % n[0]
+        E.append(k)
+
+    def item(iid, day, sha, crit=None):
+        ev(event="file", id=iid, title="title of " + iid, kind="task", needs="offline", ts=day + "T10:00:00Z")
+        ev(event="verify", id=iid, result="pass", config="c", evidence="e", sha=sha[:10], ts=day + "T10:03:30Z")
+        if crit:            # the implementer's manifest: written WITH the fix, so it can describe the answer
+            ev(event="implemented", id=iid, sha=sha[:10], criteria=[{"id": "C1", "level": "L0", "text": crit}],
+               ts=day + "T10:03:40Z")
+        ev(event="close", id=iid, sha=sha[:10], reason="r", ts=day + "T10:04:00Z")
+
+    item("VT_DISC_FIX_ONE", "2026-10-14", s["disc"], crit="LEAKED ANSWER: make f return 2")
+    item("VT_NONDISC_FIX_TWO", "2026-10-15", s["nondisc"])
+    item("VT_MIXED_FIX_THREE", "2026-10-16", s["mixed"], crit="LEAKED MIXED ANSWER: f returns 4")
+    item("VT_FIXFAIL_FIX_FOUR", "2026-10-17", s["fixfail"])
+    item("VT_SLOW_FIX_FIVE", "2026-10-18", s["slow"])
+    item("VT_COLLIDE_FIX_SIX", "2026-10-19", collide)
+    item("VT_MIXSLOW_FIX_SEVEN", "2026-10-19", s["mixslow"])
+    w = A.model.replay(E).items["VT_DISC_FIX_ONE"]
+    check(bool(w.criteria) and "LEAKED" in w.criteria[0]["text"],
+          "instrument: the fixture's ledger manifest really holds the later criteria (%s)" % (w.criteria,))
+
+    # census without a vet: candidates only, nothing scored is claimed
+    p0, r0 = A.census(E, repo=repo, sanity="VT_DISC_FIX_ONE", old_history=[old])
+    g0 = {t["source_item"]: (t, h) for t, h in p0}
+    t1 = g0["VT_DISC_FIX_ONE"][0]
+    check(t1["criteria"] == "title of VT_DISC_FIX_ONE" and "LEAKED" not in A._dump(t1).decode()
+          and t1["criteria_source"].startswith("title"),
+          "criteria: the ledger manifest (implemented, after the fix) never reaches the task (%s / %s)"
+          % (t1["criteria"], t1["criteria_source"]))
+    t3 = g0["VT_MIXED_FIX_THREE"][0]
+    check("BASE CRITERIA" in t3["criteria"] and "LEAKED" not in A._dump(t3).decode()
+          and t3["criteria_source"].startswith("prose"),
+          "criteria: prose ## criteria at base wins over a later manifest (%s / %s)"
+          % (t3["criteria"], t3["criteria_source"]))
+    check("VT_COLLIDE_FIX_SIX" not in g0 and any("content differs" in k for k in r0["rejects"]),
+          "census: a content-differing remap is rejected with its reason (%s)" % r0["rejects"])
+    check(r0["vet"]["run"] is False and r0["vet"]["not_vetted"] == 0,
+          "census without a vet says so in the report (%s)" % r0.get("vet"))
+
+    # the vet itself: the judge's own route (materialise + run_hidden), fix side and base side (body overlaid alone)
+    cache = tmp / "vt_vet_cache.jsonl"
+    jobs = A.vet_jobs(p0)
+    check(sum(len(j["checks"]) for j in jobs) == 8, "vet jobs: 8 fix_tests across the 6 candidate tasks (%s)"
+          % [(j["task"], len(j["checks"])) for j in jobs])
+    out = A.run_vet(jobs, repo, tmp / "vt_vetdir", cache, workers=2, timeout=3)
+    check(out["ran"] == 8 and out["left"] == 0 and not out["errors"], "run_vet ran all 8 checks (%s)" % out)
+    check(not (tmp / "vt_vetdir").exists() or not any((tmp / "vt_vetdir").iterdir()),
+          "run_vet leaves no tree behind")
+    recs = A.read_vet_cache(cache)
+    by_path = {}
+    for r in recs.values():
+        by_path.setdefault((r["task"], r["path"]), r)
+    d = by_path.get(("RP_VT_DISC_FIX_ONE", TEST), {})
+    check(d.get("fix_result") == "pass" and d.get("base_result") == "fail" and d.get("fix_rc") == 0
+          and d.get("base_rc") not in (0, None),
+          "vet: the discriminating test passes at the fix and fails at base (%s)" % d)
+    nd = by_path.get(("RP_VT_NONDISC_FIX_TWO", TEST), {})
+    check(nd.get("fix_result") == "pass" and nd.get("base_result") == "pass",
+          "vet: the comment-only test passes at base too (%s)" % nd)
+    sl = by_path.get(("RP_VT_SLOW_FIX_FIVE", SLOW), {})
+    check(sl.get("fix_result") == "error" and A.vet_verdict(sl) == (False, "timeout"),
+          "vet: a hung test is recorded as a timeout, never a pass (%s)" % sl)
+    # judge fidelity: rc 0 without the runner's nonce marker is no pass (plain python would call it one)
+    fj = {"task": "RP_VT_FIDELITY", "base": b0, "fix": s["disc"], "area": A.area_for([TEST]),
+          "checks": [{"path": TEST, "body": "import os\nos._exit(0)\n", "key": "vt-fid"}]}
+    fr = A._vet_task(fj, repo, tmp / "vt_fid", 10)[0]
+    check(fr["fix_result"] == "no_marker" and fr["fix_rc"] == 0 and A.vet_verdict(fr) == (False, "fails_at_fix"),
+          "vet runs the judge's runner: rc 0 without its marker is not a pass (%s)" % {k: fr[k] for k in
+                                                                                     ("fix_result", "fix_rc")})
+    for b, want in (("no_marker", "base_invalid"), ("denied", "base_invalid"), ("error", "timeout"),
+                    ("fail", "discriminating"), ("pass", "passes_at_base")):
+        check(A.vet_verdict({"fix_result": "pass", "base_result": b})[1] == want,
+              "vet verdict: base %s -> %s" % (b, want))
+    check(A.vet_verdict({"fix_rc": 0, "base_rc": 1}) == (False, "fails_at_fix"),
+          "vet verdict: a record without judge results (another runner) never discriminates")
+    k_now = A.vet_key(b0, s["disc"], TEST, "x")
+    saved = list(A._RUNNER_ID)
+    A._RUNNER_ID[:] = ["judge runner changed"]
+    k_other = A.vet_key(b0, s["disc"], TEST, "x")
+    A._RUNNER_ID[:] = saved
+    check(k_now != k_other and A._runner_id().startswith(A.VET_RUNNER + "@"),
+          "vet cache key carries the judge runner's hash: a runner change invalidates every record")
+    import arena_judge as J
+    jsrc = Path(J.__file__).read_bytes()
+    check(A.vet_runner_id(jsrc) == A._runner_id() and b"class SafeRepo" in jsrc
+          and A.vet_runner_id(jsrc.replace(b"class SafeRepo", b"class SafeRepo ", 1)) != A._runner_id(),
+          "runner hash covers the whole judge module (a helper such as SafeRepo, not only named functions)")
+    # a second run finds everything cached
+    out2 = A.run_vet(A.vet_jobs(p0), repo, tmp / "vt_vetdir", cache, workers=2, timeout=3)
+    check(out2["ran"] == 0 and out2["cached"] == 8, "run_vet is resumable: a rerun runs nothing (%s)" % out2)
+    bj = [{"task": "RP_VT_BUDGET", "base": b0, "fix": s["disc"],
+           "checks": [{"path": TEST, "body": "assert 0\n", "key": "vt-budget-key"}]}]
+    ob = A.run_vet(bj, repo, tmp / "vt_vetdir", cache, workers=1, timeout=3, budget=-1)
+    check(ob["ran"] == 0 and ob["left"] == 1 and not ob["errors"] and "vt-budget-key" not in A.read_vet_cache(cache),
+          "run_vet: past its budget it starts nothing and caches nothing (%s)" % ob)
+    ej = [{"task": "RP_VT_INFRA", "base": b0, "fix": "0" * 40,
+           "checks": [{"path": TEST, "body": "assert 0\n", "key": "vt-infra-key"}]}]
+    oe = A.run_vet(ej, repo, tmp / "vt_vetdir", cache, workers=1, timeout=3)
+    check(oe["ran"] == 0 and len(oe["errors"]) == 1 and "vt-infra-key" not in A.read_vet_cache(cache),
+          "run_vet: an infrastructure error is reported and NOT cached (stays unvetted) (%s)" % oe)
+
+    pool, rep = A.census(E, repo=repo, sanity="VT_DISC_FIX_ONE", old_history=[old], vet=A.vet_lookup(recs))
+    got = {t["source_item"]: (t, h) for t, h in pool}
+    check(set(got) == {"VT_DISC_FIX_ONE", "VT_MIXED_FIX_THREE"},
+          "vet: only tasks with a discriminating check stay (%s; rejects %s)" % (sorted(got), rep["rejects"]))
+    rj = A.json.dumps(rep["rejects"])
+    check("discriminat" in rj and rep["vet"]["passes_at_base"] >= 2 and rep["vet"]["fails_at_fix"] == 1
+          and rep["vet"]["timeout"] == 2 and rep["vet"]["discriminating"] == 3 and rep["vet"]["tasks_rejected"] == 4,
+          "vet report counts: 3 discriminating, >=2 pass at base, 1 fails at fix, 2 timeouts, 4 tasks out (%s)"
+          % rep["vet"])
+    check(rep["rejects"].get("a hidden check cannot run under the judge (timeout, denied or no marker)") == 2,
+          "fail closed: a timed-out check rejects its task even beside a discriminating one (%s)" % rep["rejects"])
+    tm, hm = got["VT_MIXED_FIX_THREE"]
+    types = {c["path"]: c["type"] for c in hm["checks"]}
+    check(types.get(TEST) == "fix_test" and types.get(NEW2) == "fix_test_unscored",
+          "mixed task: the discriminating test is scored, the base-passing one kept unscored (%s)" % types)
+    check(all(isinstance(c.get("vet"), dict) and "base_rc" in c["vet"] and "fix_rc" in c["vet"]
+              for _, h in pool for c in h["checks"] if c["type"].startswith("fix_test")),
+          "every hidden fix_test records its base and fix exit codes")
+    check("held-back" not in tm["proof"] and TEST in tm["proof"],
+          "proof counts no held-back test for an unscored added one (%s)" % tm["proof"])
+    # fail closed: a check the vet never ran rejects its task
+    miss: list = []
+    pn, rn = A.census(E, repo=repo, sanity=None, old_history=[old], vet=lambda *a: None, vet_missing=miss)
+    check(not pn and rn["vet"]["not_vetted"] == 8 and any("not vetted" in k for k in rn["rejects"]),
+          "fail closed: never-vetted checks reject every task (%s)" % rn["rejects"])
+    mk = sorted(A.vet_key(j["base"], j["fix"], c["path"], c["body"]) for j in miss for c in j["checks"])
+    check(len(mk) == 8 and all(c["key"] == A.vet_key(j["base"], j["fix"], c["path"], c["body"])
+                               for j in miss for c in j["checks"]) and len(set(mk)) == 8,
+          "census collects every unvetted check as a vet job (%d)" % len(mk))
+    # freeze refuses a scored fix_test without a passing vet record (a pool from census(vet=None))
+    pa = fresh_arena(tmp, "vt_arena")
+    A.write_pool(p0, pa)
+    e = raises(A.TaskRefused, A.freeze, pa)
+    check(bool(e) and "vet" in e, "freeze refuses tasks whose checks were never vetted: %s" % (e or "NOT RAISED")[:120])
+    # freeze binds the evidence to the check: a judge change since the census, or an edited body, refuses
+    pr = fresh_arena(tmp, "vt_arena_runner")
+    A.write_pool(pool, pr)
+    saved = list(A._RUNNER_ID)
+    A._RUNNER_ID[:] = ["judge runner changed after the census"]
+    e = raises(A.TaskRefused, A.freeze, pr)
+    A._RUNNER_ID[:] = saved
+    check(bool(e) and "vet" in e, "freeze refuses vet evidence from another judge runner: %s" % (e or "NOT RAISED")[:120])
+    import copy
+    pe = fresh_arena(tmp, "vt_arena_body")
+    edited = copy.deepcopy(pool)
+    for c in edited[0][1]["checks"]:
+        if c["type"] == "fix_test":
+            c["body"] += "# edited after the vet\n"
+    A.write_pool(edited, pe)
+    e = raises(A.TaskRefused, A.freeze, pe)
+    check(bool(e) and "vet" in e, "freeze refuses a check body edited after its vet: %s" % (e or "NOT RAISED")[:120])
+    pv = fresh_arena(tmp, "vt_arena_ok")
+    A.write_pool(pool, pv)
+    check(A.freeze(pv)["pool"] == 2, "freeze accepts the vetted pool")
+
+    # siblings: the report lists, per task, the pool tasks whose fix commit is in its base
+    bc = rep["base_contains"]
+    check(bc.get("RP_VT_MIXED_FIX_THREE") == ["RP_VT_DISC_FIX_ONE"] and bc.get("RP_VT_DISC_FIX_ONE") == []
+          and rep["base_contains_pairs"] == 1,
+          "base_contains: the mixed task's base holds the disc task's fix (%s)" % bc)
+    later, earlier = "RP_VT_MIXED_FIX_THREE", "RP_VT_DISC_FIX_ONE"
+    check(A.schedule_conflicts([later, earlier], bc) == [(later, earlier)],
+          "planner: judging a task before the one its base contains is a conflict")
+    check(A.schedule_conflicts([[later, earlier]], bc) == [(later, earlier)],
+          "planner: the two in one round is a conflict")
+    check(A.schedule_conflicts([earlier, later], bc) == [], "planner: the contained task judged first is fine")
+    check(bool(raises(A.TaskRefused, A.check_schedule, [later, earlier], bc)),
+          "planner: check_schedule refuses a conflicting order")
+    check(A.check_schedule([earlier, later], bc) is None, "planner: check_schedule accepts the safe order")
 
 
 def t_real_ledger():
@@ -1150,6 +1460,7 @@ def main():
         t_freeze_round2(tmp, pool)
         t_round3(tmp, repo, old, s, pool)
         t_review_2026_10_30(tmp)                # its own repo
+        t_vet_siblings(tmp)                     # its own repo
         t_multi_old(tmp, repo, old, s)          # last: it adds a commit to the fixture repo
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)

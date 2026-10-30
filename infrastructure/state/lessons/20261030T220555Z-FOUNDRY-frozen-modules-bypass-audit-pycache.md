@@ -1,0 +1,2 @@
+An audit hook that denies marshal.loads to block .pyc smuggling also denies FROZEN stdlib modules on Python 3.14 (ntpath via pathlib.PureWindowsPath): FrozenImporter.exec_module calls marshal.loads and sys.pycache_prefix does not cover frozen modules. Probe 'import pathlib' under any such sandbox before trusting its verdicts: arena_judge RUNNER denied 179 of 265 vetted checks this way (ARENA_RUNNER_FIX_FROZEN_PATHLIB_DENIED).
+home: NONE

@@ -283,8 +283,110 @@ class Resolver:
         self.old_used.setdefault(full, str(old))
         hits = self._key_index().get(tuple(key.split("\t", 2)), [])
         if len(hits) == 1:
+            # FOUNDRY 2026-10-30 (ARENA_RESOLVER_VERIFY_REMAP_BY_PATCH_ID): the triple is metadata; two commits can
+            # share it and differ in content. Measured on the real pool, 2 of 241 remaps did (old 465f61350b
+            # changed FlowWorks/validation.py, its triple twin afd094c3ba does not).
+            why = remap_content_differs(Path(old), full, self.repo, hits[0])
+            if why:
+                return None, "remap content differs (%s)" % why
             return hits[0], "remapped"
         return None, ("close sha excised by the history rewrite" if not hits else "close sha remaps ambiguously")
+
+
+EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+PATHSPEC_CHUNK = 400
+
+
+def _run(repo: Path, args, inp=None, timeout=120) -> bytes:
+    r = subprocess.run(["git", "--literal-pathspecs", "-C", str(repo), *args], input=inp, capture_output=True,
+                       timeout=timeout)
+    if r.returncode != 0:
+        raise ArenaError("git %s: %s" % (" ".join(args[:3]), r.stderr.decode("utf-8", "replace").strip()[:200]))
+    return r.stdout
+
+
+def _commit_diff(repo: Path, sha: str):
+    """(first parent or the empty tree, {path: binary?}) of `sha`'s own change, renames off."""
+    par = (_parents(repo, sha) or [EMPTY_TREE])[0]
+    out = {}
+    for rec in _run(repo, ["diff-tree", "-r", "-z", "--numstat", "--no-renames", par, sha]).split(b"\0"):
+        if rec:
+            a, _d, path = rec.split(b"\t", 2)
+            out[path.decode("utf-8", "surrogateescape")] = a == b"-"
+    return par, out
+
+
+def _patch_id(repo: Path, par: str, sha: str, paths) -> str:
+    """git patch-id --stable of `par..sha` restricted to `paths` (chunked pathspecs, one id: --stable sums per-file
+    hashes, so the concatenated chunks give the id of the whole restricted diff)."""
+    paths, diff = sorted(paths), b""
+    for i in range(0, len(paths), PATHSPEC_CHUNK):
+        diff += _run(repo, ["diff-tree", "-p", "--no-renames", "--full-index", par, sha, "--",
+                            *paths[i:i + PATHSPEC_CHUNK]])
+    if not diff:
+        return ""
+    out = _run(repo, ["patch-id", "--stable"], inp=diff).split()
+    return out[0].decode() if out else ""
+
+
+def _paths_in(repo: Path, tree: str, paths) -> set:
+    """The subset of `paths` that exist (as a file) in `tree`."""
+    if tree == EMPTY_TREE:
+        return set()
+    paths, got = sorted(paths), set()
+    for i in range(0, len(paths), PATHSPEC_CHUNK):
+        for p in _run(repo, ["ls-tree", "-r", "-z", "--name-only", tree, "--",
+                             *paths[i:i + PATHSPEC_CHUNK]]).split(b"\0"):
+            if p:
+                got.add(p.decode("utf-8", "surrogateescape"))
+    return got
+
+
+def _tree_entries(repo: Path, tree: str, paths) -> dict:
+    """{path: (mode, blob)} for the subset of `paths` present in `tree`."""
+    if tree == EMPTY_TREE:
+        return {}
+    paths, got = sorted(paths), {}
+    for i in range(0, len(paths), PATHSPEC_CHUNK):
+        for rec in _run(repo, ["ls-tree", "-r", "-z", tree, "--", *paths[i:i + PATHSPEC_CHUNK]]).split(b"\0"):
+            if rec:
+                meta, _, path = rec.partition(b"\t")
+                mode, _, blob = meta.decode().split(" ")
+                got[path.decode("utf-8", "surrogateescape")] = (mode, blob)
+    return got
+
+
+def remap_content_differs(old: Path, old_sha: str, repo: Path, new_sha: str) -> str:
+    """'' when the pre-rewrite commit and its triple twin made the same change, else why not.
+    A path the old commit changed that exists in NEITHER the new commit's tree nor its parent's was excised by the
+    rewrite and is dropped; the rest must be the very same path set with the same `git patch-id --stable`, and a
+    binary path (numstat '-', which patch-id does not see) the same resulting blob."""
+    try:
+        opar, od = _commit_diff(old, old_sha)
+        npar, nd = _commit_diff(repo, new_sha)
+        alive = _paths_in(repo, new_sha, od) | _paths_in(repo, npar, od)
+        kept = {p: b for p, b in od.items() if p in alive}
+        if set(kept) != set(nd):
+            extra, miss = sorted(set(kept) - set(nd)), sorted(set(nd) - set(kept))
+            return "paths: old only %s, new only %s" % (extra[:3], miss[:3])
+        text = [p for p in kept if not kept[p] and not nd[p]]
+        if _patch_id(old, opar, old_sha, text) != _patch_id(repo, npar, new_sha, text):
+            return "patch-id of %d text path(s) differs" % len(text)
+        # patch-id sees neither binary content nor mode lines: compare (mode, blob) before and after for a binary
+        # path (so A->C and B->C, or two different deletions, differ) and the mode pair for every path
+        e = [_tree_entries(old, opar, kept), _tree_entries(old, old_sha, kept), _tree_entries(repo, npar, kept),
+             _tree_entries(repo, new_sha, kept)]
+        none = ("", "")
+        for p in sorted(kept):
+            o, n = (e[0].get(p, none), e[1].get(p, none)), (e[2].get(p, none), e[3].get(p, none))
+            if kept[p] or nd[p]:
+                if o != n:
+                    return "binary %s differs" % p
+            elif (o[0][0], o[1][0]) != (n[0][0], n[1][0]):
+                return "mode of %s differs" % p
+    except (ArenaError, subprocess.TimeoutExpired, ValueError) as e:
+        return "cannot compare: %s" % str(e)[:120]
+    return ""
 
 
 def pin_old(shas, old=None) -> dict:
@@ -516,8 +618,15 @@ def _public_bytes(task: dict) -> bytes:
 
 # ---------------------------------------------------------------- census
 
-def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, old_history=None):
-    """-> (pool, report). Pool entries are (task, hidden). Raises SanityFail when the sanity item is not kept."""
+def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, old_history=None, vet=None,
+           vet_missing: list | None = None):
+    """-> (pool, report). Pool entries are (task, hidden). Raises SanityFail when the sanity item is not kept.
+    `vet(base, fix, path, body)` -> a vet record ({base_rc, fix_rc, ...}) or None when the check was never run
+    (vet_lookup over the vet cache). With vet=None nothing is vetted: the pool is candidates, and freeze refuses
+    it. With a vet, a never-run check rejects its task (fail closed), and `vet_missing` (a list) collects a vet job
+    (vet_jobs shape) for each such task: every candidate, before the chain dedup, so one `vet` pass covers them."""
+    vstat = {"run": vet is not None, "checks": 0, "discriminating": 0, "passes_at_base": 0, "fails_at_fix": 0,
+             "timeout": 0, "base_invalid": 0, "not_vetted": 0, "tasks_rejected": 0}
     if events is None:
         events = model.read()
     world = model.replay(events)
@@ -608,8 +717,9 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         prompt = title + ("\n\n" + prose.strip() if prose else "")
         crit = _section(prose, "criteria") if prose else None
         crit_src = "prose ## criteria at base_sha"
-        if not crit and it.criteria:
-            crit, crit_src = "\n".join("%s: %s" % (c["id"], c["text"]) for c in it.criteria), "ledger manifest"
+        # FOUNDRY 2026-10-30 (ARENA_TASKS_FIX_CRITERIA_FROM_LATER_LEDGER): no fallback to the ledger manifest
+        # (it.criteria): it is written by the `implemented` event, WITH the fix, from the final ledger state, so it
+        # can describe the answer. Prose at base, else the title.
         if not crit:
             crit, crit_src = title, "title (no criteria written)"
         tid = "RP_" + iid
@@ -618,6 +728,48 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
             if is_selftest(path) and st != "D":
                 checks.append(_test_entry(repo, fix, base, path, st, type="fix_test",
                                           command="python3 src/RimMandrake/Utils/run_selftests.py --only " + path))
+        if vet is not None:
+            # FOUNDRY 2026-10-30 (ARENA_TASKS_VET_CHECK_FAILS_AT_BASE): a hidden check that also passes at base
+            # proves nothing. Each fix_test carries its measured base/fix exit codes; one that does not FAIL at base
+            # and PASS at the fix is kept as fix_test_unscored (still leak-scanned, never scored by the judge)
+            unvetted = 0
+            for c in checks:
+                rec = vet(base, fix, c["path"], c["body"])
+                if rec is None:
+                    unvetted += 1
+                    vstat["not_vetted"] += 1
+                    c["vet"] = None
+                    continue
+                ok, why = vet_verdict(rec)
+                vstat[why] += 1
+                vstat["checks"] += 1
+                c["vet"] = {"key": vet_key(base, fix, c["path"], c["body"]), "runner": _runner_id(),
+                            "base_rc": rec.get("base_rc"), "fix_rc": rec.get("fix_rc"), "discriminates": ok,
+                            "fix_result": rec.get("fix_result"), "base_result": rec.get("base_result"), "why": why}
+                if not ok:
+                    c["type"] = "fix_test_unscored"
+            if unvetted:               # fail closed: a check that was never run is not evidence either way
+                vstat["tasks_rejected"] += 1
+                if vet_missing is not None:
+                    vet_missing.append({"task": tid, "base": base, "fix": fix, "area": area_for(files), "checks": [
+                        {"path": c["path"], "body": c["body"], "key": vet_key(base, fix, c["path"], c["body"])}
+                        for c in checks if c.get("vet", 0) is None]})
+                reject(iid, "hidden check not vetted (run `arena_tasks.py vet`)"); continue
+            # fail closed: a check the judge cannot run (timeout, sandbox-denied, no marker) on either side would be
+            # an error in every judged round, whatever its siblings prove, so it takes the whole task out
+            if any(c["vet"]["fix_result"] not in ("pass", "fail") or c["vet"]["base_result"] not in ("pass", "fail")
+                   for c in checks):
+                vstat["tasks_rejected"] += 1
+                reject(iid, "a hidden check cannot run under the judge (timeout, denied or no marker)")
+                continue
+            if not any(c["type"] == "fix_test" for c in checks):
+                vstat["tasks_rejected"] += 1
+                reject(iid, "no fix selftest discriminates (each passes at base, fails at the fix or times out)")
+                continue
+            # an unscored ADDED test is not one the judge holds back: the proof must not count it
+            unscored_new = {c["path"] for c in checks if c["type"] == "fix_test_unscored" and c["added"]}
+            proof = proof_for([f for f in files if f not in unscored_new], {d[0] for d in diff if d[2] == "A"},
+                              {d[0] for d in diff if d[2] == "D"})
         rw_out = []
         for r, rfix in rw:
             prel = os.path.relpath(model.item_path(r.id), str(model.ROOT))
@@ -683,7 +835,11 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                                    for r in sorted(set(resolve.old_used.values()))},
               "rejects": dict(sorted(rejects.items(), key=lambda kv: -kv[1])),
               "sanity": {"item": sanity, "found": sanity in kept, "reason_if_not": reasons.get(sanity)},
-              "kinds": _count(t["kind"] for t, _ in pool), "sizes": _count(str(t["size"]) for t, _ in pool)}
+              "kinds": _count(t["kind"] for t, _ in pool), "sizes": _count(str(t["size"]) for t, _ in pool),
+              "vet": vstat}
+    bc = base_contains(pool, repo)
+    report["base_contains"] = bc
+    report["base_contains_pairs"] = sum(len(v) for v in bc.values())
     if sanity and sanity not in kept:
         raise SanityFail("sanity item %s was not kept (%s): the census is blind, not the pool small"
                          % (sanity, reasons.get(sanity) or "not scanned: not a done item closed in window"))
@@ -710,6 +866,228 @@ def _count(xs):
     for x in xs:
         out[x] = out.get(x, 0) + 1
     return out
+
+
+# ---------------------------------------------------------------- vet (ARENA_TASKS_VET_CHECK_FAILS_AT_BASE)
+# A hidden fix_test is evidence only if the JUDGE would see it FAIL at base_sha and PASS at the fix. The vet runs it
+# the judge's own way: arena_judge.materialise (TREE_PATHS + the task's area, as the judge builds an arm's tree) of
+# each side, then arena_judge.run_hidden (its sandbox, env allow-list, audit-hook runner, nonce marker, timeout). The
+# fix side stands for a perfect arm. Results are cached in <arena>/judge/vet_cache.jsonl (judge-only, like the hidden
+# checks); the census reads the cache and never runs code.
+
+VET_BUDGET = 480                        # seconds: one `vet` call stays inside a foreground command window
+VET_RUNNER = "arena_judge.materialise+run_hidden/1"
+
+
+def vet_runner_id(judge_src: bytes | None = None) -> str:
+    """VET_RUNNER + a hash of ALL the judge code a check result depends on: the whole arena_judge.py (its RUNNER,
+    tree paths, env allow-list, timeout, and every helper materialise/run_hidden/the sandbox call, e.g. SafeRepo),
+    plus the two outside functions they call (arena_tasks.paths, judge_codex_home.posix_within). In the cache key:
+    any judge edit stops every record matching and the census fails closed until `vet` reruns."""
+    import inspect
+    import arena_judge as J            # lazy: arena_judge imports this module
+    src = Path(J.__file__).read_bytes() if judge_src is None else judge_src
+    h = hashlib.sha256(src)
+    for f in (paths, J.JH.posix_within):
+        h.update(b"\0" + inspect.getsource(f).encode("utf-8"))
+    return VET_RUNNER + "@" + h.hexdigest()[:16]
+
+
+_RUNNER_ID: list = []
+
+
+def _runner_id() -> str:
+    if not _RUNNER_ID:
+        _RUNNER_ID.append(vet_runner_id())
+    return _RUNNER_ID[0]
+
+
+def vet_cache_path(p: dict | None = None) -> Path:
+    return (p or paths())["freeze"].parent / "vet_cache.jsonl"
+
+
+def vet_key(base: str, fix: str, path: str, body: str) -> str:
+    return hashlib.sha256(json.dumps([_runner_id(), base, fix, path, body]).encode("utf-8")).hexdigest()
+
+
+def vet_verdict(rec: dict) -> tuple[bool, str]:
+    """(discriminates, why) from the judge results (arena_judge._check_result) of the two runs: why is one of
+    discriminating / passes_at_base / fails_at_fix / timeout / base_invalid. Only fix `pass` and base `fail`
+    discriminates: a base run that timed out, was denied by the audit hook or lost its marker proves nothing."""
+    f, b = rec.get("fix_result"), rec.get("base_result")
+    if f == "error":
+        return False, "timeout"
+    if f != "pass":
+        return False, "fails_at_fix"
+    if b == "error":
+        return False, "timeout"
+    if b == "pass":
+        return False, "passes_at_base"
+    if b != "fail":
+        return False, "base_invalid"
+    return True, "discriminating"
+
+
+def read_vet_cache(path: Path) -> dict:
+    """{vet_key: record}; the last record for a key wins; a torn last line is ignored."""
+    out = {}
+    if Path(path).exists():
+        for line in Path(path).read_text(encoding="utf-8").splitlines():
+            try:
+                r = json.loads(line)
+            except ValueError:
+                continue
+            if isinstance(r, dict) and r.get("key"):
+                out[r["key"]] = r
+    return out
+
+
+def vet_lookup(recs: dict):
+    """The census's vet callable over a read cache: a record, or None (never vetted)."""
+    return lambda base, fix, path, body: recs.get(vet_key(base, fix, path, body))
+
+
+def vet_jobs(pool) -> list[dict]:
+    """One job per task: its base, fix, area and every fix_test (scored or not) with its cache key."""
+    jobs = []
+    for t, h in pool:
+        cs = [{"path": c["path"], "body": c["body"], "key": vet_key(t["base_sha"], h["fix_sha"], c["path"], c["body"])}
+              for c in h["checks"] if str(c.get("type", "")).startswith("fix_test")]
+        if cs:
+            jobs.append({"task": t["id"], "base": t["base_sha"], "fix": h["fix_sha"], "area": t.get("area") or [],
+                         "checks": cs})
+    return jobs
+
+
+def _vet_task(job: dict, repo: Path, work: Path, timeout: int) -> list[dict]:
+    """Both sides of one task, each materialised once and every check run in its own copy (run_hidden)."""
+    import shutil
+    import arena_judge as J            # lazy: arena_judge imports this module
+    checks = [{"kind": "fix_test", "path": c["path"], "body": c["body"]} for c in job["checks"]]
+    res = {}
+    for side in ("fix", "base"):
+        d = work / side
+        if d.exists():
+            shutil.rmtree(d)
+        d.mkdir(parents=True)
+        try:
+            tree = J.materialise(repo, job[side], job.get("area") or [], d / "tree")
+            res[side] = J.run_hidden(checks, tree, d, timeout=timeout)
+        except J.JudgeError as e:
+            raise ArenaError("vet: %s side: %s" % (side, e))
+        finally:
+            shutil.rmtree(d, ignore_errors=True)
+    recs = []
+    for c, fr, br in zip(job["checks"], res["fix"], res["base"]):
+        recs.append({"key": c["key"], "task": job["task"], "path": c["path"], "base": job["base"], "fix": job["fix"],
+                     "runner": _runner_id(), "fix_result": fr.get("result"), "base_result": br.get("result"),
+                     "fix_rc": fr.get("rc"), "base_rc": br.get("rc"), "fix_tail": (fr.get("tail") or "")[-600:],
+                     "base_tail": (br.get("tail") or "")[-600:], "timeout": timeout,
+                     "at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
+    return recs
+
+
+def run_vet(jobs, repo: Path, workdir: Path, cache: Path, workers: int = 4, timeout: int | None = None,
+            budget: float | None = None) -> dict:
+    """Run every uncached check; append each finished task's records to `cache`. `timeout` is the judge's own
+    CHECK_TIMEOUT (part of the runner hash in the key); only a selftest passes another. Resumable: no new task starts after
+    `budget` seconds. An infrastructure error (materialise, sandbox) is reported and NOT cached: the check stays
+    unvetted and its task stays out of the pool."""
+    import shutil
+    import tempfile
+    import time
+    from concurrent.futures import ThreadPoolExecutor
+    if timeout is None:
+        import arena_judge as J
+        timeout = J.CHECK_TIMEOUT
+    t0, have = time.monotonic(), read_vet_cache(cache)
+    todo = []
+    for j in jobs:
+        cs = [c for c in j["checks"] if c["key"] not in have]
+        if cs:
+            todo.append(dict(j, checks=cs))
+    cached = sum(len(j["checks"]) for j in jobs) - sum(len(j["checks"]) for j in todo)
+    out = {"ran": 0, "cached": cached, "left": 0, "errors": [], "seconds": 0.0}
+    if not todo:
+        return out
+    Path(workdir).mkdir(parents=True, exist_ok=True)
+    Path(cache).parent.mkdir(parents=True, exist_ok=True)
+    root = Path(tempfile.mkdtemp(prefix="vet-", dir=str(workdir)))
+
+    def one(job):
+        if budget is not None and time.monotonic() - t0 > budget:
+            return job, None, "budget"
+        try:
+            return job, _vet_task(job, Path(repo), Path(tempfile.mkdtemp(prefix="t", dir=str(root))), timeout), None
+        except (ArenaError, OSError, subprocess.SubprocessError, ValueError) as e:
+            return job, None, "%s: %s" % (type(e).__name__, str(e)[:200])
+
+    try:
+        with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+            for job, recs, err in ex.map(one, todo):
+                if recs is None:
+                    out["left"] += len(job["checks"])
+                    if err != "budget":
+                        out["errors"].append({"task": job["task"], "error": err})
+                    continue
+                with open(cache, "a", encoding="utf-8") as fh:
+                    for r in recs:
+                        fh.write(json.dumps(r, sort_keys=True) + "\n")
+                out["ran"] += len(recs)
+    finally:
+        shutil.rmtree(root, ignore_errors=True)
+    out["seconds"] = round(time.monotonic() - t0, 1)
+    return out
+
+
+def vet_record_ok(c: dict) -> bool:
+    """A scored fix_test's stored vet record is a measured discrimination (judge result pass at the fix, fail at base)."""
+    v = c.get("vet")
+    return (isinstance(v, dict) and v.get("fix_result") == "pass" and v.get("base_result") == "fail"
+            and v.get("fix_rc") == 0 and isinstance(v.get("base_rc"), int) and not isinstance(v.get("base_rc"), bool)
+            and v["base_rc"] != 0 and v.get("discriminates") is True)
+
+
+# ---------------------------------------------------------------- siblings (ARENA_POOL_HARDEN_SIBLING_FIX_IN_BASE)
+
+def base_contains(pool, repo: Path = REPO) -> dict:
+    """{task id: [pool task ids whose fix commit is in this task's base]} (sorted; [] when none). Such a pair must
+    never be judged in an order where the containing task comes first or alongside: its base already holds the other
+    task's answer, so an arm working on the other could read it from history (see schedule_conflicts)."""
+    fixes = {t["id"]: h["fix_sha"] for t, h in pool}
+    bases = {t["id"]: t["base_sha"] for t, _ in pool}
+    out = {tid: [] for tid in sorted(fixes)}
+    on_head = {tid: _is_ancestor(repo, b, "HEAD") for tid, b in bases.items()}
+    for eid, efix in sorted(fixes.items()):
+        desc = set(_git(repo, "rev-list", "--ancestry-path", efix + "..HEAD").split()) | {efix}
+        for lid, lb in bases.items():
+            if lid != eid and (lb in desc if on_head[lid] else _is_ancestor(repo, efix, lb)):
+                out[lid].append(eid)
+    return {k: sorted(v) for k, v in out.items()}
+
+
+def schedule_conflicts(order, contains: dict) -> list[tuple[str, str]]:
+    """[(task, contained)] for every task scheduled no later than a pool task whose fix its base contains. `order` is
+    a list of task ids (one per round) or a list of rounds (lists/sets of ids judged together). The contained task
+    must be judged STRICTLY earlier: same round is a conflict too."""
+    rnd = {}
+    for i, r in enumerate(order):
+        for tid in ([r] if isinstance(r, str) else list(r)):
+            rnd.setdefault(tid, i)
+    out = []
+    for tid, i in sorted(rnd.items(), key=lambda kv: (kv[1], kv[0])):
+        for other in contains.get(tid, []):
+            if other in rnd and rnd[other] >= i:
+                out.append((tid, other))
+    return out
+
+
+def check_schedule(order, contains: dict) -> None:
+    """Raise TaskRefused when `order` judges a task no earlier than one whose fix its base already contains."""
+    bad = schedule_conflicts(order, contains)
+    if bad:
+        raise TaskRefused("schedule judges %d task(s) whose base already contains another scheduled task's fix: %s"
+                          % (len(bad), ", ".join("%s<-%s" % b for b in bad[:5])))
 
 
 def _dump(obj) -> bytes:
@@ -1782,6 +2160,26 @@ def _provisional(hidden: dict, ts: str):
     return None
 
 
+def _vet_problem(hidden: dict, base) -> str:
+    """'' when the hidden file has >= 1 scored fix_test and every scored fix_test carries a measured discrimination
+    (ARENA_TASKS_VET_CHECK_FAILS_AT_BASE, fail closed) bound to this very check: its stored key must equal the key
+    of (current judge runner, the task's base, fix, path, body) now, so a judge change or an edited body since the
+    census refuses; else why not."""
+    checks = hidden.get("checks") if isinstance(hidden, dict) else None
+    scored = [c for c in checks or [] if isinstance(c, dict) and c.get("type") == "fix_test"]
+    if not scored:
+        return "no scored fix_test"
+    fix = hidden.get("fix_sha")
+
+    def bound(c):
+        try:
+            return c["vet"].get("key") == vet_key(str(base), str(fix), str(c.get("path")), str(c.get("body")))
+        except (AttributeError, TypeError):
+            return False
+    bad = [str(c.get("path")) for c in scored if not (vet_record_ok(c) and bound(c))]
+    return ("fix_test not vetted, not discriminating or vetted under another judge/body: " + ", ".join(bad[:3])) if bad else ""
+
+
 def freeze(p: dict, now=None) -> dict:
     """Freeze every task file, under the arena lock from the assign check to the last append. Refuses: any
     assign-like record anywhere under events/ (or an entry there it cannot read); a symlinked task, judge or
@@ -1810,7 +2208,7 @@ def freeze(p: dict, now=None) -> dict:
             raise TaskRefused("hidden checks reachable by an arm (every task), nothing frozen:\n  "
                               + "\n  ".join(every[:20]))
         held = {s for s, _ in scoped}
-        refused, early, withheld, recs, all_hashes = [], [], [], [], []
+        refused, early, withheld, recs, all_hashes, unvetted = [], [], [], [], [], []
         run_id = "freeze-" + ts
         for t, (tf, tb, hb) in sorted(read.items()):
             task = _loads(tb, str(tf))
@@ -1827,6 +2225,10 @@ def freeze(p: dict, now=None) -> dict:
             if t in held:
                 withheld.append(t)
                 continue
+            unvet = _vet_problem(_loads(hb, str(hp)), task.get("base_sha"))
+            if unvet:
+                unvetted.append("%s (%s)" % (t, unvet))
+                continue
             why = _provisional(_loads(hb, str(hp)), ts)
             if why:
                 early.append("%s (%s)" % (t, why))
@@ -1837,6 +2239,9 @@ def freeze(p: dict, now=None) -> dict:
         if refused:
             raise TaskRefused("frozen task file(s) changed since freeze, refused: " + ", ".join(refused)
                               + " (recovery: `census --replace TASK` then `refreeze TASK --reason ...`)")
+        if unvetted:
+            raise TaskRefused("hidden check(s) without a passing vet record (fails at base, passes at the fix), "
+                              "nothing frozen: " + "; ".join(unvetted[:20]))
         if early:
             raise TaskRefused("Clean label(s) still provisional, nothing frozen: " + "; ".join(early))
         moved = [t for t, (tf, tb, hb) in read.items() if _read_pair(p, tf) != (tb, hb)]
@@ -1885,6 +2290,9 @@ def refreeze(p: dict, task_id: str, reason: str, now=None) -> dict:
         if task.get("id") != task_id:
             raise TaskRefused("%s: id %r does not match its file name" % (tf, task.get("id")))
         validate_task(task, p["judge"] / tf.name, p, hidden_bytes=hb)
+        unvet = _vet_problem(_loads(hb), task.get("base_sha"))
+        if unvet:
+            raise TaskRefused("%s: hidden check without a passing vet record: %s" % (task_id, unvet))
         why = _provisional(_loads(hb), ts)
         if why:
             raise TaskRefused("%s: Clean label still provisional (%s)" % (task_id, why))
@@ -1978,6 +2386,11 @@ def main(argv=None) -> int:
     c.add_argument("--replace", nargs="+", default=[], metavar="TASK",
                    help="rewrite these FROZEN tasks anyway (they then need `refreeze TASK --reason`)")
     c.add_argument("--no-pin", action="store_true", help="do not pin the old-history shas under " + PIN_PREFIX)
+    v = sub.add_parser("vet", help="run each unvetted hidden fix_test at base and at the fix; cache the exit codes")
+    v.add_argument("--budget", type=float, default=VET_BUDGET, help="start no task after this many seconds "
+                   "(resumable; default %(default)s)")
+    v.add_argument("--jobs", type=int, default=4, help="parallel sparse clones (default %(default)s)")
+    v.add_argument("--task", nargs="+", help="only these task ids")
     sub.add_parser("freeze", help="hash every task file into the event log (before any assignment)")
     r = sub.add_parser("refreeze", help="re-freeze one changed frozen task, with a recorded reason (appended)")
     r.add_argument("task")
@@ -1991,9 +2404,24 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     p = paths()
     try:
+        if a.cmd == "vet":
+            missing: list = []
+            # sanity=None: the sanity item is itself unvetted until this runs; `census` applies the sanity gate
+            census(sanity=None, vet=vet_lookup(read_vet_cache(vet_cache_path(p))), vet_missing=missing)
+            jobs = [j for j in missing if not a.task or j["task"] in a.task]
+            work = Path(os.environ.get("ARENA_VET_DIR") or
+                        Path(os.environ.get("ARENA_CLONES", "/home/mandrake/rm/arena")).parent / "arena-vet")
+            out = run_vet(jobs, REPO, work, vet_cache_path(p), workers=a.jobs, budget=a.budget)
+            out["tasks"] = len(jobs)
+            print(json.dumps(out)[:2000])
+            return 1 if out["left"] or out["errors"] else 0
         if a.cmd == "census":
-            pool, rep = census(sanity=a.sanity)
+            pool, rep = census(sanity=a.sanity, vet=vet_lookup(read_vet_cache(vet_cache_path(p))))
             rep["arena"] = str(p["root"])
+            if rep["vet"]["not_vetted"] and not a.dry_run:
+                print("REFUSED: %d hidden check(s) never vetted; run `arena_tasks.py vet` until it exits 0"
+                      % rep["vet"]["not_vetted"])
+                return 1
             if not a.dry_run:
                 rep["write"] = write_pool(pool, p, replace=a.replace)
                 if not a.no_pin:
@@ -2002,8 +2430,8 @@ def main(argv=None) -> int:
                 rp = p["census"] / ("census_%s.json" % dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
                 rp.write_bytes(_dump(rep))
                 print("report:", rp)
-            print(json.dumps({k: rep.get(k) for k in ("pool", "labels", "labelled", "sanity",
-                                                      "scanned_closed_in_window")}))
+            print(json.dumps({k: rep.get(k) for k in ("pool", "labels", "labelled", "sanity", "kinds", "vet",
+                                                      "base_contains_pairs", "scanned_closed_in_window")}))
             if rep.get("pins"):
                 print("pins:", json.dumps({k: (len(v) if isinstance(v, list) else v)
                                            for k, v in rep["pins"].items()}))

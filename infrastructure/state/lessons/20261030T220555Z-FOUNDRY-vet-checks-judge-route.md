@@ -1,0 +1,2 @@
+Vet a hidden check on the judge's own route (materialise + run_hidden), never on a hand-built python run: the first vet (plain python, sparse checkout) reported 161/265 fails-at-fix from env artefacts (RM_DATA_ROOT unset, PIL missing), the judge route reported different ones (pathlib denied, files outside the materialised tree). Key the vet cache on a hash of the judge runner code so a judge change re-vets.
+home: NONE
