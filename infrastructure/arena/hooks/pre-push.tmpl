@@ -1,0 +1,4 @@
+#!/bin/sh
+# pre-push hook for arm @ARM@ (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY). A push outside arena/@ARM@/*, or from a stopped
+# arm, is refused AND alarmed. Fails closed: if arena cannot run, the push is refused.
+ARENA_ARM_TOML="@ARM_TOML@" exec python3 "@ARENA_PY@" prepush --arm "@ARM@" --remote "$1" --url "$2"

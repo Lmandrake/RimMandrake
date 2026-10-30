@@ -1,0 +1,8 @@
+# rm-arm-@ARM@.target - rendered by arena (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY). Do not edit the installed copy.
+# Starting two arm targets is refused by systemd itself: every target Conflicts= every other.
+[Unit]
+Description=RimMandrake arena arm @ARM@ (the only architecture live)
+Conflicts=@CONFLICTS@
+Wants=@WANTS@
+StopWhenUnneeded=no
+

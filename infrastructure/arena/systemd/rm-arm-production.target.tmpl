@@ -1,0 +1,8 @@
+# rm-arm-production.target - production mode as a first-class arm; scope = the production clones live in it
+# (bench, foundry). Rendered by arena. Conflicts= is mutual with every arena arm target.
+[Unit]
+Description=RimMandrake production (scope @SCOPE@)
+X-RM-Scope=@SCOPE@
+Conflicts=@CONFLICTS@
+Wants=@WANTS@
+

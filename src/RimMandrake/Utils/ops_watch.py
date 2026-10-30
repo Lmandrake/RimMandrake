@@ -67,7 +67,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion")
+            "evidence", "companion", "arena")
 
 
 def ops_dir() -> Path:
@@ -893,11 +893,29 @@ def c_companion(now, rules, ctx):
             "companion.grant_visible": M(1, file=g["file"])}
 
 
+def c_arena(now, rules, ctx):
+    """arena.two_live: 0 when `arena who` passes, else the failed-check bitmask (ARENA_TWO_LIVE). No arm.toml (the arena
+    switch is not installed) or an arena module that cannot run is UNMEASURED, never 0."""
+    ad = str(HERE / "arena")
+    if ad not in sys.path:
+        sys.path.insert(0, ad)
+    import arena as AR
+    try:
+        tp = AR.arm_toml_path()
+    except Exception as e:  # noqa: BLE001
+        return {"arena.two_live": U("arena root unresolved: %s" % e)}
+    if not tp.exists():
+        return {"arena.two_live": U("no arm.toml at %s: the arena switch is not installed" % tp)}
+    r = AR.ops_two_live(tp)
+    return {"arena.two_live": M(r["value"], "failed-check bitmask (0 = one arm live)", why=r["why"], mode=r.get("mode"))}
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
-              "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion}
+              "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
+              "arena": c_arena}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion")
+         "evidence", "companion", "arena")
 
 
 # ==================================================================================================== storage

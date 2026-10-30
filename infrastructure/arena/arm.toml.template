@@ -1,0 +1,31 @@
+# arm.toml TEMPLATE (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY). The REAL file lives OUTSIDE git:
+#   $ARENA_ARM_TOML, default <arena root>/arm.toml  (D:\ClaudeWork\rimmandrake\arena\arm.toml). Never commit it.
+mode = "production"          # v3 | v3c | ralph_a | ralph_c | trio | production | trial
+
+[production]                 # the production clones that are live in v3 / production / trial mode
+scope = ["bench", "foundry"]
+
+[trial]                      # read only when mode = "trial"
+steve_lane    = "trio"
+archmagi_lane = "ralph_c"
+replay_arms   = ["ralph_a", "trio", "v3", "v3c"]
+areas_day     = "D:/ClaudeWork/rimmandrake/arena/areas/2026-10-31.json"
+
+# optional clone path overrides (defaults: /home/mandrake/rm/<bench|foundry>, /home/mandrake/rm/arena/<arm>)
+# [clones]
+# ralph_a = "/home/mandrake/rm/arena/ralph_a"
+
+# the units that belong to each arm's target (each gets PartOf=rm-arm-<arm>.target by the installer's drop-in).
+# Substrate timers (account-usage, deadman, memwatch, mirror, pulse-*, ...) are in NO target.
+[arms.ralph_a]
+units = ["rm-ralph-loop@a.service"]
+[arms.ralph_c]
+units = ["rm-ralph-loop@a1.service", "rm-ralph-loop@a2.service", "rm-runner@steve.service", "rm-runner@archmagi.service"]
+[arms.trio]
+units = ["rm-testpilot@steve.service", "rm-testpilot@archmagi.service"]
+[arms.v3]
+units = []                   # fill from the live dispatcher units: rm-dispatcher, testq-tick, ... (see the design 2.1)
+[arms.v3c]
+units = []
+[arms.production]
+units = []

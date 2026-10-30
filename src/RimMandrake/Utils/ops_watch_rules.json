@@ -40,6 +40,8 @@
    "why": "the WSL ext4 volume holds every clone and agent scratch; scratch grew 207 GB on 2026-10-26 (181 -> 389 GB, rm-scratch-reap runs.jsonl), the worst day seen. Under 210 GB free, one more such day fills it and git, builds and the ledger fail together"},
   {"key": "disk.root_free_gb", "op": "<", "value": 420, "alarm": false, "tag": "DISK_TWO_DAYS",
    "why": "two worst days of scratch growth left: a warning flag, not an alarm"},
+  {"key": "arena.two_live", "op": ">", "value": 0, "alarm": true, "tag": "ARENA_TWO_LIVE", "name": "OPS_ARENA_TWO_LIVE", "marks": ["MEASURED"],
+   "why": "arena who failed (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY, design 2.3): the value is the failed-check bitmask, a=1 active targets are not the expected one, b=2 a live process sits in a stopped arm's clone, c=4 a bridge lock names another arm, d=8 a stopped arm wrote an event or pushed a ref since the switch, 16 arm.toml unreadable. UNMEASURED (no arm.toml, no systemd) never alarms"},
   {"key": "disk.c_free_gb", "op": "<", "value": 200, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
    "why": "C: holds the WSL disk image and the game; the image grows with ext4 (see root), so C: gets the same one-worst-day margin"},
   {"key": "disk.d_free_gb", "op": "<", "value": 200, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
