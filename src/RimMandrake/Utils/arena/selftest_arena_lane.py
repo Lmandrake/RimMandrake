@@ -69,6 +69,7 @@ class FakeDriver:
         self.log_mtime = 0.0
         self.active = ["ludeon.rimworld"]
         self.facts_override = {}
+        self.mods_restore_ok = True
 
     def clock(self):
         return self.t
@@ -118,6 +119,11 @@ class FakeDriver:
 
     def clone_head(self, clone):
         return self.head.get(clone)
+
+    def restore_mods(self, mods, clone):
+        self.calls.append(("restore_mods", tuple(mods), clone, self.running))
+        self.t += 10.0
+        return self.mods_restore_ok, "main redeployed" if self.mods_restore_ok else "deploy rc 1", "c" * 40
 
     def deploy(self, mod, clone):
         self.calls.append(("deploy", mod, self.running))
@@ -336,6 +342,80 @@ def t_restore():
         check(why is not None and ("restore",) not in ds.calls and any(c[0] == "release" for c in ds.calls)
               and events(ps, "live_release")[-1]["verdict"] == "error" and L.swap_marker(ps, "steve").is_file(),
               "restore: %s -> no restore written, bridge still released, release says error, marker kept" % name)
+
+
+# ---------------------------------------------------------------- main's mod files restored (N11)
+def t_mods_restore():
+    p = fresh("modsrestore")
+    d = FakeDriver(running=True)
+    d.head["/c"] = SHA_A
+    with L.Lane("steve", R.ARM, d, "files", root=p["root"]) as lane:
+        lane.reload("minimal", None, "R0", mods=["Slime", "Abyss"], clone="/c", sha=SHA_A)
+    rm = [c for c in d.calls if c[0] == "restore_mods"]
+    rel = events(p, "live_release")[-1]
+    check(rm == [("restore_mods", ("Slime", "Abyss"), "/c", False)],
+          "N11: release redeploys main's version of every deployed mod, from the deploy clone, game down (%s)" % rm)
+    check(d.calls.index(("restore",)) < d.calls.index(rm[0]) and rel["verdict"] == "ok"
+          and rel["detail"]["mods_restored"] == ["Slime", "Abyss"] and rel["detail"]["main_sha"] == "c" * 40
+          and not L.swap_marker(p, "steve").is_file(),
+          "N11: list then files; the release event names the mods and main's sha; the marker is gone")
+    d0 = FakeDriver()
+    with L.Lane("steve", R.ARM, d0, "no deploy", root=p["root"]) as lane:
+        lane.reload("minimal", None, "R0")
+    check(not any(c[0] == "restore_mods" for c in d0.calls), "N11 control: a hold that deployed nothing redeploys nothing")
+    # a failed file restore is loud, keeps the marker with the mods, and the next hold redeploys them
+    pf = fresh("modsrestore_fail")
+    df = FakeDriver()
+    df.head["/c"] = SHA_A
+    df.mods_restore_ok = False
+
+    def body():
+        with L.Lane("steve", R.ARM, df, "x", root=pf["root"]) as lane:
+            lane.reload("minimal", None, "R0", mods=["Slime"], clone="/c", sha=SHA_A)
+    why = raises(L.RestoreFailed, body)
+    mk = L.swap_marker(pf, "steve")
+    check(why is not None and "mod-file restore" in why and events(pf, "live_release")[-1]["verdict"] == "error"
+          and mk.is_file() and json.loads(mk.read_text())["mods"] == ["Slime"],
+          "N11: a failed file restore raises RestoreFailed, release says error, the marker keeps the mods")
+    dn = FakeDriver()
+    with L.Lane("steve", "other_arm", dn, "next", root=pf["root"]):
+        pass
+    check(("restore_mods", ("Slime",), "/c", False) in dn.calls and not mk.is_file()
+          and events(pf, "live_release")[-1]["detail"]["charged_to"] == R.ARM,
+          "N11: the next hold inherits the mods from the marker and redeploys main (charged to the arm that swapped)")
+    # a deploy that dies half way still restores: the marker is written before the first copy
+    pk = fresh("modsrestore_killed")
+    dk = FakeDriver()
+    dk.head["/c"] = SHA_A
+    dk.deploy = lambda mod, clone: (_ for _ in ()).throw(KeyboardInterrupt())
+    lane = L.Lane("steve", R.ARM, dk, "killed", root=pk["root"])
+    lane.take()
+    try:
+        lane.reload("minimal", None, "R0", mods=["Slime"], clone="/c", sha=SHA_A)
+    except KeyboardInterrupt:
+        pass
+    del lane
+    check(json.loads(L.swap_marker(pk, "steve").read_text()).get("mods") == ["Slime"],
+          "N11: a runner killed mid-deploy leaves the marker naming the mod and clone")
+    # a seat clone is refused before anything is deployed
+    ps = fresh("modsrestore_seat")
+    dsx = FakeDriver()
+    dsx.head[str(L.REPO)] = SHA_A
+    with L.Lane("steve", R.ARM, dsx, "seat", root=ps["root"]) as lane:
+        why = raises(L.LaneRefused, lane.reload, "minimal", None, "R0", mods=["Slime"], clone=str(L.REPO), sha=SHA_A)
+    check(why is not None and "seat clone" in why and not any(c[0] == "deploy" for c in dsx.calls),
+          "N11: a deploy from a seat clone is refused (main can never be checked out there to restore)")
+    # game still up at release: files withheld, loud
+    pu = fresh("modsrestore_up")
+    du = FakeDriver()
+    du.head["/c"] = SHA_A
+
+    def body3():
+        with L.Lane("steve", R.ARM, du, "up", root=pu["root"]) as lane:
+            lane.reload("minimal", None, "R0", mods=["Slime"], clone="/c", sha=SHA_A)
+            du.stop_sticks = True
+    check(raises(L.RestoreFailed, body3) is not None and not any(c[0] == "restore_mods" for c in du.calls),
+          "N11: game still running at release -> main's files are not written under it (DLL lock), loud")
 
 
 # ---------------------------------------------------------------- the other lane rules
@@ -683,7 +763,7 @@ def t_review():
     check([x["item"] for x in R.pending(p)] == ["Y", "X"], "queue: a republished item goes behind older ones")
 
 
-for t in (t_stale, t_dead, t_full, t_loadtime, t_restore, t_rules, t_canary, t_verdicts, t_review):
+for t in (t_stale, t_dead, t_full, t_loadtime, t_restore, t_mods_restore, t_rules, t_canary, t_verdicts, t_review):
     t()
 shutil.rmtree(TMP, ignore_errors=True)
 print("\n%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))

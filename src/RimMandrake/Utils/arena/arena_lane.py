@@ -12,7 +12,10 @@ lane does every live act through a `Lane` so that each act is logged once, by ha
     reload        stop, profile swap, deploy, launch, quicktest; detail carries the deploy and the MEASURED
                   launch-to-ready seconds; `rule` is the M1 rule the caller says it met (R0..R3)
     canary        pass | fail; a failed canary also writes `invalid` (never `fail`: the run is re-queued)
-    live_release  modlist_swap --restore --apply; `minutes` = restore time, charged to the arm that swapped
+    live_release  modlist_swap --restore --apply, then every mod this hold deployed is redeployed from origin/main
+                  (deploy_custom_mods --mod M --apply --prune, in the runner's own clone checked out at origin/main):
+                  the candidate's mod FILES must not stay in the owner's game (ARENA_LANE_RESTORE_MAIN_MOD_FILES).
+                  `minutes` = restore time (list + files), charged to the arm that swapped
 
 ENFORCED HERE (each one a refusal, LaneRefused, before anything is touched):
   * profile `full` is refused in trial mode (owner 2026-10-29: no full-list profile in the trial). Only `minimal`
@@ -208,6 +211,14 @@ def is_canonical(name) -> bool:
     return bool(name) and save_base(name) in {save_base(c) for c in canonical_saves()}
 
 
+def is_seat_clone(clone) -> bool:
+    """A seat's working clone (this repo, or one named bench/foundry): never checked out or reset by a lane."""
+    try:
+        return Path(clone).resolve() == REPO.resolve() or Path(clone).name in ("bench", "foundry")
+    except (OSError, TypeError):
+        return True
+
+
 # ---------------------------------------------------------------- the lane
 
 class Lane:
@@ -234,6 +245,8 @@ class Lane:
         self.profile = None
         self.expected_active = None    # package ids the profile may have active (None = unmeasured: canary red)
         self.inherited_swap = None     # a swap marker left by an earlier hold that never restored
+        self.dirty_mods = []           # mods whose game copy may now be the candidate's: release redeploys main's
+        self.restore_clone = None      # the clone those mods were deployed from (main is checked out there to restore)
 
     # -- logging
     def _ev(self, event, **kw):
@@ -268,6 +281,8 @@ class Lane:
                 except ValueError:
                     self.inherited_swap = {"unreadable": True}
                 self.swapped = True
+                self.dirty_mods = list(self.inherited_swap.get("mods") or [])
+                self.restore_clone = self.inherited_swap.get("clone")
         except BaseException:
             self.release(aborted=True, why="take failed after the bridge was taken")   # __exit__ will not run
             raise
@@ -278,6 +293,7 @@ class Lane:
         if not self.held:
             return
         restore_s, restore_ok, restore_out, rel_ok, rel_out = 0.0, None, "", False, ""
+        mods_ok, mods_out, main_sha, dirty = None, "", None, list(self.dirty_mods)
         swapped = self.swapped
         try:
             if swapped:
@@ -292,9 +308,21 @@ class Lane:
                         restore_ok, restore_out = self.d.restore_modlist()
                 except Exception as e:  # noqa: BLE001 - any failure here is a failed restore, reported below
                     restore_ok, restore_out = False, "%s: %s" % (type(e).__name__, e)
+                if self.dirty_mods:      # the candidate's files out, main's back; only with the game down (DLLs)
+                    try:
+                        if self.d.game_running():
+                            mods_ok, mods_out = False, "the game is still running: main's mod files not redeployed"
+                        elif not self.restore_clone:
+                            mods_ok, mods_out = False, "no clone recorded for the deployed mods: cannot redeploy main"
+                        else:
+                            mods_ok, mods_out, main_sha = self.d.restore_mods(list(self.dirty_mods),
+                                                                              self.restore_clone)
+                    except Exception as e:  # noqa: BLE001
+                        mods_ok, mods_out = False, "%s: %s" % (type(e).__name__, e)
                 restore_s = self.d.clock() - t0
-                if restore_ok:
+                if restore_ok and mods_ok is not False:
                     swap_marker(self.p, self.lane).unlink(missing_ok=True)
+                    self.dirty_mods = []
         finally:
             try:
                 rel_ok, rel_out = self.d.bridge_release(self.host)
@@ -302,16 +330,38 @@ class Lane:
                 rel_ok, rel_out = False, "%s: %s" % (type(e).__name__, e)
             self.held = False
             self.swapped = False
-            self._ev("live_release", verdict="ok" if (restore_ok is not False and rel_ok) else "error",
+            self._ev("live_release", verdict="ok" if (restore_ok is not False and mods_ok is not False and rel_ok)
+                     else "error",
                      minutes=round(restore_s / 60.0, 3),
                      detail={"restored": swapped, "restore_ok": restore_ok, "restore_s": round(restore_s, 1),
                              "charged_to": ((self.inherited_swap or {}).get("arm") or self.arm) if swapped else None,
                              "aborted": aborted, "why": why,
                              "inherited_swap": self.inherited_swap,
-                             "restore_out": (restore_out or "")[-300:], "release_out": (rel_out or "")[-200:]})
+                             "restore_out": (restore_out or "")[-300:], "release_out": (rel_out or "")[-200:],
+                             "mods_restored": dirty, "mods_restore_ok": mods_ok, "main_sha": main_sha,
+                             "mods_restore_out": (mods_out or "")[-300:]})
         if restore_ok is False:
             raise RestoreFailed("modlist restore FAILED on %s: the owner's list is not back: %s"
                               % (self.host, (restore_out or "").strip()[-200:]))
+        if mods_ok is False:
+            raise RestoreFailed("mod-file restore FAILED on %s: the candidate's files of %s may still be in the game: %s"
+                                % (self.host, ", ".join(dirty), (mods_out or "").strip()[-200:]))
+
+    def _write_marker(self):
+        """Create or update the swap marker. An inherited marker keeps its arm (it is charged the restore); the
+        mods and clone always carry the union this lane must redeploy from main, so a killed run still restores."""
+        mk = swap_marker(self.p, self.lane)
+        rec = dict(self.inherited_swap or {}) if mk.is_file() else {}
+        rec.pop("unreadable", None)
+        rec.setdefault("run_id", self.run_id)
+        rec.setdefault("arm", self.arm)
+        rec.setdefault("ts", _now_iso())
+        rec["mods"] = list(self.dirty_mods)
+        rec["clone"] = self.restore_clone
+        self.p["lanes"].mkdir(parents=True, exist_ok=True)
+        tmp = mk.with_suffix(".tmp")
+        tmp.write_text(json.dumps(rec, sort_keys=True) + "\n", encoding="utf-8")
+        os.replace(tmp, mk)
 
     def _need_held(self):
         if not self.held:
@@ -342,12 +392,22 @@ class Lane:
         self._need_held()
         if has_dll and self.d.game_running():
             raise LaneRefused("C# deploy refused while the game runs: the DLL is locked")
+        if is_seat_clone(clone):
+            raise LaneRefused("clone %s is a seat clone: a lane deploys only from a clone it may later reset to "
+                              "origin/main to restore the owner's mod files" % clone)
         head = self.d.clone_head(clone)
         if not same_sha(head, sha):
             raise LaneRefused("clone %s is at %s, not the candidate sha %s" % (clone, head, sha))
         dirty = self.d.clone_dirty(clone)
         if dirty:
             raise LaneRefused("clone %s has local changes, so it is not the candidate sha: %s" % (clone, dirty[:200]))
+        if self.restore_clone and self.dirty_mods and self.restore_clone != clone:
+            raise LaneRefused("this hold already deployed %s from %s; one restore clone per hold (got %s)"
+                              % (", ".join(self.dirty_mods), self.restore_clone, clone))
+        self.restore_clone = clone      # recorded BEFORE the first copy: a half-done deploy is still restored
+        self.dirty_mods += [m for m in mods if m not in self.dirty_mods]
+        self.swapped = True
+        self._write_marker()
         out = []
         for m in mods:
             ok, txt = self.d.deploy(m, clone)
@@ -387,10 +447,7 @@ class Lane:
         if self.d.game_running():
             raise LaneRefused("the game did not stop; no list swap or C# deploy while it runs")
         self.swapped = True             # from here on the owner's list may be gone: release restores it
-        if not swap_marker(self.p, self.lane).is_file():
-            self.p["lanes"].mkdir(parents=True, exist_ok=True)
-            swap_marker(self.p, self.lane).write_text(json.dumps({"run_id": self.run_id, "arm": self.arm,
-                                                                  "ts": _now_iso()}) + "\n", encoding="utf-8")
+        self._write_marker()
         ok, out = self.d.apply_minimal() if profile == "minimal" else self.d.apply_tier(tier)
         if not ok:
             raise LaneRefused("profile %s%s refused by the swap tool: %s"
@@ -585,6 +642,30 @@ class RealDriver:
                        "--mod", mod, "--apply"], timeout=600, cwd=clone)
         return rc == 0, out   # deploy_custom_mods --apply: 0 = repo and game agree after verify; 1 = they do not
                               # (and sys.exit(msg) crashes exit 1 too), so 1 is never a deploy
+
+    def restore_mods(self, mods, clone):
+        """Put main's version of `mods` back in the game: in `clone` (the runner's own, never a seat clone), fetch,
+        detach at origin/main, clean, then deploy_custom_mods --mod M --apply --prune for each (prune: files the
+        candidate ADDED are game-only once main is the source, and --apply alone keeps game-only files).
+        Returns (ok, output, main_sha)."""
+        if is_seat_clone(clone):
+            return False, "clone %s is a seat clone: main is never checked out there by a lane" % clone, None
+        out = ""
+        for argv in (["git", "-C", clone, "fetch", "-q", "origin"],
+                     ["git", "-C", clone, "checkout", "-q", "--detach", "origin/main"],
+                     ["git", "-C", clone, "clean", "-fdq"]):
+            rc, txt = _sh(argv, timeout=300)
+            out += txt
+            if rc != 0:
+                return False, out + " (%s rc %d)" % (" ".join(argv[3:]), rc), None
+        head = self.clone_head(clone)
+        for m in mods:
+            rc, txt = _sh(["python3", os.path.join(clone, "src", "RimMandrake", "Utils", "deploy_custom_mods.py"),
+                           "--mod", m, "--apply", "--prune"], timeout=600, cwd=clone)
+            out += txt[-400:]
+            if rc != 0:
+                return False, out + " (deploy %s rc %d)" % (m, rc), head
+        return True, out, head
 
     def package_ids(self, mods, clone):
         import xml.etree.ElementTree as ET
