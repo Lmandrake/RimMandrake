@@ -818,9 +818,9 @@ class Pilot:
                     self.owner_t = self.d.clock()
                 raise
 
-    def _yield(self, why: str) -> dict:
+    def _yield(self, why: str, stop_error: str | None = None) -> dict:
         """He is back: the in-flight test is invalid and requeued, completed evidence stays, the lane is freed."""
-        t0 = self.owner_t if self.owner_t is not None else self.d.clock()
+        t0 = self.owner_t if self.owner_t is not None else self.d.clock()   # the return (set from the lane), not the stop
         s = self._sess()
         steps = 0
         if s.get("in_flight") and s.get("pilot") == self.id and s.get("generation") == self.gen:
@@ -846,7 +846,7 @@ class Pilot:
         rec = self._decision({"kind": "yield", "why": why, "steps": steps, "seconds": round(dt, 1),
                               "bound_steps": self.rule["yield_bound_steps"], "bound_s": self.rule["yield_bound_s"],
                               "within": steps <= self.rule["yield_bound_steps"] and dt <= self.rule["yield_bound_s"],
-                              "restore_error": err})
+                              "restore_error": err, "stop_error": stop_error})
         self._ev("pass_end", detail={"pilot": self.id, "yield": True, "decision": rec["id"], "steps": steps,
                                      "seconds": rec["seconds"], "within": rec["within"]})
         return rec
@@ -895,9 +895,51 @@ class Pilot:
                 return {"decision": dec, "result": self.test(dec)}
             return {"decision": dec, "result": None}
         except L.OwnerReturned as e:
+            seen = getattr(e, "seen_t", None)
+            if seen is not None and (self.owner_t is None or seen < self.owner_t):
+                self.owner_t = seen
             if self.owner_t is None:
                 self.owner_t = self.d.clock()
-            return {"decision": {"action": "yield"}, "result": self._yield(str(e))}
+            return {"decision": {"action": "yield"}, "result": self._yield(str(e), getattr(e, "stop_error", None))}
+        except (StalePilot, PilotRefused):
+            raise                       # not this pilot's lane (or refused before any act): nothing of ours to release
+        except Exception as e:  # noqa: BLE001 - a launch failure/timeout or any act failing: end the pass cleanly
+            return {"decision": locals().get("dec") or {"action": "abort"}, "result": self.abort(e, locals().get("dec"))}
+
+    def abort(self, exc, dec: dict | None = None) -> dict:
+        """An act failed (launch failure or timeout, a failed stop...): his list and files are restored, the bridge
+        released, the session ended and the step recorded (invalid evidence, the candidate requeued once then parked).
+        Reuses Lane.release (the one restore-and-release path). Never raises for a failure of its own."""
+        why = "%s: %s" % (type(exc).__name__, str(exc)[-300:])
+        if self.retired:
+            return {"abort": why, "released": False}
+        c = cand_by_id(self.p).get((dec or {}).get("cand"))
+        if c is not None:
+            done = scenario_status(self.p, c)
+            scn = next((x["id"] for x in c["plan"]["scenarios"] if x["id"] not in done), None)
+            if scn:
+                add_evidence(self.p, c, scn, "invalid", self.lane_name, self.id, t=self.d.clock(), why=why,
+                             crash=False, taint=None)
+            n = sum(1 for r in _read(self.p["state"]) if r["cand"] == c["cand"] and r.get("requeued"))
+            if n >= int(self.rule.get("max_interrupt_requeues", 1)):
+                set_state(self.p, c["cand"], "parked", why="act failed again: %s" % why)
+            else:
+                set_state(self.p, c["cand"], "queued", requeued=True, why=why)
+        err = None
+        with locked(self.p):
+            s = self._sess()
+            mine = s.get("pilot") == self.id and s.get("generation") == self.gen
+            if mine:
+                try:
+                    self.lane.release(aborted=True, why="act failed: %s" % why)
+                except Exception as e:  # noqa: BLE001 - RestoreFailed or worse: logged, the session still ends
+                    err = str(e)
+                s.update({"status": "yielded", "game": None, "in_flight": None, "yielded_by": self.id})
+                self._save(s)
+        self.retired = True
+        rec = self._decision({"kind": "abort", "why": why, "cand": (dec or {}).get("cand"), "restore_error": err})
+        self._ev("pass_end", detail={"pilot": self.id, "abort": True, "decision": rec["id"], "why": why})
+        return rec
 
     def run_pass(self, max_steps: int = 50) -> list[dict]:
         """Steps until idle, a yield, or the first candidate it tested resolves (one item per pass, L7)."""
@@ -1255,6 +1297,19 @@ def _status(p, lane):
     return out
 
 
+def run_pass_guarded(pilot, max_steps: int = 50) -> list[dict]:
+    """The pass with one try/finally: whatever escapes, his list is restored and the bridge released."""
+    try:
+        return pilot.run_pass(max_steps)
+    except BaseException as e:
+        if not pilot.retired:
+            try:
+                pilot.abort(e)
+            except Exception:  # noqa: BLE001 - the abort logs its own failures; the original error still raises
+                pass
+        raise
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
@@ -1319,7 +1374,7 @@ def main(argv=None):
         return 0
     pilot = Pilot(a.lane, PilotDriver(), a.pilot, clone=a.clone)
     pilot.wake(takeover_dead=a.takeover_dead)
-    steps = pilot.run_pass(a.max_steps)
+    steps = run_pass_guarded(pilot, a.max_steps)
     for r in steps:
         dec = r["decision"]
         print(json.dumps({k: dec.get(k) for k in ("action", "rule", "cand", "scenario", "rung", "why")},

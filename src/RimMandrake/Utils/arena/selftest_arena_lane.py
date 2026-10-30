@@ -12,7 +12,7 @@ the bridge and the swap tools; nothing live is touched):
   restore     the owner's list is restored on release, its minutes charged to the arm, also when the body raised;
               a failed restore is loud (RestoreFailed) and the release event says error
 plus: C# deploy while the game runs, a flyer's flight and the canonical save are refused; archmagi's idle rule follows
-owner_playing (missing = playing); an owner return aborts with no result and the candidate stays first; every canary
+owner_playing (missing = not playing, owner 2026-10-30); an owner return aborts with no result and the candidate stays first; every canary
 check (stale log, wrong/unpinned version, wrong deployed sha, mod not active, unreadable facts) turns it red; a proof
 exit code other than 0/1 is invalid; 3 failed rounds park an item; an event outside the schema is refused.
 t_review replays every confirmed finding of the two blind reviews (Transient-free: ClaudeWork arena_lane_build/review
@@ -443,7 +443,7 @@ def t_rules():
           is not None, "rules: a flyer's flight is refused before any take")
     check(raises(R.CandidateRefused, R.publish, p, "F", SHA_A, "A1", ["Slime"], False, "minimal", None, ["x"], True)
           is not None, "rules: a flyer-flight candidate is refused at publish")
-    for cfg, want in ((None, True), (True, True), (False, False)):
+    for cfg, want in ((None, False), (True, True), (False, False)):
         pp = fresh("idle_%s" % cfg, owner_playing=cfg)
         dd = FakeDriver()
         with L.Lane("archmagi", R.ARM, dd, "idle", root=pp["root"]):

@@ -17,6 +17,7 @@ import json
 import os
 import shutil
 import sys
+import time
 import tempfile
 from pathlib import Path
 
@@ -349,6 +350,149 @@ def t_owner_yield():
     check(ran.count("s1") == 1 and ran.count("s2") == 2 and T.states(p)["ITEM_O@1"].get("verdict") == "pass",
           "after he leaves, s2 re-runs, s1 is not re-run, and the item resolves PASS: %s" % actions(steps))
     every_reload_has_a_rule(root, p, "owner")
+
+
+# ---------------------------------------------------------------- launch failure / mid-launch yield (indep3 B, C, D)
+def _ml_setup(name, lane, drv):
+    root, p = fresh(name, owner_playing=True)
+    T.enqueue(p, "ITEM_P", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, drv, "P1", lane=lane)
+    pl.wake()
+    return root, p, pl
+
+
+def _ml_state(root, p, d):
+    rel = [c for c in d.calls if c[0] == "release"]
+    return (len(rel), sum(1 for c in d.calls if c[0] == "restore"), T.read_session(p, d.lane).get("status"),
+            L.swap_marker(L.lane_paths(root), d.lane).is_file())
+
+
+def t_launch_failures():
+    L.Lane.WATCH_POLL_S = 0.05
+
+    class DA(FakeDriver):
+        lane = "archmagi"
+
+        def launch_and_wait(self):
+            self.owner_back = True
+            time.sleep(0.3)
+            return super().launch_and_wait()
+
+    class DB(DA):                       # B: the stop fails during the owner's mid-launch yield
+        def stop_game(self):
+            if self.owner_back:
+                self.calls.append(("stop_fail",))
+                raise L.LaneRefused("[1 stop] game still running after 90 s (not force-killing)")
+            return super().stop_game()
+    d = DB()
+    root, p, pl = _ml_setup("lfB", "archmagi", d)
+    r = None
+    try:
+        r = pl.step()
+    except BaseException as e:  # noqa: BLE001
+        check(False, "B: a failed stop escaped Pilot.step: %s" % e)
+    check(r is not None and r["decision"]["action"] == "yield", "B: a failed mid-launch stop is still a yield: %s" % (r,))
+    rel, rest, status, marker = _ml_state(root, p, d)
+    check(status == "yielded" and rel == 1 and marker and r["result"]["restore_error"],
+          "B: bridge released, session yielded, the owed restore is kept in the swap marker and reported "
+          "(releases=%s status=%s marker=%s)" % (rel, status, marker))
+    check(r is not None and r["result"].get("stop_error") and decisions(p, "yield"), "B: the yield is logged with the stop error")
+
+    class DC(FakeDriver):               # C: the launch fails (no bridge token)
+        lane = "steve"
+
+        def launch_and_wait(self):
+            self.t += 30
+            return False, "[4 launch] no bridge token within 600 s"
+    d = DC()
+    root, p, pl = _ml_setup("lfC", "steve", d)
+    r = None
+    try:
+        r = pl.step()
+    except BaseException as e:  # noqa: BLE001
+        check(False, "C: a launch failure escaped Pilot.step: %s" % e)
+    rel, rest, status, marker = _ml_state(root, p, d)
+    check(rel == 1 and rest >= 1 and not marker and status == "yielded",
+          "C: launch failure restores his list, releases the bridge, ends the session (rel=%s restore=%s status=%s "
+          "marker=%s)" % (rel, rest, status, marker))
+    check(decisions(p, "abort") and any(e["status"] == "invalid" for e in T.evidence(p)),
+          "C: the failed step is logged (abort decision, invalid evidence)")
+    check(T.states(p)["ITEM_P@1"]["state"] == "queued", "C: the candidate is requeued once")
+    n_rel = len([c for c in d.calls if c[0] == "release"])
+    pl.abort(RuntimeError("again"), {"cand": "ITEM_P@1"})
+    check(len([c for c in d.calls if c[0] == "release"]) == n_rel and len(decisions(p, "abort")) == 1,
+          "C: a second abort by the retired pilot acts on nothing")
+    pl2 = pilot(root, d, "P2", lane="steve")
+    pl2.wake()
+    pl2.step()
+    check(T.states(p)["ITEM_P@1"]["state"] == "parked", "C: a second launch failure parks the candidate, not a loop")
+
+    # C2: the pass CLI path: an exception out of run_pass still restores and releases
+    d = DC()
+    root, p, pl = _ml_setup("lfC2", "steve", d)
+    pl.step = lambda canary_ok=None: (_ for _ in ()).throw(RuntimeError("boom"))
+    try:
+        T.run_pass_guarded(pl)
+    except RuntimeError:
+        pass
+    rel, rest, status, marker = _ml_state(root, p, d)
+    check(rel == 1 and not marker and status == "yielded", "C2: an exception out of the pass restores and releases "
+          "(rel=%s status=%s marker=%s)" % (rel, status, marker))
+
+    class DD(DA):                       # D: the stop costs 60 s of clock; the yield seconds must include it
+        def stop_game(self):
+            if self.owner_back and self.running is False:
+                self.t += 60.0
+                self.calls.append(("stop",))
+                return
+            return super().stop_game()
+    d = DD()
+    root, p, pl = _ml_setup("lfD", "archmagi", d)
+    r = pl.step()
+    y = r["result"]
+    check(y["seconds"] >= 60 and y["within"],
+          "D: the yield clock starts at the return and includes the 60 s stop: seconds=%s within=%s (bound %s)" % (
+              y["seconds"], y["within"], y["bound_s"]))
+
+    class DE(DD):                       # a stop that costs 400 s is over the 300 s bound, and says so
+        def stop_game(self):
+            if self.owner_back and self.running is False:
+                self.t += 400.0
+                return
+            return super().stop_game()
+    d = DE()
+    root, p, pl = _ml_setup("lfE", "archmagi", d)
+    y = pl.step()["result"]
+    check(y["seconds"] >= 400 and y["within"] is False, "D2: a 400 s stop logs the true elapsed time and within=False: "
+          "seconds=%s within=%s" % (y["seconds"], y["within"]))
+
+
+def t_default_never_consults_owner():
+    L.Lane.WATCH_POLL_S = 0.05
+    root, p = fresh("noown")           # no owner_playing config: the default
+    check(L.lane_config(p, "archmagi")["owner_playing"] is False, "default config: owner_playing is False")
+
+    class D(FakeDriver):
+        lane = "archmagi"
+        probed = 0
+
+        def owner_returned(self):
+            D.probed += 1
+            return True
+
+        def launch_and_wait(self):
+            time.sleep(0.2)
+            return super().launch_and_wait()
+    d = D()
+    T.enqueue(p, "ITEM_N", SHA[0], "B1", plan("s1"))
+    pl = pilot(root, d, "P1", lane="archmagi")
+    pl.wake()
+    take = [c for c in d.calls if c[0] == "take"]
+    check(take and take[-1][2] is False, "default config: the take is a plain take, not --idle-ok")
+    r = pl.step()
+    check(r["decision"]["action"] == "reload" and pl.step()["decision"]["action"] != "yield",
+          "default config: launch and quicktest run, no yield")
+    check(D.probed == 0, "default config: owner_returned() was never consulted (%d calls)" % D.probed)
 
 
 # ---------------------------------------------------------------- 4. the handoff
@@ -1039,7 +1183,7 @@ def t_killpg():
 def main():
     for t in (t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_owner_yield, t_handoff,
               t_takeover_dead, t_l9a, t_classes, t_hotfix, t_ladder, t_review1, t_review2, t_review2b,
-              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout):
+              t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner):
         try:
             t()
         except Exception as e:  # noqa: BLE001 - a crash in one test is a failure, the others still run

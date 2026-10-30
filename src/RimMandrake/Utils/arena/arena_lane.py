@@ -24,8 +24,10 @@ ENFORCED HERE (each one a refusal, LaneRefused, before anything is touched):
   * never a canonical world save: loading a save whose name is the canon start save (canon_save.py) is refused, and
     the canary is red on such a map.
   * no C# deploy while the game runs (the DLL is locked).
-  * archmagi: `owner_playing` (lane config) true -> the take is `--idle-ok` (his 20-minute idle rule); false -> a
-    plain take ("I don't play right now so no need to wait", owner 2026-10-29). A missing flag counts as PLAYING.
+  * his input never gates, delays or yields a lane (owner 2026-10-30: "I want you to disable the relationship between
+    me touching the machine and the live checker. It needs to live beside me."). `owner_playing` true is only his
+    explicit "I'm playing the game" switch (idle-ok take, owner-return polling); the default, and a missing flag, is
+    NOT playing: a plain take, no owner probe. The 20-minute idle rule for other seat work is unchanged.
 
 THE CANARY (§1.2 step 8): a live colonist and the vanilla spawn probe (modcheck/validity.canary, reused, not copied);
 a Player.log written since this lane's own launch; the expected game version (lane config `game_version`, pinned once
@@ -125,9 +127,10 @@ def write_config(p: dict, cfg: dict):
 
 
 def lane_config(p: dict, lane: str) -> dict:
-    """The lane's settings with SAFE defaults: the owner counts as playing, the trial is on, no version pinned."""
+    """The lane's settings with defaults: the owner is not playing (his touch never gates a lane), the trial is on,
+    no version pinned."""
     c = dict(read_config(p).get(lane) or {})
-    c.setdefault("owner_playing", True)
+    c.setdefault("owner_playing", False)
     c.setdefault("trial", True)
     c.setdefault("game_version", None)
     return c
@@ -430,11 +433,18 @@ class Lane:
         th.start()
         while not done.wait(self.WATCH_POLL_S):
             if self.d.owner_returned():
+                seen = self.d.clock()   # the yield clock starts HERE, before the stop and the wait
+                stop_err = None
                 try:
                     self.d.stop_game()
+                except Exception as e:  # noqa: BLE001 - a failed stop must not replace the owner's return
+                    stop_err = "%s: %s" % (type(e).__name__, e)
                 finally:
                     done.wait(30)       # the stop ends the wait; release() restores either way
-                raise OwnerReturned("owner input on %s during launch: yielding" % self.host)
+                exc = OwnerReturned("owner input on %s during launch: yielding%s" % (
+                    self.host, "; stop_game failed: " + stop_err if stop_err else ""))
+                exc.seen_t, exc.stop_error = seen, stop_err
+                raise exc
         if "e" in box:
             raise box["e"]
         return box["r"]
