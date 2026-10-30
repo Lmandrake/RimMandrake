@@ -506,15 +506,26 @@ def _cfg_lines(argv, **kw):
     return [x for x in r.stdout.split(b"\0") if x]
 
 
-def net_cfg(root):
+GPG_OFF = ["-c", "commit.gpgSign=false", "-c", "gpg.program=false", "-c", "gpg.openpgp.program=false",
+           "-c", "gpg.ssh.program=false", "-c", "gpg.x509.program=false"]   # the rebase re-commits: no builder signer
+
+
+def net_cfg(root, url=None):
     """`-c` overrides for everything the builder's own .git/config could use to run its command when the harness talks
     to a remote: core.sshCommand, core.askPass and every credential*.helper are pinned to the OWNER's value (read from
     outside any repo, so the clone's config is never consulted) or to nothing. Merge drivers (a rebase runs them) are
-    neutralised. -> list of argv, or None when the clone redirects URLs (url.*.insteadOf) and must not be pulled."""
-    out = []
+    neutralised, signing is off. The clone's config is read WITH its include.path/includeIf files (the pull reads them
+    too) and with the owner's global/system config out of the picture. -> list of argv, or None when the clone
+    redirects URLs (url.*.insteadOf) or defines a remote named like the pinned `url` (its url/uploadpack/proxy would
+    replace the pin) and must not be pulled."""
+    out = list(GPG_OFF)
     here = tempfile.gettempdir()                      # not inside any repo: only the owner's global/system config
-    if _cfg_lines(["-C", str(root), "config", "--local", "-z", "--name-only", "--get-regexp",
-                   r"^url\..*\.(push)?insteadof$"]):
+    clone = ["-C", str(root)]
+    cenv = dict(os.environ, **GIT_SAFE_ENV)           # global/system nulled: the clone's own file plus what it includes
+    if _cfg_lines(clone + ["config", "-z", "--name-only", "--get-regexp", r"^url\..*\.(push)?insteadof$"], env=cenv):
+        return None
+    if url and any(k.startswith(b"remote." + url.encode() + b".") for k in
+                   _cfg_lines(clone + ["config", "-z", "--name-only", "--get-regexp", r"^remote\."], env=cenv)):
         return None
     for k, default in (("core.sshCommand", "ssh"), ("core.askPass", "")):
         vals = _cfg_lines(["config", "--get-all", "-z", k], cwd=here)
@@ -524,14 +535,13 @@ def net_cfg(root):
     for kv in _cfg_lines(["config", "-z", "--get-regexp", rx], cwd=here):
         k, _, v = kv.decode("utf-8", "replace").partition("\n")
         keys.setdefault(k, []).append(v)
-    for kv in _cfg_lines(["-C", str(root), "config", "--local", "-z", "--get-regexp", rx]):
+    for kv in _cfg_lines(clone + ["config", "-z", "--get-regexp", rx], env=cenv):
         keys.setdefault(kv.decode("utf-8", "replace").partition("\n")[0], [])
     for k, vals in keys.items():
         out += ["-c", k + "="]                        # an empty value resets the list
         for v in vals:
             out += ["-c", "%s=%s" % (k, v)]
-    for kv in _cfg_lines(["-C", str(root), "config", "-z", "--get-regexp", r"^merge\..*\.driver$"],
-                         env=dict(os.environ, **GIT_SAFE_ENV)):
+    for kv in _cfg_lines(clone + ["config", "-z", "--get-regexp", r"^merge\..*\.driver$"], env=cenv):
         out += ["-c", kv.decode("utf-8", "replace").partition("\n")[0] + "=false"]
     return out
 
@@ -555,14 +565,17 @@ def default_sync(root, sleep=time.sleep, tries=3, pin=None):
     # The builder owns .git/config: the pull never reads the remote from it. The URL is pinned on first sight (file
     # `pin`, harness-owned), the ssh/credential/askpass keys are the owner's, the protocols are allow-listed.
     url = Path(pin).read_text().strip() if pin and Path(pin).exists() else \
-        git_run(root, "config", "--get", "remote.origin.url", capture_output=True, text=True).stdout.strip() or "origin"
-    cfg = net_cfg(root)
+        git_run(root, "config", "--get", "remote.origin.url", capture_output=True, text=True).stdout.strip()
+    if not url:
+        return False                                  # no URL to pin: never pull the literal name "origin" (its section is the clone's)
+    cfg = net_cfg(root, url)
     if cfg is None:
         return False
     if pin and not Path(pin).exists():
         Path(pin).write_text(url + "\n")
     for n in range(1, tries + 1):
-        if git_run(root, *cfg, "pull", "--rebase", "-q", url, MAIN, capture_output=True, timeout=600,
+        if git_run(root, *cfg, "pull", "--rebase", "-q",
+                   "--upload-pack=git-upload-pack", url, MAIN, capture_output=True, timeout=600,
                    keep_user_config=True).returncode == 0:   # the owner's ssh/credential config; hooks stay off
             return True
         if n < tries:
@@ -908,14 +921,24 @@ class Loop:
         self._save()
         return self.tester_pass(task)                             # AT ONCE: no other work between build and test
 
+    def _tree(self, sha):
+        r = git_run(self.root, "rev-parse", "--verify", "-q", "%s^{tree}" % sha, capture_output=True, text=True)
+        return r.stdout.strip() if r.returncode == 0 else None
+
     def already_failed(self, task, sha):
-        """True when this sha of this task already FAILED a gate, the tester, the lane or the final gate: it is never
-        gated or tested again, so a builder that changes nothing after a FAIL cannot resubmit the failed diff."""
-        if sha in (self.state.get("failed_heads") or {}).get(task["id"], []):
+        """True when this sha OR its tree already FAILED a gate, the tester, the lane or the final gate for this task:
+        it is never gated or tested again. The TREE is the key (an amend --no-edit or an empty commit is a new sha
+        with the same tree), so a builder that changes nothing after a FAIL cannot resubmit the failed diff."""
+        k = task["id"]
+        if sha in (self.state.get("failed_heads") or {}).get(k, []):
             return True
-        tid = L.norm_id(task["id"])
-        return any(r.get("event") == "test_end" and r.get("verdict") == "fail" and r.get("sha") == sha
-                   and L.norm_id(r.get("task")) == tid for r in canon_records(self.writer.records()))
+        tree = self._tree(sha)
+        if tree and tree in (self.state.get("failed_trees") or {}).get(k, []):
+            return True
+        tid = L.norm_id(k)
+        return any(r.get("event") == "test_end" and r.get("verdict") == "fail" and L.norm_id(r.get("task")) == tid
+                   and (r.get("sha") == sha or (tree and self._tree(r.get("sha") or "") == tree))
+                   for r in canon_records(self.writer.records()))
 
     def _failed(self, task, base, head, why, n, record=True):
         k = task["id"]
@@ -923,6 +946,10 @@ class Loop:
             fh = self.state.setdefault("failed_heads", {}).setdefault(k, [])
             if head not in fh:
                 fh.append(head)
+            ft = self.state.setdefault("failed_trees", {}).setdefault(k, [])
+            tree = self._tree(head)
+            if tree and tree not in ft:
+                ft.append(tree)
         t = self.state["tries"].get(k, 0) + 1
         self.state["tries"][k] = t
         self.state["pending"] = None
@@ -935,6 +962,7 @@ class Loop:
             self._clear_notes()
             self.state["tries"].pop(k, None)
             self.state.get("failed_heads", {}).pop(k, None)
+            self.state.get("failed_trees", {}).pop(k, None)
             self.state["task_i"] += 1
             self._save()
             return self.status("parked %s after %d tries (evidence ralph/failed/%s)" % (k, t, k))
@@ -1008,7 +1036,8 @@ class Loop:
             tester, pend["build_id"], (verdict or "NO VERDICT").upper(), text[-6000:]))
         if verdict != "pass":
             return self._failed(task, pend["base"], pend["head"], "tester pass %s: %s" % (
-                (verdict or "gave no verdict").upper(), text.strip()[-1500:]), n)
+                (verdict or "gave no verdict").upper(), text.strip()[-1500:]), n,
+                record=verdict == "fail")      # no verdict = the tester's infrastructure failed, not the candidate
         if task.get("live", "none") != "none":
             if self.lane is None:
                 raise Refused("task %s needs a live lane and none is configured" % task["id"])
@@ -1028,7 +1057,7 @@ class Loop:
         self.state["lane_wait"] = None
         if r.get("verdict") != "pass":
             return self._failed(task, lw["base"], lw["head"], "live lane %s: %s" % (
-                r.get("verdict"), r.get("why") or r.get("run_id")), self.state["n"])
+                r.get("verdict"), r.get("why") or r.get("run_id")), self.state["n"], record=r.get("verdict") == "fail")
         return self._final(task, lw, self.state["n"])
 
     def _final(self, task, pend, n):

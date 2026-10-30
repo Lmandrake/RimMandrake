@@ -626,7 +626,8 @@ def sc_sync(tmp, mod, tag):
     """L6: the build pass pulls main first (3 tries, 30/60 s apart); a pull that keeps failing stops the step before
     any model runs; a working origin is pulled."""
     slept = []
-    w = World(tmp, "L6" + tag, mod, sync="default", sleep=slept.append)     # no upstream: every pull fails
+    w = World(tmp, "L6" + tag, mod, sync="default", sleep=slept.append)
+    sh(w.root, "git", "remote", "add", "origin", str(tmp / "L6_nowhere.git"))   # a dead upstream: every pull fails
     out = w.loop.step()
     failed = out.startswith("sync failed") and slept == [30, 60] and w.calls == []
     origin = tmp / ("L6o" + tag + ".git")
@@ -639,7 +640,7 @@ def sc_sync(tmp, mod, tag):
     sh(clone, "git", "add", "NEW")
     sh(clone, "git", "commit", "-q", "-m", "new")
     sh(clone, "git", "push", "-q", "origin", "main")
-    sh(w.root, "git", "remote", "add", "origin", str(origin))
+    sh(w.root, "git", "remote", "set-url", "origin", str(origin))
     sh(w.root, "git", "fetch", "-q", "origin")
     sh(w.root, "git", "branch", "-q", "--set-upstream-to=origin/main", "main")
     pulled = mod.default_sync(w.root, slept.append) and (w.root / "NEW").exists()
@@ -1001,6 +1002,125 @@ def sc_nochange_after_fail(tmp, mod, tag):
     return ("tester pass FAIL" in out[0] and out[1].startswith("failed") and len(seen) == 1
             and not w.pubs() and w.main_src() is None and w.roles() == ["build", "test", "build"])
 
+def sc_pull_trap2(kind):
+    """RALPHA_EXPORT_FIX_BUILDER_GIT_TRUST round 2 (opus blind review of 803f811f67): include.path, a remote section
+    named like the pinned URL, an unset origin URL, and a signing program run by the rebase."""
+    def sc(tmp, mod, tag):
+        w, origin = _pull_world(tmp, "N2" + kind + tag, mod)
+        marker = w.d / "marker"
+        script = w.d / "evil.sh"
+        script.write_text("#!/bin/sh\ntouch %s\nexit 1\n" % marker)
+        script.chmod(0o755)
+        cfg = lambda *a: sh(w.root, "git", "config", *a)                  # noqa: E731
+        penv = dict(os.environ, GIT_TERMINAL_PROMPT="0")
+        plain = ["git", "pull", "--rebase", "-q"]
+        if kind == "include":
+            other = tmp / ("N2" + kind + tag + "_x.git")
+            sh(tmp, "git", "clone", "-q", "--bare", str(origin), str(other))
+            inc = w.d / "inc.cfg"
+            inc.write_text('[url "%s"]\n\tinsteadOf = %s\n' % (other, origin))
+            cfg("include.path", str(inc))
+            sane = bool(sh(w.root, "git", "config", "--get-regexp", r"^url\..*insteadof$"))      # git DOES read it
+            got = mod.default_sync(w.root, lambda s: None, tries=1)
+            return sane and not got                      # redirect by an included file: the loop refuses to pull
+        if kind == "remote_section":
+            U = "https://example.invalid/r.git"
+            cfg("remote.origin.url", U)
+            cfg("remote.%s.url" % U, str(origin))
+            cfg("remote.%s.uploadpack" % U, str(script))
+            subprocess.run(plain + [U, "main"], cwd=str(w.root), capture_output=True, timeout=60, env=penv)
+            sane = marker.exists()                       # plain git ran the section's uploadpack
+            marker.unlink(missing_ok=True)
+            sh(w.root, "git", "rebase", "--abort") if (w.root / ".git" / "rebase-merge").exists() else None
+            got = mod.default_sync(w.root, lambda s: None, tries=1)
+            return sane and not got and not marker.exists() and not (w.root / "NEW").exists()
+        if kind == "no_url":
+            sh(w.root, "git", "remote", "remove", "origin")
+            sh(tmp, "git", "clone", "-q", str(origin), str(w.root / "origin"))        # a builder-made ./origin repo
+            c = w.root / "origin"
+            sh(c, "git", "config", "user.email", "t@t")
+            sh(c, "git", "config", "user.name", "t")
+            (c / "EVIL").write_text("x\n")
+            sh(c, "git", "add", "EVIL")
+            sh(c, "git", "commit", "-q", "-m", "evil")
+            (w.root / ".git" / "info").mkdir(exist_ok=True)
+            (w.root / ".git" / "info" / "exclude").write_text("origin/\n")
+            subprocess.run(plain + ["origin", "main"], cwd=str(w.root), capture_output=True, timeout=60, env=penv)
+            sane = (w.root / "EVIL").exists()            # plain git pulled the builder's ./origin as "origin"
+            sh(w.root, "git", "reset", "-q", "--hard", "HEAD~1") if sane else None
+            got = mod.default_sync(w.root, lambda s: None, tries=1)
+            return sane and not got and not (w.root / "EVIL").exists()
+        if kind.startswith("gpg"):
+            (w.root / "L").write_text("l\n")
+            sh(w.root, "git", "add", "L")
+            sh(w.root, "git", "commit", "-q", "-m", "local")
+            cfg("commit.gpgSign", "true")
+            cfg("user.signingkey", "x")
+            fmt = {"gpg": None, "gpgssh": "ssh", "gpgx509": "x509"}[kind]
+            key = {"gpg": "gpg.program", "gpgssh": "gpg.ssh.program", "gpgx509": "gpg.x509.program"}[kind]
+            if fmt:
+                cfg("gpg.format", fmt)
+            cfg(key, str(script))
+            subprocess.run(plain, cwd=str(w.root), capture_output=True, timeout=60, env=penv)
+            sane = marker.exists()                       # plain git's rebase ran the signing program
+            marker.unlink(missing_ok=True)
+            sh(w.root, "git", "rebase", "--abort") if (w.root / ".git" / "rebase-merge").exists() else None
+            got = mod.default_sync(w.root, lambda s: None, tries=1)
+            return sane and not marker.exists() and got and (w.root / "NEW").exists()
+        raise ValueError(kind)
+    sc.__name__ = "sc_pull_trap2_" + kind
+    return sc
+
+
+def sc_same_tree_resubmit(kind):
+    """A failed candidate re-presented under a NEW sha with the SAME tree (amend --no-edit semantics, or an empty
+    commit on top) is the same diff: never gated or tested again; a failed try, no second tester."""
+    def sc(tmp, mod, tag):
+        seen = []
+
+        def tester(prompt, cwd):
+            seen.append(1)
+            return "VERDICT: FAIL" if len(seen) == 1 else "VERDICT: PASS"
+        builds = []
+        holder = []
+
+        def b(prompt):
+            builds.append(1)
+            if len(builds) == 1:
+                return WEAK, 0
+            r = holder[0].root
+            if kind == "amend":
+                sh(r, "git", "commit", "-q", "--amend", "--allow-empty", "-m", "reworded")
+            else:
+                sh(r, "git", "commit", "-q", "--allow-empty", "-m", "empty on top")
+            return None, 0
+        w = World(tmp, "TR" + kind + tag, mod, builder=b, tester=tester)
+        holder.append(w)
+        out = [w.loop.step(), w.loop.step()]
+        return ("tester pass FAIL" in out[0] and out[1].startswith("failed") and len(seen) == 1
+                and not w.pubs() and w.main_src() is None)
+    sc.__name__ = "sc_same_tree_" + kind
+    return sc
+
+
+def sc_infra_retry(tmp, mod, tag):
+    """A tester that gave NO verdict (infrastructure) does not condemn the candidate: the builder that rightly
+    changes nothing on the retry gets the SAME candidate tested again (a try is still spent, MAX_TRIES bounds it)."""
+    seen = []
+
+    def tester(prompt, cwd):
+        seen.append(1)
+        return "tester crashed, no verdict" if len(seen) <= mod.TESTER_TRIES else default_tester(prompt, cwd)
+    builds = []
+
+    def b(prompt):
+        builds.append(1)
+        return (GOOD, 0) if len(builds) == 1 else (None, 0)
+    w = World(tmp, "IR" + tag, mod, builder=b, tester=tester)
+    out = [w.loop.step(), w.loop.step()]
+    return "no verdict" in out[0] and out[1].startswith("published") and len(w.pubs()) == 1
+
+
 
 MUTATIONS = [
     ("T1 replace refs honoured", sc_git_replace_ref, "\"GIT_NO_REPLACE_OBJECTS\": \"1\", ", ""),
@@ -1081,11 +1201,33 @@ MUTATIONS = [
     ("N1 ssh command from the clone's config", sc_pull_trap("ssh"),
      '("core.sshCommand", "ssh"), ', ""),
     ("N1 remote.origin.uploadpack from the clone's config", sc_pull_trap("uploadpack"),
-     '"-q", url, MAIN', '"-q", "origin", MAIN'),
+     '"--upload-pack=git-upload-pack", url, MAIN', '"origin", MAIN'),
     ("N1 ext:: remote helper allowed", sc_pull_trap("ext"),
      '        env["GIT_ALLOW_PROTOCOL"] = "file:https:ssh"', "        pass"),
     ("N1 merge driver run by the rebase", sc_pull_trap("merge"), 'r"^merge\\..*\\.driver$"', 'r"^nomatch$"'),
     ("N1 url.insteadOf redirect followed", sc_pull_trap("insteadof"), 'r"^url\\..*\\.(push)?insteadof$"', 'r"^nomatch$"'),
+    ("R2 include.path of the clone's config not read", sc_pull_trap2("include"),
+     'if _cfg_lines(clone + ["config", "-z", "--name-only", "--get-regexp", r"^url',
+     'if _cfg_lines(clone + ["config", "--local", "-z", "--name-only", "--get-regexp", r"^url'),
+    ("R2 remote.<pinned url> section not refused", sc_pull_trap2("remote_section"),
+     '    if url and any(k.startswith', '    if False and any(k.startswith'),
+    ("R2 literal origin pulled when no URL is set", sc_pull_trap2("no_url"),
+     "    if not url:\n        return False", "    url = url or 'origin'\n    if False:\n        return False"),
+    ("R2 rebase honours commit.gpgSign and gpg.program", sc_pull_trap2("gpg"),
+     [('"commit.gpgSign=false"', '"commit.gpgSign=true"'),
+      ('"-c", "gpg.program=false", "-c", "gpg.openpgp.program=false",', "")], None),
+    ("R2 rebase honours commit.gpgSign and gpg.ssh.program", sc_pull_trap2("gpgssh"),
+     [('"commit.gpgSign=false"', '"commit.gpgSign=true"'), ('"-c", "gpg.ssh.program=false",', "")], None),
+    ("R2 rebase honours commit.gpgSign and gpg.x509.program", sc_pull_trap2("gpgx509"),
+     [('"commit.gpgSign=false"', '"commit.gpgSign=true"'), ('"-c", "gpg.x509.program=false"]', "]")], None),
+    ("R2 rebase honours commit.gpgSign alone", sc_pull_trap2("gpg"),
+     [('"commit.gpgSign=false"', '"commit.gpgSign=true"')], None),
+    ("R3 failures keyed by sha only (amend)", sc_same_tree_resubmit("amend"),
+     "        return r.stdout.strip() if r.returncode == 0 else None", "        return None"),
+    ("R3 failures keyed by sha only (empty commit)", sc_same_tree_resubmit("empty"),
+     "        return r.stdout.strip() if r.returncode == 0 else None", "        return None"),
+    ("R4 tester infrastructure failure condemns the candidate", sc_infra_retry,
+     "                record=verdict == \"fail\")", "                record=True)"),
     ("N2 failed candidate resubmitted by a no-change builder", sc_nochange_after_fail,
      "            if self.already_failed(task, head) else (None, None)", "            if False else (None, None)"),
     ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
@@ -1402,10 +1544,21 @@ def main():
                          ("N1 pull refuses an ext:: remote helper", sc_pull_trap("ext")),
                          ("N1 rebase runs no builder merge driver", sc_pull_trap("merge")),
                          ("N1 pull refuses a url.insteadOf redirect", sc_pull_trap("insteadof")),
+                         ("R2 pull refuses a url.insteadOf set by an included file", sc_pull_trap2("include")),
+                         ("R2 pull refuses a remote section named like the pinned URL", sc_pull_trap2("remote_section")),
+                         ("R2 pull never takes the literal name origin", sc_pull_trap2("no_url")),
+                         ("R2 rebase signs with no builder gpg.program", sc_pull_trap2("gpg")),
+                         ("R2 rebase signs with no builder gpg.ssh.program", sc_pull_trap2("gpgssh")),
+                         ("R2 rebase signs with no builder gpg.x509.program", sc_pull_trap2("gpgx509")),
+                         ("R3 amended failed candidate (same tree) is not retested", sc_same_tree_resubmit("amend")),
+                         ("R3 empty commit on a failed candidate is not retested", sc_same_tree_resubmit("empty")),
+                         ("R4 a tester infrastructure failure does not condemn the candidate", sc_infra_retry),
                          ("N2 no-change builder after a FAIL cannot resubmit the failed sha", sc_nochange_after_fail)):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
-            if old is None:        # diff.external: remove every layer (env, -c, flags)
+            if isinstance(old, list):
+                mod = variant_multi(old)
+            elif old is None:        # diff.external: remove every layer (env, -c, flags)
                 mod = variant_multi([("\"GIT_EXTERNAL_DIFF\": \"\", ", ""), ("\"-c\", \"diff.external=\",", ""),
                                      ("NO_DRIVER = (\"--no-ext-diff\", \"--no-textconv\")", "NO_DRIVER = ()")])
             else:
