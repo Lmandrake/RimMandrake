@@ -123,6 +123,36 @@ def simplify_rec(recs, tid):
     return s[-1] if s else None
 
 
+RIMFLOW_CLI = Path(__file__).resolve().parents[2] / "rimflow" / "cli.py"
+PARK_FOR = "BENCH"          # the Conductor's ledger seat (infrastructure/agents/CONDUCTOR.md: still seat BENCH)
+
+
+def park_item_name(tid):
+    """PARKED-style rimflow name for a park: the task's subject words + _VET_PARKED (intent VET), within the 44-char cap,
+    no trailing number (the retired legacy form); a hash tail keeps a truncated name unique."""
+    import re
+    words = [w for w in re.sub(r"[^A-Z0-9]+", "_", tid.upper()).split("_") if w]
+    while words and words[-1].isdigit():
+        words.pop()
+    suffix, name = "VET_PARKED", "_".join(words)
+    if len(name) + 1 + len(suffix) > 44:
+        h = hashlib.sha1(tid.encode()).hexdigest()[:3].upper()
+        keep = []
+        for w in words:
+            if len("_".join(keep + [w])) + 1 + len(h) + 1 + len(suffix) > 44:
+                break
+            keep.append(w)
+        name = "_".join(keep + [h])
+    return "%s_%s" % (name, suffix)
+
+
+def park_item_text(line):
+    return ("task %s (%s) parked after %s rounds. last verdict %s at sha %s. why: %s. evidence branch: %s. "
+            "audit line: parks.jsonl. NEXT: read the branch and the critic note, then retry, split or drop the task."
+            % (line.get("task"), line.get("priority"), line.get("rounds"), line.get("last_verdict"),
+               line.get("last_sha"), (line.get("last_why") or "")[:600].replace("\n", " "), line.get("evidence")))
+
+
 def parked(recs, tid):
     return bool(_task_recs(recs, tid, "critic_round", "park"))
 
@@ -353,6 +383,7 @@ class TrioLoop(RA.Loop):
             return self.status("STOP")
         fz = self.frozen()
         if fz is not None and parked(self.recs(), fz["id"]):   # killed after the park record, before state was saved
+            self._file_park_item(fz["id"])                       # a filing that failed last time is retried
             return self._advance(fz, "parked %s (from the log)" % fz["id"])   # before task(): a lost spec file cannot wedge it
         task = self.task()
         if task is None:
@@ -492,6 +523,7 @@ class TrioLoop(RA.Loop):
         tid = task["id"]
         recs = self.recs()
         if parked(recs, tid):
+            self._file_park_item(tid)
             return self._advance(task, "parked %s" % tid)
         vs = verdicts(recs, tid)
         lastv = vs[-1] if vs else {}
@@ -513,7 +545,50 @@ class TrioLoop(RA.Loop):
                 fh.write(json.dumps(line, sort_keys=True) + "\n")
         self.emit("critic_round", task, verdict="park", sha=wip or None, detail={
             "kind": "park", "rounds": k, "last_verdict": lastv.get("verdict"), "to": "conductor"})
+        self._file_park_item(tid)
         return self._advance(task, "parked %s after %d rounds (evidence %s)" % (tid, k, FAILED_BRANCH % tid))
+
+    def _file_park_item(self, tid):
+        """File the park as a rimflow item for the Conductor's queue (the Conductor works through rimflow items;
+        parks.jsonl stays the audit log). Idempotent: <ctl>/parks_filed.json remembers the item per task, and an
+        item that already exists counts as filed. Never raises: a failed filing is retried on the next visit."""
+        try:
+            mark = self.ctl / "parks_filed.json"
+            done = json.loads(mark.read_text()) if mark.is_file() else {}
+            if tid in done:
+                return done[tid]
+            pf = self.ctl / "parks.jsonl"
+            line = next((json.loads(x) for x in (pf.read_text().splitlines() if pf.is_file() else [])
+                         if x.strip() and json.loads(x).get("task") == tid), None)
+            if line is None:
+                return None
+            name = park_item_name(tid)
+            have = self._rimflow("namecheck", name)
+            if have.returncode != 0 and " exists:" not in have.stdout:
+                have = self._rimflow("file", name, "--for", PARK_FOR, "--kind", "task", "--needs", "offline",
+                                     "--title", "Trio parked %s after %s rounds: look at trio/failed branch, then retry, "
+                                     "split or drop" % (tid, line.get("rounds")),
+                                     "--spec", park_item_text(line), "--caused-by", tid, "--why",
+                                     "trio_loop park: the Conductor works through rimflow items (delegated design default)")
+                if have.returncode != 0 and "caused" in (have.stdout + have.stderr).lower():
+                    have = self._rimflow("file", name, "--for", PARK_FOR, "--kind", "task", "--needs", "offline",
+                                         "--title", "Trio parked %s" % tid, "--spec", park_item_text(line),
+                                         "--why", "trio_loop park (caused-by %s is not an item)" % tid)
+                if have.returncode != 0:
+                    print("trio: park item %s not filed: %s" % (name, (have.stdout + have.stderr)[-300:]), file=sys.stderr)
+                    return None
+            done[tid] = name
+            mark.write_text(json.dumps(done, sort_keys=True))
+            return name
+        except Exception as e:  # noqa: BLE001  a filing failure never loses the park or stops the loop
+            print("trio: park item for %s not filed: %s: %s" % (tid, type(e).__name__, e), file=sys.stderr)
+            return None
+
+    def _rimflow(self, *argv):
+        cmd = shlex.split(os.environ.get("TRIO_RIMFLOW_CMD") or "") or [sys.executable, str(RIMFLOW_CLI)]
+        env = dict(os.environ)
+        env.setdefault("RIMFLOW_SEAT", "FOUNDRY")
+        return subprocess.run(cmd + list(argv), capture_output=True, text=True, timeout=120, env=env)
 
     # ---- the critic (in place of ralph_a's tester)
     def tester_pass(self, task):

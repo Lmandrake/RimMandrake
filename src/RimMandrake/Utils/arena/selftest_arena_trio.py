@@ -436,6 +436,85 @@ def sc_park_once(tmp, mod, tag):
     return len(parks(w)) == 1 and len(w.recs("critic_round", "park")) == 1 and w.calls.count("build") == 4
 
 
+FAKE_RIMFLOW = """import json, os, sys
+st = os.environ["FAKE_RF_STORE"]
+have = json.load(open(st)) if os.path.exists(st) else {}
+a = sys.argv[1:]
+if os.path.exists(st + ".fail"):
+    sys.exit(3)
+if a[0] == "file":
+    open(st + ".calls", "a").write("x")
+if a[0] == "namecheck" and os.path.exists(st + ".blind"):
+    sys.exit(1)
+if a[0] == "namecheck":
+    print(a[1] + " exists: state proposed" if a[1] in have else "OK")
+    sys.exit(0 if a[1] not in have else 0) if a[1] in have else sys.exit(0)
+have[a[1]] = a
+json.dump(have, open(st, "w"))
+print("filed")
+"""
+
+
+def fake_rimflow(w, tmp):
+    d = Path(tmp) / ("rf_" + w.ctl.parent.name + w.ctl.name)
+    d.mkdir(parents=True, exist_ok=True)
+    (d / "rf.py").write_text(FAKE_RIMFLOW.replace('sys.exit(0 if a[1] not in have else 0) if a[1] in have else sys.exit(0)',
+                                                  'sys.exit(1 if a[1] not in have else 0)'))
+    os.environ["TRIO_RIMFLOW_CMD"] = "%s %s" % (sys.executable, d / "rf.py")
+    os.environ["FAKE_RF_STORE"] = str(d / "store.json")
+    return d
+
+
+def sc_park_files_item(tmp, mod, tag):
+    """A park files one rimflow item for the Conductor (BENCH), caused by the task, naming the branch; a restart and a
+    second park visit file nothing more; parks.jsonl is still written."""
+    w = World(tmp, "PF" + tag, mod)
+    d = fake_rimflow(w, tmp)
+    (d / "store.json.blind").write_text("x")                    # the namecheck cannot see an existing item
+    try:
+        w.run()
+        first = (d / "store.json").exists()                     # filed on the park itself, not only on a restart
+        w.reopen(drop_state=True)
+        w.run(4)
+        w.loop.step()
+        have = json.loads((d / "store.json").read_text()) if (d / "store.json").exists() else {}
+        calls1 = len((d / "store.json.calls").read_text()) if (d / "store.json.calls").exists() else 0
+        (w.ctl / "parks_filed.json").unlink()                   # marker lost: the existing item still counts as filed
+        (d / "store.json.blind").unlink()
+        w.reopen(drop_state=True)
+        w.run(4)
+        calls2 = len((d / "store.json.calls").read_text()) if (d / "store.json.calls").exists() else 0
+    finally:
+        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+    a = next(iter(have.values()), [])
+    print("     PF%s: items %s calls %s/%s" % (tag, list(have), calls1, calls2))
+    return (first and calls1 == 1 and calls2 == 1 and list(have) == ["TRIO_ABSDIFF_VET_PARKED"] and len(parks(w)) == 1 and "BENCH" in a and "TRIO_ABSDIFF" in a
+            and any(T.FAILED_BRANCH % TASK["id"] in x for x in a) and a[a.index("--caused-by") + 1] == "TRIO_ABSDIFF")
+
+
+def sc_park_filing_fails(tmp, mod, tag):
+    """rimflow failing (exit 3) or crashing loses no parks.jsonl line and does not stop the loop; the next visit files it."""
+    w = World(tmp, "PX" + tag, mod)
+    d = fake_rimflow(w, tmp)
+    (d / "store.json.fail").write_text("x")
+    try:
+        out = w.run()
+        pk1 = len(parks(w))
+        os.environ["TRIO_RIMFLOW_CMD"] = str(d / "does_not_exist_binary")
+        w.reopen(drop_state=True)
+        out2 = w.run(4)                                         # a crashing launcher: swallowed too
+        os.environ["TRIO_RIMFLOW_CMD"] = "%s %s" % (sys.executable, d / "rf.py")
+        (d / "store.json.fail").unlink()
+        w.reopen(drop_state=True)
+        w.run(4)
+        have = json.loads((d / "store.json").read_text()) if (d / "store.json").exists() else {}
+    finally:
+        os.environ.pop("TRIO_RIMFLOW_CMD", None)
+    print("     PX%s: out %s / %s items %s" % (tag, out[-1][:30], out2[-1][:30], list(have)))
+    return (out[-1].startswith("parked") and pk1 == 1 and len(parks(w)) == 1 and list(have) == ["TRIO_ABSDIFF_VET_PARKED"]
+            and len(w.recs("critic_round", "park")) == 1)
+
+
 def sc_spec_tamper(tmp, mod, tag):
     w = World(tmp, "G" + tag, mod, simplifier=lambda p: SIMPLE)
     for _ in range(3):
@@ -485,6 +564,15 @@ MUTATIONS = [
      "        fz = self.frozen()\n        if fz is not None and parked(", "        fz = self.frozen()\n        task = self.task()\n        if fz is not None and parked("),
     ("PO park line written twice", sc_park_once, "        if not any(json.loads(x).get(\"task\") == tid for x in have if x.strip()):",
      "        if True:"),
+    ("PF filing not remembered", sc_park_files_item, "            if tid in done:\n                return done[tid]\n",
+     "            pass\n"),
+    ("PF existing item not recognised", sc_park_files_item, "\" exists:\" not in have.stdout", "\" exists:\" in have.stdout"),
+    ("PF item not filed at all", sc_park_files_item, "        self._file_park_item(tid)\n        return self._advance(task, \"parked",
+     "        return self._advance(task, \"parked"),
+    ("PX filing failure not contained", sc_park_filing_fails, "        except Exception as e:  # noqa: BLE001  a filing",
+     "        except KeyboardInterrupt as e:  # noqa: BLE001  a filing"),
+    ("PX failed filing not retried from the log", sc_park_filing_fails,
+     "            self._file_park_item(fz[\"id\"])                       # a filing", "            pass                                                 # a filing"),
     ("G spec integrity check removed", sc_spec_tamper,
      "            if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != want:",
      "            if False:"),
@@ -505,6 +593,8 @@ SCENARIOS = [
     ("F a critic with no verdict spends the round", sc_invalid_critic),
     ("FK a killed build pass spends the round; the simplified spec reaches round 3", sc_killed_build),
     ("PL a parked item with its spec file lost still advances", sc_parked_spec_lost),
+    ("PF a park files one Conductor item, once", sc_park_files_item),
+    ("PX a failed or crashing filing loses nothing and is retried", sc_park_filing_fails),
     ("PO a killed park writes one parks.jsonl line", sc_park_once),
     ("G a tampered simplified spec refuses", sc_spec_tamper),
 ]
