@@ -898,7 +898,11 @@ def hidden_checks(hidden: dict) -> list[dict]:
 #     importlib.util...: FrozenImporter unmarshals them, and `_imp.get_frozen_object(name, data)` would unmarshal
 #     arm bytes, so marshal stays denied) is imported before the hook goes in; ARENA_RUNNER_FIX_FROZEN_PATHLIB_DENIED:
 #     `import pathlib` was denied, ~70% of real fix_tests); ctypes (import and every ctypes.* event), _test*/subinterpreter
-#     modules and interpreter creation (a subinterpreter has no hooks); further audit hooks; setrlimit (core dumps are
+#     modules and interpreter creation (a subinterpreter has no hooks; _interpreters.create raises NO audit event on
+#     3.14, so the module itself must never load). A plain `import` of one (event args (name, None, sys.path, ...)) gets
+#     ModuleNotFoundError raised from the hook, aborting it, so an OPTIONAL `try: import _interpreters` (concurrent.futures
+#     on 3.14) carries on (ARENA_RUNNER_FIX_OPTIONAL_IMPORT_DENIED); any other shape (a loader's create_dynamic: (name,
+#     path, None, None, None)) is a kill; further audit hooks; setrlimit (core dumps are
 #     disabled with a hard RLIMIT_CORE of 0 before any arm code); any open of a file named `mem` or on procfs, and the
 #     check sandbox mounts an empty tmpfs on /proc (no /proc/self/mem, environ or cmdline at all);
 #   * the seal writes the marker only when resumed from `_main()` after exec() returned normally, or from the check's
@@ -957,7 +961,7 @@ def _seal(nonce, fd, s_offs, e_offs, top, w, x, gf, T, I):
     except BaseException:
         x(87)
     x(87)
-def _hook(g, x, w, T, S, B, N, st, pdev):
+def _hook(g, x, w, T, S, B, N, st, pdev, IE):
     ALWAYS = frozenset(("sys._current_frames", "sys._current_exceptions", "gc.get_objects", "gc.get_referrers",
                         "gc.get_referents", "sys.settrace", "sys.setprofile", "sys._settraceallthreads",
                         "sys._setprofileallthreads", "sys.monitoring.register_callback", "sys.remote_exec",
@@ -973,6 +977,7 @@ def _hook(g, x, w, T, S, B, N, st, pdev):
     def h(ev, args):
         if T(ev) is not S:
             return
+        no = None
         try:
             if ev == "object.__getattr__":
                 o, n = args[0], args[1]
@@ -985,8 +990,13 @@ def _hook(g, x, w, T, S, B, N, st, pdev):
                     deny(ev)
             elif ev == "import":
                 m = args[0]
-                if T(m) is not S or m.startswith(BADMOD):
+                if T(m) is not S:
                     deny(ev)
+                if m.startswith(BADMOD):
+                    if args[1] is None and args[2] is not None:
+                        no = m
+                    else:
+                        deny(ev)
             elif ev == "open":
                 p = args[0]
                 if T(p) is N:
@@ -1003,6 +1013,8 @@ def _hook(g, x, w, T, S, B, N, st, pdev):
                     pass
         except BaseException:
             deny("hook")
+        if no is not None:
+            raise IE("arena check: %s is not importable" % no)
     return h
 def _exit_stmt(n):
     if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call):
@@ -1082,7 +1094,8 @@ def _main():
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     sys.pycache_prefix = "/nonexistent/arena-no-pycache"
     _frozen()
-    sys.addaudithook(_hook(g, posix._exit, posix.write, type, str, bytes, int, posix.stat, posix.stat("/proc").st_dev))
+    sys.addaudithook(_hook(g, posix._exit, posix.write, type, str, bytes, int, posix.stat, posix.stat("/proc").st_dev,
+                     ModuleNotFoundError))
     sys.argv = [test]
     sys.path.insert(0, os.path.dirname(test))
     mod = types.ModuleType("__main__")
