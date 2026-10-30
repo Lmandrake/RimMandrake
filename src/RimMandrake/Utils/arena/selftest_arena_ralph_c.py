@@ -25,6 +25,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import sys
@@ -418,7 +419,89 @@ def sc_crash_between_saves(tmp, mod, tag):
     return ok
 
 
+def sc_buildend_crash(tmp, mod, tag):
+    """RALPH_LOOPS_HARDEN_BUILDEND_CRASH_WINDOW through LoopC: killed after build_end was logged, before state.pending
+    reached disk. The restart runs that build's tester from the log and publishes; without _recover it refuses
+    forever, which is what shows this scenario sits in the window."""
+    class Killed(BaseException):
+        pass
+
+    def crashed(name):
+        ar = Arena(tmp, name + tag, [task("T_A", MA)], mod)
+        w = ar.world("a1", lambda prompt, tid: ({MA + "/a.py": "v = 1\n"}, 0))
+        real = w.loop._save
+
+        def boom():
+            if w.loop.state.get("pending"):
+                raise Killed()
+            real()
+        w.loop._save = boom
+        try:
+            run_steps(w)
+        except Killed:
+            pass
+        return ar, w
+    ar, w = crashed("BE")
+    in_window = ("pending" not in json.loads((w.ctl / "state.json").read_text()) or
+                 not json.loads((w.ctl / "state.json").read_text())["pending"])
+    logged = [r["event"] for r in ar.writer.records() if r["event"] in ("build_end", "test_start")]
+    w2 = ar.world("a1", w.builder)
+    out = run_steps(w2)
+    # the same crash with the recovery off: the hard check refuses
+    ar3, w3 = crashed("BN")
+    w4 = ar3.world("a1", w3.builder)
+    w4.loop._recover = lambda t: None
+    try:
+        w4.loop.step()
+        refused = False
+    except Exception as e:  # noqa: BLE001
+        refused = type(e).__name__ == "NotTested"
+    ok = (in_window and logged == ["build_end"] and out[-1].startswith("published") and len(w.pubs()) == 1 and refused)
+    if tag == "":
+        check(ok, "build_end logged, state.pending lost: restart tests the build and publishes: %s %s %s" % (logged, out, refused))
+    return ok
+
+
+def sc_tester_sandbox(tmp, mod, tag):
+    """RALPHC_SANDBOX_TEST_PROVE_BWRAP_REALLY_USED: cwd is NOT the sandbox root, as in the real tester pass (with them
+    equal, dropping the sandbox= pass-through changes nothing). The pass really ran in bwrap: the launcher argv names
+    bwrap and the given root, the process has another mount namespace, and it can write the root, not just cwd."""
+    troot = tmp / ("tsb2" + tag)
+    work = troot / "work"
+    work.mkdir(parents=True)
+    probe = ("import os,json,pathlib;p=pathlib.Path(%r);p.write_text('x');"
+             "print(json.dumps([os.environ['HOME'],os.readlink('/proc/self/ns/mnt'),os.path.exists(%r)]))"
+             % (str(troot / "root_written"), str(mod.RA.HARNESS_REPO)))
+    seen = []
+    real = mod.RA.AS.wrap
+
+    def spy(argv, env, **kw):
+        out = real(argv, env, **kw)
+        seen.append(out[0])
+        return out
+    m = mod.CmdModelC("%s -c %s" % (sys.executable, shlex.quote(probe)), "a2")
+    mod.RA.AS.wrap = spy
+    try:
+        r = m("test", "", cwd=work, agent_id="x", run_id=0, timeout_s=30, log=troot / "t.log", sandbox={"root": troot})
+    finally:
+        mod.RA.AS.wrap = real
+    try:
+        home, ns, harness = json.loads(r["text"].strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        home, ns, harness = None, None, None
+    argv = seen[0] if seen else []
+    ok = (r["rc"] == 0 and home == str(troot / "home") and harness is False and ns != os.readlink("/proc/self/ns/mnt")
+          and any("bwrap" in a for a in argv) and any(str(troot) in a for a in argv)
+          and (troot / "root_written").exists())
+    if tag == "":
+        check(ok, "CmdModelC tester pass really runs in bwrap at the sandbox root: %r %r" % (r["text"], argv[5:6]))
+    return ok
+
+
 MUTATIONS = [
+    ("sandbox= pass-through dropped from the tester pass", sc_tester_sandbox,
+     "timeout_s=timeout_s,\n                                    log=log, sandbox=sandbox)",
+     "timeout_s=timeout_s,\n                                    log=log)"),
     ("P1c rename detection back on", sc_rename_out, '"--no-renames", ', ""),
     ("P1 area guard removed", sc_stolen_out_of_area, "        if bad:\n            Path(log)",
      "        if False:\n            Path(log)"),
@@ -872,8 +955,14 @@ def main():
                          ("P4 steal only when own list empty", sc_steal_last),
                          ("P5 two loops, one board", sc_two_loops),
                          ("P1c rename out of the other area refused", sc_rename_out),
-                         ("crash between saves recovered", sc_crash_between_saves)):
+                         ("crash between saves recovered", sc_crash_between_saves),
+                         ("tester pass really sandboxed", sc_tester_sandbox)):
             check(guarded(fn, tmp, C, "") is True, "green: " + name)
+        if hasattr(RA.Loop, "arm"):
+            check(guarded(sc_buildend_crash, tmp, C, "") is True, "green: build_end crash window recovered")
+        else:           # _recover reads RA.canon_records, which filters to arm ralph_a: blind to every LoopC record
+            SKIPS.append("sc_buildend_crash: Loop.arm absent (RALPH_RECOVER_HARDEN_BLIND_TO_SUBCLASS_ARMS)")
+            print("EXPECTED SKIP sc_buildend_crash: LoopC wedges today, owed by RALPH_RECOVER_HARDEN_BLIND_TO_SUBCLASS_ARMS")
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             check(guarded(fn, tmp, variant(old, new), "_m%d" % i) is False,
                   "mutation goes RED (a False verdict, not a crash): " + name)
