@@ -210,14 +210,18 @@ def require_tested(recs):
 
 
 def open_tester_build(recs):
-    """The build_id of a test_start (same build, same tester) with no later test_end, else None. Per ATTEMPT, so a
-    retry killed after an earlier attempt ended is still open (GPT review r1)."""
-    done = {((r.get("detail") or {}).get("build_id"), (r.get("detail") or {}).get("tester"))
-            for r in recs if r.get("event") == "test_end"}
+    """The build_id whose LAST tester event is a test_start (a pass started and never ended), else None. Ordered per
+    build, not per (build, tester): a retry killed after an earlier attempt ended is open (GPT r1), and a killed
+    attempt that a LATER attempt of the same build finished is closed, or the builder stays blocked forever (tester
+    drill: the per-attempt match deadlocked every recovered tester pass)."""
+    last = {}
     for r in recs:
         d = r.get("detail") or {}
-        if r.get("event") == "test_start" and d.get("build_id") and (d["build_id"], d.get("tester")) not in done:
-            return d["build_id"]
+        if r.get("event") in ("test_start", "test_end") and d.get("build_id"):
+            last[d["build_id"]] = r["event"]
+    for bid, ev in last.items():
+        if ev == "test_start":
+            return bid
     return None
 
 

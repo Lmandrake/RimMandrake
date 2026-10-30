@@ -219,7 +219,12 @@ def sc_tester_killed(tmp, mod, tag):
     reopen(w, mod, model=w.loop.model)
     out = S.run_steps(w)
     drill_note(w, "tester_killed", out[-1])
-    return ok and [c[0] for c in w.calls[n:]] == ["test"] and out[-1].startswith("published") \
+    try:                                                 # the recovered tester pass must not leave the builder blocked FOREVER
+        mod.require_tested(w.writer.records())
+        unblocked = True
+    except mod.NotTested:
+        unblocked = False
+    return ok and unblocked and [c[0] for c in w.calls[n:]] == ["test"] and out[-1].startswith("published") \
         and w.main_src() == GOOD and len(w.pubs()) == 1
 
 
@@ -288,7 +293,9 @@ MUTATIONS = [
     ("T build_pass lets a started-never-ended tester pass through", sc_tester_killed_lost_state,
      '    if bid:\n        raise NotTested("refused: a tester', '    if False:\n        raise NotTested("refused: a tester'),
     ("T guard matches by build only, not attempt", sc_tester_retry_killed,
-     'not in done:\n            return d["build_id"]', 'not in done and d["build_id"] not in {k[0] for k in done}:\n            return d["build_id"]'),
+     'last[d["build_id"]] = r["event"]', 'last[d["build_id"]] = min(last.get(d["build_id"], "z"), r["event"])'),
+    ("T guard matches per attempt: a killed attempt a later attempt finished blocks the builder forever", sc_tester_killed,
+     'last[d["build_id"]] = r["event"]', 'last[d["build_id"]] = max(last.get(d["build_id"], ""), r["event"])'),
     ("T both guards removed: the builder runs ahead", sc_tester_killed_lost_state, None, None),
     ("P build-phase gate bypassed", sc_planted, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("R leftover commit of a killed pass read as an empty candidate", sc_build_killed,
