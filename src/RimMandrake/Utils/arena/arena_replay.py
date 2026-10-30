@@ -106,7 +106,8 @@ def sandbox_masks(source=DEFAULT_SOURCE) -> list[str]:
     out = [str(Path(source)), str(private_dir()), "/home/mandrake/rm/bench", "/home/mandrake/rm/foundry",
            "/home/mandrake/rm/store.git", "/home/mandrake/rm/mirror.git", "/mnt/d/Luke/dev/RimMandrake",
            RETIRED_TREES, CLAUDEWORK_ROOT]
-    for pat in T.OLD_HISTORY_DEFAULT:
+    env_old = [e.strip() for e in os.environ.get("ARENA_OLD_HISTORY", "").split(os.pathsep) if e.strip()]
+    for pat in list(T.OLD_HISTORY_DEFAULT) + env_old:     # an $ARENA_OLD_HISTORY override is masked the same way
         out.append(glob_dir(pat))
     out += [str(p) for p in T.old_history_repos()]
     seen = []

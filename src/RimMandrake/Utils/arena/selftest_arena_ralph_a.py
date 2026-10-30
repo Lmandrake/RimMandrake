@@ -494,11 +494,23 @@ def sc_orphan(tmp, mod, tag):
     except (OSError, ValueError):
         pr.kill()
         return False
-    pr.kill()                                    # the loop dies; its model's session lives on
+    pr.kill()                                    # the loop dies; its model's session may live on
     pr.wait()
     try:
+        time.sleep(0.5)
         if not R.group_alive(pgid):
-            return False
+            # bwrap --die-with-parent (pid-namespace init) took the sandboxed model down with the loop: that path
+            # leaves no orphan. The loop-start kill is defence in depth for one that escapes it: exercise it on a
+            # stand-in group recorded in the same pidfile, exactly as spawn() records a model.
+            # double fork: the stand-in is not our child, so once killed it is reaped (no zombie keeps its group)
+            pgid = int(subprocess.run([sys.executable, "-c", "import subprocess, sys; print(subprocess.Popen("
+                                       "[sys.executable, '-c', 'import time; time.sleep(300)'], "
+                                       "start_new_session=True, stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, "
+                                       "stderr=subprocess.DEVNULL).pid)"], capture_output=True, text=True).stdout)
+            w.loop.pidfile.write_text(json.dumps({"pgid": pgid, "start": R.proc_start(pgid), "role": "build",
+                                                  "agent": "a"}))
+            if not R.group_alive(pgid):
+                return False
         (w.ctl / "STOP").touch()
         out = w.loop.run(1)
         t0 = time.time()

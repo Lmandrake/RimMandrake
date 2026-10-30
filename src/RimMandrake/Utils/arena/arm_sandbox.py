@@ -13,6 +13,10 @@ HOW (allow-list, not deny-list). bubblewrap: the root read-only, then a tmpfs ov
   ro   the agent CLI and user python (~/.local/bin, ~/.local/share/claude, ~/.local/lib, $RM_ARM_SANDBOX_RO), the
        resolver file /etc/resolv.conf points into /mnt/wsl, and a few $HOME seeds bound into a PRIVATE home
        (default only .gitconfig; $RM_ARM_SANDBOX_HOME_RO adds home-relative paths, e.g. .claude/skills)
+The host's logs are masked too (VAR_MASK: /var/log syslog + systemd journal, /var/lib/systemd, /var/spool, /var/mail,
+/var/crash; item ARENA_SANDBOX_HARDEN_JOURNAL_SYSLOG_READABLE). The ENV is an allow-list (ENV_ALLOW, LC_*, the
+harness's GIT_CONFIG_* pins, MODEL_AUTH on a model pass, $RM_ARM_SANDBOX_ENV_KEEP; item
+ARENA_SANDBOX_HARDEN_ENV_PASSED_WHOLESALE): no seat name, session or messaging token, GH or OpenAI key crosses.
 Own user/pid/ipc/uts namespaces, nested user namespaces disabled, a fresh /proc (no /proc/<harness pid>/root),
 --new-session, --die-with-parent. A seccomp filter refuses socket(AF_VSOCK) and io_uring (the raw channel to the
 Windows host). /run is a tmpfs and WSL_INTEROP is dropped: Windows interop (binfmt -> /init -> /run/WSL/*_interop) is
@@ -65,7 +69,11 @@ import arena_critic_relay as RELAY  # noqa: E402
 
 BWRAP = "/usr/bin/bwrap"
 PY = "/usr/bin/python3"
-CONTAINERS = ("/home", "/mnt", "/tmp", "/var/tmp", "/run", "/root", "/srv", "/opt", "/media", "/usr/lib/wsl/drivers")
+# the host's logs: syslog and the systemd journal hold ledger close events with item ids and every systemd-run
+# dispatch command line with its full agent brief (we are in group adm) - ARENA_SANDBOX_HARDEN_JOURNAL_SYSLOG_READABLE
+VAR_MASK = ("/var/log", "/var/lib/systemd", "/var/spool", "/var/mail", "/var/crash")
+CONTAINERS = ("/home", "/mnt", "/tmp", "/var/tmp", "/run", "/root", "/srv", "/opt", "/media",
+              "/usr/lib/wsl/drivers") + VAR_MASK
 TOOL_RO = (".local/bin", ".local/share/claude", ".local/lib")          # home-relative, bound at the same path
 HOME_SEED_RO = (".gitconfig",)                                         # home-relative, bound into the private home
 RM_ROOT = "/home/mandrake/rm"
@@ -81,6 +89,19 @@ DROP_ENV = ("LD_PRELOAD", "LD_LIBRARY_PATH", "LD_AUDIT",
             "WSL_INTEROP", "XDG_RUNTIME_DIR", "DBUS_SESSION_BUS_ADDRESS", "SSH_AUTH_SOCK", "DISPLAY",
             "WAYLAND_DISPLAY", "PULSE_SERVER", "GIT_DIR", "GIT_WORK_TREE", "GIT_ALTERNATE_OBJECT_DIRECTORIES",
             "GIT_OBJECT_DIRECTORY", "GIT_COMMON_DIR", "GIT_INDEX_FILE", "OLDPWD")
+# THE ENV IS AN ALLOW-LIST (ARENA_SANDBOX_HARDEN_ENV_PASSED_WHOLESALE): the launcher's env held AGENT_SEAT, the
+# Claude Code session / messaging tokens (an inner `claude -p` introduced itself as the Conductor), and could hold any
+# GH_TOKEN or OpenAI key. Only these names cross; everything else is dropped, whatever the caller passes.
+ENV_ALLOW = ("PATH", "LANG", "LANGUAGE", "TERM", "TZ", "SHELL", "USER", "LOGNAME", "NO_COLOR", "COLUMNS",
+             "PYTHONIOENCODING", "PYTHONUTF8", "PYTHONDONTWRITEBYTECODE",
+             # set by the harness itself on purpose (ralph_a/ralph_c/trio/v3 role tags, the tester's neutral id, its
+             # GPT call log, the private data root of harness-run clone code)
+             "RM_ARM", "RALPH_A_ROLE", "RALPH_A_AGENT_ID", "RALPH_C_MEMBER", "RALPH_C_MAX_SUBAGENTS", "V3_ROLE",
+             "TESTER_ID", "RM_GPT_CALL_LOG", "RM_DATA_ROOT")
+ENV_ALLOW_RE = re.compile(r"^(LC_[A-Z]+|GIT_CONFIG_COUNT|GIT_CONFIG_(KEY|VALUE)_[0-9]+)$")
+MODEL_AUTH = ("CLAUDE_CODE_OAUTH_TOKEN", "ANTHROPIC_API_KEY")   # net="model" only: the model CLI's own credential
+ENV_SET = {"HOME", "TMPDIR", "PYTHONUSERBASE", "PWD"}   # set by sandbox_env itself (PWD: bwrap --chdir)
+ENV_KEEP_VARS = ("RM_ARM_SANDBOX_ENV_KEEP", "RALPH_A_TESTER_ENV_KEEP")  # operator opt-in, comma-separated names
 AF_VSOCK = 40
 NETS = ("model", "none")       # model: the allow-listed relay route only; none: no route out at all
 
@@ -346,8 +367,26 @@ def bwrap_argv(pl, bpf_path=None) -> list[str]:
     return a + ["--"]
 
 
-def sandbox_env(env, home, drop=()):
-    e = {k: v for k, v in dict(env).items() if k not in DROP_ENV or ("env" in drop and k == "WSL_INTEROP")}
+def env_keep(net):
+    """The names that may cross into a sandbox with `net` (besides HOME/TMPDIR): ENV_ALLOW, MODEL_AUTH for a model
+    pass, and the operator's $RM_ARM_SANDBOX_ENV_KEEP / $RALPH_A_TESTER_ENV_KEEP (read from the HARNESS env, never
+    from the env being filtered). DROP_ENV is never kept, whoever asks."""
+    keep = set(ENV_ALLOW) | (set(MODEL_AUTH) if net == "model" else set())
+    for var in ENV_KEEP_VARS:
+        keep |= {k.strip() for k in os.environ.get(var, "").split(",") if k.strip()}
+    return keep - set(DROP_ENV)
+
+
+def env_ok(k, keep):
+    return k in keep or bool(ENV_ALLOW_RE.match(k))
+
+
+def sandbox_env(env, home, drop=(), net="model"):
+    if "env" in drop:     # selftest mutation: the old wholesale pass (WSL_INTEROP included)
+        e = {k: v for k, v in dict(env).items() if k not in DROP_ENV or k == "WSL_INTEROP"}
+    else:
+        keep = env_keep(net)
+        e = {k: v for k, v in dict(env).items() if env_ok(k, keep)}
     e.update(HOME=home, TMPDIR="/tmp")
     # the user's python packages (PIL, numpy) are bound ro at their real path (TOOL_RO .local/lib), but python finds
     # them through $HOME/.local: point the user base at the real one, or every test needing them is red in here
@@ -404,6 +443,12 @@ for d, allowed in spec.get("only", {}).items():
         leaks.append(["unexpected entries in " + d, extra[:20]])
 if os.environ.get("WSL_INTEROP"):
     leaks.append(["env", "WSL_INTEROP"])
+er = spec.get("env")
+if er:                                  # the env is an allow-list: any other name crossed
+    import re
+    bad = sorted(k for k in os.environ if k not in er["keep"] and not re.match(er["re"], k))
+    if bad:
+        leaks.append(["env not allow-listed", bad[:20]])
 try:                                    # own network namespace: lo only (no host loopback, NAT gateway or internet)
     nics = sorted(n for _, n in socket.if_nameindex())
 except OSError as e:
@@ -508,7 +553,7 @@ def probe_spec(pl, full=False, **kw):
     binds = pl["rw"] + pl["tools"] + pl["files"] + [d for _, d in pl["seeds"]]
     binds += [pl["relay"]] if pl.get("relay") else []
     masked = list(pl["deny"])
-    for top in (h, "/mnt", RM_ROOT, "/run", "/tmp"):
+    for top in (h, "/mnt", RM_ROOT, "/run", "/tmp") + VAR_MASK:
         try:
             names = os.listdir(top)
         except OSError:
@@ -517,7 +562,9 @@ def probe_spec(pl, full=False, **kw):
             p = os.path.join(top, n)
             if not any(_under(b, p) for b in binds) and p not in masked:
                 masked.append(p)
-    spec = {"masked": masked, "rw": pl["rw"], "scratch": pl["home"], "full": full}
+    spec = {"masked": masked, "rw": pl["rw"], "scratch": pl["home"], "full": full,
+            "env": {"keep": sorted(env_keep(pl["net"]) | ENV_SET),
+                    "re": ENV_ALLOW_RE.pattern}}
     spec.update(kw)
     return spec
 
@@ -527,7 +574,7 @@ def _run_probe(pl, spec, env, timeout=300):
     try:
         argv = bwrap_argv(pl, bpf) + [PY, "-I", "-c", PROBE, json.dumps(spec)]
         r = subprocess.run(argv, capture_output=True, text=True, errors="replace",
-                           env=sandbox_env(env, pl["home"], pl["drop"]),
+                           env=sandbox_env(env, pl["home"], pl["drop"], pl["net"]),
                            timeout=timeout)
     finally:
         if os.path.exists(bpf):
@@ -561,7 +608,7 @@ def wrap(argv, env, *, cwd, rw, home, ro=(), net="model", _drop=(), _preflight=T
     if _preflight:
         preflight(pl, env)
     pre = [PY, "-I", "-c", RELAY.BRIDGE, pl["relay"]] if pl["relay"] else []
-    return bwrap_argv(pl, _bpf_file(pl["drop"])) + pre + list(argv), sandbox_env(env, pl["home"], pl["drop"])
+    return bwrap_argv(pl, _bpf_file(pl["drop"])) + pre + list(argv), sandbox_env(env, pl["home"], pl["drop"], pl["net"])
 
 
 def probe(*, clone, scratch, absent=(), pe=(), tools=(), _drop=(), env=None, full=True, net="none"):
@@ -610,7 +657,7 @@ def scratch_dir(cwd, role) -> Path:
     return d
 
 
-MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "pidns", "seccomp", "uring", "env", "net")
+MUTATIONS = ("/home", "/mnt", "/run", "/tmp", "/var/log", "pidns", "seccomp", "uring", "env", "net")
 
 
 def main(argv=None):

@@ -8,7 +8,9 @@ Item ARENA_SANDBOX_HARDEN_RETIRED_TREES_VISIBLE. Each check launches REAL sandbo
   S3  fail CLOSED: no bwrap, a foreign machine, HOME/cwd outside the rw dirs, a weakened sandbox at preflight.
   S4  the full attack probe (cat / ls / git -C / git --git-dir / for-each-ref / grep -r / python open / symlink /
       /proc/*/root / Windows PE) finds nothing, while the clone, scratch and tools work and the clone lacks the fix.
-  S5  mutation: each protection removed -> the probe sees a leak AND the preflight refuses the launch.
+  S5  mutation: each protection removed (incl. the /var/log mask and the env allow-list) -> the probe sees a leak AND
+      the preflight refuses the launch.
+  S1+ a new OLD_HISTORY_DEFAULT / $ARENA_OLD_HISTORY entry is masked with no edit (drift guard).
   S6  every launch site (ralph_a build/test, ralph_c build/test, trio build/simplify, v3 build/test) runs its model
       sandboxed: the harness repos, retired trees, D:\\ mirror, ClaudeWork and transcripts are invisible and
       `git for-each-ref refs/arena/old/` in a retired tree fails (harness-side it lists refs); with no bwrap every one
@@ -87,6 +89,27 @@ def s1_deny():
     old = [AS._real(str(p)) for p in T.old_history_repos()]
     check(old and all(any(AS._under(o, d) for d in deny) for o in old),
           "S1 every old_history_repos() entry (%d) is under DENY" % len(old))
+    # drift guard: a NEW old-history entry (default list or $ARENA_OLD_HISTORY), anywhere, is masked with no edit here
+    nd = tempfile.mkdtemp(prefix="asb_oldhist_")
+    os.makedirs(os.path.join(nd, "new-git-1"))
+    saved_def, saved_env = T.OLD_HISTORY_DEFAULT, os.environ.get("ARENA_OLD_HISTORY")
+    try:
+        T.OLD_HISTORY_DEFAULT = saved_def + (os.path.join(nd, "*-git-*"),)
+        d2 = AS.deny_paths()
+        check(AS._real(nd) in d2 and AS._real(os.path.join(nd, "new-git-1")) in d2,
+              "S1 a new OLD_HISTORY_DEFAULT entry is masked (its glob root and the repo it matches)")
+        T.OLD_HISTORY_DEFAULT = saved_def
+        os.environ["ARENA_OLD_HISTORY"] = os.path.join(nd, "*-git-*")
+        d3 = AS.deny_paths()
+        check(AS._real(nd) in d3, "S1 an $ARENA_OLD_HISTORY glob root is masked")
+        check(AS._real(nd) not in deny, "S1 sanity: the scratch old-history root was not masked before")
+    finally:
+        T.OLD_HISTORY_DEFAULT = saved_def
+        if saved_env is None:
+            os.environ.pop("ARENA_OLD_HISTORY", None)
+        else:
+            os.environ["ARENA_OLD_HISTORY"] = saved_env
+        shutil.rmtree(nd, ignore_errors=True)
     for p in (RETIRED, AS.CLAUDEWORK, str(Path.home() / ".claude" / "projects"), "/home/mandrake/rm/bench",
               "/home/mandrake/rm/foundry", MIRROR):
         check(AS._real(p) in deny, "S1 DENY holds %s" % p)
@@ -249,6 +272,7 @@ def s4_full(tmp):
 
 
 def s5_mutations(tmp, clone, scratch, pe, absent):
+    os.environ["ARM_SB_CANARY"] = "x"        # the env mutation must show even under a minimal launcher env
     for m in AS.MUTATIONS:
         res = AS.probe(clone=str(clone), scratch=str(scratch), absent=absent, pe=pe, _drop=(m,), full=False)
         check(len(res["leaks"]) > 0, "S5 mutation drop %-8s -> the probe sees %d leak(s)" % (m, len(res["leaks"])))
@@ -260,6 +284,7 @@ def s5_mutations(tmp, clone, scratch, pe, absent):
         res = AS.probe(clone=str(clone), scratch=str(scratch), pe=pe, _drop=("/run", "env", "seccomp"))
         ran = [lk for lk in res["leaks"] if lk[0] == "interop exec"]
         check(bool(ran), "S5 /run+env+seccomp dropped -> the Windows PE runs (sanity: interop is observable)")
+    os.environ.pop("ARM_SB_CANARY", None)
 
 
 # ------------------------------------------------------------------------------------------------ S6
@@ -271,7 +296,10 @@ seen = [p for p in a["hidden"] if os.path.lexists(p)]
 r = subprocess.run(["git", "-C", a["retired"], "for-each-ref", "refs/arena/old/"], capture_output=True, text=True)
 refs = len(r.stdout.splitlines()) if r.returncode == 0 else -1
 open(os.path.join(os.environ["HOME"], "w"), "w").write("x")
-print(json.dumps({"seen": seen, "refs": refs, "home": os.environ["HOME"], "interop": "WSL_INTEROP" in os.environ}))
+jr = subprocess.run(["journalctl", "-q", "--no-pager", "-n", "1", "-D", "/var/log/journal"], capture_output=True,
+                    text=True) if os.path.exists("/usr/bin/journalctl") else None
+print(json.dumps({"seen": seen, "refs": refs, "home": os.environ["HOME"], "interop": "WSL_INTEROP" in os.environ,
+                  "env": sorted(os.environ), "journal": bool(jr and jr.returncode == 0 and jr.stdout.strip())}))
 '''
 
 
@@ -283,9 +311,19 @@ def s6_launch_sites(tmp):
     retired, n = retired_with_refs()
     check(n > 0, "S6 sanity: harness-side a retired tree lists %d refs/arena/old/ refs (%s)" % (n, retired))
     hidden = ["/home/mandrake/rm/bench", "/home/mandrake/rm/foundry", RETIRED, MIRROR, AS.CLAUDEWORK,
-              str(Path.home() / ".claude" / "projects"), str(Path.home() / ".codex")]
+              str(Path.home() / ".claude" / "projects"), str(Path.home() / ".codex"), "/var/log/syslog",
+              "/var/log/journal"]
     sanity = [p for p in hidden if os.path.exists(p)]
     check(len(sanity) >= 5, "S6 sanity: %d of the hidden paths exist harness-side" % len(sanity))
+    check(os.access("/var/log/syslog", os.R_OK), "S6 sanity: harness-side /var/log/syslog is readable (the leak)")
+    jr = subprocess.run(["journalctl", "-q", "--no-pager", "-n", "1", "-D", "/var/log/journal"], capture_output=True,
+                        text=True)
+    host_journal = jr.returncode == 0 and bool(jr.stdout.strip())
+    print("info  S6 harness-side journalctl -D /var/log/journal reads: %s" % host_journal)
+    canary = {"AGENT_SEAT": "BENCH", "CLAUDE_CODE_MESSAGING_TOKEN": "canary-msg", "CLAUDE_CODE_SESSION_ID": "canary-s",
+              "GH_TOKEN": "canary-gh", "OPENAI_API_KEY": "canary-oa", "ARM_SB_CANARY": "x", "ARM_SB_KEPT_NAME": "k"}
+    saved = {k: os.environ.get(k) for k in list(canary) + list(AS.ENV_KEEP_VARS)}
+    os.environ.update(canary, **{v: "ARM_SB_KEPT_NAME" for v in AS.ENV_KEEP_VARS})   # builder keep / tester keep
     pb = tmp / "probebin"            # bound read-only into every arm sandbox via RM_ARM_SANDBOX_RO
     pb.mkdir()
     script = pb / "armprobe.py"
@@ -312,9 +350,18 @@ def s6_launch_sites(tmp):
                                                                          log.read_text()[-300:] if log.exists() else ""))
                 continue
             ok = (r["rc"] == 0 and res["seen"] == [] and res["refs"] == -1 and not res["interop"]
-                  and res["home"] != str(Path.home()))
-            check(ok, "S6 %s %-8s sandboxed: hidden paths invisible, for-each-ref refs/arena/old/ fails, private "
-                      "HOME (%s)" % (name, role, res))
+                  and res["home"] != str(Path.home()) and not res["journal"])
+            check(ok, "S6 %s %-8s sandboxed: hidden paths + syslog/journal invisible, for-each-ref refs/arena/old/ "
+                      "fails, private HOME (%s)" % (name, role, {k: v for k, v in res.items() if k != "env"}))
+            env = set(res["env"])
+            leaked = sorted(env & (set(canary) - {"ARM_SB_KEPT_NAME"}))
+            tag = "TESTER_ID" if role == "test" else ("V3_ROLE" if name == "v3" else "RALPH_A_ROLE")
+            check(not leaked and "ARM_SB_KEPT_NAME" in env and tag in env and "PATH" in env,
+                  "S6 %s %-8s env is the allow-list: no seat/session/messaging/GH/OpenAI canary (%s), the operator "
+                  "keep and the harness tag %s cross%s" % (name, role, leaked, tag, "" if "ARM_SB_KEPT_NAME" in env and tag in env
+                                                         else " (got %s)" % sorted(env)))
+            stray = sorted(k for k in env if not AS.env_ok(k, AS.env_keep("model") | AS.ENV_SET | BRIDGE_SET))
+            check(not stray, "S6 %s %-8s no env name outside the allow-list (%s)" % (name, role, stray))
         with NoBwrap():
             for role in roles:
                 d = tmp / ("nb_%s_%s" % (name, role))
@@ -326,6 +373,14 @@ def s6_launch_sites(tmp):
                     check(False, "S6 %s %s with no bwrap is refused" % (name, role))
                 except RA.Refused:
                     check(not log.exists(), "S6 %s %-8s with no bwrap is refused before anything starts" % (name, role))
+    for k, v in saved.items():
+        if v is None:
+            os.environ.pop(k, None)
+        else:
+            os.environ[k] = v
+
+
+BRIDGE_SET = {"HTTPS_PROXY", "https_proxy", "HTTP_PROXY", "http_proxy", "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"}
 
 
 class NoBwrap:

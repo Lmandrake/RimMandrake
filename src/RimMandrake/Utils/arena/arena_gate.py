@@ -671,7 +671,8 @@ class Gate:
         return tp, ""
 
     # ------------------------------------------------------------ sandbox
-    STRICT_EXTRA = ("/var/log", "/var/lib/systemd", "/var/spool", "/var/mail")   # + AS.CONTAINERS: masked wholesale
+    STRICT_EXTRA = tuple(x for x in ("/var/log", "/var/lib/systemd", "/var/spool", "/var/mail")
+                         if x not in AS.CONTAINERS)     # + AS.CONTAINERS (now holds AS.VAR_MASK): masked wholesale
 
     def game_ro(self):
         """The read-only game inputs of the xml / deploy_plan steps: the def roots and the game's LocalLow dir (the
