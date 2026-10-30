@@ -33,4 +33,21 @@ units = ["rm-arena-replay.service"]
 [arms.v3c]
 units = []
 [arms.production]
-units = []
+units = []                   # production owns NO member units: a unit belongs to exactly one arm, and the v3 timers
+                             # above (dispatcher, testq-tick, steward, artpipe-idle-fill, arteval-autojudge) are v3's.
+# What `production` LIVE means (item 3), per production clone; only the clones in [production] scope are checked.
+# `arena who` (a) fails when an entry is not active: a plain name must be active, a glob needs >= 1 active match
+# (the seat scopes are transient: claude-seat-<SEAT>-<pid>.scope, scripts/claude_bounded.sh). This is a VERIFICATION
+# set, not membership: nothing here gets a drop-in, and switching away from production stops none of it.
+# Read 2026-10-29 from the unit files in ~/.config/systemd/user (WorkingDirectory / zz-*-workdir.conf drop-ins):
+#   bench:   seat scope, rm-selftests-nightly.timer (WorkingDirectory=/home/mandrake/rm/bench)
+#   foundry: seat scope, rm-artpiped.service (zz-foundry-workdir.conf), rm-codebase-health.timer
+# UNCLASSIFIED (neither production-live nor substrate; decide before relying on them): testq-sweep.timer (runs in the
+#   dispatch clone, not in v3's list), rm-scratch-reap.timer (foundry workdir housekeeping), rm-objstore.service,
+#   rm-v3-vs-v2 (not enabled), account-plan, claude-account-warm (not enabled), hestia.
+# Substrate (in NO arm, never checked): account-usage, deadman, memwatch, mirror, pulse-*, ops-watch, timer-guard,
+#   telemetry-*, claude-account-*. No conductor unit file exists.
+# Known noise: with no seat open in a clone, production `who` (a) fails (no active seat scope matches).
+[arms.production.live]
+bench   = ["claude-seat-BENCH-*.scope", "rm-selftests-nightly.timer"]
+foundry = ["claude-seat-FOUNDRY-*.scope", "rm-artpiped.service", "rm-codebase-health.timer"]

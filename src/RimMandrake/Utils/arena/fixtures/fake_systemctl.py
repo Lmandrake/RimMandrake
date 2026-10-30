@@ -6,8 +6,14 @@ dbus or a cgroup. It reads unit files from a directory and keeps its state in a 
 verbs: start U...  stop U...  restart U...  is-active U  is-enabled U  enable U...  disable U...  list-units PATTERN
        reset-failed  daemon-reload  boot (test verb: a fresh boot - everything inactive, then every enabled unit starts)
 
-State {"active": [...], "failed": [...], "enabled": [...], "fail_start": [...], "log": [...]}; a state file holding
-only "active" is fine (the rest default to empty).
+State {"active": [...], "failed": [...], "enabled": [...], "fail_start": [...], "error_units": [...],
+"runtime_dir": "...", "log": [...]}; a state file holding only "active" is fine (the rest default to empty).
+  - error_units: is-active / is-enabled of these answer like a broken bus (rc 1, "Failed to connect to bus") - the
+    state of the unit is UNKNOWN, neither active nor inactive (item 9).
+  - runtime_dir: what %t expands to. ConditionPathExists=%t/... is checked at start (a failed condition skips the
+    unit: rc 0, stays inactive, like systemd); ExecStartPre/ExecStart/ExecStop lines of the forms
+    `/usr/bin/mkdir -p P`, `/usr/bin/touch P`, `/usr/bin/rm -f P` are carried out on P (the gate units, item 2).
+    Units start in After= order inside one transaction.
 
 Semantics emulated (systemd's, after the tester's fsd.py, switch_test/fsd.py):
   - units = every file in D (*.target, *.service, *.timer) plus `<unit>.d/*.conf` drop-ins merged by name (a unit
@@ -16,6 +22,8 @@ Semantics emulated (systemd's, after the tester's fsd.py, switch_test/fsd.py):
     (either side lists the other: Conflicts= is symmetric) it fails with "Transaction contains conflicting jobs" and
     changes nothing; a pulled-in unit that conflicts with an explicit one is dropped from the transaction.
   - starting a unit STOPS every active unit it conflicts with; stopping a unit stops (recursively) the units PartOf= it.
+  - `restart T` stops T (and its PartOf children) and starts T, then restarts the PartOf children that were active
+    (systemd propagates restart through PartOf=; tester's fsd.py does the same).
   - a unit in fail_start fails to start (lands in failed; rc 1 when it was explicit). is-active: active rc0,
     failed rc3, inactive rc3. is-enabled: enabled rc0, disabled rc1.
 """
@@ -71,6 +79,25 @@ def partof_children(u, a):
     return {n for n in u if a in g(u, n, "PartOf")}
 
 
+def expand(s, p):
+    return p.replace("%t", s.get("runtime_dir") or "/nonexistent-runtime-dir")
+
+
+def run_exec(u, s, n, key):
+    f = list(((u.get(n) or {}).get("Service") or {}).get(key, []))     # one command line per key in our units
+    if f and s.get("runtime_dir"):                 # no runtime dir: nothing to write (and nothing outside the world)
+        if len(f) == 3 and f[0].endswith("/mkdir") and f[1] == "-p":
+            Path(expand(s, f[2])).mkdir(parents=True, exist_ok=True)
+        elif len(f) == 2 and f[0].endswith("/touch"):
+            Path(expand(s, f[1])).touch()
+        elif len(f) == 3 and f[0].endswith("/rm") and f[1] == "-f":
+            Path(expand(s, f[2])).unlink(missing_ok=True)
+
+
+def condition_ok(u, s, n):
+    return all(Path(expand(s, c)).exists() for c in g(u, n, "ConditionPathExists"))
+
+
 def do_stop(u, s, a, seen=None):
     seen = seen if seen is not None else set()
     if a in seen:
@@ -80,6 +107,7 @@ def do_stop(u, s, a, seen=None):
         do_stop(u, s, ch, seen)
     if a in s["active"]:
         s["active"].remove(a); s["log"].append("stop " + a)
+        run_exec(u, s, a, "ExecStop")
 
 
 def do_start(u, s, names):
@@ -104,6 +132,19 @@ def do_start(u, s, names):
     for n in explicit:
         pull(n)
     order = [n for n in order if n in explicit or not any(n in conflicts(u, e) for e in explicit)]
+    # After= ordering inside the transaction (stable: a unit moves behind the units it is After=)
+    ordered = []
+
+    def place(n, stack=()):
+        if n in ordered or n in stack:
+            return
+        for b in sorted(g(u, n, "After")):
+            if b in order:
+                place(b, stack + (n,))
+        ordered.append(n)
+    for n in order:
+        place(n)
+    order = ordered
     for n in order:
         for c in sorted(conflicts(u, n)):
             if c in s["active"]:
@@ -117,6 +158,11 @@ def do_start(u, s, names):
                 rc = 1
             continue
         if n not in s["active"]:
+            if not condition_ok(u, s, n):
+                s["log"].append("condition failed " + n)     # systemd: skipped, rc 0, stays inactive
+                continue
+            run_exec(u, s, n, "ExecStartPre")
+            run_exec(u, s, n, "ExecStart")
             s["active"].append(n); s["log"].append("start " + n)
         if n in s["failed"]:
             s["failed"].remove(n)
@@ -132,7 +178,7 @@ def main(argv):
     verb, args = rest[0], rest[1:]
     u = load_units(ud)
     s = json.loads(state.read_text()) if state.exists() else {}
-    for k in ("active", "failed", "enabled", "fail_start", "log"):
+    for k in ("active", "failed", "enabled", "fail_start", "error_units", "log"):
         s.setdefault(k, [])
     s["log"].append("CMD " + " ".join(rest))
     out, err, rc = "", "", 0
@@ -143,9 +189,15 @@ def main(argv):
             do_stop(u, s, a)
     elif verb == "restart":
         for a in args:
+            kids = sorted(c for c in partof_children(u, a) if c in s["active"])
             do_stop(u, s, a)
             r, e = do_start(u, s, [a])
             rc, err = rc or r, err or e
+            for c in kids:
+                if c not in s["active"]:
+                    do_start(u, s, [c])
+    elif verb in ("is-active", "is-enabled") and args and args[0] in s["error_units"]:
+        err, rc = "Failed to connect to bus: No such file or directory", 1
     elif verb == "is-active":
         a = args[0]
         if a in s["active"]:
@@ -179,6 +231,9 @@ def main(argv):
         s["failed"] = []
     elif verb == "boot":
         s["active"], s["failed"] = [], []
+        if s.get("runtime_dir"):                     # %t is a tmpfs: a reboot empties it (the gate markers go)
+            import shutil
+            shutil.rmtree(Path(s["runtime_dir"]) / "rm-arena", ignore_errors=True)
         for n in list(s["enabled"]):
             if n in u:
                 do_start(u, s, [n])

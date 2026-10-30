@@ -37,6 +37,8 @@ def plan_units(cfg: dict, unit_dir: Path) -> list[tuple[Path, str]]:
     out = []
     for arm in AR.TARGET_ARMS:
         out.append((unit_dir / AR.target_name(arm), AR.render_target(arm, cfg)))
+        # the gate (item 2): started by the target, writes the runtime marker every member's drop-in requires
+        out.append((unit_dir / AR.gate_name(arm), AR.render_gate(arm)))
         for u in cfg["units"].get(arm, []):
             out.append((unit_dir / (u + ".d") / "10-arm.conf", AR.render_dropin(arm)))
     if AR.REPLAY_UNIT in cfg["units"].get(AR.TRIAL, []):

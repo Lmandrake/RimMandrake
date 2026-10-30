@@ -14,6 +14,12 @@ event log are never read or written; git work happens in throwaway repos under a
                  foreign member at boot -> who (a), switch disables it and never enables. clone_dirt: detached, stash,
                  dirty, untracked, submodule, non-origin, missing; --allow-dirty-untracked recorded. switch_safety:
                  lock, already-live no-op/--force, interrupt cleans STOP, stale STOP/idle -> who (f), exit 16, rollback.
+  fix round 2    (switch_gpt_review.md) unknown_and_live: bus error != inactive (who a, not idle); production live
+                 set missing/glob/unknown -> (a), empty live table refused. prepush_and_late_dirt: lock/STOP refuse a
+                 push; dirt after the first check fails the switch before start. already_live_resume: red who resumes.
+                 remote_truth: tags, force-replace, delete (fetch --prune), unreachable refuses, --allow-offline
+                 recorded. who_d_fail_closed: corrupt state, unreadable events, git failure, snapshot/reflog not
+                 commit dates. cli_bits: real CLI exit bits b/c/d. fsd_parity: shim vs the tester's fsd.py.
   two targets    start A B fails for every pair (incl. production) and changes nothing. Forced: units rendered without
                  a Conflicts= line -> the same transaction SUCCEEDS (the shim can see), and check_graph names the hole
   graph          rendered templates pass check_graph; forced: a missing/one-way Conflicts=, a member with no PartOf=,
@@ -91,7 +97,11 @@ units = ["rm-testpilot@steve.service"]
 units = ["rm-dispatcher.service"]
 [arms.production]
 units = ["rm-prod-loop.service"]
+[arms.production.live]
+bench = ["claude-seat-BENCH-*.scope"]
+foundry = ["claude-seat-FOUNDRY-*.scope", "rm-artpiped.service"]
 '''
+PROD_LIVE = ["claude-seat-BENCH-1.scope", "claude-seat-FOUNDRY-2.scope", "rm-artpiped.service"]
 
 
 class World:
@@ -109,9 +119,18 @@ class World:
         self.toml.write_text(TOML % (mode, self.root, self.root))
         self.cfg = AR.load_config(self.toml)
         self.render(skip_conflicts)
-        self.state.write_text(json.dumps({"active": sorted(AR.target_name(a) for a in active)}))
+        self.rt = self.root / "runtime"
+        self.rt.mkdir()
+        st = {"active": sorted(AR.target_name(a) for a in active), "runtime_dir": str(self.rt)}
+        st["active"] += PROD_LIVE             # production's live set (item 3): seats + daemon run in every mode
+        for a in active:                      # a live target's gate has written its marker
+            (self.rt / "rm-arena").mkdir(exist_ok=True); (self.rt / AR.marker_rel(a)).touch()
+            st["active"].append(AR.gate_name(a))
+        st["active"] = sorted(set(st["active"]))
+        self.state.write_text(json.dumps(st))
         self.sc = AR.Systemctl([sys.executable, str(SHIM), "--state", str(self.state), "--unit-dir", str(self.units)])
         self.remotes = {}
+        self.locks = []                       # the bridge holds the fake ledger knows (released ones disappear)
 
     def render(self, skip_conflicts=False, cfg=None):
         """the installer's own unit plan (targets incl. trial, member drop-ins, the replay unit) into the temp dir"""
@@ -130,8 +149,12 @@ class World:
         files, hp, _ = AR.plan_clone_hooks(clone, arm, name, str(self.toml), str(self.alarm_file()), arena_py)
         INS.apply_plan([("file", p, x) for p, x in files] + [("hookspath", clone, hp)], True, out=lambda m: None)
 
-    def active(self):
-        return sorted(json.loads(self.state.read_text())["active"])
+    def active(self, all_units=False):
+        """active units minus the item-2 gates and item-3 production live set (unless all_units)"""
+        a = json.loads(self.state.read_text())["active"]
+        if not all_units:
+            a = [x for x in a if not x.startswith("rm-arena-gate-") and x not in PROD_LIVE]
+        return sorted(a)
 
     def clone(self, arm, hooks=True):
         """a clone of the arm with an 'origin' bare remote, one pushed commit on arena/<arm>/a (or main for production)."""
@@ -159,10 +182,15 @@ class World:
         d.poll_s = 60.0
         d.log = lambda m: None
         self.released = []
-        d.bridge_release = lambda h: (self.released.append(h) or True, "ok")
-        d.unpushed = lambda c: []
-        d.bridge_locks = lambda: []          # never the real ledger
+        def release(h):
+            self.released.append(h)
+            self.locks = [l for l in self.locks if l.get("host") != h]
+            return True, "ok"
+        d.bridge_release = release
+        d.unpushed = lambda c, refresh=True: []
+        d.bridge_locks = lambda: list(self.locks)          # never the real ledger
         d.modlist_restore = lambda: {"active": 2}
+        d.runtime_dir = lambda: self.rt
         d.t = t
         for k, v in over.items():
             setattr(d, k, v)
@@ -265,17 +293,29 @@ def t_switch_production():
             idle_status(w, "ralph_a", "idle")
     d.sleep = sleep
     # restore by PARSING: live ModsConfig reformatted + a decoy <li> in knownExpansions that a grep would find
+    # item 10: the REAL restore path (real_modlist_restore with an injected modlist_swap run) on a live list that
+    # DIFFERS (the arena arm swapped in a tier: one mod, plus a decoy id only in knownExpansions a grep would find)
     full = w.root / "FULL.xml"; live = w.root / "ModsConfig.xml"
     full.write_text("<ModsConfigData><activeMods><li>ludeon.rimworld</li><li>Mandrake.X</li></activeMods></ModsConfigData>")
-    live.write_text("<ModsConfigData>\n <version>1</version><activeMods>\n  <li>ludeon.rimworld</li>\n  <li>mandrake.x</li>\n </activeMods>"
-                    "<knownExpansions><li>zzz</li></knownExpansions></ModsConfigData>")
-    d.modlist_restore = lambda: AR.verify_restored(live, full)
+    live.write_text("<ModsConfigData>\n <version>1</version><activeMods>\n  <li>ludeon.rimworld</li>\n </activeMods>"
+                    "<knownExpansions><li>mandrake.x</li></knownExpansions></ModsConfigData>")
+    ran = []
+    def fake_swap(cmd, **kw):                    # what `modlist_swap.py --restore --apply` does: owner's list back
+        ran.append(cmd[-2:]); live.write_text(full.read_text().replace("Mandrake.X", "mandrake.x"))
+        return subprocess.CompletedProcess(cmd, 0, "", "")
+    check(AR.modsconfig_active(live) != AR.modsconfig_active(full), "before: the live activeMods differ from the owner's")
+    d.modlist_restore = lambda: AR.real_modlist_restore(live, full, run=fake_swap)
+    w.locks = [{"lane": "archmagi", "host": "archmagi", "purpose": "arena ralph_a archmagi r1: x"},
+               {"lane": "steve", "host": "stevedesktop", "purpose": "testq job 7 (production seat)"}]
     r = AR.switch("production", w.toml, d)
     check(w.active() == sorted([AR.target_name("production"), "rm-prod-loop.service"]), "production mode: only the production target + its member live (%s)" % w.active())
     check(AR.load_config(w.toml)["mode"] == "production", "arm.toml now says production")
     check(r["stopped"] == ["ralph_a"] and not r["forced"] and 6 * 60 <= r["waited_s"] <= 8 * 60, "STOP honoured at idle after ~7 min, no forced stop (%s)" % r["waited_s"])
-    check(sorted(w.released) == ["archmagi", "stevedesktop"], "both bridges released (%s)" % w.released)
-    check(r["restored"] == {"active": 2}, "list restored and verified by parsing activeMods")
+    check(w.released == ["archmagi"], "item 4: only the stopped arm's (ralph_a) bridge hold released, not the untagged "
+          "production one (%s)" % w.released)
+    check(r["restored"] == {"active": 2} and ran == [["--restore", "--apply"]]
+          and AR.modsconfig_active(live) == AR.modsconfig_active(full),
+          "item 10: leaving an arena arm ran modlist_swap --restore --apply and the live list now PARSES equal (%s)" % ran)
     ev = w.events[-1]
     check(ev["event"] == "switch" and ev["arm"] == "production" and ev["lane"] == "none" and ev["detail"]["from"] == "ralph_a"
           and ev["detail"]["scope"] == ["bench", "foundry"], "switch event signed with from/to/scope %s" % ev["detail"])
@@ -289,7 +329,19 @@ def t_switch_production():
     check(not (w.arena / "STOP.production").exists() and (w.arena / "STOP.ralph_a").exists(), "STOP file written for the old arm, cleared for the new")
     check(json.loads((w.arena / "switch_state.json").read_text())["mode"] == "production", "switch_state recorded")
     # back to an arena arm and to trial
-    r2 = AR.switch("trio", w.toml, w.deps()); check(w.active() == sorted([AR.target_name("trio"), "rm-testpilot@steve.service"]), "production -> trio")
+    def clobber():
+        raise AssertionError("production must never restore the owner's ModsConfig")
+    owner_list = "<ModsConfigData><activeMods><li>owner.own.choice</li></activeMods></ModsConfigData>"
+    live.write_text(owner_list)
+    w.locks = [{"lane": "steve", "host": "stevedesktop", "purpose": "testq job 7 (production seat)"},
+               {"lane": "archmagi", "host": "archmagi", "purpose": "arena trio archmagi r0: stale"}]
+    d2 = w.deps(modlist_restore=clobber)
+    r2 = AR.switch("trio", w.toml, d2); check(w.active() == sorted([AR.target_name("trio"), "rm-testpilot@steve.service"]), "production -> trio")
+    check(r2["restored"] is None and live.read_text() == owner_list,
+          "FORCED item 4: leaving production does NOT touch the owner's ModsConfig (restore not called)")
+    check(w.released == ["stevedesktop"], "item 4: production -> arena releases the untagged production hold only, "
+          "keeps the incoming arm's (%s)" % w.released)
+    w.locks = []
     r3 = AR.switch("trial", w.toml, w.deps())
     check(w.active() == sorted([AR.target_name("v3"), "rm-dispatcher.service", AR.target_name("trial"), AR.REPLAY_UNIT]),
           "trial: v3 (the control) AND rm-arm-trial.target with the replay runner are live (%s)" % w.active())
@@ -373,6 +425,7 @@ def t_switch_forced():
         w.clone(a)
     idle_status(w, "ralph_a", "idle")
     try:
+        w.locks = [{"lane": "archmagi", "host": "archmagi", "purpose": "arena ralph_a archmagi r1: x"}]
         AR.switch("trio", w.toml, w.deps(bridge_release=lambda h: (False, "lock held by BENCH"))); ok = False
     except AR.SwitchError as e:
         ok = "bridge release failed" in str(e)
@@ -775,8 +828,11 @@ def t_trial_and_members():
     w.sc.run("boot")
     d = w.deps()
     r = who_quiet(w, d)
-    check("rm-dispatcher.service" in w.active() and r["exit"] & 1 and r["checks"]["a"]["foreign_members"][0]["unit"] == "rm-dispatcher.service",
-          "FORCED boot with v3's member enabled: it runs beside ralph_a and who (a) flags it (%s)" % r["exit"])
+    check("rm-dispatcher.service" not in w.active() and AR.target_name("ralph_a") in w.active()
+          and "condition failed rm-dispatcher.service" in sc_state(w)["log"],
+          "item 2: boot with v3's member enabled - its ConditionPathExists (no live.v3 marker) skips it")
+    check(r["exit"] & 1 and r["checks"]["a"]["foreign_members"][0]["unit"] == "rm-dispatcher.service",
+          "FORCED ...and who (a) still flags the ENABLED member of a stopped arm (%s)" % r["exit"])
     log0 = len(sc_state(w)["log"])
     r = AR.switch("trio", w.toml, d)
     s = sc_state(w)
@@ -785,8 +841,37 @@ def t_trial_and_members():
     check(not any(l.startswith("CMD enable") for l in s["log"][log0:]), "switch never enables anything")
     w.sc.run("boot")
     check("rm-dispatcher.service" not in w.active(), "after a reboot the disabled member stays down")
+    rc, _ = w.sc.run("start", "rm-dispatcher.service")
+    r = who_quiet(w, d)
+    check(rc == 0 and "rm-dispatcher.service" not in w.active()
+          and not any(f["unit"] == "rm-dispatcher.service" for f in r["checks"]["a"]["foreign_members"]),
+          "FORCED item 2: a DIRECT start of a stopped arm's member is skipped by its condition (PartOf alone would "
+          "run it) (%s %s)" % (rc, w.active()))
+    (w.rt / AR.marker_rel("v3")).touch()                 # a forged / leftover marker of a stopped arm
+    r = who_quiet(w, d)
+    check(r["exit"] & 1 and r["checks"]["a"]["stray_markers"], "FORCED item 2: a gate marker of a stopped arm -> who (a)")
     w.sc.run("start", "rm-dispatcher.service")
-    check(who_quiet(w, d)["exit"] & 1, "FORCED a manually started member of a stopped arm -> who (a)")
+    check("rm-dispatcher.service" in w.active() and who_quiet(w, d)["checks"]["a"]["foreign_members"],
+          "FORCED ...and a member started under it is flagged by who (a)")
+    (w.rt / AR.marker_rel("v3")).unlink(); w.sc.run("stop", "rm-dispatcher.service")
+    # unit text: the drop-in, the gate and the target wiring
+    dropin = AR.parse_unit(AR.render_dropin("trio")); gate = AR.parse_unit(AR.render_gate("trio"))
+    tgt = AR.parse_unit(AR.render_target("trio", w.cfg))
+    check(AR.unit_values(dropin, "ConditionPathExists") == {"%t/rm-arena/live.trio"}
+          and AR.unit_values(dropin, "After") == {AR.gate_name("trio")}
+          and AR.unit_values(dropin, "PartOf") == {AR.target_name("trio")},
+          "item 2 unit text: member drop-in = PartOf target + After gate + ConditionPathExists=%t/rm-arena/live.trio")
+    check(AR.unit_values(gate, "PartOf") == {AR.target_name("trio")}
+          and AR.unit_values(gate, "ExecStart", "Service") == {"/usr/bin/touch", "%t/rm-arena/live.trio"}
+          and AR.gate_name("trio") in AR.unit_values(tgt, "Wants"),
+          "item 2 unit text: gate PartOf the target, touches the marker; the target Wants the gate")
+    check(any(p.name == AR.gate_name("trio") for p, _ in INS.plan_units(w.cfg, w.units)), "installer plans the gate units")
+    # start/stop the target in the shim: the marker follows the target
+    w.sc.run("start", AR.target_name("trio"))
+    on = (w.rt / AR.marker_rel("trio")).exists() and "rm-testpilot@steve.service" in w.active()
+    w.sc.run("stop", AR.target_name("trio"))
+    check(on and not (w.rt / AR.marker_rel("trio")).exists() and "rm-testpilot@steve.service" not in w.active(),
+          "item 2 shim: target start writes the marker and runs the member; target stop removes both")
 
 
 def t_clone_dirt():
@@ -918,10 +1003,320 @@ def t_switch_safety():
     check("SERVER_SIDE_REQUIREMENTS" in doc and "--no-verify" in doc and "unbypassable" in doc, "arena.py states the client-hook limit and the server-side requirement")
 
 
+def expect_raise(exc, fn, *a, **k):
+    try:
+        fn(*a, **k)
+    except exc as e:
+        return str(e) or type(e).__name__
+    return None
+
+
+def t_unknown_and_live():
+    """Item 9: a unit state that cannot be read is not 'inactive'. Item 3: production's live set is checked."""
+    w = World("unk", mode="ralph_a", active=("ralph_a",))
+    d = w.deps()
+    check(w.sc.is_active("rm-dispatcher.service") is False, "an inactive unit reads False (no raise)")
+    sc_set(w, error_units=["rm-dispatcher.service"])
+    check(expect_raise(AR.UnitStateUnknown, w.sc.is_active, "rm-dispatcher.service") is not None
+          and expect_raise(AR.UnitStateUnknown, w.sc.is_enabled, "rm-dispatcher.service") is not None,
+          "FORCED a bus error on is-active/is-enabled raises UnitStateUnknown (not 'inactive'/'disabled')")
+    r = who_quiet(w, d)["checks"]["a"]
+    check(not r["ok"] and r.get("unknown_state") == ["rm-dispatcher.service"],
+          "FORCED who (a) fails and names the member whose state is unknown (%s)" % r.get("unknown_state"))
+    sc_set(w, error_units=[])
+    idle_status(w, "ralph_a", "idle")
+    check(d.is_idle("ralph_a"), "a fresh idle status on a readable active target is idle")
+    sc_set(w, error_units=[AR.target_name("ralph_a")])
+    check(not d.is_idle("ralph_a"), "FORCED a target whose state is unknown is NOT idle")
+    sc_set(w, error_units=[])
+    # item 3: production live set
+    wp = World("live3", mode="production", active=("production",))
+    dp = wp.deps()
+    check(who_quiet(wp, dp)["checks"]["a"]["ok"], "production with its live set active: who (a) ok")
+    st = sc_state(wp)
+    sc_set(wp, active=[x for x in st["active"] if x != "rm-artpiped.service"])
+    r = who_quiet(wp, dp)["checks"]["a"]
+    check(not r["ok"] and any("rm-artpiped.service" in m for m in r["missing_live"]),
+          "FORCED production daemon not active -> who (a) names it (%s)" % r.get("missing_live"))
+    sc_set(wp, active=[x for x in st["active"] if not x.startswith("claude-seat-FOUNDRY-")])
+    r = who_quiet(wp, dp)["checks"]["a"]
+    check(not r["ok"] and any("claude-seat-FOUNDRY-*" in m for m in r["missing_live"]),
+          "FORCED no FOUNDRY seat scope matches the glob -> who (a) fails")
+    sc_set(wp, active=st["active"], error_units=["rm-artpiped.service"])
+    r = who_quiet(wp, dp)["checks"]["a"]
+    check(not r["ok"] and any("unknown" in m for m in r["missing_live"]), "FORCED a live unit with unknown state fails (a)")
+    sc_set(wp, error_units=[], active=[x for x in st["active"] if not x.startswith("claude-seat-FOUNDRY-")
+                                       and x != "rm-artpiped.service"])
+    t = wp.toml.read_text().replace('scope = ["bench", "foundry"]', 'scope = ["bench"]')
+    wp.toml.write_text(t)
+    check(who_quiet(wp, dp)["checks"]["a"]["ok"], "a clone outside [production] scope is not checked")
+    base = TOML % ("production", wp.root, wp.root)
+    for name, txt in (("empty foundry list", base.replace('foundry = ["claude-seat-FOUNDRY-*.scope", "rm-artpiped.service"]', "foundry = []")),
+                      ("no live table", base.split("[arms.production.live]")[0])):
+        wp.toml.write_text(txt)
+        check(expect_raise(AR.SwitchError, AR.load_config, wp.toml) is not None,
+              "FORCED production live set %s for an in-scope clone: load_config refuses" % name)
+
+
+def t_prepush_and_late_dirt():
+    """Item 5: a push while a switch runs is refused; dirt that appears after the first check stops the switch."""
+    w = World("pp5", mode="ralph_a", active=("ralph_a",))
+    d = w.deps()
+    sink = []
+    def pp(arm, ref, clone=None):
+        return AR.prepush(arm, "%s %s %s %s\n" % (ref, "a" * 40, ref, "0" * 40), w.toml,
+                          sink=lambda kind, **f: sink.append(f), deps=d, clone=clone)
+    check(pp("ralph_a", "refs/heads/arena/ralph_a/x") == 0, "a live arm pushes its own branch with no switch running")
+    with AR.switch_lock(d):
+        rc = pp("ralph_a", "refs/heads/arena/ralph_a/x")
+    check(rc == AR.PREPUSH_REFUSED and "switch is running" in " ".join(sink[-1]["reasons"]),
+          "FORCED a push while the switch lock is held is refused")
+    (w.arena / "STOP.ralph_a").write_text("{}")
+    rc = pp("ralph_a", "refs/heads/arena/ralph_a/x")
+    check(rc == AR.PREPUSH_REFUSED and "STOP.ralph_a" in " ".join(sink[-1]["reasons"]),
+          "FORCED a push while STOP.<arm> exists is refused")
+    (w.arena / "STOP.ralph_a").unlink()
+    wp = World("pp5p", mode="production", active=("production",))
+    dp = wp.deps()
+    ppp = lambda: AR.prepush("production", "refs/heads/main %s refs/heads/main %s\n" % ("a" * 40, "b" * 40), wp.toml,
+                             sink=lambda kind, **f: sink.append(f), deps=dp, clone="foundry")
+    check(ppp() == 0, "a production clone pushes main while production is live and no switch runs")
+    (wp.arena / "STOP.v3").write_text("{}")
+    check(ppp() == AR.PREPUSH_REFUSED, "FORCED STOP.v3 refuses a production clone's push")
+    # late dirt: clean at the first check, dirty at the re-check after the writers stopped
+    idle_status(w, "ralph_a", "idle")
+    calls = []
+    def late(c, refresh=True):
+        calls.append(str(c))
+        return [] if len(calls) == 1 else [{"kind": "unpushed", "what": "%s: refs/heads/x (1 commits)" % c}]
+    msg = expect_raise(AR.SwitchError, AR.switch, "trio", w.toml, w.deps(unpushed=late))
+    last = json.loads((w.arena / "switch_last.json").read_text())
+    check(msg is not None and "NOT started" in msg and len(calls) == 2 and AR.target_name("trio") not in w.active()
+          and last["result"] == "failed", "FORCED dirt appearing before the writers stopped: re-check fails the switch, "
+          "new target NOT started (%s)" % (msg or "")[:80])
+
+
+def t_already_live_resume():
+    """Item 6: 'already live' only when the full who is green; otherwise the switch resumes."""
+    w = World("res6", mode="ralph_a", active=("ralph_a",))
+    for a in ("ralph_a", "trio", "bench", "foundry"):
+        w.clone(a)
+    idle_status(w, "ralph_a", "idle")
+    st = sc_state(w)
+    sc_set(w, active=sorted(st["active"] + ["rm-dispatcher.service"]))
+    r = AR.switch("ralph_a", w.toml, w.deps())
+    check(not r.get("already_live") and r.get("resumed_after_who", 0) & 1 and "rm-dispatcher.service" not in w.active()
+          and AR.target_name("ralph_a") in w.active() and w.events and w.events[-1]["detail"].get("resumed_after_who"),
+          "FORCED mode recorded live but who (a) red (a foreign member runs): switch resumes, fixes it, records it")
+    r = AR.switch("ralph_a", w.toml, w.deps())
+    check(r.get("already_live") and r.get("who") == 0, "then (who green) the same switch is 'already live'")
+    calls = []
+    def who_red(cfg, d):
+        calls.append(1)
+        return {"exit": 4 if len(calls) == 1 else 0, "checks": {}}
+    n = len(w.events)
+    r = AR.switch("ralph_a", w.toml, w.deps(who_fn=who_red))
+    check(not r.get("already_live") and r.get("resumed_after_who") == 4 and len(w.events) == n + 1,
+          "FORCED who (c) red with the right target active: not 'already live', the switch re-runs")
+
+
+def t_remote_truth():
+    """Item 7: unpushed is judged against origin AS IT IS NOW (fetch --prune, ls-remote tags); unreachable fails closed."""
+    w = World("rem7", mode="ralph_a", active=("ralph_a",))
+    c = w.clone("ralph_a")
+    bare = w.remotes["ralph_a"]
+    kinds = lambda **k: sorted({i["kind"] for i in AR.clone_dirt(c, **k)})
+    check(kinds() == [], "a clean pushed clone: no dirt after the refresh")
+    git(c, "tag", "t1")
+    check(kinds() == ["tag"], "FORCED a local-only tag is dirt (kind tag)")
+    git(c, "push", "-q", "--no-verify", "origin", "t1")
+    check(kinds() == [], "the tag pushed: clean")
+    base = git(c, "rev-parse", "HEAD").stdout.strip()
+    commit(c, "x"); git(c, "push", "-q", "--no-verify", "origin", "arena/ralph_a/a")
+    git(c, "tag", "-f", "t1")
+    check(any(i["kind"] == "tag" and "another object" in i["what"] for i in AR.clone_dirt(c)),
+          "FORCED a local tag moved off origin's object is dirt")
+    git(c, "push", "-q", "--no-verify", "-f", "origin", "t1")
+    check(kinds() == [], "clean again")
+    git(bare, "update-ref", "refs/heads/arena/ralph_a/a", base)          # the remote force-replaced the branch
+    check(kinds(refresh=False) == [], "INSTRUMENT: the stale tracking ref alone hides the lost commit")
+    check(kinds() == ["unpushed"], "FORCED remote force-replace: fetch --prune makes the lost commit unpushed")
+    git(c, "push", "-q", "--no-verify", "-f", "origin", "arena/ralph_a/a")
+    git(c, "checkout", "-q", "-b", "arena/ralph_a/d"); commit(c, "d")
+    git(c, "push", "-q", "--no-verify", "origin", "arena/ralph_a/d"); git(c, "checkout", "-q", "arena/ralph_a/a")
+    check(kinds() == [], "a second pushed branch: clean")
+    git(bare, "update-ref", "-d", "refs/heads/arena/ralph_a/d")
+    check(any(i["kind"] == "unpushed" and "arena/ralph_a/d" in i["what"] for i in AR.clone_dirt(c)),
+          "FORCED remote branch deleted: --prune drops the tracking ref, the commit is unpushed")
+    git(c, "push", "-q", "--no-verify", "origin", "arena/ralph_a/d")
+    # unreachable origin: refuse unless --allow-offline, which is recorded
+    for a in ("bench", "foundry"):
+        w.clone(a)
+    idle_status(w, "ralph_a", "idle")
+    git(c, "remote", "set-url", "origin", str(w.root / "no-such-remote.git"))
+    check(expect_raise(AR.RemoteUnreachable, AR.clone_dirt, c) is not None, "FORCED unreachable origin: clone_dirt raises")
+    msg = expect_raise(AR.Refused, AR.switch, "trio", w.toml, w.deps(unpushed=AR.clone_dirt))
+    check(msg is not None and "cannot reach origin" in msg and AR.target_name("ralph_a") in w.active(),
+          "FORCED unreachable origin refuses the switch; the old target stays")
+    r = AR.switch("trio", w.toml, w.deps(unpushed=AR.clone_dirt), allow_offline=True)
+    check(AR.target_name("trio") in w.active() and str(c) in (r["event"]["detail"].get("offline") or []),
+          "--allow-offline switches and records the offline clone in the event")
+
+
+def t_who_d_fail_closed():
+    """Item 8: who (d) fails closed on unreadable evidence; pushed_since does not rely on commit dates."""
+    import time
+    w = World("d8", mode="ralph_a", active=("ralph_a",))
+    d = w.deps()
+    real = dict(events=None, pushed=None)
+    check(who_quiet(w, d, **real)["checks"]["d"]["ok"], "no switch recorded: (d) ok")
+    d.state_file().write_text("{not json")
+    check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "FORCED corrupt switch_state.json fails (d)")
+    AR.write_json(d.state_file(), {"ts": "x", "mode": "ralph_a"})
+    check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "FORCED switch_state.json without an epoch fails (d)")
+    AR.write_json(d.state_file(), {"ts": "x", "epoch": d.clock() - 600, "mode": "ralph_a", "refs": {}})
+    check(who_quiet(w, d, **real)["checks"]["d"]["ok"], "a sound state with nothing since: (d) ok")
+    (w.arena / "events" / "trio.jsonl").mkdir(parents=True)
+    check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "FORCED an unreadable events file (a directory) fails (d)")
+    (w.arena / "events" / "trio.jsonl").rmdir()
+    tc = AR.clone_path(w.cfg, "trio"); tc.mkdir(parents=True); (tc / ".git").write_text("gitdir: /nonexistent\n")
+    check(not who_quiet(w, d, **real)["checks"]["d"]["ok"], "FORCED a git failure in a stopped arm's clone fails (d)")
+    shutil.rmtree(tc)
+    c = w.clone("trio")
+    future = time.time() + 3600
+    snap = AR.refs_snapshot(w.cfg, "trio")
+    check(AR.pushed_since(w.cfg, "trio", future, snapshot=snap) == [], "refs equal to the snapshot, reflog older: nothing")
+    old = dict(GENV, GIT_AUTHOR_DATE="2001-01-01T00:00:00Z", GIT_COMMITTER_DATE="2001-01-01T00:00:00Z")
+    (c / "old.txt").write_text("o")
+    subprocess.run(["git", "-C", str(c), "add", "old.txt"], check=True, env=old)
+    subprocess.run(["git", "-C", str(c), "commit", "-qm", "old"], check=True, env=old)
+    subprocess.run(["git", "-C", str(c), "push", "-q", "--no-verify", "origin", "HEAD:refs/heads/arena/trio/late"],
+                   check=True, env=old, capture_output=True)
+    r = AR.pushed_since(w.cfg, "trio", future, snapshot=snap)
+    check(any("arena/trio/late new" in x for x in r), "FORCED a 2001-dated commit pushed after the switch: snapshot sees "
+          "the new ref (%s)" % r)
+    snap2 = AR.refs_snapshot(w.cfg, "trio")
+    r = AR.pushed_since(w.cfg, "trio", time.time() - 3600, snapshot=snap2)
+    check(any("reflog" in x for x in r), "FORCED same refs as the snapshot but the reflog moved after ts: flagged")
+    check(AR.pushed_since(w.cfg, "trio", future, snapshot=None) != [], "FORCED no snapshot recorded: flagged, not passed")
+
+
+def t_cli_bits():
+    """Item 10: the real CLI's exit bits for (b), (c), (d) through a subprocess, and --allow-offline accepted."""
+    import time
+    import datetime as dt
+    w = World("cli10", mode="ralph_a", active=("ralph_a",))
+    lf = w.root / "locks.json"; lf.write_text("[]")
+    env = dict(os.environ, ARENA_SYSTEMCTL_JSON=json.dumps(w.sc.cmd), ARENA_ARM_TOML=str(w.toml),
+               ARENA_ROOT=str(w.arena), ARENA_BRIDGE_LOCKS_FILE=str(lf))
+    def rc():
+        return subprocess.run([sys.executable, str(HERE / "arena.py"), "who"], capture_output=True, text=True,
+                              env=env, timeout=120).returncode
+    base = rc()
+    check(base & (2 | 4 | 8) == 0, "CLI who baseline: bits b, c, d clear (rc %d)" % base)
+    stopped = AR.clone_path(w.cfg, "trio") / "sub"; stopped.mkdir(parents=True)
+    p = subprocess.Popen(["sleep", "30"], cwd=str(stopped))
+    try:
+        r = rc()
+    finally:
+        p.kill(); p.wait()
+    check(r & 2 == 2, "FORCED CLI who: a process inside a stopped clone sets bit 2 (rc %d)" % r)
+    lf.write_text(json.dumps([{"lane": "steve", "holder": "FOUNDRY", "purpose": "arena trio steve run1: t"}]))
+    r = rc(); check(r & 4 == 4, "FORCED CLI who: a lock of another arm sets bit 4 (rc %d)" % r)
+    lf.write_text("[not json"); r = rc(); check(r & 4 == 4, "FORCED CLI who: an unreadable lock file sets bit 4 (rc %d)" % r)
+    lf.write_text("[]")
+    now = time.time()
+    AR.write_json(w.arena / "switch_state.json", {"ts": "x", "epoch": now - 600, "mode": "ralph_a", "refs": {}})
+    check(rc() & 8 == 0, "CLI who: a recorded switch with nothing since leaves bit 8 clear")
+    (w.arena / "events").mkdir(exist_ok=True)
+    (w.arena / "events" / "trio.jsonl").write_text(json.dumps(
+        {"ts": dt.datetime.fromtimestamp(now - 60, dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "event": "pass_start"}) + "\n")
+    r = rc(); check(r & 8 == 8, "FORCED CLI who: a stopped arm's event after the switch sets bit 8 (rc %d)" % r)
+    (w.arena / "events" / "trio.jsonl").unlink()
+    (w.arena / "switch_state.json").write_text("{")
+    r = rc(); check(r & 8 == 8, "FORCED CLI who: a corrupt switch_state.json sets bit 8 (rc %d)" % r)
+    h = subprocess.run([sys.executable, str(HERE / "arena.py"), "switch", "--help"], capture_output=True, text=True,
+                       env=env, timeout=60)
+    check(h.returncode == 0 and "--allow-offline" in h.stdout, "CLI `arena switch` accepts --allow-offline")
+
+
+FSD = HERE / "fixtures" / "fsd_reference.py"
+
+
+def t_fsd_parity():
+    """Item 10: fake_systemctl.py agrees with the blind tester's fsd.py (vendored) on the same rendered unit dir.
+    Skipped divergences (documented, not compared): `boot` (fsd reads [Install] WantedBy, ours `enabled`), `restart`
+    of PartOf children that were inactive (fsd starts them all), ConditionPathExists= (fsd ignores conditions: a
+    member started directly without its target), list-units bullets for failed units."""
+    w = World("fsd", active=())
+    synth = w.root / "synth"; synth.mkdir()
+    (synth / "a.target").write_text("[Unit]\nWants=y.service\n")
+    (synth / "b.target").write_text("[Unit]\n")
+    (synth / "y.service").write_text("[Unit]\nConflicts=b.target\n[Service]\nExecStart=/bin/true\n")
+    n = [0]
+
+    def run_both(ud, cmds, fail_start=()):
+        n[0] += 1
+        s1, s2 = w.root / ("p%d_ours.json" % n[0]), w.root / ("p%d_fsd.json" % n[0])
+        rt = w.root / ("rt%d" % n[0]); rt.mkdir()
+        s1.write_text(json.dumps({"active": [], "runtime_dir": str(rt), "fail_start": list(fail_start)}))
+        s2.write_text(json.dumps({"active": [], "failed": [], "enabled": [], "log": [], "fail_start": list(fail_start)}))
+        env = dict(os.environ, FSD_STATE=str(s2), FSD_UNITS=str(ud))
+        res = []
+        for c in cmds:
+            a = subprocess.run([sys.executable, str(SHIM), "--state", str(s1), "--unit-dir", str(ud)] + c,
+                               capture_output=True, text=True, timeout=60)
+            b = subprocess.run([sys.executable, str(FSD)] + c, capture_output=True, text=True, env=env, timeout=60)
+            res.append((c, a.returncode == 0, b.returncode == 0,
+                        (a.stdout.split() or [""])[0] if c[0] == "is-active" else "",
+                        (b.stdout.split() or [""])[0] if c[0] == "is-active" else ""))
+        act = lambda s: sorted(json.loads(s.read_text())["active"])
+        return res, act(s1), act(s2)
+
+    def same(label, ud, cmds, **k):
+        res, a, b = run_both(ud, cmds, **k)
+        rcs = [(r[0], r[1], r[2]) for r in res if r[1] != r[2] or r[3] != r[4]]
+        return (not rcs and a == b), "%s: ours %s fsd %s diff %s" % (label, a, b, rcs[:2])
+
+    T = AR.target_name
+    bad = []
+    for i, a in enumerate(AR.TARGET_ARMS):
+        for b in AR.TARGET_ARMS[i + 1:]:
+            ok, why = same("start %s %s" % (a, b), w.units, [["start", T(a), T(b)]])
+            if not ok:
+                bad.append(why)
+    check(not bad, "parity: `start A B` (transaction) agrees for every target pair (%d differ: %s)" % (len(bad), bad[:1]))
+    seqs = [
+        ("start one target (gate + members via Wants)", [["start", T("ralph_a")]]),
+        ("sequential start stops the conflicting target and its members", [["start", T("ralph_a")], ["start", T("trio")]]),
+        ("production then ralph_c", [["start", T("production")], ["start", T("ralph_c")]]),
+        ("v3 + trial live together", [["start", T("v3")], ["start", T("trial")]]),
+        ("stop target propagates PartOf", [["start", T("ralph_c")], ["stop", T("ralph_c")]]),
+        ("restart an active target with active members", [["start", T("ralph_a")], ["restart", T("ralph_a")]]),
+        ("is-active words", [["start", T("ralph_a")], ["is-active", T("ralph_a")], ["is-active", T("trio")],
+                             ["is-active", "rm-ralph-loop@a.service"]]),
+    ]
+    for label, cmds in seqs:
+        ok, why = same(label, w.units, cmds)
+        check(ok, "parity: " + why)
+    ok, why = same("fail_start target", w.units, [["start", T("trio")], ["is-active", T("trio")]], fail_start=[T("trio")])
+    check(ok, "parity: " + why)
+    ok, why = same("pulled-in unit conflicting with an explicit one is dropped", synth, [["start", "a.target", "b.target"]])
+    check(ok, "parity: " + why)
+    ok, why = same("Wants pull-in", synth, [["start", "a.target"]])
+    check(ok, "parity: " + why)
+    # instrument: the comparison can see a difference (the documented condition divergence)
+    res, a, b = run_both(w.units, [["start", "rm-ralph-loop@a.service"]])
+    check(a != b, "INSTRUMENT: parity sees the documented divergence (direct member start: ours skips it on its "
+          "condition, fsd starts it) ours %s fsd %s" % (a, b))
+
+
 def main():
     try:
         for t in (t_two_targets, t_graph, t_switch_production, t_switch_forced, t_who, t_push, t_installer, t_ops_watch,
-                  t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety):
+                  t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety, t_unknown_and_live,
+                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_cli_bits,
+                  t_fsd_parity):
             print("== %s" % t.__name__)
             t()
     finally:

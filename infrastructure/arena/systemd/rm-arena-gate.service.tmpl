@@ -1,0 +1,14 @@
+# rm-arena-gate-@ARM@.service - the start gate of rm-arm-@ARM@.target (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY item 2).
+# Rendered by arena_install.py. A target cannot run commands, so this oneshot (Wanted by the target, PartOf= it) writes
+# the runtime marker every member's drop-in requires (ConditionPathExists=%t/@MARKER@) and removes it when the
+# target stops (directly or through Conflicts=). Do not edit the installed copy.
+[Unit]
+Description=RimMandrake arena start gate for arm @ARM@
+PartOf=rm-arm-@ARM@.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStartPre=/usr/bin/mkdir -p %t/rm-arena
+ExecStart=/usr/bin/touch %t/@MARKER@
+ExecStop=/usr/bin/rm -f %t/@MARKER@

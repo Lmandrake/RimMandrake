@@ -118,6 +118,20 @@ class Interrupted(SwitchError):
     """SIGTERM during a switch (raised by the handler main() installs)."""
 
 
+class UnitStateUnknown(SwitchError):
+    """systemctl answered is-active/is-enabled with something that is neither on nor off (error, bus down)."""
+
+
+class RemoteUnreachable(SwitchError):
+    """The authoritative remote could not be read: an unpushed verdict would rest on a stale cache."""
+
+
+ON_WORDS = ("active", "reloading", "activating", "deactivating", "refreshing")
+OFF_WORDS = ("inactive", "failed", "dead", "maintenance")
+NOT_ENABLED_WORDS = ("disabled", "static", "indirect", "generated", "transient", "masked", "masked-runtime", "linked",
+                     "linked-runtime", "alias", "not-found", "bad")
+
+
 def target_name(arm: str) -> str:
     return "%s%s.target" % (UNIT_PREFIX, arm)
 
@@ -182,9 +196,23 @@ def load_config(path: Path | None = None) -> dict:
     ra = trial.get("replay_arms")
     if not isinstance(ra, list) or any(a not in ARMS for a in ra):
         raise SwitchError("[trial] replay_arms must be a list of %s (got %r)" % (ARMS, ra))
+    live = {}
+    for a in TARGET_ARMS:
+        lv = (arms_raw.get(a) or {}).get("live", {})
+        if not isinstance(lv, dict) or any(not isinstance(v, list) or any(
+                not isinstance(x, str) or not re.fullmatch(r"[\w@.:\-\\*?\[\]]+", x) for x in v) for v in lv.values()):
+            raise SwitchError("[arms.%s] live must be a table clone -> list of unit names/globs (got %r)" % (a, lv))
+        live[a] = {k: list(v) for k, v in lv.items()}
+    plive = live.get("production") or {}
+    if any(c not in PROD_CLONES for c in plive):
+        raise SwitchError("[arms.production] live keys must be production clones %s (got %s)" % (PROD_CLONES, sorted(plive)))
+    if any(not plive.get(c) for c in scope):
+        raise SwitchError("[arms.production] live is empty for in-scope clone(s) %s: 'production live' would check "
+                          "nothing (item 3; see infrastructure/arena/arm.toml.template)"
+                          % [c for c in scope if not plive.get(c)])
     clones = raw.get("clones") or {}
     return {"mode": mode, "scope": list(scope), "path": str(p), "trial": trial,
-            "clones": {k: str(v) for k, v in clones.items()}, "units": units}
+            "clones": {k: str(v) for k, v in clones.items()}, "units": units, "live": live}
 
 
 def set_mode(path: Path, mode: str):
@@ -312,14 +340,33 @@ class Systemctl:
         return sorted(act)
 
     def is_active(self, unit) -> bool:
+        """True for active (and the transitional on-states), False for inactive/failed. Anything else - a bus error,
+        an empty answer, a word systemd does not use - is NOT 'inactive': it raises UnitStateUnknown."""
         rc, out = self.run("is-active", unit)
-        return rc == 0 and out.strip().startswith("active")
+        w = (out.split() or [""])[0]
+        if w in ON_WORDS:
+            return True
+        if w in OFF_WORDS:
+            return False
+        raise UnitStateUnknown("is-active %s: rc %d, %r" % (unit, rc, out.strip()[:120]))
 
     def is_enabled(self, unit) -> bool:
-        """enabled / enabled-runtime: the unit starts at boot by itself (static/disabled/not-found do not)."""
+        """enabled / enabled-runtime: the unit starts at boot by itself (static/disabled/not-found do not). An answer
+        that is none of systemd's words (bus error, empty) raises UnitStateUnknown instead of reading as 'disabled'."""
         rc, out = self.run("is-enabled", unit)
         w = (out.split() or [""])[0]
-        return rc == 0 and w in ("enabled", "enabled-runtime")
+        if w in ("enabled", "enabled-runtime"):
+            return True
+        if w in NOT_ENABLED_WORDS:
+            return False
+        raise UnitStateUnknown("is-enabled %s: rc %d, %r" % (unit, rc, out.strip()[:120]))
+
+    def active_matching(self, pattern: str) -> list[str]:
+        """Active units matching a glob (transient seat scopes included). A reader failure raises."""
+        rc, out = self.run("list-units", "--plain", "--no-legend", "--all", pattern)
+        if rc != 0:
+            raise SwitchError("systemctl list-units %s failed (rc %d): %s" % (pattern, rc, out.strip()[:200]))
+        return sorted(f[0] for f in (ln.split() for ln in out.splitlines()) if len(f) >= 3 and f[2] == "active")
 
     def stop(self, unit):
         rc, out = self.run("stop", unit, timeout=300)
@@ -338,16 +385,53 @@ class Systemctl:
 
 
 def foreign_members(cfg: dict, sc: Systemctl) -> list[dict]:
-    """Member units of targets that are NOT live in this mode which are active or enabled. Raises on a reader error."""
+    """Member units of targets that are NOT live in this mode which are active or enabled. A unit whose state cannot
+    be read (UnitStateUnknown) is listed with unknown=True and counted as BOTH active and enabled (fail closed: who
+    flags it, switch disables and stops it). Any other reader error raises."""
     live = set(mode_targets(cfg))
     out = []
     for a in TARGET_ARMS:
         if a in live:
             continue
         for u in cfg["units"].get(a, []):
-            on, en = sc.is_active(u), sc.is_enabled(u)
+            unknown = []
+            try:
+                on = sc.is_active(u)
+            except UnitStateUnknown as e:
+                on, unknown = True, unknown + [str(e)]
+            try:
+                en = sc.is_enabled(u)
+            except UnitStateUnknown as e:
+                en, unknown = True, unknown + [str(e)]
             if on or en:
-                out.append({"unit": u, "arm": a, "active": on, "enabled": en})
+                rec = {"unit": u, "arm": a, "active": on, "enabled": en}
+                if unknown:
+                    rec.update(unknown=True, why=unknown)
+                out.append(rec)
+    return out
+
+
+def missing_live(cfg: dict, sc: Systemctl) -> list[str]:
+    """Item 3: what the mode's `live` set says must be running and is not. Each entry of [arms.<arm>] live (per clone,
+    only the clones in [production] scope for production) is a unit name (must be active) or a glob (at least one
+    active unit must match: the seat scopes). A reader failure raises (check a fails)."""
+    out = []
+    for a in mode_targets(cfg):
+        for clone, names in sorted((cfg.get("live") or {}).get(a, {}).items()):
+            if a == "production" and clone not in cfg["scope"]:
+                continue
+            for n in names:
+                if any(ch in n for ch in "*?["):
+                    if not sc.active_matching(n):
+                        out.append("%s (%s): no active unit matches %s" % (a, clone, n))
+                else:
+                    try:
+                        on = sc.is_active(n)
+                    except UnitStateUnknown as e:
+                        out.append("%s (%s): %s state unknown: %s" % (a, clone, n, e))
+                        continue
+                    if not on:
+                        out.append("%s (%s): %s is not active" % (a, clone, n))
     return out
 
 
@@ -440,6 +524,22 @@ def read_unit_dir(d: Path) -> dict[str, str]:
 
 # ------------------------------------------------------------------ templates (rendering only; installer writes)
 
+def gate_name(arm: str) -> str:
+    """Item 2: the arm's gate unit. Started by the target (Wants=), it writes the runtime marker; every member's
+    drop-in has ConditionPathExists= on that marker, so a member started DIRECTLY while its target is stopped is
+    skipped by systemd itself (PartOf= alone only propagates stop/restart, never refuses a start)."""
+    return "rm-arena-gate-%s.service" % arm
+
+
+def marker_rel(arm: str) -> str:
+    """The marker path under the user runtime dir (%t in a user unit = $XDG_RUNTIME_DIR)."""
+    return "rm-arena/live.%s" % arm
+
+
+def runtime_dir() -> Path:
+    return Path(os.environ.get("XDG_RUNTIME_DIR") or "/run/user/%d" % os.getuid())
+
+
 def target_wants(units: list[str]) -> list[str]:
     """A target Wants= its members, except a .service whose .timer is also a member (the timer starts it)."""
     s = set(units)
@@ -450,14 +550,19 @@ def render_target(arm: str, cfg: dict, arms=TARGET_ARMS) -> str:
     name = "rm-arm-production.target.tmpl" if arm == "production" else "rm-arm.target.tmpl"
     t = (TEMPLATES / "systemd" / name).read_text(encoding="utf-8")
     others = " ".join(target_name(b) for b in arms if b != arm and not compatible(arm, b))
-    wants = " ".join(target_wants(cfg["units"].get(arm, [])))
+    wants = " ".join([gate_name(arm)] + target_wants(cfg["units"].get(arm, [])))
     return (t.replace("@ARM@", arm).replace("@CONFLICTS@", others).replace("@WANTS@", wants)
             .replace("@SCOPE@", ",".join(cfg["scope"])))
 
 
 def render_dropin(arm: str) -> str:
     t = (TEMPLATES / "systemd" / "rm-arm-member.conf.tmpl").read_text(encoding="utf-8")
-    return t.replace("@ARM@", arm)
+    return t.replace("@ARM@", arm).replace("@GATE@", gate_name(arm)).replace("@MARKER@", marker_rel(arm))
+
+
+def render_gate(arm: str) -> str:
+    t = (TEMPLATES / "systemd" / "rm-arena-gate.service.tmpl").read_text(encoding="utf-8")
+    return t.replace("@ARM@", arm).replace("@MARKER@", marker_rel(arm))
 
 
 def _unit_safe(s: str) -> str:
@@ -648,9 +753,11 @@ def events_since(root: Path, arm: str, ts: float) -> int:
     f = Path(root) / "events" / ("%s.jsonl" % arm)
     n = 0
     try:
-        lines = f.read_text(encoding="utf-8").splitlines()
-    except OSError:
-        return 0
+        lines = f.read_text(encoding="utf-8", errors="replace").splitlines()
+    except FileNotFoundError:
+        return 0                        # the arm never wrote an event
+    except OSError as e:
+        raise SwitchError("events/%s.jsonl unreadable: %s" % (arm, e))   # item 8: unreadable is not 'zero events'
     for ln in lines:
         try:
             r = json.loads(ln)
@@ -667,28 +774,92 @@ def _epoch(s) -> float:
     return dt.datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp()
 
 
-def pushed_since(cfg: dict, arm: str, ts: float) -> list[str]:
-    """Refs in the arm's namespace whose tip is newer than `ts`, read from the arm clone's remote-tracking refs.
-    (A tip's commit date is a proxy for the push time; a stopped arm pushing OLD commits is caught by the hook.)"""
-    out = []
+def arm_ref_prefix(arm: str) -> str:
+    return "refs/remotes/origin/arena/%s/" % arm
+
+
+def refs_snapshot(cfg: dict, arm: str) -> dict[str, dict[str, str]]:
+    """{clone: {tracking ref: sha}} of the arm's namespace in each of its clones (arena arms only: production and v3
+    push to main, which is not theirs alone). A clone path that is not a clone is recorded as absent (None); a git
+    failure RAISES."""
+    out = {}
+    if arm in PRODUCTION_ARMS:
+        return out
     for c in arm_clones(cfg, arm):
-        if not (c / ".git").exists():
+        if not is_clone(c):
+            out[str(c)] = None
             continue
-        r = subprocess.run(["git", "-C", str(c), "for-each-ref", "--format=%(refname) %(committerdate:unix)",
-                            "refs/remotes/origin/arena/%s/" % arm], capture_output=True, text=True, timeout=60)
-        for ln in r.stdout.splitlines():
-            ref, _, t = ln.rpartition(" ")
-            if t.isdigit() and int(t) > ts:
-                out.append(ref)
+        refs = {}
+        for ln in _git(c, "for-each-ref", "--format=%(objectname) %(refname)", arm_ref_prefix(arm)).splitlines():
+            sha, _, ref = ln.strip().partition(" ")
+            if ref:
+                refs[ref] = sha
+        out[str(c)] = refs
     return out
 
 
-def clone_dirt(clone: Path, _prefix: str = "") -> list[dict]:
+def pushed_since(cfg: dict, arm: str, ts: float, snapshot: dict | None = None) -> list[str]:
+    """Item 8: refs of a stopped arm that MOVED since the switch, by two timestamp-free-of-commits methods:
+    (1) compare the arm clone's tracking refs now with the snapshot the switch stored (new / moved / deleted ref);
+    (2) the reflog of each tracking ref: an update recorded locally after `ts` (reflog times are when the ref moved
+    here, not commit dates, so an old commit pushed late is caught). A git failure RAISES; a clone recorded in the
+    snapshot that is no longer readable raises. No snapshot for an arena arm (a pre-round-2 state) is flagged, not
+    passed."""
+    out = []
+    if arm in PRODUCTION_ARMS:
+        return out
+    now = refs_snapshot(cfg, arm)
+    if snapshot is None:
+        if any(v for v in now.values()):
+            out.append("(no refs snapshot recorded by the switch for %s: cannot prove nothing moved)" % arm)
+    else:
+        for c, refs in now.items():
+            then = snapshot.get(c) or {}
+            for ref in sorted(set(then) | set(refs or {})):
+                if (refs or {}).get(ref) != then.get(ref):
+                    out.append("%s %s" % (ref, "deleted" if ref not in (refs or {}) else
+                                          ("new" if ref not in then else "moved")))
+    for c, refs in now.items():
+        for ref in sorted(refs or {}):
+            log = _git(c, "reflog", "show", "--date=unix", "--format=%gd", ref, "--")
+            for ln in log.splitlines()[:1]:
+                m = re.search(r"@\{(\d+)\}$", ln.strip())
+                if m and int(m.group(1)) > ts and not any(o.startswith(ref + " ") for o in out):
+                    out.append("%s updated %s (reflog)" % (ref, m.group(1)))
+    return out
+
+
+def remote_refresh(clone: Path, timeout=120) -> dict[str, str]:
+    """Item 7: make the origin view CURRENT before judging 'unpushed'. `git fetch --prune origin` (a ref the remote
+    force-replaced or deleted is updated/removed locally, so a commit that only the stale tracking ref held counts as
+    unpushed again), then `git ls-remote --tags --refs origin` -> {refs/tags/x: sha} (tags are not judged by the
+    tracking refs at all). Any failure (no origin, unreachable, auth) raises RemoteUnreachable: fail closed."""
+    for args in (["fetch", "--quiet", "--prune", "--no-tags", "origin"],
+                 ["ls-remote", "--tags", "--refs", "origin"]):
+        try:
+            r = subprocess.run(["git", "-C", str(clone)] + args, capture_output=True, text=True, timeout=timeout,
+                               env=dict(os.environ, GIT_TERMINAL_PROMPT="0"))
+        except (OSError, subprocess.TimeoutExpired) as e:
+            raise RemoteUnreachable("git %s: %s" % (args[0], e))
+        if r.returncode != 0:
+            raise RemoteUnreachable("git %s exit %d: %s" % (args[0], r.returncode, (r.stderr or r.stdout).strip()[:200]))
+    tags = {}
+    for ln in r.stdout.splitlines():
+        sha, _, ref = ln.strip().partition("\t")
+        if ref.startswith("refs/tags/"):
+            tags[ref] = sha
+    return tags
+
+
+def clone_dirt(clone: Path, _prefix: str = "", refresh: bool = True, remote=None) -> list[dict]:
     """Everything a stopped clone would lose or strand: [{kind, what}] with kind one of
-    missing (no clone there), unpushed (a local branch with commits origin has not), detached (HEAD off every branch
-    with commits origin has not), stash, dirty (uncommitted tracked change), untracked (non-ignored file), submodule
-    dirt (recursive, prefixed with its path). The reference is the `origin` remote-tracking refs only. A git failure
-    RAISES (UNMEASURED never passes)."""
+    missing (no clone there), unpushed (a local branch with commits origin has not), tag (a local tag origin lacks or
+    holds at another object), detached (HEAD off every branch with commits origin has not), stash, dirty (uncommitted
+    tracked change), untracked (non-ignored file), submodule dirt (recursive, prefixed with its path). The reference
+    is origin AS IT IS NOW: with refresh (the default) `remote(clone)` (remote_refresh: fetch --prune + ls-remote)
+    runs first and raises RemoteUnreachable when origin cannot be asked; refresh=False judges from the cached
+    tracking refs (the --allow-offline path; tags are then not judged). A git failure RAISES (UNMEASURED never
+    passes)."""
     clone = Path(clone)
     tag = _prefix + str(clone)
     if not clone.exists():
@@ -696,6 +867,13 @@ def clone_dirt(clone: Path, _prefix: str = "") -> list[dict]:
     if not is_clone(clone):
         return [{"kind": "missing", "what": "%s: not a git clone" % tag}]
     out = []
+    if refresh:
+        rtags = (remote or remote_refresh)(clone)
+        for ln in _git(clone, "for-each-ref", "--format=%(objectname) %(refname)", "refs/tags/").splitlines():
+            sha, _, ref = ln.strip().partition(" ")
+            if ref and rtags.get(ref) != sha:
+                out.append({"kind": "tag", "what": "%s: %s (%s)" % (
+                    tag, ref, "not on origin" if ref not in rtags else "origin holds another object")})
     for ref in _git(clone, "for-each-ref", "--format=%(refname)", "refs/heads/").split():
         n = int(_git(clone, "rev-list", "--count", ref, "--not", "--remotes=origin").strip() or "0")
         if n:
@@ -723,7 +901,7 @@ def clone_dirt(clone: Path, _prefix: str = "") -> list[dict]:
         for ln in subs.splitlines():
             f = ln[1:].split()
             if len(f) >= 2 and (clone / f[1]).exists() and is_clone(clone / f[1]):
-                out += clone_dirt(clone / f[1], _prefix=tag + " submodule ")
+                out += clone_dirt(clone / f[1], _prefix=tag + " submodule ", refresh=refresh, remote=remote)
     return out
 
 
@@ -747,8 +925,9 @@ def modsconfig_active(path) -> list[str]:
 
 def real_modlist_restore(live=None, full=None, run=None) -> dict:
     """`modlist_swap.py --restore --apply`, then verify by PARSING both files that the live list is the owner's."""
-    import game_paths
-    live = live or game_paths.MODS_CONFIG
+    if live is None:
+        import game_paths
+        live = game_paths.MODS_CONFIG
     full = full or str(REPO / "infrastructure" / "state" / "modlists" / "ModsConfig.FULL.LATEST.xml")
     rc = (run or subprocess.run)([sys.executable, str(UTILS / "modlist_swap.py"), "--restore", "--apply"],
                                  capture_output=True, text=True, timeout=300)
@@ -777,8 +956,12 @@ class Deps:
         self.poll_s = 30.0
         self.bridge_release = self._bridge_release
         self.bridge_locks = default_bridge_locks
+        if os.environ.get("ARENA_BRIDGE_LOCKS_FILE"):     # selftest seam: a JSON list of locks instead of the ledger
+            self.bridge_locks = lambda p=os.environ["ARENA_BRIDGE_LOCKS_FILE"]: json.loads(Path(p).read_text())
         self.modlist_restore = real_modlist_restore
         self.unpushed = clone_dirt
+        self.refs_snapshot = refs_snapshot
+        self.runtime_dir = runtime_dir      # where the gate units write rm-arena/live.<arm> (systemd's %t)
         self.who_fn = None              # set by switch() to who() when None
         self.log = lambda m: print(m, flush=True)
 
@@ -828,8 +1011,11 @@ class Deps:
     def is_idle(self, arm: str) -> bool:
         """Target inactive -> idle. Active -> its status must read idle AND be fresh (within IDLE_FRESH_S);
         missing, unreadable, untimed or stale is NOT idle."""
-        if not self.systemctl.is_active(target_name(arm)):
-            return True
+        try:
+            if not self.systemctl.is_active(target_name(arm)):
+                return True
+        except UnitStateUnknown:
+            return False                # item 9: an unknown state is not 'inactive'
         try:
             s = self.status(arm)
         except ValueError:
@@ -846,10 +1032,22 @@ def write_json(path: Path, obj):
 
 
 def read_state(d: Deps) -> dict | None:
+    """None only when no switch was ever recorded (file absent). Unreadable/corrupt/untimed RAISES (item 8: who (d)
+    fails closed instead of reading 'nothing to compare')."""
     try:
-        return json.loads(d.state_file().read_text(encoding="utf-8"))
-    except (OSError, ValueError):
+        text = d.state_file().read_text(encoding="utf-8")
+    except FileNotFoundError:
         return None
+    except (OSError, UnicodeDecodeError) as e:
+        raise SwitchError("%s unreadable: %s" % (d.state_file(), e))
+    try:
+        st = json.loads(text)
+        float(st["epoch"])
+    except (ValueError, KeyError, TypeError) as e:
+        raise SwitchError("%s is corrupt (%s: %s)" % (d.state_file(), type(e).__name__, e))
+    if not isinstance(st, dict):
+        raise SwitchError("%s is not an object" % d.state_file())
+    return st
 
 
 def harness_signer(arm: str, event: str, *, lane: str, run_id: str, detail: dict, ts: str | None = None) -> dict:
@@ -905,7 +1103,7 @@ def _record_last(d: Deps, **rec):
 
 
 def switch(mode: str, cfg_path: Path | None = None, deps: Deps | None = None, *, force: bool = False,
-           allow_dirty_untracked: bool = False) -> dict:
+           allow_dirty_untracked: bool = False, allow_offline: bool = False) -> dict:
     """Switch to `mode`. Raises Refused (safe: nothing new started, our STOP files removed) or SwitchError (recorded
     in switch_last.json with the steps done and how to recover). Returns a summary."""
     d = deps or Deps()
@@ -913,22 +1111,76 @@ def switch(mode: str, cfg_path: Path | None = None, deps: Deps | None = None, *,
         raise Refused("unknown mode %r (modes: %s)" % (mode, ", ".join(MODES)))
     cfg_path = Path(cfg_path) if cfg_path else arm_toml_path(d.root)
     with switch_lock(d):
-        return _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked)
+        return _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offline)
 
 
-def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked) -> dict:
+def releasable_locks(cfg: dict, new: dict, locks: list[dict]) -> list[dict]:
+    """Item 4: the bridge locks this switch may release - only holds of an arm that STOPS in it. A lock tagged with an
+    arm that stays live is kept; an untagged lock belongs to the production seats, so it is released only when the
+    production clones stop (a production mode -> an arena mode)."""
+    stopping = live_arms(cfg) - live_arms(new)
+    prod_stops = cfg["mode"] in PRODUCTION_MODES and new["mode"] not in PRODUCTION_MODES
+    out = []
+    for l in locks:
+        arm = lock_arm(l)
+        if (arm is not None and arm in stopping) or (arm is None and prod_stops):
+            out.append(l)
+    return out
+
+
+def owns_game_list(cfg: dict, new: dict) -> list[str]:
+    """Item 4: the stopping arms that may have swapped the game's mod list (the arena arms; modlist_swap's tier swap).
+    Only for them is the list restored. v3/production never trigger a restore: the owner's ModsConfig is his (CLAUDE.md:
+    never restore the owner's mod list)."""
+    return sorted(a for a in live_arms(cfg) - live_arms(new) if a not in PRODUCTION_ARMS)
+
+
+def _dirt_holders(d, clones, allow_dirty_untracked, allow_offline, offline, overrides):
+    """-> {clone: [what]} that block; fills overrides (dirty/untracked accepted) and offline (clones judged from the
+    cached refs because the remote was unreachable and --allow-offline was given). Unreadable state raises Refused."""
+    holders = {}
+    for c in clones:
+        try:
+            items = _norm_dirt(d.unpushed(c))
+        except RemoteUnreachable as e:
+            if not allow_offline:
+                raise Refused("cannot reach origin of %s (%s): an unpushed verdict from cached refs is refused "
+                              "(--allow-offline accepts it and records it in the switch event)" % (c, e))
+            try:
+                items = _norm_dirt(d.unpushed(c, refresh=False))
+            except Exception as e2:  # noqa: BLE001
+                raise Refused("cannot read git state of %s (%s): switch refused" % (c, e2))
+            offline.append(str(c))
+        except Exception as e:  # noqa: BLE001 - unmeasured never passes
+            raise Refused("cannot read git state of %s (%s): switch refused" % (c, e))
+        if allow_dirty_untracked:
+            overrides += [i for i in items if i["kind"] in ALLOWABLE_DIRT]
+            items = [i for i in items if i["kind"] not in ALLOWABLE_DIRT]
+        if items:
+            holders[str(c)] = [i["what"] for i in items]
+    return holders
+
+
+def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offline=False) -> dict:
     cfg = load_config(cfg_path)
     new = dict(cfg, mode=mode)
     act = set(d.systemctl.active_targets())
+    resumed_from = None
     if mode == cfg["mode"] and not force:
-        foreign = foreign_members(cfg, d.systemctl)
-        if act == set(expected_targets(cfg)) and not foreign:
+        # item 6: "already live" only when the FULL `who` is green; after a partial failure (bridge, hook, STOP,
+        # status, events) the switch resumes as if forced instead of reporting a false success
+        res = (d.who_fn or who)(cfg, d)
+        if res["exit"] == 0:
             _record_last(d, result="already_live", mode=mode)
-            return {"already_live": True, "from": mode, "to": mode, "active": sorted(act)}
+            return {"already_live": True, "from": mode, "to": mode, "active": sorted(act), "who": 0}
+        resumed_from = res["exit"]
+        d.log("arena: mode %s is recorded but `who` exits %d; resuming the switch" % (mode, res["exit"]))
     old_arms = sorted(a for a in TARGET_ARMS if target_name(a) in act or a in mode_targets(cfg))
     running = [a for a in old_arms if target_name(a) in act]
     summary = {"from": cfg["mode"], "to": mode, "stopped": [], "waited_s": 0.0, "forced": [], "disabled": [],
-               "overrides": [], "steps": []}
+               "overrides": [], "steps": [], "offline": []}
+    if resumed_from is not None:
+        summary["resumed_after_who"] = resumed_from
     steps = summary["steps"]
     t0 = d.clock()
     wrote_stop = []
@@ -953,24 +1205,20 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked) -> dict:
             d.sleep(d.poll_s)
         summary["waited_s"] = d.clock() - t0
         steps.append("waited %.0f s (forced: %s)" % (summary["waited_s"], ",".join(summary["forced"]) or "none"))
-        # clone state BEFORE stopping (a stopped arm's hook refuses its pushes)
-        holders, overrides = {}, []
+        # clone state BEFORE stopping (a stopped arm's hook refuses its pushes); checked AGAIN after the writers stop
+        overrides = []
         keep = live_clones(new)
-        seen = set()
+        dirt_clones = []
         for a in old_arms:
             for c in arm_clones(cfg, a):
-                if c in keep or c in seen:
-                    continue
-                seen.add(c)
-                try:
-                    items = _norm_dirt(d.unpushed(c))
-                except Exception as e:  # noqa: BLE001 - unmeasured never passes
-                    raise Refused("cannot read git state of %s (%s): switch refused" % (c, e))
-                if allow_dirty_untracked:
-                    overrides += [i for i in items if i["kind"] in ALLOWABLE_DIRT]
-                    items = [i for i in items if i["kind"] not in ALLOWABLE_DIRT]
-                if items:
-                    holders[str(c)] = [i["what"] for i in items]
+                if c not in keep and c not in dirt_clones:
+                    dirt_clones.append(c)
+        holders = _dirt_holders(d, dirt_clones, allow_dirty_untracked, allow_offline, summary["offline"], overrides)
+        # item 4: which bridge holds this switch may release (read now: an unreadable lock refuses, nothing stopped)
+        try:
+            to_release = releasable_locks(cfg, new, d.bridge_locks())
+        except Exception as e:  # noqa: BLE001
+            raise Refused("bridge locks unreadable (%s: %s): switch refused" % (type(e).__name__, e))
         if holders:
             raise Refused("unsaved work in the stopped arm's clone (unpushed commits, detached HEAD, stash, uncommitted "
                           "or untracked files, submodule dirt, or a missing clone); push or save it first "
@@ -1006,22 +1254,43 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked) -> dict:
                 d.systemctl.stop(f["unit"])
             summary["disabled"].append(f["unit"])
         steps.append("disabled/stopped other arms' members %s" % (",".join(summary["disabled"]) or "none"))
+        # item 5: the writers are stopped now; a push or commit that slipped in between the first check and the stop
+        # is caught here (under the switch lock). The new target is NOT started on dirt.
+        late_offline, late_over = [], []
+        try:
+            late = _dirt_holders(d, dirt_clones, allow_dirty_untracked, allow_offline, late_offline, late_over)
+        except Refused as e:
+            raise SwitchError("clone state unreadable after the writers stopped (%s); the new target was NOT started" % e)
+        if late:
+            raise SwitchError("unsaved work appeared in the stopped clone(s) while the switch ran (after the first "
+                              "check, before the writers stopped); the new target was NOT started: %s"
+                              % json.dumps(late, sort_keys=True))
+        summary["offline"] = sorted(set(summary["offline"]) | set(late_offline))
+        steps.append("clone state re-checked clean after the writers stopped")
         rel = {}
-        for lane, host in LANES.items():
+        for l in to_release:
+            host = l.get("host") or LANES.get(l.get("lane"), l.get("lane"))
             ok, out = d.bridge_release(host)
-            rel[lane] = bool(ok)
+            rel[l.get("lane") or host] = bool(ok)
             if not ok:
-                raise SwitchError("bridge release failed on %s: %s" % (lane, str(out).strip()[:200]))
+                raise SwitchError("bridge release failed on %s: %s" % (host, str(out).strip()[:200]))
         summary["released"] = rel
-        steps.append("released bridges")
-        summary["restored"] = d.modlist_restore()
-        steps.append("restored the owner's mod list")
+        steps.append("released bridge holds of the stopped arm(s): %s" % (",".join(sorted(rel)) or "none"))
+        owners = owns_game_list(cfg, new)
+        if owners:
+            summary["restored"] = d.modlist_restore()
+            steps.append("restored the mod list after arena arm(s) %s (modlist_swap tier restore, verified by parse)"
+                         % ",".join(owners))
+        else:
+            summary["restored"] = None
+            steps.append("mod list untouched (no stopping arm owns the game list)")
         run_id = "switch-%s" % now_iso(d.clock).replace(":", "")
         detail = {"from": cfg["mode"], "to": mode, "stopped": summary["stopped"],
                   "waited_s": round(summary["waited_s"], 1), "forced_stop": summary["forced"],
                   "scope": cfg["scope"] if mode in PRODUCTION_MODES else None,
                   "targets": expected_targets(new), "disabled": summary["disabled"] or None,
                   "overrides": summary["overrides"] or None, "force": True if force else None,
+                  "offline": summary["offline"] or None, "resumed_after_who": summary.get("resumed_after_who"),
                   "live_arms": sorted(live_arms(new)) if mode == TRIAL else None, "steps": list(steps)}
         detail = {k: v for k, v in detail.items() if v is not None}
         try:
@@ -1031,8 +1300,14 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked) -> dict:
             raise SwitchError("switch event could not be signed (%s: %s); the old arm is stopped and the new target "
                               "was NOT started" % (type(e).__name__, e))
         steps.append("signed the switch event")
+        stopped_now = sorted(set(ARMS) - live_arms(new))
+        try:
+            snap = {a: d.refs_snapshot(new, a) for a in stopped_now}
+        except Exception as e:  # noqa: BLE001 - who (d) must have a baseline; without one it would fail open
+            raise SwitchError("tracking refs of the stopped arms unreadable (%s: %s); the new target was NOT started"
+                              % (type(e).__name__, e))
         write_json(d.state_file(), {"ts": now_iso(d.clock), "epoch": d.clock(), "mode": mode, "from": cfg["mode"],
-                                    "stopped": sorted(set(ARMS) - live_arms(new))})
+                                    "stopped": stopped_now, "refs": snap})
         set_mode(cfg_path, mode)
         steps.append("arm.toml mode = %s" % mode)
         for a in sorted(live_arms(new) | set(mode_targets(new))):
@@ -1066,6 +1341,16 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked) -> dict:
 
 # ------------------------------------------------------------------ arena who
 
+def stray_markers(cfg: dict, d) -> list[str]:
+    """Gate markers (<runtime>/rm-arena/live.<arm>) of arms whose target is not live in this mode: a member could
+    start under them. Unreadable runtime dir raises."""
+    base = Path(d.runtime_dir()) / "rm-arena"
+    if not base.exists():
+        return []
+    live = set(mode_targets(cfg))
+    return sorted(str(p) for p in base.glob("live.*") if p.name[len("live."):] not in live)
+
+
 def who(cfg: dict, d: Deps, bridge_locks=None, cwds=None, events=None, pushed=None, hooks=None) -> dict:
     """The checks (module docstring). exit = bitmask a=1 b=2 c=4 d=8 e=32 f=64. A reader that raises FAILS its check."""
     checks = {}
@@ -1073,8 +1358,11 @@ def who(cfg: dict, d: Deps, bridge_locks=None, cwds=None, events=None, pushed=No
     try:
         act = set(d.systemctl.active_targets())
         foreign = foreign_members(cfg, d.systemctl)
-        checks["a"] = {"ok": act == exp and not foreign, "expected": sorted(exp), "active": sorted(act),
-                       "foreign_members": foreign}
+        missing = missing_live(cfg, d.systemctl)            # item 3: production's live set, read from the config
+        stray = stray_markers(cfg, d)                       # item 2: a gate marker of an arm that is not live
+        checks["a"] = {"ok": act == exp and not foreign and not missing and not stray, "expected": sorted(exp),
+                       "active": sorted(act), "foreign_members": foreign, "missing_live": missing,
+                       "stray_markers": stray, "unknown_state": [f["unit"] for f in foreign if f.get("unknown")]}
     except Exception as e:  # noqa: BLE001
         checks["a"] = {"ok": False, "error": "%s: %s" % (type(e).__name__, e)}
     try:
@@ -1100,7 +1388,9 @@ def who(cfg: dict, d: Deps, bridge_locks=None, cwds=None, events=None, pushed=No
             stopped_arms = [a for a in ARMS if a not in live_arms(cfg)]
             ev = {a: (events or events_since)(d.root, a, ts) for a in stopped_arms}
             ev = {a: n for a, n in ev.items() if n}
-            pu = {a: (pushed or pushed_since)(cfg, a, ts) for a in stopped_arms}
+            snaps = st.get("refs") if isinstance(st.get("refs"), dict) else {}
+            pushed_fn = pushed or (lambda c, a, t: pushed_since(c, a, t, snapshot=snaps.get(a)))
+            pu = {a: pushed_fn(cfg, a, ts) for a in stopped_arms}
             pu = {a: r for a, r in pu.items() if r}
             checks["d"] = {"ok": not ev and not pu, "events_since_switch": ev, "pushed_since_switch": pu}
     except Exception as e:  # noqa: BLE001
@@ -1168,6 +1458,22 @@ def prepush_verdict(cfg: dict, arm: str, refs, clone: str | None = None) -> list
     return why
 
 
+def switch_in_progress(d: Deps, arm: str) -> list[str]:
+    """Item 5: a push during a switch is refused - the switch lock is held, or a STOP file names this clone's arm
+    (production clones: STOP.production or STOP.v3, the arms that run in them). An unreadable lock refuses."""
+    why = []
+    try:
+        if switch_lock_held(d):
+            why.append("an arena switch is running (%s held): pushes wait until it finishes" % d.lock_file())
+    except OSError as e:
+        why.append("switch lock %s unreadable (%s): fail closed" % (d.lock_file(), e))
+    arms = list(PRODUCTION_ARMS) if arm == "production" else [arm]
+    for a in arms:
+        if d.stop_file(a).exists():
+            why.append("%s exists: arm %s is being stopped by a switch" % (d.stop_file(a), a))
+    return why
+
+
 def alarm(d: Deps, kind: str, **fields):
     rec = dict(ts=now_iso(d.clock), kind=kind, **fields)
     p = d.alarm_file()
@@ -1193,7 +1499,7 @@ def prepush(arm: str, stdin_text: str, cfg_path: Path | None = None, sink=None, 
              refs=[r[2] for r in refs])
         sys.stderr.write("arena pre-push: REFUSED: arm.toml unreadable (%s)\n" % e)
         return PREPUSH_REFUSED
-    why = prepush_verdict(cfg, arm, refs, clone=clone)
+    why = prepush_verdict(cfg, arm, refs, clone=clone) + switch_in_progress(d, arm)
     if why:
         sink("PUSH_REFUSED", arm=arm, clone=clone, mode=cfg["mode"], reasons=why, refs=[r[2] for r in refs])
         sys.stderr.write("arena pre-push: REFUSED (%s):\n  %s\n" % (arm, "\n  ".join(why)))
@@ -1249,6 +1555,9 @@ def main(argv=None):
     s.add_argument("--force", action="store_true", help="restart the mode even if it is already live")
     s.add_argument("--allow-dirty-untracked", action="store_true",
                    help="accept uncommitted/untracked files in the stopped clones (recorded in the switch event)")
+    s.add_argument("--allow-offline", action="store_true",
+                   help="when origin cannot be reached, judge unpushed work from the cached refs (recorded in the "
+                        "switch event; without it an unreachable origin refuses the switch)")
     sub.add_parser("who")
     h = sub.add_parser("prepush"); h.add_argument("--arm", required=True, choices=ARMS)
     h.add_argument("--clone"); h.add_argument("--remote"); h.add_argument("--url")
@@ -1279,7 +1588,8 @@ def main(argv=None):
         raise Interrupted("SIGTERM during the switch")
     signal.signal(signal.SIGTERM, on_term)
     try:
-        r = switch(a.mode, deps=d, force=a.force, allow_dirty_untracked=a.allow_dirty_untracked)
+        r = switch(a.mode, deps=d, force=a.force, allow_dirty_untracked=a.allow_dirty_untracked,
+                   allow_offline=a.allow_offline)
     except Refused as e:
         print("REFUSED: %s" % e, file=sys.stderr); return 3
     except SwitchError as e:

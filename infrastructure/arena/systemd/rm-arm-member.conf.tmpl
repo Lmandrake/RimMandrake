@@ -1,3 +1,9 @@
-# drop-in 10-arm.conf: this unit belongs to rm-arm-@ARM@.target; stopping the target stops it.
+# drop-in 10-arm.conf: this unit belongs to rm-arm-@ARM@.target; stopping the target stops it (PartOf=).
+# PartOf= does NOT refuse a direct `systemctl start` of this unit while the target is stopped, so the start is gated:
+# @GATE@ (started by the target) writes %t/@MARKER@ and removes it when the target stops; without that
+# marker systemd skips this unit ("condition failed"). Consequence: after a reboot nothing of this arm runs until the
+# target is started again (`arena switch <mode> --force`); `arena who` (a) reports the target as not live.
 [Unit]
 PartOf=rm-arm-@ARM@.target
+After=@GATE@
+ConditionPathExists=%t/@MARKER@
