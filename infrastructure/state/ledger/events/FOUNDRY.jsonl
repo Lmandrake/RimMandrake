@@ -9183,3 +9183,12 @@
 {"seat":"FOUNDRY","event":"start","id":"ARENA_RALPHA_BUILD_TESTER_PASS_EACH_BUILD","ts":"2026-10-30T03:40:25Z","tsn":1793331625758454033}
 {"seat":"FOUNDRY","event":"implemented","id":"ARENA_REPLAY_BUILD_NO_FUTURE_IN_CLONE","sha":"5489d80a3d58","ref":"origin/main","criteria":[{"id":"A1","level":"L0","text":"a replay clone cannot git show the original fix sha"},{"id":"A2","level":"L0","text":"the run order differs per arm and is reproducible from the seed"},{"id":"A3","level":"L0","text":"a judged clone is gone"}],"ts":"2026-10-30T03:43:07Z","tsn":1793331787283597428}
 {"seat":"FOUNDRY","event":"lease","id":"ARENA_REPLAY_BUILD_NO_FUTURE_IN_CLONE","action":"release","token":"FOUNDRY.pid12032.1a447b95","ts":"2026-10-30T03:43:09Z","tsn":1793331789796088189}
+{"seat":"FOUNDRY","event":"lease","id":"ARENA_RALPHA_BUILD_TESTER_PASS_EACH_BUILD","action":"take","token":"FOUNDRY.pid36274.a869f3a4","expires":"2026-10-30T05:11:15Z","ts":"2026-10-30T04:26:15Z","tsn":1793334376364744759}
+{"seat":"FOUNDRY","event":"lease","id":"ARENA_TRIO_BUILD_CRITIC_ROUND_CAP_PARKS","action":"take","token":"FOUNDRY.pid36307.7bbc7bcf","expires":"2026-10-30T05:11:22Z","ts":"2026-10-30T04:26:22Z","tsn":1793334383414514063}
+{"seat":"FOUNDRY","event":"claim","id":"ARENA_TRIO_BUILD_CRITIC_ROUND_CAP_PARKS","ts":"2026-10-30T04:26:23Z","tsn":1793334383909466119}
+{"seat":"FOUNDRY","event":"start","id":"ARENA_TRIO_BUILD_CRITIC_ROUND_CAP_PARKS","ts":"2026-10-30T04:26:24Z","tsn":1793334384535135938}
+{"seat":"FOUNDRY","event":"lease","id":"ARENA_CONTROL_BUILD_V3_TESTER_AFTER_CLOSE","action":"take","token":"FOUNDRY.pid36320.a4e80bd1","expires":"2026-10-30T05:11:27Z","ts":"2026-10-30T04:26:27Z","tsn":1793334387715252486}
+{"seat":"FOUNDRY","event":"claim","id":"ARENA_CONTROL_BUILD_V3_TESTER_AFTER_CLOSE","ts":"2026-10-30T04:26:28Z","tsn":1793334388248312345}
+{"seat":"FOUNDRY","event":"start","id":"ARENA_CONTROL_BUILD_V3_TESTER_AFTER_CLOSE","ts":"2026-10-30T04:26:28Z","tsn":1793334388828630652}
+{"seat":"FOUNDRY","event":"lease","id":"ARENA_TRIO_BUILD_CRITIC_ROUND_CAP_PARKS","action":"release","token":"FOUNDRY.pid36307.7bbc7bcf","ts":"2026-10-30T04:26:36Z","tsn":1793334397442942541}
+{"seat":"FOUNDRY","event":"lease","id":"ARENA_CONTROL_BUILD_V3_TESTER_AFTER_CLOSE","action":"release","token":"FOUNDRY.pid36320.a4e80bd1","ts":"2026-10-30T04:26:39Z","tsn":1793334400121456996}
