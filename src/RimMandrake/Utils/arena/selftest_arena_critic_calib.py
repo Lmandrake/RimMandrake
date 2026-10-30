@@ -485,6 +485,52 @@ def t_tree_and_hidden(root):
     check("critic tree holds the sibling mod a changed selftest names (text only), not unnamed mods",
           "src/RimMandrake/TheSump/Defs/a.xml" in f2 and "src/RimMandrake/TheSump/icon.png" not in f2
           and "src/RimMandrake/Other/x.xml" not in f2, str(f2))
+    # CRITIC_TREE_WIDEN_UNCHANGED_ASSETS: the changed mod's unchanged textures are named, never carried
+    (sd / "Art" / "Defs").mkdir(parents=True)
+    (sd / "Art" / "Textures").mkdir()
+    (sd / "Art" / "Defs" / "a.xml").write_text("<Defs/>\n")
+    (sd / "Art" / "Textures" / "RM_Art_east.png").write_bytes(b"\x89PNG")
+    git(repo, "add", "src")
+    git(repo, "commit", "-q", "-m", "art")
+    head3 = git(repo, "rev-parse", "HEAD")
+    (sd / "Art" / "Defs" / "a.xml").write_text("<Defs><!-- x --></Defs>\n")
+    git(repo, "add", "src")
+    git(repo, "commit", "-q", "-m", "art2")
+    head4 = git(repo, "rev-parse", "HEAD")
+    chg = ["src/RimMandrake/Art/Defs/a.xml"]
+    check("asset_roots: a mod is src/<tier>/<mod>; elsewhere the file's directory",
+          C.asset_roots(chg + ["pkg/a.py", "src/x.py", "top.py"]) == ["pkg", "src", "src/RimMandrake/Art"],
+          str(C.asset_roots(chg + ["pkg/a.py", "src/x.py", "top.py"])))
+    png = "src/RimMandrake/Art/Textures/RM_Art_east.png"
+    f4 = C.critic_tree_files(repo, head4, chg)
+    left = C.unchanged_assets(repo, head4, chg, f4)
+    check("unchanged_assets names the texture the tree left out, not what it holds, not another mod's",
+          png not in f4 and left == [png], str(left))
+    work = Path(tempfile.mkdtemp(prefix="critic_assets_"))
+    real = os.environ.get("ARENA_CRITIC_WORK")
+    os.environ["ARENA_CRITIC_WORK"] = str(work)
+
+    class TreeCritic:
+        needs_tree = True
+    cand = {"cid": "x", "prompt": "p", "criteria": "c", "base": head3, "head": head4, "area": ["src/**"]}
+    try:
+        ci = C.prepare(cand, TreeCritic(), repo)
+        check("prepare writes the listing beside the tree, carries no blob, and tells the critic where it is",
+              (ci.work / C.ASSET_LIST).read_text().split() == [png] and not (ci.tree / png).exists()
+              and ci.diff.startswith("=== FILES NOT IN YOUR TREE") and "../" + C.ASSET_LIST in ci.diff, ci.diff[:300])
+        fp = C.critic_fingerprint(C.AcceptAll())
+        src = C.unchanged_assets
+
+        def other(repo, head, changed, tree_paths):
+            return []
+        try:
+            C.unchanged_assets = other
+            check("a changed listing changes the critic fingerprint", C.critic_fingerprint(C.AcceptAll()) != fp)
+        finally:
+            C.unchanged_assets = src
+    finally:
+        os.environ.pop("ARENA_CRITIC_WORK") if real is None else os.environ.update(ARENA_CRITIC_WORK=real)
+        shutil.rmtree(work, ignore_errors=True)
     hid = C.hidden_code(repo, base, head, ["pkg/**", ".claude/**"])
     check("hidden_code finds stripped bookkeeping CODE, not bookkeeping prose",
           hid == [".claude/hooks/guard.py"], str(hid))

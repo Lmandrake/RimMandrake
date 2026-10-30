@@ -571,7 +571,7 @@ class L4OpusCritic:
 
 def critic_fingerprint(critic: Critic) -> str:
     """What a run is bound to: the critic's name, its class source, its instance configuration (model, timeout,
-    budget...), the resolved executable, the L4 prompt and the sandbox code. A resumed run whose critic differs in
+    budget...), the resolved executable, the L4 prompt, the sandbox code and what it is shown (prepare, the tree). A resumed run whose critic differs in
     any of these is refused. The model is the REQUESTED alias; the resolved version is in each result's meta.
     Contract for a plug-in: everything that changes its reviews must be a scalar instance attribute or in its class
     source (containers are treated as run state and ignored)."""
@@ -581,7 +581,8 @@ def critic_fingerprint(critic: Critic) -> str:
     config = sorted((k, repr(v)) for k, v in vars(critic).items()     # configuration, not mutable run state
                     if k not in ("deadline", "exe") and isinstance(v, scalar)) if hasattr(critic, "__dict__") else []
     parts = [critic.name, getattr(critic, "model", "") or "", str(getattr(critic, "max_usd", "")), L4_PROMPT,
-             inspect.getsource(sandbox_argv), exe_id, repr(config)]
+             inspect.getsource(sandbox_argv), inspect.getsource(prepare), inspect.getsource(critic_tree_files),
+             inspect.getsource(unchanged_assets), inspect.getsource(asset_roots), exe_id, repr(config)]
     try:
         parts.append(inspect.getsource(type(critic)))
     except (OSError, TypeError):
@@ -701,6 +702,32 @@ def critic_tree_files(repo: Path, head: str, changed: list) -> list:
     return sorted(keep)
 
 
+ASSET_LIST = "unchanged_assets.txt"     # in the work dir, beside the tree: the critic greps it instead of trusting `ls`
+
+
+def asset_roots(changed: list) -> list:
+    """The mod of each changed file (src/<tier>/<mod>), or its directory outside src/: where a change's unchanged art,
+    sounds and other defs live."""
+    roots = set()
+    for p in changed:
+        parts = Path(p).parts
+        roots.add("/".join(parts[:3]) if parts[0] == "src" and len(parts) >= 4 else str(Path(p).parent))
+    return sorted(r for r in roots if r not in ("", "."))
+
+
+def unchanged_assets(repo: Path, head: str, changed: list, tree_paths: list) -> list:
+    """Every path at head under asset_roots(changed) that the critic's tree left out: names only, never blobs. Without
+    them the critic reads an absent texture directory as missing art (GELATINOUSSLIME, CONTAGION on l4-main)."""
+    roots = asset_roots(changed)
+    if not roots:
+        return []
+    with J.SafeRepo(Path(repo)) as g:
+        out = g.git("ls-tree", "-r", "-z", "--name-only", "--full-tree", head, "--", *roots)
+    held = set(tree_paths)
+    names = (n.decode("utf-8", "surrogateescape") for n in out.split(b"\0") if n)
+    return sorted(n for n in names if n not in held and not n.startswith(("Transient/", "deployed/")))
+
+
 # Words that would tell the critic a candidate's role if they were in the item text (none in the shipped set).
 ROLE_WORDS = re.compile(r"(?i)\b(?:planted|calibrat\w*|escaped|rework(?:ed)?|reopened)\b")
 
@@ -733,7 +760,18 @@ def prepare(c: dict, critic: Critic, repo: Path = A.REPO) -> CriticInput:
     if critic.needs_tree:
         work = work_base() / secrets.token_hex(8)
         work.mkdir(parents=True, mode=0o700)
-        tree = J.materialise(repo, c["head"], [], work / "tree", tree_paths=critic_tree_files(repo, c["head"], text))
+        paths = critic_tree_files(repo, c["head"], text)
+        tree = J.materialise(repo, c["head"], [], work / "tree", tree_paths=paths)
+        rest = [J.scrub(n)[0] for n in unchanged_assets(repo, c["head"], text, paths)]
+        if rest:
+            leaks = J.find_leaks("\n".join(rest), clone=Path(repo), shas=(c["base"], c["head"]))
+            if leaks:
+                raise J.NeutraliserLeak("unchanged file names identify the arm: " + "; ".join(leaks[:5]))
+            (work / ASSET_LIST).write_text("\n".join(rest) + "\n", "utf-8", "surrogateescape")
+            diff = ("=== FILES NOT IN YOUR TREE (they exist at this head) ===\nYour tree leaves out %d unchanged files "
+                    "of the changed mods: textures, sounds and other binaries, and text it does not need. An absent "
+                    "file is not a missing file: before you call anything missing, grep ../%s relative to your current "
+                    "directory (one path per line).\n\n" % (len(rest), ASSET_LIST)) + diff
     return CriticInput(cid=c["cid"], prompt=c["prompt"], criteria=c["criteria"], diff=diff, tree=tree, work=work)
 
 
