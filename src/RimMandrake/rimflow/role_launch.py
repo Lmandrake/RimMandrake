@@ -728,7 +728,10 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 " (after %d stop(s))" % run["stop_tries"] if run.get("stop_tries") else "",
                 tok if tok is not None else "UNMEASURED (counted at its budget)",
                 run.get("budget") or 0, run["raw_tokens"] if run["raw_tokens"] is not None else "?",
-                ",".join(models) or "?", res.get("subtype") or "no result"),
+                ",".join(models) or "?",
+                # an auth failure reports subtype `success` with is_error: "failed ... success" hid it on 10-30
+                "%s%s" % (res.get("subtype") or "no result",
+                          " but is_error (%s)" % (res.get("terminal_reason") or "?") if res.get("is_error") else "")),
             # a token-blind role reads its ledger item: its note is a FIXED outcome (blind_note), never the result's
             # subtype or text; the journal and Operations' item keep `why` (review dispatcher-full #2)
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))

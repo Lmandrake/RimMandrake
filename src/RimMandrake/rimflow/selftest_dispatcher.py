@@ -2996,6 +2996,15 @@ def test_golive_b2_blind_fixed_outcomes():
         check(any(n and n.endswith(": " + want) for n in notes)
               and not any("7781" in (n or "") or "4.2M" in (n or "") or sub in (n or "") for n in notes),
               "B2 subtype %r: blind notes are fixed (%r)" % (sub, notes))
+    # 10-30: an expired login reports subtype success, is_error true, 0 tokens: `why` must not read "failed ... success"
+    st = {"roles": {"Conductor": {"runs": [{"state": "running", "unit": "rm-role-conductor-6", "at": 0, "budget": 30000,
+                                            "item": role["ledger_item"], "mode": "quick", "scope": "s"}]}}}
+    acts = []
+    RL.supervise_roles({"roles": [role]}, st, {"unit_state": lambda u: "inactive", "result": lambda r: {
+        "usage": usage(), "subtype": "success", "is_error": True, "terminal_reason": "api_error"}}, 5000.0,
+        lambda **k: acts.append(k))
+    check(any("is_error (api_error)" in (a.get("why") or "") for a in acts), "a failed run says why it failed: %s"
+          % [a.get("why") for a in acts])
     # closed sets: any field outside them -> None, and execute diverts that note to Operations' item
     good = RL.blind("Conductor", "completed", "quick", "rm-role-conductor-9")
     check(RL.blind_note(good) == "dispatcher: Conductor quick run: completed", "B2 a good note")
