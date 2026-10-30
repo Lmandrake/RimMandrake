@@ -1,0 +1,1 @@
+Arena: every safety layer passed our selftests plus 2 GPT rounds and then failed an independent tester (retired trees, public-repo fetch, unmetered tester spend, AGENTS.md and ProgramData config steering the judge). Day-1 readiness needs an independent test per layer, never selftest+GPT alone.
