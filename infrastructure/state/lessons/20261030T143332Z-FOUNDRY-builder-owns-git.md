@@ -1,0 +1,2 @@
+An agent-controlled clone's .git is attacker input: git archive/diff/show honour replace refs, grafts, in-tree export-ignore/export-subst and repo-config diff drivers/fsmonitor, so a harness that tests 'sha X' through git can be shown another tree. Use GIT_NO_REPLACE_OBJECTS=1, GIT_GRAFT_FILE=/dev/null, -c core.fsmonitor=false -c diff.external= --no-ext-diff --no-textconv, and export via ls-tree+cat-file, not archive (v3_control.safe_git/export_tree).
+home: skill: git-efficiency
