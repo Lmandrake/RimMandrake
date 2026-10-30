@@ -833,6 +833,24 @@ def sc_git_replace_ref(tmp, mod, tag):
         and GOOD.splitlines()[1] in diff
 
 
+def sc_git_forged_blob(tmp, mod, tag):
+    """T5 (final tester): a blob stored under another blob's name is refused by the tester export, not exported."""
+    import zlib
+    w = _git_world(tmp, "GF" + tag, mod)
+    sha = sh(w.root, "git", "rev-parse", "HEAD")
+    blob = sh(w.root, "git", "rev-parse", "HEAD:mod.py")
+    good_ok = (w.loop._export_tree(sha, tmp / ("GFg" + tag)) / "mod.py").read_text() == GOOD
+    sh(w.root, "git", "repack", "-a", "-d", "-q")
+    op = w.root / ".git" / "objects" / blob[:2] / blob[2:]
+    op.parent.mkdir(parents=True, exist_ok=True)
+    op.write_bytes(zlib.compress(b"blob 7\0forged\n"))
+    try:
+        dest = w.loop._export_tree(sha, tmp / ("GFx" + tag))
+    except mod.Refused:
+        return good_ok
+    return False
+
+
 def sc_git_export_attrs(tmp, mod, tag):
     """T2: export-ignore / export-subst in the builder's .gitattributes do not change the tester's tree."""
     w = _git_world(tmp, "GE" + tag, mod)
@@ -1134,6 +1152,8 @@ MUTATIONS = [
      "        subprocess.run(['git', '-C', str(self.root), 'archive', '--format=tar', '-o', str(dest) + '.tar', sha], "
      "env=dict(os.environ), check=True)\n        dest.mkdir(parents=True, exist_ok=True)\n        import tarfile\n"
      "        tarfile.open(str(dest) + '.tar').extractall(dest)\n        return dest"),
+    ("T5 export does not re-hash the objects", sc_git_forged_blob,
+     "    ok, why = SG.verify_tree(root, sha)", "    ok, why = True, ''"),
     ("T3 grafts honoured", sc_git_grafts, "\"GIT_GRAFT_FILE\": os.devnull, ", ""),
     ("T4 fsmonitor not disabled", sc_git_exec("fsmonitor"), "\"-c\", \"core.fsmonitor=false\", ", ""),
     ("T4 hooksPath not disabled", sc_git_exec("hooks"), "\"-c\", \"core.hooksPath=\" + os.devnull, ", ""),
@@ -1533,6 +1553,7 @@ def main():
                          ("P2 retried tester gets fresh context", sc_retry_fresh),
                          ("T1 a planted replace ref does not change the tested tree or diff", sc_git_replace_ref),
                          ("T2 export-ignore / export-subst do not change the tested tree", sc_git_export_attrs),
+                         ("T5 a forged blob in the builder's object store is refused by the export", sc_git_forged_blob),
                          ("T3 a planted graft does not rewrite the history read", sc_git_grafts),
                          ("T4 builder fsmonitor does not run", sc_git_exec("fsmonitor")),
                          ("T4 builder core.hooksPath hooks do not run", sc_git_exec("hooks")),

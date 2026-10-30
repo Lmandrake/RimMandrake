@@ -456,7 +456,7 @@ class TrioLoop(RA.Loop):
             self._verdict(task, "invalid", stage="killed", why="build pass started and never reached a verdict")
         return super().build_pass(task)
 
-    def _failed(self, task, base, head, why, n):
+    def _failed(self, task, base, head, why, n, record=True):   # record: the base loop's failed-sha ledger; the trio keeps rounds instead
         if self._round_open(task["id"]):                           # a build-side failure ends the round
             self._verdict(task, "reject", sha=head, stage="build", why=why[:600])
         k = self.rounds(task["id"])
@@ -620,7 +620,7 @@ class TrioLoop(RA.Loop):
         if done is not None:
             return done
         n = self.state["n"]
-        diff =self.git("diff", pend["base"], pend["head"])
+        diff = self.git("diff", *RA.NO_DRIVER, pend["base"], pend["head"])
         tree_id = self.git("rev-parse", pend["head"] + "^{tree}")
         criteria = task["criteria"]
         if task.get("_last", True) and task.get("_part_label"):
@@ -691,7 +691,7 @@ class TrioLoop(RA.Loop):
         if task.get("live", "none") != "none":
             if self.lane is None:
                 raise Refused("task %s needs a live lane and none is configured" % task["id"])
-            files = self.git("diff", "--name-only", pend["base"], pend["head"]).splitlines()
+            files = self.git("diff", *RA.NO_DRIVER, "--name-only", pend["base"], pend["head"]).splitlines()
             self.lane.publish(task, pend["head"], pend["builder"], files)
             self.state["lane_wait"] = dict(pend)
             self.state["pending"] = None

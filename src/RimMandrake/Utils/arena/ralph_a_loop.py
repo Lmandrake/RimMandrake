@@ -82,6 +82,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
 import arena_eventlog as L  # noqa: E402
+import arena_safe_git as SG  # noqa: E402
 
 ARM = "ralph_a"
 ARM_DIR = HERE / "ralph_a"
@@ -653,6 +654,9 @@ def export_tree(root, sha, dest):
     """A history-less copy of exactly `sha`'s tree, read object by object (ls-tree + cat-file): replace refs and
     grafts are ignored and no attribute applies (`git archive` honours the builder's export-ignore/export-subst).
     Submodule entries are skipped; a symlink is kept only if it stays inside dest; a path may not escape dest."""
+    ok, why = SG.verify_tree(root, sha)                         # a builder can store other bytes under an object's name
+    if not ok:
+        raise Refused("refused: tree of %s does not verify: %s" % (sha, why))
     if dest.exists():
         shutil.rmtree(dest)
     dest.mkdir(parents=True)
