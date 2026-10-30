@@ -2,7 +2,7 @@
 r"""ralph_c_runner.py — the `ralph_c` fixed-SHA live runner (harness step 12; Ralph design §2 AB_test and §3.1).
 
 Design: design/RimMandrake/ralph_loop_design_2026-10-29.md §2 ("B tests that fixed SHA and nothing else") and §3.1
-(runner S on SteveDesktop, runner A on Archmagi behind the idle rule, one queue, oldest first);
+(runner S on SteveDesktop, runner A on Archmagi, one queue, oldest first; no idle rule since 2026-10-30);
 architecture_switch_harness_2026-10-29.md §1.5 and §1.2 step 8. Build ticket ARENA_LANE_BUILD_MINIMAL_LIST_ONLY.
 Every live act goes through arena_lane.Lane, which logs it and enforces the lane rules.
 

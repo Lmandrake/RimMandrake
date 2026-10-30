@@ -46,9 +46,9 @@ def test_gate():
     check(g("FOUNDRY", "BENCH", 60, "deploy", False)[1] is not None, "live other holder -> refused")
     check("OWNER" in (g("OWNER", "BENCH", 99_999, "deploy", False)[1] or ""), "OWNER hold -> refused even if stale")
     check("flyer" in (g(None, "BENCH", None, "deploy", True)[1] or ""), "--flyer -> refused")
-    for words in ("live test flyer flight", "watch it take off", "glider pass"):
+    for words in ("live test flyer flight", "watch it take off", "glider pass", "Flight test", "it flew"):
         check(g(None, "BENCH", None, words, False)[1] is not None, "flight wording %r -> refused" % words)
-    check(not hasattr(cli, "_idle_gate") and "idle_probe" not in sys.modules, "no idle gate, idle_probe never loaded")
+    check(not hasattr(cli, "_idle_gate") and not {"idle_probe", "rimflow.idle_probe"} & set(sys.modules), "no idle gate, idle_probe never loaded")
 
 
 def test_cli_end_to_end():
@@ -94,6 +94,71 @@ def test_cli_end_to_end():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def test_delegated_reach():
+    """Review of 9456c1f533: the delegated take keeps its kept-by-design refusals on every path it can reach."""
+    import argparse
+    import time
+    # (a) `bridge idle --host <other>` is report-only and the delegated gate applies there too
+    calls, emitted = [], []
+    keep = cli._guard_call, cli._emit
+    cli._guard_call = lambda hk, a: (calls.append(a), (0, "ok"))[1]
+    cli._emit = lambda ev, w, quiet=False: emitted.append(ev)
+    try:
+        w = argparse.Namespace(bridge_hosts={"stevedesktop": {"holder": "OWNER", "since": "x"}}, last_seen={})
+        mk = lambda action, **kw: argparse.Namespace(**dict(dict(action=action, purpose="deploy", force=False,
+                                                                 idle_ok=False, flyer=False), **kw))
+        rc = cli._bridge_other_host(mk("idle"), "BENCH", w, "stevedesktop")
+        check(rc == 1 and not calls and not emitted, "idle --host: OWNER hold -> NOT TAKEABLE, nothing taken "
+              "(rc=%s calls=%s emitted=%s)" % (rc, calls, emitted))
+        w.bridge_hosts = {}
+        del calls[:], emitted[:]
+        rc = cli._bridge_other_host(mk("idle"), "BENCH", w, "stevedesktop")
+        check(rc == 0 and not any(c and c[0] == "take" for c in calls) and not emitted,
+              "idle --host on a free bridge reports TAKEABLE and takes nothing (calls=%s)" % calls)
+        del calls[:], emitted[:]
+        try:
+            cli._bridge_other_host(mk("take", idle_ok=True, flyer=True), "BENCH", w, "stevedesktop")
+            refused = False
+        except SystemExit:
+            refused = True
+        check(refused and not emitted, "take --host --idle-ok --flyer -> refused")
+    finally:
+        cli._guard_call, cli._emit = keep
+    # (b) a stale OWNER hold in the shared (cross-clone) lock refuses a delegated take; a live one refuses `idle`
+    tmp = tempfile.mkdtemp(prefix="rf_nopres2_")
+    try:
+        os.makedirs(os.path.join(tmp, "items"))
+        shared = os.path.join(tmp, "shared.json")
+        env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
+        env.update(RIMFLOW_LEDGER=os.path.join(tmp, "events.jsonl"), RIMFLOW_ITEMS=os.path.join(tmp, "items"),
+                   RIMFLOW_SHARED_BRIDGE=shared, RIMFLOW_SEAT="BENCH")
+
+        def rf(*a):
+            return subprocess.run([sys.executable, os.path.join(HERE, "cli.py")] + list(a), env=env,
+                                  capture_output=True, text=True, timeout=120)
+
+        def put(holder, age_s):
+            t = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - age_s))
+            with open(shared, "w") as f:
+                json.dump({"holder": holder, "since": t, "touched": t, "clone": "/other"}, f)
+        put("OWNER", 3 * 3600)
+        r = rf("bridge", "take", "--idle-ok", "--for", "deploy")
+        check(r.returncode != 0 and "OWNER" in (r.stderr + r.stdout), "shared stale OWNER hold -> --idle-ok refused "
+              "(%s)" % (r.stderr + r.stdout).strip()[:120])
+        r = rf("bridge", "idle", "--for", "deploy")
+        check(r.returncode == 1 and r.stdout.startswith("NOT TAKEABLE"), "shared stale OWNER hold -> bridge idle "
+              "NOT TAKEABLE (%s)" % r.stdout.strip()[:120])
+        put("FOUNDRY", 60)
+        r = rf("bridge", "idle", "--for", "deploy")
+        check(r.returncode == 1 and r.stdout.startswith("NOT TAKEABLE"), "shared live FOUNDRY hold -> bridge idle "
+              "NOT TAKEABLE (%s)" % r.stdout.strip()[:120])
+        put("FOUNDRY", 46 * 60)
+        r = rf("bridge", "idle", "--for", "deploy")
+        check(r.returncode == 0, "control: shared stale FOUNDRY hold -> TAKEABLE (%s)" % r.stdout.strip()[:120])
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 PRESENCE = re.compile(r"\bimport idle_probe\b|from rimflow import idle_probe|GetLastInputInfo|def owner_returned|"
                       r"class OwnerReturned|owner_idle_s")
 
@@ -104,7 +169,7 @@ def test_static():
         dirs[:] = [d for d in dirs if d not in (".git", "__pycache__", "node_modules")]
         for fn in files:
             # selftests are skipped: they name these symbols to assert their absence (tripwire observers)
-            if not (fn.endswith(".py") or fn.endswith(".json")) or fn.startswith("selftest_") or fn == "testpilot.py":
+            if not fn.endswith((".py", ".json", ".ps1", ".cs", ".sh")) or fn.startswith("selftest_") or fn == "testpilot.py":
                 continue
             path = os.path.join(root, fn)
             try:
@@ -122,7 +187,7 @@ def test_static():
 
 
 def main():
-    for t in (test_gate, test_cli_end_to_end, test_static):
+    for t in (test_gate, test_cli_end_to_end, test_delegated_reach, test_static):
         try:
             t()
         except Exception as e:  # noqa: BLE001

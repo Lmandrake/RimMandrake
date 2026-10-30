@@ -1,0 +1,2 @@
+selftest_arena_ralph_c.py failed once (rc 1, 'FAIL: 1 failure(s)', the failing line not shown in the runner's tail) in an 8-test run_selftests --no-cache --only pool on 2026-10-30, then passed 3/3 alone and 11/11 in a re-run of the same pool. Code under review did not touch ralph_c's path (FakeDriver). Treat as a parallel-load flake until reproduced; the run_selftests summary truncates the failing check, so capture the full child output (run_selftests evidence or rerun alone) before calling it.
+home: NONE

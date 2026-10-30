@@ -8,7 +8,7 @@ the rule it met and the measured reload cost it used). Build ticket ARENA_LANE_B
 There are two lanes, one game each: `steve` (SteveDesktop) and `archmagi` (the owner's machine). Whichever arm holds a
 lane does every live act through a `Lane` so that each act is logged once, by harness code, in the §1.7 schema:
 
-    live_take     rimflow bridge take --host <h> --for "arena <arm> ..."
+    live_take     rimflow bridge take --host <h> --idle-ok --for "arena <arm> ..."   (the delegated take)
     reload        stop, profile swap, deploy, launch, quicktest; detail carries the deploy and the MEASURED
                   launch-to-ready seconds; `rule` is the M1 rule the caller says it met (R0..R3)
     canary        pass | fail; a failed canary also writes `invalid` (never `fail`: the run is re-queued)
@@ -20,14 +20,16 @@ lane does every live act through a `Lane` so that each act is logged once, by ha
 ENFORCED HERE (each one a refusal, LaneRefused, before anything is touched):
   * profile `full` is refused in trial mode (owner 2026-10-29: no full-list profile in the trial). Only `minimal`
     (modlist_swap --minimal, modlist_swap.MINIMAL, 26 mods measured 2026-10-30) and `minimal+deps` (modset_builder --tier <tier>) exist.
-  * never a flyer's flight (standing ruling; `bridge take` refuses flight wording too, but the lane refuses first).
+  * never a flyer's flight (standing ruling; the lane's `bridge take --idle-ok` refuses flight wording too, but the lane refuses
+    first).
   * never a canonical world save: loading a save whose name is the canon start save (canon_save.py) is refused, and
     the canary is red on such a map.
   * no C# deploy while the game runs (the DLL is locked).
   * his presence at the machine never gates, delays, yields or aborts a lane (owner 2026-10-30: "I really, really
     need you to strip "when I come back to the machine" as an event for anything changing. It's causing so many
     problems and I don't need it."). There is no owner probe and no owner-return abort; a lane config's old
-    `owner_playing` key is ignored. His explicit OWNER bridge hold still refuses the take.
+    `owner_playing` key is ignored. His explicit OWNER bridge hold still refuses the take, at any
+    age (the lane's take is the delegated `--idle-ok` one).
 
 THE CANARY (§1.2 step 8): a live colonist and the vanilla spawn probe (modcheck/validity.canary, reused, not copied);
 a Player.log written since this lane's own launch; the expected game version (lane config `game_version`, pinned once
@@ -616,8 +618,10 @@ class RealDriver:
         return time.time()
 
     def bridge_take(self, host, purpose, idle_ok=False):
-        """`idle_ok` is accepted and ignored: a lane take is always a plain take (owner 2026-10-30)."""
-        rc, out = self._rf("bridge", "take", "--host", host, "--for", purpose)
+        """`idle_ok` is accepted and ignored. A lane take is always the delegated take (`--idle-ok`): free, ours or
+        45-min stale, never his OWNER hold at any age, never flight wording. It reads nothing about his presence
+        (owner 2026-10-30); a plain take would cut a stale OWNER hold (review of 9456c1f533)."""
+        rc, out = self._rf("bridge", "take", "--host", host, "--idle-ok", "--for", purpose)
         return rc == 0, out
 
     def bridge_release(self, host):

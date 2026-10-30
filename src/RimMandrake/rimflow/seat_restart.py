@@ -16,7 +16,8 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              Refused while any helper of the window is alive. Backstop: the Dispatcher also starts one for a window that
              is idle, has no live helper, and whose context (last usage in its transcript) is past a threshold.
   pending    grace (grace_s; FOUNDRY 30 s); cancelled by new HUMAN input in the window's transcript after the request
-             (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input),
+             (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input;
+             a Conductor's goodbye restart is the exception, cancelled by ANY input: cursor_verdict),
              or by the window's session changing. No ring while pending (ring_hold, bounded). HELD (never killed) while: a helper is alive (a stale one also alarms), the bridge or
              driver lock is held by the seat or unreadable, the seat's last game event is transitional, PAUSE, or a
              doorbell ring is in flight. Not quiet (idle + last record an ended assistant turn, 30 s old) for 3 ticks

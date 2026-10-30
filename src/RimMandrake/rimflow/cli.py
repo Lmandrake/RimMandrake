@@ -2517,6 +2517,22 @@ def _delegated_gate(holder, seat, holder_idle, purpose, flyer):
                                                      else "ours" if holder == seat else "free")}, None
 
 
+def _shared_delegated_refusal(seat):
+    """The cross-clone half of the delegated gate: another clone's take is not in this ledger until it is pushed.
+    His OWNER hold there refuses at any age; another seat's refuses while its shared lock is fresh (45-min rule)."""
+    shared = model.read_shared_bridge()
+    holder = (shared or {}).get("holder")
+    if holder == "OWNER":               # before the own-seat exemption, as in _delegated_gate
+        return "refused: the OWNER holds the bridge in another clone; a delegated take never takes his hold"
+    if holder in (None, seat):
+        return None
+    age = model.shared_bridge_age_seconds(shared)
+    if age is not None and age < model.BRIDGE_STALE_SECONDS:
+        return ("refused: %s holds the bridge in another clone (%d min ago); a delegated take takes only a free or "
+                "stale bridge" % (holder, age // 60))
+    return None
+
+
 def _bridge_take(args, seat, w, holder, purpose):
     """`bridge take` — the contended path, and the only one with a race in it."""
     why, refusal = _take_decision(
@@ -2529,7 +2545,8 @@ def _bridge_take(args, seat, w, holder, purpose):
         if args.force:
             die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
         idle_ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
-                                      args.purpose, getattr(args, "flyer", False))
+                                           args.purpose, getattr(args, "flyer", False))
+        refusal = refusal or _shared_delegated_refusal(seat)
         if refusal:
             die(refusal)
     ev = {"seat": seat, "event": "bridge", "state": "taken"}
@@ -2675,8 +2692,20 @@ def _bridge_other_host(args, seat, w, hk):
         _emit(ev, w, quiet=True)
         print("%s bridge released by %s" % (hk, seat))
         return 0
-    why, refusal = _take_decision(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
-                                  args.force, args.purpose)
+    holder_idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
+    delegated = None
+    if args.action == "idle" or getattr(args, "idle_ok", False):
+        # the delegated gate holds on every host (review of 9456c1f533): `idle` is report-only here too (it used to
+        # fall through to a real take), and --idle-ok keeps its OWNER-hold and flight refusals off Archmagi
+        delegated, refusal = _delegated_gate(holder, seat, holder_idle, args.purpose, getattr(args, "flyer", False))
+        if args.action == "idle":
+            print(("NOT TAKEABLE  " + refusal) if refusal else ("TAKEABLE  %s" % delegated["why"]))
+            return 1 if refusal else 0
+        if args.force:
+            die("--idle-ok and --force exclude each other: --idle-ok is the delegated take of a FREE bridge")
+        if refusal:
+            die(refusal)
+    why, refusal = _take_decision(holder, seat, holder_idle, args.force, args.purpose)
     if refusal:
         die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hk))
     take = ["take", "--seat", seat, "--for", args.purpose or "(no purpose given)", "--identity-json", ident]
@@ -2688,6 +2717,8 @@ def _bridge_other_host(args, seat, w, hk):
             "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
             "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
     ev = {"seat": seat, "event": "bridge", "state": "taken", "host": hk}
+    if delegated:
+        ev.update(delegated)
     if args.purpose:
         ev["purpose"] = args.purpose
     if why:
@@ -2756,6 +2787,7 @@ def cmd_bridge(args, seat):
     if args.action == "idle":
         ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
                                       args.purpose, args.flyer)
+        refusal = refusal or _shared_delegated_refusal(seat)
         if refusal:
             print("NOT TAKEABLE  " + refusal)
             return 1

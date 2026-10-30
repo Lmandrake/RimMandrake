@@ -801,6 +801,14 @@ def t_review():
     r = R.run_one(p, "archmagi", d, "/c")
     check(r["verdict"] != "aborted" and r.get("restore_failed") and ("owner_probe",) not in d.calls,
           "M8: owner back + failed restore -> not aborted, restore_failed carried (got %s)" % r.get("verdict"))
+    # review of 9456c1f533: the real driver's take is the delegated one, so his OWNER hold (any age) and flight
+    # wording refuse at the bridge too, not only while fresh
+    rd = L.RealDriver()
+    seen = []
+    rd._rf = lambda *a: (seen.append(a), (0, "taken"))[1]
+    rd.bridge_take("archmagi", "arena A archmagi r1: proof", False)
+    check(seen and "--idle-ok" in seen[0] and "--force" not in seen[0],
+          "RealDriver.bridge_take is a delegated take (--idle-ok): %s" % (seen,))
     # N10: unclaim drops only our own claim
     p = fresh("n10")
     R.claim(p, "cand1", "runnerA")
