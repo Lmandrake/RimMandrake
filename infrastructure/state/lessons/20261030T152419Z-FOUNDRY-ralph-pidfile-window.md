@@ -1,0 +1,2 @@
+ralph_a_loop.CmdModel.__call__: pass.pid is written after Popen returns; a loop killed in that window leaves an untracked model group that reap_stale_pass cannot find (GPT drill r3, UNVERIFIED repro, microsecond window). Also drill gaps: kills are Python exceptions (CmdModel group cleanup, default_sync not exercised), sc_gate_process_killed calls cmd_gate directly with no loop restart. Accepted residuals of ARENA_DRILL_PROVE_KILLED_PASS_RECOVERS; fix idea: write the pidfile from the child (preexec after setsid) or wrap argv in a shim that writes it.
+home: NONE
