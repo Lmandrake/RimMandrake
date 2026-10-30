@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 """arena_safe_git.py - git calls on a clone whose .git a build helper (an untrusted builder) may have written.
 
-DUPLICATION NOTE: this mirrors the helpers in ralph_a_loop.py (GIT_SAFE_ENV, GIT_SAFE_CFG, NO_DRIVER, git_run,
-no_filter_cfg). They are copied, not imported, because another change was editing ralph_a_loop.py; once that lands,
-ralph_a_loop.py should import this module and its copy be deleted so there is one definition.
+ONE definition: ralph_a_loop (and through it trio_loop, ralph_c_loop), arena_gate and ralph_c_runner all import
+this module; none keeps a copy of the env, config pins, git_run, no_filter_cfg or net_cfg (RALPHA_GIT_DEDUPE_SAFE_GIT_COPY).
 
 What the builder can plant in a .git and what each knob does:
   replace ref / graft   GIT_NO_REPLACE_OBJECTS=1, GIT_GRAFT_FILE=/dev/null: sha A is read as A, not as commit B
@@ -25,13 +24,21 @@ GIT_SAFE_ENV = {"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull, "GI
                 "GIT_CONFIG_GLOBAL": os.devnull, "GIT_EXTERNAL_DIFF": "", "GIT_PAGER": "cat",
                 "GIT_TERMINAL_PROMPT": "0"}
 GIT_SAFE_CFG = ["-c", "core.fsmonitor=false", "-c", "core.hooksPath=" + os.devnull, "-c", "diff.external=",
-                "-c", "core.attributesFile=" + os.devnull, "-c", "protocol.ext.allow=never"]
+                "-c", "core.attributesFile=" + os.devnull, "-c", "protocol.ext.allow=never",
+                # a commit starts `git maintenance run --auto --detach`, which outlives it with its cwd in the clone
+                # and trips ralph_a's "no process beside a build pass" refusal (ARENA_DRILL_SYNC_FLAKY_PENDING_MAIN)
+                "-c", "maintenance.auto=false", "-c", "gc.auto=0"]
 NO_DRIVER = ("--no-ext-diff", "--no-textconv")
 # a transport call (fetch/clone) reaches a remote: a repo-local core.sshCommand/gitProxy/uploadpack would run the
 # builder's command as the harness. Override them; the user's own GLOBAL ssh command (if any) is passed back in.
 # remote.<name>.uploadpack is multi-valued ("using the first": the repo's wins over -c), so a fetch must also pass
 # --upload-pack=git-upload-pack on its own command line (an option beats config).
 TRANSPORT_CFG = ["-c", "core.gitProxy="]
+
+
+# a rebase / pull re-commits: no builder-chosen signing program may run
+GPG_OFF = ["-c", "commit.gpgSign=false", "-c", "gpg.program=false", "-c", "gpg.openpgp.program=false",
+           "-c", "gpg.ssh.program=false", "-c", "gpg.x509.program=false"]
 
 
 def safe_env(keep_user_config=False):
@@ -74,16 +81,32 @@ def user_ssh_cfg():
     return ["-c", "core.sshCommand=" + (vals[-1].decode("utf-8", "replace") if vals else "ssh")]
 
 
-def net_cfg(root):
-    """Transport pins (mirrors ralph_a_loop.net_cfg): core.askPass and every credential*.helper the OWNER's value or
-    nothing (the clone's own are overridden: a reset then the owner's list); refuses (CloneRefused) a clone that
-    redirects URLs with url.*.insteadOf."""
-    out = []
+def _clone_lines(root, argv):
+    """NUL-separated config output of the clone itself (its own file plus what it includes; the owner's global/system
+    config is out of the picture)."""
+    r = subprocess.run(["git", "-C", str(root)] + argv, env=safe_env(), capture_output=True)
+    return [x for x in r.stdout.split(b"\0") if x]
+
+
+def merge_driver_keys(root):
+    """the `merge.<name>.driver` config keys the clone defines (a builder-set driver would run as the harness)"""
+    return [kv.decode("utf-8", "replace").partition("\n")[0]
+            for kv in _clone_lines(root, ["config", "-z", "--get-regexp", r"^merge\..*\.driver$"])]
+
+
+def net_cfg(root, url=None):
+    """Transport pins: signing off, core.sshCommand/core.askPass and every credential*.helper the OWNER's value or
+    nothing (the clone's own are overridden: a reset then the owner's list), every merge.<name>.driver the clone
+    defines pinned to `false` (a rebase would run it). Raises CloneRefused for a clone that redirects URLs with
+    url.*.insteadOf, or (with `url`, the pinned remote) defines a remote section named like it (its url/uploadpack/
+    proxy would replace the pin)."""
+    out = list(GPG_OFF)
     if root is not None:
-        r = subprocess.run(["git", "-C", str(root), "config", "-z", "--name-only", "--get-regexp",
-                            r"^url\..*\.(push)?insteadof$"], env=safe_env(), capture_output=True)
-        if r.stdout.strip(b"\0"):
+        if _clone_lines(root, ["config", "-z", "--name-only", "--get-regexp", r"^url\..*\.(push)?insteadof$"]):
             raise CloneRefused("%s redirects URLs (url.*.insteadOf in its config): refused" % root)
+        if url and any(k.startswith(b"remote." + url.encode() + b".") for k in
+                       _clone_lines(root, ["config", "-z", "--name-only", "--get-regexp", r"^remote\."])):
+            raise CloneRefused("%s defines a remote section named like the pinned url %s: refused" % (root, url))
     vals = _owner_lines(["config", "--get-all", "-z", "core.askPass"])
     out += ["-c", "core.askPass=" + (vals[-1].decode("utf-8", "replace") if vals else "")]
     rx = r"^credential\..*helper$"
@@ -92,14 +115,15 @@ def net_cfg(root):
         k, _, v = kv.decode("utf-8", "replace").partition("\n")
         keys.setdefault(k, []).append(v)
     if root is not None:
-        r = subprocess.run(["git", "-C", str(root), "config", "-z", "--get-regexp", rx], env=safe_env(), capture_output=True)
-        for kv in r.stdout.split(b"\0"):
-            if kv:
-                keys.setdefault(kv.decode("utf-8", "replace").partition("\n")[0], [])
+        for kv in _clone_lines(root, ["config", "-z", "--get-regexp", rx]):
+            keys.setdefault(kv.decode("utf-8", "replace").partition("\n")[0], [])
     for k, vs in keys.items():
         out += ["-c", k + "="]                        # an empty value resets the list
         for v in vs:
             out += ["-c", "%s=%s" % (k, v)]
+    if root is not None:
+        for k in merge_driver_keys(root):
+            out += ["-c", k + "=false"]
     return out
 
 
@@ -108,11 +132,11 @@ WORKTREE_CFG = ["-c", "core.sparseCheckout=false", "-c", "core.sparseCheckoutCon
                 "-c", "core.eol=lf", "-c", "core.safecrlf=false", "-c", "core.symlinks=true", "-c", "core.ignoreStat=false"]
 
 
-def git_argv(root, *a, transport=False):
+def git_argv(root, *a, transport=False, url=None):
     """The argv for a safe git call on `root` (root=None: no -C, e.g. a clone whose dest does not exist yet)."""
     head = ["git"] + (["-C", str(root)] if root is not None else []) + GIT_SAFE_CFG
     if transport:
-        head += TRANSPORT_CFG + user_ssh_cfg() + net_cfg(root)
+        head += TRANSPORT_CFG + user_ssh_cfg() + net_cfg(root, url)
     if root is not None:
         head += no_filter_cfg(root)
         if (Path(root) / ".git").exists():
@@ -130,10 +154,10 @@ def _env(root, transport):
     return env
 
 
-def git_run(root, *a, transport=False, **kw):
+def git_run(root, *a, transport=False, url=None, **kw):
     """subprocess.run of git on the clone with the safe env and config. transport=True keeps the user's global
     config (credential helpers) but not the clone's ssh/proxy/uploadpack/askpass/credential commands."""
-    return subprocess.run(git_argv(root, *a, transport=transport), env=_env(root, transport), **kw)
+    return subprocess.run(git_argv(root, *a, transport=transport, url=url), env=_env(root, transport), **kw)
 
 
 def check_clone(root):

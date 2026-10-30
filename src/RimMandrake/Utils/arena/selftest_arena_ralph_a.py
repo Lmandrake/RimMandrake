@@ -57,27 +57,47 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
+SG_SRC = (HERE / "arena_safe_git.py").read_text()
+
+
+def _mutated(pairs, tag):
+    """The loop module with the (old, new) pairs applied. An anchor lives in exactly ONE of ralph_a_loop.py and
+    arena_safe_git.py (the git hardening is defined once, in SG); a pair that hits SG is applied to a copy of SG that
+    the mutated loop imports in place of the real one (restored afterwards, the real SG is never changed)."""
+    src, sg_src = SRC, SG_SRC
+    for old, new in pairs:
+        n = src.count(old) + sg_src.count(old)
+        assert n == 1, "mutation anchor not unique/absent: %r (%d hits)" % (old, n)
+        if src.count(old):
+            src = src.replace(old, new)
+        else:
+            sg_src = sg_src.replace(old, new)
+    real = sys.modules.get("arena_safe_git")
+    if sg_src != SG_SRC:
+        sg = types.ModuleType("arena_safe_git")
+        sg.__file__ = str(HERE / "arena_safe_git.py")
+        exec(compile(sg_src, sg.__file__, "exec"), sg.__dict__)
+        sys.modules["arena_safe_git"] = sg
+    try:
+        m = types.ModuleType("ralph_a_loop_" + tag)
+        m.__file__ = str(HERE / "ralph_a_loop.py")
+        exec(compile(src, m.__file__, "exec"), m.__dict__)
+    finally:
+        if real is not None:
+            sys.modules["arena_safe_git"] = real
+    return m
+
+
 def variant(old=None, new=None):
     """The loop module, or a copy with one line mutated (exec'd with the real __file__ so its imports resolve)."""
     if old is None:
         return R
-    assert SRC.count(old) == 1, "mutation anchor not unique/absent: %r" % old
-    m = types.ModuleType("ralph_a_loop_mut")
-    m.__file__ = str(HERE / "ralph_a_loop.py")
-    exec(compile(SRC.replace(old, new), m.__file__, "exec"), m.__dict__)
-    return m
+    return _mutated([(old, new)], "mut")
 
 
 def variant_multi(pairs):
     """The loop module with SEVERAL lines mutated (defence in depth: every layer of one trap must be removed)."""
-    src = SRC
-    for old, new in pairs:
-        assert src.count(old) == 1, "mutation anchor not unique/absent: %r" % old
-        src = src.replace(old, new)
-    m = types.ModuleType("ralph_a_loop_mut_multi")
-    m.__file__ = str(HERE / "ralph_a_loop.py")
-    exec(compile(src, m.__file__, "exec"), m.__dict__)
-    return m
+    return _mutated(pairs, "mut_multi")
 
 
 def sh(cwd, *a):
@@ -1163,7 +1183,7 @@ MUTATIONS = [
      "NO_DRIVER = ()"),
     ("T4 diff.external run by the diff", sc_git_exec("external"), None, None),
     ("T4 filter clean/smudge drivers not neutralised", sc_git_exec("filter"),
-     "GIT_SAFE_CFG + no_filter_cfg(root) + list(a)", "GIT_SAFE_CFG + list(a)"),
+     "head += no_filter_cfg(root)", "head += []"),
     ("A gate bypass", sc_planted_check, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("A failure note not fed", sc_planted_check, "            if self._note(name):\n", "            if False:\n"),
     ("B rc ignored", sc_killed_after_commit, "if rc != 0 else", "if False else"),
@@ -1219,20 +1239,20 @@ MUTATIONS = [
     ("R2 publish merges WIP not the tested sha", sc_publish_tested_sha,
      "self.git(\"merge\", \"-q\", \"--ff-only\", pend[\"head\"])", "self.git(\"merge\", \"-q\", \"--ff-only\", WIP)"),
     ("L6 pull drops the owner's $GIT_CONFIG_GLOBAL", sc_sync_user_config,
-     "            if k in os.environ:                      # the owner's own GIT_CONFIG_GLOBAL file is the user config\n                env[k] = os.environ[k]\n", ""),
+     "            if k in os.environ:\n                env[k] = os.environ[k]\n", ""),
     ("N1 ssh command from the clone's config", sc_pull_trap("ssh"),
-     '("core.sshCommand", "ssh"), ', ""),
+     'return ["-c", "core.sshCommand=" + (vals[-1].decode("utf-8", "replace") if vals else "ssh")]', "return []"),
     ("N1 remote.origin.uploadpack from the clone's config", sc_pull_trap("uploadpack"),
      '"--upload-pack=git-upload-pack", url, MAIN', '"origin", MAIN'),
     ("N1 ext:: remote helper allowed", sc_pull_trap("ext"),
-     '        env["GIT_ALLOW_PROTOCOL"] = "file:https:ssh"', "        pass"),
+     [('env["GIT_ALLOW_PROTOCOL"] = "file:https:ssh"', "pass"), ('"-c", "protocol.ext.allow=never",', "")], None),
     ("N1 merge driver run by the rebase", sc_pull_trap("merge"), 'r"^merge\\..*\\.driver$"', 'r"^nomatch$"'),
     ("N1 url.insteadOf redirect followed", sc_pull_trap("insteadof"), 'r"^url\\..*\\.(push)?insteadof$"', 'r"^nomatch$"'),
     ("R2 include.path of the clone's config not read", sc_pull_trap2("include"),
-     'if _cfg_lines(clone + ["config", "-z", "--name-only", "--get-regexp", r"^url',
-     'if _cfg_lines(clone + ["config", "--local", "-z", "--name-only", "--get-regexp", r"^url'),
+     'if _clone_lines(root, ["config", "-z", "--name-only", "--get-regexp", r"^url',
+     'if _clone_lines(root, ["config", "--local", "-z", "--name-only", "--get-regexp", r"^url'),
     ("R2 remote.<pinned url> section not refused", sc_pull_trap2("remote_section"),
-     '    if url and any(k.startswith', '    if False and any(k.startswith'),
+     '        if url and any(k.startswith', '        if False and any(k.startswith'),
     ("R2 literal origin pulled when no URL is set", sc_pull_trap2("no_url"),
      "    if not url:\n        return False", "    url = url or 'origin'\n    if False:\n        return False"),
     ("R2 rebase honours commit.gpgSign and gpg.program", sc_pull_trap2("gpg"),

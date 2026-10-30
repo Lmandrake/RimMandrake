@@ -512,51 +512,6 @@ def default_precheck(root, log):
     return precheck_verdict(r.returncode, r.stdout)
 
 
-def _cfg_lines(argv, **kw):
-    r = subprocess.run(["git"] + argv, capture_output=True, **kw)
-    return [x for x in r.stdout.split(b"\0") if x]
-
-
-GPG_OFF = ["-c", "commit.gpgSign=false", "-c", "gpg.program=false", "-c", "gpg.openpgp.program=false",
-           "-c", "gpg.ssh.program=false", "-c", "gpg.x509.program=false"]   # the rebase re-commits: no builder signer
-
-
-def net_cfg(root, url=None):
-    """`-c` overrides for everything the builder's own .git/config could use to run its command when the harness talks
-    to a remote: core.sshCommand, core.askPass and every credential*.helper are pinned to the OWNER's value (read from
-    outside any repo, so the clone's config is never consulted) or to nothing. Merge drivers (a rebase runs them) are
-    neutralised, signing is off. The clone's config is read WITH its include.path/includeIf files (the pull reads them
-    too) and with the owner's global/system config out of the picture. -> list of argv, or None when the clone
-    redirects URLs (url.*.insteadOf) or defines a remote named like the pinned `url` (its url/uploadpack/proxy would
-    replace the pin) and must not be pulled."""
-    out = list(GPG_OFF)
-    here = tempfile.gettempdir()                      # not inside any repo: only the owner's global/system config
-    clone = ["-C", str(root)]
-    cenv = dict(os.environ, **GIT_SAFE_ENV)           # global/system nulled: the clone's own file plus what it includes
-    if _cfg_lines(clone + ["config", "-z", "--name-only", "--get-regexp", r"^url\..*\.(push)?insteadof$"], env=cenv):
-        return None
-    if url and any(k.startswith(b"remote." + url.encode() + b".") for k in
-                   _cfg_lines(clone + ["config", "-z", "--name-only", "--get-regexp", r"^remote\."], env=cenv)):
-        return None
-    for k, default in (("core.sshCommand", "ssh"), ("core.askPass", "")):
-        vals = _cfg_lines(["config", "--get-all", "-z", k], cwd=here)
-        out += ["-c", k + "=" + (vals[-1].decode("utf-8", "replace") if vals else default)]
-    rx = r"^credential\..*helper$"
-    keys = {}
-    for kv in _cfg_lines(["config", "-z", "--get-regexp", rx], cwd=here):
-        k, _, v = kv.decode("utf-8", "replace").partition("\n")
-        keys.setdefault(k, []).append(v)
-    for kv in _cfg_lines(clone + ["config", "-z", "--get-regexp", rx], env=cenv):
-        keys.setdefault(kv.decode("utf-8", "replace").partition("\n")[0], [])
-    for k, vals in keys.items():
-        out += ["-c", k + "="]                        # an empty value resets the list
-        for v in vals:
-            out += ["-c", "%s=%s" % (k, v)]
-    for kv in _cfg_lines(clone + ["config", "-z", "--get-regexp", r"^merge\..*\.driver$"], env=cenv):
-        out += ["-c", kv.decode("utf-8", "replace").partition("\n")[0] + "=false"]
-    return out
-
-
 def default_sync(root, sleep=time.sleep, tries=3, pin=None):
     """The Ralph doc's pull (ralph_loop_design §1.2: `for n in 1 2 3; do git pull --rebase -q && break; sleep
     $((n*30)); done`), on main, before every build pass (review L6). -> True when a pull succeeded."""
@@ -579,15 +534,19 @@ def default_sync(root, sleep=time.sleep, tries=3, pin=None):
         git_run(root, "config", "--get", "remote.origin.url", capture_output=True, text=True).stdout.strip()
     if not url:
         return False                                  # no URL to pin: never pull the literal name "origin" (its section is the clone's)
-    cfg = net_cfg(root, url)
-    if cfg is None:
-        return False
     if pin and not Path(pin).exists():
+        try:
+            SG.net_cfg(root, url)                     # refuse (CloneRefused) before pinning a url the clone redirects
+        except SG.CloneRefused:
+            return False
         Path(pin).write_text(url + "\n")
     for n in range(1, tries + 1):
-        if git_run(root, *cfg, "pull", "--rebase", "-q",
-                   "--upload-pack=git-upload-pack", url, MAIN, capture_output=True, timeout=600,
-                   keep_user_config=True).returncode == 0:   # the owner's ssh/credential config; hooks stay off
+        try:
+            ok = SG.git_run(root, "pull", "--rebase", "-q", "--upload-pack=git-upload-pack", url, MAIN,
+                            transport=True, url=url, capture_output=True, timeout=600).returncode == 0
+        except SG.CloneRefused:                       # url.*.insteadOf / a remote section named like the pin
+            return False
+        if ok:
             return True
         if n < tries:
             sleep(n * 30)
@@ -625,42 +584,18 @@ class RalphCLane:
 # export-subst in its .gitattributes change an archive, and a diff driver, textconv, fsmonitor or hooksPath in
 # .git/config runs its code as the harness. Every git call on the clone ignores replace objects and grafts, loads no
 # system/global/attributes file and disables those execution hooks; diffs also pass --no-ext-diff --no-textconv.
-GIT_SAFE_ENV = {"GIT_NO_REPLACE_OBJECTS": "1", "GIT_GRAFT_FILE": os.devnull, "GIT_CONFIG_NOSYSTEM": "1",
-                "GIT_CONFIG_GLOBAL": os.devnull, "GIT_EXTERNAL_DIFF": "", "GIT_PAGER": "cat"}
-GIT_SAFE_CFG = ["-c", "core.fsmonitor=false", "-c", "core.hooksPath=" + os.devnull, "-c", "diff.external=",
-                "-c", "core.attributesFile=" + os.devnull,
-                # a commit starts `git maintenance run --auto --detach`, which outlives it with its cwd in the clone and
-                # trips the "no process beside a build pass" refusal (ARENA_DRILL_SYNC_FLAKY_PENDING_MAIN)
-                "-c", "maintenance.auto=false", "-c", "gc.auto=0"]
-NO_DRIVER = ("--no-ext-diff", "--no-textconv")
+# One definition lives in arena_safe_git (SG); these names stay for callers (trio_loop, v3_control, the selftests).
+GIT_SAFE_ENV = SG.GIT_SAFE_ENV
+GIT_SAFE_CFG = SG.GIT_SAFE_CFG
+NO_DRIVER = SG.NO_DRIVER
+no_filter_cfg = SG.no_filter_cfg
+net_cfg = SG.net_cfg
+GPG_OFF = SG.GPG_OFF
 
 
-def git_run(root, *a, keep_user_config=False, **kw):
-    """subprocess.run of git on the clone with the safe env and config; kw goes to subprocess.run. Only `pull`
-    keeps the user's global config (its ssh/credential settings): still no replace objects, hooks or fsmonitor."""
-    env = dict(os.environ, **GIT_SAFE_ENV)
-    if keep_user_config:
-        env["GIT_ALLOW_PROTOCOL"] = "file:https:ssh"          # no ext:: or helper protocol, whatever the clone's config says
-        for k in ("GIT_CONFIG_NOSYSTEM", "GIT_CONFIG_GLOBAL"):
-            env.pop(k, None)
-            if k in os.environ:                      # the owner's own GIT_CONFIG_GLOBAL file is the user config
-                env[k] = os.environ[k]
-    return subprocess.run(["git", "-C", str(root)] + GIT_SAFE_CFG + no_filter_cfg(root) + list(a), env=env, **kw)
-
-
-def no_filter_cfg(root):
-    """`-c` overrides that turn every filter.<name> driver the clone's config defines into plain `cat` (clean and
-    smudge) or nothing (process): .gitattributes `filter=` plus .git/config otherwise runs the builder's command as
-    the harness on status/add/switch/merge/stash. Names are read with the same safe env (reading runs nothing)."""
-    env = dict(os.environ, **GIT_SAFE_ENV)
-    r = subprocess.run(["git", "-C", str(root), "config", "-z", "--get-regexp", r"^filter\..*\.(clean|smudge|process)$"],
-                       env=env, capture_output=True)
-    out = []
-    for kv in r.stdout.split(b"\0"):
-        key = kv.split(b"\n", 1)[0].decode("utf-8", "replace")
-        if key:
-            out += ["-c", key + ("=" if key.endswith(".process") else "=cat")]
-    return out
+def git_run(root, *a, **kw):
+    """SG.git_run on the clone (the pull goes through SG.git_run(..., transport=True, url=...) in default_sync)."""
+    return SG.git_run(root, *a, **kw)
 
 
 def export_tree(root, sha, dest):
