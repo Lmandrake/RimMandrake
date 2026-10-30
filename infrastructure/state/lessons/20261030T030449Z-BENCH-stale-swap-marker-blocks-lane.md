@@ -1,0 +1,2 @@
+A stale deployed/config/ModsConfig.swap-active.json (a flowworks tier swap from 2026-10-24) makes modset_builder refuse every later tier swap, so the first live arena run went INVALID after already stopping the game; and the aborted release still wrote ModsConfig.FULL.LATEST (321 mods), leaving a 25-min list for the next launch. Fix before running a lane: modset_builder --status, and move a stale marker aside (ModsConfig is disposable per owner).
+home: src/RimMandrake/Utils/arena/arena_lane.py
