@@ -45,6 +45,19 @@ Fix round 1 (judge_test_report.md), one forced failure per defect:
                 per judge, deleted after
   guess         seeded arm-independent random guesses are not leaky; consistently naming the next arm is LEAKY on
                 the low tail; binomial at n=5000 does not overflow; the report states its decision rule
+ fix round 3 (GPT review of round 2; every forced case below failed against round-2 code 64f2e51cf1):
+  nonce hunt    imported arm code hunting the REAL nonce (frame f_locals walk, inspect.stack, gi_frame, gc, /proc/self
+                mem/environ, argv/stdin, sending or swapping the seal, ctypes, a C-slot SystemExit(0)) never passes;
+                two marker lines are not a pass; controls: run-to-end, sys.exit(main()), bare SystemExit pass
+  replay empty  a replay whose hidden file is {}, empty, unsupported-only, unauthored-only, body-less or malformed ->
+                invalid, 0 model calls; control: a non-replay with no checks is still judged
+  report types  a list judge_id, a list vote judge or a dict guess is skipped and counted; the report is written
+  detectors     one fixture per leak detector, each firing ALONE; disabling exactly that detector silences exactly
+                that fixture and no other
+  binary        a binary change in the area -> JudgeError / invalid, 0 model calls
+  one verdict   a rejection followed by a quoted acceptance -> invalid; an identical repeat and a nested object do not
+  mutual info   a one-to-one relabelling at 20% accuracy is not LEAKY on accuracy but the secondary MI test flags it;
+                random guesses are not flagged; the Bonferroni count is unchanged
 Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES / ARENA_PRIVATE / ARENA_JUDGE_WORK point there).
 """
 import json
@@ -804,6 +817,195 @@ def t_bad_verdict(tmp):
         check(False, "corrupt verdict.json crashed the report: %r" % ex)
 
 
+# ------------------------------------------------------------------ fix round 3 (GPT review of round 2)
+# Each block below was RED against the round-2 code (64f2e51cf1) and is green after the fix.
+IMPORT_THEN = ("import sys, os\nsys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))\nimport mod\n")
+HUNT = ("import sys, os\nHEX = set('0123456789abcdef')\nfound = set()\n"
+        "def look(v):\n    if isinstance(v, bytes):\n        v = v.decode('ascii', 'replace')\n"
+        "    if isinstance(v, str) and len(v) == 32 and set(v) <= HEX:\n        found.add(v)\n"
+        "f = sys._getframe()\nwhile f is not None:\n    for v in list(f.f_locals.values()):\n        look(v)\n"
+        "    f = f.f_back\nfor v in found:\n    print('ARENA_CHECK_DONE ' + v)\nsys.stdout.flush()\nos._exit(0)\n")
+NONCE_HUNTS = {
+    "sys._getframe walk of f_locals (the review's attack)": HUNT,
+    "inspect.stack frame locals": HUNT.replace("f = sys._getframe()\nwhile f is not None:\n    for v in list("
+                                               "f.f_locals.values()):\n        look(v)\n    f = f.f_back\n",
+                                               "import inspect\nfor fi in inspect.stack():\n    for v in list("
+                                               "fi.frame.f_locals.values()):\n        look(v)\n"),
+    "generator gi_frame": "import sys, os\nf = sys._getframe()\nwhile f is not None:\n    for v in list("
+                          "f.f_globals.values()):\n        if type(v).__name__ == 'generator':\n"
+                          "            print(v.gi_frame.f_locals)\n    f = f.f_back\nos._exit(0)\n",
+    "gc.get_objects": "import gc, os\nfor o in gc.get_objects():\n    pass\nos._exit(0)\n",
+    "/proc/self/mem": "import os\nopen('/proc/self/mem', 'rb')\nos._exit(0)\n",
+    "/proc/self/environ": "import os\nprint(open('/proc/self/environ', 'rb').read()[:9])\nos._exit(0)\n",
+    "argv and stdin": "import sys, os\nprint('ARENA_CHECK_DONE ' + (sys.argv + [''])[-1][:32])\n"
+                      "print('ARENA_CHECK_DONE ' + sys.stdin.read().strip())\nsys.stdout.flush()\nos._exit(0)\n",
+    "send the seal from the arm": "import sys\nsys.modules['__main__'].__dict__.get('__arena_seal__').send(0)\n",
+    "swap the seal": "import sys\nclass F:\n    def send(self, v):\n        pass\n"
+                     "sys.modules['__main__'].__arena_seal__ = F()\n",
+    "ctypes": "import ctypes\n",
+    "C-slot exit (bool raises SystemExit(0))": "import functools\ndef g():\n    yield\nz = g()\nlist(z)\n"
+                                              "class A:\n    __bool__ = staticmethod(functools.partial(z.throw, "
+                                              "SystemExit(0)))\nX = A()\nif X:\n    pass\n",
+}
+
+
+def t_nonce_hunt(tmp):
+    """GPT round 2 #3: imported arm code hunting the REAL nonce (frames, gc, /proc, stdin, the seal) never passes."""
+    hidden = {"checks": [{"type": "fix_test", "path": DEMO + "selftest_hunt.py",
+                          "body": IMPORT_THEN + "sys.exit(1)\n"}], "reworks": []}
+    for i, (what, body) in enumerate(NONCE_HUNTS.items()):
+        c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "hunt" / str(i), {DEMO + "mod.py": body})
+        fs = [Fake(ans("accept")) for _ in range(3)]
+        r = J.judge(task=task_for("T_H"), hidden=hidden, clone=c, base=b, head=h, arm="v3", gate=GATE,
+                    judges=J.Judges(*fs))
+        res = r["hidden"][0]["result"] if r.get("hidden") else r.get("why", "")[:40]
+        check(res != "pass" and r["verdict"] in ("reject", "invalid") and fs[0].calls == 0,
+              "forced: nonce hunt via %s is never a pass (%s -> %s, 0 model calls)" % (what, res, r["verdict"]))
+    n = "ab" * 16
+    check(J._check_result(0, ("ARENA_CHECK_DONE %s\nARENA_CHECK_DONE %s\n" % (n, "cd" * 16)).encode(), n) != "pass",
+          "a second marker line beside the real one is not a pass")
+    check(J._check_result(0, ("ARENA_CHECK_DONE %s\n" % n).encode(), n) == "pass", "control: exactly one real marker")
+    check(J._check_result(J.RUNNER_DENIED, b"", n) == "denied", "the runner's deny exit is 'denied', never pass")
+    c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "hunt" / "ok", {DEMO + "mod.py": "def value():\n"
+                                                                              "    return 2\n"})
+    for what, body, want in (("plain run to the end", HIDDEN_TEST, "pass"),
+                             ("module-level sys.exit(main()) under __main__", IMPORT_THEN.replace("import mod\n", "")
+                              + "def main():\n    import mod\n    return 0 if mod.value() == 2 else 1\n"
+                              "if __name__ == '__main__':\n    sys.exit(main())\n", "pass"),
+                             ("bare raise SystemExit", "raise SystemExit\n", "pass"),
+                             ("sys.exit(1)", "import sys\nsys.exit(1)\n", "fail")):
+        hd = {"checks": [{"type": "fix_test", "path": DEMO + "selftest_ctl3.py", "body": body}], "reworks": []}
+        r = J.judge(task=task_for("T_H"), hidden=hd, clone=c, base=b, head=h, arm="v3", gate=GATE,
+                    judges=J.Judges(Fake(ans("accept")), Fake(ans("accept")), Fake(ans("accept"))))
+        check(r["hidden"][0]["result"] == want, "control: %s -> %s (%s)" % (what, want, r["hidden"][0]["result"]))
+
+
+def t_replay_empty(tmp):
+    """GPT round 2 #4: a replay whose hidden file runs NOTHING fails closed (only `None` did in round 2)."""
+    c, b, h = make_clone(Path(os.environ["ARENA_CLONES"]) / "replayempty", "v3", 1, plant=False)
+    task = dict(task_for("RP_T_EMPTY"), source_item="SOME_ITEM_FIXED")
+    for what, hd in (("{}", {}), ("empty checks", {"checks": [], "reworks": []}),
+                     ("only an unsupported check type", {"checks": [{"type": "live", "path": "x", "body": "1"}]}),
+                     ("only an unauthored rework (UNMEASURED)", {"checks": [], "reworks": [{"item": "R1"}]}),
+                     ("a fix_test with no stored body", {"checks": [{"type": "fix_test", "path": DEMO + "t.py"}]}),
+                     ("a malformed checks list", {"checks": ["nope"]})):
+        fs = [Fake(ans("accept")) for _ in range(3)]
+        r = J.judge(task=task, hidden=hd, clone=c, base=b, head=h, arm="v3", gate=GATE, judges=J.Judges(*fs))
+        check(r["verdict"] == "invalid" and fs[0].calls == fs[1].calls == 0,
+              "forced: replay with %s -> invalid, 0 model calls (%s: %s)" % (what, r["verdict"], r.get("why", "")[:50]))
+    fs = [Fake(ans("accept")) for _ in range(3)]
+    r = J.judge(task=task_for("T_NOTREPLAY"), hidden={}, clone=c, base=b, head=h, arm="v3", gate=GATE,
+                judges=J.Judges(*fs))
+    check(r["verdict"] == "accept", "control: a NON-replay task with no hidden checks is still judged (%s)"
+          % r["verdict"])
+
+
+def t_report_types(tmp):
+    """GPT round 2 #5: a list-valued judge_id or vote judge is skipped and counted, never a crash."""
+    wb = tmp / "badtypes"
+    jid = J.ArmMap().assign("v3", "T_TY", "b" * 40, "c" * 40)
+    for name, rec in (("Jlistid", {"judge_id": [], "ts": "2026-10-29T00:00:00Z", "votes": []}),
+                      ("Jlistjudge", {"judge_id": jid, "ts": "2026-10-29T00:00:00Z",
+                                      "votes": [{"judge": [], "arm_guess": "v3"}]}),
+                      ("Jdictguess", {"judge_id": jid, "ts": "2026-10-29T00:00:00Z",
+                                      "votes": [{"judge": "opus", "arm_guess": {"x": 1}}]}),
+                      ("Jgood", {"judge_id": jid, "ts": "2026-10-29T00:00:00Z",
+                                 "votes": [{"judge": "opus", "arm_guess": "v3"}]})):
+        (wb / name).mkdir(parents=True)
+        (wb / name / "verdict.json").write_text(json.dumps(rec))
+    try:
+        rep = json.loads(J.write_report("2026-10-29", work_base=wb).read_text())
+        check(rep["unreadable"] == 3 and rep["pooled"]["guesses"] == 1,
+              "forced: list judge_id / list vote judge / dict guess skipped and counted (%d unreadable, %d guesses)"
+              % (rep["unreadable"], rep["pooled"]["guesses"]))
+    except Exception as ex:                                              # noqa: BLE001
+        check(False, "a list-valued judge_id or vote judge crashed the report: %r" % ex)
+    rep = J.guess_report([{"judge_id": [], "votes": []}, {"judge_id": jid, "votes": [{"judge": [], "arm_guess": []}]}],
+                         J.ArmMap().read(), ("v3", "trio"))
+    check(rep["unmapped"] == 1 and "?" in rep["per_judge"], "guess_report alone also survives the bad types")
+
+
+def t_detectors(tmp):
+    """GPT round 2 #6: one fixture per leak detector, each firing ALONE; disabling exactly that detector silences
+    exactly that fixture (a mutation check: a broken detector turns its own test red, no other)."""
+    out = Path(os.environ["ARENA_CLONES"]).parent / "elsewhere" / "zz9"
+    sha = "deadbee" + "f" * 33
+    fx = {"arm token": ("made by ralph_a here\n", {}),
+          "model name": ("asked opus about it\n", {}),
+          "glued": ("xralph_afoo = 1\n", {}),
+          "clone path": ("log at %s/run.log\n" % out, {"clone": out}),
+          "clone root path": ("see %s/zzz/x\n" % J.clones_root(), {}),
+          "sha": ("fixed at deadbeef\n", {"shas": (sha,)}),
+          "trailer": ("Signed-off-by: Q\n", {}),
+          "session url": ("ref session_" + "Q7" * 12 + "\n", {}),
+          "branch ref": ("pushed refs/heads/feature9\n", {})}
+    check(set(fx) == set(J.LEAK_DETECTORS), "a fixture for every detector (%s)" % sorted(set(J.LEAK_DETECTORS) ^ set(fx)))
+    for label, (text, kw) in fx.items():
+        hits = J.find_leaks(text, allow=(), **kw)
+        own = [x for x in hits if x.startswith(label + " ") or x.startswith(label + " arm")]
+        check(len(hits) == len(own) >= 1, "%s fixture fires its own detector ALONE (%s)" % (label, hits))
+        for off in J.LEAK_DETECTORS:
+            quiet = not J.find_leaks(text, allow=(), _off=(off,), **kw)
+            if off == label:
+                check(quiet, "mutation: %s detector off -> its fixture goes quiet (RED for a broken detector)" % label)
+            elif not quiet:
+                pass
+            else:
+                check(False, "mutation: turning off %s silenced the %s fixture" % (off, label))
+
+
+def t_binary(tmp):
+    """GPT round 2 #10: a binary change shows only 'Binary files differ' -> invalid, never judged blind."""
+    c, b, h = clone_files(Path(os.environ["ARENA_CLONES"]) / "binary" / "v3", {DEMO + "mod.py": "def value():\n"
+                                                                                "    return 2\n"})
+    (c / DEMO / "blob.bin").write_bytes(bytes(range(256)) * 4)
+    git(c, "add", "-A")
+    git(c, "commit", "-q", "-m", "bin")
+    h = git(c, "rev-parse", "HEAD")
+    try:
+        J.neutralise(c, b, h, AREA)
+        check(False, "forced: neutralise accepted a binary change")
+    except J.JudgeError as ex:
+        check("binary" in str(ex).lower(), "forced: neutralise refuses a binary change (%s)" % str(ex)[:60])
+    fs = [Fake(ans("accept")) for _ in range(3)]
+    r = J.judge(task=task_for("T_B"), hidden=None, clone=c, base=b, head=h, arm="v3", gate=GATE, judges=J.Judges(*fs))
+    check(r["verdict"] == "invalid" and fs[0].calls == 0, "a binary change -> invalid, 0 model calls (%s)"
+          % r["verdict"])
+
+
+def t_one_verdict(tmp):
+    """GPT round 2 #12: exactly ONE verdict object; a rejection then a quoted acceptance is invalid, not accept."""
+    two = ('{"verdict": "reject", "reasons": ["bad"], "arm_guess": "unknown"}\nfor example a passing answer '
+           'would be {"verdict": "accept", "reasons": [], "arm_guess": "unknown"}')
+    check(J.parse_answer(two, ("v3",))["verdict"] == "invalid", "forced: two distinct verdict objects -> invalid")
+    one = '{"verdict": "accept", "reasons": ["r"], "arm_guess": "v3"}'
+    check(J.parse_answer(one + "\n" + one, ("v3",))["verdict"] == "accept", "an identical repeat is one answer")
+    nest = '{"verdict": "reject", "reasons": [{"verdict": "accept"}], "arm_guess": "unknown"}'
+    check(J.parse_answer(nest, ("v3",))["verdict"] == "reject", "a nested object inside the verdict is not a second one")
+    check(J.parse_answer("no json here", ("v3",))["verdict"] == "invalid", "none -> invalid")
+
+
+def t_mi(tmp):
+    """GPT round 2 #11: a one-to-one relabelling at chance accuracy is not LEAKY on accuracy (the pre-registered
+    decision) but the secondary mutual-information test flags it."""
+    labels = ("a", "b", "c", "d", "e")
+    nxt = {"a": "a", "b": "c", "c": "d", "d": "e", "e": "b"}        # one arm right, the other four cycled
+    amap = {"J%d" % i: {"arm": labels[i % 5]} for i in range(40)}
+    recs = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": nxt[m["arm"]]}]} for j, m in amap.items()]
+    rep = J.guess_report(recs, amap, labels)
+    o = rep["per_judge"]["opus"]
+    check(not o["leaky"] and abs(o["rate"] - 0.2) < 1e-12, "forced: accuracy at chance (20%%) is not LEAKY on accuracy "
+          "(p=%.3f) - the review's blind spot" % o["p_value"])
+    check(o["mi_p"] < rep["alpha_per_test"] and rep["blinding_secondary"].startswith("LEAKY"),
+          "the mutual-information test flags the relabelling (mi=%.2f bits, mi_p=%.4f)" % (o["mi_bits"], o["mi_p"]))
+    rng = random.Random(5)
+    recs = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": rng.choice(labels)}]} for j in amap]
+    rep = J.guess_report(recs, amap, labels)
+    check(rep["blinding_secondary"] == "not shown leaky", "control: arm-independent random guesses are not flagged "
+          "by MI (mi_p=%.3f)" % rep["per_judge"]["opus"]["mi_p"])
+    check(rep["tests"] == 2, "the secondary statistic does not change the Bonferroni count")
+
+
 def main():
     if not shutil.which("bwrap"):
         print("FAIL  bwrap not installed: the judge cannot run, and this test cannot prove the map is hidden")
@@ -837,6 +1039,13 @@ def main():
         t_chance(tmp)
         t_model_unset(tmp)
         t_bad_verdict(tmp)
+        t_nonce_hunt(tmp)
+        t_replay_empty(tmp)
+        t_report_types(tmp)
+        t_detectors(tmp)
+        t_binary(tmp)
+        t_one_verdict(tmp)
+        t_mi(tmp)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)

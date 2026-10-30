@@ -103,15 +103,47 @@ RESIDUAL (stated, not hidden):
     clones, the arm map at its default path (named in this source), ~/.claude/projects, the arena event log and the
     gate folders arena_gate.py names <arm>_<task>_<head12>_<stamp>. Setting ARENA_PRIVATE to an unpublished path
     narrows the map; nothing here can stop a model that goes looking. The guess-rate report is the detector.
-  - arm code inside a hidden check shares the runner's interpreter, so deliberate frame/gc introspection could still
-    find the nonce, and a check that CALLS an arm-supplied C callable (functools.partial(sys.exit, 0)) raises from its
-    own frame; an arm object with a lying __eq__ can satisfy an assert. The marker and the own-code rule defeat early
-    exits from imports and hooked exits, not a targeted attack on the runner.
+  - SAME-UID ARMS (GPT round 2 #2, criterion-breaking, NOT fixed here): the arms run as the same OS user as the
+    harness. 0700/0600 modes do not stop a same-uid process, so an arm acting BEFORE a judge runs can read or copy the
+    arm map, plant it in model config, edit a hidden-check JSON before judge_task() reads it, or edit verdict.json
+    before the report. The sandbox masks only bind what runs INSIDE the judge; the only real fix is a separate uid (or
+    host) for the arms, which is outside this module.
+  - WINDOWS codex.exe (GPT round 2 #1, criterion-breaking, NOT fixed here): the GPT judge is a Windows process that
+    bubblewrap cannot confine (below); the selftest's Linux stand-in IS confined, so the green arm-map test does not
+    cover the production GPT path.
+  - arm code inside a hidden check shares the runner's interpreter. Round 3 seals the nonce (see the runner comment):
+    gone from every Python frame, readable only by native code, a CPython memory bug, or an arm that rewrites the check
+    namespace it shares; an arm object with a lying __eq__ can still satisfy an assert.
   - the Opus run's writable $HOME means claude still auto-loads the user's own ~/.claude config/CLAUDE.md (it names
     no arm); the model has no tools to read further.
-  - the guess test assumes exchangeable submissions (no task/replay-family/time structure), uses accuracy as its only
-    statistic (a truth-dependent mapping that keeps accuracy at chance is not caught), and alpha is per report, not
-    across repeated daily reports.
+  - the guess test assumes exchangeable submissions (no task/replay-family/time structure), DECIDES on accuracy, and
+    alpha is per report, not across repeated daily reports (see DESIGN CALLS #11 for the secondary MI statistic).
+
+FIX ROUND 3 (GPT review of round 2), each with a forced-failure selftest red against round-2 code:
+  #3 nonce: the runner reads the nonce from stdin into a sealed generator, never a frame local; an audit hook denies
+     frame/gc/trace/monitoring/ctypes/code-object/marshal access, /proc and `mem` opens (the check sandbox also gets a
+     tmpfs /proc); module-level sys.exit/SystemExit in the CHECK's own source is rewritten to a seal send at a known
+     bytecode offset, so only the check's own top frame can finish it; exactly one marker line, or no_marker.
+  #4 a replay whose hidden file runs nothing ({} / empty / unsupported / unauthored / body-less / malformed) or where
+     no hidden check passed is invalid before any model call.
+  #5 a non-string judge_id, vote judge or arm_guess is skipped and counted unreadable; guess_report guards too.
+  #6 one fixture per leak detector, each firing alone; glued_residue no longer re-reports what the boundary matcher
+     sees, and find_leaks(_off=...) lets each detector be mutated off in the selftest.
+  #10 a binary change (numstat `-`, "Binary files differ", GIT binary patch) is a JudgeError: never judged blind.
+  #12 parse_answer requires exactly one distinct verdict object.
+DESIGN CALLS (documented, not changed):
+  #7 judge_masks() masks the CONFIGURED roots (ARENA_CLONES, ARENA_PRIVATE, arena root); a clone or work_base passed
+     from elsewhere is not masked. Callers must keep submissions under those roots (not enforced here).
+  #8 judges are fresh processes, not independent ones: Opus shares the real $HOME (~/.claude auto-loads), GPT shares
+     its scratch/receipt dirs, and a same-uid arm can pre-seed both. opus_model() accepts any non-empty model string;
+     that the primary and tie-break are really Opus is the operator's configuration, not verified here.
+  #9 the leak scan is lexical: the `import trio` / `v3.2` exemptions are deliberate (reported ambiguous) and an arm
+     can choose them as a signal; escaped, encoded or respelled names outside the skeleton map are not caught. The
+     guess report is the backstop, not a proof that identity was removed.
+  #11 accuracy stays the pre-registered decision (`blinding`). A secondary mutual-information statistic (bits, same
+     submission-level one-sided permutation, `mi_bits`/`mi_p`, `blinding_secondary`) catches a one-to-one relabelling
+     at chance accuracy; it is upward-biased with few submissions per arm, so it flags for investigation only and
+     does not enter the Bonferroni count.
   - glued_residue refuses legitimate words that contain an arm name until a human allowlists them (fail closed).
   - the real `claude -p` / codex.exe have not been run inside this sandbox by the selftests (they cost money).
 """
@@ -272,7 +304,8 @@ def A_now() -> str:
 
 # ---------------------------------------------------------------- sandbox (judge side)
 
-def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir: Path | None = None) -> list[str]:
+def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir: Path | None = None,
+                 proc: bool = True) -> list[str]:
     """READ-ONLY root (`--ro-bind / /`), a fresh /tmp, its own pid namespace (no host /proc, and the whole tree dies
     with it), `masks` hidden under empty tmpfs, and ONLY `keep` writable. Order: kept dirs outside every mask are
     bound first, then the masks are laid (so a broad bind like $HOME never re-exposes ~/.claude/projects), then the
@@ -280,7 +313,9 @@ def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir:
     bw = shutil.which("bwrap")
     if not bw:
         raise JudgeUnavailable("bwrap not found: the judge never runs unsandboxed")
-    out = [bw, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--tmpfs", "/tmp",
+    # proc=False (a hidden check: arm code runs there) lays an empty tmpfs over /proc instead (fix round 3, #3)
+    out = [bw, "--ro-bind", "/", "/", "--dev", "/dev"] + (["--proc", "/proc"] if proc else ["--tmpfs", "/proc"]) + [
+           "--tmpfs", "/tmp",
            "--unshare-pid", "--new-session", "--die-with-parent"]
     ms = sorted({os.path.realpath(m) for m in masks if Path(m).exists()}, key=len)
     ks = sorted({os.path.realpath(k) for k in keep if Path(k).exists()}, key=len)
@@ -365,7 +400,7 @@ def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | 
     caller's EXTRA variables (the rest is judge_env's allow-list for `kind`). On timeout the whole process group is
     SIGKILLed (bwrap --die-with-parent then takes the pid namespace, grandchildren included)."""
     keep = [work] if rw is None else list(rw)
-    full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work)
+    full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work, proc=kind != "check")
     proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind),
                             start_new_session=True)
@@ -472,8 +507,12 @@ def glued_residue(text: str, tokens, allow=()) -> list[str]:
     `trioxide`) escapes the boundary matcher, so the scrub leaves it and the matcher-based scan cannot see it. This
     scan looks for the bare token (separator-insensitive, case-insensitive, on the skeleton) ANYWHERE, minus the
     reported version/import exemptions; each hit names its whole enclosing identifier, which is refused unless a
-    human-listed allowlist (`allow`: identifiers, case-insensitive) covers it. Returns the refused identifiers."""
+    human-listed allowlist (`allow`: identifiers, case-insensitive) covers it. Returns the refused identifiers.
+    Fix round 3 (GPT round 2 #6): an occurrence the boundary matcher ALREADY sees is that detector's hit, not glued
+    residue, so each detector can be proven alone (find_leaks always runs the boundary matcher on the same text)."""
     sk, _, _, _, exempt = _find_tokens_sk(text, tokens)
+    if tokens:
+        exempt = exempt + [m.span() for m in re.finditer("|".join("(?:%s)" % _token_re(t) for t in tokens), sk)]
     allow = {a.lower() for a in allow}
     out = []
     for t in tokens:
@@ -581,39 +620,48 @@ def scrub(text: str, *, clone: Path | None = None, shas=(), branch: str | None =
     return t, counts
 
 
+LEAK_DETECTORS = ("arm token", "model name", "glued", "clone path", "clone root path", "sha", "trailer", "session url",
+                  "branch ref")
+
+
 def find_leaks(text: str, *, clone: Path | None = None, extra_tokens=(), shas=(), ambiguous: list | None = None,
-               allow=None) -> list[str]:
+               allow=None, _off=()) -> list[str]:
     """The SAME token matcher as scrub (skeleton, glued, plural): anything it finds refuses. Exempted occurrences
     (version, import of a real module) are not hits; they are appended to `ambiguous` when a list is passed. Then the
     glued-residue scan (glued_residue): an arm name inside a longer identifier the scrub could not cut refuses unless
-    `allow` (default: glued_allowlist()) lists that identifier; the refused identifier is also reported ambiguous."""
+    `allow` (default: glued_allowlist()) lists that identifier; the refused identifier is also reported ambiguous.
+    `_off` (selftest only, fix round 3 #6) names LEAK_DETECTORS to skip, so each detector's forced-failure fixture
+    can be shown to depend on that detector alone. Every hit string starts with its detector's label."""
     hits = []
     for what, toks in (("arm token", arm_tokens(extra_tokens)), ("model name", MODEL_TOKENS)):
+        if what in _off:
+            continue
         spans, amb = _find_tokens(text, toks)
         if spans:
             s, e = spans[0]
             hits.append("%s %r at %d" % (what, text[s:e], s))
         if ambiguous is not None:
             ambiguous += amb
-    glued = glued_residue(text, arm_tokens(extra_tokens), glued_allowlist() if allow is None else allow)
+    glued = [] if "glued" in _off else glued_residue(text, arm_tokens(extra_tokens),
+                                                      glued_allowlist() if allow is None else allow)
     if glued:
         hits.append("glued arm name in identifier(s) %s (ambiguous: refused; a human may list the identifier in %s)"
                     % (", ".join(repr(g) for g in glued[:5]), GLUED_ALLOW_FILE))
         if ambiguous is not None:
             ambiguous += ["glued:" + g for g in glued]
     sk = _skeleton(text)[0]
-    if clone is not None:
+    if clone is not None and "clone path" not in _off:
         for f in _path_forms(Path(clone)):
             if f.lower() in sk.lower():
                 hits.append("clone path %r" % f)
-    for f in _path_forms(clones_root()):
+    for f in () if "clone root path" in _off else _path_forms(clones_root()):
         if re.search(re.escape(f) + r"[/\\-][A-Za-z0-9_.\-]+", sk, re.IGNORECASE):
             hits.append("clone root path %r" % f)
-    for s in shas:
+    for s in () if "sha" in _off else shas:
         if s and len(s) >= 7 and re.search(_sha_re(s), sk):
             hits.append("sha %s" % s[:7])
     for rx, what in ((TRAILER_RE, "trailer"), (SESSION_RE, "session url"), (BRANCH_RE, "branch ref")):
-        m = rx.search(sk)
+        m = None if what in _off else rx.search(sk)
         if m and "<TRAILER>" not in m.group(0):
             hits.append("%s %r" % (what, m.group(0)[:60]))
     return hits
@@ -724,6 +772,12 @@ def neutralise(clone: Path, base: str, head: str, area: list[str], *, extra_toke
             d = g.git("diff", *DIFF_SAFE, "--src-prefix=a/", "--dst-prefix=b/", base, head, "--", f)
             if not d.strip():
                 raise JudgeError("changed file %r produced no diff: a partial diff is never judged" % f)
+            # fix round 3 (GPT round 2 #10): a binary change shows only "Binary files ... differ", hiding both the
+            # implementation and any identity it carries: it can never be judged blind (git's own numstat decides)
+            ns = g.git("diff", *DIFF_SAFE, "--numstat", "-z", base, head, "--", f)
+            if ns.startswith(b"-\t-\t") or re.search(rb"(?m)^(Binary files .* differ|GIT binary patch)$", d):
+                raise JudgeError("changed file %r is a binary change: its content cannot be shown, so it cannot be "
+                                 "judged blind" % f)
             parts.append(d.decode("utf-8", "replace"))
         branch = g.branch()
     raw = "".join(parts)
@@ -813,72 +867,237 @@ def hidden_checks(hidden: dict) -> list[dict]:
 
 # The harness-owned runner. Exit code 0 is NOT a pass: arm code imported by the check can os._exit(0), replace
 # sys.excepthook, or shadow a module. A pass needs the runner's completion line carrying a per-run nonce the harness
-# generated and handed over on stdin (never in argv, env or a file); the runner writes it to a dup of the ORIGINAL
-# stdout only after the check body returned (or exited 0) under its own try/except. `-P` keeps the arm's tree off
-# sys.path until the runner's own imports are done.
+# generated and handed over on stdin (never in argv, env or a file). `-P` keeps the arm's tree off sys.path until the
+# runner's own imports are done. atexit handlers never run (posix._exit).
 #
-# Fix round 2 (GPT review #2): `raise SystemExit(0)` / `sys.exit(0)` / `sys.exit()` inside an IMPORTED arm module
-# unwinds the check body early; the round-1 runner counted it as success. Now a SystemExit with code 0/None counts
-# only when the frame that raised it is a code object COMPILED FROM THE CHECK FILE ITSELF (identity, not filename:
-# the runner compiles the file and collects every nested code object), i.e. the check's own `sys.exit(main())`.
-# Raised anywhere else (an arm module, an exec'd string) it is `no_marker`. atexit handlers never run (os._exit).
+# Fix round 3 (GPT round 2, #3): the round-2 runner kept the nonce in `_main()`'s locals while arm code ran in the same
+# interpreter, so an imported module could walk frames (sys._getframe / inspect.stack), read it, print the real marker
+# and os._exit(0). A completion signal emitted by the process that also runs the arm's code can never be made
+# unforgeable in principle (exit status and stdout are both the arm's), so the parent-only nonce of the brief is not
+# achievable for an in-process Python check; the runner instead makes the nonce UNREACHABLE from Python:
+#   * it is read with posix.read(0) (stdin is then replaced by /dev/null) and lives ONLY in the frame of a suspended
+#     generator (`_seal`), never in a module, a global, `_main()`'s locals, argv, env or a file;
+#   * an irremovable audit hook (no audit hook can be removed or listed) kills the process (rc 86, `denied`) on every
+#     Python route to that frame or to raw memory: `gi_frame` on the seal; any frame acquisition (sys._getframe,
+#     tb_frame, gi/cr/ag_frame) while the seal runs; sys._current_frames/_current_exceptions; gc.get_objects/
+#     get_referrers/get_referents; settrace/setprofile (all-threads too)/sys.monitoring callbacks/sys.remote_exec;
+#     code.__new__ (code.replace too) and marshal.load(s) (crafted bytecode; pyc lookup is pointed at a nonexistent
+#     pycache_prefix so imports never call marshal); ctypes (import and every ctypes.* event), _test*/subinterpreter
+#     modules and interpreter creation (a subinterpreter has no hooks); further audit hooks; setrlimit (core dumps are
+#     disabled with a hard RLIMIT_CORE of 0 before any arm code); any open of a file named `mem` or on procfs, and the
+#     check sandbox mounts an empty tmpfs on /proc (no /proc/self/mem, environ or cmdline at all);
+#   * the seal writes the marker only when resumed from `_main()` after exec() returned normally, or from the check's
+#     OWN top-level frame at an injected call: the runner parses the check and rewrites each module-level
+#     `sys.exit(X)` / `raise SystemExit(X)` (also inside top-level `if` blocks, i.e. `if __name__ == "__main__"`) into
+#     `__arena_seal__.send(X)` followed by a `[][0]` trap; the seal checks the caller frame by identity (`f_back`,
+#     `f_code is top`, `f_lasti` at the injected CALL) and that the same top frame registered itself at the first
+#     statement, so a re-run of the check code from arm code is refused (rc 87). A SystemExit raised ANYWHERE else (an
+#     arm module, a C slot aliased to sys.exit, a nested function) is never a success, so the round-2 rule "SystemExit
+#     from a check code object" (forgeable through C-slot aliases such as `__bool__ = staticmethod(partial(gen.throw,
+#     SystemExit(0)))`) is gone;
+#   * the parent accepts exactly ONE marker line and it must carry the nonce (`_check_result`): any other marker line
+#     means the output was tampered with and the check is not a pass.
+# RESIDUAL (stated, not closed): native code in the check process runs below every audit hook: an arm-shipped
+# extension module loaded through importlib, or a CPython memory-safety bug, can read the generator's frame and forge
+# the marker; and arm code can still rewrite the check's own namespace (its imported helpers, its globals) so that
+# assertions test something else. Only running the check in a process that never loads the arm's code would close
+# those, and an import-based Python check cannot do that.
 RUNNER = r'''
-import os, sys, traceback, types
-def _codes(co, acc):
-    acc.add(id(co))
-    for c in co.co_consts:
-        if isinstance(c, types.CodeType):
-            _codes(c, acc)
-    return acc
+import os, sys, posix, types, ast, dis, io, resource, traceback
+SENT_S, SENT_E = 999998, 999999
+def _nonce():
+    b = b""
+    while len(b) < 200 and not b.endswith(b"\n"):
+        c = posix.read(0, 64)
+        if not c:
+            break
+        b += c
+    z = posix.open(os.devnull, posix.O_RDONLY)
+    posix.dup2(z, 0)
+    posix.close(z)
+    return b.strip()
+def _seal(nonce, fd, s_offs, e_offs, top, w, x, gf, T, I):
+    me = gf(0)
+    home = me.f_back
+    gf = None
+    try:
+        yield
+        c = me.f_back
+        if not (c is not None and c.f_back is home and c.f_code is top and c.f_lasti in s_offs):
+            x(87)
+        orig = c
+        c = None
+        v = yield
+        c = me.f_back
+        if c is home:
+            ok = True
+        elif c is orig and c.f_lasti in e_offs:
+            ok = v is None or v is False or (T(v) is I and v == 0)
+        else:
+            x(87)
+        if ok:
+            w(fd, b"\nARENA_CHECK_DONE " + nonce + b"\n")
+            x(0)
+        x(1)
+    except BaseException:
+        x(87)
+    x(87)
+def _hook(g, x, w, T, S, B, N, st, pdev):
+    ALWAYS = frozenset(("sys._current_frames", "sys._current_exceptions", "gc.get_objects", "gc.get_referrers",
+                        "gc.get_referents", "sys.settrace", "sys.setprofile", "sys._settraceallthreads",
+                        "sys._setprofileallthreads", "sys.monitoring.register_callback", "sys.remote_exec",
+                        "code.__new__", "marshal.loads", "marshal.load", "sys.addaudithook",
+                        "cpython.PyInterpreterState_New", "resource.setrlimit", "resource.prlimit"))
+    FRAMEY = frozenset(("tb_frame", "gi_frame", "cr_frame", "ag_frame"))
+    BADMOD = ("ctypes", "_ctypes", "_test", "_interp", "_xxsub", "_xxinterp", "concurrent.interpreters")
+    def deny(ev):
+        try:
+            w(2, b"\nARENA_RUNNER_DENIED " + ev.encode("ascii", "replace") + b"\n")
+        finally:
+            x(86)
+    def h(ev, args):
+        if T(ev) is not S:
+            return
+        try:
+            if ev == "object.__getattr__":
+                o, n = args[0], args[1]
+                if o is g or (g.gi_running and (T(n) is not S or n in FRAMEY)):
+                    deny(ev)
+            elif ev in ALWAYS or ev.startswith("ctypes."):
+                deny(ev)
+            elif ev == "sys._getframe":
+                if g.gi_running:
+                    deny(ev)
+            elif ev == "import":
+                m = args[0]
+                if T(m) is not S or m.startswith(BADMOD):
+                    deny(ev)
+            elif ev == "open":
+                p = args[0]
+                if T(p) is N:
+                    return
+                if T(p) is not S and T(p) is not B:
+                    deny(ev)
+                q = p if T(p) is S else p.decode("utf-8", "surrogateescape")
+                if q.rstrip("/").rsplit("/", 1)[-1] == "mem":
+                    deny(ev)
+                try:
+                    if st(q).st_dev == pdev:
+                        deny(ev)
+                except OSError:
+                    pass
+        except BaseException:
+            deny("hook")
+    return h
+def _exit_stmt(n):
+    if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call):
+        f, c = n.value.func, n.value
+        if (isinstance(f, ast.Attribute) and f.attr == "exit" and isinstance(f.value, ast.Name)
+                and f.value.id == "sys" and not c.keywords and len(c.args) <= 1
+                and not any(isinstance(a, ast.Starred) for a in c.args)):
+            return True, (c.args[0] if c.args else None)
+    if isinstance(n, ast.Raise) and n.cause is None:
+        e = n.exc
+        if isinstance(e, ast.Name) and e.id == "SystemExit":
+            return True, None
+        if (isinstance(e, ast.Call) and isinstance(e.func, ast.Name) and e.func.id == "SystemExit"
+                and not e.keywords and len(e.args) <= 1 and not any(isinstance(a, ast.Starred) for a in e.args)):
+            return True, (e.args[0] if e.args else None)
+    return False, None
+def _send(arg, line):
+    call = ast.Call(func=ast.Attribute(value=ast.Name(id="__arena_seal__", ctx=ast.Load()), attr="send",
+                                       ctx=ast.Load()), args=[arg if arg is not None else ast.Constant(None)],
+                    keywords=[])
+    for k in (call, call.func, call.func.value):
+        k.lineno, k.end_lineno, k.col_offset, k.end_col_offset = line, line, 0, 1
+    s = ast.Expr(value=call)
+    s.lineno, s.end_lineno, s.col_offset, s.end_col_offset = line, line, 0, 1
+    return s
+def _trap(line):
+    s = ast.parse("[][0]").body[0]
+    for k in ast.walk(s):
+        if hasattr(k, "lineno"):
+            k.lineno, k.end_lineno = line, line
+    return s
+def _rewrite(body):
+    out = []
+    for n in body:
+        hit, a = _exit_stmt(n)
+        if hit:
+            out += [_send(a, SENT_E), _trap(SENT_E)]
+            continue
+        if isinstance(n, ast.If):
+            n.body, n.orelse = _rewrite(n.body), _rewrite(n.orelse)
+        out.append(n)
+    return out
 def _main():
-    nonce = sys.stdin.readline().strip()
-    sys.stdin = open(os.devnull)
-    fd = os.dup(1)
+    so, se, fl, pe = sys.stdout, sys.stderr, io.TextIOWrapper.flush, traceback.print_exception
     test = sys.argv[1]
+    with open(test, "rb") as f:
+        tree = ast.parse(f.read(), test)
+    body = _rewrite(tree.body)
+    i = 0
+    while i < len(body) and (isinstance(body[i], ast.ImportFrom) and body[i].module == "__future__" or
+                             i == 0 and isinstance(body[i], ast.Expr) and isinstance(body[i].value, ast.Constant)
+                             and isinstance(body[i].value.value, str)):
+        i += 1
+    body.insert(i, _send(None, SENT_S))
+    tree.body = body
+    ast.fix_missing_locations(tree)
+    top = compile(tree, test, "exec", dont_inherit=True)
+    ins = [(k.offset, k.positions.lineno if k.positions else None) for k in dis.get_instructions(top)
+           if k.opname.startswith("CALL")]
+    s_offs = frozenset(o for o, l in ins if l == SENT_S)
+    e_offs = frozenset(o for o, l in ins if l == SENT_E)
+    g = _seal(_nonce(), os.dup(1), s_offs, e_offs, top, posix.write, posix._exit, sys._getframe, type, int)
+    next(g)
+    resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
+    sys.pycache_prefix = "/nonexistent/arena-no-pycache"
+    sys.addaudithook(_hook(g, posix._exit, posix.write, type, str, bytes, int, posix.stat, posix.stat("/proc").st_dev))
     sys.argv = [test]
     sys.path.insert(0, os.path.dirname(test))
-    ok = False
-    with open(test, "rb") as f:
-        code = compile(f.read(), test, "exec", dont_inherit=True)
-    own = _codes(code, set())
-    keep = [code]
     mod = types.ModuleType("__main__")
     mod.__file__ = test
     mod.__builtins__ = __builtins__
+    mod.__dict__["__arena_seal__"] = g
     sys.modules["__main__"] = mod
     try:
-        exec(code, mod.__dict__)
-        ok = True
-    except SystemExit as e:
-        tb = e.__traceback__
-        while tb is not None and tb.tb_next is not None:
-            tb = tb.tb_next
-        mine = tb is not None and id(tb.tb_frame.f_code) in own
-        ok = e.code in (None, 0) and mine
-        if not ok:
-            print("SystemExit(%r)%s" % (e.code, "" if mine else " raised outside the check body"), file=sys.stderr)
-    except BaseException:
-        traceback.print_exc()
-    try:
-        sys.stdout.flush(); sys.stderr.flush()
-    except Exception:
-        pass
-    if ok:
-        os.write(fd, ("\n" + "ARENA_CHECK_DONE " + nonce + "\n").encode())
-    os._exit(0 if ok else 1)
+        exec(top, mod.__dict__)
+    except BaseException as e:
+        try:
+            pe(e)
+        finally:
+            posix._exit(1)
+    for s in (so, se):
+        try:
+            fl(s)
+        except BaseException:
+            pass
+    g.send(None)
+    posix._exit(87)
 _main()
 '''
 MARKER = "ARENA_CHECK_DONE "
+UNFINISHED = ("error", "no_marker", "denied")
+RUNNER_DENIED, RUNNER_TAMPER = 86, 87
 
 
 def _check_result(rc: int, out: bytes, nonce: str) -> str:
-    """pass ONLY on rc 0 AND the nonce line; rc 0 without it is `no_marker` (the check did not finish: invalid)."""
+    """pass ONLY on rc 0 AND exactly one marker line, the nonce's. rc 0 without it is `no_marker` (the check did not
+    finish: invalid); a second or foreign marker line is `no_marker` too (output tampered); rc 86 is `denied` (the
+    runner's audit hook stopped an introspection/memory route: invalid); rc 87 (the seal was resumed from a frame that
+    is not the check's own) is `no_marker`."""
     if rc == 124:
         return "error"
+    if rc == RUNNER_DENIED:
+        return "denied"
+    if rc == RUNNER_TAMPER:
+        return "no_marker"
     if rc != 0:
         return "fail"
-    lines = out.decode("utf-8", "replace").splitlines()
-    return "pass" if (MARKER + nonce) in (x.strip() for x in lines) else "no_marker"
+    lines = [x.strip() for x in out.decode("utf-8", "replace").splitlines()]
+    marks = [x for x in lines if x.startswith(MARKER.strip())]
+    return "pass" if marks == [MARKER + nonce] else "no_marker"
 
 
 def _write_check(scratch: Path, rel: str, body: str) -> Path:
@@ -926,7 +1145,9 @@ def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None 
         tail = (r.stdout + r.stderr).decode("utf-8", "replace").replace(nonce, "<NONCE>")[-1500:]
         row = {"kind": c["kind"], "path": c["path"], "rc": r.returncode, "result": result, "tail": tail}
         if result == "no_marker":
-            row["why"] = "exit 0 without the harness completion marker: the check body did not finish"
+            row["why"] = "no single harness completion marker: the check body did not finish, or its output was forged"
+        elif result == "denied":
+            row["why"] = "the runner's audit hook stopped an introspection or raw-memory route (see tail)"
         res.append(row)
     return res
 
@@ -970,20 +1191,33 @@ def build_prompt(criteria: str, gate: dict, hidden_res: list[dict], diff: str, l
 
 
 def parse_answer(text: str, labels: tuple) -> dict:
-    """The last JSON object carrying a verdict. Anything else is invalid, never accept."""
+    """Exactly ONE JSON verdict object (fix round 3, GPT round 2 #12: the round-2 parser took the LAST one, so a
+    rejection followed by a quoted acceptance example became `accept`). Each decoded verdict object's span is skipped
+    (its nested braces are not re-read); a second DISTINCT verdict object, or none, is invalid, never accept. An
+    identical repeat is the same answer and is tolerated."""
     dec = json.JSONDecoder()
-    found = None
-    for i, ch in enumerate(text or ""):
-        if ch != "{":
-            continue
+    text = text or ""
+    found, seen, i = None, set(), 0
+    while True:
+        i = text.find("{", i)
+        if i < 0:
+            break
         try:
-            obj, _ = dec.raw_decode(text, i)
+            obj, end = dec.raw_decode(text, i)
         except ValueError:
+            i += 1
             continue
         if isinstance(obj, dict) and "verdict" in obj:
+            seen.add(json.dumps(obj, sort_keys=True, default=str))
             found = obj
+            i = end
+        else:
+            i += 1
     if not found:
         return {"verdict": "invalid", "why": "no JSON verdict in the answer", "arm_guess": "unknown"}
+    if len(seen) > 1:
+        return {"verdict": "invalid", "why": "more than one verdict object in the answer (%d)" % len(seen),
+                "arm_guess": "unknown"}
     v = str(found.get("verdict", "")).strip().lower()
     g = str(found.get("arm_guess", "unknown")).strip()
     return {"verdict": v if v in VERDICTS else "invalid", "reasons": found.get("reasons") or [],
@@ -1180,6 +1414,14 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
         # fix round 2 (GPT review #8): a replay task's hidden checks are part of its definition; a missing judge file
         # fails CLOSED (the known-bad output it exists to catch would otherwise reach the models)
         return done("invalid", "replay task %s has no hidden-check file: refusing to judge without it" % task["id"])
+    try:
+        runnable = [c for c in hidden_checks(hidden or {}) if c.get("body") is not None]
+    except (AttributeError, KeyError, TypeError) as ex:
+        return done("invalid", "hidden-check file is malformed: %s" % ex)
+    if is_replay(task) and not runnable:
+        # fix round 3 (GPT round 2 #4): fail closed before any work when nothing in the judge file can run
+        return done("invalid", "replay task %s: its hidden-check file holds no runnable check (no stored body)"
+                    % task["id"])
     allow = glued_allowlist(p)
     try:
         nd = neutralise(clone, base, head, task.get("area") or [], extra_tokens=extra_tokens, allow=allow)
@@ -1202,13 +1444,18 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
             # fix round 2 (GPT review #1/#4): the raw head tree and the per-check copies are gone BEFORE any model
             # is asked, so no judge (codex.exe included, which the Linux sandbox does not confine) can read them
             remove_raw_tree(work)
-        if any(h["result"] in ("error", "no_marker") for h in rec["hidden"]):
+        if any(h["result"] in UNFINISHED for h in rec["hidden"]):
             return done("invalid", "a hidden check could not finish: " +
                         ", ".join("%s (%s)" % (h["path"], h["result"]) for h in rec["hidden"]
-                                  if h["result"] in ("error", "no_marker")))
+                                  if h["result"] in UNFINISHED))
         if any(h["result"] == "fail" for h in rec["hidden"]):
             return done("reject", "hidden check failed: " +
                         ", ".join(h["path"] for h in rec["hidden"] if h["result"] == "fail"))
+    if is_replay(task) and not any(h["result"] == "pass" for h in rec["hidden"]):
+        # fix round 3 (GPT round 2 #4): a replay exists to catch a known-bad output; `{}`, an empty `checks` list, or
+        # checks that are all UNMEASURED (no stored body) ran nothing, so the models would judge it unchecked
+        return done("invalid", "replay task %s: no hidden check ran and passed (%s); refusing to judge without one"
+                    % (task["id"], ", ".join(sorted({h["result"] for h in rec["hidden"]})) or "no runnable checks"))
 
     kw = {"clone": clone, "shas": (base, head), "extra_tokens": extra_tokens}
     gview = _gate_view(gate, **kw)
@@ -1268,9 +1515,15 @@ DECISION_NOTE = ("LEAKY is decided by a TWO-SIDED PERMUTATION test (p_value < al
                  "every arm is equally likely on every submission (the day's arm mix is unequal) and, pooled, treats "
                  "the correlated votes on one submission as independent trials, so it calls a majority-guessing blind "
                  "judge leaky. binom_p is printed for reference only. Residual: the permutation null assumes "
-                 "submissions are exchangeable (no task/replay-family/time structure), accuracy is the only statistic "
-                 "(a truth-dependent mapping that keeps accuracy at chance is not detected), and alpha is per report, "
-                 "not across repeated daily reports.")
+                 "submissions are exchangeable (no task/replay-family/time structure), the DECISION statistic is "
+                 "accuracy (a truth-dependent mapping that keeps accuracy at chance is not detected by it), and alpha "
+                 "is per report, not across repeated daily reports. Fix round 3 (GPT round 2 #11): a SECONDARY "
+                 "statistic, the mutual information of guess x truth (bits) with its own one-sided permutation p "
+                 "(mi_p, same submission-level permutation), is printed per judge and pooled, and "
+                 "`blinding_secondary` says LEAKY when any mi_p < alpha_per_test: it catches a one-to-one relabelling "
+                 "at chance accuracy. It does not change `blinding` (the pre-registered decision), and with few "
+                 "submissions per arm MI is biased upward, so it is evidence to investigate, not a verdict.")
+MI_DRAWS = 1000          # permutations for the secondary mutual-information statistic
 EXACT_MAX = 8            # n! permutations enumerated exactly up to this many submissions
 MC_DRAWS = 20000
 
@@ -1317,6 +1570,34 @@ def _perm_p(pairs_by_sub: list[list[tuple]], seed: int = 0) -> tuple:
     return min(1.0, 2 * min(hi, lo)), expected, how, hi, lo
 
 
+def _mi(pairs: list[tuple]) -> float:
+    """Plug-in mutual information (bits) of the (guess, truth) pairs."""
+    from collections import Counter
+    n = len(pairs)
+    if not n:
+        return 0.0
+    j, g, t = Counter(pairs), Counter(a for a, _ in pairs), Counter(b for _, b in pairs)
+    return sum(c / n * math.log2(c * n / (g[a] * t[b])) for (a, b), c in j.items())
+
+
+def _mi_perm(pairs_by_sub: list[list[tuple]], seed: int = 1) -> tuple:
+    """(observed MI, one-sided permutation p = P(MI >= obs) under the null), permuting submission truths exactly as
+    _perm_p does. High MI = the guess depends on the arm, whatever the mapping (round 3, #11)."""
+    truths = [ps[0][1] for ps in pairs_by_sub]
+    guesses = [[g for g, _ in ps] for ps in pairs_by_sub]
+    if not truths:
+        return 0.0, 1.0
+
+    def stat(ts):
+        return _mi([(g, t) for gs, t in zip(guesses, ts) for g in gs])
+
+    obs, rng, ts, ge = stat(truths), random.Random(seed), list(truths), 0
+    for _ in range(MI_DRAWS):
+        rng.shuffle(ts)
+        ge += stat(ts) >= obs - 1e-12
+    return obs, (ge + 1) / (MI_DRAWS + 1)
+
+
 def guess_report(records: list[dict], amap: dict, labels: tuple | None = None, alpha: float = 0.05) -> dict:
     """Per judge and pooled: did the arm guesses beat CHANCE, where chance is the day's own mix (a permutation test,
     _perm_p), not 1/len(labels). 'unknown' counts as a wrong guess (a judge cannot lower its rate by abstaining).
@@ -1327,15 +1608,17 @@ def guess_report(records: list[dict], amap: dict, labels: tuple | None = None, a
     q = 1.0 / len(labels)
     per, subs, unmapped = {}, [], 0
     for r in records:
-        truth = (amap.get(r.get("judge_id")) or {}).get("arm")
-        if truth is None:
+        jid = r.get("judge_id")                      # round 3 #5: a non-string id or judge never reaches a dict key
+        truth = ((amap.get(jid) if isinstance(jid, str) else None) or {}).get("arm")
+        if not isinstance(truth, str):
             unmapped += 1
             continue
         pairs = []
         for v in r.get("votes") or []:
             g = v.get("arm_guess")
-            g = g if g in labels else "unknown"
-            per.setdefault(v.get("judge") or "?", []).append([(g, truth)])
+            g = g if isinstance(g, str) and g in labels else "unknown"
+            name = v.get("judge")
+            per.setdefault(name if isinstance(name, str) and name else "?", []).append([(g, truth)])
             pairs.append((g, truth))
         if pairs:
             subs.append(pairs)
@@ -1346,21 +1629,26 @@ def guess_report(records: list[dict], amap: dict, labels: tuple | None = None, a
         n = len(ps)
         k = sum(g == t for (g, t), in ps)
         pv, ex, how, hi, lo = _perm_p(ps)
+        mi, mp = _mi_perm(ps)
         rows[name] = {"correct": k, "guesses": n, "rate": k / n if n else None, "chance": ex / n if n else None,
                       "p_value": pv, "p_high": hi, "p_low": lo, "method": how, "binom_p": binom_sf(k, n, q),
-                      "leaky": pv < a_m}
+                      "leaky": pv < a_m, "mi_bits": mi, "mi_p": mp}
     N = sum(len(ps) for ps in subs)
     K = sum(g == t for ps in subs for g, t in ps)
     pp, ex, how, hi, lo = _perm_p(subs)
+    mi, mp = _mi_perm(subs)
     pooled = {"correct": K, "guesses": N, "rate": K / N if N else None, "chance": ex / N if N else None,
               "p_value": pp, "p_high": hi, "p_low": lo, "method": how, "binom_p": binom_sf(K, N, q),
-              "leaky": pp < a_m}
+              "leaky": pp < a_m, "mi_bits": mi, "mi_p": mp}
     return {"decision": DECISION_NOTE, "chance": pooled["chance"], "q_plugin": q, "alpha": alpha,
             "alpha_per_test": a_m, "tests": m,
             "arms": list(labels), "per_judge": rows, "pooled": pooled,
             "submissions": len(records) - unmapped, "unmapped": unmapped,
             "blinding": "UNMEASURED" if not N else ("LEAKY" if pooled["leaky"] or any(r["leaky"] for r in rows.values())
-                                                    else "not shown leaky")}
+                                                    else "not shown leaky"),
+            "blinding_secondary": "UNMEASURED" if not N else (
+                "LEAKY (mutual information)" if min([pooled["mi_p"]] + [r["mi_p"] for r in rows.values()]) < a_m
+                else "not shown leaky")}
 
 
 def write_report(day: str | None = None, *, p: dict | None = None, priv: Path | None = None,
@@ -1374,9 +1662,13 @@ def write_report(day: str | None = None, *, p: dict | None = None, priv: Path | 
             r = json.loads(f.read_text(encoding="utf-8"))
             if not isinstance(r, dict) or not isinstance(r.get("votes", []), list):
                 raise ValueError("not a verdict record")
+            if not isinstance(r.get("judge_id"), str):
+                raise ValueError("judge_id is not a string")      # round 3 #5: `"judge_id": []` crashed the report
             for v in r.get("votes") or []:
                 if not isinstance(v, dict):
                     raise ValueError("vote is not an object")
+                if any(v.get(k) is not None and not isinstance(v.get(k), str) for k in ("judge", "arm_guess")):
+                    raise ValueError("vote judge/arm_guess is not a string")
         except (OSError, ValueError):
             unreadable += 1                  # skipped and COUNTED: one bad file never hides the rest
             continue
