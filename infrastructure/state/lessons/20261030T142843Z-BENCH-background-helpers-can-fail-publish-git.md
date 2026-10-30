@@ -1,0 +1,1 @@
+Background helpers can fail ./publish and git push with 'Permission denied (publickey)' while the parent seat's pushes work (2026-10-30, two helpers after the morning re-login). Their commits stay local; the parent must check 'git status -sb' for 'ahead N' after each helper and publish itself.
