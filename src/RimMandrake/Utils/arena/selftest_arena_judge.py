@@ -911,6 +911,60 @@ def t_nonce_hunt(tmp):
         check(r["hidden"][0]["result"] == want, "control: %s -> %s (%s)" % (what, want, r["hidden"][0]["result"]))
 
 
+SEAL_FORGE = ("import types, posix, sys\ndef mark(nf):\n    posix.write(nf.f_locals['fd'], b'\\nARENA_CHECK_DONE ' + "
+              "nf.f_locals['nonce'] + b'\\n')\n    posix._exit(0)\ntry:\n    import ctypes\nexcept ImportError as e:\n"
+              "    tb = e.__traceback__\n    while tb.tb_next:\n        tb = tb.tb_next\n    f = tb.tb_frame\n"
+              "    if 'g' in f.f_locals:\n        seal = f.f_locals['g']\n"
+              "        f.f_locals['g'] = types.SimpleNamespace(gi_running=False)\n        mark(seal.gi_frame)\n"
+              "    sys.stderr.write('SEAL_FORGE_NO_SEAL\\n')\n")
+SEAL_FORGE_IN_HOOK = ("import sys, types, posix\nclass M(dict):\n    def __setitem__(s, k, v):\n"
+                      "        f = sys._getframe(1)\n        seal = f.f_locals['g']\n"
+                      "        f.f_locals['g'] = types.SimpleNamespace(gi_running=False)\n        nf = seal.gi_frame\n"
+                      "        posix.write(nf.f_locals['fd'], b'\\nARENA_CHECK_DONE ' + nf.f_locals['nonce'] + b'\\n')\n"
+                      "        posix._exit(0)\nsys.modules = M(sys.modules)\ntry:\n    import ctypes\nexcept ImportError:\n"
+                      "    pass\n")
+HOOK_TAIL = '            deny("hook")\n    return h\n'
+HOOK_RAISES = ('            deny("hook")\n        if ev == "import" and T(args[0]) is S and args[0].startswith(BADMOD):\n'
+               '            raise ModuleNotFoundError(args[0])\n    return h\n')
+
+
+def t_seal_leak(tmp):
+    """ARENA_RUNNER_HARDEN_IMPORT_SEAL_LEAK: an optional import of a denied module must not hand the arm the hook's
+    frame (b7a773744e raised ModuleNotFoundError FROM the hook; under PEP 667 the arm swapped the hook's `g` for a decoy
+    and forged the marker, so a check that exits 1 passed). Planted forgeries against a FAILING check never pass, and the
+    same payload is shown live against a mutant runner whose hook raises (the instrument can see the attack)."""
+    fail = "import mod\nimport sys\nsys.exit(1)\n"
+    def run(arm, runner, tag):
+        w = tmp / ("seal_" + tag)
+        t = w / "tree"
+        t.mkdir(parents=True)
+        (t / "mod.py").write_text(arm)
+        saved, J.RUNNER = J.RUNNER, runner
+        try:
+            return J.run_hidden([{"kind": "fix_test", "path": "sel.py", "body": fail}], t.resolve(), w.resolve(),
+                                timeout=60)[0]
+        finally:
+            J.RUNNER = saved
+    check(J.RUNNER.count(HOOK_TAIL) == 1 and "raise" not in J.RUNNER.split("def _hook(")[1].split("\ndef ")[0],
+          "the RUNNER's audit hook contains no raise (a hook-raised exception carries the hook frame)")
+    mutant = J.RUNNER.replace(HOOK_TAIL, HOOK_RAISES)
+    r = run(SEAL_FORGE, mutant, "mutant")
+    check(r["result"] == "pass", "forced: the planted forgery is LIVE against a hook that raises (mutant -> %s rc %s)"
+          % (r["result"], r["rc"]))
+    for i in range(2):
+        r = run(SEAL_FORGE, J.RUNNER, "real%d" % i)
+        check(r["result"] == "fail" and "SEAL_FORGE_NO_SEAL" in r["tail"],
+              "forced: traceback-frame seal forgery on a failing check -> fail, payload ran and found no seal "
+              "(%s rc %s)" % (r["result"], r["rc"]))
+    r = run(SEAL_FORGE_IN_HOOK, J.RUNNER, "inhook")
+    check(r["result"] != "pass", "forced: a sys.modules dict subclass running arm code inside the hook never passes "
+          "(%s rc %s)" % (r["result"], r["rc"]))
+    r = run("import sys\nfor i in range(3):\n    try:\n        import _interpreters\n    except ImportError:\n"
+            "        pass\n    sys.modules.pop('_interpreters', None)\nimport concurrent.futures\n", J.RUNNER, "delre")
+    check(r["result"] == "fail", "control: del + re-import of _interpreters stays an ImportError, the check still "
+          "fails on its own exit 1 (%s rc %s)" % (r["result"], r["rc"]))
+
+
 def t_replay_empty(tmp):
     """GPT round 2 #4: a replay whose hidden file runs NOTHING fails closed (only `None` did in round 2)."""
     c, b, h = make_clone(Path(os.environ["ARENA_CLONES"]) / "replayempty", "v3", 1, plant=False)
@@ -1255,6 +1309,7 @@ def main():
         t_model_unset(tmp)
         t_bad_verdict(tmp)
         t_nonce_hunt(tmp)
+        t_seal_leak(tmp)
         t_replay_empty(tmp)
         t_report_types(tmp)
         t_detectors(tmp)

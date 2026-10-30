@@ -900,9 +900,15 @@ def hidden_checks(hidden: dict) -> list[dict]:
 #     `import pathlib` was denied, ~70% of real fix_tests); ctypes (import and every ctypes.* event), _test*/subinterpreter
 #     modules and interpreter creation (a subinterpreter has no hooks; _interpreters.create raises NO audit event on
 #     3.14, so the module itself must never load). A plain `import` of one (event args (name, None, sys.path, ...)) gets
-#     ModuleNotFoundError raised from the hook, aborting it, so an OPTIONAL `try: import _interpreters` (concurrent.futures
-#     on 3.14) carries on (ARENA_RUNNER_FIX_OPTIONAL_IMPORT_DENIED); any other shape (a loader's create_dynamic: (name,
-#     path, None, None, None)) is a kill; further audit hooks; setrlimit (core dumps are
+#     None stored in sys.modules[name] by the hook, which then RETURNS, so importlib's own _find_and_load raises
+#     ModuleNotFoundError and an OPTIONAL `try: import _interpreters` (concurrent.futures on 3.14) carries on
+#     (ARENA_RUNNER_FIX_OPTIONAL_IMPORT_DENIED). The hook itself NEVER raises (ARENA_RUNNER_HARDEN_IMPORT_SEAL_LEAK: an
+#     exception raised from the hook put the hook's frame on the arm's traceback; its f_locals held the seal, and PEP 667
+#     write-through let the arm swap the hook's `g` for a decoy and forge the marker), and it calls no arm-overridable
+#     code (dict.get on sys.__dict__, dict.__setitem__ on an exact-dict sys.modules, else a kill), since any arm code
+#     running inside the hook could reach the hook frame with sys._getframe. A deleted None only re-runs the hook, and
+#     any actual load still goes through a loader's create_dynamic: (name, path, None, None, None), which is a kill;
+#     further audit hooks; setrlimit (core dumps are
 #     disabled with a hard RLIMIT_CORE of 0 before any arm code); any open of a file named `mem` or on procfs, and the
 #     check sandbox mounts an empty tmpfs on /proc (no /proc/self/mem, environ or cmdline at all);
 #   * the seal writes the marker only when resumed from `_main()` after exec() returned normally, or from the check's
@@ -961,7 +967,7 @@ def _seal(nonce, fd, s_offs, e_offs, top, w, x, gf, T, I):
     except BaseException:
         x(87)
     x(87)
-def _hook(g, x, w, T, S, B, N, st, pdev, IE):
+def _hook(g, x, w, T, S, B, N, st, pdev, D, sd, dg, ds):
     ALWAYS = frozenset(("sys._current_frames", "sys._current_exceptions", "gc.get_objects", "gc.get_referrers",
                         "gc.get_referents", "sys.settrace", "sys.setprofile", "sys._settraceallthreads",
                         "sys._setprofileallthreads", "sys.monitoring.register_callback", "sys.remote_exec",
@@ -977,7 +983,6 @@ def _hook(g, x, w, T, S, B, N, st, pdev, IE):
     def h(ev, args):
         if T(ev) is not S:
             return
-        no = None
         try:
             if ev == "object.__getattr__":
                 o, n = args[0], args[1]
@@ -994,7 +999,10 @@ def _hook(g, x, w, T, S, B, N, st, pdev, IE):
                     deny(ev)
                 if m.startswith(BADMOD):
                     if args[1] is None and args[2] is not None:
-                        no = m
+                        md = dg(sd, "modules")
+                        if T(md) is not D:
+                            deny(ev)
+                        ds(md, m, None)
                     else:
                         deny(ev)
             elif ev == "open":
@@ -1013,8 +1021,6 @@ def _hook(g, x, w, T, S, B, N, st, pdev, IE):
                     pass
         except BaseException:
             deny("hook")
-        if no is not None:
-            raise IE("arena check: %s is not importable" % no)
     return h
 def _exit_stmt(n):
     if isinstance(n, ast.Expr) and isinstance(n.value, ast.Call):
@@ -1095,7 +1101,7 @@ def _main():
     sys.pycache_prefix = "/nonexistent/arena-no-pycache"
     _frozen()
     sys.addaudithook(_hook(g, posix._exit, posix.write, type, str, bytes, int, posix.stat, posix.stat("/proc").st_dev,
-                     ModuleNotFoundError))
+                     dict, sys.__dict__, dict.get, dict.__setitem__))
     sys.argv = [test]
     sys.path.insert(0, os.path.dirname(test))
     mod = types.ModuleType("__main__")
