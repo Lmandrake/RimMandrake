@@ -22,7 +22,11 @@ arm's signed event log knows when the arm worked on which task. This script join
     and marks its task row `invalid_calls` (arena_analysis.py refuses that task).
   - BLOCKING (arena_analysis.py refuses the whole file): calls with no usable time, and the meter diagnostics that
     mean spend was lost or may sit on the wrong arm (BLOCKING_DIAG: unreadable transcripts, bad lines, cwd mismatch,
-    unreadable gpt log lines, a message id under two arm folders).
+    unreadable gpt log lines, a message id under two arm folders), and UNATTRIBUTED Claude spend under the arena root
+    that the meter could not put on one arm (BLOCKING_UNATTRIBUTED). GPT calls with no RM_ARM tag (UNTAGGED) stay
+    overhead: the log cannot tell an untagged arm call from unrelated GPT use in the same window (residual).
+  - a null count is invalid; for GPT, tokens_used null/0 means "no usage line" and both chars/4 estimates must be
+    present counts.
 
 OUTPUT, schema arena_task_spend/2 (arena_analysis.SPEND_SCHEMA):
   {"schema", "window": {since, until}, "logs": {arm: {n, digest}} (arena_analysis.spend_log_binding of the logs
@@ -60,6 +64,9 @@ import arena_analysis as AA  # noqa: E402
 
 SCHEMA = "arena_task_spend/2"
 # meter diagnostics that mean spend was LOST or may be on the wrong arm: blocking, the analysis reads UNMEASURED
+# UNATTRIBUTED Claude spend that may be an arm's (under the arena root, arm not decidable); "outside" (a session
+# outside the arena root) and cwd_mismatch (already in BLOCKING_DIAG) are not listed here
+BLOCKING_UNATTRIBUTED = ("ambiguous", "unlisted")
 BLOCKING_DIAG = ("unreadable_files", "bad_lines", "cwd_mismatch", "gpt_unreadable", "id_conflicts")
 SPAN_EXCLUDED_EVENTS = ("gate", "judge")
 SPAN_END_EVENT = "pass_end"
@@ -80,13 +87,13 @@ def spans_of(recs):
     no pass_end ends at its last event. Raises ValueError on a bad ts (the caller makes that arm's spend overhead,
     blocking)."""
     seq = []
-    for r in recs:
+    for i, r in enumerate(recs):
         t = r.get("task")
         if not isinstance(t, str) or not t or r.get("event") in SPAN_EXCLUDED_EVENTS:
             continue
-        seq.append((L.ts_epoch(r.get("ts")), r.get("event") == SPAN_END_EVENT, r.get("run_id"), t))
+        seq.append((L.ts_epoch(r.get("ts")), i, r.get("event") == SPAN_END_EVENT, r.get("run_id"), t))
     open_, out = {}, []
-    for e, is_end, rid, t in sorted(seq, key=lambda x: (x[0], x[1])):
+    for e, _i, is_end, rid, t in sorted(seq, key=lambda x: (x[0], x[1])):   # equal times keep signed (file) order
         k = (rid, t)
         lo = open_.get(k, (e,))[0]
         open_[k] = (lo, e)
@@ -102,9 +109,7 @@ def tasks_at(spans, t):
 
 
 def _n(v):
-    """A per-call raw count: a non-negative int (not a bool). None means absent (0). -> int, or None if invalid."""
-    if v is None:
-        return 0
+    """A per-call raw count: a non-negative int (not a bool, not null). -> int, or None if invalid."""
     if isinstance(v, bool) or not isinstance(v, int) or v < 0:
         return None
     return v
@@ -132,8 +137,12 @@ def add_claude(row, c):
 def add_gpt(row, d):
     """Real codex tokens when tokens_used > 0, else the chars/4 in/out estimates (spend_census.gpt_ite_of's rule);
     every count is validated first, as in add_claude."""
-    tu, ie, oe = _n(d.get("tokens_used")), _n(d.get("in_tok_est")), _n(d.get("out_tok_est"))
-    if tu is None or ie is None or oe is None:
+    tu = d.get("tokens_used")
+    tu = 0 if tu is None else _n(tu)            # null = codex reported no usage line: the estimates must stand in
+    if tu is None:
+        return _invalid(row)
+    ie, oe = (_n(d.get("in_tok_est")), _n(d.get("out_tok_est"))) if tu == 0 else (0, 0)
+    if ie is None or oe is None:
         return _invalid(row)
     g = row["gpt"]
     if tu > 0:
@@ -204,7 +213,7 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
     if since is None or until is None:
         raise ValueError("no event times to derive a window from: pass --since and --until")
     cl, gp, diag = [], [], {}
-    S.claude_spend_by_arm(projects=projects, arms=sorted(arm_logs), arena_root=clones_root, since=since,
+    by_arm = S.claude_spend_by_arm(projects=projects, arms=sorted(arm_logs), arena_root=clones_root, since=since,
                           until=until, diag=diag, sink=lambda arm, c: cl.append((arm, c)))
     S.gpt_spend_by_arm(gpt_log, since=since, until=until, diag=diag, sink=lambda arm, d: gp.append((arm, d)))
     doc = attribute(arm_logs, cl, gp)
@@ -213,6 +222,10 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
         v = diag.get(k)
         if v:
             doc["blocking"].append("meter %s: %s" % (k, len(v) if isinstance(v, (list, dict)) else v))
+    for why, ite in sorted(((by_arm or {}).get(S.UNATTRIBUTED) or {}).get("reasons", {}).items()):
+        if why in BLOCKING_UNATTRIBUTED and ite:
+            doc["blocking"].append("meter UNATTRIBUTED %s: %s ITE of Claude spend under the arena root on no one arm"
+                                   % (why, ite))
     doc["logs"] = AA.spend_log_binding(arm_logs)
     return doc
 

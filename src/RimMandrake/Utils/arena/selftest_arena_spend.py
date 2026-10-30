@@ -129,6 +129,25 @@ def t_units_r1(recs, cc):
     check(d["overhead"].get("trio", {}).get("claude", {}).get(OPUS, {}).get("input") == 5
           and d["arms"]["trio"]["A"]["claude"][OPUS]["input"] == 3,
           "r1#2: a call in the idle gap between two executions is overhead", d)
+    # r2#1: equal timestamps keep signed (file) order: end@150 then start@150 is two executions
+    rr2 = [{"ts": iso(100), "run_id": "r", "task": "A", "event": "pass_start"},
+           {"ts": iso(150), "run_id": "r", "task": "A", "event": "pass_end"},
+           {"ts": iso(150), "run_id": "r", "task": "A", "event": "pass_start"},
+           {"ts": iso(200), "run_id": "r", "task": "A", "event": "pass_end"}]
+    sp = SP.spans_of(rr2)
+    check(sp == [(100.0, 150.0, "A"), (150.0, 200.0, "A")], "r2#1: an end and a new start at the same second keep "
+          "their signed order (two executions, the call at 175 is the task's)", sp)
+    # r2#4: an explicit null count is invalid, not zero; GPT with no real tokens needs its estimates
+    d = SP.attribute({"trio": {"recs": recs}}, [("trio", cc(5050, **{"in": None, "out": 9}))], [])
+    check(d["arms"]["trio"]["C"].get("invalid_calls") == 1, "r2#4: a Claude call with in=null is invalid",
+          d["arms"]["trio"]["C"])
+    for g, ok in (({"tokens_used": None}, False), ({}, False), ({"tokens_used": None, "in_tok_est": None,
+                                                                "out_tok_est": 3}, False),
+                  ({"tokens_used": None, "in_tok_est": 40, "out_tok_est": 10}, True)):
+        d = SP.attribute({"trio": {"recs": recs}}, [("trio", cc(5050, **{"in": 100}))], [("trio", dict(g, t=5070))])
+        row = d["arms"]["trio"]["C"]
+        check((row.get("invalid_calls") == 0) == ok, "r2#4: GPT call %r is %s" % (g, "valid" if ok else "invalid"),
+              row)
     # (5) every per-call count is validated BEFORE it is summed
     for name, bad in (("bool", True), ("negative", -20), ("float", 1.5), ("nan", float("nan")), ("str", "7")):
         d = SP.attribute({"trio": {"recs": recs}},
@@ -147,12 +166,26 @@ def t_units_r1(recs, cc):
     d = SP.attribute({"trio": {"recs": recs}}, [("trio", {"model": OPUS, "in": 5})], [])
     check(d.get("blocking"), "r1#5: a metered call with no time is blocking, not silent overhead", d.get("blocking"))
     # (7) a present Claude section that is not a dict is refused, never ignored and never a crash
-    for cl in ([], [1], "x", 0):
+    for cl in ([], [1], "x", 0, None):
         try:
             tok, why = AA.task_tokens({"claude": cl, "gpt": {"tokens": 50}}, AA.default_conv())
         except Exception as e:                              # noqa: BLE001
             tok, why = "crash", repr(e)
         check(tok is None, "r1#7: claude=%r is refused" % (cl,), (tok, why))
+    tok, why = AA.task_tokens({"claude": {OPUS: {"input": 10}}, "gpt": None}, AA.default_conv())
+    check(tok is None, "r2#5: an explicit gpt=null section is refused", (tok, why))
+    # r2#2: Claude spend under the arena root that the meter could not put on one arm is blocking; spend outside
+    # the arena root (an unrelated session) stays overhead
+    real = S.claude_spend_by_arm
+    for reasons, blocks in (({"unlisted": 5.0}, True), ({"ambiguous": 5.0}, True), ({"outside": 5.0}, False)):
+        S.claude_spend_by_arm = lambda *a, _r=reasons, **k: {S.UNATTRIBUTED: {"ite": 5.0, "calls": 1, "reasons": _r}}
+        try:
+            d = SP.meter({"trio": {"recs": recs}}, projects="/nonexistent", clones_root="/nonexistent",
+                         gpt_log="/nonexistent/g.jsonl")
+        finally:
+            S.claude_spend_by_arm = real
+        check(bool(d["blocking"]) == blocks, "r2#2: UNATTRIBUTED Claude spend for reason %s is %s" % (
+            next(iter(reasons)), "blocking" if blocks else "overhead only"), d["blocking"])
     # (3) meter diagnostics are blocking, not report-only flags
     real = S.claude_spend_by_arm
     for key, val in (("unreadable_files", ["x.jsonl: boom"]), ("id_conflicts", {"m1": ["trio", "v3"]}),
@@ -381,6 +414,26 @@ def t_main_wiring(tmp):
     recs = L.verify(p, "trio")["accepted"]
     out, prob = AA.completions(recs, {"T042": {"kind": A.KINDS[0], "size": 1}}, {}, AA.default_conv())
     check(prob and "pending" in prob, "r1#6: a task whose last judge event is pending makes the arm a problem", prob)
+    # r2#3: judge precedence must not depend on a clock that ran backwards
+    spec = {"T1": {"kind": A.KINDS[0], "size": 1}}
+
+    def jr(ts, verdict, pending=False):
+        return {"ts": iso(ts), "arm": "trio", "lane": "judge", "run_id": "judge", "task": "T1", "event": "judge",
+                "sha": "a" * 40, "verdict": verdict, "detail": dict({"base": "b"}, **({"pending": True} if pending
+                                                                                      else {}))}
+    row = {"T1": {"claude": {OPUS: {"input": 10}}, "gpt": {}}}
+    for seq, ok, what in (([jr(200, "accept"), jr(190, "invalid", True)], False,
+                           "an earlier accept, then a pending re-judgment stamped EARLIER (clock back) and never "
+                           "recorded"),
+                          ([jr(100, "invalid", True), jr(90, "reject")], False,
+                           "a verdict stamped before its own pending marker (clock back)"),
+                          ([jr(200, "reject"), jr(190, "accept")], False,
+                           "a later-appended verdict stamped earlier (clock back), no pending involved"),
+                          ([jr(100, "invalid", True), dict(jr(150, "accept"), lane="L1")], False,
+                           "the last-appended live judge event is pending, a later-stamped import does not cover it"),
+                          ([jr(100, "invalid", True), jr(100, "reject")], True, "pending then verdict, same second")):
+        out, prob = AA.completions(seq, spec, row, AA.default_conv())
+        check((prob is None) == ok, "r2#3: %s -> %s" % (what, "measured" if ok else "arm problem"), (out, prob))
 
 
 def t_mutations(tmp):

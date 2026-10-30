@@ -314,8 +314,16 @@ def t_cli():
             rc4 = AA.main(["run", "--spend", str(Path(d, "spend.json")), "--raw-dir", d, "--tasks-dir", str(td),
                            "--draws", "300", "--claude-model-weight", "opus=0.5", "--gpt-est-out-to-ite", "4",
                            "--out", str(Path(d, "out4.json"))])
-            rcs = {n: AA.main(["run", "--spend", str(Path(d, n + ".json")), "--raw-dir", d, "--tasks-dir", str(td),
-                               "--draws", "300"]) for n in ("old", "stale", "blk")}
+            for n, txt in (("jnull", "null"), ("jint", "123"), ("jtrue", "true"), ("jstr", '"unreadable"'),
+                           ("jlist", "[]")):
+                Path(d, n + ".json").write_text(txt)
+            rcs = {}
+            for n in ("old", "stale", "blk", "jnull", "jint", "jtrue", "jstr", "jlist"):
+                try:
+                    rcs[n] = AA.main(["run", "--spend", str(Path(d, n + ".json")), "--raw-dir", d, "--tasks-dir",
+                                      str(td), "--draws", "300"])
+                except Exception as e:                      # noqa: BLE001
+                    rcs[n] = "crash %r" % e
         out = json.loads(Path(d, "out.json").read_text())
         out4 = json.loads(Path(d, "out4.json").read_text()) if Path(d, "out4.json").is_file() else {}
     check("CLI: runs end to end on raw logs and writes the report", rc == 0 and "final" in out and out["blocks"],
@@ -323,7 +331,8 @@ def t_cli():
     check("CLI: unreadable spend file -> UNMEASURED, exit 3", rc2 == 3, rc2)
     check("CLI: a spend file without the arena_task_spend/2 schema -> UNMEASURED, exit 3", rc3 == 3, rc3)
     check("CLI: an old /1 doc, a doc metered against another log (stale), and a doc with blocking meter problems "
-          "-> each UNMEASURED, exit 3", rcs == {"old": 3, "stale": 3, "blk": 3}, rcs)
+          "-> each UNMEASURED, exit 3; so does a JSON scalar/list document (r2#6), without a crash",
+          set(rcs.values()) == {3} and len(rcs) == 8, rcs)
     check("CLI: conversion overrides reach the report", rc4 == 0 and out4["conversion"]["claude_model"]["opus"] == 0.5
           and out4["conversion"]["gpt_out_est"] == 4.0, out4.get("conversion"))
 

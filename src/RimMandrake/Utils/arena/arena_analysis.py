@@ -33,12 +33,13 @@ WHAT IT READS (only fields some harness code writes, or the section 1.7 schema n
     reproduce sim/spend_census's ITE). Refused (UNMEASURED for that task): a row with no raw counts (derived or merged
     total only), a Claude model of no known family carrying tokens, an unweighted token field, a task whose calls
     overlapped another task's span (ambiguous_calls > 0), a task with a metered call whose raw count was invalid
-    (invalid_calls > 0), a Claude section that is not a dict, and any bool/negative/non-finite/overflowing count. The
+    (invalid_calls > 0), a claude or gpt section present but not a dict, and any bool/negative/non-finite/overflowing count. The
     WHOLE spend file is refused (spend_doc_problem: UNMEASURED) when its `blocking` list is not empty (the meter lost
     spend or may have put it on the wrong arm), when its `logs` binding (record count + digest per arm) differs from
     the logs analysed (stale: the log moved on after metering), or when its `window` does not cover every analysed
-    record. A task whose LAST judge event is arena_judge.py's pending marker (detail.pending: a judgment started and
-    its verdict was never appended) makes its arm UNMEASURED. Any record `ite` is ignored, counted in
+    record. A task whose LAST judge event (by time, or among live lane-"judge" events by append order) is
+    arena_judge.py's pending marker (detail.pending: a judgment started and its verdict was never appended) makes its
+    arm UNMEASURED, as do live judge events whose append order and time order disagree (a clock ran backwards). Any record `ite` is ignored, counted in
     `merged_ite_records`.
 
 THE MODEL (all small-n safe: exact conjugate posteriors, Monte Carlo FROM the posterior, fixed seed; no bootstrap):
@@ -398,8 +399,9 @@ def task_tokens(row, conv):
     claude, gpt = row.get("claude"), row.get("gpt")
     if not isinstance(claude, dict) and not isinstance(gpt, dict):
         return None, "spend row has no raw per-model counts (derived claude_ite / merged total only?)"
-    if claude is not None and not isinstance(claude, dict):
-        return None, "spend claude section is %s, not a dict" % type(claude).__name__
+    for sec in ("claude", "gpt"):
+        if sec in row and not isinstance(row[sec], dict):
+            return None, "spend %s section is %s, not a dict" % (sec, type(row[sec]).__name__)
     inv = row.get("invalid_calls", 0)
     if _count(inv) is None or inv > 0:
         return None, "spend has %r invalid metered call(s) (a bad raw count)" % (inv,)
@@ -529,8 +531,24 @@ def completions(recs, tasks, spend_arm, conv, cap=None):
             cur = start.get(t)
             if cur is None or (cur["event"] == "pass_start" and r["event"] == "assign"):
                 start[t] = r
+    # precedence must not rest on a clock alone (GPT review r2 #3). arena_judge.py appends its judge events live
+    # (lane "judge"; never late imports), so among THOSE the last appended must also be the last by time, else the
+    # clock ran backwards between judgments; and a pending marker that is the last appended is an unrecorded verdict
+    # whatever its timestamp says. Other-lane judge records keep the late-import rule (event time decides).
+    live_app, live_time = {}, {}
+    for r in recs:
+        if r.get("event") == "judge" and r.get("lane") == "judge" and (cap is None or _ep(r) <= cap):
+            live_app[_tkey(r.get("task"))] = r
+    for r in seq:
+        if r["event"] == "judge" and r.get("lane") == "judge":
+            live_time[_tkey(r.get("task"))] = r
     out = []
     for t, j in last.items():
+        a = live_app.get(t)
+        if a is not None and a is not live_time.get(t):
+            return [], "task %s: its last live judge event by time is not its last appended (clock went backwards)" % t
+        if a is not None and isinstance(a.get("detail"), dict) and a["detail"].get("pending") is True:
+            j = a
         if isinstance(j.get("detail"), dict) and j["detail"].get("pending") is True:
             return [], "task %s: a judgment started at %s was never recorded (pending judge event is last)" % (
                 t, j.get("ts"))
@@ -1055,16 +1073,17 @@ def main(argv=None):
             if key == "claude_token" and name not in CLAUDE_TOKEN_WEIGHT:
                 ap.error("unknown Claude token field %r (have %s)" % (name, sorted(CLAUDE_TOKEN_WEIGHT)))
             conv[key][name.lower() if key == "claude_model" else name] = wf
+    read_err = None
     try:
         doc = json.loads(Path(a.spend).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
-        doc = {"unreadable": str(e)}
+        doc, read_err = None, str(e)
     logs = load_raw(a.raw_dir) if a.raw_dir else load_verified(allow_untrusted=a.allow_untrusted)
     tasks = load_tasks({"tasks": Path(a.tasks_dir)} if a.tasks_dir else None)
     cap = L.ts_epoch(a.hard_cap) if a.hard_cap else None
     rep = analyse_spend_doc(logs, tasks, doc, seed=a.seed, draws=a.draws, hard_cap=cap, final=a.final, conv=conv)
-    if "unreadable" in doc:
-        rep["final"] = {"verdict": "UNMEASURED", "why": "spend file unreadable: %s" % doc["unreadable"]}
+    if read_err is not None:
+        rep["final"] = {"verdict": "UNMEASURED", "why": "spend file unreadable: %s" % read_err}
     if a.blind:
         rep = blind(rep, a.blind)
     text = json.dumps(rep, indent=1, sort_keys=True, default=str)
