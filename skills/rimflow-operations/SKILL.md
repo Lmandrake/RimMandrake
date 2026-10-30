@@ -1,6 +1,6 @@
 ---
 name: rimflow-operations
-description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (soonest-expiry first, 0%/2% floors, soft line then hard stop, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, switching_plan.py, account_failover.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
+description: Operate the multi-account Claude quota system - check each account's level (weekly vs 5-hour cap, percent left, reset time, MEASURED/ESTIMATE/UNMEASURED), apply the standard switching plan (owner's fixed priority steven > system > lukas, 0%/2% floors, soft line then hard stop, Steven's 52% leave line, pool pacing), switch or recover accounts with claude-account, and stand windows down and up. Use whenever anyone asks how much quota/usage is left, which account is live, when an account resets, whether to switch accounts, why the fleet stopped or went DARK, how to recover a stuck switch, or touches account_usage.py, switching_plan.py, account_failover.py, slot_allocator set/clear, account-plan.timer, or timers_guard pause - even if they just say "are we about to run out".
 ---
 
 # rimflow-operations: accounts, levels and the standard switching plan
@@ -31,17 +31,20 @@ vault copy is never run. Details, properties per account, Steven's window: `refe
 
 | Rule | Source |
 |---|---|
-| Burn the account whose budget **expires soonest** among those above their floor (use it or lose it); fixed order only breaks ties | owner 10:15 order, rule change relayed by coordinator 10:58 |
+| **Fixed priority** `order` = steven, system, lukas: burn the FIRST account in that list that is measured, fresh, inside its window and above its line. When system resets the machine goes to system even if lukas still has budget (a lower account's budget that expires first is given up) | owner's 10:15 words; the 10:58 soonest-expiry rule was reverted on his 15:20 review ("awkward") |
 | Steven: use only inside 48 h after his reset, **leave at 52% left** (his "50%" plus a 2-point overshoot margin) | owner words 2026-10-27 "up to 50% after a fresh reset only"; 52 by card 10:20; 48 h is our reading (delegated) |
-| Floors: **0%** when switching away, **2%** when waiting on an account (owner can still talk to a seat while idle) | owner via coordinator 11:2x (0%); 2% delegated |
+| Floors: **0%** when switching away, **2%** when waiting on an account (owner can still talk to a seat while idle) | card 2026-10-28 15:33 "Drain to 0%"; 2% delegated |
 | **Soft line** (line + 2%: allocator gives 0 new helpers, running seats publish and finish) then **hard stop** (fleet-stop) | by card 10:20 |
 | **Blind meter = 0%**: once the last MEASURED reading is <= 1%, a blind one (failed /usage, limit error, ESTIMATE, stale) counts as 0% and switches | relayed rule 11:2x |
 | **Pool pacing**: pace the whole pool "BECAUSE it spreads out the human review time cleanly to inform the process in a timely manner" | by card 10:20 |
 
 The engine (`switching_plan.py check`, `account-plan.timer`, every 5 min) polls the meter itself near a line or
-when a reading is old, acts once per transition (markers), and is passive until the old
-`account_failover` stage 3 is done (gate) or a `HOLD` file exists in its output dir. Full state
-machine, markers and the review history: `references/plan.md`.
+when a reading is old and acts once per transition (markers). Its ONLY brake is a `HOLD` file in its output dir
+(`D:\ClaudeWork\rimmandrake\switching_plan\HOLD`): while it exists every pass logs `passive` and acts on nothing.
+(The old account_failover gate was removed 2026-10-28; that script and its timer are retired.)
+**Owner pause, 2026-10-28 14:14 PDT:** "disable any script that will auto log me out for awhile and stay on this
+account" - HOLD is set and `account-plan.timer` is stopped and disabled. Remove HOLD or re-enable the timer only on
+his word. Full state machine, markers and the review history: `references/plan.md`.
 
 **Why switching at 0% is safe.** The switch is local: `claude-account` renames a credential file,
 spends no model tokens and uses no network or Tailscale. Hitting 0% locks nobody out of the
@@ -79,7 +82,9 @@ anywhere in this path.
   point** and write the handoff BEFORE a switch (the soft line exists to give time for this).
 - Remote Control sessions are likely dropped and need re-attaching (UNMEASURED; see skill
   `claude-remote-control`).
-- Vault freshness: dormant logins need `claude-account warm`; a stale vault cannot be probed or switched to.
+- Vault freshness: a stale vault cannot be probed or switched to. `account_usage.py` warms an expired DORMANT login
+  itself (at most once per hour per account, under claude-account's own lock, refused if that login is live here or on
+  any remote); `claude-account-warm.timer` (daily) is separate and still warms every account (WARMTIMER_HARDEN_SPARE_LIVE).
 - The relaunched Fleet comes up on the new account; check `slot_allocator now` before assuming capacity.
 
 ## 6. Throttles and timers
