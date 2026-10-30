@@ -58,17 +58,17 @@ check(g.get("trio", {}).get("calls") == 1 and abs(g["trio"]["ite_est"] - (100 + 
 os.remove(log); log = call({})
 g = S.gpt_spend_by_arm(log)
 check("UNTAGGED" in g and "trio" not in g, "untagged call flagged UNTAGGED")
-rep = S.arm_report(ran=["ralph_a"], arms=arms, projects=proj, arena_root=ROOT, gpt_log=log)
+rep = S.arm_report(ran=["ralph_a"], arms=arms, projects=proj, arena_root=ROOT, gpt_log=log, since=0.0)
 check(any("untagged" in f for f in rep["flags"]), "report carries the untagged flag")
-check(rep["arms"]["ralph_a"]["ite"] >= 1300, "arm_report ITE nonzero for ran arm")
+check(rep["arms"]["ralph_a"]["claude_ite"] >= 1300, "arm_report ITE nonzero for ran arm")
 try:
-    S.arm_report(ran=["ralph_a", "ghost"], arms=arms + ["ghost"], projects=proj, arena_root=ROOT, gpt_log=log)
+    S.arm_report(ran=["ralph_a", "ghost"], arms=arms + ["ghost"], projects=proj, arena_root=ROOT, gpt_log=log, since=0.0)
     check(False, "zero spend for an arm that ran is refused")
 except S.ZeroSpendRefused:
     check(True, "zero spend for an arm that ran is refused")
 # a blind meter (wrong root): real arm transcripts land UNATTRIBUTED -> ran arm sees zero -> refused
 try:
-    S.arm_report(ran=["ralph_a"], arms=arms, projects=proj, arena_root="/elsewhere", gpt_log=os.path.join(T, "none"))
+    S.arm_report(ran=["ralph_a"], arms=arms, projects=proj, arena_root="/elsewhere", gpt_log=os.path.join(T, "none"), since=0.0)
     check(False, "blind meter (wrong clone root) refused")
 except S.ZeroSpendRefused:
     check(True, "blind meter (wrong clone root) refused")
@@ -111,7 +111,7 @@ check(L.resolve_target() == (os.path.join(ext_tmp, "ovr.jsonl"), "file"), "RM_GP
 os.environ.pop("RM_GPT_CALL_LOG", None)
 # a corrupt fragment is counted and flagged, not dropped
 open(os.path.join(ext_tmp, "one.jsonl"), "a").write('{"t": 1, "arm\n')
-rp = S.arm_report(ran=["ralph_a"], arms=arms, projects=proj, arena_root=ROOT, gpt_log=os.path.join(ext_tmp, "one.jsonl"))
+rp = S.arm_report(ran=["ralph_a"], arms=arms, projects=proj, arena_root=ROOT, gpt_log=os.path.join(ext_tmp, "one.jsonl"), since=0.0)
 check(any("unreadable gpt" in f for f in rp["flags"]), "unreadable gpt log line is flagged")
 
 # (2) run window: stale transcript excluded; arm with only stale spend refused (Claude and GPT)
@@ -130,7 +130,7 @@ except S.ZeroSpendRefused:
     check(True, "arm with only stale (Claude+GPT) spend is refused")
 g = S.gpt_spend_by_arm(glog, W0, W1)
 check("oldarm" not in g and g["newarm"]["ite"] == 777, "GPT spend honours the window")
-check(S.arm_report(ran=["newarm"], arms=["newarm", "oldarm"], projects=proj, arena_root=ROOT, gpt_log=glog, since=W0, until=W1)["arms"]["newarm"]["ite"] == 150 + 777, "in-window arm passes with both sides")
+check(S.arm_report(ran=["newarm"], arms=["newarm", "oldarm"], projects=proj, arena_root=ROOT, gpt_log=glog, since=W0, until=W1)["arms"]["newarm"]["total_ite_mixed"] == 150 + 777, "in-window arm passes with both sides")
 r = subprocess.run([sys.executable, os.path.join(HERE, "sim", "spend_census.py"), "--arm-report", "--ran", "oldarm", "--arms", "newarm", "oldarm",
                     "--projects", proj, "--arena-root", ROOT, "--gpt-log", glog, "--since", "2026-10-29T12:00:00Z", "--until", "2026-10-29T13:00:00Z"],
                    capture_output=True, text=True)
@@ -221,12 +221,87 @@ check(cl["noid"]["calls"] == 3, "calls with no message id do not collapse to one
 # builder's owed item: a 1-pass job in a fresh arm clone, simulated (no paid call) by a COPIED real small transcript
 # placed under a temp arena root's project slug
 FX = "/mnt/d/ClaudeWork/rimmandrake/foundry_arena/fixtures/small_real_transcript.jsonl"
+check(os.path.isfile(FX), "fixture transcript present (missing => FAIL, never a silent skip): " + FX)
 if os.path.isfile(FX):
     TA = tempfile.mkdtemp(dir=ext_tmp); os.makedirs(os.path.join(TA, "freshclone"))
     P3 = os.path.join(T, "p3", S.path_slug(TA + "/freshclone"), "sess", "subagents"); os.makedirs(P3)
-    shutil.copy(FX, os.path.join(P3, "agent-real.jsonl"))
+    with open(FX) as fi, open(os.path.join(P3, "agent-real.jsonl"), "w") as fo:       # re-home the recorded cwd into the temp clone
+        for ln in fi:
+            try:
+                dd = json.loads(ln)
+                if "cwd" in dd: dd["cwd"] = TA + "/freshclone"
+                ln = json.dumps(dd) + "\n"
+            except Exception: pass
+            fo.write(ln)
     cl = S.claude_spend_by_arm(os.path.join(T, "p3"), [], TA)
-    check(cl.get("freshclone", {}).get("ite", 0) > 0, "1-pass job in a fresh arm clone (copied real transcript, temp arena root) -> nonzero ITE: %s" % cl.get("freshclone"))
+    check(cl.get("freshclone", {}).get("ite", 0) > 0, "copied real transcript, temp arena root -> nonzero ITE: %s" % cl.get("freshclone"))
+print("OWED: the literal criterion 'a 1-pass job in a fresh arm clone' is a LIVE probe (one paid run in a real "
+      "arena clone, then --arm-report); the copied-transcript check above only proves the slug/ITE path, not that probe.")
+
+# ---- fix round 2 (GPT review) ----
+# (6) explicit window required with --ran
+try:
+    S.arm_report(ran=["newarm"], arms=["newarm"], projects=proj, arena_root=ROOT, gpt_log=glog); check(False, "(6) --ran without a window is refused")
+except S.ZeroSpendRefused as e:
+    check("window" in str(e), "(6) arm_report(ran=...) without since is refused with a clear message")
+r = subprocess.run([sys.executable, os.path.join(HERE, "sim", "spend_census.py"), "--arm-report", "--ran", "newarm", "--arms", "newarm",
+                    "--projects", proj, "--arena-root", ROOT, "--gpt-log", glog], capture_output=True, text=True)
+check(r.returncode == 2 and "--since" in r.stdout, "(6) CLI --ran without --since refuses (exit 2)")
+# (8) GPT record with no numeric t is excluded and counted unreadable
+g8 = os.path.join(ext_tmp, "g8.jsonl")
+open(g8, "w").write(json.dumps({"arm": "newarm", "tokens_used": 999}) + "\n" + json.dumps({"t": "yesterday", "arm": "newarm", "tokens_used": 5}) + "\n" +
+                    json.dumps({"t": W0 + 1, "arm": "newarm", "tokens_used": 7}) + "\n")
+d8 = {}; g = S.gpt_spend_by_arm(g8, W0, W1, d8)
+check(g["newarm"]["ite"] == 7 and d8["gpt_unreadable"] == 2, "(8) GPT records without numeric t are excluded and counted unreadable: %s %s" % (g, d8))
+# (9) a failing file must not leave its ids in seen
+P9 = os.path.join(T, "p9"); os.makedirs(os.path.join(P9, S.path_slug(ROOT + "/trio")))
+os.makedirs(os.path.join(P9, S.path_slug(ROOT + "/newarm")))
+def rec9(mid, tsv): return json.dumps({"type": "assistant", "timestamp": tsv, "message": {"id": mid, "model": "claude-opus-FAKE-test-only", "usage": {"input_tokens": 100, "output_tokens": 0}}}) + "\n"
+fa = os.path.join(P9, S.path_slug(ROOT + "/trio"), "a.jsonl")
+open(fa, "w").write(rec9("x1", "2026-10-29T12:10:00Z") + "{not json\n" + rec9("x2", "NOT-A-TIME"))
+fb = os.path.join(P9, S.path_slug(ROOT + "/newarm"), "b.jsonl")
+open(fb, "w").write(rec9("x1", "2026-10-29T12:10:00Z"))
+os.utime(fa, (1000, 1000)); os.utime(fb, (2000, 2000))
+d9 = {}; cl = S.claude_spend_by_arm(P9, ["trio", "newarm"], ROOT, diag=d9)
+check(len(d9["unreadable_files"]) == 1 and cl.get("newarm", {}).get("ite") == 100, "(9) ids of a failed file are not 'seen': the copy in another file still counts: %s" % cl)
+open(fa, "w").write(rec9("y1", "2026-10-29T12:10:00Z") + "{not json\n" + rec9("y2", "2026-10-29T12:11:00Z"))
+d9 = {}; cl = S.claude_spend_by_arm(P9, ["trio", "newarm"], ROOT, diag=d9)
+check(cl["trio"]["ite"] == 200 and d9.get("bad_lines"), "(9) malformed line mid-file: later records still counted and the bad line flagged")
+# (7) short / lost write to an override file is warned about
+import io, contextlib, gpt_call_log as L7
+real_write = os.write
+os.write = lambda fd, b: real_write(fd, b[: len(b) // 2])
+buf = io.StringIO()
+try:
+    with contextlib.redirect_stderr(buf):
+        L7.write_record({"t": 1, "arm": "x"}, target=os.path.join(ext_tmp, "short.jsonl"), mode="file")
+finally:
+    os.write = real_write
+check("WARNING" in buf.getvalue(), "(7) short write to an override file is detected and warned: %r" % buf.getvalue()[:80])
+buf = io.StringIO()
+with contextlib.redirect_stderr(buf):
+    L7.write_record({"t": 1, "arm": "x"}, target=os.path.join(ext_tmp, "okw.jsonl"), mode="file")
+check(buf.getvalue() == "", "(7) a good write warns nothing")
+# (1) slug collisions refused at declaration; transcript's recorded cwd cross-checked
+try:
+    S.arm_report(ran=["solo", "solo-b"], arms=["a/b", "a-b", "solo"], projects=proj, arena_root=ROOT, since=0.0); check(False, "(1) colliding arm names refused")
+except S.ZeroSpendRefused:
+    check(False, "(1) wrong exception class")
+except S.ArmNameCollision as e:
+    check("a-b" in str(e) and "a/b" in str(e), "(1) arm names whose slugs collide are refused at declaration: %s" % e)
+P1 = os.path.join(T, "p1"); d1 = os.path.join(P1, S.path_slug(ROOT + "/solo")); os.makedirs(d1)
+def rec1(mid, cwd): return json.dumps({"type": "assistant", "cwd": cwd, "timestamp": "2026-10-29T12:10:00Z", "message": {"id": mid, "model": "claude-opus-FAKE-test-only", "usage": {"input_tokens": 100, "output_tokens": 0}}}) + "\n"
+open(os.path.join(d1, "ok.jsonl"), "w").write(rec1("c1", ROOT + "/solo/src"))
+open(os.path.join(d1, "bad.jsonl"), "w").write(rec1("c2", ROOT + "-solo"))
+d1d = {}; cl = S.claude_spend_by_arm(P1, ["solo"], ROOT, diag=d1d)
+check(cl["solo"]["ite"] == 100 and cl[S.UNATTRIBUTED]["ite"] == 100 and cl[S.UNATTRIBUTED]["reasons"] == {"cwd_mismatch": 100.0}
+      and d1d["cwd_mismatch"], "(1) recorded cwd outside the arm path => UNATTRIBUTED cwd_mismatch + flag: %s" % cl)
+# (2) separate units, mixed total only with an explicit note
+glog2 = os.path.join(ext_tmp, "u2.jsonl")
+open(glog2, "w").write(json.dumps({"t": W0 + 5, "arm": "newarm", "tokens_used": 777}) + "\n")
+a2 = S.arm_report(ran=["newarm"], arms=["newarm"], projects=proj, arena_root=ROOT, gpt_log=glog2, since=W0, until=W1)["arms"]["newarm"]
+check(a2["claude_ite"] == 150 and a2["gpt_ite"] == 777 and "ite" not in a2 and a2["total_ite_mixed"] == 927
+      and "RAW" in a2["unit_note"] and "open" in a2["unit_note"], "(2) claude_ite and gpt_ite separate; total_ite_mixed carries a unit_note, no bare 'ite'")
 shutil.rmtree(ext_tmp, ignore_errors=True)
 print("FAILS", fails)
 sys.exit(1 if fails else 0)

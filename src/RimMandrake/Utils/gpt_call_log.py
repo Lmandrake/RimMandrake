@@ -77,6 +77,31 @@ def resolve_target(mode=None):
     return (p, m) if mode is None else (p, mode)
 
 
+def _warn(msg):
+    print("gpt_call_log WARNING: " + msg, file=sys.stderr)
+
+
+def _verify(path, data, whole):
+    """Read back what we wrote: the record's line must be intact (override files skip the drvfs safety rule, so
+    a lost/torn append is warned about, never silent)."""
+    try:
+        with open(path, "rb") as f:
+            if whole:
+                got = f.read()
+            else:
+                f.seek(0, 2)
+                f.seek(max(0, f.tell() - 64 * len(data) - 4096))   # tolerate later writers appending after ours
+                got = f.read()
+        ok = (got == data) if whole else (data in got)
+    except OSError as e:
+        ok, got = False, b""
+        _warn("cannot read back %s: %s" % (path, e))
+        return False
+    if not ok:
+        _warn("record not found intact in %s after write (lost or torn append; drvfs?)" % path)
+    return ok
+
+
 def write_record(rec: dict, target=None, mode=None) -> str:
     """Write one record; returns the file written. Raises on failure (caller decides to warn)."""
     if target is None:
@@ -92,13 +117,17 @@ def write_record(rec: dict, target=None, mode=None) -> str:
         with open(tmp, "wb") as f:
             f.write(data)
         os.replace(tmp, d / name)                            # readers never see a half-written record
+        _verify(d / name, data, whole=True)
         return str(d / name)
     Path(target).parent.mkdir(parents=True, exist_ok=True)
     fd = os.open(target, os.O_WRONLY | os.O_APPEND | os.O_CREAT, 0o644)
     try:
-        os.write(fd, data)                                   # one write call per record
+        n = os.write(fd, data)                               # one write call per record
     finally:
         os.close(fd)
+    if n != len(data):
+        _warn("short write to %s (%d of %d bytes)" % (target, n, len(data)))
+    _verify(target, data, whole=False)
     return str(target)
 
 

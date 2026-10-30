@@ -57,8 +57,10 @@ def ts(s):
     return datetime.fromisoformat(s.replace("Z", "+00:00")).timestamp()
 
 
-def scan_file(path, cutoff, seen):
-    """Yield per-call dicts and compaction events for one transcript."""
+def scan_file(path, cutoff, seen, stats=None):
+    """Per-call dicts and compaction events for one transcript. `stats` (dict) receives bad_lines (unparseable
+    JSON lines, skipped) and cwd (first recorded cwd). A message id enters `seen` only after its usage is counted."""
+    stats = stats if stats is not None else {}
     calls, compacts, reads = [], [], []
     res_size = {}            # tool_use_id -> tool_result tokens (chars/4)
     last_t = None
@@ -67,7 +69,13 @@ def scan_file(path, cutoff, seen):
         try:
             d = json.loads(line)
         except Exception:
+            stats["bad_lines"] = stats.get("bad_lines", 0) + 1
             continue
+        if not isinstance(d, dict):
+            stats["bad_lines"] = stats.get("bad_lines", 0) + 1
+            continue
+        if d.get("cwd") and "cwd" not in stats:
+            stats["cwd"] = d["cwd"]
         t = d.get("type")
         if t == "system" and d.get("subtype") == "compact_boundary":
             md = d.get("compactMetadata") or {}
@@ -101,7 +109,6 @@ def scan_file(path, cutoff, seen):
                                                       sort_keys=True).encode()).hexdigest()
         if not u or not d.get("timestamp") or mid in seen:
             continue
-        seen.add(mid)
         t0 = ts(d["timestamp"])
         cc = u.get("cache_creation") or {}
         c5 = cc.get("ephemeral_5m_input_tokens")
@@ -120,6 +127,7 @@ def scan_file(path, cutoff, seen):
                       "ite": x * (it + 0.1 * cr + 1.25 * c5 + 2.0 * c1 + 5.0 * out),
                       "ite_write": x * (1.25 * c5 + 2.0 * c1), "in_window": t0 >= cutoff, "c5": c5, "c1": c1, "x": x,
                       "ep": d.get("entrypoint")})
+        seen.add(mid)
         last_t = t0
     return calls, compacts, reads, res_size
 
@@ -233,6 +241,13 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__)))) 
 ARENA_ROOT = os.environ.get("RM_ARENA_ROOT", "/home/mandrake/rm/arena")
 HARNESS = "HARNESS"          # judge, gate and anything else run from <ARENA_ROOT>/judge bill here, never to an arm
 UNATTRIBUTED = "UNATTRIBUTED"
+UNIT_NOTE = ("claude_ite is Opus-input-token equivalents; gpt_ite is RAW codex tokens (gpt_ite_est a chars/4 guess), "
+             "NOT ITE. total_ite_mixed adds them 1:1 for convenience only; the GPT->ITE conversion is an open "
+             "owner/spec question and no conversion is applied.")
+
+
+class ArmNameCollision(Exception):
+    pass
 
 
 class ZeroSpendRefused(Exception):
@@ -301,7 +316,8 @@ class _Seen(set):
     caller's job: files are fed earliest mtime first)."""
     def __init__(self):
         super().__init__()
-        self.owner, self.cur, self.conflicts = {}, None, {}
+        self.owner, self.cur, self.conflicts, self.mark = {}, None, {}, None
+        self.added = []
 
     def __contains__(self, mid):
         hit = super().__contains__(mid)
@@ -312,6 +328,34 @@ class _Seen(set):
     def add(self, mid):
         super().add(mid)
         self.owner.setdefault(mid, self.cur)
+        self.added.append(mid)
+
+    def begin_file(self, arm):
+        self.cur, self.added = arm, []
+
+    def rollback(self):
+        """Forget every id added since the last begin_file(): the file failed, so its ids were never counted."""
+        for mid in self.added:
+            self.discard(mid); self.owner.pop(mid, None)
+        self.added = []
+
+
+def _cwd_under(cwd: str, arena_root, arm: str) -> bool:
+    """Real path comparison (not slugs: /arena/solo and /arena-solo share a slug but not a path)."""
+    base, c = _root(arena_root) + "/" + arm, str(cwd).rstrip("/")
+    return c == base or c.startswith(base + "/")
+
+
+def check_arm_names(names):
+    """Refuse declared arm names whose project slugs collide (/arena/solo vs /arena-solo encode the same)."""
+    by = {}
+    for n in names:
+        n = n.strip("/")
+        by.setdefault(path_slug(n), set()).add(n)
+    bad = ["%s" % " and ".join(sorted(v)) for v in by.values() if len(v) > 1]
+    if bad:
+        raise ArmNameCollision("arm names with the same project slug cannot be told apart by the meter: %s -- rename one"
+                               % "; ".join(bad))
 
 
 def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, until=None, diag=None):
@@ -336,12 +380,19 @@ def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, unti
                 paths.append((mt, p))
     for _mt, p in sorted(paths):
         arm, why = classify_slug(os.path.relpath(p, projects).split(os.sep)[0], arms, arena_root)
-        seen.cur = arm
+        seen.begin_file(arm)
+        st = {}
         try:
-            calls = scan_file(p, since, seen)[0]
+            calls = scan_file(p, since, seen, st)[0]
         except Exception as e:                              # noqa: BLE001  unreadable: counted, flagged
+            seen.rollback()                                 # its ids were not counted: a copy elsewhere must count
             diag["unreadable_files"].append("%s: %s" % (p, e))
             continue
+        if st.get("bad_lines"):
+            diag.setdefault("bad_lines", {})[p] = st["bad_lines"]
+        if arm not in (UNATTRIBUTED, HARNESS) and st.get("cwd") and not _cwd_under(st["cwd"], arena_root, arm):
+            diag.setdefault("cwd_mismatch", []).append("%s: recorded cwd %s is not under arm %s" % (p, st["cwd"], arm))
+            arm, why = UNATTRIBUTED, "cwd_mismatch"
         calls = [c for c in calls if since <= c["t"] < until]
         if calls:
             r = out[arm]
@@ -378,7 +429,13 @@ def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None):
         out["UNREADABLE"]["calls"] += bad
     for d in recs:
         t = d.get("t")
-        if isinstance(t, (int, float)) and not (since <= t < until):
+        if isinstance(t, bool) or not isinstance(t, (int, float)) or t != t:
+            bad += 1                                   # no numeric time: cannot be placed in the window
+            out["UNREADABLE"]["calls"] += 1
+            if diag is not None:
+                diag["gpt_unreadable"] = bad
+            continue
+        if not (since <= t < until):
             continue
         arm = (d.get("arm") or "").strip() or "UNTAGGED"
         ite, est = gpt_ite_of(d)
@@ -388,7 +445,7 @@ def gpt_spend_by_arm(log=None, since=0.0, until=None, diag=None):
     return dict(out)
 
 
-def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, since=0.0, until=None,
+def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, since=None, until=None,
                gpt_only_arms=(), idle_arms=()):
     """Combined per-arm ITE within [since, until). Declared arms: `ran` (must show Claude spend), `gpt_only_arms`
     (ran, GPT only: must show GPT spend), `idle_arms` (ran, legitimately did nothing: zero accepted). A declared arm
@@ -398,7 +455,12 @@ def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, 
     if not (ran or gpt_only_arms or idle_arms):
         raise ZeroSpendRefused("no arms declared (--ran / --gpt-only-arms / --idle-arms): nothing to check, so no "
                                "result is reported -- an empty arm list must not pass")
+    if ran and since is None:
+        raise ZeroSpendRefused("--ran needs an explicit window (--since): with no lower bound old spend would satisfy "
+                               "an arm that did nothing this run")
     arms = list(arms or (ran + gpt_only_arms + idle_arms))
+    check_arm_names(set(arms) | set(ran) | set(gpt_only_arms) | set(idle_arms))
+    since = 0.0 if since is None else since
     diag = {}
     cl = claude_spend_by_arm(projects, arms, arena_root, since, until, diag)
     gp = gpt_spend_by_arm(gpt_log, since, until, diag)
@@ -408,7 +470,8 @@ def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, 
         rep[k] = {"claude_ite": c.get("ite", 0.0), "gpt_ite": g.get("ite", 0.0), "gpt_ite_est": g.get("ite_est", 0.0),
                   "claude_calls": c.get("calls", 0), "gpt_calls": g.get("calls", 0),
                   "gpt_calls_estimated": g.get("est_calls", 0)}
-        rep[k]["ite"] = rep[k]["claude_ite"] + rep[k]["gpt_ite"] + rep[k]["gpt_ite_est"]
+        rep[k]["total_ite_mixed"] = rep[k]["claude_ite"] + rep[k]["gpt_ite"] + rep[k]["gpt_ite_est"]
+        rep[k]["unit_note"] = UNIT_NOTE
     dead = [a for a in ran if rep.get(a, {}).get("claude_ite", 0) <= 0]
     dead += ["%s (declared GPT-only)" % a for a in gpt_only_arms if rep.get(a, {}).get("gpt_ite", 0) + rep.get(a, {}).get("gpt_ite_est", 0) <= 0]
     if dead:
@@ -425,17 +488,21 @@ def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, 
         flags.append("%d unreadable transcript file(s): %s" % (len(diag["unreadable_files"]), diag["unreadable_files"][:3]))
     if diag.get("gpt_unreadable"):
         flags.append("%d unreadable gpt call log line(s)/file(s)" % diag["gpt_unreadable"])
+    if diag.get("bad_lines"):
+        flags.append("%d transcript file(s) had unparseable lines (skipped)" % len(diag["bad_lines"]))
+    for m in diag.get("cwd_mismatch", [])[:3]:
+        flags.append("UNATTRIBUTED (cwd mismatch): " + m)
     if diag.get("id_conflicts"):
         flags.append("%d message id(s) found under two arm folders (earliest transcript mtime won)" % len(diag["id_conflicts"]))
     for a in idle_arms:
-        if rep.get(a, {}).get("ite", 0) > 0:
-            flags.append("arm %s declared idle but shows %.0f ITE" % (a, rep[a]["ite"]))
+        if rep.get(a, {}).get("total_ite_mixed", 0) > 0:
+            flags.append("arm %s declared idle but shows %.0f (mixed units)" % (a, rep[a]["total_ite_mixed"]))
     known = set(arms) | {"UNTAGGED", "UNREADABLE", HARNESS, UNATTRIBUTED}
     for k in sorted(set(gp) - known):
         flags.append("gpt arm %r is not a declared/listed arm" % k)
     if gpt_only_arms:
         flags.append("GPT-only arms (declared): %s" % ", ".join(gpt_only_arms))
-    return {"arms": rep, "flags": flags, "since": since, "until": until}
+    return {"arms": rep, "flags": flags, "since": since, "until": until, "unit_note": UNIT_NOTE}
 
 
 def _iso(s):
@@ -450,15 +517,15 @@ def arm_main(argv):
     ap.add_argument("--gpt-only-arms", nargs="*", default=[], help="arms that ran with GPT calls only")
     ap.add_argument("--idle-arms", nargs="*", default=[], help="arms that ran and legitimately did nothing")
     ap.add_argument("--arms", nargs="*", default=None, help="explicit arm names when the arena root has no directory")
-    ap.add_argument("--since", help="ISO UTC start of the run window (default: no lower bound)")
+    ap.add_argument("--since", help="ISO UTC start of the run window (REQUIRED with --ran)")
     ap.add_argument("--until", help="ISO UTC end of the run window")
     ap.add_argument("--projects"); ap.add_argument("--arena-root"); ap.add_argument("--gpt-log")
     a = ap.parse_args(argv)
     try:
         r = arm_report(ran=a.ran, arms=a.arms, projects=a.projects, arena_root=a.arena_root, gpt_log=a.gpt_log,
-                       since=_iso(a.since) if a.since else 0.0, until=_iso(a.until) if a.until else None,
+                       since=_iso(a.since) if a.since else None, until=_iso(a.until) if a.until else None,
                        gpt_only_arms=a.gpt_only_arms, idle_arms=a.idle_arms)
-    except ZeroSpendRefused as e:
+    except (ZeroSpendRefused, ArmNameCollision) as e:
         print("REFUSED:", e)
         return 2
     print(json.dumps(r, indent=1))
