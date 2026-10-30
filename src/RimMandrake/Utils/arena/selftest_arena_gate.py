@@ -759,8 +759,8 @@ def t_real(tmp):
     import secrets
     root = HERE.parents[3]
     env = {k: v for k, v in os.environ.items() if not k.startswith(("ARENA", "PYTHON"))}
-    # a real selftest that needs no harness capability (selftest_arena_eventlog refuses any entrypoint but its own
-    # /proc/self/cmdline script, so under the gate's runner it reads FAIL by design: a known residual)
+    # a real selftest that needs no harness capability (the eventlog one, which opens harness_pass, is run through the
+    # runner below: it must PASS there, ARENA_GATE_FIX_EVENTLOG_SELFTEST_CANT_PASS)
     target = HERE.parent / "selftest_about_dependency_urls.py"
     out = subprocess.run([sys.executable, str(root / UT / "run_selftests.py"), "--only", str(target), "--no-cache"],
                          cwd=str(root), capture_output=True, text=True, env=env, timeout=300)
@@ -785,6 +785,19 @@ def t_real(tmp):
     v, rec = via_runner(target)
     check(v == "PASS" and rec and rec["lines"] > 0,
           "the harness runner passes the same real selftest, lines counted (%s %s)" % (v, rec))
+    (tmp / "gr").mkdir(exist_ok=True); (tmp / "gr" / G.GATE_RUNNER_NAME).write_text(G.RUNNER_SRC)
+    ev = HERE / "selftest_arena_eventlog.py"
+    entries = [x for x in subprocess.run([sys.executable, "-I", str(collector), str(ev)], capture_output=True, text=True,
+                                         env=env, timeout=60).stdout.strip().splitlines()[-1].split(" ", 1)[1].split(",") if x]
+    rfd, wfd = os.pipe(); n = secrets.token_hex(16)
+    p = subprocess.run([sys.executable, "-I", str(tmp / "gr" / G.GATE_RUNNER_NAME), str(wfd), str(ev)],
+                       input=n + "\nENTRIES " + ",".join(entries) + "\n", text=True, capture_output=True, pass_fds=(wfd,),
+                       env=dict(env, **{G.GATE_RUNNER_ENV: G.runner_sha256()}), timeout=500, cwd=str(HERE))
+    os.close(wfd); buf = os.read(rfd, 4096); os.close(rfd)
+    rec = G.parse_record(buf, n)
+    v = G.verdict_from(p.returncode, rec, len(entries) + 1)[0] if rec else "NONE"
+    check(v == "PASS" and rec and rec["lines"] > 0,
+          "the harness runner PASSES selftest_arena_eventlog (a task touching arena_eventlog can pass the gate) (%s %s)" % (v, rec))
     red = tmp / "selftest_red_real.py"; red.write_text("def t_a():\n    assert 1 == 2\n\nt_a()\n")
     v, rec = via_runner(red)
     check(v == "FAIL", "the harness runner reports a real red selftest as FAIL (%s)" % v)

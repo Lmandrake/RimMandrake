@@ -430,7 +430,8 @@ def t_d7_recover(tmp):
 def t_r2_1_capability(tmp):
     p, _ = fresh(tmp, "r21", writer=False)
     kw = dict(lane="L", run_id="r")
-    real_entry, real_code = L._entrypoint, L._main_code_ok
+    real_entry, real_code, real_sel = L._entrypoint, L._main_code_ok, L._gate_runner_sel
+    L._gate_runner_sel = lambda cmdline=None, env=None: None   # these tests swap the entry NAME: not under the gate runner
     L._main_code_ok = lambda e: None     # this test swaps the entry NAME; the code-shape check has its own R3 test
     try:
         # GPT's attack: RM_ARM cleared, cwd outside every clone, token readable, library imported from an agent script
@@ -490,7 +491,7 @@ def t_r2_1_capability(tmp):
         finally:
             os.environ["ARENA_EVENT_TOKEN_FILE"] = saved
     finally:
-        L._entrypoint, L._main_code_ok = real_entry, real_code
+        L._entrypoint, L._main_code_ok, L._gate_runner_sel = real_entry, real_code, real_sel
     # RESIDUAL, shown not hidden: the raw token + _sign() still forges a valid line; prov makes it visible only
     f = L.arm_file(p, "ralph_a")
     acc = L.verify(p, "ralph_a")["accepted"]
@@ -755,7 +756,8 @@ def t_r3_entrypoint(tmp):
         e = L._entrypoint()
     finally:
         __main__.__file__, sys.argv[0], L._ENTRY = saved
-    check(os.path.basename(e) == "selftest_arena_eventlog.py",
+    want_entry = "gate_runner.py" if L._gate_runner_sel() else "selftest_arena_eventlog.py"   # under the gate the runner is __main__
+    check(os.path.basename(e) == want_entry,
           "R3-A2 forging __main__.__file__ / sys.argv[0] does not change the entrypoint (%s)" % os.path.basename(e))
     forge = ("import sys, __main__; sys.path.insert(0, %r); __main__.__file__ = %r; sys.argv[0] = __main__.__file__\n"
              "import arena_eventlog as L, arena_tasks as A\n"
@@ -932,6 +934,7 @@ def t_gate_runner(tmp):
     sel = str(L.HERE / "selftest_arena_eventlog.py")
     base = dict(os.environ, RM_EVLOG_GATE_PROBE="1", ARENA_EVENT_TOKEN_FILE=str(tmp / "gr_token"))
     base.pop("RM_ARM", None)
+    base.pop("RM_GATE_RUNNER", None)   # when this selftest itself runs under the gate runner the marker is inherited
 
     def launch(env, rpath=runner, target=sel):
         r, w = os.pipe()
@@ -992,7 +995,8 @@ def t_switch_entry(tmp):
     p, _ = fresh(tmp, "sw", writer=False)
     kw = dict(lane="none", run_id="switch-1")
     det = {"from": "ralph_a", "to": "stopped", "stopped": ["ralph_a"], "waited_s": 1.0}
-    real_entry, real_code = L._entrypoint, L._main_code_ok
+    real_entry, real_code, real_sel = L._entrypoint, L._main_code_ok, L._gate_runner_sel
+    L._gate_runner_sel = lambda cmdline=None, env=None: None   # these tests swap the entry NAME: not under the gate runner
     L._main_code_ok = lambda e: None
     try:
         L._entrypoint = lambda: str(L.HERE / "arena.py")
@@ -1005,7 +1009,7 @@ def t_switch_entry(tmp):
             L._entrypoint = lambda e=ent: str(e)
             check(raises(L.Rejected, L.harness_pass, p) is not None, "SW-2 %s: refused" % nm)
     finally:
-        L._entrypoint, L._main_code_ok = real_entry, real_code
+        L._entrypoint, L._main_code_ok, L._gate_runner_sel = real_entry, real_code, real_sel
     # a real copy of arena.py outside the arena dir, and a spoofed __main__.__file__, run as real processes
     forge = ("import sys, __main__; sys.path.insert(0, %r); __main__.__file__ = %r; sys.argv[0] = __main__.__file__\n"
              "import arena_eventlog as L, arena_tasks as A\n"
