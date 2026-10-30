@@ -151,8 +151,8 @@ Keep: three actors, subagents do the work, two independent gates, fix-now, a wri
   6 h; each item gets a short clash test in that session. A batch failure is attributed per item by its own clash
   test; an unattributable failure bisects the batch on the minimal + tier lists, not the full list.
 - D8. Two pilots: one shared ready queue with claims (an item is taken by one pilot; F9 lock per machine).
-  SteveDesktop runs through testq as executor (F11: canary, steward, PAUSE_ON); Archmagi runs only while the owner
-  is not playing and yields on his return (the session is lost, the batch returns to the queue).
+  SteveDesktop runs through testq as executor (F11: canary, steward, PAUSE_ON); Archmagi runs the same way: his
+  presence at the machine is not an event (F10, owner 2026-10-30).
 - D9. Routed out of the game (K9): flyer flight (never), art/subjective (art-evaluation pipeline, owner sheets),
   owner-only acts (cards). Worldgen items do not exist (F16).
 - D10. Crash recovery: relaunch, canary, the in-flight test is INVALID and re-queued once; a second crash on the same
@@ -167,8 +167,8 @@ Critical problems of TP+ (X1..X5).
 - X2. The critic's false-reject rate is unmeasured and is the largest lever (S10: crit_fr swings accepted/day by
   about 6 between its ends). If the critic rejects 25 % of good small items, TP+ loses its lead.
 - X3. Batched full-list failures need attribution; a crash in the full load (25 min) voids the whole batch.
-- X4. Archmagi: if the owner sits down mid-session the session is lost (modelled as a bump); a pilot on his gaming
-  machine also changes its mod list, which he must never discover the hard way. Needs his explicit switch.
+- X4. Archmagi: a pilot on his gaming
+  machine changes its mod list, which he must never discover the hard way. Needs his explicit switch.
 - X5. The sim is uncalibrated: every TP parameter is ASSUMED; only p_invalid (0.09, F12) and the reload times
   (F1, F6) are measured. Its canary benefit is invisible (S12) because poisoned-session events are rare at the
   priors; the canary's case rests on F7 and F12, not on the sim.
