@@ -739,6 +739,26 @@ def sc_refused_no_start(tmp, mod, tag):
                 os.environ[k] = v
 
 
+def sc_publish_tested_sha(tmp, mod, tag):
+    """GPT r2: what is published is the sha the gate and tester checked, even if the WIP ref moved meanwhile."""
+    box = {}
+
+    def t(prompt, cwd):
+        r = box["w"].root
+        (r / "evil.txt").write_text("untested\n")
+        sh(r, "git", "add", "evil.txt")
+        sh(r, "git", "commit", "-q", "-m", "untested commit on wip")
+        return default_tester(prompt, cwd)
+    w = World(tmp, "PT" + tag, mod, tester=t, builder=lambda p: (GOOD, 0))
+    box["w"] = w
+    run_steps(w)
+    recs = w.writer.records()
+    tested = [r.get("sha") for r in recs if r.get("event") == "test_start"]
+    main = sh(w.root, "git", "rev-parse", "main")
+    leaked = subprocess.run(["git", "cat-file", "-e", "main:evil.txt"], cwd=str(w.root), capture_output=True).returncode == 0
+    return bool(tested) and main in tested and not leaked
+
+
 MUTATIONS = [
     ("A gate bypass", sc_planted_check, "            ok, why = build_gate_ok(g)\n", "            ok, why = True, 'x'\n"),
     ("A failure note not fed", sc_planted_check, "            if self._note(name):\n", "            if False:\n"),
@@ -793,6 +813,8 @@ MUTATIONS = [
      "            troot = self.__dict__.setdefault('_tr', self._tester_root())"),
     ("R2 test_start before isolation check", sc_refused_no_start,
      "                    pf(sandbox, work)\n", "                    pass\n"),
+    ("R2 publish merges WIP not the tested sha", sc_publish_tested_sha,
+     "self.git(\"merge\", \"-q\", \"--ff-only\", pend[\"head\"])", "self.git(\"merge\", \"-q\", \"--ff-only\", WIP)"),
     ("L6 sync skipped", sc_sync, "        if self.sync is not None and not self.sync():", "        if False:"),
 ]
 
@@ -1091,6 +1113,7 @@ def main():
                          ("P1 dirty tree after killed build is parked", sc_dirty_sync),
                          ("P1 unisolated tester refused without override", sc_unisolated),
                          ("R2 refused tester logs no test_start", sc_refused_no_start),
+                         ("R2 publishes the tested sha, not WIP", sc_publish_tested_sha),
                          ("P2 retried tester gets fresh context", sc_retry_fresh)):
             check(guarded(fn, tmp, R, ""), "green: " + name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):

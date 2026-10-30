@@ -859,7 +859,9 @@ class Loop:
         if not ok:
             return self._failed(task, pend["base"], pend["head"], "final gate: " + why, n)
         self.git("switch", "-q", MAIN)
-        self.git("merge", "-q", "--ff-only", WIP)
+        self.git("merge", "-q", "--ff-only", pend["head"])    # GPT r2: the TESTED sha, never the mutable WIP ref
+        if self.git("rev-parse", "HEAD") != pend["head"]:
+            raise Refused("refused: main is not at the tested sha %s after the merge" % pend["head"])
         pub = subprocess.run(shlex.split(self.publish_cmd), cwd=str(self.root), capture_output=True, text=True)
         self.git("switch", "-q", WIP)
         if pub.returncode != 0:
