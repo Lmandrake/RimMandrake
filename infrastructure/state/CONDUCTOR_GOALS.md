@@ -8,6 +8,21 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
+## From Fri 2026-10-30: the architecture trial (block 2, on top of block 1)
+
+Set: 2026-10-30 00:40Z. His words (note on `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD`): *"Ok. You convinced me. Execute
+the 3-day comparison please. Let me know when you need help."* · *"Of course build everything you need first, if that
+isn't clear"*. The rank against block 1 is the Conductor's: the trial goes first because he made it the current act.
+He can reorder it.
+
+1. **Architecture trial**: build the whole harness (day 0: all 16 `ARENA_*` items, FOUNDRY), then run the 3 measuring
+   days per `design/RimMandrake/architecture_switch_harness_2026-10-29.md` §4 at the 1.5x token allowance he gave.
+   Rules decided before any data, which he accepted: (a) if day 2 shows the critic is unreliable, the simplest
+   critic-free arm wins; (b) if nothing separates by the day-3 hard cap, the simplest arm wins by the §4.1 tie order
+   and there is no further round; (c) after that, no architecture work for about a month, and the time goes to
+   FlowWorks. Headline measure: accepted work per day per owner touch. Never cut.
+2. Block 1 below continues in its order, under the trial.
+
 ## Week of Wed 2026-10-28 → Wed 2026-11-04 (block 1)
 
 Set: 2026-10-28, the weekly sit-down (his card, 23:19Z: *"Weekly sit-down, I draft"*). Rank 1-3 is his
