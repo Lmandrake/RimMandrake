@@ -22,8 +22,8 @@ WHAT IT READS (only fields some harness code writes, or the section 1.7 schema n
   - judge events: task, verdict ('accept' | 'reject' | 'invalid'; the LAST by event time counts, as
     arena_eventlog.accepted_tasks), ts, sha. A task is COMPLETED when its last judge verdict is accept or reject.
   - the frozen task specs <arena>/tasks/<id>.json: kind (arena_tasks.KINDS) and size (1/2/4 = points).
-  - TOKENS, from a spend file (--spend, schema arena_task_spend/1, written by arena_spend.py), never from the record
-    `ite` field: {"schema", "arms": {arm: {task: row}}, "overhead", "flags"}, row = {"claude": {model: {input,
+  - TOKENS, from a spend file (--spend, schema arena_task_spend/2, written by arena_spend.py), never from the record
+    `ite` field: {"schema", "window", "logs", "blocking", "arms": {arm: {task: row}}, "overhead", "flags"}, row = {"claude": {model: {input,
     cache_read, cache_write_5m, cache_write_1h, output}}, "gpt": {tokens, in_est, out_est, ...}, "ambiguous_calls",
     "claude_ite" (derived, IGNORED here)}. Owner ruling (ARENA_METER_BUILD_SPEND_BY_CLONE_PATH, 2026-10-30) and
     Conductor refinement: RAW Claude tokens per model and RAW GPT tokens are stored separately and THIS script weights:
@@ -32,8 +32,14 @@ WHAT IT READS (only fields some harness code writes, or the section 1.7 schema n
     (named constants, overridable on the command line, so a new conversion needs no re-metering; the defaults
     reproduce sim/spend_census's ITE). Refused (UNMEASURED for that task): a row with no raw counts (derived or merged
     total only), a Claude model of no known family carrying tokens, an unweighted token field, a task whose calls
-    overlapped another task's span (ambiguous_calls > 0), and any bool/negative/non-finite/overflowing count. Any
-    record `ite` is ignored and counted in `merged_ite_records`.
+    overlapped another task's span (ambiguous_calls > 0), a task with a metered call whose raw count was invalid
+    (invalid_calls > 0), a Claude section that is not a dict, and any bool/negative/non-finite/overflowing count. The
+    WHOLE spend file is refused (spend_doc_problem: UNMEASURED) when its `blocking` list is not empty (the meter lost
+    spend or may have put it on the wrong arm), when its `logs` binding (record count + digest per arm) differs from
+    the logs analysed (stale: the log moved on after metering), or when its `window` does not cover every analysed
+    record. A task whose LAST judge event is arena_judge.py's pending marker (detail.pending: a judgment started and
+    its verdict was never appended) makes its arm UNMEASURED. Any record `ite` is ignored, counted in
+    `merged_ite_records`.
 
 THE MODEL (all small-n safe: exact conjugate posteriors, Monte Carlo FROM the posterior, fixed seed; no bootstrap):
   - log tokens per completed task: y[a,t] = c + mu[a] + tau[t] + e, e ~ N(0, s2); normal-inverse-gamma conjugate
@@ -94,8 +100,10 @@ DISQUALIFICATION CONDITIONS, AND WHAT THE LOG CAN SHOW:
 
 LIMITS, STATED PLAINLY:
   - `judge` events are written by arena_judge.py (`judge` command, signed, lane "judge") and per-task spend by
-    arena_spend.py, which attributes each metered call to the task whose signed-event span [first, last event of a
-    (run_id, task)] contains it. A call inside spans of two different tasks of one arm (concurrent members, e.g.
+    arena_spend.py, which attributes each metered call to the task whose signed-event span (one execution of a
+    (run_id, task): first event to pass_end) contains it. Attribution is BY TIME: a call whose meter clock disagrees
+    with the event clock, or an execution whose events stop early, can put a call on the wrong task or in overhead
+    with no signal here (GPT review r1 #1; residual until calls carry a task/execution key). A call inside spans of two different tasks of one arm (concurrent members, e.g.
     ralph_c) is AMBIGUOUS and makes those tasks UNMEASURED; calls outside every span are reported as `overhead` and are
     NOT in the efficiency. GPT real tokens are a total (codex reports no in/out split), so GPT_TO_ITE weights them
     flat; only estimated GPT tokens carry an in/out split.
@@ -158,7 +166,7 @@ C_PREC = 1e-6                  # intercept prior precision (flat)
 ACCEPT_PRIOR_MEAN, ACCEPT_PRIOR_WEIGHT = 0.64, 2.0
 
 # ---------------------------------------------------------------- token conversion (owner ruling 2026-10-30)
-SPEND_SCHEMA = "arena_task_spend/1"
+SPEND_SCHEMA = "arena_task_spend/2"
 # Claude model family -> Opus-input-equivalent weight (sim/spend_census.MODEL_X), matched as a substring of the
 # lower-cased model id. A model of no listed family that carries tokens is REFUSED, never silently weighted.
 CLAUDE_MODEL_WEIGHT = {"opus": 1.0, "sonnet": 0.6, "haiku": 0.2}
@@ -390,6 +398,11 @@ def task_tokens(row, conv):
     claude, gpt = row.get("claude"), row.get("gpt")
     if not isinstance(claude, dict) and not isinstance(gpt, dict):
         return None, "spend row has no raw per-model counts (derived claude_ite / merged total only?)"
+    if claude is not None and not isinstance(claude, dict):
+        return None, "spend claude section is %s, not a dict" % type(claude).__name__
+    inv = row.get("invalid_calls", 0)
+    if _count(inv) is None or inv > 0:
+        return None, "spend has %r invalid metered call(s) (a bad raw count)" % (inv,)
     amb = row.get("ambiguous_calls", 0)
     if _count(amb) is None:
         return None, "spend ambiguous_calls=%r invalid" % (amb,)
@@ -437,6 +450,63 @@ def task_tokens(row, conv):
     return tot, None
 
 
+def spend_log_binding(arm_logs):
+    """{arm: {"n", "digest"} | {"unmeasured": True}}: what a spend doc was metered against. arena_spend.py writes it;
+    spend_doc_problem() compares it with the logs being analysed, so stale spend (the log moved on) is refused."""
+    out = {}
+    for arm, lg in sorted((arm_logs or {}).items()):
+        if not isinstance(lg, dict) or "recs" not in lg:
+            out[arm] = {"unmeasured": True}
+            continue
+        blob = json.dumps(lg["recs"], sort_keys=True, default=str, separators=(",", ":"))
+        out[arm] = {"n": len(lg["recs"]), "digest": hashlib.sha256(blob.encode("utf-8")).hexdigest()}
+    return out
+
+
+def spend_doc_problem(doc, arm_logs):
+    """-> why the spend doc cannot be used with these logs, or None. Refuses: wrong schema; blocking meter problems
+    (spend lost or possibly on the wrong arm); a doc metered against a different log (stale or partial); a meter
+    window that does not cover every analysed record of an arm."""
+    if not isinstance(doc, dict) or doc.get("schema") != SPEND_SCHEMA or not isinstance(doc.get("arms"), dict):
+        return "spend file is not schema %s (write it with arena_spend.py)" % SPEND_SCHEMA
+    blocking = doc.get("blocking")
+    if not isinstance(blocking, list):
+        return "spend file has no blocking list"
+    if blocking:
+        return "spend metering incomplete: %s" % "; ".join(str(b) for b in blocking[:5])
+    bound, now = doc.get("logs"), spend_log_binding(arm_logs)
+    if not isinstance(bound, dict):
+        return "spend file is not bound to an event log (no logs binding)"
+    for arm, b in now.items():
+        if "digest" in b and bound.get(arm) != b:
+            return "spend file is stale for arm %s: metered against %r, analysing %r" % (arm, bound.get(arm), b)
+    win = doc.get("window")
+    if not isinstance(win, dict):
+        return "spend file has no meter window"
+    try:
+        since, until = float(win["since"]), float(win["until"])
+        for arm, lg in (arm_logs or {}).items():
+            ts = [_ep(r) for r in lg.get("recs", ())] if isinstance(lg, dict) else []
+            if ts and not (since <= min(ts) and max(ts) < until):
+                return "spend window [%s, %s) does not cover arm %s's records [%s, %s]" % (
+                    since, until, arm, min(ts), max(ts))
+    except (KeyError, TypeError, ValueError) as e:
+        return "spend window unreadable: %s" % e
+    return None
+
+
+def analyse_spend_doc(arm_logs, tasks, doc, **kw):
+    """analyse() on a whole spend doc: the doc must pass spend_doc_problem() against THESE logs, else UNMEASURED."""
+    why = spend_doc_problem(doc, arm_logs)
+    arms = doc.get("arms") if isinstance(doc, dict) and isinstance(doc.get("arms"), dict) else {}
+    rep = analyse(arm_logs, tasks, arms, **kw)
+    rep["spend_overhead"] = doc.get("overhead") if isinstance(doc, dict) else None
+    rep["spend_flags"] = doc.get("flags") if isinstance(doc, dict) else None
+    if why:
+        rep["final"] = {"verdict": "UNMEASURED", "why": why}
+    return rep
+
+
 def _spec_ok(spec):
     return (isinstance(spec, dict) and type(spec.get("size")) is int and spec["size"] in (1, 2, 4)
             and spec.get("kind") in A.KINDS)
@@ -461,6 +531,9 @@ def completions(recs, tasks, spend_arm, conv, cap=None):
                 start[t] = r
     out = []
     for t, j in last.items():
+        if isinstance(j.get("detail"), dict) and j["detail"].get("pending") is True:
+            return [], "task %s: a judgment started at %s was never recorded (pending judge event is last)" % (
+                t, j.get("ts"))
         if j.get("verdict") not in JUDGE_DONE:
             continue
         spec = tasks.get(t)
@@ -982,24 +1055,16 @@ def main(argv=None):
             if key == "claude_token" and name not in CLAUDE_TOKEN_WEIGHT:
                 ap.error("unknown Claude token field %r (have %s)" % (name, sorted(CLAUDE_TOKEN_WEIGHT)))
             conv[key][name.lower() if key == "claude_model" else name] = wf
-    spend, overhead, flags = {}, None, None
     try:
         doc = json.loads(Path(a.spend).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
-        spend_err = "spend file unreadable: %s" % e
-    else:
-        if not isinstance(doc, dict) or doc.get("schema") != SPEND_SCHEMA or not isinstance(doc.get("arms"), dict):
-            spend_err = "spend file is not schema %s (write it with arena_spend.py)" % SPEND_SCHEMA
-        else:
-            spend_err, spend, overhead, flags = None, doc["arms"], doc.get("overhead"), doc.get("flags")
+        doc = {"unreadable": str(e)}
     logs = load_raw(a.raw_dir) if a.raw_dir else load_verified(allow_untrusted=a.allow_untrusted)
     tasks = load_tasks({"tasks": Path(a.tasks_dir)} if a.tasks_dir else None)
     cap = L.ts_epoch(a.hard_cap) if a.hard_cap else None
-    rep = analyse(logs, tasks, spend if isinstance(spend, dict) else {}, seed=a.seed, draws=a.draws, hard_cap=cap,
-                  final=a.final, conv=conv)
-    rep["spend_overhead"], rep["spend_flags"] = overhead, flags   # reported, not in the statistics
-    if spend_err:
-        rep["final"] = {"verdict": "UNMEASURED", "why": spend_err}
+    rep = analyse_spend_doc(logs, tasks, doc, seed=a.seed, draws=a.draws, hard_cap=cap, final=a.final, conv=conv)
+    if "unreadable" in doc:
+        rep["final"] = {"verdict": "UNMEASURED", "why": "spend file unreadable: %s" % doc["unreadable"]}
     if a.blind:
         rep = blind(rep, a.blind)
     text = json.dumps(rep, indent=1, sort_keys=True, default=str)

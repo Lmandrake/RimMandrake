@@ -112,6 +112,63 @@ def t_units():
           "calls in no span, and harness spend, are overhead", doc["overhead"])
     check(any("ambiguous" in f for f in doc["flags"]) and any("v3" in f and "UNMEASURED" in f for f in doc["flags"]),
           "ambiguity and an UNMEASURED arm log are flagged", doc["flags"])
+    t_units_r1(recs, cc)
+
+
+def t_units_r1(recs, cc):
+    """GPT review r1 findings 2, 3, 5, 7 at unit level."""
+    # (2) a reused (run_id, task) is two executions: a span closes at pass_end
+    rr = [{"ts": iso(100), "run_id": "r", "task": "A", "event": "pass_start"},
+          {"ts": iso(150), "run_id": "r", "task": "A", "event": "pass_end"},
+          {"ts": iso(300), "run_id": "r", "task": "A", "event": "pass_start"},
+          {"ts": iso(350), "run_id": "r", "task": "A", "event": "pass_end"}]
+    sp = SP.spans_of(rr)
+    check(sp == [(100.0, 150.0, "A"), (300.0, 350.0, "A")], "r1#2: a reused (run_id, task) gives one span per "
+          "execution (closed at pass_end), not one span across the idle gap", sp)
+    d = SP.attribute({"trio": {"recs": rr}}, [("trio", cc(250, **{"in": 5})), ("trio", cc(120, **{"in": 3}))], [])
+    check(d["overhead"].get("trio", {}).get("claude", {}).get(OPUS, {}).get("input") == 5
+          and d["arms"]["trio"]["A"]["claude"][OPUS]["input"] == 3,
+          "r1#2: a call in the idle gap between two executions is overhead", d)
+    # (5) every per-call count is validated BEFORE it is summed
+    for name, bad in (("bool", True), ("negative", -20), ("float", 1.5), ("nan", float("nan")), ("str", "7")):
+        d = SP.attribute({"trio": {"recs": recs}},
+                         [("trio", cc(5050, **{"in": 100})), ("trio", cc(5060, **{"in": bad}))], [])
+        row = d["arms"]["trio"]["C"]
+        tok, why = AA.task_tokens(row, AA.default_conv())
+        check(row.get("invalid_calls") == 1 and tok is None and "invalid" in (why or ""),
+              "r1#5: a %s Claude count in one call marks the task invalid_calls and the analysis refuses it" % name,
+              (row, why))
+    for name, g in (("tokens_used bool", {"tokens_used": True}), ("tokens_used neg", {"tokens_used": -5}),
+                    ("est neg", {"in_tok_est": 40, "out_tok_est": -10}), ("est bool", {"in_tok_est": True})):
+        d = SP.attribute({"trio": {"recs": recs}}, [("trio", cc(5050, **{"in": 100}))], [("trio", dict(g, t=5070))])
+        row = d["arms"]["trio"]["C"]
+        check(row.get("invalid_calls") == 1 and AA.task_tokens(row, AA.default_conv())[0] is None,
+              "r1#5: a GPT call with %s marks the task invalid" % name, row)
+    d = SP.attribute({"trio": {"recs": recs}}, [("trio", {"model": OPUS, "in": 5})], [])
+    check(d.get("blocking"), "r1#5: a metered call with no time is blocking, not silent overhead", d.get("blocking"))
+    # (7) a present Claude section that is not a dict is refused, never ignored and never a crash
+    for cl in ([], [1], "x", 0):
+        try:
+            tok, why = AA.task_tokens({"claude": cl, "gpt": {"tokens": 50}}, AA.default_conv())
+        except Exception as e:                              # noqa: BLE001
+            tok, why = "crash", repr(e)
+        check(tok is None, "r1#7: claude=%r is refused" % (cl,), (tok, why))
+    # (3) meter diagnostics are blocking, not report-only flags
+    real = S.claude_spend_by_arm
+    for key, val in (("unreadable_files", ["x.jsonl: boom"]), ("id_conflicts", {"m1": ["trio", "v3"]}),
+                     ("cwd_mismatch", ["x"]), ("bad_lines", {"x.jsonl": 2})):
+        def fake(*a, diag=None, sink=None, _k=key, _v=val, **k):
+            diag[_k] = _v
+            return {}
+        S.claude_spend_by_arm = fake
+        try:
+            d = SP.meter({"trio": {"recs": recs}}, projects="/nonexistent", clones_root="/nonexistent",
+                         gpt_log="/nonexistent/g.jsonl")
+        finally:
+            S.claude_spend_by_arm = real
+        prob = AA.spend_doc_problem(d, {"trio": {"recs": recs}})
+        check(any(key in b for b in d.get("blocking", ())) and prob and key in prob,
+              "r1#3: meter %s is blocking and the analysis refuses the spend doc" % key, (d.get("blocking"), prob))
 
 
 # ------------------------------------------------------------------ e2e
@@ -140,7 +197,8 @@ def task_cost():
     return {"T%03d" % i: math.exp(math.log(1e5) + rng.gauss(0, 1.0)) for i in range(N)}
 
 
-def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True):
+def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True, pending=False, id_conflict=False,
+          stale=False, since_cut=False):
     """One miniature arena run through the real writers. -> dict with the analysis report and paths."""
     root, p = setup_env(tmp, name)
     w = L.HarnessWriter(p)                                  # the selftest's implicit harness pass
@@ -180,7 +238,8 @@ def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True):
         (clones_root / arm).mkdir(exist_ok=True)          # the meter lists the clones root to name arms
         d = projects / S.path_slug(str(clones_root / arm))
         d.mkdir(parents=True)
-        (d / "s.jsonl").write_text("".join(json.dumps(x) + "\n" for x in tr[arm]))
+        lines = tr[arm] + ([tr["trio"][10]] if (id_conflict and arm == "v3") else [])   # one id under two arms
+        (d / "s.jsonl").write_text("".join(json.dumps(x) + "\n" for x in lines))
     Path(os.environ["RM_GPT_CALL_LOG"]).write_text("".join(json.dumps(x) + "\n" for x in gpt_lines))
     # judging: T000 of each arm through the real judge(), the rest through the same recorder main() uses
     for arm in ARMS:
@@ -195,6 +254,9 @@ def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True):
             fn = rec(arm, "base", sha)
             if fn:
                 fn({"task": task, "verdict": "accept"})
+        if pending and arm == "trio":     # r1#6: a re-judgment started, its verdict never appended
+            J.record_judge_event(w, arm=arm, base="base", head=hashlib.sha1(b"trio/T005").hexdigest(),
+                                 rec={"task": "T005", "verdict": "invalid"}, pending=True)
     anchors = [w._cap.last_anchor[a] for a in ARMS if a in w._cap.last_anchor]
     ext = L.ledger_anchors([{"event": "note", "text": L.anchor_note_text(anchors)}])
     logs = AA.load_verified(p, None, ext)
@@ -203,7 +265,8 @@ def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True):
         S.claude_spend_by_arm = lambda *a, sink=None, **k: real_census[0](*a, **k)
         S.gpt_spend_by_arm = lambda *a, sink=None, **k: real_census[1](*a, **k)
     try:
-        doc = SP.meter(logs, projects=str(projects), clones_root=str(clones_root), gpt_log=None)
+        doc = SP.meter(logs, projects=str(projects), clones_root=str(clones_root), gpt_log=None,
+                       since=(T0 + 30) if since_cut else None)   # cuts no call: only the window check can see it
     finally:
         S.claude_spend_by_arm, S.gpt_spend_by_arm = real_census
     if not raw_counts:                                       # mutation: only the derived column survives
@@ -211,7 +274,12 @@ def build(tmp, name, *, judge_writer=True, sinks=True, raw_counts=True):
             for row in rows.values():
                 row.pop("claude", None)
                 row.pop("gpt", None)
-    rep = AA.analyse(logs, specs, doc["arms"], draws=2000)
+    if stale:                                                # r1#4: the log moved on after the spend was metered
+        w.emit("trio", "pass_start", lane="build", run_id="trio.retry", ts=iso(T0 + N * 600 + 50), task="T003")
+        anchors = [w._cap.last_anchor[a] for a in ARMS if a in w._cap.last_anchor]
+        ext = L.ledger_anchors([{"event": "note", "text": L.anchor_note_text(anchors)}])
+        logs = AA.load_verified(p, None, ext)
+    rep = AA.analyse_spend_doc(logs, specs, doc, draws=2000)
     return {"root": root, "p": p, "logs": logs, "doc": doc, "rep": rep, "judged": judged, "specs": specs,
             "projects": projects, "clones_root": clones_root}
 
@@ -238,6 +306,10 @@ def t_e2e(tmp):
           "a task row holds the raw per-model Claude input and the raw GPT tokens of that task only", one)
     check(r["doc"]["overhead"].get("trio", {}).get("claude", {}).get(OPUS, {}).get("input") == 999 * N,
           "calls between tasks land in the arm's overhead, not in a task", r["doc"]["overhead"].get("trio"))
+    check(r["doc"].get("schema") == "arena_task_spend/2" and r["doc"].get("blocking") == []
+          and set(r["doc"].get("logs", {})) == set(ARMS) and AA.spend_doc_problem(r["doc"], r["logs"]) is None,
+          "the spend doc is schema /2, binds each arm's analysed log and has no blocking problem",
+          (r["doc"].get("schema"), r["doc"].get("blocking"), r["doc"].get("logs")))
     v = r["rep"]["final"]["verdict"]
     check(v == "DECIDE_FOR_trio", "analysis on the real writers' output is MEASURED and decides (cheaper arm wins)",
           r["rep"]["final"])
@@ -279,9 +351,36 @@ def t_main_wiring(tmp):
         J.judge_task = real
     recs = L.verify(p, "trio")["accepted"]
     js = [x for x in recs if x["event"] == "judge"]
-    check(rc == 0 and len(js) == 1 and js[0]["task"] == "T042" and js[0]["verdict"] == "reject"
-          and js[0]["sha"] == head, "arena_judge.main() writes one signed judge event (task, verdict, sha=head)",
+    check(rc == 0 and len(js) == 2 and js[0].get("detail", {}).get("pending") is True
+          and js[-1]["task"] == "T042" and js[-1]["verdict"] == "reject" and js[-1]["sha"] == head
+          and not js[-1].get("detail", {}).get("pending"),
+          "arena_judge.main() writes a signed PENDING judge event before judging, then the verdict (task, sha=head)",
           (rc, js))
+    # r1#6: the verdict append fails -> the pending marker stays last -> the analysis refuses the arm
+    real_rec = J.record_judge_event
+    calls = []
+
+    def flaky(w, **kw):
+        calls.append(kw.get("pending"))
+        if not kw.get("pending"):
+            raise L.EventLogError("disk full (selftest)")
+        return real_rec(w, **kw)
+    J.record_judge_event, J.judge_task = flaky, (lambda tid, **kw: J.judge(task=SJ.task_for(tid), hidden=None, **kw))
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            try:
+                rc = J.main(["judge", "--task", "T042", "--clone", str(c), "--base", base, "--head", head,
+                             "--arm", "trio", "--gate", str(gate)])
+            except L.EventLogError:
+                rc = "raised"
+    finally:
+        J.record_judge_event, J.judge_task = real_rec, real
+    js = [x for x in L.verify(p, "trio")["accepted"] if x["event"] == "judge"]
+    check(rc != 0 and js and js[-1].get("detail", {}).get("pending") is True,
+          "r1#6: a failed verdict append leaves the pending marker last (command fails)", (rc, js[-1:]))
+    recs = L.verify(p, "trio")["accepted"]
+    out, prob = AA.completions(recs, {"T042": {"kind": A.KINDS[0], "size": 1}}, {}, AA.default_conv())
+    check(prob and "pending" in prob, "r1#6: a task whose last judge event is pending makes the arm a problem", prob)
 
 
 def t_mutations(tmp):
@@ -291,6 +390,13 @@ def t_mutations(tmp):
     r = build(tmp, "nosink", sinks=False)
     check(r["rep"]["final"]["verdict"] == "UNMEASURED" and not any(r["doc"]["arms"].values()),
           "mutation: meter sinks dropped -> no per-task spend -> UNMEASURED", r["rep"]["final"])
+    for kw, what in (({"pending": True}, "r1#6 judge append failed after an earlier accept (pending marker last)"),
+                     ({"id_conflict": True}, "r1#3 one message id under two arm folders"),
+                     ({"stale": True}, "r1#4 the log moved on after the spend was metered"),
+                     ({"since_cut": True}, "r1#4 the meter window cut the start of the log")):
+        r = build(tmp, "m_" + next(iter(kw)), **kw)
+        check(r["rep"]["final"]["verdict"].startswith("UNMEASURED"), "mutation: %s -> UNMEASURED" % what,
+              r["rep"]["final"])
     r = build(tmp, "noraw", raw_counts=False)
     check(r["rep"]["final"]["verdict"] == "UNMEASURED",
           "mutation: raw counts dropped (derived claude_ite only) -> UNMEASURED", r["rep"]["final"])

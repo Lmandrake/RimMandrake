@@ -1496,13 +1496,16 @@ def judge_task(task_id: str, *, clone: Path, base: str, head: str, arm: str, gat
                  **kw)
 
 
-def record_judge_event(writer, *, arm: str, base: str, head: str, rec: dict) -> dict:
+def record_judge_event(writer, *, arm: str, base: str, head: str, rec: dict, pending: bool = False) -> dict:
     """Append the signed `judge` event to the arm's log through an open arena_eventlog.HarnessWriter: the record
     arena_analysis.py reads (task, verdict, ts, sha = the judged head). Deliberately NOT in it: votes, arm guesses,
     reasons and the judge_id (the log names the arm; joining judge ids to arms there would publish the private arm
-    map)."""
+    map). pending=True writes the START marker main() appends before judging (verdict 'invalid', detail.pending): if
+    the verdict append then fails, the marker stays the task's last judge event and arena_analysis.py refuses the
+    arm, instead of an earlier accept silently standing (GPT review r1 #6)."""
+    detail = {"base": base, "pending": True} if pending else {"base": base}
     return writer.emit(arm, "judge", lane="judge", run_id="judge", task=rec["task"], sha=head,
-                       verdict=rec["verdict"], detail={"base": base})
+                       verdict=rec["verdict"], detail=detail)
 
 
 # ---------------------------------------------------------------- arm-guess report (harness side)
@@ -1720,6 +1723,8 @@ def main(argv=None) -> int:
         # than spending judge tokens on a verdict arena_analysis.py would never see
         with L.harness_pass(p) as cap:
             w = L.HarnessWriter(p, cap=cap)
+            record_judge_event(w, arm=a.arm, base=a.base, head=a.head, rec={"task": a.task, "verdict": "invalid"},
+                               pending=True)
             rec = judge_task(a.task, clone=Path(a.clone), base=a.base, head=a.head, arm=a.arm, gate=gate, p=p,
                              record=lambda r: record_judge_event(w, arm=a.arm, base=a.base, head=a.head, rec=r))
         print(json.dumps({k: rec[k] for k in ("judge_id", "task", "verdict")}, sort_keys=True))

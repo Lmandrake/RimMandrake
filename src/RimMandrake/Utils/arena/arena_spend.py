@@ -8,27 +8,37 @@
 WHAT IT DOES. The meter (sim/spend_census.py) knows each Claude API call (from the transcripts, attributed to an
 arm by the clone path the session ran in) and each GPT call (gpt_call_log, tagged by RM_ARM), with a time. The
 arm's signed event log knows when the arm worked on which task. This script joins the two:
-  - a task SPAN is [first, last] event time of one (run_id, task) in the arm's log, over every event that carries a
-    task EXCEPT `gate` and `judge` (harness events written after the arm's pass; a gate running while the arm
-    starts its next task would otherwise make every task ambiguous). A task run twice has two spans.
+  - a task SPAN is one EXECUTION of a (run_id, task) in the arm's log: from its first event to its `pass_end`
+    (inclusive; with no pass_end, to its last event), over every event that carries a task EXCEPT `gate` and `judge`
+    (harness events written after the arm's pass; a gate running while the arm starts its next task would otherwise
+    make every task ambiguous). A later event of the same (run_id, task) after a pass_end opens a new span, so a
+    reused run_id never claims the idle gap between two runs.
   - a call whose time lies inside spans of exactly one task is that task's; inside spans of two or more different
     tasks it is AMBIGUOUS (counted on each such task as `ambiguous_calls`, its tokens on none; arena_analysis.py
     refuses such a task); inside no span it is the arm's `overhead` (reported, never in the efficiency).
   - meter buckets that are not an arm with a usable log (HARNESS, UNATTRIBUTED, UNTAGGED, UNREADABLE, an arm whose
     log is UNMEASURED) go to `overhead` whole, and are flagged.
+  - every per-call raw count is validated BEFORE it is summed; a call with a bool/negative/non-int count adds nothing
+    and marks its task row `invalid_calls` (arena_analysis.py refuses that task).
+  - BLOCKING (arena_analysis.py refuses the whole file): calls with no usable time, and the meter diagnostics that
+    mean spend was lost or may sit on the wrong arm (BLOCKING_DIAG: unreadable transcripts, bad lines, cwd mismatch,
+    unreadable gpt log lines, a message id under two arm folders).
 
-OUTPUT, schema arena_task_spend/1 (arena_analysis.SPEND_SCHEMA):
-  {"schema", "window": {since, until}, "arms": {arm: {task: row}}, "overhead": {bucket: row}, "flags": [str]}
+OUTPUT, schema arena_task_spend/2 (arena_analysis.SPEND_SCHEMA):
+  {"schema", "window": {since, until}, "logs": {arm: {n, digest}} (arena_analysis.spend_log_binding of the logs
+   metered: the analysis refuses the file against any other log), "blocking": [str], "arms": {arm: {task: row}},
+   "overhead": {bucket: row}, "flags": [str] (report only)}
   row = {"claude": {model: {input, cache_read, cache_write_5m, cache_write_1h, output}},     RAW counts per model
          "claude_ite": float,          DERIVED (spend_census weighting) for humans; arena_analysis.py ignores it
          "gpt": {tokens, in_est, out_est, calls, est_calls},   RAW: real codex tokens (a total; codex gives no
                                         in/out split) or, for calls with no usage line, the chars/4 in/out estimates
-         "calls": int, "ambiguous_calls": int}
+         "calls": int, "ambiguous_calls": int, "invalid_calls": int}
 No conversion between models or between Claude and GPT happens here: arena_analysis.py does all weighting.
 
 LIMITS: attribution is by TIME inside one arm. An arm that works on two tasks at once (ralph_c members in parallel)
 makes the overlapping calls ambiguous, so those tasks read UNMEASURED until calls carry a per-member key. Calls
-before an arm's first event or between tasks are overhead. A wrong clock on either side misattributes silently.
+before an arm's first event or between tasks are overhead. A wrong clock on either side, or an execution whose events
+stop before its calls do, misattributes silently (GPT review r1 #1): fixing that needs calls that carry their task.
 """
 from __future__ import annotations
 
@@ -46,9 +56,13 @@ sys.path.insert(0, str(HERE.parent / "sim"))
 sys.path.insert(0, str(HERE.parent))
 import arena_eventlog as L  # noqa: E402
 import spend_census as S  # noqa: E402
+import arena_analysis as AA  # noqa: E402
 
-SCHEMA = "arena_task_spend/1"
+SCHEMA = "arena_task_spend/2"
+# meter diagnostics that mean spend was LOST or may be on the wrong arm: blocking, the analysis reads UNMEASURED
+BLOCKING_DIAG = ("unreadable_files", "bad_lines", "cwd_mismatch", "gpt_unreadable", "id_conflicts")
 SPAN_EXCLUDED_EVENTS = ("gate", "judge")
+SPAN_END_EVENT = "pass_end"
 CLAUDE_RAW = (("input", "in"), ("cache_read", "cr"), ("cache_write_5m", "c5"), ("cache_write_1h", "c1"),
               ("output", "out"))
 
@@ -56,45 +70,78 @@ CLAUDE_RAW = (("input", "in"), ("cache_read", "cr"), ("cache_write_5m", "c5"), (
 def new_row():
     return {"claude": {}, "claude_ite": 0.0,
             "gpt": {"tokens": 0.0, "in_est": 0.0, "out_est": 0.0, "calls": 0, "est_calls": 0},
-            "calls": 0, "ambiguous_calls": 0}
+            "calls": 0, "ambiguous_calls": 0, "invalid_calls": 0}
 
 
 def spans_of(recs):
-    """[(start, end, task)] from an arm's accepted records, one per (run_id, task). Raises ValueError on a bad ts
-    (the caller makes that arm's spend overhead, flagged)."""
-    by = {}
+    """[(start, end, task)] from an arm's accepted records: one span per EXECUTION of a (run_id, task). An execution
+    runs from its first event to its `pass_end` (inclusive); a later event of the same (run_id, task) opens a new
+    execution, so a reused run_id never stretches one span across the idle gap between two runs. An execution with
+    no pass_end ends at its last event. Raises ValueError on a bad ts (the caller makes that arm's spend overhead,
+    blocking)."""
+    seq = []
     for r in recs:
         t = r.get("task")
         if not isinstance(t, str) or not t or r.get("event") in SPAN_EXCLUDED_EVENTS:
             continue
-        e = L.ts_epoch(r.get("ts"))
-        k = (r.get("run_id"), t)
-        lo, hi = by.get(k, (e, e))
-        by[k] = (min(lo, e), max(hi, e))
-    return sorted((lo, hi, t) for (_rid, t), (lo, hi) in by.items())
+        seq.append((L.ts_epoch(r.get("ts")), r.get("event") == SPAN_END_EVENT, r.get("run_id"), t))
+    open_, out = {}, []
+    for e, is_end, rid, t in sorted(seq, key=lambda x: (x[0], x[1])):
+        k = (rid, t)
+        lo = open_.get(k, (e,))[0]
+        open_[k] = (lo, e)
+        if is_end:
+            out.append((lo, e, t))
+            del open_[k]
+    out.extend((lo, hi, t) for (_rid, t), (lo, hi) in open_.items())
+    return sorted(out)
 
 
 def tasks_at(spans, t):
     return {task for lo, hi, task in spans if lo <= t <= hi}
 
 
+def _n(v):
+    """A per-call raw count: a non-negative int (not a bool). None means absent (0). -> int, or None if invalid."""
+    if v is None:
+        return 0
+    if isinstance(v, bool) or not isinstance(v, int) or v < 0:
+        return None
+    return v
+
+
+def _invalid(row):
+    row["invalid_calls"] += 1
+    row["calls"] += 1
+
+
 def add_claude(row, c):
+    """Each count is validated BEFORE it is summed (a bool or a negative would otherwise launder into a valid-looking
+    total); a call with any invalid count adds nothing and marks the row `invalid_calls` (the analysis refuses it)."""
+    vals = [(k, _n(c.get(ck))) for k, ck in CLAUDE_RAW]
+    if any(v is None for _k, v in vals):
+        return _invalid(row)
     m = row["claude"].setdefault(str(c.get("model") or "?"), {k: 0 for k, _ in CLAUDE_RAW})
-    for k, ck in CLAUDE_RAW:
-        m[k] += c.get(ck) or 0
-    row["claude_ite"] += c.get("ite") or 0.0
+    for k, v in vals:
+        m[k] += v
+    ite = c.get("ite")
+    row["claude_ite"] += ite if isinstance(ite, (int, float)) and not isinstance(ite, bool) else 0.0
     row["calls"] += 1
 
 
 def add_gpt(row, d):
-    _ite, est = S.gpt_ite_of(d)
+    """Real codex tokens when tokens_used > 0, else the chars/4 in/out estimates (spend_census.gpt_ite_of's rule);
+    every count is validated first, as in add_claude."""
+    tu, ie, oe = _n(d.get("tokens_used")), _n(d.get("in_tok_est")), _n(d.get("out_tok_est"))
+    if tu is None or ie is None or oe is None:
+        return _invalid(row)
     g = row["gpt"]
-    if est:
-        g["in_est"] += d.get("in_tok_est") or 0
-        g["out_est"] += d.get("out_tok_est") or 0
-        g["est_calls"] += 1
+    if tu > 0:
+        g["tokens"] += tu
     else:
-        g["tokens"] += d.get("tokens_used")
+        g["in_est"] += ie
+        g["out_est"] += oe
+        g["est_calls"] += 1
     g["calls"] += 1
     row["calls"] += 1
 
@@ -119,10 +166,12 @@ def attribute(arm_logs, claude_calls, gpt_calls):
             spans[arm] = spans_of(lg["recs"])
         except ValueError as e:
             flags.append("arm %s: unusable event ts (%s); its spend is overhead" % (arm, e))
-    ambiguous = 0
+    ambiguous, untimed = 0, defaultdict(int)
     for kind, items, add in (("claude", claude_calls, add_claude), ("gpt", gpt_calls, add_gpt)):
         for bucket, c in items:
             t = call_time(kind, c)
+            if t is None:
+                untimed[bucket] += 1
             sp = spans.get(bucket)
             hit = tasks_at(sp, t) if (sp is not None and t is not None) else set()
             if len(hit) == 1:
@@ -139,8 +188,10 @@ def attribute(arm_logs, claude_calls, gpt_calls):
     for b in overhead:
         if b not in spans:
             flags.append("meter bucket %s has no usable event log: all its spend is overhead" % b)
+    blocking = ["%d metered call(s) of %s have no usable time: they cannot be placed in a task" % (n, b)
+                for b, n in sorted(untimed.items())]
     return {"schema": SCHEMA, "arms": {a: dict(r) for a, r in arms.items()}, "overhead": dict(overhead),
-            "flags": flags}
+            "flags": flags, "blocking": blocking}
 
 
 def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None, until=None):
@@ -158,16 +209,15 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
     S.gpt_spend_by_arm(gpt_log, since=since, until=until, diag=diag, sink=lambda arm, d: gp.append((arm, d)))
     doc = attribute(arm_logs, cl, gp)
     doc["window"] = {"since": since, "until": until}
-    for k in ("unreadable_files", "cwd_mismatch", "gpt_unreadable"):
-        if diag.get(k):
-            doc["flags"].append("meter %s: %s" % (k, diag[k] if not isinstance(diag[k], list) else len(diag[k])))
-    if diag.get("id_conflicts"):
-        doc["flags"].append("meter id_conflicts: %d message id(s) under two arm folders" % len(diag["id_conflicts"]))
+    for k in BLOCKING_DIAG:
+        v = diag.get(k)
+        if v:
+            doc["blocking"].append("meter %s: %s" % (k, len(v) if isinstance(v, (list, dict)) else v))
+    doc["logs"] = AA.spend_log_binding(arm_logs)
     return doc
 
 
 def main(argv=None):
-    import arena_analysis as AA
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--out", required=True)
     ap.add_argument("--raw-dir", help="read unsigned <arm>.jsonl from this dir instead of the signed log")

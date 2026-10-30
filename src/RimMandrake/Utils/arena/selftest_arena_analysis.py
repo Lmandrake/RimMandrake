@@ -79,7 +79,7 @@ OPUS = "claude-opus-5-5"
 
 
 def raw_row(opus_input=0.0, **kw):
-    """A per-task spend row in the meter's RAW shape (arena_spend.py, schema arena_task_spend/1)."""
+    """A per-task spend row in the meter's RAW shape (arena_spend.py, schema arena_task_spend/2)."""
     row = {"claude": {OPUS: {"input": opus_input, "cache_read": 0, "cache_write_5m": 0, "cache_write_1h": 0,
                              "output": 0}},
            "gpt": {"tokens": 0, "in_est": 0, "out_est": 0, "calls": 0, "est_calls": 0}, "ambiguous_calls": 0}
@@ -91,8 +91,11 @@ def spend_for(rows_tokens):
     return {t: raw_row(tok) for t, tok in rows_tokens}
 
 
-def spend_file(spend):
-    return {"schema": "arena_task_spend/1", "arms": spend, "overhead": {}, "flags": []}
+def spend_file(spend, logs):
+    """A schema /2 spend doc bound to `logs` (as arena_spend.meter writes it), window covering every record."""
+    ts = [AA._ep(r) for lg in logs.values() for r in lg.get("recs", ())]
+    return {"schema": "arena_task_spend/2", "arms": spend, "overhead": {}, "flags": [], "blocking": [],
+            "logs": AA.spend_log_binding(logs), "window": {"since": min(ts), "until": max(ts) + 1}}
 
 
 def scenario(arms, n, tasks=None, draws=DRAWS, seed=7, **kw):
@@ -289,8 +292,15 @@ def t_cli():
         for t, v in tasks.items():
             Path(td, t + ".json").write_text(json.dumps(dict(v, id=t)))
         sp = {a: spend_for((t, 1e5) for t in ids) for a in ("trio", "v3")}
-        Path(d, "spend.json").write_text(json.dumps(spend_file(sp)))
+        logs = AA.load_raw(d)
+        Path(d, "spend.json").write_text(json.dumps(spend_file(sp, logs)))
         Path(d, "bare.json").write_text(json.dumps(sp))
+        old = dict(spend_file(sp, logs), schema="arena_task_spend/1")
+        Path(d, "old.json").write_text(json.dumps(old))
+        stale = spend_file(sp, {a: {"recs": lg["recs"][:-1]} for a, lg in logs.items()})
+        Path(d, "stale.json").write_text(json.dumps(stale))
+        blk = dict(spend_file(sp, logs), blocking=["meter unreadable_files: 1"])
+        Path(d, "blk.json").write_text(json.dumps(blk))
         import contextlib
         import io
         buf = io.StringIO()
@@ -304,12 +314,16 @@ def t_cli():
             rc4 = AA.main(["run", "--spend", str(Path(d, "spend.json")), "--raw-dir", d, "--tasks-dir", str(td),
                            "--draws", "300", "--claude-model-weight", "opus=0.5", "--gpt-est-out-to-ite", "4",
                            "--out", str(Path(d, "out4.json"))])
+            rcs = {n: AA.main(["run", "--spend", str(Path(d, n + ".json")), "--raw-dir", d, "--tasks-dir", str(td),
+                               "--draws", "300"]) for n in ("old", "stale", "blk")}
         out = json.loads(Path(d, "out.json").read_text())
         out4 = json.loads(Path(d, "out4.json").read_text()) if Path(d, "out4.json").is_file() else {}
     check("CLI: runs end to end on raw logs and writes the report", rc == 0 and "final" in out and out["blocks"],
           (rc, out.get("final", {}).get("verdict")))
     check("CLI: unreadable spend file -> UNMEASURED, exit 3", rc2 == 3, rc2)
-    check("CLI: a spend file without the arena_task_spend/1 schema -> UNMEASURED, exit 3", rc3 == 3, rc3)
+    check("CLI: a spend file without the arena_task_spend/2 schema -> UNMEASURED, exit 3", rc3 == 3, rc3)
+    check("CLI: an old /1 doc, a doc metered against another log (stale), and a doc with blocking meter problems "
+          "-> each UNMEASURED, exit 3", rcs == {"old": 3, "stale": 3, "blk": 3}, rcs)
     check("CLI: conversion overrides reach the report", rc4 == 0 and out4["conversion"]["claude_model"]["opus"] == 0.5
           and out4["conversion"]["gpt_out_est"] == 4.0, out4.get("conversion"))
 
