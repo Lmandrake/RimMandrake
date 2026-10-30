@@ -106,6 +106,8 @@ def mutate_text(text: str, m: dict) -> str:
     if n != want:
         raise A.ArenaError("%s: %r occurs %d times in %s, the fixture says %d" % (m["mid"], find[:60], n, m["path"], want))
     nth = m.get("nth", 1)
+    if not isinstance(nth, int) or isinstance(nth, bool) or not 1 <= nth <= n:
+        raise A.ArenaError("%s: nth %r is outside 1..%d in %s" % (m["mid"], nth, n, m["path"]))
     i = -1
     for _ in range(nth):
         i = text.index(find, i + 1)
@@ -329,6 +331,9 @@ def seed(doc: dict, critic, run_id: str, from_run: str, from_set: dict, root: Pa
         prev = json.loads(meta.read_text())
         if prev.get("critic_fingerprint") != fp or prev.get("set_sha256") != doc["set_sha256"]:
             raise SystemExit("seed refused: run %s belongs to another critic or set" % run_id)
+        sources = prev.get("seeded_from") or []
+        if from_run not in sources:                  # every source, before its records land: never a record without one
+            meta.write_text(json.dumps(dict(prev, seeded_from=sources + [from_run]), indent=1))
     have = {r["cid"] for r in C.read_results(d / "results.jsonl")}
     from_by = {c["cid"]: c for c in from_set["candidates"]}
     valid = {}

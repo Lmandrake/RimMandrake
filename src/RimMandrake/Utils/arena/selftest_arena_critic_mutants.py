@@ -21,7 +21,7 @@ model is called (a fake matcher call stands in), git runs only in a throwaway re
   exact pins    cp matches closed forms at k=0,1,n-1,n; MOVER pairs the right bounds; the paired box corners; sign_flip_p
                 equals brute-force enumeration over originals (the small-n checks above prove only shape)
   equivalent    (CRITIC_MUTANTS_DELETE_EQUIVALENT_M30) an EQUIVALENT mutant (m30) never enters the catch term
-  seed          copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
+  seed          run.json lists every source once; copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
                 does not match its recorded sha, and a target run of another critic
   proofs        latest() accepts a proof made on this set OR on exactly this mutant's and original's heads, and
                 nothing else
@@ -67,6 +67,9 @@ def t_mutate():
     check("mutate refuses an empty find", refuses(M.mutate_text, "abc", dict(m, find="")))
     two = dict(m, occurrences=2, nth=2)
     check("mutate nth=2 edits the second occurrence only", M.mutate_text("i < n; i < n", two) == "i < n; i <= n")
+    for bad in (3, 0, -1, "2"):
+        check("mutate refuses nth=%r with an ArenaError" % (bad,),
+              refuses(M.mutate_text, "i < n; i < n", dict(two, nth=bad), exc=(A.ArenaError,)))
 
 
 def t_commit(root: Path):
@@ -398,6 +401,14 @@ def t_seed(root: Path):
         check("seed records the chain", recs[0]["meta"]["seeded_from"] == ["src"])
         out = M.seed(doc, FakeCritic(), "dst", "src", old, root / "runs")
         check("seed twice adds nothing", out["seeded"] == 0)
+        src2 = root / "runs" / "src2"
+        src2.mkdir()
+        (src2 / "run.json").write_text((src / "run.json").read_text())
+        (src2 / "results.jsonl").write_text("")
+        M.seed(doc, FakeCritic(), "dst", "src2", old, root / "runs")
+        M.seed(doc, FakeCritic(), "dst", "src2", old, root / "runs")
+        dst_meta = json.loads((root / "runs" / "dst" / "run.json").read_text())
+        check("run.json records every seed source once", dst_meta["seeded_from"] == ["src", "src2"], str(dst_meta))
         check("seed refuses a set whose content does not match its sha",
               refuses(M.seed, doc, FakeCritic(), "dst2", "src", dict(old, set_sha256="0" * 64), root / "runs"))
         other = [{"cid": "z"}]
