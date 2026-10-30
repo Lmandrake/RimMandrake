@@ -2,7 +2,7 @@
 """arena_install.py - install the arm targets, member drop-ins, the trial replay unit and the pre-push hooks.
 DRY-RUN BY DEFAULT.
 
-    arena_install.py units  [--unit-dir D] [--arm-toml P]            print the plan
+    arena_install.py units  [--unit-dir D] [--env-dir E] [--arm-toml P]   print the plan (also the commented env templates, never overwritten)
     arena_install.py hooks  [--arm-toml P]                           print the plan
     ... --apply                                                      write (refused without it)
 
@@ -130,6 +130,13 @@ def apply_plan(plan, apply: bool, out=print) -> int:
         out("%s %s (%d bytes)" % ("WRITE" if apply else "would write", p, len(val)))
         if apply:
             p.parent.mkdir(parents=True, exist_ok=True)
+            if kind == "file_if_absent":
+                try:                       # exclusive create: a file that appeared since the check is never truncated
+                    with p.open("x", encoding="utf-8") as fh:
+                        fh.write(val)
+                except FileExistsError:
+                    out("keep %s (appeared meanwhile, not overwritten)" % p)
+                continue
             p.write_text(val, encoding="utf-8")
             if p.name in AR.GIT_HOOKS:
                 os.chmod(p, 0o755)

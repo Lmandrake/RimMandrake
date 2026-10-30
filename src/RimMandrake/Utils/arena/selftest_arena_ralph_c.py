@@ -624,6 +624,15 @@ def t_envfiles(tmp):
     INS.apply_plan(plan, True, out=lambda *_: None)
     check((ed / "ralph-a1.env").read_text() == "MINE=1\n" and (ed / "runner-steve.env").exists(),
           "apply keeps an existing env file and writes the missing ones")
+    # TOCTOU (GPT review): a file that appears between the exists() check and the write must survive (exclusive create)
+    (ed / "ralph-a2.env").write_text("RACE=1\n")
+    _ex = Path.exists
+    Path.exists = lambda self, *a, **k: False if self.name == "ralph-a2.env" else _ex(self, *a, **k)
+    try:
+        INS.apply_plan(plan, True, out=lambda *_: None)
+    finally:
+        Path.exists = _ex
+    check((ed / "ralph-a2.env").read_text() == "RACE=1\n", "a file created between the check and the write is not truncated")
     for nm in ("rm-ralph-loop@.service.tmpl", "rm-runner@.service.tmpl"):
         check("RestartPreventExitStatus=2" in (AR.TEMPLATES / "systemd" / nm).read_text(), "%s stops restarting on exit 2" % nm)
     env = {k: v for k, v in os.environ.items() if not k.startswith("RALPH_") and k != "RM_ARM"}
