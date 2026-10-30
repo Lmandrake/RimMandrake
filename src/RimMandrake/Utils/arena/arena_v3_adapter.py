@@ -13,11 +13,15 @@ Mapping (accepted ledger events only; refused ones are skipped, via model.replay
   verify  -> test_end     task=id, sha, verdict=result, detail.tester=seat (the ledger names the seat, not the helper), detail.done as above
 testq (result records, jobs for the item): started -> test_start, finished -> test_end, tester "testq:<host>",
   task = job.item, verdict = outcome, detail.job. A testq run is a different agent from any builder by construction.
+Every record carries detail.src = the SOURCE event id ("ledger:<tsn>", or "ledger:h<sha256 of the event>" for
+old events without tsn; "testq:<job>:start|end"). write() skips a record whose src is already in the arm's
+accepted log, so --apply run twice writes nothing the second time.
 Not derivable from the ledger: lane (set "v3"), run_id ("v3-ledger" / the testq job id), a test_start for a ledger
 verify. The adapter invents nothing for them.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -31,6 +35,12 @@ from rimflow import model  # noqa: E402
 ARM = "v3"
 LANE = "v3"
 LEDGER_RUN = "v3-ledger"
+
+
+def source_id(ev: dict) -> str:
+    if ev.get("tsn") is not None:
+        return "ledger:%s" % ev["tsn"]
+    return "ledger:h" + hashlib.sha256(json.dumps(ev, sort_keys=True, separators=(",", ":")).encode()).hexdigest()[:24]
 
 
 def translate_ledger(events=None) -> list[dict]:
@@ -49,15 +59,16 @@ def translate_ledger(events=None) -> list[dict]:
         seat = ev.get("seat") or ev.get("who") or "unknown"
         base = {"ts": ev["ts"], "arm": ARM, "lane": LANE, "run_id": LEDGER_RUN, "task": iid}
         e = ev["event"]
+        src = source_id(ev)
         if e == "start":
-            out.append(dict(base, event="pass_start", detail={"agent": seat}))
+            out.append(dict(base, event="pass_start", detail={"agent": seat, "src": src}))
         elif e in ("close", "implemented"):
             out.append(dict(base, event="build_end", sha=ev.get("sha"),
-                            detail={"builder": seat, "via": e, "state_after": it.state,
+                            detail={"builder": seat, "via": e, "state_after": it.state, "src": src,
                                     "done": bool(it.state == "done" and prev != "done")}))
         else:
             out.append(dict(base, event="test_end", sha=ev.get("sha"), verdict=ev.get("result"),
-                            detail={"tester": seat, "level": ev.get("level"), "criterion": ev.get("criterion"),
+                            detail={"tester": seat, "level": ev.get("level"), "criterion": ev.get("criterion"), "src": src,
                                     "done": bool(it.state == "done" and prev != "done")}))
 
     model.replay(events, observe=observe)
@@ -75,10 +86,12 @@ def translate_testq(results: list[dict], jobs: dict | None = None) -> list[dict]
         who = "testq:%s" % (r.get("host") or "unknown")
         base = {"arm": ARM, "lane": (jobs.get(jid) or {}).get("lane") or LANE, "run_id": jid, "task": item}
         if r.get("started"):
-            out.append(dict(base, event="test_start", ts=r["started"], detail={"tester": who, "job": jid}))
+            out.append(dict(base, event="test_start", ts=r["started"], detail={"tester": who, "job": jid,
+                                                                         "src": "testq:%s:start" % jid}))
         if r.get("finished"):
             out.append(dict(base, event="test_end", ts=r["finished"], verdict=r.get("outcome"),
-                            detail={"tester": who, "job": jid, "cause": r.get("cause"), "counts": r.get("counts")}))
+                            detail={"tester": who, "job": jid, "cause": r.get("cause"), "counts": r.get("counts"),
+                                    "src": "testq:%s:end" % jid}))
     return out
 
 
@@ -102,8 +115,18 @@ def sorted_by_ts(recs):
 
 
 def write(writer: "L.HarnessWriter", recs: list[dict]) -> int:
-    n = 0
+    """Idempotent: a record whose detail.src is already in the arm's accepted log (or earlier in `recs`) is skipped.
+    A record without src is refused (it could not be deduplicated)."""
+    n, have = 0, {}
     for r in sorted_by_ts(recs):
+        src = (r.get("detail") or {}).get("src")
+        if not src:
+            raise L.Rejected("adapter record without detail.src: %r" % (r,))
+        if r["arm"] not in have:
+            have[r["arm"]] = {(x.get("detail") or {}).get("src") for x in writer.accepted(r["arm"])}
+        if src in have[r["arm"]]:
+            continue
+        have[r["arm"]].add(src)
         r = dict(r)
         ev = r.pop("event")
         arm, lane, run_id = r.pop("arm"), r.pop("lane"), r.pop("run_id")
