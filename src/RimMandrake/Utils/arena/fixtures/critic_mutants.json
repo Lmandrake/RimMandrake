@@ -1,0 +1,307 @@
+{
+ "mutants": [
+  {
+   "defect": "worker.py: the refusal branch tests `if data and refusal:` instead of `if not data and refusal:` - an empty reply that carries a refusal is no longer reported as a refusal, and a reply with real data plus refusal text is wrongly treated as refused.",
+   "find": "if not data and refusal:",
+   "kind": "inverted-guard",
+   "mid": "m01",
+   "nth": 1,
+   "orig": "c3648d5fead",
+   "path": "infrastructure/stevedesktop/worker.py",
+   "replace": "if data and refusal:"
+  },
+  {
+   "defect": "bridge_concurrency_guard.py: the 'ended within window_s' test compares `age` (the call's age since it STARTED) instead of `now - ended[cid]` (time since it ENDED) - a long call that just ended is not seen as active, so the guard lets a foreign caller in right after it.",
+   "find": "(cid in ended and now - ended[cid] <= window_s)",
+   "kind": "wrong-variable",
+   "mid": "m02",
+   "nth": 1,
+   "orig": "c653e75c524",
+   "path": "src/RimMandrake/Utils/bridge_concurrency_guard.py",
+   "replace": "(cid in ended and age <= window_s)"
+  },
+  {
+   "defect": "northstar_site.py: the `os.chmod(dst, 0o666)` after copying the save was removed - a copy of a read-only source stays read-only, so the later overwrite/delete of the staged save fails (PermissionError on Windows).",
+   "find": "            os.chmod(dst, 0o666)\n",
+   "kind": "dropped-statement",
+   "mid": "m03",
+   "nth": 1,
+   "orig": "c653e75c524",
+   "path": "src/RimMandrake/Pyrelands/northstar_site.py",
+   "replace": ""
+  },
+  {
+   "defect": "Encasing.cs: `ingredients.Remove(ing);` was removed - the stack being encased stays in the ingredient list, so the job's ConsumeIngredients destroys it instead of encasing it.",
+   "find": "ingredients.Remove(ing);",
+   "kind": "dropped-statement",
+   "mid": "m04",
+   "nth": 1,
+   "orig": "c503b1f032d",
+   "path": "src/RimMandrake/ColdStorage/Source/Encasing.cs",
+   "replace": ""
+  },
+  {
+   "defect": "RSW_CarbonFreezing.xml: the new bills WorkGiverDef (RSW_DoBillsCarbonFreezingPress) lists `RSW_CarbonFreezePress` in fixedBillGiverDefs, a def that does not exist (the press is `RSW_CarbonFreezingPress`) - no pawn ever works bills at the press (cross-reference error at load).",
+   "find": "<li>RSW_CarbonFreezingPress</li>\n    </fixedBillGiverDefs>\n    <verb>operate</verb>",
+   "kind": "wrong-identifier",
+   "mid": "m05",
+   "nth": 1,
+   "orig": "c9445b621c8",
+   "path": "src/RimStarWars/Cuisine/Defs/RSW_CarbonFreezing.xml",
+   "replace": "<li>RSW_CarbonFreezePress</li>\n    </fixedBillGiverDefs>\n    <verb>operate</verb>"
+  },
+  {
+   "defect": "CompStorageClimate.cs partial-stasis inspect line: the two percentages passed to RM_ColdStorage_StasisHoldingPartial are swapped - it prints the spoil-rate factor as the field strength and (1 - factor) as the spoil rate, so a field holding at 80% reads 'holding at 20%, spoil at 80%' (the confusing message the item set out to fix).",
+   "find": "Translate(name, (1f - factor).ToStringPercent(), factor.ToStringPercent())",
+   "kind": "wrong-variable",
+   "mid": "m06",
+   "nth": 1,
+   "orig": "c3e76b564ba",
+   "path": "src/RimMandrake/ColdStorage/Source/CompStorageClimate.cs",
+   "replace": "Translate(name, factor.ToStringPercent(), (1f - factor).ToStringPercent())"
+  },
+  {
+   "defect": "RM_FlowKernel.cs IsLiveMouth: the neighbour loop runs `d < 3` instead of `d < 4` - the fourth cardinal direction is never checked, so a mouth open only on that side is wrongly judged dead.",
+   "find": "private bool IsLiveMouth(int c)\n\t\t{\n\t\t\tfor (int d = 0; d < 4; d++)",
+   "kind": "off-by-one",
+   "mid": "m07",
+   "nth": 1,
+   "orig": "caf6334d203",
+   "path": "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs",
+   "replace": "private bool IsLiveMouth(int c)\n\t\t{\n\t\t\tfor (int d = 0; d < 3; d++)"
+  },
+  {
+   "defect": "FoodPoisonDisabledCookGuard.cs: the `!` before `StatDefOf.FoodPoisonChance.Worker.IsDisabledFor(pawn)` was dropped - the guard now skips exactly the cooks whose food-poison stat is disabled (the case it exists for) and acts on everyone else.",
+   "find": "!StatDefOf.FoodPoisonChance.Worker.IsDisabledFor(pawn)",
+   "kind": "inverted-guard",
+   "mid": "m08",
+   "nth": 1,
+   "orig": "c00dd92142d",
+   "path": "src/RimStarWars/Cuisine/Source/Cuisine/FoodPoisonDisabledCookGuard.cs",
+   "replace": "StatDefOf.FoodPoisonChance.Worker.IsDisabledFor(pawn)"
+  },
+  {
+   "defect": "walk_gaps_proof.py tanks_verdict: compares `sum(u0) != sum(u1)` instead of the per-tank `u0 != u1` - fluid that moves between tanks with the total unchanged (levelling) is reported as no change, so the can-fail tank row cannot fail.",
+   "find": "if u0 != u1:",
+   "kind": "wrong-condition",
+   "mid": "m09",
+   "nth": 1,
+   "orig": "cb98216ed6f",
+   "path": "src/RimMandrake/FlowWorks/northstar/walk_gaps_proof.py",
+   "replace": "if sum(u0) != sum(u1):"
+  },
+  {
+   "defect": "walk_gaps_proof.py tanks_verdict: the empty-tanks guard is `sum(u0) < 0` instead of `<= 0` - tanks that start empty are not reported UNMEASURED and go on to a meaningless PASS/FAIL.",
+   "find": "if sum(u0) <= 0:",
+   "kind": "off-by-one",
+   "mid": "m10",
+   "nth": 1,
+   "orig": "cb98216ed6f",
+   "path": "src/RimMandrake/FlowWorks/northstar/walk_gaps_proof.py",
+   "replace": "if sum(u0) < 0:"
+  },
+  {
+   "defect": "modset_builder.py restore_before: the `os.remove(marker)` that consumes the restore marker was removed - the marker survives a successful restore, so a later --restore restores a stale snapshot again.",
+   "find": "    os.remove(marker)\n",
+   "kind": "dropped-statement",
+   "mid": "m11",
+   "nth": 1,
+   "orig": "cf46ef7da35",
+   "path": "src/RimMandrake/Utils/modset_builder.py",
+   "replace": ""
+  },
+  {
+   "defect": "modset_builder.py main: a refused --restore (RestoreRefused) prints the refusal but returns exit code 0 instead of 1 - callers and scripts see success when nothing was restored.",
+   "find": "            print(\"REFUSING --restore: %s\" % e)\n            return 1",
+   "kind": "swallowed-error",
+   "mid": "m12",
+   "nth": 1,
+   "orig": "cf46ef7da35",
+   "path": "src/RimMandrake/Utils/modset_builder.py",
+   "replace": "            print(\"REFUSING --restore: %s\" % e)\n            return 0"
+  },
+  {
+   "defect": "publish.py rebase conflict handling: `not any(is_dll_pair_path(...))` instead of `not all(...)` - a conflict that mixes a DLL pair with ordinary source files is treated as DLL-only and auto-resolved (taking one side) instead of refusing.",
+   "find": "not all(is_dll_pair_path(p) for p in paths)",
+   "kind": "wrong-quantifier",
+   "mid": "m13",
+   "nth": 1,
+   "orig": "c8ae1a591bb",
+   "path": "src/RimMandrake/Utils/publish.py",
+   "replace": "not any(is_dll_pair_path(p) for p in paths)"
+  },
+  {
+   "defect": "publish.py dll_of: strips `len(\".dll.srchash\")` instead of `len(\".srchash\")` - the stamp path `X.dll.srchash` maps to `X` (not `X.dll`), so the DLL and its source stamp are no longer paired.",
+   "find": "return p[:-len(\".srchash\")] if p.endswith(\".srchash\") else p",
+   "kind": "off-by-one",
+   "mid": "m14",
+   "nth": 1,
+   "orig": "c8ae1a591bb",
+   "path": "src/RimMandrake/Utils/publish.py",
+   "replace": "return p[:-len(\".dll.srchash\")] if p.endswith(\".srchash\") else p"
+  },
+  {
+   "defect": "Pyrinth validation.py: the heat-pusher check reads heatPerSecond with default 1 instead of 0 - a HeatPusher with no heatPerSecond at all passes as heating.",
+   "find": "_num(h[0], \"heatPerSecond\", 0) > 0",
+   "kind": "wrong-default",
+   "mid": "m15",
+   "nth": 1,
+   "orig": "c65a3de243c",
+   "path": "src/RimMandrake/Pyrinth/validation.py",
+   "replace": "_num(h[0], \"heatPerSecond\", 1) > 0"
+  },
+  {
+   "defect": "Pyrinth validation.py: the glow-radius ordering check is inverted (`>` for `<`) - it now demands the wall lamp glow FARTHER than the lamp, so the correct defs fail and a wrong ordering passes.",
+   "find": "not rad[\"DV_PyrinthWallLamp\"] < rad[\"DV_PyrinthLamp\"]",
+   "kind": "inverted-comparison",
+   "mid": "m16",
+   "nth": 1,
+   "orig": "c65a3de243c",
+   "path": "src/RimMandrake/Pyrinth/validation.py",
+   "replace": "not rad[\"DV_PyrinthWallLamp\"] > rad[\"DV_PyrinthLamp\"]"
+  },
+  {
+   "defect": "StarWarsPatches validation.py: the `except (TypeError, ValueError)` around the weather commonality parse now just passes - a weather attached with a non-numeric/empty commonality is silently accepted instead of reported.",
+   "find": "                        bad.append(\"%s: weather %s has a non-numeric commonality %r\" % (fn, c.tag, c.text))",
+   "kind": "swallowed-error",
+   "mid": "m17",
+   "nth": 1,
+   "orig": "c6359d298ca",
+   "path": "src/RimStarWars/StarWarsPatches/validation.py",
+   "replace": "                        pass"
+  },
+  {
+   "defect": "StarWarsPatches validation.py: the unknown-weather check runs only when there is NO def dump (`dump is None`) - with a dump present a patch attaching a weather no mod defines is never reported.",
+   "find": "if dump is not None and c.tag not in known:",
+   "kind": "inverted-guard",
+   "mid": "m18",
+   "nth": 1,
+   "orig": "c6359d298ca",
+   "path": "src/RimStarWars/StarWarsPatches/validation.py",
+   "replace": "if dump is None and c.tag not in known:"
+  },
+  {
+   "defect": "RaidRedesigner validation.py scribe check: searches the whole source `t` instead of the ExposeData body `expose` - a field passed by ref anywhere in the file counts as scribed, so a field missing from ExposeData (lost on save/load) passes.",
+   "find": "if not re.search(r\"ref\\s+%s\\b\" % f, expose):",
+   "kind": "wrong-variable",
+   "mid": "m19",
+   "nth": 1,
+   "orig": "c5806db2c16",
+   "path": "src/RimMandrake/RaidRedesigner/validation.py",
+   "replace": "if not re.search(r\"ref\\s+%s\\b\" % f, t):"
+  },
+  {
+   "defect": "SeaShores validation.py _want: only compares keys present in the proof output (`k in kv and ...`) - a key the in-game proof never printed passes instead of failing, so a missing measurement reads as PASS.",
+   "find": "if kv.get(k) != str(v))",
+   "kind": "wrong-condition",
+   "mid": "m20",
+   "nth": 1,
+   "orig": "cd75ac961d4",
+   "path": "src/RimMandrake/SeaShores/validation.py",
+   "replace": "if k in kv and kv.get(k) != str(v))"
+  },
+  {
+   "defect": "RM_StockMath.cs MayFlowBetween: the sink-hop rule is `>=` instead of `>` - two cells the same distance from the sink may flow both ways, so stock oscillates between equal-hop cells instead of moving toward the sink.",
+   "find": "return donorSinkHops > recipientSinkHops;",
+   "kind": "off-by-one",
+   "mid": "m21",
+   "nth": 1,
+   "orig": "c9f99444b35",
+   "path": "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+   "replace": "return donorSinkHops >= recipientSinkHops;"
+  },
+  {
+   "defect": "HoseMath.cs building-crossing count: the reused per-thread set `rigHitScratch` is no longer cleared (`hit.Clear()` dropped) before the walk - cells hit by earlier lays accumulate, so the returned crossing count grows from call to call instead of counting this pose's cells.",
+   "find": "            hit.Clear();\n            void Try(Cell c)",
+   "kind": "dropped-statement",
+   "mid": "m22",
+   "nth": 1,
+   "orig": "c8fca6c0c30",
+   "path": "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs",
+   "replace": "            void Try(Cell c)"
+  },
+  {
+   "defect": "RM_WallClimbMath.cs pathfind budget: refuses when `used + pathfinds >= PathfindsPerTick` instead of `>` - the last allowed pathfind of each tick is refused (a budget of 1 allows none).",
+   "find": "used + pathfinds > PathfindsPerTick",
+   "kind": "off-by-one",
+   "mid": "m23",
+   "nth": 1,
+   "orig": "c493b07aee0",
+   "path": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimbMath.cs",
+   "replace": "used + pathfinds >= PathfindsPerTick"
+  },
+  {
+   "defect": "RM_MapComponent_ScaldImmersionBerth.cs: the Scald test uses `||` instead of `&&` - every pocket map (any biome) counts as the Scald, so berths in unrelated pocket maps get immersion heat.",
+   "find": "return b == \"RM_TheScald\" && map.IsPocketMap;",
+   "kind": "wrong-operator",
+   "mid": "m24",
+   "nth": 1,
+   "orig": "c301c81547c",
+   "path": "src/RimMandrake/DivingInteraction/Source/RM_MapComponent_ScaldImmersionBerth.cs",
+   "replace": "return b == \"RM_TheScald\" || map.IsPocketMap;"
+  },
+  {
+   "defect": "MessyConduit validation_style.py: the LOD-printed check is inverted (`if not lod_on`) - with LOD on, strands missing their (lod) print are never reported; with LOD off it demands LOD prints that cannot exist.",
+   "find": "not in printed) if lod_on else []",
+   "kind": "inverted-guard",
+   "mid": "m25",
+   "nth": 1,
+   "orig": "cf4128fcd1d",
+   "path": "src/RimMandrake/MessyConduit/validation_style.py",
+   "replace": "not in printed) if not lod_on else []"
+  },
+  {
+   "defect": "RM_Miasma.xml: dryTerrain still points at the campaign terrain `RUT_Jawa_SaltCrust` (only landTerrain was moved to RM_MiasmaSaltCrust) - the free biome still depends on the campaign pack's terrain, against criterion 1.",
+   "find": "<dryTerrain>RM_MiasmaSaltCrust</dryTerrain>",
+   "kind": "reverted-fix",
+   "mid": "m26",
+   "nth": 1,
+   "orig": "c525896c317",
+   "path": "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+   "replace": "<dryTerrain>RUT_Jawa_SaltCrust</dryTerrain>"
+  },
+  {
+   "defect": "RM_LongShade_Fauna.xml: the first Vosska swimmingGraphicData texPath is misspelt `RM_Vosska_Swiming` - no such texture, so that life stage swims as the missing-texture placeholder.",
+   "find": "<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swimming</texPath>",
+   "kind": "wrong-identifier",
+   "mid": "m27",
+   "nth": 1,
+   "occurrences": 3,
+   "orig": "ce81b098b9c",
+   "path": "src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fauna.xml",
+   "replace": "<texPath>Things/Pawn/Animal/RM_Vosska/RM_Vosska_Swiming</texPath>"
+  },
+  {
+   "defect": "PawnFlavor validation.py leak containment: tests `\"Pirate\" not in leakers` instead of `leakers != [\"Pirate\"]` - other factions wired to JawaBSC_Blackstar pass as long as Pirate is also wired, so the Blackstar leak is no longer detected.",
+   "find": "if leakers != [\"Pirate\"]:",
+   "kind": "wrong-condition",
+   "mid": "m28",
+   "nth": 1,
+   "orig": "cc62de5bf67",
+   "path": "src/RimUtinni/PawnFlavor/validation.py",
+   "replace": "if \"Pirate\" not in leakers:"
+  },
+  {
+   "defect": "review_map.py ring: the border test uses `and` instead of `or` - the ring is only the four corner cells, so the enclosing walls of each review station are not built.",
+   "find": "if (x in (x0, x1) or z in (z0, z1)) and",
+   "kind": "wrong-operator",
+   "mid": "m29",
+   "nth": 1,
+   "orig": "cd08704258d",
+   "path": "src/RimMandrake/FlowWorks/review_map.py",
+   "replace": "if (x in (x0, x1) and z in (z0, z1)) and"
+  },
+  {
+   "defect": "selftest_reader_invariant.py: the projection comparison zips `a[2:], b[2:]` instead of `a[1:], b[1:]` - the first non-item projection is never compared, so a reader change that alters it passes the invariant.",
+   "find": "zip(a[1:], b[1:])",
+   "kind": "off-by-one",
+   "mid": "m30",
+   "nth": 1,
+   "orig": "cf20a65d08a",
+   "path": "src/RimMandrake/rimflow/selftest_reader_invariant.py",
+   "replace": "zip(a[2:], b[2:])"
+  }
+ ],
+ "seed": "critic-mutants-v1",
+ "version": 1
+}

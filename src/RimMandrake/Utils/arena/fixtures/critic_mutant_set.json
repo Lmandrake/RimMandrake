@@ -1,0 +1,1123 @@
+{
+ "built_from": {
+  "base_set_sha256": "3e41df0638518c7fff09903d2474fae664bcd96ae45b78d0baed066f17bc10a3",
+  "spec": "b8050921e30e716bb244464a25b16aa3eb421ef38e1ddb41b8ac5dda0cf5c078"
+ },
+ "candidates": [
+  {
+   "area": [
+    "src/RimMandrake/Utils/*",
+    "src/RimStarWars/Cuisine/About/*",
+    "src/RimStarWars/Cuisine/Assemblies/*",
+    "src/RimStarWars/Cuisine/Source/Cuisine/*"
+   ],
+   "base": "3554fc232dc9a86be49f6d2480ca9081a0fcdb7c",
+   "cid": "c00dd92142d",
+   "criteria": "Roast-on-a-stick by a Cooking-incapable pawn hits vanilla's dev-mode 'disabled stat' ErrorOnce twice: CookSpeed (recipe workSpeedStat, skillNeedOffsets Cooking) each work tick, FoodPoisonChance (RSW_RoastOnAStick inherits CompFoodPoisonable from MealBaseIngredientless; Notify_RecipeProduced reads pawn FoodPoisonChance, skillNeedFactors Cooking). StatWorker.GetValueUnfinalized logs when Prefs.DevMode && IsDisabledFor. Gameplay is fine (level 0: 5% poison, base speed); fix = workSpeedStat not tied to Cooking (or none) plus a Cuisine guard/Harmony for the poison roll, or document as accepted.",
+   "head": "05366d9ad4205cae749b443baef108a87d09a39f",
+   "kind": "csharp",
+   "prompt": "Roast-on-a-stick by a Cooking-incapable pawn hits vanilla's dev-mode 'disabled stat' ErrorOnce twice: CookSpeed (recipe workSpeedStat, skillNeedOffsets Cooking) each work tick, FoodPoisonChance (RSW_RoastOnAStick inherits CompFoodPoisonable from MealBaseIngredientless; Notify_RecipeProduced reads pawn FoodPoisonChance, skillNeedFactors Cooking). StatWorker.GetValueUnfinalized logs when Prefs.DevMode && IsDisabledFor. Gameplay is fine (level 0: 5% poison, base speed); fix = workSpeedStat not tied to Cooking (or none) plus a Cuisine guard/Harmony for the poison roll, or document as accepted.",
+   "role": "good",
+   "size": 4,
+   "source_item": "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+   "task": "RP_ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/DivingInteraction/*",
+    "src/RimMandrake/DivingInteraction/Assemblies/*",
+    "src/RimMandrake/DivingInteraction/Source/*"
+   ],
+   "base": "1a4737b42c7d041fe9089e9ae2ca82f09487d18e",
+   "cid": "c301c81547c",
+   "criteria": "Scald Immersion Berth: a parked ship's rooms slowly heat; compact ships cheap to cool; never seals doors or blocks launch",
+   "head": "f2e1d811c50514920ec9f33590fdd08be9cb562e",
+   "kind": "csharp",
+   "prompt": "Scald Immersion Berth: a parked ship's rooms slowly heat; compact ships cheap to cool; never seals doors or blocks launch",
+   "role": "good",
+   "size": 4,
+   "source_item": "SCALD_IMMERSION_BERTH_1",
+   "task": "RP_SCALD_IMMERSION_BERTH_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "infrastructure/stevedesktop/*"
+   ],
+   "base": "9b4000f5c2a91a4eac21706f3e434a3fa0eeb96e",
+   "cid": "c3648d5fead",
+   "criteria": "SteveDesktop worker: one detached attempt per job (pinned runner sha, unique attempt dir, heartbeat, outbox result JSON, watchdog), whole attempt under host_guard; plan test_orchestration_two_machines_2026-10-25 helper #3",
+   "head": "310ad7f95342cd05e982229c57753a26ad27cfb6",
+   "kind": "tooling",
+   "prompt": "SteveDesktop worker: one detached attempt per job (pinned runner sha, unique attempt dir, heartbeat, outbox result JSON, watchdog), whole attempt under host_guard; plan test_orchestration_two_machines_2026-10-25 helper #3\n\n# STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS\n\nPlan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md, section 4 helper #3 (H-A).\n\n## spec\n- `infrastructure/stevedesktop/worker.py` runs on SteveDesktop in ~/rm/runner, started over ssh by the testq dispatcher.\n- `start` takes a job (testq/schema.py `testq.job/1`) on stdin, makes a unique attempt dir `<job>.a<n>`, and detaches the\n  attempt as a transient systemd user unit (fallback: a new session), so a dropped ssh never kills it.\n- The attempt runs under `host_guard.held(\"RUNNER\", ...)`, pins the runner HEAD (refuses SOURCE_SHA_MISSING), deploys,\n  loads the game, runs modcheck, writes a heartbeat every 15 s and one `testq.result/1` JSON into the outbox.\n- Watchdog: a run that outlasts `timeout_s` is killed, the game restarted once, and the run retried once (section 6).\n- Duplicate delivery: `start` for a job with a live or finished attempt returns that attempt, never a second run.\n\n## verify\n- selftest_steve_worker.py (mock phases): DONE, INVALID, HANG -> retry, duplicate start, guard held.\n- One real attempt on SteveDesktop with a result JSON in the outbox.",
+   "role": "good",
+   "size": 1,
+   "source_item": "STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS",
+   "task": "RP_STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/*",
+    "src/RimMandrake/ColdStorage/Languages/English/Keyed/*",
+    "src/RimMandrake/ColdStorage/Source/*",
+    "src/RimStarWars/Cuisine/Defs/*"
+   ],
+   "base": "38cdc75a019035493a3f9694ee5a80f3c20c187f",
+   "cid": "c3e76b564ba",
+   "criteria": "Partial stasis inspect says 'nothing inside spoils' then 'spoil at 80%'",
+   "head": "36d19ef5726354c3cf047017566351d368dd7cc3",
+   "kind": "csharp",
+   "prompt": "Partial stasis inspect says 'nothing inside spoils' then 'spoil at 80%'",
+   "role": "good",
+   "size": 2,
+   "source_item": "COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
+   "task": "RP_COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/*"
+   ],
+   "base": "621796e96b6ef0535cfa27b61d336dd55f66fb63",
+   "cid": "c493b07aee0",
+   "criteria": "Raider trench: ReachVetoed lets a trench-floor raider reach the far bank, loops on no path",
+   "head": "a1cfcb760018c931eec9bfa3ec01b1eed373712d",
+   "kind": "csharp",
+   "prompt": "Raider trench: ReachVetoed lets a trench-floor raider reach the far bank, loops on no path\n\nReview 2026-10-19 (BENCH helper). HIGH: RM_PocketGridMath.cs ReachVetoed (~186-195): start in a pocket with any way out + dest on a surface component clears the veto even if the way out leads to a different surface; raider on trench floor with only the near-wall ladder gets CanReach(far bank)==true, TryCross returns null, GotoNearestHostile loops. Fix: require JoinedByLadders(cs,cd) when exactly one end is a pocket and other a surface (unless narrow-pocket exemption); add a RaiderTrenchChecks case. MEDIUM: RM_RaiderTrench.cs 451-460 checks reachability of only the nearest colonist/building (island target starts ladders despite reachable colonists); 469-477 fill only when ladders infeasible, LadderJob null (unreachable slot) stalls - fall back to FillJob. LOW: no reservation on fill cell (579); lordLips/warned statics survive load and ProofDecision has side effects (546); RM_FallRails.cs:82 eng null check. Files stay DIRTY.",
+   "role": "good",
+   "size": 4,
+   "source_item": "RAIDER_TRENCH_FIX_REACH_BOUNCE",
+   "task": "RP_RAIDER_TRENCH_FIX_REACH_BOUNCE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/Assemblies/*",
+    "src/RimMandrake/ColdStorage/Source/*"
+   ],
+   "base": "b16f7e591be65d2cb7fd2350ebc95693f2995f4d",
+   "cid": "c503b1f032d",
+   "criteria": "MOD: carbon-freeze meals recipe counts 18 meals but the pack encases every carried stack whole (20 and 21 meals live)",
+   "head": "aa958c199052419f05bf925ec47b9e58ac561453",
+   "kind": "csharp",
+   "prompt": "MOD: carbon-freeze meals recipe counts 18 meals but the pack encases every carried stack whole (20 and 21 meals live)",
+   "role": "good",
+   "size": 2,
+   "source_item": "CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS",
+   "task": "RP_CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/Miasma/*",
+    "src/RimMandrake/Miasma/Defs/BiomeDefs/*",
+    "src/RimMandrake/Miasma/Defs/TerrainDefs/*"
+   ],
+   "base": "f400547af3cd3792c6f2a4d083350dcccc2f9c94",
+   "cid": "c525896c317",
+   "criteria": "- Offline: no `RUT_` defName referenced from `src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml`'s gradient and pool extensions.\n- Live, on a tier **without** `mandrake.rut.patches`: no `Could not resolve` for a salt crust; a surge's recede repaints land\n  to the free crust. This is also a bar for `MIASMA_FIRST_SCRIPT_1` (the salt crust painting with the campaign absent).",
+   "head": "44c730e63a1b0388caa9672f4ea8c4027c890957",
+   "kind": "xml-def-patch",
+   "prompt": "Miasma free tier: its own salt crust so the salt line paints without the campaign\n\n# MIASMA_FREE_SALT_CRUST_1 \u2014 the free Miasma gets its own salt crust, so the salt line paints without the campaign\n\n**Free tier**, `mandrake.rm.miasma`. Design: `design/Jawa/worldbuilding/biomes/miasma_bedazzle_review_2026-10-02.md` \u00a71 (b\u2032), \u00a74 row 0a. Caused by `MIASMA_SCORING_SITTING_1` (turn 1).\nDecision taken by question card (owner, 2026-10-02 15:39 PDT, item 1, *Build first*): land everything the card's first option listed, plus the giant's choice in the same batch.\n\n## The defect\n`RM_Miasma`'s gradient axis (`landTerrain`) and stranding pools (`dryTerrain`) name `RUT_Jawa_SaltCrust`, defined only in\n`src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml`, with no guard. Without the campaign the biome's signature\nmechanic (the salt line moving over the land) has no terrain to paint: a cross-reference error at load and a dead repaint.\n\n## What exists (reuse first)\n- `RM_SaltCrustShore` (`src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_GreySeaTerrains.xml`, `mandrake.rm.terminalbiomes`):\n  a free salt-crust terrain, but its description is the Grey Sea's (*\"Every shore of this sea\"*), and `mandrake.rm.miasma`\n  does not depend on that mod. Reuse it only if that dependency is acceptable and the text is made biome-neutral; otherwise\n  author `RM_MiasmaSaltCrust` in the Miasma mod (FOUNDRY's call; say which in the close).\n\n## spec\n1. Point `landTerrain` and `dryTerrain` on `RM_Miasma` at the free terrain.\n2. The campaign twin `RUT_Miasma` keeps `RUT_Jawa_SaltCrust`.\n\n## criteria\n- Offline: no `RUT_` defName referenced from `src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml`'s gradient and pool extensions.\n- Live, on a tier **without** `mandrake.rut.patches`: no `Could not resolve` for a salt crust; a surge's recede repaints land\n  to the free crust. This is also a bar for `MIASMA_FIRST_SCRIPT_1` (the salt crust painting with the campaign absent).",
+   "role": "good",
+   "size": 2,
+   "source_item": "MIASMA_FREE_SALT_CRUST_1",
+   "task": "RP_MIASMA_FREE_SALT_CRUST_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/RaidRedesigner/*",
+    "src/RimMandrake/RaidRedesigner/Assemblies/*",
+    "src/RimMandrake/RaidRedesigner/Source/*"
+   ],
+   "base": "a37209d067f70c1b251bdf1f1bff106bbe524c74",
+   "cid": "c5806db2c16",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "b8202d7cd41a906a7739995f71f33fed93d40f4c",
+   "kind": "csharp",
+   "prompt": "RaidRedesigner north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# RAIDREDESIGNER_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `RaidRedesigner` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe RaidRedesigner `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nGameComponent_OldFriends actually recording an Encounter for any of the hooks (flee, captain leave, prisoner escape/release, kidnap, caravan robbed, NAMED_HUNTER); 24-living-entry cap/notability pruning (RosterPruning); world-pawn KeepForever pinning effect; maxLivingEntries/grudgeNotabilityMultiplier tuning; scribe round-trip of roster\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "good",
+   "size": 4,
+   "source_item": "RAIDREDESIGNER_COVERAGE_GAPS_1",
+   "task": "RP_RAIDREDESIGNER_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimStarWars/*",
+    "src/RimStarWars/StarWarsPatches/*"
+   ],
+   "base": "7aa049f479548961befbc112c7820f119f3f2682",
+   "cid": "c6359d298ca",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "cdc1b33470d6db431bbf9c183dc48634da53339c",
+   "kind": "python-util",
+   "prompt": "StarWarsPatches north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# STARWARSPATCHES_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `StarWarsPatches` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe StarWarsPatches `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\n~23 Patches/*.xml asserted nowhere live (delegated to \"def dump\"): BodySizeIsReal, EggLayersLayEggs, JawaCombatViability_Tuning, JawaXenotype_Repoint, WeaponTags_Renormalise (tag loss disarms kinds), VanillaFaction_Xenotypes, SWDesertWeather_Attach + SWDesertWeather def, PsychicToForceDisturbance; no static xpath-matches-target check like Shokk has; blast door open/close behaviour\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "good",
+   "size": 4,
+   "source_item": "STARWARSPATCHES_COVERAGE_GAPS_1",
+   "task": "RP_STARWARSPATCHES_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Pyrelands/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "a6743835e7afb272c30a0b799d04e7167710ec0b",
+   "cid": "c653e75c524",
+   "criteria": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "head": "ff922e8c37bae7001c50f76897caa2a458c13826",
+   "kind": "python-util",
+   "prompt": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "role": "good",
+   "size": 2,
+   "source_item": "TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "task": "RP_TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimMandrake/*",
+    "src/RimMandrake/Pyrinth/*"
+   ],
+   "base": "93fd9e84012dc68b333af2377c6147c765b4a5f5",
+   "cid": "c65a3de243c",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "f840dac106e60a03bb4d16f5ea8b282339337002",
+   "kind": "python-util",
+   "prompt": "Pyrinth north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# PYRINTH_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `Pyrinth` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe Pyrinth `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nglow/heat/meditation of DV_PyrinthLamp/WallLamp/Brazier/Heater (UNMEASURED); DV_MeleeWeapon_PyrinthBlade stats; spark mote effects DV_PyrinthSparkingEffect*; Royalty throne-room patch; whether this pack (vs donor det.epochspyrinth) is the loaded copy\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.\n\n## progress 2026-10-03 (r34)\n- `every_shipped_def_reads_back` wired: all 13 DV_ defs loaded and labelled as this pack says (a donor det.epochspyrinth copy with other labels would read as drift). Still open: lamp/brazier glow/heat/meditation, blade stats, spark motes, throne-room patch.",
+   "role": "good",
+   "size": 4,
+   "source_item": "PYRINTH_COVERAGE_GAPS_1",
+   "task": "RP_PYRINTH_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/RimMandrake/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "c08b5af599491ac363e3b370323a0b9e8b4dfff2",
+   "cid": "c8ae1a591bb",
+   "criteria": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "head": "bcc85dd859ec0b38d88f808dd2873dfeac221017",
+   "kind": "python-util",
+   "prompt": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "role": "good",
+   "size": 2,
+   "source_item": "PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "task": "RP_PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/Hose/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*"
+   ],
+   "base": "47128e4575fdf693fef0e453e8dd0557a474d9c8",
+   "cid": "c8fca6c0c30",
+   "criteria": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "head": "75480171c2b08ac1f21fdf5e6e6ab41c39d6013f",
+   "kind": "csharp",
+   "prompt": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "role": "good",
+   "size": 4,
+   "source_item": "HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "task": "RP_HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/*",
+    "src/RimMandrake/ColdStorage/Languages/English/Keyed/*",
+    "src/RimMandrake/ColdStorage/Source/*",
+    "src/RimStarWars/Cuisine/Defs/*"
+   ],
+   "base": "38cdc75a019035493a3f9694ee5a80f3c20c187f",
+   "cid": "c9445b621c8",
+   "criteria": "No WorkGiverDef lists RSW_CarbonFreezingPress, so no pawn ever runs its bills",
+   "head": "36d19ef5726354c3cf047017566351d368dd7cc3",
+   "kind": "csharp",
+   "prompt": "No WorkGiverDef lists RSW_CarbonFreezingPress, so no pawn ever runs its bills",
+   "role": "good",
+   "size": 2,
+   "source_item": "CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS",
+   "task": "RP_CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*",
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "88bde3c6d6915f88c8dabebd2e7c425463754354",
+   "cid": "c9f99444b35",
+   "criteria": "FlowWorks: a canal dug east or north from its water source never fills (water oscillates between cells forever); west/south fill normally",
+   "head": "64ff430d93db69a2bfa5aa3c155d1ce93053e198",
+   "kind": "csharp",
+   "prompt": "FlowWorks: a canal dug east or north from its water source never fills (water oscillates between cells forever); west/south fill normally",
+   "role": "good",
+   "size": 4,
+   "source_item": "FLOWWORKS_CHANNEL_OSCILLATION_1",
+   "task": "RP_FLOWWORKS_CHANNEL_OSCILLATION_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "95fa1200c7c067f3a38b56613be9c8130d9241a0",
+   "cid": "caf6334d203",
+   "criteria": "FlowWorks: source-fed canals wet only their first cell since the level solve (5 validation_v2 fill rows FAIL, oracle agrees)",
+   "head": "147e059020fef4f3be1baafc48c28e393488baf0",
+   "kind": "csharp",
+   "prompt": "FlowWorks: source-fed canals wet only their first cell since the level solve (5 validation_v2 fill rows FAIL, oracle agrees)",
+   "role": "good",
+   "size": 2,
+   "source_item": "CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY",
+   "task": "RP_CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "a5a6211e7306d262cdf4f7f69c8dc53fb2dd19b1",
+   "cid": "cb98216ed6f",
+   "criteria": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "head": "7a68931d8a6d7041aa0b434674a086e4559dd93d",
+   "kind": "python-util",
+   "prompt": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "role": "good",
+   "size": 1,
+   "source_item": "TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "task": "RP_TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimUtinni/*",
+    "src/RimUtinni/PawnFlavor/*",
+    "src/RimUtinni/PawnFlavor/About/*"
+   ],
+   "base": "746195ce5eb269ca882feb7701084838edf95c3e",
+   "cid": "cc62de5bf67",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "ac550d82d39b1a23798d28c23afe3893d151fe27",
+   "kind": "python-util",
+   "prompt": "PawnFlavor north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# PAWNFLAVOR_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `PawnFlavor` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe PawnFlavor `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\n9 of 11 faction filter patches (all RUT_Jawa_* factions) unverified live (needs mandrake.rut.patches); pirate-leak containment (Blackstar not reaching Junkers); Pirate pawn draw; any trait actually doing something; About.xml count stale (50/5 vs 77/13)\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.\n\n## progress 2026-10-03 (r34)\n- `every_shipped_def_reads_back` wired (77 backstories by title/titleShort/slot, 13 traits loaded). About.xml count corrected (was 50/5 + \"droid backstories absent\"; measured 77 = 30 childhood + 47 adulthood across 13 faction categories, 13 traits, FDE droid sets present). Still open: faction filters live, pirate-leak containment, traits doing anything.",
+   "role": "good",
+   "size": 4,
+   "source_item": "PAWNFLAVOR_COVERAGE_GAPS_1",
+   "task": "RP_PAWNFLAVOR_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/*",
+    "src/RimMandrake/GimmeSomeSlack/*",
+    "src/RimMandrake/GimmeSomeSlack/review/*"
+   ],
+   "base": "e23a8847943e6d1de78fccf463f959cee1e773aa",
+   "cid": "cd08704258d",
+   "criteria": "Remove every hose from the GSS walkthrough (hoses live in FlowWorks): the live walk save and human_review.py, with the hose review stations moved to the FlowWorks review map",
+   "head": "df89a17560a5921c4582b7a5eb37e54e43109454",
+   "kind": "python-util",
+   "prompt": "Remove every hose from the GSS walkthrough (hoses live in FlowWorks): the live walk save and human_review.py, with the hose review stations moved to the FlowWorks review map",
+   "role": "good",
+   "size": 4,
+   "source_item": "GSS_WALK_HOSES_EXCISE_REELED_IN",
+   "task": "RP_GSS_WALK_HOSES_EXCISE_REELED_IN",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/SeaShores/*",
+    "src/RimMandrake/SeaShores/Assemblies/*",
+    "src/RimMandrake/SeaShores/Source/*"
+   ],
+   "base": "52edfee240dad7e415c4b54091f34e8c4d4bc0e6",
+   "cid": "cd75ac961d4",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "d56058eb7d01836a74ed1877ea577b5c64b4a5d5",
+   "kind": "csharp",
+   "prompt": "SeaShores north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# SEASHORES_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `SeaShores` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe SeaShores `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nseasCountAsCoast (World.CoastDirectionAt postfix makes land beside a modded sea IsCoastal); generateSeaShores (RM_SeaCoast substituted for vanilla Coast in TryAddMutator); seaCatchTables (rare-catch transpiler on FishingUtility.GetCatchesFor); healFrozenWorldOnLoad count (healed tiles deliberately not asserted); none of the 4 settings flipped\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "good",
+   "size": 4,
+   "source_item": "SEASHORES_COVERAGE_GAPS_1",
+   "task": "RP_SEASHORES_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "infrastructure/state/art/events/*",
+    "src/RimMandrake/LongShade/Defs/ThingDefs_Races/*",
+    "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Vosska/*"
+   ],
+   "base": "b0494cf3dd0ac072f05576c172c46ad6b4e06100",
+   "cid": "ce81b098b9c",
+   "criteria": "Wire RM_Vosska's sand-swim graphic (swimmingGraphicData + RM_SandBuriedGraphicExtension, thraia precedent) once art job stillsand_RM_Vosska_sandswim_v1 lands at LongShade Textures RM_Vosska_Swimming_{facing}.png",
+   "head": "05ba942d2a418c08e02074124ec5f8a0988226ce",
+   "kind": "xml-def-patch",
+   "prompt": "Wire RM_Vosska's sand-swim graphic (swimmingGraphicData + RM_SandBuriedGraphicExtension, thraia precedent) once art job stillsand_RM_Vosska_sandswim_v1 lands at LongShade Textures RM_Vosska_Swimming_{facing}.png",
+   "role": "good",
+   "size": 4,
+   "source_item": "VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+   "task": "RP_VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/experiment_2026-10-14/*",
+    "src/RimMandrake/rimflow/*"
+   ],
+   "base": "3119925b31ee4f700b6f0d54ae391be80715ed2a",
+   "cid": "cf20a65d08a",
+   "criteria": "selftest_reader_invariant t_real_ledger_projects_as_before fails: the OLD (ts, file rank) baseline orders BENCH's claim before OWNER's same-second reassign of PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP and logs a lease error the new reader correctly avoids; the baseline, not the reader, is wrong for same-second cross-shard causal pairs",
+   "head": "c62c4c31974a6b3de3e877c6d7b03934f3bad959",
+   "kind": "tooling",
+   "prompt": "selftest_reader_invariant t_real_ledger_projects_as_before fails: the OLD (ts, file rank) baseline orders BENCH's claim before OWNER's same-second reassign of PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP and logs a lease error the new reader correctly avoids; the baseline, not the reader, is wrong for same-second cross-shard causal pairs",
+   "role": "good",
+   "size": 2,
+   "source_item": "READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
+   "task": "RP_READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/MessyConduit/*",
+    "src/RimMandrake/MessyConduit/Source/*",
+    "src/RimMandrake/MessyConduit/Source/Aerial/*"
+   ],
+   "base": "78e071a49df4de3763fcd77f4bd5117bcafbdd11",
+   "cid": "cf4128fcd1d",
+   "criteria": "Build per-build art style choice (stage 1 poles end to end, 2 conduit runs, 3 reels and hoses, 4 art fill) per design/RimMandrake/messyconduit_style_per_build_design.md and the owner's four decisions",
+   "head": "1d7cce3e99dfaed400cdc3a1fefb41063f9ee835",
+   "kind": "csharp",
+   "prompt": "Build per-build art style choice (stage 1 poles end to end, 2 conduit runs, 3 reels and hoses, 4 art fill) per design/RimMandrake/messyconduit_style_per_build_design.md and the owner's four decisions",
+   "role": "good",
+   "size": 4,
+   "source_item": "MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1",
+   "task": "RP_MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/night_20261013/*",
+    "skills/rimworld-load-round/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "291ce4b30684e77905f375ea9c71c83bb0cc8611",
+   "cid": "cf46ef7da35",
+   "criteria": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "head": "7de700be437714700c63a4240f23d8921a2869e8",
+   "kind": "python-util",
+   "prompt": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "role": "good",
+   "size": 2,
+   "source_item": "TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "task": "RP_TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "infrastructure/stevedesktop/*"
+   ],
+   "base": "9b4000f5c2a91a4eac21706f3e434a3fa0eeb96e",
+   "cid": "c2a193ec7f6",
+   "criteria": "SteveDesktop worker: one detached attempt per job (pinned runner sha, unique attempt dir, heartbeat, outbox result JSON, watchdog), whole attempt under host_guard; plan test_orchestration_two_machines_2026-10-25 helper #3",
+   "head": "1180f5fed7cf7b6bd5497852e07b6bb29e1df9b7",
+   "kind": "tooling",
+   "mid": "m01",
+   "mutant_defect": "worker.py: the refusal branch tests `if data and refusal:` instead of `if not data and refusal:` - an empty reply that carries a refusal is no longer reported as a refusal, and a reply with real data plus refusal text is wrongly treated as refused.",
+   "mutant_kind": "inverted-guard",
+   "mutant_path": "infrastructure/stevedesktop/worker.py",
+   "pair": "c3648d5fead",
+   "prompt": "SteveDesktop worker: one detached attempt per job (pinned runner sha, unique attempt dir, heartbeat, outbox result JSON, watchdog), whole attempt under host_guard; plan test_orchestration_two_machines_2026-10-25 helper #3\n\n# STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS\n\nPlan: design/RimMandrake/test_orchestration_two_machines_2026-10-25.md, section 4 helper #3 (H-A).\n\n## spec\n- `infrastructure/stevedesktop/worker.py` runs on SteveDesktop in ~/rm/runner, started over ssh by the testq dispatcher.\n- `start` takes a job (testq/schema.py `testq.job/1`) on stdin, makes a unique attempt dir `<job>.a<n>`, and detaches the\n  attempt as a transient systemd user unit (fallback: a new session), so a dropped ssh never kills it.\n- The attempt runs under `host_guard.held(\"RUNNER\", ...)`, pins the runner HEAD (refuses SOURCE_SHA_MISSING), deploys,\n  loads the game, runs modcheck, writes a heartbeat every 15 s and one `testq.result/1` JSON into the outbox.\n- Watchdog: a run that outlasts `timeout_s` is killed, the game restarted once, and the run retried once (section 6).\n- Duplicate delivery: `start` for a job with a live or finished attempt returns that attempt, never a second run.\n\n## verify\n- selftest_steve_worker.py (mock phases): DONE, INVALID, HANG -> retry, duplicate start, guard held.\n- One real attempt on SteveDesktop with a result JSON in the outbox.",
+   "role": "mutant",
+   "size": 1,
+   "source_item": "STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS",
+   "task": "RP_STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Pyrelands/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "a6743835e7afb272c30a0b799d04e7167710ec0b",
+   "cid": "c7344028c2c",
+   "criteria": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "head": "440946ed9e783e7fc4af1ea392d646bbfddda67a",
+   "kind": "python-util",
+   "mid": "m02",
+   "mutant_defect": "bridge_concurrency_guard.py: the 'ended within window_s' test compares `age` (the call's age since it STARTED) instead of `now - ended[cid]` (time since it ENDED) - a long call that just ended is not seen as active, so the guard lets a foreign caller in right after it.",
+   "mutant_kind": "wrong-variable",
+   "mutant_path": "src/RimMandrake/Utils/bridge_concurrency_guard.py",
+   "pair": "c653e75c524",
+   "prompt": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "task": "RP_TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Pyrelands/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "a6743835e7afb272c30a0b799d04e7167710ec0b",
+   "cid": "cf7f6d1a4ea",
+   "criteria": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "head": "822e55fc03b34109668e55a4ad79b5f637078aca",
+   "kind": "python-util",
+   "mid": "m03",
+   "mutant_defect": "northstar_site.py: the `os.chmod(dst, 0o666)` after copying the save was removed - a copy of a read-only source stays read-only, so the later overwrite/delete of the staged save fails (PermissionError on Windows).",
+   "mutant_kind": "dropped-statement",
+   "mutant_path": "src/RimMandrake/Pyrelands/northstar_site.py",
+   "pair": "c653e75c524",
+   "prompt": "northstar_site build_site PermissionError copying saves_backup_k when site index k is reused (read-only copy)",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "task": "RP_TESTENV_SITE_BACKUP_REPAIR_READONLY_REUSE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/Assemblies/*",
+    "src/RimMandrake/ColdStorage/Source/*"
+   ],
+   "base": "b16f7e591be65d2cb7fd2350ebc95693f2995f4d",
+   "cid": "c82df019c2e",
+   "criteria": "MOD: carbon-freeze meals recipe counts 18 meals but the pack encases every carried stack whole (20 and 21 meals live)",
+   "head": "cfe4ea939ed7e9e202333430ccb6ea9047650a99",
+   "kind": "csharp",
+   "mid": "m04",
+   "mutant_defect": "Encasing.cs: `ingredients.Remove(ing);` was removed - the stack being encased stays in the ingredient list, so the job's ConsumeIngredients destroys it instead of encasing it.",
+   "mutant_kind": "dropped-statement",
+   "mutant_path": "src/RimMandrake/ColdStorage/Source/Encasing.cs",
+   "pair": "c503b1f032d",
+   "prompt": "MOD: carbon-freeze meals recipe counts 18 meals but the pack encases every carried stack whole (20 and 21 meals live)",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS",
+   "task": "RP_CARBON_PRESS_FIX_PACK_TAKES_WHOLE_STACKS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/*",
+    "src/RimMandrake/ColdStorage/Languages/English/Keyed/*",
+    "src/RimMandrake/ColdStorage/Source/*",
+    "src/RimStarWars/Cuisine/Defs/*"
+   ],
+   "base": "38cdc75a019035493a3f9694ee5a80f3c20c187f",
+   "cid": "cb6d81f9655",
+   "criteria": "No WorkGiverDef lists RSW_CarbonFreezingPress, so no pawn ever runs its bills",
+   "head": "28260eda78a658a226898c33fc23128ce3e929a7",
+   "kind": "csharp",
+   "mid": "m05",
+   "mutant_defect": "RSW_CarbonFreezing.xml: the new bills WorkGiverDef (RSW_DoBillsCarbonFreezingPress) lists `RSW_CarbonFreezePress` in fixedBillGiverDefs, a def that does not exist (the press is `RSW_CarbonFreezingPress`) - no pawn ever works bills at the press (cross-reference error at load).",
+   "mutant_kind": "wrong-identifier",
+   "mutant_path": "src/RimStarWars/Cuisine/Defs/RSW_CarbonFreezing.xml",
+   "pair": "c9445b621c8",
+   "prompt": "No WorkGiverDef lists RSW_CarbonFreezingPress, so no pawn ever runs its bills",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS",
+   "task": "RP_CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/ColdStorage/*",
+    "src/RimMandrake/ColdStorage/Languages/English/Keyed/*",
+    "src/RimMandrake/ColdStorage/Source/*",
+    "src/RimStarWars/Cuisine/Defs/*"
+   ],
+   "base": "38cdc75a019035493a3f9694ee5a80f3c20c187f",
+   "cid": "c45731681c1",
+   "criteria": "Partial stasis inspect says 'nothing inside spoils' then 'spoil at 80%'",
+   "head": "b3b85b8c3d6588a83b158892335fd6155dbc5d9b",
+   "kind": "csharp",
+   "mid": "m06",
+   "mutant_defect": "CompStorageClimate.cs partial-stasis inspect line: the two percentages passed to RM_ColdStorage_StasisHoldingPartial are swapped - it prints the spoil-rate factor as the field strength and (1 - factor) as the spoil rate, so a field holding at 80% reads 'holding at 20%, spoil at 80%' (the confusing message the item set out to fix).",
+   "mutant_kind": "wrong-variable",
+   "mutant_path": "src/RimMandrake/ColdStorage/Source/CompStorageClimate.cs",
+   "pair": "c3e76b564ba",
+   "prompt": "Partial stasis inspect says 'nothing inside spoils' then 'spoil at 80%'",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
+   "task": "RP_COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "95fa1200c7c067f3a38b56613be9c8130d9241a0",
+   "cid": "cdb9e986628",
+   "criteria": "FlowWorks: source-fed canals wet only their first cell since the level solve (5 validation_v2 fill rows FAIL, oracle agrees)",
+   "head": "5b024bdf2a50f55471efc4875f5b69536654bf17",
+   "kind": "csharp",
+   "mid": "m07",
+   "mutant_defect": "RM_FlowKernel.cs IsLiveMouth: the neighbour loop runs `d < 3` instead of `d < 4` - the fourth cardinal direction is never checked, so a mouth open only on that side is wrongly judged dead.",
+   "mutant_kind": "off-by-one",
+   "mutant_path": "src/RimMandrake/FlowWorks/Source/RM_FlowKernel.cs",
+   "pair": "caf6334d203",
+   "prompt": "FlowWorks: source-fed canals wet only their first cell since the level solve (5 validation_v2 fill rows FAIL, oracle agrees)",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY",
+   "task": "RP_CANAL_INLET_DIAGNOSE_FIRST_CELL_ONLY",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/Utils/*",
+    "src/RimStarWars/Cuisine/About/*",
+    "src/RimStarWars/Cuisine/Assemblies/*",
+    "src/RimStarWars/Cuisine/Source/Cuisine/*"
+   ],
+   "base": "3554fc232dc9a86be49f6d2480ca9081a0fcdb7c",
+   "cid": "cc5e4ddd7dc",
+   "criteria": "Roast-on-a-stick by a Cooking-incapable pawn hits vanilla's dev-mode 'disabled stat' ErrorOnce twice: CookSpeed (recipe workSpeedStat, skillNeedOffsets Cooking) each work tick, FoodPoisonChance (RSW_RoastOnAStick inherits CompFoodPoisonable from MealBaseIngredientless; Notify_RecipeProduced reads pawn FoodPoisonChance, skillNeedFactors Cooking). StatWorker.GetValueUnfinalized logs when Prefs.DevMode && IsDisabledFor. Gameplay is fine (level 0: 5% poison, base speed); fix = workSpeedStat not tied to Cooking (or none) plus a Cuisine guard/Harmony for the poison roll, or document as accepted.",
+   "head": "0f6ed508d861ea36a74a31847d58dfaeb5f4c9f9",
+   "kind": "csharp",
+   "mid": "m08",
+   "mutant_defect": "FoodPoisonDisabledCookGuard.cs: the `!` before `StatDefOf.FoodPoisonChance.Worker.IsDisabledFor(pawn)` was dropped - the guard now skips exactly the cooks whose food-poison stat is disabled (the case it exists for) and acts on everyone else.",
+   "mutant_kind": "inverted-guard",
+   "mutant_path": "src/RimStarWars/Cuisine/Source/Cuisine/FoodPoisonDisabledCookGuard.cs",
+   "pair": "c00dd92142d",
+   "prompt": "Roast-on-a-stick by a Cooking-incapable pawn hits vanilla's dev-mode 'disabled stat' ErrorOnce twice: CookSpeed (recipe workSpeedStat, skillNeedOffsets Cooking) each work tick, FoodPoisonChance (RSW_RoastOnAStick inherits CompFoodPoisonable from MealBaseIngredientless; Notify_RecipeProduced reads pawn FoodPoisonChance, skillNeedFactors Cooking). StatWorker.GetValueUnfinalized logs when Prefs.DevMode && IsDisabledFor. Gameplay is fine (level 0: 5% poison, base speed); fix = workSpeedStat not tied to Cooking (or none) plus a Cuisine guard/Harmony for the poison roll, or document as accepted.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+   "task": "RP_ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "a5a6211e7306d262cdf4f7f69c8dc53fb2dd19b1",
+   "cid": "ceba5f0b673",
+   "criteria": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "head": "8bad5453d7f1f834a1fc371a4f310f8d62ebc45f",
+   "kind": "python-util",
+   "mid": "m09",
+   "mutant_defect": "walk_gaps_proof.py tanks_verdict: compares `sum(u0) != sum(u1)` instead of the per-tank `u0 != u1` - fluid that moves between tanks with the total unchanged (levelling) is reported as no change, so the can-fail tank row cannot fail.",
+   "mutant_kind": "wrong-condition",
+   "mutant_path": "src/RimMandrake/FlowWorks/northstar/walk_gaps_proof.py",
+   "pair": "cb98216ed6f",
+   "prompt": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "role": "mutant",
+   "size": 1,
+   "source_item": "TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "task": "RP_TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "a5a6211e7306d262cdf4f7f69c8dc53fb2dd19b1",
+   "cid": "ca38edbe71a",
+   "criteria": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "head": "63ccf1d37b60e2becb2082ae7dd101880508e3d5",
+   "kind": "python-util",
+   "mid": "m10",
+   "mutant_defect": "walk_gaps_proof.py tanks_verdict: the empty-tanks guard is `sum(u0) < 0` instead of `<= 0` - tanks that start empty are not reported UNMEASURED and go on to a meaningless PASS/FAIL.",
+   "mutant_kind": "off-by-one",
+   "mutant_path": "src/RimMandrake/FlowWorks/northstar/walk_gaps_proof.py",
+   "pair": "cb98216ed6f",
+   "prompt": "walk_gaps TANKS_JOINED_ONE_LEVEL asserts Store tanks level; ruling says they never do (HARNESS)",
+   "role": "mutant",
+   "size": 1,
+   "source_item": "TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "task": "RP_TANKS_ROW_FIX_LEVELS_WHAT_RULING_FORBADE",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "Transient/night_20261013/*",
+    "skills/rimworld-load-round/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "291ce4b30684e77905f375ea9c71c83bb0cc8611",
+   "cid": "c662e748309",
+   "criteria": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "head": "d2864fc897c53f032b6078bc003535c327ac3fae",
+   "kind": "python-util",
+   "mid": "m11",
+   "mutant_defect": "modset_builder.py restore_before: the `os.remove(marker)` that consumes the restore marker was removed - the marker survives a successful restore, so a later --restore restores a stale snapshot again.",
+   "mutant_kind": "dropped-statement",
+   "mutant_path": "src/RimMandrake/Utils/modset_builder.py",
+   "pair": "cf46ef7da35",
+   "prompt": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "task": "RP_TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/night_20261013/*",
+    "skills/rimworld-load-round/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "291ce4b30684e77905f375ea9c71c83bb0cc8611",
+   "cid": "ca3a49e9eca",
+   "criteria": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "head": "ec279cf6a9020ababf73e398287f268a7d2a6d18",
+   "kind": "python-util",
+   "mid": "m12",
+   "mutant_defect": "modset_builder.py main: a refused --restore (RestoreRefused) prints the refusal but returns exit code 0 instead of 1 - callers and scripts see success when nothing was restored.",
+   "mutant_kind": "swallowed-error",
+   "mutant_path": "src/RimMandrake/Utils/modset_builder.py",
+   "pair": "cf46ef7da35",
+   "prompt": "modset_builder --restore writes ModsConfig.FULL.LATEST (551, md5 1ab545a0) not the pre-swap backup (550, owner md5 ee01dae9); warns but exits 0",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "task": "RP_TESTENV_MODSET_RESTORE_WRONG_FILE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/RimMandrake/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "c08b5af599491ac363e3b370323a0b9e8b4dfff2",
+   "cid": "c73de644893",
+   "criteria": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "head": "841161cab605cb45188a3e778b3fce22fed5fe3a",
+   "kind": "python-util",
+   "mid": "m13",
+   "mutant_defect": "publish.py rebase conflict handling: `not any(is_dll_pair_path(...))` instead of `not all(...)` - a conflict that mixes a DLL pair with ordinary source files is treated as DLL-only and auto-resolved (taking one side) instead of refusing.",
+   "mutant_kind": "wrong-quantifier",
+   "mutant_path": "src/RimMandrake/Utils/publish.py",
+   "pair": "c8ae1a591bb",
+   "prompt": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "task": "RP_PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/RimMandrake/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "c08b5af599491ac363e3b370323a0b9e8b4dfff2",
+   "cid": "cc37055c8f7",
+   "criteria": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "head": "595799b24ff1570656934596a99afa717eaa1a4e",
+   "kind": "python-util",
+   "mid": "m14",
+   "mutant_defect": "publish.py dll_of: strips `len(\".dll.srchash\")` instead of `len(\".srchash\")` - the stamp path `X.dll.srchash` maps to `X` (not `X.dll`), so the DLL and its source stamp are no longer paired.",
+   "mutant_kind": "off-by-one",
+   "mutant_path": "src/RimMandrake/Utils/publish.py",
+   "pair": "c8ae1a591bb",
+   "prompt": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "task": "RP_PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimMandrake/*",
+    "src/RimMandrake/Pyrinth/*"
+   ],
+   "base": "93fd9e84012dc68b333af2377c6147c765b4a5f5",
+   "cid": "c7870e055b0",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "e2f99cedd578d69f828bfca72d662924702a5071",
+   "kind": "python-util",
+   "mid": "m15",
+   "mutant_defect": "Pyrinth validation.py: the heat-pusher check reads heatPerSecond with default 1 instead of 0 - a HeatPusher with no heatPerSecond at all passes as heating.",
+   "mutant_kind": "wrong-default",
+   "mutant_path": "src/RimMandrake/Pyrinth/validation.py",
+   "pair": "c65a3de243c",
+   "prompt": "Pyrinth north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# PYRINTH_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `Pyrinth` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe Pyrinth `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nglow/heat/meditation of DV_PyrinthLamp/WallLamp/Brazier/Heater (UNMEASURED); DV_MeleeWeapon_PyrinthBlade stats; spark mote effects DV_PyrinthSparkingEffect*; Royalty throne-room patch; whether this pack (vs donor det.epochspyrinth) is the loaded copy\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.\n\n## progress 2026-10-03 (r34)\n- `every_shipped_def_reads_back` wired: all 13 DV_ defs loaded and labelled as this pack says (a donor det.epochspyrinth copy with other labels would read as drift). Still open: lamp/brazier glow/heat/meditation, blade stats, spark motes, throne-room patch.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "PYRINTH_COVERAGE_GAPS_1",
+   "task": "RP_PYRINTH_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimMandrake/*",
+    "src/RimMandrake/Pyrinth/*"
+   ],
+   "base": "93fd9e84012dc68b333af2377c6147c765b4a5f5",
+   "cid": "c42f6e94e53",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "9ff105ba33dc397f07dbbc762358744596f1b215",
+   "kind": "python-util",
+   "mid": "m16",
+   "mutant_defect": "Pyrinth validation.py: the glow-radius ordering check is inverted (`>` for `<`) - it now demands the wall lamp glow FARTHER than the lamp, so the correct defs fail and a wrong ordering passes.",
+   "mutant_kind": "inverted-comparison",
+   "mutant_path": "src/RimMandrake/Pyrinth/validation.py",
+   "pair": "c65a3de243c",
+   "prompt": "Pyrinth north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# PYRINTH_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `Pyrinth` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe Pyrinth `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nglow/heat/meditation of DV_PyrinthLamp/WallLamp/Brazier/Heater (UNMEASURED); DV_MeleeWeapon_PyrinthBlade stats; spark mote effects DV_PyrinthSparkingEffect*; Royalty throne-room patch; whether this pack (vs donor det.epochspyrinth) is the loaded copy\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.\n\n## progress 2026-10-03 (r34)\n- `every_shipped_def_reads_back` wired: all 13 DV_ defs loaded and labelled as this pack says (a donor det.epochspyrinth copy with other labels would read as drift). Still open: lamp/brazier glow/heat/meditation, blade stats, spark motes, throne-room patch.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "PYRINTH_COVERAGE_GAPS_1",
+   "task": "RP_PYRINTH_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimStarWars/*",
+    "src/RimStarWars/StarWarsPatches/*"
+   ],
+   "base": "7aa049f479548961befbc112c7820f119f3f2682",
+   "cid": "c02cda29322",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "6a5ead48e72e8f9e6537daab203f44e623559d68",
+   "kind": "python-util",
+   "mid": "m17",
+   "mutant_defect": "StarWarsPatches validation.py: the `except (TypeError, ValueError)` around the weather commonality parse now just passes - a weather attached with a non-numeric/empty commonality is silently accepted instead of reported.",
+   "mutant_kind": "swallowed-error",
+   "mutant_path": "src/RimStarWars/StarWarsPatches/validation.py",
+   "pair": "c6359d298ca",
+   "prompt": "StarWarsPatches north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# STARWARSPATCHES_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `StarWarsPatches` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe StarWarsPatches `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\n~23 Patches/*.xml asserted nowhere live (delegated to \"def dump\"): BodySizeIsReal, EggLayersLayEggs, JawaCombatViability_Tuning, JawaXenotype_Repoint, WeaponTags_Renormalise (tag loss disarms kinds), VanillaFaction_Xenotypes, SWDesertWeather_Attach + SWDesertWeather def, PsychicToForceDisturbance; no static xpath-matches-target check like Shokk has; blast door open/close behaviour\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "STARWARSPATCHES_COVERAGE_GAPS_1",
+   "task": "RP_STARWARSPATCHES_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimStarWars/*",
+    "src/RimStarWars/StarWarsPatches/*"
+   ],
+   "base": "7aa049f479548961befbc112c7820f119f3f2682",
+   "cid": "ccedbf1c9b8",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "3b68de6fb4b7995683f22955221c7822c38de129",
+   "kind": "python-util",
+   "mid": "m18",
+   "mutant_defect": "StarWarsPatches validation.py: the unknown-weather check runs only when there is NO def dump (`dump is None`) - with a dump present a patch attaching a weather no mod defines is never reported.",
+   "mutant_kind": "inverted-guard",
+   "mutant_path": "src/RimStarWars/StarWarsPatches/validation.py",
+   "pair": "c6359d298ca",
+   "prompt": "StarWarsPatches north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# STARWARSPATCHES_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `StarWarsPatches` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe StarWarsPatches `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\n~23 Patches/*.xml asserted nowhere live (delegated to \"def dump\"): BodySizeIsReal, EggLayersLayEggs, JawaCombatViability_Tuning, JawaXenotype_Repoint, WeaponTags_Renormalise (tag loss disarms kinds), VanillaFaction_Xenotypes, SWDesertWeather_Attach + SWDesertWeather def, PsychicToForceDisturbance; no static xpath-matches-target check like Shokk has; blast door open/close behaviour\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "STARWARSPATCHES_COVERAGE_GAPS_1",
+   "task": "RP_STARWARSPATCHES_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/RaidRedesigner/*",
+    "src/RimMandrake/RaidRedesigner/Assemblies/*",
+    "src/RimMandrake/RaidRedesigner/Source/*"
+   ],
+   "base": "a37209d067f70c1b251bdf1f1bff106bbe524c74",
+   "cid": "ce571abf589",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "54125a817dcacf33491f8d353f45f9e7918d5614",
+   "kind": "csharp",
+   "mid": "m19",
+   "mutant_defect": "RaidRedesigner validation.py scribe check: searches the whole source `t` instead of the ExposeData body `expose` - a field passed by ref anywhere in the file counts as scribed, so a field missing from ExposeData (lost on save/load) passes.",
+   "mutant_kind": "wrong-variable",
+   "mutant_path": "src/RimMandrake/RaidRedesigner/validation.py",
+   "pair": "c5806db2c16",
+   "prompt": "RaidRedesigner north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# RAIDREDESIGNER_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `RaidRedesigner` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe RaidRedesigner `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nGameComponent_OldFriends actually recording an Encounter for any of the hooks (flee, captain leave, prisoner escape/release, kidnap, caravan robbed, NAMED_HUNTER); 24-living-entry cap/notability pruning (RosterPruning); world-pawn KeepForever pinning effect; maxLivingEntries/grudgeNotabilityMultiplier tuning; scribe round-trip of roster\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "RAIDREDESIGNER_COVERAGE_GAPS_1",
+   "task": "RP_RAIDREDESIGNER_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/SeaShores/*",
+    "src/RimMandrake/SeaShores/Assemblies/*",
+    "src/RimMandrake/SeaShores/Source/*"
+   ],
+   "base": "52edfee240dad7e415c4b54091f34e8c4d4bc0e6",
+   "cid": "c263fc5ed6f",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "91ff37422e4731ed35da52e58dc0e2851acaeea5",
+   "kind": "csharp",
+   "mid": "m20",
+   "mutant_defect": "SeaShores validation.py _want: only compares keys present in the proof output (`k in kv and ...`) - a key the in-game proof never printed passes instead of failing, so a missing measurement reads as PASS.",
+   "mutant_kind": "wrong-condition",
+   "mutant_path": "src/RimMandrake/SeaShores/validation.py",
+   "pair": "cd75ac961d4",
+   "prompt": "SeaShores north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# SEASHORES_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `SeaShores` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe SeaShores `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\nseasCountAsCoast (World.CoastDirectionAt postfix makes land beside a modded sea IsCoastal); generateSeaShores (RM_SeaCoast substituted for vanilla Coast in TryAddMutator); seaCatchTables (rare-catch transpiler on FishingUtility.GetCatchesFor); healFrozenWorldOnLoad count (healed tiles deliberately not asserted); none of the 4 settings flipped\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "SEASHORES_COVERAGE_GAPS_1",
+   "task": "RP_SEASHORES_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*",
+    "src/RimMandrake/FlowWorks/northstar/*"
+   ],
+   "base": "88bde3c6d6915f88c8dabebd2e7c425463754354",
+   "cid": "c37b5491e23",
+   "criteria": "FlowWorks: a canal dug east or north from its water source never fills (water oscillates between cells forever); west/south fill normally",
+   "head": "5194c7be4d8286b61588918d4740b2bb656a2db0",
+   "kind": "csharp",
+   "mid": "m21",
+   "mutant_defect": "RM_StockMath.cs MayFlowBetween: the sink-hop rule is `>=` instead of `>` - two cells the same distance from the sink may flow both ways, so stock oscillates between equal-hop cells instead of moving toward the sink.",
+   "mutant_kind": "off-by-one",
+   "mutant_path": "src/RimMandrake/FlowWorks/Source/RM_StockMath.cs",
+   "pair": "c9f99444b35",
+   "prompt": "FlowWorks: a canal dug east or north from its water source never fills (water oscillates between cells forever); west/south fill normally",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "FLOWWORKS_CHANNEL_OSCILLATION_1",
+   "task": "RP_FLOWWORKS_CHANNEL_OSCILLATION_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/Hose/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*"
+   ],
+   "base": "47128e4575fdf693fef0e453e8dd0557a474d9c8",
+   "cid": "c3fdc9d977b",
+   "criteria": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "head": "d88c5d5abd424ef12baafa42aee773ae114b7278",
+   "kind": "csharp",
+   "mid": "m22",
+   "mutant_defect": "HoseMath.cs building-crossing count: the reused per-thread set `rigHitScratch` is no longer cleared (`hit.Clear()` dropped) before the walk - cells hit by earlier lays accumulate, so the returned crossing count grows from call to call instead of counting this pose's cells.",
+   "mutant_kind": "dropped-statement",
+   "mutant_path": "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs",
+   "pair": "c8fca6c0c30",
+   "prompt": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "task": "RP_HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/*"
+   ],
+   "base": "621796e96b6ef0535cfa27b61d336dd55f66fb63",
+   "cid": "cce9e17a6f2",
+   "criteria": "Raider trench: ReachVetoed lets a trench-floor raider reach the far bank, loops on no path",
+   "head": "ed6f7c53dd7d54ee27aafed0c18d5dd9c3391868",
+   "kind": "csharp",
+   "mid": "m23",
+   "mutant_defect": "RM_WallClimbMath.cs pathfind budget: refuses when `used + pathfinds >= PathfindsPerTick` instead of `>` - the last allowed pathfind of each tick is refused (a budget of 1 allows none).",
+   "mutant_kind": "off-by-one",
+   "mutant_path": "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallClimbMath.cs",
+   "pair": "c493b07aee0",
+   "prompt": "Raider trench: ReachVetoed lets a trench-floor raider reach the far bank, loops on no path\n\nReview 2026-10-19 (BENCH helper). HIGH: RM_PocketGridMath.cs ReachVetoed (~186-195): start in a pocket with any way out + dest on a surface component clears the veto even if the way out leads to a different surface; raider on trench floor with only the near-wall ladder gets CanReach(far bank)==true, TryCross returns null, GotoNearestHostile loops. Fix: require JoinedByLadders(cs,cd) when exactly one end is a pocket and other a surface (unless narrow-pocket exemption); add a RaiderTrenchChecks case. MEDIUM: RM_RaiderTrench.cs 451-460 checks reachability of only the nearest colonist/building (island target starts ladders despite reachable colonists); 469-477 fill only when ladders infeasible, LadderJob null (unreachable slot) stalls - fall back to FillJob. LOW: no reservation on fill cell (579); lordLips/warned statics survive load and ProofDecision has side effects (546); RM_FallRails.cs:82 eng null check. Files stay DIRTY.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "RAIDER_TRENCH_FIX_REACH_BOUNCE",
+   "task": "RP_RAIDER_TRENCH_FIX_REACH_BOUNCE",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/DivingInteraction/*",
+    "src/RimMandrake/DivingInteraction/Assemblies/*",
+    "src/RimMandrake/DivingInteraction/Source/*"
+   ],
+   "base": "1a4737b42c7d041fe9089e9ae2ca82f09487d18e",
+   "cid": "cee1abd51a4",
+   "criteria": "Scald Immersion Berth: a parked ship's rooms slowly heat; compact ships cheap to cool; never seals doors or blocks launch",
+   "head": "af73abd5ac4ef36814244100dfa2b774ab397262",
+   "kind": "csharp",
+   "mid": "m24",
+   "mutant_defect": "RM_MapComponent_ScaldImmersionBerth.cs: the Scald test uses `||` instead of `&&` - every pocket map (any biome) counts as the Scald, so berths in unrelated pocket maps get immersion heat.",
+   "mutant_kind": "wrong-operator",
+   "mutant_path": "src/RimMandrake/DivingInteraction/Source/RM_MapComponent_ScaldImmersionBerth.cs",
+   "pair": "c301c81547c",
+   "prompt": "Scald Immersion Berth: a parked ship's rooms slowly heat; compact ships cheap to cool; never seals doors or blocks launch",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "SCALD_IMMERSION_BERTH_1",
+   "task": "RP_SCALD_IMMERSION_BERTH_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/MessyConduit/*",
+    "src/RimMandrake/MessyConduit/Source/*",
+    "src/RimMandrake/MessyConduit/Source/Aerial/*"
+   ],
+   "base": "78e071a49df4de3763fcd77f4bd5117bcafbdd11",
+   "cid": "c88522efe2a",
+   "criteria": "Build per-build art style choice (stage 1 poles end to end, 2 conduit runs, 3 reels and hoses, 4 art fill) per design/RimMandrake/messyconduit_style_per_build_design.md and the owner's four decisions",
+   "head": "730d9ed4c8db009b68455dda89f25d621615eddf",
+   "kind": "csharp",
+   "mid": "m25",
+   "mutant_defect": "MessyConduit validation_style.py: the LOD-printed check is inverted (`if not lod_on`) - with LOD on, strands missing their (lod) print are never reported; with LOD off it demands LOD prints that cannot exist.",
+   "mutant_kind": "inverted-guard",
+   "mutant_path": "src/RimMandrake/MessyConduit/validation_style.py",
+   "pair": "cf4128fcd1d",
+   "prompt": "Build per-build art style choice (stage 1 poles end to end, 2 conduit runs, 3 reels and hoses, 4 art fill) per design/RimMandrake/messyconduit_style_per_build_design.md and the owner's four decisions",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1",
+   "task": "RP_MESSYCONDUIT_STYLE_PER_BUILD_BUILD_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/*",
+    "src/RimMandrake/Miasma/*",
+    "src/RimMandrake/Miasma/Defs/BiomeDefs/*",
+    "src/RimMandrake/Miasma/Defs/TerrainDefs/*"
+   ],
+   "base": "f400547af3cd3792c6f2a4d083350dcccc2f9c94",
+   "cid": "c553bc3e2d5",
+   "criteria": "- Offline: no `RUT_` defName referenced from `src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml`'s gradient and pool extensions.\n- Live, on a tier **without** `mandrake.rut.patches`: no `Could not resolve` for a salt crust; a surge's recede repaints land\n  to the free crust. This is also a bar for `MIASMA_FIRST_SCRIPT_1` (the salt crust painting with the campaign absent).",
+   "head": "41c8b780873d457478738f63608cd8a4ae6cf580",
+   "kind": "xml-def-patch",
+   "mid": "m26",
+   "mutant_defect": "RM_Miasma.xml: dryTerrain still points at the campaign terrain `RUT_Jawa_SaltCrust` (only landTerrain was moved to RM_MiasmaSaltCrust) - the free biome still depends on the campaign pack's terrain, against criterion 1.",
+   "mutant_kind": "reverted-fix",
+   "mutant_path": "src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml",
+   "pair": "c525896c317",
+   "prompt": "Miasma free tier: its own salt crust so the salt line paints without the campaign\n\n# MIASMA_FREE_SALT_CRUST_1 \u2014 the free Miasma gets its own salt crust, so the salt line paints without the campaign\n\n**Free tier**, `mandrake.rm.miasma`. Design: `design/Jawa/worldbuilding/biomes/miasma_bedazzle_review_2026-10-02.md` \u00a71 (b\u2032), \u00a74 row 0a. Caused by `MIASMA_SCORING_SITTING_1` (turn 1).\nDecision taken by question card (owner, 2026-10-02 15:39 PDT, item 1, *Build first*): land everything the card's first option listed, plus the giant's choice in the same batch.\n\n## The defect\n`RM_Miasma`'s gradient axis (`landTerrain`) and stranding pools (`dryTerrain`) name `RUT_Jawa_SaltCrust`, defined only in\n`src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml`, with no guard. Without the campaign the biome's signature\nmechanic (the salt line moving over the land) has no terrain to paint: a cross-reference error at load and a dead repaint.\n\n## What exists (reuse first)\n- `RM_SaltCrustShore` (`src/RimMandrake/TerminalBiomes/Defs/TerrainDefs/RM_GreySeaTerrains.xml`, `mandrake.rm.terminalbiomes`):\n  a free salt-crust terrain, but its description is the Grey Sea's (*\"Every shore of this sea\"*), and `mandrake.rm.miasma`\n  does not depend on that mod. Reuse it only if that dependency is acceptable and the text is made biome-neutral; otherwise\n  author `RM_MiasmaSaltCrust` in the Miasma mod (FOUNDRY's call; say which in the close).\n\n## spec\n1. Point `landTerrain` and `dryTerrain` on `RM_Miasma` at the free terrain.\n2. The campaign twin `RUT_Miasma` keeps `RUT_Jawa_SaltCrust`.\n\n## criteria\n- Offline: no `RUT_` defName referenced from `src/RimMandrake/Miasma/Defs/BiomeDefs/RM_Miasma.xml`'s gradient and pool extensions.\n- Live, on a tier **without** `mandrake.rut.patches`: no `Could not resolve` for a salt crust; a surge's recede repaints land\n  to the free crust. This is also a bar for `MIASMA_FIRST_SCRIPT_1` (the salt crust painting with the campaign absent).",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "MIASMA_FREE_SALT_CRUST_1",
+   "task": "RP_MIASMA_FREE_SALT_CRUST_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "infrastructure/state/art/events/*",
+    "src/RimMandrake/LongShade/Defs/ThingDefs_Races/*",
+    "src/RimMandrake/LongShade/Textures/Things/Pawn/Animal/RM_Vosska/*"
+   ],
+   "base": "b0494cf3dd0ac072f05576c172c46ad6b4e06100",
+   "cid": "c0e06ad14e4",
+   "criteria": "Wire RM_Vosska's sand-swim graphic (swimmingGraphicData + RM_SandBuriedGraphicExtension, thraia precedent) once art job stillsand_RM_Vosska_sandswim_v1 lands at LongShade Textures RM_Vosska_Swimming_{facing}.png",
+   "head": "d0fc40b31a1fc6efefdc261c74454e5c70844432",
+   "kind": "xml-def-patch",
+   "mid": "m27",
+   "mutant_defect": "RM_LongShade_Fauna.xml: the first Vosska swimmingGraphicData texPath is misspelt `RM_Vosska_Swiming` - no such texture, so that life stage swims as the missing-texture placeholder.",
+   "mutant_kind": "wrong-identifier",
+   "mutant_path": "src/RimMandrake/LongShade/Defs/ThingDefs_Races/RM_LongShade_Fauna.xml",
+   "pair": "ce81b098b9c",
+   "prompt": "Wire RM_Vosska's sand-swim graphic (swimmingGraphicData + RM_SandBuriedGraphicExtension, thraia precedent) once art job stillsand_RM_Vosska_sandswim_v1 lands at LongShade Textures RM_Vosska_Swimming_{facing}.png",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+   "task": "RP_VOSSKA_SANDSWIM_GRAPHIC_WIRING_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "design/validation_walks/RimUtinni/*",
+    "src/RimUtinni/PawnFlavor/*",
+    "src/RimUtinni/PawnFlavor/About/*"
+   ],
+   "base": "746195ce5eb269ca882feb7701084838edf95c3e",
+   "cid": "c45d2de909a",
+   "criteria": "Each listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.",
+   "head": "27b8b376203a271879fa705e8fd132543a212054",
+   "kind": "python-util",
+   "mid": "m28",
+   "mutant_defect": "PawnFlavor validation.py leak containment: tests `\"Pirate\" not in leakers` instead of `leakers != [\"Pirate\"]` - other factions wired to JawaBSC_Blackstar pass as long as Pirate is also wired, so the Blackstar leak is no longer detected.",
+   "mutant_kind": "wrong-condition",
+   "mutant_path": "src/RimUtinni/PawnFlavor/validation.py",
+   "pair": "cc62de5bf67",
+   "prompt": "PawnFlavor north-star script is THIN: add asserting bars for its uncovered behaviours (design/RimMandrake/northstar_coverage_audit_2026-10-03.md row)\n\n# PAWNFLAVOR_COVERAGE_GAPS_1\n\nChild of NORTHSTAR_COVERAGE_AUDIT_1. Row `PawnFlavor` of `design/RimMandrake/northstar_coverage_audit_2026-10-03.md`.\n\n## spec\nThe PawnFlavor `validation.py` asserts little of what the mod does. Uncovered, per the audit (a Sonnet reader's evidence; re-read the mod first):\n9 of 11 faction filter patches (all RUT_Jawa_* factions) unverified live (needs mandrake.rut.patches); pirate-leak containment (Blackstar not reaching Junkers); Pirate pawn draw; any trait actually doing something; About.xml count stale (50/5 vs 77/13)\n\nAdd a component per uncovered behaviour that asserts it DOES its job (not spawn-and-count), one per settings toggle with an off arm. Static/offline bars first.\n\n## criteria\nEach listed behaviour has an asserting component or a stated reason it cannot (UNMEASURED with the missing instrument named); `lint_calls.py` clean for the file.\n\n## progress 2026-10-03 (r34)\n- `every_shipped_def_reads_back` wired (77 backstories by title/titleShort/slot, 13 traits loaded). About.xml count corrected (was 50/5 + \"droid backstories absent\"; measured 77 = 30 childhood + 47 adulthood across 13 faction categories, 13 traits, FDE droid sets present). Still open: faction filters live, pirate-leak containment, traits doing anything.",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "PAWNFLAVOR_COVERAGE_GAPS_1",
+   "task": "RP_PAWNFLAVOR_COVERAGE_GAPS_1",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/*",
+    "src/RimMandrake/GimmeSomeSlack/*",
+    "src/RimMandrake/GimmeSomeSlack/review/*"
+   ],
+   "base": "e23a8847943e6d1de78fccf463f959cee1e773aa",
+   "cid": "c05114f9703",
+   "criteria": "Remove every hose from the GSS walkthrough (hoses live in FlowWorks): the live walk save and human_review.py, with the hose review stations moved to the FlowWorks review map",
+   "head": "6fdaf039930ba185922c300441738d5e60db76ca",
+   "kind": "python-util",
+   "mid": "m29",
+   "mutant_defect": "review_map.py ring: the border test uses `and` instead of `or` - the ring is only the four corner cells, so the enclosing walls of each review station are not built.",
+   "mutant_kind": "wrong-operator",
+   "mutant_path": "src/RimMandrake/FlowWorks/review_map.py",
+   "pair": "cd08704258d",
+   "prompt": "Remove every hose from the GSS walkthrough (hoses live in FlowWorks): the live walk save and human_review.py, with the hose review stations moved to the FlowWorks review map",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "GSS_WALK_HOSES_EXCISE_REELED_IN",
+   "task": "RP_GSS_WALK_HOSES_EXCISE_REELED_IN",
+   "tier": "B"
+  },
+  {
+   "area": [
+    "Transient/experiment_2026-10-14/*",
+    "src/RimMandrake/rimflow/*"
+   ],
+   "base": "3119925b31ee4f700b6f0d54ae391be80715ed2a",
+   "cid": "c08bd7c13d5",
+   "criteria": "selftest_reader_invariant t_real_ledger_projects_as_before fails: the OLD (ts, file rank) baseline orders BENCH's claim before OWNER's same-second reassign of PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP and logs a lease error the new reader correctly avoids; the baseline, not the reader, is wrong for same-second cross-shard causal pairs",
+   "head": "ffa17a1c3e3acdfcbf89940805a22ef7b76e670c",
+   "kind": "tooling",
+   "mid": "m30",
+   "mutant_defect": "selftest_reader_invariant.py: the projection comparison zips `a[2:], b[2:]` instead of `a[1:], b[1:]` - the first non-item projection is never compared, so a reader change that alters it passes the invariant.",
+   "mutant_kind": "off-by-one",
+   "mutant_path": "src/RimMandrake/rimflow/selftest_reader_invariant.py",
+   "pair": "cf20a65d08a",
+   "prompt": "selftest_reader_invariant t_real_ledger_projects_as_before fails: the OLD (ts, file rank) baseline orders BENCH's claim before OWNER's same-second reassign of PIT_POCKET_GRID_BUILD_SLOPES_NEVER_TRAP and logs a lease error the new reader correctly avoids; the baseline, not the reader, is wrong for same-second cross-shard causal pairs",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
+   "task": "RP_READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
+   "tier": "B"
+  }
+ ],
+ "set_sha256": "9bc301c3c62c52ea71a062cefdc2e7bc5e47a798b285e536651cce1baf994d88"
+}
