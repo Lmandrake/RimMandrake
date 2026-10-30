@@ -58,7 +58,7 @@ from rmpaths import rm_str  # noqa: E402
 
 DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm_s": 900, "intile_wait_s": 30,
             "intile_window_s": 90, "backstop_ctx_tokens": 110_000, "backstop_idle_s": 1800,
-            "helper_stale_s": 3600, "game_hold_s": 3600, "cooldown_s": 1800,
+            "helper_stale_s": 1800, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
             "fence_s": 1020, "ring_hold_s": 600,
             "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 600}
@@ -474,7 +474,7 @@ def _non_text(rec):
     return [b.get("type") or "?" for b in c if isinstance(b, dict) and b.get("type") not in ("text", None)]
 
 
-def helpers_of(path, now=None):
+def helpers_of(path, now=None, stale_s=None):
     """-> [{id, alive, last_at}] for ALL the window's subagent transcripts (<session>/subagents/agent-*.jsonl), or None
     (UNMEASURED: no main transcript, or a helper file that cannot be read) — never aged out by mtime: a helper silent
     for days still counts until its transcript ends (GPT review 2026-10-28 HIGH 3). MEASURED 2026-10-28 on the BENCH session: a finished helper's last user/assistant record is an
@@ -498,7 +498,15 @@ def helpers_of(path, now=None):
         except (OSError, Malformed):     # a helper mid-write or with a bad line: inventory UNMEASURED (review2 P0-2)
             return None
         alive = not (recs and recs[-1].get("type") == "assistant" and _assistant_kind(recs[-1]) == "assistant_end")
-        out.append({"id": os.path.basename(f)[:-len(".jsonl")], "alive": alive, "last_at": mt})
+        retired = None                   # proof of death (lesson 20261030T163434Z): an API/auth error is the last record
+        if alive and recs and (recs[-1].get("isApiErrorMessage") or recs[-1].get("error")):
+            retired = "API error tail (%s)" % (recs[-1].get("error") or "isApiErrorMessage")
+        elif alive and now is not None and now - mt > (stale_s if stale_s is not None else DEFAULTS["helper_stale_s"]):
+            retired = "transcript silent %d s" % (now - mt)   # or silent past the bound (above the 600 s subagent watchdog)
+        if retired:
+            alive = False
+        out.append({"id": os.path.basename(f)[:-len(".jsonl")], "alive": alive, "last_at": mt,
+                    **({"retired": retired} if retired else {})})
     return out
 
 
@@ -604,7 +612,7 @@ def default_obs(sch, events_since, now_fn=time.time):
     return {
         "request": lambda seat: _read_json(request_path(seat)),
         "tx": lambda seat, s: tx_summary(transcript_for(s, cfgs[seat]) or ""),
-        "helpers": lambda seat, s: helpers_of(transcript_for(s, cfgs[seat]), now_fn()),
+        "helpers": lambda seat, s: helpers_of(transcript_for(s, cfgs[seat]), now_fn(), cfgs[seat].get("helper_stale_s")),
         "killed": killed_reading,
         "start": proc_start,
         "bridge": bridge_reading,
@@ -1290,7 +1298,8 @@ def check_request(seat, sf, helpers):
     live = [h["id"] for h in helpers if h.get("alive")]
     if live:
         return False, "helper(s) still alive: %s: wait for them (or stop them) before the close-out" % ", ".join(live)
-    return True, "ok"
+    ret = ["%s (%s)" % (h["id"], h["retired"]) for h in helpers if h.get("retired")]
+    return True, ("ok; retired dead helper(s): %s" % ", ".join(ret)) if ret else "ok"
 
 
 def unpublished_shard(seat, clone):

@@ -405,6 +405,27 @@ def test_transcript_readers():
                 + json.dumps({"type": "attachment", "timestamp": "2026-10-28T01:00:07Z"}) + "\n")
     hs = {h["id"]: h["alive"] for h in SR.helpers_of(os.path.join(proj, "sid-x.jsonl"), now=None)}
     check(hs == {"agent-done": False, "agent-live": True}, "helpers_of: ended vs live subagent transcripts (%s)" % hs)
+    # dead helpers: an API/auth error as the last record, or a transcript silent past helper_stale_s (lesson 20261030T163434Z)
+    err = {"type": "assistant", "timestamp": "2026-10-28T01:00:09Z", "error": "authentication_failed",
+           "isApiErrorMessage": True, "message": {"role": "assistant", "model": "<synthetic>", "stop_reason": "stop_sequence",
+                                                  "content": [{"type": "text", "text": "Login expired \u00b7 Please run /login"}]}}
+    with open(os.path.join(sub, "agent-authdead.jsonl"), "w") as f:
+        f.write("\n".join(json.dumps(r) for r in main[:3]) + "\n" + json.dumps(err) + "\n")
+    with open(os.path.join(sub, "agent-stale.jsonl"), "w") as f:
+        f.write("\n".join(json.dumps(r) for r in main[:3]) + "\n")
+    old = time.time() - SR.DEFAULTS["helper_stale_s"] - 100
+    os.utime(os.path.join(sub, "agent-stale.jsonl"), (old, old))
+    hl = {h["id"]: h for h in SR.helpers_of(os.path.join(proj, "sid-x.jsonl"), now=time.time())}
+    check(not hl["agent-authdead"]["alive"] and hl["agent-authdead"].get("retired")
+          and not hl["agent-stale"]["alive"] and hl["agent-stale"].get("retired")
+          and hl["agent-live"]["alive"] and not hl["agent-live"].get("retired")
+          and SR.DEFAULTS["helper_stale_s"] > 600,
+          "helpers_of: auth-error tail and stale transcript retire; a fresh live one stays alive (%s)" % hl)
+    ok, why = SR.check_request("FOUNDRY", {"pid": 1, "sessionId": "s", "name": "AGENT FOUNDRY"},
+                               [h for h in hl.values() if h["id"] in ("agent-authdead", "agent-stale")])
+    check(ok and "agent-authdead" in why and "agent-stale" in why, "check_request passes and names retired helpers (%s)" % why)
+    os.remove(os.path.join(sub, "agent-authdead.jsonl"))
+    os.remove(os.path.join(sub, "agent-stale.jsonl"))
 
 
 def test_intile_claim_once():
@@ -577,7 +598,9 @@ def test_r3_helpers_unreadable_hold_and_never_age_out():
         f.write(json.dumps({"type": "assistant", "message": {"stop_reason": "tool_use"}}) + "\n")
     os.utime(os.path.join(sub, "agent-old.jsonl"), (1, 1))
     h = SR.helpers_of(main, now=time.time())
-    check([x["id"] for x in h if x["alive"]] == ["agent-old"], "R3 a live-looking helper silent for days still counts")
+    check([x["id"] for x in h if x["alive"]] == [] and h[0].get("retired"),
+          "R3 (superseded by CONDUCTOR_AUTHORITY 2026-10-30) a helper silent past helper_stale_s is retired, named, not alive")
+    check([x["id"] for x in SR.helpers_of(main, now=None) if x["alive"]] == ["agent-old"], "R3 without a clock, silence proves nothing")
     check(SR.helpers_of(os.path.join(tdir, "nope.jsonl"), now=time.time()) is None,
           "R3 no main transcript -> helpers UNMEASURED (None), not 'none'")
 
