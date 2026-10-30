@@ -1368,11 +1368,46 @@ def t_who_d_remote_refs():
     check(r["exit"] & 8 and "RemoteUnreachable" in str(r["checks"]["d"]), "FORCED unreachable remote -> (d) fails loud, never passes")
 
 
+def t_who_d_offline_partial():
+    """Tester pass: an --allow-offline switch tolerates ONLY the remote-refs half of (d), and ONLY when its snapshot
+    was taken offline; a stopped-arm event after the switch still sets bit 8."""
+    def run(tag, events_n, snapshot_offline):
+        w = World("off" + tag, mode="ralph_a", active=("ralph_a",))
+        c = w.clone("ralph_a")
+        for a in ("bench", "foundry"):
+            w.clone(a)
+        idle_status(w, "ralph_a", "idle")
+        gone = str(w.root / "no-such-remote.git")
+        good = subprocess.run(["git", "-C", str(c), "remote", "get-url", "origin"], capture_output=True, text=True).stdout.strip()
+        if snapshot_offline:
+            git(c, "remote", "set-url", "origin", gone)
+
+        def who_fn(cfg, d):
+            git(c, "remote", "set-url", "origin", gone)          # the remote is unreachable at the post-switch who
+            return AR.who(cfg, d, bridge_locks=lambda: [], cwds=lambda: [(1, "/")],
+                          events=lambda root, a, ts: events_n if a == "ralph_a" else 0)
+        try:
+            r = AR.switch("trio", w.toml, w.deps(unpushed=AR.clone_dirt, who_fn=who_fn), allow_offline=True)
+            return r["who"], None
+        except AR.SwitchError as e:
+            return None, str(e)
+    res, err = run("a", 0, True)
+    check(res is not None and res["exit"] == 0 and res.get("offline_d"),
+          "offline snapshot + origin unreachable + no stopped-arm event: only the remote-refs half is tolerated (%s)" % err)
+    res, err = run("b", 2, True)
+    check(res is None and err and '"events_since_switch": {"ralph_a": 2}' in err,
+          "FORCED stopped-arm event after an offline switch with the remote gone -> (d) still fails with the events "
+          "reported (%s)" % err)
+    res, err = run("c", 0, False)
+    check(res is None and err and "RemoteUnreachable" in err,
+          "FORCED origin unreachable at who although the snapshot was taken ONLINE -> not tolerated (%s)" % err)
+
+
 def main():
     try:
         for t in (t_two_targets, t_graph, t_switch_production, t_switch_forced, t_who, t_push, t_installer, t_ops_watch,
                   t_hooks_path, t_trial_and_members, t_clone_dirt, t_switch_safety, t_unknown_and_live,
-                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_cli_bits,
+                  t_prepush_and_late_dirt, t_already_live_resume, t_remote_truth, t_who_d_fail_closed, t_who_d_remote_refs, t_who_d_offline_partial, t_cli_bits,
                   t_fsd_parity, t_round2_gpt):
             print("== %s" % t.__name__)
             t()

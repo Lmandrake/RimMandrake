@@ -1210,6 +1210,7 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
     running = [a for a in old_arms if target_name(a) in act]
     summary = {"from": cfg["mode"], "to": mode, "stopped": [], "waited_s": 0.0, "forced": [], "disabled": [],
                "overrides": [], "steps": [], "offline": []}
+    snapshot_offline = False        # True only when the stopped-arm refs snapshot fell back to cached tracking refs
     if resumed_from is not None:
         summary["resumed_after_who"] = resumed_from
     steps = summary["steps"]
@@ -1344,6 +1345,7 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
                 if not allow_offline:
                     raise
                 snap = {a: d.refs_snapshot(new, a, remote=False) for a in stopped_now}   # recorded offline switch
+                snapshot_offline = True
         except Exception as e:  # noqa: BLE001 - who (d) must have a baseline; without one it would fail open
             raise SwitchError("tracking refs of the stopped arms unreadable (%s: %s); the new target was NOT started"
                               % (type(e).__name__, e))
@@ -1375,9 +1377,12 @@ def _switch_locked(mode, cfg_path, d, force, allow_dirty_untracked, allow_offlin
     cfg = load_config(cfg_path)
     res = (d.who_fn or who)(cfg, d)
     summary["who"] = res
-    if res["exit"] == 8 and summary.get("offline") and \
-            str(res["checks"].get("d", {}).get("error", "")).startswith("RemoteUnreachable"):
-        res = dict(res, exit=0, offline_d="origin unreachable under the recorded --allow-offline switch")
+    dchk = res["checks"].get("d", {})
+    if res["exit"] == 8 and snapshot_offline and dchk.get("remote_unreachable") and \
+            isinstance(dchk.get("events_since_switch"), dict) and not dchk["events_since_switch"]:
+        # tolerated: ONLY the remote-refs half of (d), ONLY when this switch's snapshot was taken offline, and only
+        # with the events half measured and empty (a stopped-arm event after the switch still exits 8)
+        res = dict(res, exit=0, offline_d="origin unreachable under the recorded --allow-offline snapshot")
         summary["who"] = res
     _record_last(d, result="ok" if res["exit"] == 0 else "who_failed", mode_from=summary["from"], mode_to=mode,
                  steps=steps, who=res["exit"])
@@ -1438,9 +1443,17 @@ def who(cfg: dict, d: Deps, bridge_locks=None, cwds=None, events=None, pushed=No
             ev = {a: n for a, n in ev.items() if n}
             snaps = st.get("refs") if isinstance(st.get("refs"), dict) else {}
             pushed_fn = pushed or (lambda c, a, t: pushed_since(c, a, t, snapshot=snaps.get(a)))
-            pu = {a: pushed_fn(cfg, a, ts) for a in stopped_arms}
-            pu = {a: r for a, r in pu.items() if r}
-            checks["d"] = {"ok": not ev and not pu, "events_since_switch": ev, "pushed_since_switch": pu}
+            try:
+                pu = {a: pushed_fn(cfg, a, ts) for a in stopped_arms}
+            except RemoteUnreachable as e:
+                # the events half is already measured: keep it in the report so a caller that tolerates only the
+                # remote-refs half (recorded offline switch) cannot also forgive a stopped-arm event
+                checks["d"] = {"ok": False, "error": "RemoteUnreachable: %s" % e, "remote_unreachable": True,
+                               "events_since_switch": ev}
+                pu = None
+            if pu is not None:
+                pu = {a: r for a, r in pu.items() if r}
+                checks["d"] = {"ok": not ev and not pu, "events_since_switch": ev, "pushed_since_switch": pu}
     except Exception as e:  # noqa: BLE001
         checks["d"] = {"ok": False, "error": "%s: %s" % (type(e).__name__, e)}
     try:
