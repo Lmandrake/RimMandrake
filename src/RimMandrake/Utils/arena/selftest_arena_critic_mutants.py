@@ -12,7 +12,9 @@ model is called (a fake matcher call stands in), git runs only in a throwaway re
                 with no valid match drops out (and the grade is UNMEASURED); the paired restriction keeps only
                 candidates valid for both reviewers; an always-reject reviewer scores 0; the bootstrap is reproducible;
                 a match record whose key is not the current job's (other write-up, fixture or matcher) is ignored;
-                an unproved mutant or a run without a critic fingerprint grades UNMEASURED
+                an unproved mutant, a run without a critic fingerprint or too few defined bootstrap resamples grades
+                UNMEASURED; only tier A is labelled good (tier B and untiered are not); a reject awaiting its match is
+                not a subgroup (by_kind / by_detect) miss
   seed          copies only byte-identical candidates; refuses another fingerprint, another set, a set whose content
                 does not match its recorded sha, and a target run of another critic
   proofs        latest() accepts a proof made on this set OR on exactly this mutant's and original's heads, and
@@ -165,8 +167,10 @@ def t_scoring():
     doc = {"candidates": [{"cid": "a", "role": "good", "tier": "A"}, {"cid": "b", "role": "good", "tier": "B"},
                           {"cid": "ma", "role": "mutant", "pair": "a", "mid": "m1"},
                           {"cid": "mb", "role": "mutant", "pair": "b", "mid": "m2"}]}
+    doc["candidates"] += [{"cid": "n", "role": "good"}, {"cid": "mn", "role": "mutant", "pair": "n", "mid": "m3"}]
     rt = M.reviewer_table(doc, {}, {})
     check("reviewer_table labels tier A and unlabels tier B", rt["a"]["labelled"] and not rt["b"]["labelled"], str(rt))
+    check("reviewer_table never labels an untiered original good", rt["n"]["labelled"] is False, str(rt))
     sc = {"detect": {"unproved": 0}, "reviewers": {"critic": {"run": "r", "critic_fingerprint": "fp", "invalid": 0, "candidates": 10, "matcher_decoy_hits": [0, 5],
                                    "rejects_without_valid_match": 1}},
           "paired": {"reason": {"ci95": [0.1, 0.4]}}}
@@ -183,13 +187,16 @@ def t_scoring():
     sc["reviewers"]["critic"]["critic_fingerprint"] = None
     check("a run without a critic fingerprint grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
     sc["reviewers"]["critic"]["critic_fingerprint"] = "fp"
+    sc["paired"]["reason"]["boot_kept"] = [900, 1000]
+    check("an interval from too few defined resamples grades UNMEASURED", M.decision(sc)["grade"] == "UNMEASURED")
+    sc["paired"]["reason"]["boot_kept"] = [1000, 1000]
     sc["paired"]["reason"]["ci95"] = [-0.1, 0.4]
     check("an interval spanning 0 is not a call", "spans 0" in M.decision(sc).get("call", ""))
 
 
 def t_stale_match():
     doc = {"set_sha256": "S", "candidates": [
-        {"cid": "o1", "role": "good"}, {"cid": "o2", "role": "good"},
+        {"cid": "o1", "role": "good", "tier": "A"}, {"cid": "o2", "role": "good", "tier": "A"},
         {"cid": "m1", "role": "mutant", "pair": "o1", "mid": "m1", "mutant_kind": "k", "mutant_defect": "d1"},
         {"cid": "m2", "role": "mutant", "pair": "o2", "mid": "m2", "mutant_kind": "k", "mutant_defect": "d2"}]}
     recs = {"o1": {"cid": "o1", "verdict": "accept"}, "o2": {"cid": "o2", "verdict": "accept"},
@@ -207,6 +214,10 @@ def t_stale_match():
     check("a stale match (other write-up, fixture or matcher) is ignored",
           sc["reviewers"]["critic"]["rejects_without_valid_match"] == 1 and sc["verdict"]["grade"] == "UNMEASURED",
           str(sc["reviewers"]["critic"]))
+    blk = sc["reviewers"]["critic"]
+    check("a reject awaiting its match is not a subgroup miss",
+          blk["by_kind"]["k"]["reason_catch"] == [0, 1] and blk["by_detect"]["read"]["reason_catch"] == [0, 0]
+          and blk["by_detect"]["read"]["verdict_catch"] == [1, 1], str(blk["by_kind"]) + str(blk["by_detect"]))
     j2 = M.match_jobs(doc, {"r": dict(recs, m1=dict(recs["m1"], reasons=["another write-up"]))})
     check("a changed write-up changes the match key", j2[0]["key"] != job[0]["key"])
 

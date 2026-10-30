@@ -76,6 +76,7 @@ MATCH_TIMEOUT = 300
 MATCH_FP_MAX = 0.10      # decoy hit rate above this: the matcher cannot tell defects apart; reason scores UNMEASURED
 BOOT = 10000
 BOOT_SEED = "critic-mutants-boot-v1"
+BOOT_KEPT_MIN = 0.95     # fewer resamples with a defined term than this: the interval conditions on luck; UNMEASURED
 WRITEUP_MAX = 12000     # chars of write-up the matcher sees (the END is kept: findings precede the verdict)
 
 
@@ -529,7 +530,7 @@ def match(doc: dict, run_ids: list, budget_s: float, concurrency: int = 8, call=
 # ---------------------------------------------------------------- scoring
 
 def reviewer_table(doc: dict, recs: dict, matches: dict) -> dict:
-    """original cid -> {"labelled": bool (False = tier B), "orig": verdict, "orig_match": bool|None, "muts": [(mid, verdict, matched|None)]}.
+    """original cid -> {"labelled": bool (True only for tier A), "orig": verdict, "orig_match": bool|None, "muts": [(mid, verdict, matched|None)]}.
     verdict None = no valid verdict; matched None = a reject whose match is missing/invalid."""
     tab = {}
     tier_of = {c["cid"]: c.get("tier") for c in doc["candidates"] if c.get("role") != "mutant"}
@@ -537,7 +538,8 @@ def reviewer_table(doc: dict, recs: dict, matches: dict) -> dict:
         ro = recs.get(o)
         vo = ro["verdict"] if ro and ro["verdict"] in J.VERDICTS else None
         mo = matches.get(o)
-        row = {"labelled": tier_of.get(o) != "B", "orig": vo, "orig_match": (bool(mo["true_hit"]) if mo else None) if vo == "reject" else False,
+        # only tier A is labelled good: a tier that is missing or unknown is unlabelled, never silently "good"
+        row = {"labelled": tier_of.get(o) == "A", "orig": vo, "orig_match": (bool(mo["true_hit"]) if mo else None) if vo == "reject" else False,
                "muts": []}
         for m in ms:
             r = recs.get(m["cid"])
@@ -646,9 +648,9 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
     n_orig = len(pairs(doc))
     tiers = [c.get("tier") for c in doc["candidates"] if c.get("role") != "mutant" and c["cid"] in pairs(doc)]
     out = {"set_sha256": doc["set_sha256"], "mutants": n_mut, "originals": n_orig,
-           "labels": {"false_reject_on": "tier-A originals only; tier-B originals unlabelled",
-                      "labelled_originals": sum(t != "B" for t in tiers),
-                      "unlabelled_originals": sum(t == "B" for t in tiers)},
+           "labels": {"false_reject_on": "tier-A originals only; tier-B (or untiered) originals unlabelled",
+                      "labelled_originals": sum(t == "A" for t in tiers),
+                      "unlabelled_originals": sum(t != "A" for t in tiers)},
            "kinds": sorted({c["mutant_kind"] for c in doc["candidates"] if c.get("role") == "mutant"}),
            "detect": {"test": sum(1 for p in proofs_by.values() if p["detect"] == "test"),
                       "read": sum(1 for p in proofs_by.values() if p["detect"] == "read"),
@@ -678,16 +680,18 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
         for mode in ("verdict", "reason"):
             r = _rates(tab, mode)
             d = _disc(tab, list(tab), mode)
+            bt = boot([tab], list(tab), mode, reps)
             blk[mode] = {"catch": r["catch"], "false_reject": r["false_reject"],
                          "unlabelled_reject": r["unlabelled_reject"],
                          "discrimination": None if d is None else round(d, 3),
-                         "ci95": boot([tab], list(tab), mode, reps)[:2]}
+                         "ci95": bt[:2], "boot_kept": [bt[2], reps]}
         by_detect = {}
         for det in ("test", "read", "unproved"):
             hits = [(v, hit) for row in tab.values() for mid, v, hit in row["muts"] if v is not None
                     and (proofs_by.get(mid) or {}).get("detect", "unproved") == det]
+            known = [(v, h) for v, h in hits if h is not None]     # a reject awaiting its match is not a miss
             by_detect[det] = {"verdict_catch": [sum(v == "reject" for v, _h in hits), len(hits)],
-                              "reason_catch": [sum(v == "reject" and bool(h) for v, h in hits), len(hits)]}
+                              "reason_catch": [sum(v == "reject" and h for v, h in known), len(known)]}
         blk["by_detect"] = by_detect
         kind_of = {c["mid"]: c["mutant_kind"] for c in doc["candidates"] if c.get("role") == "mutant"}
         by_kind: dict = {}
@@ -699,7 +703,7 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
                 k["verdict_catch"][0] += v == "reject"
                 k["reason_catch"][0] += v == "reject" and bool(hit)
                 k["verdict_catch"][1] += 1
-                k["reason_catch"][1] += 1
+                k["reason_catch"][1] += hit is not None
         blk["by_kind"] = dict(sorted(by_kind.items()))
         out["reviewers"][role] = blk
     if set(tabs) == {"critic", "baseline"}:
@@ -707,10 +711,11 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
         out["paired"] = {}
         for mode in ("verdict", "reason"):
             da, db = _disc(a, list(a), mode), _disc(b, list(b), mode)
+            bt = boot([a, b], list(a), mode, reps)
             out["paired"][mode] = {"critic": da if da is None else round(da, 3),
                                    "baseline": db if db is None else round(db, 3),
                                    "difference": None if da is None or db is None else round(da - db, 3),
-                                   "ci95": boot([a, b], list(a), mode, reps)[:2]}
+                                   "ci95": bt[:2], "boot_kept": [bt[2], reps]}
     out["verdict"] = decision(out)
     return out
 
@@ -734,6 +739,9 @@ def decision(sc: dict) -> dict:
     p = (sc.get("paired") or {}).get("reason")
     if not p or p["ci95"][0] is None:
         return {"grade": "UNMEASURED", "why": ["no paired comparison"]}
+    kept, reps = p.get("boot_kept") or [1, 1]
+    if kept < BOOT_KEPT_MIN * reps:
+        return {"grade": "UNMEASURED", "why": ["only %d/%d bootstrap resamples had a defined discrimination" % (kept, reps)]}
     lo, hi = p["ci95"]
     if lo > 0:
         call = "critic discriminates better than the baseline"
