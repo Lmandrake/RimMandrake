@@ -893,6 +893,38 @@ def t_hotapply_taint_carries():
           "a state reset clears the chain and the block: %s %s" % (s["game"].get("hot_from"), T._pending(p, b, s),))
 
 
+def t_enqueue_vets_plan():
+    """TESTPILOT_ENQUEUE_TAINT_ID_VET_AT_SEAL: enqueue seals only a plan check_live_plan accepts: a typo in `taints`
+    would block nothing and s2 would run on contaminated state and count."""
+    root, p = fresh("enqueue_vet")
+    bad = plan("s1", "s2", s1={"taints": ["s22"]})
+    e = raises(T.PilotRefused, T.enqueue, p, "ITEM_VT", SHA[0], "B1", bad)
+    check(bool(e) and "taints" in e and not T.candidates(p), "enqueue refuses an unknown taint id: %s" % e)
+    e = raises(T.PilotRefused, T.enqueue, p, "ITEM_VT", SHA[0], "B1", plan("s1", s1={"taint": ["s1"]}))
+    check(bool(e) and "does not read" in e and not T.candidates(p), "enqueue refuses a misspelt key: %s" % e)
+    good = plan("s1", "s2", s1={"taints": ["s2"]}, s2={"taints": "uncertain"})
+    check(T.enqueue(p, "ITEM_VT", SHA[0], "B1", good)["attempt"] == 1, "enqueue still seals a good plan")
+
+
+def t_absolute_proof_path():
+    """TESTPILOT_ABSOLUTE_PROOF_PATH_CODE_FIX: a proof named by a path that is no repo tail (absolute, or climbing
+    out of the cwd) still ties to the changed file: inside the clone exactly, elsewhere by its file name."""
+    n = T._names_file
+    p_ = "src/RimMandrake/Utils/proofs/proof.py"
+    for argf in ("/tmp/pilot/proof.py", "/home/x/clone/" + p_, "C:/pilot/proof.py", "../proofs/proof.py",
+                 "proofs/proof.py", "proof.py", p_):
+        check(n(p_, argf), "%s names %s" % (argf, p_))
+    for argf in ("/tmp/pilot/other.py", "/usr/bin/python3", "/tmp/pilot/", "../proofs/other.py", "ofs/proof.py",
+                 "/tmp/pilot/roof.py", "C:/pilot/other.py"):
+        check(not n(p_, argf), "%s does not name %s" % (argf, p_))
+    scn = {"id": "s1", "argv": ["python3", "/tmp/pilot/proof.py"], "footprint": {"files": ["src/Other/*"]}}
+    mk = lambda f: {"changed_files": [f], "changed_defs": [], "mods": [], "profile": "minimal", "tier": None,
+                    "has_dll": False}
+    why = T.touched(scn, scn, mk(p_), mk(p_), set())
+    check(why and "proof file" in why, "editing the absolute-argv proof forces its re-run: %s" % why)
+    check(T.touched(scn, scn, mk("src/Unrelated/x.py"), mk(p_), set()) is None, "an unrelated change still carries")
+
+
 # ---------------------------------------------------------------- independent-test defects (2026-10-30)
 def t_taint_keeps_fail():
     """TESTPILOT_FIX_TAINT_ERASING_FAIL: a taint note (the `taint` CLI) annotates a FAIL, it never replaces it."""
@@ -2385,7 +2417,7 @@ def t_check_live_plan():
 
 def main():
     for t in (t_check_live_plan, t_rule_refused, t_cs_cheap, t_cs_expensive, t_cs_max_delay, t_unmeasured, t_handoff,
-              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_ladder, t_review1, t_review2, t_review2b,
+              t_takeover_dead, t_l9a, t_classes, t_hotfix, t_hotapply_taint_carries, t_enqueue_vets_plan, t_ladder, t_review1, t_review2, t_review2b,
               t_taint_keeps_fail, t_canary_blip, t_ladder_remembers_reloads, t_carried_rebuild, t_same_fingerprint_rebuild, t_mutant_guards, t_killpg, t_proof_timeout, t_launch_failures, t_default_never_consults_owner,
               t_abort_scenario, t_mutant_guards2, t_checkout_refusal, t_quarantine_item, t_mutant_guards3, t_mutant_guards4,
               t_resolve_after_crashed_pass, t_enqueue_single_record, t_wake_interrupt_crash, t_reload_crash,

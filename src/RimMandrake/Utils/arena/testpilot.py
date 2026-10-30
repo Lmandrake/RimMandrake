@@ -343,7 +343,7 @@ def enqueue(p: dict, item: str, sha: str, builder: str, plan: dict, mods=(), has
                            % profile)
     if not L.same_sha(sha, sha):
         raise PilotRefused("sha %r is not a commit sha (>= 10 hex)" % sha)
-    _check_plan(plan)
+    check_live_plan(plan)               # the strict gate: an unknown taint id would silently block nothing
     if kind not in ("build", "repair"):
         raise PilotRefused("kind %r is not build|repair" % kind)
     if kind == "repair":
