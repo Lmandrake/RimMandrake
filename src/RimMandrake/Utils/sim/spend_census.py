@@ -224,5 +224,116 @@ def main():
     print("compactions in window:", len(compact_rows), "unreadable:", int(total.get("unreadable_files", 0)))
 
 
+# ---- per-arm metering (architecture_switch_harness §1.6) ------------------------------------------------
+ARENA_ROOT = os.environ.get("RM_ARENA_ROOT", "/home/mandrake/rm/arena")
+HARNESS = "HARNESS"          # judge, gate and anything else run from <ARENA_ROOT>/judge bill here, never to an arm
+UNATTRIBUTED = "UNATTRIBUTED"
+GPT_CALL_LOG = os.environ.get("RM_GPT_CALL_LOG", "/mnt/d/ClaudeWork/rimmandrake/arena/gpt_calls.jsonl")
+
+
+class ZeroSpendRefused(Exception):
+    """An arm that ran shows no spend: the meter is blind (wrong slug/path), so no result is reported."""
+
+
+def path_slug(path: str) -> str:
+    """Claude Code's project slug for a cwd: every non-alphanumeric character becomes '-'."""
+    return re.sub(r"[^A-Za-z0-9]", "-", path)
+
+
+def arm_of_slug(slug: str, arms=(), arena_root: str = None) -> str:
+    """Attribute a transcript project slug (helpers/subagent transcripts live under their parent's slug).
+    <root>/judge[/...] -> HARNESS; <root>/<arm>[/...] -> arm (longest known arm name first, else the whole
+    remainder); anything outside the arena root -> UNATTRIBUTED (not an arm)."""
+    pre = path_slug(arena_root or ARENA_ROOT) + "-"
+    if not slug.startswith(pre):
+        return UNATTRIBUTED
+    rest = slug[len(pre):]
+    if rest == "judge" or rest.startswith("judge-"):
+        return HARNESS
+    for a in sorted(arms, key=len, reverse=True):
+        sa = path_slug(a)
+        if rest == sa or rest.startswith(sa + "-"):
+            return a
+    return rest or UNATTRIBUTED
+
+
+def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0):
+    """{arm: {"ite","calls","files"}} over every transcript (subagents included), each API call once."""
+    projects = projects or PROJECTS
+    out, seen = defaultdict(lambda: {"ite": 0.0, "calls": 0, "files": 0}), set()
+    for root, _d, files in os.walk(projects):
+        for f in sorted(files):
+            if not f.endswith(".jsonl"):
+                continue
+            p = os.path.join(root, f)
+            arm = arm_of_slug(os.path.relpath(p, projects).split(os.sep)[0], arms, arena_root)
+            calls = scan_file(p, since, seen)[0]
+            calls = [c for c in calls if c["t"] >= since]
+            if calls:
+                r = out[arm]
+                r["ite"] += sum(c["ite"] for c in calls)
+                r["calls"] += len(calls)
+                r["files"] += 1
+    return dict(out)
+
+
+def gpt_spend_by_arm(log=None):
+    """{arm: {"ite","calls"}} from gpt_consult's call log. ITE here is an ESTIMATE from prompt/answer chars/4
+    (codex reports no tokens): in + 5*out, Opus-input-equivalents at weight 1. Untagged calls are
+    kept under UNTAGGED and counted, never dropped or folded into an arm."""
+    out = defaultdict(lambda: {"ite": 0.0, "calls": 0})
+    try:
+        lines = open(log or GPT_CALL_LOG, errors="replace").read().splitlines()
+    except FileNotFoundError:
+        return {}
+    for ln in lines:
+        try:
+            d = json.loads(ln)
+        except Exception:
+            out["UNREADABLE"]["calls"] += 1
+            continue
+        arm = d.get("arm") or "UNTAGGED"
+        out[arm]["ite"] += (d.get("in_tok_est") or 0) + 5 * (d.get("out_tok_est") or 0)
+        out[arm]["calls"] += 1
+    return dict(out)
+
+
+def arm_report(ran=(), arms=None, projects=None, arena_root=None, gpt_log=None, since=0.0):
+    """Combined per-arm ITE. `ran` names arms that did run; any with zero spend raises ZeroSpendRefused.
+    Flags: untagged GPT calls and unattributed Claude spend are reported, not hidden."""
+    arms = list(arms or ran)
+    cl = claude_spend_by_arm(projects, arms, arena_root, since)
+    gp = gpt_spend_by_arm(gpt_log)
+    rep = {}
+    for k in set(cl) | set(gp):
+        rep[k] = {"claude_ite": cl.get(k, {}).get("ite", 0.0), "gpt_ite_est": gp.get(k, {}).get("ite", 0.0),
+                  "claude_calls": cl.get(k, {}).get("calls", 0), "gpt_calls": gp.get(k, {}).get("calls", 0)}
+        rep[k]["ite"] = rep[k]["claude_ite"] + rep[k]["gpt_ite_est"]
+    dead = [a for a in ran if rep.get(a, {}).get("ite", 0) <= 0]
+    if dead:
+        raise ZeroSpendRefused("arm(s) ran but the meter sees zero ITE: %s -- a zero is not a result" % ", ".join(dead))
+    flags = []
+    if "UNTAGGED" in rep:
+        flags.append("%d untagged gpt_consult call(s)" % rep["UNTAGGED"]["gpt_calls"])
+    return {"arms": rep, "flags": flags}
+
+
+def arm_main(argv):
+    import argparse
+    ap = argparse.ArgumentParser(description="per-arm ITE by clone path (harness 1.6)")
+    ap.add_argument("--arm-report", action="store_true", required=True)
+    ap.add_argument("--ran", nargs="*", default=[], help="arms that ran; zero spend for one is refused")
+    a = ap.parse_args(argv)
+    try:
+        r = arm_report(ran=a.ran)
+    except ZeroSpendRefused as e:
+        print("REFUSED:", e)
+        return 2
+    print(json.dumps(r, indent=1))
+    return 0
+
+
 if __name__ == "__main__":
+    if "--arm-report" in sys.argv:
+        sys.exit(arm_main(sys.argv[1:]))
     main()

@@ -12,6 +12,7 @@ and written to --out when given. Default model: gpt-6.1-sol at high effort (owne
 2026-10-02; CODEX_CONSULT_MODEL overrides). Art (codex_image.py) stays on gpt-5.5 — a separate default.
 """
 import argparse
+import json
 import os
 import shutil
 import subprocess
@@ -47,6 +48,20 @@ def build_prompt(question, files, inlined=None):
             inlined.append((Path(shown).as_posix(), raw))
         parts += ["", "===== FILE: %s =====" % shown, text.rstrip("\n"), "===== END FILE: %s =====" % shown]
     return "\n".join(parts) + "\n"
+
+
+def _log_call(job, model, prompt, answer_text, rc):
+    """One line per call in the arm-metering log, tagged from RM_ARM (absent -> arm null = flagged UNTAGGED
+    by spend_census). Token counts are chars/4 ESTIMATES. A log that cannot be written never fails the consult."""
+    try:
+        log = os.environ.get("RM_GPT_CALL_LOG", "/mnt/d/ClaudeWork/rimmandrake/arena/gpt_calls.jsonl")
+        Path(log).parent.mkdir(parents=True, exist_ok=True)
+        rec = {"t": time.time(), "arm": os.environ.get("RM_ARM") or None, "job": job, "model": model, "rc": rc,
+               "in_tok_est": len(prompt) // 4, "out_tok_est": len(answer_text) // 4}
+        with open(log, "a") as f:
+            f.write(json.dumps(rec) + "\n")
+    except Exception as e:                                  # noqa: BLE001
+        print("[consult] WARN: call not metered: %s" % e, file=sys.stderr)
 
 
 def _receipt(job, model, answered, inlined, rc):
@@ -113,6 +128,7 @@ def main(argv=None):
         rc = 124
     answered = answer.is_file() and bool(answer.read_text().strip())
     _receipt(job.name, a.model, answered, inlined, rc)
+    _log_call(job.name, a.model, prompt, answer.read_text() if answered else "", rc)
     if not answered:
         tail = (job / "codex.log").read_text(errors="replace")[-2000:]
         print("ERROR: no answer (exit %d after %.0fs). Job kept: %s\n%s" % (
