@@ -398,7 +398,8 @@ def t_mods_restore():
     except KeyboardInterrupt:
         pass
     del lane
-    check(json.loads(L.swap_marker(pk, "steve").read_text()).get("mods") == ["Slime"],
+    mk = json.loads(L.swap_marker(pk, "steve").read_text())
+    check(mk.get("mods") == ["Slime"] and mk.get("clone") == "/c",
           "N11: a runner killed mid-deploy leaves the marker naming the mod and clone")
     # a seat clone is refused before anything is deployed
     ps = fresh("modsrestore_seat")

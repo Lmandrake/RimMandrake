@@ -28,7 +28,9 @@ def main():
     with Session(lock=None) as s:
         out["ingame_canary"] = validity.canary(s, runner._default_anchor(s))
         h, rows = validity._pawns(s)
-        out["live_colonists"] = sum(1 for r in rows if h.is_colonist(r) and not r.get("dead"))
+        cols = [r for r in rows if h.is_colonist(r)]
+        if all(isinstance(r.get("dead"), bool) for r in cols):   # a row with no death flag leaves it unmeasured
+            out["live_colonists"] = sum(1 for r in cols if r["dead"] is False)
         out["game_info"] = s.call("rimworld/get_game_info") or {}
         wi = s.call("jawa/world_info_get") or {}
         info = wi.get("info") if isinstance(wi, dict) else None
