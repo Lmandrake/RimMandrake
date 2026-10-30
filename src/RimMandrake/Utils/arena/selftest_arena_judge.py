@@ -16,6 +16,20 @@ ARENA_JUDGES_BUILD_BLIND_TO_THE_ARM criteria, and the failure planted for each:
                 a private dir inside a judge/arm root is refused; no verdict file names the arm
   guess report  exact binomial sanity; a planted leaky judge (reads the map with masks removed) is reported LEAKY;
                 a blind one is not; the report file is written
+Fix round 1 (judge_test_report.md), one forced failure per defect:
+  sandbox rw    a write outside the scratch WORKS with the scratch widened (red) and fails through the judge (green);
+                a hidden check cannot rewrite another task's hidden check, the next check's file or the host
+  orphans       a timed-out check's detached grandchild survives a plain subprocess timeout (red), not the sandbox
+  pass marker   os._exit(0), a hooked excepthook and a forged marker line are never `pass` (no 0 model calls spent)
+  gate view     the raw gate record trips the leak scan on head12 (red); the whitelist view carries no folder, time,
+                task, sha or step note; the arena event log and gate folders are unreadable in the sandbox
+  glued names   RalphLoop / ralphs / myRalph / V3Arm / trioJudge / look-alike unicode / \\wsl$ / model names and
+                Assisted-by trip the raw leak scan (red) and are gone after the scrub; `import trio`, 'v3.2' and
+                'trioxide' survive; agent config (CLAUDE.md, .claude/, specs/, .ralph/) is bookkeeping
+  chance model  an always-the-majority guesser beats 1/len(labels) on the binomial (red) but is not LEAKY; exact
+                hand cases 1/6
+  model unset   with the preflight bypassed the GPT call is spent (red); with it, 0 model calls
+  bad verdict   a corrupt verdict.json is skipped and counted, the report still written
 Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES / ARENA_PRIVATE / ARENA_JUDGE_WORK point there).
 """
 import json
@@ -285,7 +299,9 @@ def t_guess(tmp):
     blind = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": J.ARMS[(i + 1) % 5] if i % 5 else
                                         amap[j]["arm"]}]} for i, j in enumerate(amap)]
     rl, rb = J.guess_report(leaky, amap), J.guess_report(blind, amap)
-    check(rl["blinding"] == "LEAKY" and rl["pooled"]["p_value"] < 1e-10, "forced: 30/30 correct guesses -> LEAKY")
+    floor = 1.0 / (J.MC_DRAWS + 1)
+    check(rl["blinding"] == "LEAKY" and rl["pooled"]["p_value"] <= floor + 1e-12,
+          "forced: 30/30 correct guesses -> LEAKY (p=%.1e, the permutation floor)" % rl["pooled"]["p_value"])
     check(rb["blinding"] == "not shown leaky" and rb["pooled"]["correct"] == 6,
           "chance-rate guesses (6/30 at q=.2) -> not shown leaky (p=%.2f)" % rb["pooled"]["p_value"])
     check(J.guess_report([], {})["blinding"] == "UNMEASURED", "no guesses -> UNMEASURED, not 'not leaky'")
@@ -321,6 +337,224 @@ def t_guess(tmp):
     check(set(rep["per_judge"]) == {"opus", "gpt"}, "report has a row per judge")
 
 
+# ------------------------------------------------------------------ fix round 1 (judge_test_report.md)
+
+def t_sandbox_rw(tmp):
+    work = Path(os.environ["ARENA_JUDGE_WORK"]) / "rwprobe"
+    work.mkdir(parents=True)
+    host = tmp / "host_write_probe.txt"
+    w = [sys.executable, "-c", "open(%r, 'w').write('x')" % str(host)]
+    r = J.run_sandboxed(w, work=work, rw=[work, tmp])
+    check(r.returncode == 0 and host.is_file(), "forced: with the host dir made writable, the probe CAN write it")
+    host.unlink(missing_ok=True)
+    r = J.run_sandboxed(w, work=work)
+    check(r.returncode != 0 and not host.exists(), "judge sandbox: a write outside the scratch fails (read-only root)")
+    p = A.paths()
+    p["judge"].mkdir(parents=True, exist_ok=True)
+    other = p["judge"] / "OTHER.json"
+    other.write_text('{"checks": []}')
+    clone, base, head = make_clone(Path(os.environ["ARENA_CLONES"]) / "tamper", "trio", 2, plant=False)
+    evil = ("import os\n"
+            "for t in (%r, %r, os.path.join(os.getcwd(), '..', 'tree', 'src/RimMandrake/Utils/demo/selftest_demo.py'),"
+            " os.path.abspath(%r)):\n"
+            "    try:\n"
+            "        os.makedirs(os.path.dirname(t), exist_ok=True); open(t, 'w').write('raise SystemExit(0)\\n')\n"
+            "        print('WROTE', t)\n"
+            "    except OSError as ex:\n"
+            "        print('blocked', type(ex).__name__)\n") % (str(other), str(host), J.__file__)
+    hidden = {"checks": [{"type": "fix_test", "path": "src/RimMandrake/Utils/demo/selftest_evil.py", "body": evil},
+                         {"type": "fix_test", "path": "src/RimMandrake/Utils/demo/selftest_demo.py",
+                          "body": HIDDEN_TEST.replace("== 2", "== 3")}], "reworks": []}
+    jsrc = Path(J.__file__).read_bytes()
+    r = J.judge(task=task_for("T_RW"), hidden=hidden, clone=clone, base=base, head=head, arm="trio", gate=GATE,
+                judges=J.Judges(Fake(ans("accept")), Fake(ans("accept")), Fake(ans("accept"))))
+    tails = r["hidden"][0].get("tail", "")
+    check("WROTE" not in tails and other.read_text() == '{"checks": []}' and not host.exists()
+          and Path(J.__file__).read_bytes() == jsrc,
+          "a hidden check cannot rewrite another task's hidden check, the judge code or the host (%s)"
+          % " ".join(x for x in tails.split() if x in ("blocked", "WROTE"))[:40])
+    check(r["hidden"][1]["result"] == "fail" and r["verdict"] == "reject",
+          "the next check still runs its own body (value()==3 fails -> reject), not a planted exit")
+
+
+GRANDCHILD = ("import subprocess, sys, time\n"
+              "subprocess.Popen(['sh', '-c', 'sleep 4; echo alive > %s'], start_new_session=True)\n"
+              "time.sleep(60)\n")
+
+
+def t_orphans(tmp):
+    import time
+    work = Path(os.environ["ARENA_JUDGE_WORK"]) / "orphan"
+    work.mkdir(parents=True)
+    flag = work / "alive"
+    try:
+        subprocess.run([sys.executable, "-c", GRANDCHILD % flag], timeout=2)
+    except subprocess.TimeoutExpired:
+        pass
+    time.sleep(4)
+    check(flag.is_file(), "forced: a plain subprocess timeout leaves the detached grandchild running (it wrote)")
+    flag.unlink(missing_ok=True)
+    t0 = time.time()
+    r = J.run_sandboxed([sys.executable, "-c", GRANDCHILD % flag], work=work, timeout=2)
+    time.sleep(4)
+    check(r.returncode == 124 and not flag.exists() and time.time() - t0 < 30,
+          "sandbox timeout kills the whole tree: the grandchild never wrote (rc %d)" % r.returncode)
+
+
+def t_marker(tmp):
+    clone, base, head = make_clone(Path(os.environ["ARENA_CLONES"]) / "marker", "v3", 2, plant=False)
+    check(J._check_result(0, b"hidden ok\n", "ab" * 16) == "no_marker",
+          "rc 0 alone is not a pass (the pre-fix rule would call this pass)")
+    bodies = {"os._exit(0) on import": "import os\nos._exit(0)\nassert False\n",
+              "hooked excepthook": "import sys, os\nsys.excepthook = lambda *a: os._exit(0)\nassert False, 'x'\n",
+              "forged marker": "import os\nprint('ARENA_CHECK_DONE ' + 'f' * 32)\nos._exit(0)\n",
+              "atexit exit 0": "import atexit, os\natexit.register(lambda: os._exit(0))\nassert False\n"}
+    for what, body in bodies.items():
+        hidden = {"checks": [{"type": "fix_test", "path": "src/RimMandrake/Utils/demo/selftest_x.py", "body": body}],
+                  "reworks": []}
+        fs = [Fake(ans("accept")) for _ in range(3)]
+        r = J.judge(task=task_for("T_M"), hidden=hidden, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                    judges=J.Judges(*fs))
+        res = r["hidden"][0]["result"]
+        check(res in ("no_marker", "fail") and r["verdict"] in ("invalid", "reject") and fs[0].calls == 0,
+              "%s is never a pass (%s -> %s, 0 model calls)" % (what, res, r["verdict"]))
+    good = {"checks": [{"type": "fix_test", "path": "src/RimMandrake/Utils/demo/selftest_demo.py",
+                        "body": HIDDEN_TEST}], "reworks": []}
+    r = J.judge(task=task_for("T_M"), hidden=good, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                judges=J.Judges(Fake(ans("accept")), Fake(ans("accept")), Fake(ans("accept"))))
+    check(r["hidden"][0]["result"] == "pass" and "<NONCE>" in r["hidden"][0].get("tail", "<NONCE>"),
+          "control: a real check that runs to its end passes via the marker")
+
+
+def t_gate_view(tmp):
+    head, base = "a1b2c3d4e5f6" + "0" * 28, "f" * 40
+    stamp = "20261029T120000Z"
+    gate = {"verdict": "pass", "passed": True, "task": "T1", "arm": ARM, "base": base, "head": head, "ts": stamp,
+            "log_dir": "/arena/judge/gate/%s_T1_%s_%s" % (ARM, head[:12], stamp),
+            "record_file": "/arena/judge/gate/%s_T1_%s_%s/gate.json" % (ARM, head[:12], stamp),
+            "steps": {"tests": {"status": "pass", "why": "builder b-17 ran it"}}, "unmeasured": []}
+    raw = {k: v for k, v in gate.items() if k != "arm"}
+    raw["log_dir"] = raw["log_dir"].replace(ARM, "x")
+    check(bool(J.find_leaks(json.dumps(raw), shas=(base, head))),
+          "forced: the raw gate record (arm key dropped) still trips the leak scan on head12")
+    g = J._gate_view(gate, shas=(base, head))
+    txt = json.dumps(g)
+    check(set(g) <= {"verdict", "passed", "steps", "unmeasured"} and head[:12] not in txt and stamp not in txt
+          and "b-17" not in txt and "T1" not in txt and g["steps"] == {"tests": "pass"},
+          "gate view is a whitelist: verdict + step status only (%s)" % txt[:60])
+    p = A.paths()
+    ev = p["root"] / "events"
+    ev.mkdir(parents=True, exist_ok=True)
+    (ev / "harness.jsonl").write_text('{"arm": "%s", "head": "%s"}\n' % (ARM, head))
+    gd = p["root"] / "judge" / "gate" / ("%s_T1_%s_%s" % (ARM, head[:12], stamp))
+    gd.mkdir(parents=True, exist_ok=True)
+    (gd / "gate.json").write_text(json.dumps(gate))
+    work = Path(os.environ["ARENA_JUDGE_WORK"]) / "gateprobe"
+    work.mkdir(parents=True)
+    rd = [sys.executable, "-c", "import os,sys; r=sys.argv[1]; print([os.path.join(d, f) for d, _, fs in os.walk(r) "
+          "for f in fs]); print(open(os.path.join(r, 'events', 'harness.jsonl')).read())", str(p["root"])]
+    r = subprocess.run(rd, capture_output=True)
+    check(r.returncode == 0 and ARM.encode() in r.stdout, "forced: unsandboxed, the event log names the arm")
+    r = J.run_sandboxed(rd, work=work)
+    check(r.returncode != 0 and ARM.encode() not in r.stdout and head[:12].encode() not in r.stdout,
+          "in the sandbox the arena root (event log, gate folders) is empty")
+
+
+GLUED = {"camel suffix": "class RalphLoop:", "plural": "the ralphs ran", "camel prefix": "myRalph = 1",
+         "arm camel": "V3Arm()", "arm camel 2": "trioJudge.run()", "fullwidth": "ｒａｌｐｈ was here",
+         "cyrillic": "rаlph was here", "zero width": "ral​ph was here",
+         "model": "reviewed with GPT and Claude", "assisted": "# Assisted-by: Claude", "generated": "# Generated-by: Codex",
+         "opus": "ask Opus first", "wsl$": None}
+KEEP = ("import trio\n", "from trio.lowlevel import x\n", "VERSION = 'v3.2'\n", "trioxide = 1\n")
+
+
+def t_glued(tmp):
+    clone = Path(os.environ["ARENA_CLONES"]) / "gluedclone"
+    clone.mkdir(parents=True)
+    GLUED["wsl$"] = "log at \\\\wsl$\\Ubuntu%s\\src" % str(clone).replace("/", "\\")
+    for what, s in GLUED.items():
+        raw = J.find_leaks(s, clone=clone)
+        out, _ = J.scrub(s, clone=clone)
+        after = J.find_leaks(out, clone=clone)
+        low = out.lower()
+        gone = all(w not in low for w in ("ralph", "v3", "trio", "gpt", "claude", "codex", "opus", "wsl$"))
+        check(bool(raw) and not after and gone, "%s: raw scan refuses, scrub removes (%r -> %r)" % (what, s[:24],
+                                                                                                   out[:28]))
+    for s in KEEP:
+        amb = []
+        out, _ = J.scrub(s)
+        check(out == s and not J.find_leaks(s, ambiguous=amb), "code kept intact: %r" % s.strip())
+    amb = []
+    J.find_leaks("import trio\nVERSION = 'v3.2'\n", ambiguous=amb)
+    check(len(amb) >= 2, "the kept import/version are reported as ambiguous (%s)" % amb)
+    for f in ("CLAUDE.md", "sub/CLAUDE.md", ".claude/settings.json", "specs/plan.md", ".ralph/state",
+              "GEMINI.md", ".codex/config.toml"):
+        check(J.is_arm_bookkeeping(f), "agent config is bookkeeping: %s" % f)
+    check(not J.is_arm_bookkeeping("src/RimMandrake/Utils/demo/mod.py"), "real code is not bookkeeping")
+
+
+def t_chance(tmp):
+    labels = ("a", "b", "c", "d")
+    amap = {"J%d" % i: {"arm": "a" if i < 6 else "b"} for i in range(10)}
+    recs = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": "a"}]} for j in amap]
+    rep = J.guess_report(recs, amap, labels)
+    check(rep["per_judge"]["opus"]["binom_p"] < 0.05,
+          "forced: an always-majority guesser (6/10) beats 1/4 on the binomial (p=%.3f)" % rep["per_judge"]["opus"]["binom_p"])
+    check(rep["blinding"] == "not shown leaky" and abs(rep["per_judge"]["opus"]["p_value"] - 1.0) < 1e-12
+          and abs(rep["pooled"]["chance"] - 0.6) < 1e-12,
+          "the permutation test calls it chance (p=1, chance 0.6), not LEAKY")
+    amap3 = {"J0": {"arm": "a"}, "J1": {"arm": "b"}, "J2": {"arm": "c"}}
+    recs3 = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": m["arm"]}]} for j, m in amap3.items()]
+    r3 = J.guess_report(recs3, amap3, labels)
+    check(r3["per_judge"]["opus"]["method"] == "exact" and abs(r3["per_judge"]["opus"]["p_value"] - 1 / 6) < 1e-12,
+          "hand case: 3/3 on arms a,b,c -> exact p = 1/3! = 1/6")
+    amap4 = {"J%d" % i: {"arm": "aabb"[i]} for i in range(4)}
+    recs4 = [{"judge_id": j, "votes": [{"judge": "opus", "arm_guess": m["arm"]}]} for j, m in amap4.items()]
+    r4 = J.guess_report(recs4, amap4, labels)
+    check(abs(r4["per_judge"]["opus"]["p_value"] - 4 / 24) < 1e-12, "hand case: 4/4 on a,a,b,b -> 2!2!/4! = 1/6")
+    check(rep["tests"] == 2 and abs(rep["alpha_per_test"] - 0.025) < 1e-12, "Bonferroni: 1 judge + pooled -> 0.05/2")
+
+
+def t_model_unset(tmp):
+    os.environ.pop("ARENA_JUDGE_OPUS_MODEL", None)
+    os.environ.pop("ANTHROPIC_DEFAULT_OPUS_MODEL", None)
+    clone, base, head = make_clone(Path(os.environ["ARENA_CLONES"]) / "nomodel", "trio", 2, plant=False)
+    fake = tmp / "fake_model.py"
+    real = J.OpusCLI.preflight
+    try:
+        J.OpusCLI.preflight = lambda self: None
+        g = Fake(ans("accept"))
+        r = J.judge(task=task_for("T_N"), hidden=None, clone=clone, base=base, head=head, arm="trio", gate=GATE,
+                    judges=J.Judges(J.OpusCLI(prefix=[sys.executable, str(fake)]), g, Fake(ans("accept"))))
+        check(r["verdict"] == "invalid" and g.calls == 1,
+              "forced: preflight bypassed -> invalid, but only after the GPT judge was paid")
+    finally:
+        J.OpusCLI.preflight = real
+    g = Fake(ans("accept"))
+    r = J.judge(task=task_for("T_N"), hidden=None, clone=clone, base=base, head=head, arm="trio", gate=GATE,
+                judges=J.Judges(J.OpusCLI(prefix=[sys.executable, str(fake)]), g, Fake(ans("accept"))))
+    check(r["verdict"] == "invalid" and g.calls == 0 and "unavailable" in r.get("why", ""),
+          "no Opus model -> invalid before ANY judge call (gpt calls %d)" % g.calls)
+
+
+def t_bad_verdict(tmp):
+    wb = tmp / "badverdict"
+    (wb / "Jbad").mkdir(parents=True)
+    (wb / "Jbad" / "verdict.json").write_text("{not json")
+    (wb / "Jlist").mkdir()
+    (wb / "Jlist" / "verdict.json").write_text('{"votes": ["x"], "ts": "2026"}')
+    (wb / "Jok").mkdir()
+    (wb / "Jok" / "verdict.json").write_text(json.dumps({"judge_id": "Jok", "ts": "2026-10-29T00:00:00Z",
+                                                         "votes": []}))
+    try:
+        out = J.write_report("2026-10-29", work_base=wb)
+        rep = json.loads(out.read_text())
+        check(rep["unreadable"] == 2 and rep["unmapped"] == 1, "corrupt verdict.json files skipped and counted (%d)"
+              % rep["unreadable"])
+    except Exception as ex:                                              # noqa: BLE001
+        check(False, "corrupt verdict.json crashed the report: %r" % ex)
+
+
 def main():
     if not shutil.which("bwrap"):
         print("FAIL  bwrap not installed: the judge cannot run, and this test cannot prove the map is hidden")
@@ -340,6 +574,14 @@ def main():
         t_replay(tmp)
         t_arm_map(tmp)
         t_guess(tmp)
+        t_sandbox_rw(tmp)
+        t_orphans(tmp)
+        t_marker(tmp)
+        t_gate_view(tmp)
+        t_glued(tmp)
+        t_chance(tmp)
+        t_model_unset(tmp)
+        t_bad_verdict(tmp)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
