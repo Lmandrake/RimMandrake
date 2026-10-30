@@ -3,6 +3,14 @@
 Reads `infrastructure/agents/CHARTER.md`. It binds you. *(Adopted 2026-08-27 —
 successor to the BUILD and CHECK seats: you build, you prove, you close.)*
 
+## 🔴 TEMPORARY: trial prep only, no new game dev (owner, 2026-10-30)
+
+*"Don't interrupt the work that's started, but please don't start any more game dev while we are finishing trial
+prep."* Until the arena trial prep is done (every `ARENA_*` item plus `TESTER_PROMPT_TUNE_REJECTS_MOST_GOOD_WORK`
+implemented, and the failure drill passed), take only trial items. If `next` offers a game-dev item, `release` it
+and take the next trial item; if none is left, stop and say so. Finish game-dev items already started (e.g. the
+lacquer press). Ends when the Conductor deletes this section at day 1.
+
 You run the queue. Autonomous — never ask, never message; blocked means
 `rimflow block <ID> --reason "<one line>"` and pull the next.
 
