@@ -1,7 +1,7 @@
 {
  "built_from": {
   "base_set_sha256": "3e41df0638518c7fff09903d2474fae664bcd96ae45b78d0baed066f17bc10a3",
-  "spec": "b8050921e30e716bb244464a25b16aa3eb421ef38e1ddb41b8ac5dda0cf5c078"
+  "spec": "847a658aacc234a6c48a63c7f7ebc80e19a91c4d6a709382de7167bae99ad906"
  },
  "candidates": [
   {
@@ -1117,7 +1117,52 @@
    "source_item": "READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
    "task": "RP_READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
    "tier": "B"
+  },
+  {
+   "area": [
+    "src/RimMandrake/FlowWorks/Assemblies/*",
+    "src/RimMandrake/FlowWorks/Source/Hose/*",
+    "src/RimMandrake/FlowWorks/Source/SelfTest/*"
+   ],
+   "base": "47128e4575fdf693fef0e453e8dd0557a474d9c8",
+   "cid": "ca9055fca8d",
+   "criteria": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "head": "15b13cc9546ca977dcab16d0a537d243d3c98722",
+   "kind": "csharp",
+   "mid": "m31",
+   "mutant_defect": "HoseMath.cs DubinsWords: the `[ThreadStatic]` on `dubScratch` was removed - the six-slot candidate array that the comment calls 'this thread's reused array' is now one static array shared by every lay worker thread, so two lays ranking Dubins words at the same time overwrite each other's candidates (a data race that picks a wrong or non-landing word).",
+   "mutant_kind": "removed-lock",
+   "mutant_path": "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs",
+   "pair": "c8fca6c0c30",
+   "prompt": "MOD: DrawCrossShadow goes all-pairs again whenever any hose re-lays: 833600 calls, 13.3 s total, 138 ms max frame share in T3 (paused, 400 relays, 200 hoses) on d1430b9b46",
+   "role": "mutant",
+   "size": 4,
+   "source_item": "HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "task": "RP_HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC",
+   "tier": "A"
+  },
+  {
+   "area": [
+    "design/RimMandrake/*",
+    "src/RimMandrake/Utils/*"
+   ],
+   "base": "c08b5af599491ac363e3b370323a0b9e8b4dfff2",
+   "cid": "cb1b9b997ff",
+   "criteria": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "head": "af72eb53f37f25135f6b2c0a8f7070913daa9c78",
+   "kind": "python-util",
+   "mid": "m32",
+   "mutant_defect": "publish.py DLL rebuild: the return-code check after each scratch-clone git step (clone / sparse-checkout / checkout) was removed - a failed clone or checkout is ignored and the rebuild runs on a missing or wrong tree instead of refusing with 'scratch clone for the DLL rebuild failed'.",
+   "mutant_kind": "dropped-error-check",
+   "mutant_path": "src/RimMandrake/Utils/publish.py",
+   "pair": "c8ae1a591bb",
+   "prompt": "./publish lands committed mod DLLs: DLL-only replay conflict and stamp-guard refusal rebuild from committed HEAD in a src-only scratch clone",
+   "role": "mutant",
+   "size": 2,
+   "source_item": "PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "task": "RP_PUBLISH_DLL_FIX_BINARIES_STOP_ARGUING",
+   "tier": "B"
   }
  ],
- "set_sha256": "9bc301c3c62c52ea71a062cefdc2e7bc5e47a798b285e536651cce1baf994d88"
+ "set_sha256": "b54d2e850bf67e431192463f61eefadf0da92fdb569bb3862c7d5676ce2c946f"
 }

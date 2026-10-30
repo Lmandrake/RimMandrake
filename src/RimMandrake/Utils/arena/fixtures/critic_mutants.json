@@ -300,6 +300,26 @@
    "orig": "cf20a65d08a",
    "path": "src/RimMandrake/rimflow/selftest_reader_invariant.py",
    "replace": "zip(a[2:], b[2:])"
+  },
+  {
+   "defect": "HoseMath.cs DubinsWords: the `[ThreadStatic]` on `dubScratch` was removed - the six-slot candidate array that the comment calls 'this thread's reused array' is now one static array shared by every lay worker thread, so two lays ranking Dubins words at the same time overwrite each other's candidates (a data race that picks a wrong or non-landing word).",
+   "find": "        [ThreadStatic] private static DubCand[] dubScratch;\n",
+   "kind": "removed-lock",
+   "mid": "m31",
+   "nth": 1,
+   "orig": "c8fca6c0c30",
+   "path": "src/RimMandrake/FlowWorks/Source/Hose/HoseMath.cs",
+   "replace": "        private static DubCand[] dubScratch;\n"
+  },
+  {
+   "defect": "publish.py DLL rebuild: the return-code check after each scratch-clone git step (clone / sparse-checkout / checkout) was removed - a failed clone or checkout is ignored and the rebuild runs on a missing or wrong tree instead of refusing with 'scratch clone for the DLL rebuild failed'.",
+   "find": "            if r.returncode:\n                raise Refuse(\"scratch clone for the DLL rebuild failed: git %s: %s\" % (a[0], r.stderr.strip()))\n",
+   "kind": "dropped-error-check",
+   "mid": "m32",
+   "nth": 1,
+   "orig": "c8ae1a591bb",
+   "path": "src/RimMandrake/Utils/publish.py",
+   "replace": ""
   }
  ],
  "seed": "critic-mutants-v1",

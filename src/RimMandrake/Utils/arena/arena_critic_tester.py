@@ -2,11 +2,12 @@
 (CRITIC_CALIB_MEASURE_AGAINST_TESTER_BASELINE). Same sandbox, model, timeout and budget as L4OpusCritic; only the
 prompt and the verdict parsing differ. Load it as `--critic arena_critic_tester:RalphATester`.
 
-The class body is byte-identical to the plug-in that made run tester-ralpha-baseline (ClaudeWork copy, 2026-10-30), so
-its critic_fingerprint is unchanged (46d2fe7a...) and that run's verdicts on unmutated originals stay reusable. Do not
-edit the class without accepting that every earlier tester run stops being reusable. Known asymmetry with L4: the
-tester's reasons are only the last 800 chars of its answer (meta answer_tail: 1500), so a defect it names early and
-does not repeat in its summary is invisible to the reason matcher (verdict-only scoring is reported alongside)."""
+Copied from the scratch plug-in that made run tester-ralpha-baseline (ClaudeWork, 2026-10-30) with ONE change: the
+whole answer is kept in meta["answer"] (it kept only an 800-char reason and a 1500-char tail, so a finding listed
+early was invisible to the blind reason matcher of arena_critic_mutants and the tester was scored on a truncated
+write-up while L4 was scored on its full reasons). That change gives it a new critic_fingerprint, so runs of the old
+copy (tester-ralpha-baseline) are not reusable as seeds; arena_critic_mutants runs it fresh on every candidate.
+Editing the class again changes the fingerprint again."""
 import json, os, re, signal, subprocess, sys, time
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -78,6 +79,7 @@ class RalphATester(C.L4OpusCritic):
             return C.CriticVerdict("invalid", ["claude error: %s" % str(d.get("result"))[:300]], meta)
         res = (d.get("result") or "").rstrip()
         meta["answer_tail"] = res[-1500:]
+        meta["answer"] = res
         m = re.search(r"VERDICT:\s*(PASS|FAIL)\s*\**\s*$", res)
         if not m:
             return C.CriticVerdict("invalid", ["no VERDICT line"], meta)

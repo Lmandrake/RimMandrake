@@ -70,7 +70,7 @@ MATCH_TIMEOUT = 300
 MATCH_FP_MAX = 0.10      # decoy hit rate above this: the matcher cannot tell defects apart; reason scores UNMEASURED
 BOOT = 10000
 BOOT_SEED = "critic-mutants-boot-v1"
-WRITEUP_MAX = 4000
+WRITEUP_MAX = 12000     # chars of write-up the matcher sees (the END is kept: findings precede the verdict)
 
 
 def evidence_root() -> Path:
@@ -207,7 +207,7 @@ def run_in_sandbox(argv: list, work: Path, tree: Path, timeout: int) -> tuple:
 
 def prove_one(doc_by: dict, mut: dict, repo: Path = A.REPO, deadline: float | None = None) -> dict:
     orig = doc_by[mut["pair"]]
-    rec = {"cid": mut["cid"], "mid": mut["mid"], "tests": [], "detect": "read"}
+    rec = {"cid": mut["cid"], "mid": mut["mid"], "tests": [], "detect": "read", "heads": [orig["head"], mut["head"]]}
     tests = proof_tests(repo, orig, mut)
     if not tests:
         rec["why"] = "no selftest touches the change"
@@ -243,7 +243,7 @@ def prove_one(doc_by: dict, mut: dict, repo: Path = A.REPO, deadline: float | No
 def proofs(doc: dict, budget_s: float, concurrency: int = 4, repo: Path = A.REPO) -> dict:
     out = evidence_root() / "proofs.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
-    done = {r["cid"] for r in C.read_results(out) if "error" not in r}
+    done = set(latest(C.read_results(out), doc))
     by = {c["cid"]: c for c in doc["candidates"]}
     todo = [c for c in doc["candidates"] if c.get("role") == "mutant" and c["cid"] not in done]
     t_end = time.time() + budget_s
@@ -270,39 +270,50 @@ def _timed_prove(by, c, repo, t_end):
 
 
 def latest(recs: list, doc: dict) -> dict:
+    """cid -> its proof: made on this set, or on exactly this mutant's and its original's heads (a proof depends on
+    nothing else, so it survives a rebuild that added other mutants)."""
+    by = {c["cid"]: c for c in doc["candidates"]}
     out = {}
     for r in recs:
-        if r.get("set_sha256") == doc["set_sha256"] and "error" not in r:
+        c = by.get(r.get("cid"))
+        if c is None or c.get("role") != "mutant" or "error" in r:
+            continue
+        if r.get("set_sha256") == doc["set_sha256"] or r.get("heads") == [by[c["pair"]]["head"], c["head"]]:
             out[r["cid"]] = r
     return out
 
 
 # ---------------------------------------------------------------- runs (with seeded originals)
 
-def seed(doc: dict, critic, run_id: str, from_run: str, base_set: dict, root: Path | None = None) -> dict:
-    """Copy `from_run`'s valid verdicts on this set's originals into run `run_id`, only if `from_run` was made on the
-    shipped base set by a critic with THIS critic's fingerprint, and each original is byte-identical there."""
+def seed(doc: dict, critic, run_id: str, from_run: str, from_set: dict, root: Path | None = None) -> dict:
+    """Copy `from_run`'s valid verdicts into run `run_id` for every candidate of this set that is BYTE-IDENTICAL in
+    `from_set`, only if `from_run` was made on `from_set` (its recorded sha, which must also be from_set's own content
+    hash) by a critic with THIS critic's fingerprint. `from_set` is the shipped base set (originals) or an earlier build
+    of this mutant set (git show <sha>:...critic_mutant_set.json), whose unchanged mutants then carry over."""
     root = root or C.calib_root()
     src = json.loads((root / from_run / "run.json").read_text())
     fp = C.critic_fingerprint(critic)
     if src.get("critic_fingerprint") != fp:
         raise SystemExit("seed refused: %s was made by fingerprint %s, this critic is %s"
                          % (from_run, str(src.get("critic_fingerprint"))[:12], fp[:12]))
-    if src.get("set_sha256") != base_set["set_sha256"]:
-        raise SystemExit("seed refused: %s was made on set %s, not the shipped base set" % (from_run, src.get("set_sha256")))
+    if set_hash(from_set["candidates"]) != from_set["set_sha256"]:
+        raise SystemExit("seed refused: the seed set's recorded sha does not match its content")
+    if src.get("set_sha256") != from_set["set_sha256"]:
+        raise SystemExit("seed refused: %s was made on set %s, not the seed set %s"
+                         % (from_run, str(src.get("set_sha256"))[:12], from_set["set_sha256"][:12]))
     d = root / run_id
     d.mkdir(parents=True, exist_ok=True)
     meta = d / "run.json"
     if not meta.exists():
         meta.write_text(json.dumps({"run": run_id, "critic": critic.name, "critic_fingerprint": fp,
-                                    "set_sha256": doc["set_sha256"], "seeded_from": from_run,
+                                    "set_sha256": doc["set_sha256"], "seeded_from": [from_run],
                                     "started": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}, indent=1))
     else:
         prev = json.loads(meta.read_text())
         if prev.get("critic_fingerprint") != fp or prev.get("set_sha256") != doc["set_sha256"]:
             raise SystemExit("seed refused: run %s belongs to another critic or set" % run_id)
     have = {r["cid"] for r in C.read_results(d / "results.jsonl")}
-    base_by = {c["cid"]: c for c in base_set["candidates"]}
+    from_by = {c["cid"]: c for c in from_set["candidates"]}
     valid = {}
     for r in C.read_results(root / from_run / "results.jsonl"):
         if r["verdict"] in J.VERDICTS:
@@ -310,12 +321,14 @@ def seed(doc: dict, critic, run_id: str, from_run: str, base_set: dict, root: Pa
     n = 0
     with open(d / "results.jsonl", "a") as fh:
         for c in doc["candidates"]:
-            if c.get("role") == "mutant" or c["cid"] in have or c["cid"] not in valid:
-                continue
-            if base_by.get(c["cid"]) != c:
-                raise SystemExit("seed refused: original %s differs from the shipped set's" % c["cid"])
+            if c["cid"] in have or c["cid"] not in valid or from_by.get(c["cid"]) != c:
+                continue                     # absent there, or changed since: this run must judge it itself
             r = dict(valid[c["cid"]])
-            r["meta"] = dict(r.get("meta") or {}, seeded_from=from_run)
+            m = dict(r.get("meta") or {})
+            m["seeded_from"] = list(m.get("seeded_from") or []) if isinstance(m.get("seeded_from"), list) else (
+                [m["seeded_from"]] if m.get("seeded_from") else [])
+            m["seeded_from"].append(from_run)
+            r["meta"] = m
             fh.write(json.dumps(r, sort_keys=True) + "\n")
             n += 1
     return {"seeded": n, "from": from_run}
@@ -345,7 +358,10 @@ empty]}}
 def writeup_of(rec: dict) -> str:
     """The reviewer's own words, without the verdict token, the reviewer's name or anything else about the run."""
     parts = [str(x) for x in (rec.get("reasons") or []) if x]
-    tail = str((rec.get("meta") or {}).get("answer_tail") or "")
+    full = (rec.get("meta") or {}).get("answer")
+    if full:                                    # a reviewer that keeps its whole answer (the tester): use all of it
+        parts = []
+    tail = str(full or (rec.get("meta") or {}).get("answer_tail") or "")
     if tail and not any(p and p[-200:] in tail for p in parts):
         parts.append(tail)
     elif tail:
@@ -635,6 +651,18 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict, reps: int = 
             by_detect[det] = {"verdict_catch": [sum(v == "reject" for v, _h in hits), len(hits)],
                               "reason_catch": [sum(v == "reject" and bool(h) for v, h in hits), len(hits)]}
         blk["by_detect"] = by_detect
+        kind_of = {c["mid"]: c["mutant_kind"] for c in doc["candidates"] if c.get("role") == "mutant"}
+        by_kind: dict = {}
+        for row in tab.values():
+            for mid, v, hit in row["muts"]:
+                if v is None:
+                    continue
+                k = by_kind.setdefault(kind_of[mid], {"verdict_catch": [0, 0], "reason_catch": [0, 0]})
+                k["verdict_catch"][0] += v == "reject"
+                k["reason_catch"][0] += v == "reject" and bool(hit)
+                k["verdict_catch"][1] += 1
+                k["reason_catch"][1] += 1
+        blk["by_kind"] = dict(sorted(by_kind.items()))
         out["reviewers"][role] = blk
     if set(tabs) == {"critic", "baseline"}:
         a, b = restrict(tabs["critic"], tabs["baseline"]), restrict(tabs["baseline"], tabs["critic"])
@@ -687,7 +715,8 @@ def main(argv=None) -> int:
     r = sp.add_parser("run")
     r.add_argument("--critic", required=True)
     r.add_argument("--run", required=True)
-    r.add_argument("--seed-from")
+    r.add_argument("--seed-from", action="append", default=[],
+                   help="RUN or RUN=SETFILE (default set: the shipped base set); repeatable")
     r.add_argument("--concurrency", type=int, default=8)
     r.add_argument("--max", type=int)
     r.add_argument("--budget", type=float, default=480)
@@ -721,8 +750,9 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "run":
         critic = C.load_critic(a.critic)
-        if a.seed_from:
-            print(json.dumps(seed(doc, critic, a.run, a.seed_from, base)))
+        for sf in a.seed_from:
+            rid, _, setf = sf.partition("=")
+            print(json.dumps(seed(doc, critic, a.run, rid, json.loads(Path(setf).read_text()) if setf else base)))
         print(json.dumps(C.run(doc, critic, a.run, a.concurrency, a.max, budget_s=a.budget)))
         return 0
     if a.cmd == "match":
