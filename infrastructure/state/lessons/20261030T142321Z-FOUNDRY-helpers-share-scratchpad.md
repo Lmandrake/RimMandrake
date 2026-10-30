@@ -1,0 +1,2 @@
+Parallel helpers launched from one FOUNDRY orchestrator session share that session's scratchpad dir (/home/mandrake/.seat-tmp/FOUNDRY/.../<session>/scratchpad). A generic filename there (item.txt) is overwritten by a sibling helper between the write and the read: a 'rimflow show <MY_ITEM> > item.txt' read back as another helper's item (ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING) on 2026-10-30. Use an item-specific filename, or the agent storage root, for anything you write there.
+home: skills/night-shift-orchestration
