@@ -38,7 +38,7 @@ is shuffled per run. Each call runs in bubblewrap with a FRESH empty $HOME (a co
 no CLAUDE.md, no memory, no transcripts), tmpfs over /home/<user> (every clone, the mirror, ~/.claude), /mnt (D:,
 C:, the arena root, the read-only mirror) and /var/tmp (the other candidates' trees); only its own work dir is
 writable; /run is hidden and pid/ipc/uts are unshared. The critic therefore cannot read the later history that holds
-the rework. The network stays shared (the model API); that is a stated residual. The item text is refused when it
+the rework. The network is its own namespace with one allow-listed route to the model API (arena_critic_relay); that route is a stated residual. The item text is refused when it
 names the candidate's rework item, its arena task id, its base/head sha or a role word (ROLE_WORDS); the
 source item's own name is allowed (a builder sees it). The work base is masked so no call sees another's work dir. A plug-in critic runs in-process and is only as blind
 as its own review() makes it. A run is bound to its critic fingerprint (name, model, class source, prompt, sandbox)
@@ -97,6 +97,8 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import arena_tasks as A  # noqa: E402
 import arena_judge as J  # noqa: E402
+import arena_critic_relay as RELAY  # noqa: E402
+import arm_sandbox as AS  # noqa: E402
 
 SET_PATH = HERE / "fixtures" / "critic_calib_set.json"
 CENSUS_WINDOW = ("2026-09-15", "2026-10-29")
@@ -467,11 +469,13 @@ End your answer with exactly one JSON object and nothing after it:
 """
 
 
-def sandbox_argv(argv: list, work: Path, cwd: Path) -> list:
-    """bwrap: read-only root, fresh /tmp, own pid/ipc/uts namespaces; tmpfs over /home (clones, mirror, ~/.claude),
-    /mnt (D:, C:, the arena root), /var/tmp (the other candidates) and /run (host service sockets); DNS, the claude
-    binary and THIS call's work dir bound back. Nothing else is writable. Residual: the network is shared (the
-    critic must reach the model API), so a critic could reach loopback services or the public internet."""
+def sandbox_argv(argv: list, work: Path, cwd: Path, model_route: bool = True) -> list:
+    """bwrap: read-only root, fresh /tmp, own pid/ipc/uts/net namespaces; tmpfs over /home (clones, mirror, ~/.claude),
+    /mnt (D:, C:, the arena root), /var/tmp (the other candidates) and /run (host service sockets); the claude binary
+    and THIS call's work dir bound back. Nothing else is writable. The network namespace holds only lo: the model API
+    is reached through arena_critic_relay's allow-listed socket (model_route=False: no way out at all), so loopback
+    services, the Windows host and the rest of the internet are gone. arm_sandbox's seccomp program refuses AF_VSOCK
+    (no namespace covers it) and io_uring."""
     bw = shutil.which("bwrap")
     if not bw:
         raise J.JudgeUnavailable("bwrap not found: the critic never runs unsandboxed")
@@ -485,12 +489,22 @@ def sandbox_argv(argv: list, work: Path, cwd: Path) -> list:
         if not (os.path.realpath(p) + "/").startswith(masked):
             raise J.JudgeUnavailable("the %s %s is outside every masked directory: the critic could read it" % (what, p))
     out += ["--tmpfs", str(work_base())]          # the other candidates' work dirs, wherever ARENA_CRITIC_WORK points
-    for p in ("/mnt/wsl/resolv.conf", str(home / ".local" / "bin"), str(home / ".local" / "share" / "claude")):
+    try:
+        AS._prereq()
+        rel = RELAY.relay(work_base()) if model_route else None
+        bpf = AS._bpf_file()
+    except (RELAY.RelayRefused, AS.SandboxRefused, OSError) as e:
+        raise J.JudgeUnavailable("critic network refused: %s" % e)
+    for p in (str(home / ".local" / "bin"), str(home / ".local" / "share" / "claude")):
         if os.path.exists(p):
             out += ["--ro-bind", p, p]
-    out += ["--bind", str(work), str(work), "--unshare-pid", "--unshare-ipc", "--unshare-uts", "--new-session", "--die-with-parent",
-            "--chdir", str(cwd), "--"]
-    return out + list(argv)
+    if rel:
+        out += ["--ro-bind", rel.path, rel.path]
+    out += ["--bind", str(work), str(work), "--unshare-net", "--unshare-pid", "--unshare-ipc", "--unshare-uts",
+            "--new-session", "--die-with-parent", "--seccomp", "3", "--chdir", str(cwd), "--"]
+    if rel:
+        out += ["/usr/bin/python3", "-I", "-c", RELAY.BRIDGE, rel.path]
+    return ["/bin/sh", "-c", 'exec 3<"$1" && /bin/rm -f "$1" && shift && exec "$@"', "sh", bpf] + out + list(argv)
 
 
 class L4OpusCritic:
@@ -582,7 +596,8 @@ def critic_fingerprint(critic: Critic) -> str:
                     if k not in ("deadline", "exe") and isinstance(v, scalar)) if hasattr(critic, "__dict__") else []
     parts = [critic.name, getattr(critic, "model", "") or "", str(getattr(critic, "max_usd", "")), L4_PROMPT,
              inspect.getsource(sandbox_argv), inspect.getsource(prepare), inspect.getsource(critic_tree_files),
-             inspect.getsource(unchanged_assets), inspect.getsource(asset_roots), exe_id, repr(config)]
+             inspect.getsource(unchanged_assets), inspect.getsource(asset_roots), inspect.getsource(RELAY), exe_id,
+             repr(config)]
     try:
         parts.append(inspect.getsource(type(critic)))
     except (OSError, TypeError):

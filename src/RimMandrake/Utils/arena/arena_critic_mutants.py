@@ -209,7 +209,7 @@ def _git_ok(repo: Path, *args) -> bool:
 def run_in_sandbox(argv: list, work: Path, tree: Path, timeout: int) -> tuple:
     env = {"PATH": "/usr/local/bin:/usr/bin:/bin", "HOME": str(work / "home"), "LANG": "C.UTF-8", "TERM": "dumb"}
     (work / "home").mkdir(exist_ok=True)
-    proc = subprocess.Popen(C.sandbox_argv(argv, work, tree), cwd="/", stdout=subprocess.PIPE,
+    proc = subprocess.Popen(C.sandbox_argv(argv, work, tree, model_route=False), cwd="/", stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, env=env, start_new_session=True)
     try:
         out, _ = proc.communicate(timeout=timeout)

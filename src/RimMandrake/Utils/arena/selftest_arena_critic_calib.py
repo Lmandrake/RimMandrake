@@ -22,9 +22,11 @@ from __future__ import annotations
 import json
 import os
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
+import threading
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -360,6 +362,7 @@ def t_sandbox(repo, base, head, root):
         doc = synth_set(base, head, n_good=1, n_bad=0)
         c = doc["candidates"][0]
         os.environ["ARENA_CRITIC_WORK"] = "/var/tmp/rm_critic_calib_selftest_%d" % os.getpid()
+        os.environ[C.RELAY.ALLOW_ENV] = "127.0.0.1:1"
         sib = Path(os.environ["ARENA_CRITIC_WORK"]) / "other_candidate"
         sib.mkdir(parents=True, exist_ok=True)
         (sib / "secret").write_text("rework")
@@ -385,6 +388,103 @@ def t_sandbox(repo, base, head, root):
         shutil.rmtree(home_dir, ignore_errors=True)
         shutil.rmtree(tmp_dir, ignore_errors=True)
         shutil.rmtree(os.environ.get("ARENA_CRITIC_WORK", "/nonexistent"), ignore_errors=True)
+
+
+NET_PROBE = r"""
+import json, os, socket, sys
+good, bad = int(sys.argv[1]), int(sys.argv[2])
+out = {}
+def direct(port):
+    s = socket.socket(); s.settimeout(3)
+    try:
+        s.connect(("127.0.0.1", port)); return "open"
+    except OSError as e:
+        return type(e).__name__
+out["direct_good"] = direct(good)
+try:
+    socket.socket(40, socket.SOCK_STREAM); out["vsock"] = "open"
+except OSError as e:
+    out["vsock"] = e.errno
+url = os.environ.get("HTTPS_PROXY", "")
+out["proxy"] = bool(url)
+if url:
+    def via(port):
+        s = socket.create_connection(("127.0.0.1", int(url.rsplit(":", 1)[1])), 5)
+        s.sendall(b"CONNECT 127.0.0.1:%d HTTP/1.1\r\n\r\n" % port)
+        h = b""
+        while b"\r\n\r\n" not in h:
+            d = s.recv(4096)
+            if not d: break
+            h += d
+        line = h.split(b"\r\n")[0].decode()
+        if " 200 " in line:
+            s.sendall(b"ping"); return s.recv(16).decode()
+        return line
+    out["via_good"], out["via_bad"] = via(good), via(bad)
+print(json.dumps(out))
+"""
+
+
+def t_network():
+    if not shutil.which("bwrap"):
+        check("network (bwrap absent: UNMEASURED)", False, "bwrap not installed")
+        return
+    srv = socket.socket()
+    srv.bind(("127.0.0.1", 0))
+    srv.listen(8)
+    other = socket.socket()
+    other.bind(("127.0.0.1", 0))
+    other.listen(8)
+    good, bad = srv.getsockname()[1], other.getsockname()[1]
+
+    def echo():
+        while True:
+            try:
+                c, _ = srv.accept()
+            except OSError:
+                return
+            d = c.recv(16)
+            c.sendall(d)
+            c.close()
+    threading.Thread(target=echo, daemon=True).start()
+    os.environ["ARENA_CRITIC_WORK"] = "/var/tmp/rm_critic_net_selftest_%d" % os.getpid()
+    os.environ[C.RELAY.ALLOW_ENV] = "127.0.0.1:%d" % good
+    work = Path(os.environ["ARENA_CRITIC_WORK"]) / "w"
+    work.mkdir(parents=True)
+    argv = [sys.executable, "-I", "-c", NET_PROBE, str(good), str(bad)]
+
+    def run(**kw):
+        r = subprocess.run(C.sandbox_argv(argv, work, work, **kw), capture_output=True, text=True, timeout=30, cwd="/")
+        try:
+            return json.loads(r.stdout)
+        except ValueError:
+            return {"rc": r.returncode, "out": r.stdout[-300:], "err": r.stderr[-300:]}
+    try:
+        red = subprocess.run(argv, capture_output=True, text=True, timeout=30)
+        check("red: outside the sandbox the probe reaches the loopback service", '"direct_good": "open"' in red.stdout,
+              red.stdout + red.stderr[-200:])
+        check("red: outside the sandbox AF_VSOCK opens", '"vsock": "open"' in red.stdout, red.stdout)
+        o = run()
+        check("sandbox: host loopback service refused", o.get("direct_good") == "ConnectionRefusedError", str(o))
+        check("sandbox: AF_VSOCK refused by seccomp (EAFNOSUPPORT, the filter's answer)", o.get("vsock") == 97, str(o))
+        check("sandbox: allowed target reached through the relay, bytes cross", o.get("via_good") == "ping", str(o))
+        check("sandbox: other target refused by the relay and recorded", " 403 " in str(o.get("via_bad"))
+              and "127.0.0.1:%d" % bad in C.RELAY._relay.denied, str(o))
+        o = run(model_route=False)
+        check("no model route: no proxy, no way out", o.get("proxy") is False
+              and o.get("direct_good") == "ConnectionRefusedError", str(o))
+        for raw, name in (("", "empty"), ("hostonly", "no port")):
+            os.environ[C.RELAY.ALLOW_ENV] = raw
+            try:
+                C.sandbox_argv(argv, work, work)
+                check("allow-list %s refuses" % name, False)
+            except C.J.JudgeUnavailable:
+                check("allow-list %s refuses" % name, True)
+    finally:
+        os.environ[C.RELAY.ALLOW_ENV] = "127.0.0.1:1"
+        srv.close()
+        other.close()
+        shutil.rmtree(os.environ["ARENA_CRITIC_WORK"], ignore_errors=True)
 
 
 def t_persist(repo, base, head):
@@ -548,6 +648,7 @@ def main() -> int:
         t_blind(repo, base, head, root)
         t_resume(repo, base, head, root)
         t_sandbox(repo, base, head, root)
+        t_network()
         t_persist(repo, base, head)
         t_adjudicate(repo, base, head)
         t_tree_and_hidden(root)
