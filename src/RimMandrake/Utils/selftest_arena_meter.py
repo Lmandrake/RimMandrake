@@ -13,8 +13,8 @@ def check(ok, name):
     global fails
     print(("PASS " if ok else "FAIL ") + name); fails += (not ok)
 
-ROOT = "/home/mandrake/rm/arena"
 T = tempfile.mkdtemp()
+ROOT = os.path.join(T, "arena")   # hermetic: never the live arena dir (a real probe clone there changed classification)
 proj = os.path.join(T, "projects")
 def transcript(slug, name, mid, out_tok, sub=False, model="claude-opus-FAKE-test-only", ts="2026-10-29T10:00:00Z"):
     d = os.path.join(proj, slug, "sess", "subagents") if sub else os.path.join(proj, slug)
