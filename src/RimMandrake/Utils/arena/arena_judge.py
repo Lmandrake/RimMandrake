@@ -894,7 +894,10 @@ def hidden_checks(hidden: dict) -> list[dict]:
 #     tb_frame, gi/cr/ag_frame) while the seal runs; sys._current_frames/_current_exceptions; gc.get_objects/
 #     get_referrers/get_referents; settrace/setprofile (all-threads too)/sys.monitoring callbacks/sys.remote_exec;
 #     code.__new__ (code.replace too) and marshal.load(s) (crafted bytecode; pyc lookup is pointed at a nonexistent
-#     pycache_prefix so imports never call marshal); ctypes (import and every ctypes.* event), _test*/subinterpreter
+#     pycache_prefix so source imports never call marshal, and every FROZEN stdlib module (ntpath, runpy,
+#     importlib.util...: FrozenImporter unmarshals them, and `_imp.get_frozen_object(name, data)` would unmarshal
+#     arm bytes, so marshal stays denied) is imported before the hook goes in; ARENA_RUNNER_FIX_FROZEN_PATHLIB_DENIED:
+#     `import pathlib` was denied, ~70% of real fix_tests); ctypes (import and every ctypes.* event), _test*/subinterpreter
 #     modules and interpreter creation (a subinterpreter has no hooks); further audit hooks; setrlimit (core dumps are
 #     disabled with a hard RLIMIT_CORE of 0 before any arm code); any open of a file named `mem` or on procfs, and the
 #     check sandbox mounts an empty tmpfs on /proc (no /proc/self/mem, environ or cmdline at all);
@@ -1042,6 +1045,19 @@ def _rewrite(body):
             n.body, n.orelse = _rewrite(n.body), _rewrite(n.orelse)
         out.append(n)
     return out
+def _frozen():
+    try:
+        import _imp
+        names = _imp._frozen_module_names()
+    except BaseException:
+        names = ("ntpath", "runpy", "importlib.machinery", "importlib.util", "io")
+    for n in sorted(names):
+        if n.startswith("__") or n in sys.modules:
+            continue
+        try:
+            __import__(n)
+        except BaseException:
+            pass
 def _main():
     so, se, fl, pe = sys.stdout, sys.stderr, io.TextIOWrapper.flush, traceback.print_exception
     test = sys.argv[1]
@@ -1065,6 +1081,7 @@ def _main():
     next(g)
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     sys.pycache_prefix = "/nonexistent/arena-no-pycache"
+    _frozen()
     sys.addaudithook(_hook(g, posix._exit, posix.write, type, str, bytes, int, posix.stat, posix.stat("/proc").st_dev))
     sys.argv = [test]
     sys.path.insert(0, os.path.dirname(test))

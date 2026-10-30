@@ -853,6 +853,12 @@ NONCE_HUNTS = {
     "swap the seal": "import sys\nclass F:\n    def send(self, v):\n        pass\n"
                      "sys.modules['__main__'].__arena_seal__ = F()\n",
     "ctypes": "import ctypes\n",
+    "marshal.loads crafted bytecode": "import marshal, os\nexec(marshal.loads(marshal.dumps(compile("
+                                      "'import os; os._exit(0)', 'x', 'exec'))))\n",
+    "_imp.get_frozen_object with arm bytes": "import _imp, marshal\nexec(_imp.get_frozen_object('os', marshal.dumps("
+                                             "compile('import os; os._exit(0)', 'x', 'exec'))))\n",
+    "re-import a pre-loaded frozen module": "import sys\ndel sys.modules['ntpath']\nimport ntpath\nimport os\n"
+                                            "os._exit(0)\n",
     "C-slot exit (bool raises SystemExit(0))": "import functools\ndef g():\n    yield\nz = g()\nlist(z)\n"
                                               "class A:\n    __bool__ = staticmethod(functools.partial(z.throw, "
                                               "SystemExit(0)))\nX = A()\nif X:\n    pass\n",
@@ -883,6 +889,11 @@ def t_nonce_hunt(tmp):
                               + "def main():\n    import mod\n    return 0 if mod.value() == 2 else 1\n"
                               "if __name__ == '__main__':\n    sys.exit(main())\n", "pass"),
                              ("bare raise SystemExit", "raise SystemExit\n", "pass"),
+                             # ARENA_RUNNER_FIX_FROZEN_PATHLIB_DENIED: frozen stdlib imports were 'denied'
+                             ("import pathlib (frozen ntpath)", "import pathlib\nfrom pathlib import Path\n"
+                              + HIDDEN_TEST, "pass"),
+                             ("import ntpath, runpy, importlib.util", "import ntpath, runpy, importlib.util\n"
+                              + HIDDEN_TEST, "pass"),
                              ("sys.exit(1)", "import sys\nsys.exit(1)\n", "fail")):
         hd = {"checks": [{"type": "fix_test", "path": DEMO + "selftest_ctl3.py", "body": body}], "reworks": []}
         r = J.judge(task=task_for("T_H"), hidden=hd, clone=c, base=b, head=h, arm="v3", gate=GATE,
