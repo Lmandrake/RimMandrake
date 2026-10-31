@@ -1,0 +1,2 @@
+Gate harness runner: strip() on a protocol line ate the trailing space of 'ENTRIES ' (empty entry list), so a module-body-only selftest exited 3 with no record and read as UNMEASURED for every task. Use rstrip('\n') on protocol lines whose payload may be empty. Also one run of selftest_arena_gate saw 'the harness runner PASSES selftest_arena_eventlog' fail once and pass on rerun: flaky row, not reproduced.
+home: NONE

@@ -1,0 +1,2 @@
+Comparing code objects by repr() of co_consts is nondeterministic on CPython 3.14: a constant set literal (or x in {...}) folds to a frozenset whose repr order changes with PYTHONHASHSEED, so a recompile of the SAME file can differ from the running code (arena_eventlog._main_code_ok refused the real arena_gate.py at seed 0). Compare frozensets as sorted member shapes; test under several PYTHONHASHSEED values in subprocesses, not repeated compiles in one process (those all agreed).
+home: skills/live-debugging-proof-harness
