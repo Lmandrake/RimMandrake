@@ -139,6 +139,10 @@ def fixture(d, extra=False):
                             "find file 'src/newmod.py'.\n")], body=opn)
         # v5 review: a root private.json at base must not hide the fix's new src/private.json
         task("RP_FILESHADOW", [("src/selftest_n.py", fnf % "src/private.json")], body=opn)
+        # LAST_FOUR_ROUGH_EDGES: the C# compiler's CS2001 cites a source file the csproj lists
+        task("RP_FILECS2001", [("src/selftest_n.py", "C:\\clone\\x.csproj : error CS2001: Source file "
+                                "'C:\\clone\\src\\newmod.py' could not be found. [C:\\clone\\x.csproj]\n")],
+             body=opn)
     Path(p["tasks"], "RP_NOHIDDEN.json").write_text(json.dumps({"id": "RP_NOHIDDEN", "source_item": "NOHIDDEN"}))
     A.vet_cache_path(p).write_text("".join(json.dumps(r) + "\n" for r in vet))
     return p, repo
@@ -527,7 +531,8 @@ def rules_v5():
     with tempfile.TemporaryDirectory() as d:
         p, repo = fixture(d, extra=True)
         want = {"RP_FILE": "missing_name_only", "RP_FILEABS": "missing_name_only", "RP_FILECS": "missing_name_only",
-                "RP_FILENAMED": None, "RP_FILEBASE": None, "RP_FILEOUT": None, "RP_FILESHADOW": "missing_name_only"}
+                "RP_FILENAMED": None, "RP_FILEBASE": None, "RP_FILEOUT": None, "RP_FILESHADOW": "missing_name_only",
+                "RP_FILECS2001": "missing_name_only"}
         for tid, v in want.items():
             c = R.build_packet(tid, p, repo)["checks"][0]
             bf = c["base_failure"]
@@ -615,6 +620,39 @@ def rules_v5():
         bf = R.base_failure(gap + t + "\nSELFTEST FAILED\n", UN)
         check(bf["veto"] == "missing_name_only" and bf["missing_fix_only_unnamed"],
               "v5 review (2): %r after a gap is still the missing name (%s)" % (t.strip(), bf))
+
+
+
+def rules_rough_edges():
+    """ARENA_READER_REPAIR_LAST_FOUR_ROUGH_EDGES, each edge with a control."""
+    gap = "[... 33 chars cut ...]\n"
+    attr = "AttributeError: module 'tool' has no attribute '_private_two'\n"
+    # (1) the of-N summary form
+    for t in ("FAIL: 2 of 5 checks", "FAILED 1 of 3 tests", "2 of 5 checks failed", "FAIL: 1 of 4 check(s)"):
+        check(veto(MISS + t + "\n") == "missing_name_only", "edges (1): %r is a bare summary" % t)
+    check(veto(MISS + "FAIL: 2 of 5 widgets wrong\n") is None, "edges (1): an of-N line that is not a count is behaviour")
+    # (2) a blank line inside an orphan run does not end it
+    tail = gap + "    assert (\n\n        tool._private_two() == 2  # expected\n    )\n" + attr
+    check(veto(tail) == "missing_name_only", "edges (2): a blank line inside orphan source (%s)" % R.base_failure(tail, UN))
+    check(veto(gap + "    x = 1\n\nFAIL widget\n" + attr) is None,
+          "edges (2): an unindented line after the blank still ends the run")
+    check(veto(gap + "\n    assert x == 1  # expected\n" + attr) == "missing_name_only",
+          "edges (2): a blank line directly after the gap starts the run")
+    # (3) CS2001
+    uf = {"fix_only_unnamed": ["src/newmod.cs"]}
+    cs = "x.csproj : error CS2001: Source file 'src/newmod.cs' could not be found.\n"
+    check(R.missing_files_cited(cs) == ["src/newmod.cs"], "edges (3): CS2001 cites its file")
+    check(R.base_failure(cs, {}, None, uf)["veto"] == "missing_name_only", "edges (3): CS2001 reports the missing file")
+    check(R.base_failure(cs + "error CS1503: cannot convert\n", {}, None, uf)["veto"] is None,
+          "edges (3): another compiler error beside it is behaviour")
+    # (4) PASS=0 FAIL=1 is a failure, not a zero count on a pass line
+    for t in ("PASS=0 FAIL=1", "PASS:0 FAIL:2", "PASS=0 FAIL=1 (widget)"):
+        check(veto(t + "\n") is None, "edges (4): %r alone is a visible behaviour failure (%s)" % (t, R.base_failure(t, UN)))
+        check(veto(MISS + t + "\n") is None, "edges (4): %r beside the missing name is behaviour" % t)
+    check(veto(MISS + "assert result == \"No module named 'newmod'\"\n") == "missing_name_only",
+          "v5 review: only pytest's `E   assert` is behaviour whatever it quotes (a bare assert line is not)")
+    for t in ("PASS=3 FAIL=0", "3 passed, 0 failed", "ok 0 failures"):
+        check(veto(MISS + t + "\n") == "missing_name_only", "edges (4): %r is a zero count (control)" % t)
 
 
 def tail_invariants():
@@ -722,6 +760,7 @@ def main():
     keep_refusals()
     rules_v4()
     rules_v5()
+    rules_rough_edges()
     tail_invariants()
 
     def boom(pr):

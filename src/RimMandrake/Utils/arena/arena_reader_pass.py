@@ -72,7 +72,10 @@ fix_only when its longest match in the fix tree is absent at base (a root `x.jso
 chained traceback, and its footer `t.py:12: SomeError` repeats the `E` line above it so is never an outcome line (a
 `FAILED t - FileNotFoundError: ...` summary reports the missing file again). A pytest `E   assert ...` line is
 behaviour whatever string it quotes. A file is named only by its whole name (`config.json.example` does not name
-`config.json`).
+`config.json`). ARENA_READER_REPAIR_LAST_FOUR_ROUGH_EDGES: a blank line inside an orphan run does not end it (2);
+`FAIL: 2 of 5 checks` is a bare summary (4); C#'s `error CS2001: Source file 'p' could
+not be found` cites the file p like `Could not find file` (5); and in `PASS=0 FAIL=1` the `0` is not a zero failure
+count (nor in `PASS:0 FAIL:2`), while `FAIL=1` is a nonzero one, so the line is a failure, not a pass line.
 
     run     read every survivor without a current verdict; one JSON file per task under the results dir (default
             <arena>/judge/reader/verdicts/, judge-only: the packets hold hidden check bodies). Resumable: a task
@@ -383,8 +386,9 @@ _BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|(?<!Build )\bFAILED
 _TB_FILE = re.compile(r'^\s*File "[^"]*", line \d+')
 _PYTEST_SRC = re.compile(r"^>\s")
 _PASS_LINE = re.compile(r"^\s*(?:ok|PASS|PASSED)\b")
-_NONZERO_FAILS = re.compile(r"\b[1-9]\d*\s+fail", re.I)
-_NEUTRAL = re.compile(r"\b0\s+fail\w*|\bfail\w*\s*[:=]\s*0\b|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.I)
+_NONZERO_FAILS = re.compile(r"\b[1-9]\d*\s+fail|\bfail\w*\s*[:=]\s*[1-9]", re.I)   # `1 failed`, `FAIL=1`
+# (LAST_FOUR_ROUGH_EDGES: the `0` of `PASS=0 FAIL=1` is the pass count, not a zero failure count)
+_NEUTRAL = re.compile(r"(?<![=:\w])0\s+fail\w*|\bfail\w*\s*[:=]\s*0\b|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.I)
 # C7: a missing-name message on an assertion or FAIL line is that check's own failure report (behaviour), unless the
 # line also names the import/attribute/name error class (`FAIL: ImportError: cannot import name ...`), which is the
 # missing name reported again.
@@ -407,7 +411,8 @@ _ERR_LEAD = re.compile(r"^\s*(?:E\s+)?(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?:Error|Except
 _FILE_REPORT = re.compile(r"^\s*(?:E\s+)?(?:Unhandled exception\.\s*)?(?:FAIL(?:ED)?\s*:\s*"
                           r"|(?:FAILED|ERROR)\s+\S+\s+-\s+)?"
                           r"(?:(?:[A-Za-z_]\w*\.)*FileNotFound(?:Error|Exception):\s*)?"
-                          r"(?:\[Errno 2\] No such file or directory: '|Could not find file ')")
+                          r"(?:\[Errno 2\] No such file or directory: '|Could not find file ')"
+                          r"|^.*?\berror CS2001: Source file '")       # MSBuild: `x.csproj : error CS2001: ...`
 _PYTEST_ASSERT = re.compile(r"^\s*E\s+assert\b")
 # pytest's `path.py:12: RuntimeError` location footer and `FAILED path::t - RuntimeError: msg` summary
 _PYTEST_REREPORT = re.compile(r"^\s*(?:FAILED|ERROR)\s+\S+\s+-\s+(?P<cls>(?:[A-Za-z_]\w*\.)*[A-Z]\w*)(?::|\s*$)")
@@ -427,10 +432,11 @@ _MISSING_LEAD = re.compile(r"No module named\b|cannot import name\b|name '\w+' i
                            r"|(?:module |type object )?'[^']+' (?:object )?has no attribute\b"
                            r"|[\w.]+\(\) got an unexpected keyword argument\b")
 _SUMMARY = re.compile(r"^\s*(?:[A-Z][A-Z0-9_]*\s+)*FAIL(?:ED)?[.!]?\s*$"
-                      r"|^\s*FAIL(?:ED)?\b\W*\d+\s+(?:failure|failed|error|test|check)\w*(?:\(s\))?\W*$")
+                      r"|^\s*FAIL(?:ED)?\b\W*\d+(?:\s+of\s+\d+)?\s+(?:failure|failed|error|test|check)\w*(?:\(s\))?\W*$")
 _MISSING_FILE = [re.compile(p) for p in (
     r"\[Errno 2\] No such file or directory: '([^']+)'",             # FileNotFoundError, or its str() alone
     r"\bCould not find file '([^']+)'",                               # C# FileNotFoundException
+    r"\berror CS2001: Source file '([^']+)' could not be found",       # C# compiler: a .cs the csproj lists
 )]
 
 
@@ -460,8 +466,11 @@ def _outcome(tail) -> list[tuple[str, bool]]:
         # unindented error line, which is kept
         src = bool(_TB_FILE.search(prev)) and ln[:1].isspace()
         # v5 rule 2: an indented line right after a tail cut (or after such an orphan) lost its File line
-        orphan = ((bool(_GAP.match(prev)) or orphan) and ln[:1].isspace()
-                  and not _ERR_LEAD.match(ln) and not _BEH_REPORT.match(ln))
+        run = bool(_GAP.match(prev)) or orphan
+        if ln.strip():
+            orphan = run and ln[:1].isspace() and not _ERR_LEAD.match(ln) and not _BEH_REPORT.match(ln)
+        else:               # a blank line inside the quoted source does not end the orphan run
+            orphan = run
         prev = ln
         if src or orphan or _TB_FILE.search(ln) or _GAP.match(ln) or _PYTEST_FOOTER.match(ln):
             continue
