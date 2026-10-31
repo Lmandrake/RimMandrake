@@ -8,6 +8,12 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
+## From Sat 2026-10-31: closed-loop building (block 3, on top)
+
+Set: 2026-10-31. His words (`CLOSED_LOOP_PROVE_EDIT_RUN_LOOK_AGAIN`): *"Yes. Please make that a high priority. That's how I see Claude mostly write software: edits the code, runs the code, looks at the outcome, edits again."* · *"at the end of the cycle there must be a blind checker, that makes sense, just not inside the debugging loop."*
+
+1. **Closed-loop building**: once arena day 0 closes, one agent owns each problem end to end with the live game, then one blind checker at the end of the cycle. Start with the items routed to a Test Pilot; measure closed items per day against the old route. High priority, under the running trial.
+
 ## From Fri 2026-10-30: the architecture trial (block 2, on top of block 1)
 
 Set: 2026-10-30 00:40Z. His words (note on `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD`): *"Ok. You convinced me. Execute
