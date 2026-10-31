@@ -260,11 +260,13 @@ def sandbox_homes(sandbox_root):
     return out, blocking
 
 
-def tester_captures(arm_logs, helpers, since, until):
+def tester_captures(arm_logs, helpers, since, until, gaps=None):
     """For every MODEL tester the arms' logs say started in the window or up to PRE_WINDOW_S before it (test_start; a detail "model": false runner such as
     ralph_c's live-lane proof runner is exempt): its helper_capture manifest. -> (claude extra roots, gpt dirs
-    [(dir, arm)], blocking). A missing/foreign manifest, skipped files or no Claude transcript at all is BLOCKING."""
+    [(dir, arm)], blocking). A missing/foreign manifest, skipped files or no Claude transcript at all is BLOCKING,
+    except a missing capture the restart sweep proved was killed (killed_gaps): appended to `gaps`, not blocking."""
     extra, gdirs, blocking = [], [], []
+    missing = []                             # (arm, rec, who, why): no capture at all
     for arm, lg in sorted((arm_logs or {}).items()):
         for r in lg.get("recs", ()):
             if r.get("event") != "test_start":
@@ -283,7 +285,7 @@ def tester_captures(arm_logs, helpers, since, until):
             who = "arm %s tester %s (test_start %s, task %s)" % (arm, det.get("tester"), r.get("ts"), r.get("task"))
             man, d = HC.load(r, helpers)
             if man is None:
-                blocking.append("%s ran but its spend is not captured (%s): UNMEASURED" % (who, d))
+                missing.append((arm, r, who, d))
                 continue
             if man.get("skipped"):
                 blocking.append("%s: capture skipped %d file(s) (%s): UNMEASURED"
@@ -293,7 +295,47 @@ def tester_captures(arm_logs, helpers, since, until):
             extra.append((str(d / "claude"), arm, None))
             if man.get("gpt_files"):
                 gdirs.append((str(d / "gpt") + "/", arm))
+    for arm, r, who, d in killed_gaps(missing, helpers, gaps):
+        blocking.append("%s ran but its spend is not captured (%s): UNMEASURED" % (who, d))
     return extra, gdirs, blocking
+
+
+def killed_gaps(missing, helpers, gaps=None):
+    """ARENA_KILLED_TESTER_FIX_VOIDS_WHOLE_TRIAL: each helper_capture kill marker of an arm/task (written by the
+    restart sweep before it emptied the tester tmp) explains AT MOST ONE missing capture of that arm/task: the latest
+    test_start before the sweep not already explained. Explained ones go to `gaps` (a known under-count); a marker that
+    explains nothing is reported in `gaps` too (unused). -> the still-unexplained `missing` (blocking)."""
+    left = list(missing)
+    by = {}
+    for m in missing:
+        by.setdefault((m[0], m[1].get("task")), []).append(m)
+    for (arm, task), ms in sorted(by.items(), key=lambda kv: (kv[0][0], str(kv[0][1]))):
+        if not isinstance(task, str):
+            continue
+        for path, mk in HC.killed_markers(arm, task, helpers):
+            try:
+                sw = L.ts_epoch(mk["swept_ts"])
+            except (ValueError, TypeError):
+                continue
+            cand = []
+            for m in ms:
+                try:
+                    t = L.ts_epoch(m[1].get("ts"))
+                except (ValueError, TypeError):
+                    continue
+                if t <= sw and m in left:
+                    cand.append((t, m))
+            if not cand:
+                if gaps is not None:
+                    gaps.append({"arm": arm, "task": task, "marker": str(path), "unused": True})
+                continue
+            _t, m = max(cand, key=lambda x: x[0])
+            left.remove(m)
+            det = m[1].get("detail") if isinstance(m[1].get("detail"), dict) else {}
+            if gaps is not None:
+                gaps.append({"arm": arm, "task": task, "run_id": m[1].get("run_id"), "ts": m[1].get("ts"),
+                             "tester": det.get("tester"), "marker": str(path), "swept_ts": mk["swept_ts"]})
+    return left
 
 
 STALE_MARGIN_S = 3600       # a crash tail is excused only when its file was last written this long before the window
@@ -378,7 +420,8 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
     if clones_root is None:     # ARENA_SPEND_FIX_DEFAULT_ROOT_DROPS_BUILDER: the runner's own path helper, one truth
         clones_root = str(default_clones_root())
     harness_roots = [R.arena_root() / "judge"]
-    extra, gdirs, cap_blocking = tester_captures(arm_logs, helpers, since, until)
+    gaps = []
+    extra, gdirs, cap_blocking = tester_captures(arm_logs, helpers, since, until, gaps)
     homes, home_blocking = sandbox_homes(sandbox_root)
     cl, gp, diag = [], [], {}
     by_arm = S.claude_spend_by_arm(projects=projects, arms=sorted(arm_logs), arena_root=clones_root, since=since,
@@ -412,8 +455,30 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
             doc["blocking"].append("meter UNATTRIBUTED %s: %s ITE of Claude spend under the arena root on no one arm"
                                    % (why, ite))
     doc["blocking"].extend(container_buckets(doc, clones_root))
+    record_gaps(doc, gaps)
     doc["logs"] = AA.spend_log_binding(arm_logs)
     return doc
+
+
+def record_gaps(doc, gaps):
+    """Known tester gaps (killed_gaps) into the doc: doc["tester_gaps"] = {"count", "by_arm_task", "items"}, the
+    row's "tester_gaps" count, and an UNDER-COUNT flag per gap (the killed tester's spend is NOT in that row)."""
+    real = [g for g in gaps if not g.get("unused")]
+    bat = {}
+    for g in real:
+        bat.setdefault(g["arm"], {}).setdefault(g["task"], 0)
+        bat[g["arm"]][g["task"]] += 1
+        row = (doc.get("arms") or {}).get(g["arm"], {}).get(g["task"])
+        if isinstance(row, dict):
+            row["tester_gaps"] = row.get("tester_gaps", 0) + 1
+        doc["flags"].append("UNDER-COUNT: arm %s task %s tester %s (test_start %s) was killed before its capture "
+                            "(kill marker %s): its spend is a known gap, not metered" % (
+                                g["arm"], g["task"], g.get("tester"), g.get("ts"), g["marker"]))
+    for g in gaps:
+        if g.get("unused"):
+            doc["flags"].append("kill marker %s explains no missing capture (killed after its capture): no gap"
+                                % g["marker"])
+    doc["tester_gaps"] = {"count": len(real), "by_arm_task": bat, "items": gaps}
 
 
 def default_clones_root():

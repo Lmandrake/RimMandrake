@@ -35,6 +35,7 @@ CLI: arena.py trial-runner --arm {ralph_a,trio,v3} [--ctl DIR] [--model-cmd CMD]
 """
 from __future__ import annotations
 
+import datetime
 import json
 import os
 import shlex
@@ -444,9 +445,43 @@ def tester_tmp(arm, tid, env=None):
     if _fs_type(rb) in ("tmpfs", "ramfs"):
         raise RunRefused("tester temp base %s is on %s (RAM, charged to the slice): refused" % (rb, _fs_type(rb)))
     d = Path(rb) / arm / tid
+    sweep_killed_testers(Path(rb) / arm, arm, env)      # BEFORE anything is emptied
     tester_tmp_done(d)
     d.mkdir(parents=True)
     return d
+
+
+def sweep_killed_testers(arm_dir, arm, env=None):
+    """ARENA_KILLED_TESTER_FIX_VOIDS_WHOLE_TRIAL: a tester root (rt-*, or its rt-*.mirror) still under
+    <tester base>/<arm>/<task> at a task start was left by a runner killed mid-tester (a finished tester's root is
+    captured, then removed). Record each in the helper store (helper_capture.mark_killed) before the tmp is emptied,
+    so arena_spend reads that tester's missing capture as a known, counted gap, not an unknown. -> [marker paths].
+    A failure to record is reported and the run goes on: the missing capture then stays blocking (strict)."""
+    import helper_capture as HC
+    env = os.environ if env is None else env
+    base = env.get("ARENA_METER_HELPERS", "").strip() or None
+    swept = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds")
+    out = []
+    try:
+        tasks = sorted(os.listdir(arm_dir))
+    except OSError:
+        return out
+    for task in tasks:
+        td = Path(arm_dir) / task
+        if td.is_symlink() or not td.is_dir():
+            continue
+        try:
+            names = os.listdir(td)
+        except OSError:
+            continue
+        roots = sorted({n[:-len(".mirror")] if n.endswith(".mirror") else n for n in names if n.startswith("rt-")})
+        for rn in roots:
+            try:
+                out.append(HC.mark_killed(arm, task, rn, swept, base=base))
+            except (OSError, ValueError) as e:
+                print("arena_replay_run: could not record killed tester %s/%s/%s (%s): its missing capture stays "
+                      "blocking" % (arm, task, rn, e), file=sys.stderr)
+    return out
 
 
 def tester_tmp_done(d):

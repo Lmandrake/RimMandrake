@@ -525,6 +525,91 @@ def t_default_root(tmp):
     os.environ.pop("RM_ARENA_ROOT", None)
 
 
+
+# ------------------------------------------------------------------ killed tester (ARENA_KILLED_TESTER_FIX_VOIDS_WHOLE_TRIAL)
+
+def t_killed_tester(tmp):
+    """A runner SIGKILLed mid-tester leaves its rt-* root under <tester tmp>/<arm>/<task> and no capture. The restart
+    sweep (arena_replay_run.tester_tmp, before it empties) writes a kill marker; the meter then counts ONE known gap
+    for that arm/task (flagged UNDER-COUNT, doc tester_gaps) instead of blocking. Every other loss still blocks."""
+    import arena_replay_run as RR
+    base = tmp / "killed"
+    helpers, ttmp = base / "helpers", Path(tempfile.mkdtemp(prefix="st_sp_kt_", dir="/var/tmp"))
+    env = {"ARENA_METER_HELPERS": str(helpers), "RALPH_A_TESTER_TMP": str(ttmp)}
+    now = int(time.time())
+    try:
+        def ts_rec(task, t, tester="v3-test-1", run="v3.replay.2"):
+            return {"event": "test_start", "arm": "v3", "task": task, "run_id": run, "ts": iso(t), "lane": "test",
+                    "detail": {"tester": tester, "build_id": task + ".b"}}
+
+        def caps(recs, h=helpers):
+            gaps = []
+            _e, _g, blk = SP.tester_captures({"v3": {"recs": recs}}, str(h), now - 3600, now + 3600, gaps)
+            return blk, gaps
+        killed = ts_rec("T1", now - 120)
+        root = Path(os.path.realpath(ttmp)) / "v3" / "T1" / "rt-k1"
+        root.mkdir(parents=True)
+        (root.parent / "rt-k1.mirror").mkdir()
+        blk, gaps = caps([killed])
+        check(len(blk) == 1 and not gaps, "killed tester: before the sweep the missing capture BLOCKS", (blk, gaps))
+        d = RR.tester_tmp("v3", "T1", env=env)
+        mk = HC.killed_markers("v3", "T1", str(helpers))
+        check(d.is_dir() and not any(d.iterdir()) and len(mk) == 1 and mk[0][1]["root"] == "rt-k1",
+              "killed tester: the restart sweep records ONE marker (root + its mirror) before emptying the tmp", mk)
+        RR.tester_tmp("v3", "T1", env=env)
+        check(len(HC.killed_markers("v3", "T1", str(helpers))) == 1, "killed tester: a re-sweep is idempotent")
+        blk, gaps = caps([killed])
+        check(not blk and len(gaps) == 1 and gaps[0]["tester"] == "v3-test-1" and gaps[0]["task"] == "T1",
+              "killed tester: the marked missing capture is a KNOWN gap, not blocking", (blk, gaps))
+        blk, gaps = caps([ts_rec("T1", now - 300, "v3-test-0", "v3.replay.0"), killed])
+        check(len(blk) == 1 and "v3-test-0" in blk[0] and len(gaps) == 1 and gaps[0]["tester"] == "v3-test-1",
+              "killed tester MUTANT: one marker explains ONE missing capture (the latest before the sweep); a second "
+              "still blocks", (blk, gaps))
+        blk, gaps = caps([ts_rec("T2", now - 120)])
+        check(len(blk) == 1, "killed tester MUTANT: a marker of another task explains nothing (blocks)", blk)
+        blk, gaps = caps([ts_rec("T1", now + 600)])
+        check(len(blk) == 1 and gaps and gaps[0].get("unused"),
+              "killed tester MUTANT: a test_start AFTER the sweep is not explained by it (blocks; marker unused)",
+              (blk, gaps))
+        blk, gaps = caps([killed], h=base / "other_helpers")
+        check(len(blk) == 1 and not gaps, "killed tester MUTANT: a gap with no marker still blocks", blk)
+        # a tmp emptied with NO sweep (the pre-fix start): no marker, still blocks
+        r2 = Path(os.path.realpath(ttmp)) / "v3" / "T3" / "rt-k3"
+        r2.mkdir(parents=True)
+        real = RR.sweep_killed_testers
+        RR.sweep_killed_testers = lambda *a, **k: []
+        try:
+            RR.tester_tmp("v3", "T3", env=env)
+        finally:
+            RR.sweep_killed_testers = real
+        blk, gaps = caps([ts_rec("T3", now - 120)])
+        check(not r2.exists() and len(blk) == 1 and not gaps,
+              "killed tester MUTANT: a tmp emptied with no kill marker still blocks", (blk, gaps))
+        # a forged/edited marker (wrong why, or root name not its file) is not a marker
+        p = mk[0][0]
+        doc = json.loads(p.read_text())
+        for name, bad in (("another why", dict(doc, why="x")), ("another root", dict(doc, root="rt-zz")),
+                          ("another arm", dict(doc, arm="trio"))):
+            p.write_text(json.dumps(bad))
+            blk, gaps = caps([killed])
+            check(len(blk) == 1, "killed tester MUTANT: a marker with %s is not a marker (blocks)" % name, blk)
+        p.write_text(json.dumps(doc))
+        # meter level: the gap is counted per arm/task in the doc, flagged UNDER-COUNT, and the doc stays usable
+        logs = {"v3": {"recs": [{"event": "pass_start", "arm": "v3", "task": "T1", "run_id": "v3.replay.1",
+                                 "lane": "build", "ts": iso(now - 200)}, killed,
+                                {"event": "pass_end", "arm": "v3", "task": "T1", "run_id": "v3.replay.1",
+                                 "lane": "build", "ts": iso(now - 10)}]}}
+        dm = SP.meter(logs, projects=str(base / "nopj"), clones_root="/nonexistent", gpt_log=str(base / "none.jsonl"),
+                      helpers=str(helpers), sandbox_root=str(base / "sb"), since=now - 300, until=now)
+        tg = dm.get("tester_gaps") or {}
+        check(not dm["blocking"] and tg.get("count") == 1 and tg.get("by_arm_task") == {"v3": {"T1": 1}}
+              and any(f.startswith("UNDER-COUNT") for f in dm["flags"]),
+              "killed tester: the doc counts the gap per arm/task (tester_gaps) and flags the UNDER-COUNT",
+              (dm["blocking"], tg))
+    finally:
+        shutil.rmtree(ttmp, ignore_errors=True)
+
+
 # ------------------------------------------------------------------ e2e
 
 def setup_env(tmp, name):
@@ -997,6 +1082,7 @@ def main():
         t_census(tmp)
         t_stale_tail(tmp)
         t_default_root(tmp)
+        t_killed_tester(tmp)
         t_e2e(tmp)
         t_main_wiring(tmp)
         t_mutations(tmp)

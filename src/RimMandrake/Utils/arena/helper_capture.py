@@ -485,3 +485,65 @@ def load(rec: dict, base=None):
             any(man.get(k) != v for k, v in ident(rec).items()):
         return None, "capture manifest %s does not match its test_start" % mp
     return man, d
+
+
+# ------------------------------------------------------------------ killed testers (ARENA_KILLED_TESTER_FIX_VOIDS_WHOLE_TRIAL)
+# A runner SIGKILLed mid-tester never reaches capture_tester (it runs in a finally), and the next start empties the
+# tester tmp. The restart sweep (arena_replay_run.tester_tmp, harness side, BEFORE it empties anything) records each
+# leftover tester root it finds here, in the helper store (masked from arms). arena_spend then reads ONE uncaptured
+# test_start of that arm/task, started before the sweep, as a KNOWN gap (counted, under-count flagged) instead of
+# a blocking unknown. No marker -> still blocking.
+KILLED_DIR = "tester_killed"
+KILLED_SCHEMA = 1
+KILLED_WHY = "tester root left by a killed runner: recorded by the restart sweep before the tester tmp was emptied"
+
+
+def killed_dir(arm: str, task: str, base=None) -> Path:
+    for what, v in (("arm", arm), ("task", task)):
+        if not isinstance(v, str) or not ARM_NAME.fullmatch(v) or v.endswith("."):
+            raise ValueError("bad %s name %r" % (what, v))
+    return Path(base or root()) / arm / KILLED_DIR / task
+
+
+def mark_killed(arm: str, task: str, root_name: str, swept_ts: str, base=None) -> Path:
+    """Record one leftover tester root `root_name` of arm/task (idempotent per root: a re-sweep keeps the first)."""
+    if not isinstance(root_name, str) or not ARM_NAME.fullmatch(root_name):
+        raise ValueError("bad tester root name %r" % (root_name,))
+    d = killed_dir(arm, task, base)
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / (root_name + ".json")
+    if p.exists():
+        return p
+    doc = {"schema": KILLED_SCHEMA, "arm": arm, "task": task, "root": root_name, "swept_ts": swept_ts,
+           "why": KILLED_WHY}
+    fd, tmp = tempfile.mkstemp(prefix=".k-", dir=str(d))
+    with os.fdopen(fd, "w") as f:
+        json.dump(doc, f, sort_keys=True)
+    os.replace(tmp, p)
+    return p
+
+
+def killed_markers(arm: str, task: str, base=None) -> list:
+    """[(path, doc)] of valid kill markers of arm/task, oldest sweep first; a malformed marker is not a marker."""
+    try:
+        d = killed_dir(arm, task, base)
+    except ValueError:
+        return []
+    out = []
+    try:
+        names = sorted(os.listdir(d))
+    except OSError:
+        return []
+    for n in names:
+        p = d / n
+        if not n.endswith(".json") or n.startswith(".") or p.is_symlink() or not p.is_file():
+            continue
+        try:
+            doc = json.loads(p.read_text())
+        except (OSError, ValueError):
+            continue
+        if (isinstance(doc, dict) and doc.get("schema") == KILLED_SCHEMA and doc.get("arm") == arm
+                and doc.get("task") == task and doc.get("why") == KILLED_WHY and isinstance(doc.get("swept_ts"), str)
+                and doc.get("root") == n[:-5]):
+            out.append((p, doc))
+    return sorted(out, key=lambda x: (x[1]["swept_ts"], str(x[0])))
