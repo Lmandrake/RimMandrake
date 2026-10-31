@@ -181,6 +181,11 @@ ARM_BOOKKEEPING = ("AGENTS.md", "*/AGENTS.md", "PROMPT.md", "fix_plan.md", "IMPL
                    "*/arm.toml", "CLAUDE.md", "*/CLAUDE.md", "CLAUDE.local.md", "GEMINI.md", ".claude/*", "*/.claude/*",
                    ".codex/*", "*/.codex/*", ".ralph/*", "*/.ralph/*", "specs/*", ".cursor/*", ".aider*")
 TREE_PATHS = ("src/RimMandrake/Utils", "src/RimMandrake/rimflow")   # what hidden checks import; src is ~2 GB
+# ARENA_CSHARP_CHECK_BUILD_IN_JUDGE_SANDBOX: a hidden check that builds C# (selftest_coldstorage, the *_fuzz ones) stages
+# through winbuild.stage_build, which always copies these two files; every tree gets them (two small files)
+BUILD_FILES = ("src/Directory.Build.props", "src/Directory.Build.targets")
+# a check whose body names winbuild or dotnet runs Windows dotnet.exe: it gets the interop shape (see run_hidden)
+BUILDS_CSHARP_RE = re.compile(r"\bwinbuild\b|\bdotnet(?:\.exe)?\b")
 CHECK_TIMEOUT = 300
 MODEL_TIMEOUT = 1500
 VERDICTS = ("accept", "reject")
@@ -410,12 +415,15 @@ def judge_env(extra: dict | None, priv: Path | None, kind: str = "model", base: 
 
 def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | None = None,
                   timeout: int = CHECK_TIMEOUT, env: dict | None = None, cwd: Path | None = None,
-                  rw: list[Path] | None = None, kind: str = "model"):
+                  rw: list[Path] | None = None, kind: str = "model", interop: bool = False):
     """`rw` defaults to [work]; a hidden check passes its own per-check scratch copy instead. `env` holds only the
     caller's EXTRA variables (the rest is judge_env's allow-list for `kind`). On timeout the whole process group is
-    SIGKILLed (bwrap --die-with-parent then takes the pid namespace, grandchildren included)."""
+    SIGKILLed (bwrap --die-with-parent then takes the pid namespace, grandchildren included). `interop` (a check
+    that builds C#) keeps the sandbox's own /proc: WSL interop's /init reads /proc/self/mountinfo and dies on a
+    tmpfs /proc, so no dotnet.exe could start."""
     keep = [work] if rw is None else list(rw)
-    full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work, proc=kind != "check")
+    full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work,
+                        proc=kind != "check" or interop)
     proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind, own=work),
                             start_new_session=True)
@@ -817,7 +825,7 @@ def materialise(clone: Path, head: str, area: list[str], dest: Path, tree_paths=
     commit timestamps, no in-tree attribute processing). Read from a SafeRepo: `ls-tree -r -z` then `cat-file
     --batch`. A symlink is kept only when relative and resolving inside dest; submodules are skipped; a path with a
     `..`/`.git` component, or one reaching through a symlink, refuses (JudgeError)."""
-    want = set(tree_paths)
+    want = set(tree_paths) | set(BUILD_FILES)
     for g in area:
         d = g.split("*", 1)[0].rstrip("/")
         if d and d != ".":
@@ -1169,6 +1177,35 @@ def _write_check(scratch: Path, rel: str, body: str) -> Path:
     return target
 
 
+def win_stage_root() -> Path:
+    """Where a C#-building check stages for Windows dotnet.exe: a D: dir (dotnet.exe cannot build from \\\\wsl$),
+    $ARENA_WIN_STAGE_ROOT else <data root>/build/arena_check (beside winbuild's own BUILD_ROOT)."""
+    v = os.environ.get("ARENA_WIN_STAGE_ROOT", "").strip()
+    if v:
+        return Path(v)
+    if str(UTILS) not in sys.path:
+        sys.path.insert(0, str(UTILS))
+    from rmpaths import rm_str
+    return Path(rm_str("build")) / "arena_check"
+
+
+def csharp_check_env(scratch: Path, priv: Path | None = None) -> tuple[Path, dict]:
+    """ARENA_CSHARP_CHECK_BUILD_IN_JUDGE_SANDBOX -> (stage, env) for a check that builds C#: a fresh empty stage dir on
+    D: (bound read-write, removed after the check) as WINBUILD_ROOT, and winbuild's flock dir inside the check's own
+    scratch (the shared ~/.cache one is read-only here). The stage may not sit inside anything the judge masks, or
+    binding it would reopen that path. RESIDUAL (ARENA_SANDBOX_HARDEN_INTEROP_STEP_LEGACY, deliberately unhardened,
+    owner threat model non-adversarial): dotnet.exe and anything a csproj Exec target starts run on Windows, OUTSIDE
+    bwrap, and could read D:\\ (the arena root included); the Linux side of the check still sees every mask."""
+    root = win_stage_root()
+    for m in judge_masks(priv):
+        if _inside(root, m) or _inside(m, root):
+            raise JudgeError("C# check stage root %s overlaps judge mask %s" % (root, m))
+    root.mkdir(parents=True, exist_ok=True)
+    import tempfile
+    stage = Path(tempfile.mkdtemp(prefix="c", dir=str(root)))
+    return stage, {"WINBUILD_ROOT": str(stage), "WINBUILD_LOCK_DIR": str(scratch / ".winbuild_locks")}
+
+
 def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None = None,
                timeout: int = CHECK_TIMEOUT) -> list[dict]:
     """Each check runs in its OWN copy of the tree, the only writable path in its sandbox: arm code imported by one
@@ -1189,9 +1226,19 @@ def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None 
             res.append({"kind": c["kind"], "path": c["path"], "rc": None, "result": "fail", "tail": str(ex)})
             continue
         nonce = secrets.token_hex(16)
-        r = run_sandboxed([sys.executable, "-P", "-c", RUNNER, str(target)], work=work, priv=priv,
-                          stdin=(nonce + "\n").encode(), timeout=timeout, cwd=scratch, rw=[scratch],
-                          env={"PYTHONDONTWRITEBYTECODE": "1"}, kind="check")
+        env, rw, stage = {"PYTHONDONTWRITEBYTECODE": "1"}, [scratch], None
+        interop = bool(BUILDS_CSHARP_RE.search(c["body"]))
+        if interop:
+            stage, more = csharp_check_env(scratch, priv)
+            env.update(more)
+            rw.append(stage)
+        try:
+            r = run_sandboxed([sys.executable, "-P", "-c", RUNNER, str(target)], work=work, priv=priv,
+                              stdin=(nonce + "\n").encode(), timeout=timeout, cwd=scratch, rw=rw,
+                              env=env, kind="check", interop=interop)
+        finally:
+            if stage is not None:
+                shutil.rmtree(stage, ignore_errors=True)
         result = _check_result(r.returncode, r.stdout, nonce)
         tail = (r.stdout + r.stderr).decode("utf-8", "replace").replace(nonce, "<NONCE>")[-1500:]
         row = {"kind": c["kind"], "path": c["path"], "rc": r.returncode, "result": result, "tail": tail}
