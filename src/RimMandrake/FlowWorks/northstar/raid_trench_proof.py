@@ -29,7 +29,36 @@ Rows:
   RAID_LADDER_BREACH        PASS/FAIL  (--depth <= 6) RAIDERS_TRENCH A2: raider ladders on BOTH walls and a raider used them.
   RAID_FILL_CAUSEWAY        PASS/FAIL  (--depth 8, past the portable ladder reach) RAIDERS_TRENCH A3: a ring square filled
                                        shallower than dug and a raider used it. First live run 2026-10-22: FAIL, raiders
-                                       Wait at the lip (CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP).
+                                       Wait at the lip (CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP). UNMEASURED (SITE) when a
+                                       --direct raid holds no shovel and filled nothing (--shovels 0).
+
+CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP, test-pilot sitting 2026-10-31 (Archmagi, 11-mod flowworks tier, --direct --depth 8
+--fresh-map; probes read RM_RaiderTrench.ProofDecision / ProofJobTrace and RM_Shovels.HasShovel per raider):
+  FOUND (HARNESS): --direct spawns through jawa/spawn_pawn, so IncidentWorker_Raid.PostProcessSpawnedPawns never runs and
+    RM_Patch_Raid_Shovels hands out no shovel (the 25 % hash picked raider 16485; it had none). All six read
+    "None line=0/4/0/0/8/8/8/0": a crossing plan and no means. FillJob is null without a shovel (owner 2026-10-25: "raiders
+    need shovels"), Choose says None, and vanilla's JobGiver_WanderAnywhere / AIFightEnemies hold them 18+ squares out.
+    That IS the wait at the lip. Check that killed doubt: one raider handed a shovel live -> RM_RaiderFetchFill at once.
+  FOUND (MOD, by design?): a shovel-holding GUNNER fetched one load, then JobGiver_AIFightEnemies (vanilla, before
+    ours in AssaultColony) kept him in Wait_Combat at colonists across the trench for ~6,000 ticks; one more load at
+    +6,400. Shovels go to melee raiders first here; whether shooters should stop to shovel is filed for the owner.
+  FOUND (SITE), run2 with 2 shovels: the open island let the gunners down all 3 colonists by t+4000; the lord turned to
+    Kidnap (LordToil_KidnapCover, no CrossTrench in that duty) and the shovellers, one load each, Waited to the end.
+    Every --direct run now boxes the colonists in granite (Chebyshev 3), as the jump-pack runs already did.
+  FOUND (SITE): a colonist off the island makes the target reachable: ProofDecision "GoAround <colonist>"; the raid
+    chases him, no fill. det.colonistsOffIsland records it.
+  FOUND (MOD, tuning), run3 boxed, 2 shovels: both slashers sat in RM_RaiderFillTrench from t703 / t3837 to the end and
+    no square changed. One level is LabourWork(1600, x4) = 6400 work / (MiningSpeed x 1.7 x raiderFillSpeed 0.5); live
+    MiningSpeed 0.478 and 0.1 (the FillTicks floor; 4 of 6 raiders read 0.1) price it at ~15,700 and ~75,000 ticks. The
+    raid departed at t+29,135. FillWorkPerLevel's doc ("~2,800 ticks") predates the x4 labour and x0.5 raider knobs.
+    Check that decided it, run4 --fill-speed 4 (x8, restored and read back 0.5): fills landed, 131,122 -> 6, 131,125 -> 7.
+    The mechanism works; the shipped price outlasts the raid. Filed for a tuning ruling (the owner's "a lot of time").
+  OPEN, untraced: in run3 the 0.478 slasher's first fill ended near t16.4k and (131,127) still read depth 8, fill 0;
+    he fetched again and restarted. Shared square (two fillers, one credit) is presumed, unproven.
+  RULED OUT: the re-issue loop (BENCH, earlier: workEnds sameTick=0). RULED OUT: no crossing plan (a line was read for
+    every raider). FALSE THEORY (kept): "fill speed is not the cause, nobody was filling" -- true only until shovels were
+    handed out; with them, fill speed is the next wall (run3/run4 above).
+  NOT A CAUSE but a confound: the extra Mechanoid SleepThenAssault lord (2-3 pawns, dormant through runs 2-4).
   LADDER_PARITY_* rows (LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner by card 2026-10-23; design
   design/RimMandrake/ladder_parity_2026-10-23.md; reads/acts through RM_LadderParity.ProofLadderParity):
   LADDER_PARITY_BREACH_SCAR_REPAIR      (--depth 8) every square the raid filled carries a breach scar at its dug depth,
@@ -166,6 +195,36 @@ def job_trace(B, pid):
     return str(r.get("result") or "no answer")[:600]
 
 
+def static_text(B, typ, method, arg):
+    """One jawa/static_call as text; a refusal or a raise is its own text (diagnostics, never a crash)."""
+    try:
+        r = B.call("jawa/static_call", type=typ, method=method, args=arg, _answer=True) or {}
+    except Exception as ex:  # noqa: BLE001 - diagnostics only
+        return ("unread: %s: %s" % (type(ex).__name__, ex))[:300]
+    return str(r.get("result") if r.get("result") is not None else (r.get("message") or "no answer"))[:300]
+
+
+def shovel_order(kinds):
+    """kinds: [(id, kindDef)] -> ids, melee (Slasher) first, else spawn order. Pure."""
+    return [i for i, k in kinds if "Slasher" in str(k)] + [i for i, k in kinds if "Slasher" not in str(k)]
+
+
+def give_shovels(B, ids, n, cell):
+    """Spawn n RM_Shovel at cell and move each into a raider's pack; returns the ids that READ BACK HasShovel True."""
+    if n <= 0 or not ids:
+        return []
+    lp = B.call("jawa/list_pawns", includeHealth=False, includeCorpses=False, limit=500) or {}
+    kind = {str(p.get("id")): p.get("kindDef") for p in lp.get("pawns") or []}
+    held = []
+    for pid in shovel_order([(i, kind.get(i)) for i in ids])[:n]:
+        sp = B.call("rimworld/spawn_thing", defName="RM_Shovel", x=cell[0], z=cell[1]) or {}
+        if sp.get("thingId"):
+            B.call("jawa/inventory_transfer", pawn=pid, mode="add", thing=sp["thingId"])
+        if static_text(B, "RimMandrake.FlowWorks.RM_Shovels", "HasShovel", pid) == "True":
+            held.append(pid)
+    return held
+
+
 def parity(B, arg):
     """RM_LadderParity.ProofLadderParity, as text; a refused or raising call is its own text, never a crash."""
     try:
@@ -206,12 +265,33 @@ def maskswap_verdict(came_near, sealed, crossed, ways, staged_way):
     return "UNMEASURED" if (ways or staged_way) else "FAIL"
 
 
+TRENCH_SETTINGS = "RimMandrake.FlowWorks.RM_RaiderTrenchSettings"
+
+
+def set_setting(B, typ, field, value):
+    """jawa/mod_settings_field set, then a get: (True, after) only when the read-back equals what was asked."""
+    try:
+        B.call("jawa/mod_settings_field", typeName=typ, action="set", field=field, value=str(value))
+        got = B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}
+        vals = [f_.get("value") for f_ in got.get("fields") or [] if f_.get("name") == field]
+        after = vals[0] if vals else got.get("value")
+        return (after is not None and abs(float(after) - float(value)) < 1e-6), after
+    except Exception as ex:  # noqa: BLE001 - an unread restore is reported, never assumed
+        return False, "%s: %s" % (type(ex).__name__, ex)
+
+
 def main(argv=None):
     """Runs the proof; the storyteller setting is restored in a finally whatever the body does (raise, Ctrl-C, early return)."""
     hold = {}
     try:
         return _run(argv, hold)
     finally:
+        if hold.get("fillSpeedPrior") is not None:
+            # --fill-speed compresses the shovelling; the shipped value goes back whatever the body did, and is read back
+            ok, note = set_setting(hold["B"], TRENCH_SETTINGS, "raiderFillSpeed", hold["fillSpeedPrior"])
+            print("raiderFillSpeed restore: %s %s" % (ok, note), flush=True)
+            if hold.get("log") is not None:
+                hold["log"].append("raiderFillSpeed restore: %s %s" % (ok, note))
         if hold.get("changed"):
             ok, note = restore_storyteller(hold["B"], hold.get("prior"))
             print("storyteller restore: %s" % note, flush=True)
@@ -245,6 +325,15 @@ def _run(argv, hold):
                     "ladder reach: RAIDERS_TRENCH A3 expects a fill causeway)")
     ap.add_argument("--direct", action="store_true", help="spawn 6 pirates 30 squares east into LordJob_AssaultColony "
                     "instead of a storyteller raid (which may stage or mill far off)")
+    ap.add_argument("--shovels", type=int, default=2, help="--direct only: hand this many raiders an RM_Shovel (melee "
+                    "first); spawn_pawn skips PostProcessSpawnedPawns, where a real raid gets its shovels. 0 = none: a "
+                    "fill row is then UNMEASURED (no shovel, no fill is the owner's rule)")
+    ap.add_argument("--exposed", action="store_true", help="--direct only: no granite box round the colonists (the "
+                    "gunners then shoot them down across the trench and the lord turns to Kidnap)")
+    ap.add_argument("--fill-speed", type=float, default=None, help="COMPRESSION (debug_process long-duration rule): set "
+                    "RM_RaiderTrenchSettings.raiderFillSpeed for the run (shipped 0.5, slider max 4), restored and read "
+                    "back after. At shipped values one level is 6400 work / (MiningSpeed x 1.7 x 0.5): a raider at the "
+                    "0.1 floor needs ~75,000 ticks, longer than the raid stays")
     a = ap.parse_args(argv)
     import validation_core as V
     B = V.Bridge()
@@ -299,6 +388,17 @@ def _run(argv, hold):
     if not (off.get("success") is True and off.get("valueAfter") is False):
         say("WARNING: storyteller NOT confirmed off (%s): a stray incident may land on the island" % json.dumps(off, default=str)[:200])
         res["storytellerOff"] = "UNCONFIRMED"
+    if a.fill_speed is not None:
+        got = B.call("jawa/mod_settings_field", typeName=TRENCH_SETTINGS, action="get", field="raiderFillSpeed") or {}
+        vals = [f_.get("value") for f_ in got.get("fields") or [] if f_.get("name") == "raiderFillSpeed"]
+        prior = vals[0] if vals else got.get("value")
+        if prior is None:
+            say("WARNING: raiderFillSpeed unread; --fill-speed NOT applied (%s)" % json.dumps(got, default=str)[:200])
+        else:
+            hold["fillSpeedPrior"] = prior
+            ok, after = set_setting(B, TRENCH_SETTINGS, "raiderFillSpeed", a.fill_speed)
+            res["fillSpeed"] = {"prior": prior, "set": a.fill_speed, "readBack": after, "ok": ok}
+            say("raiderFillSpeed %s -> %s (read back %s)" % (prior, a.fill_speed, after))
     # PROOF_SWEEPS_FIX_OTHER_ZOOS_STILL_OPEN: on a map we did not make keep its own non-colonists (staged animals, prisoners)
     res["sweep_start"] = V.sweep_at_start(B, made_map=a.fresh_map)
     B.call("rimworld/set_god_mode", enabled=True)
@@ -329,7 +429,10 @@ def _run(argv, hold):
     cols = B.probe_of(HPROBE, "colonists").get("pawns") or []
     for i, p in enumerate(cols):
         B.probe_of(HPROBE, "pawn:%d=tp:%d,%d" % (p["id"], c[0] - 2 + (i % 4), c[1] + (i // 4)))
-    if a.jump_packs or a.preladder or a.colony_ladders:
+    # SITE (test pilot 2026-10-31, run2: the fill run had no box): the same shooting downed all 3 colonists by t+4000, the
+    # lord left AssaultColony for Kidnap (LordToil_KidnapCover; its duty has no JobGiver_RM_CrossTrench) and both shovellers
+    # stood in Wait to the end. Every --direct run gets the box now; --exposed keeps the old open island.
+    if (a.direct and not a.exposed) or a.jump_packs or a.preladder or a.colony_ladders:
         # SITE (belt live 2026-10-22, first --jump-packs run): the gunners shot every island colonist down across the moat by
         # t+4000, after which RM_RaiderTrench.TargetFor has no free colonist and nobody crosses. The colonists stand inside a
         # closed granite box (Chebyshev 3), out of sight, as drawbridge_proof's RAID_UP does.
@@ -337,8 +440,8 @@ def _run(argv, hold):
         B.call("jawa/spawn_batch", ops=";".join("Wall:%d,%d" % b_ for b_ in box), stuff="BlocksGranite")
     feed()
     adv(70)
-    say("scene: centre %s, island 9x9, trench %d squares D 4 (2 m) width 2, colonists on the island: %s" % (
-        c, len(ring), [p["id"] for p in cols]))
+    say("scene: centre %s, island 9x9, trench %d squares D %d (%g m) width 2, colonists on the island: %s" % (
+        c, len(ring), a.depth, a.depth / 2.0, [p["id"] for p in cols]))
 
     # ------------------------------------------------------------ sealed?
     # the masks derive lazily (LIVE 2026-10-17: the first read after digging said bits=0xFF derived=False, a read of an
@@ -374,6 +477,18 @@ def _run(argv, hold):
         for kind, n in (("Mercenary_Gunner", 4), ("Mercenary_Slasher", 2)):
             sp = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0] + 30, z=c[1], faction=fac, count=n) or {}
             ids += [str(p_.get("id")) for p_ in sp.get("pawns") or []]
+        # CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (test pilot, live 2026-10-31): spawn_pawn skips IncidentWorker_Raid's
+        # PostProcessSpawnedPawns, so RM_Patch_Raid_Shovels hands this raid NO shovel. FillJob is null without one, Choose
+        # says None, and vanilla's wander / AIFightEnemies keep the raid 18+ squares out: the "wait at the lip". Every
+        # --direct raid before this was unable to fill by construction. Hand --shovels of them one (melee first: a gunner
+        # with a sight line is held by JobGiver_AIFightEnemies, which runs before ours) and read it back.
+        res["shovelHolders"] = give_shovels(B, ids, a.shovels, (c[0] + 30, c[1]))
+        say("shovels handed to %s (asked %d)" % (res["shovelHolders"], a.shovels))
+        # run3 (live): the two slashers shovelled one square for 15,000+ ticks; MiningSpeed 0.478 and 0.1 (the floor)
+        # price one level at ~15,700 and ~75,000 ticks. Record it: a FAIL with every holder that slow is the price, not a stall
+        res["holderMiningSpeed"] = {h: static_text(B, "RimWorld.StatExtension", "GetStatValue", "%s|MiningSpeed|true|-1" % h)
+                                    for h in res["shovelHolders"]}
+        say("holder MiningSpeed %s" % res["holderMiningSpeed"])
         if a.preladder or a.colony_ladders:
             pre = "RM_LadderPortable:%d,%d,1;RM_LadderPortable:%d,%d,3" % (c[0] + 6, c[1], c[0] + 5, c[1])   # outer wall faces the east bank, inner the island
             # LADDER_PARITY: --colony-ladders builds the same two ladders as the PLAYER's (build_batch's default faction)
@@ -467,6 +582,12 @@ def _run(argv, hold):
     if samples:
         det["jobTrace"] = {r_["id"]: job_trace(B, r_["id"])
                            for r_ in (samples[-1]["raiders"] if samples else []) if r_.get("spawned") and not r_.get("dead")}
+        # what RM_RaiderTrench would choose for each now: "None line=..." = a plan and no means (no shovel, no ladder
+        # wood, no fill material); "GoAround X" = a target reachable (a colonist off the island); read-only (dryRun)
+        det["decision"] = {i_: static_text(B, "RimMandrake.FlowWorks.RM_RaiderTrench", "ProofDecision", i_)
+                           for i_ in det["jobTrace"]}
+        last_c = samples[-1].get("colonists") or []
+        det["colonistsOffIsland"] = [q["id"] for q in last_c if q["x"] is not None and cheb((q["x"], q["z"]), c) > 4]
     row("RAID_outcome", "MEASURED", dict(outcome=words, **det))
     cameNear = len(det["cameNear"])
     crossed = det["onIsland"] + det["inTrench"]
@@ -513,6 +634,8 @@ def _run(argv, hold):
         # 4 m: past the portable ladder's reach -> the fill causeway is the legal way (A3); a ladder there is a FAIL of its own
         a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" or filled is None else
               "PASS" if (filled and used) else "FAIL")
+        if a.direct and not res.get("shovelHolders") and not filled:
+            a2 = "UNMEASURED"   # SITE: a raid with no shovel cannot fill (owner 2026-10-25); its waiting is the rule, not a bug
     if a.jump_packs:
         # A4: a raider who reached the island over a trench nobody laddered or filled jumped; no descent recorded for him
         pr_ = B.call("jawa/flowworks_pit_report", x=c[0] + 6, z=c[1]) or {}

@@ -77,6 +77,33 @@ chk(R.tree_verdict(6, 6, False, 3)[0] == "FAIL", "trees: can-fail, raiders near 
 chk(R.tree_verdict(0, 0, False, 3)[0] == "UNMEASURED", "trees: nothing planted UNMEASURED")
 chk(R.tree_verdict(6, 6, False, 0)[0] == "UNMEASURED", "trees: no raider near UNMEASURED")
 chk(R.tree_verdict(6, None, False, 3)[0] == "UNMEASURED", "trees: uncounted UNMEASURED")
+# CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (live 2026-10-31): a --direct raid gets no shovel from PostProcessSpawnedPawns; the
+# proof hands them out melee first, because a gunner with a sight line is held by vanilla's AIFightEnemies
+chk(R.shovel_order([("g1", "Mercenary_Gunner"), ("s1", "Mercenary_Slasher"), ("g2", "Mercenary_Gunner"),
+                    ("s2", "Mercenary_Slasher")]) == ["s1", "s2", "g1", "g2"], "shovels: melee first, then spawn order")
+chk(R.shovel_order([("g1", None)]) == ["g1"], "shovels: an unread kind still gets one")
+chk(R.give_shovels(None, ["x"], 0, (0, 0)) == [], "shovels: --shovels 0 hands none and calls nothing")
+chk('a.direct and not res.get("shovelHolders") and not filled' in open(R.__file__).read(),
+    "shovels: a --direct fill row with no shovel holder is UNMEASURED, not a mod FAIL")
+# --fill-speed compression: a set is confirmed only by a read-back equal to the asked value; the restore is in main's finally
+
+
+class SetBridge:
+    """A MOCK, not the game: mod_settings_field get answers `after` whatever was set."""
+    def __init__(self, after):
+        self.after = after
+
+    def call(self, tool, **kw):
+        assert tool == "jawa/mod_settings_field", tool
+        return {"success": True, "value": self.after}
+
+
+chk(R.set_setting(SetBridge("4"), R.TRENCH_SETTINGS, "raiderFillSpeed", 4.0) == (True, "4"), "fill speed: read-back 4 confirmed")
+chk(R.set_setting(SetBridge("0.5"), R.TRENCH_SETTINGS, "raiderFillSpeed", 4.0)[0] is False,
+    "fill speed: can-fail, a set that read back unchanged is not confirmed")
+chk(R.set_setting(SetBridge(None), R.TRENCH_SETTINGS, "raiderFillSpeed", 4.0)[0] is False, "fill speed: unread is not confirmed")
+chk('if hold.get("fillSpeedPrior") is not None' in open(R.__file__).read().split("def _run")[0],
+    "fill speed: main's finally restores the shipped value")
 # MASKSWAP: a crossing over the PLAYER's ladders (--colony-ladders; filtered out of the raider ways) is legal, never a FAIL
 chk(R.maskswap_verdict(3, "PASS", [5], [], staged_way=True) == "UNMEASURED",
     "maskswap: a crossing with colony ladders staged is masked, not a mask FAIL")
