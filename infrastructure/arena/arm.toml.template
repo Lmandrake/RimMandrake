@@ -8,7 +8,7 @@ scope = ["bench", "foundry"]
 [trial]                      # read only when mode = "trial"
 steve_lane    = "trio"
 archmagi_lane = "ralph_c"
-replay_arms   = ["ralph_a", "trio", "v3", "v3c"]
+replay_arms   = ["ralph_a", "trio", "v3"]   # v3c dropped: owner decision 2026-10-31
 areas_day     = "D:/ClaudeWork/rimmandrake/arena/areas/2026-10-31.json"
 
 # optional clone path overrides (defaults: /home/mandrake/rm/<bench|foundry>, /home/mandrake/rm/arena/<arm>)

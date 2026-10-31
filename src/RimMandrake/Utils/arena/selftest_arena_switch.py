@@ -788,8 +788,12 @@ def t_trial_and_members():
     check(who_quiet(w, d, bridge_locks=lambda: swapped)["exit"] == 4, "FORCED trial: steve lane holding ralph_c's lock -> 4")
     check(who_quiet(w, d, bridge_locks=lambda: [{"lane": "steve", "purpose": "testq job 9"}])["exit"] == 4,
           "FORCED trial: an UNTAGGED lock is unknown -> 4")
-    check(who_quiet(w, d, events=lambda root, a, ts: 3 if a in ("ralph_a", "v3c") else 0)["exit"] == 0,
+    check(who_quiet(w, d, events=lambda root, a, ts: 3 if a in ("ralph_a", "trio") else 0)["exit"] == 0,
           "trial: the replay arms' events are not a stopped arm's (d)")
+    # v3c dropped from replay_arms (owner decision 2026-10-31): in trial mode it is a stopped arm like any other
+    check(cfg["trial"]["replay_arms"] == ["ralph_a", "trio", "v3"], "trial: replay_arms are ralph_a, trio, v3 (v3c dropped)")
+    check(who_quiet(w, d, events=lambda root, a, ts: 3 if a == "v3c" else 0)["exit"] == 8,
+          "FORCED trial: an event from v3c (dropped from replay) is a stopped arm's -> 8")
     check(who_quiet(w, d, events=lambda root, a, ts: 1 if a == "production" else 0)["exit"] == 8, "FORCED trial: a production event -> 8")
     AR.set_mode(w.toml, "ralph_a")
     check(AR.lock_problems(AR.load_config(w.toml), [{"lane": "steve", "purpose": "x"}]), "FORCED ralph_a mode: untagged lock flagged")

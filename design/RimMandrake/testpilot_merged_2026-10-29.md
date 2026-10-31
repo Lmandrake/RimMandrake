@@ -353,7 +353,7 @@ The replay half can be ported to Inspect later, if the trial becomes a standing 
   after each close (section 2.3). The owner answers its design cards like any arm's and does nothing else in it. A
   sample of production v3 closes is judged blind as a reference. This arm measures the ~25/day autonomous estimate
   directly.
-- `v3c` joins only if the token allowance covers a fifth arm. Otherwise each arm's task count shrinks.
+- `v3c` joins only if the token allowance covers a fifth arm. Otherwise each arm's task count shrinks. **Decided 2026-10-31 (owner, via the Conductor): `v3c` is dropped; the replay arms are `ralph_a`, `trio`, `v3`.**
 
 ### 6.3 Build order, two builders
 

@@ -88,7 +88,8 @@ HOST_LANE = {h: lane for lane, h in LANES.items()}
 LANE_KEYS = {"steve": "steve_lane", "archmagi": "archmagi_lane"}
 REPLAY_UNIT = "rm-arena-replay.service"
 DEFAULT_UNITS = {TRIAL: [REPLAY_UNIT]}
-TRIAL_DEFAULTS = {"steve_lane": "trio", "archmagi_lane": "ralph_c", "replay_arms": ["ralph_a", "trio", "v3", "v3c"]}
+TRIAL_DEFAULTS = {"steve_lane": "trio", "archmagi_lane": "ralph_c", "replay_arms": ["ralph_a", "trio", "v3"]}
+# v3c dropped from the trial replay: owner decision 2026-10-31 (ARENA_ANALYSIS_RETHINK_POWER_BELOW_TARGET); it stays a known arm
 IDLE_WAIT_S = 90 * 60
 IDLE_FRESH_S = 15 * 60                           # an `idle` status older than this does not count as idle now
 STALE_IDLE_S = 6 * 3600                          # who (f): a live arm idle for longer is silently paused

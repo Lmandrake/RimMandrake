@@ -20,7 +20,7 @@ acceptance check.
 | arm id | architecture | source |
 |---|---|---|
 | `v3` | v3 as it runs today: the control | `rimflow_v3_workflow_as_built_2026-10-29.md` |
-| `v3c` | collapsed v3: 4 actors, a done gate, GPT reviews every finished sha | `rimflow_v3_collapse_compare_2026-10-29.md` §6 |
+| `v3c` (dropped from the trial 2026-10-31, owner decision) | collapsed v3: 4 actors, a done gate, GPT reviews every finished sha | `rimflow_v3_collapse_compare_2026-10-29.md` §6 |
 | `ralph_a` | one `loop.sh` on Archmagi, gate run by the loop | `ralph_loop_design_2026-10-29.md` §1 |
 | `ralph_c` | two builder loops split by area, plus fixed-SHA live runners on both machines | same doc, §3 (it has landed) |
 | `trio` | Conductor + FOUNDRY running a Ralph builder and a blind critic as subagents + a TestPilot per machine | `D:\ClaudeWork\rimmandrake\testpilot\brief.md` |
@@ -198,7 +198,7 @@ mode = "ralph_a"          # v3 | v3c | ralph_a | ralph_c | trio | trial
 [trial]                   # read only when mode = "trial"
 steve_lane   = "trio"     # who holds SteveDesktop's game
 archmagi_lane = "ralph_c" # who holds Archmagi's game
-replay_arms  = ["ralph_a", "trio", "v3", "v3c"]
+replay_arms  = ["ralph_a", "trio", "v3"]   # v3c dropped (owner decision 2026-10-31)
 areas_day    = "D:/ClaudeWork/rimmandrake/arena/areas/2026-10-31.json"
 ```
 
@@ -360,7 +360,9 @@ flipping one way and 4% the other, takes about **49 paired tasks**. Unpaired it 
   (50 tasks, 4 arms), 24% (3 arms) or 35% (2 arms) of trials; 40-50% appears only at 75-100 tasks with 2-3 arms
   (simulated on the real `arena_analysis.analyse()` with assumed sigma and accept rate; table:
   `D:\ClaudeWork\rimmandrake\arena\verify_stop\power_table.md`). Which row applies awaits the owner's task-count
-  decision. A HARD_CAP_PICK is not evidence of a difference. Without replay the same answer needs 100-500 tasks per arm: weeks.
+  decision. DECIDED (owner decision 2026-10-31 (ledger ARENA_ANALYSIS_RETHINK_POWER_BELOW_TARGET, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)):
+  29 tasks, 3 replay arms `ralph_a`, `trio`, `v3` (`v3c` dropped), accept gate 15 points; that row is in
+  `D:\ClaudeWork\rimmandrake\arena\power_card_2026-10-31.md`. A HARD_CAP_PICK is not evidence of a difference. Without replay the same answer needs 100-500 tasks per arm: weeks.
 - **Acceptance rate:** a 20-point difference needs about 50 tasks per arm.
 - **Escaped defects:** these cannot be powered in days (section 5).
 
@@ -424,9 +426,9 @@ The simulators behind the numbers below model no task order or era: their figure
   mid-run, and kill the gate mid-run. Proven when nothing unchecked reaches an `arena/*` branch the judge reads,
   and the next pass recovers.
 
-### 4.3 Day 1: replay block 1 (all four build arms in parallel)
+### 4.3 Day 1: replay block 1 (all three replay arms in parallel; `v3c` dropped 2026-10-31)
 
-- **Morning:** block 1, 4 arms × the first 12 tasks of the trial list, each arm oldest first (sibling order), the arms interleaved in random order inside
+- **Morning:** block 1, 3 arms × the first 12 tasks of the trial list, each arm oldest first (sibling order), the arms interleaved in random order inside
   each round.
 - **Duplicates:** 6 of those tasks are run twice in the same arm. That measures run-to-run spread, which gives
   σ_d and how much of an arm difference is just noise.
@@ -469,7 +471,7 @@ arm gets a first forecast of accepted/day.
     list, a few more unrelated tests and then reload; never exhaustive; only the scenarios a change touches are
     re-run (L9a).
 - **Simulator check:** compare day 2's actual numbers with the day-1-calibrated forecast.
-  - If accepted points per arm fall inside the 80% intervals for at least 3 of 4 arms, the simulator is trusted
+  - If accepted points per arm fall inside the 80% intervals for all but one of the 3 arms (was 3 of 4 before `v3c` was dropped), the simulator is trusted
     for what days cannot measure: week-scale quota, a full-queue backlog, the combination of the build half and
     the live half.
   - If not, it is not used for this decision, and the report says so.
@@ -581,7 +583,7 @@ Assume an autonomous builder delivers about 12 effective hours a day, after revi
 **The cheapest useful slice:** steps 1-8 plus the `v3` half of step 9, about 43 hours. That gives Ralph A against
 today's FOUNDRY procedure on replayed tasks, the question the Ralph design doc's §8 trial asked. On these numbers
 it runs the whole trial list in the days given in the power table (section 3.5), and DECIDE on a true 1.5× difference
-is 12-35% at 50 tasks (more tasks, fewer arms, more power; the row awaits the owner's task-count decision); otherwise the verdict is CONTINUE or a hard-cap pick, not a no-difference finding. Built by one builder, that answer is ready about day 5 from the go.
+is 12-35% at 50 tasks (more tasks, fewer arms, more power); the owner chose 29 tasks and 3 arms on 2026-10-31 (section 3.5); otherwise the verdict is CONTINUE or a hard-cap pick, not a no-difference finding. Built by one builder, that answer is ready about day 5 from the go.
 
 **GPT's review before each arm runs.** Each arm, and the substrate as a whole, gets a blind GPT review before its
 first counted task. The review covers the code, the frozen tasks and this decision rule. A P0 finding stops that
