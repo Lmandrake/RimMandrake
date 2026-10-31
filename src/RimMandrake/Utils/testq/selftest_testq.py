@@ -37,6 +37,9 @@ sys.exit(subprocess.run(["bash", "-c", sys.argv[-1]]).returncode)
 '''
 MOCK = r'''
 import json, os, sys, time
+_t0 = time.time()
+while os.path.exists(os.environ.get("MOCK_HOLD", "")) and time.time() - _t0 < 60:   # held mid-run by the test
+    time.sleep(0.05)
 name = "Mock_%d" % int(time.time() * 1000000)
 summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"},
                                                     {"name": "r2", "verdict": "FAIL", "detail": "bad"}]}]}
@@ -396,7 +399,7 @@ def main():
                    TESTQ_CMD_DOWN="true", TESTQ_CMD_RUN="%s %s" % (sys.executable, os.path.join(tmp, "mock.py")),
                    TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",  # never the real rw_game.sh status
                    RIMFLOW_DRIVER_LOCK=os.path.join(tmp, "DRIVER_LOCK.json"), RM_HOST="stevedesktop",
-                   RM_GAME_USERDATA=tmp)
+                   RM_GAME_USERDATA=tmp, MOCK_HOLD=os.path.join(tmp, "hold"))
         sha = subprocess.run(["git", "-C", REPO, "merge-base", "HEAD", "origin/main"], capture_output=True,
                              text=True).stdout.strip()
         # the worker's deploy phase refuses a companion not built from the job's sources: give it one that is
@@ -456,11 +459,14 @@ def main():
         rc, o = tq("submit", "Mock", "--purpose", "fix", "--by", "BENCH", "--sha", sha)
         check(rc == 2 and "selects nothing" in o, "an empty selection is refused at submit")
 
+        hold = os.path.join(tmp, "hold")      # B stays running until the second tick is checked (no race)
+        open(hold, "w").close()
         tq("tick")
         check(state(b) == "running" and state(a) == "pending", "tick admits the highest priority job first")
         ab = running_attempt(b)
         tq("tick")
         check(state(a) == "pending", "a second tick while B runs admits nothing")
+        os.remove(hold)
         check(wait_worker(ab), "the worker finished B")
         tq("tick")
         done_b = json.load(open(os.path.join(queue, "done", b + ".json")))
