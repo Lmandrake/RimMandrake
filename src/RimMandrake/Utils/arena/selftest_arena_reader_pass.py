@@ -53,6 +53,7 @@ def fixture(d, extra=False):
     (repo / "notes/prose_stem_name.md").write_text("a note\n")
     (repo / "README.TXT").write_text("upper_prose_name\n")                                 # suffix case
     (repo / "notes/upper_stem_name.MD").write_text("a note\n")
+    (repo / "private.json").write_text("{}\n")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "base")
     base = git(repo, "rev-parse", "HEAD")
@@ -61,6 +62,7 @@ def fixture(d, extra=False):
                                       "\ndef prose_only_name():\n    return 4\n")
     (repo / "src/selftest_tool.py").write_text("from tool import f\nassert f() == 2\ncheck_only_marker = 1\n")
     (repo / "src/newmod.py").write_text("def capped():\n    return 1\n")
+    (repo / "src/private.json").write_text("{}\n")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "fix: f returns 2")
     fix = git(repo, "rev-parse", "HEAD")
@@ -135,6 +137,8 @@ def fixture(d, extra=False):
         task("RP_FILEOUT", [("src/selftest_n.py", fnf % "out/report.json")], body=opn)
         task("RP_FILECS", [("src/selftest_n.py", "Unhandled exception. System.IO.FileNotFoundException: Could not "
                             "find file 'src/newmod.py'.\n")], body=opn)
+        # v5 review: a root private.json at base must not hide the fix's new src/private.json
+        task("RP_FILESHADOW", [("src/selftest_n.py", fnf % "src/private.json")], body=opn)
     Path(p["tasks"], "RP_NOHIDDEN.json").write_text(json.dumps({"id": "RP_NOHIDDEN", "source_item": "NOHIDDEN"}))
     A.vet_cache_path(p).write_text("".join(json.dumps(r) + "\n" for r in vet))
     return p, repo
@@ -523,7 +527,7 @@ def rules_v5():
     with tempfile.TemporaryDirectory() as d:
         p, repo = fixture(d, extra=True)
         want = {"RP_FILE": "missing_name_only", "RP_FILEABS": "missing_name_only", "RP_FILECS": "missing_name_only",
-                "RP_FILENAMED": None, "RP_FILEBASE": None, "RP_FILEOUT": None}
+                "RP_FILENAMED": None, "RP_FILEBASE": None, "RP_FILEOUT": None, "RP_FILESHADOW": "missing_name_only"}
         for tid, v in want.items():
             c = R.build_packet(tid, p, repo)["checks"][0]
             bf = c["base_failure"]
@@ -534,11 +538,34 @@ def rules_v5():
         c = R.build_packet("RP_FILE", p, repo)["checks"][0]
         check(c["cited_files"] == {"at_base": [], "fix_only": ["src/newmod.py"], "fix_only_unnamed": ["src/newmod.py"]}
               and c["base_failure"]["missing_files"] == ["src/newmod.py"], "v5 (5): cited_files lookup (%s)" % c)
+        c = R.build_packet("RP_FILEBASE", p, repo)["checks"][0]
+        check(c["cited_files"] == {"at_base": ["src/tool.py"], "fix_only": [], "fix_only_unnamed": []},
+              "v5 (5): a cited file present at base is listed at_base (%s)" % c.get("cited_files"))
         tail = 'FileNotFoundError: [Errno 2] No such file or directory: \'src/newmod.py\'\nKeyError: \'x\'\n'
         check(R.base_failure(tail, {}, None, {"fix_only_unnamed": ["src/newmod.py"]})["veto"] is None,
               "v5 (5): another behaviour line beside the missing file lifts the veto")
         check(R._tree_match("C:\\clone\\src\\newmod.py", {"src/newmod.py"}) == "src/newmod.py"
               and R._tree_match("newmod.py", {"src/newmod.py"}) is None, "v5 (5): path suffix matching")
+        # v5 review: only a line that REPORTS the missing file is not behaviour; an assertion quoting it is
+        uf = {"fix_only_unnamed": ["src/newmod.py"]}
+        fmsg = "[Errno 2] No such file or directory: 'src/newmod.py'"
+        check(R.base_failure("AssertionError: expected diagnostic: FileNotFoundError: %s\n" % fmsg, {}, None, uf)
+              ["veto"] is None, "v5 review (5): an assertion quoting the missing-file message is behaviour")
+        for t in ("E   FileNotFoundError: " + fmsg, "builtins.FileNotFoundError: " + fmsg, "FAIL: " + fmsg,
+                  "    FileNotFoundError: " + fmsg):
+            check(R.base_failure(t + "\n", {}, None, uf)["veto"] == "missing_name_only",
+                  "v5 review (5): %r reports the missing file (not behaviour)" % t)
+    # v5 review (3): pytest's `E   ` prefix on the chained lines
+    for sep in ("E   During handling of the above exception, another exception occurred:",
+                "During handling of the above exception, another exception occurred:"):
+        tail = ("E   ModuleNotFoundError: No module named 'newmod'\n" + sep + "\nE   RuntimeError: initialization failed\n")
+        check(veto(tail) == "missing_name_only", "v5 review (3): an `E   ` chained consequence is not behaviour (%r)" % sep[:8])
+        check(veto(tail + "E   assert 1 == 2\n") is None, "v5 review (3): an `E   ` line after the consequence is behaviour")
+    # v5 review (2): an orphan led by a missing-name error class is an outcome line (the missing name is seen)
+    for t in ("    ModuleNotFoundError: No module named 'newmod'", "    E   NameError: name '_private_two' is not defined"):
+        bf = R.base_failure(gap + t + "\nSELFTEST FAILED\n", UN)
+        check(bf["veto"] == "missing_name_only" and bf["missing_fix_only_unnamed"],
+              "v5 review (2): %r after a gap is still the missing name (%s)" % (t.strip(), bf))
 
 
 def tail_invariants():

@@ -63,7 +63,10 @@ reason). (4) A FAIL report whose label is empty or names an import (`FAIL import
 cannot import name 'x'`) and whose message begins with a missing-name message is the missing name reported again; a
 bare summary (`SELFTEST FAILED`, `FAIL: 1 failure(s)`) is not behaviour. (5) `FileNotFoundError: ... No such file
 or directory: 'p'` (C#: `Could not find file 'p'`) cites the file p: a path the fix adds and the task text does not
-name is a fix_only_unnamed missing name (cited_files), and its line is not behaviour.
+name is a fix_only_unnamed missing name (cited_files), and a line that reports it (led by that message, its
+exception class or an empty FAIL label) is not behaviour; an assertion quoting it stays behaviour. A cited path is
+fix_only when its longest match in the fix tree is absent at base (a root `x.json` at base does not hide a new
+`src/x.json`). Rules (2) and (3) see a pytest `E   ` prefix through.
 
     run     read every survivor without a current verdict; one JSON file per task under the results dir (default
             <arena>/judge/reader/verdicts/, judge-only: the packets hold hidden check bodies). Resumable: a task
@@ -390,9 +393,13 @@ _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
                             r"|\bTypeError\b.*\bunexpected keyword argument\b")
 # RULES v5 (docstring). The gap marker is vet_tail's and the judge's tail cut (arena_tasks.vet_tail).
 _GAP = re.compile(r"^\[\.\.\. \d+ chars cut \.\.\.\]\s*$")
-_CHAIN = re.compile(r"^\s*(?:During handling of the above exception, another exception occurred:"
+_CHAIN = re.compile(r"^\s*(?:E\s+)?(?:During handling of the above exception, another exception occurred:"
                     r"|The above exception was the direct cause of the following exception:)\s*$")
-_EXC_LEAD = re.compile(r"^(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?::|\s*$)")    # `pkg.SomeError: msg`, `KeyboardInterrupt`
+_EXC_LEAD = re.compile(r"^(?:E\s+)?(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?::|\s*$)")    # `pkg.SomeError: msg`, `KeyboardInterrupt`
+_ERR_LEAD = re.compile(r"^\s*(?:E\s+)?(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?:Error|Exception)(?::|\s*$)")   # rule 2 keeps these
+_FILE_REPORT = re.compile(r"^\s*(?:E\s+)?(?:Unhandled exception\.\s*)?(?:FAIL(?:ED)?\s*:\s*)?"
+                          r"(?:(?:[A-Za-z_]\w*\.)*FileNotFound(?:Error|Exception):\s*)?"
+                          r"(?:\[Errno 2\] No such file or directory: '|Could not find file ')")
 _FAIL_LABEL = re.compile(r"^\s*(?:E\s+)?(?:FAIL|FAILED|(?i:fail(?:ed|ure)?))\b(?P<label>[^:\n]*):\s*")
 _MISSING_LEAD = re.compile(r"No module named\b|cannot import name\b|name '\w+' is not defined"
                            r"|(?:module |type object )?'[^']+' (?:object )?has no attribute\b"
@@ -400,7 +407,7 @@ _MISSING_LEAD = re.compile(r"No module named\b|cannot import name\b|name '\w+' i
 _SUMMARY = re.compile(r"^\s*(?:[A-Z][A-Z0-9_]*\s+)*FAIL(?:ED)?[.!]?\s*$"
                       r"|^\s*FAIL(?:ED)?\b\W*\d+\s+(?:failure|failed|error|test|check)\w*(?:\(s\))?\W*$")
 _MISSING_FILE = [re.compile(p) for p in (
-    r"FileNotFoundError: \[Errno 2\] No such file or directory: '([^']+)'",
+    r"\[Errno 2\] No such file or directory: '([^']+)'",             # FileNotFoundError, or its str() alone
     r"\bCould not find file '([^']+)'",                               # C# FileNotFoundException
 )]
 
@@ -431,7 +438,7 @@ def _outcome(tail) -> list[tuple[str, bool]]:
         src = bool(_TB_FILE.search(prev)) and ln[:1].isspace()
         # v5 rule 2: an indented line right after a tail cut (or after such an orphan) lost its File line
         orphan = ((bool(_GAP.match(prev)) or orphan) and ln[:1].isspace()
-                  and not _BEH_CLASS.match(ln) and not _BEH_REPORT.match(ln))
+                  and not _ERR_LEAD.match(ln) and not _BEH_REPORT.match(ln))
         prev = ln
         if src or orphan or _TB_FILE.search(ln) or _GAP.match(ln):
             continue
@@ -443,7 +450,8 @@ def _outcome(tail) -> list[tuple[str, bool]]:
         # v5 rule 3: the first unindented line past a chain separator that is not the next Traceback header ends that
         # traceback; when it is an exception it is the consequence
         consequence = False
-        if chained and ln.strip() and not ln[:1].isspace() and not ln.startswith("Traceback (most recent call last)"):
+        if chained and ln.strip() and not ln[:1].isspace() \
+                and not re.match(r"(?:E\s+)?Traceback \(most recent call last\)", ln):
             consequence, chained = bool(_EXC_LEAD.match(ln)), False
         out.append((_NEUTRAL.sub(" ", ln), consequence))
     return out
@@ -504,14 +512,14 @@ def file_lookup(repo, base_sha, fix_sha, paths, task_text) -> dict:
         trees[sha] = set(out.splitlines()) if sha else set()
     v = {"at_base": [], "fix_only": [], "fix_only_unnamed": []}
     for p in sorted(set(paths)):
-        if _tree_match(p, trees[base_sha]):
-            v["at_base"].append(p)
+        hit = _tree_match(p, trees[fix_sha])        # the longest fix-tree match decides (v5 review)
+        if not hit or hit in trees[base_sha]:
+            if _tree_match(p, trees[base_sha]):
+                v["at_base"].append(p)
             continue
-        hit = _tree_match(p, trees[fix_sha])
-        if hit:
-            v["fix_only"].append(p)
-            if Path(hit).name not in (task_text or ""):      # naming the repo path names the file too
-                v["fix_only_unnamed"].append(p)
+        v["fix_only"].append(p)
+        if Path(hit).name not in (task_text or ""):      # naming the repo path names the file too
+            v["fix_only_unnamed"].append(p)
     return v
 
 
@@ -534,7 +542,7 @@ def base_failure(tail, names: dict, extra: dict | None = None, files: dict | Non
     ufiles = set((files or {}).get("fix_only_unnamed") or [])
     fix_missing = [n for n in cited if n in unnamed] + [f for f in cfiles if f in ufiles]
     behaviour = [ln for ln, consequence in rows if not consequence and _is_behaviour(ln)
-                 and not any(f in ufiles for f in missing_files_cited(ln))]
+                 and not (_FILE_REPORT.match(ln) and any(f in ufiles for f in missing_files_cited(ln)))]
     visible = any(_REASON.search(ln) for ln in lines)
     veto = ("no_reason_visible" if not visible else
             "missing_name_only" if fix_missing and not behaviour else None)
