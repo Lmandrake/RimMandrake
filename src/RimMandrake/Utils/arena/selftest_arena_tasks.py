@@ -201,6 +201,11 @@ def t_wrong_commit(tmp, repo, s):
     check([h["subject"] for h in A.later_fixes(lab, f, [TOOL, TEST], t0)] == ["RM_Patch gets its attributes back"],
           "only a repair of the fix's code, inside the window, is suspect (%s)" % A.later_fixes(lab, f, [TOOL, TEST], t0))
     check(len(A.later_fixes(lab, f, [TEST], t0)) == 1, "a test-only fix counts its test")
+    late = A._epoch("2026-10-15T11:00:00Z")
+    check("RM_Patch gets its attributes back" in [h["subject"] for h in A.later_fixes(lab, f, [TOOL, TEST], late)],
+          "a repair landed between the fix and its later close still counts (TANK_SETTLE's 1d77c17651)")
+    check("fix tool again" in [h["subject"] for h in A.later_fixes(lab, f, [TOOL, TEST], A._epoch("2026-10-25T10:00:00Z"))],
+          "the window still ends seven days after the close, not after the fix commit")
     good = ledger(s)
     pool, _ = A.census(good, repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", vet=stub_vet)
     check({t["source_item"]: h["label_suspect"] for t, h in pool}["FIXTURE_GOOD_FIX_ONE"] == [],

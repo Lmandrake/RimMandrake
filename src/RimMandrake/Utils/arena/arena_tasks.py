@@ -139,8 +139,9 @@ LATER_FIX_RE = re.compile(r"\b(?:fix|fixes|fixed|restores?|restored|repairs?|rep
                           re.I)
 # Hand-read 2026-10-30, not repairs of the fix they follow: the two later worker.py commits of the sanity item
 # (STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS): a canary-stops-the-game feature, a runner-clone heal. "restore" there
-# is a feature word.
-LATER_FIX_CLEARED = frozenset({"59ba780056", "589859a8d6"})
+# is a feature word. Hand-read 2026-10-31: 8197e06e6e, a retest-on-code-change feature whose subject says "repaired"
+# about harness-invalid runs. It landed after the freeze, demoted the same item and swapped one pool row.
+LATER_FIX_CLEARED = frozenset({"59ba780056", "589859a8d6", "8197e06e6e"})
 MAX_FILES = 8
 LIVE_OK = ("none", "minimal", "minimal+deps")
 KINDS = ("python-util", "xml-def-patch", "csharp", "live-verify", "tooling")
@@ -709,11 +710,13 @@ def later_fixes(repo: Path, fix: str, files: list, t_close: float) -> list:
     nobody filed (TANK_SETTLE's 1d77c17651), which makes a Clean label unsafe. The fix's own selftests do not count
     unless they are all it changed. Author time, in Python: a rewrite moves committer dates, and --since uses those."""
     code = [f for f in files if not is_selftest(f)] or files
+    # the close can lag its fix: 1d77c17651 landed four minutes after TANK_SETTLE's head and seven before its close
+    t_open = min(t_close, int(_git(repo, "log", "-1", "--format=%at", fix)))
     out = _git(repo, "log", "--abbrev=10", "--format=%h%x00%at%x00%s", "%s..HEAD" % fix, "--", *code)
     hits = []
     for line in out.splitlines():
         sha, at, subject = line.split("\0", 2)
-        if (t_close < int(at) <= t_close + ESCAPE_DAYS * 86400 and LATER_FIX_RE.search(subject)
+        if (t_open < int(at) <= t_close + ESCAPE_DAYS * 86400 and LATER_FIX_RE.search(subject)
                 and sha[:10] not in LATER_FIX_CLEARED):
             hits.append({"sha": sha, "subject": subject[:120]})
     return hits
