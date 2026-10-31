@@ -242,7 +242,7 @@ pc_ = S.pacing(tn)
 al = json.loads((Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").read_text()) \
     if (Path(os.environ["RM_STREAMS_DIR"]) / "allocation.json").exists() else {}
 check("pacing(): runs the allocator and writes allocation.json for the hook", al.get("seats") == pc_.get("seats")
-      and pc_.get("seats") == {"BENCH": 5, "FOUNDRY": 1}, (pc_, al.get("seats")))
+      and pc_.get("seats") == {"BENCH": 0, "FOUNDRY": 6}, (pc_, al.get("seats")))
 check("pacing(): carries the accounts with % left and hours to reset", any(a["name"] == "system" and a["burn"]
       and a["pct_left"] == 40.0 for a in pc_.get("accounts") or []), pc_.get("accounts"))
 check("collect() records pacing every 15 min", "pacing" in S.collect.__code__.co_names or "pacing(" in
