@@ -13,10 +13,12 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import subprocess
 import sys
 import time
 import uuid
+from collections import Counter
 from pathlib import Path
 
 AGENT_STORAGE = Path.home() / "dev/Lodestar/bin/lib/agent_storage.py"
@@ -133,7 +135,11 @@ def write_record(rec: dict, target=None, mode=None) -> str:
 
 def read_records(target=None):
     """(records, unreadable_count). target None -> default file + default dir (both, merged), plus an
-    RM_GPT_CALL_LOG override. A dir target is read as every *.jsonl in it; a file target also reads '<file>.d'."""
+    RM_GPT_CALL_LOG override. A dir target is read as every *.jsonl in it; a file target also reads '<file>.d'.
+    A mirror segment `<name>~mN.jsonl` (helper_capture.Mirror: the log was rewritten) holds the whole log again, so
+    a line it repeats from `<name>.jsonl` or an earlier segment is not counted twice
+    (ARENA_GPT_SEGMENTS_FIX_REWRITE_DOUBLE_COUNT). Residual: two distinct calls whose records are byte-identical
+    (same float time) across a rewrite would count once -- an under-count no real codex log produces."""
     if target is None:
         env = os.environ.get("RM_GPT_CALL_LOG", "").strip()
         if env:
@@ -152,14 +158,21 @@ def read_records(target=None):
         if os.path.isdir(t + ".d"):
             files += sorted(str(p) for p in Path(t + ".d").glob("*.jsonl"))
     recs, bad = [], 0
-    for fp in files:
+    seen = {}                                            # segment group -> Counter of lines held by earlier files
+    for fp in sorted(dict.fromkeys(files), key=_segment_order):
         try:
             lines = open(fp, errors="replace").read().splitlines()
         except OSError:
             bad += 1
             continue
+        group, seg = _segment_of(fp)
+        held = seen.setdefault(group, Counter())
+        mine = Counter()
         for ln in lines:
             if not ln.strip():
+                continue
+            mine[ln] += 1
+            if seg and held[ln] >= mine[ln]:             # a rewritten log's segment repeats what was already copied
                 continue
             try:
                 d = json.loads(ln)
@@ -168,4 +181,24 @@ def read_records(target=None):
                 recs.append(d)
             except Exception:                                # noqa: BLE001
                 bad += 1
+        held |= mine                                     # each file is a view of the same log: max, not sum
     return recs, bad
+
+
+_SEG = re.compile(r"^(?P<stem>.*)~m(?P<n>[1-9][0-9]*)\.jsonl$")
+
+
+def _segment_of(fp):
+    """(group, n): helper_capture.Mirror continues a deleted / replaced / shrunk log `<name>.jsonl` in
+    `<name>~mN.jsonl` beside it, and each segment holds the log's whole content again from its start. n is 0 for
+    the log itself and for every file that is no segment."""
+    p = Path(fp)
+    m = _SEG.match(p.name)
+    if not m:
+        return (str(p.parent), p.name[:-len(".jsonl")] if p.name.endswith(".jsonl") else p.name), 0
+    return (str(p.parent), m.group("stem")), int(m.group("n"))
+
+
+def _segment_order(fp):
+    group, n = _segment_of(fp)
+    return group, n

@@ -302,6 +302,20 @@ open(glog2, "w").write(json.dumps({"t": W0 + 5, "arm": "newarm", "tokens_used": 
 a2 = S.arm_report(ran=["newarm"], arms=["newarm"], projects=proj, arena_root=ROOT, gpt_log=glog2, since=W0, until=W1)["arms"]["newarm"]
 check(a2["claude_ite"] == 150 and a2["gpt_ite"] == 777 and "ite" not in a2 and a2["total_ite_mixed"] == 927
       and "RAW" in a2["unit_note"] and "open" in a2["unit_note"], "(2) claude_ite and gpt_ite separate; total_ite_mixed carries a unit_note, no bare 'ite'")
+# ARENA_GPT_SEGMENTS_FIX_REWRITE_DOUBLE_COUNT: helper_capture.Mirror continues a rewritten log as <name>~mN.jsonl
+# holding the whole log again; the copy must not be billed twice (was 7 calls / 3500 for a true 4 / 2000)
+def gl(i): return json.dumps({"t": W0 + 1 + i, "arm": "segarm", "tokens_used": 500, "job": "j%d" % i}) + "\n"
+sg = os.path.join(ext_tmp, "seg"); os.makedirs(sg)
+open(os.path.join(sg, "calls.jsonl"), "w").write(gl(0) + gl(1) + gl(2))
+open(os.path.join(sg, "calls~m1.jsonl"), "w").write(gl(0) + gl(1) + gl(2) + gl(3))   # rewrite: same + one more
+open(os.path.join(sg, "calls~m2.jsonl"), "w").write(gl(0))                           # then shrunk
+open(os.path.join(sg, "calls~m10.jsonl"), "w").write(gl(0) + gl(1) + gl(2) + gl(3) + gl(4))   # regrown
+open(os.path.join(sg, "other.jsonl"), "w").write(gl(0) + gl(0))   # not a segment: an unrelated log's lines all count
+g = S.gpt_spend_by_arm(sg, since=W0, until=W1)["segarm"]
+check(g["calls"] == 7 and g["ite"] == 3500, "segments of one rewritten log bill each call once (5 + other's 2): %s" % g)
+sg2 = os.path.join(ext_tmp, "seg2"); os.makedirs(sg2)          # sanity: the instrument still sees segment-only calls
+open(os.path.join(sg2, "calls~m1.jsonl"), "w").write(gl(5))
+check(S.gpt_spend_by_arm(sg2, since=W0, until=W1)["segarm"]["calls"] == 1, "a segment with no base log still counts")
 shutil.rmtree(ext_tmp, ignore_errors=True)
 print("FAILS", fails)
 sys.exit(1 if fails else 0)
