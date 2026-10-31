@@ -227,7 +227,8 @@ def _entry_violations(e) -> list[str]:
 #                   config.toml, C:\etc\codex\, codex.exe's own folder (config/requirements/AGENTS.md)
 #   DOCUMENTED    : <ProgramData> is SHGetKnownFolderPath(FOLDERID_ProgramData) with C:\ProgramData as fallback (binary
 #                   strings) -> roots below; registry SOFTWARE\Policies\OpenAI\Codex (enterprise-managed, admin-only to
-#                   write, absent here, not measurable) -> POLICY_KEYS; CODEX_*/OPENAI_* env (115 CODEX_* names in the
+#                   write -- measured 2026-10-30: `reg add HKCU\Software\Policies\<x>` as this user is Access denied
+#                   -- absent here) -> POLICY_KEYS; CODEX_*/OPENAI_* env (115 CODEX_* names in the
 #                   binary, e.g. CODEX_CA_CERTIFICATE, *_BASE_URL) -> ENV_REFUSED_PREFIXES.
 # So the WHOLE <root>\OpenAI\Codex entry is refused in any form (file, empty folder, link/junction, dangling link):
 # a future codex reading one more file there is covered too. Nothing is ever deleted: the check only names the path.
@@ -240,16 +241,64 @@ PROFILE_LIST_KEY = r"HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileLi
 REG_ABSENT = "ERROR: The system was unable to find the specified registry key or value."
 ENV_REFUSED_PREFIXES = ("CODEX_", "OPENAI_")
 ENV_ALLOWED = ("CODEX_HOME",)                     # the judge's own home, set by codex_image.child_env
+# ARENA_JUDGE_PROXY_ENV_REACHES_CODEX (BENCH tester 2026-10-30, verify_programdata/results.jsonl: HTTPS_PROXY exported
+# through WSLENV reached codex.exe and the call ran through it, unrefused). A proxy, a substitute trust store or a TLS
+# key log steers or reads every byte of the judge's traffic, prompt and answer. The names are those codex.exe 0.164
+# carries (strings in the binary: HTTP_PROXY/HTTPS_PROXY/ALL_PROXY/NO_PROXY/WS_PROXY/WSS_PROXY/FTP_PROXY in both cases,
+# SSL_CERT_FILE, SSL_CERT_DIR, SSLKEYLOGFILE, REQUESTS_CA_BUNDLE, CURL_CA_BUNDLE, NODE_EXTRA_CA_CERTS,
+# CARGO_HTTP_CAINFO, GIT_SSL_CAINFO) plus the TLS-off switches its child tools honour. Matched case-insensitively
+# (Windows env names are), every *_PROXY name by suffix so a proxy scheme codex learns later is covered too.
+ENV_STEERING_SUFFIXES = ("_PROXY",)
+ENV_STEERING_NAMES = ("SSL_CERT_FILE", "SSL_CERT_DIR", "SSLKEYLOGFILE", "REQUESTS_CA_BUNDLE", "CURL_CA_BUNDLE",
+                      "NODE_EXTRA_CA_CERTS", "NODE_TLS_REJECT_UNAUTHORIZED", "NODE_OPTIONS", "CARGO_HTTP_CAINFO",
+                      "GIT_SSL_CAINFO", "GIT_SSL_NO_VERIFY", "OPENSSL_CONF", "PROXY")
+# the WinINet per-user proxy switch, which Rust HTTP clients on Windows read as the system proxy
+INET_KEY = r"HKCU\Software\Microsoft\Windows\CurrentVersion\Internet Settings"
 WIN_TIMEOUT = 30
 
 
+def is_steering_env(name: str) -> bool:
+    """A network/TLS steering variable (proxy, trust store, key log): never handed to a judge, refused at Windows."""
+    u = name.upper()
+    return u in ENV_STEERING_NAMES or u.endswith(ENV_STEERING_SUFFIXES)
+
+
+def refused_at_codex(name: str) -> bool:
+    """A variable that refuses the call if codex.exe would inherit it (CODEX_*/OPENAI_* config, or steering)."""
+    u = name.upper()
+    return is_steering_env(u) or (u.startswith(ENV_REFUSED_PREFIXES) and u not in ENV_ALLOWED)
+
+
+def scrub_steering_env(env: dict) -> dict:
+    """`env` without any steering variable, and with WSLENV naming nothing codex.exe must not inherit (WSLENV is the
+    only route a WSL-side variable takes into a Windows process; entries are NAME or NAME/flags)."""
+    out = {k: v for k, v in env.items() if not is_steering_env(k)}
+    if "WSLENV" in out:
+        out["WSLENV"] = ":".join(x for x in str(out["WSLENV"]).split(":")
+                                 if x and not refused_at_codex(x.split("/", 1)[0]))
+    return out
+
+
+WIN_SYSTEM32 = "/mnt/c/Windows/System32"
+WIN_EXES = {"cmd.exe": "cmd.exe", "reg.exe": "reg.exe", "powershell.exe": "WindowsPowerShell/v1.0/powershell.exe"}
+
+
+def win_exe(name: str) -> str:
+    """The System32 copy of a Windows tool the checks run (a PATH lookup could find a look-alike; GPT review r1/r2)."""
+    rel = WIN_EXES.get(name)
+    full = os.path.join(WIN_SYSTEM32, rel) if rel else None
+    return full if full else name                  # a missing System32 copy fails to run (refused), never PATH
+
+
 def _run_win(argv: list) -> tuple | None:
-    """Run a Windows program from WSL with this process's env (a superset of what the judge passes codex.exe, so its
-    WSLENV-named variables reach it too). (rc, text) or None if it could not run."""
+    """Run a Windows program from WSL with this process's env SCRUBBED the way the judge scrubs it (scrub_steering_env;
+    still a superset of what the judge passes codex.exe), so what it sees is what codex.exe inherits: the Windows
+    session's own variables plus the WSLENV-named survivors. (rc, text) or None if it could not run."""
     import subprocess                                                  # noqa: PLC0415
+    argv = [win_exe(argv[0])] + list(argv[1:])
     try:
         r = subprocess.run(argv, capture_output=True, cwd="/mnt/c/Windows", timeout=WIN_TIMEOUT,
-                           env=dict(os.environ))
+                           env=scrub_steering_env(dict(os.environ)))
     except (OSError, subprocess.SubprocessError):
         return None
     return r.returncode, (r.stdout + r.stderr).decode("utf-8", "replace")
@@ -272,6 +321,7 @@ def windows_facts(run=_run_win, to_local=win_to_local) -> dict:
     if r is not None and r[0] == 0:
         env = dict(ln.split("=", 1) for ln in r[1].splitlines() if "=" in ln and not ln.startswith("="))
     keys = {k: run(["reg.exe", "query", k, "/reg:64"]) for k in POLICY_KEYS}
+    inet = run(["reg.exe", "query", INET_KEY, "/v", "ProxyEnable", "/reg:64"])
     roots = [SYSTEM_DEFAULT_ROOT]
     for n in ("ProgramData", "ALLUSERSPROFILE"):
         v = next((val for k, val in (env or {}).items() if k.upper() == n.upper()), None)
@@ -295,7 +345,7 @@ def windows_facts(run=_run_win, to_local=win_to_local) -> dict:
             out.append((w, to_local(w)))
             if out[-1][1] is not None:                                 # a refused root is never handed to cmd.exe
                 native[w] = run(native_probe_argv(w))
-    return {"env": env, "keys": keys, "roots": out, "native": native, "bad": bad}
+    return {"env": env, "keys": keys, "inet": inet, "roots": out, "native": native, "bad": bad}
 
 
 # Windows' own view of <root>\OpenAI\Codex: it resolves what a WSL listing cannot match by long name, e.g. an NTFS
@@ -352,8 +402,12 @@ def system_layer_violations(facts: dict | None = None) -> list[str]:
     if env is None:
         bad.append("cannot read the Windows environment codex.exe inherits (fail closed)")
     else:
-        bad += ["env %s reaches codex.exe" % n for n in sorted(env)
-                if n.upper().startswith(ENV_REFUSED_PREFIXES) and n.upper() not in ENV_ALLOWED]
+        bad += ["env %s reaches codex.exe" % n for n in sorted(env) if refused_at_codex(n)]
+    r = f.get("inet")
+    m = re.search(r"^\s*ProxyEnable\s+REG_DWORD\s+(0x[0-9a-fA-F]+)\s*$", r[1], re.M) if r and r[0] == 0 else None
+    if not (m and int(m.group(1), 16) == 0) and not (r and r[0] != 0 and REG_ABSENT in r[1]):
+        bad.append("the Windows system proxy (%s ProxyEnable) is on or unreadable (%s)"
+                   % (INET_KEY, "no reg.exe" if r is None else r[1].strip()[-80:]))
     for k in POLICY_KEYS:
         r = f.get("keys", {}).get(k)
         if r is None or r[0] == 0 or REG_ABSENT not in r[1]:

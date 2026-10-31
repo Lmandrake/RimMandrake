@@ -369,16 +369,18 @@ def judge_masks(priv: Path | None = None, p: dict | None = None) -> list[Path]:
 # is named here. `check` (a hidden check: arm code runs in it) gets only the basics, never a model credential.
 ENV_BASIC = ("PATH", "HOME", "USER", "LOGNAME", "LANG", "LANGUAGE", "TZ", "TERM")
 ENV_BASIC_PREFIX = ("LC_",)
-ENV_MODEL = ("SHELL", "CLAUDE_CONFIG_DIR", "SSL_CERT_FILE", "SSL_CERT_DIR", "REQUESTS_CA_BUNDLE", "http_proxy",
-             "https_proxy", "no_proxy", "HTTP_PROXY", "HTTPS_PROXY", "NO_PROXY", "RM_DATA_ROOT", "AGENT_STORAGE_ROOT",
-             "RM_CONSULT_RECEIPTS", "XDG_RUNTIME_DIR")
+# No proxy, trust-store or TLS key-log variable is on it, and judge_env strips every one even from `extra`
+# (ARENA_JUDGE_PROXY_ENV_REACHES_CODEX: an exported HTTPS_PROXY reached codex.exe and carried a judge call;
+# JH.is_steering_env names them), and WSLENV keeps no entry that would export one, or CODEX_*/OPENAI_*, to Windows.
+ENV_MODEL = ("SHELL", "CLAUDE_CONFIG_DIR", "RM_DATA_ROOT", "AGENT_STORAGE_ROOT", "RM_CONSULT_RECEIPTS",
+             "XDG_RUNTIME_DIR")
 ENV_MODEL_PREFIX = ("ANTHROPIC_", "CLAUDE_CODE_USE_", "OPENAI_", "CODEX_", "WSL", "RM_GPT_")
 
 
 def judge_env(extra: dict | None, priv: Path | None, kind: str = "model", base: dict | None = None,
               own: Path | None = None) -> dict:
     """The judge's environment, built from an allow-list over `base` (default os.environ): `check` -> ENV_BASIC only;
-    `model` -> also what claude / gpt_consult / codex.exe need (auth, proxy, WSL interop, codex scratch). Then `extra`
+    `model` -> also what claude / gpt_consult / codex.exe need (auth, WSL interop, codex scratch). Then `extra`
     (the caller's own explicit settings). Any value naming the private dir or the clone root is dropped; RM_ARM=harness
     (§1.6: judge spend is the harness's). EXCEPT (ARENA_JUDGE_GPT_METER_STRIPPED_BY_ENV): an `extra` value that is a
     path inside `own`, the call's own workspace, survives the clone-root filter -- the default work root sits under
@@ -390,6 +392,7 @@ def judge_env(extra: dict | None, priv: Path | None, kind: str = "model", base: 
         names, prefixes = names + ENV_MODEL, prefixes + ENV_MODEL_PREFIX
     e = {k: v for k, v in src.items() if k in names or k.startswith(prefixes)}
     e.update(extra or {})
+    e = JH.scrub_steering_env(e)                        # no proxy/trust-store/key-log, whoever set it
     pv, cr = os.path.realpath(Path(priv) if priv else private_dir()), os.path.realpath(clones_root())
     ownr = os.path.realpath(own) if own else None
 

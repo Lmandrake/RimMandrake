@@ -1117,7 +1117,9 @@ import json, os, sys
 a = sys.argv
 scen = open(%r).read()
 ev = a[a.index("--events") + 1] if "--events" in a else None
-dump = {"argv": a, "env_log": os.environ.get("RM_GPT_CALL_LOG"), "prompt": open(a[a.index("--prompt-file") + 1]).read()}
+dump = {"argv": a, "env_log": os.environ.get("RM_GPT_CALL_LOG"), "prompt": open(a[a.index("--prompt-file") + 1]).read(),
+        "steer": {k: v for k, v in os.environ.items() if "PROXY" in k.upper() or "CERT" in k.upper()
+                  or k.upper() in ("WSLENV", "SSLKEYLOGFILE", "REQUESTS_CA_BUNDLE", "NODE_OPTIONS")}}
 open("harden_dump.json", "w").write(json.dumps(dump))
 if os.environ.get("RM_GPT_CALL_LOG"):
     open(os.environ["RM_GPT_CALL_LOG"], "a").write(json.dumps({"job": "fake", "arm": os.environ.get("RM_ARM")}) + "\n")
@@ -1273,6 +1275,55 @@ def t_gpt_harden(tmp):
         os.environ["ARENA_JUDGE_CODEX_HOME"] = str(home)
 
 
+def t_proxy_env(tmp):
+    """ARENA_JUDGE_PROXY_ENV_REACHES_CODEX: no proxy / trust-store / key-log variable reaches a judge, however set,
+    and WSLENV exports none (nor CODEX_*/OPENAI_*) to Windows."""
+    import judge_codex_home as JH                                   # noqa: PLC0415
+    steer = {"HTTPS_PROXY": "http://127.0.0.1:9", "https_proxy": "http://127.0.0.1:9", "HTTP_PROXY": "x",
+             "http_proxy": "x", "ALL_PROXY": "socks5://x", "all_proxy": "x", "NO_PROXY": "*", "no_proxy": "*",
+             "WSS_PROXY": "x", "Ftp_Proxy": "x", "SSL_CERT_FILE": "/tmp/evil.pem", "SSL_CERT_DIR": "/tmp",
+             "SSLKEYLOGFILE": "/tmp/k", "REQUESTS_CA_BUNDLE": "/tmp/evil.pem", "NODE_EXTRA_CA_CERTS": "/tmp/e.pem",
+             "CURL_CA_BUNDLE": "/tmp/e.pem"}
+    wslenv = "WT_SESSION:HTTPS_PROXY/u:https_proxy:ALL_PROXY/u:SSL_CERT_FILE/p:OPENAI_BASE_URL/u:CODEX_SQLITE_HOME:" \
+             "CODEX_HOME/p:WT_PROFILE_ID"
+    base = dict(steer, PATH="/usr/bin", HOME="/home/x", WSLENV=wslenv, OPENAI_BASE_URL="http://evil",
+                ANTHROPIC_API_KEY="k", CODEX_SCRATCH="/s")
+    for kind in ("model", "check"):
+        e = J.judge_env(dict(steer), None, kind=kind, base=base)
+        left = sorted(k for k in e if JH.is_steering_env(k))
+        check(left == [], "judge_env(%s): no steering variable survives, from the env or from extra (%s)" % (kind, left))
+    e = J.judge_env(None, None, kind="model", base=base)
+    check(e.get("WSLENV") == "WT_SESSION:CODEX_HOME/p:WT_PROFILE_ID",
+          "judge_env: WSLENV exports no proxy/CA name and no CODEX_*/OPENAI_* name but CODEX_HOME (%s)" % e.get("WSLENV"))
+    check(e.get("ANTHROPIC_API_KEY") == "k" and e.get("CODEX_SCRATCH") == "/s" and e.get("PATH") == "/usr/bin",
+          "judge_env: what the judges need still passes (auth, codex scratch, PATH)")
+    for k in ("HTTPS_PROXY", "socks_proxy", "SSLKEYLOGFILE", "node_options", "PROXY"):
+        check(JH.is_steering_env(k), "is_steering_env(%s)" % k)
+    for k in ("PATH", "PROXYCHAINS_CONF_FILE", "WSLENV", "CODEX_HOME", "SSL_LIBRARY_VERSION_X"):
+        check(not JH.is_steering_env(k), "not steering: %s" % k)
+    # forced, end to end: the harness's own env carries a proxy exported through WSLENV; gpt_consult (the fake model,
+    # inside the sandbox) sees none of it
+    scen = tmp / "proxy_scenario.jsonl"
+    fake = tmp / "proxy_model.py"
+    fake.write_text(HARDEN_MODEL % str(scen))
+    scen.write_text(_events())
+    call = J.GptConsult(prefix=[sys.executable, str(fake)])
+    prompt = J.build_prompt("crit", GATE, [], "diff --git a/x b/x", J.ARMS)
+    saved = {k: os.environ.get(k) for k in list(steer) + ["WSLENV"]}
+    os.environ.update(steer, WSLENV=wslenv)
+    try:
+        work = J.clones_root() / "judge" / ".jw" / "proxy"
+        work.mkdir(parents=True)
+        call(prompt, work)
+        d = json.loads((work / "harden_dump.json").read_text())
+        st = d.get("steer", {})
+        check(sorted(st) == ["WSLENV"] and not any(JH.refused_at_codex(x.split("/")[0]) for x in st["WSLENV"].split(":")
+                                                    if x),
+              "forced: HTTPS_PROXY & co. in the harness env + WSLENV never reach gpt_consult/codex.exe (%s)" % st)
+    finally:
+        for k, v in saved.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+
 def main():
     if not shutil.which("bwrap"):
         print("FAIL  bwrap not installed: the judge cannot run, and this test cannot prove the map is hidden")
@@ -1317,6 +1368,7 @@ def main():
         t_one_verdict(tmp)
         t_mi(tmp)
         t_gpt_harden(tmp)
+        t_proxy_env(tmp)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)

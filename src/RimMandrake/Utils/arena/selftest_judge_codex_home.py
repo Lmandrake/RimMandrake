@@ -757,6 +757,31 @@ def t_system(tmp, M=JH, record=check):
                "env %s reaching codex.exe is %s (%s)" % (k, "refused" if bad else "allowed", h))
     h = hits(fail=("cmd.exe",))
     record(any("environment" in x for x in h), "an unreadable Windows environment is refused (fail closed) (%s)" % h)
+    # ARENA_JUDGE_PROXY_ENV_REACHES_CODEX: proxy / trust-store / key-log steering reaching codex.exe refuses the call
+    # (BENCH tester 2026-10-30: HTTPS_PROXY reached codex.exe and the call went through the proxy, unrefused)
+    for k, bad in (("HTTPS_PROXY", True), ("https_proxy", True), ("HTTP_PROXY", True), ("ALL_PROXY", True),
+                   ("no_proxy", True), ("WS_PROXY", True), ("Wss_Proxy", True), ("FTP_PROXY", True),
+                   ("SSL_CERT_FILE", True), ("ssl_cert_dir", True), ("SSLKEYLOGFILE", True),
+                   ("REQUESTS_CA_BUNDLE", True), ("NODE_EXTRA_CA_CERTS", True), ("CARGO_HTTP_CAINFO", True),
+                   ("PATH", False), ("PROXYCHAINS_CONF", False), ("SSL_LIB", False)):
+        h = hits(env=dict(env, **{k: "http://127.0.0.1:9"}))
+        record((len(h) == 1 and k in h[0]) if bad else h == [],
+               "env %s reaching codex.exe is %s (%s)" % (k, "refused" if bad else "allowed", h))
+    # the WinINet system proxy (Internet Settings ProxyEnable) codex's HTTP client reads on Windows
+    ik = M.INET_KEY
+    for label, ans, bad in (("on (0x1)", (0, "\r\n%s\r\n    ProxyEnable    REG_DWORD    0x1\r\n" % ik), True),
+                            ("off (0x0)", (0, "\r\n%s\r\n    ProxyEnable    REG_DWORD    0x0\r\n" % ik), False),
+                            ("absent", (1, REG_ABSENT_OUT), False),
+                            ("access denied", (1, "ERROR: Access is denied.\r\n"), True),
+                            ("garbled", (0, "ProxyEnable REG_SZ yes\r\n"), True)):
+        h = hits(keys={ik: ans})
+        record((len(h) == 1 and "system proxy" in h[0]) if bad else h == [],
+               "Windows system proxy %s is %s (%s)" % (label, "refused" if bad else "fine", h))
+    # the WSL side never hands a steering name on, nor exports one (or CODEX_*/OPENAI_*) through WSLENV
+    sc = M.scrub_steering_env({"HTTPS_PROXY": "x", "no_proxy": "*", "SSLKEYLOGFILE": "k", "PATH": "/b", "HOME": "/h",
+                               "WSLENV": "WT_SESSION:HTTPS_PROXY/u:OPENAI_BASE_URL:CODEX_HOME/p::ssl_cert_file/up:X"})
+    record(sc == {"PATH": "/b", "HOME": "/h", "WSLENV": "WT_SESSION:CODEX_HOME/p:X"},
+           "scrub_steering_env drops steering vars and filters WSLENV (%s)" % sc)
     # the enterprise policy registry keys
     for key in (r"HKLM\SOFTWARE\Policies\OpenAI\Codex", r"HKCU\SOFTWARE\Policies\OpenAI\Codex"):
         h = hits(keys={key: (0, "\r\n%s\r\n    x    REG_SZ    y\r\n" % key)})
@@ -797,7 +822,14 @@ SYSTEM_MUTANTS = (
     ("policy key unqueryable passes", 'bad.append("cannot query', '(lambda *_: None)("cannot query'),
     ("drop CODEX_ env", '("CODEX_", "OPENAI_")', '("OPENAI_",)'),
     ("drop OPENAI_ env", '("CODEX_", "OPENAI_")', '("CODEX_",)'),
-    ("env case-sensitive", "n.upper().startswith", "n.startswith"),
+    ("env case-sensitive", "u.startswith(ENV_REFUSED_PREFIXES)", "name.startswith(ENV_REFUSED_PREFIXES)"),
+    ("drop the *_PROXY suffix", "or u.endswith(ENV_STEERING_SUFFIXES)", ""),
+    ("drop the CA / key-log names", "return u in ENV_STEERING_NAMES or ", "return "),
+    ("steering not refused at codex.exe", "return is_steering_env(u) or (", "return ("),
+    ("WSLENV not filtered", "if x and not refused_at_codex(x.split(\"/\", 1)[0]))", "if x)"),
+    ("system proxy not checked", "if not (m and int(m.group(1), 16) == 0)", "if False and not (m and int(m.group(1), 16) == 0)"),
+    ("system proxy value ignored", "int(m.group(1), 16) == 0", "int(m.group(1), 16) >= 0"),
+    ("system proxy unreadable passes", "and REG_ABSENT in r[1])", ")"),
     ("unreadable env passes", 'bad.append("cannot read the Windows environment', '(lambda *_: None)("cannot read the Windows environment'),
     ("link not refused", "if ent.is_symlink():", "if False:"),
     ("unlistable passes", 'return ["%s unlistable', 'return [] #'),
@@ -817,10 +849,30 @@ SYSTEM_MUTANTS = (
 )
 
 
+def t_tool_pin(tmp, M=JH, record=check):
+    """A missing System32 copy is never replaced by a PATH look-alike (GPT review r2#4)."""
+    fake = tmp / "bin"
+    fake.mkdir(parents=True)
+    (fake / "reg.exe").write_text("#!/bin/sh\necho '    ProxyEnable    REG_DWORD    0x0'\n")
+    (fake / "reg.exe").chmod(0o755)
+    old, oldp = M.WIN_SYSTEM32, os.environ.get("PATH", "")
+    M.WIN_SYSTEM32, os.environ["PATH"] = str(tmp / "no_system32"), "%s:%s" % (fake, oldp)
+    try:
+        r = M._run_win(["reg.exe", "query", M.INET_KEY, "/v", "ProxyEnable"])
+    finally:
+        M.WIN_SYSTEM32, os.environ["PATH"] = old, oldp
+    record(r is None, "a missing System32 tool fails to run; a PATH look-alike is never used (%s)" % (r,))
+
+
+PIN_MUTANTS = (
+    ("tool pin falls back to PATH", "return full if full else name", "return full if full and os.path.isfile(full) else name"),
+)
+
+
 def t_system_mutants(tmp):
     import types                                                       # noqa: PLC0415
     src = (HERE / "judge_codex_home.py").read_text(encoding="utf-8")
-    for label, old, new in SYSTEM_MUTANTS:
+    for i, (label, old, new) in enumerate(SYSTEM_MUTANTS + PIN_MUTANTS):
         if src.count(old) != 1:
             check(False, "mutant '%s': its target occurs %d times (must be exactly 1)" % (label, src.count(old)))
             continue
@@ -828,10 +880,13 @@ def t_system_mutants(tmp):
         m.__file__ = str(HERE / "judge_codex_home.py")
         exec(compile(src.replace(old, new), m.__file__, "exec"), m.__dict__)   # noqa: S102
         fails = []
-        d = tmp / ("mut_%d" % SYSTEM_MUTANTS.index((label, old, new)))
+        d = tmp / ("mut_%d" % i)
         d.mkdir(parents=True)
         try:
-            t_system(d, m, lambda ok, msg: fails.append(msg) if not ok else None)
+            if (label, old, new) in PIN_MUTANTS:
+                t_tool_pin(d, m, lambda ok, msg: fails.append(msg) if not ok else None)
+            else:
+                t_system(d, m, lambda ok, msg: fails.append(msg) if not ok else None)
         except Exception as ex:                                        # noqa: BLE001 -- a crash also kills it
             fails.append("crash %r" % ex)
         check(bool(fails), "mutant killed: %s (%s)" % (label, fails[:1]))
@@ -859,6 +914,7 @@ def main():
         t_consult(tmp)
         JH.windows_facts = real_facts
         t_system(tmp / "sys")
+        t_tool_pin(tmp / "pin")
         t_system_mutants(tmp / "sysmut")
     finally:
         JH.windows_facts = real_facts
