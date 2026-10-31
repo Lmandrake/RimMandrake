@@ -647,7 +647,7 @@ def t_harness_dirs(tmp, pool):
     hidden = json.loads(sorted(p["judge"].glob("*.json"))[0].read_text())
     leak = "hint " + NEWT + " " + hidden["fix_sha"]
     try:
-        for d in ("judge/J0001", "locks", "sandbox/arm-1234/builder", "replay/v3/RP_X/.git"):
+        for d in ("judge/J0001", "locks", "sandbox/arm-1234/builder", "replay/v3/RP_X/.git", "meter_helpers/ralph_a"):
             (clones / d).mkdir(parents=True)
             (clones / d / "f.txt").write_text(leak)
         (clones / "probe_left_over").mkdir()
@@ -690,6 +690,12 @@ def t_harness_dirs(tmp, pool):
             check(any("/replay" in x for x in every()), "mutation: without the HARNESS_DIRS entry replay/ refuses")
         finally:
             A.HARNESS_DIRS["replay"] = why
+        why = A.HARNESS_DIRS.pop("meter_helpers")
+        try:
+            check(any("/meter_helpers" in x for x in every()),
+                  "mutation: without the HARNESS_DIRS entry meter_helpers/ refuses (ARENA_METER_HELPERS_REGISTER_FROZEN_OUT)")
+        finally:
+            A.HARNESS_DIRS["meter_helpers"] = why
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)

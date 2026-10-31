@@ -937,7 +937,8 @@ def sc_git_forged_blob(tmp, mod, tag):
     sh(w.root, "git", "repack", "-a", "-d", "-q")
     op = w.root / ".git" / "objects" / blob[:2] / blob[2:]
     op.parent.mkdir(parents=True, exist_ok=True)
-    op.write_bytes(zlib.compress(b"blob 7\0forged\n"))
+    n = int(sh(w.root, "git", "cat-file", "-s", blob))           # SAME size: the streamed export's truncation check
+    op.write_bytes(zlib.compress(b"blob %d\0" % n + b"f" * (n - 1) + b"\n"))  # must not be what refuses it
     try:
         dest = w.loop._export_tree(sha, tmp / ("GFx" + tag))
     except mod.Refused:
@@ -1759,6 +1760,31 @@ def t_precheck_era(tmp):
               "pre-check argv for a %s-era clone: %s" % (name, " ".join(a[1:])))
 
 
+def t_export_streamed(tmp):
+    """ARENA_EXPORT_TREE_SHRINK_RAM_OOM: export_tree copies a blob far larger than its chunk byte-exact (exec bit,
+    symlink kept) while its Python peak stays near one chunk, never the tree (the 7.7 GB tree OOM'd the slice)."""
+    import tracemalloc
+    import ralph_a_loop as RAL
+    r = tmp / "exp_repo"
+    r.mkdir()
+    sh(r, "git", "init", "-q")
+    big = os.urandom(1 << 20) * 24                              # 24 MiB, 96 chunks of 256 KiB
+    (r / "big.bin").write_bytes(big)
+    (r / "run.sh").write_text("#!/bin/sh\n")
+    (r / "run.sh").chmod(0o755)
+    os.symlink("run.sh", r / "ln")
+    sh(r, "git", "add", "-A")
+    sh(r, "git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "x")
+    sha = sh(r, "git", "rev-parse", "HEAD").strip()
+    tracemalloc.start()
+    d = RAL.export_tree(r, sha, tmp / "exp_out", chunk=1 << 18)
+    peak = tracemalloc.get_traced_memory()[1]
+    tracemalloc.stop()
+    check((d / "big.bin").read_bytes() == big and os.access(d / "run.sh", os.X_OK) and os.readlink(d / "ln") == "run.sh",
+          "streamed export is byte-exact (big blob, exec bit, symlink)")
+    check(peak < 8 << 20, "export peak %.1f MiB stays far under the 24 MiB blob" % (peak / 2 ** 20))
+
+
 def t_bridge_mine(tmp):
     cli = HERE.parents[1] / "rimflow" / "cli.py"
     os.makedirs(tmp / "rf" / "items")
@@ -1906,7 +1932,7 @@ def main():
             else:
                 mod = variant(old, new)
             check(not guarded(fn, tmp, mod, "_m%d" % i), "mutation goes RED: " + name)
-        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)), (t_precheck_era, (tmp,)), (t_baseline_pinned, (tmp,)),
+        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)), (t_precheck_era, (tmp,)), (t_export_streamed, (tmp,)), (t_baseline_pinned, (tmp,)),
                       (t_bridge_mine, (tmp,)), (t_signed_writer, (tmp,))):
             try:
                 fn(*a)

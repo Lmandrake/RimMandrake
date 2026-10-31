@@ -52,7 +52,8 @@ RESIDUAL (stated, not fixed): the build helper runs unsandboxed as the harness u
 still commit to the harness checkout itself or read the event token. The v3/v3c comparison holds that exposure equal
 across arms; isolating the build helper is a separate item. a procedure killed between build_end and test_start leaves an untested build whose
 replay clone is gone; require_tested then refuses every later brief of that arm (fail closed, loud) until the harness
-operator records the run invalid. Live tasks stop at "live owed" after the tester (the replay has no lane); v3c does
+operator records that build invalid: `v3_control.py invalidate-build --arm A --task T --build-id ID --why WHY` (a
+signed `invalid` event; the build stays in the log, untested, for the analysis to see). Live tasks stop at "live owed" after the tester (the replay has no lane); v3c does
 not close them. The bridge is never released by this program: the brief forbids it, and the replay clone's rimflow
 is not the real ledger.
 """
@@ -121,11 +122,30 @@ def scoped(recs, arm):
     return out
 
 
+def _build_key(r):
+    return (r.get("task"), (r.get("detail") or {}).get("build_id"))
+
+
+def invalidated_builds(mine):
+    """(task, build_id) of every build the harness operator recorded invalid (`v3_control.py invalidate-build`: a
+    signed `invalid` event, detail.build_id + detail.why, written AFTER that build_end). Only an exact (task,
+    build_id) match counts; an invalid event naming no build, or a build not yet ended, invalidates nothing."""
+    ended, out = set(), set()
+    for r in mine:
+        k = _build_key(r)
+        if r.get("event") == "build_end":
+            ended.add(k)
+        elif r.get("event") == "invalid" and k[1] and k in ended and (r.get("detail") or {}).get("why"):
+            out.add(k)
+    return out
+
+
 def require_tested(recs, arm):
     """Raise NotTested unless every replay build_end of `arm` has a later test_start of that build by a different
     agent, and no test_start is a builder testing itself."""
     mine = scoped(recs, arm)
-    bad = L.untested_builds(mine)
+    gone = invalidated_builds(mine)
+    bad = [b for b in L.untested_builds(mine) if _build_key(b) not in gone]
     if bad:
         b = bad[0]
         raise NotTested("refused: %s build %s of %s (builder %s) has no test_start from a different agent; no new "
@@ -224,51 +244,9 @@ def safe_git(root, *a, binary=False):
 
 
 def export_tree(root, sha, dest):
-    """A history-less copy of exactly `sha`'s tree, read object by object (ls-tree + cat-file): replace refs and
-    grafts are ignored, and no attribute applies (`git archive` would honour the builder's export-ignore and
-    export-subst, review r2). Submodule entries are skipped; a symlink is kept only if it stays inside dest."""
-    ok, why = SG.verify_tree(root, sha)                         # a builder can store other bytes under an object's name
-    if not ok:
-        raise Refused("refused: tree of %s does not verify: %s" % (sha, why))
-    if dest.exists():
-        RA.shutil.rmtree(dest)
-    dest.mkdir(parents=True)
-    top = dest.resolve()
-    ents = []
-    for e in safe_git(root, "ls-tree", "-r", "-z", "--full-tree", sha, binary=True).split(b"\0"):
-        if not e:
-            continue
-        meta, path = e.split(b"\t", 1)
-        mode, kind, obj = meta.decode().split()
-        if kind == "blob":
-            ents.append((mode, obj, path.decode("utf-8", "surrogateescape")))
-    if not ents:
-        return dest
-    r = SG.git_run(root, "cat-file", "--batch", input="".join(o + "\n" for _, o, _ in ents).encode(), capture_output=True)
-    if r.returncode != 0:
-        raise Refused("git cat-file failed: %s" % r.stderr.decode(errors="replace")[:300])
-    buf, pos = r.stdout, 0
-    for mode, obj, path in ents:
-        nl = buf.index(b"\n", pos)
-        head = buf[pos:nl].split()
-        if len(head) != 3 or head[0].decode() != obj:
-            raise Refused("git cat-file: unexpected header %r for %s" % (buf[pos:nl][:80], path))
-        size = int(head[2])
-        data = buf[nl + 1:nl + 1 + size]
-        pos = nl + 1 + size + 1
-        f = (dest / path)
-        if ".." in Path(path).parts or not f.resolve().is_relative_to(top):
-            raise Refused("refused: tree path %r escapes the export" % path)
-        f.parent.mkdir(parents=True, exist_ok=True)
-        if mode == "120000":
-            tgt = data.decode("utf-8", "surrogateescape")
-            if not os.path.isabs(tgt) and (f.parent / tgt).resolve().is_relative_to(top):
-                os.symlink(tgt, f)
-            continue
-        f.write_bytes(data)
-        if mode == "100755":
-            f.chmod(0o755)
-    return dest
+    """The tester's history-less copy of exactly `sha`'s tree: ralph_a_loop.export_tree (one streamed
+    implementation, ARENA_EXPORT_TREE_SHRINK_RAM_OOM: this copy buffered the whole tree twice in RAM)."""
+    return RA.export_tree(root, sha, dest)
 
 
 def pinned_harness_file(rel):
@@ -582,9 +560,47 @@ class SignedWriter(RA.SignedWriter):
         return self.w.accepted(self.arm)
 
 
+def invalidate_build(w, arm, task, build_id, why):
+    """Operator: record one UNTESTED replay build of `arm` invalid (signed). Refused unless that exact (task,
+    build_id) has a build_end in the arm's replay scope and is still untested; a reason is required."""
+    if not (task and build_id and (why or "").strip()):
+        print("refused: invalidate-build needs --task, --build-id and --why")
+        return 2
+    mine = scoped(w.records(), arm)
+    open_ = [b for b in L.untested_builds(mine) if _build_key(b) == (task, build_id)]
+    if not open_:
+        print("refused: %s has no untested replay build %s of %s" % (arm, build_id, task))
+        return 2
+    w.emit(arm, "invalid", lane=LANE, run_id=run_prefix(arm) + "operator", task=task, sha=open_[0].get("sha"),
+           detail={"build_id": build_id, "why": why.strip()})
+    print("recorded invalid: %s build %s of %s" % (arm, build_id, task))
+    return 0
+
+
+def void_orphans(w, arm, why, out=None):
+    """Restart path (ARENA_ORPHAN_BUILD_UNSTICK_V3_ARM_BRICKED): record every still-untested replay build of `arm`
+    invalid, signed, one `invalid` event each (nothing is deleted or rewritten). Only for a caller that holds the
+    arm's runner lock, so no live procedure of this arm can still be about to test that build. -> the voided ids."""
+    mine = scoped(w.records(), arm)
+    gone = invalidated_builds(mine)
+    voided = []
+    for b in L.untested_builds(mine):
+        k = _build_key(b)
+        if k in gone or not k[1]:
+            continue
+        w.emit(arm, "invalid", lane=LANE, run_id=run_prefix(arm) + "operator", task=k[0], sha=b.get("sha"),
+               detail={"build_id": k[1], "why": why})
+        gone.add(k)
+        voided.append(k[1])
+        print("voided orphan %s build %s of %s: %s" % (arm, k[1], k[0], why), file=out or sys.stdout)
+    return voided
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("action", choices=("run", "check-tested", "done-gate"))
+    ap.add_argument("action", choices=("run", "check-tested", "done-gate", "invalidate-build"))
+    ap.add_argument("--build-id", help="the untested build to record invalid (invalidate-build)")
+    ap.add_argument("--why", help="why the build is invalid (invalidate-build, required)")
     ap.add_argument("--arm", required=True, choices=ARMS)
     ap.add_argument("--clone", help="the replay clone (run)")
     ap.add_argument("--task", help="frozen task id (run, done-gate)")
@@ -604,6 +620,8 @@ def main(argv=None):
             require_tested(w.records(), a.arm)
             print("every %s replay build has a test_start from a different agent" % a.arm)
             return 0
+        if a.action == "invalidate-build":
+            return invalidate_build(w, a.arm, a.task, a.build_id, a.why)
         if a.action == "done-gate":
             ok, why = done_gate(w.records(), a.arm, a.task, a.sha, ctl / "reviews")
             print(why)

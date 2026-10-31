@@ -163,6 +163,11 @@ def git_run(root, *a, transport=False, url=None, **kw):
     return subprocess.run(git_argv(root, *a, transport=transport, url=url), env=_env(root, transport), **kw)
 
 
+def git_popen(root, *a, **kw):
+    """subprocess.Popen of git on the clone with the same safe argv/env as git_run (a streamed cat-file --batch)."""
+    return subprocess.Popen(git_argv(root, *a), env=_env(root, False), **kw)
+
+
 def check_clone(root):
     """-> '' when `root` is a plain clone a harness may check out in, else why not: .git must be a directory (a
     `gitdir:` file points the clone anywhere), info/attributes empty (it changes what a checkout writes), no
@@ -211,9 +216,15 @@ def verify_tree(root, rev):
             if len(hdr) != 3:
                 return False, "object %s missing" % oid
             typ, size = hdr[1], int(hdr[2])
-            body = p.stdout.read(size)
+            hs, left = hashlib.sha1(typ + b" " + str(size).encode() + b"\0"), size
+            while left:                                  # chunked: one object is never held whole (a 7.7 GB tree)
+                body = p.stdout.read(min(left, 1 << 20))
+                if not body:
+                    return False, "object %s truncated" % oid
+                hs.update(body)
+                left -= len(body)
             p.stdout.read(1)
-            h = hashlib.sha1(typ + b" " + str(size).encode() + b"\0" + body).hexdigest()
+            h = hs.hexdigest()
             if h != hdr[0].decode() or h != oid:
                 return False, "object %s is stored with content hashing to %s (forged)" % (oid, h)
         feeder.join()

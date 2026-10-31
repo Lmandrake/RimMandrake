@@ -120,11 +120,12 @@ def git(clone, *a):
     return r.stdout.strip()
 
 
-def work_v3(clone, spec, *, ctl, model_cmd, p, cap):
+def work_v3(clone, spec, *, ctl, model_cmd, p, cap, tt=None):
     import v3_control as V
     w = V.SignedWriter("v3", p, cap)
     pr = V.Procedure("v3", clone, Path(ctl) / "v3", model=V.CmdModel(model_cmd, "v3"), writer=w,
-                     timeout_s=float(os.environ.get("V3_PASS_TIMEOUT_S", V.PASS_TIMEOUT_S)))
+                     timeout_s=float(os.environ.get("V3_PASS_TIMEOUT_S", V.PASS_TIMEOUT_S)),
+                     tester_tmp=str(tt) if tt else None)
     out = pr.work(spec)
     if out.get("outcome") == "stop":
         raise RunRefused("v3 procedure stopped: STOP file in %s" % (Path(ctl) / "v3"))
@@ -132,7 +133,7 @@ def work_v3(clone, spec, *, ctl, model_cmd, p, cap):
     return {"outcome": out.get("outcome"), "head": head or spec["base_sha"]}
 
 
-def work_loop(arm, clone, spec, *, ctl, model_cmd, p, cap):
+def work_loop(arm, clone, spec, *, ctl, model_cmd, p, cap, tt=None):
     import ralph_a_loop as RA
     git(clone, "switch", "-q", "-C", RA.MAIN, spec["base_sha"])
     tctl = Path(ctl) / arm / spec["id"]
@@ -141,11 +142,13 @@ def work_loop(arm, clone, spec, *, ctl, model_cmd, p, cap):
         import trio_loop as TL
         lp = TL.TrioLoop(clone, tctl, [spec], model=TL.CmdModelT(model_cmd), writer=TL.SignedWriterT(p, cap),
                          lane=None, sync=None, publish_cmd="true",
-                         timeout_s=float(os.environ.get("TRIO_PASS_TIMEOUT_S", RA.PASS_TIMEOUT_S)))
+                         timeout_s=float(os.environ.get("TRIO_PASS_TIMEOUT_S", RA.PASS_TIMEOUT_S)),
+                         tester_tmp=str(tt) if tt else None)
     else:
         lp = RA.Loop(clone, tctl, [spec], model=RA.CmdModel(model_cmd), writer=RA.SignedWriter(p, cap),
                      lane=None, sync=None, publish_cmd="true",
-                     timeout_s=float(os.environ.get("RALPH_A_PASS_TIMEOUT_S", RA.PASS_TIMEOUT_S)))
+                     timeout_s=float(os.environ.get("RALPH_A_PASS_TIMEOUT_S", RA.PASS_TIMEOUT_S)),
+                     tester_tmp=str(tt) if tt else None)
     out = lp.run()
     last = out[-1] if out else ""
     if not last.startswith("done"):
@@ -159,10 +162,14 @@ def default_work(arm, clone, spec, *, ctl, model_cmd):
     import arena_tasks as A
     model_cmd = resolve_model_cmd(model_cmd)  # at call time: a variable unset since the start refuses by name
     p = A.paths()
-    with L.harness_pass(p) as cap:
-        if arm == "v3":
-            return work_v3(clone, spec, ctl=ctl, model_cmd=model_cmd, p=p, cap=cap)
-        return work_loop(arm, clone, spec, ctl=ctl, model_cmd=model_cmd, p=p, cap=cap)
+    tt = tester_tmp(arm, spec["id"])
+    try:
+        with L.harness_pass(p) as cap:
+            if arm == "v3":
+                return work_v3(clone, spec, ctl=ctl, model_cmd=model_cmd, p=p, cap=cap, tt=tt)
+            return work_loop(arm, clone, spec, ctl=ctl, model_cmd=model_cmd, p=p, cap=cap, tt=tt)
+    finally:
+        tester_tmp_done(tt)
 
 
 def default_judge(arm, clone, spec, head, *, logdir):
@@ -359,6 +366,112 @@ def run_all(arms, passthrough, *, arena_py=None, popen=subprocess.Popen, out=sys
     return max(rcs.values())
 
 
+TESTER_TMP_DEFAULT = "/var/tmp/rm_arena_tester"   # ext4 (not the /tmp tmpfs charged to the 12G slice); outside RM_ROOT
+
+
+def _fs_type(path):
+    """The filesystem type of the longest /proc/mounts prefix of `path` ('' when unreadable)."""
+    best, typ = "", ""
+    try:
+        for line in Path("/proc/mounts").read_text().splitlines():
+            f = line.split()
+            if len(f) >= 3:
+                mp = f[1].replace("\\040", " ")
+                if (path == mp or path.startswith(mp.rstrip("/") + "/")) and len(mp) >= len(best):
+                    best, typ = mp, f[2]
+    except OSError:
+        return ""
+    return typ
+
+
+def tester_tmp(arm, tid, env=None):
+    """ARENA_TESTER_TMP_RELOCATE_TMPFS_RAM_BOMB: the tester export (a whole tree, GBs) goes under
+    $RALPH_A_TESTER_TMP (default /var/tmp/rm_arena_tester)/<arm>/<task>, emptied before the task and removed after
+    it (tester_tmp_done). A relative base, a tmpfs/ramfs base or a link at <arm>/<task> refuses."""
+    env = os.environ if env is None else env
+    base = Path(env.get("RALPH_A_TESTER_TMP") or TESTER_TMP_DEFAULT)
+    if not base.is_absolute():
+        raise RunRefused("RALPH_A_TESTER_TMP %r is relative: refused" % str(base))
+    import arena_replay as R
+    for what, v in (("arm", arm), ("task", tid)):
+        if not R.NAME.fullmatch(v):
+            raise RunRefused("bad %s name %r" % (what, v))
+    base.mkdir(parents=True, exist_ok=True)
+    rb = os.path.realpath(base)
+    if _fs_type(rb) in ("tmpfs", "ramfs"):
+        raise RunRefused("tester temp base %s is on %s (RAM, charged to the slice): refused" % (rb, _fs_type(rb)))
+    d = Path(rb) / arm / tid
+    tester_tmp_done(d)
+    d.mkdir(parents=True)
+    return d
+
+
+def tester_tmp_done(d):
+    import arena_replay as R
+    d = Path(d)
+    if d.is_symlink():
+        d.unlink()
+    elif d.exists():
+        R.rmtree(d)
+
+
+def start_repair(arm, ctl, steps, *, root=None, writer=None, out=None):
+    """Run once per runner start, UNDER <ctl>/<arm>/runner.lock (so no other runner of this arm is live):
+    (a) ARENA_REPLAY_SWEEP_REPAIR_ORPHAN_CLONE: a clone dir replay/<arm>/<trial task> left by a killed runner (marker
+        or not: no marker is a partial build) whose run lock is FREE is deleted; a held lock is left alone.
+    (b) ARENA_LOOP_STOP_REPAIR_STALE_ON_RETRY: <ctl>/<arm>/<trial task>/STOP, written by a loop of an EARLIER attempt
+        (red pre-check, failed publish), is removed. <ctl>/<arm>/STOP is the operator's stop and is NEVER touched.
+    (c) ARENA_ORPHAN_BUILD_UNSTICK_V3_ARM_BRICKED (v3 only, `writer` given): every signed build_end of this arm with
+        no tester is voided by a signed harness `invalid` event (v3_control.void_orphans); require_tested is unchanged
+        and no signed event is deleted or rewritten.
+    -> {"clones": [...], "stops": [...], "voided": [...]}"""
+    import arena_replay as R
+    ids = {tid for tid, _ in steps}
+    res = {"clones": [], "stops": [], "voided": []}
+    base = R.replay_dir(root) / arm
+    if R.replay_dir(root).is_symlink() or base.is_symlink():
+        raise RunRefused("%s is a symlink: refused" % base)
+    if base.is_dir():
+        for c in sorted(base.iterdir()):
+            if c.is_symlink() or not c.is_dir() or c.name not in ids:
+                continue
+            try:
+                with R._lock(arm, c.name, root):
+                    if c.is_symlink():
+                        continue
+                    R._contained(c, root)
+                    R.rmtree(c)
+                    res["clones"].append(str(c))
+                    log("%s: start: swept orphan clone %s (marker %s)" % (
+                        arm, c, "ok" if R._marker_ok(c) else "absent/partial"), out)
+            except R.ReplayExists:
+                log("%s: start: clone %s is held by a live run: left" % (arm, c), out)
+    actl = Path(ctl) / arm
+    for tid in sorted(ids):
+        f = actl / tid / "STOP"
+        if f.is_file() or f.is_symlink():
+            f.unlink()
+            res["stops"].append(str(f))
+            log("%s: start: removed stale %s from an earlier attempt" % (arm, f), out)
+    if arm == "v3" and writer is not None:
+        import v3_control as V
+        res["voided"] = V.void_orphans(writer, "v3", "orphaned by a killed runner: voided at restart under runner.lock")
+        for b in res["voided"]:
+            log("%s: start: voided untested orphan build %s (signed invalid)" % (arm, b), out)
+    return res
+
+
+def _start_repair_live(arm, ctl, steps):
+    if arm != "v3":
+        return start_repair(arm, ctl, steps)
+    import arena_eventlog as L
+    import arena_tasks as A
+    import v3_control as V
+    p = A.paths()
+    with L.harness_pass(p) as cap:
+        return start_repair(arm, ctl, steps, writer=V.SignedWriter("v3", p, cap))
+
+
 def main(argv=None, *, arms=None):
     """arms: the [trial] replay_arms list (arena.trial_runner reads arm.toml), used by --all only."""
     import argparse
@@ -394,6 +507,7 @@ def main(argv=None, *, arms=None):
         resolve_model_cmd(a.model_cmd)
         pin_state_home()
         model_snapshot(a.arm, a.ctl)
+        _start_repair_live(a.arm, a.ctl, steps)
         res = run_arm(a.arm, ctl=a.ctl, model_cmd=a.model_cmd, only=a.only, steps=steps)
     except RunRefused as e:
         print("refused: %s" % e, file=sys.stderr)

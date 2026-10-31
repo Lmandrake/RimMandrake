@@ -20,6 +20,7 @@
 Fakes only: no clone, no model, no judge, no signed log.
 """
 import io
+import os
 import json
 import shutil
 import subprocess
@@ -245,13 +246,87 @@ def t_snapshot_gate(tmp):
     check(seen[0][1].endswith("arena_model_snapshot.py") and seen[0][2] == "--out", "the snapshot tool is the one run")
 
 
+def t_start_repair(tmp):
+    """ARENA_REPLAY_SWEEP_REPAIR_ORPHAN_CLONE / ARENA_LOOP_STOP_REPAIR_STALE_ON_RETRY / ARENA_ORPHAN_BUILD_UNSTICK_V3_ARM_BRICKED:
+    the start repair sweeps a free orphan clone (marker or not), leaves a held one and a non-task dir, removes a
+    per-task stale STOP but never the operator's <ctl>/<arm>/STOP, and voids v3 orphans only through void_orphans."""
+    import arena_replay as R
+    import v3_control as V
+    root = tmp / "sr_arena"
+    ctl = tmp / "sr_ctl"
+    steps = [("T1", {}), ("T2", {}), ("T3", {})]
+    a = R.replay_dir(root) / "ralph_a"
+    for n in ("T1", "T2", "NOT_A_TASK"):
+        (a / n / ".git").mkdir(parents=True)
+        (a / n / "f").write_text("x")
+    for d in ("T1", "T3"):
+        (ctl / "ralph_a" / d).mkdir(parents=True)
+        (ctl / "ralph_a" / d / "STOP").touch()
+    (ctl / "ralph_a" / "STOP").touch()
+    with R._lock("ralph_a", "T2", root):
+        res = RR.start_repair("ralph_a", ctl, steps, root=root, out=io.StringIO())
+    check(not (a / "T1").exists() and res["clones"] == [str(a / "T1")], "a free orphan clone with no marker is swept")
+    check((a / "T2").exists(), "a clone whose run lock is held is left alone")
+    check((a / "NOT_A_TASK").exists(), "a dir that is not a trial task is left alone")
+    check(not (ctl / "ralph_a" / "T1" / "STOP").exists() and not (ctl / "ralph_a" / "T3" / "STOP").exists()
+          and len(res["stops"]) == 2, "stale per-task STOP files are removed")
+    check((ctl / "ralph_a" / "STOP").exists(), "the operator's arm-level STOP is never removed")
+    check(res["voided"] == [], "a non-v3 arm voids nothing")
+    seen = []
+    real = V.void_orphans
+    V.void_orphans = lambda w, arm, why, out=None: seen.append((w, arm, why)) or ["B1"]
+    try:
+        r3 = RR.start_repair("v3", ctl, steps, root=root, writer="W", out=io.StringIO())
+        r0 = RR.start_repair("v3", ctl, steps, root=root, writer=None, out=io.StringIO())
+    finally:
+        V.void_orphans = real
+    check(r3["voided"] == ["B1"] and seen and seen[0][:2] == ("W", "v3") and seen[0][2],
+          "v3 start voids orphans through void_orphans with a reason")
+    check(r0["voided"] == [] and len(seen) == 1, "no writer: nothing voided")
+    os.symlink(str(tmp), str(R.replay_dir(root) / "v3"))
+    try:
+        RR.start_repair("v3", ctl, steps, root=root, out=io.StringIO())
+        check(False, "a symlinked arm dir refuses")
+    except RR.RunRefused:
+        check(True, "a symlinked arm dir refuses")
+    check("_start_repair_live(a.arm, a.ctl, steps)" in Path(RR.__file__).read_text(), "main runs the start repair")
+
+
+def t_tester_tmp(tmp):
+    """ARENA_TESTER_TMP_RELOCATE_TMPFS_RAM_BOMB: the tester base is per arm/task, emptied first, removed after, never
+    on tmpfs, never relative; every loop gets it."""
+    base = Path(tempfile.mkdtemp(prefix="st_rr_tt_", dir="/var/tmp"))
+    try:
+        d = RR.tester_tmp("v3", "T1", env={"RALPH_A_TESTER_TMP": str(base)})
+        check(d == Path(os.path.realpath(base)) / "v3" / "T1" and d.is_dir(), "tester tmp is <base>/<arm>/<task>")
+        (d / "junk").write_text("x")
+        d2 = RR.tester_tmp("v3", "T1", env={"RALPH_A_TESTER_TMP": str(base)})
+        check(d2 == d and not (d / "junk").exists(), "a leftover from an earlier attempt is emptied")
+        RR.tester_tmp_done(d)
+        check(not d.exists(), "removed after the task")
+        for env, why in (({"RALPH_A_TESTER_TMP": "rel/x"}, "relative"),
+                         ({"RALPH_A_TESTER_TMP": "/dev/shm/st_rr_tt"}, "tmpfs")):
+            try:
+                RR.tester_tmp("v3", "T1", env=env)
+                check(False, "a %s tester base refuses" % why)
+            except RR.RunRefused:
+                check(True, "a %s tester base refuses" % why)
+        check(RR._fs_type(RR.TESTER_TMP_DEFAULT.rsplit("/", 1)[0]) not in ("tmpfs", "ramfs"), "the default is not RAM")
+        src = Path(RR.__file__).read_text()
+        check(src.count("tester_tmp=str(tt) if tt else None") == 3, "all three loops get the per-task tester base")
+    finally:
+        shutil.rmtree(base, ignore_errors=True)
+        shutil.rmtree("/dev/shm/st_rr_tt", ignore_errors=True)
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="st_replay_run_"))
     try:
         for fn, a in ((t_order, (tmp,)), (t_plan_refusals, ()), (t_resume, (tmp,)), (t_stop_runway, (tmp,)),
                       (t_arms, (tmp,)), (t_wired, ()),
                       (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ()),
-                      (t_model_cmd, ()), (t_snapshot_gate, (tmp,))):
+                      (t_model_cmd, ()), (t_snapshot_gate, (tmp,)), (t_start_repair, (tmp,)),
+                      (t_tester_tmp, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

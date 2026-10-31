@@ -367,6 +367,39 @@ def sc_refuses_untested(tmp, mod, tag):
     return all(got)
 
 
+def sc_invalidated(tmp, mod, tag):
+    """I: an untested build blocks; an invalid naming another build or with no reason does not unblock it; the
+    operator's invalidate_build / the restart's void_orphans does (one signed invalid event, the build_end kept)."""
+    import io
+    w = RA.ListWriter()
+
+    def blocked():
+        try:
+            mod.require_tested(w.records(), "v3")
+            return False
+        except (mod.NotTested, RA.NotTested):
+            return True
+    w.emit("v3", "build_end", lane="replay", run_id="v3.replay.0", task="OLD", sha="a" * 40,
+           ts="2026-10-31T00:00:00Z", detail={"builder": "b", "build_id": "OLD.aaaaaaaaaaaa"})
+    ok = blocked()
+    w.emit("v3", "invalid", lane="replay", run_id="v3.replay.operator", task="OLD", ts="2026-10-31T00:01:00Z",
+           detail={"build_id": "OLD.bbbbbbbbbbbb", "why": "other build"})
+    w.emit("v3", "invalid", lane="replay", run_id="v3.replay.operator", task="OLD", ts="2026-10-31T00:01:00Z",
+           detail={"build_id": "OLD.aaaaaaaaaaaa"})
+    w.emit("v3", "build_end", lane="replay", run_id="v3.replay.1", task="OLD", sha="d" * 40,
+           ts="2026-10-31T00:02:00Z", detail={"builder": "b", "build_id": "OLD.dddddddddddd"})
+    w.emit("v3", "invalid", lane="replay", run_id="v3.replay.operator", task="OLD", ts="2026-10-31T00:03:00Z",
+           detail={"build_id": "OLD.dddddddddddd", "why": "a different ended build"})
+    ok = ok and blocked()
+    ok = ok and mod.invalidate_build(w, "v3", "OLD", "OLD.cccccccccccc", "nope") == 2
+    if tag.endswith("void"):
+        ok = ok and mod.void_orphans(w, "v3", "runner restart", out=io.StringIO()) == ["OLD.aaaaaaaaaaaa"]
+        ok = ok and mod.void_orphans(w, "v3", "runner restart", out=io.StringIO()) == []
+    else:
+        ok = ok and mod.invalidate_build(w, "v3", "OLD", "OLD.aaaaaaaaaaaa", "killed between build_end and test") == 0
+    return ok and not blocked() and len([r for r in w.records() if r["event"] == "build_end"]) == 2
+
+
 def _ordered_ok(w):
     """Every build pass_start after a build_end comes after a different-agent test_start of that build."""
     seq = L.ordered(w.recs())
@@ -436,6 +469,11 @@ def sc_close_mismatch(tmp, mod, tag):
 
 
 MUTATIONS = [
+    ("I invalid build ids not checked", sc_invalidated,
+     [("    bad = [b for b in L.untested_builds(mine) if _build_key(b) not in gone]",
+       "    bad = [b for b in L.untested_builds(mine) if not gone]")]),
+    ("I an invalid with no reason accepted", sc_invalidated,
+     [(' and k in ended and (r.get("detail") or {}).get("why"):', " and k in ended:")]),
     ("D require_tested removed from the build brief", sc_refuses_untested,
      [("require_tested(self.records(), self.arm)                  # HARD CHECK", "pass  # mut")]),
     ("D same-agent flag ignored", lambda t, m, g: sc_refuses_untested(t, m, g),
@@ -666,6 +704,8 @@ def main():
                          ("S tester id never the builder's", sc_same_id),
                          ("R refused preflight logs no test_start", sc_refused_preflight),
                          ("C CLOSED must be the commit", sc_close_mismatch),
+                         ("I operator invalidate-build unblocks only that build", sc_invalidated),
+                         ("I restart void_orphans unblocks, once", lambda t, m, g: sc_invalidated(t, m, g + "void")),
                          ("RR a planted replace ref does not change what is tested", sc_replace_ref),
                          ("PIN a rewritten reviewer script is refused", sc_pinned),
                          ("EA builder attributes do not change the tested tree", sc_export_attrs),

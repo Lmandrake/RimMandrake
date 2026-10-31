@@ -139,12 +139,16 @@ def main():
         import v3_control as V3
         import trio_loop as TL
         calls = []
-        orig = SG.git_run
+        orig, orig_p = SG.git_run, SG.git_popen
 
         def spy(root, *a, **kw):
             calls.append(a[0] if a else "")
             return orig(root, *a, **kw)
-        SG.git_run = spy
+
+        def spy_p(root, *a, **kw):
+            calls.append(a[0] if a else "")
+            return orig_p(root, *a, **kw)
+        SG.git_run, SG.git_popen = spy, spy_p
         try:
             rv, a7, b7 = T.make_repo(td, "v3")
             T.plant(rv, a7, b7, ("replace", "graft", "fsmonitor", "filter", "hooksPath"))
@@ -181,7 +185,7 @@ def main():
             check('["git", "-C", str(self.root), "cat-file"' not in src and '["git", "-C", str(self.root), "merge-base"' not in src,
                   "trio_loop recover has no plain git on the builder clone")
         finally:
-            SG.git_run = orig
+            SG.git_run, SG.git_popen = orig, orig_p
     print("\n%s" % ("ALL OK" if not FAILS else "FAILED: %d" % len(FAILS)))
     return 1 if FAILS else 0
 

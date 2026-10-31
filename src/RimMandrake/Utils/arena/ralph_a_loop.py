@@ -851,10 +851,14 @@ def git_run(root, *a, **kw):
     return SG.git_run(root, *a, **kw)
 
 
-def export_tree(root, sha, dest):
+def export_tree(root, sha, dest, *, chunk=1 << 20):
     """A history-less copy of exactly `sha`'s tree, read object by object (ls-tree + cat-file): replace refs and
     grafts are ignored and no attribute applies (`git archive` honours the builder's export-ignore/export-subst).
-    Submodule entries are skipped; a symlink is kept only if it stays inside dest; a path may not escape dest."""
+    Submodule entries are skipped; a symlink is kept only if it stays inside dest; a path may not escape dest.
+    STREAMED (ARENA_EXPORT_TREE_SHRINK_RAM_OOM): cat-file --batch is read one object at a time and copied to disk in
+    `chunk`-byte pieces, so peak memory is one chunk, not the tree (the 7.7 GB replay tree was held twice in RAM and
+    the runner was OOM-killed in the 12G slice). v3_control.export_tree is this function."""
+    import threading
     ok, why = SG.verify_tree(root, sha)                         # a builder can store other bytes under an object's name
     if not ok:
         raise Refused("refused: tree of %s does not verify: %s" % (sha, why))
@@ -873,33 +877,55 @@ def export_tree(root, sha, dest):
         mode, kind, obj = meta.decode().split()
         if kind == "blob":
             ents.append((mode, obj, path.decode("utf-8", "surrogateescape")))
+    del r
     if not ents:
         return dest
-    r = git_run(root, "cat-file", "--batch", input="".join(o + "\n" for _, o, _ in ents).encode(),
-                capture_output=True)
-    if r.returncode != 0:
-        raise Refused("git cat-file failed: %s" % r.stderr.decode(errors="replace")[:300])
-    buf, pos = r.stdout, 0
-    for mode, obj, path in ents:
-        nl = buf.index(b"\n", pos)
-        head = buf[pos:nl].split()
-        if len(head) != 3 or head[0].decode() != obj:
-            raise Refused("git cat-file: unexpected header %r for %s" % (buf[pos:nl][:80], path))
-        size = int(head[2])
-        data = buf[nl + 1:nl + 1 + size]
-        pos = nl + 1 + size + 1
-        f = dest / path
-        if ".." in Path(path).parts or not f.resolve().is_relative_to(top):
-            raise Refused("refused: tree path %r escapes the export" % path)
-        f.parent.mkdir(parents=True, exist_ok=True)
-        if mode == "120000":
-            tgt = data.decode("utf-8", "surrogateescape")
-            if not os.path.isabs(tgt) and (f.parent / tgt).resolve().is_relative_to(top):
-                os.symlink(tgt, f)
-            continue
-        f.write_bytes(data)
-        if mode == "100755":
-            f.chmod(0o755)
+    p = SG.git_popen(root, "cat-file", "--batch", stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                     stderr=subprocess.DEVNULL)
+
+    def feed():
+        try:
+            for _, o, _ in ents:
+                p.stdin.write((o + "\n").encode())
+            p.stdin.close()
+        except (BrokenPipeError, ValueError, OSError):
+            pass
+    feeder = threading.Thread(target=feed, daemon=True)
+    feeder.start()
+    try:
+        for mode, obj, path in ents:
+            line = p.stdout.readline()
+            head = line.split()
+            if len(head) != 3 or head[0].decode() != obj:
+                raise Refused("git cat-file: unexpected header %r for %s" % (line[:80], path))
+            size = int(head[2])
+            f = dest / path
+            if ".." in Path(path).parts or not f.resolve().is_relative_to(top):
+                raise Refused("refused: tree path %r escapes the export" % path)
+            f.parent.mkdir(parents=True, exist_ok=True)
+            if mode == "120000":
+                tgt = p.stdout.read(size).decode("utf-8", "surrogateescape")
+                p.stdout.read(1)
+                if not os.path.isabs(tgt) and (f.parent / tgt).resolve().is_relative_to(top):
+                    os.symlink(tgt, f)
+                continue
+            left = size
+            with open(f, "wb") as fh:
+                while left:
+                    b = p.stdout.read(min(chunk, left))
+                    if not b:
+                        raise Refused("git cat-file: %s truncated (%d of %d bytes)" % (path, size - left, size))
+                    fh.write(b)
+                    left -= len(b)
+            p.stdout.read(1)
+            if mode == "100755":
+                f.chmod(0o755)
+        feeder.join(timeout=60)
+    finally:
+        p.kill()
+        p.wait()
+    if p.returncode not in (0, -9):
+        raise Refused("git cat-file failed (rc %s)" % p.returncode)
     return dest
 
 

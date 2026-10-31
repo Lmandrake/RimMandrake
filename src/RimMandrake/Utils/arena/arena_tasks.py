@@ -2282,6 +2282,8 @@ HARNESS_DIRS = {
     "sandbox": "arm_sandbox.scratch_dir base: /home is a tmpfs in the sandbox and only the arm's own scratch is bound",
     "replay": "arena_replay clones (base only, audited by build_replay_clone): /home is a tmpfs in the sandbox and "
               "only the arm's own clone is bound",
+    # ARENA_METER_HELPERS_REGISTER_FROZEN_OUT: helper_capture's <arena root>/meter_helpers (a non-kept arena child)
+    "meter_helpers": "helper_capture per-call meter records: masked by arm_sandbox.deny_paths",
 }
 
 
