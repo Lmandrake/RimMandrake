@@ -1616,9 +1616,13 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
     checks = hidden_checks(hidden or {})
     if checks:
         try:
-            # + the judge-only read set the vet traced at the fix (ARENA_TREE_FIX_OMITS_CHECK_READ_PATHS)
-            tree = materialise(clone, head, task.get("area") or [], work / "tree",
-                               A.VR.judge_tree_paths(hidden, tree_paths))
+            # + the judge-only read set the vet traced at the fix (ARENA_TREE_FIX_OMITS_CHECK_READ_PATHS); a bad
+            # reads list is an invalid verdict, never an exception (ARENA_TRACE_HARDEN_LOG_SHAPE_KILLS_VET)
+            tpaths = A.VR.judge_tree_paths(hidden, tree_paths)
+        except ValueError as ex:
+            return done("invalid", "hidden-check file is malformed: %s" % ex)
+        try:
+            tree = materialise(clone, head, task.get("area") or [], work / "tree", tpaths)
             rec["hidden"] = run_hidden(checks, tree, work, priv=priv)
         finally:
             # fix round 2 (GPT review #1/#4): the raw head tree and the per-check copies are gone BEFORE any model

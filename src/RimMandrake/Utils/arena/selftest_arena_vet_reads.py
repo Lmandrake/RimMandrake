@@ -91,6 +91,32 @@ def t_units(tmp):
     check(add == {"src/Far/y.txt", "src/Far"} and wide == {"src/Wide"},
           "new_reads: absent-but-committed file and dir added, present/uncommitted ignored, wide dir refused "
           "(%s, %s)" % (sorted(add), sorted(wide)))
+    # ARENA_VET_READS_REFUSE_FIX_CHANGED_PATHS: a read the fix changed outside the area is refused, a dir holding one too
+    files2 = files | {"infra/items/X.md", "src/Here/y.txt"}
+    dirs2 = dict(dirs, **{"infra": 1, "infra/items": 1})
+    ref: set = set()
+    add, _ = VR.new_reads({"infra/items/X.md", "src/Far/y.txt"}, tree, files2, dirs2, set(),
+                          {"infra/items/X.md", "src/Here/y.txt"}, ["src/Here/*"], ref)
+    check(add == {"src/Far/y.txt"} and ref == {"infra/items/X.md"},
+          "new_reads: a fix-changed path outside the area is refused, an unchanged one added (%s, %s)"
+          % (sorted(add), sorted(ref)))
+    ref = set()
+    add, _ = VR.new_reads({"infra"}, tree, files2, dirs2, set(), {"infra/items/X.md"}, [], ref)
+    check(not add and ref == {"infra"}, "new_reads: a dir read holding a fix-changed path is refused (%s)" % ref)
+    check(not VR.fix_changed("src/Here", {"src/Here/y.txt"}, ["src/Here/*"]) and
+          VR.fix_changed("src/Here", {"src/Here/y.txt"}, []),
+          "fix_changed: a change inside the area is the arm's to make, so it does not refuse")
+    # ARENA_TRACE_HARDEN_LOG_SHAPE_KILLS_VET: a log of the wrong shape is no reads, never an exception
+    for raw in ("null", "[1]", '[["open", ["x"]]]', '{"a": 1}', "[[\"open\"]]", "not json", "", '[["open", "a"], 3]'):
+        check(VR.parse_log(raw) == set(), "parse_log: malformed log %r -> no reads" % raw)
+    check(VR.parse_log('[["open", "a/b"], ["list", "c"]]') == {"a/b", "c"},
+          "parse_log: a well-formed log -> its paths (positive control)")
+    for bad in (["x"], "x", 3):
+        try:
+            VR.judge_tree_paths(bad, J.TREE_PATHS)
+            check(False, "judge_tree_paths refuses a non-dict hidden %r" % (bad,))
+        except ValueError:
+            check(True, "judge_tree_paths refuses a non-dict hidden %r (ValueError, not AttributeError)" % (bad,))
 
 
 def t_fixture(tmp):
@@ -146,6 +172,212 @@ def t_fixture(tmp):
     shutil.rmtree(d, ignore_errors=True)
 
 
+ITEM_MD = "infrastructure/state/items/VR_ITEM.md"
+# reads a bookkeeping file the fix itself changes (outside the area): only the fix's copy passes it
+READS_ITEM = '''import os, sys
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, HERE)
+import vr_lib
+assert vr_lib.f() == 2
+assert "state: new" in open(os.path.join(REPO, "infrastructure", "state", "items", "VR_ITEM.md")).read()
+'''
+
+
+def forged(log_json):
+    """A check that overwrites the trace log with `log_json` and dies before the tracer's own dump."""
+    return ("import os\nfd = os.open(%r, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o644)\nos.write(fd, %r)\n"
+            "os._exit(1)\n" % (VR.TRACE_LOG, log_json.encode()))
+
+
+def t_refuse_changed(tmp):
+    """ARENA_VET_READS_REFUSE_FIX_CHANGED_PATHS: a check reading a path the fix changed outside the area."""
+    repo = tmp / "repo_ch"
+    repo.mkdir()
+    git(repo, "init", "-q", "-b", "main")
+    base = commit(repo, {LIB: "def f():\n    return 1\n", ITEM_MD: "state: old\n"}, "base")
+    fix = commit(repo, {LIB: "def f():\n    return 2\n", CHECK: READS_ITEM, ITEM_MD: "state: new\n"}, "fix")
+    area = A.area_for([LIB, CHECK])
+    check(not any(J.in_area(ITEM_MD, [a]) for a in area), "instrument: the item file is outside the area")
+    checks = [{"kind": "fix_test", "path": CHECK, "body": READS_ITEM}]
+    old = VR.trace_reads(repo, fix, area, checks, tmp / "tr_old", 30)
+    check(old["reads"] == [ITEM_MD], "control: without base= the trace admits the fix-changed read (%s)" % old)
+    tr = VR.trace_reads(repo, fix, area, checks, tmp / "tr_new", 30, base=base)
+    check(tr["reads"] == [] and tr["refused"] == [ITEM_MD],
+          "trace with base: the fix-changed read is refused and reported (%s)" % tr)
+    rec = A._vet_task({"task": "RP_CH", "base": base, "fix": fix, "area": area,
+                       "checks": [{"path": CHECK, "body": READS_ITEM, "key": "ch-1"}]}, repo, tmp / "vt_ch", 30)[0]
+    check(A.vet_verdict(rec) == (False, "fails_at_fix") and rec["reads"] == []
+          and rec["reads_trace"]["refused"] == [ITEM_MD],
+          "vet: the check no arm can win is fails_at_fix (unscored), not a false discriminator (%s/%s %s)"
+          % (rec["fix_result"], rec["base_result"], rec.get("reads_trace")))
+
+
+def t_log_shape(tmp):
+    """ARENA_TRACE_HARDEN_LOG_SHAPE_KILLS_VET: a check that forges the trace log never stops the trace or the vet."""
+    repo = tmp / "repo_log"
+    repo.mkdir()
+    git(repo, "init", "-q", "-b", "main")
+    base = commit(repo, {LIB: "def f():\n    return 1\n"}, "base")
+    fix = commit(repo, {LIB: "def f():\n    return 2\n", CHECK: "x = 1\n"}, "fix")
+    area = A.area_for([LIB, CHECK])
+    tree = J.materialise(repo, fix, area, tmp / "log_tree")
+    for raw in ("null", "[1]", '[["open", ["x"]]]'):
+        try:
+            seen = VR.trace_once([{"path": CHECK, "body": forged(raw)}], tree, tmp / "log_w", 30)
+            check(seen == set(), "trace_once: forged log %s counts as no reads (%s)" % (raw, seen))
+        except Exception as e:      # noqa: BLE001
+            check(False, "trace_once: forged log %s raised %s: %s" % (raw, type(e).__name__, e))
+    jobs = [{"task": "RP_LOG%d" % i, "base": base, "fix": fix, "area": area,
+             "checks": [{"path": CHECK, "body": forged(raw), "key": "log-%d" % i}]}
+            for i, raw in enumerate(("null", "[1]", '[["open", ["x"]]]'))]
+    cache = tmp / "log_cache.jsonl"
+    out = A.run_vet(jobs, repo, tmp / "log_vw", cache, workers=2, timeout=30)
+    recs = A.read_vet_cache(cache)
+    check(out["ran"] == 3 and not out["errors"] and len(recs) == 3
+          and all(A.vet_verdict(r)[1] == "fails_at_fix" and r["reads"] == [] for r in recs.values()),
+          "run_vet: three forged-log checks are vetted (fails_at_fix, no reads), none stops the vet (%s)" % out)
+    # an unexpected exception in one task is reported for that task, not raised out of the vet
+    saved = A._vet_task
+    try:
+        A._vet_task = lambda *a, **k: (_ for _ in ()).throw(TypeError("boom"))
+        out = A.run_vet([dict(jobs[0], checks=[dict(jobs[0]["checks"][0], key="log-x")])], repo, tmp / "log_vw2",
+                        tmp / "log_cache2.jsonl", timeout=30)
+        check(out["left"] == 1 and out["errors"] and "TypeError" in out["errors"][0]["error"],
+              "run_vet: a TypeError in one task is reported, the check stays unvetted (%s)" % out)
+    except TypeError as e:
+        check(False, "run_vet: a TypeError escaped the vet (%s)" % e)
+    finally:
+        A._vet_task = saved
+
+
+CTRL_LIB = "src/RimMandrake/Utils/vr_ctrl.py"
+CTRL = "src/RimMandrake/Utils/selftest_vr_ctrl.py"
+# the negative control: imports the tree's own code, so it passes at a REAL base and fails at an empty one
+CTRL_BODY = ("import os, sys\nsys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))\nimport vr_ctrl\n"
+             "assert vr_ctrl.g() in (1, 2)\n")
+SANE, CONTROL = "VR_SANE_FIX_ONE", "VR_CONTROL_FIX_TWO"
+PROBES = {"reads": [TABLE, SCAN], "control": (CONTROL, CTRL)}
+
+
+def _ledger(sane_sha, ctrl_sha):
+    E = []
+    for i, (iid, sha, day) in enumerate(((SANE, sane_sha, "2026-10-14"), (CONTROL, ctrl_sha, "2026-10-15"))):
+        for k in ({"event": "file", "id": iid, "title": "title of " + iid, "kind": "task", "needs": "offline",
+                   "for": "FOUNDRY", "ts": day + "T10:00:00Z"},
+                  {"event": "verify", "id": iid, "result": "pass", "config": "c", "evidence": "e", "sha": sha[:10],
+                   "ts": day + "T10:03:30Z"},
+                  {"event": "close", "id": iid, "sha": sha[:10], "reason": "r", "ts": day + "T10:04:00Z"}):
+            E.append(dict(k, seat="FOUNDRY", tsn="vr%d%s" % (i, k["event"])))
+    return E
+
+
+def _dead_base(base):
+    """Mutant 1: the vet's base side gets an empty tree."""
+    real = J.materialise
+
+    def m(clone, head, area, dest, tree_paths=J.TREE_PATHS):
+        if head == base:
+            dest.mkdir(parents=True, exist_ok=True)
+            return dest
+        return real(clone, head, area, dest, tree_paths)
+    return real, m
+
+
+def t_census_judge(tmp):
+    """ARENA_SANITY_HARDEN_GREEN_ON_DEAD_BASE: census output carried through arena_judge.judge(), and the two
+    sanity probes (hidden reads present; a passes_at_base negative control), each killed by its mutant."""
+    root = tmp / "cj"
+    env = {"ARENA_ROOT": root / "arena", "ARENA_CLONES": root / "clones", "ARENA_PRIVATE": root / "private",
+           "ARENA_JUDGE_WORK": root / "work"}
+    saved_env = {k: os.environ.get(k) for k in env}
+    try:
+        for k, v in env.items():
+            os.environ[k] = str(v)
+            if k != "ARENA_PRIVATE":
+                v.mkdir(parents=True)
+        repo = env["ARENA_CLONES"] / "vr"
+        repo.mkdir()
+        git(repo, "init", "-q", "-b", "main")
+        base = commit(repo, {LIB: "def f():\n    return 1\n", TABLE: "want=2\n", SCAN + "/a.txt": "a",
+                             SCAN + "/b.txt": "b", CTRL_LIB: "def g():\n    return 1\n"}, "base")
+        ctrl = commit(repo, {CTRL_LIB: "def g():\n    return 2\n", CTRL: CTRL_BODY}, CONTROL + ": g returns 2")
+        sane = commit(repo, {LIB: "def f():\n    return 2\n", CHECK: BODY}, SANE + ": f returns 2")
+        E = _ledger(sane, ctrl)
+        miss: list = []
+        A.census(E, repo=repo, sanity=None, old_history=[], vet=lambda *a: None, vet_missing=miss)
+        check(sorted(j["task"] for j in miss) == ["RP_" + CONTROL, "RP_" + SANE],
+              "census: both fixture tasks are vet candidates (%s)" % [j["task"] for j in miss])
+        cache = root / "vet_cache.jsonl"
+        out = A.run_vet(miss, repo, root / "vw", cache, timeout=30)
+        check(out["ran"] == 2 and not out["errors"], "vet ran both fixture checks (%s)" % out)
+        recs = A.read_vet_cache(cache)
+        pool, rep = A.census(E, repo=repo, sanity=SANE, old_history=[], vet=A.vet_lookup(recs), probes=PROBES)
+        check(rep["sanity"].get("reads") == [TABLE, SCAN] and rep["sanity"]["control"]["verdict"] == "passes_at_base",
+              "census: sanity kept with its reads, negative control passes_at_base (%s)" % rep["sanity"])
+        task, hidden = next((t, h) for t, h in pool if t["source_item"] == SANE)
+
+        # mutant 1: a dead base side. The sanity item alone stays green (its base fails either way) ...
+        cache_m = root / "vet_cache_dead.jsonl"
+        for j in miss:                            # each task's own base side is the dead one
+            real, J.materialise = _dead_base(j["base"])
+            try:
+                A.run_vet([j], repo, root / "vw_dead", cache_m, timeout=30)
+            finally:
+                J.materialise = real
+        rm = A.read_vet_cache(cache_m)
+        try:
+            A.census(E, repo=repo, sanity=SANE, old_history=[], vet=A.vet_lookup(rm), probes={})
+            check(True, "mutant 1 instrument: without the control the dead base side stays green (the finding)")
+        except A.SanityFail as e:
+            check(False, "mutant 1 instrument: expected the bare probe to stay green (%s)" % e)
+        try:
+            A.census(E, repo=repo, sanity=SANE, old_history=[], vet=A.vet_lookup(rm), probes=PROBES)
+            check(False, "mutant 1 (dead base side): the negative control raises SanityFail")
+        except A.SanityFail as e:
+            check("negative control" in str(e), "mutant 1 (dead base side): SanityFail: %s" % str(e)[:120])
+
+        # mutant 2: the census drops the reads before building hidden
+        strip = lambda *a: {k: v for k, v in (A.vet_lookup(recs)(*a) or {}).items() if k != "reads"} or None
+        try:
+            A.census(E, repo=repo, sanity=SANE, old_history=[], vet=strip, probes=PROBES)
+            check(False, "mutant 2 (reads dropped): SanityFail")
+        except A.SanityFail as e:
+            check("hidden reads" in str(e), "mutant 2 (reads dropped): SanityFail: %s" % str(e)[:120])
+
+        # the census output through the judge: a perfect arm (the fix itself) passes the hidden check ...
+        arm = J.arms()[0]
+        gate = {"verdict": "pass", "arm": arm, "steps": {"tests": "pass"}, "log": "/x/gate.log"}
+
+        class Accept:
+            def __call__(self, prompt, work):
+                return '{"verdict": "accept", "reasons": ["r"], "arm_guess": "unknown"}'
+
+        def run(h, tid):
+            return J.judge(task=dict(task, id=tid), hidden=h, clone=repo, base=ctrl, head=sane, arm=arm, gate=gate,
+                           judges=J.Judges(Accept(), Accept(), Accept()))
+        r = run(hidden, "T_CJ_GOOD")
+        check(r["verdict"] == "accept" and [h["result"] for h in r["hidden"]] == ["pass"],
+              "judge: census hidden file -> perfect arm's hidden check passes (%s %s)"
+              % (r["verdict"], r.get("why")))
+        # ... and with the reads dropped (mutant 2's judge file) it is rejected: what the probe now guards
+        r = run({k: v for k, v in hidden.items() if k != "reads"}, "T_CJ_NOREADS")
+        check(r["verdict"] == "reject", "judge: hidden without reads rejects the perfect arm (%s)" % r.get("why"))
+        # ARENA_TRACE_HARDEN_LOG_SHAPE_KILLS_VET: a bad reads list is an invalid verdict, not a crash
+        for bad in (["../x"], "src/x", [3]):
+            try:
+                r = run(dict(hidden, reads=bad), "T_CJ_BAD")
+                check(r["verdict"] == "invalid", "judge: hidden reads %r -> invalid (%s)" % (bad, r.get("why")))
+            except Exception as e:      # noqa: BLE001
+                check(False, "judge: hidden reads %r raised %s: %s" % (bad, type(e).__name__, e))
+    finally:
+        for k, v in saved_env.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+
+
 def t_wiring(tmp):
     src = Path(J.__file__).read_text(encoding="utf-8")
     check("A.VR.judge_tree_paths(hidden, tree_paths)" in src,
@@ -186,6 +418,9 @@ def main():
     try:
         t_units(tmp)
         t_fixture(tmp)
+        t_refuse_changed(tmp)
+        t_log_shape(tmp)
+        t_census_judge(tmp)
         t_wiring(tmp)
         t_sanity()
     finally:

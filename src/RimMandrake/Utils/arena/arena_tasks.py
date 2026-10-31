@@ -146,6 +146,15 @@ KINDS = ("python-util", "xml-def-patch", "csharp", "live-verify", "tooling")
 # probe is ROAST_STICK's item: Clean, and pass/fail only with its traced reads (src/RimStarWars/Cuisine/Defs), so a
 # broken read trace also trips the probe.
 SANITY_ITEM = "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS"
+# FOUNDRY 2026-10-30 (ARENA_SANITY_HARDEN_GREEN_ON_DEAD_BASE): "kept" is one-sided. ROAST_STICK's base failure is a
+# FileNotFoundError on a fix-added file, so a dead (empty) base tree fails it the same way and the probe stays green;
+# and a census that dropped the reads would still keep it while the judge rejects every arm. So, with a vet, the
+# sanity item also needs (1) its hidden reads to hold `reads` (what the judge materialises), and (2) a NEGATIVE
+# CONTROL: `control` = (item, check path) whose vet record must stay passes_at_base. That check imports the tree's
+# own code at base, so a base side materialised empty or wrong fails it and the census raises SanityFail.
+SANITY_PROBES = {SANITY_ITEM: {"reads": ("src/RimStarWars/Cuisine/Defs",),
+                               "control": ("READER_BASELINE_REPAIR_OLD_ORDER_TRIPS",
+                                           "src/RimMandrake/rimflow/selftest_reader_invariant.py")}}
 BOOKKEEPING = ("infrastructure/state/ledger/*", "infrastructure/state/queue/*", "infrastructure/state/items/*",
                "AGENTS.md")
 # size points from the original diff (counted files, added+deleted lines); fixed at freeze
@@ -659,12 +668,18 @@ def later_fixes(repo: Path, fix: str, files: list, t_close: float) -> list:
 
 
 def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, old_history=None, vet=None,
-           vet_missing: list | None = None):
+           vet_missing: list | None = None, probes: dict | None = None):
     """-> (pool, report). Pool entries are (task, hidden). Raises SanityFail when the sanity item is not kept.
     `vet(base, fix, path, body)` -> a vet record ({base_rc, fix_rc, ...}) or None when the check was never run
     (vet_lookup over the vet cache). With vet=None nothing is vetted: the pool is candidates, and freeze refuses
     it. With a vet, a never-run check rejects its task (fail closed), and `vet_missing` (a list) collects a vet job
-    (vet_jobs shape) for each such task: every candidate, before the chain dedup, so one `vet` pass covers them."""
+    (vet_jobs shape) for each such task: every candidate, before the chain dedup, so one `vet` pass covers them.
+    `probes` ({"reads": [...], "control": (item, path)}, default SANITY_PROBES[sanity]) applies with a vet only:
+    the sanity item's hidden reads must hold `reads` and the control check must stay passes_at_base."""
+    if probes is None:
+        probes = SANITY_PROBES.get(sanity) if sanity else None
+    control = tuple((probes or {}).get("control") or ()) or None
+    control_rec: list = []
     vstat = {"run": vet is not None, "checks": 0, "discriminating": 0, "passes_at_base": 0, "fails_at_fix": 0,
              "timeout": 0, "base_invalid": 0, "not_vetted": 0, "tasks_rejected": 0}
     if events is None:
@@ -787,6 +802,8 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                     c["vet"] = None
                     continue
                 ok, why = vet_verdict(rec)
+                if control and (iid, c["path"]) == control:
+                    control_rec.append(rec)
                 reads.update(rec.get("reads") or [])
                 vstat[why] += 1
                 vstat["checks"] += 1
@@ -891,6 +908,20 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
     if sanity and sanity not in kept:
         raise SanityFail("sanity item %s was not kept (%s): the census is blind, not the pool small"
                          % (sanity, reasons.get(sanity) or "not scanned: not a done item closed in window"))
+    if sanity and probes and vet is not None:
+        got = next(h for t, h in pool if t["source_item"] == sanity).get("reads") or []
+        want = list(probes.get("reads") or ())
+        report["sanity"]["reads"] = got
+        if not got or any(r not in got for r in want):
+            raise SanityFail("sanity item %s: hidden reads %s lack %s: the judge would reject every arm (reads "
+                             "dropped between vet and judge file)" % (sanity, got, [r for r in want if r not in got]))
+        if control:
+            cr = control_rec[-1] if control_rec else None
+            cv = vet_verdict(cr)[1] if cr else "not vetted / not scanned"
+            report["sanity"]["control"] = {"item": control[0], "path": control[1], "verdict": cv}
+            if cv != "passes_at_base":
+                raise SanityFail("negative control %s %s is %s, not passes_at_base: the vet's base side is not the "
+                                 "real base tree" % (control[0], control[1], cv))
     return pool, report
 
 
@@ -1035,7 +1066,9 @@ def _vet_task(job: dict, repo: Path, work: Path, timeout: int) -> list[dict]:
     failing = [c for c, r in zip(checks, res["fix"]) if r.get("result") != "pass"]
     if failing:
         try:
-            trace = VR.trace_reads(repo, job["fix"], job.get("area") or [], failing, work / "trace", timeout)
+            # ARENA_VET_READS_REFUSE_FIX_CHANGED_PATHS: a read the fix changed outside the area is refused (base=)
+            trace = VR.trace_reads(repo, job["fix"], job.get("area") or [], failing, work / "trace", timeout,
+                                   base=job["base"])
         except J.JudgeError as e:
             raise ArenaError("vet: trace: %s" % e)
         finally:
@@ -1049,7 +1082,7 @@ def _vet_task(job: dict, repo: Path, work: Path, timeout: int) -> list[dict]:
                      "runner": _runner_id(), "fix_result": fr.get("result"), "base_result": br.get("result"),
                      "fix_rc": fr.get("rc"), "base_rc": br.get("rc"), "fix_tail": (fr.get("tail") or "")[-600:],
                      "base_tail": (br.get("tail") or "")[-600:], "timeout": timeout, "reads": trace["reads"],
-                     **({"reads_trace": {k: trace[k] for k in ("too_wide", "rounds", "converged")}}
+                     **({"reads_trace": {k: trace[k] for k in ("too_wide", "refused", "rounds", "converged")}}
                         if failing else {}),
                      "at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})
     return recs
@@ -1087,7 +1120,8 @@ def run_vet(jobs, repo: Path, workdir: Path, cache: Path, workers: int = 4, time
             return job, None, "budget"
         try:
             return job, _vet_task(job, Path(repo), Path(tempfile.mkdtemp(prefix="t", dir=str(root))), timeout), None
-        except (ArenaError, OSError, subprocess.SubprocessError, ValueError) as e:
+        except Exception as e:      # noqa: BLE001  ARENA_TRACE_HARDEN_LOG_SHAPE_KILLS_VET: one candidate never
+            # stops the vet; the error is reported, not cached (the check stays unvetted, its task out of the pool)
             return job, None, "%s: %s" % (type(e).__name__, str(e)[:200])
 
     try:
