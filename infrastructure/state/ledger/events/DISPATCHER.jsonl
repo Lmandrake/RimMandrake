@@ -320,3 +320,4 @@
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Innovator run run: completed","ts":"2026-10-30T22:03:45Z","tsn":1793397825340174434}
 {"seat":"DISPATCHER","event":"note","id":"DISPATCHER_BUILD_PICK_ACCOUNT_FIRST","text":"dispatcher account_pick : keep system: runway 2.23 MEASURED, week left 91% (not under the switch line) (was: SWITCH steven -> system)","ts":"2026-10-31T00:00:21Z","tsn":1793404821477505294}
 {"seat":"DISPATCHER","event":"note","id":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","text":"dispatcher: Arbiter run run: launched","ts":"2026-10-31T00:00:23Z","tsn":1793404823842368292}
+{"seat":"DISPATCHER","event":"note","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","text":"dispatcher alarm : Conductor helper a7bbb3558ae0 has been running 71 min (> 60 min): check it is not stuck or burning context; stop it or let it finish","ts":"2026-10-31T00:06:39Z","tsn":1793405199435537600}
