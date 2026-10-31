@@ -1,0 +1,1 @@
+Helper types lacked SendMessage in their tools list, so a backgrounded helper could not report mid-run and its parent re-checked by hand; added to rm-builder, rm-fixer, rm-bridge. A brief must not tell a running helper to message anyone unless its type has the tool.
