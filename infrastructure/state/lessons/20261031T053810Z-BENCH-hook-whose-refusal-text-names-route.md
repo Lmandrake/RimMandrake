@@ -1,0 +1,1 @@
+A hook whose refusal text names a route must be tested against that route: block_shared_tree_merge.py sent merges to a scratch clone and then refused them there, because it treated every clone as shared.
