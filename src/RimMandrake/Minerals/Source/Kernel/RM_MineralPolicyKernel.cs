@@ -84,6 +84,7 @@ namespace RimMandrake.Minerals
         public string ScatterReason;
         public string DeepReason;
         public bool SurfacePlaced;  // vanilla scatter zeroed because the surface adapter places this def per biome instead
+        public bool Disabled;       // the registry zeroes it (zeroProducers / retiredItems): explicit placement lists drop it too
         public bool Unregistered => MaterialId == null;
     }
 
@@ -145,7 +146,7 @@ namespace RimMandrake.Minerals
                 switch (role)
                 {
                     case Role.Zero:
-                        p.Scatter = 0f; p.Deep = 0f;
+                        p.Scatter = 0f; p.Deep = 0f; p.Disabled = true;
                         p.ScatterReason = p.DeepReason = "registry disables it (zero/retire)";
                         break;
                     case Role.Mineable:
@@ -478,6 +479,56 @@ namespace RimMandrake.Minerals
             if (p == null) return null;
             if (rSlice < p.UnregisteredShare && p.Unregistered.Count > 0) return PickWeighted(p.Unregistered, rPick);
             return PickWeighted(p.Local, rPick);
+        }
+    }
+
+    /// <summary>What one explicit placement list keeps (PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS).</summary>
+    public sealed class ListPrune
+    {
+        public readonly List<int> Keep = new List<int>();         // indices into the ORIGINAL list, in order
+        public readonly List<string> Dropped = new List<string>();
+        /// <summary>Every entry is disabled: the list is kept whole, because an emptied list makes its consumer throw or place
+        /// nothing it was built for (GenStep_PreciousLump, QuestNode_Root_Asteroid draw RandomElement).</summary>
+        public bool FellBack;
+    }
+
+    /// <summary>Explicit placement lists (GenStep_PreciousLump.mineables, asteroid GenSteps' mineableCounts, VGE/Deep Orbit
+    /// GeneratedLocationDef.preciousResources, QuestNode_Root_Asteroid.mineables, GenStep_ScatterGroup things) name mineables
+    /// directly, so zeroing scatter/deep never reaches them. Verse-free: the adapter hands each entry's defNames in.</summary>
+    public static class RM_ExplicitListKernel
+    {
+        /// <summary>The mineables every explicit list must drop: decisions the registry disables, limited to defs the caller says
+        /// are mineable buildings (a retired ITEM named in a trader or recipe list is not a placement and is never touched).</summary>
+        public static HashSet<string> Disabled(IEnumerable<PolicyDecision> decisions, Func<string, bool> isMineable)
+        {
+            var s = new HashSet<string>();
+            if (decisions == null) return s;
+            foreach (PolicyDecision p in decisions)
+                if (p != null && p.Disabled && p.DefName != null && (isMineable == null || isMineable(p.DefName))) s.Add(p.DefName);
+            return s;
+        }
+
+        /// <summary><paramref name="entries"/>[i] = the defNames entry i carries (a ThingDef list entry: its own name; a
+        /// MineableCountConfig / ThingWeight: its ThingDef fields). An entry naming any disabled def is dropped. Pure: the caller
+        /// always prunes from the list as first seen, so applying twice equals once and an empty set restores it.</summary>
+        public static ListPrune Prune(IList<IList<string>> entries, ICollection<string> disabled)
+        {
+            var r = new ListPrune();
+            if (entries == null) return r;
+            for (int i = 0; i < entries.Count; i++)
+            {
+                string hit = null;
+                if (disabled != null && entries[i] != null)
+                    foreach (string n in entries[i]) if (n != null && disabled.Contains(n)) { hit = n; break; }
+                if (hit == null) r.Keep.Add(i); else r.Dropped.Add(hit);
+            }
+            if (entries.Count > 0 && r.Keep.Count == 0)
+            {
+                r.FellBack = true;
+                r.Dropped.Clear();
+                for (int i = 0; i < entries.Count; i++) r.Keep.Add(i);
+            }
+            return r;
         }
     }
 }

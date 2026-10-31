@@ -30,6 +30,10 @@ PROOF_TYPE = NS + "RM_MineralPolicyProof"
 QUARRY_PROOF_TYPE = NS + "RM_MineralQuarryProof"
 SURFACE_PROOF_TYPE = NS + "RM_MineralSurfaceProof"
 METEOR_PROOF_TYPE = NS + "RM_MineralMeteoriteProof"
+LISTS_TYPE = NS + "RM_MineralExplicitLists"
+# PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS: lists that name mineables directly; each must lose the two the 2026-09-25 ruling bars
+EXPLICIT_LISTS = ["GenStepDef PreciousLump.", "GeneratedLocationDef VGE_IceAsteroids.", "GenStepDef BigAsteroidBasic.",
+                  "QuestScriptDef OpportunitySite_DeepOrbit_BigAsteroids.", "GenStepDef KOTOR_JunkPileClusters."]
 METEOR_CLASS = NS + "RM_MineralMeteoriteDef"
 
 
@@ -132,6 +136,13 @@ def static_checks():
             bad.append("RM_MineralMeteorite.cs lacks %s" % needle)
     if "RM_MineralMeteorite.Refresh(why)" not in pol:
         bad.append("RM_MineralPolicy.Apply no longer refreshes the meteorite list (master toggle would not reach it)")
+    if "RM_MineralExplicitLists.Refresh(decisions, why)" not in pol:
+        bad.append("RM_MineralPolicy.Apply no longer refreshes the explicit mineable lists (PreciousLump would place plasteel again)")
+    el = _read("Source", "RM_MineralExplicitLists.cs")
+    for needle in ("RM_ExplicitListKernel.Disabled(", "RM_ExplicitListKernel.Prune(", "RM_MineralsSettings.enabled ?",
+                   "public static string ProofState(string filter)", "GenDefDatabase.AllDefTypesWithDatabases()"):
+        if needle not in el:
+            bad.append("RM_MineralExplicitLists.cs lacks %s" % needle)
 
     proj = _read("Source", "RimMandrake_Minerals.csproj")
     classes = set()
@@ -465,6 +476,47 @@ def _build_suite():
                 s = _meteor(t, "ProofState", "")
                 if s.get("active") != "1" or s.get("stones") != "0":
                     raise ExpectationFailed("master back on: meteorite filter not re-applied: %r" % s)
+
+    def _lists(t, filt):
+        r = t.bridge_call("jawa/static_call", type=LISTS_TYPE, method="ProofState", args=_one_arg(filt))
+        if not isinstance(r, dict) or r.get("success") is False:
+            raise ExpectationFailed("explicit lists ProofState could not run: %r" % (r,))
+        return _parse_state(str(r.get("result", "")))
+
+    def _list_rows(s):
+        return {k: v for k, v in s.items() if k not in ("lists", "reason")}
+
+    @suite.chain("explicit_lists")
+    def explicit_lists(t):
+        with t.component("explicit_lists_drop_barred_mineables", toggle="enabled"):
+            if _live(t):
+                s = _lists(t, "")
+                if int(s.get("lists", 0)) < 5:      # sanity: the dump holds 23 such lists on the owner's list
+                    raise ExpectationFailed("only %r explicit mineable lists found: the scan is blind" % s.get("lists"))
+                rows = _list_rows(s)
+                for want in EXPLICIT_LISTS:
+                    hit = {k: v for k, v in rows.items() if k.startswith(want)}
+                    if not hit:
+                        continue          # its mod is not on this list; PreciousLump (Core) is required below
+                    for k, v in hit.items():
+                        kept = v.split("|", 1)[0]
+                        if any(m in kept.replace("+", ",").split(",") for m in METEOR_NEVER[-2:]):
+                            raise ExpectationFailed("%s still names a barred mineable: %r" % (k, v))
+                if not any(k.startswith("GenStepDef PreciousLump.") for k in rows):
+                    raise ExpectationFailed("Core PreciousLump.mineables not among the lists: %r" % sorted(rows)[:10])
+        with t.component("master_off_restores_explicit_lists", toggle="enabled"):
+            if _live(t) and not t.upstream_failed:
+                try:
+                    _set(t, "enabled", False)
+                    _call(t, "ProofApply", "master off")
+                    s = _list_rows(_lists(t, "PreciousLump"))
+                    if not any("MineablePlasteel" in v for v in s.values()):
+                        raise ExpectationFailed("master off: PreciousLump did not get plasteel back: %r" % s)
+                finally:
+                    _restore(t, "enabled")
+                s = _list_rows(_lists(t, "PreciousLump"))
+                if any("MineablePlasteel" in v.split("|", 1)[0] for v in s.values()):
+                    raise ExpectationFailed("master back on: PreciousLump still names plasteel: %r" % s)
 
     @suite.chain("settings_roundtrip")
     def settings_roundtrip(t):

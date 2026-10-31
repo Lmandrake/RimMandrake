@@ -347,6 +347,36 @@ namespace RimMandrake.Minerals.SelfTest
                   "unregistered entries keep Quarry's stored weight (owner card 2026-10-03)");
             Check(RM_QuarryKernel.PristineDictionary(null, qrocks, gov, "ComponentIndustrial") == null, "an unreadable dictionary stays unreadable");
 
+            // --- PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS: explicit placement lists drop what the registry disables
+            var mineableBuildings = new HashSet<string>(defs.Where(d => d.IsBuilding && d.MinedItem != null).Select(d => d.DefName));
+            HashSet<string> disOn = RM_ExplicitListKernel.Disabled(on.Values, mineableBuildings.Contains);
+            HashSet<string> disOff = RM_ExplicitListKernel.Disabled(off, mineableBuildings.Contains);
+            Check(disOn.Contains("MineablePlasteel") && disOn.Contains("MineableComponentsIndustrial"),
+                  "the disabled set must hold Core's plasteel and component mineables: " + string.Join(",", disOn));
+            Check(disOff.Count == 0, "master toggle off disables nothing: " + string.Join(",", disOff));
+            Check(disOn.All(mineableBuildings.Contains) && !disOn.Contains("MineableSteel"),
+                  "only mineable buildings are disabled, never an item or steel: " + string.Join(",", disOn));
+            Check(RM_ExplicitListKernel.Disabled(on.Values, null).Count >= disOn.Count, "instrument: the unfiltered disabled set is no smaller");
+            // Core GenStepDef PreciousLump.mineables, as the 2026-10-28 dump holds it
+            string[] lump = { "MineableGold", "MineableSilver", "MineableSteel", "MineablePlasteel", "MineableComponentsIndustrial",
+                              "MineableUranium", "MineableJade", "MineableDiamond", "MineableRuby", "MineableSapphire" };
+            List<IList<string>> lumpEntries = lump.Select(n => (IList<string>)new[] { n }).ToList();
+            ListPrune lp = RM_ExplicitListKernel.Prune(lumpEntries, disOn);
+            List<string> lumpKept = lp.Keep.Select(i => lump[i]).ToList();
+            Console.WriteLine("PreciousLump keeps: " + string.Join(",", lumpKept) + "; drops: " + string.Join(",", lp.Dropped));
+            Check(!lumpKept.Contains("MineablePlasteel") && !lumpKept.Contains("MineableComponentsIndustrial") && lumpKept.Contains("MineableSteel")
+                  && !lp.FellBack && lp.Keep.SequenceEqual(lp.Keep.OrderBy(i => i)), "PreciousLump drops plasteel and components, keeps steel, in order");
+            Check(RM_ExplicitListKernel.Prune(lumpEntries, disOff).Keep.Count == lump.Length, "master toggle off restores the whole list");
+            // a MineableCountConfig / ThingWeight entry carries its ThingDef fields: any disabled one drops the entry
+            var counts = new List<IList<string>> { new[] { "MineableGold" }, new[] { "MineablePlasteel" }, new string[0], new[] { "x", "MineableComponentsIndustrial" } };
+            ListPrune cp = RM_ExplicitListKernel.Prune(counts, disOn);
+            Check(cp.Keep.SequenceEqual(new[] { 0, 2 }) && cp.Dropped.SequenceEqual(new[] { "MineablePlasteel", "MineableComponentsIndustrial" }),
+                  "config entries: drop the ones naming a disabled mineable: keep " + string.Join(",", cp.Keep));
+            ListPrune only = RM_ExplicitListKernel.Prune(new List<IList<string>> { new[] { "MineablePlasteel" } }, disOn);
+            Check(only.FellBack && only.Keep.SequenceEqual(new[] { 0 }) && only.Dropped.Count == 0,
+                  "a list that would empty is kept whole (RandomElement of nothing throws)");
+            Check(!RM_ExplicitListKernel.Prune(new List<IList<string>>(), disOn).FellBack, "an empty list is not a fallback");
+
             var two = new List<QuarryEntry> { new QuarryEntry("a", 1f, "a"), new QuarryEntry("b", 3f, "b") };
             Check(RM_QuarryKernel.PickWeighted(two, 0.2).Item == "a" && RM_QuarryKernel.PickWeighted(two, 0.3).Item == "b"
                   && RM_QuarryKernel.PickWeighted(two, 1.0).Item == "b", "weighted pick boundaries");

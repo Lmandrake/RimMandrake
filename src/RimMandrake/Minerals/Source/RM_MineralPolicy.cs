@@ -155,6 +155,9 @@ namespace RimMandrake.Minerals
             // the meteorite whitelist follows the same master toggle and the same re-assert points (settings change, FinalizeInit)
             try { RM_MineralMeteorite.Refresh(why); }
             catch (System.Exception e) { Log.Error("[RM Minerals] meteorite filter refresh failed (" + why + "): " + e); }
+            // explicit placement lists (PreciousLump, asteroid GenSteps and sites, asteroid quests) follow the same decisions
+            try { RM_MineralExplicitLists.Refresh(decisions, why); }
+            catch (System.Exception e) { Log.Error("[RM Minerals] explicit mineable lists refresh failed (" + why + "): " + e); }
         }
     }
 
