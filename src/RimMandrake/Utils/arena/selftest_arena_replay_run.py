@@ -14,6 +14,9 @@
   token     the harness state dir is pinned to the REAL home (XDG_STATE_HOME), so the scrubbed temp HOME of
             work()/judge() still finds the harness token; XDG_STATE_HOME is not let into an arm sandbox
   lock      a second runner of the same arm refuses (runner.lock held) instead of double-running
+  model     the model command needs `--output-format json`; --model is a CLI alias or a $VAR read at call time (a
+            missing one refused by name); a literal id, account/region prefix or host is refused
+  snapshot  arena_model_snapshot.py exit 2/3/other refuses the arm's start; exit 0 starts it
 Fakes only: no clone, no model, no judge, no signed log.
 """
 import io
@@ -203,12 +206,52 @@ def t_token_home():
           "XDG_STATE_HOME never crosses into an arm sandbox")
 
 
+def t_model_cmd():
+    good = "/x/claude -p --model opus --dangerously-skip-permissions --output-format json"
+    check(RR.resolve_model_cmd(good, {}) == good, "alias + --output-format json passes unchanged")
+
+    def refused(cmd, env, what, needle=""):
+        try:
+            RR.resolve_model_cmd(cmd, env)
+            check(False, what)
+        except RR.RunRefused as e:
+            check(needle in str(e), what + (" (names %s)" % needle if needle else ""))
+    refused("/x/claude -p --model opus", {}, "no --output-format json refused", "--output-format json")
+    refused("/x/claude -p --model opus --output-format text", {}, "--output-format text refused")
+    refused("/x/claude -p --model $ANTHROPIC_DEFAULT_OPUS_MODEL --output-format json", {},
+            "an unset $ANTHROPIC_DEFAULT_OPUS_MODEL refused by name", "ANTHROPIC_DEFAULT_OPUS_MODEL")
+    out = RR.resolve_model_cmd("/x/claude -p --model ${ANTHROPIC_DEFAULT_OPUS_MODEL} --output-format json",
+                               {"ANTHROPIC_DEFAULT_OPUS_MODEL": "fam-1"})
+    check("--model fam-1" in out, "a set $VAR is read from the environment at call time")
+    refused("/x/claude -p --model claude-opus-x --output-format json", {}, "a literal model id refused", "literal")
+    refused("/x/claude -p --model $M --output-format json", {"M": "us.vendor.model-1"},
+            "an account/region-prefixed id via env refused", "account")
+    refused("/x/claude -p --model opus --output-format json --endpoint https://h", {}, "a host in the cmd refused")
+    refused("", {}, "an empty model command refused")
+
+
+def t_snapshot_gate(tmp):
+    class R:
+        def __init__(self, rc):
+            self.returncode, self.stdout, self.stderr = rc, "", "why"
+    seen = []
+    for rc, ok in ((0, True), (2, False), (3, False), (1, False)):
+        try:
+            d = RR.model_snapshot("v3", tmp / "snap", run=lambda argv, **k: seen.append(argv) or R(rc),
+                                  out=io.StringIO())
+            check(ok and d.parent.name == "models", "snapshot exit %d starts the arm" % rc)
+        except RR.RunRefused as e:
+            check(not ok and ("exit %d" % rc) in str(e), "snapshot exit %d refuses the start" % rc)
+    check(seen[0][1].endswith("arena_model_snapshot.py") and seen[0][2] == "--out", "the snapshot tool is the one run")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="st_replay_run_"))
     try:
         for fn, a in ((t_order, (tmp,)), (t_plan_refusals, ()), (t_resume, (tmp,)), (t_stop_runway, (tmp,)),
                       (t_arms, (tmp,)), (t_wired, ()),
-                      (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ())):
+                      (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ()),
+                      (t_model_cmd, ()), (t_snapshot_gate, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

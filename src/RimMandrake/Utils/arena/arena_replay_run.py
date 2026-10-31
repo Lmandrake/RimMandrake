@@ -28,7 +28,10 @@ CLI: arena.py trial-runner --arm {ralph_a,trio,v3} [--ctl DIR] [--model-cmd CMD]
      arena.py trial-runner --all   (ExecStart of rm-arena-replay.service: one child `--arm A` per [trial] replay_arms
      arm, all in parallel; exit = the worst child's). Each --arm process holds <ctl>/<arm>/runner.lock (flock): a
      second runner for the same arm refuses (exit 2) instead of working the same tasks twice.
-     ($ARENA_REPLAY_MODEL_CMD, $ARENA_REPLAY_CTL). Selftest: selftest_arena_replay_run.py.
+     ($ARENA_REPLAY_MODEL_CMD, $ARENA_REPLAY_CTL). START GATE (each --arm): the model command must carry
+     `--output-format json`, name its model by CLI alias or $VAR (read at each task's call, a missing one refused by
+     name; never a literal id/account/host/key), and arena_model_snapshot.py --out <ctl>/<arm>/models/<stamp> must
+     exit 0 (2: a model variable missing, 3: resolved model differs -> refused). Selftest: selftest_arena_replay_run.py.
 """
 from __future__ import annotations
 
@@ -154,6 +157,7 @@ def work_loop(arm, clone, spec, *, ctl, model_cmd, p, cap):
 def default_work(arm, clone, spec, *, ctl, model_cmd):
     import arena_eventlog as L
     import arena_tasks as A
+    model_cmd = resolve_model_cmd(model_cmd)  # at call time: a variable unset since the start refuses by name
     p = A.paths()
     with L.harness_pass(p) as cap:
         if arm == "v3":
@@ -287,6 +291,59 @@ def arm_lock(ctl, arm):
     return fh
 
 
+MODEL_ALIASES = ("opus", "sonnet", "haiku")
+_VAR_RE = __import__("re").compile(r"\$\{([A-Z_][A-Z0-9_]*)\}|\$([A-Z_][A-Z0-9_]*)")
+_ACCOUNT_RE = __import__("re").compile(r"^(us|eu|apac|global)\.|arn:|://|@|\.amazonaws\.|bedrock|vertex", __import__("re").I)
+
+
+def resolve_model_cmd(cmd, env=None):
+    """The replay model command, checked and expanded AT CALL TIME (each task). It comes from --model-cmd /
+    $ARENA_REPLAY_MODEL_CMD only. Refused: no `--output-format json` (the spend meter reconciles calls from the JSON
+    result; the loops' CmdModel parses its `result`); a `--model` that is not a CLI alias (opus/sonnet/haiku, resolved
+    by the CLI through the environment) nor a $VAR reference; anything naming an account, host, region or key. A
+    $VAR / ${VAR} (e.g. $ANTHROPIC_DEFAULT_OPUS_MODEL) is read from the environment now and a missing one is refused
+    BY NAME."""
+    env = os.environ if env is None else env
+    if not (cmd or "").strip():
+        raise RunRefused("no model command: pass --model-cmd or set ARENA_REPLAY_MODEL_CMD")
+    missing = sorted({a or b for a, b in _VAR_RE.findall(cmd) if not (env.get(a or b) or "").strip()})
+    if missing:
+        raise RunRefused("model command needs %s, unset in the environment" % ", ".join(missing))
+    raw = shlex.split(cmd)
+    for i, t in enumerate(raw):
+        if t == "--model" and i + 1 < len(raw):
+            v = raw[i + 1]
+            if v not in MODEL_ALIASES and not _VAR_RE.fullmatch(v):
+                raise RunRefused("model command --model %r: use a CLI alias (%s) or a $VAR from the environment, "
+                                 "never a literal model id" % (v, "/".join(MODEL_ALIASES)))
+        elif t.startswith("--model="):
+            raise RunRefused("model command: write `--model ALIAS`, not %r" % t)
+    out = _VAR_RE.sub(lambda m: env[m.group(1) or m.group(2)].strip(), cmd)
+    toks = shlex.split(out)
+    for t in toks[1:]:
+        if not t.startswith("-") and _ACCOUNT_RE.search(t):
+            raise RunRefused("model command names an account/host/key-shaped value %r" % t)
+    fmt = [toks[i + 1] for i, t in enumerate(toks[:-1]) if t == "--output-format"] + \
+          [t.split("=", 1)[1] for t in toks if t.startswith("--output-format=")]
+    if fmt != ["json"]:
+        raise RunRefused("model command must carry `--output-format json` exactly once (got %r)" % fmt)
+    return out
+
+
+def model_snapshot(arm, ctl, *, run=subprocess.run, out=None):
+    """arena_model_snapshot.py --out <ctl>/<arm>/models/<stamp> at runner start: exit 2 (a model variable missing) or
+    3 (the resolved model differs) refuses the start; any other non-zero refuses too."""
+    d = Path(ctl) / arm / "models" / time.strftime("%Y%m%dT%H%M%S")
+    d.mkdir(parents=True, exist_ok=True)
+    r = run([sys.executable, str(HERE / "arena_model_snapshot.py"), "--out", str(d)],
+            capture_output=True, text=True, timeout=300)
+    why = {2: "a model variable is missing", 3: "the resolved model differs"}.get(r.returncode, "failed")
+    if r.returncode != 0:
+        raise RunRefused("model snapshot exit %s (%s): %s" % (r.returncode, why, (r.stderr or r.stdout).strip()[-400:]))
+    log("%s: model snapshot ok -> %s" % (arm, d / "resolved_models.json"), out)
+    return d
+
+
 def run_all(arms, passthrough, *, arena_py=None, popen=subprocess.Popen, out=sys.stdout):
     """Fan out one `arena.py trial-runner --arm A` child per arm, in parallel; wait for all; worst exit code."""
     arms = list(arms or [])
@@ -334,7 +391,9 @@ def main(argv=None, *, arms=None):
             print(json.dumps([tid for tid, _ in steps], indent=1))
             return 0
         lock = arm_lock(a.ctl, a.arm)  # noqa: F841 - held until exit
+        resolve_model_cmd(a.model_cmd)
         pin_state_home()
+        model_snapshot(a.arm, a.ctl)
         res = run_arm(a.arm, ctl=a.ctl, model_cmd=a.model_cmd, only=a.only, steps=steps)
     except RunRefused as e:
         print("refused: %s" % e, file=sys.stderr)
