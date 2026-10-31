@@ -32,7 +32,7 @@ or the tiers never ran: every claim is unjudged); an unreadable or torn one rais
     python3 src/RimMandrake/rimflow/arbiter_pending.py                 # print what the next slot would see
     python3 src/RimMandrake/rimflow/arbiter_pending.py stamp --by BENCH --why "advisory enable" [--at ISO]
 """
-import argparse, calendar, json, os, sys, time
+import argparse, calendar, json, os, subprocess, sys, time
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from contracts import compat as CC, jsonl as CJ   # noqa: E402 - stdlib only: the dispatcher tick imports this module
@@ -175,6 +175,25 @@ def unresolved(verdicts):
     return sorted(out)
 
 
+def live_only(pairs):
+    """-> the (item, sha) pairs whose sha is a commit here. The 2026-10-29 history rewrite killed the shas of every
+    earlier close, with no commit map, so a verdict line on one can never settle: 64 of 67 UNRESOLVED were such, and
+    counted against the batch cap (judge_list) they left the Arbiter no room for a new claim
+    (ARBITER_EVIDENCE_FIX_REPLAY_ERASES_FAIL). No git reading keeps every pair: never hide work on a blind read."""
+    if not pairs:
+        return pairs
+    repo = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    try:
+        r = subprocess.run(["git", "-C", repo, "cat-file", "--batch-check"], capture_output=True, text=True, timeout=60,
+                           input="".join("%s^{commit}\n" % sha for _, sha in pairs))
+    except (OSError, subprocess.SubprocessError):
+        return pairs
+    rows = r.stdout.splitlines()
+    if r.returncode != 0 or len(rows) != len(pairs):
+        return pairs
+    return [p for p, row in zip(pairs, rows) if not (row.endswith(" missing") and len(p[1]) >= 10)]
+
+
 def _cause(ev):
     """-> (escape id, cause ids) of a filing event, or (None, ())."""
     if ev.get("event") == "file":
@@ -231,9 +250,9 @@ def pending(lr, stores, now, kinds=KINDS):
         if k == "escapes":
             got = escapes(lr["events"], stores["verdicts"])
         elif k == "unresolved":
-            got = unresolved(stores["verdicts"])
+            got = live_only(unresolved(stores["verdicts"]))
         elif k == "done_claims":
-            got = done_claims(lr["events"], stores["verdicts"], stores["tiers_history"], cutoff)
+            got = live_only(done_claims(lr["events"], stores["verdicts"], stores["tiers_history"], cutoff))
         elif k == "verify_backlog":
             got = verify_backlog(lr["world"], cutoff)
         else:

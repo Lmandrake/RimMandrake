@@ -25,6 +25,9 @@ time.tzset()
 import role_launch as RL  # noqa: E402
 import selftest_dispatcher as SD  # noqa: E402
 
+REAL_LIVE_ONLY = RL.PW.live_only
+RL.PW.live_only = lambda pairs: pairs     # the golden shas are invented: the replay must not ask this clone's git
+
 FAILS = []
 SCEN = []
 
@@ -3980,9 +3983,21 @@ def alarm_dedupe():
     want("a scheduled launch holds the open alarms for its finish", bool(sa) and sa["keys"] == ["ITEM_ONE"], sa)
 
 
+def dead_shas():
+    """ARBITER_EVIDENCE_FIX_REPLAY_ERASES_FAIL: a sha no commit answers to cannot hold the batch cap."""
+    import subprocess
+    head = subprocess.run(["git", "rev-parse", "HEAD"], capture_output=True, text=True, cwd=HERE).stdout.strip()
+    got = REAL_LIVE_ONLY([("LIVE", head), ("DEAD", "deadbeef0123"), ("TESTNAME", "docs1234")])
+    ok = [k for k, _ in got] == ["LIVE", "TESTNAME"]
+    print(("ok    " if ok else "FAIL  ") + "live_only keeps a real commit, drops a dead sha: %s" % got)
+    if not ok:
+        FAILS.append("dead_shas")
+
+
 _REACHED = []
 main()
 alarm_dedupe()
+dead_shas()
 _REACHED.append(1)
 print("%d failure(s)" % len(FAILS) if FAILS else "all ok")
 sys.exit(1 if (FAILS or _REACHED != [1]) else 0)

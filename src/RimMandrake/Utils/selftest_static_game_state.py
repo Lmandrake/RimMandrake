@@ -43,6 +43,10 @@ TICKNAME = re.compile(r"(?i)tick$")
 
 # relpath::field -> why it is safe across a game reload. Read the code before adding a line here.
 REVIEWED = {
+    # FlowWorks, reviewed 2026-10-31 (SELFTEST_SWEEP_FIX_FOUR_REDS_REMAIN)
+    "src/RimMandrake/FlowWorks/Source/Hose/HosePorts.cs::sideIds": "scratch list of ints, cleared at its only use (line 190) on the main thread; no game reference",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs::kindMap": "set by KindFn immediately before each read and nulled by KindFnDone; never read without a fresh KindFn",
+    "src/RimMandrake/FlowWorks/Source/Superdeep/RM_WallReach.cs::kindEx": "set by KindFn immediately before each read and nulled by KindFnDone; never read without a fresh KindFn",
     # GimmeSomeSlack
     "src/RimMandrake/GimmeSomeSlack/Source/SectionLayer_RM_MessyCords.cs::PrintedVariants": "keyed by strand VARIANT index, a probe counter, not game ids",
     "src/RimMandrake/GimmeSomeSlack/Source/Aerial/CompAerialAnchor.cs::aboardCacheFor": "Gravship reference: a reload makes a new Gravship, so the id set is rebuilt",

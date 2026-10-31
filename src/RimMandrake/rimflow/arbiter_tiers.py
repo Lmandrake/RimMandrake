@@ -857,7 +857,7 @@ def main(argv=None, events=None, _inject=None):
                     raise ValueError("carried list %s torn (%s)" % (cpath, ex))
             v = PW.read_jsonl(a.verdicts or os.path.join(a.judge_dir, "verdicts.jsonl"), ("item", "sha", "disposition"))
             judged = [(d["item"], d["sha"]) for d in v]
-            unres = len(PW.unresolved(v))
+            unres = len(PW.live_only(PW.unresolved(v)))
         except (OSError, ValueError) as ex:
             print("UNMEASURED: %s; nothing written" % ex, file=sys.stderr)
             return 2
