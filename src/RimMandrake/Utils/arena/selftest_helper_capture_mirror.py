@@ -160,6 +160,9 @@ def mirror_failure_cases(tmp, rec):
 
                 def stop(self):
                     return []
+
+                def reconcile(self, text):
+                    return None
             sm = RA.spend_mirror
             RA.spend_mirror = lambda root: Lost()
             try:
@@ -178,6 +181,73 @@ def mirror_failure_cases(tmp, rec):
             os.chmod(ro, 0o700)
     finally:
         HC.Mirror = hm
+
+
+def smsg(i, sid="sess-1", cr=1000):
+    return json.dumps({"type": "assistant", "sessionId": sid, "timestamp": "2026-10-30T10:00:%02dZ" % i,
+                       "message": {"id": "msg_%d" % i, "model": "claude-opus-4", "usage": {
+                           "input_tokens": 2, "cache_read_input_tokens": cr, "cache_creation_input_tokens": 8,
+                           "output_tokens": 5}, "content": []}}) + "\n"
+
+
+def envelope(n, sid="sess-1", cr=1000):
+    return json.dumps({"type": "result", "session_id": sid, "num_turns": n, "modelUsage": {"claude-opus-4": {
+        "inputTokens": 2 * n, "cacheReadInputTokens": cr * n, "cacheCreationInputTokens": 8 * n,
+        "outputTokens": 5 * n}}})
+
+
+def reconcile_cases(tmp, rec):
+    """ARENA_SPEND_RECONCILE_ERASED_CALL_UNSEEN: the call a model erases before the 1 s copy is still in the CLI's own
+    envelope; the shortfall BLOCKS a tester (manifest) and a builder (sandbox_homes), through the real spawn."""
+    # ---- R1 tester: the mirror saw 3 calls (the 4th, the erasing one, never reached a copy); the CLI counted 4
+    tr = tmp / "rt-r1"
+    pj = tr / "home" / ".claude" / "projects" / "-x"
+    pj.mkdir(parents=True)
+    (pj / "sess-1.jsonl").write_text(smsg(1) + smsg(2) + smsg(3))
+    m = HC.Mirror(tr, interval=3600).start()
+    m.stop()
+    r = m.reconcile(envelope(4))
+    check(r and r["seen_calls"] == 3 and r["why"] and abs(r["short"] - 0.25) < 1e-3,
+          "R1 reconcile sees 3 of 4 calls, 25%% of the input side unseen, and says why (%s)" % r)
+    r1 = dict(rec, run_id="rr1")
+    RA.capture_tester(r1, tr, 0)
+    check(blocked(r1, "spend reconcile"), "R1 the meter BLOCKS the tester whose erased call the CLI still counted")
+    # ---- R2 sanity: the same tester with an envelope that matches is clean; a text-output log is no check at all
+    tr2 = tmp / "rt-r2"
+    pj2 = tr2 / "home" / ".claude" / "projects" / "-x"
+    pj2.mkdir(parents=True)
+    (pj2 / "sess-1.jsonl").write_text(smsg(1) + smsg(1) + smsg(2) + smsg(3) + smsg(9, sid="other"))
+    m2 = HC.Mirror(tr2, interval=3600).start()
+    m2.stop()
+    r = m2.reconcile(envelope(3))
+    check(r and r["seen_calls"] == 3 and r["why"] is None and r["short"] == 0,
+          "R2 sanity: a matching envelope reconciles clean (a repeated id counts once, another session not) (%s)" % r)
+    check(m2.reconcile("plain text answer") is None, "R2 a non-JSON pass log is no reconcile (None)")
+    r2 = dict(rec, run_id="rr2")
+    RA.capture_tester(r2, tr2, 0)
+    check(not blocked(r2, "arm"), "R2 sanity: the reconciled tester is not blocked")
+    bad = m2.reconcile(json.dumps({"type": "result", "session_id": "s", "modelUsage": {"m": {"inputTokens": True}}}))
+    check(bad and bad["why"] and "no usable" in bad["why"], "R2 an envelope with a bool count BLOCKS (%s)" % bad)
+    # ---- R3 builder through CmdModel.spawn: the pass prints its envelope; the meter blocks the builder's scratch
+    base = tmp / "sandbox-r"
+    plan = RA.sandbox_plan
+    try:
+        for tag, n, want in (("over", 5, True), ("even", 2, False)):
+            sc = base / ("armR-12345678-%s" % tag) / "build"
+            bp = sc / "home" / ".claude" / "projects" / "-z"
+            bp.mkdir(parents=True)
+            (bp / "sess-1.jsonl").write_text(smsg(1) + smsg(2))
+            RA.sandbox_plan = lambda role, cwd, sandbox, sc=sc: ([], sc / "home")
+            cm = RA.CmdModel("true")
+            cm.wrap = lambda argv, env, n=n, **k: (["printf", "%s", envelope(n)], env)
+            log = tmp / ("r3-%s.log" % tag)
+            rc = cm.spawn("build", ["x"], {}, cwd=tmp, sandbox=None, agent_id="a", log=log, prompt="", timeout_s=10)
+            _, bl = SP.sandbox_homes(base)
+            hit = [b for b in bl if "spend reconcile" in b and tag in b]
+            check(rc == 0 and bool(hit) == want, "R3 builder %s: CLI %d calls, mirror 2 -> blocking %s (rc %s, %s)"
+                  % (tag, n, want, rc, bl))
+    finally:
+        RA.sandbox_plan = plan
 
 
 def main():
@@ -275,6 +345,7 @@ def main():
               % (n2, names, blocking))
 
         mirror_failure_cases(tmp, rec)
+        reconcile_cases(tmp, rec)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))

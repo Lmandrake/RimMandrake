@@ -236,6 +236,7 @@ class Mirror:
         self._stop = threading.Event()
         self._t = None
         self.persisted = True                       # False once a failure reached neither the state nor the marker
+        self.reconciled = None                      # reconcile()'s result for the last pass, when it had an envelope
 
     def _dst(self, below, rel, seg):
         name = rel if not seg else rel[:-len(".jsonl")] + "~m%d.jsonl" % seg
@@ -352,11 +353,108 @@ class Mirror:
             self._fail(e)
         return sorted(self.skipped)
 
+    def reconcile(self, cli_stdout):
+        """ARENA_SPEND_RECONCILE_ERASED_CALL_UNSEEN: after stop(), hold the pass's own CLI result envelope (harness-held
+        stdout of `claude -p --output-format json`) against what this mirror saw of that session. A model that erases
+        its transcript within one poll of writing a call hides that call from the 1 s copy; the envelope still counts
+        it. A shortfall over RECONCILE_SHORT_MAX joins `skipped` (state saved), which the meter already BLOCKS for
+        builders (sandbox_homes) and testers (capture manifest). No envelope (text output, a killed pass) -> no check,
+        returns None; else -> the reconcile dict (also kept as self.reconciled)."""
+        env = cli_envelope(cli_stdout)
+        if env is None:
+            return None
+        r = reconcile(self.dir.joinpath(*SPEND_LOGS[0][0]), env)
+        self.reconciled = r
+        if r["why"]:
+            self.skipped.add(r["why"])
+            try:
+                self._save()
+            except Exception as e:                  # noqa: BLE001
+                if not mark_failed(self.dir, r["why"] + "; state unsaved: %s" % e):
+                    self.persisted = False
+        return r
+
     def __enter__(self):
         return self.start()
 
     def __exit__(self, *exc):
         self.stop()
+
+
+# Input-side (input + cache_read + cache_creation) shortfall of the mirror against the CLI envelope that blocks. One
+# erased call hides about 1/N of a pass's input side (probe: 1 of 8 calls = 13.6%); the analysis bars are 1.25x
+# (DECIDE), 0.15 (TIE) and 0.9x (HARDCAP), so 5% blocks well below any of them while leaving room for side calls
+# the CLI counts but writes no transcript line for (compaction summary, small helper calls).
+RECONCILE_SHORT_MAX = 0.05
+_ENV_IN = ("inputTokens", "cacheReadInputTokens", "cacheCreationInputTokens")
+_MSG_IN = ("input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens")
+
+
+def _count(v):
+    return v if isinstance(v, int) and not isinstance(v, bool) and v >= 0 else None
+
+
+def cli_envelope(text):
+    """-> the `claude -p --output-format json` result dict in `text`, or None (not one)."""
+    try:
+        d = json.loads(text) if isinstance(text, str) else None
+    except ValueError:
+        return None
+    if isinstance(d, dict) and d.get("type") == "result" and isinstance(d.get("session_id"), str) \
+            and isinstance(d.get("modelUsage"), dict):
+        return d
+    return None
+
+
+def session_input(projects, sid):
+    """-> (input-side tokens, distinct calls) of session `sid` in a projects tree (any depth: segments, subagents),
+    one count per message id. Only files whose path below `projects` names the session are read (<sid>.jsonl, its
+    <sid>~mN segments, <sid>/subagents/*): a builder's persistent mirror grows over the whole trial."""
+    seen = {}
+    p = Path(projects)
+    for f in sorted(p.rglob("*.jsonl")) if p.is_dir() else ():
+        if sid not in str(f.relative_to(p)):
+            continue
+        with open(f, errors="replace") as fh:
+            for line in fh:
+                if '"usage"' not in line:
+                    continue
+                try:
+                    d = json.loads(line)
+                except ValueError:
+                    continue
+                m = d.get("message") if isinstance(d, dict) else None
+                if d.get("sessionId") != sid or d.get("type") != "assistant" or not isinstance(m, dict) \
+                        or not isinstance(m.get("usage"), dict) or not m.get("id"):
+                    continue
+                seen.setdefault(m["id"], sum(_count(m["usage"].get(k)) or 0 for k in _MSG_IN))
+    return sum(seen.values()), len(seen)
+
+
+def reconcile(projects, env):
+    """-> {session, cli_in, seen_in, seen_calls, cli_turns, short, why}; `why` is set (BLOCKING) when the mirror holds
+    more than RECONCILE_SHORT_MAX less input side than the envelope says the session spent, or the envelope is
+    unreadable as counts."""
+    sid = env["session_id"]
+    cli_in, bad = 0, []
+    for model, u in sorted(env["modelUsage"].items()):
+        for k in _ENV_IN:
+            c = _count((u or {}).get(k)) if isinstance(u, dict) else None
+            if c is None:
+                bad.append("%s.%s" % (model, k))
+            else:
+                cli_in += c
+    seen_in, calls = session_input(projects, sid)
+    short = (cli_in - seen_in) / cli_in if cli_in else 0.0
+    why = None
+    if bad:
+        why = "spend reconcile: session %s CLI envelope has no usable %s: UNMEASURED" % (sid, ", ".join(bad)[:200])
+    elif short > RECONCILE_SHORT_MAX:
+        why = ("spend reconcile: session %s mirror saw %d input-side tokens in %d calls, the CLI counted %d in %s turns "
+               "(%.1f%% unseen > %.0f%%): a call was erased before the mirror copied it: UNMEASURED"
+               % (sid, seen_in, calls, cli_in, env.get("num_turns"), 100 * short, 100 * RECONCILE_SHORT_MAX))
+    return {"session": sid, "cli_in": cli_in, "seen_in": seen_in, "seen_calls": calls,
+            "cli_turns": env.get("num_turns"), "short": round(short, 4), "why": why}
 
 
 def mirror_skipped(mdir) -> list:

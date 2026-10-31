@@ -482,6 +482,10 @@ class CmdModel:
         finally:
             if mirror is not None:
                 mirror.stop()
+                try:                             # ARENA_SPEND_RECONCILE_ERASED_CALL_UNSEEN: the CLI's own count
+                    mirror.reconcile(Path(log).read_text(errors="replace"))
+                except Exception as e:           # noqa: BLE001 - an unreadable log is a shortfall we cannot rule out
+                    mirror._fail(e)
                 if not mirror.persisted:         # ARENA_MIRROR_ENFORCE_PERSIST_LOST_MIDPASS: a mid-pass failure left no record
                     rc = VOID_RC
         return rc

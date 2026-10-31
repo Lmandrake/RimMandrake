@@ -74,7 +74,9 @@ class RalphATester(C.L4OpusCritic):
         except ValueError:
             meta["stderr_tail"] = err.decode("utf-8", "replace")[-400:]
             return C.CriticVerdict("invalid", ["no JSON envelope (rc %d)" % rc], meta)
-        meta.update({"cost_usd": d.get("total_cost_usd"), "turns": d.get("num_turns"), "is_error": d.get("is_error")})
+        meta.update({"cost_usd": d.get("total_cost_usd"), "turns": d.get("num_turns"), "is_error": d.get("is_error"),
+                     # ARENA_JUDGE_RECORD_RESOLVED_MODEL_NOT_ALIAS: the model ids the CLI actually ran, not the alias
+                     "models_used": sorted(d["modelUsage"]) if isinstance(d.get("modelUsage"), dict) else None})
         if rc != 0 or d.get("is_error"):
             return C.CriticVerdict("invalid", ["claude error: %s" % str(d.get("result"))[:300]], meta)
         res = (d.get("result") or "").rstrip()
