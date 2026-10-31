@@ -28,6 +28,7 @@ os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 os.environ["TESTQ_QUEUE"] = str(TMP / "q")
 os.environ["RM_SCRATCH_REAP_RUNS"] = str(TMP / "reap.jsonl")
 os.environ["RM_OPS_DISKS"] = "root=%s" % TMP
+os.environ["RM_TESTING_METRICS_DIR"] = str(TMP / "no_testing_metrics")     # no collector call may read the real one
 import ops_watch as OW  # noqa: E402
 
 for _k in [k for k in os.environ if k.startswith("GIT_")]:      # nor may a collector's git follow a hook's GIT_DIR out of the fixture
@@ -291,17 +292,37 @@ s = OW.c_steve(NOW, RULES, {})
 check("steve: steward AND watcher both silent > 30 min -> unowned stall = heartbeat age",
       abs(s["steve.unowned_stall_min"]["v"] - 50) < 0.2, s["steve.unowned_stall_min"])
 wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": {"item": "STEVE_LANE_UNSTICK_AB12"}})
-_ic = OW.incident_item_closed
-OW.incident_item_closed = lambda inc: False
+_ic = OW.incident_unowned
+OW.incident_unowned = lambda inc: False
 s = OW.c_steve(NOW, RULES, {})
 check("steve: an open incident is not an unowned stall (its ownership cannot be seen, so unknown)", s["steve.unowned_stall_min"]["v"] is None, s["steve.unowned_stall_min"])
-OW.incident_item_closed = lambda inc: True
+OW.incident_unowned = lambda inc: True
 s = OW.c_steve(NOW, RULES, {})
 check("steve: a closed incident owns nothing when steward and watcher are both silent",
       abs(s["steve.unowned_stall_min"]["v"] - 50) < 0.2, s["steve.unowned_stall_min"])
-OW.incident_item_closed = _ic
-check("steve: an incident with no item is not closed", OW.incident_item_closed({"level": 1}) is False
-      and OW.incident_item_closed("text") is False, "")
+OW.incident_unowned = _ic
+check("steve: an incident with no item owns nothing", OW.incident_unowned({"item": None}) is True
+      and OW.incident_unowned({"level": 1}) is True and OW.incident_unowned("text") is True, "")
+wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": {"item": None}})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: dead watcher, unfiled incident -> the stall is reported, not UNMEASURED",
+      abs((s["steve.unowned_stall_min"]["v"] or 0) - 50) < 0.2, s["steve.unowned_stall_min"])
+_pc_real = sys.modules.get("pulse_core")
+_led_items = {"OPEN_ONE": types.SimpleNamespace(open=True), "SHUT_ONE": types.SimpleNamespace(open=False)}
+_pc = types.ModuleType("pulse_core")
+_pc.read_ledger = lambda: []
+_pc._model = lambda: types.SimpleNamespace(replay=lambda evs: types.SimpleNamespace(items=_led_items))
+sys.modules["pulse_core"] = _pc
+check("steve: an item the readable ledger never heard of owns nothing", OW.incident_unowned({"item": "NOT_THERE"}) is True, "")
+check("steve: a closed item owns nothing", OW.incident_unowned({"item": "SHUT_ONE"}) is True, "")
+check("steve: an open item owns the stall", OW.incident_unowned({"item": "OPEN_ONE"}) is False, "")
+_pc.read_ledger = lambda: 1 / 0
+check("steve: an unreadable ledger does not say unowned (c_flow says it aloud)",
+      OW.incident_unowned({"item": "OPEN_ONE"}) is False, "")
+if _pc_real is not None:
+    sys.modules["pulse_core"] = _pc_real
+else:
+    del sys.modules["pulse_core"]
 wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": None})
 _it = types.SimpleNamespace(id="STEVE_LANE_UNSTICK_F1", state="proposed", blocked=False, created_at=NOW + 3600)
 _wd = types.SimpleNamespace(items={"a": _it})
@@ -322,6 +343,8 @@ check("caught: a close 30 h later does not", not OW.caught(d0, {"IT_A": [NOW + 3
 check("caught: a close BEFORE the run does not", not OW.caught(d0, {"IT_A": [NOW - H]}, 24))
 check("caught: an ingested finding counts", OW.caught({**d0, "ingested": {"groups": {"IT_A": {"findings": ["F"]}}}}, {}, 24))
 t = OW.c_testing(NOW, RULES, {"steve_jobs": [], "closes": None})
+check("selftest: the testing collector reads a fixture dir before its first call",
+      os.environ["RM_TESTING_METRICS_DIR"].startswith(str(TMP)), "")
 check("testing: an unreadable ledger -> UNMEASURED (never 0)", t["testing.nothing_h_7d"]["m"] == "UNMEASURED", t)
 
 # ---------------------------------------------------------------- disk (fixture mount + reap log)
@@ -1273,6 +1296,14 @@ _lr = OW.load_rules(_rp)
 check("rules: a torn file falls back to the last good copy, said aloud", _lr.get("series_days") == 8 and _lr.get("_load_error"), _lr)
 _rp.write_text("[1]", encoding="utf-8")
 check("rules: a list root is torn too", OW.load_rules(_rp).get("_load_error"))
+_rp.write_text(json.dumps({"series_days": 8, "silent": {"default_h": 24}, "band": {"k_sigma": 3}}), encoding="utf-8")
+OW.load_rules(_rp)
+for _bad in ('"silent": {"default_h": 1e309}', '"band": {"k_sigma": 1e309}', '"band": {"k_sigma": NaN}',
+             '"targets": [{"max": -Infinity}]'):
+    _rp.write_text('{"series_days": 8, %s}' % _bad, encoding="utf-8")
+    _lr = OW.load_rules(_rp)
+    check("rules: a nonfinite limit is a bad write, last good copy in use, said aloud (%s)" % _bad,
+          _lr.get("_load_error") and "rules." in _lr["_load_error"] and _lr["silent"]["default_h"] == 24, _lr)
 _dj = {"result": {"outcome": {"status": "INVALID"}}, "job": {}}
 check("steve: an outcome that is no string is no outcome", OW.outcome_of(_dj) is None and OW.outcome_of({"result": {"outcome": "DONE"}}) == "DONE")
 OW.qhome = lambda: _q2
@@ -1320,6 +1351,20 @@ OW.run(now=_T0 + 3 * 3600, rules=_rq, families={"steve"})
 OW.COLLECTORS.update(_cs)
 _txt = (OW.ops_dir() / "flags.json").read_text(encoding="utf-8")
 check("silent: a state string that went unmeasured raises the flag, through run", '"silent"' in _txt and "steve.state" in _txt, _txt[:300])
+# the string's own first pass must reach last_measured.json: a later pass past series_days has nothing else to read
+_ops_keep = os.environ["RM_OPS_WATCH_DIR"]
+os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops_silence_persist")
+try:
+    OW.COLLECTORS["steve"] = lambda now, rules, ctx: {"steve.state": OW.M("RUNNING", "steward state")}
+    OW.run(now=_T0, rules=_rq, families={"steve"})
+    OW.COLLECTORS["steve"] = lambda now, rules, ctx: {"steve.state": OW.U("gone")}
+    OW.run(now=_T0 + (_rq.get("series_days", 8) + 2) * 86400, rules=_rq, families={"steve"})
+    OW.COLLECTORS.update(_cs)
+    _txt = (OW.ops_dir() / "flags.json").read_text(encoding="utf-8")
+    check("silent: a state string measured once, then blind past series_days, raises the flag",
+          '"silent"' in _txt and "steve.state" in _txt, _txt[:300])
+finally:
+    os.environ["RM_OPS_WATCH_DIR"] = _ops_keep
 _fp = OW.series_path("steve")
 with open(_fp, "a", encoding="utf-8") as _fh:
     _fh.write(json.dumps({"t": _T0 + 400 * 86400, "ts": "x", "points": {"steve.state": OW.M("RUNNING", "s")}}) + "\n")

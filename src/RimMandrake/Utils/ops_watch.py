@@ -86,6 +86,15 @@ def data_clone() -> Path:
     return Path(os.environ.get("RM_STREAMS_BENCH", "/home/mandrake/rm/bench"))
 
 
+def nonfinite_at(x, at="rules"):
+    """-> the path of the first nonfinite number in a parsed JSON value, or None."""
+    if isinstance(x, dict):
+        return next(filter(None, (nonfinite_at(v, "%s.%s" % (at, k)) for k, v in x.items())), None)
+    if isinstance(x, list):
+        return next(filter(None, (nonfinite_at(v, "%s[%d]" % (at, i)) for i, v in enumerate(x))), None)
+    return at if isinstance(x, float) and not finite(x) else None
+
+
 def load_rules(path=None) -> dict:
     """The rules, or the last good copy with `_load_error` set when the file is torn: a bad write to the rules must not
     stop every reading and alarm. With no good copy yet it raises, and the unit fails aloud."""
@@ -97,6 +106,9 @@ def load_rules(path=None) -> dict:
         sd = rules.get("series_days", 8)
         if isinstance(sd, bool) or not isinstance(sd, (int, float)) or not finite(sd) or sd <= 0:
             raise ValueError("series_days is not a positive number: %r" % (sd,))  # every pass needs it before any collector
+        at = nonfinite_at(rules)
+        if at:      # 1e309 parses as infinity: every comparison against that limit would silently stay false
+            raise ValueError("%s is not a finite number" % at)
     except (OSError, ValueError) as e:
         saved = read_json(last_good)
         if not isinstance(saved, dict):
@@ -376,17 +388,18 @@ def outcome_of(d):
     return oc if isinstance(oc, str) and oc in OUTCOMES else None
 
 
-def incident_item_closed(inc):
-    """True when this steward incident's ledger item has closed. An unreadable ledger is False: c_flow says that aloud."""
+def incident_unowned(inc):
+    """True when this steward incident owns nobody: no item was filed, the item closed, or a readable ledger never heard
+    of it. An unreadable ledger is False: c_flow says that aloud."""
     item = inc.get("item") if isinstance(inc, dict) else None
     if not item:
-        return False
+        return True
     try:
         import pulse_core as pc
         it = pc._model().replay(pc.read_ledger()).items.get(item)
     except Exception:  # noqa: BLE001
         return False
-    return it is not None and not it.open
+    return it is None or not it.open
 
 
 def c_steve(now, rules, ctx):
@@ -428,8 +441,8 @@ def c_steve(now, rules, ctx):
         # escalating it until RUNNING, so a closed item is re-raised, not abandoned
         if fault_min and fault_min > 0 and not sj.get("incident"):
             nobody.append(("fault %s for %.0f min with no steward incident" % (st, fault_min), fault_min))
-        # both silent, nothing is left to re-raise: here a closed item owns nothing
-        if hb > 30 and (wage is None or wage > 30) and (not wj.get("incident") or incident_item_closed(wj["incident"])):
+        # both silent, nothing is left to re-raise: here an unfiled, unknown or closed item owns nothing
+        if hb > 30 and (wage is None or wage > 30) and (not wj.get("incident") or incident_unowned(wj["incident"])):
             nobody.append(("steward silent %.0f min and its watcher silent %s" % (
                 hb, "(never ran)" if wage is None else "%.0f min" % wage), hb))
         if fault_min is None and not nobody:
@@ -1783,7 +1796,7 @@ def carry_last_measured(lastm, saved, points, now):
     keep = dict(saved)
     keep.update(lastm)
     for k, p in points.items():
-        if isinstance(p, dict) and p.get("m") == "MEASURED" and num(p) is not None:
+        if counts_as_measured(p):      # a state string too, as run() reads the series
             keep[k] = now
     keep = {k: t for k, t in keep.items() if now - t <= LAST_MEASURED_RETIRE_DAYS * DAY}
     return merged, keep

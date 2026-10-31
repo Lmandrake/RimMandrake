@@ -145,6 +145,8 @@ def refused(args, needle, why, seat="BUILD", env_=None):
     """A refusal must exit NON-ZERO and carry the model's own words to stderr."""
     rc, out, err = run(*args, seat=seat, env=env_)
     assert rc != 0, "NOT REFUSED (exit 0): %s\n  stdout: %s" % (why, out.strip())
+    assert "Traceback (most recent call last)" not in err, (
+        "a crash is not a refusal, even when its traceback holds the expected words: %s\n%s" % (why, err.strip()))
     assert needle.lower() in err.lower(), (
         "refused, but the model's message did not survive to the terminal — it must be "
         "printed VERBATIM, because it is the part that says what to do instead.\n"
@@ -1099,6 +1101,44 @@ def _cli():
     import importlib
     sys.path.insert(0, os.path.dirname(HERE))
     return importlib.import_module("rimflow.cli")
+
+
+def t_a_write_tells_the_renderer_every_root_it_may_touch():
+    """The production views live under infrastructure/state, which live windows rewrite, so a before/after snapshot of
+    them would flake. Pin the arguments instead: a root left to render.py's default is the real queue or preview."""
+    import types
+    sys.path.insert(0, os.path.dirname(HERE))
+    from rimflow import cli
+    fake = types.ModuleType("rimflow.render")
+    seen = {}
+
+    def spy(**kw):
+        seen.update(kw)
+        return {}
+    fake.render = spy
+    keep_mod, keep_ev = sys.modules.get("rimflow.render"), cli.model.EVENTS
+    sys.modules["rimflow.render"] = fake
+    pkg = sys.modules.get("rimflow")
+    had_attr, keep_attr = hasattr(pkg, "render"), getattr(pkg, "render", None)
+    pkg.render = fake
+    cli.model.EVENTS = os.path.join(_tmp(), "events.jsonl")
+    try:
+        cli._rerender_queue_views()
+    finally:
+        cli.model.EVENTS = keep_ev
+        if keep_mod is not None:
+            sys.modules["rimflow.render"] = keep_mod
+        else:
+            del sys.modules["rimflow.render"]
+        if had_attr:
+            pkg.render = keep_attr
+        else:
+            del pkg.render
+    root = os.path.realpath(_tmp()) + os.sep
+    for k in ("queue_root", "out_dir"):
+        assert (os.path.realpath(seen.get(k) or "") + os.sep).startswith(root), (
+            "render's %s is %r, outside the ledger in use: a test write would overwrite the real views"
+            % (k, seen.get(k)))
 
 
 def t_the_queue_views_are_rendered_beside_the_ledger_in_use():
