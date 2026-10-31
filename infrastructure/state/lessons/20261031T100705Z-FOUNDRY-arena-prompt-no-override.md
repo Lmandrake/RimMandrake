@@ -1,0 +1,2 @@
+Arena census had no prompt-override mechanism: the task prompt is always title+prose at base_sha. Bank repairs now go through arena/prompt_rewrites.json (applied only when the base prompt sha256 and fix sha still match; stale rows reported). A rewrite does not stale the vet (prompt not in vet_key) but does stale the reader verdict (packet sha includes prompt).
+home: src/RimMandrake/Utils/arena/arena_tasks.py
