@@ -980,8 +980,76 @@ def _by_era(by_arm: dict, era: int) -> dict:
     return out
 
 
+# drvfs (/mnt/d, the real arena root) can answer ENOENT for a path that was just renamed or created and is there a
+# moment later (ARENA_NEWERA_FIX_DRVFS_RENAME_ENOENT). Every read below REOPENS the path per attempt and backs off
+# ~4 s in total before believing a path is gone; nothing is ever hashed through a handle opened before a move.
+_DRVFS_BACKOFF = (0.1, 0.25, 0.5, 1.0, 2.0)
+
+
+def _read_bytes(f: Path) -> bytes:
+    for delay in _DRVFS_BACKOFF + (None,):
+        try:
+            with open(f, "rb") as fh:
+                return fh.read()
+        except FileNotFoundError:
+            if delay is None:
+                raise
+            time.sleep(delay)
+
+
+def _visible(f: Path) -> bool:
+    """True if `f` exists, asked again over the drvfs backoff before answering False."""
+    for delay in _DRVFS_BACKOFF + (None,):
+        if os.path.lexists(f):
+            return True
+        if delay is not None:
+            time.sleep(delay)
+    return False
+
+
 def _sha256_file(f: Path) -> str:
-    return hashlib.sha256(f.read_bytes()).hexdigest()
+    return hashlib.sha256(_read_bytes(f)).hexdigest()
+
+
+def _fsync_dir(d: Path):
+    """Best effort: drvfs may refuse fsync on a directory (EINVAL); the files themselves were fsynced."""
+    try:
+        fd = os.open(d, os.O_RDONLY)
+    except OSError:
+        return
+    try:
+        os.fsync(fd)
+    except OSError:
+        pass
+    finally:
+        os.close(fd)
+
+
+def _copy_verified(src: Path, dst: Path, want: str, made: list | None = None):
+    """Copy `src` to a NEW `dst` (O_EXCL), fsync it, then reopen `dst` and require it to hash to `want` (the sha256
+    recorded under the lock before anything moved). The source bytes must hash to `want` too. Never renames."""
+    data = _read_bytes(src)
+    if hashlib.sha256(data).hexdigest() != want:
+        raise EventLogError("%s does not hash to what was closed (changed under the lock?): STOP, investigate" % src)
+    try:
+        mode = os.stat(src).st_mode & 0o777
+    except OSError:
+        mode = 0o600
+    fd = os.open(dst, os.O_WRONLY | os.O_CREAT | os.O_EXCL, mode or 0o600)
+    if made is not None:
+        made.append(dst)                # created by this call: only such a path may be removed again
+    try:
+        view = memoryview(data)
+        while view:
+            k = os.write(fd, view)
+            if k <= 0:
+                raise OSError(28, "copy of %s made no progress" % src.name)
+            view = view[k:]
+        os.fsync(fd)
+    finally:
+        os.close(fd)
+    if _sha256_file(dst) != want:
+        raise EventLogError("archived %s does not hash to what was closed: STOP, investigate" % src.name)
 
 
 def check_era_archive(p: dict, token: str, marker: dict, genesis: str, loc: dict, ext: dict, wit: dict,
@@ -1777,12 +1845,19 @@ def new_era(p: dict, reason: str, external: dict | None, dry: bool = False) -> d
                 pairs = [(f, d / f.name) for f in files]
                 efh.seek(0, os.SEEK_END)
                 eof = efh.tell()
+                made = []                       # archive copies THIS call created (its O_EXCL open succeeded)
                 try:
+                    # a MOVE by verified copy, never os.rename: on drvfs a renamed path can read ENOENT for a while
+                    # (ARENA_NEWERA_FIX_DRVFS_RENAME_ENOENT). 1) every copy written, fsynced and read back against
+                    # the sha256 recorded above, and the archive dir synced; 2) only then are the sources unlinked
+                    # (a waiting writer then finds its inode gone and refuses, as with a rename)
                     for src, dst in pairs:
-                        os.rename(src, dst)
-                        if _sha256_file(dst) != closes[src.stem]["sha256"]:
-                            raise EventLogError("archived %s does not hash to what was closed: STOP, investigate"
-                                                % src.name)
+                        _copy_verified(src, dst, closes[src.stem]["sha256"], made)
+                    _fsync_dir(d)
+                    _fsync_dir(d.parent)
+                    for src, dst in pairs:
+                        os.unlink(src)
+                    _fsync_dir(Path(p["events"]))
                     efd = efh.fileno()           # unbuffered: nothing pending in a buffer can outlive the truncate
                     buf = memoryview((json.dumps(marker, sort_keys=True) + "\n").encode("utf-8"))
                     while buf:                   # os.write may be short (ENOSPC): finish or raise into the rollback
@@ -1791,30 +1866,91 @@ def new_era(p: dict, reason: str, external: dict | None, dry: bool = False) -> d
                             raise OSError(28, "marker write made no progress")
                         buf = buf[k:]
                     os.fsync(efd)
-                except BaseException:
+                except BaseException as exc:
                     # roll back to era E unchanged (nothing was witnessed yet, and writers and the publisher's
                     # re-send wait on this lock): every step is attempted independently, so a failing disk cannot
-                    # strand the logs; a recreated path is never overwritten
-                    fails = []
+                    # strand the logs. Per log, the SOURCE is read first (over the drvfs backoff): an archive copy
+                    # is dropped only once its source reads back as closed; a missing source is restored by
+                    # os.link (never replaces a path, needs no free space) or an O_EXCL verified copy, never a
+                    # rename; a source that differs is never touched and its copy is kept. Every log is then
+                    # re-read, so "neither path visible" is a failure, never a silent skip
+                    fails, restored, dropped = [], 0, 0
                     for src, dst in reversed(pairs):
+                        want, ours = closes[src.stem]["sha256"], dst in made
+                        kept = ("archived copy kept at %s" % dst) if ours else "no archive copy was made"
                         try:
-                            if dst.exists() and not src.exists():
-                                os.rename(dst, src)
+                            try:
+                                same = hashlib.sha256(_read_bytes(src)).hexdigest() == want
+                            except FileNotFoundError:
+                                same = None
+                            if same is False:
+                                fails.append("restore %s: the log differs from what was closed (recreated or "
+                                             "edited); %s" % (src.name, kept))
+                                continue
+                            if same is None:
+                                if not ours:
+                                    fails.append("restore %s: the log is not visible and %s" % (src.name, kept))
+                                    continue
+                                try:
+                                    os.link(dst, src)
+                                except FileExistsError:
+                                    fails.append("restore %s: a path is at the log again (recreated, or a stale "
+                                                 "drvfs view); %s" % (src.name, kept))
+                                    continue
+                                except OSError:
+                                    _copy_verified(dst, src, want)
+                                if hashlib.sha256(_read_bytes(src)).hexdigest() != want:
+                                    fails.append("restore %s: the restored log does not hash to what was closed; %s"
+                                                 % (src.name, kept))
+                                    continue
+                                restored += 1
+                                _fsync_dir(Path(p["events"]))   # the restored entry durable BEFORE its copy goes
+                            if ours:
+                                try:
+                                    os.unlink(dst)
+                                    dropped += 1
+                                except FileNotFoundError:
+                                    pass
+                        except (OSError, EventLogError) as e:
+                            fails.append("restore %s from %s: %s; %s" % (src.name, dst, e, kept))
+                    _fsync_dir(Path(p["events"]))
+                    for src, _dst in pairs:     # every log, touched or not
+                        try:
+                            if hashlib.sha256(_read_bytes(src)).hexdigest() != closes[src.stem]["sha256"]:
+                                fails.append("verify %s: content differs from what was closed" % src.name)
                         except OSError as e:
-                            fails.append("restore %s: %s" % (src.name, e))
+                            fails.append("verify %s: not readable after the rollback (%s)" % (src.name, e))
                     try:
-                        os.ftruncate(efh.fileno(), eof)
-                        os.fsync(efh.fileno())
+                        if os.fstat(efh.fileno()).st_size != eof:
+                            os.ftruncate(efh.fileno(), eof)
+                            os.fsync(efh.fileno())
                     except OSError as e:
                         fails.append("drop partial marker: %s" % e)
                     try:
-                        if not any(d.iterdir()):
-                            d.rmdir()
+                        if _visible(d):
+                            left = sorted(x.name for x in d.iterdir())
+                            if left:
+                                fails.append("archive dir %s not empty after the rollback: %s"
+                                             % (d, ", ".join(left)[:300]))
+                            else:
+                                d.rmdir()
                     except OSError as e:
                         fails.append("rmdir %s: %s" % (d, e))
                     if fails:
-                        sys.stderr.write("new_era rollback INCOMPLETE (report() fails closed; repair by hand): %s\n"
-                                         % " | ".join(fails))
+                        msg = ("new_era FAILED (%s: %s) and the rollback is INCOMPLETE -- era %d is NOT intact, "
+                               "report() fails closed; repair by hand (each log back to %s, verified against the "
+                               "sha256 values printed here: %s), then dry-run: %s"
+                               % (type(exc).__name__, exc, cur["era"], p["events"],
+                                  ", ".join("%s=%s" % (a, c["sha256"][:16]) for a, c in sorted(closes.items())),
+                                  " | ".join(fails)))
+                    else:
+                        msg = ("new_era FAILED (%s: %s) and was ROLLED BACK: era %d unchanged, every log verified in "
+                               "place (%d restored from the archive copy, %d archive copies removed), no marker, no "
+                               "archive dir" % (type(exc).__name__, exc, cur["era"], restored, dropped))
+                    sys.stderr.write(msg + "\n")
+                    sys.stderr.flush()
+                    if hasattr(exc, "add_note"):
+                        exc.add_note(msg)
                     raise
                 wit = False                     # witnessed BEFORE any writer can open the new era (lock still held);
                 for _ in range(3):              # True only when READ BACK (a sent datagram is not a witness)

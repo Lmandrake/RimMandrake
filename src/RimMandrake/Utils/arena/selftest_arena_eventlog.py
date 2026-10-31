@@ -52,7 +52,10 @@ def raises(exc, fn, *a, **k):
 
 
 def fresh(tmp, name, writer=True):
-    root = tmp / name
+    # RM_EVLOG_ROOT_BASE=<dir on /mnt/d>: arena roots on drvfs like the real one (secrets stay in ext4 tmp);
+    # ARENA_NEWERA_FIX_DRVFS_RENAME_ENOENT showed an ext4-only run never sees drvfs rename/read behaviour
+    base = os.environ.get("RM_EVLOG_ROOT_BASE")
+    root = (Path(base) / tmp.name if base else tmp) / name
     os.environ["ARENA_ROOT"] = str(root)
     os.environ["ARENA_CLONES"] = str(root / "clones")
     os.environ["ARENA_EVENT_TOKEN_FILE"] = str(tmp / (name + "_secret") / "event_token")
@@ -947,6 +950,119 @@ def t_era_attacks(tmp):
         L.witness_append, L.time.sleep = real_wa, real_sleep
     check(res["era"] == 1 and res["witnessed"] is False and "WARNING" in res,
           "ERA-11 witness readback missing -> witnessed=False + WARNING, never overstated (%s)" % res.get("witnessed"))
+    _era_drvfs_rows(tmp)          # last: each row re-points the env at its own store
+
+
+def _era_drvfs_rows(tmp):
+    """ARENA_NEWERA_FIX_DRVFS_RENAME_ENOENT: the real arena root (drvfs /mnt/d) answered ENOENT for an archive path
+    just written; the old rollback then skipped the restore silently. Simulated by making `open` of archive paths
+    raise FileNotFoundError (transiently, persistently, and during the rollback too), plus the rollback's own
+    hazards: an unlink that took effect but raised, no hard links, a path at the archive this call did not make."""
+    import builtins
+    import io
+    real = {"open": builtins.open, "sleep": L.time.sleep, "unlink": L.os.unlink, "link": L.os.link,
+            "copy": L._copy_verified, "stderr": sys.stderr}
+
+    def run(name, enoent=lambda n: False, unlink_fail=None, link_fail=None, foreign=None):
+        p, w, tok, led = _era_store(tmp, name)
+        before = {a: L.arm_file(p, a).read_bytes() for a in ("a", "b")}
+        arc, seen, err, reads = str(L.archive_dir(p, 0)), [], io.StringIO(), [0]
+
+        def flaky_open(f, mode="r", *a, **k):
+            if "r" in mode and "+" not in mode and str(f).startswith(arc):
+                reads[0] += 1
+                if enoent(reads[0] - 1):
+                    seen.append(f)
+                    raise FileNotFoundError(2, "No such file or directory (simulated drvfs)", str(f))
+            return real["open"](f, mode, *a, **k)
+
+        def bad_unlink(f, *a, **k):
+            how = unlink_fail(f) if unlink_fail else None
+            if how == "after":          # took effect, then reported an error
+                real["unlink"](f, *a, **k)
+            if how:
+                raise OSError(5, "Input/output error (simulated)")
+            return real["unlink"](f, *a, **k)
+
+        def bad_link(s, d, *a, **k):
+            if link_fail:
+                raise link_fail(s)
+            return real["link"](s, d, *a, **k)
+
+        def copy(src, dst, want, made=None):
+            if foreign and dst.name == foreign:
+                dst.write_text("not ours\n")
+            return real["copy"](src, dst, want, made)
+        builtins.open, L.time.sleep, L.os.unlink, sys.stderr = flaky_open, (lambda s: None), bad_unlink, err
+        L.os.link, L._copy_verified = bad_link, copy
+        try:
+            try:
+                res, why = L.new_era(p, "x", L.ledger_anchors(led)), None
+            except (OSError, L.EventLogError) as e:
+                res, why = None, e
+        finally:
+            builtins.open, L.time.sleep, L.os.unlink, sys.stderr = real["open"], real["sleep"], real["unlink"], \
+                real["stderr"]
+            L.os.link, L._copy_verified = real["link"], real["copy"]
+        return p, tok, led, before, res, why, err.getvalue(), seen
+
+    def notes(e):
+        return "".join(getattr(e, "__notes__", []))
+
+    def intact(p, tok, led, before):
+        return (all(L.arm_file(p, a).read_bytes() == before[a] for a in before) and not L.archive_dir(p, 0).exists()
+                and L.current_era(p, tok)["era"] == 0 and not L.eras_path(p).read_text().strip()
+                and L.report(p, external=L.ledger_anchors(led))["_trust"]["trusted"])
+    src_b = lambda how: (lambda f: how if str(f).endswith("/b.jsonl") and "archive" not in str(f) else None)
+
+    # transient: two ENOENT reads, then the path is there -> the backoff rides it out, bump completes
+    p, tok, led, before, res, why, err, seen = run("era12a", lambda n: n < 2)
+    arc = L.archive_dir(p, 0)
+    check(why is None and res and res["era"] == 1 and len(seen) == 2
+          and all((arc / (a + ".jsonl")).read_bytes() == before[a] for a in before)
+          and not L.arm_file(p, "a").exists(),
+          "ERA-12 drvfs: a just-archived path reading ENOENT twice is retried (reopened), bump completes "
+          "byte-identical (%s)" % (why or res))
+    # persistent: the archived copy never reads back -> rolled back, logs verified in place, failure reported loudly
+    p, tok, led, before, res, why, err, seen = run("era12b", lambda n: True)
+    check(isinstance(why, FileNotFoundError) and "ROLLED BACK" in err and "ROLLED BACK" in notes(why)
+          and intact(p, tok, led, before),
+          "ERA-12 drvfs: ENOENT after the archive write (the 2026-10-31 real-root failure) rolls back: logs in "
+          "place and byte-identical, no archive dir, no marker, era 0 trusted, ROLLED BACK on stderr + exception "
+          "(%s | %s)" % (str(why)[:60], err.strip()[:120]))
+    # a source already unlinked, then its archive copy unreadable and no link -> INCOMPLETE, loud, copy kept
+    p, tok, led, before, res, why, err, seen = run(
+        "era12c", lambda n: n >= 2, unlink_fail=src_b("before"),
+        link_fail=lambda s: FileNotFoundError(2, "No such file or directory (simulated drvfs)", str(s)))
+    check(why is not None and "INCOMPLETE" in err and "INCOMPLETE" in notes(why)
+          and "restore a.jsonl" in err and "verify a.jsonl" in err and not L.arm_file(p, "a").exists()
+          and (L.archive_dir(p, 0) / "a.jsonl").read_bytes() == before["a"]
+          and L.arm_file(p, "b").read_bytes() == before["b"] and not L.eras_path(p).read_text().strip(),
+          "ERA-12 drvfs: neither a source nor a readable archive copy -> rollback INCOMPLETE reported on stderr "
+          "+ exception, archived copy kept (never deleted), no marker (%s)" % err.strip()[:160])
+    # a failure after one source was unlinked restores it (hard link) from the verified copy
+    p, tok, led, before, res, why, err, seen = run("era12d", unlink_fail=src_b("before"))
+    check(why is not None and "ROLLED BACK" in err and "1 restored" in err and intact(p, tok, led, before),
+          "ERA-12 a failure after one source was unlinked restores it from the archive copy; era 0 trusted (%s)"
+          % err.strip()[:120])
+    # an unlink that TOOK EFFECT and still raised: the copy is the only one left -> restored, never deleted
+    p, tok, led, before, res, why, err, seen = run("era12e", unlink_fail=src_b("after"))
+    check(why is not None and "ROLLED BACK" in err and "2 restored" in err and intact(p, tok, led, before),
+          "ERA-12 an unlink that took effect but raised: both logs restored from their copies, none lost (%s)"
+          % err.strip()[:120])
+    # no hard links on this filesystem: the restore falls back to an O_EXCL verified copy
+    p, tok, led, before, res, why, err, seen = run("era12f", unlink_fail=src_b("after"),
+                                                   link_fail=lambda s: OSError(1, "Operation not permitted"))
+    check(why is not None and "ROLLED BACK" in err and "2 restored" in err and intact(p, tok, led, before),
+          "ERA-12 no hard links: restore by verified O_EXCL copy, ROLLED BACK (%s)" % err.strip()[:120])
+    # a path at an archive name this call did not create (O_EXCL refused): never removed, INCOMPLETE
+    p, tok, led, before, res, why, err, seen = run("era12g", foreign="b.jsonl")
+    check(isinstance(why, FileExistsError) and "INCOMPLETE" in err and "not empty" in err
+          and (L.archive_dir(p, 0) / "b.jsonl").read_text() == "not ours\n"
+          and not (L.archive_dir(p, 0) / "a.jsonl").exists()
+          and all(L.arm_file(p, a).read_bytes() == before[a] for a in before),
+          "ERA-12 an archive path this call did not create is never removed; logs in place; INCOMPLETE names "
+          "the leftover (%s)" % err.strip()[:160])
 
 
 def t_r3_b4_note_tokens(tmp):
@@ -1423,6 +1539,8 @@ def main():
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
         shutil.rmtree(tmp, ignore_errors=True)
+        if os.environ.get("RM_EVLOG_ROOT_BASE"):
+            shutil.rmtree(Path(os.environ["RM_EVLOG_ROOT_BASE"]) / tmp.name, ignore_errors=True)
         shutil.rmtree(decoy_dir, ignore_errors=True)
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0
