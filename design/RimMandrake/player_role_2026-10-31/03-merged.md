@@ -153,7 +153,7 @@ Trust rule: parsed data over docs; a re-opened paper over a report of it.
 | 9* | He gives an hour | assumed | His call. | Open |
 | 10 | Shipped save is the 10-20 file | measured | Confirmed, 13,564,631 bytes. | High |
 | 11 | Cold load 15 to 25 min | sources disagree | **23 to 30 min.** | High |
-| 12 | Bridge about 141 tools | measured by others | **246**, JSON parsed again here, dump dated 10-02. Skill says 125. Filed `BRIDGE_SKILL_FIX_TOOL_COUNT_STALE`. | High, ages |
+| 12 | Bridge has 547 tools | measured | **547**, live `tools/list` 2026-10-29; source `[Tool]` count 419 + 128 built-in agrees. Recount: `skills/rimbridge/SKILL.md` §1. | High, ages |
 | 13 | Corpus a few dozen labels | rough | **Likely under 20.** | Moderate |
 | 14 | Art ledger 49 rows | measured | Unchanged. | High |
 | 15 | Pass costs 10M tokens, 2 to 3.5 h | estimated | **9M; 1.7 to 3.3 h** before load, judges, resets, controls. | Estimate |

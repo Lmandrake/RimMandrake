@@ -123,7 +123,7 @@ Mandrake, which is what he asked for, and not agreement with players, which we c
 
 ### 2.1 In this repo
 
-- **Bridge (skills/rimbridge):** about 141 tools. Usable as player eyes and hands: `get_ui_state`, `get_ui_layout`
+- **Bridge (skills/rimbridge):** 547 tools. Usable as player eyes and hands: `get_ui_state`, `get_ui_layout`
   (every button with a targetId), `click_ui_target`, `click_cell`, `list_selected_gizmos`, `execute_gizmo`,
   `open_inspect_tab`, `take_screenshot`, `jawa/clear_ui`, camera tools, `step_game_ticks`, `save_game`.
 - **The instrument is lossy as a player.** `click_cell` can select nothing; `get_context_menu_options` cannot see
@@ -203,7 +203,7 @@ something feels; asking what it expects, then checking, is a question with an an
 
 1. **A perception firewall.** A proxy, not a prompt, sits between agent and bridge. It exposes: screenshot at real
    resolution and UI scale, pixel click (resolved by the proxy to `click_ui_target` or `click_cell` from layout
-   rectangles), right-click, hover, camera, speed, pause, keys. It strips all defNames, ids and the rest of the 141 tools,
+   rectangles), right-click, hover, camera, speed, pause, keys. It strips all defNames, ids and the rest of the 547 tools,
    and refuses flight gizmos, new-game, debug tools and save-overwrites. The clean room is enforced in code. The agent's
    context has no repo, no CLAUDE.md, no skills.
 2. **Play in pauses.** Pause-stepped, because VideoGameBench shows real-time vision fails on latency.
@@ -420,7 +420,7 @@ Starred claims would change the recommendation if wrong.
 | 9* | He will give about 1 hour of labels | assumed | His call |
 | 10 | Shipped save is the 10-20 file | measured | canon.yml lines 86 to 88, file on disk, 13.6 MB |
 | 11 | Full list cold load 15 to 25 min | measured by others, sources disagree | TestPilot brief vs load-round skill |
-| 12 | Bridge has about 141 tools | measured by others | capability matrix census, date not re-checked |
+| 12 | Bridge has 547 tools | measured | live `tools/list` 2026-10-29, source `[Tool]` count 419 + 128 built-in on 2026-10-31 |
 | 13 | His experience-labelled corpus is a few dozen items | measured, rough | Regex over OWNER.jsonl (4,056 events) and conversations; unlabelled, false hits seen |
 | 14 | Art criteria ledger has 49 rows | measured | `wc -l` |
 | 15 | D1 pass: 10M input tokens, 2 to 3.5 h | estimated | 300 steps × 30k context; 20 to 40 s step assumed |

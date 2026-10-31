@@ -117,7 +117,10 @@ with a paste-the-token step that silently uses last launch's value.
 * Port **5174**, stable. Token **changes every launch**.
 * Protocol **GABP** (`gabp/1`); `session/hello` first or *"Session not established."*
 * Tool names use **slashes** — `rimworld/get_game_info`. Dotted MCP spelling is rejected.
-* **125 tools**: `rimworld/` (107), `rimbridge/` (18).
+* **547 tools on a `--gm` build**, read 2026-10-29 from `tools/list`: `jawa/` (411), `rimworld/` (110),
+  `rimbridge/` (18), `deepfire/` (8). 49 `jawa/` tools sit behind `JAWA_GM_TOOLS`, so a build without
+  `--gm` has 498. This number moves: recount with `python src/RimMandrake/Utils/rimbridge_client.py --list-tools`. The
+  `[JawaBench] ready: N tools` log line counts the companion only (419 here), not the bridge.
 
 **Drive it as a library, never through `--json` on the command line.** Debug
 action paths contain backslashes and die twice through bash then JSON.
@@ -358,7 +361,7 @@ real player path (a bench recipe / bill), not a raw severity poke (2026-09-09).
 
 ## 4. Debug actions are the real surface
 
-The 125 tools are a thin API. **`execute_debug_action` reaches the whole dev
+The bridge's built-in tools are a thin API. **`execute_debug_action` reaches the whole dev
 menu** — 1,119 matches for "apparel" on a *three-mod* list.
 
 `get_debug_action` returns `actionType`, which decides targeting:

@@ -1,5 +1,7 @@
 # `world/_lf/` — the 2026-08-26 CHECK session's working scripts
 
+`live_tools.json` is that session's snapshot (246 tools), not today's bridge; the current count is in `skills/rimbridge/SKILL.md` §1.
+
 ⚠️ **Mostly throwaway.** 110 one-off probe scripts written against a live game, kept only as
 provenance for the evidence files in `infrastructure/state/evidence/` — each of those cites the
 numbers, and these are how they were taken. Nothing here is a maintained tool and nothing else

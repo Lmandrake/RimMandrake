@@ -65,7 +65,7 @@ did not.**
 
 **Latest run: 2026-08-12 on the 574-mod stack — 23 passed, 0 failed, 2 skipped**
 (the 2 are opt-in: `--letter` writes to the player's pane, `--pawns` spawns).
-Census read **16 of 16**, 141 tools on the bridge overall. The earlier 20/20 run
+Census read **16 of 16**; the bridge had 141 tools on that date (today's count: `skills/rimbridge/SKILL.md`, Connect). The earlier 20/20 run
 at 573 proved the first 14; this one adds `jawa/set_roof_batch` and
 `jawa/get_roof_batch`, which had never run.
 

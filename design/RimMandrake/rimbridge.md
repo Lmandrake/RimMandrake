@@ -216,9 +216,9 @@ Answers to the questions this section used to ask:
   MCP spelling is rejected by `Lib.GAB` outright.
 - **Threading** ⚠️ tools execute **on the game's main thread**. This is the safety
   answer *and* the danger — see §5.
-- **Tool surface** ✅ **125 tools**: `rimworld/` 107, `rimbridge/` 18. Diffed against
-  the generated list in the checked-in `RimBridgeServer-main/README.md`: **exact
-  match, no drift**, so those docs are a trustworthy reference for this build.
+- **Tool surface** ✅ **128 built-in tools** in RBS 2.3.0: `rimworld/` 110, `rimbridge/` 18, matching
+  the live `tools/list` (2026-10-25) and the Workshop `README.md`. The companion adds the rest; the
+  total lives in `skills/rimbridge/SKILL.md`.
 
 **Our client:** `src/RimMandrake/Utils/rimbridge_client.py` — stdlib only, scrapes port+token from
 `Player.log` so a relaunch needs no hand-editing, `--list-tools` / `--call`, and a

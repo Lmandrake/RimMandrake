@@ -407,7 +407,7 @@ prose).
 | of which `#if JAWA_GM_TOOLS` (absent unless built with `--gm`) | **48** | MEASURED |
 | RBS built-in tools listed in the 2.3.0 README | **128** (110 `rimworld/` + 18 `rimbridge/`) | MEASURED `grep -cE '^- \`rimworld/'` on the Workshop README; the README is generated from the tool surface (`BEGIN GENERATED:tool-surface`) |
 | expected live total with a `--gm` build | ≈526, **UNVERIFIED live** | arithmetic |
-| last live count found in a comment | "51/432 live tools" | DOC `rimbridge_client.py:478`, date unknown. The skill's "125 tools" and "91 jawa/" are stale |
+| last live count found in a comment | "51/432 live tools" | DOC `rimbridge_client.py:478`, date unknown. Current count: `skills/rimbridge/SKILL.md` §1 |
 
 ⇒ **The tool surface roughly quadrupled in ~7 weeks** (91 `jawa/` on 2026-08-19, 398 now).
 `skills/rimbridge/SKILL.md` §1's file table is two months stale.
