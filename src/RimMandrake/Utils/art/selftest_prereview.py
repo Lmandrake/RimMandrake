@@ -61,7 +61,8 @@ def main() -> int:
         calls = []
         SV.SG.verify_stamp = lambda html: (True, "stub stamp")
         SV.startup_freshness = lambda p, ctx=None: calls.append("fresh") or 0
-        SV.serve_with_followed_guard = lambda argv, fresh=None: calls.append("serve") or 0
+        SV.REPO = sp.parent     # the fixture lives in a temp dir; off_tree_gate has its own test
+        SV.serve_with_followed_guard = lambda argv, fresh=None, **k: calls.append("serve") or 0
         rc = SV.main(["--no-open", "--sheet", str(sp), "--decisions", str(dp)])
         check(rc == 4 and not calls, f"serve_gated refuses an unread stamped sheet, serves nothing (rc {rc}, calls {calls})")
         complete(sp)

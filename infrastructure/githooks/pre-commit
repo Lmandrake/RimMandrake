@@ -19,5 +19,10 @@ g="$root/src/RimMandrake/Utils/art/game_art.py"
 command -v python3 >/dev/null 2>&1 || { echo "pre-commit: python3 missing, sheet guard skipped" >&2; exit 0; }
 python3 "$g" precommit "$root"
 r=$?
-[ "$r" -gt 1 ] && { echo "pre-commit: game_art.py crashed (exit $r), failing open" >&2; exit 0; }
+[ "$r" -gt 1 ] && { echo "pre-commit: game_art.py crashed (exit $r), failing open" >&2; r=0; }
+[ "$r" -ne 0 ] && exit $r
+# An owner pile never carries a path his Windows browser cannot open (owner 2026-10-31).
+python3 "$root/src/RimMandrake/Utils/owner_doc_lint.py" --staged
+r=$?
+[ "$r" -gt 1 ] && { echo "pre-commit: owner_doc_lint.py crashed (exit $r), failing open" >&2; exit 0; }
 exit $r

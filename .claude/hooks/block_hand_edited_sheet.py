@@ -14,6 +14,8 @@ Refused here:
   * a Bash command that writes, edits, copies over, moves or deletes such a file (redirect, sed -i, tee, cp, mv, rm,
     python write_text/open(...,'w'), perl -i, truncate ...) unless it runs a gated tool itself
   * a Bash command that starts review-sheets' serve_sheet.py for a sheet (use serve_gated.py)
+  * a Bash command that copies a sheet out of the clone: a copy has no live writer, so his picks would not save
+    (owner 2026-10-31). Give him the served URL instead.
 
 Reading (cat, grep, ls, head, git add/commit of the file) is fine. Fail open on unreadable input.
 
@@ -32,6 +34,11 @@ WRITE_VERB = re.compile(
     r"\bgit\s+(checkout|restore)\b)")
 SERVER = re.compile(r"\bserve_sheet\.py\b")
 SERVER_READONLY = re.compile(r"--(status|selftest|help)\b")
+# The 2026-10-31 copy was `cp $N.html $D/`: variables, so no sheet path to match. Here the three parts may sit anywhere in the
+# command, because a helper builds them in shell variables. The page's own block (art/sheet_live_guard.py) stands behind this.
+COPY_VERB = re.compile(r"(?:^|[;&|(]|\bsudo)\s*(?:cp|rsync|install|scp)\b|\bshutil\.copy|\bCopy-Item\b|\brobocopy\b")
+SHEETISH = re.compile(r"_sheet_|biome_ffar")
+OUTSIDE = re.compile(r"/mnt/[a-zA-Z]/|ClaudeWork|\b[A-Za-z]:[\\/]")
 
 REASON = (
     "Blocked: a biome art sheet (Transient/biome_ffar/*_sheet_*.html) may only be produced by the gated tools "
@@ -45,7 +52,8 @@ REASON = (
     "`python3 src/RimMandrake/Utils/art/scaled_review_gate.py check <html>`.\n\n"
     "Game art that is not a biome roster (buildings, items, gear, a batch of renders) gets the same gated, scaled sheet: "
     "`python3 src/RimMandrake/Utils/art/art_sheet.py --subjects <defName>... [--jobs <artpipe id>...] --name <name>`. "
-    "A hand-written sheet of game art is refused even when it declares itself non-art. Skill: rimworld-review-sheets."
+    "A hand-written sheet of game art is refused even when it declares itself non-art. Skill: rimworld-review-sheets.\n\n"
+    "A sheet is never copied out of the clone: a copy has no live writer, so picks would not save. Serve it and give the URL."
 )
 ART_DIR = __import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)), "..", "..",
                                      "src", "RimMandrake", "Utils", "art")
@@ -91,6 +99,8 @@ def refused(tool: str, ti: dict) -> bool:
         segs = [x for x in re.split(r"&&|\|\||;|\n", cmd) if x.strip()]
         if any(SERVER.search(x) and not SERVER_READONLY.search(x) and "serve_gated.py" not in x for x in segs):
             return True
+        if SHEETISH.search(cmd) and OUTSIDE.search(cmd) and any(COPY_VERB.search(x.strip()) and re.search(r"\.html?\b|biome_ffar", x, re.I) for x in segs):
+            return True
         if SHEET_PATH.search(cmd) and any(WRITE_VERB.search(x) and not GATED_TOOLS.search(x) for x in segs):
             return True
     return False
@@ -103,6 +113,9 @@ def main() -> int:
         return 0
     if refused(ev.get("tool_name", ""), ev.get("tool_input") or {}):
         deny()
+        return 0
+    import block_owner_doc_wsl_paths as OWNER_DOC
+    OWNER_DOC.refuse(ev)
     return 0
 
 

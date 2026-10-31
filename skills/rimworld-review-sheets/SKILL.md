@@ -37,7 +37,7 @@ the builder and add a selftest.
 | no game art (code triage, text/def curation, numbers) | the general template, then `python3 src/RimMandrake/Utils/art/nonart_sheet.py declare <html>` |
 
 Both art modes write `Transient/biome_ffar/<name>_sheet_<date>.html`, build to a temp file, run
-`scaled_review_gate.py` (14 requirements) and move the sheet into place stamped only on a pass; a failure
+`scaled_review_gate.py` (16 requirements) and move the sheet into place stamped only on a pass; a failure
 exits 3, names the rows and requirement, and leaves the last good sheet alone. Sizes come from the live def
 dump through `scale_panel.py`: animals (adult drawSize), plants (drawSize × visualSize, mesh count),
 buildings and items (drawSize on the `size` footprint, south facing, footprint outlined). A def the game
@@ -56,7 +56,7 @@ the resolver, re-asked by the gate, is the only thing that exempts a row from a 
    `caught`, `dropped`. `serve_gated.py`, `review_queue.py` and `sheet_to_artifact.py` refuse a sheet without it
    (exit 4); a row whose pictures change afterwards needs a fresh look (`init` resets only it).
 3. **Serve** — `serve_gated.py` only, its output in `<sheet>.serve.log` beside the sheet, or RimPulse cannot
-   list it. Give him the URL and the full native path.
+   list it. Give him the URL; the page writes every click as he goes (owner, 2026-10-31).
 4. **Refresh** as renders land — `refresh_sheets.py` keeps URLs stable, rebuilds only changed sheets, and
    prints an `UNPUBLISHED:` publish command for a rebuilt sheet only if it is pinned (tracked). Run it.
 5. **Remap** after any rebuild of a sheet he has touched — `remap_decisions.py` (dry run, then `--apply`), so
@@ -82,4 +82,7 @@ its check: `references/traps.md`.
 - [ ] donor-only rows = 0, or each has a pending render job and the count is shown to him
 - [ ] served via `serve_gated.py` into `<sheet>.serve.log`; the URL answers 200
 - [ ] for a sheet he has touched: `remap_decisions.py` reports 0 orphaned, and `letter_mismatches` = 0
-- [ ] the full native path of the serving clone (`\\wsl.localhost\Ubuntu\home\mandrake\rm\<seat>\Transient\biome_ffar\…`; Transient is untracked since 2026-10-18, so `D:\` has only pinned sheets) beside the link
+- [ ] he gets the served `http://localhost` URL and nothing else: never a copy of the sheet and never a `/home/`, `/mnt/` or
+      `\\wsl.localhost` path. A sheet with no server gets served first, even for an owner pile. Code enforces this: a page
+      without its live writer blocks picks and names the URL (`sheet_live_guard.py`, req 16), a copy out of the clone is
+      refused (hook) and refuses to serve, and `owner_doc_lint.py` refuses those paths in piles, Transient docs and cards.

@@ -55,44 +55,15 @@ Twelve other questions were cleared without you and are listed at the end.
 
 ---
 
-## 3. Did the art pipeline decide these three creatures correctly?
+## 3. Did the art pipeline decide these three creatures correctly? ANSWERED
 
-**The question.** The automatic art judge made its first decisions on new renders, including redrawing art you had kept. For each of Blarth, Bursa and Sytheclaw: keep its decision, or revert?
-
-**Why it matters.** The judge cannot be trusted to run on its own until you have checked it. Nothing else rests on this for FlowWorks, but it decides how much art reaches you later.
-
-**Look at.** `D:\ClaudeWork\rimmandrake\Transient\owner_pile_2026-10-31\art_check\art_eval_shadow_audit_20261026_d4r2_sheet_2026-10-26.html`
-
-The copy on the mirror from your earlier card opens without pictures, so use this one. Its 119 images are beside it and all resolve. The page may not save your clicks from this folder, so answer here.
-
-**What I saw.** Blarth's in-game and new versions are close to each other. Bursa's main row shows only the in-game picture and the old donor. Sytheclaw's candidate C is plainly a different animal, so check which picture the pipeline actually chose.
-
-**Options.**
-1. **Mark the three rows, about ten minutes (recommended).**
-2. **Mark only the rows where you disagree.** Quicker, but agreement teaches the judge less.
-3. **Skip it.** The judge stays on trial and art keeps coming to you.
+Your picks are enacted: Blarth, Bursa and Sytheclaw. Your overrides went into the judge's criteria ledger as CL-043 to CL-045.
 
 ---
 
-## 4. Seven creature redraws from September: use them, or keep what is in the game?
+## 4. Seven creature redraws from September: use them, or keep what is in the game? ANSWERED
 
-**The question.** Boma, Dewback, Insectomorph, Shiro, Vornskyr, Whisperbird and Zakkeg were redrawn against their references in September. You said you would grade these. Do they replace what is in the game?
-
-**Why it matters.** Using them would replace art that is marked protected for six of the seven (all but Shiro), so only you can say yes. Two later fauna passes are waiting on this job.
-
-**Look at.** `D:\ClaudeWork\rimmandrake\Transient\owner_pile_2026-10-31\creatures_redo\all_seven_now_vs_redraw.png`
-
-Each row shows the game's art on the left, then the reference and redraw. The original sheet is beside it as `sheet.html`. I recovered it from history because the old path is gone.
-
-**What I saw.** The redraws have heavy black outlines and flatter colour. The game's art is painterly, which is closer to what you asked for on Blarth: "realistic, not these cartoon versions". Dewback's south view and Insectomorph's east view were never drawn. Shiro is the exception: the reference shows a long-necked, spined animal, and the game's version is a plain tortoise that is further from it than the redraw.
-
-There are no true-scale panels on this old sheet, so it shows likeness, not size.
-
-**Options.**
-1. **Keep the game's art for six, redraw Shiro with today's pipeline (recommended).** The job can close. A new Shiro goes through the normal judge.
-2. **Keep all seven.** The job closes now. Shiro stays off-reference.
-3. **Take some redraws, by name.** The two missing views and scale checks must be finished first.
-4. **Have all seven redrawn in the current style.** This gives the closest match to the references, costs the most, and comes back to you again.
+You chose to keep the game's art for six and redraw Shiro. The job is closed, the two later fauna passes are free, and a new painterly Shiro is queued for the normal judge.
 
 ---
 

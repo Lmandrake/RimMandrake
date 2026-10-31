@@ -1,0 +1,2 @@
+A guard that matches a path literally is beaten by a shell variable: cp $N.html $D/ got a sheet past the hook, and the page then fell back silently to browser storage. Put the guard where the failure happens: the page itself refuses picks without its sidecar, and the hook is only a backstop. A fallback that keeps working while losing the user's work must be a stop, not a label.
+home: skills/rimworld-review-sheets/references/traps.md

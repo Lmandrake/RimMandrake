@@ -12,3 +12,10 @@
 | A served sheet invisible in RimPulse | server stdout went elsewhere (2026-10-10) | serve into `<sheet>.serve.log` beside the sheet |
 | A size that was never measured | plants drawn at the fallback size while their defs set sizes several times larger | every size prints its source; FALLBACK is flagged on the row and checked by the gate |
 | Enacting slowly | four helpers chained serially took ~2 h (2026-10-08) | one `art.py enact` pass, one batched card at most |
+
+## A sheet copied out for the owner's convenience (2026-10-31)
+
+A helper had no server for a sheet and a pile that wanted a `D:\` path, so it ran `cp $N.html $D/`. Variables hid the path from
+the hook, the copy fell back to browser storage, and he worked it and exported by hand. Its links were WSL paths too. The check
+is `sheet_live_guard.py` (block with the URL), req 16, the copy clause of `block_hand_edited_sheet.py`, and `owner_doc_lint.py`.
+Serve the sheet. There is no second route.

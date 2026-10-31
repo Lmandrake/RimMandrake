@@ -45,6 +45,7 @@ import artledger as L  # noqa: E402
 import subject as S  # noqa: E402  (ART_SUBJECT_RESOLVER_1: the one name->art matcher)
 import placeholder_detect as PD  # noqa: E402
 import sheet_slots as SLOTS  # noqa: E402  (what each picture is FOR: the slot vocabulary, DESIGN 2026-10-10 §3.1)
+import sheet_live_guard as LIVE  # noqa: E402  (no live writer: picks refused, URL named)
 import scaled_review_gate as SG  # noqa: E402  (the hard gate: a sheet failing a scaled-review requirement is never written)
 
 SKILL = Path.home() / ".claude" / "skills" / "review-sheets" / "assets"
@@ -904,7 +905,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
                     "owning (override) mod and the losing copy is archived — nothing is installed until you see that plan. "
                     "✕ on a picture = reject + PURGE: it is deleted from the art store and never offered again."},
         "options": opts, "groupLabel": "creature", "media": True,
-        "decisionsFile": decisions_path.name, "decisionsPath": str(decisions_path), "sheetPath": str(out_html),
+        "decisionsFile": decisions_path.name,      # no paths baked: a POSIX path is a dead link to him; the served page supplies native ones
     }
     tpl = (SKILL / "sheet_template.html").read_text()
     tpl = re.sub(r'(<script id="CONFIG" type="application/json">)(.*?)(</script>)',
@@ -913,7 +914,7 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
                  lambda m: m.group(1) + "\n" + json.dumps(items).replace("</", "<\\/") + "\n" + m.group(3), tpl, count=1, flags=re.S)
     tpl = tpl.replace("<!-- ══ FILL IN #3 (optional)", RENDER + "\n<!-- ══ FILL IN #3 (optional)", 1)
     tpl = re.sub(r"<title>.*?</title>", f"<title>{title}</title>", tpl, count=1, flags=re.S)
-    out_html.write_text(tpl)
+    out_html.write_text(LIVE.inject(tpl))
     wrote_dec = False
     if not decisions_path.exists():
         decisions_path.write_text(json.dumps({
@@ -2372,7 +2373,7 @@ def _fill_template(cfg: dict, items: list, render: str, title: str) -> str:
     tpl = re.sub(r'(<script id="ITEMS" type="application/json">)(.*?)(</script>)',
                  lambda m: m.group(1) + "\n" + json.dumps(items).replace("</", "<\\/") + "\n" + m.group(3), tpl, count=1, flags=re.S)
     tpl = tpl.replace("<!-- ══ FILL IN #3 (optional)", render + "\n<!-- ══ FILL IN #3 (optional)", 1)
-    return re.sub(r"<title>.*?</title>", f"<title>{title}</title>", tpl, count=1, flags=re.S)
+    return LIVE.inject(re.sub(r"<title>.*?</title>", f"<title>{title}</title>", tpl, count=1, flags=re.S))
 
 
 def _clusters(rows: list[dict]):
@@ -3526,7 +3527,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                     "slot' deletes nothing; the small ✕ on one picture deletes it from the art store."},
         "options": opts, "groupLabel": "group", "media": True,
         "freshness": _fresh_banner(fresh, {it["id"] for it in ordered}),
-        "decisionsFile": decisions_path.name, "decisionsPath": str(decisions_path), "sheetPath": str(out_html),
+        "decisionsFile": decisions_path.name,      # no paths baked: a POSIX path is a dead link to him; the served page supplies native ones
         "schema": 2, "biomes": [{"key": k, "label": v.get("label", k)} for k, v in census["biomes"].items()],
     }
     if Q:

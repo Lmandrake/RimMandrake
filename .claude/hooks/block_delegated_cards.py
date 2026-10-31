@@ -132,6 +132,8 @@ def main():
     if hit:
         sys.stderr.write(message(classes) + "\n")
         return 2
+    import block_owner_doc_wsl_paths as OWNER_DOC
+    OWNER_DOC.refuse(payload)
     return 0
 
 

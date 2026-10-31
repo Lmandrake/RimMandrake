@@ -42,6 +42,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import artledger as L  # noqa: E402
+import sheet_live_guard as LIVE  # noqa: E402
 import subject as S  # noqa: E402
 
 GATE_VERSION = "v1"
@@ -582,9 +583,20 @@ def check_fresh(ctx, items) -> Check:
                      "the disk — `art.py backfill disk`, then rebuild"] if r["stale"] else []))
 
 
+def check_live_writer(ctx, items) -> Check:
+    """Req 16 (owner 2026-10-31: "you're supposed to have the pages auto-write as I go"; "wsl links that don't work"): a page
+    without its sidecar blocks picks and names the served URL, and the CONFIG bakes no path his browser cannot open."""
+    html = ctx["html"]
+    p = [] if LIVE.has_guard(html) else ["no live-writer guard: built around art_sheet.py, so a copy would keep picks in the browser"]
+    cfg = re.search(r'<script id="CONFIG"[^>]*>(.*?)</script>', html, re.S)
+    if cfg and re.search(r"/home/|/mnt/[a-zA-Z]/|wsl\.localhost|wsl\$", cfg.group(1)):
+        p.append("CONFIG bakes a WSL path; the served page supplies the native ones")
+    return Check("16", "no live writer, no picks; no WSL path baked", p)
+
+
 CHECKS = (check_one_biome, check_scale, check_donor_only, check_donor_column, check_canon, check_failed_canon,
           check_ruled_elsewhere, check_letters, check_purge_wired, check_check_sheet, check_no_purged, check_browser,
-          check_fresh)
+          check_fresh, check_live_writer)
 
 
 def run_gate(ctx: dict, urls: bool = False) -> list[Check]:

@@ -31,7 +31,9 @@ sys.path.insert(0, str(HERE))
 import scaled_review_gate as SG  # noqa: E402
 import nonart_sheet as NA  # noqa: E402
 import prereview as PR  # noqa: E402
+import sheet_live_guard as LIVE  # noqa: E402
 
+REPO = HERE.parents[3]
 SERVE = Path.home() / ".claude" / "skills" / "review-sheets" / "assets" / "serve_sheet.py"
 READ_ONLY = ("--status", "--selftest", "--help", "-h")
 
@@ -156,7 +158,7 @@ def startup_freshness(p: Path, ctx=None) -> int:
     return 0
 
 
-def serve_with_followed_guard(argv: list[str], fresh=None) -> int:
+def serve_with_followed_guard(argv: list[str], fresh=None, sheet: Path | None = None) -> int:
     """Run the review-sheets sidecar in-process with write_ops wrapped by guard_ops (the skill's own file stays untouched)."""
     import importlib.util
     spec = importlib.util.spec_from_file_location("serve_sheet", str(SERVE))
@@ -179,6 +181,20 @@ def serve_with_followed_guard(argv: list[str], fresh=None) -> int:
         def inject_sidecar(html, cfg):
             return orig_inject(fresh(html), cfg)
         mod.inject_sidecar = inject_sidecar
+    if sheet is not None:
+        base = mod.ThreadingHTTPServer
+
+        class LiveServer(base):
+            """The moment the URL is known, tell any no-writer copy beside it where the live page is; forget it on the way out."""
+
+            def serve_forever(self, *a, **k):
+                url = f"http://localhost:{self.server_address[1]}/" + (f"?t={mod.Ctx.token}" if mod.Ctx.token else "")
+                LIVE.write_live(sheet, url)
+                try:
+                    return super().serve_forever(*a, **k)
+                finally:
+                    LIVE.clear_live(sheet)
+        mod.ThreadingHTTPServer = LiveServer
     sys.argv = [str(SERVE)] + argv
     return mod.main()
 
@@ -191,6 +207,15 @@ def prereview_gate(p: Path) -> int:
         return 4
     print(f"serve_gated: {msg}", file=sys.stderr, flush=True)
     return 0
+
+
+def off_tree_gate(p: Path) -> int:
+    """0 = an art sheet in this clone; 4 = a copy: its picks would land beside the copy, where enact never looks."""
+    if p.resolve().is_relative_to(REPO):
+        return 0
+    print(f"REFUSED serve_gated: {p} is a copy outside {REPO}. Serve the built sheet in place; a copy's picks reach no "
+          f"enact.", file=sys.stderr)
+    return 4
 
 
 def main(argv: list[str]) -> int:
@@ -226,17 +251,17 @@ def main(argv: list[str]) -> int:
         if not ok:
             print(f"REFUSED serve_gated: {p.name}: non-art route: {msg}", file=sys.stderr)
             return 4
-        return prereview_gate(p) or serve_with_followed_guard(argv)
+        return prereview_gate(p) or serve_with_followed_guard(argv, sheet=p)
     if not ok:
         print(f"REFUSED serve_gated: {p.name}: {msg}.\nBuild it with art_sheet.py --biome <RM_X> (gated), or stamp a sheet that "
               f"passes with `scaled_review_gate.py check {p.name} --stamp`.", file=sys.stderr)
         return 4
     # freshness re-measured at start and on every page load (owner 2026-10-12); since his card of 2026-10-19 a stale ROW is
     # labelled and its picks switched off, and the rest of the sheet serves
-    rc = prereview_gate(p) or startup_freshness(p)
+    rc = off_tree_gate(p) or prereview_gate(p) or startup_freshness(p)
     if rc:
         return rc
-    return serve_with_followed_guard(argv, fresh=fresh_gate(p))
+    return serve_with_followed_guard(argv, fresh=fresh_gate(p), sheet=p)
 
 
 if __name__ == "__main__":

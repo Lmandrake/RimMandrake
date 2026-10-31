@@ -24,6 +24,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import scaled_review_gate as SG  # noqa: E402
+import sheet_live_guard as LIVE  # noqa: E402
 
 KIND_RE = re.compile(r'<meta name="sheet-kind" content="([^"]*)">')
 SKILL_ASSETS = Path.home() / ".claude" / "skills" / "review-sheets" / "assets"
@@ -36,9 +37,10 @@ def declares_nonart(html: str) -> bool:
 
 
 def declare(html: str) -> str:
+    """Every non-art sheet passes here to be servable, so it is also where it gets the no-live-writer block."""
     if KIND_RE.search(html):
-        return KIND_RE.sub('<meta name="sheet-kind" content="non-art">', html, count=1)
-    return html.replace("<head>", '<head>\n<meta name="sheet-kind" content="non-art">', 1)
+        return LIVE.inject(KIND_RE.sub('<meta name="sheet-kind" content="non-art">', html, count=1))
+    return LIVE.inject(html.replace("<head>", '<head>\n<meta name="sheet-kind" content="non-art">', 1))
 
 
 def _items(html: str):

@@ -39,7 +39,7 @@ def scale(sid, d, **kw):
 
 def html_of(items, sheet_id, extra=""):
     cfg = {"sheetId": sheet_id}
-    return ('<html><head><title>t</title></head><body><script id="CONFIG" type="application/json">' + json.dumps(cfg) +
+    return G.LIVE.inject('<html><head><title>t</title></head><body><script id="CONFIG" type="application/json">' + json.dumps(cfg) +
             '</script><script id="ITEMS" type="application/json">' + json.dumps(items) + '</script>'
             '<script id="RENDER">bs-scale entry has no images (this entry lists no Must show) lists no Must show purge' + extra + '</script></body></html>')
 
