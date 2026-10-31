@@ -213,13 +213,19 @@ def run(argv, cwd, log: Path, timeout=STEP_TIMEOUT, env=None, stdin=None, pass_f
         return None, "cannot run: %s" % e
 
 
-def git(repo: Path, *args, check=True) -> str:
+GIT_TIMEOUT = 120
+# ARENA_GATE_WORK_REWIRE_OFF_DRVFS: a full checkout of the 7.7 GB tree is ~11 s on ext4 (measured 2026-10-31, idle)
+# and 379 s on drvfs; the checkout gets its own budget so three arms gating at once do not time out on ext4
+CHECKOUT_TIMEOUT = 900
+
+
+def git(repo: Path, *args, check=True, timeout=GIT_TIMEOUT) -> str:
     """git on a clone the builder may have written: replace refs, grafts, drivers, hooks, fsmonitor are off
     (arena_safe_git); a diff also never runs an external diff or textconv."""
     if "diff" in args:
         i = args.index("diff")
         args = args[:i + 1] + SG.NO_DRIVER + args[i + 1:]
-    r = SG.git_run(repo, *args, capture_output=True, text=True, timeout=120, errors="replace")
+    r = SG.git_run(repo, *args, capture_output=True, text=True, timeout=timeout, errors="replace")
     if check and r.returncode != 0:
         raise GateError("git %s: %s" % (" ".join(args), r.stderr.strip()[:200]))
     return r.stdout if r.returncode == 0 else ""
@@ -309,6 +315,30 @@ def gate_work_root() -> Path:
     if env:
         return Path(env)
     return Path(os.environ.get("ARENA_CLONES", "/home/mandrake/rm/arena")) / "judge" / "gate_work"
+
+
+def fs_type(path: Path, mounts="/proc/mounts") -> str | None:
+    """Filesystem type of the mount holding `path` (longest mount-point prefix of its nearest existing ancestor)."""
+    p = Path(path)
+    while not p.exists() and p != p.parent:
+        p = p.parent
+    real = os.path.realpath(p)
+    best, typ = "", None
+    try:
+        lines = Path(mounts).read_text(encoding="utf-8", errors="replace").splitlines()
+    except OSError:
+        return None
+    for line in lines:
+        f = line.split()
+        if len(f) < 3:
+            continue
+        mp = f[1].replace("\\040", " ")
+        if (real == mp or real.startswith(mp.rstrip("/") + "/") or mp == "/") and len(mp) > len(best):
+            best, typ = mp, f[2]
+    return typ
+
+
+SLOW_FS = {"9p", "drvfs", "v9fs", "fuse.drvfs", "cifs", "smb3", "nfs", "nfs4"}
 
 
 def _data_root() -> str | None:
@@ -552,6 +582,10 @@ class Gate:
         for sha in (self.base, self.head):
             if not re.fullmatch(r"[0-9a-fA-F]{7,40}", sha or ""):
                 raise GateError("not a sha: %r" % (sha,))
+        ft = fs_type(self.work)
+        if ft in SLOW_FS:      # ARENA_GATE_WORK_REWIRE_OFF_DRVFS: refuse loudly instead of timing out into UNMEASURED
+            raise GateError("gate work dir %s is on %s (drvfs/network): checkouts time out there; use ext4 "
+                            "($ARENA_GATE_WORK)" % (self.work, ft))
         if self.work.exists():
             shutil.rmtree(self.work)
         self.work.mkdir(parents=True)
@@ -562,7 +596,7 @@ class Gate:
         (self.hdir / "noinit").write_bytes(b"")     # bound over /init in the sandbox: no WSL interop interpreter
         for dest in (self.clone, self.base_clone):
             git_clone(self.repo, dest)
-        git(self.clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.head)
+        git(self.clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.head, timeout=CHECKOUT_TIMEOUT)
         got = git(self.clone, "rev-parse", "HEAD").strip()
         if not got.startswith(self.head.lower()) and not self.head.lower().startswith(got[:len(self.head)]):
             raise GateError("checkout is %s, not head %s" % (got, self.head))
@@ -574,7 +608,8 @@ class Gate:
             ok, why = SG.verify_tree(root, rev)
             if not ok:
                 raise GateError("refused: %s" % why)
-        git(self.base_clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.base_full)
+        git(self.base_clone, "-c", "advice.detachedHead=false", "checkout", "--quiet", self.base_full,
+            timeout=CHECKOUT_TIMEOUT)
         out = git(self.clone, "diff", "--no-renames", "--raw", "--no-abbrev", self.base_full, self.head_full)
         for line in out.splitlines():
             meta, _, path = line.partition("\t")

@@ -1075,6 +1075,51 @@ def t_round4_git_trust(tmp):
         G.SG.verify_tree = real_vt
     check(how == "accepted" and what.strip() == "EVIL", "RED: without verify_tree the gate checks the forged head out as sha B with EVIL content (%s %r)" % (how, what))
 
+def t_work_root(tmp):
+    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS: gate work on ext4, a drvfs work dir refused loudly, checkout's own timeout,
+    work dir removed after the run."""
+    saved = {k: os.environ.pop(k, None) for k in ("ARENA_GATE_WORK", "ARENA_CLONES")}
+    try:
+        check(G.gate_work_root() == Path("/home/mandrake/rm/arena/judge/gate_work"),
+              "work root default is the ext4 clone root's judge/gate_work (%s)" % G.gate_work_root())
+        check(not str(G.gate_work_root()).startswith("/mnt/"), "work root default is not under /mnt (drvfs)")
+        os.environ["ARENA_GATE_WORK"] = str(tmp / "gw")
+        check(G.gate_work_root() == tmp / "gw", "$ARENA_GATE_WORK is honoured")
+    finally:
+        for k, v in saved.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+    m = tmp / "mounts"
+    m.write_text("/dev/sdd / ext4 rw 0 0\nD:\\134 /mnt/d 9p rw 0 0\n")
+    check(G.fs_type(Path("/mnt/d/ClaudeWork/x/y"), mounts=m) == "9p" and G.fs_type(tmp, mounts=m) == "ext4",
+          "fs_type: /mnt/d -> 9p, a /tmp path -> ext4 (longest mount prefix)")
+    check(G.fs_type(tmp) not in G.SLOW_FS, "the selftest's own tmp is not on a slow fs (%s)" % G.fs_type(tmp))
+    c = Ctx(tmp, "wr"); h = c.commit(GOOD); c.records(h)
+    orig = G.fs_type
+    G.fs_type = lambda p, mounts="/proc/mounts": "9p"
+    try:
+        r = c.gate(h)
+    finally:
+        G.fs_type = orig
+    check(r["verdict"] == "invalid" and all("9p" in r["steps"][s]["why"] for s in G.STEPS),
+          "a drvfs (9p) work dir is refused before any clone: every step UNMEASURED naming the fs (%s)"
+          % r["steps"]["scope"]["why"][:120])
+    seen, og = [], G.git
+
+    def spy(repo, *a, **kw):
+        if "checkout" in a:
+            seen.append(kw.get("timeout"))
+        return og(repo, *a, **kw)
+    G.git = spy
+    try:
+        g = G.Gate(c.task, c.base, h, "armx", c.repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+        r2 = g.execute()
+    finally:
+        G.git = og
+    check(seen == [G.CHECKOUT_TIMEOUT] * 2 and G.CHECKOUT_TIMEOUT > G.GIT_TIMEOUT,
+          "both checkouts run with CHECKOUT_TIMEOUT=%ss, not git()'s %ss (%s)" % (G.CHECKOUT_TIMEOUT, G.GIT_TIMEOUT, seen))
+    check(r2["verdict"] == "pass" and not g.work.exists(), "a run on ext4 passes and removes its work dir afterwards")
+
+
 def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}
     os.environ["ARENA_GATE_TEST"] = "1"
@@ -1083,7 +1128,7 @@ def main():
         for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
                   t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
                   t_signfail, t_records, t_phrase_deletes, t_static, t_real, t_round3_exit, t_round3_cover,
-                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust):
+                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root):
             t(tmp)
     finally:
         for k, v in saved.items():
