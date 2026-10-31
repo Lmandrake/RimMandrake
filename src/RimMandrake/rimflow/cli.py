@@ -1077,7 +1077,13 @@ def _choose(w, seat, args, ctx, idx):
     and `_claimable` both skip them."""
     offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
     out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
-    claimable = _claimable(w, seat, args.target, ctx.get("now"), ctx)
+    claimable = []
+    for c in _claimable(w, seat, args.target, ctx.get("now"), ctx):     # judged complete: as guard() does for ranked work
+        a = reconcile.assess(c, idx)
+        if a.kind == "complete":
+            skipped.append(a)
+        else:
+            claimable.append(c)
     fo = ctx.get("focus")
     if fo:      # seat focus: only items whose id starts with an included prefix are offered
         offers = [a for a in offers if a.item.id.startswith(fo["prefixes"])]

@@ -496,8 +496,8 @@ def _non_text(rec):
 
 def helpers_of(path, now=None, stale_s=None):
     """-> [{id, alive, last_at}] for ALL the window's subagent transcripts (<session>/subagents/agent-*.jsonl), or None
-    (UNMEASURED: no main transcript, or a helper file that cannot be read) — never aged out by mtime: a helper silent
-    for days still counts until its transcript ends (GPT review 2026-10-28 HIGH 3). MEASURED 2026-10-28 on the BENCH session: a finished helper's last user/assistant record is an
+    (UNMEASURED: no main transcript, or a helper file that cannot be read). A helper silent past stale_s, above the
+    600 s subagent watchdog that would have killed it, or ended on an API error is retired (lesson 20261030T163434Z). MEASURED 2026-10-28 on the BENCH session: a finished helper's last user/assistant record is an
     assistant turn with stop_reason end_turn; a running one ends in tool_use, a tool result or an attachment. Anything
     else (empty, unreadable) counts as ALIVE: a helper is never read as dead without proof."""
     if not path or not os.path.isfile(path):

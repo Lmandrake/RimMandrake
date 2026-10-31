@@ -67,7 +67,8 @@ def plan(cfg, unit, timers):
 def _units_step(cfg, S, reading, now, act, iso):
     failed, timers = reading
     day = int(now // 86400)
-    book = {u: r for u, r in (S.get("units") or {}).items() if u in failed}    # a unit that left is forgotten
+    # a unit that left is forgotten only when its day ends: a repair that does not hold still counts and still alarms
+    book = {u: r for u, r in (S.get("units") or {}).items() if u in failed or r["day"] == day}
     S["units"] = book
     for u in failed:
         r = book.setdefault(u, {"since": now, "day": day, "n": 0})

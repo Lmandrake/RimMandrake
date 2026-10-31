@@ -139,7 +139,9 @@ def test_stranded():
         check("stranded seat gets a restart request", [x["do"] for x in a] == ["login_rescue"] and a[0]["request"]["session_id"] == "x"
               and a[0]["request"]["start"] == 77)
         check("one request per error", not run(sch, st, obs(GOOD, windows=[w]), NOW + 120)[1])
-        check("still one request after UTC midnight", not run(sch, st, obs(GOOD, windows=[w]), NOW + 86400)[1])
+        h, a = run(sch, st, obs(GOOD, windows=[w]), NOW + 7300)
+        check("an error the request did not clear alarms", [x["do"] for x in a] == ["alarm"] and "did not clear" in a[0]["why"])
+        check("still one request after UTC midnight", [x["do"] for x in run(sch, st, obs(GOOD, windows=[w]), NOW + 86400)[1]] == ["alarm"])
         w2 = dict(w, at=NOW - 10)
         run(sch, st, obs(GOOD, windows=[w2]), NOW + 240)
         w3 = dict(w, at=NOW - 5)

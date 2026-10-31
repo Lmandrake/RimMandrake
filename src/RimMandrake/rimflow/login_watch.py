@@ -23,6 +23,7 @@ Each tick (schedule key `login_watch`; off when absent or enabled false):
   back       alarm login:back:<epoch>; the gate opens by itself and held work goes.
   stranded   the login works but a seat window still sits on an API error (its turn ended on it, so its Stop hook never
              ran and no ring can reach it): a seat_restart request for it, at most rescues_per_day, then an alarm. A
+             request cancelled or a restart that left the same error standing alarms after rescue_wait_s. A
              Conductor window (kind conductor) is only alarmed: the owner talks to it. An auth or server error waits
              stranded_after_s, a rate limit waits for the reset its message names, or limit_wait_s when it names none
              (RATE_LIMIT_FIX_STRANDED_WINDOWS; 200 such records in transcripts, 10-2026).
@@ -43,7 +44,7 @@ import seat_restart as SR
 import session_match as SM
 
 DEFAULTS = {
-    "enabled": False, "confirm_n": 2, "blind_alarm_n": 5, "stranded_after_s": 300, "limit_wait_s": 5 * 3600, "rescues_per_day": 2, "probe_timeout_s": 30,
+    "enabled": False, "confirm_n": 2, "blind_alarm_n": 5, "stranded_after_s": 300, "limit_wait_s": 5 * 3600, "rescue_wait_s": 2 * 3600, "rescues_per_day": 2, "probe_timeout_s": 30,
     "auto_switch": False, "switch_verify_s": 900, "usage_stale_s": 3600, "account_cmd": "claude-account",
     "hold_file": None, "usage_latest": None, "armed_file": None, "machine_file": None}
 SCRUB_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", "CLAUDE_CODE_OAUTH_TOKEN",
@@ -200,19 +201,21 @@ def _stranded_step(cfg, sch, L, windows, now, act, iso):
         seat = w["seat"]
         r = res.get(seat) or {}
         if r.get("day") != day:                       # a new day resets the count, never the answered error
-            r = dict({"for": r["for"]} if "for" in r else {}, day=day, n=0)
-        if r.get("for") == w["at"]:                   # this error was answered: the restart path reports its own end
+            r = dict(r, day=day, n=0)
+        answered = r.get("for") == w["at"]
+        if answered and now - r.get("at", now) < cfg["rescue_wait_s"]:     # the restart path has its time to end this
             continue
-        if w["conductor"] or w["start"] is None or r["n"] >= cfg["rescues_per_day"]:
+        if answered or w["conductor"] or w["start"] is None or r["n"] >= cfg["rescues_per_day"]:
             act(do="alarm", kind="login:stranded:" + seat, seat=seat, note=True, conductor_log=True,
                 why="%s's window has sat on %s since %s although the way is clear%s" % (
                     seat, w.get("error", "an API error"), iso(w["at"]), "" if w["conductor"] else
+                    "; the restart requested for this error did not clear it" if answered else
                     "; its session file gives no birth record to restart it by" if w["start"] is None else
                     "; %d automatic restarts today did not clear it" % r["n"]),
                 raise_first="%s window needs a look: type anything in it or restart it." % seat)
             continue
         r["n"] += 1
-        r["for"] = w["at"]
+        r["for"], r["at"] = w["at"], now
         res[seat] = r
         act(do="login_rescue", seat=seat, note=True, request=rescue_request(w, now),
             why="%s's window has sat on %s since %s and the way is clear: fresh window requested" % (

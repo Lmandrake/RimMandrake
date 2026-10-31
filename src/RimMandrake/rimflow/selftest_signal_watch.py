@@ -60,8 +60,17 @@ def test_untouchable_alarms_after_standing():
     assert acts == []
     acts, st = run([u], st=st, now=T0 + H)
     assert acts[0]["kind"] == "timer:" + u and acts[0]["conductor_log"] and "no safe" in acts[0]["why"]
-    _, st = run([], st=st, now=T0 + 2 * H)
-    assert st["signals"]["units"] == {}, "a unit that left is forgotten"
+    _, st = run([], st=st, now=T0 + DAY)
+    assert st["signals"]["units"] == {}, "a unit that left is forgotten when its day ends"
+
+
+def test_recovery_keeps_the_limit():
+    u = "rm-x.service"
+    st, kinds = {}, []
+    for i in range(12):                     # fail, repair, recover, fail again: the unit flaps inside one day
+        acts, st = run([u] if i % 2 == 0 else [], ["rm-x.timer"], st=st, now=T0 + i * 900)
+        kinds += [a["do"] for a in acts]
+    assert kinds.count("unit_repair") == 2 and "alarm" in kinds, kinds
 
 
 def test_give_back_and_repair():

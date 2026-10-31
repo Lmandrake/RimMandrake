@@ -86,6 +86,10 @@ def main():
     check(cli._choose(wo, "FOUNDRY", Args(), {"now": ctx["now"]}, None)["item"] is not None, "control: a proposed owner item")
     check(cli._choose(wo, "FOUNDRY", Args(), {"now": ctx["now"], "mode": "afk"}, None)["item"] is None,
           "afk suppresses a proposed owner item as it does a ranked one")
+    head = cli._choose(wo, "FOUNDRY", Args(), {"now": ctx["now"]}, None)["item"]
+    head.reconciles = [{"verdict": "complete", "shas": ["abc1234"]}]
+    ch = cli._choose(wo, "FOUNDRY", Args(), {"now": ctx["now"]}, None)
+    check(ch["item"] is None and [a.item.id for a in ch["skipped"]] == [head.id], "a proposed item reconciled complete is not offered")
     ch = cli._choose(world(game), "FOUNDRY", Args(), {"now": ctx["now"]}, None)
     check(ch["item"] is not None, "control: without focus a game-dev item IS offered")
 
