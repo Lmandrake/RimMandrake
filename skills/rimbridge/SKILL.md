@@ -117,9 +117,10 @@ with a paste-the-token step that silently uses last launch's value.
 * Port **5174**, stable. Token **changes every launch**.
 * Protocol **GABP** (`gabp/1`); `session/hello` first or *"Session not established."*
 * Tool names use **slashes** — `rimworld/get_game_info`. Dotted MCP spelling is rejected.
-* **547 tools on a `--gm` build**, read 2026-10-29 from `tools/list`: `jawa/` (411), `rimworld/` (110),
-  `rimbridge/` (18), `deepfire/` (8). 49 `jawa/` tools sit behind `JAWA_GM_TOOLS`, so a build without
-  `--gm` has 498. This number moves: recount with `python src/RimMandrake/Utils/rimbridge_client.py --list-tools`. The
+* **547 tools on a `--gm` build**: the total is a live `tools/list` read of 2026-10-29. The split is from
+  source and the RBS README, 2026-10-31: `jawa/` (411), `rimworld/` (110), `rimbridge/` (18), `deepfire/` (8).
+  49 `jawa/` tools sit behind `JAWA_GM_TOOLS`, so a build without `--gm` should have 498 (arithmetic,
+  never read live). This number moves: recount with `python src/RimMandrake/Utils/rimbridge_client.py --list-tools`. The
   `[JawaBench] ready: N tools` log line counts the companion only (419 here), not the bridge.
 
 **Drive it as a library, never through `--json` on the command line.** Debug
