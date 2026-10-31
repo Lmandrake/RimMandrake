@@ -195,8 +195,30 @@ def default_judge(arm, clone, spec, head, *, logdir):
         rec = json.loads(j.stdout.strip().splitlines()[-1])
     except (ValueError, IndexError):
         raise RunRefused("judge printed no record for %s (rc %s): %s" % (tid, j.returncode, j.stderr[-400:]))
-    return {"verdict": rec.get("verdict"), "judge_id": rec.get("judge_id"), "gate": gate.name,
-            "gate_verdict": json.loads(gate.read_text()).get("verdict")}
+    g = json.loads(gate.read_text())
+    out = {"verdict": rec.get("verdict"), "judge_id": rec.get("judge_id"), "gate": gate.name,
+           "gate_verdict": g.get("verdict")}
+    why = unmeasured_result(g, rec)
+    if why:
+        raise RunRefused("task %s: %s: not recorded, the runner stops (logs in %s)" % (tid, why, logdir))
+    return out
+
+
+def unmeasured_result(gate, rec):
+    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS (fail loud): a gate whose every step is UNMEASURED, or a gate or judge verdict
+    `invalid` (UNMEASURED never passes and is no arm's fault), measured nothing about the arm. -> why, or None.
+    The runner then logs ERROR and stops instead of recording it and moving to the next task."""
+    steps = gate.get("steps") if isinstance(gate.get("steps"), dict) else {}
+    st = [(v.get("status") if isinstance(v, dict) else v) for v in steps.values()]
+    if st and all(x == "UNMEASURED" for x in st):
+        return "gate all-UNMEASURED (%d steps)" % len(st)
+    if gate.get("verdict") == "invalid":
+        bad = sorted(k for k, v in steps.items() if (v.get("status") if isinstance(v, dict) else v) in
+                     ("UNMEASURED", "INVALID"))
+        return "gate verdict invalid (%s)" % (", ".join(bad) or gate.get("why") or "no steps")
+    if rec.get("verdict") == "invalid":
+        return "judge verdict invalid"
+    return None
 
 
 # ------------------------------------------------------------------------------------------------ the run

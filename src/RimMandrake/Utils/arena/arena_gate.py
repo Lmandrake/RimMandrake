@@ -300,6 +300,17 @@ def _token_dirs(p: dict) -> list[Path]:
     return out
 
 
+def gate_work_root() -> Path:
+    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS: the checkouts (two full clones, a 7.7 GB tree each) live on ext4:
+    $ARENA_GATE_WORK, else <clone root>/judge/gate_work (/home/mandrake/rm/arena/judge: arena_judge's own work root,
+    a HARNESS_DIRS dir masked from every arm). Never the arena data root on /mnt/d (drvfs), where the head checkout
+    alone took 379 s against git()'s 120 s and every step came back UNMEASURED."""
+    env = os.environ.get("ARENA_GATE_WORK", "").strip()
+    if env:
+        return Path(env)
+    return Path(os.environ.get("ARENA_CLONES", "/home/mandrake/rm/arena")) / "judge" / "gate_work"
+
+
 def _data_root() -> str | None:
     try:
         import rmpaths
@@ -525,7 +536,7 @@ class Gate:
         self.run_id = run_id or "gate-%s-%s" % (task.get("id"), self.stamp)
         tag = "%s_%s_%s_%s" % (arm, task.get("id"), head[:12], self.stamp)
         self.logdir = p["root"] / "judge" / "gate" / tag
-        self.work = Path(workdir) if workdir else p["root"] / "judge" / "gate_work" / tag
+        self.work = Path(workdir) if workdir else gate_work_root() / tag
         self.clone = self.work / "co"
         self.base_clone = self.work / "base"
         self.hdir = self.work / "h"          # runner source (read-only in the sandbox)

@@ -352,6 +352,45 @@ def t_judge_home(tmp):
     check("pin_data_root()" in Path(RR.__file__).read_text(), "main pins RM_DATA_ROOT")
 
 
+def t_fail_loud(tmp):
+    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS: an all-UNMEASURED or invalid gate, or an invalid judge, stops the runner
+    loudly; a measured pass/fail goes through; the gate's checkouts are on ext4, not the /mnt/d data root."""
+    U = {"status": "UNMEASURED"}
+    check(RR.unmeasured_result({"verdict": "invalid", "steps": {"a": U, "b": U}}, {"verdict": "fail"}),
+          "all-UNMEASURED gate refuses")
+    check(RR.unmeasured_result({"verdict": "invalid", "steps": {"a": U, "b": {"status": "PASS"}}}, {}),
+          "an invalid gate refuses")
+    check(RR.unmeasured_result({"verdict": "pass", "steps": {"a": {"status": "PASS"}}}, {"verdict": "invalid"}),
+          "an invalid judge refuses")
+    for v in ("pass", "fail"):
+        check(RR.unmeasured_result({"verdict": v, "steps": {"a": {"status": v.upper()}, "b": {"status": "NA"}}},
+                                   {"verdict": v}) is None, "a measured %s goes through" % v)
+    import arena_gate as G
+    saved = os.environ.pop("ARENA_GATE_WORK", None)
+    try:
+        r = str(G.gate_work_root())
+        check(not r.startswith("/mnt/") and RR._fs_type(os.path.realpath(r.rsplit("/judge", 1)[0])) not in
+              ("9p", "drvfs", "v9fs", "virtiofs"), "gate work root is not on a Windows mount: %s" % r)
+    finally:
+        if saved is not None:
+            os.environ["ARENA_GATE_WORK"] = saved
+    seen = []
+
+    class P:
+        def __init__(self, out):
+            self.returncode, self.stdout, self.stderr = 0, out, ""
+    outs = [json.dumps({"verdict": "invalid", "steps": {"a": U}}), json.dumps({"verdict": "invalid"})]
+    real_run = RR.subprocess.run
+    RR.subprocess.run = lambda argv, **k: seen.append(1) or P(outs[len(seen) - 1])
+    try:
+        RR.default_judge("v3", tmp, {"id": "T", "base_sha": "b"}, "h", logdir=tmp / "jl2")
+        check(False, "an all-UNMEASURED task stops the runner")
+    except RR.RunRefused as e:
+        check("all-UNMEASURED" in str(e), "an all-UNMEASURED task stops the runner: %s" % e)
+    finally:
+        RR.subprocess.run = real_run
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="st_replay_run_"))
     try:
@@ -359,7 +398,7 @@ def main():
                       (t_arms, (tmp,)), (t_wired, ()),
                       (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ()),
                       (t_model_cmd, ()), (t_snapshot_gate, (tmp,)), (t_start_repair, (tmp,)),
-                      (t_tester_tmp, (tmp,)), (t_judge_home, (tmp,))):
+                      (t_tester_tmp, (tmp,)), (t_judge_home, (tmp,)), (t_fail_loud, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001
