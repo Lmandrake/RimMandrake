@@ -2029,8 +2029,47 @@ def _clone_findings(cx: _Ctx, top: Path, rec: dict):
         cx.add(ALL, "%s: object store unreadable (%s): not verified" % (top, e))
 
 
+# The harness's OWN directories at the top of the clone root (ARENA_FREEZE_FIX_HARNESS_DIRS_REFUSED): each has a
+# named writer, and each is exempt from the whitelist ONLY while arm_sandbox's policy hides it from every arm.
+HARNESS_DIRS = {
+    "judge": "arena_judge work dir ($ARENA_JUDGE_WORK default): masked by arm_sandbox.deny_paths",
+    "locks": "arena_replay run locks: masked by arm_sandbox.deny_paths",
+    "sandbox": "arm_sandbox.scratch_dir base: /home is a tmpfs in the sandbox and only the arm's own scratch is bound",
+}
+
+
+def _harness_dir_masked(name: str, full: str) -> str | None:
+    """Why a top-level directory under the clone root is unreachable by any arm, or None (then it is a finding).
+    A HARNESS_DIRS entry counts only when the live sandbox policy agrees: it is in arm_sandbox.deny_paths(), or it
+    is the sandbox scratch base. Any error reading the policy, a root the sandbox does not treat as the arena root
+    (RM_ARENA_ROOT vs ARENA_CLONES), or a name not listed: None (fail closed)."""
+    if name not in HARNESS_DIRS or os.path.islink(full) or not os.path.isdir(full):
+        return None
+    try:
+        import arm_sandbox as SB
+        import arena_replay as R
+        real = os.path.realpath(full)
+        if real in {os.path.realpath(x) for x in SB.deny_paths()}:
+            return HARNESS_DIRS[name]
+        base = os.environ.get("RM_ARM_SANDBOX_SCRATCH") or str(R.arena_root() / "sandbox")
+        if name == "sandbox" and real == os.path.realpath(base) and "sandbox" in SB.ARENA_KEEP \
+                and any(_inside(Path(real), Path(c)) for c in SB.CONTAINERS):
+            return HARNESS_DIRS[name]
+    except Exception:                    # noqa: BLE001 - the policy could not be read: not exempt
+        return None
+    return None
+
+
+def _is_empty_dir(full: str) -> bool:
+    try:
+        return not os.listdir(full)
+    except OSError:                      # unreadable: not known empty, so it stays a finding
+        return False
+
+
 def _clone_root_findings(cx: _Ctx, root: Path):
-    """Every entry under the clone root must be a registered clone or a directory leading to one."""
+    """Every entry under the clone root must be a registered clone, a directory leading to one, a harness directory
+    the arm sandbox masks (HARNESS_DIRS, top level only), or an empty directory whose name is token-scanned."""
     reg = {k: v for k, v in clone_registry(cx.p).items()}
     rr = os.path.realpath(root)
     live = {k: v for k, v in reg.items() if k.startswith(rr.rstrip("/") + "/") and os.path.isdir(k)}
@@ -2052,6 +2091,10 @@ def _clone_root_findings(cx: _Ctx, root: Path):
                 _clone_findings(cx, Path(full), live[full])
             elif full in anc:
                 keep.append(n)
+            elif dirpath == rr and _harness_dir_masked(n, full):
+                pass                     # the harness's own dir, hidden from every arm by the sandbox: not walked
+            elif _is_empty_dir(full):
+                cx.scan_bytes(n.encode("utf-8", "surrogateescape"), cx.strict, "directory name " + full)
             else:
                 cx.add(ALL, "%s: unregistered directory under the clone root (not built by build_arm_clone): "
                             "unverified" % full)

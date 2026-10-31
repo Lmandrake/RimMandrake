@@ -619,6 +619,62 @@ def t_links(tmp, pool):
     shutil.rmtree(c2)
 
 
+def t_harness_dirs(tmp, pool):
+    """ARENA_FREEZE_FIX_HARNESS_DIRS_REFUSED (forced): the harness's own dirs at the top of the clone root (judge
+    work, replay locks, sandbox scratch) - each holding a hidden check - do not refuse the freeze while the arm
+    sandbox masks them; an unlisted dir, a link, a nested copy, or a sandbox that does not treat this root as the
+    arena root still refuses every task. An empty dir is no finding unless its name carries a hidden token."""
+    p = fresh_arena(tmp, "arena_harness")
+    A.write_pool(pool, p)
+    clones = Path(os.environ["ARENA_CLONES"])
+    saved = {k: os.environ.get(k) for k in ("RM_ARENA_ROOT", "RM_ARM_SANDBOX_SCRATCH")}
+    os.environ["RM_ARENA_ROOT"] = str(clones)
+    os.environ.pop("RM_ARM_SANDBOX_SCRATCH", None)
+    hidden = json.loads(sorted(p["judge"].glob("*.json"))[0].read_text())
+    leak = "hint " + NEWT + " " + hidden["fix_sha"]
+    try:
+        for d in ("judge/J0001", "locks", "sandbox/arm-1234/builder"):
+            (clones / d).mkdir(parents=True)
+            (clones / d / "f.txt").write_text(leak)
+        (clones / "probe_left_over").mkdir()
+        every = lambda: [x for x in A.find_leaks(p) if x.startswith("[*]")]
+        check(every() == [], "masked harness dirs and an empty dir are no finding: %s" % every()[:2])
+        r = A.freeze(p, now="2026-11-10T00:00:00Z")
+        check(r["frozen_new"] == 4, "freeze proceeds with the harness dirs present: %s" % r)
+        (clones / "probe_left_over" / "x").write_text("x")
+        check(any("probe_left_over" in x for x in every()), "a non-empty unlisted dir is still unverified")
+        shutil.rmtree(clones / "probe_left_over")
+        (clones / hidden["fix_sha"][:12]).mkdir()
+        check(any(hidden["fix_sha"][:12] in x for x in A.find_leaks(p)), "an empty dir NAMED by a hidden sha is caught")
+        (clones / hidden["fix_sha"][:12]).rmdir()
+        (clones / "sub" / "locks").mkdir(parents=True)
+        (clones / "sub" / "locks" / "f.txt").write_text(leak)
+        check(any("sub" in x for x in every()), "a harness NAME below the top level buys nothing")
+        shutil.rmtree(clones / "sub")
+        os.environ["RM_ARENA_ROOT"] = str(tmp / "elsewhere")
+        lk = every()
+        check(any("/judge" in x for x in lk) and any("/locks" in x for x in lk) and any("/sandbox" in x for x in lk),
+              "a sandbox whose arena root is elsewhere masks nothing here: all three refuse: %s" % lk[:3])
+        os.environ["RM_ARENA_ROOT"] = str(clones)
+        os.environ["RM_ARM_SANDBOX_SCRATCH"] = str(tmp / "scratch_elsewhere")
+        check(any("/sandbox" in x for x in every()), "sandbox/ that is not the scratch base refuses")
+        os.environ.pop("RM_ARM_SANDBOX_SCRATCH", None)
+        shutil.move(str(clones / "locks"), str(tmp / "locks_real"))
+        os.symlink(str(tmp / "locks_real"), clones / "locks")
+        check(any("/locks" in x for x in every()), "a harness dir that is a link is flagged")
+        os.unlink(clones / "locks")
+        shutil.move(str(tmp / "locks_real"), str(clones / "locks"))
+        check(every() == [], "restored: clean again")
+        why = A.HARNESS_DIRS.pop("locks")
+        try:
+            check(any("/locks" in x for x in every()), "mutation: without the HARNESS_DIRS entry locks/ refuses")
+        finally:
+            A.HARNESS_DIRS["locks"] = why
+    finally:
+        for k, v in saved.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+
+
 def t_auth(tmp, pool):
     """(3)/(c)/(i)/(6) the freeze authority, the read-once loader, pool agreement, strict JSON."""
     p = fresh_arena(tmp, "arena_auth")
@@ -1497,6 +1553,7 @@ def main():
         t_match()
         t_clone(tmp, pool, s)
         t_links(tmp, pool)
+        t_harness_dirs(tmp, pool)
         t_auth(tmp, pool)
         t_auth2(tmp, pool)
         t_lock(tmp, pool)
