@@ -932,6 +932,8 @@ def cmd_next(args, seat):
         _print_skipped(skipped)
         return 0
     if ch["kind"] == "claimable":
+        print("(game %s, bridge %s)%s" % (w.game, w.bridge_holder or "free",
+                                          "  [peek: recorded game state, not measured]" if peek else ""))
         _offer_claimable(ch["claimable"], seat, held, bridge_free=not w.bridge_holder)
         _print_frontier(w, seat)
         _print_skipped(skipped)
@@ -2771,10 +2773,13 @@ def _bridge_take_locked(args, seat, evs, w):
                    model.shared_bridge_path()))
         if alive and args.force:
             ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
-    if seat != "OWNER":         # a seat `_emit` will refuse must not touch, let alone force, the driver lock first
-        refusal = model._who_refusal(ev, None)
-        if refusal:
-            die(refusal)
+    # an event `_emit` will refuse must not touch, let alone force, the driver lock first
+    probe = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
+    _stamp_role_unit(probe)
+    try:
+        model.check(probe, _replay_now())
+    except model.LedgerError as e:
+        die(str(e))
     dl = _archmagi_lock_path()
     if dl:
         got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(),

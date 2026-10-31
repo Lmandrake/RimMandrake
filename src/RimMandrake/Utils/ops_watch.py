@@ -628,7 +628,12 @@ def last_line(path, chunk=1 << 22):
 def disk_mounts():
     env = os.environ.get("RM_OPS_DISKS")
     if env:
-        return dict(kv.split("=", 1) for kv in env.split(","))
+        # each entry on its own: a bad one reads as its own UNMEASURED disk (mount None), never the whole family lost
+        out = {}
+        for i, kv in enumerate(env.split(",")):
+            name, sep, mnt = kv.strip().partition("=")
+            out[name if re.fullmatch(r"\w+", name) else "bad%d" % i] = mnt if sep and mnt else None
+        return out
     return {"root": "/", "c": "/mnt/c", "d": "/mnt/d"}
 
 
@@ -636,6 +641,8 @@ def c_disk(now, rules, ctx):
     out = {}
     for name, mnt in disk_mounts().items():
         try:
+            if mnt is None:
+                raise OSError("bad RM_OPS_DISKS entry (want name=mount)")
             if mnt.startswith("/mnt/") and not os.path.ismount(mnt):
                 raise OSError("not a mount point (the drive is not mounted; df would read the parent volume)")
             du = shutil.disk_usage(mnt)
@@ -645,8 +652,8 @@ def c_disk(now, rules, ctx):
                                              total_gb=round(du.total / 1e9, 1))
             out["disk.%s_used_gb" % name] = M(round(du.used / 1e9, 1), "GB used on %s" % mnt)
         except OSError as e:
-            out["disk.%s_free_gb" % name] = U("%s: %s" % (mnt, e))
-            out["disk.%s_used_gb" % name] = U("%s: %s" % (mnt, e))
+            out["disk.%s_free_gb" % name] = U("%s: %s" % (mnt or name, e))
+            out["disk.%s_used_gb" % name] = U("%s: %s" % (mnt or name, e))
     p = scratch_runs_path()
     try:
         r = json.loads(last_line(p) or "null")
@@ -802,11 +809,15 @@ def c_tps(now, rules, ctx):
         why = "no fresh TPS session (coverage %s): the game is not running or the recorder is off" % s.get("coverage")
         return {k: U(why) for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")}
     rm = s.get("ratioMedian")
-    out["tps.ratio_median"] = M(rm, "tick ratio to target, median", speed=s.get("speed"), run=s.get("run")) \
-        if rm is not None else U("fresh session but no run window (paused or stalled the whole time)")
+    if rm is None:
+        out["tps.ratio_median"] = U("fresh session but no run window (paused or stalled the whole time)")
+    elif is_num(rm):
+        out["tps.ratio_median"] = M(rm, "tick ratio to target, median", speed=s.get("speed"), run=s.get("run"))
+    else:
+        out["tps.ratio_median"] = U("tps_record gave a ratio that is not a number: %r" % (rm,))
     out["tps.stalls"] = M(s.get("stalls"), "stalls in the window", samples=s.get("samples")) \
-        if s.get("stalls") is not None else U("tps_record gave no stall count")
-    out["tps.stall_max_s"] = M(s.get("stallMaxS"), "longest stall s") if s.get("stallMaxS") is not None else \
+        if is_num(s.get("stalls")) else U("tps_record gave no stall count")
+    out["tps.stall_max_s"] = M(s.get("stallMaxS"), "longest stall s") if is_num(s.get("stallMaxS")) else \
         M(0.0, "longest stall s", why="no stall in the window") if s.get("stalls") == 0 else U("tps_record gave no stall length")
     return out
 
@@ -1267,9 +1278,11 @@ def target_state(points, rules):
 # Filing writes alarms.json first, on purpose: a name saved before the filing is what stops a repeat. On a full state
 # disk that write raises, no alarm files, and the pass dies with the unit failed. DISK_LOW fires at 210 GB, well before.
 def alarm_conf(rules):
-    a = dict(rules["alarm"])
-    a["clone"] = os.environ.get("RM_OPS_ALARM_CLONE", a["clone"])
-    a["parent"] = os.environ.get("RM_OPS_ALARM_PARENT", a["parent"])
+    # a missing setting costs filing only: the filer's raise leaves each alarm PENDING with the error on its entry
+    a = rules.get("alarm")
+    a = dict(a) if isinstance(a, dict) else {}
+    a["clone"] = os.environ.get("RM_OPS_ALARM_CLONE", a.get("clone"))
+    a["parent"] = os.environ.get("RM_OPS_ALARM_PARENT", a.get("parent"))
     return a
 
 
@@ -1803,6 +1816,10 @@ def run(now=None, rules=None, filer=None, families=None):
         alarms = _obj(read_json(ops_dir() / "alarms.json"))
         flags.append({"rule": "bad_rule", "key": "alarms", "value": None, "window": "now",
                       "detail": "NO ALARM RAN this pass: %s: %s" % (type(e).__name__, str(e)[:160])})
+    _conf = alarm_conf(rules)
+    if not (_conf.get("clone") and _conf.get("parent")):
+        flags.append({"rule": "bad_rule", "key": "rules.alarm", "value": None, "window": "now",
+                      "detail": "NO ALARM CAN BE FILED: the rules name no alarm.clone or alarm.parent"})
     flags += [{"rule": "alarm_state", "key": aid, "value": None, "window": "now", "detail": a.get("error") or "unreadable"}
               for aid, a in sorted(alarms.items()) if isinstance(a, dict) and a.get("state") == "UNREADABLE"]
     old = _obj(read_json(ops_dir() / "flags.json")).get("flags")

@@ -15,6 +15,7 @@ import json
 import os
 import re
 import subprocess
+import types
 import sys
 import tempfile
 import time
@@ -1150,7 +1151,7 @@ _rx = copy.deepcopy(RULES)
 del _rx["alarm"]
 OW.run(now=NOW + 60, rules=_rx, families={"v3"})
 _dg = (OW.ops_dir() / "digest.md").read_text(encoding="utf-8")
-check("run: a missing alarm section is said aloud, and the digest goes out", "NO ALARM RAN" in _dg, _dg[:300])
+check("run: a missing alarm section is said aloud, and the digest goes out", "NO ALARM CAN BE FILED" in _dg, _dg[:300])
 _aj = OW.atomic_json
 def _full(path, obj):
     if str(path).endswith("last_measured.json"):
@@ -1253,6 +1254,43 @@ _ap2.write_text(json.dumps({"DISK_LOW:disk.root_free_gb": {"state": "OPEN", "ite
 _st = OW.run_alarms({"disk.root_free_gb": OW.M(500.0, "GB")}, _rc, NOW, set(), None)
 check("alarm: an infinite clear_passes falls back to 4, the alarm neither crashes nor clears at once",
       _st.get("DISK_LOW:disk.root_free_gb", {}).get("clear_seen") == 1, _st)
+for _i in (2, 3):
+    _st = OW.run_alarms({"disk.root_free_gb": OW.M(500.0, "GB")}, _rc, NOW + _i, set(), lambda t, c: {})
+check("alarm: the fallback holds the alarm through three clear readings",
+      _st.get("DISK_LOW:disk.root_free_gb", {}).get("clear_seen") == 3, _st)
+_st = OW.run_alarms({"disk.root_free_gb": OW.M(500.0, "GB")}, _rc, NOW + 4, set(), lambda t, c: {})
+check("alarm: the fallback clears on the fourth", "DISK_LOW:disk.root_free_gb" not in _st, _st)
+os.environ["RM_OPS_DISKS"] = "root=%s,d,=x,e=" % TMP
+_d = OW.c_disk(NOW, RULES, {})
+check("disk: a bad entry is its own UNMEASURED disk, the good one still reads",
+      _d["disk.root_free_gb"].get("m") == "MEASURED" and _d["disk.d_free_gb"].get("m") == "UNMEASURED"
+      and _d["disk.bad2_free_gb"].get("m") == "UNMEASURED" and _d["disk.e_used_gb"].get("m") == "UNMEASURED", _d)
+os.environ["RM_OPS_DISKS"] = "root=%s" % TMP
+_saved = {k: os.environ.pop(k, None) for k in ("RM_OPS_ALARM_CLONE", "RM_OPS_ALARM_PARENT")}
+for _rc in ({k: v for k, v in RULES.items() if k != "alarm"},
+            dict(RULES, alarm={k: v for k, v in RULES["alarm"].items() if k not in ("clone", "parent")})):
+    _ap2.write_text("{}", encoding="utf-8")
+    _st = OW.run_alarms({"disk.root_free_gb": OW.M(0.0, "GB")}, _rc, NOW, set(), OW.real_filer)
+    _e = _st.get("DISK_LOW:disk.root_free_gb", {})
+    check("alarm: no filing settings cost filing only: PENDING with the error on it",
+          _e.get("state") == "PENDING" and "filer raised" in str(_e.get("error")), _st)
+for _k, _v in _saved.items():
+    if _v is not None:
+        os.environ[_k] = _v
+_run = OW.subprocess.run
+def _tps(ratio, stalls, smax):
+    OW.subprocess.run = lambda *a, **k: types.SimpleNamespace(returncode=0, stdout=json.dumps({"summary": {
+        "coverage": "FRESH", "ratioMedian": ratio, "stalls": stalls, "stallMaxS": smax}}), stderr="")
+    try:
+        return OW.c_tps(NOW, RULES, {})
+    finally:
+        OW.subprocess.run = _run
+_t = _tps("fast", "2", "x")
+check("tps: text from the recorder is UNMEASURED in all three readings",
+      all(_t[k].get("m") == "UNMEASURED" for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")), _t)
+_t = _tps(0.9, 2, 1.5)
+check("tps: numbers still read MEASURED",
+      all(_t[k].get("m") == "MEASURED" for k in ("tps.ratio_median", "tps.stalls", "tps.stall_max_s")), _t)
 sys.path.insert(0, str(Path(OW.__file__).parent / "testq"))
 import schema as _schema  # noqa: E402
 check("steve: the outcome words are the schema's", tuple(OW.OUTCOMES) == tuple(_schema.OUTCOMES), _schema.OUTCOMES)

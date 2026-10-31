@@ -208,6 +208,7 @@ def t_a_proposed_bridge_item_says_how_to_take_it_too():
        "--needs", "bridge")
     out = ok("next", "--seat", "CHECK", seat="CHECK")
     assert "nothing is CLAIMED" in out and "rimflow bridge take" in out, out
+    assert "(game UP, bridge free)" in out, out
 
 
 def t_a_proposed_partial_item_goes_the_ranked_way():
@@ -502,6 +503,14 @@ def t_a_refused_bridge_take_leaves_the_driver_lock_alone():
     assert not os.path.exists(dl), "a seat the ledger refuses wrote the driver lock"
     ok("bridge", "take", "--for", "x", env=env("CHECK", RIMFLOW_DRIVER_LOCK=dl))
     assert os.path.exists(dl), "the probe is blind: a good take wrote no lock at this path"
+
+
+def t_a_bad_role_unit_refuses_a_bridge_take_before_the_driver_lock():
+    fresh()
+    dl = os.path.join(_tmp(), "driver.lock")
+    refused(("bridge", "take", "--force", "--for", "x"), "RM_ROLE_UNIT", "garbled take", seat="CHECK",
+            env_=env("CHECK", RIMFLOW_DRIVER_LOCK=dl, RM_ROLE_UNIT="bad unit!"))
+    assert not os.path.exists(dl), "a take the writer refuses wrote the driver lock"
 
 
 def _ledger_paths():
