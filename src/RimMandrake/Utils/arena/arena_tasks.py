@@ -1097,7 +1097,7 @@ def run_vet(jobs, repo: Path, workdir: Path, cache: Path, workers: int = 4, time
     import shutil
     import tempfile
     import time
-    from concurrent.futures import ThreadPoolExecutor
+    from concurrent.futures import ThreadPoolExecutor, as_completed
     if timeout is None:
         import arena_judge as J
         timeout = J.CHECK_TIMEOUT
@@ -1126,7 +1126,10 @@ def run_vet(jobs, repo: Path, workdir: Path, cache: Path, workers: int = 4, time
 
     try:
         with ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
-            for job, recs, err in ex.map(one, todo):
+            # as each task finishes, not in submission order: one slow task (two CHECK_TIMEOUTs) must not hold every
+            # later finished task's records unwritten until an outer kill loses them all
+            for fut in as_completed([ex.submit(one, j) for j in todo]):
+                job, recs, err = fut.result()
                 if recs is None:
                     out["left"] += len(job["checks"])
                     if err != "budget":
