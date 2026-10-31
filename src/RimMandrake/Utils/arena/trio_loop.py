@@ -212,9 +212,9 @@ def cmd_gate_t(task, base, head, phase, *, root, log):
         return {"verdict": "invalid", "steps": {}, "why": "gate printed no JSON record (rc %s)" % r.returncode}
 
 
-def precheck_t(root, log):
+def precheck_t(root, log, base=None):
     rc, out = RA.precheck_run(root, log, ARM)          # sandboxed: the clone's selftests are builder-written code
-    return RA.baseline_verdict(rc, out, log)
+    return RA.baseline_verdict(rc, out, log, root=root, base=base)   # baseline pinned from the base commit
 
 
 def default_critic():
@@ -278,7 +278,7 @@ class TrioLoop(RA.Loop):
         if kw.get("gate") is None:
             kw["gate"] = lambda t, b, h, ph, log: cmd_gate_t(t, b, h, ph, root=self.root, log=log)
         if kw.get("precheck") is None:
-            kw["precheck"] = lambda log: precheck_t(self.root, log)
+            kw["precheck"] = lambda log: precheck_t(self.root, log, base=self.pre_base)
         if kw.get("tester_tmp") is None:
             kw["tester_tmp"] = str(critic_base())
         inner = model

@@ -552,33 +552,82 @@ def precheck_run(root, log, arm):
 SANDBOX_RED_RE = re.compile(r"^\[\d+/\d+\]\s+(?:FAIL|CRASH)\s+\S+\s+(\S+)\s*$", re.M)
 
 
-def baseline_verdict(rc, out, log):
+def _tree_of(root, rev):
+    r = git_run(root, "rev-parse", "--verify", "-q", "%s^{tree}" % rev, capture_output=True, text=True, timeout=60)
+    return r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else None
+
+
+def _clean(root):
+    r = git_run(root, "status", "--porcelain", "--untracked-files=all", capture_output=True, text=True, timeout=300)
+    return r.returncode == 0 and not r.stdout.strip()
+
+
+def base_export_run(root, base, log):
+    """The quick pre-check on the BASE commit's tree, not the clone: a harness-side export of `base` (export_tree:
+    object by object, verified) beside the log, given a fresh harness-made .git (`--template=`: no hooks, no config
+    from the clone) so git-using selftests see a repo, then run sandboxed exactly like the clone's run. -> (rc, out)."""
+    d = Path(log).parent / "base_export"
+    export_tree(root, base, d)
+    if os.path.lexists(d / ".git"):     # a crafted tree can hold .git/config (fsmonitor, hooksPath): never git there
+        raise Refused("refused: base %s's tree carries a top-level .git" % base)
+    for a in (["init", "-q", "--template=", "-b", MAIN], ["add", "-A", "-f"],
+              ["commit", "-q", "--no-verify", "-m", "base export %s" % base]):
+        r = subprocess.run(["git", "-C", str(d), "-c", "user.name=harness", "-c", "user.email=harness@local",
+                            "-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false"] + a, env=SG.safe_env(), capture_output=True, text=True,
+                           timeout=600)
+        if r.returncode != 0:
+            raise Refused("base export git %s failed: %s" % (a[0], r.stderr.strip()[:300]))
+    return precheck_run(d, str(log) + ".base", ARM)
+
+
+def baseline_verdict(rc, out, log, *, root=None, base=None, base_run=None):
     """-> (green, note) for a SANDBOXED quick pre-check. The repo's suite was written for the host: some selftests
     are red in the arm sandbox whatever the clone holds (the game dirs, the bench clone, nested bwrap are masked).
-    The first red run of a loop (its ctl/log dir) records those tests as the environment baseline
-    (log-dir/sandbox_red.json, harness-side, outside every arm bind) and is green, LOUDLY; later runs are green when
-    nothing beyond the baseline is red. A refused sandbox or a run with no RESULT line is red. Delete the file to
-    rebaseline (e.g. after the owner's main adds a host-only test)."""
+    Those reds are accepted only when the BASE commit (merge-base of main and wip: owner or harness-published code,
+    never the builder's unpublished try) is red on the same tests (item ARENA_PRECHECK_HARDEN_BASELINE_FIRST_RED: a
+    loop's first red run used to be taken as the baseline, so a try that broke tests before it got them accepted).
+    The baseline is keyed by base TREE (log-dir/sandbox_red.<tree>.json, harness-side, outside every arm bind): when
+    the clone is clean at base's tree the run itself is that tree's baseline; otherwise base is exported and run
+    (base_run, default base_export_run). Main advancing = a new tree = a fresh baseline: nothing to delete. The old
+    unkeyed sandbox_red.json is never read. A refused sandbox, a run with no RESULT line, no base, or a base that
+    cannot be run is red."""
     v = precheck_verdict(rc, out)
     if v[0] or rc is None or not RESULT_RE.findall(out or ""):
         return v
     red = set(SANDBOX_RED_RE.findall(out or ""))
     if not red:
         return v
-    b = Path(log).parent / "sandbox_red.json"
+    if root is None or not base:
+        return False, "%s; no base commit to pin a sandbox baseline from (%d red)" % (v[1], len(red))
+    tree = _tree_of(root, base)
+    if not tree:
+        return False, "%s; base %s has no tree in the clone" % (v[1], base)
+    b = Path(log).parent / ("sandbox_red.%s.json" % tree)
+    how = "cached"
     if not b.exists():
-        b.write_text(json.dumps({"red": sorted(red), "at": time.strftime("%Y-%m-%dT%H:%M:%S")}, indent=1) + "\n")
-        return True, ("quick pre-check: %d selftests red in the arm sandbox, recorded as its environment baseline "
-                      "(%s); later pre-checks fail on anything beyond it" % (len(red), b))
+        if _tree_of(root, "HEAD") == tree and _clean(root):
+            base_red, how = red, "this run (clone clean at base's tree)"
+        else:
+            try:
+                brc, bout = (base_run or base_export_run)(root, base, log)
+            except Refused as e:
+                return False, "%s; base %s could not be run for a baseline: %s" % (v[1], base[:12], e)
+            if brc is None or not RESULT_RE.findall(bout or ""):
+                return False, "%s; the base %s pre-check gave no RESULT (rc %s): no baseline" % (v[1], base[:12], brc)
+            base_red, how = set(SANDBOX_RED_RE.findall(bout or "")), "export of base %s" % base[:12]
+        b.write_text(json.dumps({"red": sorted(base_red), "base": base, "tree": tree, "how": how,
+                                 "at": time.strftime("%Y-%m-%dT%H:%M:%S")}, indent=1) + "\n")
     new = sorted(red - set(json.loads(b.read_text()).get("red") or ()))
     if new:
-        return False, "pre-check red in the arm sandbox beyond its baseline (%s): %s" % (b, ", ".join(new[:8]))
-    return True, "quick pre-check only: green but for %d sandbox-environment reds (%s)" % (len(red), b)
+        return False, "pre-check red in the arm sandbox beyond base %s's baseline (%s): %s" % (
+            base[:12], b, ", ".join(new[:8]))
+    return True, ("quick pre-check only: green but for %d sandbox-environment reds that base %s also has "
+                  "(baseline %s, %s)" % (len(red), base[:12], b, how))
 
 
-def default_precheck(root, log):
+def default_precheck(root, log, base=None):
     rc, out = precheck_run(root, log, ARM)
-    return baseline_verdict(rc, out, log)
+    return baseline_verdict(rc, out, log, root=root, base=base)
 
 
 def default_sync(root, sleep=time.sleep, tries=3, pin=None, report=None):
@@ -794,7 +843,8 @@ class Loop:
         self.gate = gate or (lambda t, b, h, ph, log: cmd_gate(t, b, h, ph, root=self.root, log=log))
         self.lane = lane
         self.runway = runway or default_runway
-        self.precheck = precheck or (lambda log: default_precheck(self.root, log))
+        self.pre_base = None                                      # the pass's base: its pre-check baseline pins here
+        self.precheck = precheck or (lambda log: default_precheck(self.root, log, base=self.pre_base))
         self.release = release or (lambda: default_release(self.root))
         bad = clone_relative_cmd(self.root, shlex.split(publish_cmd)) if publish_cmd else ""
         if bad:      # item ARENA_SANDBOX_HARDEN_HARNESS_RUNS_ARM_CODE: the builder can rewrite any file of its clone
@@ -978,6 +1028,7 @@ class Loop:
         self._sync_wip(task)
         base = self.git("merge-base", MAIN, "HEAD")      # main, not wip: an unpublished try stays in the diff
         n = self.state["n"]
+        self.pre_base = base
         pre = self.precheck(self.log / ("pre.%d" % n))
         green, pre_note = pre if isinstance(pre, tuple) else (bool(pre), "pre-check %s" % ("green" if pre else "red"))
         if not green and not (self.ctl / "last_failure.md").exists():

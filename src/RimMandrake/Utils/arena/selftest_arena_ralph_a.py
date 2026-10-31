@@ -1611,6 +1611,111 @@ def t_quick(tmp):
     check(rc4 != 0, "--quick with --only is refused")
 
 
+def _red_out(*names):
+    return "".join("[%d/9] FAIL 0.1s %s\n" % (i + 1, n) for i, n in enumerate(names)) + "RESULT: RED (x)\n"
+
+
+def t_baseline_pinned(tmp):
+    """Item ARENA_PRECHECK_HARDEN_BASELINE_FIRST_RED: a sandbox red is accepted only when the BASE commit is red on
+    the same test; a builder's try that broke a test before the loop's first pre-check is never baselined."""
+    c = tmp / "bl_clone"
+    (c / "src").mkdir(parents=True)
+    (c / "src/a.py").write_text("a = 1\n")
+    g = ["git", "-C", str(c), "-c", "user.name=t", "-c", "user.email=t@t"]
+    subprocess.run(["git", "init", "-q", "-b", "main", str(c)], check=True)
+    subprocess.run(g + ["add", "-A"], check=True)
+    subprocess.run(g + ["commit", "-q", "-m", "base"], check=True)
+    base = subprocess.run(g + ["rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    tree = subprocess.run(g + ["rev-parse", "HEAD^{tree}"], capture_output=True, text=True).stdout.strip()
+    logd = tmp / "bl_log"
+    logd.mkdir()
+    log = logd / "pre.0"
+    calls = []
+
+    def base_run(red):
+        def f(root, b, lg):
+            calls.append(b)
+            return 1, _red_out(*red)
+        return f
+    # stale unkeyed baseline from the old code that holds the builder's break: never read
+    (logd / "sandbox_red.json").write_text(json.dumps({"red": ["selftest_env.py", "selftest_broken.py"]}))
+    (c / "src/a.py").write_text("a = 2  # the builder's unpublished try\n")
+    subprocess.run(g + ["commit", "-q", "-am", "try"], check=True)
+    v = R.baseline_verdict(1, _red_out("selftest_env.py", "selftest_broken.py"), log, root=c, base=base,
+                           base_run=base_run(["selftest_env.py"]))
+    check(v[0] is False and "selftest_broken.py" in v[1] and "selftest_env.py" not in v[1].split(":")[-1]
+          and calls == [base],
+          "BL1 the loop's FIRST red pre-check on a try that broke a test is RED (the base is run for the baseline, "
+          "the stale unkeyed file ignored): %s" % (v,))
+    bf = logd / ("sandbox_red.%s.json" % tree)
+    check(bf.exists() and json.loads(bf.read_text())["red"] == ["selftest_env.py"],
+          "BL1 the baseline is keyed by the base tree and holds only the base's reds")
+    v = R.baseline_verdict(1, _red_out("selftest_env.py"), log, root=c, base=base,
+                           base_run=base_run(["selftest_never.py"]))
+    check(v[0] is True and len(calls) == 1 and "base" in v[1],
+          "BL2 a red the base also has is green, LOUDLY, from the cached baseline (no second base run): %s" % (v,))
+    # a clean clone AT the base tree: the run itself is the baseline (no export)
+    c2 = tmp / "bl_clone2"
+    subprocess.run(["git", "clone", "-q", str(c), str(c2)], check=True)
+    subprocess.run(["git", "-C", str(c2), "checkout", "-q", base], check=True)
+    log2 = tmp / "bl_log2" / "pre.0"
+    log2.parent.mkdir()
+    v = R.baseline_verdict(1, _red_out("selftest_env.py"), log2, root=c2, base=base, base_run=base_run(["x"]))
+    check(v[0] is True and len(calls) == 1 and "this run" in v[1],
+          "BL3 a clean clone at base's tree baselines from its own run, no export: %s" % (v,))
+    # the same tree but DIRTY: the run is not the base's, so the base is run
+    (c2 / "src/a.py").write_text("a = 3  # uncommitted\n")
+    log3 = tmp / "bl_log3" / "pre.0"
+    log3.parent.mkdir()
+    v = R.baseline_verdict(1, _red_out("selftest_env.py", "selftest_broken.py"), log3, root=c2, base=base,
+                           base_run=base_run(["selftest_env.py"]))
+    check(v[0] is False and len(calls) == 2 and "selftest_broken.py" in v[1],
+          "BL4 a dirty clone at base's tree runs the base for its baseline: %s" % (v,))
+
+    def refused(root, b, lg):
+        raise R.Refused("planted")
+    log4 = tmp / "bl_log4" / "pre.0"
+    log4.parent.mkdir()
+    for name, kw in (("no base", dict(root=c, base=None)), ("no root", dict(root=None, base=base)),
+                     ("refused base run", dict(root=c, base=base, base_run=refused)),
+                     ("base run without RESULT", dict(root=c, base=base, base_run=lambda r, b, lg: (0, "nothing"))),
+                     ("unknown base", dict(root=c, base="0" * 40))):
+        v = R.baseline_verdict(1, _red_out("selftest_env.py"), log4, **kw)
+        check(v[0] is False, "BL5 %s: a sandbox red cannot be baselined, it is red: %s" % (name, v))
+    check(not list(log4.parent.glob("sandbox_red*")), "BL5 nothing was recorded as a baseline")
+    check(R.baseline_verdict(0, "RESULT: GREEN (x)\n", log4) == (True, "pre-check green")
+          and R.baseline_verdict(None, "", log4, root=c, base=base)[0] is False,
+          "BL6 a green run needs no base; a refused sandbox is red")
+    import ralph_c_loop as RC
+    import trio_loop as TL
+    check("pre_base" in R.Loop.build_pass.__code__.co_names
+          and all("base" in f.__code__.co_varnames for f in (R.default_precheck, RC.precheck_c, TL.precheck_t)),
+          "BL8 the build pass hands its base to the pre-check (ralph_a, ralph_c, trio)")
+    # the real export path: base's tree exported beside the log with a harness-made .git, run sandboxed
+    if shutil.which("bwrap"):
+        e = tmp / "bl_exp"
+        (e / "src/RimMandrake/Utils").mkdir(parents=True)
+        (e / "src/RimMandrake/Utils/run_selftests.py").write_text(
+            "import os, subprocess\n"
+            "ok = subprocess.run(['git', 'rev-parse', 'HEAD'], capture_output=True).returncode == 0\n"
+            "print('[1/1] FAIL 0.1s selftest_base_env.py')\n"
+            "print('GIT_OK' if ok else 'GIT_MISSING'); print('RESULT: RED (x)')\n")
+        ge = ["git", "-C", str(e), "-c", "user.name=t", "-c", "user.email=t@t"]
+        subprocess.run(["git", "init", "-q", "-b", "main", str(e)], check=True)
+        subprocess.run(ge + ["add", "-A"], check=True)
+        subprocess.run(ge + ["commit", "-q", "-m", "base"], check=True)
+        eb = subprocess.run(ge + ["rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+        (e / "src/RimMandrake/Utils/run_selftests.py").write_text("print('RESULT: RED (try)')\n")
+        subprocess.run(ge + ["commit", "-q", "-am", "try"], check=True)
+        log5 = tmp / "bl_log5" / "pre.0"
+        log5.parent.mkdir()
+        v = R.baseline_verdict(1, _red_out("selftest_base_env.py", "selftest_broken.py"), log5, root=e, base=eb)
+        blog = Path(str(log5) + ".base")
+        check(v[0] is False and "selftest_broken.py" in v[1] and blog.exists() and "GIT_OK" in blog.read_text(),
+              "BL7 the real base export runs base's run_selftests (sandboxed, in a harness-made repo), not the "
+              "try's: %s / %s" % (v, blog.read_text()[-300:] if blog.exists() else "no base log"))
+
+
 def t_bridge_mine(tmp):
     cli = HERE.parents[1] / "rimflow" / "cli.py"
     os.makedirs(tmp / "rf" / "items")
@@ -1758,7 +1863,7 @@ def main():
             else:
                 mod = variant(old, new)
             check(not guarded(fn, tmp, mod, "_m%d" % i), "mutation goes RED: " + name)
-        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)),
+        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)), (t_baseline_pinned, (tmp,)),
                       (t_bridge_mine, (tmp,)), (t_signed_writer, (tmp,))):
             try:
                 fn(*a)

@@ -301,9 +301,9 @@ def cmd_gate_c(task, base, head, phase, *, root, log):
         return {"verdict": "invalid", "steps": {}, "why": "gate printed no JSON record (rc %s)" % r.returncode}
 
 
-def precheck_c(root, log):
+def precheck_c(root, log, base=None):
     rc, out = RA.precheck_run(root, log, ARM)          # sandboxed: the clone's selftests are builder-written code
-    return RA.baseline_verdict(rc, out, log)
+    return RA.baseline_verdict(rc, out, log, root=root, base=base)   # baseline pinned from the base commit
 
 
 # ------------------------------------------------------------------------------------------------ the builder loop
@@ -318,7 +318,7 @@ class LoopC(RA.Loop):
         if kw.get("gate") is None:
             kw["gate"] = lambda t, b, h, ph, log: cmd_gate_c(t, b, h, ph, root=self.root, log=log)
         if kw.get("precheck") is None:
-            kw["precheck"] = lambda log: precheck_c(self.root, log)
+            kw["precheck"] = lambda log: precheck_c(self.root, log, base=self.pre_base)
         super().__init__(root, ctl, [], model=lambda role, prompt, **k: inner(
             role, self.build_prompt(prompt) if role == "build" else prompt, **k), **kw)
         inner_gate = self.gate
