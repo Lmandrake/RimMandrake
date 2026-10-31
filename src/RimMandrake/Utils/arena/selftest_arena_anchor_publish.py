@@ -6,6 +6,7 @@ REAL signed logs (arena_eventlog.HarnessWriter, temp token, file witness) and a 
 arena_analysis run and arena_spend) read the arms TRUSTED; a second tick with nothing new writes no note; growth is
 reported as anchor_lag/STALE_ANCHORS until the next tick; a truncated or tampered log is REFUSED (never re-anchored)
 and reads UNMEASURED; a witness that lags the log is not published; --final fails on any unanchored replay arm.
+An era bump (arena_eventlog.new_era): the @era token is published, then era-1 anchors only (`era=1 ...`).
 Mutants: an arm skipped by the publisher, the stale report removed, the refusal guard removed -> each caught.
 Never touches the real token, ledger, clone or units.
 
@@ -203,6 +204,57 @@ def run():
               len(anchor_notes(led)) == nb, r8["note"])
         rc, r9 = tick(d / "nowhere" / "events.jsonl")
         check("missing ledger -> ERROR exit 2, never publishes blind", rc == 2 and "ERROR" in r9, r9)
+
+        # 9 era bump: the publisher puts the @era token on the ledger, then publishes era-1 anchors only
+        rc, r10 = tick(led, "--final")
+        check("era: era 0 fully published before the bump", rc == 0 and not r10["final_problems"], r10)
+        ext, _ = P.read_external(led)
+        bump = L.new_era(p, "selftest relaunch", ext)
+        _, cov = P.arms_to_cover(p, None)
+        real_wit = L.witness_read(p, L._read_token(p))
+        mk = [w for w in real_wit.get("eras", []) if w.get("sig") == bump["marker"]]
+        pw = P.plan(p, L._read_token(p), ext, cov, wit=dict(real_wit, status="degraded"))
+        po = P.plan(p, L._read_token(p), ext, cov, wit=real_wit)
+        check("era: witness HOLDS the marker but status is not ok -> the @era token is NOT published (fail closed); "
+              "the same witness with status ok does publish it",
+              mk and real_wit.get("status") == "ok" and not pw["era_tokens"]
+              and any("not in the witness" in w for w in pw["era_why"]) and len(po["era_tokens"]) == 1,
+              (len(mk), pw["era_why"], po["era_tokens"]))
+        nb = len(anchor_notes(led))
+        rc, r11 = tick(led, "--final")
+        n11 = anchor_notes(led)[nb:]
+        check("era: next tick publishes the @era:1 token; --final still 3 (replay arms have no era-1 log yet)",
+              len(n11) == 1 and " @era:1:%s:" % bump["marker"] in n11[0] and rc == 3
+              and r11["arms"]["v3"]["action"] == "nolog" and not any(s.startswith("era") for s in r11["final_problems"]),
+              (rc, r11.get("final_problems"), n11))
+        _, tr11 = AA.verified_logs(None, led)
+        check("era: analysis log_trust shows era 1, published + witnessed, era 0 archived (trio 5, v3 6)",
+              (tr11.get("era") or {}).get("era") == 1 and tr11["era"]["published"] and tr11["era"]["witnessed"]
+              and tr11["era"]["archived"] == {0: {"trio": 5, "v3": 6}} and not tr11["era"]["problems"], tr11.get("era"))
+        w2 = L.HarnessWriter(p)
+        for arm in ("trio", "v3"):
+            for i in range(2):
+                w2.emit(arm, "assign", lane="build", run_id="%s.e1.%d" % (arm, i), task="T%03d" % i,
+                        ts="2026-11-02T%02d:00:00Z" % i)
+        nb = len(anchor_notes(led))
+        rc, r12 = tick(led, "--final")
+        n12 = anchor_notes(led)[nb:]
+        logs12, tr12 = AA.verified_logs(None, led)
+        check("era: fresh era-1 logs published as `era=1 trio:2 v3:2`, --final 0, analysis reads both TRUSTED",
+              rc == 0 and len(n12) == 1 and n12[0].startswith("ARENA_ANCHOR era=1 ") and " trio:2:" in n12[0]
+              and " v3:2:" in n12[0] and tr12.get("trusted_arms") == ["trio", "v3"] and len(logs12["v3"]["recs"]) == 2,
+              (rc, r12.get("final_problems"), n12, tr12.get("trusted_arms")))
+        arc = Path(bump["archive"]) / "v3.jsonl"
+        keep = arc.read_bytes()
+        arc.unlink()
+        rc, r13 = tick(led, "--final")
+        check("era: closed-era archive deleted after publication -> --final fails with an `era proof:` problem",
+              rc != 0 and any(s.startswith("era proof:") for s in r13.get("final_problems") or ()),
+              (rc, r13.get("final_problems")))
+        arc.write_bytes(keep)
+        rc, r14 = tick(led, "--final")
+        check("era: archive restored -> --final 0 again", rc == 0 and not r14["final_problems"],
+              (rc, r14.get("final_problems")))
 
         # 8 units
         u = P.units(Path("/home/mandrake/rm/anchor"), 10, "/mnt/d/x/publisher.log")

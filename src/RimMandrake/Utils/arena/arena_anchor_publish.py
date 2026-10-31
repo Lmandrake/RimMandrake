@@ -23,7 +23,9 @@ publishes the arm's head `arm:n:head:lsig` (arena_eventlog.make_anchor) only whe
   - the witness (journald) is readable and its newest anchor for the arm is the log's accepted count (a log
     mid-write, or one whose tail was cut, waits for the next tick);
   - n grew past the newest anchor already in the ledger (IDEMPOTENT: nothing grew, no note, no commit).
-The `@roster` token rides along whenever anything is published or the roster grew.
+The `@roster` token rides along whenever anything is published or the roster grew. Everything is per ERA
+(arena_eventlog.new_era): only the current era's anchors are compared and published (note body `era=k ...`), and a
+witnessed era marker not yet on the ledger rides along as `@era:k:<marker sig>:lsig` (--final flags it until it is).
 
 WHERE IT PUBLISHES (the sound route). The note is written by `rimflow note --seat FOUNDRY` and pushed with
 ./publish from a DEDICATED clone (default /home/mandrake/rm/anchor, sparse: infrastructure/state + rimflow +
@@ -102,9 +104,14 @@ def plan(p: dict, token: str, external: dict | None, cover: list[str], wit: dict
          local: dict | None = None) -> dict:
     """-> {"arms": {arm: {"n", "published", "witness", "action", "why"}}, "anchors": [anchor to publish],
     "roster": roster anchor or None}. action: publish | current | skip | refused | nolog."""
-    ext = L.verify_ledger_anchors(external or {}, token)
+    cur = L.current_era(p, token)
+    E = cur["era"]                        # only the current era's anchors apply to the live logs (and are published)
+    ext_all = L.verify_ledger_anchors(external or {}, token)
+    ext = L._by_era({k: v for k, v in ext_all.items() if k != L.ERA_TOKEN}, E)
     wit = wit if wit is not None else L.witness_read(p, token)
-    local = local if local is not None else L.read_anchors(p, token)["by_arm"]
+    wit_an = L._by_era(wit.get("anchors", {}), E)
+    local_all = local if local is not None else L.read_anchors(p, token)["by_arm"]
+    local = L._by_era(local_all, E)
     out, anchors = {}, []
     for arm in cover:
         f = L.arm_file(p, arm)
@@ -114,9 +121,9 @@ def plan(p: dict, token: str, external: dict | None, cover: list[str], wit: dict
         if not f.exists():
             out[arm] = dict(row, n=0, action="nolog", why="no event log yet")
             continue
-        v = L.verify(p, arm, token)
+        v = L.verify(p, arm, token, cur)
         acc = v["accepted"]
-        wan = _usable(wit.get("anchors", {}).get(arm))
+        wan = _usable(wit_an.get(arm))
         wn = max((a["n"] for a in wan), default=0)
         row.update(n=len(acc), witness=wn, rejected=len(v["rejected"]), undecodable=v.get("undecodable", 0))
         viol = L.check_anchors(acc, pub + wan + _usable(local.get(arm)))
@@ -133,22 +140,41 @@ def plan(p: dict, token: str, external: dict | None, cover: list[str], wit: dict
         elif len(acc) == pub_n:
             out[arm] = dict(row, action="current", why="ledger already anchors n=%d" % pub_n)
         else:
-            anchors.append(L.make_anchor(arm, acc, token))
+            anchors.append(L.make_anchor(arm, acc, token, era=E))
             out[arm] = dict(row, action="publish", why="n %d -> %d" % (pub_n, len(acc)))
-    ra = L.roster_anchor(p, token)
+    ra = L.roster_anchor(p, token, E)
     pub_r = max((a["n"] for a in _usable(ext.get("@roster"))), default=-1)
     roster = ra if (anchors or ra["n"] > pub_r) and ra["n"] > 0 else None
-    return {"arms": out, "anchors": anchors, "roster": roster}
+    era_toks, era_why = [], []          # every marker (not only the newest) must be on the ledger
+    if cur["bad"]:
+        era_why.append("era chain has %d bad line(s): no era token is published" % len(cur["bad"]))
+    for m in ([] if cur["bad"] else cur["markers"]):
+        k = m["era"]
+        if any(t["n"] == k and t["head"] == m["sig"] for t in _usable(ext_all.get(L.ERA_TOKEN))):
+            continue
+        if not (wit.get("status") == "ok" and any(w.get("era") == k and w.get("sig") == m["sig"]
+                                                  for w in wit.get("eras", []))):
+            era_why.append("era %d marker is not in the witness (%s): not published" % (k, wit.get("status")))
+        else:
+            era_toks.append(L.era_token(token, m))
+            era_why.append("publish era %d marker" % k)
+    # the full era proof (closed-era archives vs their anchors, beyond-era evidence ...): --final fails on any of it
+    st = L.era_status(p, token, cur, wit, ext_all, {"by_arm": local_all})
+    return {"arms": out, "anchors": anchors, "roster": roster, "era": E, "era_tokens": era_toks, "era_why": era_why,
+            "era_problems": [x for x in st["problems"] if "not published to the ledger" not in x]}
 
 
 def note_text(pl: dict) -> str | None:
-    heads = list(pl["anchors"]) + ([pl["roster"]] if pl.get("roster") else [])
+    heads = list(pl["anchors"]) + ([pl["roster"]] if pl.get("roster") else []) + \
+        list(pl.get("era_tokens") or [])
     return L.anchor_note_text(heads) if heads else None
 
 
 def final_problems(pl: dict, required: list[str]) -> list[str]:
     """Close-out check after publishing: every required arm with a log is anchored to its tip in the ledger."""
     bad = []
+    bad += ["era: %s" % w for w in pl.get("era_why") or ()]     # a marker not (yet) on the ledger, or a bad chain
+    bad += ["era proof: %s" % w for w in pl.get("era_problems") or ()]
     for arm in required:
         r = pl["arms"].get(arm)
         if r is None:
@@ -224,7 +250,7 @@ def note_clone(clone: Path, text: str, item: str) -> dict:
     if rc:
         raise PublishError("rimflow note (anchor clone) exit %d: %s" % (rc, out.strip()[-300:]))
     sha = _publish(clone, "ledger: ARENA_ANCHOR note (%s)" % ", ".join(
-        t.split(":", 2)[0] + ":" + t.split(":", 2)[1] for t in text.split()[1:]))
+        t.split(":", 2)[0] + ":" + t.split(":", 2)[1] for t in text.split()[1:] if ":" in t))
     return {"route": "anchor clone", "clone": str(clone), "published": sha}
 
 
@@ -244,6 +270,17 @@ def tick(p: dict, *, ledger: Path | None, clone: Path, item: str, dry: bool, req
     if ext is None:
         raise PublishError("ledger %s unreadable (%s): refusing to publish blind" % (led, trust.get("status")))
     req, cover = arms_to_cover(p, required)
+    if not dry:                           # a genuine signed marker the witness lost (new_era's readback failed) is
+        ef = L.eras_path(p)               # re-sent, like PassCapability.close re-sends anchors: append-only, safe;
+        if ef.exists():                   # under the era lock (shared) so a marker new_era may still roll back is
+            with open(ef, "a+", encoding="utf-8") as efh:      # never witnessed
+                fcntl.flock(efh, fcntl.LOCK_SH)
+                wit = L.witness_read(p, token)
+                if wit.get("status") == "ok":
+                    have = {(w.get("era"), w.get("sig")) for w in wit.get("eras", [])}
+                    for m in L.current_era(p, token)["markers"]:
+                        if (m["era"], m["sig"]) not in have:
+                            L.witness_append(p, dict(m, kind="era"))
     pl = plan(p, token, ext, cover)
     res.update(required=req, arms=pl["arms"])
     text = note_text(pl)

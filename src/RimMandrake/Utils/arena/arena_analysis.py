@@ -525,6 +525,10 @@ def verified_logs(raw_dir=None, ledger=None, allow_untrusted=False, p=None):
         "untrusted log"))
     trust = dict(trust, source="signed event logs", allow_untrusted=allow_untrusted, untrusted_arms=untrusted,
                  trusted_arms=sorted(k for k, v in strict.items() if "unmeasured" not in v))
+    era = (rep.get("_trust") or {}).get("era")
+    if era is not None:              # the era bump (arena_eventlog.new_era) is visible and verified in every report
+        trust["era"] = {k: era.get(k) for k in ("era", "marker", "ts", "reason", "witnessed", "published",
+                                                 "archived", "problems")}
     lag = anchor_lag(rep)
     if lag:
         trust["anchor_lag"] = lag

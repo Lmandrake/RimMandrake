@@ -732,6 +732,223 @@ def t_r3_b3_roster(tmp):
           "R3-B3 a middle/first roster line removed: chain break listed, untrusted")
 
 
+def _note(p):
+    return {"event": "note", "tsn": 1, "text": L.anchor_note_command(p).split("--text '")[1].rstrip("'")}
+
+
+def _era_store(tmp, name):
+    """era 0 with arms a (3) and b (2), published to a stand-in ledger; -> p, w, tok, ledger events."""
+    p, w = fresh(tmp, name)
+    tok = L.token_path(p).read_text().strip()
+    _mk(w, "a", 3)
+    _mk(w, "b", 2)
+    return p, w, tok, [_note(p)]
+
+
+def t_era_fresh(tmp):
+    p, w, tok, led = _era_store(tmp, "era1")
+    old_a = L.arm_file(p, "a").read_text()
+    check(raises(L.Rejected, L.new_era, p, "", L.ledger_anchors(led)) and
+          raises(L.Rejected, L.new_era, p, "relaunch", None) and L.arm_file(p, "a").exists(),
+          "ERA-0 new_era refuses without a reason or without the ledger; nothing moved")
+    res = L.new_era(p, "fresh roster for the relaunch", L.ledger_anchors(led))
+    arc = L.archive_dir(p, 0)
+    check(res["era"] == 1 and res["witnessed"] and not L.arm_file(p, "a").exists() and not L.arm_file(p, "b").exists()
+          and (arc / "a.jsonl").read_text() == old_a and (arc / "b.jsonl").is_file(),
+          "ERA-1 bump: logs MOVED (byte-identical) to archive/era0, marker witnessed (%s)" % res)
+    r = L.report(p, external=L.ledger_anchors(led))
+    check(not r["_trust"]["trusted"] and any("not published" in x for x in r["_trust"]["era_problems"]),
+          "ERA-1 an era marker not yet on the ledger: untrusted until published (%s)" % r["_trust"]["era_problems"])
+    check(raises(L.Rejected, w.emit, "a", "judge", lane="l", run_id="r", task="X", verdict="accept",
+                 ts="2026-10-21T01:00:00Z") is not None,
+          "ERA-1 a writer opened before the bump cannot sign into the new era")
+    w2 = L.HarnessWriter(p)
+    acc = _mk(w2, "a", 2)
+    led.append(_note(p))
+    check("era=1 " in led[-1]["text"] and "@era:1:" in led[-1]["text"], "ERA-1 era-1 note: `era=1` prefix + @era token")
+    ext = L.ledger_anchors(led)
+    r = L.report(p, external=ext)
+    e = r["_trust"]["era"]
+    check(r["a"]["trusted"] and r["a"]["accepted"] == 2 and r["_trust"]["trusted"] and "b" not in r
+          and e["era"] == 1 and e["published"] and e["witnessed"] and not e["problems"]
+          and e["archived"] == {0: {"a": 3, "b": 2}} and e["reason"] == "fresh roster for the relaunch",
+          "ERA-1 fresh-era log ACCEPTED: a n=2 trusted, b not carried over, era block shows the verified bump (%s)"
+          % {k: e[k] for k in ("era", "published", "witnessed", "archived", "problems")})
+    old_led = [a for a in ext.get("a", []) if L.era_of(a) == 0]
+    old_loc = [a for a in L.read_anchors(p, tok)["by_arm"]["a"] if L.era_of(a) == 0]
+    check(max(a["n"] for a in old_led) == 3 and max(a["n"] for a in old_loc) == 3
+          and r["a"]["external_anchored_upto"] == 2,
+          "ERA-2 old-era anchors still PRESENT (ledger + local n=3) but IGNORED for the era-1 log (anchored upto %s)"
+          % r["a"]["external_anchored_upto"])
+    check(not L.verify_lines(old_a.splitlines(), tok, "a", L.current_era(p, tok)["genesis"])["accepted"],
+          "ERA-2 an era-0 log replayed into era 1 verifies NOTHING (each era chains from its marker)")
+    # same-era deleted tail: still refused
+    _mk(w2, "a", 2)
+    led.append(_note(p))
+    ext = L.ledger_anchors(led)
+    fa = L.arm_file(p, "a")
+    keep = fa.read_text()
+    fa.write_text("".join(l + "\n" for l in keep.splitlines()[:2]))
+    _trim_anchors(p, lambda a: not (a["arm"] == "a" and L.era_of(a) == 1 and a["n"] > 2))
+    r = L.report(p, external=ext)
+    check(r["a"].get("refused") and not r["_trust"]["trusted"],
+          "ERA-3 same-era deleted tail (4 -> 2, local anchors trimmed) still REFUSED (%s)" % r["a"].get("refused"))
+    fa.write_text(keep)
+    # an archived (closed-era) log cut or deleted: flagged, everything untrusted
+    fb = arc / "b.jsonl"
+    kb = fb.read_text()
+    fb.write_text(kb.splitlines()[0] + "\n")
+    r = L.report(p, external=ext)
+    check(not r["_trust"]["trusted"] and not r["a"]["trusted"] and any("era 0 archive b" in x for x in r["_trust"]["era_problems"]),
+          "ERA-4 a closed era's archived log cut: era problem, all arms untrusted (%s)" % r["_trust"]["era_problems"][:2])
+    fb.unlink()
+    r = L.report(p, external=ext)
+    check(not r["_trust"]["trusted"] and any("ARCHIVE" in x for x in r["_trust"]["era_problems"]),
+          "ERA-5 era bump WITHOUT the archived old log (deleted): flagged, untrusted")
+    fb.write_text(kb)
+    check(L.report(p, external=ext)["_trust"]["trusted"], "ERA-5 control: archive restored -> trusted again")
+    # forged marker with another token
+    ef = L.eras_path(p)
+    real = ef.read_text()
+    m = dict(L.current_era(p, tok)["marker"])
+    forged = {k: v for k, v in m.items() if k != "sig"}
+    forged.update(era=2, prev=m["sig"], reason="forged", closes={"era": 1, "arms": {}, "roster": {"n": 0, "head": L.GENESIS}})
+    forged["sig"] = L._era_sign("f" * 64, forged)
+    ef.write_text(real + json.dumps(forged) + "\n")
+    r = L.report(p, external=ext)
+    check(not r["_trust"]["trusted"] and r["_trust"]["era"]["era"] == 1
+          and any("era chain" in x for x in r["_trust"]["era_problems"]),
+          "ERA-6 forged era marker (wrong token): not applied (era stays 1), flagged, untrusted")
+    check(raises(L.Rejected, L.new_era, p, "x", ext) is not None, "ERA-6 new_era refuses on a bad era chain")
+    # rolling the era back (marker file truncated, logs put back) is seen by witness + ledger
+    ef.write_text("")
+    r = L.report(p, external=ext)
+    check(not r["_trust"]["trusted"] and any("era file truncated" in x for x in r["_trust"]["era_problems"]),
+          "ERA-7 era marker removed: witness + ledger still hold era 1 -> flagged, untrusted")
+    wf = Path(os.environ["ARENA_WITNESS"])
+    wkeep = wf.read_text()
+    wf.write_text("".join(l + "\n" for l in wkeep.splitlines() if '"kind": "era"' not in l))
+    r = L.report(p, external={k: v for k, v in ext.items() if k != L.ERA_TOKEN})
+    check(not r["_trust"]["trusted"] and any("era chain was cut back" in x for x in r["_trust"]["era_problems"]),
+          "ERA-7 marker removed AND its witness/ledger tokens gone: era-1 anchors still prove the cut-back (%s)"
+          % r["_trust"]["era_problems"][:1])
+    wf.write_text(wkeep)
+    ef.write_text(real)
+    # a signed but malformed marker is `bad` (never a crash); a deeply nested line too
+    m2 = {"ts": L.now_ts(), "era": 2, "prev": m["sig"], "reason": "x", "archive": "archive/era1",
+          "closes": {"era": 1, "arms": [1], "roster": {"n": 0, "head": L.GENESIS}}}
+    m2["sig"] = L._era_sign(tok, m2)
+    for junk in (json.dumps(m2), "[" * 100000 + "]" * 100000):
+        ef.write_text(real + junk + "\n")
+        try:
+            r = L.report(p, external=ext)
+            ok = r["_trust"]["era"]["era"] == 1 and not r["_trust"]["trusted"]
+        except Exception as e:          # noqa: BLE001
+            ok, r = False, e
+        check(ok, "ERA-6 signed-malformed / deeply nested marker line: bad, untrusted, no crash (%s)" % type(r).__name__)
+    ef.write_text(real)
+    check(L.report(p, external=ext)["_trust"]["trusted"], "ERA-6 control: era chain restored -> trusted")
+
+
+def t_era_attacks(tmp):
+    # a bump cannot launder a cut tail: the closing era must be fully trusted
+    p, w, tok, led = _era_store(tmp, "era2")
+    fa = L.arm_file(p, "a")
+    fa.write_text("".join(l + "\n" for l in fa.read_text().splitlines()[:1]))
+    _trim_anchors(p, lambda a: not (a["arm"] == "a" and a["n"] > 1))
+    why = raises(L.Rejected, L.new_era, p, "hide it", L.ledger_anchors(led))
+    check(why is not None and fa.exists() and not (L.eras_path(p).exists() and L.eras_path(p).read_text().strip())
+          and not L.archive_dir(p, 0).exists(),
+          "ERA-8 new_era refuses to close an era with a cut tail; nothing moved (%s)" % (why or "")[:120])
+    # unpublished heads (ledger behind the log) also refuse the bump
+    p, w, tok, led = _era_store(tmp, "era3")
+    _mk(w, "a", 1)
+    why = raises(L.Rejected, L.new_era, p, "x", L.ledger_anchors(led))
+    check(why is not None and "untrusted" in why and L.arm_file(p, "a").exists(),
+          "ERA-8 new_era refuses while a head is unpublished (%s)" % (why or "")[:120])
+    # tokenless forgery: move logs to an archive and append a marker signed with another token
+    p, w, tok, led = _era_store(tmp, "era4")
+    d = L.archive_dir(p, 0)
+    d.mkdir(parents=True)
+    for arm in ("a", "b"):
+        os.rename(L.arm_file(p, arm), d / (arm + ".jsonl"))
+    forged = {"ts": L.now_ts(), "era": 1, "prev": L.GENESIS, "reason": "truncate", "archive": "archive/era0",
+              "closes": {"era": 0, "arms": {}, "roster": {"n": 0, "head": L.GENESIS}}}
+    forged["sig"] = L._era_sign("e" * 64, forged)
+    L.eras_path(p).write_text(json.dumps(forged) + "\n")
+    r = L.report(p, external=L.ledger_anchors(led))
+    check(not r["_trust"]["trusted"] and r["_trust"]["era"]["era"] == 0 and r.get("a", {}).get("refused")
+          and r.get("b", {}).get("refused"),
+          "ERA-9 tokenless truncation by claiming a new era: forged marker ignored, rostered arms REFUSED")
+    # an archive move that fails half way rolls back: logs in place, no archive dir, no marker, retry works
+    p, w, tok, led = _era_store(tmp, "era5")
+    real_sha, calls = L._sha256_file, []
+    def bad_sha(f):
+        calls.append(f)
+        return real_sha(f) if len(calls) < 4 else "0" * 64
+    L._sha256_file = bad_sha
+    try:
+        why = raises(L.EventLogError, L.new_era, p, "x", L.ledger_anchors(led))
+    finally:
+        L._sha256_file = real_sha
+    check(why is not None and L.arm_file(p, "a").exists() and L.arm_file(p, "b").exists()
+          and not L.archive_dir(p, 0).exists() and L.current_era(p, tok)["era"] == 0
+          and L.report(p, external=L.ledger_anchors(led))["_trust"]["trusted"],
+          "ERA-10 interrupted archive move rolls back: logs in place, no archive, era 0 still trusted (%s)"
+          % (why or "")[:100])
+    # the marker commit itself failing (ENOSPC at fsync) also rolls back: no marker, logs in place
+    real_fsync, n = L.os.fsync, []
+    def bad_fsync(fd):
+        n.append(fd)
+        if len(n) == 1:
+            raise OSError(28, "No space left on device")
+        return real_fsync(fd)
+    L.os.fsync = bad_fsync
+    try:
+        why = raises(OSError, L.new_era, p, "x", L.ledger_anchors(led))
+    finally:
+        L.os.fsync = real_fsync
+    check(why is not None and L.arm_file(p, "a").exists() and L.arm_file(p, "b").exists()
+          and not L.archive_dir(p, 0).exists() and not L.eras_path(p).read_text().strip()
+          and L.report(p, external=L.ledger_anchors(led))["_trust"]["trusted"],
+          "ERA-10 marker fsync failure rolls back: partial marker dropped, logs in place, era 0 trusted (%s)"
+          % (why or "")[:80])
+    L.os.fsync = lambda fd: (_ for _ in ()).throw(OSError(5, "Input/output error"))   # commit AND rollback fsync fail
+    try:
+        why = raises(OSError, L.new_era, p, "x", L.ledger_anchors(led))
+    finally:
+        L.os.fsync = real_fsync
+    check(why is not None and L.arm_file(p, "a").exists() and L.arm_file(p, "b").exists()
+          and not L.archive_dir(p, 0).exists() and not L.eras_path(p).read_text().strip()
+          and L.report(p, external=L.ledger_anchors(led))["_trust"]["trusted"],
+          "ERA-10 a disk failing during the rollback too still restores every log (%s)" % (why or "")[:80])
+    real_write, wn = L.os.write, []
+    def short_write(fd, b):              # a short marker write, then ENOSPC (other writes pass through)
+        if b'"closes"' not in bytes(b) and not wn:
+            return real_write(fd, b)
+        wn.append(len(b))
+        if len(wn) == 1:
+            return real_write(fd, bytes(b[:10]))
+        raise OSError(28, "No space left on device")
+    L.os.write = short_write
+    try:
+        why = raises(OSError, L.new_era, p, "x", L.ledger_anchors(led))
+    finally:
+        L.os.write = real_write
+    check(why is not None and len(wn) == 2 and L.arm_file(p, "a").exists() and not L.archive_dir(p, 0).exists()
+          and not L.eras_path(p).read_text().strip() and L.report(p, external=L.ledger_anchors(led))["_trust"]["trusted"],
+          "ERA-10 a short marker write then ENOSPC rolls back: no partial marker, logs in place (%s)" % (why or "")[:80])
+    # a marker the witness never reads back is reported witnessed=False (a send is not a witness)
+    real_wa, real_sleep = L.witness_append, L.time.sleep
+    L.witness_append, L.time.sleep = (lambda *a, **k: True), (lambda s: None)
+    try:
+        res = L.new_era(p, "x", L.ledger_anchors(led))
+    finally:
+        L.witness_append, L.time.sleep = real_wa, real_sleep
+    check(res["era"] == 1 and res["witnessed"] is False and "WARNING" in res,
+          "ERA-11 witness readback missing -> witnessed=False + WARNING, never overstated (%s)" % res.get("witnessed"))
+
+
 def t_r3_b4_note_tokens(tmp):
     p, w = fresh(tmp, "r3b4")
     acc = _mk(w, "b", 5)
@@ -1194,7 +1411,7 @@ def main():
                   t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
                   t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg, t_r3_b1_tail, t_r3_b2_forged_note, t_r3_b3_roster,
                   t_r3_b4_note_tokens, t_r3_entrypoint, t_entry_code_shape, t_switch_entry, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
-                  t_r3_analysis, t_r3_cards, t_r4_small, t_gate_runner, t_calib_entry):
+                  t_r3_analysis, t_r3_cards, t_r4_small, t_gate_runner, t_calib_entry, t_era_fresh, t_era_attacks):
             try:
                 t(tmp)
             except Exception as e:          # a crash is a failure of that test, not of the run
