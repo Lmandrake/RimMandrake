@@ -16,7 +16,8 @@ map, fake transcripts and a fake gpt call log all point there).
              is driven once (gate-fail path, no sandbox); fake Claude transcripts under <clones>/<arm> slugs and a fake
              gpt call log go through the real meter (spend_census) via arena_spend.meter(); arena_analysis reads the
              signed logs through ledger anchors and DECIDES (not UNMEASURED); the CLI pair (arena_spend.py ->
-             arena_analysis.py run) agrees.
+             arena_analysis.py run) agrees, untrusted (--allow-untrusted, OVERRIDE reported) and TRUSTED (--ledger
+             with the ARENA_ANCHOR note, no override); missing/unanchored ledger or anchors ignored -> UNMEASURED.
   mutations  no judge recorder -> UNMEASURED; meter sinks dropped -> UNMEASURED; no spend file -> UNMEASURED (exit 3);
              the derived claude_ite alone (raw counts dropped) -> UNMEASURED.
 """
@@ -582,12 +583,13 @@ def t_e2e(tmp):
     trial = r["root"] / "trial.txt"     # the CLI's default list names the real trial; this bank is synthetic
     trial.write_text("\n".join(sorted(r["specs"])) + "\n")
     with contextlib.redirect_stdout(io.StringIO()):
-        rc1 = SP.main(["--out", str(out), "--allow-untrusted", "--projects", str(r["projects"]),
-                       "--clones-root", str(r["clones_root"])])
+        rc1 = SP.main(["--out", str(out), "--allow-untrusted", "--ledger", str(r["root"] / "noledger.jsonl"),
+                       "--projects", str(r["projects"]), "--clones-root", str(r["clones_root"])])
         rc2 = AA.main(["run", "--spend", str(out), "--tasks-dir", str(td), "--allow-untrusted", "--draws", "2000",
+                       "--ledger", str(r["root"] / "noledger.jsonl"),
                        "--era-repo", str(erepo), "--trial-tasks", str(trial), "--out", str(r["root"] / "rep.json")])
         rc3 = AA.main(["run", "--spend", str(r["root"] / "missing.json"), "--tasks-dir", str(td),
-                       "--allow-untrusted", "--draws", "2000", "--trial-tasks", str(trial)])
+                       "--allow-untrusted", "--ledger", str(r["root"] / "noledger.jsonl"), "--draws", "2000", "--trial-tasks", str(trial)])
     rep2 = json.loads((r["root"] / "rep.json").read_text()) if (r["root"] / "rep.json").is_file() else {}
     check(rc1 == 0 and json.loads(out.read_text()).get("schema") == AA.SPEND_SCHEMA, "CLI: arena_spend.py writes the "
           "schema file", rc1)
@@ -598,12 +600,75 @@ def t_e2e(tmp):
           "CLI: the era gate's chronology is computed from base_sha in --era-repo", rep2.get("era_gate"))
     check(rc3 == 3, "mutation: no spend file -> UNMEASURED, exit 3", rc3)
     with contextlib.redirect_stdout(io.StringIO()):
-        rc4 = SP.main(["--out", str(out), "--allow-untrusted", "--projects", str(r["projects"]),
+        rc4 = SP.main(["--out", str(out), "--allow-untrusted", "--ledger", str(r["root"] / "noledger.jsonl"),
+                       "--projects", str(r["projects"]),
                        "--clones-root", str(r["clones_root"]), "--helpers", str(r["root"] / "nohelpers"),
                        "--sandbox-root", str(r["root"] / "nosandbox")])
     d4 = json.loads(out.read_text())
     check(rc4 == 0 and any("not captured" in b for b in d4.get("blocking", ())),
           "CLI --helpers is honoured: an empty capture dir blocks every tester", (rc4, d4.get("blocking", [])[:2]))
+    t_cli_ledger(r, td, erepo, trial)
+
+
+def t_cli_ledger(r, td, erepo, trial):
+    """ARENA_ANALYSIS_WIRE_LEDGER_ANCHORS_TRUST: the CLI pair WITHOUT --allow-untrusted, reading the ARENA_ANCHOR note
+    from a ledger (--ledger), is trusted and DECIDES; a missing / unanchored ledger or ignored anchors -> UNMEASURED;
+    --allow-untrusted with no ledger still decides but log_trust carries the OVERRIDE."""
+    p = r["p"]
+    tok = L._read_token(p)
+    heads = [L.make_anchor(a, L.verify(p, a, tok)["accepted"], tok) for a in ARMS] + [L.roster_anchor(p, tok)]
+    led, led0 = r["root"] / "ledger" / "events.jsonl", r["root"] / "ledger0" / "events.jsonl"
+    for fpath, text in ((led, L.anchor_note_text(heads)), (led0, "no anchors here")):
+        fpath.parent.mkdir(parents=True)
+        fpath.write_text(json.dumps({"seat": "FOUNDRY", "event": "note", "id": "ARENA_SELFTEST", "text": text,
+                                     "ts": "2026-11-01T00:00:00Z"}) + "\n")
+    missing = r["root"] / "noledger" / "events.jsonl"
+    meter = ["--projects", str(r["projects"]), "--clones-root", str(r["clones_root"])]
+    ana = ["--tasks-dir", str(td), "--draws", "2000", "--era-repo", str(erepo), "--trial-tasks", str(trial)]
+    res = {}
+
+    def pair(name, ledger, allow=False, **patch):
+        out = r["root"] / ("spend_%s.json" % name)
+        rep = r["root"] / ("rep_%s.json" % name)
+        flag = ["--allow-untrusted"] if allow else []
+        saved = {k: getattr(AA, k) for k in patch}
+        try:
+            for k, v in patch.items():
+                setattr(AA, k, v)
+            with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):
+                rc1 = SP.main(["--out", str(out), "--ledger", str(ledger)] + flag + meter)
+                rc2 = AA.main(["run", "--spend", str(out), "--ledger", str(ledger), "--out", str(rep)] + flag + ana)
+        finally:
+            for k, v in saved.items():
+                setattr(AA, k, v)
+        res[name] = (rc1, json.loads(out.read_text()) if out.is_file() else {}, rc2,
+                     json.loads(rep.read_text()) if rep.is_file() else {})
+    pair("trusted", led)
+    pair("missing", missing)
+    pair("unanchored", led0)
+    pair("override", missing, allow=True)
+    pair("mut_ignored", led, ledger_external=lambda ledger=None: (None, {"ledger": "mutant"}))
+    rc1, doc, rc2, rep = res["trusted"]
+    check(rc1 == 0 and doc.get("log_trust", {}).get("trusted_arms") == sorted(ARMS)
+          and not doc["log_trust"].get("untrusted_arms") and doc["log_trust"].get("allow_untrusted") is False,
+          "CLI ledger: arena_spend.py --ledger <anchored> (no --allow-untrusted) meters trusted logs, log_trust says so",
+          (rc1, doc.get("log_trust")))
+    check(rc2 == 0 and rep.get("final", {}).get("verdict") == "DECIDE_FOR_trio"
+          and rep.get("log_trust", {}).get("trusted_arms") == sorted(ARMS) and "OVERRIDE" not in rep["log_trust"],
+          "CLI ledger: arena_analysis.py run --ledger <anchored> (no --allow-untrusted) DECIDES on trusted logs",
+          (rc2, rep.get("final"), rep.get("log_trust")))
+    for name in ("missing", "unanchored", "mut_ignored"):
+        rc1, doc, rc2, rep = res[name]
+        check(rc2 == 3 and rep.get("final", {}).get("verdict", "").startswith("UNMEASURED"),
+              "CLI ledger: %s -> analysis UNMEASURED, exit 3 (spend exit %s)"
+              % ({"missing": "missing ledger", "unanchored": "unanchored ledger",
+                  "mut_ignored": "MUTANT anchored ledger but anchors ignored"}[name], rc1),
+              (rc1, rc2, rep.get("final"), rep.get("log_trust")))
+    rc1, doc, rc2, rep = res["override"]
+    check(rc2 == 0 and rep.get("final", {}).get("verdict") == "DECIDE_FOR_trio"
+          and "OVERRIDE" in rep.get("log_trust", {}) and "OVERRIDE" in doc.get("log_trust", {}),
+          "CLI ledger: --allow-untrusted with no ledger decides, and BOTH outputs report the OVERRIDE",
+          (rc1, rc2, rep.get("final"), rep.get("log_trust")))
 
 
 def t_main_wiring(tmp):

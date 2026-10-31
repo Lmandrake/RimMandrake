@@ -7,7 +7,7 @@ design/RimMandrake/architecture_switch_harness_2026-10-29.md section 4.1 (rule),
     python3 src/RimMandrake/Utils/arena/arena_analysis.py run --spend SPEND.json [--hard-cap ISO] [--final]
             [--seed N] [--draws N] [--gpt-to-ite F] [--gpt-est-in-to-ite F] [--gpt-est-out-to-ite F]
             [--claude-ite-scale F] [--claude-model-weight FAMILY=W ...] [--claude-token-weight FIELD=W ...]
-            [--raw-dir DIR] [--allow-untrusted] [--blind SALT] [--out OUT.json]
+            [--raw-dir DIR] [--ledger EVENTS.jsonl] [--allow-untrusted] [--blind SALT] [--out OUT.json]
 
 Prints one JSON report: a verdict per 5-task block and a final verdict, each one of
     DECIDE_FOR_X | FUTILE(X) | TIE(simpler wins) | CONTINUE | DISQUALIFIED(X, reason) | HARD_CAP_PICK(X)
@@ -18,7 +18,11 @@ Exit status: 0 a verdict, 3 UNMEASURED, 4 CUT_SHORT_UNDECIDED (the trial ended b
 WHAT IT READS (only fields some harness code writes, or the section 1.7 schema names):
   - the per-arm event logs. Default: arena_eventlog.report()+verify() (signed, anchored); an arm the report refuses,
     with any rejected/undecodable line, or not `trusted` (no ledger anchor + witness) is UNMEASURED unless
-    --allow-untrusted. --raw-dir reads unsigned <arm>.jsonl files (selftests, dry runs): any unparseable line, a record
+    --allow-untrusted. The ledger anchors (ARENA_ANCHOR notes, published by `arena_eventlog.py anchor-note`) are read
+    from the rimflow ledger by DEFAULT (--ledger names another events.jsonl, its shards beside it); a missing or
+    unreadable ledger gives no anchors, so every arm is untrusted -> UNMEASURED (ARENA_ANALYSIS_WIRE_LEDGER_ANCHORS_TRUST:
+    the CLI used to pass none, so `trusted` was always False). The report's `log_trust` says where the anchors came
+    from and whether --allow-untrusted overrode the tamper check. --raw-dir reads unsigned <arm>.jsonl files (selftests, dry runs): any unparseable line, a record
     missing ts/arm/event or with a zoneless ts makes that arm UNMEASURED.
   - judge events: task, verdict ('accept' | 'reject' | 'invalid'; the LAST by event time counts, as
     arena_eventlog.accepted_tasks), ts, sha. A task is COMPLETED when its last judge verdict is accept or reject.
@@ -446,6 +450,29 @@ def stale_prefix(v):
     return len(rej)
 
 
+def ledger_external(ledger=None):
+    """-> (external, trust), external = arena_eventlog.ledger_anchors() of the rimflow ledger (the anchors that can
+    make an arm `trusted`), or None when the ledger is missing/unreadable (then no arm is trusted: fail closed).
+    `ledger` = path of an events.jsonl (its per-seat shards in events/ beside it are read too); default the
+    production ledger (rimflow.model.read())."""
+    trust = {"ledger": str(ledger) if ledger else "rimflow ledger (default)"}
+    try:
+        sys.path.insert(0, str(HERE.parent.parent))
+        from rimflow import model
+        if ledger:
+            files = model.ledger_files(str(ledger))
+            if not files:
+                return None, dict(trust, status="MISSING: no ledger file at %s" % ledger)
+            events = [e for fn in files for e in model.read(fn)]
+        else:
+            events = model.read()
+    except Exception as e:      # noqa: BLE001  any ledger failure = no anchors, never a crash, never trust
+        return None, dict(trust, status="UNREADABLE: %s: %s" % (type(e).__name__, str(e)[:200]))
+    ext = L.ledger_anchors(events)
+    return ext, dict(trust, status="read", ledger_events=len(events),
+                     anchor_notes=sum(len(v) for v in ext.values()))
+
+
 def load_verified(p=None, token=None, external=None, allow_untrusted=False):
     """Signed logs through arena_eventlog.report(): refused / rejected-line / untrusted arms are UNMEASURED, except
     that a rejected PREFIX of pre-log leftovers (stale_prefix) is skipped and counted in `stale_prefix`."""
@@ -470,6 +497,26 @@ def load_verified(p=None, token=None, external=None, allow_untrusted=False):
         if stale is not None:
             out[arm]["stale_prefix"] = stale
     return out
+
+
+def verified_logs(raw_dir=None, ledger=None, allow_untrusted=False, p=None):
+    """The CLIs' one log loader (arena_analysis run, arena_spend): -> (logs, log_trust). Signed logs are checked
+    against the ledger anchors (ledger_external); log_trust records the source, the ledger status, the arms that
+    were untrusted and whether --allow-untrusted let them through anyway."""
+    if raw_dir:
+        logs = load_raw(raw_dir)
+        return logs, {"source": "raw-dir (unsigned)", "raw_dir": str(raw_dir), "allow_untrusted": allow_untrusted}
+    ext, trust = ledger_external(ledger)
+    strict = load_verified(p, None, ext, allow_untrusted=False)
+    logs = load_verified(p, None, ext, allow_untrusted=True) if allow_untrusted else strict
+    untrusted = sorted(k for k, v in strict.items() if "unmeasured" in v and str(v["unmeasured"]).startswith(
+        "untrusted log"))
+    trust = dict(trust, source="signed event logs", allow_untrusted=allow_untrusted, untrusted_arms=untrusted,
+                 trusted_arms=sorted(k for k, v in strict.items() if "unmeasured" not in v))
+    if allow_untrusted and untrusted:
+        trust["OVERRIDE"] = ("--allow-untrusted: %d untrusted arm log(s) analysed WITHOUT the ledger-anchor tamper "
+                             "check: %s" % (len(untrusted), untrusted))
+    return logs, trust
 
 
 def load_tasks(p=None):
@@ -1464,7 +1511,9 @@ def main(argv=None):
                    "line): the era gate's population (default: the committed list %s, N tasks, default 50; never every "
                    "frozen task)" % TRIAL_DEFAULT.name)
     r.add_argument("--era-repo", help="git repo holding the tasks' base shas, for their chronology (default %s)" % A.REPO)
-    r.add_argument("--allow-untrusted", action="store_true")
+    r.add_argument("--allow-untrusted", action="store_true", help="analyse untrusted signed logs (drops the tamper "
+                   "check; reported in log_trust)")
+    r.add_argument("--ledger", help="rimflow events.jsonl holding the ARENA_ANCHOR notes (default: the repo ledger)")
     r.add_argument("--hard-cap", help="ISO-8601 with zone: end of day 3")
     r.add_argument("--final", action="store_true", help="the budget has ended: final look and hard-cap clause now (CUT_SHORT_UNDECIDED if the newest era was not compared); the driver must pass this at the end of the budget")
     r.add_argument("--seed", type=int, default=SEED)
@@ -1506,7 +1555,7 @@ def main(argv=None):
         doc = json.loads(Path(a.spend).read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         doc, read_err = None, str(e)
-    logs = load_raw(a.raw_dir) if a.raw_dir else load_verified(allow_untrusted=a.allow_untrusted)
+    logs, log_trust = verified_logs(a.raw_dir, a.ledger, a.allow_untrusted)
     if a.arms:
         arms, arms_src = [x.strip() for x in a.arms.split(",") if x.strip()], "--arms"
     else:
@@ -1530,6 +1579,7 @@ def main(argv=None):
     no_chrono = chrono_keys(tasks, a.era_repo)
     cap = L.ts_epoch(a.hard_cap) if a.hard_cap else None
     rep = analyse_spend_doc(logs, tasks, doc, seed=a.seed, draws=a.draws, hard_cap=cap, final=a.final, conv=conv)
+    rep["log_trust"] = log_trust
     rep["replay_arms"] = {"arms": arms, "source": arms_src, "ignored_arms": ignored,
                           "missing": sorted(set(arms or []) - set(logs)),
                           "stale_prefix": {k: v["stale_prefix"] for k, v in sorted(logs.items()) if "stale_prefix" in v}}

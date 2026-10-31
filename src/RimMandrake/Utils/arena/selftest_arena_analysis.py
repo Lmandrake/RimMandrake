@@ -1472,6 +1472,128 @@ def t_cut_trial():
           (r["final"]["verdict"], r["final"].get("detail", {}).get("not_judged")))
 
 
+# ---------------------------------------------------------------- ledger anchors (ARENA_ANALYSIS_WIRE_LEDGER_ANCHORS_TRUST)
+
+LEDGER_ENV = ("ARENA_ROOT", "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "ARENA_WITNESS")
+
+
+def _ledger_note(path, text):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+    Path(path).write_text(json.dumps({"seat": "FOUNDRY", "event": "note", "id": "ARENA_SELFTEST_ANCHOR",
+                                      "text": text, "ts": "2026-11-01T00:00:00Z"}) + "\n")
+
+
+def t_ledger_trust():
+    """The CLIs' loader (verified_logs, used by arena_analysis run AND arena_spend) reads the ARENA_ANCHOR notes from
+    the ledger: REAL signed logs (arena_eventlog.HarnessWriter, file witness) + signed anchors -> every arm trusted;
+    tampered line, truncated tail, missing ledger, unanchored ledger, forged note -> UNMEASURED; --allow-untrusted
+    loads them and says so (OVERRIDE). Mutant: the ledger anchors ignored -> the genuine run is UNMEASURED."""
+    import contextlib
+    import io
+    import os
+    import shutil
+    L = AA.L
+    saved = {k: os.environ.get(k) for k in LEDGER_ENV}
+    d = Path(tempfile.mkdtemp(prefix="aa_ledger_"))
+    res = {}
+    try:
+        os.environ.update(ARENA_ROOT=str(d / "arena"), ARENA_EVENT_TOKEN_FILE=str(d / "secret" / "event_token"),
+                          ARENA_ANCHOR_FILE=str(d / "secret" / "anchors.jsonl"),
+                          ARENA_WITNESS=str(d / "secret" / "witness.jsonl"))
+        p = AA.A.paths()
+        L.init_token(p)
+        tok = L._read_token(p)
+        w = L.HarnessWriter(p)
+        arms = ("trio", "v3")
+        for arm in arms:
+            for i in range(4):
+                w.emit(arm, "assign", lane="build", run_id="%s.%d" % (arm, i), task="T%03d" % i,
+                       ts="2026-11-01T0%d:00:00Z" % i)
+        heads = [L.make_anchor(a, L.verify(p, a, tok)["accepted"], tok) for a in arms] + [L.roster_anchor(p, tok)]
+        good, none_, forged = d / "led" / "events.jsonl", d / "led_none" / "events.jsonl", d / "led_f" / "events.jsonl"
+        _ledger_note(good, L.anchor_note_text(heads))
+        _ledger_note(none_, "an unrelated note, no anchors")
+        _ledger_note(forged, L.anchor_note_text([dict(h, lsig="0" * 64) for h in heads]))
+        missing = d / "nowhere" / "events.jsonl"
+        res["genuine"] = AA.verified_logs(None, good)
+        res["unanchored"] = AA.verified_logs(None, none_)
+        res["forged"] = AA.verified_logs(None, forged)
+        res["missing"] = AA.verified_logs(None, missing)
+        res["override"] = AA.verified_logs(None, missing, allow_untrusted=True)
+        real_le = AA.ledger_external
+        AA.ledger_external = lambda ledger=None: (None, {"ledger": "mutant"})
+        try:
+            res["mut_ignored"] = AA.verified_logs(None, good)
+        finally:
+            AA.ledger_external = real_le
+        real_lv = AA.load_verified
+        AA.load_verified = lambda p=None, token=None, external=None, allow_untrusted=False: real_lv(
+            p, token, external, allow_untrusted=True)
+        try:
+            res["mut_trust_dropped"] = AA.verified_logs(None, missing)
+        finally:
+            AA.load_verified = real_lv
+        # the real CLI (no spend file: UNMEASURED by spend, but log_trust shows the loader's view)
+        for name, extra in (("cli_genuine", ["--ledger", str(good)]), ("cli_missing", ["--ledger", str(missing)])):
+            out = d / (name + ".json")
+            with contextlib.redirect_stdout(io.StringIO()):
+                rc = AA.main(["run", "--spend", str(d / "no_spend.json"), "--arms", "trio,v3", "--draws", "200",
+                              "--out", str(out)] + extra)
+            res[name] = (rc, json.loads(out.read_text()).get("log_trust", {}))
+        # tamper: one byte of trio's 2nd record changed (sig no longer verifies)
+        tf = p["events"] / "trio.jsonl"
+        lines = tf.read_text().splitlines(True)
+        bad = json.loads(lines[1])
+        bad["task"] = "T999"
+        tf.write_text("".join([lines[0], json.dumps(bad, sort_keys=True) + "\n"] + lines[2:]))
+        res["tampered"] = AA.verified_logs(None, good)
+        # truncated tail: trio's last record removed (the anchor says 4)
+        tf.write_text("".join(lines[:-1]))
+        res["truncated"] = AA.verified_logs(None, good)
+        tf.write_text("".join(lines))
+        res["restored"] = AA.verified_logs(None, good)
+    finally:
+        for k, v in saved.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+        shutil.rmtree(d, ignore_errors=True)
+    um = lambda r, a: "unmeasured" in r[0].get(a, {"unmeasured": "absent"})   # noqa: E731
+    g_logs, g_tr = res["genuine"]
+    check("ledger: genuine signed + ledger-anchored logs -> every arm trusted through the CLI loader",
+          all(len(g_logs.get(a, {}).get("recs", ())) == 4 for a in ("trio", "v3"))
+          and g_tr.get("trusted_arms") == ["trio", "v3"] and not g_tr.get("untrusted_arms")
+          and g_tr.get("status") == "read" and "OVERRIDE" not in g_tr, g_tr)
+    for name, why in (("unanchored", "untrusted log"), ("forged", "untrusted log"), ("missing", "untrusted log")):
+        check("ledger: %s ledger -> every arm UNMEASURED (%s)" % (name, why),
+              all(um(res[name], a) and why in res[name][0][a]["unmeasured"] for a in ("trio", "v3")),
+              (res[name][0], res[name][1]))
+    check("ledger: a missing ledger is reported as MISSING in log_trust", str(res["missing"][1].get("status", ""))
+          .startswith("MISSING"), res["missing"][1])
+    check("ledger: tampered line -> that arm UNMEASURED, the other stays trusted",
+          um(res["tampered"], "trio") and not um(res["tampered"], "v3"), res["tampered"][0].get("trio"))
+    check("ledger: truncated tail (log shorter than the anchor) -> that arm UNMEASURED (refused)",
+          um(res["truncated"], "trio") and "refused" in res["truncated"][0]["trio"]["unmeasured"]
+          and not um(res["truncated"], "v3"), res["truncated"][0].get("trio"))
+    check("ledger: control: the restored log is trusted again", not um(res["restored"], "trio"),
+          res["restored"][0].get("trio"))
+    o_logs, o_tr = res["override"]
+    check("ledger: --allow-untrusted loads untrusted arms and REPORTS the override",
+          all(not um(res["override"], a) for a in ("trio", "v3")) and o_tr.get("allow_untrusted") is True
+          and o_tr.get("untrusted_arms") == ["trio", "v3"] and "OVERRIDE" in o_tr, o_tr)
+    check("ledger MUTANT: anchors ignored (ledger_external dropped) -> the genuine run is caught (UNMEASURED)",
+          all(um(res["mut_ignored"], a) for a in ("trio", "v3")), res["mut_ignored"][0])
+    check("ledger MUTANT: load_verified forced to allow_untrusted -> the missing-ledger arms LOAD (the missing-ledger row has teeth)",
+          all(not um(res["mut_trust_dropped"], a) for a in ("trio", "v3")), res["mut_trust_dropped"][0])
+    rcg, ltg = res["cli_genuine"]
+    rcm, ltm = res["cli_missing"]
+    check("ledger CLI: arena_analysis.py run --ledger <anchored> reports both arms trusted in log_trust",
+          ltg.get("trusted_arms") == ["trio", "v3"] and ltg.get("allow_untrusted") is False, (rcg, ltg))
+    check("ledger CLI: --ledger <missing> -> exit 3, both arms untrusted", rcm == 3 and ltm.get("untrusted_arms") ==
+          ["trio", "v3"] and not ltm.get("trusted_arms"), (rcm, ltm))
+
+
 # ---------------------------------------------------------------- runner
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
@@ -1479,7 +1601,7 @@ CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fl
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
         t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial,
-        t_stray_logs)
+        t_stray_logs, t_ledger_trust)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.16), ("ACCEPT_MARGIN", 0.14), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
@@ -1488,7 +1610,7 @@ MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97
            ("MIN_TASKS", 5), ("MIN_TASKS", 15), ("MIN_KINDS", 1), ("MIN_KINDS", 3), ("BLOCK", 4), ("BLOCK", 6),
            ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
            ("newest_era_missing", lambda *a: {}), ("held_kind", lambda v: v.startswith("DECIDE_FOR_")),
-           ("gated", AA.held_kind)]
+           ("gated", AA.held_kind), ("ledger_external", lambda ledger=None: (None, {"ledger": "mutant"}))]
 
 
 def mutants():

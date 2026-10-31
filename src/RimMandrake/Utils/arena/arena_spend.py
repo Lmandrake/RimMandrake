@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """arena_spend.py - per-(arm, task) RAW token spend for arena_analysis.py (harness side, read-only on the logs).
 
-    python3 src/RimMandrake/Utils/arena/arena_spend.py --out SPEND.json [--raw-dir DIR] [--allow-untrusted]
+    python3 src/RimMandrake/Utils/arena/arena_spend.py --out SPEND.json [--raw-dir DIR] [--ledger EVENTS.jsonl] [--allow-untrusted]
             [--projects ~/.claude/projects] [--clones-root /home/mandrake/rm/arena] [--gpt-log PATH]
             [--helpers DIR] [--sandbox-root DIR] [--since ISO] [--until ISO]
 
@@ -342,7 +342,10 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--out", required=True)
     ap.add_argument("--raw-dir", help="read unsigned <arm>.jsonl from this dir instead of the signed log")
-    ap.add_argument("--allow-untrusted", action="store_true")
+    ap.add_argument("--allow-untrusted", action="store_true", help="meter untrusted signed logs (drops the tamper "
+                    "check; reported in the doc's log_trust)")
+    ap.add_argument("--ledger", help="rimflow events.jsonl holding the ARENA_ANCHOR notes (default: the repo ledger; "
+                    "arena_analysis.ledger_external)")
     ap.add_argument("--projects", help="Claude transcripts root (default ~/.claude/projects)")
     ap.add_argument("--clones-root", help="arm clones root (default $RM_ARENA_ROOT or %s)" % S.ARENA_ROOT)
     ap.add_argument("--gpt-log", help="gpt call log file/dir (default gpt_call_log's)")
@@ -351,19 +354,22 @@ def main(argv=None):
     ap.add_argument("--since", help="ISO-8601 with zone (default: first event)")
     ap.add_argument("--until", help="ISO-8601 with zone (default: last event)")
     a = ap.parse_args(argv)
-    logs = AA.load_raw(a.raw_dir) if a.raw_dir else AA.load_verified(allow_untrusted=a.allow_untrusted)
+    logs, log_trust = AA.verified_logs(a.raw_dir, a.ledger, a.allow_untrusted)
     try:
         doc = meter(logs, projects=a.projects, clones_root=a.clones_root, gpt_log=a.gpt_log, helpers=a.helpers,
                     sandbox_root=a.sandbox_root,
                     since=L.ts_epoch(a.since) if a.since else None, until=L.ts_epoch(a.until) if a.until else None)
     except ValueError as e:
-        print("arena_spend: %s" % e, file=sys.stderr)
+        unm = {k: v["unmeasured"] for k, v in sorted(logs.items()) if "unmeasured" in v}
+        print("arena_spend: %s%s" % (e, "; UNMEASURED arm log(s) %s (ledger %s)" % (unm, log_trust.get("status"))
+                                     if unm else ""), file=sys.stderr)
         return 2
+    doc["log_trust"] = log_trust
     tmp = a.out + ".tmp"
     Path(tmp).write_text(json.dumps(doc, indent=1, sort_keys=True) + "\n", encoding="utf-8")
     os.replace(tmp, a.out)
     print(json.dumps({"arms": {k: len(v) for k, v in doc["arms"].items()}, "overhead": sorted(doc["overhead"]),
-                      "flags": doc["flags"]}, sort_keys=True))
+                      "flags": doc["flags"], "log_trust": log_trust}, sort_keys=True))
     return 0
 
 
