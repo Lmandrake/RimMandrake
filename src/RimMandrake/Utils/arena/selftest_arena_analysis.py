@@ -990,6 +990,47 @@ def t_tester_masking():
     check("tester: with no provable violation, an unidentified record -> UNMEASURED", r["status"] == "UNMEASURED", r)
 
 
+def t_tester_harness_void():
+    """ARENA_DQ_TESTER_FIX_VOIDED_ORPHAN_VIOLATES: the real v3 trail (build_end, restart orphan-void, new build pass)
+    is CLEAN; every near miss of the harness void still VIOLATES."""
+    why = AA.HARNESS_ORPHAN_VOID_WHY
+
+    def rec(ev, run, k, **kw):
+        return dict({"ts": iso(T0 + k), "arm": "v3", "task": "T000", "event": ev, "run_id": run}, **kw)
+    b = {"detail": {"role": "build"}}
+
+    def trail(inv, inv_at=3):
+        s = [rec("pass_start", "v3.replay.1", 1, **b),
+             rec("build_end", "v3.replay.1", 2, detail={"build_id": "T000.aaa", "builder": "v3-build-1"}),
+             rec("pass_start", "v3.replay.2", 4, **b),
+             rec("build_end", "v3.replay.2", 5, detail={"build_id": "T000.bbb", "builder": "v3-build-2"}),
+             rec("test_start", "v3.replay.2", 6, detail={"build_id": "T000.bbb", "tester": "v3-test-9"})]
+        if inv is not None:
+            s.append(rec("invalid", inv.pop("run_id", "v3.replay.operator"), inv_at,
+                         **dict({"task": "T000", "sha": "a" * 40}, **inv)))
+        return AA.L.ordered(s)
+    ok = {"detail": {"build_id": "T000.aaa", "why": why}}
+    r = AA.dq_tester(trail(json.loads(json.dumps(ok))))
+    check("tester: a build voided by the harness orphan-void before the next build pass is not a skip (CLEAN)",
+          r["status"] == "CLEAN", r)
+    r = AA.dq_tester(trail(None))
+    check("tester: the same trail with no void VIOLATES", r["status"] == "VIOLATED", r)
+    for name, inv, at in (
+            ("an arm-stream invalid", dict(ok, run_id="v3.replay.3"), 3),
+            ("another arm's operator stream", dict(ok, run_id="trio.replay.operator"), 3),
+            ("another why (operator invalidate-build)", {"detail": {"build_id": "T000.aaa", "why": "bad build"}}, 3),
+            ("no why", {"detail": {"build_id": "T000.aaa"}}, 3),
+            ("another build", {"detail": {"build_id": "T000.zzz", "why": why}}, 3),
+            ("no build_id", {"detail": {"why": why}}, 3),
+            ("another task", dict(ok, task="T001"), 3),
+            ("a void AFTER the new build pass", ok, 4.5)):
+        r = AA.dq_tester(trail(json.loads(json.dumps(inv)), at))
+        check("tester: %s does not launder the untested build (VIOLATED)" % name, r["status"] == "VIOLATED", r)
+    src = (Path(AA.__file__).parent / "arena_replay_run.py").read_text()
+    check("tester: the runner's restart orphan-void passes HARNESS_ORPHAN_VOID_WHY (no drift)",
+          "AA.HARNESS_ORPHAN_VOID_WHY" in src or repr(why) in src or '"%s"' % why in src, why)
+
+
 def t_final_r2():
     tasks = make_tasks(4)
     logs = {a: {"recs": arm_log(a, [("T000", True)], offset=j, drop={(0, "gate")})} for j, a in enumerate(("trio", "v3"))}
@@ -1689,7 +1730,7 @@ def t_ledger_trust():
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
-        t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
+        t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_tester_harness_void, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
         t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial,
         t_stray_logs, t_ledger_trust, t_publish_parked)
@@ -1699,7 +1740,8 @@ MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97
            ("FUTILE_RATIO", 1.155), ("FUTILE_RATIO", 1.045), ("FUTILE_P", 0.07), ("FUTILE_P", 0.03),
            ("TIE_BAND", 0.17), ("TIE_BAND", 0.13), ("TIE_P", 0.92), ("TIE_P", 0.88),
            ("MIN_TASKS", 5), ("MIN_TASKS", 15), ("MIN_KINDS", 1), ("MIN_KINDS", 3), ("BLOCK", 4), ("BLOCK", 6),
-           ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
+           ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")),
+           ("HARNESS_ORPHAN_VOID_WHY", "orphaned by a killed runner"), ("HARNESS_VOID_STREAM_SUFFIX", ""), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
            ("newest_era_missing", lambda *a: {}), ("held_kind", lambda v: v.startswith("DECIDE_FOR_")),
            ("gated", AA.held_kind), ("ledger_external", lambda ledger=None: (None, {"ledger": "mutant"})),
            ("dq_publish", _old_dq_publish)]

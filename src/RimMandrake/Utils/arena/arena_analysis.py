@@ -945,8 +945,40 @@ def stream_of(run_id):
     return re.sub(r"\d+$", "", r) if r else None
 
 
+# ARENA_DQ_TESTER_FIX_VOIDED_ORPHAN_VIOLATES: the ONE `invalid` dq_tester honours. arena_replay_run.start_repair has
+# v3_control.void_orphans write it at restart under runner.lock for a build a killed runner left untested; the next
+# build is then not the arm skipping its tester. Written on the operator stream `<arm>.<lane>.operator` with exactly
+# this why (selftest_arena_analysis checks the runner still passes this literal).
+HARNESS_ORPHAN_VOID_WHY = "orphaned by a killed runner: voided at restart under runner.lock"
+HARNESS_VOID_STREAM_SUFFIX = "operator"
+
+
+def harness_voided_builds(seq):
+    """{build_end index} of builds voided by the harness orphan-void: a later `invalid` whose run_id is the build's
+    own stream + 'operator' (stream_of(build run_id) + 'operator'), whose task and detail.build_id equal the build's,
+    and whose detail.why is HARNESS_ORPHAN_VOID_WHY exactly. The void then counts only for a build pass_start AFTER it
+    (dq_tester). An `invalid` on an arm's own stream, with another why, naming another build or none is NOT a void."""
+    out = {}
+    for j, r in enumerate(seq):
+        if r["event"] != "build_end":
+            continue
+        st, bid = stream_of(r.get("run_id")), (r.get("detail") or {}).get("build_id")
+        if not st or not isinstance(bid, str) or not bid:
+            continue
+        for k in range(j + 1, len(seq)):
+            v = seq[k]
+            d = v.get("detail") if isinstance(v.get("detail"), dict) else {}
+            if (v["event"] == "invalid" and v.get("run_id") == st + HARNESS_VOID_STREAM_SUFFIX
+                    and v.get("task") == r.get("task") and d.get("build_id") == bid
+                    and d.get("why") == HARNESS_ORPHAN_VOID_WHY):
+                out[j] = k
+                break
+    return out
+
+
 def dq_tester(seq):
     builds = [i for i, r in enumerate(seq) if r["event"] == "build_end"]
+    voided = harness_voided_builds(seq)     # {build index: index of its harness orphan-void}
     starts = [i for i, r in enumerate(seq) if r["event"] == "pass_start"
               and (r.get("detail") or {}).get("role") == "build"]
     if not builds and not starts:
@@ -961,7 +993,8 @@ def dq_tester(seq):
     viol = []
     for p in starts:
         st = stream_of(seq[p].get("run_id"))
-        prev = [j for j in builds if j < p and stream_of(seq[j].get("run_id")) == st]
+        prev = [j for j in builds if j < p and stream_of(seq[j].get("run_id")) == st
+                and not (j in voided and voided[j] < p)]     # voided by the harness before this pass: not a skip
         if not prev:
             continue
         j = prev[-1]
