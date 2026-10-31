@@ -125,6 +125,16 @@ def fixture(d, extra=False):
              body='import importlib\nnewmod = importlib.import_module("newmod")\nassert newmod.capped() == 1\n')
         task("RP_PROSE", [("src/selftest_n.py", tb + "AttributeError: module 'tool' has no attribute "
                            "'prose_only_name'\n")], body="import tool\nassert tool.prose_only_name() == 4\n")
+        # rules v5 (5): red at base because a file the fix adds is absent: unnamed, named, at base, in neither tree
+        fnf = tb + "FileNotFoundError: [Errno 2] No such file or directory: '%s'\n"
+        opn = "assert open('src/newmod.py').read()\n"
+        task("RP_FILE", [("src/selftest_n.py", fnf % "src/newmod.py")], body=opn)
+        task("RP_FILEABS", [("src/selftest_n.py", fnf % "/home/x/clone/./src/newmod.py")], body=opn)
+        task("RP_FILENAMED", [("src/selftest_n.py", fnf % "src/newmod.py")], prompt="add src/newmod.py", body=opn)
+        task("RP_FILEBASE", [("src/selftest_n.py", fnf % "src/tool.py")], body=opn)
+        task("RP_FILEOUT", [("src/selftest_n.py", fnf % "out/report.json")], body=opn)
+        task("RP_FILECS", [("src/selftest_n.py", "Unhandled exception. System.IO.FileNotFoundException: Could not "
+                            "find file 'src/newmod.py'.\n")], body=opn)
     Path(p["tasks"], "RP_NOHIDDEN.json").write_text(json.dumps({"id": "RP_NOHIDDEN", "source_item": "NOHIDDEN"}))
     A.vet_cache_path(p).write_text("".join(json.dumps(r) + "\n" for r in vet))
     return p, repo
@@ -281,10 +291,10 @@ def rules_v3():
               ["Foo", "bar", "c"], "v3: cited names: C# CS0103, ImportError, dotted module's last part")
         check(R.base_failure("Build: 0 Error(s), rc 1\nDeprecationWarning: x", {})["veto"] == "no_reason_visible",
               "v3: '0 Error(s)' and a DeprecationWarning are not a failure reason")
-        check(R.VERDICT_SCHEMA == "arena_reader_verdict/4", "v4: verdict schema bumped to /4")
+        check(R.VERDICT_SCHEMA == "arena_reader_verdict/5", "v5: verdict schema bumped to /5")
         res = R.results_dir(p)
         res.mkdir(parents=True, exist_ok=True)
-        for old in ("arena_reader_verdict/2", "arena_reader_verdict/3"):
+        for old in ("arena_reader_verdict/2", "arena_reader_verdict/3", "arena_reader_verdict/4"):
             (res / "RP_IMPNAMED.json").write_text(json.dumps({"schema": old, "task": "RP_IMPNAMED",
                                                               "packet_sha256": R.packet_sha(pn)}))
             check(R.state(p, repo=repo)["RP_IMPNAMED"][0] == "pending",
@@ -466,6 +476,71 @@ def rules_v4():
           "every missing-name form is cited (%s)" % R.missing_names_cited(forms))
 
 
+def rules_v5():
+    """ARENA_READER_REPAIR_KEEP_HOLES_ROUND_TWO defects 2-5 (BENCH plants, verify_batch3/acc3/p2.py), each with a
+    control that keeps the behaviour the rule must not eat."""
+    gap = "[... 33 chars cut ...]\n"
+    attr = "AttributeError: module 'tool' has no attribute '_private_two'\n"
+    # (2) orphan source after a tail cut
+    for name, tail in (("source after a gap", "== 4\n" + gap + "    assert tool._private_two() == 5\n" + gap +
+                        "    assert tool._private_two() == 6\n" + attr),
+                       ("multi-line source after a gap", gap + "    assert (\n        tool._private_two()\n"
+                        "        == 2  # expected\n    )\n" + attr)):
+        check(veto(tail) == "missing_name_only", "v5 (2): %s is not an outcome line (%s)" % (name, R.base_failure(tail, UN)))
+    for t in ("    AssertionError: 1 != 2\n", "    FAIL widget\n"):
+        check(veto(gap + t + attr) is None, "v5 (2): %r after a gap is led by a failure, so still behaviour" % t)
+    check(veto(gap + "ok 1\n    assert x == 1  # expected\n" + attr) is None,
+          "v5 (2): an indented line not directly after a gap stays an outcome line")
+    check(R.outcome_lines(gap + "FAIL widget\n") == ["FAIL widget"], "v5 (2): the gap marker itself is not an outcome line")
+    # (3) chained exceptions
+    for sep in ("During handling of the above exception, another exception occurred:",
+                "The above exception was the direct cause of the following exception:"):
+        tail = MISS + "\n" + sep + "\n\n" + TB + "    raise RuntimeError('setup')\nRuntimeError: check setup failed\n"
+        bf = R.base_failure(tail, UN)
+        check(bf["veto"] == "missing_name_only" and bf["reason_visible"],
+              "v5 (3): the exception chained after %r is a consequence (%s)" % (sep[:20], bf))
+        check(veto(tail + "AssertionError: 1 != 2\n") is None,
+              "v5 (3): an outcome line after the chained traceback ends is behaviour again")
+        check(veto(TB + "KeyError: 'x'\n\n" + sep + "\n\n" + TB + attr) is None,
+              "v5 (3): a behaviour exception above the separator stays behaviour")
+        check(veto(MISS + "\n" + sep + "\n\n" + TB + "    raise RuntimeError(\n    ^^^^^^^^^^^^^\n"
+                   "RuntimeError: check setup failed\n") == "missing_name_only",
+              "v5 (3): an indented caret line inside the chained traceback does not end it")
+        check(veto(MISS + "\n" + sep + "\nnot ok 1 - widget\n") is None,
+              "v5 (3): only an exception line is the consequence (a report line ending the chain is behaviour)")
+    # (4) FAIL import and summary trailers
+    for t in ("FAIL import: No module named 'newmod'", "FAIL: No module named 'newmod'",
+              "FAIL importing newmod: No module named 'newmod'", "FAILED import: cannot import name '_private_two'",
+              "failed: module 'tool' has no attribute '_private_two'", "SELFTEST FAILED", "FAIL: 1 failure(s)",
+              "FAILED", "FAIL: 2 checks", "TESTS FAILED!"):
+        check(veto(MISS + t + "\n") == "missing_name_only", "v5 (4): %r beside a fix-only missing name is not behaviour" % t)
+    check(veto("FAIL import: No module named 'newmod'\n") == "missing_name_only",
+          "v5 (4): `FAIL import:` alone is the missing name")
+    for t in ("FAIL widget import: got 1, expected 2", "FAIL: widget broke", "SELFTEST FAILED: f returned 1",
+              "FAIL 3 widgets wrong"):
+        check(veto(MISS + t + "\n") is None, "v5 (4): %r is behaviour (control)" % t)
+    # (5) a missing file the fix adds
+    with tempfile.TemporaryDirectory() as d:
+        p, repo = fixture(d, extra=True)
+        want = {"RP_FILE": "missing_name_only", "RP_FILEABS": "missing_name_only", "RP_FILECS": "missing_name_only",
+                "RP_FILENAMED": None, "RP_FILEBASE": None, "RP_FILEOUT": None}
+        for tid, v in want.items():
+            c = R.build_packet(tid, p, repo)["checks"][0]
+            bf = c["base_failure"]
+            check(bf["veto"] == v, "v5 (5): %s veto %s (%s, files %s)" % (tid, v, bf, c.get("cited_files")))
+        bf = R.build_packet("RP_FILEOUT", p, repo)["checks"][0]["base_failure"]
+        check(bf["behaviour_lines"] == 1 and not bf["missing_fix_only_unnamed"],
+              "v5 (5): a missing file in neither tree is behaviour (the defect fails to write it)")
+        c = R.build_packet("RP_FILE", p, repo)["checks"][0]
+        check(c["cited_files"] == {"at_base": [], "fix_only": ["src/newmod.py"], "fix_only_unnamed": ["src/newmod.py"]}
+              and c["base_failure"]["missing_files"] == ["src/newmod.py"], "v5 (5): cited_files lookup (%s)" % c)
+        tail = 'FileNotFoundError: [Errno 2] No such file or directory: \'src/newmod.py\'\nKeyError: \'x\'\n'
+        check(R.base_failure(tail, {}, None, {"fix_only_unnamed": ["src/newmod.py"]})["veto"] is None,
+              "v5 (5): another behaviour line beside the missing file lifts the veto")
+        check(R._tree_match("C:\\clone\\src\\newmod.py", {"src/newmod.py"}) == "src/newmod.py"
+              and R._tree_match("newmod.py", {"src/newmod.py"}) is None, "v5 (5): path suffix matching")
+
+
 def tail_invariants():
     """The base tails the reader reads come from arena_tasks.vet_tail; invariants only (that function's owner may
     change how it chooses lines): never longer than n, the start of a long FAIL line survives, and the last line
@@ -570,6 +645,7 @@ def main():
     rules_v3()
     keep_refusals()
     rules_v4()
+    rules_v5()
     tail_invariants()
 
     def boom(pr):

@@ -54,6 +54,17 @@ refusal (a task offering "drop the trailer or name the script" with checks pinni
 reader's judgement: no mechanical predicate separates it from a fair check (an " or " in the task text is in many
 fair tasks; the pinned script name exists at base, so no lookup flags it).
 
+RULES v5 (ARENA_READER_REPAIR_KEEP_HOLES_ROUND_TWO defects 2-5; BENCH plants D:\\ClaudeWork\\rimmandrake\\arena\\
+verify_batch3\\acc3\\p2.py). (2) An indented line directly after a `[... N chars cut ...]` gap marker (or after such
+an orphan) is quoted source whose File line was cut, so not an outcome line, unless it is led by an error class or
+a FAIL report. (3) The exception that ends a traceback after `During handling of the above exception` / `The above
+exception was the direct cause` is a consequence of the exception above it, never behaviour (it still shows a
+reason). (4) A FAIL report whose label is empty or names an import (`FAIL import: No module named 'm'`, `FAIL:
+cannot import name 'x'`) and whose message begins with a missing-name message is the missing name reported again; a
+bare summary (`SELFTEST FAILED`, `FAIL: 1 failure(s)`) is not behaviour. (5) `FileNotFoundError: ... No such file
+or directory: 'p'` (C#: `Could not find file 'p'`) cites the file p: a path the fix adds and the task text does not
+name is a fix_only_unnamed missing name (cited_files), and its line is not behaviour.
+
     run     read every survivor without a current verdict; one JSON file per task under the results dir (default
             <arena>/judge/reader/verdicts/, judge-only: the packets hold hidden check bodies). Resumable: a task
             whose verdict file matches its packet's sha256 is skipped; a changed packet (re-vet, new body) is
@@ -100,7 +111,7 @@ sys.path.insert(0, str(HERE))
 import arena_tasks as A  # noqa: E402
 import arena_trial as T  # noqa: E402
 
-VERDICT_SCHEMA = "arena_reader_verdict/4"   # /4: rules v4 (see docstring); /1../3 verdicts read as pending
+VERDICT_SCHEMA = "arena_reader_verdict/5"   # /5: rules v5 (see docstring); /1../4 verdicts read as pending
 VERDICTS = ("KEEP", "UNSCORE_CHECK", "DROP_TASK")
 BOOL_FIELDS = ("tests_task", "solvable_from_text", "coupled", "self_overwrite", "partial_legs", "brittle_format",
                "format_stated", "fails_for_defect")
@@ -377,10 +388,25 @@ _BEH_CLASS = re.compile(r"^\s*(?:E\s+)?(?:[A-Za-z_]\w*\.)*(?:AssertionError\b"
                         r"(?:[A-Z]\w*)?(?:Error|Exception):)")
 _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
                             r"|\bTypeError\b.*\bunexpected keyword argument\b")
+# RULES v5 (docstring). The gap marker is vet_tail's and the judge's tail cut (arena_tasks.vet_tail).
+_GAP = re.compile(r"^\[\.\.\. \d+ chars cut \.\.\.\]\s*$")
+_CHAIN = re.compile(r"^\s*(?:During handling of the above exception, another exception occurred:"
+                    r"|The above exception was the direct cause of the following exception:)\s*$")
+_EXC_LEAD = re.compile(r"^(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?::|\s*$)")    # `pkg.SomeError: msg`, `KeyboardInterrupt`
+_FAIL_LABEL = re.compile(r"^\s*(?:E\s+)?(?:FAIL|FAILED|(?i:fail(?:ed|ure)?))\b(?P<label>[^:\n]*):\s*")
+_MISSING_LEAD = re.compile(r"No module named\b|cannot import name\b|name '\w+' is not defined"
+                           r"|(?:module |type object )?'[^']+' (?:object )?has no attribute\b"
+                           r"|[\w.]+\(\) got an unexpected keyword argument\b")
+_SUMMARY = re.compile(r"^\s*(?:[A-Z][A-Z0-9_]*\s+)*FAIL(?:ED)?[.!]?\s*$"
+                      r"|^\s*FAIL(?:ED)?\b\W*\d+\s+(?:failure|failed|error|test|check)\w*(?:\(s\))?\W*$")
+_MISSING_FILE = [re.compile(p) for p in (
+    r"FileNotFoundError: \[Errno 2\] No such file or directory: '([^']+)'",
+    r"\bCould not find file '([^']+)'",                               # C# FileNotFoundException
+)]
 
 
-def outcome_lines(tail) -> list[str]:
-    """The tail's outcome lines (see _TB_FILE.. above), each with its neutral phrases blanked."""
+def _outcome(tail) -> list[tuple[str, bool]]:
+    """(outcome line, consequence) pairs: consequence marks a chained exception (v5 rule 3)."""
     out, prev = [], ""
     rows = (tail or "").splitlines()
     pysrc = set()
@@ -395,23 +421,45 @@ def outcome_lines(tail) -> list[str]:
             while j < len(rows) and rows[j].strip() and rows[j][:1].isspace():
                 pysrc.add(j)
                 j += 1
+    orphan = chained = False
     for i, ln in enumerate(rows):
         if i in pysrc:
             prev = ln
             continue
         # Python indents the quoted source; a File line with no source (`File "<string>"`) is followed by the
         # unindented error line, which is kept
-        src, prev = bool(_TB_FILE.search(prev)) and ln[:1].isspace(), ln
-        if src or _TB_FILE.search(ln):
+        src = bool(_TB_FILE.search(prev)) and ln[:1].isspace()
+        # v5 rule 2: an indented line right after a tail cut (or after such an orphan) lost its File line
+        orphan = ((bool(_GAP.match(prev)) or orphan) and ln[:1].isspace()
+                  and not _BEH_CLASS.match(ln) and not _BEH_REPORT.match(ln))
+        prev = ln
+        if src or orphan or _TB_FILE.search(ln) or _GAP.match(ln):
+            continue
+        if _CHAIN.match(ln):
+            chained = True
             continue
         if _PASS_LINE.match(ln) and not _NONZERO_FAILS.search(ln):
             continue
-        out.append(_NEUTRAL.sub(" ", ln))
+        # v5 rule 3: the first unindented line past a chain separator that is not the next Traceback header ends that
+        # traceback; when it is an exception it is the consequence
+        consequence = False
+        if chained and ln.strip() and not ln[:1].isspace() and not ln.startswith("Traceback (most recent call last)"):
+            consequence, chained = bool(_EXC_LEAD.match(ln)), False
+        out.append((_NEUTRAL.sub(" ", ln), consequence))
     return out
 
 
+def outcome_lines(tail) -> list[str]:
+    """The tail's outcome lines (see _TB_FILE.. above), each with its neutral phrases blanked."""
+    return [ln for ln, _ in _outcome(tail)]
+
+
 def _is_behaviour(ln) -> bool:
-    if not _BEHAVIOUR.search(ln):
+    if not _BEHAVIOUR.search(ln) or _SUMMARY.match(ln):
+        return False
+    m = _FAIL_LABEL.match(ln)       # v5 rule 4: `FAIL import: No module named 'm'` is the missing name again
+    if m and (not m.group("label").strip() or re.search(r"(?i)\bimport", m.group("label"))) \
+            and _MISSING_LEAD.match(ln, m.end()):
         return False
     if not _MISSING_CLASS.search(ln) and not any(rx.search(ln) for rx in _MISSING_NAME):
         return True
@@ -430,7 +478,44 @@ def missing_names_cited(tail) -> list[str]:
     return sorted(out)
 
 
-def base_failure(tail, names: dict, extra: dict | None = None) -> dict:
+def missing_files_cited(tail) -> list[str]:
+    """Paths the base output reports as absent (FileNotFoundError, C# `Could not find file`; v5 rule 5)."""
+    return sorted({m.group(1) for rx in _MISSING_FILE for m in rx.finditer(tail or "")})
+
+
+def _tree_match(path, tree: set):
+    """The repo path a cited path names: itself, or the longest repo path it ends with (`/abs/clone/src/x.json`)."""
+    parts = [x for x in path.replace("\\", "/").split("/") if x not in ("", ".")]
+    for k in range(len(parts)):
+        if "/".join(parts[k:]) in tree:
+            return "/".join(parts[k:])
+    return None
+
+
+def file_lookup(repo, base_sha, fix_sha, paths, task_text) -> dict:
+    """{at_base, fix_only, fix_only_unnamed} over cited missing FILES: fix_only is a path the fix adds (absent at
+    base); unnamed when the task text does not name its file name (nor so its repo path). A path in neither tree (an
+    output the defect fails to write) is in none of the lists."""
+    trees = {}
+    for sha in (base_sha, fix_sha):
+        rc, out = _git_out(repo, "ls-tree", "-r", "--name-only", sha) if sha else (1, "")
+        if sha and rc != 0:
+            raise ReaderError("git ls-tree %s failed (exit %d)" % (sha[:10], rc))
+        trees[sha] = set(out.splitlines()) if sha else set()
+    v = {"at_base": [], "fix_only": [], "fix_only_unnamed": []}
+    for p in sorted(set(paths)):
+        if _tree_match(p, trees[base_sha]):
+            v["at_base"].append(p)
+            continue
+        hit = _tree_match(p, trees[fix_sha])
+        if hit:
+            v["fix_only"].append(p)
+            if Path(hit).name not in (task_text or ""):      # naming the repo path names the file too
+                v["fix_only_unnamed"].append(p)
+    return v
+
+
+def base_failure(tail, names: dict, extra: dict | None = None, files: dict | None = None) -> dict:
     """Why the check is red at base, read from its stored base tail plus the name lookups. veto:
     no_reason_visible  the tail shows no failure reason at all (no traceback, *Error, FAIL, assert, compiler
                        error): nothing proves the check goes red for the defect, so it may not be KEPT;
@@ -438,17 +523,23 @@ def base_failure(tail, names: dict, extra: dict | None = None) -> dict:
                        name (fix_only_unnamed), with no behavioural failure line beside it: the check is red at base
                        for a missing name, not the defect, and pins the fix's private API. Another missing name
                        beside it (even one the task names) does not lift the veto: the private one is still pinned.
-                       A lowercase `N failed` count is not behaviour (every red run prints one)."""
+                       A lowercase `N failed` count is not behaviour (every red run prints one). `files`
+                       (file_lookup) does the same for a cited missing file the fix adds (v5 rule 5)."""
     tail = tail or ""
-    lines = outcome_lines(tail)
+    rows = _outcome(tail)
+    lines = [ln for ln, _ in rows]
     cited = missing_names_cited("\n".join(lines))      # v4 review: a missing name on a pass/source line is no evidence
+    cfiles = missing_files_cited("\n".join(lines))
     unnamed = set((names or {}).get("fix_only_unnamed") or []) | set((extra or {}).get("fix_only_unnamed") or [])
-    fix_missing = [n for n in cited if n in unnamed]
-    behaviour = [ln for ln in lines if _is_behaviour(ln)]
+    ufiles = set((files or {}).get("fix_only_unnamed") or [])
+    fix_missing = [n for n in cited if n in unnamed] + [f for f in cfiles if f in ufiles]
+    behaviour = [ln for ln, consequence in rows if not consequence and _is_behaviour(ln)
+                 and not any(f in ufiles for f in missing_files_cited(ln))]
     visible = any(_REASON.search(ln) for ln in lines)
     veto = ("no_reason_visible" if not visible else
             "missing_name_only" if fix_missing and not behaviour else None)
-    return {"reason_visible": visible, "missing_names": cited, "missing_fix_only_unnamed": fix_missing,
+    return {"reason_visible": visible, "missing_names": cited, "missing_files": cfiles,
+            "missing_fix_only_unnamed": fix_missing,
             "behaviour_lines": len(behaviour), "veto": veto}
 
 
@@ -485,15 +576,18 @@ def build_packet(task_id, p=None, repo=None, vet=None, cache=None) -> dict:
         extra_names = sorted(n for n in missing_names_cited(tail) if n not in looked)
         extra = (name_lookup(repo, base_sha, fix_sha, c["path"], extra_names, task_text, cache or None)
                  if extra_names and tail is not None else None)
+        cfiles = missing_files_cited(tail) if tail is not None else []
+        files = file_lookup(repo, base_sha, fix_sha, cfiles, task_text) if cfiles else None
         checks.append({"path": c["path"], "command": c.get("command"), "body": _clip(c.get("body"), BODY_CHARS),
                        "base_result": (rec or {}).get("base_result"),
                        "base_tail": _clip(tail, TAIL_CHARS, tail=True) if tail is not None else None,
                        "new_file": old is None, "test_diff": _clip(td, TEST_DIFF_CHARS),
                        "check_named_in_task": Path(c["path"]).name in task_text or c["path"] in task_text,
                        "names": names, **({"cited_names": extra} if extra is not None else {}),
+                       **({"cited_files": files} if files is not None else {}),
                        # the UNCLIPPED inputs: an edit past a clip limit still changes the packet sha (stale verdict)
                        "source_sha256": hashlib.sha256(json.dumps([c.get("body"), tail, td]).encode()).hexdigest(),
-                       "base_failure": base_failure(tail, names, extra) if tail is not None else None})
+                       "base_failure": base_failure(tail, names, extra, files) if tail is not None else None})
     return {"task": task_id, "prompt": t.get("prompt"), "criteria": t.get("criteria"), "kind": t.get("kind"),
             "fix_diff": fix_diff_summary(repo, fix_sha, [c["path"] for c in checks]),
             "checks": checks, "missing_tails": missing}
