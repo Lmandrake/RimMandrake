@@ -393,7 +393,7 @@ namespace RimMandrake.Greentide.SelfTest
         }
 
         // ════════════════════════ rules ════════════════════════
-        public static long Scores, RoilFlips, Marks, Drops, Parsed;
+        public static long Scores, RoilFlips, Marks, Drops, Parsed, Feeds, PartialFeeds;
 
         private static string RulesCase(int seed)
         {
@@ -501,6 +501,35 @@ namespace RimMandrake.Greentide.SelfTest
             Check(!RM_RulesKernel.DropsBranch(true, true, false, true, 1f, 0f) && !RM_RulesKernel.DropsBranch(true, true, true, false, 1f, 0f) && !RM_RulesKernel.DropsBranch(false, true, true, true, 1f, 0f), "branch gates");
             if (drop) Drops++;
             Check(RM_RulesKernel.StellockTicks(1f) == 2500 && RM_RulesKernel.StellockTicks(0f) == 0 && RM_RulesKernel.StellockTicks(0.0001f) == 0, "stellock duration");
+            // zrrik bloodlust: the gate, then the heal spend against a slow reference
+            for (int m = 0; m < 32; m++)
+            {
+                bool alive = (m & 1) != 0, self = (m & 2) != 0, flesh = (m & 4) != 0, hurt = (m & 8) != 0, frac = (m & 16) != 0;
+                Check(RM_RulesKernel.BloodlustFeeds(alive, self, flesh, hurt ? 3f : 0f, frac ? 0.5f : 0f) == (alive && !self && flesh && hurt && frac), "bloodlust gate truth");
+            }
+            Check(!RM_RulesKernel.BloodlustFeeds(true, false, true, -2f, 0.5f) && !RM_RulesKernel.BloodlustFeeds(true, false, true, 2f, -0.5f), "bloodlust fed on negative damage or fraction");
+            int nw = r.Next(0, 6);
+            var sev = new float[nw];
+            for (int i = 0; i < nw; i++) sev[i] = new[] { 0f, 1f, 2.5f, 7f, 15f, 15f }[r.Next(6)];
+            float dealt = new[] { -1f, 0f, 1f, 4f, 12f, 40f }[r.Next(6)], fr = new[] { 0f, 0.25f, 0.5f, 1f }[r.Next(4)], cap = new[] { 0f, 0f, 3f, 10f }[r.Next(4)];
+            var heal = RM_RulesKernel.BloodlustHeals(dealt, fr, cap, sev);
+            Check(heal.Length == nw, "heal array length");
+            float budget = dealt > 0f && fr > 0f ? dealt * fr : 0f;
+            if (cap > 0f) budget = Math.Min(budget, cap);
+            float sumSev = 0f, sumHeal = 0f;
+            for (int i = 0; i < nw; i++)
+            {
+                Check(heal[i] >= 0f && heal[i] <= sev[i] + 1e-5f, $"wound {i} healed {heal[i]} of {sev[i]}");
+                sumSev += Math.Max(0f, sev[i]); sumHeal += heal[i];
+            }
+            Check(Near(sumHeal, Math.Min(budget, sumSev), 1e-3), $"spent {sumHeal}, expected min(budget {budget}, wounds {sumSev})");
+            // worst first: a wound got anything only if every strictly worse wound was healed in full
+            for (int i = 0; i < nw; i++)
+                for (int j = 0; j < nw; j++)
+                    if (sev[j] > sev[i] && heal[i] > 0f) Check(Near(heal[j], sev[j], 1e-5), $"wound {i} ({sev[i]}) fed before worse wound {j} ({sev[j]})");
+            if (sumHeal > 0f) Feeds++;
+            if (sumHeal > 0f && sumHeal < sumSev - 1e-3f) PartialFeeds++;
+            Check(RM_RulesKernel.BloodlustHeals(10f, 0.5f, 0f, null).Length == 0, "null wounds");
             return null;
         }
 
@@ -531,11 +560,11 @@ namespace RimMandrake.Greentide.SelfTest
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
             Console.WriteLine($"reached: swallow scans {Scans}, buried {Buried}, merged {Merged}, dug chunks {DugChunks}, partial digs {PartialDigs}, partial merges {PartialMerges}; mire adds {MireAdds}, removes {MireRemoves}, struggles {MireStruggles} (stuck {StuckStruggles}), saturated {MireMax}");
-            Console.WriteLine($"reached: ladder shakes {Shakes}, heals {Heals}, catastrophes {Catastrophes}, rearms {Rearmed}; vurrak strikes {Strikes}, reveals {Reveals}, quiets {Quiets}, lies {Lies}; rules scores {Scores}, roil flips {RoilFlips}, marks {Marks}, branch drops {Drops}, parsed {Parsed}");
+            Console.WriteLine($"reached: ladder shakes {Shakes}, heals {Heals}, catastrophes {Catastrophes}, rearms {Rearmed}; vurrak strikes {Strikes}, reveals {Reveals}, quiets {Quiets}, lies {Lies}; rules scores {Scores}, roil flips {RoilFlips}, marks {Marks}, branch drops {Drops}, parsed {Parsed}, feeds {Feeds} (partial {PartialFeeds})");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 if (Buried == 0 || Merged == 0 || DugChunks == 0 || PartialDigs == 0 || PartialMerges == 0 || MireAdds == 0 || MireRemoves == 0 || MireStruggles == 0 || StuckStruggles == 0 || MireMax == 0
-                    || Shakes == 0 || Heals == 0 || Catastrophes == 0 || Rearmed == 0 || Strikes == 0 || Reveals == 0 || Quiets == 0 || Lies == 0 || Scores == 0 || Marks == 0 || Drops == 0 || Parsed == 0)
+                    || Shakes == 0 || Heals == 0 || Catastrophes == 0 || Rearmed == 0 || Strikes == 0 || Reveals == 0 || Quiets == 0 || Lies == 0 || Scores == 0 || Marks == 0 || Drops == 0 || Parsed == 0 || Feeds == 0 || PartialFeeds == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"greentide fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

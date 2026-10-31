@@ -68,6 +68,7 @@
     <Compile Include="RM_GreatboleServants.cs" />
     <Compile Include="RM_PatchOperationGreentideSettingGate.cs" />
     <Compile Include="RM_GreentideAntRaidApplier.cs" />
+    <Compile Include="RM_DamageWorker_Bloodlust.cs" />
     <Compile Include="Kernel\RM_SwallowKernel.cs" />
     <Compile Include="Kernel\RM_MireKernel.cs" />
     <Compile Include="Kernel\RM_LadderKernel.cs" />

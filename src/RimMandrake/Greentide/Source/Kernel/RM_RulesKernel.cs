@@ -106,5 +106,36 @@ namespace RimMandrake.Greentide
             return settingOn && hasMapAndDef && felled && inGreentide && (chance >= 1f || (chance > 0f && roll < chance));
         }
         public static int StellockTicks(float hours) { return (int)(hours * 2500f); }
+
+        // ── zrrik bloodlust (RM_DamageWorker_Bloodlust, ZRRIK_VAMPIRIC_STAB_REBUILD_OWN_BLOODLUST) ──
+        // A stab that drew blood feeds the attacker: only a living attacker, never itself, only off a flesh pawn, only on real damage.
+        public static bool BloodlustFeeds(bool attackerAlive, bool attackerIsVictim, bool victimIsFleshPawn, float dealt, float fraction)
+        {
+            return attackerAlive && !attackerIsVictim && victimIsFleshPawn && dealt > 0f && fraction > 0f;
+        }
+
+        // The budget is dealt * fraction (capped at maxPerHit when that is > 0), spent worst wound first (ties: lower index first),
+        // each wound healed at most to zero. heal[i] is what wound i receives; the sum never exceeds the budget or the wounds.
+        public static float[] BloodlustHeals(float dealt, float fraction, float maxPerHit, float[] severities)
+        {
+            int n = severities == null ? 0 : severities.Length;
+            var heal = new float[n];
+            if (n == 0 || !(dealt > 0f) || !(fraction > 0f)) return heal;
+            float budget = dealt * fraction;
+            if (maxPerHit > 0f && budget > maxPerHit) budget = maxPerHit;
+            var order = new int[n];
+            for (int i = 0; i < n; i++) order[i] = i;
+            Array.Sort(order, (a, b) => severities[b] != severities[a] ? severities[b].CompareTo(severities[a]) : a.CompareTo(b));
+            foreach (int i in order)
+            {
+                if (budget <= 0f) break;
+                float s = severities[i];
+                if (!(s > 0f)) continue;
+                float spend = s < budget ? s : budget;
+                heal[i] = spend;
+                budget -= spend;
+            }
+            return heal;
+        }
     }
 }
