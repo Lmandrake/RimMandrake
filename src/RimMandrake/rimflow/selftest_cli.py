@@ -144,8 +144,7 @@ def refused(args, needle, why, seat="BUILD", env_=None):
     """A refusal must exit NON-ZERO and carry the model's own words to stderr."""
     rc, out, err = run(*args, seat=seat, env=env_)
     assert rc != 0, "NOT REFUSED (exit 0): %s\n  stdout: %s" % (why, out.strip())
-    blob = (out + err).lower()
-    assert needle.lower() in blob, (
+    assert needle.lower() in err.lower(), (
         "refused, but the model's message did not survive to the terminal — it must be "
         "printed VERBATIM, because it is the part that says what to do instead.\n"
         "  wanted %r\n  got: %s" % (needle, (out + err).strip()))
@@ -200,6 +199,33 @@ def t_next_on_an_empty_ledger_still_explains_itself():
     # pin WHICH state — it ran green for days only while the real game happened to be
     # down. What it owes: the state is printed at all.
     assert "(game " in out, "the game state is half of why anything is offered: %s" % out
+
+
+def t_a_proposed_bridge_item_says_how_to_take_it_too():
+    fresh()
+    ok("game", "UP", "--owner-said", "game up", seat="OWNER")
+    ok("file", "BRIDGE_PROPOSED_HINT_PROBE_FIXTURE", "--for", "CHECK", "--title", "drive the bridge",
+       "--needs", "bridge")
+    out = ok("next", "--seat", "CHECK", seat="CHECK")
+    assert "nothing is CLAIMED" in out and "rimflow bridge take" in out, out
+
+
+def t_a_proposed_partial_item_goes_the_ranked_way():
+    """The claimable branch prints no REMAINING line, so a partial must not take it."""
+    import types
+    sys.path.insert(0, os.path.dirname(CLI))
+    import cli as C
+    it = types.SimpleNamespace(id="X", raised=None, needs="offline")
+    saved = (C.priority.rank, C.reconcile.guard, C._claimable, C.reconcile.assess)
+    try:
+        C.priority.rank = lambda *a: []
+        C.reconcile.guard = lambda offers, idx: (offers, [])
+        C._claimable = lambda *a: [it]
+        C.reconcile.assess = lambda c, idx: types.SimpleNamespace(kind="partial", item=c)
+        ch = C._choose(None, "BENCH", types.SimpleNamespace(target=None), {"now": 0}, {})
+    finally:
+        C.priority.rank, C.reconcile.guard, C._claimable, C.reconcile.assess = saved
+    assert ch["kind"] == "offer" and ch["offer"].kind == "partial", ch
 
 
 def t_a_free_bridge_offer_says_how_to_take_it():
@@ -420,8 +446,7 @@ def t_why_explains_a_v2_item_as_planning_not_breakage():
     fresh()
     ok("file", "SOMEDAY_ITEM_HERE_PROBE_FIXTURE", "--for", "BUILD", "--title", "t",
        "--target-field", "v2")
-    prose("SOMEDAY_ITEM_HERE_PROBE_FIXTURE")
-    ok("claim", "SOMEDAY_ITEM_HERE_PROBE_FIXTURE")
+    prose("SOMEDAY_ITEM_HERE_PROBE_FIXTURE")    # left unclaimed: a lease would withhold it whatever the v2 filter did
     out = ok("why", "SOMEDAY_ITEM_HERE_PROBE_FIXTURE")
     assert "targeted at v2" in out, out
     assert "planning decision, not a defect" in out, (
@@ -570,8 +595,9 @@ def t_one_malformed_timestamp_cannot_promote_an_item():
     import json
     fresh()
     prose("MALFORMED_TS_PROBE_PROBE_FIXTURE")
+    # needs=deploy scores 1: the +2 of a bad "claimed long ago" age is what would cross the line of 3
     ok("file", "MALFORMED_TS_PROBE_PROBE_FIXTURE", "--for", "BENCH", "--title", "probe",
-       "--needs", "offline", "--kind", "task")
+       "--needs", "deploy", "--kind", "task")
     ok("claim", "MALFORMED_TS_PROBE_PROBE_FIXTURE", seat="BENCH")
     ok("start", "MALFORMED_TS_PROBE_PROBE_FIXTURE", seat="BENCH")
     before = ok("next", "--bench", seat="BENCH")
@@ -586,7 +612,7 @@ def t_one_malformed_timestamp_cannot_promote_an_item():
         lines = [json.loads(l) for l in open(p, encoding="utf-8") if l.strip()]
         touched = False
         for e in lines:
-            if e.get("verb") == "claim" or e.get("event") == "claim":
+            if e.get("verb") in ("claim", "start") or e.get("event") in ("claim", "start"):
                 e["ts"] = "not-a-timestamp"
                 hit += 1
                 touched = True

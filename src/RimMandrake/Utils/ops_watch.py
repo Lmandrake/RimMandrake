@@ -94,6 +94,9 @@ def load_rules(path=None) -> dict:
         rules = json.loads(Path(path or rules_path()).read_text(encoding="utf-8"))
         if not isinstance(rules, dict):
             raise ValueError("the rules file's root is not an object")
+        sd = rules.get("series_days", 8)
+        if isinstance(sd, bool) or not isinstance(sd, (int, float)) or not finite(sd) or sd <= 0:
+            raise ValueError("series_days is not a positive number: %r" % (sd,))  # every pass needs it before any collector
     except (OSError, ValueError) as e:
         saved = read_json(last_good)
         if not isinstance(saved, dict):
@@ -274,7 +277,7 @@ def c_codex(now, rules, ctx):
                 bad.append(epoch(r[0]))
             except (TypeError, IndexError, KeyError):
                 bad.append(None)
-    bad += [w[0] for w in week if w[0] is not None and (w[2] is None or not finite(w[1]) or w[0] > now + 300)]
+    bad += [w[0] for w in week if w[0] is None or w[2] is None or not finite(w[1]) or w[0] > now + 300]
     week = sorted(w for w in week if w[0] is not None and w[2] is not None and finite(w[1]) and w[0] <= now + 300)
     if not week:
         why = "no weekly rate_limits reading in %d rollout file(s) modified in %d d" % (nfiles, cr["lookback_days"])
@@ -364,8 +367,8 @@ def outcome_of(d):
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
-    if not isinstance(sj, dict) or epoch(sj.get("epoch")) is None or "state" not in sj or "fault" not in sj \
-            or epoch(sj["epoch"]) > now + 300:
+    if not isinstance(sj, dict) or epoch(sj.get("epoch")) is None or "state" not in sj \
+            or not isinstance(sj.get("fault"), bool) or epoch(sj["epoch"]) > now + 300:
         # a record with no state or fault, or from the future, says nothing about a stall: unknown, never a healthy 0
         out["steve.state"] = U("steward.json missing or unreadable under %s" % qhome())
         for k in ("heartbeat_age_min", "fault_min", "unowned_stall_min"):
@@ -556,6 +559,9 @@ def c_testing(now, rules, ctx):
             blind += 1
             continue
         sig = [vals[k] for k in ("findings", "closed_after_pass", "regressions", "mod_fails")]
+        if any(v is not None and (isinstance(v, bool) or not isinstance(v, (int, float))) for v in sig):
+            blind += 1          # a counter that is no number (a string "0" is truthy) says nothing about the day
+            continue
         if all(v is None for v in sig):
             blind += 1          # busy but whether it caught anything is unknown: not "caught nothing"
             continue
@@ -819,6 +825,8 @@ def c_production(now, rules, ctx):
             continue
         if stale:
             out["production." + k] = U("the streams record is %.0f min old (rm-pulse-streams stopped?)" % age)
+        elif p.get("m") == "MEASURED" and p.get("v") is None:
+            out["production." + k] = U("the streams record marks this MEASURED with no value")
         elif p.get("m") == "MEASURED":
             unit = ((p.get("x") or {}).get("unit")) if isinstance(p.get("x"), dict) else None
             unit = unit if isinstance(unit, str) else None
@@ -1359,7 +1367,8 @@ def run_alarms(points, rules, now, known_ids, filer):
         if crossed is False and cur:
             # hysteresis: clear only after clear_passes clear readings in a row, so a reading that wobbles across
             # the line does not file a fresh item on every wobble
-            cur["clear_seen"] = cur.get("clear_seen", 0) + 1
+            seen = cur.get("clear_seen", 0)     # a bad saved count restarts the count; raising here would never clear
+            cur["clear_seen"] = (seen if isinstance(seen, int) and not isinstance(seen, bool) else 0) + 1
             if cur["clear_seen"] >= clear_passes:
                 log.append({"ts": iso(now), "event": "cleared" if cur.get("state") == "OPEN" else "cleared_unfiled",
                             "aid": aid, "item": cur.get("item")})
@@ -1750,7 +1759,7 @@ def run(now=None, rules=None, filer=None, families=None):
         hist.update(history(recs))
         for r in recs:      # any MEASURED point, a state string too: only the band and run rules need a number
             for k, p in (r.get("points") or {}).items():
-                if isinstance(p, dict) and p.get("m") == "MEASURED":
+                if isinstance(p, dict) and p.get("m") == "MEASURED" and p.get("v") is not None:
                     lastm[k] = max(r["t"], lastm.get(k, r["t"]))
     lastm, saved_lm = carry_last_measured(lastm, _obj(read_json(ops_dir() / "last_measured.json")).get("t"),
                                           points, now)

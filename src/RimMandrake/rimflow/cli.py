@@ -932,7 +932,7 @@ def cmd_next(args, seat):
         _print_skipped(skipped)
         return 0
     if ch["kind"] == "claimable":
-        _offer_claimable(ch["claimable"], seat, held)
+        _offer_claimable(ch["claimable"], seat, held, bridge_free=not w.bridge_holder)
         _print_frontier(w, seat)
         _print_skipped(skipped)
         return 0
@@ -1108,7 +1108,7 @@ def _choose(w, seat, args, ctx, idx):
         return out
     if claimable:
         a = reconcile.assess(claimable[0], idx)
-        if a.kind == "reconcile":
+        if a.kind in ("reconcile", "partial"):  # the ranked branch's words: its REMAINING line, or its verdict owed
             out.update(kind="offer", offer=a, item=a.item)
         else:
             out.update(kind="claimable", claimable=claimable, item=claimable[0])
@@ -1280,11 +1280,14 @@ def _claimable(w, seat, target="v1", now=None, ctx=None):
     return out
 
 
-def _offer_claimable(items, seat, held=None):
+def _offer_claimable(items, seat, held=None, bridge_free=False):
     it = items[0]
     print("nothing is CLAIMED, but %d item%s waiting for %s to claim."
           % (len(items), "" if len(items) == 1 else "s", seat))
     print("")
+    if it.needs == "bridge" and bridge_free:
+        print("⚠️  this item needs the bridge and nobody holds it — take it first:")
+        print("      rimflow bridge take        (and `rimflow bridge release` after)")
     print("%s   %s" % (it.id, _scalars(it)))
     print(it.title or "(no title)")
     # 🔑 What is thin about the item you are being offered, said UP FRONT — never as a

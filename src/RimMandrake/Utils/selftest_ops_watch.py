@@ -245,7 +245,7 @@ check("run: a second pass while one holds run.lock raises Busy (main exits 0, sa
 
 # ---------------------------------------------------------------- Steve collector (fixture QHOME)
 Q = TMP / "q"
-wj(Q / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": None, "incident": None, "since": None})
+wj(Q / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": False, "incident": None, "since": None})
 wj(Q / "steward_watch.json", {"epoch": NOW - 30, "incident": None})
 
 
@@ -269,17 +269,17 @@ s = OW.c_steve(NOW, RULES, ctx)
 check("steve: 3 trailing INVALID -> streak 3 MEASURED", s["steve.invalid_streak"] == {**s["steve.invalid_streak"], "v": 3, "m": "MEASURED"}, s["steve.invalid_streak"])
 check("steve: RUNNING with live heartbeats -> unowned stall 0", s["steve.unowned_stall_min"]["v"] == 0.0, s["steve.unowned_stall_min"])
 check("steve: jobs_24h counts the fixture", s["steve.jobs_24h"]["v"] == 4, s["steve.jobs_24h"])
-wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": "ssh", "incident": None,
+wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": True, "incident": None,
                         "since": OW.iso(NOW - 45 * 60)})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: a 45 min fault with no steward incident -> unowned stall 45",
       abs(s["steve.unowned_stall_min"]["v"] - 45) < 0.2, s["steve.unowned_stall_min"])
-wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": "ssh", "incident": "INC1",
+wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": True, "incident": "INC1",
                         "since": OW.iso(NOW - 45 * 60)})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: the same fault with a steward incident is owned -> 0", s["steve.unowned_stall_min"]["v"] == 0.0,
       s["steve.unowned_stall_min"])
-wj(Q / "steward.json", {"epoch": NOW - 50 * 60, "state": "RUNNING", "fault": None, "incident": None, "since": None})
+wj(Q / "steward.json", {"epoch": NOW - 50 * 60, "state": "RUNNING", "fault": False, "incident": None, "since": None})
 wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": None})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: steward AND watcher both silent > 30 min -> unowned stall = heartbeat age",
@@ -428,11 +428,11 @@ Path(os.environ["RM_SCRATCH_REAP_RUNS"]).write_text(json.dumps({"ts": OW.iso(NOW
 s = OW.c_disk(NOW, RULES, {})
 check("disk: a row with no byte count makes scratch an ESTIMATE", s["disk.scratch_total_gb"]["m"] == "ESTIMATE"
       and s["disk.scratch_total_gb"]["v"] == 2.0, s["disk.scratch_total_gb"])
-wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": "ssh", "incident": None, "since": "garbage"})
+wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": True, "incident": None, "since": "garbage"})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: a fault with no readable since is UNMEASURED duration, not 0 min",
       s["steve.fault_min"]["m"] == "UNMEASURED" and s["steve.unowned_stall_min"]["m"] == "UNMEASURED", s)
-wj(Q / "steward.json", {"epoch": NOW - 90 * 60, "state": "RUNNING", "fault": None, "incident": None, "since": None})
+wj(Q / "steward.json", {"epoch": NOW - 90 * 60, "state": "RUNNING", "fault": False, "incident": None, "since": None})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: a 90 min old steward state is an ESTIMATE, not MEASURED now", s["steve.state"]["m"] == "ESTIMATE", s["steve.state"])
 SD = TMP / "streams2"
@@ -713,7 +713,7 @@ check("blind digest: run() writes digest_blind.md", (TMP / "ops" / "digest_blind
 filed = []
 def filer_rec(todo, conf):
     filed.extend(todo)
-    return {a["name"]: True for a in todo}
+    return {a["name"]: None for a in todo}      # None is what run_alarms reads as filed
 ap = OW.ops_dir() / "alarms.json"
 ap.unlink(missing_ok=True)
 st = OW.run_alarms({"accounts.lukas.runway": M(0.5), "codex.runway": M(0.25), "disk.c_free_gb": M(5.0)},
@@ -725,7 +725,8 @@ check("V2: an account/runway crossing files NO ledger item (the blind roles read
 check("V2: it is kept OPEN for Operations with a number-free title naming no account",
       all(a.get("state") == "OPEN" and a.get("for") == "Operations" and not a.get("item")
           and not re.search(r"\d", a.get("title") or "1") and "lukas" not in a["title"] for a in ta.values()), ta)
-check("V2: a non-account alarm (disk) still files for BENCH", any(t["aid"].startswith("DISK") for t in filed), filed)
+check("V2: a non-account alarm (disk) still files for BENCH", any(t["aid"].startswith("DISK") for t in filed)
+      and any(k.startswith("DISK") and a.get("state") == "OPEN" and a.get("item") for k, a in st.items()), st)
 ap.write_text(json.dumps({"RUNWAY_LOW:accounts.system.runway": {
     "state": "OPEN", "since": "x", "item": "OPS_RUNWAY_RESCUE_C01D", "name": "OPS_RUNWAY_RESCUE_C01D",
     "title": "Ops alarm RUNWAY_LOW: accounts.system.runway = 0.81"}}))
@@ -888,8 +889,13 @@ _filed = []
 _st = OW.run_alarms(_pts, _bad_rules, NOW, set(), lambda todo, conf: _filed.extend(todo) or {a["name"]: None for a in todo})
 check("alarms: a non-object state entry holds that alarm and files nothing",
       _st["GOOD:x.k"]["state"] == "UNREADABLE" and _st["OLD:y.z"]["state"] == "UNREADABLE" and not _filed, (_st, _filed))
-_ap.write_text(json.dumps({"GOOD:x.k": {"state": "OPEN", "clear_seen": "not a number"}}), encoding="utf-8")
-_st = OW.run_alarms({"x.k": OW.M(0.0, "n")}, _bad_rules, NOW, set(), None)
+_ap.write_text(json.dumps({"GOOD:x.k": {"state": "OPEN"}}), encoding="utf-8")
+_tk = OW.is_token_key
+OW.is_token_key = lambda k: 1 / 0
+try:
+    _st = OW.run_alarms({"x.k": OW.M(0.0, "n")}, _bad_rules, NOW, set(), None)
+finally:
+    OW.is_token_key = _tk
 check("alarms: a step that raises costs its alarm only and records why", "alarm step raised" in str(_st["GOOD:x.k"].get("error")), _st)
 _ap.unlink()
 
@@ -1046,7 +1052,7 @@ check("testing: a job with list counts is not a caught job, and does not raise",
 _lm, _keep = OW.carry_last_measured({}, {"x.k": 1e20}, {"x.k": OW.U("gone")}, NOW)
 check("silence: a future saved time is dropped, not a muted key", "x.k" not in _lm and "x.k" not in _keep, (_lm, _keep))
 OW.qhome = lambda: _q2
-wj(_q2 / "steward.json", {"epoch": NOW + 3600, "state": "RUNNING", "fault": None})
+wj(_q2 / "steward.json", {"epoch": NOW + 3600, "state": "RUNNING", "fault": False})
 try:
     _s = OW.c_steve(NOW, RULES, {})
 finally:
@@ -1132,7 +1138,8 @@ _rx = copy.deepcopy(RULES)
 del _rx["run"]
 _fl = OW.andon({"disk.root_free_gb": OW.M(5.0, "GB")}, {}, {}, _rx, NOW)
 check("andon: a missing rule section is one flag, and the other rules still run",
-      len([f for f in _fl if f["rule"] == "bad_rule"]) == 1 and [f for f in _fl if f["rule"] == "bad_rule"][0]["key"] == "rules.run", _fl[:3])
+      len([f for f in _fl if f["rule"] == "bad_rule"]) == 1 and [f for f in _fl if f["rule"] == "bad_rule"][0]["key"] == "rules.run"
+      and any(f["key"] == "disk.root_free_gb" and f["rule"] != "bad_rule" for f in _fl), _fl[:3])
 _rx = copy.deepcopy(RULES)
 del _rx["alarm"]
 OW.run(now=NOW + 60, rules=_rx, families={"v3"})
@@ -1163,21 +1170,23 @@ check("rules: a list root is torn too", OW.load_rules(_rp).get("_load_error"))
 _dj = {"result": {"outcome": {"status": "INVALID"}}, "job": {}}
 check("steve: an outcome that is no string is no outcome", OW.outcome_of(_dj) is None and OW.outcome_of({"result": {"outcome": "PASS"}}) == "PASS")
 OW.qhome = lambda: _q2
-wj(_q2 / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": None, "reason": 42})
+wj(_q2 / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": False, "reason": 42})
 try:
     _s = OW.c_steve(NOW, RULES, {})
 finally:
     OW.qhome = _qh
 check("steve: a numeric reason costs nothing", _s["steve.state"]["m"] == "MEASURED", _s["steve.state"])
-_rs = copy.deepcopy(RULES)
-_rs["steve_incident"] = {"prefix": None}
-_w = types.SimpleNamespace(items={"A": types.SimpleNamespace(id="A")})
-_err = None
+import pulse_core as _pc  # noqa: E402
+_rl, _si = _pc.read_ledger, OW.steve_incident_unclaimed
+def _boom(*a):
+    raise TypeError("bad steve_incident")
+_pc.read_ledger, OW.steve_incident_unclaimed = (lambda *a, **k: []), _boom
 try:
-    OW.steve_incident_unclaimed(_w, None, NOW, _rs)
-except Exception as e:  # noqa: BLE001
-    _err = e
-check("flow: the fixture does raise, so c_flow's guard has work to do", _err is not None)
+    _f = OW.c_flow(NOW, RULES, {})
+finally:
+    _pc.read_ledger, OW.steve_incident_unclaimed = _rl, _si
+check("flow: a bad steve_incident rule costs its own reading, the family's others survive",
+      _f["steve.incident_unclaimed_min"]["m"] == "UNMEASURED" and any(k.startswith("flow.") and p["m"] == "MEASURED" for k, p in _f.items()), _f)
 _rx = copy.deepcopy(RULES)
 _rx["targets"] = [{"key": "disk.root_free_bg", "op": "<", "value": 210, "alarm": False, "tag": "T_X", "title_field": None, "marks": ["MEASURED"]}]
 _cs = dict(OW.COLLECTORS)
@@ -1213,5 +1222,22 @@ OW.run(now=_T0 + 4 * 3600, rules=_rq, families={"steve"})
 OW.COLLECTORS.update(_cs)
 _txt = (OW.ops_dir() / "flags.json").read_text(encoding="utf-8")
 check("silent: a series row from the future does not read as just measured", '"silent"' in _txt, _txt[:300])
+_rp.write_text(json.dumps({"series_days": 8}), encoding="utf-8")
+OW.load_rules(_rp)
+_rp.write_text(json.dumps({"series_days": "8"}), encoding="utf-8")
+_lr = OW.load_rules(_rp)
+check("rules: a string series_days is torn, and never becomes the last good copy",
+      _lr.get("series_days") == 8 and _lr.get("_load_error") and OW.read_json(OW.ops_dir() / "rules_last_good.json")["series_days"] == 8, _lr)
+OW.qhome = lambda: _q2
+wj(_q2 / "steward.json", {"epoch": NOW - 60, "state": "FAULT", "fault": None, "since": OW.iso(NOW - 3600), "reason": "x"})
+try:
+    _s = OW.c_steve(NOW, RULES, {})
+finally:
+    OW.qhome = _qh
+check("steve: a null fault is unknown, never a healthy 0", _s["steve.fault_min"]["m"] == "UNMEASURED", _s["steve.fault_min"])
+_ap2 = OW.ops_dir() / "alarms.json"
+_ap2.write_text(json.dumps({"DISK_LOW:disk.root_free_gb": {"state": "OPEN", "item": "X_Y_Z", "clear_seen": "3", "since": OW.iso(NOW)}}), encoding="utf-8")
+_st = OW.run_alarms({"disk.root_free_gb": OW.M(500.0, "GB")}, RULES, NOW, set(), None)
+check("alarm: a string clear_seen restarts the count instead of crashing", _st.get("DISK_LOW:disk.root_free_gb", {}).get("clear_seen") == 1, _st)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
