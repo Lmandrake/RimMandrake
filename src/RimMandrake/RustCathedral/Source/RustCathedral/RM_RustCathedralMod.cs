@@ -74,6 +74,11 @@ namespace RimMandrake.RustCathedral
 
         public override void ExposeData()
         {
+            // CATHEDRAL_FORCEDOFF_FIX_SAVED_AS_CHOICE: a feature PatchApplier forced off (its Harmony patch failed) must save
+            // as the player's own choice, not as false. The patches live in the Hum and Walls DLLs, each with its own internal
+            // PatchApplier, so this (the mod's ONLY registered settings class) calls both kits' hooks around its scribing.
+            RustCathedralHumSettings.PatchBeforeExpose();
+            RustCathedralWallsSettings.PatchBeforeExpose();
             base.ExposeData();
             Scribe_Values.Look(ref biomeRarityFactor, "biomeRarityFactor", 1f, true);
             Scribe_Values.Look(ref roachCleaningEnabled, "roachCleaningEnabled", true);
@@ -130,6 +135,8 @@ namespace RimMandrake.RustCathedral
             Scribe_Values.Look(ref RustCathedralWallsSettings.sacredWallsEnabled, "walls_sacredWallsEnabled", true);
             Scribe_Values.Look(ref RustCathedralWallsSettings.sacredWallChanceMultiplier, "walls_sacredWallChanceMultiplier", 1f);
             Scribe_Values.Look(ref RustCathedralWallsSettings.livePatternMetalGateEnabled, "walls_livePatternMetalGateEnabled", true);
+            RustCathedralHumSettings.PatchAfterExpose();
+            RustCathedralWallsSettings.PatchAfterExpose();
         }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -299,6 +306,9 @@ namespace RimMandrake.RustCathedral
             if (tab == 1) humSettings.DoWindowContents(body);
             else if (tab == 2) wallsSettings.DoWindowContents(body);
             else settings.DoWindowContents(body);
+            // A feature whose patch failed cannot be clicked (or reset) back on, on any tab.
+            RustCathedralHumSettings.PatchReforceOff();
+            RustCathedralWallsSettings.PatchReforceOff();
         }
     }
 }

@@ -96,9 +96,10 @@ namespace RimMandrake.RustCathedral.Hum
 
 		public static bool HullBoltsActive => hullBoltsEnabled;
 
+		// NOT CALLED AT RUNTIME (the class is never registered). Kept only as the Scribe inventory that
+		// Utils/selftest_settings_screens.py audits this screen against; it must NOT call PatchApplier (the hooks below do).
 		public override void ExposeData()
 		{
-			RimMandrake.Shared.PatchApplier.BeforeExpose(GetType());
 			base.ExposeData();
 			Scribe_Values.Look(ref humMechanicEnabled, "humMechanicEnabled", true);
 			Scribe_Values.Look(ref commentaryEnabled, "commentaryEnabled", true);
@@ -127,8 +128,15 @@ namespace RimMandrake.RustCathedral.Hum
 			Scribe_Values.Look(ref hullBoltRealiseDays, "hullBoltRealiseDays", 10f);
 			Scribe_Values.Look(ref hullBoltRevealDays, "hullBoltRevealDays", 5f);
 			Scribe_Values.Look(ref hullBoltPetMemoryEnabled, "hullBoltPetMemoryEnabled", true);
-			RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
 		}
+
+		// CATHEDRAL_FORCEDOFF_FIX_SAVED_AS_CHOICE: this class is never registered with Verse (RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1);
+		// RM_RustCathedralSettings.ExposeData scribes these statics as "hum_*". PatchApplier is internal and linked into each kit
+		// DLL with its own state, so the host cannot reach this DLL's copy directly: it calls these three around its scribing and
+		// after drawing the settings window. Null owner: this DLL's PatchApplier only ever remembers this class's fields.
+		public static void PatchBeforeExpose() { RimMandrake.Shared.PatchApplier.BeforeExpose(); }
+		public static void PatchAfterExpose() { RimMandrake.Shared.PatchApplier.AfterExpose(); }
+		public static void PatchReforceOff() { RimMandrake.Shared.PatchApplier.ReforceOff(); }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
         // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).

@@ -24,16 +24,22 @@ namespace RimMandrake.RustCathedral.Walls
         public static float sacredWallChanceMultiplier = 1f;
         public static bool livePatternMetalGateEnabled = true;
 
+        // NOT CALLED AT RUNTIME (the class is never registered). Kept only as the Scribe inventory that
+        // Utils/selftest_settings_screens.py audits this screen against; it must NOT call PatchApplier (the hooks below do).
         public override void ExposeData()
         {
-            RimMandrake.Shared.PatchApplier.BeforeExpose(GetType());
             base.ExposeData();
             Scribe_Values.Look(ref wallTiersEnabled, "wallTiersEnabled", true);
             Scribe_Values.Look(ref sacredWallsEnabled, "sacredWallsEnabled", true);
             Scribe_Values.Look(ref sacredWallChanceMultiplier, "sacredWallChanceMultiplier", 1f);
             Scribe_Values.Look(ref livePatternMetalGateEnabled, "livePatternMetalGateEnabled", true);
-            RimMandrake.Shared.PatchApplier.AfterExpose(GetType());
         }
+
+        // CATHEDRAL_FORCEDOFF_FIX_SAVED_AS_CHOICE: never registered with Verse; RM_RustCathedralSettings.ExposeData scribes these
+        // statics as "walls_*" and calls these hooks, because PatchApplier is internal and this DLL holds its own copy of it.
+        public static void PatchBeforeExpose() { RimMandrake.Shared.PatchApplier.BeforeExpose(); }
+        public static void PatchAfterExpose() { RimMandrake.Shared.PatchApplier.AfterExpose(); }
+        public static void PatchReforceOff() { RimMandrake.Shared.PatchApplier.ReforceOff(); }
 
         // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
         // MUST stay the LAST public static field initialiser in this class (C# runs them in textual order).
