@@ -239,11 +239,14 @@ def c_codex(now, rules, ctx):
     recs, nfiles = CX.readings(dirs, newer_than=now - cr["lookback_days"] * DAY)
     week = []
     for r in recs:      # (ts, p_used, p_win, p_reset, s_used, s_win, s_reset, plan)
-        if r[2] == 10080:
-            week.append((epoch(r[0]), float(r[1]), epoch(r[3])))
-        elif r[5] == 10080 and r[4] is not None:
-            week.append((epoch(r[0]), float(r[4]), epoch(r[6])))
-    week = sorted(w for w in week if w[0] is not None and w[2] is not None)
+        try:
+            if r[2] == 10080:
+                week.append((epoch(r[0]), float(r[1]), epoch(r[3])))
+            elif r[5] == 10080 and r[4] is not None:
+                week.append((epoch(r[0]), float(r[4]), epoch(r[6])))
+        except (TypeError, ValueError, IndexError, KeyError):
+            continue    # one bad record costs itself; a newer good one still reads
+    week = sorted(w for w in week if w[0] is not None and w[2] is not None and math.isfinite(w[1]))
     if not week:
         why = "no weekly rate_limits reading in %d rollout file(s) modified in %d d" % (nfiles, cr["lookback_days"])
         return {k: U(why) for k in ("codex.week_used_pct", "codex.hours_to_reset", "codex.runway")}
@@ -317,8 +320,9 @@ def done_jobs(since, bad=None):
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
-    if not isinstance(sj, dict) or epoch(sj.get("epoch")) is None or "state" not in sj or "fault" not in sj:
-        # a record with no state or fault says nothing about a stall: unknown, never a healthy 0
+    if not isinstance(sj, dict) or epoch(sj.get("epoch")) is None or "state" not in sj or "fault" not in sj \
+            or epoch(sj["epoch"]) > now + 300:
+        # a record with no state or fault, or from the future, says nothing about a stall: unknown, never a healthy 0
         out["steve.state"] = U("steward.json missing or unreadable under %s" % qhome())
         for k in ("heartbeat_age_min", "fault_min", "unowned_stall_min"):
             out["steve." + k] = U("steward.json missing or unreadable")
@@ -367,7 +371,7 @@ def c_steve(now, rules, ctx):
     bad = []
     jobs = done_jobs(now - 7 * DAY, bad)
     # a record with no outcome cannot say INVALID or not: unseen, like an unreadable one
-    bad += [((d.get("job") or {}).get("id") or "?") + " (no outcome)" for _, d in jobs
+    bad += [str((d.get("job") or {}).get("id") or "?") + " (no outcome)" for _, d in jobs
             if not (d.get("result") or {}).get("outcome")]
     ctx["steve_jobs_bad"] = bad
     if not jobs:
@@ -382,8 +386,8 @@ def c_steve(now, rules, ctx):
         for fin, d in reversed(js):
             oc = (d.get("result") or {}).get("outcome")
             if oc != "INVALID":
-                if not oc and ((d.get("job") or {}).get("id") or "?") + " (no outcome)" not in bad:
-                    bad.append(((d.get("job") or {}).get("id") or "?") + " (no outcome)")   # the run's end is unknown
+                if not oc and str((d.get("job") or {}).get("id") or "?") + " (no outcome)" not in bad:
+                    bad.append(str((d.get("job") or {}).get("id") or "?") + " (no outcome)")   # the run's end is unknown
                 return n, start, not oc
             n, start = n + 1, fin
         return n, start, False
@@ -425,13 +429,16 @@ def c_steve(now, rules, ctx):
 def caught(d, closes, close_after_h):
     """A testq job caught something: a FAIL row, a finding it filed, or an item it ran closed within the window."""
     res = d.get("result") or {}
-    if (res.get("counts") or {}).get("FAIL"):
+    counts, ing = res.get("counts"), d.get("ingested")
+    if isinstance(counts, dict) and counts.get("FAIL"):
         return True
-    groups = ((d.get("ingested") or {}).get("groups") or {})
+    groups = ing.get("groups") if isinstance(ing, dict) else None
+    groups = groups if isinstance(groups, dict) else {}
     if any(g.get("findings") for g in groups.values() if isinstance(g, dict)):
         return True
     fin = epoch(d.get("finished") or res.get("finished")) or 0
-    items = set(groups) | {(d.get("job") or {}).get("item")}
+    item = (d.get("job") or {}).get("item")
+    items = set(groups) | ({item} if isinstance(item, str) else set())
     return any(fin <= c <= fin + close_after_h * HOUR for i in items if i for c in closes.get(i, ()))
 
 
@@ -619,14 +626,22 @@ def systemctl_json(*args):
 def c_timers(now, rules, ctx):
     out = {}
     failed = systemctl_json("list-units", "--failed", "--all")
-    names = sorted(u.get("unit") for u in failed)
+    names = sorted(str(u.get("unit") if isinstance(u, dict) else u) for u in failed)
     out["timers.failed_units"] = M(len(names), "failed user units", units=names[:12])
-    over = []
-    for t in systemctl_json("list-timers", "--all"):
-        nxt = t.get("next")
-        if nxt and nxt / 1e6 < now - 600:
+    try:                # the failed count above stands whatever becomes of the second source
+        timers = systemctl_json("list-timers", "--all")
+    except Exception as e:  # noqa: BLE001
+        out["timers.overdue_timers"] = U("list-timers: %s: %s" % (type(e).__name__, str(e)[:160]))
+        return out
+    over, nob = [], 0
+    for t in timers:
+        nxt = t.get("next") if isinstance(t, dict) else "bad"
+        if nxt and (isinstance(nxt, bool) or not isinstance(nxt, (int, float))):
+            nob += 1
+        elif nxt and nxt / 1e6 < now - 600:
             over.append(t.get("unit"))
-    out["timers.overdue_timers"] = M(len(over), "timers whose next elapse is over 10 min past", units=over[:12])
+    mk = M if not nob else (lambda v, u, **x: E(v, "%d timer row(s) unreadable (not counted)" % nob, u, **x))
+    out["timers.overdue_timers"] = mk(len(over), "timers whose next elapse is over 10 min past", units=over[:12])
     return out
 
 
@@ -742,6 +757,8 @@ def c_production(now, rules, ctx):
     if rt is None:
         return {"production._collector": U("streams series has no record with a readable time (%s)" % streams_series())}
     age = (now - rt) / 60.0
+    if age < -5:
+        return {"production._collector": U("the streams record is dated %.0f min in the future" % -age)}
     out = {"production.record_age_min": M(round(age, 1), "min since rm-pulse-streams' last record")}
     stale = age > 60
     for k, p in sorted((rec.get("measures") or {}).items()):
@@ -752,6 +769,7 @@ def c_production(now, rules, ctx):
             out["production." + k] = U("the streams record is %.0f min old (rm-pulse-streams stopped?)" % age)
         elif p.get("m") == "MEASURED":
             unit = ((p.get("x") or {}).get("unit")) if isinstance(p.get("x"), dict) else None
+            unit = unit if isinstance(unit, str) else None
             out["production." + k] = M(p.get("v"), unit, asof=p.get("asof"))
         else:
             out["production." + k] = soft_point(p)
@@ -1234,7 +1252,11 @@ def run_alarms(points, rules, now, known_ids, filer):
     ts = target_state(points, rules)
     conf = alarm_conf(rules)
     todo = []
-    clear_passes = max(1, int(conf.get("clear_passes", 1)))
+    try:
+        clear_passes = max(1, int(conf.get("clear_passes", 1)))
+    except (TypeError, ValueError):     # a bad value reads as the safest: never an alarm cleared early, never a dead pass
+        clear_passes = 4
+        log.append({"ts": iso(now), "event": "bad_clear_passes", "value": str(conf.get("clear_passes"))[:40]})
     def one(aid):
         """One alarm's step. A malformed entry or a failure here costs that alarm only, and is said aloud."""
         crossed = ts.get(aid)          # True crossed / False clear / None UNMEASURED or no reading: hold
@@ -1244,6 +1266,9 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur = state[aid] = {"state": "UNREADABLE", "since": iso(now),
                                 "error": "alarms.json entry was not an object: filing held for this alarm"}
             log.append({"ts": iso(now), "event": "bad_state_entry", "aid": aid})
+        if cur and not isinstance(cur.get("name", ""), str):
+            cur.pop("name")     # a saved name of the wrong type cannot be retried: mint a fresh one
+            log.append({"ts": iso(now), "event": "bad_saved_name", "aid": aid})
         if cur and is_token_key(aid.split(":", 1)[-1]) and (cur.get("item") or cur.get("state") == "PENDING"):
             # filed on a seat queue before review V (V2): from now on it is Operations' alone. The old ledger item is
             # kept as legacy_item (never noted again: a clear note would carry the reading onto a blind-read item)
@@ -1274,9 +1299,10 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur["clear_seen"] = 0
         if cur and cur.get("state") == "UNREADABLE":
             return
-        if cur and cur.get("state") == "OPEN" and not cur.get("item") and not is_token_key(aid.split(":", 1)[-1]):
+        if cur and cur.get("state") == "OPEN" and not (cur.get("item") and isinstance(cur["item"], str)) \
+                and not is_token_key(aid.split(":", 1)[-1]):
             # OPEN with no item told nobody: file it, or a corrupt entry acknowledges the alarm for good
-            cur["state"] = "PENDING"
+            cur.update(state="PENDING", item=None)
             log.append({"ts": iso(now), "event": "open_without_item", "aid": aid})
         if cur and cur.get("state") == "OPEN":
             if crossed:
@@ -1305,7 +1331,7 @@ def run_alarms(points, rules, now, known_ids, filer):
             log.append({"ts": iso(now), "event": "opened_for_operations", "aid": aid})
             return
         if not cur.get("name"):  # mint once; a retry keeps the saved name
-            taken = set(known_ids) | {a.get("name") for a in state.values() if isinstance(a, dict) and a.get("name")}
+            taken = set(known_ids) | {a["name"] for a in state.values() if isinstance(a, dict) and isinstance(a.get("name"), str)}
             try:
                 cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
             except Exception as e:  # noqa: BLE001  one unnameable alarm stays PENDING and counted (signal_watch tells); the pass goes on
@@ -1594,7 +1620,7 @@ def carry_last_measured(lastm, saved, points, now):
     series: it fills the gap for keys this pass still reports (a key not reported stays the 'gone' rule's, from the
     series only, so a retired key is not 'gone' forever) and drops keys older than LAST_MEASURED_RETIRE_DAYS."""
     saved = {k: t for k, t in (saved if isinstance(saved, dict) else {}).items()
-             if isinstance(t, (int, float)) and math.isfinite(t)}
+             if isinstance(t, (int, float)) and math.isfinite(t) and t <= now + 300}
     merged = dict(lastm)
     for k in points:
         if k not in merged and k in saved:
@@ -1673,7 +1699,11 @@ def run(now=None, rules=None, filer=None, families=None):
                                       and num(points[k]) is not None else []) for k in set(hist) | set(points)}
     dg = build_digest(points, hist_all, flags, alarms, now, run_s)
     atomic_json(ops_dir() / "digest.json", dg)
-    write_text_atomic(ops_dir() / "digest.md", digest_md(dg))
+    try:
+        full = digest_md(dg)
+    except Exception as e:  # noqa: BLE001  the headline survives a row that cannot be rendered
+        full = "# ops_watch digest failed to render\n\n%s: %s\n\n%s\n" % (type(e).__name__, str(e)[:200], dg.get("headline"))
+    write_text_atomic(ops_dir() / "digest.md", full)
     try:
         blind = blind_digest_md(dg, rules)
     except Exception as e:  # noqa: BLE001  fail closed and aloud: never a stale digest, never an unfiltered one

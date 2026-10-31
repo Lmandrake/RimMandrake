@@ -353,6 +353,14 @@ check("run: digest d24 for d_free_gb is 0 (1000 a day ago, 1000 now)", k["disk.d
 check("run: digest d24 is the real change (399 a day ago, 397 now)", k["disk.root_free_gb"]["d24"] == -2.0, k["disk.root_free_gb"])
 check("run: the digest.md exists and leads with the headline",
       (TMP / "ops" / "digest.md").read_text().splitlines()[2].startswith("runway"))
+def fake_prod_new(now, rules, ctx):
+    ctx["production_src_t"] = 1235.0
+    return {"production.P1": M(6)}
+
+
+OW.COLLECTORS["production"] = fake_prod_new
+OW.run(now=NOW + 1, rules=RULES, filer=None)
+check("run: a changed production source record IS appended", len(OW.series_path("production").read_text().splitlines()) == 2)
 OW.COLLECTORS.clear()
 OW.COLLECTORS.update(saved)
 
@@ -630,14 +638,15 @@ texts, bad = OW.tt_texts(NOW, R, {"events": evs})
 check("tokentalk: an empty killed-run file marks only its own role bad, an in-flight one is skipped, the rest stay read",
       list(k for k in bad if k.startswith("role.")) == ["role.arbiter", "role.producer"] and "role._all" not in bad
       and len(texts.get("role.conductor", [])) == 6, (bad, list(texts)))
-subprocess.run(["git", "-C", str(GIT), "init", "-q"], check=True)
+_GITENV = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}     # -C does not beat an inherited GIT_DIR
+subprocess.run(["git", "-C", str(GIT), "init", "-q"], check=True, env=_GITENV)
 for name, msg in (("src/RimMandrake/Mod/a.xml", "tokens spent here"), ("src/RimMandrake/Utils/b.py", "plain"),
                   ("src/RimMandrake/Utils/c.py", "ledger: skip me tokens")):
     f = GIT / name
     f.parent.mkdir(parents=True, exist_ok=True)
     f.write_text(msg)
-    subprocess.run(["git", "-C", str(GIT), "add", "-A"], check=True)
-    subprocess.run(["git", "-C", str(GIT), "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", msg], check=True)
+    subprocess.run(["git", "-C", str(GIT), "add", "-A"], check=True, env=_GITENV)
+    subprocess.run(["git", "-C", str(GIT), "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", msg], env=_GITENV, check=True)
 texts, bad = OW.tt_texts(time.time(), R, {"events": evs})
 check("tokentalk: commits are split by path owner and ledger: commits skipped (no repo yet -> bad)", "commits.BENCH" in bad)
 os.environ["RM_STREAMS_BENCH"] = str(GIT)
@@ -707,7 +716,8 @@ st = OW.run_alarms({"accounts.lukas.runway": M(0.5), "codex.runway": M(0.25), "d
                    RULES, NOW, set(), filer_rec)
 ta = {k: a for k, a in st.items() if k.startswith("RUNWAY")}
 check("V2: an account/runway crossing files NO ledger item (the blind roles read `rimflow queue`)",
-      ta and not [t for t in filed if OW.is_token_key(t["aid"].split(":", 1)[1])], filed)
+      set(ta) == {"RUNWAY_LOW:accounts.lukas.runway", "RUNWAY_LOW:codex.runway"}
+      and not [t for t in filed if OW.is_token_key(t["aid"].split(":", 1)[1])], filed)
 check("V2: it is kept OPEN for Operations with a number-free title naming no account",
       all(a.get("state") == "OPEN" and a.get("for") == "Operations" and not a.get("item")
           and not re.search(r"\d", a.get("title") or "1") and "lukas" not in a["title"] for a in ta.values()), ta)
@@ -987,7 +997,9 @@ OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, set(), _ok)
 check("alarms: a non-token alarm marked for Operations with no item is filed", len(_filed) == 1, _filed)
 _ap.write_text(json.dumps({"DUP:x.k": {"state": "OPEN", "item": 123}}), encoding="utf-8")
 OW.qhome = lambda: _q2
+(_q2 / "done" / "old_torn.json").unlink()
 wj(_q2 / "done" / "listresult.json", {"finished": OW.iso(NOW - 5 * 60), "job": {"id": "l"}, "result": [1]})
+os.utime(_q2 / "done" / "listresult.json", (NOW, NOW))
 wj(_q2 / "steward.json", {"epoch": NOW - 60})
 try:
     _s = OW.c_steve(NOW, RULES, {})
@@ -998,8 +1010,8 @@ try:
 finally:
     OW.qhome = _qh
 OW.run(now=NOW + 40, rules=_rm, families={"v3"})
-check("digest: a non-string item in alarm state still writes the digest",
-      "item 123" in (OW.ops_dir() / "digest.md").read_text(encoding="utf-8"))
+check("digest: a non-string item is repaired to pending, and the digest still names the alarm",
+      "PENDING DUP:x.k" in (OW.ops_dir() / "digest.md").read_text(encoding="utf-8"), (OW.ops_dir() / "digest.md").read_text(encoding="utf-8")[:400])
 _ap.unlink()
 _rb = copy.deepcopy(_rr)
 _rb["band"]["min_points"] = "20"
@@ -1009,5 +1021,38 @@ _rb["run"]["n"] = 2
 _fl = OW.andon({"x.k": OW.M(5.0, "n")}, {"x.k": [(NOW - 90, 1.0), (NOW - 60, 2.0), (NOW - 30, 3.0)]}, {}, _rb, NOW)
 check("rules: a bad band rule leaves the run rule working", any(f["rule"] == "run" for f in _fl)
       and any(f["rule"] == "bad_rule" and f["tag"] == "band" for f in _fl), _fl)
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "OPEN", "item": ["bad"], "name": ["bad"]}}), encoding="utf-8")
+_filed.clear()
+_rc = copy.deepcopy(_rm)
+_rc["alarm"]["clear_passes"] = "four"
+OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rc, NOW, set(), _ok)
+check("alarms: a bad clear_passes, and an item or name of the wrong type, still file", len(_filed) == 1, _filed)
+_ap.unlink()
+_sj = OW.systemctl_json
+OW.systemctl_json = lambda *a: [{"unit": "x.service"}] if a[0] == "list-units" else [{"unit": "t", "next": "unknown"}]
+try:
+    _t = OW.c_timers(NOW, RULES, {})
+finally:
+    OW.systemctl_json = _sj
+check("timers: a bad timer row keeps the failed-unit count MEASURED", _t["timers.failed_units"]["v"] == 1
+      and _t["timers.overdue_timers"]["m"] == "ESTIMATE", _t)
+check("testing: a job with list counts is not a caught job, and does not raise",
+      OW.caught({"result": {"counts": ["bad"]}, "job": {"item": ["x"]}, "ingested": 5}, {}, 1) is False)
+_lm, _keep = OW.carry_last_measured({}, {"x.k": 1e20}, {"x.k": OW.U("gone")}, NOW)
+check("silence: a future saved time is dropped, not a muted key", "x.k" not in _lm and "x.k" not in _keep, (_lm, _keep))
+OW.qhome = lambda: _q2
+wj(_q2 / "steward.json", {"epoch": NOW + 3600, "state": "RUNNING", "fault": None})
+try:
+    _s = OW.c_steve(NOW, RULES, {})
+finally:
+    OW.qhome = _qh
+check("steve: a steward record from the future is unknown, not a fresh heartbeat", _s["steve.state"]["m"] == "UNMEASURED", _s["steve.state"])
+_dm = OW.digest_md
+OW.digest_md = lambda dg: len(5)
+try:
+    OW.run(now=NOW + 50, rules=_rm, families={"v3"})
+finally:
+    OW.digest_md = _dm
+check("digest: a render failure writes the failure and the headline", "failed to render" in (OW.ops_dir() / "digest.md").read_text(encoding="utf-8"))
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
