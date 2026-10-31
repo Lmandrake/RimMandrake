@@ -348,6 +348,117 @@ def t_census(tmp):
           doc["blocking"])
 
 
+NUL_TAIL = b"\x00" * 1800                   # what a WSL crash left as the last "line" of six seat transcripts
+
+
+def tail_file(path, recs, tail, mtime):
+    """A transcript: assistant records at times `recs` ([(t, mid)] or raw bytes lines), then `tail` bytes, mtime set."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    body = b"".join(r if isinstance(r, bytes) else json.dumps(
+        {"type": "assistant", "timestamp": iso(r[0]), "cwd": "/home/u/seat", "message": {
+            "id": r[1], "model": OPUS, "usage": {"input_tokens": 10, "output_tokens": 0}}}).encode() + b"\n"
+        for r in recs) + tail
+    path.write_bytes(body)
+    os.utime(path, (mtime, mtime))
+    return path
+
+
+def t_stale_tail(tmp):
+    """ARENA_METER_FIX_BAD_LINES_VOID_VERDICT: a stale NUL crash tail in the harness's own transcript root is
+    reported, not blocking; every near miss (in-window, forged mtime, text junk, mid-file, arm-writable root, symlink,
+    nothing valid, fresh mtime) stays BLOCKING."""
+    since, until = 10_000.0, 20_000.0
+    st = tmp / "stale"
+    pj = st / "projects"
+    arm_root = st / "sandbox_home_projects"
+    ok = tail_file(pj / "-home-u-seat" / "ok.jsonl", [(1000, "o1"), (1100, "o2")], NUL_TAIL, 2000)
+    check(SP.stale_crash_tail(str(ok), str(pj), [str(arm_root)], since) is not None,
+          "stale tail: an all-NUL final line of a transcript last written before the window is a stale crash tail")
+    cases = {
+        "in-window record then NUL tail (junk after valid records)": ([(1000, "a"), (15_000, "b")], NUL_TAIL, 15_001),
+        "forged old mtime over an in-window record": ([(15_000, "c")], NUL_TAIL, 2000),
+        "old file, TEXT junk tail": ([(1000, "d")], b'{"type": "assistant", "trunc', 2000),
+        "old file, NUL line mid-file": ([(1000, "e"), NUL_TAIL + b"\n", (1100, "f")], b"", 2000),
+        "old records but mtime inside the window": ([(1000, "g")], NUL_TAIL, 15_000),
+        "nothing but NUL (no valid record dates it)": ([], NUL_TAIL, 2000),
+        "valid JSON non-dict tail": ([(1000, "h")], b"[1, 2]", 2000),
+    }
+    for name, (recs, tail, mt) in cases.items():
+        p = tail_file(pj / "-home-u-seat" / ("m%d.jsonl" % len(name)), recs, tail, mt)
+        check(SP.stale_crash_tail(str(p), str(pj), [str(arm_root)], since) is None,
+              "stale tail MUTANT %s -> not excused (blocking)" % name)
+        p.unlink()
+    armf = tail_file(arm_root / "-s" / "x.jsonl", [(1000, "i")], NUL_TAIL, 2000)
+    check(SP.stale_crash_tail(str(armf), str(pj), [str(arm_root)], since) is None
+          and SP.stale_crash_tail(str(armf), str(arm_root.parent), [str(arm_root)], since) is None,
+          "stale tail MUTANT in an arm-writable root (sandbox HOME / capture) -> never excused, even inside root")
+    lnk = pj / "-home-u-seat" / "lnk.jsonl"
+    lnk.symlink_to(ok)
+    check(SP.stale_crash_tail(str(lnk), str(pj), [], since) is None, "stale tail MUTANT symlinked file -> blocking")
+    lnk.unlink()
+    # GPT review r1 (gpt_review.md, 2026-10-31): each of these must stay blocking
+    undated = json.dumps({"type": "assistant", "message": {"id": "u", "model": OPUS}}).encode() + b"\n"
+    live = json.dumps({"type": "assistant", "timestamp": iso(15_000), "message": {"id": "lv"}}).encode()
+    gpt_cases = {
+        "undated assistant record AFTER a dated one": ([(1000, "u1"), undated], NUL_TAIL, 2000),
+        "undated assistant record BEFORE a dated one": ([undated, (1000, "u2")], NUL_TAIL, 2000),
+        "bare-CR wrapped in-window record (census splits on CR)": (
+            [(1000, "c1"), b'{"timestamp": "' + iso(1100).encode() + b'", "payload": \r' + live + b'\r}\n'],
+            NUL_TAIL, 2000),
+        "mtime inside STALE_MARGIN_S before the window": ([(1000, "b1")], NUL_TAIL, since - 10),
+        "NaN-ish timestamp": ([(1000, "n1"), b'{"type": "assistant", "timestamp": "nan"}\n'], NUL_TAIL, 2000),
+    }
+    for name, (recs, tail, mt) in gpt_cases.items():
+        p = tail_file(pj / "-home-u-seat" / "g.jsonl", recs, tail, mt)
+        check(SP.stale_crash_tail(str(p), str(pj), [str(arm_root)], since) is None,
+              "stale tail MUTANT (GPT r1) %s -> blocking" % name)
+        p.unlink()
+    check(SP.stale_crash_tail(str(ok), str(pj), [], since, census_bad=2) is None
+          and SP.stale_crash_tail(str(ok), str(pj), [], since, census_bad=1) is not None,
+          "stale tail MUTANT (GPT r1): the census's bad-line count must equal the tail's")
+    hl = pj / "-home-u-seat" / "alias.jsonl"
+    os.link(armf, hl)
+    check(SP.stale_crash_tail(str(hl), str(pj), [str(arm_root)], since) is None,
+          "stale tail MUTANT (GPT r1): a hard link (in the seat root) to an arm-written file -> blocking")
+    hl.unlink()
+    raced = tail_file(pj / "-home-u-seat" / "race.jsonl", [(1000, "r1")], NUL_TAIL, 2000)
+    real_open = open
+
+    def racing_open(f, *a, **k):            # an append lands between the stat and the read
+        with real_open(f, "ab") as w:
+            w.write(b"\x00" * 10)
+        os.utime(f, (15_000, 15_000))
+        return real_open(f, *a, **k)
+    SP.open = racing_open
+    try:
+        rr = SP.stale_crash_tail(str(raced), str(pj), [], since)
+    finally:
+        del SP.open
+    check(rr is None, "stale tail MUTANT (GPT r1): a write between stat and read -> blocking", rr)
+    raced.unlink()
+    # meter level: the excused file is a flag, not a block; a junk-after-valid file in the window still blocks
+    logs = {"trio": {"recs": [{"event": "assign", "arm": "trio", "task": "T", "run_id": "r", "lane": "build",
+                               "ts": iso(since)}]}}
+    kw = dict(projects=str(pj), clones_root="/nonexistent", gpt_log=str(st / "none.jsonl"), helpers=str(st / "h"),
+              sandbox_root=str(st / "sb"), since=since, until=until)
+    d = SP.meter(logs, **kw)
+    check(not any("bad_lines" in b for b in d["blocking"])
+          and any("stale bad_lines" in f and "ok.jsonl" in f for f in d["flags"]),
+          "meter: a stale crash tail is REPORTED in flags and not blocking", (d["blocking"], d["flags"]))
+    bad = tail_file(pj / "-home-u-seat" / "live.jsonl", [(15_000, "j")], NUL_TAIL, 15_001)
+    d = SP.meter(logs, **kw)
+    check("meter bad_lines: 1" in d["blocking"] and AA.spend_doc_problem(d, logs)
+          and any("ok.jsonl" in f for f in d["flags"]),
+          "meter MUTANT: junk after an in-window record still blocks (bad_lines counts only the live file) and the "
+          "analysis refuses the doc", d["blocking"])
+    bad.unlink()
+    sbp = st / "sb" / "c-00000000-x" / "build" / "home" / ".claude" / "projects" / "-s"
+    tail_file(sbp / "y.jsonl", [(1000, "k")], NUL_TAIL, 2000)
+    d = SP.meter(logs, **kw)
+    check("meter bad_lines: 1" in d["blocking"], "meter MUTANT: an old NUL tail in a sandbox HOME still blocks",
+          d["blocking"])
+
+
 # ------------------------------------------------------------------ e2e
 
 def setup_env(tmp, name):
@@ -669,6 +780,40 @@ def t_cli_ledger(r, td, erepo, trial):
           and "OVERRIDE" in rep.get("log_trust", {}) and "OVERRIDE" in doc.get("log_trust", {}),
           "CLI ledger: --allow-untrusted with no ledger decides, and BOTH outputs report the OVERRIDE",
           (rc1, rc2, rep.get("final"), rep.get("log_trust")))
+    # ARENA_METER_FIX_BAD_LINES_VOID_VERDICT end to end: a stale seat-transcript crash tail no longer voids the verdict;
+    # junk after in-window records, and a tampered signed event line, still do
+    seat = Path(r["projects"]) / "-home-u-seat"
+    tail_file(seat / "stale.jsonl", [(T0 - 86400, "st1")], NUL_TAIL, T0 - 86000)
+    pair("stale_tail", led)
+    rc1, doc, rc2, rep = res["stale_tail"]
+    check(rc2 == 0 and rep.get("final", {}).get("verdict") == "DECIDE_FOR_trio"
+          and any("stale bad_lines" in f for f in doc.get("flags", ())),
+          "CLI ledger: a stale NUL crash tail in a seat transcript is reported in flags and the analysis still DECIDES",
+          (rc1, rc2, rep.get("final"), doc.get("blocking")))
+    live = tail_file(seat / "live.jsonl", [(T0 + 100, "lv1")], NUL_TAIL, T0 + 101)
+    pair("junk_tail", led)
+    live.unlink()
+    rc1, doc, rc2, rep = res["junk_tail"]
+    check(rc2 == 3 and rep.get("final", {}).get("verdict", "").startswith("UNMEASURED")
+          and "meter bad_lines: 1" in doc.get("blocking", ()),
+          "CLI ledger MUTANT: junk after an in-window record -> analysis UNMEASURED (bad_lines blocks)",
+          (rc1, rc2, rep.get("final"), doc.get("blocking")))
+    lf = L.arm_file(p, "v3")
+    orig = lf.read_bytes()
+    lines = orig.split(b"\n")
+    i = next(k for k, ln in enumerate(lines) if b'"task"' in ln and b'"T005"' in ln)
+    lines[i] = lines[i].replace(b'"T005"', b'"T006"', 1)         # still valid JSON, still carries its old signature
+    lf.write_bytes(b"\n".join(lines))
+    try:
+        pair("tampered", led)
+    finally:
+        lf.write_bytes(orig)
+    rc1, doc, rc2, rep = res["tampered"]
+    check(rc2 == 3 and rep.get("final", {}).get("verdict", "").startswith("UNMEASURED")
+          and "'v3'" in rep["final"].get("why", "") and "refused" in rep["final"].get("why", ""),
+          "CLI ledger MUTANT: a signed v3 event line edited (signature kept) -> the v3 log is refused, analysis UNMEASURED",
+          (rc1, rc2, rep.get("final"), doc.get("log_trust")))
+    (seat / "stale.jsonl").unlink()
 
 
 def t_main_wiring(tmp):
@@ -784,6 +929,7 @@ def main():
             os.environ.pop(k, None)
         t_units()
         t_census(tmp)
+        t_stale_tail(tmp)
         t_e2e(tmp)
         t_main_wiring(tmp)
         t_mutations(tmp)

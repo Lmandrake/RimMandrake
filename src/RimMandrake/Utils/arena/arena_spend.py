@@ -22,7 +22,8 @@ arm's signed event log knows when the arm worked on which task. This script join
     and marks its task row `invalid_calls` (arena_analysis.py refuses that task).
   - BLOCKING (arena_analysis.py refuses the whole file): calls with no usable time, and the meter diagnostics that
     mean spend was lost or may sit on the wrong arm (BLOCKING_DIAG: unreadable transcripts, bad lines, cwd mismatch,
-    unreadable gpt log lines, a message id under two arm folders), and UNATTRIBUTED Claude spend under the arena root
+    unreadable gpt log lines, a message id under two arm folders; bad lines EXCEPT a stale crash tail, see
+    stale_crash_tail: reported in flags), and UNATTRIBUTED Claude spend under the arena root
     that the meter could not put on one arm (BLOCKING_UNATTRIBUTED). GPT calls with no RM_ARM tag (UNTAGGED) stay
     overhead: the log cannot tell an untagged arm call from unrelated GPT use in the same window (residual).
   - TESTERS (helpers): every model tester an arm's log says ran (`test_start`) must have a helper_capture.py capture
@@ -51,9 +52,11 @@ stop before its calls do, misattributes silently (GPT review r1 #1): fixing that
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 import math
 import os
+import stat
 import sys
 from collections import defaultdict
 from pathlib import Path
@@ -293,6 +296,68 @@ def tester_captures(arm_logs, helpers, since, until):
     return extra, gdirs, blocking
 
 
+STALE_MARGIN_S = 3600       # a crash tail is excused only when its file was last written this long before the window
+
+
+def stale_crash_tail(path, root, arm_roots, since, census_bad=None):
+    """-> reason str when a transcript's bad lines are a STALE crash tail that cannot hide in-window spend, else None.
+    Seen 2026-10-31 (ARENA_METER_FIX_BAD_LINES_VOID_VERDICT): seat transcripts whose last block a WSL crash left
+    zero-filled (one all-NUL final line) weeks before the trial voided every verdict. Excused only when ALL hold:
+    the file sits in the harness's own transcript root `root` (never an arm-writable capture / sandbox HOME, where an
+    arm could forge it) as a regular non-symlink file with ONE link (no hard-link alias of an arm-written file); it is
+    read the way spend_census.scan_file reads it (text, errors="replace", universal newlines) and the bad lines found
+    equal the census's count `census_bad`; every bad line is TRAILING (no parseable record after it) and holds only
+    NUL/whitespace (text junk is never excused); at least one valid record exists, every assistant record carries a
+    finite timestamp and every timestamp is before `since`; the file's mtime is STALE_MARGIN_S before `since` and
+    unchanged (inode, size, mtime) between the stat and the read. Anything else stays BLOCKING."""
+    try:
+        rp, rr = os.path.realpath(path), os.path.realpath(root)
+        if os.path.commonpath([rp, rr]) != rr or any(
+                os.path.commonpath([rp, os.path.realpath(a)]) == os.path.realpath(a) for a in arm_roots):
+            return None
+        st = os.lstat(path)
+        if not stat.S_ISREG(st.st_mode) or st.st_nlink != 1 or st.st_mtime >= since - STALE_MARGIN_S:
+            return None
+        with open(path, errors="replace") as fh:
+            lines = list(fh)
+            st2 = os.fstat(fh.fileno())
+        if (st2.st_ino, st2.st_dev, st2.st_size, st2.st_mtime_ns) != (st.st_ino, st.st_dev, st.st_size,
+                                                                      st.st_mtime_ns):
+            return None                         # changed under us: not stale
+    except (OSError, ValueError):
+        return None
+    last_t, n_good, n_bad = None, 0, 0
+    for ln in lines:
+        try:
+            d = json.loads(ln)
+            ok = isinstance(d, dict)
+        except ValueError:
+            ok = False
+        if ok:
+            if n_bad:
+                return None                     # a valid record after a bad line: not a tail
+            raw = d.get("timestamp")
+            if raw is None and d.get("type") != "assistant":
+                n_good += 1
+                continue
+            try:
+                t = S.ts(raw)
+            except (ValueError, TypeError, KeyError, AttributeError):
+                return None                     # an undatable record (an assistant call needs a time)
+            if not isinstance(t, (int, float)) or not math.isfinite(t) or t >= since:
+                return None
+            last_t = t if last_t is None else max(last_t, t)
+            n_good += 1
+            continue
+        if ln.strip("\x00 \t\r\n\f\v"):
+            return None                         # text junk: never excused
+        n_bad += 1
+    if not n_bad or not n_good or last_t is None or (census_bad is not None and n_bad != census_bad):
+        return None
+    return "%d NUL crash-tail line(s), last record %s, before the window" % (
+        n_bad, datetime.datetime.fromtimestamp(last_t, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"))
+
+
 def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None, until=None, helpers=None,
           sandbox_root=None):
     """Run the meter over the window with sinks. Window defaults to the logs' first..last event (inclusive).
@@ -326,6 +391,15 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
     doc = attribute(arm_logs, cl, gp)
     doc["blocking"].extend(cap_blocking + home_blocking)
     doc["window"] = {"since": since, "until": until}
+    if diag.get("bad_lines"):               # stale crash tails of the harness's own transcripts: reported, not blocking
+        arm_roots = [x[0] for x in extra + homes]
+        live, stale = {}, {}
+        for p, n in diag["bad_lines"].items():
+            why = stale_crash_tail(p, projects or S.PROJECTS, arm_roots, since, census_bad=n)
+            (stale if why else live)[p] = why or n
+        for p, why in sorted(stale.items()):
+            doc["flags"].append("meter stale bad_lines (excused, not blocking): %s: %s" % (p, why))
+        diag["bad_lines"] = live
     for k in BLOCKING_DIAG:
         v = diag.get(k)
         if v:
