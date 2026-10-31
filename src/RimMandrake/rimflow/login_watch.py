@@ -145,8 +145,9 @@ def limit_reset(text, at):
         when = datetime.datetime.fromtimestamp(at, tz).replace(hour=hour, minute=int(m["m"] or 0), second=0, microsecond=0)
     except (ValueError, OSError, zoneinfo.ZoneInfoNotFoundError):
         return None
-    if when.timestamp() <= at:
-        when += datetime.timedelta(days=1)
+    if when.timestamp() <= at:                     # the second pass of a repeated DST hour, else tomorrow
+        later = when.replace(fold=1)
+        when = later if later.timestamp() > at else when + datetime.timedelta(days=1)
     return when.timestamp()
 
 

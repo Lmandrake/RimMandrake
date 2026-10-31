@@ -503,6 +503,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     if n and streak >= n and ans:
                         act(do="alarm", kind="seat_declined:" + seat, seat=seat, note=True, conductor_log=True,
                             ticket=rule.get("escalate_item") or sch.get("alarm_item"),
+                            raise_first="%s is answering and takes no work." % seat,
                             why="%s is awake and answering, but %d rings in a row took no new work (peeked %s; last "
                                 "answer: %s). Conductor: look at the queue and the seat's orders, not its window" % (
                                     seat, streak, pend.get("ticket"), said))
@@ -1086,8 +1087,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         w = withdraw_reading(do_withdraw(root, a["seat"], a["ring_id"]))
                         res = "%s: %s" % (w["outcome"], w.get("why") or "")
                         ss = st["seats"].setdefault(a["seat"], {})
-                        if a.get("pending") and not ss.get("ring") and a["seat"] in (sch.get("seats") or {}):
-                            if w["outcome"] == "consumed":
+                        if a.get("pending") and not ss.get("ring"):
+                            if w["outcome"] == "consumed" and a["seat"] in (sch.get("seats") or {}):
                                 # the doorbell took it between decide and here: it WAS delivered — keep verifying it
                                 # instead of ringing a second time (review r2 #4: evidence by ring id)
                                 ss["ring"] = dict(a["pending"], consumed_at=w.get("consumed_at") or now)
@@ -1265,7 +1266,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         notes += ok
                         a["ledger"] = "noted" if ok else "note failed: " + out
             if stamped:      # a stamp means somebody was told: an alarm no destination took is retried next tick
-                no_note = str(a.get("ledger", "")).startswith(("note failed", "not noted: testq", "not noted: tick"))
+                no_note = str(a.get("ledger", "")).startswith(("note failed", "not noted"))
                 no_log = a.get("conductor_log") and str(res).startswith("error:")
                 if (no_note or no_log) and (no_note or not a.get("note")) and (no_log or not a.get("conductor_log")):
                     st["alarms"].pop(a["kind"], None) if last is None else st["alarms"].update({a["kind"]: last})

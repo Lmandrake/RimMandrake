@@ -995,7 +995,7 @@ def cmd_next(args, seat):
     # BUILD and 15 behind CHECK. 🔴 BUILD's top item was `B-V2`, a STANDING RIGHT with no
     # completion condition, so its queue could never empty and those 15 were unreachable
     # forever, not merely delayed.
-    also = _claimable(w, seat, args.target)
+    also = ch["also"]
     if also:
         print("")
         print("⚠️  %d item%s ALSO waiting for %s to claim: %s%s"
@@ -1076,7 +1076,7 @@ def _choose(w, seat, args, ctx, idx):
     `item` is what gets leased. Items under a LIVE lease never reach here: `rank()`
     and `_claimable` both skip them."""
     offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
-    out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
+    out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "also": [], "skipped": skipped}
     claimable = []
     for c in _claimable(w, seat, args.target, ctx.get("now"), ctx):     # judged complete: as guard() does for ranked work
         a = reconcile.assess(c, idx)
@@ -1095,6 +1095,7 @@ def _choose(w, seat, args, ctx, idx):
     # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next
     # --seat BENCH`") beats an unraised ranked offer, and of two raised heads the one raised
     # FIRST wins (raise order, 2026-10-29); otherwise ranked work comes first.
+    out["also"] = claimable     # the `ALSO waiting` line: what this seat may claim, withheld items never named
     if offers and (not (claimable and claimable[0].raised is not None)
                    or model.raise_key(offers[0].item) <= model.raise_key(claimable[0])):
         out.update(kind="offer", offer=offers[0], item=offers[0].item)

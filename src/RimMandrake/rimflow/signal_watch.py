@@ -98,6 +98,9 @@ def _flags_step(cfg, S, flags, now, act, ts):
     rows = [f for f in (flags or {}).get("flags") or [] if isinstance(f, dict)]
     answered = {f.get("key") for f in rows if f.get("alarm")}      # a rule with alarm true files its own item
     seen = S.setdefault("flags", {})
+    if isinstance(flags, dict):                                    # a flag that cleared starts over when it comes back
+        for key in set(seen) - {f.get("key") for f in rows}:
+            del seen[key]
     for f in rows:
         key, at = f.get("key"), ts(f.get("since"))
         if at is None or key in answered or now - at < cfg["flag_after_s"] or now - seen.get(key, -1e18) < cfg["flag_every_s"]:

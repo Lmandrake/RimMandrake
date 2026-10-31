@@ -118,6 +118,8 @@ def test_flags():
     acts, _ = run(flags=fl, st=st, now=now + 7 * DAY + 1)
     assert acts[0]["conductor_log"], "the note did not move it: now the Conductor"
     assert run(flags=None)[0] == []
+    _, st = run(flags={"flags": []}, st=st, now=now + 8 * DAY)
+    assert st["signals"]["flags"] == {}, "a cleared flag starts over"
 
 
 if __name__ == "__main__":

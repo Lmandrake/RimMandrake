@@ -1005,7 +1005,7 @@ def _request(sch, ctx, extra=(), seat="FOUNDRY", name="AGENT FOUNDRY"):
         SR._schedule = lambda: sch
         SR.session_file = lambda pid: {"pid": pid, "sessionId": "sid-old", "name": name, "cwd": CLONE,
                                        "procStart": "77"}
-        SR.helpers_of = lambda path, now=None: []
+        SR.helpers_of = lambda path, now=None, stale_s=None: []
         SR.reg_start = lambda sf: 77
         SR.proc_start = lambda pid: 77
         SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_tool", "last_at": T0, "last_user_at": T0 - 5,
@@ -1418,7 +1418,7 @@ def _brequest(recs, extra=("--fresh",), unpub=None):
         SR._schedule = lambda: sch
         SR.session_file = lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "CONDUCTOR", "cwd": BCLONE,
                                        "procStart": "77"}
-        SR.helpers_of = lambda path, now=None: []
+        SR.helpers_of = lambda path, now=None, stale_s=None: []
         SR.reg_start = lambda sf: 77
         SR.proc_start = lambda pid: 77
         rp = SR.request_path("BENCH")

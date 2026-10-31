@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import tempfile
+import zoneinfo
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
@@ -205,6 +206,10 @@ def test_limit_reset():
     want = calendar.timegm((2026, 10, 30, 20, 10, 0))          # 13:10 PDT
     check("a named reset is the next such moment", LW.limit_reset(LA, at) == want)
     check("one already past is tomorrow's", LW.limit_reset(LA, want + 1) == want + 86400)
+    tz = zoneinfo.ZoneInfo("America/Los_Angeles")
+    fall = datetime.datetime(2026, 11, 1, 1, 30, tzinfo=tz).timestamp()
+    check("the repeated DST hour is 40 minutes off, not a day",
+          LW.limit_reset("resets 1:10am (America/Los_Angeles)", fall) == fall + 2400)
     check("no minutes, 12am", LW.limit_reset("resets 12am (UTC)", at) == calendar.timegm((2026, 10, 31, 0, 0, 0)))
     check("unnamed, or an unknown zone, is no reset", LW.limit_reset("rate limited", at) is None
           and LW.limit_reset("resets 1pm (Mars/Base)", at) is None and LW.limit_reset(None, at) is None)

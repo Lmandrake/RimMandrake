@@ -280,6 +280,16 @@ def test_alarm_delivery_and_lock():
     a = alarm()
     D.execute(a, sch, st, root, True, 3.0, dict(base, conductor_log=boom))
     check(st["alarms"]["k"] == 2.0 and "rate-limited" in a[0]["result"], "a rate-limited repeat keeps its stamp")
+    real_route = D.route_note
+    D.route_note = lambda *x, **k: (None, None)      # token values on a blind item and no token_notes_item
+    try:
+        D.execute([dict(alarm()[0], kind="b")], sch, st, root, True, 3.5, dict(base, conductor_log=boom))
+    finally:
+        D.route_note = real_route
+    check("b" not in st["alarms"], "a blind alarm no destination took keeps no stamp")
+    gone = {"do": "withdraw", "seat": "GONE", "ring_id": "r1", "pending": {"ring_id": "r1"}}
+    D.execute([gone], sch, st, root, True, 3.6, dict(base, withdraw=lambda *x: {"outcome": "failed", "why": "perm"}))
+    check(st["seats"]["GONE"]["ring"]["ring_id"] == "r1", "a removed seat's failed withdrawal stays pending")
     fx = dict(base, lock=boom, conductor_log=lambda *x: "conductor log appended: p")
     acts = alarm()
     D.execute(acts, sch, st, root, True, 4.0e5, fx)

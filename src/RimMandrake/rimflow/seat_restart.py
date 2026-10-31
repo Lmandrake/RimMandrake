@@ -1257,7 +1257,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None):
     elif time.time() - tx["last_at"] < cfg["quiet_s"]:
         holds.append("not quiet: last record %.0f s ago < quiet_s %d" % (time.time() - tx["last_at"], cfg["quiet_s"]))
     holds += final_fence(seat, sch, rs, sf, path=rs.get("tx_path") or path)
-    hs = helpers_of(path, time.time())
+    hs = helpers_of(path, time.time(), cfg.get("helper_stale_s"))
     if hs is None:
         holds.append("helper inventory UNMEASURED")
     elif any(h.get("alive") for h in hs):
@@ -1393,7 +1393,7 @@ def cmd_request(args):
     pid = args.pid or doorbell.claude_ancestor()
     sf = session_file(pid) if pid else None
     path = transcript_path(sf["cwd"], sf["sessionId"]) if sf and sf.get("cwd") and sf.get("sessionId") else None
-    ok, why = check_request(seat, sf, helpers_of(path, time.time()))
+    ok, why = check_request(seat, sf, helpers_of(path, time.time(), (cfgs.get(seat) or {}).get("helper_stale_s")))
     if not ok:
         print("seat_restart: REFUSED: %s" % why)
         return 3
