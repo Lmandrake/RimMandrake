@@ -1,0 +1,2 @@
+When rewriting sys.exit(X) to inject a flush before posix._exit, evaluate X FIRST (into a temp) and flush after: flushing before the statement runs loses everything X itself prints. sys.exit(main()) is the dominant check shape, and a smoke that only printed before the exit statement passed while every real selftest_testq tail stayed empty. Probe with the real dominant shape, not a hand-made one.
+home: src/RimMandrake/Utils/arena/arena_judge.py RUNNER comment
