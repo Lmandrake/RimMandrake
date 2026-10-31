@@ -4,7 +4,7 @@ description: RimMandrake complex code generation or design work (C#/Harmony, new
 model: opus
 maxTurns: 250
 autoCompactWindow: 150000
-tools: Bash, Read, Edit, Write, Skill, ToolSearch
+tools: Bash, Read, Edit, Write, Skill, ToolSearch, SendMessage
 omitClaudeMd: true
 ---
 

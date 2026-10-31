@@ -4,7 +4,7 @@ description: RimMandrake well-defined fix with a checkable outcome (selftest, va
 model: sonnet
 maxTurns: 200
 autoCompactWindow: 150000
-tools: Bash, Read, Edit, Write, Skill
+tools: Bash, Read, Edit, Write, Skill, SendMessage
 omitClaudeMd: true
 ---
 

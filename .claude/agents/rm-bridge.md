@@ -4,7 +4,7 @@ description: RimMandrake live-game driver over the bridge: runs one section of a
 model: opus
 maxTurns: 300
 autoCompactWindow: 150000
-tools: Bash, Read, Edit, Write, Skill
+tools: Bash, Read, Edit, Write, Skill, SendMessage
 omitClaudeMd: true
 ---
 
