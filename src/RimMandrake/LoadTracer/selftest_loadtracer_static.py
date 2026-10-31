@@ -21,7 +21,7 @@ import sys
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ENGINE = os.environ.get("RIMWORLD_DECOMPILED", "/mnt/d/Luke/dev/reference/rimworld-decompiled")
+ENGINE = os.environ.get("RIMWORLD_DECOMPILED", "/mnt/d/ClaudeWork/retired-trees/archmagi-dev-2026-10-27/reference/rimworld-decompiled")
 
 
 def rd(*p):

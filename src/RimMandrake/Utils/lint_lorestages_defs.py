@@ -26,7 +26,7 @@ import xml.etree.ElementTree as ET
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 SRC = os.path.join(REPO, "src")
-ENGINE = os.environ.get("RIMWORLD_DECOMPILED", "/mnt/d/Luke/dev/reference/rimworld-decompiled")
+ENGINE = os.environ.get("RIMWORLD_DECOMPILED", "/mnt/d/ClaudeWork/retired-trees/archmagi-dev-2026-10-27/reference/rimworld-decompiled")
 MOD = "RimMandrake/LoreStages"
 TABLE_TAG = "RimMandrake.LoreStages.RM_LoreStageTableDef"
 OUR_PREFIXES = ("RM_", "RUT_", "RSW_")

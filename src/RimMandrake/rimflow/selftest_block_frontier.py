@@ -25,7 +25,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-BASE_REF = "623a146740"         # the last commit before RIM-1: the reader every clone runs today
+BASE_REF = "8680483545da"         # the last commit before RIM-1: the reader every clone runs today
 PKG = "src/RimMandrake/rimflow"
 sys.path.insert(0, os.path.dirname(HERE))
 from rimflow import model, priority                              # noqa: E402

@@ -87,7 +87,7 @@ import os as _os
 import re as _re
 
 _HERE = _os.path.dirname(_os.path.abspath(__file__))
-DECOMPILED = "/mnt/d/Luke/dev/reference/rimworld-decompiled"
+DECOMPILED = "/mnt/d/ClaudeWork/retired-trees/archmagi-dev-2026-10-27/reference/rimworld-decompiled"
 _WORKSHOP = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
 
 

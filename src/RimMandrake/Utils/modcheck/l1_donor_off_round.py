@@ -57,8 +57,8 @@ VEF = "oskarpotocki.vanillafactionsexpanded.core"
 OURS_RE = re.compile(r"\b(RM|RSW|RUT)_")
 
 # The Phase 0 commits named by the L1 brief (2026-10-15). Their touched Def files are a subject source.
-PHASE0_COMMITS = ("ab6ba54f4 419d5e70b 98f7b4506 59c2718b0 447cae1f2 ba71a81be 3021d7031 f690b6984 85ae91677 "
-                  "b4a5cf348 3fbec5530 aabcd7a 4da61378 15414fe38 1a44a77dab aaf59cd6e a8b30d24d 14405b1c4").split()
+PHASE0_COMMITS = ("e557bc1c0440 8c2ff0e85c97 c6a57926a8e4 3ee43febc9ad 1262b5714523 b0b19a31226c 52959b619418 8343f64cabf5 1419bd46834a "
+                  "3afba4675579 3f54372c54ff 4ce83afd00a3 b266aa33f538 0bc8139c67ab 180a1f57faa2 dfcd13201f79 91f64dbf83f5 a5edc1c3435e").split()
 TRACKER = os.path.join(REPO, "design", "RimMandrake", "donor_pack_port_tracker.md")
 P2_CLASSIFICATION = os.path.join(REPO, "Transient", "phase0_p2_classification.md")
 P6_CENSUS = os.path.join(REPO, "Transient", "phase0_p6_save_census.md")
@@ -73,15 +73,15 @@ EXTRA_BIOMES = {"RUT_AridShrubland": "W4 handoff FOUNDRY_HANDOFF_202610151923 (R
 BURSTS = [
     # id, kind, how it dies, the tell, the def's own deathAction (read back in derive)
     {"id": "BURST_BLOODYMESS_KILLED", "kind": "RM_BloodyMess", "death": "kill", "tell": "acid",
-     "why": "b4a5cf348: bursts into acid when killed (owner card Q3 'Burst only when killed')"},
+     "why": "3afba4675579: bursts into acid when killed (owner card Q3 'Burst only when killed')"},
     {"id": "BURST_BLOODYMESS_GESTATION", "kind": "RM_BloodyMess", "death": "gestation", "tell": "no_acid_organs",
-     "why": "b4a5cf348: no burst when it dies giving birth (AmoebaHostUtility.CompleteGestation -> KillGivingBirth)"},
+     "why": "3afba4675579: no burst when it dies giving birth (AmoebaHostUtility.CompleteGestation -> KillGivingBirth)"},
     {"id": "BURST_BULLOO", "kind": "RM_Bulloo", "death": "kill", "tell": "sentinel",
-     "why": "447cae1f2 / ab6ba54f4: the bulloo keeps vanilla DeathActionWorker_SmallExplosion (flame)"},
+     "why": "1262b5714523 / e557bc1c0440: the bulloo keeps vanilla DeathActionWorker_SmallExplosion (flame)"},
     {"id": "BURST_BLISTERED_BULLOO", "kind": "RM_InfectedAerofleet", "death": "kill", "tell": "acid",
-     "why": "ab6ba54f4: the blistered bulloo's acid burst repointed to EnvironmentalHazards ScaledExplosion"},
+     "why": "e557bc1c0440: the blistered bulloo's acid burst repointed to EnvironmentalHazards ScaledExplosion"},
     {"id": "BURST_SCORCHPOD", "kind": "RM_Scorchpod", "death": "kill", "tell": "acid",
-     "why": "f690b6984: the scorchpod carries the red spore's acid burst (ScaledExplosion)"},
+     "why": "8343f64cabf5: the scorchpod carries the red spore's acid burst (ScaledExplosion)"},
 ]
 ACID_FILTH = "Filth_SpentAcid"
 GESTATION_PRODUCTS = ("Kidney", "Liver", "Lung", "Heart", "RM_GrownLeg", "RM_GrownArm", "RM_PillarArmItem", "RM_LashItem",

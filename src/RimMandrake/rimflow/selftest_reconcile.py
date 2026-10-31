@@ -84,6 +84,7 @@ def env(seat="FOUNDRY", fixture=True):
          if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "RIMFLOW_GITINDEX")}
     e["RIMFLOW_LEDGER"] = os.path.join(_TMP["dir"], "events.jsonl")
     e["RIMFLOW_ITEMS"] = os.path.join(_TMP["dir"], "items")
+    e["RIMFLOW_SCHEDULE"] = os.path.join(_TMP["dir"], "no_schedule.json")  # the live seat_focus must not filter fixtures
     e["RIMFLOW_PROBE"] = "no-reading"
     e["RIMFLOW_SEAT"] = seat
     if fixture:

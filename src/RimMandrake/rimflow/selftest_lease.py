@@ -12,7 +12,7 @@ Cases: concurrent `next` callers get different items (with a sanity probe provin
 race for one top item without the lease); expiry -> re-offer labelled LAPSED, through the
 git check, and RECONCILE when git names the item; wrong token refused; renew keeps it,
 renew after expiry refused; claim hides the item and the queue view shows it active;
-reassign/reclaim revoke; replay judges by event timestamps; an OLD reader (0884bcc72, the
+reassign/reclaim revoke; replay judges by event timestamps; an OLD reader (462ad47c30ae, the
 last commit before step 3) tolerates every lease event.
 """
 import json
@@ -28,7 +28,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-OLD_REF = "0884bcc72"
+OLD_REF = "462ad47c30ae"
 PKG = "src/RimMandrake/rimflow"
 sys.path.insert(0, os.path.dirname(HERE))
 
@@ -73,6 +73,7 @@ def env(seat="FOUNDRY", ttl=None):
                       "RIMFLOW_LEASE_TTL", "RIMFLOW_DISPATCH_LOCK")}
     e["RIMFLOW_LEDGER"] = os.path.join(CTX["dir"], "events.jsonl")
     e["RIMFLOW_ITEMS"] = os.path.join(CTX["dir"], "items")
+    e["RIMFLOW_SCHEDULE"] = os.path.join(CTX["dir"], "no_schedule.json")  # the live seat_focus must not filter fixtures
     e["RIMFLOW_PROBE"] = "no-reading"
     e["RIMFLOW_SEAT"] = seat
     e["RIMFLOW_GITINDEX"] = os.path.join(CTX["dir"], "gitfixture.json")

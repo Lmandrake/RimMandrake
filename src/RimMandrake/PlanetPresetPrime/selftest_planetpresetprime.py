@@ -26,7 +26,7 @@ def main():
     mlp = v.mlp_source_dir()
     eng = os.path.join(v.DECOMPILED, "RimWorld")
     if mlp is None or not os.path.isfile(os.path.join(eng, "Page_CreateWorldParams.cs")):
-        print("UNMEASURED  decompiled engine tree or MLP source not reachable")
+        print("UNMEASURED, not a pass or a fail: decompiled engine tree or MLP source not reachable")
         return 2
     cs = v._rd(v._HERE, "Source", "PlanetPresetPrime.cs")
     page, layer = v._rd(eng, "Page_CreateWorldParams.cs"), v._rd(eng, "PlanetLayerSettings.cs")

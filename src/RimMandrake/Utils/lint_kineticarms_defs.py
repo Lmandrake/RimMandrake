@@ -25,7 +25,7 @@ sys.path.insert(0, HERE)
 import lint_mod_defs  # noqa: E402
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-ENGINE = os.environ.get("RIMWORLD_DECOMPILED", "/mnt/d/Luke/dev/reference/rimworld-decompiled")
+ENGINE = os.environ.get("RIMWORLD_DECOMPILED", "/mnt/d/ClaudeWork/retired-trees/archmagi-dev-2026-10-27/reference/rimworld-decompiled")
 
 
 def rd(p):

@@ -67,12 +67,12 @@ TARGETS = {
     "arbiter_tiers": (R + "arbiter_tiers.py", [R + "selftest_arbiter_tiers.py", U + "selftest_evidence_harden_ad.py",
                                          R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
     "isolated_evidence": (R + "isolated_evidence.py", [R + "selftest_isolated_evidence.py", R + "selftest_isolated_evidence_mut.py"]),
-    "dispatcher": (R + "dispatcher.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py", R + "selftest_dispatcher_mut2.py",
+    "dispatcher": (R + "dispatcher.py", [R + "selftest_login_watch.py", R + "selftest_conductor_identity.py", R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py", R + "selftest_dispatcher_mut.py", R + "selftest_dispatcher_mut2.py",
                                          R + "selftest_role_launch.py", R + "selftest_seat_restart.py"]),
     "v3_vs_v2": (U + "v3_vs_v2.py", [U + "selftest_v3_vs_v2.py", U + "selftest_v3_vs_v2_props.py", U + "selftest_v3_vs_v2_mut.py"]),
     "delegated_digest": (R + "delegated_digest.py", [R + "selftest_delegated_digest.py", R + "selftest_delegated_digest_mut.py"]),
     # role_launch has no selftest of its own: the dispatcher's, account_pick's and the DST property tests drive it
-    "role_launch": (R + "role_launch.py", [R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py",
+    "role_launch": (R + "role_launch.py", [R + "selftest_login_watch.py", R + "selftest_audit_prescreen_window.py", R + "selftest_conductor_identity.py", R + "selftest_role_tokens.py", R + "selftest_dispatcher.py", R + "selftest_dispatcher_r2.py",
                                            R + "selftest_account_pick.py", R + "selftest_role_launch_props.py", R + "selftest_role_launch.py",
                                            R + "selftest_role_launch_decide_mut.py"]),
 }

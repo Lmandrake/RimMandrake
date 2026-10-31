@@ -6,7 +6,7 @@
 🔑 WHY. The ledger shards are read by every clone, and a clone can be running older code
 than the window that wrote an event. Step 2 adds a verb (`implemented`) and two fields on
 an existing verb (`verify --level --criterion`). This test does not reason about the old
-reader — it RUNS it: the rimflow package as committed at OLD_REF (577d72d2f, step 1, the
+reader — it RUNS it: the rimflow package as committed at OLD_REF (b2e1274bfc71, step 1, the
 last commit before step 2) is extracted with `git show` into a temp dir, and both its
 model and its CLI are pointed at a ledger the NEW CLI just wrote.
 
@@ -31,7 +31,7 @@ import tempfile
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-OLD_REF = "577d72d2f"
+OLD_REF = "b2e1274bfc71"
 PKG = "src/RimMandrake/rimflow"
 sys.path.insert(0, os.path.dirname(HERE))
 

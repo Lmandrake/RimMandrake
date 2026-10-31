@@ -23,7 +23,7 @@ import sys
 from pathlib import Path
 
 # Not in the repo: the decompile is a large reference tree beside it.
-DECOMPILED = Path("/mnt/d/Luke/dev/reference/rimworld-decompiled")
+DECOMPILED = Path("/mnt/d/ClaudeWork/retired-trees/archmagi-dev-2026-10-27/reference/rimworld-decompiled")
 
 CSHARP = Path(__file__).resolve().parent
 
