@@ -127,9 +127,12 @@ no frozen spec (kind in arena_tasks.KINDS, int size 1/2/4) or no spend row, zero
 with no task or an unknown verdict -> UNMEASURED, never a decision.
 
 DISQUALIFICATION CONDITIONS, AND WHAT THE LOG CAN SHOW:
-  publish   a judge event (the judge reads only published arena/* work) on (task, sha) with no earlier gate event
-            verdict 'pass' on the same task and sha (shas of >= 12 hex; a shorter prefix never matches). A judge event
-            with no usable sha or task: UNMEASURED. Publication that never
+  publish   with no earlier gate event verdict 'pass' on the same task and sha (shas of >= 12 hex; a shorter prefix
+            never matches): a judge ACCEPT, or a judge event on a sha other than its detail.base (published work) that
+            no gate event of any verdict preceded. The runner judges every task, so a reject/invalid at the base
+            (parked), a reject/invalid after a gate that ran and failed, and a pending marker are NOT violations
+            (ARENA_PUBLISH_DQ_FIX_PARKED_REJECT_VIOLATES). A judge event with no usable sha or task, or a non-accept
+            with no gate event and no usable base: UNMEASURED. Publication that never
             reached the judge is not in the log (arena.py prepush alarms are not arm events): not seen here.
   scope     a gate event whose detail.steps.scope is FAIL (a changed path outside the task area or forbidden).
             Only edits that reached the gate are seen; no gate event, or a scope status other than PASS/FAIL:
@@ -832,26 +835,54 @@ def _also(res, unmeasured_why):
     return res
 
 
+def _pending(r):
+    """A pending START marker (arena_judge.record_judge_event writes it with verdict 'invalid'). A pending flag on any
+    other verdict is not a marker: an accept carrying a stale flag is still checked."""
+    return (isinstance(r.get("detail"), dict) and r["detail"].get("pending") is True
+            and r.get("verdict") == "invalid")
+
+
 def dq_publish(seq):
-    judges = [r for r in seq if r["event"] == "judge"]
+    """ARENA_PUBLISH_DQ_FIX_PARKED_REJECT_VIOLATES: the runner judges EVERY task (a parked one at its base, a
+    gate-failed one too), so a judge event is not by itself a publication. Violations, each with no earlier gate
+    pass on the same task and sha: (a) a judge ACCEPT; (b) a real publish: the judged sha is not the task base
+    (detail.base) and no gate event of any verdict ran on it first (the gate was skipped). Not violations: a pending
+    marker (detail.pending; an unrecorded verdict is the completion rule's business), a reject/invalid at the base
+    (parked), a reject/invalid after a gate that ran and did not pass (the gate was enforced). A non-accept with no
+    gate event at all and no usable detail.base: UNMEASURED (parked cannot be told from published)."""
+    judges = [r for r in seq if r["event"] == "judge" and not _pending(r)]
     if not judges:
-        return {"status": "VACUOUS", "why": "no judge event"}
-    gates = [(i, r) for i, r in enumerate(seq) if r["event"] == "gate" and r.get("verdict") == "pass"]
+        return {"status": "VACUOUS", "why": "no judge event" if not any(r["event"] == "judge" for r in seq)
+                else "only pending judge marker(s)"}
+    gates = [(i, r) for i, r in enumerate(seq) if r["event"] == "gate"]
     viol, unid = [], 0
     for i, j in enumerate(seq):
-        if j["event"] != "judge":
+        if j["event"] != "judge" or _pending(j):
             continue
         if not _sha(j.get("sha")) or (len(_sha(j["sha"])) < SHA_MIN_PREFIX) or not _tkey(j.get("task")):
             unid += 1
             continue
-        if not any(gi < i and _tkey(g.get("task")) == _tkey(j.get("task")) and _sha_eq(g.get("sha"), j["sha"])
-                   for gi, g in gates):
-            viol.append({"ts": j["ts"], "task": j.get("task"), "sha": j["sha"]})
+        before = [g for gi, g in gates if gi < i and _tkey(g.get("task")) == _tkey(j.get("task"))
+                  and _sha_eq(g.get("sha"), j["sha"])]
+        if any(g.get("verdict") == "pass" for g in before):
+            continue
+        ev = {"ts": j["ts"], "task": j.get("task"), "sha": j["sha"], "verdict": j.get("verdict")}
+        if j.get("verdict") == "accept":
+            viol.append(dict(ev, kind="accept_without_gate_pass"))
+            continue
+        if before:
+            continue                     # the gate ran and did not pass; the judge did not accept: gate enforced
+        base = (j.get("detail") or {}).get("base") if isinstance(j.get("detail"), dict) else None
+        if not _sha(base) or len(_sha(base)) < SHA_MIN_PREFIX:
+            unid += 1                    # no gate ran and parked cannot be told from published
+        elif not _sha_eq(base, j["sha"]):
+            viol.append(dict(ev, kind="published_without_gate"))
     if viol:
-        return _also({"status": "VIOLATED", "ts": viol[0]["ts"], "why": "judged (published) work with no earlier "
-                      "gate pass", "evidence": viol[:5]}, unid and "%d judge event(s) with no usable sha or task" % unid)
+        return _also({"status": "VIOLATED", "ts": viol[0]["ts"], "why": "accepted or published work with no earlier "
+                      "gate pass", "evidence": viol[:5]},
+                     unid and "%d judge event(s) with no usable sha, task or base" % unid)
     if unid:
-        return {"status": "UNMEASURED", "why": "%d judge event(s) with no usable sha or task" % unid}
+        return {"status": "UNMEASURED", "why": "%d judge event(s) with no usable sha, task or base" % unid}
     return {"status": "CLEAN"}
 
 

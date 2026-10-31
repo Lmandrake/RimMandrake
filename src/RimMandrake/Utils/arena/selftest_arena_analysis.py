@@ -782,6 +782,96 @@ def t_dq_identity():
     check("publish: a malformed judge sha -> UNMEASURED", r["status"] == "UNMEASURED", r)
 
 
+def _old_dq_publish(seq):
+    """The pre-ARENA_PUBLISH_DQ_FIX_PARKED_REJECT_VIOLATES rule (any judge event with no earlier gate pass is a
+    violation): the mutant t_publish_parked must catch."""
+    gates = [(i, r) for i, r in enumerate(seq) if r["event"] == "gate" and r.get("verdict") == "pass"]
+    if not any(r["event"] == "judge" for r in seq):
+        return {"status": "VACUOUS"}
+    for i, j in enumerate(seq):
+        if j["event"] == "judge" and not any(gi < i and g.get("task") == j.get("task")
+                                             and AA._sha_eq(g.get("sha"), j.get("sha")) for gi, g in gates):
+            return {"status": "VIOLATED", "ts": j["ts"]}
+    return {"status": "CLEAN"}
+
+
+def t_publish_parked():
+    """ARENA_PUBLISH_DQ_FIX_PARKED_REJECT_VIOLATES: the runner judges every task, parked and gate-failed ones too."""
+    base, head = "ba" * 20, "ce" * 20
+
+    def seq(*evs):
+        out = []
+        for k, (ev, sha, verdict, detail) in enumerate(evs):
+            r = {"ts": iso(T0 + 10 * k), "arm": "trio", "lane": "judge" if ev == "judge" else "gate",
+                 "run_id": ev, "task": "T000", "event": ev, "sha": sha, "verdict": verdict}
+            if detail is not None:
+                r["detail"] = detail
+            out.append(r)
+        return AA.L.ordered(out)
+    B = {"base": base}
+    P = {"base": base, "pending": True}
+    gf = ("gate", None, "fail", {"steps": {"scope": "PASS"}})
+    gp = ("gate", None, "pass", {"steps": {"scope": "PASS"}})
+
+    def g(t, sha):
+        return (t[0], sha, t[2], t[3])
+    rows = [
+        ("parked: gate fail at base, judge reject at base -> CLEAN",
+         seq(g(gf, base), ("judge", base, "invalid", P), ("judge", base, "reject", B)), "CLEAN"),
+        ("parked: no gate at all, judge reject at base -> CLEAN",
+         seq(("judge", base, "reject", B)), "CLEAN"),
+        ("parked: judge invalid at base -> CLEAN", seq(g(gf, base), ("judge", base, "invalid", B)), "CLEAN"),
+        ("gate-failed: published head, gate fail, judge reject -> CLEAN",
+         seq(g(gf, head), ("judge", head, "invalid", P), ("judge", head, "reject", B)), "CLEAN"),
+        ("gate-failed: judge reject with no detail.base (gate ran) -> CLEAN",
+         seq(g(gf, head), ("judge", head, "reject", None)), "CLEAN"),
+        ("pending marker only, no gate -> not VIOLATED (VACUOUS)", seq(("judge", head, "invalid", P)), "VACUOUS"),
+        ("pending marker then accept after a gate pass -> CLEAN",
+         seq(g(gp, head), ("judge", head, "invalid", P), ("judge", head, "accept", B)), "CLEAN"),
+        ("judge ACCEPT after a gate FAIL -> VIOLATED",
+         seq(g(gf, head), ("judge", head, "accept", B)), "VIOLATED"),
+        ("judge ACCEPT with no gate at all -> VIOLATED", seq(("judge", head, "accept", B)), "VIOLATED"),
+        ("judge ACCEPT at base with no gate pass -> VIOLATED", seq(g(gf, base), ("judge", base, "accept", B)),
+         "VIOLATED"),
+        ("real publish: sha != base, no gate ran, judge reject -> VIOLATED",
+         seq(("judge", head, "reject", B)), "VIOLATED"),
+        ("real publish: gate ran on a DIFFERENT sha only -> VIOLATED",
+         seq(g(gf, base), ("judge", head, "reject", B)), "VIOLATED"),
+        ("real publish: gate fail recorded AFTER the judge -> VIOLATED",
+         seq(("judge", head, "reject", B), g(gf, head)), "VIOLATED"),
+        ("an ACCEPT carrying a stale pending flag is still checked -> VIOLATED",
+         seq(("judge", head, "accept", P)), "VIOLATED"),
+        ("a pending marker after a violating accept does not erase it -> VIOLATED",
+         seq(("judge", head, "accept", B), ("judge", head, "invalid", P)), "VIOLATED"),
+        ("gate invalid (it ran) then judge reject -> CLEAN",
+         seq(("gate", head, "invalid", {"steps": {"scope": "PASS"}}), ("judge", head, "reject", B)), "CLEAN"),
+        ("an earlier violating accept survives a later gated accept -> VIOLATED",
+         seq(("judge", head, "accept", B), g(gp, head), ("judge", head, "accept", B)), "VIOLATED"),
+        ("two distinct full shas sharing 12 hex are not the base -> VIOLATED",
+         seq(("judge", "0123456789ab" + "1" * 28, "reject", {"base": "0123456789ab" + "0" * 28})), "VIOLATED"),
+        ("no gate, no usable base, non-accept -> UNMEASURED", seq(("judge", head, "reject", None)), "UNMEASURED"),
+        ("no gate, a short base prefix, non-accept -> UNMEASURED",
+         seq(("judge", head, "reject", {"base": base[:7]})), "UNMEASURED"),
+    ]
+    for name, s, want in rows:
+        r = AA.dq_publish(s)
+        check("publish: " + name, r["status"] == want, r)
+    r = AA.dq_publish(seq(("judge", head, "reject", B)))
+    check("publish: a real publish names its kind", (r.get("evidence") or [{}])[0].get("kind")
+          == "published_without_gate", r)
+    # the arm-level consequence: one parked task (gate fail at base, reject at base) no longer disqualifies an arm
+    logs, tasks, sp = winner_logs()
+    t0 = sorted(tasks)[0]
+    tr = logs["trio"]["recs"]
+    last = max(AA._ep(x) for x in tr)
+    tr += [{"ts": iso(last + 5), "arm": "trio", "lane": "gate", "run_id": "gate", "task": t0, "event": "gate",
+            "sha": base, "verdict": "fail", "detail": {"steps": {"scope": "PASS"}}},
+           {"ts": iso(last + 9), "arm": "trio", "lane": "judge", "run_id": "judge", "task": t0, "event": "judge",
+            "sha": base, "verdict": "reject", "detail": B}]
+    check("publish: an arm with a parked task judged at base is not publish-disqualified",
+          AA.dq_publish(AA.L.ordered(tr))["status"] == "CLEAN", AA.dq_publish(AA.L.ordered(tr)))
+
+
 def t_nig_oracle():
     """nig_fit (task block eliminated by Schur complement) against the full-design conjugate posterior."""
     arms = ["trio", "v3", "ralph_a"]
@@ -865,7 +955,8 @@ def t_chronology_r2():
           (r["final"]["verdict"], [(b["block"], b.get("disqualified"), b.get("ts_epoch")) for b in r["blocks"]]))
     # (2) an arm disqualified early must not set the cutoff with its late completions; (4) reasons split by time
     logs, tasks, sp = winner_logs(extra_trio=[scope_fail(T0 + 50000)])
-    late_judge = {"ts": iso(T0 + 60000), "event": "judge", "task": ids[0], "sha": "cd" * 20, "verdict": "invalid"}
+    late_judge = {"ts": iso(T0 + 60000), "event": "judge", "task": ids[0], "sha": "cd" * 20, "verdict": "invalid",
+                  "detail": {"base": "ef" * 20}}     # published (sha != base) with no gate at all -> publish VIOLATED
     logs["v3c"] = {"recs": arm_log("v3c", [(t, True) for t in ids[:5]], offset=10 ** 6,
                                    extra=[scope_fail(T0 + 100), late_judge])}
     sp["v3c"] = spend_for((t, 1e5) for t in ids[:5])
@@ -1601,7 +1692,7 @@ CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fl
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
         t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial,
-        t_stray_logs, t_ledger_trust)
+        t_stray_logs, t_ledger_trust, t_publish_parked)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.16), ("ACCEPT_MARGIN", 0.14), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
@@ -1610,7 +1701,8 @@ MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97
            ("MIN_TASKS", 5), ("MIN_TASKS", 15), ("MIN_KINDS", 1), ("MIN_KINDS", 3), ("BLOCK", 4), ("BLOCK", 6),
            ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
            ("newest_era_missing", lambda *a: {}), ("held_kind", lambda v: v.startswith("DECIDE_FOR_")),
-           ("gated", AA.held_kind), ("ledger_external", lambda ledger=None: (None, {"ledger": "mutant"}))]
+           ("gated", AA.held_kind), ("ledger_external", lambda ledger=None: (None, {"ledger": "mutant"})),
+           ("dq_publish", _old_dq_publish)]
 
 
 def mutants():
