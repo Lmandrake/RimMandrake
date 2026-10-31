@@ -152,8 +152,22 @@ def t_exclude():
             T.reader_exclusions_path = lambda p=None: rx
             doc = T.build(n=20, check=False)
             check("build: UNSCORE of one of two checks keeps the task (judge scores the other) (A2)",
-                  "B012" not in doc["left_out"] and doc["reader"]["unscore_kept"] == 1 and doc["reader"]["judge_honours"],
-                  doc["left_out"].get("B012"))
+                  "B012" not in doc["left_out"] and doc["reader"]["judge_honours"], doc["left_out"].get("B012"))
+            check("build: unscore_kept counts unscore tasks actually IN the list",
+                  doc["reader"]["unscore_kept"] == int("B012" in doc["tasks"]), (doc["reader"], "B012" in doc["tasks"]))
+            doc = T.build(n=90, check=False)
+            check("build: unscore_kept 1 when the unscore task is listed", "B012" in doc["tasks"]
+                  and doc["reader"]["unscore_kept"] == 1, doc["reader"])
+            rx2 = Path(d, "rx2.json")
+            rx2.write_text(json.dumps({"schema": T.READER_SCHEMA, "drop": {},
+                                       "unscore": {"B012": ["src/x/selftest_y.py"], "B013": ["src/x/selftest_y.py"]}}))
+            T.reader_exclusions_path = lambda p=None: rx2
+            doc = T.build(n=90, check=False)
+            check("build: an unscore task left out as a bundled sibling is NOT counted in unscore_kept "
+                  "(ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS: meta said 6, list held 4)",
+                  doc["reader"]["unscore"] == 2 and doc["reader"]["unscore_kept"] == 1 and "B013" in doc["left_out"],
+                  doc["reader"])
+            T.reader_exclusions_path = lambda p=None: rx
             T.hidden_scored_paths = lambda p=None: {t: ["src/x/selftest_y.py"] for t in bb}
             doc = T.build(n=20, check=False)
             check("build: UNSCORE of every scored check still leaves the task out",
@@ -184,6 +198,53 @@ def t_exclude():
             except T.TrialError:
                 check("build: a malformed reader file refuses", True)
             check("build: --no-reader ignores it", T.build(n=20, check=False, reader=rx, use_reader=False)["reader"] is None)
+            # trial exclusions (ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS)
+            tx = Path(d, "tx.json")
+            tx.write_text(json.dumps({"schema": T.TRIAL_EXCLUSIONS_SCHEMA, "exclude": [
+                {"task": "B020", "reason": "unfair check", "ruling": "R"}, {"task": "B030", "reason": "unfair too"},
+                {"task": "NOPE", "reason": "gone"}],
+                "ratings": {"B040": {"rating": "leak", "note": "names the fix"},
+                            "B041": {"rating": "brittle", "note": "sibling, never listed"}}}))
+            doc = T.build(n=90, check=False, trial_ex=tx)
+            ti = doc["trial_exclusions"]
+            check("trial exclusion: excluded tasks are out of the list with their reason",
+                  not {"B020", "B030"} & set(doc["tasks"]) and doc["left_out"]["B020"] == "trial exclusion: unfair check [R]"
+                  and ti["excluded"] == ["B020", "B030"], (ti, doc["left_out"].get("B020")))
+            check("trial exclusion: the excluded task's bundled sibling is NOT promoted (needs its own read)",
+                  "B021" not in doc["tasks"] and "not promoted" in doc["left_out"]["B021"], doc["left_out"].get("B021"))
+            check("trial exclusion: a row naming no bank task is reported, not silent", ti["unmatched"] == ["NOPE"], ti)
+            check("trial exclusion: ratings copied for listed tasks only; unlisted rated tasks named",
+                  ti["ratings"] == {"B040": {"rating": "leak", "note": "names the fix"}}
+                  and ti["ratings_unlisted"] == ["B041"], ti)
+            check("trial exclusion: N still a parameter after it", len(T.build(n=20, check=False, trial_ex=tx)["tasks"]) == 20)
+            check("trial exclusion: --no-trial-exclusions ignores it",
+                  T.build(n=90, check=False, trial_ex=tx, use_trial_ex=False)["trial_exclusions"] is None
+                  and "B020" in T.build(n=90, check=False, trial_ex=tx, use_trial_ex=False)["tasks"])
+            rx3 = Path(d, "rx3.json")
+            rx3.write_text(json.dumps({"schema": T.READER_SCHEMA, "drop": {"B030": "reader drop"}, "unscore": {}}))
+            doc2 = T.build(n=90, check=False, trial_ex=tx, reader=rx3)
+            check("trial exclusion: a task the reader already dropped is 'already_out' and keeps the reader reason",
+                  doc2["trial_exclusions"]["excluded"] == ["B020"] and doc2["trial_exclusions"]["already_out"] == ["B030"]
+                  and doc2["left_out"]["B030"].startswith("reader pass"), doc2["trial_exclusions"])
+            for body in ('{"schema": "x", "exclude": []}',
+                         '{"schema": "%s", "exclude": [{"task": "A"}]}' % T.TRIAL_EXCLUSIONS_SCHEMA,
+                         '{"schema": "%s", "exclude": [{"task": "A", "reason": "r"}, {"task": "A", "reason": "r"}]}'
+                         % T.TRIAL_EXCLUSIONS_SCHEMA,
+                         '{"schema": "%s", "exclude": [{"task": "A", "reason": "r"}], "ratings": {"A": {"rating": "leak"}}}'
+                         % T.TRIAL_EXCLUSIONS_SCHEMA,
+                         '{"schema": "%s", "exclude": [], "ratings": {"A": {"rating": "fine"}}}' % T.TRIAL_EXCLUSIONS_SCHEMA,
+                         '{'):
+                Path(d, "tb.json").write_text(body)
+                try:
+                    T.load_trial_exclusions(Path(d, "tb.json"))
+                    check("malformed trial exclusion file refused: %s" % body[:50], False)
+                except T.TrialError:
+                    check("malformed trial exclusion file refused: %s" % body[:50], True)
+            try:
+                T.load_trial_exclusions(Path(d, "none.json"))
+                check("an explicit missing trial exclusion file refuses", False)
+            except T.TrialError:
+                check("an explicit missing trial exclusion file refuses", True)
         finally:
             (T.AA.load_tasks, T.AA.chrono_keys, T.hidden_fix_shas, T.A.load_pool_exclusions, T._source_items,
              T.reader_exclusions_path, T.hidden_scored_paths) = saved
@@ -215,8 +276,25 @@ def t_pool_exclusions_file():
         check("absent exclusion file -> {}", T.A.load_pool_exclusions(Path(d, "none.json")) == {})
 
 
+def t_trial_exclusions_file():
+    """The committed trial_exclusions.json (ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS, read33.md)."""
+    x = T.load_trial_exclusions()
+    want = {"RP_CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER": "srchash", "RP_DONOR_REGEN_HARDEN_BLIND_JOURNAL": "queue_view",
+            "RP_ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF": "RM_Kite", "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": "retry"}
+    for t, word in want.items():
+        check("committed trial exclusions: %s excluded, reason names %r" % (t, word),
+              t in x["exclude"] and word in x["exclude"][t], x["exclude"].get(t))
+    check("committed trial exclusions: exactly those four", set(x["exclude"]) == set(want), sorted(x["exclude"]))
+    rated = {"RP_TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL": "brittle", "RP_BRAINWORMS_VALIDATION_FIX_BORROWED_REASON": "brittle",
+             "RP_ROSTERS_RENAME_MOVED_PORT_NAMES": "partial", "RP_ENACT_APPLY_REFUSED_HARDEN_PARTIAL_PICK": "partial",
+             "RP_ENACT_KEEP_AGE_FIX_DECIDED_AT": "leak", "RP_RIVERSITE_FIX_RETILE_NONE_CRASH": "leak",
+             "RP_FLYER_MOTION_FIX_HALO_PASS": "leak", "RP_SEAT_SYNC_HARDEN_LITERAL_PATHSPECS": "leak"}
+    check("committed ratings: the read's 2 brittle / 2 partial / 4 leak kept tasks",
+          {t: v["rating"] for t, v in x["ratings"].items()} == rated, x["ratings"])
+
+
 def main():
-    for t in (t_select, t_read_list, t_default_file, t_exclude, t_pool_exclusions_file):
+    for t in (t_select, t_read_list, t_default_file, t_exclude, t_pool_exclusions_file, t_trial_exclusions_file):
         t()
     print("\n%d failure(s)%s" % (len(FAILS), (": " + ", ".join(FAILS)) if FAILS else ""))
     return 1 if FAILS else 0
