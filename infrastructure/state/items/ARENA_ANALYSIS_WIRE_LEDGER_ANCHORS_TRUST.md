@@ -1,0 +1,5 @@
+Proven in a scratch root (generator: D:\ClaudeWork\rimmandrake\arena_readiness\synth.py, s1.py, s2.py). 3 arms, 29 tasks, signed chains, local anchors, witness at n, ralph_a at 0.5x tokens.
+Real CLI `arena_analysis.py run --spend ...` with no --allow-untrusted: exit 3, UNMEASURED, every arm 'untrusted log'. Same data with --allow-untrusted: DECIDE_FOR_ralph_a.
+In-process load_verified(p, TOK, ext) with a signed ledger anchor per arm: every arm passes. So the machinery works, but main() line 1509 calls load_verified(allow_untrusted=...) with external=None and has no --ledger-anchors flag; arena_spend.py line 354 likewise.
+Effect: the trusted path cannot give a verdict from the CLI. The trial either ends UNMEASURED or runs with --allow-untrusted, which removes the tamper check that the ledger anchor exists to give.
+Fix: feed L.ledger_anchors(model.read()) to load_verified in both CLIs (flag or default), and include it in the end-of-trial sequence (anchor-note, then analysis). CAN CHANGE A VERDICT.
