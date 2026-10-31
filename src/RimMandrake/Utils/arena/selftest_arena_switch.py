@@ -823,7 +823,7 @@ def t_trial_and_members():
         if old is None: sys.modules.pop("model", None)
         else: sys.modules["model"] = old
     r = subprocess.run([sys.executable, str(HERE / "arena.py"), "trial-runner"], capture_output=True, text=True)
-    check(r.returncode == 3 and "OWED" in r.stderr, "trial-runner says the replay loop is OWED (exit 3), never pretends")
+    check(r.returncode == 2 and "--arm" in r.stderr, "trial-runner without --arm refuses (exit 2), never pretends to run")
     # H4: enabled member timers of another arm come up at boot beside the live target
     w = World("mem", mode="ralph_a", active=("ralph_a",))
     for a in ("ralph_a", "trio", "bench", "foundry"):

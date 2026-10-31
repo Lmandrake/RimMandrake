@@ -11,7 +11,7 @@ design/RimMandrake/architecture_switch_harness_2026-10-29.md section 2, testpilo
     arena.py who                  the checks; exit code is a bitmask: a=1 b=2 c=4 d=8 e=32 f=64 (16 = arm.toml unreadable)
     arena.py prepush --arm A      the pre-push hook body (refs on stdin): refuse (exit 10) AND alarm anything not allowed
     arena.py ops-watch            one number for ops_watch's ARENA_TWO_LIVE rule (0 = fine)
-    arena.py trial-runner         ExecStart of rm-arena-replay.service (the replay driving loop is OWED; it exits 3)
+    arena.py trial-runner --arm A ExecStart of rm-arena-replay.service: the replay driving loop (arena_replay_run.py)
 
 arm.toml lives OUTSIDE git (`$ARENA_ARM_TOML`, default `<arena root>/arm.toml`); the committed template is
 infrastructure/arena/arm.toml.template. MODES: the arms v3 v3c ralph_a ralph_c trio, `production` (the real seats; its
@@ -1712,12 +1712,11 @@ def alarms_since(path: Path, since_epoch: float) -> int:
     return n
 
 
-def trial_runner() -> int:
-    """ExecStart of rm-arena-replay.service. The replay DRIVING loop (arena_replay.py has schedule/leftovers/sweep but
-    no run loop) is OWED to arena_replay's owner; until then the unit fails loudly instead of pretending to run."""
-    sys.stderr.write("arena trial-runner: OWED - the replay driving loop is not built yet (arena_replay.py has no run "
-                     "loop); rm-arena-replay.service exits 3\n")
-    return 3
+def trial_runner(argv=()) -> int:
+    """ExecStart of rm-arena-replay.service: the replay driving loop, arena_replay_run.py (one process per replay arm:
+    `arena.py trial-runner --arm A`). Without --arm it refuses (exit 2); it never pretends to run."""
+    import arena_replay_run as RR
+    return RR.main(list(argv))
 
 
 def main(argv=None):
@@ -1735,12 +1734,13 @@ def main(argv=None):
     h = sub.add_parser("prepush"); h.add_argument("--arm", required=True, choices=ARMS)
     h.add_argument("--clone"); h.add_argument("--remote"); h.add_argument("--url")
     sub.add_parser("ops-watch")
-    sub.add_parser("trial-runner")
+    sub.add_parser("trial-runner", add_help=False)
+    argv = list(sys.argv[1:] if argv is None else argv)
+    if argv[:1] == ["trial-runner"]:
+        return trial_runner(argv[1:])
     a = ap.parse_args(argv)
     if a.cmd == "prepush":
         return prepush(a.arm, sys.stdin.read(), clone=a.clone)
-    if a.cmd == "trial-runner":
-        return trial_runner()
     if a.cmd == "ops-watch":
         r = ops_two_live(); print(json.dumps(r)); return 0 if r["value"] == 0 else 1
     if a.cmd == "mode":
