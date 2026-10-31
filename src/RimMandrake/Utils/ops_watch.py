@@ -534,40 +534,44 @@ def c_testing(now, rules, ctx):
         jobs = done_jobs(now - 7 * DAY, bad, now)
     bad = bad or []
     closes = ctx.get("closes")
-    if closes is None:
-        return {"testing.nothing_h_7d": U("the ledger was not readable, so closes after a run are unknown")}
-    ch = rules["testing"]["close_after_h"]
-    steve_h, steve_n, unk, young = 0.0, 0, 0, 0
-    for fin, d in jobs:
-        st = epoch((d.get("result") or {}).get("started"))
-        if st is None or fin - st <= 0 or not outcome_of(d) or fail_count_unreadable(d):
-            unk += 1        # no span, or no outcome to say whether it caught anything
-            continue
-        if not caught(d, closes, ch):
-            steve_h += (fin - st) / HOUR
-            steve_n += 1
-            if now - fin < ch * HOUR:
-                young += 1      # its close window is still open: "caught nothing" is provisional
-    if jobs and (unk or young or bad):
-        out["testing.steve_nothing_h_7d"] = E(round(steve_h, 2), "%d of %d jobs have no start time or outcome (not counted); %d "
-                                              "counted jobs are inside their %d h close window; %d unreadable" % (unk, len(jobs), young, ch,
-                                                                                  len(bad)),
-                                              "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
-                                              nothing_jobs=steve_n, no_span=unk, young=young)
-    elif jobs:
-        out["testing.steve_nothing_h_7d"] = M(round(steve_h, 2), "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
-                                              nothing_jobs=steve_n, no_span=unk,
-                                              rule="no FAIL, no finding, no close of a run item within %d h" % ch)
+    if closes is None:      # costs the Steve half only: Archmagi's day records do not need the ledger
+        out["testing.steve_nothing_h_7d"] = U("the ledger was not readable, so closes after a run are unknown")
     else:
-        out["testing.steve_nothing_h_7d"] = U("no testq done record in 7 d")
+        ch = rules["testing"]["close_after_h"]
+        steve_h, steve_n, unk, young = 0.0, 0, 0, 0
+        for fin, d in jobs:
+            st = epoch((d.get("result") or {}).get("started"))
+            if st is None or fin - st <= 0 or not outcome_of(d) or fail_count_unreadable(d):
+                unk += 1        # no span, or no outcome to say whether it caught anything
+                continue
+            if not caught(d, closes, ch):
+                steve_h += (fin - st) / HOUR
+                steve_n += 1
+                if now - fin < ch * HOUR:
+                    young += 1      # its close window is still open: "caught nothing" is provisional
+        if jobs and (unk or young or bad):
+            out["testing.steve_nothing_h_7d"] = E(round(steve_h, 2), "%d of %d jobs have no start time or outcome (not counted); %d "
+                                                  "counted jobs are inside their %d h close window; %d unreadable" % (unk, len(jobs), young, ch,
+                                                                                      len(bad)),
+                                                  "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
+                                                  nothing_jobs=steve_n, no_span=unk, young=young)
+        elif jobs:
+            out["testing.steve_nothing_h_7d"] = M(round(steve_h, 2), "busy h on jobs that caught nothing, 7 d", jobs=len(jobs),
+                                                  nothing_jobs=steve_n, no_span=unk,
+                                                  rule="no FAIL, no finding, no close of a run item within %d h" % ch)
+        else:
+            out["testing.steve_nothing_h_7d"] = U("no testq done record in 7 d")
     hist = Path(os.environ.get("RM_TESTING_METRICS_DIR", "/mnt/d/ClaudeWork/rimmandrake/testing_metrics")) / "history.jsonl"
-    days = {}
+    days, torn = {}, []
     try:
         with open(hist, encoding="utf-8") as fh:
             for line in fh:
                 try:
                     r = json.loads(line)
                 except ValueError:
+                    if line.strip():    # the day it names, if it still does: a torn row may have held that day's update
+                        m = re.search(r'"day":\s*"([^"]*)"', line)
+                        torn.append(m.group(1) if m else None)
                     continue
                 if isinstance(r, dict) and isinstance(r.get("day"), str):
                     days[r["day"]] = r          # the last record of each day wins
@@ -575,7 +579,8 @@ def c_testing(now, rules, ctx):
         days = {}
     lo = time.strftime("%Y-%m-%d", time.localtime(now - 7 * DAY))
     today = time.strftime("%Y-%m-%d", time.localtime(now))
-    ah, adays, blind, soft = 0.0, 0, 0, 0
+    ah, adays, soft = 0.0, 0, 0
+    blind = sum(1 for d in torn if d is None or d > lo)
     for day, r in sorted(days.items()):
         if not day or day <= lo or not isinstance(r, dict):
             continue
@@ -1828,7 +1833,8 @@ def run(now=None, rules=None, filer=None, families=None):
                     lastm[k] = max(r["t"], lastm.get(k, r["t"]))
     lm_path = ops_dir() / "last_measured.json"
     lm_saved = _obj(read_json(lm_path)).get("t")
-    lm_bad = lm_path.exists() and not isinstance(lm_saved, dict)
+    lm_bad = lm_path.exists() and not (isinstance(lm_saved, dict)
+                                       and all(is_num(v) and finite(v) for v in lm_saved.values()))
     lastm, saved_lm = carry_last_measured(lastm, lm_saved, points, now)
     try:
         flags = andon(points, hist, lastm, rules, now) + sick

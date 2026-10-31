@@ -989,30 +989,31 @@ def t_owner_is_not_warned_where_the_rule_already_admits_him():
 
 
 def t_sweep_transient_lists_and_never_deletes():
+    """On a fixture root: the real Transient/ moves under other seats, so before/after there proves nothing."""
     fresh()
+    root = os.path.join(_tmp(), "sweeproot")
+    os.makedirs(os.path.join(root, "Transient", "sub"))
+    for rel in ("Transient/a.md", "Transient/sub/b.md", "Transient/README.md", "TRANSIENT_x.md"):
+        with open(os.path.join(root, rel), "x", encoding="utf-8") as fh:
+            fh.write("note")
     def seen():
-        roots = [(REPO, n) for n in os.listdir(REPO) if n.startswith("TRANSIENT_")]
-        d = os.path.join(REPO, "Transient")
-        roots += [(d, n) for n in os.listdir(d) if n != "README.md" and not n.startswith(".")] if os.path.isdir(d) else []
         got = {}
-        for r, n in roots:
-            top = os.path.join(r, n)
-            paths = [top] + [os.path.join(w, f) for w, ds, fs in os.walk(top) for f in ds + fs]     # nested notes too
-            for path in paths:
-                try:
-                    st = os.stat(path)
-                except OSError:
-                    continue
-                got[os.path.relpath(path, REPO)] = (st.st_size, st.st_mtime_ns)
+        for w, ds, fs in os.walk(root):
+            for n in ds + fs:
+                st = os.stat(os.path.join(w, n))
+                got[os.path.relpath(os.path.join(w, n), root)] = (st.st_size, st.st_mtime_ns)
         return got
+    code = ("import cli, types, sys; cli._bind_paths(); cli.model.ROOT = sys.argv[1]; "
+            "cli.cmd_sweep(types.SimpleNamespace(transient=True), 'BUILD')")
     before = seen()
-    out = ok("sweep", "--transient")
-    after = seen()
-    gone = {k: v for k, v in before.items() if after.get(k) != v}
-    assert not gone, (
+    r = subprocess.run([sys.executable, "-c", code, root], env=scratch_env(env("BUILD")), cwd=os.path.dirname(CLI),
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    assert r.returncode == 0, r.stderr
+    assert seen() == before, (
         "sweep DELETED or changed something. It lists; deciding a file is stale is a judgement "
-        "and destroying working notes is not recoverable: %r" % sorted(gone))
-    assert ("THIS LISTS ONLY" in out) if before else ("no transient files." in out), out
+        "and destroying working notes is not recoverable.")
+    assert "THIS LISTS ONLY" in r.stdout and os.path.join("Transient", "a.md") in r.stdout, r.stdout
+    assert "README.md" not in r.stdout, r.stdout
 
 
 def t_render_is_delegated_never_reimplemented():

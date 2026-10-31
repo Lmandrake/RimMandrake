@@ -440,7 +440,9 @@ fl = OW.andon(_pts, {}, _lm, rules(targets=[]), NOW)
 check("silent outlives series: the flag fires for a key blind past the series window",
       any(f["rule"] == "silent" and f["key"] == "steve.state" for f in fl), fl)
 os.environ["RM_OPS_DISKS"] = "d=/mnt/zz_ops_watch_not_mounted"
-s = OW.c_disk(NOW, RULES, {})
+_du, OW.shutil.disk_usage = OW.shutil.disk_usage, lambda p: type("U", (), {"total": 1e12, "used": 0, "free": 1e12})
+s = OW.c_disk(NOW, RULES, {})       # df would answer here: only the mount guard can refuse
+OW.shutil.disk_usage = _du
 check("disk: a /mnt drive that is not a mount point is UNMEASURED (df would read the parent volume)",
       s["disk.d_free_gb"]["m"] == "UNMEASURED", s["disk.d_free_gb"])
 os.environ["RM_OPS_DISKS"] = "root=%s" % TMP
@@ -532,12 +534,24 @@ t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
 check("testing: a future day does not complete the week", t["testing.archmagi_nothing_h_7d"]["m"] == "ESTIMATE"
       and t["testing.archmagi_nothing_h_7d"]["x"].get("blind_days") == 1, t)
 rows[0] = _today
+(TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows) + json.dumps(rows[0])[:30] + "\n")
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+check("testing: a torn row in the window taints the week", t["testing.archmagi_nothing_h_7d"]["m"] == "ESTIMATE", t)
+(TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows)
+                                  + '{"day": "2000-01-01", "mach\n')
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+check("testing: a torn row from long ago does not", t["testing.archmagi_nothing_h_7d"]["m"] == "MEASURED", t)
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": None})
+check("testing: an unreadable ledger costs the Steve half, Archmagi still reads",
+      t["testing.archmagi_nothing_h_7d"]["m"] == "MEASURED" and t["testing.steve_nothing_h_7d"]["m"] == "UNMEASURED"
+      and t["testing.nothing_h_7d"]["m"] == "UNMEASURED", t)
 rows[3]["machines"]["archmagi"]["busy_pct"] = float("nan")
 (TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
 t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
 _v = t["testing.archmagi_nothing_h_7d"].get("v")
-check("testing: a NaN busy_pct is one blind day, never a NaN week", _v is None or _v == _v, t)
-check("testing: the NaN day is not counted as 35 h of the week", _v != 35.0, t)
+check("testing: a NaN busy_pct is one blind day of the week: the six others stand",
+      _v == 30.0 and t["testing.archmagi_nothing_h_7d"]["m"] == "ESTIMATE"
+      and t["testing.archmagi_nothing_h_7d"]["x"].get("blind_days") == 1, t)
 rows[3]["machines"]["archmagi"]["busy_pct"] = 50
 if old_td is None:
     os.environ.pop("RM_TESTING_METRICS_DIR")
@@ -1023,6 +1037,11 @@ check("run: wrong-shaped flags.json and last_measured.json are survived", any(f[
 check("run: an unreadable last_measured.json is said aloud and kept",
       any(f["key"] == "last_measured" and "unreadable" in f["detail"] for f in _fl)
       and (OW.ops_dir() / "last_measured.json").read_text(encoding="utf-8") == "[2]", _fl)
+(OW.ops_dir() / "last_measured.json").write_text('{"t": {"x.k": "soon"}}', encoding="utf-8")
+OW.run(now=NOW + 8, rules=_bad_rules, families={"v3"})
+_fl = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["flags"]
+check("run: a bad stamp in last_measured.json is said aloud and kept",
+      any(f["key"] == "last_measured" for f in _fl) and "soon" in (OW.ops_dir() / "last_measured.json").read_text(encoding="utf-8"), _fl)
 (OW.ops_dir() / "last_measured.json").unlink()
 _r2 = OW.run(now=NOW + 20, rules=_bad_rules, families={"v3"})
 _fl2 = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["flags"]
