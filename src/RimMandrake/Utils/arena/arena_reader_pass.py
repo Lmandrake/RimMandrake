@@ -336,28 +336,47 @@ _MISSING_NAME = [re.compile(p) for p in (
     r"got an unexpected keyword argument '(\w+)'",                   # TypeError on a fix-added parameter (C4)
 )]
 _REASON = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Exception)\b|\bFAIL|\bassert\b"
-                     r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b|(?i:\bfail(?:s|ed|ure|ures|ing)?\b)")
+                     r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b|(?i:\bfail(?:s|ed|ure|ures|ing)?\b)"
+                     r"|\b(?:Error|Exception):")
 _BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|\bFAILED\b(?! \()|\bexpected\b|\bnot ok\b"
-                        r"|\b(?:Key|Type)Error\b")
+                        r"|\b(?!(?:ModuleNotFound|Import|Attribute|Name)Error\b)[A-Z]\w*(?:Error|Exception)\b"
+                        r"|\b(?:Error|Exception):")
+# (v4 review: an error class other than the missing-name classes, `ValueError: ...`, `KeyError`, `TypeError`, is a
+# failure that is not a missing name, so the check is not red for the missing name only; a TypeError that IS the
+# missing-name form, `unexpected keyword argument`, still reads as missing, see _is_behaviour)
 # RULES v4: which lines of a tail are OUTCOME lines (C2, C5). Not outcome: the source line Python prints under a
-# traceback `File "...", line N` (it quotes the check's own `assert`/`expected` text), the File line itself, and a
+# traceback `File "...", line N` (it quotes the check's own `assert`/`expected` text), the File line itself, pytest's
+# quoted source (the `>   ` failing line and the indented or blank lines directly above it), and a
 # line that starts as a pass (`ok ...`, `PASS ...`) without a nonzero failure count. In outcome lines a zero count
 # (`0 FAIL`, `0 failed`) and a negated error (`no ValueError raised`) are not failure words.
 _TB_FILE = re.compile(r'^\s*File "[^"]*", line \d+')
+_PYTEST_SRC = re.compile(r"^>\s")
 _PASS_LINE = re.compile(r"^\s*(?:ok|PASS|PASSED)\b")
 _NONZERO_FAILS = re.compile(r"\b[1-9]\d*\s+fail", re.I)
 _NEUTRAL = re.compile(r"\b0\s+fail\w*|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.I)
 # C7: a missing-name message on an assertion or FAIL line is that check's own failure report (behaviour), unless the
 # line also names the import/attribute/name error class (`FAIL: ImportError: cannot import name ...`), which is the
 # missing name reported again.
-_BEH_PREFIX = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b|FAIL\b|not ok\b)")
+_BEH_PREFIX = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b|FAIL\b|FAILED\b|not ok\b)")
 _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b")
 
 
 def outcome_lines(tail) -> list[str]:
     """The tail's outcome lines (see _TB_FILE.. above), each with its neutral phrases blanked."""
     out, prev = [], ""
-    for ln in (tail or "").splitlines():
+    rows = (tail or "").splitlines()
+    pysrc = set()
+    for i, ln in enumerate(rows):
+        if _PYTEST_SRC.match(ln):
+            pysrc.add(i)
+            j = i - 1
+            while j >= 0 and (not rows[j].strip() or rows[j][:1].isspace()) and j not in pysrc:
+                pysrc.add(j)
+                j -= 1
+    for i, ln in enumerate(rows):
+        if i in pysrc:
+            prev = ln
+            continue
         # Python indents the quoted source; a File line with no source (`File "<string>"`) is followed by the
         # unindented error line, which is kept
         src, prev = bool(_TB_FILE.search(prev)) and ln[:1].isspace(), ln
@@ -395,10 +414,10 @@ def base_failure(tail, names: dict, extra: dict | None = None) -> dict:
                        not name (fix_only_unnamed), with no behavioural failure line beside it: the check is red at
                        base for the missing name, not the defect, and pins the fix's private API."""
     tail = tail or ""
-    cited = missing_names_cited(tail)
+    lines = outcome_lines(tail)
+    cited = missing_names_cited("\n".join(lines))      # v4 review: a missing name on a pass/source line is no evidence
     unnamed = set((names or {}).get("fix_only_unnamed") or []) | set((extra or {}).get("fix_only_unnamed") or [])
     fix_missing = [n for n in cited if n in unnamed]
-    lines = outcome_lines(tail)
     behaviour = [ln for ln in lines if _is_behaviour(ln)]
     visible = any(_REASON.search(ln) for ln in lines)
     veto = ("no_reason_visible" if not visible else
@@ -630,7 +649,8 @@ def validate_reply(reply: dict, packet: dict) -> list[dict]:
                     r["path"], bf["veto"], (": " + ", ".join(bf.get("missing_fix_only_unnamed") or []))
                     if bf["veto"] == "missing_name_only" else ""))
             # the veto stays in code: a KEEP may not cite as coupling a name the fix invented and the task never gave
-            unnamed = set(((by_path[r["path"]].get("names") or {}).get("fix_only_unnamed")) or [])
+            unnamed = set(((by_path[r["path"]].get("names") or {}).get("fix_only_unnamed")) or []) | \
+                set(((by_path[r["path"]].get("cited_names") or {}).get("fix_only_unnamed")) or [])
             hit = sorted(unnamed & set(names))
             if hit:
                 raise ReaderError("%s: KEEP while coupled_names holds fix-introduced unnamed %s" % (r["path"], hit))

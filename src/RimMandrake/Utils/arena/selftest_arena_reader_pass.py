@@ -313,6 +313,11 @@ def keep_refusals():
             check(refused({"checks": [row(P, "KEEP", **{k: v})]}, pk), "KEEP with only %s=%s is refused" % (k, v))
             check(not refused({"checks": [row(P, "UNSCORE_CHECK", **{k: v})]}, pk),
                   "UNSCORE_CHECK with %s=%s is accepted" % (k, v))
+        # v4 review: a fix-only unnamed name found by the cited-name lookup is coupling too
+        pc = json.loads(json.dumps(pk))
+        pc["checks"][0]["cited_names"] = {"at_base": [], "fix_only": ["ghost_api"], "fix_only_unnamed": ["ghost_api"]}
+        check(refused({"checks": [row(P, "KEEP", coupled_names=["ghost_api"])]}, pc),
+              "KEEP citing a cited-lookup fix-only unnamed name as coupling is refused")
 
 
 def rules_v4():
@@ -374,6 +379,11 @@ def rules_v4():
     check(veto(TB.replace("src/selftest_n.py", "tests/expected/assert.py") + "AttributeError: module 'tool' has no attribute "
                "'_private_two'\n") == "missing_name_only",
           "C2: a traceback File line is not an outcome line (its path says expected/assert)")
+    check(veto("    def test_x():\n        assert a == 1\n\n>       assert tool._private_two() == 2\n"
+               "E       AttributeError: module 'tool' has no attribute '_private_two'\n") == "missing_name_only",
+          "C2: pytest's quoted source (the > line and the context above it) is not an outcome line")
+    check(veto("PASS: handled No module named 'newmod'\n" + TB + "ImportError: cannot import name 'public_api'\n")
+          is None, "C2: a missing name on a pass line is not cited (only the task-named import fails)")
     check(veto('  File "<string>", line 1\nAssertionError: 1 != 2\n' + MISS) is None,
           "C2: an unindented error after a source-less File line is an outcome line (behaviour kept)")
     # C5 / C6: pass lines and zero counts are no reason; a lowercase failure word is one
@@ -384,17 +394,22 @@ def rules_v4():
         check(veto(t) is None, "C6: %r is a visible reason" % t.strip())
     # each _REASON alternative alone
     for t in ("Traceback (most recent call last):\n", "ValueError: bad\n", "FAIL_GATE widget\n", "  assert x == 1\n",
-              "x.cs(1,1): error CS1002: semicolon\n", "not ok 3 - widget\n", "got 1, expected 2\n", "it failed\n"):
+              "x.cs(1,1): error CS1002: semicolon\n", "not ok 3 - widget\n", "got 1, expected 2\n", "it failed\n",
+              "Error: invalid dimensions\n", "Unhandled exception. System.Exception: bad\n"):
         check(R.base_failure(t, {})["reason_visible"], "reason alternative alone is visible: %r" % t.strip())
     # C7 / C8 and each _BEHAVIOUR alternative: beside a fix-only missing name, the check is NOT import-only
     for t in ("AssertionError: 1 != 2", "assert count == 3 did not hold", "FAIL widget", "got 1, expected 2",
               "not ok 1 - f", "KeyError: 'x'", "TypeError: f() takes 0 args", "FAILED test_f - got 1",
               "AssertionError: expected 2 got 1; note has no attribute '_private_two'",
               "FAIL gate reported: cannot import name '_private_two'",
-              "E   AssertionError: has no attribute '_private_two'", "not ok 2 - has no attribute '_private_two'"):
+              "E   AssertionError: has no attribute '_private_two'", "not ok 2 - has no attribute '_private_two'",
+              "ValueError: invalid dimensions", "Exception: bad dims",
+              "FAILED tests/t.py::t - AssertionError: No module named 'newmod'"):
         check(veto(MISS + t + "\n") is None and R.base_failure(MISS + t + "\n", UN)["behaviour_lines"] >= 1,
               "C7/C8: %r beside a missing name is behaviour (no veto)" % t)
     check(veto(MISS) == "missing_name_only", "control: the missing name alone vetoes")
+    check(veto(MISS + "ImportError: DLL load failed while importing _native\n") == "missing_name_only",
+          "an import/attribute/name error class is never behaviour, even without a missing-name message")
     forms = ("No module named 'a.b.m1'\ncannot import name 'm2' from 'x'\nAttributeError: 'X' has no attribute 'm3'\n"
              "NameError: name 'm4' is not defined\nerror CS0103: The name 'm5' does not exist\n"
              "error CS0117: 'A.B' does not contain a definition for 'm6'\n"
