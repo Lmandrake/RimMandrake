@@ -14,7 +14,9 @@ Every tick (the rm-dispatcher.timer, every 2 min) it, for each seat in the sched
      retried, up to `max_retries`, then an ALARM and a cooldown. Consumed but no hand-off in `handoff_s` -> recorded
      as WOKE_NO_HANDOFF (partial) and rung again on the bounded `no_handoff.rering_s` backoff; `escalate_after` of them
      in a row (each ring was sent because the queue had work) raise an idle_full_queue alarm and a line in the
-     Conductor's log (FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS).
+     Conductor's log (FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS). A ring the seat ANSWERED in its ledger without taking
+     new work (a note, a block, an implemented...) is WOKE_ANSWERED instead: same backoff, but its escalation is
+     seat_declined, which sends the Conductor to the queue, not the window (FOUNDRY_RINGS_FIX_ANSWERED_READS_NO_HANDOFF).
   4. RECOVERS a dead window — its session (found by its `--name`, never by cwd) gone from `claude agents` for
      `dead_after_s` — by resuming that session in the background in the seat's clone with the seat launcher's own
      line (`recover_argv`, default `claude_bounded.sh --bg --resume <session> --dangerously-skip-permissions --name …
@@ -282,6 +284,20 @@ def handoff_seen(events):
     return None
 
 
+# FOUNDRY_RINGS_FIX_ANSWERED_READS_NO_HANDOFF: of FOUNDRY's 24 woke_no_handoff (2026-10-28..31), 23 were answered in
+# seconds and 21 wrote ledger events (lane results read, a held item finished, a decline under the trial-prep order, as
+# the ring's own text asks); only the 10-30 06:02 "Login expired" ring was a dead window. A lease renew is not an answer
+# and neither is a bare `seat`/`bridge` event. A ring answered by nothing but talk stays silent, so a seat that says
+# "nothing for me to do until they finish" without a note is still idle_full_queue.
+ANSWERED = ("note", "block", "unblock", "raise", "implemented", "verify", "reconcile", "close", "file")
+
+
+def answer_seen(events):
+    """The seat's latest ledger event that answers a ring without a hand-off, or None."""
+    found = [ev for ev in events if ev.get("event") in ANSWERED]
+    return found[-1] if found else None
+
+
 NH_DEFAULTS = {"rering_s": [300, 900, 1800], "escalate_after": 3, "escalate_item": None,
                "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md"}
 
@@ -449,20 +465,35 @@ def decide(sch, st, obs, now, apply, out=None):
                     rule = no_handoff_rule(sch)
                     streak = int(ss.get("nh_streak") or 0) + 1
                     wait = rering_after(rule, streak)
-                    act(do="woke_no_handoff", seat=seat, ring_id=pend["ring_id"], ticket=pend.get("ticket"),
-                        why="doorbell consumed but no lease/claim/start by %s in %d s; re-ring in %d s (no-hand-off "
-                            "streak %d)" % (seat, sch["handoff_s"], wait, streak),
-                        note=True)
+                    ans = answer_seen(obs["events"](seat, pend["rung_iso"]))
+                    said = ""
+                    if ans:
+                        said = "%s on %s: %s" % (ans.get("event"), ans.get("id"),
+                                                 " ".join(str(ans.get("text") or "").split())[:200])
+                        act(do="woke_answered", seat=seat, ring_id=pend["ring_id"], ticket=pend.get("ticket"), note=True,
+                            why="%s answered the ring without taking new work (%s); re-ring in %d s (streak %d)"
+                                % (seat, said, wait, streak))
+                    else:
+                        act(do="woke_no_handoff", seat=seat, ring_id=pend["ring_id"], ticket=pend.get("ticket"),
+                            why="doorbell consumed but no lease/claim/start by %s in %d s; re-ring in %d s (no-hand-off "
+                                "streak %d)" % (seat, sch["handoff_s"], wait, streak),
+                            note=True)
                     ss.pop("ring")
                     ss["attempt"] = 0
                     ss["nh_streak"] = streak
                     ss["cooldown_until"] = now + wait
                     n = rule["escalate_after"]
-                    if n and streak >= n:
+                    if n and streak >= n and ans:
+                        act(do="alarm", kind="seat_declined:" + seat, seat=seat, note=True, conductor_log=True,
+                            ticket=rule.get("escalate_item") or sch.get("alarm_item"),
+                            why="%s is awake and answering, but %d rings in a row took no new work (peeked %s; last "
+                                "answer: %s). Conductor: look at the queue and the seat's orders, not its window" % (
+                                    seat, streak, pend.get("ticket"), said))
+                    elif n and streak >= n:
                         act(do="alarm", kind="idle_full_queue:" + seat, seat=seat, note=True, conductor_log=True,
                             ticket=rule.get("escalate_item") or sch.get("alarm_item"),
                             why="%s is idle with work waiting: %d consecutive rings ended woke_no_handoff (last ring "
-                                "%s, peeked %s); the Dispatcher keeps re-ringing every <= %d s, but the seat is not "
+                                "%s, peeked %s, and it wrote nothing to the ledger); the Dispatcher keeps re-ringing every <= %d s, but the seat is not "
                                 "taking work - Conductor: look at its window" % (
                                     seat, streak, pend["ring_id"], pend.get("ticket"), max(rule["rering_s"])))
                 return

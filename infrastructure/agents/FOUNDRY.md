@@ -190,7 +190,8 @@ Do the steps in one turn:
      (they land in files; nothing is lost by not watching them). Never answer a ring without claiming unless the
      queue truly holds nothing workable — and then say why in a `rimflow note` on the ringed ticket. An unclaimed
      ring is rung again within minutes (`no_handoff.rering_s` in `dispatcher_schedule.json`), and
-     `no_handoff.escalate_after` unclaimed rings in a row are an `idle_full_queue` alarm to the Conductor.
+     `no_handoff.escalate_after` unclaimed rings in a row alarm the Conductor: `seat_declined` when your ledger
+     answered them (your last note is quoted to him), `idle_full_queue` when nothing was written.
    - **`RESTART REQUESTED`** — context is over the backstop (or UNMEASURED, or you passed `--fresh` because the
      window's beliefs are stale). End the turn now. Only a new prompt from the owner in the next 30 s cancels the
      restart — the Dispatcher's rings, task notifications and the Conductor's cross-session messages never do, and

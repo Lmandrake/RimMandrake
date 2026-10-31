@@ -177,6 +177,46 @@ def test_verify_retry():
     check(st["seats"]["FOUNDRY"].get("cooldown_until", 0) > now - 3600, "give-up starts a cooldown")
 
 
+def test_answered_ring_is_not_no_handoff():
+    """FOUNDRY_RINGS_FIX_ANSWERED_READS_NO_HANDOFF: a seat that answers in its ledger is woke_answered and escalates as
+    seat_declined (the queue), a silent one stays woke_no_handoff and idle_full_queue (the window)."""
+    sch = sched(caps=D.load_schedule()["caps"], no_handoff={"rering_s": [300, 900, 1800], "escalate_after": 3})
+    for ev, want_do, want_alarm in (
+            ({"event": "note", "id": "PEEKED", "text": "post-trial work\n held"}, "woke_answered", "seat_declined:FOUNDRY"),
+            ({"event": "implemented", "id": "HELD"}, "woke_answered", "seat_declined:FOUNDRY"),
+            ({"event": "lease", "action": "renew", "id": "HELD"}, "woke_no_handoff", "idle_full_queue:FOUNDRY"),
+            (None, "woke_no_handoff", "idle_full_queue:FOUNDRY")):
+        st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+        o = obs(consumed={"consumed_at": 1.0}, events=[dict(ev, ts="2999-01-01T00:00:00Z")] if ev else [])
+        now, seen = 1000.0, []
+        while now < 1000.0 + 3 * 3600:
+            seen += D.decide(sch, st, o, now, True)
+            now += sch["tick_s"]
+        ended = [a for a in seen if a["do"] in ("woke_answered", "woke_no_handoff")]
+        alarms = [a for a in seen if a["do"] == "alarm"]
+        check(len(ended) >= 3 and {a["do"] for a in ended} == {want_do} and all(a["note"] for a in ended),
+              "%r ends each ring as %s (%r)" % (ev, want_do, sorted({a["do"] for a in ended})))
+        check(alarms and {a["kind"] for a in alarms} == {want_alarm} and alarms[0]["conductor_log"]
+              and alarms[0]["note"], "%r escalates as %s" % (ev, want_alarm))
+        check(st["seats"]["FOUNDRY"]["nh_streak"] == len(ended), "both kinds share the backoff streak")
+        if want_do == "woke_answered":
+            check(" ".join((ev.get("text") or "").split()) in alarms[0]["why"] and "the queue" in alarms[0]["why"]
+                  and ev["id"] in alarms[0]["why"], "the alarm carries the seat's own answer, folded to one line: %r"
+                  % alarms[0]["why"])
+    # a hand-off after answered rings ends the streak, and an answer alongside a claim is simply verified
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    t0 = 1000.0
+    D.decide(sch, st, obs(), t0, True)
+    for t in range(1, 8):
+        D.decide(sch, st, obs(), t0 + t * sch["tick_s"], True)
+    ring = st["seats"]["FOUNDRY"]["ring"]
+    both = [{"event": "note", "id": "A", "ts": D.iso(ring["rung_at"] + 1)},
+            {"event": "lease", "action": "take", "id": "B", "ts": D.iso(ring["rung_at"] + 2)}]
+    a = D.decide(sch, st, obs(consumed={"consumed_at": ring["rung_at"] + 1}, events=both),
+                 ring["rung_at"] + sch["handoff_s"], True)
+    check(kinds(a) == ["verified"], "a note plus a lease take is a hand-off, not an answer: %r" % kinds(a))
+
+
 def test_no_handoff_rering_and_escalation():
     """FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: a seat that consumes every ring and never claims, with work waiting,
     is rung again on the bounded no_handoff backoff (not after cooldown_s), and escalated after escalate_after."""
@@ -3404,7 +3444,7 @@ def test_long_helper_alarm():
 
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
-              test_no_handoff_rering_and_escalation, test_dead_recover,
+              test_no_handoff_rering_and_escalation, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
