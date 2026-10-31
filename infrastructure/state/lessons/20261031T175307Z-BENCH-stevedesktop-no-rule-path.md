@@ -1,0 +1,2 @@
+SteveDesktop gets no Lodestar or Dispatch update by itself: it has no sweep, and its deploy-key origins (Lmandrake/Lodestar, Dispatch) became one-commit release repos on 2026-10-28, so git pull refuses to fast-forward. Delivered the Haiku ban on 2026-10-31 by pushing dev HEAD over ssh to branch archmagi-main in each clone and merging --ff-only; the next rule change needs the same push until a sweep or -dev read key exists.
+home: Lodestar machines.md
