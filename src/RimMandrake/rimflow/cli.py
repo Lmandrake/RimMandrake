@@ -2773,13 +2773,7 @@ def _bridge_take_locked(args, seat, evs, w):
                    model.shared_bridge_path()))
         if alive and args.force:
             ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
-    # an event `_emit` will refuse must not touch, let alone force, the driver lock first
-    probe = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
-    _stamp_role_unit(probe)
-    try:
-        model.check(probe, _replay_now())
-    except model.LedgerError as e:
-        die(str(e))
+    _refuse_before_lock(ev)
     dl = _archmagi_lock_path()
     if dl:
         got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(),
@@ -2816,6 +2810,16 @@ def _archmagi_lock_path():
     if host_guard.local_host() not in (None, model.DEFAULT_BRIDGE_HOST):
         return None
     return driver_lock.lock_path()
+
+
+def _refuse_before_lock(ev):
+    """An event `_emit` will refuse must not touch, let alone force, a driver lock or a host guard first."""
+    probe = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
+    _stamp_role_unit(probe)
+    try:
+        model.check(probe, _replay_now())
+    except model.LedgerError as e:
+        die(str(e))
 
 
 def _guard_call(hk, args_list):
@@ -2880,12 +2884,13 @@ def _bridge_other_host_locked(args, seat, w, hk):
             owner = _owner_verdict([("his %s hold's own event" % hk, ent.get("since"))])
             if not owner[0]:
                 die(_owner_refusal(owner).replace("His hold is takeable", "A seat may release or take his hold", 1))
-        rc, out = _guard_call(hk, ["release", "--seat", seat, "--identity-json", ident])
-        if rc != 0:
-            print("⚠️  %s guard not released (exit %d): %s" % (hk, rc, out))
         ev = {"seat": seat, "event": "bridge", "state": "released", "host": hk}
         if holder and holder != seat:
             ev["override"] = "released the %s bridge out from under %s" % (hk, holder)
+        _refuse_before_lock(ev)
+        rc, out = _guard_call(hk, ["release", "--seat", seat, "--identity-json", ident])
+        if rc != 0:
+            print("⚠️  %s guard not released (exit %d): %s" % (hk, rc, out))
         _emit(ev, w, quiet=True)
         print("%s bridge released by %s" % (hk, seat))
         return 0
@@ -2921,11 +2926,6 @@ def _bridge_other_host_locked(args, seat, w, hk):
                  "--owner-cleared", owner[1], "--owner-heartbeat", str(guard_hold.get("heartbeat"))]
     elif args.force:
         take += ["--force", "bridge take --host %s --force by %s" % (hk, seat)]
-    rc, out = _guard_call(hk, take)
-    if rc != 0:
-        die("%s guard refused (exit %d): %s\n  Its own driver lock is held — the batch lane or another window is "
-            "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
-            "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
     ev = {"seat": seat, "event": "bridge", "state": "taken", "host": hk}
     if delegated:
         ev.update(delegated)
@@ -2934,6 +2934,12 @@ def _bridge_other_host_locked(args, seat, w, hk):
     if why:
         ev["override"] = ("took the %s bridge with --force while %s still held it" % (hk, holder)
                           if args.force else "took the %s bridge: %s" % (hk, why))
+    _refuse_before_lock(ev)
+    rc, out = _guard_call(hk, take)
+    if rc != 0:
+        die("%s guard refused (exit %d): %s\n  Its own driver lock is held — the batch lane or another window is "
+            "driving that game.\n  check   rimflow bridge who --host %s\n  cut across it (recorded)  "
+            "rimflow bridge take --host %s --force --for \"<what for>\"" % (hk, rc, out, hk, hk))
     _emit(ev, w, quiet=True)
     print("%s bridge taken by %s%s" % (hk, seat, ("  (%s)" % why) if why else ""))
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "

@@ -489,6 +489,13 @@ rows[3]["machines"]["archmagi"]["busy_pct"] = 50
 t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
 check("testing: (control) seven fully measured days are MEASURED 35 h", t["testing.archmagi_nothing_h_7d"]["m"] == "MEASURED"
       and t["testing.archmagi_nothing_h_7d"]["v"] == 35.0 and t["testing.nothing_h_7d"]["m"] == "MEASURED", t)
+rows[3]["machines"]["archmagi"]["busy_pct"] = float("nan")
+(TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+_v = t["testing.archmagi_nothing_h_7d"].get("v")
+check("testing: a NaN busy_pct is one blind day, never a NaN week", _v is None or _v == _v, t)
+check("testing: the NaN day is not counted as 35 h of the week", _v != 35.0, t)
+rows[3]["machines"]["archmagi"]["busy_pct"] = 50
 if old_td is None:
     os.environ.pop("RM_TESTING_METRICS_DIR")
 else:
@@ -1277,6 +1284,17 @@ for _rc in ({k: v for k, v in RULES.items() if k != "alarm"},
 for _k, _v in _saved.items():
     if _v is not None:
         os.environ[_k] = _v
+_rd = copy.deepcopy(RULES)
+_sv = OW.COLLECTORS["disk"]
+def _dead(*a):
+    raise RuntimeError("source gone")
+OW.COLLECTORS["disk"] = _dead
+OW.series_path("disk").unlink(missing_ok=True)
+OW.run(now=NOW + 90, rules=_rd, families={"disk"})
+OW.COLLECTORS["disk"] = _sv
+_fl = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["flags"]
+check("run: a collector with no history left is still flagged by name",
+      [f for f in _fl if f["rule"] == "collector" and f["key"] == "disk._collector" and "source gone" in f["detail"]], _fl[:3])
 _run = OW.subprocess.run
 def _tps(ratio, stalls, smax):
     OW.subprocess.run = lambda *a, **k: types.SimpleNamespace(returncode=0, stdout=json.dumps({"summary": {

@@ -568,7 +568,7 @@ def c_testing(now, rules, ctx):
             return x
         vals = {k: val(a.get(k)) for k in ("busy_pct", "window_h", "findings", "closed_after_pass", "regressions")}
         vals["mod_fails"] = val(_obj(a.get("fail_split")).get("mod"))
-        if not all(isinstance(vals[k], (int, float)) and not isinstance(vals[k], bool) for k in ("busy_pct", "window_h")):
+        if not all(is_num(vals[k]) and finite(vals[k]) for k in ("busy_pct", "window_h")):
             blind += 1
             continue
         sig = [vals[k] for k in ("findings", "closed_after_pass", "regressions", "mod_fails")]
@@ -1799,6 +1799,10 @@ def run(now=None, rules=None, filer=None, families=None):
     if rules.get("_load_error"):
         flags.append({"rule": "bad_rule", "key": "rules.file", "value": None, "window": "now",
                       "detail": "the rules file cannot be read, last good copy in use: %s" % rules["_load_error"]})
+    # a collector down longer than the series window has no old keys left to go silent: this flag is what still says so
+    flags += [{"rule": "collector", "key": k, "value": None, "window": "now", "detail": str(p.get("why"))[:200]}
+              for k, p in sorted(points.items()) if k.endswith("._collector") and isinstance(p, dict)
+              and p.get("m") == "UNMEASURED"]
     if not families:    # a key no collector reports would keep its alarm silent for good; a limited pass cannot tell
         for t in good_targets(rules):
             fam = t["key"].split(".")[0]

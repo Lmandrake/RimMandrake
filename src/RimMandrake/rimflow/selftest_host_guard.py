@@ -161,6 +161,20 @@ def main():
         r = rf("BENCH", "bridge", "release", "--host", "stevedesktop")
         check(r.returncode == 0 and not os.path.exists(lock), "release --host frees that host's lock: "
               + (r.stdout + r.stderr).strip()[-200:])
+        # an event the ledger will refuse moves no guard, either way
+        bad = dict(env, RIMFLOW_SEAT="BENCH", RM_ROLE_UNIT="bad unit!")
+        def rb(*args):
+            return subprocess.run([sys.executable, CLI] + list(args), env=bad, capture_output=True, text=True, timeout=60)
+        r = rb("bridge", "take", "--host", "stevedesktop", "--for", "bad")
+        check(r.returncode != 0 and "RM_ROLE_UNIT" in r.stderr and not os.path.exists(lock),
+              "a take the ledger refuses leaves the host guard alone: " + (r.stdout + r.stderr).strip()[-200:])
+        r = rf("BENCH", "bridge", "take", "--host", "stevedesktop", "--for", "drill again")
+        check(r.returncode == 0 and os.path.exists(lock), "the good take after it works: " + (r.stdout + r.stderr).strip()[-200:])
+        r = rb("bridge", "release", "--host", "stevedesktop")
+        check(r.returncode != 0 and "RM_ROLE_UNIT" in r.stderr and os.path.exists(lock),
+              "a release the ledger refuses keeps the host guard: " + (r.stdout + r.stderr).strip()[-200:])
+        r = rf("BENCH", "bridge", "release", "--host", "stevedesktop")
+        check(r.returncode == 0 and not os.path.exists(lock), "the good release after it works: " + (r.stdout + r.stderr).strip()[-200:])
         # a typo'd host is a plain refusal (exit 2, names the known hosts), not a SchemaError traceback
         r = rf("BENCH", "bridge", "take", "--host", "stevedeskop", "--for", "typo")
         check(r.returncode == 2 and "unknown bridge host" in r.stderr and "Traceback" not in r.stderr,
