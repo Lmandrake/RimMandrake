@@ -473,11 +473,21 @@ def c_steve(now, rules, ctx):
     return out
 
 
+def is_num(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def fail_count_unreadable(d):
+    """A FAIL count that is there and no number (a string "0" is truthy) cannot say whether the job caught anything."""
+    counts = (d.get("result") or {}).get("counts")
+    return isinstance(counts, dict) and counts.get("FAIL") is not None and not is_num(counts["FAIL"])
+
+
 def caught(d, closes, close_after_h):
     """A testq job caught something: a FAIL row, a finding it filed, or an item it ran closed within the window."""
     res = d.get("result") or {}
     counts, ing = res.get("counts"), d.get("ingested")
-    if isinstance(counts, dict) and counts.get("FAIL"):
+    if isinstance(counts, dict) and is_num(counts.get("FAIL")) and counts["FAIL"] > 0:
         return True
     groups = ing.get("groups") if isinstance(ing, dict) else None
     groups = groups if isinstance(groups, dict) else {}
@@ -504,7 +514,7 @@ def c_testing(now, rules, ctx):
     steve_h, steve_n, unk, young = 0.0, 0, 0, 0
     for fin, d in jobs:
         st = epoch((d.get("result") or {}).get("started"))
-        if st is None or fin - st <= 0 or not outcome_of(d):
+        if st is None or fin - st <= 0 or not outcome_of(d) or fail_count_unreadable(d):
             unk += 1        # no span, or no outcome to say whether it caught anything
             continue
         if not caught(d, closes, ch):
@@ -825,8 +835,8 @@ def c_production(now, rules, ctx):
             continue
         if stale:
             out["production." + k] = U("the streams record is %.0f min old (rm-pulse-streams stopped?)" % age)
-        elif p.get("m") == "MEASURED" and p.get("v") is None:
-            out["production." + k] = U("the streams record marks this MEASURED with no value")
+        elif p.get("m") == "MEASURED" and not (is_num(p.get("v")) and finite(p["v"])):
+            out["production." + k] = U("the streams record marks this MEASURED with no number: %r" % (p.get("v"),))
         elif p.get("m") == "MEASURED":
             unit = ((p.get("x") or {}).get("unit")) if isinstance(p.get("x"), dict) else None
             unit = unit if isinstance(unit, str) else None
@@ -1337,7 +1347,7 @@ def run_alarms(points, rules, now, known_ids, filer):
     todo = []
     try:
         clear_passes = max(1, int(conf.get("clear_passes", 1)))
-    except (TypeError, ValueError):     # a bad value reads as the safest: never an alarm cleared early, never a dead pass
+    except (TypeError, ValueError, OverflowError):     # a bad value reads as the safest: never an alarm cleared early, never a dead pass
         clear_passes = 4
         log.append({"ts": iso(now), "event": "bad_clear_passes", "value": str(conf.get("clear_passes"))[:40]})
     def one(aid):
@@ -1365,6 +1375,8 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur.update(state="OPEN", item=cur["name"], error=None, filed=cur.get("filed") or iso(now))
             log.append({"ts": iso(now), "event": "found_filed", "aid": aid, "item": cur["name"]})
         if crossed is False and cur:
+            # An unfiled PENDING clears here too, logged cleared_unfiled, on purpose: filing a condition that has gone
+            # would send a seat after nothing. A filing outage with the condition standing keeps retrying.
             # hysteresis: clear only after clear_passes clear readings in a row, so a reading that wobbles across
             # the line does not file a fresh item on every wobble
             seen = cur.get("clear_seen", 0)     # a bad saved count restarts the count; raising here would never clear

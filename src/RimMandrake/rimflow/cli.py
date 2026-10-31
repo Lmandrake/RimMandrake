@@ -1545,6 +1545,9 @@ def _replaces(args, seat, w):
                    "reason": "superseded by %s, which takes over its work" % args.id},
                   w, quiet=True)
             print("%s -> superseded by %s." % (parent, args.id))
+            moved = _move_prose_to_closed(parent)
+            if moved:
+                print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
         except SystemExit:
             # ⛔ DO NOT NAME A CAUSE HERE. This used to assert "— it belongs to another
             # seat", which is only ONE of the things `_emit` refuses for: a seat
@@ -2768,6 +2771,10 @@ def _bridge_take_locked(args, seat, evs, w):
                    model.shared_bridge_path()))
         if alive and args.force:
             ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
+    if seat != "OWNER":         # a seat `_emit` will refuse must not touch, let alone force, the driver lock first
+        refusal = model._who_refusal(ev, None)
+        if refusal:
+            die(refusal)
     dl = _archmagi_lock_path()
     if dl:
         got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(),

@@ -311,6 +311,16 @@ def t_close_takes_git_head_when_no_sha_given():
         "a close with no commit behind it is a claim, not a close: %s" % out)
 
 
+def t_replaces_moves_the_parents_prose_like_any_terminal_verb():
+    fresh()
+    ok("file", "REPLACED_PARENT_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
+    prose("REPLACED_PARENT_PROBE_FIXTURE")
+    ok("file", "REPLACING_CHILD_PROBE_FIXTURE", "--for", "BUILD", "--title", "t", "--replaces", "REPLACED_PARENT_PROBE_FIXTURE")
+    items = os.path.join(_tmp(), "items")
+    assert os.path.isfile(os.path.join(items, "closed", "REPLACED_PARENT_PROBE_FIXTURE.md")) \
+        and not os.path.exists(os.path.join(items, "REPLACED_PARENT_PROBE_FIXTURE.md")), "a superseded parent's prose stayed live"
+
+
 def t_cross_seat_close_lands_and_names_the_ruling_seat():
     """Owner's ruling, 2026-09-19: ANY seat closes an item it has proven dead.
 
@@ -327,7 +337,7 @@ def t_cross_seat_close_lands_and_names_the_ruling_seat():
     ok("claim", "BUILDS_OWN_ITEM_PROBE_FIXTURE")
     out = ok("close", "BUILDS_OWN_ITEM_PROBE_FIXTURE", "--sha", "abc1234",
              "--reason", "shipped at 51e0ceb", seat="CHECK")
-    assert "CHECK" in out and "BUILD" in out, (
+    assert "ruled by CHECK (BUILD's item)" in out, (
         "a cross-seat close must name the ruling seat AND the owning seat: %s" % out)
     assert "shipped at 51e0ceb" in out, (
         "the --reason is the ruling; it was dropped from the echo: %s" % out)
@@ -472,6 +482,16 @@ def t_bridge_is_refused_for_a_non_window_seat():
     refused(("bridge", "take"), "neither can attribute",
             "the reason the rule exists was dropped from the message", seat="BUILD")
     assert "bridge taken by CHECK" in ok("bridge", "take", seat="CHECK")
+
+
+def t_a_refused_bridge_take_leaves_the_driver_lock_alone():
+    fresh()
+    dl = os.path.join(_tmp(), "driver.lock")
+    e = {"RIMFLOW_DRIVER_LOCK": dl}
+    refused(("bridge", "take", "--force", "--for", "x"), "only a live window", "BUILD took the bridge", seat="BUILD", env_=e)
+    assert not os.path.exists(dl), "a seat the ledger refuses wrote the driver lock"
+    ok("bridge", "take", "--for", "x", seat="CHECK", env=e)
+    assert os.path.exists(dl), "the probe is blind: a good take wrote no lock at this path"
 
 
 def _ledger_paths():
@@ -839,8 +859,11 @@ def t_reassign_is_bench_only():
     ok("file", "REASSIGNABLE_ITEM_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t")
     refused(("reassign", "REASSIGNABLE_ITEM_PROBE_FIXTURE", "--to", "BENCH", "--reason", "x"),
             "only BENCH", "FOUNDRY reassigned its own item", seat="FOUNDRY")
-    assert "reassign" in ok("reassign", "REASSIGNABLE_ITEM_PROBE_FIXTURE", "--to", "FOUNDRY",
+    assert "reassign" in ok("reassign", "REASSIGNABLE_ITEM_PROBE_FIXTURE", "--to", "CHECK",
                             "--reason", "x", seat="BENCH")
+    moved = [ev for ev in _ledger_events() if ev.get("event") == "reassign"]
+    assert moved and moved[-1].get("to") == "CHECK", moved
+    assert "REASSIGNABLE_ITEM_PROBE_FIXTURE" in ok("next", "--seat", "CHECK", seat="CHECK"), "CHECK does not own it now"
 
 
 # ---- the OWNER is never refused by a seat rule -----------------------------
@@ -1277,6 +1300,15 @@ def _ledger_sizes():
     return {f: os.path.getsize(f) for f in m.ledger_files()}
 
 
+def _real_prose():
+    """Fixture-named prose in the real items/ and items/closed/: a fixture moved or written there leaves no ledger line."""
+    sys.path.insert(0, os.path.dirname(HERE))
+    import importlib
+    m = importlib.import_module("rimflow.model")
+    return {os.path.join(d, n) for d in (m.ITEMS, m.CLOSED) if os.path.isdir(d) for n in os.listdir(d)
+            if re.search(r"_PROBE_(FIXTURE|N\d)", n)}
+
+
 def _audit_real_ledger(sizes, files=None):
     """After every case: the bytes added to the real ledger during this run. Other seats may append while this runs,
     so a changed file is not a leak; a fixture's name, or a run-only reason, in the new bytes is. -> the leaks."""
@@ -1384,12 +1416,14 @@ if __name__ == "__main__":
     try:
         write_grant_fixture()
         sizes = _ledger_sizes()
+        prose_before = _real_prose()
         with ThreadPoolExecutor(max_workers=12) as pool:
             futures = [pool.submit(_run_case, name, fn) for name, fn in CASES]
             for f in as_completed(futures):
                 f.result()  # surface a harness-level exception, not just a case failure
         leaks = _audit_real_ledger(sizes)
         case("no_case_wrote_the_real_ledger", lambda: _assert_no_leaks(leaks))
+        case("no_case_wrote_real_prose", lambda: _assert_no_leaks(sorted(_real_prose() - prose_before)))
     finally:
         shutil.rmtree(TMP_ROOT, ignore_errors=True)
         try:
