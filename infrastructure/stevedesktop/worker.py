@@ -821,6 +821,14 @@ class Attempt:
         if not data and refusal:
             return self.fail("INVALID", "BLOCKED_SELECTION", "modcheck refused the selection: " + refusal.group(1))
         if not data:
+            # python -X faulthandler writes its stack ("Windows fatal exception", "Fatal Python error") far above the
+            # tail, and fail() keeps only the last 400 characters: put the stack's head in the 400, or exit 5 stays a
+            # mystery (MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET). The whole stack stays in modcheck.log on this host.
+            m = re.search(r"(?:Windows fatal exception|Fatal Python error)", text)
+            if m:
+                return self.fail("INVALID", "HARNESS", "modcheck exit %s, no sheet; %s ... %s" % (
+                    self.res["modcheck_exit"], re.sub(r"\s+", " ", text[m.start():m.start() + 600])[:250],
+                    tail[-80:]))
             return self.fail("INVALID", "HARNESS", "modcheck exit %s and no sheet JSON: %s"
                              % (self.res["modcheck_exit"], tail[-300:]))
         rows = S.rows_from_summary(data.get("summary") or {})

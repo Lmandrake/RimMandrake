@@ -55,6 +55,9 @@ if mode == "refuse":
     print("REFUSED: every selected chain of Mock is offline (c0)"); sys.exit(2)
 if mode == "crash":
     print("Traceback: boom"); sys.exit(3)
+if mode == "fatal":
+    print("Windows fatal exception: access violation\n\nThread 0x1: File gate.py line 9 in hash\n" + "x" * 800)
+    print("[modcheck] long tail " * 40); sys.exit(5)
 name = "Mock_%d" % int(time.time() * 1000)
 summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"},
                                                     {"name": "r2", "verdict": "FAIL", "detail": "bad"}]}]}
@@ -309,6 +312,11 @@ def main():
         rc, o = w(["start"], job(), MOCK_MODE="crash")
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS", "no sheet -> INVALID/HARNESS")
+
+        rc, o = w(["start"], job(), MOCK_MODE="fatal")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("cause") == "HARNESS" and "Windows fatal exception: access violation" in (res.get("note") or ""),
+              "a faulthandler stack far above the last 300 chars still reaches the note: %s" % (res.get("note") or "")[:120])
 
         rc, o = w(["start"], job(), MOCK_MODE="refuse")
         res = wait_result(o.get("attempt", "x"))

@@ -64,7 +64,11 @@ def py_cmd(script, *args):
     return ["python3", script] + [str(a) for a in args]
 
 
-def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None):
+PLAYING_PATIENCE_S = 240        # how long ensure_playing_map keeps asking a game that does not answer yet
+
+
+def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None, _patience_s=PLAYING_PATIENCE_S,
+                       _sleep=time.sleep):
     """If the bridge reports no Playing map, run the existing quicktest-world starter
     (`bridgetools/prove_quicktest_world.py`, exit 0 = Playing with a world) under THIS interpreter. The runner
     used to assume a map already existed (MEASURED 2026-10-01). Returns "playing" | "started" | "dry-run".
@@ -72,19 +76,28 @@ def ensure_playing_map(dry_run=False, _client=None, _starter=None, _gate=None):
     if dry_run:
         return "dry-run"
     state = None
-    try:
-        if _client is None:
-            import rimbridge_client as rb
-            host, port, token = rb.resolve_endpoint()
-            _client = rb.RimBridge(host=host, port=port, token=token, timeout=30.0)
-            _client.connect()
-        r = _client.call("rimworld/get_ui_state", {}) or {}
-        if isinstance(r, dict) and r.get("content"):
-            r = json.loads(r["content"][0]["text"])
-        state = r.get("programState")
-    except Exception as e:  # noqa: BLE001
-        raise RuntimeError("ensure_playing_map: cannot ask the bridge for programState (%s: %s)"
-                           % (type(e).__name__, e))
+    # A game still loading answers get_ui_state late (5 testq jobs 2026-10-30 08:10-08:30 died on one 30 s timeout
+    # while the game was in a long load event). It is a read: ask again until PLAYING_PATIENCE_S has passed.
+    give_up = time.time() + _patience_s
+    while True:
+        try:
+            if _client is None:
+                import rimbridge_client as rb
+                host, port, token = rb.resolve_endpoint()
+                _client = rb.RimBridge(host=host, port=port, token=token, timeout=30.0)
+                _client.connect()
+            r = _client.call("rimworld/get_ui_state", {}) or {}
+            if isinstance(r, dict) and r.get("content"):
+                r = json.loads(r["content"][0]["text"])
+            state = r.get("programState")
+            break
+        except Exception as e:  # noqa: BLE001
+            if time.time() >= give_up:
+                raise RuntimeError("ensure_playing_map: cannot ask the bridge for programState after %d s (%s: %s)"
+                                   % (_patience_s, type(e).__name__, e))
+            print("[modcheck] ensure_playing_map: get_ui_state failed (%s: %s); the game may be loading, asking "
+                  "again" % (type(e).__name__, e), file=sys.stderr, flush=True)
+            _sleep(10)
     if state == "Playing":
         return "playing"
     # Never start a map on top of a broken load: our own C# types missing => null thingClass => 'Error while generating map'.

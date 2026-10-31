@@ -84,6 +84,11 @@ def main():
     b.call("rimworld/get_game_info", check=False)
     good.append(case("read-only calls still run while a mutation is indeterminate", rows()[-1]["status"] == "ok"))
 
+    b.call("jawa/companion_handshake", check=False)
+    good.append(case("the companion handshake is a read: it runs while a mutation is indeterminate",
+                     rows()[-1]["status"] == "ok" and rows()[-2]["tool"] == "jawa/companion_handshake"
+                     and not b.looks_read_only("jawa/spawn_pawn"), rows()[-1]))
+
     cid = C.outstanding_indeterminate()[0]["cid"]
     C.reconcile_resolve(cid, "applied", "get_game_info shows the muffalo")
     good.append(case("reconcile clears it and records the verdict", not C.outstanding_indeterminate() and

@@ -10,6 +10,7 @@ map to it changed), DRY and offline chains skipped, identity unknown once the so
 block blocking nothing, flaky chains reported and never repeated, a blind probe reported, and fill_plan's
 pick / exhausted / dry verdicts through a temp queue.
 """
+import argparse
 import json
 import os
 import shutil
@@ -247,8 +248,47 @@ def t_fill_plan():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def t_pilot_routed_skipped():
+    """The Test Pilot rule (owner 2026-10-31): no filler, sweep or submit for a chain tied to a routed item."""
+    rf = os.path.abspath(os.path.join(HERE, "..", "..", "rimflow"))
+    sys.path.insert(0, os.path.dirname(rf))
+    from rimflow import testpilot_route as TP
+    import testq as T
+    world = (Model, [], World({"X_OWES_L1": Item("built", ["L1"], "pump", [0])}))
+    pr = fake_probe(["alpha", "gamma"], item_chains={"X_OWES_L1": ["gamma"]})
+    recs = [rec(1, 20, [("alpha", "a1", "PASS")])]
+    real = TP.routed
+    try:
+        TP.routed = lambda w, evs: []
+        r = rank(recs, None, world=world, prober=pr)
+        check(r["pick"] == ["gamma"], "unrouted item: its chain is picked: %s" % r["pick"])
+        TP.routed = lambda w, evs: [{"id": "X_OWES_L1", "kind": "streak", "why": "3 non-pass runs in a row"}]
+        r = rank(recs, None, world=world, prober=pr)
+        check("gamma" not in r["pick"] and "gamma" in r["held"], "routed item: filler skips its chain: %s %s"
+              % (r["pick"], r["held"]))
+        s0 = G.settled(MOD, recs, world, fake_git(), pr)
+        check(s0["pilot"] == {"gamma": "X_OWES_L1"}, "settled names the pilot chain: %s" % s0["pilot"])
+        recs2 = [rec(2, 21, [("gamma", "g1", "FAIL")], item="X_OWES_L1")]
+        pr2 = fake_probe(["gamma"])
+        check(G.settled(MOD, recs2, world, fake_git(), pr2)["pilot"] == {"gamma": "X_OWES_L1"},
+              "a chain whose latest run was for the routed item is taken too")
+        check(G.routed_ids(world) == {"X_OWES_L1"}, "routed_ids reads the rule")
+        T.pilot_stop = lambda mod: {"gamma": "X_OWES_L1"}
+        pv = {"chains": ["gamma"]}
+        a = argparse.Namespace(mod=MOD, by="someone", sha=None, retest_why=None)
+        why = T.already_tested(a, {"chains": ["gamma"]}, pv)
+        check(why and "Test Pilot" in why, "submit refuses a routed chain: %s" % why)
+        check(T.already_tested(a, {"rows": ["g1"]}, pv), "a --rows job on a routed chain is refused too")
+        a.by = T.FILLER
+        check(T.already_tested(a, {"chains": ["gamma"]}, pv), "even the filler is refused a routed chain")
+        a.retest_why = "owner asked"
+        check(T.already_tested(a, {"chains": ["gamma"]}, pv) is None, "--retest-why overrides")
+    finally:
+        TP.routed = real
+
+
 def main():
-    for t in (t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed,
+    for t in (t_pilot_routed_skipped, t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed,
               t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan):
         try:
             t()

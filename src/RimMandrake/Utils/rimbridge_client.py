@@ -288,6 +288,10 @@ BRIDGE_VERSION = "1.0"
 
 # Anything not on this list is assumed to mutate the game until proven otherwise.
 READ_ONLY_PREFIXES = ("list_", "get_", "search_", "find_", "compile_", "ping")
+# Reads the prefixes cannot see. companion_handshake only reports the companion's profile; treated as mutating it was
+# refused whenever any earlier call had an UNKNOWN outcome (testq: 4 jobs INVALID/HARNESS 10-27..10-29), so the
+# harness could not even read the state it needed to reconcile.
+READ_ONLY_TOOLS = ("jawa/companion_handshake",)
 
 # Tools the owner has RETIRED. The bridge still registers them; we refuse to be the
 # thing that calls one. A doc saying "don't" is read by whoever already looked it up;
@@ -773,7 +777,7 @@ class RimBridge:
     def looks_read_only(self, tool):
         """Cheap heuristic only - a False here is a warning, a True is not a promise."""
         leaf = tool.split("/", 1)[-1]
-        return leaf.startswith(READ_ONLY_PREFIXES)
+        return leaf.startswith(READ_ONLY_PREFIXES) or tool in READ_ONLY_TOOLS
 
 
 # --------------------------------------------------------------------------

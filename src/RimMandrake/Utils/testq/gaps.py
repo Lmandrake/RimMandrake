@@ -268,6 +268,39 @@ def owed_items(world=None):
 
 # ---------------------------------------------------------------- the order
 
+def routed_ids(world):
+    """-> {item ids} the Test Pilot rule routes (rimflow testpilot_route.routed over WORLD = ledger()), or set()."""
+    if not world:
+        return set()
+    try:
+        model, events, w = world
+        rf = os.path.abspath(os.path.join(HERE, "..", "..", "rimflow"))
+        if os.path.dirname(rf) not in sys.path:
+            sys.path.insert(0, os.path.dirname(rf))
+        from rimflow import testpilot_route
+        return {v["id"] for v in testpilot_route.routed(w, events)}
+    except Exception:      # noqa: BLE001 - no ledger, no routing
+        return set()
+
+
+def pilot_chains(world, st, pr):
+    """-> {chain: item id} for chains tied to an item the Test Pilot rule routes (rimflow testpilot_route): the item's
+    own owed chains (pr item_chains) and the chains its latest run was for. A Test Pilot, not another code-and-retest
+    run, takes those; the filler, the sweep and submit all skip them. An unreadable ledger routes nothing."""
+    routed = routed_ids(world)
+    if not routed:
+        return {}
+    out = {}
+    for iid, chains in (pr.get("item_chains") or {}).items():
+        if iid in routed:
+            out.update({c: iid for c in chains})
+    for c, s in st.items():
+        for iid in s["last"][0].get("items") or []:
+            if iid in routed:
+                out.setdefault(c, iid)
+    return out
+
+
 def settled(mod, recs, world=None, g=None, prober=None, items=None):
     """-> {"settled": chains with a verdict at their code version, "held": chains waiting for a repair item, "runs",
     "ident", "moved", "st", "pr", "items", "blind"}: the retest rule, for rank and for every other door (submit, sweep)."""
@@ -316,7 +349,9 @@ def settled(mod, recs, world=None, g=None, prober=None, items=None):
     w_items = getattr(world[2], "items", {}) if world else {}
     last = harness_last(mod, runs, recs, set(pr.get("chains") or []) | set(st))
     held = sorted(c for c, why in last.items() if c not in settled_set and R.repair_open(w_items, why))
-    return {"settled": settled_set, "held": held, "runs": runs, "ident": ident, "moved": moved, "st": st, "pr": pr,
+    pilot = pilot_chains(world, st, pr)
+    held = sorted(set(held) | set(pilot))
+    return {"settled": settled_set, "held": held, "pilot": pilot, "runs": runs, "ident": ident, "moved": moved, "st": st, "pr": pr,
             "items": items, "blind": blind, "fails": fails, "harness": last, "by_identity": by_identity}
 
 

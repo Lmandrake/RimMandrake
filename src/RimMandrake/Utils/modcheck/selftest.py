@@ -555,6 +555,22 @@ def t_ensure_playing_map():
         check("runner: failed starter raises", True)
     check("runner: dry-run skips", runner.ensure_playing_map(dry_run=True) == "dry-run")
 
+    class Slow:     # a game still loading: two timeouts, then it answers
+        def __init__(self, fails): self.fails, self.n = fails, 0
+        def call(self, tool, p):
+            self.n += 1
+            if self.n <= self.fails:
+                raise TimeoutError("timed out after 30.0s")
+            return {"programState": "Playing"}
+    c = Slow(2)
+    check("runner: a loading game that answers late is waited for",
+          runner.ensure_playing_map(_client=c, _sleep=lambda s: None) == "playing" and c.n == 3)
+    try:
+        runner.ensure_playing_map(_client=Slow(99), _patience_s=-1, _sleep=lambda s: None)
+        check("runner: a bridge that never answers still raises", False)
+    except RuntimeError as e:
+        check("runner: a bridge that never answers still raises", "cannot ask the bridge for programState" in str(e))
+
 
 def t_driver_that_kills_the_colony_is_named_and_the_map_restored():
     """STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: droid_dig_live left zero colonists, the canary after the drivers read red

@@ -910,14 +910,35 @@ def retest_stop(mod):
     return st["settled"] | set(st["held"])
 
 
+def pilot_stop(mod):
+    """-> {chain: item} the Test Pilot rule has taken (gaps.pilot_chains); {} when unreadable."""
+    import gaps
+    try:
+        w = gaps.ledger()
+        if not gaps.routed_ids(w):      # the common case: nothing routed, so no modcheck probe is paid for
+            return {}
+        return gaps.settled(mod, records("done"), w)["pilot"]
+    except Exception as e:      # noqa: BLE001
+        log("pilot rule could not read %s: %s" % (mod, e))
+        return {}
+
+
 def already_tested(a, sel, pv):
     """Owner ruling by card 2026-10-31, "Retest only after a code change": why this submit must not run, or None.
     Every chain it would run holds a verdict at its code version, or waits for a repair (gaps.settled). The filler
     has asked already; a --rows job may want rows no run reached; --retest-why is a human's reason."""
-    if a.by == FILLER or sel.get("rows") or (getattr(a, "retest_why", None) or "").strip():
+    if (getattr(a, "retest_why", None) or "").strip():
         return None
     chains = pv.get("chains") or sel.get("chains") or []
     sha = getattr(a, "sha", None)
+    if chains and not (sha and not git_head().startswith(sha)):
+        taken = pilot_stop(a.mod)       # owner 2026-10-31, the Test Pilot rule: a routed item is not retested by code
+        hit = sorted(c for c in chains if c in taken)
+        if hit and (len(hit) == len(chains) or sel.get("chains") or sel.get("full") or sel.get("rows")):
+            return ("%s belong to items routed to a Test Pilot (%s; `rimflow pilot`): no more code-and-retest; "
+                    "--retest-why REASON overrides" % (",".join(hit[:6]), ",".join(sorted({taken[c] for c in hit})[:3])))
+    if a.by == FILLER or sel.get("rows"):
+        return None
     if not chains or (sha and not git_head().startswith(sha)):     # the rule reads THIS checkout: another sha is unknown
         return None
     stop = retest_stop(a.mod)

@@ -193,7 +193,8 @@ def t_sweep_split():
     tmp = tempfile.mkdtemp(prefix="rf_testq_split_")
     try:
         r = subprocess.run([sys.executable, TESTQ, "sweep", "FlowWorks", "--by", "BENCH"],
-                           env=dict(os.environ, TESTQ_QUEUE=tmp), capture_output=True, text=True, timeout=240)
+                           env=dict(os.environ, TESTQ_QUEUE=tmp, RIMFLOW_LEDGER=os.path.join(tmp, "none.jsonl")),
+                           capture_output=True, text=True, timeout=240)     # no ledger: nothing routed to a Test Pilot
         jobs = [json.load(open(p)) for p in glob.glob(os.path.join(tmp, "pending", "*.json"))]
         check(len(jobs) >= 2 and all(j["purpose"] == "sweep" and j["selector"].get("chains") for j in jobs),
               "the FlowWorks sweep is queued as chain-group jobs: %s %s" % (len(jobs), (r.stdout + r.stderr)[-300:]))
