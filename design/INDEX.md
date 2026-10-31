@@ -6,7 +6,7 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
-⚠️ **1184 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+⚠️ **1202 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
 
 ### `design/`
 
@@ -740,6 +740,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
      donor rung, the withdrawal of "exceeds modern", the layer-1 assembly, the
      ninefold impulse api). that item is the authority on what the owner said
      and ruled |
+| `architecture_switch_harness_2026-10-29.md` | Build them all and switch: a harness that answers architecture questions in days (2026-10-29) | — |
 | `art_judge_brief.md` | Art judge brief — the written constraints an art-judging agent applies | — |
 | `art_ledger_design_2026-10-04.md` | Art ledger — one source of truth for every texture (design, 2026-10-04) | — |
 | `art_regen_registry_design.md` | Art Regeneration Registry + Dashboard Hub — design (ruled 2026-09-11) | — |
@@ -822,6 +823,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `exposure_gear_matrix_spec.md` | Exposure gear matrix — design spec | — |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
 | `factions_unwanted_and_lingering_2026-10-20.md` | Unwanted and lingering factions: how a faction hangs around, and how we stop it (2026-10-20) | — |
+| `findings_curation_design_2026-10-29.md` | Findings curation: keeping what the test runs learn (design pass, 2026-10-29) | — |
 | `fire_and_forget_rimflow_2026-10-26.md` | Fire-and-forget RimFlow — second GPT perspective (2026-10-26) | — |
 | `flier_authoring_architecture_2026-10-21.md` | Flier authoring architecture (2026-10-21) | — |
 | `flier_frame_registration_audit_2026-10-20.md` | Flier flip-book registration audit - 2026-10-20 | — |
@@ -1008,7 +1010,11 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `player_truth_testing_pilot_2026-10-26.md` | Player-truth testing pilot (FlowWorks: pits, ladders, pipes, hoses, levelling) | — |
 | `pond_depth_design_2026-10-16.md` | Ponds shallow out before they turn to mud: design (2026-10-16) | — |
 | `power_poles_and_flexible_pipe_assessment_2026-10-02.md` | Power Poles Extended, suspended wires and flexible piping — assessment (2026-10-02) | — |
+| `process_model_explainer_2026-10-29.md` | The process model, explained (2026-10-29) | — |
+| `process_model_v2_v3_design_2026-10-29.md` | Process model v2 + v3: design (2026-10-29) | — |
+| `producer_cadence_2026-10-29.md` | Producer cadence: more than Wednesdays (design, 2026-10-29) | — |
 | `pyrelands_ash_redesign_2026-10-12.md` | Pyrelands ground: deep ash everywhere, and the burn feeds the field (2026-10-12) | — |
+| `ralph_loop_design_2026-10-29.md` | The best simple Ralph loop for RimMandrake (2026-10-29) | — |
 | `ratchet_workflow_and_token_burst_design_2026-10-11.md` | The ratchet workflow and the token burst to Wed 16:00 | — |
 | `reaction_mechanism_spec.md` | One reaction mechanism, four scales — spec | — |
 | `relative_depth_climb_design_2026-10-12.md` | Relative depth and climbing out — design pass (2026-10-12) | — |
@@ -1023,11 +1029,17 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `rimflow_system_and_stuck_state_2026-10-07.md` | rimflow: the work-item system, and why items get stuck (2026-10-07) | — |
 | `rimflow_v3_2026-10-26.md` | RimFlow v3 — the integrator layer (design of record, 2026-10-26) | — |
 | `rimflow_v3_arbiter_tiers_2026-10-27.md` | RimFlow v3: the Arbiter by risk tier (2026-10-27) | — |
+| `rimflow_v3_collapse_compare_2026-10-29.md` | RimFlow v3 collapse: two blind minimal designs compared, 2026-10-29 | — |
 | `rimflow_v3_field_evidence_2026-10-27.md` | RimFlow v3 against what others actually ended up using (2026-10-27) | — |
 | `rimflow_v3_golive_wave1.md` | RimFlow v3 go-live, wave 1 (runbook, written 2026-10-27, for Wednesday 2026-10-28 after the weekly token reset) | — |
+| `rimflow_v3_gpt_risk_review_2026-10-29.md` | RimFlow v3 risk report | — |
+| `rimflow_v3_minimal_gpt_2026-10-29.md` | — | — |
+| `rimflow_v3_minimal_opus_2026-10-29.md` | RimFlow minimal design (Opus, written independently of GPT's version), 2026-10-29 | — |
 | `rimflow_v3_responsibilities_2026-10-26.md` | RimFlow v3 — responsibilities, metrics, and the north-star checks and balances (2026-10-26) | — |
+| `rimflow_v3_risk_response_2026-10-29.md` | RimFlow v3 risk review: the Opus response (2026-10-29) | — |
 | `rimflow_v3_sim_findings_2026-10-27.md` | RimFlow v3 in a bottle: what the simulation says (2026-10-27) | — |
 | `rimflow_v3_trial_night_2026-10-28.md` | RimFlow v3 trial night, 2026-10-28: one ordered runbook | — |
+| `rimflow_v3_workflow_as_built_2026-10-29.md` | RimFlow v3 agent workflow, as built (2026-10-29) | — |
 | `rimflow_validation_levels_addendum_2026-10-07.md` | Rimflow redesign — addendum: the validation levels | — |
 | `rimpulse_gpt_review_2026-10-22.md` | RimPulse — GPT review (2026-10-22) | — |
 | `rimpulse_intent_2026-10-22.md` | RimPulse — intention, success criteria, architecture and honest state (2026-10-22) | — |
@@ -1072,7 +1084,10 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `test_site_saves_2026-10-15.md` | Clean saved test maps — design (TESTSITE_SAVES_BUILD_ONE_CALM_MAP, 2026-10-15) | — |
 | `testing_investment_sim_2026-10-27.md` | Where more testing would pay, and which kinds (2026-10-27) | — |
 | `testing_policy_2026-10-28.md` | Testing policy: the right test, at the right time (2026-10-28) | — |
-| `thirst_bottles_design_2026-10-16.md` | Thirst and bottles in FlowWorks, compatible with Dubs Bad Hygiene Lite (design, 2026-10-16) | — |
+| `testpilot_design_opus_2026-10-29.md` | TestPilot: the owner's Foundry + TestPilot + Conductor proposal, evaluated and improved (Opus, 2026-10-29) | — |
+| `testpilot_merged_2026-10-29.md` | TestPilot: merged design, round 3 (2026-10-29) | — |
+| `testpilot_round2_opus_2026-10-29.md` | TestPilot round 2 (Opus): answer to GPT's independent design | — |
+| `thirst_bottles_design_2026-10-16.md` | Thirst and bottles in FlowWorks, our own thirst (design, 2026-10-16) | — |
 | `thirst_fluids_design_2026-10-17.md` | Thirst and fluids: rulings, interactions and traffic (3x3 design, 2026-10-17) | — |
 | `ticket_naming_2026-10-10.md` | Ticket naming: SUBJECT_INTENT_TWIST (2026-10-10) | — |
 | `tps_record.md` | The TPS record — TPS is measured all the time | — |
@@ -1083,6 +1098,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `utinni_discovery_achievements_design_2026-10-02.md` | Utinni discovery achievements — design pass (2026-10-02) | — |
 | `utinni_discovery_achievements_gpt_consult_2026-10-02.md` | — | — |
 | `v2_nine_rituals.md` | v2: the rituals of the Nine found in the Baroque Biomes | — |
+| `v3_health_daily_check_2026-10-29.md` | v3 health: the daily check (spec, 2026-10-29) | — |
 | `vee_port_plan_2026-10-22.md` | VEE world layers: port plan (2026-10-22) | — |
 | `venomvine_design_2026-10-16.md` | Venomvine: the Leaning Scrub grows teeth (design, 2026-10-16) | — |
 | `watcher_creatures_kit_design_2026-10-02.md` | Watcher creatures kit — design (WATCHER_CREATURES_MOD_1) | — |
@@ -1242,6 +1258,14 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `FlowWorks_trial_plan.md` | FlowWorks north-star trial plan | — |
 | `Graffiti_trial_plan.md` | Graffiti north-star trial plan — the pipeline pilot | — |
 | `Pyrelands_trial_plan.md` | Pyrelands — north-star trial plan (the biome template) | — |
+
+### `design/RimMandrake/player_role_2026-10-31/`
+
+| doc | title | status |
+|---|---|---|
+| `01-design.md` | Player role: can an agent tell us the game is confusing, dull, unreadable or broken as felt? | — |
+| `02a-gpt-blind.md` | GPT blind pass (02a) | — |
+| `status.md` | — | — |
 
 ### `design/RimMandrake/ratchet_evidence_2026-10-11/`
 

@@ -155,10 +155,6 @@ generator eating chemfuel)?**
   daily water of roughly 80-140 colonists.
 - (b) No, first come first served. *Simpler; crops can drink a colony dry.*
 
-**Q11. With Dubs Bad Hygiene's thirst running, should the salt-water break and slime rules still apply?**
-- (a) Yes, read Dubs' thirst bar for the break. *Same story in both modes; some code against Dubs.*
-- (b) No, Dubs' thirst rules alone. **← recommended:** one boolean, nothing to break when Dubs updates.
-
 **Q12. Smaller defaults — approve as a set or pick out any to change:** boiling water drinkable once cooled; no
 eating ice or snow; sanguophages do not drink stored blood; animals drink only fresh pond/river water and never
 slime or salt; brine kills a watered crop; buckets can fight fires.
@@ -177,7 +173,7 @@ slime or salt; brine kills a watered crop; buckets can fight fires.
 | Q8 salt | break needs thirst **plus** low mood, like other breaks (b); brine = salt, break only; toxic water = a last resort like slime, with toxic buildup | (b) against M's rec; toxic against M's rec |
 | Q9 machine bill = order | (a) yes | M's rec |
 | Q10 drinking reserve | (a) yes | M's rec |
-| Q11 Dubs | **yes**: read Dubs' thirst; the salt break and slime rules still apply under Dubs | against M's rec |
+| Q11 Dubs | **cut** by card "Cut scope → Thirst: drop Dubs interop" (2026-10-31): ours is the only thirst; full DBH and its Thirst add-on are marked incompatible | — |
 | Q12 smaller defaults | **HOLD** — *"I'll go through them"* at a later sitting; the six stay open | — |
 
 ### 8.1 What the rulings change
@@ -211,9 +207,6 @@ mood hit and the day-long laxative (ruled earlier). The design's mild per-kind t
 auto-gather). **Q8** makes `RM_Break_DrinkBrine` an ordinary mood-pool mental break, eligible only when also
 parched; brine and salt water both `BreakOnly`; toxic water moves to `LastResort` with `ToxicBuildup` as its effect.
 **Q9** a bill on a still or machine authorises fetching its non-potable input. **Q10** per-net drinking reserve.
-**Q11 reverses the recommendation**: under Dubs our code reads `DBHThirst`'s level for the break and the last-resort
-gate, and our slime/salt/toxic consequences apply; Dubs' own drinking AI still chooses among potable drinks, and our
-non-potable bottles keep `SeekForThirst false` so Dubs never picks them on its own.
 
 ### 8.2 The plan after the rulings (supersedes §6)
 
@@ -227,7 +220,7 @@ non-potable bottles keep `SeekForThirst false` so Dubs never picks them on its o
    Contagion, Gelatinous Slime, The Rot; yellow nausea/vomiting; toxic → ToxicBuildup.
 5. Salt break in the mood pool, gated on parched; relief then `RM_SaltPoisoning`; no re-entry while poisoned.
 6. Slime containers, order-only. Bills as orders for machine inputs. Per-net drinking reserve.
-7. Dubs mode: read `DBHThirst` for steps 4-5.
+7. No Dubs mode: `RM_Thirst` is the only thirst, so steps 4-5 read it alone (Q11).
 8. Batched fill/wash and a stock target remain (bottles still serve travel); drinking stations as the home mode;
    C's machine ports when a liquid-burning machine needs one. The bottler is dropped.
 9. Q12's six defaults are **not built** until he rules them.
