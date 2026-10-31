@@ -188,7 +188,8 @@ LIMITS, STATED PLAINLY:
     overstates what the era-gated rule decides. Trial power on the real gated rule at 50 tasks for a true 1.5x:
     DECIDE 12% (4 arms), 24% (3 arms), 35% (2 arms); 40-50% only at 75-100 tasks with 2-3 arms (table:
     D:/ClaudeWork/rimmandrake/arena/verify_stop/power_table.md). Never quote the 28-50% above as trial power.
-    TRIAL AS RUN (owner decision 2026-10-31 (ledger ARENA_ANALYSIS_RETHINK_POWER_BELOW_TARGET, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)): 29 tasks, replay arms ralph_a/trio/v3 (v3c
+    TRIAL AS RUN (owner decision 2026-10-31 (ledger ARENA_ANALYSIS_RETHINK_POWER_BELOW_TARGET, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)): 29 tasks, since 26 (unmeasurable tasks left out, trial_exclusions.json; the count is
+    always read from the list), replay arms ralph_a/trio/v3 (v3c
     dropped), ACCEPT_MARGIN 15 points. Its power is the 3-arm/15-point row of
     D:/ClaudeWork/rimmandrake/arena/power_card_2026-10-31.md; the 4-arm figures above do not apply.
     HARD-CAP PICK (selftest_arena_analysis.py --hardcap 1000, 2026-10-30; --final at 40 tasks/arm, accept 0.64 unless

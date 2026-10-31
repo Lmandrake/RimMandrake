@@ -105,6 +105,17 @@ def t_default_file():
           doc.get("csharp") is True and doc.get("kinds", {}).get("csharp", 0) > 0 and "check_rounds" in doc.get("order", ""),
           (doc.get("csharp"), doc.get("kinds")))
     check("analysis CLI default is this file", AA.TRIAL_DEFAULT == T.DEFAULT_PATH)
+    tx = T.load_trial_exclusions()
+    check("committed default names no trial-excluded task", not set(tx["exclude"]) & set(ids),
+          sorted(set(tx["exclude"]) & set(ids)))
+    check("committed default: eras sum to the list's own count (no hard-coded size)",
+          sum(doc.get("eras_in_trial", [])) == len(ids) == sum(doc.get("kinds", {}).values()), doc.get("eras_in_trial"))
+    rd = doc.get("reader") or {}
+    tinfo = doc.get("trial_exclusions") or {}
+    check("committed default: ratings meta only for listed tasks, none for excluded ones",
+          set(tinfo.get("ratings", {})) <= set(ids) and not set(tinfo.get("ratings", {})) & set(tx["exclude"]), tinfo.get("ratings"))
+    check("committed default: unscore_kept <= listed tasks and <= reader unscore total",
+          rd.get("unscore_kept") is None or 0 <= rd["unscore_kept"] <= min(len(ids), rd.get("unscore", 0)), rd)
 
 
 def t_exclude():
@@ -280,16 +291,20 @@ def t_trial_exclusions_file():
     """The committed trial_exclusions.json (ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS, read33.md)."""
     x = T.load_trial_exclusions()
     want = {"RP_CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER": "srchash", "RP_DONOR_REGEN_HARDEN_BLIND_JOURNAL": "queue_view",
-            "RP_ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF": "RM_Kite", "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": "retry"}
+            "RP_ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF": "RM_Kite", "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": "retry",
+            # gate builder: no arm can be measured on these (Conductor ruling 2026-10-31)
+            "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT": "red at the reference", "RP_FLYER_MOTION_FIX_HALO_PASS": "red at the reference",
+            "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE": "run_selftests.py"}
     for t, word in want.items():
         check("committed trial exclusions: %s excluded, reason names %r" % (t, word),
               t in x["exclude"] and word in x["exclude"][t], x["exclude"].get(t))
-    check("committed trial exclusions: exactly those four", set(x["exclude"]) == set(want), sorted(x["exclude"]))
+    check("committed trial exclusions: exactly those seven", set(x["exclude"]) == set(want), sorted(x["exclude"]))
     rated = {"RP_TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL": "brittle", "RP_BRAINWORMS_VALIDATION_FIX_BORROWED_REASON": "brittle",
              "RP_ROSTERS_RENAME_MOVED_PORT_NAMES": "partial", "RP_ENACT_APPLY_REFUSED_HARDEN_PARTIAL_PICK": "partial",
              "RP_ENACT_KEEP_AGE_FIX_DECIDED_AT": "leak", "RP_RIVERSITE_FIX_RETILE_NONE_CRASH": "leak",
-             "RP_FLYER_MOTION_FIX_HALO_PASS": "leak", "RP_SEAT_SYNC_HARDEN_LITERAL_PATHSPECS": "leak"}
-    check("committed ratings: the read's 2 brittle / 2 partial / 4 leak kept tasks",
+             "RP_SEAT_SYNC_HARDEN_LITERAL_PATHSPECS": "leak"}
+    check("committed ratings: the read's 2 brittle / 2 partial / 3 leak kept tasks (FLYER_MOTION's leak rating went "
+          "with its exclusion)",
           {t: v["rating"] for t, v in x["ratings"].items()} == rated, x["ratings"])
 
 

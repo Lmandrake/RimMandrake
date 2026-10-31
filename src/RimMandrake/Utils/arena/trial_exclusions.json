@@ -1,6 +1,6 @@
 {
  "schema": "arena_trial_exclusions/1",
- "note": "Tasks left out of the TRIAL list (not the pool: census, task/judge files and reader verdicts are untouched) because the final human-grade read found them unfair to an arm, plus that read's ratings of the kept tasks. Read by arena_trial.py build, after the bundled-commit pass (an excluded task's sibling is not promoted). Evidence: D:\\ClaudeWork\\rimmandrake\\arena\\verify_final33\\read33.md (rows 12, 14, 17, 23 and the FINAL line). Item ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS.",
+ "note": "Tasks left out of the TRIAL list (not the pool: census, task/judge files and reader verdicts are untouched) because the final human-grade read found them unfair to an arm, plus that read's ratings of the kept tasks. Read by arena_trial.py build, after the bundled-commit pass (an excluded task's sibling is not promoted). Evidence: D:\\ClaudeWork\\rimmandrake\\arena\\verify_final33\\read33.md (rows 12, 14, 17, 23 and the FINAL line). Items ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS (first four) and, for FILLQUEUE / FLYER_MOTION / EVIDENCE_COVERS, the gate builder's finding that no arm can be measured on them (Conductor ruling 2026-10-31).",
  "exclude": [
   {
    "task": "RP_CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER",
@@ -21,16 +21,51 @@
    "task": "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ",
    "reason": "brittle: the check needs a retry without --no-build and the IOException text in the why, neither stated in the prompt (3 of 6 base failures ride on them) (read33 row 14)",
    "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31"
+  },
+  {
+   "task": "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT",
+   "reason": "unmeasurable for every arm: all its selftests are red at the reference fix too, so even the reference-reds rule leaves nothing to score (gate builder)",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31"
+  },
+  {
+   "task": "RP_FLYER_MOTION_FIX_HALO_PASS",
+   "reason": "unmeasurable for every arm: all its selftests are red at the reference fix too, so even the reference-reds rule leaves nothing to score (gate builder); was rated leak by read33 row 24",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31"
+  },
+  {
+   "task": "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE",
+   "reason": "unmeasurable for every arm: its diff edits the instrument run_selftests.py, so the tests step is UNMEASURED (gate builder)",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31"
   }
  ],
  "ratings": {
-  "RP_TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL": {"rating": "brittle", "note": "pass needs an end-time window under 20 s (unstated; prompt says ~60 s); 'just ended refuses' visible only via the existing test (read33 row 2)"},
-  "RP_BRAINWORMS_VALIDATION_FIX_BORROWED_REASON": {"rating": "brittle", "note": "'lists no' needs carrying the row-above detail; the prompt gives the symptom (read33 row 30)"},
-  "RP_ROSTERS_RENAME_MOVED_PORT_NAMES": {"rating": "partial", "note": "'generator uses it' unasserted; only moved_names + static XML/rosters are checked (read33 row 4)"},
-  "RP_ENACT_APPLY_REFUSED_HARDEN_PARTIAL_PICK": {"rating": "partial", "note": "mocks build_plan; the plan-side gate emission (real half of the fix) is untested and unasked (read33 row 6)"},
-  "RP_ENACT_KEEP_AGE_FIX_DECIDED_AT": {"rating": "leak", "note": "prompt names v.at -> decidedAt / slot at; one-line transcription (read33 row 9)"},
-  "RP_RIVERSITE_FIX_RETILE_NONE_CRASH": {"rating": "leak", "note": "prompt names the `or {}` remedy (read33 row 19)"},
-  "RP_FLYER_MOTION_FIX_HALO_PASS": {"rating": "leak", "note": "rated leak under the read's rule (the text names the remedy, so the fix is transcription); detail not recorded beyond that (read33 row 24)"},
-  "RP_SEAT_SYNC_HARDEN_LITERAL_PATHSPECS": {"rating": "leak", "note": "prompt names the env var (read33 row 25)"}
+  "RP_TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL": {
+   "rating": "brittle",
+   "note": "pass needs an end-time window under 20 s (unstated; prompt says ~60 s); 'just ended refuses' visible only via the existing test (read33 row 2)"
+  },
+  "RP_BRAINWORMS_VALIDATION_FIX_BORROWED_REASON": {
+   "rating": "brittle",
+   "note": "'lists no' needs carrying the row-above detail; the prompt gives the symptom (read33 row 30)"
+  },
+  "RP_ROSTERS_RENAME_MOVED_PORT_NAMES": {
+   "rating": "partial",
+   "note": "'generator uses it' unasserted; only moved_names + static XML/rosters are checked (read33 row 4)"
+  },
+  "RP_ENACT_APPLY_REFUSED_HARDEN_PARTIAL_PICK": {
+   "rating": "partial",
+   "note": "mocks build_plan; the plan-side gate emission (real half of the fix) is untested and unasked (read33 row 6)"
+  },
+  "RP_ENACT_KEEP_AGE_FIX_DECIDED_AT": {
+   "rating": "leak",
+   "note": "prompt names v.at -> decidedAt / slot at; one-line transcription (read33 row 9)"
+  },
+  "RP_RIVERSITE_FIX_RETILE_NONE_CRASH": {
+   "rating": "leak",
+   "note": "prompt names the `or {}` remedy (read33 row 19)"
+  },
+  "RP_SEAT_SYNC_HARDEN_LITERAL_PATHSPECS": {
+   "rating": "leak",
+   "note": "prompt names the env var (read33 row 25)"
+  }
  }
 }

@@ -362,7 +362,10 @@ flipping one way and 4% the other, takes about **49 paired tasks**. Unpaired it 
   `D:\ClaudeWork\rimmandrake\arena\verify_stop\power_table.md`). Which row applies awaits the owner's task-count
   decision. DECIDED (owner decision 2026-10-31 (ledger ARENA_ANALYSIS_RETHINK_POWER_BELOW_TARGET, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM)):
   29 tasks, 3 replay arms `ralph_a`, `trio`, `v3` (`v3c` dropped), accept gate 15 points; that row is in
-  `D:\ClaudeWork\rimmandrake\arena\power_card_2026-10-31.md`. A HARD_CAP_PICK is not evidence of a difference. Without replay the same answer needs 100-500 tasks per arm: weeks.
+  `D:\ClaudeWork\rimmandrake\arena\power_card_2026-10-31.md`. AMENDED 2026-10-31 (Conductor, per
+  CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): the list is now 26 tasks (eras 9/9/8): three more were left out because no
+  arm can be measured on them (`src/RimMandrake/Utils/arena/trial_exclusions.json`); the power card was simulated at 29,
+  so its figures slightly overstate power at 26 (26 not simulated). The task count is whatever `trial_tasks.json` lists. A HARD_CAP_PICK is not evidence of a difference. Without replay the same answer needs 100-500 tasks per arm: weeks.
 - **Acceptance rate:** a 20-point difference needs about 50 tasks per arm.
 - **Escaped defects:** these cannot be powered in days (section 5).
 
@@ -583,7 +586,7 @@ Assume an autonomous builder delivers about 12 effective hours a day, after revi
 **The cheapest useful slice:** steps 1-8 plus the `v3` half of step 9, about 43 hours. That gives Ralph A against
 today's FOUNDRY procedure on replayed tasks, the question the Ralph design doc's §8 trial asked. On these numbers
 it runs the whole trial list in the days given in the power table (section 3.5), and DECIDE on a true 1.5× difference
-is 12-35% at 50 tasks (more tasks, fewer arms, more power); the owner chose 29 tasks and 3 arms on 2026-10-31 (section 3.5); otherwise the verdict is CONTINUE or a hard-cap pick, not a no-difference finding. Built by one builder, that answer is ready about day 5 from the go.
+is 12-35% at 50 tasks (more tasks, fewer arms, more power); the owner chose 29 tasks and 3 arms on 2026-10-31, since cut to 26 tasks by unmeasurable-task exclusions (section 3.5); otherwise the verdict is CONTINUE or a hard-cap pick, not a no-difference finding. Built by one builder, that answer is ready about day 5 from the go.
 
 **GPT's review before each arm runs.** Each arm, and the substrate as a whole, gets a blind GPT review before its
 first counted task. The review covers the code, the frozen tasks and this decision rule. A P0 finding stops that

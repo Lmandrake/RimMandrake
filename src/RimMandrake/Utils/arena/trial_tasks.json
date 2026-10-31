@@ -1,16 +1,16 @@
 {
  "schema": "arena_trial_tasks/1",
- "n": 29,
+ "n": 26,
  "csharp": true,
  "frozen_bank": 156,
  "bank_csharp": 24,
  "eras_in_trial": [
-  10,
-  10,
-  9
+  9,
+  9,
+  8
  ],
  "kinds": {
-  "python-util": 26,
+  "python-util": 23,
   "xml-def-patch": 1,
   "tooling": 1,
   "csharp": 1
@@ -21,7 +21,7 @@
   "path": "/mnt/d/ClaudeWork/rimmandrake/arena/judge/reader/exclusions.json",
   "drop": 121,
   "unscore": 6,
-  "unscore_kept": 3,
+  "unscore_kept": 2,
   "judge_honours": true
  },
  "trial_exclusions": {
@@ -30,6 +30,9 @@
    "RP_CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER",
    "RP_DONOR_REGEN_HARDEN_BLIND_JOURNAL",
    "RP_ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF",
+   "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE",
+   "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT",
+   "RP_FLYER_MOTION_FIX_HALO_PASS",
    "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ"
   ],
   "already_out": [],
@@ -54,10 +57,6 @@
    "RP_RIVERSITE_FIX_RETILE_NONE_CRASH": {
     "rating": "leak",
     "note": "prompt names the `or {}` remedy (read33 row 19)"
-   },
-   "RP_FLYER_MOTION_FIX_HALO_PASS": {
-    "rating": "leak",
-    "note": "rated leak under the read's rule (the text names the remedy, so the fix is transcription); detail not recorded beyond that (read33 row 24)"
    },
    "RP_SEAT_SYNC_HARDEN_LITERAL_PATHSPECS": {
     "rating": "leak",
@@ -197,6 +196,9 @@
   "RP_CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER": "trial exclusion: bad: the scored check needs a .srchash stamp only a DLL rebuild writes; the arm cannot build and neither judge nor gate handles srchash, so only a hand stamp passes; it also wants an exact literal the prompt gives as 'e.g.' (read33 row 17) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
   "RP_DONOR_REGEN_HARDEN_BLIND_JOURNAL": "trial exclusion: bad: the scored check calls queue_view(un) positionally while base queue_view() takes no arguments and the prompt never asks for that signature (read33 row 23) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
   "RP_ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF": "trial exclusion: brittle: the prompt's own option 1 fails an existing RM_Kite assertion; only option 2 passes, and only with a census row the prompt does not name (read33 row 12) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
+  "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE": "trial exclusion: unmeasurable for every arm: its diff edits the instrument run_selftests.py, so the tests step is UNMEASURED (gate builder) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
+  "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT": "trial exclusion: unmeasurable for every arm: all its selftests are red at the reference fix too, so even the reference-reds rule leaves nothing to score (gate builder) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
+  "RP_FLYER_MOTION_FIX_HALO_PASS": "trial exclusion: unmeasurable for every arm: all its selftests are red at the reference fix too, so even the reference-reds rule leaves nothing to score (gate builder); was rated leak by read33 row 24 [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
   "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": "trial exclusion: brittle: the check needs a retry without --no-build and the IOException text in the why, neither stated in the prompt (3 of 6 base failures ride on them) (read33 row 14) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]"
  },
  "tasks": [
@@ -217,9 +219,7 @@
   "RP_LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT",
   "RP_RIVERSITE_FIX_RETILE_NONE_CRASH",
   "RP_RIMBRIDGE_DEADLINE_FIX_NAN_FAILS_OPEN",
-  "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT",
   "RP_SAVES_PRUNE_BLIND_CITE_SEARCH_DELETES_CITED",
-  "RP_FLYER_MOTION_FIX_HALO_PASS",
   "RP_SEAT_SYNC_HARDEN_LITERAL_PATHSPECS",
   "RP_CONVERSATIONS_LAND_FIX_STALE_TRAILER",
   "RP_SITHLINE_ROUNDTRIP_FIX_INT_WRITTEN_AS_FLOAT",
@@ -227,7 +227,6 @@
   "RP_SARLACC_UNMEASURED_FIX_BORROWED_REASON",
   "RP_BRAINWORMS_VALIDATION_FIX_BORROWED_REASON",
   "RP_GRAFFITIIMPERIAL_VALIDATION_FIX_LOST_REASON",
-  "RP_MODCHECK_HARDEN_RESTORE_RAISE_LOSES_SHEET",
-  "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE"
+  "RP_MODCHECK_HARDEN_RESTORE_RAISE_LOSES_SHEET"
  ]
 }
