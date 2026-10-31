@@ -1,0 +1,1 @@
+Helpers cannot be trusted to file a report on a D: path: the harness refused a subagent's Write with 'Subagents should return findings as text', so a brief must say return the full findings in the final message or fall back to the scratchpad.
