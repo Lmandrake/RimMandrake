@@ -45,7 +45,7 @@ Rules (the hook `.claude/hooks/block_unbounded_agent.py` enforces the first):
    | `rm-builder` | complex code or design, one item | opus |
    | `rm-bridge` | live-game section run by script | opus |
    | `rm-judge` | art/taste judging of work it did not make | opus |
-   | `rm-search` | grep/census/existence check | haiku |
+   | `rm-search` | grep/census/existence check | sonnet |
 2. **One item, or one small named batch, per helper**, ending at the item boundary. Never "work N hours"; the next item is a fresh helper briefed from the progress file.
 3. **The progress file is the memory across compaction** and across helpers: decisions, pending operations, evidence paths, updated after each item.
 4. **Bulk output goes to a file** (use `set -o pipefail`, keep the exit status, read stderr), then grep or tail the file; never cat a log, diff or JSON. Read with offset/limit.

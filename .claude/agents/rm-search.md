@@ -1,7 +1,7 @@
 ---
 name: rm-search
-description: RimMandrake OS-level search, census or existence check whose result the parent re-checks: grep, glob, inventory. Haiku.
-model: haiku
+description: RimMandrake OS-level search, census or existence check whose result the parent re-checks: grep, glob, inventory. Sonnet.
+model: sonnet
 maxTurns: 60
 autoCompactWindow: 150000
 tools: Bash, Read

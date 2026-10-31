@@ -16,15 +16,13 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 
 ## 🔴 The seat models — fleet ladder updated by the owner, 2026-10-20
 
-> `opus` for design work and complex code generation; `sonnet` for well-defined coding, prose a
-> human will read and act on, and cross-context judgment; `haiku` (Haiku 5.5) for mechanical bulk
-> work with a checkable outcome: OS-level searches, greps, globs, inventories, file sweeps,
-> extraction, classification, dedup pre-screens. **No Fable.** Pass `model` on every spawn.
-> Haiku 5.5 is served on both GenAI accounts as of 2026-10-20. `haiku` is an alias resolved
-> through `ANTHROPIC_DEFAULT_HAIKU_MODEL`: read the environment (or `~/dev/GenAiSwitch/bin/genai-switch
-> status`, `~/dev/DispatchOpenCode/bin/delegate where`) before trusting a rung; name no account.
-> Ladder source of truth: `~/dev/Lodestar/claude/global/45-subagents.md`.
-> (Superseded 2026-10-20: the 2026-10-01 to 2026-10-07 notes that Haiku was struck or remapped to Sonnet.)
+> `opus` for design work and complex code generation; `sonnet` for everything else, including
+> mechanical bulk work with a checkable outcome (OS-level searches, greps, globs, inventories,
+> file sweeps, extraction, classification, dedup pre-screens). **Sonnet is the lowest rung; no
+> Haiku, no Fable.** Pass `model` on every spawn. Owner, 2026-10-31: "Please do not use Haiku for
+> RimMandrake. Sonnet 5.5 is the lowest model to consider, due to Haiku's error rate. That is a
+> project-wide setting." Read the environment (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting a rung;
+> name no account. Ladder source of truth: `~/dev/Lodestar/claude/global/45-subagents.md`.
 
 `fable` is the name that genuinely 400s (the harness expands it to a literal id).
 
@@ -47,7 +45,7 @@ loud, and dangerous exactly where it is silent.
 
 | Who catches a wrong answer | Use |
 |---|---|
-| It is an **OS-level search** (grep, glob, file inventory) whose result is re-checked | **haiku** |
+| It is an **OS-level search** (grep, glob, file inventory) whose result is re-checked | **sonnet** |
 | A **compiler, selftest, validator or hook**, before anyone reads it | **sonnet** |
 | **Another agent**, who will re-derive it before acting | **sonnet** |
 | **Nobody** — it becomes a recorded fact other work cites | **opus** |
@@ -62,7 +60,7 @@ loud, and dangerous exactly where it is silent.
 | **Opus 5.5** (+fast mode) | `opus` | **Design** — design judgment, decision drafting, synthesis across contradictory evidence, rosters, specs, skill curation — always as a backgrounded subagent from BENCH. **Complex code generation** — Harmony/C#, new systems, multi-file forensics, bridge writes, the frozen world. **BENCH's window**, the orchestrator |
 | **Sonnet 5.5** | `sonnet` | **Well-defined coding with a checkable outcome** — patches, defs, deploys, quicktests, fixes a selftest or validator proves. Log triage, interpretive sweeps, first drafts. **OS-level searches** — greps, globs, censuses, existence checks, inventories (folded in 2026-10-01; see below). FOUNDRY's default |
 
-Fable is not on the ladder (owner, 2026-09-29). Pass `opus`, `sonnet` or `haiku`; read the environment
+Fable is not on the ladder (owner, 2026-09-29). Pass `opus` or `sonnet`; read the environment
 (`ANTHROPIC_DEFAULT_*_MODEL`) before trusting any alias.
 
 ### 🔴 Sonnet vs Opus — owner ruling, 2026-10-29 (replaces "Sonnet default, self-escalate after one failed attempt")
@@ -91,7 +89,7 @@ candidate narrowing only, never conclusions, never writing —
 
 | Job | Model |
 |---|---|
-| OS-level search: grep, glob, inventory, "does X exist", fixed-shape census; extraction/classification with a checkable result | **haiku** |
+| OS-level search: grep, glob, inventory, "does X exist", fixed-shape census; extraction/classification with a checkable result | **sonnet** |
 | Well-defined coding a compiler, selftest or validator will check | **sonnet** |
 | Sweep where the agent must interpret or classify | **sonnet** |
 | Fan-out whose returns will contradict; adversarial refutation | **sonnet** |
