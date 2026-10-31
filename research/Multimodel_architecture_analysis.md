@@ -1,7 +1,5 @@
 # Multi-model architecture: what this project should actually route elsewhere
 
-> **Owner 2026-10-31: no Haiku in RimMandrake; Sonnet 5.5 is the lowest model to consider.** Every Haiku recommendation below is historical and struck.
-
 **REP, 2026-08-24.** Answering `research/KIMI_K2_6_WORKFORCE_EXPANSION.md`.
 
 Every number below is marked **CONFIRMED** (a command was run, here, today) or **UNCERTAIN**.
@@ -303,12 +301,12 @@ no endpoint risk, no harness risk, no supply-chain risk, and inside the subscrip
 
 | # | Work | Route to | Why it is safe |
 |---|---|---|---|
-| 1 | **Fan-out subagents** — censuses, sweeps, existence checks, file inventories | **Haiku 4.5** | Already bounded to 1–2k tokens by our own skill, already disposable, already non-authoritative. Zero new files |
+| 1 | **Fan-out subagents** — censuses, sweeps, existence checks, file inventories | **Sonnet 5.5** | Already bounded to 1–2k tokens by our own skill, already disposable, already non-authoritative. Zero new files |
 | 2 | **The 12 tooling/infra items** | Kimi or Sonnet | Selftests and compiler feedback; failure is loud and local |
 | 3 | **The 7 bounded-mechanical items** | Kimi or Sonnet | All carry `## verify` + `## criteria` |
-| 4 | **Documentation alignment (2)** | Haiku/Sonnet | Verifiable by grep |
+| 4 | **Documentation alignment (2)** | Sonnet | Verifiable by grep |
 | 5 | **Context preprocessing** (the doc's Option F) | Kimi | Turning a 658 MB capture into a 20 KB subsystem map is exactly what `measure` already does; the model only drives it |
-| 6 | **Contact-sheet / review-sheet assembly** | Haiku | The assembly is Python. The model wires arguments |
+| 6 | **Contact-sheet / review-sheet assembly** | Sonnet | The assembly is Python. The model wires arguments |
 | 7 | **REP-INTERNAL** — queue state, staleness detection, digest assembly | Sonnet | The board is already 100% instrument-derived and self-reports nothing |
 
 ### Keep on Opus
@@ -349,17 +347,12 @@ no endpoint risk, no harness risk, no supply-chain risk, and inside the subscrip
 ### The mechanism exists and has never been used
 
 **CONFIRMED:** there is no `.claude/agents/` in this repo or in `~/.claude/`. No settings file
-anywhere contains a `model` key. The **only** model-selection line in the entire repository is
-`skills/efficient-subagents/SKILL.md:52`:
-
-> `- **Cheap model for cheap work.** model: haiku for greps, censuses, existence checks.`
-
-It has never been executed. Every subagent this project has ever spawned inherited the parent's
+anywhere contains a `model` key. At the time of writing, no file selected a model for subagents. Every subagent this project has ever spawned inherited the parent's
 model — which means **every census, every file sweep, every existence check in this project's
 history ran on Opus.**
 
 The fix requires no file, no setting, no restart: the Agent tool takes a `model` parameter.
-`model: "haiku"` on the call. That is the whole change.
+`model: "sonnet"` on the call. That is the whole change.
 
 ### The tiers
 
@@ -370,7 +363,6 @@ Models API):
 |---|---|---|---|---|
 | **Opus 5** | 1M | 5.00 | 25.00 | 1× |
 | **Sonnet 5** | **1M** | 2.00 | 10.00 | **2.5× cheaper** |
-| **Haiku 4.5** | 200K | 1.00 | 5.00 | **5× cheaper** |
 
 ⚠️ **We are on Max, so dollars are a proxy, not the currency.** How Claude Code weights
 *subscription* consumption per model is **UNMEASURED by me** — I am using API list prices as a
@@ -382,14 +374,12 @@ and it needed no document to unlock.
 
 ### What to do today, in order
 
-1. **Every fan-out/census subagent → `haiku`.** The four that produced this document would have
-   been fine on Sonnet; two of them on Haiku. Do it on the next census. No files change.
+1. **Every fan-out/census subagent → `sonnet`.** The four that produced this document would have
+   been fine on Sonnet. Do it on the next census. No files change.
 2. **Run BUILD's seat on Sonnet 5** for the 7 bounded-mechanical and 12 tooling items — `/model`
    is per-window and reversible in one keystroke. This is the single largest allocation saving
    available with no risk of endpoint loss, no gateway, and no new dependency.
 3. **Keep DECIDE and CHECK on Opus.** Both are judgment seats and both write durable truth.
-4. ⚠️ **Do not run a seat on Haiku.** 200K is easy to overrun in a long working session — it is a
-   subagent tier here, not a seat tier.
 
 **This is strictly better than the Kimi route as a first move**: same-day, no gateway, no
 supply-chain exposure, no free-trial dependency, and it is reversible mid-sentence. If the goal is
@@ -558,7 +548,7 @@ Cheapest decisive experiment first. Each settles a question the next depends on.
 
 | # | Action | Cost | Settles |
 |---|---|---|---|
-| **1** | **Switch fan-out subagents to `haiku`/`sonnet`.** The Agent tool's `model` param, on the next census | **0 min, 0 files** | Nothing — it is simply free money we have been leaving on the table since the skill was written |
+| **1** | **Switch fan-out subagents to `sonnet`.** The Agent tool's `model` param, on the next census | **0 min, 0 files** | Nothing — it is simply free money we have been leaving on the table since the skill was written |
 | **2** | **Measure the NVIDIA endpoint.** Get a key, fire 100 calls at Kimi, watch for 429 and for any credit counter | **~10 min, free** | **Whether "perpetual" is a real word.** Everything in Part 1 waits on this |
 | **3** | **Run BUILD's window on Sonnet 5** (`/model`, per-window, reversible) for the 7 bounded + 12 tooling items | **0 min** | Whether a cheaper Anthropic tier closes our items cleanly — the control condition for any Kimi test |
 | **4** | **Stand up LiteLLM → `nvidia_nim`, point ONE window at it.** Give it BUILD. Run one item that already has `## verify` and `## criteria` | **~30 min** | Whether the gateway route works end to end, hooks intact |
@@ -583,8 +573,7 @@ two environment variables per window, and none of our 2,333 lines of hooks, 7,13
 80,932 lines of Python or 2,088 ledger events move — but the free endpoint is a 40 RPM lane of
 unmeasured durability, and four fanning-out seats will not fit in it. Meanwhile the saving we have
 actually been leaving on the table needs no gateway at all: **every census and sweep this project
-has ever run went to Opus**, because the one line in our own skill that says to use Haiku has never
-been executed. Put the cheap tiers on the disposable workers today, keep Opus where the job is
+has ever run went to Opus**, because no file or setting here ever selected a cheaper model. Put the cheaper tier on the disposable workers today, keep Opus where the job is
 deciding whether an instrument lied, and treat Kimi as an adversary feeding CHECK rather than a
 CHECK replacing it. On art: **GPT already draws our pixels — the missing piece is an API key, not
 a model**, and while a 1,123-sprite reskin is now a $46 afternoon, our own census says the entire
