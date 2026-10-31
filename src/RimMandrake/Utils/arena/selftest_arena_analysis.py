@@ -369,6 +369,134 @@ def t_cli():
           and out4["conversion"]["gpt_out_est"] == 4.0, out4.get("conversion"))
 
 
+# ------------------------------------------------- stray / stale arm logs (ARENA_ANALYSIS_FIX_STRAY_LOGS_VOID_VERDICT)
+
+def _signed_lines(arm, recs, tok, stale=(), tail=()):
+    """stale unsigned prefix lines + a real HMAC chain from GENESIS + unsigned tail lines (raw strings)."""
+    L, prev, out = AA.L, AA.L.GENESIS, [json.dumps(x) for x in stale]
+    for r in recs:
+        r = dict(r)
+        r["sig"] = L._sign(tok, prev, r)
+        prev = r["sig"]
+        out.append(json.dumps(r, sort_keys=True))
+    return out + [json.dumps(x) for x in tail]
+
+
+def _fake_eventlog(files, tok):
+    """{arm: [raw lines]} -> (report, verify) stand-ins over the REAL verify_lines chain check."""
+    def verify(_p, arm, _token=None):
+        return dict(AA.L.verify_lines(files[arm], tok, arm), undecodable=0)
+
+    def report(_p, _token=None, _external=None):
+        out = {}
+        for arm in files:
+            v = verify(None, arm)
+            out[arm] = {"accepted": len(v["accepted"]), "rejected": len(v["rejected"]),
+                        "recoverable": len(v["recoverable"]), "undecodable_lines": 0, "trusted": bool(v["accepted"])}
+        return out
+    return report, verify
+
+
+def t_stray_logs():
+    tasks = make_tasks(10)
+    ids = sorted(tasks)
+    arms = ("ralph_a", "trio", "v3")
+    tok = "k" * 64
+    import contextlib
+    import io
+    import subprocess
+    with tempfile.TemporaryDirectory() as d:
+        clean, stray = Path(d, "clean"), Path(d, "stray")
+        clean.mkdir(); stray.mkdir()
+        recs = {a: arm_log(a, [(t, True) for t in ids], offset=j * 7) for j, a in enumerate(arms)}
+        for dd in (clean, stray):
+            for a in arms:
+                Path(dd, a + ".jsonl").write_text("\n".join(json.dumps(x) for x in recs[a]) + "\n")
+        # the live leftovers: a non-replayed lane arm's log with probe lines, plus a junk line no reader accepts
+        Path(stray, "ralph_c.jsonl").write_text(json.dumps({"ts": "2026-10-30T02:59:22Z", "arm": "ralph_c",
+                                                            "event": "canary"}) + "\n{not json\n")
+        td = Path(d, "tasks")
+        td.mkdir()
+        shas = subprocess.run(["git", "-C", str(AA.A.REPO), "rev-list", "-n", str(len(ids)), "HEAD"],
+                              capture_output=True, text=True, timeout=60).stdout.split()
+        for (t, v), b in zip(sorted(tasks.items()), shas):
+            Path(td, t + ".json").write_text(json.dumps(dict(v, id=t, base_sha=b)))
+        Path(d, "trial.txt").write_text("\n".join(ids) + "\n")
+        sp = {a: spend_for((t, 1e5 * (2.0 if a == "ralph_a" else 1.0)) for t in ids) for a in arms}
+        Path(d, "spend.json").write_text(json.dumps(spend_file(sp, AA.load_raw(clean))))
+        nocfg = str(Path(d, "no-arm.toml"))
+        Path(d, "bad.toml").write_text("mode = [broken\n")
+        common = ["--spend", str(Path(d, "spend.json")), "--tasks-dir", str(td), "--draws", "300",
+                  "--trial-tasks", str(Path(d, "trial.txt"))]
+
+        def run(extra, name, **patch):
+            saved = {k: getattr(AA, k) for k in patch}
+            try:
+                for k, v in patch.items():
+                    setattr(AA, k, v)
+                with contextlib.redirect_stdout(io.StringIO()):
+                    rc = AA.main(["run"] + common + extra + ["--out", str(Path(d, name + ".json"))])
+            finally:
+                for k, v in saved.items():
+                    setattr(AA, k, v)
+            return rc, json.loads(Path(d, name + ".json").read_text())
+
+        rc0, base = run(["--raw-dir", str(clean), "--arm-config", nocfg], "base")
+        rc1, got = run(["--raw-dir", str(stray), "--arm-config", nocfg], "stray")
+        rcm, mut = run(["--raw-dir", str(stray), "--arm-config", nocfg], "mut_arms",
+                       restrict_arms=lambda logs, a: (dict(logs), []))
+        rcb, bad = run(["--raw-dir", str(clean), "--arm-config", str(Path(d, "bad.toml"))], "badcfg")
+        rcx, onl = run(["--raw-dir", str(stray), "--arms", "trio,v3"], "only2")
+
+        # signed path: trio.jsonl starts with 311-style unsigned probe lines from BEFORE the trial
+        old = [{"ts": "2026-10-30T%02d:00:00Z" % (4 + i % 14), "arm": "trio", "event": "canary", "lane": "steve",
+                "run_id": "trio-archmagi-x", "writer": "arena_lane"} for i in range(311)]
+        files = {a: _signed_lines(a, recs[a], tok) for a in arms}
+        files["trio"] = _signed_lines("trio", recs["trio"], tok, stale=old)
+        files["ralph_c"] = [json.dumps({"ts": "2026-10-30T02:59:22Z", "arm": "ralph_c", "event": "canary"})] * 27
+        rep_fn, ver_fn = _fake_eventlog(files, tok)
+        saved = (AA.L.report, AA.L.verify)
+        AA.L.report, AA.L.verify = rep_fn, ver_fn
+        try:
+            sig_logs = AA.load_verified(p={"root": d})
+            Path(d, "spend_sig.json").write_text(json.dumps(spend_file(
+                sp, {a: sig_logs[a] for a in arms})))
+            common[1] = str(Path(d, "spend_sig.json"))
+            rcs, sig = run(["--arm-config", nocfg], "signed")
+            rcsm, sigm = run(["--arm-config", nocfg], "signed_mut", stale_prefix=lambda v: None)
+            neg = {}
+            first = recs["trio"][0]["ts"]
+            for name, kw in (("junk after the trial's records", {"tail": [old[0]]}),
+                             ("a prefix line dated at/after the first record", {"stale": [dict(old[0], ts=first)]}),
+                             ("a prefix line carrying a sig", {"stale": [dict(old[0], sig="ab" * 32)]})):
+                files["trio"] = _signed_lines("trio", recs["trio"], tok, **kw)
+                neg[name] = AA.load_verified(p={"root": d}).get("trio", {})
+        finally:
+            AA.L.report, AA.L.verify = saved
+    fv = lambda r: r["final"]["verdict"]   # noqa: E731
+    check("stray: baseline (3 replay arms, ralph_a 2x tokens) reaches a verdict", rc0 != 3 and
+          not fv(base).startswith("UNMEASURED"), (rc0, base["final"]))
+    check("stray: a planted non-replayed ralph_c.jsonl (with a junk line) is ignored: same verdict as without it, "
+          "listed in ignored_arms", (rc1, fv(got)) == (rc0, fv(base)) and got["replay_arms"]["ignored_arms"] ==
+          ["ralph_c"] and got["replay_arms"]["arms"] == list(arms), (rc1, got["final"], got.get("replay_arms")))
+    check("stray MUTANT: keeping every arm's log (no replay filter) -> UNMEASURED, so the row above has teeth",
+          rcm == 3 and fv(mut).startswith("UNMEASURED"), (rcm, mut["final"]))
+    check("stray: an arm.toml that exists but does not parse -> UNMEASURED, blocks withheld",
+          rcb == 3 and "replay arms unknown" in bad["final"].get("why", "") and bad["blocks"] == [], bad["final"])
+    check("stray: --arms overrides the replay set (trio,v3 only; ralph_a and ralph_c ignored)",
+          onl["replay_arms"]["ignored_arms"] == ["ralph_a", "ralph_c"] and rcx != 3, (rcx, onl.get("replay_arms")))
+    check("stale: trio's 311 unsigned pre-trial lines are skipped and counted, every signed record kept",
+          sig_logs["trio"].get("stale_prefix") == 311 and len(sig_logs["trio"].get("recs", ())) == len(recs["trio"]),
+          {k: sorted(v) for k, v in sig_logs.items()})
+    check("stale: the signed run with stale trio + stray ralph_c gives the baseline verdict, not UNMEASURED",
+          (rcs, fv(sig)) == (rc0, fv(base)) and sig["replay_arms"]["stale_prefix"] == {"trio": 311},
+          (rcs, sig["final"], sig.get("replay_arms")))
+    check("stale MUTANT: treating the stale prefix as tampering (old behaviour) -> UNMEASURED",
+          rcsm == 3 and fv(sigm).startswith("UNMEASURED"), (rcsm, sigm["final"]))
+    for name, lg in neg.items():
+        check("stale: %s is NOT a leftover -> trio UNMEASURED" % name, "unmeasured" in lg and "recs" not in lg, lg)
+
+
 # ---------------------------------------------------------------- (4) scenarios
 
 def t_winner():
@@ -1350,7 +1478,8 @@ CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fl
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
-        t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial)
+        t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial,
+        t_stray_logs)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.16), ("ACCEPT_MARGIN", 0.14), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),

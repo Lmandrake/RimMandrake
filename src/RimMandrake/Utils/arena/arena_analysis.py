@@ -420,23 +420,55 @@ def load_raw(dirpath):
     return out
 
 
+def stale_prefix(v):
+    """L.verify() result -> k when its k rejected lines are all PRE-LOG LEFTOVERS, else None. A leftover line is
+    UNSIGNED (no `sig` key: never a signed record, so never a tampered one), parses with a zoned ts, and sits in the
+    contiguous prefix 1..k BEFORE the first accepted line with a ts earlier than every accepted record
+    (ARENA_ANALYSIS_FIX_STRAY_LOGS_VOID_VERDICT: unsigned lane/testpilot probe output from before signing, e.g.
+    events/trio.jsonl's 311 lines of 2026-10-30, stays rejected by the chain forever and voided every verdict).
+    Junk appended DURING the trial follows accepted lines, a stripped sig breaks the chain (recoverable lines,
+    anchors), an undecodable line is not a leftover: all of those still make the arm UNMEASURED."""
+    rej, acc = v.get("rejected") or [], v.get("accepted") or []
+    if not rej or v.get("recoverable") or v.get("undecodable"):
+        return None
+    if [n for n, _ in rej] != list(range(1, len(rej) + 1)):
+        return None
+    try:
+        first = min(_ep(r) for r in acc) if acc else None
+        for _, raw in rej:
+            r = json.loads(raw)
+            if not isinstance(r, dict) or "sig" in r or not isinstance(r.get("ts"), str):
+                return None
+            if first is not None and not _ep(r) < first:
+                return None
+    except (ValueError, TypeError):
+        return None
+    return len(rej)
+
+
 def load_verified(p=None, token=None, external=None, allow_untrusted=False):
-    """Signed logs through arena_eventlog.report(): refused / rejected-line / untrusted arms are UNMEASURED."""
+    """Signed logs through arena_eventlog.report(): refused / rejected-line / untrusted arms are UNMEASURED, except
+    that a rejected PREFIX of pre-log leftovers (stale_prefix) is skipped and counted in `stale_prefix`."""
     p = p or A.paths()
     rep = L.report(p, token, external)
     out = {}
     for arm, v in sorted(rep.items()):
         if arm.startswith("_") or arm in L.NON_ARENA_ARMS:     # critic calibration is not a competing arm
             continue
+        stale = None
+        if not v.get("refused") and v.get("rejected") and not v.get("undecodable_lines"):
+            stale = stale_prefix(L.verify(p, arm, token))
         if v.get("refused"):
             out[arm] = {"unmeasured": "eventlog refused: %s" % "; ".join(map(str, v["refused"]))[:300]}
-        elif v.get("rejected") or v.get("undecodable_lines"):
+        elif (v.get("rejected") and stale is None) or v.get("undecodable_lines"):
             out[arm] = {"unmeasured": "%d rejected / %d undecodable line(s)" % (v.get("rejected", 0),
                                                                              v.get("undecodable_lines", 0))}
         elif not v.get("trusted") and not allow_untrusted:
             out[arm] = {"unmeasured": "untrusted log (%s)" % v.get("trust_note", "no ledger anchor")}
         else:
             out[arm] = {"recs": L.verify(p, arm, token)["accepted"]}
+        if stale is not None:
+            out[arm]["stale_prefix"] = stale
     return out
 
 
@@ -1386,6 +1418,27 @@ def rule_constants():
                                       "HARDCAP_EFF_P", "ERAS")}
 
 
+def replay_arms(cfg_path=None):
+    """-> (arms, source) | (None, why): the arms the trial REPLAYS, the only arms the stopping rule compares
+    (ARENA_ANALYSIS_FIX_STRAY_LOGS_VOID_VERDICT). arm.toml [trial] replay_arms (arena.load_config, validated) when the
+    file exists; arena.TRIAL_DEFAULTS when it does not; an arm.toml that exists but does not parse is refused."""
+    import arena as AR
+    p = Path(cfg_path) if cfg_path else AR.arm_toml_path()
+    if not p.exists():
+        return list(AR.TRIAL_DEFAULTS["replay_arms"]), "arena.TRIAL_DEFAULTS (no %s)" % p
+    try:
+        return list(AR.load_config(p)["trial"]["replay_arms"]), str(p)
+    except AR.SwitchError as e:
+        return None, str(e)
+
+
+def restrict_arms(logs, arms):
+    """-> (logs of `arms` only, the other arms' names). A non-replayed arm's log (a lane arm such as ralph_c, a stray
+    probe file) never enters the comparison, so it can neither void the verdict nor take part in it."""
+    keep = set(arms)
+    return {a: lg for a, lg in logs.items() if a in keep}, sorted(set(logs) - keep)
+
+
 def blind(rep, salt):
     """Hash arm names in the output (section 3.4) unless a stop fired."""
     v = rep.get("final", {}).get("verdict", "")
@@ -1424,6 +1477,9 @@ def main(argv=None):
                    help="override/add a Claude model family weight (default %s)" % CLAUDE_MODEL_WEIGHT)
     r.add_argument("--claude-token-weight", action="append", default=[], metavar="FIELD=W",
                    help="override a raw Claude token-field weight (default %s)" % CLAUDE_TOKEN_WEIGHT)
+    r.add_argument("--arms", help="comma-separated arms to compare (default: arm.toml [trial] replay_arms, else "
+                   "arena.TRIAL_DEFAULTS); every other arm's log is ignored and listed in `ignored_arms`")
+    r.add_argument("--arm-config", help="arm.toml to read replay_arms from (default arena.arm_toml_path())")
     r.add_argument("--blind", metavar="SALT")
     r.add_argument("--out")
     a = ap.parse_args(argv)
@@ -1451,6 +1507,12 @@ def main(argv=None):
     except (OSError, ValueError) as e:
         doc, read_err = None, str(e)
     logs = load_raw(a.raw_dir) if a.raw_dir else load_verified(allow_untrusted=a.allow_untrusted)
+    if a.arms:
+        arms, arms_src = [x.strip() for x in a.arms.split(",") if x.strip()], "--arms"
+    else:
+        arms, arms_src = replay_arms(a.arm_config)
+    arms_err = None if arms else "replay arms unknown: %s" % (arms_src or "empty list")
+    logs, ignored = restrict_arms(logs, arms or [])
     tasks = load_tasks({"tasks": Path(a.tasks_dir)} if a.tasks_dir else None)
     trial_err = None
     try:
@@ -1468,6 +1530,12 @@ def main(argv=None):
     no_chrono = chrono_keys(tasks, a.era_repo)
     cap = L.ts_epoch(a.hard_cap) if a.hard_cap else None
     rep = analyse_spend_doc(logs, tasks, doc, seed=a.seed, draws=a.draws, hard_cap=cap, final=a.final, conv=conv)
+    rep["replay_arms"] = {"arms": arms, "source": arms_src, "ignored_arms": ignored,
+                          "missing": sorted(set(arms or []) - set(logs)),
+                          "stale_prefix": {k: v["stale_prefix"] for k, v in sorted(logs.items()) if "stale_prefix" in v}}
+    if arms_err is not None:
+        rep["final"], rep["blocks_withheld"], rep["blocks"] = ({"verdict": "UNMEASURED", "why": arms_err},
+                                                               len(rep.get("blocks") or []), [])
     if no_chrono:
         rep["era_gate"]["no_chrono"] = dict(sorted(no_chrono.items())[:20], **({"...": "%d more" % (len(no_chrono) - 20)}
                                                                                if len(no_chrono) > 20 else {}))
