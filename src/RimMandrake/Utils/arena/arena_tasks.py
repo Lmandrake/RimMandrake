@@ -2532,6 +2532,7 @@ def main(argv=None) -> int:
                 rp = p["census"] / ("census_%s.json" % dt.datetime.now(dt.timezone.utc).strftime("%Y%m%dT%H%M%SZ"))
                 rp.write_bytes(_dump(rep))
                 print("report:", rp)
+                print("next: rerun arena_answer_check.py; freeze refuses until it passes on these files")
             print(json.dumps({k: rep.get(k) for k in ("pool", "labels", "labelled", "sanity", "kinds", "vet",
                                                       "base_contains_pairs", "scanned_closed_in_window")}))
             if rep.get("pins"):
@@ -2550,6 +2551,13 @@ def main(argv=None) -> int:
             t = load_frozen(a.task, p)
             print(build_arm_clone(t["base_sha"], Path(a.dest), task=a.task, p=p))
             return 0
+        if a.cmd in ("freeze", "refreeze"):   # ARENA_ANSWER_CHECK_FIX_STALE_ROWS_UNGATED: a current, passing check
+            import arena_answer_check as AC
+            stale = AC.gate(p)
+            if stale:
+                print("REFUSED: %s refused, the answer check is not current and passing:\n  %s"
+                      % (a.cmd, "\n  ".join(stale)))
+                return 1
         if a.cmd == "freeze":
             out = freeze(p)
             print(json.dumps(out))

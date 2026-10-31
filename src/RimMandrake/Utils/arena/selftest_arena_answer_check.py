@@ -1,9 +1,17 @@
 #!/usr/bin/env python3
 """selftest_arena_answer_check: the plain answer-store check (arena_answer_check.py) passes on the real sandbox and
-FAILS when the sandbox stops masking /home and /mnt (proof the instrument can see a readable store)."""
+FAILS when the sandbox stops masking /home and /mnt (proof the instrument can see a readable store).
+G1-G7 (ARENA_ANSWER_CHECK_FIX_STALE_ROWS_UNGATED): freeze refuses with no record, a stale one (census after the
+check), a FAIL/VOID row or an unmeasured judge-hidden row, and opens on a current passing record."""
 from __future__ import annotations
 
+import contextlib
+import io
+import json
+import os
+import shutil
 import sys
+import tempfile
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -19,7 +27,65 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
+def gate_cases():
+    tmp = Path(tempfile.mkdtemp(prefix="selftest_answer_gate_"))
+    old = os.environ.get("ARENA_ROOT")
+    os.environ["ARENA_ROOT"] = str(tmp)
+    try:
+        import arena_tasks as AT
+        p = AT.paths()
+        p["tasks"].mkdir(parents=True)
+        p["judge"].mkdir(parents=True)
+        (p["tasks"] / "T1.json").write_text('{"id": "T1"}')
+        (p["judge"] / "T1.json").write_text('{"task": "T1"}')
+
+        def rows(**over):
+            out = [{"store": s, "what": w, "path": x, "result": over.get(w, "PASS")} for s, w, x in AC.targets()]
+            return out
+
+        hid = [r for r in rows() if r["what"] == "judge hidden checks"]
+        check(len(hid) == 1 and hid[0]["path"] == str(p["judge"] / "T1.json"),
+              "G7 the judge-hidden row reads the census's judge dir (%s)" % (hid[0]["path"] if hid else None))
+        g = AC.gate(p)
+        check(g and "no answer check" in g[0], "G1 no record -> refuse (%s)" % g[:1])
+        AC.record(rows(), True, p)
+        check(AC.gate(p) == [], "G2 current passing record -> gate open (%s)" % AC.gate(p))
+        AC.record(rows(**{"freeze authority": "UNMEASURED"}), True, p)
+        check(AC.gate(p) == [], "G4 an UNMEASURED row other than judge-hidden does not refuse")
+        AC.record(rows(**{"judge hidden checks": "UNMEASURED"}), True, p)
+        check(any("judge hidden checks" in x for x in AC.gate(p)), "G4 judge-hidden UNMEASURED -> refuse")
+        AC.record(rows(**{"ledger shards": "FAIL"}), True, p)
+        check(any("FAIL" in x for x in AC.gate(p)), "G5 a FAIL row -> refuse")
+        AC.record(rows(), False, p)
+        check(any("VOID" in x for x in AC.gate(p)), "G5 control unreadable -> refuse")
+        AC.record(rows(), True, p)
+        (p["judge"] / "T1.json").write_text('{"task": "T1", "changed": 1}')     # a census after the check
+        check(any("STALE" in x for x in AC.gate(p)), "G3 census after the check -> STALE, refuse")
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = AT.main(["freeze"])
+        check(rc == 1 and "answer check is not current" in buf.getvalue() and not p["freeze"].exists(),
+              "G6 `arena_tasks.py freeze` refuses on the stale record, nothing frozen (rc %s)" % rc)
+        AC.record(rows(), True, p)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            try:
+                AT.main(["freeze"])
+            except BaseException:                    # noqa: BLE001 - the fake task is refused later; only the gate matters
+                pass
+        check("answer check is not current" not in buf.getvalue(), "G6 sanity: a current record passes the gate")
+        doc = json.loads(AC.record_path(p).read_text())
+        check(doc["schema"] == AC.SCHEMA and doc["fingerprint"] == AC.fingerprint(p), "record carries its fingerprint")
+    finally:
+        if old is None:
+            os.environ.pop("ARENA_ROOT", None)
+        else:
+            os.environ["ARENA_ROOT"] = old
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
+    gate_cases()
     rows, ctl = AC.run()
     check(ctl, "control file in the arm scratch is readable inside the sandbox")
     bad = [r["what"] for r in rows if r["result"] in ("FAIL", "VOID")]
