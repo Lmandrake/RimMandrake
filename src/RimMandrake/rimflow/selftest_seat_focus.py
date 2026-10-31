@@ -12,7 +12,7 @@ import json
 import os
 import sys
 import tempfile
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from rimflow import cli, model  # noqa: E402
@@ -51,7 +51,21 @@ def main():
     fo = cli._seat_focus("FOUNDRY", sched)
     check(fo and fo["prefixes"] == ("ARENA_", "RALPH"), "focus read for FOUNDRY")
     check(cli._seat_focus("BENCH", sched) is None, "an unlisted seat is unfiltered")
-    check(cli._seat_focus("FOUNDRY", os.path.join(d, "missing.json")) is None, "unreadable schedule = no filter")
+    check(cli._seat_focus("FOUNDRY", os.path.join(d, "missing.json")) is None, "no schedule file = no filter")
+    bad = os.path.join(d, "bad.json")
+    for body in ('{"seat_focus": {"FOUN', '[1]', json.dumps({"seat_focus": {"FOUNDRY": {"include_prefixes": "ARENA_"}}}),
+                 json.dumps({"seat_focus": {"FOUNDRY": {"include_prefixes": ["A"], "until_item": []}}}),
+                 json.dumps({"seat_focus": {"FOUNDRY": {"include_prefixes": [""]}}}),
+                 json.dumps({"seat_focus": {"FOUNDRY": "ARENA_"}})):
+        with open(bad, "w") as f:
+            f.write(body)
+        err = io.StringIO()
+        try:
+            with redirect_stderr(err):
+                cli._seat_focus("FOUNDRY", bad)
+            check(False, "a damaged schedule must refuse: %s" % body)
+        except SystemExit as e:
+            check(e.code == 2 and err.getvalue(), "a damaged schedule refuses out loud: %s" % body)
     live = cli._seat_focus("FOUNDRY")
     check(live is not None and "ARENA_" in live["prefixes"], "the live schedule carries FOUNDRY's focus")
 
@@ -67,6 +81,11 @@ def main():
     w = world(game + ["ARENA_RACE_X", "OTHER_THING"])
     ch = cli._choose(w, "FOUNDRY", Args(), ctx, None)
     check(ch["item"] is not None and ch["item"].id == "ARENA_RACE_X", "an ARENA_ item is offered over game dev")
+    wo = model.replay([ev(seat="BENCH", event="file", id="LOOK_AT_THIS", title="t", kind="task", needs="owner",
+                          **{"for": "FOUNDRY"})], strict=True)
+    check(cli._choose(wo, "FOUNDRY", Args(), {"now": ctx["now"]}, None)["item"] is not None, "control: a proposed owner item")
+    check(cli._choose(wo, "FOUNDRY", Args(), {"now": ctx["now"], "mode": "afk"}, None)["item"] is None,
+          "afk suppresses a proposed owner item as it does a ranked one")
     ch = cli._choose(world(game), "FOUNDRY", Args(), {"now": ctx["now"]}, None)
     check(ch["item"] is not None, "control: without focus a game-dev item IS offered")
 

@@ -1041,20 +1041,28 @@ FOCUS_LIFTED_STATES = ("built", "validated", "done")
 def _seat_focus(seat, path=None, world=None):
     """-> {"until", "prefixes"} when the schedule's `seat_focus` names `seat`, else None (SEAT_FOCUS_FILTER_FOR_NEXT).
     A standing bar ends by itself: once the entry's `until_item` is implemented in `world`, no filter, and nobody has
-    to remember to delete the key. A gate item not in the ledger holds the bar. Unreadable schedule = no filter."""
+    to remember to delete the key. A gate item not in the ledger holds the bar. No schedule file = no filter; a damaged
+    one refuses, so the Dispatcher's peek alarms: read as no filter it would lift the bar in silence."""
     path = path or os.environ.get("RIMFLOW_SCHEDULE") or os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")
     try:
         with open(path) as f:
             c = (json.load(f).get("seat_focus") or {}).get(seat)
-    except (OSError, ValueError, AttributeError):
+    except FileNotFoundError:
         return None
-    if not isinstance(c, dict) or not c.get("include_prefixes"):
+    except (OSError, ValueError, AttributeError) as e:
+        die("schedule unreadable, %s's focus is unknown: %s: %s" % (seat, path, e))
+    if not c:
         return None
-    gate = (getattr(world, "items", None) or {}).get(c.get("until_item"))
+    fix = c.get("include_prefixes") if isinstance(c, dict) else None
+    until = c.get("until_item") if isinstance(c, dict) else None
+    if not (isinstance(fix, list) and fix and all(p and isinstance(p, str) for p in fix)
+            and (until is None or isinstance(until, str))):
+        die("seat_focus.%s is malformed in %s: include_prefixes must be a list of strings, until_item a string" % (seat, path))
+    gate = (getattr(world, "items", None) or {}).get(until)
     if gate is not None and gate.state in FOCUS_LIFTED_STATES:
         return None
-    return {"until": c.get("until"), "prefixes": tuple(c["include_prefixes"])}
+    return {"until": c.get("until"), "prefixes": tuple(fix)}
 
 
 def _choose(w, seat, args, ctx, idx):
@@ -1069,7 +1077,7 @@ def _choose(w, seat, args, ctx, idx):
     and `_claimable` both skip them."""
     offers, skipped = reconcile.guard(priority.rank(w, seat, args.target, ctx), idx)
     out = {"kind": "nothing", "offer": None, "item": None, "claimable": [], "skipped": skipped}
-    claimable = _claimable(w, seat, args.target, ctx.get("now"))
+    claimable = _claimable(w, seat, args.target, ctx.get("now"), ctx)
     fo = ctx.get("focus")
     if fo:      # seat focus: only items whose id starts with an included prefix are offered
         offers = [a for a in offers if a.item.id.startswith(fo["prefixes"])]
@@ -1223,7 +1231,7 @@ def _warn_contested_claims(w, seat):
               "work on it and take the next item." % (c["loser_ts"], seat))
 
 
-def _claimable(w, seat, target="v1", now=None):
+def _claimable(w, seat, target="v1", now=None, ctx=None):
     """-> [Item] this seat owns that are `proposed` and unblocked, thin ones included.
 
     🔴 THE HANDOFF USED TO END HERE, SILENTLY. `priority.rank()` filters
@@ -1253,6 +1261,8 @@ def _claimable(w, seat, target="v1", now=None):
            if i.owner == seat and i.state == "proposed" and not i.blocked
            and (not target or i.target in (None, target))  # "" = no filter, as rank()
            and model.lease_status(i, now) != "live"]
+    if ctx is not None:      # `next`: the availability rule a ranked item passes (--mode afk and needs=owner, above all)
+        out = [i for i in out if priority.satisfiable(i, w, ctx, seat)]
     out.sort(key=lambda i: (model.raise_key(i), not i.this_deployment, i.created_at or "", i.id))
     return out
 

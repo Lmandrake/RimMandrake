@@ -245,6 +245,53 @@ def test_new_ticket_skips_the_backoff():
     st2 = {"seats": {"FOUNDRY": {"cooldown_until": 9e9}}, "wakes": [], "recovers": [], "alarms": {}}
     check(not [a for a in D.decide(sch, st2, o, 1000.0, True) if a["do"] == "ring"],
           "a plain cooldown (a give-up, no declined tickets) is never skipped")
+    st3 = {"seats": {"FOUNDRY": {"cooldown_until": 9e9, "nh_tickets": ["GONE"], "nh_until": 5.0, "idle_since": 0.0}}, "wakes": [],
+           "recovers": [], "alarms": {}}
+    check(not [a for a in D.decide(sch, st3, o, 1000.0, True) if a["do"] == "ring"],
+          "a give-up cooldown after a declined ticket is not the backoff: not skipped")
+    st4 = {"seats": {"FOUNDRY": {"cooldown_until": 9e9, "nh_tickets": ["GONE"], "nh_until": 9e9, "idle_since": 0.0}}, "wakes": [],
+           "recovers": [], "alarms": {}}
+    held = dict(sch, caps=dict(sch["caps"], wakes_per_seat_hour=0))
+    check([a["kind"] for a in D.decide(held, st4, o, 1000.0, True) if a["do"] == "alarm"] == ["cap:FOUNDRY"], "the cap held it")
+    check(st4["seats"]["FOUNDRY"].get("cooldown_until") == 9e9, "no ring went out: the backoff still stands")
+    peeks = [top["id"]]
+    o2 = dict(o, peek=lambda seat: {"id": peeks.pop(), "needs": "offline"} if peeks else {"id": "A_ITEM", "needs": "offline"})
+    rung = [a for a in D.decide(sch, {"seats": {"FOUNDRY": {"cooldown_until": 9e9, "nh_tickets": ["GONE"], "nh_until": 9e9, "idle_since": 0.0}},
+                                      "wakes": [], "recovers": [], "alarms": {}}, o2, 1000.0, True) if a["do"] == "ring"]
+    check(len(peeks) == 0 and [a["ticket"] for a in rung] == [top["id"]], "the ring carries the ticket it peeked: %r" % rung)
+
+
+def test_alarm_delivery_and_lock():
+    """An alarm nobody received keeps no rate-limit stamp; a broken ingest.lock stops no ring; an unreadable shard raises."""
+    sch = sched(ledger_notes=True, alarm_item="X_Y")
+    root = os.path.join(TMP, "deliv")
+    os.makedirs(root, exist_ok=True)
+    def boom(*x):
+        raise OSError("disk")
+    def alarm():
+        return [{"do": "alarm", "kind": "k", "seat": "FOUNDRY", "why": "w", "note": True, "conductor_log": True}]
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    base = {"lock": lambda: None, "publish": lambda n: "p", "note": lambda i, t: (True, "")}
+    D.execute(alarm(), sch, st, root, True, 1.0, dict(base, conductor_log=boom))
+    check("k" not in st["alarms"], "neither destination took it: no stamp, retried next tick")
+    D.execute(alarm(), sch, st, root, True, 2.0, dict(base, conductor_log=lambda *x: "conductor log appended: p"))
+    check(st["alarms"].get("k") == 2.0, "the log took it, the ledger did not: stamped")
+    st["alarms"]["k"] = 2.0
+    a = alarm()
+    D.execute(a, sch, st, root, True, 3.0, dict(base, conductor_log=boom))
+    check(st["alarms"]["k"] == 2.0 and "rate-limited" in a[0]["result"], "a rate-limited repeat keeps its stamp")
+    fx = dict(base, lock=boom, conductor_log=lambda *x: "conductor log appended: p")
+    acts = alarm()
+    D.execute(acts, sch, st, root, True, 4.0e5, fx)
+    check([x["kind"] for x in acts if x["do"] == "alarm"] == ["k", "tick:ingest_lock"], "lock failure alarms: %r" % acts)
+    p = os.path.join(root, "infrastructure", "state", "ledger", "events")
+    os.makedirs(os.path.join(p, "FOUNDRY.jsonl"), exist_ok=True)
+    check(D.seat_events_since(os.path.join(root, "nope"), "FOUNDRY", "2026") == [], "no shard: no events")
+    try:
+        D.seat_events_since(root, "FOUNDRY", "2026")
+        check(False, "an unreadable shard must raise")
+    except OSError:
+        pass
 
 
 def test_no_handoff_rering_and_escalation():
@@ -3474,7 +3521,7 @@ def test_long_helper_alarm():
 
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
-              test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_answered_ring_is_not_no_handoff, test_dead_recover,
+              test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,

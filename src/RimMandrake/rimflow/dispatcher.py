@@ -244,7 +244,7 @@ def seat_events_since(clone, seat, since_iso, on_skip=None):
             ev = r.value
             if ev.get("seat") == seat and CC.ledger_ts(ev) > since_iso:   # strictly after the ring's second
                 out.append(ev)
-    except OSError:
+    except FileNotFoundError:   # any other read error raises into the seat's guard: an unreadable shard is not a silent seat
         pass
     return out
 
@@ -498,7 +498,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss["attempt"] = 0
                     ss["nh_streak"] = streak
                     ss["nh_tickets"] = sorted(set(ss.get("nh_tickets") or []) | {pend.get("ticket")} - {None})
-                    ss["cooldown_until"] = now + wait
+                    ss["cooldown_until"] = ss["nh_until"] = now + wait
                     n = rule["escalate_after"]
                     if n and streak >= n and ans:
                         act(do="alarm", kind="seat_declined:" + seat, seat=seat, note=True, conductor_log=True,
@@ -546,16 +546,17 @@ def decide(sch, st, obs, now, apply, out=None):
                 ss.pop("recover")
                 ss["cooldown_until"] = now + sch["cooldown_s"]
             return
+        peeked = None
         if ss.get("cooldown_until", 0) > now:
             # The re-ring backoff waits out a seat that declined THESE tickets, not new work: measured 10-29..30, 3 of
             # 11 backoffs (about 2.1 of 7.85 h) sat on a different, takeable top item (FOUNDRY_RINGS_FIX_BACKOFF_HIDES_NEW_WORK).
+            # Only that backoff: a give-up or failed-recover cooldown holds. It stands until a ring really goes out.
             tried = ss.get("nh_tickets")
-            if not (tried and status == "idle" and cfg.get("wake", True)):
+            if not (tried and ss.get("nh_until") == ss["cooldown_until"] and status == "idle" and cfg.get("wake", True)):
                 return
-            fresh = obs["peek"](seat)
-            if not fresh or fresh["id"] in tried:
+            peeked = obs["peek"](seat)
+            if not peeked or peeked["id"] in tried:
                 return
-            ss.pop("cooldown_until")
         # ---- dead window
         if not sess:
             ss.pop("idle_since", None)
@@ -612,7 +613,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     "with AGENT_SEAT re-armed it): not ringing a stranger" % (seat, armed["session_id"],
                                                                                sess["sessionId"]))
             return
-        ticket = obs["peek"](seat)
+        ticket = peeked or obs["peek"](seat)
         if ticket is None:
             act(do="alarm", kind="peek:" + seat, seat=seat, note=True, conductor_log=True,
                 raise_first="%s cannot read its queue." % seat, why="rimflow next --peek failed in %s" % cfg.get("clone"))
@@ -636,6 +637,8 @@ def decide(sch, st, obs, now, apply, out=None):
             session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, ring_id),
             account=pk.get("account"), idle_since=ss.get("idle_since"))
         st["wakes"].append({"seat": seat, "at": now})
+        ss.pop("cooldown_until", None)
+        ss.pop("nh_until", None)
         if apply:
             ss["ring"] = {"ring_id": ring_id, "rung_at": now, "rung_iso": iso(now), "ticket": ticket["id"],
                           "attempt": attempt}
@@ -1004,13 +1007,20 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     do_conductor = fx.get("conductor_log", conductor_log)
     wants_ledger = apply and sch.get("ledger_notes") and any(a.get("note") for a in actions)
-    lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
+    try:
+        lk = do_lock() if (wants_ledger or (apply and sch.get("publish"))) else None
+    except Exception as e:  # noqa: BLE001 - treated as busy: rings and launches do not need the lock, notes wait
+        lk = None
+        actions.append(dict(do="alarm", kind="tick:ingest_lock", at=iso(now), conductor_log=True,
+                            why="ingest.lock could not be taken (%s: %s): no ledger notes or publish until it can" % (
+                                type(e).__name__, str(e)[:160]), raise_first="Ledger notes are off."))
     ledger_ok = lk is not None
     notes = 0
     try:
         for a in actions:
             res = None
             started = []      # role_launch: the run record, once it exists (a raise after that may have started it)
+            stamped = False
             if a["do"] == "alarm":
                 last = st["alarms"].get(a["kind"])
                 if last is not None and now - last < sch.get("alarm_every_s", 6 * 3600):
@@ -1018,6 +1028,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     res = "repeat alarm (rate-limited)"
                 else:
                     st["alarms"][a["kind"]] = now
+                    stamped = True
             if a["do"] in SR.DOES:
                 try:
                     res = SR.execute(a, sch, st, sr_apply(sch, apply), now, fx.get("seat_restart"))
@@ -1253,6 +1264,11 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             ok, out = False, "%s: %s" % (type(e).__name__, str(e)[:160])
                         notes += ok
                         a["ledger"] = "noted" if ok else "note failed: " + out
+            if stamped:      # a stamp means somebody was told: an alarm no destination took is retried next tick
+                no_note = str(a.get("ledger", "")).startswith(("note failed", "not noted: testq", "not noted: tick"))
+                no_log = a.get("conductor_log") and str(res).startswith("error:")
+                if (no_note or no_log) and (no_note or not a.get("note")) and (no_log or not a.get("conductor_log")):
+                    st["alarms"].pop(a["kind"], None) if last is None else st["alarms"].update({a["kind"]: last})
             a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
             journal(root, dict(a, message=None, pending=None) if a.get("message") or a.get("pending") else a)
         if apply and ledger_ok and sch.get("publish"):

@@ -77,7 +77,8 @@ def test_dead_held():
         check("held", bool(h) and st["login"]["dead_since"] == NOW)
         check("HOLD: no switch", not [x for x in a if x["do"] == "login_switch"])
         h, a = run(sch, st, obs(BAD), NOW + 240)
-        check("no repeat inside the window, still held", not a and bool(h))
+        check("the same kind each tick: the Dispatcher rate-limits it, an undelivered one retries, still held",
+              bool(h) and [x["kind"] for x in a] == ["login:expired:%d" % st["login"]["dead_since"]])
         h, a = run(sch, st, obs((None, "timeout")), NOW + 360)
         check("a blind probe keeps the hold", bool(h) and not a)
         h, a = run(sch, st, obs(BAD), NOW + 21800)
@@ -108,6 +109,13 @@ def test_switch():
         check("only one try", not a and bool(h))
         h, a = run(sch, st, obs(BAD), NOW + 1100)
         check("not back in time: alarm, no second try", [x["kind"].split(":")[1] for x in a] == ["switch_failed"])
+        st2 = {}
+        run(sch, st2, obs(BAD), NOW)
+        run(sch, st2, obs(BAD), NOW + 120)
+        LW.switch_failed(st2)
+        h, a = run(sch, st2, obs(BAD), NOW + 240)
+        check("a refused switch is not tried again and alarms at once",
+              [x["kind"].split(":")[1] for x in a] == ["switch_failed"] and "switch_at" in st2["login"])
         h, a = run(sch, st, obs(BAD), NOW + 1300)
         check("that alarm stays up until the login is back (the Dispatcher rate-limits it)", a and "switch_failed" in a[0]["kind"])
         got = []
@@ -131,6 +139,7 @@ def test_stranded():
         check("stranded seat gets a restart request", [x["do"] for x in a] == ["login_rescue"] and a[0]["request"]["session_id"] == "x"
               and a[0]["request"]["start"] == 77)
         check("one request per error", not run(sch, st, obs(GOOD, windows=[w]), NOW + 120)[1])
+        check("still one request after UTC midnight", not run(sch, st, obs(GOOD, windows=[w]), NOW + 86400)[1])
         w2 = dict(w, at=NOW - 10)
         run(sch, st, obs(GOOD, windows=[w2]), NOW + 240)
         w3 = dict(w, at=NOW - 5)
@@ -250,7 +259,9 @@ def test_probe():
         exe = os.path.join(d, "fake")
         for body, want in (('echo \'{"loggedIn": true}\'', True), ('echo \'{"loggedIn": false}\'; exit 1', False),
                            ("echo Please run /login >&2; exit 1", False), ("echo segfault >&2; exit 139", None),
-                           ("echo junk", None), ("sleep 5", None)):
+                           ("echo junk", None), ("sleep 5", None), ('echo \'{"error": "server"}\'', None),
+                           ('echo \'{"loggedIn": "yes"}\'', None), ("echo '[1]'", None),
+                           ('echo \'{"error": "x"}\'; echo Please run /login >&2; exit 1', False)):
             with open(exe, "w") as f:
                 f.write("#!/bin/sh\n%s\n" % body)
             os.chmod(exe, 0o755)
@@ -262,6 +273,15 @@ def test_probe():
         seen = [run(sch, st, o, NOW + i)[1] for i in range(5)]
         check("blind ticks alarm only after blind_alarm_n", not any(seen[:4]) and seen[4][0]["kind"] == "login:blind")
         check("blind holds nothing", run(sch, st, o, NOW + 9)[0] is None)
+
+
+def test_bad_usage_file():
+    with tempfile.TemporaryDirectory() as d:
+        sch, st = box(d), {}
+        with open(sch["login_watch"]["usage_latest"], "w") as f:
+            json.dump({"accounts": ["a"]}, f)
+        run(sch, st, obs(BAD), NOW)
+        check("accounts as a list holds the fleet, no raise", bool(run(sch, st, obs(BAD), NOW + 120)[0]))
 
 
 def test_pick_and_way():
@@ -319,7 +339,7 @@ def test_release():
 
 def main():
     for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_limit_reset, test_quiet_and_gate, test_slot_back,
-              test_probe, test_pick_and_way, test_give_back, test_release):
+              test_probe, test_bad_usage_file, test_pick_and_way, test_give_back, test_release):
         t()
     print("selftest_login_watch: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))
     return 1 if FAILS else 0

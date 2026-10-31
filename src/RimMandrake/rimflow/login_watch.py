@@ -69,11 +69,12 @@ def probe(claude, timeout=30):
     finally:
         shutil.rmtree(cwd, ignore_errors=True)
     try:
-        if json.loads(r.stdout).get("loggedIn"):
-            return True, ""
-        return False, "auth status says not logged in"
-    except (ValueError, AttributeError):
-        pass
+        said = json.loads(r.stdout)
+    except ValueError:
+        said = None
+    state = said.get("loggedIn") if isinstance(said, dict) else None
+    if isinstance(state, bool):                       # an error object has no loggedIn: that is no reading
+        return (True, "") if state else (False, "auth status says not logged in")
     said = "%s %s" % (r.stdout, r.stderr)
     if r.returncode != 0 and GONE_RX.search(said):
         return False, "auth status exited %d: %s" % (r.returncode, said.strip()[:120])
@@ -91,6 +92,8 @@ def healthy_logins(cfg, live, lent, now, rule=None):
         with open(cfg["usage_latest"], encoding="utf-8") as f:
             recs = json.load(f).get("accounts") or {}
     except (OSError, ValueError, TypeError, AttributeError):
+        return []
+    if not isinstance(recs, dict):
         return []
     rule = rule or {}
     floor = (rule.get("target_min") or {}).get("week_left_pct_ge", 0)
@@ -195,7 +198,9 @@ def _stranded_step(cfg, sch, L, windows, now, act, iso):
     res = L.setdefault("rescues", {})
     for w in windows:
         seat = w["seat"]
-        r = res.get(seat) if (res.get(seat) or {}).get("day") == day else {"day": day, "n": 0}
+        r = res.get(seat) or {}
+        if r.get("day") != day:                       # a new day resets the count, never the answered error
+            r = dict({"for": r["for"]} if "for" in r else {}, day=day, n=0)
         if r.get("for") == w["at"]:                   # this error was answered: the restart path reports its own end
             continue
         if w["conductor"] or w["start"] is None or r["n"] >= cfg["rescues_per_day"]:
@@ -265,7 +270,7 @@ def step(sch, st, obs, now, act, iso):
                     (now - L["dead_since"]) / 3600.0, iso(L["dead_since"]),
                     "; automatic switch to %s" % L["switched_to"] if L.get("switched_to") else ""),
                 raise_first="Nothing to do unless a seat stays idle: stranded windows are restarted next.")
-        for k in ("dead_since", "fails", "hold", "alarmed_at", "switch_at", "switched_to", "first_fail"):
+        for k in ("dead_since", "fails", "hold", "switch_at", "switched_to", "first_fail"):
             L.pop(k, None)
         agents = obs.get("agents") or {}
         if agents.get("state") == "MEASURED" and lo.get("stranded") and not obs.get("paused"):
@@ -283,24 +288,21 @@ def step(sch, st, obs, now, act, iso):
     box = machine(cfg)
     if not block and not (good and box):
         block = "no healthy login to move to" if not good else "machine name unreadable"
-    if not block and not L.get("switch_at"):
+    if not block and "switch_at" not in L:            # by key: a refused switch is 0, tried and owed its alarm
         L["switch_at"], L["switched_to"] = now, good[0]
         act(do="login_switch", account=good[0], machine=box, command=cfg["account_cmd"], note=True,
             conductor_log=True, kind="login:switch", why="%s: switching the machine to %s by itself" % (L["hold"], good[0]),
             raise_first="Automatic account switch running; every Claude window restarts.")
-    if L.get("switch_at"):
+    if "switch_at" in L:
         if now - L["switch_at"] > cfg["switch_verify_s"]:     # the Dispatcher repeats it every alarm_every_s
             act(do="alarm", kind="login:switch_failed:%d" % L["dead_since"], note=True, conductor_log=True,
                 why="%s: the automatic switch to %s did not bring it back" % (L["hold"], L.get("switched_to")),
                 raise_first="LOGIN DEAD, automatic switch failed. Way back: %s." % way_back(good, box))
         return L["hold"]
-    every = sch.get("alarm_every_s", 6 * 3600)
-    if now - L.get("alarmed_at", -1e18) >= every:
-        L["alarmed_at"] = now
-        act(do="alarm", kind="login:expired:%d" % L["dead_since"], note=True, conductor_log=True,
-            why="%s; live account %s. No automatic way back: %s. Healthy logins: %s. Rings and role runs are held." % (
-                L["hold"], live or "UNMEASURED", block, ", ".join(good) or "none measured"),
-            raise_first="LOGIN DEAD, fleet held. Way back: %s." % way_back(good, box))
+    act(do="alarm", kind="login:expired:%d" % L["dead_since"], note=True, conductor_log=True,   # rate-limited by kind
+        why="%s; live account %s. No automatic way back: %s. Healthy logins: %s. Rings and role runs are held." % (
+            L["hold"], live or "UNMEASURED", block, ", ".join(good) or "none measured"),
+        raise_first="LOGIN DEAD, fleet held. Way back: %s." % way_back(good, box))
     return L["hold"]
 
 
