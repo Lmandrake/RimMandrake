@@ -627,22 +627,65 @@ def _clean(root):
     return r.returncode == 0 and not r.stdout.strip()
 
 
+# ARENA_PRECHECK_FIX_BASE_EXPORT_ADD_TIMEOUT: the base export used to sit beside the log, i.e. in the ctl dir on
+# drvfs (/mnt/d). The 7.7 GB / 48,557-file replay tree took ~20 min to write there and `git add` of it outran 600 s,
+# so ralph_a/trio died on task 1; and had it finished, arm_sandbox refuses any bind on a Windows filesystem (and the
+# ClaudeWork root is DENY), so the base run could never have run. It now lives on ext4 (measured 2026-10-31 for base
+# 8fdc8e44c11c: export 43 s, add 130 s, commit 0.4 s) next to the arms' own scratch, one dir per task log dir, and is
+# removed after its run. Same export_tree, same files, same sandboxed command: only the location moved.
+BASE_EXPORT_GIT_TIMEOUT = 1800      # per git step; ext4 add measured 130 s idle, arms export concurrently
+
+
+def base_export_root() -> Path:
+    """$ARENA_BASE_EXPORT, else <arm sandbox scratch base>/base_export ($RM_ARM_SANDBOX_SCRATCH or <arena
+    root>/sandbox: ext4, an ARENA_KEEP child, outside every builder's rw binds)."""
+    env = os.environ.get("ARENA_BASE_EXPORT", "").strip()
+    if env:
+        return Path(env)
+    import arena_replay as R
+    return Path(os.environ.get("RM_ARM_SANDBOX_SCRATCH") or (R.arena_root() / "sandbox")) / "base_export"
+
+
+def base_export_dir(root, log) -> Path:
+    """The export dir for the task whose log is `log`: <base_export_root>/<task dir name>-<sha256(log dir)[:12]>.
+    A dir the arm sandbox would refuse to bind (Windows fs, DENY, mounts) or one inside the clone is a harness
+    misconfiguration: RuntimeError (the runner stops loudly), never a Refused that baseline_verdict would turn into a
+    scored red pre-check."""
+    ld = os.path.realpath(str(Path(log).parent))
+    name = re.sub(r"[^A-Za-z0-9_.-]", "_", Path(ld).parent.name or "task")[:80]
+    d = base_export_root() / ("%s-%s" % (name, hashlib.sha256(ld.encode()).hexdigest()[:12]))
+    r = os.path.realpath(str(d))
+    try:                # the very bind policy precheck_run's sandbox applies (Windows fs, subtree/nested mounts, DENY)
+        AS.check_bind(r, AS.deny_paths(), "base export")
+    except AS.SandboxRefused as e:
+        raise RuntimeError("%s (set ARENA_BASE_EXPORT to an ext4 dir the arm sandbox may bind)" % e)
+    c = os.path.realpath(str(root))
+    if r == c or r.startswith(c.rstrip("/") + "/"):
+        raise RuntimeError("refused: base export dir %s lies inside the clone %s" % (r, c))
+    return d
+
+
 def base_export_run(root, base, log):
     """The quick pre-check on the BASE commit's tree, not the clone: a harness-side export of `base` (export_tree:
-    object by object, verified) beside the log, given a fresh harness-made .git (`--template=`: no hooks, no config
-    from the clone) so git-using selftests see a repo, then run sandboxed exactly like the clone's run. -> (rc, out)."""
-    d = Path(log).parent / "base_export"
-    export_tree(root, base, d)
-    if os.path.lexists(d / ".git"):     # a crafted tree can hold .git/config (fsmonitor, hooksPath): never git there
-        raise Refused("refused: base %s's tree carries a top-level .git" % base)
-    for a in (["init", "-q", "--template=", "-b", MAIN], ["add", "-A", "-f"],
-              ["commit", "-q", "--no-verify", "-m", "base export %s" % base]):
-        r = subprocess.run(["git", "-C", str(d), "-c", "user.name=harness", "-c", "user.email=harness@local",
-                            "-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false"] + a, env=SG.safe_env(), capture_output=True, text=True,
-                           timeout=600)
-        if r.returncode != 0:
-            raise Refused("base export git %s failed: %s" % (a[0], r.stderr.strip()[:300]))
-    return precheck_run(d, str(log) + ".base", ARM)
+    object by object, verified) into base_export_dir (ext4, harness-side), given a fresh harness-made .git
+    (`--template=`: no hooks, no config from the clone) so git-using selftests see a repo, then run sandboxed exactly
+    like the clone's run; the export is removed afterwards (the run's log stays beside `log`). -> (rc, out)."""
+    d = base_export_dir(root, log)
+    try:
+        export_tree(root, base, d)
+        if os.path.lexists(d / ".git"):  # a crafted tree can hold .git/config (fsmonitor, hooksPath): never git there
+            raise Refused("refused: base %s's tree carries a top-level .git" % base)
+        for a in (["init", "-q", "--template=", "-b", MAIN], ["add", "-A", "-f"],
+                  ["commit", "-q", "--no-verify", "-m", "base export %s" % base]):
+            # a timeout stays an exception (the runner stops loudly), never a scored red pre-check
+            r = subprocess.run(["git", "-C", str(d), "-c", "user.name=harness", "-c", "user.email=harness@local",
+                                "-c", "core.hooksPath=/dev/null", "-c", "core.fsmonitor=false"] + a,
+                               env=SG.safe_env(), capture_output=True, text=True, timeout=BASE_EXPORT_GIT_TIMEOUT)
+            if r.returncode != 0:
+                raise Refused("base export git %s failed: %s" % (a[0], r.stderr.strip()[:300]))
+        return precheck_run(d, str(log) + ".base", ARM)
+    finally:
+        shutil.rmtree(d, ignore_errors=True)
 
 
 BASE_RUNS = 2       # base observations a sandbox red must be red in to be baselined (ARENA_PRECHECK_FIX_FLAKY_BASE_RED)

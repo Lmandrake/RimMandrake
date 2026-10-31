@@ -1797,6 +1797,71 @@ def t_export_streamed(tmp):
     check(peak < 8 << 20, "export peak %.1f MiB stays far under the 24 MiB blob" % (peak / 2 ** 20))
 
 
+def t_base_export_location(tmp):
+    """ARENA_PRECHECK_FIX_BASE_EXPORT_ADD_TIMEOUT: the base export is written OFF the log dir (the live ctl dir is
+    drvfs: 20 min to write, `git add` > 600 s, and arm_sandbox refuses a Windows-fs bind) into base_export_root
+    (ext4 scratch), the pre-check runs on exactly base's tree there, and the export is removed afterwards. A drvfs
+    root or a dir inside the clone is a loud RuntimeError, never a scored red."""
+    import ralph_a_loop as RAL
+    r = tmp / "bx_repo"
+    r.mkdir()
+    sh(r, "git", "init", "-q")
+    (r / "a.txt").write_text("alpha\n")
+    (r / "x.sh").write_text("#!/bin/sh\n")
+    (r / "x.sh").chmod(0o755)
+    sh(r, "git", "add", "-A")
+    sh(r, "git", "-c", "user.name=t", "-c", "user.email=t@t", "commit", "-qm", "b")
+    sha = sh(r, "git", "rev-parse", "HEAD")
+    want_tree = sh(r, "git", "rev-parse", "HEAD^{tree}")
+    log = tmp / "bx_ctl" / "TASK_X" / "log" / "pre.0"
+    log.parent.mkdir(parents=True)
+    saved = os.environ.pop("ARENA_BASE_EXPORT", None)
+    seen = {}
+    real = RAL.precheck_run
+
+    def spy(d, lg, arm):
+        seen["d"], seen["lg"] = Path(d), lg
+        seen["tree"] = sh(d, "git", "rev-parse", "HEAD^{tree}")
+        return 0, "RESULT: GREEN (spy)\n"
+    try:
+        d = RAL.base_export_dir(r, log)
+        check(str(d).startswith(os.path.join(os.environ["RM_ARM_SANDBOX_SCRATCH"], "base_export") + "/")
+              and d.name.startswith("TASK_X-") and log.parent not in d.parents,
+              "BX1 base export dir is under the arm scratch base_export root, not the log dir: %s" % d)
+        RAL.precheck_run = spy
+        rc, out = RAL.base_export_run(r, sha, log)
+        check(rc == 0 and seen.get("d") == d and seen.get("lg") == str(log) + ".base"
+              and seen.get("tree") == want_tree,
+              "BX2 the pre-check ran on exactly base's tree in the ext4 export: %s" % seen)
+        check(not os.path.lexists(d) and not os.path.lexists(log.parent / "base_export"),
+              "BX3 the export is removed after its run and nothing is written beside the log")
+        check(RAL.BASE_EXPORT_GIT_TIMEOUT >= 900, "BX4 per-step git budget %d s" % RAL.BASE_EXPORT_GIT_TIMEOUT)
+
+        def boom(d, lg, arm):
+            seen["d2"] = Path(d)
+            raise RAL.Refused("spy refusal")
+        RAL.precheck_run = boom
+        try:
+            RAL.base_export_run(r, sha, log)
+        except RAL.Refused:
+            pass
+        check(seen.get("d2") == d and not os.path.lexists(d), "BX6 the export is removed when its run raises too")
+        for env, what in (("/mnt/d/ClaudeWork/rimmandrake/bx_selftest_never", "drvfs"), (str(r / "inner"), "clone"),
+                          ("/home/mandrake/rm/foundry/bx_selftest_never", "DENY (a live clone)")):
+            os.environ["ARENA_BASE_EXPORT"] = env
+            try:
+                RAL.base_export_dir(r, log)
+                ok = False
+            except RuntimeError:
+                ok = True
+            check(ok, "BX5 a base export root on %s is a loud RuntimeError" % what)
+    finally:
+        RAL.precheck_run = real
+        os.environ.pop("ARENA_BASE_EXPORT", None)
+        if saved is not None:
+            os.environ["ARENA_BASE_EXPORT"] = saved
+
+
 def t_bridge_mine(tmp):
     cli = HERE.parents[1] / "rimflow" / "cli.py"
     os.makedirs(tmp / "rf" / "items")
@@ -1956,7 +2021,7 @@ def main():
                 mod = variant(old, new)
             check(not guarded(fn, tmp, mod, "_m%d" % i), "mutation goes RED: " + name)
         for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)), (t_precheck_era, (tmp,)), (t_export_streamed, (tmp,)), (t_baseline_pinned, (tmp,)),
-                      (t_bridge_mine, (tmp,)), (t_signed_writer, (tmp,))):
+                      (t_base_export_location, (tmp,)), (t_bridge_mine, (tmp,)), (t_signed_writer, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001
