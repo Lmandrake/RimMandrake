@@ -68,8 +68,11 @@ exception class or an empty FAIL label) is not behaviour; an assertion quoting i
 fix_only when its longest match in the fix tree is absent at base (a root `x.json` at base does not hide a new
 `src/x.json`); the task names a file by its whole name (`config.json` is not named by `prod_config.json`). Rules
 (2) and (3) see a pytest `E   ` prefix through, and pytest's re-reports of a consequence (`t.py:12: RuntimeError`,
-`FAILED t.py::t - RuntimeError: ...`) are consequences too. A pytest `E   assert ...` line is behaviour whatever
-string it quotes.
+`FAILED t.py::t - RuntimeError: ...`) are consequences too; pytest's frame lines (`t.py:12:`, `_ _ _`) do not end a
+chained traceback, and its footer `t.py:12: SomeError` repeats the `E` line above it so is never an outcome line (a
+`FAILED t - FileNotFoundError: ...` summary reports the missing file again). A pytest `E   assert ...` line is
+behaviour whatever string it quotes. A file is named only by its whole name (`config.json.example` does not name
+`config.json`).
 
     run     read every survivor without a current verdict; one JSON file per task under the results dir (default
             <arena>/judge/reader/verdicts/, judge-only: the packets hold hidden check bodies). Resumable: a task
@@ -398,20 +401,25 @@ _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
 _GAP = re.compile(r"^\[\.\.\. \d+ chars cut \.\.\.\]\s*$")
 _CHAIN = re.compile(r"^\s*(?:E\s+)?(?:During handling of the above exception, another exception occurred:"
                     r"|The above exception was the direct cause of the following exception:)\s*$")
-_EXC_LEAD = re.compile(r"^(?:E\s+)?(?P<cls>(?:[A-Za-z_]\w*\.)*[A-Z]\w*)(?::|\s*$)")    # `pkg.SomeError: msg`, `KeyboardInterrupt`
+# `pkg.SomeError: msg`, `KeyboardInterrupt`
+_EXC_LEAD = re.compile(r"^(?:E\s+)?(?P<cls>(?:[A-Za-z_]\w*\.)*[A-Z]\w*)(?::|\s*$)")
 _ERR_LEAD = re.compile(r"^\s*(?:E\s+)?(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?:Error|Exception)(?::|\s*$)")   # rule 2 keeps these
-_FILE_REPORT = re.compile(r"^\s*(?:E\s+)?(?:Unhandled exception\.\s*)?(?:FAIL(?:ED)?\s*:\s*)?"
+_FILE_REPORT = re.compile(r"^\s*(?:E\s+)?(?:Unhandled exception\.\s*)?(?:FAIL(?:ED)?\s*:\s*"
+                          r"|(?:FAILED|ERROR)\s+\S+\s+-\s+)?"
                           r"(?:(?:[A-Za-z_]\w*\.)*FileNotFound(?:Error|Exception):\s*)?"
                           r"(?:\[Errno 2\] No such file or directory: '|Could not find file ')")
 _PYTEST_ASSERT = re.compile(r"^\s*E\s+assert\b")
 # pytest's `path.py:12: RuntimeError` location footer and `FAILED path::t - RuntimeError: msg` summary
-_PYTEST_REREPORT = re.compile(r"^(?:\S+:\d+: |\s*(?:FAILED|ERROR)\s+\S+\s+-\s+)"
-                              r"(?P<cls>(?:[A-Za-z_]\w*\.)*[A-Z]\w*)(?::|\s*$)")
+_PYTEST_REREPORT = re.compile(r"^\s*(?:FAILED|ERROR)\s+\S+\s+-\s+(?P<cls>(?:[A-Za-z_]\w*\.)*[A-Z]\w*)(?::|\s*$)")
+# pytest's `path.py:12: RuntimeError` footer repeats the `E   RuntimeError: ...` line above it, so it is never an
+# outcome of its own; `path.py:12:` (no class) and `_ _ _ _` divide the frames of one traceback
+_PYTEST_FOOTER = re.compile(r"^\S+:\d+: (?:[A-Za-z_]\w*\.)*[A-Z]\w*\s*$")
+_PYTEST_FRAME = re.compile(r"^(?:\S+:\d+:\s*|(?:_ ){3,}_?\s*)$")
 
 
 def _file_named_rx(name):
     """The task text names file `name` as a whole word (`config.json`, not inside `prod_config.json`)."""
-    return re.compile(r"(?<![\w.-])" + re.escape(name) + r"(?![\w-])")
+    return re.compile(r"(?<![\w.-])" + re.escape(name) + r"(?![\w-]|\.\w)")
 
 
 _FAIL_LABEL = re.compile(r"^\s*(?:E\s+)?(?:FAIL|FAILED|(?i:fail(?:ed|ure)?))\b(?P<label>[^:\n]*):\s*")
@@ -455,7 +463,7 @@ def _outcome(tail) -> list[tuple[str, bool]]:
         orphan = ((bool(_GAP.match(prev)) or orphan) and ln[:1].isspace()
                   and not _ERR_LEAD.match(ln) and not _BEH_REPORT.match(ln))
         prev = ln
-        if src or orphan or _TB_FILE.search(ln) or _GAP.match(ln):
+        if src or orphan or _TB_FILE.search(ln) or _GAP.match(ln) or _PYTEST_FOOTER.match(ln):
             continue
         if _CHAIN.match(ln):
             chained = True
@@ -465,7 +473,7 @@ def _outcome(tail) -> list[tuple[str, bool]]:
         # v5 rule 3: the first unindented line past a chain separator that is not the next Traceback header ends that
         # traceback; when it is an exception it is the consequence
         consequence = False
-        if chained and ln.strip() and not ln[:1].isspace() \
+        if chained and ln.strip() and not ln[:1].isspace() and not _PYTEST_FRAME.match(ln) \
                 and not re.match(r"(?:E\s+)?Traceback \(most recent call last\)", ln):
             consequence, chained = bool(_EXC_LEAD.match(ln)), False
             if consequence:

@@ -562,7 +562,9 @@ def rules_v5():
         check(lk["fix_only_unnamed"] == ["src/newmod.py"], "v5 review 2: `prod_newmod.py` does not name newmod.py (%s)" % lk)
         check(R.file_lookup(repo, base, fix, ["src/newmod.py"], "drop the stale newmod.pyc")["fix_only_unnamed"]
               == ["src/newmod.py"], "v5 review 2: `newmod.pyc` does not name newmod.py")
-        for txt in ("add newmod.py.", "add src/newmod.py", "(newmod.py)"):
+        check(R.file_lookup(repo, base, fix, ["src/newmod.py"], "copy newmod.py.example")["fix_only_unnamed"]
+              == ["src/newmod.py"], "v5 review 3: `newmod.py.example` does not name newmod.py")
+        for txt in ("add newmod.py.", "add src/newmod.py", "(newmod.py)", "edit newmod.py, then f"):
             check(R.file_lookup(repo, base, fix, ["src/newmod.py"], txt)["fix_only_unnamed"] == [],
                   "v5 review 2: %r names newmod.py" % txt)
         (repo / "src/café.json").write_text("{}\n")
@@ -581,12 +583,27 @@ def rules_v5():
     for t in ("src/selftest_n.py:12: RuntimeError", "FAILED src/selftest_n.py::t - RuntimeError: import failed",
               "ERROR src/selftest_n.py::t - builtins.RuntimeError"):
         check(veto(ch + t + "\n") == "missing_name_only", "v5 review 2: %r re-reports the consequence" % t)
-    check(veto(ch.replace("E   RuntimeError", "E   builtins.RuntimeError") + "src/selftest_n.py:12: RuntimeError\n")
+    check(veto(ch.replace("E   RuntimeError", "E   builtins.RuntimeError") + "FAILED src/selftest_n.py::t - RuntimeError: x\n")
           == "missing_name_only", "v5 review 2: a dotted consequence class matches its bare re-report")
-    for t in ("src/selftest_n.py:30: KeyError","FAILED src/selftest_n.py::u - KeyError: 'x'"):
+    for t in ("E   KeyError: 'x'\nsrc/selftest_n.py:30: KeyError", "FAILED src/selftest_n.py::u - KeyError: 'x'"):
         check(veto(ch + t + "\n") is None, "v5 review 2: %r is another failure (behaviour)" % t)
-    check(veto(MISS + "src/selftest_n.py:12: RuntimeError\n") is None,
-          "v5 review 2: without a chain a footer error class is behaviour")
+    # v5 review 3: the footer repeats the E line above it; a FAILED summary of the missing file reports it again
+    check(veto(MISS + "src/selftest_n.py:12: RuntimeError\n") == "missing_name_only",
+          "v5 review 3: a pytest footer is never an outcome line of its own")
+    check(veto(MISS + "E   RuntimeError: x\nsrc/selftest_n.py:12: RuntimeError\n") is None,
+          "v5 review 3: the E line the footer repeats is behaviour")
+    fm = "FileNotFoundError: [Errno 2] No such file or directory: 'src/newmod.py'"
+    bf = R.base_failure("E   %s\ntests/t.py:7: FileNotFoundError\nFAILED tests/t.py::t - %s\n" % (fm, fm), {}, None,
+                        {"fix_only_unnamed": ["src/newmod.py"]})
+    check(bf["veto"] == "missing_name_only", "v5 review 3: pytest re-reports of the missing file are not behaviour (%s)" % bf)
+    # v5 review 3: pytest frame lines inside a chained traceback do not end it
+    for sep in ("", "\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\n"):
+        tail = ("E   ModuleNotFoundError: No module named 'newmod'\n\nsrc/load.py:3: ModuleNotFoundError\n\n"
+                "During handling of the above exception, another exception occurred:\n\n    def test_load():\n"
+                ">       load()\n\ntests/test_load.py:12: \n" + sep + "\n    def load():\n"
+                ">           raise RuntimeError('backend unavailable') from e\nE           RuntimeError: backend unavailable\n"
+                "\nsrc/load.py:5: RuntimeError\n")
+        check(veto(tail) == "missing_name_only", "v5 review 3: a multi-frame chained pytest traceback (%d)" % len(sep))
     # v5 review (3): pytest's `E   ` prefix on the chained lines
     for sep in ("E   During handling of the above exception, another exception occurred:",
                 "During handling of the above exception, another exception occurred:"):
