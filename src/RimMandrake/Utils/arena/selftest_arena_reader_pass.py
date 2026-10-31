@@ -350,6 +350,8 @@ def rules_v4():
                   "C1: a local name aliasing the repo's (%s) is looked up and vetoes (%s)" % (how, c["names"]))
         check("_private_two" not in R.defined_in('import tool\n_private_two = getattr(tool, "_private_two")\n'),
               "C1: a name read through getattr(mod, '_x') is an alias, not defined from scratch")
+        check("new_flag" not in R.defined_in("import tool\nnew_flag = True\ntool.run(new_flag=new_flag)\n"),
+              "C1/C4: a local passed as the same-named keyword argument names the callee's parameter, so is looked up")
         check(R.defined_in("x = 1\ndef helper():\n  pass\nclass Fake:\n  pass\n") == {"x", "helper", "Fake"},
               "C1: defined_in still finds def / class / assignment")
         pp = R.build_packet("RP_PROSE", p, repo)
@@ -424,12 +426,13 @@ def rules_v4():
               "failure: HTTP status was 200, wanted 400", "KeyError: \"ImportError: cannot import name '_private_two'\"",
               "AssertionError: ImportError raised for '_private_two'",
               "E       FAIL gate reported: cannot import name '_private_two'",
-              "failed: gate reported cannot import name '_private_two'"):
+              "failed: gate reported cannot import name '_private_two'",
+              "a.cs(2,1): error CS1503: Argument 1: cannot convert from 'int' to 'string'"):
         check(veto(MISS + t + "\n") is None and R.base_failure(MISS + t + "\n", UN)["behaviour_lines"] >= 1,
               "C7/C8: %r beside a missing name is behaviour (no veto)" % t)
     check(veto(MISS) == "missing_name_only", "control: the missing name alone vetoes")
     for t in ("FAILED t.py::t - TypeError: run() got an unexpected keyword argument 'lanes'",
-              "=== 1 failed in 0.12s ===", "AttributeError: module 'tool' has no attribute 'named_new_api'"):
+              "=== 1 failed in 0.12s ===", "Build FAILED.", "AttributeError: module 'tool' has no attribute 'named_new_api'"):
         check(veto(MISS + t + "\n") == "missing_name_only", "%r beside a fix-only unnamed name keeps the veto" % t)
     check(veto('KeyError: "No module named \'newmod\'"\n') is None,
           "a line led by another error class is that error (behaviour), whatever its message quotes")

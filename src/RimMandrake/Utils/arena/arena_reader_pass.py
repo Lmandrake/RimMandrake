@@ -225,17 +225,18 @@ _DEFINED = re.compile(r"(?:\b(?:def|class|void|bool|int|string|var|static)\s+([A
                       re.M)
 _IMPORT_LINE = re.compile(r"^\s*(?:from\s+\S+\s+)?import\b.*$", re.M)
 _GETATTR = re.compile(r"""\bgetattr\(\s*[^,()]+,\s*['"](\w+)['"]""")   # `getattr(tool, "_x")` reads _x too
+_KWARG = re.compile(r"[(,]\s*([A-Za-z_]\w*)\s*=(?!=)")   # `run(new_flag=...)` reads the callee's parameter
 
 
 def defined_in(body) -> set:
     """Names the check body defines FROM SCRATCH (def/class/typed declaration/top-of-line assignment): they travel
     with the hidden copy, so they are never coupling and are not looked up (an absent name costs a full-tree grep).
     RULES v4 (C1): a name the body also READS from elsewhere, in attribute position (`tool._x`) or on an import line
-    (`from tool import _x`) or by `getattr(tool, "_x")`, is not from scratch: `_x = tool._x` or `def _x(): return tool._x()` is an alias of the
+    (`from tool import _x`), by `getattr(tool, "_x")` or as a keyword argument (`run(_x=_x)`), is not from scratch: `_x = tool._x` or `def _x(): return tool._x()` is an alias of the
     repo's name and still pins it, so it is looked up like any other."""
     body = body or ""
     imported = set(_IDENT.findall(" ".join(_IMPORT_LINE.findall(body))))
-    imported |= set(_GETATTR.findall(body))
+    imported |= set(_GETATTR.findall(body)) | set(_KWARG.findall(body))
     out = set()
     for n in {g for m in _DEFINED.finditer(body) for g in m.groups() if g}:
         if n in imported or re.search(r"\.\s*" + re.escape(n) + r"\b", body):
@@ -340,12 +341,14 @@ _MISSING_NAME = [re.compile(p) for p in (
 _REASON = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Exception)\b|\bFAIL|\bassert\b"
                      r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b|(?i:\bfail(?:s|ed|ure|ures|ing)?\b)"
                      r"|\b(?:Error|Exception):")
-_BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|\bFAILED\b(?! \()|\bexpected\b|\bnot ok\b"
+_BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|(?<!Build )\bFAILED\b(?! \()|\bexpected\b|\bnot ok\b"
                         r"|\b[A-Z]\w*(?:Error|Exception)\b|^\s*(?i:fail(?:ed|ure)?):"
-                        r"|\b(?:Error|Exception):")
+                        r"|\b(?:Error|Exception):|\berror [A-Z]{2,}\d+:")
 # (v4 review: an error class other than the missing-name classes, `ValueError: ...`, `KeyError`, `TypeError`, is a
 # failure that is not a missing name, so the check is not red for the missing name only; _is_behaviour sets aside
-# the missing-name classes (_MISSING_CLASS) and the `unexpected keyword argument` TypeError)
+# the missing-name classes (_MISSING_CLASS) and the `unexpected keyword argument` TypeError. Likewise a compiler
+# error that is not a missing-name form (`error CS1503: cannot convert`) is behaviour; MSBuild's `Build FAILED.`
+# summary and unittest's `FAILED (errors=1)` summarise the lines above them and are not)
 # RULES v4: which lines of a tail are OUTCOME lines (C2, C5). Not outcome: the source line Python prints under a
 # traceback `File "...", line N` (it quotes the check's own `assert`/`expected` text), the File line itself, pytest's
 # quoted source (the `>   ` failing line, the indented or blank lines directly above it and the indented
