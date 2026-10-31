@@ -639,6 +639,7 @@ check("tokentalk: an empty killed-run file marks only its own role bad, an in-fl
       list(k for k in bad if k.startswith("role.")) == ["role.arbiter", "role.producer"] and "role._all" not in bad
       and len(texts.get("role.conductor", [])) == 6, (bad, list(texts)))
 _GITENV = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}     # -C does not beat an inherited GIT_DIR
+_GITENV.update(GIT_CONFIG_GLOBAL=os.devnull, GIT_CONFIG_NOSYSTEM="1")           # nor may a user hooksPath run on these commits
 subprocess.run(["git", "-C", str(GIT), "init", "-q"], check=True, env=_GITENV)
 for name, msg in (("src/RimMandrake/Mod/a.xml", "tokens spent here"), ("src/RimMandrake/Utils/b.py", "plain"),
                   ("src/RimMandrake/Utils/c.py", "ledger: skip me tokens")):
@@ -973,7 +974,8 @@ check("alarms: OPEN with no item told nobody, so it is filed", len(_filed) == 1 
 check("alarms: the title quotes the row that crossed", "line > 1" in _filed[0]["title"], _filed)
 _ap.write_text(json.dumps({"DUP:x.k": {"state": "PENDING", "name": "OPS_DISK_FULL_DIAGNOSE_AB12", "title": "t", "tries": "bad"}}), encoding="utf-8")
 _st = OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, set(), _ok)
-check("alarms: a corrupt retry counter does not stop the pass", _st["DUP:x.k"]["state"] == "PENDING", _st)
+check("alarms: a corrupt retry counter does not stop the pass, and a good filing opens",
+      json.loads(_ap.read_text(encoding="utf-8"))["DUP:x.k"]["state"] == "OPEN", _ap.read_text(encoding="utf-8")[:300])
 _ap.unlink()
 _AU.read_now = lambda now: {"accounts": {"zgood": {"source": "ESTIMATE", "week_pct_left": 50.0, "hours_to_week_reset": 10.0,
                                                    "week_pct_used": 50.0}, "strpct": {"source": "ESTIMATE", "week_pct_left": "bad"}}}
@@ -1054,5 +1056,98 @@ try:
 finally:
     OW.digest_md = _dm
 check("digest: a render failure writes the failure and the headline", "failed to render" in (OW.ops_dir() / "digest.md").read_text(encoding="utf-8"))
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "PENDING", "name": "OPS_DISK_FULL_DIAGNOSE_AB12", "title": "t", "tries": "bad"}}), encoding="utf-8")
+_filed.clear()
+OW.run_alarms({"x.k": OW.U("off")}, _rm, NOW, set(), _ok)
+_st = json.loads(_ap.read_text(encoding="utf-8"))
+_n1 = len(_filed)
+OW.run_alarms({"x.k": OW.U("off")}, _rm, NOW + 60, set(), _ok)
+check("alarms: a corrupt retry count still opens on a good filing, and is never filed twice",
+      _n1 == 1 and _st["DUP:x.k"]["state"] == "OPEN" and len(_filed) == 1, (_filed, _st))
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "OPEN", "item": "NO_SUCH_ITEM", "name": "NO_SUCH_ITEM"}}), encoding="utf-8")
+_filed.clear()
+OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, {"OTHER_ITEM"}, _ok)
+check("alarms: OPEN on an item the ledger never held is filed", len(_filed) == 1, _filed)
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "OPEN", "item": "NO_SUCH_ITEM", "name": "NO_SUCH_ITEM"}}), encoding="utf-8")
+_filed.clear()
+OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, set(), _ok)
+check("alarms: control: an unread ledger judges no OPEN item", not _filed, _filed)
+_ap.unlink()
+check("numbers: a 401-digit integer is no number and no time, not a crash",
+      OW.num({"v": 10 ** 400}) is None and OW.epoch(10 ** 400) is None and OW.finite(1.0) and not OW.finite(10 ** 400))
+_lm, _keep = OW.carry_last_measured({}, {"x.k": 10 ** 400}, {"x.k": OW.U("gone")}, NOW)
+check("silence: an overflowing saved time is dropped", "x.k" not in _keep, _keep)
+OW.qhome = lambda: _q2
+wj(_q2 / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": True, "since": OW.iso(NOW + 86400)})
+for _i in range(3):
+    wj(_q2 / "done" / ("inv%d.json" % _i), {"finished": OW.iso(NOW - 600 + _i), "job": {"id": "i%d" % _i}, "result": {"verdict": "INVALID"}})
+_bad = []
+wj(_q2 / "done" / "tomorrow.json", {"finished": OW.iso(NOW + 86400), "job": {"id": "t"}, "result": {"verdict": "PASS"}})
+_j = OW.done_jobs(NOW - 3600, _bad, NOW)
+check("steve: a done record from the future is unreadable, not the newest result",
+      "tomorrow.json" in _bad and not [1 for _f, _d in _j if _d["job"]["id"] == "t"]
+      and [1 for _f, _d in OW.done_jobs(NOW - 3600, None) if _d["job"]["id"] == "t"], _bad)
+try:
+    _s = OW.c_steve(NOW, RULES, {})
+finally:
+    OW.qhome = _qh
+check("steve: a fault that starts in the future has an unknown duration, not a healthy 0",
+      _s["steve.fault_min"]["m"] == "UNMEASURED" and _s["steve.unowned_stall_min"]["m"] != "MEASURED", _s["steve.fault_min"])
+_cxm, _dirs = sys.modules.get("csuite_codex_limits"), OW.codex_dirs
+_cxs = types.SimpleNamespace()
+sys.modules["csuite_codex_limits"] = _cxs
+_rs = OW.iso(NOW + 3 * 86400)
+OW.codex_dirs = lambda: [str(TMP)]
+_cxs.readings = lambda *a, **k: ([(OW.iso(NOW - 3600), 90.0, 10080, _rs, None, None, None, "x"),
+                                   (OW.iso(NOW - 60), "broken", 10080, _rs, None, None, None, "x")], 1)
+_c1 = OW.c_codex(NOW, RULES, {})
+_cxs.readings = lambda *a, **k: ([(OW.iso(NOW - 3600), 90.0, 10080, _rs, None, None, None, "x"),
+                                   (OW.iso(NOW + 86400), 0.0, 10080, OW.iso(NOW + 8 * 86400), None, None, None, "x")], 1)
+_c2 = OW.c_codex(NOW, RULES, {})
+OW.codex_dirs = _dirs
+if _cxm is not None:
+    sys.modules["csuite_codex_limits"] = _cxm
+else:
+    del sys.modules["csuite_codex_limits"]
+check("codex: a newer broken record leaves the older reading an ESTIMATE, said aloud",
+      _c1["codex.week_used_pct"]["v"] == 90.0 and _c1["codex.week_used_pct"]["m"] == "ESTIMATE", _c1["codex.week_used_pct"])
+check("codex: a record from tomorrow is not the reading", _c2["codex.week_used_pct"]["v"] == 90.0
+      and _c2["codex.week_used_pct"]["m"] == "ESTIMATE", _c2["codex.week_used_pct"])
+_sj = OW.systemctl_json
+def _nofail(*a):
+    if a[0] == "list-units":
+        raise RuntimeError("down")
+    return [{"unit": "t", "next": 1}]
+OW.systemctl_json = _nofail
+try:
+    _t = OW.c_timers(NOW, RULES, {})
+finally:
+    OW.systemctl_json = _sj
+check("timers: list-units failing still reads the timers", _t["timers.failed_units"]["m"] == "UNMEASURED"
+      and _t["timers.overdue_timers"]["v"] == 1, _t)
+_rx = copy.deepcopy(RULES)
+del _rx["run"]
+_fl = OW.andon({"disk.root_free_gb": OW.M(5.0, "GB")}, {}, {}, _rx, NOW)
+check("andon: a missing rule section is one flag, and the other rules still run",
+      len([f for f in _fl if f["rule"] == "bad_rule"]) == 1 and [f for f in _fl if f["rule"] == "bad_rule"][0]["key"] == "rules.run", _fl[:3])
+_rx = copy.deepcopy(RULES)
+del _rx["alarm"]
+OW.run(now=NOW + 60, rules=_rx, families={"v3"})
+_dg = (OW.ops_dir() / "digest.md").read_text(encoding="utf-8")
+check("run: a missing alarm section is said aloud, and the digest goes out", "NO ALARM RAN" in _dg, _dg[:300])
+_aj = OW.atomic_json
+def _full(path, obj):
+    if str(path).endswith("last_measured.json"):
+        raise OSError(28, "No space left on device")
+    return _aj(path, obj)
+OW.atomic_json = _full
+_ra = OW.run_alarms
+_ran = []
+OW.run_alarms = lambda *a, **k: (_ran.append(1), _ra(*a, **k))[1]
+try:
+    OW.run(now=NOW + 70, rules=RULES, families={"v3"})
+finally:
+    OW.atomic_json, OW.run_alarms = _aj, _ra
+check("run: a full disk at last_measured.json still runs the alarms", _ran == [1], _ran)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

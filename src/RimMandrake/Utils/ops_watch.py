@@ -94,17 +94,25 @@ def iso(t: float) -> str:
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
 
 
+def finite(v):
+    """math.isfinite that says False for a JSON integer too large for a float, instead of raising OverflowError."""
+    try:
+        return math.isfinite(v)
+    except OverflowError:
+        return False
+
+
 def epoch(s):
     if s is None:
         return None
     if isinstance(s, bool):
         return None
     if isinstance(s, (int, float)):
-        return float(s) if math.isfinite(s) else None
+        return float(s) if finite(s) else None
     from datetime import datetime
     try:
         return datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp()
-    except ValueError:
+    except (ValueError, OverflowError, OSError):
         return None
 
 
@@ -237,16 +245,20 @@ def c_codex(now, rules, ctx):
         return {k: U("no codex sessions directory (%s)" % os.pathsep.join(codex_dirs())) for k in
                 ("codex.week_used_pct", "codex.hours_to_reset", "codex.runway")}
     recs, nfiles = CX.readings(dirs, newer_than=now - cr["lookback_days"] * DAY)
-    week = []
+    week, bad = [], []      # bad: the time of each record that cannot be used; None when not even that reads
     for r in recs:      # (ts, p_used, p_win, p_reset, s_used, s_win, s_reset, plan)
         try:
             if r[2] == 10080:
                 week.append((epoch(r[0]), float(r[1]), epoch(r[3])))
             elif r[5] == 10080 and r[4] is not None:
                 week.append((epoch(r[0]), float(r[4]), epoch(r[6])))
-        except (TypeError, ValueError, IndexError, KeyError):
-            continue    # one bad record costs itself; a newer good one still reads
-    week = sorted(w for w in week if w[0] is not None and w[2] is not None and math.isfinite(w[1]))
+        except (TypeError, ValueError, OverflowError, IndexError, KeyError):
+            try:        # one bad record costs itself; a good one still reads, marked if the bad one is the newer
+                bad.append(epoch(r[0]))
+            except (TypeError, IndexError, KeyError):
+                bad.append(None)
+    bad += [w[0] for w in week if w[0] is not None and (w[2] is None or not finite(w[1]) or w[0] > now + 300)]
+    week = sorted(w for w in week if w[0] is not None and w[2] is not None and finite(w[1]) and w[0] <= now + 300)
     if not week:
         why = "no weekly rate_limits reading in %d rollout file(s) modified in %d d" % (nfiles, cr["lookback_days"])
         return {k: U(why) for k in ("codex.week_used_pct", "codex.hours_to_reset", "codex.runway")}
@@ -260,7 +272,11 @@ def c_codex(now, rules, ctx):
         return out
     h = (reset - now) / HOUR
     age_h = (now - t) / HOUR
-    if age_h > cr.get("stale_h", 6):
+    newer = sum(1 for b in bad if b is None or b > t)
+    if newer:
+        out["codex.week_used_pct"] = E(used, "%d record(s) newer than the reading of %s cannot be read: a floor" % (newer, iso(t)),
+                                       "% of the weekly quota used", reading_at=iso(t), files=nfiles)
+    elif age_h > cr.get("stale_h", 6):
         # no Codex session here since; another machine may have spent it, so the % is a floor, not a reading
         out["codex.week_used_pct"] = E(used, "last reading %.1f h old (%s): a floor; spend elsewhere is unseen" % (
             age_h, iso(t)), "% of the weekly quota used", reading_at=iso(t), files=nfiles)
@@ -288,9 +304,10 @@ def c_codex(now, rules, ctx):
     return out
 
 
-def done_jobs(since, bad=None):
+def done_jobs(since, bad=None, now=None):
     """testq done records finished at or after `since` (epoch), oldest first, read by file mtime first. A record in the
-    window that cannot be read is appended to `bad` (when given), so a caller never mistakes the readable subset for all."""
+    window that cannot be read is appended to `bad` (when given), so a caller never mistakes the readable subset for all.
+    Given `now`, a record dated in the future is such a record: sorted last, it would pass as the newest result."""
     out = []
     for f in glob.glob(str(qhome() / "done" / "*.json")):
         try:
@@ -310,6 +327,10 @@ def done_jobs(since, bad=None):
                         bad.append(os.path.basename(f))
                 except OSError:
                     pass
+            continue
+        if now is not None and fin > now + 300:
+            if bad is not None:
+                bad.append(os.path.basename(f))
             continue
         if fin >= since:
             out.append((fin, d))
@@ -345,7 +366,7 @@ def c_steve(now, rules, ctx):
         if hb > 30:
             fault_min = None    # a stale steward's fault flag is its last word, not now: unknown, never 0
             out["steve.fault_min"] = U("steward.json is %.0f min old: whether it is in a fault now is unknown" % hb)
-        elif sj.get("fault") and since is None:
+        elif sj.get("fault") and (since is None or since > now + 300):
             fault_min = None
             out["steve.fault_min"] = U("steward reports a fault with no readable `since`: duration unknown")
         else:
@@ -369,7 +390,7 @@ def c_steve(now, rules, ctx):
             out["steve.unowned_stall_min"] = M(0.0, "min stalled with nobody escalating",
                                                why="the steward owns any stall" if fault_min else "no stall")
     bad = []
-    jobs = done_jobs(now - 7 * DAY, bad)
+    jobs = done_jobs(now - 7 * DAY, bad, now)
     # a record with no outcome cannot say INVALID or not: unseen, like an unreadable one
     bad += [str((d.get("job") or {}).get("id") or "?") + " (no outcome)" for _, d in jobs
             if not (d.get("result") or {}).get("outcome")]
@@ -395,7 +416,7 @@ def c_steve(now, rules, ctx):
     if streak == len(jobs):
         # every job in the week was INVALID: the run may start before the window, so read the whole done history
         older_bad = []
-        streak, run_start, stop_unknown = run_of_invalid(done_jobs(0, older_bad))
+        streak, run_start, stop_unknown = run_of_invalid(done_jobs(0, older_bad, now))
         bad += [b for b in older_bad if b not in bad]
     last = jobs[-1]
     out["steve.invalid_streak"] = M(streak, "INVALID results in a row", last_job=(last[1].get("job") or {}).get("id"),
@@ -448,7 +469,7 @@ def c_testing(now, rules, ctx):
     bad = ctx.get("steve_jobs_bad")
     if jobs is None:
         bad = []
-        jobs = done_jobs(now - 7 * DAY, bad)
+        jobs = done_jobs(now - 7 * DAY, bad, now)
     bad = bad or []
     closes = ctx.get("closes")
     if closes is None:
@@ -495,7 +516,7 @@ def c_testing(now, rules, ctx):
     for day, r in sorted(days.items()):
         if not day or day <= lo or not isinstance(r, dict):
             continue
-        a = (r.get("machines") or {}).get("archmagi") or {}
+        a = _obj(_obj(r.get("machines")).get("archmagi"))      # a bad row reads as a blind day, the loop goes on
         est = []
 
         def val(x):
@@ -507,7 +528,7 @@ def c_testing(now, rules, ctx):
                 return x.get("v") if m in ("MEASURED", "ESTIMATE") else None
             return x
         vals = {k: val(a.get(k)) for k in ("busy_pct", "window_h", "findings", "closed_after_pass", "regressions")}
-        vals["mod_fails"] = val((a.get("fail_split") or {}).get("mod"))
+        vals["mod_fails"] = val(_obj(a.get("fail_split")).get("mod"))
         if not all(isinstance(vals[k], (int, float)) and not isinstance(vals[k], bool) for k in ("busy_pct", "window_h")):
             blind += 1
             continue
@@ -625,10 +646,13 @@ def systemctl_json(*args):
 
 def c_timers(now, rules, ctx):
     out = {}
-    failed = systemctl_json("list-units", "--failed", "--all")
-    names = sorted(str(u.get("unit") if isinstance(u, dict) else u) for u in failed)
-    out["timers.failed_units"] = M(len(names), "failed user units", units=names[:12])
-    try:                # the failed count above stands whatever becomes of the second source
+    try:                # two sources: neither one's failure takes the other's reading
+        failed = systemctl_json("list-units", "--failed", "--all")
+        names = sorted(str(u.get("unit") if isinstance(u, dict) else u) for u in failed)
+        out["timers.failed_units"] = M(len(names), "failed user units", units=names[:12])
+    except Exception as e:  # noqa: BLE001
+        out["timers.failed_units"] = U("list-units: %s: %s" % (type(e).__name__, str(e)[:160]))
+    try:
         timers = systemctl_json("list-timers", "--all")
     except Exception as e:  # noqa: BLE001
         out["timers.overdue_timers"] = U("list-timers: %s: %s" % (type(e).__name__, str(e)[:160]))
@@ -958,13 +982,17 @@ def c_arena(now, rules, ctx):
     if not tp.exists():
         why = "no arm.toml at %s: the arena switch is not installed" % tp
         return {"arena.two_live": U(why), "arena.push_refused_24h": U(why)}
-    r = AR.ops_two_live(tp)
-    out = {"arena.two_live": M(r["value"], "failed-check bitmask (0 = one arm live)", why=r["why"], mode=r.get("mode"))}
-    af = AR.alarm_path()
+    try:                # the refusal log below is its own source: it reads whatever becomes of this one
+        r = AR.ops_two_live(tp)
+        out = {"arena.two_live": M(r["value"], "failed-check bitmask (0 = one arm live)", why=r["why"], mode=r.get("mode"))}
+    except Exception as e:  # noqa: BLE001
+        out = {"arena.two_live": U("arena who: %s: %s" % (type(e).__name__, str(e)[:160]))}
     try:
+        af = "?"
+        af = AR.alarm_path()
         n = AR.alarms_since(af, now - 86400)
         out["arena.push_refused_24h"] = M(n, "pre-push refusals/crashes alarmed in the last 24 h", file=str(af))
-    except OSError as e:
+    except Exception as e:  # noqa: BLE001
         out["arena.push_refused_24h"] = U("alarm file %s unreadable: %s" % (af, e))
     return out
 
@@ -1033,7 +1061,7 @@ def matches(key, pats):
 
 def num(p):
     v = p.get("v") if isinstance(p, dict) else None
-    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and math.isfinite(v) else None
+    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and finite(v) else None
 
 
 def history(recs):
@@ -1075,14 +1103,19 @@ def target_problem(tg):
 
 
 def good_targets(rules):
-    return [t for t in rules["targets"] if not target_problem(t)]
+    rows = rules.get("targets")
+    return [t for t in rows if not target_problem(t)] if isinstance(rows, list) else []
 
 
 def andon(points, hist, last_measured, rules, now):
     """-> [flag]. points: this pass's key -> point; hist: key -> [(t, v)] MEASURED before this pass;
     last_measured: key -> t of its last MEASURED point before this pass."""
     flags = []
-    b, rn, sl = rules["band"], rules["run"], rules["silent"]
+    b, rn, sl = (rules.get(x) for x in ("band", "run", "silent"))
+    off = {x for x, sec in (("band", b), ("run", rn), ("silent", sl)) if not isinstance(sec, dict)}
+    off |= {"run"} if "band" in off else set()      # the run rule reads the band's baseline
+    flags += [{"rule": "bad_rule", "key": "rules." + x, "value": None, "window": "now",
+               "detail": "rule section %s missing or not an object: that rule is off, the others run" % x} for x in sorted(off)]
     gone = {k: U("no longer reported by its collector") for k in last_measured if k not in points}
     def one(k, p):
         v = num(p)
@@ -1124,13 +1157,19 @@ def andon(points, hist, last_measured, rules, now):
                         iso(lm), p.get("m"), (p.get("why") or "")[:160])})
         for name, check in (("band", band), ("run", run_rule), ("silent", silent)):
             try:
-                check()
+                if name not in off:
+                    check()
             except Exception as e:  # noqa: BLE001  a bad rule costs that rule on this reading, not the others
                 flags.append({"rule": "bad_rule", "key": k, "tag": name, "value": None, "window": "now",
                               "detail": "%s rule failed: %s: %s" % (name, type(e).__name__, str(e)[:160])})
     for k, p in sorted({**gone, **points}.items()):
         one(k, p)
-    for i, tg in enumerate(rules["targets"]):
+    rows = rules.get("targets")
+    if not isinstance(rows, list):
+        rows = []
+        flags.append({"rule": "bad_rule", "key": "rules.targets", "value": None, "window": "now",
+                      "detail": "rule section targets missing or not a list: no target alarm can fire"})
+    for i, tg in enumerate(rows):
         why = target_problem(tg)
         if why:
             flags.append({"rule": "bad_target", "key": "rules.targets[%d]" % i, "value": None, "window": "now",
@@ -1239,6 +1278,12 @@ def token_alarm_title(aid):
     return "Ops alarm for Operations: %s on %s; the reading is in digest.md" % (tag, key.split(".", 1)[0])
 
 
+def _tries(cur):
+    """A saved retry count, or 0 for one that cannot be counted from: never a raise after the filing succeeded."""
+    n = cur.get("tries", 0)
+    return n if isinstance(n, int) and not isinstance(n, bool) else 0
+
+
 def run_alarms(points, rules, now, known_ids, filer):
     """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears."""
     p = ops_dir() / "alarms.json"
@@ -1299,9 +1344,10 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur["clear_seen"] = 0
         if cur and cur.get("state") == "UNREADABLE":
             return
-        if cur and cur.get("state") == "OPEN" and not (cur.get("item") and isinstance(cur["item"], str)) \
-                and not is_token_key(aid.split(":", 1)[-1]):
-            # OPEN with no item told nobody: file it, or a corrupt entry acknowledges the alarm for good
+        if cur and cur.get("state") == "OPEN" and not is_token_key(aid.split(":", 1)[-1]) \
+                and not (cur.get("item") and isinstance(cur["item"], str) and (cur["item"] in known_ids or not known_ids or not crossed)):
+            # OPEN on no item the ledger knows told nobody: file it, or a corrupt entry acknowledges the alarm for good.
+            # known_ids is every item ever filed, closed ones too; empty means the ledger was not read, so nothing is judged
             cur.update(state="PENDING", item=None)
             log.append({"ts": iso(now), "event": "open_without_item", "aid": aid})
         if cur and cur.get("state") == "OPEN":
@@ -1335,7 +1381,7 @@ def run_alarms(points, rules, now, known_ids, filer):
             try:
                 cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
             except Exception as e:  # noqa: BLE001  one unnameable alarm stays PENDING and counted (signal_watch tells); the pass goes on
-                cur.update(error=str(e)[:200], tries=cur.get("tries", 0) + 1)
+                cur.update(error=str(e)[:200], tries=_tries(cur) + 1)
                 log.append({"ts": iso(now), "event": "mint_failed", "aid": aid})
                 return
         title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
@@ -1371,7 +1417,7 @@ def run_alarms(points, rules, now, known_ids, filer):
             try:
                 cur = state[a["aid"]]
                 err = res.get(a["name"])
-                cur["tries"] = cur.get("tries", 0) + (1 if filer else 0)
+                cur["tries"] = _tries(cur) + (1 if filer else 0)
                 cur["last_try"] = iso(now)
                 if err is None:
                     cur.update(state="OPEN", item=a["name"], error=None, filed=iso(now))
@@ -1620,7 +1666,7 @@ def carry_last_measured(lastm, saved, points, now):
     series: it fills the gap for keys this pass still reports (a key not reported stays the 'gone' rule's, from the
     series only, so a retired key is not 'gone' forever) and drops keys older than LAST_MEASURED_RETIRE_DAYS."""
     saved = {k: t for k, t in (saved if isinstance(saved, dict) else {}).items()
-             if isinstance(t, (int, float)) and math.isfinite(t) and t <= now + 300}
+             if isinstance(t, (int, float)) and finite(t) and t <= now + 300}
     merged = dict(lastm)
     for k in points:
         if k not in merged and k in saved:
@@ -1641,7 +1687,7 @@ def run(now=None, rules=None, filer=None, families=None):
     t0 = time.time()
     ctx = {}
     points = {}
-    since = now - rules["series_days"] * DAY
+    since = now - rules.get("series_days", 8) * DAY
     prev = {}
     sick = []
     for fam in ORDER:
@@ -1681,8 +1727,17 @@ def run(now=None, rules=None, filer=None, families=None):
     except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
         flags = sick + [{"rule": "bad_rule", "key": "rules", "value": None, "window": "now",
                          "detail": "andon failed: %s: %s" % (type(e).__name__, str(e)[:160])}]
-    atomic_json(ops_dir() / "last_measured.json", {"t": saved_lm})
-    alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer)
+    try:
+        atomic_json(ops_dir() / "last_measured.json", {"t": saved_lm})
+    except OSError as e:    # a full disk is what the alarms below are for: never let it stop them
+        flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
+                      "detail": "last_measured.json not written: %s" % str(e)[:160]})
+    try:
+        alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer)
+    except Exception as e:  # noqa: BLE001  the digest still goes out, and says the alarms did not run
+        alarms = _obj(read_json(ops_dir() / "alarms.json"))
+        flags.append({"rule": "bad_rule", "key": "alarms", "value": None, "window": "now",
+                      "detail": "NO ALARM RAN this pass: %s: %s" % (type(e).__name__, str(e)[:160])})
     flags += [{"rule": "alarm_state", "key": aid, "value": None, "window": "now", "detail": a.get("error") or "unreadable"}
               for aid, a in sorted(alarms.items()) if isinstance(a, dict) and a.get("state") == "UNREADABLE"]
     old = _obj(read_json(ops_dir() / "flags.json")).get("flags")
@@ -1721,7 +1776,7 @@ def backfill_production(now=None, rules=None):
     rules = rules or load_rules()
     if read_series("production", 0):
         return 0
-    since = now - rules["series_days"] * DAY
+    since = now - rules.get("series_days", 8) * DAY
     n = 0
     with open(streams_series(), encoding="utf-8") as fh:
         for line in fh:
