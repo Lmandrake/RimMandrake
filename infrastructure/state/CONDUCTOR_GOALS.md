@@ -21,7 +21,7 @@ He can reorder it.
    critic-free arm wins; (b) if nothing separates by the day-3 hard cap, the simplest arm wins by the §4.1 tie order
    and there is no further round; (c) after that, no architecture work for about a month, and the time goes to
    FlowWorks. Headline measure: accepted work per day per owner touch. Never cut.
-2. Block 1 below continues in its order, under the trial. **Paused for new starts until trial prep is done** (his words, 2026-10-30: *"Don't interrupt the work that's started, but please don't start any more game dev while we are finishing trial prep."*); work already started finishes.
+2. Block 1 below continues in its order, under the trial. **Paused for new starts until trial prep is done** (his words, 2026-10-30: *"Don't interrupt the work that's started, but please don't start any more game dev while we are finishing trial prep."*); work already started finishes. The pause lifts for the rest of this week when arena day 0 closes (his card, 2026-10-31 14:46Z, on `OP-20261031T1433Z`: *Yes, as proposed*).
 
 ## Week of Wed 2026-10-28 → Wed 2026-11-04 (block 1)
 
