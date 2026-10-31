@@ -2739,6 +2739,27 @@ def _shared_delegated_refusal(seat, evs=None):
     return None
 
 
+def _driver_owner_gate(seat, evs):
+    """His rule on the Archmagi driver lock: -> (refusal, cleared), cleared being {text, heartbeat} when his lock may be
+    cut. The lock shows a hold the ledger and shared lock may not (his take in the other clone, unpushed), and his
+    `bridge take` process exits at once, so a dead process proves nothing (owner, by card 2026-10-30, --force
+    included). A lock nobody can read may be his: UNMEASURED refuses while he is not measured quiet."""
+    dl = _archmagi_lock_path()
+    if not dl or seat == "OWNER":
+        return None, None
+    st = driver_lock.status(dl)
+    state = st.get("state")
+    if state == "FREE" or (state in ("HELD", "STALE") and st.get("seat") != "OWNER"):
+        return None, None
+    his = state in ("HELD", "STALE")
+    verdict = _owner_verdict([("his driver lock", st.get("heartbeat"))] if his else [], evs)
+    if not verdict[0]:
+        return _owner_refusal(verdict).replace(
+            "holds the bridge", "holds the driver lock" if his else "may hold the driver lock (it reads %s)" % state,
+            1), None
+    return None, {"text": verdict[1], "heartbeat": st.get("heartbeat")} if his else None
+
+
 def _bridge_take(args, seat, w, holder, purpose):
     """`bridge take` — the contended path, and the only one with a race in it.
 
@@ -2806,11 +2827,18 @@ def _bridge_take_locked(args, seat, evs, w):
                    model.shared_bridge_path()))
         if alive and args.force:
             ev["override"] = "took the bridge with --force while %s held it in another clone" % shared["holder"]
+    refusal, cleared = _driver_owner_gate(seat, evs)
+    if refusal:
+        die(refusal)
+    if cleared:
+        ev["override"] = "took the OWNER's driver lock: %s" % cleared["text"]
     _refuse_before_lock(ev)
     dl = _archmagi_lock_path()
     if dl:
-        got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(),
-                                  force=("bridge take --force by %s" % seat) if args.force else None)
+        force = "bridge take by %s: his hold is takeable" % seat if cleared else \
+            ("bridge take --force by %s" % seat) if args.force else None
+        got = driver_lock.acquire(dl, seat, args.purpose, driver_lock.my_identity(), force=force,
+                                  spare_owner=not cleared, owner_heartbeat=(cleared or {}).get("heartbeat"))
         if not got["ok"]:
             die("%s.\n  The driver lock is keyed on the holder PROCESS, so a second window of the same seat is "
                 "refused too.\n  It frees the moment that process exits.\n"
@@ -3071,7 +3099,7 @@ def cmd_bridge(args, seat):
         owner = _owner_verdict([("his hold's own event", since)], evs) if holder == "OWNER" else None
         ev, refusal = _delegated_gate(holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
                                       args.purpose, args.flyer, owner=owner)
-        refusal = refusal or _shared_delegated_refusal(seat, evs)
+        refusal = refusal or _shared_delegated_refusal(seat, evs) or _driver_owner_gate(seat, evs)[0]
         if refusal:
             print("NOT TAKEABLE  " + refusal)
             return 1

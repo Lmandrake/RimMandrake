@@ -520,10 +520,86 @@ def test_host_owner_hold():
         w.close()
 
 
+def test_driver_lock_owner_hold():
+    """OPS_WATCH_FIX_FINAL_REVIEW_FINDINGS (r29): his lock on the Archmagi driver lock, with neither the ledger nor the
+    shared lock naming him, binds as on the other hosts: --force and a dead `bridge take` process included."""
+    import driver_lock as D
+    sleeper = subprocess.Popen(["sleep", "120"])
+    time.sleep(0.2)
+    live = dict(D.my_identity(), pid=sleeper.pid, start=D._proc_start(sleeper.pid))
+    gone = dict(D.my_identity(), pid=2 ** 22 - 3, start=1.0)
+
+    def world(identity, age, seat="OWNER", chat_age=None):
+        w = World([])
+        w.lock = os.path.join(w.tmp, "DRIVER_LOCK.json")
+        w.env.update(RIMFLOW_DRIVER_LOCK=w.lock)
+        w.env.pop("RM_HOST", None)
+        t = iso(age)
+        with open(w.lock, "w") as f:
+            json.dump({"seat": seat, "purpose": "playing", "identity": identity, "acquired": t, "heartbeat": t,
+                       "generation": 7}, f)
+        if chat_age is not None:
+            _write_tx(os.path.join(w.chat, "s.jsonl"), [_human(chat_age)])
+        return w
+
+    try:
+        for label, ident, age, chat in (("live process, chat 2 min ago", live, 60, 120),
+                                        ("live process, lock 1 min old, no chat", live, 60, None),
+                                        ("process gone, lock 10 min old", gone, 600, None),
+                                        ("process gone, lock 2 h old, chat 10 min ago", gone, 7200, 600)):
+            for args in (("--for", "x"), ("--force", "--for", "x"), ("--idle-ok", "--for", "x")):
+                w = world(ident, age, chat_age=chat)
+                try:
+                    rc, out = w.rf("bridge", "take", *args)
+                    check(rc != 0 and "OWNER" in out and D._read(w.lock)[0]["seat"] == "OWNER" and not w.taken(),
+                          "%s: take %s refused, his lock stands (rc=%s %s)" % (label, args[0], rc, out[:120]))
+                finally:
+                    w.close()
+        w = world(live, 60, chat_age=120)
+        try:
+            rc, out = w.rf("bridge", "idle", "--for", "x")
+            check(rc == 1 and out.startswith("NOT TAKEABLE"), "idle reports his lock NOT TAKEABLE (%s)" % out[:120])
+        finally:
+            w.close()
+        # an unreadable lock may be his: --force does not cut it while he is measured active
+        w = world(live, 60, chat_age=120)
+        try:
+            with open(w.lock, "w") as f:
+                f.write("{torn")
+            rc, out = w.rf("bridge", "take", "--force", "--for", "x")
+            check(rc != 0 and not w.taken() and open(w.lock).read() == "{torn",
+                  "unreadable lock, chat 2 min ago: --force refused (rc=%s %s)" % (rc, out[:120]))
+        finally:
+            w.close()
+        # quiet 45+ min: takeable, by the rule's own exit, and the event names his hold
+        for args in (("--for", "x"), ("--force", "--for", "x")):
+            w = world(live, 3000, chat_age=3000)
+            try:
+                rc, out = w.rf("bridge", "take", *args)
+                t = w.taken()
+                check(rc == 0 and D._read(w.lock)[0]["seat"] == "BENCH" and t and "OWNER" in t[-1].get("override", ""),
+                      "50 min quiet: take %s cuts his lock, naming his hold (rc=%s %s %s)" % (args[0], rc, out[:120], t[-1:]))
+            finally:
+                w.close()
+        # control: another seat's lock keeps its own rules
+        w = world(live, 60, seat="FOUNDRY")
+        try:
+            rc, out = w.rf("bridge", "take", "--for", "x")
+            check(rc != 0 and "FOUNDRY" in out and D._read(w.lock)[0]["seat"] == "FOUNDRY",
+                  "control: a live seat lock refuses a plain take (rc=%s %s)" % (rc, out[:120]))
+            rc, out = w.rf("bridge", "take", "--force", "--for", "x")
+            check(rc == 0 and D._read(w.lock)[0]["seat"] == "BENCH", "control: --force still cuts it (%s)" % out[:120])
+        finally:
+            w.close()
+    finally:
+        sleeper.kill()
+        sleeper.wait()
+
+
 def main():
     for t in (test_pure, test_chat, test_e2e, test_recheck_under_lock, test_release_mine_token,
               test_relayed_orders_are_not_his_acts, test_card_answer_is_his_act, test_per_ruling_must_resolve,
-              test_unwritable_stamp, test_host_owner_hold):
+              test_unwritable_stamp, test_host_owner_hold, test_driver_lock_owner_hold):
         try:
             t()
         except Exception as e:  # noqa: BLE001
