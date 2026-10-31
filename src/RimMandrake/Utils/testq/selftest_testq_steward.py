@@ -71,6 +71,11 @@ def main():
                 evs = [json.loads(x) for x in open(shard)]
             except OSError:
                 return []
+            if verb == "drop":      # RUNNER may not drop: the steward's retirements are its BENCH hat
+                try:
+                    evs += [json.loads(x) for x in open(os.path.join(os.path.dirname(shard), "BENCH.jsonl"))]
+                except OSError:
+                    pass
             return [e for e in evs if verb is None or e.get("event") == verb]
 
         def pulses():
@@ -155,19 +160,25 @@ def main():
         check(len(events("spawn")) == 2 and len(events("raise")) == 1, "past T+120: nothing more is written")
         # ------------------------------------------------ recovery
         notes0 = len(events("note"))
+        rec0_owner = sp[1]["name"]
         running(base + 9100)
         rec = step(base + 9100)
         check(rec["state"] == "RUNNING" and rec["incident"] is None and rec["last_item"] == item,
               "RUNNING ends the incident and keeps the item for the next one")
         check(pulses()[-1]["status"] == "ok", "recovery records steve:lane ok")
         check(len(events("note")) == notes0 + 1 and events("note")[-1]["id"] == item, "recovery notes the item")
-        # ------------------------------------------------ no duplicate while the item is open
+        dropped = sorted(e["id"] for e in events("drop"))
+        check(dropped == sorted([item, rec0_owner]), "recovery drops both items the incident spawned: %s" % dropped)
+        # ------------------------------------------------ the next incident
         reset()
         filler("INVALID", "HANG", base), filler("INVALID", "HANG", base)
         step(base + 10000)
         rec = step(base + 10600)
-        check(rec["incident"]["item"] == item and len(events("spawn")) == 2 and events("note")[-1]["id"] == item,
-              "a second incident while the item is open notes it, never a second item")
+        check(rec["incident"]["item"] != item and len(events("spawn")) == 3,
+              "a new incident after a recovery opens its own item: the old one was dropped")
+        item = rec["incident"]["item"]
+        rec = step(base + 10700)
+        check(rec["incident"]["item"] == item and len(events("spawn")) == 3, "while the item is open, never a second one")
         # ------------------------------------------------ an abandoned claim: a live lease freezes the clock
         rc, out = cli("claim", item)
         check(rc == 0, "BENCH claims the item: %s" % out[-160:])

@@ -42,7 +42,7 @@ Escalation (section 6.4), each at most once per incident:
              a failed `steve:lane` record lights the pulse health row
   T+30 min   `rimflow raise` it: first in `rimflow next --seat BENCH` and a line in the phone brief
   T+120 min  with no claim: spawn for OWNER (needs owner; titled "IN PERSON:" when SteveDesktop is unreachable)
-Recovery (RUNNING again) records `steve:lane` ok and notes the item.
+Recovery (RUNNING again) records `steve:lane` ok, notes the item and drops the items the incident spawned.
 
 The LLM wake (the owner's card ruling 2026-10-26 12:27 PDT, "Yes, after 30 min", on STEVE_STEWARD_BUILD_NO_LLM_OWNER):
 once an incident has been raised (T+30) and no claim holds its item, the steward MAY start ONE headless Claude session
@@ -186,6 +186,26 @@ def publish():
         return "push off"
     import ingest
     return ingest.publish(0)
+
+
+BENCH_SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
+
+
+def drop_as_bench(item, reason):
+    """RUNNER may not `drop` (model.RUNNER_VERBS, enforced at replay), so the retirement is the steward's BENCH hat, the
+    one its wake session already wears; `publish_bench` carries that shard, which no other tick step commits."""
+    import ingest
+    env = dict(os.environ, RIMFLOW_SEAT="BENCH", CLAUDE_PROJECT_DIR=ingest.REPO)
+    r = subprocess.run([sys.executable, ingest.CLI, "drop", item, "--reason", reason, "--why",
+                        "steward: the lane recovered by itself"], env=env, capture_output=True, text=True, timeout=120)
+    return r.returncode, (r.stdout + r.stderr).strip()
+
+
+def publish_bench():
+    if os.environ.get("TESTQ_INGEST_PUSH", "1") == "0":
+        return "push off"
+    import ingest
+    return ingest.publish(0, shard_rel=BENCH_SHARD, message="ledger: steward retired a recovered incident")
 
 
 def failreport(ok, cause=None):
@@ -444,6 +464,27 @@ def mint(w, tag, who):
     raise RuntimeError("no mintable escalation name for %s/%s" % (tag, who))
 
 
+def retire(items, why, now):
+    """Drop what a recovered incident spawned -> the items still to retire. It was a stall that ended, no work was
+    done, so no commit proves it: an open one holds ops_watch steve.incident_unclaimed_min high for hours (FCE8, D070,
+    STEWARD_FIX_LEAVES_THE_LIGHTS_ON). An item a seat holds is left to that seat; a refused drop is retried next pass."""
+    left = []
+    for item in items:
+        w = world()
+        if not item_open(item, w):
+            continue
+        if claim_holds(item, now, w):
+            left.append(item)
+            continue
+        rc, out = drop_as_bench(item, why)
+        if rc == 0:
+            jlog({"ts": iso(now), "event": "retired", "item": item, "publish": publish_bench()})
+        else:
+            left.append(item)
+            jlog({"ts": iso(now), "event": "retire_failed", "item": item, "error": out[-200:]})
+    return left
+
+
 def jlog(rec):
     with open(path("steward.jsonl"), "a", encoding="utf-8") as f:
         f.write(json.dumps(rec, sort_keys=True) + "\n")
@@ -524,6 +565,7 @@ def _steward_pass(now, mods):
     fault = ls["fault_at"] is not None and now >= ls["fault_at"]
     inc, last_item = prev.get("incident"), prev.get("last_item")
     dt = max(0.0, now - prev["epoch"]) if prev.get("epoch") else 0.0
+    to_retire = list(prev.get("to_retire") or [])
     if ls["state"] == "RUNNING":
         if inc:
             failreport(True)
@@ -531,7 +573,9 @@ def _steward_pass(now, mods):
                 rimflow("note", inc["item"], "--text", "steward: SteveDesktop lane RUNNING again (%s) after %s, "
                         "%d min unowned" % (ls["reason"][:120], inc["state"], inc["unowned_s"] // 60))
             jlog({"ts": iso(now), "event": "recovered", "incident": inc})
+            to_retire += [i for i in (inc.get("item"), inc.get("owner_item")) if i and i not in to_retire]
             inc = None
+        to_retire = retire(to_retire, "steward: SteveDesktop lane RUNNING again (%s)" % ls["reason"][:120], now)
     elif fault:
         if not inc:
             inc = {"state": ls["state"], "since": iso(now), "unowned_s": 0, "level": 0, "item": None,
@@ -546,7 +590,7 @@ def _steward_pass(now, mods):
         last_item = item or last_item
         maybe_wake(inc, ls, now)
     rec = {"ts": iso(now), "epoch": now, "state": ls["state"], "fault": fault, "reason": ls["reason"],
-           "jobs": ls["jobs"], "incident": inc, "last_item": last_item,
+           "jobs": ls["jobs"], "incident": inc, "last_item": last_item, "to_retire": to_retire,
            "since": prev.get("since") if prev.get("state") == ls["state"] and prev.get("fault") == fault else iso(now)}
     if rec["since"] == iso(now) and (prev.get("state"), prev.get("fault")) != (ls["state"], fault):
         jlog({"ts": iso(now), "event": "state", "state": ls["state"], "fault": fault, "reason": ls["reason"],
@@ -585,6 +629,8 @@ def _watch_pass(now):
                 rimflow("note", inc["item"], "--text", "steward-watch: the steward is writing again (stale %d min)"
                         % (inc["unowned_s"] // 60))
                 publish()
+            retire([i for i in (inc.get("item"), inc.get("owner_item")) if i], "steward-watch: the steward is writing "
+                   "again", now)
             jlog({"ts": iso(now), "event": "recovered", "by": "watch", "incident": inc})
         wst["incident"] = None
     else:
