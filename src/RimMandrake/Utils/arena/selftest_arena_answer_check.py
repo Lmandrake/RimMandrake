@@ -61,6 +61,20 @@ def gate_cases():
         AC.record(rows(), True, p)
         (p["judge"] / "T1.json").write_text('{"task": "T1", "changed": 1}')     # a census after the check
         check(any("STALE" in x for x in AC.gate(p)), "G3 census after the check -> STALE, refuse")
+        AC.record(rows(), True, p)
+        sb = tmp / "fake_sandbox.py"
+        sb.write_text("x = 1\n")
+        old_files = AC.SANDBOX_FILES
+        AC.SANDBOX_FILES = old_files + (str(sb),)
+        try:
+            check(any("sandbox code" in x for x in AC.gate(p)), "G8 sandbox file set changed -> STALE")
+            AC.record(rows(), True, p)
+            check(AC.gate(p) == [], "G8 sanity: re-recorded -> open")
+            sb.write_text("x = 2\n")                 # sandbox code edited after the check
+            check(any("STALE" in x and "sandbox code" in x for x in AC.gate(p)), "G8 sandbox code edited -> STALE, refuse")
+        finally:
+            AC.SANDBOX_FILES = old_files
+        (p["judge"] / "T1.json").write_text('{"task": "T1", "changed": 2}')
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
             rc = AT.main(["freeze"])

@@ -154,6 +154,25 @@ def mirror_failure_cases(tmp, rec):
                           timeout_s=10)
             check(rc == RA.VOID_RC and not ran.exists() and "VOID" in (tmp / "void.log").read_text(),
                   "F4 CmdModel.spawn does not run the pass (rc %s, ran %s)" % (rc, ran.exists()))
+            # ---- F5: the mirror failed mid-pass and neither state nor marker could record it -> VOID, not rc 0
+            class Lost:
+                persisted = False
+
+                def stop(self):
+                    return []
+            sm = RA.spend_mirror
+            RA.spend_mirror = lambda root: Lost()
+            try:
+                cm.wrap = lambda argv, env, **k: (["true"], env)
+                rc = cm.spawn("test", ["x"], {}, cwd=tmp, sandbox=None, agent_id="a", log=tmp / "lost.log", prompt="",
+                             timeout_s=10)
+                check(rc == RA.VOID_RC, "F5 mid-pass persist lost -> rc VOID_RC (rc %s)" % rc)
+                Lost.persisted = True
+                rc = cm.spawn("test", ["x"], {}, cwd=tmp, sandbox=None, agent_id="a", log=tmp / "lost.log", prompt="",
+                             timeout_s=10)
+                check(rc == 0, "F5 sanity: a persisted mirror leaves rc 0 (rc %s)" % rc)
+            finally:
+                RA.spend_mirror = sm
         finally:
             RA.sandbox_plan = plan
             os.chmod(ro, 0o700)

@@ -129,6 +129,19 @@ def fingerprint(p=None) -> str:
     return h.hexdigest()
 
 
+# Code the check runs through: the sandbox itself, the relay and replay modules it imports (deny_paths), and this reader.
+SANDBOX_FILES = ("arm_sandbox.py", "arena_critic_relay.py", "arena_replay.py", "arena_answer_check.py")
+
+
+def sandbox_sha() -> str:
+    """sha256 over the sandbox code (ARENA_ANSWER_CHECK_HARDEN_SANDBOX_DRIFT): editing it makes the record stale."""
+    h = hashlib.sha256()
+    for n in SANDBOX_FILES:
+        f = Path(n) if os.path.isabs(n) else Path(__file__).resolve().parent / n
+        h.update((Path(n).name + "\0").encode() + hashlib.sha256(f.read_bytes()).digest())
+    return h.hexdigest()
+
+
 def targets_sha(rows) -> str:
     return hashlib.sha256(json.dumps([[r["store"], r["what"], r["path"]] for r in rows]).encode()).hexdigest()
 
@@ -137,7 +150,8 @@ def record(rows, control_ok, p=None, now=None) -> Path:
     rp = record_path(p)
     rp.parent.mkdir(parents=True, exist_ok=True)
     doc = {"schema": SCHEMA, "ts": now or dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-           "fingerprint": fingerprint(p), "targets_sha256": targets_sha(rows), "control_ok": control_ok, "rows": rows}
+           "fingerprint": fingerprint(p), "targets_sha256": targets_sha(rows), "sandbox_sha256": sandbox_sha(),
+           "control_ok": control_ok, "rows": rows}
     tmp = rp.with_suffix(".tmp")
     tmp.write_text(json.dumps(doc, indent=1, sort_keys=True) + "\n")
     os.replace(tmp, rp)
@@ -162,6 +176,9 @@ def gate(p=None) -> list:
             bad.append("answer check of %s is STALE: task/judge files changed since (a census ran after it)" % doc.get("ts"))
         if doc.get("targets_sha256") != targets_sha([{"store": s, "what": w, "path": x} for s, w, x in targets()]):
             bad.append("answer check of %s is STALE: the answer stores it probed are not today's" % doc.get("ts"))
+        if doc.get("sandbox_sha256") != sandbox_sha():
+            bad.append("answer check of %s is STALE: the sandbox code changed since (or the record predates the hash)"
+                       % doc.get("ts"))
     except Exception as e:                       # noqa: BLE001 - an unmeasurable freshness is a refusal
         bad.append("answer check freshness unmeasurable (%s: %s)" % (type(e).__name__, e))
     if doc.get("control_ok") is not True:

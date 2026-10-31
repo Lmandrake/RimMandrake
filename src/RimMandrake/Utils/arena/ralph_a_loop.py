@@ -482,6 +482,8 @@ class CmdModel:
         finally:
             if mirror is not None:
                 mirror.stop()
+                if not mirror.persisted:         # ARENA_MIRROR_ENFORCE_PERSIST_LOST_MIDPASS: a mid-pass failure left no record
+                    rc = VOID_RC
         return rc
 
     def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):
