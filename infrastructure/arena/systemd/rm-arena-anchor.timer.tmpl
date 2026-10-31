@@ -1,0 +1,13 @@
+# rm-arena-anchor.timer - fires rm-arena-anchor.service every @INTERVAL_MIN@ min (ARENA_ANCHOR_FIX_PUBLISH_BEFORE_ANALYSIS).
+# Rendered and installed by `arena_anchor_publish.py --install`; do not edit the installed copy.
+[Unit]
+Description=RimMandrake arena: publish event-log anchors every @INTERVAL_MIN@ min
+
+[Timer]
+OnActiveSec=2min
+OnUnitActiveSec=@INTERVAL_MIN@min
+AccuracySec=30s
+Persistent=false
+
+[Install]
+WantedBy=timers.target

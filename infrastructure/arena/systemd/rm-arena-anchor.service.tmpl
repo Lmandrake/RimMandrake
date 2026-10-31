@@ -1,0 +1,20 @@
+# rm-arena-anchor.service - publish every arena arm's signed event-log head to the git ledger
+# (ARENA_ANCHOR_FIX_PUBLISH_BEFORE_ANALYSIS). Rendered and installed by
+# `arena_anchor_publish.py --install`; do not edit the installed copy. Fired by rm-arena-anchor.timer. It is NOT
+# PartOf= any arm target on purpose: a dead or stopped replay runner must not stop the anchors being published.
+# One tick: sync the dedicated anchor clone with origin/main, sign one ARENA_ANCHOR note for the arms whose verified
+# log grew (idempotent: nothing grew, no note), commit that one shard and ./publish it from the anchor clone.
+[Unit]
+Description=RimMandrake arena: publish signed event-log anchors to the git ledger
+
+[Service]
+Type=oneshot
+Slice=rm-harness.slice
+WorkingDirectory=@WORKDIR@
+Environment=PYTHONUNBUFFERED=1
+Environment=ARENA_ARM_TOML=@ARM_TOML@
+ExecStart=/usr/bin/python3 @SCRIPT@ --clone @CLONE@
+StandardOutput=append:@LOG@
+StandardError=append:@LOG@
+Nice=10
+TimeoutStartSec=420

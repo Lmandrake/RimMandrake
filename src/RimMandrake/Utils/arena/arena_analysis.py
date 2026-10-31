@@ -473,11 +473,17 @@ def ledger_external(ledger=None):
                      anchor_notes=sum(len(v) for v in ext.values()))
 
 
+_LAST_REPORT = {}             # the raw arena_eventlog.report() of the newest load_verified (verified_logs' anchor_lag)
+
+
 def load_verified(p=None, token=None, external=None, allow_untrusted=False):
     """Signed logs through arena_eventlog.report(): refused / rejected-line / untrusted arms are UNMEASURED, except
-    that a rejected PREFIX of pre-log leftovers (stale_prefix) is skipped and counted in `stale_prefix`."""
+    that a rejected PREFIX of pre-log leftovers (stale_prefix) is skipped and counted in `stale_prefix`.
+    The raw report is kept in _LAST_REPORT (verified_logs reads anchor_lag from it)."""
     p = p or A.paths()
     rep = L.report(p, token, external)
+    _LAST_REPORT.clear()
+    _LAST_REPORT.update(rep)
     out = {}
     for arm, v in sorted(rep.items()):
         if arm.startswith("_") or arm in L.NON_ARENA_ARMS:     # critic calibration is not a competing arm
@@ -507,16 +513,38 @@ def verified_logs(raw_dir=None, ledger=None, allow_untrusted=False, p=None):
         logs = load_raw(raw_dir)
         return logs, {"source": "raw-dir (unsigned)", "raw_dir": str(raw_dir), "allow_untrusted": allow_untrusted}
     ext, trust = ledger_external(ledger)
+    _LAST_REPORT.clear()
     strict = load_verified(p, None, ext, allow_untrusted=False)
+    rep = dict(_LAST_REPORT)
     logs = load_verified(p, None, ext, allow_untrusted=True) if allow_untrusted else strict
     untrusted = sorted(k for k, v in strict.items() if "unmeasured" in v and str(v["unmeasured"]).startswith(
         "untrusted log"))
     trust = dict(trust, source="signed event logs", allow_untrusted=allow_untrusted, untrusted_arms=untrusted,
                  trusted_arms=sorted(k for k, v in strict.items() if "unmeasured" not in v))
+    lag = anchor_lag(rep)
+    if lag:
+        trust["anchor_lag"] = lag
+        trust["STALE_ANCHORS"] = ("%d arm(s) have records newer than their last ledger anchor (%s): the close-out "
+                                  "must run arena_anchor_publish.py --final before analysis/spend"
+                                  % (len(lag), ", ".join("%s %d>%d" % (k, v["accepted"], v["ledger_anchored_upto"])
+                                                         for k, v in sorted(lag.items()))))
     if allow_untrusted and untrusted:
         trust["OVERRIDE"] = ("--allow-untrusted: %d untrusted arm log(s) analysed WITHOUT the ledger-anchor tamper "
                              "check: %s" % (len(untrusted), untrusted))
     return logs, trust
+
+
+def anchor_lag(rep):
+    """{arm: {accepted, ledger_anchored_upto}} for every arm of an arena_eventlog.report() whose accepted log runs
+    past its newest ledger anchor (ARENA_ANCHOR_FIX_PUBLISH_BEFORE_ANALYSIS): records the ledger cannot vouch for."""
+    out = {}
+    for arm, v in sorted((rep or {}).items()):
+        if arm.startswith("_") or not isinstance(v, dict) or not isinstance(v.get("accepted"), int):
+            continue
+        upto = v.get("external_anchored_upto") or 0
+        if v["accepted"] > upto:
+            out[arm] = {"accepted": v["accepted"], "ledger_anchored_upto": upto}
+    return out
 
 
 def load_tasks(p=None):
