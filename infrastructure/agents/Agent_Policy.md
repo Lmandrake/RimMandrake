@@ -29,7 +29,8 @@ and not a fact about the gateway. Anything in this file that is a claim about mo
 BENCH runs on Opus 5.5 and orchestrates. It does not do design in-window and does not grind:
 it holds the owner's attention, backgrounds design to an **Opus** subagent, and keeps the
 conclusion. FOUNDRY's seat runs on Sonnet 5.5 and routes: it classifies each item by the
-rule below and hands Opus-class items to an `rm-builder` (Opus) subagent.
+rule below and hands Opus-class items to an `rm-builder` (Opus) subagent; an item `rimflow next` routes to a Test Pilot goes to an
+`rm-testpilot` (Opus) subagent instead (owner 2026-10-31, FOUNDRY.md).
 
 ## The one question
 

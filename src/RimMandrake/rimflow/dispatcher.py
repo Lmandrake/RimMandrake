@@ -204,8 +204,10 @@ def peek_ticket(clone, seat, timeout=120):
 
 
 def parse_peek(out):
-    """The first item line of `rimflow next --peek`: `<ID>   <state>  row …  needs <x>  target …`. Pure (tested)."""
-    for line in (out or "").splitlines():
+    """The first item line of `rimflow next --peek`: `<ID>   <state>  row …  needs <x>  target …`. Pure (tested).
+    A `ROUTE rm-testpilot <ID>: <why>` line for that item adds "pilot": <why> (testpilot_route, the Test Pilot rule)."""
+    lines = (out or "").splitlines()
+    for line in lines:
         parts = line.split()
         if len(parts) >= 2 and parts[0].isupper() and "_" in parts[0] and not parts[0].endswith(":") \
                 and parts[1] in OPEN_STATES:
@@ -213,7 +215,12 @@ def parse_peek(out):
             if "needs" in parts:
                 i = parts.index("needs")
                 needs = parts[i + 1] if i + 1 < len(parts) else None
-            return {"id": parts[0], "needs": needs if needs not in ("-", None) else None}
+            ticket = {"id": parts[0], "needs": needs if needs not in ("-", None) else None}
+            mark = "ROUTE rm-testpilot %s: " % parts[0]
+            for route in lines:
+                if route.startswith(mark):
+                    ticket["pilot"] = route[len(mark):].strip()
+            return ticket
     return {}
 
 
@@ -345,6 +352,9 @@ def message(seat, cfg, ticket, ring_id):
              "--seat %s`, which gives you the item under a lease, and work it; renew the lease every 10 min "
              "(`rimflow renew`). The peeked next item is %s." % (seat, seat, ticket.get("id")),
              "If you are mid-task, finish it first; if the queue is wrong, say so on the item with `rimflow note`.",
+             *(["TEST PILOT, not another code-and-retest cycle: %s on %s. Run `rimflow pilot %s` and spawn the "
+                "rm-testpilot agent it prints." % (ticket["pilot"], ticket.get("id"), ticket.get("id"))]
+               if ticket.get("pilot") else []),
              # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: 2026-10-29 FOUNDRY answered rings with "nothing for me to do
              # until they finish" (SteveDesktop lane jobs) while 798 items waited
              "Waiting on a lane job, a test result or a helper is NOT idle: claim the next workable item now and read "

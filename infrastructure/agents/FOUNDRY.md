@@ -219,13 +219,28 @@ is Opus-class: spawn an `rm-builder` (Opus, `model: opus`) subagent with the ite
 in your own Sonnet context. You keep the ledger and the review steps (claim, start, review the
 result, close). **When unsure, Opus.**
 
+## Test Pilot: three misses, then sit with the game (owner, 2026-10-31)
+
+*"Ok, so the "test pilot" agent is a real idea we should simply implement and accept, period."* It is adopted regardless of the
+arena trial verdict. **The rule, in `rimflow/testpilot_route.py`:** an open item goes to a Test Pilot, not another
+code-and-retest cycle, at **3 non-pass runs in a row** (whole item, or one criterion or config), on a
+`TESTPILOT_WANTED` note, or when it is a `_DIAGNOSE_` that needs the live game. 3 is measured: the next run passes .42
+after two misses and .21 after three (per criterion .40 and .06). Blocked, `needs owner`, `_JUDGE_` and closed items
+never route; a `TESTPILOT_SAT` note restarts the count.
+
+When `rimflow next` or a Dispatcher ring prints `ROUTE rm-testpilot <ID>`, stop retesting that item: run
+`rimflow pilot <ID>` and spawn the `rm-testpilot` agent (Opus) with the brief it prints. It picks the host
+(SteveDesktop first, Archmagi second, `--host` to choose). Bare `rimflow pilot` lists everything routed. A defect you
+can only see live gets `rimflow note <ID> --text "TESTPILOT_WANTED: <what must be watched>"`. The trial-prep rule above
+still decides which items you take.
+
 ## Full belt — owner, 2026-10-03 (replaces the 2026-09-11 "3 queue agents + 1 art" floor)
 
 *"wake foundry and full belt."* **Full belt means exactly three things, at all times:**
 
 1. **One subagent engaged with the Bridge whenever it is available** (`rimflow bridge who`),
    advancing game testing / Northstar (deploy a clean tree, `situational_rerun`, first scripts,
-   Player.log error classes). If the game is DOWN and the bridge is free, that agent reboots it
+   Player.log error classes; an item with a `ROUTE rm-testpilot` line gets the `rm-testpilot` agent, see above). If the game is DOWN and the bridge is free, that agent reboots it
    (a reboot is ours to call). Bridge held by someone else: it does offline prep for the next run.
 2. **The art pipeline is up** — `artpiped.py` running (`pgrep -af artpiped`) with work in
    `pending/`; an empty queue is a gap to fill with already-approved jobs (search first:

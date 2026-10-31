@@ -151,6 +151,8 @@ poking session by writing the lesson into the script — a check red for the rep
 reason before the final fix, plus the informative theories that proved false. Agents
 write, approve and declare passing on these scripts; they may add regression checks and
 new `## north star` bars (owner 2026-10-26, `delegation_policy.md` §2.1); loosening a bar stays his. Stuck → GPT early, for hypotheses to test.
+**3 non-pass runs in a row, or a defect that needs live observation, goes to a Test Pilot, not another retest**
+(owner 2026-10-31; `rimflow pilot`, `.claude/agents/rm-testpilot.md`, `standing_rulings.md`).
 
 The 2026-10-01 build pause was lifted by the owner 2026-10-02 (*"Build pause is lifted."*);
 every new mod still ships with its first script (`debug_process.md` §2).

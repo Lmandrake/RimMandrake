@@ -482,3 +482,9 @@ unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
 ## The Conductor has no closed sources — owner, 2026-10-31
 
 *"I don't accept anything being closed to you. Don't make those designs. Conductor accesses everything. Redo that analysis."*
+
+## The Test Pilot is a permanent way of working — owner, 2026-10-31
+
+*"Ok, so the "test pilot" agent is a real idea we should simply implement and accept, period."*
+
+His earlier words: *"a "Test Pilot" type agent to sit down with the raiders and do a deep debug live with the game, trying things experimentally through bridge, rather than just code changes and long, slow testing procedures"*. Adopted regardless of the arena trial verdict. An item with 3 non-pass runs in a row, or a defect that needs live observation, goes to an `rm-testpilot` agent (`.claude/agents/rm-testpilot.md`) instead of more code-and-retest cycles. The rule and its measurement are in `src/RimMandrake/rimflow/testpilot_route.py`; `rimflow pilot` prints the ticket. Each sitting ends by writing what it learned, false theories included, into the mod's functional script.

@@ -274,6 +274,11 @@ records no verdict. Draft principles from the first one (MessyConduit), pending 
 
 ## 7. Briefing a bridge-driving subagent
 
+The standing form of this is the Test Pilot (owner 2026-10-31): `rimflow pilot <ID>` prints the brief for an
+`rm-testpilot` agent, and an item reaches one at 3 non-pass runs in a row or when it needs live observation
+(`src/RimMandrake/rimflow/testpilot_route.py`). Its brief names deploys and list changes, which it may do on its host,
+backing the list up and restoring it. Everything below still binds it.
+
 - **One driver at a time.** The holder takes the bridge lock; the subagent drives through
   the driver or `modcheck`, never around them.
 - **The brief contains:**
