@@ -1,0 +1,2 @@
+arena_answer_check.gate() used to skip every UNMEASURED row except the MUST_MEASURE ones. A missing judge/freeze.jsonl therefore never blocked freeze, but any other store that went unmeasured (ledger shards, the D: mirror) passed silently too. Fixed in e7f02d6d67: only an ABSENT freeze authority file is tolerated, and every other UNMEASURED row now refuses. Planted cases G4a/G4b are in selftest_arena_answer_check. A gate that skips a state is a gate that can be passed blind.
+home: src/RimMandrake/Utils/arena/arena_answer_check.py
