@@ -44,6 +44,8 @@ namespace RimMandrake.FlowWorks.Sheet
 		private List<FluidDef> fluids = new List<FluidDef>();
 		private int[] stamp;
 		private int stampId;
+		private KindMemory kinds;     // what each cell was last classified as (saved: a load continues the wakes exactly)
+		private byte[] loadedKinds;   // read by ExposeData, applied when Ensure builds the world
 		private readonly PulseReport rep = new PulseReport();
 		private RM_MapComponent_Excavation ex;
 
@@ -87,6 +89,21 @@ namespace RimMandrake.FlowWorks.Sheet
 				world.Credit = Credit;
 				stamp = new int[w * h];
 				stampId = 0;
+				kinds = new KindMemory(w * h);
+				if (loadedKinds != null)
+				{
+					try
+					{
+						kinds = KindMemory.Load(loadedKinds, w * h);
+					}
+					catch (Exception e)
+					{
+						// not water: only which cells wake first after this load (each cell's next look is a first look)
+						Log.Warning("[RimMandrake.FlowWorks] spilled-water wake record in this save could not be read (" + e.Message
+							+ "); the first pulse after this load may differ from an uninterrupted game. No water is lost.");
+					}
+					loadedKinds = null;
+				}
 			}
 			SyncParams();
 		}
@@ -145,12 +162,13 @@ namespace RimMandrake.FlowWorks.Sheet
 		// ── topology (§6 item 7: authoritative layers, never the picture) ──
 
 		/// <summary>GPT deep review 2026-10-22 #7: a cell whose kind changes (a wall removed, a door built) wakes itself and its
-		/// neighbours, else a settled, lossless puddle slept on beside newly open ground.</summary>
+		/// neighbours, else a settled, lossless puddle slept on beside newly open ground. FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES:
+		/// "changed" is read from the saved KindMemory, never from world.Kinds (rebuilt all-Blocked by a load, so every load
+		/// used to wake every wet ring and split the trajectory from an uninterrupted game).</summary>
 		private void Classify(int idx)
 		{
-			Kind before = world.Kinds[idx];
 			ClassifyCell(idx);
-			if (state != null && world.Kinds[idx] != before)
+			if (kinds.Changed(idx, world.Kinds[idx]) && state != null)
 			{
 				RM_SheetMath.WakeAround(state, world, idx);
 			}
@@ -275,6 +293,7 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// next sweeps + 1 rings (a sweep moves water one cell; levelling and return read one further).</summary>
 		private void RefreshAround()
 		{
+			kinds.NextGeneration();
 			stampId++;
 			if (stampId == int.MaxValue)
 			{
@@ -995,6 +1014,16 @@ namespace RimMandrake.FlowWorks.Sheet
 			if (Scribe.mode != LoadSaveMode.Saving || data != null)
 			{
 				DataExposeUtility.LookByteArray(ref data, "RM_sheetState");
+			}
+			// FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES: the wake record travels with the state it belongs to
+			byte[] kindData = Scribe.mode == LoadSaveMode.Saving && data != null && kinds != null ? kinds.Save() : null;
+			if (Scribe.mode != LoadSaveMode.Saving || kindData != null)
+			{
+				DataExposeUtility.LookByteArray(ref kindData, "RM_sheetKinds");
+			}
+			if (Scribe.mode == LoadSaveMode.LoadingVars)
+			{
+				loadedKinds = kindData;
 			}
 			Scribe_Collections.Look(ref fluids, "RM_sheetFluids", LookMode.Def);
 			Scribe_Values.Look(ref toldOverflow, "RM_sheetToldOverflow", false);

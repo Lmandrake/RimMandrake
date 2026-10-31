@@ -324,6 +324,96 @@ namespace RimMandrake.FlowWorks
 			for (int d = 0; d < 4; d++) { int n = Neighbour(s.W, s.H, cell, d); if (n >= 0) s.Calm[n] = 0; }
 		}
 
+		/// <summary>FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES: what the caller last classified each cell as, so a cell whose kind
+		/// CHANGED can wake its neighbours (<see cref="WakeAround"/>) and a save/load continues exactly as an uninterrupted run.
+		/// The bug it replaces: the component compared against <see cref="World.Kinds"/>, which a loaded game rebuilds fail-closed
+		/// (all Blocked), so the first pulse after every load read every wet cell's ring as "changed" and reset its calm counter;
+		/// an uninterrupted run did not, and the two trajectories split (live row SAVE_LOAD_CONTINUES_IDENTICAL).
+		/// The rule depends only on what is saved: a change counts when the cell was last looked at in this generation or the
+		/// one before (one generation = one pulse's refresh, plus the classifications between it and the next). A look older
+		/// than that is a first look, never a change (the ring that saw it then is gone; a cell that changes inside the
+		/// current ring was seen last pulse and wakes as before). <see cref="Save"/> keeps exactly those two generations.</summary>
+		public sealed class KindMemory
+		{
+			public const int Version = 1;
+			private readonly Kind[] last;
+			private readonly int[] seen; // generation of the last look; 0 = never
+			private int gen = 2;
+
+			public KindMemory(int cells)
+			{
+				last = new Kind[cells];
+				seen = new int[cells];
+			}
+
+			public int Cells => seen.Length;
+
+			/// <summary>Start a new generation (the caller's refresh at the head of each pulse).</summary>
+			public void NextGeneration()
+			{
+				if (gen == int.MaxValue - 1)
+				{
+					// rebase, keeping the two live generations exact (once in 2^31 pulses)
+					for (int i = 0; i < seen.Length; i++) seen[i] = seen[i] >= gen - 1 ? seen[i] - (gen - 3) : 0;
+					gen = 3;
+				}
+				gen++;
+			}
+
+			/// <summary>Record <paramref name="now"/> for <paramref name="cell"/>; true when it differs from a recent look.</summary>
+			public bool Changed(int cell, Kind now)
+			{
+				bool changed = seen[cell] != 0 && seen[cell] >= gen - 1 && last[cell] != now;
+				last[cell] = now;
+				seen[cell] = gen;
+				return changed;
+			}
+
+			/// <summary>The two live generations: (cell, kind, age 0|1), ascending by cell.</summary>
+			public byte[] Save()
+			{
+				using (var ms = new MemoryStream())
+				using (var bw = new BinaryWriter(ms))
+				{
+					int n = 0;
+					for (int i = 0; i < seen.Length; i++) if (seen[i] != 0 && seen[i] >= gen - 1) n++;
+					bw.Write(Version); bw.Write(seen.Length); bw.Write(n);
+					for (int i = 0; i < seen.Length; i++)
+					{
+						if (seen[i] == 0 || seen[i] < gen - 1) continue;
+						bw.Write(i); bw.Write((byte)last[i]); bw.Write((byte)(gen - seen[i]));
+					}
+					bw.Flush();
+					return ms.ToArray();
+				}
+			}
+
+			/// <summary>A memory of <paramref name="cells"/> cells holding what <see cref="Save"/> wrote. Throws on another
+			/// version or map size (the caller then starts empty: every cell's next look is a first look, nothing is lost).</summary>
+			public static KindMemory Load(byte[] data, int cells)
+			{
+				var m = new KindMemory(cells);
+				using (var br = new BinaryReader(new MemoryStream(data)))
+				{
+					int ver = br.ReadInt32();
+					if (ver != Version) throw new InvalidDataException("sheet kind memory version " + ver + ", this build reads " + Version);
+					int size = br.ReadInt32();
+					if (size != cells) throw new InvalidDataException("sheet kind memory is for " + size + " cells, this map has " + cells);
+					int n = br.ReadInt32();
+					for (int k = 0; k < n; k++)
+					{
+						int c = br.ReadInt32();
+						Kind kind = (Kind)br.ReadByte();
+						int age = br.ReadByte();
+						if (c < 0 || c >= cells || age > 1) throw new InvalidDataException("sheet kind memory entry out of range");
+						m.last[c] = kind;
+						m.seen[c] = m.gen - age;
+					}
+				}
+				return m;
+			}
+		}
+
 		// ── the pulse ──
 
 		internal struct Flux { public int From, To, Dl, MinNew; public byte Fluid; }

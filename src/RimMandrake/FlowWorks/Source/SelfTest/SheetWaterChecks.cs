@@ -738,6 +738,115 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(s.Returned > 0 && s.LedgerCloses, "a chemfuel channel beside it takes its own liquid back");
 			});
 
+			// FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES: the component's refresh-and-wake loop, mirrored Verse-free (classify the wet
+			// cells and SweepsPerPulse + 1 rings through sheet-holding cells, wake on a changed kind), across a save/load. A wall
+			// opens beside a settled puddle AFTER the last pre-save pulse, so only a saved wake record continues exactly.
+			Case("Sheet_save_load_continues_identically_through_the_wake_record", () =>
+			{
+				const int W = 24, H = 24, n = W * H, wallX = 13;
+				var truth = new Kind[n];
+				for (int c = 0; c < n; c++)
+				{
+					int x = c % W, z = c / W;
+					truth[c] = x == 0 || z == 0 || x == W - 1 || z == H - 1 || x == wallX || x < wallX - 4 ? Kind.Blocked : Kind.Open;
+				}
+				var p = new Params();
+				World Fresh() { var w0 = new World(W, H); for (int c = 0; c < n; c++) w0.Kinds[c] = Kind.Blocked; return w0; }
+				// mode 0: the KindMemory rule (production); mode 1: the old rule (before = world.Kinds, rebuilt Blocked on load)
+				void Refresh(State s0, World w0, KindMemory m0, int mode)
+				{
+					m0.NextGeneration();
+					var seenNow = new HashSet<int>();
+					var frontier = new List<int>(s0.Occ);
+					void Look(int c)
+					{
+						Kind before = w0.Kinds[c];
+						w0.Kinds[c] = truth[c];
+						bool changed = m0.Changed(c, truth[c]);
+						if (mode == 1 ? before != truth[c] : changed) WakeAround(s0, w0, c);
+					}
+					foreach (int c in frontier) { seenNow.Add(c); Look(c); }
+					for (int ring = 0; ring <= p.SweepsPerPulse; ring++)
+					{
+						var next = new List<int>();
+						foreach (int c in frontier)
+						{
+							if (!World.HoldsSheet(w0.Kinds[c])) continue;
+							int x = c % W, z = c / W;
+							int[] nb = { z + 1 < H ? c + W : -1, x + 1 < W ? c + 1 : -1, z > 0 ? c - W : -1, x > 0 ? c - 1 : -1 };
+							foreach (int m in nb) if (m >= 0 && seenNow.Add(m)) { Look(m); next.Add(m); }
+						}
+						frontier = next;
+					}
+				}
+				void Pulses(State s0, World w0, KindMemory m0, int k, int mode)
+				{
+					for (int i = 0; i < k; i++) { Refresh(s0, w0, m0, mode); Pulse(s0, w0, p, null); }
+					Assert(s0.LedgerCloses, "ledger open after pulse " + s0.Pulse);
+				}
+				var w = Fresh();
+				var s = new State(W, H, 0xBEEFu);
+				var mem = new KindMemory(n);
+				Refresh(s, w, mem, 0);
+				int spillAt = Idx(w, wallX - 1, 12);
+				w.Kinds[spillAt] = truth[spillAt];   // the lip walk classifies the lip before the offer
+				mem.Changed(spillAt, truth[spillAt]);
+				long got = 0;
+				for (int i = 0; i < 16; i++)   // a narrow basin, deep enough to run; one lip takes up to the cap a pulse: pour in steps, as a pump does
+				{
+					got += ResolveSpills(s, w, p, new List<SpillOffer> { Offer(p.SheetCapDl, Water, Source.Pump, spillAt) })[0];
+					Pulses(s, w, mem, 1, 0);
+				}
+				Assert(got >= 8 * p.SheetCapDl, "the pours were accepted: " + got);
+				Pulses(s, w, mem, 40, 0);
+				bool asleep = false;
+				foreach (int c in s.Occ) asleep |= s.Calm[c] >= p.SleepAfterPulses;
+				Assert(asleep, "the puddle settled (some wet cell asleep) before the wall opens: else the wake has nothing to change");
+				Assert(s.Dl[Idx(w, wallX - 1, 12)] > 0, "the puddle stands against the wall");
+				// quiet window (the live row's scene: nothing changes): the old rule diverges, the wake record does not
+				byte[] savedQ = Save(s), memQ = mem.Save();
+				Pulses(s, w, mem, 4, 0);                 // the uninterrupted run (the live world and memory)
+				ulong hQ = Hash(s);
+				var sQ = Load(savedQ);
+				Pulses(sQ, Fresh(), KindMemory.Load(memQ, n), 4, 0);
+				Assert(Hash(sQ) == hQ, "quiet save/load then 4 pulses equals 4 uninterrupted pulses");
+				State oq = Load(savedQ);
+				Pulses(oq, Fresh(), new KindMemory(n), 4, 1);
+				Assert(Hash(oq) != hQ, "control: the old rule (compare with the rebuilt all-Blocked world) must diverge, as the live row FAILed");
+				truth[Idx(w, wallX, 12)] = Kind.Open;   // the wall opens after the last pre-save pulse
+				byte[] saved = Save(s), savedMem = mem.Save();
+				ulong h0 = Hash(s);
+				Pulses(s, w, mem, 4, 0);
+				ulong hA = Hash(s);
+				Assert(s.Dl[Idx(w, wallX, 12)] > 0, "the uninterrupted run woke the puddle and it ran into the opened wall square");
+				State Reload() { State r = Load(saved); Assert(Hash(r) == h0, "the save holds the whole state"); return r; }
+				// production: loaded state + loaded wake record + a fail-closed world
+				State b = Reload();
+				var mb = KindMemory.Load(savedMem, n);
+				Assert(KindMemory.Load(mb.Save(), n).Save().Length == mb.Save().Length, "the wake record round-trips");
+				Pulses(b, Fresh(), mb, 4, 0);
+				Assert(Hash(b) == hA, "save/load then 4 pulses must equal 4 uninterrupted pulses (the wake record is saved)");
+				// teeth 2: an unsaved (empty) wake record misses the wall that opened in the save window
+				State c2 = Reload();
+				Pulses(c2, Fresh(), new KindMemory(n), 4, 0);
+				Assert(Hash(c2) != hA, "control: an empty wake record must diverge here, or the saved record is untested");
+				// a record for another map size is refused, not misapplied
+				bool refused = false;
+				try { KindMemory.Load(savedMem, n + 1); } catch (System.IO.InvalidDataException) { refused = true; }
+				Assert(refused, "a wake record for another map size is refused");
+			});
+
+			// FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES wiring: the component wakes from the saved record and saves it with the state
+			Case("Sheet_wake_record_is_wired_and_saved", () =>
+			{
+				string sheet = RiverSwitchFlipChecks.Src(System.IO.Path.Combine("Sheet", "RM_MapComponent_Sheet.cs"));
+				Assert(sheet.Contains("if (kinds.Changed(idx, world.Kinds[idx]) && state != null)"), "Classify wakes from the KindMemory");
+				Assert(!sheet.Contains("Kind before = world.Kinds[idx];"), "the old world.Kinds comparison is gone");
+				Assert(sheet.Contains("kinds.NextGeneration();"), "each refresh starts a generation");
+				Assert(sheet.Contains("DataExposeUtility.LookByteArray(ref kindData, \"RM_sheetKinds\")"), "the record is saved");
+				Assert(sheet.Contains("kinds = KindMemory.Load(loadedKinds, w * h);"), "and applied when the world is rebuilt");
+			});
+
 			// wiring (source text): the owner's two rulings of 2026-10-22 are in the production entries
 			Case("Sheet_all_liquids_and_silent_release_loss_are_wired", () =>
 			{
