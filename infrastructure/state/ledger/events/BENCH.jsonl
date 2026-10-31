@@ -8828,3 +8828,6 @@
 {"seat":"BENCH","event":"lease","id":"STEVE_SEATS_FIX_DIE_ON_REBOOT","action":"take","token":"BENCH.pid41127.e25ca44d","expires":"2026-10-31T19:55:00Z","ts":"2026-10-31T19:10:00Z","tsn":1793473801390532570}
 {"seat":"BENCH","event":"claim","id":"STEVE_SEATS_FIX_DIE_ON_REBOOT","ts":"2026-10-31T19:10:02Z","tsn":1793473802250514686}
 {"seat":"BENCH","event":"start","id":"STEVE_SEATS_FIX_DIE_ON_REBOOT","ts":"2026-10-31T19:10:03Z","tsn":1793473803058007485}
+{"seat":"BENCH","event":"lease","id":"STEVE_SEATS_FIX_DIE_ON_REBOOT","action":"renew","token":"BENCH.pid41127.e25ca44d","ts":"2026-10-31T19:12:32Z","expires":"2026-10-31T19:57:32Z","tsn":1793473952887912495}
+{"seat":"BENCH","event":"lease","id":"SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO","action":"renew","token":"BENCH.pid39187.f3630ff1","ts":"2026-10-31T19:12:46Z","expires":"2026-10-31T19:57:46Z","tsn":1793473967348106101}
+{"seat":"BENCH","event":"close","id":"SEAT_BACKSTOP_FIX_NEVER_STARTED_NO_BIRTH","sha":"e4711f7ef9","why":"registered_start supplies the birth claude agents --json omits; proved by test_agents_listing_carries_no_birth and the 18:33Z dry restart_request","ts":"2026-10-31T19:13:15Z","tsn":1793473995990950991}
