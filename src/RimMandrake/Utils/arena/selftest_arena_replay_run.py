@@ -11,6 +11,8 @@
   wired     `arena.py trial-runner` without --arm refuses (exit 2) and never pretends to run; the rendered
             rm-arena-replay.service runs `trial-runner --all` (ARENA_REPLAY_UNIT_FIX_NO_ARM_REFUSED: the unit gave no
             --arm and was refused); --all fans out one --arm child per replay arm and refuses a non-replay arm
+  token     the harness state dir is pinned to the REAL home (XDG_STATE_HOME), so the scrubbed temp HOME of
+            work()/judge() still finds the harness token; XDG_STATE_HOME is not let into an arm sandbox
   lock      a second runner of the same arm refuses (runner.lock held) instead of double-running
 Fakes only: no clone, no model, no judge, no signed log.
 """
@@ -186,12 +188,27 @@ def t_lock(tmp):
     h2.close()
 
 
+def t_token_home():
+    import os
+    import pwd
+    import arm_sandbox as SB
+    real = os.path.join(pwd.getpwuid(os.getuid()).pw_dir, ".local", "state")
+    env = {"HOME": "/tmp/arm_home_x"}
+    check(RR.pin_state_home(env) == real and env["XDG_STATE_HOME"] == real,
+          "state dir pinned to the real home, not the scrubbed HOME")
+    env = {"XDG_STATE_HOME": "/s"}
+    check(RR.pin_state_home(env) == "/s", "an explicit XDG_STATE_HOME is kept")
+    keep = SB.env_keep("model")
+    check("XDG_STATE_HOME" not in keep and not SB.ENV_ALLOW_RE.match("XDG_STATE_HOME"),
+          "XDG_STATE_HOME never crosses into an arm sandbox")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="st_replay_run_"))
     try:
         for fn, a in ((t_order, (tmp,)), (t_plan_refusals, ()), (t_resume, (tmp,)), (t_stop_runway, (tmp,)),
                       (t_arms, (tmp,)), (t_wired, ()),
-                      (t_unit_all, (tmp,)), (t_lock, (tmp,))):
+                      (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ())):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

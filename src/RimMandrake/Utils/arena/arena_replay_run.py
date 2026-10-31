@@ -260,6 +260,18 @@ def run_arm(arm, *, ctl, model_cmd, only=0, steps=None, load=None, run_one=None,
     return res
 
 
+def pin_state_home(env=None):
+    """arena_replay._arm_environ gives work()/judge() a private empty HOME, and the harness token's default path is
+    ~/.local/state/... (arena_eventlog._default_token_path): unpinned, harness_pass and arena_judge.py look in the temp
+    HOME and refuse 'no harness token'. Pin XDG_STATE_HOME to the REAL home's state dir (pwd, not $HOME) in the
+    harness process. It never crosses into an arm: XDG_STATE_HOME is not on arm_sandbox's env allow-list."""
+    import pwd
+    env = os.environ if env is None else env
+    if not env.get("XDG_STATE_HOME", "").strip():
+        env["XDG_STATE_HOME"] = os.path.join(pwd.getpwuid(os.getuid()).pw_dir, ".local", "state")
+    return env["XDG_STATE_HOME"]
+
+
 def arm_lock(ctl, arm):
     """Take <ctl>/<arm>/runner.lock (flock, held for the process's life). Raises RunRefused if another runner of the
     same arm holds it."""
@@ -322,6 +334,7 @@ def main(argv=None, *, arms=None):
             print(json.dumps([tid for tid, _ in steps], indent=1))
             return 0
         lock = arm_lock(a.ctl, a.arm)  # noqa: F841 - held until exit
+        pin_state_home()
         res = run_arm(a.arm, ctl=a.ctl, model_cmd=a.model_cmd, only=a.only, steps=steps)
     except RunRefused as e:
         print("refused: %s" % e, file=sys.stderr)
