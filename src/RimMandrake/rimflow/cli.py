@@ -327,6 +327,8 @@ def _write_one(ev):
         model.append(ev)
     except model.LedgerError as e:
         die(str(e))                     # verbatim, non-zero — see the module docstring
+    if ev.get("event") != "bridge":     # here, not in `_emit`: a lease group's writes are the holder working too
+        model.touch_shared_bridge(ev.get("seat"))
     return ev
 
 
@@ -362,8 +364,6 @@ def _emit(ev, world=None, quiet=False):
     # depends on the strip (see its `or`-not-`get`-default comment) so that a
     # present-but-null key can never reach the projection.
     ev = _write_one(ev)
-    if ev.get("event") != "bridge":
-        model.touch_shared_bridge(ev.get("seat"))
     if not quiet:
         print("%s %s%s" % (ev["event"], ev.get("id", ""),
                            "" if ev.get("id") else "(" + str(ev.get("state", "")) + ")"))

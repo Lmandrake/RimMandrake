@@ -484,6 +484,16 @@ def t_bridge_is_refused_for_a_non_window_seat():
     assert "bridge taken by CHECK" in ok("bridge", "take", seat="CHECK")
 
 
+def t_every_path_cli_writes_binds_to_scratch():
+    """scratch_env checks strings; this asks the CLI itself where its writes land. The ledger audit can only see fixture names."""
+    fresh()
+    code = ("import sys, json; sys.path.insert(0, %r); import cli; cli._bind_paths(); m = cli.model; "
+            "print(json.dumps([m.EVENTS, m.ITEMS, m.CLOSED] + list(m.ledger_files())))" % HERE)
+    got = json.loads(subprocess.check_output([sys.executable, "-c", code], env=scratch_env(env("BUILD")), cwd=REPO).decode())
+    bad = [p for p in got if not os.path.abspath(p).startswith(os.path.abspath(_tmp()))]
+    assert len(got) >= 3 and not bad, "the CLI would write outside the scratch: %s" % bad
+
+
 def t_a_refused_bridge_take_leaves_the_driver_lock_alone():
     fresh()
     dl = os.path.join(_tmp(), "driver.lock")
@@ -932,11 +942,14 @@ def t_sweep_transient_lists_and_never_deletes():
         roots += [(d, n) for n in os.listdir(d) if n != "README.md" and not n.startswith(".")] if os.path.isdir(d) else []
         got = {}
         for r, n in roots:
-            try:
-                st = os.stat(os.path.join(r, n))
-            except OSError:
-                continue
-            got[os.path.relpath(os.path.join(r, n), REPO)] = (st.st_size, st.st_mtime_ns)
+            top = os.path.join(r, n)
+            paths = [top] + [os.path.join(w, f) for w, ds, fs in os.walk(top) for f in ds + fs]     # nested notes too
+            for path in paths:
+                try:
+                    st = os.stat(path)
+                except OSError:
+                    continue
+                got[os.path.relpath(path, REPO)] = (st.st_size, st.st_mtime_ns)
         return got
     before = seen()
     out = ok("sweep", "--transient")
@@ -1361,6 +1374,11 @@ def t_a_take_in_another_clone_refuses_until_forced_or_stale():
     json.dump(body, open(shared, "w"))
     ok("file", "SHARED_TOUCH_ITEM_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t", env=env_a("FOUNDRY"))
     assert json.load(open(shared))["touched"] != t0, "an ordinary event of the holder left the shared lock's touched"
+    body = json.load(open(shared))
+    body["touched"] = t0
+    json.dump(body, open(shared, "w"))
+    ok("claim", "SHARED_TOUCH_ITEM_PROBE_FIXTURE", env=env_a("FOUNDRY"))
+    assert json.load(open(shared))["touched"] != t0, "a claim, written as a lease group, left the shared lock's touched"
     # --force crosses it, and says so on the event
     ok("bridge", "take", "--force", "--for", "urgent", env=env_b("BENCH"))
     evs = []

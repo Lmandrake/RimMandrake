@@ -358,10 +358,13 @@ def done_jobs(since, bad=None, now=None):
     return out
 
 
+OUTCOMES = ("DONE", "INVALID", "INTERRUPTED", "REFUSED")     # testq/schema.py's OUTCOMES; the selftest holds them equal
+
+
 def outcome_of(d):
-    """A done record's outcome, or None: an outcome that is no string is no outcome, never a known non-INVALID result."""
+    """A done record's outcome, or None: one outside the schema's words is no outcome, never a known non-INVALID result."""
     oc = (d.get("result") or {}).get("outcome")
-    return oc if isinstance(oc, str) and oc else None
+    return oc if isinstance(oc, str) and oc in OUTCOMES else None
 
 
 def c_steve(now, rules, ctx):
@@ -378,7 +381,7 @@ def c_steve(now, rules, ctx):
         wj = read_json(qhome() / "steward_watch.json")
         wj = wj if isinstance(wj, dict) else {}
         we = epoch(wj.get("epoch"))
-        wage = (now - we) / 60.0 if we is not None else None
+        wage = (now - we) / 60.0 if we is not None and we <= now + 300 else None     # from the future: no reading
         st = sj.get("state")
         if hb > 30:
             out["steve.state"] = E(st, "steward.json is %.0f min old: its last word, not now" % hb, "steward state",
@@ -569,7 +572,7 @@ def c_testing(now, rules, ctx):
             blind += 1
             continue
         sig = [vals[k] for k in ("findings", "closed_after_pass", "regressions", "mod_fails")]
-        if any(v is not None and (isinstance(v, bool) or not isinstance(v, (int, float))) for v in sig):
+        if any(v is not None and not (is_num(v) and finite(v)) for v in sig):
             blind += 1          # a counter that is no number (a string "0" is truthy) says nothing about the day
             continue
         if all(v is None for v in sig):
@@ -848,7 +851,7 @@ def c_production(now, rules, ctx):
 
 
 def c_v3(now, rules, ctx):
-    return {"v3." + k: U(why) for k, why in sorted(rules["v3_owed"].items())}
+    return {"v3." + k: U(str(why)) for k, why in sorted(rules["v3_owed"].items())}
 
 
 # ============================================================ token-talk drift (OPS_WATCH_BUILD_TOKEN_TALK_DRIFT)
@@ -1102,7 +1105,7 @@ def atomic_json(p, obj):
 
 # ===================================================================================================== Andon
 def matches(key, pats):
-    return any(fnmatch.fnmatchcase(key, p) for p in pats)
+    return any(fnmatch.fnmatchcase(key, p) for p in ([pats] if isinstance(pats, str) else pats))    # a bare string is one key
 
 
 def num(p):

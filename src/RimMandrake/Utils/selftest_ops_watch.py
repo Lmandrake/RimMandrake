@@ -583,6 +583,7 @@ for f in DD.iterdir():
 
 # ---------------------------------------------------------------- token-talk drift
 TT = TMP / "tt"
+os.environ["GIT_CEILING_DIRECTORIES"] = str(TT)     # "notarepo" stays no repo wherever TMPDIR sits
 RR = TT / "roles"
 GIT = TT / "repo"
 GIT.mkdir(parents=True)
@@ -889,14 +890,17 @@ _filed = []
 _st = OW.run_alarms(_pts, _bad_rules, NOW, set(), lambda todo, conf: _filed.extend(todo) or {a["name"]: None for a in todo})
 check("alarms: a non-object state entry holds that alarm and files nothing",
       _st["GOOD:x.k"]["state"] == "UNREADABLE" and _st["OLD:y.z"]["state"] == "UNREADABLE" and not _filed, (_st, _filed))
-_ap.write_text(json.dumps({"GOOD:x.k": {"state": "OPEN"}}), encoding="utf-8")
+_ap.write_text(json.dumps({"GOOD:x.k": {"state": "OPEN"}, "OTHER:y.z": {"state": "OPEN", "item": "X_Y_Z"}}), encoding="utf-8")
 _tk = OW.is_token_key
-OW.is_token_key = lambda k: 1 / 0
+OW.is_token_key = lambda k: 1 / 0 if k == "x.k" else False
 try:
-    _st = OW.run_alarms({"x.k": OW.M(0.0, "n")}, _bad_rules, NOW, set(), None)
+    _r2 = copy.deepcopy(_bad_rules)
+    _r2["targets"].append(dict([t for t in _r2["targets"] if isinstance(t, dict) and t.get("tag") == "GOOD"][0], key="y.z", tag="OTHER"))
+    _st = OW.run_alarms({"x.k": OW.M(0.0, "n"), "y.z": OW.M(0.0, "n")}, _r2, NOW, set(), None)
 finally:
     OW.is_token_key = _tk
-check("alarms: a step that raises costs its alarm only and records why", "alarm step raised" in str(_st["GOOD:x.k"].get("error")), _st)
+check("alarms: a step that raises costs its alarm only and records why", "alarm step raised" in str(_st["GOOD:x.k"].get("error"))
+      and _st["OTHER:y.z"].get("clear_seen") == 1, _st)
 _ap.unlink()
 
 import account_usage as _AU
@@ -926,7 +930,7 @@ try:
     for i in range(3):
         wj(_q2 / "done" / ("inv%d.json" % i), {"finished": OW.iso(NOW - (10 - i) * 60), "job": {"id": "j%d" % i},
                                                "result": {"outcome": "INVALID", "started": OW.iso(NOW - 20 * 60)}})
-    wj(_q2 / "done" / "pass.json", {"finished": OW.iso(NOW - 3600), "job": {"id": "p"}, "result": {"outcome": "PASS"}})
+    wj(_q2 / "done" / "pass.json", {"finished": OW.iso(NOW - 3600), "job": {"id": "p"}, "result": {"outcome": "DONE"}})
     wj(_q2 / "done" / "noout.json", {"finished": OW.iso(NOW - 2 * 3600), "job": {"id": "n"}, "result": {}})
     (_q2 / "done" / "old_torn.json").write_text('{"finished": "2026-')
     os.utime(_q2 / "done" / "old_torn.json", (NOW - 3 * 3600, NOW - 3 * 3600))
@@ -1059,12 +1063,14 @@ finally:
     OW.qhome = _qh
 check("steve: a steward record from the future is unknown, not a fresh heartbeat", _s["steve.state"]["m"] == "UNMEASURED", _s["steve.state"])
 _dm = OW.digest_md
-OW.digest_md = lambda dg: len(5)
+_digest_before = None
+OW.digest_md = lambda dg: (globals().__setitem__("_digest_before", dg.get("headline")), len(5))[1]
 try:
     OW.run(now=NOW + 50, rules=_rm, families={"v3"})
 finally:
     OW.digest_md = _dm
-check("digest: a render failure writes the failure and the headline", "failed to render" in (OW.ops_dir() / "digest.md").read_text(encoding="utf-8"))
+_dtxt = (OW.ops_dir() / "digest.md").read_text(encoding="utf-8")
+check("digest: a render failure writes the failure and the headline", "failed to render" in _dtxt and _digest_before and _digest_before in _dtxt, _dtxt[:300])
 _ap.write_text(json.dumps({"DUP:x.k": {"state": "PENDING", "name": "OPS_DISK_FULL_DIAGNOSE_AB12", "title": "t", "tries": "bad"}}), encoding="utf-8")
 _filed.clear()
 OW.run_alarms({"x.k": OW.U("off")}, _rm, NOW, set(), _ok)
@@ -1168,7 +1174,7 @@ check("rules: a torn file falls back to the last good copy, said aloud", _lr.get
 _rp.write_text("[1]", encoding="utf-8")
 check("rules: a list root is torn too", OW.load_rules(_rp).get("_load_error"))
 _dj = {"result": {"outcome": {"status": "INVALID"}}, "job": {}}
-check("steve: an outcome that is no string is no outcome", OW.outcome_of(_dj) is None and OW.outcome_of({"result": {"outcome": "PASS"}}) == "PASS")
+check("steve: an outcome that is no string is no outcome", OW.outcome_of(_dj) is None and OW.outcome_of({"result": {"outcome": "DONE"}}) == "DONE")
 OW.qhome = lambda: _q2
 wj(_q2 / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": False, "reason": 42})
 try:
@@ -1243,7 +1249,23 @@ check("testing: a string FAIL count is unreadable, not a catch", OW.fail_count_u
       and not OW.fail_count_unreadable({"result": {"counts": {"FAIL": 0}}}) and not OW.caught({"result": {"counts": {"FAIL": "0"}}, "job": {}}, {}, 24), "")
 _rc = copy.deepcopy(RULES)
 _rc.setdefault("alarm", {})["clear_passes"] = float("inf")
+_ap2.write_text(json.dumps({"DISK_LOW:disk.root_free_gb": {"state": "OPEN", "item": "X_Y_Z", "since": OW.iso(NOW)}}), encoding="utf-8")
 _st = OW.run_alarms({"disk.root_free_gb": OW.M(500.0, "GB")}, _rc, NOW, set(), None)
-check("alarm: an infinite clear_passes falls back, the alarms still run", isinstance(_st, dict), _st)
+check("alarm: an infinite clear_passes falls back to 4, the alarm neither crashes nor clears at once",
+      _st.get("DISK_LOW:disk.root_free_gb", {}).get("clear_seen") == 1, _st)
+sys.path.insert(0, str(Path(OW.__file__).parent / "testq"))
+import schema as _schema  # noqa: E402
+check("steve: the outcome words are the schema's", tuple(OW.OUTCOMES) == tuple(_schema.OUTCOMES), _schema.OUTCOMES)
+check("steve: a misspelt outcome is no outcome", OW.outcome_of({"result": {"outcome": "INVALD"}}) is None)
+OW.qhome = lambda: _q2
+wj(_q2 / "steward.json", {"epoch": NOW - 50 * 60, "state": "RUNNING", "fault": False, "since": None})
+wj(_q2 / "steward_watch.json", {"epoch": NOW + 86400})
+try:
+    _s = OW.c_steve(NOW, RULES, {})
+finally:
+    OW.qhome = _qh
+check("steve: a watcher from the future does not hide the stall", _s["steve.unowned_stall_min"]["m"] == "MEASURED" and _s["steve.unowned_stall_min"]["v"] > 0, _s["steve.unowned_stall_min"])
+check("patterns: a bare string is one key, not its characters", OW.matches("a.b", "a.*") and not OW.matches("a", "a.*"))
+check("v3: a reason that is no string still renders", isinstance(OW.c_v3(NOW, {"v3_owed": {"k": {"reason": "x"}}}, {})["v3.k"]["why"], str))
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
