@@ -347,15 +347,17 @@ n per arm = 2 (2.8 σ / δ)². All counts are rounded up.
 |---|---|---|---|
 | unpaired, raw v2 spread | 2.33 (measured) | 520 per arm | 178 per arm |
 | unpaired, micro-tasks matched by kind and size | 1.0-1.5 (assumed) | 96-215 per arm | 33-74 per arm |
-| **replay, same task in each arm** | **σ_d 0.5-0.8 (assumed; measured on day 1)** | **12-31** | **5-11** |
+| **replay, same task in each arm** | **σ_d 0.5-0.8 (assumed; measured on day 1)** | **12-31 (formula only; see below)** | **5-11 (formula only)** |
 
 **Acceptance rate**, paired (McNemar): to tell a 0.64 first-try acceptance from 0.85, with about 25% of pairs
 flipping one way and 4% the other, takes about **49 paired tasks**. Unpaired it takes about 66 per arm.
 
 **What that means:**
 
-- **Speed and tokens:** replay detects a 1.5× difference in 12-31 tasks per arm. Without replay the same answer
-  needs 100-500 tasks per arm: weeks.
+- **Speed and tokens:** the formula says replay could detect a 1.5× difference in 12-31 tasks per arm. The stopping
+  rule as built does not: it decides only at the full trial size N (the era gate, section 4.4), and at N = 40-60
+  tasks per arm it decides a true 1.5× difference in about 40-50% of trials (measured, `arena_analysis.py` LIMITS,
+  `selftest_arena_analysis.py --power`). Without replay the same answer needs 100-500 tasks per arm: weeks.
 - **Acceptance rate:** a 20-point difference needs about 50 tasks per arm.
 - **Escaped defects:** these cannot be powered in days (section 5).
 
@@ -363,9 +365,9 @@ The day-1 duplicates (section 4) replace the assumed σ with a measured one. The
 before day 2.
 
 **The budget is the binding constraint, not the calendar.** At about 2-3M ITE per micro-task attempt (v2 spent
-about 1.9G ITE a week over about 928 closes, so about 2M a close), 4 replay arms × 25 tasks costs 200-300M ITE.
-That is about a day of today's spend (M1: 270M ITE/day). The owner allowed 1.5× normal spend for the three
-measuring days (2026-10-29), which fits 50 replay tasks per arm into days 1-2. After the trial the steady budget is
+about 1.9G ITE a week over about 928 closes, so about 2M a close), 4 replay arms × 25 tasks costs 200-300M ITE,
+so a full trial of N tasks per arm (default 50) costs about twice that. 4 × 25 is about a day of today's spend (M1: 270M ITE/day). The owner allowed 1.5× normal spend for the three
+measuring days (2026-10-29), which fits a trial of about 50 replay tasks per arm into days 1-2. After the trial the steady budget is
 set from the measured cost per accepted item.
 
 ## 4. Day-by-day plan and decision rules
@@ -420,7 +422,7 @@ The simulators behind the numbers below model no task order or era: their figure
 
 ### 4.3 Day 1: replay block 1 (all four build arms in parallel)
 
-- **Morning:** 4 arms × 12 tasks, each arm oldest first (sibling order), the arms interleaved in random order inside
+- **Morning:** block 1, 4 arms × the first 12 tasks of the trial list, each arm oldest first (sibling order), the arms interleaved in random order inside
   each round.
 - **Duplicates:** 6 of those tasks are run twice in the same arm. That measures run-to-run spread, which gives
   σ_d and how much of an arm difference is just noise.
@@ -431,23 +433,28 @@ arm gets a first forecast of accepted/day.
 
 **Known by the end of day 1:**
 
-- accepted points, tokens per accepted point and accept rate per arm, about 12 tasks each;
+- accepted points, tokens per accepted point and accept rate per arm, about 12 tasks each (leading numbers only:
+  the era gate holds every stop and FUTILE drop until the newest era is in, and the oldest-first block 1 holds none
+  of it);
 - the measured σ_d, with the section 3.5 task counts recomputed from it;
 - whether the leading indicators predicted the day's accepted count. The check: within the 80% interval of the
   noon forecast.
 
 **Decision rule at the end of day 1:**
 
-- Apply futility and disqualification only; no arm is declared the winner yet (the minimum is 10 tasks per arm,
-  and a full block is needed).
+- Apply disqualification only. No arm is declared the winner and none is dropped as FUTILE yet: the era gate holds
+  both until every arm in contention has completed the newest era, which block 1 (the oldest tasks) does not reach.
+  Every arm therefore runs block 2.
 - Calibrate the simulator. The measured `r_dur_mult`, `r_p_off`, `r_ctx_ite`, tokens per pass and critic rounds go
   into `ralph_loop_sim.py`. It then forecasts day 2's leading indicators and accepted points per arm, written
   down before day 2 starts.
 
 ### 4.4 Day 2: replay block 2, and the live crossover starts
 
-- **Replay:** 12-25 more tasks per surviving arm. The sizes come from the recomputed power numbers, and the
-  budget goes to the arms still in contention.
+- **Replay:** the rest of the trial list, N − 12 more tasks per arm (N is the list's size: default 50, set by
+  `arena_trial.py build --n`; `arena_replay.py schedule` refuses any other task set). Every arm runs the whole list,
+  because no FUTILE drop is allowed before the newest era. A block cut short by the budget is CUT_SHORT_UNDECIDED at
+  `--final`, never NO_DIFFERENCE.
 - **Live, first half:**
   - The `trio` TestPilot takes SteveDesktop, and the `ralph_c` runner takes Archmagi. Each gets about 8-10
     matched candidates, 2 of them planted defects.
@@ -468,8 +475,8 @@ arm gets a first forecast of accepted/day.
 - **The build-half verdict:** lands only at the full trial size N, never earlier. Planners run the tasks oldest
   first, and the era gate (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST) holds every stop and every FUTILE drop until each
   arm has completed the newest era. The older forecast of 24-37 tasks per arm is withdrawn. A decision at N fits the
-  budget only when the trial has about 50 tasks or fewer. The default trial is therefore an explicit list of 50 frozen
-  tasks over all three eras (src/RimMandrake/Utils/arena/trial_tasks.json), not all 241.
+  budget only when the trial has about 50 tasks or fewer. The default trial is therefore an explicit list of N frozen
+  tasks (default 50, `arena_trial.py build --n`) over all three eras (src/RimMandrake/Utils/arena/trial_tasks.json), not all 241.
 - **First live-half numbers:** candidates resolved per lane-hour, reloads per resolved candidate, productive
   live-minute share, planted defects caught, invalid runs.
 
@@ -569,7 +576,8 @@ Assume an autonomous builder delivers about 12 effective hours a day, after revi
 
 **The cheapest useful slice:** steps 1-8 plus the `v3` half of step 9, about 43 hours. That gives Ralph A against
 today's FOUNDRY procedure on replayed tasks, the question the Ralph design doc's §8 trial asked. On these numbers
-it gives a 1.5× answer in about two trial days. Built by one builder, that answer is ready about day 5 from the go.
+it runs the whole trial list in about two trial days and decides a true 1.5× difference in about 40-50% of trials
+(section 3.5); otherwise the verdict is CONTINUE or a hard-cap pick, not a no-difference finding. Built by one builder, that answer is ready about day 5 from the go.
 
 **GPT's review before each arm runs.** Each arm, and the substrate as a whole, gets a blind GPT review before its
 first counted task. The review covers the code, the frozen tasks and this decision rule. A P0 finding stops that

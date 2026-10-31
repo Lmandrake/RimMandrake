@@ -72,7 +72,7 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
   - ERA GATE (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST; Conductor ruling 2026-10-30, owner authority): planners run
     tasks oldest first (sibling order, ARENA_PLANNERS_ENFORCE_SIBLING_ORDER), so an early look sees only old tasks
     and an arm x era effect can fire a false DECIDE from that prefix. The trial's tasks (--trial-tasks; default the
-    committed list trial_tasks.json, at most 50 tasks over all three eras, arena_trial.py) are ranked by `chrono`
+    committed list trial_tasks.json, N tasks (default 50, arena_trial.py --n) over all three eras, arena_trial.py) are ranked by `chrono`
     (`git rev-list --count base_sha`, --era-repo) into ERAS=3 bins, equal keys in one bin at the tie's upper rank. A
     look at which some arm in contention has not COMPLETED every task of the newest bin may neither stop nor drop: a
     would-be DECIDE_FOR_X, TIE, decision-blocked UNMEASURED or FUTILE is reported as verdict CONTINUE with `held` (the
@@ -1401,7 +1401,7 @@ def main(argv=None):
     r.add_argument("--raw-dir", help="read unsigned <arm>.jsonl from this dir instead of the signed log")
     r.add_argument("--tasks-dir", help="frozen task specs dir (default <arena>/tasks)")
     r.add_argument("--trial-tasks", help="file of the trial's task ids (arena_trial.py JSON, a JSON list, or one per "
-                   "line): the era gate's population (default: the committed list %s, at most 50 tasks; never every "
+                   "line): the era gate's population (default: the committed list %s, N tasks, default 50; never every "
                    "frozen task)" % TRIAL_DEFAULT.name)
     r.add_argument("--era-repo", help="git repo holding the tasks' base shas, for their chronology (default %s)" % A.REPO)
     r.add_argument("--allow-untrusted", action="store_true")

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""arena_trial.py — the trial's task population: an explicit list of at most 50 frozen tasks over all three eras
-(ARENA_TRIAL_TASKS_FIX_DEFAULT_ALL_FROZEN, Conductor ruling 2026-10-30, owner authority).
+"""arena_trial.py — the trial's task population: an explicit list of N frozen tasks over all three eras
+(ARENA_TRIAL_TASKS_FIX_DEFAULT_ALL_FROZEN, Conductor ruling 2026-10-30, owner authority). N is a parameter
+(`build --n`, default DEFAULT_N); nothing caps it (ARENA_TRIAL_SCHEDULE_FIX_STOPS_SHORT).
 
-Why a list and why 50: under the era gate (arena_analysis.py) a look may neither stop nor drop until every arm in
+Why a list and why the default size: under the era gate (arena_analysis.py) a look may neither stop nor drop until every arm in
 contention has completed the newest era of the TRIAL's tasks, and planners run oldest first (sibling order,
 arena_rounds.py), so decisions land only at the full trial size. With every frozen task (241) as the population
-the newest era is 80 tasks and the gate never opens within budget (about 50 tasks per arm); 50 or fewer fits.
+the newest era is 80 tasks and the gate never opens within budget (about 50 tasks per arm); a list that size or smaller fits, hence the default.
+A larger --n is allowed (a bigger budget); the replay must then run every listed task per arm.
 
 THE SELECTION (deterministic, no randomness):
   - the frozen bank (arena_analysis.load_tasks) with chronology keys (arena_analysis.chrono_keys: `git rev-list
@@ -25,7 +27,7 @@ The committed default (trial_tasks.json beside this file) is what `arena_analysi
 --trial-tasks. Rebuild it after the frozen pool changes (another builder vets the pool): a list naming a task with
 no frozen spec makes the analysis UNMEASURED (fail closed), never a silent shrink.
 
-usage: arena_trial.py build [--n 50] [--no-csharp] [--no-check] [--out PATH]   (default out: trial_tasks.json)
+usage: arena_trial.py build [--n N] [--no-csharp] [--no-check] [--out PATH]   (default out: trial_tasks.json)
        arena_trial.py show [PATH]
 """
 from __future__ import annotations
@@ -42,7 +44,7 @@ import arena_tasks as A  # noqa: E402
 
 SCHEMA = "arena_trial_tasks/1"
 DEFAULT_PATH = HERE / "trial_tasks.json"
-MAX_N = 50
+DEFAULT_N = 50          # the default trial size, NOT a cap: `build --n` takes any positive int
 CSHARP = "csharp"
 
 
@@ -73,10 +75,10 @@ def _quotas(total, sizes):
     return q
 
 
-def select(tasks: dict, n: int = MAX_N, csharp: bool = True) -> list[str]:
+def select(tasks: dict, n: int = DEFAULT_N, csharp: bool = True) -> list[str]:
     """tasks: {id: {"kind":..., "chrono": int}} -> at most n ids over all ERAS eras, oldest first. Pure."""
-    if not (isinstance(n, int) and 0 < n <= MAX_N):
-        raise TrialError("n must be an int in 1..%d (got %r)" % (MAX_N, n))
+    if not (isinstance(n, int) and not isinstance(n, bool) and n > 0):
+        raise TrialError("n must be a positive int (got %r)" % (n,))
     pool = {t: s for t, s in tasks.items() if csharp or s.get("kind") != CSHARP}
     eras, why = AA.era_map(pool)
     if eras is None:
@@ -118,7 +120,7 @@ def check_order(ids, bank: dict, fixes: dict, repo) -> None:
     RD.check_rounds(list(ids), contains)
 
 
-def build(n=MAX_N, csharp=True, check=True, repo=None, p=None) -> dict:
+def build(n=DEFAULT_N, csharp=True, check=True, repo=None, p=None) -> dict:
     bank = AA.load_tasks(p)
     nokey = AA.chrono_keys(bank, repo)
     if nokey:
@@ -161,7 +163,7 @@ def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     sub = ap.add_subparsers(dest="cmd", required=True)
     b = sub.add_parser("build")
-    b.add_argument("--n", type=int, default=MAX_N)
+    b.add_argument("--n", type=int, default=DEFAULT_N, help="trial size (default %(default)s; no cap)")
     b.add_argument("--no-csharp", action="store_true", help="leave C# tasks out (default: in proportion)")
     b.add_argument("--no-check", action="store_true", help="skip the git sibling-order check")
     b.add_argument("--repo", help="git repo holding the base shas (default %s)" % A.REPO)
