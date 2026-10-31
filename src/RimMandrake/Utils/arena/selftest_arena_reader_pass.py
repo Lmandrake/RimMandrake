@@ -288,6 +288,17 @@ def rules_v3():
         (res / "RP_IMPNAMED.json").write_text(json.dumps({"schema": R.VERDICT_SCHEMA, "task": "RP_IMPNAMED",
                                                           "packet_sha256": R.packet_sha(pn)}))
         check(R.state(p, repo=repo)["RP_IMPNAMED"][0] == "done", "v4: a current-schema verdict, same packet sha, is done")
+        jf = Path(p["judge"]) / "RP_IMPNAMED.json"
+        hid = json.loads(jf.read_text())
+        shas, bodies = [], []
+        for tailend in ("assert value == 1\n", "assert value == 2\n"):
+            hid["checks"][0]["body"] = "# pad\n" * 5000 + tailend
+            jf.write_text(json.dumps(hid))
+            pk2 = R.build_packet("RP_IMPNAMED", p, repo)
+            shas.append(R.packet_sha(pk2))
+            bodies.append(pk2["checks"][0]["body"])
+        check(bodies[0] == bodies[1] and shas[0] != shas[1],
+              "v4: an edit past the body clip still changes the packet sha (the verdict goes stale)")
 
 
 UN = {"fix_only_unnamed": ["_private_two", "newmod", "lanes"]}
@@ -403,11 +414,16 @@ def rules_v4():
               "AssertionError: expected 2 got 1; note has no attribute '_private_two'",
               "FAIL gate reported: cannot import name '_private_two'",
               "E   AssertionError: has no attribute '_private_two'", "not ok 2 - has no attribute '_private_two'",
-              "ValueError: invalid dimensions", "Exception: bad dims",
+              "ValueError: invalid dimensions", "Exception: bad dims", "AssertionError - has no attribute '_private_two'",
               "FAILED tests/t.py::t - AssertionError: No module named 'newmod'"):
         check(veto(MISS + t + "\n") is None and R.base_failure(MISS + t + "\n", UN)["behaviour_lines"] >= 1,
               "C7/C8: %r beside a missing name is behaviour (no veto)" % t)
     check(veto(MISS) == "missing_name_only", "control: the missing name alone vetoes")
+    for t in ("FAILED t.py::t - TypeError: run() got an unexpected keyword argument 'lanes'",
+              "=== 1 failed in 0.12s ===", "AttributeError: module 'tool' has no attribute 'named_new_api'"):
+        check(veto(MISS + t + "\n") == "missing_name_only", "%r beside a fix-only unnamed name keeps the veto" % t)
+    check(veto('KeyError: "No module named \'newmod\'"\n') is None,
+          "a line led by another error class is that error (behaviour), whatever its message quotes")
     check(veto(MISS + "ImportError: DLL load failed while importing _native\n") == "missing_name_only",
           "an import/attribute/name error class is never behaviour, even without a missing-name message")
     forms = ("No module named 'a.b.m1'\ncannot import name 'm2' from 'x'\nAttributeError: 'X' has no attribute 'm3'\n"

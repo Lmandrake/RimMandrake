@@ -339,11 +339,11 @@ _REASON = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Ex
                      r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b|(?i:\bfail(?:s|ed|ure|ures|ing)?\b)"
                      r"|\b(?:Error|Exception):")
 _BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|\bFAILED\b(?! \()|\bexpected\b|\bnot ok\b"
-                        r"|\b(?!(?:ModuleNotFound|Import|Attribute|Name)Error\b)[A-Z]\w*(?:Error|Exception)\b"
+                        r"|\b[A-Z]\w*(?:Error|Exception)\b"
                         r"|\b(?:Error|Exception):")
 # (v4 review: an error class other than the missing-name classes, `ValueError: ...`, `KeyError`, `TypeError`, is a
-# failure that is not a missing name, so the check is not red for the missing name only; a TypeError that IS the
-# missing-name form, `unexpected keyword argument`, still reads as missing, see _is_behaviour)
+# failure that is not a missing name, so the check is not red for the missing name only; _is_behaviour sets aside
+# the missing-name classes (_MISSING_CLASS) and the `unexpected keyword argument` TypeError)
 # RULES v4: which lines of a tail are OUTCOME lines (C2, C5). Not outcome: the source line Python prints under a
 # traceback `File "...", line N` (it quotes the check's own `assert`/`expected` text), the File line itself, pytest's
 # quoted source (the `>   ` failing line and the indented or blank lines directly above it), and a
@@ -357,8 +357,12 @@ _NEUTRAL = re.compile(r"\b0\s+fail\w*|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.
 # C7: a missing-name message on an assertion or FAIL line is that check's own failure report (behaviour), unless the
 # line also names the import/attribute/name error class (`FAIL: ImportError: cannot import name ...`), which is the
 # missing name reported again.
-_BEH_PREFIX = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b|FAIL\b|FAILED\b|not ok\b)")
-_MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b")
+# A line LED by another error class (`KeyError: "No module named ..."`) is that error, so behaviour too. The C4 form
+# (`TypeError: ... unexpected keyword argument`) counts as a missing-name class wherever it appears.
+_BEH_PREFIX = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b|FAIL\b|FAILED\b|not ok\b"
+                         r"|(?!(?:ModuleNotFound|Import|Attribute|Name|Type)Error\b)[A-Z]\w*(?:Error|Exception):)")
+_MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
+                            r"|\bTypeError\b.*\bunexpected keyword argument\b")
 
 
 def outcome_lines(tail) -> list[str]:
@@ -391,7 +395,7 @@ def outcome_lines(tail) -> list[str]:
 def _is_behaviour(ln) -> bool:
     if not _BEHAVIOUR.search(ln):
         return False
-    if not any(rx.search(ln) for rx in _MISSING_NAME):
+    if not _MISSING_CLASS.search(ln) and not any(rx.search(ln) for rx in _MISSING_NAME):
         return True
     return bool(_BEH_PREFIX.match(ln)) and not _MISSING_CLASS.search(ln)
 
@@ -410,9 +414,11 @@ def base_failure(tail, names: dict, extra: dict | None = None) -> dict:
     """Why the check is red at base, read from its stored base tail plus the name lookups. veto:
     no_reason_visible  the tail shows no failure reason at all (no traceback, *Error, FAIL, assert, compiler
                        error): nothing proves the check goes red for the defect, so it may not be KEPT;
-    missing_name_only  every failure line is a missing module/name that the FIX introduced and the task text does
-                       not name (fix_only_unnamed), with no behavioural failure line beside it: the check is red at
-                       base for the missing name, not the defect, and pins the fix's private API."""
+    missing_name_only  the tail cites a missing module/name that the FIX introduced and the task text does not
+                       name (fix_only_unnamed), with no behavioural failure line beside it: the check is red at base
+                       for a missing name, not the defect, and pins the fix's private API. Another missing name
+                       beside it (even one the task names) does not lift the veto: the private one is still pinned.
+                       A lowercase `N failed` count is not behaviour (every red run prints one)."""
     tail = tail or ""
     lines = outcome_lines(tail)
     cited = missing_names_cited("\n".join(lines))      # v4 review: a missing name on a pass/source line is no evidence
@@ -463,6 +469,8 @@ def build_packet(task_id, p=None, repo=None, vet=None, cache=None) -> dict:
                        "new_file": old is None, "test_diff": _clip(td, TEST_DIFF_CHARS),
                        "check_named_in_task": Path(c["path"]).name in task_text or c["path"] in task_text,
                        "names": names, **({"cited_names": extra} if extra is not None else {}),
+                       # the UNCLIPPED inputs: an edit past a clip limit still changes the packet sha (stale verdict)
+                       "source_sha256": hashlib.sha256(json.dumps([c.get("body"), tail, td]).encode()).hexdigest(),
                        "base_failure": base_failure(tail, names, extra) if tail is not None else None})
     return {"task": task_id, "prompt": t.get("prompt"), "criteria": t.get("criteria"), "kind": t.get("kind"),
             "fix_diff": fix_diff_summary(repo, fix_sha, [c["path"] for c in checks]),
