@@ -64,9 +64,20 @@
 (*     can yield -- the model's Fence-to-pending loop plus Check cancel /  *)
 (*     KillSurvives "failed".  A gate that held forever would break L2.    *)
 (*                                                                         *)
-(* Not modelled: the windows or the dispatcher dying on their own mid-     *)
-(* handoff, record recovery after a dispatcher restart, a wake that dies   *)
-(* after consuming its token (ARENA_HANDOFF_PROVE_SURVIVES_PROCESS_DEATH). *)
+(* Process death (ARENA_HANDOFF_PROVE_SURVIVES_PROCESS_DEATH).  Deaths is  *)
+(* the set of deaths the environment may do, at most one per behaviour;    *)
+(* {} leaves every other state as it was.                                  *)
+(*   "old_alone"  the old window dies by itself mid-handoff (OldDiesAlone) *)
+(*   "dispatcher" the Dispatcher dies, anywhere up to the relaunch, and    *)
+(*                comes back from a state.json saved before that tick      *)
+(*                (DispatcherDies/DispatcherRestarts; tick() saves only in *)
+(*                its finally, so a SIGKILL loses the tick's state)        *)
+(*   "wake"       the fresh window dies after its wake read (WakeDies)     *)
+(* Respawn is a later fresh window with no restart generation: what a      *)
+(* fleet launch or the owner opens.  Its fairness is generous on purpose:  *)
+(* seat_loop.sh drops to a login shell after a death with no record, so    *)
+(* in the code it may need him.  selftest_seat_restart_death.py shows each *)
+(* of these on real processes under real SIGKILL.                          *)
 (***************************************************************************)
 EXTENDS Naturals, FiniteSets
 
@@ -76,11 +87,14 @@ CONSTANTS Msgs,              \* owner messages that may arrive (model values)
           MaxGoodbyes,       \* goodbye attempts (a cancelled one may be retried)
           MaxReloads,        \* game (re)launches the pilot may spend
           MaxCrashes,
-          YieldBound         \* driver steps allowed between his return and the game being freed
+          YieldBound,        \* driver steps allowed between his return and the game being freed
+          Deaths             \* subset of DeathNames: the process deaths the environment may do
 
 BugNames == {"goodbye_unfixed", "relaunch_after_survive", "verdict_stale", "deploy_live",
              "silent_reload", "queue_in_memory", "switch_early", "no_park", "ignore_owner", "closeout_skips_queue"}
 ASSUME Bugs \subseteq BugNames
+DeathNames == {"old_alone", "dispatcher", "wake"}
+ASSUME Deaths \subseteq DeathNames
 
 Ctx   == {"old", "new"}
 Cands == {"c1", "c2"}
@@ -113,9 +127,11 @@ VARIABLES
   reloadRuleN, \* the newest rule's n as seen by the newest reload
   lastEmit,    \* lastEmit[c] = n of c's newest event or push
   switchN,     \* switchN[c] = n of the switch event that ended c (0 = none)
-  verdicts     \* set of <<sha the verdict is for, sha the game had loaded>>
+  verdicts,    \* set of <<sha the verdict is for, sha the game had loaded>>
+  deaths,      \* process deaths so far (at most one per behaviour)
+  dispDown     \* the Dispatcher process is dead
 
-vars == <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, sent, pos, handled, inbox,
+vars == <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, sent, pos, handled, inbox,
           dropped, lost, game, deployed, loaded, lock, holds, cand, testBy, ownerHome,
           yieldSteps, crashes, reloads, ruleOpen, n, ruleN, reloadN, prevReloadN,
           reloadRuleN, lastEmit, switchN, verdicts>>
@@ -131,7 +147,7 @@ WakeFrom == IF Bug("goodbye_unfixed") THEN reqPos ELSE recCursor
 InputAfter(p) == \E m \in sent : pos[m] > p
 
 Init ==
-  /\ hp = "none" /\ goodbyes = 0
+  /\ hp = "none" /\ goodbyes = 0 /\ deaths = 0 /\ dispDown = FALSE
   /\ cst = [c \in Ctx |-> IF c = "old" THEN "live" ELSE "none"]
   /\ txLen = 0 /\ cursor = 0 /\ reqPos = 0 /\ recCursor = 0
   /\ sent = {} /\ pos = [m \in Msgs |-> 0] /\ handled = {} /\ inbox = {}
@@ -163,7 +179,7 @@ Send(m) ==
      ELSE /\ RC_DROPS_TO_DEAD          \* else no window is up: his phone holds it until one is
           /\ dropped' = dropped \cup {m}
           /\ UNCHANGED <<txLen, pos, inbox>>
-  /\ UNCHANGED <<hp, goodbyes, cst, cursor, reqPos, recCursor, handled, lost, gameVars, n,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, cursor, reqPos, recCursor, handled, lost, gameVars, n,
                  lastEmit, switchN>>
 
 \* His whole-message goodbye (or a pilot handoff request, or `arena switch`).
@@ -177,26 +193,26 @@ Goodbye ==
   /\ cursor' = txLen + 1                        \* fixed: bound to his goodbye (input_ts, tx_offset)
   /\ cst' = [cst EXCEPT !["old"] = "closing"]
   /\ hp' = "closeout"
-  /\ UNCHANGED <<reqPos, recCursor, msgVars, gameVars, n, lastEmit, switchN>>
+  /\ UNCHANGED <<deaths, dispDown, reqPos, recCursor, msgVars, gameVars, n, lastEmit, switchN>>
 
 Arrive(c) ==
   /\ cand[c] = "future"
   /\ cand' = [cand EXCEPT ![c] = IF ownerHome /\ ~Bug("no_park") THEN "parked" ELSE "queued"]
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, lock, holds, testBy, ownerHome, yieldSteps, crashes, reloads, ruleOpen,
                  n, ruleN, reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
 Crash ==
   /\ game = "up" /\ crashes < MaxCrashes
   /\ game' = "down" /\ loaded' = "none" /\ crashes' = crashes + 1
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, deployed, lock,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, deployed, lock,
                  holds, cand, testBy, ownerHome, yieldSteps, reloads, ruleOpen, n, ruleN,
                  reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
 OwnerReturns ==
   /\ ~ownerHome
   /\ ownerHome' = TRUE
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, lock, holds, cand, testBy, yieldSteps, crashes, reloads, ruleOpen, n,
                  ruleN, reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -204,7 +220,7 @@ OwnerReturns ==
 OwnerTakes ==
   /\ ownerHome /\ lock = "none"
   /\ lock' = "owner"
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, holds, cand, testBy, ownerHome, yieldSteps, crashes, reloads, ruleOpen,
                  n, ruleN, reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -222,14 +238,14 @@ HandleOld(m) ==
   /\ Alive("old") /\ pos[m] > 0 /\ m \notin handled
   /\ handled' = handled \cup {m}
   /\ Emit("old")
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, sent, pos, inbox,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, sent, pos, inbox,
                  dropped, lost, gameVars, switchN>>
 
 HandleNew(m) ==
   /\ cst["new"] = "live" /\ m \in inbox /\ m \notin handled
   /\ handled' = handled \cup {m}
   /\ Emit("new")
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, sent, pos, inbox,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, sent, pos, inbox,
                  dropped, lost, gameVars, switchN>>
 
 (*************************** the handoff (Dispatcher / arena switch) ***************************)
@@ -243,10 +259,11 @@ CloseOut ==
   /\ reqPos' = txLen
   /\ cst' = [cst EXCEPT !["old"] = "idle"]
   /\ hp' = "pending"
-  /\ UNCHANGED <<goodbyes, txLen, cursor, recCursor, msgVars, gameVars, n, lastEmit, switchN>>
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, recCursor, msgVars, gameVars, n, lastEmit, switchN>>
 
 \* Grace over: any input after the bound cancels; else the window is quiet.
 Check ==
+  /\ ~dispDown
   /\ hp = "pending"
   /\ IF InputAfter(Bound)
        THEN /\ hp' = "cancelled"
@@ -258,20 +275,24 @@ Check ==
                  THEN /\ n' = n + 1
                       /\ switchN' = [switchN EXCEPT !["old"] = n + 1]
                  ELSE UNCHANGED <<n, switchN>>
-  /\ UNCHANGED <<goodbyes, txLen, cursor, reqPos, recCursor, msgVars, gameVars, lastEmit>>
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, reqPos, recCursor, msgVars, gameVars, lastEmit>>
 
 \* Fixed only: the killed record (with the cursor) reaches disk before the final fence.
 WriteRecord ==
+  /\ ~dispDown
   /\ hp = "checked" /\ ~Bug("goodbye_unfixed")
   /\ recCursor' = cursor
   /\ hp' = "recorded"
-  /\ UNCHANGED <<goodbyes, cst, txLen, cursor, reqPos, msgVars, gameVars, n, lastEmit, switchN>>
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, msgVars, gameVars, n, lastEmit, switchN>>
 
 \* Fixed only: the final fence re-reads the transcript from the cursor; growth puts it back to pending.
 Fence ==
+  /\ ~dispDown
   /\ hp = "recorded"
-  /\ hp' = IF InputAfter(cursor) THEN "pending" ELSE "fenced"
-  /\ UNCHANGED <<goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, gameVars, n,
+  /\ hp' = IF ~InputAfter(cursor) THEN "fenced"
+           ELSE IF Alive("old") THEN "pending"
+           ELSE "orphaned"                  \* aborted, and the next tick finds the session gone
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, gameVars, n,
                  lastEmit, switchN>>
 
 KillReady == IF Bug("goodbye_unfixed") THEN hp = "checked" ELSE hp = "fenced"
@@ -279,6 +300,7 @@ KillReady == IF Bug("goodbye_unfixed") THEN hp = "checked" ELSE hp = "fenced"
 \* The kill succeeds: the process is gone; its EXIT trap releases the bridge; an in-flight test
 \* goes back to the durable queue (or, with queue_in_memory, the old pilot's queue dies with it).
 KillOk ==
+  /\ ~dispDown
   /\ KillReady
   /\ cst' = [cst EXCEPT !["old"] = "dead"]
   /\ holds' = [holds EXCEPT !["old"] = FALSE]
@@ -289,16 +311,18 @@ KillOk ==
                 ELSE cand[c]]
   /\ testBy' = [c \in Cands |-> IF testBy[c] = "old" THEN "none" ELSE testBy[c]]
   /\ hp' = "killed"
-  /\ UNCHANGED <<goodbyes, txLen, cursor, reqPos, recCursor, msgVars, game, deployed, loaded,
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, reqPos, recCursor, msgVars, game, deployed, loaded,
                  ownerHome, yieldSteps, crashes, reloads, ruleOpen, n, ruleN, reloadN,
                  prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
 \* The kill does not take (kill_pid "survived"/"refused"): never relaunch beside it.
 KillSurvives ==
+  /\ ~dispDown
   /\ KillReady
+  /\ Alive("old")                               \* a window already dead reads "already gone": KillOk
   /\ cst' = [cst EXCEPT !["old"] = "live"]
   /\ hp' = IF Bug("relaunch_after_survive") THEN "killed" ELSE "failed"
-  /\ UNCHANGED <<goodbyes, txLen, cursor, reqPos, recCursor, msgVars, gameVars, n, lastEmit,
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, reqPos, recCursor, msgVars, gameVars, n, lastEmit,
                  switchN>>
 
 SwitchRecord ==
@@ -308,7 +332,7 @@ SwitchRecord ==
        ELSE /\ n' = n + 1
             /\ switchN' = [switchN EXCEPT !["old"] = n + 1]
   /\ hp' = "switched"
-  /\ UNCHANGED <<goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, gameVars, lastEmit>>
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, gameVars, lastEmit>>
 
 \* The fresh context starts and its wake reads the old transcript after WakeFrom.
 Relaunch ==
@@ -318,11 +342,72 @@ Relaunch ==
         /\ lost' = {m \in sent : pos[m] > 0 /\ m \notin handled /\ m \notin read}
   /\ cst' = [cst EXCEPT !["new"] = "live"]
   /\ hp' = "done"
-  /\ UNCHANGED <<goodbyes, txLen, cursor, reqPos, recCursor, sent, pos, handled, dropped,
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, reqPos, recCursor, sent, pos, handled, dropped,
                  gameVars, n, lastEmit, switchN>>
 
+\* Death 1.  Before the killed record exists the next tick finds the session gone and cancels: no
+\* record, so the tile does not relaunch and no wake reads the cursor.  From the record on a
+\* SIGKILLed window leaves its session file saying idle, so execute() carries on: the fence still
+\* reads the transcript and kill_pid says "already gone".
+OldDiesAlone ==
+  /\ "old_alone" \in Deaths /\ deaths = 0
+  /\ hp \in {"closeout", "pending", "checked", "recorded", "fenced"}
+  /\ deaths' = 1
+  /\ cst' = [cst EXCEPT !["old"] = "dead"]
+  /\ holds' = [holds EXCEPT !["old"] = FALSE]
+  /\ lock' = IF lock = "old" THEN "none" ELSE lock
+  /\ hp' = IF hp \in {"recorded", "fenced"} THEN hp ELSE "orphaned"
+  /\ UNCHANGED <<goodbyes, dispDown, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+                 loaded, cand, testBy, ownerHome, yieldSteps, crashes, reloads, ruleOpen, n, ruleN,
+                 reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
+
+\* Death 2.  What the Dispatcher did to the window and the record stands; its memory of the tick does not.
+DispatcherDies ==
+  /\ "dispatcher" \in Deaths /\ deaths = 0
+  /\ hp \in {"pending", "checked", "recorded", "fenced", "killed", "switched"}
+  /\ deaths' = 1 /\ dispDown' = TRUE
+  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, gameVars, n,
+                 lastEmit, switchN>>
+
+\* It reads state.json from before the tick: "pending".  With the old window alive it judges again;
+\* once the kill happened the record on disk is enough and the tile needs no Dispatcher.
+DispatcherRestarts ==
+  /\ dispDown
+  /\ dispDown' = FALSE
+  /\ hp' = IF hp \in {"checked", "recorded", "fenced"} THEN "pending" ELSE hp
+  /\ UNCHANGED <<goodbyes, deaths, cst, txLen, cursor, reqPos, recCursor, msgVars, gameVars, n,
+                 lastEmit, switchN>>
+
+\* Death 3.  The wake printed his messages and set woken_at; nothing has answered them yet.
+WakeDies ==
+  /\ "wake" \in Deaths /\ deaths = 0
+  /\ hp = "done" /\ cst["new"] = "live"
+  /\ deaths' = 1
+  /\ hp' = "wake_dead"
+  /\ cst' = [cst EXCEPT !["new"] = "dead"]
+  /\ holds' = [holds EXCEPT !["new"] = FALSE]
+  /\ lock' = IF lock = "new" THEN "none" ELSE lock
+  /\ cand' = [c \in Cands |-> IF cand[c] = "testing" /\ testBy[c] = "new" THEN "queued" ELSE cand[c]]
+  /\ testBy' = [c \in Cands |-> IF testBy[c] = "new" THEN "none" ELSE testBy[c]]
+  /\ UNCHANGED <<goodbyes, dispDown, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+                 loaded, ownerHome, yieldSteps, crashes, reloads, ruleOpen, n, ruleN, reloadN,
+                 prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
+
+\* A later fresh window, with no generation token: no record is replayed to it, so every message
+\* no context answered is gone (a pointer in the wake text is not a read).
+Respawn ==
+  /\ hp \in {"orphaned", "wake_dead"}
+  /\ hp' = "respawned"
+  /\ cst' = [cst EXCEPT !["new"] = "live"]
+  /\ lost' = lost \cup {m \in sent : m \notin handled /\ (pos[m] > 0 \/ m \in inbox)}
+  /\ inbox' = {}
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, reqPos, recCursor, sent, pos, handled,
+                 dropped, gameVars, n, lastEmit, switchN>>
+
+\* CloseOut is the window's.  SwitchRecord and Relaunch are the tile reading the killed record: no
+\* Dispatcher needed (seat_loop.sh, intile_claim).
 Dispatcher == CloseOut \/ Check \/ WriteRecord \/ Fence \/ KillOk \/ KillSurvives
-              \/ SwitchRecord \/ Relaunch
+              \/ SwitchRecord \/ Relaunch \/ DispatcherRestarts \/ Respawn
 
 (*************************** the pilot driving the game ***************************)
 
@@ -336,7 +421,7 @@ Take(d) ==
   /\ \/ lock = "none"
      \/ lock \in Ctx /\ ~Alive(lock)            \* a dead holder's tag is stale
   /\ lock' = d /\ holds' = [holds EXCEPT ![d] = TRUE]
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, cand, testBy, ownerHome, yieldSteps, crashes, reloads, ruleOpen, n,
                  ruleN, reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -344,7 +429,7 @@ HotApply(d, c) ==
   /\ Starting(d) /\ cand[c] = "queued" /\ Class[c] = "hot" /\ game = "up" /\ loaded # Sha[c]
   /\ deployed' = Sha[c] /\ loaded' = Sha[c]
   /\ Step(d)   \* no Emit: with it FixedSafety outgrew 480 s; S6 here rests on Pilot(d) needing a live context
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, lock,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, lock,
                  holds, cand, testBy, ownerHome, crashes, reloads, ruleOpen, n, ruleN, reloadN,
                  prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -353,7 +438,7 @@ StopGame(d) ==
   /\ \E c \in Queued : Class[c] = "cs" /\ deployed # Sha[c]
   /\ game' = "down" /\ loaded' = "none"
   /\ Step(d)
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, deployed, lock,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, deployed, lock,
                  holds, cand, testBy, ownerHome, crashes, reloads, ruleOpen, n, ruleN, reloadN,
                  prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -362,7 +447,7 @@ Deploy(d, c) ==
   /\ game = "down" \/ Bug("deploy_live")
   /\ deployed' = Sha[c]
   /\ Step(d)   \* no Emit: with it FixedSafety outgrew 480 s; S6 here rests on Pilot(d) needing a live context
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, loaded,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, loaded,
                  lock, holds, cand, testBy, ownerHome, crashes, reloads, ruleOpen, n, ruleN,
                  reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -372,7 +457,7 @@ LogRule(d) ==
   /\ ~Bug("silent_reload")
   /\ ruleOpen' = TRUE /\ Emit(d) /\ ruleN' = n + 1
   /\ Step(d)
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, lock, holds, cand, testBy, ownerHome, crashes, reloads, reloadN,
                  prevReloadN, reloadRuleN, switchN, verdicts>>
 
@@ -382,14 +467,14 @@ Launch(d) ==
   /\ game' = "up" /\ loaded' = deployed /\ reloads' = reloads + 1 /\ ruleOpen' = FALSE
   /\ Emit(d) /\ prevReloadN' = reloadN /\ reloadN' = n + 1 /\ reloadRuleN' = ruleN
   /\ Step(d)
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, deployed, lock,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, deployed, lock,
                  holds, cand, testBy, ownerHome, crashes, ruleN, switchN, verdicts>>
 
 StartTest(d, c) ==
   /\ Starting(d) /\ cand[c] = "queued" /\ game = "up" /\ loaded = Sha[c]
   /\ cand' = [cand EXCEPT ![c] = "testing"] /\ testBy' = [testBy EXCEPT ![c] = d]
   /\ Step(d)
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, lock, holds, ownerHome, crashes, reloads, ruleOpen, n, ruleN, reloadN,
                  prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -404,7 +489,7 @@ Verdict(d, c) ==
   /\ testBy' = [testBy EXCEPT ![c] = "none"]
   /\ Emit(d)
   /\ Step(d)
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, lock, holds, ownerHome, crashes, reloads, ruleOpen, ruleN, reloadN,
                  prevReloadN, reloadRuleN, switchN>>
 
@@ -413,7 +498,7 @@ Park(d, c) ==
   /\ Starting(d) /\ cand[c] = "queued" /\ game = "down" /\ reloads = MaxReloads
   /\ cand' = [cand EXCEPT ![c] = "parked"]
   /\ Step(d)
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, lock, holds, testBy, ownerHome, crashes, reloads, ruleOpen, n, ruleN,
                  reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -427,7 +512,7 @@ Yield(d) ==
   /\ cand' = [c \in Cands |-> IF cand[c] = "queued" /\ ~Bug("no_park") THEN "parked" ELSE cand[c]]
   /\ lock' = IF holds[d] THEN "none" ELSE lock
   /\ holds' = [holds EXCEPT ![d] = FALSE]
-  /\ UNCHANGED <<hp, goodbyes, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
+  /\ UNCHANGED <<hp, goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, recCursor, msgVars, game, deployed,
                  loaded, testBy, ownerHome, yieldSteps, crashes, reloads, ruleOpen, n, ruleN,
                  reloadN, prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
@@ -438,7 +523,9 @@ Driver(d) == \/ Take(d) \/ StopGame(d) \/ LogRule(d) \/ Launch(d) \/ Yield(d)
 System == Dispatcher \/ \E m \in Msgs : HandleOld(m) \/ HandleNew(m)
           \/ \E d \in Ctx : Driver(d) \/ OwnerTakes
 
-Next == Env \/ System
+Death == OldDiesAlone \/ DispatcherDies \/ WakeDies     \* environment: never fair
+
+Next == Env \/ System \/ Death
 
 Spec == /\ Init /\ [][Next]_vars
         /\ WF_vars(Dispatcher)
@@ -450,7 +537,7 @@ Spec == /\ Init /\ [][Next]_vars
 
 TypeOK ==
   /\ hp \in {"none", "closeout", "pending", "checked", "recorded", "fenced", "killed",
-             "switched", "done", "cancelled", "failed"}
+             "switched", "done", "cancelled", "failed", "orphaned", "wake_dead", "respawned"}
   /\ cst \in [Ctx -> {"none", "live", "closing", "idle", "dead"}]
   /\ sent \subseteq Msgs /\ handled \subseteq sent /\ inbox \subseteq Msgs
   /\ game \in {"up", "down"} /\ deployed \in Shas /\ loaded \in Shas \cup {"none"}
@@ -486,4 +573,12 @@ L1 == \A c \in Cands : cand[c] = "queued" ~> cand[c] \in Done
 
 \* L2: his return frees the Archmagi game.
 L2 == ownerHome ~> lock = "owner"
+
+\* L3: every message he sends is eventually answered, or read by a live window that can answer it.
+L3 == \A m \in Msgs : m \in sent ~> (m \in handled \/ (m \in inbox /\ cst["new"] = "live"))
+
+\* Witnesses, each expected VIOLATED: the instrument can see what the dispatcher case passes on.
+NoDeath == deaths = 0
+\* A wake recovered a message while the Dispatcher was still dead.
+NoTileRecovery == ~(dispDown /\ hp = "done" /\ inbox # {})
 =============================================================================
