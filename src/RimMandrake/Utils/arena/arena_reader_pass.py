@@ -43,6 +43,17 @@ check goes red for the defect) or missing_name_only (every failure is ModuleNotF
 NameError, or the C# kin, on a fix_only_unnamed name, with no behavioural failure beside it). A KEEP is refused when
 the packet has a veto or the reader answers fails_for_defect false; such a check is UNSCORE_CHECK or DROP_TASK.
 
+RULES v4 (ARENA_READER_REPAIR_RULES_MISS_PLANTS; BENCH plants D:\\ClaudeWork\\rimmandrake\\arena\\verify_reader2\\
+report.md C1-C8). base_failure reads only OUTCOME lines: not the source line a traceback quotes, not a caret line,
+not an `ok`/`PASS` line, and a zero count (`0 FAIL`) or a negated error (`no ValueError raised`) is not a reason (C2,
+C5); a lowercase `failed`/`failure` is one (C6). An assertion or FAIL line that mentions a missing name stays
+behaviour (C7), and KeyError/TypeError/pytest `FAILED test` lines are behaviour (C8); `got an unexpected keyword
+argument 'x'` is a missing name (C4). A name the check defines but also reads from the repo (`_x = tool._x`) is
+looked up (C1), and the lookup ignores prose files (C3; name cache keyed by NAME_LOOKUP_VERSION). The TRANSIENT_PIN
+refusal (a task offering "drop the trailer or name the script" with checks pinning one alternative) stays the
+reader's judgement: no mechanical predicate separates it from a fair check (an " or " in the task text is in many
+fair tasks; the pinned script name exists at base, so no lookup flags it).
+
     run     read every survivor without a current verdict; one JSON file per task under the results dir (default
             <arena>/judge/reader/verdicts/, judge-only: the packets hold hidden check bodies). Resumable: a task
             whose verdict file matches its packet's sha256 is skipped; a changed packet (re-vet, new body) is
@@ -89,7 +100,7 @@ sys.path.insert(0, str(HERE))
 import arena_tasks as A  # noqa: E402
 import arena_trial as T  # noqa: E402
 
-VERDICT_SCHEMA = "arena_reader_verdict/3"   # /3: rules v3 (see docstring); /1 and /2 verdicts read as pending
+VERDICT_SCHEMA = "arena_reader_verdict/4"   # /4: rules v4 (see docstring); /1../3 verdicts read as pending
 VERDICTS = ("KEEP", "UNSCORE_CHECK", "DROP_TASK")
 BOOL_FIELDS = ("tests_task", "solvable_from_text", "coupled", "self_overwrite", "partial_legs", "brittle_format",
                "format_stated", "fails_for_defect")
@@ -212,31 +223,52 @@ def new_line_names(diff_text) -> list[str]:
 
 _DEFINED = re.compile(r"(?:\b(?:def|class|void|bool|int|string|var|static)\s+([A-Za-z_]\w*))|(?:^\s*([A-Za-z_]\w*)\s*=[^=])",
                       re.M)
+_IMPORT_LINE = re.compile(r"^\s*(?:from\s+\S+\s+)?import\b.*$", re.M)
 
 
 def defined_in(body) -> set:
-    """Names the check body defines itself (def/class/typed declaration/top-of-line assignment): they travel with the
-    hidden copy, so they are never coupling and are not looked up (an absent name costs a full-tree grep)."""
-    return {g for m in _DEFINED.finditer(body or "") for g in m.groups() if g}
+    """Names the check body defines FROM SCRATCH (def/class/typed declaration/top-of-line assignment): they travel
+    with the hidden copy, so they are never coupling and are not looked up (an absent name costs a full-tree grep).
+    RULES v4 (C1): a name the body also READS from elsewhere, in attribute position (`tool._x`) or on an import line
+    (`from tool import _x`), is not from scratch: `_x = tool._x` or `def _x(): return tool._x()` is an alias of the
+    repo's name and still pins it, so it is looked up like any other."""
+    body = body or ""
+    imported = set(_IDENT.findall(" ".join(_IMPORT_LINE.findall(body))))
+    out = set()
+    for n in {g for m in _DEFINED.finditer(body) for g in m.groups() if g}:
+        if n in imported or re.search(r"\.\s*" + re.escape(n) + r"\b", body):
+            continue
+        out.add(n)
+    return out
+
+
+# RULES v4 (C3): a name that occurs at a commit only in prose (a plan in a .md, a ledger line) is not discoverable
+# code: the lookup and the file-stem match skip these suffixes.
+PROSE_SUFFIXES = (".md", ".markdown", ".txt", ".rst", ".adoc", ".org", ".jsonl", ".log", ".csv")
+NAME_LOOKUP_VERSION = 2       # in the name-cache key: /1 lookups (whole tree, prose included) are never reused
 
 
 def _grep_names(repo, sha, names, exclude_path) -> set:
-    """Which of `names` occur as whole words anywhere in the tree at `sha`, outside `exclude_path`, or as the stem of
-    a file or directory name there (a module name is discoverable from the layout)."""
+    """Which of `names` occur as whole words in the tree at `sha`, outside `exclude_path` and outside prose files
+    (PROSE_SUFFIXES), or as the stem of a non-prose file or a directory name there (a module name is discoverable from
+    the layout)."""
     if not sha or not names:
         return set()
     found = set()
     rc, tree = _git_out(repo, "ls-tree", "-r", "-t", "--name-only", sha)
     if rc == 0:
-        found |= {Path(x).stem for x in tree.splitlines() if x != exclude_path} & set(names)
+        found |= {Path(x).stem for x in tree.splitlines()
+                  if x != exclude_path and not x.lower().endswith(PROSE_SUFFIXES)} & set(names)
     # ONE PCRE pass per commit: `git grep -o -P '\b(?:a|b|...)\b'` over the whole tree takes ~2 s here. Measured on
     # one real task (9 names, 38.8k files): -F -w -o with many -e took 45 s, -q per name ~1.6 s each.
     rest = sorted(n for n in names if n not in found and _IDENT.fullmatch(n))
     if not rest:
         return found
     pat = r"\b(?:" + "|".join(rest) + r")\b"
+    prose = [":(exclude,icase)*" + s for s in PROSE_SUFFIXES]
     pr = subprocess.Popen(["git", "-C", str(repo), "grep", "-o", "-h", "-I", "-P", pat, sha, "--", ".",
-                           ":(exclude)" + exclude_path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+                           ":(exclude)" + exclude_path, *prose],
+                          stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     want = set(rest)
     try:
         for ln in pr.stdout:              # streamed: a common name prints 10^5 lines, none of them kept
@@ -271,7 +303,8 @@ def name_lookup(repo, base_sha, fix_sha, path, names, task_text, cache=None, _me
     """{at_base, fix_only, fix_only_unnamed}: where each new-line identifier is discoverable. A name at base outside
     the check file is something an agent working in the repo can read; a fix_only name it has to invent, which is
     fair only when the task text names it (fix_only_unnamed is the residue)."""
-    key = hashlib.sha256(json.dumps([str(repo), base_sha, fix_sha, path, names]).encode()).hexdigest()
+    key = hashlib.sha256(json.dumps([str(repo), base_sha, fix_sha, path, names, NAME_LOOKUP_VERSION])
+                         .encode()).hexdigest()
     if cache is not None and str(cache) not in _mem:
         _mem[str(cache)] = _cache_read(cache)
     store = _mem.setdefault(str(cache), {})
@@ -299,10 +332,49 @@ _MISSING_NAME = [re.compile(p) for p in (
     r"error CS0117: '[\w.]+' does not contain a definition for '(\w+)'",
     r"error CS1061: '[\w.<>]+' does not contain a definition for '(\w+)'",
     r"error CS0246: The type or namespace name '(\w+)' could not be found",
-    r"error CS0234: The type or namespace name '(\w+)' does not exist")]
+    r"error CS0234: The type or namespace name '(\w+)' does not exist",
+    r"got an unexpected keyword argument '(\w+)'",                   # TypeError on a fix-added parameter (C4)
+)]
 _REASON = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Exception)\b|\bFAIL|\bassert\b"
-                     r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b")
-_BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b(?!ED \()|\bexpected\b|\bnot ok\b")
+                     r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b|(?i:\bfail(?:s|ed|ure|ures|ing)?\b)")
+_BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|\bFAILED\b(?! \()|\bexpected\b|\bnot ok\b"
+                        r"|\b(?:Key|Type)Error\b")
+# RULES v4: which lines of a tail are OUTCOME lines (C2, C5). Not outcome: the source line Python prints under a
+# traceback `File "...", line N` (it quotes the check's own `assert`/`expected` text), the File line itself, and a
+# line that starts as a pass (`ok ...`, `PASS ...`) without a nonzero failure count. In outcome lines a zero count
+# (`0 FAIL`, `0 failed`) and a negated error (`no ValueError raised`) are not failure words.
+_TB_FILE = re.compile(r'^\s*File "[^"]*", line \d+')
+_PASS_LINE = re.compile(r"^\s*(?:ok|PASS|PASSED)\b")
+_NONZERO_FAILS = re.compile(r"\b[1-9]\d*\s+fail", re.I)
+_NEUTRAL = re.compile(r"\b0\s+fail\w*|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.I)
+# C7: a missing-name message on an assertion or FAIL line is that check's own failure report (behaviour), unless the
+# line also names the import/attribute/name error class (`FAIL: ImportError: cannot import name ...`), which is the
+# missing name reported again.
+_BEH_PREFIX = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b|FAIL\b|not ok\b)")
+_MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b")
+
+
+def outcome_lines(tail) -> list[str]:
+    """The tail's outcome lines (see _TB_FILE.. above), each with its neutral phrases blanked."""
+    out, prev = [], ""
+    for ln in (tail or "").splitlines():
+        # Python indents the quoted source; a File line with no source (`File "<string>"`) is followed by the
+        # unindented error line, which is kept
+        src, prev = bool(_TB_FILE.search(prev)) and ln[:1].isspace(), ln
+        if src or _TB_FILE.search(ln):
+            continue
+        if _PASS_LINE.match(ln) and not _NONZERO_FAILS.search(ln):
+            continue
+        out.append(_NEUTRAL.sub(" ", ln))
+    return out
+
+
+def _is_behaviour(ln) -> bool:
+    if not _BEHAVIOUR.search(ln):
+        return False
+    if not any(rx.search(ln) for rx in _MISSING_NAME):
+        return True
+    return bool(_BEH_PREFIX.match(ln)) and not _MISSING_CLASS.search(ln)
 
 
 def missing_names_cited(tail) -> list[str]:
@@ -326,9 +398,9 @@ def base_failure(tail, names: dict, extra: dict | None = None) -> dict:
     cited = missing_names_cited(tail)
     unnamed = set((names or {}).get("fix_only_unnamed") or []) | set((extra or {}).get("fix_only_unnamed") or [])
     fix_missing = [n for n in cited if n in unnamed]
-    behaviour = [ln for ln in tail.splitlines()
-                 if _BEHAVIOUR.search(ln) and not any(rx.search(ln) for rx in _MISSING_NAME)]
-    visible = bool(_REASON.search(tail))
+    lines = outcome_lines(tail)
+    behaviour = [ln for ln in lines if _is_behaviour(ln)]
+    visible = any(_REASON.search(ln) for ln in lines)
     veto = ("no_reason_visible" if not visible else
             "missing_name_only" if fix_missing and not behaviour else None)
     return {"reason_visible": visible, "missing_names": cited, "missing_fix_only_unnamed": fix_missing,

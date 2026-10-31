@@ -10,6 +10,7 @@ claude when GPT fails; every default output path is judge-only.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import subprocess
@@ -47,12 +48,18 @@ def fixture(d, extra=False):
     git(repo, "init", "-q")
     (repo / "src/tool.py").write_text("def f():\n    return 1\n\ndef base_helper():\n    return 0\n")
     (repo / "src/selftest_old.py").write_text(OLD_TEST)
+    (repo / "docs.md").write_text("plan: someday add prose_only_name to tool\n")       # rules v4 C3: prose only
+    (repo / "notes").mkdir()
+    (repo / "notes/prose_stem_name.md").write_text("a note\n")
+    (repo / "README.TXT").write_text("upper_prose_name\n")                                 # suffix case
+    (repo / "notes/upper_stem_name.MD").write_text("a note\n")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "base")
     base = git(repo, "rev-parse", "HEAD")
     (repo / "src/tool.py").write_text("def f():\n    return _private_two()\n\ndef _private_two():\n    return 2\n"
-                                      "\ndef base_helper():\n    return 0\n\ndef named_new_api():\n    return 3\n")
-    (repo / "src/selftest_tool.py").write_text("from tool import f\nassert f() == 2\n")
+                                      "\ndef base_helper():\n    return 0\n\ndef named_new_api():\n    return 3\n"
+                                      "\ndef prose_only_name():\n    return 4\n")
+    (repo / "src/selftest_tool.py").write_text("from tool import f\nassert f() == 2\ncheck_only_marker = 1\n")
     (repo / "src/newmod.py").write_text("def capped():\n    return 1\n")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "fix: f returns 2")
@@ -104,6 +111,18 @@ def fixture(d, extra=False):
         task("RP_CITED", [("src/selftest_n.py", tb + "AttributeError: module 'tool' has no attribute '_private_two'\n")],
              body="from tool import f\nassert f() == 2\n")
         task("RP_NOREASON", [("src/selftest_n.py", "ok 1\nok 2\nrc 1\n")], body="from tool import f\nassert f() == 2\n")
+        # rules v4 C1: a name defined from scratch in the check vs one aliased from the repo; C3: prose-only name
+        attr = tb + "AttributeError: module 'tool' has no attribute '_private_two'\n"
+        task("RP_LOCALDEF", [("src/selftest_n.py", attr)],
+             body="from tool import f\ndef _private_two():\n    return 2\nassert f() == _private_two()\n")
+        task("RP_ALIAS", [("src/selftest_n.py", attr)],
+             body="import tool\n_private_two = tool._private_two\nassert _private_two() == 2\n")
+        task("RP_ALIASDEF", [("src/selftest_n.py", attr)],
+             body="import tool\ndef _private_two():\n    return tool._private_two()\nassert _private_two() == 2\n")
+        task("RP_ALIASIMP", [("src/selftest_n.py", attr)],
+             body="from tool import f, _private_two\n_private_two = _private_two\nassert f() == 2\n")
+        task("RP_PROSE", [("src/selftest_n.py", tb + "AttributeError: module 'tool' has no attribute "
+                           "'prose_only_name'\n")], body="import tool\nassert tool.prose_only_name() == 4\n")
     Path(p["tasks"], "RP_NOHIDDEN.json").write_text(json.dumps({"id": "RP_NOHIDDEN", "source_item": "NOHIDDEN"}))
     A.vet_cache_path(p).write_text("".join(json.dumps(r) + "\n" for r in vet))
     return p, repo
@@ -258,12 +277,151 @@ def rules_v3():
               ["Foo", "bar", "c"], "v3: cited names: C# CS0103, ImportError, dotted module's last part")
         check(R.base_failure("Build: 0 Error(s), rc 1\nDeprecationWarning: x", {})["veto"] == "no_reason_visible",
               "v3: '0 Error(s)' and a DeprecationWarning are not a failure reason")
-        check(R.VERDICT_SCHEMA == "arena_reader_verdict/3", "v3: verdict schema bumped to /3")
+        check(R.VERDICT_SCHEMA == "arena_reader_verdict/4", "v4: verdict schema bumped to /4")
         res = R.results_dir(p)
         res.mkdir(parents=True, exist_ok=True)
-        (res / "RP_IMPNAMED.json").write_text(json.dumps({"schema": "arena_reader_verdict/2", "task": "RP_IMPNAMED",
+        for old in ("arena_reader_verdict/2", "arena_reader_verdict/3"):
+            (res / "RP_IMPNAMED.json").write_text(json.dumps({"schema": old, "task": "RP_IMPNAMED",
+                                                              "packet_sha256": R.packet_sha(pn)}))
+            check(R.state(p, repo=repo)["RP_IMPNAMED"][0] == "pending",
+                  "v4: a %s verdict (even same packet sha) reads pending" % old)
+        (res / "RP_IMPNAMED.json").write_text(json.dumps({"schema": R.VERDICT_SCHEMA, "task": "RP_IMPNAMED",
                                                           "packet_sha256": R.packet_sha(pn)}))
-        check(R.state(p, repo=repo)["RP_IMPNAMED"][0] == "pending", "v3: a /2 verdict (even same packet sha) reads pending")
+        check(R.state(p, repo=repo)["RP_IMPNAMED"][0] == "done", "v4: a current-schema verdict, same packet sha, is done")
+
+
+UN = {"fix_only_unnamed": ["_private_two", "newmod", "lanes"]}
+TB = 'Traceback (most recent call last):\n  File "src/selftest_n.py", line 2, in <module>\n'
+MISS = TB + "AttributeError: module 'tool' has no attribute '_private_two'\n"
+
+
+def veto(tail):
+    return R.base_failure(tail, UN)["veto"]
+
+
+def keep_refusals():
+    """ARENA_READER_HARDEN_SELFTEST_MUTANTS_LIVE: every KEEP refusal, ONE answer at a time, on a packet with no veto
+    (so the veto cannot be what refuses it)."""
+    with tempfile.TemporaryDirectory() as d:
+        p, repo = fixture(d, extra=True)
+        pk = R.build_packet("RP_OLD", p, repo)
+        P = "src/selftest_old.py"
+        check(pk["checks"][0]["base_failure"]["veto"] is None and not refused({"checks": [row(P, "KEEP")]}, pk),
+              "control: RP_OLD has no veto and a fair KEEP is accepted")
+        for k, v in (("tests_task", False), ("solvable_from_text", False), ("fails_for_defect", False),
+                     ("coupled", True), ("self_overwrite", True), ("partial_legs", True), ("brittle_format", True)):
+            check(refused({"checks": [row(P, "KEEP", **{k: v})]}, pk), "KEEP with only %s=%s is refused" % (k, v))
+            check(not refused({"checks": [row(P, "UNSCORE_CHECK", **{k: v})]}, pk),
+                  "UNSCORE_CHECK with %s=%s is accepted" % (k, v))
+
+
+def rules_v4():
+    """ARENA_READER_REPAIR_RULES_MISS_PLANTS C1-C8 (BENCH plants, verify_reader2/report.md), plus one row per regex
+    alternative so removing any of them turns a row red."""
+    with tempfile.TemporaryDirectory() as d:
+        p, repo = fixture(d, extra=True)
+        keep = {"checks": [row("src/selftest_n.py", "KEEP")]}
+
+        def pkt(tid):
+            return R.build_packet(tid, p, repo)["checks"][0]
+        c = pkt("RP_LOCALDEF")
+        check("_private_two" not in c["names"]["fix_only"] + c["names"]["at_base"] and c["base_failure"]["veto"] is None,
+              "C1: a name the check defines from scratch is not looked up and does not veto (%s)" % c["names"])
+        for tid, how in (("RP_ALIAS", "`_x = tool._x`"), ("RP_ALIASDEF", "`def _x(): return tool._x()`"),
+                         ("RP_ALIASIMP", "imported then rebound")):
+            c = pkt(tid)
+            check("_private_two" in c["names"]["fix_only_unnamed"] and c["base_failure"]["veto"] == "missing_name_only",
+                  "C1: a local name aliasing the repo's (%s) is looked up and vetoes (%s)" % (how, c["names"]))
+        check(R.defined_in("x = 1\ndef helper():\n  pass\nclass Fake:\n  pass\n") == {"x", "helper", "Fake"},
+              "C1: defined_in still finds def / class / assignment")
+        pp = R.build_packet("RP_PROSE", p, repo)
+        c = pp["checks"][0]
+        check("prose_only_name" in c["names"]["fix_only_unnamed"] and c["base_failure"]["veto"] == "missing_name_only"
+              and refused(keep, pp), "C3: a name only a .md mentions at base is fix_only, vetoes (%s)" % c["names"])
+        base = git(repo, "rev-list", "--max-parents=0", "HEAD")
+        fix = git(repo, "rev-parse", "HEAD")
+        check(R._grep_names(repo, base, ["base_helper", "prose_only_name", "prose_stem_name"], "src/x.py")
+              == {"base_helper"}, "C3: lookup sees code (control) but not prose words or prose file stems")
+        check(R._grep_names(repo, base, ["upper_prose_name", "upper_stem_name", "tool"], "src/x.py") == {"tool"},
+              "C3: prose suffixes match in any case (README.TXT words, a .MD stem); a code stem is still found")
+        # the name cache key carries NAME_LOOKUP_VERSION: a record stored under the /1 key form is never reused
+        cf = Path(d, "names.jsonl")
+        k1 = hashlib.sha256(json.dumps([str(repo), base, fix, "src/x.py", ["base_helper"]]).encode()).hexdigest()
+        cf.write_text(json.dumps({"k": k1, "v": {"at_base": [], "fix_only": ["base_helper"]}}) + "\n")
+        v = R.name_lookup(repo, base, fix, "src/x.py", ["base_helper"], "", cf)
+        check(v["at_base"] == ["base_helper"] and not v["fix_only"], "C3: a v1 name-cache record is not reused (%s)" % v)
+        check(R._grep_names(repo, fix, ["check_only_marker", "selftest_tool"], "src/selftest_tool.py") == set(),
+              "lookup excludes the check file: its words and its own stem")
+        check(R._grep_names(repo, fix, ["check_only_marker", "selftest_tool"], "src/other.py")
+              == {"check_only_marker", "selftest_tool"}, "control: the same names are found when that file is not excluded")
+    # C2: a traceback's quoted source line / an ok line is not behaviour
+    for name, tail in (("assert source line", TB + "    assert tool._private_two() == 2\n           ^^^^^^^^^^^^\n"
+                        "AttributeError: module 'tool' has no attribute '_private_two'\n"),
+                       ("check(..., 'expected') source line", TB + "    check(tool._private_two()==2,'expected 2')\n"
+                        "AttributeError: module 'tool' has no attribute '_private_two'\n"),
+                       ("ok line 'as expected'", "ok 1 result as expected\n" + TB +
+                        "ModuleNotFoundError: No module named 'newmod'\n"),
+                       ("pytest summary FAILED test - ModuleNotFoundError", "FAILED src/t.py::t - ModuleNotFoundError: "
+                        "No module named 'newmod'\n"),
+                       ("FAIL line naming the error class", "FAIL: ImportError: cannot import name '_private_two'\n"),
+                       ("FAIL line, ModuleNotFoundError", "FAIL: ModuleNotFoundError: No module named 'newmod'\n"),
+                       ("FAIL line, AttributeError", "FAIL: AttributeError: has no attribute '_private_two'\n"),
+                       ("FAIL line, NameError", "FAIL: NameError: name '_private_two' is not defined\n"),
+                       ("unittest FAILED (errors=1)", MISS + "FAILED (errors=1)\n"),
+                       ("C4 unexpected keyword argument", TB + "TypeError: f() got an unexpected keyword argument "
+                        "'lanes'\n")):
+        check(veto(tail) == "missing_name_only", "C2/C4/C7: %s -> missing_name_only (%s)" % (name, R.base_failure(tail, UN)))
+    check(veto(TB.replace("src/selftest_n.py", "tests/expected/assert.py") + "AttributeError: module 'tool' has no attribute "
+               "'_private_two'\n") == "missing_name_only",
+          "C2: a traceback File line is not an outcome line (its path says expected/assert)")
+    check(veto('  File "<string>", line 1\nAssertionError: 1 != 2\n' + MISS) is None,
+          "C2: an unindented error after a source-less File line is an outcome line (behaviour kept)")
+    # C5 / C6: pass lines and zero counts are no reason; a lowercase failure word is one
+    for t in ("12 PASS 0 FAIL\n", "ok 3 as expected\nok 4\n", "PASS assert count 3\n", "note: no ValueError raised\nok\n",
+              "3 passed, 0 failed\n", "PASSED assert count 3\n", "PASS assert count, 0 failed\n"):
+        check(veto(t) == "no_reason_visible", "C5: %r is no visible reason" % t.strip())
+    for t in ("check failed: got 1\n", "PASS 3 FAIL 1\n", "ok 3, 2 failures\n"):
+        check(veto(t) is None, "C6: %r is a visible reason" % t.strip())
+    # each _REASON alternative alone
+    for t in ("Traceback (most recent call last):\n", "ValueError: bad\n", "FAIL_GATE widget\n", "  assert x == 1\n",
+              "x.cs(1,1): error CS1002: semicolon\n", "not ok 3 - widget\n", "got 1, expected 2\n", "it failed\n"):
+        check(R.base_failure(t, {})["reason_visible"], "reason alternative alone is visible: %r" % t.strip())
+    # C7 / C8 and each _BEHAVIOUR alternative: beside a fix-only missing name, the check is NOT import-only
+    for t in ("AssertionError: 1 != 2", "assert count == 3 did not hold", "FAIL widget", "got 1, expected 2",
+              "not ok 1 - f", "KeyError: 'x'", "TypeError: f() takes 0 args", "FAILED test_f - got 1",
+              "AssertionError: expected 2 got 1; note has no attribute '_private_two'",
+              "FAIL gate reported: cannot import name '_private_two'",
+              "E   AssertionError: has no attribute '_private_two'", "not ok 2 - has no attribute '_private_two'"):
+        check(veto(MISS + t + "\n") is None and R.base_failure(MISS + t + "\n", UN)["behaviour_lines"] >= 1,
+              "C7/C8: %r beside a missing name is behaviour (no veto)" % t)
+    check(veto(MISS) == "missing_name_only", "control: the missing name alone vetoes")
+    forms = ("No module named 'a.b.m1'\ncannot import name 'm2' from 'x'\nAttributeError: 'X' has no attribute 'm3'\n"
+             "NameError: name 'm4' is not defined\nerror CS0103: The name 'm5' does not exist\n"
+             "error CS0117: 'A.B' does not contain a definition for 'm6'\n"
+             "error CS1061: 'List<int>' does not contain a definition for 'm7'\n"
+             "error CS0246: The type or namespace name 'm8' could not be found\n"
+             "error CS0234: The type or namespace name 'm9' does not exist in the namespace 'X'\n"
+             "TypeError: f() got an unexpected keyword argument 'm10'\n")
+    check(R.missing_names_cited(forms) == sorted("m%d" % i for i in range(1, 11)),
+          "every missing-name form is cited (%s)" % R.missing_names_cited(forms))
+
+
+def tail_invariants():
+    """The base tails the reader reads come from arena_tasks.vet_tail; invariants only (that function's owner may
+    change how it chooses lines): never longer than n, the start of a long FAIL line survives, and the last line
+    survives when failure lines are abundant."""
+    n = A.VET_TAIL_CHARS
+    many_gaps = "head\n" + "".join("x%03d %s\nFAIL %d\n" % (i, "y" * 20, i) for i in range(200))
+    out = A.vet_tail(many_gaps)
+    check(len(out) <= n, "vet_tail: never longer than n, even with many gap markers (%d > %d?)" % (len(out), n))
+    long_fail = "".join("ok %d fine\n" % i for i in range(60)) + "FAIL widget: " + "y" * 3000 + "\n" + \
+        "".join("ok %d after\n" % i for i in range(150))
+    out = A.vet_tail(long_fail)
+    check("FAIL widget:" in out and len(out) <= n, "vet_tail: a FAIL line longer than the budget keeps its start")
+    abundant = "".join("FAIL case %04d broke\n" % i for i in range(400)) + "LAST-LINE-MARKER " + "z" * 40 + "\n"
+    out = A.vet_tail(abundant)
+    check("LAST-LINE-MARKER" in out and "FAIL case 0000" in out and len(out) <= n,
+          "vet_tail: abundant FAIL lines leave room for the end of the output")
 
 
 def main():
@@ -350,6 +508,9 @@ def main():
 
     rules_v2()
     rules_v3()
+    keep_refusals()
+    rules_v4()
+    tail_invariants()
 
     def boom(pr):
         raise R.ReaderError("no login")
