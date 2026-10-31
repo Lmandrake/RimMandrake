@@ -4,7 +4,7 @@
 says which model does what *for this repo's seats*; every other doc in RimMandrake
 points here. The routing axis is measured, not argued.
 
-🔴 **FOR WHAT THE FLEET CAN ACTUALLY REACH, ASK `~/dev/DispatchOpenCode/bin/delegate`.**
+🔴 **FOR WHAT THE FLEET CAN ACTUALLY REACH, ASK `~/dev/Dispatch/bin/delegate`.**
 A census on 2026-10-01 found six files across `~/dev` restating a model ladder in prose,
 three of them naming a model the gateway does not serve. `bin/delegate where` reports
 reachability and `bin/delegate route <kind>` picks a destination from published figures;

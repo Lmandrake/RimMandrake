@@ -99,7 +99,7 @@ One question. Bounded inputs. An explicit stop condition.
   outcome and sweeps that must interpret what they find; `opus` for design,
   complex code generation, and anything acted on without re-deriving it. Full ladder:
   `infrastructure/agents/Agent_Policy.md`; what the gateway can actually reach:
-  `~/dev/DispatchOpenCode/bin/delegate where`.
+  `~/dev/Dispatch/bin/delegate where`.
 - 🔴 **A task-scoped negative instruction to a fork must explicitly SUSPEND the
   seat's own standing autonomy doctrine, not just state the narrower task.** A
   fork given "recon only, do NOT touch the bridge, do NOT claim/start/modify

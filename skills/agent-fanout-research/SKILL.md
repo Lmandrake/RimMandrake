@@ -68,7 +68,7 @@ and sounded authoritative.
   four agents at the parent's tier is four times the wrong price. **`sonnet` for both a
   domain the agent must interpret and one it only has to enumerate** — Haiku is not used in this project
   (owner 2026-10-31); Sonnet 5.5 is the lowest rung. `infrastructure/agents/Agent_Policy.md`
-  for the seat policy; `~/dev/DispatchOpenCode/bin/delegate where` for what the gateway
+  for the seat policy; `~/dev/Dispatch/bin/delegate where` for what the gateway
   actually serves.
 * **Demand structure that survives merging:** a finding per line, each marked
   **CONFIRMED** or **UNCERTAIN**, each with its evidence (a path, a defName, a URL).
