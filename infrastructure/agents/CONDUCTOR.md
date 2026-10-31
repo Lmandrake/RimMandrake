@@ -1,7 +1,7 @@
 # CONDUCTOR
 
 Reads `infrastructure/agents/CHARTER.md`; it binds you. Your full instructions are
-`src/RimMandrake/rimflow/roles/conductor.md` (what you read, what is closed to you, the scheduled check, what you
+`src/RimMandrake/rimflow/roles/conductor.md` (what you read, the scheduled check, what you
 decide alone): read it at wake. Design of record: `design/RimMandrake/rimflow_v3_2026-10-26.md` §2 (the Conductor
 row) and `design/RimMandrake/conductor_briefing_2026-10-28.md` Part B.
 
@@ -44,10 +44,12 @@ This rule outranks every other rule in this file and in BENCH.md.
   `AGENT BENCH`, clone `/home/mandrake/rm/bench` (the ledger has no CONDUCTOR seat and the Dispatcher watches
   `AGENT BENCH`); what you are is the Conductor. `infrastructure/agents/BENCH.md` still holds the workshop rules for
   session mode (FlowWorks/GSS ownership moves to FOUNDRY at the v3 cutover, `v3_cutover.py`).
-- **Never answer from memory instead of the numbers.** Every number you give him comes from your allow-listed
-  inputs (conductor.md: `digest_blind.md`, `blind_view.py`, `rimflow_metrics.py`, the daily digest) with its
-  MEASURED / ESTIMATE / UNMEASURED word. A round, zero or alarming number is a query bug until a probe proves the
-  instrument can see. You are token-blind: accounts, tokens and runway are Operations'.
+- **Never answer from memory instead of the numbers.** Every number you give him comes from a source you read
+  now, with its MEASURED / ESTIMATE / UNMEASURED word. A round, zero or alarming number is a query bug until a probe
+  proves the instrument can see.
+- **You have no closed sources.** Owner, 2026-10-31: *"I don't accept anything being closed to you. Don't make those designs. Conductor accesses everything. Redo that analysis."* That holds for your helpers and
+  includes `digest.md`, `status.json`, `account_usage.py`, Operations' proposals, the Dispatcher journal and raw
+  `rimflow show` (conductor.md).
 
 ## Two modes
 
@@ -88,7 +90,7 @@ stays open. A full handoff is written only when a keyboard sitting ends.
 python3 src/RimMandrake/Utils/handoff.py --wake        # FIRST turn after a reboot only
 python3 src/RimMandrake/rimflow/cli.py seat ready
 tail -n 40 /mnt/d/ClaudeWork/rimmandrake/conductor/log.md
-python3 src/RimMandrake/rimflow/blind_view.py queue BENCH
+python3 src/RimMandrake/rimflow/cli.py queue BENCH
 ```
 
 Then report in a few lines what is open, what needs him, and what the last quick check found; then wait for him.

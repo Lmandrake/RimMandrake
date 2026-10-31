@@ -126,7 +126,7 @@ Both roles carry the builder's defaults `seat BENCH`, `clone /home/mandrake/rm/b
 13. **[MANDRAKE]** Confirm the defaults, and the time of day. Operations' alarm run fires at first enable (see §0); the Conductor's first check
     launches only after an Operations run has finished (`after_role: Operations`), at the 08:00/20:00 slots, and a slot more than `slot_late_s` (1 h) late is missed.
     Cheapest clean start: enable shortly before 19:30 or 07:30 so the first Operations run is a scheduled one. His call, with the
-    runway reading (Operations is the only role that is token-aware).
+    runway reading (Operations reads it).
 14. **[WRITES]** Flip only these two keys, nothing else (edit by hand; the file is JSON with long lines, so do not reformat it):
     in the `Conductor` and `Operations` role objects change `"enabled": false` to `"enabled": true`. Proves, before committing:
     `python3 -c "import json;s=json.load(open('src/RimMandrake/rimflow/dispatcher_schedule.json'));print([(r['name'],r['enabled']) for r in s['roles']])"`
@@ -149,7 +149,7 @@ Healthy means all of the below. Any "not healthy" line: switch the named role of
 
 - **Launch notes.** `python3 src/RimMandrake/rimflow/cli.py show OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE | tail -n 12` (Operations' launch, done and cap
   notes) and `... show V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE | tail -n 12` (Conductor). Healthy: on Operations' item one launch note naming mode, band and the account
-  per run; on the Conductor's item one launch note, `dispatcher: Conductor quick run: launched` (token-blind: no band, no account, no unit; the unit is in `$S/journal.jsonl` and `$S/runs.json`),
+  per run; on the Conductor's item one launch note, `dispatcher: Conductor quick run: launched` (the blind roles read this item: no band, no account, no unit; the unit is in `$S/journal.jsonl` and `$S/runs.json`),
   then a "done" note for each; no cap note, no "ended without a good result". A dispatcher note meant for a token-blind
   item that is not on its allow-list of plain texts lands on Operations' item marked `[meant for <item>; token values
   stay off it]` (review roles r2 #1): look for those there too.

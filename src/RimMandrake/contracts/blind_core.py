@@ -1,6 +1,6 @@
 """contracts.blind_core -- the closed sets and identifier checks of the token-blind view, stdlib only.
 
-Owner ruling 2026-10-27: only Operations is token-aware; every other role is token-blind. A blind page is built ONLY
+Owner ruling 2026-10-27: only Operations and the Conductor (2026-10-31) are token-aware; every other role is token-blind. A blind page is built ONLY
 from values that pass these checks: members of closed sets, identifiers that match a grammar AND name no account,
 token, quota, cap or unit-number, hex shas, times and counts the program computed. There is no free-text field
 anywhere: a reason is an enum, never prose (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF). contracts.blind wraps these in

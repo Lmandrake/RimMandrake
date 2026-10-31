@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """blind_view.py — the queue and item notes as a token-blind role may read them (review W, L1 + L3).
 
-The token-blind roles (every role but Operations; owner, 2026-10-27: only Operations is token-aware) must never read
+The token-blind roles (every role but Operations and the Conductor; owner, 2026-10-27 and 2026-10-31) must never read
 a token, account, runway, quota, week, burn, cap or budget value. Titles, notes, block reasons and summaries are
 written by hand and ledger events are append-only: a leaking note can never be edited away. So a blind role reads
 the queue and an item through this view, never through raw `rimflow queue` / `rimflow show`.

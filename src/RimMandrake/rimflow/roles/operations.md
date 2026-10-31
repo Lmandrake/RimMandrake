@@ -3,7 +3,7 @@
 Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Operations]`, `enabled: true` since
 Dispatcher wave 1, 2026-10-28 (e35afe1dcc, with the Conductor).
 Design: `design/RimMandrake/rimflow_v3_responsibilities_2026-10-26.md` §Operations, `design/RimMandrake/rimflow_v3_2026-10-26.md` §3.
-Item: `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE` (your own: every other role is token-blind and reads
+Item: `OPERATIONS_MONITOR_ACCOUNTS_OFF_SHARED_TABLE` (your own: every other role but the Conductor is token-blind and reads
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`, so no reading, runway, budget or token figure goes there; review U N2).
 
 The owner, 2026-10-26: "I am most eager to have a competent agent appearing to check the spend of all the accounts
@@ -20,7 +20,7 @@ burning tokens gathering it all up for every question considered."
 - **The Dispatcher measures** (no AI): `src/RimMandrake/Utils/ops_watch.py`, every 15 min from `rm-ops-watch.timer`,
   gathers every KPI family into `D:\ClaudeWork\rimmandrake\ops_watch\series\<family>.jsonl`, raises the Andon flags,
   and files an alarm item once per NEW crossing. An account, runway or burn alarm (`accounts.*`, `codex.*`,
-  `tokentalk.*`) is yours alone and is NEVER a ledger item (the token-blind roles read the queue, through `blind_view.py`): it stays
+  `tokentalk.*`) is yours to act on and is NEVER a ledger item (the token-blind roles read the queue, through `blind_view.py`): it stays
   OPEN in `alarms.json` with `"for": "Operations"`, and its run notes on your own item, never with a value on any
   other item (review V, V2). It already fed the slot allocator (disk brake, Codex and Steve
   advice) before you woke.
@@ -77,7 +77,7 @@ do nothing, exit.
 
 ## The economy pass (daily)
 
-You are the ONLY AI that analyses token burn (owner, 2026-10-27): every other role is token-blind and the Dispatcher
+You are the AI that analyses token burn (owner, 2026-10-27): the Conductor may read every figure (owner, 2026-10-31), every other role is token-blind, and the Dispatcher
 (a program) checks caps at launch, alarms on overruns after the fact, and picks the account for new work. For every account including Codex: runway, the week's
 slope, what spent it, any surprising bleed or trend, and a **forecast against the plan** (the Producer's plan with the
 work it lists, at the measured burn, to each account's reset). When the forecast misses the plan, say so in your note (on your own item)
@@ -133,8 +133,8 @@ surplus as loudly as a projected shortfall, and propose pulling work forward. Ne
 
 ## Drift check (yours)
 
-You own the no-AI check in `ops_watch` that flags token talk creeping into the token-blind roles' reports (Conductor,
-Producer, Arbiter, Auditor, Innovator, builders): those roles' instructions forbid token talk and token-saving
+You own the no-AI check in `ops_watch` that flags token talk creeping into the token-blind roles' reports (Producer,
+Arbiter, Auditor, Innovator, FOUNDRY's builders): those roles' instructions forbid token talk and token-saving
 judgment. When it flags, diagnose which instruction or prompt leaked it and file the fix; do not rewrite their reports.
 
 ## Decides alone / hands / never
@@ -143,15 +143,15 @@ judgment. When it flags, diagnose which instruction or prompt leaked it and file
   BENCH for any fix (`rimflow spawn --from V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE --for BENCH`; names through
   `rimflow namecheck`).
 - **Hands to the Conductor:** any loosening (a raised N, a lowered bar, a wider budget). Loosening stays his. The
-  Conductor is token-blind, so a hand-up carries no account, figure, runway or budget word (review roles r2 #1). A
+  parent item is read by the blind roles, so a hand-up note on it carries no account, figure, runway or budget word (review roles r2 #1). A
   loosening that can be put in plan words (a lowered bar, a cut) goes as a plain note on the parent item. One that
   needs a figure to be understood (a raised N or cap, a wider budget) goes the owner-only route: write the proposal,
   with every figure and its series, window and MEASURED/ESTIMATE/UNMEASURED word, to
   `D:\ClaudeWork\rimmandrake\ops_watch\owner\OP-<yyyymmddThhmmZ>.md` (its id is `OP-<yyyymmddThhmmZ>`, a name the blind view passes intact), read it back and check every figure
   against its series (you are its reader of record; nothing reaches him unread), then put one note on
   `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`: `OPS PROPOSAL <id>: <what it would change, in plan words>, for his decision;
-  owner-only file <path>`, with no figure, account or reason in it. The Conductor relays that line and the path to him
-  unopened and records his answer as `OPS DECISION <id>`; you carry out a yes. Answer a `QUESTION FOR OPERATIONS`
+  owner-only file <path>`, with no figure, account or reason in it. The Conductor reads the file, brings it to him
+  and records his answer as `OPS DECISION <id>`; you carry out a yes. Answer a `QUESTION FOR OPERATIONS`
   note the same way.
 - **Helpers:** none. His limit is two helpers at once across ALL roles together, counting descendants; until
   `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` gives a confirmed reservation from that one pool, you run no helper

@@ -40,7 +40,6 @@ This section comes from reading the artifacts, not from guessing. Evidence paths
    - The brief (11 sections, 05:45/17:15) and the digest (6 sections, 06:00/17:30) name the same things differently.
    - Both run on a fixed clock, not when he reads. The brief does record opens (`since_basis`), but the digest does not.
    - The brief is reachable only on localhost or the tailnet. It has no buttons (card 2026-10-24), so answering means switching to chat and retyping the context.
-   - The digest's "Plan usage" lines are token data, which the token-blind Conductor may not read. The Conductor therefore cannot talk him through the page he is reading.
 3. **There is nothing to be "on track" against, and the hub answers a different question.**
    - `infrastructure/state/CONDUCTOR_GOALS.md` does not exist.
    - The Producer is not running, so neither page can say on or off track.
@@ -56,13 +55,12 @@ This section comes from reading the artifacts, not from guessing. Evidence paths
 ### A1. Shape: one data set, two renderings
 
 - **Program:** `src/RimMandrake/rimflow/briefing.py` (proposed).
-  - It writes `D:\ClaudeWork\rimmandrake\conductor\briefing.json`. This is the **blind** data set.
+  - It writes `D:\ClaudeWork\rimmandrake\conductor\briefing.json`.
   - It renders `briefing_phone.html` and `briefing_desk.html` from that one JSON file.
-  - The Conductor reads **only the JSON**, never the HTML, because the HTML carries the owner-only band. It writes only the `narrative` fields (marked `by: Conductor`): the night's sentences, the plain-word gloss and ask for each decision, its options and default, and the caption of the picture. Every number in them comes from the JSON.
-- **Owner-only band:**
+  - The Conductor reads the JSON, the HTML and the owner band (owner, 2026-10-31: no closed sources). It writes only the `narrative` fields (marked `by: Conductor`): the night's sentences, the plain-word gloss and ask for each decision, its options and default, and the caption of the picture. Every number in them comes from a source it read.
+- **Token band:**
   - `D:\ClaudeWork\rimmandrake\ops_watch\owner\briefing_owner.json` holds token and runway lines from Operations.
-  - Only the HTML renderer reads it. The renderer folds it into a collapsed band that he sees and the Conductor does not.
-  - This keeps the Conductor token-blind (`roles/conductor.md`, closed list) while he still gets one page.
+  - The renderer folds it into a collapsed band, so he still gets one page.
 - **When it is built:**
   - on every Conductor wake;
   - after every Dispatcher run of Operations;
@@ -111,7 +109,7 @@ This section comes from reading the artifacts, not from guessing. Evidence paths
 - **Phone and desk** have the same sections in the same order, with the same decisions, defaults, owners and verdicts. The phone shortens the supporting detail. It never drops a decision, its stakes, an owner, or the limits of the evidence. The desk adds the item list, "what to look for", and tables.
 - **Look:** a 70s palette of cream, brown, rust, mustard and olive, with a light and a dark mode (`prefers-color-scheme`). Serif body text. The phone page is one 390 px column. "Answer this first" has the rust frame; decisions are olive and problems are rust.
 - **"Probably answered" is never auto-routed.** Items whose last owner event is newer than the hand-over to him are confirmed with him as one batch question in section 3 before any of them moves.
-- **Asks are answerable.** Before asking him anything, the Conductor runs `blind_view.py show <ID>` to check for an earlier ruling, which catches "already ruled" (C1) at the source.
+- **Asks are answerable.** Before asking him anything, the Conductor runs `rimflow show <ID>` to check for an earlier ruling, which catches "already ruled" (C1) at the source.
 
 **Still open after the second blind check of v2** (`blind_check_v2_2.md`):
 - the mockup has no previews of the twelve pieces or of the Surrik redraw;
@@ -211,7 +209,7 @@ Steps, in order:
 |---|---|
 | He writes again within 2 min of goodbye | The grace check (B3.1) cancels the restart. The old window answers as usual, and his next goodbye starts over. |
 | He writes during the about 10-90 s restart | The message lands in a dead session, or in the old session's jsonl if the window was still alive. The new window reads every owner message newer than `GOODBYE.ts` from the old session (B1) and answers those first. Whether the RC server writes a message into a session whose process has died is **UNMEASURED**: until it is measured, the fresh window's first line says "if you wrote in the last few minutes and I do not answer it, send it again". |
-| Older rulings fall out of a fresh window's context | That is the point of freshness, but a question must never re-ask a ruled matter. The Conductor runs `blind_view.py show <ID>` before asking (A3 rules), and the ledger, not the log, is the memory. |
+| Older rulings fall out of a fresh window's context | That is the point of freshness, but a question must never re-ask a ruled matter. The Conductor runs `rimflow show <ID>` before asking (A3 rules), and the ledger, not the log, is the memory. |
 | The phone shows a new `CONDUCTOR` entry, and the old one lingers as offline | Expected (RC skill: a relaunch is a new session entry). The fresh window's first message says "fresh Conductor; the old one is closed" so he knows which entry to use. |
 | A whole-fleet kill takes the Conductor down with everything else (`fleet_stop` kills ALL claude pids) | The Conductor restart never calls `fleet_stop`. Conversely, an account failover kills the Conductor too, so `CONDUCTOR` is added to the failover `-Seats` list. |
 | The 08:00/20:00 headless quick checks (`dispatcher_schedule.json`) run beside the standing window | While a live `CONDUCTOR` pid exists, the quick check writes its findings into `briefing.json` / `log.md` instead of launching a second Conductor. |

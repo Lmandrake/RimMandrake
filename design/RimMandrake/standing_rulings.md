@@ -478,3 +478,7 @@ ledger event and messages no window (owner: game-state broadcasts between agents
 unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
 🔴 Run commands yourself — a `!`-prefixed paste handed to the owner is the defect
 (hook-enforced on Stop); anything he must LOOK at comes with the complete native path.
+
+## The Conductor has no closed sources — owner, 2026-10-31
+
+*"I don't accept anything being closed to you. Don't make those designs. Conductor accesses everything. Redo that analysis."*

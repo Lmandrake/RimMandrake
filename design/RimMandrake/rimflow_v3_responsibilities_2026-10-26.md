@@ -251,7 +251,7 @@ on sight, commit explicit paths, and log delegated calls `--why "delegated: <cla
 - **v3 against v2 (weekly, owner order 2026-10-27):** *"Please ensure that the RimFlow v3 will be able to actively
   determine if it's actually helping vs. the baseline of the recently tagged Rimflow v2 (Bench + Foundry). We MUST prove
   that it's superior and at what cost. After it's settled down and optimized of course. One of the v3 roles must own
-  this regular assessment."* Operations owns it (the one role that may read cost). The no-AI program
+  this regular assessment."* Operations owns it (the role that analyses cost). The no-AI program
   `src/RimMandrake/Utils/v3_vs_v2.py` measures each week (Monday 07:00) with the baseline's own definitions against the
   tag week, under the pre-registered, hash-pinned rule `src/RimMandrake/Utils/v3_vs_v2_rules.json`; settled is
   checkable (14 days with no v3 config commit and a role enabled), and every verdict before four settled weeks is

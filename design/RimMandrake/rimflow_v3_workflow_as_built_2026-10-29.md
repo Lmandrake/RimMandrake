@@ -166,8 +166,8 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - It passes the same gates. On 2026-10-28 an Innovator run-now was refused twice with "band RED", before the bands were neutralized.
 
 **Token blindness** [LIVE]:
-- Every role except Operations is token-blind. It reads `digest_blind.md` and `blind_view.py` output, never cost figures.
-- Only Operations is `token_aware: true` (`sched:96`).
+- Every role except Operations and the Conductor is token-blind. It reads `digest_blind.md` and `blind_view.py` output, never cost figures.
+- Only Operations and the Conductor are `token_aware: true`. The Conductor has no closed sources (owner, 2026-10-31).
 
 **Helpers** [LIVE as a rule in the role files]:
 - The owner's limit is 2 helpers at once across ALL roles together.
@@ -312,7 +312,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Runs/day.** 2.
 - **Caps** [LIVE, `sched:50-51`]: `quick_token_cap` 450000 per run; `daily_token_cap` 1350000; `session_week_pct_cap` 6 (percent of the account's week, for the interactive session).
 - **Run steps** (conductor.md): quick-mode steps 1-4; at the scheduled check, steps (a) through (g). It appends a 3-5 line report to `D:\ClaudeWork\rimmandrake\conductor\log.md`.
-- **Inputs.** An allow-list of sources (conductor.md). Some sources are closed to it, for example cost figures, which it is blind to.
+- **Inputs.** Everything: it has no closed sources (owner, 2026-10-31; conductor.md).
 - **Outputs.** `log.md`, ledger notes, and relays to the owner.
 - **Decides alone.** Routing of questions, and the quick-check findings.
 - **Hands to.** The owner (proposals, cut decisions, questions); FOUNDRY and the queue (tickets); the Producer (TESTQ mod decisions are the Producer's; the Conductor applies them).
@@ -329,7 +329,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - Scheduled quick checks 08:00 and 20:00 run headless through `role_launch.py` **as seat BENCH** and append 3-5 lines to `D:\ClaudeWork\rimmandrake\conductor\log.md` (CONDUCTOR.md:57-60).
 - Goodbye: his message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `that's all` runs a light close-out (rulings to the ledger, promises filed `--for OWNER`, 3-5 log lines). It then requests `seat_restart.py request --seat BENCH --fresh`, and the Dispatcher relaunches a fresh CONDUCTOR window after a 120 s grace (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`, CONDUCTOR.md §Goodbye).
 - Seat models (`infrastructure/agents/Agent_Policy.md:17-35`, owner 2026-10-20): the orchestrating seat runs Opus and backgrounds design to Opus helpers; FOUNDRY runs Sonnet and escalates to Opus per item; Haiku for mechanical bulk work with a checkable outcome.
-### 2.8 Operations (role; the only token-aware AI)
+### 2.8 Operations (role; the AI that analyses burn)
 
 - **Purpose.** Watch the accounts, burn and runway; turn alarms into action; propose economy changes to the owner.
 - **Appears** [LIVE, `sched:98,108`]:

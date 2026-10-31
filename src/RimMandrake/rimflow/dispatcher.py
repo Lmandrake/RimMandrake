@@ -870,7 +870,7 @@ def blind_items(sch):
 
 def route_note(sch, item, text, rx=None, blind_text=None):
     """-> (item, text) where a dispatcher note goes. On an item a token-blind role reads, an ALLOW-LIST (review
-    roles r2 #1; owner 2026-10-27: every role but Operations is token-blind): only `blind_text`, a note the code built
+    roles r2 #1; owner 2026-10-27: every role but Operations and the Conductor is token-blind): only `blind_text`, a note the code built
     for a blind reader (role_launch.blind_note: a closed-set role, mode and unit and a FIXED outcome; never a reason,
     an error, a result subtype or any other text from outside: review dispatcher-full #2), is written there, and only when the token_talk word list, a second net, finds no term in it.
     Anything else bound for a blind item (an alarm's `why`, a run's result text, a refusal reason) goes to

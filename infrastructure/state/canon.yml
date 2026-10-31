@@ -2210,7 +2210,8 @@ v3_token_duties_split_by_kind:
     work runs on before releasing it. Operations is the ONLY AI that analyses
     burn (rates, bleeds, trends, forecast vs plan). When a forecast misses the
     Producer drafts the replan (a cut list) and the Conductor brings the
-    trade-off to him to decide together. Every other role is token-blind: no
+    trade-off to him to decide together. The Conductor has no closed sources
+    (owner 2026-10-31). Every other role is token-blind: no
     token talk or token-saving judgment. Guards: quota unused at reset is waste
     like running dry; a no-AI check flags token talk in blind roles' reports.
     Text: design/RimMandrake/rimflow_v3_2026-10-26.md section 3;

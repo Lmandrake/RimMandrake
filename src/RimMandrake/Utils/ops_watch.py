@@ -752,7 +752,7 @@ def tt_texts(now, rules, ctx):
     'role.<name>' (a finished run's result text; Operations excluded). A group in `bad` could not be read."""
     cfg = rules.get("token_talk") or {}
     since = now - cfg.get("window_days", 7) * DAY
-    seats = cfg.get("seats") or ["BENCH", "FOUNDRY"]
+    seats = cfg.get("seats") or ["FOUNDRY"]
     texts, bad = {}, {}
     try:
         events = ctx.get("events")
@@ -793,7 +793,7 @@ def tt_texts(now, rules, ctx):
         for sn in seats:
             bad["commits." + sn] = "git log unreadable: %s: %s" % (type(e).__name__, str(e)[:120])
     rd = tt_roles_dir()
-    names = set(cfg.get("roles") or ["conductor", "producer", "arbiter", "auditor", "innovator"])
+    names = set(cfg.get("roles") or ["producer", "arbiter", "auditor", "innovator"])
     try:
         if not rd.is_dir():
             raise RuntimeError("role run folder %s absent" % rd)
@@ -842,9 +842,9 @@ def c_tokentalk(now, rules, ctx):
     rx = tt_regex(rules)
     texts, bad = tt_texts(now, rules, ctx)
     out = {}
-    seats = cfg.get("seats") or ["BENCH", "FOUNDRY"]
+    seats = cfg.get("seats") or ["FOUNDRY"]
     groups = list(seats) + ["commits." + s for s in seats] + ["role." + r for r in (cfg.get("roles") or
-              ["conductor", "producer", "arbiter", "auditor", "innovator"])]
+              ["producer", "arbiter", "auditor", "innovator"])]
     for g in groups:
         why = bad.get(g) or bad.get("role._all") if g.startswith("role.") else bad.get(g)
         if why:
@@ -1342,16 +1342,16 @@ def digest_md(dg):
 
 
 # The families whose every point is a token, runway, quota or burn reading: Operations' alone (owner 2026-10-27:
-# every other role is token-blind). tokentalk is the drift measure OF token talk: Operations' too. Used for the alarm
+# every role but it and the Conductor is token-blind; the Conductor reads anything, owner 2026-10-31). tokentalk is the drift measure OF token talk: Operations' too. Used for the alarm
 # routing (run_alarms); the blind digest does NOT rely on it: that is an allow-list (BLIND_KEYS).
 TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 
-# digest_blind.md is an ALLOW-LIST (review V, V1): a token-blind role (Conductor, Producer) sees exactly these series
+# digest_blind.md is an ALLOW-LIST (review V, V1): a token-blind role (Producer, Arbiter, Auditor, Innovator) sees exactly these series
 # and nothing else. Machine health (steve, timers, tps), disk, stalls, flow and production output counts. Every key
 # not named here is withheld by default, so a new collector, or a quota reading phrased without a token word
 # (production.B, "% of the week used"), can never reach them. Adding a key is a decision: name it here, with care.
 # Deliberately absent: every accounts.*, codex.*, tokentalk.* key, production.B (the week used), and anything new.
-# companion.grant_hours_left is machine health: a lapsing grant stalls every live seat, so the Conductor sees it.
+# companion.grant_hours_left is machine health: a lapsing grant stalls every live seat, so the blind roles see it.
 BLIND_KEYS = frozenset("""
 companion.grant_hours_left companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
@@ -1387,7 +1387,7 @@ def blind_keep(key, p, rx):
 
 
 def blind_digest_md(dg, rules):
-    """digest_blind.md: the digest for the token-blind roles (Conductor, Producer; review U N2/F6, review V V1).
+    """digest_blind.md: the digest for the token-blind roles (review U N2/F6, review V V1).
     Built only from allow-listed parts: the BLIND_KEYS points (BLIND_FIELDS of each), a headline computed from them,
     and the alarms and flags whose key is one of them. Nothing else of the digest is read, so nothing else can leak.
     Every line is then checked against the token_talk word list as a second net; the count withheld is printed,

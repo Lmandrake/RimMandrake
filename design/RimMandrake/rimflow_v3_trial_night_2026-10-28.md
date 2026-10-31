@@ -235,7 +235,7 @@ After step 15: `python3 src/RimMandrake/rimflow/v3_ready.py > $T/ready_enabled.t
 |---|---|
 | **Dispatcher** | `ticking` GO every look (last_ok_tick < 10 min). Alarms hold no `unwakeable:*`, no `role:*:scope`/`supervise`/`overtime`, no new `account:*`. (`account:unmeasured` and `cap:FOUNDRY` were open before tonight.) |
 | **FOUNDRY** | Rings in `$S/journal.jsonl` each have a hand-off; no `WOKE_NO_HANDOFF` repeats. Its shard commits and publishes at each close-out: `FOUNDRY ledger / published recently` stays GO. The `uncommitted lines` WARN count falls instead of growing. It takes former BENCH items (step 9b). |
-| **Conductor** | Answers him from `digest_blind.md` / `blind_view.py` with MEASURED / ESTIMATE / UNMEASURED words. Holds no token numbers (token-talk series: `tokentalk.role.conductor.share` stays UNMEASURED or below the 3.0 % baseline). One launch note and one done note per quick check. |
+| **Conductor** | Answers him with MEASURED / ESTIMATE / UNMEASURED words. One launch note and one done note per quick check. |
 | **Operations** | Each run `subtype: success` under 450,000 (economy 550,000). Files OPS_* items or says nothing to do. Reads `$O/digest.md` without re-gathering. A run under 20k or over cap is suspect. |
 | **Arbiter** | Advisory only. Verdicts in its sink plus one note per judged item. No close, no reopen by itself. Run under 500,000. |
 | **Producer** | One plan file per run, every line traceable to a goal in CONDUCTOR_GOALS.md (his words cited). Commits+publishes. Does not write goals. |

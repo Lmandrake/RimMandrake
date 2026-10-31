@@ -193,7 +193,7 @@ finally:
 ok("ops_watch has the companion family", ("companion" in OW.COLLECTORS, "companion" in OW.ORDER,
                                            "companion" in OW.FAMILIES), (True, True, True))
 KEY = "companion.grant_hours_left"
-ok("the Conductor's blind digest may show it", KEY in OW.BLIND_KEYS, True)
+ok("the blind digest may show it", KEY in OW.BLIND_KEYS, True)
 os.environ["RM_COMPANION_PROFILE"] = P
 try:
     put({"profile": "test", "expiresUtc": ISO(NOW + 30 * 3600)})

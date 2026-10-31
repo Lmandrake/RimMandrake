@@ -578,6 +578,11 @@ evs = [ev("BENCH", "X_A", "fixed the thing %d" % n) for n in range(8)] + [ev("BE
     + [ev("BENCH", "OPS_X", "the token burn is high")] * 20 + [ev("FOUNDRY", "Y", "plain note %d" % n) for n in range(3)] \
     + [ev("BENCH", "X_A", "old token talk", ago=9 * DAY)] * 50
 R = rules()
+check("tokentalk: the live rules measure neither seat BENCH nor the conductor role (owner 2026-10-31: the Conductor has no closed sources)",
+      "BENCH" not in R["token_talk"]["seats"] and "conductor" not in R["token_talk"]["roles"], R["token_talk"]["seats"])
+# the mechanism below is exercised on a fixture word-list config, seats and roles as named here, not the live ones
+R = dict(R, token_talk=dict(R["token_talk"], seats=["BENCH", "FOUNDRY"],
+                            roles=["conductor", "producer", "arbiter", "auditor", "innovator"]))
 rx = OW.tt_regex(R)
 check("tokentalk: the word list matches whole words only (a bare cap and 'tokenizer' do not)",
       rx.search("save tokens") and rx.search("Budget!") and not rx.search("the log cap") and not rx.search("tokenizer")

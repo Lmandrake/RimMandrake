@@ -72,7 +72,7 @@ cache_read, output), each weighted by its price class (TOKEN_WEIGHTS, run_tokens
 measures cost, not context re-reads; ROLE_CAPS_REMEASURE_ON_REAL_RUNS). Every cap, budget, daily spend and overbudget
 alarm here is in these units; the raw sum is kept beside it on the run as `raw_tokens`. A run over its budget is an ALARM after the fact: `claude -p` has no
 token stop and nothing here stops a run at its budget: the budget is checked on its result. Only a `token_aware` role
-(Operations) is told its band and budget in its launch message; every other role is token-blind and is told
+(Operations, the Conductor) is told its band and budget in its launch message; every other role is token-blind and is told
 neither (owner 2026-10-27; review T, F1/F2). A run still going after
 `run_max_s` is stopped (its claude_bounded scope and its unit) with an alarm; it stays `running` and the stop is
 re-issued each tick until systemd says the unit AND its claude_bounded scope are inactive/failed (claude lives in the
@@ -595,8 +595,8 @@ def spent_today(rs, now):
 
 
 def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, unit):
-    """The launch message. Every role but one whose schedule entry says `token_aware: true` (Operations, the only AI
-    that analyses burn) is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
+    """The launch message. Every role but those whose schedule entry says `token_aware: true` (Operations; the
+    Conductor, owner 2026-10-31) is token-blind (owner 2026-10-27): its message carries no band, runway, week, budget or cap,
     and no order to watch one (review T, F1). Nothing stops a run at its budget mid-run: the real bounds are
     `run_max_s` (wall time) and the after-the-fact accounting (supervise_roles), both the Dispatcher's (F2)."""
     lines = ["[RimFlow Dispatcher — a program, not a person; role launch %s]" % unit,

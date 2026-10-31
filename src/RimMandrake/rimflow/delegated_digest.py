@@ -6,7 +6,7 @@ No AI. Once a day, as the Conductor's pre-step (dispatcher_schedule.json `pre_la
 first, with counts MEASURED from the records. The Conductor delivers it (conductor.md, scheduled check (d)); it never
 assembles one by hand. Items DELEGATED_DIGEST_FIX_NEVER_WRITTEN, DIGEST_BLIND_HARDEN_REASONS_SLIP_THROUGH.
 
-🔴 TOKEN-BLIND BY CONSTRUCTION (owner 2026-10-27: only Operations is token-aware; the Conductor reads this page).
+🔴 TOKEN-BLIND BY CONSTRUCTION (the page goes to the owner; the Conductor is not limited to it, owner 2026-10-31).
 The page is a contracts.blind.DigestPage, a CLOSED type: each reader below extracts only the RAW_FIELDS of its
 source, contracts.blind.project_digest maps them into closed sets (policy class, decision, mark action, judge family,
 seat) and checked identifiers (item id, subject, sha, evidence path under an allowed root), and render_digest writes

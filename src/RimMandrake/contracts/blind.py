@@ -1,6 +1,6 @@
 """contracts.blind -- BlindView: the CLOSED type every token-blind page is built from (BLINDVIEW_BUILD_CLOSED_TYPE_LEAKPROOF).
 
-Owner ruling 2026-10-27: only Operations is token-aware; every other role is token-blind. Free-text redaction (the old
+Owner ruling 2026-10-27: only Operations and the Conductor (2026-10-31) are token-aware; every other role is token-blind. Free-text redaction (the old
 blind_view.redact) can never be complete, so a blind page carries no free text at all:
 
   * every model is extra="forbid", strict and frozen;

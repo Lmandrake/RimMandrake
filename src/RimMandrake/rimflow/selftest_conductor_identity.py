@@ -64,7 +64,7 @@ def test_identity():
     for needle, what in (("you absorb bench", "absorbs Bench"),
                          ("quick mode", "quick mode"),
                          ("session mode", "session mode"),
-                         ("helpers run in session mode only", "helpers in session mode only"),
+                         ("runs no helper", "helpers in session mode only"),
                          ("the only voice to him", "the single voice to him"),
                          ("infrastructure/state/conductor_goals.md", "the goals file"),
                          ("never answer from memory", "numbers never from memory"),
@@ -114,7 +114,9 @@ def test_window():
                   "the quick-check hold %r does not fire on seat %s's window %r" % (hold, seat, n))
     sys.path.insert(0, HERE)
     import role_launch as RL
-    m = RL.prompt(role, "quick", "20:00", "-", None, 0, 0, 1.0, 0, "u")
+    # token_aware since the owner's 2026-10-31 ruling ("Conductor accesses everything"), so its launch reads a reading
+    reading = {"runway": 3.0, "runway_m": "MEASURED", "week_left": 40.0, "week_left_m": "MEASURED", "at": "t"}
+    m = RL.prompt(role, "quick", "20:00", "-", reading, 0, 0, 1.0, 0, "u")
     check("then stop" in m and role["instructions"] in m, "a headless quick launch runs conductor.md and stops")
 
 

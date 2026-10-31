@@ -2103,7 +2103,7 @@ def test_role_real_schedule_triggers():
 # ---------------------------------------------------------------- review T (launcher findings)
 
 def test_review_t():
-    # F1: only a token_aware role (Operations) is told band, runway, budget and caps
+    # F1: only a token_aware role (Operations, and the Conductor since the owner ruling of 2026-10-31) is told band, runway, budget and caps
     t = at_local("07:30")
     o = operations(token_aware=True, alarm_runs=False)
     a = role_acts(rdecide([o], fresh(), robs(ops_status(t)), t))
@@ -2121,7 +2121,7 @@ def test_review_t():
               "F1: %s's launch message is token-blind" % r["name"])
     sch = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
     aware = [r["name"] for r in sch["roles"] if r.get("token_aware")]
-    check(aware == ["Operations"], "F1: in the schedule only Operations is token_aware")
+    check(aware == ["Conductor", "Operations"], "F1: in the schedule only the Conductor (owner 2026-10-31) and Operations are token_aware")
     # F2: no code claims a mid-run token stop
     src = open(os.path.join(HERE, "role_launch.py"), encoding="utf-8").read()
     check("At the budget" not in src and "stops a run at its cap" not in src, "F2: role_launch claims no token stop")
