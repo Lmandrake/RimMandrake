@@ -105,6 +105,7 @@ import time
 from fractions import Fraction
 
 AUTH_BACKS_PER_DAY = 2
+AUTH_TEXT_MAX = 400     # an auth death's result IS the short API error; a long result merely quotes one
 AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expired|please run /login|"
                      r"authentication_failed", re.I)
 
@@ -761,6 +762,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 why="%s run %s ended without a good result (%s)" % (
                     name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
                     + (text or "no result file")[:160]))
+        run.pop("consumed", None)                        # read only just above; runs stay in state for 2 days
     rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or now - r["at"] < 2 * 86400]
 
 
@@ -770,7 +772,8 @@ def auth_failed_back(rs, run, text, now):
     that fails only for role runs cannot loop. -> True when given back."""
     used = rs.get("auth_backs") if (rs.get("auth_backs") or {}).get("day") == day_of(now) else {"day": day_of(now), "n": 0}
     p = run.get("consumed")
-    if not (p and AUTH_RX.search(str(text))) or used["n"] >= AUTH_BACKS_PER_DAY or rs.get("pending_launch"):
+    if not (p and len(str(text)) <= AUTH_TEXT_MAX and AUTH_RX.search(str(text))) or run.get("tokens") \
+            or used["n"] >= AUTH_BACKS_PER_DAY or rs.get("pending_launch"):
         return False
     if any(r.get("at", 0) > run["at"] for r in rs.get("runs") or []):    # a later run already moved the marks
         return False
@@ -780,7 +783,7 @@ def auth_failed_back(rs, run, text, now):
         return False
     used["n"] += 1
     rs["auth_backs"] = used
-    run.pop("consumed", None)
+    run["tokens"] = 0                                    # it did no work: its budget is not spent either
     return True
 
 

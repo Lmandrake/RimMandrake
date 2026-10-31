@@ -107,7 +107,7 @@ def test_switch():
         h, a = run(sch, st, obs(BAD), NOW + 1100)
         check("not back in time: alarm, no second try", [x["kind"].split(":")[1] for x in a] == ["switch_failed"])
         h, a = run(sch, st, obs(BAD), NOW + 1300)
-        check("that alarm fires once", not a)
+        check("that alarm stays up until the login is back (the Dispatcher rate-limits it)", a and "switch_failed" in a[0]["kind"])
         got = []
         LW.run_switch({"epoch": NOW, "command": "ca", "account": "b", "machine": "boxy"}, got.append)
         check("the command", got[0][-5:] == ["ca", "use", "b", "--confirm", "boxy"] and got[0][0] == "systemd-run")
@@ -124,9 +124,10 @@ def test_switch():
 def test_stranded():
     with tempfile.TemporaryDirectory() as d:
         sch, st = box(d), {}
-        w = {"seat": "S", "sess": {"pid": 1, "sessionId": "x"}, "path": "p", "size": 9, "at": NOW - 900, "conductor": False}
+        w = {"seat": "S", "sess": {"pid": 1, "sessionId": "x"}, "start": 77, "path": "p", "size": 9, "at": NOW - 900, "conductor": False}
         h, a = run(sch, st, obs(GOOD, windows=[w]), NOW)
-        check("stranded seat gets a restart request", [x["do"] for x in a] == ["login_rescue"] and a[0]["request"]["session_id"] == "x")
+        check("stranded seat gets a restart request", [x["do"] for x in a] == ["login_rescue"] and a[0]["request"]["session_id"] == "x"
+              and a[0]["request"]["start"] == 77)
         check("one request per error", not run(sch, st, obs(GOOD, windows=[w]), NOW + 120)[1])
         w2 = dict(w, at=NOW - 10)
         run(sch, st, obs(GOOD, windows=[w2]), NOW + 240)
@@ -136,6 +137,10 @@ def test_stranded():
         c = dict(w, conductor=True, seat="C")
         h, a = run(sch, {}, obs(GOOD, windows=[c]), NOW)
         check("a Conductor window is never restarted", a[0]["do"] == "alarm")
+        h, a = run(sch, {}, obs(GOOD, windows=[dict(w, start=None)]), NOW)
+        check("no birth record: an alarm, no request the kill would refuse", [x["do"] for x in a] == ["alarm"])
+        h, a = run(sch, {}, obs(GOOD, windows=[w], paused="x"), NOW)
+        check("PAUSE: no rescue", not a)
         h, a = run(sch, {}, dict(obs(BAD, windows=[w])), NOW)
         check("no rescue on a dead login", not a)
 
@@ -174,10 +179,13 @@ def test_quiet_and_gate():
            "message": {"stop_reason": "stop_sequence"}}
     with tempfile.TemporaryDirectory() as d:
         path = os.path.join(d, "t.jsonl")
-        for er, want in (("authentication_failed", "assistant_end"), ("rate_limit", "assistant_other")):
+        for er, want in (("authentication_failed", True), ("rate_limit", False)):
             with open(path, "w") as f:
                 f.write(json.dumps(dict(rec, error=er, timestamp=SR._iso(NOW))) + "\n")
-            check("%s reads %s" % (er, want), SR.tx_summary(path, peers=())["last_kind"] == want)
+            tx = SR.tx_summary(path, peers=())
+            check("%s: the kill fence reads %s" % (er, want), SR.killable_turn(tx) is want)
+            check("%s is no ended turn: a fresh window dying on it is not verified" % er,
+                  tx["last_kind"] == "assistant_other")
     with tempfile.TemporaryDirectory() as d:
         sch, st, a = box(d), {"login": {"fails": 1, "first_fail": NOW}}, []
         g = D.login_gate(sch, st, obs(BAD), NOW + 120, lambda **k: a.append(k), lambda kind: (True, {}))
@@ -211,8 +219,81 @@ def test_slot_back():
     check("a later run keeps the marks", not RL.auth_failed_back(rs, r, "Login expired", NOW))
 
 
+def test_probe():
+    with tempfile.TemporaryDirectory() as d:
+        exe = os.path.join(d, "fake")
+        for body, want in (('echo \'{"loggedIn": true}\'', True), ('echo \'{"loggedIn": false}\'; exit 1', False),
+                           ("echo Please run /login >&2; exit 1", False), ("echo segfault >&2; exit 139", None),
+                           ("echo junk", None), ("sleep 5", None)):
+            with open(exe, "w") as f:
+                f.write("#!/bin/sh\n%s\n" % body)
+            os.chmod(exe, 0o755)
+            check("probe %s -> %s" % (body[:24], want), LW.probe(exe, 1)[0] is want)
+    with tempfile.TemporaryDirectory() as d:
+        sch, st = box(d), {}
+        o = obs(GOOD)
+        o["login"]["probe"] = lambda: (None, "crash")
+        seen = [run(sch, st, o, NOW + i)[1] for i in range(5)]
+        check("blind ticks alarm only after blind_alarm_n", not any(seen[:4]) and seen[4][0]["kind"] == "login:blind")
+        check("blind holds nothing", run(sch, st, o, NOW + 9)[0] is None)
+
+
+def test_pick_and_way():
+    with tempfile.TemporaryDirectory() as d:
+        cfg = LW.config(box(d))
+        at = SR._iso(NOW)
+        with open(cfg["usage_latest"], "w") as f:
+            json.dump({"accounts": {n: {"source": "MEASURED", "measured_at": at, "week_pct_used": u} for n, u in
+                                    (("full", 95), ("some", 60), ("empty", 5), ("unread", None))}}, f)
+        check("over the week line, emptiest first; no reading is unfit",
+              LW.healthy_logins(cfg, "x", (), NOW, {"target_min": {"week_left_pct_ge": 20}}) == ["empty", "some"])
+    for w in (LW.way_back(["a"], None), LW.way_back([], "m"), LW.way_back(["a"], "m")):
+        check("way back never sends him to a window, never prints None",
+              "None" not in w and "/login in any" not in w and "plain terminal" in w)
+
+
+def test_give_back():
+    st = {"login": {"switch_at": NOW, "switched_to": "a", "rescues": {"S": {"day": 1, "n": 2, "for": NOW}}}}
+    back = D.unreleased(st, [{"do": "login_switch"}, {"do": "login_rescue", "seat": "S"}], NOW)
+    check("a raised tick gives both back", len(back) == 2 and "switch_at" not in st["login"]
+          and st["login"]["rescues"]["S"] == {"day": 1, "n": 1})
+    check("a released switch stays", not D.unreleased(st, [{"do": "login_switch", "released": True}], NOW))
+    LW.give_back(st, {"do": "login_rescue", "seat": "S"}, spent=True)
+    check("a failed write keeps its place in the day's limit", st["login"]["rescues"]["S"]["n"] == 1)
+    LW.switch_failed(st)
+    check("a refused switch alarms at once", st["login"]["switch_at"] == 0)
+
+
+def test_release():
+    with tempfile.TemporaryDirectory() as d:
+        sch = box(d, hold=False)
+        sw = {"do": "login_switch", "kind": "login:switch", "seat": None, "account": "b", "machine": "boxy", "command": "ca",
+              "why": "w"}
+        res = {"do": "login_rescue", "seat": "S", "kind": "x", "why": "w", "request": {}}
+        fired, logged = [], []
+        fx = {"login_switch": lambda argv: fired.append(argv) or "started: ok", "paused": lambda: None,
+              "conductor_log": lambda *a: logged.append(a) or "logged", "lock": lambda: None}
+        st = {"alarms": {}, "login": {"switch_at": NOW}}
+        D.execute([dict(sw)], sch, st, d, True, NOW, fx, deadline=NOW + 1e9)
+        check("the switch runs at release when nothing blocks it", len(fired) == 1 and st["login"]["switch_at"] == NOW)
+        open(sch["login_watch"]["hold_file"], "w").close()
+        D.execute([dict(sw)], sch, st, d, True, NOW, fx, deadline=NOW + 1e9)
+        check("a HOLD landed during the lock wait stops it", len(fired) == 1 and "switch_at" not in st["login"])
+        os.remove(sch["login_watch"]["hold_file"])
+        st["login"]["switch_at"] = NOW
+        D.execute([dict(sw)], sch, st, d, True, NOW, dict(fx, paused=lambda: "p"), deadline=NOW + 1e9)
+        check("a PAUSE landed during the lock wait stops it", len(fired) == 1 and "switch_at" not in st["login"])
+        st["login"]["switch_at"] = NOW
+        D.execute([dict(sw)], sch, st, d, True, NOW, dict(fx, login_switch=lambda argv: "FAILED: no"), deadline=NOW + 1e9)
+        check("a refused switch is due its alarm now", st["login"]["switch_at"] == 0)
+        st["login"]["rescues"] = {"S": {"day": 1, "n": 1, "for": NOW}}
+        D.execute([dict(res)], sch, st, d, True, NOW, dict(fx, paused=lambda: "p"), deadline=NOW + 1e9)
+        check("PAUSE at release: the rescue goes back", st["login"]["rescues"]["S"] == {"day": 1, "n": 0})
+
+
 def main():
-    for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_quiet_and_gate, test_slot_back):
+    for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_quiet_and_gate, test_slot_back,
+              test_probe, test_pick_and_way, test_give_back, test_release):
         t()
     print("selftest_login_watch: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))
     return 1 if FAILS else 0

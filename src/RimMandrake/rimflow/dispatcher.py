@@ -868,7 +868,7 @@ def conductor_log(sch, a, now):
     if not path:
         return "conductor log off"
     line = "\n%s — DISPATCHER ESCALATION (%s): %s\n  RAISE FIRST: %s\n" % (
-        iso(now), a.get("kind"), a.get("why"), a.get("raise_first") or ("%s idle with work waiting." % a.get("seat") if a.get("seat") else "Read the line above."))
+        iso(now), a.get("kind"), a.get("blind") or a.get("why"), a.get("raise_first") or ("%s idle with work waiting." % a.get("seat") if a.get("seat") else "Read the line above."))
     with open(path, "a", encoding="utf-8") as f:
         f.write(line)
     return "conductor log appended: %s" % path
@@ -1020,11 +1020,30 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     if a["do"] == "alarm" and a.get("conductor_log") and res is None:
                         res = do_conductor(sch, a, now)       # not when rate-limited (res already says so)
                     if a["do"] == "login_switch":
-                        res = LW.run_switch(dict(a, epoch=now), fx.get("login_switch"))
-                        if a.get("conductor_log"):
-                            res = "%s; %s" % (res, do_conductor(sch, a, now))
+                        # PAUSE and the owner's HOLD again, now: decide() read them before the ingest.lock wait
+                        block = LW.switch_block(LW.config(sch), do_paused())
+                        if block:
+                            res = "held at release: %s" % block
+                            LW.give_back(st, a)
+                        else:
+                            a["released"] = True
+                            res = LW.run_switch(dict(a, epoch=now), fx.get("login_switch"))
+                            if res.startswith("FAILED"):
+                                LW.switch_failed(st)
+                            if a.get("conductor_log"):
+                                res = "%s; %s" % (res, do_conductor(sch, a, now))
                     elif a["do"] == "login_rescue":
-                        res = LW.write_rescue(a)
+                        paused = do_paused()
+                        if paused:
+                            res = "held at release: PAUSE (%s)" % paused
+                            LW.give_back(st, a)
+                        else:
+                            a["released"] = True
+                            try:
+                                res = LW.write_rescue(a)
+                            except OSError as e:
+                                res = "FAILED: %s" % e
+                                LW.give_back(st, a, spent=True)
                     elif a["do"] == "ring":
                         # PAUSE again, now: decide() read it before the ingest.lock wait (review dispatcher-full #8)
                         paused = do_paused()
@@ -1280,6 +1299,9 @@ def unreleased(st, acts, now):
         if a.get("do") in ("ring", "recover") and not a.get("released") and "result" not in a:
             (unring if a["do"] == "ring" else unrecover)(st, a, now)
             back.append("%s %s" % (a["do"], a["seat"]))
+        elif a.get("do") in ("login_switch", "login_rescue") and not a.get("released") and "result" not in a:
+            LW.give_back(st, a)
+            back.append(a["do"])
     return back
 
 

@@ -334,6 +334,13 @@ def auth_ended(rec):
                 and rec.get("error") == "authentication_failed")
 
 
+def killable_turn(tx):
+    """The kill fences only: a turn that ended, or one an auth error ended. A window on an auth error is quiet and
+    login_watch restarts it, but it is NOT an ended turn: the fresh-window proof and the backstop stay on last_kind,
+    so a window that dies on the error is never verified good (LOGIN_LOSS_FIX_DEAD_SIGNALS)."""
+    return tx.get("last_kind") == "assistant_end" or bool(tx.get("auth_end"))
+
+
 def _assistant_kind(rec):
     sr = (rec.get("message") or {}).get("stop_reason")
     return "assistant_end" if sr == "end_turn" else "assistant_tool" if sr == "tool_use" else "assistant_other"
@@ -362,14 +369,15 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
             continue
         at = _ts(r.get("timestamp"))
         if t == "assistant":
-            # a window stranded on an auth error is quiet: login_watch restarts it (LOGIN_LOSS_FIX_DEAD_SIGNALS)
-            s["last_kind"] = "assistant_end" if auth_ended(r) else _assistant_kind(r)
+            s["last_kind"] = _assistant_kind(r)
+            s["auth_end"] = auth_ended(r)
             u = (r.get("message") or {}).get("usage") or {}
             if u:
                 s["ctx_tokens"] = sum(int(u.get(k) or 0) for k in (
                     "input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"))
         else:
             s["last_kind"] = "user"
+            s["auth_end"] = False
             if _is_human_input(r, peers):
                 s["last_user_at"] = at
         s["last_at"] = at
@@ -980,7 +988,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         act(do="restart_hold", seat=seat, why="; ".join(holds))
         return
     rs.pop("held_since", None)
-    quiet = (cur.get("status") == "idle" and tx and tx.get("last_kind") == "assistant_end"
+    quiet = (cur.get("status") == "idle" and tx and killable_turn(tx)
              and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
     if not quiet:
         rs["busy"] = rs.get("busy", 0) + 1
@@ -1237,7 +1245,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None):
         holds.append("transcript unreadable")
     elif (tx.get("last_user_at") or 0) > rs.get("cancel_after", rs.get("ts", 0)):
         holds.append("new input at %s" % _iso(tx["last_user_at"]))
-    elif tx.get("last_kind") != "assistant_end":
+    elif not killable_turn(tx):
         holds.append("turn not ended (%s)" % tx.get("last_kind"))
     elif tx.get("last_at") is None:
         holds.append("last record time unknown")
