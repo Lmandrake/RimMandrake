@@ -1,0 +1,1 @@
+Prove the acceptance gate on the correct answers before freezing a trial: run the reference fix through the whole real gate and require PASS on every task. Our gate failed 18 of 26 reference fixes after the freeze.
