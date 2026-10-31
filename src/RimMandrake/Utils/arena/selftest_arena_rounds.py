@@ -93,7 +93,8 @@ def t_replay(tasks, rel):
     real_one = R.run_one
     R.run_one = lambda arm, task, *a, **k: seen.append((arm, task)) or "ok"
     try:
-        res = R.run_schedule(H, tasks, ["a1", "a2"], None, None, str(REPO), None)
+        res = R.run_schedule(H, tasks, ["a1", "a2"], None, None, str(REPO), None,
+                             trial=list(tasks))   # fixture ids, not trial_tasks.json (ARENA_REPLAY_TASKS_WIRE_TRIAL_LIST)
     finally:
         R.run_one = real_one
     per = {a: [t for x, t in seen if x == a] for a in ("a1", "a2")}

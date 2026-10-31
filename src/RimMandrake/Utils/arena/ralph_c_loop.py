@@ -144,15 +144,24 @@ def area_violations(task: dict, files: list, areas: dict) -> list:
 # ------------------------------------------------------------------------------------------------ the board (R2, R4)
 class Board:
     """Shared assignment for both loops: <dir>/board.json under flock. State only (holder, outcome); the task specs
-    are the frozen tasks both loops were started with, in one order that the board pins on first use."""
+    are the frozen tasks both loops were started with, in one order that the board pins on first use.
 
-    def __init__(self, path, tasks, areas, runner_pending=None):
+    SIBLING ORDER (ARENA_PLANNERS_WIRE_ROUND_GUARD_BOARD_JUDGE): `contains` is arena_tasks.base_contains over the
+    board's tasks ({id: [ids whose fix is in its base]}; make_board computes it from the judge's hidden fix shas).
+    assign never gives a task while a task its base contains is not yet done (held by the other member counts as not
+    done): arena_rounds.first_givable. It is REQUIRED, never defaulted: a board without the relation would hand out
+    a task whose base holds the answer of one being worked. Pass {} only when the tasks are known unrelated."""
+
+    def __init__(self, path, tasks, areas, runner_pending=None, *, contains):
         self.path = Path(path)
         self.areas = areas
         self.tasks = {t["id"]: t for t in tasks}
         self.order = [t["id"] for t in tasks]
         if len(self.tasks) != len(self.order):
             raise Refused("duplicate task ids")
+        if not isinstance(contains, dict):
+            raise Refused("board needs the sibling relation (contains), got %r" % type(contains).__name__)
+        self.contains = {t: list(contains.get(t, [])) for t in self.order}
         self.home = {t["id"]: home_of(t, areas) for t in tasks}          # R1 refuses a homeless task here
         self.runner_pending = runner_pending or (lambda: [])
 
@@ -189,7 +198,10 @@ class Board:
     def assign(self, member, lane_wait=False):
         """-> (task, why). A task the member already holds comes back first (a restarted loop resumes it); else its
         own oldest open task, else (own list empty) the oldest open task of the other member, a steal. A live-needing
-        task is skipped while the member has a live candidate waiting (R4). (None, why) when nothing may be given."""
+        task is skipped while the member has a live candidate waiting (R4), and a task whose base contains the fix of
+        a board task not yet done is skipped (sibling order, arena_rounds.first_givable). (None, why) when nothing
+        may be given; a member whose own open tasks are all sibling-blocked waits rather than steals (R2 unchanged)."""
+        import arena_rounds as RD                    # noqa: PLC0415 -- arena_rounds imports arena_tasks
         if member not in MEMBERS:
             raise Refused("member %r is not one of %s" % (member, MEMBERS))
         waiting = bool(lane_wait) or bool(self.waiting_in_runner(member))
@@ -204,17 +216,19 @@ class Board:
             free = [t for t in self.order if t not in st["holder"] and t not in st["done"]]
             own = [t for t in free if self.home[t] == member]
             pool, stolen = (own, False) if own else ([t for t in free if self.home[t] != member], True)
-            skipped = []
-            for tid in pool:
-                t = self.tasks[tid]
-                if waiting and t.get("live", "none") != "none":
-                    skipped.append(tid)
-                    continue
+            skipped = [tid for tid in pool if waiting and self.tasks[tid].get("live", "none") != "none"]
+            cands = [tid for tid in pool if tid not in skipped]
+            tid, blocked = RD.first_givable(cands, self.contains, st["done"], self.order)
+            if tid is not None:
                 st["holder"][tid] = member
-                return dict(t, _stolen=stolen, _home=self.home[tid]), "steal" if stolen else "own"
+                return dict(self.tasks[tid], _stolen=stolen, _home=self.home[tid]), "steal" if stolen else "own"
+            why = []
             if skipped:
-                return None, "back-pressure: live candidate waiting; live task(s) %s not given" % ", ".join(skipped)
-            return None, "no open task for %s" % member
+                why.append("back-pressure: live candidate waiting; live task(s) %s not given" % ", ".join(skipped))
+            if blocked:
+                why.append("sibling order: %s" % "; ".join("%s waits on %s" % (k, ",".join(v[:3]))
+                                                           for k, v in list(blocked.items())[:3]))
+            return None, " | ".join(why) if why else "no open task for %s" % member
 
     def finish(self, member, tid, outcome):
         with self._locked() as st:
@@ -520,7 +534,23 @@ def make_board(task_ids, areas_path, p=None):
     tp = A.paths()
     tasks = [A.load_frozen(t, tp) for t in task_ids if t]
     rp = RC.rpaths()
-    return Board(rp["rc"] / "board.json", tasks, load_areas(areas_path), runner_pending=lambda: RC.pending(rp))
+    return Board(rp["rc"] / "board.json", tasks, load_areas(areas_path), runner_pending=lambda: RC.pending(rp),
+                 contains=board_contains(tasks, tp))
+
+
+def board_contains(tasks, p, repo=None) -> dict:
+    """arena_tasks.base_contains over the board's tasks, fix shas from the judge's hidden files (the loop already
+    reads them through load_frozen). Fail closed: a task with no base or fix sha refuses the board."""
+    import arena_rounds as RD
+    import arena_tasks as A
+    import arena_trial as TR
+    fixes = TR.hidden_fix_shas(p)
+    miss = [t["id"] for t in tasks if not t.get("base_sha") or not fixes.get(t["id"])]
+    if miss:
+        raise Refused("no base/fix sha for %d board task(s) (e.g. %s): sibling order cannot be guarded"
+                      % (len(miss), miss[0]))
+    return RD.contains_for({t["id"]: {"base_sha": t["base_sha"], "fix_sha": fixes[t["id"]]} for t in tasks},
+                           repo or A.REPO)
 
 
 def main(argv=None):

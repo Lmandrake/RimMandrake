@@ -93,7 +93,7 @@ def new_clone(d):
 class Arena:
     """One temp arena: board, runner queue, shared writer, and one member World per loop."""
 
-    def __init__(self, tmp, name, tasks, mod=C, writer=None):
+    def __init__(self, tmp, name, tasks, mod=C, writer=None, contains=None):
         self.d = tmp / name
         self.aroot = self.d / "arena"
         os.environ["ARENA_ROOT"] = str(self.aroot)
@@ -101,7 +101,7 @@ class Arena:
         self.rp = RC.rpaths()
         self.writer = writer or RA.ListWriter()
         self.board = mod.Board(self.rp["rc"] / "board.json", tasks, mod.load_areas(AREAS),
-                               runner_pending=lambda: RC.pending(self.rp))
+                               runner_pending=lambda: RC.pending(self.rp), contains=contains or {})
         self.calls = []                                  # (member, role, agent_id)
         self.status_seen = []
 
@@ -320,6 +320,21 @@ def sc_steal_last(tmp, mod, tag):
     return ok
 
 
+def sc_sibling_order(tmp, mod, tag):
+    """P6 (ARENA_PLANNERS_WIRE_ROUND_GUARD_BOARD_JUDGE): T2's base contains T1's fix. While a1 holds T1, a2 is NOT
+    given T2 (same round = leak) and waits rather than steal; once T1 is done, T2 is given."""
+    ar = Arena(tmp, "P6" + tag, [task("T1", MA), task("T2", MB)], mod, contains={"T2": ["T1"], "T1": []})
+    t1, why1 = ar.board.assign("a1")
+    t2, why2 = ar.board.assign("a2")
+    ok = t1 is not None and t1["id"] == "T1" and t2 is None and "sibling order" in why2 and "T1" in why2
+    ar.board.finish("a1", "T1", "x")
+    t3, why3 = ar.board.assign("a2")
+    ok = ok and t3 is not None and t3["id"] == "T2" and why3 == "own"
+    if tag == "":
+        check(ok, "P6 T2 refused to a2 while a1 holds T1 (%s); given once T1 is done (%s)" % (why2, why3))
+    return ok
+
+
 def sc_two_loops(tmp, mod, tag):
     """P5: a1 and a2 interleaved on one board, a tester FAIL included: every build_end is tested by a different
     agent before that loop's next build pass."""
@@ -512,10 +527,46 @@ MUTATIONS = [
     ("P3 per-loop require_tested removed", sc_tested_per_loop,
      "        require_tested(self.writer.records(), self.member)\n", ""),
     ("P4 steal first", sc_steal_last, "(own, False) if own else", "(own, False) if False else"),
+    ("P6 sibling guard dropped from Board.assign", sc_sibling_order,
+     'RD.first_givable(cands, self.contains, st["done"], self.order)', 'RD.first_givable(cands, {}, st["done"], self.order)'),
+    ("P6 held-by-other counted as done", sc_sibling_order,
+     'RD.first_givable(cands, self.contains, st["done"], self.order)',
+     'RD.first_givable(cands, self.contains, list(st["done"]) + list(st["holder"]), self.order)'),
 ]
 
 
 # ------------------------------------------------------------------------------------------------ plain checks
+def t_board_contains(tmp):
+    """board_contains: the relation from a real git history and hidden fix shas; required; fail closed on a gap."""
+    r = tmp / "bc_repo"
+    r.mkdir(parents=True)
+    g = lambda *a: subprocess.run(["git", "-C", str(r), *a], check=True, capture_output=True, text=True).stdout.strip()
+    g("init", "-q")
+    shas = []
+    for i in range(4):
+        (r / "f.txt").write_text("v%d\n" % i)
+        g("add", "f.txt")
+        g("-c", "user.name=t", "-c", "user.email=t@t", "commit", "-q", "-m", "c%d" % i)
+        shas.append(g("rev-parse", "HEAD"))
+    hid = tmp / "bc_hidden"
+    hid.mkdir()
+    for tid, fix in (("T1", shas[1]), ("T2", shas[3])):
+        (hid / (tid + ".json")).write_text(json.dumps({"task": tid, "fix_sha": fix}))
+    tasks = [{"id": "T1", "base_sha": shas[0]}, {"id": "T2", "base_sha": shas[2]}]
+    c = C.board_contains(tasks, {"judge": hid}, repo=r)
+    check(c.get("T2") == ["T1"] and c.get("T1") == [], "board_contains: T2's base holds T1's fix, not vice versa (%s)" % c)
+    try:
+        C.board_contains(tasks + [{"id": "T3", "base_sha": shas[0]}], {"judge": hid}, repo=r)
+        check(False, "board_contains: a task with no hidden fix sha refuses the board")
+    except C.Refused:
+        check(True, "board_contains: a task with no hidden fix sha refuses the board")
+    try:
+        C.Board(tmp / "bc_board.json", [task("T1", MA)], C.load_areas(AREAS))
+        check(False, "Board without contains= is refused (the relation is required)")
+    except TypeError:
+        check(True, "Board without contains= is refused (the relation is required)")
+
+
 def t_areas():
     def refused(fn, *a):
         try:
@@ -954,6 +1005,7 @@ def main():
                          ("P3 tested check per loop", sc_tested_per_loop),
                          ("P4 steal only when own list empty", sc_steal_last),
                          ("P5 two loops, one board", sc_two_loops),
+                         ("P6 sibling order on the board", sc_sibling_order),
                          ("P1c rename out of the other area refused", sc_rename_out),
                          ("crash between saves recovered", sc_crash_between_saves),
                          ("tester pass really sandboxed", sc_tester_sandbox)):
@@ -966,7 +1018,7 @@ def main():
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             check(guarded(fn, tmp, variant(old, new), "_m%d" % i) is False,
                   "mutation goes RED (a False verdict, not a crash): " + name)
-        for fn, a in ((t_areas, ()), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)), (t_cmdmodel_tester_sandbox, (tmp,)),
+        for fn, a in ((t_areas, ()), (t_board_contains, (tmp,)), (t_stop_status_prompt, (tmp,)), (t_default_gate, (tmp,)), (t_run_lock_and_idle, (tmp,)), (t_cmdmodel_env, (tmp,)), (t_cmdmodel_tester_sandbox, (tmp,)),
                       (t_signed_writer, (tmp,)), (t_wired, (tmp,)), (t_envfiles, (tmp,)), (t_runner_git_trust, (tmp,)), (t_runner_git_trust2, (tmp,))):
             try:
                 fn(*a)

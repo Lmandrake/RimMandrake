@@ -1,0 +1,2 @@
+selftest_arena_rounds crashed (uncaught ReplayError) from 1dd10f4ece until 2026-10-30: ARENA_REPLAY_TASKS_WIRE_TRIAL_LIST made run_schedule refuse any task set that is not trial_tasks.json, and the rounds selftest passed fixture ids T1-T3 with no trial=. A new fail-closed gate on a shared entry point breaks every selftest that calls it with fixtures; run the callers' selftests (grep the function name) when adding one. Fixed by passing trial=list(tasks).
+home: NONE
