@@ -933,6 +933,10 @@ def t_gate_runner(tmp):
     runner.write_text(G.RUNNER_SRC, encoding="utf-8")
     sel = str(L.HERE / "selftest_arena_eventlog.py")
     base = dict(os.environ, RM_EVLOG_GATE_PROBE="1", ARENA_EVENT_TOKEN_FILE=str(tmp / "gr_token"))
+    # a DUMMY token of our own: absent, it trips the fail-closed same-file compare against the real harness token
+    # whenever that exists (ARENA_EVLOG_SELFTEST_FIX_GRA_TOKEN_UNREAD). The real token is never read or touched.
+    (tmp / "gr_token").write_text("f" * 64, encoding="utf-8")
+    os.chmod(tmp / "gr_token", 0o600)
     base.pop("RM_ARM", None)
     base.pop("RM_GATE_RUNNER", None)   # when this selftest itself runs under the gate runner the marker is inherited
 
