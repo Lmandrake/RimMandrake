@@ -1031,6 +1031,60 @@ def t_tester_harness_void():
           "AA.HARNESS_ORPHAN_VOID_WHY" in src or repr(why) in src or '"%s"' % why in src, why)
 
 
+def t_tester_last_build():
+    """ARENA_DQ_TESTER_FIX_LAST_BUILD_UNCHECKED: a stream's LAST build (no later build pass) is checked at its task's
+    close (non-pending judge): tested before the close -> CLEAN; closed untested -> VIOLATED; not closed and untested
+    -> in flight, UNMEASURED (never CLEAN); a harness-voided last build is not a skip."""
+    def rec(ev, run, k, task="T000", **kw):
+        return dict({"ts": iso(T0 + k), "arm": "ralph_a", "task": task, "event": ev, "run_id": run}, **kw)
+    b = {"detail": {"role": "build"}}
+
+    def trail(tested=False, judged=False, pending_only=False, test_after_close=False, same_agent=False):
+        s = [rec("pass_start", "ralph_a.1", 1, **b),
+             rec("build_end", "ralph_a.1", 2, detail={"build_id": "T000.a", "builder": "ra-build-1"}),
+             rec("test_start", "ralph_a.2", 3, detail={"build_id": "T000.a", "tester": "ra-test-1"}),
+             rec("pass_start", "ralph_a.3", 4, task="T001", **b),
+             rec("build_end", "ralph_a.3", 5, task="T001", detail={"build_id": "T001.b", "builder": "ra-build-3"})]
+        if tested:
+            s.append(rec("test_start", "ralph_a.4", 9 if test_after_close else 6, task="T001",
+                         detail={"build_id": "T001.b", "tester": "ra-build-3" if same_agent else "ra-test-4"}))
+        if judged or pending_only:
+            s.append(rec("judge", "judge", 7, task="T001", lane="judge", detail={"base": "x", "pending": True}))
+        if judged:
+            s.append(rec("judge", "judge", 8, task="T001", lane="judge", detail={"base": "x"}))
+        return AA.L.ordered(s)
+    for name, kw, want in (
+            ("last build tested by a different agent, then judged", dict(tested=True, judged=True), "CLEAN"),
+            ("last build tested, task not closed yet", dict(tested=True), "CLEAN"),
+            ("last build judged with no test", dict(judged=True), "VIOLATED"),
+            ("last build tested only AFTER its task closed", dict(tested=True, judged=True, test_after_close=True),
+             "VIOLATED"),
+            ("last build in flight (no test, no judge)", {}, "UNMEASURED"),
+            ("last build in flight (only a pending judge)", dict(pending_only=True), "UNMEASURED")):
+        r = AA.dq_tester(trail(**kw))
+        check("tester last build: %s -> %s" % (name, want), r["status"] == want, r)
+    r = AA.dq_tester(trail(judged=True))
+    check("tester last build: the violation names the last build and is dated at the close",
+          r.get("evidence") and r["evidence"][0].get("last_build") and r["evidence"][0]["untested_build_task"] == "T001"
+          and r["ts"] == iso(T0 + 8), r)
+    s = trail(judged=True) + [rec("pass_start", "ralph_a.b1", 10, task="T009", **b),
+                              rec("build_end", "ralph_a.b1", 11, task="T009", detail={"build_id": "T009.c"}),
+                              rec("pass_start", "ralph_a.b2", 12, task="T009", **b),
+                              rec("build_end", "ralph_a.b2", 13, task="T009", detail={"build_id": "T009.d"}),
+                              rec("test_start", "ralph_a.b3", 14, task="T009", detail={"build_id": "T009.d"})]
+    r = AA.dq_tester(AA.L.ordered(s))
+    check("tester last build: dated at the EARLIEST violation across streams (last-build close before another "
+          "stream's skip)", r["status"] == "VIOLATED" and r["ts"] == iso(T0 + 8) and len(r["evidence"]) == 2, r)
+    s = trail(judged=True)
+    s.insert(5, rec("invalid", "ralph_a.operator", 5.5, task="T001",
+                    detail={"build_id": "T001.b", "why": AA.HARNESS_ORPHAN_VOID_WHY}))
+    r = AA.dq_tester(AA.L.ordered(s))
+    check("tester last build: a harness-voided last build is not a skip (CLEAN)", r["status"] == "CLEAN", r)
+    blk = AA.dq_blocking({"ralph_a": {"tester": AA.dq_tester(trail())}})
+    check("tester last build: an in-flight last build blocks a decision for its arm (dq_blocking)",
+          blk.get("ralph_a") == ["tester"], blk)
+
+
 def t_final_r2():
     tasks = make_tasks(4)
     logs = {a: {"recs": arm_log(a, [("T000", True)], offset=j, drop={(0, "gate")})} for j, a in enumerate(("trio", "v3"))}
@@ -1730,7 +1784,7 @@ def t_ledger_trust():
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
-        t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_tester_harness_void, t_final_r2, t_overflow_r2, t_spend_missing_field,
+        t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_tester_harness_void, t_tester_last_build, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
         t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial,
         t_stray_logs, t_ledger_trust, t_publish_parked)
@@ -1741,7 +1795,7 @@ MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97
            ("TIE_BAND", 0.17), ("TIE_BAND", 0.13), ("TIE_P", 0.92), ("TIE_P", 0.88),
            ("MIN_TASKS", 5), ("MIN_TASKS", 15), ("MIN_KINDS", 1), ("MIN_KINDS", 3), ("BLOCK", 4), ("BLOCK", 6),
            ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")),
-           ("HARNESS_ORPHAN_VOID_WHY", "orphaned by a killed runner"), ("HARNESS_VOID_STREAM_SUFFIX", ""), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
+           ("HARNESS_ORPHAN_VOID_WHY", "orphaned by a killed runner"), ("HARNESS_VOID_STREAM_SUFFIX", ""), ("CHECK_LAST_BUILD", False), ("LAST_BUILD_CLOSE_EVENT", "none"), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
            ("newest_era_missing", lambda *a: {}), ("held_kind", lambda v: v.startswith("DECIDE_FOR_")),
            ("gated", AA.held_kind), ("ledger_external", lambda ledger=None: (None, {"ledger": "mutant"})),
            ("dq_publish", _old_dq_publish)]

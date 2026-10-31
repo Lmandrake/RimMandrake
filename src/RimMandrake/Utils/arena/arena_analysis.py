@@ -951,6 +951,10 @@ def stream_of(run_id):
 # this why (selftest_arena_analysis checks the runner still passes this literal).
 HARNESS_ORPHAN_VOID_WHY = "orphaned by a killed runner: voided at restart under runner.lock"
 HARNESS_VOID_STREAM_SUFFIX = "operator"
+# ARENA_DQ_TESTER_FIX_LAST_BUILD_UNCHECKED: a stream's last build is checked at its task's close (this event, not
+# pending). CHECK_LAST_BUILD=False is the pre-fix behaviour (the selftest mutant).
+CHECK_LAST_BUILD = True
+LAST_BUILD_CLOSE_EVENT = "judge"
 
 
 def harness_voided_builds(seq):
@@ -1002,15 +1006,41 @@ def dq_tester(seq):
         if ti is None or ti > p:
             viol.append({"ts": seq[p]["ts"], "stream": st, "untested_build_task": seq[j].get("task"),
                          "build_sha": seq[j].get("sha")})
+    # ARENA_DQ_TESTER_FIX_LAST_BUILD_UNCHECKED: a stream's LAST build has no later build pass to be checked at. It is
+    # checked at its task's CLOSE (the first non-pending `judge` of that task after it): a different-agent test_start
+    # before the close -> fine; closed with none -> VIOLATED; not closed yet -> in flight, pending (never CLEAN).
+    in_flight = []
+    for st in sorted({stream_of(seq[j].get("run_id")) for j in builds}) if CHECK_LAST_BUILD else ():
+        mine = [j for j in builds if stream_of(seq[j].get("run_id")) == st and j not in voided]
+        if not mine or any(p > mine[-1] and stream_of(seq[p].get("run_id")) == st for p in starts):
+            continue
+        j = mine[-1]
+        ti = first.get(j)
+        close = next((k for k in range(j + 1, len(seq)) if seq[k]["event"] == LAST_BUILD_CLOSE_EVENT
+                      and seq[k].get("task") == seq[j].get("task")
+                      and not (seq[k].get("detail") or {}).get("pending")), None)
+        if ti is not None and (close is None or ti < close):
+            continue
+        if close is not None:
+            viol.append({"ts": seq[close]["ts"], "stream": st, "untested_build_task": seq[j].get("task"),
+                         "build_sha": seq[j].get("sha"), "last_build": True})
+        else:
+            in_flight.append({"stream": st, "task": seq[j].get("task"), "build_sha": seq[j].get("sha")})
     if viol:
+        viol.sort(key=lambda v: L.ts_epoch(v["ts"]))     # last-build entries are appended out of order: date the first
         return _also({"status": "VIOLATED", "ts": viol[0]["ts"],
-                      "why": "new build pass before a different agent began testing the last candidate",
+                      "why": "new build pass (or, for a stream's last build, its task's close) before a different "
+                             "agent began testing the last candidate",
                       "evidence": viol[:5]},
                      (unid or orphan) and "%d build record(s) with no run_id; %d orphan build_end(s)" %
                      (len(unid), len(orphan)))
     if unid or orphan:
         return {"status": "UNMEASURED", "why": "%d build record(s) with no run_id (stream unknown); %d build_end(s) "
                 "with no earlier build pass_start of the same run" % (len(unid), len(orphan))}
+    if in_flight:
+        return {"status": "UNMEASURED", "pending_last_build": in_flight[:5],
+                "why": "%d stream(s) whose last build is neither tested by a different agent nor judged yet (in "
+                       "flight): not CLEAN until it is tested or its task closes" % len(in_flight)}
     return {"status": "CLEAN"}
 
 
