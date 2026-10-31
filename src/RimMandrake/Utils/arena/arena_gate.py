@@ -35,7 +35,9 @@ out `head` (and `base`) into fresh clones under `<arena>/judge/gate_work/` and r
   7 proof        the task's own `proof` (each `python3 ...` segment; prose segments such as the held-back note are
                  the judge's business and are skipped). A segment must run a file that exists (missing -> UNMEASURED)
                  and that is in the diff, is a selftest, is a held-back check, or imports a changed module; `-c`
-                 code or a script touching nothing of the diff is UNMEASURED. No runnable segment -> UNMEASURED
+                 code or a script touching nothing of the diff is UNMEASURED. No runnable segment -> UNMEASURED,
+                 except a proof that is ONLY the held-back note: the gate then RUNS the frozen held-back checks
+                 (held_back_proof, the judge's own runner) and scores the real result (pass/fail/UNMEASURED)
   8 live         live tasks only: records in the arm's SIGNED event log: canary (sha == head by a >=12-char prefix,
                  verdict pass, detail modcheck true) and live_release (verdict). A failed canary or another sha: INVALID
   9 test_record  a `test_start` for this sha from an agent id other than EVERY builder of the task (all build_end
@@ -213,6 +215,7 @@ def run(argv, cwd, log: Path, timeout=STEP_TIMEOUT, env=None, stdin=None, pass_f
         return None, "cannot run: %s" % e
 
 
+HELD_BACK_RE = re.compile(r"^the judge runs \d+ held-back (selftest|check)\(s\)", re.I)
 GIT_TIMEOUT = 120
 # ARENA_GATE_WORK_REWIRE_OFF_DRVFS: a full checkout of the 7.7 GB tree is ~11 s on ext4 (measured 2026-10-31, idle)
 # and 379 s on drvfs; the checkout gets its own budget so three arms gating at once do not time out on ext4
@@ -1293,11 +1296,59 @@ class Gate:
         stems = {Path(f).stem for f in self.paths() if f.endswith(".py")}
         return any(re.search(r"\b(import|from)\s+%s\b" % re.escape(s), txt) for s in stems)
 
+    def held_back_proof(self):
+        """ARENA_GATE_PROOF_FIX_HELD_BACK_UNPASSABLE: a proof that is ONLY the held-back note ("the judge runs N
+        held-back selftest(s) the original fix added") is RUN here and scored on its real result: the frozen judge
+        file's checks (arena_judge.hidden_checks minus the reader pass's unscored paths, the set the judge scores),
+        on head's materialised tree, through the judge's own sandboxed runner (arena_judge.materialise / run_hidden,
+        called, never changed: the vet key is untouched). All pass -> PASS; any fail -> FAIL; no judge file, no
+        stored body, nothing left after unscoring, or any check that did not finish (error/no_marker/denied) ->
+        UNMEASURED. Never an automatic pass. The step record carries counts only (no path, no body, no tail); the
+        tails go to a log under the gate's judge-only log dir."""
+        import arena_judge as AJ           # lazy: the judge's runner, read-only use
+        tid = str(self.task.get("id") or "")
+        if self.sandbox_why:
+            return unmeasured("held-back proof not run: " + self.sandbox_why)
+        hp = self.p["judge"] / (tid + ".json")
+        if not hp.is_file():
+            return unmeasured("held-back proof: the task has no judge file")
+        try:
+            hidden = json.loads(hp.read_text(encoding="utf-8"))
+            unscore = AJ.reader_unscore(tid, self.p, required=AJ.is_replay(self.task))
+            checks = [c for c in AJ.hidden_checks(hidden, unscore) if c.get("body") is not None]
+            tpaths = A.VR.judge_tree_paths(hidden, AJ.TREE_PATHS)
+        except Exception as e:  # noqa: BLE001 - an unreadable judge/reader file measures nothing
+            return unmeasured("held-back proof: judge file unusable: %s: %s" % (type(e).__name__, str(e)[:120]))
+        if not checks:
+            return unmeasured("held-back proof: no runnable held-back check (no stored body, or all unscored)")
+        work = self.work / "held_back"
+        try:
+            tree = AJ.materialise(self.clone, self.head_full, self.task.get("area") or [], work / "tree", tpaths)
+            rows = AJ.run_hidden(checks, tree, work)
+        finally:
+            AJ.remove_raw_tree(work)
+        log = self.logdir / "proof_held_back.log"
+        log.write_text("".join("== %s %s rc=%s\n%s\n" % (r.get("kind"), r.get("path"), r.get("rc"), r.get("tail", ""))
+                               for r in rows), encoding="utf-8")
+        res = [r.get("result") for r in rows]
+        counts = {k: res.count(k) for k in sorted(set(map(str, res)))}
+        if len(rows) != len(checks):
+            return unmeasured("held-back proof: %d check(s), %d result(s)" % (len(checks), len(rows)), log=str(log))
+        if "fail" in res:
+            return step(FAIL, "held-back proof: %d of %d held-back check(s) failed" % (res.count("fail"), len(res)),
+                        log=str(log), held_back=counts)
+        if res and all(x == "pass" for x in res):
+            return step(PASS, "held-back proof: %d held-back check(s) pass (run by the gate)" % len(res),
+                        log=str(log), held_back=counts)
+        return unmeasured("held-back proof: not every held-back check finished (%s)" % counts, log=str(log))
+
     def s_proof(self):
         proof = (self.task.get("proof") or "").strip()
         segs = [s.strip() for s in proof.split(" && ") if s.strip()]
         runnable = [s for s in segs if s.startswith("python3 ")]
         if not runnable:
+            if segs and all(HELD_BACK_RE.search(s) for s in segs):
+                return self.held_back_proof()
             return unmeasured("task proof has no runnable `python3 ...` segment", proof=proof[:120])
         for i, s in enumerate(runnable):
             try:

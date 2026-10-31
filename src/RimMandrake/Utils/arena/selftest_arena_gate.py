@@ -1120,6 +1120,51 @@ def t_work_root(tmp):
     check(r2["verdict"] == "pass" and not g.work.exists(), "a run on ext4 passes and removes its work dir afterwards")
 
 
+HB_PROOF = "the judge runs 1 held-back selftest(s) the original fix added"
+HB_PASS = "import foo\n\ndef t_hb():\n    assert foo.foo() == 2\n\nt_hb()\n"
+HB_FAIL = "import foo\n\ndef t_hb():\n    assert foo.foo() == 3\n\nt_hb()\n"
+
+
+def t_held_back(tmp):
+    """ARENA_GATE_PROOF_FIX_HELD_BACK_UNPASSABLE: a held-back-only proof is RUN by the gate and scored on its real
+    result; never an automatic pass."""
+    def run(tag, body=HB_PASS, judge_file=True, checks=None, head_changes=GOOD, proof=HB_PROOF):
+        c = Ctx(tmp, "hb_" + tag, proof=proof)
+        if judge_file:
+            c.p["judge"].mkdir(parents=True, exist_ok=True)
+            ck = checks if checks is not None else [{"type": "fix_test", "path": UT + "selftest_hb_hidden.py",
+                                                     "body": body}]
+            (c.p["judge"] / "T1.json").write_text(json.dumps({"task": "T1", "checks": ck, "reworks": []}))
+        h = c.commit(head_changes); c.records(h)
+        return c.gate(h), c, h
+    r, c, h = run("pass")
+    check(st(r, "proof") == "PASS" and r["verdict"] == "pass" and r["steps"]["proof"].get("held_back") == {"pass": 1},
+          "held-back-only proof: the gate RUNS the held-back check; it passes on a correct head (%s)"
+          % r["steps"]["proof"]["why"])
+    check("selftest_hb_hidden" not in json.dumps(r) and "assert" not in json.dumps(r["steps"]["proof"]),
+          "the gate record carries counts only: no held-back path or body")
+    r, _, _ = run("fail", body=HB_FAIL)
+    check(st(r, "proof") == "FAIL" and r["verdict"] == "fail",
+          "MUTANT: a failing held-back proof FAILS the gate (%s)" % r["steps"]["proof"]["why"])
+    r, _, _ = run("basehead", head_changes={UT + "unrelated.py": "import sys\nsys.exit(0)  # touched\n"})
+    check(st(r, "proof") == "FAIL", "a head that does not fix (foo still 1) fails the held-back proof (%s)"
+          % r["steps"]["proof"]["why"])
+    r, _, _ = run("nofile", judge_file=False)
+    check(st(r, "proof") == "UNMEASURED" and r["verdict"] != "pass", "no judge file: UNMEASURED, never a pass")
+    r, _, _ = run("nobody", checks=[{"type": "fix_test", "path": UT + "selftest_hb_hidden.py", "body": None}])
+    check(st(r, "proof") == "UNMEASURED" and r["verdict"] != "pass", "a held-back check with no stored body: UNMEASURED")
+    r, _, _ = run("nochecks", checks=[])
+    check(st(r, "proof") == "UNMEASURED" and r["verdict"] != "pass", "a judge file with no checks: UNMEASURED")
+    r, _, _ = run("nofinish", body="import os\nos._exit(0)\n")
+    check(st(r, "proof") == "UNMEASURED" and r["verdict"] != "pass",
+          "a held-back check exiting 0 without finishing (no marker): UNMEASURED (%s)" % r["steps"]["proof"]["why"])
+    r, _, _ = run("prose", proof="some prose that is not the held-back note")
+    check(st(r, "proof") == "UNMEASURED", "other prose-only proof: still UNMEASURED (no runnable segment)")
+    r, _, _ = run("mixed", body=HB_FAIL, proof="python3 src/RimMandrake/Utils/proof_ok.py && " + HB_PROOF)
+    check(st(r, "proof") == "PASS" and "held_back" not in r["steps"]["proof"],
+          "a proof with a runnable segment is unchanged (the held-back note stays the judge's business)")
+
+
 def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}
     os.environ["ARENA_GATE_TEST"] = "1"
@@ -1128,7 +1173,7 @@ def main():
         for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
                   t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
                   t_signfail, t_records, t_phrase_deletes, t_static, t_real, t_round3_exit, t_round3_cover,
-                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root):
+                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root, t_held_back):
             t(tmp)
     finally:
         for k, v in saved.items():
