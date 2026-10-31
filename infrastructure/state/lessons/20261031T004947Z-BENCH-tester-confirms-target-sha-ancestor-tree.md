@@ -1,0 +1,1 @@
+A tester confirms the target sha is an ancestor of the tree it runs, before running, and stops if the check prints nothing: BENCH ran a proxy test on a pre-fix HEAD, recorded a false FAIL, because the is-ancestor check was chained with ; and its silence went unread.
