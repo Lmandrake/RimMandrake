@@ -162,7 +162,7 @@ It does nothing until `seat_restart.enabled` is on in `dispatcher_schedule.json`
 `request` only writes your note and says so.
 
 **Close-out**: do it when the ticket's unit of work has ended AND no helper of yours is alive AND no background
-command of yours is still running (`run_in_background`: the restart cannot see one, so the kill would cut it off).
+command of yours is still running (`run_in_background`: a forced restart holds for one, a requested one sees it too).
 Do the steps in one turn:
 
 1. Ledger check: the ticket is closed/noted against its real sha, and your shard is committed and published —
@@ -200,6 +200,27 @@ Do the steps in one turn:
      - you hold the bridge or the driver lock;
      - your last game event is a deploy, load or shutdown;
      - PAUSE is on.
+
+**The size limit reaches a busy window too** (SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO; FOUNDRY only, never the
+Conductor). Measured as above: the last true usage in your transcript. A blind reading, or one just reset by a
+compaction, does nothing.
+   - **Over 110000 tokens: told once.** A `[RimFlow context]` message comes through your doorbell, at the next ended
+     turn if a ring has disarmed it. Reach a stopping point, write your handoff, commit, run
+     `seat_restart.py request --seat FOUNDRY --ticket <ticket> --fresh --note "..."`, end the turn. It is never repeated.
+     Do not take another ticket first.
+   - **Over 200000 tokens: forced at the next safe boundary.** Auto-compaction has hit as low as 228908, so this comes
+     first. The restart goes pending; taking work does not cancel it. It kills only when your turn has ended
+     (`assistant_end`, 30 s quiet, no 1800 s idle wait) with no helper alive, no bridge, driver lock or transitional game
+     event of yours, no background command, no doorbell message or queued prompt waiting, PAUSE off, and a good
+     context reading. Never mid-turn. The owner typing, or your context falling under 110000, cancels it. A cooldown
+     after a failed restart delays it. No boundary in 3600 s raises a Conductor alarm in the ledger and his log and
+     still kills nothing.
+   - **What survives a forced restart:** commits and uncommitted files in your clone, ledger items and leases, the seat
+     log, handoff files, your old transcript, and every systemd unit (arena replays are in `rm-harness.slice`; the kill
+     signals your window's pid alone). What you held only in your head does not, except what the fresh `wake` reads
+     back: your last inputs, your last words, open todos, files you touched, your items in `doing`, `git status`, and the
+     old transcript's path. A `doing` item with a live lease is not offered again until it lapses (45 min); `rimflow
+     reclaim <id>` returns it at once.
 
 **First turn of a fresh window** (its first prompt says so):
 `python3 src/RimMandrake/rimflow/seat_restart.py wake --seat FOUNDRY`. It prints the seat log

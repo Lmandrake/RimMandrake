@@ -15,6 +15,9 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              <dispatcher state>/restart/<SEAT>.request.json.
              Refused while any helper of the window is alive. Backstop: the Dispatcher also starts one for a window that
              is idle, has no live helper, and whose context (last usage in its transcript) is past a threshold.
+             Busy windows (backstop_busy, never a Conductor): past backstop_ctx_tokens the seat is told once through its
+             doorbell (restart_tell); past backstop_hard_tokens a restart goes pending whatever the window does, killed
+             at the next ended turn with nothing held; no such boundary in backstop_hard_alarm_s alarms the Conductor.
   pending    grace (grace_s; FOUNDRY 30 s); cancelled by new HUMAN input in the window's transcript after the request
              (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input;
              a Conductor's goodbye restart is the exception, cancelled by ANY input: cursor_verdict),
@@ -67,16 +70,20 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "helper_stale_s": 1800, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
             "fence_s": 1020, "ring_hold_s": 600, "orphan_wait_s": 180,
-            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 600}
+            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 600,
+            # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (never a Conductor, _busy_on)
+            "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
 TRANSITIONAL = ("DEPLOYING", "LOADING", "GOING_DOWN")
-DOES = ("restart_request", "restart_kill", "restart_fallback", "restart_orphan", "restart_abort")
+DOES = ("restart_request", "restart_kill", "restart_fallback", "restart_orphan", "restart_abort", "restart_tell")
 FALLBACK_GRACE_S = 200                          # past run_fallback's own 180 s timeout: no reclaim beside a launch
+TELL_RETRY_S = 300
+TELL_RING_HOLD_S = 60                           # under a tick: the doorbell polls every 3 s, so one tick clears it
 MAX_CLAIMS = 3                                  # tile relaunches of one restart, the first included
 BOUNDED = "{clone}/src/RimMandrake/Utils/claude_bounded.sh"
 MACHINE = os.path.expanduser("~/.claude-accounts/machine.json")
-PROMPT = ("[RimFlow seat restart] You are a FRESH {seat} window: the last one was restarted after its ticket ended "
+PROMPT = ("[RimFlow seat restart] You are a FRESH {seat} window: the last one was restarted "
           "({why}). Run `python3 src/RimMandrake/rimflow/seat_restart.py wake --seat {seat}{gen}`, read what it prints, "
           "then end your turn: the Dispatcher hands you your next ticket through the doorbell.")
 # kind "conductor" (CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME): the BENCH window is the owner's Conductor. It has no
@@ -88,6 +95,12 @@ CONDUCTOR_PROMPT = ("[RimFlow seat restart] You are a FRESH Conductor window (se
                     "wake --seat {seat}{gen}`: answer FIRST any owner message it lists as sent to the old window after the "
                     "close-out. Then report in a few lines what is open and what needs him, and wait for him.")
 PROMPTS = {"doorbell": PROMPT, "conductor": CONDUCTOR_PROMPT}
+TELL = ("[RimFlow context] This window is at {ctx} tokens, over the {soft} line (backstop_ctx_tokens). Reach a stopping "
+        "point, write your handoff, commit by explicit path, then run `python3 src/RimMandrake/rimflow/seat_restart.py "
+        "request --seat {seat} --ticket <ticket> --fresh --note \"<3-5 lines: what is done, what is open>\"` and end your "
+        "turn. Do not take another ticket first. You are told this once. At {hard} tokens the Dispatcher restarts this "
+        "window itself at the next ended turn with nothing held, and the fresh window gets only what is on disk and a "
+        "digest of this transcript.")
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -370,8 +383,10 @@ def _assistant_kind(rec):
 def tx_summary(path, tail_bytes=4 << 20, peers=None):
     """-> {last_kind, last_at, last_user_at, ctx_tokens} from the main transcript's tail, or None (unreadable).
     last_kind: assistant_end (turn ended) | assistant_tool | assistant_other | user. ctx_tokens: the last assistant
-    record's input + cache read + cache creation tokens (what the next call re-sends). last_user_at: the last HUMAN
-    input only (_is_human_input; peers default to every scheduled seat's names) — that is what cancels a restart."""
+    record's input + cache read + cache creation tokens (what the next call re-sends). A record with a zero total is
+    an API error's synthetic reply, not a size: the last true reading stands. A compact_boundary ends the old reading:
+    None until the next call, so a size the window no longer has can start nothing. last_user_at: the last HUMAN input
+    only (_is_human_input; peers default to every scheduled seat's names) — that is what cancels a restart."""
     if peers is None:
         peers = peer_names()
     try:
@@ -386,6 +401,9 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
                 s["last_user_at"] = _ts(q.get("timestamp"))
             continue
         t = r.get("type")
+        if t == "system" and r.get("subtype") == "compact_boundary" and not r.get("isSidechain"):
+            s["ctx_tokens"] = None
+            continue
         if t not in ("user", "assistant") or r.get("isSidechain"):
             continue
         at = _ts(r.get("timestamp"))
@@ -393,9 +411,10 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
             s["last_kind"] = _assistant_kind(r)
             s["api_end"] = api_ended(r)
             u = (r.get("message") or {}).get("usage") or {}
-            if u:
-                s["ctx_tokens"] = sum(int(u.get(k) or 0) for k in (
-                    "input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"))
+            size = sum(int(u.get(k) or 0) for k in (
+                "input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"))
+            if size:
+                s["ctx_tokens"] = size
         else:
             s["last_kind"] = "user"
             s["api_end"] = None
@@ -521,6 +540,21 @@ def undelivered(path, peers=None):
     if peers is None:
         peers = peer_names()
     return [r for r in recs if _is_human_input(r, peers)]
+
+
+def queue_depth(path):
+    """-> how many inputs wait in the window's queue now: enqueues less dequeues and removes, whoever sent them and
+    whatever their ids. undelivered() keeps his prompts only, and pairs by commandUuid for wake recovery; an id pair can
+    stay open for ever (MEASURED 2026-10-31: 171 enqueues, 171 dequeues, commandUuid None, 26 unmatched), so it must not
+    hold a kill. Of 2319 transcripts 8 end above zero: such a window holds and alarms, it is never killed."""
+    depth = 0
+    try:
+        for raw, _ in _lines_from(path, 0):
+            if raw.get("type") == "queue-operation":
+                depth = depth + 1 if raw.get("operation") == "enqueue" else max(0, depth - 1)
+    except FileNotFoundError:
+        return 0                         # no transcript, no queue. Anything else unreadable raises: UNMEASURED holds
+    return depth
 
 
 def answered(rec):
@@ -727,6 +761,9 @@ def default_obs(sch, events_since, now_fn=time.time):
         "cursor": lambda seat, s, rs: cursor_scan(rs.get("tx_path") or transcript_for(s, cfgs[seat]), rs.get("tx_offset")),
         "last_human": lambda seat, s: last_human(transcript_for(s, cfgs[seat]) or ""),
         "owed": lambda rs: unanswered(rs.get("tx_path"), rs.get("tx_offset")),
+        "registered": registered_start,
+        "pending": lambda seat, s: (background_holds(s.get("pid")) if cfgs[seat].get("kind") == "conductor" else
+                                    pending_holds(seat, s.get("pid"), transcript_for(s, cfgs[seat]))),
     }
 
 
@@ -787,10 +824,15 @@ def ring_hold(st, seat, sch, now):
     gated here (C8: a pending restart never freezes a recovery)."""
     cfg = config(sch).get(seat)
     rs = (st.get("seat_restart") or {}).get(seat) or {}
-    if not cfg or rs.get("state") != "pending" or rs.get("ts") is None:
+    if not cfg:
+        return None
+    tell = ((st.get("seat_context") or {}).get(seat) or {}).get("tell_at")
+    if tell is not None and 0 <= now - tell < TELL_RING_HOLD_S:
+        return "a context tell is going into the inbox this tick"     # the inbox is one file: a ring would overwrite it
+    if rs.get("state") != "pending" or rs.get("ts") is None:
         return None
     age = now - rs["ts"]
-    if age >= cfg["grace_s"] + cfg["ring_hold_s"]:
+    if age >= cfg["grace_s"] + cfg["ring_hold_s"] + (cfg["backstop_hard_alarm_s"] if rs.get("hard") else 0):
         return None
     return "seat restart pending (%d s old): no ring until it ends" % age
 
@@ -828,6 +870,96 @@ def _disarm(seat, rs, before, ro, act):
     if (rec and not rec.get("aborted") and rec.get("old_alive") is not False and rec.get("req_ts") == rs.get("ts")
             and rec.get("session_id") == rs.get("session_id")):
         act(do="restart_abort", seat=seat, req_ts=rs.get("ts"), why=rs.get("why") or "the restart ended")
+
+
+def _born(ro, cur):
+    """-> the window's registered birth. `cur` comes from `claude agents --json`, which has no procStart: read off the
+    listing alone it was None for every live window and the backstop could never start (0 in the journal, 2026-10-31)."""
+    return reg_start(cur) or (ro["registered"](cur) if callable(ro.get("registered")) else None)
+
+
+def _busy_on(cfg):
+    """The size limit reaches a busy window only where the schedule keys it, and never a window the owner talks to
+    (his ruling on the Conductor covers the goodbye kill alone, so its backstop stays the idle one, and off)."""
+    return cfg.get("backstop_busy") is True and cfg.get("kind") != "conductor"
+
+
+def _size_line(cfg, rs):
+    return cfg["backstop_hard_tokens"] if rs.get("hard") else cfg["backstop_ctx_tokens"]
+
+
+def _hard_on(cfg):
+    return _busy_on(cfg) and bool(cfg.get("backstop_hard_tokens"))
+
+
+def _context_memo(st, seat, cur):
+    """st["seat_context"][seat]: what this WINDOW has been told and when it first crossed the hard limit. It lives
+    apart from the restart record, which every restart replaces, and dies with the session it names."""
+    memo = st.setdefault("seat_context", {})
+    sc = memo.get(seat) or {}
+    if sc.get("session_id") != cur.get("sessionId"):
+        sc = memo[seat] = {"session_id": cur.get("sessionId")}
+    return sc
+
+
+def _tell_once(seat, cfg, st, ro, cur, tx, now, apply, act):
+    """Over the soft limit: one message to this window through its doorbell. Never a nag: told_at ends it for the
+    session (a dry tick journals it once). Never over a ring: the inbox is one file, so it waits for an empty one (the
+    write checks again) and a doorbell of this session, which a turn in progress has unless the last ring disarmed it;
+    then it goes at the next ended turn. Marked told only when written (execute), so a tell that could not go is not
+    spent."""
+    sc = _context_memo(st, seat, cur)
+    if sc.get("told_at") or (not apply and sc.get("told_dry")):
+        return
+    if now - sc.get("tell_at", now - TELL_RETRY_S) < TELL_RETRY_S:
+        return                           # spaced, so a tell that cannot go never holds the rings tick after tick
+    ss = (st.get("seats") or {}).get(seat) or {}
+    if ss.get("ring") or ss.get("recover"):
+        return
+    armed = ro["armed"](seat) if ro.get("armed") else None
+    if not armed or armed.get("session_id") != cur.get("sessionId"):
+        return
+    sc["tell_at"] = now
+    hard = cfg.get("backstop_hard_tokens") or "the hard limit"
+    act(do="restart_tell", seat=seat, session_id=cur.get("sessionId"), armed_pid=armed.get("pid"),
+        message=TELL.format(seat=seat, ctx=tx["ctx_tokens"], soft=cfg["backstop_ctx_tokens"], hard=hard),
+        why="context %d tokens >= soft %d: told once" % (tx["ctx_tokens"], cfg["backstop_ctx_tokens"]))
+
+
+def _no_boundary(seat, cfg, sc, now, act, why):
+    """The hard limit has stood backstop_hard_alarm_s with no safe boundary: the Conductor hears it, in the ledger and
+    his log, and it names what holds. Nothing is killed for it."""
+    since = sc.get("hard_since")
+    if since is None or now - since < cfg["backstop_hard_alarm_s"]:
+        return
+    act(do="alarm", kind="restart:%s:hard_no_boundary" % seat, seat=seat, note=True, conductor_log=True,
+        raise_first="%s is over its hard context limit with no safe boundary." % seat,
+        why="%s has been over backstop_hard_tokens %d for %d s and never reached a safe boundary (no kill, it stays "
+            "pending): %s" % (seat, cfg["backstop_hard_tokens"], now - since, why))
+
+
+def _hard_pending(seat, cfg, R, st, ro, cur, tx, now, act):
+    """Over the hard limit, whatever the window is doing: a restart goes pending, and _pending kills only at a safe
+    boundary. -> the record, or None while the window cannot be bound (unbound birth, unreadable transcript)."""
+    sc = _context_memo(st, seat, cur)
+    sc.setdefault("hard_since", now)
+    # a window the owner talks to stays exempt by _busy_on; his typing still cancels below (and the next tick re-arms)
+    born = _born(ro, cur)
+    if born is None or ro["start"](cur.get("pid")) != born:
+        _no_boundary(seat, cfg, sc, now, act, "the window's birth identity is unbound")
+        return None
+    lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
+    if lh is None:
+        _no_boundary(seat, cfg, sc, now, act, "the transcript cannot be read for his last input")
+        return None
+    rs = R[seat] = {"source": "backstop_hard", "hard": True, "ts": now, "session_id": cur.get("sessionId"),
+                    "pid": cur.get("pid"), "start": born, "ticket": None, "ctx_tokens": tx["ctx_tokens"],
+                    "reason": "hard context limit: %d tokens >= %d" % (tx["ctx_tokens"], cfg["backstop_hard_tokens"]),
+                    "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending",
+                    "cancel_after": tx.get("last_user_at") or now, "tx_offset": lh[2] or 0,
+                    "tx_path": transcript_for(cur, cfg)}
+    act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
+    return rs
 
 
 def _fail(rs, seat, cls, why, now, act):
@@ -870,9 +1002,20 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                     req.get("session_id"), (cur or {}).get("sessionId") or "none/ambiguous"))
             new["state"] = "pending"
             rs = new
-        elif cfg.get("backstop") and cur and rs.get("cooldown_until", 0) <= now and cur.get("status") == "idle":
+        elif (cfg.get("backstop") and cur and rs.get("cooldown_until", 0) <= now
+              and (cur.get("status") == "idle" or _busy_on(cfg))):
             tx = ro["tx"](seat, cur)
             if not tx or tx.get("ctx_tokens") is None or tx["ctx_tokens"] < cfg["backstop_ctx_tokens"]:
+                return
+            if _busy_on(cfg):
+                _tell_once(seat, cfg, st, ro, cur, tx, now, apply, act)
+            hard = _hard_on(cfg) and tx["ctx_tokens"] >= cfg["backstop_hard_tokens"]
+            if hard:
+                rs = _hard_pending(seat, cfg, R, st, ro, cur, tx, now, act)
+                if rs is None:
+                    return
+                return _pending(seat, cfg, rs, st, obs, ro, cur, now, act)
+            if cur.get("status") != "idle":
                 return
             if tx.get("last_kind") != "assistant_end" or now - (tx.get("last_at") or now) < cfg["backstop_idle_s"]:
                 return
@@ -884,7 +1027,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             hs = ro["helpers"](seat, cur)
             if hs is None or any(h.get("alive") for h in hs):
                 return
-            born = reg_start(cur)                # the window's own registration names its birth (review4 #1)
+            born = _born(ro, cur)                # the window's own registration names its birth (review4 #1)
             if born is None or ro["start"](cur.get("pid")) != born:
                 return
             # bind the cursor just past his LAST input (blind review 2 P0-3), never offset 0 plus a time filter
@@ -899,11 +1042,15 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                             # the whole transcript is scanned for a human input after the last one this read saw
                             "cancel_after": tx.get("last_user_at") or now, "tx_offset": lh[2] or 0,
                             "tx_path": transcript_for(cur, cfg)}
-            act(do="restart_request", seat=seat, session_id=rs["session_id"], why=rs["reason"])
+            act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
         else:
             return
 
     state = rs["state"]
+    if state == "pending" and rs.get("hard") and cur and cur.get("sessionId") == rs.get("session_id"):
+        tx = ro["tx"](seat, cur)         # a tell that could not go at the crossing is still owed
+        if tx and tx.get("ctx_tokens") is not None:
+            _tell_once(seat, cfg, st, ro, cur, tx, now, apply, act)
     if state == "pending":
         return _pending(seat, cfg, rs, st, obs, ro, cur, now, act)
     if state == "claimed":
@@ -1077,6 +1224,25 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if tx and tx.get("last_user_at") and tx["last_user_at"] > after:
         return _cancel(rs, seat, "new input in the window at %s, after the request" % _iso(tx["last_user_at"]), now,
                        act)
+    hard = rs.get("hard") is True
+    size = (tx or {}).get("ctx_tokens")
+    sized = rs.get("source") in FORCED   # restarted for its size, so the size must stand until the kill
+    if sized and size is not None:
+        line = _size_line(cfg, rs)
+        if size < line:
+            _context_memo(st, seat, cur).pop("hard_since", None)
+            return _cancel(rs, seat, "context fell to %d tokens, under %d (compacted): no restart owed" % (size, line),
+                           now, act)
+        rs["ctx_tokens"] = size
+    if hard:
+        req = ro["request"](seat)        # the seat answered the tell: its request joins this restart and is consumed
+        if (req and req.get("ts") is not None and req.get("ts") != rs.get("req_ts")
+                and req.get("session_id") == rs.get("session_id")):
+            # his own request stands even if a compaction would cancel the forced one: source no longer says size
+            rs.update(req_ts=req["ts"], ticket=req.get("ticket") or rs.get("ticket"), source="request",
+                      work_from=req["ts"])
+            act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
+                req_ts=req["ts"], why="the seat's own request joins the hard restart: %s" % req.get("reason"))
     sc = None
     if rs.get("tx_offset") is not None:
         try:
@@ -1090,9 +1256,9 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     # SEAT_RESTART_FIX_KILL_AFTER_NEW_WORK (Codex review 2026-10-29 P1 1): machine input no longer cancels (0cf054ade8),
     # so a seat that took a ticket after its request and then idled on external input would be killed mid-ticket.
     # Its own ledger says so: any claim/start/lease take after the request voids it. Unreadable -> held below.
-    work = ro["work"](seat, rs["ts"]) if ro.get("work") else None
+    work = ro["work"](seat, rs.get("work_from", rs["ts"])) if ro.get("work") else None
     nw = new_work(work, rs.get("ticket"))
-    if nw:
+    if nw and not sized:                 # forced: taking work is exactly what a busy window does, and the limit stands
         return _cancel(rs, seat, _work_why(nw), now, act)
     if now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
@@ -1126,16 +1292,31 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         holds.append("doorbell ring in flight")
     if ss.get("recover"):
         holds.append("Dispatcher recovery in flight")
+    if sized and size is None:
+        holds.append("no context reading (blind, or just compacted)")
+    if callable(ro.get("pending")):
+        p = ro["pending"](seat, cur)
+        holds += ["pending input or background work UNMEASURED"] if p is None else p
+    memo = _context_memo(st, seat, cur) if hard else {}
+    if hard:
+        memo.setdefault("hard_since", rs["ts"])
     if holds:
         rs.setdefault("held_since", now)
         if now - rs["held_since"] >= cfg["hold_alarm_s"]:
             act(do="alarm", kind="restart:%s:held" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
                 why="seat restart of %s held %d s: %s" % (seat, now - rs["held_since"], "; ".join(holds)))
+        if hard:
+            _no_boundary(seat, cfg, memo, now, act, "; ".join(holds))
         act(do="restart_hold", seat=seat, why="; ".join(holds))
         return
     rs.pop("held_since", None)
     quiet = (cur.get("status") == "idle" and tx and killable_turn(tx)
              and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
+    if not quiet and hard:               # the window working on is what this limit waits out: no fail, no kill
+        why = "no boundary yet (status %s, last record %s)" % (cur.get("status"), (tx or {}).get("last_kind", "unreadable"))
+        _no_boundary(seat, cfg, memo, now, act, why)
+        act(do="restart_hold", seat=seat, why=why)
+        return
     if not quiet:
         rs["busy"] = rs.get("busy", 0) + 1
         why = "window not quiet (status %s, last record %s) %d/%d" % (
@@ -1179,6 +1360,12 @@ def reg_start(sf):
         return int((sf or {}).get("procStart"))
     except (TypeError, ValueError):
         return None
+
+
+def registered_start(s):
+    """-> the birth in sessions/<pid>.json, only if that file names this session (a reused pid names another)."""
+    sf = session_file(s.get("pid"))
+    return reg_start(sf) if sf and sf.get("sessionId") == s.get("sessionId") else None
 
 
 def proc_alive(pid, start):
@@ -1260,6 +1447,7 @@ def _kill_record(seat, a, sch, rs, start, now):
             # the transcript the request named (review 2 P1-4) and this restart's generation, which only the relaunch
             # prompt carries (review 2 P1-5)
             "tx_path": rs.get("tx_path"), "gen": a.get("gen") or rs.get("gen"),
+            "source": rs.get("source"), "ctx_tokens": rs.get("ctx_tokens"),      # a forced restart's wake digests the old window
             "reads": cfg.get("kind") == "conductor", "arm_s": cfg["arm_s"],      # a wake that must be answered (`answered`)
             "window_s": cfg["intile_window_s"]}   # the tile obeys decide()'s deadline (review4 #2)
 
@@ -1272,8 +1460,12 @@ def execute(a, sch, st, apply, now, fx=None):
     if a["do"] == "restart_request":
         if not apply:
             return "would take the request"
+        if a.get("synthetic"):           # the Dispatcher started this one: a request filed meanwhile is not consumed unread
+            return "started by the Dispatcher"
         fx.get("consume", consume_request)(seat, ts=a.get("req_ts"))
         return "request taken"
+    if a["do"] == "restart_tell":
+        return _do_tell(a, st, seat, apply, now, fx)
     if a["do"] == "restart_fallback":
         if not apply:
             return "would run %s" % " ".join(a["argv"])
@@ -1377,6 +1569,82 @@ def execute(a, sch, st, apply, now, fx=None):
     return "killed pid %s (%s)" % (a["pid"], how)
 
 
+def _do_tell(a, st, seat, apply, now, fx):
+    """Put the tell in the inbox if nothing is there, addressed to this session (a doorbell of another leaves it). The
+    last look and the write are not atomic with a ring: ring_hold keeps this tick's rings off it. Marked told on the
+    write alone, so one that could not go is retried on a later tick."""
+    sc = (st.get("seat_context") or {}).get(seat) or {}
+    if not apply:
+        sc["told_dry"] = now
+        return "would tell %s through the doorbell" % seat
+    path = doorbell.inbox_path(seat, fx.get("root"))
+    if os.path.exists(path):
+        return "tell waits: the inbox holds another message"
+    if not a.get("armed_pid") or not fx.get("alive", doorbell._alive)(a["armed_pid"]):
+        return "tell waits: the armed doorbell is gone"
+    ring_id = "tell-%s-%d" % (seat, now)
+    try:                                 # the Dispatcher is the inbox's one writer, under its tick lock
+        doorbell._write_json_atomic(path, {"seat": seat, "ring_id": ring_id, "message": a["message"],
+                                           "rung_at": time.time(), "session_id": a["session_id"]})
+    except OSError as e:                 # a full disk must not stop the tick
+        return "tell waits: %s" % e
+    sc.update(told_at=now, ring_id=ring_id)
+    return "told %s (%s)" % (seat, ring_id)
+
+
+def background_commands(pid, proc="/proc"):
+    """-> pids of the window's Bash-tool children still running, [] if none, None if the process table cannot be read.
+    MEASURED 2026-10-31: a Bash-tool child sources the window's shell snapshot (a marker no hook carries), and an idle
+    window has none, so one alive past an ended turn is a background command a restart would kill."""
+    out = []
+    try:
+        names = os.listdir(proc)
+    except OSError:
+        return None
+    for name in names:
+        if not name.isdigit():
+            continue
+        try:
+            with open(os.path.join(proc, name, "stat")) as f:
+                ppid = int(f.read().rsplit(")", 1)[1].split()[1])
+            if ppid != pid:
+                continue
+            with open(os.path.join(proc, name, "cmdline"), "rb") as f:
+                cmd = f.read()
+        except FileNotFoundError:        # it ended between the listing and the read
+            continue
+        except ProcessLookupError:
+            continue
+        except (OSError, ValueError, IndexError):
+            return None
+        if b"shell-snapshots/" in cmd:
+            out.append(int(name))
+    return sorted(out)
+
+
+def background_holds(pid):
+    """Every window's: a kill must not cut off a command the window left running (a Conductor's goodbye included)."""
+    bg = background_commands(pid) if pid else []
+    if bg is None:
+        return ["background commands UNMEASURED"]
+    return ["background command(s) running: pid %s" % ", ".join(str(p) for p in bg)] if bg else []
+
+
+def pending_holds(seat, pid, path, root=None):
+    """-> holds for a doorbell seat's window: a message waiting in its inbox, an input queued and not yet taken,
+    a background command still running. [] = none; each unreadable reading is itself a hold."""
+    holds = []
+    if os.path.exists(doorbell.inbox_path(seat, root)):
+        holds.append("a doorbell message waits in the inbox")
+    if path:
+        try:
+            if queue_depth(path):
+                holds.append("a queued prompt was never delivered")
+        except (OSError, Malformed):
+            holds.append("queued prompts UNMEASURED")
+    return holds + background_holds(pid)
+
+
 def final_fence(seat, sch, rs, sf, path=None, now=None):
     """-> holds from a full read of the window's transcript from rs's cursor (cursor_verdict without moving the quiet
     clock: any growth since the claiming tick holds). [] = go. A seat without a cursor and not a Conductor passes (its tail check
@@ -1403,7 +1671,7 @@ def paused_now():
         return "PAUSE unreadable: %s" % e
 
 
-def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None):
+def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pending_holds):
     """-> the holds found by reading transcript, helpers, bridge and PAUSE again at the kill
     (empty = go). Between this and the signal there is no barrier: that gap is one /proc start read, the killed-record
     write, the pidfd open and its start re-check (milliseconds)."""
@@ -1421,6 +1689,13 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None):
         holds.append("last record time unknown")
     elif time.time() - tx["last_at"] < cfg["quiet_s"]:
         holds.append("not quiet: last record %.0f s ago < quiet_s %d" % (time.time() - tx["last_at"], cfg["quiet_s"]))
+    if rs.get("hard") or rs.get("source") in FORCED:
+        size = (tx or {}).get("ctx_tokens")
+        if size is None:
+            holds.append("no context reading at the kill")
+        elif rs.get("source") in FORCED and size < _size_line(cfg, rs):
+            holds.append("context fell to %d tokens" % size)
+    holds += pending(seat, sf.get("pid"), path) if cfg.get("kind") != "conductor" else background_holds(sf.get("pid"))
     holds += final_fence(seat, sch, rs, sf, path=rs.get("tx_path") or path)
     hs = helpers_of(path, time.time(), cfg.get("helper_stale_s"))
     if hs is None:
@@ -1433,12 +1708,12 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None):
     pz = paused()
     if pz:
         holds.append("PAUSE: %s" % pz)
-    evs = (work or (lambda s_, ts: work_since(cfg.get("clone"), s_, ts)))(seat, rs.get("ts", 0))
+    evs = (work or (lambda s_, ts: work_since(cfg.get("clone"), s_, ts)))(seat, rs.get("work_from", rs.get("ts", 0)))
     if evs is None:
         holds.append("ledger shard UNMEASURED")
     else:
         nw = new_work(evs, rs.get("ticket"))
-        if nw:
+        if nw and rs.get("source") not in FORCED:
             holds.append(_work_why(nw))
     return holds
 
@@ -1730,6 +2005,102 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
     write_killed(seat, dict(rec, woken_at=time.time(), woken_by=me.get("sessionId") or "unknown", owed=len(msgs)), root)
 
 
+FORCED = ("backstop", "backstop_hard")          # the window did not close itself out, so its open work is read out of it
+
+
+def _tx_tail(path, tail_bytes=8 << 20):
+    size = os.path.getsize(path)
+    with open(path, "rb") as f:
+        f.seek(max(0, size - tail_bytes))
+        data = f.read()
+    if size > tail_bytes:
+        data = data.split(b"\n", 1)[-1]
+    for raw in data.splitlines():
+        try:
+            r = json.loads(raw)
+        except ValueError:
+            continue
+        if isinstance(r, dict) and r.get("type") in ("user", "assistant") and not r.get("isSidechain"):
+            yield r
+
+
+def open_items(clone, seat):
+    """-> this seat's items in state doing, as lines, or None (UNMEASURED). Read from the ledger the way work_since does;
+    `clone` is the seat's, though every clone replays its own copy of the same events."""
+    try:
+        from rimflow import model
+        items = model.replay(model.read()).items
+        now = model.epoch_now()
+        return ["%s (lease %s): %s" % (i.id, model.lease_status(i, now), (i.title or "")[:160]) for i in items.values()
+                if i.state == "doing" and i.owner == seat]
+    except Exception as e:               # a wake must still print: said as UNMEASURED by the caller
+        sys.stderr.write("open_items: %r\n" % e)
+        return None
+
+
+def git_tree(clone):
+    """-> `git status --short` of the seat's clone, as lines, or None (UNMEASURED)."""
+    try:
+        r = subprocess.run(["git", "status", "--short"], cwd=clone, capture_output=True, text=True, timeout=60)
+    except (OSError, subprocess.SubprocessError):
+        return None
+    return r.stdout.rstrip().splitlines() if r.returncode == 0 else None
+
+
+def wake_digest(rec, clone=None, seat=None, reader=None, tree=None, inputs=6, files=20):
+    """-> lines for a fresh window whose predecessor was restarted without closing out: its open work as the disk and
+    the old transcript hold it. Bounded by the tail read and the caps; every source it cannot read is said, never
+    silently empty. The fresh window still ends its first turn (the doorbell arms on that Stop) and works this when
+    the Dispatcher rings."""
+    path = rec.get("tx_path")
+    out = ["\n== OPEN WORK of the window this restart replaced (%s, source %s, %s tokens). It did not close out: this "
+           "is what the disk and its transcript hold. Its whole transcript: %s" % (
+               rec.get("session_id"), rec.get("source"), rec.get("ctx_tokens") or "?", path)]
+    said, texts, tail, todos, touched = [], [], [], None, []
+    try:
+        for r in _tx_tail(path or ""):
+            if r["type"] == "user" and _is_input(r):
+                said.append((_iso(_ts(r.get("timestamp"))), _text(r).strip()))
+            content = (r.get("message") or {}).get("content")
+            if r["type"] != "assistant" or not isinstance(content, list):
+                continue
+            for c in content:
+                if not isinstance(c, dict):
+                    continue
+                if c.get("type") == "text" and (c.get("text") or "").strip():
+                    tail = [c["text"].strip()]
+                elif c.get("type") == "tool_use":
+                    inp = c.get("input") or {}
+                    if c.get("name") == "TodoWrite" and isinstance(inp.get("todos"), list):
+                        todos = inp["todos"]
+                    fp = inp.get("file_path")
+                    if isinstance(fp, str) and fp and fp not in touched:
+                        touched.append(fp)
+        texts = tail
+    except OSError as e:
+        out.append("UNMEASURED: the old transcript cannot be read (%s). Read the seat log and the ledger instead." % e)
+    else:
+        out.append("\n-- the last inputs it took:")
+        out += ["%s %s" % (at, t[:600]) for at, t in said[-inputs:]] or ["(none in the tail)"]
+        out.append("\n-- its last words:")
+        out += [t[-1500:] for t in texts] or ["(none in the tail)"]
+        left = [t for t in todos or [] if isinstance(t, dict) and t.get("status") != "completed"]
+        if left:
+            out.append("\n-- its open todos:")
+            out += ["[%s] %s" % (t.get("status"), t.get("content")) for t in left]
+        if touched:
+            out.append("\n-- files it touched last (newest last):")
+            out += touched[-files:]
+    items = reader() if reader else open_items(clone, seat)
+    out.append("\n-- ledger items it left in doing (a live lease keeps `rimflow next` from offering one until it "
+               "lapses at 45 min; `rimflow reclaim <id>` takes one at once):")
+    out += ["UNMEASURED: read your items in the ledger"] if items is None else (items or ["(none)"])
+    lines = tree() if tree else git_tree(clone)
+    out.append("\n-- uncommitted files in the clone (they survived; judge them, never assume they are yours to drop):")
+    out += ["UNMEASURED: run `git status`"] if lines is None else (lines[:40] or ["(clean)"])
+    return out
+
+
 def cmd_wake(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
     cfg = config(_schedule()).get(seat) or {}
@@ -1756,6 +2127,11 @@ def cmd_wake(args):
         print("\n".join(out[:args.lines]) or "(nothing)")
     except Exception as e:  # noqa: BLE001
         print("handoff.py --wake failed: %s" % e)
+    if rec and not rec.get("aborted") and rec.get("source") in FORCED:
+        try:
+            print("\n".join(wake_digest(rec, clone=cfg.get("clone") or REPO, seat=seat)))
+        except Exception as e:           # noqa: BLE001 - the wake must reach its last line whatever the transcript holds
+            print("\n== OPEN WORK UNMEASURED (%r): read the old transcript yourself: %s" % (e, rec.get("tx_path")))
     print("\n== your ticket: the Dispatcher hands it through the doorbell once this turn ends. Do NOT pick work "
           "yourself on this first turn; end it now.")
     return 0
