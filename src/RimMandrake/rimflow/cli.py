@@ -2078,8 +2078,8 @@ def _published(sha, idx):
         return None
     try:
         subprocess.check_call(("git", "merge-base", "--is-ancestor", full, ref),
-                              cwd=model.ROOT, stdout=subprocess.DEVNULL,
-                              stderr=subprocess.DEVNULL)
+                              cwd=os.environ.get("RIMFLOW_GIT_CWD") or model.ROOT,
+                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     except (subprocess.CalledProcessError, OSError):
         return None
     return full, ref

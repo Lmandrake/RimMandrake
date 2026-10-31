@@ -32,16 +32,22 @@ opens `<tmp>/events.jsonl` directly reads an EMPTY ledger — use `_ledger_text(
 """
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-TMP_ROOT = os.path.join(REPO, ".rimflow_selftest_cli")  # under the repo, ON 9p, on purpose
+# under the repo, ON 9p, on purpose; per process, so a second run cannot delete this run's ledgers
+TMP_PARENT = os.path.join(REPO, ".rimflow_selftest_cli")
+TMP_ROOT = os.path.join(TMP_PARENT, "run-%d" % os.getpid())
+
+GRANT_FIXTURE = os.path.join(TMP_ROOT, "grant.json")
 
 PASS, FAIL = [], []
 _print_lock = threading.Lock()
@@ -98,9 +104,21 @@ def env(seat="BUILD", **over):
     # game state is silently "corrected" to whatever the owner's actual game
     # is doing right now (see probe.measure's seam note, 2026-09-04).
     e["RIMFLOW_PROBE"] = "no-reading"
+    # The rest of what `next` and the bridge read from the machine: an ambient value here would change a verdict
+    # or, for the driver lock, displace a real driver. No schedule file means no seat focus; "" means no lock.
+    e["RIMFLOW_SCHEDULE"] = os.path.join(TMP_ROOT, "no_schedule.json")
+    e["RIMFLOW_DRIVER_LOCK"] = ""
+    e["RM_COMPANION_PROFILE"] = GRANT_FIXTURE
     if seat:
         e["RIMFLOW_SEAT"] = seat
     e.update(over)
+    return e
+
+
+def scratch_env(e):
+    """Every CLI subprocess goes through this: the ledger it writes is proved scratch BEFORE it can write."""
+    for k in ("RIMFLOW_LEDGER", "RIMFLOW_ITEMS"):
+        assert (e.get(k) or "").startswith(TMP_ROOT + os.sep), "%s=%r is not scratch" % (k, e.get(k))
     return e
 
 
@@ -108,7 +126,7 @@ def run(*args, **kw):
     """-> (rc, stdout, stderr). Never raises on a non-zero exit; that is the subject."""
     p = subprocess.Popen([sys.executable, CLI] + list(args),
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                         env=kw.get("env") or env(kw.get("seat", "BUILD")), cwd=REPO)
+                         env=scratch_env(kw.get("env") or env(kw.get("seat", "BUILD"))), cwd=REPO)
     out, err = p.communicate()
     return p.returncode, out.decode("utf-8", "replace"), err.decode("utf-8", "replace")
 
@@ -526,7 +544,7 @@ def t_the_bridge_mirror_never_disagrees_with_the_ledger_under_concurrent_takes()
         argv = ["bridge", "take"] + (["--force"] if forced else [])
         procs = [subprocess.Popen(
             [sys.executable, CLI] + argv + ["--for", "race %s" % s],
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env(s), cwd=REPO)
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=scratch_env(env(s)), cwd=REPO)
             for s in ("BENCH", "FOUNDRY")]
         outs = [p.communicate() for p in procs]
         for p, (o, e) in zip(procs, outs):
@@ -742,6 +760,11 @@ def t_a_failed_run_does_not_reopen_the_item():
     out = ok("show", "TWICE_RUN_ITEM_PROBE_FIXTURE")
     assert "run-1@min-13  fail" in out and "run-2@min-13  pass" in out, (
         "a failure must stand forever beside the later pass: %s" % out)
+    ok("close", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--sha", "abc1234")
+    out = ok("verify", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--result", "fail", "--config", "min-13")
+    assert "not reope" in out, out
+    head = ok("show", "TWICE_RUN_ITEM_PROBE_FIXTURE").splitlines()[0].split()
+    assert head[1] == "done", "a failed run changed a closed item's state: %s" % head
 
 
 def t_this_deployment_jumps_the_queue_and_clears_when_the_game_goes_down():
@@ -851,16 +874,26 @@ def t_owner_is_not_warned_where_the_rule_already_admits_him():
 
 def t_sweep_transient_lists_and_never_deletes():
     fresh()
-    before = sorted(n for n in os.listdir(REPO) if n.startswith("TRANSIENT_"))
+    def seen():
+        roots = [(REPO, n) for n in os.listdir(REPO) if n.startswith("TRANSIENT_")]
+        d = os.path.join(REPO, "Transient")
+        roots += [(d, n) for n in os.listdir(d)] if os.path.isdir(d) else []
+        got = {}
+        for r, n in roots:
+            try:
+                st = os.stat(os.path.join(r, n))
+            except OSError:
+                continue
+            got[os.path.relpath(os.path.join(r, n), REPO)] = (st.st_size, st.st_mtime_ns)
+        return got
+    before = seen()
     out = ok("sweep", "--transient")
-    after = sorted(n for n in os.listdir(REPO) if n.startswith("TRANSIENT_"))
-    assert before == after, (
-        "sweep DELETED something. It lists; deciding a file is stale is a judgement "
-        "and destroying working notes is not recoverable. before=%r after=%r"
-        % (before, after))
-    assert "THIS LISTS ONLY" in out, out
-    for n in before:
-        assert n in out, "%s was not listed: %s" % (n, out)
+    after = seen()
+    gone = {k: v for k, v in before.items() if after.get(k) != v}
+    assert not gone, (
+        "sweep DELETED or changed something. It lists; deciding a file is stale is a judgement "
+        "and destroying working notes is not recoverable: %r" % sorted(gone))
+    assert ("THIS LISTS ONLY" in out) if before else ("no transient files." in out), out
 
 
 def t_render_is_delegated_never_reimplemented():
@@ -954,9 +987,18 @@ def t_the_queue_views_are_rendered_beside_the_ledger_in_use():
     fresh()
     repo_queue = os.path.join(REPO, "queue")
     repo_derived = os.path.join(REPO, "derived")
-    before = (os.path.exists(repo_queue), os.path.exists(repo_derived))
+    def seen():
+        got = {}
+        for root in (repo_queue, repo_derived):
+            got[root] = os.path.exists(root)
+            for d, _, names in os.walk(root):
+                for n in names:
+                    st = os.stat(os.path.join(d, n))
+                    got[os.path.join(d, n)] = (st.st_size, st.st_mtime_ns)
+        return got
+    before = seen()
     ok("file", "RENDER_ROOT_PROBE_PROBE_FIXTURE", "--for", "BENCH", "--title", "t")
-    assert (os.path.exists(repo_queue), os.path.exists(repo_derived)) == before, (
+    assert seen() == before, (
         "a write rendered the throwaway ledger's queue views into the REPO ROOT "
         "(%s / %s). The whole point of RIMFLOW_LEDGER is that a test touches nothing "
         "real." % (repo_queue, repo_derived))
@@ -1184,7 +1226,9 @@ def t_the_distress_counters_measure_direction_and_recency():
 
 
 def t_the_real_ledger_was_never_touched():
-    """🔴 The whole point of RIMFLOW_LEDGER. If this fails, everything above lied."""
+    """🔴 The whole point of RIMFLOW_LEDGER. If this fails, everything above lied.
+    This case proves the real paths differ from the scratch ones. That no event landed is proved by scratch_env on
+    every subprocess, and by _audit_real_ledger once every case has finished: this case runs beside the writers."""
     import importlib
     sys.path.insert(0, os.path.dirname(HERE))
     m = importlib.import_module("rimflow.model")
@@ -1192,18 +1236,43 @@ def t_the_real_ledger_was_never_touched():
     assert not real.startswith(TMP_ROOT), real
     assert os.path.abspath(real) != os.path.abspath(os.path.join(_tmp(), "events.jsonl"))
     # 🔴 THE SHARDS TOO. Since 2026-09-23 the CLI appends to `events/<SEAT>.jsonl`, not
-    # to `events.jsonl` — so checking only the head would check the one file nothing
-    # writes any more, and this case would go green while every selftest event landed
-    # in the real BENCH/FOUNDRY shards.
+    # to `events.jsonl`.
     for path in m.ledger_files():
         assert not path.startswith(TMP_ROOT), path
-        with open(path, encoding="utf-8") as fh:
-            body = fh.read()
-        for marker in ("DESERT_STORM_TUNING_PROBE_FIXTURE", "BLACKSTAR_VESSEL_DEF_PROBE_FIXTURE",
-                       "URGENT_FOLLOWUP_HERE_PROBE_N9"):
-            assert marker not in body, (
-                "%s reached the REAL ledger at %s, which is append-only and has no "
-                "undo. RIMFLOW_LEDGER is not being honoured." % (marker, path))
+
+
+def _ledger_sizes():
+    sys.path.insert(0, os.path.dirname(HERE))
+    import importlib
+    m = importlib.import_module("rimflow.model")
+    return {f: os.path.getsize(f) for f in m.ledger_files()}
+
+
+def _audit_real_ledger(sizes, files=None):
+    """After every case: the bytes added to the real ledger during this run. Other seats may append while this runs,
+    so a changed file is not a leak; a fixture's name, or a run-only reason, in the new bytes is. -> the leaks."""
+    leaks = []
+    for f in (files if files is not None else _ledger_sizes()):
+        with open(f, "rb") as fh:
+            fh.seek(sizes.get(f, 0))
+            leaks += ["%s: %s" % (f, line[:120]) for line in fh.read().decode("utf-8", "replace").splitlines()
+                      if re.search(r"_PROBE_(FIXTURE|N\d)|after the stale one|\"my load\"", line)]
+    return leaks
+
+
+def t_the_real_ledger_audit_can_see_a_leak():
+    """The instrument, proved: new bytes with a fixture name are a leak; old bytes, and another seat's event, are not."""
+    fresh()
+    f = os.path.join(_tmp(), "shard.jsonl")
+    with open(f, "w", encoding="utf-8") as fh:
+        fh.write('{"item": "OLD_ONE_PROBE_FIXTURE"}\n')
+    mark = os.path.getsize(f)
+    with open(f, "a", encoding="utf-8") as fh:
+        fh.write('{"item": "A_REAL_ITEM"}\n')
+    assert not _audit_real_ledger({f: mark}, [f]), "bytes from before the run, or a real event, read as a leak"
+    with open(f, "a", encoding="utf-8") as fh:
+        fh.write('{"item": "NEW_ONE_PROBE_FIXTURE"}\n')
+    assert len(_audit_real_ledger({f: mark}, [f])) == 1, "the audit did not see a leaked fixture"
 
 
 def t_a_take_in_another_clone_refuses_until_forced_or_stale():
@@ -1226,7 +1295,11 @@ def t_a_take_in_another_clone_refuses_until_forced_or_stale():
     out = ok("bridge", "who", env=env_b("BENCH"))
     assert "another clone" in out, "who hid the other clone's hold: %s" % out
     # the holder's ordinary events keep the lock fresh
-    t0 = json.load(open(shared))["touched"]
+    body = json.load(open(shared))
+    t0 = body["touched"] = "2020-01-01T00:00:00Z"
+    json.dump(body, open(shared, "w"))
+    ok("file", "SHARED_TOUCH_ITEM_PROBE_FIXTURE", "--for", "FOUNDRY", "--title", "t", env=env_a("FOUNDRY"))
+    assert json.load(open(shared))["touched"] != t0, "an ordinary event of the holder left the shared lock's touched"
     # --force crosses it, and says so on the event
     ok("bridge", "take", "--force", "--for", "urgent", env=env_b("BENCH"))
     evs = []
@@ -1240,11 +1313,26 @@ def t_a_take_in_another_clone_refuses_until_forced_or_stale():
     ok("bridge", "release", env=env_b("BENCH"))
     assert json.load(open(shared)).get("holder") is None, "release left the shared lock held"
     # a stale shared hold (older than the staleness window) does not block
-    json.dump({"holder": "BENCH", "since": "2020-01-01T00:00:00Z", "touched": "2020-01-01T00:00:00Z",
-               "clone": "/elsewhere"}, open(shared, "w"))
-    ok("bridge", "release", env=env_a("FOUNDRY"))
+    ok("bridge", "release", env=env_a("FOUNDRY"))    # this clone's own ledger hold, so the take below meets only the stale one
+    with open(shared, "w") as fh:
+        json.dump({"holder": "BENCH", "since": "2020-01-01T00:00:00Z", "touched": "2020-01-01T00:00:00Z",
+                   "clone": "/elsewhere"}, fh)
     ok("bridge", "take", "--for", "after the stale one", env=env_a("FOUNDRY"))
-    assert t0 and json.load(open(shared))["holder"] == "FOUNDRY"
+    assert json.load(open(shared))["holder"] == "FOUNDRY"
+
+
+def _assert_no_leaks(leaks):
+    assert not leaks, "reached the REAL ledger, which is append-only and has no undo: %s" % leaks[:3]
+
+
+def write_grant_fixture():
+    """A valid grant, whatever the machine's real one says. A case about the preflight passes its own."""
+    sys.path.insert(0, os.path.dirname(HERE))
+    from rimflow import companion_grant
+    conf = companion_grant.load_conf()
+    exp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 7 * 86400))
+    with open(GRANT_FIXTURE, "w", encoding="utf-8") as fh:
+        json.dump({"profile": conf["test_profiles"][0], "expiresUtc": exp}, fh)
 
 
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
@@ -1263,13 +1351,21 @@ def _run_case(name, fn):
 
 
 if __name__ == "__main__":
-    shutil.rmtree(TMP_ROOT, ignore_errors=True)
+    os.makedirs(TMP_ROOT, exist_ok=True)
+    write_grant_fixture()
+    sizes = _ledger_sizes()
     try:
         with ThreadPoolExecutor(max_workers=12) as pool:
             futures = [pool.submit(_run_case, name, fn) for name, fn in CASES]
             for f in as_completed(futures):
                 f.result()  # surface a harness-level exception, not just a case failure
+        leaks = _audit_real_ledger(sizes)
+        case("no_case_wrote_the_real_ledger", lambda: _assert_no_leaks(leaks))
     finally:
         shutil.rmtree(TMP_ROOT, ignore_errors=True)
+        try:
+            os.rmdir(TMP_PARENT)
+        except OSError:
+            pass        # another run is still inside it
     print("\n%d/%d passed" % (len(PASS), len(PASS) + len(FAIL)))
     sys.exit(1 if FAIL else 0)
