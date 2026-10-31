@@ -649,7 +649,9 @@ def _p90_by_kind(w, evs):
     for it in w.items.values():
         if it.state != "done" or not it.created_at or not it.history:
             continue
-        last = evs[it.history[-1]].get("ts")
+        # closed when it reached done: a verify run after that is no part of its life
+        last = next((evs[i].get("ts") for i in it.history if evs[i].get("event") == "close"), None) \
+            or max((p.get("ts") or "" for p in it.passed), default=None)
         if not last:
             continue
         # ⚠️ Either stamp being unreadable poisons the p90 for a whole KIND, which then

@@ -234,7 +234,7 @@ a = st.get("DISK_LOW:disk.d_free_gb") or {}
 check("alarm: a name already in the ledger opens without a second spawn (the retry adds no call)",
       len(calls) == 1 and a.get("state") == "OPEN" and a.get("item") == nm, (calls, a))
 # one pass at a time
-import fcntl  # noqa: E402
+import contextlib, fcntl, io  # noqa: E402,E401
 with open(TMP / "ops" / "run.lock", "w") as lk:
     fcntl.flock(lk, fcntl.LOCK_EX)
     try:
@@ -242,7 +242,12 @@ with open(TMP / "ops" / "run.lock", "w") as lk:
         busy = False
     except OW.Busy:
         busy = True
-check("run: a second pass while one holds run.lock raises Busy (main exits 0, says skipped)", busy)
+    _cap = io.StringIO()
+    with contextlib.redirect_stdout(_cap):
+        _rc_main = OW.main(["run", "--family", "disk"])
+check("run: a second pass while one holds run.lock raises Busy", busy)
+check("run: main exits 0 and says skipped while the lock is held", _rc_main == 0 and "skipped:" in _cap.getvalue(),
+      (_rc_main, _cap.getvalue()))
 
 # ---------------------------------------------------------------- Steve collector (fixture QHOME)
 Q = TMP / "q"
@@ -1000,6 +1005,10 @@ _fl = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["fla
 check("run: an unwritable series is a flag and the pass finishes", any(f["rule"] == "series_write" for f in _fl), _fl)
 check("run: an unreadable alarms.json is a flag, not a quiet zero", any(f["rule"] == "alarm_state" for f in _fl), _fl)
 check("run: wrong-shaped flags.json and last_measured.json are survived", any(f["rule"] == "bad_target" for f in _fl), _fl)
+check("run: an unreadable last_measured.json is said aloud and kept",
+      any(f["key"] == "last_measured" and "unreadable" in f["detail"] for f in _fl)
+      and (OW.ops_dir() / "last_measured.json").read_text(encoding="utf-8") == "[2]", _fl)
+(OW.ops_dir() / "last_measured.json").unlink()
 _r2 = OW.run(now=NOW + 20, rules=_bad_rules, families={"v3"})
 _fl2 = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["flags"]
 _old = [f for f in _fl2 if f["rule"] == "bad_target"]
@@ -1146,6 +1155,15 @@ finally:
     OW.qhome = _qh
 check("steve: a fault that starts in the future has an unknown duration, not a healthy 0",
       _s["steve.fault_min"]["m"] == "UNMEASURED" and _s["steve.unowned_stall_min"]["m"] != "MEASURED", _s["steve.fault_min"])
+_fc = TMP / "fake_clone" / "src/RimMandrake/Utils/testq"
+_fc.mkdir(parents=True, exist_ok=True)
+(_fc / "ingest.py").write_text(
+    "def rimflow(*a):\n    if any('\\x00' in x for x in a):\n        raise ValueError('embedded null byte')\n    return 0, ''\n"
+    "def publish(n, message=''):\n    return None\n", encoding="utf-8")
+_fr = OW.real_filer([{"name": "A", "title": "bad\x00", "aid": "x"}, {"name": "B", "title": "good", "aid": "y"}],
+                    {"clone": str(TMP / "fake_clone"), "parent": "P", "for": "F", "needs": "n", "lock_wait_s": 1})
+check("filer: an alarm the spawn cannot carry costs itself, the next still files",
+      "ValueError" in str(_fr.get("A")) and _fr.get("B") is None and "B" in _fr, _fr)
 _cxm, _dirs = sys.modules.get("csuite_codex_limits"), OW.codex_dirs
 _cxs = types.SimpleNamespace()
 sys.modules["csuite_codex_limits"] = _cxs
@@ -1157,6 +1175,11 @@ _c1 = OW.c_codex(NOW, RULES, {})
 _cxs.readings = lambda *a, **k: ([(OW.iso(NOW - 3600), 90.0, 10080, _rs, None, None, None, "x"),
                                    (OW.iso(NOW + 86400), 0.0, 10080, OW.iso(NOW + 8 * 86400), None, None, None, "x")], 1)
 _c2 = OW.c_codex(NOW, RULES, {})
+_cxs.readings = lambda *a, **k: ([(OW.iso(NOW - 4 * 3600), 100.0, 10080, _rs, None, None, None, "x"),
+                                   (OW.iso(NOW - 60), -1.0, 10080, _rs, None, None, None, "x")], 1)
+_cn = OW.c_codex(NOW, RULES, {})
+check("codex: negative usage is no reading; the older one stays, as a floor",
+      _cn["codex.week_used_pct"]["v"] == 100.0 and _cn["codex.week_used_pct"]["m"] == "ESTIMATE", _cn["codex.week_used_pct"])
 OW.codex_dirs = _dirs
 if _cxm is not None:
     sys.modules["csuite_codex_limits"] = _cxm

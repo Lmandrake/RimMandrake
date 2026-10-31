@@ -97,7 +97,7 @@ def case(name, fn):
 # ---------------------------------------------------------------------------
 def env(seat="BUILD", **over):
     e = {k: v for k, v in os.environ.items()
-         if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
+         if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID") and not k.startswith("GIT_")}
     e["RIMFLOW_LEDGER"] = os.path.join(_tmp(), "events.jsonl")
     e["RIMFLOW_ITEMS"] = os.path.join(_tmp(), "items")
     # The probe reads the REAL machine; without this, any case that stamps a
@@ -262,12 +262,17 @@ def t_file_claim_start_close():
     assert "closed at deadbee" in out, out
 
 
+def _no_git_env():
+    """The caller's GIT_DIR/GIT_INDEX_FILE would point a fixture's git at the real repository."""
+    return {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}
+
+
 def _git_fixture():
     """-> (clone_dir, published_sha, local_sha): origin/main holds the first commit, the clone one more."""
     base = os.path.join(_tmp(), "gitfx")
     os.makedirs(base)
     def g(cwd, *a):
-        return subprocess.check_output(("git",) + a, cwd=cwd, stderr=subprocess.STDOUT).decode().strip()
+        return subprocess.check_output(("git",) + a, cwd=cwd, stderr=subprocess.STDOUT, env=_no_git_env()).decode().strip()
     g(base, "init", "-q", "--bare", "-b", "main", "origin.git")
     g(base, "clone", "-q", "origin.git", "clone")
     c = os.path.join(base, "clone")
@@ -301,15 +306,15 @@ def t_close_refuses_unpublished_sha_and_head_fallback():
 def t_close_takes_git_head_when_no_sha_given():
     fresh()
     c, pub, loc = _git_fixture()
-    subprocess.check_call(("git", "push", "-q", "origin", "HEAD:main"), cwd=c)
-    subprocess.check_call(("git", "fetch", "-q", "origin"), cwd=c)
+    subprocess.check_call(("git", "push", "-q", "origin", "HEAD:main"), cwd=c, env=_no_git_env())
+    subprocess.check_call(("git", "fetch", "-q", "origin"), cwd=c, env=_no_git_env())
     e = env("BUILD"); e["RIMFLOW_GIT_CWD"] = c
     ok("file", "SHA_FROM_GIT_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
     prose("SHA_FROM_GIT_PROBE_FIXTURE")
     ok("claim", "SHA_FROM_GIT_PROBE_FIXTURE")
     out = ok("close", "SHA_FROM_GIT_PROBE_FIXTURE", env=e)
     sha = out.split("closed at ")[1].split()[0].strip(" .")
-    assert len(sha) >= 7 and subprocess.check_output(("git", "rev-parse", "HEAD"), cwd=c).decode().strip().startswith(sha), (
+    assert len(sha) >= 7 and subprocess.check_output(("git", "rev-parse", "HEAD"), cwd=c, env=_no_git_env()).decode().strip().startswith(sha), (
         "a close with no commit behind it is a claim, not a close: %s" % out)
 
 
@@ -859,6 +864,19 @@ def t_a_failed_run_does_not_reopen_the_item():
     assert "not reope" in out, out
     head = ok("show", "TWICE_RUN_ITEM_PROBE_FIXTURE").splitlines()[0].split()
     assert head[1] == "done", "a failed run changed a closed item's state: %s" % head
+
+
+def t_a_verify_after_close_is_no_part_of_the_closed_life():
+    code = ("import cli, types; N = types.SimpleNamespace; "
+            "evs = [{'ts': '2026-01-01T02:00:00Z', 'event': 'close'}, {'ts': '2026-02-01T00:00:00Z', 'event': 'verify'},"
+            " {'ts': '2026-02-01T00:00:00Z', 'event': 'verify'}]; "
+            "mk = lambda h, p: N(state='done', created_at='2026-01-01T00:00:00Z', history=h, passed=p, kind='k'); "
+            "print(cli._p90_by_kind(N(items={'a': mk([0, 1], [])}), evs)); "
+            "print(cli._p90_by_kind(N(items={'b': mk([1], [{'ts': '2026-01-01T03:00:00Z'}])}), evs))")
+    r = subprocess.run([sys.executable, "-c", code], env=scratch_env(env("CHECK")), cwd=os.path.dirname(CLI),
+                       stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    assert r.returncode == 0, r.stderr
+    assert r.stdout.split("\n")[:2] == ["{'k': 2.0}", "{'k': 3.0}"], r.stdout
 
 
 def t_this_deployment_jumps_the_queue_and_clears_when_the_game_goes_down():

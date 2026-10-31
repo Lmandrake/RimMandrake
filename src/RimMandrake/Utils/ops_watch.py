@@ -282,8 +282,10 @@ def c_codex(now, rules, ctx):
                 bad.append(epoch(r[0]))
             except (TypeError, IndexError, KeyError):
                 bad.append(None)
-    bad += [w[0] for w in week if w[0] is None or w[2] is None or not finite(w[1]) or w[0] > now + 300]
-    week = sorted(w for w in week if w[0] is not None and w[2] is not None and finite(w[1]) and w[0] <= now + 300)
+    def usable(w):      # negative usage is no reading: it would clamp to no burn and read as a healthy runway
+        return w[0] is not None and w[2] is not None and finite(w[1]) and w[1] >= 0 and w[0] <= now + 300
+    bad += [w[0] for w in week if not usable(w)]
+    week = sorted(w for w in week if usable(w))
     if not week:
         why = "no weekly rate_limits reading in %d rollout file(s) modified in %d d" % (nfiles, cr["lookback_days"])
         return {k: U(why) for k in ("codex.week_used_pct", "codex.hours_to_reset", "codex.runway")}
@@ -1339,12 +1341,15 @@ def real_filer(todo, conf):
                 time.sleep(2)
         n = 0
         for a in todo:
-            if a.get("note_only"):
-                rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
-            else:
-                rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
-                                      "--name", a["name"], "--title", a["title"],
-                                      "--why", "ops_watch alarm (deterministic, no AI): " + a["aid"])
+            try:    # one alarm the spawn cannot carry (a NUL in an argument) costs itself, not the alarms behind it
+                if a.get("note_only"):
+                    rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
+                else:
+                    rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
+                                          "--name", a["name"], "--title", a["title"],
+                                          "--why", "ops_watch alarm (deterministic, no AI): " + a["aid"])
+            except (ValueError, OSError) as e:
+                rc, out = 1, "%s: %s" % (type(e).__name__, e)
             res[a["name"]] = None if rc == 0 else out[-300:]
             n += rc == 0
         res["_publish"] = ing.publish(n, message="ledger: ops_watch alarm(s) %s" % ", ".join(
@@ -1810,8 +1815,10 @@ def run(now=None, rules=None, filer=None, families=None):
             for k, p in (r.get("points") or {}).items():
                 if isinstance(p, dict) and p.get("m") == "MEASURED" and p.get("v") is not None:
                     lastm[k] = max(r["t"], lastm.get(k, r["t"]))
-    lastm, saved_lm = carry_last_measured(lastm, _obj(read_json(ops_dir() / "last_measured.json")).get("t"),
-                                          points, now)
+    lm_path = ops_dir() / "last_measured.json"
+    lm_saved = _obj(read_json(lm_path)).get("t")
+    lm_bad = lm_path.exists() and not isinstance(lm_saved, dict)
+    lastm, saved_lm = carry_last_measured(lastm, lm_saved, points, now)
     try:
         flags = andon(points, hist, lastm, rules, now) + sick
     except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
@@ -1830,8 +1837,12 @@ def run(now=None, rules=None, filer=None, families=None):
             if fam + "._collector" not in points and not any(fnmatch.fnmatchcase(k, t["key"]) for k in points):
                 flags.append({"rule": "bad_rule", "key": "rules.target." + t["key"], "value": None, "window": "now",
                               "detail": "target %s matches no reading: its alarm cannot fire" % t["key"]})
+    if lm_bad:      # not overwritten: the flag repeats until someone repairs or removes it, and silence flags are at stake
+        flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
+                      "detail": "last_measured.json is unreadable: long-silent keys may read as not silent; repair or delete it"})
     try:
-        atomic_json(ops_dir() / "last_measured.json", {"t": saved_lm})
+        if not lm_bad:
+            atomic_json(lm_path, {"t": saved_lm})
     except OSError as e:    # a full disk is what the alarms below are for: never let it stop them
         flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
                       "detail": "last_measured.json not written: %s" % str(e)[:160]})
