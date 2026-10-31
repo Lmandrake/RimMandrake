@@ -456,6 +456,20 @@ def t_crash_windows():
        "overdue reads the fresh beat")
 
 
+def t_real_effects():
+    """The fakes cannot see an import that fails: walk the real read paths once against this tree's ledger."""
+    d = tempfile.mkdtemp(prefix="rlfx-")
+    store = R.Store(d)
+    fx = R.Effects(dict(RULES, pool_seats=["BENCH"], pool_needs=["offline"], pool_targets=["v1"],
+                        pool_kinds_exclude=[], pool_ids_exclude=[]), store)
+    order, w = fx.pool_order(fx.r)
+    ok(isinstance(order, list) and len(w.items) > 100, "real: pool_order reads the real ledger")
+    ok(fx.item_state("NO_SUCH_ITEM_X") is None, "real: item_state")
+    ok(fx.paused() in (True, False, None) or isinstance(fx.paused(), str), "real: paused answers")
+    ok(fx.mem_gb() > 0, "real: memory reading")
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def t_launch_fail():
     x = Rig(n=1, share=1.0, launch_breaker=2, breaker_cool_s=500)
     x.w.lfail = "auth dead"
@@ -563,7 +577,7 @@ def t_live_line():
 
 def main():
     for t in (t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
-              t_done_path, t_crash_recovery, t_crash_windows, t_launch_fail, t_retire, t_concurrency, t_live_line):
+              t_done_path, t_crash_recovery, t_crash_windows, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):
         print("--", t.__name__)
         t()
     print("selftest_relentless: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

@@ -14,6 +14,7 @@ import argparse
 import contextlib
 import fcntl
 import hashlib
+import importlib
 import json
 import math
 import os
@@ -34,6 +35,12 @@ SHARD = "infrastructure/state/ledger/events/%s.jsonl"
 NOTE_MAX = 400
 SLUG_RX = re.compile(r"[^a-z0-9_]+")
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
+
+
+def pkg(name):
+    """A rimflow module as the package imports it: priority and friends use relative imports."""
+    sys.path.insert(0, os.path.dirname(HERE))
+    return importlib.import_module("rimflow." + name)
 
 
 def root():
@@ -410,15 +417,14 @@ class Effects:
 
     def ledger_items(self):
         if self._ledger is None:
-            import model
+            model = pkg("model")
             evs = model.read()
             self._ledger = (evs, model.replay(evs))
         return self._ledger
 
     def pool_order(self, r):
         """Open items in the pool, best first: raised, then Test Pilot bouncers, then rank()."""
-        import priority
-        import testpilot_route
+        priority, testpilot_route = pkg("priority"), pkg("testpilot_route")
         evs, w = self.ledger_items()
         bounce = self.bounce = {v["id"] for v in testpilot_route.routed(w, evs)}
         ranked = []
