@@ -298,6 +298,16 @@ def t_census(tmp):
     man, _ = HC.load(dict(rec, ts=iso(1003)), base)
     check(man and man["skipped"] and not man["claude_files"], "capture: a symlinked HOME is skipped, never followed",
           man)
+    # a symlinked SUBDIR under a real projects dir is skipped (reported), its target's transcripts never copied
+    hs = tmp / "census" / "home_subdir"
+    (hs / ".claude" / "projects").mkdir(parents=True)
+    tgt = next(p for p in (outside / ".claude" / "projects").iterdir() if p.is_dir())
+    (hs / ".claude" / "projects" / "-lnk").symlink_to(tgt)
+    HC.capture(dict(rec, ts=iso(1004)), home=hs, gpt_dir=None, base=base)
+    man, d = HC.load(dict(rec, ts=iso(1004)), base)
+    check(man and any("symlinked dir" in x and "-lnk" in x for x in man["skipped"]) and not man["claude_files"]
+          and not list((d / "claude").rglob("*.jsonl")), "capture: a symlinked projects subdir is skipped, its "
+          "target never copied", man)
     # GPT r1: an unreadable directory under the tester's projects is reported as skipped, not silently lost
     h = tmp / "census" / "home_unreadable"
     write_tester(h, h / "g", 1000, "trio", 0)
