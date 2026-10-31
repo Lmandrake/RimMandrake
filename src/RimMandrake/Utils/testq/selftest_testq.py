@@ -40,6 +40,9 @@ import json, os, sys, time
 _t0 = time.time()
 while os.path.exists(os.environ.get("MOCK_HOLD", "")) and time.time() - _t0 < 60:   # held mid-run by the test
     time.sleep(0.05)
+if os.environ.get("MOCK_HOLD"):   # why the hold ended: read back by the second-tick diagnostic below
+    with open(os.environ["MOCK_HOLD"] + ".log", "a") as _f:
+        _f.write("left after %.2fs hold_exists=%s pid=%d\n" % (time.time() - _t0, os.path.exists(os.environ["MOCK_HOLD"]), os.getpid()))
 name = "Mock_%d" % int(time.time() * 1000000)
 summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"},
                                                     {"name": "r2", "verdict": "FAIL", "detail": "bad"}]}]}
@@ -466,6 +469,12 @@ def main():
         ab = running_attempt(b)
         tq("tick")
         check(state(a) == "pending", "a second tick while B runs admits nothing")
+        if state(a) != "pending":     # TESTQ_SELFTEST_FIX_NIGHTLY_FILE_MISSING: only the 03:00 sweep has ever shown this
+            print("DIAG a=%s b=%s hold=%s" % (state(a), state(b), os.path.exists(hold)))
+            for f in [hold + ".log", sshlog] + sorted(glob.glob(os.path.join(queue, "*.log")))\
+                    + sorted(glob.glob(os.path.join(home, "attempts", "*", "*"))):
+                if os.path.isfile(f):
+                    print("DIAG --- %s\n%s" % (f, open(f, errors="replace").read()[-1500:]))
         os.remove(hold)
         check(wait_worker(ab), "the worker finished B")
         tq("tick")
