@@ -27,6 +27,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
@@ -685,6 +686,63 @@ def t_review_fixes(root):
         check("a failed tree build leaves no work dir", not left, str(left))
     finally:
         C.J.materialise, C.text_area, C.J.neutralise = real_mat, real_ta, real_neu
+    # any socket the critic could see refuses, however it was bound; a masked one does not
+    tree = root / "visible"
+    (tree / "shown" / "deep").mkdir(parents=True)
+    (tree / "masked").mkdir()
+    (tree / "tools").mkdir()
+    (tree / "proc").mkdir()
+    (tree / "shown" / "plain").write_text("x")
+    sock = socket.socket(socket.AF_UNIX)
+    sock.bind(str(tree / "masked" / "s.sock"))
+    C.refuse_open_sockets([str(tree / "masked")], (), str(tree))
+    check("a masked socket passes", True)
+
+    def refused(masked, bound=()):
+        try:
+            C.refuse_open_sockets(masked, bound, str(tree))
+            return False
+        except J.JudgeUnavailable:
+            return True
+    check("a socket in a directory not masked refuses the sandbox", refused([]))
+    os.rename(str(tree / "masked" / "s.sock"), str(tree / "shown" / "deep" / "moved.sock"))
+    check("a renamed socket refuses by where it is now", refused([str(tree / "masked")]))
+    os.rename(str(tree / "shown" / "deep" / "moved.sock"), str(tree / "proc" / "s.sock"))
+    check("proc is not walked", not refused([]))
+    os.rename(str(tree / "proc" / "s.sock"), str(tree / "masked" / "s.sock"))
+    check("a socket in a dir bound back refuses though its parent is masked",
+          refused([str(tree / "masked")], [str(tree / "masked")]))
+    sock.close()
+    sealed = tree / "shown" / "sealed"
+    sealed.mkdir()
+    sealed.chmod(0o111)
+    check("a directory that can be entered and not listed goes back to be masked",
+          C.refuse_open_sockets([str(tree / "masked")], (), str(tree)) == [str(sealed)])
+    sealed.chmod(0o000)
+    check("a directory closed to this uid needs no mask", C.refuse_open_sockets([str(tree / "masked")], (), str(tree)) == [])
+    sealed.chmod(0o755)
+    # a helper's edit stales the fingerprint; order of the closure does not depend on the source file's order
+    names = [n for n, _ in C._callee_closure((C.sandbox_argv,))]
+    check("the fingerprint follows a callee of a named function", "arena_critic_calib.refuse_open_sockets" in names, str(names))
+    check("the fingerprint follows a module constant of another module", "arm_sandbox.CONTAINERS" in names
+          and "arm_sandbox.VAR_MASK" in names, str(names))
+    orig = C._callee_closure
+    fp0 = C.critic_fingerprint(C.AcceptAll())
+    C._callee_closure = lambda roots: [(n, s + "#" if n.endswith(".refuse_open_sockets") else s) for n, s in orig(roots)]
+    try:
+        fp1 = C.critic_fingerprint(C.AcceptAll())
+    finally:
+        C._callee_closure = orig
+    check("a changed callee changes the fingerprint", fp0 != fp1)
+    mod = type(sys)("fake_mod")
+    mod.__file__ = __file__
+    real_src, C.inspect.getsource = C.inspect.getsource, lambda o: "X = (1,)\nX = X + (2,)\nY = 3\ndef f():\n    return X\n"
+    try:
+        got = C._constant_source(mod, "X")
+    finally:
+        C.inspect.getsource = real_src
+    check("a constant's source holds its later reassignment too", got == "X = (1,)\nX = X + (2,)", repr(got))
+
     # a spent budget builds no tree; a later unbudgeted invocation is not cut by the old deadline
     calls = []
 
@@ -700,6 +758,15 @@ def t_review_fixes(root):
     finally:
         C.prepare = real_prep
     check("spent budget: no prepare", rec["meta"].get("skipped") is True and not calls, str(rec))
+    late = Crit()
+    late.deadline = time.time() + C.MIN_CALL_S - 5
+    late.needs_tree = True
+    real_prep, C.prepare = C.prepare, lambda *a: calls.append("prep") or (_ for _ in ()).throw(RuntimeError("x"))
+    try:
+        rec = C.run_one({"cid": "z"}, late)
+    finally:
+        C.prepare = real_prep
+    check("under MIN_CALL_S of budget left: no prepare", rec["meta"].get("skipped") is True and not calls, str(rec))
     cr = Crit()
     C.run({"candidates": [], "set_sha256": "x"}, cr, "dl", root=root / "dl")
     check("no budget clears an old deadline", cr.deadline is None)

@@ -50,6 +50,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures as cf
 import fcntl
+import functools
 import hashlib
 import json
 import math
@@ -62,6 +63,7 @@ import signal
 import subprocess
 import sys
 import tempfile
+import threading
 import time
 from pathlib import Path
 
@@ -77,6 +79,7 @@ COMMIT_ENV = {"GIT_AUTHOR_NAME": "candidate", "GIT_AUTHOR_EMAIL": "candidate@inv
               "GIT_AUTHOR_DATE": "2026-10-30T00:00:00+0000", "GIT_COMMITTER_NAME": "candidate",
               "GIT_COMMITTER_EMAIL": "candidate@invalid", "GIT_COMMITTER_DATE": "2026-10-30T00:00:00+0000"}
 PROOF_TIMEOUT = 180
+PROOF_OUTPUT_KEEP = 64_000   # bytes of one proof's output the harness holds; only the tail is ever used
 MATCH_TIMEOUT = 300
 MATCH_FP_MAX = 0.10      # decoy hit rate above this: the matcher cannot tell defects apart; reason scores UNMEASURED
 INTERVAL_ALPHA = 0.05
@@ -89,7 +92,7 @@ INTERVAL_METHOD = ("exact Clopper-Pearson terms combined by MOVER (Zou & Donner 
 # set (removing one changes every matcher decoy draw, hence every match key) but never enter a catch term or a count.
 EQUIVALENT = {"m30": "zip(a[2:], b[2:]) is only in the assert MESSAGE of _assert_same_world; `assert a[1:] == b[1:]` "
                      "still compares every projection, so the mutant changes no behaviour"}
-WRITEUP_MAX = 12000     # chars of write-up the matcher sees (the END is kept: findings precede the verdict)
+WRITEUP_MAX = 60000     # chars of write-up the matcher sees (the END is kept: findings precede the verdict)
 
 
 def evidence_root() -> Path:
@@ -144,7 +147,7 @@ def set_hash(cands: list) -> str:
 
 def build(spec: dict, base_set: dict, repo: Path = A.REPO, adj: dict | None = None) -> dict:
     by = {c["cid"]: c for c in base_set["candidates"]}
-    bad = {cid for cid, f in ((adj or {}).get("findings") or {}).items()
+    bad = {cid for cid, f in ((adj or {}).get("cids") or {}).items()
            if (f.get("finding") if isinstance(f, dict) else f) in ("true_defect", "bad_candidate")}
     origs, muts, seen = {}, [], set()
     for m in spec["mutants"]:
@@ -209,22 +212,36 @@ def _git_ok(repo: Path, *args) -> bool:
     return subprocess.run(["git", "-C", str(repo), *args], capture_output=True).returncode == 0
 
 
+def _drain(pipe, keep: bytearray, cap: int = PROOF_OUTPUT_KEEP) -> None:
+    """Read a child's output to its end, holding only the last `cap` bytes: the child never blocks on a full pipe and
+    a noisy proof cannot grow the harness."""
+    while True:
+        chunk = pipe.read(65536)
+        if not chunk:
+            return
+        keep += chunk
+        del keep[:-cap]
+
+
 def run_in_sandbox(argv: list, work: Path, tree: Path, timeout: int) -> tuple:
     env = {"PATH": "/usr/local/bin:/usr/bin:/bin", "HOME": str(work / "home"), "LANG": "C.UTF-8", "TERM": "dumb"}
     (work / "home").mkdir(exist_ok=True)
     proc = subprocess.Popen(C.sandbox_argv(argv, work, tree, model_route=False), cwd="/", stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, env=env, start_new_session=True)
+    keep = bytearray()
+    reader = threading.Thread(target=_drain, args=(proc.stdout, keep), daemon=True)
+    reader.start()
     try:
-        out, _ = proc.communicate(timeout=timeout)
-        rc = proc.returncode
+        rc = proc.wait(timeout=timeout)
     except subprocess.TimeoutExpired:
         try:
             os.killpg(proc.pid, signal.SIGKILL)
         except ProcessLookupError:
             pass
-        out, _ = proc.communicate()
+        proc.wait()
         rc = 124
-    return rc, out.decode("utf-8", "replace")[-600:]
+    reader.join(5)
+    return rc, bytes(keep).decode("utf-8", "replace")[-600:]
 
 
 def prove_one(doc_by: dict, mut: dict, repo: Path = A.REPO, deadline: float | None = None) -> dict:
@@ -278,6 +295,7 @@ def proofs(doc: dict, budget_s: float, concurrency: int = 4, repo: Path = A.REPO
             if rec is None:
                 continue
             rec["set_sha256"] = doc["set_sha256"]
+            rec["harness"] = proof_harness()
             with open(out, "a") as fh:
                 fh.write(json.dumps(rec, sort_keys=True) + "\n")
     allr = latest(C.read_results(out), doc)
@@ -291,14 +309,20 @@ def _timed_prove(by, c, repo, t_end):
     return prove_one(by, c, repo, t_end)
 
 
+@functools.lru_cache(maxsize=1)
+def proof_harness() -> str:
+    """The code a proof ran through (test selection, materialisation, sandbox): a proof of another harness is stale."""
+    return hashlib.sha256(repr(C._callee_closure((prove_one,))).encode()).hexdigest()[:16]
+
+
 def latest(recs: list, doc: dict) -> dict:
-    """cid -> its proof: made on this set, or on exactly this mutant's and its original's heads (a proof depends on
-    nothing else, so it survives a rebuild that added other mutants)."""
+    """cid -> its proof: by this harness, and made on this set or on exactly this mutant's and its original's heads
+    (a proof depends on nothing else, so it survives a rebuild that added other mutants)."""
     by = {c["cid"]: c for c in doc["candidates"]}
     out = {}
     for r in recs:
         c = by.get(r.get("cid"))
-        if c is None or c.get("role") != "mutant" or "error" in r:
+        if c is None or c.get("role") != "mutant" or "error" in r or r.get("harness") != proof_harness():
             continue
         if r.get("set_sha256") == doc["set_sha256"] or r.get("heads") == [by[c["pair"]]["head"], c["head"]]:
             out[r["cid"]] = r
@@ -338,6 +362,8 @@ def _seed(doc: dict, critic, run_id: str, from_run: str, from_set: dict, root: P
     d = root / run_id
     d.mkdir(parents=True, exist_ok=True)
     meta = d / "run.json"
+    if not meta.exists() and (d / "results.jsonl").exists():
+        raise SystemExit("seed refused: run %s holds results and no run.json: they have no provenance" % run_id)
     if not meta.exists():
         meta.write_text(json.dumps({"run": run_id, "critic": critic.name, "critic_fingerprint": fp,
                                     "set_sha256": doc["set_sha256"], "seeded_from": [from_run],
@@ -349,7 +375,8 @@ def _seed(doc: dict, critic, run_id: str, from_run: str, from_set: dict, root: P
         sources = prev.get("seeded_from") or []
         if from_run not in sources:                  # every source, before its records land: never a record without one
             meta.write_text(json.dumps(dict(prev, seeded_from=sources + [from_run]), indent=1))
-    have = {r["cid"] for r in C.read_results(d / "results.jsonl")}
+    # a cid with only an invalid record still takes the seed: a valid verdict never waits behind a failed call
+    have = {r["cid"] for r in C.read_results(d / "results.jsonl") if r["verdict"] in J.VERDICTS}
     from_by = {c["cid"]: c for c in from_set["candidates"]}
     valid = {}
     for r in C.read_results(root / from_run / "results.jsonl"):
@@ -401,7 +428,8 @@ VERDICT_JSON = re.compile(r'(?i)"verdict"\s*:\s*"(?:reject|accept)"')
 
 def writeup_of(rec: dict) -> str:
     """The reviewer's own words, without the verdict token, the reviewer's name or anything else about the run; the
-    last WRITEUP_MAX chars of writeup_full (score() counts every reject that this cap cut)."""
+    last WRITEUP_MAX chars of writeup_full. The matcher never saw what the cap cut, so a cut reject with no match is
+    not a miss: score() counts it and decision() is then UNMEASURED."""
     return writeup_full(rec)[-WRITEUP_MAX:]
 
 
@@ -422,11 +450,13 @@ def writeup_full(rec: dict) -> str:
 
 
 def match_jobs(doc: dict, runs: dict) -> list:
-    """One job per valid reject: a mutant's true defect + a decoy; an original's mutants' defects + a decoy. A mutant
-    with a sibling on its original draws the sibling (a near-miss about the very same code, absent from this head);
-    every other job has no such defect to draw and takes one from another original."""
+    """One job per valid reject: a mutant's true defect, or an original's mutants' defects, padded with decoys to one
+    list length for the whole set, so the length never tells the matcher the role. A mutant draws its siblings first (a
+    near-miss about the very same code, absent from this head); the rest come from other originals. A job with no
+    decoy to draw has no control: it is skipped, the reject stays unmatched and the grade UNMEASURED."""
     mts = [c for c in doc["candidates"] if c.get("role") == "mutant"]
     pr = pairs(doc)
+    length = 1 + max([len(v) for v in pr.values()] or [1])     # the fullest original's defects + one decoy
     jobs = []
     for run_id, recs in runs.items():
         for cid, r in recs.items():
@@ -441,13 +471,20 @@ def match_jobs(doc: dict, runs: dict) -> list:
                     continue
             rng = random.Random("%s|%s|decoy" % (run_id, cid))
             near = [m for m in mts if c.get("role") == "mutant" and m["pair"] == home and m["mid"] != c["mid"]]
-            decoy = rng.choice(near or [m for m in mts if m["pair"] != home])
-            items = [("true", m["mid"], m["mutant_defect"]) for m in truths] + [("decoy", decoy["mid"], decoy["mutant_defect"])]
+            far = [m for m in mts if m["pair"] != home]
+            rng.shuffle(near)
+            rng.shuffle(far)
+            decoys = (near + far)[:length - len(truths)]
+            if not decoys:
+                continue
+            near_mids = [m["mid"] for m in decoys if m in near]
+            items = [("true", m["mid"], m["mutant_defect"]) for m in truths] + \
+                [("decoy", m["mid"], m["mutant_defect"]) for m in decoys]
             random.Random("%s|%s|order" % (run_id, cid)).shuffle(items)
             w = writeup_of(r)
             key = hashlib.sha256(json.dumps([MATCHER_ID, run_id, cid, w, items]).encode()).hexdigest()[:16]
             jobs.append({"key": key, "run": run_id, "cid": cid, "role": c.get("role"), "items": items, "writeup": w,
-                         "near_decoy": bool(near)})
+                         "near_decoy": bool(near_mids), "near_mids": near_mids})
     return jobs
 
 
@@ -548,12 +585,27 @@ def match(doc: dict, run_ids: list, budget_s: float, concurrency: int = 8, call=
           out: Path | None = None) -> dict:
     out = out or evidence_root() / "match.jsonl"
     out.parent.mkdir(parents=True, exist_ok=True)
+    with open(out.with_name(out.name + ".lock"), "w") as lk:
+        try:
+            fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            raise SystemExit("another match run holds %s; refusing to pay for its jobs twice" % out)
+        return _match_locked(doc, run_ids, budget_s, concurrency, call, out)
+
+
+def _match_locked(doc: dict, run_ids: list, budget_s: float, concurrency: int, call, out: Path) -> dict:
     have = {r["key"] for r in C.read_results(out) if r.get("valid")}
     jobs = [j for j in match_jobs(doc, {r: run_records(r, doc) for r in run_ids}) if j["key"] not in have]
     t_end = time.time() + budget_s
     with cf.ThreadPoolExecutor(max_workers=concurrency) as ex:
-        futs = [ex.submit(lambda j: None if time.time() > t_end - MATCH_TIMEOUT - 20 else match_one(j, call), j)
-                for j in jobs]
+        def one(j):                # one job's failure is that job's invalid record: the others' paid answers are kept
+            if time.time() > t_end - MATCH_TIMEOUT - 20:
+                return None
+            try:
+                return match_one(j, call)
+            except (J.JudgeError, J.JudgeUnavailable, OSError, subprocess.SubprocessError) as e:
+                return {"key": j["key"], "run": j["run"], "cid": j["cid"], "valid": False, "error": str(e)[:300]}
+        futs = [ex.submit(one, j) for j in jobs]
         for f in cf.as_completed(futs):
             rec = f.result()
             if rec is not None:
@@ -776,9 +828,9 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
     # a record for an older write-up, fixture or matcher is ignored, so its reject reads as unmatched.
     current = {j["key"]: j for j in match_jobs(doc, {rid: recs for rid, recs, _fp in runs.values()})}
     mrec = {}
-    for r in match_recs:
+    for r in match_recs:           # the FIRST valid record of a job: a duplicate never changes a judgment already made
         if r.get("valid") and r.get("key") in current:
-            mrec[(r["run"], r["cid"])] = r
+            mrec.setdefault((r["run"], r["cid"]), r)
     proofs_by = {mid: p for mid, p in proofs_by.items() if mid not in EQUIVALENT}
     n_mut = sum(1 for c in doc["candidates"] if c.get("role") == "mutant" and c["mid"] not in EQUIVALENT)
     n_orig = len(pairs(doc))
@@ -796,6 +848,7 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
                       "unproved": n_mut - len(proofs_by)},
            "reviewers": {}}
     tabs = {}
+    cid_of = {c["mid"]: c["cid"] for c in doc["candidates"] if c.get("role") == "mutant"}
     for role, (run_id, recs, fp) in runs.items():
         matches = {cid: r for (rr, cid), r in mrec.items() if rr == run_id}
         tab = reviewer_table(doc, recs, matches)
@@ -803,6 +856,7 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
         equiv_cids = {c["cid"] for c in doc["candidates"] if c.get("mid") in EQUIVALENT}
         jobs = [r for (rr, c), r in mrec.items() if rr == run_id and c not in equiv_cids]   # m30's own job is no measure
         near = [r for r in jobs if current[r["key"]]["near_decoy"]]
+        near_hits = sum(1 for r in near if set(r.get("identified") or []) & set(current[r["key"]]["near_mids"]))
         invalid = sum(1 for c in doc["candidates"]
                       if not (recs.get(c["cid"]) and recs[c["cid"]]["verdict"] in J.VERDICTS))
         unmatched = sum(1 for row in tab.values() for _m, v, hit in row["muts"] if v == "reject" and hit is None)
@@ -816,7 +870,10 @@ def score(doc: dict, runs: dict, match_recs: list, proofs_by: dict) -> dict:
                "writeups_truncated": sum(1 for r in recs.values() if r["verdict"] == "reject"
                                          and len(writeup_full(r)) > WRITEUP_MAX),
                "matcher_decoy_hits": [sum(1 for j in jobs if j["decoy_hit"]), len(jobs)],
-               "matcher_near_decoy_hits": [sum(1 for j in near if j["decoy_hit"]), len(near)],
+               "matcher_near_decoy_hits": [near_hits, len(near)],
+               "truncated_unmatched": sum(1 for row in tab.values() for mid, v, hit in row["muts"]
+                                          if v == "reject" and not hit
+                                          and len(writeup_full(recs[cid_of[mid]])) > WRITEUP_MAX),
                "orig_rejects_naming_paired_defect": sum(1 for row in tab.values() if row["orig"] == "reject"
                                                         and row["orig_match"])}
         for mode in ("verdict", "reason"):
@@ -877,6 +934,9 @@ def decision(sc: dict) -> dict:
                 why.append("%s: matcher %s hits %d/%d" % (role, label, k, n))
         if blk["rejects_without_valid_match"]:
             why.append("%s: %d mutant rejects without a valid match" % (role, blk["rejects_without_valid_match"]))
+        if blk.get("truncated_unmatched"):               # the cut text may hold the finding: not a miss, not a catch
+            why.append("%s: %d mutant rejects unmatched with a write-up cut at %d chars"
+                       % (role, blk["truncated_unmatched"], WRITEUP_MAX))
     if why:
         return {"grade": "UNMEASURED", "why": why}
     p = (sc.get("paired") or {}).get("reason")

@@ -73,6 +73,7 @@ process) is reported and exits 3 after score.json is written; --no-eventlog skip
 from __future__ import annotations
 
 import argparse
+import ast
 import concurrent.futures as cf
 import dataclasses
 import fcntl
@@ -81,6 +82,7 @@ import datetime as dt
 import hashlib
 import importlib
 import inspect
+import textwrap
 import json
 import math
 import os
@@ -89,6 +91,7 @@ import re
 import secrets
 import shutil
 import signal
+import stat
 import subprocess
 import sys
 import time
@@ -521,10 +524,40 @@ def refuse_unmasked(named) -> None:
             raise J.JudgeUnavailable("the %s %s is outside every masked directory: the critic could read it" % (what, p))
 
 
+def refuse_open_sockets(masked, bound=(), root: str = "/") -> list:
+    """A named unix socket crosses a network namespace: only a mask stops a connect, and a read-only mount does not. So
+    the files the critic will see (this uid, `root` minus `masked`, plus the host dirs bound back in) are walked at
+    every sandbox build and any socket refuses it. The walk, not /proc/net/unix: that table holds the name given at
+    bind time, so it misses a relative bind, a renamed socket and another network namespace's. Residual: a socket
+    created after this walk, during the call. Returns the directories this uid can enter and not list (snapd's
+    /var/lib/snapd/void): nothing in them is known, so the caller masks them; one it cannot enter is closed already."""
+    skip = {os.path.realpath(m) for m in masked} | {os.path.join(root, d) for d in ("proc", "sys", "dev")}
+
+    sealed = []
+
+    def unlisted(e: OSError) -> None:     # enterable but unreadable (mode 0111): a socket by name would still connect
+        if e.filename and os.access(e.filename, os.X_OK):
+            sealed.append(e.filename)
+    for top in (root, *bound):
+        for d, dirs, files in os.walk(top, onerror=unlisted):
+            dirs[:] = [x for x in dirs if top != root or os.path.join(d, x) not in skip]
+            for f in files:
+                p = os.path.join(d, f)
+                try:
+                    is_sock = stat.S_ISSOCK(os.lstat(p).st_mode)
+                except OSError:                                  # gone since the listing
+                    continue
+                if is_sock:
+                    raise J.JudgeUnavailable("unix socket %s is visible in the sandbox: the critic could connect" % p)
+    return sealed
+
+
 def sandbox_argv(argv: list, work: Path, cwd: Path, model_route: bool = True) -> list:
-    """bwrap: read-only root, fresh /tmp, own pid/ipc/uts/net namespaces; tmpfs over /home (clones, mirror, ~/.claude),
-    /mnt (D:, C:, the arena root), /var/tmp (the other candidates) and /run (host service sockets); the claude binary
-    and THIS call's work dir bound back. Nothing else is writable. The network namespace holds only lo: the model API
+    """bwrap: read-only root, fresh /tmp, own pid/ipc/uts/net namespaces; tmpfs over arm_sandbox.CONTAINERS, the one
+    mask list both sandboxes share: /home (clones, mirror, ~/.claude), /mnt (D:, C:, the arena root), /var/tmp (the other
+    candidates), /run (host service sockets), the host's logs and spools, /root /srv /opt /media; the claude binary
+    and THIS call's work dir bound back. A live unix socket outside those masks refuses the sandbox (a socket crosses the
+    network namespace). Nothing else is writable. The network namespace holds only lo: the model API
     is reached through arena_critic_relay's allow-listed socket (model_route=False: no way out at all), so loopback
     services, the Windows host and the rest of the internet are gone. arm_sandbox's seccomp program refuses AF_VSOCK
     (no namespace covers it) and io_uring."""
@@ -532,21 +565,26 @@ def sandbox_argv(argv: list, work: Path, cwd: Path, model_route: bool = True) ->
     if not bw:
         raise J.JudgeUnavailable("bwrap not found: the critic never runs unsandboxed")
     home = Path(os.path.realpath(Path.home()))
-    out = [bw, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc", "--tmpfs", "/tmp",
-           "--tmpfs", "/home", "--tmpfs", "/mnt", "--tmpfs", "/var/tmp", "--tmpfs", "/run"]
+    out = [bw, "--ro-bind", "/", "/", "--dev", "/dev", "--proc", "/proc"]
+    masks = [c for c in AS.CONTAINERS if os.path.isdir(c)]
     if not str(home).startswith("/home/"):
-        out += ["--tmpfs", str(home)]
+        masks.append(str(home))
     refuse_unmasked((("repo", A.REPO), ("arena root", A.arena_root())))
-    out += ["--tmpfs", str(work_base())]          # the other candidates' work dirs, wherever ARENA_CRITIC_WORK points
+    masks.append(str(work_base()))                # the other candidates' work dirs, wherever ARENA_CRITIC_WORK points
+    tools = [p for p in (str(home / ".local" / "bin"), str(home / ".local" / "share" / "claude")) if os.path.exists(p)]
+    sealed = refuse_open_sockets(masks, tools)
+    for m in masks:
+        out += ["--tmpfs", m]
     try:
         AS._prereq()
         rel = RELAY.relay(work_base()) if model_route else None
         bpf = AS._bpf_file()
     except (RELAY.RelayRefused, AS.SandboxRefused, OSError) as e:
         raise J.JudgeUnavailable("critic network refused: %s" % e)
-    for p in (str(home / ".local" / "bin"), str(home / ".local" / "share" / "claude")):
-        if os.path.exists(p):
-            out += ["--ro-bind", p, p]
+    for p in tools:
+        out += ["--ro-bind", p, p]
+    for p in sealed:                              # after the binds: a mask inside a tool dir must outlive its bind
+        out += ["--tmpfs", p]
     if rel:
         out += ["--ro-bind", rel.path, rel.path]
     out += ["--bind", str(work), str(work), "--unshare-net", "--unshare-pid", "--unshare-ipc", "--unshare-uts",
@@ -629,7 +667,62 @@ class L4OpusCritic:
             return CriticVerdict("invalid", ["claude error: %s" % str(d.get("result"))[:300]], meta)
         ans = J.parse_answer(d.get("result") or "", ())
         meta["answer_tail"] = (d.get("result") or "")[-1500:]
+        meta["answer"] = d.get("result") or ""   # the whole answer, as the tester keeps it: the matcher reads both alike
         return CriticVerdict(ans["verdict"], ans.get("reasons") or [ans.get("why")], meta)
+
+
+def _callee_closure(roots) -> list:
+    """Source text of `roots` and of everything they reach: same-module functions, classes and module constants, and
+    `mod.name` through a module of this package. Sorted, so reordering a file changes nothing; constants are their
+    source text, never their value (an env-built value would differ between clones), and what a constant names is
+    followed too. A bound `self.x` is not followed: the critic's class source is hashed whole by critic_fingerprint."""
+    seen, out = set(), []
+    todo = list(roots)
+    while todo:
+        item = todo.pop()
+        if isinstance(item, tuple):                               # (module, constant name)
+            mod, key, src = item[0], "%s.%s" % (item[0].__name__, item[1]), _constant_source(*item)
+        else:
+            obj = inspect.unwrap(item)
+            mod, key, src = inspect.getmodule(obj), "%s.%s" % (obj.__module__, obj.__qualname__), inspect.getsource(obj)
+        if key in seen:
+            continue
+        seen.add(key)
+        out.append((key, src))
+        for node in (ast.walk(ast.parse(textwrap.dedent(src))) if src else ()):
+            if isinstance(node, ast.Name):
+                owner, name = mod, node.id
+            elif isinstance(node, ast.Attribute) and isinstance(node.value, ast.Name):
+                owner, name = vars(mod).get(node.value.id), node.attr
+                if not (inspect.ismodule(owner) and _ours(owner)):
+                    continue
+            else:
+                continue
+            if name not in vars(owner):
+                continue
+            hit = vars(owner)[name]
+            if inspect.ismodule(hit):
+                continue
+            if inspect.isroutine(hit) or inspect.isclass(hit):
+                if _ours(inspect.getmodule(hit)):
+                    todo.append(hit)
+            else:
+                todo.append((owner, name))
+    return sorted(out)
+
+
+def _ours(mod) -> bool:
+    return mod is not None and Path(os.path.realpath(getattr(mod, "__file__", "") or "/")).parent == HERE
+
+
+def _constant_source(mod, name: str) -> str:
+    """Every top-level statement that mentions `name`, as written: a later reassignment or mutation changes what the
+    constant holds, so the first assignment alone would not do. Definitions are skipped: they are hashed when called."""
+    src = inspect.getsource(mod)
+    kept = [ast.get_source_segment(src, n) or "" for n in ast.parse(src).body
+            if not isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef))
+            and any(isinstance(x, ast.Name) and x.id == name for x in ast.walk(n))]
+    return "\n".join(kept)
 
 
 def critic_fingerprint(critic: Critic) -> str:
@@ -650,9 +743,12 @@ def critic_fingerprint(critic: Critic) -> str:
     parts = [critic.name, getattr(critic, "model", "") or "", str(getattr(critic, "max_usd", "")), L4_PROMPT, allow,
              repr((TREE_BLOB_MAX, TREE_TOTAL_MAX, SIBLING_ROOTS, SIBLING_TEXT, SIBLING_DIR_MAX, INLINE_DIFF_MAX,
                    J.TREE_PATHS))]
-    parts += [inspect.getsource(f) for f in (sandbox_argv, refuse_unmasked, prepare, critic_tree_files, unchanged_assets,
-                                             asset_roots, text_area, referenced_sibling_dirs, RELAY, J.neutralise,
-                                             J.scrub, J.materialise, J.parse_answer, AS.seccomp_program, AS._bpf_file)]
+    # the named entry points AND what they call (CRITIC_SANDBOX_AUDIT_UNIX_SOCKET_RESIDUAL): a helper's edit stales a run
+    parts += [src for _n, src in _callee_closure((sandbox_argv, refuse_unmasked, prepare, critic_tree_files,
+                                                  unchanged_assets, asset_roots, text_area, referenced_sibling_dirs,
+                                                  J.neutralise, J.scrub, J.materialise, J.parse_answer,
+                                                  AS.seccomp_program, AS._bpf_file))]
+    parts.append(inspect.getsource(RELAY))
     parts += [exe_id, repr(config)]
     try:
         parts.append(inspect.getsource(type(critic)))
@@ -855,7 +951,8 @@ def run_one(c: dict, critic: Critic, repo: Path = A.REPO) -> dict:
         "%Y-%m-%dT%H:%M:%SZ")}
     ci = None
     deadline = getattr(critic, "deadline", None)
-    if deadline is not None and time.time() >= deadline:     # before prepare: a queued job builds no tree
+    # before prepare: a call under MIN_CALL_S would be skipped anyway, so it builds no tree past the --budget either
+    if deadline is not None and time.time() >= deadline - (MIN_CALL_S if critic.needs_tree else 0):
         return dict(rec, verdict="invalid", reasons=["skipped: the invocation's wall budget is spent"],
                     meta={"skipped": True})
     try:

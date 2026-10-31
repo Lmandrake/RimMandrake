@@ -34,10 +34,12 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
+import arena_judge as J  # noqa: E402
 import arena_critic_calib as C  # noqa: E402
 import arena_critic_mutants as M  # noqa: E402
 import arena_tasks as A  # noqa: E402
@@ -352,12 +354,15 @@ def t_near_decoy():
     recs["p"] = {"cid": "p", "verdict": "accept"}
     jobs = {j["cid"]: j for j in M.match_jobs(doc, {"r": recs})}
     decoy = lambda cid: [i[1] for i in jobs[cid]["items"] if i[0] == "decoy"]
-    check("a mutant's decoy is its sibling on the same original", decoy("m1c") == ["m2"] and decoy("m2c") == ["m1"],
-          str(jobs))
-    check("a mutant without a sibling keeps a cross-original decoy", decoy("m3c") in (["m1"], ["m2"])
+    check("a mutant's decoys start with its sibling on the same original",
+          jobs["m1c"]["near_mids"] == ["m2"] and jobs["m2c"]["near_mids"] == ["m1"] and "m2" in decoy("m1c"), str(jobs))
+    check("a mutant without a sibling keeps cross-original decoys", sorted(decoy("m3c")) == ["m1", "m2"]
           and not jobs["m3c"]["near_decoy"] and jobs["m1c"]["near_decoy"], str(jobs["m3c"]))
+    check("every job's list has one length, so the length never tells the role",
+          {len(j["items"]) for j in jobs.values()} == {3}, str(jobs))
     check("an original's decoy never comes from its own mutants", decoy("o") == ["m3"] and not jobs["o"]["near_decoy"])
-    recm = lambda cid, hit: {"valid": True, "key": jobs[cid]["key"], "run": "r", "cid": cid, "true_hit": [], "decoy_hit": hit}
+    recm = lambda cid, hit: {"valid": True, "key": jobs[cid]["key"], "run": "r", "cid": cid, "true_hit": [], "decoy_hit": hit,
+                             "identified": jobs[cid]["near_mids"] if hit else []}
     sc = M.score(doc, {"critic": ("r", recs, "fp")}, [recm(c, c == "m1c") for c in jobs], {})
     blk = sc["reviewers"]["critic"]
     check("near-decoy hits are counted apart", blk["matcher_near_decoy_hits"] == [1, 2] and blk["matcher_decoy_hits"] == [1, 4],
@@ -366,6 +371,107 @@ def t_near_decoy():
     v = M.decision(fake)
     check("a near-decoy rate over the limit is UNMEASURED however many easy decoys dilute it",
           v["grade"] == "UNMEASURED" and any("near-decoy" in w for w in v["why"]), str(v))
+    # the far decoy of a job that also holds a near one is no near-decoy hit
+    far = [i for i in decoy("m1c") if i != "m2"]
+    r = dict(recm("m1c", True), identified=far)
+    blk = M.score(doc, {"critic": ("r", recs, "fp")}, [r], {})["reviewers"]["critic"]
+    check("a far-decoy hit in a near job is not a near-decoy hit", blk["matcher_near_decoy_hits"][0] == 0
+          and blk["matcher_decoy_hits"][0] == 1, str(blk))
+    # no decoy to draw: no job (never a crash), and the reject stays unmatched
+    lone = {"set_sha256": "x", "candidates": [{"cid": "o", "role": "good", "tier": "A"},
+            {"cid": "m1c", "role": "mutant", "pair": "o", "mid": "m1", "mutant_kind": "k", "mutant_defect": "d1"}]}
+    check("a reject with no decoy to draw gets no job", M.match_jobs(lone, {"r": {"m1c": recs["m1c"]}}) == [])
+
+
+def t_first_record_wins():
+    """CRITIC_MATCHER_HARDEN_ROLE_AND_CONCURRENCY: a duplicate record never changes a judgment already made."""
+    doc = {"set_sha256": "S", "candidates": [
+        {"cid": "o1", "role": "good", "tier": "A"}, {"cid": "o2", "role": "good", "tier": "A"},
+        {"cid": "m1", "role": "mutant", "pair": "o1", "mid": "m1", "mutant_kind": "k", "mutant_defect": "d1"},
+        {"cid": "m2", "role": "mutant", "pair": "o2", "mid": "m2", "mutant_kind": "k", "mutant_defect": "d2"}]}
+    recs = {"o1": {"cid": "o1", "verdict": "accept"}, "o2": {"cid": "o2", "verdict": "accept"},
+            "m1": {"cid": "m1", "verdict": "reject", "reasons": ["x"]}, "m2": {"cid": "m2", "verdict": "accept"}}
+    job = M.match_jobs(doc, {"r": recs})[0]
+    first = {"key": job["key"], "run": "r", "cid": "m1", "valid": True, "true_hit": ["m1"], "decoy_hit": False, "identified": ["m1"]}
+    second = dict(first, true_hit=[], identified=[])
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [first, second], {})
+    sc2 = M.score(doc, {"critic": ("r", recs, "fp")}, [second, first], {})
+    check("the first valid match record decides", sc["reviewers"]["critic"]["reason"]["catch"][0] == 1
+          and sc2["reviewers"]["critic"]["reason"]["catch"][0] == 0, str(sc["reviewers"]["critic"]))
+
+
+def t_truncated(root: Path):
+    """CRITIC_MATCHER_FIX_TRUNCATED_FALSE_MISS: a cut reject with no match is unmeasured, never a miss."""
+    doc = {"set_sha256": "S", "candidates": [
+        {"cid": "o1", "role": "good", "tier": "A"}, {"cid": "o2", "role": "good", "tier": "A"},
+        {"cid": "m1", "role": "mutant", "pair": "o1", "mid": "m1", "mutant_kind": "k", "mutant_defect": "d1"},
+        {"cid": "m2", "role": "mutant", "pair": "o2", "mid": "m2", "mutant_kind": "k", "mutant_defect": "d2"}]}
+    huge = {"meta": {"answer": "z" * (M.WRITEUP_MAX + 9)}}
+    recs = {"o1": {"cid": "o1", "verdict": "accept"}, "o2": {"cid": "o2", "verdict": "accept"},
+            "m1": dict(huge, cid="m1", verdict="reject"), "m2": {"cid": "m2", "verdict": "accept"}}
+    job = M.match_jobs(doc, {"r": recs})[0]
+    none = {"key": job["key"], "run": "r", "cid": "m1", "valid": True, "true_hit": [], "decoy_hit": False, "identified": []}
+    proved = {"m1": {"detect": "read"}, "m2": {"detect": "read"}}
+    sc = M.score(doc, {"critic": ("r", recs, "fp")}, [none], proved)
+    blk = sc["reviewers"]["critic"]
+    check("a cut reject with no match is counted", blk["truncated_unmatched"] == 1, str(blk))
+    fake = {"detect": {"unproved": 0}, "reviewers": {"critic": dict(blk, rejects_without_valid_match=0)},
+            "paired": {"x": 1}}
+    v = M.decision(fake)
+    check("a cut unmatched reject grades UNMEASURED", v["grade"] == "UNMEASURED"
+          and any("write-up cut" in w for w in v["why"]), str(v))
+    hit = dict(none, true_hit=["m1"], identified=["m1"])
+    blk = M.score(doc, {"critic": ("r", recs, "fp")}, [hit], proved)["reviewers"]["critic"]
+    check("a cut reject the matcher matched is a catch", blk["truncated_unmatched"] == 0, str(blk))
+    # overlapping match runs refuse
+    out = root / "lock" / "match.jsonl"
+    out.parent.mkdir()
+    with open(out.with_name(out.name + ".lock"), "w") as lk:
+        M.fcntl.flock(lk, M.fcntl.LOCK_EX)
+        check("a second match run refuses while the first holds the lock",
+              refuses(M.match, doc, ["r"], 10.0, 1, None, out))
+
+
+def t_review_round_two(root: Path):
+    base = {"candidates": [{"cid": "c1", "role": "good"}]}
+    check("build reads the adjudication's cids: a true defect is no original",
+          refuses(M.build, {"mutants": [{"mid": "m1", "orig": "c1"}]}, base, Path("."),
+                  {"cids": {"c1": {"finding": "true_defect", "evidence": "e"}}}))
+    jobs = [{"key": k, "run": "r", "cid": k} for k in ("a", "b")]
+
+    def one(j, call):
+        if j["key"] == "a":
+            raise J.JudgeUnavailable("gone")
+        return {"key": "b", "run": "r", "cid": "b", "valid": True}
+    keep = M.match_jobs, M.run_records, M.match_one
+    M.match_jobs, M.run_records, M.match_one = lambda d, r: jobs, lambda r, d: {}, one
+    out = root / "m2" / "match.jsonl"
+    try:
+        M.match({}, ["r"], 10 ** 4, 2, None, out)
+    finally:
+        M.match_jobs, M.run_records, M.match_one = keep
+    recs = {r["key"]: r for r in C.read_results(out)}
+    check("one failed match job leaves the others' answers on disk", recs["b"]["valid"] and not recs["a"]["valid"], str(recs))
+
+
+def t_proof_output(root: Path):
+    """CRITIC_MUTANT_PROOFS_HARDEN_STDOUT_CAP: a noisy proof neither blocks nor grows the harness."""
+    real = C.sandbox_argv
+    C.sandbox_argv = lambda argv, work, cwd, **k: argv
+    try:
+        t0 = time.time()
+        rc, tail = M.run_in_sandbox(["python3", "-c", "import sys\nfor i in range(600): sys.stdout.write('x'*65536)\nprint('LAST')"],
+                                    root, root, 60)
+        check("a proof printing 39 MB ends with its real exit and tail", rc == 0 and tail.rstrip().endswith("LAST")
+              and len(tail) <= 600 and time.time() - t0 < 50, "%s %r" % (rc, tail[-40:]))
+        keep = bytearray()
+        import io
+        M._drain(io.BytesIO(b"a" * 300000 + b"Z"), keep)
+        check("the harness holds only the kept tail", len(keep) == M.PROOF_OUTPUT_KEEP and keep.endswith(b"Z"), str(len(keep)))
+        rc, _ = M.run_in_sandbox(["sh", "-c", "yes; sleep 60"], root, root, 2)
+        check("a noisy proof past its timeout is killed as 124", rc == 124, str(rc))
+    finally:
+        C.sandbox_argv = real
 
 
 def big_tabs():
@@ -437,6 +543,13 @@ def t_seed(root: Path):
         check("seed records the chain", recs[0]["meta"]["seeded_from"] == ["src"])
         out = M.seed(doc, FakeCritic(), "dst", "src", old, root / "runs")
         check("seed twice adds nothing", out["seeded"] == 0)
+        dbad = root / "runs" / "dbad"
+        dbad.mkdir()
+        (dbad / "results.jsonl").write_text(json.dumps({"cid": "a", "verdict": "invalid", "meta": {}}) + "\n")
+        check("seed refuses results with no run.json", refuses(M.seed, doc, FakeCritic(), "dbad", "src", old, root / "runs"))
+        (dbad / "run.json").write_text(json.dumps({"critic_fingerprint": "FP", "set_sha256": doc["set_sha256"]}))
+        out = M.seed(doc, FakeCritic(), "dbad", "src", old, root / "runs")
+        check("seed fills a cid that holds only an invalid record", out["seeded"] == 1, str(out))
         src2 = root / "runs" / "src2"
         src2.mkdir()
         (src2 / "run.json").write_text((src / "run.json").read_text())
@@ -464,13 +577,14 @@ def t_seed(root: Path):
 def t_proofs():
     doc = {"set_sha256": "S", "candidates": [{"cid": "o", "role": "good", "head": "H0"},
                                              {"cid": "m", "role": "mutant", "pair": "o", "head": "H1"}]}
-    ok_set = {"cid": "m", "set_sha256": "S"}
-    ok_heads = {"cid": "m", "set_sha256": "OLD", "heads": ["H0", "H1"]}
-    bad = {"cid": "m", "set_sha256": "OLD", "heads": ["H0", "H9"]}
+    ok_set = {"cid": "m", "set_sha256": "S", "harness": M.proof_harness()}
+    ok_heads = {"cid": "m", "set_sha256": "OLD", "heads": ["H0", "H1"], "harness": M.proof_harness()}
+    bad = {"cid": "m", "set_sha256": "OLD", "heads": ["H0", "H9"], "harness": M.proof_harness()}
     check("latest accepts a proof on this set", "m" in M.latest([ok_set], doc))
     check("latest accepts a proof on exactly these heads", "m" in M.latest([ok_heads], doc))
     check("latest refuses a proof on other heads of another set", M.latest([bad], doc) == {})
     check("latest refuses an errored proof", M.latest([dict(ok_set, error="x")], doc) == {})
+    check("latest refuses a proof of another harness", M.latest([dict(ok_set, harness="other")], doc) == {})
 
 
 def main() -> int:
@@ -488,6 +602,10 @@ def main() -> int:
         t_review_findings()
         t_equivalent_decoys()
         t_near_decoy()
+        t_first_record_wins()
+        t_truncated(root)
+        t_review_round_two(root)
+        t_proof_output(root)
         t_stale_match()
         t_seed(root)
         t_proofs()
