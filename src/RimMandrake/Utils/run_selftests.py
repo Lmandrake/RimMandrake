@@ -135,6 +135,25 @@ SEQUENTIAL_ISOLATED = {"selftest_render.py"}
 # admission-gated pool (peaks 2.1-4.4 GB, 2026-10-08); uncontained they run after it, alone.
 MEMORY_HEAVY = {"selftest_starwarspatches_semantics.py", "selftest_utinnipatches_dump.py",
                 "selftest_mandrakepatches.py"}
+# Tests that drive dotnet.exe (a Windows-side build + run). Several at once starve each other:
+# the 2026-10-31 nightly had 12 of them CRASH [timeout] under 6 workers, some even past their
+# 600/720 s tags, while sun_heat alone takes 111 s. They run ONE at a time (a lane beside the
+# rest of the pool), so each gets the machine's dotnet to itself and the timeout means what it says.
+DOTNET_LANE = {"selftest_atmosphericbase_kernel.py", "selftest_flowworks_kernel_oracle.py",
+               "selftest_empire_ladder.py", "selftest_flowworks_stock.py",
+               "selftest_flowworks_trench_cover.py", "selftest_gimmesomeslack.py",
+               "selftest_property_fabric.py", "selftest_reclamation_trigger.py",
+               "selftest_seashores.py", "selftest_stun_scaling.py", "selftest_sun_heat.py",
+               "selftest_track_grid.py"}
+
+
+def _lane_of(path: Path):
+    """The serial lane a test belongs to, or None."""
+    if path.name in MEMORY_HEAVY:
+        return "heavy"
+    return "dotnet" if path.name in DOTNET_LANE else None
+
+
 # Per-test wall times from the previous run (path -> seconds). Used ONLY to start the
 # slowest tests first (longest-processing-time scheduling), so the long pole overlaps
 # everything else instead of starting last. Never read for a verdict. Lives in /tmp:
@@ -980,12 +999,12 @@ def _suite(args) -> int:
         # always start one so a test bigger than the budget still runs, alone.
         queue = list(pooled)
         with ThreadPoolExecutor(max_workers=workers) as pool:
-            inflight, heavy = set(), {}
+            inflight, lane = set(), {}
             while queue or inflight:
                 while queue and len(inflight) < workers:
-                    heavy_busy = any(heavy[f] for f in inflight)
+                    busy = {lane[f] for f in inflight}
                     pick = next((t for t in queue
-                                 if not (t.name in MEMORY_HEAVY and heavy_busy)
+                                 if _lane_of(t) not in busy - {None}
                                  and admit(estimate(t, peaks))), None)
                     if pick is None:
                         break
@@ -993,7 +1012,7 @@ def _suite(args) -> int:
                     est = estimate(pick, peaks)
                     fut = pool.submit(run_one, pick,
                                       cap_for(pick, peaks, pick.name in MEMORY_HEAVY), est)
-                    heavy[fut] = pick.name in MEMORY_HEAVY
+                    lane[fut] = _lane_of(pick)
                     inflight.add(fut)
                     time.sleep(0.05)  # let the scope register before the next admit() reads
                 done, inflight = wait(inflight, timeout=1.0, return_when=FIRST_COMPLETED)

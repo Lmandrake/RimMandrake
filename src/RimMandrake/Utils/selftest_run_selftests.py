@@ -182,6 +182,15 @@ finally:
     os.getpid = _real_getpid
 eq(len(set(units)), 4, "concurrent _scope_argv calls get distinct systemd unit names: %r" % units)
 
+# Serial lanes: the dotnet tests share one lane, the memory-heavy ones another, the rest none.
+import subprocess as _sp2
+_tracked = {Path(l).name for l in _sp2.run(["git", "-C", str(rs.REPO_ROOT), "ls-files", "*selftest_*.py"],
+                                           capture_output=True, text=True).stdout.split()}
+eq(sorted(rs.DOTNET_LANE - _tracked), [], "every DOTNET_LANE name is a tracked selftest (a rename must not drop it silently)")
+eq(rs._lane_of(Path("selftest_sun_heat.py")), "dotnet", "sun_heat is in the dotnet lane")
+eq(rs._lane_of(Path("selftest_mandrakepatches.py")), "heavy", "memory-heavy lane unchanged")
+eq(rs._lane_of(Path("selftest_ledger_lint.py")), None, "an ordinary test has no lane")
+
 if FAILS:
     print("FAIL selftest_run_selftests.py")
     for f in FAILS:
