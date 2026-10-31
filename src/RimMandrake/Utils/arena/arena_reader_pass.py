@@ -66,7 +66,10 @@ or directory: 'p'` (C#: `Could not find file 'p'`) cites the file p: a path the 
 name is a fix_only_unnamed missing name (cited_files), and a line that reports it (led by that message, its
 exception class or an empty FAIL label) is not behaviour; an assertion quoting it stays behaviour. A cited path is
 fix_only when its longest match in the fix tree is absent at base (a root `x.json` at base does not hide a new
-`src/x.json`). Rules (2) and (3) see a pytest `E   ` prefix through.
+`src/x.json`); the task names a file by its whole name (`config.json` is not named by `prod_config.json`). Rules
+(2) and (3) see a pytest `E   ` prefix through, and pytest's re-reports of a consequence (`t.py:12: RuntimeError`,
+`FAILED t.py::t - RuntimeError: ...`) are consequences too. A pytest `E   assert ...` line is behaviour whatever
+string it quotes.
 
     run     read every survivor without a current verdict; one JSON file per task under the results dir (default
             <arena>/judge/reader/verdicts/, judge-only: the packets hold hidden check bodies). Resumable: a task
@@ -395,11 +398,22 @@ _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
 _GAP = re.compile(r"^\[\.\.\. \d+ chars cut \.\.\.\]\s*$")
 _CHAIN = re.compile(r"^\s*(?:E\s+)?(?:During handling of the above exception, another exception occurred:"
                     r"|The above exception was the direct cause of the following exception:)\s*$")
-_EXC_LEAD = re.compile(r"^(?:E\s+)?(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?::|\s*$)")    # `pkg.SomeError: msg`, `KeyboardInterrupt`
+_EXC_LEAD = re.compile(r"^(?:E\s+)?(?P<cls>(?:[A-Za-z_]\w*\.)*[A-Z]\w*)(?::|\s*$)")    # `pkg.SomeError: msg`, `KeyboardInterrupt`
 _ERR_LEAD = re.compile(r"^\s*(?:E\s+)?(?:[A-Za-z_]\w*\.)*[A-Z]\w*(?:Error|Exception)(?::|\s*$)")   # rule 2 keeps these
 _FILE_REPORT = re.compile(r"^\s*(?:E\s+)?(?:Unhandled exception\.\s*)?(?:FAIL(?:ED)?\s*:\s*)?"
                           r"(?:(?:[A-Za-z_]\w*\.)*FileNotFound(?:Error|Exception):\s*)?"
                           r"(?:\[Errno 2\] No such file or directory: '|Could not find file ')")
+_PYTEST_ASSERT = re.compile(r"^\s*E\s+assert\b")
+# pytest's `path.py:12: RuntimeError` location footer and `FAILED path::t - RuntimeError: msg` summary
+_PYTEST_REREPORT = re.compile(r"^(?:\S+:\d+: |\s*(?:FAILED|ERROR)\s+\S+\s+-\s+)"
+                              r"(?P<cls>(?:[A-Za-z_]\w*\.)*[A-Z]\w*)(?::|\s*$)")
+
+
+def _file_named_rx(name):
+    """The task text names file `name` as a whole word (`config.json`, not inside `prod_config.json`)."""
+    return re.compile(r"(?<![\w.-])" + re.escape(name) + r"(?![\w-])")
+
+
 _FAIL_LABEL = re.compile(r"^\s*(?:E\s+)?(?:FAIL|FAILED|(?i:fail(?:ed|ure)?))\b(?P<label>[^:\n]*):\s*")
 _MISSING_LEAD = re.compile(r"No module named\b|cannot import name\b|name '\w+' is not defined"
                            r"|(?:module |type object )?'[^']+' (?:object )?has no attribute\b"
@@ -429,6 +443,7 @@ def _outcome(tail) -> list[tuple[str, bool]]:
                 pysrc.add(j)
                 j += 1
     orphan = chained = False
+    conseq = set()          # classes of the chained consequences: pytest re-reports them (footer, FAILED summary)
     for i, ln in enumerate(rows):
         if i in pysrc:
             prev = ln
@@ -453,6 +468,11 @@ def _outcome(tail) -> list[tuple[str, bool]]:
         if chained and ln.strip() and not ln[:1].isspace() \
                 and not re.match(r"(?:E\s+)?Traceback \(most recent call last\)", ln):
             consequence, chained = bool(_EXC_LEAD.match(ln)), False
+            if consequence:
+                conseq.add(_EXC_LEAD.match(ln).group("cls").split(".")[-1])
+        if not consequence and conseq:
+            m = _PYTEST_REREPORT.match(ln)
+            consequence = bool(m and m.group("cls").split(".")[-1] in conseq)
         out.append((_NEUTRAL.sub(" ", ln), consequence))
     return out
 
@@ -465,6 +485,8 @@ def outcome_lines(tail) -> list[str]:
 def _is_behaviour(ln) -> bool:
     if not _BEHAVIOUR.search(ln) or _SUMMARY.match(ln):
         return False
+    if _PYTEST_ASSERT.match(ln):    # v5 review: pytest's evaluated assertion, whatever string it quotes
+        return True
     m = _FAIL_LABEL.match(ln)       # v5 rule 4: `FAIL import: No module named 'm'` is the missing name again
     if m and (not m.group("label").strip() or re.search(r"(?i)\bimport", m.group("label"))) \
             and _MISSING_LEAD.match(ln, m.end()):
@@ -506,10 +528,10 @@ def file_lookup(repo, base_sha, fix_sha, paths, task_text) -> dict:
     output the defect fails to write) is in none of the lists."""
     trees = {}
     for sha in (base_sha, fix_sha):
-        rc, out = _git_out(repo, "ls-tree", "-r", "--name-only", sha) if sha else (1, "")
+        rc, out = _git_out(repo, "ls-tree", "-r", "-z", "--name-only", sha) if sha else (1, "")   # -z: unquoted
         if sha and rc != 0:
             raise ReaderError("git ls-tree %s failed (exit %d)" % (sha[:10], rc))
-        trees[sha] = set(out.splitlines()) if sha else set()
+        trees[sha] = set(x for x in out.split("\0") if x) if sha else set()
     v = {"at_base": [], "fix_only": [], "fix_only_unnamed": []}
     for p in sorted(set(paths)):
         hit = _tree_match(p, trees[fix_sha])        # the longest fix-tree match decides (v5 review)
@@ -518,7 +540,7 @@ def file_lookup(repo, base_sha, fix_sha, paths, task_text) -> dict:
                 v["at_base"].append(p)
             continue
         v["fix_only"].append(p)
-        if Path(hit).name not in (task_text or ""):      # naming the repo path names the file too
+        if not _file_named_rx(Path(hit).name).search(task_text or ""):   # naming the repo path names the file too
             v["fix_only_unnamed"].append(p)
     return v
 

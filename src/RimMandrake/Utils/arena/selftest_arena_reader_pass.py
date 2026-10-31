@@ -555,6 +555,38 @@ def rules_v5():
                   "    FileNotFoundError: " + fmsg):
             check(R.base_failure(t + "\n", {}, None, uf)["veto"] == "missing_name_only",
                   "v5 review (5): %r reports the missing file (not behaviour)" % t)
+        # v5 review 2: whole-name file naming; a non-ASCII path git would quote
+        base = git(repo, "rev-list", "--max-parents=0", "HEAD")
+        fix = git(repo, "rev-parse", "HEAD")
+        lk = R.file_lookup(repo, base, fix, ["src/newmod.py"], "fix prod_newmod.py parsing")
+        check(lk["fix_only_unnamed"] == ["src/newmod.py"], "v5 review 2: `prod_newmod.py` does not name newmod.py (%s)" % lk)
+        check(R.file_lookup(repo, base, fix, ["src/newmod.py"], "drop the stale newmod.pyc")["fix_only_unnamed"]
+              == ["src/newmod.py"], "v5 review 2: `newmod.pyc` does not name newmod.py")
+        for txt in ("add newmod.py.", "add src/newmod.py", "(newmod.py)"):
+            check(R.file_lookup(repo, base, fix, ["src/newmod.py"], txt)["fix_only_unnamed"] == [],
+                  "v5 review 2: %r names newmod.py" % txt)
+        (repo / "src/café.json").write_text("{}\n")
+        git(repo, "add", "-A")
+        git(repo, "commit", "-q", "-m", "unicode")
+        lk = R.file_lookup(repo, base, git(repo, "rev-parse", "HEAD"), ["/checkout/src/café.json"], "make f return 2")
+        check(lk["fix_only_unnamed"] == ["/checkout/src/café.json"], "v5 review 2: a path git quotes is found (%s)" % lk)
+    # v5 review 2: pytest's evaluated assertion quoting a missing-name message is behaviour
+    check(veto("E   assert result == \"No module named 'newmod'\"\n") is None,
+          "v5 review 2: `E   assert` quoting a missing-name message is behaviour")
+    check(veto(gap + "    assert result == \"No module named 'newmod'\"\n" + attr) == "missing_name_only",
+          "v5 review 2: an orphan source `assert` after a gap is still not an outcome line")
+    # v5 review 2: pytest's footer and FAILED summary re-report the chained consequence
+    ch = ("E   ModuleNotFoundError: No module named 'newmod'\n"
+          "During handling of the above exception, another exception occurred:\nE   RuntimeError: import failed\n")
+    for t in ("src/selftest_n.py:12: RuntimeError", "FAILED src/selftest_n.py::t - RuntimeError: import failed",
+              "ERROR src/selftest_n.py::t - builtins.RuntimeError"):
+        check(veto(ch + t + "\n") == "missing_name_only", "v5 review 2: %r re-reports the consequence" % t)
+    check(veto(ch.replace("E   RuntimeError", "E   builtins.RuntimeError") + "src/selftest_n.py:12: RuntimeError\n")
+          == "missing_name_only", "v5 review 2: a dotted consequence class matches its bare re-report")
+    for t in ("src/selftest_n.py:30: KeyError","FAILED src/selftest_n.py::u - KeyError: 'x'"):
+        check(veto(ch + t + "\n") is None, "v5 review 2: %r is another failure (behaviour)" % t)
+    check(veto(MISS + "src/selftest_n.py:12: RuntimeError\n") is None,
+          "v5 review 2: without a chain a footer error class is behaviour")
     # v5 review (3): pytest's `E   ` prefix on the chained lines
     for sep in ("E   During handling of the above exception, another exception occurred:",
                 "During handling of the above exception, another exception occurred:"):
