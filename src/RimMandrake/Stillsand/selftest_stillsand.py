@@ -744,6 +744,52 @@ BREAKS = {
 }
 
 
+SWIM_CS = os.path.join(ROOT, "src", "RimMandrake", "CreatureBehaviors", "Source", "RM_CompSandSwim.cs")
+VEKKA_XML = os.path.join(HERE, "Defs", "ThingDefs_Races", "RM_Vekka.xml")
+ROCK = ("Gravel",)
+
+
+def vekka_swim_terrains(cs_text, xml_text):
+    """The terrain names RM_Vekka submerges in, read from the mod (not from the fake): its RM_SandSwimExtension
+    swimTerrains when it lists any, else RM_SandSwimUtility.EnsureDefaults' name array. None = unreadable."""
+    ext = re.search(r'RM_SandSwimExtension">(.*?)</li>\s*</modExtensions>', xml_text, re.S)
+    if ext is None:
+        return None
+    st = re.search(r"<swimTerrains>(.*?)</swimTerrains>", ext.group(1), re.S)
+    own = re.findall(r"<li>\s*(\w+)\s*</li>", st.group(1)) if st else []
+    if own:
+        return own
+    m = re.search(r"void EnsureDefaults\(\).*?new\[\]\s*\{([^}]*)\}", cs_text, re.S)
+    return re.findall(r'"(\w+)"', m.group(1)) if m else None
+
+
+def vekka_rock_rows(cs_text, xml_text):
+    """STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1: the live FAIL on acc_biomes (2026-10-08) was the harness (the gravel vekka
+    walked onto sand; fixed in 749d6a0d30). This pins the mod half offline: the vekka's swim set holds sand, never rock."""
+    got = vekka_swim_terrains(cs_text, xml_text)
+    if not got:
+        return ["vekka swim terrains unreadable from %s / %s" % (os.path.basename(SWIM_CS), os.path.basename(VEKKA_XML))]
+    out = []
+    if "Sand" not in got:
+        out.append("vekka swim set %s lacks Sand" % got)
+    if set(got) & set(ROCK):
+        out.append("vekka swim set %s includes rock %s: it would submerge on Gravel" % (got, sorted(set(got) & set(ROCK))))
+    return out
+
+
+def vekka_rock_check(bad):
+    cs, xml = open(SWIM_CS, encoding="utf-8").read(), open(VEKKA_XML, encoding="utf-8").read()
+    bad.extend(vekka_rock_rows(cs, xml))
+    # instrument probes: the reader must see the real set, and Gravel planted in either source must redden
+    if vekka_swim_terrains(cs, xml) != ["Sand", "SoftSand", "RM_DeepSand"]:
+        bad.append("probe: expected the default set Sand/SoftSand/RM_DeepSand, read %s" % vekka_swim_terrains(cs, xml))
+    if not vekka_rock_rows(cs.replace('"RM_DeepSand"', '"RM_DeepSand", "Gravel"'), xml):
+        bad.append("probe: Gravel planted in EnsureDefaults did not redden")
+    planted = xml.replace("<submergedHediff>", "<swimTerrains><li>Sand</li><li>Gravel</li></swimTerrains><submergedHediff>", 1)
+    if not vekka_rock_rows(cs, planted):
+        bad.append("probe: Gravel planted in RM_Vekka swimTerrains did not redden")
+
+
 def main():
     bad = []
     real_err = sys.stderr
@@ -755,6 +801,7 @@ def main():
 
 
 def _main(bad):
+    vekka_rock_check(bad)
     healthy = run()
     # gale_dims_sun_exposure is UNMEASURED by design: no tool reads pawn exposure (see validation.py)
     # glass.* below: STILLSAND_GLASS_CHAIN_REMAINDER_1 live-proof arms, UNMEASURED until a driven session
