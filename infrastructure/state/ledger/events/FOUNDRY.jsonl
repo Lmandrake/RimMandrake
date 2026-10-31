@@ -9552,3 +9552,6 @@
 {"seat":"FOUNDRY","event":"lease","id":"CATHEDRAL_FORCEDOFF_FIX_SAVED_AS_CHOICE","action":"renew","token":"FOUNDRY.pid97751.9093f2ae","ts":"2026-10-31T23:12:32Z","expires":"2026-10-31T23:57:32Z","tsn":1793488353203505758}
 {"seat":"FOUNDRY","event":"lease","id":"COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES","action":"renew","token":"FOUNDRY.pid95166.80354759","ts":"2026-10-31T23:13:12Z","expires":"2026-10-31T23:58:12Z","tsn":1793488392846914095}
 {"seat":"FOUNDRY","event":"lease","id":"CATHEDRAL_FORCEDOFF_FIX_SAVED_AS_CHOICE","action":"renew","token":"FOUNDRY.pid97751.9093f2ae","ts":"2026-10-31T23:13:49Z","expires":"2026-10-31T23:58:49Z","tsn":1793488430546117754}
+{"seat":"FOUNDRY","event":"lease","id":"SITE_SPEC_WIRE_TOWER_COST_KEY","action":"renew","token":"FOUNDRY.pid98208.b77f3eb8","expires":"2026-11-01T00:01:01Z","ts":"2026-10-31T23:16:01Z","tsn":1793488561709774301}
+{"seat":"FOUNDRY","event":"lease","id":"SITE_SPEC_WIRE_TOWER_COST_KEY","action":"renew","token":"FOUNDRY.pid98208.b77f3eb8","ts":"2026-10-31T23:16:08Z","expires":"2026-11-01T00:01:08Z","tsn":1793488569337305775}
+{"seat":"FOUNDRY","event":"lease","id":"COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES","action":"renew","token":"FOUNDRY.pid95166.80354759","ts":"2026-10-31T23:16:24Z","expires":"2026-11-01T00:01:24Z","tsn":1793488584941574107}
