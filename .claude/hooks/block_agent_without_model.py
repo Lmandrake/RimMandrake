@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""PreToolUse/Agent hook — refuse a subagent spawned with no `model`.
+"""PreToolUse/Agent hook — refuse a subagent with no `model`, or on Haiku.
+
+Haiku is banned everywhere (owner, 2026-10-31). `banned` refuses the name in any
+spelling and any agent definition here that pins it, even with `fork`-style types.
 
 Omitting `model` inherits the parent's tier. Measured 2026-08-24: that is how
 EVERY grep, census and existence check in this project's history came to run on
@@ -13,6 +16,7 @@ those would be a false block, which is the only way a guard like this does harm.
     python3 .claude/hooks/selftest_block_agent_without_model.py
 """
 import json
+import os
 import sys
 
 # Generic built-ins: no definition file, so nothing else supplies a model.
@@ -36,6 +40,39 @@ REASON = (
 )
 
 
+BAN_REASON = (
+    "Blocked: Haiku is banned on every machine and in every project (owner, 2026-10-31: "
+    "\"Ban it everywhere\"; \"Sonnet 5.5 is the lowest model to consider, due to Haiku's "
+    "error rate.\"). Re-issue the spawn with model: sonnet or opus."
+)
+
+
+def definition_model(subagent):
+    """The `model:` a project agent definition pins, or ''."""
+    root = os.environ.get("CLAUDE_PROJECT_DIR") or "."
+    try:
+        with open(os.path.join(root, ".claude", "agents", subagent + ".md"),
+                  encoding="utf-8") as handle:
+            lines = handle.read().splitlines()
+    except (OSError, ValueError):
+        return ""
+    for line in lines[1:]:
+        if line.strip() == "---":
+            break
+        if line.startswith("model:"):
+            return line.split(":", 1)[1].strip()
+    return ""
+
+
+def banned(tool_input):
+    """True when this spawn would run on Haiku."""
+    model = str(tool_input.get("model") or "").strip().lower()
+    if model:
+        return "haiku" in model
+    subagent = str(tool_input.get("subagent_type") or "").strip()
+    return bool(subagent) and "haiku" in definition_model(subagent).lower()
+
+
 def needs_model(tool_input):
     """True when this spawn must carry an explicit model."""
     if str(tool_input.get("model") or "").strip():
@@ -49,13 +86,19 @@ def main():
         tool_input = json.load(sys.stdin).get("tool_input", {}) or {}
     except Exception:
         return 0  # fail open: a guard that breaks spawning is worse than the habit
-    if not isinstance(tool_input, dict) or not needs_model(tool_input):
+    if not isinstance(tool_input, dict):
+        return 0
+    if banned(tool_input):
+        reason = BAN_REASON
+    elif needs_model(tool_input):
+        reason = REASON
+    else:
         return 0
     print(json.dumps({
         "hookSpecificOutput": {
             "hookEventName": "PreToolUse",
             "permissionDecision": "deny",
-            "permissionDecisionReason": REASON,
+            "permissionDecisionReason": reason,
         }
     }))
     return 0
