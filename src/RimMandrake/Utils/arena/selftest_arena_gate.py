@@ -28,6 +28,7 @@ FAILURE against a throwaway git repo whose gate instruments (run_selftests/valid
   Each round-3 fix is shown RED first: the same scenario with the fix disabled (monkeypatched) reads PASS / leaks.
 Writes only under a temp dir.
 """
+import hashlib
 import json
 import os
 import re
@@ -131,6 +132,33 @@ class Ctx:
         self.task = {"id": "T1", "area": AREA, "proof": proof, "live": live}
         self.dump = self.root / "dump"
         self.dump.mkdir()
+        self.pin_reds({})
+
+    @property
+    def base(self):
+        return self._base
+
+    @base.setter
+    def base(self, sha):          # a row that moves base gets an empty (no-excuse) list pinned for the new base
+        self._base = sha
+        if hasattr(self, "p"):
+            self.pin_reds({})
+
+    def pin_reds(self, reds, base=None, task_id="T1", body=None):
+        """Store a reference-red list for `task_id` judge-only and pin it in this context's own lock (G.REDS_LOCK
+        is pointed at it, so no row reads the committed pins). `body` overrides the stored bytes after pinning."""
+        f = G.reds_dir(self.p) / (task_id + ".json")
+        f.parent.mkdir(parents=True, exist_ok=True)
+        data = json.dumps({"task": task_id, "base_sha": base or self.base, "fix_sha": "0" * 40, "reds": reds}).encode()
+        f.write_bytes(data)
+        lock = self.root / "reds.lock.json"
+        pins = json.loads(lock.read_text()) if lock.is_file() else {"lists": {}}
+        pins["lists"][task_id] = hashlib.sha256(data).hexdigest()
+        lock.write_text(json.dumps(pins))
+        if body is not None:
+            f.write_bytes(body)
+        G.REDS_LOCK = lock
+        return f
 
     def commit(self, changes, msg="c"):
         for path, content in changes.items():
@@ -1213,6 +1241,68 @@ def t_held_back(tmp):
           "a proof with a runnable segment is unchanged (the held-back note stays the judge's business)")
 
 
+def t_reference_reds(tmp):
+    """ARENA_GATE_FIX_REAL_FIXES_FAIL_TESTS (option a, second form): only a selftest red for the REFERENCE fix in the
+    same sandbox, MEASURED and STORED before the arms (pinned list), is excused; nothing is decided live."""
+    red = UT + "selftest_foor.py"
+    RED = "import foo\n\ndef t_r():\n    assert foo.foo() == 3\n\nt_r()\n"           # red at the reference fix too
+    WRONG = {UT + "foo.py": "def foo():\n    return 5\n"}                            # breaks the reference-green test
+
+    def run(tag, reds=None, extra=None, pin=True, body=None, base=None, unpin=False):
+        c = Ctx(tmp, "rr_" + tag)
+        if pin and reds is not None:
+            c.pin_reds(reds, base=base, body=body)
+        if unpin:
+            (c.root / "reds.lock.json").write_text(json.dumps({"lists": {}}))
+        h = c.commit({**GOOD, red: RED, **(extra or {})}); c.records(h)
+        return c, h, c.gate(h)
+
+    c, h, r = run("absent", reds={})
+    check(st(r, "tests") == "FAIL" and r["verdict"] == "fail",
+          "MUTANT a red ABSENT from the stored list still FAILS the arm (%s)" % r["steps"]["tests"]["why"])
+    c, h, r = run("listed", reds={red: "FAIL: the test failed (rc=1)"})
+    tw = r["steps"]["tests"]
+    check(st(r, "tests") == "PASS" and tw.get("excused") == [red] and "1/2" in tw["why"],
+          "a red the stored list holds (red at reference) is excused; the other test still counts (%s)" % tw["why"])
+    c, h, r = run("refgreen", reds={red: "FAIL: x"}, extra=WRONG)
+    check(st(r, "tests") == "FAIL" and r["verdict"] == "fail",
+          "MUTANT a test GREEN at reference that is red for the arm FAILS the arm despite a list (%s)"
+          % r["steps"]["tests"]["why"])
+    c, h, r = run("allred", reds={red: "FAIL: x", UT + "selftest_foo.py": "FAIL: x"}, extra=WRONG)
+    check(st(r, "tests") == "UNMEASURED" and r["verdict"] != "pass",
+          "every selftest excused -> nothing counted -> UNMEASURED (%s)" % r["steps"]["tests"]["why"])
+    c, h, r = run("greenlisted", reds={UT + "selftest_foo.py": "FAIL: x", red: "FAIL: x"},
+                  extra={red: "import foo\n\ndef t_r():\n    assert foo.foo() == 2\n\nt_r()\n"})
+    tw = r["steps"]["tests"]
+    check(st(r, "tests") == "PASS" and tw.get("excused") == [] and "2/2" in tw["why"],
+          "a listed test that is GREEN for the arm counts normally, it is not excused (%s)" % tw["why"])
+    for tag, kw in (("missing", dict(pin=False)), ("unpinned", dict(reds={red: "x"}, unpin=True)),
+                    ("edited", dict(reds={}, body=json.dumps({"task": "T1", "base_sha": "0" * 40,
+                                                             "reds": {red: "x"}}).encode())),
+                    ("unreadable", dict(reds={}, body=b"\xff not json")),
+                    ("malformed", dict(reds="not a mapping")),
+                    ("otherbase", dict(reds={red: "x"}, base="1234567" * 5 + "12345"))):
+        c = Ctx(tmp, "rr_" + tag)
+        if tag == "missing":
+            (G.reds_dir(c.p) / "T1.json").unlink()
+        if kw.get("pin", True):
+            c.pin_reds(kw["reds"], base=kw.get("base"), body=kw.get("body"))
+        if kw.get("unpin"):
+            (c.root / "reds.lock.json").write_text(json.dumps({"lists": {}}))
+        h = c.commit(dict(GOOD, **{red: RED})); c.records(h); r = c.gate(h)
+        check(st(r, "tests") == "UNMEASURED" and r["verdict"] != "pass",
+              "MUTANT stored list %s -> tests UNMEASURED, never a pass (%s)" % (tag, r["steps"]["tests"]["why"]))
+    c = Ctx(tmp, "rr_measure")
+    h = c.commit(dict(GOOD, **{red: RED}))
+    g = G.Gate(c.task, c.base, h, "reference", c.repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+    try:
+        g.logdir.mkdir(parents=True, exist_ok=True); g.checkout(); g.sandbox_probe()
+        got = g.measure_reference_reds()
+    finally:
+        shutil.rmtree(g.work, ignore_errors=True)
+    check(sorted(got) == [red], "measure_reference_reds lists exactly the red selftest at the reference (%s)" % got)
+
+
 def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}
     os.environ["ARENA_GATE_TEST"] = "1"
@@ -1221,7 +1311,8 @@ def main():
         for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
                   t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
                   t_signfail, t_records, t_phrase_deletes, t_static, t_real, t_round3_exit, t_round3_cover,
-                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root, t_held_back, t_plain):
+                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root, t_held_back, t_plain,
+                  t_reference_reds):
             t(tmp)
     finally:
         for k, v in saved.items():

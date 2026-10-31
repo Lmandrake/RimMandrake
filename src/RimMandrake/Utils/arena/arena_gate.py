@@ -26,6 +26,12 @@ out `head` (and `base`) into fresh clones under `<arena>/judge/gate_work/` and r
                  by the runner -> FAIL. A selftest the diff changed is run at base too: its check count may not drop
                  and its executed lines may not fall below 80% of base (FAIL). A new selftest executing no
                  recognisable check is UNMEASURED. Printed text can only downgrade (the UNMEASURED phrase).
+                 REFERENCE REDS: a selftest that is red (FAIL / no positive result) for the task's REFERENCE fix in
+                 this same sandbox is excused for an arm too, and only those: the list is MEASURED per task before
+                 the arms run (--measure-reference-reds), stored judge-only under <arena>/judge/gate_reference_reds/
+                 and pinned by sha256 in the committed gate_reference_reds.lock.json; the gate reads it, never
+                 decides it live. A test green at reference that is red for the arm still FAILS the arm; a missing,
+                 unpinned or unreadable list makes the step UNMEASURED; nothing counted but excused -> UNMEASURED.
   4 xml          validate_patch.py --live <dump> --defs <Data, workshop, Mods> on changed Defs/Patches; PASS needs the
                  positive `OK - 0 errors` marker (exit 0 with no marker is UNMEASURED)
   5 csharp       winbuild.py <mod> for each mod with a changed .cs
@@ -216,6 +222,48 @@ def run(argv, cwd, log: Path, timeout=STEP_TIMEOUT, env=None, stdin=None, pass_f
 
 
 HELD_BACK_RE = re.compile(r"^the judge runs \d+ held-back (selftest|check)\(s\)", re.I)
+# ARENA_GATE_FIX_REAL_FIXES_FAIL_TESTS (option a, second form): the per-task reference-red lists. The data lives
+# judge-only (<arena>/judge is hidden from every sandboxed step and masked for arms); the committed lock pins each
+# list's sha256, so a list nobody re-measured and re-pinned is refused, never read.
+REDS_DIRNAME = "gate_reference_reds"
+REDS_LOCK = HERE / "gate_reference_reds.lock.json"
+
+
+def reds_dir(p: dict) -> Path:
+    return Path(p["root"]) / "judge" / REDS_DIRNAME
+
+
+def load_reference_reds(p: dict, task_id: str, base: str, lock: Path | None = None):
+    """-> ({selftest rel: reason red at reference}, '') or (None, why UNMEASURED). The file must exist, hash to the
+    sha256 the lock pins for this task, parse, name this task and have been measured against this base."""
+    lock = Path(lock) if lock is not None else REDS_LOCK
+    try:
+        pins = json.loads(lock.read_text(encoding="utf-8")).get("lists") or {}
+    except (OSError, ValueError, AttributeError) as e:
+        return None, "reference-red lock %s unreadable: %s" % (lock.name, type(e).__name__)
+    want = pins.get(task_id)
+    if not want:
+        return None, "no reference-red list is pinned for %s (measure it: --measure-reference-reds)" % task_id
+    f = reds_dir(p) / (task_id + ".json")
+    try:
+        body = f.read_bytes()
+    except OSError as e:
+        return None, "reference-red list %s unreadable: %s" % (f.name, type(e).__name__)
+    if hashlib.sha256(body).hexdigest() != want:
+        return None, "reference-red list %s does not match the sha256 its lock pins: edited after measuring" % f.name
+    try:
+        d = json.loads(body)
+        reds = d["reds"]
+        ok = isinstance(reds, dict) and all(isinstance(k, str) and isinstance(v, str) for k, v in reds.items())
+    except (ValueError, KeyError, TypeError):
+        ok = False
+    if not ok:
+        return None, "reference-red list %s is malformed" % f.name
+    mb = str(d.get("base_sha") or "").lower()
+    gb = str(base or "").lower()
+    if d.get("task") != task_id or min(len(mb), len(gb)) < 7 or not (mb.startswith(gb) or gb.startswith(mb)):
+        return None, "reference-red list %s was measured for another task/base" % f.name
+    return dict(reds), ""
 GIT_TIMEOUT = 120
 # ARENA_GATE_WORK_REWIRE_OFF_DRVFS: a full checkout of the 7.7 GB tree is ~11 s on ext4 (measured 2026-10-31, idle)
 # and 379 s on drvfs; the checkout gets its own budget so three arms gating at once do not time out on ext4
@@ -556,6 +604,17 @@ def verdict_from(rc, rec, expected=None) -> tuple[str, str]:
     return "PASS", ""
 
 
+def red_reason(rec, text) -> str:
+    """'' when a test run is a positive result (runner record, verdict PASS, no UNMEASURED phrase), else why not."""
+    if rec is None:
+        return "no runner record: " + (text or "")[-100:].strip()
+    if rec.get("verdict") != PASS:
+        return "%s: %s" % (rec.get("verdict"), rec.get("why") or "")
+    if UNMEASURED_PHRASE in (text or ""):
+        return "printed the unmeasured phrase"
+    return ""
+
+
 # ---------------------------------------------------------------- the gate
 
 class Gate:
@@ -581,6 +640,7 @@ class Gate:
         self.results: dict = {}
         self.sandbox_why = ""                # non-empty: no sandboxed step may run
         self.data_root = _data_root()
+        self.reds_lock = REDS_LOCK           # the committed pin file of the reference-red lists (selftests swap it)
 
     # ------------------------------------------------------------ checkout and diff
     def checkout(self):
@@ -1115,10 +1175,18 @@ class Gate:
         special = [t for t in tests if t in SPECIAL_TESTS]
         if special:
             return unmeasured("selftest(s) %s need run_selftests' special invocation" % special)
+        reds, rwhy = load_reference_reds(self.p, self.task.get("id"), self.base, self.reds_lock)
+        if reds is None:
+            return unmeasured(rwhy)
         changed_set = set(self.paths("M"))
-        fails, unm, rows, uncounted = [], [], {}, []
+        fails, unm, rows, uncounted, excused = [], [], {}, [], []
         for t in tests:
             rec, text = self.run_test(self.clone, t, "head")
+            if red_reason(rec, text) and t in reds:     # red for the REFERENCE fix in this sandbox too: no evidence
+                excused.append(t)
+                rows[t] = {"verdict": (rec or {}).get("verdict"), "rc": (rec or {}).get("rc"),
+                           "excused": reds[t][:160]}
+                continue
             if rec is None:
                 unm.append("%s: no positive record from the harness runner (%s)" % (t, (text or "")[-120:].strip()))
                 continue
@@ -1167,19 +1235,36 @@ class Gate:
                 if rec["lines"] < LINES_FLOOR * brec["lines"]:
                     fails.append("%s: executed lines dropped %d -> %d vs base" % (t, brec["lines"], rec["lines"]))
                     continue
+        ex = "; %d red at the reference fix too, excused: %s" % (len(excused), ", ".join(excused[:6])) \
+            if excused else ""
         if fails:
-            return step(FAIL, "%d of %d selftest(s) fail or were weakened" % (len(fails), len(tests)),
-                        findings=fails[:20], tests=tests, counts=rows)
+            return step(FAIL, "%d of %d selftest(s) fail or were weakened%s" % (len(fails), len(tests), ex),
+                        findings=fails[:20], tests=tests, counts=rows, excused=excused)
         if unm:
-            return unmeasured("%d of %d selftest(s) gave no positive result" % (len(unm), len(tests)),
-                              findings=unm[:20], tests=tests, counts=rows)
-        if len(uncounted) == len(tests):
-            return unmeasured("every selftest is plain and passes at base too: nothing tells the fix from the base",
-                              findings=uncounted[:20], tests=tests, counts=rows, uncounted=uncounted)
-        return step(PASS, "%d/%d selftests pass (harness runner, counted)%s"
-                    % (len(tests) - len(uncounted), len(tests), "; %d plain one(s) pass at base too, not counted: %s"
-                       % (len(uncounted), ", ".join(uncounted[:8])) if uncounted else ""),
-                    tests=tests, counts=rows, uncounted=uncounted)
+            return unmeasured("%d of %d selftest(s) gave no positive result%s" % (len(unm), len(tests), ex),
+                              findings=unm[:20], tests=tests, counts=rows, excused=excused)
+        if len(uncounted) + len(excused) == len(tests):
+            return unmeasured("no selftest counts: every one is plain and green at base too, or red at the "
+                              "reference fix too%s" % ex, findings=(uncounted + excused)[:20], tests=tests,
+                              counts=rows, uncounted=uncounted, excused=excused)
+        return step(PASS, "%d/%d selftests pass (harness runner, counted)%s%s"
+                    % (len(tests) - len(uncounted) - len(excused), len(tests),
+                       "; %d plain one(s) pass at base too, not counted: %s"
+                       % (len(uncounted), ", ".join(uncounted[:8])) if uncounted else "", ex),
+                    tests=tests, counts=rows, uncounted=uncounted, excused=excused)
+
+    def measure_reference_reds(self) -> dict:
+        """Run on the REFERENCE fix (head = the task's fix_sha), in this same sandbox: every selftest the tests step
+        would run, through the same runner; -> {rel: reason} for each one that is red (red_reason). Measurement
+        only: the gate never calls this while judging an arm."""
+        tests, _ = self.selftests_for()
+        out = {}
+        for t in tests:
+            rec, text = self.run_test(self.clone, t, "reference")
+            why = red_reason(rec, text)
+            if why:
+                out[t] = why
+        return out
 
     def s_xml(self):
         xml = [f for f in self.alive() if A.is_defxml(f)]
@@ -1742,6 +1827,48 @@ def refuse_arm_location(file=__file__, env=None):
                             "checkout" % clones)
 
 
+def measure_reference_reds(p: dict, task_ids, repo: Path | None = None, lock: Path | None = None, out=print) -> int:
+    """--measure-reference-reds: for each task, check out base..fix_sha (the reference fix, from the judge file) like
+    the gate, run the tests step's selftests in the same sandbox, store the red ones judge-only and pin the file's
+    sha256 in the lock. Run BEFORE the arms; the stored list is what the gate reads. Empty list = no excuse."""
+    lock = Path(lock) if lock is not None else REDS_LOCK
+    try:
+        pins = json.loads(lock.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        pins = {}
+    pins.setdefault("lists", {})
+    pins["about"] = ("sha256 of each <arena>/judge/%s/<task>.json (arena_gate.py --measure-reference-reds); the gate "
+                     "refuses a list this file does not pin" % REDS_DIRNAME)
+    reds_dir(p).mkdir(parents=True, exist_ok=True)
+    rc = 0
+    for tid in task_ids:
+        task = A.load_frozen(tid, p)
+        fix = json.loads((Path(p["judge"]) / (tid + ".json")).read_text(encoding="utf-8"))["fix_sha"]
+        g = Gate(task, task["base_sha"], fix, "reference", Path(repo) if repo else A.REPO, p, lane="reference")
+        try:
+            g.logdir.mkdir(parents=True, exist_ok=True)
+            g.checkout()
+            g.sandbox_probe()
+            if g.sandbox_why:
+                out(json.dumps({"task": tid, "error": "no sandbox: " + g.sandbox_why[:160]})); rc = 2
+                continue
+            reds = g.measure_reference_reds()
+        finally:
+            shutil.rmtree(g.work, ignore_errors=True)
+        body = json.dumps({"task": tid, "base_sha": task["base_sha"], "fix_sha": fix, "measured": g.stamp,
+                           "runner_sha256": runner_sha256(), "reds": reds}, indent=1, sort_keys=True).encode() + b"\n"
+        dst = reds_dir(p) / (tid + ".json")
+        tmp = dst.with_suffix(".tmp")
+        tmp.write_bytes(body)
+        os.replace(tmp, dst)
+        pins["lists"][tid] = hashlib.sha256(body).hexdigest()
+        ltmp = lock.with_suffix(".tmp")
+        ltmp.write_text(json.dumps(pins, indent=1, sort_keys=True) + "\n", encoding="utf-8")
+        os.replace(ltmp, lock)
+        out(json.dumps({"task": tid, "reds": len(reds), "sha256": pins["lists"][tid][:16]}))
+    return rc
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--task")
@@ -1752,6 +1879,8 @@ def main(argv=None):
                                                  "else this checkout)")
     ap.add_argument("--lane", default="gate")
     ap.add_argument("--verify-record", default=None, help="check a gate.json against its signed gate event")
+    ap.add_argument("--measure-reference-reds", nargs="+", metavar="TASK", default=None,
+                    help="measure and store the reference-red list of each task (run before the arms)")
     a = ap.parse_args(argv)
     try:
         refuse_arm_location()
@@ -1767,6 +1896,8 @@ def main(argv=None):
             return 2
         print(json.dumps({"verified": True, "verdict": rec.get("verdict")}))
         return 0
+    if a.measure_reference_reds:
+        return measure_reference_reds(p, a.measure_reference_reds)
     if not (a.task and a.base and a.head):
         ap.error("--task, --base and --head are required")
     clones = Path(os.environ.get("ARENA_CLONES", DEFAULT_CLONES))
