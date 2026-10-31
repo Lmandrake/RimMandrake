@@ -852,5 +852,86 @@ with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ops_watch_ru
     _real = json.load(_f)
 _bad = [t["name"] for t in _real["targets"] if t.get("name") and _pc._model().mint_problems(t["name"] + "_A1B2", set())]
 check("every shipped rule's name mints: a refused prefix kills the whole pass", not _bad, _bad)
+# ---- one bad rule, row, entry or write costs only itself and is said aloud (Codex review 2026-10-31)
+_bad_rules = dict(RULES)
+_bad_rules["targets"] = [{"key": "x.*", "op": "~", "value": 1, "tag": "BADOP", "alarm": True},
+                         {"key": "x.*", "op": ">", "value": 1, "tag": "A:B", "alarm": True}, "junk",
+                         {"key": "x.k", "op": ">", "value": 1, "tag": "GOOD", "alarm": True, "name": "OPS_DISK_FULL_DIAGNOSE"}]
+_pts = {"x.k": OW.M(5.0, "n")}
+_fl = OW.andon(_pts, {}, {}, _bad_rules, NOW)
+check("rules: three bad targets each raise a bad_target flag", sum(f["rule"] == "bad_target" for f in _fl) == 3, _fl)
+check("rules: the good target still fires beside the bad ones", any(f.get("tag") == "GOOD" for f in _fl), _fl)
+check("rules: only the good target reaches the alarm state", OW.target_state(_pts, _bad_rules) == {"GOOD:x.k": True},
+      OW.target_state(_pts, _bad_rules))
+_ap = OW.ops_dir() / "alarms.json"
+_ap.write_text(json.dumps({"GOOD:x.k": "junk", "OLD:y.z": 5}), encoding="utf-8")
+_filed = []
+_st = OW.run_alarms(_pts, _bad_rules, NOW, set(), lambda todo, conf: _filed.extend(todo) or {a["name"]: None for a in todo})
+check("alarms: a non-object state entry holds that alarm and files nothing",
+      _st["GOOD:x.k"]["state"] == "UNREADABLE" and _st["OLD:y.z"]["state"] == "UNREADABLE" and not _filed, (_st, _filed))
+_ap.write_text(json.dumps({"GOOD:x.k": {"state": "OPEN", "clear_seen": "not a number"}}), encoding="utf-8")
+_st = OW.run_alarms({"x.k": OW.M(0.0, "n")}, _bad_rules, NOW, set(), None)
+check("alarms: a step that raises costs its alarm only and records why", "alarm step raised" in str(_st["GOOD:x.k"].get("error")), _st)
+_ap.unlink()
+
+import account_usage as _AU
+_rn = _AU.read_now
+_AU.read_now = lambda now: {"accounts": {"nullrow": None}}
+try:
+    _a = OW.c_accounts(NOW, RULES, {})
+finally:
+    _AU.read_now = _rn
+check("accounts: a malformed account is UNMEASURED, not a lost family", _a["accounts.nullrow.runway"]["m"] == "UNMEASURED", _a)
+
+_ss = OW.streams_series
+_sf = TMP / "streams_null.jsonl"
+_sf.write_text(json.dumps({"t": NOW - 60, "measures": {"nullm": None}}) + "\n", encoding="utf-8")
+OW.streams_series = lambda: _sf
+try:
+    _p = OW.c_production(NOW, RULES, {})
+finally:
+    OW.streams_series = _ss
+check("production: a null measure says so instead of vanishing", _p["production.nullm"]["m"] == "UNMEASURED", _p)
+
+_qh = OW.qhome
+_q2 = TMP / "q_streak"
+(_q2 / "done").mkdir(parents=True)
+OW.qhome = lambda: _q2
+try:
+    for i in range(3):
+        wj(_q2 / "done" / ("inv%d.json" % i), {"finished": OW.iso(NOW - (10 - i) * 60), "job": {"id": "j%d" % i},
+                                               "result": {"outcome": "INVALID", "started": OW.iso(NOW - 20 * 60)}})
+    wj(_q2 / "done" / "pass.json", {"finished": OW.iso(NOW - 3600), "job": {"id": "p"}, "result": {"outcome": "PASS"}})
+    wj(_q2 / "done" / "noout.json", {"finished": OW.iso(NOW - 2 * 3600), "job": {"id": "n"}, "result": {}})
+    (_q2 / "done" / "old_torn.json").write_text('{"finished": "2026-')
+    os.utime(_q2 / "done" / "old_torn.json", (NOW - 3 * 3600, NOW - 3 * 3600))
+    wj(_q2 / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": False, "incident": None, "since": None})
+    _s = OW.c_steve(NOW, RULES, {})
+    check("steve: bad records older than the run leave the streak MEASURED, so its alarm can fire",
+          _s["steve.invalid_streak"]["m"] == "MEASURED" and _s["steve.invalid_streak"]["v"] == 3, _s["steve.invalid_streak"])
+    check("steve: those bad records still mark the window counts", _s["steve.jobs_24h"]["m"] == "ESTIMATE", _s["steve.jobs_24h"])
+    os.utime(_q2 / "done" / "old_torn.json", (NOW, NOW))
+    _s = OW.c_steve(NOW, RULES, {})
+    check("steve: a torn record inside the run keeps the streak an ESTIMATE", _s["steve.invalid_streak"]["m"] == "ESTIMATE",
+          _s["steve.invalid_streak"])
+finally:
+    OW.qhome = _qh
+
+_ap2 = OW.append
+def _no_room(*a):
+    raise OSError("no space left")
+OW.append = _no_room
+(OW.ops_dir() / "flags.json").write_text("[1]", encoding="utf-8")
+(OW.ops_dir() / "last_measured.json").write_text("[2]", encoding="utf-8")
+_ap.write_text("[3]", encoding="utf-8")
+try:
+    _r = OW.run(now=NOW + 7, rules=_bad_rules, families={"v3"})
+finally:
+    OW.append = _ap2
+    _ap.unlink()
+_fl = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["flags"]
+check("run: an unwritable series is a flag and the pass finishes", any(f["rule"] == "series_write" for f in _fl), _fl)
+check("run: an unreadable alarms.json is a flag, not a quiet zero", any(f["rule"] == "alarm_state" for f in _fl), _fl)
+check("run: wrong-shaped flags.json and last_measured.json are survived", any(f["rule"] == "bad_target" for f in _fl), _fl)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
