@@ -5,7 +5,7 @@
 
 Owner 2026-10-30: FOUNDRY does trial prep only. A game-dev item is not offered (so the Dispatcher's peek finds
 no work and does not ring); an in-focus one is; a seat not listed is unfiltered; with none the output says
-"no in-focus work"; the live schedule carries the key (delete it on trial day 1).
+"no in-focus work". The live bar was lifted 2026-10-31 (owner), so no assertion reads the live schedule.
 """
 import io
 import json
@@ -66,8 +66,6 @@ def main():
             check(False, "a damaged schedule must refuse: %s" % body)
         except SystemExit as e:
             check(e.code == 2 and err.getvalue(), "a damaged schedule refuses out loud: %s" % body)
-    live = cli._seat_focus("FOUNDRY")
-    check(live is not None and "ARENA_" in live["prefixes"], "the live schedule carries FOUNDRY's focus")
 
     game = ["EXPLOSIVE_GROWTH_RETHINK_SERIOUS_CONCERNS", "SPRINKLER_HEADS_BUILD_PUMP_REQUIRED"]
     ctx = {"now": model.epoch_now(), "focus": fo}
@@ -117,10 +115,6 @@ def main():
         check((cli._seat_focus("FOUNDRY", gated, Wd(state)) is not None) == barred,
               "gate item %s: barred=%s" % (state, barred))
     check(cli._seat_focus("FOUNDRY", sched, Wd("done")) is not None, "an entry with no until_item never self-lifts")
-    gate = json.load(open(cli.os.path.join(os.path.dirname(os.path.abspath(cli.__file__)), "dispatcher_schedule.json")))
-    gate = gate["seat_focus"]["FOUNDRY"].get("until_item")
-    _, real = cli.load()
-    check(gate in real.items, "the live until_item is filed in the ledger: %s" % gate)
 
     print("%d FAIL" % len(FAILS) if FAILS else "ALL OK")
     return 1 if FAILS else 0

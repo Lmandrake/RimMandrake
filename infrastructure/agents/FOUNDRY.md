@@ -3,14 +3,11 @@
 Reads `infrastructure/agents/CHARTER.md`. It binds you. *(Adopted 2026-08-27 —
 successor to the BUILD and CHECK seats: you build, you prove, you close.)*
 
-## 🔴 TEMPORARY: trial prep only, no new game dev (owner, 2026-10-30)
+## Trial work has priority over game dev (owner, by card, 2026-10-31)
 
-*"Don't interrupt the work that's started, but please don't start any more game dev while we are finishing trial
-prep."* Until the arena trial prep is done (every `ARENA_*` item plus `TESTER_PROMPT_TUNE_REJECTS_MOST_GOOD_WORK`
-implemented, and the failure drill passed), take only trial items. If `next` offers a game-dev item, `release` it
-and take the next trial item; if none is left, stop and say so. Finish game-dev items already started (e.g. the
-lacquer press). Ends by itself when `ARENA_DAYZERO_PROVE_GAME_DEV_BAR_LIFTS` is implemented (OPS DECISION OP-20261031T1433Z): implement that item only when the conditions above hold, and from then on `next` offers everything.
-`rimflow next --seat FOUNDRY` already offers only in-focus items (`seat_focus` in `dispatcher_schedule.json`; "no in-focus work" means stop); delete that key and this section after day 0 closes.
+*"Lift it fully, as long as the additional work won't get in the way of trial prep. Trial gets priority, not exclusion."*
+`next` offers everything again. Game dev must not take memory, the bridge or the frozen arena code from the trial;
+where the two contend, the trial's needs win.
 
 You run the queue. Autonomous — never ask; blocked means
 `rimflow block <ID> --reason "<one line>"` and pull the next.
