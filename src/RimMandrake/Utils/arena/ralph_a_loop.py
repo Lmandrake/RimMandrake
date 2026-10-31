@@ -580,6 +580,9 @@ def base_export_run(root, base, log):
     return precheck_run(d, str(log) + ".base", ARM)
 
 
+BASE_RUNS = 2       # base observations a sandbox red must be red in to be baselined (ARENA_PRECHECK_FIX_FLAKY_BASE_RED)
+
+
 def baseline_verdict(rc, out, log, *, root=None, base=None, base_run=None):
     """-> (green, note) for a SANDBOXED quick pre-check. The repo's suite was written for the host: some selftests
     are red in the arm sandbox whatever the clone holds (the game dirs, the bench clone, nested bwrap are masked).
@@ -587,8 +590,8 @@ def baseline_verdict(rc, out, log, *, root=None, base=None, base_run=None):
     never the builder's unpublished try) is red on the same tests (item ARENA_PRECHECK_HARDEN_BASELINE_FIRST_RED: a
     loop's first red run used to be taken as the baseline, so a try that broke tests before it got them accepted).
     The baseline is keyed by base TREE (log-dir/sandbox_red.<tree>.json, harness-side, outside every arm bind): when
-    the clone is clean at base's tree the run itself is that tree's baseline; otherwise base is exported and run
-    (base_run, default base_export_run). Main advancing = a new tree = a fresh baseline: nothing to delete. The old
+    the clone is clean at base's tree the run itself is one base observation; base is exported and run (base_run,
+    default base_export_run) until there are BASE_RUNS, and only reds common to all are baselined. Main advancing = a new tree = a fresh baseline: nothing to delete. The old
     unkeyed sandbox_red.json is never read. A refused sandbox, a run with no RESULT line, no base, or a base that
     cannot be run is red."""
     v = precheck_verdict(rc, out)
@@ -605,17 +608,24 @@ def baseline_verdict(rc, out, log, *, root=None, base=None, base_run=None):
     b = Path(log).parent / ("sandbox_red.%s.json" % tree)
     how = "cached"
     if not b.exists():
+        # item ARENA_PRECHECK_FIX_FLAKY_BASE_RED: one base run let a test red at base by chance stay excused for every
+        # try on that tree. The baseline is the reds common to BASE_RUNS base observations (a flaky test must be red
+        # in all of them); a clean clone at base's tree counts its own run as one observation.
+        runs, how = [], "%d runs of base %s" % (BASE_RUNS, base[:12])
         if _tree_of(root, "HEAD") == tree and _clean(root):
-            base_red, how = red, "this run (clone clean at base's tree)"
-        else:
+            runs, how = [red], "this run (clone clean at base's tree) + %d export(s)" % (BASE_RUNS - 1)
+        while len(runs) < BASE_RUNS:
+            i = len(runs)
             try:
-                brc, bout = (base_run or base_export_run)(root, base, log)
+                brc, bout = (base_run or base_export_run)(root, base, log if i == 0 else "%s.%d" % (log, i))
             except Refused as e:
                 return False, "%s; base %s could not be run for a baseline: %s" % (v[1], base[:12], e)
             if brc is None or not RESULT_RE.findall(bout or ""):
                 return False, "%s; the base %s pre-check gave no RESULT (rc %s): no baseline" % (v[1], base[:12], brc)
-            base_red, how = set(SANDBOX_RED_RE.findall(bout or "")), "export of base %s" % base[:12]
-        b.write_text(json.dumps({"red": sorted(base_red), "base": base, "tree": tree, "how": how,
+            runs.append(set(SANDBOX_RED_RE.findall(bout or "")))
+        base_red = set.intersection(*runs)
+        b.write_text(json.dumps({"red": sorted(base_red), "flaky": sorted(set.union(*runs) - base_red),
+                                 "base": base, "tree": tree, "how": how,
                                  "at": time.strftime("%Y-%m-%dT%H:%M:%S")}, indent=1) + "\n")
     new = sorted(red - set(json.loads(b.read_text()).get("red") or ()))
     if new:

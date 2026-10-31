@@ -1644,7 +1644,7 @@ def t_baseline_pinned(tmp):
     v = R.baseline_verdict(1, _red_out("selftest_env.py", "selftest_broken.py"), log, root=c, base=base,
                            base_run=base_run(["selftest_env.py"]))
     check(v[0] is False and "selftest_broken.py" in v[1] and "selftest_env.py" not in v[1].split(":")[-1]
-          and calls == [base],
+          and calls == [base, base],
           "BL1 the loop's FIRST red pre-check on a try that broke a test is RED (the base is run for the baseline, "
           "the stale unkeyed file ignored): %s" % (v,))
     bf = logd / ("sandbox_red.%s.json" % tree)
@@ -1652,7 +1652,7 @@ def t_baseline_pinned(tmp):
           "BL1 the baseline is keyed by the base tree and holds only the base's reds")
     v = R.baseline_verdict(1, _red_out("selftest_env.py"), log, root=c, base=base,
                            base_run=base_run(["selftest_never.py"]))
-    check(v[0] is True and len(calls) == 1 and "base" in v[1],
+    check(v[0] is True and len(calls) == 2 and "base" in v[1],
           "BL2 a red the base also has is green, LOUDLY, from the cached baseline (no second base run): %s" % (v,))
     # a clean clone AT the base tree: the run itself is the baseline (no export)
     c2 = tmp / "bl_clone2"
@@ -1660,17 +1660,46 @@ def t_baseline_pinned(tmp):
     subprocess.run(["git", "-C", str(c2), "checkout", "-q", base], check=True)
     log2 = tmp / "bl_log2" / "pre.0"
     log2.parent.mkdir()
-    v = R.baseline_verdict(1, _red_out("selftest_env.py"), log2, root=c2, base=base, base_run=base_run(["x"]))
-    check(v[0] is True and len(calls) == 1 and "this run" in v[1],
-          "BL3 a clean clone at base's tree baselines from its own run, no export: %s" % (v,))
+    v = R.baseline_verdict(1, _red_out("selftest_env.py"), log2, root=c2, base=base,
+                           base_run=base_run(["selftest_env.py"]))
+    check(v[0] is True and len(calls) == 3 and "this run" in v[1],
+          "BL3 a clean clone at base's tree counts its own run as one base observation (+1 export): %s" % (v,))
     # the same tree but DIRTY: the run is not the base's, so the base is run
     (c2 / "src/a.py").write_text("a = 3  # uncommitted\n")
     log3 = tmp / "bl_log3" / "pre.0"
     log3.parent.mkdir()
     v = R.baseline_verdict(1, _red_out("selftest_env.py", "selftest_broken.py"), log3, root=c2, base=base,
                            base_run=base_run(["selftest_env.py"]))
-    check(v[0] is False and len(calls) == 2 and "selftest_broken.py" in v[1],
+    check(v[0] is False and len(calls) == 5 and "selftest_broken.py" in v[1],
           "BL4 a dirty clone at base's tree runs the base for its baseline: %s" % (v,))
+
+    # item ARENA_PRECHECK_FIX_FLAKY_BASE_RED: a test red at base only by chance (one of two base runs) is never
+    # baselined, so a try that really breaks it stays red
+    flips = []
+
+    def flaky_base(root, b, lg):
+        flips.append(str(lg))
+        return 1, _red_out(*(["selftest_env.py", "selftest_flaky.py"] if len(flips) == 1 else ["selftest_env.py"]))
+    log9 = tmp / "bl_log9" / "pre.0"
+    log9.parent.mkdir()
+    v = R.baseline_verdict(1, _red_out("selftest_env.py", "selftest_flaky.py"), log9, root=c, base=base,
+                           base_run=flaky_base)
+    bf9 = json.loads((log9.parent / ("sandbox_red.%s.json" % tree)).read_text())
+    check(v[0] is False and "selftest_flaky.py" in v[1].split(":")[-1] and len(flips) == 2
+          and len(set(flips)) == 2 and bf9["red"] == ["selftest_env.py"] and bf9["flaky"] == ["selftest_flaky.py"],
+          "BL9 a test red in only one of two base runs is not excused (flaky, recorded apart): %s / %s" % (v, bf9))
+    v = R.baseline_verdict(1, _red_out("selftest_env.py"), log9, root=c, base=base, base_run=flaky_base)
+    check(v[0] is True and len(flips) == 2, "BL9 the base's steady red is still excused, from cache: %s" % (v,))
+    # and the clean-at-base case: a flaky red in the clone's own run alone is not baselined either
+    c2_clean = tmp / "bl_clone3"
+    subprocess.run(["git", "clone", "-q", str(c), str(c2_clean)], check=True)
+    subprocess.run(["git", "-C", str(c2_clean), "checkout", "-q", base], check=True)
+    log10 = tmp / "bl_log10" / "pre.0"
+    log10.parent.mkdir()
+    v = R.baseline_verdict(1, _red_out("selftest_env.py", "selftest_flaky.py"), log10, root=c2_clean, base=base,
+                           base_run=base_run(["selftest_env.py"]))
+    check(v[0] is False and "selftest_flaky.py" in v[1].split(":")[-1],
+          "BL9 a clean clone at base: its own flaky red without a second base red is red: %s" % (v,))
 
     def refused(root, b, lg):
         raise R.Refused("planted")
