@@ -63,10 +63,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile
+    from . import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile   # noqa: F401
+    from rimflow import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -885,7 +885,7 @@ def cmd_next(args, seat):
     if getattr(args, "acceptance", False):
         return _print_acceptance(args, seat)
     peek = bool(getattr(args, "peek", False))
-    _, w = load()
+    evs, w = load()
     # 🔴 MEASURE BEFORE OFFERING. `next` decides what a seat may work on, and half of
     # that decision is the game state — so it reads it from the machine, not from what
     # somebody last typed. Owner, 2026-08-22: the measurement wins, silently. Cached for
@@ -919,7 +919,7 @@ def cmd_next(args, seat):
         ch = _choose(w, seat, args, ctx, idx)
     else:
         with lease.dispatch_lock():
-            _, w = load()
+            evs, w = load()
             ctx["now"] = model.epoch_now()
             ch = _choose(w, seat, args, ctx, idx)
             if ch["item"] is not None:
@@ -965,6 +965,12 @@ def cmd_next(args, seat):
     print(it.title or "(no title)")
     if it.caused_by:
         print("caused by %s" % it.caused_by)
+    # The Test Pilot rule (owner 2026-10-31). dispatcher.parse_peek reads this line, so it stays on --peek too.
+    pilot = testpilot_route.judge(it, evs)
+    if pilot:
+        print("")
+        print(testpilot_route.route_line(pilot))
+        print("    No more code-and-retest on this one: `rimflow pilot %s` prints the ticket to spawn." % it.id)
     if a.kind == "partial":
         # A partial item is offered for its REMAINDER, not its original spec (review §2:
         # "a partial item should say 'implement the remaining three forms'").
@@ -1391,6 +1397,27 @@ def _describe(ev):
     if prov:
         tail = (tail + "  | " if tail else "| ") + " | ".join(prov)
     return "%s  %-6s %-9s %s" % (ev.get("ts", "?"), ev.get("seat", "?"), verb, tail)
+
+
+def cmd_pilot(args, seat):
+    """Read-only. No id: every item the Test Pilot rule routes. An id: the ticket to spawn, on a free host."""
+    evs, w = load()
+    if not args.id:
+        got = testpilot_route.routed(w, evs)
+        for v in got:
+            print("%-48s %-9s %-8s %s" % (v["id"], w.items[v["id"]].owner, v["kind"], v["why"]))
+        print("%d item(s) routed to a Test Pilot; the streak is %d non-pass runs in a row."
+              % (len(got), testpilot_route.STREAK))
+        return
+    if args.id not in w.items:
+        die("no such item %s\n" % args.id)
+    v = testpilot_route.judge(w.items[args.id], evs) or {"id": args.id, "kind": "by-hand", "why": "sent by hand"}
+    host = args.host
+    if host == "auto":
+        host = testpilot_route.pick_host(testpilot_route.read_statuses(host_guard))
+    if not host:
+        die("no free host for a Test Pilot: both guards are held or unreachable. Wait for one; never --force.\n")
+    print(testpilot_route.brief(v, host))
 
 
 def cmd_show(args, seat):
@@ -2366,7 +2393,8 @@ def _mirror_from_ledger(actor, note=None):
 def _bridge_who(w, holder, since, purpose):
     """`bridge who` — the answer, re-derived, plus the mirror repaired on the way."""
     # Re-derived from the ledger, so this answer is true even when the mirror is not.
-    model.write_bridge_file(holder, None, purpose, since)
+    with _bridge_lock():            # the caller's snapshot may predate a take: the mirror comes from a fresh replay
+        _mirror_from_ledger(None)
     shared = model.read_shared_bridge()
     if shared and shared.get("holder") not in (None, holder):
         age = model.shared_bridge_age_seconds(shared)
@@ -2551,11 +2579,12 @@ def _bridge_release_locked(seat, w):
 
 
 def _bridge_release_write(seat, w, holder):
-    _driver_release(seat)
     ev = {"seat": seat, "event": "bridge", "state": "released"}
     crossed = bool(holder and holder != seat)
     if crossed:
         ev["override"] = "released the bridge out from under %s" % holder
+    _refuse_before_lock(ev)
+    _driver_release(seat)
     _emit(ev, w, quiet=True)
     _mirror_from_ledger(seat)
     sh = model.read_shared_bridge()
@@ -3450,6 +3479,10 @@ def build_parser():
     s = add("show", "everything the ledger says about one item", cmd_show)
     s.add_argument("id")
 
+    s = add("pilot", "the Test Pilot rule: list what it routes, or print the spawn ticket for one item", cmd_pilot)
+    s.add_argument("id", nargs="?")
+    s.add_argument("--host", choices=("auto",) + testpilot_route.HOSTS, default="auto")
+
     s = add("why", "why is this item not being offered", cmd_why)
     s.add_argument("id")
 
@@ -3702,7 +3735,7 @@ def build_parser():
     return p
 
 
-READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue")
+READ_ONLY = ("show", "why", "sweep", "lint", "render", "reindex", "queue", "pilot")
 
 
 # \u26d4 Bare assent is not an instruction. These are the words that mean "I agree

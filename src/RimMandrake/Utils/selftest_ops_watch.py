@@ -285,6 +285,24 @@ wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": None})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: steward AND watcher both silent > 30 min -> unowned stall = heartbeat age",
       abs(s["steve.unowned_stall_min"]["v"] - 50) < 0.2, s["steve.unowned_stall_min"])
+wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": {"item": "STEVE_LANE_UNSTICK_AB12"}})
+_ic = OW.incident_item_closed
+OW.incident_item_closed = lambda inc: False
+s = OW.c_steve(NOW, RULES, {})
+check("steve: an open incident is not an unowned stall (its ownership cannot be seen, so unknown)", s["steve.unowned_stall_min"]["v"] is None, s["steve.unowned_stall_min"])
+OW.incident_item_closed = lambda inc: True
+s = OW.c_steve(NOW, RULES, {})
+check("steve: a closed incident owns nothing when steward and watcher are both silent",
+      abs(s["steve.unowned_stall_min"]["v"] - 50) < 0.2, s["steve.unowned_stall_min"])
+OW.incident_item_closed = _ic
+check("steve: an incident with no item is not closed", OW.incident_item_closed({"level": 1}) is False
+      and OW.incident_item_closed("text") is False, "")
+wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": None})
+_it = types.SimpleNamespace(id="STEVE_LANE_UNSTICK_F1", state="proposed", blocked=False, created_at=NOW + 3600)
+_wd = types.SimpleNamespace(items={"a": _it})
+_md = types.SimpleNamespace(lease_status=lambda i, n: "none", epoch=lambda v: v)
+check("steve: a future incident time is UNMEASURED, not 0 min",
+      OW.steve_incident_unclaimed(_wd, _md, NOW, RULES)["m"] == "UNMEASURED", "")
 (Q / "steward.json").unlink()
 s = OW.c_steve(NOW, RULES, {})
 check("steve: no steward.json -> state UNMEASURED, not a number", s["steve.state"]["m"] == "UNMEASURED"

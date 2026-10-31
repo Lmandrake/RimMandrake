@@ -367,6 +367,19 @@ def outcome_of(d):
     return oc if isinstance(oc, str) and oc in OUTCOMES else None
 
 
+def incident_item_closed(inc):
+    """True when this steward incident's ledger item has closed. An unreadable ledger is False: c_flow says that aloud."""
+    item = inc.get("item") if isinstance(inc, dict) else None
+    if not item:
+        return False
+    try:
+        import pulse_core as pc
+        it = pc._model().replay(pc.read_ledger()).items.get(item)
+    except Exception:  # noqa: BLE001
+        return False
+    return it is not None and not it.open
+
+
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
@@ -406,7 +419,8 @@ def c_steve(now, rules, ctx):
         # escalating it until RUNNING, so a closed item is re-raised, not abandoned
         if fault_min and fault_min > 0 and not sj.get("incident"):
             nobody.append(("fault %s for %.0f min with no steward incident" % (st, fault_min), fault_min))
-        if hb > 30 and (wage is None or wage > 30) and not wj.get("incident"):
+        # both silent, nothing is left to re-raise: here a closed item owns nothing
+        if hb > 30 and (wage is None or wage > 30) and (not wj.get("incident") or incident_item_closed(wj["incident"])):
             nobody.append(("steward silent %.0f min and its watcher silent %s" % (
                 hb, "(never ran)" if wage is None else "%.0f min" % wage), hb))
         if fault_min is None and not nobody:
@@ -767,6 +781,8 @@ def steve_incident_unclaimed(world, model, now, rules):
         t = model.epoch(it.created_at)
         if t is None:
             return U("incident %s has no readable creation time" % it.id)
+        if t > now + 300:
+            return U("incident %s is dated %.0f min in the future" % (it.id, (t - now) / 60.0))
         ages.append(max(0.0, (now - t) / 60.0))
         names.append(it.id)
     if not ages:

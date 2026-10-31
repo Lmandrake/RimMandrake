@@ -513,6 +513,26 @@ def t_a_bad_role_unit_refuses_a_bridge_take_before_the_driver_lock():
     assert not os.path.exists(dl), "a take the writer refuses wrote the driver lock"
 
 
+def t_a_refused_release_keeps_the_driver_lock():
+    fresh()
+    dl = os.path.join(_tmp(), "driver.lock")
+    ok("bridge", "take", "--for", "x", env=env("CHECK", RIMFLOW_DRIVER_LOCK=dl))
+    refused(("bridge", "release"), "RM_ROLE_UNIT", "garbled release", seat="CHECK",
+            env_=env("CHECK", RIMFLOW_DRIVER_LOCK=dl, RM_ROLE_UNIT="bad unit!"))
+    assert os.path.exists(dl), "a release the ledger refused freed the driver lock"
+    assert _ledger_holder() == "CHECK", _ledger_holder()
+
+
+def t_bridge_who_mirrors_the_ledger_not_its_snapshot():
+    fresh()
+    ok("bridge", "take", "--for", "x", seat="CHECK")
+    code = "import cli; cli._bind_paths(); w = cli.load()[1]; cli._bridge_who(w, 'STALE', None, None)"
+    r = subprocess.run([sys.executable, "-c", code], env=scratch_env(env("CHECK")), cwd=os.path.dirname(CLI),
+                       capture_output=True, text=True, timeout=60)
+    assert r.returncode == 0, r.stderr
+    assert _mirror_holder() == "CHECK", _mirror_holder()
+
+
 def _ledger_paths():
     """-> every file the throwaway ledger is spread across, head first then shards.
 
@@ -614,6 +634,10 @@ def t_the_bridge_mirror_never_disagrees_with_the_ledger_under_concurrent_takes()
             stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=scratch_env(env(s)), cwd=REPO)
             for s in ("BENCH", "FOUNDRY")]
         outs = [p.communicate() for p in procs]
+        codes = [p.returncode for p in procs]
+        assert (all(c == 0 for c in codes) if forced else any(c == 0 for c in codes)), (
+            "the race did not happen: forced=%s exits %s" % (forced, codes))
+        assert _ledger_holder() in ("BENCH", "FOUNDRY"), "no take reached the ledger: %r" % (_ledger_holder(),)
         for p, (o, e) in zip(procs, outs):
             blob = o.decode("utf-8", "replace") + e.decode("utf-8", "replace")
             assert p.returncode == 0 or "--force" in blob, (
