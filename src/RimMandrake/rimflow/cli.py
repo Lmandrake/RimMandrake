@@ -2390,11 +2390,13 @@ def _mirror_from_ledger(actor, note=None):
     return w3.bridge_holder
 
 
-def _bridge_who(w, holder, since, purpose):
+def _bridge_who():
     """`bridge who` — the answer, re-derived, plus the mirror repaired on the way."""
     # Re-derived from the ledger, so this answer is true even when the mirror is not.
-    with _bridge_lock():            # the caller's snapshot may predate a take: the mirror comes from a fresh replay
+    with _bridge_lock():            # a snapshot from before the lock may predate a take: mirror and answer read fresh
         _mirror_from_ledger(None)
+        _, w = load()
+    holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
     shared = model.read_shared_bridge()
     if shared and shared.get("holder") not in (None, holder):
         age = model.shared_bridge_age_seconds(shared)
@@ -3054,7 +3056,7 @@ def cmd_bridge(args, seat):
     if hk != model.DEFAULT_BRIDGE_HOST:
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
-        return _bridge_who(w, holder, since, purpose)
+        return _bridge_who()
     if args.action == "give":
         # under the bridge lock on a fresh replay, like take and release: his handover must not interleave with a
         # take's driver-lock acquire + append (GPT review 2026-10-30)

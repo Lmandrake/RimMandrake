@@ -447,6 +447,11 @@ Path(os.environ["RM_SCRATCH_REAP_RUNS"]).write_text(json.dumps({"ts": OW.iso(NOW
 s = OW.c_disk(NOW, RULES, {})
 check("disk: a row with no byte count makes scratch an ESTIMATE", s["disk.scratch_total_gb"]["m"] == "ESTIMATE"
       and s["disk.scratch_total_gb"]["v"] == 2.0, s["disk.scratch_total_gb"])
+Path(os.environ["RM_SCRATCH_REAP_RUNS"]).write_text(json.dumps({"ts": OW.iso(NOW - H), "rows": [
+    {"verdict": "YOUNG", "bytes": 2e9}, {"verdict": [], "bytes": 1e9}]}) + "\n")
+s = OW.c_disk(NOW, RULES, {})
+check("disk: an unhashable verdict costs its row, not the scratch total", s["disk.scratch_total_gb"]["m"] == "ESTIMATE"
+      and s["disk.scratch_total_gb"]["v"] == 2.0, s["disk.scratch_total_gb"])
 wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": True, "incident": None, "since": "garbage"})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: a fault with no readable since is UNMEASURED duration, not 0 min",
@@ -802,6 +807,13 @@ try:
     _fake_accounts({"fresh": _acct(1.0, 167.0), "zero": _acct(0.0, 167.5), "hot": _acct(30.0, 165.0),
                     "old": _acct(50.0, 68.0), "unk": {"source": "UNMEASURED", "why": "nothing"}})
     out = OW.c_accounts(NOW, RULES, {})
+    _ok_slope = sys.modules["slot_allocator"].slope
+    sys.modules["slot_allocator"].slope = lambda a, r, n, rules: (rules["fit"]["window_h"], 0, 0.0)  # reads the rule as the real one does
+    _nf = OW.c_accounts(NOW, {k: v for k, v in RULES.items() if k != "accounts_fit"}, {})
+    sys.modules["slot_allocator"].slope = _ok_slope
+    check("accounts: no accounts_fit costs the slope, said aloud; readings and runway stay",
+          _nf["accounts.old.week_left_pct"]["m"] == "MEASURED" and _nf["accounts.old.runway"]["v"] is not None
+          and "accounts_fit" in _nf.get("accounts._collector", {}).get("why", ""), _nf.get("accounts._collector"))
     fr = out["accounts.fresh.runway"]
     check("fresh week: runway is an ESTIMATE, not UNMEASURED", fr["m"] == "ESTIMATE" and fr["v"] is not None, fr)
     check("fresh week: 1%% used in its first hour reads ample (>= 1), so no alarm", (fr["v"] or 0) >= 1.0, fr)

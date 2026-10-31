@@ -207,7 +207,7 @@ def c_accounts(now, rules, ctx):
     acc = (AU.read_now(now).get("accounts") or {})
     if not acc:
         return {"accounts._collector": U("account_usage.read_now() returned no account")}
-    fit = {"fit": rules["accounts_fit"]}
+    fit = {"fit": rules.get("accounts_fit")}
     def account(name, a):
         src = a.get("source") or "UNMEASURED"
         if a.get("stale"):
@@ -225,7 +225,12 @@ def c_accounts(now, rules, ctx):
         out[k + "hours_to_reset"] = mk(h, "h to the weekly reset") if h is not None else U("no reset time")
         rate, how = None, None
         if src == "MEASURED":
-            r, n, span = SA.slope(name, a.get("week_resets_at"), now, fit)
+            try:
+                r, n, span = SA.slope(name, a.get("week_resets_at"), now, fit)
+            except (KeyError, TypeError, ValueError) as e:  # a bad rule costs the slope: the week average still reads
+                r, n, span = None, 0, 0
+                out["accounts._collector"] = U("accounts_fit unusable, runway uses the week average: %s: %s"
+                                               % (type(e).__name__, str(e)[:120]))
             if r is not None:
                 rate, how = r, "meter slope, %d readings over %.1f h" % (n, span)
         if rate is None:
@@ -678,7 +683,7 @@ def c_disk(now, rules, ctx):
         if not rows:
             raise ValueError("the reaper's last run has no rows (a scan that saw nothing is not 0 GB)")
         for row in rows:
-            if not isinstance(row, dict):
+            if not isinstance(row, dict) or not isinstance(row.get("verdict"), str):
                 nob += 1
                 continue
             if row.get("verdict") != "DELETED":

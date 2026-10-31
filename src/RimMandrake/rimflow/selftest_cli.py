@@ -108,6 +108,7 @@ def env(seat="BUILD", **over):
     # or, for the driver lock, displace a real driver. No schedule file means no seat focus; "" means no lock.
     e["RIMFLOW_SCHEDULE"] = os.path.join(TMP_ROOT, "no_schedule.json")
     e["RIMFLOW_DRIVER_LOCK"] = ""
+    e["RM_HOST"] = "archmagi"       # the default bridge's lock is only used on its own host: pin it, not the machine's
     e["RIMFLOW_SHARED_BRIDGE"] = ""
     e["RIMFLOW_BRIDGE_LOCK"] = os.path.join(TMP_ROOT, "bridge.lock")
     e["RM_COMPANION_PROFILE"] = GRANT_FIXTURE
@@ -526,11 +527,12 @@ def t_a_refused_release_keeps_the_driver_lock():
 def t_bridge_who_mirrors_the_ledger_not_its_snapshot():
     fresh()
     ok("bridge", "take", "--for", "x", seat="CHECK")
-    code = "import cli; cli._bind_paths(); w = cli.load()[1]; cli._bridge_who(w, 'STALE', None, None)"
+    code = "import cli; cli._bind_paths(); cli._bridge_who()"
     r = subprocess.run([sys.executable, "-c", code], env=scratch_env(env("CHECK")), cwd=os.path.dirname(CLI),
                        capture_output=True, text=True, timeout=60)
     assert r.returncode == 0, r.stderr
     assert _mirror_holder() == "CHECK", _mirror_holder()
+    assert "bridge held by CHECK" in r.stdout, r.stdout
 
 
 def _ledger_paths():
