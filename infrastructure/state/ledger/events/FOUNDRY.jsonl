@@ -9555,3 +9555,13 @@
 {"seat":"FOUNDRY","event":"lease","id":"SITE_SPEC_WIRE_TOWER_COST_KEY","action":"renew","token":"FOUNDRY.pid98208.b77f3eb8","expires":"2026-11-01T00:01:01Z","ts":"2026-10-31T23:16:01Z","tsn":1793488561709774301}
 {"seat":"FOUNDRY","event":"lease","id":"SITE_SPEC_WIRE_TOWER_COST_KEY","action":"renew","token":"FOUNDRY.pid98208.b77f3eb8","ts":"2026-10-31T23:16:08Z","expires":"2026-11-01T00:01:08Z","tsn":1793488569337305775}
 {"seat":"FOUNDRY","event":"lease","id":"COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES","action":"renew","token":"FOUNDRY.pid95166.80354759","ts":"2026-10-31T23:16:24Z","expires":"2026-11-01T00:01:24Z","tsn":1793488584941574107}
+{"seat":"FOUNDRY","event":"lease","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","action":"take","token":"FOUNDRY.pid10106.ff94bff8","expires":"2026-11-01T00:01:49Z","ts":"2026-10-31T23:16:49Z","tsn":1793488610159902106}
+{"seat":"FOUNDRY","event":"claim","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","ts":"2026-10-31T23:16:50Z","tsn":1793488610759056857}
+{"seat":"FOUNDRY","event":"start","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","ts":"2026-10-31T23:16:51Z","tsn":1793488611366534921}
+{"seat":"FOUNDRY","event":"lease","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","action":"renew","token":"FOUNDRY.pid10106.ff94bff8","ts":"2026-10-31T23:17:21Z","expires":"2026-11-01T00:02:21Z","tsn":1793488642382154351}
+{"seat":"FOUNDRY","event":"lease","id":"STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1","action":"take","token":"FOUNDRY.pid10138.ad1156a8","expires":"2026-11-01T00:03:25Z","ts":"2026-10-31T23:18:25Z","tsn":1793488706082761541}
+{"seat":"FOUNDRY","event":"claim","id":"STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1","ts":"2026-10-31T23:18:26Z","tsn":1793488706647044357}
+{"seat":"FOUNDRY","event":"start","id":"STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1","ts":"2026-10-31T23:18:27Z","tsn":1793488707195022518}
+{"seat":"FOUNDRY","event":"lease","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","action":"renew","token":"FOUNDRY.pid10106.ff94bff8","ts":"2026-10-31T23:18:28Z","expires":"2026-11-01T00:03:28Z","tsn":1793488709495298436}
+{"seat":"FOUNDRY","event":"lease","id":"STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1","action":"renew","token":"FOUNDRY.pid10138.ad1156a8","ts":"2026-10-31T23:19:06Z","expires":"2026-11-01T00:04:06Z","tsn":1793488747319869179}
+{"seat":"FOUNDRY","event":"lease","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","action":"renew","token":"FOUNDRY.pid10106.ff94bff8","ts":"2026-10-31T23:19:26Z","expires":"2026-11-01T00:04:26Z","tsn":1793488767381056611}
