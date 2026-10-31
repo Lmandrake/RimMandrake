@@ -1750,12 +1750,16 @@ def test_j6_wake_is_bound_to_one_restart():
     o, _ = _wake(rec, "g0")
     check("GEN_NOTE" not in o, "J6 another restart's generation is not replayed")
     o, _ = _wake(rec, None)
-    check("GEN_NOTE" not in o, "J6 a wake without --gen replays nothing")
+    check("GEN_NOTE" in o, "J6 a wake without --gen reads an unanswered restart (a fallback window has no token)")
     o, after = _wake(rec, "g1")
     check("GEN_NOTE" in o and after.get("woken_at"), "J6 the right generation reads it and marks it woken (%s)"
           % after.get("woken_at"))
     o, _ = _wake(after, "g1")
-    check("GEN_NOTE" not in o and "already" in o, "J6 a second wake of the same restart replays nothing")
+    check("GEN_NOTE" in o, "J6 a read no window can vouch for is read again")
+    o, _ = _wake(dict(rec, woken_at=T0), "g1")
+    check("GEN_NOTE" not in o and "already" in o, "J6 a wake from before woken_by counts as answered")
+    o, _ = _wake(dict(rec, woken_at=T0, woken_by="s", owed=0), None)
+    check("GEN_NOTE" not in o and "already" in o, "J6 a wake that had nothing to read is not replayed")
     o, after = _wake(dict(rec, tx_path=p + ".missing"), "g1")
     check("UNMEASURED" in o and not after.get("woken_at"), "J6 an UNMEASURED read is not marked woken")
     cfg = SR.config(bsched())["BENCH"]
@@ -1884,6 +1888,176 @@ def test_k1_goodbye_kill_on_backstop_off():
         SR._schedule, SR.unpublished_shard = saved
     check(rc == 0 and not os.path.exists(rp) and "not enabled" in out.getvalue(),
           "K1 BENCH off: `request` writes no request (%r)" % out.getvalue()[-120:])
+
+
+def test_k2_dead_window_routes():
+    cfg = SR.config(bsched())["BENCH"]
+    cases = [("nothing owed", {}, [], None, "cancelled", "restart_cancel"),
+             ("unreadable transcript", {}, None, None, "claimed", "restart_orphan"),
+             ("owed", {}, [{}], None, "claimed", "restart_orphan"),
+             ("owed under PAUSE", {"paused": "x"}, [{}], None, "pending", "restart_hold"),
+             ("owed beside another live window", {"agents": {"sessions": [{"name": cfg["session_name"]}]}}, [{}], None,
+              "cancelled", "alarm"),
+             ("a live pid is /clear, not a death", {}, [{}], 7, "cancelled", "restart_cancel")]
+    for label, obs, owed, start, state, do in cases:
+        acts, rs = [], {"pid": 5, "start": 7, "ts": T0, "session_id": "s", "gen": "g"}
+        SR._gone("BENCH", cfg, rs, obs, {"start": lambda p: start, "owed": lambda r: owed}, T0, lambda **k: acts.append(k), "gone")
+        check(rs["state"] == state and do in [a["do"] for a in acts], "K2 dead window, %s: %s by %s (%s %s)" % (
+            label, state, do, rs["state"], [a["do"] for a in acts]))
+    acts, rs = [], {"pid": 5, "start": 7, "ts": T0}
+    SR._gone("BENCH", dict(cfg, kind="doorbell"), rs, {}, {"start": lambda p: None, "owed": lambda r: [{}]}, T0,
+             lambda **k: acts.append(k), "gone")
+    check(rs["state"] == "cancelled", "K2 a doorbell seat is recovered by the Dispatcher: only a Conductor is adopted")
+    armed = {"req_ts": T0, "session_id": "s", "old_alive": True}
+    for label, st, rec, want in [("alive", "cancelled", armed, 1), ("dead", "cancelled", dict(armed, old_alive=False), 0),
+                                 ("another restart", "failed", dict(armed, req_ts=1), 0), ("verified", "verified", armed, 0)]:
+        acts = []
+        SR._disarm("BENCH", {"state": st, "ts": T0, "session_id": "s"}, "pending", {"killed": lambda s: rec},
+                   lambda **k: acts.append(k))
+        check(len(acts) == want, "K2 disarm, %s: %d abort(s)" % (label, want))
+
+
+def test_k3_relaunched_rebinds_to_the_replacement():
+    cfg = SR.config(bsched())["BENCH"]
+    a, b = {"name": cfg["session_name"], "sessionId": "b", "pid": 9}, {"name": cfg["session_name"], "sessionId": "old", "pid": 8}
+    rs = {"state": "relaunched", "session_id": "old", "new_session": "a", "killed_at": T0, "relaunched_at": T0}
+    ro = {"tx": lambda seat, s: {"last_kind": "assistant_end", "last_at": T0 + 1}}
+    SR._one("BENCH", cfg, {"BENCH": rs}, {}, {"seat_restart": ro}, [a, b], T0 + 5, True, lambda **k: None)
+    check(rs.get("new_session") == "b" and rs["state"] == "verified", "K3 a replacement's first turn verifies the restart")
+    rs = dict(rs, state="relaunched", new_session="a", relaunched_at=T0)
+    SR._one("BENCH", cfg, {"BENCH": rs}, {}, {"seat_restart": ro}, [b], T0 + cfg["arm_s"], True, lambda **k: None)
+    check(rs["state"] == "failed", "K3 the old session is no replacement (%s)" % rs["state"])
+
+
+def test_k4_reclaim_is_bounded():
+    root = os.path.join(TMP, "reclaim")
+    os.makedirs(os.path.join(root, "restart"))
+    live = SR._live_window
+    rec = {"reads": True, "gen": "g", "killed_at": T0, "arm_s": 900}
+    SR._write_json(SR.intile_path("BENCH", T0, root), {"at": T0, "by_pid": None})
+    try:
+        SR._live_window = lambda s: False
+        p = SR._reclaim("BENCH", rec, T0 + 5, root)
+        check(p and p.endswith(".2.json"), "K4 an unanswered restart gets a second claim (%s)" % p)
+        check(not SR._reclaim("BENCH", dict(rec, reads=False), T0 + 5, root), "K4 a doorbell seat's record has none")
+        check(not SR._reclaim("BENCH", dict(rec, gen=None), T0 + 5, root), "K4 nor a record with no token")
+        check(not SR._reclaim("BENCH", dict(rec, woken_at=T0), T0 + 5, root), "K4 nor an answered one")
+        check(not SR._reclaim("BENCH", rec, T0 + 900, root), "K4 nor one past arm_s of the last claim")
+        SR._write_json(SR.intile_path("BENCH", T0, root), {"at": T0, "by_pid": os.getpid(), "by_start": SR.proc_start(os.getpid())})
+        check(not SR._reclaim("BENCH", rec, T0 + 5, root), "K4 nor beside a live claimer")
+        SR._write_json(SR.intile_path("BENCH", T0, root), {"at": T0})
+        SR._live_window = lambda s: True
+        check(not SR._reclaim("BENCH", rec, T0 + 5, root), "K4 nor beside a live window")
+        SR._live_window = lambda s: False
+        SR._write_json(p, {"at": T0})
+        third = SR._reclaim("BENCH", rec, T0 + 5, root)
+        SR._write_json(third, {"at": T0})
+        check(third.endswith(".3.json") and not SR._reclaim("BENCH", rec, T0 + 5, root), "K4 MAX_CLAIMS bounds it")
+    finally:
+        SR._live_window = live
+
+
+def test_k5_review_of_the_death_fixes():
+    import argparse
+    import contextlib
+    import io
+    t = "1970-01-12T13:4%d:00Z"
+    woke = SR._ts(t % 6)
+    enq = {"type": "queue-operation", "operation": "enqueue", "timestamp": t % 8, "content": "QUEUED_NOTE", "commandUuid": "c1"}
+    deq = {"type": "queue-operation", "operation": "dequeue", "timestamp": t % 8, "commandUuid": "c1"}
+    # an ended turn answers what came before it, not what he typed after it
+    ok, _ = _bt("sid-k5a", [_hu(t % 5, "the wake"), _ha(t % 7)])
+    rec = {"woken_at": woke, "woken_by": "s", "woken_tx": ok, "owed": 1}
+    check(SR.answered(rec), "K5 an ended turn after the read answers it")
+    late, _ = _bt("sid-k5b", [_hu(t % 5, "the wake"), _ha(t % 7), _hu(t % 8, "LATE_NOTE")])
+    check(not SR.answered(dict(rec, woken_tx=late)), "K5 a message after the answer leaves it unanswered")
+    check(not SR.answered(dict(rec, woken_tx=late, owed=0)), "K5 even when the wake had nothing to read")
+    # submitted, never delivered
+    q, _ = _bt("sid-k5c", [_ha(t % 7), enq])
+    check([SR._text(r) for r in SR.unanswered(q, 0)] == ["QUEUED_NOTE"], "K5 an enqueue no delivery follows is owed")
+    d, _ = _bt("sid-k5d", [_ha(t % 7), enq, deq])
+    check(SR.unanswered(d, 0) == [], "K5 a dequeued enqueue is not owed twice")
+    first = json.dumps(_hu(GB, "goodbye")) + "\n"
+    base = {"seat": "BENCH", "session_id": "sid", "killed_at": T0, "req_ts": T0, "gen": "g", "tx_offset": len(first)}
+    p = os.path.join(TMP, "elsewhere", "sid-k5e.jsonl")
+    with open(p, "w") as f:
+        f.write(first + json.dumps(enq) + "\n")
+    o, _ = _wake(dict(base, tx_path=p), "g")
+    check("QUEUED_NOTE" in o, "K5 the wake lists a message that was queued and never delivered (%r)" % o[-160:])
+    # a torn prior transcript gives what it holds and says what it cannot
+    torn = os.path.join(TMP, "elsewhere", "sid-k5f.jsonl")
+    with open(torn, "w") as f:
+        f.write(json.dumps(_hu(t % 8, "PRIOR_NOTE")) + "\n" + '{"type": "assis')
+    o, _ = _wake(dict(base, tx_path=p, woken_tx=torn), "g")
+    check("PRIOR_NOTE" in o and "UNMEASURED" in o, "K5 a torn prior transcript is read and flagged (%r)" % o[-200:])
+    # a window is on the chain before it reads, so its death mid-wake leaves it findable
+    root = os.path.join(TMP, "k5reg")
+    os.makedirs(os.path.join(root, "restart"))
+    real = SR.write_killed, SR.transcript_for
+    seen = []
+    try:
+        SR.write_killed = lambda seat, r, root=None: (seen.append(dict(r)), real[0](seat, r, root))
+        SR.transcript_for = lambda me, cfg: "/tx/" + me["sessionId"]
+        with contextlib.redirect_stdout(io.StringIO()):
+            SR._wake_conductor("BENCH", SR.config(bsched())["BENCH"], dict(base, tx_path=p, woken_tx="/tx/a"), root=root,
+                               me={"sessionId": "b"})
+    finally:
+        SR.write_killed, SR.transcript_for = real
+    check(seen and seen[0].get("woken_tx") == "/tx/b" and seen[0].get("prior_tx") == ["/tx/a"]
+          and not seen[0].get("woken_at") and seen[-1].get("woken_at"),
+          "K5 the window registers before it reads, and is marked woken after (%s)" % seen[:1])
+    # a fallback launch is not yet a window: no reclaim beside it inside the grace
+    root = os.path.join(TMP, "k5fall")
+    os.makedirs(os.path.join(root, "restart"))
+    SR._write_json(SR.intile_path("BENCH", T0, root), {"at": T0, "by": "fallback"})
+    live = SR._live_window
+    r2 = {"reads": True, "gen": "g", "killed_at": T0, "arm_s": 900}
+    try:
+        SR._live_window = lambda s: False
+        check(not SR._reclaim("BENCH", r2, T0 + 5, root), "K5 no reclaim beside a fallback launch")
+        check(SR._reclaim("BENCH", r2, T0 + SR.FALLBACK_GRACE_S + 1, root), "K5 a fallback that never appeared can be reclaimed")
+    finally:
+        SR._live_window = live
+    check(SR.FALLBACK_GRACE_S > 180, "K5 the grace outlasts run_fallback's timeout")
+    # a prompt queued behind the goodbye sits before the cursor
+    q2 = os.path.join(TMP, "elsewhere", "sid-k5g.jsonl")
+    head = json.dumps(enq) + "\n" + first
+    with open(q2, "w") as f:
+        f.write(head)
+    check([SR._text(r) for r in SR.unanswered(q2, len(head))] == ["QUEUED_NOTE"], "K5 an enqueue before the cursor is still owed")
+    # a dead window's session file on a reused pid is not a live window
+    saved_home, saved_sch = SR.claude_home, SR._schedule
+    home = os.path.join(TMP, "k5home")
+    os.makedirs(os.path.join(home, "sessions"))
+    sch = bsched()
+    try:
+        SR.claude_home, SR._schedule = (lambda: home), (lambda: sch)
+        name = SR.SM.names_of(SR.config(sch)["BENCH"])
+        name = name[0] if isinstance(name, (list, tuple)) else name
+        sf = {"pid": os.getpid(), "name": name, "procStart": SR.proc_start(os.getpid()) + 1}
+        SR._write_json(os.path.join(home, "sessions", "1.json"), sf)
+        check(not SR._live_window("BENCH"), "K5 a reused pid is not the session's window")
+        SR._write_json(os.path.join(home, "sessions", "1.json"), dict(sf, procStart=SR.proc_start(os.getpid())))
+        check(SR._live_window("BENCH"), "K5 the session's own process is")
+    finally:
+        SR.claude_home, SR._schedule = saved_home, saved_sch
+    # a record published between the tile's claim and its state read is still claimed
+    calls = []
+    saved = SR.intile_claim, SR.orphan_owed, SR.os.execv
+    def claim(seat, now):
+        calls.append(now)
+        return ["relaunch"] if len(calls) > 1 else None
+    def execv(a, b):
+        raise SystemExit(7)
+    try:
+        SR.intile_claim, SR.orphan_owed, SR.os.execv = claim, lambda *a: False, execv
+        try:
+            rc = SR.cmd_intile(argparse.Namespace(seat="BENCH"))
+        except SystemExit as e:
+            rc = e.code
+    finally:
+        SR.intile_claim, SR.orphan_owed, SR.os.execv = saved
+    check(rc == 7, "K5 the tile claims once more before it gives up (%s)" % rc)
 
 
 def main():

@@ -79,7 +79,8 @@ ring, a task notification, or a queued prompt. A malformed transcript record als
 (`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time, a transcript byte cursor and the
 transcript's path, and the Dispatcher reads everything after the cursor in full, ignoring timestamps, and again right
 before the kill). The fresh window runs `seat_restart.py wake --seat BENCH --gen <restart id>` first. That lists, whole,
-everything he sent the old window after the goodbye, once, and only for that restart. If the request prints
+everything he sent the old window after the goodbye, and lists it again until a window has answered, so a fresh
+window that dies on it costs nothing; a window opened without a token runs the same command with no `--gen`. If the request prints
 REFUSED (helpers alive, shard unpublished or unmeasured, or his last message is no longer the goodbye: answer him), fix
 what it names and request again; if it still refuses, tell him in one line that this window
 stays open. A full handoff is written only when a keyboard sitting ends.

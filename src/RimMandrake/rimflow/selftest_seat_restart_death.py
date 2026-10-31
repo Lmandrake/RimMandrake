@@ -9,8 +9,8 @@ Two things are stubbed, both for isolation: recheck_at_kill and the bridge/game/
 this machine's real seats. The live session list is the session files whose pid is alive (`claude agents` needs a real
 Claude; assumed: it does not list a dead pid). Nothing outside the temp dir is written and only own children are killed.
 
-A row marked GAP pins what the code does today, which LiveHandoff.tla reports as a broken S5/L3; it flips when the
-named item is fixed, and check_models.py's matching case flips with it.
+The rows named after SEAT_RESTART_FIX_DEAD_WINDOW_UNREAD_LOST, _WAKE_DEATH_READ_LOST and _STALE_RECORD_RELAUNCH pin the
+fixes of the gaps LiveHandoff.tla first reported as a broken S5/L3; check_models.py's death cases expect ok with them.
 """
 import json
 import os
@@ -28,6 +28,7 @@ os.environ["RM_DEATH_TMP"] = TMP
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
 os.environ["CLAUDE_CONFIG_DIR"] = os.path.join(TMP, "claude")
 os.environ["RM_SEAT_LOG_DIR"] = os.path.join(TMP, "seat_log")
+os.environ["RM_SEAT_RESTART_SCHEDULE"] = os.path.join(TMP, "schedule.json")
 sys.path.insert(0, HERE)
 sys.path.insert(0, os.path.dirname(HERE))
 sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
@@ -49,10 +50,10 @@ def check(ok, msg):
         FAILS.append(msg)
 
 
-def sched(seat):
+def sched(*seats):
     clone = os.path.join(TMP, "clone")
-    return {"seats": {seat: {"enabled": True, "session_name": "AGENT " + seat, "clone": clone, "model": "sonnet"}},
-            "seat_restart": {"enabled": True, "seats": {seat: {"kind": "conductor", "goodbye_quiet_s": 600}}}}
+    return {"seats": {s: {"enabled": True, "session_name": "AGENT " + s, "clone": clone, "model": "sonnet"} for s in seats},
+            "seat_restart": {"enabled": True, "seats": {s: {"kind": "conductor", "goodbye_quiet_s": 600} for s in seats}}}
 
 
 def stamp(at):
@@ -80,6 +81,15 @@ def pause_at(mark):
         f.write(str(os.getpid()))
     while not os.path.exists(mark + ".go"):
         time.sleep(0.02)
+
+
+def wait_text(path, text, timeout=20):
+    end = time.time() + timeout
+    while time.time() < end:
+        if text in read(path):
+            return True
+        time.sleep(0.02)
+    return False
 
 
 def wait_for(path, timeout=20):
@@ -149,11 +159,14 @@ class Scene:
         append(self.tx, user_rec(text, time.time()))
         self.rs["seen_size"] = os.path.getsize(self.tx)
 
+    def argv(self):
+        return [sys.executable, SCRIPT, "--child", "fresh", self.seat, self.gen, self.wake_mode]
+
     def dispatcher(self, pause):
         """A real Dispatcher tick that claimed the kill and paused at `pause` inside execute()."""
         act = {"do": "restart_kill", "seat": self.seat, "pid": self.pid, "session_id": self.sid,
                "session_name": self.cfg["session_name"], "session_names": [self.cfg["session_name"]], "ticket": "T",
-               "gen": self.gen, "argv": [sys.executable, SCRIPT, "--child", "fresh", self.seat, self.gen, self.wake_mode]}
+               "gen": self.gen, "argv": self.argv()}
         with open(os.path.join(self.dir, "act.json"), "w") as f:
             json.dump({"act": act, "sch": self.sch}, f)
         p = spawn("dispatcher", self.seat, pause)
@@ -185,6 +198,10 @@ class Scene:
             acts.append(kw)
         SR.decide(self.sch, st, {"agents": {"state": "MEASURED", "sessions": self.live_sessions()}, "seat_restart": ro,
                                  "paused": None}, time.time(), True, act)
+        for a in acts:               # what the tick itself carries out (a restart_kill goes through dispatcher())
+            if a["do"] in ("restart_orphan", "restart_abort"):
+                a["argv"] = self.argv() if a["do"] == "restart_orphan" else None
+                SR.execute(a, self.sch, st, True, time.time())
         self.save(st["seat_restart"])
         return st["seat_restart"][self.seat], acts
 
@@ -264,13 +281,19 @@ def child_fresh(seat, gen, mode):
     real = SR.write_killed
 
     def write(seat_, rec, root=None):
-        if mode == "die_before_mark":
+        sys.stdout.flush()
+        if mode == "die_before_mark" and rec.get("woken_at"):   # the mark, not the registration before the read
             pause_at(os.path.join(d, "wake_read"))
         real(seat_, rec, root)
     SR.write_killed = write
     rec = SR._read_json(SR.killed_path(seat)) or {}
-    SR._wake_conductor(seat, SR.config(sched(seat))[seat], rec, gen=None if gen == "-" else gen)
+    me = None
+    if mode == "answers":            # a real window: its session is known, and it ends the turn that read him
+        me = {"pid": os.getpid(), "sessionId": "fresh-" + seat.lower(), "cwd": SR.config(sched(seat))[seat]["clone"]}
+    SR._wake_conductor(seat, SR.config(sched(seat))[seat], rec, gen=None if gen == "-" else gen, me=me)
     sys.stdout.flush()
+    if mode == "answers":
+        append(SR.transcript_path(me["cwd"], me["sessionId"]), end_rec(time.time() + 1))
     if mode == "die_after_mark":
         pause_at(os.path.join(d, "wake_read"))
     elif mode == "live":
@@ -280,30 +303,55 @@ def child_fresh(seat, gen, mode):
 # -- the deaths --------------------------------------------------------------------------------------------------------
 
 def test_old_window_dies_before_the_record():
-    s = Scene("DEATHA")
+    s = Scene("DEATHA", wake="live")
     s.owner_says()                  # the window took it into its transcript and died before answering
     sigkill(s.window)
     rs, acts = s.tick()
-    check(rs["state"] == "cancelled" and not s.record(), "death 1, no record yet: the next tick cancels (%s)" % rs["state"])
+    check(rs["state"] == "killed" and s.record().get("gen") == s.gen and any(a["do"] == "restart_orphan" for a in acts),
+          "%s, no record yet: the next tick writes one for the dead window (%s)" % (GAP_DEAD, rs["state"]))
+    p, out = s.tile()
+    check(wait_for(os.path.join(s.dir, "fresh_up")) and MSG in read(out), "%s: the tile relaunched, the wake read him" % GAP_DEAD)
+    sigkill(p)
+
+
+def test_old_window_dies_tile_asks_before_the_tick():
+    s = Scene("DEATHJ", wake="live")
+    s.owner_says()
+    sigkill(s.window)
+    SR._write_json(os.path.join(doorbell.state_dir(), "state.json"), {"seat_restart": {s.seat: s.rs}})
+    p, out = s.tile()               # seat_loop.sh runs as the window ends, before any tick
+    time.sleep(1.5)
+    check(p.poll() is None, "%s: the tile waits for the tick instead of dropping to a login shell" % GAP_DEAD)
+    s.tick()
+    check(wait_for(os.path.join(s.dir, "fresh_up"), 30) and MSG in read(out), "%s: the waiting tile relaunches" % GAP_DEAD)
+    sigkill(p)
+    os.remove(os.path.join(doorbell.state_dir(), "state.json"))
+
+
+def test_old_window_dies_with_nothing_unanswered():
+    s = Scene("DEATHK")
+    s.owner_says()
+    append(s.tx, end_rec(time.time()))    # it answered him, then died
+    sigkill(s.window)
+    rs, acts = s.tick()
+    check(rs["state"] == "cancelled" and not s.record(), "a dead window that owes nothing is cancelled, no relaunch (%s)" % rs["state"])
     p, _ = s.tile()
-    check(p.wait(timeout=30) == 3, "GAP %s: no record, so the tile does not relaunch (exit 3)" % GAP_DEAD)
-    check(MSG not in s.fresh_by_hand(None), "GAP %s: a later window never reads his message" % GAP_DEAD)
+    check(p.wait(timeout=30) == 3, "and its tile drops to a shell at once (exit 3)")
 
 
 def test_old_window_dies_after_the_record_message_at_fence():
-    s = Scene("DEATHB")
+    s = Scene("DEATHB", wake="live")
     d = s.dispatcher("after_record")
     s.owner_says()
     sigkill(s.window)
     check(s.resume("after_record", d) == 0, "death 1, input at the fence: the tick ends")
     check(s.record().get("aborted"), "the fence read his message and aborted the record")
     rs, _ = s.tick()
-    check(rs["state"] == "cancelled", "the next tick cancels: the window is gone (%s)" % rs["state"])
-    p, _ = s.tile()
-    check(p.wait(timeout=30) == 3, "GAP %s: an aborted record gets no relaunch" % GAP_DEAD)
-    text = s.fresh_by_hand(None)
-    check("nothing to recover" in text, "GAP %s: the wake says nothing to recover, of a dead window with his message "
-          "unanswered (it quotes only the reason's first words)" % GAP_DEAD)
+    check(rs["state"] == "killed" and not s.record().get("aborted"),
+          "%s: the next tick replaces the aborted record, the window is dead (%s)" % (GAP_DEAD, rs["state"]))
+    p, out = s.tile()
+    check(wait_for(os.path.join(s.dir, "fresh_up")) and MSG in read(out), "%s: relaunched, and the wake read him" % GAP_DEAD)
+    sigkill(p)
 
 
 def test_old_window_dies_after_the_fence():
@@ -348,8 +396,8 @@ def test_dispatcher_dies_after_the_kill():
     check(wait_for(os.path.join(s.dir, "fresh_up")), "SURVIVES: the tile relaunched with no Dispatcher alive")
     check(MSG in read(out), "SURVIVES: the wake read his message with no Dispatcher alive")
     rs, acts = s.tick()
-    check(rs["state"] == "cancelled", "the restarted Dispatcher, on a stale state.json, cancels what already happened "
-          "(%s: its first-turn verification is lost, %s)" % (rs["state"], GAP_STALE))
+    check(rs["state"] == "killed" and rs.get("gen") == s.gen, "%s: the restarted Dispatcher, on a stale state.json, finds "
+          "the kill in the record and keeps first-turn verification (%s)" % (GAP_STALE, rs["state"]))
     sigkill(p)
 
 
@@ -361,12 +409,22 @@ def test_dispatcher_dies_then_input_cancels_and_the_window_quits():
     append(s.tx, end_rec(time.time()))
     rs, _ = s.tick()
     check(rs["state"] == "cancelled", "the input cancels the restart (%s)" % rs["state"])
-    check(not s.record().get("aborted"), "GAP %s: the cancelled restart's record stays armed" % GAP_STALE)
+    check(s.record().get("aborted"), "%s: the cancel aborts the record" % GAP_STALE)
     sigkill(s.window)               # he quits the window, inside the tile's window
-    p, out = s.tile()
-    check(wait_for(os.path.join(s.dir, "fresh_up")), "GAP %s: a cancelled restart still relaunches" % GAP_STALE)
-    check(MSG in read(out), "GAP %s: and replays what the old window already answered" % GAP_STALE)
-    sigkill(p)
+    p, _ = s.tile()
+    check(p.wait(timeout=30) == 3, "%s: a cancelled restart does not relaunch" % GAP_STALE)
+    check(MSG not in s.fresh_by_hand(s.gen) and not os.path.exists(os.path.join(s.dir, "fresh_up")),
+          "%s: and nothing replays what the old window already answered" % GAP_STALE)
+
+
+def test_dispatcher_dies_then_the_window_dies_alone():
+    s = Scene("DEATHL", wake="live")
+    d = s.dispatcher("after_record")
+    sigkill(d)
+    s.owner_says()
+    sigkill(s.window)
+    rs, _ = s.tick()
+    check(rs["state"] == "killed", "%s: the record is the persisted claim: a dead window reconciles it (%s)" % (GAP_STALE, rs["state"]))
 
 
 def _to_fresh(seat, mode):
@@ -383,10 +441,10 @@ def test_fresh_window_dies_before_the_wake_marks():
     s, p, out = _to_fresh("DEATHG", "die_before_mark")
     sigkill(p)
     check(not s.record().get("woken_at"), "death 3, before woken_at: the record is not consumed")
-    q, _ = s.tile()
-    check(q.wait(timeout=30) == 3, "GAP %s: the tile's O_EXCL marker refuses a second relaunch" % GAP_WAKE)
-    check(MSG not in s.fresh_by_hand(None), "GAP %s: a window with no token gets a pointer, not the message" % GAP_WAKE)
-    check(MSG in s.fresh_by_hand(s.gen), "the record survives for a window that holds the token")
+    check(MSG in s.fresh_by_hand(None), "%s: a window with no token reads the unanswered message" % GAP_WAKE)
+    q, out2 = s.tile()
+    check(wait_text(out2, MSG), "%s: the same tile relaunches for an unanswered restart" % GAP_WAKE)
+    sigkill(q)
 
 
 def test_fresh_window_dies_after_the_wake_marks():
@@ -394,11 +452,25 @@ def test_fresh_window_dies_after_the_wake_marks():
     check(MSG in read(out), "death 3: the wake printed his message")
     sigkill(p)
     check(s.record().get("woken_at"), "the wake marked the record before anything answered him")
+    q, out2 = s.tile()
+    check(wait_text(out2, MSG), "%s: read but unanswered: the tile relaunches and the wake reads him again" % GAP_WAKE)
+    sigkill(q)
+    check(MSG in s.fresh_by_hand(s.gen), "%s: the same token is not refused" % GAP_WAKE)
+
+
+def test_fresh_window_answers_then_quits():
+    s = Scene("DEATHI", wake="answers")
+    d = s.dispatcher("after_kill")
+    s.owner_says()
+    s.resume("after_kill", d)
+    p, out = s.tile()
+    check(wait_text(out, MSG), "the fresh window read him")
+    p.wait(timeout=30)
     q, _ = s.tile()
-    check(q.wait(timeout=30) == 3, "GAP %s: no second relaunch" % GAP_WAKE)
+    check(q.wait(timeout=30) == 3, "%s: an answered restart is not relaunched" % GAP_WAKE)
     text = s.fresh_by_hand(s.gen)
-    check("not replayed" in text and MSG not in text, "GAP %s: even the same token is refused: read, unanswered, gone"
-          % GAP_WAKE)
+    check("not replayed" in text and MSG not in text, "%s: and not replayed with its token" % GAP_WAKE)
+    check(MSG not in s.fresh_by_hand(None), "%s: nor without one" % GAP_WAKE)
 
 
 def main():
@@ -407,6 +479,8 @@ def main():
     if not (doorbell.state_dir().startswith(TMP) and SR.claude_home().startswith(TMP)):
         print("FAIL  refusing to run: state or claude home outside the temp dir")
         return 1
+    with open(os.environ["RM_SEAT_RESTART_SCHEDULE"], "w") as f:      # what the real `intile` reads
+        json.dump(sched(*("DEATH" + c for c in "ABCDEFGHIJKL")), f)
     try:
         for name, fn in sorted(globals().items()):
             if name.startswith("test_"):

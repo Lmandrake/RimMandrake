@@ -85,18 +85,20 @@ def cases() -> dict[str, tuple[str, str]]:
     out["risk_rc_drops_to_dead"] = (_cfg(RC_DROPS_TO_DEAD="TRUE", invariants=["S5"]), "invariant:S5")
     out["mut_no_park"] = (_cfg(bugs=["no_park"], properties=["L1"]), "temporal:L1")
     out["mut_ignore_owner_L2"] = (_cfg(bugs=["ignore_owner"], properties=["L2"]), "temporal:L2")
-    # Process death.  The dispatcher's death is survived; each other row is a filed gap against seat_restart.py
-    # (ARENA_HANDOFF_PROVE_SURVIVES_PROCESS_DEATH), and flips to "ok" when the gap is closed.
+    # Process death (ARENA_HANDOFF_PROVE_SURVIVES_PROCESS_DEATH): each is survived, and the bug that puts back the code
+    # before its fix (SEAT_RESTART_FIX_DEAD_WINDOW_UNREAD_LOST, _WAKE_DEATH_READ_LOST) still breaks S5 and L3.
     allinv = ["TypeOK", "S1", "S2", "S3", "S4", "S5", "S6", "L2Bound"]
     disp = '{"dispatcher"}'
     out["death_dispatcher_safety"] = (_cfg(Deaths=disp, invariants=allinv), "ok")
     out["death_dispatcher_live"] = (_cfg(Deaths=disp, properties=["L1", "L2", "L3"]), "ok")
     out["death_dispatcher_witness"] = (_cfg(Deaths=disp, invariants=["NoDeath"]), "invariant:NoDeath")
     out["death_dispatcher_tile_alone"] = (_cfg(Deaths=disp, invariants=["NoTileRecovery"]), "invariant:NoTileRecovery")
-    for death in ("old_alone", "wake"):
+    for death, bug in (("old_alone", "no_adopt"), ("wake", "wake_once")):
         d = '{"%s"}' % death
-        out[f"death_{death}_safety"] = (_cfg(Deaths=d, invariants=allinv), "invariant:S5")
-        out[f"death_{death}_live"] = (_cfg(Deaths=d, properties=["L3"]), "temporal:L3")
+        out[f"death_{death}_safety"] = (_cfg(Deaths=d, invariants=allinv), "ok")
+        out[f"death_{death}_live"] = (_cfg(Deaths=d, properties=["L3"]), "ok")
+        out[f"mut_{bug}"] = (_cfg(Deaths=d, bugs=[bug], invariants=["S5"]), "invariant:S5")
+        out[f"mut_{bug}_L3"] = (_cfg(Deaths=d, bugs=[bug], properties=["L3"]), "temporal:L3")
     return out
 
 

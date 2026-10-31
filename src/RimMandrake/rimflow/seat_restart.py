@@ -31,6 +31,12 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              one is left at a shell). No window in 90 s more -> failed + alarm.
   relaunched a new session with the seat's name; verified once the doorbell is ARMED for that new session (the first
              prompt makes it end a turn), else failed + alarm after arm_s.
+Process death (selftest_seat_restart_death.py, LiveHandoff.tla). The killed record is the persisted claim: state.json is
+saved only when a tick ends, so a pending state with an armed record of the same restart whose window is dead reconciles
+to killed; a restart that ends with the window alive disarms its record (restart_abort). A Conductor window that dies by
+itself with his message unanswered is adopted (restart_orphan writes the record the kill would have written; `intile`
+waits orphan_wait_s for it). A wake is read until a window has ENDED A TURN after it (`answered`): the tile may relaunch
+up to MAX_CLAIMS times for an unanswered restart, and a window without the token reads it too.
 Every step is journalled (dispatcher journal.jsonl); failures alarm and note the ticket. Off unless the schedule key
 `seat_restart.enabled` is true (design/RimMandrake/rimflow_v3_golive_wave1.md, "Seat restart: enable steps").
 """
@@ -60,12 +66,14 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "intile_window_s": 90, "backstop_ctx_tokens": 110_000, "backstop_idle_s": 1800,
             "helper_stale_s": 1800, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
-            "fence_s": 1020, "ring_hold_s": 600,
+            "fence_s": 1020, "ring_hold_s": 600, "orphan_wait_s": 180,
             "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
 TRANSITIONAL = ("DEPLOYING", "LOADING", "GOING_DOWN")
-DOES = ("restart_request", "restart_kill", "restart_fallback")
+DOES = ("restart_request", "restart_kill", "restart_fallback", "restart_orphan", "restart_abort")
+FALLBACK_GRACE_S = 200                          # past run_fallback's own 180 s timeout: no reclaim beside a launch
+MAX_CLAIMS = 3                                  # tile relaunches of one restart, the first included
 BOUNDED = "{clone}/src/RimMandrake/Utils/claude_bounded.sh"
 MACHINE = os.path.expanduser("~/.claude-accounts/machine.json")
 PROMPT = ("[RimFlow seat restart] You are a FRESH {seat} window: the last one was restarted after its ticket ended "
@@ -126,6 +134,13 @@ def seat_log_path(seat, cfg=None):
     if cfg and cfg.get("seat_log"):
         return cfg["seat_log"]
     return os.path.join(os.environ.get("RM_SEAT_LOG_DIR") or rm_str("seat_log"), "%s.md" % seat)
+
+
+def intile_claims(seat, killed_at, root=None):
+    """-> the claim markers of one kill, oldest first: the O_EXCL marker, then one per re-claim."""
+    first = intile_path(seat, killed_at, root)
+    more = glob.glob(first[:-len(".json")] + ".*.json")
+    return ([first] if os.path.exists(first) else []) + sorted(more, key=lambda f: int(f.split(".")[-2]))
 
 
 def _write_json(path, data):
@@ -462,6 +477,72 @@ def cursor_scan(path, offset, peers=None):
     return out
 
 
+def unanswered(path, offset, peers=None):
+    """-> his inputs from byte offset that no ended assistant turn follows ([] = the window owes him nothing), or None
+    (UNMEASURED: no cursor, unreadable, shorter than the cursor, or a malformed/torn record)."""
+    if not path or offset is None:
+        return None
+    if peers is None:
+        peers = peer_names()
+    owed = []
+    try:
+        if os.path.getsize(path) < offset:
+            return None
+        for r, _ in scan_records(path, offset):
+            if r.get("type") == "user" and _is_human_input(r, peers):
+                owed.append(r)
+            elif r.get("type") == "assistant" and _assistant_kind(r) == "assistant_end":
+                owed = []
+    except (Malformed, OSError):
+        return None
+    return owed + undelivered(path, peers)
+
+
+def undelivered(path, peers=None):
+    """-> his prompts that were submitted and never delivered, as user records: a queue-operation enqueue no dequeue or
+    remove followed (MEASURED 2026-10-31: 156 enqueues, 128 dequeues, 28 removes). From byte 0, whatever the cursor: a
+    prompt queued behind the goodbye sits before it. Reads up to a bad line: the caller's own scan says UNMEASURED."""
+    queued = []
+    try:
+        for raw, _ in _lines_from(path, 0):
+            if raw.get("type") != "queue-operation":
+                continue
+            if raw.get("operation") == "enqueue":
+                queued.append(raw)
+            elif queued:                 # dequeue or remove
+                ids = [q.get("commandUuid") for q in queued]
+                cid = raw.get("commandUuid")
+                if cid in ids or cid is None:
+                    del queued[ids.index(cid) if cid in ids else 0]
+    except (Malformed, OSError):
+        pass
+    recs = [{"type": "user", "timestamp": q.get("timestamp"), "uuid": q.get("commandUuid"),
+             "message": {"role": "user", "content": q.get("content") or ""}} for q in queued]
+    if peers is None:
+        peers = peer_names()
+    return [r for r in recs if _is_human_input(r, peers)]
+
+
+def answered(rec):
+    """Has a window dealt with this restart's wake? Yes when the transcript of the window that last read it holds an
+    ended turn after that read and owes nothing since. A wake from before woken_by existed counts as answered, and so
+    does a wake with nothing to read by a window that cannot be named. Otherwise a window that cannot be named, or a
+    transcript that cannot be read, has not answered."""
+    if not rec.get("woken_at"):
+        return False
+    path = rec.get("woken_tx")
+    if "woken_by" not in rec or (rec.get("owed") == 0 and not path):
+        return True
+    if not path:
+        return False
+    try:
+        return unanswered(path, 0) == [] and any(
+            r.get("type") == "assistant" and _assistant_kind(r) == "assistant_end"
+            and (_ts(r.get("timestamp")) or 0) >= rec["woken_at"] for r, _ in scan_records(path))
+    except (Malformed, OSError):
+        return False
+
+
 def human_since_offset(path, offset, peers=None):
     """-> every HUMAN input record from byte offset to EOF (no timestamp filter, review 2 P0-3), [] when there is none,
     or None (UNMEASURED: no path, unreadable, shorter than the cursor, or a malformed/torn record)."""
@@ -645,6 +726,7 @@ def default_obs(sch, events_since, now_fn=time.time):
         # the transcript the request named (review 2 P1-4), else the one the live session resolves to
         "cursor": lambda seat, s, rs: cursor_scan(rs.get("tx_path") or transcript_for(s, cfgs[seat]), rs.get("tx_offset")),
         "last_human": lambda seat, s: last_human(transcript_for(s, cfgs[seat]) or ""),
+        "owed": lambda rs: unanswered(rs.get("tx_path"), rs.get("tx_offset")),
     }
 
 
@@ -728,10 +810,24 @@ def decide(sch, st, obs, now, apply, act):
     R = st.setdefault("seat_restart", {})
     for seat, cfg in cfgs.items():
         try:
+            before = (R.get(seat) or {}).get("state")
             _one(seat, cfg, R, st, obs, agents.get("sessions"), now, apply, act)
+            _disarm(seat, R.get(seat) or {}, before, obs["seat_restart"], act)
         except Exception as e:  # noqa: BLE001 - one seat's fault never stops the tick
             act(do="alarm", kind="restart:decide:" + seat, seat=seat, note=True,
                 why="seat restart NOT decided for %s: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
+
+
+def _disarm(seat, rs, before, ro, act):
+    """A restart ended with its window alive, while a record a dead tick left is armed: abort it, or the window's later
+    quit would relaunch a restart nobody wants (SEAT_RESTART_FIX_STALE_RECORD_RELAUNCH). A dead window's record stays:
+    the tile and the wake still need it."""
+    if before not in ACTIVE or rs.get("state") not in ("cancelled", "failed") or not ro.get("killed"):
+        return
+    rec = ro["killed"](seat)
+    if (rec and not rec.get("aborted") and rec.get("old_alive") is not False and rec.get("req_ts") == rs.get("ts")
+            and rec.get("session_id") == rs.get("session_id")):
+        act(do="restart_abort", seat=seat, req_ts=rs.get("ts"), why=rs.get("why") or "the restart ended")
 
 
 def _fail(rs, seat, cls, why, now, act):
@@ -770,8 +866,8 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             if now - ts > cfg["request_max_age_s"]:
                 return _cancel(new, seat, "request is %d s old (stale)" % (now - ts), now, act)
             if cur is None or cur.get("sessionId") != req.get("session_id"):
-                return _cancel(new, seat, "request names session %s, the seat runs %s" % (
-                    req.get("session_id"), (cur or {}).get("sessionId") or "none/ambiguous"), now, act)
+                return _gone(seat, cfg, new, obs, ro, now, act, "request names session %s, the seat runs %s" % (
+                    req.get("session_id"), (cur or {}).get("sessionId") or "none/ambiguous"))
             new["state"] = "pending"
             rs = new
         elif cfg.get("backstop") and cur and rs.get("cooldown_until", 0) <= now and cur.get("status") == "idle":
@@ -852,6 +948,11 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
     if state == "relaunched" and cfg.get("kind") == "conductor":
         # no doorbell: the fresh window proves itself by ending its first turn (its wake read) after the kill
         mine = [s for s in named if s.get("sessionId") == rs.get("new_session")]
+        if not mine:                     # the fresh window died in its first turn and a replacement carries the wake
+            next_ = [s for s in named if s.get("sessionId") != rs.get("session_id")]
+            if next_:
+                rs.update(new_session=next_[0].get("sessionId"), new_pid=next_[0].get("pid"), relaunched_at=now)
+                mine = next_[:1]
         tx = ro["tx"](seat, mine[0]) if mine else None
         if tx and tx.get("last_kind") == "assistant_end" and (tx.get("last_at") or 0) >= rs.get("killed_at", 0):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
@@ -933,10 +1034,44 @@ def _cancel(rs, seat, why, now, act):
     act(do="restart_cancel", seat=seat, ticket=rs.get("ticket"), why=why)
 
 
+def _gone(seat, cfg, rs, obs, ro, now, act, why):
+    """The window a restart was asked for is not the seat's window. A Conductor window that died with his message
+    unanswered is adopted, so the next window reads it (SEAT_RESTART_FIX_DEAD_WINDOW_UNREAD_LOST). Anything else is a
+    cancel: a live pid is /clear or /resume, and a window that owes nothing may have been quit on purpose."""
+    rs["state"] = "pending"
+    alive = ro["start"](rs.get("pid")) == rs.get("start") if callable(ro.get("start")) and rs.get("pid") else True
+    if cfg.get("kind") != "conductor" or alive or rs.get("start") is None or not callable(ro.get("owed")):
+        return _cancel(rs, seat, why, now, act)
+    owed = ro["owed"](rs)
+    if owed == []:
+        return _cancel(rs, seat, why, now, act)
+    if _find((obs.get("agents") or {}).get("sessions"), SM.names_of(cfg)):    # never a second window beside a live one
+        _cancel(rs, seat, why, now, act)
+        act(do="alarm", kind="restart:%s:orphan" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
+            why="%s window %s died with his message unanswered, and another window already runs: read %s after byte %s" % (
+                seat, rs.get("session_id"), rs.get("tx_path"), rs.get("tx_offset")))
+        return
+    if obs.get("paused"):
+        act(do="restart_hold", seat=seat, why="PAUSE: %s (dead window, message owed)" % obs["paused"])
+        return
+    rs.update(state="claimed", claimed_at=now, gen=rs.get("gen") or uuid.uuid4().hex[:12])
+    act(do="restart_orphan", seat=seat, pid=rs.get("pid"), session_id=rs.get("session_id"), ticket=rs.get("ticket"),
+        gen=rs["gen"], argv=relaunch_argv(seat, cfg, "the window died with his message unanswered", rs["gen"]),
+        why="the window died with his message unanswered (%s)" % ("UNMEASURED" if owed is None else "%d owed" % len(owed)))
+
+
 def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
+    rec = ro["killed"](seat) if ro.get("killed") else None
+    if (rec and not rec.get("aborted") and rec.get("old_alive") is False and rec.get("killed_at")
+            and rec.get("req_ts") == rs.get("ts") and rec.get("session_id") == rs.get("session_id")
+            and rec["killed_at"] >= rs.get("ts", 0)):        # the tick that wrote it died before saving: the record is the claim
+        rs.update(state="killed", killed_at=rec["killed_at"], kill="reconciled from the killed record",
+                  window_s=rec.get("window_s"), gen=rec.get("gen") or rs.get("gen"))
+        act(do="restart_hold", seat=seat, why="pending restart found killed at %s (state reconciled)" % _iso(rec["killed_at"]))
+        return
     if cur is None or cur.get("sessionId") != rs.get("session_id"):
-        return _cancel(rs, seat, "the window's session changed or is gone (%s)" % ((cur or {}).get("sessionId")), now,
-                       act)
+        return _gone(seat, cfg, rs, obs, ro, now, act,
+                     "the window's session changed or is gone (%s)" % ((cur or {}).get("sessionId")))
     tx = ro["tx"](seat, cur)
     after = rs.get("cancel_after", rs["ts"])
     if tx and tx.get("last_user_at") and tx["last_user_at"] > after:
@@ -1115,6 +1250,20 @@ def run_fallback(argv):
     return "rc=%d %s" % (r.returncode, (r.stderr or r.stdout).strip()[-200:])
 
 
+def _kill_record(seat, a, sch, rs, start, now):
+    cfg = config(sch).get(seat, DEFAULTS)
+    wall = time.time()      # the tile's window starts at the real kill, not the tick's start (GPT review P1)
+    return {"seat": seat, "old_pid": a["pid"], "old_start": start, "session_id": a["session_id"],
+            "killed_at": max(now, wall) if abs(wall - now) < 600 else now,
+            "argv": a["argv"], "ticket": a.get("ticket"), "req_ts": rs.get("ts"),
+            "input_ts": rs.get("cancel_after"), "tx_offset": rs.get("tx_offset"),   # the wake reads on from here (P1-5)
+            # the transcript the request named (review 2 P1-4) and this restart's generation, which only the relaunch
+            # prompt carries (review 2 P1-5)
+            "tx_path": rs.get("tx_path"), "gen": a.get("gen") or rs.get("gen"),
+            "reads": cfg.get("kind") == "conductor", "arm_s": cfg["arm_s"],      # a wake that must be answered (`answered`)
+            "window_s": cfg["intile_window_s"]}   # the tile obeys decide()'s deadline (review4 #2)
+
+
 def execute(a, sch, st, apply, now, fx=None):
     """Carry out one restart_* action. -> result text. Dry run: nothing is killed, launched or consumed."""
     fx = fx or {}
@@ -1143,7 +1292,15 @@ def execute(a, sch, st, apply, now, fx=None):
             return fx.get("fallback", run_fallback)(a["argv"])
         except Exception as e:  # noqa: BLE001
             return "fallback failed: %s: %s" % (type(e).__name__, str(e)[:160])
-    if a["do"] != "restart_kill":
+    if a["do"] == "restart_abort":
+        rec = _read_json(killed_path(seat, fx.get("root"))) or {}
+        if rec.get("aborted") or rec.get("req_ts") != a.get("req_ts"):
+            return "no armed record of this restart"
+        if not apply:
+            return "would abort the killed record"
+        fx.get("write_killed", write_killed)(seat, dict(rec, aborted=a.get("why") or "the restart ended"))
+        return "killed record aborted"
+    if a["do"] not in ("restart_kill", "restart_orphan"):
         return None
     if seat not in config(sch):          # a seat switched off is never killed, whatever action reaches here (review 3)
         rs.update(state="cancelled", why="seat_restart is off for %s: kill refused" % seat, ended_at=now)
@@ -1153,7 +1310,14 @@ def execute(a, sch, st, apply, now, fx=None):
         return "skipped: restart state is %s" % rs.get("state")
     if not apply:
         rs.update(state="dry", ended_at=now, why="dry run")
+        if a["do"] == "restart_orphan":
+            return "would write a killed record for the dead pid %s" % a["pid"]
         return "would SIGTERM pid %s (%s) and relaunch in-tile: %s" % (a["pid"], a["session_id"], a["argv"][:-1])
+    if a["do"] == "restart_orphan":      # no kill: the window is dead, and this record is what the tile and the wake read
+        rec = _kill_record(seat, a, sch, rs, rs.get("start"), now)
+        fx.get("write_killed", write_killed)(seat, dict(rec, kill="already dead, nothing signalled"))
+        rs.update(state="killed", killed_at=rec["killed_at"], kill="already dead", window_s=rec["window_s"])
+        return "adopted dead pid %s (%s)" % (a["pid"], a["session_id"])
     sf = fx.get("session_file", session_file)(a["pid"]) or {}
     if sf.get("sessionId") != a["session_id"] or not SM.name_matches(sf.get("name"), a.get("session_names") or a["session_name"]):
         why = "sessions/%s.json names %s/%r, not %s/%r: nothing killed" % (
@@ -1181,15 +1345,8 @@ def execute(a, sch, st, apply, now, fx=None):
                   alarm_pending="seat restart of %s: pid %s vanished before the kill (no relaunch)" % (seat, a["pid"]),
                   cooldown_until=now + rs.get("cooldown_s", DEFAULTS["cooldown_s"]))
         return "refused: pid %s gone before the kill" % a["pid"]
-    wall = time.time()      # the tile's window starts at the real kill, not the tick's start (GPT review P1)
-    kt = max(now, wall) if abs(wall - now) < 600 else now
-    rec = {"seat": seat, "old_pid": a["pid"], "old_start": start, "session_id": a["session_id"], "killed_at": kt,
-           "argv": a["argv"], "ticket": a.get("ticket"), "req_ts": rs.get("ts"),
-           "input_ts": rs.get("cancel_after"), "tx_offset": rs.get("tx_offset"),   # the wake reads on from here (P1-5)
-           # the transcript the request named (review 2 P1-4) and this restart's generation, which only the relaunch
-           # prompt carries: the wake reads this record only for that token, and only once (review 2 P1-5)
-           "tx_path": rs.get("tx_path"), "gen": a.get("gen") or rs.get("gen"),
-           "window_s": config(sch).get(seat, DEFAULTS)["intile_window_s"]}   # the tile obeys decide()'s deadline (review4 #2)
+    rec = _kill_record(seat, a, sch, rs, start, now)
+    kt = rec["killed_at"]
     fx.get("write_killed", write_killed)(seat, rec)
     # the final fence (blind review 2026-10-29 P0-3; review 2 P0-1): the killed record is on disk, so anything the old
     # window accepts from here on is still recovered by the new window's wake (it reads from the record's cursor). In
@@ -1298,24 +1455,79 @@ def old_alive(rec):
 
 def intile_claim(seat, now, alive=None, root=None, window_s=DEFAULTS["intile_window_s"]):
     """-> the relaunch argv if this seat's window was just killed by a restart and no tile has claimed it; else None.
-    The claim is an O_EXCL marker per kill, so exactly one relaunch happens."""
+    The claim is an O_EXCL marker per kill, so exactly one relaunch happens, and one more for each fresh window that
+    died before answering his wake (_reclaim)."""
     rec = _read_json(killed_path(seat, root))
     if not rec or rec.get("aborted") or not isinstance(rec.get("argv"), list) or not rec.get("killed_at"):
         return None
     if rec.get("window_s") is not None:
         window_s = min(window_s, rec["window_s"])
-    if now - rec["killed_at"] >= window_s or now < rec["killed_at"] - 5:
+    if now < rec["killed_at"] - 5:
         return None
     if rec.get("old_pid") and (alive(int(rec["old_pid"])) if alive else old_alive(rec)):
         return None
     p = intile_path(seat, rec["killed_at"], root)
+    if os.path.exists(p):
+        p = _reclaim(seat, rec, now, root)
+    elif now - rec["killed_at"] >= window_s:
+        return None
+    if not p:
+        return None
     try:
         fd = os.open(p, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     except FileExistsError:
         return None
     with os.fdopen(fd, "w") as f:
-        json.dump({"seat": seat, "at": now, "killed_at": rec["killed_at"], "by_pid": os.getpid()}, f)
+        json.dump({"seat": seat, "at": now, "killed_at": rec["killed_at"], "by_pid": os.getpid(),
+                   "by_start": proc_start(os.getpid())}, f)
     return rec["argv"]
+
+
+def _reclaim(seat, rec, now, root=None):
+    """-> the path of the next claim marker if a fresh window died before answering this restart's wake, else None.
+    Bounded: MAX_CLAIMS tile relaunches, each within arm_s of the last, never beside a live claimer or window."""
+    if not rec.get("reads") or not rec.get("gen") or answered(rec):
+        return None
+    marks = intile_claims(seat, rec["killed_at"], root)
+    last = _read_json(marks[-1]) or {}
+    if len(marks) >= MAX_CLAIMS or now - (last.get("at") or 0) >= (rec.get("arm_s") or DEFAULTS["arm_s"]):
+        return None
+    if last.get("by_pid") and proc_alive(last["by_pid"], last.get("by_start")):
+        return None
+    if last.get("by") == "fallback" and now - (last.get("at") or 0) < FALLBACK_GRACE_S:
+        return None
+    if _live_window(seat):
+        return None
+    return "%s.%d.json" % (intile_path(seat, rec["killed_at"], root)[:-len(".json")], len(marks) + 1)
+
+
+def _live_window(seat):
+    """A running session file carries the seat's name. Unknown seat -> True: never a second window on a guess."""
+    cfg = config(_schedule()).get(seat)
+    if not cfg:
+        return True
+    for p in glob.glob(os.path.join(claude_home(), "sessions", "*.json")):
+        sf = _read_json(p) or {}
+        born = reg_start(sf) or proc_start(sf.get("pid"))
+        if SM.name_matches(sf.get("name"), SM.names_of(cfg)) and proc_alive(sf.get("pid"), born):
+            return True
+    return False
+
+
+def orphan_owed(seat, sch, st):
+    """Is a dead Conductor window's message waiting for the Dispatcher to adopt it (decide's _gone)? The tile runs as the
+    window ends, so its restart may still be a request nobody has taken."""
+    cfg = config(sch).get(seat)
+    if not cfg or cfg.get("kind") != "conductor":
+        return False
+    rs = (st.get("seat_restart") or {}).get(seat) or {}
+    if rs.get("state") not in ("pending", "claimed"):
+        req = _read_json(request_path(seat)) or {}
+        rs = req if req.get("ts") is not None and req.get("ts") != rs.get("req_ts") else {}
+    if not rs or rs.get("start") is None or proc_alive(rs.get("pid"), rs["start"]):
+        return False
+    owed = unanswered(rs.get("tx_path"), rs.get("tx_offset"))
+    return owed is None or bool(owed)
 
 
 def check_request(seat, sf, helpers):
@@ -1370,7 +1582,8 @@ def append_seat_log(seat, ticket, note, now=None, cfg=None):
 
 def _schedule():
     try:
-        with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+        with open(os.environ.get("RM_SEAT_RESTART_SCHEDULE") or os.path.join(HERE, "dispatcher_schedule.json"),
+                  encoding="utf-8") as f:
             return json.load(f)
     except (OSError, ValueError):
         return {}
@@ -1456,12 +1669,13 @@ def cmd_request(args):
     return 0
 
 
-def _wake_conductor(seat, cfg, rec, gen=None, root=None):
+def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
     """The Conductor's wake read after a goodbye restart: EVERY message he sent the old window after his goodbye, read
     in full from the killed record's byte cursor in the transcript the record names (review 1 P1-5; review 2 P1-4).
-    Bound to ONE restart (review 2 P1-5): the record is read only when its generation token is the `--gen` the
-    relaunch prompt passed, it was not aborted, and no earlier wake consumed it; after a full read it is marked woken,
-    so a later window never replays it."""
+    Bound to ONE restart (review 2 P1-5): a token for another restart is refused and an aborted record is never read.
+    Read until ANSWERED, not once (SEAT_RESTART_FIX_WAKE_DEATH_READ_LOST): a window that died after reading him has not
+    told him anything, so the next window reads it again, with or without the token (a fallback window has none).
+    me: the reading window's session file, whose ended turn proves the read; without it the read proves nothing."""
     if not rec:
         print("\n== no restart record: this window was not made by a goodbye restart (a fleet launch or boot).")
         return
@@ -1469,15 +1683,20 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None):
         print("\n== no restart record: the last restart (%s) was ABORTED before any kill (%s); the old window was "
               "never killed, so there is nothing to recover." % (rec.get("gen") or "?", str(rec["aborted"])[:160]))
         return
-    if not gen or rec.get("gen") != gen:
+    if answered(rec):
+        print("\n== restart %s was already recovered by a wake at %s: not replayed." % (rec.get("gen"), _iso(rec["woken_at"])))
+        return
+    if gen and rec.get("gen") != gen:
         print("\n== no restart record for this window: the killed record is restart %s, this window was given %s. It is "
               "NOT replayed (it may be an older restart's, already answered). If the fleet launcher opened this window "
               "right after a goodbye restart, the owner's messages are in %s after byte %s." % (
-                  rec.get("gen") or "(none)", gen or "no --gen", rec.get("tx_path") or "?", rec.get("tx_offset")))
+                  rec.get("gen") or "(none)", gen, rec.get("tx_path") or "?", rec.get("tx_offset")))
         return
-    if rec.get("woken_at"):
-        print("\n== restart %s was already recovered by a wake at %s: not replayed." % (gen, _iso(rec["woken_at"])))
-        return
+    me = me or {}
+    mine = transcript_for(me, cfg) if me.get("sessionId") else None
+    prior = [t for t in list(rec.get("prior_tx") or []) + [rec.get("woken_tx")] if t and t != mine]
+    rec = dict({k: v for k, v in rec.items() if k != "woken_at"}, woken_tx=mine, prior_tx=prior)
+    write_killed(seat, rec, root)        # on the chain before the read: this window's death leaves it findable
     path = rec.get("tx_path")
     off = rec.get("tx_offset")
     since = rec.get("input_ts") or rec.get("req_ts") or rec.get("killed_at") or 0
@@ -1489,6 +1708,13 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None):
               "the killed record names no transcript/cursor. Say so to him in one line; ask whether he sent anything "
               "after his goodbye." % path)
         return                           # not consumed: a later read may still recover them
+    msgs = msgs + undelivered(path)
+    blind = []
+    for tx in prior:                     # what he typed to a fresh window that died before answering
+        sc = cursor_scan(tx, 0)
+        msgs = msgs + ((sc or {}).get("human") or []) + undelivered(tx)
+        if sc is None or sc["malformed"] or sc["torn"]:
+            blind.append(tx)
     if not msgs:
         print("(none)")
     else:
@@ -1499,7 +1725,9 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None):
                 " (+ %s: open the record in the transcript to see it)" % ", ".join(extra) if extra else "",
                 _text(r).strip() or "(no text)"))
         print("Answer these FIRST, before anything else.")
-    write_killed(seat, dict(rec, woken_at=time.time()), root)
+    for tx in blind:
+        print("UNMEASURED: %s could not be read to its end. Say so to him in one line; ask what he sent that window." % tx)
+    write_killed(seat, dict(rec, woken_at=time.time(), woken_by=me.get("sessionId") or "unknown", owed=len(msgs)), root)
 
 
 def cmd_wake(args):
@@ -1517,7 +1745,8 @@ def cmd_wake(args):
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
             rec.get("session_id"), _iso(rec.get("killed_at") or 0), rec.get("ticket") or "-"))
     if cfg.get("kind") == "conductor":
-        _wake_conductor(seat, cfg, rec, gen=args.gen)
+        pid = doorbell.claude_ancestor()
+        _wake_conductor(seat, cfg, rec, gen=args.gen, me=session_file(pid) if pid else None)
         return 0
     print("\n== handoff pointers (handoff.py --wake)")
     try:
@@ -1534,13 +1763,19 @@ def cmd_wake(args):
 
 def cmd_intile(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
-    deadline = time.time() + 15
+    sch = _schedule()
+    start = time.time()
+    orphan_end = start + config(sch).get(seat, DEFAULTS)["orphan_wait_s"]
+    state = os.path.join(doorbell.state_dir(), "state.json")
     while True:
-        argv = intile_claim(seat, time.time())
+        now = time.time()
+        argv = intile_claim(seat, now)
         rec = _read_json(killed_path(seat)) or {}
-        if argv or time.time() >= deadline or not rec.get("old_pid") or not doorbell._alive(int(rec["old_pid"])):
+        dying = rec.get("old_pid") and now < start + 15 and doorbell._alive(int(rec["old_pid"]))
+        if argv or not (dying or (now < orphan_end and orphan_owed(seat, sch, _read_json(state) or {}))):
             break
-        time.sleep(1)       # the killed window is still dying: give it a moment
+        time.sleep(1)       # the killed window is still dying, or a tick is about to adopt the dead one
+    argv = argv or intile_claim(seat, time.time())       # a tick may have written the record since this loop's claim
     if not argv:
         return 3
     print("[seat_restart] relaunching %s in this tile" % seat, flush=True)

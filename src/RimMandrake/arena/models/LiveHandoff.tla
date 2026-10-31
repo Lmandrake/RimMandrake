@@ -73,11 +73,12 @@
 (*                (DispatcherDies/DispatcherRestarts; tick() saves only in *)
 (*                its finally, so a SIGKILL loses the tick's state)        *)
 (*   "wake"       the fresh window dies after its wake read (WakeDies)     *)
-(* Respawn is a later fresh window with no restart generation: what a      *)
-(* fleet launch or the owner opens.  Its fairness is generous on purpose:  *)
-(* seat_loop.sh drops to a login shell after a death with no record, so    *)
-(* in the code it may need him.  selftest_seat_restart_death.py shows each *)
-(* of these on real processes under real SIGKILL.                          *)
+(* Adopt is the next tick writing the record for a dead window (restart_   *)
+(* orphan).  Respawn is the next window after a wake death: the same tile  *)
+(* or one with no token; the wake reads until a window has answered.       *)
+(* Bugs "no_adopt" and "wake_once" put back the code before those fixes:   *)
+(* a Respawn that replays nothing.  selftest_seat_restart_death.py shows   *)
+(* each of these on real processes under real SIGKILL.                     *)
 (***************************************************************************)
 EXTENDS Naturals, FiniteSets
 
@@ -91,7 +92,8 @@ CONSTANTS Msgs,              \* owner messages that may arrive (model values)
           Deaths             \* subset of DeathNames: the process deaths the environment may do
 
 BugNames == {"goodbye_unfixed", "relaunch_after_survive", "verdict_stale", "deploy_live",
-             "silent_reload", "queue_in_memory", "switch_early", "no_park", "ignore_owner", "closeout_skips_queue"}
+             "silent_reload", "queue_in_memory", "switch_early", "no_park", "ignore_owner", "closeout_skips_queue",
+             "no_adopt", "wake_once"}
 ASSUME Bugs \subseteq BugNames
 DeathNames == {"old_alone", "dispatcher", "wake"}
 ASSUME Deaths \subseteq DeathNames
@@ -345,13 +347,14 @@ Relaunch ==
   /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, reqPos, recCursor, sent, pos, handled, dropped,
                  gameVars, n, lastEmit, switchN>>
 
-\* Death 1.  Before the killed record exists the next tick finds the session gone and cancels: no
-\* record, so the tile does not relaunch and no wake reads the cursor.  From the record on a
+\* Death 1.  Before the killed record exists the next tick finds the session gone and adopts the
+\* restart (Adopt).  A death in the close-out has no request yet, so no restart to adopt: that is
+\* outside this action (SEAT_RESTART_ADD_DEATH_BEFORE_REQUEST).  From the record on a
 \* SIGKILLed window leaves its session file saying idle, so execute() carries on: the fence still
 \* reads the transcript and kill_pid says "already gone".
 OldDiesAlone ==
   /\ "old_alone" \in Deaths /\ deaths = 0
-  /\ hp \in {"closeout", "pending", "checked", "recorded", "fenced"}
+  /\ hp \in {"pending", "checked", "recorded", "fenced"}
   /\ deaths' = 1
   /\ cst' = [cst EXCEPT !["old"] = "dead"]
   /\ holds' = [holds EXCEPT !["old"] = FALSE]
@@ -393,21 +396,31 @@ WakeDies ==
                  loaded, ownerHome, yieldSteps, crashes, reloads, ruleOpen, n, ruleN, reloadN,
                  prevReloadN, reloadRuleN, lastEmit, switchN, verdicts>>
 
-\* A later fresh window, with no generation token: no record is replayed to it, so every message
-\* no context answered is gone (a pointer in the wake text is not a read).
+\* The next tick finds the window dead with his message unanswered: the record it writes carries the
+\* cursor, and the tile relaunches on it as on a kill.
+Adopt ==
+  /\ hp = "orphaned" /\ ~dispDown /\ ~Bug("no_adopt")
+  /\ recCursor' = cursor
+  /\ hp' = "killed"
+  /\ UNCHANGED <<goodbyes, deaths, dispDown, cst, txLen, cursor, reqPos, msgVars, gameVars, n,
+                 lastEmit, switchN>>
+
+\* The next window.  Nothing answered the wake, so it reads it again and his messages stay in the
+\* inbox.  With a bug on it replays nothing: every message no context answered is gone.
+Forgets == Bug("no_adopt") \/ Bug("wake_once")
 Respawn ==
-  /\ hp \in {"orphaned", "wake_dead"}
-  /\ hp' = "respawned"
+  /\ hp = "wake_dead" \/ (hp = "orphaned" /\ Bug("no_adopt"))
+  /\ hp' = IF Forgets THEN "respawned" ELSE "done"
   /\ cst' = [cst EXCEPT !["new"] = "live"]
-  /\ lost' = lost \cup {m \in sent : m \notin handled /\ (pos[m] > 0 \/ m \in inbox)}
-  /\ inbox' = {}
+  /\ lost' = IF Forgets THEN lost \cup {m \in sent : m \notin handled /\ (pos[m] > 0 \/ m \in inbox)} ELSE lost
+  /\ inbox' = IF Forgets THEN {} ELSE inbox
   /\ UNCHANGED <<goodbyes, deaths, dispDown, txLen, cursor, reqPos, recCursor, sent, pos, handled,
                  dropped, gameVars, n, lastEmit, switchN>>
 
 \* CloseOut is the window's.  SwitchRecord and Relaunch are the tile reading the killed record: no
 \* Dispatcher needed (seat_loop.sh, intile_claim).
 Dispatcher == CloseOut \/ Check \/ WriteRecord \/ Fence \/ KillOk \/ KillSurvives
-              \/ SwitchRecord \/ Relaunch \/ DispatcherRestarts \/ Respawn
+              \/ SwitchRecord \/ Relaunch \/ DispatcherRestarts \/ Adopt \/ Respawn
 
 (*************************** the pilot driving the game ***************************)
 
