@@ -366,7 +366,26 @@ def setup_env(tmp, name):
 
 
 def tasks_spec():
-    return {"T%03d" % i: {"kind": A.KINDS[i % 2], "size": (1, 2, 4)[i % 3]} for i in range(N)}
+    # chrono: the era gate's key (arena_analysis ERA GATE). N - i puts the newest era FIRST so the gate is open from
+    # the first look; the order is not what this suite tests (selftest_arena_analysis.t_era_gate does)
+    return {"T%03d" % i: {"kind": A.KINDS[i % 2], "size": (1, 2, 4)[i % 3], "chrono": N - i} for i in range(N)}
+
+
+def era_repo(root):
+    """A git repo of N empty commits; -> (repo, {task: base_sha}) with T000 on the NEWEST commit (as tasks_spec), so
+    arena_analysis.py run --era-repo computes the same chronology from base_sha as the in-process specs carry."""
+    import subprocess
+    repo = Path(root) / "era_repo"
+    repo.mkdir()
+    env = dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t",
+               GIT_COMMITTER_EMAIL="t@t")
+    subprocess.run(["git", "init", "-q", str(repo)], check=True, env=env)
+    shas = []
+    for i in range(N):
+        subprocess.run(["git", "-C", str(repo), "commit", "-q", "--allow-empty", "-m", "c%d" % i], check=True, env=env)
+        shas.append(subprocess.run(["git", "-C", str(repo), "rev-parse", "HEAD"], check=True, env=env,
+                                   capture_output=True, text=True).stdout.strip())
+    return repo, {"T%03d" % i: shas[N - 1 - i] for i in range(N)}
 
 
 def task_cost():
@@ -555,14 +574,16 @@ def t_e2e(tmp):
     # the CLI pair, untrusted mode (no ledger here): arena_spend.py -> SPEND.json -> arena_analysis.py run
     td = r["root"] / "tasks_dir"
     td.mkdir()
+    erepo, bases = era_repo(r["root"])
     for t, s in r["specs"].items():
-        (td / (t + ".json")).write_text(json.dumps(dict(s, id=t)))
+        (td / (t + ".json")).write_text(json.dumps(dict({k: v for k, v in s.items() if k != "chrono"}, id=t,
+                                                        base_sha=bases[t])))
     out = r["root"] / "spend.json"
     with contextlib.redirect_stdout(io.StringIO()):
         rc1 = SP.main(["--out", str(out), "--allow-untrusted", "--projects", str(r["projects"]),
                        "--clones-root", str(r["clones_root"])])
         rc2 = AA.main(["run", "--spend", str(out), "--tasks-dir", str(td), "--allow-untrusted", "--draws", "2000",
-                       "--out", str(r["root"] / "rep.json")])
+                       "--era-repo", str(erepo), "--out", str(r["root"] / "rep.json")])
         rc3 = AA.main(["run", "--spend", str(r["root"] / "missing.json"), "--tasks-dir", str(td),
                        "--allow-untrusted", "--draws", "2000"])
     rep2 = json.loads((r["root"] / "rep.json").read_text()) if (r["root"] / "rep.json").is_file() else {}
@@ -571,6 +592,8 @@ def t_e2e(tmp):
     check(rc2 == 0 and rep2.get("final", {}).get("verdict") == "DECIDE_FOR_trio"
           and rep2.get("spend_overhead", {}).get("trio"),
           "CLI: arena_analysis.py run on it decides, and reports the overhead", (rc2, rep2.get("final")))
+    check(rep2.get("era_gate", {}).get("status") == "MEASURED" and not rep2["era_gate"].get("no_chrono"),
+          "CLI: the era gate's chronology is computed from base_sha in --era-repo", rep2.get("era_gate"))
     check(rc3 == 3, "mutation: no spend file -> UNMEASURED, exit 3", rc3)
     with contextlib.redirect_stdout(io.StringIO()):
         rc4 = SP.main(["--out", str(out), "--allow-untrusted", "--projects", str(r["projects"]),

@@ -68,6 +68,18 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
   - TIE: P(|eff1/eff2 - 1| < 0.15) > 0.9 for the two leading arms in contention (by posterior mean log eff) -> the
     simpler of the two wins, order ralph_a < ralph_c < trio < v3c < v3;
   - FUTILE(X), X not the control: P(eff X >= 1.1 x control) < 0.05 -> X gets no new tasks;
+  - ERA GATE (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST; Conductor ruling 2026-10-30, owner authority): planners run
+    tasks oldest first (sibling order, ARENA_PLANNERS_ENFORCE_SIBLING_ORDER), so an early look sees only old tasks
+    and an arm x era effect can fire a false DECIDE from that prefix. The trial's tasks (every frozen task, or
+    --trial-tasks) are ranked by `chrono` (`git rev-list --count base_sha`, --era-repo) into ERAS=3 bins, equal keys
+    in one bin. A look at which some arm in contention has not COMPLETED every task of the newest bin may not stop
+    on a decision: a would-be DECIDE_FOR_X, TIE, or decision-blocked UNMEASURED is reported as verdict CONTINUE with
+    `held` (the would-be verdict, its detail, the newest-era tasks each arm still lacks), and the trial goes on. A
+    task with no chronology key leaves the gate UNMEASURED: every such stop is held (final-look-only). FUTILE still
+    fires (a non-decision) and, before the newest era is in, carries detail.futile_scope (older tasks only).
+    THE FINAL LOOK: with --final or a record past the hard cap, no stop, and some look held, the rule is applied
+    once more on the final snapshot, ungated: a DECIDE/TIE/UNMEASURED there is the final verdict (detail.final_look);
+    otherwise the hard-cap clause below.
   - HARD CAP: nothing fired and either --final is given or a record is later than --hard-cap (end of day 3; records
     after it are ignored). Deterministic: the wall clock is never read. Clause added by the Conductor 2026-10-30
     (owner authority): from the final posterior, walk the simpler-arm order (control excluded) and pick the FIRST arm
@@ -122,6 +134,12 @@ DISQUALIFICATION CONDITIONS, AND WHAT THE LOG CAN SHOW:
   checks gate: an unmeasured check of a losing arm or of the control is listed, not blocking.
 
 LIMITS, STATED PLAINLY:
+  - ORDER IS NOT SIMULATED: every MEASURED number below (and testpilot_sim) assumes exchangeable tasks, with no task
+    order, era or arm x era term; the era gate's effect on them is not measured there (fixtures put the newest era
+    first, so the gate opens early and those numbers still describe the rule's other parts). The confound and the
+    final-look remedy were measured separately on assumed effects (item ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST).
+    The report carries this as era_gate.limit. The 24-37 tasks/arm forecast has not been re-derived under the gate:
+    holding to the newest era means an early DECIDE cannot happen, so expect a decision only near the full set.
   - `judge` events are written by arena_judge.py (`judge` command, signed, lane "judge") and per-task spend by
     arena_spend.py, which attributes each metered call to the task whose signed-event span (one execution of a
     (run_id, task): first event to pass_end) contains it. Attribution is BY TIME: a call whose meter clock disagrees
@@ -191,6 +209,10 @@ HARDCAP_ACCEPT_P = 0.2         # ... with probability below this
 HARDCAP_EFF_RATIO = 0.9        # accepted points per token below this x control ...
 HARDCAP_EFF_P = 0.2            # ... with probability below this
 CONTROL = "v3"
+# era gate (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST, Conductor ruling 2026-10-30, owner authority): the trial's tasks are
+# split into ERAS chronological bins by their `chrono` key; no decision before every arm in contention has completed
+# every task of the newest bin
+ERAS = 3
 
 # ---------------------------------------------------------------- priors (weak, centred on the simulator)
 RALPH_A_CAPACITY = 0.5         # Ralph section 10: ralph_a at 0.5x v3's capacity per token
@@ -400,10 +422,37 @@ def load_tasks(p=None):
     for f in sorted(Path(p["tasks"]).glob("*.json")):
         try:
             t = json.loads(f.read_text(encoding="utf-8"))
-            out[t["id"]] = {"kind": t["kind"], "size": t["size"]}
+            out[t["id"]] = {"kind": t["kind"], "size": t["size"], "base_sha": t.get("base_sha")}
         except (OSError, ValueError, KeyError, TypeError):
             continue
     return out
+
+
+def chrono_keys(tasks, repo=None):
+    """Sets tasks[id]["chrono"] = `git rev-list --count <base_sha>` in `repo` (default arena_tasks.REPO): the number of
+    commits behind the task's base, so a task whose base descends from another's has the larger key (strictly, on
+    any history). A task with no base_sha, or one git cannot count, gets no key: the era gate is then UNMEASURED and
+    holds every decision until the final look (fail closed). -> {id: why} for the tasks left without a key."""
+    import subprocess
+    repo = str(repo or A.REPO)
+    missing, memo = {}, {}
+    for tid, spec in sorted(tasks.items()):
+        b = spec.get("base_sha") if isinstance(spec, dict) else None
+        if not (isinstance(b, str) and _HEX.match(b)):
+            missing[tid] = "no base_sha"
+            continue
+        if b not in memo:
+            try:
+                r = subprocess.run(["git", "-C", repo, "rev-list", "--count", b], capture_output=True, text=True,
+                                   timeout=60)
+                memo[b] = int(r.stdout.strip()) if r.returncode == 0 else None
+            except (OSError, ValueError, subprocess.SubprocessError):
+                memo[b] = None
+        if memo[b] is None:
+            missing[tid] = "git cannot count base %s in %s" % (b[:12], repo)
+        else:
+            spec["chrono"] = memo[b]
+    return missing
 
 
 # ================================================================ per-arm extraction
@@ -964,6 +1013,48 @@ def tta_summary(data, arms, control=None):
                                              "UNMEASURED (< 2 timed acceptances)") for a, v in ds.items()}}
 
 
+ERA_LIMIT = ("the stopping rule's simulators (selftest_arena_analysis.py --calib/--power/--hardcap, testpilot_sim) "
+             "model exchangeable tasks: no task order, no era, no arm x era effect. Their false-DECIDE, power and "
+             "hard-cap numbers are for that case only; the era gate is the remedy for the order confound measured "
+             "separately (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST: assumed effects, false DECIDE 9-27% under the "
+             "chronological order vs about 0.5% shuffled; final-look-only about 0) and is not calibrated by them. "
+             "FUTILE may still drop an arm before the newest era has run: such a drop is judged on older tasks only "
+             "and says so (futile_scope).")
+
+
+def era_map(tasks):
+    """-> (eras {id: 0..ERAS-1, oldest 0} or None, why). ERAS bins of the tasks ranked by `chrono`; tasks with equal
+    keys share a bin (bin = floor(ERAS * #tasks with a strictly smaller key / n)). Any task without an int key: None."""
+    keys = {t: s.get("chrono") if isinstance(s, dict) else None for t, s in tasks.items()}
+    bad = sorted(t for t, k in keys.items() if type(k) is not int)
+    if not keys:
+        return None, "no trial tasks"
+    if bad:
+        return None, "%d trial task(s) have no chronology key (e.g. %s)" % (len(bad), bad[0])
+    n = len(keys)
+    srt = sorted(keys.values())
+    import bisect
+    return {t: min(ERAS - 1, ERAS * bisect.bisect_left(srt, k) // n) for t, k in keys.items()}, None
+
+
+def newest_era_missing(use, contention, newest):
+    """{arm in contention: [newest-era tasks it has not completed in `use`]} for arms short of any (empty = gate open).
+    newest None (no era map): every arm is short (the gate stays shut until the final look)."""
+    if newest is None:
+        return {a: ["(era map UNMEASURED)"] for a in contention}
+    out = {}
+    for a in contention:
+        miss = sorted(newest - {c["task"] for c in use[a]})
+        if miss:
+            out[a] = miss
+    return out
+
+
+def held_kind(v):
+    """A look's verdict that stops the trial on a would-be decision: what the era gate holds back."""
+    return v.startswith("DECIDE_FOR_") or v in ("TIE", "UNMEASURED")
+
+
 def _block_seed(seed, k):
     return int(hashlib.sha256(("%s:%s" % (seed, k)).encode()).hexdigest()[:16], 16)
 
@@ -975,6 +1066,13 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     control = control or CONTROL
     conv = conv or default_conv()
     rep = {"rule": rule_constants(), "conversion": conv, "seed": seed, "draws": draws, "arms": {}, "blocks": []}
+    eras, era_why = era_map(tasks if isinstance(tasks, dict) else {})
+    newest = None if eras is None else {t for t, e in eras.items() if e == max(eras.values())}
+    rep["era_gate"] = {"status": "UNMEASURED" if eras is None else "MEASURED", "eras": ERAS,
+                       "trial_tasks": len(tasks) if isinstance(tasks, dict) else 0,
+                       "newest_era": sorted(newest) if newest is not None else None, "limit": ERA_LIMIT}
+    if era_why:
+        rep["era_gate"]["why"] = era_why + ": every decision is held until the final look"
     if not isinstance(arm_logs, dict) or not arm_logs:
         rep["final"] = {"verdict": "UNMEASURED", "why": "no arm logs"}
         return rep
@@ -1025,6 +1123,7 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
     disq, disq_t, dropped, contention = {}, {}, {}, list(arms)
     k = 0
     stop = None
+    held_any = False           # some look's would-be stop was held by the era gate
     floor = -math.inf          # block times never go backwards
     while True:
         k += 1
@@ -1083,6 +1182,16 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
         probs = rule_probs(post, contention, nondq, control)
         v, det = rule_verdict(probs, control in nondq, blocked)
         blk["probs"] = probs
+        short = newest_era_missing(use, contention, newest)
+        if short and held_kind(v):
+            # ERA GATE: tasks run oldest first (sibling order), so this look has not seen the newest era: a
+            # would-be stop is held, reported, and the trial goes on (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST)
+            blk["held"] = {"would_be": v, "detail": det, "newest_era_missing": short,
+                           "why": "the newest era has not run for every arm in contention: no decision yet"}
+            held_any = True
+            v, det = "CONTINUE", {"held": v}
+        elif short and v == "FUTILE":
+            det = dict(det, futile_scope="tasks older than the newest era only (newest era not yet run)")
         blk["rule_verdict"] = v
         blk["detail"] = det
         blk.setdefault("verdict", v)
@@ -1143,9 +1252,21 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
                          (control, "disqualified" if control in fin["disqualified"] else "absent"),
                          "surviving": keep}
     elif final or beyond_cap:
-        win, pick = hardcap_pick(post, keep, control, blocked)
         cap = "--final" if final else "a record is later than the hard cap"
-        if pick["picked"]:
+        fl = None
+        if held_any:
+            # THE FINAL LOOK: a look held by the era gate gets its answer here, on all the trial's data, ungated (the
+            # whole frozen set is in or never will be). A stop state decides normally; anything else -> hard cap.
+            fprobs = rule_probs(post, live, keep, control)
+            fl = rule_verdict(fprobs, control in keep, blocked)
+            fin["final_look"] = {"rule_verdict": fl[0], "detail": fl[1], "probs": fprobs,
+                                 "newest_era_missing": newest_era_missing(snap, live, newest)}
+        win, pick = hardcap_pick(post, keep, control, blocked)
+        if fl is not None and held_kind(fl[0]):
+            fin["verdict"] = fl[0]
+            fin["detail"] = dict(fl[1], final_look=True, why_final_look="an earlier look was held by the era gate; "
+                                 "the final look (%s) decides on all data" % cap)
+        elif pick["picked"]:
             fin["verdict"] = "HARD_CAP_PICK"
             fin["detail"] = dict(pick, winner=win, why="nothing fired by the hard cap (%s): %s is the simplest arm "
                                  "not credibly worse than the control" % (cap, win))
@@ -1168,7 +1289,7 @@ def rule_constants():
                                       "CONTROL", "RALPH_A_CAPACITY", "ARM_PRIOR_SD", "TASK_PRIOR_SD", "SIGMA_REF",
                                       "IG_A0", "IG_B0", "ACCEPT_PRIOR_MEAN", "ACCEPT_PRIOR_WEIGHT",
                                       "HARDCAP_ACCEPT_MARGIN", "HARDCAP_ACCEPT_P", "HARDCAP_EFF_RATIO",
-                                      "HARDCAP_EFF_P")}
+                                      "HARDCAP_EFF_P", "ERAS")}
 
 
 def blind(rep, salt):
@@ -1192,6 +1313,9 @@ def main(argv=None):
                    SPEND_SCHEMA)
     r.add_argument("--raw-dir", help="read unsigned <arm>.jsonl from this dir instead of the signed log")
     r.add_argument("--tasks-dir", help="frozen task specs dir (default <arena>/tasks)")
+    r.add_argument("--trial-tasks", help="file of the trial's task ids (one per line, or a JSON list): the era gate's "
+                   "population (default: every frozen task)")
+    r.add_argument("--era-repo", help="git repo holding the tasks' base shas, for their chronology (default %s)" % A.REPO)
     r.add_argument("--allow-untrusted", action="store_true")
     r.add_argument("--hard-cap", help="ISO-8601 with zone: end of day 3")
     r.add_argument("--final", action="store_true", help="the hard cap has passed: report no-difference if unseparated")
@@ -1233,10 +1357,28 @@ def main(argv=None):
         doc, read_err = None, str(e)
     logs = load_raw(a.raw_dir) if a.raw_dir else load_verified(allow_untrusted=a.allow_untrusted)
     tasks = load_tasks({"tasks": Path(a.tasks_dir)} if a.tasks_dir else None)
+    trial_err = None
+    if a.trial_tasks:
+        try:
+            raw = Path(a.trial_tasks).read_text(encoding="utf-8")
+            ids = json.loads(raw) if raw.lstrip().startswith("[") else [x.strip() for x in raw.splitlines() if x.strip()]
+            unknown = sorted(set(ids) - set(tasks))
+            if unknown:
+                trial_err = "trial task(s) with no frozen spec: %s" % unknown[:5]
+            tasks = {t: tasks[t] for t in ids if t in tasks}
+        except (OSError, ValueError, TypeError) as e:
+            trial_err = "trial task list unreadable: %s" % e
+    no_chrono = chrono_keys(tasks, a.era_repo)
     cap = L.ts_epoch(a.hard_cap) if a.hard_cap else None
     rep = analyse_spend_doc(logs, tasks, doc, seed=a.seed, draws=a.draws, hard_cap=cap, final=a.final, conv=conv)
-    if read_err is not None:
-        rep["final"] = {"verdict": "UNMEASURED", "why": "spend file unreadable: %s" % read_err}
+    if no_chrono:
+        rep["era_gate"]["no_chrono"] = dict(sorted(no_chrono.items())[:20], **({"...": "%d more" % (len(no_chrono) - 20)}
+                                                                               if len(no_chrono) > 20 else {}))
+    if read_err is not None or trial_err is not None:
+        rep["final"] = {"verdict": "UNMEASURED", "why": ("spend file unreadable: %s" % read_err) if read_err is not None
+                        else trial_err}
+        if trial_err is not None:              # wrong population: no per-block verdict computed from it stands
+            rep["blocks_withheld"], rep["blocks"] = len(rep.get("blocks") or []), []
     if a.blind:
         rep = blind(rep, a.blind)
     text = json.dumps(rep, indent=1, sort_keys=True, default=str)

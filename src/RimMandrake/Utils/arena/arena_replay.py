@@ -11,8 +11,10 @@ A replay task re-does work that already exists, so the clone an arm works in mus
   audit_clone         the fix sha (and any other forbidden sha) must be absent: `git cat-file -e`, the full list from
                       `git cat-file --batch-all-objects` (loose and packed), alternates/commondir/gitfile borrowing, every
                       ref, reflog and FETCH_HEAD (raw bytes, hex and binary). Any hit raises ReplayLeak and the clone is deleted.
-  schedule            per-arm run order: a seeded shuffle, seed = sha256(freeze_hash, arm). Reproducible from the seed; two
-                      arms never get the same order (when more than one order exists). interleave() merges the arms' orders
+  schedule            per-arm run order: a seeded shuffle, seed = sha256(freeze_hash, arm), or (contains given, as
+                      run_schedule always does) a seeded chronological order, oldest first, in which arms MAY share an order
+                      (near-linear pool); the stopping rule holds decisions until the newest era has run
+                      (arena_analysis ERA GATE). Reproducible from the seed. interleave() merges the arms' orders
                       round-robin (arm order re-shuffled each round from the same seed) into one slot list.
   run_one             build -> work -> judge -> delete, deletion in `finally`, so a failure also leaves nothing.
   leftovers / sweep   clones still on disk; `rm-scratch-reap` also has the replay tree among its roots.

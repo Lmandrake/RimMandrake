@@ -48,9 +48,13 @@ def iso(t):
 
 # ---------------------------------------------------------------- synthetic logs
 
-def make_tasks(n, kinds=None):
+def make_tasks(n, kinds=None, chrono=None):
+    """chrono(i) -> the era gate's key. Default n - i: the NEWEST era comes FIRST in completion order, so the gate is
+    open from the first look and every older scenario keeps testing its own mechanics (the order is not simulated;
+    t_era_gate tests the gate with the real oldest-first order, chrono = i)."""
     kinds = kinds or (lambda i: KINDS[i % 2])
-    return {"T%03d" % i: {"kind": kinds(i), "size": (1, 2, 4)[i % 3]} for i in range(n)}
+    chrono = chrono or (lambda i: n - i)
+    return {"T%03d" % i: {"kind": kinds(i), "size": (1, 2, 4)[i % 3], "chrono": chrono(i)} for i in range(n)}
 
 
 def arm_log(arm, rows, offset=0, drop=(), extra=()):
@@ -131,7 +135,7 @@ def all_acc(_i):
 def t_pins():
     want = {"BLOCK": 5, "MIN_TASKS": 10, "MIN_KINDS": 2, "DECIDE_RATIO": 1.25, "DECIDE_P": 0.95,
             "ACCEPT_MARGIN": 0.10, "ACCEPT_P": 0.2, "FUTILE_RATIO": 1.1, "FUTILE_P": 0.05, "TIE_BAND": 0.15,
-            "TIE_P": 0.9, "SIMPLER": ("ralph_a", "ralph_c", "trio", "v3c", "v3"), "CONTROL": "v3"}
+            "TIE_P": 0.9, "SIMPLER": ("ralph_a", "ralph_c", "trio", "v3c", "v3"), "CONTROL": "v3", "ERAS": 3}
     bad = {k: getattr(AA, k) for k, v in want.items() if getattr(AA, k) != v}
     check("pins: section 4.1 thresholds are the owner's numbers", not bad, bad)
 
@@ -1105,20 +1109,108 @@ def t_small_sims():
         print("INFO  small power run (not a target): %s" % json.dumps(p))
 
 
+# ---------------------------------------------------------------- era gate (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST)
+
+def run_part(tasks, n_run, final=False, arms=None):
+    """Like scenario(), but every arm completes only the first n_run of the trial's tasks (in id order)."""
+    arms = arms or {"trio": (0.25, all_acc, 0.1), "v3": (1.0, all_acc, 0.1)}
+    ids = sorted(tasks)[:n_run]
+    rng = random.Random(7)
+    base = {t: math.log(1e5) + rng.gauss(0, 1.0) for t in ids}
+    logs, spend = {}, {}
+    for j, (arm, (fac, acc, sd)) in enumerate(sorted(arms.items())):
+        logs[arm] = {"recs": arm_log(arm, [(t, acc(i)) for i, t in enumerate(ids)], offset=j * 7)}
+        spend[arm] = spend_for((t, math.exp(base[t] + rng.gauss(0, sd)) * fac) for t in ids)
+    return AA.analyse(logs, tasks, spend, draws=DRAWS, final=final)
+
+
+def t_era_map():
+    e, why = AA.era_map({"T%02d" % i: {"chrono": i} for i in range(20)})
+    newest = sorted(t for t, v in e.items() if v == 2)
+    check("era_map: 20 distinct keys, 3 eras -> the newest era is exactly T14..T19 (bin = 3*rank//20)",
+          why is None and newest == ["T%02d" % i for i in range(14, 20)] and e["T00"] == 0 and e["T13"] == 1, newest)
+    e, _ = AA.era_map({"A": {"chrono": 5}, "B": {"chrono": 5}, "C": {"chrono": 9}})
+    check("era_map: equal keys share a bin (A, B oldest; C newest)", e == {"A": 0, "B": 0, "C": 2}, e)
+    e, why = AA.era_map({"A": {"chrono": 1}, "B": {"kind": "x"}})
+    check("era_map: a task with no key -> no map (gate UNMEASURED)", e is None and "no chronology key" in why, why)
+    e, why = AA.era_map({"A": {"chrono": True}})
+    check("era_map: a bool is not a chronology key", e is None, e)
+
+
+def t_era_gate():
+    tasks = make_tasks(20, chrono=lambda i: i)          # oldest first: the newest era (T014..T019) runs last
+    r = run_part(tasks, 20)
+    b = {x["block"]: x for x in r["blocks"]}
+    early = [b[k] for k in (2, 3) if k in b]
+    check("FORCED: early looks with a decisive margin (blocks 2, 3) are held: verdict CONTINUE, would_be DECIDE",
+          len(early) == 2 and all(x["verdict"] == "CONTINUE" and x["rule_verdict"] == "CONTINUE"
+                                  and x.get("held", {}).get("would_be") == "DECIDE_FOR_trio" for x in early),
+          [(x["block"], x.get("verdict"), x.get("held", {}).get("would_be")) for x in early])
+    check("FORCED: the held look names the newest-era tasks still missing",
+          early and early[0]["held"]["newest_era_missing"].get("trio") == ["T%03d" % i for i in range(14, 20)],
+          early and early[0]["held"]["newest_era_missing"])
+    check("no DECIDE verdict before the newest era is in", not any(
+        x["verdict"].startswith("DECIDE") for x in r["blocks"] if x["block"] < 4), [x["verdict"] for x in r["blocks"]])
+    check("once the newest era is in (block 4, 20 tasks) the look decides normally",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["final"].get("block") == 4,
+          (r["final"]["verdict"], r["final"].get("block")))
+    check("report carries the era gate and its simulator limit",
+          r["era_gate"]["status"] == "MEASURED" and "no task order" in r["era_gate"]["limit"]
+          and len(r["era_gate"]["newest_era"]) == 6, r["era_gate"].get("status"))
+    ctl = scenario({"trio": (0.25, all_acc, 0.1), "v3": (1.0, all_acc, 0.1)}, 20)
+    check("control: the same data with the newest era first decides at block 2 (the hold is the order's)",
+          ctl["final"]["verdict"] == "DECIDE_FOR_trio" and ctl["final"].get("block") == 2, ctl["final"].get("block"))
+    r = run_part(tasks, 15)
+    check("FORCED: newest era never run (15 of 20 tasks): no DECIDE anywhere, final CONTINUE",
+          r["final"]["verdict"] == "CONTINUE" and "DECIDE_FOR" not in json.dumps(
+              [x["verdict"] for x in r["blocks"]]), (r["final"]["verdict"], [x["verdict"] for x in r["blocks"]]))
+    r = run_part(tasks, 15, final=True)
+    check("FORCED: the final look (--final) decides normally on all data",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["final"]["detail"].get("final_look") is True
+          and r["final"].get("final_look", {}).get("rule_verdict") == "DECIDE_FOR_trio",
+          (r["final"]["verdict"], r["final"].get("detail")))
+    eq = {"trio": (1.0, all_acc, 0.8), "v3": (1.0, all_acc, 0.8)}
+    r = run_part(tasks, 15, final=True, arms=eq)
+    check("final look with nothing decisive falls to the hard-cap clause",
+          r["final"]["verdict"].startswith("HARD_CAP") and "final_look" not in r["final"]["detail"],
+          r["final"]["verdict"])
+    nokey = {t: {k: v for k, v in s.items() if k != "chrono"} for t, s in tasks.items()}
+    r = run_part(nokey, 20)
+    check("FORCED: no chronology key -> gate UNMEASURED, every decision held (even with all tasks in)",
+          r["era_gate"]["status"] == "UNMEASURED" and r["final"]["verdict"] == "CONTINUE"
+          and any(x.get("held") for x in r["blocks"]), (r["era_gate"].get("why"), r["final"]["verdict"]))
+    r = run_part(nokey, 20, final=True)
+    check("gate UNMEASURED: the final look still decides (final-look-only)",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["final"]["detail"].get("final_look") is True,
+          r["final"]["verdict"])
+    tie = make_tasks(60, chrono=lambda i: i)
+    r = run_part(tie, 50, arms={"trio": (1.0, all_acc, 0.02), "v3": (1.0, all_acc, 0.02)})
+    check("FORCED: a would-be TIE before the newest era is held too",
+          r["final"]["verdict"] == "CONTINUE" and any(x.get("held", {}).get("would_be") == "TIE" for x in r["blocks"]),
+          (r["final"]["verdict"], [x.get("held", {}).get("would_be") for x in r["blocks"]]))
+    los = run_part(tasks, 15, arms={"ralph_a": (4.0, all_acc, 0.1), "trio": (1.0, all_acc, 0.1),
+                                    "v3": (1.0, all_acc, 0.1)})
+    fut = [x for x in los["blocks"] if x.get("rule_verdict") == "FUTILE"]
+    check("FUTILE before the newest era still fires, scoped to older tasks",
+          bool(fut) and "older than the newest era" in fut[0]["detail"].get("futile_scope", ""),
+          [(x["block"], x.get("rule_verdict")) for x in los["blocks"]])
+
+
 # ---------------------------------------------------------------- runner
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
-        t_refused_spend_doc_withholds_blocks)
+        t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
            ("FUTILE_RATIO", 1.155), ("FUTILE_RATIO", 1.045), ("FUTILE_P", 0.07), ("FUTILE_P", 0.03),
            ("TIE_BAND", 0.17), ("TIE_BAND", 0.13), ("TIE_P", 0.92), ("TIE_P", 0.88),
            ("MIN_TASKS", 5), ("MIN_TASKS", 15), ("MIN_KINDS", 1), ("MIN_KINDS", 3), ("BLOCK", 4), ("BLOCK", 6),
-           ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")), ("CONTROL", "v3c")]
+           ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
+           ("newest_era_missing", lambda *a: {}), ("held_kind", lambda v: v.startswith("DECIDE_FOR_"))]
 
 
 def mutants():

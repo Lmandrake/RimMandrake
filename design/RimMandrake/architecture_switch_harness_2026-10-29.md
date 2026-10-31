@@ -279,8 +279,11 @@ items qualify is not known yet. The census is the first thing built, and it repo
 detection is measured at all. Inside each group the draw is random, seeded by the freeze event's hash.
 
 **Pairing.** Every replay task goes to every replay arm, so each task is paired with itself four ways. What gets
-randomised is the ORDER and the time slot of each arm's run, so quota pressure and time of day do not line up with
-one arm.
+randomised is the time slot of each arm's run inside a round (the interleave), so quota pressure and time of day do
+not line up with one arm. The task ORDER is NOT randomised: since ARENA_PLANNERS_ENFORCE_SIBLING_ORDER (1d1c060979)
+every arm runs tasks oldest first (a task whose base holds another's fix must come after it), and on the near-linear
+pool all arms share one order. An early look therefore sees only old tasks; the stopping rule holds every decision
+until the newest era has run (4.1, ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST).
 
 **Live pool.** Candidates come from the verify backlog. They are matched in pairs by verify level (L1-L4), live
 need (minimal or full) and mod family. A coin flip sends one of each pair to each lane. Then the lanes swap
@@ -372,6 +375,13 @@ set from the measured cost per accepted item.
 The trial uses a Bayesian sequential rule. It is checked after every block of 5 completed tasks per arm, and the
 trial stops the moment a rule fires. Fixed-length trials waste days once the answer is clear.
 
+**Era gate (Conductor ruling 2026-10-30, owner authority; ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST).** Tasks run oldest
+first (3.2), so no look may stop on a decision (DECIDE, TIE) before every arm in contention has completed every task of
+the newest of three chronological eras; such a look reports CONTINUE with the held verdict. At the hard cap a held
+trial gets one final look on all data, which decides normally. FUTILE may still fire early, scoped to the older tasks.
+The simulators behind the numbers below model no task order or era: their figures assume exchangeable tasks
+(arena_analysis.py `era_gate.limit`).
+
 - **The model:**
   - Each arm's log time-to-acceptance and tokens per accepted point get a hierarchical normal model with a task
     effect, so replay pairs each task with itself.
@@ -410,7 +420,8 @@ trial stops the moment a rule fires. Fixed-length trials waste days once the ans
 
 ### 4.3 Day 1: replay block 1 (all four build arms in parallel)
 
-- **Morning:** 4 arms × 12 tasks, interleaved in random order.
+- **Morning:** 4 arms × 12 tasks, each arm oldest first (sibling order), the arms interleaved in random order inside
+  each round.
 - **Duplicates:** 6 of those tasks are run twice in the same arm. That measures run-to-run spread, which gives
   σ_d and how much of an arm difference is just noise.
 - **Production:** v3 runs as usual. The judge samples 10 of its closes from the day.
