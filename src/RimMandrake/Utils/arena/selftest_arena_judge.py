@@ -1532,6 +1532,166 @@ def t_raw_env(tmp):
           "raw_output caps a huge output in the middle")
 
 
+def t_missing_exclusions(tmp):
+    """ARENA_JUDGE_REPAIR_MISSING_EXCLUSIONS_OPEN: a missing reader file read as "nothing unscored", so the reader-
+    unscored broken check was scored and the arm REJECTED (red, the not-required control); for a bank task
+    (reader_required, judge_task's default) it is invalid with no model call. An unscore path the hidden file does
+    not hold (typo) was ignored and the task rejected; now invalid."""
+    import arena_trial as T
+    clone, base, head = make_clone(Path(os.environ["ARENA_CLONES"]) / "missx", "v3", 1, plant=False)
+    bad = "src/RimMandrake/Utils/demo/selftest_demo.py"
+    okp = "src/RimMandrake/Utils/demo/selftest_ok.py"
+    two = {"checks": [{"type": "fix_test", "path": bad, "body": HIDDEN_TEST},
+                      {"type": "fix_test", "path": okp, "body": "print('fine')\n"}], "reworks": []}
+    fakes = lambda: J.Judges(Fake(ans("accept")), Fake(ans("accept")), Fake(ans("accept")))  # noqa: E731
+    rp = T.reader_exclusions_path()
+    check(not rp.exists(), "fixture: no reader file at %s" % rp)
+    r = J.judge(task=task_for("T_MX"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                judges=fakes())
+    check(r["verdict"] == "reject", "red: not required, a missing file scores every check -> reject (%s)" % r["verdict"])
+    fs = fakes()
+    r = J.judge(task=task_for("T_MX"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                judges=fs, reader_required=True)
+    check(r["verdict"] == "invalid" and "missing" in r.get("why", "") and fs.opus.calls == 0 and not r["hidden"],
+          "a bank task with the reader file missing -> invalid, no check run, no model call (%s)" % r.get("why"))
+    seen = {}
+    real_judge, real_load = J.judge, J.A.load_frozen
+    try:
+        J.judge = lambda **kw: seen.update(kw) or {"verdict": "x"}
+        J.A.load_frozen = lambda tid, p=None: task_for(tid)
+        J.judge_task("T_MX", clone=clone, base=base, head=head, arm="v3", gate=GATE)
+    finally:
+        J.judge, J.A.load_frozen = real_judge, real_load
+    check(seen.get("reader_required") is True, "judge_task (the bank path) requires the reader file")
+    fs = fakes()
+    r = J.judge(task=task_for("T_MX"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                judges=fs, unscore=["src/RimMandrake/Utils/demo/selftest_dmeo.py"])
+    check(r["verdict"] == "invalid" and "does not hold" in r.get("why", "") and fs.opus.calls == 0,
+          "an unscore path the hidden file does not hold (typo) -> invalid, not scored (%s)" % r.get("why"))
+    rp.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        rp.write_text(json.dumps({"schema": T.READER_SCHEMA, "drop": {}, "unscore": {}}))
+        r = J.judge(task=task_for("T_MX"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                    judges=fakes(), reader_required=True)
+        check(r["verdict"] == "reject", "control: an empty reader file (nothing excluded) scores both -> reject (%s)"
+              % r["verdict"])
+        rp.write_text(json.dumps({"schema": T.READER_SCHEMA, "drop": {}, "unscore": {"T_MX": [bad]}}))
+        r = J.judge(task=task_for("T_MX"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                    judges=fakes(), reader_required=True)
+        check(r["verdict"] == "accept", "control: the file present and honoured -> accept (%s)" % r["verdict"])
+    finally:
+        rp.unlink()
+
+
+STORE_PROBE = r"""
+import os, socket, subprocess, sys
+STORE, CLONE, MIRROR, SHA, PORT = %r, %r, %r, %r, %d
+def ok(argv):
+    try:
+        return subprocess.run(argv, capture_output=True, timeout=30).returncode == 0
+    except Exception:
+        return False
+def can_read(p):
+    try:
+        open(p, 'rb').read(); return True
+    except Exception:
+        return False
+def can_connect():
+    try:
+        s = socket.create_connection(('127.0.0.1', PORT), timeout=3); s.close(); return True
+    except Exception:
+        return False
+seen = {'store_show': ok(['git', '--git-dir', STORE, 'show', SHA]), 'clone_show': ok(['git', '-C', CLONE, 'show', SHA]),
+        'store_read': can_read(os.path.join(STORE, 'HEAD')), 'mirror_read': can_read(os.path.join(MIRROR, 'CLAUDE.md')),
+        'net': can_connect()}
+print('SEEN', sorted(k for k, v in seen.items() if v))
+print('TREE_GIT', ok(['git', 'rev-parse', 'HEAD']))
+"""
+
+
+def t_check_stores(tmp):
+    """ARENA_JUDGE_REPAIR_CHECK_SANDBOX_SEES_STORES: a hidden check (kind=check) could `git show` the fix from the bench
+    clone and store.git, read the D: mirror and reach the network. Planted: a fake clone + bare store holding a 'fix'
+    commit, a fake D: mirror and a host listener on 127.0.0.1. Red: the same probe in a sandbox WITHOUT the check
+    masks and with the network (kind=model) sees all five. Green: through run_hidden it sees none, and the check's
+    own synthetic git repo still works (the check passes)."""
+    # the plant lives OUTSIDE /tmp (every sandbox gets a fresh /tmp, which would hide a /tmp plant whatever the
+    # masks) and inside ~/.cache, a check overlay, so the masks are proven laid over an overlay too
+    (Path.home() / ".cache").mkdir(exist_ok=True)
+    plant = Path(tempfile.mkdtemp(prefix="arena_st_stores_", dir=str(Path.home() / ".cache")))
+    try:
+        _check_stores(tmp, plant)
+    finally:
+        shutil.rmtree(plant, ignore_errors=True)
+
+
+def _check_stores(tmp, plant):
+    import socket
+    import subprocess as sp
+    clone, store, mirror = plant / "st_clone", plant / "st_store.git", plant / "st_mirror"
+    clone.mkdir()
+    mirror.mkdir()
+    (mirror / "CLAUDE.md").write_text("mirror secret\n")
+    genv = dict(os.environ, **J.GIT_TREE_ENV)
+    sp.run("git init -q -b main . && echo fix > f && git add f && git commit -q -m fix", shell=True, cwd=clone,
+           env=genv, check=True)
+    sp.run(["git", "clone", "-q", "--bare", str(clone), str(store)], env=genv, check=True)
+    sha = sp.run(["git", "-C", str(clone), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    srv = socket.socket()
+    srv.bind(("127.0.0.1", 0))
+    srv.listen(8)
+    port = srv.getsockname()[1]
+    body = STORE_PROBE % (str(store), str(clone), str(mirror), sha, port)
+    saved = os.environ.get("ARENA_CHECK_MASKS")
+    os.environ["ARENA_CHECK_MASKS"] = os.pathsep.join(map(str, (clone, store, mirror)))
+    try:
+        work = Path(os.environ["ARENA_JUDGE_WORK"]) / "stores"
+        work.mkdir(parents=True, exist_ok=True)
+        (work / "probe.py").write_text(body)
+        red = J.run_sandboxed([sys.executable, str(work / "probe.py")], work=work, cwd=work, kind="model")
+        rout = red.stdout.decode("utf-8", "replace")
+        want = "SEEN ['clone_show', 'mirror_read', 'net', 'store_read', 'store_show']"
+        check(want in rout, "red: without the check masks and with the network the probe sees all five (%s)"
+              % (rout.strip()[-200:] or red.stderr.decode("utf-8", "replace")[-200:]))
+        tree = tmp / "st_tree"
+        (tree / "src").mkdir(parents=True)
+        ck = [{"kind": "fix_test", "path": "src/selftest_probe.py", "body": body + "\nassert 'git' in 'git'\n"}]
+        r = J.run_hidden(ck, tree, work / "hid")[0]
+        check("SEEN []" in r["tail"], "green: a hidden check reaches no clone, store, mirror or socket (%s)"
+              % r["tail"][-300:])
+        check(r["result"] == "pass" and "TREE_GIT True" in r["tail"],
+              "the check itself still runs and its own throwaway git repo works (%s: %s)" % (r["result"], r["tail"][-200:]))
+        argv = J.sandbox_argv(["true"], masks=[], keep=[work], net=False)
+        check("--unshare-net" in argv and "--unshare-net" not in J.sandbox_argv(["true"], masks=[], keep=[work]),
+              "net=False (kind=check) adds --unshare-net; a judge-model sandbox keeps its network")
+    finally:
+        srv.close()
+        os.environ.pop("ARENA_CHECK_MASKS", None) if saved is None else os.environ.__setitem__("ARENA_CHECK_MASKS", saved)
+    os.environ.pop("ARENA_CHECK_MASKS", None)
+    try:
+        dflt = {str(p) for p in J.check_store_masks()}
+        need = {"/home/mandrake/rm/bench", "/home/mandrake/rm/foundry", "/home/mandrake/rm/store.git",
+                "/home/mandrake/rm/mirror.git", "/mnt/d/Luke/dev/RimMandrake"}
+        check(need <= dflt, "the default check masks hold both clones, store.git, mirror.git and the D: mirror (%s)"
+              % sorted(need - dflt))
+        bench, store_r = Path("/home/mandrake/rm/bench"), Path("/home/mandrake/rm/store.git")
+        if (bench / ".git").exists() and store_r.is_dir():
+            # the REAL stores, default masks: the host sees them (red), a hidden check does not (green)
+            sha_r = sp.run(["git", "-C", str(bench), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+            host = sp.run(["git", "-C", str(bench), "cat-file", "-t", sha_r], capture_output=True).returncode == 0
+            body_r = STORE_PROBE % (str(store_r), str(bench), "/mnt/d/Luke/dev/RimMandrake", sha_r, 9)
+            r = J.run_hidden([{"kind": "fix_test", "path": "src/selftest_probe.py", "body": body_r}],
+                             tmp / "st_tree", Path(os.environ["ARENA_JUDGE_WORK"]) / "stores" / "real")[0]
+            check(host and "SEEN []" in r["tail"] and r["result"] == "pass",
+                  "real default masks: the host reads bench %s, a hidden check reaches no real clone/store/mirror (%s)"
+                  % (sha_r[:10], r["tail"][-300:]))
+        else:
+            print("UNMEASURED  real bench/store.git absent here: default masks not probed against the real stores")
+    finally:
+        if saved is not None:
+            os.environ["ARENA_CHECK_MASKS"] = saved
+
+
 def main():
     if not shutil.which("bwrap"):
         print("FAIL  bwrap not installed: the judge cannot run, and this test cannot prove the map is hidden")
@@ -1580,6 +1740,8 @@ def main():
         t_proxy_env(tmp)
         t_unscore(tmp)
         t_raw_env(tmp)
+        t_check_stores(tmp)
+        t_missing_exclusions(tmp)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)

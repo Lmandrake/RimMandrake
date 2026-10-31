@@ -1625,46 +1625,126 @@ REAL_CENSUS_CACHE = Path(os.environ.get("ARENA_ST_REAL_CENSUS_CACHE",
                                        "/mnt/d/ClaudeWork/rimmandrake/arena-selftest/real_census.json"))
 
 
-def _real_census_summary():
-    """The facts t_real_ledger checks, from the real census (~150 s: 22k git calls), cached under a key over
-    everything the census reads: the events it is given, every ref of the repo it resolves in, the committed pool
-    exclusions, and the source of arena_tasks.py and rimflow/model.py. Same key, same census (commits are
-    immutable), so a warm run reads the cache; any input moving reruns it. A cache that does not parse is ignored."""
-    import hashlib
-    events = A.model.read()
-    refs = subprocess.run(["git", "-C", str(A.REPO), "for-each-ref", "--format=%(objectname) %(refname)"],
-                          capture_output=True, text=True, timeout=120).stdout
-    head = subprocess.run(["git", "-C", str(A.REPO), "rev-parse", "HEAD"], capture_output=True, text=True,
-                          timeout=60).stdout
-    h = hashlib.sha256(json.dumps(events, sort_keys=True, default=str).encode())
-    for b in (refs, head, json.dumps(A.load_pool_exclusions(), sort_keys=True), str(A.arena_root()),
-              json.dumps(A.load_prompt_rewrites(), sort_keys=True)):
+# A commit authored before this instant may share an author date, author and subject with a pre-rewrite commit the
+# Resolver remaps (origin/main was rewritten 2026-10-28/29), so a new one on HEAD can make a remap ambiguous: such a
+# commit turns the cache cold. A ledger commit made now is authored after it.
+REMAP_TRIPLE_CUTOFF = "2026-10-30T00:00:00Z"
+
+
+def _census_items(events) -> list:
+    """The items the census can read: every item with a close in the window, and every caused_by descendant of one
+    (a rework is read through its parent). An item outside this set changes no census answer."""
+    world = A.model.replay(events)
+    rel = {e["id"] for e in events if e.get("id") and e.get("event") == "close"
+           and A.WINDOW[0] <= A._day(e.get("ts")) <= A.WINDOW[1]}
+    kids = {}
+    for it in world.items.values():
+        if it.caused_by:
+            kids.setdefault(str(it.caused_by), []).append(it.id)
+    todo = sorted(rel)
+    while todo:
+        for k in kids.get(todo.pop(), []):
+            if k not in rel:
+                rel.add(k)
+                todo.append(k)
+    return world, sorted(rel)
+
+
+def _events_digest(events) -> tuple[str, list]:
+    """-> (sha256 over the census-readable items' raw events AND their replayed projection, their close shas).
+    ARENA_TASKS_REPAIR_SELFTEST_STILL_TOO_SLOW: keyed on every event, each ledger commit turned the cache cold."""
+    world, rel = _census_items(events)
+    by_id = {}
+    for e in events:
+        if e.get("id") in rel:
+            by_id.setdefault(e["id"], []).append(e)
+    h, shas = hashlib.sha256(), set()
+    for iid in rel:
+        it = world.items.get(iid)
+        proj = {k: getattr(it, k, None) for k in type(it).__slots__} if it is not None else None
+        h.update(json.dumps([iid, by_id.get(iid, []), proj], sort_keys=True, default=str).encode() + b"\0")
+        shas |= {str(e.get("sha")).strip() for e in by_id.get(iid, []) if e.get("event") == "close" and e.get("sha")}
+    return h.hexdigest(), sorted(shas)
+
+
+def _head_delta_ok(repo, cached_head: str, paths, head: str = "HEAD") -> str:
+    """'' when moving from `cached_head` to `head` cannot change the census, else why it can. The census reads
+    HEAD's history through ancestry (unchanged by commits on top), the Resolver's triple index (a new commit authored
+    before REMAP_TRIPLE_CUTOFF could collide), later_fixes' log over the fix files and a HEAD read of rework prose
+    (`paths`: recorded by the cold run). A rewritten HEAD (cached head not an ancestor) is cold."""
+    if not cached_head or subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", cached_head, head],
+                                         capture_output=True, timeout=60).returncode != 0:
+        return "cached head %s is not an ancestor of %s" % ((cached_head or "-")[:10], head)
+    cut = A._epoch(REMAP_TRIPLE_CUTOFF)
+    r = subprocess.run(["git", "-C", str(repo), "log", "--format=%H %at", "%s..%s" % (cached_head, head)],
+                       capture_output=True, text=True, timeout=120)
+    if r.returncode != 0:
+        return "cannot read %s..%s" % (cached_head[:10], head)
+    for line in r.stdout.splitlines():
+        sha, at = line.split()
+        if int(at) < cut:
+            return "new commit %s authored before %s" % (sha[:10], REMAP_TRIPLE_CUTOFF)
+    paths = sorted(set(paths))
+    for i in range(0, len(paths), 400):
+        r = subprocess.run(["git", "--literal-pathspecs", "-C", str(repo), "log", "-1", "--format=%H",
+                            "%s..%s" % (cached_head, head), "--", *paths[i:i + 400]],
+                           capture_output=True, text=True, timeout=120)
+        if r.returncode != 0 or r.stdout.strip():
+            return "new commit %s touches a path the census read at HEAD" % (r.stdout.strip()[:10] or "?")
+    return ""
+
+
+def _census_key(events) -> str:
+    """Everything else the census reads: the census-readable events (_events_digest), whether each of their close
+    shas and each prompt rewrite's fix is in each history it is looked up in, the pool exclusions, the arena root, the
+    prompt rewrites, and the source of arena_tasks.py, rimflow/model.py and the two modules it reads through."""
+    ev_digest, shas = _events_digest(events)
+    h = hashlib.sha256(ev_digest.encode())
+    for b in (json.dumps(A.load_pool_exclusions(), sort_keys=True), str(A.arena_root()),
+              json.dumps(A.load_prompt_rewrites(), sort_keys=True), REMAP_TRIPLE_CUTOFF):
         h.update(b"\0" + b.encode())
-    for r in A.old_history_repos():   # the old histories it resolves in, and every ref of each (ARENA_OLD_HISTORY too)
-        orefs = subprocess.run(["git", "--git-dir", str(r), "for-each-ref", "--format=%(objectname) %(refname)"],
-                               capture_output=True, text=True, timeout=120).stdout
-        for b in (str(r), orefs):
-            h.update(b"\0" + b.encode())
-    # a commit the census resolves may live only as an unreachable object: hash the presence of every sha-like name
-    # the ledger events carry (the pre-remap shas they close on) and every rewrite fix sha, in every git dir it reads
-    names = set(re.findall(r"\b[0-9a-f]{7,40}\b", json.dumps(events, sort_keys=True, default=str)))
-    names |= {x["fix_sha"] for x in A.load_prompt_rewrites().values()}
-    want = "".join(n + "\n" for n in sorted(names))
-    for r in [A.REPO / ".git"] + list(A.old_history_repos()):   # prune one of them and the key moves
-        have = subprocess.run(["git", "--git-dir", str(r), "cat-file", "--batch-check"], input=want,
+    look = "".join(sorted(s + "\n" for s in shas + [x["fix_sha"] for x in A.load_prompt_rewrites().values()]))
+    for r in [A.REPO / ".git"] + list(A.old_history_repos()):   # an old history pruned or added moves the key
+        have = subprocess.run(["git", "--git-dir", str(r), "cat-file", "--batch-check"], input=look,
                               capture_output=True, text=True, timeout=120).stdout
-        h.update(b"\0" + have.encode())
-    for f in (A.__file__, A.model.__file__):
+        h.update(b"\0" + str(r).encode() + b"\0" + have.encode())
+    for f in (A.__file__, A.model.__file__, A.SG.__file__, A.VR.__file__):
         h.update(b"\0" + Path(f).read_bytes())
-    key = h.hexdigest()
+    return h.hexdigest()
+
+
+def _real_census_summary():
+    """The facts t_real_ledger checks, from the real census (~60 s: 22k git calls on a thread pool), cached. The key
+    (_census_key) covers the census-readable events and every other input; the HEAD the census read is stored with
+    the paths it read there, and a later HEAD is warm only when _head_delta_ok says no commit since can change the
+    answer. So a ledger commit (its events name no census item, its paths are bookkeeping) keeps the cache warm. A
+    cache that does not parse is ignored."""
+    events = A.model.read()
+    key = _census_key(events)
+    head = subprocess.run(["git", "-C", str(A.REPO), "rev-parse", "HEAD"], capture_output=True, text=True,
+                          timeout=60).stdout.strip()
     try:
         c = json.loads(REAL_CENSUS_CACHE.read_text())
-        if c.get("key") == key:
+        if c.get("key") == key and not _head_delta_ok(A.REPO, c.get("head"), c.get("paths") or []):
             return c["summary"], True
-    except (OSError, ValueError, AttributeError):
+    except (OSError, ValueError, AttributeError, TypeError):
         pass
-    pool, rep = A.census(events=events, sanity=A.SANITY_ITEM, exclude={})  # raises SanityFail if blind; {}: the
-    # sanity item is itself one of the committed pool exclusions (provisional Clean), checked separately below
+    read_paths, real_lf, real_show = set(), A.later_fixes, A._show
+
+    def lf(repo, fix, files, t_close):
+        read_paths.update(files)
+        return real_lf(repo, fix, files, t_close)
+
+    def show(repo, sha, path):
+        if sha == "HEAD":
+            read_paths.add(path)
+        return real_show(repo, sha, path)
+    A.later_fixes, A._show = lf, show
+    try:
+        pool, rep = A.census(events=events, sanity=A.SANITY_ITEM, exclude={})  # raises SanityFail if blind; {}: the
+        # sanity item is itself one of the committed pool exclusions (provisional Clean), checked separately below
+    finally:
+        A.later_fixes, A._show = real_lf, real_show
     hs = {t["source_item"]: hh for t, hh in pool}
     sh = hs.get(A.SANITY_ITEM) or {}
     summ = {"found": bool(rep["sanity"]["found"]), "pool": rep["pool"], "labels": rep["labels"],
@@ -1672,14 +1752,89 @@ def _real_census_summary():
             "rewritten": rep["rewritten"], "rewrites_stale": rep["rewrites_stale"],
             "sanity": {"fix_sha": sh.get("fix_sha"), "label": sh.get("label"),
                        "checks": [c.get("path") for c in sh.get("checks") or []]}}
-    try:
-        REAL_CENSUS_CACHE.parent.mkdir(parents=True, exist_ok=True)
-        tmpf = REAL_CENSUS_CACHE.with_suffix(".tmp")
-        tmpf.write_text(json.dumps({"key": key, "summary": summ}, sort_keys=True))
-        os.replace(tmpf, REAL_CENSUS_CACHE)
-    except OSError:
-        pass
+    if read_paths or not rep["labels"].get("Clean"):    # a Clean label with no later_fixes read: the recorder is
+        try:                                            # blind, so nothing is cached
+            REAL_CENSUS_CACHE.parent.mkdir(parents=True, exist_ok=True)
+            tmpf = REAL_CENSUS_CACHE.with_suffix(".tmp")
+            tmpf.write_text(json.dumps({"key": key, "head": head, "paths": sorted(read_paths), "summary": summ},
+                                       sort_keys=True))
+            os.replace(tmpf, REAL_CENSUS_CACHE)
+        except OSError:
+            pass
     return summ, False
+
+
+def t_vet_tail_mutants():
+    """acc3 live mutants (ARENA_TASKS_REPAIR_SELFTEST_STILL_TOO_SLOW): each row fails under one of them."""
+    n, cap = A.VET_TAIL_CHARS, A.VET_TAIL_LINE
+    fill = lambda tag, k: "".join("step %s %d\n" % (tag, i) for i in range(k))
+    # tail_fail_noclip: a kept failure line is clipped, so one huge first FAIL cannot eat the failure budget
+    huge = "AssertionError: " + "A" * 1200 + " HUGE_TAIL_MARK\n"
+    txt = fill("h", 20) + huge + fill("m", 150) + "FAIL second_short\n" + fill("e", 150)
+    tl = A.vet_tail(txt)
+    kept = [ln for ln in tl.splitlines() if ln.startswith("AssertionError: ")]
+    check(len(tl) <= n and kept and len(kept[0]) <= cap and "HUGE_TAIL_MARK" not in tl and "FAIL second_short" in tl,
+          "vet_tail: a huge failure line is clipped to %d chars and a later FAIL still fits (tail_fail_noclip)" % cap)
+    # tail_half_budget_off: failure lines take at most half the budget, so the end of the output survives
+    many = "".join("FAIL case %02d %s\n" % (i, "q" * 85) for i in range(30))
+    txt = fill("h", 40) + many + fill("m", 60) + "LASTLINE_MARK " + "z" * 40 + "\n"   # head is filler only
+    tl = A.vet_tail(txt)
+    nf = sum(1 for ln in tl.splitlines() if ln.startswith("FAIL case"))
+    check(len(tl) <= n and "LASTLINE_MARK" in tl and 0 < nf * (99 + 28) <= n // 2,
+          "vet_tail: failure lines stop at half the budget (%d kept) and the last line survives "
+          "(tail_half_budget_off)" % nf)
+    # tail_strong_break: a strong line that does not fit is skipped, and a shorter strong line after it still fits
+    long_fail = lambda tag: "FAIL %s %s\n" % (tag, "w" * 300)
+    txt = (fill("h", 5) + long_fail("one") + fill("a", 40) + long_fail("two") + fill("b", 40) + long_fail("three")
+           + fill("c", 40) + "FAIL short_marker\n" + fill("e", 200))
+    tl = A.vet_tail(txt)
+    check(len(tl) <= n and "FAIL one" in tl and "FAIL two" in tl and "FAIL three" not in tl
+          and "FAIL short_marker" in tl,
+          "vet_tail: a strong line over the half budget is skipped, a shorter later one kept (tail_strong_break)")
+
+
+def t_census_cache(tmp):
+    """ARENA_TASKS_REPAIR_SELFTEST_STILL_TOO_SLOW: a ledger commit keeps the real-census cache warm; a commit or
+    event the census could read turns it cold."""
+    ev = A.model.read()
+    base, _ = _events_digest(ev)
+    unrelated = [{"event": "file", "id": "ST_CACHE_UNRELATED_ITEM", "title": "unrelated", "kind": "fix",
+                  "needs": "offline", "seat": "FOUNDRY", "for": "FOUNDRY", "ts": "2026-10-31T00:00:00Z", "tsn": "c1"},
+                 {"event": "close", "id": "ST_CACHE_UNRELATED_ITEM", "sha": "0" * 40, "seat": "FOUNDRY",
+                  "ts": "2026-10-31T00:01:00Z", "tsn": "c2"}]
+    check(_events_digest(ev + unrelated)[0] == base,
+          "census cache: a new item filed and closed after the window leaves the events digest alone")
+    rework = {"event": "file", "id": "ST_CACHE_REWORK_OF_SANITY", "title": "rework", "kind": "fix",
+              "needs": "offline", "caused_by": A.SANITY_ITEM, "seat": "FOUNDRY", "for": "FOUNDRY",
+              "ts": "2026-10-31T00:00:00Z", "tsn": "c3"}
+    check(_events_digest(ev + [rework])[0] != base, "census cache: a rework filed against a census item moves it")
+    note = {"event": "note", "id": A.SANITY_ITEM, "text": "x", "seat": "FOUNDRY", "ts": "2026-10-31T00:00:00Z",
+            "tsn": "c4"}
+    check(_events_digest(ev + [note])[0] != base, "census cache: a new event on a census item moves it")
+    close_in = dict(unrelated[1], ts="2026-10-20T00:00:00Z")
+    check(_events_digest(ev + [unrelated[0], close_in])[0] != base,
+          "census cache: an item closed inside the window moves it")
+    # HEAD side, on a throwaway repo
+    r = tmp / "cache_head"
+    r.mkdir()
+    git(r, "init", "-q")
+    c0 = commit(r, {"src/x.py": "x\n", "src/y.py": "y\n"}, "c0", "2026-10-31T00:00:00Z")
+    c1 = commit(r, {"infrastructure/state/ledger/events/FOUNDRY.jsonl": "{}\n"}, "ledger", "2026-10-31T01:00:00Z")
+    check(_head_delta_ok(r, c0, ["src/x.py"], head=c1) == "", "census cache: a ledger commit on top keeps it warm")
+    c2 = commit(r, {"src/y.py": "y2\n"}, "other code", "2026-10-31T02:00:00Z")
+    check(_head_delta_ok(r, c0, ["src/x.py"], head=c2) == "",
+          "census cache: a commit touching only paths the census did not read keeps it warm")
+    c3 = commit(r, {"src/x.py": "x2\n"}, "fix x", "2026-10-31T03:00:00Z")
+    check("touches a path" in _head_delta_ok(r, c0, ["src/x.py"], head=c3),
+          "census cache: a commit touching a path the census read at HEAD turns it cold")
+    c4 = commit(r, {"src/z.py": "z\n"}, "backdated", "2026-10-20T00:00:00Z")
+    check("authored before" in _head_delta_ok(r, c3, ["src/x.py"], head=c4),
+          "census cache: a commit authored before the rewrite cutoff (remap triple collision) turns it cold")
+    git(r, "checkout", "-q", "--orphan", "rewritten")
+    c5 = commit(r, {"src/x.py": "x\n"}, "c0", "2026-10-31T00:00:00Z")
+    check("not an ancestor" in _head_delta_ok(r, c0, [], head=c5),
+          "census cache: a rewritten HEAD (cached head not an ancestor) turns it cold")
+    check("not an ancestor" in _head_delta_ok(r, "", [], head=c5), "census cache: no stored head is cold")
 
 
 def t_real_ledger():
@@ -1727,6 +1882,8 @@ def main():
         t_auth2(tmp, pool)
         t_lock(tmp, pool)
         t_order(tmp, pool)
+        t_census_cache(tmp)
+        t_vet_tail_mutants()
         t_pool_ruling(tmp, repo, old, s)
         t_whitelist(tmp, pool, s)
         t_freeze_round2(tmp, pool)

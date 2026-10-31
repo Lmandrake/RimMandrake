@@ -328,19 +328,35 @@ def check_overlays() -> list[Path]:
             Path(os.environ.get("RM_DATA_ROOT") or "/mnt/d/ClaudeWork/rimmandrake")]
 
 
+def check_store_masks() -> list[Path]:
+    """ARENA_JUDGE_REPAIR_CHECK_SANDBOX_SEES_STORES (owner: "keep secrets in a store it can't access"): what a hidden
+    check (arm code) must not read beyond judge_masks -- the live clones, every git store holding the fix commits, the
+    retired trees and the D: mirror. A check ran `git -C ~/rm/bench show <fix>` and read store.git before this.
+    Its own scratch tree, the synthetic git repo inside it and the overlays stay as they were. $ARENA_CHECK_MASKS
+    (os.pathsep-separated) replaces the default."""
+    v = os.environ.get("ARENA_CHECK_MASKS")
+    if v is not None:
+        return [Path(x) for x in v.split(os.pathsep) if x.strip()]
+    rm = Path("/home/mandrake/rm")
+    return [rm / "bench", rm / "foundry", rm / "store.git", rm / "mirror.git", rm / "new.git", rm / "retired-trees",
+            Path("/mnt/d/Luke/dev/RimMandrake")]
+
+
 def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir: Path | None = None,
-                 proc: bool = True, overlays: list[Path] | None = None) -> list[str]:
+                 proc: bool = True, overlays: list[Path] | None = None, net: bool = True) -> list[str]:
     """READ-ONLY root (`--ro-bind / /`), a fresh /tmp, its own pid namespace (no host /proc, and the whole tree dies
     with it), `masks` hidden under empty tmpfs, and ONLY `keep` writable. Order: kept dirs outside every mask are
     bound first, then the masks are laid (so a broad bind like $HOME never re-exposes ~/.claude/projects), then the
-    kept paths that live inside a mask (the judge's own work dir under the clone root) are bound back."""
+    kept paths that live inside a mask (the judge's own work dir under the clone root) are bound back.
+    net=False (a hidden check) adds `--unshare-net`: an empty network namespace, no route anywhere (loopback only).
+    WSL interop (a C# check's dotnet.exe) still starts: it rides a filesystem socket, not the network."""
     bw = shutil.which("bwrap")
     if not bw:
         raise JudgeUnavailable("bwrap not found: the judge never runs unsandboxed")
     # proc=False (a hidden check: arm code runs there) lays an empty tmpfs over /proc instead (fix round 3, #3)
     out = [bw, "--ro-bind", "/", "/", "--dev", "/dev"] + (["--proc", "/proc"] if proc else ["--tmpfs", "/proc"]) + [
            "--tmpfs", "/tmp",
-           "--unshare-pid", "--new-session", "--die-with-parent"]
+           "--unshare-pid", "--new-session", "--die-with-parent"] + ([] if net else ["--unshare-net"])
     ms = sorted({os.path.realpath(m) for m in masks if Path(m).exists()}, key=len)
     ks = sorted({os.path.realpath(k) for k in keep if Path(k).exists()}, key=len)
     # overlays go FIRST: a mask or kept dir inside one is then laid on top of it; an overlay at or inside a mask is
@@ -445,8 +461,10 @@ def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | 
     that builds C#) keeps the sandbox's own /proc: WSL interop's /init reads /proc/self/mountinfo and dies on a
     tmpfs /proc, so no dotnet.exe could start."""
     keep = [work] if rw is None else list(rw)
-    full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work,
-                        proc=kind != "check" or interop, overlays=check_overlays() if kind == "check" else None)
+    check = kind == "check"
+    full = sandbox_argv(list(argv), masks=judge_masks(priv) + (check_store_masks() if check else []), keep=keep,
+                        chdir=cwd or work, proc=not check or interop, overlays=check_overlays() if check else None,
+                        net=not check)
     proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind, own=work),
                             start_new_session=True)
@@ -1750,13 +1768,24 @@ def _gate_view(gate: dict | None, **kw) -> dict:
         return {"record": text}
 
 
-def reader_unscore(task_id: str, p: dict | None = None) -> list[str]:
+class ReaderFileMissing(JudgeError):
+    """The reader-pass exclusion file a frozen-bank judgement needs is not there."""
+
+
+def reader_unscore(task_id: str, p: dict | None = None, required: bool = False) -> list[str]:
     """The check paths the reader pass unscored for `task_id`, from its exclusion file (arena_trial
-    .reader_exclusions_path: <arena root>/judge/reader/exclusions.json, judge-only, never in an arm's view). No file:
-    nothing unscored. A file that does not parse raises (arena_trial.TrialError / ValueError / OSError)."""
+    .reader_exclusions_path: <arena root>/judge/reader/exclusions.json, judge-only, never in an arm's view). A file
+    that does not parse raises (arena_trial.TrialError / ValueError / OSError). No file: `required` (a frozen-bank
+    task, judge_task) raises ReaderFileMissing -- ARENA_JUDGE_REPAIR_MISSING_EXCLUSIONS_OPEN: a deleted or never
+    written file used to read as "nothing unscored" and a reader-unscored broken check rejected the arm; the reader
+    pass writes the file even when it excludes nothing. Not required (a direct judge() of a non-bank task, the
+    calibration): nothing unscored."""
     import arena_trial as T            # lazy: arena_trial imports arena_analysis, not this module
     path = T.reader_exclusions_path(p)
     if not path.is_file():
+        if required:
+            raise ReaderFileMissing("%s does not exist: a bank task is never judged without the reader pass's "
+                                    "exclusion file" % path)
         return []
     return list(T.read_reader_exclusions(path)["unscore"].get(task_id) or [])
 
@@ -1764,12 +1793,15 @@ def reader_unscore(task_id: str, p: dict | None = None) -> list[str]:
 def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str, arm: str, gate: dict | None,
           judges: Judges | None = None, p: dict | None = None, priv: Path | None = None,
           work_base: Path | None = None, extra_tokens=(), tree_paths=TREE_PATHS,
-          record: Callable[[dict], object] | None = None, unscore=None) -> dict:
+          record: Callable[[dict], object] | None = None, unscore=None, reader_required: bool = False) -> dict:
     """Harness side. Returns the blind verdict record (no arm in it); the arm goes only to the arm map.
     `record(rec)`, if given, is called with every final verdict right after verdict.json is written (main() passes
     record_judge_event: the signed `judge` event arena_analysis.py reads). If it raises, the error propagates.
     `unscore`: check paths left out of scoring (None: reader_unscore, i.e. the reader pass's file); the judge record
-    lists them as "unscored". A task whose every scored check is unscored is invalid (nothing left to score)."""
+    lists them as "unscored". A task whose every scored check is unscored is invalid (nothing left to score).
+    `reader_required` (judge_task: every frozen-bank task): no reader file -> invalid. An unscore path the task's
+    hidden file does not hold (a typo, a stale file) -> invalid: it was silently ignored and the check it meant
+    was scored."""
     p = p or A.paths()
     amap = ArmMap(p, priv)
     labels = arms()
@@ -1797,12 +1829,19 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
         # fails CLOSED (the known-bad output it exists to catch would otherwise reach the models)
         return done("invalid", "replay task %s has no hidden-check file: refusing to judge without it" % task["id"])
     try:
-        unscore = reader_unscore(task["id"], p) if unscore is None else list(unscore)
+        unscore = reader_unscore(task["id"], p, reader_required) if unscore is None else list(unscore)
+    except ReaderFileMissing as ex:
+        return done("invalid", "reader exclusion file missing: %s" % ex)
     except Exception as ex:                          # noqa: BLE001 - an unreadable reader file is a refusal
         return done("invalid", "reader exclusion file unreadable: %s: %s" % (type(ex).__name__, ex))
     try:
         runnable = [c for c in hidden_checks(hidden or {}, unscore) if c.get("body") is not None]
         if unscore:
+            known = {c.get("path") for c in (hidden or {}).get("checks") or []}
+            unknown = sorted(set(unscore) - known)
+            if unknown:
+                return done("invalid", "reader exclusion names %d check(s) the task's hidden file does not hold "
+                            "(%s): refusing to score the rest as if it applied" % (len(unknown), unknown[0]))
             scored = [c["path"] for c in (hidden or {}).get("checks") or [] if c.get("type") == "fix_test"]
             rec["unscored"] = sorted(set(unscore) & set(scored))
             if scored and not set(scored) - set(unscore):
@@ -1885,6 +1924,7 @@ def judge_task(task_id: str, *, clone: Path, base: str, head: str, arm: str, gat
     task = A.load_frozen(task_id, p)
     hp = p["judge"] / (task_id + ".json")
     hidden = json.loads(hp.read_text(encoding="utf-8")) if hp.is_file() else None
+    kw.setdefault("reader_required", True)          # a frozen-bank task: no reader file -> invalid (fail closed)
     return judge(task=task, hidden=hidden, clone=clone, base=base, head=head, arm=arm, gate=gate, judges=judges, p=p,
                  **kw)
 

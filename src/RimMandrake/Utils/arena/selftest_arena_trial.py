@@ -161,6 +161,11 @@ def t_exclude():
             T.hidden_scored_paths = lambda p=None: {}
             doc = T.build(n=20, check=False)
             check("build: an UNSCORE task with no hidden file fails closed (left out)", "B012" in doc["left_out"])
+            T.hidden_scored_paths = lambda p=None: {t: ["src/x/selftest_q.py", "src/x/selftest_z.py"] for t in bb}
+            doc = T.build(n=20, check=False)
+            check("build: an UNSCORE path the task's hidden file does not hold (typo) leaves the task out "
+                  "(the judge refuses it)", "B012" in doc["left_out"] and "does not hold" in doc["left_out"]["B012"],
+                  doc["left_out"].get("B012"))
             T.hidden_scored_paths = lambda p=None: {t: ["src/x/selftest_y.py", "src/x/selftest_z.py"] for t in bb}
             check("build: the CLI has no --allow-unscored left", "--allow-unscored" not in Path(T.__file__).read_text())
             T.reader_exclusions_path = lambda p=None: Path(d, "absent.json")

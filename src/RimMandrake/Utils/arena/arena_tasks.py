@@ -265,6 +265,9 @@ def old_history_repos(old=None) -> list[Path]:
     return out
 
 
+PREFETCH_WORKERS = 8               # threads for the census git prefetch (subprocess-bound, so threads overlap)
+
+
 class Resolver:
     """A ledger sha -> (a commit in `repo`'s current history, how), or (None, why not).
 
@@ -280,6 +283,23 @@ class Resolver:
         self.old = old_history_repos(old)
         self._index = None
         self.old_used = {}          # full pre-rewrite sha -> the old-history repo it was read from (pin it there)
+        self._memo = {}             # sha -> (commit or None, how): a lookup is a pure function of immutable objects
+
+    def prefetch(self, shas, workers=PREFETCH_WORKERS):
+        """Resolve `shas` on a thread pool (git subprocesses, so threads overlap; ARENA_TASKS_REPAIR_SELFTEST_STILL_TOO_SLOW:
+        the serial remap checks were 74 s of a 171 s census). Every later call returns the memoised answer, which is
+        the very value a serial call gives; a lookup that raises is not memoised, so the serial call raises it in
+        order. Call it with exactly the shas the caller will look up: old_used records each one it reads."""
+        todo = sorted({(s or "").strip() for s in shas} - set(self._memo))
+        if not todo:
+            return
+        self._key_index()                   # built once, before the threads share it
+        import concurrent.futures as cf
+        with cf.ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+            futs = {s: ex.submit(self._lookup, s) for s in todo}
+        for s, f in futs.items():
+            if f.exception() is None:
+                self._memo[s] = f.result()
 
     def _key_index(self):
         if self._index is None:
@@ -291,6 +311,11 @@ class Resolver:
 
     def __call__(self, sha: str):
         sha = (sha or "").strip()
+        if sha not in self._memo:
+            self._memo[sha] = self._lookup(sha)
+        return self._memo[sha]
+
+    def _lookup(self, sha: str):
         if not re.fullmatch(r"[0-9a-fA-F]{4,40}", sha):
             return None, "close sha missing or not hex"
         cur = _resolve(self.repo, sha)
@@ -468,6 +493,27 @@ def _numstat(repo: Path, base: str, head: str) -> list[tuple[str, int, str]]:
         lines = (int(a) if a.isdigit() else 0) + (int(d) if d.isdigit() else 0)
         out.append((path, lines, status.get(path, "M")))
     return out
+
+
+def _prefetch_diffs(repo: Path, fixes, workers=PREFETCH_WORKERS):
+    """-> ({fix: parents}, {fix: numstat against its one parent}) for the non-None `fixes`, on a thread pool. A fix
+    whose read raises is left out, so the caller's serial read raises it."""
+    def one(fix):
+        par = _parents(repo, fix)
+        return par, (_numstat(repo, par[0], fix) if len(par) == 1 else None)
+    todo = sorted({f for f in fixes if f})
+    pars, nums = {}, {}
+    if not todo:
+        return pars, nums
+    import concurrent.futures as cf
+    with cf.ThreadPoolExecutor(max_workers=max(1, workers)) as ex:
+        futs = {f: ex.submit(one, f) for f in todo}
+    for f, fut in futs.items():
+        if fut.exception() is None:
+            pars[f], n = fut.result()
+            if n is not None:
+                nums[f] = n
+    return pars, nums
 
 
 def _show(repo: Path, sha: str, path: str):
@@ -716,6 +762,17 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         rejects[why] = rejects.get(why, 0) + 1
         reasons[iid] = why
 
+    # Prefetch (ARENA_TASKS_REPAIR_SELFTEST_STILL_TOO_SLOW): the close shas the loop below resolves, under the very
+    # filters it applies first, then each fix's parents and numstat, on a thread pool. Same answers, in parallel.
+    want = []
+    for iid, it in sorted(world.items.items()):
+        closes = [e for e in by_id.get(iid, []) if e.get("event") == "close"]
+        in_win = [e for e in closes if window[0] <= _day(e.get("ts")) <= window[1]]
+        if in_win and it.state == "done" and closes[-1] is in_win[-1]:
+            want.append(str(closes[-1].get("sha") or ""))
+    resolve.prefetch(want)
+    pre_par, pre_num = _prefetch_diffs(repo, [resolve(s)[0] for s in want])
+
     scanned = 0
     for iid, it in sorted(world.items.items()):
         evs = by_id.get(iid, [])
@@ -733,11 +790,11 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         fix, how = resolve(str(close.get("sha") or ""))
         if not fix:
             reject(iid, how); continue
-        par = _parents(repo, fix)
+        par = pre_par[fix] if fix in pre_par else _parents(repo, fix)
         if len(par) != 1:
             reject(iid, "close sha is a merge or root"); continue
         base = par[0]
-        diff = [d for d in _numstat(repo, base, fix) if not is_bookkeeping(d[0])]
+        diff = [d for d in (pre_num[fix] if fix in pre_num else _numstat(repo, base, fix)) if not is_bookkeeping(d[0])]
         if not diff:
             reject(iid, "bookkeeping-only diff"); continue
         if len(diff) > MAX_FILES:

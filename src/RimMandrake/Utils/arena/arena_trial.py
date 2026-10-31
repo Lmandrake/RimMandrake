@@ -35,7 +35,8 @@ EXCLUSIONS, applied to the bank BEFORE the era split (so N stays N wherever the 
     <arena root>/judge/reader/exclusions.json, judge-only) names tasks to DROP and checks to UNSCORE. A dropped task
     is left out. A task with an unscored check STAYS and is scored on its remaining checks: arena_judge.judge reads
     the same default file and leaves those checks out (ARENA_JUDGE_HONOUR_UNSCORE_DOWNSTREAM). It is left out only
-    when no scored check is left (every fix_test of its hidden file unscored, or no hidden file), or when the file
+    when no scored check is left (every fix_test of its hidden file unscored, or no hidden file), when an unscored
+    path is not one of its scored checks (a typo: the judge refuses such a task), or when the file
     is an explicit --reader-exclusions path other than the default (the judge reads only the default, so it could
     not honour that unscore). Absent default file: not applied, and
     the doc says so (`reader: null`); an explicit --reader-exclusions path that is missing refuses; --no-reader skips;
@@ -229,6 +230,10 @@ def build(n=DEFAULT_N, csharp=True, check=True, repo=None, p=None, reader=None, 
                                        % (len(cks), rp))
                 elif not set(scored.get(t) or ()) - set(cks):    # no hidden file reads as nothing left: fail closed
                     drop.setdefault(t, "reader pass unscored every scored check (%d)" % len(cks))
+                elif set(cks) - set(scored.get(t) or ()):        # a typo/stale path: the judge refuses the task
+                    drop.setdefault(t, "reader pass unscores %d check(s) the task's hidden file does not hold "
+                                       "(the judge refuses it, ARENA_JUDGE_REPAIR_MISSING_EXCLUSIONS_OPEN)"
+                                       % len(set(cks) - set(scored.get(t) or ())))
                 else:
                     kept += 1
             rinfo = {"path": str(rp), "drop": len(rx["drop"]), "unscore": len(rx["unscore"]),
