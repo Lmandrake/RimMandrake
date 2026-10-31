@@ -55,6 +55,61 @@ def static_checks():
     fails += stasis_unlock_checks(ET)
     fails += encase_static_checks(ET, re)
     fails += cold_aging_dish_checks(ET, re)
+    fails += drinks_chiller_checks(ET)
+    return fails
+
+
+def drinks_chiller_checks(ET):
+    """COLD_STORAGE_CHAMBER_BUILD_DRINKS_CHILLER pins. The drinks chiller is the cooling chamber with a drinks filter
+    and a 4 C start: it inherits from the chamber, is MayRequire'd on Cold Storage, restates the chamber's comps
+    (comps Inherit="False", so a lost comp would be silent) with the same range, detents and fuel option, starts on a
+    detent, and every non-vanilla filter entry is MayRequire'd on the mod that ships it."""
+    fails = []
+    path = os.path.join(os.path.dirname(HERE), "..", "RimStarWars", "Cuisine", "Defs", "RSW_CoolingUnits.xml")
+    defs = {d.findtext("defName"): d for d in ET.parse(path).getroot() if d.tag == "ThingDef"}
+    chamber, chiller = defs.get("RSW_CoolingChamber"), defs.get("RSW_DrinksChiller")
+    if chamber is None or chiller is None:
+        return ["RSW_CoolingUnits.xml: RSW_CoolingChamber or RSW_DrinksChiller missing (instrument blind?)"]
+    if chamber.get("Name") != "RSW_CoolingChamber" or chiller.get("ParentName") != "RSW_CoolingChamber":
+        fails.append("RSW_DrinksChiller must inherit from the chamber (Name/ParentName RSW_CoolingChamber)")
+    if chiller.get("MayRequire") != "mandrake.rm.coldstorage":
+        fails.append("RSW_DrinksChiller: MayRequire %r, want mandrake.rm.coldstorage" % chiller.get("MayRequire"))
+    climate = "RimMandrake.ColdStorage.CompProperties_StorageClimate"
+
+    def comp_classes(d):
+        return sorted(li.get("Class") for li in d.find("comps").findall("li"))
+
+    if chiller.find("comps") is None or chiller.find("comps").get("Inherit") != "False":
+        fails.append("RSW_DrinksChiller: comps must be Inherit=\"False\" (else the climate comp is listed twice)")
+    elif comp_classes(chiller) != comp_classes(chamber):
+        fails.append("RSW_DrinksChiller comps %s differ from the chamber's %s" % (comp_classes(chiller), comp_classes(chamber)))
+    else:
+        a = [li for li in chamber.find("comps") if li.get("Class") == climate][0]
+        b = [li for li in chiller.find("comps") if li.get("Class") == climate][0]
+        for tag in ("mode", "method", "minSetpoint", "maxSetpoint", "fuelAlternative", "fuelAlternativePerDay",
+                    "fuelAlternativeCapacity"):
+            if a.findtext(tag) != b.findtext(tag):
+                fails.append("RSW_DrinksChiller %s %r differs from the chamber's %r" % (tag, b.findtext(tag), a.findtext(tag)))
+        detents = [li.text for li in b.find("detents")]
+        if detents != [li.text for li in a.find("detents")]:
+            fails.append("RSW_DrinksChiller detents %s differ from the chamber's" % detents)
+        if b.findtext("defaultSetpoint") != "4" or "4" not in detents:
+            fails.append("RSW_DrinksChiller must start on the 4 C Cool detent, got %r" % b.findtext("defaultSetpoint"))
+    flt = chiller.find("building/defaultStorageSettings/filter")
+    if flt is None or chiller.find("building/defaultStorageSettings").get("Inherit") != "False":
+        fails.append("RSW_DrinksChiller: needs its own defaultStorageSettings (Inherit=\"False\") with a filter")
+        return fails
+    entries = flt.findall("thingDefs/li") + flt.findall("categories/li")
+    if len(entries) < 4:
+        fails.append("RSW_DrinksChiller filter has %d entries, floor 4" % len(entries))
+    for li in entries:
+        name = (li.text or "").strip()
+        if name in ("Beer", "Milk"):
+            continue
+        want = "VanillaExpanded.VBrewE" if name.startswith("VBE_") else (
+            "mandrake.rsw.swbestiary" if name.startswith("RSW_") else None)
+        if want is None or li.get("MayRequire") != want:
+            fails.append("RSW_DrinksChiller filter %s: MayRequire %r, want %r" % (name, li.get("MayRequire"), want))
     return fails
 
 
