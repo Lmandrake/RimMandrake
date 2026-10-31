@@ -29,6 +29,9 @@ os.environ["RM_SCRATCH_REAP_RUNS"] = str(TMP / "reap.jsonl")
 os.environ["RM_OPS_DISKS"] = "root=%s" % TMP
 import ops_watch as OW  # noqa: E402
 
+for _k in [k for k in os.environ if k.startswith("GIT_")]:      # nor may a collector's git follow a hook's GIT_DIR out of the fixture
+    del os.environ[_k]
+
 FAILS = []
 H = 3600.0
 DAY = 86400.0
@@ -1149,5 +1152,66 @@ try:
 finally:
     OW.atomic_json, OW.run_alarms = _aj, _ra
 check("run: a full disk at last_measured.json still runs the alarms", _ran == [1], _ran)
+_rp = TMP / "rules_torn.json"
+_rp.write_text(json.dumps({"series_days": 8}), encoding="utf-8")
+OW.load_rules(_rp)
+_rp.write_text('{"series_days": 8, ', encoding="utf-8")
+_lr = OW.load_rules(_rp)
+check("rules: a torn file falls back to the last good copy, said aloud", _lr.get("series_days") == 8 and _lr.get("_load_error"), _lr)
+_rp.write_text("[1]", encoding="utf-8")
+check("rules: a list root is torn too", OW.load_rules(_rp).get("_load_error"))
+_dj = {"result": {"outcome": {"status": "INVALID"}}, "job": {}}
+check("steve: an outcome that is no string is no outcome", OW.outcome_of(_dj) is None and OW.outcome_of({"result": {"outcome": "PASS"}}) == "PASS")
+OW.qhome = lambda: _q2
+wj(_q2 / "steward.json", {"epoch": NOW - 60, "state": "RUNNING", "fault": None, "reason": 42})
+try:
+    _s = OW.c_steve(NOW, RULES, {})
+finally:
+    OW.qhome = _qh
+check("steve: a numeric reason costs nothing", _s["steve.state"]["m"] == "MEASURED", _s["steve.state"])
+_rs = copy.deepcopy(RULES)
+_rs["steve_incident"] = {"prefix": None}
+_w = types.SimpleNamespace(items={"A": types.SimpleNamespace(id="A")})
+_err = None
+try:
+    OW.steve_incident_unclaimed(_w, None, NOW, _rs)
+except Exception as e:  # noqa: BLE001
+    _err = e
+check("flow: the fixture does raise, so c_flow's guard has work to do", _err is not None)
+_rx = copy.deepcopy(RULES)
+_rx["targets"] = [{"key": "disk.root_free_bg", "op": "<", "value": 210, "alarm": False, "tag": "T_X", "title_field": None, "marks": ["MEASURED"]}]
+_cs = dict(OW.COLLECTORS)
+OW.COLLECTORS.clear()
+OW.COLLECTORS["disk"] = lambda now, rules, ctx: {"disk.root_free_gb": OW.M(500.0, "GB")}
+OW.ORDER, _od = ("disk",), OW.ORDER
+try:
+    _dg = OW.run(now=NOW + 80, rules=_rx, filer=None)
+    _txt = (OW.ops_dir() / "flags.json").read_text(encoding="utf-8")
+finally:
+    OW.ORDER = _od
+    OW.COLLECTORS.clear()
+    OW.COLLECTORS.update(_cs)
+check("run: a target key matching no reading is said aloud", "matches no reading" in _txt, _txt[:300])
+_sp = OW.series_path("steve")
+_sp.parent.mkdir(parents=True, exist_ok=True)
+_T0 = NOW + 7200
+OW.COLLECTORS["steve"] = lambda now, rules, ctx: {"steve.state": OW.M("RUNNING", "steward state")}
+_rq = copy.deepcopy(RULES)
+_rq["targets"] = []
+_rq["silent"] = {"keys": ["steve.state"], "skip": [], "per_key": {}, "default_h": 1}
+OW.run(now=_T0, rules=_rq, families={"steve"})
+OW.COLLECTORS["steve"] = lambda now, rules, ctx: {"steve.state": OW.U("gone")}
+OW.run(now=_T0 + 3 * 3600, rules=_rq, families={"steve"})
+OW.COLLECTORS.update(_cs)
+_txt = (OW.ops_dir() / "flags.json").read_text(encoding="utf-8")
+check("silent: a state string that went unmeasured raises the flag, through run", '"silent"' in _txt and "steve.state" in _txt, _txt[:300])
+_fp = OW.series_path("steve")
+with open(_fp, "a", encoding="utf-8") as _fh:
+    _fh.write(json.dumps({"t": _T0 + 400 * 86400, "ts": "x", "points": {"steve.state": OW.M("RUNNING", "s")}}) + "\n")
+OW.COLLECTORS["steve"] = lambda now, rules, ctx: {"steve.state": OW.U("gone")}
+OW.run(now=_T0 + 4 * 3600, rules=_rq, families={"steve"})
+OW.COLLECTORS.update(_cs)
+_txt = (OW.ops_dir() / "flags.json").read_text(encoding="utf-8")
+check("silent: a series row from the future does not read as just measured", '"silent"' in _txt, _txt[:300])
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

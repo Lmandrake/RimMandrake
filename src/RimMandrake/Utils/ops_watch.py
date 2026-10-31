@@ -87,7 +87,24 @@ def data_clone() -> Path:
 
 
 def load_rules(path=None) -> dict:
-    return json.loads(Path(path or rules_path()).read_text(encoding="utf-8"))
+    """The rules, or the last good copy with `_load_error` set when the file is torn: a bad write to the rules must not
+    stop every reading and alarm. With no good copy yet it raises, and the unit fails aloud."""
+    last_good = ops_dir() / "rules_last_good.json"
+    try:
+        rules = json.loads(Path(path or rules_path()).read_text(encoding="utf-8"))
+        if not isinstance(rules, dict):
+            raise ValueError("the rules file's root is not an object")
+    except (OSError, ValueError) as e:
+        saved = read_json(last_good)
+        if not isinstance(saved, dict):
+            raise
+        saved["_load_error"] = "%s: %s" % (type(e).__name__, str(e)[:160])
+        return saved
+    try:
+        atomic_json(last_good, rules)
+    except OSError:
+        pass            # the copy is a spare; the rules in hand are good
+    return rules
 
 
 def iso(t: float) -> str:
@@ -338,6 +355,12 @@ def done_jobs(since, bad=None, now=None):
     return out
 
 
+def outcome_of(d):
+    """A done record's outcome, or None: an outcome that is no string is no outcome, never a known non-INVALID result."""
+    oc = (d.get("result") or {}).get("outcome")
+    return oc if isinstance(oc, str) and oc else None
+
+
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
@@ -356,9 +379,9 @@ def c_steve(now, rules, ctx):
         st = sj.get("state")
         if hb > 30:
             out["steve.state"] = E(st, "steward.json is %.0f min old: its last word, not now" % hb, "steward state",
-                                   reason=(sj.get("reason") or "")[:160], since=sj.get("since"))
+                                   reason=str(sj.get("reason") or "")[:160], since=sj.get("since"))
         else:
-            out["steve.state"] = M(st, "steward state", reason=(sj.get("reason") or "")[:160], since=sj.get("since"))
+            out["steve.state"] = M(st, "steward state", reason=str(sj.get("reason") or "")[:160], since=sj.get("since"))
         out["steve.heartbeat_age_min"] = M(round(hb, 1), "min since steward.json")
         out["steve.watch_age_min"] = M(round(wage, 1), "min since steward_watch.json") if wage is not None else \
             U("steward_watch.json has no epoch")
@@ -393,7 +416,7 @@ def c_steve(now, rules, ctx):
     jobs = done_jobs(now - 7 * DAY, bad, now)
     # a record with no outcome cannot say INVALID or not: unseen, like an unreadable one
     bad += [str((d.get("job") or {}).get("id") or "?") + " (no outcome)" for _, d in jobs
-            if not (d.get("result") or {}).get("outcome")]
+            if not outcome_of(d)]
     ctx["steve_jobs_bad"] = bad
     if not jobs:
         why = "no testq done record in 7 d under %s" % (qhome() / "done") + (
@@ -405,7 +428,7 @@ def c_steve(now, rules, ctx):
         """-> (length of the newest run, its oldest finish time, did a record with no outcome stop it)"""
         n, start = 0, None
         for fin, d in reversed(js):
-            oc = (d.get("result") or {}).get("outcome")
+            oc = outcome_of(d)
             if oc != "INVALID":
                 if not oc and str((d.get("job") or {}).get("id") or "?") + " (no outcome)" not in bad:
                     bad.append(str((d.get("job") or {}).get("id") or "?") + " (no outcome)")   # the run's end is unknown
@@ -478,7 +501,7 @@ def c_testing(now, rules, ctx):
     steve_h, steve_n, unk, young = 0.0, 0, 0, 0
     for fin, d in jobs:
         st = epoch((d.get("result") or {}).get("started"))
-        if st is None or fin - st <= 0 or not (d.get("result") or {}).get("outcome"):
+        if st is None or fin - st <= 0 or not outcome_of(d):
             unk += 1        # no span, or no outcome to say whether it caught anything
             continue
         if not caught(d, closes, ch):
@@ -623,6 +646,8 @@ def c_disk(now, rules, ctx):
                     nob += 1
                     continue
                 tot[row.get("verdict")] = tot.get(row.get("verdict"), 0) + row["bytes"]
+        if age_h < -5 / 60:
+            raise ValueError("the reaper's last run is dated in the future (%s)" % r["ts"])
         if age_h > 3:
             raise ValueError("the reaper's last run is %.1f h old (%s)" % (age_h, r["ts"]))
         mk = M if not nob else (lambda v, u, **x: E(v, "%d scratch row(s) with no byte count (not counted)" % nob, u, **x))
@@ -694,7 +719,10 @@ def c_flow(now, rules, ctx):
            "flow.verify_pass_24h": M(v24, "verify pass events, 24 h (maker or not)")}
     lapsed = sum(1 for it in world.items.values() if it.open and model.lease_status(it, now) == "lapsed")
     out["flow.lapsed_leases"] = M(lapsed, "open items with a lapsed lease")
-    out["steve.incident_unclaimed_min"] = steve_incident_unclaimed(world, model, now, rules)
+    try:
+        out["steve.incident_unclaimed_min"] = steve_incident_unclaimed(world, model, now, rules)
+    except Exception as e:  # noqa: BLE001  a bad steve_incident rule costs this reading, not the family's
+        out["steve.incident_unclaimed_min"] = U("steve_incident: %s: %s" % (type(e).__name__, str(e)[:160]))
     return out
 
 
@@ -1215,6 +1243,8 @@ def target_state(points, rules):
 
 
 # ===================================================================================================== alarms
+# Filing writes alarms.json first, on purpose: a name saved before the filing is what stops a repeat. On a full state
+# disk that write raises, no alarm files, and the pass dies with the unit failed. DISK_LOW fires at 210 GB, well before.
 def alarm_conf(rules):
     a = dict(rules["alarm"])
     a["clone"] = os.environ.get("RM_OPS_ALARM_CLONE", a["clone"])
@@ -1716,10 +1746,12 @@ def run(now=None, rules=None, filer=None, families=None):
         points.update(pts)
     hist, lastm = {}, {}
     for fam, recs in prev.items():
-        h = history(recs)
-        hist.update(h)
-        for k, hs in h.items():
-            lastm[k] = hs[-1][0]
+        recs = [r for r in recs if r["t"] <= now + 300]     # a future row would read as just measured, and hide silence
+        hist.update(history(recs))
+        for r in recs:      # any MEASURED point, a state string too: only the band and run rules need a number
+            for k, p in (r.get("points") or {}).items():
+                if isinstance(p, dict) and p.get("m") == "MEASURED":
+                    lastm[k] = max(r["t"], lastm.get(k, r["t"]))
     lastm, saved_lm = carry_last_measured(lastm, _obj(read_json(ops_dir() / "last_measured.json")).get("t"),
                                           points, now)
     try:
@@ -1727,6 +1759,15 @@ def run(now=None, rules=None, filer=None, families=None):
     except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
         flags = sick + [{"rule": "bad_rule", "key": "rules", "value": None, "window": "now",
                          "detail": "andon failed: %s: %s" % (type(e).__name__, str(e)[:160])}]
+    if rules.get("_load_error"):
+        flags.append({"rule": "bad_rule", "key": "rules.file", "value": None, "window": "now",
+                      "detail": "the rules file cannot be read, last good copy in use: %s" % rules["_load_error"]})
+    if not families:    # a key no collector reports would keep its alarm silent for good; a limited pass cannot tell
+        for t in good_targets(rules):
+            fam = t["key"].split(".")[0]
+            if fam + "._collector" not in points and not any(fnmatch.fnmatchcase(k, t["key"]) for k in points):
+                flags.append({"rule": "bad_rule", "key": "rules.target." + t["key"], "value": None, "window": "now",
+                              "detail": "target %s matches no reading: its alarm cannot fire" % t["key"]})
     try:
         atomic_json(ops_dir() / "last_measured.json", {"t": saved_lm})
     except OSError as e:    # a full disk is what the alarms below are for: never let it stop them

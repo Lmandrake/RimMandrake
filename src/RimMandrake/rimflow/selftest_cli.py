@@ -108,6 +108,8 @@ def env(seat="BUILD", **over):
     # or, for the driver lock, displace a real driver. No schedule file means no seat focus; "" means no lock.
     e["RIMFLOW_SCHEDULE"] = os.path.join(TMP_ROOT, "no_schedule.json")
     e["RIMFLOW_DRIVER_LOCK"] = ""
+    e["RIMFLOW_SHARED_BRIDGE"] = ""
+    e["RIMFLOW_BRIDGE_LOCK"] = os.path.join(TMP_ROOT, "bridge.lock")
     e["RM_COMPANION_PROFILE"] = GRANT_FIXTURE
     if seat:
         e["RIMFLOW_SEAT"] = seat
@@ -278,7 +280,8 @@ def t_close_takes_git_head_when_no_sha_given():
     prose("SHA_FROM_GIT_PROBE_FIXTURE")
     ok("claim", "SHA_FROM_GIT_PROBE_FIXTURE")
     out = ok("close", "SHA_FROM_GIT_PROBE_FIXTURE", env=e)
-    assert "closed at" in out and len(out.split("closed at ")[1].strip(" .\n")) >= 7, (
+    sha = out.split("closed at ")[1].split()[0].strip(" .")
+    assert len(sha) >= 7 and subprocess.check_output(("git", "rev-parse", "HEAD"), cwd=c).decode().strip().startswith(sha), (
         "a close with no commit behind it is a claim, not a close: %s" % out)
 
 
@@ -780,7 +783,7 @@ def t_this_deployment_jumps_the_queue_and_clears_when_the_game_goes_down():
        "--name", "URGENT_FOLLOWUP_HERE_PROBE_N9", "--this-deployment", seat="CHECK")
     prose("URGENT_FOLLOWUP_HERE_PROBE_N9")
     make_ready("URGENT_FOLLOWUP_HERE_PROBE_N9", seat="CHECK")
-    out = ok("next", seat="CHECK")
+    out = ok("next", "--peek", seat="CHECK")    # a peek takes no lease: a leased item would drop out of the second look anyway
     assert body(out).startswith("URGENT_FOLLOWUP_HERE_PROBE_N9"), (
         "the live window is closing and row 1 is not: %s" % out)
     assert "THIS DEPLOYMENT" in out, out
@@ -877,7 +880,7 @@ def t_sweep_transient_lists_and_never_deletes():
     def seen():
         roots = [(REPO, n) for n in os.listdir(REPO) if n.startswith("TRANSIENT_")]
         d = os.path.join(REPO, "Transient")
-        roots += [(d, n) for n in os.listdir(d)] if os.path.isdir(d) else []
+        roots += [(d, n) for n in os.listdir(d) if n != "README.md" and not n.startswith(".")] if os.path.isdir(d) else []
         got = {}
         for r, n in roots:
             try:
@@ -1352,9 +1355,9 @@ def _run_case(name, fn):
 
 if __name__ == "__main__":
     os.makedirs(TMP_ROOT, exist_ok=True)
-    write_grant_fixture()
-    sizes = _ledger_sizes()
     try:
+        write_grant_fixture()
+        sizes = _ledger_sizes()
         with ThreadPoolExecutor(max_workers=12) as pool:
             futures = [pool.submit(_run_case, name, fn) for name, fn in CASES]
             for f in as_completed(futures):
