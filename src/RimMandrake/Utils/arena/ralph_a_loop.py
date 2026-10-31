@@ -582,11 +582,27 @@ def run_clone_code(root, argv, *, env=None, timeout=3600, role="harness"):
                           timeout=timeout, stdin=subprocess.DEVNULL)
 
 
-def precheck_run(root, log, arm):
-    """The clone's `run_selftests.py --quick`, sandboxed. -> (rc, stdout); a refused sandbox is red (rc None)."""
+SELFTEST_RUNNER = "src/RimMandrake/Utils/run_selftests.py"
+
+
+def precheck_argv(root):
+    """The pre-check command for THIS clone's era. `--quick` exists only since 2026-10-29 (cb913b4bc0); a replay clone
+    at an older task base has a run_selftests.py that refuses it (argparse exit 2, no RESULT: every replay task of the
+    trial went red-start, item ARENA_REPLAY_PRECHECK_FIX_PRE_QUICK_ERA). Such a clone gets its era's plain default-tier
+    run (stricter: nothing skipped). Read harness-side from the clone's file; a clone that fakes the flag's text just
+    gets the argparse refusal back as a red pre-check (fails closed)."""
     try:
-        r = run_clone_code(root, [AS.PY, "src/RimMandrake/Utils/run_selftests.py", "--quick"],
-                           env=dict(os.environ, RM_ARM=arm))
+        quick = '"--quick"' in (Path(root) / SELFTEST_RUNNER).read_text(encoding="utf-8", errors="replace")
+    except OSError:
+        quick = True                                    # no runner: the run fails red on its own, as before
+    return [AS.PY, SELFTEST_RUNNER] + (["--quick"] if quick else [])
+
+
+def precheck_run(root, log, arm):
+    """The clone's `run_selftests.py --quick` (an older era's plain run: precheck_argv), sandboxed. -> (rc, stdout); a
+    refused sandbox is red (rc None)."""
+    try:
+        r = run_clone_code(root, precheck_argv(root), env=dict(os.environ, RM_ARM=arm))
     except Refused as e:
         Path(log).write_text("precheck not run: %s\n" % e)
         return None, ""

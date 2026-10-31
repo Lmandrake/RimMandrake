@@ -1745,6 +1745,20 @@ def t_baseline_pinned(tmp):
               "try's: %s / %s" % (v, blog.read_text()[-300:] if blog.exists() else "no base log"))
 
 
+def t_precheck_era(tmp):
+    """ARENA_REPLAY_PRECHECK_FIX_PRE_QUICK_ERA: a replay clone older than --quick gets its era's plain run, never an
+    argparse refusal; a clone whose runner has --quick still gets it."""
+    import ralph_a_loop as RAL
+    for name, body, want in (("new", 'ap.add_argument("--quick", action="store_true")\n', ["--quick"]),
+                             ("old", 'ap.add_argument("--full", action="store_true")\n', [])):
+        f = tmp / ("era_" + name) / RAL.SELFTEST_RUNNER
+        f.parent.mkdir(parents=True, exist_ok=True)
+        f.write_text(body)
+        a = RAL.precheck_argv(tmp / ("era_" + name))
+        check(a[1] == RAL.SELFTEST_RUNNER and a[2:] == want,
+              "pre-check argv for a %s-era clone: %s" % (name, " ".join(a[1:])))
+
+
 def t_bridge_mine(tmp):
     cli = HERE.parents[1] / "rimflow" / "cli.py"
     os.makedirs(tmp / "rf" / "items")
@@ -1892,7 +1906,7 @@ def main():
             else:
                 mod = variant(old, new)
             check(not guarded(fn, tmp, mod, "_m%d" % i), "mutation goes RED: " + name)
-        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)), (t_baseline_pinned, (tmp,)),
+        for fn, a in ((t_park_redstart_stop_lock, (tmp,)), (t_cmdmodel_kill, (tmp,)), (t_quick, (tmp,)), (t_precheck_era, (tmp,)), (t_baseline_pinned, (tmp,)),
                       (t_bridge_mine, (tmp,)), (t_signed_writer, (tmp,))):
             try:
                 fn(*a)
