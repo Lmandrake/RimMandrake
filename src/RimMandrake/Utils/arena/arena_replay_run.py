@@ -179,7 +179,7 @@ def default_judge(arm, clone, spec, head, *, logdir):
     tid, base = spec["id"], spec["base_sha"]
     g = subprocess.run([sys.executable, str(HERE / "arena_gate.py"), "--task", tid, "--base", base, "--head", head,
                         "--arm", arm, "--repo", str(clone)], cwd=str(HARNESS_REPO), capture_output=True, text=True,
-                       timeout=3 * 3600)
+                       timeout=3 * 3600, env=harness_env())
     gate = logdir / ("%s.gate.json" % tid)
     gate.write_text(g.stdout)
     (logdir / ("%s.gate.log" % tid)).write_text(g.stderr)
@@ -189,7 +189,7 @@ def default_judge(arm, clone, spec, head, *, logdir):
         gate.write_text(json.dumps({"verdict": "invalid", "why": "gate printed no JSON (rc %s)" % g.returncode}))
     j = subprocess.run([sys.executable, str(HERE / "arena_judge.py"), "judge", "--task", tid, "--clone", str(clone),
                         "--base", base, "--head", head, "--arm", arm, "--gate", str(gate)], cwd=str(HARNESS_REPO),
-                       capture_output=True, text=True, timeout=3 * 3600)
+                       capture_output=True, text=True, timeout=3 * 3600, env=harness_env())
     (logdir / ("%s.judge.log" % tid)).write_text(j.stdout + "\n--- stderr\n" + j.stderr)
     try:
         rec = json.loads(j.stdout.strip().splitlines()[-1])
@@ -281,6 +281,27 @@ def pin_state_home(env=None):
     if not env.get("XDG_STATE_HOME", "").strip():
         env["XDG_STATE_HOME"] = os.path.join(pwd.getpwuid(os.getuid()).pw_dir, ".local", "state")
     return env["XDG_STATE_HOME"]
+
+
+def pin_data_root(env=None):
+    """ARENA_JUDGE_HOME_REWIRE_ARM_TMP_LEAK: rmpaths finds Lodestar under ~ when $RM_DATA_ROOT is unset, and the gate
+    and judge run while arena_replay._arm_environ has HOME on an empty arm_home_*: pin RM_DATA_ROOT, resolved from the
+    harness's REAL environment at start (it is on arm_sandbox's ENV_ALLOW already, so nothing new crosses)."""
+    import rmpaths
+    env = os.environ if env is None else env
+    if not env.get(rmpaths.ENV_VAR, "").strip():
+        env[rmpaths.ENV_VAR] = str(rmpaths.rm_data_root())
+    return env[rmpaths.ENV_VAR]
+
+
+def harness_env(env=None):
+    """The environment for a harness-side CLI (gate, judge) started from inside _arm_environ: the current one (GIT_*
+    scrub kept) with HOME back on the REAL home (pwd, never $HOME: that is the arm's empty arm_home_*). The judge's
+    private state, its leak lists and its token lookup are all home-relative."""
+    import pwd
+    e = dict(os.environ if env is None else env)
+    e["HOME"] = pwd.getpwuid(os.getuid()).pw_dir
+    return e
 
 
 def arm_lock(ctl, arm):
@@ -506,6 +527,7 @@ def main(argv=None, *, arms=None):
         lock = arm_lock(a.ctl, a.arm)  # noqa: F841 - held until exit
         resolve_model_cmd(a.model_cmd)
         pin_state_home()
+        pin_data_root()
         model_snapshot(a.arm, a.ctl)
         _start_repair_live(a.arm, a.ctl, steps)
         res = run_arm(a.arm, ctl=a.ctl, model_cmd=a.model_cmd, only=a.only, steps=steps)

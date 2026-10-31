@@ -319,6 +319,39 @@ def t_tester_tmp(tmp):
         shutil.rmtree("/dev/shm/st_rr_tt", ignore_errors=True)
 
 
+def t_judge_home(tmp):
+    """ARENA_JUDGE_HOME_REWIRE_ARM_TMP_LEAK: the gate and judge CLIs get the REAL home even inside _arm_environ, and
+    RM_DATA_ROOT is pinned at start from the real environment."""
+    import pwd
+    import arena_replay as R
+    real = pwd.getpwuid(os.getuid()).pw_dir
+    env = {"PATH": "/usr/bin"}
+    v = RR.pin_data_root(env)
+    check(v and env["RM_DATA_ROOT"] == v, "RM_DATA_ROOT pinned when unset")
+    env2 = {"RM_DATA_ROOT": "/x"}
+    check(RR.pin_data_root(env2) == "/x", "an explicit RM_DATA_ROOT is kept")
+    with R._arm_environ():
+        check(os.environ["HOME"] != real, "fixture: _arm_environ moves HOME")
+        e = RR.harness_env()
+        check(e["HOME"] == real and e.get("GIT_CONFIG_GLOBAL") == "/dev/null", "harness_env: real HOME, git scrub kept")
+    seen = []
+
+    class P:
+        returncode, stdout, stderr = 0, "{}", ""
+    real_run = RR.subprocess.run
+    RR.subprocess.run = lambda argv, **k: seen.append(k.get("env")) or P()
+    try:
+        with R._arm_environ():
+            try:
+                RR.default_judge("v3", tmp, {"id": "T", "base_sha": "b"}, "h", logdir=tmp / "jl")
+            except RR.RunRefused:
+                pass
+    finally:
+        RR.subprocess.run = real_run
+    check(len(seen) == 2 and all(e and e.get("HOME") == real for e in seen), "gate and judge both run with the real HOME")
+    check("pin_data_root()" in Path(RR.__file__).read_text(), "main pins RM_DATA_ROOT")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="st_replay_run_"))
     try:
@@ -326,7 +359,7 @@ def main():
                       (t_arms, (tmp,)), (t_wired, ()),
                       (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ()),
                       (t_model_cmd, ()), (t_snapshot_gate, (tmp,)), (t_start_repair, (tmp,)),
-                      (t_tester_tmp, (tmp,))):
+                      (t_tester_tmp, (tmp,)), (t_judge_home, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001
