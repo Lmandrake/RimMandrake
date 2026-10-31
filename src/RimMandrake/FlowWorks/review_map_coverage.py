@@ -370,7 +370,7 @@ FEATURES = [
      "Thirst rules (slime last resort, salt break, rough drinking, buckets, snow)",
      M + "behaviour with no look of its own; proven by validation.py's thirst rows"),
     ("set", r"^(thirstEnabled|thirstRateMultiplier|thirstHeatScaling|animalsGetThirst|drinkFromTerrain|waterQualityEffects"
-            r"|dbhBottleBridge|lastResortDrinking|saltBreakEnabled|roughDrinkPenalty|drinkingReserveLitres|bucketFirefighting"
+            r"|lastResortDrinking|saltBreakEnabled|roughDrinkPenalty|drinkingReserveLitres|bucketFirefighting"
             r"|snowGathering|sanguophageBloodQuenches|filledBottlesPerColonist|pipeFaucetsEnabled)$", "Thirst", M + "as thirst"),
     # PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: no frozen station yet (a faucet needs a tank-fed pipe net); four looks
     # (FAUCET_REDRAW_BORROWED_BLEED_WELL, judge verdict infrastructure/state/delegated/2026-10-23/pipe_faucet.json)

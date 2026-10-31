@@ -29,8 +29,6 @@ namespace RimMandrake.FlowWorks.Thirst
 		public static bool sanguophageBloodQuenches = true;
 		/// <summary>§8.2 step 8: the colony stock of filled potable bottles pawns keep on their own (0 = no limit).</summary>
 		public static int filledBottlesPerColonist = 3;
-		/// <summary>Read once, while patches apply (RM_PatchOperation_ThirstBridge): needs a restart.</summary>
-		public static bool dbhBottleBridge = true;
 		// PIPE_FAUCET_BUILD_TAP_NAME_NOW_FREE: pipe faucets pour (drink + fill containers) from their pipe network's tanks
 		public static bool pipeFaucetsEnabled = true;
 
@@ -62,7 +60,6 @@ namespace RimMandrake.FlowWorks.Thirst
 			Scribe_Values.Look(ref snowGathering, "snowGathering", true);
 			Scribe_Values.Look(ref sanguophageBloodQuenches, "sanguophageBloodQuenches", true);
 			Scribe_Values.Look(ref filledBottlesPerColonist, "filledBottlesPerColonist", 3);
-			Scribe_Values.Look(ref dbhBottleBridge, "dbhBottleBridge", true);
 			Scribe_Values.Look(ref pipeFaucetsEnabled, "pipeFaucetsEnabled", true);
 		}
 
@@ -71,12 +68,9 @@ namespace RimMandrake.FlowWorks.Thirst
 			list.GapLine();
 			list.Label("Thirst");
 			RimMandrake.Shared.SettingsKitDrawer.ResetButton(list, ResetAll);
-			list.Label("Whose thirst rules run: " + RM_ThirstProvider.ModeLabel
-				+ "  (read at startup; with Dubs Bad Hygiene's thirst running, ours steps aside and our bottles count for Dubs')");
 			list.CheckboxLabeled("Pawns and animals get thirsty (FlowWorks thirst)", ref thirstEnabled,
 				"A thirst bar that empties in about a day and a quarter, faster in heat. At empty, dehydration sets in and kills "
-				+ "in about three days. Bottles, ponds, rivers and tanks quench it. Has no effect while Dubs Bad Hygiene's own "
-				+ "thirst runs. Off: nobody gets FlowWorks thirst; bottles can still be drunk and their water quality still counts.");
+				+ "in about three days. Bottles, ponds, rivers and tanks quench it. Off: nobody gets FlowWorks thirst; bottles can still be drunk and their water quality still counts.");
 			list.Label("Thirst rate: x" + RateMultiplier.ToString("F2") + "  (1x = empty in 1.25 days at a comfortable temperature)");
 			thirstRateMultiplier = list.Slider(thirstRateMultiplier, 0.25f, 3f);
 			list.CheckboxLabeled("Heat makes pawns thirstier", ref thirstHeatScaling,
@@ -95,8 +89,7 @@ namespace RimMandrake.FlowWorks.Thirst
 			list.CheckboxLabeled("Desperate pawns drink slime and toxic water", ref lastResortDrinking,
 				"Like eating rotten food: only when the thirst bar is empty and no clean water is in reach, and it is always the "
 				+ "last pick. Slime brings a massive mood hit, a day of purging and the slime's own harm; toxic water brings toxic "
-				+ "buildup. Off: they are never drunk, and a pawn with nothing else dehydrates. Works under Dubs Bad Hygiene's "
-				+ "thirst too (read off Dubs' bar).");
+				+ "buildup. Off: they are never drunk, and a pawn with nothing else dehydrates.");
 			list.CheckboxLabeled("Salt-water mental break", ref saltBreakEnabled,
 				"A parched pawn in a low mood, with no fresh water in reach, can break and drink salt water or brine until the bar "
 				+ "reads full. It feels better for an hour or two; then salt poisoning sets in (nausea, confusion, seizures, "
@@ -129,9 +122,6 @@ namespace RimMandrake.FlowWorks.Thirst
 				+ "home, like any tap) and fill empty bottles, buckets and barrels at it. Off: faucets stand dry.");
 			list.CheckboxLabeled("Sanguophages quench thirst with blood", ref sanguophageBloodQuenches,
 				"For a pawn with a hemogen gene, a hemogen pack is also a full drink of water. Off: packs only give hemogen.");
-			list.CheckboxLabeled("Our bottles count for Dubs Bad Hygiene's thirst (needs restart)", ref dbhBottleBridge,
-				"With Dubs Bad Hygiene loaded, marks FlowWorks' drinkable bottles as Dubs drinkables. Off: Dubs' pawns ignore our "
-				+ "bottles (an escape hatch if a Dubs update breaks the bridge). Takes effect at the next game start.");
 		}
 	}
 }

@@ -184,7 +184,7 @@ SETTINGS = {
     # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (2026-10-16, design §6): defaults = the ruled behaviour (animals ON, OQ-5)
     "RimMandrake.FlowWorks.Thirst.RM_ThirstSettings": {
         "thirstEnabled": True, "thirstRateMultiplier": 1.0, "thirstHeatScaling": True, "animalsGetThirst": True,
-        "drinkFromTerrain": True, "waterQualityEffects": True, "dbhBottleBridge": True,
+        "drinkFromTerrain": True, "waterQualityEffects": True,
         # THIRST_RULES_BUILD_SALT_OFF_THE_MENU + owner Q12 (2026-10-17, c72cea8a08)
         "lastResortDrinking": True, "saltBreakEnabled": True, "roughDrinkPenalty": True,
         "drinkingReserveLitres": 200.0, "bucketFirefighting": True, "snowGathering": True,

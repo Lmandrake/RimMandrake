@@ -3,7 +3,8 @@
   THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY design §3. Insert tags read from Core 1.6 ThinkTreeDefs (Humanlike.xml:123
   Humanlike_PostDuty, :383 Humanlike_PostMain; Animal.xml:99 Animal_PreMain, also reached by Insect.xml). Humanlike_PostDuty
   is the tag DBH Lite's own ConditionalThirst uses (Lite 1.6/Defs/ThinkTreeDefs/SubTrees_Misc.xml). Each giver returns
-  nothing unless RM_Thirst is live and below 30%, so in Dbh mode these are inert.
+  nothing unless RM_Thirst is live and below 30% (with thirst off they are inert). Dubs thirst is not supported
+  (THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE, 2026-10-31).
 -->
 <Defs>
   <ThinkTreeDef>

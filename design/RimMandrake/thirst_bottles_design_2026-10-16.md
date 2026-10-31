@@ -1,5 +1,11 @@
 # Thirst and bottles in FlowWorks, compatible with Dubs Bad Hygiene Lite (design, 2026-10-16)
 
+> **Superseded in part, 2026-10-31 (`THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE`, per ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM):**
+> *"THIRST: Dubs interop is CUT. Ship our own thirst only; NO Dubs testing."* FlowWorks now runs its own thirst only.
+> The Dbh provider mode, the DBH bottle bridge (`RM_DBH_BottleWaterExt.xml`, setting `dbhBottleBridge`) and every row that
+> loads Dubs are deleted; About.xml lists `Dubwise.DubsBadHygiene` and `Dubwise.DubsBadHygiene.Thirst` under
+> `incompatibleWith`. DBH Lite alone (no thirst) stays compatible. Every Dubs-thirst passage below is history, not a spec.
+
 Item: `THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY`. Owner, 2026-10-16: *"We should have our own bottles and
 thirst, but if Dubs Lite is loaded be compatible with it. Not require it, but not conflict either."*
 

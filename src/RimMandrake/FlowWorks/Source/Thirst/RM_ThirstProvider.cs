@@ -29,56 +29,21 @@ namespace RimMandrake.FlowWorks.Thirst
 		}
 	}
 
-	/// <summary>Design §1 step 1: which ONE thirst need runs, resolved once at startup and written to the log once:
-	/// <c>[FlowWorks] thirst provider: Own|Dbh (reason)</c>. Dbh when DBH's NeedDef <c>DBHThirst</c> loaded AND the Thirst
-	/// add-on (<c>Dubwise.DubsBadHygiene.Thirst</c>) or full DBH (<c>Dubwise.DubsBadHygiene</c>) is active (packageIds and the
-	/// defName read from the workshop files 2570319432 / 2582878800 / 836308268, 2026-10-16). Corner case (design §1): DBH
-	/// loaded with its own thirst switched off in DBH's settings may still leave DBHThirst loaded with no pawn holding it;
-	/// then there is no thirst at all, which is DBH's choice. Whether DBH drops the def in that case is UNMEASURED (live T1).</summary>
+	/// <summary>FlowWorks runs its own thirst only. Dubs Bad Hygiene thirst interop was cut by the owner 2026-10-31
+	/// (THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE): About.xml declares full DBH and its Thirst add-on incompatible instead. The
+	/// startup log line <c>[FlowWorks] thirst provider: Own (...)</c> stays, so a load proves the thirst came up.</summary>
 	[StaticConstructorOnStartup]
 	public static class RM_ThirstProvider
 	{
-		public const string DbhThirstNeed = "DBHThirst";
-		public const string DbhThirstAddon = "Dubwise.DubsBadHygiene.Thirst";
-		public const string DbhFull = "Dubwise.DubsBadHygiene";
-
-		private static bool resolved;
-		private static RM_ThirstProviderMode mode;
-		private static string reason = "not resolved yet";
+		public const string Reason = "FlowWorks' own thirst; Dubs Bad Hygiene thirst is not supported";
 
 		static RM_ThirstProvider()
 		{
-			Resolve();
+			Log.Message("[FlowWorks] thirst provider: Own (" + Reason + ")");
 		}
 
-		public static RM_ThirstProviderMode Mode
-		{
-			get
-			{
-				if (!resolved)
-				{
-					Resolve();
-				}
-				return mode;
-			}
-		}
-
-		public static bool Own => Mode == RM_ThirstProviderMode.Own;
-
-		/// <summary>True when our need is live: Own mode and the setting on.</summary>
-		public static bool OursLive => Own && RM_ThirstSettings.thirstEnabled;
-
-		public static string Reason => reason;
-
-		public static string ModeLabel => (resolved ? mode.ToString() : "?") + " (" + reason + ")";
-
-		private static void Resolve()
-		{
-			bool need = DefDatabase<NeedDef>.GetNamedSilentFail(DbhThirstNeed) != null;
-			mode = RM_ThirstMath.ProviderMode(need, ModsConfig.IsActive(DbhThirstAddon), ModsConfig.IsActive(DbhFull), out reason);
-			resolved = true;
-			Log.Message("[FlowWorks] thirst provider: " + mode + " (" + reason + ")");
-		}
+		/// <summary>True when our need is live: the setting on.</summary>
+		public static bool OursLive => RM_ThirstSettings.thirstEnabled;
 
 		/// <summary>After a settings change: every live pawn re-asks which needs it should have (vanilla adds or removes
 		/// RM_Thirst through ShouldHaveNeed, below).</summary>
@@ -144,9 +109,9 @@ namespace RimMandrake.FlowWorks.Thirst
 	{
 	}
 
-	/// <summary>Design §1 step 2: RM_Thirst exists only where Eligible says so, so it steps aside in Dbh mode and with the
-	/// setting off. Vanilla AddOrRemoveNeedsAsAppropriate then removes it from loaded pawns, so a save survives DBH being
-	/// added or removed in either direction with no dangling def.
+	/// <summary>Design §1 step 2: RM_Thirst exists only where Eligible says so, so it steps aside with the setting off.
+	/// Vanilla AddOrRemoveNeedsAsAppropriate then removes it from loaded pawns, so a save survives the switch in either
+	/// direction with no dangling def.
 	/// Target VERIFIED 2026-10-16 against the decompiled 1.6.4871 Assembly-CSharp
 	/// (D:\Luke\dev\reference\rimworld-decompiled\RimWorld\Pawn_NeedsTracker.cs:198):
 	/// <c>private bool ShouldHaveNeed(NeedDef nd)</c>, called from <c>public void AddOrRemoveNeedsAsAppropriate()</c>.</summary>

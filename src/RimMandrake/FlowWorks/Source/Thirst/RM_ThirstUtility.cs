@@ -10,10 +10,8 @@ namespace RimMandrake.FlowWorks.Thirst
 {
 	/// <summary>Design §3: where a thirsty pawn drinks, and what a drink does. Every drink route (bottle ingest, terrain edge,
 	/// tank, bucket or barrel, water item, administered, caravan) ends in <see cref="Drink"/>, so the quality and row effects
-	/// are the same everywhere and in both provider modes (they are about the liquid, not the need). In Own mode a drink fills
-	/// our need; in Dbh mode Dubs reads its own WaterExt off a bridged bottle, and every drink Dubs cannot see fills Dubs' bar
-	/// (THIRST_RULES_BUILD_SALT_OFF_THE_MENU Q11). Which sources a pawn may drink at all is the use-class gate,
-	/// <see cref="MayDrink"/>.</summary>
+	/// are the same everywhere (they are about the liquid, not the need), and a drink fills RM_Thirst. Which sources a pawn
+	/// may drink at all is the use-class gate, <see cref="MayDrink"/>.</summary>
 	public static class RM_ThirstUtility
 	{
 		public const float SearchRadius = 60f;
@@ -45,8 +43,7 @@ namespace RimMandrake.FlowWorks.Thirst
 
 		/// <summary>May this pawn drink this liquid now (RM_ThirstMath.MayDrink with the pawn's facts filled in)?
 		/// <paramref name="only"/> narrows a search to one use class: BreakOnly is the salt-water break's own search (inside
-		/// the break salt is exactly what is wanted, so the rules are bypassed); LastResort is the Dubs-mode desperate search
-		/// (rules still apply).</summary>
+		/// the break salt is exactly what is wanted, so the rules are bypassed); any other class keeps the rules.</summary>
 		public static bool MayDrink(Pawn pawn, LiquidDef liquid, float level, RM_DrinkUse? only = null)
 		{
 			if (!QualityOf(liquid).HasValue)
@@ -70,30 +67,17 @@ namespace RimMandrake.FlowWorks.Thirst
 				RM_ThirstSettings.lastResortDrinking);
 		}
 
-		private static NeedDef dbhThirst;
-		private static bool dbhThirstLooked;
-
-		/// <summary>The thirst need that is running for this pawn: ours in Own mode, Dubs' DBHThirst in Dbh mode (Q11, owner
-		/// 2026-10-17: "read Dubs' thirst"), null when neither runs (thirst off, or a pawn without it).</summary>
+		/// <summary>The thirst need running for this pawn: RM_Thirst, or null (thirst off, or a pawn without it).</summary>
 		public static Need ThirstNeedAny(Pawn p)
 		{
 			if (p?.needs == null)
 			{
 				return null;
 			}
-			if (RM_ThirstProvider.Own)
-			{
-				return RM_ThirstProvider.OursLive ? NeedOf(p) : null;
-			}
-			if (!dbhThirstLooked)
-			{
-				dbhThirst = DefDatabase<NeedDef>.GetNamedSilentFail(RM_ThirstProvider.DbhThirstNeed);
-				dbhThirstLooked = true;
-			}
-			return dbhThirst == null ? null : p.needs.TryGetNeed(dbhThirst);
+			return RM_ThirstProvider.OursLive ? NeedOf(p) : null;
 		}
 
-		/// <summary>0..1 on whichever thirst need runs (1 = no thirst need at all).</summary>
+		/// <summary>0..1 on the thirst need (1 = no thirst need at all).</summary>
 		public static float LevelAny(Pawn p)
 		{
 			return ThirstNeedAny(p)?.CurLevelPercentage ?? 1f;
@@ -193,15 +177,6 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				need.CurLevel += hydrate;
 			}
-			else if (!RM_ThirstProvider.Own && (source == null || !HasDubsWaterExt(source.def)))
-			{
-				// Q11 Dbh mode: a drink Dubs cannot see (terrain, a tank, an item without Dubs' WaterExt) fills Dubs' bar
-				Need dbh = ThirstNeedAny(pawn);
-				if (dbh != null)
-				{
-					dbh.CurLevel += hydrate * dbh.MaxLevel;
-				}
-			}
 			// Q12 part 2: a native animal drinks its biome's terrible water "without the human consequences"
 			if (!pawn.RaceProps.Humanlike && UseOf(liquid) != RM_DrinkUse.Potable)
 			{
@@ -262,20 +237,6 @@ namespace RimMandrake.FlowWorks.Thirst
 						+ liquid.defName + " failed: " + e.Message, liquid.shortHash ^ 0x5A17);
 				}
 			}
-		}
-
-		private static readonly Dictionary<ThingDef, bool> dubsWaterExt = new Dictionary<ThingDef, bool>();
-
-		/// <summary>Does Dubs' own ingestion hydrate this item (it carries DubsBadHygiene.WaterExt)? Read by type name: this
-		/// mod never references Dubs' assembly.</summary>
-		public static bool HasDubsWaterExt(ThingDef def)
-		{
-			if (!dubsWaterExt.TryGetValue(def, out bool has))
-			{
-				has = def.modExtensions != null && def.modExtensions.Any(e => e.GetType().FullName == "DubsBadHygiene.WaterExt");
-				dubsWaterExt[def] = has;
-			}
-			return has;
 		}
 
 		public static void QualityEffects(Pawn pawn, RM_WaterQuality q, Thing source)
@@ -434,7 +395,7 @@ namespace RimMandrake.FlowWorks.Thirst
 		/// distance, so the first reachable cell of a class and quality is the nearest of it; the walk stops at the first
 		/// Potable-class, Potable-or-better hit. A pawn whose search found nothing is not searched again for 600 ticks (a dry
 		/// desert map must not pay a radial walk per think for every thirsty wild animal). The salt-water break's own search
-		/// and the Dubs-mode desperate search narrow it to one use class (<paramref name="only"/>) and never mark.</summary>
+		/// narrows it to one use class (<paramref name="only"/>) and never mark.</summary>
 		public static bool TryFindDrinkCell(Pawn pawn, float level, out IntVec3 cell, out LiquidDef liquid,
 			out RM_WaterQuality quality, RM_DrinkUse? only = null)
 		{

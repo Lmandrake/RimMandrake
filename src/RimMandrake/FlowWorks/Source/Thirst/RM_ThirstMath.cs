@@ -38,12 +38,6 @@ namespace RimMandrake.FlowWorks.Thirst
 		Caravan,
 	}
 
-	public enum RM_ThirstProviderMode
-	{
-		Own,
-		Dbh,
-	}
-
 	public static class RM_ThirstMath
 	{
 		public const float TicksPerDay = 60000f;
@@ -72,23 +66,6 @@ namespace RimMandrake.FlowWorks.Thirst
 		public const float TankDrinkLitres = 1.5f;
 
 		public const float ToxicBuildupPerDrink = 0.12f;
-
-		/// <summary>OQ-1: DBH's thirst runs and ours steps aside when DBH's NeedDef loaded AND a mod that turns it on is
-		/// active (the Thirst add-on for Lite, or full DBH). Otherwise ours.</summary>
-		public static RM_ThirstProviderMode ProviderMode(bool dbhNeedDefLoaded, bool thirstAddonActive, bool fullDbhActive,
-			out string reason)
-		{
-			if (dbhNeedDefLoaded && (thirstAddonActive || fullDbhActive))
-			{
-				reason = "DBHThirst is loaded and " + (thirstAddonActive ? "Dubwise.DubsBadHygiene.Thirst" : "Dubwise.DubsBadHygiene")
-					+ " is active: Dubs' thirst runs, RM_Thirst steps aside";
-				return RM_ThirstProviderMode.Dbh;
-			}
-			reason = dbhNeedDefLoaded
-				? "DBHThirst is loaded but neither the Thirst add-on nor full DBH is active"
-				: "no DBHThirst NeedDef loaded";
-			return RM_ThirstProviderMode.Own;
-		}
 
 		/// <summary>The heat factor: 1 + 0.05 per degree above the pawn's comfortable maximum, capped at 3.</summary>
 		public static float HeatFactor(float ambientC, float comfyMaxC, bool heatScaling)
@@ -231,7 +208,7 @@ namespace RimMandrake.FlowWorks.Thirst
 		/// last-resort liquid only when the thirst need is empty.</summary>
 		public static bool Desperate(float level) => level <= DesperateBelow;
 
-		/// <summary>"Empty", with float slack: a need clamps at 0, but another mod's bar (Dubs') may rest a hair above it.</summary>
+		/// <summary>"Empty", with float slack: a need clamps at 0, but a float bar may rest a hair above it.</summary>
 		public const float DesperateBelow = 0.005f;
 
 		/// <summary>The one gate every drink search runs (04-merged.md §8). Humanlikes: Potable always; LastResort only when

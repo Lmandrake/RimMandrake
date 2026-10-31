@@ -9,8 +9,8 @@ namespace RimMandrake.FlowWorks.Thirst
 	/// <summary>THIRST_RULES_BUILD_SALT_OFF_THE_MENU, the salt-water break (design/RimMandrake/thirst_fluids_3x3_2026-10-17/
 	/// 04-merged.md §8, owner Q8 2026-10-17: "break needs thirst plus low mood, like other breaks"; brine is salt).
 	/// RM_Break_DrinkBrine is an ordinary mood-pool MentalBreakDef (Defs/Thirst/RM_Thirst_SaltBreak.xml): the mood pool
-	/// supplies the low mood; this worker adds the thirst half (RM_ThirstMath.SaltBreakCan): parched on whichever thirst
-	/// need runs (ours, or Dubs' DBHThirst under Q11), no potable water in reach, not still salt-poisoned (no re-entry), and
+	/// supplies the low mood; this worker adds the thirst half (RM_ThirstMath.SaltBreakCan): parched on RM_Thirst,
+	/// no potable water in reach, not still salt-poisoned (no re-entry), and
 	/// salt water or brine to drink. Inside the state the pawn drinks salt until the bar reads full; each drink is brief
 	/// relief (RM_Thought_SaltRelief) and salt poisoning (RM_SaltPoisoning), both data on the salt rows.</summary>
 	public class MentalStateWorker_RM_DrinkBrine : MentalStateWorker

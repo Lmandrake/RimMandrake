@@ -516,8 +516,8 @@ CAPS = [
          effect="Industrial scale is FOUND (wrecked -> repaired), never built from the menu in the campaign.",
          probes=["rx:src/RimMandrake:(?i)defName>\\w*(Desal|TarRefiner|PumpingStation)"], src="Liquids framework §4"),
     dict(id="K12", g="K", label="Water cleaning chain wired to thirst", item="LIQUID_THIRST_CHAIN_1",
-         effect="Crude/household/industrial cleaning tiers feed Dubs Bad Hygiene thirst.",
-         probes=["cs:LiquidThirstQuality", "rx:src/RimMandrake/FlowWorks/Defs:(?i)DBHThirst"], src="Thirst item"),
+         effect="Crude/household/industrial cleaning tiers feed FlowWorks' own thirst (Dubs thirst is cut, 2026-10-31).",
+         probes=["cs:LiquidThirstQuality"], src="Thirst item"),
     # Liquid kits (b13f21360, flowworks_remaining row 18): library pieces the biome kits borrow. Each cap's last
     # probe is the CONSUMER, so a kit nobody has wired yet reads PARTIAL, not built (2026-10-11: only the vat has one).
     dict(id="K13", g="K", label="Liquid bath bills: a bench bill that needs its liquid to hand", item="GELATINOUSSLIME_PIT_SOLVENT_1",

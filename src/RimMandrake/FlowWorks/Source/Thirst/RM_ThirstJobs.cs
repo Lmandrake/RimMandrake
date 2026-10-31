@@ -10,8 +10,7 @@ namespace RimMandrake.FlowWorks.Thirst
 	/// <summary>Design §3: drinking a filled bottle by ANY route (the vanilla Ingest job, an administered drink, a caravan
 	/// tick, a bridge-ordered drink) raises RM_Thirst by litres / 3 at the bottle's water quality. Wired by the generator onto
 	/// every drinkable bottle, beside IngestionOutcomeDoer_BottleResidue (which still leaves the dirty or empty bottle).
-	/// In Dbh mode a bridged bottle hydrates through Dubs' own WaterExt (RM_ThirstUtility.Drink then fills nothing), and the
-	/// quality and row effects still apply.</summary>
+	/// </summary>
 	public class IngestionOutcomeDoer_RM_Hydrate : IngestionOutcomeDoer
 	{
 		protected override void DoIngestionOutcomeSpecial(Pawn pawn, Thing ingested, int ingestedCount)
@@ -33,13 +32,13 @@ namespace RimMandrake.FlowWorks.Thirst
 		}
 	}
 
-	/// <summary>Humanlikes (inserted at Humanlike_PostDuty, the tag DBH's own ConditionalThirst uses): below 0.3, drink from
+	/// <summary>Humanlikes (inserted at Humanlike_PostDuty): below 0.3, drink from
 	/// the best reachable source the use-class gate allows (RM_ThirstUtility.MayDrink: potable always, slime and toxic water
 	/// only when desperate, salt water and brine never outside the salt-water break), ranked by use class, then quality, then
 	/// distance, with awkward sources (a bucket or barrel scoop; anything away from home) after free ones at the same use
 	/// class (RM_ThirstMath.BetterPick). Sources: a drinkable bottle (inventory first, then the map) through the vanilla
 	/// Ingest job; a tank of the pawn's own faction; a terrain edge (setting drinkFromTerrain); a filled bucket or barrel; a
-	/// water item. Under Dubs (Q11) only the desperate last resort, read off Dubs' bar.</summary>
+	/// water item.</summary>
 	public class JobGiver_RM_Drink : ThinkNode_JobGiver
 	{
 		protected override Job TryGiveJob(Pawn pawn)
@@ -48,22 +47,11 @@ namespace RimMandrake.FlowWorks.Thirst
 			{
 				return null;
 			}
-			RM_DrinkUse? only = null;
-			if (!RM_ThirstProvider.Own)
-			{
-				// Q11 (owner 2026-10-17): under Dubs, Dubs' AI drinks the potable water; ours steps in only for the desperate
-				// last resort, read off Dubs' own bar
-				if (!RM_ThirstSettings.lastResortDrinking || RM_ThirstUtility.ThirstNeedAny(pawn) == null
-					|| !RM_ThirstMath.Desperate(RM_ThirstUtility.LevelAny(pawn)))
-				{
-					return null;
-				}
-				only = RM_DrinkUse.LastResort;
-			}
-			else if (!RM_ThirstUtility.IsThirsty(pawn))
+			if (!RM_ThirstUtility.IsThirsty(pawn))
 			{
 				return null;
 			}
+			RM_DrinkUse? only = null;   // no narrowing: every use class the gate allows competes
 			float level = RM_ThirstUtility.LevelAny(pawn);
 			Thing bottle = RM_ThirstUtility.BestBottle(pawn, level, true, out RM_DrinkUse bu, out RM_WaterQuality bq, out float bd, null, only);
 			Building_LiquidTank tank = RM_ThirstUtility.BestTank(pawn, level, out RM_DrinkUse tu, out RM_WaterQuality tq, out float td, only);

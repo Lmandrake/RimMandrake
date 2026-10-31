@@ -11,10 +11,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     /// IngestibleProperties.outcomeDoers, the one vanilla extension point
     /// every ingestion path already calls through Thing.Ingested. That is
     /// what "drinkable-agnostic" means in practice: this class never checks
-    /// for DBH. The drink itself is IngestionOutcomeDoer_RM_Hydrate (FlowWorks'
-    /// own thirst), and DBH's drinkable registration (the generated
-    /// Patches/LiquidTypes/RM_DBH_BottleWaterExt.xml) layers DBH's thirst on the
-    /// SAME ingestion: design/RimMandrake/thirst_bottles_design_2026-10-16.md.
+    /// which thirst runs. The drink itself is IngestionOutcomeDoer_RM_Hydrate
+    /// (FlowWorks' own thirst): design/RimMandrake/thirst_bottles_design_2026-10-16.md.
     ///
     /// Same shape as the local precedent, GelatinousSlime's
     /// IngestionOutcomeDoer_SlimeDose (Source/SlimeIngestion.cs) -- a try/

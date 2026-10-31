@@ -265,8 +265,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                     checkedFiles++;
                 }
                 Assert(checkedFiles >= 19, "instrument: read " + checkedFiles + " liquid terrain files");
-                // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: RM_DBH_FreshWaterDrinkables.xml became the generated RM_DBH_BottleWaterExt.xml
-                foreach (string pf in new[] { "RM_DBH_WaterTerrainTag.xml", "RM_DBH_BottleWaterExt.xml" })
+                // THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE (2026-10-31): the DBH bottle bridge is cut; the washing-water tag patch stays
+                foreach (string pf in new[] { "RM_DBH_WaterTerrainTag.xml" })
                     Assert(System.IO.File.ReadAllText(System.IO.Path.Combine(mod, "Patches", "LiquidTypes", pf)).Contains("<li>Dubs Bad Hygiene</li>"), pf + " fires for full DBH too");
                 // the DBH-only coloured bottles (RM_ColoredWaterBottles_Patch.xml) are gone: generated RM_Bottle_<Colour>Water load without DBH (OQ-4)
                 Assert(!System.IO.File.Exists(System.IO.Path.Combine(mod, "Patches", "RM_ColoredWaterBottles_Patch.xml")), "the DBH-only coloured-bottle patch is deleted");

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Xml;
 using RimMandrake.FlowWorks.LiquidTypes;
 using RimWorld.Planet;
 using Verse;
@@ -87,33 +86,6 @@ namespace RimMandrake.FlowWorks.Thirst
 			Thing one = best.SplitOff(1);
 			one.Ingested(p, 0f);
 			return true;
-		}
-	}
-
-	/// <summary>The dbhBottleBridge switch for the generated DBH patch (Patches/LiquidTypes/RM_DBH_BottleWaterExt.xml): runs
-	/// its inner operations only while the setting is on. Mod Settings are read in the Mod constructor, which runs before
-	/// patches apply, so the player's value is known here; a change needs a restart (labelled so).</summary>
-	public class RM_PatchOperation_ThirstBridge : PatchOperation
-	{
-#pragma warning disable CS0649 // set by the XML loader
-		private List<PatchOperation> operations;
-#pragma warning restore CS0649
-
-		protected override bool ApplyWorker(XmlDocument xml)
-		{
-			if (!RM_ThirstSettings.dbhBottleBridge || operations == null)
-			{
-				return true;
-			}
-			bool ok = true;
-			foreach (PatchOperation op in operations)
-			{
-				if (!op.Apply(xml))
-				{
-					ok = false;
-				}
-			}
-			return ok;
 		}
 	}
 }

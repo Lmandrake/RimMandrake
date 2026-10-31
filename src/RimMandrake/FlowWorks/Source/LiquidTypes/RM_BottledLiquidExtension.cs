@@ -26,7 +26,7 @@ namespace RimMandrake.FlowWorks.LiquidTypes
     // GENERICALLY off any bottle ThingDef by reading this extension, rather
     // than needing one JobDriver subclass per liquid. That is also what
     // keeps a bottle "drinkable-agnostic" per the item's own watch-out: thirst
-    // (FlowWorks' own RM_Thirst, and DBH's WaterExt bridge) is a separate concern
+    // (FlowWorks' own RM_Thirst) is a separate concern
     // that reads <see cref="liquid"/> too, never a base class a bottle must
     // inherit (design/RimMandrake/thirst_bottles_design_2026-10-16.md).
     //

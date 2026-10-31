@@ -16,8 +16,8 @@ the map's own colonists out of the way. Never save the map afterwards. Settings 
 HOW EACH ROW READS (PROVE / EXPECT / LIES), in the order run:
   T7   Player.log copy given by --log (the load's own): no exception line naming DubsBadHygiene / RM_Thirst / RM_Bottle_.
        LIES: a log that stopped logging (10,000-message cap) reads clean -> the row needs the 'thirst provider:' line present.
-  T1   the same log's '[FlowWorks] thirst provider: Own' on a list without Dubs. Only ONE of the bar's three lists is a
-       walk list, so the row is UNMEASURED with the measured arm in detail (never PASS from one arm of three).
+  T1   the same log's '[FlowWorks] thirst provider: Own'. Dubs thirst interop is cut (THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE,
+       owner 2026-10-31: About.xml marks full DBH and its Thirst add-on incompatible), so the walk list is the only arm.
   T2   jawa/pawn_need list on every free colonist: exactly one RM_Thirst, no DBHThirst.
   T3   a drafted fresh colonist, thirstHeatScaling OFF (so the site temperature cannot move it), need 0.9, 15,000 ticks:
        drop 0.2 +/- 0.03 x thirstRateMultiplier. LIES: a drink in the window -> drafted, and no water on the map.
@@ -49,7 +49,6 @@ HOW EACH ROW READS (PROVE / EXPECT / LIES), in the order run:
 
 BATCH 3 (thirst live round 2, 2026-10-17), on a second cleared site east of the first (X0+45..+95); every row dries the
 whole map of liquid first and quenches every bystander (a thirsty earlier-row pawn otherwise drinks the test's water):
-  T18  UNMEASURED SITE unless Dubs Bad Hygiene Lite + Thirst is loaded (provider Dbh); the walk list has no Dubs.
   T14  native = RM_ThirstUtility.NativeHere (the MAP biome's roster, read live by static_call over candidate kinds), not a
        salt-biome map: a native and a non-native wild animal at 0.2 beside salt water only, 2,500 ticks: the native rises
        > 0.2 with no FoodPoisoning, the non-native does not rise. First run: Dromedary native, Muffalo not, on AridShrubland.
@@ -117,7 +116,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # The plan --dry-run prints: (--only key, row ids it emits, what it proves). selftest_thirst_live.py checks every emitted id is declared.
 PLAN = (
     ("T7", ("T7_no_dbh_clean_log",), "no thirst/Dubs exception in --log"),
-    ("T1", ("T1_provider_line",), "provider line (one arm of three: always UNMEASURED)"),
+    ("T1", ("T1_provider_line",), "provider line reads Own (Dubs thirst is cut)"),
     ("T2", ("T2_one_thirst_need",), "exactly one RM_Thirst, no DBHThirst"),
     ("T3", ("T3_need_falls",), "15,000 ticks drop 0.2 x rate"),
     ("T6", ("T6_dehydration_readable",), "60,000 ticks at 0 -> RM_Dehydration 0.30"),
@@ -134,7 +133,6 @@ PLAN = (
     ("T24", ("T24_bucket_douses_fire",), "Firefighter priority, refused pawn replaced, area douse"),
     ("T15", ("T15_slime_effects",), "four slime colours, each pawn its own pool"),
     ("T17", ("T17_salt_break",), "forced brine break ends quenched, poisoning in 0.25 steps"),
-    ("T18", ("T18_dubs_last_resort",), "needs Dubs: UNMEASURED SITE"),
     ("T14", ("T14_native_animal_terrible_water",), "native animal drinks salt, non-native does not"),
     ("T16", ("T16_living_slime",), "RM_Slime_Liquid last resort; setting OFF -> none"),
     ("T20", ("T20_bucket_drunk_dry",), "10 drinks per bucket; part-drunk pour +105"),
@@ -584,9 +582,8 @@ def main(argv=None, bridge=None):
                 if not prov:
                     row("T1_provider_line", "UNMEASURED", "HARNESS", {"why": "no provider line in the given log"})
                 else:
-                    row("T1_provider_line", "UNMEASURED", "HARNESS",
-                        {"measuredArm": "no Dubs on the list -> %s (%s)" % prov[-1], "armOk": prov[-1][0] == "Own",
-                         "why": "the bar needs three mod lists (no DBH / Lite+Thirst / Lite alone); this run had one"})
+                    row("T1_provider_line", "PASS" if prov[-1][0] == "Own" else "FAIL", "MOD",
+                        {"providerLine": "%s (%s)" % prov[-1]})
 
         # ---------------------------------------------------------------- the site
         cols0 = colonists()
@@ -1224,7 +1221,7 @@ def main(argv=None, bridge=None):
         # batch's ponds, salt strips and slime pools. Every row starts by drying it and quenching every bystander, so a
         # thirsty pawn from an earlier row never drinks the test's water or bottles.
         X3 = X0 + 45
-        batch3 = [r_ for r_ in ("T14", "T16", "T18", "T20", "T23", "T25", "T26", "T29") if want(r_)]
+        batch3 = [r_ for r_ in ("T14", "T16", "T20", "T23", "T25", "T26", "T29") if want(r_)]
         site3_ok = False
         if batch3:
             site3_ok = V.prepare_site(B, (X3, Z0, 50, 40), rows, "site3_ready")
@@ -1278,15 +1275,9 @@ def main(argv=None, bridge=None):
                 if pid not in keep:
                     draft(pid)
 
-        # ---------------------------------------------------------------- T18 Dubs mode (needs a list with Dubs)
-        if want("T18"):
-            row("T18_dubs_last_resort", "UNMEASURED", "SITE",
-                {"why": "needs Dubs Bad Hygiene Lite + its Thirst add-on loaded; this list runs provider Own (T1's arm)"})
-
         if batch3 and not site3_ok:
             for r_ in batch3:
-                if r_ != "T18":
-                    row(r_ + "_site3", "UNMEASURED", "SITE", {"why": "site3 did not clear (see site3_ready)"})
+                row(r_ + "_site3", "UNMEASURED", "SITE", {"why": "site3 did not clear (see site3_ready)"})
             batch3 = []
 
         # ---------------------------------------------------------------- T14 native animal, terrible water

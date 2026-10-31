@@ -2,8 +2,7 @@
 <!--
   THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §2, OQ-1..OQ-5 ruled by
   the owner by card 2026-10-16). FlowWorks' own thirst. Always loads; which pawns hold it is decided in C#
-  (RM_Patch_ShouldHaveNeed on Pawn_NeedsTracker.ShouldHaveNeed): nobody while Dubs Bad Hygiene's thirst runs
-  (DBHThirst + its Thirst add-on or full DBH), nobody with the setting off, never mechanoids, droids, anomaly entities or a
+  (RM_Patch_ShouldHaveNeed on Pawn_NeedsTracker.ShouldHaveNeed): nobody with the setting off, never mechanoids, droids, anomaly entities or a
   race/gene carrying RM_ThirstExemptExtension. All animals get it (OQ-5). Rates are C# (RM_ThirstMath), not fallPerDay.
 -->
 <Defs>

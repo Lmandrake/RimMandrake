@@ -2,7 +2,7 @@
 """Offline selftest of the thirst live driver (thirst_live.py): --dry-run and --mock against thirst_fake.ThirstFakeBridge.
 
 Proves (1) --dry-run prints the plan and never builds a bridge; (2) a clean mock run emits EXACTLY the declared rows, every
-one with a verdict (PASS, except T1/T18 which are UNMEASURED by design), writes mode "mock" (never "live": validation.py must
+one with a verdict (PASS; T1 reads Own since the Dubs cut, T18 is gone), writes mode "mock" (never "live": validation.py must
 not read it) and restores the settings; (3) each injected fault flips the row it is meant to flip, so the rows can fail;
 (4) the 2026-10-18 harness branches run: a slow Ingest is waited out (PASS), one that never ends is UNMEASURED, refused
 colonists are replaced (and six refusals raise), a Store tank's in-flight pour is drained before the baseline.
@@ -98,14 +98,14 @@ missing = sorted(i for k, ids, _ in thirst_live.PLAN if k != "T15R" for i in ids
 check("clean mock: exactly the declared rows (none missing, none undeclared)", not extra_ids and not missing, (extra_ids, missing))
 check("clean mock: no duplicate row ids", len(emitted) == len(set(emitted)), emitted)
 by = {r["id"]: r["status"] for r in res["rows"]}
-unexpected = {k: v for k, v in by.items() if v != "PASS" and k not in ("T1_provider_line", "T18_dubs_last_resort")}
-check("clean mock: every row PASSes but T1/T18 (UNMEASURED by design)", not unexpected, unexpected)
-check("clean mock: T1 and T18 are UNMEASURED", by.get("T1_provider_line") == "UNMEASURED" and by.get("T18_dubs_last_resort") == "UNMEASURED", by)
+unexpected = {k: v for k, v in by.items() if v != "PASS"}
+check("clean mock: every row PASSes (T1 reads Own; Dubs thirst is cut)", not unexpected, unexpected)
+check("clean mock: T1 PASSes and no Dubs-mode row exists", by.get("T1_provider_line") == "PASS" and "T18_dubs_last_resort" not in by, by)
 check("clean mock: result says mode mock, never live", res.get("mode") == "mock", res.get("mode"))
 check("clean mock: settings restored to the shipped values",
       all(str(B.settings[k]).lower() == str(thirst_fake.SETTINGS0[k]).lower() for k in thirst_fake.SETTINGS0), B.settings)
 # review 2026-10-26: main ends on validation_core.rows_exit, so an UNMEASURED-only run exits 2 (FAIL keeps 1)
-check("clean mock: exit code 2 (T1/T18 are UNMEASURED, nothing FAILs)", code == 2, code)
+check("clean mock: exit code 0 (every row PASSes)", code == 0, code)
 
 # ---- (3)(4) faults: (label, only, faults, [(row id, status)])
 CASES = [
@@ -273,6 +273,12 @@ with open(ok_log, "w") as f:
             "  at SomeOtherMod.Thing.Tick () [0x0] in <a>:0\nRM_Thirst need ticked fine\n")
 code, res, B, _ = run("T7", log=ok_log)
 expect("an unrelated exception followed by a plain RM_Thirst line", res, "T7", "PASS")
+# THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE: T1 can fail - a provider line that is not Own is a MOD FAIL
+dbh_log = os.path.join(TMP, "dbh.log")
+with open(dbh_log, "w") as f:
+    f.write("[FlowWorks] thirst provider: Dbh (x)\n")
+code, res, B, _ = run("T1", log=dbh_log)
+expect("a provider line that is not Own", res, "T1", "FAIL")
 
 # ---- review F16: row() discards the pawns under test, so the next row drafts them as bystanders
 _row_src = open(os.path.join(HERE, "thirst_live.py"), encoding="utf-8").read()

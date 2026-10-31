@@ -2561,7 +2561,7 @@ def swale_enrichment(t):
 # (RM_NorthstarProofs / RM_LiquidFireProof / RM_DigDiscoveryProof via jawa/static_call). NOT wired, and why:
 #   * Exposed Prisoner gated on a Charity precept (PIT_TEMPERATURE_SOFTENING_1 leftover): needs two ideoligions
 #     authored live; its toggle (pitExposureEnabled) is already proven by toggle_pit_exposure. Live walk owed.
-#   * DBH thirst patch (LIQUID_THIRST_CHAIN_1): DBH is not on any test list; the patch is inert without it.
+#   * DBH thirst patch (LIQUID_THIRST_CHAIN_1): cut with all Dubs thirst interop (THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE).
 #   * Bottle fill-job fix (cf1e75d26): toggle_bottle_loop is the route; no new row.
 #   * Too-wide pawn not offered capture-down: RM_PitRoomMath.CaptureDown is proven offline by the C# selftest.
 

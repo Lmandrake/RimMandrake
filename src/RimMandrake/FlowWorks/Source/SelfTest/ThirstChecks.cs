@@ -1,10 +1,11 @@
 // THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md, OQ-1..OQ-5 ruled by card
 // 2026-10-16). Offline halves of the design's T-rows: the production arithmetic (Thirst/RM_ThirstMath.cs, compiled in) and
-// the shipped XML (need, hediff, generated bottles, DBH patch, think tree) plus the Harmony target and call sites. Each case
-// has a can-fail. NOT proven here (the live halves are FlowWorks/northstar/thirst_live.py): the provider log line on three
-// mod lists (T1), one need per colonist (T2), the fall in game (T3), a drink raising the need (T4), salt-water poisoning
+// the shipped XML (need, hediff, generated bottles, think tree, the Dubs cut) plus the Harmony target and call sites. Each case
+// has a can-fail. NOT proven here (the live halves are FlowWorks/northstar/thirst_live.py): the provider log line on a
+// mod list (T1), one need per colonist (T2), the fall in game (T3), a drink raising the need (T4), salt-water poisoning
 // odds (T5), dehydration on a live pawn (T6), a clean log without DBH (T7) and animals drinking (T9).
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml.Linq;
@@ -29,13 +30,23 @@ namespace RimMandrake.FlowWorks.SelfTest
 
         public static void Run(Action<string, Action> Case)
         {
-            Case("Thirst_provider_rule", () =>
+            Case("Thirst_dubs_cut_incompatible", () =>
             {
-                Assert(RM_ThirstMath.ProviderMode(false, false, false, out _) == RM_ThirstProviderMode.Own, "no DBH: Own");
-                Assert(RM_ThirstMath.ProviderMode(true, true, false, out string r) == RM_ThirstProviderMode.Dbh && r.Contains("Thirst"), "Lite + Thirst add-on: Dbh");
-                Assert(RM_ThirstMath.ProviderMode(true, false, true, out _) == RM_ThirstProviderMode.Dbh, "full DBH: Dbh");
-                Assert(RM_ThirstMath.ProviderMode(true, false, false, out _) == RM_ThirstProviderMode.Own, "Lite without the Thirst add-on: Own");
-                Assert(RM_ThirstMath.ProviderMode(false, true, true, out _) == RM_ThirstProviderMode.Own, "can-fail: DBH active but no DBHThirst def (thirst off in DBH): Own");
+                // THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE (owner 2026-10-31): our thirst only; DBH full and its Thirst add-on are
+                // declared incompatible, DBH Lite (no thirst of its own) is not, and no Dubs thirst code or patch ships.
+                XDocument about = XDocument.Load(Path.Combine(ModRoot, "About", "About.xml"));
+                var incompat = about.Root.Element("incompatibleWith")?.Elements("li").Select(e => (string)e).ToList() ?? new List<string>();
+                Assert(incompat.Contains("Dubwise.DubsBadHygiene") && incompat.Contains("Dubwise.DubsBadHygiene.Thirst"), "About.xml: full DBH and DBH Thirst incompatible");
+                Assert(!incompat.Contains("Dubwise.DubsBadHygiene.Lite"), "can-fail: DBH Lite alone stays compatible");
+                var after = about.Root.Element("loadAfter").Elements("li").Select(e => (string)e).ToList();
+                Assert(!after.Contains("Dubwise.DubsBadHygiene") && !after.Contains("Dubwise.DubsBadHygiene.Thirst"), "no load order kept for an incompatible mod");
+                Assert(!File.Exists(Path.Combine(ModRoot, "Patches", "LiquidTypes", "RM_DBH_BottleWaterExt.xml")), "the DBH bottle bridge patch is deleted");
+                foreach (string f in Directory.GetFiles(Path.Combine(ModRoot, "Source", "Thirst"), "*.cs"))
+                {
+                    string src = File.ReadAllText(f);
+                    Assert(!src.Contains("DBHThirst") && !src.Contains("DubsBadHygiene.") && !src.Contains("dbhBottleBridge") && !src.Contains("RM_ThirstProviderMode"),
+                        "no Dubs thirst interop left in Thirst\\" + Path.GetFileName(f));
+                }
             });
             Case("Thirst_fall_rate_ruled", () =>
             {
@@ -203,7 +214,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
                 string sb = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_SaltBreak.cs"));
                 RiverSwitchFlipChecks.Has(sb, @"RM_ThirstMath\.SaltBreakCan\(level, poisoned, RM_SaltBreakUtility\.PotableReachable\(pawn, level\)", "the worker asks the tested rule");
-                RiverSwitchFlipChecks.Has(sb, @"float level = RM_ThirstUtility\.LevelAny\(pawn\);", "Q11: the break reads whichever thirst runs (Dubs' too)");
+                RiverSwitchFlipChecks.Has(sb, @"float level = RM_ThirstUtility\.LevelAny\(pawn\);", "the break reads the thirst level");
                 Assert(!RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstUtility.cs")).Contains("AddFoodPoisoningHediff"), "can-fail: salt's routine food poisoning is gone (its harm is salt poisoning now)");
             });
             Case("Thirst_awkward_access_ruled", () =>
@@ -360,31 +371,12 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(row != null && (string)row.Element("thirstQuality") == "Potable" && (string)row.Element("terrainSuite").Element("shallow") == "RM_Water_Rust", "Potable row adopting RM_Water_Rust");
                 Assert(Def(gen, "ThingDef", "RM_Bucket_FreshWater").Element("ingestible") == null, "can-fail: a bucket is not drunk");
             });
-            Case("Thirst_dbh_bridge_patch", () =>
-            {
-                string p = Path.Combine(ModRoot, "Patches", "LiquidTypes", "RM_DBH_BottleWaterExt.xml");
-                XDocument d = XDocument.Load(p);
-                XElement op = d.Root.Element("Operation");
-                Assert((string)op.Attribute("Class") == "PatchOperationFindMod" && op.Attribute("MayRequire") == null, "FindMod-gated, no top-level MayRequire");
-                var mods = op.Element("mods").Elements("li").Select(e => (string)e).ToList();
-                Assert(mods.Contains("Dubs Bad Hygiene Lite") && mods.Contains("Dubs Bad Hygiene"), "Lite and full DBH by name");
-                XElement gate = op.Element("match");
-                Assert((string)gate.Attribute("Class") == "RimMandrake.FlowWorks.Thirst.RM_PatchOperation_ThirstBridge", "behind the dbhBottleBridge setting");
-                var adds = gate.Element("operations").Elements("li").ToList();
-                Assert(adds.Count >= 9 && adds.All(a => (string)a.Attribute("Class") == "PatchOperationAddModExtension"), "one AddModExtension per drinkable bottle (" + adds.Count + ")");
-                Assert(adds.All(a => a.Descendants("li").Any(x => (string)x.Attribute("Class") == "DubsBadHygiene.WaterExt")), "DBH's WaterExt");
-                XElement fresh = adds.First(a => ((string)a.Element("xpath")).Contains("RM_Bottle_FreshWater"));
-                XElement salt = adds.First(a => ((string)a.Element("xpath")).Contains("RM_Bottle_SaltWater"));
-                Assert(fresh.Descendants("SeekForThirst").First().Value == "true" && salt.Descendants("SeekForThirst").First().Value == "false", "seek only potable water");
-                Assert(!d.ToString().Contains("CompContamination"), "can-fail: no second contamination system");
-                Assert(!File.Exists(Path.Combine(ModRoot, "Patches", "LiquidTypes", "RM_DBH_FreshWaterDrinkables.xml")), "the hand patch it supersedes is deleted");
-            });
             Case("Thirst_harmony_target_and_call_sites", () =>
             {
                 string prov = RiverSwitchFlipChecks.Src(Path.Combine("Thirst", "RM_ThirstProvider.cs"));
                 RiverSwitchFlipChecks.Has(prov, @"\[HarmonyPatch\(typeof\(Pawn_NeedsTracker\), ""ShouldHaveNeed""\)\]", "postfix on Pawn_NeedsTracker.ShouldHaveNeed");
                 RiverSwitchFlipChecks.Has(prov, @"__result = RM_ThirstProvider\.Eligible\(___pawn\);", "the postfix only narrows (runs when vanilla said yes)");
-                RiverSwitchFlipChecks.Has(prov, @"""\[FlowWorks\] thirst provider: "" \+ mode", "T1's log line");
+                RiverSwitchFlipChecks.Has(prov, @"""\[FlowWorks\] thirst provider: Own \("" \+ Reason", "T1's log line");
                 // the decompiled 1.6 source, when this machine has it: the signature the patch names
                 string dec = Path.Combine("/mnt/d/Luke/dev/reference/rimworld-decompiled", "RimWorld", "Pawn_NeedsTracker.cs");
                 if (!File.Exists(dec)) dec = @"D:\Luke\dev\reference\rimworld-decompiled\RimWorld\Pawn_NeedsTracker.cs";

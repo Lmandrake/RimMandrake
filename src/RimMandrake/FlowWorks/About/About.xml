@@ -23,7 +23,7 @@ The land. Many liquids exist as ground (brine, boiling water, propane, acid, tar
 
 Every mechanic has a switch in Mod Settings; with everything off, the mod still digs dry canals.
 
-Requires Harmony and all five RimWorld expansions.</description>
+Requires Harmony and all five RimWorld expansions. FlowWorks has its own thirst and is not compatible with Dubs Bad Hygiene (full) or its Thirst add-on; Dubs Bad Hygiene Lite on its own is fine.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
@@ -59,12 +59,16 @@ Requires Harmony and all five RimWorld expansions.</description>
     <li>Ludeon.RimWorld</li>
     <li>brrainz.harmony</li>
     <li>Dubwise.DubsBadHygiene.Lite</li>
-    <!-- THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY: ordering only; RM_DBH_BottleWaterExt.xml patches our bottles after DBH -->
-    <li>Dubwise.DubsBadHygiene.Thirst</li>
-    <li>Dubwise.DubsBadHygiene</li>
     <li>Ludeon.RimWorld.Odyssey</li>
     <!-- hose port (2026-10-11): ordering only, NOT a dependency. An older Gimme Some Slack that still carries the hose
          reel defs loads first, so this mod's copy wins; FlowWorks logs one red line when it sees that older GSS. -->
     <li>mandrake.rm.gimmesomeslack</li>
   </loadAfter>
+  <incompatibleWith>
+    <!-- THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE (owner, 2026-10-31: Dubs thirst interop cut, ship our own thirst only).
+         Both carry Dubs' DBHThirst need, which would run beside RM_Thirst. DBH Lite alone has no thirst and stays
+         compatible (its dbh_water washing tags are still patched onto our water). -->
+    <li>Dubwise.DubsBadHygiene</li>
+    <li>Dubwise.DubsBadHygiene.Thirst</li>
+  </incompatibleWith>
 </ModMetaData>

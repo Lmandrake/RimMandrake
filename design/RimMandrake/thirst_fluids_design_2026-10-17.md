@@ -1,5 +1,11 @@
 # Thirst and fluids: rulings, interactions and traffic (3x3 design, 2026-10-17)
 
+> **Superseded in part, 2026-10-31 (`THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE`, per ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM):**
+> *"THIRST: Dubs interop is CUT. Ship our own thirst only; NO Dubs testing."* FlowWorks now runs its own thirst only.
+> The Dbh provider mode, the DBH bottle bridge (`RM_DBH_BottleWaterExt.xml`, setting `dbhBottleBridge`) and every row that
+> loads Dubs are deleted; About.xml lists `Dubwise.DubsBadHygiene` and `Dubwise.DubsBadHygiene.Thirst` under
+> `incompatibleWith`. DBH Lite alone (no thirst) stays compatible. Every Dubs-thirst passage below is history, not a spec.
+
 **Item:** `THIRST_DESIGN_SLIME_IS_THE_LAST_RESORT`. **Status:** pass 1 (deep design) written here; passes 2
 (naive Opus review) and 3 (GPT review) and the merge are tracked in §11. Offline design only: nothing here was
 built, deployed or run live. Tags: **MEASURED** (how), **PROPOSED** (a number or rule nobody ruled),

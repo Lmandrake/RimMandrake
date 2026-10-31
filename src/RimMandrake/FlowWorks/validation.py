@@ -1167,14 +1167,13 @@ def _driver_live_report(t, spec, default_driver, item):
 
 # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (design/RimMandrake/thirst_bottles_design_2026-10-16.md §9; OQ-1..OQ-5 ruled by the
 # owner by card 2026-10-16). The design's T-rows: the offline halves run here off the C# SelfTest (Source/SelfTest/
-# ThirstChecks.cs: the production RM_ThirstMath, the shipped XML, the DBH patch, the Harmony target and call sites); every
+# ThirstChecks.cs: the production RM_ThirstMath, the shipped XML, the Dubs cut, the Harmony target and call sites); every
 # live row is written and reports UNMEASURED with its call and pass bar until a bridge session runs it (owed).
-# Informative false theory to record if met (design §9): "the pawn has no thirst" when T1 says Dbh may mean DBH's own
-# thirst setting is off, not our bug.
-THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate", "Thirst_fall_rate_ruled"),
+# THIRST_DUBS_EXCISE_WARN_NOT_BRIDGE (owner 2026-10-31): Dubs thirst interop is cut; no row loads Dubs.
+THIRST_OFFLINE = [("T0_dubs_cut", "Thirst_dubs_cut_incompatible"), ("T3o_fall_rate", "Thirst_fall_rate_ruled"),
                   ("T3h_heat_cap", "Thirst_heat_cap_ruled"), ("T4o_bottle_and_quality", "Thirst_bottle_and_quality"),
                   ("T6o_dehydration", "Thirst_dehydration_ruled"), ("T8_coloured_bottles_without_dbh", "Thirst_bottles_generated"),
-                  ("Td_defs_shipped", "Thirst_defs_shipped"), ("Tb_dbh_bridge_patch", "Thirst_dbh_bridge_patch"),
+                  ("Td_defs_shipped", "Thirst_defs_shipped"),
                   ("Th_harmony_target", "Thirst_harmony_target_and_call_sites"),
                   # THIRST_RULES_BUILD_SALT_OFF_THE_MENU (04-merged.md §8): the use-class gate and the auto-fill fix
                   ("Tu_use_class_gate", "Thirst_use_class_gate_ruled"),
@@ -1186,15 +1185,15 @@ THIRST_OFFLINE = [("T0_provider_rule", "Thirst_provider_rule"), ("T3o_fall_rate"
                   ("Tq_q12_defaults", "Thirst_q12_defaults_ruled"),
                   ("Tt_bottle_stock_batches", "Thirst_bottle_stock_batches_ruled")]
 THIRST_LIVE = [
-    ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on three lists: no DBH -> Own; "
-     "Lite+Thirst -> Dbh; Lite without Thirst -> Own (and DBHThirst absent or inert)"),
-    ("T2_one_thirst_need", "thirstEnabled", "bridge pawn needs read on every free colonist: count(RM_Thirst)+count(DBHThirst) "
-     "== 1 (== 0 with thirstEnabled off in Own mode)"),
+    ("T1_provider_line", None, "Player.log grep 'thirst provider:' + parsed ModsConfig on the walk list "
+     "(no Dubs): the line reads Own"),
+    ("T2_one_thirst_need", "thirstEnabled", "bridge pawn needs read on every free colonist: count(RM_Thirst) == 1, "
+     "no DBHThirst (== 0 with thirstEnabled off)"),
     # toggle None (review 7.10): thirst_live.py's T3 sets thirstHeatScaling OFF to measure the baseline drop, so its PASS
     # says nothing about heat scaling ON; crediting it to that switch certified a feature no row measures
     ("T3_need_falls", None, "read RM_Thirst, advance 0.25 day at 20 C: drop 0.2 +/- 0.03 x thirstRateMultiplier"),
-    ("T4_bottle_satisfies", None, "set need 0.2, give RM_Bottle_FreshWater, order Ingest: level rises >= 0.45 (Own) / DBH "
-     "need rises (Dbh); a dirty bottle appears"),
+    ("T4_bottle_satisfies", None, "set need 0.2, give RM_Bottle_FreshWater, order Ingest: level rises >= 0.45; "
+     "a dirty bottle appears"),
     ("T5_salt_water_quality", "waterQualityEffects", "ORDERED drink of RM_Bottle_SaltWater x4 on test pawns: hydrate x0.7; "
      "RM_SaltPoisoning +0.25 each and RM_Thought_SaltRelief (no FoodPoisoning since THIRST_RULES_BUILD_SALT_OFF_THE_MENU)"),
     ("T6_dehydration_readable", None, "need held at 0, advance 1 day: RM_Dehydration 0.30 +/- 0.03 on the health tab"),
@@ -1221,8 +1220,6 @@ THIRST_LIVE = [
      "RM_SaltPoisoning 0.25 per drink, state ends; offered again only after the poisoning is gone; with a fresh bottle on "
      "the map it is not offered. Informative false theory if it never fires: 'the worker is wrong' when mood was above the "
      "Major threshold (the mood half is vanilla's)"),
-    ("T18_dubs_last_resort", "lastResortDrinking", "Dubs mode (Lite + Thirst add-on), DBHThirst forced to 0, only slime in "
-     "reach: JobGiver_RM_Drink drinks it and Dubs' bar rises; at DBHThirst 0.2 ours does nothing"),
     ("T19_awkward_access", "roughDrinkPenalty", "home map: colonist drinks a bottle and a tank: no RM_Thought_DrankRough; "
      "only a filled RM_Bucket_FreshWater in reach: RM_DrinkFromContainer, -3 thought, the bucket reads 'Partly drunk: 1.5 L' "
      "and no longer stacks; an Ascetic and a tribal pawn drinking the same: no thought; a pond: no thought"),
@@ -1660,9 +1657,6 @@ TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitS
                         # RIVERCOLORS_MERGE_RAINBOW_JOINS_THE_FLOW (2026-10-16): the planet-map river gradient; what it
                         # paints is read by eye on the world map (the old mod's script had no live row for it either)
                         "riverColorsEnabled",
-                        # THIRST_BUILD_OWN_BOTTLES_DUBS_FRIENDLY (2026-10-16): restart-only (read while patches apply), so a
-                        # live row flipping it needs two loads with Dubs Bad Hygiene; owed
-                        "dbhBottleBridge",
                         # TRENCH_COVER_BUILD_SANDBAGS_MADE_OF_DIRT / PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS /
                         # PIPE_ENDS_BUILD_MEET_IN_THE_MIDDLE (built 2026-10-18, registered in site_spec by the F2 settings
                         # audit): their live rows are owed on the items (A1-A5), not yet a toggle chain
