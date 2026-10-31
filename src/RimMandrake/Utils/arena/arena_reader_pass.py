@@ -33,6 +33,16 @@ legs and the check tests only one: ARTPIPE), and brittle_format without format_s
 text does not state and the repo does not already use: TPS, TESTQ, SHADOW_INGEST). validate_reply enforces all of it:
 a KEEP contradicting any answer, or listing a fix_only_unnamed name in coupled_names, is refused.
 
+RULES v3 (ARENA_VET_REPAIR_IMPORT_ONLY_FAILS, ARENA_VET_REPAIR_TAIL_EATS_FAIL_LINES; BENCH re-vet
+D:\\ClaudeWork\\rimmandrake\\arena\\verify_final2\\report.md: >= 55 of 210 discriminating checks were red at base only on a
+missing module or name, 33 showed no reason at all). Each check's packet carries base_failure, read from the stored
+base tail (the vet cache record; it is NOT recomputed, so a check vetted before the tail fix keeps its old 600-char
+tail until it is re-vetted) plus the name lookup (and a lookup of any cited missing name the '+' lines missed). Its
+veto is no_reason_visible (no traceback, *Error, FAIL, assert or compiler error in the tail: nothing proves the
+check goes red for the defect) or missing_name_only (every failure is ModuleNotFound/ImportError/AttributeError/
+NameError, or the C# kin, on a fix_only_unnamed name, with no behavioural failure beside it). A KEEP is refused when
+the packet has a veto or the reader answers fails_for_defect false; such a check is UNSCORE_CHECK or DROP_TASK.
+
     run     read every survivor without a current verdict; one JSON file per task under the results dir (default
             <arena>/judge/reader/verdicts/, judge-only: the packets hold hidden check bodies). Resumable: a task
             whose verdict file matches its packet's sha256 is skipped; a changed packet (re-vet, new body) is
@@ -79,10 +89,10 @@ sys.path.insert(0, str(HERE))
 import arena_tasks as A  # noqa: E402
 import arena_trial as T  # noqa: E402
 
-VERDICT_SCHEMA = "arena_reader_verdict/2"   # /2: rules v2 (see docstring); /1 verdicts read as pending
+VERDICT_SCHEMA = "arena_reader_verdict/3"   # /3: rules v3 (see docstring); /1 and /2 verdicts read as pending
 VERDICTS = ("KEEP", "UNSCORE_CHECK", "DROP_TASK")
 BOOL_FIELDS = ("tests_task", "solvable_from_text", "coupled", "self_overwrite", "partial_legs", "brittle_format",
-               "format_stated")
+               "format_stated", "fails_for_defect")
 SCORED_TYPE = "fix_test"                # arena_judge.hidden_checks scores exactly these
 TAIL_CHARS = 3000
 DIFF_CHARS = 8000
@@ -279,6 +289,52 @@ def name_lookup(repo, base_sha, fix_sha, path, names, task_text, cache=None, _me
     return v
 
 
+# RULES v3 (ARENA_VET_REPAIR_IMPORT_ONLY_FAILS): what the base output says about WHY the check failed there.
+_MISSING_NAME = [re.compile(p) for p in (
+    r"No module named '([\w.]+)'",                                   # ModuleNotFoundError
+    r"cannot import name '(\w+)'",                                   # ImportError
+    r"has no attribute '(\w+)'",                                     # AttributeError
+    r"\bname '(\w+)' is not defined",                                # NameError
+    r"error CS0103: The name '(\w+)' does not exist",                # C#
+    r"error CS0117: '[\w.]+' does not contain a definition for '(\w+)'",
+    r"error CS1061: '[\w.<>]+' does not contain a definition for '(\w+)'",
+    r"error CS0246: The type or namespace name '(\w+)' could not be found",
+    r"error CS0234: The type or namespace name '(\w+)' does not exist")]
+_REASON = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Exception)\b|\bFAIL|\bassert\b"
+                     r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b")
+_BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b(?!ED \()|\bexpected\b|\bnot ok\b")
+
+
+def missing_names_cited(tail) -> list[str]:
+    """Names the base output reports as missing (no module / cannot import / no attribute / not defined / C# CS0103
+    and kin); a dotted module contributes its last part (the part that is absent)."""
+    out = set()
+    for rx in _MISSING_NAME:
+        for m in rx.finditer(tail or ""):
+            out.add(m.group(1).split(".")[-1])
+    return sorted(out)
+
+
+def base_failure(tail, names: dict, extra: dict | None = None) -> dict:
+    """Why the check is red at base, read from its stored base tail plus the name lookups. veto:
+    no_reason_visible  the tail shows no failure reason at all (no traceback, *Error, FAIL, assert, compiler
+                       error): nothing proves the check goes red for the defect, so it may not be KEPT;
+    missing_name_only  every failure line is a missing module/name that the FIX introduced and the task text does
+                       not name (fix_only_unnamed), with no behavioural failure line beside it: the check is red at
+                       base for the missing name, not the defect, and pins the fix's private API."""
+    tail = tail or ""
+    cited = missing_names_cited(tail)
+    unnamed = set((names or {}).get("fix_only_unnamed") or []) | set((extra or {}).get("fix_only_unnamed") or [])
+    fix_missing = [n for n in cited if n in unnamed]
+    behaviour = [ln for ln in tail.splitlines()
+                 if _BEHAVIOUR.search(ln) and not any(rx.search(ln) for rx in _MISSING_NAME)]
+    visible = bool(_REASON.search(tail))
+    veto = ("no_reason_visible" if not visible else
+            "missing_name_only" if fix_missing and not behaviour else None)
+    return {"reason_visible": visible, "missing_names": cited, "missing_fix_only_unnamed": fix_missing,
+            "behaviour_lines": len(behaviour), "veto": veto}
+
+
 def build_packet(task_id, p=None, repo=None, vet=None, cache=None) -> dict:
     """The reader's whole input for one task. `vet` {vet key: record} (default: the judge's vet cache). `cache` the
     name-lookup cache file (default beside the verdicts dir; False disables it)."""
@@ -304,12 +360,19 @@ def build_packet(task_id, p=None, repo=None, vet=None, cache=None) -> dict:
         td = test_diff(old, c.get("body"), c["path"])
         local = defined_in(c.get("body"))
         looked = [n for n in new_line_names(td) if n not in local]
+        names = name_lookup(repo, base_sha, fix_sha, c["path"], looked, task_text, cache or None)
+        # a missing name the base output cites but the '+' lines did not yield (e.g. a module imported by a helper)
+        # gets its own lookup, so the missing_name_only veto never rests on a name nobody looked up
+        extra_names = sorted(n for n in missing_names_cited(tail) if n not in looked and n not in local)
+        extra = (name_lookup(repo, base_sha, fix_sha, c["path"], extra_names, task_text, cache or None)
+                 if extra_names and tail is not None else None)
         checks.append({"path": c["path"], "command": c.get("command"), "body": _clip(c.get("body"), BODY_CHARS),
                        "base_result": (rec or {}).get("base_result"),
                        "base_tail": _clip(tail, TAIL_CHARS, tail=True) if tail is not None else None,
                        "new_file": old is None, "test_diff": _clip(td, TEST_DIFF_CHARS),
                        "check_named_in_task": Path(c["path"]).name in task_text or c["path"] in task_text,
-                       "names": name_lookup(repo, base_sha, fix_sha, c["path"], looked, task_text, cache or None)})
+                       "names": names, **({"cited_names": extra} if extra is not None else {}),
+                       "base_failure": base_failure(tail, names, extra) if tail is not None else None})
     return {"task": task_id, "prompt": t.get("prompt"), "criteria": t.get("criteria"), "kind": t.get("kind"),
             "fix_diff": fix_diff_summary(repo, fix_sha, [c["path"] for c in checks]),
             "checks": checks, "missing_tails": missing}
@@ -317,6 +380,18 @@ def build_packet(task_id, p=None, repo=None, vet=None, cache=None) -> dict:
 
 def packet_sha(packet: dict) -> str:
     return hashlib.sha256(json.dumps(packet, sort_keys=True).encode("utf-8")).hexdigest()
+
+
+def _bf_line(bf) -> str:
+    if not bf:
+        return "(no base output recorded)"
+    return ("reason_visible: %s; missing names cited: %s; of them fix_only_unnamed: %s; behavioural failure lines: "
+            "%d; veto: %s" % (bf.get("reason_visible"), json.dumps(bf.get("missing_names") or []),
+                              json.dumps(bf.get("missing_fix_only_unnamed") or []), bf.get("behaviour_lines") or 0,
+                              bf.get("veto") or "none") +
+            {"no_reason_visible": " (KEEP forbidden: nothing shows it red for the defect)",
+             "missing_name_only": " (KEEP forbidden: red at base only on a fix-introduced unnamed name)"}
+            .get(bf.get("veto"), ""))
 
 
 def render_prompt(packet: dict) -> str:
@@ -349,15 +424,20 @@ def render_prompt(packet: dict) -> str:
         "stream such as stderr vs stdout) where other correct outputs exist? format_stated: is that exact format "
         "given in the task text, or already the repo's convention at base (the same form is used for the same kind "
         "of output elsewhere)? A brittle format that is neither is UNSCORE_CHECK (or DROP_TASK), never KEEP.",
+        "(f) fails_for_defect: does the output at base show the check going red FOR THE DEFECT the task describes? "
+        "It is false when the base output shows no failure reason at all, or when it is red only because a module "
+        "or name the fix introduced (and the task text does not name) is missing (ModuleNotFoundError, ImportError, "
+        "AttributeError, NameError, a C# 'does not exist' error): that proves the name was absent, not the defect. "
+        "Each check's BASE FAILURE line gives the mechanical reading; a veto there forbids KEEP.",
         "Then a verdict: KEEP (fair), UNSCORE_CHECK (unfair; the task can still be judged on its other checks), or "
         "DROP_TASK (the task text cannot be judged fairly at all). KEEP is only allowed when tests_task and "
         "solvable_from_text are true, coupled, self_overwrite and partial_legs are false, and brittle_format is "
-        "false or format_stated is true. A 'solvable' answer is not enough on its own: if the new assertions need a "
+        "false or format_stated is true, and fails_for_defect is true. A 'solvable' answer is not enough on its own: if the new assertions need a "
         "name the fix invented and the task text does not give, that is coupling. Give a one or two sentence reason.",
         "", "Reply with ONE JSON object and nothing else:",
         '{"checks": [{"path": "<check path>", "tests_task": true|false, "solvable_from_text": true|false, '
         '"coupled": true|false, "coupled_names": ["..."], "self_overwrite": true|false, "partial_legs": true|false, '
-        '"brittle_format": true|false, "format_stated": true|false, "verdict": "KEEP|UNSCORE_CHECK|DROP_TASK", '
+        '"brittle_format": true|false, "format_stated": true|false, "fails_for_defect": true|false, "verdict": "KEEP|UNSCORE_CHECK|DROP_TASK", '
         '"reason": "..."}]}',
         "with exactly one entry for each of these paths: " + json.dumps(paths),
         "", "=== TASK TEXT (prompt) ===", packet.get("prompt") or "",
@@ -376,6 +456,7 @@ def render_prompt(packet: dict) -> str:
                   "fix_only: " + json.dumps(nm.get("fix_only") or []),
                   "fix_only_unnamed: " + json.dumps(nm.get("fix_only_unnamed") or []),
                   "--- full body (hidden copy) ---", c.get("body") or "",
+                  "--- BASE FAILURE (mechanical reading of the base output) ---", _bf_line(c.get("base_failure")),
                   "--- output at base (before the fix; result %s), tail ---" % c.get("base_result"),
                   c.get("base_tail") or ""]
     return "\n".join(parts) + "\n"
@@ -462,11 +543,20 @@ def validate_reply(reply: dict, packet: dict) -> list[dict]:
         names = r.get("coupled_names") or []
         names = [str(x) for x in names] if isinstance(names, list) else []
         if r["verdict"] == "KEEP":
-            bad = [k for k in ("tests_task", "solvable_from_text") if not r[k]] + \
+            bad = [k for k in ("tests_task", "solvable_from_text", "fails_for_defect") if not r[k]] + \
                   [k for k in ("coupled", "self_overwrite", "partial_legs") if r[k]] + \
                   (["brittle_format without format_stated"] if r["brittle_format"] and not r["format_stated"] else [])
             if bad:
                 raise ReaderError("%s: KEEP contradicts its own answers (%s)" % (r["path"], ", ".join(bad)))
+            # rules v3: the base output must show the check red for the defect; a packet veto is final. A check with
+            # no base_failure reading (built before v3, or no tail) cannot be KEPT either: no proof is no KEEP.
+            bf = by_path[r["path"]].get("base_failure")
+            if not bf:
+                raise ReaderError("%s: KEEP without a base_failure reading in the packet" % r["path"])
+            if bf.get("veto"):
+                raise ReaderError("%s: KEEP vetoed by the base output (%s%s)" % (
+                    r["path"], bf["veto"], (": " + ", ".join(bf.get("missing_fix_only_unnamed") or []))
+                    if bf["veto"] == "missing_name_only" else ""))
             # the veto stays in code: a KEEP may not cite as coupling a name the fix invented and the task never gave
             unnamed = set(((by_path[r["path"]].get("names") or {}).get("fix_only_unnamed")) or [])
             hit = sorted(unnamed & set(names))

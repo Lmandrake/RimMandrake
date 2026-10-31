@@ -53,6 +53,7 @@ def fixture(d, extra=False):
     (repo / "src/tool.py").write_text("def f():\n    return _private_two()\n\ndef _private_two():\n    return 2\n"
                                       "\ndef base_helper():\n    return 0\n\ndef named_new_api():\n    return 3\n")
     (repo / "src/selftest_tool.py").write_text("from tool import f\nassert f() == 2\n")
+    (repo / "src/newmod.py").write_text("def capped():\n    return 1\n")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "fix: f returns 2")
     fix = git(repo, "rev-parse", "HEAD")
@@ -79,18 +80,30 @@ def fixture(d, extra=False):
         Path(p["judge"], tid + ".json").write_text(json.dumps({"task": tid, "fix_sha": fix, "checks": cs}))
 
     task("RP_KEEP", [("src/selftest_tool.py", "AssertionError KEEP-TAIL")], unscored=True)
-    task("RP_HALF", [("src/selftest_a.py", "tail a"), ("src/selftest_b.py", "tail b")])
-    task("RP_ALLUN", [("src/selftest_c.py", "tail c")])
-    task("RP_DROP", [("src/selftest_d.py", "tail d")])
+    task("RP_HALF", [("src/selftest_a.py", "FAIL tail a"), ("src/selftest_b.py", "FAIL tail b")])
+    task("RP_ALLUN", [("src/selftest_c.py", "FAIL tail c")])
+    task("RP_DROP", [("src/selftest_d.py", "FAIL tail d")])
     task("RP_NOTAIL", [("src/selftest_e.py", None)])
     if extra:
         # an EXISTING test file gaining one new assertion that uses a base name, a fix name the task gives
         # (named_new_api) and a fix name it does not (_private_two)
-        task("RP_OLD", [("src/selftest_old.py", "tail old")], prompt="add named_new_api and make f return 2",
+        task("RP_OLD", [("src/selftest_old.py", "AssertionError: tail old")], prompt="add named_new_api and make f return 2",
              body=OLD_TEST + "from tool import _private_two, named_new_api\nassert f() == _private_two() + base_helper()"
                              "\nassert named_new_api() == 3\n")
         task("RP_LSCRUB", [("src/selftest_old.py", "tail ls")], prompt="fix the fake in selftest_old.py",
              body=OLD_TEST + "assert True\n")
+        # rules v3: red at base only on a missing name the fix adds (unnamed / named), on a missing name plus a
+        # behavioural failure, on a name only the base output cites, and with no visible reason at all
+        tb = "Traceback (most recent call last):\n  File \"src/selftest_n.py\", line 1\n"
+        imp = "import newmod\nassert newmod.capped() == 1\n"
+        task("RP_IMPORT", [("src/selftest_n.py", tb + "ModuleNotFoundError: No module named 'newmod'\n")], body=imp)
+        task("RP_IMPNAMED", [("src/selftest_n.py", tb + "ModuleNotFoundError: No module named 'newmod'\n")],
+             prompt="add module newmod whose capped() returns 1", body=imp)
+        task("RP_ATTRPLUS", [("src/selftest_n.py", "FAIL f() returned 1, expected 2\n" + tb +
+                              "AttributeError: module 'newmod' has no attribute 'capped'\n")], body=imp)
+        task("RP_CITED", [("src/selftest_n.py", tb + "AttributeError: module 'tool' has no attribute '_private_two'\n")],
+             body="from tool import f\nassert f() == 2\n")
+        task("RP_NOREASON", [("src/selftest_n.py", "ok 1\nok 2\nrc 1\n")], body="from tool import f\nassert f() == 2\n")
     Path(p["tasks"], "RP_NOHIDDEN.json").write_text(json.dumps({"id": "RP_NOHIDDEN", "source_item": "NOHIDDEN"}))
     A.vet_cache_path(p).write_text("".join(json.dumps(r) + "\n" for r in vet))
     return p, repo
@@ -107,7 +120,8 @@ def row(path, verdict, **kw):
     k = verdict == "KEEP"
     r = {"path": path, "tests_task": k, "solvable_from_text": k, "coupled": not k,
          "coupled_names": [] if k else ["_private_two"], "self_overwrite": False, "partial_legs": False,
-         "brittle_format": False, "format_stated": False, "verdict": verdict, "reason": "stub " + verdict}
+         "brittle_format": False, "format_stated": False, "fails_for_defect": k, "verdict": verdict,
+         "reason": "stub " + verdict}
     r.update(kw)
     return r
 
@@ -201,6 +215,57 @@ def rules_v2():
               "name lookups are cached and stable (%d lines)" % n)
 
 
+def rules_v3():
+    """ARENA_VET_REPAIR_IMPORT_ONLY_FAILS: a check red at base only on a missing fix-introduced unnamed module/name,
+    or with no visible failure reason, may not be KEPT; the schema bump reads older verdicts as pending."""
+    with tempfile.TemporaryDirectory() as d:
+        p, repo = fixture(d, extra=True)
+        P = "src/selftest_n.py"
+        keep = {"checks": [row(P, "KEEP")]}
+        un = {"checks": [row(P, "UNSCORE_CHECK")]}
+        pk = R.build_packet("RP_IMPORT", p, repo)
+        bf = pk["checks"][0]["base_failure"]
+        check(bf["veto"] == "missing_name_only" and bf["missing_fix_only_unnamed"] == ["newmod"],
+              "v3: ModuleNotFoundError on a fix-added module the task never names -> veto (%s)" % bf)
+        check(refused(keep, pk) and not refused(un, pk) and not refused({"checks": [row(P, "DROP_TASK")]}, pk),
+              "v3: KEEP of an import-only failure is refused; UNSCORE_CHECK / DROP_TASK accepted")
+        pr = R.render_prompt(pk)
+        check("fails_for_defect" in pr and "BASE FAILURE" in pr and "missing_name_only" in pr
+              and "KEEP forbidden" in pr, "v3: prompt asks (f) and shows the mechanical base-failure reading")
+        pn = R.build_packet("RP_IMPNAMED", p, repo)
+        check(pn["checks"][0]["base_failure"]["veto"] is None and not refused(keep, pn),
+              "v3: the same failure on a module the task text names is no veto; KEEP accepted")
+        check(refused({"checks": [row(P, "KEEP", fails_for_defect=False)]}, pn),
+              "v3: KEEP with the reader's own fails_for_defect=false is refused")
+        pa = R.build_packet("RP_ATTRPLUS", p, repo)
+        check(pa["checks"][0]["base_failure"]["veto"] is None and pa["checks"][0]["base_failure"]["behaviour_lines"] == 1
+              and not refused(keep, pa), "v3: missing name beside a behavioural FAIL line is not import-only")
+        pc = R.build_packet("RP_CITED", p, repo)
+        c = pc["checks"][0]
+        check(c["base_failure"]["veto"] == "missing_name_only" and "_private_two" in c["cited_names"]["fix_only_unnamed"]
+              and "_private_two" not in c["names"]["fix_only"],
+              "v3: a missing name only the base output cites gets its own lookup and vetoes (%s)" % c.get("cited_names"))
+        pz = R.build_packet("RP_NOREASON", p, repo)
+        check(pz["checks"][0]["base_failure"]["veto"] == "no_reason_visible" and refused(keep, pz) and not refused(un, pz),
+              "v3: no visible failure reason at base -> KEEP refused, UNSCORE accepted")
+        legacy = dict(pn, checks=[{k: v for k, v in pn["checks"][0].items() if k != "base_failure"}])
+        check(refused(keep, legacy), "v3: a packet with no base_failure reading cannot carry a KEEP")
+        bad = row(P, "KEEP")
+        del bad["fails_for_defect"]
+        check(refused({"checks": [bad]}, pn), "v3: a row missing fails_for_defect is refused")
+        check(R.missing_names_cited("error CS0103: The name 'Foo' does not exist in the current context\n"
+                                    "ImportError: cannot import name 'bar' from 'x'\nNo module named 'a.b.c'") ==
+              ["Foo", "bar", "c"], "v3: cited names: C# CS0103, ImportError, dotted module's last part")
+        check(R.base_failure("Build: 0 Error(s), rc 1\nDeprecationWarning: x", {})["veto"] == "no_reason_visible",
+              "v3: '0 Error(s)' and a DeprecationWarning are not a failure reason")
+        check(R.VERDICT_SCHEMA == "arena_reader_verdict/3", "v3: verdict schema bumped to /3")
+        res = R.results_dir(p)
+        res.mkdir(parents=True, exist_ok=True)
+        (res / "RP_IMPNAMED.json").write_text(json.dumps({"schema": "arena_reader_verdict/2", "task": "RP_IMPNAMED",
+                                                          "packet_sha256": R.packet_sha(pn)}))
+        check(R.state(p, repo=repo)["RP_IMPNAMED"][0] == "pending", "v3: a /2 verdict (even same packet sha) reads pending")
+
+
 def main():
     with tempfile.TemporaryDirectory() as d:
         p, repo = fixture(d)
@@ -284,6 +349,7 @@ def main():
                 "default output %s is judge-only (not under tasks/ or events/)" % tgt.relative_to(p["root"]))
 
     rules_v2()
+    rules_v3()
 
     def boom(pr):
         raise R.ReaderError("no login")

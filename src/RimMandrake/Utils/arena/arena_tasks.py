@@ -1002,8 +1002,85 @@ def vet_runner_id(judge_src: bytes | None = None) -> str:
     h = hashlib.sha256(src)
     for f in (paths, J.JH.posix_within):
         h.update(b"\0" + inspect.getsource(f).encode("utf-8"))
-    h.update(b"\0" + Path(VR.__file__).read_bytes() + b"\0" + inspect.getsource(_vet_task).encode("utf-8"))
+    h.update(b"\0" + Path(VR.__file__).read_bytes() + b"\0" + _vet_task_keyed_source().encode("utf-8"))
     return VET_RUNNER + "@" + h.hexdigest()[:16]
+
+
+# ARENA_VET_REPAIR_TAIL_EATS_FAIL_LINES: the stored tails are what a human or the reader sees of a check's output;
+# they never feed a verdict (vet_verdict reads results and rcs only). So the tail cut is NOT part of the cache key:
+# _vet_task's source is hashed with the vet_tail(...) calls written back as the old `[-600:]` cut, and every
+# record vetted before the fix still matches. Any OTHER edit to _vet_task still changes the key.
+_TAIL_KEY_FORMS = (('vet_tail(fr.get("tail"))', '(fr.get("tail") or "")[-600:]'),
+                   ('vet_tail(br.get("tail"))', '(br.get("tail") or "")[-600:]'))
+
+
+def _vet_task_keyed_source() -> str:
+    import inspect
+    src = inspect.getsource(_vet_task)
+    for new, old in _TAIL_KEY_FORMS:
+        if src.count(new) != 1:
+            raise ArenaError("vet key: _vet_task no longer has exactly one %s; update _TAIL_KEY_FORMS" % new)
+        src = src.replace(new, old)
+    return src
+
+
+VET_TAIL_CHARS = 1500           # = arena_judge.TAIL_CHARS: the judge tail is stored whole when it fits
+VET_TAIL_HEAD = 300
+_FAIL_LINE = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Exception|Exit)\b|\bFAIL|\bassert"
+                        r"|\berror\b|\bnot ok\b|\bUNMEASURED\b|\bBLIND\b|\bmissing\b|\bexpected\b", re.I)
+
+
+def vet_tail(t, n: int = VET_TAIL_CHARS) -> str:
+    """The stored tail of one check run: whole when it fits in `n`; else its head, every failure-looking line
+    (Traceback, *Error, FAIL, assert, ...) up to half the budget, and as much of the end as is left, in order, with
+    a `[... N chars cut ...]` marker at each gap. The old `[-600:]` kept only the end, so a check that prints its
+    FAIL lines and then passing lines (or a long stderr) stored no reason at all."""
+    t = t or ""
+    if len(t) <= n:
+        return t
+    lines = t.splitlines(keepends=True)
+    size = [len(x) for x in lines]            # original lengths, for the gap markers
+    keep, used = set(), 0
+    budget = n - 160                          # room for the gap markers
+    for i, ln in enumerate(lines):            # head
+        if used + len(ln) > VET_TAIL_HEAD:
+            break
+        keep.add(i)
+        used += len(ln)
+    fails = 0
+    for i, ln in enumerate(lines):            # failure lines, each clipped
+        if i in keep or not _FAIL_LINE.search(ln):
+            continue
+        ln = ln if len(ln) <= 240 else ln[:240] + "\n"
+        if fails + len(ln) > n // 2 or used + len(ln) > budget:
+            break
+        lines[i] = ln
+        keep.add(i)
+        fails += len(ln)
+        used += len(ln)
+    for i in range(len(lines) - 1, -1, -1):   # end
+        if i in keep:
+            continue
+        if used + len(lines[i]) > budget:
+            if budget - used > 0:             # a long line: keep its end
+                lines[i] = "[...]" + lines[i][-(budget - used):]
+                keep.add(i)
+            break
+        keep.add(i)
+        used += len(lines[i])
+    out, gap = [], 0
+    for i, ln in enumerate(lines):
+        if i in keep:
+            if gap:
+                out.append("[... %d chars cut ...]\n" % gap)
+                gap = 0
+            out.append(ln)
+        else:
+            gap += size[i]
+    if gap:
+        out.append("[... %d chars cut ...]\n" % gap)
+    s = "".join(out)
+    return s if len(s) <= n else s[-n:]
 
 
 _RUNNER_ID: list = []
@@ -1113,8 +1190,8 @@ def _vet_task(job: dict, repo: Path, work: Path, timeout: int) -> list[dict]:
     for c, fr, br in zip(job["checks"], res["fix"], res["base"]):
         recs.append({"key": c["key"], "task": job["task"], "path": c["path"], "base": job["base"], "fix": job["fix"],
                      "runner": _runner_id(), "fix_result": fr.get("result"), "base_result": br.get("result"),
-                     "fix_rc": fr.get("rc"), "base_rc": br.get("rc"), "fix_tail": (fr.get("tail") or "")[-600:],
-                     "base_tail": (br.get("tail") or "")[-600:], "timeout": timeout, "reads": trace["reads"],
+                     "fix_rc": fr.get("rc"), "base_rc": br.get("rc"), "fix_tail": vet_tail(fr.get("tail")),
+                     "base_tail": vet_tail(br.get("tail")), "timeout": timeout, "reads": trace["reads"],
                      **({"reads_trace": {k: trace[k] for k in ("too_wide", "refused", "rounds", "converged")}}
                         if failing else {}),
                      "at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})

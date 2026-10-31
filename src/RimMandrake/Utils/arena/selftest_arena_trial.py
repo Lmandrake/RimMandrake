@@ -173,8 +173,9 @@ def t_exclude():
 def t_pool_exclusions_file():
     ex = T.A.load_pool_exclusions()
     want = {"CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS", "COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
-            "MISSION_FIXTURE_FIX_RESEARCH_WINDOW_BLINDS", "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS"}
-    check("committed pool_exclusions.json names the four provisional Clean items", want <= set(ex), sorted(ex))
+            "MISSION_FIXTURE_FIX_RESEARCH_WINDOW_BLINDS", "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+            "STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS"}       # ARENA_POOL_REPAIR_DURABLE_ATTEMPTS_UNLISTED
+    check("committed pool_exclusions.json names the five provisional Clean items", want <= set(ex), sorted(ex))
     with tempfile.TemporaryDirectory() as d:
         for body in ('{"schema": "x", "exclude": []}', '{"schema": "%s", "exclude": [{"item": "A"}]}' % T.A.POOL_EXCLUSIONS_SCHEMA,
                      '{"schema": "%s", "exclude": [{"item": "A", "reason": "r"}, {"item": "A", "reason": "r"}]}'

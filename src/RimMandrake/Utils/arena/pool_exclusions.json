@@ -21,6 +21,11 @@
    "item": "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
    "reason": "Clean label provisional until 2026-11-03T17:36:51Z (rework window open): excluded from this pool rather than waiting for the date or bypassing the freeze guard",
    "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-30"
+  },
+  {
+   "item": "STEVEDESKTOP_WORKER_BUILD_DURABLE_ATTEMPTS",
+   "reason": "Clean label provisional until 2026-11-02T00:21:32Z (rework window open; found unlisted by the final2 re-vet, freeze refused on it): excluded from this pool rather than waiting for the date or bypassing the freeze guard",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-30"
   }
  ]
 }

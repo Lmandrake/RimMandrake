@@ -1449,6 +1449,24 @@ def t_vet_siblings(tmp):
     check(A.vet_runner_id(jsrc) == A._runner_id() and b"class SafeRepo" in jsrc
           and A.vet_runner_id(jsrc.replace(b"class SafeRepo", b"class SafeRepo ", 1)) != A._runner_id(),
           "runner hash covers the whole judge module (a helper such as SafeRepo, not only named functions)")
+    # ARENA_VET_REPAIR_TAIL_EATS_FAIL_LINES: the tail cut is not in the key (records vetted before stay valid); any
+    # other _vet_task edit still is
+    import inspect
+    vsrc = inspect.getsource(A._vet_task)
+    ks = A._vet_task_keyed_source()
+    check("vet_tail(" in vsrc and "vet_tail(" not in ks and ks.count('[-600:]') == 2
+          and ks.replace('(fr.get("tail") or "")[-600:]', 'vet_tail(fr.get("tail"))')
+          .replace('(br.get("tail") or "")[-600:]', 'vet_tail(br.get("tail"))') == vsrc,
+          "vet key: _vet_task is hashed with only the vet_tail calls written back as the old [-600:] cut")
+    long_out = "".join("ok step %d\n" % i for i in range(30)) + "FAIL widget count: expected 3, got 4\n" + \
+        "".join("ok later %d\n" % i for i in range(400))
+    tl = A.vet_tail(long_out)
+    check(len(tl) <= A.VET_TAIL_CHARS and "FAIL widget count" in tl and tl.startswith("ok step 0")
+          and tl.rstrip().endswith("ok later 399") and "chars cut ..." in tl and "FAIL" not in long_out[-600:],
+          "vet_tail keeps head, FAIL line and end where [-600:] kept no reason (%d chars)" % len(tl))
+    check(A.vet_tail("short\nFAIL x\n") == "short\nFAIL x\n" and A.vet_tail(None) == ""
+          and len(A.vet_tail("y" * 5000)) <= A.VET_TAIL_CHARS and A.vet_tail("y" * 5000).endswith("y" * 100),
+          "vet_tail: a fitting tail is stored whole; one long line keeps its end within the cap")
     # a second run finds everything cached
     out2 = A.run_vet(A.vet_jobs(p0), repo, tmp / "vt_vetdir", cache, workers=2, timeout=3)
     check(out2["ran"] == 0 and out2["cached"] == 8, "run_vet is resumable: a rerun runs nothing (%s)" % out2)
