@@ -1,0 +1,1 @@
+mutate4.py in foundry_builder_gates rewrites the FOUNDRY clone in place: a tester must retarget a copy. run_selftests caps at 240 s, so selftest_arena_tasks.py (10 min) reads CRASH under it: run it directly.
