@@ -668,14 +668,16 @@ def later_fixes(repo: Path, fix: str, files: list, t_close: float) -> list:
 
 
 def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, old_history=None, vet=None,
-           vet_missing: list | None = None, probes: dict | None = None):
+           vet_missing: list | None = None, probes: dict | None = None, exclude: dict | None = None):
     """-> (pool, report). Pool entries are (task, hidden). Raises SanityFail when the sanity item is not kept.
     `vet(base, fix, path, body)` -> a vet record ({base_rc, fix_rc, ...}) or None when the check was never run
     (vet_lookup over the vet cache). With vet=None nothing is vetted: the pool is candidates, and freeze refuses
     it. With a vet, a never-run check rejects its task (fail closed), and `vet_missing` (a list) collects a vet job
     (vet_jobs shape) for each such task: every candidate, before the chain dedup, so one `vet` pass covers them.
     `probes` ({"reads": [...], "control": (item, path)}, default SANITY_PROBES[sanity]) applies with a vet only:
-    the sanity item's hidden reads must hold `reads` and the control check must stay passes_at_base."""
+    the sanity item's hidden reads must hold `reads` and the control check must stay passes_at_base.
+    `exclude` ({source item: reason}, default load_pool_exclusions()) leaves those items out of the returned pool
+    after the probe; report["excluded"] = {task id: reason}."""
     if probes is None:
         probes = SANITY_PROBES.get(sanity) if sanity else None
     control = tuple((probes or {}).get("control") or ()) or None
@@ -888,13 +890,19 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         seen.add(hidden)
         publics.append(pub)
         kept_pool.append((task, hidden))
-    pool = sorted(kept_pool, key=lambda th: th[0]["id"])
+    probe_pool = sorted(kept_pool, key=lambda th: th[0]["id"])
+    # POOL EXCLUSIONS (pool_exclusions.json, Conductor ruling 2026-10-30): applied AFTER the chain dedup and the
+    # sanity probe, so the instrument check still sees an excluded sanity item and no excluded task frees a chain
+    # loser; the excluded tasks get no files (write_pool withdraws an unfrozen one) and freeze never meets them.
+    exclude = load_pool_exclusions() if exclude is None else dict(exclude)
+    pool = [th for th in probe_pool if th[0]["source_item"] not in exclude]
+    excluded = {t["id"]: exclude[t["source_item"]] for t, _ in probe_pool if t["source_item"] in exclude}
 
     labels = {"Clean": 0, "Escaped": 0, "unlabelled": 0}
     for _, h in pool:
         labels[h["label"] or "unlabelled"] += 1
-    kept = {t["source_item"] for t, _ in pool}
-    report = {"window": list(window), "scanned_closed_in_window": scanned, "pool": len(pool), "labels": labels,
+    kept = {t["source_item"] for t, _ in probe_pool}
+    report = {"excluded": excluded, "window": list(window), "scanned_closed_in_window": scanned, "pool": len(pool), "labels": labels,
               "labelled": labels["Clean"] + labels["Escaped"], "old_history_shas": sorted(resolve.old_used),
               "old_history_pins": {r: sorted(h for h, rr in resolve.old_used.items() if rr == r)
                                    for r in sorted(set(resolve.old_used.values()))},
@@ -909,7 +917,7 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
         raise SanityFail("sanity item %s was not kept (%s): the census is blind, not the pool small"
                          % (sanity, reasons.get(sanity) or "not scanned: not a done item closed in window"))
     if sanity and probes and vet is not None:
-        got = next(h for t, h in pool if t["source_item"] == sanity).get("reads") or []
+        got = next(h for t, h in probe_pool if t["source_item"] == sanity).get("reads") or []
         want = list(probes.get("reads") or ())
         report["sanity"]["reads"] = got
         if not got or any(r not in got for r in want):
@@ -923,6 +931,31 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                 raise SanityFail("negative control %s %s is %s, not passes_at_base: the vet's base side is not the "
                                  "real base tree" % (control[0], control[1], cv))
     return pool, report
+
+
+POOL_EXCLUSIONS = HERE / "pool_exclusions.json"
+POOL_EXCLUSIONS_SCHEMA = "arena_pool_exclusions/1"
+
+
+def load_pool_exclusions(path=None) -> dict:
+    """{source item: reason} from the committed exclusion file ({"schema": POOL_EXCLUSIONS_SCHEMA, "exclude":
+    [{"item", "reason", "ruling"}]}). Absent file: {}. A malformed file raises ArenaError (never a silent empty)."""
+    fp = Path(path) if path else POOL_EXCLUSIONS
+    if not fp.exists():
+        return {}
+    doc = _loads(fp.read_bytes(), str(fp))
+    rows = doc.get("exclude") if isinstance(doc, dict) else None
+    if not (isinstance(doc, dict) and doc.get("schema") == POOL_EXCLUSIONS_SCHEMA and isinstance(rows, list)):
+        raise ArenaError("%s: not an %s document" % (fp, POOL_EXCLUSIONS_SCHEMA))
+    out = {}
+    for r in rows:
+        if not (isinstance(r, dict) and isinstance(r.get("item"), str) and r["item"]
+                and isinstance(r.get("reason"), str) and r["reason"].strip()):
+            raise ArenaError("%s: every exclusion needs an item and a reason (%r)" % (fp, r))
+        if r["item"] in out:
+            raise ArenaError("%s: %s excluded twice" % (fp, r["item"]))
+        out[r["item"]] = r["reason"] + ((" [" + r["ruling"] + "]") if r.get("ruling") else "")
+    return out
 
 
 def _descendants(iid, children, depth=REWORK_DEPTH):
@@ -2579,7 +2612,7 @@ def main(argv=None) -> int:
                 rp.write_bytes(_dump(rep))
                 print("report:", rp)
                 print("next: rerun arena_answer_check.py; freeze refuses until it passes on these files")
-            print(json.dumps({k: rep.get(k) for k in ("pool", "labels", "labelled", "sanity", "kinds", "vet",
+            print(json.dumps({k: rep.get(k) for k in ("pool", "excluded", "labels", "labelled", "sanity", "kinds", "vet",
                                                       "base_contains_pairs", "scanned_closed_in_window")}))
             if rep.get("pins"):
                 print("pins:", json.dumps({k: (len(v) if isinstance(v, list) else v)

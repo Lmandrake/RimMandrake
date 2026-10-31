@@ -16,6 +16,7 @@ ARENA_TASKS_BUILD_FROZEN_BEFORE_ASSIGNED criteria, and the failure planted for e
   order       a freeze with an `assign` already in the log is refused
 Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES point there). The real-ledger probe is read-only.
 """
+# selftest-timeout: 480   (t_real_ledger runs the real census, ~3 min alone)
 import base64
 import json
 import os
@@ -258,6 +259,16 @@ def t_census(tmp, repo, old, s):
     e = raises(A.SanityFail, A.census, ledger(s, drop_good_close=True), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE",
                old_history=old)
     check(bool(e), "SanityFail when the sanity item's close is missing from the ledger")
+    # POOL EXCLUSIONS (pool_exclusions.json): applied after the sanity probe, so an excluded sanity item still proves
+    # the instrument sees, and is out of the pool
+    px, rx = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet,
+                      exclude={"FIXTURE_GOOD_FIX_ONE": "provisional Clean", "FIXTURE_ESC_FIX_TWO": "ruling"})
+    ids = {t["source_item"] for t, _ in px}
+    check(ids == {"FIXTURE_NOSTART_FIX_FOUR", "FIXTURE_REMAP_FIX_FIVE"} and rx["pool"] == 2 and rx["sanity"]["found"]
+          and set(rx["excluded"]) == {"RP_FIXTURE_GOOD_FIX_ONE", "RP_FIXTURE_ESC_FIX_TWO"},
+          "excluded items leave the pool (sanity still found, report names them): %s %s" % (sorted(ids), rx["excluded"]))
+    check("FIXTURE_ESC_REWORK_THREE" not in ids, "an excluded task does not free its chain loser")
+    check(rep["excluded"] == {}, "the default (committed) exclusions name no fixture item")
     return pool
 
 
@@ -1526,7 +1537,8 @@ def t_vet_siblings(tmp):
 def t_real_ledger():
     check(A.arena_root().name == "arena" and A.paths()["judge"].parent.name == "judge",
           "with ARENA_ROOT unset the root comes from rmpaths/agent_storage: %s" % A.arena_root())
-    pool, rep = A.census(sanity=A.SANITY_ITEM)        # raises SanityFail if blind
+    pool, rep = A.census(sanity=A.SANITY_ITEM, exclude={})     # raises SanityFail if blind; {}: the sanity item
+    # is itself one of the committed pool exclusions (provisional Clean), checked separately below
     check(rep["sanity"]["found"], "real ledger: sanity item %s found (pool %d: %s)"
           % (A.SANITY_ITEM, rep["pool"], rep["labels"]))
     check(rep["pool"] > 0 and all(t["live"] in A.LIVE_OK for t, _ in pool), "real ledger: no task has live: full")
@@ -1535,8 +1547,11 @@ def t_real_ledger():
           and any(c.get("path") == "src/RimMandrake/Utils/selftest_roast_stick_no_cook_stat.py"
                   for c in h["checks"]),
           "real ledger: the sanity item is fix 05366d9ad4, is Clean and holds its discriminating roast-stick check")
-
-
+    ex = A.load_pool_exclusions()
+    got = {t["source_item"] for t, _ in pool}
+    check(len(ex) >= 4 and set(ex) <= got,
+          "real ledger: every committed pool exclusion names a real census-pool item (else it excludes nothing) %s"
+          % sorted(set(ex) - got))
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="arena_tasks_st_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES")}

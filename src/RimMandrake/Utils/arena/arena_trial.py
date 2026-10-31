@@ -27,7 +27,21 @@ The committed default (trial_tasks.json beside this file) is what `arena_analysi
 --trial-tasks. Rebuild it after the frozen pool changes (another builder vets the pool): a list naming a task with
 no frozen spec makes the analysis UNMEASURED (fail closed), never a silent shrink.
 
+EXCLUSIONS, applied to the bank BEFORE the era split (so N stays N wherever the bank allows):
+  - the pool exclusions (arena_tasks.load_pool_exclusions, pool_exclusions.json: e.g. the four provisional Clean
+    labels, Conductor ruling 2026-10-30), matched on each task file's source_item; a re-census drops them from the
+    pool too, this only keeps a list built before that re-census honest;
+  - the reader pass (arena_reader_pass.py apply): its exclusion file (default READER_EXCLUSIONS, i.e.
+    <arena root>/judge/reader/exclusions.json, judge-only) names tasks to DROP and checks to UNSCORE. A dropped task
+    is left out; a task with an unscored check is left out too unless --allow-unscored (the judge does not yet honour
+    an unscore: until it does, keeping the task would score the bad check). Absent default file: not applied, and
+    the doc says so (`reader: null`); an explicit --reader-exclusions path that is missing refuses; --no-reader skips;
+  - ONE task per bundled commit (ARENA_POOL_FIX_BUNDLED_WRONG_REASON): tasks sharing a fix sha (the judge's hidden
+    files) are siblings of one commit; only the first by id is eligible (after the other exclusions, so a dropped
+    sibling hands the slot to the next). --allow-bundled turns this off.
+
 usage: arena_trial.py build [--n N] [--no-csharp] [--no-check] [--out PATH]   (default out: trial_tasks.json)
+                            [--reader-exclusions PATH | --no-reader] [--allow-unscored] [--allow-bundled]
        arena_trial.py show [PATH]
 """
 from __future__ import annotations
@@ -46,6 +60,43 @@ SCHEMA = "arena_trial_tasks/1"
 DEFAULT_PATH = HERE / "trial_tasks.json"
 DEFAULT_N = 50          # the default trial size, NOT a cap: `build --n` takes any positive int
 CSHARP = "csharp"
+READER_SCHEMA = "arena_reader_exclusions/1"
+
+
+def reader_exclusions_path(p=None) -> Path:
+    """Default reader-pass exclusion file: <arena root>/judge/reader/exclusions.json (beside the judge's hidden
+    files: it quotes hidden check paths, so never arm-readable)."""
+    return (p or A.paths())["freeze"].parent / "reader" / "exclusions.json"
+
+
+def read_reader_exclusions(path) -> dict:
+    """{"drop": {task: reason}, "unscore": {task: [check path, ...]}} from an arena_reader_pass `apply` file."""
+    doc = json.loads(Path(path).read_text(encoding="utf-8"))
+    if not (isinstance(doc, dict) and doc.get("schema") == READER_SCHEMA and isinstance(doc.get("drop"), dict)
+            and isinstance(doc.get("unscore"), dict)):
+        raise TrialError("%s: not an %s document" % (path, READER_SCHEMA))
+    return {"drop": dict(doc["drop"]), "unscore": {t: list(v) for t, v in doc["unscore"].items()}}
+
+
+def exclude(tasks: dict, drop=(), fixes=None, bundled=False) -> tuple[dict, dict]:
+    """-> (eligible tasks, {task: why left out}). `drop`: {task: reason} left out first; then, unless `bundled`,
+    one task per fix sha (`fixes` {task: fix_sha}; a task with no fix sha is its own group): the first by id. Pure."""
+    out, why = {}, {}
+    for t in sorted(tasks):
+        if t in drop:
+            why[t] = drop[t]
+        else:
+            out[t] = tasks[t]
+    if not bundled and fixes:
+        first = {}
+        for t in sorted(out):
+            g = fixes.get(t) or ("task:" + t)
+            if g in first:
+                why[t] = "bundled commit %s: sibling %s is the eligible one" % (str(g)[:12], first[g])
+                del out[t]
+            else:
+                first[g] = t
+    return out, why
 
 
 class TrialError(Exception):
@@ -120,15 +171,49 @@ def check_order(ids, bank: dict, fixes: dict, repo) -> None:
     RD.check_rounds(list(ids), contains)
 
 
-def build(n=DEFAULT_N, csharp=True, check=True, repo=None, p=None) -> dict:
+def _source_items(p=None) -> dict:
+    """{task id: source_item} from the task files (the pool exclusions are keyed by source item)."""
+    out = {}
+    for f in sorted(Path((p or A.paths())["tasks"]).glob("*.json")):
+        try:
+            t = json.loads(f.read_text(encoding="utf-8"))
+            out[t["id"]] = t.get("source_item")
+        except (OSError, ValueError, KeyError, TypeError):
+            continue
+    return out
+
+
+def build(n=DEFAULT_N, csharp=True, check=True, repo=None, p=None, reader=None, use_reader=True,
+          allow_unscored=False, bundled=False) -> dict:
+    """`reader`: the reader exclusion file (None: the default path, applied only if it exists)."""
     bank = AA.load_tasks(p)
     nokey = AA.chrono_keys(bank, repo)
     if nokey:
         raise TrialError("%d frozen task(s) have no chronology key (e.g. %s): no eras, no list" %
                          (len(nokey), sorted(nokey.items())[0]))
-    ids = select(bank, n, csharp)
+    fixes = hidden_fix_shas(p)
+    pex = A.load_pool_exclusions()
+    src = _source_items(p)
+    drop = {t: "pool exclusion: " + pex[src[t]] for t in bank if src.get(t) in pex}
+    rinfo = None
+    if use_reader:
+        rp = Path(reader) if reader else reader_exclusions_path(p)
+        if reader and not rp.is_file():
+            raise TrialError("reader exclusion file %s does not exist" % rp)
+        if rp.is_file():
+            rx = read_reader_exclusions(rp)
+            for t, why in rx["drop"].items():
+                drop.setdefault(t, "reader pass: " + str(why))
+            if not allow_unscored:
+                for t, cks in rx["unscore"].items():
+                    drop.setdefault(t, "reader pass unscored %d check(s); the judge does not honour an unscore "
+                                       "yet (--allow-unscored keeps it)" % len(cks))
+            rinfo = {"path": str(rp), "drop": len(rx["drop"]), "unscore": len(rx["unscore"]),
+                     "allow_unscored": allow_unscored}
+    eligible, left_out = exclude(bank, drop, fixes, bundled)
+    ids = select(eligible, n, csharp)
     if check:
-        check_order(ids, bank, hidden_fix_shas(p), repo or A.REPO)
+        check_order(ids, bank, fixes, repo or A.REPO)
     eras, _ = AA.era_map({t: bank[t] for t in ids})
     kinds = {}
     for t in ids:
@@ -138,6 +223,7 @@ def build(n=DEFAULT_N, csharp=True, check=True, repo=None, p=None) -> dict:
             "eras_in_trial": [sum(1 for t in ids if eras[t] == e) for e in range(AA.ERAS)], "kinds": kinds,
             "order": "oldest first: chrono (git rev-list --count base_sha), then id"
                      + ("; checked with arena_rounds.check_rounds" if check else "; sibling order NOT checked"),
+            "one_per_bundled_commit": not bundled, "reader": rinfo, "left_out": left_out,
             "tasks": ids}
 
 
@@ -168,6 +254,11 @@ def main(argv=None):
     b.add_argument("--no-check", action="store_true", help="skip the git sibling-order check")
     b.add_argument("--repo", help="git repo holding the base shas (default %s)" % A.REPO)
     b.add_argument("--out", default=str(DEFAULT_PATH))
+    b.add_argument("--reader-exclusions", help="arena_reader_pass apply output (default: %s if it exists)"
+                   % "<arena root>/judge/reader/exclusions.json")
+    b.add_argument("--no-reader", action="store_true", help="ignore the reader-pass exclusions")
+    b.add_argument("--allow-unscored", action="store_true", help="keep tasks with reader-unscored checks")
+    b.add_argument("--allow-bundled", action="store_true", help="allow several tasks of one bundled commit")
     s = sub.add_parser("show")
     s.add_argument("path", nargs="?", default=str(DEFAULT_PATH))
     a = ap.parse_args(argv)
@@ -176,12 +267,13 @@ def main(argv=None):
         print("%d task(s): %s ... %s" % (len(ids), ids[:3], ids[-3:]))
         return 0
     try:
-        doc = build(a.n, not a.no_csharp, not a.no_check, a.repo)
-    except (TrialError, A.TaskRefused) as e:
+        doc = build(a.n, not a.no_csharp, not a.no_check, a.repo, reader=a.reader_exclusions,
+                    use_reader=not a.no_reader, allow_unscored=a.allow_unscored, bundled=a.allow_bundled)
+    except (TrialError, A.ArenaError, ValueError) as e:
         print("REFUSED: %s" % e)
         return 2
     Path(a.out).write_text(json.dumps(doc, indent=1) + "\n", encoding="utf-8")
-    print(json.dumps({k: v for k, v in doc.items() if k != "tasks"}))
+    print(json.dumps({k: (len(v) if k == "left_out" else v) for k, v in doc.items() if k != "tasks"}))
     return 0
 
 

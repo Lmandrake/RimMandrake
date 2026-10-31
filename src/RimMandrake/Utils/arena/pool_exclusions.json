@@ -1,0 +1,26 @@
+{
+ "schema": "arena_pool_exclusions/1",
+ "note": "Source items arena_tasks.census leaves out of the pool (after the chain dedup and the sanity probe). Read by census; see arena_tasks.load_pool_exclusions.",
+ "exclude": [
+  {
+   "item": "CARBON_PRESS_FIX_NO_WORKGIVER_RUNS_BILLS",
+   "reason": "Clean label provisional until 2026-11-02T20:39:44Z (rework window open): excluded from this pool rather than waiting for the date or bypassing the freeze guard",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-30"
+  },
+  {
+   "item": "COLD_INSPECT_FIX_PARTIAL_SAYS_ALL_HELD",
+   "reason": "Clean label provisional until 2026-11-02T20:39:45Z (rework window open): excluded from this pool rather than waiting for the date or bypassing the freeze guard",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-30"
+  },
+  {
+   "item": "MISSION_FIXTURE_FIX_RESEARCH_WINDOW_BLINDS",
+   "reason": "Clean label provisional until 2026-11-02T08:23:34Z (rework window open): excluded from this pool rather than waiting for the date or bypassing the freeze guard",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-30"
+  },
+  {
+   "item": "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
+   "reason": "Clean label provisional until 2026-11-03T17:36:51Z (rework window open): excluded from this pool rather than waiting for the date or bypassing the freeze guard",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-30"
+  }
+ ]
+}
