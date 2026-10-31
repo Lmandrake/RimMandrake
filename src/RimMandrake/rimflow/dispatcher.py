@@ -465,7 +465,8 @@ def decide(sch, st, obs, now, apply, out=None):
             if rec and not pend.get("consumed_at"):
                 pend["consumed_at"] = rec.get("consumed_at") or now
             if pend.get("consumed_at"):
-                ev = handoff_seen(obs["events"](seat, pend["rung_iso"]))
+                events = obs["events"](seat, pend["rung_iso"])    # one snapshot: a take between two reads is seen by neither
+                ev = handoff_seen(events)
                 if ev:
                     act(do="verified", seat=seat, ring_id=pend["ring_id"], ticket=ev.get("id") or pend.get("ticket"),
                         evidence="%s %s at %s" % (ev.get("event"), ev.get("action") or "", ev.get("ts")),
@@ -485,7 +486,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     rule = no_handoff_rule(sch)
                     streak = int(ss.get("nh_streak") or 0) + 1
                     wait = rering_after(rule, streak)
-                    ans = answer_seen(obs["events"](seat, pend["rung_iso"]))
+                    ans = answer_seen(events)
                     said = ""
                     if ans:
                         said = "%s on %s: %s" % (ans.get("event"), ans.get("id"),
@@ -609,11 +610,13 @@ def decide(sch, st, obs, now, apply, out=None):
         armed = obs["armed"](seat)
         if not armed or not obs["alive"](armed.get("pid")):
             act(do="alarm", kind="unwakeable:" + seat, seat=seat, note=True, conductor_log=True,
+                raise_first="%s cannot be woken: no doorbell." % seat,
                 why="%s is idle but no doorbell is armed (install doorbell.py as its Stop hook; a turn that ended "
                     "on an API error, such as an expired login, never ran that hook, so look at the window)" % seat)
             return
         if armed.get("session_id") and sess.get("sessionId") and armed["session_id"] != sess["sessionId"]:
             act(do="alarm", kind="unwakeable:" + seat, seat=seat, note=True, conductor_log=True,
+                raise_first="%s cannot be woken: its doorbell is another session's." % seat,
                 why="%s's armed doorbell is session %s, not the window's %s (a `claude -p` child or second window "
                     "with AGENT_SEAT re-armed it): not ringing a stranger" % (seat, armed["session_id"],
                                                                                sess["sessionId"]))
