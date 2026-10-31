@@ -77,6 +77,12 @@ claim-time prose (the item file at the commit nearest before the item's start ev
 when a start event exists) is derivable but intentionally NOT used. When the prose at base_sha holds a non-blank
 line the claim-time prose lacks (text added after the claim, a possible hint), the task is flagged
 `prompt_may_hold_hints: true`; that is metadata only and changes no behaviour.
+The one exception is a BANK REPAIR rewrite (prompt_rewrites.json, ARENA_BANK_REPAIR_THIN_PROMPTS_RESCUABLE): a
+committed row replaces the prompt and criteria of one item with a bug-report text an independent judge passed
+against the hidden checks. Such a task carries `prompt_source: "bank_repair"` and `prompt_base_sha256` (the sha256
+of the base_parent prompt it replaced). A row applies only while that sha256 and the fix sha still match; a stale
+row is not applied and is listed in report["rewrites_stale"]. A rewritten text still goes through the own-check
+leak scan and the chain dedup like any other. The prompt is not in the vet key, so a rewrite never stales the vet.
 
 RESIDUAL (same OS user). Everything above is tamper-EVIDENT, not tamper-PROOF against an arm that runs as the same
 OS user as the judge: such an arm can open the judge directory and rewrite the hashes and the log together. Only a
@@ -668,7 +674,8 @@ def later_fixes(repo: Path, fix: str, files: list, t_close: float) -> list:
 
 
 def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, old_history=None, vet=None,
-           vet_missing: list | None = None, probes: dict | None = None, exclude: dict | None = None):
+           vet_missing: list | None = None, probes: dict | None = None, exclude: dict | None = None,
+           rewrites: dict | None = None):
     """-> (pool, report). Pool entries are (task, hidden). Raises SanityFail when the sanity item is not kept.
     `vet(base, fix, path, body)` -> a vet record ({base_rc, fix_rc, ...}) or None when the check was never run
     (vet_lookup over the vet cache). With vet=None nothing is vetted: the pool is candidates, and freeze refuses
@@ -677,7 +684,11 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
     `probes` ({"reads": [...], "control": (item, path)}, default SANITY_PROBES[sanity]) applies with a vet only:
     the sanity item's hidden reads must hold `reads` and the control check must stay passes_at_base.
     `exclude` ({source item: reason}, default load_pool_exclusions()) leaves those items out of the returned pool
-    after the probe; report["excluded"] = {task id: reason}."""
+    after the probe; report["excluded"] = {task id: reason}.
+    `rewrites` ({source item: row}, default load_prompt_rewrites()) replaces those items' prompt and criteria
+    (apply_prompt_rewrite); report["rewritten"], ["rewrites_stale"] and ["rewrites_unused"] account for every row."""
+    rewrites = load_prompt_rewrites() if rewrites is None else dict(rewrites)
+    rw_done, rw_stale = [], {}
     if probes is None:
         probes = SANITY_PROBES.get(sanity) if sanity else None
     control = tuple((probes or {}).get("control") or ()) or None
@@ -866,6 +877,12 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
                 "live_plan": None, "hidden_checks": None, "base_sha": base, "prompt_source": "base_parent",
                 "prompt_may_hold_hints": _prompt_hints(repo, fix, iid, next(
                     (e.get("ts") for e in evs if e.get("event") == "start"), None), prose)}
+        if iid in rewrites:
+            why = apply_prompt_rewrite(task, rewrites[iid], fix)
+            if why:
+                rw_stale[iid] = why
+            else:
+                rw_done.append(iid)
         own = Matcher([hidden]).hits(_public_bytes(task))
         if own:                           # this one task is rejected; the census goes on
             reject(iid, "task would carry its own hidden check (%s)" % own[0][1]); continue
@@ -909,7 +926,9 @@ def census(events=None, repo: Path = REPO, window=WINDOW, sanity=SANITY_ITEM, ol
               "rejects": dict(sorted(rejects.items(), key=lambda kv: -kv[1])),
               "sanity": {"item": sanity, "found": sanity in kept, "reason_if_not": reasons.get(sanity)},
               "kinds": _count(t["kind"] for t, _ in pool), "sizes": _count(str(t["size"]) for t, _ in pool),
-              "vet": vstat}
+              "vet": vstat,
+              "rewritten": sorted(rw_done), "rewrites_stale": rw_stale,
+              "rewrites_unused": sorted(set(rewrites) - set(rw_done) - set(rw_stale))}
     bc = base_contains(pool, repo)
     report["base_contains"] = bc
     report["base_contains_pairs"] = sum(len(v) for v in bc.values())
@@ -956,6 +975,51 @@ def load_pool_exclusions(path=None) -> dict:
             raise ArenaError("%s: %s excluded twice" % (fp, r["item"]))
         out[r["item"]] = r["reason"] + ((" [" + r["ruling"] + "]") if r.get("ruling") else "")
     return out
+
+
+PROMPT_REWRITES = HERE / "prompt_rewrites.json"
+PROMPT_REWRITES_SCHEMA = "arena_prompt_rewrites/1"
+_RW_FIELDS = ("item", "fix_sha", "base_prompt_sha256", "prompt", "criteria", "reason", "judge")
+
+
+def load_prompt_rewrites(path=None) -> dict:
+    """{source item: row} from the committed bank-repair file ({"schema": PROMPT_REWRITES_SCHEMA, "rewrite":
+    [{item, fix_sha, base_prompt_sha256, prompt, criteria, reason, judge, ruling?}]}). Absent file: {}. A malformed
+    file raises ArenaError (never a silent empty): every field a non-blank string, the sha256 64 hex, the fix sha
+    40 hex, no item twice."""
+    fp = Path(path) if path else PROMPT_REWRITES
+    if not fp.exists():
+        return {}
+    doc = _loads(fp.read_bytes(), str(fp))
+    rows = doc.get("rewrite") if isinstance(doc, dict) else None
+    if not (isinstance(doc, dict) and doc.get("schema") == PROMPT_REWRITES_SCHEMA and isinstance(rows, list)):
+        raise ArenaError("%s: not an %s document" % (fp, PROMPT_REWRITES_SCHEMA))
+    out = {}
+    for r in rows:
+        ok = isinstance(r, dict) and all(isinstance(r.get(k), str) and r[k].strip() for k in _RW_FIELDS)
+        if ok:
+            ok = (re.fullmatch(r"[0-9a-f]{64}", r["base_prompt_sha256"]) is not None
+                  and re.fullmatch(r"[0-9a-f]{40}", r["fix_sha"]) is not None)
+        if not ok:
+            raise ArenaError("%s: every rewrite needs %s (fix_sha 40 hex, base_prompt_sha256 64 hex): %r"
+                             % (fp, ", ".join(_RW_FIELDS), r if not isinstance(r, dict) else r.get("item")))
+        if r["item"] in out:
+            raise ArenaError("%s: %s rewritten twice" % (fp, r["item"]))
+        out[r["item"]] = r
+    return out
+
+
+def apply_prompt_rewrite(task: dict, row: dict, fix: str) -> str | None:
+    """Replace task's prompt and criteria with the rewrite row, in place -> None; or leave the task untouched and
+    return why the row is stale (the base_parent prompt or the fix sha it was judged against has changed)."""
+    have = hashlib.sha256(task["prompt"].encode("utf-8")).hexdigest()
+    if have != row["base_prompt_sha256"]:
+        return "base prompt sha256 %s, rewrite judged against %s" % (have[:12], row["base_prompt_sha256"][:12])
+    if fix != row["fix_sha"]:
+        return "fix sha %s, rewrite judged against %s" % (fix[:10], row["fix_sha"][:10])
+    task.update(prompt=row["prompt"], criteria=row["criteria"], prompt_source="bank_repair",
+                criteria_source="bank repair rewrite (prompt_rewrites.json)", prompt_base_sha256=have)
+    return None
 
 
 def _descendants(iid, children, depth=REWORK_DEPTH):

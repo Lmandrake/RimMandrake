@@ -1,0 +1,86 @@
+{
+ "schema": "arena_prompt_rewrites/1",
+ "about": "ARENA_BANK_REPAIR_THIN_PROMPTS_RESCUABLE: bug-report rewrites of thin task texts, read by arena_tasks.census. Hidden checks are untouched. A row applies only while base_prompt_sha256 and fix_sha match.",
+ "rewrite": [
+  {
+   "item": "SMOGMOTH_FIX_EMPTY_GLOWER_WHITE",
+   "fix_sha": "0304bf084e532efe817c2c2d4134ff2493facab6",
+   "base_prompt_sha256": "811d3e21da9f5f2ab279caea3e656662c05928c728a9e1edfc56ccc601e5d274",
+   "prompt": "RSW_SmogMoth lights up like a floodlight\n\nThe smog moth's description says it glows faintly, but in game it is brighter than a standing lamp. Its CompProperties_Glower in SWBestiary (Defs/BiomesTeamPort/ThingDefs_Races/RSW_BiomesTeamPort_Races.xml, around line 6370) is empty, so the engine fills in its defaults: glow radius 14 and colour 369/369/369, about 1.45x white.\n\nRSW_Glowtail, in the same file, has a smaller version of the same problem: its glower sets a radius but no colour, so it also shines 1.45x white.\n\nRepro: TheRot already has a rule for this. glower_findings() in src/RimMandrake/TheRot/Tools/selftest_rot_glowers.py flags any glower that is missing glowRadius or glowColor. Run it over SWBestiary's defs and both creatures are reported.\n\nExpected: all of SWBestiary's glower comps state their own glowRadius and glowColor. The smog moth should get a small, faint glow in a colour that suits it, and the glowtail should get a colour. defNames stay as they are.",
+   "criteria": "All glower comps (CompProperties_Glower) in src/RimStarWars/SWBestiary/Defs set both glowRadius and glowColor, so TheRot's glower_findings() reports nothing there. RSW_SmogMoth's glow is small and faint; RSW_Glowtail has a colour. No defName changes.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  },
+  {
+   "item": "LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT",
+   "fix_sha": "b834c85b8915c97b744a74b6af38bcc13e65a98c",
+   "base_prompt_sha256": "6b5163ef150d66d8253e15cb4541468c1bb4770e75c5b377e81ba3960e4f9636",
+   "prompt": "launch_ready: an exception inside run() loses the verdict, the receipt and the steps already taken\n\nsrc/RimMandrake/bridgetools/launch_ready.py run() reports every outcome as a verdict (READY, KILL_FAILED, LAUNCH_NO_PROCESS and so on) and exit_code() maps it to the process exit code. But if anything inside run() raises, for example a powershell or taskkill call that hangs and raises subprocess.TimeoutExpired after the game was launched, the exception escapes as a traceback. There is no verdict line and no receipt, and the record of what was already done (a kill, a launch) is lost, so the caller cannot tell whether a game is now running.\n\nRepro: in the selftest's fake environment, make the process listing raise subprocess.TimeoutExpired once the launch has happened, then call run(). It raises instead of returning a result.\n\nExpected: run() never raises. Any exception becomes a new verdict, LAUNCHER_ERROR, returned like the other verdicts. Its why text names the exception and lists the steps taken so far (so a run that got as far as the launch says \"launched\"). exit_code() for it is 1, an ordinary failure. It is never READY and is not retried, since the game may be up.",
+   "criteria": "When anything inside launch_ready.run() raises (including subprocess.TimeoutExpired after the launch), run() returns a result with verdict LAUNCHER_ERROR instead of raising; its why names the exception and lists the steps already taken (e.g. \"launched\"); exit_code() returns 1 for it.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  },
+  {
+   "item": "ENACT_STALE_KEY_FIX_UNREVIEWED",
+   "fix_sha": "47455d544ebd1602a0c636a50006685e9e0ad4e4",
+   "base_prompt_sha256": "88d705c0fdb35e3918a6c7409dc76e1ce0c128839881d9c3bf26536b33ab3358",
+   "prompt": "enact: rows clicked on an older sheet build get installed unverified when a catch row comes first\n\nart/enact.py build_plan(decisions, holds, ..., stale=...) takes a stale argument: rows whose letters were clicked before the sheet's columns were rebuilt. Each such row should never be installed; it should appear in the plan's conflicts as \"<row>: letter(s) <letters> were clicked before the sheet's columns were rebuilt ...\" so the owner re-confirms it on the current sheet.\n\nThat works on its own, but not when the decisions file also has a catch row (a row like RM_XCatch, the catch item of creature RM_X) marked redo, placed before the stale row. Then the stale row is installed as if it had been verified, with no conflict.\n\nRepro: take a decisions document that build_plan handles correctly with stale={\"RM_Foo\": [\"B\"]} (RM_Foo is reported as a conflict). Add a decision {\"decision\": \"redo\"} for a catch row such as RM_RedoCatch ahead of the existing decisions and call build_plan again with the same stale argument. RM_Foo now shows up in the plan's install list and no longer in conflicts.\n\nExpected: a stale row is always a conflict and never installed, whatever other rows the decisions file holds and in whatever order.",
+   "criteria": "build_plan(..., stale={row: letters}) reports every stale row as a \"<row>: letter(s) ...\" conflict and never installs it, also when a catch row marked redo comes before it in the decisions file.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  },
+  {
+   "item": "FAUNA_SPEC_SWIMMER_FIX_WALKER_MODULE",
+   "fix_sha": "ee3d8dc9a0a922389d5372a0e255b031e8164079",
+   "base_prompt_sha256": "bf994398cdfff2b69b015b785bdd5ce5564a60876a5eabf62e12340c0ed992a7",
+   "prompt": "fauna_spec gives swimmers the walker judge module\n\nsrc/RimMandrake/Utils/art_eval/fauna_spec.py build_spec() sets the spec's module to \"flyer\" or \"walker\" only (around line 119). A swimming creature therefore gets the walker module, and the creature template's swimmer module text never reaches the art judge. The facing-fix specs work around this by setting module \"swimmer\" by hand.\n\nExpected: build_spec() picks the module with one rule, also available on its own as a public function in fauna_spec:\n\n    module_of(flyer, thing, kind_elems, brief_plan) -> \"flyer\" | \"swimmer\" | \"walker\"\n\nwhere flyer is the flight flag build_spec already computes, thing is the creature's ThingDef element, kind_elems is the list of its PawnKindDef elements, and brief_plan is the body_plan from the creature's departures brief (None if it has no brief). The rule:\n- a flyer is always \"flyer\";\n- otherwise a brief body_plan of \"swimmer\" makes it \"swimmer\" (some pool fish carry no swimming marker in their defs at all);\n- otherwise it is \"swimmer\" when the race has <waterSeeker>true</waterSeeker> AND one of its PawnKindDef lifeStages has a <swimmingGraphicData>;\n- everything else is \"walker\". waterSeeker on its own is not enough: some hoofed waders carry it.",
+   "criteria": "build_spec() gives a creature with race waterSeeker true plus a lifeStage swimmingGraphicData the module \"swimmer\", and a waterSeeker-only wader or a land creature \"walker\". fauna_spec.module_of(flyer, thing, kind_elems, brief_plan) returns \"swimmer\" for brief_plan \"swimmer\" even on a bare ThingDef, and \"flyer\" whenever flyer is true.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  },
+  {
+   "item": "RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE",
+   "fix_sha": "16b2d0f2b0f379cdd497cc42eb7baca5dadfc03b",
+   "base_prompt_sha256": "380775aa86fa5e570fe009da372c396121eaadff69bbedc6165d887f0a49a2c5",
+   "prompt": "FlowWorks sweep: toggle_river_steam still runs without a river\n\nIn src/RimMandrake/FlowWorks/validation.py the river chains (works, current, swept, placer, taken_by_land) already run on the river test site: suite.live_drivers has a chain-stage river_site driver listing them, and the first river chain settles that site. toggle_river_steam was left out (a comment says it needs a Pyrelands tile), so in the sweep it still runs on the default AridShrubland map and its rows read UNMEASURED 'no river'.\n\nPart of that chain does not need Pyrelands at all: its biome-gate half (river cells, no vent) can be measured on the river site. Only its ON/OFF half needs a Pyrelands map, and that half can stay UNMEASURED and say so.\n\nExpected: toggle_river_steam is one of the chains the river_site live driver lists, so it runs on the river site like the other river chains. Settling the river site replaces the current map for every chain that runs after it, and toggle_river_steam is registered (by the extension suite) ahead of the other river chains, so it must also move: in suite.chains it has to run after every chain that is not a river-site chain. It must stay registered.",
+   "criteria": "toggle_river_steam is listed in the chains of the chain-stage river_site entry of suite.live_drivers, is still registered in suite.chains, and comes after every non-river-site chain in suite.chains.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  },
+  {
+   "item": "ASTEROIDQUEST_FIX_PLASTEEL_PICK_NO_COUNT",
+   "fix_sha": "4b43450dfadc5c7fa46c7bdbc6a210f94ba6a336",
+   "base_prompt_sha256": "5cdb3e9a0546b1584504de2e130e5609db6fc99925f9a3d3a5a9d645f1af8ddb",
+   "prompt": "'Plasteel asteroid' quest site has no ore and logs 'No count found for resource'\n\nOur patch RSW_OdysseyAsteroidNoPlasteel.xml (Armoury) exists so that no Odyssey def places plasteel or industrial components from rock: it removes MineablePlasteel from the mineableCounts of GenStepDef Asteroid, along with the other plasteel and components entries. But Odyssey's quest OpportunitySite_Asteroid, in Script_SpaceSites.xml around line 47, still lists MineablePlasteel among the mineables its QuestNode_Root_Asteroid can pick. Its AsteroidMiningSite uses mapGenerator Asteroid, so when the quest picks plasteel, GenStep_Asteroid.SpawnOres finds no count for it, logs 'No count found for resource', and the 'plasteel asteroid' has no ore at all.\n\nRepro: apply the patch's Remove operations to the Odyssey Defs and compare the quest's mineables list with the mineableCounts left in GenStepDef Asteroid: MineablePlasteel is picked but has no count, and it is the one plasteel reference left in Odyssey's defs.\n\nExpected: keep the patch's intent (no plasteel or industrial components from rock anywhere in Odyssey) rather than putting the count back. After the patch, no Odyssey def mentions MineablePlasteel or MineableComponentsIndustrial, and every resource the asteroid quest can pick has a count in GenStepDef Asteroid. The patch file stays a list of PatchOperationRemove operations.",
+   "criteria": "With RSW_OdysseyAsteroidNoPlasteel.xml applied, no Odyssey def references MineablePlasteel or MineableComponentsIndustrial, every OpportunitySite_Asteroid mineables pick has a mineableCounts entry in GenStepDef Asteroid, and the patch contains only PatchOperationRemove operations.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  },
+  {
+   "item": "CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER",
+   "fix_sha": "bbb4942f547945268340514009e17f6e083588a4",
+   "base_prompt_sha256": "25a9939181c98802ef2abc2fae462099be5cff68861447957b8d5cb0f64dc0e3",
+   "prompt": "Cathedral pass revoke message gives away the reveal\n\nWhen Patch_CathedralPassRetaliation (src/RimUtinni/CathedralPass/Source/Patch_CathedralPassHostility.cs) revokes a pawn's pass it shows 'The Cathedral's machines no longer know X.' That breaks the arc's knowledge gate: before the reveal the player must not be told that machines are involved, or that anything knows, recognises, spares, forgives or decides about the pawn. The message has to describe only what the player can see, in the same behaviour register as the RUT_CathedralPass hediff text (design-judge verdict infrastructure/state/delegated/2026-10-26/DESIGNJUDGE_VERIFY_SHIELD_AND_PASS.json).\n\nExpected: the revoke message reads exactly 'The old sentinels no longer look away from X.' (X is the pawn, as now). No message in that patch may mention the cathedral, machines or droids, knowing, recognition, mercy, sparing, forgiving or deciding.",
+   "criteria": "Patch_CathedralPassRetaliation's revoke Messages.Message text is exactly 'The old sentinels no longer look away from X.' with the pawn as X, and no Messages.Message in that file mentions the cathedral, machines or droids, knowing, recognition, mercy, sparing, forgiving or deciding.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  },
+  {
+   "item": "TRANSIENT_PIN_FIX_STALE_TRAILER",
+   "fix_sha": "cdaa2ed6c2dfc4bb8282d05fd6bbad76f177e912",
+   "base_prompt_sha256": "5e698c85290ff6bae6ccd8d98f77edb4ec6c8aae8d2b457b76430668eb169aab",
+   "prompt": "transient_pin and facing_regen_batch commits all claim one old agent session\n\nsrc/RimMandrake/Utils/transient_pin.py (its TRAILER constant) and src/RimMandrake/Utils/art/facing_regen_batch.py (the message publish() passes to ./publish) both hardcode a Co-Authored-By model line and a fixed Claude-Session URL. Every commit these scripts make is therefore attributed to one old session that did not make it. conversations_land had the same defect and was fixed in 8c596df688.\n\nExpected: neither script writes a Co-Authored-By or Claude-Session line. Instead the commit says which script made it: transient_pin.TRAILER stays the trailer the script appends but names the script file (transient_pin.py), and the commit message facing_regen_batch.publish() hands to ./publish names facing_regen_batch.py.",
+   "criteria": "transient_pin.TRAILER contains neither Co-Authored-By nor Claude-Session and contains transient_pin.py; the -m message facing_regen_batch.publish() passes to ./publish contains neither and contains facing_regen_batch.py.",
+   "reason": "thin base_parent text did not state what the hidden checks need (verify_reader audit, lever R)",
+   "judge": "independent GPT judge PASS round 1 (bank_repair/judge_a_r1.txt): no leak beyond what the checks require; fairly specifies them",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+  }
+ ]
+}

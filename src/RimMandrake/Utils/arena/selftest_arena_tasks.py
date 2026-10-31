@@ -18,6 +18,7 @@ Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES point there). The real-l
 """
 # selftest-timeout: 480   (t_real_ledger runs the real census, ~3 min cold; a warm run reads its keyed cache)
 import base64
+import hashlib
 import json
 import os
 import re
@@ -515,6 +516,7 @@ def t_match():
         hit = m.hits(raw)
         check(not hit or name == "a shorter sha prefix", "matcher stays quiet on %s (%s)" % (name, hit))
     check(not m.hits(b"012345 abcdef"), "a 6-hex run is not a sha hit")
+    check(bool(m.hits(b"commit 0123456 x")), "a 7-char fix-sha prefix is a sha hit")
     ms = A.Matcher([{"task": "RP_S", "checks": [{"path": "t/selftest_s.py", "added": False,
                                                  "body": "assert f() == 2\n", "novel": ["assert f() == 2\n"]}]}])
     check(bool(ms.hits(b"x = 1\nASSERT  f() == 2\n")) and not ms.hits(b"assert f() == 3"),
@@ -1065,6 +1067,33 @@ def t_round3(tmp, repo, old, s, pool):
     pool2, _ = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet)
     check(all(t["prompt_source"] == "base_parent" and isinstance(t["prompt_may_hold_hints"], bool) for t, _ in pool2),
           "every census task records prompt_source base_parent and a boolean hints flag")
+    # bank-repair rewrites (ARENA_BANK_REPAIR_THIN_PROMPTS_RESCUABLE): census applies a matching row, reports a stale
+    # one and leaves its task alone, and a rewrite naming the task's own hidden check is rejected by the leak scan
+    t0, h0 = next((t, h) for t, h in pool2 if t["source_item"] == "FIXTURE_GOOD_FIX_ONE")
+    row = {"item": t0["source_item"], "fix_sha": h0["fix_sha"], "reason": "r", "judge": "j",
+           "base_prompt_sha256": hashlib.sha256(t0["prompt"].encode("utf-8")).hexdigest(),
+           "prompt": "Bug report: the fixture misbehaves.", "criteria": "It behaves."}
+    pool3, rep3 = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet,
+                           rewrites={row["item"]: row, "NOT_IN_POOL": dict(row, item="NOT_IN_POOL")})
+    t3 = next(t for t, _ in pool3 if t["source_item"] == row["item"])
+    check(t3["prompt"] == row["prompt"] and t3["criteria"] == row["criteria"] and t3["prompt_source"] == "bank_repair"
+          and rep3["rewritten"] == [row["item"]] and rep3["rewrites_unused"] == ["NOT_IN_POOL"],
+          "census applies a matching rewrite and reports the unused row (%s)" % {k: rep3[k] for k in ("rewritten", "rewrites_unused")})
+    check(all(t["prompt_source"] == "base_parent" for t, _ in pool3 if t["source_item"] != row["item"]),
+          "a rewrite touches only its own task")
+    pool4, rep4 = A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet,
+                           rewrites={row["item"]: dict(row, base_prompt_sha256="0" * 64)})
+    check(row["item"] in rep4["rewrites_stale"] and not rep4["rewritten"]
+          and next(t for t, _ in pool4 if t["source_item"] == row["item"]) == t0,
+          "a stale rewrite is reported, not applied, and its task is byte-for-byte the unrewritten one")
+    try:        # the rewritten task is the sanity item, so its leak rejection surfaces as SanityFail naming the leak
+        A.census(ledger(s), repo=repo, sanity="FIXTURE_GOOD_FIX_ONE", old_history=old, vet=stub_vet,
+                 rewrites={row["item"]: dict(row, prompt=row["prompt"] + " Fixed in " + h0["fix_sha"][:10])})
+        leak_why = None
+    except A.SanityFail as e:
+        leak_why = str(e)
+    check(bool(leak_why) and "own hidden check" in leak_why,
+          "a rewrite naming its own hidden check is rejected by the census leak scan (%s)" % (leak_why or "KEPT")[:120])
     # hints: prose gains a line after the claim
     r = tmp / "hintrepo"
     r.mkdir()
@@ -1608,8 +1637,23 @@ def _real_census_summary():
     head = subprocess.run(["git", "-C", str(A.REPO), "rev-parse", "HEAD"], capture_output=True, text=True,
                           timeout=60).stdout
     h = hashlib.sha256(json.dumps(events, sort_keys=True, default=str).encode())
-    for b in (refs, head, json.dumps(A.load_pool_exclusions(), sort_keys=True), str(A.arena_root())):
+    for b in (refs, head, json.dumps(A.load_pool_exclusions(), sort_keys=True), str(A.arena_root()),
+              json.dumps(A.load_prompt_rewrites(), sort_keys=True)):
         h.update(b"\0" + b.encode())
+    for r in A.old_history_repos():   # the old histories it resolves in, and every ref of each (ARENA_OLD_HISTORY too)
+        orefs = subprocess.run(["git", "--git-dir", str(r), "for-each-ref", "--format=%(objectname) %(refname)"],
+                               capture_output=True, text=True, timeout=120).stdout
+        for b in (str(r), orefs):
+            h.update(b"\0" + b.encode())
+    # a commit the census resolves may live only as an unreachable object: hash the presence of every sha-like name
+    # the ledger events carry (the pre-remap shas they close on) and every rewrite fix sha, in every git dir it reads
+    names = set(re.findall(r"\b[0-9a-f]{7,40}\b", json.dumps(events, sort_keys=True, default=str)))
+    names |= {x["fix_sha"] for x in A.load_prompt_rewrites().values()}
+    want = "".join(n + "\n" for n in sorted(names))
+    for r in [A.REPO / ".git"] + list(A.old_history_repos()):   # prune one of them and the key moves
+        have = subprocess.run(["git", "--git-dir", str(r), "cat-file", "--batch-check"], input=want,
+                              capture_output=True, text=True, timeout=120).stdout
+        h.update(b"\0" + have.encode())
     for f in (A.__file__, A.model.__file__):
         h.update(b"\0" + Path(f).read_bytes())
     key = h.hexdigest()
@@ -1625,6 +1669,7 @@ def _real_census_summary():
     sh = hs.get(A.SANITY_ITEM) or {}
     summ = {"found": bool(rep["sanity"]["found"]), "pool": rep["pool"], "labels": rep["labels"],
             "live": sorted({t["live"] for t, _ in pool}), "items": sorted(hs),
+            "rewritten": rep["rewritten"], "rewrites_stale": rep["rewrites_stale"],
             "sanity": {"fix_sha": sh.get("fix_sha"), "label": sh.get("label"),
                        "checks": [c.get("path") for c in sh.get("checks") or []]}}
     try:
@@ -1653,6 +1698,12 @@ def t_real_ledger():
     check(len(ex) >= 4 and set(ex) <= got,
           "real ledger: every committed pool exclusion names a real census-pool item (else it excludes nothing) %s"
           % sorted(set(ex) - got))
+    rw = A.load_prompt_rewrites()
+    check(set(summ.get("rewritten") or ()) == set(rw) and not summ.get("rewrites_stale"),
+          "real ledger: every committed prompt rewrite applies to its census task (rewritten %d of %d; stale %s)"
+          % (len(summ.get("rewritten") or ()), len(rw), summ.get("rewrites_stale")))
+    check(set(rw) <= got, "real ledger: every rewritten task survives the leak scan and chain dedup into the pool %s"
+          % sorted(set(rw) - got))
 
 
 def main():
