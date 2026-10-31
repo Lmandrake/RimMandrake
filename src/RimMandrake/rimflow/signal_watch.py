@@ -139,17 +139,23 @@ def step(sch, st, obs, now, act, iso, ts):
         act(do="alarm", kind="signal:" + name, note=True, conductor_log=True, why="signal watch blind: " + why,
             raise_first="A signal watch is blind.")
 
-    reading = so["units"]()
+    def read(name):           # a reader that raises is a reader with no reading
+        try:
+            return so[name]()
+        except Exception:  # noqa: BLE001
+            return None
+
+    reading = read("units")
     if reading is None:
         blind("units", "systemctl gave no reading, failed units unseen this pass")
     else:
         guarded("units", lambda: _units_step(cfg, S, reading, now, act, iso))
-    alarms = so["alarms"]()
+    alarms = read("alarms")
     if not isinstance(alarms, dict):
         blind("alarms", "alarms.json unreadable, unfiled alarms unseen this pass")
     else:
         guarded("alarms", lambda: _files_step(cfg, alarms, act))
-    flags = so["flags"]()
+    flags = read("flags")
     at = ts(flags.get("at")) if isinstance(flags, dict) else None
     if at is None or now - at > cfg["flags_stale_s"]:      # a frozen snapshot is no standing flag
         blind("flags", "flags.json unreadable or stale (written %s)" % (iso(at) if at is not None else "unknown"))

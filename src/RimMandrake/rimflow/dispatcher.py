@@ -471,7 +471,9 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss.pop("ring")
                     ss["attempt"] = 0
                     ss["last_verified"] = now
-                    ss.pop("nh_streak", None)        # a hand-off ends the no-hand-off streak
+                    ss.pop("nh_streak", None)        # a hand-off ends the no-hand-off streak and any give-up's wait
+                    ss.pop("cooldown_until", None)
+                    ss.pop("nh_until", None)
                     ss.pop("nh_tickets", None)
                 elif now - pend["rung_at"] >= sch["handoff_s"]:
                     # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: this used to wait the full cooldown_s (3600) before the
@@ -1266,9 +1268,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                         notes += ok
                         a["ledger"] = "noted" if ok else "note failed: " + out
             if stamped:      # a stamp means somebody was told: an alarm no destination took is retried next tick
-                no_note = str(a.get("ledger", "")).startswith(("note failed", "not noted"))
-                no_log = a.get("conductor_log") and str(res).startswith("error:")
-                if (no_note or no_log) and (no_note or not a.get("note")) and (no_log or not a.get("conductor_log")):
+                told = a.get("ledger") == "noted" or (a.get("conductor_log") and str(res).startswith("conductor log appended"))
+                if not told and (a.get("ledger") or a.get("conductor_log")):
                     st["alarms"].pop(a["kind"], None) if last is None else st["alarms"].update({a["kind"]: last})
             a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
             journal(root, dict(a, message=None, pending=None) if a.get("message") or a.get("pending") else a)

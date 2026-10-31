@@ -308,6 +308,14 @@ def test_kill_execute_and_dry():
     check(calls == [] and state(st) == "failed", "sessions/<pid>.json names another session -> no kill (%s)" % res)
     st = fresh()
     a = [x for x in to_claim(sch, st, obs(request=req())) if x["do"] == "restart_kill"][0]
+    reads = iter(["sid-old"])
+    swap = dict(fx, session_file=lambda pid: {"pid": pid, "sessionId": next(reads, "sid-swapped"), "name": "AGENT FOUNDRY",
+                                              "status": "idle"})
+    SR.execute(a, sch, st, True, T0 + 200, swap)
+    check(("kill", 4242) not in calls, "a session swapped under the pid at the final fence is not killed")
+    calls.clear()
+    st = fresh()
+    a = [x for x in to_claim(sch, st, obs(request=req())) if x["do"] == "restart_kill"][0]
     res = SR.execute(a, sch, st, True, T0 + 200, fx)
     check(("kill", 4242) in calls and state(st) == "killed", "apply: the confirmed pid is killed (%s)" % res)
     rec = [c for c in calls if c[0] == "killed"][0][2]
@@ -340,6 +348,15 @@ def test_verify_and_rearm():
     a = run(sch, st, obs(sessions=[sess(sid="sid-new", pid=5555)], armed=None), T0 + 230 + SR.DEFAULTS["arm_s"] + 1)
     check(state(st) == "failed" and any(x["do"] == "alarm" for x in a),
           "never re-armed within arm_s -> failed + alarm (%s)" % dos(a))
+    new = {"session_id": "sid-new", "pid": 5555}
+    for name, o in (("is gone", obs(sessions=[], armed=new)),
+                    ("died on an API error", obs(sessions=[sess(sid="sid-new", pid=5555)], armed=new, tx={"api_end": True}))):
+        st = killed_state(fresh())
+        run(sch, st, obs(sessions=[sess(sid="sid-new", pid=5555)]), T0 + 230)
+        run(sch, st, o, T0 + 260)
+        check(state(st) == "relaunched", "armed but %s: not verified" % name)
+        a = run(sch, st, o, T0 + 230 + SR.DEFAULTS["arm_s"] + 1)
+        check(state(st) == "failed" and name in str(a), "armed but %s -> failed, and says so (%s)" % (name, dos(a)))
 
 
 def test_fallback_and_fail():

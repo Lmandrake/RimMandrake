@@ -274,6 +274,8 @@ def test_alarm_delivery_and_lock():
     base = {"lock": lambda: None, "publish": lambda n: "p", "note": lambda i, t: (True, "")}
     D.execute(alarm(), sch, st, root, True, 1.0, dict(base, conductor_log=boom))
     check("k" not in st["alarms"], "neither destination took it: no stamp, retried next tick")
+    D.execute(alarm(), sch, st, root, True, 1.5, dict(base, note=boom, conductor_log=lambda *x: "conductor log off"))
+    check("k" not in st["alarms"], "a log switched off is no delivery")
     D.execute(alarm(), sch, st, root, True, 2.0, dict(base, conductor_log=lambda *x: "conductor log appended: p"))
     check(st["alarms"].get("k") == 2.0, "the log took it, the ledger did not: stamped")
     st["alarms"]["k"] = 2.0
@@ -364,6 +366,7 @@ def test_no_handoff_rering_and_escalation():
     lease = {"event": "lease", "action": "take", "id": "SOME_ITEM_DO_IT", "ts": D.iso(p["rung_at"] + 30)}
     a = D.decide(sch, st, obs(consumed={"consumed_at": 1.0}, events=[lease]), p["rung_at"] + 120, True)
     check(kinds(a) == ["verified"] and "nh_streak" not in st["seats"]["FOUNDRY"], "a verified hand-off ends the streak")
+    check("cooldown_until" not in st["seats"]["FOUNDRY"], "a verified hand-off ends a give-up's wait")
     st3 = {"seats": {"FOUNDRY": {"nh_streak": 5, "idle_since": 0.0}}, "wakes": [], "recovers": [], "alarms": {}}
     D.decide(sch, st3, obs(ticket={}), 9000.0, True)
     check("nh_streak" not in st3["seats"]["FOUNDRY"], "an empty queue ends the streak (no work waiting)")

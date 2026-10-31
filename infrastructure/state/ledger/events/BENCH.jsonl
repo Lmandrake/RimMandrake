@@ -8404,3 +8404,4 @@
 {"seat":"BENCH","event":"close","id":"PUBLISH_FAILURES_FIX_AUTO_RETRY","sha":"f9bef4aafe67","ts":"2026-10-31T15:47:11Z","tsn":1793461631683548330}
 {"seat":"BENCH","event":"close","id":"TICK_UNRESERVED_FIX_SILENT_ALARM","sha":"f9bef4aafe67","ts":"2026-10-31T15:47:13Z","tsn":1793461633537034736}
 {"seat":"BENCH","event":"close","id":"RATE_LIMIT_FIX_STRANDED_WINDOWS","sha":"f9bef4aafe67","ts":"2026-10-31T15:47:15Z","tsn":1793461635449764020}
+{"seat":"BENCH","event":"drop","id":"SEAT_RESTART_FIX_WORK_READ_WRONG_CLONE","reason":"Not a supported configuration: seats run in their configured clone and relaunch uses it.","ts":"2026-10-31T15:47:24Z","tsn":1793461644507333068}

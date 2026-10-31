@@ -79,6 +79,15 @@ def test_recovery_keeps_the_limit():
     assert kinds.count("unit_repair") == 2 and "alarm" in kinds, kinds
 
 
+def test_a_raising_reader_costs_only_itself():
+    def boom():
+        raise OSError("x")
+    acts = []
+    so = {"units": boom, "alarms": lambda: {}, "flags": boom}
+    SW.step(SCH, {}, {"paused": None, "signals": so}, T0, lambda **a: acts.append(a), str, ts)
+    assert [a["kind"] for a in acts] == ["signal:units", "signal:flags"], acts
+
+
 def test_give_back_and_repair():
     _, st = run(["a.scope"])
     SW.give_back(st, {"unit": "a.scope"})

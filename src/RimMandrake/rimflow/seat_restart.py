@@ -864,14 +864,18 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         return
     if state == "relaunched":
         armed = ro["armed"](seat) or {}
-        if armed.get("session_id") and armed.get("session_id") == rs.get("new_session"):
+        mine = [s for s in named if s.get("sessionId") == rs.get("new_session")]     # armed, and still alive after it
+        tx = ro["tx"](seat, mine[0]) if mine else None
+        if armed.get("session_id") and armed.get("session_id") == rs.get("new_session") and mine \
+                and not (tx or {}).get("api_end"):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
             act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=True,
                 evidence="fresh %s window %s (pid %s), doorbell armed at %s" % (
                     seat, rs["new_session"], rs.get("new_pid"), armed.get("armed_at")))
         elif now - rs["relaunched_at"] >= cfg["arm_s"]:
-            _fail(rs, seat, "rearm", "the new window %s never armed its doorbell in %d s" % (
-                rs.get("new_session"), cfg["arm_s"]), now, act)
+            _fail(rs, seat, "rearm", "the new window %s %s in %d s" % (rs.get("new_session"), (
+                "died on an API error" if (tx or {}).get("api_end") else "is gone" if not mine
+                else "never armed its doorbell"), cfg["arm_s"]), now, act)
 
 
 def cursor_verdict(cfg, rs, sc, now, track=True):
@@ -1198,6 +1202,8 @@ def execute(a, sch, st, apply, now, fx=None):
         sf2 = fx.get("session_file", session_file)(a["pid"]) or {}
         if sf2.get("status") != "idle":
             late = ["the window's status is %s at the fence" % sf2.get("status")]
+        elif sf2.get("sessionId") != sf.get("sessionId"):      # /clear or /resume under the same pid: not the one asked for
+            late = ["the window now runs session %s at the fence" % sf2.get("sessionId")]
     if late:
         fx.get("write_killed", write_killed)(seat, dict(rec, aborted="final fence: " + "; ".join(late)))
         rs.update(state="pending", busy=rs.get("busy", 0) + 1)
