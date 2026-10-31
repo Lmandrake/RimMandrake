@@ -391,11 +391,13 @@ def t_guess(tmp):
     out = batch("leaky", masked=False)
     rep = json.loads(out.read_text())
     check(out.is_file() and rep["blinding"] == "LEAKY" and rep["pooled"]["correct"] == 20,
-          "forced: report from a map-reading judge is produced and says LEAKY (%s)" % out.name)
+          "forced: report from a map-reading judge is produced and says LEAKY (%s; blinding=%s pooled=%s)"
+          % (out.name, rep.get("blinding"), {k: rep["pooled"].get(k) for k in ("guesses", "correct")}))
     out = batch("blind", masked=True)
     rep = json.loads(out.read_text())
     check(rep["blinding"] == "not shown leaky" and rep["pooled"]["guesses"] == 20 and rep["pooled"]["correct"] == 0,
-          "report from sandboxed judges: 0/20 correct, not shown leaky")
+          "report from sandboxed judges: 0/20 correct, not shown leaky (blinding=%s pooled=%s)"
+          % (rep.get("blinding"), {k: rep["pooled"].get(k) for k in ("guesses", "correct")}))
     check(set(rep["per_judge"]) == {"opus", "gpt"}, "report has a row per judge")
 
 

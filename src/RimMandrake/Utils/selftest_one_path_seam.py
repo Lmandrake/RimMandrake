@@ -54,6 +54,12 @@ EXEMPT = {
         "after a bad Player.log path cost a seat the hunt twice: the point is that "
         "the error you get is the true one (connection refused) rather than "
         "'is RimWorld up?'.",
+    "src/RimMandrake/Utils/arena/arena_gate.py":
+        "arena trial harness, frozen for the 2026-10-31 replay: an edit there "
+        "changes gate code mid-trial. Its DUMP_DEFAULT must equal "
+        "game_paths.DUMP_ROOT (validate_patch --live resolves the root to the "
+        "newest capture); t_arena_gate_dump_matches_the_seam enforces that, so "
+        "this is a guard, not a gap. Import from game_paths after the replay.",
     "skills/rimworld-start-prep/scripts/sync_mod_state.py":
         "a skill script, packaged and run on machines with no checkout of this "
         "repo. It cannot import from src/ because src/ may not be there.",
@@ -138,6 +144,17 @@ def t_refresh_does_not_run_a_second_seam():
         % (refresh.D_DUMP, game_paths.DEF_DUMP))
     assert refresh.D_CONFIG == game_paths.MODS_CONFIG, (
         "refresh.D_CONFIG is not the seam's MODS_CONFIG")
+
+
+def t_arena_gate_dump_matches_the_seam():
+    """The arena_gate.py exemption holds only while its literal IS the seam's root."""
+    sys.path.insert(0, os.path.join(ROOT, "src/RimMandrake/Utils"))
+    sys.path.insert(0, os.path.join(ROOT, "src/RimMandrake/Utils/arena"))
+    import game_paths
+    import arena_gate
+    assert os.path.normpath(arena_gate.DUMP_DEFAULT) == os.path.normpath(game_paths.DUMP_ROOT), (
+        "arena_gate.DUMP_DEFAULT %r drifted from game_paths.DUMP_ROOT %r"
+        % (arena_gate.DUMP_DEFAULT, game_paths.DUMP_ROOT))
 
 
 def t_the_skill_locator_is_not_duplicated_inside_src():
