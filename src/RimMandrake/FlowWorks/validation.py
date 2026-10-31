@@ -1695,7 +1695,10 @@ TOGGLES_NOT_ON_FLOOR = ["rainPocketApproxEnabled", "blastsBreakPitCovers", "pitS
                         "sheetOverflowEnabled", "spillFromPumps", "spillFromRain", "spillFromFloods", "spillFromFillIn",
                         "spillFromGravity", "cropsDrownEnabled", "irrigateEnabled", "pawnEffectsEnabled",
                         "putsOutFireEnabled", "otherLiquidsSpillEnabled", "fuelSpillsBurnEnabled",
-                        "ladderNoKeys", "raiderTakeLadders", "breachRepairEnabled", "ladderOverWalls"]
+                        "ladderNoKeys", "raiderTakeLadders", "breachRepairEnabled", "ladderOverWalls",
+                        # SITE_SPEC_WIRE_TOWER_COST_KEY (2026-10-31): the coverage audit found these Scribed bools missing
+                        # from the table (raider fill-line cap, owner ruling 3c4a9ba173; the two water looks); no chain yet
+                        "raiderFillLineFollowsDigCap", "deepWaterTintEnabled", "wetWallBandEnabled"]
 # KNOWN_GOOD_BUILD_SKIP_UNCHANGED_PASS (modcheck/gate.py): what these chains read beyond their code and the game. A chain
 # that shells out or reads files and declares nothing is never skipped by the known-good gate; a declaration must name
 # EVERYTHING the chain reads (it replaces the gate's read scan). The C# SelfTest: the sources it compiles and the runner

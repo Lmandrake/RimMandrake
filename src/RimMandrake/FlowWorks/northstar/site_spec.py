@@ -205,7 +205,8 @@ SETTINGS = {
     # RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP
     "RimMandrake.FlowWorks.RM_RaiderTrenchSettings": {
         "raiderTrenchEnabled": True, "raiderJumpsEnabled": True, "raiderLaddersEnabled": True, "raiderFillEnabled": True,
-        "raiderLadderSpeed": 1.0, "raiderFillSpeed": 0.5, "raiderJumpPackShare": 0.1,
+        "raiderLadderSpeed": 1.0, "raiderFillSpeed": 18.0, "raiderJumpPackShare": 0.1,   # x18: CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP
+        "raiderFillLineFollowsDigCap": True, "raiderFillMaxDepth": 4,   # owner ruling 2026-10-31 (3c4a9ba173): fill only shallow pits
         "raiderShovelShare": 0.25, "sapperShovelShare": 0.5,   # SHOVELS_BUILD_NO_DIGGING_BARE_HANDED (PROVISIONAL)
     },
     # DEEP_WATER_BUILD_SWIM_OR_SINK (numeric defaults are RM_SwimMath consts)
@@ -250,6 +251,11 @@ SETTINGS = {
         "raidLadderCarrierShare": 0.25, "raiderTakeLadders": True, "raiderTakeLadderRadius": 25, "breachRepairEnabled": True,
         "ladderOverWalls": True, "wallLadderSlowFactor": 4.0,
     },
+    # WATER_ART_CANDIDATES_BUILD_WHAT_HE_APPROVED (RM_WaterLooks.cs, scribed from RM_WaterMendSettings.ExposeData under
+    # waterDeepTintEnabled / waterWallBandEnabled). Missing from this table until SITE_SPEC_WIRE_TOWER_COST_KEY's audit
+    "RimMandrake.FlowWorks.RM_WaterLookSettings": {
+        "deepWaterTintEnabled": True, "wetWallBandEnabled": True,
+    },
 }
 SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings": "RimMandrakeFlowWorksMod.cs",
@@ -271,6 +277,7 @@ SETTINGS_SOURCES = {     # type -> C# file (relative to the mod's source folder)
     "RimMandrake.FlowWorks.Pits.RM_DrawbridgeSettings": os.path.join("Pits", "Drawbridge", "RM_DrawbridgeSettings.cs"),
     "RimMandrake.FlowWorks.Sheet.RM_SheetSettings": os.path.join("Sheet", "RM_SheetSettings.cs"),
     "RimMandrake.FlowWorks.RM_LadderParitySettings": os.path.join("Superdeep", "RM_LadderParity.cs"),
+    "RimMandrake.FlowWorks.RM_WaterLookSettings": "RM_WaterLooks.cs",
 }
 # Scribed migration flags the MOD sets itself (hoseSettingsImported goes True on the first load after the hose port): no
 # control, never a player setting, never on the toggle floor, never compared to a shipped default.
@@ -278,6 +285,16 @@ INTERNAL_FLAGS = ("hoseSettingsImported", "depthEngineLiveForTests")
 # Internal flags that are deliberately NEVER Scribed: depthEngineLiveForTests is the proof harness's live switch
 # (RimMandrakeFlowWorksMod.cs: "never saved, never shown"), so it has no Scribe key by design.
 UNSAVED_FLAGS = ("depthEngineLiveForTests",)
+# Scribed by a settings class but NOT a bool/number, so not a SETTINGS row (the table, settings_equal and the registry are
+# typed bool/float/int): string looks and river colours the harness never flips, plus a migration local read under an old
+# key. selftest_flowworks_northstar's coverage audit (SITE_SPEC_WIRE_TOWER_COST_KEY) skips exactly these and fails on a
+# stale entry, so a new Scribed field must go into SETTINGS or here, on purpose.
+NON_SCALAR_SETTINGS = {
+    "RM_RiverColorsSettings": ("waterColor", "contagionColor", "miasmaColor", "rustCathedralColor", "wastesColor"),   # Color
+    "RM_HoseSettings": ("defaultLook",),             # string, Scribed as hose_defaultLook
+    "RM_MachinerySettings": ("pipeDefaultLook",      # string
+                             "legacy"),              # local: liquidHosesEnabled read once into universalPipesEnabled
+}
 # Mod subclasses whose ModSettings files the run must restore byte-for-byte (plan 3.3).
 MOD_CLASSES = ("RimMandrakeFlowWorksMod", "RiverSteamMod")   # PitsMod retired 2026-10-02
 
