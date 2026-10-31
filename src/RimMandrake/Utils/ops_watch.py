@@ -178,11 +178,7 @@ def c_accounts(now, rules, ctx):
     if not acc:
         return {"accounts._collector": U("account_usage.read_now() returned no account")}
     fit = {"fit": rules["accounts_fit"]}
-    for name, a in sorted(acc.items()):
-        if not isinstance(a, dict):     # one malformed account costs only itself
-            for f in ("week_left_pct", "hours_to_reset", "runway"):
-                out["accounts.%s.%s" % (name, f)] = U("account_usage: malformed account row (%s)" % type(a).__name__)
-            continue
+    def account(name, a):
         src = a.get("source") or "UNMEASURED"
         if a.get("stale"):
             src = "ESTIMATE" if src == "MEASURED" else src
@@ -192,7 +188,7 @@ def c_accounts(now, rules, ctx):
             why = "account_usage: %s" % (a.get("why") or src)
             for f in ("week_left_pct", "hours_to_reset", "runway"):
                 out[k + f] = U(why)
-            continue
+            return
         mk = (lambda v, u, **x: M(v, u, **x)) if src == "MEASURED" else \
             (lambda v, u, **x: E(v, "account_usage reading is an ESTIMATE%s" % (" (stale)" if a.get("stale") else ""), u, **x))
         out[k + "week_left_pct"] = mk(left, "% of the weekly quota left", measured_at=a.get("measured_at"))
@@ -215,6 +211,13 @@ def c_accounts(now, rules, ctx):
         else:
             out[k + "runway"] = E(rw, "rate from %s%s" % (how, "" if src == "MEASURED" else "; the reading is an ESTIMATE"),
                                   "x the time to reset", rate_pct_h=round(rate, 3))
+    for name, a in sorted(acc.items()):
+        try:
+            account(name, a)
+        except Exception as e:  # noqa: BLE001  one malformed account costs only itself
+            for f in ("week_left_pct", "hours_to_reset", "runway"):
+                out["accounts.%s.%s" % (name, f)] = U("account_usage: malformed account row: %s: %s" % (
+                    type(e).__name__, str(e)[:120]))
     return out
 
 
@@ -472,7 +475,8 @@ def c_testing(now, rules, ctx):
                     r = json.loads(line)
                 except ValueError:
                     continue
-                days[r.get("day")] = r          # the last record of each day wins
+                if isinstance(r, dict) and isinstance(r.get("day"), str):
+                    days[r["day"]] = r          # the last record of each day wins
     except OSError:
         days = {}
     lo = time.strftime("%Y-%m-%d", time.localtime(now - 7 * DAY))
@@ -936,7 +940,7 @@ def c_arena(now, rules, ctx):
     out = {"arena.two_live": M(r["value"], "failed-check bitmask (0 = one arm live)", why=r["why"], mode=r.get("mode"))}
     af = AR.alarm_path()
     try:
-        n = AR.alarms_since(af, time.time() - 86400)
+        n = AR.alarms_since(af, now - 86400)
         out["arena.push_refused_24h"] = M(n, "pre-push refusals/crashes alarmed in the last 24 h", file=str(af))
     except OSError as e:
         out["arena.push_refused_24h"] = U("alarm file %s unreadable: %s" % (af, e))
@@ -1042,7 +1046,8 @@ def target_problem(tg):
         return "bad value %r on %s" % (v, tg["key"])
     if not isinstance(tg.get("tag"), str) or not tg["tag"] or ":" in tg["tag"]:
         return "bad tag %r on %s" % (tg.get("tag"), tg["key"])
-    if tg.get("marks") is not None and not isinstance(tg["marks"], list):
+    if tg.get("marks") is not None and not (isinstance(tg["marks"], list) and tg["marks"] and all(
+            m in ("MEASURED", "ESTIMATE") for m in tg["marks"])):
         return "bad marks %r on %s" % (tg["marks"], tg["key"])
     return None
 
@@ -1057,7 +1062,7 @@ def andon(points, hist, last_measured, rules, now):
     flags = []
     b, rn, sl = rules["band"], rules["run"], rules["silent"]
     gone = {k: U("no longer reported by its collector") for k in last_measured if k not in points}
-    for k, p in sorted({**gone, **points}.items()):
+    def one(k, p):
         v = num(p)
         meas = p.get("m") == "MEASURED" and v is not None
         hs = hist.get(k, [])
@@ -1092,6 +1097,12 @@ def andon(points, hist, last_measured, rules, now):
                 flags.append({"rule": "silent", "key": k, "value": None, "window": "silent %.1f h (limit %g h)" % (
                     (now - lm) / HOUR, lim), "detail": "last MEASURED %s; now %s: %s" % (
                     iso(lm), p.get("m"), (p.get("why") or "")[:160])})
+    for k, p in sorted({**gone, **points}.items()):
+        try:
+            one(k, p)
+        except Exception as e:  # noqa: BLE001  a bad band/run/silent rule costs its reading, not the pass
+            flags.append({"rule": "bad_rule", "key": k, "value": None, "window": "now",
+                          "detail": "band/run/silent check failed: %s: %s" % (type(e).__name__, str(e)[:160])})
     for i, tg in enumerate(rules["targets"]):
         why = target_problem(tg)
         if why:
@@ -1130,7 +1141,10 @@ def target_state(points, rules):
                 continue
             aid = "%s:%s" % (tg["tag"], k)
             v = num(p)
-            st[aid] = None if (v is None or p.get("m") not in marks) else bool(_cmp(v, tg["op"], tg["value"]))
+            new = None if (v is None or p.get("m") not in marks) else bool(_cmp(v, tg["op"], tg["value"]))
+            # two targets on one id: a crossing wins, then a hold; the later row never hides an earlier crossing
+            old = st.get(aid, False)
+            st[aid] = True if True in (old, new) else None if (old is None or new is None) else False
     return st
 
 
@@ -1251,6 +1265,11 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur["clear_seen"] = 0
         if cur and cur.get("state") == "UNREADABLE":
             return
+        if cur and cur.get("state") == "OPEN" and not cur.get("item") and cur.get("for") != "Operations" \
+                and not is_token_key(aid.split(":", 1)[-1]):
+            # OPEN with no item told nobody: file it, or a corrupt entry acknowledges the alarm for good
+            cur["state"] = "PENDING"
+            log.append({"ts": iso(now), "event": "open_without_item", "aid": aid})
         if cur and cur.get("state") == "OPEN":
             if crossed:
                 cur["last_seen"] = iso(now)
@@ -1264,7 +1283,8 @@ def run_alarms(points, rules, now, known_ids, filer):
         key = aid.split(":", 1)[1]
         tag = aid.split(":", 1)[0]
         pt = points[key]
-        tg = next(t for t in good_targets(rules) if t.get("alarm") and t["tag"] == tag and fnmatch.fnmatchcase(key, t["key"]))
+        rows = [t for t in good_targets(rules) if t.get("alarm") and t["tag"] == tag and fnmatch.fnmatchcase(key, t["key"])]
+        tg = next((t for t in rows if num(pt) is not None and _cmp(num(pt), t["op"], t["value"])), rows[0])
         if not cur:
             cur = {"state": "PENDING", "since": iso(now), "tries": 0}
             state[aid] = cur
@@ -1314,20 +1334,23 @@ def run_alarms(points, rules, now, known_ids, filer):
         for a in todo:
             if a.get("note_only"):
                 continue
-            cur = state[a["aid"]]
-            err = res.get(a["name"])
-            cur["tries"] = cur.get("tries", 0) + (1 if filer else 0)
-            cur["last_try"] = iso(now)
-            if err is None:
-                cur.update(state="OPEN", item=a["name"], error=None, filed=iso(now))
-                # the item is in the RUNNER shard whatever _publish says: a publish that failed is retried by the
-                # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
-                log.append({"ts": iso(now), "event": "filed", "aid": a["aid"], "item": a["name"],
-                            "publish": res.get("_publish")})
-            else:
-                cur["error"] = err
-                if filer:
-                    log.append({"ts": iso(now), "event": "file_failed", "aid": a["aid"], "error": err})
+            try:
+                cur = state[a["aid"]]
+                err = res.get(a["name"])
+                cur["tries"] = cur.get("tries", 0) + (1 if filer else 0)
+                cur["last_try"] = iso(now)
+                if err is None:
+                    cur.update(state="OPEN", item=a["name"], error=None, filed=iso(now))
+                    # the item is in the RUNNER shard whatever _publish says: a publish that failed is retried by the
+                    # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
+                    log.append({"ts": iso(now), "event": "filed", "aid": a["aid"], "item": a["name"],
+                                "publish": res.get("_publish")})
+                else:
+                    cur["error"] = err
+                    if filer:
+                        log.append({"ts": iso(now), "event": "file_failed", "aid": a["aid"], "error": err})
+            except Exception as e:  # noqa: BLE001  a corrupt counter costs this alarm's bookkeeping; found_filed recovers it
+                log.append({"ts": iso(now), "event": "step_failed", "aid": a["aid"], "error": str(e)[:200]})
     atomic_json(p, state)
     if log:
         with open(ops_dir() / "alarms_log.jsonl", "a", encoding="utf-8") as f:
@@ -1619,7 +1642,11 @@ def run(now=None, rules=None, filer=None, families=None):
             lastm[k] = hs[-1][0]
     lastm, saved_lm = carry_last_measured(lastm, _obj(read_json(ops_dir() / "last_measured.json")).get("t"),
                                           points, now)
-    flags = andon(points, hist, lastm, rules, now) + sick
+    try:
+        flags = andon(points, hist, lastm, rules, now) + sick
+    except Exception as e:  # noqa: BLE001  no flags this pass, said aloud; the alarms still run
+        flags = sick + [{"rule": "bad_rule", "key": "rules", "value": None, "window": "now",
+                         "detail": "andon failed: %s: %s" % (type(e).__name__, str(e)[:160])}]
     atomic_json(ops_dir() / "last_measured.json", {"t": saved_lm})
     alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer)
     flags += [{"rule": "alarm_state", "key": aid, "value": None, "window": "now", "detail": a.get("error") or "unreadable"}
@@ -1639,7 +1666,12 @@ def run(now=None, rules=None, filer=None, families=None):
     dg = build_digest(points, hist_all, flags, alarms, now, run_s)
     atomic_json(ops_dir() / "digest.json", dg)
     write_text_atomic(ops_dir() / "digest.md", digest_md(dg))
-    write_text_atomic(ops_dir() / "digest_blind.md", blind_digest_md(dg, rules))
+    try:
+        blind = blind_digest_md(dg, rules)
+    except Exception as e:  # noqa: BLE001  fail closed and aloud: never a stale digest, never an unfiltered one
+        blind = "# ops_watch blind digest unavailable\n\n%s at %s: check token_talk in ops_watch_rules.json\n" % (
+            type(e).__name__, iso(now))
+    write_text_atomic(ops_dir() / "digest_blind.md", blind)
     return dg
 
 

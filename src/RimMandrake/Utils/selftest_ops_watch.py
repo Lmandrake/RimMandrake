@@ -10,6 +10,7 @@ production de-dup, the digest's deltas, and the CLI's install plan writing nothi
 
     python3 src/RimMandrake/Utils/selftest_ops_watch.py
 """
+import copy
 import json
 import os
 import re
@@ -719,10 +720,13 @@ mv = st.get("RUNWAY_LOW:accounts.system.runway") or {}
 check("V2: an alarm filed as an item before the fix moves to Operations (legacy_item kept, never noted again)",
       mv.get("for") == "Operations" and mv.get("legacy_item") == "OPS_RUNWAY_RESCUE_C01D" and not mv.get("item")
       and "0.81" not in mv.get("title", "") and not filed, (mv, filed))
-st = OW.run_alarms({"accounts.system.runway": M(5.0)}, RULES, NOW + 1800, set(), filer_rec)
-check("V2: when it clears, no clear note lands on the legacy item", not filed, filed)
+for _i in range(RULES["alarm"]["clear_passes"]):
+    st = OW.run_alarms({"accounts.system.runway": M(5.0)}, RULES, NOW + 1800 + _i, set(), filer_rec)
+check("V2: when it clears, no clear note lands on the legacy item",
+      not filed and "RUNWAY_LOW:accounts.system.runway" not in st, (filed, st))
 ap.unlink(missing_ok=True)
-live = Path(os.environ.get("RM_OPS_WATCH_LIVE", "/mnt/d/ClaudeWork/rimmandrake/ops_watch")) / "digest.json"
+# opt-in: the suite proper is fixtures only, so its assertions do not depend on the live directory
+live = Path(os.environ.get("RM_OPS_WATCH_LIVE") or TMP / "no_live") / "digest.json"
 if live.exists():
     ld = json.loads(live.read_text())
     lb = OW.blind_digest_md(ld, RULES)
@@ -828,11 +832,11 @@ try:
           and OW.target_state(_p, RULES).get("ARENA_PUSH_REFUSED:arena.push_refused_24h") is False, _p)
     _af = _ad / "alarms" / "arena.jsonl"; _af.parent.mkdir()
     _iso = lambda e: time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(e))
-    _af.write_text(json.dumps({"ts": _iso(time.time() - 3 * DAY), "kind": "PUSH_REFUSED"}) + "\n")
+    _af.write_text(json.dumps({"ts": _iso(NOW - 3 * DAY), "kind": "PUSH_REFUSED"}) + "\n")
     _p = OW.c_arena(NOW, RULES, {})
     check("arena: a 3-day-old refusal is outside the 24 h window -> 0", _p["arena.push_refused_24h"]["v"] == 0, _p)
     with open(_af, "a") as _fh:
-        _fh.write(json.dumps({"ts": _iso(time.time() - 60), "kind": "PUSH_REFUSED", "arm": "ralph_c"}) + "\n")
+        _fh.write(json.dumps({"ts": _iso(NOW - 60), "kind": "PUSH_REFUSED", "arm": "ralph_c"}) + "\n")
     _p = OW.c_arena(NOW, RULES, {})
     check("FORCED arena: a refusal a minute ago -> 1 and ARENA_PUSH_REFUSED crosses", _p["arena.push_refused_24h"]["v"] == 1
           and OW.target_state(_p, RULES).get("ARENA_PUSH_REFUSED:arena.push_refused_24h") is True, _p)
@@ -933,5 +937,45 @@ _fl = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["fla
 check("run: an unwritable series is a flag and the pass finishes", any(f["rule"] == "series_write" for f in _fl), _fl)
 check("run: an unreadable alarms.json is a flag, not a quiet zero", any(f["rule"] == "alarm_state" for f in _fl), _fl)
 check("run: wrong-shaped flags.json and last_measured.json are survived", any(f["rule"] == "bad_target" for f in _fl), _fl)
+_r2 = OW.run(now=NOW + 20, rules=_bad_rules, families={"v3"})
+_fl2 = json.loads((OW.ops_dir() / "flags.json").read_text(encoding="utf-8"))["flags"]
+_old = [f for f in _fl2 if f["rule"] == "bad_target"]
+check("flags: a flag keeps its first-open time across passes", _old and all(f["since"] == OW.iso(NOW + 7) for f in _old), _fl2)
+_rr = copy.deepcopy(RULES)
+_rr["run"]["n"] = 0
+_rr["run"]["keys"] = ["x.*"]
+_fl = OW.andon({"x.k": OW.M(5.0, "n")}, {"x.k": [(NOW - 60, 4.0), (NOW - 30, 3.0)]}, {}, _rr, NOW)
+check("rules: a run rule of n=0 is a flag, not a dead pass", any(f["rule"] == "bad_rule" for f in _fl), _fl)
+_rm = copy.deepcopy(_bad_rules)
+_rm["targets"] = [{"key": "x.k", "op": ">", "value": 1, "tag": "M", "marks": ["MESURED"], "alarm": True},
+                  {"key": "x.k", "op": ">", "value": 1, "tag": "DUP", "alarm": True},
+                  {"key": "x.k", "op": ">", "value": 9, "tag": "DUP", "alarm": True}]
+_fl = OW.andon({"x.k": OW.M(5.0, "n")}, {}, {}, _rm, NOW)
+check("rules: a misspelled mark is a bad target", any(f["rule"] == "bad_target" for f in _fl), _fl)
+check("rules: a later row on the same alarm id cannot hide a crossing",
+      OW.target_state({"x.k": OW.M(5.0, "n")}, _rm) == {"DUP:x.k": True}, OW.target_state({"x.k": OW.M(5.0, "n")}, _rm))
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "OPEN"}}), encoding="utf-8")
+_filed.clear()
+_ok = lambda todo, conf: _filed.extend(todo) or {a["name"]: None for a in todo}
+_st = OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, set(), _ok)
+check("alarms: OPEN with no item told nobody, so it is filed", len(_filed) == 1 and _st["DUP:x.k"].get("item"), (_filed, _st))
+check("alarms: the title quotes the row that crossed", "line > 1" in _filed[0]["title"], _filed)
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "PENDING", "name": "OPS_DISK_FULL_DIAGNOSE_AB12", "title": "t", "tries": "bad"}}), encoding="utf-8")
+_st = OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, set(), _ok)
+check("alarms: a corrupt retry counter does not stop the pass", _st["DUP:x.k"]["state"] == "PENDING", _st)
+_ap.unlink()
+_AU.read_now = lambda now: {"accounts": {"good": {"source": "ESTIMATE", "week_pct_left": 50.0, "hours_to_week_reset": 10.0,
+                                                  "week_pct_used": 50.0}, "strpct": {"source": "ESTIMATE", "week_pct_left": "bad"}}}
+try:
+    _a = OW.c_accounts(NOW, RULES, {})
+finally:
+    _AU.read_now = _rn
+check("accounts: a row that raises costs itself, the next account still reads",
+      _a["accounts.strpct.runway"]["m"] == "UNMEASURED" and _a["accounts.good.week_left_pct"]["m"] == "ESTIMATE", _a)
+_rt = copy.deepcopy(_bad_rules)
+_rt["token_talk"]["terms"] = list(_rt["token_talk"]["terms"]) + ["("]
+OW.run(now=NOW + 30, rules=_rt, families={"v3"})
+check("digest: a bad token_talk term fails the blind digest closed and aloud",
+      "unavailable" in (OW.ops_dir() / "digest_blind.md").read_text(encoding="utf-8"))
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
