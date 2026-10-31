@@ -389,3 +389,4 @@
 {"seat":"DISPATCHER","event":"note","id":"TRIO_CRITIC_WIRE_LIVE_PLAN_TOO","text":"dispatcher verified FOUNDRY: lease take at 2026-10-31T21:08:59Z","ts":"2026-10-31T21:10:58Z","tsn":1793481058084424278}
 {"seat":"DISPATCHER","event":"note","id":"ARENA_JUDGE_ENV_FIX_CODEX_OPENAI_PASSTHROUGH","text":"dispatcher verified FOUNDRY: lease take at 2026-10-31T21:13:09Z","ts":"2026-10-31T21:15:07Z","tsn":1793481307847483212}
 {"seat":"DISPATCHER","event":"note","id":"RALPH_RECOVER_HARDEN_BLIND_TO_SUBCLASS_ARMS","text":"dispatcher verified FOUNDRY: lease take at 2026-10-31T21:17:19Z","ts":"2026-10-31T21:19:19Z","tsn":1793481559158377744}
+{"seat":"DISPATCHER","event":"note","id":"ARENA_HANDOFF_MEASURE_RC_INTO_DEAD_SESSION","text":"dispatcher verified FOUNDRY: lease take at 2026-10-31T21:25:41Z","ts":"2026-10-31T21:27:38Z","tsn":1793482058547051365}
