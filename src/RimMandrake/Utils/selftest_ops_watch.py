@@ -142,8 +142,17 @@ def fake_mint(tag, known, prefix):
     raise RuntimeError("no name")
 
 
-OW.mint_name = fake_mint
+def no_mint(tag, known, prefix):
+    raise RuntimeError("no mintable alarm name for " + tag)
+
+
+OW.mint_name = no_mint
 pts = {"timers.failed_units": M(2)}
+st = OW.run_alarms(pts, RULES, NOW, known, filer_bad)
+a = st.get("TIMER_FAILED:timers.failed_units") or {}
+check("alarm: an unnameable alarm stays PENDING and said, the pass survives",
+      a.get("state") == "PENDING" and "no mintable" in (a.get("error") or "") and a.get("tries") == 1 and not calls, a)
+OW.mint_name = fake_mint
 st = OW.run_alarms(pts, RULES, NOW, known, filer_bad)
 a = st.get("TIMER_FAILED:timers.failed_units") or {}
 check("alarm: a NEW crossing tries to file", len(calls) == 1 and calls[0][0]["name"] == "OPS_TIMER_REPAIR_AB12", calls)
@@ -838,5 +847,10 @@ finally:
         else:
             os.environ[_k] = _v
 
+import pulse_core as _pc  # noqa: E402
+with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "ops_watch_rules.json"), encoding="utf-8") as _f:
+    _real = json.load(_f)
+_bad = [t["name"] for t in _real["targets"] if t.get("name") and _pc._model().mint_problems(t["name"] + "_A1B2", set())]
+check("every shipped rule's name mints: a refused prefix kills the whole pass", not _bad, _bad)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

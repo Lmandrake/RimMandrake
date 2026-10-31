@@ -3,10 +3,11 @@
 when the answer failed (census: infrastructure/state/items/closed/LOGIN_LOSS_FIX_DEAD_SIGNALS.md).
 
 Each every_s, not under PAUSE (schedule key `signal_watch`; off when absent or enabled false):
-  units  (TIMER_FAILED_FIX_AUTO_REPAIR) a failed user unit. A .scope is dead already: reset-failed clears it. A .service
-         with a .timer: reset-failed and one start, at most repairs_per_day, so a broken job cannot loop. Past that, or
-         a unit there is no safe repair for (no timer, or deny_rx: nothing that can touch a login) standing over
-         alarm_after_s: alarm timer:<unit>. rm-scratch-reap.service sat failed 21 h and rm-scratch-bound scopes 47 h.
+  units  (TIMER_FAILED_FIX_AUTO_REPAIR) a failed user unit. A .scope is dead already: reset-failed clears it. A service
+         named by restart_rx (an allow list: a timer alone says nothing about what an early start does, so nightly and
+         login-adjacent jobs stay out) with its .timer: reset-failed and one start, at most repairs_per_day, so a broken
+         job cannot loop. Past that, or any other unit standing over alarm_after_s: alarm timer:<unit>. deny_rx wins over
+         both. rm-scratch-reap.service sat failed 21 h and rm-scratch-bound scopes 47 h.
   files  (STEVE_STALL_FIX_FILE_FAILED_ROUTE) ops_watch retries a failed alarm filing every pass; file_tries failures
          mean the filer is broken, and its error sat in alarms_log.jsonl: alarm ops:file_failed:<aid>.
   flags  (OPS_FLAGS_FIX_NO_ACTION) a flag standing flag_after_s means the digest's readers did not move it: a note to
@@ -19,8 +20,9 @@ import re
 import subprocess
 
 DEFAULTS = {"enabled": False, "every_s": 300, "repairs_per_day": 2, "alarm_after_s": 3600, "file_tries": 3,
-            "flag_after_s": 72 * 3600, "flag_every_s": 7 * 86400, "ops_dir": None,
-            "deny_rx": "switch|login|logout|account|rm-role-"}
+            "flag_after_s": 72 * 3600, "flag_every_s": 7 * 86400, "flags_stale_s": 6 * 3600, "ops_dir": None,
+            "restart_rx": "^(rm-scratch-reap|rm-pulse-update)\\.service$",
+            "deny_rx": "(?i)switch|login|logout|account|rm-role-"}
 
 
 def config(sch):
@@ -59,7 +61,7 @@ def plan(cfg, unit, timers):
         return None
     if unit.endswith(".scope"):
         return "reset"
-    if unit.endswith(".service") and unit[:-len(".service")] + ".timer" in timers:
+    if re.search(cfg["restart_rx"], unit) and unit[:-len(".service")] + ".timer" in timers:
         return "start"
     return None
 
@@ -67,8 +69,9 @@ def plan(cfg, unit, timers):
 def _units_step(cfg, S, reading, now, act, iso):
     failed, timers = reading
     day = int(now // 86400)
-    # a unit that left is forgotten only when its day ends: a repair that does not hold still counts and still alarms
-    book = {u: r for u, r in (S.get("units") or {}).items() if u in failed or r["day"] == day}
+    old = S.get("units") if isinstance(S.get("units"), dict) else {}
+    # a unit that left stays booked for its day: a repair that holds five minutes must still count against the cap
+    book = {u: r for u, r in old.items() if u in failed or r.get("day") == day}
     S["units"] = book
     for u in failed:
         r = book.setdefault(u, {"since": now, "day": day, "n": 0})
@@ -87,20 +90,22 @@ def _units_step(cfg, S, reading, now, act, iso):
 
 
 def _files_step(cfg, alarms, act):
-    for aid, a in sorted((alarms or {}).items()):
-        if isinstance(a, dict) and a.get("state") != "OPEN" and a.get("error") and a.get("tries", 0) >= cfg["file_tries"]:
+    for aid, a in sorted(alarms.items()):
+        if not isinstance(a, dict) or a.get("state") == "OPEN" or not a.get("error"):
+            continue
+        tries = a.get("tries")
+        if isinstance(tries, int) and tries >= cfg["file_tries"]:
             act(do="alarm", kind="ops:file_failed:" + aid, note=True, conductor_log=True,
-                why="ops_watch could not file alarm %s after %d tries: %s" % (aid, a["tries"], str(a["error"])[:160]),
+                why="ops_watch could not file alarm %s after %d tries: %s" % (aid, tries, str(a["error"])[:160]),
                 raise_first="An ops alarm is unfiled because its filer is broken.")
 
 
 def _flags_step(cfg, S, flags, now, act, ts):
-    rows = [f for f in (flags or {}).get("flags") or [] if isinstance(f, dict)]
+    rows = [f for f in flags.get("flags") or [] if isinstance(f, dict)]
     answered = {f.get("key") for f in rows if f.get("alarm")}      # a rule with alarm true files its own item
-    seen = S.setdefault("flags", {})
-    if isinstance(flags, dict):                                    # a flag that cleared starts over when it comes back
-        for key in set(seen) - {f.get("key") for f in rows}:
-            del seen[key]
+    # a flag that cleared is forgotten: its next rising is a new incident, and the state cannot outgrow the live flags
+    seen = {k: t for k, t in (S.get("flags") or {}).items() if k in {f.get("key") for f in rows}}
+    S["flags"] = seen
     for f in rows:
         key, at = f.get("key"), ts(f.get("since"))
         if at is None or key in answered or now - at < cfg["flag_after_s"] or now - seen.get(key, -1e18) < cfg["flag_every_s"]:
@@ -121,13 +126,35 @@ def step(sch, st, obs, now, act, iso, ts):
     if now - S.get("at", -1e18) < cfg["every_s"]:
         return
     S["at"] = now
+
+    def guarded(name, fn):    # one bad source costs its own watch, said aloud, never the other two
+        try:
+            fn()
+        except Exception as e:  # noqa: BLE001
+            act(do="alarm", kind="signal:" + name, note=True, conductor_log=True,
+                why="signal watch: %s raised %s: %s" % (name, type(e).__name__, str(e)[:200]),
+                raise_first="A signal watch is blind.")
+
+    def blind(name, why):
+        act(do="alarm", kind="signal:" + name, note=True, conductor_log=True, why="signal watch blind: " + why,
+            raise_first="A signal watch is blind.")
+
     reading = so["units"]()
     if reading is None:
-        act(do="alarm", kind="signal:units", note=True, why="systemctl gave no reading: failed units unseen this pass")
+        blind("units", "systemctl gave no reading, failed units unseen this pass")
     else:
-        _units_step(cfg, S, reading, now, act, iso)
-    _files_step(cfg, so["alarms"](), act)
-    _flags_step(cfg, S, so["flags"](), now, act, ts)
+        guarded("units", lambda: _units_step(cfg, S, reading, now, act, iso))
+    alarms = so["alarms"]()
+    if not isinstance(alarms, dict):
+        blind("alarms", "alarms.json unreadable, unfiled alarms unseen this pass")
+    else:
+        guarded("alarms", lambda: _files_step(cfg, alarms, act))
+    flags = so["flags"]()
+    at = ts(flags.get("at")) if isinstance(flags, dict) else None
+    if at is None or now - at > cfg["flags_stale_s"]:      # a frozen snapshot is no standing flag
+        blind("flags", "flags.json unreadable or stale (written %s)" % (iso(at) if at is not None else "unknown"))
+    else:
+        guarded("flags", lambda: _flags_step(cfg, S, flags, now, act, ts))
 
 
 def give_back(st, a):

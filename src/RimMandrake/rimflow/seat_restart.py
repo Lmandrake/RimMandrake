@@ -334,7 +334,8 @@ STRANDING_ERRORS = ("authentication_failed", "rate_limit", "server_error")    # 
 def api_ended(rec):
     """-> the error of a turn that ended on an API error (its record stops on stop_sequence), else None: over, but the
     Stop hook never ran, so no ring reaches that window."""
-    if rec and rec.get("type") == "assistant" and rec.get("isApiErrorMessage") and rec.get("error") in STRANDING_ERRORS:
+    if (rec and rec.get("type") == "assistant" and rec.get("isApiErrorMessage") and rec.get("error") in STRANDING_ERRORS
+            and (rec.get("message") or {}).get("stop_reason") == "stop_sequence"):
         return rec["error"]
     return None
 

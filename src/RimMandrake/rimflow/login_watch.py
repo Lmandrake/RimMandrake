@@ -51,7 +51,7 @@ SCRUB_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", 
              "CLAUDE_CONFIG_DIR", "CLAUDE_SECURESTORAGE_CONFIG_DIR")    # the login the windows use, nothing else
 
 
-RESET_RX = re.compile(r"resets (?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm) \((?P<tz>[\w/+-]+)\)", re.I)
+RESET_RX = re.compile(r"resets (?:(?P<mon>[A-Z][a-z]{2}) (?P<day>\d{1,2}),? (?:at )?)?(?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm) \((?P<tz>[\w/+-]+)\)", re.I)
 GONE_RX = re.compile(r"not logged in|log ?in expired|session expired|please (run|log)", re.I)
 
 
@@ -135,20 +135,23 @@ def machine(cfg):
 
 
 def limit_reset(text, at):
-    """`You've hit your session limit · resets 1:10pm (America/Los_Angeles)` -> the first such moment after at, or None."""
+    """`You've hit your session limit · resets 1:10pm (America/Los_Angeles)`, or the weekly `resets Oct 31, 5pm (...)`
+    -> the first such moment after at, or None. Both passes of an hour the autumn clock change repeats are tried."""
     m = RESET_RX.search(text or "")
     if not m:
         return None
     try:
         tz = zoneinfo.ZoneInfo(m["tz"])
         hour = int(m["h"]) % 12 + (12 if m["ap"].lower() == "pm" else 0)
-        when = datetime.datetime.fromtimestamp(at, tz).replace(hour=hour, minute=int(m["m"] or 0), second=0, microsecond=0)
+        base = datetime.datetime.fromtimestamp(at, tz).replace(hour=hour, minute=int(m["m"] or 0), second=0, microsecond=0)
+        if m["mon"]:
+            month, day = datetime.datetime.strptime(m["mon"], "%b").month, int(m["day"])
+            days = [base.replace(month=month, day=day), base.replace(year=base.year + 1, month=month, day=day)]
+        else:
+            days = [base, base + datetime.timedelta(days=1)]
     except (ValueError, OSError, zoneinfo.ZoneInfoNotFoundError):
         return None
-    if when.timestamp() <= at:                     # the second pass of a repeated DST hour, else tomorrow
-        later = when.replace(fold=1)
-        when = later if later.timestamp() > at else when + datetime.timedelta(days=1)
-    return when.timestamp()
+    return min((t for t in (d.replace(fold=f).timestamp() for d in days for f in (0, 1)) if t > at), default=None)
 
 
 def _record_text(rec):

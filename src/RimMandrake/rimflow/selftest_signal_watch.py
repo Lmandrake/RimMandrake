@@ -17,6 +17,10 @@ def ts(s):
 def run(failed=(), timers=(), alarms=None, flags=None, st=None, now=T0, reading=True, paused=None, sch=SCH):
     st = {} if st is None else st
     acts = []
+    alarms = {} if alarms is None else alarms
+    flags = {"flags": []} if flags is None else flags
+    if isinstance(flags, dict) and "at" not in flags:
+        flags = dict(flags, at=str(now))
     obs = {"paused": paused, "signals": {"units": lambda: (list(failed), list(timers)) if reading else None,
                                          "alarms": lambda: alarms, "flags": lambda: flags}}
     SW.step(sch, st, obs, now, lambda **a: acts.append(a), str, ts)
@@ -35,22 +39,24 @@ def test_gates():
 def test_plan():
     c = SW.config(SCH)
     assert SW.plan(c, "rm-harness-1.scope", []) == "reset"
-    assert SW.plan(c, "rm-x.service", ["rm-x.timer"]) == "start"
-    assert SW.plan(c, "rm-x.service", []) is None, "no timer: a one-shot, nothing says starting it is safe"
+    assert SW.plan(c, "rm-scratch-reap.service", ["rm-scratch-reap.timer"]) == "start"
+    assert SW.plan(c, "rm-scratch-reap.service", []) is None, "no timer: nothing says starting it is safe"
+    assert SW.plan(c, "rm-selftests-nightly.service", ["rm-selftests-nightly.timer"]) is None, "not on the allow list"
+    assert SW.plan(c, "Login-1.scope", []) is None, "the deny list ignores case"
     for u in ("rm-login-watch.service", "rm-account-switch.service", "rm-role-operations-1.service", "rm-role-1.scope"):
         assert SW.plan(c, u, [u.rsplit(".")[0] + ".timer"]) is None, u
 
 
 def test_repair_bounded_then_alarm():
-    u = "rm-x.service"
+    u = "rm-pulse-update.service"
     st, kinds, now = {}, [], T0
     for i in range(4):
-        acts, st = run([u], ["rm-x.timer"], st=st, now=now + i * 2000)
+        acts, st = run([u], ["rm-pulse-update.timer"], st=st, now=now + i * 2000)
         kinds.append([(a["do"]) for a in acts])
     assert kinds == [["unit_repair"], ["unit_repair"], ["alarm"], ["alarm"]], kinds   # execute rate-limits the repeat
-    acts, _ = run([u], ["rm-x.timer"], st=st, now=T0 + DAY)
+    acts, _ = run([u], ["rm-pulse-update.timer"], st=st, now=T0 + DAY)
     assert [a["do"] for a in acts] == ["unit_repair"], "a new day: a new repair"
-    a = run([u], ["rm-x.timer"], now=T0)[0][0]
+    a = run([u], ["rm-pulse-update.timer"], now=T0)[0][0]
     assert a["how"] == "start"
 
 
@@ -65,10 +71,10 @@ def test_untouchable_alarms_after_standing():
 
 
 def test_recovery_keeps_the_limit():
-    u = "rm-x.service"
+    u = "rm-pulse-update.service"
     st, kinds = {}, []
     for i in range(12):                     # fail, repair, recover, fail again: the unit flaps inside one day
-        acts, st = run([u] if i % 2 == 0 else [], ["rm-x.timer"], st=st, now=T0 + i * 900)
+        acts, st = run([u] if i % 2 == 0 else [], ["rm-pulse-update.timer"], st=st, now=T0 + i * 900)
         kinds += [a["do"] for a in acts]
     assert kinds.count("unit_repair") == 2 and "alarm" in kinds, kinds
 
@@ -117,9 +123,22 @@ def test_flags():
     assert run(flags=fl, st=st, now=now + 6 * DAY)[0] == []
     acts, _ = run(flags=fl, st=st, now=now + 7 * DAY + 1)
     assert acts[0]["conductor_log"], "the note did not move it: now the Conductor"
-    assert run(flags=None)[0] == []
+    assert run()[0] == []
     _, st = run(flags={"flags": []}, st=st, now=now + 8 * DAY)
     assert st["signals"]["flags"] == {}, "a cleared flag starts over"
+
+
+def test_blind_and_isolated():
+    assert [a["kind"] for a in run(alarms="{")[0]] == ["signal:alarms"]
+    assert [a["kind"] for a in run(flags="x")[0]] == ["signal:flags"]
+    fl = {"flags": [{"key": "k", "since": str(T0 - 9 * DAY)}]}
+    assert [a["kind"] for a in run(flags=dict(fl, at=str(T0 - DAY)))[0]] == ["signal:flags"], "a frozen snapshot is no standing flag"
+    acts, _ = run(alarms={"a": {"state": "PENDING", "error": "e", "tries": "3"}}, flags=fl, st={"signals": {"units": ["bad"]}})
+    assert [a["kind"] for a in acts] == ["ops:flag:k"], acts
+    acts, _ = run(failed=["a.scope"], flags=fl, alarms={"b": {"state": "PENDING", "error": "e", "tries": 3}},
+                  st={"signals": {"flags": 7}})
+    kinds = [a.get("kind") for a in acts]
+    assert "ops:file_failed:b" in kinds and "signal:flags" in kinds and None in kinds, kinds
 
 
 if __name__ == "__main__":

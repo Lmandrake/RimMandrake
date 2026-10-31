@@ -1281,7 +1281,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 journal(root, {"at": iso(now), "do": "publish", "result": out})
             # the next tick retries a failed publish by itself; one that stays failed is a stuck clone. Each publish
             # the tick tried says one of these (None: nothing to publish, which moves neither way)
-            if out and out.endswith("pushed"):
+            if out == "pushed" or (out or "").endswith("; pushed"):
                 st.pop("publish_fail_since", None)
             elif out:
                 st.setdefault("publish_fail_since", now)

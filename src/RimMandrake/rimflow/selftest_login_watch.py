@@ -178,7 +178,7 @@ def test_stranded_reader():
             got = LW.stranded({}, cfg, [sess], NOW)
             check("a window on an auth error reads stranded", [(w["seat"], w["conductor"]) for w in got] == [("S", False), ("C", True)])
             check("too fresh is not stranded yet", not LW.stranded({}, cfg, [sess], NOW - 700))
-            limited = dict(rec, error="rate_limit", message={"content": [{"type": "text", "text": "limit"}]})
+            limited = dict(rec, error="rate_limit", message={"stop_reason": "stop_sequence", "content": [{"type": "text", "text": "limit"}]})
             at = NOW - 900
             when = datetime.datetime.fromtimestamp(at + 2 * 3600, datetime.timezone.utc)
             for text, wait in (("limit", 5 * 3600), ("limit \u00b7 resets %s (UTC)" % when.strftime("%I:%M%p").lower(), 2 * 3600)):
@@ -211,12 +211,18 @@ def test_limit_reset():
     check("the repeated DST hour is 40 minutes off, not a day",
           LW.limit_reset("resets 1:10am (America/Los_Angeles)", fall) == fall + 2400)
     check("no minutes, 12am", LW.limit_reset("resets 12am (UTC)", at) == calendar.timegm((2026, 10, 31, 0, 0, 0)))
+    weekly = "You've hit your weekly limit \u00b7 resets Oct 31, 5pm (America/Los_Angeles)"
+    check("a weekly reset names its day", LW.limit_reset(weekly, at) == calendar.timegm((2026, 11, 1, 0, 0, 0)))
+    check("a weekly date behind us is next year's", LW.limit_reset(weekly, calendar.timegm((2026, 11, 2, 0, 0, 0)))
+          == calendar.timegm((2027, 11, 1, 0, 0, 0)))
     check("unnamed, or an unknown zone, is no reset", LW.limit_reset("rate limited", at) is None
           and LW.limit_reset("resets 1pm (Mars/Base)", at) is None and LW.limit_reset(None, at) is None)
     check("the text survives a record", "resets" in LW._record_text({"message": {"content": [{"type": "text", "text": LA}]}}))
 
 
 def test_quiet_and_gate():
+    check("an API error mid-retry, not a stopped turn, ends nothing",
+          SR.api_ended({"type": "assistant", "isApiErrorMessage": True, "error": "server_error", "message": {}}) is None)
     rec = {"type": "assistant", "isApiErrorMessage": True, "error": "authentication_failed",
            "message": {"stop_reason": "stop_sequence"}}
     with tempfile.TemporaryDirectory() as d:

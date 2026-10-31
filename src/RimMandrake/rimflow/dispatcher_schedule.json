@@ -19,7 +19,7 @@
  "publish": true,
  "alarm_item": "RIMFLOW_V3_BUILD_DISPATCHER_FIRST",
  "signal_watch": {"enabled": true, "ops_dir": "/mnt/d/ClaudeWork/rimmandrake/ops_watch",
-  "_doc": "signal_watch.py: failed units repaired, unfiled ops alarms and days-old flags alarmed. publish_stuck_s is its top-level neighbour."},
+  "_doc": "signal_watch.py: failed units repaired (restart_rx allow list), unfiled ops alarms and days-old flags alarmed. publish_stuck_s is its top-level neighbour."},
  "publish_stuck_s": 1800,
  "login_watch": {"enabled": true, "auto_switch": true,
   "hold_file": "/mnt/d/ClaudeWork/rimmandrake/switching_plan/HOLD",

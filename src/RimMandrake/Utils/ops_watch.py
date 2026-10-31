@@ -1216,7 +1216,12 @@ def run_alarms(points, rules, now, known_ids, filer):
             continue
         if not cur.get("name"):  # mint once; a retry keeps the saved name
             taken = set(known_ids) | {a.get("name") for a in state.values() if isinstance(a, dict) and a.get("name")}
-            cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
+            try:
+                cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
+            except RuntimeError as e:   # one unnameable alarm stays PENDING and counted (signal_watch tells); the pass goes on
+                cur.update(error=str(e)[:200], tries=cur.get("tries", 0) + 1)
+                log.append({"ts": iso(now), "event": "mint_failed", "aid": aid})
+                continue
         title = "Ops alarm %s: %s = %s %s(%s), line %s %g" % (tag, key, pt.get("v"), (pt.get("unit") or "") + " ",
                                                             pt.get("m"), tg["op"], tg["value"])
         said = (pt.get("x") or {}).get(tg["title_field"]) if tg.get("title_field") else None   # what crossed, first
