@@ -368,7 +368,8 @@ _NEUTRAL = re.compile(r"\b0\s+fail\w*|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.
 # (`TypeError: ... unexpected keyword argument`) counts as a missing-name class wherever it appears.
 _BEH_REPORT = re.compile(r"^\s*(?:E\s+)?(?:FAIL\b|FAILED\b|not ok\b|(?i:fail(?:ed|ure)?):)")
 _BEH_CLASS = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b"
-                        r"|(?!(?:ModuleNotFound|Import|Attribute|Name|Type)Error\b)[A-Z]\w*(?:Error|Exception):)")
+                        r"|(?!(?:ModuleNotFound|Import|Attribute|Name)Error\b|TypeError\b.*\bunexpected keyword argument\b)"
+                        r"[A-Z]\w*(?:Error|Exception):)")
 _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
                             r"|\bTypeError\b.*\bunexpected keyword argument\b")
 
@@ -474,7 +475,9 @@ def build_packet(task_id, p=None, repo=None, vet=None, cache=None) -> dict:
         names = name_lookup(repo, base_sha, fix_sha, c["path"], looked, task_text, cache or None)
         # a missing name the base output cites but the '+' lines did not yield (e.g. a module imported by a helper)
         # gets its own lookup, so the missing_name_only veto never rests on a name nobody looked up
-        extra_names = sorted(n for n in missing_names_cited(tail) if n not in looked and n not in local)
+        # a name the base output reports missing is looked up even when the body binds it (v4 review: `m =
+        # importlib.import_module("m")` binds the very module the base could not find)
+        extra_names = sorted(n for n in missing_names_cited(tail) if n not in looked)
         extra = (name_lookup(repo, base_sha, fix_sha, c["path"], extra_names, task_text, cache or None)
                  if extra_names and tail is not None else None)
         checks.append({"path": c["path"], "command": c.get("command"), "body": _clip(c.get("body"), BODY_CHARS),

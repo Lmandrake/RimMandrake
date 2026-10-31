@@ -113,7 +113,7 @@ def fixture(d, extra=False):
         task("RP_NOREASON", [("src/selftest_n.py", "ok 1\nok 2\nrc 1\n")], body="from tool import f\nassert f() == 2\n")
         # rules v4 C1: a name defined from scratch in the check vs one aliased from the repo; C3: prose-only name
         attr = tb + "AttributeError: module 'tool' has no attribute '_private_two'\n"
-        task("RP_LOCALDEF", [("src/selftest_n.py", attr)],
+        task("RP_LOCALDEF", [("src/selftest_n.py", "AssertionError: 1 != 2\n")],
              body="from tool import f\ndef _private_two():\n    return 2\nassert f() == _private_two()\n")
         task("RP_ALIAS", [("src/selftest_n.py", attr)],
              body="import tool\n_private_two = tool._private_two\nassert _private_two() == 2\n")
@@ -121,6 +121,8 @@ def fixture(d, extra=False):
              body="import tool\ndef _private_two():\n    return tool._private_two()\nassert _private_two() == 2\n")
         task("RP_ALIASIMP", [("src/selftest_n.py", attr)],
              body="from tool import f, _private_two\n_private_two = _private_two\nassert f() == 2\n")
+        task("RP_DYNIMP", [("src/selftest_n.py", tb + "ModuleNotFoundError: No module named 'newmod'\n")],
+             body='import importlib\nnewmod = importlib.import_module("newmod")\nassert newmod.capped() == 1\n')
         task("RP_PROSE", [("src/selftest_n.py", tb + "AttributeError: module 'tool' has no attribute "
                            "'prose_only_name'\n")], body="import tool\nassert tool.prose_only_name() == 4\n")
     Path(p["tasks"], "RP_NOHIDDEN.json").write_text(json.dumps({"id": "RP_NOHIDDEN", "source_item": "NOHIDDEN"}))
@@ -343,6 +345,9 @@ def rules_v4():
         c = pkt("RP_LOCALDEF")
         check("_private_two" not in c["names"]["fix_only"] + c["names"]["at_base"] and c["base_failure"]["veto"] is None,
               "C1: a name the check defines from scratch is not looked up and does not veto (%s)" % c["names"])
+        c = pkt("RP_DYNIMP")
+        check(c["base_failure"]["veto"] == "missing_name_only",
+              "C1: a local binding the module the base reports missing (importlib) still vetoes (%s)" % c["base_failure"])
         for tid, how in (("RP_ALIAS", "`_x = tool._x`"), ("RP_ALIASDEF", "`def _x(): return tool._x()`"),
                          ("RP_ALIASIMP", "imported then rebound")):
             c = pkt(tid)
@@ -427,7 +432,8 @@ def rules_v4():
               "AssertionError: ImportError raised for '_private_two'",
               "E       FAIL gate reported: cannot import name '_private_two'",
               "failed: gate reported cannot import name '_private_two'",
-              "a.cs(2,1): error CS1503: Argument 1: cannot convert from 'int' to 'string'"):
+              "a.cs(2,1): error CS1503: Argument 1: cannot convert from 'int' to 'string'",
+              "TypeError: expected int, got \"No module named 'newmod'\""):
         check(veto(MISS + t + "\n") is None and R.base_failure(MISS + t + "\n", UN)["behaviour_lines"] >= 1,
               "C7/C8: %r beside a missing name is behaviour (no veto)" % t)
     check(veto(MISS) == "missing_name_only", "control: the missing name alone vetoes")
