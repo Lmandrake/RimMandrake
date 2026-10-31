@@ -1260,6 +1260,11 @@ check("an old chore is not dropped as a stale ruling",
       not pc.owner_view([{**chk["ROUTER_PORT_FIX_FORWARD"], "since": NOW - 9 * 86400}], NOW)[0].get("agent"))
 
 # review 2026-10-25: /mnt/wsl/... is a Linux path, only /mnt/<letter>/ is a drive
+check("win_path leaves a native Windows path alone (no doubled drive)",
+      pc.win_path("D:\\ClaudeWork\\x\\y") == "D:\\ClaudeWork\\x\\y" and pc.win_path("d:/a/b") == "d:/a/b"
+      and pc.win_path("\\\\wsl.localhost\\Ubuntu\\a") == "\\\\wsl.localhost\\Ubuntu\\a"
+      and pc.win_path("Transient/q.png").startswith("D:\\Luke\\dev\\RimMandrake\\"),
+      (pc.win_path("D:\\ClaudeWork\\x\\y"),))
 check("win_path maps a drive mount and leaves /mnt/wsl on the Linux side",
       pc.win_path("/mnt/d/a/b") == "D:\\a\\b" and pc.win_path("/mnt/wsl/x").startswith("\\\\wsl.localhost"),
       (pc.win_path("/mnt/d/a/b"), pc.win_path("/mnt/wsl/x")))

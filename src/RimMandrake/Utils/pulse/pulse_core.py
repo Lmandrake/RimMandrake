@@ -884,6 +884,8 @@ def iso_to_epoch(ts: str) -> float:
 
 def win_path(rel: str) -> str:
     rel = rel.strip()
+    if re.match(r"^[a-zA-Z]:[\\/]", rel) or rel.startswith("\\\\"):   # already native Windows / UNC: never prefix the mirror
+        return rel
     if re.match(r"/mnt/[a-zA-Z](/|$)", rel):   # a drive mount; /mnt/wsl/... is not a drive
         return rel[5].upper() + ":\\" + rel[7:].replace("/", "\\")
     if rel.startswith("/"):
