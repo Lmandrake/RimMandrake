@@ -322,6 +322,7 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
                                                      (owner 2026-09-02) — bridge free first
 ./bridge [bench|foundry|free]                       his override; bare ./bridge says who has it
 rimflow …                                           the ledger: file/claim/close/drop/verify
+rimflow pilot [<ID>]                                Test Pilot: 3 non-pass runs in a row or live-only defect → spawn rm-testpilot
 python3 src/RimMandrake/Utils/run_selftests.py --only <tests>   before a commit: only the tests for what you changed;
                                                      the FULL sweep runs nightly 03:00 (rm-selftests-nightly.timer,
                                                      Transient/selftests_nightly.log) — owner by card 2026-10-14
@@ -330,6 +331,10 @@ python3 src/RimMandrake/Utils/system_screenshot.py <out.bmp>   OS desktop captur
 python3 src/RimMandrake/Utils/system_click.py <x> <y>          OS-level click for dialogs a
                                                      bridge call can't reach
 ```
+
+## 🔴 Never send him to a computer you can reach yourself — owner, 2026-10-31
+
+Never ask him to go to a machine and do something if you can Tailscale there right now and do it yourself.
 
 ## The bridge is passed through one file
 
