@@ -188,7 +188,8 @@ def t_deleted(tmp, src, A, B, C):
     R.rmtree(root / "replay" / "a3")
 
     tasks = {"T1": {"base_sha": A, "fix_sha": B}, "T2": {"base_sha": "e" * 40, "fix_sha": B}}
-    res = R.run_schedule(H3, {k: v for k, v in tasks.items()}, ["a", "b"], lambda a, t, c: None, lambda a, t, c: "ok", src, root)
+    res = R.run_schedule(H3, {k: v for k, v in tasks.items()}, ["a", "b"], lambda a, t, c: None, lambda a, t, c: "ok", src, root,
+                         trial=sorted(tasks))
     check(len(res) == 4 and sum("error" in r for r in res) == 2 and sum(r.get("verdict") == "ok" for r in res) == 2
           and R.leftovers(root) == [], "run_schedule records failures, continues, leaves nothing: %s" % [r["task"] + ("E" if "error" in r else "") for r in res])
 
@@ -561,6 +562,54 @@ def t_round2(tmp, src, A, B, C):
         check(raises(R.ReplayExists, R._lock("a", "b", root5).__enter__) is not None, "R2-10 same pair still excluded")
 
 
+def t_trial_list(tmp):
+    """ARENA_REPLAY_TASKS_WIRE_TRIAL_LIST: the replay runs exactly the trial list the analysis reads."""
+    import contextlib
+    import io
+    import json
+    import arena_analysis as AA
+    import arena_trial as TR
+    check(Path(AA.TRIAL_DEFAULT).resolve() == Path(TR.DEFAULT_PATH).resolve(),
+          "trial list: the analysis default and arena_trial's default are one file")
+    ids = R.trial_list()
+    check(ids == TR.read_list(TR.DEFAULT_PATH) and len(ids) > 0,
+          "trial list: replay's default is the committed list (%d task(s))" % len(ids))
+    lst = tmp / "trial_small.json"
+    lst.write_text(json.dumps(["x", "y"]))
+    ran = []
+    msg = raises(R.ReplayError, R.run_schedule, H1, {"x": {}, "y": {}, "z": {}}, ["a"],
+                 lambda *a: ran.append(a), lambda *a: "accept", trial=str(lst))
+    check(msg is not None and "1 extra" in msg and not ran,
+          "FORCED: run_schedule refuses a task set with an extra task, before any work: %s" % msg)
+    msg = raises(R.ReplayError, R.run_schedule, H1, {"x": {}}, ["a"], lambda *a: ran.append(a),
+                 lambda *a: "accept", trial=str(lst))
+    check(msg is not None and "1 missing" in msg and not ran, "FORCED: run_schedule refuses a short task set: %s" % msg)
+    msg = raises(R.ReplayError, R.run_schedule, H1, {"x": {}, "y": {}}, ["a"], lambda *a: ran.append(a),
+                 lambda *a: "accept", contains={})
+    check(msg is not None and "trial_tasks.json" in msg and not ran,
+          "FORCED: with no trial= the committed list is the default and a hand-picked set is refused: %s" % msg)
+    check(R.check_trial({"y": 1, "x": 2}, str(lst)) == ["x", "y"], "the exact trial set passes (any order)")
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = R.main(["schedule", "--freeze-hash", H1, "--arms", "a,b", "--trial-tasks", str(lst)])
+    doc = json.loads(out.getvalue()) if rc == 0 else {}
+    check(rc == 0 and sorted(doc.get("orders", {}).get("a", [])) == ["x", "y"],
+          "FORCED: CLI schedule with no --tasks schedules the trial list (rc %s)" % rc)
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = R.main(["schedule", "--freeze-hash", H1, "--arms", "a", "--tasks", "x,q", "--trial-tasks", str(lst)])
+    check(rc == 2 and "REFUSED" in out.getvalue(), "FORCED: CLI schedule refuses --tasks differing from the list")
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        rc = R.main(["schedule", "--freeze-hash", H1, "--arms", "a"])
+    doc = json.loads(out.getvalue()) if rc == 0 else {}
+    check(rc == 0 and sorted(doc.get("orders", {}).get("a", [])) == sorted(ids),
+          "CLI schedule default: the committed trial list (%d)" % len(ids))
+    bad = tmp / "trial_bad.json"
+    bad.write_text('["x", "x"]')
+    check(raises(R.ReplayError, R.trial_list, str(bad)) is not None, "a list with a repeated id is refused")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_replay_"))
     os.environ["RM_ARENA_PRIVATE"] = str(tmp / "private")
@@ -568,7 +617,7 @@ def main():
         src, (A, B, C) = mk_source(tmp)
         for fn, a in ((t_no_future, (tmp, src, A, B, C)), (t_order, (tmp,)), (t_deleted, (tmp, src, A, B, C)), (t_reap, ()),
                       (t_round1, (tmp, src, A, B, C)), (t_reaper_marker, (tmp, src, A, B)), (t_rmtree, (tmp,)),
-                      (t_round2, (tmp, src, A, B, C))):
+                      (t_round2, (tmp, src, A, B, C)), (t_trial_list, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

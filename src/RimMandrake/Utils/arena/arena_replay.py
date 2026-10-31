@@ -17,6 +17,11 @@ A replay task re-does work that already exists, so the clone an arm works in mus
                       (arena_analysis ERA GATE). Reproducible from the seed. interleave() merges the arms' orders
                       round-robin (arm order re-shuffled each round from the same seed) into one slot list.
   run_one             build -> work -> judge -> delete, deletion in `finally`, so a failure also leaves nothing.
+  trial list          run_schedule and the `schedule` CLI run THE TRIAL'S tasks: arena_trial.read_list of trial_tasks.json
+                      (arena_trial.DEFAULT_PATH, the same file `arena_analysis.py run` reads with no --trial-tasks), or
+                      the list given by trial= / --trial-tasks (pass the same one to the analysis). A task set that
+                      differs from the list is REFUSED before anything runs (ARENA_REPLAY_TASKS_WIRE_TRIAL_LIST): a
+                      replay on another set would leave the era gate unopened or analyse the wrong population.
   leftovers / sweep   clones still on disk; `rm-scratch-reap` also has the replay tree among its roots.
 
 RESIDUAL (known, accepted, not fixed here):
@@ -56,6 +61,7 @@ import arena_safe_git as SG  # noqa: E402  (git on a clone an arm wrote into)
 SHA = re.compile(r"[0-9a-f]{40}")
 SHA_IN = re.compile(r"[0-9a-fA-F]{7,40}")
 HASH64 = re.compile(r"[0-9a-f]{64}")
+CHRONO_SALTS = 50                         # salts tried per arm for a distinct chronological order (not a task count)
 MARKER = ".git/rm_arena_replay.json"      # scratch_reap.py reads the same name (REPLAY_MARKER)
 
 # D4 - WHAT THIS DOES NOT STOP. The clone has no remote, no url, no include and no alternates, and it is filled from a
@@ -499,7 +505,7 @@ def schedule(freeze_hash: str, arms, tasks, contains=None) -> dict:
     for a in arms:                                   # sorted, so the result never depends on the caller's arm order
         # COLLISION RULE (documented, deterministic): normally each arm's order is sha256(freeze|arm) alone. If it equals the
         # order of an earlier arm (sorted by name), THAT later arm's salt is incremented (1, 2, ...) until it is unique.
-        for salt in range(0, 50 if chrono else 1000):
+        for salt in range(0, CHRONO_SALTS if chrono else 1000):
             o = arm_chrono_order(freeze_hash, a, tasks, contains, salt) if chrono else arm_order(freeze_hash, a, tasks, salt)
             if tuple(o) not in taken or not (can_differ or chrono):
                 break
@@ -595,11 +601,45 @@ def run_one(arm: str, task: str, base_sha: str, fix_sha: str, work, judge, sourc
                 _delete_own(clone, root)
 
 
+def trial_list(trial=None) -> list[str]:
+    """The trial's task ids. trial: None (the committed list arena_trial.DEFAULT_PATH, which `arena_analysis.py run`
+    also reads by default), a path (arena_trial.read_list formats), or an explicit list of ids."""
+    import arena_trial as TR                     # imports arena_analysis/arena_tasks, neither imports this module
+    if trial is not None and not isinstance(trial, (str, os.PathLike)):
+        ids = list(trial)
+    else:
+        try:
+            ids = TR.read_list(trial or TR.DEFAULT_PATH)
+        except (OSError, ValueError, TypeError, AttributeError) as e:
+            raise ReplayError("trial task list %s unreadable: %s" % (trial or TR.DEFAULT_PATH, e))
+    if not ids or not all(isinstance(t, str) for t in ids) or len(set(ids)) != len(ids):
+        raise ReplayError("the trial task list must be distinct task ids, at least one (got %d)" % len(ids))
+    return ids
+
+
+def check_trial(tasks, trial=None) -> list[str]:
+    """-> the trial's ids if `tasks` (ids, or a dict keyed by id) is exactly the trial's set; else ReplayError
+    (ARENA_REPLAY_TASKS_WIRE_TRIAL_LIST: nothing ties the tasks run to the tasks analysed otherwise)."""
+    ids = trial_list(trial)
+    have, want = set(tasks), set(ids)
+    if have != want:
+        miss, extra = sorted(want - have), sorted(have - want)
+        raise ReplayError("replay tasks differ from the trial list %s: %d missing (e.g. %s), %d extra (e.g. %s); "
+                          "the analysis gates on the list, so this run would analyse a different population" %
+                          (trial if trial is not None and isinstance(trial, (str, os.PathLike)) else
+                           ("(given)" if trial is not None else "trial_tasks.json"), len(miss), miss[:3],
+                           len(extra), extra[:3]))
+    return ids
+
+
 def run_schedule(freeze_hash: str, tasks: dict, arms, work, judge, source=DEFAULT_SOURCE, root=None,
-                 contains=None) -> list[dict]:
-    """tasks = {task_id: {"base_sha":..., "fix_sha":...}}. Runs the interleaved slots; one failure is recorded and the
+                 contains=None, trial=None) -> list[dict]:
+    """tasks = {task_id: {"base_sha":..., "fix_sha":...}}, which must be exactly the trial list (trial: None = the
+    committed trial_tasks.json the analysis reads by default; a path or ids otherwise), else ReplayError before
+    anything runs. Runs the interleaved slots; one failure is recorded and the
     run goes on (its clone is already gone). Sibling order is always enforced: `contains` defaults to
     arena_tasks.base_contains over `tasks` in `source` (a refused order raises before anything runs)."""
+    check_trial(tasks, trial)
     if contains is None:
         import arena_rounds as RD
         contains = RD.contains_for(tasks, source)
@@ -622,12 +662,19 @@ def main(argv=None):
     s = sub.add_parser("schedule")
     s.add_argument("--freeze-hash", required=True)
     s.add_argument("--arms", required=True)
-    s.add_argument("--tasks", required=True)
+    s.add_argument("--tasks", help="comma-separated ids; must be exactly the trial list (default: the trial list)")
+    s.add_argument("--trial-tasks", help="the trial list file (default: arena_trial.py's trial_tasks.json, which "
+                   "arena_analysis.py run also reads by default; pass the same file to both)")
     sub.add_parser("leftovers")
     sub.add_parser("sweep")
     a = ap.parse_args(argv)
     if a.cmd == "schedule":
-        print(json.dumps(schedule(a.freeze_hash, a.arms.split(","), a.tasks.split(",")), indent=1))
+        try:
+            tasks = check_trial(a.tasks.split(","), a.trial_tasks) if a.tasks else trial_list(a.trial_tasks)
+        except ReplayError as e:
+            print("REFUSED: %s" % e)
+            return 2
+        print(json.dumps(schedule(a.freeze_hash, a.arms.split(","), tasks), indent=1))
     elif a.cmd == "leftovers":
         print("\n".join(map(str, leftovers())) or "none")
     else:
