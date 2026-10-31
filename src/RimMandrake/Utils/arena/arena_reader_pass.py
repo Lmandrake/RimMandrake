@@ -389,6 +389,19 @@ _PASS_LINE = re.compile(r"^\s*(?:ok|PASS|PASSED)\b")
 _NONZERO_FAILS = re.compile(r"\b[1-9]\d*\s+fail|\bfail\w*\s*[:=]\s*[1-9]", re.I)   # `1 failed`, `FAIL=1`
 # (LAST_FOUR_ROUGH_EDGES: the `0` of `PASS=0 FAIL=1` is the pass count, not a zero failure count)
 _NEUTRAL = re.compile(r"(?<![=:\w])0\s+fail\w*|\bfail\w*\s*[:=]\s*0\b|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.I)
+# ARENA_CODE_REPAIR_CODEX_ROUND_ONE: the same pass count with spaces (`PASS = 0 FAIL = 1`, `PASS: 0 FAIL: 2`). A `0`
+# that is the value of a `[:=]` key AND is followed by a `FAIL [:=]` key is the pass count, not a zero failure count;
+# `Results: 0 failed` (no key after it) stays a zero count.
+_KEY_BEFORE = re.compile(r"[=:]\s+$")
+_KEY_AFTER = re.compile(r"\s*[:=]")
+
+
+def _neutral(ln: str) -> str:
+    def sub(m):
+        if m.group(0)[:1] == "0" and _KEY_BEFORE.search(ln[:m.start()]) and _KEY_AFTER.match(ln, m.end()):
+            return m.group(0)
+        return " "
+    return _NEUTRAL.sub(sub, ln)
 # C7: a missing-name message on an assertion or FAIL line is that check's own failure report (behaviour), unless the
 # line also names the import/attribute/name error class (`FAIL: ImportError: cannot import name ...`), which is the
 # missing name reported again.
@@ -490,7 +503,7 @@ def _outcome(tail) -> list[tuple[str, bool]]:
         if not consequence and conseq:
             m = _PYTEST_REREPORT.match(ln)
             consequence = bool(m and m.group("cls").split(".")[-1] in conseq)
-        out.append((_NEUTRAL.sub(" ", ln), consequence))
+        out.append((_neutral(ln), consequence))
     return out
 
 

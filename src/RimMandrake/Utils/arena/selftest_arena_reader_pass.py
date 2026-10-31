@@ -646,12 +646,15 @@ def rules_rough_edges():
     check(R.base_failure(cs + "error CS1503: cannot convert\n", {}, None, uf)["veto"] is None,
           "edges (3): another compiler error beside it is behaviour")
     # (4) PASS=0 FAIL=1 is a failure, not a zero count on a pass line
-    for t in ("PASS=0 FAIL=1", "PASS:0 FAIL:2", "PASS=0 FAIL=1 (widget)"):
+    # ARENA_CODE_REPAIR_CODEX_ROUND_ONE / ARENA_READER_REPAIR_PASS_COLON_ZERO: the spaced and colon-space forms too
+    for t in ("PASS=0 FAIL=1", "PASS:0 FAIL:2", "PASS=0 FAIL=1 (widget)", "PASS = 0 FAIL = 1", "PASS: 0 FAIL: 2",
+              "PASS = 0 FAIL: 1", "PASS:  0 FAIL = 3"):
         check(veto(t + "\n") is None, "edges (4): %r alone is a visible behaviour failure (%s)" % (t, R.base_failure(t, UN)))
         check(veto(MISS + t + "\n") is None, "edges (4): %r beside the missing name is behaviour" % t)
     check(veto(MISS + "assert result == \"No module named 'newmod'\"\n") == "missing_name_only",
           "v5 review: only pytest's `E   assert` is behaviour whatever it quotes (a bare assert line is not)")
-    for t in ("PASS=3 FAIL=0", "3 passed, 0 failed", "ok 0 failures"):
+    for t in ("PASS=3 FAIL=0", "3 passed, 0 failed", "ok 0 failures", "PASS = 3 FAIL = 0", "PASS: 3 FAIL: 0",
+              "Results: 0 failed", "ran: 0 failures, 3 passed"):
         check(veto(MISS + t + "\n") == "missing_name_only", "edges (4): %r is a zero count (control)" % t)
 
 
