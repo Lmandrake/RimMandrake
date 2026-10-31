@@ -67,6 +67,7 @@ judge batch 2026-10-30 (t_judge_batch; every forced case failed against the prev
                 throwaway overlay (host untouched); a check asking git for origin/main gets a synthetic repo
 Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES / ARENA_PRIVATE / ARENA_JUDGE_WORK point there).
 """
+import fnmatch
 import json
 import os
 import random
@@ -1633,6 +1634,21 @@ for k, p in T.get('unix', {}).items():
 if T.get('tcp'):
     seen['net_loopback_host'] = can_tcp('127.0.0.1', T['tcp'])
 seen['net_out'] = can_tcp('1.1.1.1', 53)
+def can_vsock(connect):
+    try:
+        s = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+    except Exception:
+        return False
+    try:
+        if connect:
+            s.settimeout(3); s.connect((2, 50000))
+        return True
+    except Exception:
+        return False
+    finally:
+        s.close()
+seen['vsock_socket'] = can_vsock(False)
+seen['vsock_host_50000'] = can_vsock(True)
 print('SEEN', sorted(k for k, v in seen.items() if v))
 d = tempfile.mkdtemp()
 c = ok(['git', 'init', '-q', '.'], d) and open(os.path.join(d, 'a'), 'w').write('a') and ok(['git', 'add', 'a'], d)
@@ -1643,6 +1659,27 @@ import demo_skill_mod
 print('SKILL', demo_skill_mod.VALUE == 7)
 print('PYTEST_OK', subprocess.run([sys.executable, '-c', 'import json, sqlite3; print(1)'], capture_output=True).returncode == 0)
 """
+
+
+def _host_vsock() -> list:
+    """The vsock targets the HOST reaches (red needs the instrument to see): an AF_VSOCK socket at all, and a connect
+    to the Windows host (CID 2) port 50000, the side door the tester found. Nothing is sent."""
+    import socket
+    out = []
+    try:
+        s = socket.socket(socket.AF_VSOCK, socket.SOCK_STREAM)
+    except (OSError, AttributeError):
+        return out
+    out.append("vsock_socket")
+    try:
+        s.settimeout(3)
+        s.connect((2, 50000))
+        out.append("vsock_host_50000")
+    except OSError:
+        print("UNMEASURED  the host reaches nothing on vsock CID 2 port 50000: only socket creation is measured")
+    finally:
+        s.close()
+    return out
 
 
 def _seen(out: str) -> set:
@@ -1713,13 +1750,14 @@ def t_check_allowlist(tmp):
         T["tcp"] = tcp.getsockname()[1]
         plants = sorted(list(T["files"]) + list(T["dirs"]) + list(T["git"]) + list(T["unix"]))
         fs_plants = plants                    # every plant is a path: a unix socket is one too (no netns)
+        vs = _host_vsock()                    # ARENA_SANDBOX_REPAIR_VSOCK_SIDE_DOOR: what the HOST can reach by vsock
         body = ALLOW_PROBE % json.dumps(T)
         work = Path(os.environ["ARENA_JUDGE_WORK"]) / "allow"
         work.mkdir(parents=True, exist_ok=True)
         (work / "probe.py").write_text(body.split("d = tempfile.mkdtemp()")[0])
         red = J.run_sandboxed([sys.executable, str(work / "probe.py")], work=work, cwd=work, kind="model")
         rout = red.stdout.decode("utf-8", "replace")
-        want = set(plants + ["net_loopback_host"])
+        want = set(plants + ["net_loopback_host"] + vs)
         check(want <= _seen(rout), "red: the judge-model sandbox (no allow-list, network on) sees every plant "
               "(%s | want %s)" % (rout.strip()[-300:] or red.stderr.decode("utf-8", "replace")[-200:], sorted(want)))
         if not T["unix"]:
@@ -1741,9 +1779,21 @@ def t_check_allowlist(tmp):
         check(set(fs_plants) <= got,
               "mutant: the check sandbox with the allow-list emptied (the old masks only) sees every filesystem plant "
               "(%s)" % sorted(got))
+        if vs:
+            try:
+                J.CHECK_SECCOMP = False
+                mv = J.run_hidden(ck, tree, work / "mut_vsock")[0]
+            finally:
+                J.CHECK_SECCOMP = True
+            check(set(vs) <= _seen(mv["tail"]) and not (set(fs_plants) & _seen(mv["tail"])),
+                  "vsock mutant: the check sandbox WITHOUT the seccomp program (allow-list and netns intact) still "
+                  "opens AF_VSOCK %s: --unshare-net does not cover it (%s)" % (vs, sorted(_seen(mv["tail"]))))
+        else:
+            print("UNMEASURED  the host itself opens no AF_VSOCK socket: the vsock side-door row was not measured")
         r = J.run_hidden(ck, tree, work / "hid")[0]
         check("SEEN []" in r["tail"], "green: a hidden check reads no planted key, credential, transcript, scratch, "
-              "spend mirror, clone or socket and has no network (%s)" % r["tail"][-400:])
+              "spend mirror, clone or socket, has no network and no AF_VSOCK socket (CID 2 port 50000 included) "
+              "(%s)" % r["tail"][-400:])
         check(r["result"] == "pass" and all(("%s True" % k) in r["tail"]
                                             for k in ("COMMIT", "TREE_GIT", "SKILL", "PYTEST_OK")),
               "green: the check still runs: a throwaway-repo commit, its own git tree, a skills/ import (%s: %s)"
@@ -1760,6 +1810,66 @@ def t_check_allowlist(tmp):
             shutil.rmtree(pc, ignore_errors=True)
     _check_allowlist_shape()
     _check_allowlist_real(tmp)
+    _check_data_root(tmp)
+
+
+DATA_ROOT_PROBE = r'''
+import os, sys
+sys.path.insert(0, os.path.join(os.getcwd(), "src", "RimMandrake", "Utils"))
+import rmpaths
+r = rmpaths.rm_data_root()
+print("ROOT", r)
+print("EMPTY", os.listdir(r) == [])
+open(os.path.join(r, "written.txt"), "w").write("x")
+print("WRITE", os.path.isfile(os.path.join(r, "written.txt")))
+print("REAL_SEEN", os.path.exists(%r))
+print("LODESTAR_SEEN", os.path.exists(rmpaths.AGENT_STORAGE))
+'''
+
+
+def _check_data_root(tmp):
+    """ARENA_CHECK_DATA_ROOT_FIX_ALLOWLIST_HID: a check that resolves the agent data root through the tree's own
+    rmpaths gets a throwaway one (empty, writable, fresh per check) while a file planted in the REAL data root stays
+    unreadable. Mutant: without CHECK_ENV's RM_DATA_ROOT the same check dies on RmDataRootUnset (the re-vet's 113)."""
+    src = J.UTILS / "rmpaths.py"
+    real = Path(os.environ.get("RM_DATA_ROOT") or "/mnt/d/ClaudeWork/rimmandrake")
+    plant = real / (".arena_st_dataroot_%d" % os.getpid())
+    if not real.is_dir() or not os.access(real, os.W_OK):
+        print("UNMEASURED  real data root %s not writable here: the throwaway data-root row was not laid" % real)
+        return
+    tree = tmp / "dataroot_tree"
+    (tree / "src" / "RimMandrake" / "Utils").mkdir(parents=True)
+    shutil.copy2(src, tree / "src" / "RimMandrake" / "Utils" / "rmpaths.py")
+    ck = [{"kind": "fix_test", "path": "src/selftest_dataroot.py", "body": DATA_ROOT_PROBE % str(plant)}] * 2
+    work = Path(os.environ["ARENA_JUDGE_WORK"]) / "dataroot"
+    try:
+        plant.write_text("planted\n")
+        rows = J.run_hidden(ck, tree, work)
+        for i, r in enumerate(rows):
+            check(r["result"] == "pass" and all(("%s True" % k) in r["tail"] for k in ("EMPTY", "WRITE"))
+                  and "REAL_SEEN False" in r["tail"] and "LODESTAR_SEEN False" in r["tail"]
+                  and ("ROOT %s" % J.CHECK_DATA_ROOT) in r["tail"],
+                  "data root run %d: rmpaths resolves the throwaway %s, empty (fresh per check) and writable; the "
+                  "real data root's planted file and Lodestar's helper stay unseen (%s: %s)"
+                  % (i, J.CHECK_DATA_ROOT, r["result"], r["tail"][-300:]))
+        real_env = dict(J.CHECK_ENV)
+        try:
+            J.CHECK_ENV.pop("RM_DATA_ROOT")
+            mut = J.run_hidden(ck[:1], tree, work / "mut")[0]
+        finally:
+            J.CHECK_ENV.clear()
+            J.CHECK_ENV.update(real_env)
+        check(mut["result"] != "pass" and "RmDataRootUnset" in mut["tail"],
+              "data root mutant: without CHECK_ENV's RM_DATA_ROOT the check dies on RmDataRootUnset (%s: %s)"
+              % (mut["result"], mut["tail"][-200:]))
+    finally:
+        if plant.exists():
+            plant.unlink()
+    try:
+        J.sandbox_argv(["true"], masks=[], keep=[], dirs=["/home/x"])
+        check(False, "sandbox_argv refuses a created dir outside the sandbox's own /tmp")
+    except J.JudgeError:
+        check(True, "sandbox_argv refuses a created dir outside the sandbox's own /tmp")
 
 
 def _check_allowlist_shape():
@@ -1771,6 +1881,22 @@ def _check_allowlist_shape():
     bad = [str(r) for r in al["ro"] for s in secret if J._inside(Path(r), Path(s)) or J._inside(Path(s), Path(r))]
     check(not bad, "nothing the check gets back read-only holds or sits in a secret root (%s)" % bad)
     ia = {str(p) for p in J.check_allowlist(interop=True)["ro"]}
+    mc = sorted(r for r in {str(p) for p in al["ro"]} if J._inside(Path(r), Path("/mnt/c")))
+    check(not mc, "a python check gets nothing of /mnt/c back (the deployed mods live there) (%s)" % mc)
+    imc = sorted(r for r in ia if J._inside(Path(r), Path("/mnt/c")))
+    check(all(fnmatch.fnmatch(r, J.CHECK_INTEROP_GLOB) for r in imc),
+          "a C#-building check gets only the per-user .dotnet of /mnt/c (%s)" % imc)
+    fd = J.check_seccomp_fd()
+    try:
+        prog = os.read(fd, 1 << 16)
+    finally:
+        os.close(fd)
+    import arm_sandbox
+    check(prog == arm_sandbox.seccomp_program() and len(prog) % 8 == 0 and prog,
+          "check_seccomp_fd hands bwrap exactly arm_sandbox.seccomp_program() (%d bytes)" % len(prog))
+    sa = J.sandbox_argv(["true"], masks=[], keep=[], seccomp_fd=7)
+    check(("--seccomp", "7") in list(zip(sa, sa[1:])) and sa.index("--seccomp") < sa.index("--"),
+          "sandbox_argv passes --seccomp FD to bwrap, before the command")
     check("/run/WSL" in ia and "/run/WSL" not in {str(p) for p in al["ro"]},
           "only a C#-building (interop) check gets /run/WSL back")
     argv = J.sandbox_argv(["true"], masks=[], keep=[], net=False, hide=al["hide"], ro=al["ro"])

@@ -341,10 +341,13 @@ def check_overlays() -> list[Path]:
 VAR_LOGS = ("/var/log", "/var/lib/systemd", "/var/spool", "/var/mail", "/var/crash")   # = arm_sandbox.VAR_MASK
 CHECK_HIDE = ("/home", "/mnt", "/run", "/var/tmp", "/root", "/srv", "/opt", "/media") + VAR_LOGS
 CHECK_TOOL_RO_HOME = (".local/bin", ".local/lib", ".local/node", ".local/share/uv/python")   # home-relative
-CHECK_TOOL_RO = ("/mnt/c/Program Files", "/mnt/c/Windows", "/mnt/c/Program Files (x86)/Steam/steamapps",
-                 "/mnt/d/SteamLibrary/steamapps")
+# ARENA_SANDBOX_REPAIR_VSOCK_SIDE_DOOR: NOTHING of /mnt/c (C:\Program Files (x86)\Steam\...\RimWorld\Mods holds the
+# deployed mods, i.e. possibly the fix). A python check that reads the game's vanilla Data from there simply fails:
+# counted, not masked around. /mnt/d/SteamLibrary holds other games and a RimWorld with third-party mods only.
+CHECK_TOOL_RO = ("/mnt/d/SteamLibrary/steamapps",)
 # a C#-building check (interop): WSL's /init finds its socket under /run/WSL and winbuild's dotnet.exe is the per-user
-# /mnt/c/Users/*/.dotnet. dotnet.exe itself runs on Windows OUTSIDE bwrap: the accepted gap, not built around here.
+# /mnt/c/Users/*/.dotnet (the only /mnt/c a check ever sees). dotnet.exe itself runs on Windows OUTSIDE bwrap: the
+# accepted gap, not built around here.
 CHECK_INTEROP_RO = ("/run/WSL",)
 CHECK_INTEROP_GLOB = "/mnt/c/Users/*/.dotnet"
 # the check's ~/.gitconfig: an identity for throwaway-repo commits and nothing else (the real one names the owner and a
@@ -362,6 +365,34 @@ def check_allowlist(interop: bool = False) -> dict:
     return {"hide": [Path(h) for h in CHECK_HIDE], "ro": ro}
 
 
+# ARENA_SANDBOX_REPAIR_VSOCK_SIDE_DOOR: --unshare-net does not cover AF_VSOCK (the host is CID 2; ports 50000-50005
+# answered from a check). A hidden check runs under arm_sandbox's own seccomp program (imported, arm_sandbox.py is
+# unchanged, so the answer-check sandbox_sha256 record is too): socket(AF_VSOCK) -> EAFNOSUPPORT, io_uring -> ENOSYS,
+# a foreign ABI -> KILL. x86_64-only, so elsewhere a check refuses to run rather than run without it.
+CHECK_SECCOMP = True
+
+
+def check_seccomp_fd() -> int:
+    """-> the read end of a pipe holding the seccomp program (bwrap --seccomp FD reads it to EOF). Caller closes it."""
+    import platform
+    import arm_sandbox  # noqa: PLC0415 -- same directory (sys.path above)
+    if platform.machine() != "x86_64":
+        raise JudgeUnavailable("the check seccomp program is x86_64-only (machine %s): no check runs without it"
+                               % platform.machine())
+    prog = arm_sandbox.seccomp_program()
+    r, w = os.pipe()
+    try:
+        if len(prog) > 60000:                        # one write into an empty pipe buffer (64 KiB) never blocks
+            raise JudgeError("seccomp program too large for a pipe (%d bytes)" % len(prog))
+        os.write(w, prog)
+    except BaseException:
+        os.close(r)
+        raise
+    finally:
+        os.close(w)
+    return r
+
+
 def check_gitconfig(work: Path) -> Path:
     """The synthetic ~/.gitconfig bound into a check sandbox (written once into the judge's own work dir)."""
     f = Path(work) / ".check_gitconfig"
@@ -374,7 +405,8 @@ def check_gitconfig(work: Path) -> Path:
 def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir: Path | None = None,
                  proc: bool = True, overlays: list[Path] | None = None, net: bool = True,
                  hide: list[Path] | None = None, ro: list[Path] | None = None,
-                 files: list[tuple[Path, Path]] | None = None) -> list[str]:
+                 files: list[tuple[Path, Path]] | None = None, dirs: list[str] | None = None,
+                 seccomp_fd: int | None = None) -> list[str]:
     """READ-ONLY root (`--ro-bind / /`), a fresh /tmp, its own pid namespace (no host /proc, and the whole tree dies
     with it), `masks` hidden under empty tmpfs, and ONLY `keep` writable. Order: kept dirs outside every mask are
     bound first, then the masks are laid (so a broad bind like $HOME never re-exposes ~/.claude/projects), then the
@@ -389,6 +421,12 @@ def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir:
     out = [bw, "--ro-bind", "/", "/", "--dev", "/dev"] + (["--proc", "/proc"] if proc else ["--tmpfs", "/proc"]) + [
            "--tmpfs", "/tmp",
            "--unshare-pid", "--new-session", "--die-with-parent"] + ([] if net else ["--unshare-net"])
+    if seccomp_fd is not None:                       # the arm_sandbox filter (check_seccomp_fd): no AF_VSOCK socket
+        out += ["--seccomp", str(int(seccomp_fd))]
+    for d in dirs or ():                             # empty dirs inside the fresh /tmp (CHECK_DATA_ROOT)
+        if not os.path.isabs(d) or not _inside(Path(d), Path("/tmp")) or d.rstrip("/") == "/tmp":
+            raise JudgeError("sandbox dir %r is not inside the sandbox's own /tmp" % (d,))
+        out += ["--dir", d]
     # ALLOW-LIST part (a hidden check, ARENA_SANDBOX_REPAIR_DENYLIST_STILL_LEAKS): every `hide` container becomes an
     # empty tmpfs, then only `ro` (the toolchain) and `files` (src, dst) come back read-only. A mask inside a hidden
     # container is already gone (not laid again); an overlay inside one is an EMPTY writable tmpfs, never the host dir.
@@ -513,12 +551,19 @@ def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | 
     check = kind == "check"
     al = check_allowlist(interop) if check else {}
     files = [(check_gitconfig(work), Path.home() / ".gitconfig")] if check else None
-    full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work, proc=not check or interop,
-                        overlays=check_overlays() if check else None, net=not check, hide=al.get("hide"),
-                        ro=al.get("ro"), files=files)
-    proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
-                            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind, own=work),
-                            start_new_session=True)
+    sfd = check_seccomp_fd() if check and CHECK_SECCOMP else None
+    try:
+        full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work,
+                            proc=not check or interop, overlays=check_overlays() if check else None, net=not check,
+                            hide=al.get("hide"), ro=al.get("ro"), files=files,
+                            dirs=[CHECK_DATA_ROOT] if check else None, seccomp_fd=sfd)
+        proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
+                                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                env=judge_env(env, priv, kind, own=work), start_new_session=True,
+                                pass_fds=(sfd,) if sfd is not None else ())
+    finally:
+        if sfd is not None:
+            os.close(sfd)
     try:
         out, err = proc.communicate(stdin, timeout=timeout)
         return subprocess.CompletedProcess(full, proc.returncode, out, err)
@@ -1456,9 +1501,15 @@ def raw_output(out: bytes, err: bytes, nonce: str, cap: int = RAW_CAP) -> str:
 # /tmp tmpfs (dies with the sandbox; reaches nothing). run_selftests/suite_evidence write ~/.local/state/rm-selftests
 # and the judge mask over ~/.local/state (the private dir's generic parent) is read-only: close_evidence checks died
 # on EROFS at the fix. Passed to every check run and to the vet's read trace (arena_vet_reads), so both see one env.
+# CHECK_DATA_ROOT (ARENA_CHECK_DATA_ROOT_FIX_ALLOWLIST_HID): rmpaths resolves the agent data root from $RM_DATA_ROOT
+# or else Lodestar's ~/dev/Lodestar/bin/lib/agent_storage.py, hidden by the allow-list, so 113 vetted checks died on
+# RmDataRootUnset at both sides. A check gets a THROWAWAY data root instead: an empty dir sandbox_argv creates in the
+# sandbox's own /tmp tmpfs (fresh per check run, writable, gone with the sandbox); the real one stays unseen.
+CHECK_DATA_ROOT = "/tmp/arena-check-state/data-root"
 CHECK_ENV = {"RM_SELFTEST_STATE_DIR": "/tmp/arena-check-state/rm-selftests",
              "XDG_STATE_HOME": "/tmp/arena-check-state/xdg-state",
-             "XDG_CACHE_HOME": "/tmp/arena-check-state/xdg-cache"}
+             "XDG_CACHE_HOME": "/tmp/arena-check-state/xdg-cache",
+             "RM_DATA_ROOT": CHECK_DATA_ROOT}
 
 
 def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None = None,

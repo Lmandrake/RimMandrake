@@ -1,0 +1,2 @@
+On WSL2, bwrap --unshare-net does NOT close AF_VSOCK: a sandboxed process still connects to the Windows host (CID 2, ports 50000-50005 answer). Network isolation for untrusted code needs a seccomp filter too (arm_sandbox.seccomp_program returns EAFNOSUPPORT for socket(AF_VSOCK)); arena_judge kind=check now passes it via bwrap --seccomp FD from a pipe. WSL interop (a Windows .exe from inside bwrap) keeps working under that filter. Item ARENA_SANDBOX_REPAIR_VSOCK_SIDE_DOOR.
+home: NONE
