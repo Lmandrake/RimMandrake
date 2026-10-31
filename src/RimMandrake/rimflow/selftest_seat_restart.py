@@ -349,7 +349,10 @@ def test_verify_and_rearm():
     check(state(st) == "failed" and any(x["do"] == "alarm" for x in a),
           "never re-armed within arm_s -> failed + alarm (%s)" % dos(a))
     new = {"session_id": "sid-new", "pid": 5555}
+    torn = obs(sessions=[sess(sid="sid-new", pid=5555)], armed=new)
+    torn["seat_restart"]["tx"] = lambda seat, s: None
     for name, o in (("is gone", obs(sessions=[], armed=new)),
+                    ("has an unreadable transcript", torn),
                     ("died on an API error", obs(sessions=[sess(sid="sid-new", pid=5555)], armed=new, tx={"api_end": True}))):
         st = killed_state(fresh())
         run(sch, st, obs(sessions=[sess(sid="sid-new", pid=5555)]), T0 + 230)

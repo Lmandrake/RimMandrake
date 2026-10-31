@@ -84,7 +84,7 @@ def _units_step(cfg, S, reading, now, act, iso):
                 u, "restart" if how == "start" else "clear", r["n"], cfg["repairs_per_day"]))
         elif now - r["since"] >= cfg["alarm_after_s"]:
             act(do="alarm", kind="timer:" + u, note=True, conductor_log=True,
-                why="%s failed since %s; %s" % (u, iso(r["since"]), "%d automatic repairs today did not hold" % r["n"]
+                why="%s first failed %s; %s" % (u, iso(r["since"]), "%d automatic repairs today did not hold" % r["n"]
                                                 if how else "no safe automatic repair for it"),
                 raise_first="%s needs a look: `systemctl --user status %s`." % (u, u))
 
@@ -156,7 +156,10 @@ def step(sch, st, obs, now, act, iso, ts):
     else:
         guarded("alarms", lambda: _files_step(cfg, alarms, act))
     flags = read("flags")
-    at = ts(flags.get("at")) if isinstance(flags, dict) else None
+    try:
+        at = ts(flags.get("at")) if isinstance(flags, dict) else None
+    except Exception:  # noqa: BLE001
+        at = None
     if at is None or now - at > cfg["flags_stale_s"]:      # a frozen snapshot is no standing flag
         blind("flags", "flags.json unreadable or stale (written %s)" % (iso(at) if at is not None else "unknown"))
     else:

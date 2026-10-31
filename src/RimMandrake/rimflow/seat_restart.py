@@ -864,10 +864,11 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         return
     if state == "relaunched":
         armed = ro["armed"](seat) or {}
-        mine = [s for s in named if s.get("sessionId") == rs.get("new_session")]     # armed, and still alive after it
+        # armed, still alive after it, and a transcript that can say so: no reading is no proof
+        mine = [s for s in named if s.get("sessionId") == rs.get("new_session")]
         tx = ro["tx"](seat, mine[0]) if mine else None
         if armed.get("session_id") and armed.get("session_id") == rs.get("new_session") and mine \
-                and not (tx or {}).get("api_end"):
+                and tx and not tx.get("api_end"):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
             act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=True,
                 evidence="fresh %s window %s (pid %s), doorbell armed at %s" % (
@@ -875,7 +876,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         elif now - rs["relaunched_at"] >= cfg["arm_s"]:
             _fail(rs, seat, "rearm", "the new window %s %s in %d s" % (rs.get("new_session"), (
                 "died on an API error" if (tx or {}).get("api_end") else "is gone" if not mine
-                else "never armed its doorbell"), cfg["arm_s"]), now, act)
+                else "has an unreadable transcript" if not tx else "never armed its doorbell"), cfg["arm_s"]), now, act)
 
 
 def cursor_verdict(cfg, rs, sc, now, track=True):

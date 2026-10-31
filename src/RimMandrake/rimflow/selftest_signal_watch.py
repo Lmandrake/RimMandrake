@@ -88,6 +88,15 @@ def test_a_raising_reader_costs_only_itself():
     assert [a["kind"] for a in acts] == ["signal:units", "signal:flags"], acts
 
 
+def test_a_flags_stamp_that_raises_reads_blind():
+    def bad(s):
+        raise ValueError(s)
+    acts = []
+    so = {"units": lambda: ([], {}), "alarms": lambda: {}, "flags": lambda: {"at": "junk", "flags": []}}
+    SW.step(SCH, {}, {"paused": None, "signals": so}, T0, lambda **a: acts.append(a), str, bad)
+    assert [a["kind"] for a in acts] == ["signal:flags"], acts
+
+
 def test_give_back_and_repair():
     _, st = run(["a.scope"])
     SW.give_back(st, {"unit": "a.scope"})

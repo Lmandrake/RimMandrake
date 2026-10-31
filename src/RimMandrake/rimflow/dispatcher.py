@@ -436,7 +436,7 @@ def decide(sch, st, obs, now, apply, out=None):
         RL.decide_roles(sch, st, obs["roles"], now, act, busy=role_busy, gate=gate)
     else:
         for role in sch.get("roles") or []:
-            if role.get("enabled"):
+            if isinstance(role, dict) and role.get("enabled"):
                 act(do="alarm", kind="role:" + role.get("name", "?"), note=True, conductor_log=True,
                     raise_first="Role runs are not being launched.", why="role %s is enabled but this tick has no role observer" % role.get("name"))
     if obs.get("seat_restart"):        # seat_restart.py: a fresh window per ticket (off unless seat_restart.enabled)
@@ -638,7 +638,8 @@ def decide(sch, st, obs, now, apply, out=None):
         ring_id = "%s-%d-%d" % (seat, int(now), attempt)
         act(do="ring", seat=seat, ring_id=ring_id, ticket=ticket["id"], attempt=attempt,
             session_id=sess.get("sessionId"), message=message(seat, cfg, ticket, ring_id),
-            account=pk.get("account"), idle_since=ss.get("idle_since"))
+            account=pk.get("account"), idle_since=ss.get("idle_since"),
+            backoff={k: ss[k] for k in ("cooldown_until", "nh_until") if k in ss})
         st["wakes"].append({"seat": seat, "at": now})
         ss.pop("cooldown_until", None)
         ss.pop("nh_until", None)
@@ -914,7 +915,8 @@ def token_rx(path=None):
 
 def blind_items(sch):
     """The ledger items a token-blind role reads: every role's ledger_item unless the role is `token_aware`."""
-    return {r["ledger_item"] for r in sch.get("roles") or [] if r.get("ledger_item") and r.get("token_aware") is not True}
+    return {r["ledger_item"] for r in sch.get("roles") or []
+            if isinstance(r, dict) and r.get("ledger_item") and r.get("token_aware") is not True}
 
 
 def route_note(sch, item, text, rx=None, blind_text=None):
@@ -1123,7 +1125,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                             res = ("started: " if ok else "failed: ") + out
                             st["seats"][a["seat"]].setdefault("recover", {"at": now})["out"] = out
                     elif a["do"] == "role_launch":
-                        role = RL.launch_role(next(r for r in sch["roles"] if r.get("name") == a["role"]), a)
+                        role = RL.launch_role(next(r for r in sch["roles"] if isinstance(r, dict) and r.get("name") == a["role"]), a)
                         # the off switch and PAUSE again, now: decide() read them before the ingest.lock wait
                         off = do_off(RL.wsl_path(role.get("off_file") or ""))
                         paused = do_paused()
@@ -1311,13 +1313,14 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
 
 def unring(st, a, now):
     """Give back a ring decide() made that was never released (PAUSE at release, a tick that raised first): no
-    pending ring to verify, no wake on the caps, the stall clock resumes where it was."""
+    pending ring to verify, no wake on the caps, the stall clock and any backoff resume where they were."""
     ss = st["seats"].setdefault(a["seat"], {})
     if (ss.get("ring") or {}).get("ring_id") == a["ring_id"]:
         ss.pop("ring")          # never written: nothing to verify, nothing in the inbox
     st["wakes"] = [w for w in st["wakes"] if not (w["seat"] == a["seat"] and w["at"] == now)]
     if a.get("idle_since") is not None:
         ss["idle_since"] = a["idle_since"]
+    ss.update(a.get("backoff") or {})
 
 
 def unrecover(st, a, now):

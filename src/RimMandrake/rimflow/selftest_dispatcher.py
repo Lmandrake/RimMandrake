@@ -3532,6 +3532,15 @@ def test_long_helper_alarm():
     check(not [x for x in off if str(x.get("kind")).startswith("long_helper")], "long helper: disabled = silent")
 
 
+def test_unring_gives_back_a_backoff_and_bad_roles_are_skipped():
+    st = {"seats": {"FOUNDRY": {}}, "wakes": []}
+    D.unring(st, {"seat": "FOUNDRY", "ring_id": "r", "idle_since": 5.0,
+                  "backoff": {"cooldown_until": 900.0, "nh_until": 900.0}}, 100.0)
+    ss = st["seats"]["FOUNDRY"]
+    check(ss.get("cooldown_until") == 900.0 and ss.get("nh_until") == 900.0, "an unreleased ring keeps the seat's backoff")
+    check(D.blind_items({"roles": ["not a role", {"ledger_item": "X"}]}) == {"X"}, "a bad role row reads as no role")
+
+
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
@@ -3549,7 +3558,7 @@ def main():
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
               test_golive_b3_wave1_config, test_golive_trial_set_from_schedule, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,
-              test_golive_m6_weekday_slot_keys, test_long_helper_alarm, test_golive_m7_dst_yesterday, test_review_night_n1):
+              test_golive_m6_weekday_slot_keys, test_long_helper_alarm, test_unring_gives_back_a_backoff_and_bad_roles_are_skipped, test_golive_m7_dst_yesterday, test_review_night_n1):
         try:
             t()
         except Exception as e:  # noqa: BLE001
