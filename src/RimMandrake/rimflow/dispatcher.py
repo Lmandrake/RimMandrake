@@ -551,6 +551,8 @@ def decide(sch, st, obs, now, apply, out=None):
             return
         peeked = None
         if ss.get("cooldown_until", 0) > now:
+            if status != "idle":
+                ss.pop("idle_since", None)       # busy time is not stall time, in a backoff too
             # The re-ring backoff waits out a seat that declined THESE tickets, not new work: measured 10-29..30, 3 of
             # 11 backoffs (about 2.1 of 7.85 h) sat on a different, takeable top item (FOUNDRY_RINGS_FIX_BACKOFF_HIDES_NEW_WORK).
             # Only that backoff: a give-up or failed-recover cooldown holds. It stands until a ring really goes out.
