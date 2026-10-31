@@ -1460,5 +1460,61 @@ finally:
 check("steve: a watcher from the future does not hide the stall", _s["steve.unowned_stall_min"]["m"] == "MEASURED" and _s["steve.unowned_stall_min"]["v"] > 0, _s["steve.unowned_stall_min"])
 check("patterns: a bare string is one key, not its characters", OW.matches("a.b", "a.*") and not OW.matches("a", "a.*"))
 check("v3: a reason that is no string still renders", isinstance(OW.c_v3(NOW, {"v3_owed": {"k": {"reason": "x"}}}, {})["v3.k"]["why"], str))
+# STEVE_SEATS_FIX_DIE_ON_REBOOT: both seats back after a boot, or an alarm through the ledger and the Conductor log.
+_cfg = RULES["steve_seats"]
+_probe_real, _run_real = OW.steve_seat_probe, OW.subprocess.run
+
+
+def _ssh_says(out):
+    OW.subprocess.run = lambda *a, **k: subprocess.CompletedProcess(a, 0, out, "")
+    try:
+        return _probe_real(_cfg)
+    finally:
+        OW.subprocess.run = _run_real
+
+
+check("seats: the probe reads uptime and the seats that answered", _ssh_says("120\nup seat-runner\nprobe-done\n") == (True, 120, {"seat-runner"}))
+check("seats: a probe cut short is no reading, not absent seats", _ssh_says("120\nup seat-runner\n")[0] is False)
+check("seats: both seats are named and the ready text covers both screens",
+      set(_cfg["seats"]) == {"seat-server", "seat-runner"} and re.search(_cfg["ready"], "✔ Connected · Capacity: 1/32")
+      and re.search(_cfg["ready"], "/remote-control is active"))
+
+
+def _seats(reach, up, seen, now=NOW):
+    OW.steve_seat_probe = lambda cfg: (reach, up, set(seen))
+    try:
+        return OW.c_steve_seats(now, RULES, {})["steve.seats_absent_min"]
+    finally:
+        OW.steve_seat_probe = _probe_real
+
+
+_both = list(_cfg["seats"])
+check("seats: both live reads 0", _seats(True, 9000, _both)["v"] == 0.0)
+_p = _seats(True, 1200, ["seat-runner"])
+check("seats: absent since the boot counts from the boot", _p["v"] == 20.0 and "seat-server" in _p["x"]["said"], _p)
+_p = _seats(True, 1500, [], NOW + 300)
+check("seats: the count holds across looks", _p["v"] == 25.0, _p)
+check("seats: back up clears", _seats(True, 9000, _both, NOW + 600)["v"] == 0.0 and not (OW.ops_dir() / "steve_seats.json").exists())
+_p = _seats(True, 90000, ["seat-server"])
+check("seats: lost long after boot counts from the first look, so a switch of seconds cannot alarm", _p["v"] == 0.0, _p)
+_seats(True, 9000, _both, NOW)
+_p = _seats(False, None, [])
+check("seats: a machine out of reach counts as absent, not silent", _p["m"] == "MEASURED" and _p["x"]["said"] == "unreachable", _p)
+_p = _seats(False, None, [], NOW + 1200)
+check("seats: and crosses the line", _p["v"] == 20.0, _p)
+_seats(True, 9000, _both, NOW)
+_clog = TMP / "conductor_log.md"
+_r = json.loads(json.dumps(RULES))
+_rows = [t for v in _r.values() if isinstance(v, list) for t in v if isinstance(t, dict) and t.get("key") == "steve.seats_absent_min"]
+for _t in _rows:
+    _t["conductor_log"] = str(_clog)
+check("seats: the rule alarms and owes the Conductor", _rows and _rows[0]["alarm"] and _rows[0]["value"] == 10)
+(OW.ops_dir() / "alarms.json").unlink(missing_ok=True)
+OW.run_alarms({"steve.seats_absent_min": M(5.0)}, _r, NOW, known, filer_ok)
+check("seats: under the line nothing is filed", not _clog.exists())
+_st = OW.run_alarms({"steve.seats_absent_min": OW.M(20.0, "min", said="seat-server absent")}, _r, NOW, known, filer_ok)
+_a = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
+check("seats: over the line a ledger item is filed, naming the seat", _a.get("state") == "OPEN" and "seat-server absent" in (_a.get("title") or ""), _a)
+check("seats: and the Conductor log has the line", _clog.exists() and _a.get("item", "?") in _clog.read_text() and "seat-server absent" in _clog.read_text())
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

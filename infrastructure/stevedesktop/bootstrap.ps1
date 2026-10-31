@@ -516,6 +516,22 @@ function Register-KeepaliveTask {
     return 'registered \WSL Keepalive'
 }
 
+function Register-FleetTask {
+    # STEVE_SEATS_FIX_DIE_ON_REBOOT: returns the two Claude seats after every logon. claude_fleet.ps1 comes from
+    # claude-remote-control accounts/install.sh; -Logon waits for WSL and the network, and is idempotent.
+    $ps = Join-Path $Root 'claude_fleet.ps1'
+    $action = New-ScheduledTaskAction -Execute 'powershell.exe' `
+        -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$ps`" -Logon"
+    $trigger = New-ScheduledTaskTrigger -AtLogOn -User $TaskUserSid
+    $trigger.Delay = 'PT15S'
+    $principal = New-ScheduledTaskPrincipal -UserId $TaskUserSid -LogonType Interactive
+    $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+        -ExecutionTimeLimit (New-TimeSpan -Minutes 20) -MultipleInstances IgnoreNew
+    Register-ScheduledTask -TaskName 'Claude Fleet' -TaskPath '\' -Action $action -Trigger $trigger `
+        -Principal $principal -Settings $settings -Description 'SteveDesktop: returns the two Claude seats after every logon.' -Force | Out-Null
+    return 'registered \Claude Fleet'
+}
+
 function Register-SelfUpgradeTask {
     $ps = Join-Path $Root 'selfupgrade_windows.ps1'
     $body = @(
@@ -682,6 +698,7 @@ function Invoke-Main {
     Invoke-Step 'autologon_tool' { Install-Autologon }
     Invoke-Step 'rdp' { Enable-RdpIfPro }
     Invoke-Step 'task_keepalive' { Register-KeepaliveTask }
+    Invoke-Step 'task_fleet' { Register-FleetTask }
     Invoke-Step 'task_selfupgrade' { Register-SelfUpgradeTask }
     Invoke-Step 'tailscale_login' { Start-TailscaleLogin }
     $script:Status.phase = 'B_done'

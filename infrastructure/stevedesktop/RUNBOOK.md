@@ -242,6 +242,13 @@ The agent then gets PASS on every door.
   - **Fleet** (delegated call): `C:\SteveDesktop\claude_fleet.ps1` opens "Claude Server (SteveDesktop)"
     (`claude remote-control`) and "Claude Runner (SteveDesktop)" in `~/rm/runner`. This supersedes step 9's
     "do not turn on Remote Control" now that the owner wants SteveDesktop controllable from his phone.
+  - **Fleet after a reboot:** the logon task `\Claude Fleet` runs it with `-Logon` (log `C:\SteveDesktop\fleet.log`).
+    Each seat is a tmux session, `seat-server` in `~/seat-server` and `seat-runner` in `~/rm/runner`; a Windows
+    Terminal tile only views it. From anywhere: `ssh stevedesktop-wsl tmux capture-pane -p -t seat-runner`, and
+    `tmux send-keys` to answer it. The Server must never run in `~`: Claude does not save trust for a home directory,
+    so it stops at a `[y/N]` prompt on every launch, alive and unconnected. `ops_watch` alarms
+    (`steve.seats_absent_min` > 10, ledger item `OPS_STEVE_SEATS_RESTORE_*` and the Conductor log).
+    Steve's test queue lives on Archmagi: `testq.py pause` from a bench clone, never from Steve's runner clone.
   - **Reinstall:** copy the repo to `~/src/claude-account` and run `bash accounts/install.sh stevedesktop`.
   - The `sjlewis` user's `~/.claude/.credentials.json` is a superseded copy of the lukas grant (the token has
     rotated since); do not use or copy it.

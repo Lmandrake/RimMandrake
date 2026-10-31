@@ -512,6 +512,62 @@ def c_steve(now, rules, ctx):
     return out
 
 
+# STEVE_SEATS_FIX_DIE_ON_REBOOT: are SteveDesktop's two Claude seats up AND connected? Each lives in a tmux session
+# (accounts/stevedesktop_fleet.ps1 in claude-remote-control), so its screen is readable over ssh. A live process is
+# not the test: on 2026-10-31 the Server sat alive at a trust prompt, never connected.
+SEAT_PROBE = """cut -d. -f1 /proc/uptime
+for s in %s; do p=$(tmux capture-pane -p -t "$s" 2>/dev/null); echo "$p" | grep -qE '%s' && echo "up $s"; done
+echo probe-done"""
+
+
+def steve_seat_probe(cfg):
+    """(reachable, uptime_s, {seats up}). Reachable is False unless the whole probe ran to its last line."""
+    cmd = SEAT_PROBE % (" ".join(cfg["seats"]), cfg["ready"])
+    try:
+        r = subprocess.run(["ssh", "-o", "BatchMode=yes", "-o", "ConnectTimeout=10", cfg["ssh"], cmd],
+                           capture_output=True, text=True, timeout=30)
+    except (OSError, subprocess.TimeoutExpired):
+        return False, None, set()
+    lines = r.stdout.split("\n")
+    if "probe-done" not in lines or not lines[0].isdigit():
+        return False, None, set()
+    return True, int(lines[0]), {x[3:] for x in lines if x.startswith("up ")}
+
+
+def c_steve_seats(now, rules, ctx):
+    """steve.seats_absent_min: how long a seat has been missing, not connected, or the machine out of reach (0 = both
+    live). Over the rule's line it alarms: a ledger item and a Conductor log line. Absent since boot counts from the
+    boot, so a reboot that never brought them back alarms at the first look past the line; a seat lost later counts
+    from the first look that saw it, so one account switch (seconds) does not. Reach failing counts too: a machine
+    gone is seats gone, and UNMEASURED would be silent."""
+    cfg = rules.get("steve_seats")
+    if not cfg:
+        return {}
+    reach, up, seen = steve_seat_probe(cfg)
+    missing = sorted(set(cfg["seats"]) - seen)
+    p = ops_dir() / "steve_seats.json"
+    st = read_json(p) if p.exists() else None
+    since = st.get("absent_since") if isinstance(st, dict) else None
+    if reach and not missing:
+        if since is not None:
+            p.unlink()
+        return {"steve.seats_absent_min": M(0.0, "min a Steve seat has been absent", uptime_min=round(up / 60.0, 1))}
+    if not is_num(since):
+        since = now
+    if reach and up <= HOUR:
+        since = min(since, now - up)
+    atomic_json(p, {"absent_since": since})
+    said = "unreachable" if not reach else ", ".join(missing) + " absent"
+    return {"steve.seats_absent_min": M(round((now - since) / 60.0, 1), "min a Steve seat has been absent", said=said,
+                                        uptime_min=round(up / 60.0, 1) if reach else None)}
+
+
+def c_steve_all(now, rules, ctx):
+    out = c_steve(now, rules, ctx)
+    out.update(c_steve_seats(now, rules, ctx))
+    return out
+
+
 def is_num(v):
     return isinstance(v, (int, float)) and not isinstance(v, bool)
 
@@ -1104,7 +1160,7 @@ def c_arena(now, rules, ctx):
     return out
 
 
-COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve, "flow": c_flow, "testing": c_testing,
+COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
               "arena": c_arena}
@@ -1508,7 +1564,7 @@ def run_alarms(points, rules, now, known_ids, filer):
         if isinstance(said, str) and said:
             title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
         cur["title"] = title[:160]
-        todo.append({"aid": aid, "name": cur["name"], "title": cur["title"]})
+        todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log")})
     for aid in sorted(set(ts) | set(state)):
         try:
             one(aid)
@@ -1542,6 +1598,12 @@ def run_alarms(points, rules, now, known_ids, filer):
                     # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
                     log.append({"ts": iso(now), "event": "filed", "aid": a["aid"], "item": a["name"],
                                 "publish": res.get("_publish")})
+                    if a.get("conductor_log"):      # a rule that also owes the Conductor a line (rules key conductor_log)
+                        try:
+                            with open(a["conductor_log"], "a", encoding="utf-8") as f:
+                                f.write("\n- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]))
+                        except OSError as e:
+                            log.append({"ts": iso(now), "event": "conductor_log_failed", "aid": a["aid"], "error": str(e)[:200]})
                 else:
                     cur["error"] = err
                     if filer:
@@ -1664,7 +1726,7 @@ production.O1 production.O2 production.O3 production.O4
 production.P1 production.P2 production.P3 production.P4
 production.V0 production.W1 production.W2 production.W3 production.W4 production.record_age_min
 steve.fault_min steve.heartbeat_age_min steve.invalid_24h steve.invalid_streak steve.jobs_24h steve.last_done_age_min
-steve.state steve.unowned_stall_min steve.watch_age_min
+steve.seats_absent_min steve.state steve.unowned_stall_min steve.watch_age_min
 testing.archmagi_nothing_h_7d testing.nothing_h_7d testing.steve_nothing_h_7d
 timers.failed_units timers.overdue_timers
 tps.ratio_median tps.stall_max_s tps.stalls
