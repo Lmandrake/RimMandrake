@@ -75,11 +75,38 @@ namespace RimMandrake.Minerals
             return null;
         }
 
-        /// <summary>This biome's quarry plan from the live registry, settings and Quarry dictionary.</summary>
+        private static List<RM_QuarryKernel.QuarryRock> rocks;
+        private static int rocksRevision = -1;
+
+        /// <summary>Every resource rock Quarry lists (its OreDictionary.validOre), with the scatter and deepCommonality the policy
+        /// found before writing (RM_MineralPolicy.Original; live values for a def it never saw). Cached on the policy Revision.</summary>
+        internal static List<RM_QuarryKernel.QuarryRock> QuarryRocks()
+        {
+            if (rocks != null && rocksRevision == RM_MineralPolicy.Revision) return rocks;
+            var list = new List<RM_QuarryKernel.QuarryRock>();
+            foreach (ThingDef t in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                if (t == null || !t.mineable || t.building == null || !t.building.isResourceRock || t.building.mineableThing == null
+                    || t.defName == "MineableComponentsIndustrial") continue;
+                ThingDef item = t.building.mineableThing;
+                float scatter = RM_MineralPolicy.Original(t.defName)?.Scatter ?? t.building.mineableScatterCommonality;
+                float deep = RM_MineralPolicy.Original(item.defName)?.Deep ?? item.deepCommonality;
+                list.Add(new RM_QuarryKernel.QuarryRock(item.defName, scatter, deep, item.BaseMarketValue));
+            }
+            rocks = list;
+            rocksRevision = RM_MineralPolicy.Revision;
+            return rocks;
+        }
+
+        /// <summary>This biome's quarry plan from the live registry, settings and Quarry dictionary. Governed entries are weighed
+        /// from the originals, never from the stored dictionary (QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS: the stored weights depend
+        /// on whether Quarry built its list before or after the policy zeroed them).</summary>
         public static QuarryPlan PlanFor(string biome)
         {
-            return RM_QuarryKernel.Plan(RM_MineralPolicy.Rows, biome, RM_MineralsSettings.overrides, QuarryDictionary(),
-                                        RM_MineralsSettings.suppressUnregistered);
+            List<MineralRow> rows = RM_MineralPolicy.Rows;
+            List<KeyValuePair<string, float>> dict = RM_QuarryKernel.PristineDictionary(
+                QuarryDictionary(), QuarryRocks(), RM_QuarryKernel.GovernedItems(rows), ThingDefOf.ComponentIndustrial.defName);
+            return RM_QuarryKernel.Plan(rows, biome, RM_MineralsSettings.overrides, dict, RM_MineralsSettings.suppressUnregistered);
         }
 
         /// <summary>Public draw (design §6.4: the API for the other local-material consumers). The item a quarry on this map hands out,

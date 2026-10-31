@@ -375,6 +375,83 @@ namespace RimMandrake.Minerals
             return p;
         }
 
+        // ---- Quarry's own weights, as they would stand without the policy (QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS).
+        // Quarry persists its dictionary in its mod settings and builds it once. Built after the policy zeroed a governed item's
+        // deepCommonality, that entry weighs 0 (and so does ComponentIndustrial, 1.5 x the smallest entry); built before Minerals
+        // was installed, it keeps its vanilla weight. Reading those weights made UnregisteredShare depend on install order, so the
+        // governed entries are recomputed from the policy's ORIGINAL values with Quarry's own formula and only the unregistered
+        // entries are read from the dictionary as stored.
+
+        /// <summary>One resource rock Quarry would list (Quarry.OreDictionary.validOre): the item it yields, the rock's
+        /// mineableScatterCommonality and the item's deepCommonality as they were before the policy wrote them, the item's market value.</summary>
+        public sealed class QuarryRock
+        {
+            public string Item;
+            public float Scatter;
+            public float Deep;
+            public float MarketValue;
+            public QuarryRock(string item, float scatter, float deep, float marketValue)
+            {
+                Item = item; Scatter = scatter; Deep = deep; MarketValue = marketValue;
+            }
+        }
+
+        private static readonly float[] curveX = { 0f, 0.02f, 0.04f, 0.06f, 0.08f, float.MaxValue };
+        private static readonly float[] curveY = { 10f, 9f, 8f, 6f, 3f, 1f };
+
+        /// <summary>Quarry's commonalityCurve (OreDictionary static ctor) evaluated as Verse.SimpleCurve does: clamped at the ends,
+        /// linear between points.</summary>
+        public static float QuarryCurve(float x)
+        {
+            if (x <= curveX[0]) return curveY[0];
+            for (int i = 1; i < curveX.Length; i++)
+                if (x < curveX[i])
+                    return curveY[i - 1] + (curveY[i] - curveY[i - 1]) * ((x - curveX[i - 1]) / (curveX[i] - curveX[i - 1]));
+            return curveY[curveY.Length - 1];
+        }
+
+        /// <summary>Quarry.OreDictionary.ValueForMineableOre: (int)(clamp(deep, 0, 1.5) * scatter * curve(scatter) * 50 / max(value / 5, 2)).</summary>
+        public static int QuarryOreWeight(float deep, float scatter, float marketValue)
+        {
+            float d = Math.Max(0f, Math.Min(deep, 1.5f));
+            float s = scatter * QuarryCurve(scatter);
+            float v = Math.Max(marketValue / 5f, 2f);
+            return (int)(d * s * 50f / v);
+        }
+
+        /// <summary>Quarry's dictionary as it would be built without the policy: every unregistered entry as stored; every governed
+        /// item the dictionary lists, one entry per resource rock yielding it with <see cref="QuarryOreWeight"/> over the originals
+        /// (stored governed weights are dropped, whatever order built them); <paramref name="componentItem"/>, if listed, at
+        /// Quarry's 1.5 x the smallest ore entry (OreDictionary.Build). Null stays null (an unreadable dictionary).</summary>
+        public static List<KeyValuePair<string, float>> PristineDictionary(IEnumerable<KeyValuePair<string, float>> stored,
+                                                                           IEnumerable<QuarryRock> rocks, HashSet<string> governed,
+                                                                           string componentItem)
+        {
+            if (stored == null) return null;
+            governed = governed ?? new HashSet<string>(StringComparer.Ordinal);
+            var listed = new HashSet<string>(StringComparer.Ordinal);
+            var outList = new List<KeyValuePair<string, float>>();
+            bool hasComponent = false;
+            foreach (KeyValuePair<string, float> e in stored)
+            {
+                if (e.Key == null) continue;
+                listed.Add(e.Key);
+                if (e.Key == componentItem) { hasComponent = true; continue; }
+                if (!governed.Contains(e.Key)) outList.Add(e);
+            }
+            if (rocks != null)
+                foreach (QuarryRock r in rocks)
+                    if (r?.Item != null && r.Item != componentItem && governed.Contains(r.Item) && listed.Contains(r.Item))
+                        outList.Add(new KeyValuePair<string, float>(r.Item, QuarryOreWeight(r.Deep, r.Scatter, r.MarketValue)));
+            if (hasComponent)
+            {
+                int min = 1000;   // OreDictionary.MaxWeight
+                foreach (KeyValuePair<string, float> e in outList) min = Math.Min(min, (int)e.Value);
+                outList.Add(new KeyValuePair<string, float>(componentItem, min + min / 2));
+            }
+            return outList;
+        }
+
         /// <summary>Weighted pick; <paramref name="r01"/> in [0,1). Null for an empty list or no positive weight.</summary>
         public static QuarryEntry PickWeighted(IList<QuarryEntry> pool, double r01)
         {

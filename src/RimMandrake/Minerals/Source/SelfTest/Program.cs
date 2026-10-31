@@ -307,6 +307,46 @@ namespace RimMandrake.Minerals.SelfTest
             Check(RM_QuarryKernel.Plan(new List<MineralRow> { qno }, "RM_X", null, null, false).Local.Count == 0, "quarry=no row with a cell stays out (planted)");
             qno.QuarryLocal = true;
             Check(RM_QuarryKernel.Plan(new List<MineralRow> { qno }, "RM_X", null, null, false).Local.Count == 1, "same row with quarry=local enters (probe)");
+            // QUARRYSHARE_FIX_ZEROED_GOVERNED_WEIGHTS: Quarry's stored dictionary depends on whether it was built before Minerals was
+            // installed (vanilla weights) or after the policy zeroed a governed item (weight 0, and ComponentIndustrial = 1.5 x min = 0).
+            // The share must not: governed entries are reweighed from the originals with Quarry's own formula.
+            Check(Math.Abs(RM_QuarryKernel.QuarryCurve(0.03f) - 8.5f) < 1e-5f && RM_QuarryKernel.QuarryCurve(0f) == 10f
+                  && Math.Abs(RM_QuarryKernel.QuarryCurve(1f) - 3f) < 1e-4f, "Quarry's commonality curve");
+            Check(RM_QuarryKernel.QuarryOreWeight(4f, 1f, 1.9f) == 112 && RM_QuarryKernel.QuarryOreWeight(0f, 1f, 1.9f) == 0
+                  && RM_QuarryKernel.QuarryOreWeight(1f, 0.05f, 10f) == (int)(1f * 0.05f * 7f * 50f / 2f),
+                  "Quarry's ValueForMineableOre: steel 112, zero deep 0, plasteel-like 8: " + RM_QuarryKernel.QuarryOreWeight(4f, 1f, 1.9f));
+            var qrocks = new List<RM_QuarryKernel.QuarryRock> {   // originals, as the policy snapshotted them
+                new RM_QuarryKernel.QuarryRock("Steel", 1f, 4f, 1.9f), new RM_QuarryKernel.QuarryRock("Gold", 0.1f, 1f, 10f),
+                new RM_QuarryKernel.QuarryRock("Silver", 0.2f, 1f, 1f), new RM_QuarryKernel.QuarryRock("Plasteel", 0.05f, 1f, 10f) };
+            Func<string, float> vw = it => { var r = qrocks.First(x => x.Item == it); return RM_QuarryKernel.QuarryOreWeight(r.Deep, r.Scatter, r.MarketValue); };
+            int vmin = new[] { "Steel", "Gold", "Silver", "Plasteel" }.Select(it => (int)vw(it)).Min();
+            var builtBefore = new List<KeyValuePair<string, float>> {   // Quarry built before Minerals: vanilla weights throughout
+                new KeyValuePair<string, float>("Steel", vw("Steel")), new KeyValuePair<string, float>("Gold", vw("Gold")),
+                new KeyValuePair<string, float>("Silver", vw("Silver")), new KeyValuePair<string, float>("Plasteel", vw("Plasteel")),
+                new KeyValuePair<string, float>("ComponentIndustrial", vmin + vmin / 2) };
+            var builtAfter = new List<KeyValuePair<string, float>> {    // built after the policy zeroed Plasteel's deepCommonality
+                new KeyValuePair<string, float>("Steel", vw("Steel")), new KeyValuePair<string, float>("Gold", vw("Gold")),
+                new KeyValuePair<string, float>("Silver", vw("Silver")), new KeyValuePair<string, float>("Plasteel", 0f),
+                new KeyValuePair<string, float>("ComponentIndustrial", 0f) };
+            float rawBefore = RM_QuarryKernel.Plan(rows, "TemperateForest", null, builtBefore, false).UnregisteredShare;
+            float rawAfter = RM_QuarryKernel.Plan(rows, "TemperateForest", null, builtAfter, false).UnregisteredShare;
+            Check(rawAfter == 1f && rawBefore < 0.99f, "probe: the stored dictionaries really give order-dependent shares unrepaired (" + rawBefore + " vs " + rawAfter + ")");
+            List<KeyValuePair<string, float>> pBefore = RM_QuarryKernel.PristineDictionary(builtBefore, qrocks, gov, "ComponentIndustrial");
+            List<KeyValuePair<string, float>> pAfter = RM_QuarryKernel.PristineDictionary(builtAfter, qrocks, gov, "ComponentIndustrial");
+            Func<List<KeyValuePair<string, float>>, string> show = l => string.Join(",", l.OrderBy(e => e.Key, StringComparer.Ordinal).Select(e => e.Key + "=" + e.Value));
+            Check(show(pBefore) == show(pAfter) && show(pBefore) == show(builtBefore),
+                  "both install orders repair to the vanilla dictionary: " + show(pAfter) + " | " + show(builtBefore));
+            float shBefore = RM_QuarryKernel.Plan(rows, "TemperateForest", null, pBefore, false).UnregisteredShare;
+            float shAfter = RM_QuarryKernel.Plan(rows, "TemperateForest", null, pAfter, false).UnregisteredShare;
+            Check(shBefore == shAfter && Math.Abs(shBefore - rawBefore) < 1e-6f, "the unregistered share is the same in both orders: " + shBefore + " / " + shAfter);
+            var stale = new List<KeyValuePair<string, float>>(builtAfter.Where(e => e.Key != "Plasteel"));   // built before Plasteel's mod
+            Check(!RM_QuarryKernel.PristineDictionary(stale, qrocks, gov, "ComponentIndustrial").Any(e => e.Key == "Plasteel"),
+                  "a governed item Quarry never listed is not invented");
+            var odd = new List<KeyValuePair<string, float>> { new KeyValuePair<string, float>("Steel", 7f), new KeyValuePair<string, float>("Plasteel", 99f) };
+            Check(RM_QuarryKernel.PristineDictionary(odd, qrocks, gov, "ComponentIndustrial").Single(e => e.Key == "Steel").Value == 7f,
+                  "unregistered entries keep Quarry's stored weight (owner card 2026-10-03)");
+            Check(RM_QuarryKernel.PristineDictionary(null, qrocks, gov, "ComponentIndustrial") == null, "an unreadable dictionary stays unreadable");
+
             var two = new List<QuarryEntry> { new QuarryEntry("a", 1f, "a"), new QuarryEntry("b", 3f, "b") };
             Check(RM_QuarryKernel.PickWeighted(two, 0.2).Item == "a" && RM_QuarryKernel.PickWeighted(two, 0.3).Item == "b"
                   && RM_QuarryKernel.PickWeighted(two, 1.0).Item == "b", "weighted pick boundaries");
