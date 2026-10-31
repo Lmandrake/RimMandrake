@@ -180,7 +180,10 @@ FAMILY_TOKENS = ("ralph",)                                     # family words th
 ARM_BOOKKEEPING = ("AGENTS.md", "*/AGENTS.md", "PROMPT.md", "fix_plan.md", "IMPLEMENTATION_PLAN.md", "arm.toml",
                    "*/arm.toml", "CLAUDE.md", "*/CLAUDE.md", "CLAUDE.local.md", "GEMINI.md", ".claude/*", "*/.claude/*",
                    ".codex/*", "*/.codex/*", ".ralph/*", "*/.ralph/*", "specs/*", ".cursor/*", ".aider*")
-TREE_PATHS = ("src/RimMandrake/Utils", "src/RimMandrake/rimflow")   # what hidden checks import; src is ~2 GB
+# what hidden checks import; src is ~2 GB. ARENA_VET_FIX_ENV_CULLED_CLASSES: `skills` (3 MB) too -- 21 vetted groups died
+# on `No module named 'codex_image'` (skills/generating-images/scripts), which the read trace never names; and
+# `infrastructure/stevedesktop` (0.3 MB): its selftests run the sibling worker.py as a subprocess (no import to trace)
+TREE_PATHS = ("src/RimMandrake/Utils", "src/RimMandrake/rimflow", "skills", "infrastructure/stevedesktop")
 # ARENA_CSHARP_CHECK_BUILD_IN_JUDGE_SANDBOX: a hidden check that builds C# (selftest_coldstorage, the *_fuzz ones) stages
 # through winbuild.stage_build, which always copies these two files; every tree gets them (two small files)
 BUILD_FILES = ("src/Directory.Build.props", "src/Directory.Build.targets")
@@ -310,8 +313,23 @@ def A_now() -> str:
 
 # ---------------------------------------------------------------- sandbox (judge side)
 
+def check_overlays() -> list[Path]:
+    """ARENA_VET_FIX_ENV_CULLED_CLASSES: host dirs a hidden check may WRITE into, each laid as a throwaway overlay
+    (`--tmp-overlay`: the host content stays readable, every write lands in a tmpfs that dies with the sandbox, the
+    host dir is never touched). Real selftests hard-code the seat scratch (/home/mandrake/rm/scratch/BENCH/...) and
+    ~/.cache/publish-selftest, and the art_eval selftests write under the agent data root ($RM_DATA_ROOT, default
+    /mnt/d/ClaudeWork/rimmandrake: art_eval/runs/regress_t); on the read-only root vetted groups died on EROFS
+    there. The judge masks (arena root, work root, ...) are laid AFTER the overlays, so an overlay never unmasks
+    anything. $ARENA_CHECK_OVERLAYS (os.pathsep-separated) replaces the default."""
+    v = os.environ.get("ARENA_CHECK_OVERLAYS")
+    if v is not None:
+        return [Path(x) for x in v.split(os.pathsep) if x.strip()]
+    return [Path.home() / "rm" / "scratch", Path.home() / ".cache",
+            Path(os.environ.get("RM_DATA_ROOT") or "/mnt/d/ClaudeWork/rimmandrake")]
+
+
 def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir: Path | None = None,
-                 proc: bool = True) -> list[str]:
+                 proc: bool = True, overlays: list[Path] | None = None) -> list[str]:
     """READ-ONLY root (`--ro-bind / /`), a fresh /tmp, its own pid namespace (no host /proc, and the whole tree dies
     with it), `masks` hidden under empty tmpfs, and ONLY `keep` writable. Order: kept dirs outside every mask are
     bound first, then the masks are laid (so a broad bind like $HOME never re-exposes ~/.claude/projects), then the
@@ -325,6 +343,11 @@ def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir:
            "--unshare-pid", "--new-session", "--die-with-parent"]
     ms = sorted({os.path.realpath(m) for m in masks if Path(m).exists()}, key=len)
     ks = sorted({os.path.realpath(k) for k in keep if Path(k).exists()}, key=len)
+    # overlays go FIRST: a mask or kept dir inside one is then laid on top of it; an overlay at or inside a mask is
+    # dropped (it would re-expose the masked content)
+    for o in sorted({os.path.realpath(o) for o in overlays or () if Path(o).is_dir()}, key=len):
+        if not any(_inside(Path(o), Path(m)) for m in ms):
+            out += ["--overlay-src", o, "--tmp-overlay", o]
     under = [k for k in ks if any(_inside(Path(k), Path(m)) for m in ms)]
     for k in ks:
         if k not in under:
@@ -423,7 +446,7 @@ def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | 
     tmpfs /proc, so no dotnet.exe could start."""
     keep = [work] if rw is None else list(rw)
     full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work,
-                        proc=kind != "check" or interop)
+                        proc=kind != "check" or interop, overlays=check_overlays() if kind == "check" else None)
     proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind, own=work),
                             start_new_session=True)
@@ -927,10 +950,21 @@ def hidden_checks(hidden: dict) -> list[dict]:
 #     `sys.exit(X)` / `raise SystemExit(X)` (also inside top-level `if` blocks, i.e. `if __name__ == "__main__"`) into
 #     `__arena_seal__.send(X)` followed by a `[][0]` trap; the seal checks the caller frame by identity (`f_back`,
 #     `f_code is top`, `f_lasti` at the injected CALL) and that the same top frame registered itself at the first
-#     statement, so a re-run of the check code from arm code is refused (rc 87). A SystemExit raised ANYWHERE else (an
-#     arm module, a C slot aliased to sys.exit, a nested function) is never a success, so the round-2 rule "SystemExit
-#     from a check code object" (forgeable through C-slot aliases such as `__bool__ = staticmethod(partial(gen.throw,
-#     SystemExit(0)))`) is gone;
+#     statement, so a re-run of the check code from arm code is refused (rc 87). ARENA_RUNNER_FIX_NESTED_EXIT_ZERO: the
+#     same rewrite is applied inside a "main" -- a unique, undecorated, sync top-level `def F` that the top level calls
+#     as a bare `F()` (also in a top-level `if`) -- to its exit statements reached through if/for/while only (never
+#     try/with: an exit there may be caught). The seal accepts that resume only when the caller's code object is F's,
+#     its f_lasti is at F's injected CALL, its f_back IS the registered top frame and that frame's f_lasti is at one
+#     of the bare `F()` call sites; F's code reached any other way (a callback, a helper, a re-run) makes `send`
+#     simply return and the original `sys.exit(v)` raises as before, which is never a success. A SystemExit raised
+#     ANYWHERE else (an arm module, a C slot aliased to sys.exit, any other function) is never a success, so the
+#     round-2 rule "SystemExit from a check code object" (forgeable through C-slot aliases such as
+#     `__bool__ = staticmethod(partial(gen.throw, SystemExit(0)))`) is gone;
+#   * ARENA_RUNNER_FIX_FAILED_OUTPUT_LOST / ARENA_RUNNER_SEAL_FIX_LOST_STDOUT_TAIL: posix._exit skips the interpreter's
+#     flush, so a check's buffered stdout (a pipe: block-buffered) died with it and 79 of 163 vet tails were empty.
+#     Each rewritten exit first evaluates its argument into `__arena_x` (so `sys.exit(main())` runs main() and its
+#     prints), then calls `__arena_fin__()` (flushes the runner's own captured stdout/stderr objects), then sends; a
+#     str exit argument is written to stderr as sys.exit would; the exception path flushes before posix._exit(1);
 #   * the parent accepts exactly ONE marker line and it must carry the nonce (`_check_result`): any other marker line
 #     means the output was tampered with and the check is not a pass.
 # RESIDUAL (stated, not closed): native code in the check process runs below every audit hook: an arm-shipped
@@ -940,7 +974,7 @@ def hidden_checks(hidden: dict) -> list[dict]:
 # those, and an import-based Python check cannot do that.
 RUNNER = r'''
 import os, sys, posix, types, ast, dis, io, resource, traceback
-SENT_S, SENT_E = 999998, 999999
+SENT_F, SENT_S, SENT_E = 999997, 999998, 999999
 def _nonce():
     b = b""
     while len(b) < 200 and not b.endswith(b"\n"):
@@ -952,7 +986,7 @@ def _nonce():
     posix.dup2(z, 0)
     posix.close(z)
     return b.strip()
-def _seal(nonce, fd, s_offs, e_offs, top, w, x, gf, T, I):
+def _seal(nonce, fd, s_offs, e_offs, top, w, x, gf, T, I, S, dg, nest, m_offs):
     me = gf(0)
     home = me.f_back
     gf = None
@@ -963,14 +997,27 @@ def _seal(nonce, fd, s_offs, e_offs, top, w, x, gf, T, I):
             x(87)
         orig = c
         c = None
-        v = yield
-        c = me.f_back
-        if c is home:
-            ok = True
-        elif c is orig and c.f_lasti in e_offs:
-            ok = v is None or v is False or (T(v) is I and v == 0)
-        else:
-            x(87)
+        while True:
+            v = yield
+            c = me.f_back
+            if c is home:
+                ok = True
+                break
+            if c is orig and c.f_lasti in e_offs:
+                ok = v is None or v is False or (T(v) is I and v == 0)
+                break
+            if c is None:
+                x(87)
+            k = dg(nest, c.f_code)
+            if k is None or c.f_lasti not in k:
+                x(87)
+            if c.f_back is orig and orig.f_lasti in m_offs:
+                ok = v is None or v is False or (T(v) is I and v == 0)
+                break
+            c = None
+        c = None
+        if T(v) is S:
+            w(2, b"\n" + S.encode(v, "utf-8", "replace") + b"\n")
         if ok:
             w(fd, b"\nARENA_CHECK_DONE " + nonce + b"\n")
             x(0)
@@ -1048,6 +1095,11 @@ def _exit_stmt(n):
                 and not e.keywords and len(e.args) <= 1 and not any(isinstance(a, ast.Starred) for a in e.args)):
             return True, (e.args[0] if e.args else None)
     return False, None
+def _at(node, line):
+    for k in ast.walk(node):
+        if "lineno" in k._attributes:
+            k.lineno, k.end_lineno, k.col_offset, k.end_col_offset = line, line, 0, 1
+    return node
 def _send(arg, line):
     call = ast.Call(func=ast.Attribute(value=ast.Name(id="__arena_seal__", ctx=ast.Load()), attr="send",
                                        ctx=ast.Load()), args=[arg if arg is not None else ast.Constant(None)],
@@ -1063,17 +1115,68 @@ def _trap(line):
         if hasattr(k, "lineno"):
             k.lineno, k.end_lineno = line, line
     return s
+def _fin():
+    return _at(ast.Expr(value=ast.Call(func=ast.Name(id="__arena_fin__", ctx=ast.Load()), args=[], keywords=[])),
+               SENT_F)
 def _rewrite(body):
     out = []
     for n in body:
         hit, a = _exit_stmt(n)
         if hit:
-            out += [_send(a, SENT_E), _trap(SENT_E)]
+            if a is not None:
+                asg = ast.copy_location(ast.Assign(targets=[ast.Name(id="__arena_x", ctx=ast.Store())], value=a), n)
+                out.append(asg)
+                a = ast.Name(id="__arena_x", ctx=ast.Load())
+            out += [_fin(), _send(a, SENT_E), _trap(SENT_E)]
             continue
         if isinstance(n, ast.If):
             n.body, n.orelse = _rewrite(n.body), _rewrite(n.orelse)
         out.append(n)
     return out
+def _rewrite_fn(body):
+    out = []
+    for n in body:
+        hit, a = _exit_stmt(n)
+        if hit:
+            if a is not None:
+                asg = ast.Assign(targets=[ast.Name(id="__arena_x", ctx=ast.Store())], value=a)
+                ast.copy_location(asg, n)
+                tmp = ast.copy_location(ast.Name(id="__arena_x", ctx=ast.Load()), n)
+                if isinstance(n, ast.Raise):
+                    n.exc.args = [tmp]
+                else:
+                    n.value.args = [tmp]
+                out += [asg, _fin(), _send(ast.Name(id="__arena_x", ctx=ast.Load()), SENT_E)]
+            else:
+                out += [_fin(), _send(None, SENT_E)]
+            out.append(n)
+            continue
+        if isinstance(n, (ast.If, ast.For, ast.While)):
+            n.body, n.orelse = _rewrite_fn(n.body), _rewrite_fn(n.orelse)
+        out.append(n)
+    return out
+def _bare_calls(body, names, out):
+    for n in body:
+        if (isinstance(n, ast.Expr) and isinstance(n.value, ast.Call) and isinstance(n.value.func, ast.Name)
+                and n.value.func.id in names and not n.value.args and not n.value.keywords):
+            out.append(n.value)
+        elif isinstance(n, ast.If):
+            _bare_calls(n.body, names, out)
+            _bare_calls(n.orelse, names, out)
+    return out
+def _mains(body):
+    seen = {}
+    for n in body:
+        if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
+            seen.setdefault(n.name, []).append(n)
+    fns = {k: v[0] for k, v in seen.items() if len(v) == 1 and isinstance(v[0], ast.FunctionDef)
+           and not v[0].decorator_list}
+    calls = _bare_calls(body, set(fns), [])
+    used = {c.func.id for c in calls}
+    for k in used:
+        fns[k].body = _rewrite_fn(fns[k].body)
+    return {(c.lineno, c.end_lineno, c.col_offset, c.end_col_offset) for c in calls}, \
+        {(k, fns[k].lineno) for k in used}
 def _frozen():
     try:
         import _imp
@@ -1092,6 +1195,7 @@ def _main():
     test = sys.argv[1]
     with open(test, "rb") as f:
         tree = ast.parse(f.read(), test)
+    sites, fnames = _mains(tree.body)
     body = _rewrite(tree.body)
     i = 0
     while i < len(body) and (isinstance(body[i], ast.ImportFrom) and body[i].module == "__future__" or
@@ -1102,11 +1206,24 @@ def _main():
     tree.body = body
     ast.fix_missing_locations(tree)
     top = compile(tree, test, "exec", dont_inherit=True)
-    ins = [(k.offset, k.positions.lineno if k.positions else None) for k in dis.get_instructions(top)
-           if k.opname.startswith("CALL")]
-    s_offs = frozenset(o for o, l in ins if l == SENT_S)
-    e_offs = frozenset(o for o, l in ins if l == SENT_E)
-    g = _seal(_nonce(), os.dup(1), s_offs, e_offs, top, posix.write, posix._exit, sys._getframe, type, int)
+    def calls(code):
+        return [(k.offset, k.positions) for k in dis.get_instructions(code) if k.opname.startswith("CALL")]
+    ins = calls(top)
+    s_offs = frozenset(o for o, p in ins if p and p.lineno == SENT_S)
+    e_offs = frozenset(o for o, p in ins if p and p.lineno == SENT_E)
+    m_offs = frozenset(o for o, p in ins if p and tuple(p) in sites)
+    nest = {}
+    for k in top.co_consts:
+        if isinstance(k, types.CodeType) and (k.co_name, k.co_firstlineno) in fnames:
+            nest[k] = frozenset(o for o, p in calls(k) if p and p.lineno == SENT_E)
+    def fin():
+        for s in (so, se):
+            try:
+                fl(s)
+            except BaseException:
+                pass
+    g = _seal(_nonce(), os.dup(1), s_offs, e_offs, top, posix.write, posix._exit, sys._getframe, type, int, str,
+              dict.get, nest, m_offs)
     next(g)
     resource.setrlimit(resource.RLIMIT_CORE, (0, 0))
     sys.pycache_prefix = "/nonexistent/arena-no-pycache"
@@ -1119,6 +1236,7 @@ def _main():
     mod.__file__ = test
     mod.__builtins__ = __builtins__
     mod.__dict__["__arena_seal__"] = g
+    mod.__dict__["__arena_fin__"] = fin
     sys.modules["__main__"] = mod
     try:
         exec(top, mod.__dict__)
@@ -1126,6 +1244,7 @@ def _main():
         try:
             pe(e)
         finally:
+            fin()
             posix._exit(1)
     for s in (so, se):
         try:
@@ -1206,6 +1325,46 @@ def csharp_check_env(scratch: Path, priv: Path | None = None) -> tuple[Path, dic
     return stage, {"WINBUILD_ROOT": str(stage), "WINBUILD_LOCK_DIR": str(scratch / ".winbuild_locks")}
 
 
+TAIL_CHARS = 1500
+# ARENA_VET_FIX_ENV_CULLED_CLASSES: a check that drives git or testq gets a synthetic git repo over its own scratch copy
+# (one harness commit of the tree, `main`, refs/remotes/origin/main = HEAD): testq and the steve worker resolve
+# `git -C <repo> rev-parse/merge-base origin/main` and refused every job (`source_sha must be a hex sha`) in a tree
+# with no .git. Built INSIDE the check sandbox (arm files are never fed to an unsandboxed git), no global/system
+# config, no hooks, fixed identity and dates: the repo carries the tree's content and nothing about the arm.
+GIT_TREE_RE = re.compile(r"\bgit\b|\btestq\b")
+GIT_TREE_SH = ("git init -q --template= -b main . && git add --all && git commit -q --no-verify -m tree && "
+               "git update-ref refs/remotes/origin/main HEAD")
+GIT_TREE_ENV = {"GIT_CONFIG_GLOBAL": "/dev/null", "GIT_CONFIG_NOSYSTEM": "1", "GIT_AUTHOR_NAME": "tree",
+                "GIT_AUTHOR_EMAIL": "tree@invalid", "GIT_COMMITTER_NAME": "tree", "GIT_COMMITTER_EMAIL": "tree@invalid",
+                "GIT_AUTHOR_DATE": "2000-01-01T00:00:00Z", "GIT_COMMITTER_DATE": "2000-01-01T00:00:00Z"}
+
+
+def git_tree(scratch: Path, work: Path, priv: Path | None = None) -> str | None:
+    """Make `scratch` a one-commit git repo (see GIT_TREE_RE); None when done, else why not (the check still runs)."""
+    if (scratch / ".git").exists():
+        return "the tree already has a .git"
+    r = run_sandboxed(["/bin/sh", "-c", GIT_TREE_SH], work=work, priv=priv, timeout=120, cwd=scratch, rw=[scratch],
+                      env=dict(GIT_TREE_ENV), kind="check")
+    if r.returncode != 0:
+        return "git tree rc %s: %s" % (r.returncode, (r.stdout + r.stderr).decode("utf-8", "replace")[-300:])
+    return None
+
+
+def check_tail(out: bytes, err: bytes, nonce: str, n: int = TAIL_CHARS) -> str:
+    """ARENA_RUNNER_FIX_FAILED_OUTPUT_LOST: the end of stdout AND of stderr (stdout first). A long traceback no longer
+    pushes the check's own FAIL lines out of the tail: past `n` chars each stream keeps at least half."""
+    o = out.decode("utf-8", "replace").replace(nonce, "<NONCE>")
+    e = err.decode("utf-8", "replace").replace(nonce, "<NONCE>")
+    if len(o) + len(e) <= n:
+        return o + e
+    h = n // 2
+    if len(o) <= h:
+        return o + e[-(n - len(o)):]
+    if len(e) <= h:
+        return o[-(n - len(e)):] + e
+    return o[-h:] + e[-(n - h):]
+
+
 def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None = None,
                timeout: int = CHECK_TIMEOUT) -> list[dict]:
     """Each check runs in its OWN copy of the tree, the only writable path in its sandbox: arm code imported by one
@@ -1225,6 +1384,7 @@ def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None 
         except JudgeError as ex:
             res.append({"kind": c["kind"], "path": c["path"], "rc": None, "result": "fail", "tail": str(ex)})
             continue
+        gt = git_tree(scratch, work, priv) if GIT_TREE_RE.search(c["body"]) else None
         nonce = secrets.token_hex(16)
         env, rw, stage = {"PYTHONDONTWRITEBYTECODE": "1"}, [scratch], None
         interop = bool(BUILDS_CSHARP_RE.search(c["body"]))
@@ -1240,8 +1400,10 @@ def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None 
             if stage is not None:
                 shutil.rmtree(stage, ignore_errors=True)
         result = _check_result(r.returncode, r.stdout, nonce)
-        tail = (r.stdout + r.stderr).decode("utf-8", "replace").replace(nonce, "<NONCE>")[-1500:]
+        tail = check_tail(r.stdout, r.stderr, nonce)
         row = {"kind": c["kind"], "path": c["path"], "rc": r.returncode, "result": result, "tail": tail}
+        if gt:
+            row["git_tree"] = gt
         if result == "no_marker":
             row["why"] = "no single harness completion marker: the check body did not finish, or its output was forged"
         elif result == "denied":

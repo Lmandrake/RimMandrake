@@ -68,7 +68,9 @@ assert vr_lib.f() == want, (vr_lib.f(), want)
 print("PASS")
 '''
 PASSING = 'import sys\nsys.path.insert(0, __import__("os").path.dirname(__file__))\nimport vr_lib\nassert vr_lib.f() == 2\n'
-NEEDS_GIT = 'import os\nassert os.path.isdir(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".git"))\n'
+# a VCS dir no read can supply (was .git: since ARENA_VET_FIX_ENV_CULLED_CLASSES a check naming git gets a synthetic
+# repo tree from the judge, so .git is no longer an unsuppliable path)
+NEEDS_VCS = 'import os\nassert os.path.isdir(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".hg"))\n'
 
 
 def t_units(tmp):
@@ -158,10 +160,10 @@ def t_fixture(tmp):
     check(rp["fix_result"] == "pass" and rp["reads"] == [] and "reads_trace" not in rp,
           "vet: a check passing at the fix is not traced and carries no reads (%s)" % rp.get("reads"))
     jg = {"task": "RP_VR_GIT", "base": base, "fix": fix, "area": area,
-          "checks": [{"path": CHECK.replace("vr_lib", "vr_git"), "body": NEEDS_GIT, "key": "vr-3"}]}
+          "checks": [{"path": CHECK.replace("vr_lib", "vr_vcs"), "body": NEEDS_VCS, "key": "vr-3"}]}
     rg = A._vet_task(jg, repo, tmp / "vt3", 30)[0]
     check(rg["fix_result"] == "fail" and A.vet_verdict(rg)[1] == "fails_at_fix" and rg["reads"] == [],
-          "vet: a check needing .git still fails at the fix (no read can supply it; the drop stands) (%s)"
+          "vet: a check needing .hg still fails at the fix (no read can supply it; the drop stands) (%s)"
           % rg.get("reads_trace"))
 
     # the judge's tree for the same task, built the judge's way from the hidden reads, passes the check at the fix

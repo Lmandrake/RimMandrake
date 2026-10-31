@@ -58,6 +58,13 @@ Fix round 1 (judge_test_report.md), one forced failure per defect:
   one verdict   a rejection followed by a quoted acceptance -> invalid; an identical repeat and a nested object do not
   mutual info   a one-to-one relabelling at 20% accuracy is not LEAKY on accuracy but the secondary MI test flags it;
                 random guesses are not flagged; the Bonferroni count is unchanged
+judge batch 2026-10-30 (t_judge_batch; every forced case failed against the previous runner):
+  nested exit   sys.exit(0) inside main() (if/for) called bare from the top level passes; a nested sys.exit(1), a caught
+                callback/main exit, a helper's exit, an aliased or re-entered main and an exit inside try never pass
+  output tail   sys.exit(main()) after main() printed, a print before sys.exit(1) or an uncaught exception, and a str
+                exit message all reach the tail; check_tail keeps the end of both stdout and stderr
+  env classes   skills + infrastructure/stevedesktop are tree paths; a write into a hard-coded host dir lands in a
+                throwaway overlay (host untouched); a check asking git for origin/main gets a synthetic repo
 Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES / ARENA_PRIVATE / ARENA_JUDGE_WORK point there).
 """
 import json
@@ -965,6 +972,92 @@ def t_seal_leak(tmp):
           "fails on its own exit 1 (%s rc %s)" % (r["result"], r["rc"]))
 
 
+NESTED_OK = "import sys\ndef main():\n    print('ran main')\n    if True:\n        sys.exit(0)\nif __name__ == '__main__':\n    main()\n"
+
+
+def t_judge_batch(tmp):
+    """ARENA_RUNNER_FIX_NESTED_EXIT_ZERO, ARENA_RUNNER_FIX_FAILED_OUTPUT_LOST + ARENA_RUNNER_SEAL_FIX_LOST_STDOUT_TAIL,
+    ARENA_VET_FIX_ENV_CULLED_CLASSES (cheap classes). Every forced case below failed against the runner before it."""
+    def run(body, tag, files=None):
+        w = tmp / ("jb_" + tag)
+        t = w / "tree"
+        t.mkdir(parents=True)
+        for k, v in (files or {}).items():
+            (t / k).write_text(v)
+        return J.run_hidden([{"kind": "fix_test", "path": "sel.py", "body": body}], t.resolve(), w.resolve(),
+                            timeout=60)[0]
+    # 1 nested exit: a sound check whose main() calls sys.exit(0) passes; a nested non-zero exit still fails
+    r = run(NESTED_OK, "nested_ok")
+    check(r["result"] == "pass", "forced: sys.exit(0) inside main() called from the top level passes (%s rc %s)"
+          % (r["result"], r["rc"]))
+    r = run(NESTED_OK.replace("sys.exit(0)", "print('FAIL: nested'); sys.exit(1)"), "nested_fail")
+    check(r["result"] == "fail" and "FAIL: nested" in r["tail"],
+          "control: sys.exit(1) inside main() fails and its output is in the tail (%s %r)" % (r["result"], r["tail"]))
+    r = run(NESTED_OK.replace("if True:\n        sys.exit(0)", "for v in (0,):\n        sys.exit(v)"), "nested_for")
+    check(r["result"] == "pass", "forced: an exit inside a for loop of main() passes (%s)" % r["result"])
+    for what, body in (
+            ("a caught callback's sys.exit(0)", "import sys\ndef cb():\n    sys.exit(0)\ntry:\n    cb()\n"
+             "except SystemExit:\n    print('caught')\nsys.exit(1)\n"),
+            ("a caught exit of main() under try", "import sys\ndef main():\n    sys.exit(0)\ntry:\n    main()\n"
+             "except SystemExit:\n    pass\nsys.exit(1)\n"),
+            ("a helper's sys.exit(0) called from main()", "import sys\ndef helper():\n    sys.exit(0)\n"
+             "def main():\n    helper()\n    sys.exit(1)\nmain()\n"),
+            ("main() reached through an alias", "import sys\ndef main():\n    sys.exit(0)\nf = main\nf()\n"
+             "sys.exit(1)\n"),
+            ("main() re-entered from a nested call", "import sys\ndef main():\n    sys.exit(0)\ndef outer():\n"
+             "    main()\nouter()\nsys.exit(1)\n"),
+            ("an exit inside try in main()", "import sys\ndef main():\n    try:\n        sys.exit(0)\n"
+             "    except SystemExit:\n        pass\n    sys.exit(1)\nmain()\n")):
+        r = run(body, "neg_%d" % abs(hash(what)))
+        check(r["result"] != "pass", "forced: %s never makes a failing check pass (%s rc %s)" % (what, r["result"],
+                                                                                              r["rc"]))
+    # 2 the failing output tail: posix._exit skipped the buffered stdout
+    for what, body, want in (
+            ("sys.exit(main()) after main() printed", "import sys\ndef main():\n    print('LAST LINE of main')\n"
+             "    return 1\nsys.exit(main())\n", "LAST LINE of main"),
+            ("a print before a top-level sys.exit(1)", "import sys\nprint('BUFFERED top line')\nsys.exit(1)\n",
+             "BUFFERED top line"),
+            ("a print before an uncaught exception", "print('BUFFERED before boom')\nraise ValueError('boom')\n",
+             "BUFFERED before boom"),
+            ("a str exit message", "import sys\nsys.exit('FAIL: as a message')\n", "FAIL: as a message")):
+        r = run(body, "tail_%d" % abs(hash(what)))
+        check(r["result"] == "fail" and want in r["tail"], "forced: %s keeps it in the tail (%s %r)"
+              % (what, r["result"], r["tail"][-160:]))
+    ct = getattr(J, "check_tail", None)
+    if ct is None:
+        check(False, "forced: J.check_tail exists (keeps both streams)")
+    else:
+        t = ct(b"o" * 4000 + b"OUT_END", b"e" * 4000 + b"ERR_END", "n")
+        check("OUT_END" in t and "ERR_END" in t and len(t) <= J.TAIL_CHARS,
+              "forced: a long stdout and a long stderr both keep their ends in the tail (%d chars)" % len(t))
+        t = ct(b"FAIL short\n", b"x" * 9000, "n")
+        check(t.startswith("FAIL short"), "control: a short stdout survives a long traceback")
+    # 3 environment classes the vet culled
+    check("skills" in J.TREE_PATHS and "infrastructure/stevedesktop" in J.TREE_PATHS,
+          "forced: skills (codex_image) and infrastructure/stevedesktop are tree paths")
+    host = tmp / "jb_host"
+    host.mkdir()
+    (host / "seen.txt").write_text("host")
+    saved = os.environ.get("ARENA_CHECK_OVERLAYS")
+    os.environ["ARENA_CHECK_OVERLAYS"] = str(host)
+    try:
+        r = run("import os, sys\nh = %r\nassert open(os.path.join(h, 'seen.txt')).read() == 'host'\n"
+                "os.makedirs(os.path.join(h, 'sub'), exist_ok=True)\nopen(os.path.join(h, 'sub', 'new.txt'), 'w')"
+                ".write('x')\nsys.exit(0)\n" % str(host), "overlay")
+    finally:
+        os.environ.pop("ARENA_CHECK_OVERLAYS") if saved is None else os.environ.__setitem__("ARENA_CHECK_OVERLAYS",
+                                                                                            saved)
+    check(r["result"] == "pass" and not (host / "sub").exists(),
+          "forced: a check writes into a hard-coded host dir through a throwaway overlay; the host dir is untouched "
+          "(%s %r)" % (r["result"], r["tail"][-160:]))
+    r = run("import os, subprocess, sys\nroot = os.path.dirname(os.path.abspath(__file__))\n"
+            "s = subprocess.run(['git', '-C', root, 'merge-base', 'HEAD', 'origin/main'], capture_output=True, "
+            "text=True)\nprint(s.stdout, s.stderr)\nsys.exit(0 if len(s.stdout.strip()) == 40 else 1)\n", "git",
+            files={"a.txt": "a\n"})
+    check(r["result"] == "pass", "forced: a check that asks git for origin/main gets a repo tree (%s %r)"
+          % (r["result"], r["tail"][-160:]))
+
+
 def t_replay_empty(tmp):
     """GPT round 2 #4: a replay whose hidden file runs NOTHING fails closed (only `None` did in round 2)."""
     c, b, h = make_clone(Path(os.environ["ARENA_CLONES"]) / "replayempty", "v3", 1, plant=False)
@@ -1403,6 +1496,7 @@ def main():
         t_bad_verdict(tmp)
         t_nonce_hunt(tmp)
         t_seal_leak(tmp)
+        t_judge_batch(tmp)
         t_replay_empty(tmp)
         t_report_types(tmp)
         t_detectors(tmp)
