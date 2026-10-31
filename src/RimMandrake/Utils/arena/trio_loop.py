@@ -633,6 +633,7 @@ class TrioLoop(RA.Loop):
                 rec = self.emit("test_start", task, sha=pend["head"], detail={
                     "tester": critic, "build_id": pend["build_id"], "role": "critic"})
                 self.status("critic pass running (%s on %s)" % (critic, pend["build_id"]))
+                mirror = RA.spend_mirror(work)          # its spend logs, where the critic cannot erase them
                 try:
                     v = self.critic.review(_critic_input(cid=neutral_id(critic), prompt=task["prompt"],
                                                          criteria=criteria, diff=diff, tree=tree, work=work))
@@ -640,6 +641,8 @@ class TrioLoop(RA.Loop):
                     v = type("V", (), {"verdict": "invalid", "reasons": ["critic raised %s: %s" % (
                         type(e).__name__, str(e)[:300])], "meta": {}})()
                 finally:
+                    if mirror is not None:
+                        mirror.stop()
                     self.release()
             finally:
                 RA.capture_tester(rec, work, (getattr(v, "meta", None) or {}).get("rc"))  # before rmtree

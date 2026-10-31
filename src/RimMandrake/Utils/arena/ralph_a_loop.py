@@ -292,12 +292,28 @@ def capture_tester(rec, troot, rc=None, *, home=None, gpt=True):
     """Before a tester root is deleted: copy its Claude transcripts and GPT call log to the meter's helper store
     (helper_capture), keyed by the test_start record `rec`. Never raises: a failed capture leaves no manifest, and
     arena_spend.meter() then BLOCKS that tester (UNMEASURED), which is the fail-closed outcome."""
-    if not rec:
-        return None
+    mdir = HC.mirror_dir(troot)            # the pass's append-only Mirror (spawn): what the tester could not erase
     try:
+        if not rec:
+            return None
+        if home is None and mdir.is_dir():
+            return HC.capture(rec, home=mdir / "home", gpt_dir=(mdir / "gpt") if gpt else None, rc=rc,
+                              skipped=HC.mirror_skipped(mdir))
         return HC.capture(rec, home=home or Path(troot) / "home", gpt_dir=(Path(troot) / "gpt") if gpt else None, rc=rc)
     except Exception as e:                       # noqa: BLE001 - the meter blocks on the missing manifest
         print("helper capture failed for %s: %s" % (HC.ident(rec), e), file=sys.stderr)
+        return None
+    finally:
+        shutil.rmtree(mdir, ignore_errors=True)
+
+
+def spend_mirror(root):
+    """A started helper_capture.Mirror of `root`'s spend logs (ARENA_TESTER_SPEND_ENFORCE_SELF_ERASED_LOGS), or None
+    when it cannot start (said on stderr; the meter then reads the live logs as before)."""
+    try:
+        return HC.Mirror(root).start()
+    except Exception as e:                       # noqa: BLE001
+        print("spend mirror for %s did not start: %s" % (root, e), file=sys.stderr)
         return None
 
 
@@ -423,26 +439,31 @@ class CmdModel:
         process group, recorded in the pidfile, the group killed at the timeout and after the pass. Returns rc."""
         rw, home = sandbox_plan(role, cwd, sandbox)
         argv, env = self.wrap(list(argv), env, cwd=cwd, rw=rw, home=home)
-        with open(log, "w") as out:
-            pr = subprocess.Popen(argv, cwd=str(cwd), env=env, stdin=subprocess.PIPE, stdout=out,
-                                  stderr=subprocess.STDOUT, text=True, start_new_session=True)
-            if self.pidfile:
-                Path(self.pidfile).write_text(json.dumps({"pgid": pr.pid, "start": proc_start(pr.pid),
-                                                          "role": role, "agent": agent_id}))
-            try:
-                pr.communicate(prompt, timeout=timeout_s)
-                rc = pr.returncode
-            except subprocess.TimeoutExpired:
-                os.killpg(pr.pid, signal.SIGKILL)
-                pr.wait()
-                rc = -9
-            finally:
+        mirror = spend_mirror(home.parent)     # the spend logs, copied where the arm cannot erase them
+        try:
+            with open(log, "w") as out:
+                pr = subprocess.Popen(argv, cwd=str(cwd), env=env, stdin=subprocess.PIPE, stdout=out,
+                                      stderr=subprocess.STDOUT, text=True, start_new_session=True)
+                if self.pidfile:
+                    Path(self.pidfile).write_text(json.dumps({"pgid": pr.pid, "start": proc_start(pr.pid),
+                                                              "role": role, "agent": agent_id}))
                 try:
-                    os.killpg(pr.pid, signal.SIGKILL)  # whatever it left behind in its group dies with the pass
-                except (ProcessLookupError, PermissionError):
-                    pass
-                if self.pidfile and not group_alive(pr.pid):
-                    Path(self.pidfile).unlink(missing_ok=True)
+                    pr.communicate(prompt, timeout=timeout_s)
+                    rc = pr.returncode
+                except subprocess.TimeoutExpired:
+                    os.killpg(pr.pid, signal.SIGKILL)
+                    pr.wait()
+                    rc = -9
+                finally:
+                    try:
+                        os.killpg(pr.pid, signal.SIGKILL)  # whatever it left behind in its group dies with the pass
+                    except (ProcessLookupError, PermissionError):
+                        pass
+                    if self.pidfile and not group_alive(pr.pid):
+                        Path(self.pidfile).unlink(missing_ok=True)
+        finally:
+            if mirror is not None:
+                mirror.stop()
         return rc
 
     def __call__(self, role, prompt, *, cwd, agent_id, run_id, timeout_s, log, sandbox=None):

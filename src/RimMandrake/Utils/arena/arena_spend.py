@@ -215,7 +215,9 @@ def sandbox_homes(sandbox_root):
     """-> ([(projects dir, None, scratch name)], blocking) for every arm_sandbox private HOME under the scratch base
     (<base>/<clone>-<sha8>-<tag>/<role>/home/.claude/projects): builders' transcripts live there, not in ~/.claude.
     A symlinked or unreadable component on that path is BLOCKING (an arm could hide its home or point it at another's).
-    Residual: a scratch dir deleted outright is not seen (the harness does not yet register its launches)."""
+    A builder that deletes its own transcripts mid-session hides nothing: the harness's append-only copy
+    <base>/<clone>/<role>.mirror/home (helper_capture.Mirror, never bound into the sandbox) is read here as one more
+    home of the same scratch; message-id dedup makes the overlap with the live home harmless."""
     out, blocking = [], []
     base = Path(sandbox_root)
     if not base.is_dir():
