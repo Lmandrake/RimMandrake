@@ -328,17 +328,22 @@ def _queued_as_user(rec):
     return out
 
 
-def auth_ended(rec):
-    """A turn that ended on an auth API error (its record stops on stop_sequence): over, but the Stop hook never ran."""
-    return bool(rec and rec.get("type") == "assistant" and rec.get("isApiErrorMessage")
-                and rec.get("error") == "authentication_failed")
+STRANDING_ERRORS = ("authentication_failed", "rate_limit", "server_error")    # measured in transcripts, 10-2026
+
+
+def api_ended(rec):
+    """-> the error of a turn that ended on an API error (its record stops on stop_sequence), else None: over, but the
+    Stop hook never ran, so no ring reaches that window."""
+    if rec and rec.get("type") == "assistant" and rec.get("isApiErrorMessage") and rec.get("error") in STRANDING_ERRORS:
+        return rec["error"]
+    return None
 
 
 def killable_turn(tx):
-    """The kill fences only: a turn that ended, or one an auth error ended. A window on an auth error is quiet and
+    """The kill fences only: a turn that ended, or one an API error ended. A window on an API error is quiet and
     login_watch restarts it, but it is NOT an ended turn: the fresh-window proof and the backstop stay on last_kind,
     so a window that dies on the error is never verified good (LOGIN_LOSS_FIX_DEAD_SIGNALS)."""
-    return tx.get("last_kind") == "assistant_end" or bool(tx.get("auth_end"))
+    return tx.get("last_kind") == "assistant_end" or bool(tx.get("api_end"))
 
 
 def _assistant_kind(rec):
@@ -370,14 +375,14 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
         at = _ts(r.get("timestamp"))
         if t == "assistant":
             s["last_kind"] = _assistant_kind(r)
-            s["auth_end"] = auth_ended(r)
+            s["api_end"] = api_ended(r)
             u = (r.get("message") or {}).get("usage") or {}
             if u:
                 s["ctx_tokens"] = sum(int(u.get(k) or 0) for k in (
                     "input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"))
         else:
             s["last_kind"] = "user"
-            s["auth_end"] = False
+            s["api_end"] = None
             if _is_human_input(r, peers):
                 s["last_user_at"] = at
         s["last_at"] = at

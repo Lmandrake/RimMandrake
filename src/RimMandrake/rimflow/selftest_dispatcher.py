@@ -462,7 +462,7 @@ def test_review_fixes():
         note_calls.append(i)
         raise subprocess.TimeoutExpired("rimflow", 120)
     boom = {"note": raising_note, "ring": lambda *x: None, "withdraw": lambda *x: "withdrawn",
-            "publish": lambda n: "p", "lock": lambda: open(os.devnull)}
+            "publish": lambda n: "pushed", "lock": lambda: open(os.devnull)}
     os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state_boom")
     try:
         t0 = 10000.0

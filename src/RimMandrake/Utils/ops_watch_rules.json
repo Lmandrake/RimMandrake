@@ -67,7 +67,7 @@
    "why": "v3 section 6 target: process-commit share 70% -> under 61%"},
   {"key": "tokentalk.*.share", "op": ">=", "value": 10, "alarm": false, "tag": "TOKEN_TALK_DRIFT",
    "why": "owner 2026-10-27: token-blind roles must not talk tokens; cold 7-day baseline BENCH/FOUNDRY ledger (BENCH left the measure 2026-10-31) and commits was 2-6%, so 10% is about double"},
-  {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": false, "tag": "UNTRIAGED",
+  {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": true, "tag": "UNTRIAGED", "name": "OPS_FINDINGS_TRIAGE",
    "why": "findings filed UNTRIAGED and not yet turned into items"}
  ],
  "alarm": {

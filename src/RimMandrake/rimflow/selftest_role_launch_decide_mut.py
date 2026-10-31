@@ -716,6 +716,14 @@ def supervise_overbudget_when_budget_is_zero():
     return supervise([c], st, ob, T)
 
 
+@scen
+def supervise_overbudget_repeats_tell_the_conductor():
+    c = SD.conductor()
+    st = {"roles": {"Conductor": {"done": {}, "runs": [run("u0", T - 60, budget=0)],
+                                  "over_at": [T - 8 * 86400, T - 86400, T - 3600]}}}
+    return supervise([c], st, sobs({"u0": "inactive"}, {"u0": {"usage": usage(1), "subtype": "success"}}), T)
+
+
 def _first_launching_cap(role, band_cfg, t, evs, items, lo_, hi_, step):
     for cap in range(lo_, hi_, step):
         r = dict(role, daily_token_cap=cap, throttle_bands=band_cfg)
@@ -3582,9 +3590,12 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                          'unit_gone': False,
                                                          'why': 'Conductor run t1 still active after 1900 s '
                                                                 '(run_max_s 1800): stop #2'},
-                                                        {'do': 'alarm',
+                                                        {'conductor_log': True,
+                                                         'do': 'alarm',
                                                          'kind': 'role:Conductor:stop_failed',
                                                          'note': True,
+                                                         'raise_first': 'Conductor run will not stop: its slot stays '
+                                                                        'held.',
                                                          'ticket': 'ROLES_ITEM_X',
                                                          'why': 'Conductor run t1 still active after 1 stop(s): NOT '
                                                                 'confirmed stopped, kept as running'},
@@ -3601,9 +3612,12 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                          'unit_gone': False,
                                                          'why': 'Conductor run t2 still active after 1900 s '
                                                                 '(run_max_s 1800): stop #3'},
-                                                        {'do': 'alarm',
+                                                        {'conductor_log': True,
+                                                         'do': 'alarm',
                                                          'kind': 'role:Conductor:stop_failed',
                                                          'note': True,
+                                                         'raise_first': 'Conductor run will not stop: its slot stays '
+                                                                        'held.',
                                                          'ticket': 'ROLES_ITEM_X',
                                                          'why': 'Conductor run t2 still active after 2 stop(s): NOT '
                                                                 'confirmed stopped, kept as running'},
@@ -3701,6 +3715,51 @@ GOLDEN = {'after_ready_every_reason': {'alarm job': None,
                                                                        'state': 'running',
                                                                        'stop_tries': 1,
                                                                        'unit': 'exact'}]}},
+ 'supervise_overbudget_repeats_tell_the_conductor': {'acts': [{'blind': {'mode': 'quick',
+                                                                         'outcome': 'completed',
+                                                                         'role': 'Conductor',
+                                                                         'unit': 'u0'},
+                                                               'do': 'role_done',
+                                                               'note': True,
+                                                               'role': 'Conductor',
+                                                               'ticket': 'ROLES_ITEM_X',
+                                                               'unit': 'u0',
+                                                               'why': 'Conductor quick run u0 done: 1 weighted '
+                                                                      'tokens of a 0 budget (raw 1), model ?, '
+                                                                      'success'},
+                                                              {'do': 'alarm',
+                                                               'kind': 'role:Conductor:overbudget',
+                                                               'note': True,
+                                                               'ticket': 'ROLES_ITEM_X',
+                                                               'why': 'Conductor run u0 used 1 weighted tokens (raw '
+                                                                      '1), budget 0'},
+                                                              {'blind': {'mode': 'quick',
+                                                                         'outcome': 'overbudget',
+                                                                         'role': 'Conductor',
+                                                                         'unit': 'u0'},
+                                                               'conductor_log': True,
+                                                               'do': 'alarm',
+                                                               'kind': 'role:Conductor:overbudget_repeat',
+                                                               'note': True,
+                                                               'raise_first': 'Conductor keeps overrunning: re-set '
+                                                                              'its budget or narrow its scope.',
+                                                               'ticket': 'ROLES_ITEM_X',
+                                                               'why': 'Conductor ran over budget 3 times in 7 days: '
+                                                                      'its budget or its scope is wrong'}],
+                                                     'busy': [],
+                                                     'runs': {'Conductor': [{'at': 1793174400.0,
+                                                                             'budget': 0,
+                                                                             'day': '2026-10-28',
+                                                                             'item': 'ROLES_ITEM_X',
+                                                                             'mode': 'quick',
+                                                                             'raw_tokens': 1,
+                                                                             'run_max_s': 1800,
+                                                                             'scope': 'sc-u0',
+                                                                             'seat': 'BENCH',
+                                                                             'state': 'done',
+                                                                             'token_unit': 'weighted_v1',
+                                                                             'tokens': 1,
+                                                                             'unit': 'u0'}]}},
  'supervise_overbudget_when_budget_is_zero': {'acts': [{'blind': {'mode': 'quick',
                                                                   'outcome': 'completed',
                                                                   'role': 'Conductor',

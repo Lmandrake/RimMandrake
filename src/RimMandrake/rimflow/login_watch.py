@@ -21,31 +21,36 @@ Each tick (schedule key `login_watch`; off when absent or enabled false):
              switch_verify_s, or systemd-run refused: alarm login:switch_failed, every alarm_every_s until the login is
              back, never a second try.
   back       alarm login:back:<epoch>; the gate opens by itself and held work goes.
-  stranded   the login works but a seat window still sits on an auth error (its turn ended on the API error, so its
-             Stop hook never ran and no ring can reach it): a seat_restart request for it, at most rescues_per_day,
-             then an alarm. A Conductor window (kind conductor) is only alarmed: the owner talks to it.
+  stranded   the login works but a seat window still sits on an API error (its turn ended on it, so its Stop hook never
+             ran and no ring can reach it): a seat_restart request for it, at most rescues_per_day, then an alarm. A
+             Conductor window (kind conductor) is only alarmed: the owner talks to it. An auth or server error waits
+             stranded_after_s, a rate limit waits for the reset its message names, or limit_wait_s when it names none
+             (RATE_LIMIT_FIX_STRANDED_WINDOWS; 200 such records in transcripts, 10-2026).
 
 Role runs that die on an auth error: role_launch.supervise_roles gives their slot back (role_launch.AUTH_RX).
 """
 import json
+import datetime
 import os
 import re
 import shutil
 import subprocess
 import tempfile
+import zoneinfo
 
 import account_pick as AP
 import seat_restart as SR
 import session_match as SM
 
 DEFAULTS = {
-    "enabled": False, "confirm_n": 2, "blind_alarm_n": 5, "stranded_after_s": 300, "rescues_per_day": 2, "probe_timeout_s": 30,
+    "enabled": False, "confirm_n": 2, "blind_alarm_n": 5, "stranded_after_s": 300, "limit_wait_s": 5 * 3600, "rescues_per_day": 2, "probe_timeout_s": 30,
     "auto_switch": False, "switch_verify_s": 900, "usage_stale_s": 3600, "account_cmd": "claude-account",
     "hold_file": None, "usage_latest": None, "armed_file": None, "machine_file": None}
 SCRUB_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", "CLAUDE_CODE_OAUTH_TOKEN",
              "CLAUDE_CONFIG_DIR", "CLAUDE_SECURESTORAGE_CONFIG_DIR")    # the login the windows use, nothing else
 
 
+RESET_RX = re.compile(r"resets (?P<h>\d{1,2})(?::(?P<m>\d{2}))?\s*(?P<ap>am|pm) \((?P<tz>[\w/+-]+)\)", re.I)
 GONE_RX = re.compile(r"not logged in|log ?in expired|session expired|please (run|log)", re.I)
 
 
@@ -125,8 +130,29 @@ def machine(cfg):
         return None
 
 
+def limit_reset(text, at):
+    """`You've hit your session limit · resets 1:10pm (America/Los_Angeles)` -> the first such moment after at, or None."""
+    m = RESET_RX.search(text or "")
+    if not m:
+        return None
+    try:
+        tz = zoneinfo.ZoneInfo(m["tz"])
+        hour = int(m["h"]) % 12 + (12 if m["ap"].lower() == "pm" else 0)
+        when = datetime.datetime.fromtimestamp(at, tz).replace(hour=hour, minute=int(m["m"] or 0), second=0, microsecond=0)
+    except (ValueError, OSError, zoneinfo.ZoneInfoNotFoundError):
+        return None
+    if when.timestamp() <= at:
+        when += datetime.timedelta(days=1)
+    return when.timestamp()
+
+
+def _record_text(rec):
+    c = (rec.get("message") or {}).get("content")
+    return " ".join(b.get("text") or "" for b in c if isinstance(b, dict)) if isinstance(c, list) else str(c or "")
+
+
 def stranded(sch, cfg, sessions, now):
-    """-> [{seat, sess, path, size, at, conductor}]: seat windows idle on a turn that ended on an auth error."""
+    """-> [{seat, sess, start, path, size, at, error, conductor}]: seat windows idle on a turn an API error ended, due."""
     out = []
     for seat, c in (SR.config(sch) or {}).items():
         named = SR._find(sessions, SM.names_of(c))
@@ -144,8 +170,14 @@ def stranded(sch, cfg, sessions, now):
             if r.get("type") in ("user", "assistant") and not r.get("isSidechain"):
                 last = r
         at = SR._ts((last or {}).get("timestamp"))
-        if SR.auth_ended(last) and at is not None and now - at >= cfg["stranded_after_s"]:
-            out.append({"seat": seat, "sess": named[0], "start": start, "path": path, "size": size, "at": at,
+        err = SR.api_ended(last)
+        if not err or at is None:
+            continue
+        due = at + cfg["stranded_after_s"]
+        if err == "rate_limit":
+            due = max(due, limit_reset(_record_text(last), at) or at + cfg["limit_wait_s"])
+        if now >= due:
+            out.append({"seat": seat, "sess": named[0], "start": start, "path": path, "size": size, "at": at, "error": err,
                         "conductor": c.get("kind") == "conductor"})
     return out
 
@@ -154,7 +186,7 @@ def rescue_request(w, now):
     """The request file `seat_restart.py request` would write, had the window been able to run it."""
     s = w["sess"]
     return {"seat": w["seat"], "pid": s.get("pid"), "start": w["start"], "session_id": s.get("sessionId"),
-            "ticket": None, "reason": "window stranded on an expired login, login works again", "ts": now,
+            "ticket": None, "reason": "window stranded on %s, the way is clear again" % w.get("error", "an API error"), "ts": now,
             "ctx_tokens": None, "input_ts": None, "tx_offset": w["size"], "tx_path": w["path"]}
 
 
@@ -168,8 +200,8 @@ def _stranded_step(cfg, sch, L, windows, now, act, iso):
             continue
         if w["conductor"] or w["start"] is None or r["n"] >= cfg["rescues_per_day"]:
             act(do="alarm", kind="login:stranded:" + seat, seat=seat, note=True, conductor_log=True,
-                why="%s's window has sat on an auth error since %s although the login works%s" % (
-                    seat, iso(w["at"]), "" if w["conductor"] else
+                why="%s's window has sat on %s since %s although the way is clear%s" % (
+                    seat, w.get("error", "an API error"), iso(w["at"]), "" if w["conductor"] else
                     "; its session file gives no birth record to restart it by" if w["start"] is None else
                     "; %d automatic restarts today did not clear it" % r["n"]),
                 raise_first="%s window needs a look: type anything in it or restart it." % seat)
@@ -178,8 +210,8 @@ def _stranded_step(cfg, sch, L, windows, now, act, iso):
         r["for"] = w["at"]
         res[seat] = r
         act(do="login_rescue", seat=seat, note=True, request=rescue_request(w, now),
-            why="%s's window has sat on an auth error since %s and the login works: fresh window requested" % (
-                seat, iso(w["at"])))
+            why="%s's window has sat on %s since %s and the way is clear: fresh window requested" % (
+                seat, w.get("error", "an API error"), iso(w["at"])))
 
 
 def way_back(good, box):

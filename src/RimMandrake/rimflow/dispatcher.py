@@ -86,6 +86,7 @@ import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
 import seat_restart as SR  # noqa: E402
 import login_watch as LW  # noqa: E402
+import signal_watch as SW  # noqa: E402
 import account_pick as AP  # noqa: E402
 import helper_budget as HB  # noqa: E402
 import schema as S  # noqa: E402  (testq: dump, utcnow, parse_ts)
@@ -385,6 +386,15 @@ def decide(sch, st, obs, now, apply, out=None):
     if carried:
         act(do="alarm", kind="tick:raised", note=True, conductor_log=True, why=carried,
             raise_first="A Dispatcher tick raised: read the journal.")
+    carried = st.pop("alarm_carry_unreserved", None)    # given back already; said here so the next tick's ledger has it
+    if carried:
+        act(do="alarm", kind="tick:given_back", note=True, conductor_log=True, why=carried,
+            raise_first="A launch was decided and never ran; its slot is back.")
+    try:
+        SW.step(sch, st, obs, now, act, iso, SR._ts)
+    except Exception as e:  # noqa: BLE001 - never stops the tick, and alarms
+        act(do="alarm", kind="signal:watch", note=True, conductor_log=True,
+            why="signal watch raised %s: %s" % (type(e).__name__, str(e)[:200]))
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
         for seat, ss in sorted(st["seats"].items()):     # a ring already in an inbox would still wake its window
@@ -1032,6 +1042,13 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 LW.switch_failed(st)
                             if a.get("conductor_log"):
                                 res = "%s; %s" % (res, do_conductor(sch, a, now))
+                    elif a["do"] == "unit_repair":
+                        paused = do_paused()
+                        if paused:
+                            res = "held at release: PAUSE (%s)" % paused
+                            SW.give_back(st, a)
+                        else:
+                            res = SW.repair(a, fx.get("unit_repair"))
                     elif a["do"] == "login_rescue":
                         paused = do_paused()
                         if paused:
@@ -1245,12 +1262,20 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 out = "error: %s: %s" % (type(e).__name__, str(e)[:160])
             if out is not None:
                 journal(root, {"at": iso(now), "do": "publish", "result": out})
-            if out and "index.lock" in out:      # a stuck lock silently stops all publishing (review S, F3)
-                key = "publish:index_lock"
+            # the next tick retries a failed publish by itself; one that stays failed is a stuck clone. Each publish
+            # the tick tried says one of these (None: nothing to publish, which moves neither way)
+            if out and out.endswith("pushed"):
+                st.pop("publish_fail_since", None)
+            elif out:
+                st.setdefault("publish_fail_since", now)
+            stuck = now - st.get("publish_fail_since", now) >= sch.get("publish_stuck_s", 1800)
+            if out and ("index.lock" in out or stuck):    # a stuck lock silently stops all publishing (review S, F3)
+                key = "publish:index_lock" if "index.lock" in out else "publish:stuck"
                 if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
                     st["alarms"][key] = now
                     al = dict(do="alarm", kind=key, at=iso(now), note=True, result="raised",
                               why="ledger publish: " + out[:240])
+                    al["conductor"] = do_conductor(sch, dict(al, raise_first="Ledger publishing is stuck."), now)
                     # routed like every other note: never raw onto a token-blind item (night review N4)
                     item, text = route_note(sch, sch.get("alarm_item"), "dispatcher alarm: " + al["why"])
                     if item and ledger_ok and time.time() < deadline:
@@ -1411,6 +1436,14 @@ def login_obs(sch):
             "stranded": lambda sessions: LW.stranded(sch, cfg, sessions, time.time())}
 
 
+def signal_obs(sch):
+    cfg = SW.config(sch)
+    if not cfg["enabled"]:
+        return None
+    return {"units": SW.read_units, "alarms": lambda: SW.read_json(cfg, "alarms.json"),
+            "flags": lambda: SW.read_json(cfg, "flags.json")}
+
+
 def default_obs(sch, root, st=None):
     seats = sch.get("seats") or {}
     return {
@@ -1425,6 +1458,7 @@ def default_obs(sch, root, st=None):
         "roles": role_obs(sch),
         "seat_restart": SR.default_obs(sch, seat_events_since) if SR.config(sch) else None,
         "login": login_obs(sch),
+        "signals": signal_obs(sch),
     }
 
 
@@ -1625,6 +1659,7 @@ def tick(sch, apply, obs=None, now=None, fx=None):
                            "why": "launches decided but never executed, given back: %s" % ", ".join(back)}
                     journal(root, rec)
                     acts.append(rec)
+                    st["alarm_carry_unreserved"] = rec["why"]
             # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
             if o.get("paused") or (o.get("agents") or {}).get("state") == "MEASURED":
                 st["last_ok_tick"] = iso(now)

@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """selftest_login_watch.py: the lost-login answer (login_watch.py) and the role slot given back on an auth death."""
+import calendar
+import datetime
 import json
 import os
 import sys
@@ -164,6 +166,18 @@ def test_stranded_reader():
             got = LW.stranded({}, cfg, [sess], NOW)
             check("a window on an auth error reads stranded", [(w["seat"], w["conductor"]) for w in got] == [("S", False), ("C", True)])
             check("too fresh is not stranded yet", not LW.stranded({}, cfg, [sess], NOW - 700))
+            limited = dict(rec, error="rate_limit", message={"content": [{"type": "text", "text": "limit"}]})
+            at = NOW - 900
+            when = datetime.datetime.fromtimestamp(at + 2 * 3600, datetime.timezone.utc)
+            for text, wait in (("limit", 5 * 3600), ("limit \u00b7 resets %s (UTC)" % when.strftime("%I:%M%p").lower(), 2 * 3600)):
+                limited["message"]["content"][0]["text"] = text
+                with open(path, "w") as f:
+                    f.write(json.dumps(limited) + "\n")
+                check("a rate limit waits out %d s: not before" % wait, not LW.stranded({}, cfg, [sess], at + wait - 60))
+                late = LW.stranded({}, cfg, [sess], at + wait + 60)
+                check("a rate limit waits out %d s: then due" % wait, [w["error"] for w in late] == ["rate_limit"] * 2)
+            with open(path, "w") as f:
+                f.write(json.dumps(rec) + "\n")
             sess["status"] = "busy"
             check("a busy window is not stranded", not LW.stranded({}, cfg, [sess], NOW))
             sess["status"] = "idle"
@@ -174,12 +188,24 @@ def test_stranded_reader():
             SR.config, SR.transcript_for, LW.SM.names_of, SR._find = keep
 
 
+def test_limit_reset():
+    LA = "You've hit your session limit \u00b7 resets 1:10pm (America/Los_Angeles)"
+    at = calendar.timegm((2026, 10, 30, 12, 0, 0))             # 05:00 PDT
+    want = calendar.timegm((2026, 10, 30, 20, 10, 0))          # 13:10 PDT
+    check("a named reset is the next such moment", LW.limit_reset(LA, at) == want)
+    check("one already past is tomorrow's", LW.limit_reset(LA, want + 1) == want + 86400)
+    check("no minutes, 12am", LW.limit_reset("resets 12am (UTC)", at) == calendar.timegm((2026, 10, 31, 0, 0, 0)))
+    check("unnamed, or an unknown zone, is no reset", LW.limit_reset("rate limited", at) is None
+          and LW.limit_reset("resets 1pm (Mars/Base)", at) is None and LW.limit_reset(None, at) is None)
+    check("the text survives a record", "resets" in LW._record_text({"message": {"content": [{"type": "text", "text": LA}]}}))
+
+
 def test_quiet_and_gate():
     rec = {"type": "assistant", "isApiErrorMessage": True, "error": "authentication_failed",
            "message": {"stop_reason": "stop_sequence"}}
     with tempfile.TemporaryDirectory() as d:
         path = os.path.join(d, "t.jsonl")
-        for er, want in (("authentication_failed", True), ("rate_limit", False)):
+        for er, want in (("authentication_failed", True), ("rate_limit", True), ("server_error", True), ("overloaded", False)):
             with open(path, "w") as f:
                 f.write(json.dumps(dict(rec, error=er, timestamp=SR._iso(NOW))) + "\n")
             tx = SR.tx_summary(path, peers=())
@@ -292,7 +318,7 @@ def test_release():
 
 
 def main():
-    for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_quiet_and_gate, test_slot_back,
+    for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_limit_reset, test_quiet_and_gate, test_slot_back,
               test_probe, test_pick_and_way, test_give_back, test_release):
         t()
     print("selftest_login_watch: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))

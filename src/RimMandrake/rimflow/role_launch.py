@@ -105,6 +105,7 @@ import time
 from fractions import Fraction
 
 AUTH_BACKS_PER_DAY = 2
+OVER_REPEAT, OVER_WINDOW_S = 3, 7 * 86400
 AUTH_TEXT_MAX = 400     # an auth death's result IS the short API error; a long result merely quotes one
 AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expired|please run /login|"
                      r"authentication_failed", re.I)
@@ -716,6 +717,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                         why="%s run %s passed run_max_s %d" % (name, run["unit"], max_s))
                 else:
                     act(do="alarm", kind="role:%s:stop_failed" % name, ticket=run.get("item"), note=True,
+                        conductor_log=True, raise_first="%s run will not stop: its slot stays held." % name,
                         why="%s run %s still %s after %d stop(s): NOT confirmed stopped, kept as running"
                         % (name, run["unit"], ustate, tries))
             continue
@@ -750,6 +752,15 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             act(do="alarm", kind="role:%s:overbudget" % name, ticket=run.get("item"), note=True,
                 why="%s run %s used %d weighted tokens (raw %s), budget %d" % (
                     name, run["unit"], tok, run["raw_tokens"], run.get("budget") or 0))
+            # the day's spend already counts the real tokens, so the daily cap answers one overrun by itself; a
+            # role that keeps overrunning has a wrong budget, and only a person can reset that
+            over = [t for t in rs.get("over_at") or [] if now - t < OVER_WINDOW_S] + [now]
+            rs["over_at"] = over
+            if len(over) >= OVER_REPEAT:
+                act(do="alarm", kind="role:%s:overbudget_repeat" % name, ticket=run.get("item"), note=True,
+                    conductor_log=True, blind=blind(name, "overbudget", run.get("mode"), run["unit"]),
+                    why="%s ran over budget %d times in 7 days: its budget or its scope is wrong" % (name, len(over)),
+                    raise_first="%s keeps overrunning: re-set its budget or narrow its scope." % name)
         if run["state"] == "failed":
             text = res.get("result") or run.get("err_tail") or ""
             back = auth_failed_back(rs, run, text, now)
