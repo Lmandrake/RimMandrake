@@ -1,0 +1,10 @@
+[Unit]
+Description=RimFlow relentless supervisor every 2 min
+
+[Timer]
+OnBootSec=3min
+OnUnitInactiveSec=2min
+Unit=rm-relentless.service
+
+[Install]
+WantedBy=timers.target

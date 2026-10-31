@@ -1,0 +1,11 @@
+[Unit]
+Description=RimFlow relentless supervisor tick (RELENTLESS_OWNER_DESIGN_NEVER_LETS_GO)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/relentless/books
+Environment=PATH=/home/mandrake/.local/bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/bin/python3 /home/mandrake/rm/relentless/books/src/RimMandrake/rimflow/relentless.py tick
+# a tick may make two clones (400 s each) and publish; a hung one is ended and the next resumes from the store
+TimeoutStartSec=1200
+KillMode=process
