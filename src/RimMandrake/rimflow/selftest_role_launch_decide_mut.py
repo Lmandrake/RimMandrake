@@ -3958,8 +3958,31 @@ def main():
             FAILS.append("golden without scenario: " + name)
 
 
+def alarm_dedupe():
+    """ALARM_RUN_DEDUPE_SAID_IT_TWICE: a scheduled run that finishes covers the alarms open at its launch, a failed one
+    covers nothing. Not a golden scenario: it reads the marks, not the journal."""
+    def want(name, ok, got):
+        print(("ok    " if ok else "FAIL  ") + name + ": %s" % (got,))
+        if not ok:
+            FAILS.append(name)
+    for state, seen in (("done", ["ITEM_ONE"]), ("failed", [])):
+        rs = {"alarms_seen": [], "slot_alarms": {"unit": "u", "keys": ["ITEM_ONE"]}}
+        RL.finish_slot_alarms(rs, {"unit": "u", "state": state})
+        want("slot run %s marks %s" % (state, seen), rs["alarms_seen"] == seen and "slot_alarms" not in rs, rs)
+    rs = {"slot_alarms": {"unit": "u", "keys": ["ITEM_ONE"]}}
+    RL.finish_slot_alarms(rs, {"unit": "other", "state": "done"})
+    want("another unit's finish leaves the launch's list", "alarms_seen" not in rs and "slot_alarms" in rs, rs)
+    op = SD.operations(alarm_runs=True, runs_local=["12:00"], economy_pass_local=None, alarm_run_gap_s=100000)
+    now = SD.at_local("12:00")
+    st = fresh_st(Operations={"done": {}, "runs": [], "alarm_last_run": now - 10})
+    decide([op], st, SD.robs(SD.ops_status(now, alarms={"a1": {"state": "OPEN", "item": "ITEM_ONE"}})), now, busy=set())
+    sa = st["roles"]["Operations"].get("slot_alarms")
+    want("a scheduled launch holds the open alarms for its finish", bool(sa) and sa["keys"] == ["ITEM_ONE"], sa)
+
+
 _REACHED = []
 main()
+alarm_dedupe()
 _REACHED.append(1)
 print("%d failure(s)" % len(FAILS) if FAILS else "all ok")
 sys.exit(1 if (FAILS or _REACHED != [1]) else 0)

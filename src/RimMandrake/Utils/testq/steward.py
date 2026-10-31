@@ -208,6 +208,16 @@ def publish_bench():
     return ingest.publish(0, shard_rel=BENCH_SHARD, message="ledger: steward retired a recovered incident")
 
 
+def flush_bench():
+    """A retirement whose publish failed is closed locally, so no later drop carries it, and a dirty shard can stop the
+    tick's --ff-only pull: every pass retries while the shard has unpublished work."""
+    if os.environ.get("TESTQ_INGEST_PUSH", "1") == "0":
+        return
+    import ingest
+    if ingest.unpublished(BENCH_SHARD):
+        jlog({"ts": iso(time.time()), "event": "retired_publish", "result": publish_bench()})
+
+
 def failreport(ok, cause=None):
     """pulse failreport (`steve:lane` health row); the dispatch clone is sparse and has no Utils/pulse, so the same
     record is written inline there."""
@@ -629,8 +639,7 @@ def _watch_pass(now):
                 rimflow("note", inc["item"], "--text", "steward-watch: the steward is writing again (stale %d min)"
                         % (inc["unowned_s"] // 60))
                 publish()
-            retire([i for i in (inc.get("item"), inc.get("owner_item")) if i], "steward-watch: the steward is writing "
-                   "again", now)
+            wst["to_retire"] = (wst.get("to_retire") or []) + [i for i in (inc.get("item"), inc.get("owner_item")) if i]
             jlog({"ts": iso(now), "event": "recovered", "by": "watch", "incident": inc})
         wst["incident"] = None
     else:
@@ -654,6 +663,8 @@ def _watch_pass(now):
             if inc["level"] != lvl:
                 publish()
         wst["incident"] = inc
+    wst["to_retire"] = retire(wst.get("to_retire") or [], "steward-watch: the steward is writing again", now)
+    flush_bench()       # the watch has its own timer, so this retry outlives a stopped tick
     wst.update(ts=iso(now), epoch=now, age_s=int(age))
     S.dump(wst, path("steward_watch.json"))
     return wst

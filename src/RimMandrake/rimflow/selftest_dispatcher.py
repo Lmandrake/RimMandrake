@@ -950,7 +950,7 @@ def test_role_economy_and_alarms():
     a = role_acts(rdecide([operations()], st, robs(ops_status(now, runway=0.1, week_left=3, alarms=alarms)), now))
     check([x["do"] for x in a] == ["role_launch"] and a[0]["mode"] == "economy" and a[0]["budget"] == 150000,
           "Operations 07:30: economy pass at economy_token_cap, no bands (x1.0 even when low)")
-    check(st["roles"]["Operations"]["alarms_seen"] == [], "W1: alarms open at first enable are no baseline: not seen")
+    check(st["roles"]["Operations"]["alarms_seen"] == [], "W1: alarms open at first enable are not seen while the run is going")
     t = now + 600
     st["roles"]["Operations"]["runs"] = [{"unit": "u1", "at": now, "day": RL.day_of(now), "budget": 150000,
                                           "mode": "economy", "item": "ROLES_ITEM_X", "state": "running",

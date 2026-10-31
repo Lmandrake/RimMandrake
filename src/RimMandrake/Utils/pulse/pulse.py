@@ -990,13 +990,19 @@ def compact_metrics(path: Path) -> tuple[int, int]:
 def health(restart: bool) -> int:
     import subprocess
     import urllib.request
-    try:
-        snap = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{PORT}/api/now", timeout=10).read())
-        age = time.time() - snap.get("collected_at", 0)
-    except Exception as e:
-        age, snap = None, {"error": str(e)}
+    for attempt in (1, 2):      # one beat missed on a loaded box is no outage: ask twice before restarting the spine
+        try:
+            snap = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{PORT}/api/now", timeout=10).read())
+            age = time.time() - snap.get("collected_at", 0)
+        except Exception as e:
+            age, snap = None, {"error": str(e)}
+        if age is not None and age < 60:
+            break
+        if attempt == 1:
+            time.sleep(15)
     ok = age is not None and age < 60
-    print(f"pulse health: {'ok' if ok else 'BAD'} age={None if age is None else round(age)}s")
+    print(f"pulse health: {'ok' if ok else 'BAD'} age={None if age is None else round(age)}s"
+          + (f" error={snap['error']}" if snap.get("error") else ""))
     if not ok and restart:
         append("metrics.jsonl", {"m": "spine_restart", "age_s": age})
         subprocess.run(["systemctl", "--user", "restart", "rm-pulse.service"], timeout=20)

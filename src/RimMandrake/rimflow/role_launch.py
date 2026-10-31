@@ -742,6 +742,7 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
             # a token-blind role reads its ledger item: its note is a FIXED outcome (blind_note), never the result's
             # subtype or text; the journal and Operations' item keep `why` (review dispatcher-full #2)
             blind=blind(name, "completed" if run["state"] == "done" else "failed", run.get("mode"), run["unit"]))
+        finish_slot_alarms(rs, run)
         if run["state"] == "done" and name in STRUCTURED:
             harvest(name, run, res, act)
         if run["state"] == "done" and name in FINISH_STAMP:
@@ -1314,6 +1315,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             rs["run_now_last"] = dict(rs.pop("run_now"), outcome="launched", unit=unit, decided=now)
         rs.pop("event_skip", None)
         mark(rs, job, "launch")
+        if job.get("slot") and role.get("alarm_runs") and reading()["state"] == "MEASURED":
+            # finish_slot_alarms: what this scheduled run diagnoses, marked when it finishes done
+            keys = alarm_reading((reading_cache["s"] or {}).get("alarms"))
+            if keys:
+                rs["slot_alarms"] = {"unit": unit, "keys": keys}
         if job["mode"] == "alarm":
             rs["alarm_last_run"] = now        # the gap runs from launched alarm runs only, not from passed-over ones
             ad = rs.get("alarm_day") if (rs.get("alarm_day") or {}).get("day") == day_of(now) else \
@@ -1512,6 +1518,18 @@ def launch_role(role, a):
     if a.get("pre_launch"):
         out["pre_launch"] = a["pre_launch"]
     return out
+
+
+def finish_slot_alarms(rs, run):
+    """A scheduled run diagnosed what was open as it launched: no alarm run minutes later to say it twice
+    (ALARM_RUN_DEDUPE_SAID_IT_TWICE; 2026-10-31 economy 07:30, alarm run 250 s later). A failed run covers nothing. The
+    prune at the next alarm reading still re-arms an alarm that clears and re-crosses."""
+    sa = rs.get("slot_alarms")
+    if not sa or sa.get("unit") != run["unit"]:
+        return
+    rs.pop("slot_alarms")
+    if run["state"] == "done":
+        rs["alarms_seen"] = sorted(set(rs.get("alarms_seen") or []) | set(sa["keys"]))
 
 
 def mark(rs, job, how):
