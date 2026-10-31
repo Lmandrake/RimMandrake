@@ -356,8 +356,11 @@ flipping one way and 4% the other, takes about **49 paired tasks**. Unpaired it 
 
 - **Speed and tokens:** the formula says replay could detect a 1.5× difference in 12-31 tasks per arm. The stopping
   rule as built does not: it decides only at the full trial size N (the era gate, section 4.4), and at N = 40-60
-  tasks per arm it decides a true 1.5× difference in about 40-50% of trials (measured, `arena_analysis.py` LIMITS,
-  `selftest_arena_analysis.py --power`). Without replay the same answer needs 100-500 tasks per arm: weeks.
+  tasks per arm the power depends on the task count and the arm count: a true 1.5× difference reaches DECIDE in 12%
+  (50 tasks, 4 arms), 24% (3 arms) or 35% (2 arms) of trials; 40-50% appears only at 75-100 tasks with 2-3 arms
+  (simulated on the real `arena_analysis.analyse()` with assumed sigma and accept rate; table:
+  `D:\ClaudeWork\rimmandrake\arena\verify_stop\power_table.md`). Which row applies awaits the owner's task-count
+  decision. A HARD_CAP_PICK is not evidence of a difference. Without replay the same answer needs 100-500 tasks per arm: weeks.
 - **Acceptance rate:** a 20-point difference needs about 50 tasks per arm.
 - **Escaped defects:** these cannot be powered in days (section 5).
 
@@ -576,8 +579,8 @@ Assume an autonomous builder delivers about 12 effective hours a day, after revi
 
 **The cheapest useful slice:** steps 1-8 plus the `v3` half of step 9, about 43 hours. That gives Ralph A against
 today's FOUNDRY procedure on replayed tasks, the question the Ralph design doc's §8 trial asked. On these numbers
-it runs the whole trial list in about two trial days and decides a true 1.5× difference in about 40-50% of trials
-(section 3.5); otherwise the verdict is CONTINUE or a hard-cap pick, not a no-difference finding. Built by one builder, that answer is ready about day 5 from the go.
+it runs the whole trial list in the days given in the power table (section 3.5), and DECIDE on a true 1.5× difference
+is 12-35% at 50 tasks (more tasks, fewer arms, more power; the row awaits the owner's task-count decision); otherwise the verdict is CONTINUE or a hard-cap pick, not a no-difference finding. Built by one builder, that answer is ready about day 5 from the go.
 
 **GPT's review before each arm runs.** Each arm, and the substrate as a whole, gets a blind GPT review before its
 first counted task. The review covers the code, the frozen tasks and this decision rule. A P0 finding stops that
