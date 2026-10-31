@@ -218,6 +218,35 @@ def test_answered_ring_is_not_no_handoff():
     check(kinds(a) == ["verified"], "a note plus a lease take is a hand-off, not an answer: %r" % kinds(a))
 
 
+def test_new_ticket_skips_the_backoff():
+    """A seat that declined ticket A is rung at the next tick for a different takeable top item, and only for that."""
+    sch = sched(no_handoff={"rering_s": [1800], "escalate_after": 9})
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    top = {"id": "A_ITEM", "needs": "offline"}
+    o = obs(consumed={"consumed_at": 1.0}, ticket=top)
+    now, seen = 1000.0, []
+    def run(until):
+        nonlocal now
+        while now < until:
+            seen.extend((now, a["ticket"]) for a in D.decide(sch, st, o, now, True) if a["do"] == "ring")
+            now += sch["tick_s"]
+    run(1000.0 + 1500)
+    check([t for _, t in seen] == ["A_ITEM"], "one ring, then the backoff holds the same ticket: %r" % seen)
+    ss = st["seats"]["FOUNDRY"]
+    check(ss["cooldown_until"] > now and ss["nh_tickets"] == ["A_ITEM"], "backoff running, declined ticket recorded")
+    top["id"] = "B_ITEM"
+    run(now + sch["tick_s"])
+    check([t for _, t in seen] == ["A_ITEM", "B_ITEM"], "a new top item rings inside the backoff: %r" % seen)
+    run(now + 700)      # B declined as well: A coming back is no new work
+    top["id"] = "A_ITEM"
+    n = len(seen)
+    run(now + 300)
+    check(len(seen) == n, "a ticket already declined in this streak waits out the backoff: %r" % seen)
+    st2 = {"seats": {"FOUNDRY": {"cooldown_until": 9e9}}, "wakes": [], "recovers": [], "alarms": {}}
+    check(not [a for a in D.decide(sch, st2, o, 1000.0, True) if a["do"] == "ring"],
+          "a plain cooldown (a give-up, no declined tickets) is never skipped")
+
+
 def test_no_handoff_rering_and_escalation():
     """FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: a seat that consumes every ring and never claims, with work waiting,
     is rung again on the bounded no_handoff backoff (not after cooldown_s), and escalated after escalate_after."""
@@ -3445,7 +3474,7 @@ def test_long_helper_alarm():
 
 def main():
     for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
-              test_no_handoff_rering_and_escalation, test_answered_ring_is_not_no_handoff, test_dead_recover,
+              test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
               test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,

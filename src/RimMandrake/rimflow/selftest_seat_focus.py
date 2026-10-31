@@ -70,6 +70,28 @@ def main():
     ch = cli._choose(world(game), "FOUNDRY", Args(), {"now": ctx["now"]}, None)
     check(ch["item"] is not None, "control: without focus a game-dev item IS offered")
 
+    # the bar ends by itself: `until_item` implemented lifts it, nothing else does
+    gated = os.path.join(d, "g.json")
+    json.dump({"seat_focus": {"FOUNDRY": {"until_item": "DAY_ZERO_GATE", "include_prefixes": ["ARENA_"]}}},
+              open(gated, "w"))
+    class It:
+        def __init__(self, state):
+            self.state = state
+    class Wd:
+        def __init__(self, state=None):
+            self.items = {"DAY_ZERO_GATE": It(state)} if state else {}
+    check(cli._seat_focus("FOUNDRY", gated) is not None, "no world given: the bar holds")
+    check(cli._seat_focus("FOUNDRY", gated, Wd()) is not None, "gate item not filed: the bar holds")
+    for state, barred in (("proposed", True), ("doing", True), ("dropped", True), ("built", False),
+                          ("validated", False), ("done", False)):
+        check((cli._seat_focus("FOUNDRY", gated, Wd(state)) is not None) == barred,
+              "gate item %s: barred=%s" % (state, barred))
+    check(cli._seat_focus("FOUNDRY", sched, Wd("done")) is not None, "an entry with no until_item never self-lifts")
+    gate = json.load(open(cli.os.path.join(os.path.dirname(os.path.abspath(cli.__file__)), "dispatcher_schedule.json")))
+    gate = gate["seat_focus"]["FOUNDRY"].get("until_item")
+    _, real = cli.load()
+    check(gate in real.items, "the live until_item is filed in the ledger: %s" % gate)
+
     print("%d FAIL" % len(FAILS) if FAILS else "ALL OK")
     return 1 if FAILS else 0
 

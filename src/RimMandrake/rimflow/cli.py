@@ -894,7 +894,7 @@ def cmd_next(args, seat):
     # 2026-10-30: "I really, really need you to strip "when I come back to the machine" as an event for anything
     # changing. It's causing so many problems and I don't need it.").
     _apply_grant_preflight(ctx)
-    ctx["focus"] = _seat_focus(seat)
+    ctx["focus"] = _seat_focus(seat, world=w)
     # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
     # its output is checked against the published git history before anything is
     # offered, because an item whose work already shipped kept being offered as fresh
@@ -1035,9 +1035,13 @@ def _apply_grant_preflight(ctx, reader=None):
           "python3 src/RimMandrake/rimflow/companion_grant.py)" % (state, "/".join(needs), why))
 
 
-def _seat_focus(seat, path=None):
+FOCUS_LIFTED_STATES = ("built", "validated", "done")
+
+
+def _seat_focus(seat, path=None, world=None):
     """-> {"until", "prefixes"} when the schedule's `seat_focus` names `seat`, else None (SEAT_FOCUS_FILTER_FOR_NEXT).
-    One place to delete on day 1: the `seat_focus` key of dispatcher_schedule.json. Unreadable = no filter."""
+    A standing bar ends by itself: once the entry's `until_item` is implemented in `world`, no filter, and nobody has
+    to remember to delete the key. A gate item not in the ledger holds the bar. Unreadable schedule = no filter."""
     path = path or os.environ.get("RIMFLOW_SCHEDULE") or os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")
     try:
@@ -1046,6 +1050,9 @@ def _seat_focus(seat, path=None):
     except (OSError, ValueError, AttributeError):
         return None
     if not isinstance(c, dict) or not c.get("include_prefixes"):
+        return None
+    gate = (getattr(world, "items", None) or {}).get(c.get("until_item"))
+    if gate is not None and gate.state in FOCUS_LIFTED_STATES:
         return None
     return {"until": c.get("until"), "prefixes": tuple(c["include_prefixes"])}
 

@@ -457,6 +457,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss["attempt"] = 0
                     ss["last_verified"] = now
                     ss.pop("nh_streak", None)        # a hand-off ends the no-hand-off streak
+                    ss.pop("nh_tickets", None)
                 elif now - pend["rung_at"] >= sch["handoff_s"]:
                     # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: this used to wait the full cooldown_s (3600) before the
                     # next ring, so an idle seat with a full queue sat ~70 min per cycle (handoff_s + cooldown_s +
@@ -481,6 +482,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss.pop("ring")
                     ss["attempt"] = 0
                     ss["nh_streak"] = streak
+                    ss["nh_tickets"] = sorted(set(ss.get("nh_tickets") or []) | {pend.get("ticket")} - {None})
                     ss["cooldown_until"] = now + wait
                     n = rule["escalate_after"]
                     if n and streak >= n and ans:
@@ -530,7 +532,15 @@ def decide(sch, st, obs, now, apply, out=None):
                 ss["cooldown_until"] = now + sch["cooldown_s"]
             return
         if ss.get("cooldown_until", 0) > now:
-            return
+            # The re-ring backoff waits out a seat that declined THESE tickets, not new work: measured 10-29..30, 3 of
+            # 11 backoffs (about 2.1 of 7.85 h) sat on a different, takeable top item (FOUNDRY_RINGS_FIX_BACKOFF_HIDES_NEW_WORK).
+            tried = ss.get("nh_tickets")
+            if not (tried and status == "idle" and cfg.get("wake", True)):
+                return
+            fresh = obs["peek"](seat)
+            if not fresh or fresh["id"] in tried:
+                return
+            ss.pop("cooldown_until")
         # ---- dead window
         if not sess:
             ss.pop("idle_since", None)
@@ -591,6 +601,7 @@ def decide(sch, st, obs, now, apply, out=None):
             return
         if not ticket:
             ss.pop("nh_streak", None)  # no work waiting: an idle window is correct, nothing to escalate
+            ss.pop("nh_tickets", None)
             return                     # empty queue: an idle window is correct
         ok, why = caps_ok(st, sch, seat, now)
         if not ok:
