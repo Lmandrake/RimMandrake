@@ -453,6 +453,8 @@ def decide(sch, st, obs, now, apply, out=None):
         # still has it verified, then does nothing else (review r2 #6)
         ss = st["seats"].setdefault(seat, {})
         sess = find_session(agents["sessions"], cfg)
+        if sess:     # learned before any early return (pending ring, cooldown, restart, recover): a later recover
+            ss["session_id"] = sess.get("sessionId") or ss.get("session_id")   # resumes the CURRENT session (night review N1)
         status = (sess or {}).get("status") or (sess or {}).get("state")
         pend = ss.get("ring")
         # ---- a ring in flight: verify it
@@ -530,8 +532,6 @@ def decide(sch, st, obs, now, apply, out=None):
             return
         if not enabled:
             return
-        if sess:     # learned before any early return (cooldown, restart, recover): a later recover resumes the
-            ss["session_id"] = sess.get("sessionId") or ss.get("session_id")   # CURRENT session (night review N1)
         if SR.in_flight(st, seat, sch):     # seat_restart owns this window until its restart ends: no ring, no recover
             return
         # ---- recovery in flight: verify it

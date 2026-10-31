@@ -367,6 +367,9 @@ def test_no_handoff_rering_and_escalation():
     a = D.decide(sch, st, obs(consumed={"consumed_at": 1.0}, events=[lease]), p["rung_at"] + 120, True)
     check(kinds(a) == ["verified"] and "nh_streak" not in st["seats"]["FOUNDRY"], "a verified hand-off ends the streak")
     check("cooldown_until" not in st["seats"]["FOUNDRY"], "a verified hand-off ends a give-up's wait")
+    pending = {**st, "seats": {"FOUNDRY": {"session_id": "sid-1", "ring": dict(p, rung_at=p["rung_at"] + 500)}}}
+    D.decide(sch, pending, obs(sessions=[sess(sid="sid-2")]), p["rung_at"] + 501, True)
+    check(pending["seats"]["FOUNDRY"]["session_id"] == "sid-2", "a pending ring does not hide a new window from recover")
     st3 = {"seats": {"FOUNDRY": {"nh_streak": 5, "idle_since": 0.0}}, "wakes": [], "recovers": [], "alarms": {}}
     D.decide(sch, st3, obs(ticket={}), 9000.0, True)
     check("nh_streak" not in st3["seats"]["FOUNDRY"], "an empty queue ends the streak (no work waiting)")
