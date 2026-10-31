@@ -146,7 +146,12 @@ def limit_reset(text, at):
         base = datetime.datetime.fromtimestamp(at, tz).replace(hour=hour, minute=int(m["m"] or 0), second=0, microsecond=0)
         if m["mon"]:
             month, day = datetime.datetime.strptime(m["mon"], "%b").month, int(m["day"])
-            days = [base.replace(month=month, day=day), base.replace(year=base.year + 1, month=month, day=day)]
+            days = []
+            for year in range(base.year, base.year + 5):        # a Feb 29 exists only in some of these years
+                try:
+                    days.append(base.replace(year=year, month=month, day=day))
+                except ValueError:
+                    pass
         else:
             days = [base, base + datetime.timedelta(days=1)]
     except (ValueError, OSError, zoneinfo.ZoneInfoNotFoundError):

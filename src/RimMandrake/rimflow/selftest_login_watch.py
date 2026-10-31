@@ -215,6 +215,10 @@ def test_limit_reset():
     check("a weekly reset names its day", LW.limit_reset(weekly, at) == calendar.timegm((2026, 11, 1, 0, 0, 0)))
     check("a weekly date behind us is next year's", LW.limit_reset(weekly, calendar.timegm((2026, 11, 2, 0, 0, 0)))
           == calendar.timegm((2027, 11, 1, 0, 0, 0)))
+    leap = calendar.timegm((2028, 2, 29, 17, 0, 0))
+    check("Feb 29 is found across a year roll and next to a leap year's end",
+          LW.limit_reset("resets Feb 29, 5pm (UTC)", calendar.timegm((2027, 12, 31, 12, 0, 0))) == leap
+          and LW.limit_reset("resets Feb 29, 5pm (UTC)", calendar.timegm((2028, 2, 28, 12, 0, 0))) == leap)
     check("unnamed, or an unknown zone, is no reset", LW.limit_reset("rate limited", at) is None
           and LW.limit_reset("resets 1pm (Mars/Base)", at) is None and LW.limit_reset(None, at) is None)
     check("the text survives a record", "resets" in LW._record_text({"message": {"content": [{"type": "text", "text": LA}]}}))
