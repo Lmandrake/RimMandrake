@@ -2,7 +2,7 @@
 """arena_spend.py - per-(arm, task) RAW token spend for arena_analysis.py (harness side, read-only on the logs).
 
     python3 src/RimMandrake/Utils/arena/arena_spend.py --out SPEND.json [--raw-dir DIR] [--ledger EVENTS.jsonl] [--allow-untrusted]
-            [--projects ~/.claude/projects] [--clones-root /home/mandrake/rm/arena] [--gpt-log PATH]
+            [--projects ~/.claude/projects] [--clones-root /home/mandrake/rm/arena/replay] [--gpt-log PATH]
             [--helpers DIR] [--sandbox-root DIR] [--since ISO] [--until ISO]
 
 WHAT IT DOES. The meter (sim/spend_census.py) knows each Claude API call (from the transcripts, attributed to an
@@ -372,15 +372,18 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
         raise ValueError("no event times to derive a window from: pass --since and --until")
     if helpers is None:
         helpers = HC.root()
+    import arena_replay as R
     if sandbox_root is None:
-        import arena_replay as R
         sandbox_root = os.environ.get("RM_ARM_SANDBOX_SCRATCH") or (R.arena_root() / "sandbox")
+    if clones_root is None:     # ARENA_SPEND_FIX_DEFAULT_ROOT_DROPS_BUILDER: the runner's own path helper, one truth
+        clones_root = str(default_clones_root())
+    harness_roots = [R.arena_root() / "judge"]
     extra, gdirs, cap_blocking = tester_captures(arm_logs, helpers, since, until)
     homes, home_blocking = sandbox_homes(sandbox_root)
     cl, gp, diag = [], [], {}
     by_arm = S.claude_spend_by_arm(projects=projects, arms=sorted(arm_logs), arena_root=clones_root, since=since,
                                    until=until, diag=diag, sink=lambda arm, c: cl.append((arm, c)),
-                                   extra=extra + homes)
+                                   extra=extra + homes, harness_roots=harness_roots)
     S.gpt_spend_by_arm(gpt_log, since=since, until=until, diag=diag, sink=lambda arm, d: gp.append((arm, d)))
     for gdir, arm in gdirs:
         gd = {}
@@ -408,8 +411,33 @@ def meter(arm_logs, *, projects=None, clones_root=None, gpt_log=None, since=None
         if why in BLOCKING_UNATTRIBUTED and ite:
             doc["blocking"].append("meter UNATTRIBUTED %s: %s ITE of Claude spend under the arena root on no one arm"
                                    % (why, ite))
+    doc["blocking"].extend(container_buckets(doc, clones_root))
     doc["logs"] = AA.spend_log_binding(arm_logs)
     return doc
+
+
+def default_clones_root():
+    """The replay clones root exactly as the runner lays clones out (arena_replay.clone_path: replay_dir()/<arm>/<task>),
+    so the first path component under it IS the arm."""
+    import arena_replay as R
+    return R.replay_dir()
+
+
+def container_buckets(doc, clones_root):
+    """An overhead bucket that IS the replay container (clones root set one level too high, e.g. the bare arena root:
+    the pre-fix default) hides every builder call of every arm as overhead: blocking, never a flag."""
+    import arena_replay as R
+    try:
+        rep = os.path.realpath(str(R.replay_dir()))
+    except Exception:
+        return []
+    out = []
+    for b, v in sorted((doc.get("overhead") or {}).items()):
+        if b and os.path.realpath(os.path.join(str(clones_root), b)) == rep:
+            out.append("meter clones root %s is above the replay dir: bucket %r holds %s call(s) of builder spend "
+                       "(use the default, arena_replay.replay_dir())" % (clones_root, b, v.get("calls", "?")
+                                                                         if isinstance(v, dict) else "?"))
+    return out
 
 
 def main(argv=None):
@@ -421,7 +449,8 @@ def main(argv=None):
     ap.add_argument("--ledger", help="rimflow events.jsonl holding the ARENA_ANCHOR notes (default: the repo ledger; "
                     "arena_analysis.ledger_external)")
     ap.add_argument("--projects", help="Claude transcripts root (default ~/.claude/projects)")
-    ap.add_argument("--clones-root", help="arm clones root (default $RM_ARENA_ROOT or %s)" % S.ARENA_ROOT)
+    ap.add_argument("--clones-root", help="arm clones root (default arena_replay.replay_dir(): "
+                    "<$RM_ARENA_ROOT or %s>/replay, the runner's clone layout)" % S.ARENA_ROOT)
     ap.add_argument("--gpt-log", help="gpt call log file/dir (default gpt_call_log's)")
     ap.add_argument("--helpers", help="tester spend captures (default $ARENA_METER_HELPERS or <arena root>/meter_helpers)")
     ap.add_argument("--sandbox-root", help="arm_sandbox scratch base (default $RM_ARM_SANDBOX_SCRATCH or <arena root>/sandbox)")

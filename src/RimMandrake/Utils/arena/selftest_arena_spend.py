@@ -459,6 +459,72 @@ def t_stale_tail(tmp):
           d["blocking"])
 
 
+
+# ------------------------------------------------------------------ default clones root (ARENA_SPEND_FIX_DEFAULT_ROOT_DROPS_BUILDER)
+
+def t_default_root(tmp):
+    """The runner's real layout <arena root>/replay/<arm>/<task> with NO --clones-root: every builder call reaches its
+    arm, the judge stays harness overhead; a finished arm whose clone dir is gone still classifies (declared arm);
+    MUTANT: the pre-fix default (the bare arena root) puts the builder in a 'replay' bucket -> now BLOCKING."""
+    import arena_replay as R
+    base = tmp / "default_root"
+    arena = base / "arena"
+    os.environ["RM_ARENA_ROOT"] = str(arena)
+    clone = R.clone_path("v3", "T1")
+    clone.mkdir(parents=True)
+    judge = arena / "judge" / "work-1"
+    judge.mkdir(parents=True)
+    pj = base / "projects"
+    t0 = T0
+    n = [0]
+
+    def session(cwd, ts_list):
+        d = pj / S.path_slug(os.path.realpath(str(cwd)))
+        d.mkdir(parents=True, exist_ok=True)
+        lines = []
+        for t in ts_list:
+            n[0] += 1
+            lines.append({"type": "assistant", "timestamp": iso(t), "cwd": os.path.realpath(str(cwd)),
+                          "message": {"id": "dr-%d" % n[0], "model": OPUS,
+                                      "usage": {"input_tokens": 100, "output_tokens": 10}}})
+        (d / ("s%d.jsonl" % n[0])).write_text("".join(json.dumps(x) + "\n" for x in lines))
+    session(clone, [t0 + 60, t0 + 120, t0 + 180])
+    session(judge, [t0 + 200])
+    logs = {"v3": {"recs": [
+        {"event": "pass_start", "arm": "v3", "task": "T1", "run_id": "v3.replay.1", "lane": "build", "ts": iso(t0)},
+        {"event": "pass_end", "arm": "v3", "task": "T1", "run_id": "v3.replay.1", "lane": "build",
+         "ts": iso(t0 + 300)}]}}
+    kw = dict(projects=str(pj), gpt_log=str(base / "none.jsonl"), helpers=str(base / "h"),
+              sandbox_root=str(base / "sb"), since=t0 - 10, until=t0 + 400)
+    check(str(SP.default_clones_root()) == str(R.replay_dir()) and R.clone_path("v3", "T1").parent.parent
+          == SP.default_clones_root(), "default clones root IS the runner's replay_dir (one source of truth)")
+    d = SP.meter(logs, **kw)
+    calls = sum(r["calls"] for r in d["arms"].get("v3", {}).values())
+    ov = d["overhead"]
+    check(calls == 3 and not d["blocking"] and "replay" not in ov and (ov.get(S.HARNESS) or {}).get("calls") == 1,
+          "default root: all 3 builder calls on v3/T1, judge call in harness overhead, nothing blocking",
+          (calls, sorted(ov), d["blocking"]))
+    shutil.rmtree(arena / "replay" / "v3")          # a finished arm's clones are pruned: still a declared arm
+    d2 = SP.meter(logs, **kw)
+    check(not d2["blocking"] and S.HARNESS in d2["overhead"],
+          "default root: an arm whose clone dir is gone is still declared (not 'unlisted' blocking)", d2["blocking"])
+    clone.mkdir(parents=True)
+    dm = SP.meter(logs, clones_root=str(arena), **kw)
+    check(not dm["arms"].get("v3") and "replay" in dm["overhead"]
+          and any("above the replay dir" in b for b in dm["blocking"]) and AA.spend_doc_problem(dm, logs),
+          "default root MUTANT: the old default (bare arena root) hides the builder in 'replay' -> blocking, "
+          "the analysis refuses the doc", (sorted(dm["overhead"]), dm["blocking"]))
+    real = SP.default_clones_root
+    SP.default_clones_root = lambda: arena
+    try:
+        dm2 = SP.meter(logs, **kw)
+    finally:
+        SP.default_clones_root = real
+    check(any("above the replay dir" in b for b in dm2["blocking"]),
+          "default root MUTANT: default_clones_root reverted to the arena root -> caught (blocking)", dm2["blocking"])
+    os.environ.pop("RM_ARENA_ROOT", None)
+
+
 # ------------------------------------------------------------------ e2e
 
 def setup_env(tmp, name):
@@ -921,7 +987,7 @@ def main():
         return 1
     keys = ("ARENA_ROOT", "ARENA_CLONES", "ARENA_PRIVATE", "ARENA_JUDGE_WORK", "ARENA_JUDGE_OPUS_MODEL",
             "ARENA_EVENT_TOKEN_FILE", "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_GPT_CALL_LOG", "ARENA_ARMS",
-            "ARENA_ARM_TOKENS", "ANTHROPIC_DEFAULT_OPUS_MODEL", "ARENA_METER_HELPERS", "RM_ARM_SANDBOX_SCRATCH")
+            "ARENA_ARM_TOKENS", "ANTHROPIC_DEFAULT_OPUS_MODEL", "ARENA_METER_HELPERS", "RM_ARM_SANDBOX_SCRATCH", "RM_ARENA_ROOT")
     saved = {k: os.environ.get(k) for k in keys}
     tmp = Path(tempfile.mkdtemp(prefix="arena_spend_st_"))
     try:
@@ -930,6 +996,7 @@ def main():
         t_units()
         t_census(tmp)
         t_stale_tail(tmp)
+        t_default_root(tmp)
         t_e2e(tmp)
         t_main_wiring(tmp)
         t_mutations(tmp)

@@ -279,21 +279,27 @@ def _desc_exists(base: str, rem: str, depth=0) -> bool:
     return False
 
 
-def classify_slug(slug: str, arms=(), arena_root: str = None):
+def classify_slug(slug: str, arms=(), arena_root: str = None, harness_roots=()):
     """-> (arm, reason). arm is a directory name directly under the arena root, HARNESS, or UNATTRIBUTED.
+    A slug that is (or lies under) one of `harness_roots` (arena_spend passes <arena root>/judge when the clones root
+    is the replay dir, ARENA_SPEND_FIX_DEFAULT_ROOT_DROPS_BUILDER) is HARNESS.
     The slug must start with the arena root's slug + '-' EXACTLY; the arm is then the NEXT path component:
-    matched against the real directory listing under the root when it exists, else the explicit `arms` list
+    matched against the real directory listing under the root when it exists PLUS the explicit `arms` list (a
+    finished arm's clones may be deleted; _cwd_under still checks every cwd), else the `arms` list alone
     ('judge' is always the harness). A slug that fits several names (ralph/a vs ralph-a) is settled by the
     real tree when possible, else UNATTRIBUTED with reason 'ambiguous'; a name not listed is 'unlisted'."""
+    for h in harness_roots or ():
+        hp = path_slug(_root(str(h)))
+        if slug == hp or slug.startswith(hp + "-"):
+            return HARNESS, ""
     root = _root(arena_root)
     pre = path_slug(root) + "-"
     if not slug.startswith(pre):
         return UNATTRIBUTED, "outside"
     rest = slug[len(pre):]
     have_fs = os.path.isdir(root)
-    names = sorted(d for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))) if have_fs else \
-        sorted({a.strip("/") for a in arms if a})
-    names = sorted(set(names) | {"judge"})
+    names = sorted(d for d in os.listdir(root) if os.path.isdir(os.path.join(root, d))) if have_fs else []
+    names = sorted(set(names) | {a.strip("/") for a in arms if a and a.strip("/")} | {"judge"})
     cands = [n for n in names if rest == path_slug(n) or rest.startswith(path_slug(n) + "-")]
     if len(cands) > 1 and have_fs:
         ok = [n for n in cands if (rest == path_slug(n)) or
@@ -382,7 +388,7 @@ def _owns(scratch_name, cwd) -> bool:
 
 
 def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, until=None, diag=None, sink=None,
-                        extra=()):
+                        extra=(), harness_roots=()):
     """{arm: {"ite","calls","files"}} over every transcript (subagents included), each API call once, only calls
     with since <= t < until. UNATTRIBUTED carries "reasons" {reason: ite}. `sink(arm, call)`, if given, sees every
     counted call (raw fields model/in/cr/c5/c1/out/t; arena_spend.py attributes them to tasks). `diag` (dict) receives
@@ -421,7 +427,7 @@ def claude_spend_by_arm(projects=None, arms=(), arena_root=None, since=0.0, unti
                     paths.append((mt, p, src))
     for _mt, p, (sroot, forced, owner) in sorted(paths):
         top = os.path.relpath(p, sroot).split(os.sep)[0]
-        arm, why = (forced, "") if forced else classify_slug(top, arms, arena_root)
+        arm, why = (forced, "") if forced else classify_slug(top, arms, arena_root, harness_roots)
         seen.begin_file(arm)
         st = {}
         try:
