@@ -1035,21 +1035,29 @@ def t_judge_batch(tmp):
     # 3 environment classes the vet culled
     check("skills" in J.TREE_PATHS and "infrastructure/stevedesktop" in J.TREE_PATHS,
           "forced: skills (codex_image) and infrastructure/stevedesktop are tree paths")
-    host = tmp / "jb_host"
-    host.mkdir()
-    (host / "seen.txt").write_text("host")
-    saved = os.environ.get("ARENA_CHECK_OVERLAYS")
-    os.environ["ARENA_CHECK_OVERLAYS"] = str(host)
-    try:
-        r = run("import os, sys\nh = %r\nassert open(os.path.join(h, 'seen.txt')).read() == 'host'\n"
-                "os.makedirs(os.path.join(h, 'sub'), exist_ok=True)\nopen(os.path.join(h, 'sub', 'new.txt'), 'w')"
-                ".write('x')\nsys.exit(0)\n" % str(host), "overlay")
-    finally:
-        os.environ.pop("ARENA_CHECK_OVERLAYS") if saved is None else os.environ.__setitem__("ARENA_CHECK_OVERLAYS",
-                                                                                            saved)
-    check(r["result"] == "pass" and not (host / "sub").exists(),
-          "forced: a check writes into a hard-coded host dir through a throwaway overlay; the host dir is untouched "
-          "(%s %r)" % (r["result"], r["tail"][-160:]))
+    # ARENA_SANDBOX_REPAIR_DENYLIST_STILL_LEAKS: an overlay inside a hidden container (/home, /mnt, ...) is an EMPTY
+    # throwaway (the host content is not readable); one outside them (here /tmp) keeps the host content readable
+    hosts = [tmp / "jb_host"] + ([Path(tempfile.mkdtemp(prefix="jb_host_", dir="/tmp"))] if os.access("/tmp", os.W_OK)
+                                 else [])
+    for hi, host in enumerate(hosts):
+        host.mkdir(exist_ok=True)
+        (host / "seen.txt").write_text("host")
+        saved = os.environ.get("ARENA_CHECK_OVERLAYS")
+        os.environ["ARENA_CHECK_OVERLAYS"] = str(host)
+        hid = any(J._inside(host, Path(h)) for h in J.CHECK_HIDE)
+        try:
+            r = run("import os, sys\nh = %r\nassert os.path.exists(os.path.join(h, 'seen.txt')) is %r\n"
+                    "os.makedirs(os.path.join(h, 'sub'), exist_ok=True)\nopen(os.path.join(h, 'sub', 'new.txt'), 'w')"
+                    ".write('x')\nsys.exit(0)\n" % (str(host), not hid), "overlay%d" % hi)
+        finally:
+            os.environ.pop("ARENA_CHECK_OVERLAYS") if saved is None else os.environ.__setitem__("ARENA_CHECK_OVERLAYS",
+                                                                                                saved)
+        check(r["result"] == "pass" and not (host / "sub").exists(),
+              "forced: a check writes into a hard-coded host dir %s through a throwaway overlay; the host dir is "
+              "untouched, its content %s (%s %r)" % (host, "hidden (inside a hidden root)" if hid else "readable",
+                                                    r["result"], r["tail"][-160:]))
+        if host.parent == Path("/tmp"):
+            shutil.rmtree(host, ignore_errors=True)
     r = run("import os, subprocess, sys\nroot = os.path.dirname(os.path.abspath(__file__))\n"
             "s = subprocess.run(['git', '-C', root, 'merge-base', 'HEAD', 'origin/main'], capture_output=True, "
             "text=True)\nprint(s.stdout, s.stderr)\nsys.exit(0 if len(s.stdout.strip()) == 40 else 1)\n", "git",
@@ -1583,113 +1591,229 @@ def t_missing_exclusions(tmp):
         rp.unlink()
 
 
-STORE_PROBE = r"""
-import os, socket, subprocess, sys
-STORE, CLONE, MIRROR, SHA, PORT = %r, %r, %r, %r, %d
-def ok(argv):
+ALLOW_PROBE = r"""
+import json, os, socket, subprocess, sys, tempfile
+T = json.loads(%r)
+def ok(argv, cwd=None):
     try:
-        return subprocess.run(argv, capture_output=True, timeout=30).returncode == 0
+        return subprocess.run(argv, capture_output=True, timeout=30, cwd=cwd).returncode == 0
     except Exception:
         return False
 def can_read(p):
     try:
-        open(p, 'rb').read(); return True
+        with open(p, 'rb') as f:
+            f.read(1)
+        return True
     except Exception:
         return False
-def can_connect():
+def can_list(p):
     try:
-        s = socket.create_connection(('127.0.0.1', PORT), timeout=3); s.close(); return True
+        return bool(os.listdir(p))
     except Exception:
         return False
-seen = {'store_show': ok(['git', '--git-dir', STORE, 'show', SHA]), 'clone_show': ok(['git', '-C', CLONE, 'show', SHA]),
-        'store_read': can_read(os.path.join(STORE, 'HEAD')), 'mirror_read': can_read(os.path.join(MIRROR, 'CLAUDE.md')),
-        'net': can_connect()}
+def can_unix(p):
+    try:
+        s = socket.socket(socket.AF_UNIX); s.settimeout(3); s.connect(p); s.close(); return True
+    except Exception:
+        return False
+def can_tcp(host, port):
+    try:
+        s = socket.create_connection((host, port), timeout=3); s.close(); return True
+    except Exception:
+        return False
+seen = {}
+for k, p in T.get('files', {}).items():
+    seen[k] = can_read(p)
+for k, p in T.get('dirs', {}).items():
+    seen[k] = can_list(p)
+for k, (repo, sha) in T.get('git', {}).items():
+    seen[k] = ok(['git', '-C', repo, 'show', '--stat', sha])
+for k, p in T.get('unix', {}).items():
+    seen[k] = can_unix(p)
+if T.get('tcp'):
+    seen['net_loopback_host'] = can_tcp('127.0.0.1', T['tcp'])
+seen['net_out'] = can_tcp('1.1.1.1', 53)
 print('SEEN', sorted(k for k, v in seen.items() if v))
+d = tempfile.mkdtemp()
+c = ok(['git', 'init', '-q', '.'], d) and open(os.path.join(d, 'a'), 'w').write('a') and ok(['git', 'add', 'a'], d)
+print('COMMIT', bool(c and ok(['git', 'commit', '-q', '-m', 'a'], d)))
 print('TREE_GIT', ok(['git', 'rev-parse', 'HEAD']))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'skills', 'demo-skill', 'scripts'))
+import demo_skill_mod
+print('SKILL', demo_skill_mod.VALUE == 7)
+print('PYTEST_OK', subprocess.run([sys.executable, '-c', 'import json, sqlite3; print(1)'], capture_output=True).returncode == 0)
 """
 
 
-def t_check_stores(tmp):
-    """ARENA_JUDGE_REPAIR_CHECK_SANDBOX_SEES_STORES: a hidden check (kind=check) could `git show` the fix from the bench
-    clone and store.git, read the D: mirror and reach the network. Planted: a fake clone + bare store holding a 'fix'
-    commit, a fake D: mirror and a host listener on 127.0.0.1. Red: the same probe in a sandbox WITHOUT the check
-    masks and with the network (kind=model) sees all five. Green: through run_hidden it sees none, and the check's
-    own synthetic git repo still works (the check passes)."""
-    # the plant lives OUTSIDE /tmp (every sandbox gets a fresh /tmp, which would hide a /tmp plant whatever the
-    # masks) and inside ~/.cache, a check overlay, so the masks are proven laid over an overlay too
-    (Path.home() / ".cache").mkdir(exist_ok=True)
-    plant = Path(tempfile.mkdtemp(prefix="arena_st_stores_", dir=str(Path.home() / ".cache")))
-    try:
-        _check_stores(tmp, plant)
-    finally:
-        shutil.rmtree(plant, ignore_errors=True)
+def _seen(out: str) -> set:
+    import ast
+    for line in out.splitlines():
+        if line.startswith("SEEN "):
+            return set(ast.literal_eval(line[5:]))
+    return set()
 
 
-def _check_stores(tmp, plant):
+def t_check_allowlist(tmp):
+    """ARENA_SANDBOX_REPAIR_DENYLIST_STILL_LEAKS: the check sandbox masked a LIST (clones, store.git, the D: mirror) and
+    a check could still `git show` the fix from ~/rm/dispatch and ClaudeWork/pulse-deploy, read ~/.ssh/id_ed25519, the
+    ~/.claude credentials, account transcripts, ~/rm/scratch, ~/wt, ~/rm/arena-vet, the spend mirror, and reach the
+    tailscale socket. Now an allow-list (check_allowlist). Planted (never the real secrets' content): a fake key,
+    credential file and transcript in $HOME, a fake dispatch clone with a 'fix', a file in ~/rm/scratch, a fake spend
+    mirror and a fake pulse-deploy clone in ClaudeWork, a unix socket in /run/user/<uid> (the tailscale socket's
+    shape), a host TCP listener. Red: the judge-model sandbox (no allow-list) sees every plant; a MUTANT check sandbox
+    with the allow-list emptied sees the filesystem ones. Green: run_hidden sees none, and the check still runs
+    (throwaway-repo commit, its synthetic git tree, a skills/ import, python). Then the REAL paths, booleans only."""
     import socket
     import subprocess as sp
-    clone, store, mirror = plant / "st_clone", plant / "st_store.git", plant / "st_mirror"
-    clone.mkdir()
-    mirror.mkdir()
-    (mirror / "CLAUDE.md").write_text("mirror secret\n")
-    genv = dict(os.environ, **J.GIT_TREE_ENV)
-    sp.run("git init -q -b main . && echo fix > f && git add f && git commit -q -m fix", shell=True, cwd=clone,
-           env=genv, check=True)
-    sp.run(["git", "clone", "-q", "--bare", str(clone), str(store)], env=genv, check=True)
-    sha = sp.run(["git", "-C", str(clone), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-    srv = socket.socket()
-    srv.bind(("127.0.0.1", 0))
-    srv.listen(8)
-    port = srv.getsockname()[1]
-    body = STORE_PROBE % (str(store), str(clone), str(mirror), sha, port)
-    saved = os.environ.get("ARENA_CHECK_MASKS")
-    os.environ["ARENA_CHECK_MASKS"] = os.pathsep.join(map(str, (clone, store, mirror)))
+    home = Path.home()
+    (home / ".cache").mkdir(exist_ok=True)
+    ph = Path(tempfile.mkdtemp(prefix="arena_st_allow_", dir=str(home / ".cache")))
+    cw_base = Path("/mnt/d/ClaudeWork/rimmandrake")
+    pc = Path(tempfile.mkdtemp(prefix=".arena_st_allow_", dir=str(cw_base))) if cw_base.is_dir() else None
+    scr = home / "rm" / "scratch"
+    ps = scr / (".arena_st_allow_%d" % os.getpid()) if scr.is_dir() else None
+    rdir = Path("/run/user/%d" % os.getuid())
+    sock_path = rdir / ("arena_st_allow_%d.sock" % os.getpid())
+    usock = tcp = None
     try:
-        work = Path(os.environ["ARENA_JUDGE_WORK"]) / "stores"
+        (ph / ".ssh").mkdir()
+        (ph / ".ssh" / "id_ed25519").write_text("PLANTED KEY\n")
+        (ph / ".claude" / "projects" / "p").mkdir(parents=True)
+        (ph / ".claude" / ".credentials.json").write_text('{"planted": true}\n')
+        (ph / ".claude" / "projects" / "p" / "s.jsonl").write_text('{"planted": true}\n')
+        genv = dict(os.environ, **J.GIT_TREE_ENV)
+
+        def repo(d):
+            d.mkdir(parents=True)
+            sp.run("git init -q -b main . && echo fix > f && git add f && git commit -q -m fix", shell=True, cwd=d,
+                   env=genv, check=True)
+            return [str(d), sp.run(["git", "-C", str(d), "rev-parse", "HEAD"], capture_output=True,
+                                   text=True).stdout.strip()]
+        T = {"files": {"ssh_key": str(ph / ".ssh" / "id_ed25519"),
+                       "claude_cred": str(ph / ".claude" / ".credentials.json")},
+             "dirs": {"transcripts": str(ph / ".claude" / "projects" / "p")},
+             "git": {"dispatch_show": repo(ph / "rm" / "dispatch")}, "unix": {}}
+        if ps is not None:
+            ps.write_text("planted\n")
+            T["files"]["rm_scratch"] = str(ps)
+        if pc is not None:
+            m = pc / "sandbox" / "c-12345678-x" / "builder.mirror" / "home" / ".claude" / "projects" / "p"
+            m.mkdir(parents=True)
+            (m / "s.jsonl").write_text('{"planted": true}\n')
+            T["dirs"]["spend_mirror"] = str(m)
+            T["git"]["pulse_deploy_show"] = repo(pc / "pulse-deploy")
+        if rdir.is_dir() and os.access(rdir, os.W_OK):
+            usock = socket.socket(socket.AF_UNIX)
+            usock.bind(str(sock_path))
+            usock.listen(4)
+            T["unix"]["run_socket"] = str(sock_path)
+        tcp = socket.socket()
+        tcp.bind(("127.0.0.1", 0))
+        tcp.listen(8)
+        T["tcp"] = tcp.getsockname()[1]
+        plants = sorted(list(T["files"]) + list(T["dirs"]) + list(T["git"]) + list(T["unix"]))
+        fs_plants = plants                    # every plant is a path: a unix socket is one too (no netns)
+        body = ALLOW_PROBE % json.dumps(T)
+        work = Path(os.environ["ARENA_JUDGE_WORK"]) / "allow"
         work.mkdir(parents=True, exist_ok=True)
-        (work / "probe.py").write_text(body)
+        (work / "probe.py").write_text(body.split("d = tempfile.mkdtemp()")[0])
         red = J.run_sandboxed([sys.executable, str(work / "probe.py")], work=work, cwd=work, kind="model")
         rout = red.stdout.decode("utf-8", "replace")
-        want = "SEEN ['clone_show', 'mirror_read', 'net', 'store_read', 'store_show']"
-        check(want in rout, "red: without the check masks and with the network the probe sees all five (%s)"
-              % (rout.strip()[-200:] or red.stderr.decode("utf-8", "replace")[-200:]))
-        tree = tmp / "st_tree"
+        want = set(plants + ["net_loopback_host"])
+        check(want <= _seen(rout), "red: the judge-model sandbox (no allow-list, network on) sees every plant "
+              "(%s | want %s)" % (rout.strip()[-300:] or red.stderr.decode("utf-8", "replace")[-200:], sorted(want)))
+        if not T["unix"]:
+            print("UNMEASURED  /run/user/%d not writable: the /run socket plant was not laid" % os.getuid())
+        if pc is None:
+            print("UNMEASURED  /mnt/d/ClaudeWork/rimmandrake absent: spend-mirror and pulse-deploy plants not laid")
+        tree = tmp / "allow_tree"
         (tree / "src").mkdir(parents=True)
+        (tree / "skills" / "demo-skill" / "scripts").mkdir(parents=True)
+        (tree / "skills" / "demo-skill" / "scripts" / "demo_skill_mod.py").write_text("VALUE = 7\n")
         ck = [{"kind": "fix_test", "path": "src/selftest_probe.py", "body": body + "\nassert 'git' in 'git'\n"}]
+        real_al = J.check_allowlist
+        try:
+            J.check_allowlist = lambda interop=False: {"hide": [], "ro": []}
+            mut = J.run_hidden(ck, tree, work / "mut")[0]
+        finally:
+            J.check_allowlist = real_al
+        got = _seen(mut["tail"])
+        check(set(fs_plants) <= got,
+              "mutant: the check sandbox with the allow-list emptied (the old masks only) sees every filesystem plant "
+              "(%s)" % sorted(got))
         r = J.run_hidden(ck, tree, work / "hid")[0]
-        check("SEEN []" in r["tail"], "green: a hidden check reaches no clone, store, mirror or socket (%s)"
-              % r["tail"][-300:])
-        check(r["result"] == "pass" and "TREE_GIT True" in r["tail"],
-              "the check itself still runs and its own throwaway git repo works (%s: %s)" % (r["result"], r["tail"][-200:]))
-        argv = J.sandbox_argv(["true"], masks=[], keep=[work], net=False)
-        check("--unshare-net" in argv and "--unshare-net" not in J.sandbox_argv(["true"], masks=[], keep=[work]),
-              "net=False (kind=check) adds --unshare-net; a judge-model sandbox keeps its network")
+        check("SEEN []" in r["tail"], "green: a hidden check reads no planted key, credential, transcript, scratch, "
+              "spend mirror, clone or socket and has no network (%s)" % r["tail"][-400:])
+        check(r["result"] == "pass" and all(("%s True" % k) in r["tail"]
+                                            for k in ("COMMIT", "TREE_GIT", "SKILL", "PYTEST_OK")),
+              "green: the check still runs: a throwaway-repo commit, its own git tree, a skills/ import (%s: %s)"
+              % (r["result"], r["tail"][-300:]))
     finally:
-        srv.close()
-        os.environ.pop("ARENA_CHECK_MASKS", None) if saved is None else os.environ.__setitem__("ARENA_CHECK_MASKS", saved)
-    os.environ.pop("ARENA_CHECK_MASKS", None)
-    try:
-        dflt = {str(p) for p in J.check_store_masks()}
-        need = {"/home/mandrake/rm/bench", "/home/mandrake/rm/foundry", "/home/mandrake/rm/store.git",
-                "/home/mandrake/rm/mirror.git", "/mnt/d/Luke/dev/RimMandrake"}
-        check(need <= dflt, "the default check masks hold both clones, store.git, mirror.git and the D: mirror (%s)"
-              % sorted(need - dflt))
-        bench, store_r = Path("/home/mandrake/rm/bench"), Path("/home/mandrake/rm/store.git")
-        if (bench / ".git").exists() and store_r.is_dir():
-            # the REAL stores, default masks: the host sees them (red), a hidden check does not (green)
-            sha_r = sp.run(["git", "-C", str(bench), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
-            host = sp.run(["git", "-C", str(bench), "cat-file", "-t", sha_r], capture_output=True).returncode == 0
-            body_r = STORE_PROBE % (str(store_r), str(bench), "/mnt/d/Luke/dev/RimMandrake", sha_r, 9)
-            r = J.run_hidden([{"kind": "fix_test", "path": "src/selftest_probe.py", "body": body_r}],
-                             tmp / "st_tree", Path(os.environ["ARENA_JUDGE_WORK"]) / "stores" / "real")[0]
-            check(host and "SEEN []" in r["tail"] and r["result"] == "pass",
-                  "real default masks: the host reads bench %s, a hidden check reaches no real clone/store/mirror (%s)"
-                  % (sha_r[:10], r["tail"][-300:]))
-        else:
-            print("UNMEASURED  real bench/store.git absent here: default masks not probed against the real stores")
-    finally:
-        if saved is not None:
-            os.environ["ARENA_CHECK_MASKS"] = saved
+        for s in (usock, tcp):
+            if s is not None:
+                s.close()
+        for p in (sock_path, ps):
+            if p is not None and (p.exists() or p.is_socket()):
+                p.unlink()
+        shutil.rmtree(ph, ignore_errors=True)
+        if pc is not None:
+            shutil.rmtree(pc, ignore_errors=True)
+    _check_allowlist_shape()
+    _check_allowlist_real(tmp)
+
+
+def _check_allowlist_shape():
+    al, home = J.check_allowlist(), str(Path.home())
+    hide = {str(p) for p in al["hide"]}
+    check({"/home", "/mnt", "/run"} <= hide, "the check hides /home, /mnt and /run whole (%s)" % sorted(hide))
+    secret = [home + "/.ssh", home + "/.claude", home + "/.claude-accounts", home + "/rm", home + "/wt",
+              "/mnt/c/Users", "/mnt/c/ProgramData", "/mnt/d/Luke", "/mnt/d/ClaudeWork", "/run/tailscale", "/run/user"]
+    bad = [str(r) for r in al["ro"] for s in secret if J._inside(Path(r), Path(s)) or J._inside(Path(s), Path(r))]
+    check(not bad, "nothing the check gets back read-only holds or sits in a secret root (%s)" % bad)
+    ia = {str(p) for p in J.check_allowlist(interop=True)["ro"]}
+    check("/run/WSL" in ia and "/run/WSL" not in {str(p) for p in al["ro"]},
+          "only a C#-building (interop) check gets /run/WSL back")
+    argv = J.sandbox_argv(["true"], masks=[], keep=[], net=False, hide=al["hide"], ro=al["ro"])
+    pairs = list(zip(argv, argv[1:]))
+    check("--unshare-net" in argv and all((f, h) in pairs for h in ("/home", "/mnt", "/run")
+                                          for f in ("--tmpfs", "--remount-ro")),
+          "the check argv unshares the network, lays /home, /mnt, /run as tmpfs and remounts them read-only")
+
+
+def _check_allowlist_real(tmp):
+    """The REAL leak targets the tester found: the host can reach each (exists / rev-parse; content never read
+    here), a hidden check reaches none. A target absent on this host is UNMEASURED, not passed."""
+    import pwd
+    import subprocess as sp
+    home = Path(pwd.getpwuid(os.getuid()).pw_dir)          # the account's real home, whatever $HOME says
+    T = {"files": {}, "dirs": {}, "git": {}, "unix": {}}
+    for k, p in (("ssh_key", home / ".ssh" / "id_ed25519"), ("claude_cred", home / ".claude" / ".credentials.json")):
+        T["files"][k] = str(p)
+    for k, p in (("rm_scratch", home / "rm" / "scratch"), ("wt", home / "wt"), ("arena_vet", home / "rm" / "arena-vet"),
+                 ("transcripts", home / ".claude" / "projects"), ("accounts", home / ".claude-accounts"),
+                 ("spend_mirror", Path("/mnt/d/ClaudeWork/rimmandrake/arena/sandbox")),
+                 ("d_mirror", Path("/mnt/d/Luke/dev/RimMandrake")), ("c_users", Path("/mnt/c/Users"))):
+        T["dirs"][k] = str(p)
+    for k, p in (("dispatch_show", home / "rm" / "dispatch"), ("bench_show", home / "rm" / "bench"),
+                 ("pulse_deploy_show", Path("/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))):
+        sha = sp.run(["git", "-C", str(p), "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+        if sha:
+            T["git"][k] = [str(p), sha]
+    T["unix"]["tailscale"] = "/run/tailscale/tailscaled.sock"
+    present = [k for k, p in list(T["files"].items()) + list(T["dirs"].items()) + list(T["unix"].items())
+               if os.path.exists(p)] + list(T["git"])
+    absent = sorted((set(T["files"]) | set(T["dirs"]) | set(T["unix"])
+                     | {"dispatch_show", "bench_show", "pulse_deploy_show"}) - set(present))
+    for k in absent:
+        print("UNMEASURED  real target %s absent on this host: not probed" % k)
+    if not present:
+        return
+    tree = tmp / "allow_tree"
+    body = ALLOW_PROBE % json.dumps(T)
+    r = J.run_hidden([{"kind": "fix_test", "path": "src/selftest_probe.py", "body": body}], tree,
+                     Path(os.environ["ARENA_JUDGE_WORK"]) / "allow" / "real")[0]
+    check("SEEN []" in r["tail"] and r["result"] == "pass",
+          "real: the host has %s; a hidden check reaches none of them (%s)" % (sorted(present), r["tail"][-300:]))
 
 
 def main():
@@ -1740,7 +1864,7 @@ def main():
         t_proxy_env(tmp)
         t_unscore(tmp)
         t_raw_env(tmp)
-        t_check_stores(tmp)
+        t_check_allowlist(tmp)
         t_missing_exclusions(tmp)
     finally:
         for k, v in saved.items():

@@ -133,7 +133,9 @@ FIX ROUND 3 (GPT review of round 2), each with a forced-failure selftest red aga
   #12 parse_answer requires exactly one distinct verdict object.
 DESIGN CALLS (documented, not changed):
   #7 judge_masks() masks the CONFIGURED roots (ARENA_CLONES, ARENA_PRIVATE, arena root); a clone or work_base passed
-     from elsewhere is not masked. Callers must keep submissions under those roots (not enforced here).
+     from elsewhere is not masked. Callers must keep submissions under those roots (not enforced here). A HIDDEN
+     CHECK does not rely on it: since ARENA_SANDBOX_REPAIR_DENYLIST_STILL_LEAKS it runs in an allow-list
+     (check_allowlist: /home, /mnt, /run, ... hidden, only the toolchain rebound), so an unlisted root is unseen.
   #8 judges are fresh processes, not independent ones: Opus shares the real $HOME (~/.claude auto-loads), GPT shares
      its scratch/receipt dirs, and a same-uid arm can pre-seed both. opus_model() accepts any non-empty model string;
      that the primary and tie-break are really Opus is the operator's configuration, not verified here.
@@ -153,6 +155,7 @@ import argparse
 import datetime as dt
 import fcntl
 import fnmatch
+import glob
 import json
 import math
 import os
@@ -314,13 +317,13 @@ def A_now() -> str:
 # ---------------------------------------------------------------- sandbox (judge side)
 
 def check_overlays() -> list[Path]:
-    """ARENA_VET_FIX_ENV_CULLED_CLASSES: host dirs a hidden check may WRITE into, each laid as a throwaway overlay
-    (`--tmp-overlay`: the host content stays readable, every write lands in a tmpfs that dies with the sandbox, the
-    host dir is never touched). Real selftests hard-code the seat scratch (/home/mandrake/rm/scratch/BENCH/...) and
-    ~/.cache/publish-selftest, and the art_eval selftests write under the agent data root ($RM_DATA_ROOT, default
-    /mnt/d/ClaudeWork/rimmandrake: art_eval/runs/regress_t); on the read-only root vetted groups died on EROFS
-    there. The judge masks (arena root, work root, ...) are laid AFTER the overlays, so an overlay never unmasks
-    anything. $ARENA_CHECK_OVERLAYS (os.pathsep-separated) replaces the default."""
+    """ARENA_VET_FIX_ENV_CULLED_CLASSES: host dirs a hidden check may WRITE into. Real selftests hard-code the seat
+    scratch (/home/mandrake/rm/scratch/BENCH/...) and ~/.cache/publish-selftest, and the art_eval selftests write under
+    the agent data root ($RM_DATA_ROOT, default /mnt/d/ClaudeWork/rimmandrake: art_eval/runs/regress_t); on the
+    read-only root vetted groups died on EROFS there. Since ARENA_SANDBOX_REPAIR_DENYLIST_STILL_LEAKS each one inside a
+    CHECK_HIDE root is an EMPTY throwaway tmpfs (the host content is not readable: ~/rm/scratch held other seats'
+    work); one outside every hidden root stays a `--tmp-overlay` (host content readable, writes die with the sandbox).
+    $ARENA_CHECK_OVERLAYS (os.pathsep-separated) replaces the default."""
     v = os.environ.get("ARENA_CHECK_OVERLAYS")
     if v is not None:
         return [Path(x) for x in v.split(os.pathsep) if x.strip()]
@@ -328,28 +331,57 @@ def check_overlays() -> list[Path]:
             Path(os.environ.get("RM_DATA_ROOT") or "/mnt/d/ClaudeWork/rimmandrake")]
 
 
-def check_store_masks() -> list[Path]:
-    """ARENA_JUDGE_REPAIR_CHECK_SANDBOX_SEES_STORES (owner: "keep secrets in a store it can't access"): what a hidden
-    check (arm code) must not read beyond judge_masks -- the live clones, every git store holding the fix commits, the
-    retired trees and the D: mirror. A check ran `git -C ~/rm/bench show <fix>` and read store.git before this.
-    Its own scratch tree, the synthetic git repo inside it and the overlays stay as they were. $ARENA_CHECK_MASKS
-    (os.pathsep-separated) replaces the default."""
-    v = os.environ.get("ARENA_CHECK_MASKS")
-    if v is not None:
-        return [Path(x) for x in v.split(os.pathsep) if x.strip()]
-    rm = Path("/home/mandrake/rm")
-    return [rm / "bench", rm / "foundry", rm / "store.git", rm / "mirror.git", rm / "new.git", rm / "retired-trees",
-            Path("/mnt/d/Luke/dev/RimMandrake")]
+# ARENA_SANDBOX_REPAIR_DENYLIST_STILL_LEAKS (owner: "keep secrets in a store it can't access"): the check sandbox is an
+# ALLOW-LIST, the arm_sandbox shape. A denylist of clones/stores (ARENA_JUDGE_REPAIR_CHECK_SANDBOX_SEES_STORES) still
+# let a check `git show` the fix from ~/rm/dispatch and ClaudeWork/pulse-deploy and read ~/.ssh, ~/.claude credentials,
+# account transcripts, ~/rm/scratch, ~/wt. Now every CONTAINER below is an empty tmpfs (read-only after the binds), and
+# only CHECK_TOOL_RO (the toolchain: user python packages and bins, node, the Windows binaries interop starts, the
+# game's steamapps) comes back read-only, then the check's own scratch read-write. /run goes with it (the tailscale
+# socket, systemd credentials, the user runtime dir); --unshare-net stays.
+VAR_LOGS = ("/var/log", "/var/lib/systemd", "/var/spool", "/var/mail", "/var/crash")   # = arm_sandbox.VAR_MASK
+CHECK_HIDE = ("/home", "/mnt", "/run", "/var/tmp", "/root", "/srv", "/opt", "/media") + VAR_LOGS
+CHECK_TOOL_RO_HOME = (".local/bin", ".local/lib", ".local/node", ".local/share/uv/python")   # home-relative
+CHECK_TOOL_RO = ("/mnt/c/Program Files", "/mnt/c/Windows", "/mnt/c/Program Files (x86)/Steam/steamapps",
+                 "/mnt/d/SteamLibrary/steamapps")
+# a C#-building check (interop): WSL's /init finds its socket under /run/WSL and winbuild's dotnet.exe is the per-user
+# /mnt/c/Users/*/.dotnet. dotnet.exe itself runs on Windows OUTSIDE bwrap: the accepted gap, not built around here.
+CHECK_INTEROP_RO = ("/run/WSL",)
+CHECK_INTEROP_GLOB = "/mnt/c/Users/*/.dotnet"
+# the check's ~/.gitconfig: an identity for throwaway-repo commits and nothing else (the real one names the owner and a
+# Windows credential helper)
+CHECK_GITCONFIG = "[user]\n\tname = tree\n\temail = tree@invalid\n"
+
+
+def check_allowlist(interop: bool = False) -> dict:
+    """-> {"hide": [...], "ro": [...]} for a hidden check (kind=check): the containers laid as empty tmpfs and the
+    toolchain paths bound back read-only (only those that exist)."""
+    home = Path.home()
+    ro = [home / t for t in CHECK_TOOL_RO_HOME] + [Path(t) for t in CHECK_TOOL_RO]
+    if interop:
+        ro += [Path(t) for t in CHECK_INTEROP_RO] + [Path(t) for t in sorted(glob.glob(CHECK_INTEROP_GLOB))]
+    return {"hide": [Path(h) for h in CHECK_HIDE], "ro": ro}
+
+
+def check_gitconfig(work: Path) -> Path:
+    """The synthetic ~/.gitconfig bound into a check sandbox (written once into the judge's own work dir)."""
+    f = Path(work) / ".check_gitconfig"
+    if not f.is_file() or f.read_text() != CHECK_GITCONFIG:
+        Path(work).mkdir(parents=True, exist_ok=True)
+        f.write_text(CHECK_GITCONFIG)
+    return f
 
 
 def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir: Path | None = None,
-                 proc: bool = True, overlays: list[Path] | None = None, net: bool = True) -> list[str]:
+                 proc: bool = True, overlays: list[Path] | None = None, net: bool = True,
+                 hide: list[Path] | None = None, ro: list[Path] | None = None,
+                 files: list[tuple[Path, Path]] | None = None) -> list[str]:
     """READ-ONLY root (`--ro-bind / /`), a fresh /tmp, its own pid namespace (no host /proc, and the whole tree dies
     with it), `masks` hidden under empty tmpfs, and ONLY `keep` writable. Order: kept dirs outside every mask are
     bound first, then the masks are laid (so a broad bind like $HOME never re-exposes ~/.claude/projects), then the
     kept paths that live inside a mask (the judge's own work dir under the clone root) are bound back.
     net=False (a hidden check) adds `--unshare-net`: an empty network namespace, no route anywhere (loopback only).
-    WSL interop (a C# check's dotnet.exe) still starts: it rides a filesystem socket, not the network."""
+    WSL interop (a C# check's dotnet.exe) still starts: it rides a filesystem socket, not the network.
+    `hide`/`ro`/`files` (a hidden check: check_allowlist) turn this into an allow-list, laid before everything else."""
     bw = shutil.which("bwrap")
     if not bw:
         raise JudgeUnavailable("bwrap not found: the judge never runs unsandboxed")
@@ -357,13 +389,28 @@ def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir:
     out = [bw, "--ro-bind", "/", "/", "--dev", "/dev"] + (["--proc", "/proc"] if proc else ["--tmpfs", "/proc"]) + [
            "--tmpfs", "/tmp",
            "--unshare-pid", "--new-session", "--die-with-parent"] + ([] if net else ["--unshare-net"])
-    ms = sorted({os.path.realpath(m) for m in masks if Path(m).exists()}, key=len)
+    # ALLOW-LIST part (a hidden check, ARENA_SANDBOX_REPAIR_DENYLIST_STILL_LEAKS): every `hide` container becomes an
+    # empty tmpfs, then only `ro` (the toolchain) and `files` (src, dst) come back read-only. A mask inside a hidden
+    # container is already gone (not laid again); an overlay inside one is an EMPTY writable tmpfs, never the host dir.
+    hs = sorted({os.path.realpath(h) for h in hide or () if Path(h).is_dir()}, key=len)
+    hs = [h for i, h in enumerate(hs) if not any(_inside(Path(h), Path(o)) for o in hs[:i])]
+    for h in hs:
+        out += ["--tmpfs", h]
+    for r in sorted({os.path.realpath(r) for r in ro or () if Path(r).exists()}, key=len):
+        out += ["--ro-bind", r, r]
+    for src, dst in files or ():
+        out += ["--ro-bind", os.path.realpath(src), str(dst)]
+
+    def hidden(p):
+        return any(_inside(Path(p), Path(h)) for h in hs)
+    ms = sorted({os.path.realpath(m) for m in masks if Path(m).exists() and not hidden(m)}, key=len)
     ks = sorted({os.path.realpath(k) for k in keep if Path(k).exists()}, key=len)
-    # overlays go FIRST: a mask or kept dir inside one is then laid on top of it; an overlay at or inside a mask is
-    # dropped (it would re-expose the masked content)
+    # overlays go before the masks and kept dirs: a mask or kept dir inside one is then laid on top of it; an overlay
+    # at or inside a mask is dropped (it would re-expose the masked content)
     for o in sorted({os.path.realpath(o) for o in overlays or () if Path(o).is_dir()}, key=len):
-        if not any(_inside(Path(o), Path(m)) for m in ms):
-            out += ["--overlay-src", o, "--tmp-overlay", o]
+        if any(_inside(Path(o), Path(m)) for m in ms):
+            continue
+        out += ["--tmpfs", o] if hidden(o) else ["--overlay-src", o, "--tmp-overlay", o]
     under = [k for k in ks if any(_inside(Path(k), Path(m)) for m in ms)]
     for k in ks:
         if k not in under:
@@ -376,6 +423,8 @@ def sandbox_argv(argv: list[str], *, masks: list[Path], keep: list[Path], chdir:
     for m in ms:                                     # then each mask goes READ-ONLY (a write there fails rather than
         if m != home_proj:                           # landing in a throwaway); claude may write its transcript there
             out += ["--remount-ro", m]
+    for h in hs:                                     # and each hidden container (its writable overlays and kept dirs
+        out += ["--remount-ro", h]                   # are mounts of their own and stay writable)
     if chdir is not None:
         out += ["--chdir", os.path.realpath(chdir)]
     return out + ["--"] + list(argv)
@@ -462,9 +511,11 @@ def run_sandboxed(argv, *, work: Path, priv: Path | None = None, stdin: bytes | 
     tmpfs /proc, so no dotnet.exe could start."""
     keep = [work] if rw is None else list(rw)
     check = kind == "check"
-    full = sandbox_argv(list(argv), masks=judge_masks(priv) + (check_store_masks() if check else []), keep=keep,
-                        chdir=cwd or work, proc=not check or interop, overlays=check_overlays() if check else None,
-                        net=not check)
+    al = check_allowlist(interop) if check else {}
+    files = [(check_gitconfig(work), Path.home() / ".gitconfig")] if check else None
+    full = sandbox_argv(list(argv), masks=judge_masks(priv), keep=keep, chdir=cwd or work, proc=not check or interop,
+                        overlays=check_overlays() if check else None, net=not check, hide=al.get("hide"),
+                        ro=al.get("ro"), files=files)
     proc = subprocess.Popen(full, cwd="/", stdin=subprocess.PIPE if stdin is not None else subprocess.DEVNULL,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=judge_env(env, priv, kind, own=work),
                             start_new_session=True)
@@ -1335,7 +1386,8 @@ def csharp_check_env(scratch: Path, priv: Path | None = None) -> tuple[Path, dic
     scratch (the shared ~/.cache one is read-only here). The stage may not sit inside anything the judge masks, or
     binding it would reopen that path. RESIDUAL (ARENA_SANDBOX_HARDEN_INTEROP_STEP_LEGACY, deliberately unhardened,
     owner threat model non-adversarial): dotnet.exe and anything a csproj Exec target starts run on Windows, OUTSIDE
-    bwrap, and could read D:\\ (the arena root included); the Linux side of the check still sees every mask."""
+    bwrap, and could read D:\\ (the arena root included); the Linux side of the check runs in the check allow-list
+    (check_allowlist: interop adds /run/WSL and the .dotnet dirs read-only, nothing else)."""
     root = win_stage_root()
     for m in judge_masks(priv):
         if _inside(root, m) or _inside(m, root):
