@@ -487,10 +487,10 @@ def t_bridge_is_refused_for_a_non_window_seat():
 def t_a_refused_bridge_take_leaves_the_driver_lock_alone():
     fresh()
     dl = os.path.join(_tmp(), "driver.lock")
-    e = {"RIMFLOW_DRIVER_LOCK": dl}
-    refused(("bridge", "take", "--force", "--for", "x"), "only a live window", "BUILD took the bridge", seat="BUILD", env_=e)
+    refused(("bridge", "take", "--force", "--for", "x"), "only a live window", "BUILD took the bridge", seat="BUILD",
+            env_=env("BUILD", RIMFLOW_DRIVER_LOCK=dl))
     assert not os.path.exists(dl), "a seat the ledger refuses wrote the driver lock"
-    ok("bridge", "take", "--for", "x", seat="CHECK", env=e)
+    ok("bridge", "take", "--for", "x", env=env("CHECK", RIMFLOW_DRIVER_LOCK=dl))
     assert os.path.exists(dl), "the probe is blind: a good take wrote no lock at this path"
 
 
