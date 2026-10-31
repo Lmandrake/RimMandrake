@@ -323,6 +323,106 @@ def t_stamp_guard_rebuild_never_overwrites_dirty_dll(a, b):
     assert not calls, calls
 
 
+PUBLISH_PY = os.environ.get("PUBLISH_PY", os.path.join(os.path.dirname(os.path.abspath(__file__)), "publish.py"))
+
+
+def race_once(a, b, workers=12, pushes=10, tag="w"):
+    """`workers` real ./publish processes in ONE clone commit a file each while a peer keeps moving origin.
+    Returns (lost, lied): files missing from origin/main or from disk, and workers that printed PUBLISHED
+    although their file is not on origin/main."""
+    import threading
+    stop = threading.Event()
+
+    def mover():
+        for i in range(pushes):
+            try:
+                peer_push(b, "%smv%d.txt" % (tag, i), "m%d\n" % i)
+            except Exception:  # noqa: BLE001
+                pass
+        stop.set()
+    for i in range(workers):
+        write(a, "%s%d.txt" % (tag, i), "w%d\n" % i)
+    t = threading.Thread(target=mover)
+    t.start()
+    env = dict(os.environ, PYTHONPATH=os.path.dirname(os.path.abspath(__file__)))
+    cmd = ("for n in $(seq 30); do %s %s -m w%d " + tag + "%d.txt && exit 0; sleep 0.1; done; exit 1")
+    procs = [subprocess.Popen(["bash", "-c", cmd % (sys.executable, PUBLISH_PY, i, i)], cwd=a, env=env,
+                              stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for i in range(workers)]
+    res = [(p.communicate(), p.returncode) for p in procs]
+    t.join()
+    sh(a, "fetch", "-q")
+    onorigin = set(sh(a, "ls-tree", "-r", "--name-only", "origin/main").splitlines())
+    lost, lied = [], []
+    for i, ((so, se), rc) in enumerate(res):
+        f = "%s%d.txt" % (tag, i)
+        if f not in onorigin or not os.path.exists(os.path.join(a, f)):
+            lost.append(f)
+            if "PUBLISHED" in so:
+                lied.append(f)
+        elif f in onorigin and rc not in (0,):
+            pass
+    return lost, lied, res
+
+
+def t_concurrent_publishers_lose_nothing(a, b):
+    """Old code lost commits in ~16% of these rounds (measured 4/25); 15 rounds catch it ~93% of the time."""
+    for rnd in range(15):
+        lost, lied, res = race_once(a, b, tag="r%d_" % rnd)
+        assert not lost, "round %d: commits vanished: %s (printed PUBLISHED anyway: %s)" % (rnd, lost, lied)
+        for (so, se), rc in res:
+            assert rc == 0 and "PUBLISHED" in so, "worker failed: rc=%s %s%s" % (rc, so, se)
+
+
+def t_stale_head_aborts_not_discards(a, b):
+    """A commit that lands on HEAD between the replay and the reset makes publish refuse, never drop it."""
+    peer_push(b, "g.txt", "moved\n")
+    write(a, "mine.txt", "m\n")
+    sh(a, "add", "mine.txt")
+    sh(a, "commit", "-q", "-m", "mine")
+
+    def intrude():
+        write(a, "intruder.txt", "i\n")
+        sh(a, "add", "intruder.txt")
+        sh(a, "commit", "-q", "-m", "intruder")
+    P.before_reset = intrude
+    try:
+        msg = refused(P.rebase, a)
+    finally:
+        P.before_reset = None
+    assert msg and "HEAD moved" in msg, msg
+    assert os.path.exists(os.path.join(a, "intruder.txt"))
+    assert "intruder" in sh(a, "log", "--format=%s")
+
+
+def t_lock_times_out_loudly(a, b):
+    import fcntl
+    fd = os.open(P.lock_path(a), os.O_CREAT | os.O_RDWR)
+    fcntl.flock(fd, fcntl.LOCK_EX)
+    old = P.LOCK_TIMEOUT
+    P.LOCK_TIMEOUT = 0.5
+    try:
+        write(a, "x.txt", "x\n")
+        msg = refused(P.publish, a, ["x.txt"], "x")
+    finally:
+        P.LOCK_TIMEOUT = old
+        os.close(fd)
+    assert msg and "lock" in msg, msg
+    assert "x.txt" not in sh(a, "log", "--format=%s", "--name-only")
+
+
+def t_lock_released_when_holder_dies(a, b):
+    code = ("import fcntl,os,sys,time;sys.path.insert(0,%r);import publish as P;"
+            "fd=os.open(P.lock_path(%r),os.O_CREAT|os.O_RDWR);fcntl.flock(fd,fcntl.LOCK_EX);"
+            "print('held',flush=True);time.sleep(60)") % (os.path.dirname(PUBLISH_PY), a)
+    h = subprocess.Popen([sys.executable, "-c", code], stdout=subprocess.PIPE, text=True)
+    assert h.stdout.readline().strip() == "held"
+    h.kill()
+    h.wait()
+    write(a, "x.txt", "x\n")
+    quiet(P.publish, a, ["x.txt"], "x")
+    assert show(a, "x.txt") == "x\n"
+
+
 TESTS = [v for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 

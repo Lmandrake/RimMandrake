@@ -27,6 +27,8 @@ old plumbing route that published from it (temp index, --catchup, --sync, --comm
 is deleted, not kept for emergencies. With no owned clone, make one on ext4.
 """
 import argparse
+import contextlib
+import fcntl
 import os
 import re
 import subprocess
@@ -37,6 +39,8 @@ REMOTE, BRANCH = "origin", "main"
 RM_ROOT = os.environ.get("PUBLISH_RM_ROOT", "/home/mandrake/rm")
 MAX_TRIES = 8
 before_push = None          # selftest hook: called(attempt) between rebase and push
+before_reset = None         # selftest hook: called() between the replay and the HEAD check
+LOCK_TIMEOUT = float(os.environ.get("PUBLISH_LOCK_TIMEOUT", "600"))
 
 
 class Refuse(Exception):
@@ -44,7 +48,11 @@ class Refuse(Exception):
 
 
 def run(top, *args, check=True):
-    r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True)
+    for i in range(12):                                  # a plain-git peer may hold .git/index.lock for a moment
+        r = subprocess.run(["git", *args], cwd=top, capture_output=True, text=True)
+        if not (r.returncode and "index.lock" in r.stderr and i < 11):
+            break
+        time.sleep(0.25 * (i + 1))
     if check and r.returncode:
         raise Refuse("git %s failed: %s" % (" ".join(args[:3]), (r.stderr or r.stdout).strip()))
     return r
@@ -52,6 +60,33 @@ def run(top, *args, check=True):
 
 def out(top, *args):
     return run(top, *args).stdout.strip()
+
+
+def lock_path(top):
+    return os.path.join(out(top, "rev-parse", "--absolute-git-dir"), "publish.lock")
+
+
+@contextlib.contextmanager
+def clone_lock(top):
+    """Clone-wide exclusive flock held across commit AND land, so two publishers in one clone never interleave
+    (a peer's commit landing between rebase()'s read of HEAD and its reset used to vanish). The kernel drops a
+    flock when its holder exits or is killed, so a crashed publisher cannot wedge the clone. Times out loudly."""
+    fd = os.open(lock_path(top), os.O_CREAT | os.O_RDWR, 0o644)
+    deadline = time.time() + LOCK_TIMEOUT
+    try:
+        while True:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except OSError:
+                if time.time() >= deadline:
+                    raise Refuse("could not take the publish lock %s within %gs: another ./publish in this clone is "
+                                 "still running. Nothing was committed. Re-run when it finishes."
+                                 % (lock_path(top), LOCK_TIMEOUT))
+                time.sleep(0.2)
+        yield
+    finally:
+        os.close(fd)                                     # closing releases the flock
 
 
 def toplevel(cwd="."):
@@ -95,8 +130,12 @@ def commit(top, paths, msg):
     run(top, "add", "--all", "--", *paths)
     if not run(top, "diff", "--cached", "--quiet", "--", *paths, check=False).returncode:
         return None
-    r = subprocess.run(["git", "commit", "-q", "-F", "-", "--", *paths], cwd=top,
-                       input=msg, capture_output=True, text=True)
+    for i in range(12):
+        r = subprocess.run(["git", "commit", "-q", "-F", "-", "--", *paths], cwd=top,
+                           input=msg, capture_output=True, text=True)
+        if not (r.returncode and "index.lock" in r.stderr and i < 11):
+            break
+        time.sleep(0.25 * (i + 1))
     if r.returncode:
         raise Refuse("git commit failed: %s" % (r.stderr or r.stdout).strip())
     return out(top, "rev-parse", "HEAD")
@@ -157,6 +196,13 @@ def rebase(top):
     # 2026-10-18); it keeps them on disk and otherwise behaves exactly like `git reset --keep`.
     sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     import seat_sync
+    if before_reset:
+        before_reset()
+    now = out(top, "rev-parse", "HEAD")
+    if now != head:
+        raise Refuse("HEAD moved from %s to %s while the replay ran (a commit landed in this clone from outside "
+                     "this publish). Not resetting: that would discard it. Nothing was lost; re-run ./publish."
+                     % (head[:12], now[:12]))
     try:
         seat_sync.reset_keep(seat_sync.Git(top), head, tip)
     except seat_sync.Refused as e:
@@ -333,6 +379,11 @@ def land(top):
 def publish(top, paths, msg, cwd=None):
     """Paths are relative to `cwd` (the caller's directory; defaults to the repo top)."""
     guard_mnt(top)
+    with clone_lock(top):
+        return _publish(top, paths, msg, cwd)
+
+
+def _publish(top, paths, msg, cwd=None):
     if paths:
         if not msg or not msg.strip():
             raise Refuse("a message is required (-m or -F)")
