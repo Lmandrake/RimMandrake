@@ -83,11 +83,13 @@ namespace RimMandrake.ColdStorage
         {
             StorageClimateRegistry.Clear();
             CompSealed.ClearPending();
+            CompColdAging.ClearPending();
         }
 
         public override void GameComponentTick()
         {
             CompSealed.RunPending();
+            CompColdAging.RunPending();
         }
     }
 

@@ -52,6 +52,7 @@
     <Compile Include="IngredientValueGetter_ExcludeSkewer.cs" />
     <Compile Include="CuisineSettings.cs" />
     <Compile Include="FoodPoisonDisabledCookGuard.cs" />
+    <Compile Include="PatchOperation_CuisineSetting.cs" />
   </ItemGroup>
 
   <ItemGroup>

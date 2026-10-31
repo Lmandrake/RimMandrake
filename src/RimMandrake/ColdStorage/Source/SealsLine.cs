@@ -58,7 +58,7 @@ namespace RimMandrake.ColdStorage
             bool hasExternal = !ext.settingField.NullOrEmpty();
             FieldInfo f = hasExternal ? Field(ext.settingField) : null;
             bool readable = f != null && f.FieldType == typeof(bool);
-            return ColdStorageKernel.GateOpen(own, hasExternal, readable, readable && (bool)f.GetValue(null));
+            return ColdStorageKernel.GateOpen(own, hasExternal, readable, readable && (bool)f.GetValue(null), ext.settingInverted);
         }
 
         public static bool RecipeOpen(RecipeDef recipe)

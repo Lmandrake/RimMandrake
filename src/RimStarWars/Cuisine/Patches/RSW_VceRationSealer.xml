@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES (design/RimStarWars/cold_storage_line_2026-10-26.md §5): with Vanilla
+       Cooking Expanded loaded, its canning machine reads as a Star Wars ration sealer and its tins as sealed ration
+       tins. Words only: the canning mechanics are VCE's, untouched. Switch: Mod Settings, "Ration-sealer names for
+       Vanilla Cooking Expanded" (vceReskinEnabled, read at start-up). The sealer's sprite is owed to the art batch. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Cooking Expanded</li>
+    </mods>
+    <match Class="RimMandrake.StarWars.Cuisine.PatchOperation_CuisineSetting">
+      <setting>vceReskinEnabled</setting>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="VCE_CanningMachine"]/label</xpath>
+            <value><label>ration sealer</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="VCE_CanningMachine"]/description</xpath>
+            <value><description>A galley ration sealer: it vacuum-packs food into durasteel ration tins that keep almost forever. Every tin uses a little steel.</description></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="VCE_CannedMeat"]/label</xpath>
+            <value><label>sealed ration tin (meat)</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="VCE_CannedProduce"]/label</xpath>
+            <value><label>sealed ration tin (produce)</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="VCE_CannedFruit"]/label</xpath>
+            <value><label>sealed ration tin (fruit)</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="VCE_CannedAP"]/label</xpath>
+            <value><label>sealed ration tin (eggs)</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ThingDef[defName="VCE_CannedFish"]/label</xpath>
+            <value><label>sealed ration tin (fish)</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/RecipeDef[defName="VCE_CanMeats"]/label</xpath>
+            <value><label>seal meat ration tins x20</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/RecipeDef[defName="VCE_CanProduce"]/label</xpath>
+            <value><label>seal produce ration tins x20</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/RecipeDef[defName="VCE_CanFruit"]/label</xpath>
+            <value><label>seal fruit ration tins x20</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/RecipeDef[defName="VCE_CanEggs"]/label</xpath>
+            <value><label>seal egg ration tins x20</label></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/RecipeDef[defName="VCE_CanMeats" or defName="VCE_CanProduce" or defName="VCE_CanFruit" or defName="VCE_CanEggs"]/jobString</xpath>
+            <value><jobString>Sealing ration tins.</jobString></value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+</Patch>

@@ -48,6 +48,30 @@
     </match>
   </Operation>
 
+  <!-- ...and frost-cures as roe (COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES). -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RSW_EggRoeUnfertilized"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/RecipeDef[defName="RM_WrapFrostCureRoe"]</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/RecipeDef[defName="RM_WrapFrostCureRoe"]/ingredients/li[1]/filter/thingDefs</xpath>
+            <value>
+              <li>RSW_EggRoeUnfertilized</li>
+            </value>
+          </li>
+          <li Class="PatchOperationAdd">
+            <xpath>Defs/RecipeDef[defName="RM_WrapFrostCureRoe"]/fixedIngredientFilter/thingDefs</xpath>
+            <value>
+              <li>RSW_EggRoeUnfertilized</li>
+            </value>
+          </li>
+        </operations>
+      </match>
+    </match>
+  </Operation>
+
   <!-- The shipped Grey-salt rations are salt-crusted food: tag them so recipes can require the method (§4.4, §5). -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/RimMandrake.ColdStorage.ColdStorageMethodDef[defName="RM_ColdMethod_SaltCrust"]</xpath>

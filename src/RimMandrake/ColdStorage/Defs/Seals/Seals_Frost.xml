@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES (design/RimStarWars/cold_storage_line_2026-10-26.md §5): frost aging.
+       Meat or roe wrapped for curing ages only while kept at or below -25 C (a deep-cold storage unit, or a cold enough
+       place) for 15 days, scaled by the aging setting (CompColdAging); warm days pause it and lose nothing. Until
+       then it is raw food that rots as raw food does at its temperature. No canon names: Star Wars Cuisine adds its
+       roe and its dishes from its own files. Placeholder textures; art is owed (COLD_STORAGE_ART_BUILD_SPRITE_BATCH). -->
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_FrostCuringMeat</defName>
+    <label>frost-curing meat</label>
+    <description>Meat salted lightly and wrapped for frost curing. Kept at -25 °C or colder for fifteen days it becomes frost-aged meat, firm and deep-flavoured. Warm spells pause the curing; it rots like raw meat if it thaws for long.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Pemmican</texPath>
+      <color>(200,215,235)</color>
+    </graphicData>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_ColdAging">
+        <agesInto>RM_FrostAgedMeat</agesInto>
+        <agingDays>15</agingDays>
+        <maxTemperature>-25</maxTemperature>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PreservedFoodBase">
+    <defName>RM_FrostCuringRoe</defName>
+    <label>frost-curing roe</label>
+    <description>Roe salted lightly and packed for frost curing. Kept at -25 °C or colder for fifteen days it becomes frost-aged roe, a luxury. Warm spells pause the curing; it rots like raw roe if it thaws for long.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
+      <color>(200,215,235)</color>
+    </graphicData>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_ColdAging">
+        <agesInto>RM_FrostAgedRoe</agesInto>
+        <agingDays>15</agingDays>
+        <maxTemperature>-25</maxTemperature>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase">
+    <defName>RM_FrostAgedMeat</defName>
+    <label>frost-aged meat</label>
+    <description>Meat cured for weeks in deep cold. Firm, dark and rich: a delicacy eaten as it is, and a fine ingredient. It keeps well while cold.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Pemmican</texPath>
+      <color>(150,90,95)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4</MarketValue>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AteFrostAgedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.1</strangeChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Chill</method>
+        <flavours>
+          <li>frost</li>
+          <li>aged</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase">
+    <defName>RM_FrostAgedRoe</defName>
+    <label>frost-aged roe</label>
+    <description>Roe cured for weeks in deep cold until each grain is firm and bright with salt. A luxury: most people prize it, a few cannot stand it.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
+      <color>(230,120,80)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>5</MarketValue>
+    </statBases>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RM_AteFrostAgedDelicacy</liked>
+          <strange>RM_AteStrangePreserved</strange>
+          <strangeChance>0.2</strangeChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Chill</method>
+        <flavours>
+          <li>frost</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThoughtDef>
+    <defName>RM_AteFrostAgedDelicacy</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>ate a frost-aged delicacy</label>
+        <description>Weeks in the deep cold made that something rare. I could taste the patience in it.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Wrapping bills: 0.5 nutrition of meat or roe and a little salt make 10 units, at a butcher table. -->
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_WrapFrostCureMeat</defName>
+    <label>wrap meat for frost curing</label>
+    <description>Salt meat lightly and wrap it for frost curing. Keep the result at -25 °C or colder for fifteen days.</description>
+    <jobString>Wrapping meat for frost curing.</jobString>
+    <workAmount>500</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li>MeatRaw</li>
+      </categories>
+    </fixedIngredientFilter>
+    <products>
+      <RM_FrostCuringMeat>10</RM_FrostCuringMeat>
+    </products>
+    <recipeUsers>
+      <li>TableButcher</li>
+      <li>ButcherSpot</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase">
+    <defName>RM_WrapFrostCureRoe</defName>
+    <label>pack roe for frost curing</label>
+    <description>Salt roe lightly and pack it for frost curing. Keep the result at -25 °C or colder for fifteen days.</description>
+    <jobString>Packing roe for frost curing.</jobString>
+    <workAmount>500</workAmount>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rm.bluedesert">RM_QeshraRoe</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rm.bluedesert">RM_QeshraRoe</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_FrostCuringRoe>10</RM_FrostCuringRoe>
+    </products>
+    <recipeUsers>
+      <li>TableButcher</li>
+      <li>ButcherSpot</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+</Defs>

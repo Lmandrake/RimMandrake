@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES (design/RimStarWars/cold_storage_line_2026-10-26.md §5): the canon
+       dishes that need preserved ingredients. Every def rides Cold Storage classes or parents, so each is
+       MayRequire'd on it; bestiary meats are MayRequire'd too and their bills hide when nothing can fill them.
+       Assumptions, recorded on the item: the mynock party bonus is a joy dish with a good thought (no gathering hook);
+       crustapod roe stands in for coodler roe (no coodler def exists), and "+ for some traits, - for others" is the
+       per-pawn stable taste roll (half love it). Placeholder textures; art is owed. -->
+
+  <!-- Carbonite 'n' cream pie: blast-chilled cream and something sweet, a luxury. -->
+  <ThingDef ParentName="MealLavishBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CarboniteNCreamPie</defName>
+    <label>carbonite 'n' cream pie</label>
+    <description>A cold, glossy pie of blast-chilled cream over sweet fruit, set grey and hard on top like a carbonite slab. A spacer's luxury: rich, sweet, and worth a great deal.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/Lavish</texPath>
+      <graphicClass>Graphic_MealVariants</graphicClass>
+      <color>(205,210,225)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>48</MarketValue>
+    </statBases>
+    <ingestible>
+      <tasteThought>RSW_AteCarboniteNCreamPie</tasteThought>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThoughtDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_AteCarboniteNCreamPie</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>ate carbonite 'n' cream pie</label>
+        <description>Cold, sweet and absurdly rich. I will be thinking about that pie all day.</description>
+        <baseMoodEffect>14</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Lavish-meal bill (vanilla CookMealLavishBase: Cooking 8, nutrition-valued ingredients). -->
+  <RecipeDef Name="RSW_CookCarbonitePieBase" ParentName="CookMealLavishBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">
+    <workAmount>900</workAmount>
+    <products>
+      <RSW_CarboniteNCreamPie>1</RSW_CarboniteNCreamPie>
+    </products>
+    <recipeUsers>
+      <li>ElectricStove</li>
+      <li>FueledStove</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="RSW_CookCarbonitePieBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CookCarboniteNCreamPie</defName>
+    <label>bake carbonite 'n' cream pie</label>
+    <description>Set blast-chilled cream over sweet fruit into a carbonite 'n' cream pie.</description>
+    <jobString>Making carbonite 'n' cream pie.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_BlastChilledCream</li>
+          </thingDefs>
+        </filter>
+        <count>0.25</count>
+      </li>
+      <li>
+        <filter>
+          <customSummary>something sweet</customSummary>
+          <thingDefs>
+            <li>RawBerries</li>
+            <li>InsectJelly</li>
+            <li>RM_AmberAgedSweet</li>
+            <li>RM_AmberAgedFruit</li>
+            <li>RM_SandDriedFruit</li>
+          </thingDefs>
+        </filter>
+        <count>0.25</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter Inherit="False">
+      <thingDefs>
+        <li>RSW_BlastChilledCream</li>
+        <li>RawBerries</li>
+        <li>InsectJelly</li>
+        <li>RM_AmberAgedSweet</li>
+        <li>RM_AmberAgedFruit</li>
+        <li>RM_SandDriedFruit</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+
+  <!-- Fresh variant: only while "preservation-required recipes" is off (settingInverted). -->
+  <RecipeDef ParentName="RSW_CookCarbonitePieBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CookCarboniteNCreamPieFresh</defName>
+    <label>bake carbonite 'n' cream pie (fresh milk)</label>
+    <description>Whip fresh milk over sweet fruit into a carbonite 'n' cream pie. Shown while preservation-required recipes are off in Mod Settings.</description>
+    <jobString>Making carbonite 'n' cream pie.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>Milk</li>
+          </thingDefs>
+        </filter>
+        <count>0.25</count>
+      </li>
+      <li>
+        <filter>
+          <customSummary>something sweet</customSummary>
+          <thingDefs>
+            <li>RawBerries</li>
+            <li>InsectJelly</li>
+            <li>RM_AmberAgedSweet</li>
+            <li>RM_AmberAgedFruit</li>
+            <li>RM_SandDriedFruit</li>
+          </thingDefs>
+        </filter>
+        <count>0.25</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter Inherit="False">
+      <thingDefs>
+        <li>Milk</li>
+        <li>RawBerries</li>
+        <li>InsectJelly</li>
+        <li>RM_AmberAgedSweet</li>
+        <li>RM_AmberAgedFruit</li>
+        <li>RM_SandDriedFruit</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>External</gate>
+        <settingField>RimMandrake.StarWars.Cuisine.RSW_CuisineSettings:preservationRequired</settingField>
+        <settingInverted>true</settingInverted>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <!-- Pickled mynock: a party dish. -->
+  <ThingDef ParentName="RM_PreservedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_PickledMynock</defName>
+    <label>pickled mynock</label>
+    <description>Strips of mynock meat kept in sharp brine. Chewy, sour and oddly moreish: spacers pass a jar round at any gathering, and everyone pretends not to like it.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+      <color>(170,190,150)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>2.2</MarketValue>
+    </statBases>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+      <joy>0.12</joy>
+      <joyKind>Gluttonous</joyKind>
+      <specialThoughtDirect>RSW_AtePickledMynock</specialThoughtDirect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>sour</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThoughtDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_AtePickledMynock</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>had pickled mynock</label>
+        <description>Sour, chewy, faintly leathery. Somehow it always tastes like a party.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_PickleMynock</defName>
+    <label>pickle mynock</label>
+    <description>Pickle mynock meat in brine.</description>
+    <jobString>Pickling mynock.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rsw.swbestiary">Meat_RSW_Mynock</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_TaozinBrine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+            <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rsw.swbestiary">Meat_RSW_Mynock</li>
+        <li>RSW_TaozinBrine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+        <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_PickledMynock>10</RSW_PickledMynock>
+    </products>
+    <recipeUsers>
+      <li>RM_BrineCrock</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <!-- Coodler roe: brined, then chilled at -5 C or colder for five days before it is ready. -->
+  <ThingDef ParentName="RM_PreservedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_BrinedCoodlerRoe</defName>
+    <label>brined coodler roe</label>
+    <description>Coodler roe fresh from the brine crock. It must rest chilled, at -5 °C or colder, for five days before it is ready to eat; warm days pause it.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+      <color>(150,170,200)</color>
+    </graphicData>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="RimMandrake.ColdStorage.CompProperties_ColdAging">
+        <agesInto>RSW_PickledCoodlerRoe</agesInto>
+        <agingDays>5</agingDays>
+        <maxTemperature>-5</maxTemperature>
+      </li>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_AgedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_PickledCoodlerRoe</defName>
+    <label>pickled coodler roe</label>
+    <description>Brined coodler roe, rested in the cold until it pops sharp and bright on the tongue. People either love it or cannot bear it, and they never change their minds.</description>
+    <graphicData>
+      <texPath>Things/Item/Drug/Beer</texPath>
+      <color>(110,140,200)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.4</MarketValue>
+    </statBases>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+      <outcomeDoers>
+        <li Class="RimMandrake.ColdStorage.IngestionOutcomeDoer_PreservedTaste">
+          <liked>RSW_AtePickledCoodlerRoe</liked>
+          <strange>RSW_HatedPickledCoodlerRoe</strange>
+          <strangeChance>0.5</strangeChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_Brine</method>
+        <rotFactor>0.05</rotFactor>
+        <flavours>
+          <li>pickled</li>
+          <li>frost</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <ThoughtDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_AtePickledCoodlerRoe</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>ate pickled coodler roe</label>
+        <description>Little cold bursts of salt and sea. Wonderful.</description>
+        <baseMoodEffect>7</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <ThoughtDef MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_HatedPickledCoodlerRoe</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>ate pickled coodler roe</label>
+        <description>Slimy little eggs that burst in my mouth. How does anyone eat that on purpose?</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_BrineCoodlerRoe</defName>
+    <label>brine coodler roe</label>
+    <description>Brine coodler roe. Rest the result chilled for five days.</description>
+    <jobString>Brining coodler roe.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_EggRoeUnfertilized</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RSW_TaozinBrine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+            <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+            <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+            <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+            <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+          </thingDefs>
+        </filter>
+        <count>2</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rsw.swbestiary">RSW_EggRoeUnfertilized</li>
+        <li>RSW_TaozinBrine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_Brine</li>
+        <li MayRequire="mandrake.rm.flowworks">RM_Bottle_SaltWater</li>
+        <li MayRequire="mandrake.rm.stillsand">RM_Brine</li>
+        <li MayRequire="VanillaExpanded.VCookE">VCE_Salt</li>
+        <li MayRequire="mandrake.rm.terminalbiomes">RM_RawSalt</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_BrinedCoodlerRoe>10</RSW_BrinedCoodlerRoe>
+    </products>
+    <recipeUsers>
+      <li>RM_BrineCrock</li>
+    </recipeUsers>
+    <researchPrerequisite>RM_ResinWork</researchPrerequisite>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>Brine</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+
+  <!-- Nerf jerky: sand-dried jerky, named for its meat. -->
+  <ThingDef ParentName="RM_PreservedFoodBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_NerfJerky</defName>
+    <label>nerf jerky</label>
+    <description>Strips of nerf meat dried in hot sand. The trail food of half the Outer Rim: light, tough, salty and slow to spoil.</description>
+    <graphicData>
+      <texPath>Things/Item/Resource/Kibble</texPath>
+      <color>(170,120,90)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.5</MarketValue>
+    </statBases>
+    <ingestible>
+      <ingestEffect>EatMeat</ingestEffect>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStoragePreservedExtension">
+        <method>RM_ColdMethod_SandDry</method>
+        <rotFactor>0.1</rotFactor>
+        <flavours>
+          <li>dry</li>
+          <li>salty</li>
+        </flavours>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <RecipeDef ParentName="RM_SealRecipeBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_SandDryNerf</defName>
+    <label>sand-dry nerf jerky</label>
+    <description>Sand-dry nerf meat into nerf jerky.</description>
+    <jobString>Sand-drying nerf jerky.</jobString>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li MayRequire="mandrake.rsw.swbestiary">RSW_Nerf_Meat</li>
+          </thingDefs>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li MayRequire="mandrake.rsw.swbestiary">RSW_Nerf_Meat</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RSW_NerfJerky>10</RSW_NerfJerky>
+    </products>
+    <recipeUsers>
+      <li>RM_SandDryingBox</li>
+    </recipeUsers>
+    <modExtensions>
+      <li Class="RimMandrake.ColdStorage.ColdStorageGateExtension">
+        <gate>SandDry</gate>
+        <hideIfIngredientEmpty>true</hideIfIngredientEmpty>
+      </li>
+    </modExtensions>
+  </RecipeDef>
+</Defs>

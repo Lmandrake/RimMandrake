@@ -67,6 +67,7 @@ namespace RimMandrake.ColdStorage.SelfTest
             SealsGates();
             EncaseShock();
             EncasedStackSum();
+            ColdAging();
             Console.WriteLine("coldstorage selftest: " + pass + " passed, " + fail + " failed");
             return fail == 0 ? 0 : 1;
         }
@@ -530,6 +531,42 @@ namespace RimMandrake.ColdStorage.SelfTest
             Near("null", ColdStorageKernel.StackSum(null, null), 0f);
             Near("negative value or count adds nothing", ColdStorageKernel.StackSum(new[] { -3f, 4f }, new[] { 5, -2 }), 0f);
             Near("mismatched lengths: the shorter", ColdStorageKernel.StackSum(new[] { 1f, 1f, 1f }, new[] { 2 }), 2f);
+        }
+
+        // 27. Cold aging (frost-aged roe and meat): time counts only while cold, one sample adds at most one step, and
+        // a whole run of samples at -30 C reaches 15 days exactly when 15 days have passed; an inverted gate opens on OFF
+        private static void ColdAging()
+        {
+            Check("first sample adds nothing", ColdStorageKernel.ColdAccrue(0, -1, 5000, -30f, -25f, 60000) == 0);
+            Check("cold sample adds the gap", ColdStorageKernel.ColdAccrue(100, 1000, 1250, -30f, -25f, 60000) == 350);
+            Check("at the limit counts", ColdStorageKernel.ColdAccrue(0, 1000, 1250, -25f, -25f, 60000) == 250);
+            Check("warm sample adds nothing", ColdStorageKernel.ColdAccrue(100, 1000, 1250, -10f, -25f, 60000) == 100);
+            Check("clock back adds nothing", ColdStorageKernel.ColdAccrue(100, 2000, 1000, -30f, -25f, 60000) == 100);
+            Check("long gap capped at one step", ColdStorageKernel.ColdAccrue(0, 0, 900000, -30f, -25f, 60000) == 60000);
+            Check("negative stored ticks read as 0", ColdStorageKernel.ColdAccrue(-5, 0, 10, -30f, -25f, 60000) == 10);
+            Check("no overflow", ColdStorageKernel.ColdAccrue(int.MaxValue - 5, 0, 100, -30f, -25f, 60000) == int.MaxValue);
+            int cold = 0, last = -1;
+            int need = ColdStorageKernel.AgingTicks(15f, 1f, true);
+            int reachedAt = -1;
+            for (int now = 0; now <= 20 * 60000; now += 250)
+            {
+                // a warm spell from day 5 to day 7 pauses it: two days later than 15
+                float temp = now > 5 * 60000 && now <= 7 * 60000 ? 0f : -30f;
+                cold = ColdStorageKernel.ColdAccrue(cold, last, now, temp, -25f, 60000);
+                last = now;
+                if (reachedAt < 0 && cold >= need)
+                {
+                    reachedAt = now;
+                }
+            }
+            Check("15 cold days with a 2-day thaw: reached on day 17", reachedAt == 17 * 60000, "got " + reachedAt);
+            Check("merge weighted", ColdStorageKernel.MergedColdTicks(1000, 1, 4000, 2) == 3000);
+            Check("merge ignores negatives", ColdStorageKernel.MergedColdTicks(-50, 1, 300, 1) == 150);
+            Check("inverted gate: switch on closes", !ColdStorageKernel.GateOpen(true, true, true, true, true));
+            Check("inverted gate: switch off opens", ColdStorageKernel.GateOpen(true, true, true, false, true));
+            Check("inverted gate: unreadable opens", ColdStorageKernel.GateOpen(true, true, false, false, true));
+            Check("inverted gate: own off closes", !ColdStorageKernel.GateOpen(false, true, true, false, true));
+            Check("not inverted: same as before", ColdStorageKernel.GateOpen(true, true, true, true, false));
         }
     }
 }

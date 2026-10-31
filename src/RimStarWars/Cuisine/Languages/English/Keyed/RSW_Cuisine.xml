@@ -9,4 +9,9 @@
   <RSW_Cuisine_SettingCarbonShock>Carbon-shock chance per thawed meal: {0}</RSW_Cuisine_SettingCarbonShock>
   <RSW_Cuisine_SettingCarbonShockDesc>Each meal thawed out of a carbonite pack may come out carbon-burnt: edible, tastes of metal, a small bad thought. Raw food never burns.</RSW_Cuisine_SettingCarbonShockDesc>
   <RSW_Cuisine_SettingsReset>Reset to defaults</RSW_Cuisine_SettingsReset>
+  <RSW_Cuisine_SettingsPreserved>Preserved dishes</RSW_Cuisine_SettingsPreserved>
+  <RSW_Cuisine_SettingPreservationRequired>Preservation-required recipes</RSW_Cuisine_SettingPreservationRequired>
+  <RSW_Cuisine_SettingPreservationRequiredDesc>On: canon dishes need their preserved ingredient (the carbonite 'n' cream pie needs blast-chilled cream). Off: each such dish also gets a bill that takes fresh ingredients. Applies at once.</RSW_Cuisine_SettingPreservationRequiredDesc>
+  <RSW_Cuisine_SettingVceReskin>Ration-sealer names for Vanilla Cooking Expanded</RSW_Cuisine_SettingVceReskin>
+  <RSW_Cuisine_SettingVceReskinDesc>On: the canning machine reads as a ration sealer and its cans as sealed ration tins. Names only; nothing changes how they work. Needs a restart.</RSW_Cuisine_SettingVceReskinDesc>
 </LanguageData>

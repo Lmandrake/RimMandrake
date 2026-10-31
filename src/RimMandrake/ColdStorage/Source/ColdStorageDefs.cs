@@ -59,6 +59,10 @@ namespace RimMandrake.ColdStorage
         /// Unreadable (mod absent, field renamed): counts as on, with one warning.</summary>
         public string settingField;
 
+        /// <summary>Inverts <see cref="settingField"/>: open while that switch is OFF. A fresh-ingredient variant of a
+        /// dish rides this, showing only while Star Wars Cuisine's "preservation required" is off.</summary>
+        public bool settingInverted = false;
+
         /// <summary>On a recipe whose ingredients come only from optional mods (MayRequire filter entries, e.g. brine
         /// or salt): when, after load, any ingredient's filter allows nothing, the recipe is hidden rather than left as
         /// a bill no pawn can ever fill.</summary>

@@ -54,6 +54,84 @@ def static_checks():
     fails += seal_static_checks(ET, re)
     fails += stasis_unlock_checks(ET)
     fails += encase_static_checks(ET, re)
+    fails += cold_aging_dish_checks(ET, re)
+    return fails
+
+
+COLD_AGING = "RimMandrake.ColdStorage.CompProperties_ColdAging"
+GATE_EXT = "RimMandrake.ColdStorage.ColdStorageGateExtension"
+
+
+def cold_aging_dish_checks(ET, re):
+    """COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES pins. Every CompColdAging names an agesInto def that exists and a
+    real temperature; the Cuisine dishes ride Cold Storage classes and parents, so each is MayRequire'd on it; a
+    bestiary meat is MayRequire'd on the bestiary (a missing def would be a red cross-reference error); every Cuisine
+    gate names a real public static bool and settingInverted is a real field of the gate extension; the fresh pie is
+    the inverted twin of the preserved one; RM_QeshraRoe is MayRequire'd on its source id mandrake.rm.bluedesert (repo
+    convention: deploy rewrites folded ids to mandrake.rm.biomes in the deployed copy only)."""
+    fails = []
+    mods = os.path.dirname(HERE)
+    cuisine = os.path.join(mods, "..", "RimStarWars", "Cuisine")
+    dishes = os.path.join(cuisine, "Defs", "RSW_PreservedDishes.xml")
+    seal_dir = os.path.join(HERE, "Defs", "Seals")
+    seal_files = [os.path.join(seal_dir, f) for f in sorted(os.listdir(seal_dir))]
+    defined = set()
+    for path in seal_files + [dishes]:
+        for d in ET.parse(path).getroot():
+            if d.findtext("defName"):
+                defined.add(d.findtext("defName"))
+    gsrc = open(os.path.join(HERE, "Source", "ColdStorageDefs.cs"), encoding="utf-8").read()
+    if not re.search(r"public\s+bool\s+settingInverted\b", gsrc):
+        fails.append("ColdStorageDefs.cs: ColdStorageGateExtension has no public bool settingInverted")
+    settings = open(os.path.join(cuisine, "Source", "Cuisine", "CuisineSettings.cs"), encoding="utf-8").read()
+    aging, inverted, bestiary = 0, 0, 0
+    for path in seal_files + [dishes]:
+        fname = os.path.basename(path)
+        root = ET.parse(path).getroot()
+        for d in root:
+            name = d.findtext("defName") or d.get("Name") or "?"
+            if path == dishes and "mandrake.rm.coldstorage" not in (d.get("MayRequire") or "").split(","):
+                fails.append("%s: %s %s lacks MayRequire mandrake.rm.coldstorage" % (fname, d.tag, name))
+            for li in d.iter("li"):
+                if li.get("Class") == COLD_AGING:
+                    aging += 1
+                    into = li.findtext("agesInto")
+                    if into not in defined:
+                        fails.append("%s: %s ages into %r, which no seal or dish file defines" % (fname, name, into))
+                    try:
+                        float(li.findtext("agingDays") or "15")
+                        float(li.findtext("maxTemperature") or "-25")
+                    except ValueError:
+                        fails.append("%s: %s CompColdAging has a non-number agingDays/maxTemperature" % (fname, name))
+                if li.get("Class") == GATE_EXT and li.findtext("settingInverted") is not None:
+                    inverted += 1
+                    if li.findtext("settingInverted") != "true" or not li.findtext("settingField"):
+                        fails.append("%s: %s settingInverted without a settingField, or not 'true'" % (fname, name))
+                if (li.text or "").strip() == "RM_QeshraRoe" and li.get("MayRequire") != "mandrake.rm.bluedesert":
+                    fails.append("%s: %s RM_QeshraRoe MayRequire %r, want mandrake.rm.bluedesert" % (fname, name, li.get("MayRequire")))
+                if (li.text or "").strip() in ("Meat_RSW_Mynock", "RSW_Nerf_Meat", "RSW_EggRoeUnfertilized"):
+                    bestiary += 1
+                    if li.get("MayRequire") != "mandrake.rsw.swbestiary":
+                        fails.append("%s: %s %s without MayRequire mandrake.rsw.swbestiary" % (fname, name, li.text))
+            if path == dishes:
+                for el in d.iter("settingField"):
+                    typ, _, field = (el.text or "").strip().rpartition(":")
+                    if typ != CUISINE_SETTINGS or not re.search(r"public\s+static\s+bool\s+%s\s*=" % re.escape(field), settings):
+                        fails.append("%s: %s settingField %r names no public static bool of %s" % (fname, name, el.text, CUISINE_SETTINGS))
+    root = ET.parse(dishes).getroot()
+    pies = {d.findtext("defName"): d for d in root if d.tag == "RecipeDef" and d.get("ParentName") == "RSW_CookCarbonitePieBase"}
+    fresh = pies.get("RSW_CookCarboniteNCreamPieFresh")
+    if set(pies) != {"RSW_CookCarboniteNCreamPie", "RSW_CookCarboniteNCreamPieFresh"} or fresh is None \
+            or fresh.findtext("modExtensions/li/settingInverted") != "true" \
+            or "RSW_BlastChilledCream" not in [li.text for li in pies["RSW_CookCarboniteNCreamPie"].iter("li")]:
+        fails.append("pie recipes: want the cream pie plus its inverted fresh-milk twin, found %s" % sorted(pies))
+    # The VCE reskin runs only under the Cuisine setting it names.
+    vce = ET.parse(os.path.join(cuisine, "Patches", "RSW_VceRationSealer.xml")).getroot()
+    sw = [m for m in vce.iter("match") if m.get("Class") == "RimMandrake.StarWars.Cuisine.PatchOperation_CuisineSetting"]
+    if len(sw) != 1 or not re.search(r"public\s+static\s+bool\s+%s\s*=" % re.escape(sw[0].findtext("setting") or "?"), settings):
+        fails.append("RSW_VceRationSealer.xml: the reskin is not under one PatchOperation_CuisineSetting naming a real bool")
+    if aging < 3 or inverted < 1 or bestiary < 3:
+        fails.append("cold aging check: aging=%d inverted=%d bestiary=%d, want >=3/>=1/>=3 (instrument blind?)" % (aging, inverted, bestiary))
     return fails
 
 

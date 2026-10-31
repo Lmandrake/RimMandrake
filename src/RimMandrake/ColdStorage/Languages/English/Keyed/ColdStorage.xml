@@ -27,6 +27,8 @@
   <RM_ColdStorage_SealBroken>Seal broken</RM_ColdStorage_SealBroken>
   <RM_ColdStorage_SealedFor>{0} for {1}</RM_ColdStorage_SealedFor>
   <RM_ColdStorage_SealedAging>{0} for {1}; becomes {2} in {3}</RM_ColdStorage_SealedAging>
+  <RM_ColdStorage_ColdAging>Becomes {0} after {2} more at or below {1}</RM_ColdStorage_ColdAging>
+  <RM_ColdStorage_ColdAgingOff>Would become {0} if kept cold (aging is off in Mod Settings)</RM_ColdStorage_ColdAgingOff>
 
   <!-- Mod Settings -->
   <RM_ColdStorage_SettingsCategory>RimMandrake: Cold Storage</RM_ColdStorage_SettingsCategory>

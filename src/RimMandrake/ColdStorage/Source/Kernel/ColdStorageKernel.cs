@@ -592,5 +592,38 @@ namespace RimMandrake.ColdStorage
             }
             return sum;
         }
+
+        /// <summary>COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES: cold aging (frost-aged roe and meat). The cold ticks an
+        /// item has after one sample: the time since the last sample counts only while the item sits at or below
+        /// <paramref name="maxTemp"/>, and one sample adds at most <paramref name="maxStep"/> ticks, so a stack that did
+        /// not tick for a long while (a caravan, an unloaded container) gains no more than one step. A first sample
+        /// (lastTick below 0), a clock that went back, or a warm sample adds nothing; cold time is never lost.</summary>
+        public static int ColdAccrue(int coldTicks, int lastTick, int now, float temperature, float maxTemp, int maxStep)
+        {
+            if (coldTicks < 0)
+            {
+                coldTicks = 0;
+            }
+            if (lastTick < 0 || now <= lastTick || temperature > maxTemp)
+            {
+                return coldTicks;
+            }
+            long step = Math.Min((long)now - lastTick, Math.Max(0, maxStep));
+            long sum = coldTicks + step;
+            return sum >= int.MaxValue ? int.MaxValue : (int)sum;
+        }
+
+        /// <summary>Cold ticks of a merged stack: stack-weighted, as <see cref="MergedSealTick"/>.</summary>
+        public static int MergedColdTicks(int ticksA, int countA, int ticksB, int countB)
+        {
+            return MergedSealTick(Math.Max(0, ticksA), countA, Math.Max(0, ticksB), countB);
+        }
+
+        /// <summary>A gate whose external switch is inverted opens when that switch is OFF (a fresh-ingredient variant
+        /// of a dish shows only while "preservation required" is off). Unreadable still counts as open.</summary>
+        public static bool GateOpen(bool ownSwitch, bool hasExternal, bool externalReadable, bool externalValue, bool inverted)
+        {
+            return GateOpen(ownSwitch, hasExternal, externalReadable, inverted ? !externalValue : externalValue);
+        }
     }
 }
