@@ -610,7 +610,11 @@ def precheck_run(root, log, arm):
     return r.returncode, r.stdout
 
 
-SANDBOX_RED_RE = re.compile(r"^\[\d+/\d+\]\s+(?:FAIL|CRASH)\s+\S+\s+(\S+)\s*$", re.M)
+# run_selftests prints `[i/N] FAIL  0.1s  path` to STDERR and `FAIL  0.1s  path` (no index) to STDOUT; precheck_run
+# hands baseline_verdict stdout only, so the index is optional (item ARENA_PRECHECK_FIX_RED_LINES_ON_STDERR: with it
+# required no stdout red ever matched, no baseline was ever taken and every replay task went red start). The time
+# token is required so the `FAIL (89/414): a, b` summary and the indented per-check lines never match.
+SANDBOX_RED_RE = re.compile(r"^(?:\[\d+/\d+\]\s+)?(?:FAIL|CRASH)\s+\d+(?:\.\d+)?s\s+(\S+)\s*$", re.M)
 
 
 def _tree_of(root, rev):

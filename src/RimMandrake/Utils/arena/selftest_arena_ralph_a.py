@@ -1713,6 +1713,18 @@ def t_baseline_pinned(tmp):
         v = R.baseline_verdict(1, _red_out("selftest_env.py"), log4, **kw)
         check(v[0] is False, "BL5 %s: a sandbox red cannot be baselined, it is red: %s" % (name, v))
     check(not list(log4.parent.glob("sandbox_red*")), "BL5 nothing was recorded as a baseline")
+    # BL7 (item ARENA_PRECHECK_FIX_RED_LINES_ON_STDERR): the real runner's STDOUT, the only stream precheck_run passes
+    # on, has no [i/N] index; its reds must be seen, and its summary / indented per-check lines must not be.
+    real_stdout = ("PASS          0.0s  .claude/hooks/selftest_ok.py\n"
+                   "FAIL          0.7s  .claude/hooks/selftest_block_blind_scan.py\n"
+                   "             rc 1\n             FAIL  a_bare_filename_with_no_directory_is_still_the_artifact\n"
+                   "CRASH         1.7s  src/x/selftest_human_review.py\n"
+                   "FAIL (1/414): src/x/selftest_summary_only.py\n"
+                   "RESULT: RED (green = FAIL 0 and CRASH 0)\n")
+    check(sorted(R.SANDBOX_RED_RE.findall(real_stdout)) == [".claude/hooks/selftest_block_blind_scan.py",
+                                                            "src/x/selftest_human_review.py"],
+          "BL7 the runner's un-indexed stdout reds are read (and only they): %s"
+          % R.SANDBOX_RED_RE.findall(real_stdout))
     check(R.baseline_verdict(0, "RESULT: GREEN (x)\n", log4) == (True, "pre-check green")
           and R.baseline_verdict(None, "", log4, root=c, base=base)[0] is False,
           "BL6 a green run needs no base; a refused sandbox is red")
