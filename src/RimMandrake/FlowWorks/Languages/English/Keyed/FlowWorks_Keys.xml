@@ -124,6 +124,7 @@
   <!-- RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP: {0} = the raiding faction's name -->
   <RMFlow_RaidersSetLadders>Raiders of {0} are setting scaling ladders against your trench.</RMFlow_RaidersSetLadders>
   <RMFlow_RaidersFillTrench>Raiders of {0} are shovelling a causeway into your trench.</RMFlow_RaidersFillTrench>
+  <RMFlow_RaidersGiveUpTrench>Raiders of {0} cannot cross your pit and are pulling back.</RMFlow_RaidersGiveUpTrench>
 
   <!-- RIVERCURRENT_FIX_STALE_DOC_AND_BARE_ENGLISH: first time a colonist is swept by a fast river lane -->
   <RMFlow_RiverSweptFirstEntry>{0} is being swept downstream by the river's current. Fast water cannot be waded out of; build a ford or a bridge to cross.</RMFlow_RiverSweptFirstEntry>

@@ -16,8 +16,14 @@ namespace RimMandrake.FlowWorks
 	/// </summary>
 	public static class RM_LadderParityMath
 	{
-		/// <summary>"Digging should be slow": the shipped breach-fill speed (PROVISIONAL; it was x1).</summary>
-		public const float DefaultRaiderFillSpeed = 0.5f;
+		/// <summary>The shipped breach-fill speed. CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (owner ruling 2026-10-31: raiders fill
+		/// only shallow pits "reasonable for their effort"): x18, derived in RM_RaiderTrenchMath.DerivedFillSpeed so a 2 m pit
+		/// is shovelled inside the raid by one melee raider at the 0.1 MiningSpeed floor. Was x0.5 ("digging should be slow",
+		/// 2026-10-23), at which one level cost such a raider ~75,000 ticks against a raid of 26,000-38,000.</summary>
+		public const float DefaultRaiderFillSpeed = 18f;
+
+		/// <summary>The breach-fill speed slider's top (was 4 when the default was x0.5).</summary>
+		public const float MaxRaiderFillSpeed = 40f;
 
 		/// <summary>A ladder over a wall: this many of the pawn's own steps (climbing gear is 20). PROVISIONAL.</summary>
 		public const float DefaultWallLadderSlowFactor = 4f;

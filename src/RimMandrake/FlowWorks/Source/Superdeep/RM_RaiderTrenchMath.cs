@@ -275,6 +275,100 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		// ── CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP, owner ruling 2026-10-31 (via the Conductor): "Raiders should only be willing to
+		// fill relatively shallow pits that are reasonable for their effort. Deep pits they must go around or stand and shoot,
+		// making deep pits (the ones you need droids or machines to do) a real defense." Plus: melee digs, gunners cover.
+
+		/// <summary>Where a crossing line starts on the raider's own side. <paramref name="own"/>: the depths along the line from
+		/// its origin to the last square of the raider's own component (inclusive). The plan starts at that last square, then walks
+		/// back while each earlier square is strictly SHALLOWER (the slope rises toward the raider), at most
+		/// <paramref name="maxBack"/> squares: a half-built causeway (bank 0, filled 2, unfilled 4 at k = 2) is all one component,
+		/// and a line starting at the unfilled 4 had no middle and stopped the fill half done (live 2026-10-31, shallow2: "line=4/0
+		/// pit=0"). Returns an index into <paramref name="own"/>.</summary>
+		public static int PlanStart(int[] own, int maxBack)
+		{
+			if (own == null || own.Length == 0)
+			{
+				return 0;
+			}
+			int s = own.Length - 1;
+			while (s > 0 && own.Length - 1 - s < maxBack && own[s - 1] < own[s])
+			{
+				s--;
+			}
+			return s;
+		}
+
+		/// <summary>The pit a crossing line asks a raid to fill, in levels: its deepest middle square below the SHALLOWER bank
+		/// (the higher of the two ends; a raider must climb out to the higher one). 0 for a line with no middle.</summary>
+		public static int PitDepth(int[] d)
+		{
+			if (d == null || d.Length < 3)
+			{
+				return 0;
+			}
+			int bank = Math.Min(d[0], d[d.Length - 1]);
+			int deepest = 0;
+			for (int i = 1; i < d.Length - 1; i++)
+			{
+				deepest = Math.Max(deepest, d[i] - bank);
+			}
+			return deepest;
+		}
+
+		/// <summary>The depth line (levels): the deepest pit a raid will fill. Delegated (the Conductor, 2026-10-31): the
+		/// colonist hand-dig cap (DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL, "Colonists 2 m, machines deeper", default 4 = 2 m),
+		/// because the owner's deep pit is "the ones you need droids or machines to do"; a fixed line when the setting says so.</summary>
+		public static int FillLine(bool followsDigCap, int colonistCap, int fixedLine)
+		{
+			return Math.Max(0, followsDigCap ? colonistCap : fixedLine);
+		}
+
+		/// <summary>Will a raid shovel this pit? Only one no deeper than the line.</summary>
+		public static bool FillWorthIt(int pitDepth, int line)
+		{
+			return pitDepth <= line;
+		}
+
+		/// <summary>What a raider does when it has no crossing of its own (no jump, no ladder, no fill job for it).</summary>
+		public enum Hold
+		{
+			/// <summary>The raid is breaching a shallow pit and this raider has no shot: wait for the causeway (vanilla).</summary>
+			Wait,
+			/// <summary>It can hit the target from where it stands: shoot.</summary>
+			Shoot,
+			/// <summary>It can hit the target from a cast position on its own side: go there and shoot ("stand and shoot").</summary>
+			MoveToShoot,
+			/// <summary>No crossing for the raid and no shot: leave the map rather than idle at the lip.</summary>
+			Leave,
+		}
+
+		/// <summary><paramref name="breachUnderway"/>: the pit is shallow and the raid has a melee shoveller who can fill it
+		/// (melee digs, gunners cover). Anyone with a shot takes it; without one, a raider waits only for a breach underway.</summary>
+		public static Hold HoldFor(bool breachUnderway, bool canShootNow, bool hasCastPosition)
+		{
+			if (canShootNow)
+			{
+				return Hold.Shoot;
+			}
+			if (hasCastPosition)
+			{
+				return Hold.MoveToShoot;
+			}
+			return breachUnderway ? Hold.Wait : Hold.Leave;
+		}
+
+		/// <summary>The shipped breach-fill speed, derived (not guessed): vanilla's assault lord gives up after 26,000-38,000
+		/// ticks (LordJob_AssaultColony). The worst shallow pit at the line (2 m) for a person (climb 2 levels) is a 4-level
+		/// causeway (2 squares x 2 levels, any width: the steps are climbable from the second square on). One melee raider at
+		/// the 0.1 MiningSpeed floor (4 of 6 live pirates read it, CAUSEWAY run3) must finish it in a third of the shortest
+		/// raid (8,667 ticks, leaving the rest for the shovel, the fetch trips, the crossing and the fight):
+		/// 4 x 6,400 / (0.1 x 1.7 x s) &lt;= 8,667 gives s &gt;= 17.4, so x18 (8,366 ticks; a 0.478 digger: 1,750).</summary>
+		public static float DerivedFillSpeed(int levels, int workPerLevel, float floorStat, int budgetTicks)
+		{
+			return (float)(levels * (double)workPerLevel / (Math.Max(0.1, floorStat) * 1.7 * Math.Max(1, budgetTicks)));
+		}
+
 		/// <summary>The landing for a jump across: the first square from the far side's first square (<paramref name="from"/>)
 		/// outward that is a valid landing within range, looking at most <paramref name="look"/> squares on. -1: none.</summary>
 		public static int JumpLanding(int from, int count, int look, Func<int, bool> valid, Func<int, bool> inRange)

@@ -9,7 +9,7 @@ storyteller's default hostile humanlike faction, and a flying raider is reported
 
 Scene (map centre c): a 9x9 ISLAND of untouched ground (Chebyshev distance <= 4 from c) holding every colonist, ringed
 by a SHEER TRENCH 2 squares wide (distance 5 and 6), dug D 4 = 2 m everywhere (climb_proof: a person is trapped at D 3,
-so 2 m is a wall for the person band both down and up). A CHURN cell 9 east of c is dug to D 4 and filled back every
+so 2 m is a wall for the person band both down and up). A CHURN cell 9 east of c (9 WEST under --direct, off the raid's approach) is dug to D 4 and filled back every
 other chunk, so the cliff masks rebuild over and over while the raiders' path requests are in flight (risk 2: the
 per-request mask swap under 1.6's multithreaded pathfinding).
 
@@ -27,10 +27,37 @@ Rows:
                                        and when the crossing went over the raid's own ladder/plank (legal since
                                        RAIDERS_TRENCH_BUILD_BREACH_AND_JUMP).
   RAID_LADDER_BREACH        PASS/FAIL  (--depth <= 6) RAIDERS_TRENCH A2: raider ladders on BOTH walls and a raider used them.
-  RAID_FILL_CAUSEWAY        PASS/FAIL  (--depth 8, past the portable ladder reach) RAIDERS_TRENCH A3: a ring square filled
-                                       shallower than dug and a raider used it. First live run 2026-10-22: FAIL, raiders
-                                       Wait at the lip (CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP). UNMEASURED (SITE) when a
-                                       --direct raid holds no shovel and filled nothing (--shovels 0).
+  OWNER RULING 2026-10-31 (via the Conductor, CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): "Raiders should only be willing to
+  fill relatively shallow pits that are reasonable for their effort. Deep pits they must go around or stand and shoot,
+  making deep pits (the ones you need droids or machines to do) a real defense." Melee digs, gunners cover. The fill line
+  is the colonist hand-dig cap (MaxDigDepth, 4 = 2 m; deeper needs droids, DEEP_DIG_BUILD_DROIDS_TAKE_THE_SHOVEL). These
+  three rows (--direct; never a pass under --fill-speed) replace RAID_FILL_CAUSEWAY, whose bar (a 4 m pit filled) the
+  ruling forbids:
+  RAID_SHALLOW_FILLED_IN_RAID (--no-ladders, depth <= line) a ring square filled and a raider in the pit or on the island
+                                       by t+26,000 (vanilla AssaultColony's earliest give-up), at shipped fill speed.
+  RAID_DEEP_NOT_FILLED      (depth > line) no square filled; no raider within 15 squares in an idle job (IDLE_JOBS) on
+                                       4 consecutive job reads (2,000 ticks); the raid leaves (despawned alive) or shoots
+                                       (AttackStatic, Wait_Combat facing an enemy, or SHOT_ACROSS). Boxed colonists: nobody
+                                       has a shot, expect LEAVE (--exposed: expect SHOT_ACROSS). A raid that gave up or shot
+                                       from outside 15 squares is judged (the trench rule's Goto-to-exit is read early).
+  RAID_NO_MELEE_GOES_AROUND (--no-melee, 6 gunners, the shovels on gunners) as DEEP: nobody fills, nobody idles.
+
+  Second sitting 2026-10-31 (the ruling enacted: fill line 4, raiderFillSpeed x18; all at shipped values):
+    shallow4 (d4 --no-ladders) PASS: 4 squares filled 4->2/3, a raider on the island at t+11,250 (holders 0.1 / 0.296).
+    deep2 (d8, boxed) PASS: 6/6 left by the trench rule at t+250, nothing filled.  deep6 (d8 --exposed) PASS: colonists
+    shot down across the pit from 22 squares, nothing filled, nobody idled, the raid left.  nomelee1 PASS: 6/6 left.
+    FOUND (MOD BUG), shallow2: once the outer square was filled 4->2 the raider's k=2 component reached down into the next
+    square (depth 4) and the plan read [4, island 0], pit=0, every raider None: the causeway stopped half built. Fixed by
+    RM_RaiderTrenchMath.PlanStart (TryPlan walks back over dug squares to the bank).
+    FOUND (HARNESS), shallow1: the east churn cell lay on the raiders' approach line, so the harness re-dug what they
+    filled; --direct churns west now.  shallow3: the line was read from the END ProofDecision, which after a breach reads
+    "GoAround" (no fillLine=); read from FillLine() at the start now.  shallow3: MASKSWAP counted a fill crossing as a
+    mask FAIL; filled squares are a raid way.  deep1/deep5: raids that gave up or shot from far read UNMEASURED by the
+    cameNear gate.  deep3: Wait_Combat facing an enemy is vanilla stand-and-shoot, not idling.  deep4: shots fell between
+    500-tick job reads; SHOT_ACROSS is the shooting.
+    THEORY (unproven, not needed for the pass): two fillers on one square share one credit and the second's labour is
+    wasted. shallow4 filled four squares, so the credit share did not stop it; not instrumented.
+    BY DESIGN: in a shallow raid the gunners Wait (vanilla) near the lip while the melee dig ("gunners cover").
 
 CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP, test-pilot sitting 2026-10-31 (Archmagi, 11-mod flowworks tier, --direct --depth 8
 --fresh-map; probes read RM_RaiderTrench.ProofDecision / ProofJobTrace and RM_Shovels.HasShovel per raider):
@@ -41,7 +68,7 @@ CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP, test-pilot sitting 2026-10-31 (Archmagi, 11-
     That IS the wait at the lip. Check that killed doubt: one raider handed a shovel live -> RM_RaiderFetchFill at once.
   FOUND (MOD, by design?): a shovel-holding GUNNER fetched one load, then JobGiver_AIFightEnemies (vanilla, before
     ours in AssaultColony) kept him in Wait_Combat at colonists across the trench for ~6,000 ticks; one more load at
-    +6,400. Shovels go to melee raiders first here; whether shooters should stop to shovel is filed for the owner.
+    +6,400. Owner ruling 2026-10-31: "melee digs, gunners cover" -- only melee raiders fill now (RM_RaiderTrench.Melee).
   FOUND (SITE), run2 with 2 shovels: the open island let the gunners down all 3 colonists by t+4000; the lord turned to
     Kidnap (LordToil_KidnapCover, no CrossTrench in that duty) and the shovellers, one load each, Waited to the end.
     Every --direct run now boxes the colonists in granite (Chebyshev 3), as the jump-pack runs already did.
@@ -52,9 +79,9 @@ CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP, test-pilot sitting 2026-10-31 (Archmagi, 11-
     MiningSpeed 0.478 and 0.1 (the FillTicks floor; 4 of 6 raiders read 0.1) price it at ~15,700 and ~75,000 ticks. The
     raid departed at t+29,135. FillWorkPerLevel's doc ("~2,800 ticks") predates the x4 labour and x0.5 raider knobs.
     Check that decided it, run4 --fill-speed 4 (x8, restored and read back 0.5): fills landed, 131,122 -> 6, 131,125 -> 7.
-    The mechanism works; the shipped price outlasts the raid. Filed for a tuning ruling (the owner's "a lot of time").
-  OPEN, untraced: in run3 the 0.478 slasher's first fill ended near t16.4k and (131,127) still read depth 8, fill 0;
-    he fetched again and restarted. Shared square (two fillers, one credit) is presumed, unproven.
+    The mechanism works; the x0.5 price outlasted the raid. Ruled 2026-10-31: shipped x18 (DerivedFillSpeed), shallow only.
+  UNTRACED: in run3 the 0.478 slasher's first fill ended near t16.4k and (131,127) still read depth 8, fill 0;
+    he fetched again and restarted (the shared-credit theory, second sitting below).
   RULED OUT: the re-issue loop (BENCH, earlier: workEnds sameTick=0). RULED OUT: no crossing plan (a line was read for
     every raider). FALSE THEORY (kept): "fill speed is not the cause, nobody was filling" -- true only until shovels were
     handed out; with them, fill speed is the next wall (run3/run4 above).
@@ -268,6 +295,73 @@ def maskswap_verdict(came_near, sealed, crossed, ways, staged_way):
 TRENCH_SETTINGS = "RimMandrake.FlowWorks.RM_RaiderTrenchSettings"
 
 
+def get_setting(B, typ, field):
+    """jawa/mod_settings_field get -> the value, or None when unread (never a guessed default)."""
+    got = B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}
+    vals = [f_.get("value") for f_ in got.get("fields") or [] if f_.get("name") == field]
+    return vals[0] if vals else got.get("value")
+
+
+# a raider standing in one of these, near the trench, with no crossing of its own, is the "idle at the lip" the owner's
+# 2026-10-31 ruling forbids for deep pits (go around or stand and shoot). AttackStatic (our Shoot) and Goto (our MoveToShoot
+# and Leave, or vanilla's own cast-position walk) are not in it.
+# HARNESS (deep3_exposed 2026-10-31): a gunner in Wait_Combat WITH an enemy is vanilla's stand-and-shoot (JobGiver_AIFight-
+# Enemies parks a shooter that can hit from where it stands in Wait_Combat, and JobDriver_Wait's auto-attack fires), which
+# the ruling allows; the run read it as a lip idler and FAILED. job_read() reports that as "Wait_Combat+enemy" (a shooter);
+# Wait_Combat with enemy=none is still idle.
+IDLE_JOBS = ("Wait", "Wait_Wander", "GotoWander", "Wait_MaintainPosture", "Wait_Combat")
+SHOOT_JOBS = ("AttackStatic", "Wait_Combat+enemy")
+IDLE_RUN = 4          # consecutive job reads (one every JOB_EVERY chunks = 500 ticks): 2,000 ticks idle near the pit
+JOB_EVERY = 2
+RAID_MIN_TICKS = 26000   # vanilla LordToil_AssaultColony gives up after Rand 26,000-38,000: "inside the raid" = before this
+
+
+def job_of(trace):
+    """'... job=Wait_Wander giver=...' -> 'Wait_Wander' (None when the trace has no job token). Pure."""
+    tok = next((t for t in str(trace).split() if t.startswith("job=")), None)
+    return tok[4:] if tok else None
+
+
+def job_read(trace):
+    """A trace -> its job, with Wait_Combat facing an enemy (enemy= token not none) read as 'Wait_Combat+enemy'. Pure."""
+    j = job_of(trace)
+    en = next((t[6:] for t in str(trace).split() if t.startswith("enemy=")), "none")
+    return "Wait_Combat+enemy" if j == "Wait_Combat" and en not in ("none", "") else j
+
+
+def lip_idlers(job_reads, run=IDLE_RUN):
+    """job_reads: [(tick, {raider: job})] for raiders within NEAR -> {raider: first tick of a run of `run` consecutive idle
+    reads}. A raider absent from a read breaks its run. Pure."""
+    streak, start, out = {}, {}, {}
+    for tick, jobs in job_reads:
+        for rid in list(streak):
+            if rid not in jobs:
+                streak.pop(rid)
+        for rid, job in jobs.items():
+            if job in IDLE_JOBS:
+                if not streak.get(rid):
+                    start[rid] = tick
+                streak[rid] = streak.get(rid, 0) + 1
+                if streak[rid] >= run and rid not in out:
+                    out[rid] = start[rid]
+            else:
+                streak[rid] = 0
+    return out
+
+
+def rule_verdict(kind, gate, filled, used_tick, idlers, left, shot):
+    """The owner's 2026-10-31 fill ruling as one row. kind: 'shallow' (melee raid, pit at or under the fill line: filled and
+    crossed inside the raid), 'deep' (pit over the line: nothing filled, nobody idles at the lip, the raid leaves or
+    shoots), 'nomelee' (no melee pawn: as deep). gate: None, or why the run cannot judge (UNMEASURED). Pure."""
+    if gate:
+        return "UNMEASURED"
+    if filled is None:
+        return "UNMEASURED"
+    if kind == "shallow":
+        return "PASS" if filled and used_tick is not None and used_tick <= RAID_MIN_TICKS else "FAIL"
+    return "PASS" if not filled and not idlers and (left or shot) else "FAIL"
+
+
 def set_setting(B, typ, field, value):
     """jawa/mod_settings_field set, then a get: (True, after) only when the read-back equals what was asked."""
     try:
@@ -275,6 +369,8 @@ def set_setting(B, typ, field, value):
         got = B.call("jawa/mod_settings_field", typeName=typ, action="get", field=field) or {}
         vals = [f_.get("value") for f_ in got.get("fields") or [] if f_.get("name") == field]
         after = vals[0] if vals else got.get("value")
+        if isinstance(value, bool) or str(value).lower() in ("true", "false"):
+            return str(after).lower() == str(value).lower(), after
         return (after is not None and abs(float(after) - float(value)) < 1e-6), after
     except Exception as ex:  # noqa: BLE001 - an unread restore is reported, never assumed
         return False, "%s: %s" % (type(ex).__name__, ex)
@@ -292,6 +388,11 @@ def main(argv=None):
             print("raiderFillSpeed restore: %s %s" % (ok, note), flush=True)
             if hold.get("log") is not None:
                 hold["log"].append("raiderFillSpeed restore: %s %s" % (ok, note))
+        for field, prior in reversed(hold.get("settingsPrior") or []):
+            ok, note = set_setting(hold["B"], TRENCH_SETTINGS, field, prior)
+            print("%s restore: %s %s" % (field, ok, note), flush=True)
+            if hold.get("log") is not None:
+                hold["log"].append("%s restore: %s %s" % (field, ok, note))
         if hold.get("changed"):
             ok, note = restore_storyteller(hold["B"], hold.get("prior"))
             print("storyteller restore: %s" % note, flush=True)
@@ -331,9 +432,14 @@ def _run(argv, hold):
     ap.add_argument("--exposed", action="store_true", help="--direct only: no granite box round the colonists (the "
                     "gunners then shoot them down across the trench and the lord turns to Kidnap)")
     ap.add_argument("--fill-speed", type=float, default=None, help="COMPRESSION (debug_process long-duration rule): set "
-                    "RM_RaiderTrenchSettings.raiderFillSpeed for the run (shipped 0.5, slider max 4), restored and read "
-                    "back after. At shipped values one level is 6400 work / (MiningSpeed x 1.7 x 0.5): a raider at the "
-                    "0.1 floor needs ~75,000 ticks, longer than the raid stays")
+                    "RM_RaiderTrenchSettings.raiderFillSpeed for the run (shipped 18 since 2026-10-31, slider max 40), restored "
+                    "and read back after. A compressed run is never a pass of the fill-rule rows (they read UNMEASURED): "
+                    "the owner's rule must hold at shipped values")
+    ap.add_argument("--no-ladders", action="store_true", help="--direct only: raiderLaddersEnabled off for the run "
+                    "(restored, read back), so a shallow pit (within the 3 m ladder reach) is crossed by FILL alone: "
+                    "RAID_SHALLOW_FILLED_IN_RAID")
+    ap.add_argument("--no-melee", action="store_true", help="--direct only: 6 gunners, no slasher; the --shovels go to "
+                    "gunners. RAID_NO_MELEE_GOES_AROUND: nobody fills, nobody idles at the lip")
     a = ap.parse_args(argv)
     import validation_core as V
     B = V.Bridge()
@@ -388,6 +494,23 @@ def _run(argv, hold):
     if not (off.get("success") is True and off.get("valueAfter") is False):
         say("WARNING: storyteller NOT confirmed off (%s): a stray incident may land on the island" % json.dumps(off, default=str)[:200])
         res["storytellerOff"] = "UNCONFIRMED"
+    if a.no_ladders:
+        prior_l = get_setting(B, TRENCH_SETTINGS, "raiderLaddersEnabled")
+        if prior_l is None:
+            say("WARNING: raiderLaddersEnabled unread; --no-ladders NOT applied")
+        else:
+            hold.setdefault("settingsPrior", []).append(("raiderLaddersEnabled", prior_l))
+            ok, after = set_setting(B, TRENCH_SETTINGS, "raiderLaddersEnabled", False)
+            res["laddersOff"] = {"prior": prior_l, "readBack": after, "ok": ok}
+            say("raiderLaddersEnabled %s -> False (read back %s)" % (prior_l, after))
+    # the fill rule's live settings, recorded: the run judges what the game holds, not what the source says
+    res["fillSettings"] = {f_: get_setting(B, TRENCH_SETTINGS, f_) for f_ in
+                           ("raiderFillEnabled", "raiderFillSpeed", "raiderFillLineFollowsDigCap", "raiderFillMaxDepth")}
+    # HARNESS (shallow3 2026-10-31): the line was parsed only from the END ProofDecision, and after a breach every raider
+    # reads "GoAround <colonist>" (no fillLine= token), so a passing shallow run read UNMEASURED. Read it here, from the game.
+    fl_ = static_text(B, "RimMandrake.FlowWorks.RM_RaiderTrench", "FillLine", "")
+    res["fillLine"] = int(fl_) if fl_.isdigit() else None
+    say("fill settings: %s fillLine=%s" % (res["fillSettings"], fl_))
     if a.fill_speed is not None:
         got = B.call("jawa/mod_settings_field", typeName=TRENCH_SETTINGS, action="get", field="raiderFillSpeed") or {}
         vals = [f_.get("value") for f_ in got.get("fields") or [] if f_.get("name") == "raiderFillSpeed"]
@@ -415,7 +538,8 @@ def _run(argv, hold):
         why = (site_rows[-1].get("detail") if site_rows and isinstance(site_rows[-1], dict) else None) or "prepare_site refused"
         res["siteNotReady"] = why
         for rid in ("RAID_island_sealed", "RAID_outcome", "MASKSWAP_no_wall_crossing",
-                    "RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY"):
+                    "RAID_NO_MELEE_GOES_AROUND" if a.no_melee else "RAID_SHALLOW_FILLED_IN_RAID" if a.no_ladders
+                    else "RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_DEEP_NOT_FILLED"):
             row(rid, "UNMEASURED", {"class": "SITE", "why": "the raid site did not read back clear; nothing dug or fired",
                                     "site": why})
         return 2
@@ -425,7 +549,11 @@ def _run(argv, hold):
         dr0 = B.call("jawa/flowworks_excavation_drive", x=cell[0], z=cell[1], deepenLevels=a.depth, setFill=-1) or {}
         dug[cell] = dr0.get("depth") if isinstance(dr0.get("depth"), int) else None
     res["ringShort"] = sorted((c_[0], c_[1], d_) for c_, d_ in dug.items() if d_ is None or d_ < a.depth)
-    churn = (c[0] + 9, c[1])
+    # HARNESS (test pilot 2026-10-31, shallow1): with the churn 9 EAST, on the --direct raid's straight approach, the
+    # raiders' crossing line read 0/4/0/0/2/4/0 -- the churn square was the first pit on it, NextFill sent the shoveller
+    # there, and the harness re-dug it every other chunk (a new cut clears the fill credit): 15,000 ticks of shovelling
+    # wasted on a square the scene keeps resetting. A --direct raid comes from the east, so its churn stands WEST.
+    churn = (c[0] - 9, c[1]) if a.direct else (c[0] + 9, c[1])
     cols = B.probe_of(HPROBE, "colonists").get("pawns") or []
     for i, p in enumerate(cols):
         B.probe_of(HPROBE, "pawn:%d=tp:%d,%d" % (p["id"], c[0] - 2 + (i % 4), c[1] + (i // 4)))
@@ -474,7 +602,7 @@ def _run(argv, hold):
             row("RAID_outcome", "UNMEASURED", dict(why="no assault faction available", reply=json.dumps(probe, default=str)[:300]))
             return 2
         say("assault faction: %s (hostile factions on this map: %s)" % (fac, [f_["def"] for f_ in avail if f_.get("hostile")]))
-        for kind, n in (("Mercenary_Gunner", 4), ("Mercenary_Slasher", 2)):
+        for kind, n in ((("Mercenary_Gunner", 6),) if a.no_melee else (("Mercenary_Gunner", 4), ("Mercenary_Slasher", 2))):
             sp = B.call("jawa/spawn_pawn", kindDef=kind, x=c[0] + 30, z=c[1], faction=fac, count=n) or {}
             ids += [str(p_.get("id")) for p_ in sp.get("pawns") or []]
         # CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP (test pilot, live 2026-10-31): spawn_pawn skips IncidentWorker_Raid's
@@ -546,6 +674,21 @@ def _run(argv, hold):
         colon = [dict(id=p["id"], x=p.get("x"), z=p.get("z"), dead=p.get("dead"), downed=p.get("downed"))
                  for p in lp.get("pawns") or [] if p.get("isPlayer") and p.get("intelligence") == "Humanlike"]
         samples.append(dict(tick=t, advance=ar.get("state"), raiders=raiders, colonists=colon))
+        if k % JOB_EVERY == 0:
+            # the lip-idle instrument: every live raider within NEAR, its current job (ProofJobTrace's job= token)
+            jr = {r_["id"]: job_read(job_trace(B, r_["id"])) for r_ in raiders if r_.get("spawned") and not r_.get("dead")
+                  and not r_.get("downed") and r_["x"] is not None and cheb((r_["x"], r_["z"]), c) <= NEAR}
+            res.setdefault("jobReads", []).append((t, jr))
+        # HARNESS (deep1 2026-10-31): a deep-pit raid gave up from ~39 squares out and was off the map by t+2000, so nobody
+        # came within NEAR and the row read UNMEASURED on a run that did exactly what the ruling asks. Every live raider's job
+        # and giver, early: a Goto from JobGiver_RM_CrossTrench followed by leaving the map alive is the trench rule's
+        # give-up (HoldFor Leave), not vanilla's flee.
+        if k <= 8:
+            for r_ in raiders:
+                if r_.get("spawned") and not r_.get("dead") and r_["id"] not in res.setdefault("ruleLeave", {}):
+                    tr_ = job_trace(B, r_["id"])
+                    if job_of(tr_) == "Goto" and "giver=JobGiver_RM_CrossTrench" in str(tr_):
+                        res["ruleLeave"][r_["id"]] = t
         if a.trees and k % 4 == 0:
             for r_ in raiders:
                 if r_.get("spawned") and not r_.get("dead") and "RM_RaiderChopForLadder" in job_trace(B, r_["id"]):
@@ -602,11 +745,6 @@ def _run(argv, hold):
                  if t.get("faction") and not str(t.get("faction")).startswith("Player") and cheb((t.get("x"), t.get("z")), c) in (4, 5, 6, 7)]
     # a jump-pack crossing is legal too (A4), and so is one over the PLAYER's ladders (--colony-ladders, LADDER_PARITY: those
     # are filtered out of `ways`, so leaving them out here read a legal crossing as a mask FAIL -- review 2026-10-26)
-    ms = maskswap_verdict(cameNear, sealed, crossed, ways, bool(a.jump_packs or a.preladder or a.colony_ladders))
-    row("MASKSWAP_no_wall_crossing", ms,
-        {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
-         "raiderWays": ways, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
-                                       "own ladder/plank is legal (RAIDERS_TRENCH) and masks the question" % CHUNK})
     # RAIDERS_TRENCH A2: a raid against a base ringed by a sheer 2 m trench no longer stalls -- it sets a way across and walks in
     # HARNESS (belt 2026-10-22 raid_3): 'a raider on the island' was too strict -- the raiders laddered both walls, shot every
     # island colonist down from the trench and LEFT (the raid had won). The ruling's bar is "no longer stalls: set a ladder
@@ -625,17 +763,62 @@ def _run(argv, hold):
     except Exception as ex:  # noqa: BLE001 - the client refuses a mutating tool after an unknown-outcome call (see jobTrace)
         filled, det["ringReadError"] = None, ("%s: %s" % (type(ex).__name__, ex))[:300]
     det["ringDepth"], det["filledSquares"], det["ringDugShort"] = a.depth, filled, res["ringShort"]
+    # HARNESS (shallow3 2026-10-31): a raid that FILLED its way across (the owner's shallow-pit rule) put its own way over:
+    # legal, so the filled squares count as a raid way here; read after the ring read-back, not before it.
+    ms = maskswap_verdict(cameNear, sealed, crossed, ways, bool(a.jump_packs or a.preladder or a.colony_ladders
+                                                            or filled))
+    row("MASKSWAP_no_wall_crossing", ms,
+        {"raidersWithin15": cameNear, "islandSealed": sealed, "sampledOnIslandOrTrench": crossed, "churnRebuilds": k,
+         "raiderWays": ways, "caveat": "sampled every %d ticks; never seen, not proven impossible; a crossing over the raid's "
+                                       "own ladder/plank is legal (RAIDERS_TRENCH) and masks the question" % CHUNK})
     walls = sorted({cheb((w["x"], w["z"]), c) for w in ways})
     both = 5 in walls and 6 in walls
     used = bool(det["onIsland"] or det["inTrench"])
     a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" else
           "PASS" if (both and used) else "FAIL")
-    if a.depth > 6:
-        # 4 m: past the portable ladder's reach -> the fill causeway is the legal way (A3); a ladder there is a FAIL of its own
-        a2 = ("UNMEASURED" if cameNear < 2 or sealed != "PASS" or filled is None else
-              "PASS" if (filled and used) else "FAIL")
-        if a.direct and not res.get("shovelHolders") and not filled:
-            a2 = "UNMEASURED"   # SITE: a raid with no shovel cannot fill (owner 2026-10-25); its waiting is the rule, not a bug
+    # OWNER RULING 2026-10-31 (via the Conductor): "Raiders should only be willing to fill relatively shallow pits that are
+    # reasonable for their effort. Deep pits they must go around or stand and shoot ... Melee digs, gunners cover." The old
+    # A3 bar (RAID_FILL_CAUSEWAY: a 4 m pit filled) asked for what the ruling forbids and is deleted. The fill line is read
+    # from the game (ProofDecision's fillLine=, the colonist hand-dig cap by default: 4 = 2 m).
+    lines = [int(tok[9:]) for v_ in (det.get("decision") or {}).values() for tok in str(v_).split()
+             if tok.startswith("fillLine=") and tok[9:].isdigit()]
+    fill_line = res.get("fillLine") if res.get("fillLine") is not None else (lines[0] if lines else None)
+    idlers = lip_idlers(res.get("jobReads") or [])
+    shot = sorted({rid for _t, jr in res.get("jobReads") or [] for rid, j in jr.items() if j in SHOOT_JOBS})
+    # HARNESS (deep4_exposed 2026-10-31): the gunners downed all four colonists across the 4 m pit by t+2000 between two job
+    # reads (one every 500 ticks) and the row read FAIL "neither left nor shot". The outcome's SHOT_ACROSS (a colonist down
+    # on the island with no raider across) is the shooting, measured from the colonists' side.
+    if "SHOT_ACROSS" in words and not shot:
+        shot = ["SHOT_ACROSS"]
+    in_pit = [s_["tick"] for s_ in samples for r_ in s_["raiders"] if r_.get("x") is not None and r_.get("spawned", True)
+              and not r_.get("dead") and cheb((r_["x"], r_["z"]), c) <= 6]
+    used_tick = in_pit[0] if in_pit else None
+    rule_left = sorted(set(res.get("ruleLeave") or {}) & set(det.get("despawnedAlive") or []))
+    # HARNESS (deep5_exposed 2026-10-31): the gunners downed the colonists from 23 squares (outside NEAR) and left, so the
+    # cameNear gate read UNMEASURED; shooting across the pit (SHOT_ACROSS) is engagement too, wherever they stood.
+    gave_up = (a.no_melee or (fill_line is not None and a.depth > fill_line)) and (
+        len(rule_left) >= 2 or "SHOT_ACROSS" in words)
+    gate = ("not --direct" if not a.direct else "island not sealed" if sealed != "PASS" else
+            "fewer than 2 raiders came within %d" % NEAR if cameNear < 2 and not gave_up else
+            "--fill-speed compression: the rule must hold at shipped values" if a.fill_speed is not None else
+            "fill line unread (old DLL?)" if fill_line is None else None)
+    rule = dict(fillLine=fill_line, pitDepth=a.depth, filledSquares=filled, firstRaiderInPitTick=used_tick,
+                lipIdlers=idlers, shooters=shot, despawnedAlive=det.get("despawnedAlive"), gate=gate,
+                leftByTrenchRule=res.get("ruleLeave"),
+                shovelHolders=res.get("shovelHolders"), fillSettings=res.get("fillSettings"))
+    if a.direct and a.no_melee:
+        row("RAID_NO_MELEE_GOES_AROUND", rule_verdict("nomelee", gate, filled, used_tick, idlers,
+            det.get("despawnedAlive"), shot), dict(rule, bar="no melee pawn: no square filled (gunners hold the shovels), "
+            "no raider idle %d reads running within %d, and the raid leaves or shoots" % (IDLE_RUN, NEAR)))
+    elif a.direct and fill_line is not None and a.depth > fill_line:
+        row("RAID_DEEP_NOT_FILLED", rule_verdict("deep", gate, filled, used_tick, idlers, det.get("despawnedAlive"), shot),
+            dict(rule, bar="pit over the fill line: no square filled, no raider idle %d reads running within %d, and the "
+                 "raid leaves or shoots" % (IDLE_RUN, NEAR)))
+    elif a.direct and a.no_ladders:
+        g_ = gate or ("no shovel in the raid" if not res.get("shovelHolders") else None)
+        row("RAID_SHALLOW_FILLED_IN_RAID", rule_verdict("shallow", g_, filled, used_tick, idlers,
+            det.get("despawnedAlive"), shot), dict(rule, bar="pit at or under the fill line, ladders off, melee shovellers: "
+            "a square filled and a raider in the pit or on the island by t+%d (the raid's earliest give-up)" % RAID_MIN_TICKS))
     if a.jump_packs:
         # A4: a raider who reached the island over a trench nobody laddered or filled jumped; no descent recorded for him
         pr_ = B.call("jawa/flowworks_pit_report", x=c[0] + 6, z=c[1]) or {}
@@ -660,7 +843,7 @@ def _run(argv, hold):
         row("LADDER_PARITY_RAIDERS_USE_COLONY_LADDERS", st_k, {"onIsland": det["onIsland"], "inTrench": det["inTrench"],
             "raiderWays": ways, "preladder": res.get("preladder"),
             "bar": "a raider on the island over the PLAYER's two ladders; no raider-faction way set"})
-    if a.depth > 6 and filled:
+    if filled:
         # LADDER_PARITY: each filled square carries its scar at the dug depth; the real designator orders it dug back
         reps = {"%d,%d" % (x, z): parity(B, "repair:%d,%d" % (x, z)) for x, z, _d in filled}
         good = [k_ for k_, v_ in reps.items()
@@ -668,7 +851,7 @@ def _run(argv, hold):
         row("LADDER_PARITY_BREACH_SCAR_REPAIR", "PASS" if len(good) == len(reps) else "FAIL",
             {"repairs": reps, "dug": {"%d,%d" % k_: v_ for k_, v_ in dug.items() if "%d,%d" % k_ in reps},
              "bar": "every filled square: Repair breach accepted, dig-to target = the depth it was dug to"})
-    elif a.depth > 6:
+    elif a.no_ladders and a.depth <= (fill_line or 0):
         row("LADDER_PARITY_BREACH_SCAR_REPAIR", "UNMEASURED", {"why": "the raid filled no square", "filled": filled})
     if a.trees:
         spots = res.get("treeSpots") or []
@@ -685,11 +868,12 @@ def _run(argv, hold):
             "bar": "a ladderless raider fells an oak within 30 squares of the east bank"})
     if a.jump_packs or a.preladder or a.colony_ladders:
         a2 = "UNMEASURED"       # jump packs come first in the owner's order: ladders/fill are not asked of this run
-    row("RAID_LADDER_BREACH" if a.depth <= 6 else "RAID_FILL_CAUSEWAY", a2,
-        {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways, "filledSquares": filled,
-                                   "wallsLaddered": walls, "outcome": words,
-                                   "bar": "raiders within 15 squares; raider-faction ladders/planks on both trench walls and a "
-                                          "raider used them (in the trench or on the island) -- no stall"})
+    if a.depth <= 6 and not a.no_ladders and not a.no_melee:
+        row("RAID_LADDER_BREACH", a2,
+            {"onIsland": det["onIsland"], "inTrench": det["inTrench"], "raiderWays": ways, "filledSquares": filled,
+             "wallsLaddered": walls, "outcome": words,
+             "bar": "raiders within 15 squares; raider-faction ladders/planks on both trench walls and a "
+                    "raider used them (in the trench or on the island) -- no stall"})
     save()
     say("result: %s" % a.out)   # not relpath: under python.exe an out on D: vs a \\wsl.localhost REPO raises ValueError
     return 0

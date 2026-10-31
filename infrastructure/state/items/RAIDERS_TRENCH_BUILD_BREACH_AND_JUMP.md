@@ -12,8 +12,12 @@ appended to AssaultColony, after JobGiver_AIBreaching in Breaching and after Job
 
 Order, when NO colonist (else colony building) is reachable even through destroyable things and the target is on another
 climb-band component: jump (jump pack or leaping ability, landing in range) → scaling ladders (every wall on the crossing line
-within the portable ladder's reach) → breach by shovelling the least fill that makes a one-square causeway climbable. A
-reachable target means vanilla goes around. Sieges (LordJob_Siege), trapped raiders, flyers and gear-wearers never use it.
+within the portable ladder's reach) → breach by shovelling the least fill that makes a one-square causeway climbable, ONLY
+when the pit is at or under the fill line and only by melee raiders (owner ruling 2026-10-31: "Raiders should only be willing
+to fill relatively shallow pits that are reasonable for their effort. Deep pits they must go around or stand and shoot";
+melee digs, gunners cover). The line is the colonist hand-dig cap (4 = 2 m). Over it, or with no melee raider, they shoot
+from where they can, walk to a cast position, or leave the map; never idle at the lip. A reachable target means vanilla
+goes around. Sieges (LordJob_Siege), trapped raiders, flyers and gear-wearers never use it.
 A raid on a map with 20+ dug squares hands 10% (PROVISIONAL) of an industrial-or-better raid's people a jump pack.
 
 Robust to either P2 outcome (`PIT_CLIMB_PROVE_RAIDERS_VS_SHEER_TRENCH`): if raiders turn out to reach the colony, the giver
@@ -25,7 +29,9 @@ raider is sent into the trench and vanilla takes over from there. Colonists cros
 ## criteria
 - A1 L0: decision order, line, fill causeway, ladder slots, times, jump share and wiring pass offline (RaiderTrenchChecks, 6/6)
 - A2 L2: a raid against a base ringed by a sheer 2 m trench no longer stalls: raiders set a ladder down and up and walk in
-- A3 L2: a 4 m trench (past the 3 m portable reach) is breached by fill: the causeway forms and the raid crosses it
+- A3 L2: a 2 m trench (at the fill line, ladders off) is filled and crossed inside the raid; a 4 m trench is NOT filled and the
+  raid shoots across or leaves without idling at the lip; a raid with no melee raider leaves (raid_trench_proof.py
+  RAID_SHALLOW_FILLED_IN_RAID / RAID_DEEP_NOT_FILLED / RAID_NO_MELEE_GOES_AROUND)
 - A4 L2: a jump-pack raider jumps the trench and lands on its feet (no fall hediff), then fights
 - A5 L2: a siege against the same base only builds and shells; no ladder, fill or jump job
 - A6 L2: destroying a raider ladder strands the raiders below in the pit (held, trap rules apply)

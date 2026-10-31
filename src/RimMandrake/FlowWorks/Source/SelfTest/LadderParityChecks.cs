@@ -165,7 +165,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_LadderParityMath.RepairTarget(8, 8) == 0, "can-fail: a healed square needs no order");
                 Assert(RM_LadderParityMath.RepairTarget(0, 3) == 0, "can-fail: an unscarred square is not 'repaired'");
                 Assert(RM_LadderParityMath.ScarHealed(8, 9) && !RM_LadderParityMath.ScarHealed(8, 7), "a scar clears at its depth");
-                Assert(RM_LadderParityMath.DefaultRaiderFillSpeed == 0.5f, "digging in is slow: x0.5 (PROVISIONAL)");
+                Assert(RM_LadderParityMath.DefaultRaiderFillSpeed == 18f, "a shallow pit fills inside a raid: x18 (RaiderTrench_shallow_only_melee_digs)");
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");
                 RiverSwitchFlipChecks.Has(r, @"public static float raiderFillSpeed = RM_LadderParityMath\.DefaultRaiderFillSpeed;", "the shipped fill speed");
                 RiverSwitchFlipChecks.Has(r, @"RM_BreachScars\.NoteFill\(map, c\);\s*eng\.FillIn\(c\);", "every raider fill records the scar first");

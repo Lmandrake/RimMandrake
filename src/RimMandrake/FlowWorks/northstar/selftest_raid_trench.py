@@ -83,8 +83,8 @@ chk(R.shovel_order([("g1", "Mercenary_Gunner"), ("s1", "Mercenary_Slasher"), ("g
                     ("s2", "Mercenary_Slasher")]) == ["s1", "s2", "g1", "g2"], "shovels: melee first, then spawn order")
 chk(R.shovel_order([("g1", None)]) == ["g1"], "shovels: an unread kind still gets one")
 chk(R.give_shovels(None, ["x"], 0, (0, 0)) == [], "shovels: --shovels 0 hands none and calls nothing")
-chk('a.direct and not res.get("shovelHolders") and not filled' in open(R.__file__).read(),
-    "shovels: a --direct fill row with no shovel holder is UNMEASURED, not a mod FAIL")
+chk('"no shovel in the raid" if not res.get("shovelHolders")' in open(R.__file__).read(),
+    "shovels: the shallow fill row with no shovel holder is UNMEASURED, not a mod FAIL")
 # --fill-speed compression: a set is confirmed only by a read-back equal to the asked value; the restore is in main's finally
 
 
@@ -113,6 +113,33 @@ chk(R.maskswap_verdict(3, "PASS", [5], [{"def_": "RM_LadderPortable"}], staged_w
 chk(R.maskswap_verdict(3, "PASS", [], [], staged_way=False) == "PASS", "maskswap: no crossing PASS")
 chk(R.maskswap_verdict(1, "PASS", [], [], staged_way=False) == "UNMEASURED", "maskswap: under 2 raiders near UNMEASURED")
 chk(R.maskswap_verdict(3, "FAIL", [], [], staged_way=False) == "UNMEASURED", "maskswap: an unsealed island UNMEASURED")
+# OWNER RULING 2026-10-31 (shallow fills only; deep: go around or shoot, never idle at the lip): the lip-idle instrument
+# and the three rule rows
+chk(R.job_of("duty=AssaultColony toil=X job=Wait_Wander giver=JobGiver_WanderAnywhere") == "Wait_Wander" and
+    R.job_of("no pawn") is None, "rule: job token parse")
+chk(R.job_read("job=Wait_Combat giver=JobGiver_AIFightEnemies started=1 enemy=Lachi Petrov | x") == "Wait_Combat+enemy"
+    and R.job_read("job=Wait_Combat giver=G enemy=none") == "Wait_Combat"
+    and R.lip_idlers([(t_, {"a": "Wait_Combat+enemy"}) for t_ in (500, 1000, 1500, 2000)]) == {},
+    "rule: Wait_Combat facing an enemy is stand-and-shoot, not a lip idler (deep3_exposed); with no enemy it is idle")
+_J = [(t_, {"a": "Wait_Combat", "b": "AttackStatic"}) for t_ in (500, 1000, 1500, 2000)]
+chk(R.lip_idlers(_J) == {"a": 500}, "rule: 4 idle reads running is a lip idler; AttackStatic is not")
+chk(R.lip_idlers(_J[:3]) == {}, "rule: 3 idle reads is not")
+chk(R.lip_idlers(_J[:2] + [(1500, {"a": "Goto"})] + _J[2:]) == {}, "rule: a Goto between idle reads breaks the run")
+chk(R.lip_idlers(_J[:2] + [(1500, {})] + _J[2:]) == {}, "rule: a raider gone from a read (left NEAR) breaks the run")
+chk(R.rule_verdict("deep", None, [], None, {}, ["x"], []) == "PASS", "rule: deep, nothing filled, raid left PASS")
+chk(R.rule_verdict("deep", None, [(1, 2, 6)], None, {}, ["x"], []) == "FAIL", "rule: can-fail, a deep pit filled")
+chk(R.rule_verdict("deep", None, [], None, {"a": 500}, ["x"], []) == "FAIL", "rule: can-fail, a raider idled at the lip")
+chk(R.rule_verdict("deep", None, [], None, {}, [], []) == "FAIL", "rule: can-fail, neither left nor shot (stall)")
+chk(R.rule_verdict("nomelee", None, [], None, {}, [], ["g"]) == "PASS", "rule: no melee, gunners shooting PASS")
+chk(R.rule_verdict("shallow", None, [(1, 2, 2)], 9000, {}, [], []) == "PASS", "rule: shallow filled and used in the raid PASS")
+chk(R.rule_verdict("shallow", None, [(1, 2, 2)], 30000, {}, [], []) == "FAIL", "rule: can-fail, used after the raid's give-up")
+chk(R.rule_verdict("shallow", None, [], None, {}, [], []) == "FAIL", "rule: can-fail, shallow not filled")
+chk(R.rule_verdict("shallow", "--fill-speed compression", [(1, 2, 2)], 9000, {}, [], []) == "UNMEASURED",
+    "rule: a compressed run is never a pass")
+chk(R.rule_verdict("deep", None, None, None, {}, ["x"], []) == "UNMEASURED", "rule: an unread ring UNMEASURED")
+chk('hold.get("settingsPrior")' in open(R.__file__).read().split("def _run")[0], "rule: main's finally restores --no-ladders")
+chk("RAID_FILL_CAUSEWAY" not in open(R.__file__).read().split('"""', 2)[2].split("OWNER RULING 2026-10-31")[0],
+    "rule: the deleted deep-fill row is not emitted")
 import ladder_wall_proof as LW  # noqa: E402
 ok_reads = {k: "ladder=RM_LadderPortable faction=x mayClimb=%s letsOut=True" % w for k, _f, w in LW.CENSUS}
 chk(LW.census_verdict(ok_reads)[0] == "PASS", "census: the table read back PASS")

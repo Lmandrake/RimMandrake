@@ -61,6 +61,7 @@ namespace RimMandrake.FlowWorks
 			lordLips.Clear();
 			warned.Clear();
 			workEnds.Clear();
+			shovellers.Clear();
 			dryRun = false;
 		}
 
@@ -250,9 +251,18 @@ namespace RimMandrake.FlowWorks
 			{
 				return false;
 			}
+			// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: back up the slope of a half-built causeway to its bank (RM_RaiderTrenchMath.PlanStart)
+			int back = Mathf.Min(exit - 1, MaxTrenchWidth);
+			var own = new int[back + 1];
+			for (int i = exit - 1 - back; i <= exit - 1; i++)
+			{
+				var c = new IntVec3(line[i].x, 0, line[i].z);
+				own[i - (exit - 1 - back)] = c.InBounds(map) ? RM_SuperdeepTrap.StepDepthAt(map, eng, c) : 0;
+			}
+			int start = exit - 1 - back + RM_RaiderTrenchMath.PlanStart(own, MaxTrenchWidth);
 			var cells = new List<IntVec3>();
-			var depths = new int[far - exit + 2];
-			for (int i = exit - 1; i <= far; i++)
+			var depths = new int[far - start + 1];
+			for (int i = start; i <= far; i++)
 			{
 				var c = new IntVec3(line[i].x, 0, line[i].z);
 				if (!c.InBounds(map) || !c.Walkable(map))
@@ -260,7 +270,7 @@ namespace RimMandrake.FlowWorks
 					return false;
 				}
 				cells.Add(c);
-				depths[i - exit + 1] = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
+				depths[i - start] = RM_SuperdeepTrap.StepDepthAt(map, eng, c);
 			}
 			if (cells[0] != p.Position && !p.CanReach(cells[0], PathEndMode.OnCell, Danger.Deadly))
 			{
@@ -515,6 +525,12 @@ namespace RimMandrake.FlowWorks
 			{
 				return null;
 			}
+			// Owner ruling 2026-10-31: only a pit "reasonable for their effort" (at most the depth line), and "melee digs, gunners
+			// cover": a raider with a gun in its hands never shovels
+			if (!Shallow(plan) || !Melee(p))
+			{
+				return null;
+			}
 			int[] t = RM_RaiderTrenchMath.FillTargets(plan.depths, k);
 			if (!RM_RaiderTrenchMath.StepsClimbable(t, k))
 			{
@@ -667,8 +683,125 @@ namespace RimMandrake.FlowWorks
 			{
 				// the raid is still working this crossing: keep it the raid's one crossing past PlanCacheTicks
 				RememberLip(p, plan.cells[0], true);
+				return chosen;
 			}
-			return chosen;
+			// CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: no crossing of its own. A null here was vanilla's Wait at the lip for the rest
+			// of the raid. Owner ruling 2026-10-31: "Deep pits they must go around or stand and shoot": anyone with a shot takes
+			// it; without one, a raider waits only while its raid is crossing (ladders going up, or a shallow pit and a melee
+			// shoveller to fill it); else it leaves.
+			bool underway = ladderable || (RM_RaiderTrenchSettings.raiderFillEnabled && Shallow(plan) && RaidHasShoveller(p));
+			return HoldJob(p, target, underway);
+		}
+
+		// ── the depth line and "melee digs, gunners cover" (owner ruling 2026-10-31) ──
+
+		/// <summary>The depth line in levels (RM_RaiderTrenchMath.FillLine): the colonist hand-dig cap unless set by hand.</summary>
+		public static int FillLine()
+		{
+			return RM_RaiderTrenchMath.FillLine(RM_RaiderTrenchSettings.raiderFillLineFollowsDigCap,
+				RimMandrakeFlowWorksSettings.MaxDigDepth, RM_RaiderTrenchSettings.raiderFillMaxDepth);
+		}
+
+		private static bool Shallow(Plan plan)
+		{
+			return RM_RaiderTrenchMath.FillWorthIt(RM_RaiderTrenchMath.PitDepth(plan.depths), FillLine());
+		}
+
+		/// <summary>A raider without a ranged weapon in its hands: the one who digs.</summary>
+		public static bool Melee(Pawn p)
+		{
+			ThingWithComps w = p.equipment?.Primary;
+			return w == null || !w.def.IsRangedWeapon;
+		}
+
+		private static readonly Dictionary<Lord, (int tick, bool has)> shovellers = new Dictionary<Lord, (int, bool)>();
+		private const int ShovellerCacheTicks = 250;
+
+		/// <summary>Has this raider's raid a melee tool user standing who can dig (a shovel in hand, or one in fetching reach,
+		/// or no shovel needed)? Cached per lord for <see cref="ShovellerCacheTicks"/>.</summary>
+		private static bool RaidHasShoveller(Pawn p)
+		{
+			Lord lord = p.GetLord();
+			if (lord == null)
+			{
+				return false;
+			}
+			int now = Find.TickManager?.TicksGame ?? 0;
+			if (shovellers.TryGetValue(lord, out (int tick, bool has) e) && now - e.tick < ShovellerCacheTicks)
+			{
+				return e.has;
+			}
+			bool has = false;
+			foreach (Pawn q in lord.ownedPawns)
+			{
+				if (q.Spawned && !q.Downed && !q.Dead && ToolUser(q) && Melee(q) && (!RM_Shovels.Needs(q) || RM_Shovels.HasShovel(q)
+					|| RM_Shovels.FindShovelFor(q, false, FetchRadius, true) != null))
+				{
+					has = true;
+					break;
+				}
+			}
+			if (shovellers.Count > 64)
+			{
+				shovellers.Clear();
+			}
+			if (!dryRun)
+			{
+				shovellers[lord] = (now, has);
+			}
+			return has;
+		}
+
+		/// <summary>Seconds-scale: a held raider thinks again this often (and on any threat: checkOverrideOnExpire).</summary>
+		public const int HoldExpiryTicks = 450;
+
+		/// <summary>RM_RaiderTrenchMath.HoldFor made a job: shoot from here, walk to a cast position and shoot, wait (null:
+		/// vanilla), or leave the map.</summary>
+		private static Job HoldJob(Pawn p, Thing target, bool underway)
+		{
+			Verb verb = p.TryGetAttackVerb(target, false);
+			bool ranged = verb != null && !verb.IsMeleeAttack;
+			bool shootNow = ranged && verb.CanHitTarget(target);
+			IntVec3 cast = IntVec3.Invalid;
+			bool hasCast = ranged && !shootNow && CastPositionFinder.TryFindCastPosition(new CastPositionRequest
+			{
+				caster = p,
+				target = target,
+				verb = verb,
+				maxRangeFromTarget = verb.verbProps.range,
+				wantCoverFromTarget = true,
+			}, out cast) && cast != p.Position;
+			switch (RM_RaiderTrenchMath.HoldFor(underway, shootNow, hasCast))
+			{
+				case RM_RaiderTrenchMath.Hold.Shoot:
+				{
+					Job job = JobMaker.MakeJob(JobDefOf.AttackStatic, target);
+					job.expiryInterval = HoldExpiryTicks;
+					job.checkOverrideOnExpire = true;
+					job.endIfCantShootTargetFromCurPos = true;
+					return job;
+				}
+				case RM_RaiderTrenchMath.Hold.MoveToShoot:
+				{
+					Job job = JobMaker.MakeJob(JobDefOf.Goto, cast, HoldExpiryTicks, true);
+					job.locomotionUrgency = LocomotionUrgency.Jog;
+					return job;
+				}
+				case RM_RaiderTrenchMath.Hold.Leave:
+				{
+					if (!RCellFinder.TryFindBestExitSpot(p, out IntVec3 exit, TraverseMode.ByPawn))
+					{
+						return null;
+					}
+					Warn(p, "RMFlow_RaidersGiveUpTrench");
+					Job job = JobMaker.MakeJob(JobDefOf.Goto, exit);
+					job.exitMapOnArrival = true;
+					job.locomotionUrgency = LocomotionUrgency.Jog;
+					return job;
+				}
+				default:
+					return null;
+			}
 		}
 
 		/// <summary>Ladders cannot do it (no slot list, a drop past reach, a blocked square, ladders off): only then breach.</summary>
@@ -742,7 +875,9 @@ namespace RimMandrake.FlowWorks
 			{
 				dryRun = false;
 			}
-			return (j == null ? "None" : j.def.defName + " " + j.targetA) + " line=" + string.Join("/", plan.depths);
+			return (j == null ? "None" : j.def.defName + " " + j.targetA + (j.exitMapOnArrival ? " (leave)" : "")) + " line="
+				+ string.Join("/", plan.depths) + " pit=" + RM_RaiderTrenchMath.PitDepth(plan.depths) + " fillLine=" + FillLine()
+				+ " melee=" + Melee(p) + " k=" + k;
 		}
 	}
 
@@ -962,8 +1097,14 @@ namespace RimMandrake.FlowWorks
 		public static bool raiderLaddersEnabled = true;
 		public static bool raiderFillEnabled = true;
 		public static float raiderLadderSpeed = 1f;
-		/// <summary>LADDER_PARITY_BUILD_NO_KEYS_REQUIRED, owner 2026-10-23: "Digging should be slow." (x0.5, PROVISIONAL)</summary>
+		/// <summary>CAUSEWAY_DIAGNOSE_WAITS_AT_THE_LIP: x18 so a pit at the depth line is shovelled inside a raid by one melee
+		/// raider at the MiningSpeed floor (RM_RaiderTrenchMath.DerivedFillSpeed). Was x0.5, which no raid ever finished.</summary>
 		public static float raiderFillSpeed = RM_LadderParityMath.DefaultRaiderFillSpeed;
+		/// <summary>Owner ruling 2026-10-31: raiders fill only pits "reasonable for their effort". On: the depth line is the
+		/// colonist hand-dig cap (a deeper pit needs droids or machines to dig, so it is "a real defense").</summary>
+		public static bool raiderFillLineFollowsDigCap = true;
+		/// <summary>The depth line in levels (0.5 m each) when it does not follow the dig cap.</summary>
+		public static int raiderFillMaxDepth = RM_DigDepthMath.DefaultMaxDigDepth;
 		/// <summary>PROVISIONAL: "some may have jump packs".</summary>
 		public static float raiderJumpPackShare = 0.1f;
 		/// <summary>SHOVELS_BUILD_NO_DIGGING_BARE_HANDED, PROVISIONAL (design §4a): the share of an assault raid's tool-users who
@@ -991,6 +1132,8 @@ namespace RimMandrake.FlowWorks
 			Scribe_Values.Look(ref raiderFillEnabled, "raiderFillEnabled", true);
 			Scribe_Values.Look(ref raiderLadderSpeed, "raiderLadderSpeed", 1f);
 			Scribe_Values.Look(ref raiderFillSpeed, "raiderFillSpeed", RM_LadderParityMath.DefaultRaiderFillSpeed);
+			Scribe_Values.Look(ref raiderFillLineFollowsDigCap, "raiderFillLineFollowsDigCap", true);
+			Scribe_Values.Look(ref raiderFillMaxDepth, "raiderFillMaxDepth", RM_DigDepthMath.DefaultMaxDigDepth);
 			Scribe_Values.Look(ref raiderJumpPackShare, "raiderJumpPackShare", 0.1f);
 			Scribe_Values.Look(ref raiderShovelShare, "raiderShovelShare", RM_ShovelMath.DefaultRaiderShovelShare);
 			Scribe_Values.Look(ref sapperShovelShare, "sapperShovelShare", RM_ShovelMath.DefaultSapperShovelShare);
@@ -1035,8 +1178,17 @@ namespace RimMandrake.FlowWorks
 				"The same for a sapper raid (the raid that digs through your walls). A siege brings none: it shells you.");
 			sapperShovelShare = Mathf.Round(list.Slider(sapperShovelShare, 0f, 1f) * 20f) / 20f;
 			list.Label("  Breach filling speed: x" + raiderFillSpeed.ToString("0.00"), tooltip:
-				"How fast raiders shovel a breach causeway (shipped x0.5: digging in is slow; Orders > Repair breach digs it back out). At x1 one level of fill is half a first-notch dig at ANY depth (a gunner: about 2,800 ticks a level), up to three raiders to a square.");
-			raiderFillSpeed = Mathf.Round(list.Slider(raiderFillSpeed, 0.25f, 4f) * 20f) / 20f;
+				"How fast raiders shovel a breach causeway into a shallow pit (shipped x18: one melee raider with the poorest mining skill fills a 2 m pit in about a third of a raid; a fair digger in about 1,750 ticks). Only melee raiders dig; gunners cover. Up to three raiders to a square. Orders > Repair breach digs it back out.");
+			raiderFillSpeed = Mathf.Round(list.Slider(raiderFillSpeed, 0.25f, RM_LadderParityMath.MaxRaiderFillSpeed) * 4f) / 4f;
+			list.CheckboxLabeled("  Raiders fill only pits a colonist could dig by hand", ref raiderFillLineFollowsDigCap,
+				"On (shipped): the deepest pit raiders will shovel is the colonist hand-dig depth (" + RimMandrakeFlowWorksSettings.MaxDigDepth * 0.5f
+				+ " m). Deeper pits, the ones that need droids or machines, they go around, shoot across, or give up and leave. Off: set the depth below.");
+			if (!raiderFillLineFollowsDigCap)
+			{
+				list.Label("  Deepest pit raiders fill: " + (raiderFillMaxDepth * 0.5f).ToString("0.0") + " m", tooltip:
+					"Raiders shovel a causeway only into a pit this deep or shallower; deeper they go around, shoot across, or leave.");
+				raiderFillMaxDepth = Mathf.RoundToInt(list.Slider(raiderFillMaxDepth, 0f, 40f));
+			}
 		}
 	}
 

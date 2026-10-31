@@ -165,6 +165,50 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(r, @"StepDepthAt\(map, eng, c\) > job\.count", "the last shoveller never over-fills the step");
                 RiverSwitchFlipChecks.Has(r, @"RememberLip\(p, plan\.cells\[0\], true\)", "an issued job renews the raid's crossing");
             });
+            Case("RaiderTrench_shallow_only_melee_digs", () =>
+            {
+                // owner ruling 2026-10-31 (via the Conductor): raiders fill only shallow pits; deep ones they go around, shoot
+                // across, or leave; melee digs, gunners cover
+                Assert(RM_RaiderTrenchMath.PitDepth(new[] { 0, 4, 4, 0 }) == 4, "a 2 m ring is 4 levels deep");
+                Assert(RM_RaiderTrenchMath.PitDepth(new[] { 0, 8, 8, 0 }) == 8, "a 4 m ring is 8");
+                Assert(RM_RaiderTrenchMath.PitDepth(new[] { 2, 8, 6, 2 }) == 6 && RM_RaiderTrenchMath.PitDepth(new[] { 2, 8, 6, 0 }) == 8, "measured from the shallower bank");
+                Assert(RM_RaiderTrenchMath.PitDepth(new[] { 0, 0 }) == 0 && RM_RaiderTrenchMath.PitDepth(null) == 0, "can-fail: no middle, no pit");
+                // live 2026-10-31 shallow2: a half-built causeway (bank 0, filled 2, unfilled 4) is one k=2 component; the plan must
+                // start back at the bank, or it has no middle and the fill stops half done
+                Assert(RM_RaiderTrenchMath.PlanStart(new[] { 0, 0, 2, 4 }, 30) == 1, "a half-built causeway's plan starts at its bank");
+                Assert(RM_RaiderTrenchMath.PlanStart(new[] { 0, 0, 0 }, 30) == 2, "can-fail: a sheer lip starts where it stands");
+                Assert(RM_RaiderTrenchMath.PlanStart(new[] { 2, 2, 4 }, 30) == 1, "a dug floor is not walked back over");
+                Assert(RM_RaiderTrenchMath.PlanStart(new[] { 0, 1, 2, 3 }, 2) == 1 && RM_RaiderTrenchMath.PlanStart(null, 3) == 0, "bounded");
+                Assert(RM_RaiderTrenchMath.PitDepth(new[] { 0, 2, 4, 0 }) == 4, "the half-built causeway is still the 4-level pit");
+                Assert(RM_RaiderTrenchMath.FillLine(true, 4, 9) == 4 && RM_RaiderTrenchMath.FillLine(false, 4, 9) == 9, "the line follows the dig cap unless set");
+                Assert(RM_RaiderTrenchMath.FillLine(true, RM_DigDepthMath.DefaultMaxDigDepth, 0) == 4, "shipped: 2 m, the colonist hand-dig cap");
+                Assert(RM_RaiderTrenchMath.FillWorthIt(4, 4) && !RM_RaiderTrenchMath.FillWorthIt(5, 4), "can-fail: one notch past the line is not filled");
+                var H = RM_RaiderTrenchMath.Hold.Wait;
+                Assert(RM_RaiderTrenchMath.HoldFor(true, true, true) == RM_RaiderTrenchMath.Hold.Shoot, "a gunner with a shot covers");
+                Assert(RM_RaiderTrenchMath.HoldFor(false, false, true) == RM_RaiderTrenchMath.Hold.MoveToShoot, "deep pit: stand and shoot");
+                Assert(RM_RaiderTrenchMath.HoldFor(false, false, false) == RM_RaiderTrenchMath.Hold.Leave, "can-fail: deep, no shot: leave, never idle at the lip");
+                Assert(RM_RaiderTrenchMath.HoldFor(true, false, false) == H, "a breach underway: wait for the causeway");
+                // the shipped speed, derived: the worst 2 m pit for a person is 4 levels at any width
+                int[] d = { 0, 4, 4, 0 };
+                int[] t = RM_RaiderTrenchMath.FillTargets(d, 2);
+                Assert(RM_RaiderTrenchMath.FillLevels(d, t) == 4, "a 2 m ring is a 4-level causeway: " + string.Join(",", t));
+                int[] d3 = { 0, 4, 4, 4, 0 };
+                Assert(RM_RaiderTrenchMath.FillLevels(d3, RM_RaiderTrenchMath.FillTargets(d3, 2)) == 4, "wider is no dearer");
+                int work = RM_DigDepthMath.LabourWork(RM_RaiderTrenchMath.FillWorkPerLevel, 4);
+                Assert(work == 6400, "a level is 6,400 work at the shipped labour x4: " + work);
+                float s = RM_RaiderTrenchMath.DerivedFillSpeed(4, work, 0.1f, 26000 / 3);
+                Assert(s > 17f && s <= RM_LadderParityMath.DefaultRaiderFillSpeed, "x18 covers the floor digger: needs " + s);
+                int floor = 4 * RM_RaiderTrenchMath.FillTicks(work, 0.1f, RM_LadderParityMath.DefaultRaiderFillSpeed);
+                Assert(floor <= 26000 / 3, "one floor digger fills it in a third of the shortest raid: " + floor);
+                Assert(4 * RM_RaiderTrenchMath.FillTicks(work, 0.1f, 0.5f) > 38000, "can-fail: the old x0.5 never finished in a raid");
+                Assert(RM_LadderParityMath.MaxRaiderFillSpeed >= RM_LadderParityMath.DefaultRaiderFillSpeed, "the slider reaches the default");
+                string r = Src("Superdeep", "RM_RaiderTrench.cs");
+                RiverSwitchFlipChecks.Has(r, @"if \(!Shallow\(plan\) \|\| !Melee\(p\)\)\s*\{\s*return null;", "FillJob: shallow pits only, melee only");
+                RiverSwitchFlipChecks.Has(r, @"return HoldJob\(p, target, underway\);", "no crossing of its own: hold (shoot, move, wait, leave), not vanilla's Wait");
+                RiverSwitchFlipChecks.Has(r, @"job\.exitMapOnArrival = true;", "Leave leaves the map");
+                RiverSwitchFlipChecks.Has(r, @"Scribe_Values\.Look\(ref raiderFillLineFollowsDigCap, ""raiderFillLineFollowsDigCap"", true\);", "scribed line switch");
+                RiverSwitchFlipChecks.Has(r, @"Scribe_Values\.Look\(ref raiderFillMaxDepth, ""raiderFillMaxDepth"", RM_DigDepthMath\.DefaultMaxDigDepth\);", "scribed fixed line");
+            });
             Case("RaiderTrench_wiring", () =>
             {
                 string r = Src("Superdeep", "RM_RaiderTrench.cs");
