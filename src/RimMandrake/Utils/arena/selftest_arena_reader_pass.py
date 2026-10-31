@@ -200,6 +200,8 @@ def rules_v2():
         check(not refused(ok_keep, pk), "rule 1: KEEP citing only an at-base name is accepted")
         check(refused({"checks": [row(P, "KEEP", coupled_names=["_private_two"])]}, pk),
               "rule 1: KEEP citing a fix-introduced name the task never gives is refused")
+        check(refused({"checks": [row(P, "KEEP", coupled_names="_private_two")]}, pk),
+              "rule 1: coupled_names as a bare string is refused, not read as empty")
         check(refused({"checks": [row(P, "KEEP", coupled=True)]}, pk),
               "rule 1: veto kept: KEEP with coupled=true (TRANSIENT_PIN: solvable is not enough) is refused")
         check(not refused({"checks": [row(P, "UNSCORE_CHECK", coupled=True)]}, pk),
@@ -357,6 +359,11 @@ def rules_v4():
               "C1: a name read through getattr(mod, '_x') is an alias, not defined from scratch")
         check("new_flag" not in R.defined_in("import tool\nnew_flag = True\ntool.run(new_flag=new_flag)\n"),
               "C1/C4: a local passed as the same-named keyword argument names the callee's parameter, so is looked up")
+        check("_secret" in R.new_line_names(R.test_diff("x = 1\n", 'x = 1\n_v = getattr(tool, "_secret", None)\n', "t.py")),
+              "C1: a name read through getattr is looked up")
+        td = R.test_diff("assert tool.old_api()", "assert tool.new_api()", "t.py")
+        check("new_api" in R.new_line_names(td) and "-assert tool.old_api()\n+assert" in td,
+              "test_diff: bodies without a final newline still give one line per -/+ (%r)" % td)
         check(R.defined_in("x = 1\ndef helper():\n  pass\nclass Fake:\n  pass\n") == {"x", "helper", "Fake"},
               "C1: defined_in still finds def / class / assignment")
         pp = R.build_packet("RP_PROSE", p, repo)
@@ -411,7 +418,8 @@ def rules_v4():
           "C2: an unindented error after a source-less File line is an outcome line (behaviour kept)")
     # C5 / C6: pass lines and zero counts are no reason; a lowercase failure word is one
     for t in ("12 PASS 0 FAIL\n", "ok 3 as expected\nok 4\n", "PASS assert count 3\n", "note: no ValueError raised\nok\n",
-              "3 passed, 0 failed\n", "PASSED assert count 3\n", "PASS assert count, 0 failed\n"):
+              "3 passed, 0 failed\n", "PASSED assert count 3\n", "PASS assert count, 0 failed\n",
+              "Tests run: 12, Failures: 0, Errors: 0\n"):
         check(veto(t) == "no_reason_visible", "C5: %r is no visible reason" % t.strip())
     for t in ("check failed: got 1\n", "PASS 3 FAIL 1\n", "ok 3, 2 failures\n"):
         check(veto(t) is None, "C6: %r is a visible reason" % t.strip())
@@ -433,7 +441,8 @@ def rules_v4():
               "E       FAIL gate reported: cannot import name '_private_two'",
               "failed: gate reported cannot import name '_private_two'",
               "a.cs(2,1): error CS1503: Argument 1: cannot convert from 'int' to 'string'",
-              "TypeError: expected int, got \"No module named 'newmod'\""):
+              "TypeError: expected int, got \"No module named 'newmod'\"",
+              "Exception: cannot import name '_private_two'", "mypkg.ValidationError: has no attribute '_private_two'"):
         check(veto(MISS + t + "\n") is None and R.base_failure(MISS + t + "\n", UN)["behaviour_lines"] >= 1,
               "C7/C8: %r beside a missing name is behaviour (no veto)" % t)
     check(veto(MISS) == "missing_name_only", "control: the missing name alone vetoes")
@@ -442,6 +451,8 @@ def rules_v4():
         check(veto(MISS + t + "\n") == "missing_name_only", "%r beside a fix-only unnamed name keeps the veto" % t)
     check(veto('KeyError: "No module named \'newmod\'"\n') is None,
           "a line led by another error class is that error (behaviour), whatever its message quotes")
+    check(veto(MISS + "builtins.ImportError: cannot import name '_private_two'\n") == "missing_name_only",
+          "a qualified import error class is still the missing name")
     check(veto(MISS + "ImportError: DLL load failed while importing _native\n") == "missing_name_only",
           "an import/attribute/name error class is never behaviour, even without a missing-name message")
     forms = ("No module named 'a.b.m1'\ncannot import name 'm2' from 'x'\nAttributeError: 'X' has no attribute 'm3'\n"

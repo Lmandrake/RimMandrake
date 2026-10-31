@@ -193,6 +193,9 @@ def test_diff(base_body, body, path) -> str:
     """Unified diff base -> hidden copy. '+' lines are what the fix ADDED to the check: the reader judges those."""
     a = (base_body or "").splitlines(keepends=True)
     b = (body or "").splitlines(keepends=True)
+    for x in (a, b):            # a file without a final newline would glue its last -/+ line to the next one
+        if x and not x[-1].endswith("\n"):
+            x[-1] += "\n"
     d = "".join(difflib.unified_diff(a, b, "a/" + path if base_body is not None else "/dev/null", "b/" + path, n=2))
     return d or "(no difference: the hidden copy equals the base file)"
 
@@ -204,7 +207,8 @@ _SKIP = set(keyword.kwlist) | set(dir(builtins)) | {"self", "cls", "true", "fals
 
 def new_line_names(diff_text) -> list[str]:
     """Identifiers on the ADDED lines of a test diff that look like code: anything with an underscore, a digit or a
-    case change (snake/camel/CONST), plus any word in call, attribute or import position. Sorted, capped."""
+    case change (snake/camel/CONST), plus any word in call, attribute, getattr or import position. Sorted, capped.
+    A name under 3 characters is never looked up (design: it is everywhere at base)."""
     names = set()
     for ln in (diff_text or "").splitlines():
         if not ln.startswith("+") or ln.startswith("+++"):
@@ -214,6 +218,7 @@ def new_line_names(diff_text) -> list[str]:
             if len(tok) >= 3 and ("_" in tok.strip("_") or any(ch.isdigit() for ch in tok)
                                   or (tok != tok.lower() and tok != tok.capitalize())):
                 names.add(tok)
+        names.update(_GETATTR.findall(s))
         for m in _CODE_POS.finditer(s):
             for g in m.groups():
                 if g:
@@ -354,12 +359,12 @@ _BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|(?<!Build )\bFAILED
 # quoted source (the `>   ` failing line, the indented or blank lines directly above it and the indented
 # continuation lines directly below it), and a
 # line that starts as a pass (`ok ...`, `PASS ...`) without a nonzero failure count. In outcome lines a zero count
-# (`0 FAIL`, `0 failed`) and a negated error (`no ValueError raised`) are not failure words.
+# (`0 FAIL`, `0 failed`, `Failures: 0`) and a negated error (`no ValueError raised`) are not failure words.
 _TB_FILE = re.compile(r'^\s*File "[^"]*", line \d+')
 _PYTEST_SRC = re.compile(r"^>\s")
 _PASS_LINE = re.compile(r"^\s*(?:ok|PASS|PASSED)\b")
 _NONZERO_FAILS = re.compile(r"\b[1-9]\d*\s+fail", re.I)
-_NEUTRAL = re.compile(r"\b0\s+fail\w*|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.I)
+_NEUTRAL = re.compile(r"\b0\s+fail\w*|\bfail\w*\s*[:=]\s*0\b|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.I)
 # C7: a missing-name message on an assertion or FAIL line is that check's own failure report (behaviour), unless the
 # line also names the import/attribute/name error class (`FAIL: ImportError: cannot import name ...`), which is the
 # missing name reported again.
@@ -367,9 +372,9 @@ _NEUTRAL = re.compile(r"\b0\s+fail\w*|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.
 # error, so behaviour whatever its message quotes. The C4 form
 # (`TypeError: ... unexpected keyword argument`) counts as a missing-name class wherever it appears.
 _BEH_REPORT = re.compile(r"^\s*(?:E\s+)?(?:FAIL\b|FAILED\b|not ok\b|(?i:fail(?:ed|ure)?):)")
-_BEH_CLASS = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b"
+_BEH_CLASS = re.compile(r"^\s*(?:E\s+)?(?:[A-Za-z_]\w*\.)*(?:AssertionError\b"
                         r"|(?!(?:ModuleNotFound|Import|Attribute|Name)Error\b|TypeError\b.*\bunexpected keyword argument\b)"
-                        r"[A-Z]\w*(?:Error|Exception):)")
+                        r"(?:[A-Z]\w*)?(?:Error|Exception):)")
 _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
                             r"|\bTypeError\b.*\bunexpected keyword argument\b")
 
@@ -657,7 +662,9 @@ def validate_reply(reply: dict, packet: dict) -> list[dict]:
         if not (isinstance(r.get("reason"), str) and r["reason"].strip()):
             raise ReaderError("%s: no reason" % r["path"])
         names = r.get("coupled_names") or []
-        names = [str(x) for x in names] if isinstance(names, list) else []
+        if not isinstance(names, list):
+            raise ReaderError("%s: coupled_names is not a list (%r)" % (r["path"], names))
+        names = [str(x) for x in names]
         if r["verdict"] == "KEEP":
             bad = [k for k in ("tests_task", "solvable_from_text", "fails_for_defect") if not r[k]] + \
                   [k for k in ("coupled", "self_overwrite", "partial_legs") if r[k]] + \
