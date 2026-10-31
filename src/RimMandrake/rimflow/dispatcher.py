@@ -918,6 +918,12 @@ def token_rx(path=None):
     return _TOKEN_RX[path]
 
 
+def agents_read(agents):
+    """A reading decide() can act on: the heartbeat must not call a tick good that this same reading made blind."""
+    agents = agents or {}
+    return agents.get("state") == "MEASURED" and sessions_ok(agents.get("sessions"))
+
+
 def blind_items(sch):
     """The ledger items a token-blind role reads: every role's ledger_item unless the role is `token_aware`."""
     return {r["ledger_item"] for r in sch.get("roles") or []
@@ -1687,7 +1693,7 @@ def tick(sch, apply, obs=None, now=None, fx=None):
                     acts.append(rec)
                     st["alarm_carry_unreserved"] = rec["why"]
             # a tick that WORKED: no raise, and not blind (PAUSE is the owner's choice, a working tick) — review Q 11
-            if o.get("paused") or (o.get("agents") or {}).get("state") == "MEASURED":
+            if o.get("paused") or agents_read(o.get("agents")):
                 st["last_ok_tick"] = iso(now)
         except BaseException as e:
             # a launch decided but never executed must not stay consumed: give its slot/alarm/event back (a run that

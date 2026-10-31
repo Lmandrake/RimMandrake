@@ -3547,6 +3547,8 @@ def test_unring_gives_back_a_backoff_and_bad_roles_are_skipped():
     ss = st["seats"]["FOUNDRY"]
     check(ss.get("cooldown_until") == 900.0 and ss.get("nh_until") == 900.0, "an unreleased ring keeps the seat's backoff")
     check(D.blind_items({"roles": ["not a role", {"ledger_item": "X"}]}) == {"X"}, "a bad role row reads as no role")
+    check(D.agents_read({"state": "MEASURED", "sessions": []}) and not D.agents_read({"state": "MEASURED", "sessions": [None]})
+          and not D.agents_read(None), "a malformed session list is no good tick for the heartbeat")
 
 
 def main():
