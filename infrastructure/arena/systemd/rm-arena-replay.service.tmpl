@@ -1,12 +1,16 @@
-# rm-arena-replay.service - the trial's replay runner (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY, design 2.1). Rendered by
-# arena_install.py. Runs only while rm-arm-trial.target is live (PartOf=). The driving loop is OWED: until it lands,
-# `arena.py trial-runner` exits 3 and this unit shows failed.
+# rm-arena-replay.service - the trial's replay runner (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY, design 2.1; driving loop
+# arena_replay_run.py). Rendered by arena_install.py. Runs only while rm-arm-trial.target is live (PartOf=).
+# `trial-runner --all` starts one `trial-runner --arm A` child per [trial] replay_arms arm, in parallel; each child
+# holds <ctl>/<arm>/runner.lock, so a hand-started runner of the same arm makes this one's child refuse, never double-run.
+# The model command comes from ARENA_REPLAY_MODEL_CMD in the optional EnvironmentFile; without it every child refuses.
 [Unit]
-Description=RimMandrake arena trial replay runner
+Description=RimMandrake arena trial replay runner (all replay arms)
 PartOf=rm-arm-trial.target
 
 [Service]
 Type=simple
 Environment=ARENA_ARM_TOML=@ARM_TOML@
-ExecStart=/usr/bin/python3 @ARENA_PY@ trial-runner
+Environment=PYTHONUNBUFFERED=1
+EnvironmentFile=-%h/.config/rimmandrake/arena_replay.env
+ExecStart=/usr/bin/python3 @ARENA_PY@ trial-runner --all
 Restart=no

@@ -25,6 +25,9 @@ RESUME. <ctl>/<arm>/runner.json keeps each finished task's record; a restart ski
 for runway before each task. <ctl>/<arm>/STOP stops it between tasks.
 
 CLI: arena.py trial-runner --arm {ralph_a,trio,v3} [--ctl DIR] [--model-cmd CMD] [--only N]
+     arena.py trial-runner --all   (ExecStart of rm-arena-replay.service: one child `--arm A` per [trial] replay_arms
+     arm, all in parallel; exit = the worst child's). Each --arm process holds <ctl>/<arm>/runner.lock (flock): a
+     second runner for the same arm refuses (exit 2) instead of working the same tasks twice.
      ($ARENA_REPLAY_MODEL_CMD, $ARENA_REPLAY_CTL). Selftest: selftest_arena_replay_run.py.
 """
 from __future__ import annotations
@@ -257,10 +260,42 @@ def run_arm(arm, *, ctl, model_cmd, only=0, steps=None, load=None, run_one=None,
     return res
 
 
-def main(argv=None):
+def arm_lock(ctl, arm):
+    """Take <ctl>/<arm>/runner.lock (flock, held for the process's life). Raises RunRefused if another runner of the
+    same arm holds it."""
+    import fcntl
+    d = Path(ctl) / arm
+    d.mkdir(parents=True, exist_ok=True)
+    fh = open(d / "runner.lock", "a+")
+    try:
+        fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except OSError:
+        fh.close()
+        raise RunRefused("another %s runner holds %s" % (arm, d / "runner.lock"))
+    return fh
+
+
+def run_all(arms, passthrough, *, arena_py=None, popen=subprocess.Popen, out=sys.stdout):
+    """Fan out one `arena.py trial-runner --arm A` child per arm, in parallel; wait for all; worst exit code."""
+    arms = list(arms or [])
+    bad = [a for a in arms if a not in REPLAY_ARMS]
+    if not arms or bad:
+        raise RunRefused("replay_arms %r: must be a non-empty subset of %s" % (arms, REPLAY_ARMS))
+    py = arena_py or str(Path(__file__).resolve().parent / "arena.py")
+    kids = [(a, popen([sys.executable, py, "trial-runner", "--arm", a] + list(passthrough))) for a in arms]
+    for a, k in kids:
+        log("all: %s runner pid %s" % (a, k.pid), out)
+    rcs = {a: k.wait() for a, k in kids}
+    log("all: runners exited %s" % json.dumps(rcs), out)
+    return max(rcs.values())
+
+
+def main(argv=None, *, arms=None):
+    """arms: the [trial] replay_arms list (arena.trial_runner reads arm.toml), used by --all only."""
     import argparse
     ap = argparse.ArgumentParser(prog="arena trial-runner", description=__doc__.split("\n")[0])
     ap.add_argument("--arm", choices=REPLAY_ARMS, help="the replay arm this process drives (one process per arm)")
+    ap.add_argument("--all", action="store_true", help="one child runner per [trial] replay_arms arm, in parallel")
     ap.add_argument("--ctl", default=os.environ.get("ARENA_REPLAY_CTL", DEFAULT_CTL))
     ap.add_argument("--model-cmd", default=os.environ.get("ARENA_REPLAY_MODEL_CMD"))
     ap.add_argument("--only", type=int, default=0, help="stop after N tasks (0: all)")
@@ -269,15 +304,24 @@ def main(argv=None):
     if os.environ.get("RM_ARM"):
         print("refused: the replay runner is harness code; run it without RM_ARM", file=sys.stderr)
         return 2
-    if not a.arm and not a.plan:
-        print("refused: give --arm (one of %s); one runner process per replay arm" % ", ".join(REPLAY_ARMS),
+    if a.all and a.arm:
+        print("refused: --all and --arm are exclusive", file=sys.stderr)
+        return 2
+    if not a.arm and not a.plan and not a.all:
+        print("refused: give --arm (one of %s) or --all; one runner process per replay arm" % ", ".join(REPLAY_ARMS),
               file=sys.stderr)
         return 2
     try:
+        if a.all:
+            rest = ["--ctl", a.ctl, "--only", str(a.only)]
+            if a.model_cmd:
+                rest += ["--model-cmd", a.model_cmd]
+            return run_all(arms, rest)
         steps = plan()
         if a.plan:
             print(json.dumps([tid for tid, _ in steps], indent=1))
             return 0
+        lock = arm_lock(a.ctl, a.arm)  # noqa: F841 - held until exit
         res = run_arm(a.arm, ctl=a.ctl, model_cmd=a.model_cmd, only=a.only, steps=steps)
     except RunRefused as e:
         print("refused: %s" % e, file=sys.stderr)

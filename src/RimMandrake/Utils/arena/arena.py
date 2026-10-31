@@ -11,7 +11,7 @@ design/RimMandrake/architecture_switch_harness_2026-10-29.md section 2, testpilo
     arena.py who                  the checks; exit code is a bitmask: a=1 b=2 c=4 d=8 e=32 f=64 (16 = arm.toml unreadable)
     arena.py prepush --arm A      the pre-push hook body (refs on stdin): refuse (exit 10) AND alarm anything not allowed
     arena.py ops-watch            one number for ops_watch's ARENA_TWO_LIVE rule (0 = fine)
-    arena.py trial-runner --arm A ExecStart of rm-arena-replay.service: the replay driving loop (arena_replay_run.py)
+    arena.py trial-runner --arm A|--all  the replay driving loop (arena_replay_run.py); --all is rm-arena-replay.service
 
 arm.toml lives OUTSIDE git (`$ARENA_ARM_TOML`, default `<arena root>/arm.toml`); the committed template is
 infrastructure/arena/arm.toml.template. MODES: the arms v3 v3c ralph_a ralph_c trio, `production` (the real seats; its
@@ -1714,9 +1714,16 @@ def alarms_since(path: Path, since_epoch: float) -> int:
 
 def trial_runner(argv=()) -> int:
     """ExecStart of rm-arena-replay.service: the replay driving loop, arena_replay_run.py (one process per replay arm:
-    `arena.py trial-runner --arm A`). Without --arm it refuses (exit 2); it never pretends to run."""
+    `arena.py trial-runner --arm A`; the unit runs `--all`: one child per [trial] replay_arms arm, read from arm.toml).
+    Without --arm/--all it refuses (exit 2); it never pretends to run."""
     import arena_replay_run as RR
-    return RR.main(list(argv))
+    argv = list(argv)
+    try:
+        arms = load_config()["trial"].get("replay_arms") if "--all" in argv and "--arm" not in argv else None
+    except SwitchError as e:
+        print("refused: %s" % e, file=sys.stderr)
+        return 2
+    return RR.main(argv, arms=arms)
 
 
 def main(argv=None):

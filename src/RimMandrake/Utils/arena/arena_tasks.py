@@ -2280,6 +2280,8 @@ HARNESS_DIRS = {
     "judge": "arena_judge work dir ($ARENA_JUDGE_WORK default): masked by arm_sandbox.deny_paths",
     "locks": "arena_replay run locks: masked by arm_sandbox.deny_paths",
     "sandbox": "arm_sandbox.scratch_dir base: /home is a tmpfs in the sandbox and only the arm's own scratch is bound",
+    "replay": "arena_replay clones (base only, audited by build_replay_clone): /home is a tmpfs in the sandbox and "
+              "only the arm's own clone is bound",
 }
 
 
@@ -2298,6 +2300,9 @@ def _harness_dir_masked(name: str, full: str) -> str | None:
             return HARNESS_DIRS[name]
         base = os.environ.get("RM_ARM_SANDBOX_SCRATCH") or str(R.arena_root() / "sandbox")
         if name == "sandbox" and real == os.path.realpath(base) and "sandbox" in SB.ARENA_KEEP \
+                and any(_inside(Path(real), Path(c)) for c in SB.CONTAINERS):
+            return HARNESS_DIRS[name]
+        if name == "replay" and real == os.path.realpath(R.replay_dir()) and "replay" in SB.ARENA_KEEP \
                 and any(_inside(Path(real), Path(c)) for c in SB.CONTAINERS):
             return HARNESS_DIRS[name]
     except Exception:                    # noqa: BLE001 - the policy could not be read: not exempt

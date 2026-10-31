@@ -8,7 +8,10 @@
   stop      a STOP file stops between tasks; runway below the minimum waits (no task starts) until it recovers
   arms      a non-replay arm (v3c, bench) is refused; no model command is refused
   judged    every finished task (a parked one included) carries the judge's record, judged on the work's head
-  wired     `arena.py trial-runner` without --arm refuses (exit 2) and never pretends to run
+  wired     `arena.py trial-runner` without --arm refuses (exit 2) and never pretends to run; the rendered
+            rm-arena-replay.service runs `trial-runner --all` (ARENA_REPLAY_UNIT_FIX_NO_ARM_REFUSED: the unit gave no
+            --arm and was refused); --all fans out one --arm child per replay arm and refuses a non-replay arm
+  lock      a second runner of the same arm refuses (runner.lock held) instead of double-running
 Fakes only: no clone, no model, no judge, no signed log.
 """
 import io
@@ -142,11 +145,53 @@ def t_wired():
     check(r.returncode == 2 and "--arm" in r.stderr, "trial-runner without --arm refuses (exit 2)")
 
 
+def t_unit_all(tmp):
+    import arena as AR
+    u = AR.render_replay_unit(str(tmp / "arm.toml"), "/x/arena.py")
+    ex = [l for l in u.splitlines() if l.startswith("ExecStart=")]
+    check(ex == ["ExecStart=/usr/bin/python3 /x/arena.py trial-runner --all"], "rendered replay unit runs trial-runner --all")
+    r = subprocess.run([sys.executable, str(HERE / "arena.py"), "trial-runner", "--all", "--arm", "v3"],
+                       capture_output=True, text=True)
+    check(r.returncode == 2 and "exclusive" in r.stderr, "--all with --arm refuses (exit 2)")
+    calls = []
+
+    class K:
+        def __init__(self, argv):
+            calls.append(argv)
+            self.pid = len(calls)
+
+        def wait(self):
+            return 1 if "trio" in calls[self.pid - 1] else 0
+    rc = RR.run_all(["ralph_a", "trio", "v3"], ["--ctl", "C"], arena_py="/x/arena.py", popen=K, out=io.StringIO())
+    check([c[2:5] for c in calls] == [["trial-runner", "--arm", a] for a in ("ralph_a", "trio", "v3")]
+          and all(c[-2:] == ["--ctl", "C"] for c in calls), "--all starts one --arm child per replay arm")
+    check(rc == 1, "--all exits with the worst child's code")
+    for bad in (["v3c"], [], None):
+        try:
+            RR.run_all(bad, [], popen=K, out=io.StringIO())
+            check(False, "--all refuses replay_arms %r" % (bad,))
+        except RR.RunRefused:
+            check(True, "--all refuses replay_arms %r" % (bad,))
+
+
+def t_lock(tmp):
+    h = RR.arm_lock(tmp / "L", "v3")
+    r = subprocess.run([sys.executable, "-c", "import sys; sys.path.insert(0, %r); import arena_replay_run as RR\n"
+                        "try:\n RR.arm_lock(%r, 'v3'); print('took')\nexcept RR.RunRefused: print('refused')"
+                        % (str(HERE), str(tmp / "L"))], capture_output=True, text=True)
+    check(r.stdout.strip() == "refused", "a second v3 runner refuses while the lock is held")
+    h.close()
+    h2 = RR.arm_lock(tmp / "L", "v3")
+    check(h2 is not None, "the lock is free again once its holder exits")
+    h2.close()
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="st_replay_run_"))
     try:
         for fn, a in ((t_order, (tmp,)), (t_plan_refusals, ()), (t_resume, (tmp,)), (t_stop_runway, (tmp,)),
-                      (t_arms, (tmp,)), (t_wired, ())):
+                      (t_arms, (tmp,)), (t_wired, ()),
+                      (t_unit_all, (tmp,)), (t_lock, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001
