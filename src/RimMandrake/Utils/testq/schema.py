@@ -253,6 +253,12 @@ def rows_from_summary(summary):
     return rows
 
 
+def chain_versions(summary):
+    """modcheck's sheet JSON `summary` -> {chain: code version} (gate.code_version; testq/retest.py)."""
+    return {ch["name"]: (ch.get("gate") or {})["code_version"] for ch in summary.get("chains") or []
+            if ch.get("name") and (ch.get("gate") or {}).get("code_version")}
+
+
 def count_verdicts(rows):
     out = {}
     for r in rows:
@@ -318,6 +324,7 @@ def json_schema():
             "outcome": {"enum": list(OUTCOMES)}, "cause": {"enum": list(CAUSES)},
             "deployed": {"type": "object"}, "rows": {"type": "array", "items": row},
             "counts": {"type": "object", "additionalProperties": {"type": "integer"}},
+            "chain_versions": {"type": "object", "additionalProperties": {"type": "string"}},
             "phase_s": {"type": "object"}, "retries": {"type": "integer"},
             "modcheck_exit": {"type": ["integer", "null"]},
             "artifacts": {"type": "array", "items": {"type": "object", "required": ["name", "path", "sha256", "bytes"]}},

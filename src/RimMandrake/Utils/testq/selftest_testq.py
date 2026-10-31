@@ -661,7 +661,7 @@ def main():
         check(rc == 0 and o.startswith("busy") and njobs() == n0, "fill queues nothing while a runnable job waits: %s" % o)
         tq("cancel", sj, "--reason", "selftest")
         rc, o = tq("fill", "Mock", "--n", "1")
-        check(rc == 0 and o.startswith("Mock: exhausted") and "FAILED with no fix" in o,
+        check(rc == 0 and o.startswith("Mock: exhausted") and "hold a verdict" in o,
               "every Mock chain PASSED or FAILED (no fix) at the current identity: nothing is filler: %s" % o[-200:])
         # a newer run with no deployed block: identity unknown, so every chain is "never run at it" again
         fin = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())

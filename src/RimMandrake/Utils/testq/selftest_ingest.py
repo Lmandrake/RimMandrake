@@ -389,6 +389,55 @@ def review_r1_checks():
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def harness_checks(env):
+    """Owner ruling by card 2026-10-31: a harness row is no verdict, and each cause files one repair."""
+    import ingest
+    import retest as R
+    os.environ.update(env)
+    ingest._REPAIR_ITEMS[0], calls = None, []
+
+    def fake(*a):
+        calls.append(a)
+        return 0, "HX/run-1@steve-targeted recorded"
+    saved = ingest.rimflow, ingest.recorded_run, ingest.note_once
+    ingest.rimflow, ingest.recorded_run = fake, lambda *a: None
+    ingest.note_once = lambda it, needle, text: calls.append(("note", it, text)) or True
+    try:
+        dead = {"row": "r9", "chain": "c1", "verdict": "UNMEASURED", "detail": "canary red, chain body not run"}
+        ok = {"row": "r1", "chain": "c2", "verdict": "PASS", "detail": ""}
+        rec = done_rec(ITEM)
+        rec["job"].update(mod="FlowWorks")
+        rec["result"].update(rows=[dead, ok], counts={"UNMEASURED": 1, "PASS": 1})
+        out = ingest.ingest_one(rec)
+        verify = [c for c in calls if c[0] == "verify"]
+        spawn = [c for c in calls if c[0] == "spawn"]
+        check(len(verify) == 1 and verify[0][verify[0].index("--result") + 1] == "pass",
+              "a harness chain is left out of the verify: the measured rows carry the verdict: %s" % (out,))
+        check(len(spawn) == 1 and "FOUNDRY" in spawn[0], "a FlowWorks cause files one repair for FOUNDRY")
+        del calls[:]
+        ingest.ingest_one(rec)
+        check(not [c for c in calls if c[0] == "spawn"], "the same cause files nothing twice")
+        del calls[:]
+        rec = done_rec(ITEM)
+        rec["result"].update(rows=[dead], counts={"UNMEASURED": 1})
+        out = ingest.ingest_one(rec)
+        check(not [c for c in calls if c[0] == "verify"] and out.get("result") == "harness",
+              "a run of harness rows alone records no verify, least of all a partial: %s" % (out,))
+        ingest._REPAIRED.clear()
+        ingest._REPAIR_ITEMS[0] = {}
+        rec = done_rec(None, "INVALID", "HARNESS")
+        rec["result"]["note"] = "modcheck exit 5 and no sheet JSON: x"
+        del calls[:]
+        out = ingest.ingest_one(rec)
+        spawn = [c for c in calls if c[0] == "spawn"]
+        check(len(spawn) == 1 and "BENCH" in spawn[0] and "skipped" in out, "an item-less dead job still files its repair")
+        check(spawn[0][spawn[0].index("--name") + 1] == R.repair_base(R.job_cause(rec["result"])), "named for the cause")
+    finally:
+        ingest.rimflow, ingest.recorded_run, ingest.note_once = saved
+        ingest._REPAIR_ITEMS[0] = None
+        ingest._REPAIRED.clear()
+
+
 def main():
     crash_checks()
     review_r1_checks()
@@ -493,11 +542,13 @@ def main():
         u = rec_of("unknown")
         check("error" in u.get("ingested", {}) and "ingest_pending" not in u, "the last try marks it with the error")
         # a standing host (TESTQ_HOST_ITEM) hosts only item-less jobs: a job that names its own item is not noted there
+        harness_checks(env)
         hr = done_rec(ITEM, "INVALID", "HANG")
         S.dump(hr, os.path.join(queue, "done", hr["job"]["id"] + ".json"))
         subprocess.run([sys.executable, os.path.join(HERE, "ingest.py")], env=dict(env, TESTQ_HOST_ITEM=MANY_A),
                        capture_output=True, text=True, timeout=300)
-        hn = [e for e in events() if e["event"] == "note" and hr["result"]["attempt"] in e.get("text", "")]
+        hn = [e for e in events() if e["event"] == "note" and hr["result"]["attempt"] in e.get("text", "")
+              and not e["id"].startswith("HARNESS_REPAIR_")]
         check([e["id"] for e in hn] == [ITEM], "a non-DONE job with an item notes that item only, not the host: %s"
               % [e["id"] for e in hn])
         # a non-DONE job whose item is not on the ledger yet: the refused note is retried, not lost, and written once

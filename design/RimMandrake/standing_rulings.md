@@ -488,3 +488,9 @@ unnecessarily and rarely inform"*; `rimflow next` measures the game itself).
 *"Ok, so the "test pilot" agent is a real idea we should simply implement and accept, period."*
 
 His earlier words: *"a "Test Pilot" type agent to sit down with the raiders and do a deep debug live with the game, trying things experimentally through bridge, rather than just code changes and long, slow testing procedures"*. Adopted regardless of the arena trial verdict. An item with 3 non-pass runs in a row, or a defect that needs live observation, goes to an `rm-testpilot` agent (`.claude/agents/rm-testpilot.md`) instead of more code-and-retest cycles. The rule and its measurement are in `src/RimMandrake/rimflow/testpilot_route.py`; `rimflow pilot` prints the ticket. Each sitting ends by writing what it learned, false theories included, into the mod's functional script.
+
+## Retest only after a code change — owner, by card 2026-10-31
+
+Card: "Retest rule → Retest only after a code change". An item is tested once per code version; a harness-invalid run is repaired, never counted.
+
+A code version is `gate.code_version`: the chain's runtime hash, the runtime hash of every mod composed with it, its code slice and its declared inputs, without the harness and without a driver's result files. Every kind of verdict counts, GAP included: a row owed a live check stays owed however often it runs. A chain the harness stopped gets no verify at all, and one `HARNESS_REPAIR_CAUSE_<HEX>` item per distinct cause holds it until the repair closes. A flaky chain is reported, not repeated. `testq.py submit --retest-why REASON` is the human override, and a `--rows` job asks no permission. Code: `src/RimMandrake/Utils/testq/retest.py`, `gaps.settled`.

@@ -5,9 +5,9 @@ design/RimMandrake/work_allocation_framework_2026-10-26.md section 6.3).
 Offline over hand-made done records; git, the modcheck probe and the ledger are fakes passed in, except one real
 gapprobe.py call on FlowWorks (the instrument can see: a known chain, an offline chain, a backticked item link).
 Proves: the rank order (fix landed > item owed > unmeasured > never run), that a chain which PASSED at the current
-identity or FAILED there with no fix is never filler, the two halves of "fix landed" (a commit names it; files that
+identity or FAILED there with no fix is never filler (nor one with a GAP there: testq/retest.py), the two halves of "fix landed" (a commit names it; files that
 map to it changed), DRY and offline chains skipped, identity unknown once the source moved, a run without a deployed
-block blocking nothing, the 5% repeatability budget for flaky chains, a blind probe reported, and fill_plan's
+block blocking nothing, flaky chains reported and never repeated, a blind probe reported, and fill_plan's
 pick / exhausted / dry verdicts through a temp queue.
 """
 import json
@@ -108,7 +108,7 @@ def t_pass_and_unfixed_fail_never_filler():
     r = rank(recs, ["alpha", "beta_b"])
     check(r["rank"] is None and r["pick"] == [] and r["text"].startswith("exhausted"),
           "PASS at the current identity and a FAIL with no fix since: nothing is filler: %s" % r["text"])
-    check("1 chain(s) PASSED" in r["text"] and "1 FAILED with no fix" in r["text"], "exhausted says why: %s" % r["text"])
+    check("2 chain(s) hold a verdict" in r["text"], "exhausted says why: %s" % r["text"])
 
 
 def t_fix_landed():
@@ -153,8 +153,8 @@ def t_item_owed():
 def t_unmeasured_and_dry():
     recs = [rec(1, 20, [("alpha", "a1", "PASS"), ("beta_b", "b1", "UNMEASURED"), ("gamma", "g1", "NOT_RUN")])]
     r = rank(recs, ["alpha", "beta_b", "gamma", "delta"])
-    check(r["rank"] == "unmeasured" and set(r["pick"]) == {"beta_b", "gamma"},
-          "UNMEASURED / NOT_RUN at the current identity: unmeasured, ahead of never-run delta: %s" % r["text"])
+    check(r["rank"] == "never_run" and r["pick"] == ["delta"],
+          "UNMEASURED / NOT_RUN at the current identity is a verdict: only never-run delta: %s" % r["text"])
     r = rank(recs, ["alpha", "beta_b", "gamma", "delta"], dry={"beta_b", "gamma"})
     check(r["rank"] == "never_run" and r["pick"] == ["delta"] and r["dry"] == ["beta_b", "gamma"],
           "DRY chains are not re-queued for their gaps: %s" % r["text"])
@@ -185,21 +185,18 @@ def t_never_run_and_identity():
     check(r["pick"] == ["alpha"], "a run that did not come back DONE is not a valid run")
 
 
-def t_flake_budget():
-    recs = [rec(1, 18, [("alpha", "a1", "PASS"), ("beta_b", "b1", "PASS")]),
-            rec(2, 19, [("beta_b", "b1", "FAIL")]), rec(3, 20, [("beta_b", "b1", "PASS")])]
-    r = rank(recs, ["alpha", "beta_b"], flake_spent_s=0, day_lane_s=72000)
-    check(r["rank"] == "flake" and r["purpose"] == "flake" and r["pick"] == ["beta_b"],
-          "a chain that flipped PASS/FAIL at the same identity: flake, within the 5%% budget: %s" % r["text"])
-    r = rank(recs, ["alpha", "beta_b"], flake_spent_s=0.05 * 72000, day_lane_s=72000)
-    check(r["rank"] is None and "flaky budget spent" in r["text"], "over the budget: exhausted: %s" % r["text"])
-    check(G.FLAKE_SHARE == 0.05 and G.PURPOSE["flake"] == "flake", "the budget is 5% and runs as purpose flake")
+def t_flaky_is_reported_never_repeated():
+    recs = [rec(1, 1, [("beta_b", "b1", "PASS")]), rec(2, 2, [("beta_b", "b1", "FAIL")]),
+            rec(3, 3, [("alpha", "a1", "PASS")])]
+    r = rank(recs, ["alpha", "beta_b"])
+    check(r["rank"] is None and r["pick"] == [] and "beta_b" in r["flaky"],
+          "a flipped chain is reported and not run again at the same code (owner ruling 2026-10-31): %s" % r["text"])
 
 
 def t_blind():
     recs = [rec(1, 20, [("alpha", "a1", "PASS"), ("beta_b", "b1", "UNMEASURED")])]
     r = rank(recs, None, prober=fake_probe([], blind="no modcheck in this checkout"))
-    check(r["rank"] == "unmeasured" and r["pick"] == ["beta_b"] and r["blind"] == ["no modcheck in this checkout"],
+    check(r["rank"] is None and r["blind"] == ["no modcheck in this checkout"],
           "a blind probe: chains from history, and the plan says it is blind: %s" % r["blind"])
     r = rank([rec(1, 20, [("alpha", "a1", "PASS")])], None, prober=fake_probe([], blind="no modcheck"))
     check(r["rank"] is None and "blind: no modcheck" in r["text"], "exhausted while blind says so: %s" % r["text"])
@@ -228,13 +225,13 @@ def t_fill_plan():
         def put(r):
             with open(os.path.join(tmp, "done", r["job"]["id"] + ".json"), "w") as fh:
                 json.dump(r, fh)
-        put(rec(1, 25, [("alpha", "a1", "PASS"), ("beta_b", "b1", "UNMEASURED")]))
+        put(rec(1, 25, [("alpha", "a1", "PASS")]))
         G.probe = fake_probe(["alpha", "beta_b"])
         G.owed_items = lambda world=None: {}
         G.git = fake_git()
         now = S.parse_ts(fin) + 3600
         p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
-        check(p["verdict"] == "pick" and p["pick"] == ["beta_b"] and p["rank"] == "unmeasured"
+        check(p["verdict"] == "pick" and p["pick"] == ["beta_b"] and p["rank"] == "never_run"
               and p["purpose"] == "guard", "fill_plan: the gap order, not the stalest chain: %s" % p["text"])
         put(rec(2, 25, [("beta_b", "b1", "PASS")]))
         p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
@@ -243,7 +240,7 @@ def t_fill_plan():
         put(rec(3, 25, [("beta_b", "b1", "FAIL")]))
         put(rec(4, 25, [("beta_b", "b1", "PASS")], by=T.FILLER, purpose="flake"))
         p = T.fill_plan(MOD, 2, T.FILL_CAP_DEFAULT, T.FILL_DAY_S, now)
-        check(p["verdict"] == "pick" and p["purpose"] == "flake", "fill_plan: a flipped chain uses the flake budget: %s"
+        check(p["verdict"] == "exhausted" and p["flaky"] == ["beta_b"], "fill_plan: a flipped chain is only reported: %s"
               % p["text"])
     finally:
         T.QHOME, G.probe, G.owed_items, G.git = saved
@@ -252,7 +249,7 @@ def t_fill_plan():
 
 def main():
     for t in (t_identity_and_verdicts, t_pass_and_unfixed_fail_never_filler, t_fix_landed, t_item_owed,
-              t_unmeasured_and_dry, t_never_run_and_identity, t_flake_budget, t_blind, t_real_probe, t_fill_plan):
+              t_unmeasured_and_dry, t_never_run_and_identity, t_flaky_is_reported_never_repeated, t_blind, t_real_probe, t_fill_plan):
         try:
             t()
         except Exception as e:      # noqa: BLE001 - one broken case must not hide the rest

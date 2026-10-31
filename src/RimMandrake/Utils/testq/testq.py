@@ -850,6 +850,10 @@ def cmd_submit(a):
     if bad:
         print("REFUSED: %s (checked before queueing: a bad row id would burn a runner slot)" % bad)
         return 2
+    stale = already_tested(a, sel, pv)
+    if stale:
+        print("REFUSED: %s" % stale)
+        return 2
     asked = job["timeout_s"]
     job["timeout_s"], driver_need, size_warn = sized_timeout(asked, pv["drivers"])
     if not a.no_sha_check and not published(a.sha):
@@ -884,6 +888,46 @@ def cmd_submit(a):
             out["est_s"] = int(per * len(planned))
     print(json.dumps(out))
     return 0
+
+
+def git_head():
+    r = subprocess.run(["git", "-C", REPO, "rev-parse", "HEAD"], capture_output=True, text=True)
+    return r.stdout.strip()
+
+
+def retest_stop(mod):
+    """-> {chains that must not run now}: a verdict at their code version, or a repair open. The rule's own fault
+    stops nothing: it costs a run, never a queue. A mod with no history skips the probe: nothing can be settled."""
+    recs = records("done")
+    if not any(job_of(r).get("mod") == mod for r in recs):
+        return set()
+    import gaps
+    try:
+        st = gaps.settled(mod, recs)
+    except Exception as e:      # noqa: BLE001
+        log("retest rule could not read %s: %s" % (mod, e))
+        return set()
+    return st["settled"] | set(st["held"])
+
+
+def already_tested(a, sel, pv):
+    """Owner ruling by card 2026-10-31, "Retest only after a code change": why this submit must not run, or None.
+    Every chain it would run holds a verdict at its code version, or waits for a repair (gaps.settled). The filler
+    has asked already; a --rows job may want rows no run reached; --retest-why is a human's reason."""
+    if a.by == FILLER or sel.get("rows") or (getattr(a, "retest_why", None) or "").strip():
+        return None
+    chains = pv.get("chains") or sel.get("chains") or []
+    sha = getattr(a, "sha", None)
+    if not chains or (sha and not git_head().startswith(sha)):     # the rule reads THIS checkout: another sha is unknown
+        return None
+    stop = retest_stop(a.mod)
+    # chains named one by one, or --full: each must earn its run. An --item's chains are modcheck's choice: one fresh
+    # one is enough.
+    hit = sorted(c for c in chains if c in stop)
+    if len(hit) == len(chains) or (hit and (sel.get("chains") or sel.get("full"))):
+        return ("%s already hold a verdict at this code version, or wait for a harness repair: the owner's retest rule; "
+                "drop them, or --retest-why REASON overrides" % ",".join(hit[:6]))
+    return None
 
 
 def row_seconds(mod, recs=None, last=20):
@@ -982,11 +1026,19 @@ def cmd_sweep(a):
         print("REFUSED: no origin/main in %s: %s" % (REPO, r.stderr.strip()[-200:]))
         return 2
     pv = preview(a.mod, {"full": True})
+    # Owner ruling by card 2026-10-31, "Retest only after a code change": the sweep runs only the chains with no
+    # verdict at their code version (gaps.settled). None left: no sweep tonight, whatever the calendar says.
+    stop = retest_stop(a.mod)
+    todo = [c for c in pv["chains"] or [] if c not in stop]
+    if pv["chains"] and not todo:
+        print("no sweep: every chain of %s holds a verdict at its code version" % a.mod)
+        return 0
     groups = None
-    if pv["drivers"] and pv["chains"] and pv["driver_chains"]:
-        g = split_sweep(pv["drivers"], pv["driver_chains"], pv["chains"])
+    if pv["drivers"] and todo and pv["driver_chains"]:
+        g = split_sweep(pv["drivers"], pv["driver_chains"], todo)
         groups = g if len(g) > 1 else None
-    sels = [{"chains": g} for g in groups] if groups else [{"full": True}]
+    sels = [{"chains": g} for g in groups] if groups else (
+        [{"chains": todo}] if stop and todo else [{"full": True}])
     todays = []
     for st in STATES:
         for rec in records(st):
@@ -1154,11 +1206,9 @@ def fill_rank(mod, n, now, today=None, exclude=()):
     today = today or time.strftime("%Y-%m-%d", time.localtime(now))
     recs = records("done")
     hist = chain_history(mod, recs)
-    flake = [r for r in recs if job_of(r).get("requested_by") == FILLER and job_of(r).get("purpose") == "flake"
-             and time.strftime("%Y-%m-%d", time.localtime(S.parse_ts(job_of(r)["submitted"]))) == today]
-    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), flake_spent_s=fill_spent_s(flake),
-                  exclude=exclude)
-    plan = {k: g[k] for k in ("rank", "purpose", "row_items", "dry", "ident", "counts", "flaky", "blind", "why")}
+    g = gaps.rank(mod, n, now, recs, lambda c: is_dry(hist.get(c) or [], now), exclude=exclude)
+    plan = {k: g[k] for k in ("rank", "purpose", "row_items", "dry", "held", "ident", "counts", "flaky", "blind",
+                              "why")}
     if g["rank"]:
         return dict(plan, verdict="pick", pick=g["pick"], text="would queue %s" % g["text"])
     if not hist and not g["counts"]["never_run"] and g["blind"]:
@@ -1412,6 +1462,7 @@ def main(argv=None):
     s.add_argument("--no-canary", action="store_true")
     s.add_argument("--no-validity", action="store_true")
     s.add_argument("--no-sha-check", action="store_true", help="skip the is-it-on-origin/main check")
+    s.add_argument("--retest-why", help="run chains that already hold a verdict at their code version, and say why")
     s = sub.add_parser("list")
     s.add_argument("--state", choices=STATES)
     s = sub.add_parser("show")

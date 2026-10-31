@@ -15,11 +15,12 @@ FlowWorks first". When SteveDesktop's lane is idle, `testq.py fill MOD` queues t
   4. never_run    a chain with no valid run at the current identity, stalest first.
   5. the sweep    is not the filler's: testq-sweep.timer queues it nightly (`testq.py sweep`).
 
-Never as filler: a chain whose latest valid run at the current identity PASSED (the WASTE rule as a selector), and a
-FAIL at that identity with no fix since (it would only FAIL again). The one exception is the repeatability budget: a
-chain that has both PASSED and FAILED at the current identity (flaky or environment-sensitive) may be queued with
-purpose "flake" while today's flake jobs have used under FLAKE_SHARE of the day's lane time (5%: 72 min). modcheck's
-metrics count purpose=flake as "budgeted", never as WASTE.
+ONE VERDICT PER CODE VERSION (owner ruling by card 2026-10-31, "Retest only after a code change"; retest.py): a chain
+holding a verdict of any kind at its current code version is in NO rank: not a PASS, not a FAIL (a fix that changed no
+code changed nothing), not a GAP (a row owed a live check stays owed however often it runs), not a flaky chain (it is
+reported in the plan; the repeatability budget, which spent lane time at unchanged code, is gone). A run with no
+chain_versions (from before the rule) counts at its identity; a stamped --rows job settles nothing: it ran a prefix. A
+harness run is no verdict: its chains are HELD while the repair item for its cause is open, and run once it closes.
 
 IDENTITY. A valid run is a DONE result. Its identity is result.deployed: each mod's dll and defs sha256 plus the
 ModsConfig sha256, i.e. what was on the game's disk. The CURRENT identity is that of MOD's latest valid run, unless
@@ -40,12 +41,12 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 if HERE not in sys.path:
     sys.path.insert(0, HERE)
+import retest as R  # noqa: E402
 import schema as S  # noqa: E402
 
 RANKS = ("fix_landed", "item_owed", "unmeasured", "never_run")
-PURPOSE = {"fix_landed": "fix", "item_owed": "guard", "unmeasured": "guard", "never_run": "guard", "flake": "flake"}
+PURPOSE = {"fix_landed": "fix", "item_owed": "guard", "unmeasured": "guard", "never_run": "guard"}
 LIVE_LEVELS = ("L1", "L2", "GREEN-MIN")       # the levels one testq run can give an item (minimal list, live)
-FLAKE_SHARE = float(os.environ.get("TESTQ_FLAKE_SHARE") or 0.05)
 SITE_HOLD_ROW = "<site hold"
 TIERS = ("RimMandrake", "RimStarWars", "RimUtinni")
 GIT_TIMEOUT_S = 30
@@ -82,23 +83,64 @@ def chain_verdict(rows):
 
 
 def valid_runs(mod, recs):
-    """-> [{t, id, sha, ident, items, chains: {chain: (verdict, fail_rows)}}] oldest first: MOD's DONE results."""
+    """-> [{t, id, sha, ident, items, chains: {chain: (verdict, fail_rows)}, versions, partial, harness}] oldest first:
+    MOD's DONE results. A harness chain is not in `chains`; it is in `harness`, {chain: cause}."""
     out = []
     for rec in recs:
         job, res = (rec or {}).get("job") or {}, (rec or {}).get("result") or {}
         if job.get("mod") != mod or res.get("outcome", "DONE") != "DONE" or not res.get("rows"):
             continue
+        kept, _, causes = R.split_rows(res["rows"])
         by = {}
-        for r in res["rows"]:
+        for r in kept:
             if r.get("chain"):
                 by.setdefault(r["chain"], []).append(r)
         chains = {c: v for c, v in ((c, chain_verdict(rows)) for c, rows in by.items()) if v[0]}
         items = sorted({i for i in [job.get("item")] + list((job.get("row_items") or {}).values()) if i})
+        sel = job.get("selector") or {}
+        harness = {c: why for c, why in causes.items() if c != R.ORPHAN}
+        if R.ORPHAN in causes:      # the run died: a chain it was asked for and never reached is the same fault
+            harness.update({c: causes[R.ORPHAN] for c in sel.get("chains") or [] if c not in by and c not in harness})
+        died = causes.get(R.ORPHAN) if sel.get("full") else None    # its chains: every one, known to harness_last
         out.append({"t": S.parse_ts(rec.get("finished") or res.get("finished") or job["submitted"]),
-                    "id": job.get("id"), "sha": res.get("runner_sha") or job.get("source_sha"),
-                    "ident": identity_of(res), "items": items, "chains": chains})
+                    "died": died, "reached": set(by), "id": job.get("id"), "sha": res.get("runner_sha") or job.get("source_sha"),
+                    "ident": identity_of(res), "items": items, "chains": chains,
+                    "versions": res.get("chain_versions"), "partial": bool(sel.get("rows")), "harness": harness})
     out.sort(key=lambda r: (r["t"], r["id"] or ""))
     return out
+
+
+def verdict_versions(runs):
+    """-> {chain: {code version}} with a verdict recorded."""
+    out = {}
+    for run in runs:
+        if run["partial"] or not run["versions"]:
+            continue
+        for c in run["chains"]:
+            if run["versions"].get(c):
+                out.setdefault(c, set()).add(run["versions"][c])
+    return out
+
+
+def harness_last(mod, runs, recs, every=()):
+    """-> {chain: cause}: chains whose latest attempt was a harness run. A job that left no sheet names its chains
+    through its selector; a --full one stood for EVERY chain, or the sweep would repeat its death nightly."""
+    events = [(run["t"], run["id"] or "", dict({c: run["died"] for c in every if c not in run["reached"]}, **run["harness"])
+               if run.get("died") else run["harness"], set(run["chains"])) for run in runs]
+    for rec in recs:
+        job, res = (rec or {}).get("job") or {}, (rec or {}).get("result") or {}
+        cause = R.job_cause(res) if job.get("mod") == mod else None
+        if cause:
+            sel = job.get("selector") or {}
+            chains = every if sel.get("full") else sel.get("chains") or []
+            events.append((S.parse_ts(rec.get("finished") or res.get("finished") or job["submitted"]),
+                           job.get("id") or "", {c: cause for c in chains}, set()))
+    last = {}
+    for _, _, harness, measured in sorted(events, key=lambda e: e[:2]):
+        for c in measured:
+            last.pop(c, None)
+        last.update(harness)
+    return last
 
 
 def chain_state(runs, ident):
@@ -226,13 +268,9 @@ def owed_items(world=None):
 
 # ---------------------------------------------------------------- the order
 
-def rank(mod, n, now, recs, dry_of, flake_spent_s=0, day_lane_s=86400, world=None, g=None, prober=None, exclude=()):
-    """-> {"rank", "purpose", "pick", "row_items", "dry", "ident", "counts", "flaky", "blind", "text"}.
-
-    RECS: finished records (testq records("done")). DRY_OF(chain) -> bool (testq.is_dry over its history).
-    "rank" None means nothing may be queued as filler (every chain PASSED at the current identity, FAILED with no
-    fix since, or is DRY): testq reports verdict "exhausted". EXCLUDE: chains never to pick (modcheck refused them
-    this fill). G / PROBER: the git and modcheck answers (selftests pass fakes)."""
+def settled(mod, recs, world=None, g=None, prober=None, items=None):
+    """-> {"settled": chains with a verdict at their code version, "held": chains waiting for a repair item, "runs",
+    "ident", "moved", "st", "pr", "items", "blind"}: the retest rule, for rank and for every other door (submit, sweep)."""
     g, prober = g or git, prober or probe
     runs = valid_runs(mod, recs)
     latest = runs[-1] if runs else None
@@ -245,12 +283,55 @@ def rank(mod, n, now, recs, dry_of, flake_spent_s=0, day_lane_s=86400, world=Non
     blind = []
     fails = {c: s["last"] for c, s in st.items() if s["last"][1] == "FAIL"}
     since = sorted({run["sha"] for run, _, _ in fails.values() if run["sha"]})
-    items = owed_items(world)
+    try:
+        world = world or ledger()
+    except Exception:  # noqa: BLE001 - a ledger that cannot be read hides ranks and repairs; the plan says so
+        world = None
+    items = owed_items(world) if world else None
     if items is None:
-        blind.append("the ledger could not be read (rank 2)")
+        blind.append("the ledger could not be read (rank 2, repair holds)")
     pr = prober(mod, items or {}, since)
     if pr.get("blind"):
         blind.append(pr["blind"])
+    now_v = pr.get("versions") or {}
+    done_v = verdict_versions(runs)
+    settled_set, by_identity = set(), set()
+    for c in set(st) | set(now_v):
+        v = now_v.get(c)
+        at = (st.get(c) or {}).get("at")
+        if v and v in done_v.get(c, ()):
+            settled_set.add(c)
+        elif at and not (v and (at[0]["versions"] or {}).get(c)) \
+                and not (at[0]["partial"] and (v or (at[0]["versions"] or {}).get(c))):
+            by_identity.add(c)      # a run from before chain_versions, or no version known: the identity decides. A
+            #                         --rows run is a verdict on its prefix once a version can tell: only the old rule's
+    settled_set |= by_identity
+    skew = sorted(c for c, s in st.items() if latest and s["last"][0]["sha"] == latest["sha"] and not moved
+                  and now_v.get(c) and (s["last"][0]["versions"] or {}).get(c) not in (None, now_v[c])
+                  and latest["sha"] and g("rev-parse", "--short", "origin/main") is not None
+                  and not g("diff", "--name-only", latest["sha"], "origin/main"))
+    if skew:
+        blind.append("code version skew: %s differ from the run at this very sha (host-dependent hash?)"
+                     % ",".join(skew[:4]))
+    w_items = getattr(world[2], "items", {}) if world else {}
+    last = harness_last(mod, runs, recs, set(pr.get("chains") or []) | set(st))
+    held = sorted(c for c, why in last.items() if c not in settled_set and R.repair_open(w_items, why))
+    return {"settled": settled_set, "held": held, "runs": runs, "ident": ident, "moved": moved, "st": st, "pr": pr,
+            "items": items, "blind": blind, "fails": fails, "harness": last, "by_identity": by_identity}
+
+
+def rank(mod, n, now, recs, dry_of, world=None, g=None, prober=None, exclude=()):
+    """-> {"rank", "purpose", "pick", "row_items", "dry", "held", "ident", "counts", "flaky", "blind", "text"}.
+
+    RECS: finished records (testq records("done")). DRY_OF(chain) -> bool (testq.is_dry over its history).
+    "rank" None means nothing may be queued as filler (every chain holds a verdict at its code version, is held for
+    a repair, or is DRY): testq reports verdict "exhausted". EXCLUDE: chains never to pick (modcheck refused them
+    this fill). G / PROBER: the git and modcheck answers (selftests pass fakes)."""
+    g = g or git
+    s0 = settled(mod, recs, world, g, prober)
+    runs, ident, moved, st, pr, blind, fails = (s0["runs"], s0["ident"], s0["moved"], s0["st"], s0["pr"], s0["blind"],
+                                                s0["fails"])
+    done, held_now = s0["settled"], set(s0["held"])
     known = list(pr.get("chains") or [])
     offline = set(pr.get("offline") or [])
     names = [c for c in known if c not in offline] or sorted(st)
@@ -259,18 +340,17 @@ def rank(mod, n, now, recs, dry_of, flake_spent_s=0, day_lane_s=86400, world=Non
     names = [c for c in dict.fromkeys(names) if c not in set(exclude)]
     dry = sorted(c for c in names if dry_of(c))
 
-    def passed_at(c):
-        return bool(st.get(c) and st[c]["at"] and st[c]["at"][1] == "PASS")
-
-    def failed_at(c):
-        return bool(st.get(c) and st[c]["at"] and st[c]["at"][1] == "FAIL")
+    def fresh(c):
+        """The one question every rank asks: may this chain be tested now?"""
+        return c not in done and c not in held_now
 
     age = {c: st[c]["age"] if c in st else 0 for c in names}
     cand = {r: [] for r in RANKS}
     why, row_items = {}, {}
     # 1. FAILs with a fix since
     for c, (run, _, frows) in sorted(fails.items()):
-        if c not in names:
+        # A FAIL with no version on it is the one case a commit can reopen: only the version could have said "unchanged"
+        if c not in names or c in held_now or (c in done and c not in s0["by_identity"]):
             continue
         hit = None
         msgs = commits_since(run["sha"], g)
@@ -291,24 +371,24 @@ def rank(mod, n, now, recs, dry_of, flake_spent_s=0, day_lane_s=86400, world=Non
     # 2. built/validated items owing a live level, linked to a chain
     for iid, chains in sorted((pr.get("item_chains") or {}).items()):
         for c in chains:
-            if c in names and c not in cand["item_owed"] and not passed_at(c) and not failed_at(c) and c not in dry:
+            if c in names and c not in cand["item_owed"] and fresh(c) and c not in dry:
                 row_items[c] = iid
                 cand["item_owed"].append(c)
                 why[c] = "%s owes a live level" % iid
-    # 3. UNMEASURED/NOT_RUN rows at the current identity, not DRY
+    # 3. UNMEASURED/NOT_RUN rows at the current identity, at a version with no verdict yet, not DRY
     for c in names:
-        if c in dry or not st.get(c) or not st[c]["at"]:
-            continue
-        if st[c]["at"][1] == "GAP":
+        if c not in dry and fresh(c) and st.get(c) and st[c]["at"] and st[c]["at"][1] == "GAP":
             cand["unmeasured"].append(c)
-    # 4. never run at the current identity
+    # 4. no verdict at the current version
     for c in names:
-        if c not in dry and not (st.get(c) and st[c]["at"]):
+        if c not in dry and fresh(c) and c not in cand["unmeasured"]:
             cand["never_run"].append(c)
     flaky = sorted(c for c in names if st.get(c) and st[c]["flaky"])
     counts = {r: len(dict.fromkeys(cand[r])) for r in RANKS}
     counts["flaky"] = len(flaky)
-    out = {"dry": dry, "ident": ident, "moved": moved, "counts": counts, "flaky": flaky, "blind": blind,
+    held = sorted(c for c in names if c in held_now)
+    counts["held"] = len(held)
+    out = {"dry": dry, "held": held, "ident": ident, "moved": moved, "counts": counts, "flaky": flaky, "blind": blind,
            "row_items": {}, "why": why, "all_dry": False}
     for r in RANKS:
         seq = sorted(dict.fromkeys(cand[r]), key=lambda c: (age[c], c))
@@ -317,16 +397,9 @@ def rank(mod, n, now, recs, dry_of, flake_spent_s=0, day_lane_s=86400, world=Non
             ri = {c: row_items[c] for c in pick if c in row_items}
             return dict(out, rank=r, purpose=PURPOSE[r], pick=pick, row_items=ri,
                         text="%s: %s" % (r, ", ".join("%s (%s)" % (c, why[c]) if c in why else c for c in pick)))
-    budget = FLAKE_SHARE * day_lane_s
-    if flaky and flake_spent_s < budget:
-        pick = sorted(flaky, key=lambda c: (age[c], c))[:n]
-        return dict(out, rank="flake", purpose="flake", pick=pick,
-                    text="flake: %s flipped PASS/FAIL at identity %s; repeatability budget %d of %d s used"
-                         % (",".join(pick), ident, flake_spent_s, budget))
-    held = [c for c in names if passed_at(c)]
     out["all_dry"] = bool(names) and set(dry) == set(names)
     return dict(out, rank=None, purpose=None, pick=[],
-                text="exhausted: %d chain(s) PASSED at identity %s, %d FAILED with no fix since, %d DRY%s%s"
-                     % (len(held), ident, sum(1 for c in names if failed_at(c) and c not in cand["fix_landed"]),
-                        len(dry), "; flaky budget spent (%d s)" % flake_spent_s if flaky else "",
+                text="exhausted: %d chain(s) hold a verdict at their code version, %d held for a repair, %d DRY%s%s"
+                     % (sum(1 for c in names if c in done), len(held), len(dry),
+                        "; %d flaky (reported, not repeated)" % len(flaky) if flaky else "",
                         "; blind: " + "; ".join(blind) if blind else ""))

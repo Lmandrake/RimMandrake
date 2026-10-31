@@ -219,8 +219,9 @@ DISPATCHER_VERBS = ("note",)
 # (STEVE_STEWARD_BUILD_NO_LLM_OWNER, design/RimMandrake/work_allocation_framework_2026-10-26.md
 # §6.4): an idle lane nobody owns escalates as WORK, so the steward must be able to file
 # it. Narrowly: a RUNNER spawn is for BENCH (needs offline) or for OWNER (needs owner)
-# and nothing else; see RUNNER_SPAWN_TO and `_who_refusal`.
-RUNNER_SPAWN_TO = {"BENCH": "offline", "OWNER": "owner"}
+# and nothing else; see RUNNER_SPAWN_TO and `_who_refusal`. FOUNDRY (needs offline) since
+# RETEST_RULE_ONCE_PER_CODE_VERSION: a FlowWorks harness repair is that lane's.
+RUNNER_SPAWN_TO = {"BENCH": "offline", "FOUNDRY": "offline", "OWNER": "owner"}
 
 # Item lifecycle. `proposed` means "filed, not yet taken". 🔴 It is NO LONGER a
 # completeness gate — the owner removed that on 2026-08-21 (see `start`). An item may be
@@ -1699,7 +1700,7 @@ def _who_refusal(ev, item):
         if verb == "spawn":
             want = RUNNER_SPAWN_TO.get(ev.get("for"))
             if want is None or (ev.get("needs") or "offline") != want:
-                return ("RUNNER spawns only for BENCH with needs offline or for OWNER with "
+                return ("RUNNER spawns only for BENCH or FOUNDRY with needs offline or for OWNER with "
                         "needs owner (the steward's escalations); got --for %s --needs %s"
                         % (ev.get("for"), ev.get("needs")))
         return None

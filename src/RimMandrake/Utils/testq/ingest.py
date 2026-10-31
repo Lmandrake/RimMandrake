@@ -11,6 +11,10 @@ For each done/<job>.json not yet ingested, whose job names a rimflow item:
                        --from that run, type UNTRIAGED (a human or seat decides MOD/SITE/HARNESS).
   any other outcome -> a note on the item (INVALID/REFUSED/INTERRUPTED measured nothing about the mod), once per
                        attempt; a refused note (item not on origin yet) is an error, retried like a verify.
+  a harness fault   -> no verdict (owner ruling by card 2026-10-31, retest.py). A chain the harness stopped is left out of
+                       the verify, so it never reads as a feature's partial, and each distinct cause files ONE repair
+                       item, HARNESS_REPAIR_CAUSE_<HEX> (--for FOUNDRY for FlowWorks, else BENCH, needs offline), or a
+                       note on the open one. An INVALID job with no sheet does the same.
   no item           -> nothing on the ledger, unless job.row_items (submit --row-item ROW_OR_CHAIN=ITEM) maps rows to
                        items or TESTQ_HOST_ITEM names a standing host: then each item is verified from ITS rows only.
 A lane-pausing outcome (testq.PAUSE_ON: a red canary, a refused runner pull) is also, item or not, a failed run of
@@ -36,6 +40,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
+import retest as R  # noqa: E402
 import testq as T  # noqa: E402
 
 REPO = T.REPO
@@ -168,12 +173,62 @@ def note_once(item, needle, text):
     return rimflow("note", item, "--text", text)[0] == 0
 
 
+_REPAIR_ITEMS = [None]      # the ledger's items, once per process; REPAIRED holds what this process has filed since
+_REPAIRED = {}
+
+
+def spawned_for(base, att):
+    """True when the shard already holds a repair spawned by ATT for this cause."""
+    try:
+        with open(shard_path(), encoding="utf-8") as f:
+            return any(base in line and att in line and '"spawn"' in line for line in f)
+    except OSError:
+        return False
+
+
+def repair(job, res, cause):
+    """One repair item per CAUSE: file it, or note the open one -> None, or an error string (retried)."""
+    import gaps
+    att, base = res["attempt"], R.repair_base(cause)
+    if spawned_for(base, att):      # a retry of this attempt, even if its repair has closed since
+        return None
+    try:
+        if _REPAIR_ITEMS[0] is None:
+            _REPAIR_ITEMS[0] = gaps.ledger()[2].items
+    except Exception as e:  # noqa: BLE001 - retried like any record that could not be written
+        return "repair %s: ledger unreadable: %s" % (base, e)
+    if base in _REPAIRED:
+        name, how = _REPAIRED[base], "note"
+    else:
+        name, how = R.repair_slot(_REPAIR_ITEMS[0], base)
+    if how == "note":
+        needle = "seen again in testq %s" % att
+        return None if note_once(name, needle, "%s: %s" % (needle, (res.get("note") or cause)[:160])) \
+            else "repair note refused on %s" % name
+    cause_item = job.get("item") or next(iter(sorted((job.get("row_items") or {}).values())), None) or LANE_ITEM
+    rc, out = rimflow("spawn", "--from", cause_item, "--for", "FOUNDRY" if job["mod"] == "FlowWorks" else "BENCH",
+                      "--needs", "offline", "--name", name,
+                      "--title", ("harness fault, no verdict (testq %s, %s): %s" % (att, job["mod"], cause))[:160])
+    if rc != 0:
+        return "repair %s not filed: %s" % (name, out[-160:])
+    _REPAIRED[base] = name
+    return None
+
+
 def ingest_one(rec):
     job, res = rec["job"], rec["result"]
     item, att = job.get("item"), res["attempt"]
     lane = lane_finding(job, res)
     if lane and lane.startswith("lane "):  # run or finding not recorded (host item not on origin yet): retried
         return {"error": lane}
+    if res["outcome"] == "DONE":
+        causes = R.split_rows(res.get("rows") or [])[2].values()
+    else:
+        causes = [c for c in [R.job_cause(res)] if c]
+    for cause in sorted(set(causes)):       # before the no-item return: the filler's jobs name no item
+        err = repair(job, res, cause)
+        if err:
+            return {"error": err}
     if not item and not job.get("row_items") and not os.environ.get("TESTQ_HOST_ITEM"):
         return dict({"skipped": "the job names no item"}, **({"lane_finding": lane} if lane else {}))
     # the standing host stands in only for a job with no item of its own (as in groups_of)
@@ -215,12 +270,21 @@ def groups_of(job, res):
 
 def ingest_done(job, res, item):
     att = res["attempt"]
-    groups = groups_of(job, res)
-    if item and item not in groups and not job.get("row_items"):
+    kept, held, causes = R.split_rows(res.get("rows") or [])
+    groups = groups_of(job, dict(res, rows=kept))
+    held_on = sorted(i for i in groups_of(job, dict(res, rows=held)) if i not in groups)
+    if item and item not in groups and item not in held_on and not job.get("row_items"):
         groups[item] = []                      # unchanged: a job for an item with no rows still gets its verdict
-    if not groups:
+    if not groups and not held_on:
         return {"skipped": "no row maps to an item"}
     out, errs = {}, []
+    for it in held_on:                          # nothing measured for this item: never a partial
+        needle = "testq %s on SteveDesktop:" % att
+        if note_once(it, needle, "%s harness fault, no verdict recorded (%s)"
+                     % (needle, "; ".join(sorted(set(causes.values())))[:160])):
+            out[it] = {"result": "harness", "note": True}
+        else:
+            errs.append("%s: note refused" % it)
     for it, rows in sorted(groups.items()):     # every group is tried: one item not on origin yet blocks no other
         r = ingest_group(job, res, it, dict(res, rows=rows, counts=T.S.count_verdicts(rows)), att)
         if "error" in r:
@@ -231,6 +295,8 @@ def ingest_done(job, res, item):
         return dict({"error": " | ".join(errs)}, **({"groups": out} if out else {}))
     if len(out) == 1:
         return next(iter(out.values()))
+    if not out:
+        return {"skipped": "no row maps to an item"}
     return {"groups": out, "result": ",".join("%s=%s" % (i, o["result"]) for i, o in out.items())}
 
 

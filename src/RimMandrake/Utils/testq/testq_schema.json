@@ -209,6 +209,12 @@
       "GAME_DIED"
      ]
     },
+    "chain_versions": {
+     "additionalProperties": {
+      "type": "string"
+     },
+     "type": "object"
+    },
     "counts": {
      "additionalProperties": {
       "type": "integer"

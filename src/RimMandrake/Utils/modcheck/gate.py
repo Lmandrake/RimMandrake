@@ -93,11 +93,20 @@ def _sha(obj):
 
 
 def _hash_files(paths, base):
+    """Host-independent: the order is the "/" relative path's. Sorted on the native path, "\\" and "/" put a file and a
+    directory of like name the other way round, and one tree hashed two ways (measured 2026-10-31, Windows vs WSL)."""
     h = hashlib.sha256()
-    for p in sorted(set(paths)):
+    for rel, p in sorted((_rel(p, base), p) for p in set(paths)):
         with open(p, "rb") as f:
-            h.update(os.path.relpath(p, base).replace(os.sep, "/").encode("utf-8") + b"\0" + f.read() + b"\0")
+            h.update(rel.encode("utf-8") + b"\0" + f.read() + b"\0")
     return h.hexdigest()
+
+
+def _rel(path, base):
+    try:
+        return os.path.relpath(path, base).replace(os.sep, "/")
+    except ValueError:      # two mounts, or a mangled UNC path: the bare name, never a clone's absolute location
+        return os.path.basename(path)
 
 
 def _status():
@@ -204,15 +213,17 @@ class _Module(object):
         return None
 
 
-def code_slice(fn, suite_file, mod_dir, _cache=None):
-    """{"code": sha, "files": [...], "reads": [...], "unresolved": [...]} for chain function `fn` (the registered
-    wrapper or the raw function). Pure but for reads; `_cache` {path: _Module} shares parses across chains."""
+def code_slice(fn, suite_file, mod_dir, _cache=None, harness=()):
+    """{"code": sha, "version_code": sha, "files": [...], "reads": [...], "unresolved": [...]} for chain function `fn`
+    (the registered wrapper or the raw function). `version_code` is `code` without the `harness` files a chain reaches
+    through `suite = Suite(...)`: a harness edit is not a code change (code_version).
+    Pure but for reads; `_cache` {path: _Module} shares parses across chains."""
     st_mod = _status()
     cache = _cache if _cache is not None else {}
     raw = fn
     while getattr(raw, "__wrapped__", None) is not None:
         raw = raw.__wrapped__
-    out = {"code": None, "files": [], "reads": [], "unresolved": []}
+    out = {"code": None, "version_code": None, "files": [], "reads": [], "unresolved": []}
     try:
         path = os.path.abspath(raw.__code__.co_filename)
         line = raw.__code__.co_firstlineno
@@ -272,23 +283,26 @@ def code_slice(fn, suite_file, mod_dir, _cache=None):
         out["unresolved"] += unres
     files.discard(path)
     base = os.path.dirname(os.path.abspath(mod_dir))
-    out["files"] = sorted(os.path.relpath(p, base).replace(os.sep, "/") for p in files)
+    out["files"] = sorted(_rel(p, base) for p in files)
     out["reads"] = _scan_reads(picked, os.path.basename(path))
     try:
-        out["code"] = _sha({"texts": texts, "modules": _hash_files(files, base) if files else None,
-                            "file": os.path.relpath(path, base).replace(os.sep, "/")})
-    except OSError as ex:
+        tested = files - set(harness)
+        out["code"] = _sha({"texts": texts, "modules": _hash_files(files, base) if files else None, "file": _rel(path, base)})
+        out["version_code"] = _sha({"texts": texts, "modules": _hash_files(tested, base) if tested else None,
+                                    "file": _rel(path, base)})
+    except (OSError, ValueError) as ex:
         out["unresolved"].append("hash: %s" % ex)
     return out
 
 
 # ------------------------------------------------------------------------------------------------ inputs, profile
-def inputs_hash(globs, mod_dir):
+def inputs_hash(globs, mod_dir, harness=()):
     """(sha or None, file count, unresolved) over a chain's declared inputs, each relative to `mod_dir`:
       "<glob>"             every matching file (`**` recursive); matching nothing is unresolved (a typo never skips);
       "?<glob>"            the same, but may match nothing (a driver result not yet written);
       "@mod_hash"          status.mod_hash(mod_dir) -- what a reader of "a result at the current mod hash" keys on;
-      "@closure:<script>"  status.test_closure of a helper script the chain shells out to (its imports and data)."""
+      "@closure:<script>"  status.test_closure of a helper script the chain shells out to (its imports and data).
+    `harness` files leave the hash: the code version's own reading of an input (see code_slice)."""
     st = _status()
     files, unresolved, extra = set(), [], []
     for g in globs:
@@ -312,6 +326,7 @@ def inputs_hash(globs, mod_dir):
             unresolved.append("input %s matches nothing" % g)
         files.update(os.path.abspath(p) for p in got)
     base = os.path.dirname(os.path.abspath(mod_dir))
+    files -= set(harness)
     try:
         return _sha({"files": _hash_files(files, base) if files else None, "extra": extra}), len(files), unresolved
     except OSError as ex:
@@ -361,9 +376,28 @@ def profile(package_ids, flags=None):
         if d:
             try:
                 hashes[pid] = st.runtime_hash(d)
-            except OSError as ex:
+            except (OSError, ValueError) as ex:      # ValueError: a mangled UNC path; a gate never kills a run
                 unresolved.append("runtime %s: %s" % (pid, ex))
     return {"minimal": ids, "composed": composed, "repo_runtime": hashes, "flags": dict(flags or {})}, unresolved
+
+
+def version_inputs(declared):
+    """A chain's declared inputs as the code version sees them: "@mod_hash" goes, because it hashes docs and selftests
+    too and the runtime hash already stands for what the game loads; a "?*.json" goes because it is a driver's RESULT,
+    written by the run itself, in that clone: with it in, a run would move the version it measured."""
+    if declared is None:
+        return None
+    return [g for g in declared if g != "@mod_hash" and not (g.startswith("?") and g.endswith(".json"))]
+
+
+def code_version(chain, runtime, minimal, composed, repo_runtime, code, inputs, declared):
+    """The chain's CODE VERSION (testq/retest.py): what a verdict is a verdict on, or None when it cannot be told.
+    No schema, no harness, no run flags: none of them is the code under test. testq compares this across hosts, so
+    nothing here may depend on the host."""
+    if runtime is None or code is None:
+        return None
+    return _sha({"chain": chain, "runtime": runtime, "minimal": minimal, "composed": composed,
+                 "repo_runtime": repo_runtime, "code": code, "inputs": inputs, "declared": declared})
 
 
 def package_ids_for(mod_folder):
@@ -557,17 +591,22 @@ class Gate(object):
         st = _status()
         try:
             self.runtime = st.runtime_hash(mod_dir)
-        except OSError as ex:
+        except (OSError, ValueError) as ex:          # ValueError: a mangled UNC path; a gate never kills a run
             self.runtime = None
             self.common_unresolved.append("runtime: %s" % ex)
         self.profile, unres = profile(package_ids, flags)
+        self.profile_whole = not unres      # a dependency with no hash: no code version can stand on this profile
         self.common_unresolved += unres
-        files = set()
-        for s in ("runner.py", "suite.py"):
-            got, unres = st.test_closure(os.path.join(HERE, s), mod_dir)
-            files.update(got)
-            self.common_unresolved += unres
-        self.harness = _hash_files(files, os.path.dirname(os.path.abspath(mod_dir)))
+        files = self.harness_files = set()
+        self.harness = None
+        try:
+            for s in ("runner.py", "suite.py"):
+                got, unres = st.test_closure(os.path.join(HERE, s), mod_dir)
+                files.update(got)
+                self.common_unresolved += unres
+            self.harness = _hash_files(files, os.path.dirname(os.path.abspath(mod_dir)))
+        except (OSError, ValueError) as ex:          # the same mangled path: a gate never kills a run
+            self.common_unresolved.append("harness: %s" % ex)
         dll = deployed_dll_check(mod_dir, mod)
         if dll:
             self.common_unresolved.append(dll)
@@ -583,7 +622,7 @@ class Gate(object):
         declared = (getattr(self.full, "chain_inputs", {}) or {}).get(name)
         if declared is None:
             declared = (getattr(self.suite, "chain_inputs", {}) or {}).get(name)
-        sl = code_slice(fn, self.suite_file, self.mod_dir, self._cache)
+        sl = code_slice(fn, self.suite_file, self.mod_dir, self._cache, self.harness_files)
         unresolved = list(self.common_unresolved) + sl["unresolved"]
         ih, nfiles = None, 0
         if declared is not None:
@@ -592,10 +631,25 @@ class Gate(object):
         known = declared is not None or not sl["reads"]
         parts = {"schema": SCHEMA, "chain": name, "runtime": self.runtime, "profile": _sha(self.profile),
                  "harness": self.harness, "code": sl["code"], "inputs": ih, "declared": declared}
+        vdecl = version_inputs(declared)
+        vih = inputs_hash(vdecl, self.mod_dir, self.harness_files)[0] if vdecl else None
         m = {"key": _sha(parts), "parts": parts, "unresolved": unresolved, "inputs_known": known,
+             "code_version": None if not self.profile_whole or (vdecl and vih is None) else code_version(
+                 name, self.runtime, self.profile["minimal"], self.profile["composed"], self.profile["repo_runtime"],
+                 sl["version_code"], vih, vdecl),
              "reads": sl["reads"][:12], "input_files": nfiles, "code_files": len(sl["files"])}
         self._man[name] = m
         return m
+
+    def versions(self):
+        """-> {chain: code version or None} for testq's filler (gapprobe.py)."""
+        out = {}
+        for name, fn in self.suite.chains:
+            try:
+                out[name] = self.manifest(name, fn)["code_version"]
+            except Exception:  # noqa: BLE001 - a chain with no version is run, never refused
+                out[name] = None
+        return out
 
     def decide(self, name, fn, scope=None):
         """{"action", "key", "why", "record"}; never raises (a gate that breaks runs the chain)."""
@@ -607,6 +661,7 @@ class Gate(object):
             return {"action": RUN, "key": None, "why": "manifest error %s: %s" % (type(ex).__name__, ex),
                     "record": None}
         d = {"action": RUN, "key": m["key"], "record": None, "purpose": self.purpose,
+             "code_version": m["code_version"],
              "unresolved": m["unresolved"][:6], "inputs_known": m["inputs_known"], "reads": m["reads"]}
         if m["unresolved"]:
             d["why"] = "manifest unresolved: %s" % "; ".join(m["unresolved"])[:200]
@@ -670,7 +725,8 @@ class Gate(object):
 
 def stamp(d):
     """The `gate` field a chain dict carries."""
-    return {k: d.get(k) for k in ("action", "key", "why", "record", "purpose", "inputs_known") if k in d}
+    return {k: d.get(k) for k in ("action", "key", "why", "record", "purpose", "inputs_known", "code_version")
+            if k in d}
 
 
 def summarize(chains):

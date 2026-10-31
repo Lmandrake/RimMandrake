@@ -375,7 +375,8 @@ def out(obj, rc=0):
 # thirst_live.py, drawbridge_proof.py, validation_v2.py --live ...) run before the chains they feed, so a sweep or a
 # targeted job measures those rows instead of reading UNMEASURED (modcheck/drivers.py).
 RUN_BASE = ("export MODCHECK_SKIP_DEPLOY=1 WSLENV=${WSLENV:+$WSLENV:}MODCHECK_SKIP_DEPLOY; "
-            "python.exe src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
+            # -X faulthandler: 0xC0000005 reaches WSL as "exit 5" with no output (MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET)
+            "python.exe -X faulthandler src/RimMandrake/Utils/modcheck/cli.py run --drivers on")
 
 
 
@@ -842,6 +843,7 @@ class Attempt:
                              "detail": "in modcheck's preview plan, absent from the sheet"})
                 seen.add(w)
         self.res["rows"] = rows
+        self.res["chain_versions"] = S.chain_versions(data.get("summary") or {})
         for path in (sheet, sheet[:-5] + ".html", os.path.join(self.d, "modcheck.log")):
             if os.path.isfile(path):
                 self.res["artifacts"].append({"name": os.path.basename(path), "path": path,

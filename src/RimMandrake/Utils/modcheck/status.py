@@ -145,7 +145,7 @@ def mod_hash(mod_dir):
             if name.lower() in _EXCLUDED_BASENAMES or name.endswith(".pyc"):
                 continue
             path = os.path.join(root, name)
-            rel = os.path.relpath(path, mod_dir).replace(os.sep, "/")
+            rel = _rel_to(path, mod_dir)
             if any(rel == g or rel.startswith(g.rstrip("/") + "/") or (g.endswith("*") and rel.startswith(g[:-1]))
                    for g in ignore):
                 continue
@@ -186,11 +186,14 @@ def runtime_hash(mod_dir):
     ignore = _hashignore(mod_dir)
     for root, dirs, files in os.walk(mod_dir):
         dirs[:] = [d for d in dirs if d.lower() not in _EXCLUDED_BASENAMES and d != ".git"]
+        # Not os.path.relpath: under Windows Python on a \\wsl.localhost UNC clone it raised ValueError mid-run
+        # ("path is on mount ...") and the whole job died in Gate(). os.walk's root always starts with mod_dir.
+        sub = root[len(mod_dir):].strip("\\/").replace(os.sep, "/")
         for name in sorted(files):
             if name.lower() in _EXCLUDED_BASENAMES or name.endswith(".pyc"):
                 continue
             path = os.path.join(root, name)
-            rel = os.path.relpath(path, mod_dir).replace(os.sep, "/")
+            rel = sub + "/" + name if sub else name
             if _non_runtime(rel) or any(rel == g or rel.startswith(g.rstrip("/") + "/")
                                         or (g.endswith("*") and rel.startswith(g[:-1])) for g in ignore):
                 continue
@@ -305,6 +308,11 @@ def test_closure(script, mod_dir):
 
 
 def _rel_to(path, base):
+    """`path` relative to `base`, "/" separated. A plain prefix first: os.path.relpath raises ValueError under
+    Windows Python on a \\\\wsl.localhost UNC clone ("path is on mount ...")."""
+    p, b = path.replace("\\", "/"), base.replace("\\", "/").rstrip("/")
+    if p.startswith(b + "/"):
+        return p[len(b) + 1:]
     return os.path.relpath(path, base).replace(os.sep, "/")
 
 

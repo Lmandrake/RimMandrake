@@ -3,7 +3,8 @@
 stdin:  {"mod": MOD, "items": {item id: ledger text}, "since": [sha, ...]}
 stdout: {"chains": [every chain, suite order], "offline": [offline chains],
          "item_chains": {item id: [live chains it links to]},
-         "changed": {sha: [chains modcheck --changed suggests for sha..origin/main] or null}}
+         "changed": {sha: [chains modcheck --changed suggests for sha..origin/main] or null},
+         "versions": {chain: its code version now (gate.code_version; testq/retest.py), or null}}
 
 Offline (the declaration probe, no game). The item links mirror modcheck targeting.resolve(--item): the chain's
 source names the item, or the item's text names the chain or one of its rows. They are computed here in one pass,
@@ -24,6 +25,7 @@ def main():
     import contextlib
     import io
     with contextlib.redirect_stdout(io.StringIO()):       # a validation.py that prints must not corrupt the answer
+        import gate
         import runner
         import targeting
         mod_dir = runner.find_mod_dir(req["mod"])
@@ -46,7 +48,12 @@ def main():
                 changed[sha] = sorted(res["suggest"])
             except targeting.TargetError:
                 changed[sha] = None
-    print(json.dumps({"chains": names, "offline": sorted(offline), "item_chains": links, "changed": changed}))
+        try:
+            versions = gate.Gate(suite, req["mod"], mod_dir, gate.package_ids_for(req["mod"]), {}).versions()
+        except Exception:  # noqa: BLE001 - no version is the identity rule, never a dead probe
+            versions = {}
+    print(json.dumps({"chains": names, "offline": sorted(offline), "item_chains": links, "changed": changed,
+                      "versions": versions}))
     return 0
 
 
