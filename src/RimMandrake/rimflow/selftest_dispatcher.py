@@ -120,6 +120,7 @@ def test_wake_and_owner():
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
     a = stall(sch, st, obs(armed=False))
     check(kinds(a) == ["alarm"] and a[0]["kind"] == "unwakeable:FOUNDRY", "no doorbell armed: UNWAKEABLE alarm")
+    check(a[0].get("note") and a[0].get("conductor_log"), "UNWAKEABLE reaches the ledger and the Conductor, not only the journal")
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
     check(kinds(stall(sch, st, obs(sessions=[sess(status="busy")]))) == [], "busy window: nothing")
     code = open(os.path.join(HERE, "dispatcher.py")).read().split('"""', 2)[2]     # the code, not the docstring

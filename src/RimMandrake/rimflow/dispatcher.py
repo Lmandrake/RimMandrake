@@ -575,11 +575,12 @@ def decide(sch, st, obs, now, apply, out=None):
             return
         armed = obs["armed"](seat)
         if not armed or not obs["alive"](armed.get("pid")):
-            act(do="alarm", kind="unwakeable:" + seat, seat=seat,
-                why="%s is idle but no doorbell is armed (install doorbell.py as its Stop hook)" % seat)
+            act(do="alarm", kind="unwakeable:" + seat, seat=seat, note=True, conductor_log=True,
+                why="%s is idle but no doorbell is armed (install doorbell.py as its Stop hook; a turn that ended "
+                    "on an API error, such as an expired login, never ran that hook, so look at the window)" % seat)
             return
         if armed.get("session_id") and sess.get("sessionId") and armed["session_id"] != sess["sessionId"]:
-            act(do="alarm", kind="unwakeable:" + seat, seat=seat,
+            act(do="alarm", kind="unwakeable:" + seat, seat=seat, note=True, conductor_log=True,
                 why="%s's armed doorbell is session %s, not the window's %s (a `claude -p` child or second window "
                     "with AGENT_SEAT re-armed it): not ringing a stranger" % (seat, armed["session_id"],
                                                                                sess["sessionId"]))

@@ -817,7 +817,8 @@ def test_decide_ring_path():
     acts, st = stalled(240, armed=None)
     al = one(acts, "alarm")
     check(len(al) == 1 and al[0]["kind"] == "unwakeable:FOUNDRY" and al[0]["seat"] == "FOUNDRY" and not one(acts, "ring")
-          and al[0]["why"] == "FOUNDRY is idle but no doorbell is armed (install doorbell.py as its Stop hook)", "no doorbell armed -> unwakeable alarm")
+          and al[0]["why"] == "FOUNDRY is idle but no doorbell is armed (install doorbell.py as its Stop hook; a turn that ended "
+          "on an API error, such as an expired login, never ran that hook, so look at the window)", "no doorbell armed -> unwakeable alarm")
     sch = sched()
     o = obs(sessions=[T.sess(), T.sess("AGENT BENCH", "busy", "b")])
     o["alive"] = lambda pid: False
