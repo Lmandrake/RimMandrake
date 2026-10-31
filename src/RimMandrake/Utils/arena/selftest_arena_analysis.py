@@ -303,8 +303,12 @@ def t_cli():
                                                          arm_log(arm, [(t, True) for t in ids])) + "\n")
         td = Path(d, "tasks")
         td.mkdir()
-        for t, v in tasks.items():
-            Path(td, t + ".json").write_text(json.dumps(dict(v, id=t)))
+        import subprocess
+        shas = subprocess.run(["git", "-C", str(AA.A.REPO), "rev-list", "-n", str(len(ids)), "HEAD"],
+                              capture_output=True, text=True, timeout=60).stdout.split()
+        for (t, v), b in zip(sorted(tasks.items()), shas):     # real bases: the CLI computes chrono with git
+            Path(td, t + ".json").write_text(json.dumps(dict(v, id=t, base_sha=b)))
+        Path(d, "trial.txt").write_text("\n".join(ids) + "\n")
         sp = {a: spend_for((t, 1e5) for t in ids) for a in ("trio", "v3")}
         logs = AA.load_raw(d)
         Path(d, "spend.json").write_text(json.dumps(spend_file(sp, logs)))
@@ -319,15 +323,20 @@ def t_cli():
         import io
         buf = io.StringIO()
         with contextlib.redirect_stdout(buf):
+            tl = ["--trial-tasks", str(Path(d, "trial.txt"))]
             rc = AA.main(["run", "--spend", str(Path(d, "spend.json")), "--raw-dir", d, "--tasks-dir", str(td),
-                          "--draws", "300", "--out", str(Path(d, "out.json"))])
+                          "--draws", "300", "--out", str(Path(d, "out.json"))] + tl)
+            rc_def = AA.main(["run", "--spend", str(Path(d, "spend.json")), "--raw-dir", d, "--tasks-dir", str(td),
+                              "--draws", "300", "--out", str(Path(d, "out_def.json"))])
+            rc_nol = AA.main(["run", "--spend", str(Path(d, "spend.json")), "--raw-dir", d, "--tasks-dir", str(td),
+                              "--draws", "300", "--trial-tasks", str(Path(d, "nolist.txt"))])
             rc2 = AA.main(["run", "--spend", str(Path(d, "nope.json")), "--raw-dir", d, "--tasks-dir", str(td),
                            "--draws", "300"])
             rc3 = AA.main(["run", "--spend", str(Path(d, "bare.json")), "--raw-dir", d, "--tasks-dir", str(td),
                            "--draws", "300"])
             rc4 = AA.main(["run", "--spend", str(Path(d, "spend.json")), "--raw-dir", d, "--tasks-dir", str(td),
                            "--draws", "300", "--claude-model-weight", "opus=0.5", "--gpt-est-out-to-ite", "4",
-                           "--out", str(Path(d, "out4.json"))])
+                           "--out", str(Path(d, "out4.json"))] + tl)
             for n, txt in (("jnull", "null"), ("jint", "123"), ("jtrue", "true"), ("jstr", '"unreadable"'),
                            ("jlist", "[]")):
                 Path(d, n + ".json").write_text(txt)
@@ -340,8 +349,17 @@ def t_cli():
                     rcs[n] = "crash %r" % e
         out = json.loads(Path(d, "out.json").read_text())
         out4 = json.loads(Path(d, "out4.json").read_text()) if Path(d, "out4.json").is_file() else {}
+        out_def = json.loads(Path(d, "out_def.json").read_text())
     check("CLI: runs end to end on raw logs and writes the report", rc == 0 and "final" in out and out["blocks"],
           (rc, out.get("final", {}).get("verdict")))
+    check("CLI: chrono comes from git for the listed tasks (era gate MEASURED over the 10 listed)",
+          out.get("era_gate", {}).get("status") == "MEASURED" and out["era_gate"]["trial_tasks"] == 10,
+          out.get("era_gate"))
+    check("CLI: no --trial-tasks -> the committed default list, never every frozen task: here its ids have no "
+          "spec in the test bank -> UNMEASURED, exit 3, blocks withheld",
+          rc_def == 3 and "no frozen spec" in out_def["final"].get("why", "") and out_def["blocks"] == [],
+          (rc_def, out_def["final"]))
+    check("CLI: a missing --trial-tasks file -> UNMEASURED, exit 3", rc_nol == 3, rc_nol)
     check("CLI: unreadable spend file -> UNMEASURED, exit 3", rc2 == 3, rc2)
     check("CLI: a spend file without the arena_task_spend/2 schema -> UNMEASURED, exit 3", rc3 == 3, rc3)
     check("CLI: an old /1 doc, a doc metered against another log (stale), and a doc with blocking meter problems "
@@ -1008,9 +1026,9 @@ def t_hardcap_pick_scenario():
     check("hard cap, nothing fired, trio not credibly worse -> HARD_CAP_PICK trio, intervals alongside",
           r["final"]["verdict"] == "HARD_CAP_PICK" and r["final"]["detail"].get("winner") == "trio"
           and "eff_vs_control_90" in r["final"]["intervals"]["trio"], (r["final"]["verdict"], r["final"].get("detail")))
-    r = scenario({"trio": (0.85, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}, 15)
-    check("no hard cap yet -> CONTINUE (the pick fires only at the cap)", r["final"]["verdict"] == "CONTINUE",
-          r["final"]["verdict"])
+    r = scenario({"trio": (0.85, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}, 15, tasks=make_tasks(20))
+    check("no hard cap yet (15 of a 20-task trial) -> CONTINUE (the pick fires only at the cap)",
+          r["final"]["verdict"] == "CONTINUE", r["final"]["verdict"])
     skip = {"ts": iso(T0 + 5), "event": "gate", "sha": "c" * 40, "verdict": "pass",
             "detail": {"steps": {"scope": "SKIP"}}}
     r = scenario({"trio": (0.85, all_acc, 0.3), "v3c": (0.85, all_acc, 0.3), "v3": (1.0, all_acc, 0.3)}, 15,
@@ -1130,7 +1148,17 @@ def t_era_map():
     check("era_map: 20 distinct keys, 3 eras -> the newest era is exactly T14..T19 (bin = 3*rank//20)",
           why is None and newest == ["T%02d" % i for i in range(14, 20)] and e["T00"] == 0 and e["T13"] == 1, newest)
     e, _ = AA.era_map({"A": {"chrono": 5}, "B": {"chrono": 5}, "C": {"chrono": 9}})
-    check("era_map: equal keys share a bin (A, B oldest; C newest)", e == {"A": 0, "B": 0, "C": 2}, e)
+    check("era_map: equal keys share a bin, ranked at their UPPER position (A, B middle; C newest)",
+          e == {"A": 1, "B": 1, "C": 2}, e)
+    keys = {"T%03d" % i: {"chrono": i} for i in range(13)}
+    keys.update(("T%03d" % i, {"chrono": 13}) for i in range(13, 19))
+    keys["T019"] = {"chrono": 19}
+    e, _ = AA.era_map(keys)
+    newest = sorted(t for t, v in e.items() if v == 2)
+    check("FORCED (ARENA_STOP_GATE_FIX_SMALL_LEFTOVERS): a tie straddling the 2/3 cut never shrinks the newest era "
+          "(T013..T019, 7 tasks; was T019 alone)", newest == ["T%03d" % i for i in range(13, 20)], newest)
+    e, _ = AA.era_map({"A": {"chrono": 1}, "B": {"chrono": 1}, "C": {"chrono": 1}, "D": {"chrono": 2}})
+    check("era_map: 3 tied + 1 -> the tied three are not the oldest era by default", e["D"] == 2 and e["A"] == 1, e)
     e, why = AA.era_map({"A": {"chrono": 1}, "B": {"kind": "x"}})
     check("era_map: a task with no key -> no map (gate UNMEASURED)", e is None and "no chronology key" in why, why)
     e, why = AA.era_map({"A": {"chrono": True}})
@@ -1165,10 +1193,12 @@ def t_era_gate():
           r["final"]["verdict"] == "CONTINUE" and "DECIDE_FOR" not in json.dumps(
               [x["verdict"] for x in r["blocks"]]), (r["final"]["verdict"], [x["verdict"] for x in r["blocks"]]))
     r = run_part(tasks, 15, final=True)
-    check("FORCED: the final look (--final) decides normally on all data",
-          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["final"]["detail"].get("final_look") is True
-          and r["final"].get("final_look", {}).get("rule_verdict") == "DECIDE_FOR_trio",
-          (r["final"]["verdict"], r["final"].get("detail")))
+    check("FORCED (ARENA_FINAL_LOOK_FIX_UNGATED_AT_CAP): --final with the newest era never run -> the final look does "
+          "not run, no DECIDE; the hard cap skips every arm (the control lacks the newest era) and the control stays",
+          not r["final"]["verdict"].startswith("DECIDE") and r["final"].get("final_look", {}).get("ran") is False
+          and r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE"
+          and all("skipped" in c for c in r["final"]["detail"].get("candidates", [])),
+          (r["final"]["verdict"], r["final"].get("final_look")))
     eq = {"trio": (1.0, all_acc, 0.8), "v3": (1.0, all_acc, 0.8)}
     r = run_part(tasks, 15, final=True, arms=eq)
     check("final look with nothing decisive falls to the hard-cap clause",
@@ -1176,13 +1206,14 @@ def t_era_gate():
           r["final"]["verdict"])
     nokey = {t: {k: v for k, v in s.items() if k != "chrono"} for t, s in tasks.items()}
     r = run_part(nokey, 20)
-    check("FORCED: no chronology key -> gate UNMEASURED, every decision held (even with all tasks in)",
-          r["era_gate"]["status"] == "UNMEASURED" and r["final"]["verdict"] == "CONTINUE"
+    check("FORCED: no chronology key -> gate UNMEASURED, every decision held; all tasks in -> UNMEASURED, no verdict",
+          r["era_gate"]["status"] == "UNMEASURED" and r["final"]["verdict"] == "UNMEASURED"
           and any(x.get("held") for x in r["blocks"]), (r["era_gate"].get("why"), r["final"]["verdict"]))
+    r = run_part(nokey, 15)
+    check("gate UNMEASURED mid-trial -> CONTINUE (held)", r["final"]["verdict"] == "CONTINUE", r["final"]["verdict"])
     r = run_part(nokey, 20, final=True)
-    check("gate UNMEASURED: the final look still decides (final-look-only)",
-          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["final"]["detail"].get("final_look") is True,
-          r["final"]["verdict"])
+    check("gate UNMEASURED at --final -> UNMEASURED (no era named, no decision on unknown order)",
+          r["final"]["verdict"] == "UNMEASURED", r["final"]["verdict"])
     tie = make_tasks(60, chrono=lambda i: i)
     r = run_part(tie, 50, arms={"trio": (1.0, all_acc, 0.02), "v3": (1.0, all_acc, 0.02)})
     check("FORCED: a would-be TIE before the newest era is held too",
@@ -1190,10 +1221,71 @@ def t_era_gate():
           (r["final"]["verdict"], [x.get("held", {}).get("would_be") for x in r["blocks"]]))
     los = run_part(tasks, 15, arms={"ralph_a": (4.0, all_acc, 0.1), "trio": (1.0, all_acc, 0.1),
                                     "v3": (1.0, all_acc, 0.1)})
-    fut = [x for x in los["blocks"] if x.get("rule_verdict") == "FUTILE"]
-    check("FUTILE before the newest era still fires, scoped to older tasks",
-          bool(fut) and "older than the newest era" in fut[0]["detail"].get("futile_scope", ""),
-          [(x["block"], x.get("rule_verdict")) for x in los["blocks"]])
+    fut = [x for x in los["blocks"] if x.get("held", {}).get("would_be") == "FUTILE"]
+    check("FORCED (ARENA_FUTILE_GATE_FIX_OLD_TASK_DROPS): FUTILE before the newest era is held: CONTINUE, no arm "
+          "dropped, would_be FUTILE names ralph_a",
+          bool(fut) and all(x["verdict"] == "CONTINUE" for x in fut) and not los["final"].get("futile")
+          and fut[0]["held"].get("futile_would_be") == ["ralph_a"],
+          [(x["block"], x.get("verdict"), x.get("held", {}).get("would_be")) for x in los["blocks"]])
+    r = run_part(tasks, 20, arms={"ralph_a": (4.0, all_acc, 0.1), "trio": (0.9, all_acc, 0.3),
+                                  "v3": (1.0, all_acc, 0.3)})
+    b4 = [x for x in r["blocks"] if x["block"] == 4]
+    check("FUTILE once the newest era is in (block 4) fires normally (ralph_a dropped)",
+          "ralph_a" in r["final"].get("futile", []) and b4 and b4[0]["verdict"] == "FUTILE",
+          (r["final"]["verdict"], r["final"].get("futile")))
+
+
+def t_stop_gate_fixes():
+    """The tester's failing scenarios (verify_stop/forced.py) must now be held or CONTINUE."""
+    t30 = make_tasks(30, chrono=lambda i: i)
+    r = run_part(t30, 15, final=True, arms={"ralph_a": (0.25, all_acc, 0.1), "v3": (1.0, all_acc, 0.1)})
+    check("FORCED (FINAL_LOOK): ralph_a .25x on 15 of 30 (older only), --final -> no DECIDE, final look not run",
+          not r["final"]["verdict"].startswith("DECIDE") and r["final"].get("final_look", {}).get("ran") is False,
+          (r["final"]["verdict"], r["final"].get("final_look")))
+    r = run_part(t30, 15, final=True, arms={"ralph_a": (4.0, all_acc, 0.1), "trio": (0.9, all_acc, 0.1),
+                                            "v3": (1.0, all_acc, 0.1)})
+    check("FORCED (FUTILE gate): loser + trio, 15 of 30, --final -> no FUTILE drop, no pick on older tasks alone",
+          not r["final"].get("futile") and r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE",
+          (r["final"]["verdict"], r["final"].get("futile")))
+    # a dead arm: trio stops at 15 of 20 tasks (newest era T014..T019 never run), v3 and v3c finish
+    tasks = make_tasks(20, chrono=lambda i: i)
+    ids = sorted(tasks)
+    rng = random.Random(7)
+    base = {t: math.log(1e5) + rng.gauss(0, 1.0) for t in ids}
+    logs, spend = {}, {}
+    for j, (arm, fac, n) in enumerate((("trio", 0.25, 15), ("v3", 1.0, 20), ("v3c", 1.0, 20))):
+        logs[arm] = {"recs": arm_log(arm, [(t, True) for t in ids[:n]], offset=j * 7)}
+        spend[arm] = spend_for((t, math.exp(base[t] + rng.gauss(0, 0.1)) * fac) for t in ids[:n])
+    r = AA.analyse(logs, tasks, spend, draws=DRAWS, final=True)
+    cands = {c["arm"]: c for c in r["final"].get("detail", {}).get("candidates", [])}
+    check("FORCED (FINAL_LOOK): a dead arm (trio stopped before the newest era) is never decided for, and the hard cap "
+          "skips it", r["final"]["verdict"] != "DECIDE_FOR_trio" and r["final"].get("detail", {}).get("winner") != "trio"
+          and "skipped" in cands.get("trio", {}),
+          (r["final"]["verdict"], r["final"].get("detail", {}).get("winner"), cands.get("trio")))
+    t22 = make_tasks(22, chrono=lambda i: i)
+    r = run_part(t22, 22)
+    check("FORCED (SMALL_LEFTOVERS): pool exhausted (22 of 22), no --final -> never CONTINUE to a block that cannot "
+          "exist; the final look runs on the full data and decides", r["final"]["verdict"] == "DECIDE_FOR_trio"
+          and r["final"].get("final_look", {}).get("ran") is True, (r["final"]["verdict"], r["final"].get("final_look")))
+    r = run_part(make_tasks(20, chrono=lambda i: i), 20, arms={"trio": (1.0, all_acc, 0.8), "v3": (1.0, all_acc, 0.8)})
+    check("FORCED (SMALL_LEFTOVERS): pool exhausted on a block boundary, flat -> the hard cap, not CONTINUE",
+          r["final"]["verdict"].startswith("HARD_CAP"), r["final"]["verdict"])
+    r = run_part(t22, 17)
+    check("CONTINUE mid-trial names a reachable next block (<= the trial size) and what it waits for",
+          r["final"]["verdict"] == "CONTINUE" and r["final"]["detail"].get("next_block_tasks_per_arm") <= 22
+          and "waiting_for" in r["final"]["detail"], r["final"].get("detail"))
+    r = run_part(t22, 22, final=True)
+    check("FORCED (FINAL_LOOK): 22 tasks --final -> the final look runs gated (ran True) and decides",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and r["final"]["final_look"]["ran"] is True
+          and not r["final"]["final_look"].get("newest_era_missing"), r["final"].get("final_look"))
+    r = run_part(t30, 15, arms={"ralph_a": (4.0, all_acc, 0.1), "trio": (0.25, all_acc, 0.1),
+                                "v3": (1.0, all_acc, 0.1)})
+    held = [x["held"] for x in r["blocks"] if x.get("held", {}).get("would_be") == "DECIDE_FOR_trio"]
+    check("FORCED (SMALL_LEFTOVERS): a held DECIDE no longer masks a FUTILE: the held look names futile_would_be",
+          bool(held) and held[-1].get("futile_would_be") == ["ralph_a"], held and held[-1])
+    check("report lists every held block", r["era_gate"].get("held_blocks") == [x["block"] for x in r["blocks"]
+                                                                                  if x.get("held")],
+          r["era_gate"].get("held_blocks"))
 
 
 # ---------------------------------------------------------------- runner
@@ -1202,7 +1294,7 @@ CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fl
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
-        t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate)
+        t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
@@ -1210,7 +1302,8 @@ MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97
            ("TIE_BAND", 0.17), ("TIE_BAND", 0.13), ("TIE_P", 0.92), ("TIE_P", 0.88),
            ("MIN_TASKS", 5), ("MIN_TASKS", 15), ("MIN_KINDS", 1), ("MIN_KINDS", 3), ("BLOCK", 4), ("BLOCK", 6),
            ("SIMPLER", ("v3", "v3c", "trio", "ralph_c", "ralph_a")), ("CONTROL", "v3c"), ("ERAS", 2), ("ERAS", 4),
-           ("newest_era_missing", lambda *a: {}), ("held_kind", lambda v: v.startswith("DECIDE_FOR_"))]
+           ("newest_era_missing", lambda *a: {}), ("held_kind", lambda v: v.startswith("DECIDE_FOR_")),
+           ("gated", AA.held_kind)]
 
 
 def mutants():

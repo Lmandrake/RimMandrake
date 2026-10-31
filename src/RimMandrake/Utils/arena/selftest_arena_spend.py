@@ -579,13 +579,15 @@ def t_e2e(tmp):
         (td / (t + ".json")).write_text(json.dumps(dict({k: v for k, v in s.items() if k != "chrono"}, id=t,
                                                         base_sha=bases[t])))
     out = r["root"] / "spend.json"
+    trial = r["root"] / "trial.txt"     # the CLI's default list names the real trial; this bank is synthetic
+    trial.write_text("\n".join(sorted(r["specs"])) + "\n")
     with contextlib.redirect_stdout(io.StringIO()):
         rc1 = SP.main(["--out", str(out), "--allow-untrusted", "--projects", str(r["projects"]),
                        "--clones-root", str(r["clones_root"])])
         rc2 = AA.main(["run", "--spend", str(out), "--tasks-dir", str(td), "--allow-untrusted", "--draws", "2000",
-                       "--era-repo", str(erepo), "--out", str(r["root"] / "rep.json")])
+                       "--era-repo", str(erepo), "--trial-tasks", str(trial), "--out", str(r["root"] / "rep.json")])
         rc3 = AA.main(["run", "--spend", str(r["root"] / "missing.json"), "--tasks-dir", str(td),
-                       "--allow-untrusted", "--draws", "2000"])
+                       "--allow-untrusted", "--draws", "2000", "--trial-tasks", str(trial)])
     rep2 = json.loads((r["root"] / "rep.json").read_text()) if (r["root"] / "rep.json").is_file() else {}
     check(rc1 == 0 and json.loads(out.read_text()).get("schema") == AA.SPEND_SCHEMA, "CLI: arena_spend.py writes the "
           "schema file", rc1)

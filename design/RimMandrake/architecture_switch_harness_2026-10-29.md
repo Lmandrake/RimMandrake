@@ -465,8 +465,11 @@ arm gets a first forecast of accepted/day.
 
 **Known by the end of day 2:**
 
-- **The build-half verdict:** most likely decided by then, at about 24-37 tasks per arm. That covers a 1.5×
-  difference at σ_d up to about 0.8.
+- **The build-half verdict:** lands only at the full trial size N, never earlier. Planners run the tasks oldest
+  first, and the era gate (ARENA_STOP_RULE_HOLD_DECIDE_TILL_NEWEST) holds every stop and every FUTILE drop until each
+  arm has completed the newest era. The older forecast of 24-37 tasks per arm is withdrawn. A decision at N fits the
+  budget only when the trial has about 50 tasks or fewer. The default trial is therefore an explicit list of 50 frozen
+  tasks over all three eras (src/RimMandrake/Utils/arena/trial_tasks.json), not all 241.
 - **First live-half numbers:** candidates resolved per lane-hour, reloads per resolved candidate, productive
   live-minute share, planted defects caught, invalid runs.
 
