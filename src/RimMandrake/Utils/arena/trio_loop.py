@@ -273,6 +273,7 @@ class TestPilotLane:
 
 # ------------------------------------------------------------------------------------------------ the loop
 class TrioLoop(RA.Loop):
+    arm = "trio"                      # the inherited _recover / already_failed read THIS arm's records
     def __init__(self, root, ctl, tasks, *, model, critic=None, **kw):
         kw.setdefault("new_id", lambda role: "%s-%s-%s" % (ARM, role, uuid.uuid4().hex[:12]))
         if kw.get("gate") is None:

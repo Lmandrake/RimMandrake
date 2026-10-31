@@ -322,6 +322,7 @@ def precheck_c(root, log, base=None):
 
 # ------------------------------------------------------------------------------------------------ the builder loop
 class LoopC(RA.Loop):
+    arm = "ralph_c"                      # the inherited _recover / already_failed read THIS arm's records
     def __init__(self, member, root, ctl, board, *, arena=None, model, **kw):
         if member not in MEMBERS:
             raise Refused("member %r is not one of %s" % (member, MEMBERS))

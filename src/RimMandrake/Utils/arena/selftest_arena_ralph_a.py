@@ -1871,12 +1871,23 @@ def t_bridge_mine(tmp):
               % (label, "BENCH" in who, not crossed, out.strip()[-160:], who.strip()[-160:]))
 
 
+def sc_canon_records_per_arm():
+    """RALPH_RECOVER_HARDEN_BLIND_TO_SUBCLASS_ARMS: _recover / already_failed read the loop's OWN arm's records."""
+    recs = [{"arm": "ralph_c", "event": "build_end", "task": "T", "seq": 1}, {"arm": "trio", "event": "build_end", "task": "T", "seq": 2}]
+    check(R.canon_records(recs) == [], "canon_records default arm is ralph_a: foreign arms are invisible")
+    check([r["arm"] for r in R.canon_records(recs, "ralph_c")] == ["ralph_c"], "canon_records(arm=ralph_c) sees ralph_c only")
+    import ralph_c_loop as RC, trio_loop as TL
+    check(RC.LoopC.arm == "ralph_c" and TL.TrioLoop.arm == "trio" and not hasattr(R.Loop, "arm"),
+          "subclass loops name their arm for the inherited recovery")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_"))
     TBASE[0] = Path(tempfile.mkdtemp(prefix="selftest_ralph_a_rt_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE",
                                              "ARENA_ANCHOR_FILE", "ARENA_WITNESS", "RM_ARM", "ARENA_METER_HELPERS")}
     os.environ.pop("RM_ARM", None)
+    sc_canon_records_per_arm()
     os.environ["RM_ARM_SANDBOX_SCRATCH"] = str(tmp / "armscratch")     # builder scratch: not the live arena root
     os.environ["ARENA_METER_HELPERS"] = str(tmp / "meter_helpers")      # tester captures: not the live arena root
     try:

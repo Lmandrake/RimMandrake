@@ -170,11 +170,11 @@ def agent_key(x):
     return d if d.isascii() else L.UNATTRIBUTED + d
 
 
-def canon_records(recs):
-    """This arm's records with builder/tester ids replaced by agent_key, and a REPEATED build_end of the same
+def canon_records(recs, arm=None):
+    """This arm's records (default ralph_a; a subclass arm passes its own) with builder/tester ids replaced by agent_key, and a REPEATED build_end of the same
     (task, build_id, sha) dropped (the first is kept: a test after it tests that build; review L2)."""
     out, seen = [], set()
-    for r in L.ordered([r for r in recs if r.get("arm") == ARM]):
+    for r in L.ordered([r for r in recs if r.get("arm") == (arm or ARM)]):
         d = r.get("detail")
         if isinstance(d, dict) and r.get("event") in ("build_end", "test_start"):
             k = "builder" if r["event"] == "build_end" else "tester"
@@ -1045,7 +1045,7 @@ class Loop:
         on main, or whose commit is gone, is left alone (the hard check then refuses, loudly)."""
         if self.state.get("pending") or self.state.get("lane_wait"):
             return None
-        recs = canon_records(self.writer.records())
+        recs = canon_records(self.writer.records(), getattr(self, "arm", None))
         tid = L.norm_id(task["id"])
         last = None
         for i, r in enumerate(recs):
@@ -1185,7 +1185,7 @@ class Loop:
         tid = L.norm_id(k)
         return any(r.get("event") == "test_end" and r.get("verdict") == "fail" and L.norm_id(r.get("task")) == tid
                    and (r.get("sha") == sha or (tree and self._tree(r.get("sha") or "") == tree))
-                   for r in canon_records(self.writer.records()))
+                   for r in canon_records(self.writer.records(), getattr(self, "arm", None)))
 
     def _failed(self, task, base, head, why, n, record=True):
         k = task["id"]
