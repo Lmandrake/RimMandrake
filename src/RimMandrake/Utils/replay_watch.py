@@ -508,6 +508,8 @@ def write_atomic(p, text):
     fd, tmp = tempfile.mkstemp(dir=str(p.parent), prefix=".%s." % p.name)
     with os.fdopen(fd, "w", encoding="utf-8", newline="") as f:
         f.write(text)
+        f.flush()
+        os.fsync(f.fileno())
     os.replace(tmp, p)
 
 
@@ -552,6 +554,8 @@ def read_arm(w, arm, cfg, launcher, login, boot, total):
     log = rp / "logs" / ("%s.log" % arm)
     try:
         runner = json.loads((rp / "ctl" / arm / "runner.json").read_text("utf-8"))
+    except FileNotFoundError:
+        runner = {"done": {}}                 # a fresh attempt writes it at its first finished task
     except (OSError, ValueError, RecursionError):
         runner = None
     return {"unit": w.unit(arm), "lines": parse_log(read_text(log)), "runner": runner, "log": log,
@@ -620,14 +624,17 @@ def restart_arm(w, st, sp, arm, s, row, a, cfg, now, alarms, kind):
         ok, out = w.restart(arm)
     except Exception as e:  # noqa: BLE001
         ok, out = False, "%s: %s" % (type(e).__name__, str(e)[:160])
-    with open(Path(cfg["replay"]) / "launcher.log", "a", encoding="utf-8") as f:
-        f.write("%s WATCH RESTART %s %s: %s\n" % (
-            time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime(now)), arm, "launched" if ok else "FAILED",
-            a["why"][:200].replace("\n", " ")))
     if not ok:
         row["state"], row["note"] = "TWICE_DEAD", "restart failed: %s" % out[:120]
         alarms.append({"kind": kind, "why": "arm %s: the one restart failed: %s" % (arm, out),
                        "first": "Replay arm %s is down and its restart failed: relaunch by hand." % arm})
+    try:
+        with open(Path(cfg["replay"]) / "launcher.log", "a", encoding="utf-8") as f:
+            f.write("%s WATCH RESTART %s %s: %s\n" % (
+                time.strftime("%Y-%m-%dT%H:%M:%S%z", time.localtime(now)), arm, "launched" if ok else "FAILED",
+                a["why"][:200].replace("\n", " ")))
+    except OSError:
+        pass                              # the record of a restart must not cost its alarm or the other arms
 
 
 def tick(cfg=None, world=None, dry=False):

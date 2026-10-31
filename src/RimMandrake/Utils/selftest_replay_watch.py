@@ -213,6 +213,13 @@ def test_failed_restart():
     ok(r["trio"]["state"] == "TWICE_DEAD" and len(a) == 1 and "FAILED" in (c.rp / "launcher.log").read_text(),
        "a failed restart alarms")
     c.close()
+    c = Case()
+    c.w.launch_ok = False
+    (c.rp / "launcher.log").mkdir()
+    c.failed("trio", result="signal", status=9)
+    r, a = c.tick()
+    ok(len(a) == 1 and len(c.w.notes) == 1, "an unwritable launcher.log does not cost the alarm")
+    c.close()
 
 
 def test_pages():
@@ -640,6 +647,17 @@ def test_board():
     p.write_text("# someone rewrote it\n", encoding="utf-8")
     c.tick()
     ok(p.read_text(encoding="utf-8") == "# someone rewrote it\n", "no Trial table: the board is left alone")
+    c.close()
+
+
+def test_no_runner_json():
+    c = Case()
+    c.up("v3")
+    r, _ = c.tick()
+    ok(r["v3"]["done"] == 0, "no runner.json yet is 0 done")
+    (c.rp / "ctl" / "v3" / "runner.json").write_text("{torn")
+    r, _ = c.tick()
+    ok(r["v3"]["done"] is None, "a torn runner.json is unknown")
     c.close()
 
 
