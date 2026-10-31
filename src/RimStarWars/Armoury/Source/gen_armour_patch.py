@@ -405,27 +405,48 @@ def replace(fn, mod, comment, defpath, xpath, tag, value):
         "        </li>" + NL))
 
 
-def set_block(fn, mod, comment, defpath, parent_xpath, tag, inner):
-    """Like set_field, but for a whole child element rather than one value.
+def children_xml(parent_xpath, tag, items):
+    """Set some children of a block element, as patch text (LEATHERFACTORS_FIX_KEEP_OWN_STATS).
 
-    Replace when the block exists, Add when it does not, decided at load. The
-    offline check this replaced was wrong for at least one def and produced a
-    duplicate sibling node; see the leather section for the full account.
+    When <tag> exists, each child in `items` is set ONE BY ONE (Replace when that child exists, Add into <tag> when not),
+    so every child the def declares and we do not name -- a leather's own MaxHitPoints, Flammability, ... -- survives.
+    Replacing the whole block wiped them (Leather_Thrumbo MaxHitPoints 2.0 -> 1.3 inherited from LeatherBase). When <tag>
+    is absent, the block is added whole: nothing local to keep, and XML inheritance still merges the parent's children.
+    Pure text, no module state: selftest_leather_factors.py renders it to check the shipped file is in this form.
     """
-    block = ("            <%s>" % tag) + NL + inner + ("            </%s>" % tag) + NL
+    block_path = "%s/%s" % (parent_xpath, tag)
+    block = ("            <%s>" % tag) + NL + "".join(
+        "              <%s>%s</%s>%s" % (n, v, n, NL) for n, v in items) + ("            </%s>" % tag) + NL
+    out = ['        <li Class="PatchOperationConditional">' + NL,
+           "          <xpath>%s</xpath>" % block_path + NL,
+           '          <match Class="PatchOperationSequence">' + NL,
+           "            <operations>" + NL]
+    for n, v in items:
+        out += ['              <li Class="PatchOperationConditional">' + NL,
+                "                <xpath>%s/%s</xpath>" % (block_path, n) + NL,
+                '                <match Class="PatchOperationReplace">' + NL,
+                "                  <xpath>%s/%s</xpath>" % (block_path, n) + NL,
+                "                  <value><%s>%s</%s></value>" % (n, v, n) + NL,
+                "                </match>" + NL,
+                '                <nomatch Class="PatchOperationAdd">' + NL,
+                "                  <xpath>%s</xpath>" % block_path + NL,
+                "                  <value><%s>%s</%s></value>" % (n, v, n) + NL,
+                "                </nomatch>" + NL,
+                "              </li>" + NL]
+    out += ["            </operations>" + NL,
+            "          </match>" + NL,
+            '          <nomatch Class="PatchOperationAdd">' + NL,
+            "            <xpath>%s</xpath>" % parent_xpath + NL,
+            "            <value>" + NL + block + "            </value>" + NL,
+            "          </nomatch>" + NL,
+            "        </li>" + NL]
+    return "".join(out)
+
+
+def set_children(fn, mod, comment, defpath, parent_xpath, tag, items):
+    """Queue children_xml for one def: sets the named children, keeps the rest."""
     ops[fn][mod or "?"].append((defpath,
-        "        <!-- %s -->" % comment + NL +
-        '        <li Class="PatchOperationConditional">' + NL +
-        "          <xpath>%s/%s</xpath>" % (parent_xpath, tag) + NL +
-        '          <match Class="PatchOperationReplace">' + NL +
-        "            <xpath>%s/%s</xpath>" % (parent_xpath, tag) + NL +
-        "            <value>" + NL + block + "            </value>" + NL +
-        "          </match>" + NL +
-        '          <nomatch Class="PatchOperationAdd">' + NL +
-        "            <xpath>%s</xpath>" % parent_xpath + NL +
-        "            <value>" + NL + block + "            </value>" + NL +
-        "          </nomatch>" + NL +
-        "        </li>" + NL))
+        "        <!-- %s -->" % comment + NL + children_xml(parent_xpath, tag, items)))
 
 
 def set_field(fn, mod, comment, defpath, parent_xpath, tag, value):
@@ -748,13 +769,13 @@ for rec in ds.of_type("ThingDef"):
     # ever replaced and skipped anything missing the node, this one only ever
     # added and duplicated anything that had it. The conditional decides at load
     # and is right either way, so the offline guess is removed entirely.
-    set_block("Armour_Leather.xml", rec.modName,
-              "%s : %s" % (dn, why),
-              '/Defs/ThingDef[defName="%s"]' % dn,
-              '/Defs/ThingDef[defName="%s"]/stuffProps' % dn,
-              "statFactors",
-              "".join("              <%s>%.2f</%s>%s" % (name, prof[i], name, NL)
-                      for name, i in FACTORS))
+    # Per child, not the whole block (LEATHERFACTORS_FIX_KEEP_OWN_STATS): a hide's own MaxHitPoints/Flammability stay.
+    set_children("Armour_Leather.xml", rec.modName,
+                 "%s : %s" % (dn, why),
+                 '/Defs/ThingDef[defName="%s"]' % dn,
+                 '/Defs/ThingDef[defName="%s"]/stuffProps' % dn,
+                 "statFactors",
+                 [(name, "%.2f" % prof[i]) for name, i in FACTORS])
 
 # ========================================================== emit
 # A blind input (no armour tier matched, no leather found, no animals.csv) must not be written
