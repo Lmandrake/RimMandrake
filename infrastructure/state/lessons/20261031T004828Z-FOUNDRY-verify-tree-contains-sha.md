@@ -1,0 +1,2 @@
+A verify run must first prove the tree it imports contains the sha under test (git merge-base --is-ancestor <sha> HEAD in that clone, recorded in the result). ARENA_JUDGE_PROXY_ENV_REACHES_CODEX run-1 failed only because bench's tree at call time (fb3c8a8c1c) predated the fix 33f1264c68 by 11 s; it cost a FOUNDRY investigation. Also: WSLENV NAME/u does NOT export WSL->Windows (/u is Win32->WSL only), so a /u entry is not a leak route.
+home: skills/live-debugging-proof-harness
