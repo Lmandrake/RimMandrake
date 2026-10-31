@@ -1,0 +1,2 @@
+Real arena_analysis on the anchor ledger (2026-10-31, after ARENA spend/dq_tester fixes 15f6beef5f/038c825730/bae13354d9/4ec9fb3e67) still exits 3 UNMEASURED for two causes outside those items: (1) arms trio and ralph_c have event logs but are not in the roster, so they are untrusted and their spend is overhead; (2) dq v3 publish VIOLATED: published_without_gate on 6f42eca (17:04:33Z). Evidence: D:\ClaudeWork\rimmandrake\arena_fix3\post_an.json. Whoever owns the roster / publish gate must decide whether either is a real defect before a verdict is read.
+home: NONE
