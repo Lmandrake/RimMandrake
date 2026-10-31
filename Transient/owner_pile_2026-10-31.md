@@ -1,13 +1,15 @@
 # What still needs you, 31 October 2026
 
-Ten decisions, most useful first. The first two free the most water and machinery (FlowWorks) work.
-A one-line answer in chat is enough for any of them, for example "1: option 1, 4: keep all but Shiro".
+Ten decisions, most useful first. Entries 1 and 2 are answered; eight are still open, from entry 3 on.
+A one-line answer in chat is enough for any of them, for example "4: keep all but Shiro".
 
 Twelve other questions were cleared without you and are listed at the end.
 
 ---
 
 ## 1. Accept the small stutters left in the water machinery?
+
+**ANSWERED 31 October: accept as they stand.** The three jobs are closed. The speed and no-pause limits on them no longer apply.
 
 **The question.** Three performance jobs have hit their floor. Should we accept what is left and move on?
 
@@ -29,6 +31,8 @@ Twelve other questions were cleared without you and are listed at the end.
 ---
 
 ## 2. One sitting for everything that must be seen in the game?
+
+**ANSWERED 31 October: one sitting from one new save.** The save job now lists all five looks, with stations numbered and packed close. It still has to be built.
 
 **The question.** Five things can only be judged by looking at them in play. Do you want them in one sitting from one save?
 - Timber and steel drawbridges.
