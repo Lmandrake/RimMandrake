@@ -1,0 +1,2 @@
+git grep -o -w -F with many -e patterns over a commit tree is ~25x slower than one PCRE alternation: on this repo (38.8k files, 9 identifiers) -F -w -o took 45 s, -l -w -F 3.7 s, -q per name ~1.6 s each (no early-exit win), and git grep -o -h -I -P '\b(?:a|b|c)\b' <sha> took 1.7 s for all names at once. Use the -P alternation for 'which of these names exist at <sha>' lookups (arena_reader_pass name_lookup).
+home: git-efficiency

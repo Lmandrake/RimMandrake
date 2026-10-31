@@ -38,15 +38,20 @@ def git(repo, *a):
                                    GIT_COMMITTER_EMAIL="t@t")).stdout.strip()
 
 
-def fixture(d):
+OLD_TEST = "from tool import f, base_helper\nOLD_HELPER_LINE = base_helper()\n"
+
+
+def fixture(d, extra=False):
     repo = Path(d, "repo")
     (repo / "src").mkdir(parents=True)
     git(repo, "init", "-q")
-    (repo / "src/tool.py").write_text("def f():\n    return 1\n")
+    (repo / "src/tool.py").write_text("def f():\n    return 1\n\ndef base_helper():\n    return 0\n")
+    (repo / "src/selftest_old.py").write_text(OLD_TEST)
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "base")
     base = git(repo, "rev-parse", "HEAD")
-    (repo / "src/tool.py").write_text("def f():\n    return _private_two()\n\ndef _private_two():\n    return 2\n")
+    (repo / "src/tool.py").write_text("def f():\n    return _private_two()\n\ndef _private_two():\n    return 2\n"
+                                      "\ndef base_helper():\n    return 0\n\ndef named_new_api():\n    return 3\n")
     (repo / "src/selftest_tool.py").write_text("from tool import f\nassert f() == 2\n")
     git(repo, "add", "-A")
     git(repo, "commit", "-q", "-m", "fix: f returns 2")
@@ -56,14 +61,15 @@ def fixture(d):
         Path(p[k]).mkdir(parents=True)
     vet = []
 
-    def task(tid, checks, unscored=False):
+    def task(tid, checks, unscored=False, prompt="make f return 2", body=None):
         Path(p["tasks"], tid + ".json").write_text(json.dumps({
-            "id": tid, "source_item": tid[3:], "kind": "python-util", "prompt": "PROMPT-%s: make f return 2" % tid,
+            "id": tid, "source_item": tid[3:], "kind": "python-util", "prompt": "PROMPT-%s: %s" % (tid, prompt),
             "criteria": "CRITERIA-%s" % tid, "base_sha": base}))
         cs = []
         for i, (path, tail) in enumerate(checks):
             key = "%s-%d" % (tid, i)
-            cs.append({"type": "fix_test", "path": path, "body": "BODY-%s-%d\nassert f() == 2\n" % (tid, i),
+            cs.append({"type": "fix_test", "path": path,
+                       "body": body if body is not None else "BODY-%s-%d\nassert f() == 2\n" % (tid, i),
                        "command": "python3 " + path, "vet": {"key": key, "discriminates": True}})
             if tail is not None:
                 vet.append({"key": key, "base_tail": tail, "base_result": "fail"})
@@ -77,6 +83,14 @@ def fixture(d):
     task("RP_ALLUN", [("src/selftest_c.py", "tail c")])
     task("RP_DROP", [("src/selftest_d.py", "tail d")])
     task("RP_NOTAIL", [("src/selftest_e.py", None)])
+    if extra:
+        # an EXISTING test file gaining one new assertion that uses a base name, a fix name the task gives
+        # (named_new_api) and a fix name it does not (_private_two)
+        task("RP_OLD", [("src/selftest_old.py", "tail old")], prompt="add named_new_api and make f return 2",
+             body=OLD_TEST + "from tool import _private_two, named_new_api\nassert f() == _private_two() + base_helper()"
+                             "\nassert named_new_api() == 3\n")
+        task("RP_LSCRUB", [("src/selftest_old.py", "tail ls")], prompt="fix the fake in selftest_old.py",
+             body=OLD_TEST + "assert True\n")
     Path(p["tasks"], "RP_NOHIDDEN.json").write_text(json.dumps({"id": "RP_NOHIDDEN", "source_item": "NOHIDDEN"}))
     A.vet_cache_path(p).write_text("".join(json.dumps(r) + "\n" for r in vet))
     return p, repo
@@ -88,6 +102,24 @@ PLAN = {"RP_KEEP": {"src/selftest_tool.py": "KEEP"},
         "RP_DROP": {"src/selftest_d.py": "DROP_TASK"}}
 
 
+def row(path, verdict, **kw):
+    """A stub reader row: fair answers for KEEP, a coupled answer otherwise; kw overrides."""
+    k = verdict == "KEEP"
+    r = {"path": path, "tests_task": k, "solvable_from_text": k, "coupled": not k,
+         "coupled_names": [] if k else ["_private_two"], "self_overwrite": False, "partial_legs": False,
+         "brittle_format": False, "format_stated": False, "verdict": verdict, "reason": "stub " + verdict}
+    r.update(kw)
+    return r
+
+
+def refused(reply, pk):
+    try:
+        R.validate_reply(reply, pk)
+        return False
+    except R.ReaderError:
+        return True
+
+
 class Stub:
     def __init__(self, plan=PLAN, bad=()):
         self.plan, self.bad, self.calls = plan, set(bad), []
@@ -95,13 +127,78 @@ class Stub:
     def __call__(self, prompt):
         tid = next(t for t in self.plan if ("PROMPT-%s:" % t) in prompt)
         self.calls.append(tid)
-        rows = [{"path": pa, "tests_task": v == "KEEP", "solvable_from_text": v == "KEEP", "coupled": v != "KEEP",
-                 "coupled_names": [] if v == "KEEP" else ["_private_two"], "verdict": v, "reason": "stub " + v}
-                for pa, v in self.plan[tid].items()]
+        rows = [row(pa, v) for pa, v in self.plan[tid].items()]
         if tid in self.bad:
             rows[0]["verdict"] = "KEEP"
             rows[0]["coupled"] = True                 # KEEP contradicting (b): must be refused
         return "Here you go:\n```json\n" + json.dumps({"checks": rows}) + "\n```\n", "stub"
+
+
+def rules_v2():
+    """The five audit fixes (ARENA_READER_FIX_COUPLED_VETO_TOO_EAGER, ARENA_READER_FIX_KEEPS_THE_SELF_OVERWRITE)."""
+    with tempfile.TemporaryDirectory() as d:
+        p, repo = fixture(d, extra=True)
+        pk = R.build_packet("RP_OLD", p, repo)
+        c = pk["checks"][0]
+        pr = R.render_prompt(pk)
+        P = "src/selftest_old.py"
+        # rule 2: base-vs-fix test diff + base-name lookup; old lines are not new assertions
+        check(not c["new_file"] and "+assert named_new_api() == 3" in c["test_diff"]
+              and "+OLD_HELPER_LINE" not in c["test_diff"] and " OLD_HELPER_LINE = base_helper()" in c["test_diff"],
+              "rule 2: test diff marks only the fix's new lines '+' (old lines are context)")
+        nm = c["names"]
+        check("base_helper" in nm["at_base"] and "_private_two" in nm["fix_only"] and "named_new_api" in nm["fix_only"]
+              and "OLD_HELPER_LINE" not in nm["at_base"] + nm["fix_only"],
+              "rule 2: name lookup: base name at_base, fix names fix_only, old-line names not looked up (%s)" % nm)
+        check(nm["fix_only_unnamed"] == ["_private_two"],
+              "rule 2: a fix name the task text gives is not unnamed (%s)" % nm["fix_only_unnamed"])
+        check("--- test diff" in pr and "at_base: " in pr and "_private_two" in pr.split("fix_only_unnamed: ")[1][:80],
+              "rule 2: the prompt shows the test diff and the name lookup")
+        check(R.build_packet("RP_KEEP", p, repo)["checks"][0]["new_file"] and "(new file:" in
+              R.render_prompt(R.build_packet("RP_KEEP", p, repo)), "rule 2: a check file new at the fix is flagged new")
+        pk_s = dict(pk, checks=[dict(c, body=c["body"] + "#x\n")])
+        check(R.packet_sha(pk_s) != R.packet_sha(pk), "packet sha moves with the check (verdicts are re-read)")
+        # rule 3: fairness test says "working in that repo"
+        check("working in that repo" in pr and "may read" in pr, "rule 3: fairness test is 'working in that repo'")
+        # rule 1: at-base names are not coupling; fix-introduced unnamed names keep the veto
+        ok_keep = {"checks": [row(P, "KEEP", coupled_names=["base_helper"])]}
+        check(not refused(ok_keep, pk), "rule 1: KEEP citing only an at-base name is accepted")
+        check(refused({"checks": [row(P, "KEEP", coupled_names=["_private_two"])]}, pk),
+              "rule 1: KEEP citing a fix-introduced name the task never gives is refused")
+        check(refused({"checks": [row(P, "KEEP", coupled=True)]}, pk),
+              "rule 1: veto kept: KEEP with coupled=true (TRANSIENT_PIN: solvable is not enough) is refused")
+        check(not refused({"checks": [row(P, "UNSCORE_CHECK", coupled=True)]}, pk),
+              "rule 1: UNSCORE with coupled=true is accepted")
+        check("INTRODUCED BY THE FIX" in pr and "NOT coupling" in pr, "rule 1: prompt redefines coupling")
+        # rule 4: self-overwrite (LSCRUB) and one-leg-of-many (ARTPIPE)
+        pl = R.build_packet("RP_LSCRUB", p, repo)
+        check(pl["checks"][0]["check_named_in_task"] and not c["check_named_in_task"],
+              "rule 4: packet flags a check file the task text names")
+        check(refused({"checks": [row(P, "KEEP", self_overwrite=True)]}, pl),
+              "rule 4: KEEP of a check whose file holds the requested work is refused")
+        check(refused({"checks": [row(P, "KEEP", partial_legs=True)]}, pk),
+              "rule 4: KEEP of a check testing one leg of a multi-leg task is refused")
+        check(not refused({"checks": [row(P, "DROP_TASK", self_overwrite=True)]}, pl),
+              "rule 4: DROP_TASK for a self-overwrite is accepted")
+        check("self_overwrite" in pr and "partial_legs" in pr and "REPLACES" in pr, "rule 4: prompt asks both")
+        # rule 5: brittle output format
+        check(refused({"checks": [row(P, "KEEP", brittle_format=True)]}, pk),
+              "rule 5: KEEP of a brittle format neither stated nor the repo's convention is refused")
+        check(not refused({"checks": [row(P, "KEEP", brittle_format=True, format_stated=True)]}, pk),
+              "rule 5: KEEP of a format the task states (or the repo already uses) is accepted")
+        check(not refused({"checks": [row(P, "UNSCORE_CHECK", brittle_format=True)]}, pk),
+              "rule 5: UNSCORE of a brittle format is accepted")
+        check("brittle_format" in pr and "convention" in pr, "rule 5: prompt asks about output format")
+        bad = row(P, "KEEP")
+        del bad["partial_legs"]
+        check(refused({"checks": [bad]}, pk), "a row missing a v2 answer is refused")
+        rows = R.validate_reply(ok_keep, pk)
+        check(all(k in rows[0] for k in R.BOOL_FIELDS), "verdict rows carry every v2 answer")
+        cache = R.results_dir(p).parent / R.NAME_CACHE
+        n = len(cache.read_text().splitlines())
+        R.build_packet("RP_OLD", p, repo)
+        check(n >= 1 and len(cache.read_text().splitlines()) == n and R.build_packet("RP_OLD", p, repo) == pk,
+              "name lookups are cached and stable (%d lines)" % n)
 
 
 def main():
@@ -185,6 +282,8 @@ def main():
             check(A._inside(tgt, Path(p["freeze"]).parent) and not any(
                 A._inside(tgt, r) for r in (p["tasks"], p["events"])),
                 "default output %s is judge-only (not under tasks/ or events/)" % tgt.relative_to(p["root"]))
+
+    rules_v2()
 
     def boom(pr):
         raise R.ReaderError("no login")
