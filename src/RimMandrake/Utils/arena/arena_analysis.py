@@ -11,8 +11,9 @@ design/RimMandrake/architecture_switch_harness_2026-10-29.md section 4.1 (rule),
 
 Prints one JSON report: a verdict per 5-task block and a final verdict, each one of
     DECIDE_FOR_X | FUTILE(X) | TIE(simpler wins) | CONTINUE | DISQUALIFIED(X, reason) | HARD_CAP_PICK(X)
-    | HARD_CAP_NO_DIFFERENCE(control stays) | UNMEASURED(reason)
+    | HARD_CAP_NO_DIFFERENCE(control stays) | CUT_SHORT_UNDECIDED(trial cut before the newest era) | UNMEASURED(reason)
 plus per-arm intervals and every disqualification condition as VIOLATED / CLEAN / VACUOUS / UNMEASURED.
+Exit status: 0 a verdict, 3 UNMEASURED, 4 CUT_SHORT_UNDECIDED (the trial ended before the newest era was compared).
 
 WHAT IT READS (only fields some harness code writes, or the section 1.7 schema names):
   - the per-arm event logs. Default: arena_eventlog.report()+verify() (signed, anchored); an arm the report refuses,
@@ -93,7 +94,12 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
     with P(accept[control] - accept[X] >= HARDCAP_ACCEPT_MARGIN=0.10) < HARDCAP_ACCEPT_P=0.2 AND P(accepted points
     per token X < HARDCAP_EFF_RATIO=0.9 x control) < HARDCAP_EFF_P=0.2 (both strict) and no non-exempt UNMEASURED
     disqualification check: HARD_CAP_PICK, detail.winner = X. None qualifies: HARD_CAP_NO_DIFFERENCE, detail.winner
-    = the control (the control stays). Every candidate's two probabilities and 90% intervals are in detail.candidates,
+    = the control (the control stays). CUT SHORT (ARENA_CUT_TRIAL_FIX_SAYS_NO_DIFFERENCE): when the trial ends with
+    the control, or every other kept arm, short of the newest era, the verdict is CUT_SHORT_UNDECIDED (detail.winner
+    None): nothing was compared on the newest era, so "no difference" would be false. An arm short of the newest era
+    (cut or silent) is skipped by the final look, which runs on the arms that finished; it never blocks their look.
+    The wall clock is never read, so a stuck arm leaves the trial CONTINUE until the driver re-runs with --final at the
+    end of its budget (the driver MUST do so). Every candidate's two probabilities and 90% intervals are in detail.candidates,
     the per-arm intervals alongside. A futile arm is a candidate, on its frozen data.
   - CONTROL: a decision, TIE or hard-cap pick needs the control. The first block (with two or more arms in
     contention) at which the control is absent or already disqualified stops the trial UNMEASURED and carries no
@@ -222,6 +228,7 @@ CONTROL = "v3"
 # split into ERAS chronological bins by their `chrono` key; no decision before every arm in contention has completed
 # every task of the newest bin
 ERAS = 3
+CUT_SHORT = "CUT_SHORT_UNDECIDED"   # the trial ended before the newest era was compared: no verdict on it
 TRIAL_DEFAULT = HERE / "trial_tasks.json"   # the committed trial population (arena_trial.py build)
 
 # ---------------------------------------------------------------- priors (weak, centred on the simulator)
@@ -1301,24 +1308,43 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
         # hard cap, a silent dead arm) is never decided on its older prefix: it falls to the hard-cap clause, in
         # which an arm short of the newest era is not a candidate.
         miss = newest_era_missing(snap, keep, newest)
-        fresh = last_look is None or any(len(snap[a]) != last_look.get(a) for a in live)
-        if miss:
-            fin["final_look"] = {"ran": False, "why": "the newest era has not run for every arm: no look on older "
-                                 "tasks alone", "newest_era_missing": miss}
+        # an arm short of the newest era (cut, or gone silent) is SKIPPED by the final look, never a reason to skip
+        # the look for the arms that finished (ARENA_CUT_TRIAL_FIX_SAYS_NO_DIFFERENCE: one dead arm used to block it)
+        seen = [a for a in keep if a not in miss]
+        live_seen = [a for a in live if a not in miss]
+        cut = control in miss or not any(a != control for a in seen)
+        fresh = (last_look is None or set(last_look) != set(seen)
+                 or any(len(snap[a]) != last_look.get(a) for a in seen))
+        if cut:
+            fin["final_look"] = {"ran": False, "why": "the %s has not completed the newest era: no look on older "
+                                 "tasks alone" % ("control" if control in miss else "every other arm"),
+                                 "newest_era_missing": miss}
         elif not fresh:
             fin["final_look"] = {"ran": False, "why": "the last block already applied the rule to exactly this data"}
         else:
-            fprobs = rule_probs(post, live, keep, control)
-            fl = rule_verdict(fprobs, control in keep, blocked)
+            fprobs = rule_probs(post, live_seen, seen, control)
+            fl = rule_verdict(fprobs, control in seen, blocked)
             fin["final_look"] = {"ran": True, "rule_verdict": fl[0], "detail": fl[1], "probs": fprobs,
-                                 "newest_era_missing": {}}
+                                 "arms": seen, "newest_era_missing": miss}
+            if miss:
+                fin["final_look"]["skipped_short"] = sorted(miss)
         win, pick = hardcap_pick(post, keep, control, blocked, miss)
         if miss:
             pick = dict(pick, newest_era_missing=miss)
-        if fl is not None and held_kind(fl[0]):
+        if cut:
+            # a cut trial is UNDECIDED, never "no difference": the control, or every arm compared with it, never ran
+            # the newest era, so nothing was compared on the population the rule is defined over
+            # (ARENA_CUT_TRIAL_FIX_SAYS_NO_DIFFERENCE; was HARD_CAP_NO_DIFFERENCE, winner = the control)
+            fin["verdict"] = CUT_SHORT
+            fin["detail"] = dict(pick, winner=None, why="the trial ended (%s) before %s completed the newest era: "
+                                 "no comparison was made on it, so there is no decision, no pick and no 'no "
+                                 "difference'; run the newest era (or rerun) to decide" %
+                                 (cap, "the control" if control in miss else "any arm besides the control"))
+        elif fl is not None and held_kind(fl[0]):
             fin["verdict"] = fl[0]
-            fin["detail"] = dict(fl[1], final_look=True, why_final_look="the final look (%s) decides on all data, "
-                                 "the newest era in for every arm" % cap)
+            fin["detail"] = dict(fl[1], final_look=True, why_final_look="the final look (%s) decides on all data "
+                                 "of the arms %s, the newest era in for each%s" % (
+                                     cap, seen, "; skipped (newest era not run): %s" % sorted(miss) if miss else ""))
         elif pick["picked"]:
             fin["verdict"] = "HARD_CAP_PICK"
             fin["detail"] = dict(pick, winner=win, why="nothing fired by the hard cap (%s): %s is the simplest arm "
@@ -1327,11 +1353,17 @@ def analyse(arm_logs, tasks, spend, *, seed=SEED, draws=DRAWS, hard_cap=None, fi
             fin["verdict"] = "HARD_CAP_NO_DIFFERENCE"
             fin["detail"] = dict(pick, winner=control, why="nothing fired by the hard cap (%s) and no simpler arm "
                                  "qualifies: the control stays" % cap)
+            if miss:
+                fin["detail"]["not_judged"] = sorted(miss)
+                fin["detail"]["why"] += ("; arm(s) %s never completed the newest era and were not judged"
+                                         % sorted(miss))
     else:
         fin["verdict"] = "CONTINUE"
         nxt = min(BLOCK * k, len(trial)) if trial else BLOCK * k
         fin["detail"] = {"next_block_tasks_per_arm": nxt, "in_contention": contention,
-                         "waiting_for": sorted(a for a in live if len(data[a]) < nxt)}
+                         "waiting_for": sorted(a for a in live if len(data[a]) < nxt),
+                         # the wall clock is never read: a stuck arm keeps this CONTINUE until the driver ends it
+                         "end_of_budget": "the driver must re-run with --final at the end of the budget"}
     if late_dq:
         fin["verdict_note"] = "arm(s) %s violated a condition after the last complete block" % late_dq
     rep["final"] = fin
@@ -1374,7 +1406,7 @@ def main(argv=None):
     r.add_argument("--era-repo", help="git repo holding the tasks' base shas, for their chronology (default %s)" % A.REPO)
     r.add_argument("--allow-untrusted", action="store_true")
     r.add_argument("--hard-cap", help="ISO-8601 with zone: end of day 3")
-    r.add_argument("--final", action="store_true", help="the hard cap has passed: report no-difference if unseparated")
+    r.add_argument("--final", action="store_true", help="the budget has ended: final look and hard-cap clause now (CUT_SHORT_UNDECIDED if the newest era was not compared); the driver must pass this at the end of the budget")
     r.add_argument("--seed", type=int, default=SEED)
     r.add_argument("--draws", type=int, default=DRAWS)
     r.add_argument("--claude-ite-scale", type=float, default=CLAUDE_ITE_SCALE)
@@ -1443,7 +1475,8 @@ def main(argv=None):
     if a.out:
         Path(a.out).write_text(text + "\n", encoding="utf-8")
     print(json.dumps(rep["final"], indent=1, sort_keys=True, default=str))
-    return 0 if not rep["final"]["verdict"].startswith("UNMEASURED") else 3
+    v = rep["final"]["verdict"]
+    return 3 if v.startswith("UNMEASURED") else 4 if v == CUT_SHORT else 0
 
 
 if __name__ == "__main__":

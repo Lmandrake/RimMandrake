@@ -1193,14 +1193,18 @@ def t_era_gate():
           r["final"]["verdict"] == "CONTINUE" and "DECIDE_FOR" not in json.dumps(
               [x["verdict"] for x in r["blocks"]]), (r["final"]["verdict"], [x["verdict"] for x in r["blocks"]]))
     r = run_part(tasks, 15, final=True)
-    check("FORCED (ARENA_FINAL_LOOK_FIX_UNGATED_AT_CAP): --final with the newest era never run -> the final look does "
-          "not run, no DECIDE; the hard cap skips every arm (the control lacks the newest era) and the control stays",
+    check("FORCED (ARENA_FINAL_LOOK_FIX_UNGATED_AT_CAP, ARENA_CUT_TRIAL_FIX_SAYS_NO_DIFFERENCE): --final with the "
+          "newest era never run -> the final look does not run, no DECIDE, every arm skipped, and the verdict is "
+          "CUT_SHORT_UNDECIDED with no winner (was HARD_CAP_NO_DIFFERENCE, winner v3)",
           not r["final"]["verdict"].startswith("DECIDE") and r["final"].get("final_look", {}).get("ran") is False
-          and r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE"
+          and r["final"]["verdict"] == AA.CUT_SHORT and r["final"]["detail"].get("winner") is None
           and all("skipped" in c for c in r["final"]["detail"].get("candidates", [])),
           (r["final"]["verdict"], r["final"].get("final_look")))
     eq = {"trio": (1.0, all_acc, 0.8), "v3": (1.0, all_acc, 0.8)}
     r = run_part(tasks, 15, final=True, arms=eq)
+    check("FORCED (CUT_TRIAL): equal arms cut before the newest era, --final -> CUT_SHORT_UNDECIDED, never a "
+          "hard-cap verdict", r["final"]["verdict"] == AA.CUT_SHORT, r["final"]["verdict"])
+    r = run_part(tasks, 20, final=True, arms=eq)
     check("final look with nothing decisive falls to the hard-cap clause",
           r["final"]["verdict"].startswith("HARD_CAP") and "final_look" not in r["final"]["detail"],
           r["final"]["verdict"])
@@ -1244,8 +1248,8 @@ def t_stop_gate_fixes():
           (r["final"]["verdict"], r["final"].get("final_look")))
     r = run_part(t30, 15, final=True, arms={"ralph_a": (4.0, all_acc, 0.1), "trio": (0.9, all_acc, 0.1),
                                             "v3": (1.0, all_acc, 0.1)})
-    check("FORCED (FUTILE gate): loser + trio, 15 of 30, --final -> no FUTILE drop, no pick on older tasks alone",
-          not r["final"].get("futile") and r["final"]["verdict"] == "HARD_CAP_NO_DIFFERENCE",
+    check("FORCED (FUTILE gate, CUT_TRIAL): loser + trio, 15 of 30, --final -> no FUTILE drop, no pick on older "
+          "tasks alone, CUT_SHORT_UNDECIDED", not r["final"].get("futile") and r["final"]["verdict"] == AA.CUT_SHORT,
           (r["final"]["verdict"], r["final"].get("futile")))
     # a dead arm: trio stops at 15 of 20 tasks (newest era T014..T019 never run), v3 and v3c finish
     tasks = make_tasks(20, chrono=lambda i: i)
@@ -1258,9 +1262,11 @@ def t_stop_gate_fixes():
         spend[arm] = spend_for((t, math.exp(base[t] + rng.gauss(0, 0.1)) * fac) for t in ids[:n])
     r = AA.analyse(logs, tasks, spend, draws=DRAWS, final=True)
     cands = {c["arm"]: c for c in r["final"].get("detail", {}).get("candidates", [])}
-    check("FORCED (FINAL_LOOK): a dead arm (trio stopped before the newest era) is never decided for, and the hard cap "
-          "skips it", r["final"]["verdict"] != "DECIDE_FOR_trio" and r["final"].get("detail", {}).get("winner") != "trio"
-          and "skipped" in cands.get("trio", {}),
+    check("FORCED (FINAL_LOOK): a dead arm (trio stopped before the newest era) is never decided for: the hard cap "
+          "skips it and the final look runs without it (CUT_TRIAL: it no longer blocks the look for v3, v3c)",
+          r["final"]["verdict"] != "DECIDE_FOR_trio" and r["final"].get("detail", {}).get("winner") != "trio"
+          and r["final"].get("final_look", {}).get("skipped_short") == ["trio"]
+          and (r["final"].get("final_look", {}).get("ran") or "skipped" in cands.get("trio", {})),
           (r["final"]["verdict"], r["final"].get("detail", {}).get("winner"), cands.get("trio")))
     t22 = make_tasks(22, chrono=lambda i: i)
     r = run_part(t22, 22)
@@ -1288,13 +1294,63 @@ def t_stop_gate_fixes():
           r["era_gate"].get("held_blocks"))
 
 
+def _dead_arm(tasks, arms):
+    """arms: ((arm, token factor, tasks completed), ...): each arm runs the first n tasks (oldest first), all accepted."""
+    ids = sorted(tasks)
+    rng = random.Random(7)
+    base = {t: math.log(1e5) + rng.gauss(0, 1.0) for t in ids}
+    logs, spend = {}, {}
+    for j, (arm, fac, n) in enumerate(arms):
+        logs[arm] = {"recs": arm_log(arm, [(t, True) for t in ids[:n]], offset=j * 7)}
+        spend[arm] = spend_for((t, math.exp(base[t] + rng.gauss(0, 0.1)) * fac) for t in ids[:n])
+    return logs, spend
+
+
+def t_cut_trial():
+    """ARENA_CUT_TRIAL_FIX_SAYS_NO_DIFFERENCE: a cut trial is UNDECIDED; a dead arm is skipped, not a blocker."""
+    n = 20
+    tasks = make_tasks(n, chrono=lambda i: i)
+    cut = n * 3 // 4                                         # every arm stuck before the newest era
+    logs, spend = _dead_arm(tasks, (("trio", 1.0, cut), ("v3", 1.0, cut), ("v3c", 1.0, cut)))
+    r = AA.analyse(logs, tasks, spend, draws=DRAWS)
+    check("stuck trial, no --final -> CONTINUE naming the end-of-budget duty (the wall clock is never read)",
+          r["final"]["verdict"] == "CONTINUE" and "--final" in r["final"]["detail"].get("end_of_budget", ""),
+          r["final"].get("detail"))
+    r = AA.analyse(logs, tasks, spend, draws=DRAWS, final=True)
+    check("FORCED: every arm stuck before the newest era, --final -> CUT_SHORT_UNDECIDED, winner None (was "
+          "HARD_CAP_NO_DIFFERENCE, winner v3)", r["final"]["verdict"] == AA.CUT_SHORT
+          and r["final"]["detail"].get("winner") is None and "HARD_CAP" not in r["final"]["verdict"],
+          (r["final"]["verdict"], r["final"]["detail"].get("winner")))
+    logs, spend = _dead_arm(tasks, (("trio", 1.0, n), ("v3", 1.0, cut), ("v3c", 1.0, n)))
+    r = AA.analyse(logs, tasks, spend, draws=DRAWS, final=True)
+    check("FORCED: the control alone stuck before the newest era, --final -> CUT_SHORT_UNDECIDED",
+          r["final"]["verdict"] == AA.CUT_SHORT and "control" in r["final"]["detail"].get("why", ""),
+          r["final"]["verdict"])
+    logs, spend = _dead_arm(tasks, (("ralph_a", 1.0, cut), ("trio", 0.25, n), ("v3", 1.0, n)))
+    r = AA.analyse(logs, tasks, spend, draws=DRAWS, final=True)
+    fl = r["final"].get("final_look", {})
+    check("FORCED: a dead arm (ralph_a stopped before the newest era) is skipped by the final look, which decides "
+          "for the arms that finished (was: the look did not run, HARD_CAP_PICK)",
+          r["final"]["verdict"] == "DECIDE_FOR_trio" and fl.get("ran") is True
+          and fl.get("skipped_short") == ["ralph_a"] and "ralph_a" not in fl.get("arms", []),
+          (r["final"]["verdict"], fl.get("ran"), fl.get("skipped_short")))
+    logs, spend = _dead_arm(tasks, (("ralph_a", 1.0, cut), ("trio", 1.0, n), ("v3", 1.0, n)))
+    r = AA.analyse(logs, tasks, spend, draws=DRAWS, final=True)
+    check("a dead arm next to two equal finished arms: never decided for; if the control stays, the report names the "
+          "arm not judged", r["final"]["verdict"] != "DECIDE_FOR_ralph_a"
+          and r["final"].get("detail", {}).get("winner") != "ralph_a"
+          and (r["final"]["verdict"] != "HARD_CAP_NO_DIFFERENCE"
+               or r["final"]["detail"].get("not_judged") == ["ralph_a"]),
+          (r["final"]["verdict"], r["final"].get("detail", {}).get("not_judged")))
+
+
 # ---------------------------------------------------------------- runner
 
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_final_r2, t_overflow_r2, t_spend_missing_field,
         t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
-        t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes)
+        t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
            ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
