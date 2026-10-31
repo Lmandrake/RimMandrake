@@ -124,7 +124,7 @@ def t_exclude():
     check("select over the deduped bank: N kept, no two of one commit", len(ids) == 30 and len(set(fx.values())) == 30)
 
     saved = (T.AA.load_tasks, T.AA.chrono_keys, T.hidden_fix_shas, T.A.load_pool_exclusions, T._source_items,
-             T.reader_exclusions_path)
+             T.reader_exclusions_path, T.hidden_scored_paths)
     with tempfile.TemporaryDirectory() as d:
         try:
             bb = bank(90)
@@ -143,13 +143,27 @@ def t_exclude():
             rx = Path(d, "rx.json")
             rx.write_text(json.dumps({"schema": T.READER_SCHEMA, "drop": {"B010": "no scored check left"},
                                       "unscore": {"B012": ["src/x/selftest_y.py"]}}))
+            T.hidden_scored_paths = lambda p=None: {t: ["src/x/selftest_y.py", "src/x/selftest_z.py"] for t in bb}
             doc = T.build(n=20, check=False, reader=rx)
             check("build: reader DROP leaves the task out", "B010" not in doc["tasks"] and "reader pass" in doc["left_out"]["B010"])
-            check("build: reader UNSCORE leaves the task out by default (judge cannot unscore yet)",
-                  "B012" not in doc["tasks"] and "unscored" in doc["left_out"]["B012"])
             check("build: B011 (sibling of dropped B010) takes the slot", "B011" not in doc["left_out"], doc["left_out"].get("B011"))
-            doc2 = T.build(n=20, check=False, reader=rx, allow_unscored=True)
-            check("build: --allow-unscored keeps an unscored task eligible", "B012" not in doc2["left_out"])
+            check("build: an UNSCORE in a file the judge does not read (explicit non-default path) leaves the task out",
+                  "B012" in doc["left_out"] and "does not read" in doc["left_out"]["B012"], doc["left_out"].get("B012"))
+            T.reader_exclusions_path = lambda p=None: rx
+            doc = T.build(n=20, check=False)
+            check("build: UNSCORE of one of two checks keeps the task (judge scores the other) (A2)",
+                  "B012" not in doc["left_out"] and doc["reader"]["unscore_kept"] == 1 and doc["reader"]["judge_honours"],
+                  doc["left_out"].get("B012"))
+            T.hidden_scored_paths = lambda p=None: {t: ["src/x/selftest_y.py"] for t in bb}
+            doc = T.build(n=20, check=False)
+            check("build: UNSCORE of every scored check still leaves the task out",
+                  "B012" in doc["left_out"] and "every scored" in doc["left_out"]["B012"], doc["left_out"].get("B012"))
+            T.hidden_scored_paths = lambda p=None: {}
+            doc = T.build(n=20, check=False)
+            check("build: an UNSCORE task with no hidden file fails closed (left out)", "B012" in doc["left_out"])
+            T.hidden_scored_paths = lambda p=None: {t: ["src/x/selftest_y.py", "src/x/selftest_z.py"] for t in bb}
+            check("build: the CLI has no --allow-unscored left", "--allow-unscored" not in Path(T.__file__).read_text())
+            T.reader_exclusions_path = lambda p=None: Path(d, "absent.json")
             check("build: N stays a parameter after exclusions", len(T.build(n=33, check=False, reader=rx)["tasks"]) == 33)
             T.reader_exclusions_path = lambda p=None: rx
             check("build: the default reader path is applied when present", T.build(n=20, check=False)["reader"]["drop"] == 1)
@@ -167,7 +181,14 @@ def t_exclude():
             check("build: --no-reader ignores it", T.build(n=20, check=False, reader=rx, use_reader=False)["reader"] is None)
         finally:
             (T.AA.load_tasks, T.AA.chrono_keys, T.hidden_fix_shas, T.A.load_pool_exclusions, T._source_items,
-             T.reader_exclusions_path) = saved
+             T.reader_exclusions_path, T.hidden_scored_paths) = saved
+    with tempfile.TemporaryDirectory() as d:
+        Path(d, "H1.json").write_text(json.dumps({"task": "H1", "fix_sha": "x", "checks": [
+            {"type": "fix_test", "path": "a.py"}, {"type": "fix_test_unscored", "path": "b.py"},
+            {"type": "fix_test", "path": "c.py"}]}))
+        Path(d, "bad.json").write_text("{")
+        check("hidden_scored_paths: scored fix_tests only, a torn file skipped",
+              T.hidden_scored_paths({"judge": Path(d)}) == {"H1": ["a.py", "c.py"]}, T.hidden_scored_paths({"judge": Path(d)}))
 
 
 def t_pool_exclusions_file():

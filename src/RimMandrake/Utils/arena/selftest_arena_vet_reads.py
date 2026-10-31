@@ -400,6 +400,45 @@ def t_wiring(tmp):
     check(now != other and now.startswith(A.VET_RUNNER + "@"), "vet runner id hashes arena_vet_reads.py")
 
 
+MODHOME = "src/Other/modhome"
+IMPORTS = '''import os, sys
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, os.path.join(REPO, "src", "Other", "modhome"))
+import vrmod
+sys.path.insert(0, HERE)
+import vr_lib
+assert vr_lib.f() == vrmod.V, "FAIL vr_lib.f() != vrmod.V"
+print("ok vrmod")
+'''
+
+
+def t_import_miss(tmp):
+    """A check importing a module from a sys.path dir outside the tree: the audit hooks see no open/stat of a missing
+    dir, so only the meta_path finder (_Miss) can name it (ARENA_VET_REPAIR_SANDBOX_STARVED_CHECKS)."""
+    repo = tmp / "repo_imp"
+    repo.mkdir()
+    git(repo, "init", "-q", "-b", "main")
+    chk = "src/RimMandrake/Utils/selftest_vr_imp.py"
+    base = commit(repo, {LIB: "def f():\n    return 1\n", MODHOME + "/vrmod.py": "V = 2\n"}, "base")
+    fix = commit(repo, {LIB: "def f():\n    return 2\n", chk: IMPORTS}, "fix")
+    area = A.area_for([LIB, chk])
+    check(not any(a == MODHOME or MODHOME.startswith(a.rstrip("/") + "/") for a in area),
+          "control: the module home is outside the area (%s)" % area)
+    checks = [{"kind": "fix_test", "path": chk, "body": IMPORTS}]
+    tr = VR.trace_reads(repo, fix, area, checks, tmp / "trace_imp", 30)
+    hit = [r for r in tr["reads"] if r == MODHOME or r.startswith(MODHOME + "/")]
+    check(bool(hit) and tr["converged"], "trace: a failed import names its sys.path dir/module (%s)" % tr)
+    job = {"task": "RP_VR_IMP", "base": base, "fix": fix, "area": area,
+           "checks": [{"path": chk, "body": IMPORTS, "key": "vr-imp"}]}
+    rec = A._vet_task(job, repo, tmp / "vt_imp", 30)[0]
+    check(rec["fix_result"] == "pass" and rec["base_result"] == "fail",
+          "vet: with the traced import dir the check passes at the fix, fails at base (%s/%s, reads %s)"
+          % (rec["fix_result"], rec["base_result"], rec.get("reads")))
+    check(all("/tmp/arena-check-state/" in v for v in J.CHECK_ENV.values()) and "J.CHECK_ENV" in
+          Path(VR.__file__).read_text(encoding="utf-8"), "trace runs with the judge's CHECK_ENV (writable state under /tmp)")
+
+
 def t_sanity():
     check(A.SANITY_ITEM == "ROAST_STICK_FIX_DISABLED_COOK_STAT_ERRORS",
           "sanity default is the item that discriminates under the judge route (ARENA_SANITY_ITEM_FIX_NOT_DISCRIMINATING)")
@@ -424,6 +463,7 @@ def main():
         t_log_shape(tmp)
         t_census_judge(tmp)
         t_wiring(tmp)
+        t_import_miss(tmp)
         t_sanity()
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

@@ -51,7 +51,16 @@ def gate_cases():
         AC.record(rows(), True, p)
         check(AC.gate(p) == [], "G2 current passing record -> gate open (%s)" % AC.gate(p))
         AC.record(rows(**{"freeze authority": "UNMEASURED"}), True, p)
-        check(AC.gate(p) == [], "G4 an UNMEASURED row other than judge-hidden does not refuse")
+        check(not p["freeze"].exists() and AC.gate(p) == [],
+              "G4a only freeze.jsonl UNMEASURED (absent before the first freeze) -> not refused (%s)" % AC.gate(p))
+        p["freeze"].write_text("{}\n")                  # it exists now: an UNMEASURED freeze row is a blind check
+        check(any("freeze authority" in x for x in AC.gate(p)), "G4a' freeze.jsonl present but UNMEASURED -> refuse")
+        p["freeze"].unlink()
+        AC.record(rows(**{"freeze authority": "UNMEASURED", "ledger shards": "UNMEASURED"}), True, p)
+        check(any("ledger shards" in x for x in AC.gate(p)) and not any("freeze authority" in x for x in AC.gate(p)),
+              "G4b another store UNMEASURED -> refused (%s)" % AC.gate(p)[:1])
+        AC.record(rows(**{"D:\\ mirror": "UNMEASURED"}), True, p)
+        check(any("UNMEASURED" in x for x in AC.gate(p)), "G4b a fixes store UNMEASURED -> refused")
         AC.record(rows(**{"judge hidden checks": "UNMEASURED"}), True, p)
         check(any("judge hidden checks" in x for x in AC.gate(p)), "G4 judge-hidden UNMEASURED -> refuse")
         AC.record(rows(**{"ledger shards": "FAIL"}), True, p)

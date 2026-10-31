@@ -897,11 +897,14 @@ def materialise(clone: Path, head: str, area: list[str], dest: Path, tree_paths=
     return dest
 
 
-def hidden_checks(hidden: dict) -> list[dict]:
-    """Flatten arena_tasks' judge file into runnable checks: the original fix's tests, and each rework's tests."""
+def hidden_checks(hidden: dict, unscore=()) -> list[dict]:
+    """Flatten arena_tasks' judge file into runnable checks: the original fix's tests, and each rework's tests.
+    `unscore`: check paths the reader pass unscored for this task (ARENA_JUDGE_HONOUR_UNSCORE_DOWNSTREAM): those
+    fix_tests are left out and the task is scored on the rest."""
     out = []
+    skip = set(unscore or ())
     for c in hidden.get("checks") or []:
-        if c.get("type") == "fix_test":
+        if c.get("type") == "fix_test" and c["path"] not in skip:
             out.append({"kind": "fix_test", "path": c["path"], "body": c.get("body")})
     for r in hidden.get("reworks") or []:
         for t in r.get("tests") or []:
@@ -1365,10 +1368,34 @@ def check_tail(out: bytes, err: bytes, nonce: str, n: int = TAIL_CHARS) -> str:
     return o[-h:] + e[-(n - h):]
 
 
+RAW_CAP = 4_000_000            # chars of a raw check output kept for the vet's own tail (raw=True); the middle goes
+
+
+def raw_output(out: bytes, err: bytes, nonce: str, cap: int = RAW_CAP) -> str:
+    """ARENA_VET_REPAIR_TAIL_FIX_NEVER_RUNS: stdout then stderr, whole (nonce scrubbed), for arena_tasks.vet_tail,
+    which must see the output BEFORE check_tail's cut: a FAIL line in the middle of a long output was already gone
+    when vet_tail ran on the 1500-char judge tail. Above `cap` the middle is dropped (a marker says so)."""
+    s = (out.decode("utf-8", "replace") + err.decode("utf-8", "replace")).replace(nonce, "<NONCE>")
+    if len(s) <= cap:
+        return s
+    h = cap // 2
+    return s[:h] + "\n[... %d chars cut ...]\n" % (len(s) - cap) + s[-h:]
+
+
+# ARENA_VET_REPAIR_SANDBOX_STARVED_CHECKS: state dirs a hidden check may write, inside the check sandbox's own fresh
+# /tmp tmpfs (dies with the sandbox; reaches nothing). run_selftests/suite_evidence write ~/.local/state/rm-selftests
+# and the judge mask over ~/.local/state (the private dir's generic parent) is read-only: close_evidence checks died
+# on EROFS at the fix. Passed to every check run and to the vet's read trace (arena_vet_reads), so both see one env.
+CHECK_ENV = {"RM_SELFTEST_STATE_DIR": "/tmp/arena-check-state/rm-selftests",
+             "XDG_STATE_HOME": "/tmp/arena-check-state/xdg-state",
+             "XDG_CACHE_HOME": "/tmp/arena-check-state/xdg-cache"}
+
+
 def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None = None,
-               timeout: int = CHECK_TIMEOUT) -> list[dict]:
+               timeout: int = CHECK_TIMEOUT, raw: bool = False) -> list[dict]:
     """Each check runs in its OWN copy of the tree, the only writable path in its sandbox: arm code imported by one
-    check cannot touch another check's copy, the judge work dir, the hidden checks, or anything on the host."""
+    check cannot touch another check's copy, the judge work dir, the hidden checks, or anything on the host.
+    `raw` (the vet only): each row also carries "raw", the whole output (raw_output), for the vet's stored tail."""
     res = []
     for i, c in enumerate(checks):
         if c["kind"] == "rework_unauthored" or c.get("body") is None:
@@ -1386,7 +1413,7 @@ def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None 
             continue
         gt = git_tree(scratch, work, priv) if GIT_TREE_RE.search(c["body"]) else None
         nonce = secrets.token_hex(16)
-        env, rw, stage = {"PYTHONDONTWRITEBYTECODE": "1"}, [scratch], None
+        env, rw, stage = {"PYTHONDONTWRITEBYTECODE": "1", **CHECK_ENV}, [scratch], None
         interop = bool(BUILDS_CSHARP_RE.search(c["body"]))
         if interop:
             stage, more = csharp_check_env(scratch, priv)
@@ -1402,6 +1429,8 @@ def run_hidden(checks: list[dict], tree: Path, work: Path, *, priv: Path | None 
         result = _check_result(r.returncode, r.stdout, nonce)
         tail = check_tail(r.stdout, r.stderr, nonce)
         row = {"kind": c["kind"], "path": c["path"], "rc": r.returncode, "result": result, "tail": tail}
+        if raw:
+            row["raw"] = raw_output(r.stdout, r.stderr, nonce)
         if gt:
             row["git_tree"] = gt
         if result == "no_marker":
@@ -1721,13 +1750,26 @@ def _gate_view(gate: dict | None, **kw) -> dict:
         return {"record": text}
 
 
+def reader_unscore(task_id: str, p: dict | None = None) -> list[str]:
+    """The check paths the reader pass unscored for `task_id`, from its exclusion file (arena_trial
+    .reader_exclusions_path: <arena root>/judge/reader/exclusions.json, judge-only, never in an arm's view). No file:
+    nothing unscored. A file that does not parse raises (arena_trial.TrialError / ValueError / OSError)."""
+    import arena_trial as T            # lazy: arena_trial imports arena_analysis, not this module
+    path = T.reader_exclusions_path(p)
+    if not path.is_file():
+        return []
+    return list(T.read_reader_exclusions(path)["unscore"].get(task_id) or [])
+
+
 def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str, arm: str, gate: dict | None,
           judges: Judges | None = None, p: dict | None = None, priv: Path | None = None,
           work_base: Path | None = None, extra_tokens=(), tree_paths=TREE_PATHS,
-          record: Callable[[dict], object] | None = None) -> dict:
+          record: Callable[[dict], object] | None = None, unscore=None) -> dict:
     """Harness side. Returns the blind verdict record (no arm in it); the arm goes only to the arm map.
     `record(rec)`, if given, is called with every final verdict right after verdict.json is written (main() passes
-    record_judge_event: the signed `judge` event arena_analysis.py reads). If it raises, the error propagates."""
+    record_judge_event: the signed `judge` event arena_analysis.py reads). If it raises, the error propagates.
+    `unscore`: check paths left out of scoring (None: reader_unscore, i.e. the reader pass's file); the judge record
+    lists them as "unscored". A task whose every scored check is unscored is invalid (nothing left to score)."""
     p = p or A.paths()
     amap = ArmMap(p, priv)
     labels = arms()
@@ -1755,7 +1797,17 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
         # fails CLOSED (the known-bad output it exists to catch would otherwise reach the models)
         return done("invalid", "replay task %s has no hidden-check file: refusing to judge without it" % task["id"])
     try:
-        runnable = [c for c in hidden_checks(hidden or {}) if c.get("body") is not None]
+        unscore = reader_unscore(task["id"], p) if unscore is None else list(unscore)
+    except Exception as ex:                          # noqa: BLE001 - an unreadable reader file is a refusal
+        return done("invalid", "reader exclusion file unreadable: %s: %s" % (type(ex).__name__, ex))
+    try:
+        runnable = [c for c in hidden_checks(hidden or {}, unscore) if c.get("body") is not None]
+        if unscore:
+            scored = [c["path"] for c in (hidden or {}).get("checks") or [] if c.get("type") == "fix_test"]
+            rec["unscored"] = sorted(set(unscore) & set(scored))
+            if scored and not set(scored) - set(unscore):
+                return done("invalid", "the reader pass unscored every scored hidden check (%d): nothing to score"
+                            % len(scored))
     except (AttributeError, KeyError, TypeError) as ex:
         return done("invalid", "hidden-check file is malformed: %s" % ex)
     if is_replay(task) and not runnable:
@@ -1775,7 +1827,7 @@ def judge(*, task: dict, hidden: dict | None, clone: Path, base: str, head: str,
     probe = run_sandboxed(["true"], work=work, priv=priv, timeout=60)
     if probe.returncode:
         return done("invalid", "judge sandbox did not start: " + probe.stderr.decode("utf-8", "replace")[-200:])
-    checks = hidden_checks(hidden or {})
+    checks = hidden_checks(hidden or {}, unscore)
     if checks:
         try:
             # + the judge-only read set the vet traced at the fix (ARENA_TREE_FIX_OMITS_CHECK_READ_PATHS); a bad

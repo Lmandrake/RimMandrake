@@ -16,10 +16,11 @@ ARENA_TASKS_BUILD_FROZEN_BEFORE_ASSIGNED criteria, and the failure planted for e
   order       a freeze with an `assign` already in the log is refused
 Writes only under a temp dir (ARENA_ROOT / ARENA_CLONES point there). The real-ledger probe is read-only.
 """
-# selftest-timeout: 480   (t_real_ledger runs the real census, ~3 min alone)
+# selftest-timeout: 480   (t_real_ledger runs the real census, ~3 min cold; a warm run reads its keyed cache)
 import base64
 import json
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -1449,15 +1450,54 @@ def t_vet_siblings(tmp):
     check(A.vet_runner_id(jsrc) == A._runner_id() and b"class SafeRepo" in jsrc
           and A.vet_runner_id(jsrc.replace(b"class SafeRepo", b"class SafeRepo ", 1)) != A._runner_id(),
           "runner hash covers the whole judge module (a helper such as SafeRepo, not only named functions)")
-    # ARENA_VET_REPAIR_TAIL_EATS_FAIL_LINES: the tail cut is not in the key (records vetted before stay valid); any
-    # other _vet_task edit still is
+    # ARENA_VET_REPAIR_TAIL_FIX_NEVER_RUNS: the tail code IS in the key (old records refresh), and the tail is cut
+    # from the raw output
     import inspect
+    ks = A._vet_keyed_source()
+    check(inspect.getsource(A.vet_tail) in ks and inspect.getsource(A._vet_task) in ks
+          and A._FAIL_STRONG.pattern in ks and A.VET_RUNNER.endswith("/3+rawtail")
+          and not hasattr(A, "_vet_task_keyed_source") and not hasattr(A, "_TAIL_KEY_FORMS"),
+          "vet key: _vet_task, vet_tail and the failure patterns are all hashed; runner /3+rawtail")
     vsrc = inspect.getsource(A._vet_task)
-    ks = A._vet_task_keyed_source()
-    check("vet_tail(" in vsrc and "vet_tail(" not in ks and ks.count('[-600:]') == 2
-          and ks.replace('(fr.get("tail") or "")[-600:]', 'vet_tail(fr.get("tail"))')
-          .replace('(br.get("tail") or "")[-600:]', 'vet_tail(br.get("tail"))') == vsrc,
-          "vet key: _vet_task is hashed with only the vet_tail calls written back as the old [-600:] cut")
+    check("raw=True" in vsrc and 'vet_tail(fr.get("raw"' in vsrc and 'vet_tail(br.get("raw"' in vsrc,
+          "vet: both stored tails are cut from run_hidden's raw output, not the judge's 1500-char tail")
+    saved_fl = A._FAIL_STRONG
+    A._FAIL_STRONG = re.compile(saved_fl.pattern + "|xyzzy")
+    try:
+        check(A._vet_keyed_source() != ks, "vet key: a failure-pattern edit changes the key")
+    finally:
+        A._FAIL_STRONG = saved_fl
+    # C9 plants (verify_reader2 SP/tail.out): each lost the failure under the old tail
+    ok_noise = "".join("ok no error, value as expected %d\n" % i for i in range(60))
+    mid = "".join("line %d of setup\n" % i for i in range(150)) + "FAIL widget\n" + \
+        "".join("ok later %d\n" % i for i in range(150))
+    plants = {
+        "mid_fail": (mid, "FAIL widget"),
+        "fail_then_passes": ("FAIL first thing broke\n" + "".join("ok pass %d\n" % i for i in range(400)),
+                             "FAIL first thing broke"),
+        "tb_stderr_passes_stdout": ("".join("ok %d\n" % i for i in range(300)) +
+                                    "Traceback (most recent call last):\n  File \"x.py\", line 3\n"
+                                    "KeyError: 'lanes'\n", "KeyError: 'lanes'"),
+        "noise_before_fail": ("head\n" + ok_noise + "AssertionError: count 3 != 4\n" + ok_noise * 2,
+                              "AssertionError: count 3 != 4"),
+        "many_fails": ("".join("FAIL case %03d %s\n" % (i, "z" * 50) for i in range(200)), "FAIL case 000"),
+        "many_gaps": ("".join("ok %d\nFAIL g%d\n" % (i, i) for i in range(400)), "FAIL g0\n"),
+        "lowercase_failed": ("".join("ok %d\n" % i for i in range(400)) + "check failed: widget\n" +
+                             "".join("ok z%d\n" % i for i in range(300)), "check failed: widget"),
+    }
+    for name, (txt, want) in plants.items():
+        tl = A.vet_tail(txt)
+        check(len(txt) > A.VET_TAIL_CHARS and len(tl) <= A.VET_TAIL_CHARS and want in tl,
+              "vet_tail C9 plant %s: %r kept within the cap (%d of %d chars)" % (name, want, len(tl), len(txt)))
+    pl = "".join("ok %d\n" % i for i in range(300)) + "12 PASS 0 FAIL\nok as expected\nPASS assert count\n" + \
+        "".join("ok z%d\n" % i for i in range(300))
+    tp = A.vet_tail(pl)
+    check("12 PASS 0 FAIL" not in tp and "PASS assert count" not in tp,
+          "vet_tail: pass lines holding failure words are not kept as failure lines")
+    weak = "".join("x%d\n" % i for i in range(30)) + "".join("missing optional thing %d\n" % i for i in range(200)) + \
+        "FAIL the real one\n" + "".join("ok z%d\n" % i for i in range(200))
+    check("FAIL the real one" in A.vet_tail(weak),
+          "vet_tail: a strong failure line wins over weak ones printed before it")
     long_out = "".join("ok step %d\n" % i for i in range(30)) + "FAIL widget count: expected 3, got 4\n" + \
         "".join("ok later %d\n" % i for i in range(400))
     tl = A.vet_tail(long_out)
@@ -1552,24 +1592,69 @@ def t_vet_siblings(tmp):
     check(A.check_schedule([earlier, later], bc) is None, "planner: check_schedule accepts the safe order")
 
 
+REAL_CENSUS_CACHE = Path(os.environ.get("ARENA_ST_REAL_CENSUS_CACHE",
+                                       "/mnt/d/ClaudeWork/rimmandrake/arena-selftest/real_census.json"))
+
+
+def _real_census_summary():
+    """The facts t_real_ledger checks, from the real census (~150 s: 22k git calls), cached under a key over
+    everything the census reads: the events it is given, every ref of the repo it resolves in, the committed pool
+    exclusions, and the source of arena_tasks.py and rimflow/model.py. Same key, same census (commits are
+    immutable), so a warm run reads the cache; any input moving reruns it. A cache that does not parse is ignored."""
+    import hashlib
+    events = A.model.read()
+    refs = subprocess.run(["git", "-C", str(A.REPO), "for-each-ref", "--format=%(objectname) %(refname)"],
+                          capture_output=True, text=True, timeout=120).stdout
+    head = subprocess.run(["git", "-C", str(A.REPO), "rev-parse", "HEAD"], capture_output=True, text=True,
+                          timeout=60).stdout
+    h = hashlib.sha256(json.dumps(events, sort_keys=True, default=str).encode())
+    for b in (refs, head, json.dumps(A.load_pool_exclusions(), sort_keys=True), str(A.arena_root())):
+        h.update(b"\0" + b.encode())
+    for f in (A.__file__, A.model.__file__):
+        h.update(b"\0" + Path(f).read_bytes())
+    key = h.hexdigest()
+    try:
+        c = json.loads(REAL_CENSUS_CACHE.read_text())
+        if c.get("key") == key:
+            return c["summary"], True
+    except (OSError, ValueError, AttributeError):
+        pass
+    pool, rep = A.census(events=events, sanity=A.SANITY_ITEM, exclude={})  # raises SanityFail if blind; {}: the
+    # sanity item is itself one of the committed pool exclusions (provisional Clean), checked separately below
+    hs = {t["source_item"]: hh for t, hh in pool}
+    sh = hs.get(A.SANITY_ITEM) or {}
+    summ = {"found": bool(rep["sanity"]["found"]), "pool": rep["pool"], "labels": rep["labels"],
+            "live": sorted({t["live"] for t, _ in pool}), "items": sorted(hs),
+            "sanity": {"fix_sha": sh.get("fix_sha"), "label": sh.get("label"),
+                       "checks": [c.get("path") for c in sh.get("checks") or []]}}
+    try:
+        REAL_CENSUS_CACHE.parent.mkdir(parents=True, exist_ok=True)
+        tmpf = REAL_CENSUS_CACHE.with_suffix(".tmp")
+        tmpf.write_text(json.dumps({"key": key, "summary": summ}, sort_keys=True))
+        os.replace(tmpf, REAL_CENSUS_CACHE)
+    except OSError:
+        pass
+    return summ, False
+
+
 def t_real_ledger():
     check(A.arena_root().name == "arena" and A.paths()["judge"].parent.name == "judge",
           "with ARENA_ROOT unset the root comes from rmpaths/agent_storage: %s" % A.arena_root())
-    pool, rep = A.census(sanity=A.SANITY_ITEM, exclude={})     # raises SanityFail if blind; {}: the sanity item
-    # is itself one of the committed pool exclusions (provisional Clean), checked separately below
-    check(rep["sanity"]["found"], "real ledger: sanity item %s found (pool %d: %s)"
-          % (A.SANITY_ITEM, rep["pool"], rep["labels"]))
-    check(rep["pool"] > 0 and all(t["live"] in A.LIVE_OK for t, _ in pool), "real ledger: no task has live: full")
-    h = {t["source_item"]: hh for t, hh in pool}[A.SANITY_ITEM]
-    check(h["fix_sha"].startswith("05366d9ad4") and h["label"] == "Clean"
-          and any(c.get("path") == "src/RimMandrake/Utils/selftest_roast_stick_no_cook_stat.py"
-                  for c in h["checks"]),
+    summ, cached = _real_census_summary()
+    check(summ["found"], "real ledger: sanity item %s found (pool %d: %s)%s"
+          % (A.SANITY_ITEM, summ["pool"], summ["labels"], " [cached census]" if cached else ""))
+    check(summ["pool"] > 0 and set(summ["live"]) <= set(A.LIVE_OK), "real ledger: no task has live: full")
+    h = summ["sanity"]
+    check((h["fix_sha"] or "").startswith("05366d9ad4") and h["label"] == "Clean"
+          and "src/RimMandrake/Utils/selftest_roast_stick_no_cook_stat.py" in h["checks"],
           "real ledger: the sanity item is fix 05366d9ad4, is Clean and holds its discriminating roast-stick check")
     ex = A.load_pool_exclusions()
-    got = {t["source_item"] for t, _ in pool}
+    got = set(summ["items"])
     check(len(ex) >= 4 and set(ex) <= got,
           "real ledger: every committed pool exclusion names a real census-pool item (else it excludes nothing) %s"
           % sorted(set(ex) - got))
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="arena_tasks_st_"))
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES")}

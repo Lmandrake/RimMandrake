@@ -988,7 +988,9 @@ def _count(xs):
 # checks); the census reads the cache and never runs code.
 
 VET_BUDGET = 480                        # seconds: one `vet` call stays inside a foreground command window
-VET_RUNNER = "arena_judge.materialise+run_hidden+trace_reads/2"
+# /3 (ARENA_VET_REPAIR_TAIL_FIX_NEVER_RUNS): the stored tails are cut from the RAW output and the tail code is in the
+# key, so every record vetted with the old judge-tail cut is refreshed by the next `vet`.
+VET_RUNNER = "arena_judge.materialise+run_hidden+trace_reads/3+rawtail"
 
 
 def vet_runner_id(judge_src: bytes | None = None) -> str:
@@ -1002,62 +1004,70 @@ def vet_runner_id(judge_src: bytes | None = None) -> str:
     h = hashlib.sha256(src)
     for f in (paths, J.JH.posix_within):
         h.update(b"\0" + inspect.getsource(f).encode("utf-8"))
-    h.update(b"\0" + Path(VR.__file__).read_bytes() + b"\0" + _vet_task_keyed_source().encode("utf-8"))
+    h.update(b"\0" + Path(VR.__file__).read_bytes() + b"\0" + _vet_keyed_source().encode("utf-8"))
     return VET_RUNNER + "@" + h.hexdigest()[:16]
 
 
-# ARENA_VET_REPAIR_TAIL_EATS_FAIL_LINES: the stored tails are what a human or the reader sees of a check's output;
-# they never feed a verdict (vet_verdict reads results and rcs only). So the tail cut is NOT part of the cache key:
-# _vet_task's source is hashed with the vet_tail(...) calls written back as the old `[-600:]` cut, and every
-# record vetted before the fix still matches. Any OTHER edit to _vet_task still changes the key.
-_TAIL_KEY_FORMS = (('vet_tail(fr.get("tail"))', '(fr.get("tail") or "")[-600:]'),
-                   ('vet_tail(br.get("tail"))', '(br.get("tail") or "")[-600:]'))
-
-
-def _vet_task_keyed_source() -> str:
+# ARENA_VET_REPAIR_TAIL_FIX_NEVER_RUNS: the stored tails are what the reader pass and a human see of a check's output
+# (arena_reader_pass vetoes a fail-at-fix check whose tail shows no reason), so the code that cuts them IS in the
+# cache key: _vet_task, vet_tail and both failure patterns. (The /2 key wrote the vet_tail calls back as the old
+# `[-600:]` cut, so no record ever refreshed and vet_tail, fed the judge's own 1500-char tail, never cut anything.)
+def _vet_keyed_source() -> str:
     import inspect
-    src = inspect.getsource(_vet_task)
-    for new, old in _TAIL_KEY_FORMS:
-        if src.count(new) != 1:
-            raise ArenaError("vet key: _vet_task no longer has exactly one %s; update _TAIL_KEY_FORMS" % new)
-        src = src.replace(new, old)
-    return src
+    return "\0".join([inspect.getsource(_vet_task), inspect.getsource(vet_tail), _FAIL_STRONG.pattern,
+                       _FAIL_WEAK.pattern, _PASS_LINE.pattern])
 
 
-VET_TAIL_CHARS = 1500           # = arena_judge.TAIL_CHARS: the judge tail is stored whole when it fits
+VET_TAIL_CHARS = 1500           # = arena_judge.TAIL_CHARS: the raw output is stored whole when it fits
 VET_TAIL_HEAD = 300
-_FAIL_LINE = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Exception|Exit)\b|\bFAIL|\bassert"
-                        r"|\berror\b|\bnot ok\b|\bUNMEASURED\b|\bBLIND\b|\bmissing\b|\bexpected\b", re.I)
+VET_TAIL_LINE = 240             # a kept failure line is clipped to this
+# Strong failure lines are case-sensitive (a lowercase "assert"/"fail" in prose is not one); weak ones are any-case
+# words, kept only after every strong line has had its turn. A pass line ("ok ...", "PASS ...", "12 PASS 0 FAIL")
+# is never kept as a failure line, whatever words it holds.
+_FAIL_STRONG = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Exception|Exit)\b|\bFAIL|\bassert"
+                          r"|\bnot ok\b|\bUNMEASURED\b|\bBLIND\b")
+_FAIL_WEAK = re.compile(r"\berror\b|\bfail(?:ed|ure|s)?\b|\bmissing\b|\bexpected\b|\bnot found\b", re.I)
+_PASS_LINE = re.compile(r"^\s*(?:ok|PASS|pass)\b|\b0 (?:FAIL|fail|failure|error)", )
 
 
 def vet_tail(t, n: int = VET_TAIL_CHARS) -> str:
-    """The stored tail of one check run: whole when it fits in `n`; else its head, every failure-looking line
-    (Traceback, *Error, FAIL, assert, ...) up to half the budget, and as much of the end as is left, in order, with
-    a `[... N chars cut ...]` marker at each gap. The old `[-600:]` kept only the end, so a check that prints its
-    FAIL lines and then passing lines (or a long stderr) stored no reason at all."""
+    """The stored tail of one check run, from its RAW output (arena_judge.run_hidden raw=True): whole when it fits in
+    `n`; else its head, its failure lines (the first strong one always, then strong ones, then weak ones, each
+    clipped, up to half the budget), and as much of the end as is left, in order, with a `[... N chars cut ...]`
+    marker at each gap. Never longer than `n`; an over-long result is cut in the MIDDLE, so the head (and with it
+    the first failure) survives."""
     t = t or ""
     if len(t) <= n:
         return t
     lines = t.splitlines(keepends=True)
     size = [len(x) for x in lines]            # original lengths, for the gap markers
     keep, used = set(), 0
-    budget = n - 160                          # room for the gap markers
+    gap_cost = 28                             # one "[... N chars cut ...]" marker a kept line may open
+    budget = n - 2 * gap_cost                 # the head and the end blocks' markers
     for i, ln in enumerate(lines):            # head
         if used + len(ln) > VET_TAIL_HEAD:
             break
         keep.add(i)
         used += len(ln)
+
+    def clip(ln):
+        return ln if len(ln) <= VET_TAIL_LINE else ln[:VET_TAIL_LINE] + "\n"
+
+    strong = [i for i, ln in enumerate(lines) if i not in keep and _FAIL_STRONG.search(ln) and not _PASS_LINE.search(ln)]
+    weak = [i for i, ln in enumerate(lines) if i not in keep and i not in strong and _FAIL_WEAK.search(ln)
+            and not _PASS_LINE.search(ln)]
     fails = 0
-    for i, ln in enumerate(lines):            # failure lines, each clipped
-        if i in keep or not _FAIL_LINE.search(ln):
-            continue
-        ln = ln if len(ln) <= 240 else ln[:240] + "\n"
-        if fails + len(ln) > n // 2 or used + len(ln) > budget:
+    for k, i in enumerate(strong + weak):     # failure lines; the first strong one is reserved whatever its cost
+        ln = clip(lines[i])
+        cost = len(ln) + gap_cost
+        if k and (fails + cost > n // 2 or used + cost > budget):
+            if i in strong:
+                continue                      # a shorter strong line may still fit
             break
         lines[i] = ln
         keep.add(i)
-        fails += len(ln)
-        used += len(ln)
+        fails += cost
+        used += cost
     for i in range(len(lines) - 1, -1, -1):   # end
         if i in keep:
             continue
@@ -1080,7 +1090,11 @@ def vet_tail(t, n: int = VET_TAIL_CHARS) -> str:
     if gap:
         out.append("[... %d chars cut ...]\n" % gap)
     s = "".join(out)
-    return s if len(s) <= n else s[-n:]
+    if len(s) <= n:
+        return s
+    mark = "\n[... %d chars cut ...]\n" % (len(s) - n + 40)
+    h = (n - len(mark)) // 2
+    return s[:h] + mark + s[-(n - len(mark) - h):]
 
 
 _RUNNER_ID: list = []
@@ -1163,7 +1177,7 @@ def _vet_task(job: dict, repo: Path, work: Path, timeout: int) -> list[dict]:
         d.mkdir(parents=True)
         try:
             tree = J.materialise(repo, job[side], job.get("area") or [], d / "tree", J.TREE_PATHS + tuple(reads))
-            res[side] = J.run_hidden(checks, tree, d, timeout=timeout)
+            res[side] = J.run_hidden(checks, tree, d, timeout=timeout, raw=True)
         except J.JudgeError as e:
             raise ArenaError("vet: %s side: %s" % (side, e))
         finally:
@@ -1190,8 +1204,8 @@ def _vet_task(job: dict, repo: Path, work: Path, timeout: int) -> list[dict]:
     for c, fr, br in zip(job["checks"], res["fix"], res["base"]):
         recs.append({"key": c["key"], "task": job["task"], "path": c["path"], "base": job["base"], "fix": job["fix"],
                      "runner": _runner_id(), "fix_result": fr.get("result"), "base_result": br.get("result"),
-                     "fix_rc": fr.get("rc"), "base_rc": br.get("rc"), "fix_tail": vet_tail(fr.get("tail")),
-                     "base_tail": vet_tail(br.get("tail")), "timeout": timeout, "reads": trace["reads"],
+                     "fix_rc": fr.get("rc"), "base_rc": br.get("rc"), "fix_tail": vet_tail(fr.get("raw", fr.get("tail"))),
+                     "base_tail": vet_tail(br.get("raw", br.get("tail"))), "timeout": timeout, "reads": trace["reads"],
                      **({"reads_trace": {k: trace[k] for k in ("too_wide", "refused", "rounds", "converged")}}
                         if failing else {}),
                      "at": dt.datetime.now(dt.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")})

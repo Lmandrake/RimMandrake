@@ -41,6 +41,10 @@ import arena_replay as R  # noqa: E402
 SCHEMA = "arena_answer_check/1"
 COVERED = {"bench", "foundry", "store.git", "mirror.git", "arena", "retired-trees"}   # rows of their own below
 MUST_MEASURE = {"judge hidden checks"}   # the census writes it: UNMEASURED there means the check ran too early
+# The one store that is legitimately absent when the check runs: the freeze writes judge/freeze.jsonl, so before the
+# first freeze it cannot exist. UNMEASURED there passes only while the file is really absent; every other UNMEASURED
+# row refuses (a store the check could not see is not a store it proved unreadable).
+ABSENT_UNTIL_FREEZE = {"freeze authority"}
 
 READER = r'''
 import json, os, sys
@@ -185,7 +189,9 @@ def gate(p=None) -> list:
         bad.append("answer check control was not readable inside: the check was VOID")
     for r in doc["rows"]:
         res = r.get("result") if isinstance(r, dict) else None
-        if res in ("FAIL", "VOID") or (res != "PASS" and r.get("what") in MUST_MEASURE):
+        if res == "UNMEASURED" and r.get("what") in ABSENT_UNTIL_FREEZE and not os.path.lexists(str(r.get("path"))):
+            continue
+        if res != "PASS":
             bad.append("answer check row %s / %s: %s (%s)" % (r.get("store"), r.get("what"), res, r.get("path")))
     if not any(isinstance(r, dict) and r.get("what") in MUST_MEASURE for r in doc["rows"]):
         bad.append("answer check record has no judge-hidden row")

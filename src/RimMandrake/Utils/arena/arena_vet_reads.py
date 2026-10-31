@@ -75,6 +75,26 @@ def hook(ev, args):
         cut = min([g.find(c) for c in _WILD if c in g] or [len(g)])
         rec(os.path.dirname(g[:cut]) if cut < len(g) else g, "list")
 sys.addaudithook(hook)
+import importlib.abc as _iabc
+class _Miss(_iabc.MetaPathFinder):
+    # last on sys.meta_path, so asked only when every real finder failed: a module on a sys.path entry the tree lacks
+    # (FileFinder never lists a directory that does not exist, so no hook above sees it) is recorded as the two
+    # candidates the path finder would have used, <entry>/<name>.py and <entry>/<name>
+    def find_spec(self, name, path=None, target=None):
+        base = name.rpartition(".")[2]
+        try:
+            entries = list(path) if path is not None else list(sys.path)
+        except BaseException:
+            return None
+        for e in entries:
+            try:
+                e = os.fsdecode(e) if e else os.getcwd()
+                rec(os.path.join(e, base + ".py"), "stat")
+                rec(os.path.join(e, base), "stat")
+            except BaseException:
+                pass
+        return None
+sys.meta_path.append(_Miss())
 _st, _lst = os.stat, os.lstat
 def _stat(p, *a, **k):
     rec(p, "stat")
@@ -173,7 +193,7 @@ def trace_once(checks: list[dict], tree: Path, work: Path, timeout: int) -> set:
             target = J._write_check(scratch, c["path"], c["body"])
             J.run_sandboxed([sys.executable, "-P", "-c", TRACER, str(target), TRACE_LOG], work=work,
                             stdin=b"", timeout=timeout, cwd=scratch, rw=[scratch],
-                            env={"PYTHONDONTWRITEBYTECODE": "1"}, kind="check")
+                            env={"PYTHONDONTWRITEBYTECODE": "1", **J.CHECK_ENV}, kind="check")  # = run_hidden's
             logf = scratch / TRACE_LOG
             if logf.is_file() and not logf.is_symlink():
                 seen |= parse_log(logf.read_text(encoding="utf-8", errors="replace"))

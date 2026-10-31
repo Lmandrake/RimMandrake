@@ -33,15 +33,18 @@ EXCLUSIONS, applied to the bank BEFORE the era split (so N stays N wherever the 
     pool too, this only keeps a list built before that re-census honest;
   - the reader pass (arena_reader_pass.py apply): its exclusion file (default READER_EXCLUSIONS, i.e.
     <arena root>/judge/reader/exclusions.json, judge-only) names tasks to DROP and checks to UNSCORE. A dropped task
-    is left out; a task with an unscored check is left out too unless --allow-unscored (the judge does not yet honour
-    an unscore: until it does, keeping the task would score the bad check). Absent default file: not applied, and
+    is left out. A task with an unscored check STAYS and is scored on its remaining checks: arena_judge.judge reads
+    the same default file and leaves those checks out (ARENA_JUDGE_HONOUR_UNSCORE_DOWNSTREAM). It is left out only
+    when no scored check is left (every fix_test of its hidden file unscored, or no hidden file), or when the file
+    is an explicit --reader-exclusions path other than the default (the judge reads only the default, so it could
+    not honour that unscore). Absent default file: not applied, and
     the doc says so (`reader: null`); an explicit --reader-exclusions path that is missing refuses; --no-reader skips;
   - ONE task per bundled commit (ARENA_POOL_FIX_BUNDLED_WRONG_REASON): tasks sharing a fix sha (the judge's hidden
     files) are siblings of one commit; only the first by id is eligible (after the other exclusions, so a dropped
     sibling hands the slot to the next). --allow-bundled turns this off.
 
 usage: arena_trial.py build [--n N] [--no-csharp] [--no-check] [--out PATH]   (default out: trial_tasks.json)
-                            [--reader-exclusions PATH | --no-reader] [--allow-unscored] [--allow-bundled]
+                            [--reader-exclusions PATH | --no-reader] [--allow-bundled]
        arena_trial.py show [PATH]
 """
 from __future__ import annotations
@@ -161,6 +164,19 @@ def hidden_fix_shas(p=None) -> dict:
     return out
 
 
+def hidden_scored_paths(p=None) -> dict:
+    """{task id: [path of every scored fix_test]} from the judge's hidden files (judge side; nothing is copied out)."""
+    p = p or A.paths()
+    out = {}
+    for f in sorted(Path(p["judge"]).glob("*.json")):
+        try:
+            h = json.loads(f.read_text(encoding="utf-8"))
+            out[h["task"]] = [c["path"] for c in h.get("checks") or [] if c.get("type") == "fix_test"]
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            continue
+    return out
+
+
 def check_order(ids, bank: dict, fixes: dict, repo) -> None:
     """Raise TaskRefused (arena_rounds) when `ids` puts a task no later than a listed task whose fix its base holds."""
     import arena_rounds as RD
@@ -184,7 +200,7 @@ def _source_items(p=None) -> dict:
 
 
 def build(n=DEFAULT_N, csharp=True, check=True, repo=None, p=None, reader=None, use_reader=True,
-          allow_unscored=False, bundled=False) -> dict:
+          bundled=False) -> dict:
     """`reader`: the reader exclusion file (None: the default path, applied only if it exists)."""
     bank = AA.load_tasks(p)
     nokey = AA.chrono_keys(bank, repo)
@@ -204,12 +220,19 @@ def build(n=DEFAULT_N, csharp=True, check=True, repo=None, p=None, reader=None, 
             rx = read_reader_exclusions(rp)
             for t, why in rx["drop"].items():
                 drop.setdefault(t, "reader pass: " + str(why))
-            if not allow_unscored:
-                for t, cks in rx["unscore"].items():
-                    drop.setdefault(t, "reader pass unscored %d check(s); the judge does not honour an unscore "
-                                       "yet (--allow-unscored keeps it)" % len(cks))
+            honoured = rp.resolve() == reader_exclusions_path(p).resolve()   # the file the judge reads
+            scored = hidden_scored_paths(p) if rx["unscore"] else {}
+            kept = 0
+            for t, cks in rx["unscore"].items():
+                if not honoured:
+                    drop.setdefault(t, "reader pass unscored %d check(s) in %s, which the judge does not read"
+                                       % (len(cks), rp))
+                elif not set(scored.get(t) or ()) - set(cks):    # no hidden file reads as nothing left: fail closed
+                    drop.setdefault(t, "reader pass unscored every scored check (%d)" % len(cks))
+                else:
+                    kept += 1
             rinfo = {"path": str(rp), "drop": len(rx["drop"]), "unscore": len(rx["unscore"]),
-                     "allow_unscored": allow_unscored}
+                     "unscore_kept": kept, "judge_honours": honoured}
     eligible, left_out = exclude(bank, drop, fixes, bundled)
     ids = select(eligible, n, csharp)
     if check:
@@ -257,7 +280,6 @@ def main(argv=None):
     b.add_argument("--reader-exclusions", help="arena_reader_pass apply output (default: %s if it exists)"
                    % "<arena root>/judge/reader/exclusions.json")
     b.add_argument("--no-reader", action="store_true", help="ignore the reader-pass exclusions")
-    b.add_argument("--allow-unscored", action="store_true", help="keep tasks with reader-unscored checks")
     b.add_argument("--allow-bundled", action="store_true", help="allow several tasks of one bundled commit")
     s = sub.add_parser("show")
     s.add_argument("path", nargs="?", default=str(DEFAULT_PATH))
@@ -268,7 +290,7 @@ def main(argv=None):
         return 0
     try:
         doc = build(a.n, not a.no_csharp, not a.no_check, a.repo, reader=a.reader_exclusions,
-                    use_reader=not a.no_reader, allow_unscored=a.allow_unscored, bundled=a.allow_bundled)
+                    use_reader=not a.no_reader, bundled=a.allow_bundled)
     except (TrialError, A.ArenaError, ValueError) as e:
         print("REFUSED: %s" % e)
         return 2

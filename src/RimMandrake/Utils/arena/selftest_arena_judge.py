@@ -1459,6 +1459,79 @@ def t_proxy_windows_side(tmp, steer):
           "Windows side of the judge launch path (sandbox -> child_env -> interop) gets CODEX_HOME and no steering "
           "or CODEX_*/OPENAI_* variable (bad=%s, rc=%s%s)" % (bad, d["rc"], ", " + d["err"] if "err" in d else ""))
 
+def t_unscore(tmp):
+    """ARENA_JUDGE_HONOUR_UNSCORE_DOWNSTREAM: a reader-unscored check is not run or scored; the task is scored on the
+    rest; every scored check unscored -> invalid; the default reader file is read judge-side."""
+    import arena_trial as T
+    clone, base, head = make_clone(Path(os.environ["ARENA_CLONES"]) / "unscore", "v3", 1, plant=False)
+    bad = "src/RimMandrake/Utils/demo/selftest_demo.py"          # fails on this (v3) clone: T_BAD control
+    okp = "src/RimMandrake/Utils/demo/selftest_ok.py"
+    two = {"checks": [{"type": "fix_test", "path": bad, "body": HIDDEN_TEST},
+                      {"type": "fix_test", "path": okp, "body": "print('fine')\n"}], "reworks": []}
+    fakes = lambda: J.Judges(Fake(ans("accept")), Fake(ans("accept")), Fake(ans("accept")))  # noqa: E731
+    check([c["path"] for c in J.hidden_checks(two, [bad])] == [okp] and len(J.hidden_checks(two)) == 2,
+          "hidden_checks drops exactly the unscored fix_test")
+    r = J.judge(task=task_for("T_US"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                judges=fakes())
+    check(r["verdict"] == "reject" and "unscored" not in r, "control: no reader file -> both checks scored, reject (%s)"
+          % r["verdict"])
+    r = J.judge(task=task_for("T_US"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                judges=fakes(), unscore=[bad])
+    check(r["verdict"] == "accept" and [h["path"] for h in r["hidden"]] == [okp] and r["unscored"] == [bad],
+          "an unscored failing check is not run; the task is scored on the other (%s)" % r["verdict"])
+    prompt = (Path(os.environ["ARENA_JUDGE_WORK"]) / r["judge_id"] / "prompt.md").read_text()
+    check("selftest_demo.py" not in prompt and "selftest_ok.py" in prompt, "the unscored check is not in the prompt")
+    rp = T.reader_exclusions_path()
+    rp.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        rp.write_text(json.dumps({"schema": T.READER_SCHEMA, "drop": {}, "unscore": {"T_US": [bad]}}))
+        r = J.judge(task=task_for("T_US"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                    judges=fakes())
+        check(r["verdict"] == "accept" and r.get("unscored") == [bad],
+              "judge reads the reader pass's default exclusion file (%s)" % r["verdict"])
+        r = J.judge(task=task_for("T_OTHER"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                    judges=fakes())
+        check(r["verdict"] == "reject", "another task's unscore does not apply")
+        fs = fakes()
+        one = {"checks": two["checks"][:1], "reworks": []}
+        r = J.judge(task=task_for("T_US"), hidden=one, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                    judges=fs)
+        check(r["verdict"] == "invalid" and "every scored" in r.get("why", "") and fs.opus.calls == 0,
+              "every scored check unscored -> invalid, no model call (%s)" % r.get("why"))
+        rp.write_text("{not json")
+        r = J.judge(task=task_for("T_US"), hidden=two, clone=clone, base=base, head=head, arm="v3", gate=GATE,
+                    judges=fakes())
+        check(r["verdict"] == "invalid" and "reader exclusion" in r.get("why", ""),
+              "a malformed reader file -> invalid, never scored without it")
+    finally:
+        rp.unlink()
+
+
+def t_raw_env(tmp):
+    """ARENA_VET_REPAIR_TAIL_FIX_NEVER_RUNS: run_hidden(raw=True) carries the whole output, where the judge tail lost
+    a mid-output FAIL; ARENA_VET_REPAIR_SANDBOX_STARVED_CHECKS: a check's state dir is writable (EROFS before)."""
+    import arena_tasks as A
+    tree = tmp / "rawtree"
+    (tree / "src").mkdir(parents=True)
+    body = ("import os\nfor i in range(150): print('setup line', i)\nprint('FAIL widget mid-output')\n"
+            "for i in range(150): print('ok later', i)\n"
+            "d = os.environ['RM_SELFTEST_STATE_DIR']\nos.makedirs(d, exist_ok=True)\n"
+            "open(os.path.join(d, 'state.json'), 'w').write('{}')\n"
+            "assert os.environ['XDG_STATE_HOME'].startswith('/tmp/')\n")
+    ck = [{"kind": "fix_test", "path": "src/selftest_raw.py", "body": body}]
+    rows = J.run_hidden(ck, tree, tmp / "rawwork", raw=True)
+    r = rows[0]
+    check(r["result"] == "pass", "a check writing RM_SELFTEST_STATE_DIR passes in the sandbox (%s: %s)"
+          % (r["result"], r["tail"][-200:]))
+    check("FAIL widget" not in r["tail"] and "FAIL widget mid-output" in r.get("raw", "")
+          and "FAIL widget mid-output" in A.vet_tail(r["raw"]),
+          "raw output keeps the mid-output FAIL the 1500-char judge tail lost; vet_tail of raw keeps it")
+    plain = J.run_hidden(ck, tree, tmp / "rawwork2")
+    check("raw" not in plain[0], "the judge's own run (raw=False) carries no raw output")
+    check(len(J.raw_output(b"a" * 50, b"b" * 50, "zz", cap=40)) < 100 and "cut" in J.raw_output(b"a" * 50, b"", "z", cap=20),
+          "raw_output caps a huge output in the middle")
+
+
 def main():
     if not shutil.which("bwrap"):
         print("FAIL  bwrap not installed: the judge cannot run, and this test cannot prove the map is hidden")
@@ -1505,6 +1578,8 @@ def main():
         t_mi(tmp)
         t_gpt_harden(tmp)
         t_proxy_env(tmp)
+        t_unscore(tmp)
+        t_raw_env(tmp)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
