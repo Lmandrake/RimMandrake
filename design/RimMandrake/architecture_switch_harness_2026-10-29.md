@@ -394,7 +394,8 @@ The simulators behind the numbers below model no task order or era: their figure
   - Priors are weak and centred on the simulator, with a wide spread: `ralph_a` at 0.5× `v3`'s capacity per token
     (Ralph §10), the others at 1×.
 - **Decide for X:** P(X's accepted points per token ≥ 1.25 × the best other arm's) > 0.95, AND X's judge accept
-  rate is not credibly worse than the control's (P(worse by ≥ 0.10) < 0.2).
+  rate is not credibly worse than the control's (P(worse by ≥ 0.15) < 0.2; 15 points, owner decision
+  2026-10-31, was 0.10; the hard-cap clause below keeps its own 0.10).
 - **Futility, drop X:** P(X ≥ 1.1 × control) < 0.05. The arm stops getting new tasks, and its budget goes to the
   arms still in contention.
 - **Tie:** P(|difference| < 15%) > 0.9 between the leading arms. Then the **simpler arm wins**: fewer running

@@ -65,7 +65,7 @@ THE RULE (section 4.1, thresholds are the owner's; module constants, never tuned
   - nothing else may fire until EVERY arm in contention has >= MIN_TASKS=10 completed tasks over >= MIN_KINDS=2
     kinds: such a block is UNMEASURED(below minimum);
   - DECIDE_FOR_X: P(eff X >= 1.25 x the best other non-disqualified arm) > 0.95 AND P(accept[control] - accept[X]
-    >= 0.10) < 0.2 (control = v3; no control data -> no decision);
+    >= ACCEPT_MARGIN=0.15) < 0.2 (control = v3; no control data -> no decision);
   - TIE: P(|eff1/eff2 - 1| < 0.15) > 0.9 for the two leading arms in contention (by posterior mean log eff) -> the
     simpler of the two wins, order ralph_a < ralph_c < trio < v3c < v3;
   - FUTILE(X), X not the control: P(eff X >= 1.1 x control) < 0.05 -> X gets no new tasks;
@@ -215,7 +215,7 @@ MIN_TASKS = 10
 MIN_KINDS = 2
 DECIDE_RATIO = 1.25
 DECIDE_P = 0.95
-ACCEPT_MARGIN = 0.10
+ACCEPT_MARGIN = 0.15   # 15 points: owner decision 2026-10-31 (was 0.10; ARENA_ANALYSIS_RETHINK_POWER_BELOW_TARGET)
 ACCEPT_P = 0.2
 FUTILE_RATIO = 1.1
 FUTILE_P = 0.05

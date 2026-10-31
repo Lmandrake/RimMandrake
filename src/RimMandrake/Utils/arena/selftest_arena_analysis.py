@@ -6,7 +6,7 @@
     python3 src/RimMandrake/Utils/arena/selftest_arena_analysis.py --calib N    # null false-DECIDE rate over N seeds
     python3 src/RimMandrake/Utils/arena/selftest_arena_analysis.py --power N    # 1.5x, sigma_d 0.8: tasks to decide
 
-Sections: (1) the owner's thresholds pinned; (2) rule boundaries with LITERAL numbers (1.25, 0.95, 0.10, 0.2, 1.1,
+Sections: (1) the owner's thresholds pinned; (2) rule boundaries with LITERAL numbers (1.25, 0.95, 0.15, 0.2, 1.1,
 0.05, 0.15, 0.9) so a changed module constant fails here; (3) token conversion and fail-closed input; (4) scenarios:
 clear winner decides only once 10 tasks / 2 kinds are in, an early fluke does not stop, a clear loser is futile, equal
 arms tie to the simpler arm, hard cap, determinism; (5) each disqualification path, firing before the minimum;
@@ -134,7 +134,7 @@ def all_acc(_i):
 
 def t_pins():
     want = {"BLOCK": 5, "MIN_TASKS": 10, "MIN_KINDS": 2, "DECIDE_RATIO": 1.25, "DECIDE_P": 0.95,
-            "ACCEPT_MARGIN": 0.10, "ACCEPT_P": 0.2, "FUTILE_RATIO": 1.1, "FUTILE_P": 0.05, "TIE_BAND": 0.15,
+            "ACCEPT_MARGIN": 0.15, "ACCEPT_P": 0.2, "FUTILE_RATIO": 1.1, "FUTILE_P": 0.05, "TIE_BAND": 0.15,
             "TIE_P": 0.9, "SIMPLER": ("ralph_a", "ralph_c", "trio", "v3c", "v3"), "CONTROL": "v3", "ERAS": 3}
     bad = {k: getattr(AA, k) for k, v in want.items() if getattr(AA, k) != v}
     check("pins: section 4.1 thresholds are the owner's numbers", not bad, bad)
@@ -157,12 +157,12 @@ def t_rule_probs():
     p = AA.rule_probs(fake({"trio": [math.log(1.3)] * n, "v3": [0.0] * n, "v3c": [math.log(1.2)] * n},
                            dict(th, v3c=[0.8] * n)), ["trio", "v3", "v3c"], ["trio", "v3", "v3c"])
     check("decide compares to the best OTHER arm, not the control", p["decide"]["trio"] == 0.0, p["decide"])
-    p = AA.rule_probs(fake({"trio": [0.0] * n, "v3": [0.0] * n}, {"trio": [0.8 - 0.105] * n, "v3": [0.8] * n}),
+    p = AA.rule_probs(fake({"trio": [0.0] * n, "v3": [0.0] * n}, {"trio": [0.8 - 0.155] * n, "v3": [0.8] * n}),
                       ["trio", "v3"], ["trio", "v3"])
-    check("accept margin: 0.105 worse counts as >= 0.10", p["accept_worse"]["trio"] == 1.0, p["accept_worse"])
-    p = AA.rule_probs(fake({"trio": [0.0] * n, "v3": [0.0] * n}, {"trio": [0.8 - 0.095] * n, "v3": [0.8] * n}),
+    check("accept margin: 0.155 worse counts as >= 0.15", p["accept_worse"]["trio"] == 1.0, p["accept_worse"])
+    p = AA.rule_probs(fake({"trio": [0.0] * n, "v3": [0.0] * n}, {"trio": [0.8 - 0.145] * n, "v3": [0.8] * n}),
                       ["trio", "v3"], ["trio", "v3"])
-    check("accept margin: 0.095 worse does not", p["accept_worse"]["trio"] == 0.0, p["accept_worse"])
+    check("accept margin: 0.145 worse does not", p["accept_worse"]["trio"] == 0.0, p["accept_worse"])
     p = AA.rule_probs(fake({"trio": [math.log(1.1 * 1.03)] * n, "v3": [0.0] * n}, th), ["trio", "v3"], ["trio", "v3"])
     check("futility ratio: 1.133x counts as >= 1.1x control", p["futile"]["trio"] == 1.0, p["futile"])
     p = AA.rule_probs(fake({"trio": [math.log(1.1 * 0.97)] * n, "v3": [0.0] * n}, th), ["trio", "v3"], ["trio", "v3"])
@@ -709,12 +709,12 @@ def t_nig_oracle():
 # ---------------------------------------------------------------- (5c) review round 2: chronology, masking, snapshots
 
 def t_ratio_boundaries():
-    """The owner's ratios are inclusive (>=): a draw exactly at 1.25x / 1.1x / a 0.10 drop counts."""
+    """The owner's ratios are inclusive (>=): a draw exactly at 1.25x / 1.1x / a 0.15 drop counts."""
     le = {"trio": [math.log(1.25)] * 4, "v3": [0.0] * 4}
-    th = {"trio": [0.0] * 4, "v3": [0.1] * 4}
+    th = {"trio": [0.0] * 4, "v3": [0.15] * 4}
     p = AA.rule_probs({"le": le, "theta": th}, ["trio", "v3"], ["trio", "v3"])
     check("a draw exactly at 1.25x counts for DECIDE (>=)", p["decide"]["trio"] == 1.0, p["decide"])
-    check("an accept drop of exactly 0.10 counts as worse (>=)", p["accept_worse"]["trio"] == 1.0, p["accept_worse"])
+    check("an accept drop of exactly 0.15 counts as worse (>=)", p["accept_worse"]["trio"] == 1.0, p["accept_worse"])
     le = {"trio": [math.log(1.1)] * 4, "v3": [0.0] * 4}
     p = AA.rule_probs({"le": le, "theta": th}, ["trio", "v3"], ["trio", "v3"])
     check("a draw exactly at 1.1x control counts against futility (>=)", p["futile"]["trio"] == 1.0, p["futile"])
@@ -1353,7 +1353,7 @@ CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fl
         t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial)
 
 MUTANTS = [("DECIDE_RATIO", 1.3125), ("DECIDE_RATIO", 1.1875), ("DECIDE_P", 0.97), ("DECIDE_P", 0.93),
-           ("ACCEPT_MARGIN", 0.11), ("ACCEPT_MARGIN", 0.09), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
+           ("ACCEPT_MARGIN", 0.16), ("ACCEPT_MARGIN", 0.14), ("ACCEPT_P", 0.22), ("ACCEPT_P", 0.18),
            ("FUTILE_RATIO", 1.155), ("FUTILE_RATIO", 1.045), ("FUTILE_P", 0.07), ("FUTILE_P", 0.03),
            ("TIE_BAND", 0.17), ("TIE_BAND", 0.13), ("TIE_P", 0.92), ("TIE_P", 0.88),
            ("MIN_TASKS", 5), ("MIN_TASKS", 15), ("MIN_KINDS", 1), ("MIN_KINDS", 3), ("BLOCK", 4), ("BLOCK", 6),
