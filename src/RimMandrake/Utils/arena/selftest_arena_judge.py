@@ -1320,9 +1320,51 @@ def t_proxy_env(tmp):
         check(sorted(st) == ["WSLENV"] and not any(JH.refused_at_codex(x.split("/")[0]) for x in st["WSLENV"].split(":")
                                                     if x),
               "forced: HTTPS_PROXY & co. in the harness env + WSLENV never reach gpt_consult/codex.exe (%s)" % st)
+        t_proxy_windows_side(tmp, steer)
     finally:
         for k, v in saved.items():
             os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+
+
+# The real launch path past gpt_consult: codex_image.child_env builds codex.exe's env and WSL interop hands a Windows
+# process the WSLENV-named survivors. A Windows process (cmd.exe `set`) stands in for codex.exe on exactly that path,
+# so the check reads what the Windows side receives, not what Python thinks it passed.
+WIN_SET_PROBE = r'''
+import json, subprocess, sys
+from pathlib import Path
+sys.path.insert(0, %r)
+import codex_image
+env = codex_image.child_env(Path(sys.argv[1]))
+r = subprocess.run(["/mnt/c/Windows/System32/cmd.exe", "/d", "/c", "set"], capture_output=True, env=env,
+                   cwd="/mnt/c/Windows", timeout=60)
+names = [l.split("=", 1)[0] for l in r.stdout.decode("utf-8", "replace").splitlines() if "=" in l]
+print(json.dumps({"rc": r.returncode, "names": names}))
+'''
+
+
+def t_proxy_windows_side(tmp, steer):
+    """Called with `steer` + its WSLENV already in os.environ. Sanity arm first: the same cmd.exe launched straight
+    from the harness env DOES see HTTPS_PROXY (the instrument can see); then the judge path does not."""
+    cmd = "/mnt/c/Windows/System32/cmd.exe"
+    if not os.path.exists(cmd):
+        print("SKIP  no WSL interop here: the Windows side of the judge launch path is UNMEASURED on this machine")
+        return
+    r = subprocess.run([cmd, "/d", "/c", "set"], capture_output=True, cwd="/mnt/c/Windows", timeout=60)
+    seen = {l.split("=", 1)[0].upper() for l in r.stdout.decode("utf-8", "replace").splitlines() if "=" in l}
+    check("HTTPS_PROXY" in seen, "sanity: cmd.exe launched from the unscrubbed harness env sees HTTPS_PROXY")
+    scripts = Path(J.__file__).resolve().parents[4] / "skills" / "generating-images" / "scripts"
+    work = J.clones_root() / "judge" / ".jw" / "proxy_win"
+    (work / "home").mkdir(parents=True)
+    r = J.run_sandboxed([sys.executable, "-c", WIN_SET_PROBE % str(scripts), str(work / "home")], work=work,
+                        timeout=120)
+    try:
+        d = json.loads(r.stdout.decode().strip().splitlines()[-1])
+    except (ValueError, IndexError):
+        d = {"rc": None, "names": [], "err": (r.stdout + r.stderr).decode("utf-8", "replace")[-300:]}
+    bad = [n for n in d["names"] if J.JH.refused_at_codex(n)]
+    check(d["rc"] == 0 and "CODEX_HOME" in d["names"] and not bad,
+          "Windows side of the judge launch path (sandbox -> child_env -> interop) gets CODEX_HOME and no steering "
+          "or CODEX_*/OPENAI_* variable (bad=%s, rc=%s%s)" % (bad, d["rc"], ", " + d["err"] if "err" in d else ""))
 
 def main():
     if not shutil.which("bwrap"):
