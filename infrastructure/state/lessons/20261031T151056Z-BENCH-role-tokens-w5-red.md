@@ -1,0 +1,1 @@
+selftest_role_tokens W5 is red at HEAD independent of LOGIN_LOSS_FIX_DEAD_SIGNALS: dispatcher_schedule.json roles' _caps_why no longer carry the literal [A] the test asserts. Also selftest_role_launch_decide_mut's golden was already stale on the 'but is_error' text: nobody ran it after that change.

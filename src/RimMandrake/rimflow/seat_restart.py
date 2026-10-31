@@ -328,6 +328,12 @@ def _queued_as_user(rec):
     return out
 
 
+def auth_ended(rec):
+    """A turn that ended on an auth API error (its record stops on stop_sequence): over, but the Stop hook never ran."""
+    return bool(rec and rec.get("type") == "assistant" and rec.get("isApiErrorMessage")
+                and rec.get("error") == "authentication_failed")
+
+
 def _assistant_kind(rec):
     sr = (rec.get("message") or {}).get("stop_reason")
     return "assistant_end" if sr == "end_turn" else "assistant_tool" if sr == "tool_use" else "assistant_other"
@@ -356,7 +362,8 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
             continue
         at = _ts(r.get("timestamp"))
         if t == "assistant":
-            s["last_kind"] = _assistant_kind(r)
+            # a window stranded on an auth error is quiet: login_watch restarts it (LOGIN_LOSS_FIX_DEAD_SIGNALS)
+            s["last_kind"] = "assistant_end" if auth_ended(r) else _assistant_kind(r)
             u = (r.get("message") or {}).get("usage") or {}
             if u:
                 s["ctx_tokens"] = sum(int(u.get(k) or 0) for k in (

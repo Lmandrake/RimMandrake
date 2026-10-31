@@ -104,6 +104,10 @@ import sys
 import time
 from fractions import Fraction
 
+AUTH_BACKS_PER_DAY = 2
+AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expired|please run /login|"
+                     r"authentication_failed", re.I)
+
 try:
     import arbiter_pending as PW     # the rimflow dir is on sys.path (dispatcher.py, the selftests)
 except ImportError:
@@ -746,14 +750,38 @@ def _supervise_one(name, rs, cfg, obs, now, act, busy):
                 why="%s run %s used %d weighted tokens (raw %s), budget %d" % (
                     name, run["unit"], tok, run["raw_tokens"], run.get("budget") or 0))
         if run["state"] == "failed":
-            act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True,
+            text = res.get("result") or run.get("err_tail") or ""
+            back = auth_failed_back(rs, run, text, now)
+            act(do="alarm", kind="role:%s:failed" % name, ticket=run.get("item"), note=True, conductor_log=True,
+                raise_first="%s run failed%s." % (name, ": its slot is given back, it reruns once the login works"
+                                                  if back else ""),
                 # a blind role's item gets the fixed line only: the result text is outside text (a usage-limit
                 # message names no token word); the full why goes to Operations' item (dispatcher.route_note)
                 blind=blind(name, "failed", run.get("mode"), run["unit"]),
                 why="%s run %s ended without a good result (%s)" % (
                     name, run["unit"], ("usage UNMEASURED: " if res and tok is None else "")
-                    + (res.get("result") or run.get("err_tail") or "no result file")[:160]))
+                    + (text or "no result file")[:160]))
     rs["runs"] = [r for r in rs.get("runs") or [] if r.get("state") == "running" or now - r["at"] < 2 * 86400]
+
+
+def auth_failed_back(rs, run, text, now):
+    """A run killed by a lost login did no work: its slot, alarm mark and event cursor go back so it runs again
+    (10-30: three such runs spent the day's alarm and event limits). At most AUTH_BACKS_PER_DAY per role, so a login
+    that fails only for role runs cannot loop. -> True when given back."""
+    used = rs.get("auth_backs") if (rs.get("auth_backs") or {}).get("day") == day_of(now) else {"day": day_of(now), "n": 0}
+    p = run.get("consumed")
+    if not (p and AUTH_RX.search(str(text))) or used["n"] >= AUTH_BACKS_PER_DAY or rs.get("pending_launch"):
+        return False
+    if any(r.get("at", 0) > run["at"] for r in rs.get("runs") or []):    # a later run already moved the marks
+        return False
+    rs["pending_launch"] = p
+    if not unlaunch(rs, run["unit"]):
+        rs.pop("pending_launch", None)
+        return False
+    used["n"] += 1
+    rs["auth_backs"] = used
+    run.pop("consumed", None)
+    return True
 
 
 def harvest(name, run, res, act):
@@ -983,7 +1011,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             return
         missing = [k for k in LAUNCH_KEYS if not role.get(k)]
         if missing:
-            act(do="alarm", kind="role:" + name, why="role %s is enabled but cannot be launched: no %s in the schedule"
+            act(do="alarm", kind="role:" + name, note=True, conductor_log=True, why="role %s is enabled but cannot be launched: no %s in the schedule"
                 % (name, ", ".join(missing)))
             return
         cfg = dict(ROLE_DEFAULTS, **role)
@@ -1209,7 +1237,7 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
         factor = float(b.get("quick_cap_x", 1.0)) if job["mode"] in ("quick", "run", "weekly", "event") else 1.0
         if not job["cap"]:
             refuse_now(rs, "no cap", now, job)
-            act(do="alarm", kind="role:" + name, why="role %s has no token cap for %s" % (name, job["mode"]))
+            act(do="alarm", kind="role:" + name, note=True, conductor_log=True, why="role %s has no token cap for %s" % (name, job["mode"]))
             return
         budget = int(job["cap"] * factor)
         spent = spent_today(rs, now)

@@ -85,6 +85,7 @@ import session_match as SM  # noqa: E402
 import doorbell  # noqa: E402
 import role_launch as RL  # noqa: E402
 import seat_restart as SR  # noqa: E402
+import login_watch as LW  # noqa: E402
 import account_pick as AP  # noqa: E402
 import helper_budget as HB  # noqa: E402
 import schema as S  # noqa: E402  (testq: dump, utcnow, parse_ts)
@@ -379,7 +380,11 @@ def decide(sch, st, obs, now, apply, out=None):
             role_busy = {n for n, rs in (st.get("roles") or {}).items() if isinstance(rs, dict) and rs.get("runs")}
             act(do="alarm", kind="role:supervise", note=True, why="supervise_roles raised %s: %s; roles with runs on "
                 "record are held as busy this tick" % (type(e).__name__, str(e)[:200]))
-    gate = account_gate(sch, st, obs, now, act)
+    gate = login_gate(sch, st, obs, now, act, account_gate(sch, st, obs, now, act))
+    carried = st.pop("alarm_carry", None)       # a raised tick could only journal: said here, by the next tick
+    if carried:
+        act(do="alarm", kind="tick:raised", note=True, conductor_log=True, why=carried,
+            raise_first="A Dispatcher tick raised: read the journal.")
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
         for seat, ss in sorted(st["seats"].items()):     # a ring already in an inbox would still wake its window
@@ -422,8 +427,8 @@ def decide(sch, st, obs, now, apply, out=None):
     else:
         for role in sch.get("roles") or []:
             if role.get("enabled"):
-                act(do="alarm", kind="role:" + role.get("name", "?"),
-                    why="role %s is enabled but this tick has no role observer" % role.get("name"))
+                act(do="alarm", kind="role:" + role.get("name", "?"), note=True, conductor_log=True,
+                    raise_first="Role runs are not being launched.", why="role %s is enabled but this tick has no role observer" % role.get("name"))
     if obs.get("seat_restart"):        # seat_restart.py: a fresh window per ticket (off unless seat_restart.enabled)
         try:
             SR.decide(sch, st, obs, now, sr_apply(sch, apply), act)
@@ -548,16 +553,18 @@ def decide(sch, st, obs, now, apply, out=None):
             if now - ss["dead_since"] < sch["dead_after_s"]:
                 return
             if not cfg.get("recover_dead"):
-                act(do="alarm", kind="dead:" + seat, seat=seat, why="%s has had no session for %d s (recovery off)"
+                act(do="alarm", kind="dead:" + seat, seat=seat, note=True, conductor_log=True,
+                    raise_first="%s has no window." % seat, why="%s has had no session for %d s (recovery off)"
                     % (seat, now - ss["dead_since"]))
                 return
             if not ss.get("session_id"):
-                act(do="alarm", kind="dead:" + seat, seat=seat, why="%s is dead and no session id was ever seen" % seat)
+                act(do="alarm", kind="dead:" + seat, seat=seat, note=True, conductor_log=True,
+                    raise_first="%s has no window." % seat, why="%s is dead and no session id was ever seen" % seat)
                 return
             day = [r for r in st["recovers"] if r["seat"] == seat and now - r["at"] < 86400]
             if len(day) >= sch["caps"]["recovers_per_seat_day"]:
-                act(do="alarm", kind="cap:recover:" + seat, seat=seat,
-                    why="cap: %d recovers/day for %s" % (sch["caps"]["recovers_per_seat_day"], seat))
+                act(do="alarm", kind="cap:recover:" + seat, seat=seat, note=True, conductor_log=True,
+                    raise_first="%s is dead and out of recoveries." % seat, why="cap: %d recovers/day for %s" % (sch["caps"]["recovers_per_seat_day"], seat))
                 return
             msg = ("[RimFlow Dispatcher] Your window was found dead and resumed in the background. Run "
                    "`python3 src/RimMandrake/rimflow/cli.py next --seat %s` and continue." % seat)
@@ -597,7 +604,8 @@ def decide(sch, st, obs, now, apply, out=None):
             return
         ticket = obs["peek"](seat)
         if ticket is None:
-            act(do="alarm", kind="peek:" + seat, seat=seat, why="rimflow next --peek failed in %s" % cfg.get("clone"))
+            act(do="alarm", kind="peek:" + seat, seat=seat, note=True, conductor_log=True,
+                raise_first="%s cannot read its queue." % seat, why="rimflow next --peek failed in %s" % cfg.get("clone"))
             return
         if not ticket:
             ss.pop("nh_streak", None)  # no work waiting: an idle window is correct, nothing to escalate
@@ -605,7 +613,8 @@ def decide(sch, st, obs, now, apply, out=None):
             return                     # empty queue: an idle window is correct
         ok, why = caps_ok(st, sch, seat, now)
         if not ok:
-            act(do="alarm", kind="cap:" + seat, seat=seat, why=why)
+            act(do="alarm", kind="cap:" + seat, seat=seat, note=True, conductor_log=True, why=why,
+                raise_first="%s is out of wakes." % seat)
             return
         go, pk = gate("ring")
         if not go:
@@ -638,6 +647,19 @@ def decide(sch, st, obs, now, apply, out=None):
 
 
 HOLD_ALARM_EVERY_S = 6 * 3600
+
+
+def login_gate(sch, st, obs, now, act, gate):
+    """login_watch's step (LOGIN_LOSS_FIX_DEAD_SIGNALS). While the login is dead nothing is released: every release
+    would die on the same error and spend a daily limit. Its failure never stops the tick, and alarms."""
+    try:
+        hold = LW.step(sch, st, obs, now, act, iso)
+    except Exception as e:  # noqa: BLE001
+        act(do="alarm", kind="login:watch", note=True, conductor_log=True,
+            why="login watch raised %s: %s; a dead login would go unseen" % (type(e).__name__, str(e)[:200]),
+            raise_first="The login watch is broken.")
+        return gate
+    return (lambda kind: (False, {"why": hold})) if hold else gate
 
 
 def account_gate(sch, st, obs, now, act):
@@ -846,7 +868,7 @@ def conductor_log(sch, a, now):
     if not path:
         return "conductor log off"
     line = "\n%s — DISPATCHER ESCALATION (%s): %s\n  RAISE FIRST: %s\n" % (
-        iso(now), a.get("kind"), a.get("why"), a.get("raise_first") or "%s idle with work waiting." % a.get("seat"))
+        iso(now), a.get("kind"), a.get("why"), a.get("raise_first") or ("%s idle with work waiting." % a.get("seat") if a.get("seat") else "Read the line above."))
     with open(path, "a", encoding="utf-8") as f:
         f.write(line)
     return "conductor log appended: %s" % path
@@ -997,7 +1019,13 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 try:     # one failing side effect must not skip the rest, nor the state save that holds the caps
                     if a["do"] == "alarm" and a.get("conductor_log") and res is None:
                         res = do_conductor(sch, a, now)       # not when rate-limited (res already says so)
-                    if a["do"] == "ring":
+                    if a["do"] == "login_switch":
+                        res = LW.run_switch(dict(a, epoch=now), fx.get("login_switch"))
+                        if a.get("conductor_log"):
+                            res = "%s; %s" % (res, do_conductor(sch, a, now))
+                    elif a["do"] == "login_rescue":
+                        res = LW.write_rescue(a)
+                    elif a["do"] == "ring":
                         # PAUSE again, now: decide() read it before the ingest.lock wait (review dispatcher-full #8)
                         paused = do_paused()
                         if paused:
@@ -1085,7 +1113,8 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 if ok:
                                     # the scope and marker recorded above stay authoritative
                                     run.update({k: v for k, v in (rec or {}).items() if k not in ("scope", "marker")})
-                                    rs.pop("pending_launch", None)
+                                    # kept on the run: an auth death gives it back (login_watch)
+                                    run["consumed"] = rs.pop("pending_launch", None)
                                 else:
                                     runs.remove(run)            # systemd-run said no: nothing started
                                     a["why"] = "%s — LAUNCH FAILED: %s" % (a["why"], out)
@@ -1340,6 +1369,26 @@ def long_helpers_obs(now=None):
     return out
 
 
+def login_obs(sch):
+    """login_watch's readings. account() -> (live account or None, lent accounts); neither may stop a probe."""
+    cfg = LW.config(sch)
+    if not cfg["enabled"]:
+        return None
+
+    def account():
+        try:
+            ro = role_obs(sch) or {}
+            live = ro["account"]() if ro.get("account") else None
+            live = live.get("account") if isinstance(live, dict) else live
+            rule = sch.get("account_pick") or {}
+            rules = AP.load_lent(rule)[0]
+            return live, AP.lent_set(rules) if isinstance(rules, dict) else None
+        except Exception:  # noqa: BLE001 - the alarm says UNMEASURED; nothing may be picked on an unknown reading
+            return None, None
+    return {"probe": lambda: LW.probe(claude_exe(), cfg["probe_timeout_s"]), "account": account,
+            "stranded": lambda sessions: LW.stranded(sch, cfg, sessions, time.time())}
+
+
 def default_obs(sch, root, st=None):
     seats = sch.get("seats") or {}
     return {
@@ -1353,6 +1402,7 @@ def default_obs(sch, root, st=None):
         "long_helpers": long_helpers_obs,
         "roles": role_obs(sch),
         "seat_restart": SR.default_obs(sch, seat_events_since) if SR.config(sch) else None,
+        "login": login_obs(sch),
     }
 
 
@@ -1562,9 +1612,9 @@ def tick(sch, apply, obs=None, now=None, fx=None):
             # (review dispatcher-full #5)
             back = unreserve(st)
             rings = unreleased(st, acts, now)    # rings/recovers given back, withdraws kept pending
-            journal(root, {"at": iso(now), "do": "alarm", "kind": "tick:raised",
-                           "why": "tick raised %s: %s; launches given back: %s; rings/recovers/withdraws undone: %s" % (
-                               type(e).__name__, str(e)[:200], ", ".join(back) or "none", ", ".join(rings) or "none")})
+            st["alarm_carry"] = ("tick raised %s: %s; launches given back: %s; rings/recovers/withdraws undone: %s" % (
+                type(e).__name__, str(e)[:200], ", ".join(back) or "none", ", ".join(rings) or "none"))
+            journal(root, {"at": iso(now), "do": "alarm", "kind": "tick:raised", "why": st["alarm_carry"]})
             raise
         finally:     # the caps and pending rings are in st: save them even when a step raised
             st["last_tick"] = iso(now)        # last ATTEMPT
