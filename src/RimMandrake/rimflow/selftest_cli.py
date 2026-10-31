@@ -228,6 +228,7 @@ def t_a_proposed_partial_item_goes_the_ranked_way():
     finally:
         C.priority.rank, C.reconcile.guard, C._claimable, C.reconcile.assess = saved
     assert ch["kind"] == "offer" and ch["offer"].kind == "partial", ch
+    assert ch["also"] == [], "the item on offer is not also waiting: %s" % ch
 
 
 def t_a_free_bridge_offer_says_how_to_take_it():
@@ -942,7 +943,7 @@ def t_owner_may_reassign_and_is_told_that_he_overrode():
     rc, out, err = run("reassign", "OWNER_TAKES_THIS_BACK_PROBE_FIXTURE", "--to", "CHECK",
                        "--reason", "mine now", seat="OWNER")
     assert rc == 0, "the OWNER was refused a reassign\n  %s" % (out + err).strip()
-    assert "CHECK" in ok("show", "OWNER_TAKES_THIS_BACK_PROBE_FIXTURE"), "the reassign did nothing"
+    assert "owner CHECK " in ok("show", "OWNER_TAKES_THIS_BACK_PROBE_FIXTURE"), "the reassign did nothing"
     assert "OVERRIDE" in err.upper(), (
         "the override was silent. He asked to be able to override AND to be warned; "
         "an unannounced bypass is the failure mode, not the bypass.\n  stderr: %r" % err)
@@ -1034,6 +1035,17 @@ def t_render_is_delegated_never_reimplemented():
         return
     assert callable(getattr(mod, "main", None)) or callable(getattr(mod, "render", None)), (
         "render.py exists but exposes no entry point this CLI can call")
+    import types
+    calls, saved = [], cli._render_module
+    try:        # the delegate itself, on stubs: the real renderer writes real derived views
+        cli._render_module = lambda: types.SimpleNamespace(main=lambda argv: calls.append(argv) or 3)
+        rc = cli._delegate("render")(types.SimpleNamespace(cmd="render", rest=["--x"]), "BUILD")
+        assert rc == 3 and calls == [["render", "--x"]], "main was not handed the verb: %r %r" % (rc, calls)
+        cli._render_module = lambda: types.SimpleNamespace(reindex=lambda: calls.append("reindex") or 0)
+        cli._delegate("reindex")(types.SimpleNamespace(cmd="reindex"), "BUILD")
+        assert calls[-1] == "reindex", "the named function was not called: %r" % calls
+    finally:
+        cli._render_module = saved
     # 🔑 The sharper invariant: this CLI opens NO file for writing. Every byte it puts
     # on disk goes through `model.append`, which holds the flock. A renderer would
     # have to write files, so "no write mode anywhere" is what actually keeps the two

@@ -1119,7 +1119,7 @@ def _choose(w, seat, args, ctx, idx):
     if claimable:
         a = reconcile.assess(claimable[0], idx)
         if a.kind in ("reconcile", "partial"):  # the ranked branch's words: its REMAINING line, or its verdict owed
-            out.update(kind="offer", offer=a, item=a.item)
+            out.update(kind="offer", offer=a, item=a.item, also=[c for c in claimable if c is not a.item])
         else:
             out.update(kind="claimable", claimable=claimable, item=claimable[0])
     return out

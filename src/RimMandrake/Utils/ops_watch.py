@@ -273,6 +273,8 @@ def c_codex(now, rules, ctx):
     week, bad = [], []      # bad: the time of each record that cannot be used; None when not even that reads
     for r in recs:      # (ts, p_used, p_win, p_reset, s_used, s_win, s_reset, plan)
         try:
+            if isinstance(r[2], str) or isinstance(r[5], str):
+                raise ValueError("window is text")      # a weekly record in the wrong shape must not read as no record
             if r[2] == 10080:
                 week.append((epoch(r[0]), float(r[1]), epoch(r[3])))
             elif r[5] == 10080 and r[4] is not None:
@@ -572,9 +574,13 @@ def c_testing(now, rules, ctx):
     except OSError:
         days = {}
     lo = time.strftime("%Y-%m-%d", time.localtime(now - 7 * DAY))
+    today = time.strftime("%Y-%m-%d", time.localtime(now))
     ah, adays, blind, soft = 0.0, 0, 0, 0
     for day, r in sorted(days.items()):
         if not day or day <= lo or not isinstance(r, dict):
+            continue
+        if day > today or not re.fullmatch(r"\d{4}-\d\d-\d\d", day):
+            blind += 1          # a day that has not happened, or is no date, cannot stand in for one that has
             continue
         a = _obj(_obj(r.get("machines")).get("archmagi"))      # a bad row reads as a blind day, the loop goes on
         est = []
@@ -689,7 +695,7 @@ def c_disk(now, rules, ctx):
                 nob += 1
                 continue
             if row.get("verdict") != "DELETED":
-                if not isinstance(row.get("bytes"), (int, float)):
+                if not (is_num(row.get("bytes")) and finite(row["bytes"])):
                     nob += 1
                     continue
                 tot[row.get("verdict")] = tot.get(row.get("verdict"), 0) + row["bytes"]
@@ -1753,6 +1759,11 @@ def _obj(x):
     return x if isinstance(x, dict) else {}
 
 
+def counts_as_measured(p):
+    """A MEASURED point with a value. NaN is not one: no rule can read it, so it must not refresh a key's last reading."""
+    return isinstance(p, dict) and p.get("m") == "MEASURED" and p.get("v") is not None and p.get("v") == p.get("v")
+
+
 def carry_last_measured(lastm, saved, points, now):
     """-> (lastm for andon, saved for disk). `lastm` is read from the loaded series (series_days), so a key
     UNMEASURED longer than that loses its last MEASURED and its 'silent' flag. `saved` (last_measured.json) outlives the
@@ -1813,7 +1824,7 @@ def run(now=None, rules=None, filer=None, families=None):
         hist.update(history(recs))
         for r in recs:      # any MEASURED point, a state string too: only the band and run rules need a number
             for k, p in (r.get("points") or {}).items():
-                if isinstance(p, dict) and p.get("m") == "MEASURED" and p.get("v") is not None:
+                if counts_as_measured(p):
                     lastm[k] = max(r["t"], lastm.get(k, r["t"]))
     lm_path = ops_dir() / "last_measured.json"
     lm_saved = _obj(read_json(lm_path)).get("t")

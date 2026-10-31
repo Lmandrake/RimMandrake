@@ -457,6 +457,14 @@ Path(os.environ["RM_SCRATCH_REAP_RUNS"]).write_text(json.dumps({"ts": OW.iso(NOW
 s = OW.c_disk(NOW, RULES, {})
 check("disk: an unhashable verdict costs its row, not the scratch total", s["disk.scratch_total_gb"]["m"] == "ESTIMATE"
       and s["disk.scratch_total_gb"]["v"] == 2.0, s["disk.scratch_total_gb"])
+Path(os.environ["RM_SCRATCH_REAP_RUNS"]).write_text(json.dumps({"ts": OW.iso(NOW - H), "rows": [
+    {"verdict": "YOUNG", "bytes": 2e9}, {"verdict": "REFUSE", "bytes": float("nan")}]}) + "\n")
+s = OW.c_disk(NOW, RULES, {})
+check("disk: a NaN byte count costs its row, not the scratch total", s["disk.scratch_total_gb"]["m"] == "ESTIMATE"
+      and s["disk.scratch_total_gb"]["v"] == 2.0, s["disk.scratch_total_gb"])
+check("run: NaN is no measurement, a state string and a zero are",
+      not OW.counts_as_measured(OW.M(float("nan"), "x")) and OW.counts_as_measured(OW.M("OK", "x"))
+      and OW.counts_as_measured(OW.M(0, "x")))
 wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": True, "incident": None, "since": "garbage"})
 s = OW.c_steve(NOW, RULES, {})
 check("steve: a fault with no readable since is UNMEASURED duration, not 0 min",
@@ -517,6 +525,13 @@ rows[3]["machines"]["archmagi"]["busy_pct"] = 50
 t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
 check("testing: (control) seven fully measured days are MEASURED 35 h", t["testing.archmagi_nothing_h_7d"]["m"] == "MEASURED"
       and t["testing.archmagi_nothing_h_7d"]["v"] == 35.0 and t["testing.nothing_h_7d"]["m"] == "MEASURED", t)
+_today = rows[0]
+rows[0] = dict(_today, day=time.strftime("%Y-%m-%d", time.localtime(NOW + DAY)))
+(TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
+t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
+check("testing: a future day does not complete the week", t["testing.archmagi_nothing_h_7d"]["m"] == "ESTIMATE"
+      and t["testing.archmagi_nothing_h_7d"]["x"].get("blind_days") == 1, t)
+rows[0] = _today
 rows[3]["machines"]["archmagi"]["busy_pct"] = float("nan")
 (TD / "history.jsonl").write_text("".join(json.dumps(r) + "\n" for r in rows))
 t = OW.c_testing(NOW, RULES, {"steve_jobs": grown, "closes": {}})
@@ -1178,6 +1193,11 @@ _c2 = OW.c_codex(NOW, RULES, {})
 _cxs.readings = lambda *a, **k: ([(OW.iso(NOW - 4 * 3600), 100.0, 10080, _rs, None, None, None, "x"),
                                    (OW.iso(NOW - 60), -1.0, 10080, _rs, None, None, None, "x")], 1)
 _cn = OW.c_codex(NOW, RULES, {})
+_cxs.readings = lambda *a, **k: ([(OW.iso(NOW - 3600), 90.0, 10080, _rs, None, None, None, "x"),
+                                   (OW.iso(NOW - 60), 5.0, "10080", _rs, None, None, None, "x")], 1)
+_ct = OW.c_codex(NOW, RULES, {})
+check("codex: a newer record with a text window leaves the older reading a floor",
+      _ct["codex.week_used_pct"]["m"] == "ESTIMATE" and _ct["codex.week_used_pct"]["v"] == 90.0, _ct["codex.week_used_pct"])
 check("codex: negative usage is no reading; the older one stays, as a floor",
       _cn["codex.week_used_pct"]["v"] == 100.0 and _cn["codex.week_used_pct"]["m"] == "ESTIMATE", _cn["codex.week_used_pct"])
 OW.codex_dirs = _dirs
