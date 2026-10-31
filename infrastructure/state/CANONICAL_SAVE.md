@@ -1,4 +1,11 @@
-# The canonical savegame is FROZEN
+# The canonical savegames
+
+**The canonical start, what tools load by default:
+`ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`**, the value of `planet.start_savegame` in
+`infrastructure/state/canon.yml` (owner card 2026-10-25, last section below). This doc's frozen
+block is the owner's 09-12 record, a different file, which is no longer `planet.start_savegame`.
+
+## The frozen record
 
 ```
 frozen:        true
@@ -9,9 +16,9 @@ frozenBy:      owner
 **File**: `CANONICAL_ASHKARR_START_2026-09-12.rws`, in the live Saves folder —
 `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Saves\CANONICAL_ASHKARR_START_2026-09-12.rws`.
 Not tracked in git (a savegame is a binary/XML blob, not source — this doc is
-the provenance record CLAUDE.md's Transient rule asks for). The same file is
-`planet.start_savegame` in `infrastructure/state/canon.yml`, which carries its
-full provenance.
+the provenance record CLAUDE.md's Transient rule asks for). It is
+`planet.frozen_record_savegame` in `infrastructure/state/canon.yml`, which carries
+its full provenance.
 
 **frozenMeaning**: the frozen world with the player start on it (The Utinni at
 tile 17007 with the Five Founders). Owner, 2026-09-12 10:20: *"record this save

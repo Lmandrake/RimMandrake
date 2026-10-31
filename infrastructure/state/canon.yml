@@ -71,7 +71,7 @@ planet:
   status: frozen
   status_src: >
     Owner card, 2026-09-12: "Flip to frozen" — confirming the 2026-09-07
-    freeze declaration. The embodied world is the START savegame below
+    freeze declaration. The world frozen then is frozen_record_savegame below
     (owner, 2026-09-12 10:20: "record this save game as the new canonical
     frozen start savegame"); CANONICAL_ASHKARR_2026-09-09.rws was the world
     before the player start existed on it and is kept only as the owner's
@@ -87,6 +87,12 @@ planet:
   # The frozen 09-12 file is kept as the record (see CANONICAL_SAVE.md), no longer the default.
   start_savegame: ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws
   start_savegame_src: >
+    Owner card 2026-10-25, "Which saved world should the project treat as the
+    canonical start? -> Repoint to the 10-20 save". Lineage and evidence for R3:
+    infrastructure/state/CANONICAL_SAVE.md, "Which save is current".
+  # The file the owner froze on 2026-09-12: the record, not the default start.
+  frozen_record_savegame: CANONICAL_ASHKARR_START_2026-09-12.rws
+  frozen_record_savegame_src: >
     Saves\CANONICAL_ASHKARR_START_2026-09-12.rws, written 10:20 2026-09-12 via
     rimworld/save_game with the Saves folder stat'd before and after (one new
     file, nothing else changed). Contents: the frozen world (live
@@ -105,8 +111,8 @@ planet:
   start_tile_src: >
     PLAYER_START_SITE_1 ruling (owner card 2026-09-08: Zeddo's Yard, tile 17007,
     ExtremeDesert / The Breaks, one tile from Zeddo's Toll 17006); the
-    START savegame's PlayerColony Settlement (world object 277) sits on it,
-    read back live 2026-09-12.
+    frozen 09-12 savegame's PlayerColony Settlement (world object 277) sits on
+    it, read back live 2026-09-12.
 
   # ⭐ ACCEPTED FOR V1 — owner, 2026-08-20, after looking at the ortho globes.
   #   "Let's go with the globe map you made for v1. Map accepted."
