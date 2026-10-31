@@ -224,16 +224,18 @@ def new_line_names(diff_text) -> list[str]:
 _DEFINED = re.compile(r"(?:\b(?:def|class|void|bool|int|string|var|static)\s+([A-Za-z_]\w*))|(?:^\s*([A-Za-z_]\w*)\s*=[^=])",
                       re.M)
 _IMPORT_LINE = re.compile(r"^\s*(?:from\s+\S+\s+)?import\b.*$", re.M)
+_GETATTR = re.compile(r"""\bgetattr\(\s*[^,()]+,\s*['"](\w+)['"]""")   # `getattr(tool, "_x")` reads _x too
 
 
 def defined_in(body) -> set:
     """Names the check body defines FROM SCRATCH (def/class/typed declaration/top-of-line assignment): they travel
     with the hidden copy, so they are never coupling and are not looked up (an absent name costs a full-tree grep).
     RULES v4 (C1): a name the body also READS from elsewhere, in attribute position (`tool._x`) or on an import line
-    (`from tool import _x`), is not from scratch: `_x = tool._x` or `def _x(): return tool._x()` is an alias of the
+    (`from tool import _x`) or by `getattr(tool, "_x")`, is not from scratch: `_x = tool._x` or `def _x(): return tool._x()` is an alias of the
     repo's name and still pins it, so it is looked up like any other."""
     body = body or ""
     imported = set(_IDENT.findall(" ".join(_IMPORT_LINE.findall(body))))
+    imported |= set(_GETATTR.findall(body))
     out = set()
     for n in {g for m in _DEFINED.finditer(body) for g in m.groups() if g}:
         if n in imported or re.search(r"\.\s*" + re.escape(n) + r"\b", body):
@@ -329,8 +331,8 @@ _MISSING_NAME = [re.compile(p) for p in (
     r"has no attribute '(\w+)'",                                     # AttributeError
     r"\bname '(\w+)' is not defined",                                # NameError
     r"error CS0103: The name '(\w+)' does not exist",                # C#
-    r"error CS0117: '[\w.]+' does not contain a definition for '(\w+)'",
-    r"error CS1061: '[\w.<>]+' does not contain a definition for '(\w+)'",
+    r"error CS0117: '[^']+' does not contain a definition for '(\w+)'",
+    r"error CS1061: '[^']+' does not contain a definition for '(\w+)'",
     r"error CS0246: The type or namespace name '(\w+)' could not be found",
     r"error CS0234: The type or namespace name '(\w+)' does not exist",
     r"got an unexpected keyword argument '(\w+)'",                   # TypeError on a fix-added parameter (C4)
@@ -339,14 +341,15 @@ _REASON = re.compile(r"Traceback \(most recent call last\)|\b[A-Z]\w*(?:Error|Ex
                      r"|\berror [A-Z]{2,}\d+:|\bnot ok\b|\bexpected\b|(?i:\bfail(?:s|ed|ure|ures|ing)?\b)"
                      r"|\b(?:Error|Exception):")
 _BEHAVIOUR = re.compile(r"AssertionError|\bassert\b|\bFAIL\b|\bFAILED\b(?! \()|\bexpected\b|\bnot ok\b"
-                        r"|\b[A-Z]\w*(?:Error|Exception)\b"
+                        r"|\b[A-Z]\w*(?:Error|Exception)\b|^\s*(?i:fail(?:ed|ure)?):"
                         r"|\b(?:Error|Exception):")
 # (v4 review: an error class other than the missing-name classes, `ValueError: ...`, `KeyError`, `TypeError`, is a
 # failure that is not a missing name, so the check is not red for the missing name only; _is_behaviour sets aside
 # the missing-name classes (_MISSING_CLASS) and the `unexpected keyword argument` TypeError)
 # RULES v4: which lines of a tail are OUTCOME lines (C2, C5). Not outcome: the source line Python prints under a
 # traceback `File "...", line N` (it quotes the check's own `assert`/`expected` text), the File line itself, pytest's
-# quoted source (the `>   ` failing line and the indented or blank lines directly above it), and a
+# quoted source (the `>   ` failing line, the indented or blank lines directly above it and the indented
+# continuation lines directly below it), and a
 # line that starts as a pass (`ok ...`, `PASS ...`) without a nonzero failure count. In outcome lines a zero count
 # (`0 FAIL`, `0 failed`) and a negated error (`no ValueError raised`) are not failure words.
 _TB_FILE = re.compile(r'^\s*File "[^"]*", line \d+')
@@ -357,10 +360,12 @@ _NEUTRAL = re.compile(r"\b0\s+fail\w*|\bno\s+[A-Z]\w*(?:Error|Exception)\b", re.
 # C7: a missing-name message on an assertion or FAIL line is that check's own failure report (behaviour), unless the
 # line also names the import/attribute/name error class (`FAIL: ImportError: cannot import name ...`), which is the
 # missing name reported again.
-# A line LED by another error class (`KeyError: "No module named ..."`) is that error, so behaviour too. The C4 form
+# A line LED by AssertionError or another error class (`KeyError: "ImportError: No module named ..."`) is that
+# error, so behaviour whatever its message quotes. The C4 form
 # (`TypeError: ... unexpected keyword argument`) counts as a missing-name class wherever it appears.
-_BEH_PREFIX = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b|FAIL\b|FAILED\b|not ok\b"
-                         r"|(?!(?:ModuleNotFound|Import|Attribute|Name|Type)Error\b)[A-Z]\w*(?:Error|Exception):)")
+_BEH_REPORT = re.compile(r"^\s*(?:E\s+)?(?:FAIL\b|FAILED\b|not ok\b|(?i:fail(?:ed|ure)?):)")
+_BEH_CLASS = re.compile(r"^\s*(?:E\s+)?(?:AssertionError\b"
+                        r"|(?!(?:ModuleNotFound|Import|Attribute|Name|Type)Error\b)[A-Z]\w*(?:Error|Exception):)")
 _MISSING_CLASS = re.compile(r"\b(?:ModuleNotFound|Import|Attribute|Name)Error\b"
                             r"|\bTypeError\b.*\bunexpected keyword argument\b")
 
@@ -377,6 +382,10 @@ def outcome_lines(tail) -> list[str]:
             while j >= 0 and (not rows[j].strip() or rows[j][:1].isspace()) and j not in pysrc:
                 pysrc.add(j)
                 j -= 1
+            j = i + 1           # a multi-line statement's continuation: indented, before the `E   ` lines
+            while j < len(rows) and rows[j].strip() and rows[j][:1].isspace():
+                pysrc.add(j)
+                j += 1
     for i, ln in enumerate(rows):
         if i in pysrc:
             prev = ln
@@ -397,7 +406,9 @@ def _is_behaviour(ln) -> bool:
         return False
     if not _MISSING_CLASS.search(ln) and not any(rx.search(ln) for rx in _MISSING_NAME):
         return True
-    return bool(_BEH_PREFIX.match(ln)) and not _MISSING_CLASS.search(ln)
+    if _BEH_CLASS.match(ln):
+        return True
+    return bool(_BEH_REPORT.match(ln)) and not _MISSING_CLASS.search(ln)
 
 
 def missing_names_cited(tail) -> list[str]:

@@ -348,6 +348,8 @@ def rules_v4():
             c = pkt(tid)
             check("_private_two" in c["names"]["fix_only_unnamed"] and c["base_failure"]["veto"] == "missing_name_only",
                   "C1: a local name aliasing the repo's (%s) is looked up and vetoes (%s)" % (how, c["names"]))
+        check("_private_two" not in R.defined_in('import tool\n_private_two = getattr(tool, "_private_two")\n'),
+              "C1: a name read through getattr(mod, '_x') is an alias, not defined from scratch")
         check(R.defined_in("x = 1\ndef helper():\n  pass\nclass Fake:\n  pass\n") == {"x", "helper", "Fake"},
               "C1: defined_in still finds def / class / assignment")
         pp = R.build_packet("RP_PROSE", p, repo)
@@ -393,6 +395,9 @@ def rules_v4():
     check(veto("    def test_x():\n        assert a == 1\n\n>       assert tool._private_two() == 2\n"
                "E       AttributeError: module 'tool' has no attribute '_private_two'\n") == "missing_name_only",
           "C2: pytest's quoted source (the > line and the context above it) is not an outcome line")
+    check(veto("    def test_x():\n>       assert tool._private_two() == (\n            expected\n        )\n"
+               "E       AttributeError: module 'tool' has no attribute '_private_two'\n") == "missing_name_only",
+          "C2: the continuation of pytest's quoted > statement is not an outcome line")
     check(veto("PASS: handled No module named 'newmod'\n" + TB + "ImportError: cannot import name 'public_api'\n")
           is None, "C2: a missing name on a pass line is not cited (only the task-named import fails)")
     check(veto('  File "<string>", line 1\nAssertionError: 1 != 2\n' + MISS) is None,
@@ -415,7 +420,11 @@ def rules_v4():
               "FAIL gate reported: cannot import name '_private_two'",
               "E   AssertionError: has no attribute '_private_two'", "not ok 2 - has no attribute '_private_two'",
               "ValueError: invalid dimensions", "Exception: bad dims", "AssertionError - has no attribute '_private_two'",
-              "FAILED tests/t.py::t - AssertionError: No module named 'newmod'"):
+              "FAILED tests/t.py::t - AssertionError: No module named 'newmod'",
+              "failure: HTTP status was 200, wanted 400", "KeyError: \"ImportError: cannot import name '_private_two'\"",
+              "AssertionError: ImportError raised for '_private_two'",
+              "E       FAIL gate reported: cannot import name '_private_two'",
+              "failed: gate reported cannot import name '_private_two'"):
         check(veto(MISS + t + "\n") is None and R.base_failure(MISS + t + "\n", UN)["behaviour_lines"] >= 1,
               "C7/C8: %r beside a missing name is behaviour (no veto)" % t)
     check(veto(MISS) == "missing_name_only", "control: the missing name alone vetoes")
@@ -429,7 +438,7 @@ def rules_v4():
     forms = ("No module named 'a.b.m1'\ncannot import name 'm2' from 'x'\nAttributeError: 'X' has no attribute 'm3'\n"
              "NameError: name 'm4' is not defined\nerror CS0103: The name 'm5' does not exist\n"
              "error CS0117: 'A.B' does not contain a definition for 'm6'\n"
-             "error CS1061: 'List<int>' does not contain a definition for 'm7'\n"
+             "error CS1061: 'Dictionary<string, int>' does not contain a definition for 'm7'\n"
              "error CS0246: The type or namespace name 'm8' could not be found\n"
              "error CS0234: The type or namespace name 'm9' does not exist in the namespace 'X'\n"
              "TypeError: f() got an unexpected keyword argument 'm10'\n")
