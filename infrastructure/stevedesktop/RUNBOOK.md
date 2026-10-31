@@ -249,6 +249,9 @@ The agent then gets PASS on every door.
     so it stops at a `[y/N]` prompt on every launch, alive and unconnected. `ops_watch` alarms
     (`steve.seats_absent_min` > 10, ledger item `OPS_STEVE_SEATS_RESTORE_*` and the Conductor log).
     Steve's test queue lives on Archmagi: `testq.py pause` from a bench clone, never from Steve's runner clone.
+    Measured 2026-10-31, three `Restart-Computer` runs: both seats connected at 101 to 120 s from the command, the
+    Runner answering a prompt at 107 to 125 s. A power cut is not measured: nothing here can cut Steve's power remotely.
+    After power returns the path is the same only if the BIOS restores on AC, which is also unmeasured.
   - **Reinstall:** copy the repo to `~/src/claude-account` and run `bash accounts/install.sh stevedesktop`.
   - The `sjlewis` user's `~/.claude/.credentials.json` is a superseded copy of the lukas grant (the token has
     rotated since); do not use or copy it.
