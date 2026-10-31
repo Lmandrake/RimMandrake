@@ -79,6 +79,12 @@ namespace RimMandrake.CrackedLands
         // maker's explicit choice), so a standing aimed flood is never torn down next tick by the biome gate.
         private IntVec3 aimedAt = IntVec3.Invalid;
 
+        // FLOOD_WITNESS_EVENT_1: a flood armed by ArmFlood (the production verb a quest calls), from the arm until its water
+        // recedes. Like aimedAt it lifts the biome gate for ITS flood only, so a plot flood on a map the cycle would not
+        // otherwise run on is not torn down by the gate; unlike aimedAt it needs no map-controls switch and no dug channel
+        // (the quest is the explicit choice) and it keeps the canyon ecology on the recede.
+        private bool questArmed;
+
         // Last tick's Active. Off the canyon (or with the cycle switched off) the clock idles, so its next flood ages
         // into the past; on the switch-on edge it gets a fresh period instead of playing the whole warning and the wall
         // within a few ticks. Saved: a game saved idle and loaded with the gate open (setting turned on between
@@ -123,7 +129,7 @@ namespace RimMandrake.CrackedLands
         // one stands on the clock, or while a flood it started is pending or standing.
         private bool Active =>
             RM_CrackedLandsSettings.floodCycleEnabled
-            && (CanyonGate || (RM_BiomeMapControls.FloodTriggersOn && (aimedAt.IsValid || RM_BiomeMapControls.AnyClockTrigger(map))));
+            && (CanyonGate || questArmed || (RM_BiomeMapControls.FloodTriggersOn && (aimedAt.IsValid || RM_BiomeMapControls.AnyClockTrigger(map))));
 
         public FloodPhase Phase => st.Phase;
         public IntVec3 AimedAt => aimedAt;
@@ -186,6 +192,49 @@ namespace RimMandrake.CrackedLands
             return "OK flooding " + flooded + " cells from " + at + " until tick " + st.FloodEndTick;
         }
 
+        // FLOOD_WITNESS_EVENT_1: the production verb behind the flood-witness quest -- "arm the chime-and-flood cycle on this
+        // map, now, on this lead time" -- the non-debug twin of DebugArmFloodSoon. The wall lands wallInTicks from now (never
+        // inside the lead its own herald beats and chimes need: RM_FloodKernel.ArmWall), with the whole warning played on the
+        // way, on any biome. Refuses only when the player switched the flood cycle off or a flood is already standing; a
+        // warning already sounding is kept and its wall tick reported. Returns "OK ..." or "REFUSED: ...".
+        public string ArmFlood(int wallInTicks)
+        {
+            if (!RM_CrackedLandsSettings.floodCycleEnabled)
+            {
+                return "REFUSED: the flood cycle is off in Mod Settings (Cracked Lands > Flood cycle)";
+            }
+            int now = Find.TickManager.TicksGame;
+            FloodPhase before = st.Phase;
+            int wall = RM_FloodKernel.ArmWall(st, Cfg(true), now, wallInTicks);
+            if (wall < 0)
+            {
+                return "REFUSED: a flood is already standing on this map (it recedes at tick " + st.FloodEndTick + ")";
+            }
+            questArmed = true;
+            wasActive = true;   // questArmed may just have lifted the gate: not a switch-on edge that reschedules this arm
+            if (before != FloodPhase.Dry)
+            {
+                return "OK already warning (" + before + "): the wall stays at tick " + wall + " (" + (wall - now) + " ticks)";
+            }
+            return "OK armed: the wall at tick " + wall + " (" + (wall - now) + " ticks, asked " + wallInTicks + ")";
+        }
+
+        public bool QuestArmed => questArmed;
+
+        private static FloodCfg Cfg(bool active)
+        {
+            return new FloodCfg
+            {
+                Active = active,
+                FiveBeats = RM_CrackedLandsSettings.fiveBeatsEnabled,
+                ChimeStaging = RM_CrackedLandsSettings.chimeStagingEnabled,
+                PeakstormBias = RM_CrackedLandsSettings.peakstormBiasEnabled,
+                ChimeLeadHours = RM_CrackedLandsSettings.chimeLeadTimeHours,
+                HeraldLeadHours = RM_CrackedLandsSettings.heraldLeadHours,
+                FloodPeriodDays = RM_CrackedLandsSettings.floodPeriodDays,
+            };
+        }
+
 
         // Test surface: end a standing flood on the next tick, so the recede
         // (soil conversion + CRACKEDLANDS_MECHANICS_BUILD_1's fresh fossil
@@ -204,7 +253,7 @@ namespace RimMandrake.CrackedLands
                 "phase={0} nextFloodTick={1} floodEndTick={2} nowTick={3} activeFloodCells={4} "
                 + "raisedFillCells={5} active={6} flowWorksEngine={7} explosiveGrowth={8} "
                 + "chimeStage={9} lastRecedeTick={10} peakstormConsidered={11} weather={12} "
-                + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16} refugeFlooded={17} aimedAt={18}",
+                + "heraldBeat={13} pendingSeed={14} roar={15} tarruqSilenced={16} refugeFlooded={17} aimedAt={18} questArmed={19}",
                 st.Phase, st.NextFloodTick, st.FloodEndTick, Find.TickManager.TicksGame,
                 ledger.Active.Count, ledger.RaisedCells.Count, Active,
                 Excavation != null ? "present" : "ABSENT",
@@ -212,7 +261,7 @@ namespace RimMandrake.CrackedLands
                 st.ChimeStage, st.LastRecedeTick, st.PeakstormPulled,
                 map.weatherManager.curWeather?.defName ?? "null",
                 st.HeraldBeat, pendingSeed, roar != null && !roar.Ended ? "on" : "off", TarruqSilenced,
-                RefugeFloodedCount(), aimedAt.IsValid ? aimedAt.x + "," + aimedAt.z : "none");
+                RefugeFloodedCount(), aimedAt.IsValid ? aimedAt.x + "," + aimedAt.z : "none", questArmed);
         }
 
         // Ledges of Mercy verify: footprint cells that are refuge cells. Must
@@ -272,19 +321,11 @@ namespace RimMandrake.CrackedLands
                     st.ChimeStage = 0;
                     st.HeraldBeat = 0;
                     ScheduleNextFlood();
+                    questArmed = false;   // the armed wall is void (the cycle was off past it): it no longer lifts the gate
                 }
             }
             wasActive = active;
-            FloodCfg cfg = new FloodCfg
-            {
-                Active = active,
-                FiveBeats = RM_CrackedLandsSettings.fiveBeatsEnabled,
-                ChimeStaging = RM_CrackedLandsSettings.chimeStagingEnabled,
-                PeakstormBias = RM_CrackedLandsSettings.peakstormBiasEnabled,
-                ChimeLeadHours = RM_CrackedLandsSettings.chimeLeadTimeHours,
-                HeraldLeadHours = RM_CrackedLandsSettings.heraldLeadHours,
-                FloodPeriodDays = RM_CrackedLandsSettings.floodPeriodDays,
-            };
+            FloodCfg cfg = Cfg(active);
             bool wasFlooding = st.Phase == FloodPhase.Flooding;
             FloodStep step = RM_FloodKernel.Tick(st, cfg, now, pendingSeed.IsValid,
                 st.Phase == FloodPhase.Dry && map.weatherManager.curWeather == RM_CrackedLandsDefOf.RM_PeakstormLight,
@@ -575,8 +616,9 @@ namespace RimMandrake.CrackedLands
             List<IntVec3> wetted = ledger.Wetted().ConvertAll(Cell);
             // FLOOD_SOAK_MARKERS_BUILD_AIMED_AT_CANALS: a trigger's flood outside the canyon brings the water and its
             // soak only; the canyon's ecology (fresh fossil seams, the feast, floodline salvage) stays canyon.
-            bool ecology = !aimedAt.IsValid || CanyonGate;
+            bool ecology = !aimedAt.IsValid || CanyonGate || questArmed;   // FLOOD_WITNESS_EVENT_1: the plot flood IS the canyon showcase
             aimedAt = IntVec3.Invalid;
+            questArmed = false;
             if (ecology && RM_CrackedLandsSettings.floodRecutSeamsEnabled)
             {
                 RM_FossilStrata.RecutAlong(map, wetted, RM_CrackedLandsSettings.floodRecutSeamCount);
@@ -685,6 +727,7 @@ namespace RimMandrake.CrackedLands
             Scribe_Values.Look(ref roarCell, "roarCell", IntVec3.Invalid);
             Scribe_Values.Look(ref aimedAt, "aimedAt", IntVec3.Invalid);
             Scribe_Values.Look(ref wasActive, "wasActive", true);
+            Scribe_Values.Look(ref questArmed, "questArmed", false);
             // ExposeData runs once per load phase (LoadingVars, ResolveCrossRefs, PostLoadInit); the loaded lists must live in FIELDS so
             // the LoadingVars read survives to PostLoadInit. Same labels as before the kernel extraction, so old saves load.
             if (Scribe.mode == LoadSaveMode.Saving)

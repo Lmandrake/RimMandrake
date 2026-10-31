@@ -550,6 +550,62 @@ namespace RimMandrake.CrackedLands.SelfTest
             return null;
         }
 
+        // ════════════════════════ arm ════════════════════════
+        // FLOOD_WITNESS_EVENT_1: the production arm (RM_FloodKernel.ArmWall) from whatever phase a natural cycle left the map
+        // in. A standing flood refuses untouched; a warning already sounding is kept untouched; from Dry the wall lands exactly
+        // at the returned tick, never inside the warnings' lead, with every herald beat and chime on its own tick before it,
+        // and a peakstorm standing the whole time cannot pull the plot's clock (the next schedule after the recede clears that).
+        public static long ArmedWalls, ArmKeptWarnings, ArmRefusals;
+
+        private static string ArmCase(int seed)
+        {
+            var r = new Random(seed);
+            var cfg = new FloodCfg { Active = true, FiveBeats = r.Next(4) != 0, ChimeStaging = r.Next(4) != 0, PeakstormBias = true, ChimeLeadHours = new[] { 0.01f, 0.5f, 2f, 6f }[r.Next(4)], HeraldLeadHours = new[] { 0.01f, 1f, 4f, 12f }[r.Next(4)], FloodPeriodDays = new[] { 0.01f, 1f, 6f }[r.Next(3)] };
+            var s = new FloodState();
+            int now = r.Next(0, 1000) * 250;
+            var rng = new Random(seed ^ 0xa4);
+            for (int i = r.Next(0, 1500); i > 0; i--)
+            {
+                now += 250; Steps++;
+                var st0 = RM_FloodKernel.Tick(s, cfg, now, false, r.Next(3) == 0, (float)r.NextDouble(), (lo, hi) => rng.Next(lo, hi + 1), (lo, hi) => rng.Next(lo, hi + 1));
+                if (st0.StartFlood) s.FloodEndTick = now + 5000;
+            }
+            int min = RM_FloodKernel.MinArmLeadTicks(cfg), max = RM_FloodKernel.MaxArmLeadTicks;
+            int[] asks = { -5, 0, 1, 250, min - 1, min, min + 1, r.Next(0, 3 * 60000), max + 1000, int.MaxValue };
+            int ask = asks[r.Next(asks.Length)];
+            var b = new FloodState { Phase = s.Phase, NextFloodTick = s.NextFloodTick, FloodEndTick = s.FloodEndTick, LastRecedeTick = s.LastRecedeTick, ChimeStage = s.ChimeStage, HeraldBeat = s.HeraldBeat, PeakstormPulled = s.PeakstormPulled };
+            int wall = RM_FloodKernel.ArmWall(s, cfg, now, ask);
+            string where = $" (phase {b.Phase}, ask {ask}, min {min}, now {now})";
+            bool untouched = s.Phase == b.Phase && s.NextFloodTick == b.NextFloodTick && s.FloodEndTick == b.FloodEndTick && s.ChimeStage == b.ChimeStage && s.HeraldBeat == b.HeraldBeat && s.PeakstormPulled == b.PeakstormPulled && s.LastRecedeTick == b.LastRecedeTick;
+            if (b.Phase == FloodPhase.Flooding) { Check(wall == -1 && untouched, "a standing flood was re-armed" + where); ArmRefusals++; return null; }
+            if (b.Phase != FloodPhase.Dry) { Check(wall == b.NextFloodTick && untouched, "a warning already sounding was moved" + where); ArmKeptWarnings++; return null; }
+            long expect = now + (long)Math.Max(min, Math.Min(max, ask));
+            Check(wall == expect, $"wall at {wall}, expected {expect}" + where);
+            Check(wall - now >= min && s.Phase == FloodPhase.Dry && s.ChimeStage == 0 && s.HeraldBeat == 0 && s.PeakstormPulled && s.NextFloodTick == wall, "arm bookkeeping" + where);
+            Check(min > RM_FloodKernel.HoursToTicks(cfg.ChimeLeadHours) + (cfg.FiveBeats ? RM_FloodKernel.HoursToTicks(cfg.HeraldLeadHours) : 0), "min lead does not clear the warnings" + where);
+            ArmedWalls++;
+            if (wall - now > 4 * 60000) return null;   // arithmetic checked; stepping a 60-day clock tick by tick is too slow
+            var beats = new List<int>(); var chimes = new List<int>(); bool started = false;
+            while (now < wall + 5)
+            {
+                now++; Steps++;
+                var st = RM_FloodKernel.Tick(s, cfg, now, false, true, 0f, (lo, hi) => rng.Next(lo, hi + 1), (lo, hi) => lo);
+                if (!started) Check(s.NextFloodTick == wall, $"the armed wall moved to {s.NextFloodTick} at tick {now} (peakstorm standing)" + where);
+                int warns = st.HeraldBeats.Count + (st.RingChime >= 0 ? 1 : 0);
+                Check(warns <= 1, $"{warns} warnings squeezed into tick {now}" + where);
+                beats.AddRange(st.HeraldBeats);
+                if (st.RingChime >= 0) chimes.Add(st.RingChime);
+                if (st.StartFlood) { Check(now == wall && !started, $"the wall came at {now}, armed for {wall}" + where); started = true; s.FloodEndTick = now + 2500; break; }
+            }
+            Check(started, "the armed wall never came" + where);
+            Check(!cfg.FiveBeats || string.Join(",", beats) == "1,2,3", $"herald beats {string.Join(",", beats)} before the armed wall" + where);
+            Check(cfg.FiveBeats || beats.Count == 0, "herald beats with the five beats off" + where);
+            Check(string.Join(",", chimes) == (cfg.ChimeStaging ? "0,1,2" : "0"), $"chimes {string.Join(",", chimes)} before the armed wall" + where);
+            for (int i = 0; i < 6000 && s.Phase == FloodPhase.Flooding; i++) { now++; Steps++; RM_FloodKernel.Tick(s, cfg, now, false, false, 1f, (lo, hi) => rng.Next(lo, hi + 1), (lo, hi) => lo); }
+            Check(s.Phase == FloodPhase.Dry && !s.PeakstormPulled, "after the armed flood receded the natural cycle did not take its clock back" + where);
+            return null;
+        }
+
         // ════════════════════════ runner ════════════════════════
         public static bool Run(double scale, int? oneSeed, string only)
         {
@@ -564,6 +620,7 @@ namespace RimMandrake.CrackedLands.SelfTest
                 ("refuge", () => Family("refuge", N(3000), S(1), RefugeCase)),
                 ("pan", () => Family("pan", N(3000), S(1), s => Drive(s, rr => GenActs(rr, 10, 90, new[] { 40, 8, 8, 6, 12, 4, 6, 4, 3 }, PnNames), RunPan) ?? PanUnits(s))),
                 ("rules", () => Family("rules", N(3000), S(1), RulesCase)),
+                ("arm", () => Family("arm", N(600), S(1), ArmCase)),
             };
             foreach (var f in fam)
             {
@@ -576,11 +633,12 @@ namespace RimMandrake.CrackedLands.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
-            Console.WriteLine($"reached: flood floods {Floods}, recedes {Recedes}, herald runs {HeraldRuns}, peakstorm pulls {Pulls}, forced recedes {ForcedRecedes}, chimes {Chimes}; cells {CellsMade}, raised {RaisedCells}, chime points {ChimePts}; refuge seekers {Seekers}, holds {Holds}, sends {Goes}, no-reach {NoReaches}; pan seals {Seals}, dig-ins {DigIns}, wakes {Wakes}, re-sleeps {Resleeps}; rules salvage {Salvage}, faces {Faces}, seams {Seams}, scores {Scores}");
+            Console.WriteLine($"reached: flood floods {Floods}, recedes {Recedes}, herald runs {HeraldRuns}, peakstorm pulls {Pulls}, forced recedes {ForcedRecedes}, chimes {Chimes}; cells {CellsMade}, raised {RaisedCells}, chime points {ChimePts}; refuge seekers {Seekers}, holds {Holds}, sends {Goes}, no-reach {NoReaches}; pan seals {Seals}, dig-ins {DigIns}, wakes {Wakes}, re-sleeps {Resleeps}; rules salvage {Salvage}, faces {Faces}, seams {Seams}, scores {Scores}; arm walls {ArmedWalls}, kept warnings {ArmKeptWarnings}, refusals {ArmRefusals}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 if (Floods == 0 || Recedes == 0 || HeraldRuns == 0 || Pulls == 0 || ForcedRecedes == 0 || Chimes == 0 || CellsMade == 0 || RaisedCells == 0 || Seekers == 0 || Holds == 0 || Goes == 0 || NoReaches == 0
-                    || Seals == 0 || DigIns == 0 || Wakes == 0 || Resleeps == 0 || Salvage == 0 || Faces == 0 || Seams == 0 || Scores == 0)
+                    || Seals == 0 || DigIns == 0 || Wakes == 0 || Resleeps == 0 || Salvage == 0 || Faces == 0 || Seams == 0 || Scores == 0
+                    || ArmedWalls == 0 || ArmKeptWarnings == 0 || ArmRefusals == 0)
                 { Console.WriteLine("FAIL a fuzz family never reached one of its key transitions (blind)"); ok = false; }
             }
             Console.WriteLine($"crackedlands fuzz: {Cases} cases, {Steps} steps, {sw.Elapsed.TotalSeconds:F2}s total -> {(ok ? "OK" : "FAILED")}");

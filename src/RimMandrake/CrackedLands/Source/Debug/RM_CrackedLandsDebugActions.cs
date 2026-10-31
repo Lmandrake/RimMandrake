@@ -23,6 +23,19 @@ namespace RimMandrake.CrackedLands
             Log.Message("[RMCrackedLandsDebug] chime armed for next tick. " + comp.DebugStateReport());
         }
 
+        // FLOOD_WITNESS_EVENT_1: drives the PRODUCTION verb the flood-witness quest calls (ArmFlood), not a debug shortcut:
+        // the wall in one in-game day with the full warning on the way, on any biome.
+        [DebugAction(CAT, "Arm plot flood, wall in 1 day (production ArmFlood, current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ArmPlotFlood()
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+            RM_MapComponent_CanyonFlood comp = map.GetComponent<RM_MapComponent_CanyonFlood>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_CanyonFlood on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] ArmFlood(60000): " + comp.ArmFlood(60000) + " " + comp.DebugStateReport());
+        }
+
         [DebugAction(CAT, "Start flood NOW (current map)",
             allowedGameStates = AllowedGameStates.PlayingOnMap)]
         private static void StartNow()

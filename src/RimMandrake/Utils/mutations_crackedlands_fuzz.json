@@ -178,5 +178,23 @@
   "file": "src/RimMandrake/CrackedLands/Source/Kernel/RM_CanyonRulesKernel.cs",
   "old": "roll < 0.26f ? 1 : 2",
   "new": "roll < 0.30f ? 1 : 2"
+ },
+ {
+  "name": "arm: the armed wall loses the herald's lead (warnings crowd or skip)",
+  "file": "src/RimMandrake/CrackedLands/Source/Kernel/RM_FloodKernel.cs",
+  "old": "(cfg.FiveBeats ? HoursToTicks(cfg.HeraldLeadHours) : 0) + 1;",
+  "new": "0 + 1;"
+ },
+ {
+  "name": "arm: a peakstorm can still pull an armed wall",
+  "file": "src/RimMandrake/CrackedLands/Source/Kernel/RM_FloodKernel.cs",
+  "old": "s.HeraldBeat = 0;\n            s.PeakstormPulled = true;\n            s.NextFloodTick = now + lead;",
+  "new": "s.HeraldBeat = 0;\n            s.NextFloodTick = now + lead;"
+ },
+ {
+  "name": "arm: a warning in progress is restarted instead of kept",
+  "file": "src/RimMandrake/CrackedLands/Source/Kernel/RM_FloodKernel.cs",
+  "old": "if (s.Phase == FloodPhase.Herald || s.Phase == FloodPhase.Warned) return s.NextFloodTick;",
+  "new": "if (false) return s.NextFloodTick;"
  }
 ]

@@ -154,6 +154,34 @@ namespace RimMandrake.CrackedLands
             step.SweepRefuge = true;
         }
 
+        // FLOOD_WITNESS_EVENT_1: the shortest lead an armed flood may have, so every warning it owes still sounds on its own
+        // tick: the chime lead, plus the herald lead when the five beats are on, plus one tick so the first beat falls after the
+        // arm, not on it.
+        public static int MinArmLeadTicks(FloodCfg cfg)
+        {
+            return HoursToTicks(cfg.ChimeLeadHours) + (cfg.FiveBeats ? HoursToTicks(cfg.HeraldLeadHours) : 0) + 1;
+        }
+
+        public const int MaxArmLeadTicks = 60 * 60000;   // 60 days; also keeps now + lead clear of int overflow
+
+        // FLOOD_WITNESS_EVENT_1: the production arm (the quest contract: "arm the chime-and-flood cycle on this map, now, on this
+        // lead time"). From Dry the wall is set wallInTicks from now, capped at MaxArmLeadTicks and raised to MinArmLeadTicks, and
+        // the warnings start over. The plot owns this clock, so the peakstorm may not pull it forward (PeakstormPulled is set; the
+        // next ScheduleNext clears it). A warning already sounding (Herald/Warned) is kept as it is: its wall tick is returned and
+        // nothing is moved, so no beat is replayed or squeezed. A standing flood refuses: -1, state untouched.
+        public static int ArmWall(FloodState s, FloodCfg cfg, int now, int wallInTicks)
+        {
+            if (s.Phase == FloodPhase.Flooding) return -1;
+            if (s.Phase == FloodPhase.Herald || s.Phase == FloodPhase.Warned) return s.NextFloodTick;
+            int lead = Math.Max(MinArmLeadTicks(cfg), Math.Min(MaxArmLeadTicks, wallInTicks));   // the warnings' lead wins over the cap
+            s.Phase = FloodPhase.Dry;
+            s.ChimeStage = 0;
+            s.HeraldBeat = 0;
+            s.PeakstormPulled = true;
+            s.NextFloodTick = now + lead;
+            return s.NextFloodTick;
+        }
+
         // A flood begins: end tick and how long the soil stays soaked afterwards.
         public static void Begin(FloodState s, int now, float durationHours, float soakDecayDays, out int durationTicks, out int soakTicks)
         {
