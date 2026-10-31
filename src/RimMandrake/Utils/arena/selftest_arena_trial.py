@@ -101,9 +101,13 @@ def t_default_file():
     check("committed default trial_tasks.json: n distinct ids, n as recorded", 0 < len(ids) == doc.get("n"), len(ids))
     check("committed default spans three eras", len(doc.get("eras_in_trial", [])) == 3 and all(
         doc["eras_in_trial"]), doc.get("eras_in_trial"))
-    check("committed default: C# included (owner: C# tasks stay in the pool), sibling order checked",
-          doc.get("csharp") is True and doc.get("kinds", {}).get("csharp", 0) > 0 and "check_rounds" in doc.get("order", ""),
-          (doc.get("csharp"), doc.get("kinds")))
+    # C# stays eligible (built without --no-csharp); the trial's last C# task, LAUNCHREADY, left by trial exclusion
+    # (cannot pass at its reference fix, gate round 3, Conductor ruling 2026-10-31), so a C#-free list is legal only then.
+    cs_out = "RP_LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT" in T.load_trial_exclusions()["exclude"]
+    check("committed default: C# eligible (owner: C# tasks stay in the pool; none kept only by the LAUNCHREADY "
+          "exclusion), sibling order checked",
+          doc.get("csharp") is True and (doc.get("kinds", {}).get("csharp", 0) > 0 or cs_out)
+          and "check_rounds" in doc.get("order", ""), (doc.get("csharp"), doc.get("kinds")))
     check("analysis CLI default is this file", AA.TRIAL_DEFAULT == T.DEFAULT_PATH)
     tx = T.load_trial_exclusions()
     check("committed default names no trial-excluded task", not set(tx["exclude"]) & set(ids),
@@ -294,11 +298,13 @@ def t_trial_exclusions_file():
             "RP_ENACT_ALIAS_FIX_SWAP_SEPARATE_DEF": "RM_Kite", "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": "retry",
             # gate builder: no arm can be measured on these (Conductor ruling 2026-10-31)
             "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT": "red at the reference", "RP_FLYER_MOTION_FIX_HALO_PASS": "red at the reference",
-            "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE": "run_selftests.py"}
+            "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE": "run_selftests.py",
+            # gate round 3: cannot pass at its own reference fix (Conductor ruling 2026-10-31)
+            "RP_LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT": "no csproj"}
     for t, word in want.items():
         check("committed trial exclusions: %s excluded, reason names %r" % (t, word),
               t in x["exclude"] and word in x["exclude"][t], x["exclude"].get(t))
-    check("committed trial exclusions: exactly those seven", set(x["exclude"]) == set(want), sorted(x["exclude"]))
+    check("committed trial exclusions: exactly those eight", set(x["exclude"]) == set(want), sorted(x["exclude"]))
     rated = {"RP_TESTENV_GUARD_UNSTICK_BLOCKS_ITS_OWN_SEQUEL": "brittle", "RP_BRAINWORMS_VALIDATION_FIX_BORROWED_REASON": "brittle",
              "RP_ROSTERS_RENAME_MOVED_PORT_NAMES": "partial", "RP_ENACT_APPLY_REFUSED_HARDEN_PARTIAL_PICK": "partial",
              "RP_ENACT_KEEP_AGE_FIX_DECIDED_AT": "leak", "RP_RIVERSITE_FIX_RETILE_NONE_CRASH": "leak",

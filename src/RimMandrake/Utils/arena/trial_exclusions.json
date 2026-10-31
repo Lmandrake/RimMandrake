@@ -1,6 +1,6 @@
 {
  "schema": "arena_trial_exclusions/1",
- "note": "Tasks left out of the TRIAL list (not the pool: census, task/judge files and reader verdicts are untouched) because the final human-grade read found them unfair to an arm, plus that read's ratings of the kept tasks. Read by arena_trial.py build, after the bundled-commit pass (an excluded task's sibling is not promoted). Evidence: D:\\ClaudeWork\\rimmandrake\\arena\\verify_final33\\read33.md (rows 12, 14, 17, 23 and the FINAL line). Items ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS (first four) and, for FILLQUEUE / FLYER_MOTION / EVIDENCE_COVERS, the gate builder's finding that no arm can be measured on them (Conductor ruling 2026-10-31).",
+ "note": "Tasks left out of the TRIAL list (not the pool: census, task/judge files and reader verdicts are untouched) because the final human-grade read found them unfair to an arm, plus that read's ratings of the kept tasks. Read by arena_trial.py build, after the bundled-commit pass (an excluded task's sibling is not promoted). Evidence: D:\\ClaudeWork\\rimmandrake\\arena\\verify_final33\\read33.md (rows 12, 14, 17, 23 and the FINAL line). Items ARENA_POOL_REPAIR_FOUR_UNFAIR_SURVIVORS (first four) and, for FILLQUEUE / FLYER_MOTION / EVIDENCE_COVERS, the gate builder's finding that no arm can be measured on them (Conductor ruling 2026-10-31), and LAUNCHREADY, which cannot pass at its reference fix (gate round 3, Conductor ruling 2026-10-31).",
  "exclude": [
   {
    "task": "RP_CATHEDRALPASS_FIX_REVOKE_MESSAGE_REGISTER",
@@ -35,6 +35,11 @@
   {
    "task": "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE",
    "reason": "unmeasurable for every arm: its diff edits the instrument run_selftests.py, so the tests step is UNMEASURED (gate builder)",
+   "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31"
+  },
+  {
+   "task": "RP_LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT",
+   "reason": "cannot pass at the reference fix: its proof runs `winbuild.py bridgetools`, which finds no csproj under src/**/bridgetools/Source/ at the reference sha, so proof and csharp read UNMEASURED (gate round 3, 25/26; ARENA_TRIAL_FIX_LAUNCHREADY_NO_CSPROJ)",
    "ruling": "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31"
   }
  ],

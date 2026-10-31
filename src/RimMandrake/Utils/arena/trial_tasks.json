@@ -1,19 +1,18 @@
 {
  "schema": "arena_trial_tasks/1",
- "n": 26,
+ "n": 25,
  "csharp": true,
  "frozen_bank": 156,
  "bank_csharp": 24,
  "eras_in_trial": [
   9,
-  9,
+  8,
   8
  ],
  "kinds": {
   "python-util": 23,
   "xml-def-patch": 1,
-  "tooling": 1,
-  "csharp": 1
+  "tooling": 1
  },
  "order": "oldest first: chrono (git rev-list --count base_sha), then id; checked with arena_rounds.check_rounds",
  "one_per_bundled_commit": true,
@@ -33,6 +32,7 @@
    "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE",
    "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT",
    "RP_FLYER_MOTION_FIX_HALO_PASS",
+   "RP_LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT",
    "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ"
   ],
   "already_out": [],
@@ -199,6 +199,7 @@
   "RP_EVIDENCE_COVERS_HARDEN_REVIEW_AD_SIX_MORE": "trial exclusion: unmeasurable for every arm: its diff edits the instrument run_selftests.py, so the tests step is UNMEASURED (gate builder) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
   "RP_FILLQUEUE_GATE_FIX_MIXED_FACING_EXEMPT": "trial exclusion: unmeasurable for every arm: all its selftests are red at the reference fix too, so even the reference-reds rule leaves nothing to score (gate builder) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
   "RP_FLYER_MOTION_FIX_HALO_PASS": "trial exclusion: unmeasurable for every arm: all its selftests are red at the reference fix too, so even the reference-reds rule leaves nothing to score (gate builder); was rated leak by read33 row 24 [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
+  "RP_LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT": "trial exclusion: cannot pass at the reference fix: its proof runs `winbuild.py bridgetools`, which finds no csproj under src/**/bridgetools/Source/ at the reference sha, so proof and csharp read UNMEASURED (gate round 3, 25/26; ARENA_TRIAL_FIX_LAUNCHREADY_NO_CSPROJ) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]",
   "RP_SELFTEST_ONLY_FIX_UNREQUESTED_CASES_READ": "trial exclusion: brittle: the check needs a retry without --no-build and the IOException text in the why, neither stated in the prompt (3 of 6 base failures ride on them) (read33 row 14) [CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM 2026-10-31]"
  },
  "tasks": [
@@ -216,7 +217,6 @@
   "RP_ENACT_STALE_KEY_FIX_UNREVIEWED",
   "RP_VALIDATE_PATCH_DESCENDANT_FIX_FALSE_ZERO",
   "RP_RIVER_CHAINS_WIRE_SWEEP_TO_RIVER_SITE",
-  "RP_LAUNCHREADY_FIX_TIMEOUT_KILLS_RECEIPT",
   "RP_RIVERSITE_FIX_RETILE_NONE_CRASH",
   "RP_RIMBRIDGE_DEADLINE_FIX_NAN_FAILS_OPEN",
   "RP_SAVES_PRUNE_BLIND_CITE_SEARCH_DELETES_CITED",
