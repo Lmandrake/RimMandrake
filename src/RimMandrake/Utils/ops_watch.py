@@ -146,6 +146,8 @@ def runway(left_pct, rate_pct_h, hours_to_reset):
         return 0.0          # spent: runs out now, whatever the rate (known even before there is a rate)
     if left_pct is None or rate_pct_h is None or hours_to_reset is None or hours_to_reset <= 0:
         return None         # an unknown burn is not "no burn"
+    if not all(math.isfinite(x) for x in (left_pct, rate_pct_h, hours_to_reset)):
+        return None         # NaN would pass min(10.0, NaN) as a full runway
     if rate_pct_h <= 0:
         return 10.0
     return round(min(10.0, (left_pct / rate_pct_h) / hours_to_reset), 2)
@@ -296,7 +298,8 @@ def done_jobs(since, bad=None):
                 bad.append(os.path.basename(f))     # cannot tell its age: count it as unseen, not as absent
             continue
         d = read_json(f)
-        fin = epoch(d.get("finished") or (d.get("result") or {}).get("finished")) if isinstance(d, dict) else None
+        whole = isinstance(d, dict) and isinstance(d.get("result") or {}, dict) and isinstance(d.get("job") or {}, dict)
+        fin = epoch(d.get("finished") or (d.get("result") or {}).get("finished")) if whole else None
         if fin is None:
             if bad is not None:
                 try:
@@ -314,7 +317,8 @@ def done_jobs(since, bad=None):
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
-    if not isinstance(sj, dict) or epoch(sj.get("epoch")) is None:
+    if not isinstance(sj, dict) or epoch(sj.get("epoch")) is None or "state" not in sj or "fault" not in sj:
+        # a record with no state or fault says nothing about a stall: unknown, never a healthy 0
         out["steve.state"] = U("steward.json missing or unreadable under %s" % qhome())
         for k in ("heartbeat_age_min", "fault_min", "unowned_stall_min"):
             out["steve." + k] = U("steward.json missing or unreadable")
@@ -1042,8 +1046,8 @@ def target_problem(tg):
     if tg.get("op") not in OPS:
         return "bad op %r on %s" % (tg.get("op"), tg["key"])
     v = tg.get("value")
-    if isinstance(v, bool) or not isinstance(v, (int, float)) or not math.isfinite(v):
-        return "bad value %r on %s" % (v, tg["key"])
+    if isinstance(v, bool) or not isinstance(v, (int, float)) or not -1e300 < v < 1e300:     # NaN fails the range too
+        return "bad value %s on %s" % (str(v)[:40], tg["key"])
     if not isinstance(tg.get("tag"), str) or not tg["tag"] or ":" in tg["tag"]:
         return "bad tag %r on %s" % (tg.get("tag"), tg["key"])
     if tg.get("marks") is not None and not (isinstance(tg["marks"], list) and tg["marks"] and all(
@@ -1066,43 +1070,48 @@ def andon(points, hist, last_measured, rules, now):
         v = num(p)
         meas = p.get("m") == "MEASURED" and v is not None
         hs = hist.get(k, [])
-        if meas and matches(k, b["keys"]) and not matches(k, b["skip"]):
-            base = [x for t, x in hs if now - b["baseline_days"] * DAY <= t <= now - b["exclude_recent_h"] * HOUR]
-            if len(base) >= b["min_points"]:
-                mu = statistics.fmean(base)
-                sd = statistics.pstdev(base)
-                sig = max(sd, b["sigma_floor_rel"] * abs(mu), b["sigma_floor_abs"])
-                if abs(v - mu) > b["k_sigma"] * sig:
-                    flags.append({"rule": "band", "key": k, "value": v, "window": "%dd baseline, %d pts" % (
-                        b["baseline_days"], len(base)), "detail": "%.4g outside %.4g +/- %.1f x %.3g" % (
-                        v, mu, b["k_sigma"], sig)})
-        if meas and matches(k, rn["keys"]):
-            seq = [x for t, x in hs if t >= now - b["baseline_days"] * DAY] + [v]
-            dd = []
-            for x in seq:
-                if not dd or x != dd[-1]:
-                    dd.append(x)
-            n = rn["n"]
-            if len(dd) >= n + 1:
-                tail = dd[-(n + 1):]
-                diffs = [tail[i + 1] - tail[i] for i in range(n)]
-                if all(d > 0 for d in diffs) or all(d < 0 for d in diffs):
-                    flags.append({"rule": "run", "key": k, "value": v, "window": "last %d changes" % n,
-                                  "detail": "%s %d in a row: %.4g -> %.4g" % (
-                                      "rising" if diffs[0] > 0 else "falling", n, tail[0], tail[-1])})
-        if not meas and matches(k, sl["keys"]) and not matches(k, sl["skip"]):
-            lm = last_measured.get(k)
-            lim = next((h for pat, h in sl["per_key"].items() if fnmatch.fnmatchcase(k, pat)), sl["default_h"])
-            if lm is not None and now - lm > lim * HOUR:
-                flags.append({"rule": "silent", "key": k, "value": None, "window": "silent %.1f h (limit %g h)" % (
-                    (now - lm) / HOUR, lim), "detail": "last MEASURED %s; now %s: %s" % (
-                    iso(lm), p.get("m"), (p.get("why") or "")[:160])})
+        def band():
+            if meas and matches(k, b["keys"]) and not matches(k, b["skip"]):
+                base = [x for t, x in hs if now - b["baseline_days"] * DAY <= t <= now - b["exclude_recent_h"] * HOUR]
+                if len(base) >= b["min_points"]:
+                    mu = statistics.fmean(base)
+                    sd = statistics.pstdev(base)
+                    sig = max(sd, b["sigma_floor_rel"] * abs(mu), b["sigma_floor_abs"])
+                    if abs(v - mu) > b["k_sigma"] * sig:
+                        flags.append({"rule": "band", "key": k, "value": v, "window": "%dd baseline, %d pts" % (
+                            b["baseline_days"], len(base)), "detail": "%.4g outside %.4g +/- %.1f x %.3g" % (
+                            v, mu, b["k_sigma"], sig)})
+        def run_rule():
+            if meas and matches(k, rn["keys"]):
+                seq = [x for t, x in hs if t >= now - b["baseline_days"] * DAY] + [v]
+                dd = []
+                for x in seq:
+                    if not dd or x != dd[-1]:
+                        dd.append(x)
+                n = rn["n"]
+                if len(dd) >= n + 1:
+                    tail = dd[-(n + 1):]
+                    diffs = [tail[i + 1] - tail[i] for i in range(n)]
+                    if all(d > 0 for d in diffs) or all(d < 0 for d in diffs):
+                        flags.append({"rule": "run", "key": k, "value": v, "window": "last %d changes" % n,
+                                      "detail": "%s %d in a row: %.4g -> %.4g" % (
+                                          "rising" if diffs[0] > 0 else "falling", n, tail[0], tail[-1])})
+        def silent():
+            if not meas and matches(k, sl["keys"]) and not matches(k, sl["skip"]):
+                lm = last_measured.get(k)
+                lim = next((h for pat, h in sl["per_key"].items() if fnmatch.fnmatchcase(k, pat)), sl["default_h"])
+                if lm is not None and now - lm > lim * HOUR:
+                    flags.append({"rule": "silent", "key": k, "value": None, "window": "silent %.1f h (limit %g h)" % (
+                        (now - lm) / HOUR, lim), "detail": "last MEASURED %s; now %s: %s" % (
+                        iso(lm), p.get("m"), (p.get("why") or "")[:160])})
+        for name, check in (("band", band), ("run", run_rule), ("silent", silent)):
+            try:
+                check()
+            except Exception as e:  # noqa: BLE001  a bad rule costs that rule on this reading, not the others
+                flags.append({"rule": "bad_rule", "key": k, "tag": name, "value": None, "window": "now",
+                              "detail": "%s rule failed: %s: %s" % (name, type(e).__name__, str(e)[:160])})
     for k, p in sorted({**gone, **points}.items()):
-        try:
-            one(k, p)
-        except Exception as e:  # noqa: BLE001  a bad band/run/silent rule costs its reading, not the pass
-            flags.append({"rule": "bad_rule", "key": k, "value": None, "window": "now",
-                          "detail": "band/run/silent check failed: %s: %s" % (type(e).__name__, str(e)[:160])})
+        one(k, p)
     for i, tg in enumerate(rules["targets"]):
         why = target_problem(tg)
         if why:
@@ -1265,8 +1274,7 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur["clear_seen"] = 0
         if cur and cur.get("state") == "UNREADABLE":
             return
-        if cur and cur.get("state") == "OPEN" and not cur.get("item") and cur.get("for") != "Operations" \
-                and not is_token_key(aid.split(":", 1)[-1]):
+        if cur and cur.get("state") == "OPEN" and not cur.get("item") and not is_token_key(aid.split(":", 1)[-1]):
             # OPEN with no item told nobody: file it, or a corrupt entry acknowledges the alarm for good
             cur["state"] = "PENDING"
             log.append({"ts": iso(now), "event": "open_without_item", "aid": aid})
@@ -1420,7 +1428,7 @@ def digest_md(dg):
     if al:
         L.append("## Alarms")
         for k, a in sorted(al.items()):
-            L.append("- %s %s since %s%s%s" % (a.get("state"), k, a.get("since"), " item " + a["item"] if a.get("item")
+            L.append("- %s %s since %s%s%s" % (a.get("state"), k, a.get("since"), " item %s" % a["item"] if a.get("item")
                                                else "", " error: " + str(a["error"])[:120] if a.get("error") else ""))
         L.append("")
     if dg["flags"]:
@@ -1517,7 +1525,7 @@ def blind_digest_md(dg, rules):
         body.append("## Alarms")
         for k, a in sorted(al.items()):
             body.append("- %s %s since %s%s" % (a.get("state"), k, a.get("since"),
-                                                " item " + a["item"] if a.get("item") else ""))
+                                                " item %s" % a["item"] if a.get("item") else ""))
         body.append("")
     if fl:
         body.append("## Open flags")

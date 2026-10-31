@@ -350,6 +350,7 @@ check("run: status.json carries the points for the allocator",
 check("run: a key's first MEASURED sample counts in the digest's n7 (1, review night r1)",
       r0["kpis"]["production.P1"]["n7"] == 1, r0["kpis"]["production.P1"])
 check("run: digest d24 for d_free_gb is 0 (1000 a day ago, 1000 now)", k["disk.d_free_gb"]["d24"] == 0.0, k["disk.d_free_gb"])
+check("run: digest d24 is the real change (399 a day ago, 397 now)", k["disk.root_free_gb"]["d24"] == -2.0, k["disk.root_free_gb"])
 check("run: the digest.md exists and leads with the headline",
       (TMP / "ops" / "digest.md").read_text().splitlines()[2].startswith("runway"))
 OW.COLLECTORS.clear()
@@ -964,18 +965,49 @@ _ap.write_text(json.dumps({"DUP:x.k": {"state": "PENDING", "name": "OPS_DISK_FUL
 _st = OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, set(), _ok)
 check("alarms: a corrupt retry counter does not stop the pass", _st["DUP:x.k"]["state"] == "PENDING", _st)
 _ap.unlink()
-_AU.read_now = lambda now: {"accounts": {"good": {"source": "ESTIMATE", "week_pct_left": 50.0, "hours_to_week_reset": 10.0,
-                                                  "week_pct_used": 50.0}, "strpct": {"source": "ESTIMATE", "week_pct_left": "bad"}}}
+_AU.read_now = lambda now: {"accounts": {"zgood": {"source": "ESTIMATE", "week_pct_left": 50.0, "hours_to_week_reset": 10.0,
+                                                   "week_pct_used": 50.0}, "strpct": {"source": "ESTIMATE", "week_pct_left": "bad"}}}
 try:
     _a = OW.c_accounts(NOW, RULES, {})
 finally:
     _AU.read_now = _rn
 check("accounts: a row that raises costs itself, the next account still reads",
-      _a["accounts.strpct.runway"]["m"] == "UNMEASURED" and _a["accounts.good.week_left_pct"]["m"] == "ESTIMATE", _a)
+      _a["accounts.strpct.runway"]["m"] == "UNMEASURED" and _a["accounts.zgood.week_left_pct"]["m"] == "ESTIMATE", _a)
 _rt = copy.deepcopy(_bad_rules)
 _rt["token_talk"]["terms"] = list(_rt["token_talk"]["terms"]) + ["("]
 OW.run(now=NOW + 30, rules=_rt, families={"v3"})
 check("digest: a bad token_talk term fails the blind digest closed and aloud",
       "unavailable" in (OW.ops_dir() / "digest_blind.md").read_text(encoding="utf-8"))
+check("rules: an enormous integer value is a bad target, not a dead pass", OW.target_problem(
+    {"key": "x", "op": ">", "value": 10 ** 400, "tag": "T"}) is not None)
+check("accounts: NaN is no reading of runway", OW.runway(50.0, float("nan"), 10.0) is None)
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "OPEN", "for": "Operations"}}), encoding="utf-8")
+_filed.clear()
+OW.run_alarms({"x.k": OW.M(5.0, "n")}, _rm, NOW, set(), _ok)
+check("alarms: a non-token alarm marked for Operations with no item is filed", len(_filed) == 1, _filed)
+_ap.write_text(json.dumps({"DUP:x.k": {"state": "OPEN", "item": 123}}), encoding="utf-8")
+OW.qhome = lambda: _q2
+wj(_q2 / "done" / "listresult.json", {"finished": OW.iso(NOW - 5 * 60), "job": {"id": "l"}, "result": [1]})
+wj(_q2 / "steward.json", {"epoch": NOW - 60})
+try:
+    _s = OW.c_steve(NOW, RULES, {})
+    check("steve: a done record with a list result is one bad record, not a lost family",
+          _s["steve.invalid_streak"]["m"] == "ESTIMATE", _s["steve.invalid_streak"])
+    check("steve: a steward record with no state or fault is unknown, not healthy",
+          _s["steve.unowned_stall_min"]["m"] == "UNMEASURED", _s["steve.unowned_stall_min"])
+finally:
+    OW.qhome = _qh
+OW.run(now=NOW + 40, rules=_rm, families={"v3"})
+check("digest: a non-string item in alarm state still writes the digest",
+      "item 123" in (OW.ops_dir() / "digest.md").read_text(encoding="utf-8"))
+_ap.unlink()
+_rb = copy.deepcopy(_rr)
+_rb["band"]["min_points"] = "20"
+_rb["band"]["keys"] = ["x.*"]
+_rb["band"]["skip"] = []
+_rb["run"]["n"] = 2
+_fl = OW.andon({"x.k": OW.M(5.0, "n")}, {"x.k": [(NOW - 90, 1.0), (NOW - 60, 2.0), (NOW - 30, 3.0)]}, {}, _rb, NOW)
+check("rules: a bad band rule leaves the run rule working", any(f["rule"] == "run" for f in _fl)
+      and any(f["rule"] == "bad_rule" and f["tag"] == "band" for f in _fl), _fl)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
