@@ -3738,7 +3738,7 @@ def _resolve_command_seat(args):
     if args.cmd in READ_ONLY:
         seat = (os.environ.get("RIMFLOW_SEAT") or getattr(args, "seat", None)
                 or os.environ.get("AGENT_SEAT") or _role_file_seat() or "BUILD")
-        seat = seat.strip().upper()
+        seat = model.canonical(seat.strip().upper())
         return seat if seat in model.SEATS else "BUILD"
     return resolve_seat(getattr(args, "seat", None))
 

@@ -90,6 +90,13 @@ def main():
     head.reconciles = [{"verdict": "complete", "shas": ["abc1234"]}]
     ch = cli._choose(wo, "FOUNDRY", Args(), {"now": ctx["now"]}, None)
     check(ch["item"] is None and [a.item.id for a in ch["skipped"]] == [head.id], "a proposed item reconciled complete is not offered")
+    saved = os.environ.pop("RIMFLOW_SEAT", None)
+    try:
+        check(cli._resolve_command_seat(type("A", (), {"cmd": "queue", "seat": "CONDUCTOR"})()) == "BENCH",
+              "a read-only verb reads the display name as its seat")
+    finally:
+        if saved is not None:
+            os.environ["RIMFLOW_SEAT"] = saved
     ch = cli._choose(world(game), "FOUNDRY", Args(), {"now": ctx["now"]}, None)
     check(ch["item"] is not None, "control: without focus a game-dev item IS offered")
 
