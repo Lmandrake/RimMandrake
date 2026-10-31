@@ -22,7 +22,7 @@ answered that by hand in about an hour, and four of the answers were UNMEASURED.
   reads its output on every tick. We add four small pieces to that same pass: tag counts of his messages, a trace of
   each role's output, the timing of planted faults ("drills"), and one rebuilt page.
 - **One cheap AI step, checked by a program.** Telling "keep going" from "this is broken" in his messages needs reading.
-  A Haiku tagger does it hourly; a program checks every tag it writes and its agreement with the 10-26 censuses.
+  A Sonnet tagger does it hourly; a program checks every tag it writes and its agreement with the 10-26 censuses.
 - **Operations judges, it does not gather.** It reads the page in its existing 07:30 and 19:30 runs and when a health
   alarm wakes it. No new role run, no helper, no new schedule slot.
 - **Nothing new reaches the owner** except the page, which Operations has read before he does, and the existing
@@ -33,7 +33,7 @@ answered that by hand in about an hour, and four of the answers were UNMEASURED.
 
 | part | what measures it | cadence | what judges it | AI cost |
 |---|---|---|---|---|
-| 1 message tags | `owner_tags.py extract` (no AI) finds new messages; `owner_tags.py tag` (Haiku) tags them | extract every 15 min (inside the ops_watch pass); tag hourly (own timer) | program checks every batch; Operations reads the daily numbers | Haiku only |
+| 1 message tags | `owner_tags.py extract` (no AI) finds new messages; `owner_tags.py tag` (Sonnet 5.5) tags them | extract every 15 min (inside the ops_watch pass); tag hourly (own timer) | program checks every batch; Operations reads the daily numbers | Sonnet only |
 | 2 drills | `health_drill.py plant` (no AI), the Auditor's program, plants blind from the Auditor's catalogue; `health_drill.py watch` (no AI, not in ops_watch) looks for the catch | plant: own timer, random minute, at most the rate in §3.3; watch every 15 min | the Arbiter referees each settled plant; Operations and the Auditor read results weekly | none |
 | 3 output trace | ops_watch collector `health.trace.*` (no AI) | every 15 min | Operations at 07:30 and on `ROLE_*` alarms | none |
 | 5 page | `v3_health_page.py` (no AI), last step of the ops_watch pass | every 15 min; one dated copy kept per day | Operations reads it at 07:30 and stamps it read | none |
@@ -96,8 +96,8 @@ mis-dated). Output: `v3_health\tags\messages.jsonl` (append-only).
 
 ### 2.4 The tagger and its mechanical check
 
-Model: **Haiku**, by `infrastructure/agents/Agent_Policy.md` ("haiku ... classification"), and allowed there only
-because a program catches it. Read the alias from `ANTHROPIC_DEFAULT_HAIKU_MODEL`; name no account in code.
+Model: **Sonnet 5.5** (owner 2026-10-31: no Haiku; Sonnet is the lowest rung), and allowed there only
+because a program catches it. Name no account in code.
 
 One call tags up to 40 messages. The prompt is fixed text in the repo (`owner_tags_prompt.md`, sha256 pinned in the
 program like `v3_vs_v2_rules.json`; a changed byte refuses to tag until re-calibrated). It holds the tag definitions
@@ -419,16 +419,15 @@ All token figures are ESTIMATE (weighted tokens, `role_launch.TOKEN_WEIGHTS`), s
 
 | part | daily tokens | basis |
 |---|---|---|
-| 1 tagger | ~60k Haiku-weighted/day | ~110 messages/day (78 typed + cards), 3 batches/day at ~7k in and ~1.5k out each, plus the 15% repeat |
-| 1 calibration | ~70k Haiku-weighted/week (~10k/day) | 400 + 300 gold messages, weekly |
+| 1 tagger | ~60k Sonnet-weighted/day | ~110 messages/day (78 typed + cards), 3 batches/day at ~7k in and ~1.5k out each, plus the 15% repeat |
+| 1 calibration | ~70k Sonnet-weighted/week (~10k/day) | 400 + 300 gold messages, weekly |
 | 1 gold pass | ~150k Opus-weighted, once | 300 friction-window messages labelled by Opus at build time |
 | 2, 3, 5 | 0 | programs |
 | Operations judging | ~+40k at 07:30, ~+15k at 19:30 (~55k/day) | one screen of page plus the trace rows it overrules; inside its existing 450k/550k caps and 1.65M daily cap, no new run |
 | alarm runs | 0 new on average | health alarms share the existing one-alarm-run-a-day budget; a day with a health alarm and another alarm still runs once |
 | Auditor re-check | ~+30k/week | the weekly re-check of Operations' trace overrulings and drill reading (its own budget) |
 
-**Total ≈ 70k Haiku + 55k Opus weighted per day**, about 3% of Operations' 1.65M daily cap for the Opus part. Haiku's
-list price is roughly a fifth of Opus per token (ESTIMATE from the published price sheet, not a meter reading).
+**Total ≈ 70k Sonnet-priced (was Haiku-priced; re-cost) + 55k Opus weighted per day**, about 3% of Operations' 1.65M daily cap for the Opus part. Re-cost at Sonnet 5.5 list price (not a meter reading).
 
 **Commits.** Daily running adds **no routine commits**: everything writes under `D:\ClaudeWork`, and the health alarms
 stay out of the ledger. Ledger events come only from drills (about 3 events at plant, one `reveal` plus the drops at reveal; at 2

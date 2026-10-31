@@ -29,7 +29,7 @@ REASON = (
     "    rm-builder  opus    design or complex code (C#/Harmony, new systems)\n"
     "    rm-bridge   opus    live game driver, script-driven\n"
     "    rm-judge    opus    taste/art judging of work it did not make\n"
-    "    rm-search   haiku   bounded search the parent re-checks\n"
+    "    rm-search   sonnet  bounded search the parent re-checks\n"
     "    Explore / web-fetch for read-only lookups.\n"
     "Why and how: skills/efficient-subagents/SKILL.md §Context burn."
 )

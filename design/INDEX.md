@@ -153,7 +153,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `A3_frozen_save_droid_census.md` | Droid-Related Content Census: Frozen World vs Campaign Save | — |
 | `D1_donor_reference_grep.md` | Droid Donor Reference Audit — D1_donor_reference_grep | — |
 | `DROID_PROGRAM_STATE_2026-09-06.md` | The droid program — where it actually stands (2026-09-06) | ? state-of-play, fable design pass 2026-09-06 for bench. sibling |
 | `DROID_UNIFIED_FRAMEWORK_DESIGN.md` | Droidworks — the unified framework, the retirement, the ladder, the fan-out | ? design, fable pass 2026-09-06, ruled by the owner the same day (§0).

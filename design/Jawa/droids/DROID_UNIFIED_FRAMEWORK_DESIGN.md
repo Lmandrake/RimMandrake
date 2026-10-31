@@ -52,7 +52,7 @@
    hands, three-toed feet.
 9. **Detonation**: walk the grid as a savegame (B7).
 10. **Port boundary**: the next fresh start from the frozen world.
-11. **Save scrub** of the 82 Asimov entries: yes, haiku.
+11. **Save scrub** of the 82 Asimov entries: yes, Sonnet (no Haiku).
 12. **Reboot**: Crafting 4 only, as built.
 13. **Distress Call quest**: re-point to DW kinds — it becomes the wild/crashed-droid
     rescue.
@@ -203,7 +203,7 @@ explicit inputs/outputs/verify, no push without BENCH. Filing lines in §8.
 |---|---|---|---|---|---|---|
 | A1 | `DROIDWORKS_LIVE_LOOP_PROOF_1` | opus | minimal list + Droidworks + JawaIonWeapons; the 8 open checkboxes | quicktest: spawn GNK + a KotOR kind; ion → `RSW_DW_PoweredDown`, stays down; reboot; bolt; wipe; spike; kill → corpse; GNK detonation 100 % vs 5 % | `jawa/pawn_get` per step; radius measured; boxes ticked or bugs filed | — |
 | A2 | `DROIDWORKS_FULL_LIST_COEXIST_1` | sonnet | A1 green; ModsConfig backup | Droidworks in the full list beside donors; cold load; texPath census; Harmony idempotency | `harvest_log.py` baseline unchanged; 0 new `Config error in`; DW pawn generates 10/10 in a real-ideo faction | A1 |
-| A3 | `DROID_FACTIONS_IN_FROZEN_SAVE_1` | haiku | `rimworld-savegame` skill; both saves | table of droid FactionDefs/kinds/need classes scribed | counts MEASURED by the skill's method | — |
+| A3 | `DROID_FACTIONS_IN_FROZEN_SAVE_1` | sonnet | `rimworld-savegame` skill; both saves | table of droid FactionDefs/kinds/need classes scribed | counts MEASURED by the skill's method | — |
 | B1 | `DROIDWORKS_FORMAT_TIERS_1` | opus | unit 10; ruling 4 | `RSW_DW_FormatTier` hediff (blank/mindless/programmable/sapient); `ShouldHaveNeed` extension gating Mood/Joy/Beauty/Comfort/Outdoors by stage; `WorkTagIsDisabled` postfix; format recipes (deformat sapient = murder thought per faction ethics) | quicktest: programmable has Mood, no Joy; mindless has Power only; sapient breaks | A1 |
 | B2 | `DROIDWORKS_MODULE_ABSORB_1` | sonnet | kotorcore `_DroidsBase/ThingDefs_DroidEquipment` (9 files) + kotordroids equipment; `gen_kotorcore_absorption.py` pattern | `Absorbed_KotorDroidModules/` as `RSW_DW_Module_*`, body groups, tags re-pointed; **no recipeMaker on any** (loot-only) | validate 0/0; manifest of excluded classes; a KotOR kind spawns wearing its modules | A1 |
 | B3 | `DROIDWORKS_HEADS_BRAINS_SPIKES_1` | opus | unit 8; ruling 3, 6; `Items_Droidworks.xml` placeholders | brain trio items (no recipe, tradeable), `RSW_DW_Head_<Family>` + `CompHeadIdentity` (snapshot incl. hardware quirks), **`RSW_DW_Head_Mindstone`** (`MECHANOID_ORIGIN_CANON_1`'s race = any chassis + this head), `RSW_DW_DataSpike_<Empire|Hutt|Junker|Wild>` | kill → head drops with its name; wrong key does nothing; mindstone head yields the ruled stats | A1 |
@@ -222,8 +222,8 @@ explicit inputs/outputs/verify, no push without BENCH. Filing lines in §8.
 | C5 | `DROID_REPAIR_FOR_PROFIT_EVENTS_1` | opus | ruling 2; `rimworld-quests` skill; B4b | recurring incident/quest: a friendly arrives with a broken/under-spec droid, pays for repair/upgrade; options to fit inferior parts, keep the good ones, or "lose" a problem droid — reputation effects | quest fires, completes, pays; validator clean | B4b C1 |
 | C6 | `DROID_HUTT_CAPTIVES_1` | sonnet | ruling 2; Hutt settlement/dungeon work | captive droids as a site feature: rescue (they join, bolted or resentful) or purchase | site spawns them; both outcomes tested | C1 |
 | C7 | `DROID_DISTRESS_CALL_REPOINT_1` | sonnet | ruling 13; `btd.gbp.shippack.kotor.vge` quest sub-mod | patch its 5 `KotORDroidColonist_*` refs to DW kinds; reframe as the crashed/wild-droid rescue | quest offers and completes with DW pawns | C1 |
-| D0 | `DROID_ASIMOV_SAVE_SCRUB_1` | haiku | ruling 11; `rimworld-savegame` | 82 `Asimov.Need_Energy` `<li>` blocks removed from the frozen save (backup first) | count 82 → 0; save loads | A3 |
-| D1 | `DROID_DONOR_REFGREP_1` | haiku | §2 risk column | per donor, every reference in `src/` and every active mod's XML | counts MEASURED, one file per donor | — |
+| D0 | `DROID_ASIMOV_SAVE_SCRUB_1` | sonnet | ruling 11; `rimworld-savegame` | 82 `Asimov.Need_Energy` `<li>` blocks removed from the frozen save (backup first) | count 82 → 0; save loads | A3 |
+| D1 | `DROID_DONOR_REFGREP_1` | sonnet | §2 risk column | per donor, every reference in `src/` and every active mod's XML | counts MEASURED, one file per donor | — |
 | D2 | `DROID_RETIRE_KOTORDROIDS_1` | sonnet | B2 B3 C1 C2 C7 D1 A3 closed | flip + cold load | baseline clean | B2 B3 C1 C2 C7 |
 | D3 | `DROID_RETIRE_ABF_SYNCORE_1` | sonnet | D2 | flip + cold load; `DroidsAreMachines` ABF half removed | 0 `ArtificialBeings` errors | D2 |
 | D4 | `DROID_RETIRE_DEPOT_ASIMOV_1` | sonnet | D3, C2, D0; KX kind repointed | flip + cold load | 0 `Asimov` errors; FDE droids spawn | D3 |

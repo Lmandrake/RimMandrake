@@ -1,5 +1,7 @@
 # Models and tokens
 
+> **Owner 2026-10-31: no Haiku in RimMandrake; Sonnet 5.5 is the lowest model to consider.** Every Haiku rung below is struck; read it as Sonnet.
+
 You burn a week's Max allocation in ~4 days. The levers below are ranked by expected
 savings; the model ladder maps the full current Anthropic line onto this project's
 actual actions.
@@ -13,7 +15,7 @@ actual actions.
    several-fold reduction in fixed input cost per working day — the single largest
    lever available.
 2. **Model tiering (recurring, both sides).** Everything currently runs at the top of
-   the ladder. Moving FACTORY to Sonnet and fan-out to Haiku cuts the *price of the
+   the ladder. Moving FACTORY to Sonnet and fan-out to Sonnet (floor) cuts the *price of the
    same tokens* by 3–10× on the majority of daily work (§2).
 3. **Verification ceremony (output + tool calls).** The reversibility table deletes
    claim/start/verify/spec on T1/T2 work — which the ledger says is most work
@@ -35,7 +37,7 @@ and paid *output* (ceremony prose, reports, re-verification narration).
 Current line: **Haiku 4.5 · Sonnet 5 · Opus 5 (+fast mode) · Fable 5** (this model;
 Mythos-class tier above Opus). External free tier: NVIDIA nemotron (§4).
 
-> Current ladder as of 2026-10-20 (owner): opus = design and complex code; sonnet = well-defined coding, prose, cross-context judgment; haiku (Haiku 5.5, read `ANTHROPIC_DEFAULT_HAIKU_MODEL`) = mechanical bulk work. No Fable. See `infrastructure/agents/Agent_Policy.md`.
+> Current ladder as of 2026-10-20 (owner): opus = design and complex code; sonnet = well-defined coding, prose, cross-context judgment; haiku = STRUCK 2026-10-31 (owner: Sonnet 5.5 is the lowest rung). No Fable. See `infrastructure/agents/Agent_Policy.md`.
 
 | model | use it for (this project's actions) | do not use it for |
 |---|---|---|
@@ -51,9 +53,9 @@ hard; otherwise FACTORY starts at Sonnet and escalates itself after one failed
 attempt, noting the escalation in the closing commit.
 
 **Subagents:** the existing rule (always set `model`) is right and stays. Default
-Haiku for enumeration, Sonnet for interpretation — `efficient-subagents` already says
+Sonnet for enumeration and interpretation (no Haiku) — `efficient-subagents` already says
 this; under the new topology it finally becomes the common case instead of the
-exception, because FACTORY at Sonnet spawning Haiku is the normal shape of a sweep.
+exception, because FACTORY at Sonnet spawning Sonnet is the normal shape of a sweep.
 
 ## §3 Nemotron / free-compute verdict
 

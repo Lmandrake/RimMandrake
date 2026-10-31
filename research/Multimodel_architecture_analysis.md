@@ -1,5 +1,7 @@
 # Multi-model architecture: what this project should actually route elsewhere
 
+> **Owner 2026-10-31: no Haiku in RimMandrake; Sonnet 5.5 is the lowest model to consider.** Every Haiku recommendation below is historical and struck.
+
 **REP, 2026-08-24.** Answering `research/KIMI_K2_6_WORKFORCE_EXPANSION.md`.
 
 Every number below is marked **CONFIRMED** (a command was run, here, today) or **UNCERTAIN**.

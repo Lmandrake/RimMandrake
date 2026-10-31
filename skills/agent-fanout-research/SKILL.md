@@ -66,11 +66,8 @@ and sounded authoritative.
   budget is the single highest-leverage line in the prompt.
 * 🔴 **Set `model` per agent — it is the second.** A fan-out is where the cost lands:
   four agents at the parent's tier is four times the wrong price. **`sonnet` for both a
-  domain the agent must interpret and one it only has to enumerate** — this line said
-  `haiku` for the enumerating case until 2026-10-01, and the gateway serves no Haiku at
-  all, so the rung did not exist. (`model: haiku` does not fail: it is remapped to
-  `us-gov.anthropic.claude-sonnet-5` and resolves to Sonnet anyway. It just made the
-  instruction mean something other than it said.) `infrastructure/agents/Agent_Policy.md`
+  domain the agent must interpret and one it only has to enumerate** — Haiku is not used in this project
+  (owner 2026-10-31); Sonnet 5.5 is the lowest rung. `infrastructure/agents/Agent_Policy.md`
   for the seat policy; `~/dev/DispatchOpenCode/bin/delegate where` for what the gateway
   actually serves.
 * **Demand structure that survives merging:** a finding per line, each marked

@@ -3,8 +3,8 @@
 
 Omitting `model` inherits the parent's tier. Measured 2026-08-24: that is how
 EVERY grep, census and existence check in this project's history came to run on
-Opus, while `skills/efficient-subagents/SKILL.md` had said `model: haiku` since
-the day it was written and nobody ever passed it.
+Opus, while `skills/efficient-subagents/SKILL.md` had named a cheaper rung since
+the day it was written and nobody ever passed it (that rung is since struck: no Haiku).
 
 ⛔ Only the GENERIC built-ins are gated. A named agent type carries its own
 `model:` in frontmatter, and `fork` ignores the parameter entirely — refusing
@@ -23,13 +23,11 @@ REASON = (
     "Omitting it inherits THIS seat's tier. That is how every grep and census in "
     "this project's history ran on Opus.\n\n"
     "Pass one — the question is who catches the error, not how hard it looks:\n"
-    "    haiku    mechanical bulk work with a checkable outcome: OS-level searches (grep,\n"
-    "             glob, census, 'does X exist'), inventories, extraction, classification\n"
-    "    sonnet   well-defined coding with a checkable outcome; interpretive sweeps;\n"
-    "             prose a human will act on\n"
+    "    sonnet   the floor: searches, censuses, inventories, extraction, well-defined\n"
+    "             coding with a checkable outcome, prose a human will act on\n"
     "    opus     design, complex code generation, or a return you will act on\n"
     "             WITHOUT re-deriving it\n\n"
-    "Haiku 5.5 is a live rung (2026-10-20); `haiku` resolves via ANTHROPIC_DEFAULT_HAIKU_MODEL.\n"
+    "Owner 2026-10-31: no Haiku in RimMandrake; Sonnet 5.5 is the lowest model to consider.\n"
     "`fable` is the name that genuinely 400s.\n\n"
     "Full ladder: infrastructure/agents/Agent_Policy.md\n"
     "What the gateway serves right now: ~/dev/Dispatch/bin/delegate where\n"

@@ -21,7 +21,7 @@ landforms on the world. That's a bunch of content we're not even using."*
 
 ## spec
 
-1. **Exact census** (offline, haiku-tier): every TileMutatorDef on the full list
+1. **Exact census** (offline, Sonnet 5.5 at lowest; no Haiku): every TileMutatorDef on the full list
    (live def dump, `official`) minus the 88 in use → the UNUSED roster, with label,
    source mod, `categories`, and any biome/hilliness/coast gate the worker declares.
    Same for the 30 non-disabled GL landforms and the 14 disabled ones, flagged.

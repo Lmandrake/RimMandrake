@@ -182,11 +182,9 @@ Distress Call re-pointed as the crashed-droid rescue · Oracle voice designed
 dormant · B and C before D.
 
 **Still open after the rulings (not owner calls — measure or build)**: which
-droid FactionDefs are scribed in the frozen/campaign saves (A3, haiku — ⚠️ the
-sibling file `A3_frozen_save_droid_census.md` in this folder is a scan-grade
-string count whose comparison BENCH has already voided: its second file was a
-25-mod Droidworks quicktest autosave, not the campaign; it does not answer A3,
-which needs `<def>NAME</def>`-shaped reads via the `rimworld-savegame` skill); the
+droid FactionDefs are scribed in the frozen/campaign saves (A3, Sonnet or above — the
+voided scan-grade census file `A3_frozen_save_droid_census.md` has been deleted (its second file was a
+25-mod Droidworks quicktest autosave, not the campaign); A3 needs `<def>NAME</def>`-shaped reads via the `rimworld-savegame` skill); the
 exact per-faction droid share of raid points (C1 tunes at the bench); the G2's
 art (owner's eye, B9); whether `btd.gbp.shippack.kotor.vge`'s quest sub-mod is
 `LoadFolders`-gated on kotordroids (C7 reads it before patching).
@@ -207,7 +205,7 @@ pedantry, repair-shop pack) · `ORACLE_EXPERIMENT_SPIKE_1` (client rewrite to
 `design/Jawa/explosion_energy_model.md` (the general detonation model
 Droidworks' comp is the pawn half of).
 
-UNMEASURED and worth a haiku sweep before any retirement: whether
+UNMEASURED and worth a Sonnet sweep before any retirement: whether
 `guy762_KotORFaction_RogueDroids`, `JDSCIS_CIS_Faction` or
 `OuterRim_RogueDroidColony` are scribed in `world/WORLDMAP_V1_original.rws` and in
 the campaign save (a FactionDef in a save that no mod defines is a Scribe

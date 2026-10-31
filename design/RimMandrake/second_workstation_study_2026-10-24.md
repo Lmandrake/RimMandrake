@@ -293,8 +293,8 @@ That is approximately **80,600 output tokens, 997,000 cache-write tokens, and 44
 The first funding measures should be:
 
 - **No LLM during routine sweeps.** Scripts wait for the game, execute approved sequences, collect evidence, and notify once. Passing runs need no conversational supervision.
-- **Apply the supplied model ladder to helper work.** Haiku for rechecked mechanical inventories/extraction; Sonnet for bounded implementation with a real compiler/test/validator catching errors; Opus for design, complex code, uncaught conclusions, and instrument-truth judgments. Resolve aliases through the existing dispatcher.
-- **Respect the live-write restriction.** Agent_Policy.md explicitly forbids cheaper models for live bridge writes. Moving those writes to Sonnet/Haiku would require an explicit policy change. Existing approved deterministic proof scripts offer savings without introducing a cheaper model making live decisions.
+- **Apply the supplied model ladder to helper work.** Sonnet (the floor; no Haiku, owner 2026-10-31) for rechecked mechanical inventories/extraction; Sonnet for bounded implementation with a real compiler/test/validator catching errors; Opus for design, complex code, uncaught conclusions, and instrument-truth judgments. Resolve aliases through the existing dispatcher.
+- **Respect the live-write restriction.** Agent_Policy.md explicitly forbids cheaper models for live bridge writes. Moving those writes to a cheaper model would require an explicit policy change. Existing approved deterministic proof scripts offer savings without introducing a cheaper model making live decisions.
 - **Reduce redundant verification.** Adopt the audit’s one plan, one apply, accepted deploy verification; remove routine ad-hoc PNG hashing/XML censuses. Reuse valid suite evidence when dependencies are unchanged. Keep meaningful correctness gates.
 - **Reduce helper context and repeated calls.** Give bounded tasks the needed files and evidence, return compact results, and avoid duplicate “reliability” agents. Cache reads dominate volume, but they are not priced identically to output or cache writes.
 

@@ -234,8 +234,8 @@ refuses correct work gets disabled.
 
 ### Who catches a wrong answer
 
-Per `Agent_Policy.md`'s table: **a selftest, before anyone reads it → row 1 → haiku is
-safe to build it.** The checker's own correctness sits on row 1 too, because
+Per `Agent_Policy.md`'s table: **a selftest, before anyone reads it → row 1 → Sonnet is
+safe to build it (no Haiku: owner 2026-10-31).** The checker's own correctness sits on row 1 too, because
 `selftest_walklint.py` asserts against fixtures with known-bad and known-good walks.
 The `walklint-ok` escapes are row 2 — the next agent reading the file re-derives the
 reason. **The one row-3 decision is scoping** (which id classes are in scope at all),

@@ -22,7 +22,7 @@ CASES = [
     ("Plan, no model", {"subagent_type": "Plan"}, True),
     ("empty-string model", {"subagent_type": "general-purpose", "model": ""}, True),
     ("whitespace model", {"subagent_type": "general-purpose", "model": "  "}, True),
-    ("haiku given", {"subagent_type": "general-purpose", "model": "haiku"}, False),
+    ("sonnet given, general-purpose", {"subagent_type": "general-purpose", "model": "sonnet"}, False),
     ("sonnet given", {"subagent_type": "Explore", "model": "sonnet"}, False),
     ("opus given", {"model": "opus"}, False),
     # false-block guards
