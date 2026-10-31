@@ -9565,3 +9565,5 @@
 {"seat":"FOUNDRY","event":"lease","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","action":"renew","token":"FOUNDRY.pid10106.ff94bff8","ts":"2026-10-31T23:18:28Z","expires":"2026-11-01T00:03:28Z","tsn":1793488709495298436}
 {"seat":"FOUNDRY","event":"lease","id":"STILLSAND_SANDSWIM_GRAVEL_SUBMERGE_1","action":"renew","token":"FOUNDRY.pid10138.ad1156a8","ts":"2026-10-31T23:19:06Z","expires":"2026-11-01T00:04:06Z","tsn":1793488747319869179}
 {"seat":"FOUNDRY","event":"lease","id":"LEATHERFACTORS_FIX_KEEP_OWN_STATS","action":"renew","token":"FOUNDRY.pid10106.ff94bff8","ts":"2026-10-31T23:19:26Z","expires":"2026-11-01T00:04:26Z","tsn":1793488767381056611}
+{"seat":"FOUNDRY","event":"lease","id":"COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES","action":"renew","token":"FOUNDRY.pid95166.80354759","ts":"2026-10-31T23:20:11Z","expires":"2026-11-01T00:05:11Z","tsn":1793488812168881835}
+{"seat":"FOUNDRY","event":"lease","id":"COLD_STORAGE_CUISINE_BUILD_PRESERVE_DISHES","action":"renew","token":"FOUNDRY.pid95166.80354759","ts":"2026-10-31T23:23:13Z","expires":"2026-11-01T00:08:13Z","tsn":1793488994069928704}
