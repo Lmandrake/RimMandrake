@@ -1,0 +1,16 @@
+# Replay watchdog, ARENA_WATCHDOG_BUILD_UNATTENDED_REPLAY: reads the arena replay arms, restarts a dead arm once, pages
+# fail-loud stops, alarms stalls and second deaths, writes the Trial rows and replay_watch_status.txt. See replay_watch.py.
+# Runs from the dispatch clone, which testq-tick keeps current.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-replay-watch.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-replay-watch.timer
+# Remove when the replay ends:  systemctl --user disable --now rm-replay-watch.timer
+#           rm ~/.config/systemd/user/rm-replay-watch.{service,timer}; systemctl --user daemon-reload
+[Unit]
+Description=RimMandrake arena replay watchdog
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/replay_watch.py tick
+WorkingDirectory=/home/mandrake/rm/dispatch
+Nice=10
+TimeoutStartSec=300s

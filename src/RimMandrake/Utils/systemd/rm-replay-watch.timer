@@ -1,0 +1,11 @@
+# Every 3 minutes — see rm-replay-watch.service.
+[Unit]
+Description=RimMandrake arena replay watchdog, every 3 minutes
+
+[Timer]
+OnCalendar=*:00/3
+AccuracySec=10s
+Persistent=false
+
+[Install]
+WantedBy=timers.target
