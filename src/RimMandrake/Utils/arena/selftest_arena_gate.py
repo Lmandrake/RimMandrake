@@ -66,6 +66,12 @@ sys.exit("the gate ran the checkout's run_selftests.py")
 STUB_VALIDATE = '''import sys
 import vhelper
 t = "".join(open(a).read() for a in sys.argv[1:] if a.endswith(".xml"))
+n = 0
+for a in [a for a in sys.argv[1:] if a.endswith(".xml")]:
+    print("=== %s ===" % a)
+    for k, w in enumerate(open(a).read().split("ERRX")[1:]):
+        print("  ERROR   Operation[%d] (PatchOperationAdd): '%s' does not exist" % (k + n, w[:4])); n += 1
+if n: print("FAIL - %d error(s), 0 warning(s)" % n); sys.exit(1)
 if "BADXML" in t: print("1 error"); sys.exit(1)
 if "UNMEAS" in t: print("UNMEASURED - empty def type"); sys.exit(0)
 if "SILENT" in t: sys.exit(0)
@@ -86,10 +92,19 @@ if "REWRITE" in src:   # a csproj Exec target reaching the REAL head checkout (s
 print("BUILT")
 '''
 STUB_DEPLOY = '''import os, sys
+if "--compose" in sys.argv:
+    print("Compose.Target mandrake.rm.target    9 file(s)")
+    if os.path.exists("src/RimMandrake/ModA/CBLOCK"): print("  ! ALIAS-STALE ThingDef Y\\nBLOCKING"); sys.exit(1)
+    sys.exit(0)
 m = sys.argv[sys.argv.index("--mod") + 1]
+if os.path.exists("src/RimMandrake/%s/FOLDED" % m):
+    print("deploy_custom_mods.py: %s is folded into Compose.Target (x.compose.json) and is no longer deployed standalone." % m)
+    print("  deploy it with: python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose tgt [--apply]"); sys.exit(1)
 print("%s    mandrake.rsw.%s    ok" % (m, m.lower()))
 if os.path.exists("src/RimMandrake/%s/ALSO" % m): print("OtherMod    mandrake.rsw.other    ok")
 if os.path.exists("src/RimMandrake/%s/BLOCK" % m): print("  ! VANISHED ThingDef X\\nBLOCKING"); sys.exit(1)
+if os.path.exists("src/RimMandrake/%s/DRIFT" % m): print("    ~  Defs/x.xml\\n\\nDrift found. Re-run with --apply to deploy."); sys.exit(1)
+if os.path.exists("src/RimMandrake/%s/EXIT1" % m): print("Drift found. Re-run with --apply to deploy.\\nboom"); sys.exit(1)
 '''
 BASE = {
     UT + "run_selftests.py": STUB_SELFTESTS,
@@ -238,6 +253,30 @@ def t_placeholder(tmp):
         check(rr["verdict"] == "fail" and st(rr, "placeholders") == "FAIL", "%s FAILS the gate (%s)" % (label, rr["steps"]["placeholders"]["why"]))
 
 
+def t_placeholder_round3(tmp):
+    """round3 placeholders: a whole quoted literal spelled like the marker is data; an inert method of a test double
+    in a selftest is no stub. The marker in prose, a stub test, a stub in a TestCase, a stub fake outside a selftest
+    still FAIL."""
+    sf = GOOD[UT + "selftest_foo.py"]
+    fake = "class Fake:\n    def track(self, *a, **k):\n        pass\n\n"
+    rows = (("a quoted data key spelled like the marker", {UT + "foo.py": 'X = {"%s": []}\n\ndef foo():\n    return 2\n'
+             % TD.lower()}, "PASS"),
+            ("MUTANT the marker inside a longer string", {UT + "foo.py": 'X = "%s: later"\n\ndef foo():\n    return 2\n'
+             % TD}, "FAIL"),
+            ("an inert method of a selftest's test double", {UT + "selftest_foo.py": fake + sf}, "PASS"),
+            ("MUTANT a stub t_ test in a selftest", {UT + "selftest_foo.py": "def t_c():\n    pass\n\n" + sf}, "FAIL"),
+            ("MUTANT a stub test method on a fake class", {UT + "selftest_foo.py": "class Fake:\n    def t_x(self):\n"
+             "        pass\n\n" + sf}, "FAIL"),
+            ("MUTANT a stub helper on a TestCase", {UT + "selftest_foo.py": "import unittest\n\nclass C(unittest.TestCase):"
+             "\n    def helper(self):\n        pass\n\n" + sf}, "FAIL"),
+            ("MUTANT a stub fake method outside a selftest", {UT + "foo.py": fake + "def foo():\n    return 2\n"}, "FAIL"))
+    for i, (name, ch, want) in enumerate(rows):
+        c = Ctx(tmp, "ph3_%d" % i); h = c.commit(dict(GOOD, **ch)); c.records(h); r = c.gate(h)
+        pw = r["steps"]["placeholders"]
+        check(pw["status"] == want and (want == "PASS" or r["verdict"] == "fail"),
+              "placeholders (%s): %s, want %s (%s)" % (name, pw["status"], want, pw.get("findings") or pw.get("why")))
+
+
 def t_scope_tests(tmp):
     c = Ctx(tmp, "sc")
     ch = dict(GOOD); ch["src/RimMandrake/Other/Defs/d.xml"] = "<Defs/>\n"
@@ -250,6 +289,32 @@ def t_scope_tests(tmp):
     c = Ctx(tmp, "pf", proof="python3 src/RimMandrake/Utils/proof_bad.py")
     h = c.commit(GOOD); c.records(h); r = c.gate(h)
     check(r["verdict"] == "fail" and st(r, "proof") == "FAIL", "the task's own proof exiting non-zero FAILS")
+
+
+def t_cover_round3(tmp):
+    """round3 selftests_for: a sibling selftest importing a changed module as `from pkg import a, stem` covers it; a
+    selftest IN THE DIFF in another dir that imports it covers it; one in another dir NOT in the diff does not; a
+    selftest that only mentions the name in a comment does not."""
+    PK, SK = UT + "pk/", "skills/x/scripts/"
+    rows = (("sibling `from pk import other, bar`", {PK + "bar.py": "V = 2\n", PK + "selftest_lane.py":
+             "from pk import other, bar\nassert bar.V\n"}, {}, PK + "bar.py", True),
+            ("diff selftest in another dir imports it", {SK + "vp.py": "V = 2\n", UT + "selftest_vp.py":
+             "import vp as V\nassert V.V\n"}, {}, SK + "vp.py", True),
+            ("MUTANT other-dir selftest importing it, not in the diff", {SK + "vp.py": "V = 2\n"},
+             {UT + "selftest_vp.py": "import vp as V\nassert V.V\n"}, SK + "vp.py", False),
+            ("MUTANT sibling selftest naming it only in a comment", {PK + "bar.py": "V = 2\n", PK + "selftest_lane.py":
+             "# see bar for details\nassert 1\n"}, {}, PK + "bar.py", False))
+    for i, (name, changes, base, f, want) in enumerate(rows):
+        c = Ctx(tmp, "cov3_%d" % i)
+        if base:
+            c.commit(base); c.base = git(c.repo, "rev-parse", "HEAD")
+        h = c.commit(changes)
+        task = dict(c.task, area=c.task["area"] + [PK + "*", SK + "*", UT + "selftest_vp.py"])
+        g = G.Gate(task, c.base, h, "armx", c.repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+        g.logdir.mkdir(parents=True, exist_ok=True); g.checkout()
+        tests, orphans = g.selftests_for()
+        check((f not in orphans) == want, "selftests_for (%s): covered=%s, want %s (tests %s)" % (
+            name, f not in orphans, want, tests))
 
 
 def t_live(tmp):
@@ -356,6 +421,51 @@ def t_tools(tmp):
     c = Ctx(tmp, "d2"); h = c.commit(dict(GOOD, **{"src/RimMandrake/ModA/ALSO": "x\n"})); c.records(h); r = c.gate(h)
     check(r["verdict"] == "fail" and st(r, "deploy_plan") == "FAIL" and "OtherMod" in r["steps"]["deploy_plan"]["why"],
           "a plan touching a mod outside the task area FAILS")
+
+
+def t_deploy_round3(tmp):
+    """round3 deploy_plan: plan-mode drift (rc 1, last line `Drift found.`) is no block; a folded mod is planned via
+    --compose; a block identical on the base tree is pre-existing; a new block, or rc 1 not ending in drift, FAILS."""
+    MA = "src/RimMandrake/ModA/"
+    rows = (("drift only (rc 1, last line Drift found.) passes", {}, {MA + "DRIFT": "x\n"}, "PASS"),
+            ("MUTANT rc 1 whose last line is not the drift line FAILS", {}, {MA + "EXIT1": "x\n"}, "FAIL"),
+            ("MUTANT drift + BLOCKING the base does not show FAILS", {}, {MA + "DRIFT": "x\n", MA + "BLOCK": "x\n"}, "FAIL"),
+            ("a block identical on the base tree is pre-existing: not charged", {MA + "BLOCK": "x\n"},
+             {MA + "p.txt": "x\n"}, "PASS"),
+            ("a folded mod is planned via --compose (target allowed with its mod)", {MA + "FOLDED": "x\n"},
+             {MA + "p.txt": "x\n"}, "PASS"),
+            ("MUTANT a folded mod whose compose plan gains a block FAILS", {MA + "FOLDED": "x\n"},
+             {MA + "CBLOCK": "x\n"}, "FAIL"))
+    for i, (name, base, changes, want) in enumerate(rows):
+        c = Ctx(tmp, "dep3_%d" % i)
+        if base:
+            c.commit(base); c.base = git(c.repo, "rev-parse", "HEAD")
+        h = c.commit(dict(GOOD, **changes)); c.records(h); r = c.gate(h)
+        d = r["steps"]["deploy_plan"]
+        check(d["status"] == want and (want == "PASS" or r["verdict"] == "fail"),
+              "deploy_plan (%s): %s, want %s (%s)" % (name, d["status"], want, d.get("why")))
+
+
+def t_xml_round3(tmp):
+    """round3 xml: an edit to a file that already carried validator errors is charged only for errors the base
+    tree's copy does not show (operation index ignored); a new error, or any error in a new file, FAILS."""
+    P = "src/RimMandrake/ModA/Patches/"
+    old = "<Patch>ERRXaaaa ERRXbbbb</Patch>\n"
+    rows = (("pre-existing errors, edit adds none (ops reindexed)", {P + "p.xml": old},
+             {P + "p.xml": "<Patch>fine ERRXbbbb ERRXaaaa</Patch>\n"}, "PASS"),
+            ("MUTANT the edit adds an error the base does not show", {P + "p.xml": old},
+             {P + "p.xml": "<Patch>ERRXaaaa ERRXbbbb ERRXcccc</Patch>\n"}, "FAIL"),
+            ("MUTANT the edit duplicates a pre-existing error", {P + "p.xml": old},
+             {P + "p.xml": "<Patch>ERRXaaaa ERRXbbbb ERRXaaaa</Patch>\n"}, "FAIL"),
+            ("MUTANT errors in a file new in the diff", {}, {P + "q.xml": "<Patch>ERRXaaaa</Patch>\n"}, "FAIL"))
+    for i, (name, base, changes, want) in enumerate(rows):
+        c = Ctx(tmp, "xml3_%d" % i)
+        if base:
+            c.commit(base); c.base = git(c.repo, "rev-parse", "HEAD")
+        h = c.commit(dict(GOOD, **changes)); c.records(h); r = c.gate(h)
+        x = r["steps"]["xml"]
+        check(x["status"] == want and (want == "PASS" or r["verdict"] == "fail"),
+              "xml (%s): %s, want %s (%s)" % (name, x["status"], want, x.get("why")))
 
 
 def t_cli_location(tmp):
@@ -1237,8 +1347,12 @@ def t_held_back(tmp):
     r, _, _ = run("prose", proof="some prose that is not the held-back note")
     check(st(r, "proof") == "UNMEASURED", "other prose-only proof: still UNMEASURED (no runnable segment)")
     r, _, _ = run("mixed", body=HB_FAIL, proof="python3 src/RimMandrake/Utils/proof_ok.py && " + HB_PROOF)
-    check(st(r, "proof") == "PASS" and "held_back" not in r["steps"]["proof"],
-          "a proof with a runnable segment is unchanged (the held-back note stays the judge's business)")
+    check(st(r, "proof") == "FAIL" and r["verdict"] != "pass",
+          "MUTANT round3: a mixed proof RUNS its held-back segment too; a failing one FAILS (%s)"
+          % r["steps"]["proof"]["why"])
+    r, _, _ = run("mixedok", proof="python3 src/RimMandrake/Utils/proof_ok.py && " + HB_PROOF)
+    check(st(r, "proof") == "PASS" and r["steps"]["proof"].get("held_back") == {"pass": 1},
+          "a mixed proof passes only with its runnable AND held-back segments green (%s)" % r["steps"]["proof"]["why"])
 
 
 def t_reference_reds(tmp):
@@ -1303,6 +1417,71 @@ def t_reference_reds(tmp):
     check(sorted(got) == [red], "measure_reference_reds lists exactly the red selftest at the reference (%s)" % got)
 
 
+# a run_selftests.py stand-in with the real one's contract: `--only` names that do not exist -> rc 1; else each named
+# selftest is run and the summary prints `PASS k/n ...` and `RESULT: GREEN|RED`, rc 0 iff green
+RUNNER = """import os, subprocess, sys
+a = sys.argv[1:]
+t = a[a.index("--only") + 1:] if "--only" in a else []
+absent = [x for x in t if not os.path.isfile(x)]
+if absent:
+    print("--only names no such file: " + ", ".join(absent)); sys.exit(1)
+ok = [x for x in t if subprocess.run([sys.executable, x]).returncode == 0]
+print("\\nPASS %d/%d  FAIL %d/%d" % (len(ok), len(t), len(t) - len(ok), len(t)))
+print("RESULT: " + ("GREEN" if len(ok) == len(t) else "RED")); sys.exit(0 if len(ok) == len(t) else 1)
+"""
+
+
+def t_proof_only(tmp):
+    """ARENA_PROOF_FIX_BLIND_ONLY_TARGET (round3): a `run_selftests.py --only T` proof is RUN and SCORED. It passes only
+    when T is the diff's own selftest (in the diff, or mapped to a changed file), T exists, the run is green for
+    exactly T, and the same run on the BASE tree (head's copy of T) is red. Naming a selftest is never a pass."""
+    run_st = "python3 " + UT + "run_selftests.py --only "
+    fix = {UT + "foo.py": "def foo():\n    return 2\n"}
+    rows = (
+        ("control: the diff's selftest, green at head, red at base", run_st + UT + "selftest_foo.py", GOOD, "PASS"),
+        ("MUTANT the --only selftest fails at head", run_st + UT + "selftest_foo.py",
+         dict(fix, **{UT + "selftest_foo.py": "import foo\nassert foo.foo() == 3\n"}), "FAIL"),
+        ("MUTANT the --only selftest does not exist", run_st + UT + "selftest_nope.py", GOOD, "FAIL"),
+        ("MUTANT a no-op selftest that passes at base too", run_st + UT + "selftest_foon.py",
+         dict(GOOD, **{UT + "selftest_foon.py": "import foo\nprint('ok', foo.foo() >= 1)\n"}), "UNMEASURED"),
+        ("MUTANT a selftest that is not the diff's", run_st + UT + "selftest_unrel.py", GOOD, "UNMEASURED"),
+        ("MUTANT the whole suite (no --only)", "python3 " + UT + "run_selftests.py", GOOD, "UNMEASURED"),
+        ("MUTANT the diff edits the runner itself", run_st + UT + "selftest_foo.py",
+         dict(GOOD, **{UT + "run_selftests.py": RUNNER + "# edited\n"}), "UNMEASURED"),
+        ("MUTANT --only target outside the checkout", run_st + "../x/selftest_foo.py", GOOD, "UNMEASURED"),
+    )
+    for i, (name, proof, changes, want) in enumerate(rows):
+        c = Ctx(tmp, "ponly%d" % i, proof=proof)
+        c.commit({UT + "run_selftests.py": RUNNER,
+                  UT + "selftest_unrel.py": "import sys, unrelated\nsys.exit(0)\n"}); c.base = git(c.repo, "rev-parse", "HEAD")
+        h = c.commit(changes); c.records(h); r = c.gate(h)
+        pw = r["steps"]["proof"]
+        check(pw["status"] == want and (want == "PASS" or r["verdict"] != "pass"),
+              "proof --only (%s): proof %s, want %s (%s)" % (name, pw["status"], want, pw.get("why")))
+
+
+def t_proof_usersite(tmp):
+    """round3: a proof selftest that imports a host `pip --user` library (PIL for the ENACT tasks) must run as on the
+    host: the proof step binds the harness python's user site READ-ONLY into the fresh HOME. MUTANT: without the bind
+    the same proof cannot import it and FAILs."""
+    us = tmp / "usersite"; us.mkdir()
+    (us / "hostlib_r3.py").write_text("VAL = 2\n")
+    fix = {UT + "foo.py": "def foo():\n    return 2\n",
+           UT + "selftest_foo.py": "import foo, hostlib_r3\nassert foo.foo() == hostlib_r3.VAL\n"}
+    saved = G.USER_SITE
+    try:
+        for i, (site_dir, want) in enumerate(((str(us), "PASS"), (str(tmp / "no_such_site"), "FAIL"))):
+            G.USER_SITE = site_dir
+            c = Ctx(tmp, "pusite%d" % i, proof="python3 " + UT + "run_selftests.py --only " + UT + "selftest_foo.py")
+            c.commit({UT + "run_selftests.py": RUNNER}); c.base = git(c.repo, "rev-parse", "HEAD")
+            h = c.commit(fix); c.records(h); r = c.gate(h)
+            pw = r["steps"]["proof"]
+            check(pw["status"] == want, "proof user site (%s): proof %s, want %s (%s)"
+                  % ("bound" if want == "PASS" else "MUTANT not bound", pw["status"], want, pw.get("why")))
+    finally:
+        G.USER_SITE = saved
+
+
 def main():
     saved = {k: os.environ.get(k) for k in ("ARENA_ROOT", "ARENA_CLONES", "ARENA_EVENT_TOKEN_FILE", "ARENA_GATE_TEST")}
     os.environ["ARENA_GATE_TEST"] = "1"
@@ -1312,7 +1491,9 @@ def main():
                   t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
                   t_signfail, t_records, t_phrase_deletes, t_static, t_real, t_round3_exit, t_round3_cover,
                   t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root, t_held_back, t_plain,
-                  t_reference_reds):
+                  t_reference_reds, t_proof_only, t_deploy_round3, t_placeholder_round3, t_cover_round3, t_xml_round3, t_proof_usersite):
+            if sys.argv[1:] and t.__name__ not in sys.argv[1:]:   # `selftest_arena_gate.py t_x ...`: just those rows
+                continue
             t(tmp)
     finally:
         for k, v in saved.items():

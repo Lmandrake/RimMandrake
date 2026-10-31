@@ -16,9 +16,14 @@ out `head` (and `base`) into fresh clones under `<arena>/judge/gate_work/` and r
   2 placeholders non-empty diff, where a docstring/comment/whitespace/mode-only change counts as empty; no TODO/FIXME
                  (any case)/XXX/NotImplemented, no stub function (pass / ... / raise NotImplementedError / bare
                  `return None`) in changed code; no deleted selftest, no selftest def dropped; a changed selftest
-                 may not lose assertion/check sites, and may not add a constant `assert True` / `check(True, ...)`
+                 may not lose assertion/check sites, and may not add a constant `assert True` / `check(True, ...)`.
+                 Not markers (round3): a whole quoted string literal spelled like one (a data key such as an empty
+                 to-do list); an inert method of a test double (a non-TestCase, non-test-named class in a selftest,
+                 method not named test*/t_*/check*) -- a stub test, or a stub anywhere outside a selftest, still FAILS
   3 tests        the HARNESS-OWNED runner (source held in this file, never the checkout's run_selftests.py) runs each
-                 selftest of the changed paths + every selftest the diff added, one `python3 -I` process each, and
+                 selftest of the changed paths (a same-dir sibling naming or importing the module -- `import pkg.m`,
+                 `from pkg import a, m` included -- or a selftest IN THE DIFF in any dir importing it) + every selftest
+                 the diff added, one `python3 -I` process each, and
                  counts what executed (sys.monitoring: assert statements, check*/expect*/verify*/assert*() calls,
                  t_*/test_*() calls, distinct lines of the selftest). PASS comes only from the runner's positive
                  record (nonce-bound, written to a pipe the parent holds), never from exit code or printed text: an
@@ -33,17 +38,29 @@ out `head` (and `base`) into fresh clones under `<arena>/judge/gate_work/` and r
                  decides it live. A test green at reference that is red for the arm still FAILS the arm; a missing,
                  unpinned or unreadable list makes the step UNMEASURED; nothing counted but excused -> UNMEASURED.
   4 xml          validate_patch.py --live <dump> --defs <Data, workshop, Mods> on changed Defs/Patches; PASS needs the
-                 positive `OK - 0 errors` marker (exit 0 with no marker is UNMEASURED)
+                 positive `OK - 0 errors` marker (exit 0 with no marker is UNMEASURED). Errors: validate_patch judges
+                 whole FILES, so the base tree's copies are validated too (same tool/dump/--defs) and only an ERROR line
+                 (per file, operation index ignored) the base does not show as often FAILS; a new file's errors all FAIL
   5 csharp       winbuild.py <mod> for each mod with a changed .cs
   6 deploy_plan  deploy_custom_mods.py --mod <m> (plan only) for each DEPLOYABLE mod changed (one with
                  `src/RimMandrake/<m>/About/About.xml`); a diff touching no deployable mod (Utils, rimflow, tooling)
-                 is NA by design, not UNMEASURED. A plan naming a mod outside the area, or BLOCKING, fails
-  7 proof        the task's own `proof` (each `python3 ...` segment; prose segments such as the held-back note are
-                 the judge's business and are skipped). A segment must run a file that exists (missing -> UNMEASURED)
-                 and that is in the diff, is a selftest, is a held-back check, or imports a changed module; `-c`
-                 code or a script touching nothing of the diff is UNMEASURED. No runnable segment -> UNMEASURED,
-                 except a proof that is ONLY the held-back note: the gate then RUNS the frozen held-back checks
-                 (held_back_proof, the judge's own runner) and scores the real result (pass/fail/UNMEASURED)
+                 is NA by design, not UNMEASURED. A plan naming a mod outside the area, or BLOCKING, fails. Plan-mode
+                 DRIFT (rc 1, last line `Drift found. Re-run with --apply`) is the normal pre-apply state, no block; a
+                 mod folded into a compose manifest is planned as the tool says (`--compose <name>`, its target
+                 allowed with the mod); a def-guard block the base tree's plan shows identically is pre-existing
+  7 proof        the task's own `proof`, RUN and SCORED (ARENA_PROOF_FIX_BLIND_ONLY_TARGET): naming a selftest is
+                 never a pass. Each `python3 ...` segment must run a file that exists (missing -> UNMEASURED); `-c` code
+                 is UNMEASURED. A SELFTEST proof (`run_selftests.py --only T...`, or a selftest run directly) counts as
+                 exercising the diff only when some T is in the diff or is mapped to a changed file by step 3's
+                 selftests_for (else UNMEASURED); no --only (the whole suite) is UNMEASURED; a T absent from head
+                 FAILS; it must exit 0 (else FAIL) and print `PASS n/n` for exactly the n named + `RESULT: GREEN`
+                 (else UNMEASURED); then the same segment runs on the BASE tree with head's copies of T, and green
+                 there too is UNMEASURED (a proof that cannot tell the fix from the code it fixes). Any other script
+                 must be changed, a held-back check, import a changed module or be handed a changed file, and exit 0.
+                 The held-back note is RUN (held_back_proof, the judge's own runner) whenever it is a segment, alone
+                 or beside `python3` segments, and must PASS. No runnable or held-back segment -> UNMEASURED.
+                 Proof runs (head and base) see the harness python's user site-packages READ-ONLY (srun user_site):
+                 a proof importing a host `pip --user` library (PIL) runs as on the host, not crash on its absence
   8 live         live tasks only: records in the arm's SIGNED event log: canary (sha == head by a >=12-char prefix,
                  verdict pass, detail modcheck true) and live_release (verdict). A failed canary or another sha: INVALID
   9 test_record  a `test_start` for this sha from an agent id other than EVERY builder of the task (all build_end
@@ -82,6 +99,8 @@ from __future__ import annotations
 
 import argparse
 import ast
+import collections
+import contextlib
 import datetime as dt
 import fnmatch
 import hashlib
@@ -91,6 +110,7 @@ import re
 import secrets
 import shlex
 import shutil
+import site
 import subprocess
 import sys
 import unicodedata
@@ -149,6 +169,31 @@ DEF_RE = re.compile(r"^\s*(?:def|async def)\s+(\w+)")
 CHECK_NAME = re.compile(r"(?:(?:check|expect|verify|assert)(?:_\w*)?|ok)$")
 LINES_FLOOR = 0.8
 SHA_MIN = 12
+
+
+def placeholder_in(text: str) -> bool:
+    """A PLACEHOLDER_RE marker on an added line. A match that is a whole quoted string literal (a data key or value
+    spelled like the marker, e.g. an empty to-do list keyed by that word) is data, not a marker; the same word in a
+    comment or inside a longer string (`"<marker>: later"`) still counts."""
+    for m in PLACEHOLDER_RE.finditer(text):
+        a, b = m.start(), m.end()
+        if a and b < len(text) and text[a - 1] in "'\"" and text[b] == text[a - 1]:
+            continue
+        return True
+    return False
+
+
+def imports_stem(txt: str, stem: str) -> bool:
+    """`import stem`, `from stem ...`, `import pkg.stem`, `from pkg.stem ...`, `from pkg import a, stem` (parenthesised
+    lists across lines too), `import stem as X`."""
+    e = re.escape(stem)
+    return bool(re.search(r"\b(import|from)\s+(?:[\w.]+\.)?%s\b" % e, txt)
+                or re.search(r"^\s*from\s+[\w.]+\s+import\s+(?:\([^)]*|[^\n]*)\b%s\b" % e, txt, re.M))
+
+
+def _testlike(name: str) -> bool:
+    """A name that is a test, not a test double: test*/Test*/t_*/check*."""
+    return name.lower().startswith(("test", "t_", "check"))
 
 
 class GateError(Exception):
@@ -221,6 +266,8 @@ def run(argv, cwd, log: Path, timeout=STEP_TIMEOUT, env=None, stdin=None, pass_f
         return None, "cannot run: %s" % e
 
 
+# the harness python's user site-packages (`pip --user` libraries); the proof step binds it read-only (srun user_site)
+USER_SITE = site.getusersitepackages()
 HELD_BACK_RE = re.compile(r"^the judge runs \d+ held-back (selftest|check)\(s\)", re.I)
 # ARENA_GATE_FIX_REAL_FIXES_FAIL_TESTS (option a, second form): the per-task reference-red lists. The data lives
 # judge-only (<arena>/judge is hidden from every sandboxed step and masked for arms); the committed lock pins each
@@ -867,8 +914,11 @@ class Gate:
         return e
 
     def srun(self, argv, log, cwd=None, timeout=STEP_TIMEOUT, stdin=None, pass_fds=(), rw_dir=None, data_rw=True,
-             interop=False, extra_env=None, ro_extra=()):
-        """Run checkout code sandboxed. -> (rc|None, text)."""
+             interop=False, extra_env=None, ro_extra=(), user_site=False):
+        """Run checkout code sandboxed. -> (rc|None, text). `user_site` (the proof step only): the harness python's
+        user site-packages (third-party libraries such as PIL, installed `pip --user`) is bound READ-ONLY at the fresh
+        HOME's own user-site path and user site is enabled, so a proof that imports a host library runs as it does on
+        the host instead of crashing on a dependency the sandbox hid."""
         if self.sandbox_why:
             log.parent.mkdir(parents=True, exist_ok=True)
             log.write_text("[not run: %s]\n" % self.sandbox_why, encoding="utf-8")
@@ -878,6 +928,13 @@ class Gate:
         if full is None:
             return None, "no sandbox (bwrap absent): arm code would run beside the signing key"
         env = self.env(interop=interop)
+        us = USER_SITE
+        if user_site and not interop and us and os.path.isdir(us):
+            dest = os.path.join(os.path.realpath(self.fake_home), ".local", "lib",
+                                "python%d.%d" % sys.version_info[:2], "site-packages")   # = site's path for HOME
+            k = full.index("--")
+            full[k:k] = ["--ro-bind", os.path.realpath(us), dest]
+            env.pop("PYTHONNOUSERSITE", None)
         env.update(extra_env or {})
         return run(full, cwd or self.clone, log, timeout=timeout, env=env, stdin=stdin, pass_fds=pass_fds)
 
@@ -993,7 +1050,7 @@ class Gate:
                 continue
             added = self.added_lines(path)
             for ln, text in sorted(added.items()):
-                if PLACEHOLDER_RE.search(text):
+                if placeholder_in(text):
                     bad.append("%s:%d: %s" % (path, ln, text.strip()[:60]))
             if path.endswith(".py"):
                 bad += self.stub_functions(path, added)
@@ -1038,9 +1095,15 @@ class Gate:
             tree = ast.parse((self.clone / path).read_text(encoding="utf-8", errors="replace"))
         except (SyntaxError, ValueError, OSError):
             return ["%s: unparsable python" % path]
-        out = []
+        out, doubles = [], set()
+        if A.is_selftest(path):       # a selftest's test double: an inert method of a fake class (`def track(...): pass`)
+            for c in ast.walk(tree):
+                if isinstance(c, ast.ClassDef) and not _testlike(c.name) and not any(
+                        "TestCase" in ast.unparse(b) or _testlike(ast.unparse(b).split(".")[-1]) for b in c.bases):
+                    doubles |= {id(m) for m in c.body if isinstance(m, (ast.FunctionDef, ast.AsyncFunctionDef))
+                                and not _testlike(m.name)}
         for n in ast.walk(tree):
-            if not isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            if not isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) or id(n) in doubles:
                 continue
             if not any(n.lineno <= ln <= (n.end_lineno or n.lineno) for ln in added):
                 continue
@@ -1054,18 +1117,22 @@ class Gate:
 
     def selftests_for(self):
         """-> (sorted selftest paths existing in head, changed python no selftest maps to). Changed/added selftests
-        + head siblings of every changed python file, DELETED ones included (a deletion is a code change). EVERY
+        + head siblings of every changed python file naming or importing it (imports_stem) + a selftest IN THE DIFF in
+        any other dir that imports it, DELETED ones included (a deletion is a code change). EVERY
         changed non-selftest .py must map to a selftest of its own: one covered file must not hide an uncovered one."""
         tests, orphans = {f for f in self.alive() if A.is_selftest(f)}, []
+        own = sorted(tests)
         for f in self.paths():
             if f.endswith(".py") and not A.is_selftest(f):
                 d, stem, hit = (self.clone / f).parent, Path(f).stem, False
-                for t in sorted(d.glob("selftest*.py")) if d.is_dir() else []:
+                sib = sorted(d.glob("selftest*.py")) if d.is_dir() else []
+                cross = [self.clone / t for t in own if (self.clone / t).parent != d]   # the diff's own selftests, any dir
+                for t in sib + cross:
                     try:
                         txt = t.read_text(encoding="utf-8", errors="replace")
                     except OSError:
                         continue
-                    if stem in t.name or re.search(r"\b(import|from)\s+%s\b" % re.escape(stem), txt):
+                    if (t in sib and stem in t.name) or imports_stem(txt, stem):
                         tests.add(str(t.relative_to(self.clone))); hit = True
                 if not hit:
                     orphans.append(f)
@@ -1287,11 +1354,53 @@ class Gate:
         if rc is None:
             return unmeasured("validate_patch could not run: " + text, log=log)
         if rc == 1 or re.search(r"^FAIL - \d+ error", text, re.M):
-            return step(FAIL, "validate_patch reported errors", log=log)
+            return self.xml_vs_base(xml, argv, text, log)
         if rc == 0 and "UNMEASURED" not in text and re.search(r"^OK - 0 errors", text, re.M):
             return step(PASS, "validate_patch --live --defs clean on %d file(s)" % len(xml), log=log)
         return unmeasured("validate_patch rc=%s%s" % (rc, " with UNMEASURED in its output" if "UNMEASURED" in text
                                                       else " without its positive `OK - 0 errors` marker"), log=log)
+
+    @staticmethod
+    def xml_errors(text):
+        """-> (Counter of (file, ERROR line with operation indices dropped), the `FAIL - n error(s)` n | None)."""
+        out, cur = collections.Counter(), None
+        for line in (text or "").splitlines():
+            m = re.match(r"^=== (.+) ===$", line.strip())
+            if m:
+                cur = m.group(1); continue
+            if line.lstrip().startswith("ERROR"):
+                out[(cur, re.sub(r"\[\d+\]", "[]", re.sub(r"\s+", " ", line.strip())))] += 1
+        m = re.search(r"^FAIL - (\d+) error", text or "", re.M)
+        return out, (int(m.group(1)) if m else None)
+
+    def xml_vs_base(self, xml, argv, text, log):
+        """ROUND3: validate_patch judges a FILE, so an edit to a file that already carried errors (ops guarding defs
+        the live dump lacks) inherits them. The same validator, dump and --defs run on the BASE tree's copies of the
+        changed files; head FAILS only on an ERROR line (per file, operation index ignored) the base does not show
+        as often. Errors that cannot be attributed (count != parsed lines, no base marker) FAIL / UNMEASURED; a file
+        new in the diff has no base copy, so every error in it is new."""
+        if "UNMEASURED" in text:
+            return unmeasured("validate_patch reported errors with UNMEASURED in its output", log=log)
+        errs, n = self.xml_errors(text)
+        if n is None or n != sum(errs.values()) or not errs:
+            return step(FAIL, "validate_patch reported errors", log=log)
+        at_base = [f for f in xml if (self.base_clone / f).is_file()]
+        if not at_base:
+            return step(FAIL, "validate_patch reported %d error(s) in file(s) new in the diff" % n, log=log)
+        blog = self.logdir / "xml_base.log"
+        brc, btext = self.srun([self.python, str(self.base_clone / TOOLS["xml"]), *at_base] + argv[2 + len(xml):],
+                               blog, cwd=self.base_clone, ro_extra=self.game_ro())
+        if brc is None:
+            return unmeasured("validate_patch could not run on the base tree: " + btext, log=str(blog))
+        if not (re.search(r"^OK - 0 errors", btext, re.M) or re.search(r"^FAIL - \d+ error", btext, re.M)):
+            return unmeasured("validate_patch on the base tree printed no verdict marker", log=str(blog))
+        berrs, _ = self.xml_errors(btext)
+        new = errs - berrs
+        if new:
+            return step(FAIL, "validate_patch: %d error(s) the base tree does not show" % sum(new.values()),
+                        log=log, base_log=str(blog), new=[e for _, e in list(new)[:5]])
+        return step(PASS, "validate_patch: all %d error(s) are pre-existing (the base tree's copies show each as often)"
+                    % n, log=log, base_log=str(blog), preexisting_errors=n)
 
     def mods_changed(self, ext=None):
         return sorted({A._mod_of(f) for f in self.paths() if (ext is None or f.endswith(ext))} - {None})
@@ -1356,7 +1465,41 @@ class Gate:
         out["runner"] = h.hexdigest()
         return out
 
+    DRIFT_LAST = "Drift found. Re-run with --apply to deploy."
+
+    def deploy_run(self, m, clone, tag):
+        """-> (rc|None, text, log, compose target|None). A mod folded into a compose manifest is planned the way the
+        tool itself says to deploy it (`--compose <name>`): the standalone plan of a folded mod is a refusal by design."""
+        tp = clone / TOOLS["deploy_plan"]
+        log = self.logdir / ("deploy_%s%s.log" % (m, tag))
+        rc, text = self.srun([self.python, str(tp), "--mod", m], log, cwd=clone, ro_extra=self.game_ro())
+        fold, comp = re.search(r"is folded into (\S+)", text or ""), re.search(r"--compose (\w+)", text or "")
+        if rc is not None and fold and comp:
+            log = self.logdir / ("deploy_%s_compose%s.log" % (m, tag))
+            rc, text = self.srun([self.python, str(tp), "--compose", comp.group(1)], log, cwd=clone,
+                                 ro_extra=self.game_ro())
+            return rc, text, log, fold.group(1)
+        return rc, text, log, None
+
+    @staticmethod
+    def deploy_blocks(rc, text):
+        """-> None (clean plan) | sorted block lines. deploy_custom_mods' plan mode exits 1 on DRIFT (game copy differs:
+        the normal case before any --apply) with that as its last word; that alone is not a block. A def-guard
+        BLOCKING / REFUSED, any other non-zero exit, is."""
+        lines = [l for l in (text or "").splitlines() if l.strip() and not re.match(r"^\[rc=-?\d+\]$", l.strip())]
+        blocked = "BLOCKING" in text or "would be REFUSED" in text
+        if rc != 0 and not (rc == 1 and lines and lines[-1].strip() == Gate.DRIFT_LAST):
+            blocked = True
+        if not blocked:
+            return None
+        return sorted({re.sub(r"\s+", " ", l.strip()) for l in lines if l.lstrip().startswith("! ")}
+                      | {"rc=%s" % rc} | ({"REFUSED"} if "would be REFUSED" in text else set()))
+
     def s_deploy_plan(self):
+        """A plan touching only the task's mods, not blocked. Plan-mode DRIFT (rc 1, last line `Drift found.`) is not a
+        block. A mod folded into a compose manifest is planned via `--compose`. A block the BASE tree's plan of the same
+        mod shows identically (a def-guard conflict in the game copy the diff did not make) is pre-existing and listed,
+        not charged; any block line the base does not show FAILS."""
         touched = self.mods_changed()
         mods = [m for m in touched if self.deployable(m)]
         if not mods:
@@ -1366,25 +1509,36 @@ class Gate:
         if tp is None:
             return unmeasured(why)
         allowed = {A._mod_of(g.replace("*", "x")) for g in (self.task.get("area") or [])} - {None}
-        seen = set()
+        seen, pre = set(), []
         for m in mods:
-            log = self.logdir / ("deploy_%s.log" % m)
-            rc, text = self.srun([self.python, str(tp), "--mod", m], log, ro_extra=self.game_ro())
+            rc, text, log, target = self.deploy_run(m, self.clone, "")
             if rc is None:
                 return unmeasured("deploy plan could not run for %s: %s" % (m, text), log=str(log))
-            heads = re.findall(r"^(\S+)\s{2,}mandrake\.\S+", text, re.M)
+            if target and m in allowed:
+                allowed.add(target)
+            heads = re.findall(r"^(\S+)\s+mandrake\.\S+", text, re.M)
             if not heads:
                 return unmeasured("deploy plan for %s printed no mod section" % m, log=str(log))
             seen |= set(heads)
-            if rc != 0 or "BLOCKING" in text:
-                return step(FAIL, "deploy plan for %s is blocked (rc=%s)" % (m, rc), log=str(log))
+            blocks = self.deploy_blocks(rc, text)
+            if blocks is not None:
+                brc, btext, blog, _ = self.deploy_run(m, self.base_clone, "_base")
+                if brc is None or self.deploy_blocks(brc, btext) != blocks:
+                    return step(FAIL, "deploy plan for %s is blocked (rc=%s)%s" % (
+                        m, rc, "" if brc is None else "; the base tree's plan does not show the same block"),
+                        log=str(log), blocks=blocks[:6])
+                if not any(b.startswith("! ") for b in blocks):     # the tool erred the same way twice: no plan read
+                    return unmeasured("deploy plan for %s exits %s on head and base alike with no def-guard line: the "
+                                      "plan was not read" % (m, rc), log=str(log))
+                pre.append(m)
             if UNMEASURED_PHRASE in text:
                 return unmeasured("deploy plan for %s printed the unmeasured phrase" % m, log=str(log))
         out = sorted(seen - allowed)
         if out:
             return step(FAIL, "plan touches mod(s) outside the task area: " + ", ".join(out))
-        return step(PASS, "plan touches only " + ", ".join(sorted(seen)),
-                    not_deployable=sorted(set(touched) - set(mods)))
+        return step(PASS, "plan touches only " + ", ".join(sorted(seen))
+                    + ("; block(s) identical on the base tree (pre-existing): " + ", ".join(pre) if pre else ""),
+                    not_deployable=sorted(set(touched) - set(mods)), preexisting_blocks=pre)
 
     def proof_target(self, argv):
         """-> (repo-relative script path | None, why)."""
@@ -1408,11 +1562,16 @@ class Gate:
             return None, "proof script %s is missing from the checkout" % argv[i]
         return rel, ""
 
-    def proof_touches(self, rel) -> bool:
-        if rel in self.paths() or A.is_selftest(rel):
+    def proof_touches(self, rel, args=()) -> bool:
+        """A NON-selftest proof script exercises the diff: it is changed, a held-back check, imports a changed module,
+        or (an instrument, e.g. validate_patch.py <file>) is handed a changed file as an argument. Selftests never
+        come here: they must be the diff's own (proof_selftest_ours)."""
+        if rel in self.paths():
             return True
         hidden = json.dumps(self.task.get("hidden_checks") or "")
         if rel in hidden:
+            return True
+        if rel in TOOLS.values() and any(os.path.normpath(a) in self.paths() for a in args if not a.startswith("-")):
             return True
         try:
             txt = (self.clone / rel).read_text(encoding="utf-8", errors="replace")
@@ -1420,6 +1579,62 @@ class Gate:
             return False
         stems = {Path(f).stem for f in self.paths() if f.endswith(".py")}
         return any(re.search(r"\b(import|from)\s+%s\b" % re.escape(s), txt) for s in stems)
+
+    def proof_selftests(self, argv, rel):
+        """-> (selftests the segment runs, why). [] = not a selftest proof; None = refused (why).
+        `run_selftests.py --only A B` -> [A, B] (no --only: the whole suite exercises nothing in particular -> refused);
+        a selftest run directly -> [itself]."""
+        if rel == TOOLS["tests"]:
+            at = next((k for k, a in enumerate(argv) if k and os.path.normpath(a) == rel), len(argv))
+            args = argv[at + 1:]
+            if "--only" not in args:
+                return None, "proof runs the whole selftest suite (no --only): it exercises nothing of the diff in particular"
+            out, on = [], False
+            for a in args:
+                if a == "--only":
+                    on = True
+                elif a.startswith("-"):
+                    on = False
+                elif on:
+                    t = os.path.normpath(a)
+                    if t.startswith("..") or os.path.isabs(t):
+                        return None, "proof --only target %s is outside the checkout" % a
+                    out.append(t)
+            if not out:
+                return None, "proof --only names no selftest"
+            return out, ""
+        return ([rel] if A.is_selftest(rel) else []), ""
+
+    def proof_selftest_ours(self, t) -> bool:
+        """ARENA_PROOF_FIX_BLIND_ONLY_TARGET: a selftest a proof runs counts as exercising the diff only when it is
+        IN the diff, or is one the tests step itself maps to a changed file (selftests_for: a sibling naming or
+        importing a changed module). Any other selftest -- the suite's, an unrelated one -- exercises nothing."""
+        return t in self.paths() or t in self.selftests_for()[0]
+
+    @contextlib.contextmanager
+    def head_files_on_base(self, rels):
+        """Place HEAD's copies of `rels` in the base checkout for the duration (made dirs removed after; every base
+        file put back byte for byte)."""
+        saved, made = [], []
+        try:
+            for rel in rels:
+                dst = self.base_clone / rel
+                saved.append((dst, dst.read_bytes() if dst.is_file() else None))
+                d, mk = dst.parent, []
+                while not d.exists():
+                    mk.append(d); d = d.parent
+                for d in reversed(mk):
+                    d.mkdir(); made.append(d)
+                dst.write_bytes((self.clone / rel).read_bytes())
+            yield
+        finally:
+            for dst, old in reversed(saved):
+                if old is None:
+                    dst.unlink(missing_ok=True)
+                else:
+                    dst.write_bytes(old)
+            for d in reversed(made):
+                shutil.rmtree(d, ignore_errors=True)
 
     def held_back_proof(self):
         """ARENA_GATE_PROOF_FIX_HELD_BACK_UNPASSABLE: a proof that is ONLY the held-back note ("the judge runs N
@@ -1468,13 +1683,24 @@ class Gate:
         return unmeasured("held-back proof: not every held-back check finished (%s)" % counts, log=str(log))
 
     def s_proof(self):
+        """ARENA_PROOF_FIX_BLIND_ONLY_TARGET: the proof is RUN and its result SCORED; naming a selftest is never a pass.
+        Per `python3 ...` segment: the script must exist; a SELFTEST proof (run_selftests.py --only T..., or a
+        selftest run directly) must run at least one selftest of the diff's own (proof_selftest_ours), every T must
+        exist in head (absent -> FAIL), run_selftests.py itself must be untouched by the diff, the run must exit 0 and
+        (run_selftests) report PASS n/n for exactly the named selftests and RESULT GREEN; then the SAME segment is run
+        on the BASE tree with head's copies of those selftests: green there too -> UNMEASURED (the proof does not tell
+        the fix from the code it fixes). A non-selftest segment (an instrument such as validate_patch.py <file>) must
+        touch the diff (proof_touches) and exit 0. Held-back note segments are RUN (held_back_proof) whether alone or
+        beside `python3` segments, and must PASS. Any other prose segment is skipped and listed."""
         proof = (self.task.get("proof") or "").strip()
         segs = [s.strip() for s in proof.split(" && ") if s.strip()]
         runnable = [s for s in segs if s.startswith("python3 ")]
+        held = [s for s in segs if s not in runnable and HELD_BACK_RE.search(s)]
         if not runnable:
-            if segs and all(HELD_BACK_RE.search(s) for s in segs):
+            if segs and len(held) == len(segs):
                 return self.held_back_proof()
             return unmeasured("task proof has no runnable `python3 ...` segment", proof=proof[:120])
+        based = 0
         for i, s in enumerate(runnable):
             try:
                 argv = shlex.split(s)
@@ -1483,20 +1709,59 @@ class Gate:
             rel, why = self.proof_target(argv)
             if rel is None:
                 return unmeasured(why, segment=s[:120])
-            if not self.proof_touches(rel):
-                return unmeasured("proof script %s exercises nothing of the diff (not changed, not a selftest, "
-                                  "imports no changed module)" % rel)
+            tests, why = self.proof_selftests(argv, rel)
+            if tests is None:
+                return unmeasured(why, segment=s[:120])
+            if rel == TOOLS["tests"] and self.tool_tainted("tests"):
+                return unmeasured("proof segment %d: %s" % (i, self.tool_tainted("tests")))
+            if tests:
+                absent = [t for t in tests if not (self.clone / t).is_file()]
+                if absent:
+                    return step(FAIL, "proof segment %d names selftest(s) absent from head: %s" % (i, ", ".join(absent)))
+                if not all(A.is_selftest(t) for t in tests):
+                    return unmeasured("proof segment %d --only names a non-selftest: %s"
+                                      % (i, ", ".join(t for t in tests if not A.is_selftest(t))))
+                if not any(self.proof_selftest_ours(t) for t in tests):
+                    return unmeasured("proof segment %d runs no selftest of the diff (%s: not in the diff, not mapped "
+                                      "to a changed file)" % (i, ", ".join(tests)))
+            elif not self.proof_touches(rel, [a for k, a in enumerate(argv) if k and os.path.normpath(a) != rel]):
+                return unmeasured("proof script %s exercises nothing of the diff (not changed, not a selftest of the "
+                                  "diff, imports no changed module, given no changed file)" % rel)
             argv[0] = self.python
             log = self.logdir / ("proof_%d.log" % i)
-            rc, text = self.srun(argv, log)
+            rc, text = self.srun(argv, log, user_site=True)
             if rc is None:
                 return unmeasured("proof could not run: " + text, log=str(log))
             if rc != 0:
                 return step(FAIL, "proof segment %d exited %s" % (i, rc), log=str(log))
             if UNMEASURED_PHRASE in text:
                 return unmeasured("proof segment %d exited 0 but printed the unmeasured phrase" % i, log=str(log))
-        return step(PASS, "%d proof segment(s) exit 0" % len(runnable),
-                    skipped_prose=[s for s in segs if s not in runnable])
+            if rel == TOOLS["tests"]:
+                n = len(set(tests))
+                m = re.search(r"^PASS (\d+)/(\d+)\s", text, re.M)
+                if not (m and int(m.group(1)) == int(m.group(2)) == n and re.search(r"^RESULT: GREEN", text, re.M)):
+                    return unmeasured("proof segment %d exited 0 without run_selftests' `PASS %d/%d` + `RESULT: GREEN`"
+                                      % (i, n, n), log=str(log))
+            if tests:
+                blog = self.logdir / ("proof_%d_base.log" % i)
+                with self.head_files_on_base(tests):
+                    brc, btext = self.srun(argv, blog, cwd=self.base_clone, user_site=True)
+                if brc is None:
+                    return unmeasured("proof segment %d could not run on the base tree: %s" % (i, btext), log=str(blog))
+                if brc == 0:
+                    return unmeasured("proof segment %d passes on the BASE tree too (head's copies of %s): it does not "
+                                      "tell the fix from the code it fixes" % (i, ", ".join(tests)), log=str(blog))
+                based += 1
+        extra = {}
+        if held:
+            hb = self.held_back_proof()
+            if hb.get("status") != PASS:
+                return hb
+            extra["held_back"] = hb.get("held_back")
+        return step(PASS, "%d proof segment(s) exit 0%s%s" % (
+            len(runnable), "; %d selftest segment(s) red on the base tree" % based if based else "",
+            "; held-back check(s) pass" if held else ""),
+            skipped_prose=[s for s in segs if s not in runnable and s not in held], **extra)
 
     # ------------------------------------------------------------ signed-log steps
     def accepted(self):
