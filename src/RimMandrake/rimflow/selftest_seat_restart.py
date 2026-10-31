@@ -693,6 +693,22 @@ def test_c1_recheck_reads_pause_not_owner():
     check("owner" not in inspect.signature(SR.recheck_at_kill).parameters, "C1 recheck_at_kill takes no owner reader")
 
 
+def test_q1_recheck_reapplies_quiet_at_kill():
+    sch = sched()
+    rs = {"ts": T0, "session_id": "sid-old"}
+    sf = {"pid": 1, "sessionId": "sid-old", "cwd": CLONE}
+    old = SR.tx_summary
+    try:
+        for label, at, want in (("just ended", time.time() - 2, True), ("quiet", time.time() - 3600, False),
+                                ("no timestamp", None, True)):
+            SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_end", "last_at": at, "last_user_at": 0}
+            holds = SR.recheck_at_kill("FOUNDRY", sch, rs, sf, paused=lambda: None, work=lambda s_, ts: [])
+            got = any(("quiet" in h) or ("unknown" in h) for h in holds)
+            check(got == want, "Q1 kill-time recheck, assistant_end %s: quiet hold=%s want %s (%s)" % (label, got, want, holds))
+    finally:
+        SR.tx_summary = old
+
+
 def test_c3_unlistable_subagents_dir_is_unmeasured():
     tdir = os.path.join(TMP, "c3")
     os.makedirs(tdir, exist_ok=True)

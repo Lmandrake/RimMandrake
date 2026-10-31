@@ -1232,6 +1232,10 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None):
         holds.append("new input at %s" % _iso(tx["last_user_at"]))
     elif tx.get("last_kind") != "assistant_end":
         holds.append("turn not ended (%s)" % tx.get("last_kind"))
+    elif tx.get("last_at") is None:
+        holds.append("last record time unknown")
+    elif time.time() - tx["last_at"] < cfg["quiet_s"]:
+        holds.append("not quiet: last record %.0f s ago < quiet_s %d" % (time.time() - tx["last_at"], cfg["quiet_s"]))
     holds += final_fence(seat, sch, rs, sf, path=rs.get("tx_path") or path)
     hs = helpers_of(path, time.time())
     if hs is None:
