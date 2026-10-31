@@ -26,6 +26,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.dirname(HERE))
 from rimflow import cli, model  # noqa: E402
 from rimflow import owner_interaction as OI  # noqa: E402
+sys.path.insert(0, HERE)                        # driver_lock / host_guard, as selftest_host_guard imports them
 
 FAILS = []
 
@@ -138,7 +139,8 @@ class World:
         if shared:
             with open(self.shared, "w") as f:
                 json.dump(shared, f)
-        self.env = {k: v for k, v in os.environ.items() if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
+        self.env = {k: v for k, v in os.environ.items()
+                    if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID", "CLAUDECODE", "RIMFLOW_RAN_BY")}
         self.env.update(RIMFLOW_LEDGER=self.led, RIMFLOW_ITEMS=os.path.join(self.tmp, "items"),
                         RIMFLOW_SHARED_BRIDGE=self.shared, RIMFLOW_SEAT="BENCH",
                         RIMFLOW_OWNER_CHAT_DIRS=self.chat,
@@ -147,7 +149,7 @@ class World:
                         RIMFLOW_BRIDGE_LOCK=os.path.join(self.tmp, "bridge.lock"))
 
     def rf(self, *a, seat="BENCH"):
-        env = dict(self.env, RIMFLOW_SEAT=seat)
+        env = dict(self.env, RIMFLOW_SEAT=seat)      # seat="": nothing names one but what the test put in env
         r = subprocess.run([sys.executable, os.path.join(HERE, "cli.py")] + list(a), env=env,
                            capture_output=True, text=True, timeout=120)
         return r.returncode, (r.stdout + r.stderr).strip()
@@ -341,8 +343,187 @@ def test_release_mine_token():
         w.close()
 
 
+def test_relayed_orders_are_not_his_acts():
+    """OWNER_CLOCK_FIX_RELAYED_ORDERS_WEAR_HAT: seat OWNER is his AUTHORITY; only his own hands reset his clock."""
+    his = OI.is_his_act
+    check(his({"seat": "OWNER", "event": "game", "state": "UP"}), "his own ./game is his act")
+    check(his({"seat": "FOUNDRY", "event": "bridge", "override": "the OWNER gave the bridge to FOUNDRY"}),
+          "his ./bridge foundry (emitted under the target seat) is his act")
+    check(not his({"seat": "BENCH", "event": "note"}), "a seat's own event is not")
+    for field, val in (("perRuling", "X"), ("byCard", "yes"), ("ownerSaid", "game up"), ("why", "delegated: idle"),
+                       ("ranBy", "BENCH"), ("role_unit", "rm-role-x")):
+        check(not his({"seat": "OWNER", "event": "game", "state": "UP", field: val}),
+              "an event carrying %s is an agent's relay, not his act" % field)
+    check(not his({"seat": "FOUNDRY", "event": "bridge", "override": "the OWNER gave it", "perRuling": "X"}),
+          "an agent running his switch under a ruling is not his act")
+    for field, val in (("perRuling", "X"), ("byCard", "yes"), ("ownerSaid", "game up"), ("why", "delegated: idle")):
+        w = World([OWNER_HOLD, {"seat": "OWNER", "event": "game", "state": "UP", "ts": iso(60), field: val}])
+        try:
+            rc, out = w.rf("bridge", "idle", "--for", "x")
+            check(rc == 0 and out.startswith("TAKEABLE"), "a relayed %s event 1 min ago leaves his hold's clock alone (%s)"
+                  % (field, out[:140]))
+        finally:
+            w.close()
+    # the writer: an agent's hands are recorded, whichever flag it used
+    w = World([{"seat": "BENCH", "event": "file", "id": "SOME_RULING", "for": "BENCH", "title": "a ruling",
+                "kind": "task", "ts": iso(9000)}])
+    try:
+        w.env.update(AGENT_SEAT="FOUNDRY")
+        rc, out = w.rf("note", "SOME_RULING", "--text", "relayed", "--per-ruling", "SOME_RULING", seat="")
+        ev = [e for e in w.events() if e.get("event") == "note"]
+        check(rc == 0 and ev and ev[-1].get("seat") == "OWNER" and ev[-1].get("ranBy") == "FOUNDRY",
+              "--per-ruling stays seat OWNER and records ranBy=FOUNDRY (rc=%s %s %s)" % (rc, ev[-1:], out[:120]))
+    finally:
+        w.close()
+    # an agent window running ./bridge does not touch his clock: the stamp is his hands only
+    w = World([OWNER_HOLD])
+    try:
+        w.env.update(AGENT_SEAT="BENCH")
+        rc, out = w.rf("bridge", "who", seat="OWNER")
+        check(rc == 0 and not os.path.exists(w.env["RIMFLOW_OWNER_ACT_STAMP"]),
+              "./bridge from an agent window writes no stamp (%s)" % out[:100])
+        w.env.pop("AGENT_SEAT")
+        w.env["CLAUDECODE"] = "1"
+        rc, out = w.rf("bridge", "who", seat="OWNER")
+        check(rc == 0 and not os.path.exists(w.env["RIMFLOW_OWNER_ACT_STAMP"]),
+              "nor from any Claude shell with no seat named (%s)" % out[:100])
+    finally:
+        w.close()
+
+
+def test_card_answer_is_his_act():
+    """A card he answered is his deliberate act: the relayed --by-card event no longer stands for it, the transcript's
+    answer record does."""
+    w = World([OWNER_HOLD])
+    try:
+        rec = {"type": "user", "timestamp": iso(600, ms=True), "sessionId": "s", "sourceToolAssistantUUID": "u",
+               "toolUseResult": {"questions": [{"question": "q"}], "answers": {"q": "a"}},
+               "message": {"role": "user", "content": [{"type": "tool_result", "tool_use_id": "t", "content": "a"}]}}
+        _write_tx(os.path.join(w.chat, "s.jsonl"), [rec])
+        rc, out = w.rf("bridge", "idle", "--for", "x")
+        check(rc == 1 and "NOT TAKEABLE" in out, "a card answered 10 min ago keeps his hold (%s)" % out[:160])
+        pad = {"type": "assistant", "timestamp": iso(60, ms=True), "sessionId": "s",
+               "message": {"role": "assistant", "content": [{"type": "text", "text": "x" * (1 << 20)}]}}
+        _write_tx(os.path.join(w.chat, "s.jsonl"), [rec] + [pad] * 6)
+        rc, out = w.rf("bridge", "idle", "--for", "x")
+        check(rc == 1 and "NOT TAKEABLE" in out, "...and still does with 6 MiB of agent output after it (%s)" % out[:160])
+    finally:
+        w.close()
+
+
+def test_per_ruling_must_resolve():
+    """RIMFLOW_FIX_PER_RULING_UNCHECKED: a reference that names nothing must not stamp seat OWNER."""
+    ts = iso(9000)
+    w = World([{"seat": "BENCH", "event": "file", "id": "REAL_RULING", "for": "BENCH", "title": "a ruling",
+                "kind": "task", "ts": ts}, {"seat": "OWNER", "event": "game", "state": "UP", "ts": ts}])
+    try:
+        before = len(w.events())
+        rc, out = w.rf("note", "REAL_RULING", "--text", "x", "--per-ruling", "NO_SUCH_RULING")
+        check(rc != 0 and "NO_SUCH_RULING" in out and len(w.events()) == before,
+              "an id naming nothing is refused, nothing written (rc=%s %s)" % (rc, out[:140]))
+        rc, out = w.rf("note", "REAL_RULING", "--text", "x", "--per-ruling", "OWNER.jsonl:999")
+        check(rc != 0 and len(w.events()) == before, "an event naming nothing is refused (rc=%s %s)" % (rc, out[:140]))
+        rc, out = w.rf("note", "REAL_RULING", "--text", "x", "--per-ruling", "REAL_RULING")
+        check(rc == 0, "a real item id passes (rc=%s %s)" % (rc, out[:140]))
+        rc, out = w.rf("note", "REAL_RULING", "--text", "y", "--per-ruling", "OWNER.jsonl:1700000000000000001")
+        check(rc == 0, "a real <shard>:<tsn> passes (rc=%s %s)" % (rc, out[:140]))
+        rc, out = w.rf("note", "REAL_RULING", "--text", "y", "--per-ruling", "BENCH.jsonl:1700000000000000001")
+        check(rc != 0, "a tsn in the wrong shard is refused (rc=%s %s)" % (rc, out[:140]))
+    finally:
+        w.close()
+
+
+def test_unwritable_stamp():
+    """OWNER_STAMP_FIX_UNWRITABLE_FAILS_OPEN: an old stamp that cannot be refreshed must not let a seat in."""
+    w = World([OWNER_HOLD])
+    d = os.path.join(w.tmp, "ro")
+    os.makedirs(d)
+    stamp = os.path.join(d, "OWNER_LAST_ACT.json")
+    with open(stamp, "w") as f:
+        json.dump({"at": iso(7000), "what": "old"}, f)
+    w.env["RIMFLOW_OWNER_ACT_STAMP"] = stamp
+    os.chmod(stamp, 0o444)
+    os.chmod(d, 0o555)
+    try:
+        rc, out = w.rf("bridge", "who", seat="OWNER")
+        check(rc == 0 and "could not" in out.lower(), "bare ./bridge with an unwritable stamp warns (%s)" % out[:140])
+        rc, out = w.rf("bridge", "take", "--for", "x")
+        check(rc != 0 and "OWNER ledger event" in out and not w.taken(),
+              "the act fell back to the ledger: the take refuses (rc=%s %s)" % (rc, out[:180]))
+    finally:
+        os.chmod(d, 0o755)
+        w.close()
+
+
+def test_host_owner_hold():
+    """HOST_OWNER_HOLD_ENFORCE_ACROSS_CLONES: his hold in the OTHER clone's unpushed ledger, seen only in the host's
+    own guard lock: his rule still holds, --force included, at the cli and at the guard."""
+    import driver_lock as D
+    import host_guard as H
+    foreign = {"pid": 1, "start": 1.0, "boot_id": "b", "platform": "wsl", "host": "OtherBox"}
+
+    def lock_at(path, seat, age):
+        t = iso(age)
+        with open(path, "w") as f:
+            json.dump({"seat": seat, "purpose": "playing", "identity": foreign, "acquired": t, "heartbeat": t,
+                       "generation": 1}, f)
+
+    w = World([])
+    lock = os.path.join(w.tmp, "DRIVER_LOCK.json")
+    w.env.update(RM_HOST="stevedesktop", RIMFLOW_DRIVER_LOCK=lock, RIMFLOW_PROBE="no-reading")
+    try:
+        lock_at(lock, "OWNER", 60)
+        for args in (("--for", "x"), ("--force", "--for", "x"), ("--idle-ok", "--for", "x")):
+            rc, out = w.rf("bridge", "take", "--host", "stevedesktop", *args)
+            check(rc != 0 and "OWNER" in out and D._read(lock)[0]["seat"] == "OWNER",
+                  "guard lock OWNER 1 min ago, empty ledger: take %s refused (rc=%s %s)" % (args[0], rc, out[:140]))
+        rc, out = w.rf("bridge", "idle", "--host", "stevedesktop", "--for", "x")
+        check(rc == 1 and "NOT TAKEABLE" in out, "idle says NOT TAKEABLE (%s)" % out[:140])
+        # the guard alone, as a script or another clone would call it
+        r = H.acquire("RUNNER", "job", force="break it", identity=dict(foreign, pid=9), path=lock)
+        check(not r["ok"] and "OWNER" in r["why"], "guard: --force does not break a live OWNER lock (%s)" % r["why"][:100])
+        r = H.release("RUNNER", force="break it", identity=dict(foreign, pid=2), path=lock)
+        check(not r["ok"] and D._read(lock)[0]["seat"] == "OWNER",
+              "guard: --force does not release a live OWNER lock (%s)" % str(r.get("why"))[:100])
+        r = H.acquire("OWNER", "his", force="his own", identity=dict(foreign, pid=2), path=lock)
+        check(r["ok"], "guard: the owner may re-take his own lock (%s)" % r["why"])
+        lock_at(lock, "OWNER", 60)
+        r = H.acquire("RUNNER", "job", force="cleared", identity=dict(foreign, pid=5), path=lock, owner_cleared="quiet",
+                      owner_heartbeat="2000-01-01T00:00:00Z")
+        check(not r["ok"] and D._read(lock)[0]["seat"] == "OWNER",
+              "guard: a verdict measured on an older lock of his does not cut a fresher one (%s)" % r["why"][:100])
+        r = H.acquire("RUNNER", "job", force="cleared", identity=dict(foreign, pid=3), path=lock, owner_cleared="quiet")
+        check(r["ok"], "guard: owner_cleared (the caller's verdict) passes (%s)" % r["why"])
+        # his `./bridge take` process is gone within seconds: the hold is not
+        t = iso(600)
+        with open(lock, "w") as f:
+            json.dump({"seat": "OWNER", "purpose": "playing", "identity": dict(H.self_identity(), pid=2 ** 22 - 3),
+                       "acquired": t, "heartbeat": t, "generation": 1}, f)
+        r = H.acquire("RUNNER", "job", identity=dict(foreign, pid=6), path=lock)
+        check(not r["ok"] and D._read(lock)[0]["seat"] == "OWNER", "guard: his lock, process gone, 10 min old: not free")
+        r = H.release("RUNNER", force="x", identity=dict(foreign, pid=7), path=lock)
+        check(not r["ok"] and D._read(lock)[0]["seat"] == "OWNER", "guard: ...nor releasable by --force")
+        lock_at(lock, "RUNNER", 60)
+        r = H.acquire("BENCH", "job", force="cut", identity=dict(foreign, pid=4), path=lock)
+        check(r["ok"], "guard: --force still cuts a seat's lock (%s)" % r["why"])
+        # 44 min old lock, 50 min old everything else: the cli's verdict still needs the lock's own heartbeat old enough
+        lock_at(lock, "OWNER", 2640)
+        rc, out = w.rf("bridge", "take", "--host", "stevedesktop", "--force", "--for", "x")
+        check(rc != 0, "guard lock OWNER 44 min ago: refused (rc=%s %s)" % (rc, out[:120]))
+        # stale by the heartbeat and his verdict: an agent gets it, the event names his hold
+        lock_at(lock, "OWNER", 2760)
+        rc, out = w.rf("bridge", "take", "--host", "stevedesktop", "--for", "x")
+        t = w.taken()
+        check(rc == 0 and t and "OWNER" in t[-1].get("override", ""), "46 min quiet: taken, naming his hold (rc=%s %s %s)"
+              % (rc, out[:120], t[-1:]))
+    finally:
+        w.close()
+
+
 def main():
-    for t in (test_pure, test_chat, test_e2e, test_recheck_under_lock, test_release_mine_token):
+    for t in (test_pure, test_chat, test_e2e, test_recheck_under_lock, test_release_mine_token,
+              test_relayed_orders_are_not_his_acts, test_card_answer_is_his_act, test_per_ruling_must_resolve,
+              test_unwritable_stamp, test_host_owner_hold):
         try:
             t()
         except Exception as e:  # noqa: BLE001

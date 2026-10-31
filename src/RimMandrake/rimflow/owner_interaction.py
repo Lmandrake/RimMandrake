@@ -6,14 +6,18 @@ my last interaction, or I deliberately release it". So an OWNER hold is takeable
 the latest of his interactions; otherwise every take refuses, `--force` included, naming his last interaction time.
 
 What counts as an interaction (the Conductor's reading of "interaction", BRIDGE_DECIDE_STALE_OWNER_HOLD):
-  ledger   any OWNER-attributed ledger event (seat OWNER: his own commands, `./game` run by him (broadcast.py stamps
-           OWNER), anything run on his words/card/ruling), and any event whose `override` says "the OWNER ..." (his
-           `./bridge bench|foundry|free`, which is emitted under the target seat). Gathered by cli.py from the replay.
+  ledger   an event HIS OWN HANDS wrote (is_his_act below): seat OWNER carrying no relay marker (his own commands,
+           `./game` run by him, which broadcast.py stamps OWNER), and an event whose `override` says "the OWNER ..."
+           (his `./bridge bench|foundry|free`, which is emitted under the target seat). Seat OWNER alone is his
+           AUTHORITY, not his activity: an agent under --owner-said/--by-card/--per-ruling, or an agent's `./game
+           --why`, wears that seat and never resets his clock (OWNER_CLOCK_FIX_RELAYED_ORDERS_WEAR_HAT). Gathered by
+           cli.py from the replay.
   hold     the OWNER hold's own events (its `since`; the shared cross-clone lock's `touched`). Gathered by cli.py.
   bridge   a bare `./bridge` (`bridge who --seat OWNER`, which writes no event): the stamp file written here.
   chat     his prompts to ANY seat window: the last HUMAN input (seat_restart._is_human_input — the same signal
            block_agent_over_slots.py uses for its 20-min conductor_window rule, via seat_restart.tx_summary) in every
-           main transcript of every scheduled seat's clone, under the Claude config dir.
+           main transcript of every scheduled seat's clone, under the Claude config dir; and a question card he
+           answered there, which is his act at the moment he clicked (a --by-card event only relays it, later).
 
 ⛔ NEVER keyboard, mouse or any machine input clock. OWNER 2026-10-30, verbatim: "I really, really need you to strip
 "when I come back to the machine" as an event for anything changing." (selftest_no_owner_presence.py guards it.)
@@ -43,6 +47,36 @@ WINDOW_S = 45 * 60          # his "45 minutes"; cli.py asserts this equals model
 
 def iso(t):
     return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t)) if t is not None else "?"
+
+
+# ---------------------------------------------------------------------------------------------------------------------
+# ledger: whose hands wrote an event
+
+# An event carrying any of these was written by an agent. byCard/ownerSaid/perRuling relay him; `why` is, by the flag's
+# definition, the agent's own reason; ranBy names the seat whose hands ran it; role_unit is a headless role's run. The
+# fields are on the history already (ranBy only on `game`), so no migration is owed.
+RELAY_FIELDS = ("ownerSaid", "byCard", "perRuling", "why", "ranBy", "role_unit")
+
+
+def is_his_act(ev):
+    """Pure. Did the owner's own hands write this event? The one definition of "his activity" in the ledger: use it,
+    not `seat == "OWNER"`, for his clock and for any count of what he did. Seat OWNER says whose AUTHORITY an event
+    carries, which is his under every relay too."""
+    if any(ev.get(f) for f in RELAY_FIELDS):
+        return False
+    return ev.get("seat") == "OWNER" or str(ev.get("override") or "").startswith("the OWNER ")
+
+
+def agent_hands(role_seat=None):
+    """-> the seat whose shell is running this ("BENCH", "AGENT" for a Claude shell naming none), or "" for a plain
+    terminal: his. Stamped as `ranBy` on what they write under his seat, and it keeps a bare `./bridge` run by an agent
+    off his clock. RIMFLOW_SEAT is not read: `./game` forces it to OWNER (and passes the real seat in RIMFLOW_RAN_BY).
+    role_seat: the session role file's seat. A `!` command he types inside a Claude window reads as that window's: his chat record there is what counts."""
+    for val in (os.environ.get("RIMFLOW_RAN_BY"), os.environ.get("AGENT_SEAT"), role_seat):
+        val = (val or "").strip().upper()
+        if val and val != "OWNER":
+            return val
+    return "AGENT" if os.environ.get("CLAUDECODE") else ""
 
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -116,6 +150,32 @@ def chat_dirs():
     return out, None
 
 
+def last_card_answer(path, tail_bytes=None):
+    """-> epoch of the last question card answered in this transcript's tail (None: all of it), or None. The caller has already had the
+    tail judged readable by tx_summary; a line that will not parse here is the mid-write last line, never an answer."""
+    with open(path, "rb") as f:
+        f.seek(0, os.SEEK_END)
+        f.seek(max(0, f.tell() - tail_bytes) if tail_bytes else 0)
+        data = f.read()
+    best = None
+    for raw in data.split(b"\n"):
+        if b'"toolUseResult"' not in raw or b'"answers"' not in raw:
+            continue
+        try:
+            rec = json.loads(raw)
+        except ValueError:
+            continue
+        res = rec.get("toolUseResult")
+        if isinstance(res, dict) and res.get("answers"):
+            try:
+                t = calendar.timegm(time.strptime(rec["timestamp"][:19], "%Y-%m-%dT%H:%M:%S"))
+            except (KeyError, TypeError, ValueError):
+                continue
+            if best is None or t > best:
+                best = t
+    return best
+
+
 def last_chat(now=None, window_s=WINDOW_S):
     """-> (epoch of his latest prompt found in a transcript touched inside the window, or None; problem or None).
 
@@ -157,7 +217,9 @@ def last_chat(now=None, window_s=WINDOW_S):
                 problems.append("%s unreadable or mid-write" % path)
                 continue
             t = s.get("last_user_at")
+            scan = tail                                # a prompt in the tail is newer than any answer before the tail
             if t is None and st.st_size > tail:        # his last prompt may sit before the tail: read it all
+                scan = None
                 try:
                     lh = SR.last_human(path, peers=peers)
                 except Exception:  # noqa: BLE001
@@ -166,6 +228,12 @@ def last_chat(now=None, window_s=WINDOW_S):
                     problems.append("%s unreadable" % path)
                     continue
                 t = lh[0]
+            try:
+                card = last_card_answer(path, scan)
+            except OSError as e:
+                problems.append("%s: %s" % (path, type(e).__name__))
+                continue
+            t = max(x for x in (t, card, 0) if x is not None) or None
             if t is not None and (best is None or t > best):
                 best = t
     if problems:

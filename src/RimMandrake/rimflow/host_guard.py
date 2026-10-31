@@ -16,11 +16,18 @@ deploy and rw_game.sh - so a window and a script can never both drive one game.
   * A take made from ANOTHER machine (Archmagi taking SteveDesktop's game for an interactive session) carries that
     machine's identity; driver_lock reads it as "not inspectable" and its heartbeat decides (45 min).
 
+  * 🔴 His OWNER hold lives in this lock too, as `seat: OWNER`, so it binds the clone whose ledger has not seen it:
+    neither a take nor --force passes a held OWNER lock (owner, by card 2026-10-30: "45 minutes after my last interaction, or I
+    deliberately release it"). This machine cannot measure his interactions, so only a caller that has can pass:
+    `rimflow bridge take --host` runs his rule and hands its verdict over as --owner-cleared. A lock with its process
+    gone and its heartbeat 45 min old is free here as any other; `rimflow bridge take` still runs his rule on it first
+    (HOST_OWNER_HOLD_ENFORCE_ACROSS_CLONES).
+
 CLI (exit 0 ok, 75 held by someone else, 2 usage or lock unusable):
   host_guard.py status [--json]
-  host_guard.py take    --seat S --for WHAT [--identity-json J] [--force WHY]
-  host_guard.py release --seat S [--identity-json J] [--force WHY]
-  host_guard.py run     --seat S --for WHAT [--force WHY] -- CMD [ARGS...]   hold it for CMD's lifetime
+  host_guard.py take    --seat S --for WHAT [--identity-json J] [--force WHY] [--owner-cleared VERDICT [--owner-heartbeat T]]
+  host_guard.py release --seat S [--identity-json J] [--force WHY] [--owner-cleared VERDICT]
+  host_guard.py run     --seat S --for WHAT [--force WHY] [--owner-cleared VERDICT] -- CMD [ARGS...]   hold for CMD's life
   host_guard.py remote  HOST status|take|release [same flags]                run it on HOST over ssh
 """
 import argparse
@@ -105,7 +112,7 @@ def _shared_window_holder(seat):
     return "%s (shared bridge file, %d min ago, for: %s)" % (sh["holder"], age // 60, sh.get("purpose"))
 
 
-def acquire(seat, purpose, force=None, identity=None, path=None):
+def acquire(seat, purpose, force=None, identity=None, path=None, owner_cleared=None, owner_heartbeat=None):
     """-> driver_lock result dict plus `reentrant` and `path`. Fails CLOSED when there is no lock file to take."""
     path = path or lock_path()
     if not path:
@@ -114,20 +121,24 @@ def acquire(seat, purpose, force=None, identity=None, path=None):
     inherited = _reentrant(path) if identity is None else None
     if inherited is not None:
         return {"ok": True, "reentrant": True, "generation": inherited, "why": "inherited take", "path": path}
-    if not force:
-        other = _shared_window_holder(seat)
-        if other:
-            return {"ok": False, "why": "a window holds this machine's bridge: %s" % other, "path": path}
-    r = driver_lock.acquire(path, seat, purpose, identity or self_identity(), force=force)
+    other = _shared_window_holder(seat)
+    if other and (not force or (other.startswith("OWNER ") and not owner_cleared)):
+        return {"ok": False, "why": "a window holds this machine's bridge: %s" % other, "path": path}
+    r = driver_lock.acquire(path, seat, purpose, identity or self_identity(), force=force,
+                            spare_owner=not owner_cleared, owner_heartbeat=owner_heartbeat)
     r["reentrant"] = False
     r["path"] = path
     return r
 
 
-def release(seat, force=None, identity=None, path=None):
+def release(seat, force=None, identity=None, path=None, owner_cleared=None):
     path = path or lock_path()
     if not path:
         return {"ok": False, "why": "no driver lock path on this machine"}
+    cur, _problem = driver_lock._read(path)
+    if force and not owner_cleared and seat != "OWNER" and driver_lock.owner_held(cur):
+        return {"ok": False, "why": "the OWNER holds this lock; --force does not cut it (45 min after his last "
+                "interaction, or he releases it)"}
     return driver_lock.release(path, seat, identity or self_identity(), force=force)
 
 
@@ -144,9 +155,9 @@ class Refused(RuntimeError):
 
 
 @contextlib.contextmanager
-def held(seat, purpose, force=None):
+def held(seat, purpose, force=None, owner_cleared=None):
     """Hold this machine's game guard for the block. Raises Refused when another driver holds it."""
-    r = acquire(seat, purpose, force=force)
+    r = acquire(seat, purpose, force=force, owner_cleared=owner_cleared)
     if not r["ok"]:
         raise Refused(r["why"])
     prev = os.environ.get(ENV_GEN)
@@ -207,6 +218,10 @@ def main(argv=None):
         s = sub.add_parser(name)
         s.add_argument("--seat", required=True)
         s.add_argument("--force", default=None, help="break a live holder; the reason is recorded on the lock")
+        s.add_argument("--owner-cleared", default=None,
+                       help="the verdict of a caller that measured his last interaction: --force may cut his hold")
+        s.add_argument("--owner-heartbeat", default=None,
+                       help="the heartbeat of the lock of his that verdict measured: a newer lock is refused")
         s.add_argument("--json", action="store_true")
         if name != "release":
             s.add_argument("--for", dest="purpose", required=True)
@@ -237,11 +252,13 @@ def main(argv=None):
     if a.cmd == "take":
         if ident is None:
             ident = driver_lock.my_identity()      # a CLI take outlives this process: hold for the calling window
-        r = acquire(a.seat, a.purpose, force=a.force, identity=ident)
+        r = acquire(a.seat, a.purpose, force=a.force, identity=ident, owner_cleared=a.owner_cleared,
+                    owner_heartbeat=a.owner_heartbeat)
         _print(r, a.json)
         return 0 if r["ok"] else (EX_HELD if r.get("path") else 2)
     if a.cmd == "release":
-        r = release(a.seat, force=a.force, identity=ident or driver_lock.my_identity())
+        r = release(a.seat, force=a.force, identity=ident or driver_lock.my_identity(),
+                    owner_cleared=a.owner_cleared)
         _print(r, a.json)
         return 0 if r["ok"] else EX_HELD
     # run
@@ -249,7 +266,7 @@ def main(argv=None):
     if not cmd:
         ap.error("run needs a command after --")
     try:
-        with held(a.seat, a.purpose, force=a.force) as r:
+        with held(a.seat, a.purpose, force=a.force, owner_cleared=a.owner_cleared) as r:
             if not a.json:
                 sys.stderr.write("host_guard: %s holds %s gen %s%s\n" % (
                     a.seat, local_host(), r["generation"], " (inherited)" if r.get("reentrant") else ""))

@@ -182,6 +182,24 @@ def _last_gen(path, cur=None):
     return g
 
 
+def _heartbeat_age(cur):
+    try:
+        # calendar.timegm, not mktime + time.timezone: the latter is an hour off whenever DST is in force, so every
+        # heartbeat read 3600 s too old and a not-inspectable holder was ALWAYS stale (found 2026-10-25, PDT).
+        return time.time() - calendar.timegm(time.strptime(cur.get("heartbeat", ""), "%Y-%m-%dT%H:%M:%SZ"))
+    except (ValueError, OverflowError):
+        return None
+
+
+def owner_held(cur):
+    """His OWNER lock binds while its process lives, and for 45 min after: his `bridge take` process exits at once, the
+    hold does not. Only a caller that measured his last interaction may pass (host_guard says why)."""
+    if not cur or cur.get("seat") != "OWNER":
+        return False
+    age = _heartbeat_age(cur)
+    return _alive(cur)[0] or (age is not None and age < STALE_HEARTBEAT_S)
+
+
 def _alive(cur):
     """Holder liveness: process identity first; heartbeat only when the process cannot be inspected."""
     ident = cur.get("identity") or {}
@@ -192,12 +210,7 @@ def _alive(cur):
     a = process_alive(ident)
     if a is not None:
         return a, "holder process pid %s %s" % (ident.get("pid"), "alive" if a else "gone")
-    try:
-        # calendar.timegm, not mktime + time.timezone: the latter is an hour off whenever DST is in force, so every
-        # heartbeat read 3600 s too old and a not-inspectable holder was ALWAYS stale (found 2026-10-25, PDT).
-        age = time.time() - calendar.timegm(time.strptime(cur.get("heartbeat", ""), "%Y-%m-%dT%H:%M:%SZ"))
-    except (ValueError, OverflowError):
-        age = None
+    age = _heartbeat_age(cur)
     if age is not None and age < STALE_HEARTBEAT_S:
         return True, "holder process not inspectable from here; heartbeat %d s old" % age
     return False, "holder process not inspectable and heartbeat stale/absent"
@@ -216,7 +229,7 @@ def _create(path, body):
         pass
 
 
-def acquire(path, seat, purpose, identity, force=None):
+def acquire(path, seat, purpose, identity, force=None, spare_owner=False, owner_heartbeat=None):
     """-> {ok, generation, why, broke, holder}. force: a reason string to break a live or unreadable lock."""
     for _ in range(20):
         cur, problem = _read(path)
@@ -237,8 +250,13 @@ def acquire(path, seat, purpose, identity, force=None):
                 _replace(path, cur)
                 return {"ok": True, "generation": cur.get("generation"), "why": "already held by this process",
                         "broke": False}
+            # owner_heartbeat: the lock of his the caller's verdict was measured on; any newer one was not cleared
+            if owner_heartbeat and cur.get("seat") == "OWNER" and seat != "OWNER" \
+                    and cur.get("heartbeat") != owner_heartbeat:
+                return {"ok": False, "holder": cur, "why": "the OWNER's lock moved after his hold was measured (%s, "
+                        "measured %s): measure again" % (cur.get("heartbeat"), owner_heartbeat)}
             alive, how = _alive(cur)
-            if alive and not force:
+            if (alive and not force) or (spare_owner and seat != "OWNER" and owner_held(cur)):
                 return {"ok": False, "holder": cur, "why": "driver lock held by %s (%s), %s; for: %s" % (
                     cur.get("seat"), _who(cur["identity"]), how, cur.get("purpose"))}
             prev = cur
@@ -249,7 +267,9 @@ def acquire(path, seat, purpose, identity, force=None):
             except FileNotFoundError:
                 continue
             took, _p = _read(aside)
-            if prev is not None and (took or {}).get("generation") != prev.get("generation"):
+            if prev is not None and ((took or {}).get("generation") != prev.get("generation") or (
+                    owner_heartbeat and prev.get("seat") == "OWNER"
+                    and (took or {}).get("heartbeat") != owner_heartbeat)):
                 try:                                  # someone re-took between our read and rename: put it back
                     _create(path, took)
                 except (FileExistsError, OSError, TypeError):

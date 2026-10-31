@@ -1068,15 +1068,16 @@ def t_each_kind_of_authority_lands_in_its_own_field():
     re-quoted rulings there). `--by-card` / `--per-ruling` carry OWNER authority;
     `--why` grants nothing and leaves the acting seat as it was."""
     fresh()
+    ok("file", "REBOOT_RULING_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")   # --per-ruling must resolve
     ok("game", "UP", "--by-card", "Restart now? -> Restart now", env=env(seat=None))
-    ok("game", "DOWN", "--per-ruling", "REBOOT_IS_OURS_RULING", "--why",
+    ok("game", "DOWN", "--per-ruling", "REBOOT_RULING_PROBE_FIXTURE", "--why",
        "FOUNDRY restart to load the new DLL", env=env(seat=None))
     games = [e for e in _ledger_events() if e.get("event") == "game"]
     assert len(games) == 2, games
     card, rul = games
     assert card.get("seat") == "OWNER" and card.get("byCard") == "Restart now? -> Restart now", card
     assert "ownerSaid" not in card and "why" not in card, card
-    assert rul.get("seat") == "OWNER" and rul.get("perRuling") == "REBOOT_IS_OURS_RULING", rul
+    assert rul.get("seat") == "OWNER" and rul.get("perRuling") == "REBOOT_RULING_PROBE_FIXTURE", rul
     assert rul.get("why") == "FOUNDRY restart to load the new DLL" and "ownerSaid" not in rul, rul
     refused(("game", "UP", "--per-ruling", "when bridge is available go ahead"),
             "takes a reference", "a re-quoted ruling went into --per-ruling",

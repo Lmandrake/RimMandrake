@@ -109,7 +109,7 @@ def test_delegated_reach():
         mk = lambda action, **kw: argparse.Namespace(**dict(dict(action=action, purpose="deploy", force=False,
                                                                  idle_ok=False, flyer=False), **kw))
         rc = cli._bridge_other_host_locked(mk("idle"), "BENCH", w, "stevedesktop")
-        check(rc == 1 and not calls and not emitted, "idle --host: OWNER hold -> NOT TAKEABLE, nothing taken "
+        check(rc == 1 and not any(c and c[0] == "take" for c in calls) and not emitted, "idle --host: OWNER hold -> NOT TAKEABLE, nothing taken "
               "(rc=%s calls=%s emitted=%s)" % (rc, calls, emitted))
         w.bridge_hosts = {}
         del calls[:], emitted[:]

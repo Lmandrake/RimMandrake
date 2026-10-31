@@ -226,6 +226,12 @@ def _stamp_owner_and_override(ev):
             "    Allowed because you are the OWNER, and recorded on the event as "
             "`override` so the ledger shows you crossed a seat boundary on purpose.\n"
             % model.OVERRIDE_NOTICES[0])
+    # Seat OWNER is his authority; `ranBy` says whose hands were on it, so his clock and any count of what he did can
+    # tell (owner_interaction.is_his_act). Absent when he ran it himself.
+    if ev.get("seat") == "OWNER" or str(ev.get("override") or "").startswith("the OWNER "):
+        hands = owner_interaction.agent_hands(_role_file_seat())
+        if hands and not ev.get("ranBy"):
+            ev["ranBy"] = hands
     return ev
 
 
@@ -2564,7 +2570,7 @@ def _owner_verdict(holds, evs=None):
         evs, _ = load()
     problems, ledger = [], None
     for ev in evs:
-        if ev.get("seat") == "OWNER" or str(ev.get("override") or "").startswith("the OWNER "):
+        if owner_interaction.is_his_act(ev):
             e = _epoch(ev.get("ts"))
             if not e:
                 problems.append("an OWNER ledger event has an unreadable ts %r" % (ev.get("ts"),))
@@ -2810,6 +2816,17 @@ def _guard_call(hk, args_list):
     return host_guard.remote(hk, args_list)
 
 
+def _guard_owner_hold(hk):
+    """-> the status of host `hk`'s driver lock when its holder is the OWNER (alive or not: his rule outlives the
+    guard's heartbeat), else None. An unreachable guard answers None: the take then fails at the same guard."""
+    rc, out = _guard_call(hk, ["status", "--json"])
+    try:
+        st = json.loads(out) if rc == 0 else None
+    except ValueError:
+        st = None
+    return st if isinstance(st, dict) and st.get("seat") == "OWNER" and st.get("state") in ("HELD", "STALE") else None
+
+
 def _bridge_other_host(args, seat, w, hk):
     """`bridge take|release|who --host <machine>` for a game other than Archmagi's (BRIDGE_LOCK_WIDEN_ONE_PER_HOST).
 
@@ -2859,7 +2876,14 @@ def _bridge_other_host_locked(args, seat, w, hk):
         return 0
     holder_idle = _idle_seconds(w.last_seen.get(holder)) if holder else None
     # his OWNER hold on this host: takeable only 45 min after his last interaction (owner, by card 2026-10-30)
-    owner = _owner_verdict([("his %s hold's own event" % hk, ent.get("since"))]) if holder == "OWNER" else None
+    holds = [("his %s hold's own event" % hk, ent.get("since"))] if holder == "OWNER" else []
+    # 🔴 the guard's lock is shared by both clones; this ledger is not. A take of his from the other clone, unpushed,
+    # shows here only as `seat: OWNER` on the lock (HOST_OWNER_HOLD_ENFORCE_ACROSS_CLONES)
+    guard_hold = _guard_owner_hold(hk) if seat != "OWNER" else None
+    if guard_hold:
+        holder = "OWNER"
+        holds.append(("his %s guard lock" % hk, guard_hold.get("heartbeat")))
+    owner = _owner_verdict(holds) if holder == "OWNER" else None
     delegated = None
     if args.action == "idle" or getattr(args, "idle_ok", False):
         # the delegated gate holds on every host (review of 9456c1f533): `idle` is report-only here too (it used to
@@ -2877,7 +2901,10 @@ def _bridge_other_host_locked(args, seat, w, hk):
     if refusal:
         die(refusal.replace("rimflow bridge take", "rimflow bridge take --host %s" % hk))
     take = ["take", "--seat", seat, "--for", args.purpose or "(no purpose given)", "--identity-json", ident]
-    if args.force:
+    if guard_hold:       # his rule was just run on this very lock: hand the verdict over, the guard cannot measure it
+        take += ["--force", "bridge take --host %s by %s: his hold is takeable" % (hk, seat),
+                 "--owner-cleared", owner[1], "--owner-heartbeat", str(guard_hold.get("heartbeat"))]
+    elif args.force:
         take += ["--force", "bridge take --host %s --force by %s" % (hk, seat)]
     rc, out = _guard_call(hk, take)
     if rc != 0:
@@ -2897,6 +2924,32 @@ def _bridge_other_host_locked(args, seat, w, hk):
     print("  guard: %s\n  pass RM_HOST_GUARD_GEN to what you run there (rw_game.sh, modcheck) so it drives under "
           "this take; re-run take within 45 min to keep it." % out)
     return 0
+
+
+def _relayed_owner_command():
+    """Seat OWNER, but an agent's hands: a flag relayed his authority, or the shell is an agent's."""
+    return bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or model.AGENT_WHY
+                or owner_interaction.agent_hands(_role_file_seat()))
+
+
+def _stamp_bare_bridge(w):
+    """A bare `./bridge` is one of his deliberate acts and writes no ledger event: stamp it, so his hold's 45-min clock
+    restarts (owner, by card 2026-10-30: "45 minutes after my last interaction, ..."). 🔴 A stamp that cannot be written
+    must not leave an OLDER readable stamp to tell a seat he was quiet (OWNER_STAMP_FIX_UNWRITABLE_FAILS_OPEN): the act
+    falls back to a ledger event of his, which the clock reads as any other."""
+    try:
+        owner_interaction.write_stamp("./bridge (bridge who)")
+        return
+    except OSError as e:
+        fail = "%s: %s" % (type(e).__name__, e)
+    try:
+        _emit({"seat": "OWNER", "event": "seat", "state": "ready",
+               "note": "./bridge: the stamp could not be written (%s)" % fail}, w, quiet=True)
+        print("⚠️  could not write the ./bridge stamp (%s); recorded in the ledger instead, your hold's clock restarted"
+              % fail)
+    except (OSError, SystemExit, model.LedgerError, model.SchemaError) as e:
+        print("⚠️  could not record this ./bridge at all (stamp: %s; ledger: %s). Your hold's clock runs from your last "
+              "other interaction" % (fail, e))
 
 
 def cmd_bridge(args, seat):
@@ -2946,14 +2999,8 @@ def cmd_bridge(args, seat):
             if hk != model.DEFAULT_BRIDGE_HOST:
                 return _bridge_other_host(args, seat, w, hk)
             return _bridge_release(seat, w, holder, expect_token=tok2)
-    if args.action == "who" and seat == "OWNER":
-        # a bare `./bridge` is one of his deliberate acts and writes no ledger event: stamp it, so his hold's
-        # 45-min clock restarts (owner, by card 2026-10-30: "45 minutes after my last interaction, ...")
-        try:
-            owner_interaction.write_stamp("./bridge (bridge who)")
-        except OSError as e:
-            print("⚠️  could not record this ./bridge as your last interaction (%s: %s); your hold's clock runs from "
-                  "your last other interaction" % (type(e).__name__, e))
+    if args.action == "who" and seat == "OWNER" and not _relayed_owner_command():
+        _stamp_bare_bridge(w)
     if hk != model.DEFAULT_BRIDGE_HOST:
         return _bridge_other_host(args, seat, w, hk)
     if args.action == "who":
@@ -3682,6 +3729,22 @@ def _check_owner_said(said):
             "'game up' is fine, 'yes' is not.\n" % said)
 
 
+def _check_per_ruling(ref):
+    """`--per-ruling` stamps seat OWNER, so it must name something: an item id, or a ledger event by `<tsn>` or
+    `<shard>.jsonl:<tsn>` (RIMFLOW_FIX_PER_RULING_UNCHECKED). A ruling filed in the other clone needs a pull first."""
+    evs, w = load()
+    if ref in w.items:
+        return
+    shard, sep, tsn = ref.rpartition(":")
+    stem = shard[:-len(".jsonl")] if shard.endswith(".jsonl") else None
+    if (not sep or stem) and any(str(ev.get("tsn")) == tsn and (not stem or stem in (ev.get("seat"), "events"))
+                                 for ev in evs):
+        return
+    die("`--per-ruling %s` names no item and no ledger event, and it would stamp this event seat OWNER.\n"
+        "  cite  an item id, or the ruling event's <tsn> or <shard>.jsonl:<tsn> (filed in the other clone? pull first)\n"
+        "  or    act as your own seat, with --why" % ref[:80])
+
+
 def _resolve_command_seat(args):
     """-> the seat this invocation acts under. Refuses rather than guessing.
 
@@ -3707,6 +3770,8 @@ def _resolve_command_seat(args):
         die("`--per-ruling` takes a reference — the ruling's item id or ledger event "
             "(e.g. BIOME_SPECIFIC_FAUNA_LAW_1, OWNER.jsonl:1791736328105579900) — not a "
             "quote. %r has spaces or punctuation in it." % per_ruling[:80])
+    if per_ruling:
+        _check_per_ruling(per_ruling)
     model.BY_CARD, model.PER_RULING = by_card, per_ruling
     # ⛔ AN EMPTY QUOTE IS NOT "NO QUOTE". `--owner-said ""` (or a shell that expanded a
     # variable to nothing) used to fall straight through to ordinary seat resolution:

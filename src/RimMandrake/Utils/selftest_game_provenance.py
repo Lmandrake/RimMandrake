@@ -55,14 +55,18 @@ def main():
                           RIMFLOW_ITEMS=os.path.join(tmp, "items"), RIMFLOW_PROBE="no-reading",
                           RIMFLOW_OWNER_SAID="", RIMFLOW_BY_CARD="",
                           RIMFLOW_WHY="FOUNDRY restart to load the new DLL",
-                          RIMFLOW_PER_RULING="REBOOT_IS_OURS_RULING")
+                          RIMFLOW_PER_RULING="REBOOT_RULING_PROBE_FIXTURE")
+        # --per-ruling must resolve: the cited ruling is an item of this throwaway ledger
+        subprocess.run([sys.executable, os.path.join(HERE, "..", "rimflow", "cli.py"), "file", "REBOOT_RULING_PROBE_FIXTURE",
+                        "--for", "BUILD", "--title", "t", "--seat", "BUILD"], env=dict(os.environ, RIMFLOW_PER_RULING=""),
+                       check=True, capture_output=True)
         err = broadcast.record_game("DOWN", "Game is down")
         evs = events(tmp)
         check("record_game stamps the event", err is None and len(evs) == 1, (err, evs))
         ev = evs[-1] if evs else {}
         check("--why lands in `why`, never in `ownerSaid`",
               ev.get("why") == "FOUNDRY restart to load the new DLL" and "ownerSaid" not in ev, ev)
-        check("--per-ruling lands in `perRuling`", ev.get("perRuling") == "REBOOT_IS_OURS_RULING", ev)
+        check("--per-ruling lands in `perRuling`", ev.get("perRuling") == "REBOOT_RULING_PROBE_FIXTURE", ev)
 
         os.environ.update(RIMFLOW_WHY="", RIMFLOW_PER_RULING="", RIMFLOW_BY_CARD="Restart now")
         broadcast.record_game("UP", "Game is up")

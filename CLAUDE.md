@@ -338,8 +338,11 @@ written only by `rimflow bridge who | take --for "<what for>" | release` (releas
 you stop). It errs toward ALLOWING: a hold with no event for 45 minutes is stale and simply
 taken; `take --force` works on any seat's hold. ⭐ The owner overrides with `./bridge bench|foundry|free`.
 🔴 **His OWNER hold** (owner, by card 2026-10-30: *"45 minutes after my last interaction, or I deliberately release
-it"*): takeable only 45 min after his last deliberate interaction (any OWNER ledger event, a `./bridge`, a `./game`,
-his chat prompt to any seat), `--force` included; an unmeasured signal refuses (`rimflow/owner_interaction.py`).
+it"*): takeable only 45 min after his last deliberate interaction (a ledger event, `./bridge` or `./game` by his own
+hands, his chat prompt or card answer to any seat), `--force` included; an unmeasured signal refuses
+(`rimflow/owner_interaction.py`). Seat OWNER is his authority, not his activity: an agent's `--owner-said`, `--by-card`,
+`--per-ruling` or `--why` restarts nothing (`is_his_act`). `host_guard` holds the same line across clones: a live OWNER
+lock takes no `--force` without the cli's verdict.
 🔴 **His presence at the machine is not an event** (owner, 2026-10-30: *"I really, really need you to strip "when I come
 back to the machine" as an event for anything changing. It's causing so many problems and I don't need it."*): nothing
 reads his input clock, and his touching, leaving or returning to the machine never gates, delays, yields, requeues or
