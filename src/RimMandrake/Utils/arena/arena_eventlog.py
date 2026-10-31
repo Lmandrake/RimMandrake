@@ -265,9 +265,22 @@ def _entry_name() -> str:
     return os.path.basename(sel) if sel else os.path.basename(_entrypoint())
 
 
+def _const_shape(c):
+    """ARENA_GATE_ENTRY_FIX_FALSE_BORROWED_CODE: a frozenset constant (CPython folds a constant set literal or
+    `x in {...}` into one) has no fixed iteration order: two compiles of the SAME source in one process gave
+    frozenset reprs in different orders, so the real arena_gate.py read as 'borrowed filename'. Compare its members
+    as a sorted multiset of shapes instead (contents still compared exactly; tuples recurse)."""
+    if isinstance(c, types.CodeType):
+        return _code_shape(c)
+    if isinstance(c, frozenset):
+        return ("frozenset",) + tuple(sorted(repr(_const_shape(x)) for x in c))
+    if isinstance(c, tuple):
+        return ("tuple",) + tuple(_const_shape(x) for x in c)
+    return (type(c).__name__, repr(c))
+
+
 def _code_shape(co) -> tuple:
-    return (co.co_code, co.co_names, tuple(_code_shape(c) if isinstance(c, types.CodeType) else repr(c)
-                                           for c in co.co_consts))
+    return (co.co_code, co.co_names, tuple(_const_shape(c) for c in co.co_consts))
 
 
 def _main_code_ok(entry: str) -> str | None:

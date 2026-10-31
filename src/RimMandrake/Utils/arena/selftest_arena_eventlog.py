@@ -778,6 +778,42 @@ def t_r3_entrypoint(tmp):
           % (out.stdout.strip() or out.stderr.strip())[-120:])
 
 
+def t_entry_code_shape(tmp):
+    """ARENA_GATE_ENTRY_FIX_FALSE_BORROWED_CODE: the real gate's own code passes the code-shape check; a borrowed
+    filename (other bytecode carrying the entry's co_filename) is still refused, also when it differs only inside a
+    set literal."""
+    import py_compile
+    import subprocess
+    gate = L.HERE / "arena_gate.py"
+    src = gate.read_bytes()
+    shapes = {repr(L._code_shape(compile(src, str(gate), "exec", dont_inherit=True))) for _ in range(12)}
+    check(len(shapes) == 1, "ENTRY 12 compiles of the real arena_gate.py have ONE code shape (was frozenset-order "
+          "dependent; got %d)" % len(shapes))
+    probe = ("\nimport os as _o, sys as _s\n_s.path.insert(0, %r)\nimport arena_eventlog as _L\n"
+             "print('WHY', _L._main_code_ok(_o.path.realpath(__file__)))\n" % str(L.HERE))
+    text = gate.read_text()
+    guard = 'if __name__ == "__main__":'
+    check(text.count(guard) == 1, "ENTRY fixture: arena_gate.py has one __main__ guard")
+    copy = tmp / "entry_gate" / "arena" / "arena_gate.py"   # its HERE.parent must not hold the R3-A2 forged arena_eventlog.py
+    copy.parent.mkdir(parents=True, exist_ok=True)
+    copy.write_text(text.replace(guard, "if False:") + probe)      # the real gate's code, run as a script, as the runner does
+    for seed in ("0", "1", "random"):
+        out = subprocess.run([sys.executable, str(copy)], capture_output=True, text=True, cwd=str(tmp), timeout=120,
+                             env=dict(os.environ, PYTHONHASHSEED=seed, PYTHONPATH=os.pathsep.join((str(L.HERE), str(L.HERE.parent)))))
+        check(out.stdout.strip().endswith("WHY None"), "ENTRY the real gate run as a script passes the code check "
+              "(PYTHONHASHSEED=%s): %s" % (seed, (out.stdout.strip() or out.stderr.strip())[-160:]))
+    for name, body in (("other code", "x = 1\n"),
+                       ("one set member changed", text.replace(guard, "if False:").replace('"9p"', '"9q"', 1))):
+        evil = copy.parent / "evil.py"
+        evil.write_text(body + probe.replace("_o.path.realpath(__file__)", repr(os.path.realpath(copy))))
+        pyc = copy.parent / "evil.pyc"
+        py_compile.compile(str(evil), cfile=str(pyc), dfile=os.path.realpath(copy), doraise=True)
+        out = subprocess.run([sys.executable, str(pyc)], capture_output=True, text=True, cwd=str(tmp), timeout=120,
+                             env=dict(os.environ, PYTHONPATH=os.pathsep.join((str(L.HERE), str(L.HERE.parent)))))
+        check("borrowed filename" in out.stdout, "ENTRY borrowed filename (%s, .pyc with the gate's co_filename) is "
+              "still REFUSED: %s" % (name, (out.stdout.strip() or out.stderr.strip())[-160:]))
+
+
 def t_r3_a4c_fd_reuse(tmp):
     p, _ = fresh(tmp, "r3a4", writer=False)
     cap = L.harness_pass(p)
@@ -1157,7 +1193,7 @@ def main():
         for t in (t_d1_token, t_d2_tail, t_d3_partial, t_d4_ids, t_d5_idem, t_d6_minutes, t_d8_verdict, t_d7_recover,
                   t_r2_1_capability, t_r2_2_trust, t_r2_3_v3_output, t_r2_4_build_id, t_r2_5_order, t_r2_6_schema,
                   t_r2_7_testq, t_r2_8_window, t_r2_9_anchor_neg, t_r3_b1_tail, t_r3_b2_forged_note, t_r3_b3_roster,
-                  t_r3_b4_note_tokens, t_r3_entrypoint, t_switch_entry, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
+                  t_r3_b4_note_tokens, t_r3_entrypoint, t_entry_code_shape, t_switch_entry, t_r3_a4c_fd_reuse, t_r3_testq_real, t_r3_testq_attempts,
                   t_r3_analysis, t_r3_cards, t_r4_small, t_gate_runner, t_calib_entry):
             try:
                 t(tmp)
