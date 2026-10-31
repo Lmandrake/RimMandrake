@@ -2,9 +2,12 @@
 """selftest_helper_capture_mirror: a pass that deletes or shrinks its own spend logs mid-run hides nothing
 (ARENA_TESTER_SPEND_ENFORCE_SELF_ERASED_LOGS). helper_capture.Mirror copies the logs, append-only, into a sibling the
 sandbox never binds; capture_tester files that copy; arena_spend.sandbox_homes reads a builder's mirror home.
-Sanity: the same run captured WITHOUT the mirror loses the deleted calls (the check can see a loss)."""
+Sanity: the same run captured WITHOUT the mirror loses the deleted calls (the check can see a loss).
+F1-F4 (ARENA_MIRROR_FAILURE_ENFORCE_SILENT_LOSS): a mirror tick that fails, a state that cannot be written, a mirror
+that never starts (tester and builder) each make the meter BLOCK; with no failure record possible the pass is VOID."""
 from __future__ import annotations
 
+import calendar
 import json
 import os
 import shutil
@@ -54,6 +57,108 @@ def calls_in(d):
     for p in sorted(Path(d).rglob("*.jsonl")):
         n += len(S.scan_file(str(p), 0, seen)[0])
     return n, seen
+
+
+def blocked(rec, what):
+    """The meter's tester rule on rec's capture -> its blocking lines."""
+    t = calendar.timegm(time.strptime(rec["ts"], "%Y-%m-%dT%H:%M:%SZ"))
+    _, _, bl = SP.tester_captures({rec["arm"]: {"recs": [rec]}}, None, t - 1, t + 100)
+    return [b for b in bl if what in b]
+
+
+def mirror_failure_cases(tmp, rec):
+    """ARENA_MIRROR_FAILURE_ENFORCE_SILENT_LOSS: a mirror that fails flags (meter BLOCKS) or voids the run."""
+    # ---- a tick's write fails mid-run, then the log is erased: the error is on disk, the capture blocks
+    r = tmp / "rt-f1"
+    pj = r / "home" / ".claude" / "projects" / "-x"
+    pj.mkdir(parents=True)
+    tr = pj / "s.jsonl"
+    tr.write_text(msg(1))
+    m = HC.Mirror(r, interval=0.02).start()
+    md = m.dir / "home" / ".claude" / "projects" / "-x"
+    check(wait_for(m, md / "s.jsonl", 1), "F1 mirror copied the first call")
+    os.chmod(md / "s.jsonl", 0o400)
+    with open(tr, "a") as f:
+        f.write(msg(2))
+    end = time.time() + 5
+    while time.time() < end and not any("mirror error" in x for x in HC.mirror_skipped(m.dir)):
+        time.sleep(0.02)
+    on_disk = HC.mirror_skipped(m.dir)
+    check(any("mirror error" in x for x in on_disk), "F1 a failed tick is written to the mirror state at once (%s)"
+          % on_disk)
+    tr.unlink()                                          # the undelivered call is gone with the log
+    os.chmod(md / "s.jsonl", 0o600)
+    m.stop()
+    r1 = dict(rec, run_id="f1")
+    RA.capture_tester(r1, r, 0)
+    check(blocked(r1, "mirror error"), "F1 the meter BLOCKS the tester whose mirror failed (run flagged)")
+    sane = dict(rec, run_id="f1s")
+    r_ok = tmp / "rt-f1s"
+    (r_ok / "home" / ".claude" / "projects" / "-x").mkdir(parents=True)
+    (r_ok / "home" / ".claude" / "projects" / "-x" / "s.jsonl").write_text(msg(1))
+    RA.spend_mirror(r_ok).stop()
+    RA.capture_tester(sane, r_ok, 0)
+    check(not blocked(sane, "arm"), "F1 sanity: the same tester with a healthy mirror is not blocked")
+
+    # ---- the state cannot be written either: the failure goes to the <root>.mirror.failed marker
+    r = tmp / "rt-f2"
+    (r / "home" / ".claude" / "projects" / "-x").mkdir(parents=True)
+    (r / "home" / ".claude" / "projects" / "-x" / "s.jsonl").write_text(msg(1))
+    m = HC.Mirror(r, interval=3600)
+    save = m._save
+    m._save = lambda: (_ for _ in ()).throw(OSError("disk full"))
+    m.sync = lambda: (_ for _ in ()).throw(OSError("copy failed"))
+    m.stop()
+    m._save = save
+    check(m.persisted and any("copy failed" in x for x in HC.mirror_failures(m.dir)),
+          "F2 state unwritable: the failure lands in the marker file")
+    r2 = dict(rec, run_id="f2")
+    RA.capture_tester(r2, r, 0)
+    check(blocked(r2, "copy failed"), "F2 the meter BLOCKS on the marker")
+    check(not HC.failed_marker(m.dir).exists(), "F2 capture_tester removes the marker after filing it")
+
+    # ---- the mirror never starts: marker -> tester blocked, builder scratch blocked
+    hm = HC.Mirror
+    HC.Mirror = lambda *a, **k: (_ for _ in ()).throw(OSError("mirror unavailable"))
+    try:
+        r = tmp / "rt-f3"
+        (r / "home" / ".claude" / "projects" / "-x").mkdir(parents=True)
+        (r / "home" / ".claude" / "projects" / "-x" / "s.jsonl").write_text(msg(1))
+        check(RA.spend_mirror(r) is None, "F3 spend_mirror -> None when the mirror cannot start")
+        r3 = dict(rec, run_id="f3")
+        RA.capture_tester(r3, r, 0)
+        check(blocked(r3, "did not start"), "F3 a tester whose mirror never started is BLOCKED (was clean)")
+        base = tmp / "sandbox-f"
+        sc = base / "armB-12345678-b" / "build"
+        (sc / "home" / ".claude" / "projects" / "-z").mkdir(parents=True)
+        RA.spend_mirror(sc)
+        _, bl = SP.sandbox_homes(base)
+        check(len(bl) == 1 and "did not start" in bl[0], "F3 a builder scratch whose mirror never started BLOCKS (%s)"
+              % bl)
+        # ---- not even the marker can be written: the pass is VOID, never run
+        ro = tmp / "ro"
+        (ro / "role" / "home").mkdir(parents=True)
+        os.chmod(ro, 0o500)
+        plan = RA.sandbox_plan
+        try:
+            try:
+                RA.spend_mirror(ro / "role")
+                check(False, "F4 spend_mirror raises MirrorVoid when no failure record can be written")
+            except RA.MirrorVoid:
+                check(True, "F4 spend_mirror raises MirrorVoid when no failure record can be written")
+            ran = tmp / "ran"
+            cm = RA.CmdModel("true")
+            RA.sandbox_plan = lambda role, cwd, sandbox: ([], ro / "role" / "home")
+            cm.wrap = lambda argv, env, **k: (["touch", str(ran)], env)
+            rc = cm.spawn("test", ["x"], {}, cwd=tmp, sandbox=None, agent_id="a", log=tmp / "void.log", prompt="",
+                          timeout_s=10)
+            check(rc == RA.VOID_RC and not ran.exists() and "VOID" in (tmp / "void.log").read_text(),
+                  "F4 CmdModel.spawn does not run the pass (rc %s, ran %s)" % (rc, ran.exists()))
+        finally:
+            RA.sandbox_plan = plan
+            os.chmod(ro, 0o700)
+    finally:
+        HC.Mirror = hm
 
 
 def main():
@@ -149,6 +254,8 @@ def main():
         check(not blocking and n2 == 2 and names == {"armA-12345678-b"},
               "sandbox_homes reads the builder's mirror home under its scratch name (%d calls, %s, %s)"
               % (n2, names, blocking))
+
+        mirror_failure_cases(tmp, rec)
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("%s: %d failure(s)" % ("FAIL" if FAILS else "PASS", len(FAILS)))

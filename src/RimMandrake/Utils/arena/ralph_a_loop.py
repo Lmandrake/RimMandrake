@@ -299,22 +299,35 @@ def capture_tester(rec, troot, rc=None, *, home=None, gpt=True):
         if home is None and mdir.is_dir():
             return HC.capture(rec, home=mdir / "home", gpt_dir=(mdir / "gpt") if gpt else None, rc=rc,
                               skipped=HC.mirror_skipped(mdir))
-        return HC.capture(rec, home=home or Path(troot) / "home", gpt_dir=(Path(troot) / "gpt") if gpt else None, rc=rc)
+        return HC.capture(rec, home=home or Path(troot) / "home", gpt_dir=(Path(troot) / "gpt") if gpt else None, rc=rc,
+                          skipped=HC.mirror_failures(mdir))     # a mirror that never started: BLOCKING
     except Exception as e:                       # noqa: BLE001 - the meter blocks on the missing manifest
         print("helper capture failed for %s: %s" % (HC.ident(rec), e), file=sys.stderr)
         return None
     finally:
         shutil.rmtree(mdir, ignore_errors=True)
+        HC.failed_marker(mdir).unlink(missing_ok=True)
 
 
 def spend_mirror(root):
-    """A started helper_capture.Mirror of `root`'s spend logs (ARENA_TESTER_SPEND_ENFORCE_SELF_ERASED_LOGS), or None
-    when it cannot start (said on stderr; the meter then reads the live logs as before)."""
+    """A started helper_capture.Mirror of `root`'s spend logs (ARENA_TESTER_SPEND_ENFORCE_SELF_ERASED_LOGS). When it
+    cannot start, the failure is written to helper_capture.failed_marker (the meter then BLOCKS that spend) and this
+    returns None; it RAISES MirrorVoid when even the marker cannot be written: the caller must not run the pass."""
     try:
         return HC.Mirror(root).start()
     except Exception as e:                       # noqa: BLE001
-        print("spend mirror for %s did not start: %s" % (root, e), file=sys.stderr)
+        why = "spend mirror for %s did not start: %s: %s" % (root, type(e).__name__, e)
+        print(why, file=sys.stderr)
+        if not HC.mark_failed(HC.mirror_dir(root), why):
+            raise MirrorVoid(why + "; failure marker unwritable: pass VOID") from e
         return None
+
+
+class MirrorVoid(RuntimeError):
+    """No spend mirror and no record of its failure: a pass run now could under-count silently, so it is not run."""
+
+
+VOID_RC = -12                                    # spawn's rc for a pass not run because MirrorVoid
 
 
 def neutral_id(agent_id):
@@ -439,7 +452,12 @@ class CmdModel:
         process group, recorded in the pidfile, the group killed at the timeout and after the pass. Returns rc."""
         rw, home = sandbox_plan(role, cwd, sandbox)
         argv, env = self.wrap(list(argv), env, cwd=cwd, rw=rw, home=home)
-        mirror = spend_mirror(home.parent)     # the spend logs, copied where the arm cannot erase them
+        try:
+            mirror = spend_mirror(home.parent)  # the spend logs, copied where the arm cannot erase them
+        except MirrorVoid as e:                  # ARENA_MIRROR_FAILURE_ENFORCE_SILENT_LOSS: never run unmetered
+            Path(log).write_text("VOID: %s\n" % e)
+            print(e, file=sys.stderr)
+            return VOID_RC
         try:
             with open(log, "w") as out:
                 pr = subprocess.Popen(argv, cwd=str(cwd), env=env, stdin=subprocess.PIPE, stdout=out,

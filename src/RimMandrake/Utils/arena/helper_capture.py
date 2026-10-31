@@ -27,6 +27,12 @@ deletes, and a log that is deleted, replaced (new inode) or shrunk continues in 
 Duplicated lines are harmless (the census dedupes Claude spend by message id). capture() of a tester reads the mirror
 when there is one (capture_tester), and arena_spend.sandbox_homes reads a builder's `<role>.mirror` home like any
 other home of the same scratch.
+
+A mirror that FAILS never under-counts silently (ARENA_MIRROR_FAILURE_ENFORCE_SILENT_LOSS): every sync error is written
+to the mirror's state at once (Mirror._fail), or, when that write fails too, to the harness-side marker file
+`<root>.mirror.failed` (failed_marker; also written when the mirror cannot start at all). mirror_skipped() reads both,
+so the tester's manifest lists the failure (BLOCKING) and arena_spend.sandbox_homes blocks a builder scratch holding
+one. When neither can be written, ralph_a_loop.CmdModel.spawn does not run the pass at all (VOID).
 """
 from __future__ import annotations
 
@@ -179,6 +185,32 @@ def mirror_dir(root) -> Path:
     return r.parent / (r.name + ".mirror")
 
 
+def failed_marker(mdir) -> Path:
+    """`<root>.mirror.failed`: the mirror's failures when they could not be written into the mirror itself."""
+    m = Path(mdir)
+    return m.parent / (m.name + ".failed")
+
+
+def mark_failed(mdir, why) -> bool:
+    """Append one failure line to failed_marker(mdir) -> True when it reached the disk."""
+    try:
+        with open(failed_marker(mdir), "a") as f:
+            f.write(why.replace("\n", " ") + "\n")
+        return True
+    except OSError:
+        return False
+
+
+def mirror_failures(mdir) -> list:
+    """The failure lines in failed_marker(mdir) ([] when there is none)."""
+    try:
+        return [x for x in failed_marker(mdir).read_text().splitlines() if x.strip()]
+    except FileNotFoundError:
+        return []
+    except OSError as e:
+        return ["mirror failure marker %s unreadable (%s)" % (failed_marker(mdir), e)]
+
+
 SPEND_LOGS = ((("home", ".claude", "projects"), False), (("gpt",), True))   # (path below the root, flat)
 
 
@@ -203,6 +235,7 @@ class Mirror:
         self.skipped = set(st.get("skipped") or ())
         self._stop = threading.Event()
         self._t = None
+        self.persisted = True                       # False once a failure reached neither the state nor the marker
 
     def _dst(self, below, rel, seg):
         name = rel if not seg else rel[:-len(".jsonl")] + "~m%d.jsonl" % seg
@@ -244,6 +277,21 @@ class Mirror:
         st["done"] += cut
         return True
 
+    def _save(self):
+        tmp = self.dir / (self.STATE + ".tmp")
+        tmp.write_text(json.dumps({"files": self.files, "skipped": sorted(self.skipped)}, sort_keys=True))
+        os.replace(tmp, self.dir / self.STATE)
+
+    def _fail(self, e):
+        """A sync raised: record it where capture/meter read it NOW (state, else the marker), never only in memory."""
+        why = "mirror error: %s: %s" % (type(e).__name__, e)
+        self.skipped.add(why)
+        try:
+            self._save()
+        except Exception:                           # noqa: BLE001
+            if not mark_failed(self.dir, why):
+                self.persisted = False
+
     def sync(self):
         changed, nsk = False, len(self.skipped)
         for below, flat in self.parts:
@@ -275,19 +323,20 @@ class Mirror:
             finally:
                 os.close(top)
         if changed or len(self.skipped) != nsk or not (self.dir / self.STATE).exists():
-            tmp = self.dir / (self.STATE + ".tmp")
-            tmp.write_text(json.dumps({"files": self.files, "skipped": sorted(self.skipped)}, sort_keys=True))
-            os.replace(tmp, self.dir / self.STATE)
+            self._save()
 
     def _run(self):
         while not self._stop.wait(self.interval):
             try:
                 self.sync()
-            except Exception as e:                  # noqa: BLE001 - recorded: the capture then blocks
-                self.skipped.add("mirror error: %s: %s" % (type(e).__name__, e))
+            except Exception as e:                  # noqa: BLE001 - persisted: the capture then blocks
+                self._fail(e)
 
     def start(self):
-        self.sync()
+        try:
+            self.sync()
+        except Exception as e:                      # noqa: BLE001
+            self._fail(e)
         self._t = threading.Thread(target=self._run, name="spend-mirror", daemon=True)
         self._t.start()
         return self
@@ -300,7 +349,7 @@ class Mirror:
         try:
             self.sync()
         except Exception as e:                      # noqa: BLE001
-            self.skipped.add("mirror error: %s: %s" % (type(e).__name__, e))
+            self._fail(e)
         return sorted(self.skipped)
 
     def __enter__(self):
@@ -311,10 +360,12 @@ class Mirror:
 
 
 def mirror_skipped(mdir) -> list:
+    """The mirror's recorded problems: its state's skipped list plus failed_marker lines (any entry BLOCKS)."""
     try:
-        return list(json.loads((Path(mdir) / Mirror.STATE).read_text()).get("skipped") or ())
+        out = list(json.loads((Path(mdir) / Mirror.STATE).read_text()).get("skipped") or ())
     except (OSError, ValueError) as e:
-        return ["mirror state %s unreadable (%s)" % (mdir, e)]
+        out = ["mirror state %s unreadable (%s)" % (mdir, e)]
+    return out + [x for x in mirror_failures(mdir) if x not in out]
 
 
 def load(rec: dict, base=None):

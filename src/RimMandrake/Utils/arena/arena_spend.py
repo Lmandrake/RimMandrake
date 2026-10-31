@@ -217,7 +217,9 @@ def sandbox_homes(sandbox_root):
     A symlinked or unreadable component on that path is BLOCKING (an arm could hide its home or point it at another's).
     A builder that deletes its own transcripts mid-session hides nothing: the harness's append-only copy
     <base>/<clone>/<role>.mirror/home (helper_capture.Mirror, never bound into the sandbox) is read here as one more
-    home of the same scratch; message-id dedup makes the overlap with the live home harmless."""
+    home of the same scratch; message-id dedup makes the overlap with the live home harmless. A mirror that recorded a
+    failure (its state's skipped list, or a `<role>.mirror.failed` marker: helper_capture.mirror_skipped) BLOCKS its
+    scratch (ARENA_MIRROR_FAILURE_ENFORCE_SILENT_LOSS): the builder's erased spend may be missing from both homes."""
     out, blocking = [], []
     base = Path(sandbox_root)
     if not base.is_dir():
@@ -236,6 +238,16 @@ def sandbox_homes(sandbox_root):
             blocking.append("sandbox scratch %s unreadable (%s): UNMEASURED" % (sc, e))
             continue
         for role in roles:
+            if role.name.endswith(".mirror.failed") or (role.name.endswith(".mirror") and role.is_dir()
+                                                        and not role.is_symlink()):
+                failed = role.name.endswith(".failed")
+                mdir = role.with_name(role.name[:-len(".failed")]) if failed else role
+                bad = (HC.mirror_failures(mdir) if not mdir.is_dir() else []) if failed else HC.mirror_skipped(mdir)
+                if bad:                         # (a marker beside its mirror dir is read with that dir)
+                    blocking.append("sandbox spend mirror %s recorded %d failure(s) (%s): UNMEASURED"
+                                    % (mdir, len(bad), "; ".join(bad)[:300]))
+                if role.name.endswith(".failed"):
+                    continue
             pj = role / "home" / ".claude" / "projects"
             chain = (role, role / "home", role / "home" / ".claude", pj)
             if any(x.is_symlink() for x in chain):
