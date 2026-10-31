@@ -180,6 +180,10 @@ LIMITS, STATED PLAINLY:
     in the accept rate at p = 0.64 alone gives the log-efficiency difference an SD near 0.17 at 37 tasks per arm.
     Equal arms practically never TIE inside 40 tasks per arm for the same reason (a 15% band at P > 0.9 needs an SD
     near 0.09).
+    SUPERSEDED FOR THE TRIAL (2026-10-30): the POWER line above is an exchangeable-task, ungated simulation and
+    overstates what the era-gated rule decides. Trial power on the real gated rule at 50 tasks for a true 1.5x:
+    DECIDE 12% (4 arms), 24% (3 arms), 35% (2 arms); 40-50% only at 75-100 tasks with 2-3 arms (table:
+    D:/ClaudeWork/rimmandrake/arena/verify_stop/power_table.md). Never quote the 28-50% above as trial power.
     HARD-CAP PICK (selftest_arena_analysis.py --hardcap 1000, 2026-10-30; --final at 40 tasks/arm, accept 0.64 unless
     stated, sigma_d 0.8, 1000 seeds each, 1000 draws; thresholds NOT tuned):
       3 equal arms (trio/v3c/v3): pick 496 (trio 343, v3c 153 when trio narrowly failed), control stays 497, false
