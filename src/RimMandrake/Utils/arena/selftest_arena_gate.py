@@ -446,7 +446,9 @@ def t_weakened(tmp):
     c = Ctx(tmp, "wk_new"); h = c.commit(dict(GOOD, **{UT + "selftest_foo2.py": "assert True\n"})); c.records(h); r = c.gate(h)
     check(r["verdict"] == "fail" and st(r, "placeholders") == "FAIL", "a new `assert True`-only selftest FAILS")
     c = Ctx(tmp, "wk_empty"); h = c.commit(dict(GOOD, **{UT + "selftest_foo2.py": "print('fine')\n"})); c.records(h); r = c.gate(h)
-    check(r["verdict"] == "invalid" and st(r, "tests") == "UNMEASURED", "a new selftest executing no check is UNMEASURED")
+    check(r["steps"]["tests"].get("uncounted") == [UT + "selftest_foo2.py"],    # PLAIN_SELFTEST_UNCOUNTED: green at
+          "a new selftest executing no check confers nothing: not counted (%s)"   # base too; alone it is UNMEASURED (t_plain)
+          % r["steps"]["tests"].get("why"))
 
 
 def t_med(tmp):
@@ -1125,6 +1127,52 @@ HB_PASS = "import foo\n\ndef t_hb():\n    assert foo.foo() == 2\n\nt_hb()\n"
 HB_FAIL = "import foo\n\ndef t_hb():\n    assert foo.foo() == 3\n\nt_hb()\n"
 
 
+def t_plain(tmp):
+    """ARENA_GATE_TESTS_FIX_PLAIN_SELFTEST_UNCOUNTED: a plain selftest (rc 0, no assert / check*() / t_*()) counts only
+    when HEAD's copy of it FAILS against the base tree; one that passes at base (a no-op) never counts."""
+    fix = UT + "foo.py"
+    disc = "import sys, foo\nsys.exit(0 if foo.foo() == 2 else 1)\n"         # red at base (foo()==1), green at head
+    noop = "import sys, foo\nsys.exit(0 if foo.foo() >= 1 else 1)\n"         # green at base AND head: proves nothing
+    rows = (("new plain, red at base", {UT + "selftest_foop.py": disc}, "pass", "PASS"),
+            ("MUTANT new plain no-op beside a counted test", {UT + "selftest_foop.py": noop}, "pass", "PASS"),
+            ("edited plain, red at base", {UT + "selftest_foo.py": disc}, "pass", "PASS"),
+            ("MUTANT edited plain no-op", {UT + "selftest_foo.py": noop}, "invalid", "UNMEASURED"))
+    for i, (name, changes, verdict, status) in enumerate(rows):
+        c = Ctx(tmp, "plain%d" % i)
+        if name.startswith(("edited", "MUTANT edited")):     # the base already carries a plain selftest_foo.py
+            c.commit({UT + "selftest_foo.py": "import foo\nfoo.foo()\n"}); c.base = git(c.repo, "rev-parse", "HEAD")
+        h = c.commit(dict({fix: "def foo():\n    return 2\n"}, **changes)); c.records(h); r = c.gate(h)
+        tw = r["steps"]["tests"]
+        check(r["verdict"] == verdict and st(r, "tests") == status,
+              "plain selftest (%s): tests %s, verdict %s (%s %s)" % (name, st(r, "tests"), r["verdict"], tw.get("why"),
+                                                                    (tw.get("findings") or [""])[0][:140]))
+        bp = [v.get("base_plain") for v in (tw.get("counts") or {}).values() if "base_plain" in v]
+        check(bp and bp[0] and bp[0]["verdict"] == ("PASS" if "no-op" in name else "FAIL"),
+              "plain selftest (%s): the base run of head's copy is recorded (%s)" % (name, bp))
+        if "no-op" in name:
+            check(tw.get("uncounted") == [UT + ("selftest_foop.py" if "new" in name else "selftest_foo.py")]
+                  and ("0/1" not in tw["why"] if status == "PASS" else True),
+                  "plain selftest (%s): the no-op is listed as NOT counted (%s)" % (name, tw.get("uncounted")))
+        if status == "PASS" and "no-op" in name:
+            check(tw["why"].startswith("1/2 selftests pass"), "plain selftest (%s): only the marker test counts (%s)"
+                  % (name, tw["why"]))
+    # the base tree is left as it was: a plain test placed for the base run is gone, an edited one is restored
+    c = Ctx(tmp, "plain_restore")
+    h = c.commit({fix: "def foo():\n    return 2\n", UT + "selftest_foop.py": disc}); c.records(h)
+    g = G.Gate(c.task, c.base, h, "armx", c.repo, c.p, dump=str(c.dump), writer=c.w, defs_roots=[])
+    try:
+        g.checkout()
+        before = (g.base_clone / (UT + "selftest_foo.py")).read_bytes()
+        g.plain_at_base(UT + "selftest_foop.py")
+        g.plain_at_base(UT + "selftest_foo.py")
+        check(not (g.base_clone / (UT + "selftest_foop.py")).exists()
+              and (g.base_clone / (UT + "selftest_foo.py")).read_bytes() == before
+              and not G.git(g.base_clone, "status", "--porcelain").strip(),
+              "plain_at_base leaves the base checkout clean (placed file removed, edited file restored)")
+    finally:
+        shutil.rmtree(g.work, ignore_errors=True)
+
+
 def t_held_back(tmp):
     """ARENA_GATE_PROOF_FIX_HELD_BACK_UNPASSABLE: a held-back-only proof is RUN by the gate and scored on its real
     result; never an automatic pass."""
@@ -1173,7 +1221,7 @@ def main():
         for t in (t_control, t_placeholder, t_scope_tests, t_live, t_agents, t_unmeasured, t_tools, t_cli_location,
                   t_sandbox, t_runner, t_ids, t_weakened, t_med, t_low, t_signing, t_isolation, t_instruments, t_rc,
                   t_signfail, t_records, t_phrase_deletes, t_static, t_real, t_round3_exit, t_round3_cover,
-                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root, t_held_back):
+                  t_round3_build, t_round3_interop, t_round3_marker, t_round3_live, t_round4_git_trust, t_work_root, t_held_back, t_plain):
             t(tmp)
     finally:
         for k, v in saved.items():

@@ -372,7 +372,9 @@ def _main(_write=os.write, _close=os.close, _exit=os._exit, _run=runpy.run_path,
           _stdlib=os.path.realpath(os.path.dirname(os.__file__)), _self=os.path.realpath(__file__)):
     fd = int(sys.argv[1]); path = os.path.realpath(sys.argv[2]); os.set_inheritable(fd, False)
     nonce = sys.stdin.readline().strip()
-    entries = sys.stdin.readline().strip()   # the harness's collection pass, made BEFORE this process started
+    entries = sys.stdin.readline().rstrip("\n")   # the harness's collection pass, made BEFORE this process started
+    # (rstrip, not strip: a module-body-only selftest has an EMPTY list, "ENTRIES "; strip() cut the space and the
+    # fullmatch below exited 3, so every such selftest read as "no record" - ARENA_GATE_TESTS_FIX_PLAIN_SELFTEST_UNCOUNTED)
     nul = os.open(os.devnull, os.O_RDONLY); os.dup2(nul, 0); os.close(nul)
     if not _fullmatch(r"[0-9a-f]{32}", nonce) or not _fullmatch(r"ENTRIES [\w,]*", entries):
         _exit(3)
@@ -1064,6 +1066,30 @@ class Gate:
         rec["incomplete"] = rec["verdict"] == "UNMEASURED" and rec["done"] < rec["expected"]
         return rec, text
 
+    def plain_at_base(self, rel: str):
+        """ARENA_GATE_TESTS_FIX_PLAIN_SELFTEST_UNCOUNTED: -> (base record | None, why). Runs HEAD's copy of selftest
+        `rel` against the BASE tree (the file is placed in the base checkout for the run, then the base file is put
+        back byte for byte, or removed with any dirs it needed). A plain selftest (rc 0, no assert / check*() / t_*())
+        counts only when this run FAILS: it then tells the fix from the code it fixes."""
+        src = (self.clone / rel).read_bytes()
+        dst = self.base_clone / rel
+        old = dst.read_bytes() if dst.is_file() else None
+        made, d = [], dst.parent
+        while not d.exists():
+            made.append(d); d = d.parent
+        try:
+            for d in reversed(made):
+                d.mkdir()
+            dst.write_bytes(src)
+            return self.run_test(self.base_clone, rel, "baseplain")
+        finally:
+            if old is None:
+                dst.unlink(missing_ok=True)
+                for d in made:
+                    shutil.rmtree(d, ignore_errors=True)
+            else:
+                dst.write_bytes(old)
+
     def s_tests(self):
         changed_py = [f for f in self.alive() if f.endswith(".py")]
         tests, orphans = self.selftests_for()
@@ -1090,7 +1116,7 @@ class Gate:
         if special:
             return unmeasured("selftest(s) %s need run_selftests' special invocation" % special)
         changed_set = set(self.paths("M"))
-        fails, unm, rows = [], [], {}
+        fails, unm, rows, uncounted = [], [], {}, []
         for t in tests:
             rec, text = self.run_test(self.clone, t, "head")
             if rec is None:
@@ -1118,6 +1144,17 @@ class Gate:
                 unm.append("%s: printed the unmeasured phrase" % t)
                 continue
             n_head = rec["asserts"] + rec["checks"] + rec["tests"]
+            if n_head == 0:     # a plain selftest: rc 0 alone says nothing; it counts only where it is red at base
+                brec, btext = self.plain_at_base(t)
+                row["base_plain"] = None if brec is None else {k: brec.get(k) for k in ("verdict", "rc", "status")}
+                if brec is not None and brec["verdict"] == FAIL:
+                    continue
+                if brec is not None and brec["verdict"] == PASS:     # green without the fix too: no evidence either way
+                    row["counted"] = False; uncounted.append(t)
+                    continue
+                unm.append("%s: a plain selftest (no assert / check*() / t_*()) gave no result at base, so its pass "
+                           "cannot count (%s)" % (t, (brec or {}).get("why") or (btext or "")[-100:].strip()))
+                continue
             if t in changed_set and (self.base_clone / t).is_file():
                 brec, _ = self.run_test(self.base_clone, t, "base")
                 if brec is None or brec["rc"] is None or brec["tampered"]:
@@ -1130,16 +1167,19 @@ class Gate:
                 if rec["lines"] < LINES_FLOOR * brec["lines"]:
                     fails.append("%s: executed lines dropped %d -> %d vs base" % (t, brec["lines"], rec["lines"]))
                     continue
-            elif n_head == 0:
-                unm.append("%s: executed no recognisable check (assert / check*() / t_*())" % t)
         if fails:
             return step(FAIL, "%d of %d selftest(s) fail or were weakened" % (len(fails), len(tests)),
                         findings=fails[:20], tests=tests, counts=rows)
         if unm:
             return unmeasured("%d of %d selftest(s) gave no positive result" % (len(unm), len(tests)),
                               findings=unm[:20], tests=tests, counts=rows)
-        return step(PASS, "%d/%d selftests pass (harness runner, counted)" % (len(tests), len(tests)),
-                    tests=tests, counts=rows)
+        if len(uncounted) == len(tests):
+            return unmeasured("every selftest is plain and passes at base too: nothing tells the fix from the base",
+                              findings=uncounted[:20], tests=tests, counts=rows, uncounted=uncounted)
+        return step(PASS, "%d/%d selftests pass (harness runner, counted)%s"
+                    % (len(tests) - len(uncounted), len(tests), "; %d plain one(s) pass at base too, not counted: %s"
+                       % (len(uncounted), ", ".join(uncounted[:8])) if uncounted else ""),
+                    tests=tests, counts=rows, uncounted=uncounted)
 
     def s_xml(self):
         xml = [f for f in self.alive() if A.is_defxml(f)]
