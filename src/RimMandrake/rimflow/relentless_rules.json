@@ -9,7 +9,7 @@
   "pool_ids_exclude": ["LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING"],
   "enrol_per_tick": 2,
   "max_queued": 8,
-  "max_workers": 2,
+  "max_workers": 1,
   "same_failure_limit": 3,
   "unchanged_returns_limit": 9,
   "run_max_s": 3600,

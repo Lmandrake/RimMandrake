@@ -444,6 +444,11 @@ def t_crash_windows():
     x.tick()
     ok(x.st("I0")["quarantined"][0]["reaped"], "the quarantined run is reaped and charged when it dies")
     x.done()
+    x = Rig(n=1)
+    R.enrol_one(x.s, "PICKED", "test", x.now)
+    R.enrol_one(x.s, "PICKED", "again", x.now)
+    ok(x.st("PICKED")["status"] == "queued" and x.st("PICKED")["why"] == "test", "enrol by name is idempotent")
+    x.done()
     # overdue reads the beat
     st = dict(R.new_state("I0", 1, ""), started_at=0, last_beat=1000)
     rr = dict(RULES, run_max_s=10 ** 6)

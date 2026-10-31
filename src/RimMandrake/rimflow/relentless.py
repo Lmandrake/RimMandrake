@@ -754,6 +754,17 @@ def enrol(store, fx, r, now):
     return took
 
 
+def enrol_one(store, item, why, now):
+    """A person's or the Conductor's pick. It queues in enrol order like any other and takes no lease by itself."""
+    with store.lock():
+        st = store.load(item)
+        if st is None:
+            st = new_state(item, now, why)
+            store.save(st)
+            store.journal({"at": iso(now), "do": "enrol", "item": item, "why": why})
+        return st
+
+
 def run_of(st, key):
     return st.get("run") if key == "run" else (st.get("check") or {}).get("run")
 
@@ -1230,6 +1241,9 @@ def main(argv=None):
     p.add_argument("--nonce", required=True)
     p.add_argument("word")
     p.add_argument("reasons")
+    p = sub.add_parser("enrol", help="carry one named item, ahead of the share's next picks")
+    p.add_argument("--item", required=True)
+    p.add_argument("--why", required=True)
     p = sub.add_parser("unhold")
     p.add_argument("item")
     p.add_argument("--owner-said", required=True)
@@ -1260,6 +1274,9 @@ def main(argv=None):
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section)
         elif a.cmd == "finish":
             finish(store, a.item, a.gen, a.sha, a.evidence)
+        elif a.cmd == "enrol":
+            st = enrol_one(Store(), a.item, a.why, time.time())
+            print("%s %s" % (a.item, st["status"]))
         elif a.cmd == "verdict":
             verdict(store, a.item, a.nonce, a.word, a.reasons)
         elif a.cmd == "unhold":
