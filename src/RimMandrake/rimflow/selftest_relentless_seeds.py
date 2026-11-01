@@ -222,6 +222,11 @@ def test_contamination_scan():
     check("a read between cd and the verdict is seen",
           C("cd %s; cat /home/mandrake/rm/relentless/store/x; %s" % (own, verdict), own=own) != [])
     check("the fix's sha is seen", C("git show abcdef0123") == ["abcdef0123"])
+    for q in ("'&&'", '"&&"', "\\&\\&", "';'"):
+        c = "cat -- %s %s --item /rm/foundry/secret --nonce N accept reasons" % (q, "python3 " + S.BOOKS_VERB + " verdict")
+        check("a quoted operator hides no read: %s" % q, "/rm/foundry" in C(c), C(c))
+    check("an operator inside the reasons is still the verdict",
+          C("python3 %s verdict --item X --nonce n PASS 'a && b'" % S.BOOKS_VERB) == [])
     ev = []
     S.contamination([{"command": "ls /home/mandrake/rm/bench/src"}], k, evidence=ev)
     check("a hit keeps the text around it", len(ev) == 1 and ev[0]["hit"] == "/rm/bench" and "ls /home/mandrake/rm/bench/src" in ev[0]["text"])
@@ -288,6 +293,41 @@ def test_census_log():
         f.write('  tail of a torn row"}\n')
     S.append_row(log, {"task": "b", "kind": "fix"})
     check("a torn row is no row, the rest stand", [r["task"] for r in S.census_rows(log)] == ["a", "b"])
+    with open(log, "a", encoding="utf-8") as f:
+        f.write('{"task":"T","kind":')
+    S.append_row(log, {"task": "T", "kind": "fix"})
+    check("a retry after a torn row is kept", [r["task"] for r in S.census_rows(log)] == ["a", "b", "T"])
+    fresh = Path(log.parent, "new.jsonl")
+    S.append_row(fresh, {"task": "x"})
+    check("a first row on a new log", S.census_rows(fresh) == [{"task": "x"}] and fresh.read_bytes().count(b"\n") == 1)
+
+
+def test_second_read_frozen():
+    keys = S.PRIVATE / "keys"
+    keys.mkdir(parents=True, exist_ok=True)
+    (keys / "FRZ.json").write_text(json.dumps([{"item": "FRZ_c1", "cls": "other"}]), encoding="utf-8")
+    d = S.PRIVATE / "results_frz"
+    d.mkdir(exist_ok=True)
+    (d / "OTHER_SET.json").write_text("{}", encoding="utf-8")
+    seen = []
+    real = S.sh
+    S.sh = lambda *a, **k: seen.append(a)
+    try:
+        import types
+        out = S.PRIVATE / "reads" / "FRZ.answer.md"
+        out.parent.mkdir(exist_ok=True)
+        out.write_text("", encoding="utf-8")
+        S.cmd_read(types.SimpleNamespace(set="FRZ"))
+        check("another set's results freeze nothing", len(seen) == 1, seen)
+        (d / "FRZ_c1.json").write_text("{}", encoding="utf-8")
+        try:
+            S.cmd_read(types.SimpleNamespace(set="FRZ"))
+            check("a measured case freezes the second reads", False)
+        except SystemExit as e:
+            check("a measured case freezes the second reads", "frozen" in str(e), e)
+        check("and no read was spent", len(seen) == 1, seen)
+    finally:
+        S.sh = real
 
 
 def test_verdict_and_journal():
@@ -349,6 +389,7 @@ def main():
     test_split_and_pick_are_hash_only()
     test_assign_rare_class_first()
     test_census_log()
+    test_second_read_frozen()
     test_verdict_and_journal()
     if FAILS:
         print(json.dumps(FAILS, default=str)[:1500])

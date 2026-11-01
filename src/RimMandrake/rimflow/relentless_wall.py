@@ -64,14 +64,21 @@ def denied(prof, extra=()):
     return sorted(set(out))
 
 
+def unit_path(p):
+    """One path as a systemd list property reads it: unquoted, a space would split it into two entries."""
+    if not re.search(r"""[\s"'\\]""", p):
+        return p
+    return '"%s"' % p.replace("\\", "\\\\").replace('"', '\\"')
+
+
 def props(prof, box, extra=()):
     """systemd properties. Shared scratch comes up empty. A missing denied path fails the launch: a typo must not unwall.
     The transcript folder is the box's: other runs' memory stays out, this run's stays in."""
     out = []
     for p in denied(prof, extra):
-        out += ["-p", "InaccessiblePaths=" + p]
+        out += ["-p", "InaccessiblePaths=" + unit_path(p)]
     for p in prof.get("tmpfs", ()):
-        out += ["-p", "TemporaryFileSystem=" + p]
+        out += ["-p", "TemporaryFileSystem=" + unit_path(p)]
     return out + ["-p", "BindPaths=%s:%s/.claude/projects" % (Path(box, "projects"), HOME)]
 
 
@@ -99,7 +106,9 @@ def make_box(prof, source, sha, nonce):
     if x.returncode:
         raise RuntimeError("export failed: %s" % x.stderr[-200:])
     if subprocess.run(["git", "rev-parse", "-q", "--verify", sha + "^"], cwd=source, capture_output=True).returncode:
-        parent = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"     # a root commit's change is all of it: diff from the empty tree
+        # a root commit's change is all of it: diff from the empty tree, named by the repo's own hash
+        parent = subprocess.run(["git", "hash-object", "-t", "tree", "--stdin"], cwd=source, input=b"", capture_output=True,
+                                timeout=60, check=True).stdout.decode("ascii").strip()
     else:
         parent = sha + "^"
     d = subprocess.run(["git", "diff", "--no-renames", parent, sha, "--", ".", *ex], cwd=source, capture_output=True,

@@ -91,7 +91,8 @@ def is_state(path):
 
 
 def split_hunks(diff):
-    """-U0 diff -> [(path, patch text of one hunk)]; a binary or rename section yields nothing."""
+    """-U0 diff -> [(path, patch text of one hunk)]; a binary, rename or deleted-file section yields nothing (by choice: a
+    deletion has no file to plant a partial fix in)."""
     out, head, path = [], [], None
     body = None
     for line in diff.splitlines(keepends=True):
@@ -217,8 +218,14 @@ LOG_LOCK = threading.Lock()
 
 def append_row(log, row):
     """One writer at a time: concurrent appends tore a row on this mount."""
-    with LOG_LOCK, open(log, "a", encoding="utf-8") as f:
-        f.write(json.dumps(row) + "\n")
+    with LOG_LOCK, open(log, "ab+") as f:
+        f.seek(0, os.SEEK_END)
+        torn = False
+        if f.tell():            # an interrupted append: a fresh line, or the retry's row dies with the fragment
+            f.seek(-1, os.SEEK_END)
+            torn = f.read(1) != b"\n"
+            f.seek(0, os.SEEK_END)
+        f.write((("\n" if torn else "") + json.dumps(row) + "\n").encode("utf-8"))
 
 
 def census_rows(log):
@@ -456,8 +463,14 @@ Reply with one line per case and nothing else: <case id> <word>
 
 def cmd_read(a):
     """Every hunk_green case, read blind before any verdict exists, so that a removal cannot depend on the Marker."""
-    keys = [k for k in json.loads((PRIVATE / "keys" / (a.set + ".json")).read_text(encoding="utf-8"))
-            if k["cls"] == "hunk_green"]
+    all_keys = json.loads((PRIVATE / "keys" / (a.set + ".json")).read_text(encoding="utf-8"))
+    mine = {k["item"] for k in all_keys}
+    measured = [p for d in sorted(PRIVATE.glob("results*")) if d.is_dir() for p in d.glob("*.json")]
+    measured += list((PRIVATE / "attempts").glob("*.jsonl"))
+    measured = sorted(p.name for p in measured if p.stem in mine)
+    if measured:        # a second read after a Marker ran would change the population under a measured case
+        raise SystemExit("second reads of %s are frozen: %d measured, first %s" % (a.set, len(measured), measured[0]))
+    keys = [k for k in all_keys if k["cls"] == "hunk_green"]
     ids = {"c%d" % n: k for n, k in enumerate(keys, 1)}
     body = READ_PROMPT + "\n".join("===== CASE %s =====\n%s\n\n--- hunk ---\n%s" % (c, k["words"], k["patch"])
                                    for c, k in ids.items())
@@ -632,15 +645,19 @@ def tool_inputs(session, box=None):
     return out if parsed else None
 
 
-def tokens(cmd):
-    """-> shell tokens, control operators as tokens of their own; None when the line does not parse."""
+def tokens(cmd, posix=True):
+    """-> shell tokens, control operators as tokens of their own; None when the line does not parse.
+    posix=False keeps the quotes on, so a quoted operator can be told from a real one."""
     try:
-        lex = shlex.shlex(cmd, posix=True, punctuation_chars=True)
+        lex = shlex.shlex(cmd, posix=posix, punctuation_chars=True)
         lex.whitespace_split = True
         lex.commenters = ""
         return list(lex)
     except ValueError:
         return None
+
+
+OPERATORS = (";", "&&", "||", "|", "&")
 
 
 def verdict_words(toks, box=None):
@@ -668,9 +685,13 @@ def scan_text(inp, box=None):
     if not toks:
         return text
     text += " " + " ".join(toks)       # the shell's spelling too: are''na is arena once it runs
+    # shlex drops the quotes: a quoted '&&' reads as a separator and would forgive a real read beside it
+    raw = tokens(cmd, posix=False)
+    if "\\" in cmd or raw is None or sum(t in OPERATORS for t in raw) != sum(t in OPERATORS for t in toks):
+        return text.replace(BOOKS_VERB, "")
     parts, cur = [], []
     for t in toks:
-        if t in (";", "&&", "||", "|", "&"):
+        if t in OPERATORS:
             parts.append(cur)
             cur = []
         else:
