@@ -1,0 +1,2 @@
+A capacity refusal charged as a launch failure turns a full pool into a breaker that hides the cause for hours. Capacity is a wait: release what is dead, alarm the real cause within minutes, and count running as live units, not held places. Also git diff HEAD plus stash top plus exclude-standard loses index-only, older-stash and ignored work before a clone delete; GPT review found those.
+home: design/RimMandrake/relentless_owner_design_2026-10-31.md

@@ -39,6 +39,12 @@ NOTE_MAX = 400
 NOT_READ = object()
 ALLOCATION_FRESH_S = 1800
 SLUG_RX = re.compile(r"[^a-z0-9_]+")
+POOL_REFUSED = "POOL REFUSED"        # scratch_clone's word: the pool said no, the launch path is healthy
+POOL_FULL = ("pool full", "pool at")  # make_room's holds: what the staffing reading looks for in the tick's acts
+# dirt no worker made on purpose: session dumps and ledger shards the seats' projection rewrites. Bundled, never restored
+POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastructure/state/code_review/")
+POOL_ORPHAN_IDLE_S = 3600
+POOL_IGNORED_MAX = 2 * 10**9
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
 
 
@@ -633,14 +639,159 @@ class Effects:
                                stdin=subprocess.DEVNULL)
             if r.returncode:
                 return "clone failed: %s" % (r.stderr or r.stdout)[-300:]
+            if st.get("bundle"):
+                self.restore_bundle(st["item"], st["bundle"], c)
+                with self.store.lock():
+                    cur = self.store.load(st["item"])
+                    cur.pop("bundle", None)
+                    self.store.save(cur)
         with open(os.path.join(c, ".git", "relentless.json"), "w", encoding="utf-8") as f:
             json.dump({"item": st["item"], "gen": st["gen"]}, f)
         return None
 
+    def scratch_clone(self):
+        sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
+        return importlib.import_module("scratch_clone")
+
+    def pool_clones(self):
+        return sorted(d for d in glob.glob(os.path.join(self.base, "clones", "*")) if self.clone_present(d))
+
+    def clone_present(self, c):
+        return os.path.isdir(c)   # a half-removed clone still takes its path and its bytes
+
+    def pool_load(self):
+        """-> (clones, bytes, cap on clones, cap on bytes). The caps are scratch_clone's, the owner's numbers."""
+        sc = self.scratch_clone()
+        got = self.pool_clones()
+        cmax, bmax = sc.pool_cap()
+        return len(got), sum(sc.clone_bytes(sc.Path(c)) for c in got), cmax, bmax
+
+    def clone_busy(self, c):
+        sc = self.scratch_clone()
+        return sc.clone_in_use(sc.Path(c))
+
+    def clone_idle_s(self, c):
+        sc = self.scratch_clone()
+        return sc.clone_idle_s(sc.Path(c))
+
+    def clone_wip(self, c):
+        """-> {"kept": commits or a stash no remote has, "real": changed paths a worker meant}. An unreadable clone is
+        kept: nothing about it is known. Commits have no way back into a fresh clone, so only a dead item's may go."""
+        try:
+            kept = self.git_ok(c, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes").strip() != ""
+            kept = kept or self.git_ok(c, "stash", "list").strip() != ""
+            return {"kept": kept, "real": [p for p in self.changed_paths(c) + self.ignored_paths(c) if not p.startswith(POOL_NOISE)]}
+        except (RuntimeError, OSError, ValueError, subprocess.SubprocessError):
+            return {"kept": True, "real": []}
+
+    def git_ok(self, cwd, *args):
+        r = self.git(cwd, *args, timeout=300)
+        if r.returncode:
+            raise RuntimeError("git %s: %s" % (args[0], r.stderr[-200:]))
+        return r.stdout
+
+    def changed_paths(self, c):
+        out = self.git_ok(c, "--no-optional-locks", "status", "--porcelain", "--untracked-files=normal", "--no-renames", "-z")
+        return [x[3:] for x in out.split("\0") if x]
+
+    def ignored_paths(self, c):
+        """Ignored files are nobody else's copy either. Bytecode is the one thing that is only ever derived."""
+        out = self.git_ok(c, "ls-files", "-z", "--others", "--ignored", "--exclude-standard").split("\0")
+        return [p for p in out if p and "__pycache__/" not in p and not p.endswith(".pyc")]
+
+    def bundle_clone(self, item, c):
+        """Everything no remote has, on the store's disk, before a clone goes. -> the bundle dir, None when there is
+        nothing. Raises when it cannot be sure: the caller then keeps the clone."""
+        paths = self.changed_paths(c)
+        commits = self.git_ok(c, "rev-list", "HEAD", "--branches", "--tags", "--not", "--remotes").strip()
+        stash = self.git_ok(c, "stash", "list", "--format=%H").split()
+        ignored = self.ignored_paths(c)
+        if not paths and not commits and not stash and not ignored:
+            return None
+        if sum(os.lstat(os.path.join(c, p)).st_size for p in ignored) > POOL_IGNORED_MAX:
+            raise RuntimeError("ignored files over %d bytes: read them before this clone goes" % POOL_IGNORED_MAX)
+        home = self.store.p("items", item) if os.path.isdir(self.store.p("items", item)) else self.store.p("orphans")
+        stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+        out = os.path.join(home, "bundles", "%s-%s" % (stamp, os.path.basename(c)))
+        os.makedirs(out, exist_ok=True)
+        real = [":(top)" + p for p in paths if not p.startswith(POOL_NOISE)]
+        untracked = self.git_ok(c, "ls-files", "-z", "--others", "--exclude-standard").split("\0")
+        untracked = [p for p in untracked if p]
+        with open(os.path.join(out, "HEAD"), "w", encoding="utf-8") as f:
+            f.write(self.git_ok(c, "rev-parse", "HEAD"))
+        with open(os.path.join(out, "diff.patch"), "wb") as f:
+            subprocess.run(["git", "-C", c, "diff", "--binary", "HEAD"], stdout=f, check=True, timeout=300)
+        with open(os.path.join(out, "index.patch"), "wb") as f:   # staged content the working file no longer shows
+            subprocess.run(["git", "-C", c, "diff", "--binary", "--cached", "HEAD"], stdout=f, check=True, timeout=300)
+        with open(os.path.join(out, "real.patch"), "wb") as f:
+            if real:
+                subprocess.run(["git", "-C", c, "diff", "--binary", "HEAD", "--"] + real, stdout=f, check=True, timeout=300)
+        for name, want in (("untracked.tar", untracked), ("ignored.tar", ignored),
+                           ("real_untracked.tar", [p for p in untracked if not p.startswith(POOL_NOISE)])):
+            if want:
+                subprocess.run(["tar", "-C", c, "--null", "-T", "-", "-cf", os.path.join(out, name)],
+                               input="\0".join(want).encode(), check=True, timeout=300)
+        for i, sha in enumerate(stash):   # refs/stash names only the newest; the rest live in a reflog no bundle carries
+            self.git_ok(c, "update-ref", "refs/rm-stash/%d" % i, sha)
+        if commits or stash:
+            r = self.git(c, "bundle", "create", os.path.join(out, "commits.bundle"), "HEAD", "--all", "--not", "--remotes")
+            if r.returncode:
+                raise RuntimeError("git bundle: %s" % r.stderr[-200:])
+        return out
+
+    def restore_bundle(self, item, bundle, c):
+        """A fresh clone takes the WIP of the one evicted. What will not apply stays in the bundle and the record says so."""
+        bad = []
+        patch = os.path.join(bundle, "real.patch")
+        if os.path.exists(patch) and os.path.getsize(patch):
+            r = self.git(c, "apply", "--3way", "--whitespace=nowarn", patch, timeout=300)
+            if r.returncode:
+                bad.append("patch: %s" % r.stderr[-200:])
+        for name in ("real_untracked.tar", "ignored.tar"):
+            tar = os.path.join(bundle, name)
+            if not os.path.exists(tar):
+                continue
+            listed = subprocess.run(["tar", "-tf", tar], capture_output=True, text=True, timeout=300)
+            clash = [p for p in listed.stdout.splitlines() if os.path.isfile(os.path.join(c, p))]
+            if clash:   # upstream has since tracked the name: never overwritten, and said
+                bad.append("%s kept in the bundle, upstream has them: %s" % (name, ", ".join(clash[:5])))
+            r = subprocess.run(["tar", "--skip-old-files", "-C", c, "-xf", tar], capture_output=True, text=True, timeout=300)
+            if r.returncode:
+                bad.append("%s: %s" % (name, r.stderr[-200:]))
+        if bad:
+            self.store.learn(item, "\n%s relentless: your clone was evicted from a full pool and its WIP did not all "
+                             "come back; it is in %s (%s)\n" % (iso(time.time()), bundle, "; ".join(bad)))
+        return bad
+
     def remove_clone(self, st):
+        """Nothing leaves the pool unbundled. -> the bundle dir or None; a bundle that fails keeps the clone."""
         c = st.get("clone")
-        if c and os.path.abspath(c).startswith(os.path.join(self.base, "clones") + os.sep):
-            shutil.rmtree(c, ignore_errors=True)
+        if not c or not os.path.abspath(c).startswith(os.path.join(self.base, "clones") + os.sep):
+            return None
+        out = None
+        if os.path.exists(os.path.join(c, ".git")):
+            try:
+                out = self.bundle_clone(st.get("item") or clone_item(c), c)
+            except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
+                self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "bundle_failed", "clone": c, "why": str(e)[:300]})
+                return None
+        try:
+            shutil.rmtree(c)
+        except OSError as e:   # still present, so still counted; the bundle stands
+            self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "remove_failed", "clone": c, "why": str(e)[:300]})
+        return out
+
+    def conductor_alarm(self, text):
+        """The line the Conductor reads first. -> None, or why it did not land."""
+        path = (self.r.get("staffing") or {}).get("conductor_log")
+        if not path:
+            return "no conductor_log in the rules"
+        try:
+            with open(path, "a", encoding="utf-8") as f:
+                f.write("\n%s — RELENTLESS JAM: %s\n  RAISE FIRST: relentless is stalled\n" % (iso(time.time()), text))
+        except OSError as e:
+            return str(e)[:200]
+        return None
 
     def check_path(self, st):
         """A new path per check: a quarantined checker may still be running in the last one."""
@@ -761,6 +912,12 @@ class Effects:
     def live_check(self, line, not_before):
         import live_line
         return live_line.check(line, not_before=not_before)
+
+
+def clone_item(c):
+    """The item a pool clone's folder is named for: ITEM, ITEM.qN or check-ITEM-cN."""
+    name = os.path.basename(c.rstrip("/"))
+    return re.sub(r"\.q\d+$", "", name[6:].rsplit("-c", 1)[0] if name.startswith("check-") else name)
 
 
 def foreign_seat(r):
@@ -896,8 +1053,8 @@ def worker_cap(fx, r, extra=0, store=None):
 def admission(store, fx, r, now, active, extra=0):
     """-> None when one more run may start, else why not."""
     br = load_breaker(store)
-    if br.get("until", 0) > now:
-        return "breaker open until %s" % iso(br["until"])
+    if br.get("until", 0) > now:        # the cause, not only the state: the alarm quotes this line
+        return "breaker open until %s: %s" % (iso(br["until"]), (br.get("why") or "no cause recorded").strip()[:200])
     if active >= worker_cap(fx, r, extra, store):
         return "max_workers"
     if fx.paused():
@@ -930,6 +1087,93 @@ def launch_failed(store, r, now, why):
 def launch_ok(store):
     if load_breaker(store):
         store._write(store.p("breaker.json"), "{}")
+
+
+def pool_rows(store, fx, r):
+    """Every pool clone and who holds it. -> [{clone, item, kind, state, rank}], rank 0 dead, 1 parked, 2 live.
+    Dead: its item ended, a check that is not running, or nobody's and idle. Parked: nothing runs in it, a later run may
+    want it (a fresh clone serves as well, with the bundle). Live: never touched."""
+    own = {}
+    for st in store.states():
+        if st.get("clone"):
+            own[os.path.abspath(st["clone"])] = ("work", st)
+        if (st.get("check") or {}).get("clone"):
+            own[os.path.abspath(st["check"]["clone"])] = ("check", st)
+    for st in store.states():
+        for q in st["quarantined"]:
+            if q.get("clone") and not q.get("reaped"):
+                own[os.path.abspath(q["clone"])] = ("quarantine", st)
+    rows = []
+    for c in fx.pool_clones():
+        kind, st = own.get(os.path.abspath(c), (None, None))
+        status = st["status"] if st else None
+        if st is None:
+            rank = 0 if fx.clone_idle_s(c) >= POOL_ORPHAN_IDLE_S else 2
+        elif kind == "quarantine" or (run_of(st, "run" if kind == "work" else "check") or {"charged": 0}).get("charged") is None:
+            rank = 2
+        elif status in ENDED:
+            rank = 0
+        elif kind == "check":
+            rank = 0 if status in ("queued", "held", "candidate") else 2
+        else:
+            rank = 1 if status in ("queued", "held", "candidate") else 2
+        rows.append({"clone": c, "item": st["item"] if st else clone_item(c), "kind": kind, "status": status, "rank": rank})
+    return rows
+
+
+def evict(store, fx, row, now, acts, why):
+    bundle = fx.remove_clone({"clone": row["clone"], "item": row["item"]})
+    gone = not fx.clone_present(row["clone"])
+    if gone:
+        store.journal({"at": iso(now), "do": "clone_released", "clone": os.path.basename(row["clone"]), "why": why, "bundle": bundle})
+        acts.append({"do": "clone_released", "clone": os.path.basename(row["clone"]), "why": why})
+    return gone, bundle
+
+
+def reclaim_dead(store, fx, r, now, acts):
+    """A dead run gives its clone back on the next tick, whichever road it ended by."""
+    for row in pool_rows(store, fx, r):
+        if row["rank"] == 0 and not fx.clone_busy(row["clone"]):
+            evict(store, fx, row, now, acts, "dead: %s %s" % (row["kind"] or "nobody's", row["status"] or ""))
+
+
+def make_room(store, fx, r, now, acts, reserve=0):
+    """Room for one more clone, or the hold that names who has the pool. Parked clones go first with nothing of theirs
+    at risk, then those whose WIP a bundle carries; commits and stashes stay, and a live clone is never touched.
+    `reserve`: places a builder may not take, so a finished item can always get its check."""
+    n, size, cmax, bmax = fx.pool_load()
+    reserve = min(reserve, cmax - 1)   # a pool of one still has to take a builder
+    if n < cmax - reserve and size < bmax:
+        return None
+    rows, order = pool_rows(store, fx, r), {"candidate": 0, "held": 1, "queued": 2}
+    parked = []
+    for row in rows:
+        if row["rank"] == 2 or fx.clone_busy(row["clone"]):
+            row["hold"] = "live"
+            continue
+        wip = fx.clone_wip(row["clone"])
+        if wip["kept"] and row["rank"]:
+            row["hold"] = "commits"
+            continue
+        parked.append((row["rank"], bool(wip["real"]), order.get(row["status"], 0), row, wip))
+    for rank, real, _o, row, wip in sorted(parked, key=lambda p: p[:3]):
+        gone, bundle = evict(store, fx, row, now, acts, "for room: %s %s" % (row["kind"] or "nobody's", row["status"] or ""))
+        if not gone:
+            row["hold"] = "bundle failed"
+            continue
+        if real and bundle and row["kind"] == "work" and rank:
+            with store.lock():
+                cur = store.load(row["item"])
+                cur["bundle"] = bundle
+                store.save(cur)
+        n, size, cmax, bmax = fx.pool_load()
+        if n < cmax - reserve and size < bmax:
+            return None
+    held = ", ".join("%s (%s)" % (clone_item(x["clone"]), x.get("hold") or x["status"]) for x in rows if fx.clone_present(x["clone"]))
+    if size >= bmax:
+        return "pool at %.1f GB, cap %.0f GB, nothing to release: %s" % (size / 1e9, bmax / 1e9, held)
+    return "pool full: %d clones, cap %d%s, nothing to release: %s" % (
+        n, cmax, " (%d kept for checks)" % reserve if reserve else "", held)
 
 
 def enrol(store, fx, r, now):
@@ -1189,14 +1433,16 @@ def step(store, fx, r, item, now, acts):
         if not hold and r.get("staffing") and clones_this_tick(acts) >= r["staffing"]["launch_per_tick"]:
             hold = "clones per tick"
         hold = hold or ("memory after its last clone" if now < st.get("clone_again_at", 0) else None)
+        hold = hold or make_room(store, fx, r, now, acts)
         if hold:
             acts.append({"do": "check_waits", "item": item, "why": hold})
             return
         acts.append({"do": "clone_try"})
         clean, why = fx.clean_checkout(st, c["sha"])
         if why:
-            launch_failed(store, r, now, why)
-            acts.append({"do": "check_waits", "item": item, "why": why})
+            if POOL_REFUSED not in why:     # a full pool is a wait: the launch path is fine, the engine must not back off
+                launch_failed(store, r, now, why)
+            acts.append({"do": "check_waits", "item": item, "why": "pool full: " + why if POOL_REFUSED in why else why})
             return
         gb = fx.mem_gb()
         acts.append({"do": "mem_after_clone", "gb": gb})
@@ -1439,6 +1685,8 @@ def lease(store, fx, r, now, acts):
         # a stopping item holds its place: its slot is not free for a fresh item while it returns to the top
         active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE)
         why = admission(store, fx, r, now, active)
+        if not why and not fx.clone_present(st["clone"] or fx.clone_path(st["item"], len(st["quarantined"]))):
+            why = make_room(store, fx, r, now, acts, r.get("pool_check_reserve", 0))
         if why:
             acts.append({"do": "wait", "why": why})
             return
@@ -1510,8 +1758,9 @@ def lease(store, fx, r, now, acts):
                 cur["run"] = None
                 store.attempt(item, {"at": iso(now), "gen": cur["gen"] - 1, "end": "launch_fail", "detail": why[:300]})
                 store.save(cur)
-                launch_failed(store, r, now, why)
-                acts.append({"do": "launch_fail", "item": item, "why": why})
+                if POOL_REFUSED not in why:
+                    launch_failed(store, r, now, why)
+                acts.append({"do": "launch_fail", "item": item, "why": "pool full: " + why if POOL_REFUSED in why else why})
                 return
             store.attempt(item, {"at": iso(now), "gen": cur["gen"], "start": cur["run"]["unit"],
                                  "approach": cur["approach"]})
@@ -1593,7 +1842,9 @@ def staffing(store, fx, r, now, acts):
     elif budget == 0:
         why = "budget 0"
     else:
-        stuck = admission(store, fx, r, now, k, extra=k + 1)    # whatever else stops a run, the places aside
+        # whatever else stops a run, the places aside; a clone the pool cannot give stops it as surely
+        stuck = next((a["why"] for a in acts if str(a.get("why", "")).startswith(POOL_FULL)), None) or admission(
+            store, fx, r, now, k, extra=k + 1)   # pool first: a breaker flapping over it must not reset the jam's clock
         why = stuck
         if why is None and stepped:
             why = "memory step-back"
@@ -1632,6 +1883,22 @@ def staffing(store, fx, r, now, acts):
             s["alarmed"] = True
             store.journal({"at": iso(now), "do": "alarm", "kind": "understaffed", "minutes": minutes, "why": why})
             acts.append({"do": "alarm", "item": cfg["alarm_item"]})
+    # a jam: nothing runs, or the pool refuses, while work waits. Named within minutes, in the log the Conductor reads
+    if under and why not in NO_ALARM and (live == 0 or str(why).startswith(POOL_FULL)):
+        s["jam_since"] = s.get("jam_since") or now
+        if now - s["jam_since"] >= cfg["jam_alarm_s"] and not s.get("jam_said"):
+            fail = fx.conductor_alarm("%d live of %d wanted, %d checks waiting, %d ready, stalled %.0f min: %s" % (
+                live, target, sum(1 for x in states if x["status"] == "candidate"), ready, (now - s["jam_since"]) / 60.0, why))
+            if fail:
+                alarm_fail = fail
+                acts.append({"do": "alarm_retry", "why": fail})
+            else:
+                s["jam_said"] = True
+                store.journal({"at": iso(now), "do": "alarm", "kind": "jam", "why": why})
+                acts.append({"do": "jam_alarm", "why": why})
+    else:
+        s.pop("jam_since", None)
+        s.pop("jam_said", None)
     # the staged rise: each step only after a clean reading. An OOM kill anywhere on the host steps one back down
     s["mem_min"] = min([s["mem_min"], fx.mem_gb()] + [a["gb"] for a in acts if a.get("do") == "mem_after_clone"])
     if s["mem_min"] < r["step_back_mem_gb"]:        # a dip restarts the clean window; it does not end it for good
@@ -1660,7 +1927,7 @@ def staffing(store, fx, r, now, acts):
     store._write(store.p("staffing_state.json"), json.dumps(s))
     cand = [x for x in states if x["status"] == "candidate"]
     rec = {"at": iso(now), "t": now, "budget": budget, "budget_measured": budget is not None, "head_helpers": head,
-           "stage": cfg["stages"][s["stage"]], "target": target, "running": k, "live": live, "ready": ready,
+           "stage": cfg["stages"][s["stage"]], "target": target, "running": live, "places": k, "live": live, "ready": ready,
            "under": under, "foreign_tree_read": words_read, "alarm_fail": alarm_fail,
            "minutes_under": minutes, "why": why, "alarmed": bool(s.get("alarmed")), "rise_lacks": lack,
            "spent_today": spent_today(store, now), "day_spend_limit": r["day_spend_limit"],
@@ -1689,6 +1956,7 @@ def tick(store=None, fx=None, r=None, now=None):
             return acts
         fx.sync()
         retire(store, fx, store.states(), now, acts, r)
+        reclaim_dead(store, fx, r, now, acts)
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
             for item in store.items():
                 if final and (store.load(item) or {}).get("status") != "stopping":

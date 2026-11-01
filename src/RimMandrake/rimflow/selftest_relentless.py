@@ -6,6 +6,7 @@ import json
 import multiprocessing
 import os
 import shutil
+import subprocess
 import sys
 import tempfile
 import types
@@ -107,10 +108,33 @@ class FakeWorld:
     def ledger_needs_owner(self, item, why): self.needs.append(item)
     def ledger_needs(self, item, to, why): self.needs.append((item, to))
     def clone_path(self, item, q=0): return "/c/%s.%d" % (item, q)
-    def prepare(self, st): return None
-    def remove_clone(self, st): pass
+    def prepare(self, st):
+        return "clone failed: POOL REFUSED: pool full" if self.refuse else None
+    # the clone pool: path -> {busy, kept, real}. Empty unless a test plants one
+    pool = {}
+    pool_max = 10
+    refuse = False
+    jams = ()
+    jam_fail = None
+    def pool_clones(self): return sorted(self.pool)
+    def pool_load(self): return len(self.pool), 0, self.pool_max, 10**12
+    def clone_present(self, c): return c in self.pool
+    def clone_busy(self, c): return self.pool[c].get("busy", False)
+    def clone_idle_s(self, c): return 7200
+    def clone_wip(self, c): return {"kept": self.pool[c].get("kept", False), "real": self.pool[c].get("real", [])}
+    def remove_clone(self, st):
+        got = self.pool.pop(st.get("clone"), None)
+        return "/bundle/" + st["clone"] if got else None
+    def conductor_alarm(self, text):
+        if self.jam_fail:
+            return self.jam_fail
+        self.jams = list(self.jams) + [text]
     def clean_checkout(self, st, sha):
         self.mem_once = getattr(self, "mem_after", None)
+        if self.refuse or (self.pool and len(self.pool) >= self.pool_max):
+            return None, "checker clone failed: scratch_clone: FAILED: POOL REFUSED: pool full: 10 clones, cap 10\n"
+        if self.pool:
+            self.pool["/c/check-" + st["item"]] = {"busy": True}
         return "/c/check", None
     def published(self, sha): return self.is_pub
     def changed(self, base, sha, item): return self.touched
@@ -1444,8 +1468,229 @@ def t_alarm_routes():
     shutil.rmtree(d, ignore_errors=True)
 
 
+def parked(x, item, status, clone=None, **kw):
+    """A store record for an item the pool holds a clone for, with nothing running."""
+    st = R.new_state(item, x.now, "planted")
+    st.update(status=status, clone=clone, ledger_started=True, **kw)
+    if status == "held":
+        st["hold"] = {"at": x.now, "delivered": True, "kind": "owner_call", "why": "planted"}
+    x.s.save(st)
+    x.w.items[item] = "doing"
+
+
+def jammed(n=3):
+    """The jam of 2026-11-01: `n` checks waiting, every one of ten clones held, no run live."""
+    x = staffed(n=n, check_backlog_max=9, stages=[n])
+    x.w.pool = {}
+    x.tick(), x.tick()
+    finish_all(x)
+    x.w.pool = {x.w.clone_path(st["item"], 0): {} for st in x.s.states()}
+    return x
+
+
+def t_pool_jam():
+    x = jammed()
+    for i, status in enumerate(["retired", "retired", "held", "held", "held", "held", "held"]):
+        c = "/c/P%d" % i
+        parked(x, "P%d" % i, status, c)
+        x.w.pool[c] = {}
+    ok(len(x.w.pool) == 10, "planted: ten clones")
+    x.tick()
+    r = reading(x)
+    ok("/c/P0" not in x.w.pool and "/c/P1" not in x.w.pool, "a retired item's clone is released on the next tick")
+    ok(not R.load_breaker(x.s), "a full pool charges the breaker nothing")
+    ok(r["checks"]["running"] >= 1, "the planted jam clears: a check really starts")
+    ok(r["running"] == r["live"] and r["places"] == 3, "running means live, places what is held")
+    x.done()
+
+    # every clone live: nothing may be released, the check waits, and the cause reaches the Conductor
+    x = jammed()
+    x.w.pool = {"/c/L%d" % i: {"busy": True} for i in range(10)}
+    x.tick()
+    r = reading(x)
+    ok(len(x.w.pool) == 10, "a live clone is never released")
+    ok(not R.load_breaker(x.s), "a pool hold is a wait, not a launch failure")
+    ok(r["under"] and str(r["why"]).startswith("pool full: 10 clones") and "L3" in r["why"],
+       "the reading names the pool and who holds it, got %s" % r["why"])
+    ok(r["running"] == 0 and r["places"] == 3, "three waiting checks: 0 running, 3 places")
+    ok(not x.w.jams, "not alarmed on the first tick")
+    x.w.jam_fail = "disk gone"
+    x.tick(300)
+    ok(reading(x)["alarm_fail"] == "disk gone", "an alarm that did not land says so")
+    x.w.jam_fail = None
+    x.tick(120)
+    x.tick(120)
+    ok(len(x.w.jams) == 1 and "pool full" in x.w.jams[0] and "L3" in x.w.jams[0],
+       "within minutes, one line, the real cause: %s" % (x.w.jams,))
+    ok(not x.w.alarms, "and the half-hour staffing alarm has not had to speak")
+    for c in x.w.pool.values():
+        c["busy"] = False
+    del x.w.pool["/c/L0"]
+    del x.w.pool["/c/L1"]
+    x.tick()
+    ok(reading(x)["checks"]["running"] >= 1, "room again: a check starts")
+    ok("jam_said" not in R.stage_load(x.s), "the jam ended, the next one alarms again")
+    x.done()
+
+    # a refusal that gets past make_room (a seat's clone, a race) is a wait too, for checks and for builders
+    x = jammed()
+    x.w.pool = {}
+    x.w.refuse = True
+    x.tick()
+    ok(not R.load_breaker(x.s), "a check's POOL REFUSED does not charge the breaker")
+    x.done()
+    x = Rig(n=1, share=1.0, launch_breaker=1)
+    x.w.refuse = True
+    x.tick()
+    ok(not R.load_breaker(x.s) and x.st("I0")["status"] == "queued" and x.st("I0")["total_failures"] == 0,
+       "a builder's POOL REFUSED does not charge the breaker or the item")
+    x.done()
+
+    # the place kept for checks
+    x = staffed(n=3)
+    x.w.pool = {"/c/L%d" % i: {"busy": True} for i in range(9)}
+    x.tick()
+    ok(not x.w.launches and str(reading(x)["why"]).startswith("pool full") and "kept for checks" in reading(x)["why"],
+       "a builder may not take the last clone")
+    del x.w.pool["/c/L0"]
+    x.tick()
+    ok(x.w.launches, "one below it, a builder starts")
+    x.done()
+
+    # the order and the limits of an eviction
+    x = staffed(n=1)
+    x.w.pool = {"/c/L%d" % i: {"busy": True} for i in range(7)}
+    for i, (status, wip) in enumerate((("held", {"kept": True}), ("held", {"real": ["a.cs"]}), ("queued", {}))):
+        parked(x, "H%d" % i, status, "/c/H%d" % i)
+        x.w.pool["/c/H%d" % i] = wip
+    ok(R.make_room(x.s, x.w, x.r, x.now, []) is None and sorted(c for c in x.w.pool if "H" in c) == ["/c/H0", "/c/H1"],
+       "nothing at risk goes first")
+    x.w.pool_max = 9
+    ok(R.make_room(x.s, x.w, x.r, x.now, []) is None and "/c/H1" not in x.w.pool and x.st("H1").get("bundle") == "/bundle//c/H1",
+       "WIP goes with a bundle the next clone restores")
+    ok(R.make_room(x.s, x.w, dict(x.r, pool_check_reserve=1), x.now, [], reserve=1) is not None, "the reserve holds at a real cap")
+    x.w.pool = {}
+    x.w.pool_max = 1
+    ok(R.make_room(x.s, x.w, x.r, x.now, [], reserve=1) is None, "a pool of one still takes a builder")
+    x.w.pool = {"/c/H0": {"kept": True}, "/c/L0": {"busy": True}}
+    x.w.pool_max = 2
+    ok("H0 (commits)" in str(R.make_room(x.s, x.w, x.r, x.now, [])) and "/c/H0" in x.w.pool, "commits stay, and the hold says so")
+    parked(x, "D0", "retired", "/c/D0")
+    x.w.pool["/c/D0"] = {"kept": True}
+    x.tick()
+    ok("/c/D0" not in x.w.pool, "a dead item's commits are bundled and released")
+    x.done()
+
+    # a check that ended leaves its clone; one running keeps it
+    x = staffed(n=1)
+    parked(x, "C0", "queued", None, check={"clone": "/c/check-C0-c1", "run": {"charged": 5}}, not_before=x.now + 10**6)
+    parked(x, "C1", "checking", None, check={"clone": "/c/check-C1-c1", "run": {"charged": None}, "at": x.now, "nonce": "n", "unit": "u"})
+    x.w.up["u"] = True
+    x.w.pool = {"/c/check-C0-c1": {}, "/c/check-C1-c1": {}}
+    R.reclaim_dead(x.s, x.w, x.r, x.now, [])
+    ok(list(x.w.pool) == ["/c/check-C1-c1"], "a dead check clone goes, a running one stays")
+    x.done()
+
+    x = staffed(n=3)
+    x.s._write(x.s.p("breaker.json"), json.dumps({"fails": 4, "why": "auth dead", "until": x.now + 10**5}))
+    x.tick()
+    ok("auth dead" in reading(x)["why"], "an open breaker's reading carries its cause")
+    x.done()
+
+
+def t_pool_real_git():
+    """Effects' bundle and restore against real git: what is unpushed survives the clone's removal."""
+    d = tempfile.mkdtemp(prefix="rlpool-")
+    store = R.Store(d)
+    fx = R.Effects(dict(RULES), store)
+    def git(c, *a):
+        subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True, capture_output=True)
+    o = os.path.join(d, "o.git")
+    os.makedirs(os.path.join(d, "clones"))
+    git(d, "init", "-q", "--bare", o)
+    c = os.path.join(d, "clones", "I0")
+    git(d, "clone", "-q", o, c)
+    os.makedirs(os.path.join(c, "conversations"))
+    def put(rel, text, base=None):
+        with open(os.path.join(base or c, rel), "w", encoding="utf-8") as f:
+            f.write(text)
+    put("a.txt", "one\n")
+    git(c, "add", "a.txt")
+    git(c, "commit", "-qm", "a")
+    git(c, "push", "-q", "origin", "HEAD")
+    x = R.new_state("I0", 0, "t")
+    x["clone"] = c
+    store.save(x)
+    ok(fx.remove_clone({"clone": c, "item": "I0"}) is None and not fx.clone_present(c), "a clean clone needs no bundle")
+    git(d, "clone", "-q", o, c)
+    os.makedirs(os.path.join(c, "conversations"))
+    put("a.txt", "two\n")
+    put("new one.txt", "wip\n")
+    put("conversations/n.md", "noise\n")
+    w = fx.clone_wip(c)
+    ok(sorted(w["real"]) == ["a.txt", "new one.txt"] and not w["kept"], "noise is not WIP: %s" % (w,))
+    b = fx.remove_clone({"clone": c, "item": "I0"})
+    ok(b and not fx.clone_present(c) and b.startswith(store.p("items", "I0")), "bundled, then gone: %s %s" % (b, fx.clone_present(c)))
+    git(d, "clone", "-q", o, c)
+    ok(fx.restore_bundle("I0", b, c) == [], "the bundle applies")
+    with open(os.path.join(c, "a.txt"), encoding="utf-8") as f:
+        ok(f.read() == "two\n", "the changed file came back")
+    ok(os.path.exists(os.path.join(c, "new one.txt")), "the new file came back")
+    ok(not os.path.exists(os.path.join(c, "conversations/n.md")), "the noise stayed in the bundle")
+    git(c, "checkout", "-q", "--", "a.txt")
+    os.remove(os.path.join(c, "new one.txt"))
+    put("b.txt", "committed\n")
+    git(c, "add", "b.txt")
+    git(c, "commit", "-qm", "b")
+    ok(fx.clone_wip(c)["kept"], "an unpushed commit is kept")
+    b = fx.remove_clone({"clone": c, "item": "I0"})
+    ok(os.path.exists(os.path.join(b or "", "commits.bundle")), "a dead clone's commits are in the bundle")
+    git(d, "clone", "-q", o, c)
+    git(c, "commit", "-qm", "detached", "--allow-empty")
+    git(c, "checkout", "-q", "--detach")
+    os.remove(os.path.join(c, ".git", "HEAD"))
+    ok(fx.clone_wip(c)["kept"], "a clone git cannot read is kept")
+    ok(fx.remove_clone({"clone": c, "item": "I0"}) is None and os.path.isdir(c), "and a bundle that fails keeps the clone")
+    # what a plain diff and a plain bundle do not carry
+    shutil.rmtree(c)
+    git(d, "clone", "-q", o, c)
+    put("a.txt", "staged\n")
+    git(c, "add", "a.txt")
+    put("a.txt", "one\n")
+    put(".gitignore", "*.local\n")
+    git(c, "add", ".gitignore")
+    git(c, "commit", "-qm", "ign", "--", ".gitignore")
+    git(c, "push", "-q", "origin", "HEAD")
+    put("a.txt", "staged\n")
+    git(c, "add", "a.txt")
+    put("a.txt", "one\n")
+    put("keep.local", "ignored work\n")
+    put("x.txt", "s1\n")
+    git(c, "add", "x.txt")
+    git(c, "stash", "push", "-q", "-m", "older", "x.txt")
+    put("x.txt", "s2\n")
+    git(c, "add", "x.txt")
+    git(c, "stash", "push", "-q", "-m", "newer", "x.txt")
+    ok("keep.local" in fx.clone_wip(c)["real"], "an ignored file is WIP")
+    b = fx.remove_clone({"clone": c, "item": "I0"})
+    with open(os.path.join(b, "index.patch"), encoding="utf-8") as f:
+        ok("+staged" in f.read(), "content only the index holds is in the bundle")
+    u = os.path.join(d, "unb")
+    git(d, "clone", "-q", o, u)
+    git(u, "fetch", "-q", os.path.join(b, "commits.bundle"), "refs/rm-stash/*:refs/rm-stash/*")
+    shown = [subprocess.run(["git", "-C", u, "show", "refs/rm-stash/%d:x.txt" % i], capture_output=True, text=True).stdout for i in (0, 1)]
+    ok(sorted(shown) == ["s1\n", "s2\n"], "every stash is in the bundle, not just the newest: %s" % (shown,))
+    git(d, "clone", "-q", o, c)
+    put("keep.local", "upstream's\n")
+    ok(any("keep.local" in w for w in fx.restore_bundle("I0", b, c)), "a restore that meets a newer file says so")
+    with open(os.path.join(c, "keep.local"), encoding="utf-8") as f:
+        ok(f.read() == "upstream's\n", "and does not overwrite it")
+    ok(R.clone_item("/x/check-AB_C-1-c12") == "AB_C-1" and R.clone_item("/x/AB.q2") == "AB", "clone names read back")
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def main():
-    for t in (t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_pool_jam, t_pool_real_git, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):

@@ -203,6 +203,7 @@ day through this route against all other closes. CLOSED_LOOP_PROVE_EDIT_RUN_LOOK
 | Fault | Result |
 |---|---|
 | Worker dies | Fenced, `worker_lost`, TOP, fresh worker in the same clone with the same record |
+| Pool full (`relentless_pool_jam`, 2026-11-01) | See §14: a wait, never a launch failure; released or alarmed |
 | Same failure three times | Approach changes, pilot or redesign, it does not stop |
 | Stale worker writes, pushes or closes after a reassign | Refused, exit 3, nothing written |
 | Spend limit | `held`, needs owner, Conductor told, nothing else is held |
@@ -306,3 +307,19 @@ no alarm: nothing is wrong. A filled stage ends the episode; a done alarm item w
 `day_spend_limit` and the alarm goes. Burn at 8 may pass the 3%/h stop line, so the rise may stop at 5, by design.
 Queues for heavy tests and Windows builds are not measured (plan step 8). The memory low is sampled at each tick and after
 each clone, not continuously; the OOM count catches what it misses.
+
+## 14. The clone pool can jam; it must not stall
+
+The jam of 2026-11-01: ten clones parked, no run live, the engine dead for six hours. Every clone counted as unpushed
+(session dumps and ledger noise), so nothing could be reused; retired and held items kept theirs; each POOL REFUSED was
+charged as a launch failure, so the breaker backed off for hours. The cap of 10 clones / 40 GB is the owner's and stays.
+
+- **A dead run releases its clone.** Every tick, `reclaim_dead` releases clones of retired, closed or unknown items and of
+  checks no longer running, bundling first (§4). A live clone is never touched.
+- **A place is kept for checks.** `pool_check_reserve` (1): a builder may not take the last clone; a check may.
+- **Pool-full releases, in order.** `make_room`: dead, then parked with nothing at risk (candidate, held, queued), then
+  parked with WIP, whose bundle the item's next clone restores, so "same clone" in §1 means same work. Parked commits stay.
+- **Pool-full is a wait.** POOL REFUSED is not `launch_failed`: no breaker, no failure on the item.
+- **A jam alarms.** Under target with nothing live, or pool-full, for `jam_alarm_s` (300): one RAISE FIRST line in the Conductor
+  log naming the cause and who holds the pool. An open breaker's reading carries its cause.
+- **`running` means live.** The reading's `places` holds what used to be called running: candidates waiting for checks count there.
