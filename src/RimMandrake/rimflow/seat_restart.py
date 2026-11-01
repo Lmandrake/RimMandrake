@@ -1216,6 +1216,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
                   window_s=rec.get("window_s"), gen=rec.get("gen") or rs.get("gen"))
         act(do="restart_hold", seat=seat, why="pending restart found killed at %s (state reconciled)" % _iso(rec["killed_at"]))
         return
+    if rs.get("source") in FORCED and cfg.get("backstop") is not True:
+        return _cancel(rs, seat, "the backstop is off for this seat: a pending forced restart does not outlive it", now, act)
     if cur is None or cur.get("sessionId") != rs.get("session_id"):
         return _gone(seat, cfg, rs, obs, ro, now, act,
                      "the window's session changed or is gone (%s)" % ((cur or {}).get("sessionId")))
@@ -1498,6 +1500,10 @@ def execute(a, sch, st, apply, now, fx=None):
         rs.update(state="cancelled", why="seat_restart is off for %s: kill refused" % seat, ended_at=now)
         rs.pop("claimed_at", None)
         return "refused: seat_restart is off for %s (nothing killed)" % seat
+    if rs.get("source") in FORCED and config(sch)[seat].get("backstop") is not True:
+        rs.update(state="cancelled", why="the backstop is off for %s: kill refused" % seat, ended_at=now)
+        rs.pop("claimed_at", None)
+        return "refused: the backstop is off for %s (nothing killed)" % seat
     if rs.get("state") != "claimed":
         return "skipped: restart state is %s" % rs.get("state")
     if not apply:
@@ -1987,7 +1993,8 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
     blind = []
     for tx in prior:                     # what he typed to a fresh window that died before answering
         sc = cursor_scan(tx, 0)
-        msgs = msgs + ((sc or {}).get("human") or []) + undelivered(tx)
+        owed = unanswered(tx, 0)         # what that window already answered is not replayed (Codex closeout review #3)
+        msgs = msgs + (((sc or {}).get("human") or []) if owed is None else owed) + undelivered(tx)
         if sc is None or sc["malformed"] or sc["torn"]:
             blind.append(tx)
     if not msgs:

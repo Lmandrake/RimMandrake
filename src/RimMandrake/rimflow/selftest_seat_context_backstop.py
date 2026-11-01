@@ -577,6 +577,29 @@ def test_review_findings():
     check(isinstance("\n".join(out), str), "a malformed tool call cannot crash the digest")
 
 
+def test_closeout_review_findings():
+    """Codex closeout review 2026-10-31: #1 pending saved before the request is consumed; #2 a forced restart does not
+    outlive its backstop switch, at the decide step or at the kill."""
+    order, sch = [], limits(backstop=False)
+    rs = {"state": "claimed", "source": "backstop_hard", "session_id": "sid-old", "ts": T0}
+    st = {"seats": {}, "seat_restart": {"FOUNDRY": rs}}
+    killed = []
+    res = SR.execute({"do": "restart_kill", "seat": "FOUNDRY", "pid": 999, "session_id": "sid-old", "argv": ["x"]}, sch, st,
+                     True, T0, {"kill": lambda p, start=None: killed.append(p)})
+    check("refused" in res and not killed and rs["state"] == "cancelled", "#2: execute refuses a forced kill with the backstop off")
+    rs2 = {"state": "pending", "ts": T0, "source": "backstop", "session_id": "sid-old", "pid": 999, "start": 77}
+    st2 = {"seats": {}, "seat_restart": {"FOUNDRY": rs2}}
+    out = []
+    SR._pending("FOUNDRY", dict(sch["seat_restart"]["seats"]["FOUNDRY"], backstop=False), rs2, st2, {}, {}, {"sessionId": "sid-old"},
+                T0 + 1, lambda **k: out.append(k))
+    check(rs2["state"] == "cancelled" and [o["do"] for o in out] == ["restart_cancel"], "#2: a pending backstop is cancelled when it is off")
+    a = [{"do": "restart_request", "seat": "FOUNDRY", "req_ts": T0}]
+    sch2 = dict(limits(), ledger_notes=False)
+    D.execute(a, sch2, {"seats": {}, "seat_restart": {}}, ROOT, True, T0,
+              {"persist": lambda: order.append("persist"), "seat_restart": {"consume": lambda seat, **k: order.append("consume")}})
+    check(order == ["persist", "consume"], "#1: pending persisted before the request is consumed (%s)" % order)
+
+
 def test_live_schedule():
     with open(os.path.join(HERE, "dispatcher_schedule.json")) as f:
         s = json.load(f)["seat_restart"]["seats"]

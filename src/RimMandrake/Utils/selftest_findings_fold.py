@@ -230,10 +230,14 @@ try:
     ledger0 = tree(led)
 
     def run(*args, wrap=""):
-        return subprocess.run([sys.executable, "-c", wrap + "import runpy, sys; sys.argv = ['findings_fold.py'] + %r; "
-                               "runpy.run_path(%r, run_name='__main__')" % (list(args or ["run"]),
-                                                                          os.path.join(HERE, "findings_fold.py"))],
-                              env=env, capture_output=True, text=True, timeout=120)
+        before = tree(led)
+        r_ = subprocess.run([sys.executable, "-c", wrap + "import runpy, sys; sys.argv = ['findings_fold.py'] + %r; "
+                             "runpy.run_path(%r, run_name='__main__')" % (list(args or ["run"]),
+                                                                        os.path.join(HERE, "findings_fold.py"))],
+                            env=env, capture_output=True, text=True, timeout=120)
+        if tree(led) != before:              # around THIS run, before any fixture restores the shard (closeout #8)
+            check(False, "a run changed the ledger: %r" % (args,))
+        return r_
 
     def snap():
         return open(rep, "rb").read() if os.path.exists(rep) else None
@@ -385,6 +389,11 @@ try:
                          json.dumps(dict(tbl, schema="findings_fold/2")) + FF.TABLE_END)):
         closed("G8 an existing report with %s" % label, lambda text=text: open(rep, "w").write(text),
                lambda: open(rep, "wb").write(good))
+    for label, bad in (("counts null (closeout #7)", dict(tbl, counts=None)), ("signatures null", dict(tbl, signatures=None)),
+                       ("a signature that is no row", dict(tbl, signatures={"S1": 7}))):
+        closed("G8 an existing report with %s" % label,
+               lambda bad=bad: open(rep, "w").write(head + FF.TABLE_FENCE + json.dumps(bad) + FF.TABLE_END),
+               lambda: open(rep, "wb").write(good))
     os.chmod(rep, 0)
     r = run()
     os.chmod(rep, 0o644)
@@ -393,6 +402,23 @@ try:
     os.remove(rep)
     r = run()
     check(r.returncode == 0 and os.path.isfile(rep) and same_table(good), "G8 a missing report is written")
+    sig0 = next(iter(json.loads(snap().decode().rpartition(FF.TABLE_FENCE)[2][:-len(FF.TABLE_END)])["signatures"]))
+    keep = open(decf, "rb").read() if os.path.exists(decf) else None
+    line0 = json.dumps({"sig": sig0, "as": "undo", "by": "F", "ts": ts(29, 1), "why": "w"})
+    with open(decf, "w") as f:
+        f.write(line0)                       # a valid last line with no newline (closeout #4)
+    r = run("decide", sig0, "--as", "retire", "--why", "w", "--seat", "FOUNDRY")
+    lines = open(decf).read().splitlines()
+    check(r.returncode == 0 and len(lines) == 2 and all(json.loads(x)["sig"] == sig0 for x in lines),
+          "G8 decide never fuses onto a last line with no newline (got %d: %r)" % (r.returncode, lines))
+    with open(decf, "w") as f:
+        f.write("not json\n")
+    r = run("decide", sig0, "--as", "retire", "--why", "w", "--seat", "FOUNDRY")
+    check(r.returncode == 2 and open(decf).read() == "not json\n", "G8 decide appends nothing to a log that does not parse")
+    if keep is None:
+        os.remove(decf)
+    else:
+        open(decf, "wb").write(keep)
     other = os.path.join(led, "events", "OTHER.jsonl")
     open(other, "w").close()
     seen_new = tree(led) != ledger0
@@ -405,6 +431,33 @@ try:
 finally:
     tempfile.tempdir = None
     shutil.rmtree(tmp, ignore_errors=True)
+
+# ---- Codex closeout review 2026-10-31 (#1 #3 #4 #5 #6)
+check(not pair("lookup failed: tenant20261027T010203A", "lookup failed: tenant20261028T010203A"),
+      "C1 a timestamp glued inside an identifier is the identifier: no merge")
+check(not pair("opaque=J20261027T010101Z-a1b2c3ff", "opaque=J20261028T020202Z-d4e5f6ff"),
+      "C1 a job-shaped prefix of a longer id is kept")
+check(pair("at 20261027T010101Z failed", "at 20261028T020202Z failed"), "C1 a real compact timestamp still folds")
+check(pair("run J20261027T010101Z-a1b2c3.a2 failed", "run J20261028T020202Z-d4e5f6 failed"), "C1 a real job id still folds")
+_d = {"sig": "S1", "as": "merge", "into": "X", "by": "F", "ts": ts(29, 1), "why": "w"}
+_u = dict(_d, **{"as": "undo", "into": None})
+check(FF.latest_decision("S1", set(), [], [_d, _u]) is None, "C3 an undo in the same second as the decision wins")
+check((FF.latest_decision("S1", set(), [], [_u, _d]) or {}).get("as") == "merge", "C3 and the later of a tie is what counts")
+_r = rec("JX", "FlowWorks", ts(27, 1), [("c1", "r1", "FAIL", "x")], [], "IT_A")
+_r["result"]["outcome"] = "FAILED"
+_r["result"]["rows"] = 7
+check(FF.record_fault(_r) is not None, "C5 rows that are no list are refused on a non-DONE result too")
+del _r["result"]["rows"]
+check(FF.record_fault(_r) is None, "C5 a non-DONE result with no rows stays valid")
+with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as _f:
+    json.dump(dict(json.load(open(FF.RULES_PATH)), normalise=[["x", "\\2"]]), _f)
+try:
+    FF.load_rules(_f.name)
+    _refused = False
+except FF.Unmeasured:
+    _refused = True
+os.remove(_f.name)
+check(_refused, "C6 a bad replacement template is UNMEASURED at load")
 
 print("\n%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

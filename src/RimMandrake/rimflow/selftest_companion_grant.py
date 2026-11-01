@@ -129,7 +129,8 @@ ok("KNOWN_NEEDS mirrors priority.BY_GAME", sorted(cg.KNOWN_NEEDS), sorted(_prio.
 # review2 #2: a READABLE config with a malformed hold_needs fails closed (load_conf refuses it), never filters nothing
 BADC = os.path.join(D, "bad_conf.json")
 for label, bad in (("a string", "bridge"), ("an empty list", []), ("an unknown need", ["bridge", "brige"]),
-                   ("a non-string entry", ["bridge", 3])):
+                   ("a non-string entry", ["bridge", 3]),
+                   ("bridge alone (game-up leaks past a lapsed grant)", ["bridge"]), ("offline held", ["offline", "bridge", "game-up"])):
     json.dump(dict(CONF, hold_needs=bad), open(BADC, "w"))
     try:
         cg.load_conf(BADC)

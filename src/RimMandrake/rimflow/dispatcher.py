@@ -1057,6 +1057,9 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                     stamped = True
             if a["do"] in SR.DOES:
                 try:
+                    if a["do"] == "restart_request" and sr_apply(sch, apply):
+                        do_persist()     # pending on disk BEFORE the request file is consumed: a tick killed between them
+                                         # must not forget the restart (Codex closeout review #1)
                     res = SR.execute(a, sch, st, sr_apply(sch, apply), now, fx.get("seat_restart"))
                 except Exception as e:  # noqa: BLE001 - the state save must still run
                     res = "FAILED: %s: %s" % (type(e).__name__, str(e)[:200])

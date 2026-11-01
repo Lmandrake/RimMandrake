@@ -78,6 +78,8 @@ def load_rules(path=None):
             rules[k]
         rules["_mh"] = [re.compile(p, re.I) for p in rules["machine_health_patterns"]]
         rules["_norm"] = [(re.compile(p), r) for p, r in rules["normalise"]]
+        for rx, rep in rules["_norm"]:
+            rx.sub(rep, "")                         # a bad replacement template is a rules fault, not a crash mid-fold
         return rules
     except (OSError, ValueError, KeyError, TypeError, re.error) as e:
         raise Unmeasured("rules %s unreadable: %s: %s" % (path, type(e).__name__, e))
@@ -122,8 +124,8 @@ def record_fault(r):
     if not ISO_RE.match(str(res.get("finished"))):
         return "no finish time (got %r)" % res.get("finished")
     rows = res.get("rows")
-    if res["outcome"] == "DONE" and not isinstance(rows, list):
-        return "a DONE result whose rows are not a list"
+    if (res["outcome"] == "DONE" or rows is not None) and not isinstance(rows, list):
+        return "a %s result whose rows are not a list" % res["outcome"]
     seen = set()
     for k, x in enumerate(rows if isinstance(rows, list) else []):
         if not isinstance(x, dict) or not isinstance(x.get("row"), str) or not x["row"] \
@@ -288,7 +290,8 @@ def latest_decision(sig, names, spawns, lines):
     ds = [dict(d, src="decisions") for d in lines if d["sig"] == sig] + \
         [{"as": "work", "into": e.get("name"), "by": e.get("seat"), "ts": e.get("ts") or "",
           "why": "spawned from %s" % e["from"], "src": "ledger"} for e in spawns if e["from"] in names]
-    last = max(ds, key=lambda d: d["ts"]) if ds else None
+    # ties (one-second clock) go to the later line: an undo right after a decision wins
+    last = ds[max(range(len(ds)), key=lambda k: (ds[k]["ts"], k))] if ds else None
     return None if not last or last["as"] == "undo" else last
 
 
@@ -425,7 +428,9 @@ def read_prev(path):
         t = json.loads(body[:-len(TABLE_END)]) if fence and body.endswith(TABLE_END) else None
     except ValueError:
         t = None
-    if not isinstance(t, dict) or set(t) != TABLE_KEYS or t["schema"] != SCHEMA:
+    if not isinstance(t, dict) or set(t) != TABLE_KEYS or t["schema"] != SCHEMA \
+            or not isinstance(t.get("counts"), dict) or not isinstance(t.get("signatures"), dict) \
+            or not all(isinstance(s, dict) for s in t["signatures"].values()):
         raise Unmeasured("existing report %s holds no whole %s table (partial, edited or another version): "
                          "move it aside to start again" % (path, SCHEMA))
     return t, text
@@ -526,9 +531,14 @@ def decide(a, seat, rules):
         print("REFUSED: %s" % decision_fault(line))
         return 2
     path = decisions_path(rules)
+    read_decisions(path)                            # never append to a log that does not parse (raises Unmeasured)
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(json.dumps(line, sort_keys=True) + "\n")
+    with open(path, "a+b") as f:
+        lead = b""
+        if f.seek(0, os.SEEK_END) > 0:
+            f.seek(-1, os.SEEK_END)
+            lead = b"" if f.read(1) == b"\n" else b"\n"   # a last line with no newline must not fuse with this one
+        f.write(lead + (json.dumps(line, sort_keys=True) + "\n").encode("utf-8"))
     print("decided %s as %s -> %s. Commit %s by explicit path." % (a.sig, a.as_, into, os.path.relpath(path, REPO)))
     return 0
 

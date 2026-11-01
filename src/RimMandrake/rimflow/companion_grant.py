@@ -26,6 +26,7 @@ CONF_PATH = os.path.join(HERE, "companion_grant.json")
 # The `needs` values rimflow knows (priority.BY_GAME's keys; selftest_companion_grant pins the two equal). Mirrored,
 # not imported: ops_watch imports this module top-level, outside the rimflow package.
 KNOWN_NEEDS = ("offline", "deploy", "game-up", "bridge", "harvest", "owner")
+LIVE_NEEDS = ("bridge", "game-up")    # the needs that drive the live game: no valid config lets them through a lapsed grant
 
 
 def load_conf(path=CONF_PATH):
@@ -40,6 +41,8 @@ def load_conf(path=CONF_PATH):
     if (not isinstance(needs, list) or not needs
             or not all(isinstance(n, str) and n in KNOWN_NEEDS for n in needs)):
         raise ValueError("hold_needs %r must be a non-empty list of known needs %s" % (needs, KNOWN_NEEDS))
+    if not set(LIVE_NEEDS) <= set(needs) or "offline" in needs:     # a hold that lets live work through, or hides offline
+        raise ValueError("hold_needs %r must hold %s and never offline" % (needs, LIVE_NEEDS))
     prof = conf.get("test_profiles")
     if not isinstance(prof, list) or not prof or not all(isinstance(x, str) and x for x in prof):
         raise ValueError("test_profiles %r must be a non-empty list of strings" % (prof,))

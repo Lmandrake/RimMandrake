@@ -1376,6 +1376,30 @@ def test_g8_bench_request_logs_to_the_conductor_log():
     check("landed x" in log, "G8 the close-out note lands in the Conductor log, not seat_log/BENCH.md")
 
 
+def test_g8b_recovery_does_not_replay_what_a_dead_window_answered():
+    """Codex closeout review #3: fresh window A answered H1, then died owing H2. Window B reads H2 only."""
+    import contextlib
+    import io
+    root = os.path.join(TMP, "g8b")
+    os.makedirs(os.path.join(root, "restart"))
+    a = _tx_file("g8b_a", [_u("1970-01-12T13:50:00Z", "ANSWERED_H1", origin={"kind": "human"}, promptSource="typed"),
+                           {"type": "assistant", "timestamp": "1970-01-12T13:50:30Z", "message": {"stop_reason": "end_turn"}},
+                           _u("1970-01-12T13:51:00Z", "OWED_H2", origin={"kind": "human"}, promptSource="typed")])
+    old = _tx_file("g8b_old", [_u("1970-01-12T13:45:00Z", "goodbye", origin={"kind": "human"}, promptSource="typed")])
+    rec = {"seat": "BENCH", "session_id": "sid-old", "killed_at": T0, "req_ts": T0, "gen": "g", "tx_path": old,
+           "tx_offset": os.path.getsize(old), "woken_tx": a}
+    real = SR.transcript_for
+    out = io.StringIO()
+    try:
+        SR.transcript_for = lambda me, cfg: "/tx/" + me["sessionId"]
+        with contextlib.redirect_stdout(out):
+            SR._wake_conductor("BENCH", SR.config(bsched())["BENCH"], rec, root=root, me={"sessionId": "b"})
+    finally:
+        SR.transcript_for = real
+    check("OWED_H2" in out.getvalue() and "ANSWERED_H1" not in out.getvalue(),
+          "G8b the wake gives the unanswered message and not the answered one (%r)" % out.getvalue()[:300])
+
+
 def test_g9_wt_bench_keeps_the_conductor_wake_under_seat_loop():
     import install_wt_seat_profiles as W
     real = W.restart_seats
