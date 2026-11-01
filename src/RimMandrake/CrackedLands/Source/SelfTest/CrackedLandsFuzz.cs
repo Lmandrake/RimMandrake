@@ -4,6 +4,7 @@
 //   refuge   who shelters on the ledges and which ledge cell (RM_RefugeKernel)
 //   pan      the sleeper pan's dig-in / wake state machine (RM_PanKernel)
 //   rules    recede aftermath timers, biome score, fossil strata geometry (RM_CanyonRulesKernel)
+//   arm      the witness quest's armed wall (RM_FloodKernel.ArmWall) from whatever phase a natural cycle left
 // A failing action sequence (returned or thrown) is shrunk (delta debugging) and printed as
 // `family seed N: shrunk A->B: message | actions`.
 using System;
@@ -103,7 +104,7 @@ namespace RimMandrake.CrackedLands.SelfTest
             var rng = new Random(seed ^ 0x77);
             // per-cycle ledger for the spec
             bool rungZero = false; var rung = new List<int>(); var beats = new List<int>(); bool enteredHerald = false;
-            int cycleStartNext = -1; bool floodedThisCycle = false; bool cfgTouched = false; int heraldEnteredAt = int.MinValue;
+            bool floodedThisCycle = false; bool cfgTouched = false; int heraldEnteredAt = int.MinValue;
             FloodPhase prev = s.Phase;
             int step = 0;
             foreach (var a in acts)
@@ -151,6 +152,8 @@ namespace RimMandrake.CrackedLands.SelfTest
                                 if (st.Recede)
                                 {
                                     Recedes++;
+                                    // the phase table allows Warned -> Flooding, so only this catches a flood the kernel entered without signalling StartFlood
+                                    Check(floodedThisCycle, "receded from a flood that never signalled StartFlood this cycle" + where);
                                     Check(cfg.Active ? (now >= before.FloodEndTick) : true, "receded before the flood's end" + where);
                                     Check(s.Phase == FloodPhase.Dry && s.LastRecedeTick == now, "recede bookkeeping" + where);
                                     int period = RM_FloodKernel.DaysToTicks(cfg.FloodPeriodDays);
@@ -416,7 +419,7 @@ namespace RimMandrake.CrackedLands.SelfTest
             var s = new PanState();
             bool awake = r.Next(2) == 0, wokeUp = false, startsDormant = r.Next(3) != 0, water = false, flooding = false, canSeal = true, wakeOn = true, digOn = true;
             int interval = 500; float hours = new[] { 0.2f, 1f, 12f }[r.Next(3)];
-            int step = 0; int dryExpected = 0; bool sealedExpected = false;
+            int step = 0;
             foreach (var a in acts)
             {
                 step++; Steps++;
