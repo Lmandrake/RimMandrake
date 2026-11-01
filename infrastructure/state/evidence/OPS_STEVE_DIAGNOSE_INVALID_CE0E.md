@@ -26,7 +26,7 @@ green canary. The auditor called the fix SOUND on 2026-10-30.
 ## It has not come back
 
 From 2026-10-29T20:27Z to 2026-10-31T23:26Z the lane finished 228 jobs: 211 DONE, 17 INVALID. None of the 17 carry
-`no live colonist` and none are CANARY (HARNESS 15, DEPLOY 1, GAME_DIED 1). `droid_dig` went DONE 5 times.
+`no live colonist` and none are CANARY (HARNESS 15, DEPLOY 1, GAME_DIED 1). `droid_dig` was in 4 of the DONE jobs (the proof job 9f6088, at 20:26Z, is a fifth, just before this window).
 
 Rerun (the first line shows the instrument can see the streak):
 
@@ -49,10 +49,21 @@ The alarm crossed again on 10-30 and 10-31. Those are not this streak:
 | 5f50de, 77e9fd, 86ef58, f0c31c, 28a21e (10-30) | kept game stopped answering the bridge | OPS_STEVE_DIAGNOSE_INVALID_630C, STEVE_LANE_FIX_WEDGED_KEPT_GAME |
 | 1fe7ea, 00238b, dd60e2 (10-31) | game died, then a wounded game was reused (`no_game`) | STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP; alarm item OPS_STEVE_DIAGNOSE_INVALID_577B still open |
 | 1e76b1, 74d756, d766a0 (10-31) | modcheck exit 5 with no sheet | MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET |
-| e1966f (10-31) | `relpath` ValueError on the UNC clone | removed from `status.py` (the comment at the `os.walk` loop says why) |
-| 74f811 (`embedded null character`), 78564c (exit 9) (10-31) | modcheck crashes in the Python runner; the path text was corrupt or the process died | no item names these two; they may be the same family as exit 5 (a guess, unmeasured) |
-| bf55c0, c153aa (10-29, 10-31) | `companion_handshake`: UNKNOWN-outcome marker | not traced here; a handshake item closed in ledger commit 0c76b7306a, after both jobs |
-| b101b5 (10-29) | deploy refused: `RSW_Stygium` alias had no deployed definer | not traced here |
+| e1966f (10-31) | `relpath` ValueError on the UNC clone | RETEST_RULE_ONCE_PER_CODE_VERSION, done: 8197e06e6e removed `relpath` from `status.py` |
+| 74f811 (`embedded null character`), 78564c (exit 9) (10-31) | python.exe on Steve: a NUL inside a walked path, then a native death 3 s into the next job's run, about a minute later | STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO (open; both jobs noted there); 78564c also noted on MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET (open) |
+| bf55c0, c153aa (10-29, 10-31) | `companion_handshake` refused because an earlier call (`jawa/pawn_need`, `jawa/set_draft`) had an UNKNOWN outcome | MODCHECK_FIX_UNKNOWN_OUTCOME_KEPT_GAME, done: 138039a280 made the handshake read-only |
+| b101b5 (10-29) | job submitted without Armoury, so the deploy guard refused the `RSW_Stygium` alias | CONTAGION_DIVE_HARDEN_WANDERERS_WELCOME, done: FOUNDRY resubmitted with `--deploy Armoury` (a65f87, e58abd) |
+
+How firm each of the last three is:
+
+- **The crash pair.** The ledger marks Steve's results before the 18:03Z reboot as suspect (a per-CPU SIMD fault), and both
+  jobs fall there. The link to that fault is a hypothesis: Steve's event log for 09:42Z was not read, because Steve has no
+  route from this clone. The lane went 24 of 24 DONE after the reboot. A NUL path would still crash `runtime_hash` if it
+  came back.
+- **The handshake.** No refusal since the fix, and all 24 jobs after it ran on code containing it. The fix stops the
+  false refusal; why the thirst chain left those markers is untraced. Its job logs are on Steve.
+- **The Stygium refusal.** This is the guard working as designed, and its message names the fix. It happened on 2 of 639
+  jobs (f7c1d2 on 10-26, b101b5), and never since.
 
 For the next alarm, start with `invalid_census.py --since <streak start>`: the streaks so far had different causes, so
 do not assume this one.
