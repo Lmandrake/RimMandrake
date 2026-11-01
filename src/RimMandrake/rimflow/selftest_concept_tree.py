@@ -130,10 +130,13 @@ def main():
         check("positive: write", not errs, errs)
         errs, fl = CT.lint(d, repo)
         check("positive: lint passes", not errs, errs)
-        check("multiplayer is flagged on every lint", any("multiplayer" in x for x in fl), fl)
         floor = CT.load_floor()[0]
         mp = [x for x in floor["lines"] if x["id"] == "multiplayer"][0]
-        check("multiplayer stays blank", mp["default"] is None and mp["class"] == "open_owner", mp)
+        check("multiplayer is a standing ruling, not waivable, text is his",
+              mp["class"] == "standing" and mp["waivable"] is False and mp["default"].startswith("No multiplayer support"), mp)
+        check("no flag is raised while no line is open_owner", CT.flags(floor) == [] and not any("multiplayer" in x for x in fl), fl)
+        fx = dict(floor, lines=floor["lines"] + [dict(id="fx", **{"class": "open_owner"}, flag="UNANSWERED fx")])
+        check("open_owner code path still flags (fixture)", CT.flags(fx) == ["FLAG fx: UNANSWERED fx"], CT.flags(fx))
 
         errs, _ = CT.gate(d, repo)
         check("unsigned tree: gate refuses", any("signature" in e for e in errs), errs)

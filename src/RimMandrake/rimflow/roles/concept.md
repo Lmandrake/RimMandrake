@@ -106,12 +106,11 @@ signature, and refuses Setter fields (`oracle`, `tier`, `guard`, `budget`). Then
 - Whatever the mod needs measured and nothing can yet measure: an `instrument` leaf, depended on through `needs_instrument`.
 - The floor is inherited by hash, never copied. State only where this mod differs (`floor_off`, with his words).
 
-## The floor and the one blank line
+## The floor and the standing rulings
 
 `concept_floor.json` is the bar every mod inherits (tick cost, stalls, save, log, settings, art, text, the standing
-rulings). Numeric lines are advisory until five mods have calibrated them. **`multiplayer` is his and unanswered: leave it
-blank, never answer it for him, never infer a promise from it.** Every lint prints the flag; pass it on and move on.
-`mod_settings` and the standing rulings cannot be turned off: no worldgen of any kind, every DLC assumed, biomes in scope
+rulings). Numeric lines are advisory until five mods have calibrated them. Multiplayer is ruled: **no multiplayer support** (his card 2026-11-01): spend no cost, make no promise, build no leaf; seeded randomness only where free.
+`mod_settings` and the standing rulings cannot be turned off: no multiplayer support, no worldgen of any kind, every DLC assumed, biomes in scope
 only, no live flight test without him, our names.
 
 ## Handoff

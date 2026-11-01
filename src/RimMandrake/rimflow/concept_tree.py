@@ -43,7 +43,7 @@ SLUG = re.compile(r"^[a-z][a-z0-9_]*$")
 OBSERVER = re.compile(r"\b(player|colonist|colonists|viewer|observer|pawn|pawns|he|you|screen|log|reader|tester|the save)\b",
                       re.I)
 CONSTRAINT = re.compile(r"^\s*(at most|at least|under|over|no more than|<=?|>=?)?\s*\d+(\.\d+)?\s*(ms|s|min|mb|gb|kb|tps|fps|%|"
-                        r"per [a-z]+|[a-z]+/[a-z]+)\b.*\bon\s+\S+", re.I)
+                        r"per [a-z]+|[a-z]+/[a-z]+)(?![A-Za-z0-9]).*\bon\s+\S+", re.I)
 WALK_NEEDS = {"reload": r"\breload(s|ed|ing)?\b", "repeat": r"\brepeat", "second order": r"\b(second|another|different|other|opposite|reverse|reversed)\s+order\b|\border\s+reversed\b|\breverse\s+the\s+order\b"}
 TOOL_ROOT = "tool"
 STOP = set("the a an of to in on and or it is at for by this that with how what does do not be are was you your his he "
@@ -101,7 +101,7 @@ def parse_sheet(path):
     return out
 
 
-def sheet_errors(sheet, tree):
+def sheet_errors(sheet, tree, floor=None):
     errs = []
     for s in SECTIONS:
         if s not in sheet:
@@ -110,7 +110,7 @@ def sheet_errors(sheet, tree):
         errs.append("sheet: `his words` is empty")
     leaves = {x.get("id"): x for x in tree.get("leaves") or [] if isinstance(x, dict)}
     waived = {w.get("id") for w in tree.get("waived") or [] if isinstance(w, dict)}
-    floor_ids = {ln["id"] for ln in load_floor()[0]["lines"]}
+    floor_ids = {ln["id"] for ln in (floor or load_floor()[0])["lines"]}
     named = set()
     for sec, allowed in (("does", ("leaf", "floor", "waived", "advisory")), ("does not", ("leaf", "floor", "waived"))):
         for line in sheet.get(sec, []):
@@ -353,7 +353,7 @@ def lint(d, repo=REPO, floor_file=None):
             errs.append("no sheet.md")
         else:
             sheet = parse_sheet(sp)
-            errs += sheet_errors(sheet, tree)
+            errs += sheet_errors(sheet, tree, floor)
             if tree.get("dry_walk") is True:
                 with open(sp, encoding="utf-8") as f:
                     if "DRY WALK" not in f.readline():
@@ -557,7 +557,7 @@ def askcheck(tree, question):
     hits = []
     for w in tree.get("waived") or []:
         s = set(squash(w.get("scope")).split()) - STOP
-        if s and len(q & s) >= max(2, (len(s) + 1) // 2):
+        if s and len(q & s) >= min(len(s), max(2, (len(s) + 1) // 2)):
             hits.append(w.get("id"))
     return hits
 

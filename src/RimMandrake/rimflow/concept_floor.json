@@ -14,7 +14,7 @@
   {"id": "load_order", "class": "rule", "advisory": false, "waivable": true, "default": "loadAfter declared; survives the full list at playtest", "instrument": "check the effect, never the absence of error"},
   {"id": "log", "class": "rule", "advisory": false, "waivable": true, "default": "zero red, zero mod warnings across the scenario", "instrument": "log tap; beware the Verse.Log cap"},
   {"id": "mod_settings", "class": "standing", "advisory": false, "waivable": false, "default": "on/off per major feature; tuning where a number is the experience; all-off degrades gracefully; every toggle has a check", "instrument": "modcheck floor"},
-  {"id": "multiplayer", "class": "open_owner", "advisory": true, "waivable": false, "default": null, "instrument": null, "flag": "UNANSWERED: his one line, once for all mods (design §8). Blank on purpose: no default, no leaf, no promise is inferred from this line."},
+  {"id": "multiplayer", "class": "standing", "advisory": false, "waivable": false, "default": "No multiplayer support: no cost spent, no promise, no leaf; seeded randomness stays only where free", "instrument": "standing ruling (his card 2026-11-01)"},
   {"id": "art", "class": "rule", "advisory": false, "waivable": true, "default": "real art at GREEN; scale beside a human; facings; textures divisible by 4; art pipeline judged", "instrument": "rimworld-art-evaluation"},
   {"id": "text", "class": "rule", "advisory": false, "waivable": true, "default": "English, plain, spoiler-free tooltips", "instrument": "spec §10"},
   {"id": "dlc", "class": "standing", "advisory": false, "waivable": false, "default": "all assumed; no gating work, no degraded mode", "instrument": "standing ruling"},

@@ -201,7 +201,7 @@ not been calibrated on any mod yet**, so numeric lines are **advisory, reported 
 | **Load order** | `loadAfter` declared; no required position otherwise; survives the owner's full list at playtest | A patch matching nothing logs nothing, so check the effect, never the absence of error. `MayRequire` on a top-level `<Operation>` is ignored |
 | **Log** | Zero red, zero mod warnings across the scenario | Log tap; beware the `Verse.Log` cap going blind |
 | **Mod Settings** | Standing rule, 2026-09-12: on/off per major feature, tuning where a number is the experience, defaults are shipped behaviour, all-off degrades gracefully; every toggle has a check (`modcheck` floor) | Not waivable by default: *"no exceptions"* |
-| **Multiplayer** | **Open.** Default: no cost spent, no promise, and no leaf; use seeded `Rand` where free | Only an agent's words exist (`messy_conduit_design`: *"irrelevant to us"*). No ruling of his found, so this one needs his one line, once for all mods |
+| **Multiplayer** | **No multiplayer support** (standing, not waivable). No cost spent, no promise, no leaf; seeded randomness stays only where free | His card 2026-11-01, "What's your one line on multiplayer?" → "No multiplayer support" |
 | **Art** | Real art, no placeholder at GREEN; correct scale beside a human; facings; textures divisible by 4; art pipeline judged | `rimworld-art-evaluation`, offline validator |
 | **Text** | English, plain, spoiler-free tooltips; a `must read` line where text is the experience | Spec §10 |
 | **Sound** | Not a gate (spec §12) | |
