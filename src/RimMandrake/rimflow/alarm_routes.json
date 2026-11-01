@@ -56,6 +56,7 @@
     {"match": "withdraw_failed:*", "route": "role", "reader": "Operations", "cause": "seats"},
     {"match": "seat_declined:*", "route": "role", "reader": "Operations", "cause": "seats"},
     {"match": "idle_full_queue:*", "route": "role", "reader": "Operations", "cause": "seats"},
+    {"match": "idle_bringback:*", "route": "role", "reader": "Operations", "cause": "seats", "_why": "DI1, CK4: the one restart was spent and the fresh window took nothing"},
     {"match": "decide:*", "route": "role", "reader": "Operations", "cause": "dispatcher"},
     {"match": "restart:*:held", "route": "program"},
     {"match": "restart:*", "route": "role", "reader": "Operations", "cause": "seats"},

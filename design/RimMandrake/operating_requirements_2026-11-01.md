@@ -62,7 +62,7 @@ was on the code path; this one does not trust it.
 **CK4 A fresh window takes work.** [Dispatcher runs; Operations reads] A restarted seat with ready work makes a handoff or a `started` event within
 `fresh_take_s`, else one more restart, then alarm. Signal: `started` events after `restart_verified`. Threshold:
 `fresh_take_s` 900. Test: a fresh stub that ignores its prompt is restarted once, then alarms. Exists: `no_handoff`
-rings. Missing: the bring-back (shared with DI1).
+rings, the bring-back (shared with DI1).
 
 ## 3. Operations
 
@@ -153,8 +153,8 @@ Dispatch stays a plain program.
 **DI1 Idle with work is ended, not just rung (one state machine with CK4).** [Dispatcher runs; Operations reads] Seat idle with ready work: ring, then after `no_handoff.escalate_after`
 rings the Dispatcher restarts it once (a window that does not take work is treated as dead), then alarms. Threshold:
 `dispatcher_schedule.json` new `idle_bringback_after_min` 30. Told: the told ledger. Test: stub window that ignores rings
-restarted at the limit; still silent, alarm; a seat with a human active is left alone. Exists: rings, `idle_full_queue`.
-Missing: the restart.
+restarted at the limit; still silent, alarm; a seat with a human active is left alone. Exists: rings, `idle_full_queue`,
+the restart (`seat_restart.py` `_bringback`, `selftest_idle_bringback.py`); the limit starts it, since three rings take 50 min.
 
 **DI2 A stall names itself, and a breaker cannot sleep on it.** [Dispatcher runs; Operations reads] Live under target with work ready names one cause.
 Breaker cools are capped at `breaker_cool_max_s`, lowered from 14400 to 1800; the same cause opening it twice is an

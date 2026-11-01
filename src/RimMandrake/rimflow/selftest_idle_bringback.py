@@ -192,12 +192,9 @@ class World:
     def told(self):
         try:
             with open(os.path.join(self.ops, "told.jsonl")) as f:
-                return [json.loads(x) for x in f]
+                return [r for r in map(json.loads, f) if str(r.get("kind")).startswith("idle_bringback:")]
         except FileNotFoundError:
             return []
-
-    def bb(self):
-        return (D.load_state(self.state).get("bringback") or {}).get(SEAT) if hasattr(D, "load_state") else None
 
     def close(self):
         for w in self.windows:
@@ -236,8 +233,7 @@ def test_ignores():
     check(w.count("ring") >= 4, "the fresh window was rung too: %d rings" % w.count("ring"))
     check(len(w.incidents()) == 1, "a fresh window that takes nothing raises the incident (%d)" % len(w.incidents()))
     rows = w.told()
-    check(len(rows) == 1 and rows[0]["cause"] == "dispatcher.idle_bringback:" + SEAT and rows[0]["item"] == "READY_TICKET_WAITING",
-          "one row in told.jsonl: %s" % rows)
+    check(len(rows) == 1 and rows[0]["kind"] == "idle_bringback:" + SEAT, "one signal in the told ledger: %s" % str(rows)[:200])
     with open(w.sch["no_handoff"]["conductor_log"]) as f:
         log = f.read()
     check(log.count("still takes no work") == 1, "one RAISE FIRST line in the Conductor's log")

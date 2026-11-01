@@ -1001,11 +1001,10 @@ def _bb_incident(seat, bb, st, sch, now, act, why):
     """One outage, one incident: the alarm repeats on alarm_every_s until a reading ends it (a take, or an empty queue),
     and the tick's alarm path signals it into the told ledger (incident.py joins the repeats by cause). No further restart: a replacement that took nothing is not a window problem."""
     bb["phase"] = "incident"
-    kind = "idle_bringback:" + seat
-    if bb.get("told_at") and now - (st.get("alarms") or {}).get(kind, -1e18) < sch.get("alarm_every_s", 21600):
+    if bb.get("told_at") and now - (st.get("alarms") or {}).get("idle_bringback:" + seat, -1e18) < sch.get("alarm_every_s", 21600):
         return                           # rate-limited in execute anyway: not one journal line per tick
     bb["told_at"] = now
-    act(do="alarm", kind=kind, seat=seat, note=True, conductor_log=True,
+    act(do="alarm", kind="idle_bringback:" + seat, seat=seat, note=True, conductor_log=True,
         ticket=(sch.get("no_handoff") or {}).get("escalate_item") or sch.get("alarm_item"),
         raise_first="%s was restarted and still takes no work." % seat, why=why)
 
