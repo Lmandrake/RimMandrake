@@ -145,8 +145,7 @@ assembly on the owner's Steam install.
 - **`RUT_IncidentWorker_WalkerSurfacing : IncidentWorker`** (S5) — samples
   deep boil-water cells (`terrain.IsWater && terrain.burnDamage > 0`,
   excluding the margin ring without naming it) and keeps the one furthest
-  from a map edge as a "deep center" stand-in; fires a Message (never a
-  Letter), spawns no pawn — Ban 4 holds structurally. Effecter art and the
+  from a map edge as a "deep center" stand-in; fires a Message (never a Letter). OWNER RULING 2026-11-01 (card): ban 4 is withdrawn; this becomes a BEACH sighting, and the macro-life pawn really appears at the map's deep-water edge for a while, then leaves unless harassed (pawn spawn owed: SCALD_WALKER_BUILD_PAWN_AT_DEEP_EDGE). Effecter art and the
   real `RUT_WalkerSurfacing` IncidentDef/cooldown tuning are owed to the
   full build.
 - **`RUT_ScaldWater.xml` fixed** (S1, already-shipped terrain) — `dbh_water`
