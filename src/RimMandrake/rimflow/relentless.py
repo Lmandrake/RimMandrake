@@ -13,6 +13,7 @@ Exit codes for worker verbs: 0 done, 2 usage or refused, 3 FENCED (your lease is
 import argparse
 import contextlib
 import fcntl
+import glob
 import hashlib
 import importlib
 import json
@@ -31,6 +32,7 @@ DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 FENCED = 3
 LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring")   # a worker or the supervisor owns the item
 OPEN = ("queued",) + LEASED + ("held",)
+HOLDS_A_PLACE = ("running", "checking", "candidate", "stopping", "retiring")    # a run that may be live counts
 ENDED = ("done", "retired")
 SHARD = "infrastructure/state/ledger/events/%s.jsonl"
 NOTE_MAX = 400
@@ -150,7 +152,7 @@ def new_state(item, now, why):
             "spent": 0, "attempts": 0, "unit": None, "scope": None, "clone": None, "started_at": None,
             "last_beat": None, "stopping_since": None, "contract": None, "candidate": None, "check": None,
             "hold": None, "last_fail": None, "last_sha": None, "sha_at_change": None, "run": None,
-            "not_before": 0, "ledger_started": False, "done_at": None, "quarantined": []}
+            "not_before": 0, "ledger_started": False, "start_intent": False, "done_at": None, "quarantined": []}
 
 
 def queue_order(states):
@@ -497,10 +499,21 @@ class Effects:
         if c and os.path.abspath(c).startswith(os.path.join(self.base, "clones") + os.sep):
             shutil.rmtree(c, ignore_errors=True)
 
+    def check_path(self, st):
+        """A new path per check: a quarantined checker may still be running in the last one."""
+        return os.path.join(self.base, "clones", "check-%s-c%d" % (st["item"], (st.get("check_count") or 0) + 1))
+
+    def old_checks(self, st):
+        """This item's earlier check clones, less any an unreaped quarantined run is still in."""
+        keep = {q.get("clone") for q in st["quarantined"] if not q.get("reaped")}
+        got = glob.glob(os.path.join(self.base, "clones", "check-%s-c*" % st["item"]))
+        return [d for d in got if d not in keep]
+
     def clean_checkout(self, st, sha):
         """A clean tree at exactly `sha`, for the checker. Tracked files only: no worker scratch leaks in."""
-        d = os.path.join(self.base, "clones", "check-" + st["item"])
-        shutil.rmtree(d, ignore_errors=True)
+        d = self.check_path(st)
+        for old in self.old_checks(st):
+            shutil.rmtree(old, ignore_errors=True)
         env = dict(os.environ, RM_SCRATCH_ROOT=os.path.dirname(os.path.dirname(d)), RM_SEAT="clones")
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/scratch_clone.py"), "clone",
                             "relentless check " + st["item"], "--name", os.path.basename(d), "--checkout", "--fetch"],
@@ -787,7 +800,8 @@ def settle(store, fx, r, item, key, since, now, acts):
         with store.lock():
             cur = store.load(item)
             live = run_of(cur, key)
-            cur["quarantined"].append({"run": dict(live), "clone": cur["clone"] if key == "run" else None, "at": now,
+            cur["quarantined"].append({"run": dict(live), "at": now,
+                                       "clone": cur["clone"] if key == "run" else (cur["check"] or {}).get("clone"),
                                        "reaped": False})
             live["charged"] = 0
             if key == "run":
@@ -824,6 +838,7 @@ def reap_quarantined(store, fx, r, now, acts):
                     cur["quarantined"][i]["reaped"] = True
                     charge(store, cur, tok, now, r, q["run"]["unit"])
                     store.save(cur)
+            fx.remove_clone({"clone": q.get("clone")})
             acts.append({"do": "reaped", "item": st["item"], "unit": q["run"]["unit"]})
 
 
@@ -963,7 +978,7 @@ def step(store, fx, r, item, now, acts):
         # the finishing worker leaves first: nothing of its survives into the check
         if not settle(store, fx, r, item, "run", c["at"], now, acts):
             return
-        active = sum(1 for x in store.states() if x["status"] in ("running", "checking"))
+        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["status"] != "candidate")
         hold = admission(store, fx, dict(r, max_workers=r["max_workers"] + 1), now, active)   # checks get a place
         if hold:
             acts.append({"do": "check_waits", "item": item, "why": hold})
@@ -1089,7 +1104,8 @@ def retire(store, fx, states, now, acts, r=None):
                 store.save(cur)
             acts.append({"do": "retire", "item": st["item"]})
         elif not st["ledger_started"] and st["status"] == "queued" and (
-                led["state"] not in ("proposed", "ready") or led.get("lease")):
+                led["state"] not in ("proposed", "ready") or led.get("lease")) and (
+                not st.get("start_intent") or led.get("lease")):
             with store.lock():
                 cur = store.load(st["item"])
                 cur["status"] = "retired"           # a seat took it first; it was never ours
@@ -1114,7 +1130,7 @@ def lease(store, fx, r, now, acts):
     """Fill the free places, top of the queue first. An item the machine cannot run now keeps its place."""
     for st in queue_order(store.states()):
         # a stopping item holds its place: its slot is not free for a fresh item while it returns to the top
-        active = sum(1 for x in store.states() if x["status"] in ("running", "checking", "candidate", "stopping"))
+        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE)
         why = admission(store, fx, r, now, active)
         if why:
             acts.append({"do": "wait", "why": why})
@@ -1123,6 +1139,12 @@ def lease(store, fx, r, now, acts):
         if st.get("needs_back"):       # the ledger still says owner: the next step() clears it first
             continue
         if not st["ledger_started"]:
+            with store.lock():      # said before the ledger hears it: a crash after `start` must not read as a seat's take
+                cur = store.load(item)
+                if cur["status"] != "queued":
+                    continue
+                cur["start_intent"] = True
+                store.save(cur)
             why = fx.ledger_start(item)
             if why:
                 acts.append({"do": "start_refused", "item": item, "why": why})

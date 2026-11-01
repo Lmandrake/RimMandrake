@@ -520,6 +520,48 @@ def t_crash_windows():
        "overdue reads the fresh beat")
 
 
+def t_third_review():
+    # a crash after the ledger heard `start`, before the lease is on disk: ours, not a seat's take
+    x = Rig(n=1, share=1.0)
+    start = x.w.ledger_start
+
+    def dies(item):
+        start(item)
+        x.w.ledger_start = start
+        raise OSError("planted crash")
+    x.w.ledger_start = dies
+    try:
+        x.tick()
+    except OSError:
+        pass
+    ok(x.w.items["I0"] == "doing" and not x.st("I0")["ledger_started"], "crash window: planted after start")
+    x.tick()
+    ok(x.st("I0")["status"] == "running", "a crash after start leaves the item ours, and it is leased")
+    # a retiring item's run still holds its place
+    x = Rig(n=2, share=1.0, max_workers=1)
+    x.run_one("I0")
+    x.w.items["I0"] = "dropped"
+    x.w.alive_always = True
+    stop = x.w.stop
+    x.w.stop = lambda run, force: None         # the unit does not die yet
+    x.tick()
+    ok(x.st("I0")["status"] == "retiring", "retiring: planted")
+    ok(x.st("I1")["status"] == "queued", "a retiring run holds its place: nothing launches beside it")
+    x.w.stop = stop
+    # a new check never reuses a path a quarantined checker may be in, and the reaper frees it
+    d = tempfile.mkdtemp(prefix="rlck-")
+    fx = R.Effects.__new__(R.Effects)
+    fx.base = d
+    a, b = (os.path.join(d, "clones", "check-X-c%d" % n) for n in (1, 2))
+    os.makedirs(a), os.makedirs(b)
+    st = {"item": "X", "check_count": 2, "quarantined": [{"clone": a, "reaped": False}]}
+    ok(fx.check_path(st).endswith("check-X-c3"), "each check has its own path")
+    ok(fx.old_checks(st) == [b], "a quarantined checker's clone is kept, the older clean one goes")
+    st["quarantined"][0]["reaped"] = True
+    ok(sorted(fx.old_checks(st)) == [a, b], "once reaped it may go")
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def t_real_effects():
     """The fakes cannot see an import that fails: walk the real read paths once against this tree's ledger."""
     d = tempfile.mkdtemp(prefix="rlfx-")
@@ -643,7 +685,7 @@ def t_live_line():
 
 def main():
     for t in (t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
-              t_done_path, t_crash_recovery, t_crash_windows, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):
+              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):
         print("--", t.__name__)
         t()
     print("selftest_relentless: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
