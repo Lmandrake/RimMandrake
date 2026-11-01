@@ -3,10 +3,10 @@
 Program step 2 of 6 (design/Jawa/worldbuilding/world_look_program_2026-10-24.md). Owner, 2026-10-24: "then the sea floors on their own layers".
 
 ## spec
-Measured: `RM_SeabedLayer` (DivingInteraction) is a geometric twin of the surface (radius 100, tile N under tile N), drawLayers include `WorldDrawLayer_Terrain` and `WorldDrawLayer_Hills` only. `RM_WorldLook` adds films/blend/swirls to the ROOT SURFACE only (`IsRootSurface`), so the floor view is bare faces with hard hex edges. Floor faces: RM_SeabedFloor_{TheScald,GreySea,TwilightSea,TheChill}, RM_SeabedFloor, RM_SeabedBedrock, RM_SeabedUnavailable (crust/crack style, `biome_worldfaces.py`). The view gizmo is still `PlaceholderImage`.
+Measured: `RM_SeabedLayer` (DivingInteraction) is a geometric twin of the main (land) layer (radius 100, tile N under tile N), drawLayers include `WorldDrawLayer_Terrain` and `WorldDrawLayer_Hills` only. `RM_WorldLook` adds films/blend/swirls to the ROOT SURFACE only (`IsRootSurface`), so the floor view is bare faces with hard hex edges. Floor faces: RM_SeabedFloor_{TheScald,GreySea,TwilightSea,TheChill}, RM_SeabedFloor, RM_SeabedBedrock, RM_SeabedUnavailable (crust/crack style, `biome_worldfaces.py`). The view gizmo is still `PlaceholderImage`.
 Work:
 1. Decide what the floor view shows per layer: floor faces per sea, a depth tint (deep basins darker), dry land drawn as a dim "continent above" mask, not as bedrock noise.
-2. Let `RM_WorldLook` run on the seabed layer too (blend + a depth film keyed off the surface twin's depth), behind its own toggle.
+2. Let `RM_WorldLook` run on the seabed layer too (blend + a depth film keyed off the land-layer twin's depth), behind its own toggle.
 3. Real gizmo icon (art) replacing PlaceholderImage.
 4. Seabed Phase 5 (depth/geology) stays with the world remake; this ticket is look only.
 

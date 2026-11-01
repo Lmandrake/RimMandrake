@@ -7,7 +7,7 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   studied — built AFTER the weapon was deployed and active, never part of the
   terramanufacture plan; directly over the **Impact Site** where the first infection
   occurred. Mutual learning, mutual destruction: every study taught the weapon.
-- **Where**: beneath the propane lake's surface under Umbra (`LIQUID_BIOMES_MAP_1` places
+- **Where**: on the Chill's sea floor under Umbra (`LIQUID_BIOMES_MAP_1` places
   the lake; this item places the lab within it). Reached by the ruled submerged
   adventure (the ship lowered into fuel) — great care against ignition from spacecraft
   interaction or anything extremely hot.

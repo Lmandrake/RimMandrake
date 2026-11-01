@@ -285,7 +285,7 @@ live-proven" and mean it.
 ## criteria
 
 Flying the gravship down to a sea's floor shows you the animals its fish descriptions promised, and
-fishing its shore pulls out the same creatures you swam past.
+fishing its shore pulls out the same creatures you dived past on the floor.
 
 ## Watch out
 

@@ -21,8 +21,7 @@ consumed, not duplicated).
 
 Governing rules from the sheet: the Scald is **never potable** (only its
 distilled breath); **no boiling-immune traversal for free** (the shipped
-burn values stand); **no macro-life in the boil itself** (walkers surface as
-a set-piece, sails ride the carve-out); **no drained, cooled, or tamed
+burn values stand); **alien macro-life lives in the boil** (ban 4 withdrawn, owner 2026-11-01; the only places are the beach and the sea floor, nothing stands "on" the boil); **no drained, cooled, or tamed
 Scald**.
 
 ## verify
@@ -50,13 +49,13 @@ Scald**.
       below). **Not done this pass** — this item ran the spikes only, per
       `LIQUID_TYPES_SPIKES_1`'s/`MIASMA_MECHANICS_1`'s own precedent; the
       full 6-mechanic build is later, separate FOUNDRY work.
-- [ ] **Steam lock and Scald weather are read on the SURFACE `RM_TheScald` map; the sea-floor map
+- [ ] **Steam lock and Scald weather are read on the BEACH `RM_TheScald` map (the land-layer map, the "surface map" of the 2026-10-23 card; no "on the surface" place exists); the sea-floor map
       (`RM_SeabedFloor_TheScald`, ship landing on `RM_SeabedLayer`) stays calm** — owner by card
       2026-10-23 ("Surface map only"). The vent, catch, wreck and sail reads stay on the floor map,
       where their content is generated (`GenStep_ScaldVentField`, `RM_SeabedFloorLife`). Original
       text: A quicktest map in the biome shows: forced steam weather with clear
       spells; a condenser producing on a vent and refusing placement off
-      one; a pawn swimming the margin ring and never pathing through boil
+      one; a pawn on the beach/margin shallows never pathing into boil
       cells; a fishable water body once the bucket is ruled; wrecks in
       shallows salvageable at burn cost; sails anchored to vents. **Not
       done this pass** — explicitly out of scope, same posture as every kit
@@ -740,7 +739,7 @@ was red for that reason, then green. The margin ring lands on the floor through
 `RM_SeaFloorBandsExtension` (share 0.12, ringing each boiling core), so no bridge cove painting is owed.
 S5's "sail PawnKind/ThinkTree/Duty owed" is stale: `RM_Noohm` is the sail, tethered by
 `RM_MapComponent_ScaldVentForecast`; spec and scatterer header corrected.
-**Still owed, all live (L2):** on the SURFACE `RM_TheScald` map (owner by card 2026-10-23, "Surface map
+**Still owed, all live (L2):** on the BEACH `RM_TheScald` map (the land-layer "surface map"; owner by card 2026-10-23, "Surface map
 only"), forced steam with clear spells, and the floor map staying calm; on the floor map, condenser producing
 `RM_DistilledWater` on a vent and refusing off one; a fishing zone on `RUT_ScaldMargin` yielding Scald
 catches and none on boil; wrecks salvageable at burn cost; sails gathering at and tethered to vents.

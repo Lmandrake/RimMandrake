@@ -10,7 +10,7 @@ planetary layer called sea floor."* Phase 2 of the seabed plan
 1. The pilot console's destination step offers the `RM_SeabedLayer` tile under a sea tile (and the sea
    tile above a floor tile) as a launch destination; fuel cost per depth both ways.
 2. Arrival on a floor tile generates the floor map (`RM_SeabedSite`) and lands the ship; take-off from
-   the floor returns it to the surface tile above. No pawn walks or caravans between the two
+   the floor returns it to the beach (land-layer) tile above. No pawn walks or caravans between the two
    (`canFormCaravans false` already holds).
 3. Read GravTide (`gravtide.mod`, installed, inactive) for technique before writing anything: it has
    already solved most of this (CLAUDE.md, the 2026-09-26 "is there a mod" lesson).
@@ -18,5 +18,5 @@ planetary layer called sea floor."* Phase 2 of the seabed plan
 ## criteria
 
 - From a sea tile, the ship's launch dialog offers the floor below; landing there builds a floor map;
-  launching from it returns to the surface tile above.
+  launching from it returns to the beach (land-layer) tile above.
 - Proven live with a bridge state read (`Find.CurrentMap.Tile.Layer`), not a screenshot hunt.

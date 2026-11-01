@@ -864,3 +864,6 @@ gone. **Real catches:** a spawned colonist fishing a placed zone landed
 
 Three bugs in `prove_fish_bestiary_live.py` (mapId passed to two tools that
 don't declare it; BiomeDef fields read off the wrong level) fixed at `5488e4ddf`.
+
+
+> Note 2026-11-01 (owner: sea biomes have only a beach and a sea floor, no surface place): "surface fishable" above means shore fishing from the beach (shallow cells laid by the SeaShores coast). The history stands.
