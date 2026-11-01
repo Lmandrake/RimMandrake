@@ -71,14 +71,18 @@ DIGEST_DIR = Path(os.environ.get("RM_PULSE_DIGESTS", rm_str("dashboard", "digest
 INTERVAL = 5.0
 REFRESH_TIMEOUT = 40.0   # a refresh that has not finished collecting by then answers with why
 
-# Phone push: NOT decided by the owner yet (2026-10-08). Hook point only; stays off until
-# he rules. Wire ntfy (or anything) here, never in the widget.
-PHONE_PUSH_ENABLED = False
+# Phone push: ON by the owner's word 2026-11-01. Route: Todoist task due in a minute (phone_push.py).
+PHONE_PUSH_ENABLED = True
 
 
 def notify_phone(row: dict) -> None:
     if not PHONE_PUSH_ENABLED:
         return
+    try:
+        import phone_push
+        phone_push.send(row)
+    except Exception as e:   # a failed push must never stop the pulse tick
+        print(f"phone push failed: {e}", file=sys.stderr)
 
 
 # ---------------------------------------------------------------- state io
@@ -315,6 +319,12 @@ class Collector:
         for k, kind in kinds.items():
             if self.prev_kinds.get(k) != kind:
                 append("pulse.jsonl", {"key": k, "kind": kind, "was": self.prev_kinds.get(k)})
+                if kind not in ("red", "amber") and PHONE_PUSH_ENABLED:
+                    try:
+                        import phone_push
+                        phone_push.close(k)
+                    except Exception:
+                        pass
                 if kind in ("red", "amber"):
                     notify_phone(next(r for r in snap["rows"] if r["key"] == k))
         self.prev_kinds = kinds
