@@ -1,0 +1,2 @@
+circling.classify misreads shell commands (verified 2026-11-01): it splits on ';' without honouring quotes, so "echo 'x; pytest'; sleep 600" classifies selftest (10 min sleep charged as testing, can forge a waste flag), and interpreter options hide a test: 'python3 -u /tmp/selftest_x.py' and 'python3 -I selftest_x.py' classify other (a real selftest missed). Shared by RW1 time_ledger and the RW2 tick; fix in circling.py with direct classifier cases in selftest_circling.
+home: src/RimMandrake/rimflow/circling.py

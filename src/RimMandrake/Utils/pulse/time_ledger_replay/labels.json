@@ -1,0 +1,134 @@
+[
+ {
+  "run": "SCRATCHREAP_FIX_ARCHIVE_TAGS_CRY_WOLF#g3",
+  "label": "waste",
+  "why": "identical selftest reruns with no edit between them, about half of an hour-long run spent re-testing what it already knew",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "SCRATCHREAP_FIX_ARCHIVE_TAGS_CRY_WOLF#g5",
+  "label": "waste",
+  "why": "identical selftest reruns with no edit between them, about half of an hour-long run spent re-testing what it already knew",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK#g1",
+  "label": "fine",
+  "why": "21 of 33 min testing, but the long runs are planted-fault (sed -i mutation) proofs: testing that taught something",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "VEXXITH_USES_1#g1",
+  "label": "fine",
+  "why": "14 min testing, mostly one first full flowworks_stock run plus distinct targeted suites",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED#g9",
+  "label": "fine",
+  "why": "11 of 18 min testing, a different suite after each edit",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED#g1",
+  "label": "fine",
+  "why": "many short close_gate reruns (about 2 min together) inside a 44 min edit-heavy run",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "DELEGATED_CARDS_FIX_HELD_OUT_RECALL#g3",
+  "label": "fine",
+  "why": "one 9 min remeasure, then edits and builds",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "DELEGATED_CARDS_FIX_HELD_OUT_RECALL#g7",
+  "label": "fine",
+  "why": "a 9 min remeasure then one review run after an edit",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "FLYER_STABLE_BODY_GATE_1#g1",
+  "label": "fine",
+  "why": "reading and editing dominate; short suites after edits",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "FLYER_STABLE_BODY_GATE_1#g3",
+  "label": "fine",
+  "why": "distinct suites (flyer_gate, enact, enact_ws) chasing one failure",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK#g9",
+  "label": "fine",
+  "why": "12 min run, a proof before and after an edit",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "RIMFLOW_V3_BUILD_WHAT_WAS_ONLY_PROSE#g1",
+  "label": "fine",
+  "why": "one 7 min suite, then many sub-second targeted checks",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "WASTE_RUN_STUBS_1#g1",
+  "label": "fine",
+  "why": "16 min run, kernel suite then the run_selftests gate",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "SCALD_STEAM_WEATHER_DESIGN_1#g1",
+  "label": "fine",
+  "why": "61 min design run, little testing",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "CRACKEDLANDS_SALVAGE_CLAIM_CREW_1#g1",
+  "label": "fine",
+  "why": "53 min, build and live work, little testing",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "CRACKEDLANDS_SALVAGE_CLAIM_CREW_1#g3",
+  "label": "fine",
+  "why": "32 min, low test share",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "BESKAR_ARMORER_QUEST_1#g1",
+  "label": "fine",
+  "why": "40 min, low test share",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "DELEGATED_CARDS_FIX_HELD_OUT_RECALL#g5",
+  "label": "fine",
+  "why": "40 min, low test share",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED#g3",
+  "label": "fine",
+  "why": "31 min, low test share",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "RUSTCATHEDRAL_WORN_BIT_ARC_1#g1",
+  "label": "fine",
+  "why": "25 min, low test share",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "ASIMOV_SCRUB_BACKUPS_RESTORE_LOST_PAIR#g1",
+  "label": "fine",
+  "why": "23 min, low test share",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ },
+ {
+  "run": "RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS#g1",
+  "label": "fine",
+  "why": "22 min, low test share",
+  "by": "FOUNDRY helper 2026-11-01, read from the run's selftest targets and edit counts (agent label, not the owner's)"
+ }
+]
