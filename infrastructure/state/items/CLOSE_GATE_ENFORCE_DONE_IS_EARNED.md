@@ -14,3 +14,7 @@ This item also carries T1 and T3 of the v3 audit (`CLOSE_ENFORCE_NO_OWED_NO_IMPL
 - Calibration is on false ACCEPTS (the Auditor's random slice), not on verdict count; the "1 week / 30 verdicts" binding rule is replaced.
 - Standing text to change when this lands (all of it, deciding-and-superseding): `roles/arbiter.md` (header, "Advisory first" section, binding criteria), `roles/auditor.md` l.85 and l.106, `dispatcher_schedule.json` `verdicts` and its `_why`, `arbiter_tiers.py` docstring and `bounces.json` advisory flag, `role_launch.py` verdict note text, `selftest_arbiter_tiers.py` F9, `selftest_role_run_now.py` advisory assertion. A grep for 'advisory' under src/RimMandrake/rimflow must find none that describe the Arbiter's close verdict.
 Priority: P0, raised.
+
+## verify
+- L0, offline, each by its planted fault on the real path: S1 each of the four missing is refused. S2 a fail after a pass demotes. S3 a seeded behavioural regression caught later reopens the item. S4 the D1(b) rules in `## Ruled 2026-11-01` each hold on a planted case. S5 AU4 re-read and in range.
+- Stopping point: finish.

@@ -1,0 +1,115 @@
+{
+ "set_at": "2026-11-01T17:05:18Z",
+ "set_by": "Producer",
+ "entries": [
+  {
+   "id": "WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "CIRCLING_WATCH_BUILD_REPORT_ONLY_FIRST",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "HELP_CALL_BUILD_FRESH_EYES_ON_FAILURES",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "MISSION_PAGE_BUILD_READ_ONLY_STATE",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "ARENA_HANDOFF_RECONCILE_MODEL_WITH_CODE",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  },
+  {
+   "id": "HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS",
+   "reading": {
+    "mod": "FlowWorks"
+   }
+  },
+  {
+   "id": "FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN",
+   "reading": {
+    "mod": "FlowWorks"
+   }
+  },
+  {
+   "id": "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING",
+   "reading": {
+    "mod": "GimmeSomeSlack"
+   }
+  },
+  {
+   "id": "MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP",
+   "reading": {
+    "file": "infrastructure/state/codebase_health_last.json",
+    "key": "counts.green"
+   }
+  }
+ ]
+}

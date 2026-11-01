@@ -5,3 +5,7 @@ Requirement RO2 in `design/RimMandrake/operating_requirements_2026-11-01.md`. Re
 At N focus items `next` offers no new item; a dated wait frees one place; a third wait is refused. The number lives in `dispatcher_schedule.json`; relentless reads the same number.
 
 Proved by the planted fault on the real path, not by a statement.
+
+## verify
+- L0, offline: the `## Done when` above, each case by its planted fault on the real path (RO2 in `design/RimMandrake/operating_requirements_2026-11-01.md`).
+- Stopping point: finish.
