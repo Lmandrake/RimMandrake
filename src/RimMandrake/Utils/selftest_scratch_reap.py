@@ -6,6 +6,8 @@ The planted cases are the brief's (SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES): a
 unpushed commit, a dirty tree, a young dir, an unreadable state; plus a protected path, a canonical save, a blind spot
 that must hold everything, a clone whose lender is gone, a bad archive root, and the alarm and record paths.
 A path is deleted only if nothing in it is unique, or after its work was bundled and restored and logged."""
+import contextlib
+import io
 import json
 import os
 import subprocess
@@ -97,9 +99,7 @@ def dated(c: Path, name: str, text: str, msg: str, when: str, committed: str | N
 
 
 def run_reaper(*args):
-    from io import StringIO
-    import contextlib
-    buf = StringIO()
+    buf = io.StringIO()
     with contextlib.redirect_stdout(buf):
         rc = R.main(["--json", *args])
     return rc, {Path(r["path"]).name: r for r in json.loads(buf.getvalue())}
@@ -515,6 +515,11 @@ def run_cases(env):
     rc, r3 = run_reaper("--apply")
     check(rc == 1 and (iso / "arch_probe_clone").exists() and r3["arch_probe_clone"]["verdict"] == "REFUSE",
           "no archive root: the path stays and the run exits 1")
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        R.main(["--apply"])                 # as the unit runs it, no --json
+    check("FAILED " in out.getvalue() and "arch_probe_clone" in out.getvalue(),
+          "the failed run names its failure on stdout, so the journal keeps it")
     rec = json.loads((td / "state/last_run.json").read_text())
     check(rec["ok"] is False and rec["failures"], "the failed run says so in last_run.json")
     check(rec["last_ok_epoch"] is None, "a failed run does not count as a clean one")
@@ -652,9 +657,7 @@ def run_cases(env):
     import fcntl
     with open(td / "state/run.lock", "w") as lk:
         fcntl.flock(lk, fcntl.LOCK_EX)
-        from io import StringIO
-        import contextlib
-        b = StringIO()
+        b = io.StringIO()
         with contextlib.redirect_stdout(b):
             c = subprocess.run([sys.executable, str(Path(R.__file__)), "--apply"], capture_output=True, text=True).returncode
         check(c == 0 and d1.exists(), "a run that finds the lock held stands down")

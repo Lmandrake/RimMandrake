@@ -2157,6 +2157,8 @@ def run(a, sd: Path) -> int:
     else:
         report(rows, a, sd, freed)
         print(f"selftest fixtures: {fixtures}")
+        for f in failures:      # the journal keeps these; last_run.json is overwritten by the next run
+            print(f"FAILED {f}")
     return 1 if failures else 0
 
 
