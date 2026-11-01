@@ -101,7 +101,9 @@ def main() -> int:
     """One at a time: a run plants an undumpable process, and the /proc scan of a run beside it rightly holds everything."""
     lock = open(Path(tempfile.gettempdir()) / "selftest_scratch_reap.lock", "w")
     fcntl.flock(lock, fcntl.LOCK_EX)
-    return run()
+    rc = run()
+    tags = subprocess.run([sys.executable, str(Path(__file__).with_name("selftest_scratch_reap_archive_tags.py"))])
+    return rc or tags.returncode            # apart because that one stubs the live-process gate this one proves
 
 
 def run() -> int:

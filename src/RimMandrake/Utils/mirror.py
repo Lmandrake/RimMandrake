@@ -108,7 +108,8 @@ def sync(target, timer=False, seed=None):
     try:
         os.makedirs(target, exist_ok=True)
         ensure_bare(seed)
-        git("fetch", "-q", "--prune", "--no-tags", "origin")
+        # GitHub's tags too: scratch_reap.make_residual counts what they reach as held; --prune drops a tag GitHub dropped
+        git("fetch", "-q", "--prune", "--no-tags", "origin", "+refs/heads/main:" + REF, "+refs/tags/*:refs/tags/*")
         new = git("rev-parse", REF)
         try:
             old = open(os.path.join(target, HEAD_FILE)).read().split()[0]

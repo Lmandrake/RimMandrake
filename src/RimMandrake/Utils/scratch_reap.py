@@ -25,7 +25,9 @@ Verdicts:
   YOUNG    newest mtime or ctime anywhere inside (a session: anywhere in the session) is within the TTL. The TTL is 24 h and
            disk pressure never shortens it.
   DELETE   old, and nothing in it is missing elsewhere.
-  ARCHIVE  old, and it holds a commit the mirror lacks (any ref, reflog or stash; a local tracking ref proves nothing),
+  ARCHIVE  old, and it holds a commit the mirror lacks (any readable ref, reflog or stash; a local tracking ref proves
+           nothing, and a dead one holds nothing; a clone whose bundle is over the cap keeps only the objects GitHub's main
+           and tags do not reach, make_residual),
            a dirty or untracked file, ignored files that are not build output, or loose session files: bundle + tar +
            index and worktree patches to a new archive dir, restore-tested, an acts.jsonl line, then delete. A commit
            whose author, dates and subject match main but whose content does not is kept as a patch: main's history was
@@ -734,7 +736,8 @@ class Borrows:
 
 # ---------------------------------------------------------------- what exists only here
 def mirror_tips() -> list[str]:
-    """origin/main per each mirror we can read: the proof a commit is pushed even when a clone's refs are stale."""
+    """origin/main per each mirror we can read, the first mirror's first (main_keys reads it), then each mirror's tags:
+    the proof a commit is pushed even when a clone's refs are stale. mirror.py fetches GitHub's tags; only what GitHub has."""
     global _MIRROR_TIPS
     if _MIRROR_TIPS is None:
         _MIRROR_TIPS = []
@@ -744,6 +747,8 @@ def mirror_tips() -> list[str]:
                 if r.returncode == 0:
                     _MIRROR_TIPS.append(r.stdout.strip())
                     break
+        for m in origin_mirrors():
+            _MIRROR_TIPS.extend(git(m, "for-each-ref", "--format=%(objectname)", "refs/tags/").stdout.split())
     return _MIRROR_TIPS
 
 
@@ -773,7 +778,8 @@ def commit_digests(repo: Path, *args, stdin: str | None = None) -> dict[str, tup
 
 def main_keys() -> dict[str, set[str]]:
     """A rewrite of main left old clones holding every commit under another hash. {key: digests on main}: a commit
-    with main's key and digest is that commit, on main. An unreadable mirror yields nothing, so nothing is excused."""
+    with main's key and digest is that commit, on main. An unreadable mirror yields nothing, so nothing is excused.
+    A rewrite that also changed author email misses this key; a big clone from one is settled by make_residual."""
     global _MAIN_KEYS
     if _MAIN_KEYS is None:
         _MAIN_KEYS = {}
@@ -782,6 +788,16 @@ def main_keys() -> dict[str, set[str]]:
         for key, dig in (d or {}).values():
             _MAIN_KEYS.setdefault(key, set()).add(dig)
     return _MAIN_KEYS
+
+
+def dead_ref_harmless(ref: str) -> bool:
+    """Its object is gone, so walking it can find nothing; what it alone reached may survive, so a clone with one keeps its
+    own object store and the names (clone_state, preserve). A tracking ref's name is the remote's. A tag GitHub has by that
+    name is a tag that moved: a clone borrowing from a lender that dropped the old object after a history rewrite. Any
+    other dead ref is local work we cannot read: a refusal."""
+    if ref.startswith("refs/remotes/"):
+        return True
+    return ref.startswith("refs/tags/") and any(git(m, "show-ref", "-q", "--verify", ref).returncode == 0 for m in origin_mirrors())
 
 
 def reflog_tips(c: Path) -> tuple[set[str], str | None]:
@@ -800,18 +816,28 @@ def reflog_tips(c: Path) -> tuple[set[str], str | None]:
     return tips, None
 
 
-def unique_commits(c: Path) -> tuple[list[str], int, list[str], str | None]:
-    """(heads to bundle, commits the mirror lacks, commits like main's with other content, error). Every ref, HEAD,
-    stash and reflog entry counts. Only the mirror proves a push: a local tracking ref is local."""
-    fe = git(c, "for-each-ref", "--format=%(objectname) %(objecttype) %(refname)")
+def unique_commits(c: Path, dead: list[str] | None = None) -> tuple[list[str], int, list[str], str | None]:
+    """(heads to bundle, commits the mirror lacks, commits like main's with other content, error). Every readable ref,
+    HEAD, stash and reflog entry counts. Only the mirror proves a push: a local tracking ref is local. A dead ref
+    refuses unless dead_ref_harmless, which names it in `dead`; a dangling origin/HEAD is not listed at all."""
+    fe = git(c, "for-each-ref", "--format=%(objectname) %(refname)")     # no %(objecttype): one dead ref would kill the list
     said = [x for x in fe.stderr.splitlines() if x.strip() and not GONE_LENDER.match(x)]    # judged elsewhere
     if fe.returncode or said:                           # git warns past a ref it cannot read, and succeeds
         return [], 0, [], f"cannot list refs ({' '.join(said)[:120] or fe.stderr.strip()[:120]})"
     tips, nots = set(), set(mirror_tips())
-    for ln in fe.stdout.splitlines():
-        sha, typ, ref = ln.split(None, 2)
-        if typ in ("commit", "tag"):
+    refs = [ln.split(None, 1) for ln in fe.stdout.splitlines()]
+    chk = git(c, "cat-file", "--batch-check", stdin="".join(sha + "\n" for sha, _ in refs))
+    if chk.returncode:
+        return [], 0, [], f"cannot list refs ({chk.stderr.strip()[:120]})"
+    typ = {w[0]: w[1] for w in (ln.split() for ln in chk.stdout.splitlines()) if len(w) >= 2}
+    for sha, ref in refs:
+        if typ.get(sha) in ("commit", "tag"):
             tips.add(sha)
+        elif typ.get(sha, "missing") == "missing":
+            if not dead_ref_harmless(ref):
+                return [], 0, [], f"cannot list refs (missing object {sha} for {ref})"
+            if dead is not None:
+                dead.append(f"{sha} {ref}")
     h = git(c, "rev-parse", "-q", "--verify", "HEAD^{commit}")
     if h.returncode == 0:
         tips.add(h.stdout.strip())
@@ -832,8 +858,9 @@ def unique_commits(c: Path) -> tuple[list[str], int, list[str], str | None]:
     if r.returncode:
         return [], 0, [], f"cannot list commits ({r.stderr.strip()[:120]})"
     unique = r.stdout.split()
+    own_tags = {sha for sha, _ in refs if typ.get(sha) == "tag" and sha not in nots}    # its commit may be pushed; its text is not
     if not unique:
-        return [], 0, [], None
+        return sorted(own_tags), len(own_tags), [], None
     d = commit_digests(c, "--no-walk=unsorted", "--stdin", stdin="\n".join(sorted(unique)) + "\n")
     if d is None or set(d) != set(unique):
         return [], 0, [], "cannot read the commits the mirror lacks"
@@ -841,12 +868,12 @@ def unique_commits(c: Path) -> tuple[list[str], int, list[str], str | None]:
     changed = sorted(x for x, (k, dig) in d.items() if k in keys and dig not in keys[k])
     alone = {x for x, (k, _) in d.items() if k not in keys}
     if not alone:
-        return [], 0, changed, None
+        return sorted(own_tags), len(own_tags), changed, None
     par = git(c, "rev-list", "--parents", "--no-walk=unsorted", "--stdin", stdin="\n".join(sorted(alone)) + "\n")
     if par.returncode:
         return [], 0, [], f"cannot read parents ({par.stderr.strip()[:120]})"
     parents = {w for ln in par.stdout.splitlines() for w in ln.split()[1:]}
-    return sorted(alone - parents), len(alone), changed, None
+    return sorted((alone - parents) | own_tags), len(alone) + len(own_tags), changed, None
 
 
 def disposable(path: str) -> bool:
@@ -941,13 +968,21 @@ def clone_state(c: Path) -> dict:
     if lfs or filtered_paths(c):
         hard.append(f"{c}: git-lfs or a content filter: a bundle holds the pointers, not the bytes")
     hard.extend(f"{c}: {x}" for x in gitlink_files(c))
-    tips, n, changed, err = unique_commits(c)
+    dead: list[str] = []
+    tips, n, changed, err = unique_commits(c, dead)
     if err:
         hard.append(f"{c}: {err}")
     elif n:
         out["tips"], out["unique"] = tips, n
         no_remote = "" if git(c, "remote").stdout.strip() else ", no remote at all"
         soft.append(f"{c}: {n} commit(s) on no remote{no_remote}")
+    if dead:
+        size = Tree(dotgit / "objects").size
+        if size > DIRTY_CAP:
+            hard.append(f"{c}: {len(dead)} dead ref(s), and {human(size)} of own objects, over the {human(DIRTY_CAP)} preserve cap")
+        else:
+            out["dead_refs"] = dead
+            soft.append(f"{c}: {len(dead)} dead ref(s): what they alone reached stays in its object store, so that is kept")
     if len(changed) > CHANGED_CAP:
         hard.append(f"{c}: {len(changed)} commits differ from main's under the same author and dates")
     elif changed:
@@ -1167,7 +1202,7 @@ def judge_clone(p: Path, ctx: Ctx) -> dict:
         return refuse(row, why)
     if st["soft"]:
         row.update(verdict="ARCHIVE", why=st["soft"], tips=st["tips"], unique=st["unique"], dirty=st["dirty"],
-                   changed=st["changed"], tracked=st["tracked"])
+                   changed=st["changed"], tracked=st["tracked"], dead_refs=st.get("dead_refs", []))
     return row
 
 
@@ -1292,6 +1327,60 @@ def make_bundle(c: Path, tips: list[str], work: Path) -> Path:
     return out
 
 
+def proved_objects() -> set[str]:
+    """Every object the mirrors reach from origin/main and refs/tags: what GitHub holds, by id. A seat clone's refs are not
+    in this. A mirror that cannot be walked adds nothing, so an unreadable one excuses nothing."""
+    out: set[str] = set()
+    for m in origin_mirrors():
+        tags = git(m, "for-each-ref", "--format=%(objectname)", "refs/tags/")
+        tips = [r.stdout.strip() for r in (git(m, "rev-parse", "-q", "--verify", x + "^{commit}")
+                                           for x in ("refs/remotes/origin/main", "refs/heads/main")) if r.returncode == 0]
+        if tags.returncode or not tips:
+            continue
+        r = git(m, "rev-list", "--objects", "--stdin", stdin="\n".join(tips + tags.stdout.split()) + "\n", timeout=1800)
+        if r.returncode == 0:
+            out.update(ln[:40] for ln in r.stdout.splitlines())
+    return out
+
+
+def make_residual(c: Path, tips: list[str], work: Path, why: str) -> tuple[list[Path], dict]:
+    """A clone from before a history rewrite differs from GitHub in every commit hash and tag, and the bundle of that is
+    the whole history. What can be lost is objects, so the proof is by object: a self-contained pack of every object the
+    tips reach and the mirrors do not (commits and trees too: they hold names, modes and history), plus the ref list. The
+    pack over RESIDUE_CAP is OverCap, a refusal, and so is an unreadable proving repo, since then all of it is residual."""
+    revs = "\n".join(tips + ["^" + b for b in sorted(set(mirror_tips()))]) + "\n"
+    src = work / "residual_src.git"
+    must(subprocess.run(["git", "init", "-q", "--bare", str(src)], capture_output=True, text=True), "git init")
+    (src / "objects" / "info" / "alternates").write_text(str(c / ".git" / "objects") + "\n")
+    listed = must(git(src, "rev-list", "--objects", "--stdin", stdin=revs, timeout=1800), "git rev-list --objects")
+    paths = {ln[:40]: ln[41:] for ln in listed.stdout.split("\n") if ln}
+    left = sorted(set(paths) - proved_objects())
+    chk = must(git(src, "cat-file", "--batch-check", stdin="".join(x + "\n" for x in left)), "git cat-file")
+    rows = [ln.split() for ln in chk.stdout.splitlines()]
+    if len(rows) != len(left) or any(len(w) != 3 for w in rows):
+        raise PreserveFailed("an object the tips reach cannot be read")
+    if sum(int(w[2]) for w in rows if w[1] == "blob") > RESIDUE_CAP * 8:     # do not pack what cannot fit, even compressed
+        raise OverCap(f"{why}, and the blobs on no mirror cannot fit the {human(RESIDUE_CAP)} cap")
+    made = [write_text_out(work / "residual.txt", subprocess.CompletedProcess([], 0, "".join(
+                f"{w[0]} {w[1]} {w[2]} {paths[w[0]]}\n" for w in rows), ""), "residual list"),
+            write_text_out(work / "refs.txt", git(c, "for-each-ref", "--format=%(objectname) %(refname)"), "git for-each-ref")]
+    if not left:
+        return made, {"objects": 0, "pack_bytes": 0, "instead_of": why}
+    h = must(git(src, "pack-objects", "-q", str(work / "residual"), stdin="".join(x + "\n" for x in left), timeout=1800),
+             "git pack-objects")
+    pack = work / "residual.pack"
+    (work / f"residual-{h.stdout.strip()}.pack").rename(pack)
+    if pack.stat().st_size > RESIDUE_CAP:
+        raise OverCap(f"{why}, and the objects on no mirror pack to {human(pack.stat().st_size)}, over the {human(RESIDUE_CAP)} cap")
+    idx = work / "restored.idx"
+    must(git(src, "index-pack", "-o", str(idx), str(pack), timeout=1800), "restore test")
+    with open(idx, "rb") as f:
+        shown = subprocess.run(["git", "show-index"], stdin=f, capture_output=True, text=True)
+    if shown.returncode or {ln.split()[1] for ln in shown.stdout.splitlines()} != set(left):
+        raise PreserveFailed("restore test: the residual pack does not hold every object it was given")
+    return made + [pack], {"objects": len(left), "pack_bytes": pack.stat().st_size, "instead_of": why}
+
+
 def write_text_out(out: Path, r: subprocess.CompletedProcess, what: str) -> Path:
     must(r, what)
     out.write_bytes(r.stdout.encode("utf-8", "surrogateescape"))
@@ -1401,7 +1490,16 @@ def preserve(row: dict) -> str:
             if row.get("unique") and not row.get("tips"):
                 raise PreserveFailed("commits are unique here, yet there is no tip to bundle")
             if row.get("tips"):
-                made.append(make_bundle(p, row["tips"], work))
+                try:
+                    made.append(make_bundle(p, row["tips"], work))
+                except OverCap as e:
+                    (work / "clone.bundle").unlink(missing_ok=True)
+                    files, row["residual"] = make_residual(p, row["tips"], work, str(e))
+                    made += files
+            if row.get("dead_refs"):
+                (work / "dead_refs.txt").write_text("\n".join(row["dead_refs"]) + "\n", errors="surrogateescape")
+                make_tar(p, [".git/objects"], work / "objects.tar.gz")
+                made += [work / "dead_refs.txt", work / "objects.tar.gz"]
             if row.get("changed"):
                 made.append(make_changed(p, row["changed"], work / "rewritten.patch"))
             if row.get("tracked"):
@@ -1426,12 +1524,13 @@ def preserve(row: dict) -> str:
         (tmp / "manifest.json").write_text(json.dumps({
             "path": row["path"], "kind": row["kind"], "bytes": row["bytes"], "age_h": row["age_h"], "why": row["why"],
             "tips": row.get("tips", []), "unique_commits": row.get("unique", 0), "dirty_paths": row.get("dirty", []),
-            "rewritten_commits": row.get("changed", []), "files": files,
+            "rewritten_commits": row.get("changed", []), "files": files, "residual": row.get("residual"),
             "restore": "git clone --shared /home/mandrake/rm/store.git r && git -C r fetch clone.bundle "
                        "'refs/rm/*:refs/heads/rescued/*'; check out status.txt's base; tar -xzf staged.tar.gz -C blobs; "
                        "git -C r hash-object -w --no-filters blobs/*; git -C r read-tree --empty; "
                        "git -C r update-index -z --index-info < index.txt; tar -xzf dirty.tar.gz -C r; "
-                       "the patches are for reading"}, indent=1))
+                       "the patches are for reading; a residual.pack instead of a bundle: copy it to "
+                       "r/.git/objects/pack, git index-pack it there, then git cat-file -p the ids in residual.txt"}, indent=1))
         for f in tmp.iterdir():
             durable(f)
         durable(tmp, False)
@@ -1442,7 +1541,9 @@ def preserve(row: dict) -> str:
     manifest = dest / "manifest.json"
     acts_append(root, {"ts": local_ts(), "kind": "scratch-" + row["kind"], "path": row["path"], "size": row["bytes"],
                        "archive": str(dest), "manifest": str(manifest),
-                       "verify": "bundle restored into an empty repo; tar listed; sha256 matched on the archive",
+                       "verify": "residual pack indexed, every object listed; the rest is reachable on the mirrors; "
+                                 "tar listed; sha256 matched on the archive" if row.get("residual")
+                                 else "bundle restored into an empty repo; tar listed; sha256 matched on the archive",
                        "evidence": "; ".join(row["why"])[:300]})
     return str(dest)
 
