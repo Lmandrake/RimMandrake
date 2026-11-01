@@ -11,7 +11,11 @@ NOTE = ROOT / "design/Jawa/worldbuilding/warlab_garrison_early_blast_2026-11-01.
 VERDICT = ROOT / "infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json"
 SECTIONS = ["## 2. The heat rise", "## 4. The garrison", "## 5. The codes", "## 6. Where it meets other rulings",
             "## 7. Mod Settings", "## Judgment"]
-PHRASES = ["**Who.**", "**Where.**", "**Persistence.**", "RaiseFloor", "AdjustVisibility", "CodesUsable"]
+PHRASES = ["**Who.**", "**Where.**", "**Persistence.**", "RaiseFloor", "AdjustVisibility", "CodesUsable",
+           "labFate", "Route6Live", "WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE"]
+ROUTES = ROOT / "design/Jawa/worldbuilding/biomes/the_chill_warlab_routes_spec_2026-09-27.md"
+# Judge round 1 removed the blast-lit Route 6: a ruled route is not edited on an agent's reading.
+GONE = {NOTE: ["Route 6 clock", "Days until the Empire"], ROUTES: ["warlab_garrison_early_blast", "ordnance clock"]}
 EXISTING = ["WarLabCraterMutation", "GameComponent_WarLabCrater", "CompIgniteCraterOnDestroy", "EmpireSearch",
             "GameComponent_ColonyVisibility", "GameComponent_EmpireSearch", "MapComponent_EmpireSearch",
             "FuelBlastInvestigation", "EmpireLadderMath", "RFPSettings", "CompRedeemRakatanCommandCodes",
@@ -47,6 +51,8 @@ def main() -> int:
         hit = subprocess.run(["git", "-C", str(ROOT), "grep", "-q", "-F", sym, "--", "src", "infrastructure/state/items"])
         if hit.returncode != 0:
             bad.append(f"cited symbol resolves nowhere: {sym}")
+    for path, phrases in GONE.items():
+        bad += [f"{path.name} still says: {p}" for p in phrases if p in path.read_text(encoding="utf-8")]
     bad += ruling_defects(text)
     print("\n".join(bad) if bad else f"OK {len(EXISTING)} symbols, {len(SECTIONS + PHRASES)} sections, ruled KEEP")
     return 1 if bad else 0

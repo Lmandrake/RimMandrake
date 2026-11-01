@@ -31,21 +31,37 @@ and how Route 1 blows the lake), `design/Jawa/worldbuilding/biomes/the_propane_l
   the melting event."*
 - The crater: *"if they fail to do so, there may be automated ways for it to occur too... no one
   will miss it"*.
+- Route 6, shape: *"The route nobody buys, nobody places and nobody arms"*; lit by *"plot points, not
+  just player behavior"*, Paths A and B; leaks are discrete named events, *"prevented, never undone"*.
+- Strike or dive, 2026-10-12 (`dungeons_arc_spec.md`, ledger `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`):
+  *"one or the other — strike (full Cathedral trust, lab lost) OR go in and defy the Cathedral."*
 - Standing: no worldgen of any kind; a biome of ours on 0 tiles is expected, not a defect; every DLC
   is assumed; every mod ships Mod Settings.
 
+## Rebuttal: this is round 2 (delegation_policy §4.5, your verdict stands)
+
+Round 1 returned REDO. The maker does not contest it; every defect was taken and fixed. The record is
+`infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`, field `judge_rounds`.
+
+- **Defect 1, strike and defeat left Route 6 live.** Fixed by a second state, `labFate`, and one guard,
+  `Route6Live`: §4 tables, §6. A strike sets `Lost` and nothing reopens it.
+- **Defect 2, every blast lit Route 6.** The clock is deleted, with its setting, and the sentence added to
+  the routes spec is removed. The question is filed for him as `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE`,
+  and the design stands whichever way he answers. What is left of the tension is said in §6.
+
 ## Hard reads: where the maker extended beyond his words
 
-1. **Every blast lights Route 6.** Route 6 is written as *"the route nobody buys, nobody places and
-   nobody arms"* and the owner named two plot paths. The note makes the player's own blast a third
-   fuse, and the maker **added that sentence to the Route 6 section of the routes spec** (commit
-   `cc00d23b40`). Is this a fair reading of *"If the Empire finds out"*, or an unruled change to a
-   ruled route? Route 1 blows the lake on purpose: does a 180-day clock on it fit that route?
-2. **The clock stops when the codes are used**, and a beaten garrison does not stop it.
-3. **Heat on every blast, not only an early one**, which the note itself calls an agent's reading.
-4. **A blast with the codes in hand posts no garrison.** Card 8 ruled only the early case.
-5. **Codes usable only on the lab's map**, which settles a question the item XML left open.
-6. **The numbers:** +80 Visibility, floor 2, 12 pawns, 1,314 points. Does "small" and "significantly"
+1. **`Route6Live` is false on `Open`.** Round 1 asked for cancellation on `Lost` and on a defeated
+   Empire. The note also cancels Route 6 on a lab the player already opened, because no door is left.
+   Is that fair, or a further change to a ruled route?
+2. **The garrison reading in §6:** it guards a crater and a door and does not report what is behind
+   it. Does that hold beside *"The Empire learns the place exists"* until he answers?
+3. **Both §4 tables:** can every row be reached and left as written? Does any path give both a strike
+   and a dive? §2's floor no longer cites a leak; does it still stand?
+4. **Heat on every blast, not only an early one**, which the note itself calls an agent's reading.
+5. **A blast with the codes in hand posts no garrison.** Card 8 ruled only the early case.
+6. **Codes usable only on the lab's map**, which settles a question the item XML left open.
+7. **The numbers:** +80 Visibility, floor 2, 12 pawns, 1,314 points. Does "small" and "significantly"
    hold? All are marked PROVISIONAL.
 
 Also check: any second heat meter, any worldgen by another name, any softlock, any state in the

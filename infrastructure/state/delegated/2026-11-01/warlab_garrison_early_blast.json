@@ -2,7 +2,7 @@
  "item": "WARLAB_GARRISON_DESIGN_EARLY_BLAST",
  "class": "design",
  "subject": "design/Jawa/worldbuilding/warlab_garrison_early_blast_2026-11-01.md",
- "verdict": "PENDING: no delegation_policy §4 opus judge has run",
+ "verdict": "PENDING: round 1 REDO; round 2 judge (§4.5) has not returned",
  "gpt_prereview": {
   "model": "gpt-6.1-sol via gpt_consult.py",
   "note": "pre-review, not a §4 judgment",
@@ -33,5 +33,18 @@
    }
   ]
  },
- "all_defects_fixed_in": "the note as committed with this file; the fixed text has had no judge"
+ "all_defects_fixed_in": "the note as committed with this file; round 2 has not judged the fixed text",
+ "judge_rounds": [
+  {
+   "round": 1,
+   "judge": "rm-consult opus, relentless help, unit rm-relentless-help-effed59c1b-g4-h1",
+   "verdict": "REDO",
+   "sound": "heat, garrison, codes gate, cited engine facts; hard reads 3 to 6",
+   "defects": [
+    "A Cradle strike did not stop the Route 6 clock or Paths A/B, so the lab could reopen after a strike (dungeons_arc_spec.md:233-240, 'Strike OR dive, never both'); a defeated Empire could still bomb; the state table had contradictory or missing edges",
+    "Route 6 on every blast changed a ruled route on an agent's reading ('The route nobody buys, nobody places and nobody arms'; card 8 gives heat and a garrison); hard read 2 fell with the clock"
+   ],
+   "owed": "fix both, remove the clock and the routes-spec sentence from cc00d23b40, file the clock as an owner question, re-ask one new judge with a rebuttal"
+  }
+ ]
 }

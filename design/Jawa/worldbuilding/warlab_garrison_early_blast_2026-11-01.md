@@ -20,13 +20,15 @@ Status and judge record: see `## Judgment` at the end of this note.
 3. **Early means no codes in hand when the lake blows.** An early blast posts the garrison. A
    blast with the codes in hand raises the same heat and posts no garrison, because the card
    ruled the garrison for the case where the lab cannot be opened yet.
-4. **The garrison is fixed at 12 pawns and never refills.** It holds the lab until it is beaten or
-   Route 6 ends it.
-5. **The codes work only on the lab's own site map, only once the ground has opened, and only when
-   no garrison stands there.**
-6. **Every blast is a named Route 6 leak.** The Empire now knows the place exists, so the fuse is
-   lit and cannot be put out, whoever holds the codes. An early blast adds the garrison as that
-   route's first, unhurried step. Either way the player has until the ordnance arrives. See §6.
+4. **The garrison is fixed at 12 pawns and never refills.** It holds the lab until it is beaten, or
+   until the lab's fate ends it (§4).
+5. **The codes work only on the lab's own site map, only once the ground has opened, only when no
+   garrison stands there, and only while the door is still shut.**
+6. **A blast does not light Route 6.** Route 6 keeps the two fuses he named. Whether a blast is a
+   third is his question, `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE`. Until he answers, the garrison
+   holds for as long as it takes, and nothing here depends on the answer.
+7. **The lab has one fate.** Once the Cradle strikes it, it is lost: no later event reopens it. That
+   is *"Strike OR dive, never both"* carried into the state. See §4 and §6.
 
 ## 1. What exists, and what this design has to change
 
@@ -65,11 +67,12 @@ On every successful `Ignite()`, early or not:
   imperial heat increase"*, and this is the planet's largest blast, so it must not rate below the
   top of that scale. Since the band boundary is 80, every clan lands on **Exposed** whatever it was
   before: interval ×0.5, and the top of the raid-points curve.
-- **`EmpireSearch.RaiseFloor(2, "the lake blew")`**. An early blast is a named leak (§6), and a
-  blast with the codes in hand is the same event to everyone watching. This is the same number the
-  ladder design set for a named leak (`empire_escalation_ladder_design_2026-10-02.md` §4). Probes never open a
-  ladder again, on any tile, for the rest of the game. Route 6's maximal floor of 3 still sits
-  above it, and `RaiseFloor` only moves upward.
+- **`EmpireSearch.RaiseFloor(2, "the lake blew")`**. The ladder design sets this floor for events
+  the Empire cannot un-see (`empire_escalation_ladder_design_2026-10-02.md` §4: a Route 6 leak, or the
+  droid line being discovered). The blast is the same kind of event but is not a Route 6 leak (§6);
+  only the number is shared. A blast with the codes in hand is the same event to everyone watching.
+  Probes never open a ladder again, on any tile, for the rest of the game. Route 6's maximal floor of
+  3 still sits above it, and `RaiseFloor` only moves upward.
 - **The Empire goes hostile if it was not.** A garrison that does not fight cannot be beaten.
 
 Launching drops the dial as usual (`launchResetMultiplier`), so the +80 is the part the player can
@@ -93,7 +96,7 @@ Visibility absent, only the floor moves.
 
 `early` is computed at the top of `Ignite()`, before the tiles change:
 
-    early = !HasBeenSeized && no RUT_RakatanCommandCodes is in the player's hands
+    early = labFate == Sealed && no RUT_RakatanCommandCodes is in the player's hands
 
 In the player's hands means on a colonist or in a caravan (recursively, through
 `ThingOwnerUtility`), or lying on a player home map. Codes still on the Spire's floor do not count,
@@ -105,7 +108,7 @@ own trigger, as the Chill's ban on ignition without a hot source already require
 
 ## 4. The garrison
 
-**Where.** On every successful `Ignite()` a **new site appears at the island crag, tile 5873**, the
+**Where.** On every successful `Ignite()`, unless the lab is already `Lost`, a **new site appears at the island crag, tile 5873**, the
 lab's access (`the_propane_lakes.md` §8). This is card 9's *"map change"*. It is a fixed tile from
 one authored constant, placed once by one in-game event: the same shape as the reinfection nodes,
 and not worldgen. A pre-blast `RUT_WarLabSite` there, if the held bridge placement has run, is
@@ -140,18 +143,26 @@ because it is charge-gated and needs a `RM_HeatedSuitCharger`.
 **Behaviour.** One lord, `LordJob_DefendBase` on the camp, as `RM_GenStep_DetentionPost` does. They
 stay in the camp until the player comes.
 
-**Persistence.** `GameComponent_WarLabGarrison` is scribed and holds `state` and the survivors by
-kind:
+**Persistence.** `GameComponent_WarLabGarrison` is scribed and holds the garrison `state`, the
+survivors by kind, and the lab's fate. The two tables are separate facts: who stands outside the door,
+and what became of the door.
 
-| state | meaning | codes |
-|---|---|---|
-| `None` | no early blast | usable at the lab once the ground is open |
-| `Posted` | a garrison stands | refused |
-| `Beaten` | latched; never returns | usable at the lab |
-| `Moot` | the lab is struck or its door broken, or the Empire is defeated (§6) | usable at the lab, if there is a door left |
+| `state` | meaning | entered from | left by |
+|---|---|---|---|
+| `None` | no garrison was ever posted | the start | an early blast → `Posted` |
+| `Posted` | a garrison stands | `None`, on an early blast with the setting on and the Empire undefeated | last guard out → `Beaten`; fate `Broken` or `Lost` → `Moot` |
+| `Beaten` | the player beat it; never returns | `Posted` | nothing |
+| `Moot` | other hands ended it | `Posted` | nothing |
+
+| `labFate` | meaning | entered from | left by |
+|---|---|---|---|
+| `Sealed` | the door is shut | the start | any of the three below |
+| `Open` | the codes were used; this is `HasBeenSeized`, not a second flag | `Sealed` | `Lost`, if a strike can still land |
+| `Broken` | Route 6 broke the door (aftermath 6) | `Sealed` | `Lost`, if a strike can still land |
+| `Lost` | the Cradle struck it | any other fate | nothing |
 
 - The garrison has no timer of its own and never leaves. It takes no reinforcements, and no ladder
-  contact adds to it. Only the player or Route 6's ordnance (§6) removes it.
+  contact adds to it. It ends only by the player's hand or when the lab's fate changes under it.
 - A guard counts as out when dead, downed, held prisoner by the player, or off the map. When none
   stands, the state latches to `Beaten`, and a downed guard who rises later changes nothing.
 - If the player leaves and the map unloads, the survivors are written back by kind and the next
@@ -159,6 +170,8 @@ kind:
   and resumed.
 - A map already loaded at the blast (a crew on site when it blew) gets the camp spawned onto it
   directly instead of through the GenStep.
+- If the Empire is defeated after the garrison is posted, the state stays `Posted`. Its men are
+  still on the glass, and they still have to be beaten. They just have no one left to answer to.
 
 **What the player sees.** Card 9's beats belong to the cut-scene. After it, two letters:
 
@@ -171,7 +184,8 @@ kind:
 
 One choke point, the gizmo in `CompRedeemRakatanCommandCodes`, with one pure question:
 
-    CodesUsable(mapIsWarLab, groundOpen, state) = mapIsWarLab && groundOpen && state != Posted
+    CodesUsable(mapIsWarLab, groundOpen, state, labFate) =
+        mapIsWarLab && groundOpen && state != Posted && labFate == Sealed
 
 `groundOpen` is the first key: a new scribed latch on `GameComponent_WarLabGarrison`, separate from
 `GameComponent_WarLabCrater.Triggered`, which stays the once-per-save blast latch. A successful
@@ -180,7 +194,8 @@ without a blast, and they leave `Triggered` alone so a later blast still has its
 
 On any other map the gizmo is disabled, with the reason *"This is a key. It wants its lock."* On
 the lab's map with the ground shut: *"The ground has not opened."* With a garrison standing: *"Not
-with the Empire's rifles on your back."* It consumes nothing while refused, so it can never
+with the Empire's rifles on your back."* With the door `Broken`: *"These were for a door that no
+longer exists."* With the lab `Lost`: *"Nothing is left that would answer."* It consumes nothing while refused, so it can never
 softlock, and the codes stay the one item they are today.
 
 `mapIsWarLab` is true on a site carrying either `RUT_WarLabSite` or `RUT_WarLabRevealedSite`. This
@@ -192,48 +207,45 @@ The whole gate order is written once, in `dungeons_arc_spec.md` §2.3 (`ASSAILAN
 
 ## 6. Where it meets other rulings
 
-- **Route 6.** Its trigger is *"The Empire learns the place exists."* That is the whole fuse, and
-  a garrison outside the lab means the Empire has learned it. So every blast **is** a leak: the
-  named event *The Hole in the World*, which can be prevented by not blowing the lake and can never
-  be undone. Route 6's two named paths are the plot's fuses (*"plot points, not just player
-  behavior"*), so a fuse the player lights is allowed. The card's garrison and Route 6's bombing
-  are then one sequence, and *"procedural, unhurried"* is the room between them:
+- **Route 6.** A blast does not light it, and no clock runs from a blast. Route 6 is *"the route
+  nobody buys, nobody places and nobody arms"*, with two named paths, and it sits off the price
+  ladder. Route 1 keeps its door, and card 8 gives the Empire's answer to a blast as heat and a
+  garrison, not ordnance. A fuse the player lights would also let a player blow the lake, skip the
+  Spire and wait for a free door. Against that, the trigger reads *"The Empire learns the place
+  exists"*, and a garrison outside the lab looks like the Empire knowing. The written text does not
+  settle it, so it is his: `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE`. Until then the garrison guards a
+  crater and a sealed door it cannot open and does not report what is behind it.
 
-  1. Any blast starts the **Route 6 clock**: 180 days by default, one scribed tick on
-     `GameComponent_WarLabGarrison`, with a letter 15 days out, *"Imperial ordnance is on its way to
-     the crater."* An early blast also posts the garrison. A blast with the codes in hand does not.
-  2. **The player keys the codes first**, having beaten the garrison if one stands. The lab is open
-     and the clock is stopped: there is no sealed door left for the Empire to bomb. The floor
-     stays. The card is honoured in full.
-  3. **The clock runs out.** Route 6 fires as ruled: the door breaks, the Empire is overrun, the
-     lab stands open with no codes needed, and the floor goes to 3. A garrison still standing dies
-     there and the state goes `Moot`. This is the one bypass the two-key rule allows, and the
-     ending *"the world supplies when the player declines"*.
+  Paths A and B stay exactly as ruled and can fire at any time. Their entry asks one pure question:
 
-  A blast after the codes are already used (Routes 2 to 5 can open the lab first) starts no clock
-  and posts no garrison: `HasBeenSeized` is true, there is no sealed door to bomb, and only the heat
-  applies.
+      Route6Live(labFate, empireDefeated) = labFate == Sealed && !empireDefeated
 
-  Beating the garrison does **not** stop the clock, because a leak is never undone. Only using the
-  codes does, and a clan that holds them when the lake blows is on the same clock. Paths A and B can still fire earlier, with the same result. Route 6's own
-  consequences are not built: this design only starts the clock and calls Route 6's entry, and the
-  build item owes that entry as a stub until Route 6 has an item of its own.
-- **Strike or dive.** A Cradle strike on the lab while a garrison stands kills it too (`Moot`).
+  False cancels the route: no door breaks and no floor 3 comes from it. True fires Route 6 as ruled:
+  fate `Broken`, a standing garrison dies there (`Moot`), and the lab stands open with no codes
+  needed. This is the one bypass the two-key rule allows. Route 6's own consequences are not built,
+  so the build item owes this guard and a stub entry until Route 6 has an item of its own.
+- **Strike or dive.** Dive means `Open`; strike means `Lost`. A Cradle strike on a sealed lab sets
+  `Lost`, kills a standing garrison (`Moot`) and cancels Route 6 through `Route6Live`, so no door ever
+  breaks afterwards and the codes never work. A later blast raises heat and places nothing. Whether
+  a strike can still be called on a lab already `Open` or `Broken` is `dungeons_arc_spec.md` §2.9's
+  open part. If one lands, the fate is `Lost`.
+- **A blast on a lab no longer sealed.** Routes 2 to 5 can open the lab first, or Route 6 can break
+  it. `early` is then false, so no garrison is posted and only the heat applies.
 - **Sekkulaath.** This rises in the same event, and its reach is its own region. Nothing here
   touches it.
 - **Specimen Casket** (`dungeons_arc_spec.md` §2.10). Its heat goes through
   `EmpireSearch.AdjustVisibility`, which is this same meter.
-- **The Empire defeated.** If `Faction.OfEmpire` is defeated at the blast, no garrison is posted
-  and the state goes straight to `Moot`.
+- **The Empire defeated.** If `Faction.OfEmpire` is defeated at the blast, no garrison is posted and
+  the state stays `None`. A defeated Empire bombs nothing: `Route6Live` is false.
 - **A biome of ours on 0 tiles** is the expected state, and `RM_ChillCrater` stays that until the
   blast. No paint is owed by this design.
 
 ## 7. Mod Settings
 
 On `StructureInjectionsRUT`: **War lab garrison** on/off (default on), **Garrison size** ×0.5 to
-×2 (default 1), scaling each kind and keeping at least one officer, and **Days until the Empire
-bombs the lab** 60 to 720 (default 180). Off means no garrison and no clock, and the gate reads
-`None` with `groundOpen` still honest, so all-off degrades to the two-key lab.
+×2 (default 1), scaling each kind and keeping at least one officer. Off means no garrison, and the
+state reads `None` with `groundOpen` and `labFate` still honest, so all-off degrades to the two-key
+lab.
 
 On `EmpirePursuit`: **Lake blast raises heat** on/off (default on) and **Lake blast rung floor**
 0 to 3 (default 2). The Visibility rise reads the existing fuel-blast dial.
@@ -244,15 +256,17 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 `validation.py`, under the 2026-10-01 debugging process.
 
 1. A pure kernel, `WarLabGarrisonKernel`: `Early`, `CodesUsable`, the state transitions,
-   `groundOpen`, the Route 6 clock, the survivor write-back. Selftests cover each table row above.
+   `groundOpen`, `Route6Live`, the survivor write-back. Selftests cover each row of both §4 tables, and
+   one row each for strike-then-Route-6 (lab stays `Lost`, no door breaks) and defeat-then-Route-6.
 2. The `Ignited` event, the `EmpirePursuit` binding, and the settings.
 3. `RUT_WarLabRevealedSite`, `RUT_Site_WarLab`, the camp layout, `RUT_GarrisonColdSealed`, and
    `GameComponent_WarLabGarrison`.
 4. The gizmo gate.
 5. Live proof on a test map, by state reads: `Ignite()` once → Visibility, floor, site on tile,
    state `Posted`. Refused gizmo on and off site. Leave with a part-killed garrison and return:
-   survivors, not 12. Last guard down → `Beaten` → gizmo works and stops the clock. A second run
-   with the clock jumped past 180 days → `Moot`, floor 3. A second `Ignite()` does nothing.
+   survivors, not 12. Last guard down → `Beaten` → gizmo works. A second run calls the Route 6 stub
+   with the garrison standing → `Moot`, `Broken`, gizmo refused. A third strikes the lab → `Moot`,
+   `Lost`, and the Route 6 stub refuses. A second `Ignite()` does nothing.
 
 **To check at build, not settled here:**
 
@@ -266,11 +280,9 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 
 ## Judgment
 
-Status: **not yet ruled.** The opus judge required by `delegation_policy.md` §4 has not run. The
-maker may not rule its own design, and the worker that wrote this note could not spawn one. Brief:
-`infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast_judge_brief.md`.
-
-Pre-review only, by GPT (not a valid §4 judge for this class): three rounds, each REDO, five
-defects, all fixed in this text. Its last two defects (`groundOpen` and the Route 6 clock) came
-after earlier fixes, so the Route 6 section is the part most worth a hard read. Record:
-`infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`.
+Status: **not yet ruled.** Round 1, a fresh opus judge under `delegation_policy.md` §4 (rm-consult):
+**REDO**, two defects. Strike and defeat left Route 6 live, and a blast-lit Route 6 changed a ruled
+route. Both are fixed in this text. Heat, garrison, codes gate and the cited engine facts it found
+sound stand unchanged. Round 2, one new judge with a written rebuttal under §4.5, has not returned.
+Brief: `infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast_judge_brief.md`.
+Record: `infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`.

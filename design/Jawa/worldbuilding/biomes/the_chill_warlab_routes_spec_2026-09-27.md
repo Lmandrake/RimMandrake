@@ -299,9 +299,7 @@ ancient secrets to the Empire. *Path B:* the Empire, escalating too far too
 fast while the players ignore events, starts opening the Vaults themselves —
 after many threats that this is possible — leading eventually to the War Lab.
 Leaks land as **discrete, named events**, and counterplay runs upstream only:
-a leak can be prevented, never undone (both by card, same sitting). The player
-can light it too: blowing the lake is a leak, whose garrison and ordnance clock
-are in `../warlab_garrison_early_blast_2026-11-01.md` §6.
+a leak can be prevented, never undone (both by card, same sitting).
 
 **What happens.** The occupier does what occupiers do: they bomb their way in —
 procedural, unhurried, with ordnance that asks nobody's permission and brings
