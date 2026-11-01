@@ -52,8 +52,8 @@ the trial says: the Test Pilot is adopted (OWNER note, 10-31 17:16:42Z).
 
 ## What the carrier item does
 
-`V3_COLLAPSE_BUILD_AFTER_THE_QUIET_MONTH` is blocked on `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD`, and rule 3 holds it
-further, until about 2026-12-01. When it opens, it applies the trial's winner and closes the gaps above against that
+`V3_COLLAPSE_BUILD_AFTER_THE_QUIET_MONTH` is blocked with no blocker item: rule 3 holds it until the trial has reported
+and the quiet month has passed, about 2026-12-01. When it opens, it applies the trial's winner and closes the gaps above against that
 winner, depth first, with each step blind-reviewed by GPT.
 
 The 18 draft tickets of the audit re-measure stay unfiled by his order on `V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR`. The

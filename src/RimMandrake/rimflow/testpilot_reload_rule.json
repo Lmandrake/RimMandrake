@@ -1,0 +1,8 @@
+{
+  "_what": "The permanent Test Pilot's written reload rule (design/RimMandrake/testpilot_merged_2026-10-29.md M1). testpilot_reload.py reads it; its sha256 goes in every logged decision. Change a number here, never in code. The arena trio lane keeps its own file, src/RimMandrake/Utils/arena/testpilot_reload_rule.json.",
+  "_owner": "When reloads are cheap, try for a few more unrelated tests, then reload. When reloads are expensive, work harder to find any remaining value first. Never just \"exhaustively test everything\" though, that's almost guaranteed to be a waste.",
+  "cheap_max_launch_to_ready_s": 120,
+  "cheap_extra_tests": 3,
+  "max_acceptance_delay_s": {"cheap": 900, "expensive": 3600},
+  "unmeasured_cost_class": "expensive"
+}

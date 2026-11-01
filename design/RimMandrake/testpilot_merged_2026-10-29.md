@@ -1,7 +1,6 @@
 # TestPilot: merged design, round 3 (2026-10-29)
 
-Item `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD` (needs owner). DESIGN MERGE ONLY: no code, unit, role file or config
-was changed. The merger wrote neither design.
+Item `TESTPILOT_DESIGN_PROOF_BEFORE_RELOAD`. The merger wrote neither design.
 
 Inputs, cited by short name in the text:
 
@@ -14,7 +13,7 @@ Inputs, cited by short name in the text:
 - **Presence:** `D:\ClaudeWork\rimmandrake\testpilot\v2_owner_augmentation.md`.
 - **Harness:** `D:\Luke\dev\RimMandrake\design\RimMandrake\architecture_switch_harness_2026-10-29.md`.
 - **Research:** `D:\ClaudeWork\rimmandrake\modelling_research\gpt_research.md` and `gpt_fast_decisions.md`.
-- **Zoo:** `D:\Luke\dev\RimMandrake\Transient\architecture_zoo.html`.
+- **Zoo:** `D:\ClaudeWork\rimmandrake\testpilot\architecture_zoo.html`.
 
 Owner answers recorded on this item (from `rimflow show`, newest last): TestPilot on both machines; the Archmagi
 20-minute idle wait does not apply while he is not playing (flyer flight still needs him present); rank by accepted
@@ -31,6 +30,21 @@ Trust tags used throughout: **MEASURED** = counted from the ledger or transcript
 measured numbers. **SIM** = Opus's simulator (calibrated world, every TestPilot and Ralph parameter assumed, p50 of 240
 members). **ASSUMED** = GPT's static formula, every input assumed. **DEFINITIONAL** = follows from how the metric is
 defined, not from performance. **UNMEASURED** = nobody has a number.
+
+## 0. Outcome
+
+The evaluation this page records is finished. Two things came after it.
+
+- **The Test Pilot is adopted, whatever the trial says.** Owner, 2026-10-31: "Ok, so the "test pilot" agent is a real
+  idea we should simply implement and accept, period." The adopted form differs from section 2 on purpose: one sitting
+  on one item (`.claude/agents/rm-testpilot.md`), routed by `rimflow pilot` after 3 non-pass runs in a row or a defect
+  that needs live observation (`src/RimMandrake/rimflow/testpilot_route.py`). Its reload rule is M1 below, as a script
+  (`src/RimMandrake/rimflow/testpilot_reload.py`, numbers in `testpilot_reload_rule.json`), and each reload stamps the
+  rule it met on the item.
+- **The architecture choice went to the arena trial,** under the owner's three rules of 2026-10-30, and its report
+  decides between the arms. The rest of this page is the design as merged on 2026-10-29: the trial's actual schedule and
+  arms are in `D:\Luke\dev\RimMandrake\design\RimMandrake\architecture_switch_harness_2026-10-29.md`, and section 6
+  below is the plan as first drawn.
 
 ## 1. Executive summary
 
@@ -61,8 +75,8 @@ defined, not from performance. **UNMEASURED** = nobody has a number.
 9. The owner decided section 5 on 2026-10-29: reloads scale with reload cost; 1.5x tokens for the 3 measuring days,
    then a budget set from measured cost per accepted item; the minimal list plus load dependencies only; design cards
    from every arm equally, minutes measured per arm; a win switches production to the winner immediately.
-10. None of this is built yet. The build is ticketed for FOUNDRY at top priority in the section 6.3 order. Production
-   changes when the trial names a winner, at once.
+10. The build was ticketed for FOUNDRY at top priority in the section 6.3 order. Production changes when the trial
+   names a winner, at once.
 
 ## 2. The merged design
 
