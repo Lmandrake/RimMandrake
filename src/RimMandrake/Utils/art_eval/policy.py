@@ -346,7 +346,7 @@ def revert_commands(card_or_rec: dict, by_card: str) -> list:
 
 
 def replaces_kept(card: dict, decision: str) -> bool:
-    return bool(card.get("owner_kept")) and decision == "REGEN"
+    return bool(card.get("owner_kept")) and decision in ("REGEN", "ACCEPT")  # an accepted redraw is installed over his kept art
 
 
 def cap_regen(decision: str, prior_rounds: int, max_rounds: int) -> tuple[str, int]:

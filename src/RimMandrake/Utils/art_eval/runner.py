@@ -418,12 +418,12 @@ def evaluate(spec: dict, card_dir: Path, rev: Reviewers, policy: dict, settings:
             rq = P.deterministic_regen_prompt(card, fs)
             rq["fallback_why"] = str(e) if not meta.get("error") else meta["error"]
         rec["regen"] = {"findings": [f["code"] for f in fs], "request": rq}
-        if P.replaces_kept(card, decision):
-            rec["replaces_kept"] = True
-            rec["kept_install"] = card["kept_install"]
-            rec["install_by_card"] = P.KEPT_ART_CARD
-            rec["revert"] = P.revert_commands(card, "shadow sheet: replaced your kept art → REVERT")
-            rec["reasons"].append("REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert")
+    if P.replaces_kept(card, decision):   # REGEN draws a new picture; ACCEPT installs the judged redraw: both replace his kept art
+        rec["replaces_kept"] = True
+        rec["kept_install"] = card.get("kept_install") or []
+        rec["install_by_card"] = P.KEPT_ART_CARD
+        rec["revert"] = P.revert_commands(card, "shadow sheet: replaced your kept art → REVERT")
+        rec["reasons"].append("REPLACES YOUR KEPT ART (owner card 2026-10-23 06:42) — on the next shadow sheet with a revert")
     return rec
 
 
@@ -813,6 +813,8 @@ def selftest_dry_run(tmp: Path) -> list:
     specs[3]["owner_kept"] = True
     specs.append(dict(base, subject="RM_DryKeptRevertible", owner_kept=True,
                       kept_install=[{"mod": "SWBestiary", "rel": "Things/Pawn/X/X_south.png", "sha": "a" * 64}]))
+    specs.append(dict(base, subject="RM_DryKeptAccepted", owner_kept=True,
+                      kept_install=[{"mod": "SWBestiary", "rel": "Things/Pawn/Y/Y_south.png", "sha": "b" * 64}]))
     specs.append({"subject": "RM_DryBadCatch", "template": "creature", "module": "catch", "invented": True,
                   "depends_on": "RM_DryBad", "description": "dead beast",
                   "images": {"single": imgs["south"], "scale": imgs["scale"], "living_reference": {"south": imgs["south"]}}})
