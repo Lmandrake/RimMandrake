@@ -436,6 +436,20 @@ namespace RimMandrake.CrackedLands
                 crewProp = null;
                 return;
             }
+            // A piece the player claims mid-dig stays his: the visitor stops. Hostile, they no longer care.
+            if (!crewLord.faction.HostileTo(Faction.OfPlayer))
+            {
+                for (int i = 0; i < crewLord.ownedPawns.Count; i++)
+                {
+                    Pawn p = crewLord.ownedPawns[i];
+                    Job job = p.CurJob;
+                    if (job != null && job.def == JobDefOf.TakeInventory
+                        && salvage.Find(c => c.piece == job.targetA.Thing) is RM_FloodlineClaim dug && !IsOpen(dug))
+                    {
+                        p.jobs.EndCurrentJob(JobCondition.InterruptForced);
+                    }
+                }
+            }
             if (crewTrader == null || !crewTrader.Spawned || crewTrader.Dead || !crewLord.ownedPawns.Contains(crewTrader))
             {
                 return;
@@ -606,6 +620,10 @@ namespace RimMandrake.CrackedLands
                 cohort.RemoveAll(p => p == null);
                 floodWrecks.RemoveAll(w => w == null);
                 // A reference that failed to resolve is a destroyed piece.
+                foreach (RM_FloodlineClaim dead in salvage.FindAll(c => c != null && c.piece == null))
+                {
+                    RemoveStake(dead);
+                }
                 salvage.RemoveAll(c => c == null || c.piece == null);
             }
         }
