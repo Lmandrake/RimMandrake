@@ -691,6 +691,4 @@ def mood_walk_tick(t):
     t.clear_area(size=10)
     _devmode_on(t)
     with t.component("mood_walk_advances", toggle="moodWalkMultiplier"):
-        t.wait_ticks(2600)
-        t.bridge_call("jawa/prefs")   # read-only ping; no mood claim made
-        t.screenshot()
+        raise ExpectationFailed("UNMEASURED: no read of the walking pawn's mood exists, so the row cannot say it advances")

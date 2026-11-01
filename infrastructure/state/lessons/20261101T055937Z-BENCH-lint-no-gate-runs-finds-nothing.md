@@ -1,0 +1,1 @@
+A lint no gate runs finds nothing: vacuity.py could name false-green rows for weeks because only its own selftest ran it. When you build a check, wire it to something that fails. Round record: design/RimMandrake/northstar_adversarial_rounds/round_1_2026-10-31.md

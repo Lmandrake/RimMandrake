@@ -75,11 +75,15 @@ class FakeWatch(object):
 def run_chain(mod, chain, handler, watch=None, waits=None):
     suite = runner.load_validation(runner.find_mod_dir(mod))
     fn = dict(suite.chains)[chain]
+    clock = [0]                                       # wait_ticks refuses an unreadable clock: the fake game has one
     def wrapped(tool, **p):
         if tool == "rimworld/get_cell_info":          # TestContext.spawn checks the cell after a batch
             return {"success": True, "cell": {"things": []}}
+        if tool in ("rimworld/step_game_ticks", "jawa/safe_advance"):
+            clock[0] += int(p.get("ticks") or 0)
         return handler(tool, **p)
     t = TestContext(_session(wrapped), anchor=(100, 100), watch=watch)
+    t.session._ticks = lambda: clock[0]
     t.screenshot = lambda *a, **k: None       # the real verb falls back to an OS screenshot with no game
     if waits is not None:
         t.wait_ticks = lambda n, **k: waits.append(n)

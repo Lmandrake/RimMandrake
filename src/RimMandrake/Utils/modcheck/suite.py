@@ -44,6 +44,7 @@ RULES THIS MODULE ENFORCES
   mode. `--debug` additionally implies halt-on-fail, which is the RUNNER's
   concern (it stops calling further chains), not this module's.
 """
+import re
 import sys
 import time
 
@@ -56,6 +57,11 @@ PASS, FAIL, UNMEASURED = "PASS", "FAIL", "UNMEASURED"
 NOT_RUN = "NOT_RUN"
 
 
+def _kv_in_line(line, field, value):
+    """`field=value` as a whole token: `n=1` does not match `n=12`, `subn=1` or `n=1.5` (a bare substring did)."""
+    return re.search(r"(?<![\w.])%s=%s(?![\w]|\.\d)" % (re.escape(str(field)), re.escape(str(value))), line) is not None
+
+
 class StopAfter(BaseException):
     """Raised when the last row a targeted prefix run asked for has recorded (TestContext.stop_after). A BaseException
     so a chain's own `except Exception` cannot swallow it; it unwinds the chain through its `finally` teardown, so no
@@ -65,6 +71,15 @@ class StopAfter(BaseException):
 
 class ExpectationFailed(Exception):
     """A `t.expect_*` read-back did not match what the component asserted."""
+
+
+# Exceptions that say the script or the wire broke, never that the mod misbehaved (`assert` and ExpectationFailed still
+# FAIL). Same line as northstar_driver.bars.run_bar; rimdrive's SessionError is matched by name in `_is_harness_error`.
+HARNESS_ERRORS = (ConnectionError, TimeoutError, OSError, KeyError, IndexError, TypeError, AttributeError, NameError)
+
+
+def _is_harness_error(exc_type):
+    return issubclass(exc_type, HARNESS_ERRORS) or exc_type.__name__ == "SessionError"
 
 
 class Precondition(Exception):
@@ -418,13 +433,13 @@ class TestContext(object):
             last = r
             now = self.session._ticks()
             if start is None or now is None:
-                # Can't verify independently (e.g. off the map screen) --
-                # fall back to the old single-call, unverified behavior
-                # rather than looping blind.
+                # Can't verify independently (e.g. off the map screen): never loop blind, and never report the
+                # wait as done (returning here ran one chunk of n and let the next expect read a young world).
                 self._record("wait_ticks(%d) [unverifiable clock]" % n, r)
                 if self.pre is not None:
                     self.pre.fault("wait_ticks(%d)" % n, "clock unverifiable: no tick read before/after the wait")
-                return r
+                raise ExpectationFailed("UNMEASURED: wait_ticks(%d) could not read the clock, so at most one %d-tick "
+                                        "chunk ran and nothing checked after it is evidence (HARNESS)" % (n, step))
             new_advanced = now - start
             if new_advanced <= advanced:
                 # A call that reported completion but moved nothing is a
@@ -692,8 +707,7 @@ class TestContext(object):
             rows = [m for m in rows if now[m.get("text", "")] > self._log_base.get(m.get("text", ""), 0)]
         msgs = [m.get("text", "") for m in rows]
         line = msgs[-1] if msgs else None
-        got = line is not None and (field is None or
-                                    ("%s=%s" % (field, value)) in line)
+        got = line is not None and (field is None or _kv_in_line(line, field, value))
         self._record("expect_log_contains(%s, %s=%s)" % (tag, field, value), got)
         if not got:
             raise ExpectationFailed(
@@ -717,7 +731,11 @@ class TestContext(object):
         if not self._guard():
             return None
         x, z = self._pawn_pos(pawn_id)
-        got = defName not in (self.session.things_at(x, z) if x is not None else [])
+        if x is None:
+            # gone from the map is not "stands somewhere without it": that would pass on a dead or despawned pawn
+            raise ExpectationFailed("UNMEASURED: %s is not on the map, so its cell cannot be read for %s"
+                                    % (pawn_id, defName))
+        got = defName not in self.session.things_at(x, z)
         self._record("expect_not_in_cell_of(%s, %s)" % (pawn_id, defName), got)
         if not got:
             raise ExpectationFailed(
@@ -734,8 +752,9 @@ class TestContext(object):
         xs = [c[0] for c in cells]
         zs = [c[1] for c in cells]
         along_x = max(xs) - min(xs) >= max(zs) - min(zs)
-        got = (px is not None and px > max(xs)) if along_x else \
-              (pz is not None and pz > max(zs))
+        vals, pos = (xs, px) if along_x else (zs, pz)
+        # the far edge is the end the walk was heading to: a walk toward -x is past min, never max
+        got = pos is not None and (pos < min(vals) if vals[-1] < vals[0] else pos > max(vals))
         self._record("expect_reached_past(%s, %d cells)" % (pawn_id, len(cells)), got)
         if not got:
             raise ExpectationFailed(
@@ -920,6 +939,13 @@ class _ComponentCtx(object):
             c.detail = "%s: %s" % (exc_type.__name__, exc)
             self.ctx.upstream_failed = True
             self.ctx.upstream_reason = "an UNMEASURED component ended this chain earlier: " + c.detail[:200]
+        elif exc is not None and _is_harness_error(exc_type):
+            # The script or the transport broke: no answer about the mod came back, so this is no finding against it.
+            c.verdict = UNMEASURED
+            c.validity, c.suspected_cause, c.cause_confidence = "invalid", "HARNESS", "high"
+            c.detail = "UNMEASURED (harness: no answer from the mod): %s: %s" % (exc_type.__name__, exc)
+            self.ctx.upstream_failed = True
+            self.ctx.upstream_reason = "a harness error ended this chain earlier: " + c.detail[:200]
         elif exc is not None:
             c.detail = "%s: %s" % (exc_type.__name__, exc)
             self.ctx.upstream_failed = True

@@ -228,6 +228,8 @@ them or grow them."*
 - **Periodic adversarial review.** The owner releases adversarial agents and GPT reviews
   against the scripts, on his clock (`NORTHSTAR_ADVERSARIAL_REVIEW_1`). A weakened, proxy
   or never-red check they find is a script defect. It is fixed and recorded like any bug.
+  Each round is recorded in `design/RimMandrake/northstar_adversarial_rounds/` (findings, false leads, what changed), and
+  `src/RimMandrake/Utils/modcheck/selftest_northstar_adversarial_round.py` refuses a row without class, evidence or change.
 
 ### 6a. The north-star ladder (`NORTHSTAR_PHASE_LADDER_1`)
 

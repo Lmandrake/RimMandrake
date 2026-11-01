@@ -152,10 +152,14 @@ def scald_return_gallery(t):
         t.screenshot()
     with t.component("scald_generator_lists_gallery_only", beyond_toggle=True):
         text = open(os.path.join(here, "Defs", "MapGeneration", "RM_SeaDiveGenerators.xml"), encoding="utf-8").read()
+        names = []
         for b in text.split("<MapGeneratorDef>")[1:]:
             name = b.split("<defName>")[1].split("</defName>")[0]
+            names.append(name)
             if (name == "RM_SeaDiveGenerator_TheScald") != ("RM_ScaldReturnGallery" in b):
                 raise ExpectationFailed("%s gallery listing wrong" % name)
+        if "RM_SeaDiveGenerator_TheScald" not in names:
+            raise ExpectationFailed("the Scald generator is not in the file, so the listing was never checked: %s" % names)
         t.screenshot()
     with t.component("gallery_cannot_reach_live_systems", beyond_toggle=True):
         src = open(os.path.join(here, "Source", "RM_ReturnGallery.cs"), encoding="utf-8").read()
@@ -203,8 +207,8 @@ def chill_return_comb(t):
                 raise ExpectationFailed("comb step touches %s" % banned)
         t.screenshot()
     with t.component("comb_laid_on_live_floor", beyond_toggle=True):
-        # UNMEASURED offline: a real Chill floor map must be generated live; a count of RM_ReturnCombStud on it is the check.
-        t.screenshot()
+        raise ExpectationFailed("UNMEASURED: a real Chill floor map must be generated live; a count of RM_ReturnCombStud "
+                                "on it is the check, and no script reads it yet")
 
 
 @suite.chain("chill_dive_density_sampler")
@@ -233,9 +237,8 @@ def chill_dive_density_sampler(t):
             raise ExpectationFailed("GenStep_SeaFloorFauna lacks the weighted-draw path or its toggle")
         t.screenshot()
     with t.component("live_dive_animal_count", beyond_toggle=True):
-        # UNMEASURED offline: the number of animals on a freshly generated Chill floor needs a live dive; the
-        # owner sets the final count (leaning 2-4) on a walk. Run density_sampler.py for the offline expectation.
-        t.screenshot()
+        # the owner sets the final count (leaning 2-4) on a walk; density_sampler.py is the offline expectation
+        raise ExpectationFailed("UNMEASURED: the number of animals on a freshly generated Chill floor needs a live dive")
 
 
 @suite.chain("seabed_floor_generators")

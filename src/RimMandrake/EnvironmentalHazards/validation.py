@@ -310,6 +310,8 @@ def _build_suite():
                     for kind in ("prefixes", "postfixes"):
                         if any(p.get("owner") == HARMONY_ID for p in (m.get(kind) or [])):
                             raise ExpectationFailed("a nonexistent method reads as patched by %s" % HARMONY_ID)
+            elif _live(t):
+                raise ExpectationFailed("UNMEASURED: the control never got an answer, so it proved nothing: %s" % str(r)[:160])
         for typ, meth, kind, patch, toggle in RULES:
             with t.component("%s_%s_%s_armed" % (typ, meth, kind[:-2]), toggle=toggle, beyond_toggle=toggle is None):
                 r = t.bridge_call("jawa/harmony_patches", typeName=typ, methodName=meth)

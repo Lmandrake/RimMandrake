@@ -305,8 +305,7 @@ def theft_hauler_uninstall(t):
 
 @suite.chain("animal_theft_take")
 def animal_theft_take(t):
-    """Spawn a stealable item, a stationary colonist co-located with it (a
-    sentinel proving where the item started), and a Muffalo past it; order
+    """Spawn a stealable item and a Muffalo past it; order
     the Muffalo to run `RM_AnimalSteal` directly via `jawa/ordered_job` --
     bypassing `JobGiver_RM_{Trained,Wild}Steal`'s own gates (RM_Steal
     trainable / WildTheftExtension) and `AnimalTheftUtility.FindStealTarget`'s
@@ -331,18 +330,14 @@ def animal_theft_take(t):
         raise ExpectationFailed(
             "no %s found in the test area right after spawn_batch" % STEAL_ITEM_DEF)
 
-    # Co-located with the item at spawn (spawn_pawn defaults to t.anchor
-    # with no `beyond`) -- items don't block pawn movement, so this is a
-    # legal placement, and it never moves: its cell is the item's ORIGIN,
-    # checked again after the steal.
-    sentinel = t.spawn_pawn("Colonist", hostile=False)
     thief = t.spawn_pawn(THIEF_KIND, hostile=False, beyond=item_cells)
 
     with t.component("take_and_relocate", toggle="animalTheftEnabled"):
         t.bridge_call("jawa/ordered_job", pawnId=thief, jobDef="RM_AnimalSteal",
                       targetAId=item_id)
         t.wait_ticks(900)
-        t.expect_not_in_cell_of(sentinel, STEAL_ITEM_DEF)   # left its origin
+        if t._guard() and STEAL_ITEM_DEF in t.session.things_at(*item_cells[0]):
+            raise ExpectationFailed("%s is still on its origin cell %s" % (STEAL_ITEM_DEF, item_cells[0]))
         t.expect_in_cell_of(thief, STEAL_ITEM_DEF)          # dropped where the thief ended up
         t.screenshot()
 

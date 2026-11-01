@@ -1,0 +1,16 @@
+{
+ "about": "Components vacuity.py --repo may leave asserting nothing, each with why. Adding a row needs a reason a reviewer would accept.",
+ "rows": {
+  "src/RimMandrake/FlowWorks/northstar/extensions.py|plot_C_limitless_canal|canal_same_liquid_look": "visual row: its bar passes only on a judge verdict",
+  "src/RimMandrake/FlowWorks/validation.py|core_offline|offline_tier_ran": "delegates to a measuring module or tier; FlowWorks lane",
+  "src/RimMandrake/FlowWorks/validation.py|hose_offline|hose_offline_ran": "delegates to a measuring module or tier; FlowWorks lane",
+  "src/RimMandrake/FlowWorks/validation.py|water_level_surface|level_surface_within_1cm": "delegates to a measuring module or tier; FlowWorks lane",
+  "src/RimMandrake/Graffiti/validation.py|beauty_pair|site_ready_beauty_pair": "site setup row: a failed fixture raises in the verbs",
+  "src/RimMandrake/Graffiti/validation.py|forced_paint_job|site_ready_forced_paint": "site setup row: a failed fixture raises in the verbs",
+  "src/RimMandrake/Graffiti/validation.py|mental_break_spree|site_ready_mental_break": "site setup row: a failed fixture raises in the verbs",
+  "src/RimMandrake/Graffiti/validation.py|spree_wall|site_ready_spree_wall": "site setup row: a failed fixture raises in the verbs",
+  "src/RimMandrake/Utils/modcheck/live_queue/abort_proof.py|_c|meets_a_hostile": "harness probe of the watch itself, not a mod claim",
+  "src/RimMandrake/Utils/modcheck/live_queue/situational_rerun.py|_q|waits": "harness probe of the watch itself, not a mod claim",
+  "src/RimUtinni/PyrelandsMechanics/validation.py|unproven_bars|name": "honest stub: upstream_failed is set before the row opens"
+ }
+}

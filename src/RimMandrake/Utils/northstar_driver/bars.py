@@ -89,9 +89,11 @@ class Trial(object):
         return self.s_wait(n)
 
     def s_wait(self, n):
-        # the mock advances per call; live uses rimworld/step_game_ticks if present
-        if "rimworld/step_game_ticks" in self.s.tools:
-            self.s.call("rimworld/step_game_ticks", ticks=n)
+        # the mock advances per call; live uses rimworld/step_game_ticks. No tool means no time passed: a
+        # cannot-show bar read after a silent no-op would pass having watched nothing happen.
+        if "rimworld/step_game_ticks" not in self.s.tools:
+            raise Unmeasured("wait_ticks(%d): rimworld/step_game_ticks is not on the bridge, no time passed" % n)
+        self.s.call("rimworld/step_game_ticks", ticks=n)
         return self
 
 
@@ -121,7 +123,7 @@ def run_bar(b, session, anchor=(100, 100)):
         # A bridge/tool error or script bug: we did not get an answer about the MOD.
         st, ev = UNMEASURED, "%s: %s | %s" % (type(ex).__name__, ex,
                                               traceback.format_exc().strip().splitlines()[-2][:120])
-    if b.visual and st == PASS and "judge:" not in ev:
+    if b.visual and st == PASS and not str(ev).startswith("judge:"):
         st, ev = UNMEASURED, "visual bar: state evidence only, no judge verdict (%s)" % ev
     return _row(b, st, ev, t0, t)
 
@@ -183,7 +185,10 @@ def summarize(rows):
 def all_green(rows, expected_ids=None):
     """GREEN only if every EXPECTED bar is present and PASS. A bar the walk lists but the run
     never produced counts UNMEASURED -- absence is not a pass."""
-    by = {r["id"]: r["status"] for r in rows}
+    by = {}
+    for r in rows:      # a repeated id keeps its worst row: a later PASS never erases an earlier FAIL
+        if by.get(r["id"], PASS) == PASS:
+            by[r["id"]] = r["status"]
     ids = list(expected_ids) if expected_ids is not None else list(by)
     return bool(ids) and all(by.get(i) == PASS for i in ids)
 

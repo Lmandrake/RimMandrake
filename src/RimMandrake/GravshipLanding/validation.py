@@ -162,6 +162,8 @@ def _build_suite():
                 for m in (r.get("methods") or []):
                     if any(p.get("owner") == HARMONY_ID for p in (m.get("postfixes") or [])):
                         raise ExpectationFailed("a nonexistent method reads as patched by %s" % HARMONY_ID)
+            elif _live(t):
+                raise ExpectationFailed("UNMEASURED: the control never got an answer, so it proved nothing: %s" % str(r)[:160])
         with t.component("postfix_attached_to_gravship_marker_generate", toggle="revealOutdoorsBeforeLanding"):
             r = t.bridge_call("jawa/harmony_patches", typeName=PATCH_TYPE, methodName=PATCH_METHOD)
             if _live(t):
