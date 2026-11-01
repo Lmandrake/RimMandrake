@@ -280,7 +280,8 @@ to the BENCH seat, then to you. No LLM by default.
 The **unowned clock** runs while the state is a fault (BRAKED, PAUSED without reason, QUARANTINE, STALE_HEARTBEAT, or
 IDLE_EMPTY with gaps). Filing an item does not stop it, and neither does a claim on its own: a claim pauses the clock
 for the claim's lease (2 h), and the clock resumes if the lease lapses or the lane is not RUNNING by the restoration
-deadline (the lease end). Only RUNNING stops it. The steward cannot see its own tick stop, so a **separate heartbeat
+deadline (the lease end). RUNNING, the day brake and EXHAUSTED end the incident; an incident left open across a settled
+lane resumed its old clock on the next fault, so a one-minute reboot read "unowned 70 min". The steward cannot see its own tick stop, so a **separate heartbeat
 watcher** (its own timer, reading `steward.json` age) raises STALE_HEARTBEAT when the steward has not written for 5 min.
 
 ### 6.2 What it writes

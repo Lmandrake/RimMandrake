@@ -14,7 +14,7 @@ braked and unowned that morning; nothing in the system noticed, so nobody did.
 What it knows (section 6.1), first match wins:
   UNREACHABLE      ssh_state.json says SteveDesktop is down                         fault
   QUARANTINE       QHOME/quarantine.json exists (an operator's hand quarantine)     fault, escalates at once
-  RUNNING          a SteveDesktop job is running                                    the only state that ends an incident
+  RUNNING          a SteveDesktop job is running                                    ends an incident
   PAUSED           paused.json: an auto pause (it names an outcome) is a fault at once; a manual pause with an `until`
                    in the future is intentional; any other manual pause (or QHOME/fill.stop, aged by its mtime) turns
                    into a fault 60 min after it began
@@ -22,18 +22,22 @@ What it knows (section 6.1), first match wins:
                    dispatcher that stopped admitting)
   BRAKED           fill_plan's brake (two filler jobs in a row not DONE): a fault, at once when either failure is a
                    HARNESS-class cause (HARNESS, DEPLOY, SYNC, SOURCE_SHA_MISSING, BLOCKED_SELECTION) with the job ids;
-                   the day's lane-time budget or job cap is a brake too but NOT a fault: it expires at local midnight
+                   the day's lane-time budget or job cap is a brake too but NOT a fault: it expires at local midnight,
+                   and it ends an incident (the lane stands idle on purpose, every check above it passed)
   IDLE_EMPTY       nothing queued and the fill found nothing selectable (no history, every chain DRY), or it would
                    queue chains yet nothing is pending (the fill itself failed): an evidence gap, a fault
-  EXHAUSTED        the fill's gap scan found nothing to do at all (fill_plan verdict "exhausted"): not a fault
+  EXHAUSTED        the fill's gap scan found nothing to do at all (fill_plan verdict "exhausted"): not a fault,
+                   and it ends an incident
   TICK_STOPPED     (after RUNNING and PAUSED: a job running or an intentional pause is not a fault) testq-tick.timer is not active on this machine (stopped by hand or by another seat): nothing is
                    dispatched, filled, reconciled or ingested; a fault at once (it outranks READY and IDLE_EMPTY,
                    whose "the fill failed?" was the misdiagnosis of 2026-10-28, when a cutover stopped every
                    rm-*/testq-* timer at 05:04 and nobody restarted them). An unknown state (no systemd) says nothing.
   STALE_HEARTBEAT  the watcher's: steward.json not written for 5 min
 
-The unowned clock (section 6.1) adds the time between two passes while the state is a fault. Non-fault states freeze
-it; only RUNNING ends the incident. A claim on the escalation item pauses it while the claim's lease is live, or for
+The unowned clock (section 6.1) adds the time between two passes while the state is a fault. RUNNING, the day brake
+and EXHAUSTED end the incident; any other non-fault state (an intentional pause, a young READY) freezes the clock. An
+incident left open across a settled lane resumed its old clock on the next fault: a one-minute reboot read "unowned 70
+min" and took two rungs at once (STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_2DEB). A claim on the escalation item pauses it while the claim's lease is live, or for
 2 h after a claim with no lease; a lapsed or released lease does not.
 
 Escalation (section 6.4), each at most once per incident:
@@ -42,7 +46,7 @@ Escalation (section 6.4), each at most once per incident:
              a failed `steve:lane` record lights the pulse health row
   T+30 min   `rimflow raise` it: first in `rimflow next --seat BENCH` and a line in the phone brief
   T+120 min  with no claim: spawn for OWNER (needs owner; titled "IN PERSON:" when SteveDesktop is unreachable)
-Recovery (RUNNING again) records `steve:lane` ok, notes the item and drops the items the incident spawned.
+Recovery (a settled lane) records `steve:lane` ok, notes the item and drops the items the incident spawned.
 
 The LLM wake (the owner's card ruling 2026-10-26 12:27 PDT, "Yes, after 30 min", on STEVE_STEWARD_BUILD_NO_LLM_OWNER):
 once an incident has been raised (T+30) and no claim holds its item, the steward MAY start ONE headless Claude session
@@ -114,9 +118,11 @@ def mods_default():
 
 # ---------------------------------------------------------------- what state the lane is in
 
-def _st(state, reason, fault_at=None, at_once=False, jobs=()):
-    """fault_at: the epoch from which the state is a fault (0: already; None: never)."""
-    return {"state": state, "reason": reason, "fault_at": fault_at, "at_once": at_once, "jobs": list(jobs)}
+def _st(state, reason, fault_at=None, at_once=False, jobs=(), settled=False):
+    """fault_at: the epoch from which the state is a fault (0: already; None: never). settled: the lane is working as
+    intended, so this state ends an incident."""
+    return {"state": state, "reason": reason, "fault_at": fault_at, "at_once": at_once, "jobs": list(jobs),
+            "settled": settled}
 
 
 def lane_state(now, mods=None):
@@ -129,7 +135,8 @@ def lane_state(now, mods=None):
         return _st("QUARANTINE", "quarantined: %s" % (qz.get("reason") or "quarantine.json exists"), 0, at_once=True)
     run = T.steve_running()
     if run:
-        return _st("RUNNING", "running %s" % ",".join(r["job"]["id"] for r in run), jobs=[r["job"]["id"] for r in run])
+        return _st("RUNNING", "running %s" % ",".join(r["job"]["id"] for r in run), jobs=[r["job"]["id"] for r in run],
+                   settled=True)
     pz = T.paused()
     if pz:
         since = S.parse_ts(pz["since"]) if pz.get("since") else now
@@ -179,9 +186,10 @@ def lane_state(now, mods=None):
         return _st("IDLE_EMPTY", "nothing selectable: " + "; ".join(plans[m]["text"][:160] for m in gaps), 0)
     capped = by.get("cap", []) + by.get("budget", [])
     if capped:
-        return _st("BRAKED", "day brake: " + plans[capped[0]]["text"][:200])
+        return _st("BRAKED", "day brake: " + plans[capped[0]]["text"][:200], settled=True)
     if "exhausted" in by:
-        return _st("EXHAUSTED", "the gap scan found nothing to fill: " + plans[by["exhausted"][0]]["text"][:200])
+        return _st("EXHAUSTED", "the gap scan found nothing to fill: " + plans[by["exhausted"][0]]["text"][:200],
+                   settled=True)
     return _st("IDLE_EMPTY", "idle; fill says: " + "; ".join("%s: %s" % (m, p["text"][:80]) for m, p in plans.items()),
                0)
 
@@ -650,13 +658,14 @@ def mint(w, tag, who):
 def retire(items, why, now):
     """Drop what a recovered incident spawned -> the items still to retire. It was a stall that ended, no work was
     done, so no commit proves it: an open one holds ops_watch steve.incident_unclaimed_min high for hours (FCE8, D070,
-    STEWARD_FIX_LEAVES_THE_LIGHTS_ON). An item a seat holds is left to that seat; a refused drop is retried next pass."""
+    STEWARD_FIX_LEAVES_THE_LIGHTS_ON). An item a seat holds, by a claim or by having started it (the relentless
+    supervisor starts without claiming), is left to that seat; a refused drop is retried next pass."""
     left = []
     for item in items:
         w = world()
         if not item_open(item, w):
             continue
-        if claim_holds(item, now, w):
+        if claim_holds(item, now, w) or w[1].items[item].state == "doing":
             left.append(item)
             continue
         rc, out = drop_as_bench(item, why)
@@ -750,16 +759,17 @@ def _steward_pass(now, mods):
     settle_wake(inc, now)
     dt = max(0.0, now - prev["epoch"]) if prev.get("epoch") else 0.0
     to_retire = list(prev.get("to_retire") or [])
-    if ls["state"] == "RUNNING":
+    if ls["settled"]:
         if inc:
             failreport(True)
             if inc.get("item"):
-                rimflow("note", inc["item"], "--text", "steward: SteveDesktop lane RUNNING again (%s) after %s, "
-                        "%d min unowned" % (ls["reason"][:120], inc["state"], inc["unowned_s"] // 60))
+                rimflow("note", inc["item"], "--text", "steward: SteveDesktop lane %s again (%s) after %s, "
+                        "%d min unowned" % (ls["state"], ls["reason"][:120], inc["state"], inc["unowned_s"] // 60))
             jlog({"ts": iso(now), "event": "recovered", "incident": inc})
             to_retire += [i for i in (inc.get("item"), inc.get("owner_item")) if i and i not in to_retire]
             inc = None
-        to_retire = retire(to_retire, "steward: SteveDesktop lane RUNNING again (%s)" % ls["reason"][:120], now)
+        to_retire = retire(to_retire, "steward: SteveDesktop lane %s again (%s)" % (ls["state"], ls["reason"][:120]),
+                            now)
     elif fault:
         if not inc:
             inc = {"state": ls["state"], "since": iso(now), "unowned_s": 0, "level": 0, "item": None,

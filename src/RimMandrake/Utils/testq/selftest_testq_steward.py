@@ -7,7 +7,8 @@ A temp queue, a temp ledger (RIMFLOW_LEDGER / RIMFLOW_ITEMS, the steward's own i
 acceptance injections of section 8 and the states around them:
   a brake          BRAKED is a fault: T+10 spawns one BENCH item (needs offline) and a failed steve:lane record, T+30
                    raises it, T+120 with no claim spawns an OWNER item (needs owner); each rung once
-  recovery         RUNNING ends the incident: steve:lane ok, a note on the item
+  recovery         RUNNING ends the incident: steve:lane ok, a note on the item; so do the day brake and EXHAUSTED, so
+                   a reboot after them starts a fresh clock; an item a seat started is left to that seat
   no duplicate     a second incident while the item is open notes it instead of spawning another
   an abandoned claim  a claim's live lease freezes the clock; the lease lapsing (45 min) resumes it
   pauses           a pause with an expiry never escalates before it expires; one without becomes a fault at 60 min;
@@ -463,6 +464,44 @@ def main():
             T.fill_plan = lambda *a, **k: {"verdict": "budget", "text": "cap: day budget"}
             ls = W.lane_state(base, ["Mock"])
             check(ls["state"] == "BRAKED" and ls["fault_at"] is None, "the day budget is a brake, not a fault")
+            # ---------------------------------------- a settled lane ends an incident (..._OFFLINE_UNOWNED_2DEB)
+            kept = T.read_json(T.q("steward.json"))
+            t0 = base + 500000
+            stale = {"state": "UNREACHABLE", "since": W.iso(t0 - 9000), "unowned_s": 4200, "level": 0, "item": None,
+                     "owner_item": None}
+            S.dump({"ts": W.iso(t0 - 60), "epoch": t0 - 60, "state": "UNREACHABLE", "fault": True, "reason": "x",
+                    "jobs": [], "incident": dict(stale), "last_item": None, "to_retire": [], "since": W.iso(t0 - 60)},
+                   T.q("steward.json"))
+            spawns = len(events("spawn"))
+            rec = step(t0)
+            check(rec["state"] == "BRAKED" and not rec["fault"] and rec["incident"] is None,
+                  "the day brake ends an old incident")
+            S.dump({"down_since": S.utcnow(), "last_probe": t0, "last_error": "timeout"}, T.q("ssh_state.json"))
+            step(t0 + 60)
+            rec = step(t0 + 360)
+            check(rec["incident"]["unowned_s"] == 300 and len(events("spawn")) == spawns,
+                  "a reboot after it starts a fresh clock, no rung: %s" % rec["incident"])
+            os.remove(T.q("ssh_state.json"))
+            T.fill_plan = lambda *a, **k: {"verdict": "exhausted", "text": "nothing to fill"}
+            rec = step(t0 + 420)
+            check(rec["state"] == "EXHAUSTED" and rec["incident"] is None, "EXHAUSTED ends an incident too")
+            # an item a seat started, with no claim (the relentless supervisor), is left to that seat
+            held = "STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_BEEF"
+            rc, out = W.rimflow("spawn", "--from", W.STEWARD_ITEM, "--for", "BENCH", "--needs", "offline",
+                                "--name", held, "--title", "x")
+            import ingest
+            st = subprocess.run([sys.executable, ingest.CLI, "start", held, "--why", "selftest"], capture_output=True,
+                                text=True, timeout=120, env=dict(os.environ, RIMFLOW_SEAT="BENCH",
+                                                                 CLAUDE_PROJECT_DIR=ingest.REPO))
+            check(rc == 0 and st.returncode == 0, "a started item: %s %s" % (out[-120:], st.stderr[-160:]))
+            prev = T.read_json(T.q("steward.json"))
+            prev["to_retire"] = [held]
+            S.dump(prev, T.q("steward.json"))
+            drops = len(events("drop"))
+            rec = step(t0 + 480)
+            check(rec["to_retire"] == [held] and len(events("drop")) == drops, "a started item is not retired")
+            W.drop_as_bench(held, "selftest done")
+            S.dump(kept, T.q("steward.json"))
         finally:
             T.fill_plan = real
         job = S.make_job("Mock", {"chains": ["c1"]}, "guard", "BENCH", "abc1234")
