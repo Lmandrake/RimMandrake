@@ -1,0 +1,1 @@
+selftest_contracts C6 fails on clean HEAD 88ddb17408: 'import dispatcher' pulls stdlib _sysconfigdata__linux_x86_64-linux-gnu, which the stdlib+RimMandrake allowlist does not know; independent of any contract change, so read it as a test-allowlist gap (seen 2026-11-01).
