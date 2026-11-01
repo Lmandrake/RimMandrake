@@ -25,8 +25,8 @@ Status and judge record: see `## Judgment` at the end of this note.
 4. **Five regional sites close for good:** Vhelloth, Fevrakesh, Octopus Silted Creek, Elephant
    Sealshoulder Standing Channel and Minonlanen Town. Their ground sinks. Only a tile something still
    stands on waits, and it closes when that thing leaves (§4).
-5. **Elsewhere only threat rises:** threat points ×1.15 for good, everywhere, and nothing else
-   changes outside the region.
+5. **Elsewhere only threat rises:** threat points ×1.15 for good, on everything that reads them.
+   Nothing else changes outside the region.
 6. **Inside the region, the pools stay savage for good.**
 7. **The cut-scene gives it the last frame before the cut to the crater.**
 8. **It is not Assailant flesh and not a woken ancient.** Nothing in this event names the Assailants.
@@ -132,7 +132,8 @@ list. The postfix reads a persisted set of settlement IDs in `GameComponent_Sekk
   letter's young line reads *"The tank is gone. So is what was in it."* If Sporefall's map is loaded
   at that moment, the worker also destroys `RUT_SporefallDisplayTank` on it, so the tank is gone from
   the map a player is standing on and not only from the next one generated. That destruction goes
-  through neither the freeing action nor its letter.
+  through neither the freeing action nor its letter: it uses `DestroyMode.Vanish`, because a kill
+  would run the freeing route and cost the goodwill.
 - If the player freed it earlier, `DisplayTankFreed` is already true and the letter reads *"The tank
   was already empty. It came anyway."* Freeing the young early buys no mercy.
 
@@ -180,14 +181,24 @@ out there that is."*, so the exception reads in play whether or not the map gets
 ## 5. Elsewhere only threat rises
 
 The card's option text says elsewhere only threat rises, and F4 asked whether that means a storyteller
-bump, raids or both. **It is one permanent factor: threat points ×1.15, set once.**
+bump, raids or both. **It is one permanent factor: threat points ×1.15, set once, on every system
+that reads them.**
 
 A postfix on `StorytellerUtility.DefaultThreatPointsNow` multiplies the result by the factor once
-the flag is set. That method is the choke point for storyteller raids, so raids grow without a second
-raid system, and `EmpireLadder` and `RuthlessPursuingMechanoids` inherit it because they call the same
-method. Raid frequency does not change: that would be a new schedule, and the ruling asks for
-"more dangerous", not more often. No new incident is added, no faction relation moves and no tile
-outside the region changes.
+the flag is set. About 50 call sites read that method, and the breadth is the point. Raids grow, and
+`EmpireLadder` and `RuthlessPursuingMechanoids` inherit it because they call the same method. So do
+infestations, mech-hive growth, ancient-complex sentries, thrumbo herds and quest difficulty. His
+words are *"the whole world is now upset and more dangerous"*, and those systems are the world.
+Raid frequency does not change: that would be a new schedule, and the ruling asks for "more
+dangerous", not more often. No new incident is added, no faction relation moves and no tile outside
+the region changes.
+
+**This is a deliberate exception to `colony_visibility_stat.md` §4.3,** which says not to patch this
+method. §4.3 governs Visibility, a replacement for the wealth term that non-raid systems were never
+designed to read. The rising is one flat multiplier, fired once and meant for all of them, so §4.3's
+"double-billing by accident" does not apply, and §4.3 now records the exception. It adds one duty:
+F12's `RaidThreatPointsNow` will bypass this method at the four raid call sites, so it must apply the
+factor itself. The factor is one public read on `GameComponent_SekkulaathRising`.
 
 **Inside the region, the pools stay savage.** `BoldnessMultiplier` returns the cap for good once the
 deep has risen, whatever the tally, and `RestlessnessLine` reads *the pools are savage*. This is the
@@ -206,17 +217,26 @@ person. The test is `tile.feature` named `Fever Wood`, or a biome of `RM_FeverWo
 
 - one `RUT_TenantEmergenceSpawner` at the map's largest `RUT_FeverWoodMirrorPool` body, which comes up
   as `RUT_TenantEmergedMass`, a building that cannot be damaged;
-- all six `RM_Sekkulaath_*` limbs around that pool, through the same placement
+- the five limb roles `RM_Sekkulaath_Feeler`, `RM_Sekkulaath_Snare`, `RM_Sekkulaath_Lash`,
+  `RM_Sekkulaath_Porter` and `RM_Sekkulaath_Sentinel` around that pool, through the same placement
   `RM_MapComponent_TentacleWatch` already uses;
 - the mass sinks, once, at the first of two things: every limb on the map has retreated or been
   severed under the existing ladder, or two in-game days have passed.
 
 The mass cannot be killed. *"you never can kill, but you can drive it off"* is the owner's rule, and
-driving off the limbs is how it is driven off. The eye set-piece cannot end the rising early, because
-the mass is not its target, though the eye limb counts among the six. Colonists are grabbed under the
+driving off the limbs is how it is driven off. **The rising brings no `RM_Sekkulaath_Bloom`.** The
+Bloom carries `RM_CompTentacleEye`, whose severe branch calls `KillPermanentlyOnThisMap`; the whole
+body offers no small eye to hit, so the rising's own limbs hold no way to end it for good. An ordinary
+Bloom already up, or one that ambient emergence brings during the two days, stays under the ruled
+ladder (`fever_wood_deep_and_mud_2026-09-23.md` §2b). Beating it clears the map's limbs, so the mass
+sinks with the second letter below. Colonists are grabbed under the
 Snare's existing rescue window, which outlives the mass, so nobody vanishes without a sign. When the
 mass sinks, the map's player gets a second letter: *"It has gone down again. It has not gone back to
 sleep."*
+
+**A map that has already won keeps it.** The emergence uses the three gates of `ForceEmergenceNear`:
+the bestiary setting off, `PermanentlyKilled`, or fouled water still in effect means no mass and no
+limbs on that map, and the letter takes the plain `{DEPARTURE_LINE}`. The world changes still happen.
 
 A map with no mirror pool gets no emergence. If `RUT_TenantEmergedMass` is not yet built, the emergence
 is skipped with one warning and everything else in this note still happens.
@@ -299,25 +319,32 @@ Filed as `SEKKULAATH_RISING_BUILD_THE_LAMPS_GO_OUT`. It ships with its slice of 
 4. Live emergence: `RUT_TenantEmergedMass`, its spawner ThingDef and art. It may land last.
 5. Live proof on a test map, by state reads: `Ignite()` once → the five tiles read `RM_SunkenGround`,
    a path to each is refused, settling is refused, both settlements report `RUT_Trader_WildsteamRuined`,
-   threat points read ×1.15 before and after on one fixed colony. A caravan parked on Vhelloth holds
+   threat points read ×1.15 before and after on one fixed colony. No Bloom stands among the rising's
+   limbs, and a map with `PermanentlyKilled` set gets no emergence. A caravan parked on Vhelloth holds
    the swap until it leaves. With Sporefall's map loaded, the tank is gone and goodwill is unchanged. A second `Ignite()` does nothing.
 
 **To check at build, not settled here:**
 
 - Which state of `RM_CompProperties_TentacleLimb`'s ladder reads as retreated or severed, for the
-  mass's sink test, and whether a map that spawns without its eye limb still counts all limbs gone.
+  mass's sink test.
 - Whether a river tile (Octopus Silted Creek carries a river) draws correctly on the swapped biome.
 - Whether the soft reference from `StructureInjectionsRUT` to `RM_WorldComponent_DeepYoung` needs the
   reflection binding the garrison uses for `EmpirePursuit`.
-- Whether the `RaidRedesigner` postfix on the same method needs a Harmony priority.
+- If the compile-excluded `Spike_ThreatPointReplace.cs` is ever built, its postfix on the same
+  method and this one need an agreed order.
 - Whether a saved `Settlement_TraderTracker` holding stock from before the swap needs more than
   `TryDestroyStock`.
 
 ## Judgment
 
-Status: **not yet ruled.** The opus judge required by `delegation_policy.md` §4 has not run. The maker
-may not rule its own design, and this worker may not spawn a judge. Brief:
+Status: **not yet ruled.** A `delegation_policy.md` §4 opus judge returned REDO, confined to §5 and §6,
+and passed the site list and hard reads 2-8. Both defects are fixed in this text, which a new judge
+must rule. Brief:
 `infrastructure/state/delegated/2026-11-01/sekkulaath_rising_judge_brief.md`.
+
+Round 1 defects: the six-limb set included the Bloom, whose severe branch ended the rising for good,
+and a map already won was unhandled (§6). The threat patch contradicted `colony_visibility_stat.md`
+§4.3 unacknowledged, and §10 cited a postfix that does not exist (§5).
 
 Pre-review only, by GPT (not a valid §4 judge for this class): one round, REDO, six defects, all fixed
 in this text. They were a tank left standing on a loaded map, a closure with a permanent exemption, a

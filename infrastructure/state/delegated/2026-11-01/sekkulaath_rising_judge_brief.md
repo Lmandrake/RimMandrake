@@ -51,6 +51,19 @@ elsewhere, and the event specified as one IncidentDef riding the crater event.
 8. **The whole body in one frame.** "Only tentacles are ever drawn" was the ordinary-play rule. Does
    the frame break it, or the size mystery?
 
+## Round 2: you are the new judge §4.5 requires
+
+Round 1 returned REDO on two defects only, and passed the site list and hard reads 2-8. Rule on the
+fixes, and on anything the fixes broke; you may still REDO anything else with a quoted constraint.
+
+1. **§6, the eye.** The rising now brings five limbs and no `RM_Sekkulaath_Bloom`. An ordinary Bloom on
+   the map stays under the ruled ladder. A map already won (`PermanentlyKilled`, fouled, bestiary off)
+   gets no emergence.
+2. **§5, the threat patch. Rebuttal:** the global postfix stays. `colony_visibility_stat.md` §4.3 rules
+   on the Visibility term, a stat those consumers were never designed to read. The owner's words,
+   *"the whole world is now upset and more dangerous"*, want the breadth, so the note now states the
+   50-odd consumers, claims the exception, and §4.3 records it. Is that exception sound?
+
 ## Return
 
 Per `delegation_policy.md` §4: `KEEP`, `REDO` or `UNSURE`, with reasons. Each REDO quotes the violated

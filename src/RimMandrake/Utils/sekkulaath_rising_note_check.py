@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """Proof for SEKKULAATH_RISING_DESIGN_CRATER_EVENT: the note names the sites and specifies the event, every named
 site resolves against the paint-input planet record, every cited symbol resolves in src/, and a judge other than
-the maker returned KEEP. Names the note introduces are listed in NEW and must not exist yet unless the build landed."""
+the maker returned KEEP. A cited name src/ cannot hold is listed here: NEW (the note introduces it) or ENGINE (vanilla)."""
 import collections
 import csv
 import json
 import pathlib
+import re
 import subprocess
 import sys
 
@@ -25,11 +26,45 @@ EXISTING = ["WarLabCraterMutation", "GameComponent_WarLabCrater", "RM_ChillCrate
             "RestlessnessLine", "RUT_TenantEmergenceSpawner", "RM_MapComponent_TentacleWatch",
             "RUT_MapComponent_TheTenant", "RUT_FeverWoodMirrorPool", "RM_FeverWoodSettings", "EmpireLadder",
             "RuthlessPursuingMechanoids", "RM_FeverWood", "RUT_FeverWood", "warLabCraterEnabled"]
+NEW = {"RUT_SekkulaathRising", "IncidentWorker_SekkulaathRising", "SekkulaathRisingExtension", "RM_SunkenGround",
+       "GameComponent_SekkulaathRising", "RUT_Trader_WildsteamRuined",
+       "RaidThreatPointsNow"}                               # F12's owed method, colony_visibility_stat.md 4.3
+ENGINE = {"IncidentTargetTagDefOf", "TryDestroyStock"}      # read public in the 1.6 decompile, 2026-11-01
 
 
 def rows(name: str) -> list[dict]:
     with (WORLD / f"ASHKARR_WORLDMAP_{name}.csv").open(encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
+
+
+def cited_symbols(text: str) -> set[str]:
+    """Prefixed names and camelCase identifiers, in inline code and in the fenced XML's element text."""
+    fenced = re.findall(r"```.*?```", text, re.S)
+    inline = re.findall(r"`([^`\n]+)`", re.sub(r"```.*?```", "", text, flags=re.S))
+    found = {w for span in inline for w in re.findall(r"[A-Za-z_]\w*", span)
+             if w.startswith(("RM_", "RUT_", "RSW_")) or re.search(r"[a-z][A-Z]", w)}
+    values = [v for block in fenced for v in re.findall(r'>([^<>]+)<|Class="([^"]+)"', block)]
+    values = [a or b for a, b in values]
+    return found | {w for v in values for w in re.findall(r"[A-Za-z_]\w*", v)
+                    if w.startswith(("RM_", "RUT_", "RSW_")) or re.search(r"[a-z][A-Z]", w)}
+
+
+def event_list_defects(text: str) -> list[str]:
+    """The event's two XML site lists hold exactly the sites this checker resolved."""
+    bad = []
+    for tag, want in (("harmedSettlements", HARMED), ("closedLandmarks", CLOSED)):
+        got = re.search(rf"<{tag}>(.*?)</{tag}>", text, re.S)
+        items = re.findall(r"<li>([^<]+)</li>", got[1]) if got else []
+        if set(items) != set(want) or got[1].count("<li") != len(want):
+            bad.append(f"event list {tag} differs from the checked sites")
+    return bad
+
+
+def in_src(sym: str) -> bool:
+    """A whole-word match, or a prefix for a `NAME_*` family. The checker cites every name, so it never counts."""
+    me = f":!{pathlib.Path(__file__).resolve().relative_to(ROOT)}"
+    how = ["-E", rf"\b{sym}"] if sym.endswith("_") else ["-F", "-w", sym]
+    return subprocess.run(["git", "-C", str(ROOT), "grep", "-q", *how, "--", "src", me]).returncode == 0
 
 
 def world_defects() -> list[str]:
@@ -86,10 +121,14 @@ def ruling_defects(text: str) -> list[str]:
         rec = json.loads(VERDICT.read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         return bad + [f"no readable verdict file: {e}"]
+    if not isinstance(rec, dict):
+        return bad + ["verdict file is not an object"]
     if rec.get("verdict") != "KEEP":
         bad.append(f"verdict is not KEEP: {str(rec.get('verdict'))[:60]}")
     if not rec.get("judge"):
         bad.append("verdict names no judge")
+    elif rec["judge"] == rec.get("maker") or not rec.get("maker"):
+        bad.append("verdict must name a maker and a judge who differ")
     return bad
 
 
@@ -97,14 +136,15 @@ def main() -> int:
     text = NOTE.read_text(encoding="utf-8")
     bad = [f"missing section/phrase: {s}" for s in SECTIONS + PHRASES if s not in text]
     bad += [f"note does not name site: {s}" for s in [*HARMED, *CLOSED] if s not in text]
-    for sym in EXISTING:
-        if sym not in text:
-            bad.append(f"note no longer cites {sym}")
-        elif subprocess.run(["git", "-C", str(ROOT), "grep", "-q", "-F", sym, "--", "src"]).returncode != 0:
-            bad.append(f"cited symbol resolves nowhere: {sym}")
+    bad += [f"note no longer cites {sym}" for sym in EXISTING if sym not in text]
+    cited = cited_symbols(text)
+    if not set(EXISTING) & cited:
+        bad.append("sanity: the symbol scan sees none of the known names, the instrument is blind")
+    bad += [f"cited symbol resolves nowhere: {sym}" for sym in sorted((cited | set(EXISTING)) - NEW - ENGINE) if not in_src(sym)]
+    bad += event_list_defects(text)
     bad += world_defects()
     bad += ruling_defects(text)
-    print("\n".join(bad) if bad else f"OK {len(EXISTING)} symbols, {len(HARMED) + len(CLOSED)} sites, ruled KEEP")
+    print("\n".join(bad) if bad else f"OK {len(cited)} symbols, {len(HARMED) + len(CLOSED)} sites, ruled KEEP")
     return 1 if bad else 0
 
 

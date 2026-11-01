@@ -2,7 +2,8 @@
   "item": "SEKKULAATH_RISING_DESIGN_CRATER_EVENT",
   "class": "design",
   "subject": "design/Jawa/worldbuilding/sekkulaath_rising_crater_event_2026-11-01.md",
-  "verdict": "PENDING: no delegation_policy §4 opus judge has run",
+  "maker": "relentless worker, generation 1",
+  "verdict": "PENDING: round 1 REDO fixed; a new delegation_policy §4 judge must rule",
   "gpt_prereview": {
     "model": "gpt_consult.py",
     "note": "pre-review, not a §4 judgment",
@@ -14,5 +15,16 @@
       }
     ]
   },
-  "all_defects_fixed_in": "the note as committed with this file; the fixed text has had no judge"
+  "rounds": [
+    {
+      "round": 1,
+      "judge": "relentless consult rm-relentless-help-a362ea7b0e-g3-h1",
+      "verdict": "REDO",
+      "scope": "§5 and §6 only; sites and hard reads 2-8 pass",
+      "defects": [
+        "the Bloom among the rising limbs ends it for good via KillPermanentlyOnThisMap; won maps unhandled",
+        "§5 contradicts colony_visibility_stat.md §4.3 unacknowledged; §10 cites a non-existent postfix"
+      ]
+    }
+  ]
 }

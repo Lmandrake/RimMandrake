@@ -229,6 +229,11 @@ function would silently reshape all of those around a stat they were never
 designed to read, which is the same "double-billing by accident" failure
 mode F12 was filed to kill, just relocated.
 
+One exception, by design: the sekkulaath rising's flat permanent factor is a postfix on this method,
+because it means to reach all those systems
+(`design/Jawa/worldbuilding/sekkulaath_rising_crater_event_2026-11-01.md` §5). `RaidThreatPointsNow`
+bypasses that postfix, so it must apply the same factor.
+
 **Target the actual raid call sites** instead, via a Harmony **transpiler
 call-site swap** (redirect the specific `call
 StorytellerUtility.DefaultThreatPointsNow(...)` IL instruction to a new
