@@ -774,6 +774,59 @@ check("the ledger cache is reused when nothing moved, re-folded when a refresh f
       unforced == [] and forced == [{"x": 1}] and "force" not in real.ledger_cache, (unforced, forced))
 check("update refuses a seat clone (never pull another agent's working tree)",
       raises(lambda: pl.update_code(pc.CLONES[0])))
+
+# --- PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT: a real git checkout whose pull outruns the budget -----------------
+import subprocess as _sp  # noqa: E402
+with tempfile.TemporaryDirectory() as d:
+    origin, deploy, bindir = Path(d) / "origin", Path(d) / "deploy", Path(d) / "bin"
+    def _g(cwd, *a):
+        return _sp.run(["git", "-C", str(cwd), *a], check=True, capture_output=True, text=True).stdout.strip()
+    origin.mkdir()
+    _g(origin, "init", "-q", "-b", "main")
+    _g(origin, "config", "user.email", "t@t"); _g(origin, "config", "user.name", "t")
+    (origin / "f").write_text("1")
+    _g(origin, "add", "f"); _g(origin, "commit", "-qm", "one")
+    _sp.run(["git", "clone", "-q", str(origin), str(deploy)], check=True)
+    real_git = _sp.run(["which", "git"], capture_output=True, text=True).stdout.strip()
+    bindir.mkdir()
+    (bindir / "git").write_text(f'#!/bin/sh\ncase " $* " in *" pull "*) exec sleep 5;; esac\nexec {real_git} "$@"\n')
+    (bindir / "git").chmod(0o755)
+    stamp = deploy / ".git" / pl.UPDATE_STAMP
+    good = pl.update_code(deploy)
+    check("a good pass reports the sha and stamps the checkout", good.get("changed") is False and stamp.exists(), good)
+    path = os.environ["PATH"]
+    os.environ["PATH"] = f"{bindir}:{path}"
+    try:
+        t0 = time.monotonic()
+        skip = pl.update_code(deploy, timeout=1.5)
+        took = time.monotonic() - t0
+        check("a pull past its budget is a skip, not an exception", skip.get("skipped") is True and took < 4, (skip, took))
+        os.utime(stamp, (time.time() - 7200, time.time() - 7200))
+        check("a skip past the limit with no good pass fails loud (a silent skip would hide a dead deploy)",
+              raises(lambda: pl.update_code(deploy, timeout=1.5)))
+        stamp.unlink()
+        check("a skip with no stamp at all fails loud", raises(lambda: pl.update_code(deploy, timeout=1.5)))
+    finally:
+        os.environ["PATH"] = path
+    (bindir / "git").unlink()
+    (origin / "f").write_text("2")
+    _g(origin, "commit", "-qam", "two")
+    moved = pl.update_code(deploy)
+    check("the pass after a skip moves the checkout and restamps it", moved.get("changed") is True and stamp.exists(), moved)
+    (bindir / "git").write_text(f'#!/bin/sh\ncase " $* " in *" pull "*) echo nope >&2; exit 1;; esac\nexec {real_git} "$@"\n')
+    (bindir / "git").chmod(0o755)
+    os.environ["PATH"] = f"{bindir}:{path}"
+    try:
+        check("a pull that fails (not a timeout) still fails the unit", raises(lambda: pl.update_code(deploy)))
+    finally:
+        os.environ["PATH"] = path
+    orig_uc = pl.update_code
+    pl.update_code = lambda: {"skipped": True, "age": 5.0}
+    try:
+        rc = pl.main(["update", "--restart"])
+    finally:
+        pl.update_code = orig_uc
+    check("`pulse.py update` exits 0 on a skip, so the unit does not fail", rc == 0, rc)
 cr = pl.code_rev()
 check("the running revision is reported (sha, checkout kind)", cr["sha"] and cr["checkout"] in ("deploy", "seat clone", "unknown"), cr)
 

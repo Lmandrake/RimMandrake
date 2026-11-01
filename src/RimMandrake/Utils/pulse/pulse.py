@@ -532,25 +532,51 @@ def code_rev(root: Path = ROOT) -> dict:
     return dict(_CODE)
 
 
-def update_code(root: Path = ROOT, timeout: float = 60) -> dict:
+# The unit gives a pass TimeoutStartSec=120 s; this budget plus the 30 s service restart stays under it.
+UPDATE_BUDGET_S = 80
+# A skip is a success for systemd, so nothing else would notice a deploy that has stopped updating.
+UPDATE_SKIP_MAX_AGE_S = 3600
+UPDATE_STAMP = "pulse_update_last_good"
+
+
+def update_code(root: Path = ROOT, timeout: float = UPDATE_BUDGET_S, max_skip_age: float = UPDATE_SKIP_MAX_AGE_S) -> dict:
     """Fast-forward the deploy checkout to origin/main. Refuses a seat clone: pulling there would move
-    another agent's working tree under it (RIMPULSE_DEPLOY_FIX_RUNS_THE_BENCH_CLONE)."""
+    another agent's working tree under it (RIMPULSE_DEPLOY_FIX_RUNS_THE_BENCH_CLONE).
+
+    git on drvfs sometimes outruns the budget; that pass is a skip, not a failed unit (which would trip
+    TIMER_FAILED), because the timer is the retry (PULSEUPDATE_FIX_DRVFS_PULL_TIMES_OUT). A skip with no
+    good pass for max_skip_age raises instead. `timeout` is the whole pass, not one git call."""
     import subprocess
     if root in pc.CLONES:
         raise RuntimeError(f"{root} is a seat clone, not the deploy checkout; never pulled from here")
+    stamp = root / ".git" / UPDATE_STAMP
+    end = time.monotonic() + timeout
 
     def git(*a):
-        return subprocess.run(["git", "-C", str(root), *a], capture_output=True, text=True, timeout=timeout)
-    old = git("rev-parse", "HEAD").stdout.strip()
-    have = set(git("sparse-checkout", "list").stdout.split())
-    if have and not set(SPARSE_DIRS) <= have:   # a dir pulse newly imports from (art/ for prereview.py, 2026-10-23)
-        s = git("sparse-checkout", "set", *SPARSE_DIRS)
-        if s.returncode != 0:
-            raise RuntimeError(f"git sparse-checkout set: rc {s.returncode}: {(s.stderr or s.stdout).strip()[:200]}")
-    p = git("pull", "--ff-only", "-q", "origin", "main")
-    if p.returncode != 0:
-        raise RuntimeError(f"git pull --ff-only: rc {p.returncode}: {(p.stderr or p.stdout).strip()[:200]}")
-    new = git("rev-parse", "HEAD").stdout.strip()
+        left = end - time.monotonic()
+        if left <= 0:
+            raise subprocess.TimeoutExpired(["git", *a], timeout)
+        return subprocess.run(["git", "-C", str(root), *a], capture_output=True, text=True, timeout=left)
+    try:
+        old = git("rev-parse", "HEAD").stdout.strip()
+        have = set(git("sparse-checkout", "list").stdout.split())
+        if have and not set(SPARSE_DIRS) <= have:   # a dir pulse newly imports from (art/ for prereview.py, 2026-10-23)
+            s = git("sparse-checkout", "set", *SPARSE_DIRS)
+            if s.returncode != 0:
+                raise RuntimeError(f"git sparse-checkout set: rc {s.returncode}: {(s.stderr or s.stdout).strip()[:200]}")
+        p = git("pull", "--ff-only", "-q", "origin", "main")
+        if p.returncode != 0:
+            raise RuntimeError(f"git pull --ff-only: rc {p.returncode}: {(p.stderr or p.stdout).strip()[:200]}")
+        new = git("rev-parse", "HEAD").stdout.strip()
+    except subprocess.TimeoutExpired as e:
+        try:
+            age = time.time() - stamp.stat().st_mtime
+        except OSError:
+            raise RuntimeError(f"git timed out and {stamp} is missing, so the skip has no good pass to lean on") from e
+        if age > max_skip_age:
+            raise RuntimeError(f"git timed out and the last good pass is {age:.0f} s old (limit {max_skip_age:.0f} s)") from e
+        return {"skipped": True, "age": age}
+    stamp.touch()
     return {"old": old[:12], "new": new[:12], "changed": old != new}
 
 
@@ -1141,6 +1167,9 @@ def main(argv=None) -> int:
         print(f"brief: {p} ({sum(len(v) for v in b['sections'].values())} lines, {b.get('withheld', '?')} withheld by the judge)")
     elif args.cmd == "update":
         u = update_code()
+        if u.get("skipped"):
+            print(f"pulse update: git timed out, skipping this pass (last good pass {u['age']:.0f} s ago)")
+            return 0
         print(f"pulse update: {ROOT} {u['old']} -> {u['new']}" + ("" if u["changed"] else " (already current)"))
         if u["changed"] and args.restart:
             import subprocess
