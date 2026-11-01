@@ -7,7 +7,8 @@
 // MASS CONSERVATION is the top invariant of transport: total depth changes by exactly -Lost -CapOverflow +DepositError -ErodeError
 // +InPlaceDelta; with the nudge off DepositError is exactly 0. Water (a cell that cannot hold sand) never takes a slab: the hop banks
 // on the shore cell before it (MOVINGDUNES_WATER_BANKS_SAND_1), so the leeward edge and the depth cap are the only ways sand leaves.
-// A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
+// A failing action sequence (returned or thrown) is shrunk (delta debugging) and printed as
+// `family seed N: shrunk A->B: message | actions`.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,11 +51,19 @@ namespace RimMandrake.MovingDunes.SelfTest
 
         private static string Drive(int seed, Func<Random, List<Act>> gen, Func<int, List<Act>, string> run)
         {
+            // A runner fails either by RETURNING a message or by THROWING from Check(); both are failures, so both shrink.
+            Func<List<Act>, string> fail = t =>
+            {
+                try { return run(seed, t); }
+                catch (Exception e) when (!(e is OutOfMemoryException))
+                {
+                    return e.Message + (e is IndexOutOfRangeException || e is ArgumentOutOfRangeException || e is NullReferenceException ? " " + e.StackTrace : "");
+                }
+            };
             var acts = gen(new Random(seed));
-            string err = run(seed, acts);
-            if (err == null) return null;
-            var small = Shrink(acts, t => run(seed, t) != null);
-            return run(seed, small) + " | " + string.Join(" ", small);
+            if (fail(acts) == null) return null;
+            var small = Shrink(acts, t => fail(t) != null);
+            return "shrunk " + acts.Count + "->" + small.Count + ": " + fail(small) + " | " + string.Join(" ", small);
         }
 
         private static List<string> Family(string name, int n, int baseSeed, Func<int, string> one)

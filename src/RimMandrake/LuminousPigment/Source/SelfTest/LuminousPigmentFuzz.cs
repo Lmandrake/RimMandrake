@@ -4,7 +4,8 @@
 //   rules    RM_DeepfireRules: coat cap + first-coat latch, status engine, beauty/cost, mat lifecycle, god tables and
 //            anti-pinning, dodge inversion, worn blend, dark test - property checks and short sequences
 //   cuisine  RM_DeepfireCuisine: steer curve, family rolls (incl. exact roll boundaries), per-pawn cap, rates
-// A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
+// A failing action sequence (returned or thrown) is shrunk (delta debugging) and printed as
+// `family seed N: shrunk A->B: message | actions`.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -47,11 +48,19 @@ namespace RimMandrake.LuminousPigment.SelfTest
 
         private static string Drive(int seed, Func<Random, List<Act>> gen, Func<int, List<Act>, string> run)
         {
+            // A runner fails either by RETURNING a message or by THROWING from Check(); both are failures, so both shrink.
+            Func<List<Act>, string> fail = t =>
+            {
+                try { return run(seed, t); }
+                catch (Exception e) when (!(e is OutOfMemoryException))
+                {
+                    return e.Message + (e is IndexOutOfRangeException || e is ArgumentOutOfRangeException || e is NullReferenceException ? " " + e.StackTrace : "");
+                }
+            };
             var acts = gen(new Random(seed));
-            string err = run(seed, acts);
-            if (err == null) return null;
-            var small = Shrink(acts, t => run(seed, t) != null);
-            return run(seed, small) + " | " + string.Join(" ", small);
+            if (fail(acts) == null) return null;
+            var small = Shrink(acts, t => fail(t) != null);
+            return "shrunk " + acts.Count + "->" + small.Count + ": " + fail(small) + " | " + string.Join(" ", small);
         }
 
         private static List<string> Family(string name, int n, int baseSeed, Func<int, string> one)
