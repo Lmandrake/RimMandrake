@@ -187,11 +187,14 @@ def new_state(item, now, why):
             "not_before": 0, "ledger_started": False, "start_intent": False, "done_at": None, "quarantined": []}
 
 
-def queue_order(states):
-    """Returned items first, oldest return first, then fresh in enrol order. Pure."""
+def queue_order(states, plan=None):
+    """The priority list first (`plan`: {item: place}, DI3), then returned items, oldest return first, then fresh in
+    enrol order. Pure."""
+    plan = plan or {}
     q = [s for s in states if s["status"] == "queued"]
-    return sorted(q, key=lambda s: (0, s["returned_at"], s["item"]) if s["returned_at"] is not None
-                  else (1, s["enrolled_at"], s["item"]))
+    return sorted(q, key=lambda s: (0, plan[s["item"]], s["item"]) if s["item"] in plan
+                  else (1, s["returned_at"], s["item"]) if s["returned_at"] is not None
+                  else (2, s["enrolled_at"], s["item"]))
 
 
 def fail(store, st, klass, detail, r, now):
@@ -550,8 +553,11 @@ class Effects:
         return self._ledger
 
     def pool_order(self, r):
-        """Open items in the pool, best first: raised, then Test Pilot bouncers, then rank()."""
+        """Open items in the pool, best first: the priority list, then Test Pilot bouncers, raised, then rank().
+        A list that cannot be obeyed gives no order, and ops_watch's plan family reads that as distressed."""
         priority, testpilot_route, model = pkg("priority"), pkg("testpilot_route"), pkg("model")
+        plist = pkg("priority_list")
+        orders = plist.order_map(plist.load(self.books)["entries"])
         evs, w = self.ledger_items()
         bounce = self.bounce = {v["id"] for v in testpilot_route.routed(w, evs)}
         targets = r.get("pool_targets") or ["v1"]
@@ -560,8 +566,9 @@ class Effects:
         words = self.seat_words()
         pool = [it for it in w.items.values() if eligible(it, r) and it.target in (None, *targets)
                 and (it.owner != foreign_seat(r) or (words is not None and it.id not in words))]
-        pool.sort(key=lambda i: (i.id not in bounce, model.raise_key(i), not i.this_deployment, priority._row_key(i),
-                                 i.created_at or "", i.id))
+        pool.sort(key=lambda i: (plist.position(i, orders), i.id not in bounce, model.raise_key(i), not i.this_deployment,
+                                 priority._row_key(i), i.created_at or "", i.id))
+        self.plan = {i.id: plist.position(i, orders) for i in pool if plist.position(i, orders) <= plist.MAX_ENTRIES}
         return [i.id for i in pool], w
 
     def item_state(self, item):
@@ -1377,8 +1384,9 @@ def enrol(store, fx, r, now):
         want = max(want, worker_cap(fx, r, 0, store) - sum(1 for s in live if s["status"] in HOLDS_A_PLACE) - queued)
     room = min(want, r["enrol_per_tick"], r["max_queued"] - queued)
     took = []
+    plan = getattr(fx, "plan", None) or {}      # a listed item never waits for room: the list holds under 30 (DI3)
     for i in order:
-        if room <= 0:
+        if room <= 0 and i not in plan:
             break
         if i in ours:
             continue
@@ -1916,7 +1924,7 @@ def lease(store, fx, r, now, acts):
         if waiting > cfg["check_backlog_max"]:          # more builders would only lengthen the line at the checkers
             acts.append({"do": "wait", "why": "check_backlog"})
             return
-    for st in queue_order(store.states()):
+    for st in queue_order(store.states(), getattr(fx, "plan", None)):
         if not st["ledger_started"] and fx.item_state(st["item"]) is None:     # not published yet: see retire()
             continue
         if cfg and launched >= cfg["launch_per_tick"]:   # prepare() blocks and the tick has a timeout

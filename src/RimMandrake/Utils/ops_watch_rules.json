@@ -11,7 +11,39 @@
   "_doc": "c_seats (OP2 in operating_requirements_2026-11-01.md), read from the Dispatcher's journal.jsonl and state.json under RM_DISPATCHER_STATE or state_dir. Every limit is in the ranges block. Bringing the seat back is DI1's, not this metric's",
   "state_dir": "/mnt/d/ClaudeWork/rimmandrake/dispatcher"
  },
+ "plan": {
+  "_doc": "c_plan (DI3, MI1 in operating_requirements_2026-11-01.md). status_rank: a mod's modcheck status as the number an entry's finish-line reading rises on; a status not here is a reading not seen. Every limit is in the ranges block: list_max_age_h is plan.list_age_h's distressed bound, advance_max_days is plan.days_since_advance's",
+  "status_rank": {"DRAFT-CHECKLIST": 0, "RED": 1, "GREEN": 2}
+ },
  "ranges": {
+  "plan.list_state": {
+   "owner": "Producer",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "DI3: a list missing, torn, too long or holding a closed entry is a plan nobody is obeying; the ring and the pool have fallen back or are spending a place on nothing.",
+   "classes": {"sane": {"in": ["ok"]}, "distressed": {"otherwise": true}}
+  },
+  "plan.list_age_h": {
+   "owner": "Producer",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "DI3 list_max_age_h: 48. The Producer's list is daily, so two missed days without a rewrite means the plan is no longer being read.",
+   "classes": {"sane": {"at_least": 0}, "distressed": {"at_least": 48}}
+  },
+  "plan.days_since_advance": {
+   "owner": "Conductor",
+   "ack_within_min": 240,
+   "max_age_min": 30,
+   "why": "MI1 advance_max_days: 7. A listed entry whose finish-line reading has not risen in a week is busy, not progress, however many tickets closed.",
+   "classes": {"sane": {"at_least": 0}, "distressed": {"at_least": 7}}
+  },
+  "plan.blind": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 30,
+   "why": "The ledger, an entry's reading or the advance record was not seen, or the collector did not run: nothing can then say the plan is advancing.",
+   "classes": {"sane": {"at_least": 0}, "distressed": {"at_least": 1}}
+  },
   "_doc": "OP1 in operating_requirements_2026-11-01.md: the watched metrics' classes as data, read by the collectors and by ops_watch.run, which stamps class, owner, ack_within_min and max_age_min on each reading. A metric fills only the classes it can act on, of idle, sane, distressed, emergency; every class is one of {\"at_least\": n}, the class of a reading from n up to the next class's n, or {\"in\": [text]} with one {\"otherwise\": true}. owner: who answers for it. ack_within_min: required with distressed or emergency. max_age_min: an older source reads UNMEASURED. idle_if: this metric reads idle while any metric named here does. why: a range change rewrites it. `ops_watch.py lint` and load_rules refuse a metric short of any of these. classes: a limit lives here and nowhere else",
   "relentless.why": {
    "owner": "Operations",
@@ -265,6 +297,12 @@
   {"key": "seats.distressed", "op": ">", "value": 0, "alarm": true, "tag": "SEAT_IDLE_WITH_WORK", "name": "OPS_SEAT_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: FOUNDRY sat idle with work ready on 2026-10-30 and 10-31, rung, and nothing brought it back. The seat and the minutes are in the title; the limits are in the ranges block"},
+  {"key": "plan.distressed", "op": ">", "value": 0, "alarm": true, "tag": "PLAN_DISTRESS", "name": "OPS_PLAN_LIST_FIX", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "DI3, MI1: the priority list is missing, stale, too long or holds a closed entry, or an entry's finish-line reading stood flat past advance_max_days. Closes do not clear it. The cause is in the title and in plan.cause; the limits are in the ranges block"},
+  {"key": "plan.blind", "op": ">", "value": 0, "alarm": true, "tag": "PLAN_BLIND", "name": "OPS_PLAN_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "DI3, MI1: a source of the plan family is missing or torn, or the collector did not run. Nothing can say the list is obeyed or advancing"},
   {"key": "seats.blind", "op": ">", "value": 0, "alarm": true, "tag": "SEATS_BLIND", "name": "OPS_SEATS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: the Dispatcher's state or journal is missing, frozen or disagreeing, or the collector did not run. Nothing can say the seats are sane until it is seen again; the cause names which source"},

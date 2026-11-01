@@ -166,7 +166,9 @@ to log. Missing: same-cause count, delivery, cap.
 entries, written by Producer or Conductor, with `set_at`. Dispatcher's ring and relentless's pool read it, nothing else
 does. A closed entry or age past `list_max_age_h` is a distressed reading. Test: a listed item is launched before a
 ranked one; a stale list alarms; a missing list falls back to today's order and reads distressed. Exists: `rimflow raise`,
-V1 rows, `priority.py`. Missing: the file. `raise` stays as the way to add one.
+V1 rows, `priority.py`, `rimflow/priority_list.py` (the one writer), `plan.*` in `ops_watch.py`, limits `list_max_age_h` and
+`advance_max_days` as the distressed bounds of `plan.list_age_h` and `plan.days_since_advance` in the ranges block. A listed
+item goes ahead of raised ones; `raise` stays as the way to move one unlisted item up.
 
 **DI4 Nothing falls off the schedule.** [Operations] Every enabled `rm-*` timer appears in the deadman baseline or in an explicit
 exempt list with reason. Test: enable a stub timer; the next pass reports it. Keep a timer firing while its job does nothing:
@@ -209,7 +211,8 @@ escape with neither; a new test that passes on the old build is refused. Missing
 
 **MI1 Busy is not progress.** [Producer writes; Operations reads; Conductor acts] Every entry on the priority list (DI3)
 names a finish-line reading. `plan.days_since_advance` per entry: a list entry with no rise in that reading past
-`advance_max_days` is distressed, however many tickets closed. Exists: `modcheck floor`, north-star bars. Test: fixture with
+`advance_max_days` is distressed, however many tickets closed. Exists: `plan.days_since_advance` (a mod's modcheck status, or a
+number in a repo file; `modcheck floor --all` takes minutes and is no 15-min reading). Test: fixture with
 20 closes and a flat reading on a listed mod alarms; a rise clears it. The rest of C1, C2, C7, C8 waits for the pilot.
 
 ## 7a. Roles: rules move into programs, the chairs stay

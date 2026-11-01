@@ -79,6 +79,12 @@ You do not argue the forecast; one you think is wrong goes to Operations as a qu
    yours to read there). A round,
    zero or alarming number is a query bug until a sanity probe proves the instrument can see
    (`infrastructure/state/facts/instrument_traps.md`).
+   **The priority list** (DI3, MI1) is yours, each run: `python3 src/RimMandrake/rimflow/priority_list.py set --file
+   <entries.json> --by Producer`, under 30 ordered entries, each `{"id": ...}` or `{"row": ...}` plus a finish-line
+   `"reading"`: `{"mod": "<Mod>"}` (its modcheck status) or `{"file": "<repo path>", "key": "<dotted.key>"}` (a number).
+   Commit `infrastructure/state/priority_list.json` by path. Listed items launch first on the ring and the pool; a list
+   past 48 h, a closed entry, or a reading flat past 7 days reads distressed however many items closed. `rimflow raise`
+   still moves one unlisted item up.
 2. **Replan first** if a request or a failed plan step is open: a cut list (what drops, which goal it served, what
    the drop costs the goal) or a reordered critical path. Every record carries one id, and every id is read by the
    two prefixes above (review roles r2 #6):

@@ -18,7 +18,8 @@ model in the loop. Same inputs, same item, every time.
       filter  blocked == false
       filter  target  == the active version, normally v1
       filter  needs   is satisfiable in the CURRENT GAME STATE
-      sort    1. this_deployment  desc     ← the live window is closing
+      sort    0. priority list    asc      ← ctx["plan_order"], `next` only (priority_list.py)
+              1. this_deployment  desc     ← the live window is closing
               2. v1 row           asc      ← the campaign's own order
               3. created_at       asc      ← oldest first, so nothing starves
 
@@ -33,7 +34,7 @@ import json
 import os
 import re
 
-from . import model
+from . import model, priority_list
 
 # Which `needs` are satisfiable in which game state. ⚠️ `harvest` and `owner` are NOT
 # functions of game state alone — they are passed in, because the ledger cannot know
@@ -164,7 +165,9 @@ def rank(world, seat, target="v1", ctx=None):
         out.append(it)
     # `raised` (2026-10-26, steward escalation T+30) outranks everything, raised items in
     # RAISE order (model.raise_key, 2026-10-29), then `this_deployment`, then the campaign row.
-    out.sort(key=lambda i: (model.raise_key(i), not i.this_deployment, _row_key(i),
+    # The priority list (DI3) goes before all of it, when the caller carries one: only `rimflow next`, the ring's path.
+    orders = (ctx or {}).get("plan_order") or {}
+    out.sort(key=lambda i: (priority_list.position(i, orders), model.raise_key(i), not i.this_deployment, _row_key(i),
                             i.created_at or "", i.id))
     return out
 

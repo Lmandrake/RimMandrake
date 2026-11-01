@@ -1377,11 +1377,16 @@ def read(path=None):
     nobody learns it happened.
     """
     if path is None:
-        events = []
-        for f in ledger_files():
-            events.extend(_read_one(f))
-        return canonical_order(events)
+        return read_clone(None)
     return _read_one(path)
+
+
+def read_clone(head):
+    """-> the WHOLE ledger of the clone whose frozen head is `head` (None: this one), as `read()` orders it."""
+    events = []
+    for f in ledger_files(head):
+        events.extend(_read_one(f))
+    return canonical_order(events)
 
 
 # A second `claim` on an item already held, landing within this many seconds of the

@@ -63,10 +63,10 @@ import sys
 import time
 
 try:                                                    # python3 -m rimflow.cli
-    from . import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile, testpilot_route
+    from . import driver_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route
 except ImportError:                                     # python3 .../rimflow/cli.py
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    from rimflow import driver_lock, host_guard, lease, model, owner_interaction, priority, probe, reconcile, testpilot_route   # noqa: F401
+    from rimflow import driver_lock, host_guard, lease, model, owner_interaction, priority, priority_list, probe, reconcile, testpilot_route   # noqa: F401
 
 PROSE_BUDGET = 2400          # chars of items/<ID>.md that `next` will print, ~600 tokens
 
@@ -935,6 +935,10 @@ def cmd_next(args, seat):
     # changing. It's causing so many problems and I don't need it.").
     _apply_grant_preflight(ctx)
     ctx["focus"] = _seat_focus(seat, world=w)
+    # The priority list orders `next`, so the ring's peek and the claim that follows agree (DI3). A redirected ledger
+    # is a throwaway: it reads the list only when the same caller redirected that too.
+    if os.environ.get("RM_PRIORITY_LIST") or not os.environ.get("RIMFLOW_LEDGER"):
+        ctx["plan_order"] = priority_list.order_map(priority_list.load(model.ROOT)["entries"])
     # 🔑 GUARDED DISPATCH (rimflow redesign step 1, 2026-10-07). `rank()` stays pure;
     # its output is checked against the published git history before anything is
     # offered, because an item whose work already shipped kept being offered as fresh
@@ -1142,10 +1146,12 @@ def _choose(w, seat, args, ctx, idx):
         claimable = [c for c in claimable if c.needs not in gneeds]
     # 🔑 A RAISED proposed item (the steward's T+30, design §6.4: "top of `rimflow next
     # --seat BENCH`") beats an unraised ranked offer, and of two raised heads the one raised
-    # FIRST wins (raise order, 2026-10-29); otherwise ranked work comes first.
+    # FIRST wins (raise order, 2026-10-29); otherwise ranked work comes first. A listed one beats both (DI3).
     out["also"] = claimable     # the `ALSO waiting` line: what this seat may claim, withheld items never named
-    if offers and (not (claimable and claimable[0].raised is not None)
-                   or model.raise_key(offers[0].item) <= model.raise_key(claimable[0])):
+    orders = ctx.get("plan_order") or {}
+    place = lambda i: (priority_list.position(i, orders), model.raise_key(i))    # noqa: E731
+    jumps = claimable and (claimable[0].raised is not None or priority_list.position(claimable[0], orders) <= priority_list.MAX_ENTRIES)
+    if offers and (not jumps or place(offers[0].item) <= place(claimable[0])):
         out.update(kind="offer", offer=offers[0], item=offers[0].item)
         return out
     if claimable:
@@ -1318,7 +1324,9 @@ def _claimable(w, seat, target="v1", now=None, ctx=None):
            and model.lease_status(i, now) != "live"]
     if ctx is not None:      # `next`: the availability rule a ranked item passes (--mode afk and needs=owner, above all)
         out = [i for i in out if priority.satisfiable(i, w, ctx, seat)]
-    out.sort(key=lambda i: (model.raise_key(i), not i.this_deployment, i.created_at or "", i.id))
+    orders = (ctx or {}).get("plan_order") or {}
+    out.sort(key=lambda i: (priority_list.position(i, orders), model.raise_key(i), not i.this_deployment,
+                            i.created_at or "", i.id))
     return out
 
 

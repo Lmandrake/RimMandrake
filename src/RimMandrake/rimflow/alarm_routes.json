@@ -23,6 +23,7 @@
   "routes": [
     {"match": "relentless.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "seats.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "plan.*", "route": "role", "reader": "Operations", "cause": "plan"},
     {"match": "disk.pool_breach", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "disk.*", "route": "role", "reader": "Operations", "cause": "disk"},
     {"match": "scratch:sanity:*", "route": "role", "reader": "Operations", "cause": "disk"},
