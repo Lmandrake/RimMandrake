@@ -52,6 +52,7 @@ The finish lines are in this file before any building starts, so the worker neve
 - an item id does not exist, or is already closed;
 - the links form a loop (`wait_cycle` already detects these);
 - there are more than 29 orders, the priority list's limit;
+- `until` is more than 5 days after `from` (D5);
 - **a finish reading is already true today**, or is shared across orders. Four of today's seven list entries use the same
   stand-in reading, a code-health count that says nothing about the item. This rule ends that;
 - **no worker can reach the order**: the named worker must match the item's owner, its `needs` and a seat that is actually
@@ -99,12 +100,12 @@ overstated it. `rimflow block --on X --until L` exists: 49 of 126 blocked open i
 | One blocker per item | `after` in the orders file holds several. The block points at the first open one and moves on. No ledger change. |
 | A block never lifts itself, on purpose: `next` only announces that it is satisfied. So a chain stops at every link until someone comes. | Program lifts a link when its target is **ticked** (section 5, gate and reading both), only for links in a signed set. Dropped or superseded targets still go to a person. **Decision D1.** |
 | 76 of FOUNDRY's 107 blocked items have no link | Not fixed here. A set only needs links on its own orders. |
-| Nobody can see a chain | `orders.py ticks` prints it, as text, from the file and the ledger. |
+| Nobody can see a chain | `orders.py ticks` prints it, as text, from the file and the ledger; the Board shows it. |
 
-Why D1 is a real question: the rule that a block never lifts itself came from an audit (21 of 73 named blocks outlived the
-blocker), and that audit's fault was blocks left behind. Lifting on a tick is the narrow case. But a wrongly closed item
-would still release the next step. So if a tick is lost, the program re-blocks every step after it that has not started,
-and any step already running gets a card to the Producer. Work already built on the bad step is not undone by this.
+The rule that a block never lifts itself came from an audit (21 of 73 named blocks outlived the blocker), and that audit's
+fault was blocks left behind. You ruled this narrow case the other way (D1). A wrongly closed item would still release the
+next step, so if a tick is lost, the program re-blocks every step after it that has not started, and any step already
+running gets a card to the Producer. Work already built on the bad step is not undone by this.
 
 ## 5. Progress as measured ticks
 
@@ -114,9 +115,10 @@ A tick is computed each time it is read and stored nowhere, the way the mission 
 An order is **ticked** when all of these hold now:
 - the item is `done`, and that close passed the Close gate: nothing owed, nothing unchecked, no FAIL, no failing verdict;
 - its checks passed at the level it owes, on the build it was closed on;
+- a blind judge who never saw the maker's story passed that build (D2);
 - its finish reading meets the target.
 
-A tick means "the gate passed and the signed reading moved". It does not mean the feature is right, and a test on an old
+A tick means "the gate passed, a blind judge agreed, and the signed reading moved". It does not mean the feature is right, and a test on an old
 build says little about today's. So each goal also has its own finish reading, read at the end of the set on the current
 build. A goal is only finished on that. If all its orders are ticked and the goal reading fails, the page says so, in red.
 
@@ -124,14 +126,13 @@ A close marked `--no-code` shows as a hollow tick and counts separately. If the 
 goes away by itself and shows as lost, so a lost tick is visible.
 
 How far this can be trusted today: since the gate went on, 1 of 26 code closes and 4 of 30 `--no-code` closes were
-unearned, against 1503 of 1666 since Oct 19. The gate item itself is still `doing`. One hole is left: under ruling D1(b) a
-close with no verdict at all passes, so a tick need not have been seen by anyone but the maker. An Oct 27 draft card
-proposed that someone other than the builder records the pass; you turned that card set down as a whole, so this one is
-open. **Decision D2.**
+unearned, against 1503 of 1666 since Oct 19. The gate item itself is still `doing`. Under ruling D1(b) a close with no
+verdict at all passes. D2 closes that hole for ticks: a close may pass with no verdict, but it does not tick without the
+blind pass.
 
-The view is plain text on the phone-width page, one line per order, in the style of the Example 1 view. You said *"DON'T
-build any UI right now"*, about answers first, and you still want it graphical. So this builds the answers, and a picture
-on top is **Decision D3**.
+The view is the Board markdown (D3): the program writes one marked block of plain lines, one per order, in the style of the
+Example 1 view, into `D:\ClaudeWork\rimmandrake\arena\ARENA_BUILD_BOARD.md`. The ticks are computed; a hand edit is overwritten
+at the next step. The block is a copy, so it carries its time, and a stale block is an alarm. No picture is built.
 
 ## 6. When an order goes stale or stuck
 
@@ -139,14 +140,14 @@ on top is **Decision D3**.
 |---|---|---|
 | Reading flat for 2 days (ESTIMATE; today's limit is 7) | New reading per order | Producer replans |
 | Relentless holds the item (3 same failures, or 9 unchanged returns) | Existing hold | Producer: split, re-brief, or call for help |
-| Arbiter FAIL | Existing verdict | Producer, with a new ticket |
+| Marker FAIL (the Arbiter's lock, `operations_design_2026-11-01.md` §6) | Existing verdict | Producer, with a new ticket |
 | A blocker is dropped or superseded | `next` says confirm | Producer re-links, in `amendments` |
 | A cut would take something you marked never-cut, or `pause_goal_if` fires | Program | One card; that goal's new work pauses, the others run |
 | `stop_if` fires | Program | One card; no new work on any goal until you answer |
 | A tick is lost | Program | Later steps re-blocked; Producer told |
 | Ceiling reached, or account empty | Program | Nothing new enrolled; one card if a goal cannot finish |
 | Next step has no worker | Program, every tick | Producer; card if it stays stuck for a day |
-| The end date passes | Program | Whatever `at_end` says. **Decision D4** |
+| The end date passes | Program | Whatever `at_end` says; the default is `keep` (D4): unfinished orders keep running as `OVERTIME day N` on the Board, nothing new is added, the signed ceiling still holds, one card on day 1 |
 
 A jam should only ever cost its own chain. Tickets that do not depend on the stuck one keep moving. Tickets that do move
 to the next goal's work, and the program never waits on you in silence, which was your Oct 26 complaint: *"the plan grinds
@@ -239,7 +240,7 @@ concept). Estimates are helper days, all ESTIMATE:
 | 0 | First set by hand, no code: the Conductor writes the file with real readings, sets the list and blocks, reads ticks by hand | 1, plus 30 minutes of you |
 | 1 | `orders.py check`: schema, refusals, amendment rules | 1 |
 | 2 | Tick step: list, links, waits, `out`, ceiling, repair after a crash | 2 |
-| 3 | `orders.py ticks`, lost-tick re-block, a text block on the mission page | 1 |
+| 3 | `orders.py ticks`, lost-tick re-block, the Board block | 1 |
 | 4 | ops_watch: per-order flat reading, no worker, set in date | 0.5 |
 | 5 | Producer and Conductor role changes, including amendments and event wakes | 0.5 |
 | 6 | Live share in ring text | 0.25 |
@@ -264,13 +265,13 @@ GPT read a first draft (job `consult-20261101-142918-2377023`) and gave six obje
 | The examples did not prove the mechanism: wrong counts, unreadable finishes, no route for S09. | **Changed.** Counts fixed, S09 routed by `rimflow reassign`, and Example 1 says openly it fails `check` until readings are written. |
 | Four helper days priced the happy path. | **Changed.** Now 6 to 8, with crash repair and a real trial. Still ESTIMATE, and nothing like this has been timed. |
 
-## 12. Decisions for you
+## 12. Your answers, 2026-11-01
 
-- **D1. May a passed Close gate lift a link in a signed set?** A: yes, program lifts. B: no, the Producer lifts each one,
-  which costs a run at every link. I lean A; a multi-day chain needs it.
-- **D2. Must a tick have a pass from someone other than the maker?** A: yes, costs Arbiter runs and slows ticks. B: no, the
-  gate alone, as now. An Oct 27 draft card said A, and you never ruled on it alone; ruling D1(b) says B for closes generally.
-- **D3. A graphic view?** A: text only for now. B: a small read-only picture on the mission page after step 3.
-- **D4. What should `at_end` default to, when a set ends with no new session?** A: keep running the last orders. B: fall back
-  to the Producer's list. C: stop new work. `plan.days_since_advance` still alarms in all three. Each set must state one.
-- **D5. How long may a set run?** Five days is my example. Your phrase is "many days"; longer sets go stale harder.
+- **D1. May a program lift a link in a signed set?** *"Yes, the program lifts it."* It lifts on the tick: the card asked about
+  the Close gate, and a tick is that gate plus D2's blind pass plus the finish reading. A link must not lift on less than a tick.
+- **D2. Must a tick have a pass from someone other than the maker?** *"Yes, a blind pass."* Section 5 has the fourth test. Who
+  gives it, now the Arbiter is folded: `operations_design_2026-11-01.md` §6. Items outside a signed set keep ruling D1(b).
+- **D3. A graphic view?** *"The Board markdown files are just fine for this."* No picture is built. Section 5 has the view.
+- **D4. What happens when a set ends with no new session?** *"Keep running the last orders."* `at_end` defaults to `keep`.
+  Section 6 says what that means.
+- **D5. How long may a set run?** *"5 days."* `check` refuses a longer set.
