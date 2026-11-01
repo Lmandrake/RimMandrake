@@ -49,6 +49,12 @@ def problems(text):
     tick = _body(text, "override void MapComponentTick(")
     if tick is None or "Find.CurrentMap != map" not in tick:
         out.append("MapComponentTick lost its look-away gate")
+    # wave 76: a stage change (bridge/GM SetStage) synced layers even with the hum switched off in settings; paused,
+    # the tick that would end them never came. SetLineCycleDrop was already gated; Notify_StageChanged must be too.
+    for sig in ("void Notify_StageChanged(", "static void SetLineCycleDrop("):
+        b = _body(text, sig)
+        if b is None or ("SyncSustainers(" in b and "humMechanicEnabled" not in b):
+            out.append("%s syncs hum layers without the humMechanicEnabled gate" % sig.split("(")[0].split()[-1])
     return out
 
 
@@ -61,6 +67,8 @@ def main():
         ("MapComponentUpdate renamed away", "override void MapComponentUpdate(", "void UnusedUpdate("),
         ("look-away end only in a comment", "\t\t\t\tEndAllSustainers();\n\t\t\t}\n\t\t}\n\n\t\tpublic override void MapComponentTick",
          "\t\t\t\t// EndAllSustainers();\n\t\t\t}\n\t\t}\n\n\t\tpublic override void MapComponentTick"),
+        ("stage change ungated", "\t\t\t\tif (RustCathedralHumSettings.humMechanicEnabled)\n\t\t\t\t{\n\t\t\t\t\tSyncSustainers(def, displayBand);",
+         "\t\t\t\tif (true)\n\t\t\t\t{\n\t\t\t\t\tSyncSustainers(def, displayBand);"),
     ]
     for name, old, new in breaks:
         check("planted break applies: " + name, old in text, "anchor text not found")

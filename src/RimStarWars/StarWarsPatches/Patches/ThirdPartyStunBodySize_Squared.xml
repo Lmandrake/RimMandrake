@@ -34,11 +34,15 @@
      retired and absorbed, so that gate matched nothing and both ops silently never ran
      (DONOR_GATES_REWIRE_DEAD_SINCE_RETIREMENT; absorbed_gate_lint.py now fails on a
      donor-name gate).
+     The gate also requires the StatDef the value names: RSW_Jawa_InverseBodySize lives in
+     mandrake.rsw.ionweapons, which this mod neither depends on nor loads after, so without
+     it the Add wrote a dangling victimSeverityScaling (a cross-reference error at load)
+     (DIRTY_CODE_REVIEW_LOOP_CONTINUE_NOT_DONE wave 76; selftest_stun_bodysize_gate.py).
 -->
 <Patch>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_KOstun"]</xpath>
+    <xpath>/Defs[StatDef[defName="RSW_Jawa_InverseBodySize"]]/DamageDef[defName="guy762_RangedDamage_KOstun"]</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_KOstun"]/additionalHediffs/li</xpath>
       <value>
@@ -49,7 +53,7 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]</xpath>
+    <xpath>/Defs[StatDef[defName="RSW_Jawa_InverseBodySize"]]/DamageDef[defName="guy762_RangedDamage_sonic"]</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]/additionalHediffs/li</xpath>
       <value>

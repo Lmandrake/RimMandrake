@@ -50,10 +50,6 @@ def sheet_row_ids(path):
     return [r["id"] for r in json.loads(m.group(1))]
 
 
-REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
-    os.path.abspath(__file__)))))      # Utils -> RimMandrake -> src -> repo
-
-
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -86,8 +82,11 @@ def main():
     # added "artifact-db-merge" (the stamp of merge_artifact_db.py and of
     # art/sheet_artifact_merge.py): a phone sitting folded back is just as real a per-row sitting as
     # the other two and deserves the same guard.
+    # 🔴 wave 76: a list of known sitting stamps is the same trap one stamp later: decisions_v2 --accept-looks stamps
+    # "decisions_v2 --accept-looks (owner's words)" over per-row owner picks and was let through. Pre-fill generators
+    # never write savedBy, so ANY stamp but a previous blanket ruling, or any writeCount, is a sitting.
     prior = doc.get("savedBy")
-    if prior in ("review-sheet-page", "review-sheet-sidecar", "artifact-db-merge") and not a.over_sitting:
+    if prior != "owner-blanket-ruling" and (prior or doc.get("writeCount")) and not a.over_sitting:
         sys.exit(f"REFUSED: {a.decisions} was written by '{prior}' — that is a real sitting, and a "
                  "blanket ruling would overwrite per-row judgements. Pass --over-sitting only if "
                  "the owner explicitly said to discard them.")

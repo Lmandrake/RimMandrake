@@ -1,0 +1,2 @@
+A PatchOperationConditional must gate on every def its value NAMES, not just the def it edits: ThirdPartyStunBodySize_Squared.xml gated on the KotOR DamageDef but wrote victimSeverityScaling=RSW_Jawa_InverseBodySize from mandrake.rsw.ionweapons, which the patch mod neither depends on nor loads after. One xpath does both: /Defs[StatDef[defName="X"]]/DamageDef[defName="Y"] (wave 76).
+home: rimworld-modding

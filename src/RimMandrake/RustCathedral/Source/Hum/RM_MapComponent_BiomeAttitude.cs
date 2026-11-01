@@ -186,9 +186,6 @@ namespace RimMandrake.RustCathedral.Hum
 			return comp.lineCycleDrop ? DroppedBand(comp.displayBand, comp.GetDef()) : comp.displayBand;
 		}
 
-		/// <summary>RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: while a line-cycle rolls the hum drops one band (one hum
-		/// layer fewer, the band one lower); the worst band is already silent and stays where it is. Not a second
-		/// meter: irritation and standing are untouched, only what the hum shows moves.</summary>
 		/// <summary>The band before the stage ceiling, -1 off Cathedral ground. RUSTCATHEDRAL_WORN_BIT_ARC_1: a stage only caps what the
 		/// hum DISPLAYS; stage 0 (WARY, where the free tier stays for good) holds GetBand at 0 however angry the ground is, so a
 		/// gate on real anger reads this.</summary>
@@ -204,6 +201,9 @@ namespace RimMandrake.RustCathedral.Hum
 			return comp.lineCycleDrop ? DroppedBand(band, def) : band;
 		}
 
+		/// <summary>RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: while a line-cycle rolls the hum drops one band (one hum
+		/// layer fewer, the band one lower); the worst band is already silent and stays where it is. Not a second
+		/// meter: irritation and standing are untouched, only what the hum shows moves.</summary>
 		public static int DroppedBand(int band, RM_BiomeAttitudeDef def)
 		{
 			if (def == null)
@@ -313,7 +313,12 @@ namespace RimMandrake.RustCathedral.Hum
 				// should be audible/visible on the next sustainer sync, not lag
 				// behind by up to checkIntervalTicks worth of game time.
 				displayBand = ClampToStage(def, currentBand < 0 ? 0 : currentBand);
-				SyncSustainers(def, displayBand);
+				// Gated like SetLineCycleDrop: with the hum switched off in settings a stage change must
+				// spawn nothing (paused, the tick that would end it again never comes).
+				if (RustCathedralHumSettings.humMechanicEnabled)
+				{
+					SyncSustainers(def, displayBand);
+				}
 			}
 		}
 

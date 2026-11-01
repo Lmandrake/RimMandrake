@@ -363,6 +363,18 @@ def t_validity_module():
     r = validity.canary(s, (0, 0))
     ok(r["ok"] and len(s.destroyed) == 1 and s.destroyed[0] != (0, 0) and min(s.destroyed[0]) >= 0,
        "canary: an occupied anchor on the map edge skips off-map cells and uses an in-bounds neighbour", (r, s.destroyed))
+    # wave 76: a spawn_batch that raises in flight (rimdrive Reconnected) may still have landed the stack; the canary
+    # must still clean its cell, or a Steel stack is left on the colony map.
+    class _InFlightSess(_Sess):
+        def call(self, tool, **p):
+            r = _Sess.call(self, tool, **p)
+            if tool == "jawa/spawn_batch":
+                raise Exception("jawa/spawn_batch was in flight when the socket died; reconnected")
+            return r
+    s = _InFlightSess()
+    r = validity.canary(s, (10, 10))
+    ok(not r["ok"] and s.destroyed == [(10, 10)] and s.cells.get((10, 10)) == [],
+       "canary: a spawn that raises in flight is red AND its cell is still cleaned", (r, s.destroyed))
     r = validity.canary(_Sess(readback=False), (10, 10))
     ok(not r["ok"] and any("did not read back" in p for p in r["problems"]), "canary: red when the spawn does not read back", r)
     s = _Sess(state="Entry")
