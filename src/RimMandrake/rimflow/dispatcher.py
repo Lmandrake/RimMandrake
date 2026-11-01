@@ -566,6 +566,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss.pop("cooldown_until", None)
                     ss.pop("nh_until", None)
                     ss.pop("nh_tickets", None)
+                    SR.bb_clear(st, seat)            # the take ends the bring-back watch
                 elif now - pend["rung_at"] >= sch["handoff_s"]:
                     # FOUNDRY_IDLE_REWIRE_PARKS_ON_LANE_WAITS: this used to wait the full cooldown_s (3600) before the
                     # next ring, so an idle seat with a full queue sat ~70 min per cycle (handoff_s + cooldown_s +
@@ -592,7 +593,7 @@ def decide(sch, st, obs, now, apply, out=None):
                     ss["nh_streak"] = streak
                     ss["nh_tickets"] = sorted(set(ss.get("nh_tickets") or []) | {pend.get("ticket")} - {None})
                     ss["cooldown_until"] = ss["nh_until"] = now + wait
-                    n = rule["escalate_after"]
+                    n = 0 if SR.bb_incident(st, seat) else rule["escalate_after"]   # one outage, one incident (OP3)
                     if n and streak >= n and ans:
                         act(do="alarm", kind="seat_declined:" + seat, seat=seat, note=True, conductor_log=True,
                             ticket=rule.get("escalate_item") or sch.get("alarm_item"),
@@ -696,6 +697,10 @@ def decide(sch, st, obs, now, apply, out=None):
         if rh:
             return
         armed = obs["armed"](seat)
+        if SR.bb_rule(sch) and (not armed or not obs["alive"](armed.get("pid"))
+                                or (armed.get("session_id") and sess.get("sessionId")
+                                    and armed["session_id"] != sess["sessionId"])):
+            SR.bb_work(sch, st, seat, obs["peek"](seat), now)    # no ring can reach it: exactly what the restart is for
         if not armed or not obs["alive"](armed.get("pid")):
             act(do="alarm", kind="unwakeable:" + seat, seat=seat, note=True, conductor_log=True,
                 raise_first="%s cannot be woken: no doorbell." % seat,
@@ -714,6 +719,7 @@ def decide(sch, st, obs, now, apply, out=None):
             act(do="alarm", kind="peek:" + seat, seat=seat, note=True, conductor_log=True,
                 raise_first="%s cannot read its queue." % seat, why="rimflow next --peek failed in %s" % cfg.get("clone"))
             return
+        SR.bb_work(sch, st, seat, ticket, now)
         if not ticket:
             ss.pop("nh_streak", None)  # no work waiting: an idle window is correct, nothing to escalate
             ss.pop("nh_tickets", None)

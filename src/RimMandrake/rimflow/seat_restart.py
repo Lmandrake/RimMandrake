@@ -32,6 +32,10 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              claims the kill once and execs the relaunch argv (the profile's own LAUNCH line + a first prompt). No
              claim in 30 s -> fallback: machine.json's launch_fleet.ps1 narrowed to `-Seats <SEAT>` (a new tab; the old
              one is left at a shell). No window in 90 s more -> failed + alarm.
+  bring-back the Dispatcher's own start of this flow (DI1, CK4; _bringback): a seat idle with ready work and nothing
+             taken for idle_bringback_after_min goes pending once, source "bringback". Its replacement has fresh_take_s
+             to take work, else one incident (the alarm, signalled into the told ledger): never a second restart. A human input in the window
+             within the limit leaves it alone.
   relaunched a new session with the seat's name; verified once the doorbell is ARMED for that new session (the first
              prompt makes it end a turn), else failed + alarm after arm_s.
 Process death (selftest_seat_restart_death.py, LiveHandoff.tla). The killed record is the persisted claim: state.json is
@@ -80,6 +84,7 @@ DOES = ("restart_request", "restart_kill", "restart_fallback", "restart_orphan",
 FALLBACK_GRACE_S = 200                          # past run_fallback's own 180 s timeout: no reclaim beside a launch
 TELL_RETRY_S = 300
 TELL_RING_HOLD_S = 60                           # under a tick: the doorbell polls every 3 s, so one tick clears it
+BB_FRESH_TAKE_S = 900                           # CK4; the schedule's fresh_take_s overrides it
 MAX_CLAIMS = 3                                  # tile relaunches of one restart, the first included
 BOUNDED = "{clone}/src/RimMandrake/Utils/claude_bounded.sh"
 MACHINE = os.path.expanduser("~/.claude-accounts/machine.json")
@@ -949,9 +954,144 @@ def decide(sch, st, obs, now, apply, act):
             before = (R.get(seat) or {}).get("state")
             _one(seat, cfg, R, st, obs, agents.get("sessions"), now, apply, act)
             _disarm(seat, R.get(seat) or {}, before, obs["seat_restart"], act)
+            rule = bb_rule(sch)
+            if rule:
+                _bringback(seat, cfg, R, st, obs, now, rule, act, sch)
         except Exception as e:  # noqa: BLE001 - one seat's fault never stops the tick
             act(do="alarm", kind="restart:decide:" + seat, seat=seat, note=True,
                 why="seat restart NOT decided for %s: %s: %s" % (seat, type(e).__name__, str(e)[:200]))
+
+
+def bb_rule(sch):
+    """-> (limit_s, fresh_s) of the bring-back (DI1, CK4), or None while `idle_bringback_after_min` is unset or 0."""
+    mins = sch.get("idle_bringback_after_min")
+    if not mins:
+        return None
+    fresh = sch.get("fresh_take_s", BB_FRESH_TAKE_S)
+    if isinstance(mins, bool) or not isinstance(mins, (int, float)) or mins < 0 or not isinstance(fresh, (int, float)) or fresh <= 0:
+        raise ValueError("idle_bringback_after_min / fresh_take_s must be positive numbers: %r %r" % (mins, fresh))
+    return mins * 60, fresh
+
+
+def bb_work(sch, st, seat, ticket, now):
+    """The Dispatcher's reading of SEAT's queue while the window sat idle: work starts the clock (a later reading never
+    moves it), an empty queue ends the watch (an idle window is correct), None (peek failed) changes nothing."""
+    if ticket is None or not bb_rule(sch):
+        return
+    if not ticket:
+        return bb_clear(st, seat)
+    st.setdefault("bringback", {}).setdefault(seat, {"phase": "watch", "since": now, "ticket": ticket.get("id")})
+
+
+def bb_clear(st, seat):
+    (st.get("bringback") or {}).pop(seat, None)
+
+
+def bb_incident(st, seat):
+    """The one incident stands for this outage: the no-hand-off alarms would only be the same news again."""
+    return ((st.get("bringback") or {}).get(seat) or {}).get("phase") == "incident"
+
+
+def _bb_done(seat, st, act, why):
+    bb_clear(st, seat)
+    act(do="bringback_end", seat=seat, why=why)
+
+
+def _bb_incident(seat, bb, st, sch, now, act, why):
+    """One outage, one incident: the alarm repeats on alarm_every_s until a reading ends it (a take, or an empty queue),
+    and the tick's alarm path signals it into the told ledger (incident.py joins the repeats by cause). No further restart: a replacement that took nothing is not a window problem."""
+    bb["phase"] = "incident"
+    kind = "idle_bringback:" + seat
+    if bb.get("told_at") and now - (st.get("alarms") or {}).get(kind, -1e18) < sch.get("alarm_every_s", 21600):
+        return                           # rate-limited in execute anyway: not one journal line per tick
+    bb["told_at"] = now
+    act(do="alarm", kind=kind, seat=seat, note=True, conductor_log=True,
+        ticket=(sch.get("no_handoff") or {}).get("escalate_item") or sch.get("alarm_item"),
+        raise_first="%s was restarted and still takes no work." % seat, why=why)
+
+
+def _bringback(seat, cfg, R, st, obs, now, rule, act, sch):
+    """DI1 + CK4, one state machine, st["bringback"][seat]. watch: idle with ready work (bb_work started the clock) and
+    nothing taken for the limit -> one restart through the ordinary pending path, with all its holds. restart: wait for
+    it to end; a window it never killed goes back to watch. fresh: the replacement has fresh_take_s to take work, else
+    the incident. No state reaches a second restart: only a real take or an empty queue ends the machine.
+    A human is the HUMAN input in that window's own transcript, the reading a pending restart already cancels on; never
+    his presence at the machine (no_owner_presence)."""
+    bb = (st.get("bringback") or {}).get(seat)
+    if not bb:
+        return
+    if cfg.get("kind") == "conductor":   # the window he talks to is never restarted for idling
+        return bb_clear(st, seat)
+    limit, fresh = rule
+    ro = obs["seat_restart"]
+    rs = R.get(seat) or {}
+    work = ro["work"](seat, bb["since"])
+    if work is None:                     # UNMEASURED: no restart and no incident on a blind reading
+        return act(do="bringback_hold", seat=seat, why="the seat's ledger shard is UNMEASURED")
+    nw = new_work(work, None)
+    if nw:
+        return _bb_done(seat, st, act, _work_why(nw))
+    if bb["phase"] == "incident":
+        return _bb_incident(seat, bb, st, sch, now, act, bb.get("why") or "the bring-back incident stands")
+    if bb["phase"] == "restart":
+        if rs.get("ts") != bb.get("ts"):  # a seat request or the backstop overtook it before the kill
+            bb.update(phase="watch", retry_at=now + cfg["cooldown_s"])
+        elif rs.get("state") in ACTIVE:
+            return
+        elif rs.get("state") == "verified":
+            bb.update(phase="fresh", since=rs["killed_at"], verified_at=rs["ended_at"])
+            ss = st["seats"].setdefault(seat, {})
+            for k in ("cooldown_until", "nh_until", "nh_streak", "nh_tickets", "attempt"):
+                ss.pop(k, None)          # the fresh window is rung now: the old window's backoff is not its own
+            return
+        elif rs.get("killed_at"):
+            bb["why"] = "%s was killed for idling with work and no replacement came: %s" % (seat, rs.get("why"))
+            return _bb_incident(seat, bb, st, sch, now, act, bb["why"])
+        else:                            # dry, cancelled or refused: nothing was replaced, so this is no restart spent
+            bb.update(phase="watch", retry_at=now + cfg["cooldown_s"])
+            return
+    named = _find(obs["agents"].get("sessions"), SM.names_of(cfg))
+    cur = named[0] if len(named) == 1 else None
+    if rs.get("state") in ACTIVE:
+        return
+    if rs.get("state") == "verified" and rs.get("ended_at", 0) > bb["since"] and bb["phase"] == "watch":
+        bb["since"] = rs["ended_at"]     # another road's fresh window: it gets its own full turn at the queue
+        return
+    due = bb["verified_at"] + fresh if bb["phase"] == "fresh" else max(bb["since"] + limit, bb.get("retry_at", 0))
+    if now < due or (bb["phase"] == "watch" and rs.get("cooldown_until", 0) > now):
+        return
+    if cur is None:                      # none: dead:<seat> speaks. two: never choose between windows
+        return
+    tx = ro["tx"](seat, cur)
+    if tx is None:
+        return act(do="bringback_hold", seat=seat, why="the window's transcript is unreadable")
+    if tx.get("last_user_at") and now - tx["last_user_at"] < limit:
+        return _bb_done(seat, st, act, "left alone: a human typed in the window at %s" % _iso(tx["last_user_at"]))
+    ticket = obs["peek"](seat)
+    if ticket is None:
+        return act(do="bringback_hold", seat=seat, why="rimflow next --peek failed")
+    if not ticket:
+        return _bb_done(seat, st, act, "the queue is empty")
+    if bb["phase"] == "fresh":
+        bb["why"] = ("%s was restarted once for idling with work (ready: %s) and the fresh window %s took nothing in %d "
+                     "s. Conductor: look at the seat's orders and the queue; the Dispatcher will not restart it again"
+                     % (seat, ticket.get("id"), cur.get("sessionId"), fresh))
+        return _bb_incident(seat, bb, st, sch, now, act, bb["why"])
+    ss = st["seats"].get(seat) or {}
+    if cur.get("status") != "idle" or ss.get("ring") or ss.get("recover"):
+        return
+    hs = ro["helpers"](seat, cur)
+    born = _born(ro, cur)
+    lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
+    if hs is None or any(h.get("alive") for h in hs) or born is None or ro["start"](cur.get("pid")) != born or lh is None:
+        return act(do="bringback_hold", seat=seat, why="a helper is alive, or the window cannot be bound to its birth")
+    rs = R[seat] = {"source": "bringback", "ts": now, "session_id": cur.get("sessionId"), "pid": cur.get("pid"),
+                    "start": born, "ticket": None, "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending",
+                    "reason": "idle with ready work (%s) for %d s and no ring taken" % (ticket.get("id"), now - bb["since"]),
+                    "cancel_after": tx.get("last_user_at") or now, "tx_offset": lh[2] or 0,
+                    "tx_path": transcript_for(cur, cfg)}
+    bb.update(phase="restart", ts=now)
+    act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
 
 
 def _disarm(seat, rs, before, ro, act):
@@ -2286,7 +2426,8 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
                                shown=[_msg_key(r) for r in msgs]), root)
 
 
-FORCED = ("backstop", "backstop_hard")          # the window did not close itself out, so its open work is read out of it
+FORCED = ("backstop", "backstop_hard")          # size restarts: the size must stand until the kill
+NO_CLOSEOUT = FORCED + ("bringback",)           # the window did not close itself out, so its open work is read out of it
 
 
 def _tx_tail(path, tail_bytes=8 << 20):
@@ -2422,7 +2563,7 @@ def cmd_wake(args):
         print("\n".join(out[:args.lines]) or "(nothing)")
     except Exception as e:  # noqa: BLE001
         print("handoff.py --wake failed: %s" % e)
-    if rec and not rec.get("aborted") and rec.get("source") in FORCED:
+    if rec and not rec.get("aborted") and rec.get("source") in NO_CLOSEOUT:
         try:
             print("\n".join(wake_digest(rec, clone=cfg.get("clone") or REPO, seat=seat)))
         except Exception as e:           # noqa: BLE001 - the wake must reach its last line whatever the transcript holds
