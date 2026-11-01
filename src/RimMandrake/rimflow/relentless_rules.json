@@ -41,6 +41,21 @@
   "model": "opus",
   "seat": "BENCH",
   "_staffing": "The no-AI filler, design section 13. Rises 3, 5, budget, each step only after a clean reading: hold_s at full stage, min_verdicts blind verdicts in that stage's window, at most max_reject_share rejected, memory never under step_back_mem_gb, no OOM kill, burn at most burn_max_pct_h. foreign_* are what a worker may take from the other seat without pulling its tree.",
+  "_circling": "RW2, circling.py. Thresholds unmeasured: replay real runs before trusting one. stop stays false until circling_replay.json, written by `circling.py replay --write` from hand-labelled runs on this code and these numbers, shows wrongful stops under false_stop_limit; the flag alone stops nothing.",
+  "circling": {
+    "enabled": true,
+    "stop": false,
+    "test_share_limit": 0.6,
+    "test_share_min": 25,
+    "no_change_min": 30,
+    "finding_min_new": 3,
+    "oscillation_limit": 2,
+    "churn_min": 25,
+    "churn_moves": 5,
+    "churn_max_lines": 6,
+    "false_stop_limit": 0.05,
+    "replay_min_runs": 20
+  },
   "staffing": {
     "seat": "FOUNDRY",
     "stages": [3, 5, "budget"],

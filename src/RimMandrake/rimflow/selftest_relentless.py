@@ -18,7 +18,7 @@ import relentless as R  # noqa: E402
 
 RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, share=0.5, max_workers=2,
              enrol_per_tick=50, max_queued=50, run_reserve=1000, item_spend_limit=10**7, day_spend_limit=10**9,
-             staffing=None)
+             staffing=None, circling=None)
 STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600)
 FAILS = []
 

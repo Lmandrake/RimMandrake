@@ -25,6 +25,9 @@ import subprocess
 import sys
 import time
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import circling  # noqa: E402
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
 ALARM_PREFIXES = ("OPS_", "LIVE_RESTORE_")       # rimflow close refuses these without a live line (cli._live_gate)
@@ -1028,6 +1031,12 @@ class Effects:
             return int(self.RL.run_tokens(res) or 0)
         except Exception:  # noqa: BLE001
             return 0
+
+    def circling_tree(self, st):
+        return circling.tree_reading(st["clone"], st.get("base") or "HEAD", POOL_NOISE)
+
+    def transcripts(self, st):
+        return circling.transcript_paths(st["clone"], st["started_at"])
 
     def activity(self, st):
         """Newest write in the item's transcripts: a worker in a long test is not silent, only its beat is."""
@@ -2044,7 +2053,7 @@ def reading(store, r, now, acts):
         counts[s["status"]] = counts.get(s["status"], 0) + 1
     br = load_breaker(store)
     rec = {"at": iso(now), "share": r["share"], "counts": counts, "spent_today": spent_today(store, now),
-           "breaker": br or None, "acts": acts[-20:],
+           "breaker": br or None, "acts": acts[-20:], "circling": circling.summary(store, r, now),
            "items": [{"item": s["item"], "status": s["status"], "gen": s["gen"], "returns": s["returns"],
                       "approach": s["approach"], "spent": s["spent"]} for s in states if s["status"] in OPEN]}
     store._write(store.p("reading.json"), json.dumps(rec, indent=1, sort_keys=True))
@@ -2260,6 +2269,10 @@ def tick(store=None, fx=None, r=None, now=None):
                     acts.append({"do": "error", "item": item, "why": "%s: %s" % (type(e).__name__, e)})
                     store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": item,
                                    "why": str(e)[:300]})
+        try:
+            circling.watch(store, fx, r, now, acts, fail)
+        except Exception as e:  # noqa: BLE001  the watch never stops the belt
+            acts.append({"do": "error", "item": None, "why": "circling %s: %s" % (type(e).__name__, e)})
         reap_quarantined(store, fx, r, now, acts)
         spend_holds(store, fx, r, now, acts)
         enrol_acts = enrol(store, fx, r, now)
