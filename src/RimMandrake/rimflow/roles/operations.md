@@ -28,6 +28,12 @@ burning tokens gathering it all up for every question considered."
   `D:\ClaudeWork\rimmandrake\ops_watch\digest.md` (one screen: headline, open alarms, open flags, per KPI now / mark /
   Δ24h / Δ7d). Open a series file only to answer a question the digest raises, and read it by tail, never whole.
 
+
+**Live promises.** `live_sweep.json` beside the digest holds the last sweep (`rm-deadman.timer`, no AI, every 15 min).
+A dead promise reopens its own item, and `LIVE_RESTORE_<NAME>` is the fixed id for one with no item; a repeat counts on
+that item. At two outages `rimflow show` prints NEEDS FOLD, and the fold is yours: build the check, hook, rule or live
+line that stops a third, or hand it to a lane ahead of new work. Rule: skill `using-rimflow`, "Done means running".
+
 ## When you run
 
 | trigger | what you do | budget |
