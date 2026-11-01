@@ -103,7 +103,11 @@ class FakeWorld:
             return why
         self.closes.append((item, sha))
         self.items[item] = "done"
+    reclaim_fail = None
     def ledger_reclaim(self, item):
+        if self.reclaim_fail:
+            why, self.reclaim_fail = self.reclaim_fail, None
+            return why
         self.items[item] = "ready"
     def ledger_note(self, item, text): self.notes.append(text)
     def ledger_needs_owner(self, item, why): self.needs.append(item)
@@ -566,10 +570,14 @@ def t_crash_windows():
     R.snag(x.s, "I0", st["gen"], "gate_not_met", "waits on others", x.r, now=x.now)
     x.w.up[st["run"]["unit"]] = False
     x.r["pool_ids_exclude"] = ["I0"]
+    x.w.reclaim_fail = "rimflow refused"
     launched = len(x.w.launches)
     x.tick(600)
     x.tick(600)
     ok(len(x.w.launches) == launched, "an excluded item is not relaunched on its way out")
+    ok(x.st("I0")["status"] == "queued" and x.w.items["I0"] == "doing", "a refused hand-back does not retire it")
+    x.tick(600)
+    ok(x.w.reclaim_fail is None and x.w.items["I0"] == "ready", "a refused hand-back comes round again: %s" % x.w.items["I0"])
     ok(x.st("I0")["status"] == "retired", "a started item excluded in the rules leaves the line")
     ok(x.w.items["I0"] == "ready", "and the ledger gets it back, not left doing with nobody on it")
     x.done()
@@ -1799,8 +1807,12 @@ def t_unpublished_enrol_waits():
             ok(False, "reenrol must refuse %s" % bad)
         except ValueError:
             ok(True, "reenrol refuses %r" % bad)
+    st = store.load("EARLY_ITEM")
+    st["check_count"] = 3
+    store.save(st)
     st = R.reenrol(store, "EARLY_ITEM", "wrongly retired", 1300)
     ok(st["status"] == "queued" and st["gen"] == gen + 1, "the named verb does, with a new gen")
+    ok(st["check_count"] == 3, "and a new checker cannot land on an old one's path")
     ok(any(j.get("do") == "reenrol" and j.get("why") == "wrongly retired" for j in map(json.loads, open(store.p("journal.jsonl"), encoding="utf-8"))), "and journals why")
     try:
         R.reenrol(store, "EARLY_ITEM", "twice", 1400)
@@ -1884,6 +1896,27 @@ def t_books_frozen():
         ok(f.read() == "local secret\n", "and it keeps its bytes")
     put(b, "ignored.cfg", "upstream\n")
     ok(fx.sync() is None, "the same bytes level")
+    # the same collision by a rename: git calls that R, and a filter on A alone never sees it
+    git(b, "fetch", "-q", "origin")
+    git(b, "reset", "-q", "--hard", "origin/main")
+    put(b, ".git/info/exclude", "ignored.cfg\nmoved.cfg\n")
+    put(b, "moved.cfg", "local secret\n")
+    git(up, "fetch", "-q", "origin")
+    git(up, "reset", "-q", "--hard", "origin/main")
+    git(up, "mv", "code.py", "moved.cfg")
+    git(up, "commit", "-qm", "rename onto it")
+    git(up, "push", "-q", "origin", "main")
+    why = fx.sync()
+    ok(why and "ignored file moved.cfg" in why, "a rename onto an ignored file stops the books: %s" % why)
+    put(b, "moved.cfg", git(up, "show", "HEAD:moved.cfg"))
+    ok(fx.sync() is None, "the same bytes level, after a rename too")
+    # a fetch that fails leaves origin/main old, and every check above would pass against it without a word
+    url = git(b, "remote", "get-url", "origin").strip()
+    git(b, "remote", "set-url", "origin", os.path.join(d, "gone.git"))
+    why = fx.sync()
+    ok(why and "cannot fetch" in why, "a failed fetch is said: %s" % why)
+    git(b, "remote", "set-url", "origin", url)
+    ok(fx.sync() is None, "and clears when it fetches")
     class W:
         said = []
         def conductor_alarm(self, t):

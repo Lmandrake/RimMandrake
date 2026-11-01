@@ -442,7 +442,9 @@ class Effects:
         self._ledger = None
         self._budget = self._helpers = NOT_READ
         try:
-            self.git(self.books, "fetch", "--quiet", "origin")
+            got = self.git(self.books, "fetch", "--quiet", "origin")
+            if got.returncode:      # every check below reads origin/main: an old one passes them all and says nothing
+                return "books cannot fetch: %s" % got.stderr[-300:]
             why = self.ignored_collision()
             if why:
                 return why
@@ -454,7 +456,7 @@ class Effects:
     def ignored_collision(self):
         """-> why, when origin newly tracks a path the clone holds as an IGNORED file with other bytes. Neither a merge
         nor `reset --keep` protects it and `status` cannot see it, so the check is the only thing between it and loss."""
-        new = self.git_ok(self.books, "diff", "--name-only", "--diff-filter=A", "-z", "HEAD", "origin/main").split("\0")
+        new = self.git_ok(self.books, "diff", "--name-only", "--no-renames", "--diff-filter=A", "-z", "HEAD", "origin/main").split("\0")
         for p in filter(None, new):
             src = os.path.join(self.books, p)
             if not os.path.isfile(src) or self.git(self.books, "ls-files", "--error-unmatch", "--", p).returncode == 0:
@@ -1374,7 +1376,8 @@ def enrol_one(store, item, why, now):
 
 def reenrol(store, item, why, now):
     """Back in line after `retired`, which is otherwise for good: a named verb, journalled, for a retirement that was
-    wrong. A fresh start with the old spend: `gen` moves on, so a run of the old life stays fenced."""
+    wrong. A fresh start with the old spend: `gen` moves on, so a run of the old life stays fenced, and `check_count`
+    stays, so a new checker never lands in the path a quarantined one may still be running in."""
     if not (why or "").strip():
         raise ValueError("reenrol: --why is required")
     with store.lock():
@@ -1384,7 +1387,7 @@ def reenrol(store, item, why, now):
                 item, old["status"] if old else "not enrolled"))
         st = new_state(item, now, why)
         st.update(gen=old["gen"] + 1, spent=old.get("spent", 0), quarantined=old.get("quarantined", []),
-                  attempts=old.get("attempts", 0))
+                  attempts=old.get("attempts", 0), check_count=old.get("check_count", 0))
         store.save(st)
         store.journal({"at": iso(now), "do": "reenrol", "item": item, "why": why})
         return st
@@ -1746,13 +1749,17 @@ def retire(store, fx, states, now, acts, r=None):
             continue
         led = fx.item_state(st["item"])
         if r and st["status"] == "queued" and st["item"] in r.get("pool_ids_exclude", []):
+            # started means the ledger says doing with no one on it: hand it back or it reads as worked on for good.
+            # Back first: `retired` is never looked at again, so a refused hand-back must come round next tick.
+            why = fx.ledger_reclaim(st["item"]) if st["ledger_started"] else None
+            if why:
+                acts.append({"do": "retire_waits", "item": st["item"], "why": why})
+                continue
             with store.lock():
                 cur = store.load(st["item"])
                 cur["status"] = "retired"
                 store.save(cur)
-            # started means the ledger says doing with no one on it: hand it back or it reads as worked on for good
-            why = fx.ledger_reclaim(st["item"]) if st["ledger_started"] else None
-            acts.append({"do": "retire", "item": st["item"], "why": "excluded in the rules", "ledger": why})
+            acts.append({"do": "retire", "item": st["item"], "why": "excluded in the rules"})
         elif led is None and st["status"] == "queued" and not st["ledger_started"]:
             # filed but not published yet: the books have not heard of it, and that is no close (five items ended
             # this way, 2026-11-01). It waits in line; the launch skips it until the ledger names it.
