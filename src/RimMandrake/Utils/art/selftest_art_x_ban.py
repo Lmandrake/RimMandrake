@@ -199,6 +199,18 @@ def main():
             check(False, "unban with blank words is refused")
         except L.Refused:
             check(True, "unban with blank words is refused")
+        ruling = "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+        for kw in ({"why": "the agent's own reason"}, {"per_ruling": "SOME_OTHER_RULING", "why": "x"}, {"per_ruling": ruling}):
+            try:
+                L.unban(sha[:12], **kw)
+                check(False, f"unban refuses {kw}")
+            except L.Refused as e:
+                check(sha in L.Index().bans and "needs his typed words" in str(e), f"unban refuses {kw}")
+        try:
+            L.unban("0000000000", per_ruling=ruling, why="Conductor: lift it")
+            check(False, "a Conductor instruction passes the authority gate")
+        except L.Refused as e:
+            check("matches 0 banned" in str(e), "a Conductor instruction passes the authority gate")
         p = subprocess.run([sys.executable, str(art), "unban", sha[:12], "--owner-said", "bring the beetle back"],
                            capture_output=True, text=True, timeout=120)
         idx = L.Index()

@@ -48,6 +48,12 @@ the call is taken as a delegated decision and logged as one. ⛔ An unanswered c
 
 Each line is reserved by a ruling of his that says so; nothing else is.
 
+This list binds who may decide alone. The Conductor holds it for him: a seat or helper that receives a Conductor
+instruction acts on it and does not re-open this list against it (owner, 2026-10-30, ledger
+`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`: *"No more "I need the user to confirm."*). Tool gates that take his words
+take that ruling too (`src/RimMandrake/Utils/conductor_authority.py`), except the north-star gates of line 1, which
+record his own words against a hash.
+
 1. **North-star bars.** The `## north star` sections are hash-bound and his: agents write and approve the
    functional scripts, *"the owner's hash-bound `## north star` bars stay his"* (CHARTER, How we debug;
    CLAUDE.md, North-star validation, 2026-09-17). The 2026-09-16 carve-out stands: a model's `must read` YES
@@ -61,7 +67,8 @@ Each line is reserved by a ruling of his that says so; nothing else is.
 2. **Irreversible acts on work that is not ours.** Force-push, `reset --hard` over work you did not make,
    deleting work not yours — *"only with the owner's word"* (CHARTER, expensive list #5). Re-freezing the
    frozen `official` dump — *"only the owner re-freezes it"* (CHARTER, Instruments). Purging a picture from the
-   art store — `art.py purge` takes `--owner-said` only (his ✕ on a sheet archives instead, §2.3).
+   art store — `art.py purge` takes `--owner-said`, `--by-card` or `--per-ruling`, never a bare `--why`
+   (his ✕ on a sheet deletes and bans, owner card 2026-10-26 19:54).
    **Delegated (owner card 2026-10-26 19:06, *"Archive then delete, in digest (Recommended)"*):** deleting OUR
    OWN leftovers — old dev saves, scratch clones, orphan mandrake mod folders, settings or pictures nothing
    reads, patches aimed at retired mods — when a check proves nothing reads it AND everything is pushed, after

@@ -30,7 +30,8 @@
     art.py purge     <sha> (--owner-said "..." | --by-card "q → option" | --per-ruling <item|event>) [--why "..."]
                      [--release-keep]       reject+purge (owner only, one field per kind of his authority, as install);
                                             a kept picture is refused unless --release-keep names his authority for it
-    art.py unpurge   <sha> --owner-said "..."   reverse the latest purge of that picture on his newer, explicit
+    art.py unpurge   <sha> (--owner-said "..." | --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "...")
+                                            reverse the latest purge of that picture on his newer, explicit
                                             words (owner only; append-only `unpurge` event, history kept). Restores
                                             no bytes (put them first) and no keep; a mechanical install stays refused
     art.py kept-purged [--out FILE]         pictures purged while an owner keep on them is still active —
@@ -49,7 +50,8 @@
     art.py restore   <archive-event|sha> (--owner-said "..." | --by-card "q → option" | --per-ruling REF)
                                             one-command undo of an archive: the same bytes back at the same slot
     art.py marks-digest [--since ISO]       one line per newest-mark act (digest data source, class `art marks`)
-    art.py unban     <sha> --owner-said "..."   lift the ban his ✕ made (delete forever + ban, card 2026-10-26 19:54)
+    art.py unban     <sha> (--owner-said "..." | --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "...")
+                                            lift the ban his ✕ made (delete forever + ban, card 2026-10-26 19:54)
     art.py bans      [--check <png>]        list banned pictures; test a file against the bans (exact + near-duplicate)
     art.py rotate    <SEAT> (--before ISO | --keep-mb N) [--apply]
                                             move a byte-exact PREFIX of events/<SEAT>.jsonl into write-once
@@ -339,7 +341,7 @@ def cmd_unpurge(a):
         print(f"REFUSED: {a.sha} matches {len(full)} purged pictures")
         return 2
     try:
-        r = L.unpurge(full[0], owner_said=a.owner_said)
+        r = L.unpurge(full[0], owner_said=a.owner_said, per_ruling=a.per_ruling, why=a.why)
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2
@@ -395,7 +397,7 @@ def cmd_restore(a):
 
 def cmd_unban(a):
     try:
-        r = L.unban(a.sha, owner_said=a.owner_said)
+        r = L.unban(a.sha, owner_said=a.owner_said, per_ruling=a.per_ruling, why=a.why)
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2
@@ -514,11 +516,11 @@ def main(argv=None):
     p = sp.add_parser("restore"); p.add_argument("ref"); p.add_argument("--owner-said")
     p.add_argument("--by-card"); p.add_argument("--per-ruling")
     p = sp.add_parser("marks-digest"); p.add_argument("--since")
-    p = sp.add_parser("unban", help="lift a ban his ✕ made - his typed words only"); p.add_argument("sha")
-    p.add_argument("--owner-said", default="")
+    p = sp.add_parser("unban", help="lift a ban his ✕ made - his typed words or a Conductor instruction"); p.add_argument("sha")
+    p.add_argument("--owner-said", default=""); p.add_argument("--per-ruling"); p.add_argument("--why")
     p = sp.add_parser("bans", help="list banned pictures; --check <png> tests a file against them")
     p.add_argument("--check")
-    p = sp.add_parser("unpurge"); p.add_argument("sha"); p.add_argument("--owner-said", default="")
+    p = sp.add_parser("unpurge"); p.add_argument("sha"); p.add_argument("--owner-said", default=""); p.add_argument("--per-ruling"); p.add_argument("--why")
     p = sp.add_parser("ingest"); p.add_argument("decisions"); p.add_argument("--dry-run", action="store_true")
     p.add_argument("--redo-jobs", help="the regen jobs queued for this sheet; each must carry his note verbatim as owner_note (req 9)")
     p.add_argument("--defer-redo-jobs", action="store_true", help="redo decisions present, jobs queued later (skips the req-9 check)")

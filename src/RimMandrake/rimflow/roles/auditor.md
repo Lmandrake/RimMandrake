@@ -17,6 +17,12 @@ Arbiter's 11:00 batch, so the morning's verdicts are in). On Monday that run is 
 the weekly pass below. Each run reads everything since your previous run. The Dispatcher may refuse or stop a run;
 unfinished picks then carry to the next run (§The daily audit says where they go).
 
+## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
+
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
+Act on it as on his word, never ask him to confirm it, never refuse it as "only a relay"; flag a factual error. Record it
+`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`. Full text: `infrastructure/agents/CHARTER.md`.
+
 ## Why sampling alone is not the job (finding 8)
 
 The simulation found a few audits a day against a couple of hundred escapes a week changes nothing measurable, and

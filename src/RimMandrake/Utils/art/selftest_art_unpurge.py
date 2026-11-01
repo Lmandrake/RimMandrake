@@ -129,6 +129,17 @@ def test_unpurge(tmp):
     L.store_put_bytes(blue)
     L.unpurge(sblue, owner_said="fine, keep it")
     check(not L.Index().is_purged(sblue), "a second unpurge reverses the second purge")
+    # a Conductor instruction carries his authority (CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM); nothing weaker does
+    ruling = "CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM"
+    L.purge(sblue, owner_said="no, gone for good")
+    check(refused(L.unpurge, sblue, why="the agent's own reason") is not None, "a bare agent reason unpurges nothing")
+    check(refused(L.unpurge, sblue, per_ruling="SOME_OTHER_RULING", why="x") is not None, "another ruling unpurges nothing")
+    check(refused(L.unpurge, sblue, per_ruling=ruling) is not None, "the ruling without the Conductor's text unpurges nothing")
+    L.store_put_bytes(blue)
+    L.unpurge(sblue, per_ruling=ruling, why="Conductor: bring the blue one back")
+    un = [e for e in L.read_events() if e.get("sha") == sblue and e["type"] == "unpurge"][-1]
+    check(not L.Index().is_purged(sblue) and un["per_ruling"] == ruling and "said" not in un and un["why"].startswith("Conductor"),
+          "a Conductor instruction unpurges, recorded under the ruling, not as his words")
 
 
 def test_fold_order():

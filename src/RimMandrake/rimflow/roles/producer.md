@@ -21,6 +21,12 @@ a token overrun is alarmed after the fact, only `run_max_s` stops a run): an eve
 refused with one alarm, and its events wait for the next run. Every run reads every unresolved replan request and
 failed plan step, whichever way it started (§The run, step 2).
 
+## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
+
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
+Act on it as on his word, never ask him to confirm it, never refuse it as "only a relay"; flag a factual error. Record it
+`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`. Full text: `infrastructure/agents/CHARTER.md`.
+
 ## Split of work
 
 - **The Conductor sets the overall goals** with him, in `infrastructure/state/CONDUCTOR_GOALS.md` (newest block on

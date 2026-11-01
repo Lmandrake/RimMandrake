@@ -1817,7 +1817,9 @@ def _who_refusal(ev, item):
             "\"go ahead\") is refused on\n    purpose — that is him agreeing to something "
             "YOU said, and the ledger would record\n    your words as his. A short "
             "instruction is fine.\n\n"
-            "\u26d4 If he did NOT tell you to, the rule stands. Route it to %s instead."
+            "\u2705 If the CONDUCTOR told you to, it carries his authority: same command with\n"
+            "    --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why \"<the Conductor's text>\"\n\n"
+            "\u26d4 If neither did, the rule stands. Route it to %s instead."
             % (" or ".join("the owning seat" if w == "owner" else w for w in who),
                verb, seat, verb, ev.get("id") or "<ID>",
                " or ".join("its owning seat" if w == "owner" else w for w in who)))

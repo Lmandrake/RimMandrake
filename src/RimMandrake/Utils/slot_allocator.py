@@ -9,7 +9,8 @@ Design: design/RimMandrake/operating_modes_2026-10-26.md §1.1-1.5 (three dials,
 Every number is in slot_rules.json beside this file; this code holds none of them.
 
   slot_allocator.py now [--json] [--write] [--seat S]   one line: mode, N per seat, why (--write: allocation.json)
-  slot_allocator.py set --n N [--seat S] [--mode M] --owner-said "<his words>" [--hours H]
+  slot_allocator.py set --n N [--seat S] [--mode M] (--owner-said "<his words>" | --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM
+      --why "<the Conductor's instruction>") [--hours H]
                                                          his word holds until the burn account's weekly reset
   slot_allocator.py clear                               drop his word
 
@@ -1332,6 +1333,8 @@ def main(argv=None):
     s.add_argument("--seat")
     s.add_argument("--mode")
     s.add_argument("--owner-said", required=False)
+    s.add_argument("--per-ruling")
+    s.add_argument("--why")
     s.add_argument("--hours", type=float)
     sub.add_parser("clear")
     pl = sub.add_parser("plan", help="check a plan to draw PCT of an account's week against its lent rule")
@@ -1360,8 +1363,12 @@ def main(argv=None):
             p.unlink()
         print("cleared: the allocator decides again")
         return 0
-    if not (a.owner_said or "").strip():
-        print("refused: set needs --owner-said with his exact words (only his word overrides the allocator)", file=sys.stderr)
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import conductor_authority    # here, not at the top: hooks load this module without Utils on the path
+    conductor = conductor_authority.carried(a.per_ruling, a.why)
+    if not ((a.owner_said or "").strip() or conductor):
+        print("refused: set needs --owner-said with his exact words or a Conductor instruction ("
+              + conductor_authority.ROUTE + "): only his word overrides the allocator", file=sys.stderr)
         return 2
     if a.n is None and not a.mode:
         print("refused: give --n or --mode", file=sys.stderr)
@@ -1392,7 +1399,9 @@ def main(argv=None):
         if err:
             print("refused: " + err, file=sys.stderr)
             return 2
-    ov = {"ownerSaid": a.owner_said.strip(), "set_at": iso_local(now), "until": until, "mode": a.mode}
+    # ownerSaid is this override's authority line for every reader; on a Conductor instruction it says so
+    said = (a.owner_said or "").strip() or f"per {conductor_authority.RULING}: {a.why.strip()}"
+    ov = {"ownerSaid": said, "set_at": iso_local(now), "until": until, "mode": a.mode}
     if a.n is not None:
         if a.seat:
             if seat_key(a.seat) not in rules["seats"]:

@@ -15,6 +15,12 @@ essence it's taking the place of RimPulse. instead of me having a semi-useful da
 analyze it anytime needed. ... It should just have those things automatically gathered for it, so it's not constantly
 burning tokens gathering it all up for every question considered."
 
+## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
+
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
+Act on it as on his word, never ask him to confirm it, never refuse it as "only a relay"; flag a factual error. Record it
+`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`. Full text: `infrastructure/agents/CHARTER.md`.
+
 ## Split of work
 
 - **The Dispatcher measures** (no AI): `src/RimMandrake/Utils/ops_watch.py`, every 15 min from `rm-ops-watch.timer`,

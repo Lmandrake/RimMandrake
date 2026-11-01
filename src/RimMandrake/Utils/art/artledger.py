@@ -34,6 +34,7 @@ from __future__ import annotations
 import sys as _rm_sys, pathlib as _rm_pl  # noqa: E401
 _rm_sys.path.insert(0, str(_rm_pl.Path(__file__).resolve().parents[4] / "src" / "RimMandrake" / "Utils"))
 from rmpaths import rm_path, rm_str, rm_win  # noqa: E402,F401  (data root: rmpaths.py)
+import conductor_authority  # noqa: E402
 import hashlib
 import json
 import os
@@ -1572,7 +1573,7 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         k = others[0]
         raise Refused(f"{sha[:12]} carries an owner keep ({k['id']}, {Path(k.get('via') or '').name or 'his words'}"
                       f"{': ' + repr(k.get('said'))[:80] if k.get('said') else ''}) — a purge never silently releases "
-                      f"a keep; ask him, then `art.py purge {sha[:12]} --owner-said \"…\" | --by-card \"q → option\" --release-keep`")
+                      f"a keep; `art.py purge {sha[:12]} --owner-said \"…\" | --by-card \"q → option\" | --per-ruling <ruling> --release-keep`")
     for k in prot:
         w.add({"type": "ruling", "id": det_id("release", k["id"], sha), "target": {"sha": sha},
                "verdict": "release", "releases": k["id"], "by": "owner", **auth,
@@ -1592,22 +1593,35 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
     return {"sha": sha, "bytes_removed": removed}
 
 
-def unpurge(sha: str, *, owner_said: str, via: str = "art unpurge") -> dict:
+def _lift_authority(owner_said: str, per_ruling: str | None, why: str | None) -> dict | None:
+    """The owner-authority fields of an unpurge or unban: his words, or a Conductor instruction under his ruling
+    (conductor_authority). None when neither is given."""
+    if (owner_said or "").strip():
+        return {"said": owner_said.strip()}
+    if conductor_authority.carried(per_ruling, why):
+        return {"per_ruling": per_ruling.strip(), "why": why.strip()}
+    return None
+
+
+def unpurge(sha: str, *, owner_said: str = "", per_ruling: str | None = None, why: str | None = None,
+            via: str = "art unpurge") -> dict:
     """Reverse the latest purge of `sha` on the owner's newer, explicit words (2026-10-15: he accepted on a later
     sheet a picture he had purged on an earlier one). Appends an `unpurge` event naming the purge it reverses; the
     purge stays in history. It restores nothing else: no keep (an install with --owner-said / --ruling records one),
     no bytes (put them in the store first if the purge deleted them), and a MECHANICAL install of a once-purged
-    picture stays refused (install: was_purged). Owner words are the only authorisation — there is no mechanical or
-    sheet route."""
-    if not owner_said or not owner_said.strip():
-        raise Refused("unpurge is the owner's act — it needs his typed words (--owner-said \"…\")")
+    picture stays refused (install: was_purged). His words or a Conductor instruction are the only authorisation —
+    there is no mechanical or sheet route."""
+    auth = _lift_authority(owner_said, per_ruling, why)
+    if not auth:
+        raise Refused("unpurge is the owner's act — it needs his typed words (--owner-said \"…\") or a Conductor "
+                      "instruction (" + conductor_authority.ROUTE + ")")
     idx = Index()
     pev = idx.purged.get(sha)
     if not pev:
         raise Refused(f"{sha[:12]} is not purged — nothing to unpurge"
                       + (" (already unpurged)" if sha in idx.unpurged else ""))
     ev = {"type": "unpurge", "id": det_id("unpurge", sha, pev["id"]), "sha": sha, "by": "owner",
-          "said": owner_said.strip(), "via": via, "follows": pev["id"], "bytes_in_store": store_has(sha)}
+          **auth, "via": via, "follows": pev["id"], "bytes_in_store": store_has(sha)}
     w = Writer({e["id"] for e in idx.events})
     w.add(ev)
     w.flush()
@@ -1620,7 +1634,7 @@ def unpurge(sha: str, *, owner_said: str, via: str = "art unpurge") -> dict:
 # His ✕, enacted, removes the picture from the game and the art store and appends a `ban` {sha, ph, ph_mirror, subject,
 # mark}. A ban refuses the exact bytes and any near-duplicate (dHash within BAN_NEAR bits, either way round) at the
 # sheet builders, at install, and in the art pipeline (a matching redraw is discarded and re-rolled). Only his typed
-# words lift one (`art.py unban <sha> --owner-said "…"`). Threshold measured on the ledger 2026-10-26
+# words or a Conductor instruction lift one (`art.py unban <sha> --owner-said "…"`). Threshold measured on the ledger 2026-10-26
 # (D:\ClaudeWork\rimmandrake\art_x_ban\returns.md): d<=10 matched 28 of 399,512 known-distinct pairs, 20 of them
 # low-information hashes; with the BAN_MIN_BITS 32 guard, 8 (0.002%).
 
@@ -1709,8 +1723,8 @@ def ban_refusal(hit: dict, sha: str | None = None) -> str:
     m = b.get("mark") or {}
     what = "is" if hit["how"] == "exact" else f"is a near-duplicate (dHash {hit['d']} bits) of"
     return (f"{(sha or '')[:12]} {what} picture {b['sha'][:12]} he ✕'d for ever ({b.get('subject') or '?'}; sheet "
-            f"{m.get('sheet')} row {m.get('row')} at {m.get('at')}) — banned; only his words lift it: "
-            f"art.py unban {b['sha'][:12]} --owner-said \"…\"")
+            f"{m.get('sheet')} row {m.get('row')} at {m.get('at')}) — banned; only his words or a Conductor instruction lift it: "
+            f"art.py unban {b['sha'][:12]} --owner-said \"…\" | --per-ruling <ruling> --why \"…\"")
 
 
 def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MARKS_WHY) -> dict:
@@ -1791,26 +1805,29 @@ def x_delete(sha: str, mark: dict, *, subject: str | None = None, why: str = MAR
             "bytes_removed": bytes_removed, "released": released}
 
 
-def unban(ref: str, *, owner_said: str, via: str = "art unban") -> dict:
-    """Lift his ban on his typed words only (no card, no standing ruling, no agent reason). `ref` is the banned
+def unban(ref: str, *, owner_said: str = "", per_ruling: str | None = None, why: str | None = None,
+          via: str = "art unban") -> dict:
+    """Lift his ban on his typed words or a Conductor instruction (no card, no other standing ruling, no agent reason). `ref` is the banned
     sha or a prefix. Appends `unban` naming the ban (the ban stays in history) and, when the ✕'s own purge is still
     the picture's state, an `unpurge` of it on the same words. It returns no bytes (they were deleted): put the PNG in
     the store again before installing it."""
-    if not owner_said or not owner_said.strip():
-        raise Refused("unban lifts his ✕ - it needs his typed words (--owner-said \"…\"); nothing else lifts a ban")
+    auth = _lift_authority(owner_said, per_ruling, why)
+    if not auth:
+        raise Refused("unban lifts his ✕ - it needs his typed words (--owner-said \"…\") or a Conductor instruction ("
+                      + conductor_authority.ROUTE + "); nothing else lifts a ban")
     idx = Index()
     hits = [s for s in idx.bans if s.startswith(ref)]
     if len(hits) != 1:
         raise Refused(f"{ref!r} matches {len(hits)} banned pictures")
     b = idx.bans[hits[0]]
     ev = {"type": "unban", "id": det_id("unban", b["id"]), "sha": b["sha"], "follows": b["id"], "by": "owner",
-          "said": owner_said.strip(), "via": via}
+          **auth, "via": via}
     w = Writer({e["id"] for e in idx.events})
     w.add(ev)
     pev = idx.purged.get(b["sha"])
     if pev and pev.get("ban") == b["id"]:
         w.add({"type": "unpurge", "id": det_id("unpurge", b["sha"], pev["id"]), "sha": b["sha"], "by": "owner",
-               "said": owner_said.strip(), "via": via, "follows": pev["id"], "bytes_in_store": store_has(b["sha"])})
+               **auth, "via": via, "follows": pev["id"], "bytes_in_store": store_has(b["sha"])})
     added = list(w.buf)
     w.flush()
     _absorb(added)

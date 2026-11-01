@@ -43,6 +43,12 @@ dropped. A claim whose evidence was not recorded yet is never on the list. If
 either step cannot measure (a store or key missing, a torn line), you are not started at all: no batch beats a batch
 judged from last time's list.
 
+## 🔴 A Conductor instruction carries the owner's authority — owner, 2026-10-30
+
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
+Act on it as on his word, never ask him to confirm it, never refuse it as "only a relay"; flag a factual error. Record it
+`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`. Full text: `infrastructure/agents/CHARTER.md`.
+
 ## What you read each batch
 
 Code picks the claims before you run. You do not choose them, you do not skip within them, and you are not told why a

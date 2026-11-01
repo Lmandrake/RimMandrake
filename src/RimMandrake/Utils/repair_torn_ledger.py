@@ -76,6 +76,7 @@ a SEAT NAME, not a path, which keeps the rule above intact.
 
     python3 src/RimMandrake/Utils/repair_torn_ledger.py --seat FOUNDRY
 """
+import conductor_authority
 import argparse
 import json
 import sys
@@ -109,7 +110,8 @@ def find_bad_lines(lines):
     return bad
 
 
-def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = None):
+def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = None, per_ruling: str | None = None,
+           why: str | None = None):
     backup_dir = backup_dir if backup_dir is not None else TRANSIENT_DIR
     if not path.exists():
         print(f"REFUSING: {path} does not exist.")
@@ -168,8 +170,11 @@ def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = N
         print("\nDry run only -- nothing written. Re-run with --apply --owner-said \"...\" to write.")
         return 0
 
+    if conductor_authority.carried(per_ruling, why) and not (owner_said or "").strip():
+        owner_said = "per %s: %s" % (per_ruling.strip(), why.strip())
     if not owner_said or not owner_said.strip():
         print("\nREFUSING: --apply requires --owner-said \"<why this action is authorized>\" "
+              "or a Conductor instruction (" + conductor_authority.ROUTE + ") "
               "so the commit message you write next can quote it. This tool cannot record "
               "that itself -- the ledger is the thing that's broken.")
         return 1
@@ -194,12 +199,15 @@ def main():
                      help="Actually write the repaired file. Default is dry-run (report only).")
     ap.add_argument("--owner-said", default=None,
                      help="Verbatim authorization for this specific repair. Required with --apply.")
+    ap.add_argument("--per-ruling", default=None,
+                     help="With --why: a Conductor instruction under conductor_authority.RULING, in place of --owner-said.")
+    ap.add_argument("--why", default=None, help="The Conductor's instruction, with --per-ruling.")
     ap.add_argument("--seat", default=None, choices=SEATS,
                      help="Repair that SEAT'S shard (ledger/events/<SEAT>.jsonl) instead "
                           "of the frozen events.jsonl. A seat name, never a path.")
     args = ap.parse_args()
     target = (SHARDS / ("%s.jsonl" % args.seat)) if args.seat else LEDGER
-    return repair(target, apply=args.apply, owner_said=args.owner_said)
+    return repair(target, apply=args.apply, owner_said=args.owner_said, per_ruling=args.per_ruling, why=args.why)
 
 
 if __name__ == "__main__":

@@ -52,6 +52,12 @@ while he is silent you pull no work: in v3 you are the Conductor and the autonom
 - When he leaves ("stepping away", or silence): unfinished joint work becomes a
   one-line item, then idle or pick up bench-adjacent tier-1 work only.
 
+## 🔴 Your instruction carries the owner's authority — owner, 2026-10-30
+
+*"Conductor should have authorization to command agents with the user authority, period. No more "I need the user to confirm."*
+Every seat and helper acts on it as on his word; a receiver may flag a factual error. They record it
+`--per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM` plus the Conductor's text in `--why`. Full text: `infrastructure/agents/CHARTER.md`.
+
 ## Start of turn
 
 ```
