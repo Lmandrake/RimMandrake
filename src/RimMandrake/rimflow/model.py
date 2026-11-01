@@ -1550,7 +1550,7 @@ class Item(object):
                  "live", "live_broken", "live_repeats", "live_from",
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
-                 "built_sha", "built_ref", "built_at", "built_by", "criteria", "outstanding",
+                 "built_sha", "built_ref", "built_at", "built_by", "makers", "criteria", "outstanding",
                  "passed", "level_reached", "lease", "raised", "raised_tsn",
                  "arbiter_fail", "arbiter_pass", "held")
 
@@ -1582,7 +1582,8 @@ class Item(object):
         self.outstanding = []           # criterion ids still OWED (never L0), in order
         self.passed = []                # [{"criterion","level","run","ts"}] since built
         self.level_reached = None       # highest level passed since built (L0 at built)
-        self.built_by = None            # the seat of the last `implemented`: the maker, for a verdict's non-maker test
+        self.built_by = None            # the seat of the last `implemented`
+        self.makers = []                # every seat that took it up or built it, past owners too: see `is_verdict`
         self.arbiter_fail = None        # the standing Arbiter FAIL, {sha, run, ts}: see `_earned_run`
         self.arbiter_pass = None        # the last sha the Arbiter passed, so a late FAIL on an older build cannot undo it
         self.held = False               # nothing is owed, and only that FAIL keeps it from done
@@ -2079,6 +2080,7 @@ EARNED_FROM = "2026-11-01T17:30:00Z"
 DONE_GATE_FROM = "2026-11-01T18:35:00Z"     # the same, for `implemented`: from here on it reaches done only as `close` does
 CLOSE_FOLD_FROM = "2026-11-01T19:15:00Z"    # from here the fold judges a `close` too: a clone's old cli cannot write a done
 ARBITER_CONFIG = "arbiter:"     # a verdict the launcher wrote: --config arbiter:<disposition>, role_launch.verdict_run
+ARBITER_SEAT = "RUNNER"         # the seat that writes it (dispatcher.ledger_verdict); no other seat's run is a verdict
 
 
 def same_sha(a, b):
@@ -2110,6 +2112,13 @@ def _finish(item, sha):
     item.blocked_reason = item.blocked_on = item.blocked_until = None
 
 
+def is_verdict(item, run):
+    """Can this run clear an Arbiter FAIL? Only one the launcher's seat wrote on work that seat had no hand in. `built_by`
+    alone is not the maker: a hand item never goes through `implemented`, so it would call every seat a non-maker."""
+    return str(run.config or "").startswith(ARBITER_CONFIG) and run.seat == ARBITER_SEAT \
+        and run.seat not in item.makers + [item.owner, item.built_by]
+
+
 def _earned_run(item, cid, level, run, ev):
     """A run recorded at or after EARNED_FROM.
 
@@ -2117,12 +2126,14 @@ def _earned_run(item, cid, level, run, ev):
     exception is `afterClose`, set by the CLI from git: the sha descends from the closed one, so a fail there is the
     closed work failing later. A fail on the current work: an open item drops to `built` and owes the criterion again;
     a done item REOPENS, the same id, because the regression is that item's. An Arbiter FAIL also stands until a
-    non-maker Arbiter pass on a different sha, or the owner's word on the close; `implemented` and the last criterion
-    pass stop short of done while it stands (`held`), and the clearing pass finishes the item."""
+    non-maker Arbiter pass (`is_verdict`) on a different sha, or the owner's word on the close; `implemented` and the
+    last criterion pass stop short of done while it stands (`held`), and the clearing pass finishes the item. Clearing
+    asks who wrote it; a run signed FAIL stands from any seat, since a false block costs a look and a false clear a bad close."""
     current = current_sha(item)
     stale = bool(current) and not same_sha(run.sha, current) and not ev.get("afterClose")
-    verdict = str(run.config or "").startswith(ARBITER_CONFIG) and run.seat != item.built_by
-    if run.result == "fail" and verdict and item.open and not same_sha(item.arbiter_pass, current):
+    verdict = is_verdict(item, run)
+    signed = str(run.config or "").startswith(ARBITER_CONFIG)
+    if run.result == "fail" and signed and item.open and not same_sha(item.arbiter_pass, current):
         # a late FAIL on an older build still stands: the current one has not passed either
         item.arbiter_fail = {"sha": run.sha, "run": run.name, "ts": ev["ts"]}
     if stale:
@@ -2130,10 +2141,10 @@ def _earned_run(item, cid, level, run, ev):
     if verdict and run.result in ("pass", "partial"):
         item.arbiter_pass = run.sha
     if run.result == "fail":
-        if verdict and not item.arbiter_fail:           # closed work: the FAIL stands on the item it reopens
+        if signed and not item.arbiter_fail:            # closed work: the FAIL stands on the item it reopens
             item.arbiter_fail = {"sha": run.sha, "run": run.name, "ts": ev["ts"]}
         was_done = item.state == "done"
-        _reowe(item, cid, None if verdict else level)   # the Arbiter judged the build, not one level of it
+        _reowe(item, cid, None if signed else level)    # the Arbiter judged the build, not one level of it
         if was_done:
             item.state, item.closed_sha = "ready", None       # past _transition, as `live` is: the close stands in the log
         elif item.state == "validated":
@@ -2223,6 +2234,7 @@ def _apply_implemented(ev, item):
     _live_promise(ev, item)
     item.built_sha, item.built_ref, item.built_at = ev["sha"], ev.get("ref"), ev["ts"]
     item.built_by, item.held = ev.get("seat"), held
+    item.makers.append(ev.get("seat"))
     item.criteria, item.outstanding, item.passed = crit, owed, []
     item.level_reached = "L0"
     if owed:
@@ -2296,6 +2308,7 @@ def _apply_item_verb(ev, index, item, seat, world):
         else:
             item.claim_ts = ev["ts"]
         item.owner = seat
+        item.makers.append(seat)
     elif verb == "start":
         # 🔴 THE COMPLETENESS GATE IS GONE. Owner, 2026-08-21:
         #   "I need you to turn off the whole 'you can't work on something that
@@ -2361,6 +2374,7 @@ def _apply_item_verb(ev, index, item, seat, world):
     elif verb == "needs":
         item.needs = ev["to"]
     elif verb == "reassign":
+        item.makers.append(item.owner)
         item.owner = ev["to"]
         # 🔴 A `doing` item handed to another seat was INVISIBLE to them.
         # `priority.rank()` only offers `ready`, so `rimflow next` never showed it,

@@ -174,6 +174,38 @@ def s1(a, b, led):
     check(item(i).arbiter_fail is not None and item(i).state == "built",
           "a MAKER's run signed arbiter: clears nothing (the seat that built it is no verdict)")
 
+    def stands(name, what, signer, **kw):
+        """A hand item: never `implemented`, built_by None. A FAIL on a, then `signer` signs a PASS on b; no Arbiter ran."""
+        i = new(name)
+        kw.get("before", lambda i: None)(i)
+        passed(i, a)
+        ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "arbiter:FAIL-module",
+           "--evidence", "e", seat="RUNNER")
+        check(item(i).built_by is None and item(i).arbiter_fail is not None, what + ": the planted FAIL stands first")
+        ok("verify", i, "--sha", b, "--level", "L0", "--result", "pass", "--config", "arbiter:PASS", "--evidence", "e",
+           seat=signer)
+        check(item(i).arbiter_fail is not None, what + ": the signed pass clears nothing")
+        refused(what, "verdict", "close", i, "--sha", b)
+
+    stands("HAND_MAKER", "the owner of a hand item signing its own arbiter:PASS", "BENCH")
+    stands("HAND_OTHER", "a seat that is not the Arbiter's signing arbiter:PASS", "OWNER")
+    stands("HAND_PAST_OWNER", "a past owner signing after the item was reassigned away from it", "RUNNER",
+           before=lambda i: (ok("reassign", i, "--to", "RUNNER", "--reason", "fixture"),
+                             ok("reassign", i, "--to", "BENCH", "--reason", "fixture")))
+    i = new("HAND_REAL")
+    passed(i, a)
+    ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "arbiter:FAIL-module", "--evidence", "e",
+       seat="RUNNER")
+    ok("verify", i, "--sha", b, "--level", "L0", "--result", "pass", "--config", "arbiter:PASS", "--evidence", "e",
+       seat="RUNNER")
+    check(item(i).arbiter_fail is None, "the real Arbiter's pass on a new sha still clears a hand item's FAIL")
+    ok("close", i, "--sha", b)
+    i = new("MAKER_FAIL")
+    passed(i, a)
+    ok("verify", i, "--sha", a, "--level", "L0", "--result", "fail", "--config", "arbiter:FAIL-module", "--evidence", "e")
+    passed(i, a)
+    refused("a maker's own signed FAIL", "verdict", "close", i, "--sha", a)
+
     i = new("CLEAN", prose="Cites `%s` and nothing else.\n" % paths_of(a)[0])
     passed(i, a)
     ok("close", i, "--sha", a)

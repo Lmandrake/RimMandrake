@@ -33,7 +33,7 @@ OUT = os.path.join(HERE, "schemas")
 class ArbiterBatch(BaseModel):
     """The structured output of one Arbiter batch: one verdict per judged claim, in judging order."""
     model_config = {"extra": "forbid", "strict": True, "frozen": True}
-    verdicts: list[ArbiterVerdict] = Field(description="one advisory verdict per claim judged this batch")
+    verdicts: list[ArbiterVerdict] = Field(description="one verdict per claim judged this batch")
 
 
 def schemas():

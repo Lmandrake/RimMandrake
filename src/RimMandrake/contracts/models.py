@@ -253,7 +253,7 @@ def audits_problems(d):
 # ------------------------------------------------------------------ 4. Arbiter verdicts (rimflow/arbiter_pending.py)
 
 class ArbiterVerdict(Strict):
-    """One Arbiter verdict: returned in its run's structured output (roles/arbiter.md 'Every advisory verdict is
+    """One Arbiter verdict: returned in its run's structured output (roles/arbiter.md 'Every verdict is
     RETURNED'), checked here by role_launch.harvest and appended as one line of arbiter/verdicts.jsonl. Exported as
     JSON Schema (contracts/schemas/, contracts/export.py) for `claude -p --json-schema`."""
     item: str = Field(min_length=1, description="ledger item id")
