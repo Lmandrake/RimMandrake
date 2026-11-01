@@ -1,0 +1,1147 @@
+{
+ "schema": 1,
+ "made_by": "flyer_gate.py refresh",
+ "flyers": {
+  "Aiwha": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "",
+   "static": null,
+   "static_fails": [
+    "G? static UNMEASURED"
+   ],
+   "provenance": "donor bundle (cartoon)",
+   "frames": "4"
+  },
+  "RM_Blisterfloat": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Blisterfloat/RM_Blisterfloat",
+   "static": {
+    "g1": 0.732,
+    "g2": 0.664,
+    "g4": 0.617
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_BloodropMoth": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RM_LanternDeeps/Fauna/BMT_Caverns/Things/Animal/BloodropMoth/BloodropMoth",
+   "static": {
+    "g1": 0.61,
+    "g2": 0.507,
+    "g4": 0.465
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Chellow": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Chellow",
+   "static": {
+    "g1": 0.839,
+    "g2": 0.528,
+    "g4": 0.816
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Dustflutter": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Dustflutter/RM_Dustflutter",
+   "static": {
+    "g1": 0.944,
+    "g2": 0.933,
+    "g4": 0.766
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Dustveil": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RotSpecies/AngelMoth/AngelMoth_B",
+   "static": {
+    "g1": 0.814,
+    "g2": 0.965,
+    "g4": 0.828
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Dwommo": {
+   "tier": 3,
+   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/Dwommo/RM_Dwommo",
+   "static": {
+    "g1": 0.575,
+    "g2": 0.502,
+    "g4": 0.508
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_FeverSwarm": {
+   "tier": 3,
+   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm",
+   "static": {
+    "g1": 0.791,
+    "g2": 0.695,
+    "g4": 0.797
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_FireHawk": {
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "FireHawk"
+   ],
+   "tex": "Things/Pawn/Animal/Pyrelands/FireHawk/FireHawk",
+   "static": {
+    "g1": 0.563,
+    "g2": 0.494,
+    "g4": 0.434
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "5"
+  },
+  "RM_FleetFlier": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_FleetFlier/RM_FleetFlier",
+   "static": {
+    "g1": 0.137,
+    "g2": 1.04,
+    "g4": 0.129
+   },
+   "static_fails": [
+    "G1 body share 0.14 < 0.5"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Gorekite": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Gorekite/RM_Gorekite",
+   "static": {
+    "g1": 0.8,
+    "g2": 1.0,
+    "g4": 0.752
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Grimewing": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Grimewing/RM_Grimewing",
+   "static": {
+    "g1": 0.683,
+    "g2": 0.482,
+    "g4": 0.527
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Illoth": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RM_TheRot/Fauna/Redrawn/Illoth/Illoth",
+   "static": {
+    "g1": 0.327,
+    "g2": 1.065,
+    "g4": 0.531
+   },
+   "static_fails": [
+    "G1 body share 0.33 < 0.5"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Jossur": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Jossur/RM_Jossur",
+   "static": {
+    "g1": 0.567,
+    "g2": 0.541,
+    "g4": 0.402
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Kirruk": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Kirruk/RM_Kirruk",
+   "static": {
+    "g1": 0.51,
+    "g2": 0.984,
+    "g4": 0.672
+   },
+   "static_fails": [],
+   "provenance": "vanilla Core frames (borrowed)",
+   "frames": "8"
+  },
+  "RM_Krannock": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Krannock/RM_Krannock",
+   "static": {
+    "g1": 0.686,
+    "g2": 0.738,
+    "g4": 0.625
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Krizzak": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [
+    "Krizzak"
+   ],
+   "tex": "RM_Abyss/Things/Pawn/Animal/RM_Krizzak/RM_Krizzak",
+   "static": {
+    "g1": 0.746,
+    "g2": 0.537,
+    "g4": 0.734
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "5"
+  },
+  "RM_Mirrik": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Mirrik/RM_Mirrik",
+   "static": {
+    "g1": 0.434,
+    "g2": 0.962,
+    "g4": 0.598
+   },
+   "static_fails": [
+    "G1 body share 0.43 < 0.5"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Murrelith": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Murrelith",
+   "static": {
+    "g1": 0.285,
+    "g2": 0.951,
+    "g4": 0.27
+   },
+   "static_fails": [
+    "G1 body share 0.28 < 0.5"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Pirrik": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Pirrik/RM_Pirrik",
+   "static": {
+    "g1": 0.758,
+    "g2": 0.801,
+    "g4": 0.734
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Shirrel": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Shirrel/RM_Shirrel",
+   "static": {
+    "g1": 0.642,
+    "g2": 0.308,
+    "g4": 0.414
+   },
+   "static_fails": [
+    "G2 N/S width 0.31 < 0.33"
+   ],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RM_Sivvern": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Sivvern/RM_Sivvern",
+   "static": {
+    "g1": 0.623,
+    "g2": 1.004,
+    "g4": 0.695
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Skellarn": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Skellarn/RM_Skellarn",
+   "static": {
+    "g1": 0.232,
+    "g2": 0.471,
+    "g4": 0.164
+   },
+   "static_fails": [
+    "G1 body share 0.23 < 0.5"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Skellick": {
+   "tier": 3,
+   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_FeverWoodBirds/RM_Skellick",
+   "static": {
+    "g1": 0.544,
+    "g2": 0.348,
+    "g4": 0.398
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Skerrel": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+   "static": {
+    "g1": 0.752,
+    "g2": 1.045,
+    "g4": 0.891
+   },
+   "static_fails": [
+    "G4 body width 0.89 > 0.85"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Skinflap": {
+   "tier": 3,
+   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Skinflap/RM_Skinflap",
+   "static": {
+    "g1": 0.772,
+    "g2": 0.955,
+    "g4": 0.746
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Skiralim": {
+   "tier": 3,
+   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Skarrok/RM_Skarrok",
+   "static": {
+    "g1": 0.564,
+    "g2": 0.579,
+    "g4": 0.621
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Skivvik": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/Sparrow/Sparrow",
+   "static": null,
+   "static_fails": [
+    "G? static UNMEASURED"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Soorrak": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Soorrak/RM_Soorrak",
+   "static": {
+    "g1": 0.755,
+    "g2": 0.855,
+    "g4": 0.685
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Sparkleech": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Sparkleech/RM_Sparkleech",
+   "static": {
+    "g1": 0.631,
+    "g2": 0.785,
+    "g4": 0.586
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Suush": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Suush/RM_SuushV_B",
+   "static": {
+    "g1": 0.797,
+    "g2": 0.977,
+    "g4": 0.484
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Thozzik": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "static": {
+    "g1": 0.667,
+    "g2": 0.385,
+    "g4": 0.457
+   },
+   "static_fails": [
+    "G3 no wings drawn"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_ThozzikColony": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RM_TheRot/Fauna/Redrawn/Thozzik/Thozzik",
+   "static": {
+    "g1": 0.667,
+    "g2": 0.385,
+    "g4": 0.457
+   },
+   "static_fails": [
+    "G3 no wings drawn"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_ThozzikColonyQueen": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
+   "static": {
+    "g1": 0.599,
+    "g2": 0.819,
+    "g4": 0.727
+   },
+   "static_fails": [
+    "G3 no wings drawn"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_ThozzikQueen": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RM_TheRot/Fauna/Redrawn/ThozzikQueen/ThozzikQueen",
+   "static": {
+    "g1": 0.599,
+    "g2": 0.819,
+    "g4": 0.727
+   },
+   "static_fails": [
+    "G3 no wings drawn"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Vrisk": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Vrisk/RM_Vrisk",
+   "static": {
+    "g1": 0.478,
+    "g2": 0.9,
+    "g4": 0.762
+   },
+   "static_fails": [
+    "G1 body share 0.48 < 0.5"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Yammeth": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Yammeth/RM_Yammeth",
+   "static": {
+    "g1": 0.578,
+    "g2": 1.012,
+    "g4": 0.777
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RM_Zellik": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RM_Zellik/RM_Zellik",
+   "static": {
+    "g1": 0.661,
+    "g2": 0.769,
+    "g4": 0.672
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RSW_Beldon": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Beldon/Beldon",
+   "static": {
+    "g1": 0.738,
+    "g2": 0.97,
+    "g4": 0.887
+   },
+   "static_fails": [
+    "G4 body width 0.89 > 0.85"
+   ],
+   "provenance": "generated/ours",
+   "frames": "3"
+  },
+  "RSW_BloodletterPetrel": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/BloodletterPetrel/BloodletterPetrel",
+   "static": {
+    "g1": 0.856,
+    "g2": 0.363,
+    "g4": 0.48
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_Bogwing": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "unannotated",
+   "sets": [
+    "Bogwing"
+   ],
+   "tex": "swanimals/Bogwing/Bogwing",
+   "static": {
+    "g1": 0.442,
+    "g2": 0.545,
+    "g4": 0.398
+   },
+   "static_fails": [
+    "G1 body share 0.44 < 0.5"
+   ],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Brezak": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Brezak/Brezak",
+   "static": {
+    "g1": 0.677,
+    "g2": 0.436,
+    "g4": 0.371
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_CanCell": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/CanCell/CanCell",
+   "static": {
+    "g1": 0.049,
+    "g2": 1.029,
+    "g4": 0.902
+   },
+   "static_fails": [
+    "G1 body share 0.05 < 0.5",
+    "G4 body width 0.90 > 0.85"
+   ],
+   "provenance": "donor-copy (cartoon)",
+   "frames": "4"
+  },
+  "RSW_ColonyPustuleHornet": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
+   "static": {
+    "g1": 0.801,
+    "g2": 1.069,
+    "g4": 0.672
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_ColonyPustuleHornetQueen": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornetQueen/PustuleHornetQueen",
+   "static": {
+    "g1": 0.791,
+    "g2": 1.012,
+    "g4": 0.945
+   },
+   "static_fails": [
+    "G4 body width 0.94 > 0.85"
+   ],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_Convor": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Convor/Convor",
+   "static": {
+    "g1": 0.605,
+    "g2": 0.785,
+    "g4": 0.598
+   },
+   "static_fails": [],
+   "provenance": "donor-copy (cartoon)",
+   "frames": "4"
+  },
+  "RSW_Dactillion": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "swanimals/Dactillion/Dactillion",
+   "static": {
+    "g1": 0.668,
+    "g2": 0.614,
+    "g4": 0.578
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RSW_Drexl": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Drexl/Drexl_j",
+   "static": {
+    "g1": 0.629,
+    "g2": 0.994,
+    "g4": 0.799
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_FacetMoth": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/FacetMoth/FacetMoth",
+   "static": {
+    "g1": 0.896,
+    "g2": 1.428,
+    "g4": 0.977
+   },
+   "static_fails": [
+    "G4 body width 0.98 > 0.85"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RSW_Hawkbat": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "gate_fails",
+   "sets": [
+    "Hawkbat",
+    "Hawkbat_j"
+   ],
+   "tex": "RimStarWars/SWBestiary/Hawkbat/Hawkbat",
+   "static": {
+    "g1": 0.72,
+    "g2": 0.553,
+    "g4": 0.48
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Leaftail": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "swanimals/Leaftail/Leaftail",
+   "static": {
+    "g1": 0.773,
+    "g2": 0.82,
+    "g4": 0.523
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RSW_Mynock": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "RimStarWars/SWBestiary/ShipVermin/Mynock/Mynock",
+   "static": null,
+   "static_fails": [
+    "G? static UNMEASURED"
+   ],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RSW_Neebray": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Neebray/Neebray",
+   "static": {
+    "g1": 0.901,
+    "g2": 0.607,
+    "g4": 0.84
+   },
+   "static_fails": [],
+   "provenance": "donor-copy (cartoon)",
+   "frames": "4"
+  },
+  "RSW_PekoPeko": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "unannotated",
+   "sets": [
+    "PekoPeko_f",
+    "PekoPeko_m"
+   ],
+   "tex": "RimStarWars/SWBestiary/PekoPeko/PekoPeko_m",
+   "static": {
+    "g1": 0.717,
+    "g2": 0.557,
+    "g4": 0.48
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Porg": {
+   "tier": 3,
+   "item": "FLYER_TIER_THREE_REBUILD_EASY_WINGS_ONLY",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Porg/Porg_j",
+   "static": {
+    "g1": 0.974,
+    "g2": 0.97,
+    "g4": 0.48
+   },
+   "static_fails": [],
+   "provenance": "donor-copy (cartoon)",
+   "frames": "4"
+  },
+  "RSW_PustuleHornet": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
+   "static": {
+    "g1": 0.801,
+    "g2": 1.069,
+    "g4": 0.672
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_PustuleHornetQueen": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornetQueen/PustuleHornetQueen",
+   "static": {
+    "g1": 0.791,
+    "g2": 1.012,
+    "g4": 0.945
+   },
+   "static_fails": [
+    "G4 body width 0.94 > 0.85"
+   ],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_PustuleHornetSpawned": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/PustuleHornet/PustuleHornet",
+   "static": {
+    "g1": 0.801,
+    "g2": 1.069,
+    "g4": 0.672
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_Sacapillar": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SacaPillar/SacaPillar",
+   "static": {
+    "g1": 0.954,
+    "g2": 0.47,
+    "g4": 0.43
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_ScrapNestBird": {
+   "tier": 1,
+   "item": "FLYER_TIER_ONE_REBUILD_REDO_ROWS_FIRST",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RSW_ScrapNestBird/RSW_ScrapNestBird",
+   "static": {
+    "g1": 0.719,
+    "g2": 0.823,
+    "g4": 0.785
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Screecher": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/Screecher/Screecher",
+   "static": {
+    "g1": 0.681,
+    "g2": 0.37,
+    "g4": 0.404
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_Shyrack": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "unannotated",
+   "sets": [
+    "Shyrack"
+   ],
+   "tex": "swanimals/Shyrack/Shyrack",
+   "static": {
+    "g1": 0.672,
+    "g2": 0.996,
+    "g4": 0.699
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Sketto": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "gate_fails",
+   "sets": [
+    "Sketto"
+   ],
+   "tex": "swanimals/Sketto/Sketto",
+   "static": {
+    "g1": 0.139,
+    "g2": 0.734,
+    "g4": 0.16
+   },
+   "static_fails": [
+    "G1 body share 0.14 < 0.5"
+   ],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_SmogMoth": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/BiomesTeam/BMT_PollutedLands/Things/Animal/SmogMoth/SmogMoth",
+   "static": {
+    "g1": 0.89,
+    "g2": 1.514,
+    "g4": 0.855
+   },
+   "static_fails": [
+    "G4 body width 0.85 > 0.85"
+   ],
+   "provenance": "generated/ours",
+   "frames": "1"
+  },
+  "RSW_Strill": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Strill/Strill",
+   "static": {
+    "g1": 0.655,
+    "g2": 0.404,
+    "g4": 0.297
+   },
+   "static_fails": [
+    "G3 no wings drawn"
+   ],
+   "provenance": "donor-copy (cartoon)",
+   "frames": "1"
+  },
+  "RSW_Thranta": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Thranta/Thranta",
+   "static": {
+    "g1": 0.753,
+    "g2": 0.972,
+    "g4": 0.781
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Tibidee": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "unannotated",
+   "sets": [],
+   "tex": "swanimals/Tibidee/Tibidee",
+   "static": {
+    "g1": 0.31,
+    "g2": 0.996,
+    "g4": 0.684
+   },
+   "static_fails": [
+    "G1 body share 0.31 < 0.5"
+   ],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Urusai": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "unannotated",
+   "sets": [
+    "Urusai"
+   ],
+   "tex": "swanimals/Urusai/Urusai",
+   "static": {
+    "g1": 0.647,
+    "g2": 1.036,
+    "g4": 0.766
+   },
+   "static_fails": [],
+   "provenance": "donor-copy (cartoon)",
+   "frames": "4"
+  },
+  "RSW_Uvak": {
+   "tier": 0,
+   "item": "",
+   "flipbook": "locked",
+   "sets": [
+    "Uvak"
+   ],
+   "tex": "swanimals/Uvak/Uvak",
+   "static": {
+    "g1": 0.725,
+    "g2": 1.008,
+    "g4": 0.816
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RSW_Whisperbird": {
+   "tier": 2,
+   "item": "FLYER_TIER_TWO_REBUILD_KEPT_NEW_WINGS",
+   "flipbook": "gate_fails",
+   "sets": [
+    "Whisperbird"
+   ],
+   "tex": "RimStarWars/SWBestiary/Whisperbird/Whisperbird",
+   "static": {
+    "g1": 0.732,
+    "g2": 0.948,
+    "g4": 0.672
+   },
+   "static_fails": [],
+   "provenance": "generated/ours",
+   "frames": "4"
+  },
+  "RUT_EmperorVulture": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RUT_EmperorVulture/RUT_EmperorVulture",
+   "static": {
+    "g1": 0.863,
+    "g2": 0.51,
+    "g4": 0.719
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  },
+  "RUT_FleetFlier": {
+   "tier": 4,
+   "item": "FLYER_TIER_FOUR_REBUILD_UNRULED_AT_SITTING",
+   "flipbook": "none",
+   "sets": [],
+   "tex": "Things/Pawn/Animal/RUT_FleetFlier/RUT_FleetFlier",
+   "static": {
+    "g1": 0.64,
+    "g2": 1.066,
+    "g4": 0.656
+   },
+   "static_fails": [],
+   "provenance": "no flip-book",
+   "frames": ""
+  }
+ }
+}

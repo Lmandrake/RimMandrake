@@ -76,6 +76,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import artledger as L  # noqa: E402
 import decisions_v2 as DV  # noqa: E402
+import flyer_gate as FG  # noqa: E402
 import ingest as I  # noqa: E402
 
 WRITER_TAG = "script:src/RimMandrake/Utils/art/enact.py"
@@ -1136,6 +1137,12 @@ def build_plan(decisions: Path, holds=(), idx: L.Index | None = None, jobs: list
         is_cut = decided and (dec == "cut" or (dec == "hold" and CUT_NOTE.search(note or "")) or bool(asks.get("cut")))
         if is_cut:
             P["cuts"].append({"row": row, "names": names, "note": note, "raw_note": v.get("note")})
+        # FLYER_STABLE_BODY_GATE_1: a keep of a flyer the gate refuted is the look, not a settled flyer
+        if decided and dec == "keep" and not is_cut:
+            _fc = FG.cell_for([row, *names])
+            if _fc.startswith("flyer: ✗"):
+                P["todo"].append(f"{row}: kept the look, body pass owed ({_fc}); `--mark-done {row}` if the keep "
+                                 f"stands as it is")
         # ── 2 install
         protect_here = set()
         folders: dict = {}

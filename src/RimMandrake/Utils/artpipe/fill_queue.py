@@ -133,7 +133,7 @@ KNOWN_ROW_FIELDS = frozenset(REQUIRED_ROW_FIELDS) | {
     "background", "biome_neutral", "biome_register", "canon", "canon_reference", "channel", "derive_from",
     "drawsize", "facings", "install_to", "no_subject", "oversize_reason", "priority", "reference",
     "style_notes", "target_def", "target_original", "target_texpath",
-    "owner_note", "canon_na", "canon_na_reason", "slot", "ask", "module"} | set(MARKER_FIELDS)
+    "owner_note", "canon_na", "canon_na_reason", "slot", "ask", "module", "plan", "flipbook_override"} | set(MARKER_FIELDS)
 
 
 def _split_na(v):
@@ -291,11 +291,29 @@ def load_rows(path: Path) -> list[dict]:
         return list(csv.DictReader(fh))
 
 
+# FLYER_STABLE_BODY_GATE_1: one whole creature per frame is the recipe that drifts. A flight frame is a layer drawn
+# against an accepted master (`plan` says which body plan, `derive_from` which master), or a named exception.
+FLIGHT_FRAME = re.compile(r"_fly(?:ing)?_?\d", re.I)
+FLYER_PLANS = ("bird", "bat", "insect", "ray", "floater", "swarm", "large")
+
+
+def _refuse_unlocked_frames(row: dict) -> None:
+    where = " ".join(str(row.get(k) or "") for k in ("id", "target_texpath", "install_to"))
+    if not FLIGHT_FRAME.search(where) or (row.get("flipbook_override") or "").strip():
+        return
+    plan = (row.get("plan") or "").strip()
+    if plan not in FLYER_PLANS or not row.get("derive_from"):
+        raise ValueError(f"row {row.get('id')!r} is a per-frame whole-creature flight row: file a wing layer with "
+                         f"plan={'|'.join(FLYER_PLANS)} and derive_from=<accepted master>, or say why not in "
+                         f"flipbook_override (design/RimMandrake/flyer_stable_body_study.md section 3.1)")
+
+
 def row_to_jobs(row: dict, default_channel: str = "codex",
                  derive_facings: bool = True, no_subject: str | None = None, world=None) -> list[dict]:
     missing = [f for f in REQUIRED_ROW_FIELDS if not row.get(f)]
     if missing:
         raise ValueError(f"row {row.get('id', '?')!r} missing {missing}")
+    _refuse_unlocked_frames(row)
     binding = bind_subject(row, no_subject=no_subject, world=world)
     # csv.DictReader keys a row's surplus cells under None; sorting str with None would crash the whole file
     unknown = sorted((str(k) for k in row if k not in KNOWN_ROW_FIELDS and row[k] not in (None, "")))

@@ -45,6 +45,7 @@ import artledger as L  # noqa: E402
 import subject as S  # noqa: E402  (ART_SUBJECT_RESOLVER_1: the one name->art matcher)
 import placeholder_detect as PD  # noqa: E402
 import sheet_slots as SLOTS  # noqa: E402  (what each picture is FOR: the slot vocabulary, DESIGN 2026-10-10 §3.1)
+import flyer_gate as FG  # noqa: E402  (the `flyer:` cell on every flyer's row)
 import sheet_live_guard as LIVE  # noqa: E402  (no live writer: picks refused, URL named)
 import scaled_review_gate as SG  # noqa: E402  (the hard gate: a sheet failing a scaled-review requirement is never written)
 
@@ -849,6 +850,9 @@ def generate(resources: list[str], out_html: Path, title: str, sheet_id: str, br
         rid = row["res"]
         shadow = [c for c in row["cols"] if c["kind"] == "live"]
         flags = list(m.get("flags", []))
+        _fc = FG.cell_for([rid, *m.get("subject_keys", []), *m.get("canon_names", [])])
+        if _fc:
+            flags.append(_fc)
         if len(shadow) > 1:
             flags.append(f"SHADOWED: {len(shadow)} of our mods ship this texPath")
         nonwin_mixed = [c for c in row["cols"] if c["kind"] == "live" and len({c["faces"].get(f) is None for f in facings}) > 1]
@@ -3306,6 +3310,9 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
             tier, tier_text = "canon", f"canon Star Wars creature (entry for the base species: {base})"
         canon_tag = (canon_state(key) or "no canon-library entry for this subject — judge on its own") if not canon else ""
         flags = []
+        _fc = FG.cell_for([key, r.get("port"), *(r.get("defNames") or [])])
+        if _fc:
+            flags.append(_fc)      # FLYER_STABLE_BODY_GATE_1: no flyer's static is ruled without its cell showing
         # a row the owner decided whose pictures changed since the snapshot he ruled on (a redo landed, a pick was
         # installed under new bytes, or the row was renamed and its decision carried over under `carriedFrom`)
         _od = ((old or {}).get("decisions") or {}).get(key) or {}

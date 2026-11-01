@@ -37,4 +37,4 @@ and `RM_Thozzik`'s family has no wings drawn.
 - Each regenerated flip-book passes the body-lock test, by its script's exit code, before he sees it.
 - Flight is verified by a `Pawn_FlightTracker` state read and never by an unattended live visual hunt.
 
-NEXT: decide whether to hold the 28 in-flight `regen_gt_pekopeko_flying_*` / `regen_gt_hawkbat_flying_j_*` jobs (unlocked recipe), then reconcile study §3 `[R]` values with the Sketto pilot.
+Study: `design/RimMandrake/flyer_stable_body_study.md`. Gate: `src/RimMandrake/Utils/art/flyer_gate.py`. Regeneration moved to the four `FLYER_TIER_*` items.
