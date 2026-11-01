@@ -1348,11 +1348,11 @@ def make_residual(c: Path, tips: list[str], work: Path, why: str) -> tuple[list[
     the whole history. What can be lost is objects, so the proof is by object: a self-contained pack of every object the
     tips reach and the mirrors do not (commits and trees too: they hold names, modes and history), plus the ref list. The
     pack over RESIDUE_CAP is OverCap, a refusal, and so is an unreadable proving repo, since then all of it is residual."""
-    revs = "\n".join(tips + ["^" + b for b in sorted(set(mirror_tips()))]) + "\n"
     src = work / "residual_src.git"
     must(subprocess.run(["git", "init", "-q", "--bare", str(src)], capture_output=True, text=True), "git init")
     (src / "objects" / "info" / "alternates").write_text(str(c / ".git" / "objects") + "\n")
-    listed = must(git(src, "rev-list", "--objects", "--stdin", stdin=revs, timeout=1800), "git rev-list --objects")
+    listed = must(git(src, "rev-list", "--objects", "--stdin", stdin="\n".join(tips) + "\n", timeout=1800), "git rev-list --objects")
+    # No ^mirror tips here: they would drop objects before proved_objects() has shown any mirror can actually be walked.
     paths = {ln[:40]: ln[41:] for ln in listed.stdout.split("\n") if ln}
     left = sorted(set(paths) - proved_objects())
     chk = must(git(src, "cat-file", "--batch-check", stdin="".join(x + "\n" for x in left)), "git cat-file")

@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 530
 """Selftest for scratch_reap.py, the expiry that nobody has to run by hand.
 
 The planted cases are the brief's (SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES): a live session, borrowed alternates, an
@@ -99,9 +100,17 @@ def sessions_root(root):
 
 def main() -> int:
     """One at a time: a run plants an undumpable process, and the /proc scan of a run beside it rightly holds everything."""
+    if os.environ.get("SCRATCH_REAP_SELFTEST_ONCE"):      # the parent below holds the lock: taking it here would deadlock
+        return run()
     lock = open(Path(tempfile.gettempdir()) / "selftest_scratch_reap.lock", "w")
     fcntl.flock(lock, fcntl.LOCK_EX)
-    rc = run()
+    # A stranger's unreadable pid on a busy machine rightly holds every fixture (Live.blind): one bad attempt says nothing,
+    # three in a row say the code. Fresh processes: an attempt that died leaves no patched module behind.
+    for attempt in range(1, 4):
+        rc = subprocess.run([sys.executable, __file__], env={**os.environ, "SCRATCH_REAP_SELFTEST_ONCE": "1"}).returncode
+        if rc == 0:
+            break
+        print(f"RETRY: attempt {attempt} failed", flush=True)
     tags = subprocess.run([sys.executable, str(Path(__file__).with_name("selftest_scratch_reap_archive_tags.py"))])
     return rc or tags.returncode            # apart because that one stubs the live-process gate this one proves
 

@@ -9,6 +9,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -171,6 +172,17 @@ def archive_tag_cases(td: Path, origin: Path):
         check(not d.exists() and blob in (kept / "residual.txt").read_text(), "a mirror without the tag excuses nothing: the blob is kept")
         os.environ["SCRATCH_REAP_MIRRORS"] = str(td / "no_such_mirror")
         check(R.proved_objects() == set(), "an unreadable mirror proves nothing")
+        neg = clone(origin, td / "neg_clone")
+        tip = git(neg, "rev-parse", "HEAD")
+        work = td / "neg_work"
+        work.mkdir()
+        real_tips, real_proved = R.mirror_tips, R.proved_objects
+        R.mirror_tips, R.proved_objects = lambda: [tip], set     # a tip named, but no mirror walked
+        try:
+            R.make_residual(neg, [tip], work, "test")
+            check(tip in (work / "residual.txt").read_text(), "a mirror tip that was never walked excludes nothing")
+        finally:
+            R.mirror_tips, R.proved_objects = real_tips, real_proved
     finally:
         R.BUNDLE_CAP, R.RESIDUE_CAP = caps
         for k, v in saved.items():
@@ -178,6 +190,29 @@ def archive_tag_cases(td: Path, origin: Path):
                 os.environ.pop(k, None)
             else:
                 os.environ[k] = v
+
+
+def zombie_cases(td: Path):
+    """A real zombie cannot be read but holds nothing: it must not blind a run."""
+    pid = os.fork()
+    if pid == 0:
+        os._exit(0)
+    real = R.Live._read
+    try:
+        for _ in range(50):
+            if " Z " in R._who(f"/proc/{pid}") + " ":
+                break
+            time.sleep(0.02)
+
+        def denied(self, p, base, cmds):
+            if p == str(pid):
+                raise PermissionError(13, "Permission denied")
+            return real(self, p, base, cmds)
+        R.Live._read = denied
+        check(not [b for b in R.Live(time.time()).blind if f"pid {pid} " in b], "a zombie is not a blind spot")
+    finally:
+        R.Live._read = real
+        os.waitpid(pid, 0)
 
 
 def main() -> int:
@@ -200,6 +235,7 @@ def main() -> int:
                           SCRATCH_REAP_PROTECTED=str(td / "protected"))
         R.Ctx.global_holds = lambda self: []
         archive_tag_cases(td, origin)
+        zombie_cases(td)
     print("FAILED: " + "; ".join(T.FAILS) if T.FAILS else "ALL PASS")
     return 1 if T.FAILS else 0
 
