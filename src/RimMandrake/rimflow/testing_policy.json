@@ -98,6 +98,13 @@
    "provenance": "A",
    "signal": "lower if new reds are missed among known ones; raise never above 7"
   },
+  "selftest.known_red_max_age_days": {
+   "value": 14,
+   "unit": "days an entry stands on the known-red list",
+   "why": "TE1: each entry names its item with an age limit, and an entry past it alarms. 14 days is the window the policy measured (2026-10-15..28): a red older than that on an open item is an item nobody is working",
+   "provenance": "A",
+   "signal": "lower if entries are renewed unread; raise if live items routinely need longer"
+  },
   "selftest.red_first_for_bug_fixes": {
    "value": true,
    "unit": "bool",

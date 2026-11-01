@@ -320,6 +320,8 @@
    "why": "v3 section 6 target: process-commit share 70% -> under 61%"},
   {"key": "tokentalk.*.share", "op": ">=", "value": 10, "alarm": false, "tag": "TOKEN_TALK_DRIFT",
    "why": "owner 2026-10-27: token-blind roles must not talk tokens; cold 7-day baseline BENCH/FOUNDRY ledger (BENCH left the measure 2026-10-31) and commits was 2-6%, so 10% is about double"},
+  {"key": "testing.nightly_news", "op": ">", "value": 0, "alarm": true, "tag": "NIGHTLY_NEWS", "name": "OPS_NIGHTLY_RED_DIAGNOSE", "marks": ["MEASURED"], "title_field": "said", "note_field": "news",
+   "why": "TE1: a nightly red not on the known-red list, or an entry past its age. A listed red is silence. Fix it, or at known_red_after_nights nights list it under an open item: python3 src/RimMandrake/Utils/known_reds.py add <test> --item <ID> --why ..."},
   {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": true, "tag": "UNTRIAGED", "name": "OPS_FINDINGS_DIAGNOSE",
    "why": "findings filed UNTRIAGED and not yet turned into items"}
  ],

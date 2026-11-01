@@ -909,7 +909,23 @@ def c_testing(now, rules, ctx):
     else:
         out["testing.nothing_h_7d"] = U("a part is UNMEASURED: " + "; ".join(p.get("why", "") for p in parts
                                                                               if p["m"] != "MEASURED"))
+    out.update(nightly_news(now, ctx))
     return out
+
+
+def nightly_news(now, ctx):
+    """TE1: the nightly's news, the only part of it that alarms (known_reds.py). A blind reading holds the alarm."""
+    import known_reds
+    keys = ("testing.nightly_news", "testing.nightly_known_reds")
+    try:
+        v = known_reds.measure(ctx.get("open_ids"), now)
+    except Exception as e:  # noqa: BLE001  a list that cannot be read costs these readings, not the family's
+        v = {"why": "%s: %s" % (type(e).__name__, str(e)[:160])}
+    if v.get("why"):
+        return {k: U(v["why"]) for k in keys}
+    return {keys[0]: M(len(v["news"]), "nightly reds not on the known-red list, and entries past their age", night=v["night"],
+                       said=v["said"], news=v["news"][:30], reds=len(v["reds"])),
+            keys[1]: M(len(v["listed"]), "nightly reds on the known-red list", night=v["night"], cured=v["cured"][:30])}
 
 
 def scratch_runs_path() -> Path:
@@ -1126,6 +1142,7 @@ def c_flow(now, rules, ctx):
     ctx["events"] = events
     world = model.replay(events)
     ctx["known_ids"] = set(world.items)
+    ctx["open_ids"] = {i for i, it in world.items.items() if it.open}
     closes = {}
     c24 = set()
     v24 = 0
@@ -2098,8 +2115,23 @@ def _tries(cur):
     return n if isinstance(n, int) and not isinstance(n, bool) else 0
 
 
-def run_alarms(points, rules, now, known_ids, filer):
-    """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears."""
+def fresh_news(cur, aid, points, rules):
+    """The names in a note_field target's reading that this alarm has not told anyone yet, and all of them. A count can
+    stand still across a line while what it counts changes: a new red on an open alarm must not vanish into it."""
+    key = aid.split(":", 1)[1]
+    tg = next((t for t in good_targets(rules) if t.get("alarm") and t.get("note_field") and t["tag"] == aid.split(":", 1)[0]
+               and fnmatch.fnmatchcase(key, t["key"])), None)
+    names = ((points.get(key) or {}).get("x") or {}).get(tg["note_field"]) if tg else None
+    if not isinstance(names, list):
+        return [], []
+    told = cur.get("noted")
+    told = told if isinstance(told, list) else []
+    return [n for n in names if n not in told], names
+
+
+def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
+    """Edge-triggered: file once on a NEW crossing, keep it while it holds, re-arm when it clears. A target with note_field
+    also says what is new while it stays crossed: a note on its open item, or, the item closed (open_ids), a reopen."""
     p = ops_dir() / "alarms.json"
     state = read_json(p) if p.exists() else {}
     if not isinstance(state, dict):
@@ -2170,7 +2202,15 @@ def run_alarms(points, rules, now, known_ids, filer):
         if cur and cur.get("state") == "OPEN":
             if crossed:
                 cur["last_seen"] = iso(now)
-            return
+            fresh, names = fresh_news(cur, aid, points, rules) if crossed else ([], [])
+            if not fresh:
+                return
+            if open_ids is None or cur.get("item") in open_ids:
+                todo.append({"note_only": True, "item": cur["item"], "name": "note:" + aid, "aid": aid, "noted": names,
+                             "text": "ops_watch: new at %s: %s" % (iso(now), "; ".join(fresh)[:600])})
+                return
+            cur.update(state="PENDING", item=None, name=cur.get("item"), reopen=True, tries=0)
+            log.append({"ts": iso(now), "event": "reopen_for_news", "aid": aid, "item": cur["name"]})
         if not crossed:
             if cur and cur.get("name") and cur.get("title"):
                 # PENDING, not crossed now (UNMEASURED, or clear but not for clear_passes yet): the crossing was
@@ -2210,6 +2250,7 @@ def run_alarms(points, rules, now, known_ids, filer):
         if isinstance(said, str) and said:
             title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
         cur["title"] = title[:160]
+        cur["noted"] = fresh_news(cur, aid, points, rules)[1]
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
                      "reopen": bool(cur.get("reopen"))})
     for aid in sorted(set(ts) | set(state)):
@@ -2233,6 +2274,8 @@ def run_alarms(points, rules, now, known_ids, filer):
             res = {a["name"]: "filing off (run without --file-alarms)" for a in todo}
         for a in todo:
             if a.get("note_only"):
+                if a.get("noted") and res.get(a["name"]) is None and isinstance(state.get(a.get("aid")), dict):
+                    state[a["aid"]]["noted"] = a["noted"]       # unsaid on a failed note: the next pass says it again
                 continue
             try:
                 cur = state[a["aid"]]
@@ -2629,7 +2672,7 @@ def run(now=None, rules=None, filer=None, families=None):
         flags.append({"rule": "bad_rule", "key": "last_measured", "value": None, "window": "now",
                       "detail": "last_measured.json not written: %s" % str(e)[:160]})
     try:
-        alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer)
+        alarms = run_alarms(points, rules, now, ctx.get("known_ids") or set(), filer, ctx.get("open_ids"))
     except Exception as e:  # noqa: BLE001  the digest still goes out, and says the alarms did not run
         alarms = _obj(read_json(ops_dir() / "alarms.json"))
         flags.append({"rule": "bad_rule", "key": "alarms", "value": None, "window": "now",

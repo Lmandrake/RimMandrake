@@ -185,7 +185,8 @@ park fixture alarms. Test deferred until unparked: drain the queue to zero; fill
 **TE1 Nightly carries news.** [Operations reads; Foundry drains] A known-red list, each entry naming its item with an age limit. Alarm only on a red not on
 the list, or an entry past its age. `known_red_after_nights` 3 (`testing_policy.json`) is the threshold to enter it. An
 entry with no open item is refused. Test: plant a new red; alarm next morning. Plant a listed red; silence. Exists: the
-log, the policy number. Missing: list, metric. Items: `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS`,
+log, the policy number, the list (`src/RimMandrake/rimflow/selftest_known_reds.json`, `known_reds.py`), the metric
+(`testing.nightly_news`, alarm `NIGHTLY_NEWS`). Items: `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS`,
 `NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS`.
 
 **TE2 Known results return without running (C3).** [Operations] Same test, same dependency hash: the stored answer comes back.

@@ -1,0 +1,96 @@
+{
+ "_doc": "Written by src/RimMandrake/Utils/known_reds.py (add, drop); its docstring is the rule.",
+ "entries": [
+  {
+   "added": "2026-11-01T16:05:24Z",
+   "expires": "2026-11-15T16:05:24Z",
+   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "test": ".claude/hooks/selftest_block_delegated_cards.py",
+   "why": "seeded from the 2026-11-01 nightly; red 6 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:25Z",
+   "expires": "2026-11-15T16:05:25Z",
+   "item": "FLOWWORKS_PINS_FIX_EXCISED_SHAS",
+   "test": "src/RimMandrake/FlowWorks/Tools/selftest_weir_looks.py",
+   "why": "seeded from the 2026-11-01 nightly; red 3 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:26Z",
+   "expires": "2026-11-15T16:05:26Z",
+   "item": "FLOWWORKS_GUARDS_FIX_THREE_RED_SELFTESTS",
+   "test": "src/RimMandrake/FlowWorks/selftest_flowworks_review1022_liquidnet.py",
+   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:27Z",
+   "expires": "2026-11-15T16:05:27Z",
+   "item": "HOSEOFFLINE_HO7_FIX_STALE_CACHEFRESH_PIN",
+   "test": "src/RimMandrake/FlowWorks/selftest_hose_offline.py",
+   "why": "seeded from the 2026-11-01 nightly; red 6 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:28Z",
+   "expires": "2026-11-15T16:05:28Z",
+   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "test": "src/RimMandrake/FlowWorks/selftest_tank_art_edges.py",
+   "why": "seeded from the 2026-11-01 nightly; red 3 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:28Z",
+   "expires": "2026-11-15T16:05:28Z",
+   "item": "ARENA_JUDGE_ENV_FIX_CODEX_OPENAI_PASSTHROUGH",
+   "test": "src/RimMandrake/Utils/arena/selftest_arena_judge.py",
+   "why": "seeded from the 2026-11-01 nightly; red 3 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:29Z",
+   "expires": "2026-11-15T16:05:29Z",
+   "item": "STOCK_SELFTEST_WIDEN_RUNNER_TIMEOUT",
+   "test": "src/RimMandrake/Utils/selftest_flowworks_stock.py",
+   "why": "seeded from the 2026-11-01 nightly; red 5 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:30Z",
+   "expires": "2026-11-15T16:05:30Z",
+   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "test": "src/RimMandrake/Utils/selftest_handoff.py",
+   "why": "seeded from the 2026-11-01 nightly; red 18 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:31Z",
+   "expires": "2026-11-15T16:05:31Z",
+   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "test": "src/RimMandrake/Utils/selftest_ledger_lint.py",
+   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:32Z",
+   "expires": "2026-11-15T16:05:32Z",
+   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "test": "src/RimMandrake/Utils/selftest_plant_tolerance_targets.py",
+   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:33Z",
+   "expires": "2026-11-15T16:05:33Z",
+   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "test": "src/RimMandrake/Utils/selftest_property_fabric.py",
+   "why": "seeded from the 2026-11-01 nightly; red 4 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:34Z",
+   "expires": "2026-11-15T16:05:34Z",
+   "item": "NIGHTLY_SELFTESTS_DRAIN_THIRTEEN_RED_NIGHTS",
+   "test": "src/RimMandrake/rimflow/selftest_dispatcher_r2.py",
+   "why": "seeded from the 2026-11-01 nightly; red 5 nights"
+  },
+  {
+   "added": "2026-11-01T16:05:35Z",
+   "expires": "2026-11-15T16:05:35Z",
+   "item": "ROLE_LAUNCH_KILL_DECIDE_ROLES_SURVIVORS",
+   "test": "src/RimMandrake/rimflow/selftest_role_launch_decide_mut.py",
+   "why": "seeded from the 2026-11-01 nightly; red 5 nights"
+  }
+ ]
+}

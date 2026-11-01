@@ -97,8 +97,10 @@ Provenance of each tunable: **O** owner's words, **C** owner by card, **D** code
 - **Signs we need it:** a module with many importers changed; or a day with commits from several seats.
 - **It was a mistake when:** nobody read the result. If the red set equals yesterday's red set, there is
   nothing to act on unless the known-red list is kept.
-- **Tunables:** `selftest.known_red_after_nights` 3 [A]; `selftest.slow_test_flag_s` 120 [A].
-- **Action owed:** item SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS.
+- **Tunables:** `selftest.known_red_after_nights` 3 [A]; `selftest.known_red_max_age_days` 14 [A];
+  `selftest.slow_test_flag_s` 120 [A].
+- **The known-red list:** `src/RimMandrake/Utils/known_reds.py` (the rule is its docstring). ops_watch alarms
+  (`NIGHTLY_NEWS`) only on a red not on the list or an entry past its age.
 
 ### 2.4 Code review to CLEAN (`code_review_status.py`)
 - **Purpose:** a second read before a file becomes trusted. Diff-scoped review is valid only once the file
