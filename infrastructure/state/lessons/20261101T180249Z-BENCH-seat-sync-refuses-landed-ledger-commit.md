@@ -1,0 +1,1 @@
+seat_sync refuses a local ledger commit already landed once origin's shard has more lines: it compares blobs, so a commit whose every line is on origin still reads NOT on origin, and land.sh keeps publishing while the clone stays diverged. Seen 2026-11-01, BENCH.jsonl 2c13f6b1b5.

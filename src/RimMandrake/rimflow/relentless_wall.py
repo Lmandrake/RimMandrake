@@ -119,7 +119,7 @@ def would_deny(inputs, prof):
     hits = set()
     for inp in inputs:
         text = json.dumps(inp)
-        hits.update(p for p in denied(prof) if p in text)
+        hits.update(p for p in denied(prof) + list(prof.get("tmpfs", ())) if p in text)
         hits.update(p for p in prof["tree_exclude"] if ("/" + p) in text or (" " + p) in text)
     return sorted(hits)
 

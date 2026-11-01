@@ -85,15 +85,14 @@
     "foreign_kinds_exclude": ["art", "design", "decision", "decide", "card", "review", "finding", "trial", "goal", "epic"],
     "foreign_exclude": "(^|_| )(ARENA|TRIAL|TRIO|REPLAY|ARM|RALPH|ART|ARTEVAL|SHEET|OWNER|LIVE|FLOWWORKS|GSS|HOSE)(_| |$)|review sheet|redraw|sprite|bridge|in game|in-game|cold load"
   },
-  "_walls": "What a mode may not see (relentless_wall.py). enforce false changes no launch; `relentless wall --audit` reports what it would deny.",
+  "_walls": "What a mode may not see (relentless_wall.py). enforce false changes no launch; `relentless wall` reports what it would deny.",
   "walls": {
     "marker": {
       "enforce": false,
       "box_root": "/home/mandrake/walled",
       "deny_children": ["/home/mandrake/rm", "/home/mandrake/dev"],
-      "deny": ["/home/mandrake/.seat-tmp", "/mnt/d/Luke/dev/RimMandrake",
-               "/mnt/d/ClaudeWork/rimmandrake/arena", "/mnt/d/ClaudeWork/rimmandrake/relentless_agent"],
-      "tmpfs": ["/home/mandrake/rm/scratch", "/mnt/d/ClaudeWork/rimmandrake/selftest_tmp"],
+      "deny": ["/home/mandrake/.seat-tmp", "/mnt/d/Luke/dev", "/home/mandrake/ClaudeWork", "/home/mandrake/.ssh", "/home/mandrake/.config/gh", "/home/mandrake/.remember", "/home/mandrake/.bash_history", "/home/mandrake/.zsh_history", "/home/mandrake/.claude-accounts", "/home/mandrake/.claude/history.jsonl", "/home/mandrake/.claude/backups", "/home/mandrake/.claude/jobs", "/home/mandrake/.claude/uploads", "/home/mandrake/.claude/downloads", "/home/mandrake/.claude/feedback", "/home/mandrake/.claude/bridge-spawn", "/home/mandrake/.claude/daemon", "/home/mandrake/.claude/daemon.log", "/home/mandrake/.claude/state", "/home/mandrake/.claude/auto_allowed_bash.log", "/home/mandrake/.claude/route-guard-health.jsonl"],
+      "tmpfs": ["/home/mandrake/rm/scratch", "/mnt/d/ClaudeWork/rimmandrake", "/home/mandrake/.claude/file-history", "/home/mandrake/.claude/session-env", "/home/mandrake/.claude/sessions", "/home/mandrake/.claude/shell-snapshots", "/home/mandrake/.claude/telemetry", "/home/mandrake/.claude/paste-cache"],
       "tree_exclude": ["conversations", "infrastructure/state/ledger", "infrastructure/state/items", "infrastructure/state/code_review"]
     }
   }
