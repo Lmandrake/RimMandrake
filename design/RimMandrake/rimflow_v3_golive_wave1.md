@@ -243,7 +243,7 @@ else creates that file. Run these from `$B`, in order, and stop at the first fai
 
 What it is: a fresh FOUNDRY window per ticket.
 - The seat's close-out (`infrastructure/agents/FOUNDRY.md`, "A fresh window per ticket") runs `seat_restart.py request`. While the window's context is under `backstop_ctx_tokens` (110000) it prints CONTEXT OK, writes no request, and the seat pulls its next ticket itself (FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE); only over it (or UNMEASURED, or `--fresh`) is the restart requested.
-- The Dispatcher holds the request through its grace (`grace_s`, FOUNDRY 30 s) and does not ring the seat while it is pending (bounded by `ring_hold_s`), then kills that one pid. then kills that one pid. It holds instead while any of these is true:
+- The Dispatcher holds the request through its grace (`grace_s`, FOUNDRY 20 s) and does not ring the seat while it is pending (bounded by `ring_hold_s`), then kills that one pid. then kills that one pid. It holds instead while any of these is true:
   - a helper is alive;
   - the bridge or driver lock is FOUNDRY's;
   - FOUNDRY's last game event is transitional;

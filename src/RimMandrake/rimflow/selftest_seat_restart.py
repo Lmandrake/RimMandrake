@@ -922,8 +922,8 @@ def test_e6_the_deadline_is_the_one_written_at_the_kill():
 def test_v1_foundry_grace_is_30_s():
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         live = json.load(f)
-    check(SR.config(live).get("FOUNDRY", {}).get("grace_s") == 30,
-          "V1 the live schedule gives FOUNDRY a 30 s restart grace (%s)" % SR.config(live).get("FOUNDRY", {}).get("grace_s"))
+    check(SR.config(live).get("FOUNDRY", {}).get("grace_s") == 20,
+          "V1 the live schedule gives FOUNDRY a 20 s restart grace (%s)" % SR.config(live).get("FOUNDRY", {}).get("grace_s"))
 
 
 def _tx_file(name, recs):

@@ -68,6 +68,9 @@ def armed_path(seat, root=None):
     return os.path.join(root or state_dir(), "armed", "%s.json" % seat)
 
 
+HANDOFF_HOOK_S = 120     # .claude/hooks/handoff_restart.py's timeout
+
+
 def inbox_path(seat, root=None):
     return os.path.join(root or state_dir(), "inbox", "%s.json" % seat)
 
@@ -142,9 +145,10 @@ def _alive(pid):
 
 
 def wait(seat, session_id, root=None, max_wait=None, poll=POLL_S, clock=time.time, sleep=time.sleep,
-         owner_pid=None):
+         owner_pid=None, hold=None):
     """Arm, then wait. -> (exit_code, text). 2 = rung (text is the message), 0 = superseded/gave up/orphaned.
-    `owner_pid`: the window's process; when it is gone the doorbell exits instead of waiting out its day."""
+    `owner_pid`: the window's process; when it is gone the doorbell exits instead of waiting out its day.
+    `hold`: called each poll; true leaves a waiting ring in the inbox (the Dispatcher withdraws it)."""
     me = arm(seat, session_id, root, owner_pid=owner_pid)
     deadline = clock() + (max_wait if max_wait is not None
                           else float(os.environ.get("RM_DOORBELL_MAX_WAIT_S", 23 * 3600)))
@@ -160,7 +164,7 @@ def wait(seat, session_id, root=None, max_wait=None, poll=POLL_S, clock=time.tim
         if clock() >= deadline:
             _disarm_if_mine(seat, me["pid"], root)
             return 0, "gave up waiting"
-        rec = take_ring(seat, root, session_id)
+        rec = None if hold and hold() else take_ring(seat, root, session_id)
         if rec is not None:
             _disarm_if_mine(seat, me["pid"], root)
             return 2, render(rec)
@@ -177,6 +181,17 @@ def _disarm_if_mine(seat, pid, root=None):
             pass
 
 
+def handoff_hold(seat, hook, clock=time.time):
+    """-> the doorbell's hold for a window ending its handoff: this turn said HANDOFF READY (for the HOOK_S the Stop hook
+    has to record the request, it runs beside this one), or its restart stands. A ring taken now would wake a window
+    that has finished and restart its quiet clock. Lazy import: seat_restart imports this module."""
+    import seat_restart as SR
+    sid = hook.get("session_id")
+    text = hook.get("last_assistant_message") or SR.last_assistant_text(hook.get("transcript_path"))
+    until = clock() + HANDOFF_HOOK_S if SR.says_handoff_ready(text) else 0
+    return lambda: clock() < until or SR.handoff_drain(seat, sid)
+
+
 def main():
     seat = seat_name()
     if not seat:
@@ -190,7 +205,16 @@ def main():
         # Fail closed: without its window's pid the doorbell cannot tell when to die (the 23 h orphan, lesson
         # 20261027T054627Z-BENCH-async-hook-orphan). Not arming leaves the seat UNWAKEABLE, which the Dispatcher alarms.
         return 0
-    code, text = wait(seat, hook.get("session_id"), owner_pid=anc)
+    try:
+        hold = handoff_hold(seat, hook)
+    except Exception:  # noqa: BLE001 - never lose the doorbell over this
+        hold = None
+    try:
+        import seat_restart as SR
+        SR.kick_fresh(seat, hook.get("session_id"))
+    except Exception:  # noqa: BLE001 - nor over this: the timer ticks anyway
+        pass
+    code, text = wait(seat, hook.get("session_id"), owner_pid=anc, hold=hold)
     if code == 2:
         sys.stderr.write(text + "\n")
     return code

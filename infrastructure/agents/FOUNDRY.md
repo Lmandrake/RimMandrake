@@ -135,8 +135,13 @@ three omissions.
 
 ⛔ **The script never says HANDOFF READY.** Only you do, once `--check` passes and you
 judge the wave genuinely closed — then say it as the last line of your reply and stop.
-He reboots on his own clock; a warm cache is the whole point, so do not start new work
-after saying it.
+The words fire the restart: the Stop hook `.claude/hooks/handoff_restart.py` runs `--check`, then
+`seat_restart.py request --ticket HANDOFF`, and the Dispatcher relaunches you 20 s after the turn ends and your
+helpers finish (owner, 2026-11-01: "20 seconds, build it now and implement."). You run no restart command. A refusal
+comes back as a block: fix what it names and say it again; three refusals alarm the Conductor. From there nothing rings
+you, and only the owner's own text in the window cancels. The fresh window, its first turn ended, is verified
+and rung on that same tick: no waiting out the old window's stall clock or backoff. A window that took no work since its own restart cannot
+hand off inside the cooldown: the Dispatcher refuses and alarms. Do not start new work after saying it.
 
 ## Start of turn
 
@@ -198,7 +203,7 @@ Do the steps in one turn:
      `no_handoff.escalate_after` unclaimed rings in a row alarm the Conductor: `seat_declined` when your ledger
      answered them (your last note is quoted to him), `idle_full_queue` when nothing was written.
    - **`RESTART REQUESTED`** — context is over the backstop (or UNMEASURED, or you passed `--fresh` because the
-     window's beliefs are stale). End the turn now. Only a new prompt from the owner in the next 30 s cancels the
+     window's beliefs are stale). End the turn now. Only a new prompt from the owner in the next 20 s cancels the
      restart — the Dispatcher's rings, task notifications and the Conductor's cross-session messages never do, and
      the Dispatcher does not ring you while it is pending. It is also held, never forced, in any of these cases:
      - a helper is alive (the drain above; `DEFERRED` also holds for your unpublished shard);
@@ -215,7 +220,7 @@ compaction, does nothing.
      Do not take another ticket first.
    - **Over 200000 tokens: forced at the next safe boundary.** Auto-compaction has hit as low as 228908, so this comes
      first. The restart goes pending; taking work does not cancel it. It kills only when your turn has ended
-     (`assistant_end`, 30 s quiet, no 1800 s idle wait) with no helper alive, no bridge, driver lock or transitional game
+     (`assistant_end`, 20 s quiet, no 1800 s idle wait) with no helper alive, no bridge, driver lock or transitional game
      event of yours, no background command, no doorbell message or queued prompt waiting, PAUSE off, and a good
      context reading. Never mid-turn. The owner typing, or your context falling under 110000, cancels it. A cooldown
      after a failed restart delays it. No boundary in 3600 s raises a Conductor alarm in the ledger and his log and

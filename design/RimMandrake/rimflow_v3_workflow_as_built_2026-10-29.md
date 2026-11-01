@@ -245,7 +245,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 
 - **Purpose.** Restart a seat whose context is too full (a "backstop"), or restart one on request.
 - **Appears** [LIVE, `sched:32-35`; `enabled: true`, `dry: false`]:
-  - FOUNDRY has `backstop: true`. The restart fires when context ≥ `backstop_ctx_tokens` 110000 and the seat has been idle ≥ `backstop_idle_s` 1800, with `grace_s` 30. FOUNDRY also has `backstop_busy: true`: over 110000 it is told once through its doorbell; at `backstop_hard_tokens` 200000 a restart goes pending whatever it is doing and kills at the next ended turn with nothing held; no boundary in `backstop_hard_alarm_s` 3600 alarms the Conductor (SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO).
+  - FOUNDRY has `backstop: true`. The restart fires when context ≥ `backstop_ctx_tokens` 110000 and the seat has been idle ≥ `backstop_idle_s` 1800, with `grace_s` 20. FOUNDRY also has `backstop_busy: true`: over 110000 it is told once through its doorbell; at `backstop_hard_tokens` 200000 a restart goes pending whatever it is doing and kills at the next ended turn with nothing held; no boundary in `backstop_hard_alarm_s` 3600 alarms the Conductor (SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO).
   - A request flows through request → pending → claimed → killed → relaunched.
 - **Defaults** [LIVE, `seat_restart.py` DEFAULTS]:
 
@@ -728,7 +728,7 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | recovers_per_seat_day | 3 | sched:20 | owner (P4 L-1) | unused |
 | code cap defaults | 3/30/80/3 | disp:99 | code | |
 | RM_DOORBELL_MAX_WAIT_S / POLL_S | 23 h / 3 s | doorbell hook | env | |
-| backstop_ctx_tokens / backstop_idle_s / grace_s (FOUNDRY) | 110000 / 1800 / 30 | sched:35 | owner (P4 L-1) | |
+| backstop_ctx_tokens / backstop_idle_s / grace_s (FOUNDRY) | 110000 / 1800 / 20 | sched:35 | owner (P4 L-1) | |
 | seat_restart defaults | see §2.4 table | seat_restart.py DEFAULTS | code | |
 | lease length / renew | 45 min / every 10 min | `lease.py:72-73` `LEASE_TTL_S`, `RENEW_EVERY_S` | code | [LIVE] |
 | helper_budget MAX_AGE_S / FUTURE_SLACK_S | 600 s / 5 s | `helper_budget.py:32-33` | code | [LIVE] |

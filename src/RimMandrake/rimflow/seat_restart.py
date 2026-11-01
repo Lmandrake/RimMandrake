@@ -18,7 +18,7 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              Busy windows (backstop_busy, never a Conductor): past backstop_ctx_tokens the seat is told once through its
              doorbell (restart_tell); past backstop_hard_tokens a restart goes pending whatever the window does, killed
              at the next ended turn with nothing held; no such boundary in backstop_hard_alarm_s alarms the Conductor.
-  pending    grace (grace_s; FOUNDRY 30 s); cancelled by new HUMAN input in the window's transcript after the request
+  pending    grace (grace_s; FOUNDRY 20 s); cancelled by new HUMAN input in the window's transcript after the request
              (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input;
              a Conductor's goodbye restart cannot be cancelled by text at all: _goodbye),
              or by the window's session changing. No ring while pending (ring_hold, bounded). HELD (never killed) while: a helper is alive (a stale one also alarms), the bridge or
@@ -142,6 +142,10 @@ def restart_dir(root=None):
 
 def request_path(seat, root=None):
     return os.path.join(restart_dir(root), "%s.request.json" % seat)
+
+
+def refused_path(seat, root=None):
+    return os.path.join(restart_dir(root), "%s.refused.json" % seat)
 
 
 def killed_path(seat, root=None):
@@ -782,7 +786,55 @@ def work_since(clone, seat, req_ts):
 
 # --ticket values that name a moment, not an item (.claude/hooks/conductor_goodbye.py): the seat log and the journal
 # hold them; the ledger has nothing to note. Noting one failed "never been filed" at every goodbye (journal, 2026-11-01).
-LABEL_TICKETS = ("GOODBYE",)
+HANDOFF_TICKET = "HANDOFF"                     # .claude/hooks/handoff_restart.py: the window said HANDOFF READY
+LABEL_TICKETS = ("GOODBYE", HANDOFF_TICKET)
+REFUSED_ALARM_S = 120                          # a refused handoff the window did not put right is the Conductor's after this
+
+
+def says_handoff_ready(text):
+    """A message that closes a seat's handoff: a line of its own reading HANDOFF READY (bold or a full stop allowed), or
+    a last line opening with those words. The words inside a sentence, a quote or a code span are not the signal."""
+    lines = [x.strip().strip("*_`#> ").strip() for x in (text or "").splitlines()]
+    lines = [x for x in lines if x]
+    return bool(lines) and (any(x.rstrip(".!") == "HANDOFF READY" for x in lines)
+                            or bool(re.match(r"HANDOFF READY\b", lines[-1])))
+
+
+def last_assistant_text(path, tail_bytes=1 << 20):
+    """-> the final assistant message's text from the transcript's tail, or "" (unreadable or none yet)."""
+    try:
+        with open(path, "rb") as f:
+            f.seek(0, 2)
+            f.seek(max(0, f.tell() - tail_bytes))
+            raw = f.read().decode("utf-8", "replace")
+    except (OSError, TypeError):
+        return ""
+    for line in reversed(raw.splitlines()):
+        try:
+            r = json.loads(line)
+        except ValueError:
+            continue
+        if r.get("type") == "assistant" and not r.get("isSidechain"):
+            c = (r.get("message") or {}).get("content")
+            t = c if isinstance(c, str) else "\n".join(b.get("text") or "" for b in c or [] if isinstance(b, dict))
+            if t.strip():
+                return t
+    return ""
+
+
+def handoff_drain(seat, session_id, root=None, now=None):
+    """-> True while this session's handoff restart stands, recorded or pending. Nothing may reach the window then: the
+    20 s of quiet are the whole wait. Readers fail open (False), as drain_of's do."""
+    if not seat or not session_id:
+        return False
+    root = root or doorbell.state_dir()
+    now = time.time() if now is None else now
+    rs = ((_read_json(os.path.join(root, "state.json")) or {}).get("seat_restart") or {}).get(seat) or {}
+    if rs.get("session_id") == session_id and rs.get("state") in ("pending", "claimed") and rs.get("handoff"):
+        return True
+    req = _read_json(request_path(seat, root)) or {}
+    return bool(req.get("handoff") and req.get("session_id") == session_id and req.get("ts") is not None
+                and req["ts"] != rs.get("req_ts") and 0 <= now - req["ts"] < DEFAULTS["request_max_age_s"])
 
 
 def note_item(ticket):
@@ -868,6 +920,7 @@ def default_obs(sch, events_since, now_fn=time.time):
         "last_human": lambda seat, s: last_human(transcript_for(s, cfgs[seat]) or ""),
         "owed": lambda rs: unanswered(rs.get("tx_path"), rs.get("tx_offset")),
         "registered": registered_start,
+        "refused": lambda seat: _read_json(refused_path(seat)),
         "pending": lambda seat, s: (background_holds(s.get("pid")) if cfgs[seat].get("kind") == "conductor" else
                                     pending_holds(seat, s.get("pid"), transcript_for(s, cfgs[seat]))),
     }
@@ -940,6 +993,8 @@ def ring_hold(st, seat, sch, now):
     age = now - rs["ts"]
     if rs.get("deferred"):               # a drain has no ring window: the kill waits on helpers, not on a clock
         return "seat restart deferred (%d s old): draining, no ring until it ends" % age
+    if rs.get("handoff"):                # the window has said goodbye: a ring would only restart its quiet clock
+        return "handoff restart pending (%d s old): no ring until it ends" % age
     if age >= cfg["grace_s"] + cfg["ring_hold_s"] + (cfg["backstop_hard_alarm_s"] if rs.get("hard") else 0):
         return None
     return "seat restart pending (%d s old): no ring until it ends" % age
@@ -1219,6 +1274,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
     named = _find(sessions, SM.names_of(cfg))
     cur = named[0] if len(named) == 1 else None
     state = rs.get("state")
+    _refused_alarm(seat, st, ro, cur, now, act)
 
     if state not in ACTIVE:
         req = ro["request"](seat)
@@ -1236,6 +1292,8 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             if req.get("deferred") is True:
                 new["deferred"] = True
                 new["drained"] = {h["id"]: h.get("desc") or "" for h in req.get("helpers") or []}
+            if req.get("handoff") is True:
+                new["handoff"] = True
             act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
                 req_ts=req["ts"], why="%s by %s: %s" % ("DEFERRED (only the kill waits)" if new.get("deferred")
                                                         else "requested", seat, req.get("reason")))
@@ -1247,6 +1305,9 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             if cur is None or cur.get("sessionId") != req.get("session_id"):
                 return _gone(seat, cfg, new, obs, ro, now, act, "request names session %s, the seat runs %s" % (
                     req.get("session_id"), (cur or {}).get("sessionId") or "none/ambiguous"))
+            spin = _handoff_spin(seat, new, rs, ro, now, act)
+            if spin:
+                return _cancel(new, seat, spin, now, act)
             new["state"] = "pending"
             rs = new
         elif (cfg.get("backstop") and cur and rs.get("cooldown_until", 0) <= now
@@ -1320,25 +1381,26 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                       relaunched_at=now, how=(mk.get("by") or "in-tile") if mk else ("fallback" if rs.get("fallback_at") else "?"))
             act(do="restart_relaunched", seat=seat, ticket=rs.get("ticket"), session_id=rs["new_session"],
                 why="new %s window (%s) %d s after the kill" % (seat, rs["how"], now - rs["killed_at"]))
-            return
-        since = now - rs["killed_at"]
-        # the give-up deadline never falls inside the tile window written at the kill, even if the config shrank (review6)
-        deadline = max(cfg["intile_wait_s"] + cfg["verify_s"], rs.get("window_s") or 0)
-        if not rs.get("fallback_at") and since >= cfg["intile_wait_s"] and not ro["intile"](seat, rs["killed_at"]):
-            argv = fallback_argv(seat, cfg.get("machine"))
-            if not argv:                 # fail only at the deadline: until then a tile may still claim (review5 #1)
-                if since >= deadline:
-                    return _fail(rs, seat, "relaunch", "no in-tile relaunch and no fleet launcher to fall back on",
-                                 now, act)
+            state = "relaunched"         # no tick lost: an armed window is verified, and rung, by this one
+        else:
+            since = now - rs["killed_at"]
+            # the give-up deadline never falls inside the tile window written at the kill, even if the config shrank (review6)
+            deadline = max(cfg["intile_wait_s"] + cfg["verify_s"], rs.get("window_s") or 0)
+            if not rs.get("fallback_at") and since >= cfg["intile_wait_s"] and not ro["intile"](seat, rs["killed_at"]):
+                argv = fallback_argv(seat, cfg.get("machine"))
+                if not argv:             # fail only at the deadline: until then a tile may still claim (review5 #1)
+                    if since >= deadline:
+                        return _fail(rs, seat, "relaunch", "no in-tile relaunch and no fleet launcher to fall back on",
+                                     now, act)
+                    return
+                rs["fallback_at"] = now
+                act(do="restart_fallback", seat=seat, argv=argv, killed_at=rs["killed_at"],
+                    why="no in-tile relaunch %d s after the kill: opening a new %s tile" % (since, seat))
                 return
-            rs["fallback_at"] = now
-            act(do="restart_fallback", seat=seat, argv=argv, killed_at=rs["killed_at"],
-                why="no in-tile relaunch %d s after the kill: opening a new %s tile" % (since, seat))
+            if since >= deadline:
+                _fail(rs, seat, "relaunch", "no new %r window %d s after the kill" % (cfg["session_name"], since), now,
+                      act)
             return
-        if since >= deadline:
-            _fail(rs, seat, "relaunch", "no new %r window %d s after the kill" % (cfg["session_name"], since), now,
-                  act)
-        return
     if state == "relaunched" and cfg.get("kind") == "conductor":
         # no doorbell: the fresh window proves itself by ending its first turn (its wake read) after the kill
         mine = [s for s in named if s.get("sessionId") == rs.get("new_session")]
@@ -1368,10 +1430,21 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=takes_note(rs.get("ticket")),
                 evidence="fresh %s window %s (pid %s), doorbell armed at %s" % (
                     seat, rs["new_session"], rs.get("new_pid"), armed.get("armed_at")))
+            _fresh_owed(st, seat)
         elif now - rs["relaunched_at"] >= cfg["arm_s"]:
             _fail(rs, seat, "rearm", "the new window %s %s in %d s" % (rs.get("new_session"), (
                 "died on an API error" if (tx or {}).get("api_end") else "is gone" if not mine
                 else "has an unreadable transcript" if not tx else "never armed its doorbell"), cfg["arm_s"]), now, act)
+
+
+def _fresh_owed(st, seat):
+    """A restart ends in work. The stall clock, the backoff and the give-up belong to the dead window: without this a
+    fresh window with a full queue waits them out (2026-11-01: 4 m 23 s of 424 ready, and the owner saw it). The Dispatcher's
+    pass over the seat runs right after this one in the same tick and rings it, or finds the queue empty."""
+    ss = (st.setdefault("seats", {})).setdefault(seat, {})
+    for k in ("cooldown_until", "nh_until", "nh_tickets", "nh_streak"):
+        ss.pop(k, None)
+    ss["idle_since"] = 0
 
 
 def _is_helper_notice(r):
@@ -1445,6 +1518,12 @@ def cursor_verdict(cfg, rs, sc, now, track=True):
     return "ok", None
 
 
+def _ring_taken(obs, seat, ring):
+    """Has the doorbell taken this ring? decide runs before the tick's own ring check, so consumed_at can lag one tick."""
+    return bool(ring.get("consumed_at")
+                or (callable(obs.get("consumed")) and obs["consumed"](seat, ring.get("ring_id"))))
+
+
 def _cancel(rs, seat, why, now, act):
     rs.update(state="cancelled", why=why, ended_at=now)
     act(do="restart_cancel", seat=seat, ticket=rs.get("ticket"), why=why)
@@ -1474,6 +1553,40 @@ def _gone(seat, cfg, rs, obs, ro, now, act, why):
     act(do="restart_orphan", seat=seat, pid=rs.get("pid"), session_id=rs.get("session_id"), ticket=rs.get("ticket"),
         gen=rs["gen"], argv=relaunch_argv(seat, cfg, "the window died with his message unanswered", rs["gen"]),
         why="the window died with his message unanswered (%s)" % ("UNMEASURED" if owed is None else "%d owed" % len(owed)))
+
+
+def _refused_alarm(seat, st, ro, cur, now, act):
+    """A handoff the hook could not turn into a restart and the window did not put right: loud, once per refusal. The
+    hook's own block told the window first; the hook clears the file when a request lands."""
+    ref = ro["refused"](seat) if callable(ro.get("refused")) else None
+    if not ref or not cur or ref.get("session_id") != cur.get("sessionId") or ref.get("ts") is None:
+        return
+    seen = st.setdefault("handoff_refused", {})
+    if seen.get(seat) != ref["ts"] and now - ref["ts"] >= REFUSED_ALARM_S:
+        seen[seat] = ref["ts"]
+        act(do="alarm", kind="restart:%s:handoff_refused" % seat, seat=seat, note=True, conductor_log=True,
+            raise_first="%s said HANDOFF READY and no restart followed." % seat,
+            why="%s's handoff was refused and stands unanswered after %d s: %s" % (seat, now - ref["ts"],
+                                                                                   str(ref.get("why"))[:300]))
+
+
+def _handoff_spin(seat, new, old, ro, now, act):
+    """-> why a handoff request is refused, or None. The cooldown guards only the backstop, and handoff.py passes a window
+    with nothing in it (ALREADY HANDED OFF is rc 0), so a fresh window that hands off at once would restart for ever.
+    A window made by a restart hands off inside the cooldown only if it took work; UNMEASURED refuses: no kill is safe."""
+    born = old.get("killed_at") or old.get("spin_from")
+    until = old.get("cooldown_until") or 0
+    if new.get("handoff") is not True or not born or until <= now:
+        return None
+    work = ro["work"](seat, born) if callable(ro.get("work")) else None
+    if work is not None and new_work(work, None):
+        return None
+    new.update(spin_from=born, cooldown_until=until)
+    why = "handoff from a window that has done no work since the restart at %s (cooldown to %s): no restart, or it spins" % (
+        _iso(born), _iso(until))
+    act(do="alarm", kind="restart:%s:handoff_spin" % seat, seat=seat, note=True, conductor_log=True,
+        raise_first="%s handed off again with no work done." % seat, why=why)
+    return why
 
 
 def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
@@ -1513,6 +1626,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
             # his own request stands even if a compaction would cancel the forced one: source no longer says size
             rs.update(req_ts=req["ts"], ticket=req.get("ticket") or rs.get("ticket"), source="request",
                       work_from=req["ts"])
+            if req.get("handoff") is True:
+                rs["handoff"] = True
             if req.get("deferred") is True:
                 rs["deferred"] = True
                 rs.setdefault("drained", {}).update({h["id"]: h.get("desc") or "" for h in req.get("helpers") or []})
@@ -1577,8 +1692,14 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if obs.get("paused"):
         holds.append("PAUSE: %s" % obs["paused"])
     ss = (st.get("seats") or {}).get(seat) or {}
-    if ss.get("ring"):
-        holds.append("doorbell ring in flight")
+    ring = ss.get("ring")
+    if ring and not _ring_taken(obs, seat, ring):    # taken means read: only a ring still in the inbox can wake the window
+        if rs.get("handoff") is True:
+            act(do="withdraw", seat=seat, ring_id=ring["ring_id"], pending=dict(ring),
+                why="the seat handed off: its waiting ring is withdrawn")
+            ss.pop("ring")
+        else:
+            holds.append("doorbell ring in flight")
     if ss.get("recover"):
         holds.append("Dispatcher recovery in flight")
     if sized and size is None:
@@ -1602,7 +1723,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     rs.pop("held_since", None)
     quiet = goodbye or (cur.get("status") == "idle" and tx and killable_turn(tx)
                         and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
-    if not quiet and deferred and not hard:   # its last helper's notice wakes it: working that out is no failed request
+    # a helper's last notice wakes a drain, a ring taken just before a handoff runs its turn out: neither fails the request
+    if not quiet and (deferred or rs.get("handoff") is True) and not hard:
         rs.setdefault("busy_since", now)
         why = "no boundary yet (status %s, last record %s)" % (cur.get("status"), (tx or {}).get("last_kind", "unreadable"))
         if now - rs["busy_since"] >= cfg["hold_alarm_s"]:
@@ -1626,6 +1748,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if rs.get("pid") is not None and cur.get("pid") != rs["pid"]:
         return _cancel(rs, seat, "the window's pid %s is not the requester's %s" % (cur.get("pid"), rs["pid"]), now,
                        act)
+    ss.pop("ring", None)                 # a taken ring dies with the window it reached: nothing is left to verify
     rs.update(state="claimed", claimed_at=now, pid=cur.get("pid"), gen=rs.get("gen") or uuid.uuid4().hex[:12])
     act(do="restart_kill", seat=seat, pid=cur.get("pid"), session_id=rs["session_id"],
         session_name=cfg["session_name"], session_names=SM.names_of(cfg), ticket=rs.get("ticket"), gen=rs["gen"],
@@ -2258,6 +2381,23 @@ def _wake_gaps(rec, cfg):
         print("- key %s at %s:\n%s" % (g.get("key"), _iso(g.get("ts") or 0), g.get("text") or "(no text)"))
 
 
+def kick_handoff(cfg):
+    """The timer ticks every 120 s; the handoff promise is 20. Ticks just past the wait, then two to catch a slow turn end."""
+    w = max(cfg["grace_s"], cfg["quiet_s"])
+    _tick_soon(w + 1, w + 11, w + 41)
+
+
+def kick_fresh(seat, session_id, root=None):
+    """The doorbell, arming: a window a restart is waiting on has ended its first turn. Without a tick now it sits out the
+    timer, 120 s for each state. -> True if ticks were kicked. A slow status reading gets the later two."""
+    st = _read_json(os.path.join(root or doorbell.state_dir(), "state.json")) or {}
+    rs = (st.get("seat_restart") or {}).get(seat) or {}
+    if rs.get("state") not in ("killed", "relaunched") or not session_id or session_id == rs.get("session_id"):
+        return False
+    _tick_soon(1, 31, 91)
+    return True
+
+
 def cmd_request(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
     if not seat:
@@ -2340,6 +2480,8 @@ def cmd_request(args):
            "reason": args.reason, "ts": time.time(), "ctx_tokens": ctx,
            "input_ts": in_ts if cfg.get("kind") == "conductor" else None, "tx_offset": cursor,
            "tx_path": path}             # the transcript actually read, carried to the kill and the wake (review 2 P1-4)
+    if args.ticket == HANDOFF_TICKET:
+        req["handoff"] = True
     if deferred:
         req.update(deferred=True, helpers=[{"id": h["id"], "desc": h.get("desc")} for h in live], shard_owed=unpub)
     if cfg.get("kind") == "conductor":
@@ -2357,6 +2499,8 @@ def cmd_request(args):
         return 0
     if cfg.get("kind") == "conductor":
         _tick_soon(cfg["goodbye_quiet_s"] + 1, cfg["goodbye_quiet_s"] + 30)
+    elif req.get("handoff"):
+        kick_handoff(cfg)
     wait = ("now (goodbye_quiet_s %d). No text stops it; anything he sends goes to the next window. End your turn now"
             % cfg["goodbye_quiet_s"]) if cfg.get("kind") == "conductor" else (
             "after a %d s grace once this turn has ended and nothing holds it. End your turn now; a new prompt from "

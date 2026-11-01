@@ -192,7 +192,9 @@ write the handoff with `RIMFLOW_SEAT=<SEAT> python3 src/RimMandrake/Utils/handof
 (the env var is required on any machine without a seat profile; it REFUSES rather than guess), fill
 the four sections it leaves marked (it lands `conversations/` itself; `--check` refuses while a record is
 uncommitted — owner 2026-10-18), pass `--check`, then say **HANDOFF READY** as
-your last line and start nothing new. He reboots on his own clock while the cache is
-warm; the phrase is the signal, and only a seat may say it — the script refuses to.
+your last line and start nothing new. The phrase is the signal, and only a seat may say it — the script refuses to.
+On a seat with a restart (FOUNDRY) the phrase fires it: the Stop hook `.claude/hooks/handoff_restart.py` requests the
+restart and the Dispatcher relaunches the window 20 s after its helpers finish (owner, 2026-11-01: "20 seconds, build it
+now and implement."). The Conductor's window closes on his goodbye instead, and otherwise he reboots on his own clock.
 Say it **once**: until real work comes in, `handoff.py` reports ALREADY HANDED OFF
 and writes nothing, because a signal given every idle turn is not a signal.

@@ -27,7 +27,8 @@ missing section nobody notices.
 
 ⛔ IT NEVER SAYS "HANDOFF READY" ITSELF. Only the agent does, after filling the
 judgment sections, and only when `--check` passes. That phrase is the owner's
-signal to reboot; a script that could emit it would eventually emit it wrongly.
+signal to reboot, read by .claude/hooks/handoff_restart.py on a seat with a restart;
+a script that could emit it would eventually emit it wrongly.
 
     handoff.py                write the skeleton (gates first, --force to skip)
     handoff.py --check        gates + content scan; exit 1 if not ready
