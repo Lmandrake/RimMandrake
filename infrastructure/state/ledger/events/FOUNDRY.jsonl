@@ -10023,3 +10023,7 @@
 {"seat":"FOUNDRY","event":"lease","id":"ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG","action":"release","token":"FOUNDRY.pid21066.d50a1bf8","ts":"2026-11-01T21:57:14Z","tsn":1793570235433267824}
 {"seat":"FOUNDRY","event":"lease","id":"ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG","action":"take","token":"FOUNDRY.pid21545.993d1ec4","expires":"2026-11-01T22:42:18Z","ts":"2026-11-01T21:57:18Z","tsn":1793570239735846475}
 {"seat":"FOUNDRY","event":"wait","id":"ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG","until":"2026-11-02T08:00:00Z","reason":"Destroyer_v2 renders pending in artpipe daemon; judge+close after they land","ts":"2026-11-01T21:57:25Z","tsn":1793570245969345720}
+{"seat":"FOUNDRY","event":"lease","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","action":"take","token":"FOUNDRY.pid21968.cca645a2","expires":"2026-11-01T22:47:39Z","ts":"2026-11-01T22:02:39Z","tsn":1793570559730246638}
+{"seat":"FOUNDRY","event":"reconcile","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","verdict":"complete","sha":"e82013482 f894568ca","why":"Dispatcher built and ringing this seat now; 48h proof is acceptance, separate","ts":"2026-11-01T22:02:45Z","tsn":1793570565420673296}
+{"seat":"FOUNDRY","event":"reconcile","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","verdict":"unrelated","sha":"8fdc8e44c","why":"bench pass note only","ts":"2026-11-01T22:02:48Z","tsn":1793570568221018750}
+{"seat":"FOUNDRY","event":"lease","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","action":"release","token":"FOUNDRY.pid21968.cca645a2","ts":"2026-11-01T22:02:54Z","tsn":1793570575174131752}
