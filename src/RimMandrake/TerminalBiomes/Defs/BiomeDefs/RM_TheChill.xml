@@ -19,10 +19,8 @@
   for the V-wake role), so all three stay on this def, and fishTypes/description/weather/GravTide-support fields are
   byte-identical to the twin.
 
-  texture: `World/Biomes/Jawa_SickWater` is this mod's OWN texture (was
-  already authored under UtinniPatches/Textures, not a donor asset) — moved
-  alongside this def to Textures/World/Biomes/Jawa_SickWater.png, no
-  placeholder needed.
+  texture: `World/Biomes/RM_Chill`, the still 'abyss' face the owner picked 2026-10-24 (no ripple,
+  ominously dark, value 22; WORLD_WATER_REDRAW_SEAS_THAT_READ_DEEP), byte-identical to the twin's RUT_Chill.
   ============================================================================
 -->
 <Defs>
@@ -37,7 +35,7 @@
     <allowRoads>true</allowRoads>
     <allowRivers>false</allowRivers>
     <hasVirtualPlants>false</hasVirtualPlants>
-    <texture>World/Biomes/Jawa_SickWater</texture>  <!-- WORLDMAP_IN_GAME_AUDIT 2026-10-20: back to the owner-briefed sediment water (pre-2026-10-18 face), WorldOcean shader -->
+    <texture>World/Biomes/RM_Chill</texture>  <!-- owner's abyss pick 2026-10-24; WorldOcean shader -->
     <impassable>true</impassable>
     <isBackgroundBiome>true</isBackgroundBiome>
     <waterDeepTerrain>RM_TheChillDeep</waterDeepTerrain>

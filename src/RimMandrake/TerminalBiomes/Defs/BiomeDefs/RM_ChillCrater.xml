@@ -46,8 +46,8 @@
     to pick (an empty list logs "All weather commonalities were zero").
 
   World texture World/Biomes/RM_ChillCrater is a procedural PLACEHOLDER
-  (fractured black glass, mean RGB ~39,42,53), made to differ from the Chill's
-  Jawa_SickWater (~59,71,69). It is not commissioned art.
+  (fractured dark glass), made to differ from the Chill's still abyss face.
+  It is not commissioned art.
   ============================================================================
 -->
 <Defs>

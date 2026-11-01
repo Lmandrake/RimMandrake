@@ -14,9 +14,7 @@ usage:
   python3 biome_worldfaces.py check [--src]       stats on DIR (default) or on the installed files in src/
   python3 biome_worldfaces.py install [--dry-run] art-ledger install of every face (art.py install)
 DIR defaults to <agent storage>/rimmandrake/scratch/biomeart.
-Water faces only for RUT twins and mineral water: RM_GreySea/RM_TwilightSea/RM_TheScald point at vanilla
-World/Biomes/Ocean and RM_TheChill at Jawa_SickWater (2026-10-20 audit) - those are left alone.
-Since 2026-10-24 the Grey Sea and Twilight Sea faces (both twins) come from world_water_variants.py (owner picks,
+Since 2026-10-24 the Grey Sea, Twilight Sea and Chill faces (both twins) come from world_water_variants.py (owner picks,
 WORLD_SEA_FACES_INSTALL_PICKED_LOOKS); `install` skips them (PICKED_ELSEWHERE) so a rerun cannot revert his pick.
 """
 import argparse, colorsys, json, os, subprocess, sys
@@ -70,7 +68,7 @@ F = {
  "GreySea":       ("#4b5f6e", "#5a6e7c", "water",  3.6, 41, False, [(U, "RUT_GreySea")]),
  "TwilightSea":   ("#284669", "#344f74", "water",  3.6, 42, False, [(U, "RUT_TwilightSea")]),
  "Scald":         ("#3c727a", "#4a8088", "water",  3.8, 43, False, [(U, "RUT_Scald")]),
- "Chill":         ("#2d415f", "#3a4e6a", "water",  3.4, 44, False, [(U, "RUT_Chill")]),
+ "Chill":         ("#2d415f", "#3a4e6a", "water",  3.4, 44, False, [("RimMandrake/TerminalBiomes", "RM_Chill"), (U, "RUT_Chill")]),
  "MineralWater":  ("#3e5e5a", "#4c6c64", "water",  3.6, 45, True,  [(U, "RUT_MineralWater")]),
 }
 WATER = {k for k, v in F.items() if v[2] == "water"}
@@ -210,7 +208,8 @@ def gblur(a, sigma):
 # really liked the harsh rusty machinery". These three are judged by these bounds instead of the spec's.
 OVERRIDE = {"Abyss": {"val": (14, 45), "sd": (2, 9)},
             "TheRot": {"sd": (8, 18), "sat": 75, "blk": 6.0},
-            "RustCathedral": {"sd": (10, 20), "sat": 72, "blk": 6.0}}
+            "RustCathedral": {"sd": (10, 20), "sat": 72, "blk": 6.0},
+            "Chill": {"val": (12, 60), "sd": (0.5, 9)}}   # his still abyss, 2026-10-24: darker than the water floor, no ripple
 
 
 def curl_lic(seed, lo, hi, steps=14, h=1.6, vlo=1.2, vhi=3.5, vamp=60.0):
@@ -532,7 +531,7 @@ def report(res, nb, fails):
         if not x["ok"]: print("NEIGHBOUR", x)
 
 
-PICKED_ELSEWHERE = {"GreySea", "TwilightSea"}   # faces owned by world_water_variants.py (owner picks 2026-10-24)
+PICKED_ELSEWHERE = {"GreySea", "TwilightSea", "Chill"}   # faces owned by world_water_variants.py (owner picks 2026-10-24)
 
 
 def install(dry, only=None):

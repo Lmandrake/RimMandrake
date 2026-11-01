@@ -526,8 +526,10 @@ def make_still(key, value, sat=0.42, seed=5):
     r, g, b = (BW.H(base) / 255).tolist(); h, _s, _v = colorsys.rgb_to_hsv(r, g, b)
     col = np.array(colorsys.hsv_to_rgb(h, sat, value / 255)) * 255
     slow = z(BW.gblur(band(1, 3, seed), 4))
-    img = col[None, None, :] * (1 + 0.035 * slow[..., None])
-    return np.clip(np.rint(img), 0, 255).astype(np.uint8), ("#%02x%02x%02x" % tuple(int(round(c)) for c in col),) * 2
+    img = col[None, None, :] * (1 + 0.10 * slow[..., None])   # at value 22 a fainter swell rounds to a flat rectangle: art.py refuses it as a placeholder
+    dither = np.random.default_rng(value)                     # floor + uniform noise, not rint: no 8-bit bands across a dark sea
+    img = np.floor(img + dither.random(img.shape[:2])[..., None])
+    return np.clip(img, 0, 255).astype(np.uint8), ("#%02x%02x%02x" % tuple(int(round(c)) for c in col),) * 2
 
 
 def still_check(st):
