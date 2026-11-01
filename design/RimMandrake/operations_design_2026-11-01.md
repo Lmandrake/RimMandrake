@@ -76,7 +76,9 @@ closes, since one closed watcher (`IDLE_WATCH_BUILD_SEAT_MINUTES_IN_DIGEST`) lat
 It does not fix things or replan. It files items, and the Producer replans. It runs no helpers. It stops doing the weekly
 v3-against-v2 assessment: the arms are over and you closed that question.
 
-**Input: one packet, built by a program** before each run, under a size cap, so it never gathers:
+**Input: one packet, built by a program** before each run, so it never gathers. It has a size cap, a fixed order (emergencies,
+then open incidents, then the rest), and a list naming anything cut. Capacity is UNMEASURED: one run took all 11 once. The
+program checks the run gave every open incident a line; any left out are told again, and moved up the ladder if past due:
 - the digest, open incidents, and told rows since the last run;
 - flags with their age;
 - orders: set, ticks, lost ticks, flat readings, orders with no worker;
@@ -93,7 +95,8 @@ suffice: the weekly assessment leaves, sampling and quality reading arrive).
 **A refused run must not strand anything.** If the budget refuses a run, the program says so and the incident moves to the
 next rung at once. Past the fresh-Operations rung, the Conductor's quick check takes it.
 
-**Who watches the watcher.** A clock run with no report inside 2 hours is an alarm the program raises. The drill (OP5) walks
+**Who watches the watcher.** The ladder runs on age, whether or not Operations ran or reported. A clock run with no report
+inside 2 hours is an alarm the program raises. The drill (OP5) walks
 the real path weekly. Its own numbers (`roles.Operations.*`, incident age, report ack time) can never be tuned by it.
 
 ## 4. What it may change by itself
@@ -105,20 +108,24 @@ So numbers split in three.
 |---|---|---|
 | **Alarm limits** | Limits in `ranges`, `ack_within_min`, `max_age_min`, band and run rules: only entries carrying a signed `tune` block | Operations, inside the band, under the guard |
 | **Budgets and machinery** | Token caps, slots, `dispatcher_schedule.json`, worker counts | Tighten alone inside slot rules, as now. Widen: yours |
-| **Bars** | Mod bars and north-star checks, Relentless contract clauses, finish readings, `close_gate_rules.json`, TRUST bars, `false_stop_limit`, anything in a signed order | Never. A loosening request goes through the Conductor to you, as now |
+| **Bars, and the alarms that watch bars** | Mod bars and north-star checks, Relentless contract clauses, finish readings, `close_gate_rules.json`, TRUST bars, `false_stop_limit`, anything in a signed order. Also every limit, ack time and age limit on a reading that detects a bar failing: `close_audit`, the check floor, escapes, sampled closes, deadman | Never. A loosening request goes through the Conductor to you, as now |
 
 **The guard is `ops_tune.py`, the only writer.** The agent asks; the program applies or refuses:
 1. **A band you sign once.** Each tunable entry holds `tune: {base, min, max}`. The band is measured from the signed base, so
-   twenty small steps cannot walk past it. No entry, no tuning. A value outside the band goes up as a proposal.
+   twenty small steps cannot walk past it. No entry, no tuning. A value outside the band goes up as a proposal. A selftest
+   refuses any band or base that changed without your signature, and any `tune` block on an alarm that watches a bar.
 2. **No moving the bar under an open incident.** A metric with an open incident is frozen until it closes, because
    incidents close on reading and a loosened limit would close one by fiat.
-3. **Replay before loosening.** The program replays the series for 30 days with the new limit (ESTIMATE). Every incident that
-   led to a real action must still ring, no later than `tune.late_min`. The §1 catches in the requirements stay in the replay
-   set forever. Tightening needs no replay.
+3. **Replay before loosening.** The program replays the stored readings with the new limit. Every fault in the replay set must
+   still ring, no later than `tune.late_min`. The set is not chosen by the agent: faults found by deadman, Conductor or you,
+   the §1 catches in the requirements, and faults planted by a program it keeps hidden from the agent. **Today that set is far
+   too small to prove anything (UNMEASURED), so no loosening goes live until it holds 20 faults (ESTIMATE); until then a
+   loosening is advice only.** Tightening needs no replay.
 4. **Slow.** One change per metric per 7 days, 3 per run.
 5. **It can only move numbers.** It may not remove a metric, change an owner, delete an emergency class, or loosen an
    emergency limit. Emergency limits only tighten.
-6. **It undoes itself.** A loosening expires after 14 days unless the next review keeps it. If a fault is found by anything
+6. **It undoes itself.** A loosening expires after 14 days. The Conductor may renew it once, naming its reason; after that it
+   goes to you. If a fault is found by anything
    else (deadman, the Conductor, you) on a loosened metric, the program restores the base and tells the Conductor.
 7. **Everything is on the record.** Each change is a ledger event with old, new, why and replay result, and a line in the next
    report.
@@ -126,7 +133,8 @@ So numbers split in three.
 
 **The alarm quality table** is the evidence for all of this. Per metric over 30 days: rings, time to ack, whether an action on
 an item followed, time open. Program-built, from `told.jsonl` and the ledger. A metric that rings often with no action is
-noise; one that a fault passed quietly is deaf. The action count can be gamed by notes, so only an item state change counts.
+a suspect for noise, never proof of it: ignoring a true alarm looks the same. One that a fault passed quietly is deaf. Notes can
+fake action, so only an item state change counts.
 
 ## 5. Arbiter, Auditor, Innovator: where each job goes
 
@@ -162,7 +170,7 @@ Innovator 25% of very few outputs.
 | Classifies escapes by layer | Operations, weekly |
 | Repeat errors become rules (RO5) | Operations names the class; a Relentless item builds the hook; `rimflow` shows it owed until then |
 | Alarm drill and origin (OP5) | Program, Operations reads |
-| Samples FOUNDRY's findings decisions | Dropped; no evidence it was read |
+| Samples findings the fold rejected | Same sample, same Marker: rejected findings are drawn alongside closes, because a close sample cannot see what was never worked |
 
 **Innovator**
 
@@ -170,18 +178,18 @@ Innovator 25% of very few outputs.
 |---|---|
 | Finding curves, RW5 | Program builds it, Operations reads it |
 | Retiring rules: each names the assumption it encodes | Operations, weekly: rules and checks that have never fired, proposed for a test. TE3 applies: nothing goes without proof that detection held |
-| Better ways for agents to work | Relentless refines itself from its own failures (your word: it "won't work well at first and that's ok"). At most one idea a week in Operations' report |
+| Better ways for agents to work | Relentless refines itself from its own failures (your word: it "won't work well at first and that's ok"). One idea a week, from a fixed line in Operations' run, plus alternatives read at each planning session, since Relentless alone only improves what it already tries |
 | Trials | Dropped as a separate system. A trial is an order in a signed set |
 | Innovations list | Stays a file; any seat adds a line. Read at the planning session |
 | Game ideas, new mods, merging mods; Sunday game review | **Does not fit.** See flag |
 
 **Flag: game ideas.** Your card names Operations and Relentless, and neither is the right home for new game ideas. Your
 Oct 26 question, *"What could we be doing much better?"*, also included redesigning agents. I recommend game ideas go to The
-Designer, and that each planning session's page carries one line for that question. If this is wrong, the Sunday review is
-simply lost.
+Designer, and that each planning session's page carries one line for that question. Until The Designer takes it, the Sunday review
+is simply off: nobody does it.
 
-**Close the chairs in a safe order.** Delete each role's file, schedule entry and `roles.*` reading only after its work has a
-live new home, and fix inbound references (`relentless_agent_design` §10, `concept_agent_design` §5 and step 2, the requirement
+**Close the chairs in a safe order.** All three are off, so nothing runs in the meantime. Delete each role's file, schedule
+entry and `roles.*` reading only after each kept job has shown its new path working once, and fix inbound references (`relentless_agent_design` §10, `concept_agent_design` §5 and step 2, the requirement
 owner tags, `alarm_routes.json`).
 
 ## 6. The power to block a close, and the blind pass
@@ -195,13 +203,19 @@ moving it there as stated would lose something.** There are two:
 
 If the power moved only into Relentless, every order run by ring, live or by hand would have no block. So: **keep the lock in
 the Close gate, where nothing can walk around it, and change who feeds it. A Marker FAIL goes on the ledger as the verdict the
-lock reads.** It lifts the same way: a new build that passes, or your word. WEAK does not lock: the item just stays open.
+lock reads.** It holds for that item on that build. It lifts by a new build that passes, by one blind appeal, or by your word. WEAK does not
+lock: the item stays open.
 
 This is the substance of what you asked, so it needs no card unless you object. Two honest costs:
-- **The Marker's false fails.** 1 of 9 good controls failed (95% 2-44%, MEASURED, E1). A wrong FAIL now blocks, not merely
-  returns. The maker can't overrule it. The way out is a new build, or the Conductor's word under your authority.
-- **It will slow things.** On that same set, only 1 of 11 good controls got a PASS; 7 of 11 read WEAK. Until that improves, most
-  good work costs a proof round.
+- **The Marker's false fails.** 1 of 9 good controls failed (95% 2-44%, MEASURED). A wrong FAIL now blocks, not merely
+  returns. The maker can't overrule it. So one appeal per build: a fresh blind Marker, same build, evidence corrected if that
+  was the fault. A second FAIL stands. Every verdict stays on the ledger. Past that it is your word, which the Conductor may
+  give only as your standing authority ruling, recorded as such.
+- **It could stop signed orders outright.** On that same set, only 1 of 11 good controls got a PASS; 7 of 11 read WEAK. At that
+  rate most good work never ticks, and a chain never lifts. So the blind pass stays as you ruled, and **the lock and automatic
+  link lifting stay off until a `trust` rerun passes at least 6 of 11 good controls (ESTIMATE; the bar is yours) with false fails
+  no worse.** Until then the Conductor lifts links by hand and each tick shows `no pass yet`. A WEAK order gets 2 proof rounds, then
+  a card to the Producer within a day, so it cannot wait silently.
 
 **The blind pass for ticks.** Your card: *"Must a tick need a pass from someone other than the maker? → Yes, a blind pass."*
 The tick gets a fourth test: a PASS, on the build that closed, by a judge who never saw the maker's story.
@@ -233,8 +247,10 @@ drop        nothing
 ```
 
 **Delivered so an old failure cannot recur:** Operations once diagnosed a jam correctly, and the diagnosis sat unread in a note for 5.5 hours. The report rings the
-Conductor and is a row in `told.jsonl`. It stays unacked until the Conductor answers with `rimflow ack`, naming what it did;
-past 4 hours it moves on the ladder. The packet's next run shows what the Conductor did. Emergencies do not wait for a report;
+Conductor and is a row in `told.jsonl`. It stays unacked until the Conductor answers with `rimflow ack`, naming an item or saying `no action`;
+past 4 hours it moves on the ladder (ESTIMATE). An ack proves it was read, not fixed. Incidents still close only on the reading,
+and the next packet shows which actions happened. If Operations and the Conductor are both down, the deadman's fixed line goes
+to your phone unread: your accepted exception. Emergencies do not wait for a report;
 they take the incident ladder. Figures the blind roles may not see stay in this file, not on shared items. The Conductor reads
 the report and tells you what matters; you are not its reader. Nothing reaches you unread.
 
@@ -248,16 +264,20 @@ should be true, and repairs differences. A crash is just the next tick. Your ans
   blind pass plus the finish reading. Your card said the Close gate; the tick is stricter, because a blind pass is now part of
   a tick and a link should not lift on less. A lost tick re-blocks what has not started.
 - **The set's end:** a set is at most 5 days. If none follows, the last orders keep running, shown on the Board as
-  `OVERTIME day N`. In overtime no new tickets get added, and the signed money ceiling still holds, so overtime ends itself.
-  `plan.days_since_advance` still alarms, and one card goes out on day 1.
-- **The plan view:** the Board markdown. The program writes one marked block in
-  `D:\ClaudeWork\rimmandrake\arena\ARENA_BUILD_BOARD.md`, in the top section agents already keep. Ticks are never typed, and a
-  hand edit is overwritten at the next step. That is what keeps your *"REALLY ticked off"* true. The block carries its time, and
-  a block going stale is an alarm.
+  `OVERTIME day N`. In overtime nothing new joins. The Producer may still split or repair an unfinished order, or a jam
+  would stay jammed. The signed ceiling still holds, but it stops new Relentless starts only: it reads Relentless's spend, running
+  workers finish, and ring and live work count only against the account caps. So overtime can run on until the orders finish or
+  you sign a new set. **Flag: I read your 5 days as how far a signing may reach, not a stop, because you also said keep running.**
+  `plan.days_since_advance` still alarms, and one card goes out on day 1. The `plan` reading goes distressed in overtime.
+- **The plan view:** a Board markdown file of its own, `D:\ClaudeWork\rimmandrake\arena\ORDERS_BOARD.md`, written whole by the
+  program in one atomic step. The hand-kept `ARENA_BUILD_BOARD.md` gets one line pointing to it, so no agent's edit can collide.
+  Ticks are never typed, which is what keeps your *"REALLY ticked off"* true. The file is only a view: nothing reads it to
+  decide anything, so a hand edit can mislead until the next step and no longer. It shows its time, and going stale is an alarm.
 
 **What must change first.**
-- The Dispatcher's seat may only write notes (`DISPATCHER_VERBS`). The step needs its own seat, allowed only link and wait
-  verbs, and only on items in the open signed set.
+- The Dispatcher's seat may only write notes (`DISPATCHER_VERBS`). The step needs its own seat, allowed only to set and lift
+  links and waits it placed itself (tagged), on items in the open signed set, and to rewrite the priority list through
+  `priority_list.py`. It never touches a block someone else placed. It writes only if the state it read has not changed.
 - FOUNDRY's rings and the Producer are both off now. While so, `check` must refuse any `ring:FOUNDRY` order, and a stuck order has
   nobody to replan it. **The Producer must be back on before the first set.**
 - `plan.list_age_h` needs the swap the planning doc describes.
@@ -271,20 +291,36 @@ All ESTIMATE, in helper days; nothing like this has been timed. Each step ends w
 
 | # | Step | Days |
 |---|---|---|
-| 1 | Refused run moves the rung; held-back emergency run; reports' missing-report alarm | 0.5 |
-| 2 | Marker FAIL feeds the Close gate lock; `blind-check` for non-Relentless closes | 1 |
+| 1 | Refused run moves the rung; held-back emergency run; missing-report alarm | 0.5 |
+| 2 | Marker FAIL on the ledger as a verdict, not yet locking; one appeal; `blind-check` for non-Relentless closes | 1 |
 | 3 | `close_audit` in the digest; OP5 drill; OP6 flag ends; DI4 exempt list; DI5 park expiry | 1.5 |
 | 4 | Packet, report form, ack row; retire the weekly assessment; role file rewritten | 1 |
-| 5 | Close sample; escape and repeat-class readings | 1 |
-| 6 | Delete the three roles, fix references | 0.5 |
-| 7 | Alarm quality table, then `ops_tune.py` in advice mode; his band signed | 2 |
-| 8 | Two weeks of advice read by the Conductor, then applying | watching only |
-| 9 | Planning doc's steps 0 to 7, with tick fourth test, Board block, overtime, own seat | 7 to 9 |
+| 5 | Close and rejected-finding sample; escape and repeat-class readings | 1 |
+| 6 | Marker tuned, `trust` rerun, your bar met: then turn the lock on | Unknown: Marker work, not a build |
+| 7 | Alarm quality table, then `ops_tune.py` in advice mode; your band signed | 2 |
+| 8 | Planning doc's steps 1 to 7, with tick fourth test, orders file, overtime, own seat. Link lifting stays manual until step 6 | 7 to 9 |
+| 9 | Delete the three roles, fix references, each kept job shown working | 0.5 |
+| 10 | Tightening applies; loosening applies once the replay set holds 20 faults | watching only |
 
-Steps 1 and 2 first: the first unjams the ladder, the second gives the lock a feeder. Step 6 waits for 2, 4 and 5, or the work
-would have no home. About 7 days for 1 to 7, then the orders work on top; the planning doc's first hand-run set (its step 0) can
-start any time. Foundry owns the items once filed; Relentless may take the offline ones.
+Step 1 first: it unjams the ladder. Step 2 next: it makes a FAIL visible at no risk. About 7 days for 1 to 5 and 7, then the
+orders work on top. Step 6 has no honest estimate. The planning doc's hand-run set (its step 0) has that doc's prerequisites;
+with the blind pass it would show few ticks until step 6. Foundry owns the items once filed; Relentless may take the offline ones.
 
 ## 10. A skeptical read
 
-Pending.
+GPT-6.1 read this document and the planning doc, told to be hostile. Twelve findings: eleven changed the text above, one partly.
+
+| Objection | Answer |
+|---|---|
+| Limits on bars are safe, but raising the alarm that watches a bar hides the failure just as well | **Changed.** Those alarms are now in the Bars class, enforced by a selftest (§4) |
+| 11 incidents are no replay set; "no action means noise" rewards ignoring alarms | **Changed.** Set not chosen by the agent, planted faults added, loosening is advice only until 20 faults; low action is suspicion only; one renewal (§4). The 20 is a guess |
+| The FAIL lock is an appeal trap; the Conductor's word is undefined | **Changed.** One blind appeal per build, verdict history kept, override only as your recorded standing ruling (§6) |
+| 1 PASS in 11 good controls strands signed chains | **Changed, and the largest open risk.** Lock and auto-lifting wait for a rerun to meet a bar you set; WEAK has a deadline (§6, step 6). If the Marker cannot reach the bar, the blind pass as ruled stalls orders, and that comes back to you as a card |
+| The ceiling reads Relentless only, so "overtime ends itself" is false | **Conceded;** claim removed (§8). Metering all spend is not designed here: account caps cover it |
+| One reader, one sweep, no capacity proof; a capped packet can hide things | **Changed.** Fixed order, list of cuts, line per incident checked by program, ladder runs on age alone (§3). Capacity stays UNMEASURED; if it fails, the fix is routing incidents to owners, in `INCIDENTS_FIX_ONE_READER_ELEVEN_OPEN` |
+| An ack proves receipt; Conductor and Operations can fail together | **Changed.** Ack and remedy split; both down goes to your phone as the fixed line (§7) |
+| D4 and D5 are not reconciled; overtime blocks the repairs it needs | **Changed.** Repairs allowed, nothing new joins; my reading of 5 days is flagged for you (§8) |
+| The orders step could overwrite others' blocks; link verbs do not cover the list | **Changed.** Own tags, list through its one writer, write only if unchanged (§8) |
+| The lock came before calibration; deletion before replacements | **Changed.** Build order redone (§9) |
+| Dropped duties are not shown safe; a low action rate is not proof | **Partly.** Rejected-findings sample kept; ideas get a fixed line. Game review stays a flag. Your card decided the fold; low use is why it costs little, not why it is right |
+| A Board block inside an agent-edited file is unsafe and can be tampered with | **Changed.** Its own program-written file, a view that nothing decides from (§8). A hand edit can still mislead for a few minutes; accepted |

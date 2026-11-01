@@ -130,9 +130,9 @@ unearned, against 1503 of 1666 since Oct 19. The gate item itself is still `doin
 verdict at all passes. D2 closes that hole for ticks: a close may pass with no verdict, but it does not tick without the
 blind pass.
 
-The view is the Board markdown (D3): the program writes one marked block of plain lines, one per order, in the style of the
-Example 1 view, into `D:\ClaudeWork\rimmandrake\arena\ARENA_BUILD_BOARD.md`. The ticks are computed; a hand edit is overwritten
-at the next step. The block is a copy, so it carries its time, and a stale block is an alarm. No picture is built.
+The view is a Board markdown file (D3): the program writes `D:\ClaudeWork\rimmandrake\arena\ORDERS_BOARD.md` whole, plain lines,
+one per order, in the style of the Example 1 view; `ARENA_BUILD_BOARD.md` points to it. The ticks are computed, and nothing reads
+the file to decide anything. It carries its time, and a stale file is an alarm. No picture is built.
 
 ## 6. When an order goes stale or stuck
 
@@ -147,7 +147,7 @@ at the next step. The block is a copy, so it carries its time, and a stale block
 | A tick is lost | Program | Later steps re-blocked; Producer told |
 | Ceiling reached, or account empty | Program | Nothing new enrolled; one card if a goal cannot finish |
 | Next step has no worker | Program, every tick | Producer; card if it stays stuck for a day |
-| The end date passes | Program | Whatever `at_end` says; the default is `keep` (D4): unfinished orders keep running as `OVERTIME day N` on the Board, nothing new is added, the signed ceiling still holds, one card on day 1 |
+| The end date passes | Program | Whatever `at_end` says; the default is `keep` (D4): unfinished orders keep running as `OVERTIME day N` on the Board, nothing new joins, the Producer may still split or repair an unfinished order, the ceiling still stops new enrolment, one card on day 1 |
 
 A jam should only ever cost its own chain. Tickets that do not depend on the stuck one keep moving. Tickets that do move
 to the next goal's work, and the program never waits on you in silence, which was your Oct 26 complaint: *"the plan grinds
@@ -240,7 +240,7 @@ concept). Estimates are helper days, all ESTIMATE:
 | 0 | First set by hand, no code: the Conductor writes the file with real readings, sets the list and blocks, reads ticks by hand | 1, plus 30 minutes of you |
 | 1 | `orders.py check`: schema, refusals, amendment rules | 1 |
 | 2 | Tick step: list, links, waits, `out`, ceiling, repair after a crash | 2 |
-| 3 | `orders.py ticks`, lost-tick re-block, the Board block | 1 |
+| 3 | `orders.py ticks`, lost-tick re-block, the orders Board file | 1 |
 | 4 | ops_watch: per-order flat reading, no worker, set in date | 0.5 |
 | 5 | Producer and Conductor role changes, including amendments and event wakes | 0.5 |
 | 6 | Live share in ring text | 0.25 |
@@ -274,4 +274,7 @@ GPT read a first draft (job `consult-20261101-142918-2377023`) and gave six obje
 - **D3. A graphic view?** *"The Board markdown files are just fine for this."* No picture is built. Section 5 has the view.
 - **D4. What happens when a set ends with no new session?** *"Keep running the last orders."* `at_end` defaults to `keep`.
   Section 6 says what that means.
-- **D5. How long may a set run?** *"5 days."* `check` refuses a longer set.
+- **D5. How long may a set run?** *"5 days."* `check` refuses a longer set. With D4, 5 days is read as how far a signing may
+  reach, not a stop: flagged in `operations_design_2026-11-01.md` §8.
+
+Link lifting waits for the Marker to pass enough good work: `operations_design_2026-11-01.md` §6.
