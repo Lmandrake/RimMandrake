@@ -1328,5 +1328,15 @@ check("a stale sweep says so", "silent" in pc.live_sweep_line({**LS, "t": NOW - 
 check("a future or NaN stamp is not fresh", all("silent" in pc.live_sweep_line({**LS, "t": t}, NOW) for t in (NOW + 7200, float("nan"))))
 check("no report says so", "no sweep report" in pc.live_sweep_line(None, NOW) and "no sweep report" in pc.live_sweep_line([], NOW))
 check("an unreadable report is none", pc.read_live_sweep("/nonexistent/live_sweep.json") is None)
+# --- FOUNDRY_FANOUT_DESIGN_NO_MORE_SINGLE_FILE: the staffing reading; a silent filler never reads as staffed ---
+ST = {"t": NOW - 60, "running": 3, "target": 5, "budget": 8, "budget_measured": True, "stage": 5, "ready": 40,
+      "under": True, "minutes_under": 12.0, "why": "memory"}
+check("the reading reaches health", "3 of 5 running" in " ".join(pc.collect_snapshot({**raw, "staffing": ST}, {}, NOW)[0]["health"]), "")
+check("under names its minutes and why", "UNDER 12.0 min: memory" in pc.staffing_line(ST, NOW), pc.staffing_line(ST, NOW))
+check("a stale reading says so", "silent" in pc.staffing_line({**ST, "t": NOW - 3600}, NOW), "")
+check("an unmeasured budget says so", "UNMEASURED" in pc.staffing_line({**ST, "budget_measured": False, "budget": None}, NOW), "")
+check("no reading says so", "no reading" in pc.staffing_line(None, NOW) and "no reading" in pc.staffing_line([], NOW), "")
+check("a malformed reading says so", "unreadable" in pc.staffing_line({"t": NOW}, NOW), "")
+check("an unreadable file is none", pc.read_staffing("/nonexistent/staffing.json") is None, "")
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)

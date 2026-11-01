@@ -95,15 +95,12 @@ tick; it is not sent back.
 - **Cross-clone exclusion.** The store's flock is host-wide, so every clone on this machine shares the arbiter (the gap
   `lease.py` names). Off-host clones never hold items in this pool: the pool is the seats in `pool_seats`, on this host.
 
-## 5. Why one queue for now is BENCH-seat items only (the trial)
+## 5. Taking FOUNDRY's items without its tree
 
-FOUNDRY cannot pull during the replay, so it holds an old ledger and an old `rimflow`. A worker on a FOUNDRY item would
-race FOUNDRY's own `next`, and no guard on this host can stop that: the `start` event would not reach it. So
-`pool_seats` is `["BENCH"]` until the replay ends. The parameter is read as the share of the pool.
-
-**After the trial, exact step** (filed as RELENTLESS_FOUNDRY_WIDEN_AFTER_TRIAL_ENDS): when the replay has ended, FOUNDRY
-pulls (its normal pre-pull check then passes), then one data commit sets `pool_seats` to `["BENCH","FOUNDRY"]`. Nothing
-else: FOUNDRY's clone is not a dependency of any worker, and no unit changes.
+FOUNDRY may hold an old ledger and an old `rimflow`, and a pull there is not ours to ask. Its code does hold the guard:
+`_relentless_guard` refuses `claim`, `start`, `close`, `renew`, `release`, `reclaim` and `implemented` on any status in
+its hard-coded `LEASED`, reading the host-wide store with no pull. So the store is the one word both trees hear at once,
+and section 13 gives the order that makes it enough.
 
 Deployment meanwhile: the supervisor runs from its own books clone, so a push to main reaches it on the next tick.
 Nothing touches `/home/mandrake/rm/foundry`. No code under `src/RimMandrake/Utils/arena/` is changed.
@@ -159,8 +156,8 @@ All in `relentless_rules.json`.
 | Rule | Start | Why this number, and when to reconsider |
 |---|---|---|
 | `share` | 0.5 | Owner: "maybe half". Raise it when closed-per-day from `stats` beats the old route |
-| `max_workers` | 2 | The trial comes first. `use_now.md` stop lines. Raise when the replay ends |
-| `pool_seats` | BENCH | §5 |
+| `max_workers` | 10 | The ceiling only: the plan's `total_max` test ceiling. What runs is `staffing.stages` under the budget (section 13) |
+| `pool_seats` | BENCH, FOUNDRY | §5, §13 |
 | `same_failure_limit` | 3 | Owner-approved safeguard. Pilot cliff: 3 misses, `testpilot_route.py` header |
 | `run_max_s` | 3600 | Long enough for a build pass. A full worker is replaced, not lost |
 | `stale_s` | 1500 | Silent by beat AND transcript. The 600 s silence rule is per call, so a long test does not trip this |
@@ -219,9 +216,7 @@ day through this route against all other closes. CLOSED_LOOP_PROVE_EDIT_RUN_LOOK
 - **The pool is the proposed backlog.** `rank()` offers only items already taken, so the supervisor reads the eligible
   proposed items itself (`pool_order`, priority sort) and enrols `share` of them. `relentless.py enrol --item X --why "..."`
   puts one named item in by hand. An item excluded in the rules leaves the queue at the next tick.
-- **`max_workers` is 1 during the trial,** because of its stop lines (system burn, oom on `rm-harness.slice`, host memory).
-  It goes back to 2 with RELENTLESS_FOUNDRY_WIDEN_AFTER_TRIAL_ENDS. Note the tick itself peaked at 4 to 5 GB of host memory
-  during clones; see RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK.
+- **The tick itself peaked at 4 to 5 GB of host memory during clones;** see RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK.
 - **A worker lives in its scope.** `role_launch` puts it in `claude-seat-BENCH-<unit>.scope`; the `.service` wrapper may
   die and the worker lives on. The supervisor's stop and every kill go to the scope.
 - **A worker that reported and then died is lost,** `worker_lost`, not a failed launch: `launch_fail` needs no `last_beat`.
@@ -234,3 +229,80 @@ day through this route against all other closes. CLOSED_LOOP_PROVE_EDIT_RUN_LOOK
   honest-but-stale threat model of section 2.
 
 Evidence: `D:\ClaudeWork\rimmandrake\relentless\` (`design_review.md`, `code_review.md`, `code_review2.md`).
+
+## 13. The filler: staffing that needs no head to remember
+
+Owner, 2026-10-31: *"So why is it so hard to keep Foundry staffed?"* Nothing refused it: its budget was 8, it ran one
+helper for hours, then seven in three minutes once told. Staffing lived in a head's attention; the Dispatcher rings only
+an idle seat, and a seat with one helper reads as busy. Helpers as subagents also grow the head's context and block its
+close-out. Workers here are units outside any head, so the fix is to let the tick fill them.
+
+**What it does each tick** (no AI, `relentless.py`, rules block `staffing`):
+
+- **Places:** the current stage under the published budget (`helper_budget.read`, FOUNDRY's N) less the helpers FOUNDRY's
+  head runs itself (`allocation.json`). Budget unreadable: the lowest stage, marked `budget_measured: false`. Budget 0: no
+  new run; checks of finished work still run. Under 8 GB available: 1. Under 6 GB: none. Share 0 stays his off switch.
+- **Enrols by need:** a free place enrols work whatever `share` says of the backlog, under `enrol_per_tick` and `max_queued`.
+- **Launches** at most `launch_per_tick` (2), as `prepare` blocks and the tick has a timeout, and none while more than
+  `check_backlog_max` (2) candidates wait: verification goes first (Codex finding 8). A candidate already holds a place, so
+  a check is never starved of one. The check itself is unchanged and blind: the filler neither reads nor feeds it.
+
+**Staged rise: 3, 5, budget.** A stage rises only with, in that stage's own window: `hold_s` (1 h) at full stage, at least
+3 blind verdicts, at most 34% rejected, memory never under 8 GB (a dip restarts the window), no OOM kill (`/proc/vmstat oom_kill`, host-wide, so a
+kill by anything counts), burn at most 3%/h if the allocator's reading is fresh. An OOM kill steps one down at once.
+Stage state is `store/staffing_state.json`.
+
+**Why above 4 is allowed before plan steps 1-4.** Those guard seat helpers. A worker already has what they build:
+receipts on disk, generation fencing, a host-wide store, an exact candidate in its own clone, and a landing path a peer's
+dirty file cannot jam. The plan's stop lines stay, in the rise.
+
+**The classes it must not take from FOUNDRY** (`foreign_kinds_exclude`, `foreign_exclude`). `needs` other than offline
+never reach the pool, so the bridge and the game are out at the door. Beyond that:
+
+| Class | Why |
+|---|---|
+| `ready` or `doing`, any lease | Its `next` offers these with no guarded step on some paths. Only `proposed` is safe: a head reaches it through `claim`, which the guard refuses |
+| ARENA, TRIAL, TRIO, REPLAY, ARM, RALPH | That tree's live experiment; arena code is not to change under it |
+| FLOWWORKS, GSS, HOSE | FOUNDRY's active campaign, in flight in that tree, and it owns FlowWorks and GSS |
+| ART, ARTEVAL, SHEET, art kind, sprite, redraw, review sheet | Pipeline and owner-facing; nothing reaches him unread |
+| OWNER, LIVE, bridge, in game, cold load | Words in the title that say the game or he is needed, whatever `needs` says |
+| design, decision, card, review, finding, trial | A head's judgment, not a worker's. Filing rulings is the head's job |
+
+A worker who finds live need hands back through `needs`, as any worker does. Excluded classes stay with FOUNDRY's head
+and its own helpers.
+
+**Exclusion across trees** (Codex finding 3). In the tick, for an item whose owner is FOUNDRY:
+
+1. Pool: refused while its tree has any line about the id that the books lack (raw line difference of its FOUNDRY and
+   OWNER shards). A tree that cannot be read or holds a torn line refuses all of that seat's items.
+2. Reserve: under the lock the store says `running` with no run. From here its guard refuses claim and start.
+3. Wait `settle_s` (15), so a claim that passed the guard just before reaches its shard.
+4. Read the unpublished lines again. A word on the id, or a blind tree: back out, `retired`, never taken again. Once the
+   ledger already says ours (a crash or a failed launch brought it back), either only waits in `queued`: retired, it would
+   strand as ours. Once the word is published the ledger says what it was.
+5. `reassign --to BENCH`, then `start`, then launch. A refused take backs out; a refused start stays `queued` under the launch breaker. A crash inside the reservation returns the
+   item to the line at the next tick.
+6. At the end: closed on the ledger, the store stays `closing` (`tomb_since`, no place held, clones gone) until its tree
+   shows that close (parsed: this id, event close, newer than the run), or 48 h pass. Without this a stale head reads `proposed` and no guard, the moment we say done.
+
+Left open, knowingly: an item we gave back after `reassign`, or `retired` while its tree is stale, is unguarded there.
+Nobody is working it, so the worst case is a contested claim `next` already names. A queued item returning from a failed
+launch, or a take cut short by a crash, goes through steps 2 to 4 again; every launch rechecks the whole eligibility.
+Three gaps remain and are accepted. A claim suspended between its guard and its append for longer than `settle_s` lands after
+ours; the ledger's earliest claim wins and `next` names the contest. A foreign item waiting `queued` for a retry has no
+guard while its tree is stale. After 48 h an unheard tree could claim a closed item, and a head silent for two days is not
+racing anyone.
+
+**The reading** is `store/staffing.json`, each tick logged to `store/staffing.jsonl`: budget, stage, target, running k,
+ready m, live runs, minutes under, why, check queue, spend. Under means `k < min(target, k + m)`, and also: every place is
+a check that cannot start, or the other seat's tree is unreadable with places free. Minutes are watched minutes: a gap
+counts at most `tick_gap_max_s`, a pause none. Head helpers unmeasured or budget unreadable mean the lowest stage and no rise. RimPulse shows one health line; a
+stale reading says the filler is silent. After `alarm_after_min` (30) one fixed item, OPS_STAFFING_RESTORE_UNDER_BUDGET, is
+filed, noted while open, or reopened through RUNNER `live` if done, once per episode. Paused, budget 0 and share 0 are
+no alarm: nothing is wrong. A filled stage ends the episode; a done alarm item with no live line just reopens.
+
+**Limits this build did not lift.** `day_spend_limit` stays 24M: a choice for him and the Conductor, and measured 14.4M in
+2.7 h at 3 workers (1.8M per worker-hour), 3 workers end it in about 4.5 h of a UTC day, 8 in under 2. When it stops the filler, the reading says
+`day_spend_limit` and the alarm goes. Burn at 8 may pass the 3%/h stop line, so the rise may stop at 5, by design.
+Queues for heavy tests and Windows builds are not measured (plan step 8). The memory low is sampled at each tick and after
+each clone, not continuously; the OOM count catches what it misses.

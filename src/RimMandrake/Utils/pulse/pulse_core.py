@@ -1945,6 +1945,9 @@ def health_lines(rows: list[dict], chips: list[dict], now: float) -> list[str]:
     return lines
 
 
+STAFFING_STALE_SECS = 1200      # the tick runs every 2 min and may take 20
+
+
 def read_live_sweep(path: str | None = None) -> dict | None:
     """deadman_check.py's report of the live promises (done means running); None when there is none."""
     p = path or os.path.join(os.environ.get("RM_OPS_WATCH_DIR", "/mnt/d/ClaudeWork/rimmandrake/ops_watch"),
@@ -1962,6 +1965,35 @@ def live_sweep_line(sweep: dict | None, now: float) -> str:
         return "live promises: no sweep report"
     age = now - (sweep.get("t") or 0)
     return sweep["line"] if -300 <= age <= LIVE_SWEEP_STALE_SECS else "live promises: sweep silent"
+
+
+def read_staffing(path: str | None = None) -> dict | None:
+    """relentless.py's staffing reading (design section 13); None when there is none."""
+    p = path or os.environ.get("RM_STAFFING_READING", "/home/mandrake/rm/relentless/store/staffing.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def staffing_line(rec: dict | None, now: float) -> str:
+    """'staffing: 3 of 5 running (budget 8), 40 ready, under 12 min: memory'. A silent filler must not read as staffed."""
+    if not isinstance(rec, dict):
+        return "staffing: no reading"
+    try:
+        age = now - rec["t"]
+        fresh = -300 <= age <= STAFFING_STALE_SECS
+        line = "staffing: %s of %s running (budget %s, stage %s), %s ready" % (
+            rec["running"], rec["target"], rec["budget"] if rec.get("budget_measured") else "UNMEASURED",
+            rec.get("stage"), rec["ready"])
+    except (KeyError, TypeError):
+        return "staffing: unreadable reading"
+    if not fresh:
+        return "staffing: filler silent"
+    if rec.get("under"):
+        line += ", UNDER %s min: %s" % (rec.get("minutes_under"), rec.get("why"))
+    return line
 
 
 def not_shown_line(rows: list[dict]) -> str:
@@ -2088,7 +2120,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     new_state = dict(state)
     new_state.update({"seen": seen, "open": open_now, "incidents": incidents, "tel_episodes": tel_eps})
     snap = {
-        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": chips, "health": health_lines(rows, chips, now) + [live_sweep_line(raw.get("live_sweep"), now)], "counts": counts,
+        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": chips, "health": health_lines(rows, chips, now) + [staffing_line(raw.get("staffing"), now)] + [live_sweep_line(raw.get("live_sweep"), now)], "counts": counts,
         "done_since": since, "sources": source_freshness(raw.get("source_status", {}), raw, now),
         "sparks": None,          # sparklines are Grafana's, not his
         # his two burn charts: tokens/hour (transcripts) and tickets/day opened/closed (ledger); absent = UNMEASURED

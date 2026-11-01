@@ -15,7 +15,9 @@ import live_line  # noqa: E402
 import relentless as R  # noqa: E402
 
 RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, share=0.5, max_workers=2,
-             enrol_per_tick=50, max_queued=50, run_reserve=1000, item_spend_limit=10**7, day_spend_limit=10**9)
+             enrol_per_tick=50, max_queued=50, run_reserve=1000, item_spend_limit=10**7, day_spend_limit=10**9,
+             staffing=None)
+STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600)
 FAILS = []
 
 
@@ -44,6 +46,39 @@ class FakeWorld:
         self.touched = ["src/x.py"]
         self.pause = False
         self.bounce = set()
+        self.owners = {}
+        self.budget_v = 8
+        self.helpers = 0
+        self.burn_v = 1.0
+        self.oom = 0
+        self.words = set()
+        self.heard = False
+        self.fits = True
+        self.takes = []
+        self.take_fail = None
+        self.on_settle = None
+        self.alarms = []
+        self.alarm_fail = None
+
+    def budget(self): return self.budget_v
+    def head_helpers(self): return self.helpers
+    def burn(self): return self.burn_v
+    def oom_kills(self): return self.oom
+    def seat_words(self): return self.words
+    def seat_heard(self, item, since): return self.heard
+    def foreign_fits(self, item): return self.fits
+    def settle_wait(self, s):
+        if self.on_settle:
+            self.on_settle()
+    def ledger_take(self, item):
+        if self.take_fail:
+            return self.take_fail
+        self.takes.append(item)
+        self.owners[item] = "BENCH"
+    def staffing_alarm(self, item, text):
+        if self.alarm_fail:
+            return self.alarm_fail
+        self.alarms.append(text)
 
     def sync(self): pass
     def flush(self): return None
@@ -54,7 +89,8 @@ class FakeWorld:
 
     def item_state(self, item):
         st = self.items.get(item)
-        return None if st is None else {"state": st, "lease": None, "needs": "offline"}
+        return None if st is None else {"state": st, "lease": None, "needs": "offline",
+                                        "owner": self.owners.get(item, "BENCH")}
 
     def item_text(self, item): return "text of " + item
     def ledger_start(self, item):
@@ -71,7 +107,9 @@ class FakeWorld:
     def clone_path(self, item, q=0): return "/c/%s.%d" % (item, q)
     def prepare(self, st): return None
     def remove_clone(self, st): pass
-    def clean_checkout(self, st, sha): return "/c/check", None
+    def clean_checkout(self, st, sha):
+        self.mem_once = getattr(self, "mem_after", None)
+        return "/c/check", None
     def published(self, sha): return self.is_pub
     def changed(self, base, sha, item): return self.touched
     def head(self): return "base"
@@ -91,7 +129,9 @@ class FakeWorld:
             self.up[run["unit"]] = False
     def tokens(self, run): return self.tok
     def activity(self, st): return 0
-    def mem_gb(self): return self.mem
+    def mem_gb(self):
+        v, self.mem_once = getattr(self, "mem_once", None), None
+        return self.mem if v is None else v
     def paused(self): return self.pause
     def live_check(self, line, nb): return self.live_broken
 
@@ -724,8 +764,657 @@ def t_live_line():
     shutil.rmtree(d, ignore_errors=True)
 
 
+def staffed(n=12, **cfg):
+    return Rig(n=n, share=0.5, max_workers=10, staffing=dict(STAFF, **cfg))
+
+
+def running(x):
+    return sum(1 for st in x.s.states() if st["status"] in R.HOLDS_A_PLACE)
+
+
+def reading(x):
+    with open(x.s.p("staffing.json"), encoding="utf-8") as f:
+        return json.load(f)
+
+
+def verdicts(x, good, bad):
+    for i in range(good + bad):
+        x.s.attempt("I0", {"at": R.iso(x.now), "end": "done" if i < good else "blind_fail", "sha": "s%d.%d" % (x.now, i)})
+
+
+def t_staffing_places():
+    x = staffed()
+    x.tick()
+    ok(running(x) == 2, "launches are limited per tick")
+    x.tick(), x.tick()
+    r = reading(x)
+    ok(running(x) == 3 and r["target"] == 3 and r["running"] == 3 and not r["under"] and r["ready"] > 0,
+       "the filler fills the first stage, and no further")
+    x.done()
+    x = staffed()
+    x.w.budget_v = None
+    for _ in range(4):
+        x.tick()
+    r = reading(x)
+    ok(running(x) == 3 and r["budget_measured"] is False, "budget unreadable: the lowest stage, and marked")
+    x.done()
+    x = staffed(stages=["budget"])
+    x.w.budget_v = None
+    for _ in range(4):
+        x.tick()
+    ok(running(x) == 1, "budget unreadable at a budget stage does not run away")
+    x.done()
+    x = staffed()
+    x.w.budget_v = 2
+    for _ in range(4):
+        x.tick()
+    ok(running(x) == 2, "a budget below the stage rules")
+    x.done()
+    x = staffed()
+    x.w.helpers = 7
+    for _ in range(4):
+        x.tick()
+    r = reading(x)
+    ok(running(x) == 1 and r["head_helpers"] == 7 and not r["under"], "a head's own helpers count against the budget")
+    x.done()
+    x = staffed()
+    x.w.budget_v = 0
+    for _ in range(25):
+        x.tick()
+    r = reading(x)
+    ok(running(x) == 0 and r["why"] == "budget 0" and not x.w.alarms, "budget 0: nothing runs, and no alarm")
+    x.done()
+    x = staffed()
+    x.w.mem = 7.0
+    for _ in range(4):
+        x.tick()
+    ok(running(x) == 1 and reading(x)["target"] == 1, "memory under 8 GB steps back to 1")
+    x.done()
+    x = staffed()
+    x.r["share"] = 0
+    for _ in range(4):
+        x.tick()
+    ok(running(x) == 0 and reading(x)["why"] == "share 0", "share 0 is still his off switch")
+    x.done()
+    x = staffed(n=2)
+    for _ in range(5):
+        x.tick()
+    ok(running(x) == 2 and not reading(x)["under"] and reading(x)["ready"] == 0, "no ready work is not under-staffed")
+    x.done()
+    # the filler's need, not the share of the backlog: the old rule enrols nothing past ceil(.5 x 2 items)
+    x = Rig(n=12, share=0.01, max_workers=10, staffing=dict(STAFF))
+    for _ in range(4):
+        x.tick()
+    ok(running(x) == 3, "a free place enrols whatever the share says")
+    x.done()
+
+
+def t_staffing_backlog():
+    x = staffed()
+    for _ in range(3):
+        x.tick()
+    # three candidates waiting: over check_backlog_max 2, so no builder starts
+    with x.s.lock():
+        for st in x.s.states():
+            if st["status"] == "running":
+                x.w.up[st["run"]["unit"]] = False
+                st["status"] = "candidate"
+                st["candidate"] = {"sha": "s", "gen": st["gen"], "evidence": "e", "at": x.now - 300}
+                st["run"] = None
+                x.s.save(st)
+    n = len(x.w.launches)
+    r = R.staffing
+    fx, acts = x.w, []
+    R.lease(x.s, fx, dict(x.r, max_workers=10, staffing=dict(STAFF, stages=[9])), x.now, acts)
+    ok(len(x.w.launches) == n and any(a.get("why") == "check_backlog" for a in acts), "no new builders past the check backlog")
+    rec = r(x.s, fx, x.r, x.now + 60, [])
+    ok(rec["checks"]["waiting"] == 3 and rec["checks"]["oldest_wait_s"] >= 300, "the reading shows the check queue")
+    x.done()
+
+
+def stage_rig(**cfg):
+    x = staffed(**cfg)
+    for _ in range(3):
+        x.tick()
+    return x
+
+
+def hold(x, n=6):
+    for _ in range(n):
+        x.tick()
+    return reading(x)
+
+
+def t_staffing_rise():
+    x = stage_rig()
+    ok(hold(x)["rise_lacks"].endswith("verdicts") and reading(x)["stage"] == 3, "no verdicts, no rise")
+    verdicts(x, 3, 0)
+    r = hold(x, 2)
+    ok(r["stage"] == 5, "a clean reading rises one stage (%s)" % r["rise_lacks"])
+    hold(x, 2)
+    ok(running(x) == 5, "the filler refills to the new stage")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 2, 2)
+    r = hold(x, 7)
+    ok(r["stage"] == 3 and "rejected" in r["rise_lacks"], "rejected work holds the stage")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    x.w.mem = 7.0
+    x.tick()
+    x.w.mem = 30.0
+    r = hold(x, 7)
+    ok(r["stage"] == 3 and "verdicts" in r["rise_lacks"], "one memory dip restarts the window: old verdicts do not count")
+    verdicts(x, 3, 0)
+    r = hold(x, 2)
+    ok(r["stage"] == 5, "and a clean window after it still rises (%s)" % r["rise_lacks"])
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    x.w.burn_v = None
+    r = hold(x, 7)
+    ok(r["stage"] == 3 and r["rise_lacks"] == "burn unmeasured", "an unmeasured burn holds the stage")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    x.w.burn_v = 3.5
+    r = hold(x, 7)
+    ok(r["stage"] == 3 and "burn" in r["rise_lacks"], "burn over the stop line holds the stage")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    x.w.oom = None
+    r = hold(x, 7)
+    ok(r["stage"] == 3 and "OOM" in r["rise_lacks"], "an unreadable OOM count holds the stage")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    hold(x, 8)
+    ok(reading(x)["stage"] == 5, "setup: at the second stage")
+    x.w.oom = 1
+    x.tick()
+    ok(reading(x)["stage"] == 3, "an OOM kill steps one down")
+    x.tick()
+    ok(reading(x)["stage"] == 3, "and the same kill counts once")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    x.w.budget_v = 7
+    hold(x, 8)
+    verdicts(x, 3, 0)
+    hold(x, 8)
+    ok(reading(x)["stage"] == "budget", "the last stage is the budget (%s)" % reading(x)["rise_lacks"])
+    ok(running(x) == 7, "and the filler stands at it")
+    x.done()
+
+
+def foreign_rig(**cfg):
+    x = staffed(n=1, stages=[3], **cfg)
+    x.w.owners["I0"] = "FOUNDRY"
+    return x
+
+
+def t_foreign_take():
+    x = foreign_rig()
+    seen = []
+    x.w.on_settle = lambda: seen.append((x.st("I0")["status"], list(x.w.takes)))
+    x.tick()
+    ok(seen == [("running", [])], "the guard's word is on the store before the wait, the ledger unmoved")
+    ok(x.w.takes == ["I0"] and len(x.w.launches) == 1 and x.st("I0")["foreign"], "a clear item is taken and runs")
+    ok(not x.st("I0").get("reserving"), "the reservation ends at launch")
+    x.done()
+    x = foreign_rig()
+
+    def said():
+        x.w.words = {"I0"}
+    x.w.on_settle = said
+    x.tick()
+    ok(x.st("I0")["status"] == "retired" and not x.w.takes and not x.w.launches, "a claim that won the race keeps it")
+    x.tick()
+    ok(not x.w.launches, "and it is not taken later")
+    x.done()
+    x = foreign_rig()
+
+    def blind():
+        x.w.words = None
+    x.w.on_settle = blind
+    x.tick()
+    ok(x.st("I0")["status"] == "retired" and not x.w.takes, "its tree gone unreadable mid-wait: not taken")
+    x.done()
+    x = foreign_rig()
+    x.w.take_fail = "refused"
+    x.tick()
+    ok(x.st("I0")["status"] == "retired" and not x.w.launches, "a refused hand-over backs out")
+    x.done()
+    x = foreign_rig()
+    orig = x.w.ledger_start
+
+    def refuse(item):
+        return "no"
+    x.w.ledger_start = refuse
+    x.tick()
+    ok(x.st("I0")["status"] == "queued" and not x.w.launches, "a refused start launches nothing")
+    x.w.ledger_start = orig
+    x.done()
+    # a crash inside the reservation
+    x = foreign_rig()
+    x.w.pause = True
+    x.tick()
+    x.w.pause = False
+    with x.s.lock():
+        st = x.st("I0")
+        st.update(status="running", reserving=x.now, run=None, foreign=True, started_at=x.now)
+        x.s.save(st)
+    acts = []
+    R.step(x.s, x.w, x.r, "I0", x.now, acts)
+    ok(x.st("I0")["status"] == "queued" and not x.st("I0").get("reserving"), "a crashed reservation returns to the line")
+    x.done()
+    # back in line after a failed launch, its seat reached it
+    x = foreign_rig()
+    x.w.lfail = "no unit"
+    x.tick()
+    ok(x.st("I0")["status"] == "queued" and x.st("I0")["ledger_started"], "setup: a launch failed")
+    x.w.lfail = None
+    x.w.words = {"I0"}
+    x.r["breaker_cool_s"] = 0
+    x.s._write(x.s.p("breaker.json"), "{}")
+    x.tick()
+    ok(x.st("I0")["status"] == "queued" and len(x.w.launches) == 0, "a word from its seat while queued holds the launch")
+    x.done()
+
+
+def t_foreign_tomb():
+    x = foreign_rig()
+    x.tick(1)
+    full_pass(x, "I0")
+    x.tick()
+    st = x.st("I0")
+    ok(x.w.closes == [("I0", "sha1")] and st["status"] == "closing" and st.get("tomb_since"),
+       "closed on the ledger, the guard's word stays")
+    x.tick()
+    ok(len(x.w.closes) == 1 and x.st("I0")["status"] == "closing", "not closed twice, and held while its tree is stale")
+    ok(running(x) == 0, "a tombstone holds no place")
+    x.w.heard = True
+    x.tick()
+    ok(x.st("I0")["status"] == "done", "its tree has heard: done")
+    x.done()
+    x = foreign_rig(tomb_max_s=100)
+    x.tick(1)
+    full_pass(x, "I0")
+    x.tick()
+    x.tick(200)
+    ok(x.st("I0")["status"] == "done", "a tree that never hears ends at tomb_max_s")
+    x.done()
+
+
+def t_foreign_eligible():
+    r = dict(RULES, pool_seats=["BENCH", "FOUNDRY"], staffing=dict(STAFF))
+
+    def it(id="X_FIX_Y", owner="FOUNDRY", state="proposed", kind="task", title="a title"):
+        return types.SimpleNamespace(id=id, owner=owner, state=state, kind=kind, title=title, blocked=False,
+                                     needs="offline", lease=None, target="v1")
+    ok(R.eligible(it(), r), "a proposed FOUNDRY task is eligible")
+    ok(not R.eligible(it(state="ready"), r), "ready is what its `next` offers: refused")
+    ok(R.eligible(it(owner="BENCH", state="ready"), r), "BENCH's ready stays eligible")
+    ok(not R.eligible(it(kind="art"), r) and not R.eligible(it(kind="design"), r), "excluded kinds")
+    ok(not R.eligible(it("HOSE_X_FIX"), r) and not R.eligible(it("MY_ARENA_FIX"), r), "excluded prefix anywhere")
+    ok(R.eligible(it("PARTY_ARTIST_FIX"), r), "a word inside a word is no match")
+    ok(not R.eligible(it(title="needs the bridge up"), r), "excluded by title")
+    ok(R.eligible(it("HOSE_X_FIX", owner="BENCH"), r), "the exclusions are FOUNDRY's alone")
+
+
+def t_foreign_tree():
+    d = tempfile.mkdtemp(prefix="rlt-")
+    tree, books = os.path.join(d, "foundry"), os.path.join(d, "books")
+    for t in (tree, books):
+        os.makedirs(os.path.dirname(os.path.join(t, R.SHARD % "X")))
+    cfg = dict(STAFF, foreign_tree=tree)
+    store = R.Store(d)
+    fx = R.Effects(dict(RULES, staffing=cfg), store)
+    fx.books = books
+    ok(fx.seat_words() is None, "no tree files: refuse every item of that seat")
+
+    def write(root, seat, *events):
+        with open(os.path.join(root, R.SHARD % seat), "a", encoding="utf-8") as f:
+            for e in events:
+                f.write(json.dumps(e) + "\n")
+    old = {"seat": "FOUNDRY", "event": "claim", "id": "OLD"}
+    write(tree, "FOUNDRY", old)
+    write(tree, "OWNER", {"seat": "OWNER", "event": "note", "id": "HIS"})
+    write(books, "FOUNDRY", old)
+    write(tree, "FOUNDRY", {"seat": "FOUNDRY", "event": "claim", "id": "NEW"}, {"seat": "FOUNDRY", "event": "seat"})
+    ok(fx.seat_words() == {"NEW", "HIS"}, "only what the books have not heard; an event with no id is no subject")
+    with open(os.path.join(tree, R.SHARD % "FOUNDRY"), "a", encoding="utf-8") as f:
+        f.write('{"torn\n')
+    ok(fx.seat_words() is None, "a torn line: refuse")
+    since = "2026-10-31T10:00:00Z"
+    ok(not fx.seat_heard("NEW", since), "no BENCH shard there: not heard")
+    write(tree, "BENCH", {"seat": "BENCH", "event": "close", "id": "NEW_OTHER", "ts": "2026-10-31T11:00:00Z"},
+          {"seat": "BENCH", "event": "reassign", "id": "NEW", "to": "BENCH", "ts": "2026-10-31T11:00:00Z"},
+          {"seat": "BENCH", "event": "close", "id": "NEW", "ts": "2026-10-30T11:00:00Z"})
+    with open(os.path.join(tree, R.SHARD % "BENCH"), "a", encoding="utf-8") as f:
+        f.write('{"event":"close","id":"NEW\n')
+    ok(not fx.seat_heard("NEW", since), "another id, a hand-over, an older close, a torn line: not heard")
+    write(tree, "BENCH", {"seat": "BENCH", "event": "close", "id": "NEW", "ts": "2026-10-31T11:00:00Z"})
+    ok(fx.seat_heard("NEW", since) and not fx.seat_heard("OTHER", since), "the close in its tree is heard")
+    shutil.rmtree(d, ignore_errors=True)
+
+
+def t_staffing_alarm():
+    x = staffed(alarm_after_min=10)
+    x.w.mem = 5.0       # nothing launches, ready work waits
+    for _ in range(4):
+        x.tick()
+    ok(not x.w.alarms and reading(x)["under"] and reading(x)["why"] == "memory", "under, named, not yet alarmed")
+    for _ in range(4):
+        x.tick()
+    r = reading(x)
+    ok(len(x.w.alarms) == 1 and r["alarmed"] and r["minutes_under"] >= 10, "the alarm goes after its minutes")
+    for _ in range(6):
+        x.tick()
+    ok(len(x.w.alarms) == 1, "once per episode")
+    x.w.mem = 30.0
+    for _ in range(3):
+        x.tick()
+    ok(not reading(x)["under"] and not reading(x)["alarmed"], "a filled stage ends the episode")
+    x.w.mem = 5.0
+    for st in x.s.states():
+        if st["status"] == "running":
+            x.w.up[st["run"]["unit"]] = False
+    for _ in range(12):
+        x.tick()
+    ok(len(x.w.alarms) == 2, "a new episode alarms again")
+    x.done()
+    x = staffed(alarm_after_min=2)
+    x.w.pause = True
+    for _ in range(5):
+        x.tick()
+    ok(not x.w.alarms and reading(x)["why"] == "paused", "paused is no alarm")
+    x.done()
+    x = staffed(alarm_after_min=2)
+    x.w.mem, x.w.alarm_fail = 5.0, "ledger down"
+    for _ in range(5):
+        x.tick()
+    ok(not reading(x)["alarmed"], "an alarm that did not land is not marked")
+    x.w.alarm_fail = None
+    x.tick()
+    ok(len(x.w.alarms) == 1, "and goes on the next tick")
+    x.done()
+
+    class Boom(FakeWorld):
+        def oom_kills(self):
+            raise RuntimeError("planted")
+    x = staffed()
+    x.w.__class__ = Boom
+    res = x.tick()
+    ok(running(x) == 2, "a dead reading stops no worker")
+    ok(any("staffing" in str(a.get("why")) for a in res["acts"]) if isinstance(res, dict) else True, "and says so")
+    x.done()
+
+
+def t_foreign_back_in_line():
+    # handed over, then a crash before `start`: the books say BENCH, the reservation still applies
+    x = foreign_rig()
+    x.w.pause = True
+    x.tick()
+    x.w.pause = False
+    x.w.owners["I0"] = "BENCH"
+    with x.s.lock():
+        st = x.st("I0")
+        st["foreign"] = True
+        x.s.save(st)
+    seen = []
+    x.w.on_settle = lambda: seen.append(x.st("I0")["status"])
+    x.tick()
+    ok(seen == ["running"] and not x.w.takes and len(x.w.launches) == 1, "a half-done take resumes through the wait")
+    x.done()
+    x = foreign_rig()
+    x.w.lfail = "no unit"
+    x.tick()
+    x.w.lfail = None
+    x.s._write(x.s.p("breaker.json"), "{}")
+    seen = []
+    x.w.on_settle = lambda: seen.append(x.st("I0")["status"])
+    x.tick()
+    ok(seen == ["running"] and len(x.w.launches) == 1, "a failed launch comes back through the reservation")
+    x.done()
+    # after the hand-over the ledger says ours: backing out must not strand it
+    x = foreign_rig()
+    orig = x.w.ledger_start
+    x.w.ledger_start = lambda item: "no"
+    x.tick()
+    x.w.ledger_start = orig
+    ok(x.st("I0")["status"] == "queued", "a refused start after the hand-over stays in line")
+    x.s._write(x.s.p("breaker.json"), "{}")
+    x.tick()
+    ok(len(x.w.launches) == 1 and x.w.takes == ["I0"], "and runs next tick, not taken twice")
+    x.done()
+    x = foreign_rig()
+    x.w.lfail = "no unit"
+    x.tick()
+    x.w.lfail = None
+    x.s._write(x.s.p("breaker.json"), "{}")
+    x.w.words = None
+    x.tick()
+    ok(x.st("I0")["status"] == "queued" and not x.w.launches, "a blind tree after the hand-over waits, never retires")
+    x.done()
+    x = foreign_rig()
+    x.w.lfail = "no unit"
+    x.tick()
+    x.w.lfail = None
+    x.s._write(x.s.p("breaker.json"), "{}")
+    x.w.words = {"I0"}
+    x.tick()
+    ok(x.st("I0")["status"] == "queued" and not x.w.launches, "a word after the hand-over waits in line, no launch")
+    x.w.words = set()
+    x.tick()
+    ok(len(x.w.launches) == 1, "and goes once the word is published and read")
+    x.done()
+    # a hung rimflow in the take: the tick still flushes and reads
+    x = foreign_rig()
+
+    def hang(item):
+        raise TimeoutError("planted")
+    x.w.ledger_take = hang
+    res = x.tick()
+    ok(any("lease" in str(a.get("why")) for a in res) and x.st("I0")["status"] == "running", "a raising lease loses no tick")
+    x.tick()
+    ok(x.st("I0")["status"] != "running" or x.st("I0").get("reserving"), "and the reservation is taken back or redone")
+    x.done()
+    x = foreign_rig()
+    x.w.pause = True
+    x.tick()
+    x.w.pause = False
+    x.w.fits = False
+    x.tick()
+    ok(x.st("I0")["status"] == "retired" and not x.w.takes and not x.w.launches, "unfit at launch: given back")
+    x.done()
+
+
+def t_staffing_edges():
+    # a budget or memory cut must not leave candidates waiting on each other
+    x = staffed(n=2, check_backlog_max=9)
+    x.tick(), x.tick()
+    finish_all(x)
+    x.w.budget_v = 0
+    x.tick(), x.tick(), x.tick()
+    ok(any(st["status"] == "checking" for st in x.s.states()), "budget 0: a candidate still reaches its check")
+    x.done()
+    # unmeasured is not free
+    x = staffed(stages=[3, 5, "budget"])
+    x.s._write(x.s.p("staffing_state.json"), json.dumps({"stage": 1, "stage_since": x.now, "full_s": 0, "mem_min": 30, "oom": 0}))
+    x.w.helpers = None
+    x.w.budget_v = 5
+    hold(x, 3)
+    r = reading(x)
+    ok(running(x) == 3 and r["head_helpers"] is None and r["target"] == 3, "helpers unmeasured: the lowest stage, shown")
+    x.w.helpers, x.w.budget_v = 0, None
+    hold(x, 3)
+    ok(reading(x)["target"] == 3, "budget unreadable at a numeric stage: the lowest stage")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    x.w.budget_v = None
+    r = hold(x, 7)
+    ok(r["rise_lacks"] == "budget unreadable" and r["stage"] == 3, "no rise on an unreadable budget")
+    x.done()
+    # the clone took the memory
+    x = staffed()
+
+    def eat(st):
+        x.w.mem = 5.0
+    x.w.prepare = eat
+    x.tick()
+    ok(not x.w.launches and all(st["status"] != "running" for st in x.s.states()), "memory gone in the clone: no launch")
+    x.done()
+    # every place a check that cannot start
+    x = staffed(n=3, check_backlog_max=9)
+    x.tick(), x.tick()
+    finish_all(x)
+    x.r["day_spend_limit"] = 0
+    x.tick()
+    r = reading(x)
+    ok(r["under"] and r["live"] == 0 and r["why"] == "day_spend_limit", "places full of waiting checks read as under")
+    x.done()
+    x = staffed(n=3, check_backlog_max=9)
+    x.tick(), x.tick()
+    st = [s for s in x.s.states() if s["status"] == "running"][0]
+    R.contract(x.s, st["item"], st["gen"], "proof", live="once: test")
+    R.finish(x.s, st["item"], st["gen"], "sha1", "evidence")
+    x.w.up[st["run"]["unit"]] = False
+    x.r["day_spend_limit"] = 0
+    x.tick()
+    r = reading(x)
+    ok(r["under"] and r["live"] >= 1 and r["why"] == "day_spend_limit", "one running, a check stuck: still under")
+    x.done()
+    # at most launch_per_tick clones a tick, builders and checkers together
+    x = staffed(n=4, check_backlog_max=9, stages=[4])
+    for _ in range(3):
+        x.tick()
+    finish_all(x)
+    before = len(x.w.launches)
+    x.tick()
+    x.tick()
+    ok(len(x.w.launches) - before <= 4, "clones per tick are shared")
+    x.done()
+    # a clone that leaves too little memory steps aside for the next candidate
+    x = staffed(n=2, check_backlog_max=9, launch_per_tick=1)
+    x.tick(), x.tick()
+    finish_all(x)
+    x.w.mem_after = 2.0
+    x.tick()
+    x.w.mem_after = None
+    a = [s for s in x.s.states() if s.get("clone_again_at")]
+    ok(len(a) == 1, "the clone that ran short steps aside")
+    x.tick()
+    ok(sum(1 for s in x.s.states() if s["status"] == "checking") == 1 and x.st(a[0]["item"])["status"] == "candidate",
+       "and the other check goes first")
+    x.done()
+    # the other seat's tree unreadable
+    x = staffed(n=0)
+    x.w.words = None
+    x.tick()
+    r = reading(x)
+    ok(r["under"] and not r["foreign_tree_read"] and "unreadable" in r["why"], "a blind pool is not an empty one")
+    x.done()
+    # a stopped timer is not under-staffed minutes, nor is a pause
+    x = staffed(alarm_after_min=30)
+    x.w.mem = 5.0
+    x.tick()
+    x.tick(86400)
+    ok(not x.w.alarms and reading(x)["minutes_under"] <= 12, "a day with no ticks counts one gap")
+    x.done()
+    x = staffed(alarm_after_min=4)
+    x.w.pause = True
+    for _ in range(6):
+        x.tick()
+    x.w.pause = False
+    x.w.mem = 5.0
+    x.tick()
+    ok(not x.w.alarms and reading(x)["minutes_under"] <= 2, "paused minutes do not count")
+    x.done()
+    # credit only for gaps full at both ends
+    x = staffed(hold_s=99999)
+    x.tick(), x.tick()
+    before = R.stage_load(x.s).get("full_s", 0)
+    x.tick()
+    a = R.stage_load(x.s)
+    ok(before == 0 and a["full_s"] == 120, "the gap before a stage fills earns nothing, the next one does")
+    x.done()
+    # evidence
+    x = staffed(n=2)
+    x.tick()
+    d = os.path.join(x.s.item_dir("I0"), "attempts.jsonl")
+    x.s.attempt("I0", {"at": R.iso(x.now), "end": "blind_fail"})
+    with open(d, "a", encoding="utf-8") as f:
+        f.write('{"torn\n')
+    ok(any(a.get("end") == "blind_fail" for a in x.s.attempts("I0")), "a torn tail keeps the record before it")
+    x.done()
+    x = stage_rig()
+    x.tick()
+    for _ in range(2):
+        x.s.attempt("I0", {"at": R.iso(x.now), "end": "done", "sha": "same"})
+    x.s.attempt("I0", {"at": R.iso(x.now), "end": "blind_fail"})
+    s = dict(R.stage_load(x.s), stage_since=x.now - 3600, full_s=999999, mem_min=30)
+    ok(R.clean_window(x.s, s, x.w, x.r, x.now) == "2 of 3 verdicts", "one pass written twice counts once")
+    x.done()
+    x = stage_rig()
+    verdicts(x, 3, 0)
+    x.w.oom = None
+    hold(x, 7)
+    x.w.oom = 10
+    r = hold(x, 1)
+    ok(r["stage"] == 3 and R.stage_load(x.s)["full_s"] == 0, "a count back from unreadable restarts the window")
+    x.done()
+    # the off switch
+    x = staffed()
+    x.w.pause = True
+    x.tick()
+    x.w.pause = False
+    x.r["share"] = 0
+    x.tick()
+    ok(not x.w.launches and reading(x)["why"] == "share 0", "share 0 launches nothing, queued work included")
+    x.done()
+    x = staffed(alarm_after_min=2)
+    x.w.mem, x.w.alarm_fail = 5.0, "nowhere"
+    hold(x, 3)
+    ok(reading(x)["alarm_fail"] == "nowhere", "a dead alarm route is in the reading")
+    x.done()
+
+
+def finish_all(x):
+    """Every running builder finishes with a receipt and exits."""
+    for st in x.s.states():
+        if st["status"] == "running":
+            R.contract(x.s, st["item"], st["gen"], "proof", live="once: test")
+            R.finish(x.s, st["item"], st["gen"], "sha1", "evidence")
+            x.w.up[st["run"]["unit"]] = False
+
+
+def t_alarm_routes():
+    d = tempfile.mkdtemp(prefix="rla-")
+    fx = R.Effects(dict(RULES, staffing=dict(STAFF)), R.Store(d))
+    calls = []
+
+    def rimflow(*a, timeout=60, seat=None):
+        calls.append((a[0], seat))
+        return types.SimpleNamespace(returncode=0, stdout="", stderr="")
+    fx.rimflow = rimflow
+    for state, want in ((None, ("file", None)), ("doing", ("note", None)), ("done", ("live", "RUNNER"))):
+        calls.clear()
+        fx.item_state = lambda i, s=state: None if s is None else {"state": s}
+        ok(fx.staffing_alarm("A", "t") is None and calls == [want], "alarm on %s goes by %s" % (state, want[0]))
+    fx.item_state = lambda i: {"state": "dropped"}
+    calls.clear()
+    ok(fx.staffing_alarm("A", "t") and not calls, "a dropped alarm item says it cannot land")
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def main():
-    for t in (t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
+    for t in (t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+              t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
+              t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):
         print("--", t.__name__)
         t()
