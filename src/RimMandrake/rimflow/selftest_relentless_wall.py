@@ -104,6 +104,10 @@ def test_read_verdict_malformed():
     for name, body in (("torn", '{"word": "PA'), ("list", "[1]"), ("word", '{"word": "pass"}'), ("none", "{}")):
         Path(box, "verdict.json").write_text(body, encoding="utf-8")
         check("malformed refused: " + name, W.read_verdict(box) is None)
+    Path(box, "verdict.json").write_text('{"word": "PASS", "at": "invalid"}', encoding="utf-8")
+    got = W.read_verdict(box)
+    check("a bad stamp keeps the word", got is not None and got["word"] == "PASS" and isinstance(got["at"], float))
+    check("no wall profile, nothing to audit", W.audit(None, {}, None, None) == [])
 
 
 def test_would_deny():

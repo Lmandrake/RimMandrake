@@ -126,7 +126,11 @@ def read_verdict(box):
         return None
     if not isinstance(v, dict) or v.get("word") not in WORDS:
         return None
-    return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "at": float(v.get("at") or time.time())}
+    try:
+        at = float(v.get("at") or time.time())
+    except (TypeError, ValueError):     # the Marker writes this file: a bad stamp is its to get wrong, not ours to crash on
+        at = time.time()
+    return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "at": at}
 
 
 def would_deny(inputs, prof):
@@ -143,6 +147,8 @@ def audit(store, rules, sessions_of, inputs_of):
     """Report only. -> [{item, unit, would_deny}] for each check in the store that has a session."""
     prof = profile(rules)
     out = []
+    if prof is None:        # no wall configured: nothing to report against
+        return out
     for st in store.states():
         chk = st.get("check") or {}
         session = sessions_of(chk.get("run"))
