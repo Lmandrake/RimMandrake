@@ -1,6 +1,6 @@
 {
- "set_at": "2026-11-01T17:05:18Z",
- "set_by": "Producer",
+ "set_at": "2026-11-01T19:16:50Z",
+ "set_by": "Conductor",
  "entries": [
   {
    "id": "WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT",
@@ -10,56 +10,7 @@
    }
   },
   {
-   "id": "CIRCLING_WATCH_BUILD_REPORT_ONLY_FIRST",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "HELP_CALL_BUILD_FRESH_EYES_ON_FAILURES",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
    "id": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "MISSION_PAGE_BUILD_READ_ONLY_STATE",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT",
    "reading": {
     "file": "infrastructure/state/codebase_health_last.json",
     "key": "counts.green"
