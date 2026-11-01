@@ -128,6 +128,10 @@
   <RimMandrake.FlowWorks.FluidDef>
     <defName>RM_Fluid_SlimeWhite</defName>
     <label>white slime</label>
+    <!-- WHITE_SLIME_CANAL_FIX_CANNOT_IGNITE: RM_Liquid_SlimeWhite is flammable (fat that "burns readily once something else
+         provides the spark"), so its canal form burns too: a creeping fuse like tar. PROVISIONAL 120 ticks/cell (tar's). -->
+    <fireKind>CreepingFuse</fireKind>
+    <fireFrontTicksPerCell>120</fireFrontTicksPerCell>
     <floodTerrain>RM_Fill_SlimeWhite_Trace</floodTerrain>
     <fillTerrainHalf>RM_Fill_SlimeWhite_Half</fillTerrainHalf>
     <fillTerrainBrim>RM_Fill_SlimeWhite_Brim</fillTerrainBrim>

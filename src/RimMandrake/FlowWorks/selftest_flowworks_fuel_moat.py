@@ -14,7 +14,9 @@ What is checked here (the data half; the burn arithmetic is the C# SelfTest's Fu
      propane (PROPANE_CANAL_WIRE_STILL_NO_FLUID) names RM_Fluid_Propane, an Inferno with its own four fill terrains;
   5. the Verse half of RM_LiquidFire.cs holds the shapes the C# SelfTest cannot reach: the detonation queue runs every
      tick inside both per-tick budgets, a planned cell is never re-queued, the inferno burns at its own rate, and both
-     fires raise RM_FuelFireEvents.
+     fires raise RM_FuelFireEvents;
+  6. every LiquidDef marked flammable that names a canalFluid has a canal fluid that lights (fireKind not None):
+     white slime's did not (WHITE_SLIME_CANAL_FIX_CANNOT_IGNITE).
 
 CAN IT FAIL: each case runs once against an in-memory copy with the fix taken back out and must go RED there.
 
@@ -31,6 +33,7 @@ REGISTRY = MOD / "Defs/LiquidTypes/LiquidDefs/RM_LiquidDefRegistry.xml"
 GENERATOR = MOD / "Tools/generate_liquid_suite.py"
 ASTRO = MOD / "Patches/LiquidTypes/RM_LiquidDef_AstrofuelAdoption.xml"
 FLUIDS = MOD / "Defs/Canals/FluidDefs/FlowWorks_PitFluids.xml"
+CANAL_FLUIDS = MOD / "Defs/Canals/FluidDefs/FlowWorks_Fluids.xml"
 TERRAIN = MOD / "Defs/Canals/TerrainDefs/FlowWorks_PitFluidTerrain.xml"
 FIRE = MOD / "Source/RM_LiquidFire.cs"
 
@@ -112,9 +115,33 @@ def case_fluids(fl: str, ter: str) -> list[str]:
     return errs
 
 
+def case_flammable_canal(reg: str, fluid_texts: list[str]) -> list[str]:
+    """WHITE_SLIME_CANAL_FIX_CANNOT_IGNITE: a LiquidDef marked flammable whose canalFluid never lights (fireKind None) burns in
+    a tank and not in a channel. Every flammable row's canal fluid must carry a fireKind other than None."""
+    errs = []
+    f: dict[str, ET.Element] = {}
+    for t in fluid_texts:
+        f.update(fluids(t))
+    checked = 0
+    for el in ET.fromstring(reg).iter(LIQUID_TAG):
+        canal = el.findtext("canalFluid")
+        if (el.findtext("flammable") or "").strip().lower() != "true" or not canal:
+            continue
+        checked += 1
+        fe = f.get(canal)
+        if fe is None:
+            errs.append(el.findtext("defName") + ": canalFluid " + canal + " is not a FluidDef")
+        elif (fe.findtext("fireKind") or "None") == "None":
+            errs.append(el.findtext("defName") + " is flammable but its canal fluid " + canal + " has no fireKind (never lights)")
+    if checked < 3:   # chemfuel, propane, white slime: a smaller count means the walk went blind
+        errs.append("only " + str(checked) + " flammable liquids with a canal fluid seen (expected at least 3)")
+    return errs
+
+
 def main() -> int:
     reg, gen, astro = REGISTRY.read_text("utf-8"), GENERATOR.read_text("utf-8"), ASTRO.read_text("utf-8")
     fl, ter = FLUIDS.read_text("utf-8"), TERRAIN.read_text("utf-8")
+    canal = CANAL_FLUIDS.read_text("utf-8")
     fire = FIRE.read_text("utf-8").replace("\r\n", "\n")
     cases = [
         ("chemfuel_registry_names_canal_fluid", lambda: case_registry(reg, gen),
@@ -127,6 +154,9 @@ def main() -> int:
          lambda: case_fluids(fl, ter.replace("<defName>RM_Fill_Propane_Brim</defName>", "<defName>x</defName>"))),
         ("fuel_fluids_exist_with_fire_kinds", lambda: case_fluids(fl, ter),
          lambda: case_fluids(fl.replace("<fireKind>Inferno</fireKind>", "<fireKind>Detonation</fireKind>"), ter)),
+        ("flammable_liquids_canal_form_burns", lambda: case_flammable_canal(reg, [fl, canal]),
+         lambda: case_flammable_canal(reg, [fl, canal.replace(
+             "<defName>RM_Fluid_SlimeWhite</defName>", "<defName>RM_Fluid_SlimeWhite</defName><fireKind>None</fireKind>", 1)])),
     ]
     for needle, why in FIRE_SHAPES:
         cases.append(("fire_shape: " + why, lambda n=needle, w=why: [] if n in fire else [w + " (missing)"],
