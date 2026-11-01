@@ -1,0 +1,1 @@
+relentless finish must name the commit that did the work, not a later ledger-only commit: rimflow close refuses a ledger-only sha after the blind check has already passed (RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS lost a whole generation this way). relentless.finish does not check this up front.
