@@ -434,3 +434,4 @@
 {"seat":"DISPATCHER","event":"note","id":"VENOMVINE_BUILD_SCRUB_GROWS_TEETH","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T07:25:59Z","ts":"2026-11-01T07:27:59Z","tsn":1793518079329905038}
 {"seat":"DISPATCHER","event":"note","id":"VENOMVINE_BUILD_SCRUB_GROWS_TEETH","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T08:00:58Z","ts":"2026-11-01T08:02:56Z","tsn":1793520176468358466}
 {"seat":"DISPATCHER","event":"note","id":"WORLDMAP_REPAIR_LOST_BIOMES_ROCKY_TEXTURES","text":"dispatcher restart_verified FOUNDRY: fresh FOUNDRY window a7c7930f-2102-4715-95e6-74edc86d9d1a (pid 1986571), doorbell armed at 1793520439.3508332","ts":"2026-11-01T08:11:12Z","tsn":1793520672162164936}
+{"seat":"DISPATCHER","event":"note","id":"CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T08:13:37Z","ts":"2026-11-01T08:15:35Z","tsn":1793520935272313115}
