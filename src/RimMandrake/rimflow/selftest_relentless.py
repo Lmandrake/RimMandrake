@@ -101,6 +101,8 @@ class FakeWorld:
             return why
         self.closes.append((item, sha))
         self.items[item] = "done"
+    def ledger_reclaim(self, item):
+        self.items[item] = "ready"
     def ledger_note(self, item, text): self.notes.append(text)
     def ledger_needs_owner(self, item, why): self.needs.append(item)
     def ledger_needs(self, item, to, why): self.needs.append((item, to))
@@ -526,6 +528,20 @@ def t_crash_windows():
     x.r["pool_ids_exclude"] = [q[0]["item"]]
     x.tick()
     ok(x.st(q[0]["item"])["status"] == "retired", "an item excluded in the rules leaves the queue")
+    x.done()
+    # started, it hit a gate its own text sets: exclusion must still take it out, and hand the ledger back
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], "gate_not_met", "waits on others", x.r, now=x.now)
+    x.w.up[st["run"]["unit"]] = False
+    x.r["pool_ids_exclude"] = ["I0"]
+    launched = len(x.w.launches)
+    x.tick(600)
+    x.tick(600)
+    ok(len(x.w.launches) == launched, "an excluded item is not relaunched on its way out")
+    ok(x.st("I0")["status"] == "retired", "a started item excluded in the rules leaves the line")
+    ok(x.w.items["I0"] == "ready", "and the ledger gets it back, not left doing with nobody on it")
     x.done()
     # a checker past its deadline cannot pass
     x = Rig(n=1, share=1.0)

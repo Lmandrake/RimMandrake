@@ -108,11 +108,10 @@ once, deliberately, at the end — with nothing half-migrated behind it.
   `Wimp` trait** from 5 of 6 founders, with nothing in `Player.log`: gene `loadID`s are
   save-local, so the fragments' gene references resolve *successfully* into the
   destination save's own, unrelated genes. A loadID collision does not error — it resolves
-  to the wrong object. The remap that fixes it is known and recorded, but it lives in prose
-  until `FOUNDERS_IMPORTER_OWED_1` ships a committed importer.
+  to the wrong object. The remap that fixes it lives in the committed importer,
+  `design/Jawa/worldbuilding/founders/import_founders.py` (`FOUNDERS_IMPORTER_OWED_1`, done).
 
-  ⇒ **The founders are backed up. Restoring them is not yet a one-command operation**, and
-  a reader who follows the prose and misses one of the four remaps gets a clean load and a
+  ⇒ **Use the importer, never a bare splice**: a bare splice gives a clean load and a
   quietly wrong colonist.
 - The canonical save's mod-list divergence (`CANONICAL_SAVE_MODLIST_DIVERGENCE_1`,
   `CANONICAL_SAVE_SCENARIO_MISMATCH_1`) becomes moot at the remake — check

@@ -591,6 +591,10 @@ class Effects:
         r = self.rimflow("start", item, "--why", "relentless supervisor takes the item")
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
+    def ledger_reclaim(self, item):
+        r = self.rimflow("reclaim", item, "--why", "relentless supervisor: excluded in the rules, back to the pool")
+        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
+
     def ledger_close(self, item, sha, reason, live=None):
         r = self.rimflow("close", item, "--sha", sha, "--reason", reason, "--why", "relentless: blind check passed",
                          *(("--live", live) if live else ()))     # the sweep keeps checking what the contract promised
@@ -1324,12 +1328,14 @@ def retire(store, fx, states, now, acts, r=None):
         if st["status"] not in OPEN or st["status"] in ("closing", "retiring"):
             continue
         led = fx.item_state(st["item"])
-        if r and st["status"] == "queued" and not st["ledger_started"] and st["item"] in r.get("pool_ids_exclude", []):
+        if r and st["status"] == "queued" and st["item"] in r.get("pool_ids_exclude", []):
             with store.lock():
                 cur = store.load(st["item"])
                 cur["status"] = "retired"
                 store.save(cur)
-            acts.append({"do": "retire", "item": st["item"], "why": "excluded in the rules"})
+            # started means the ledger says doing with no one on it: hand it back or it reads as worked on for good
+            why = fx.ledger_reclaim(st["item"]) if st["ledger_started"] else None
+            acts.append({"do": "retire", "item": st["item"], "why": "excluded in the rules", "ledger": why})
         elif led is None or led["state"] in ("done", "dropped", "superseded"):
             with store.lock():
                 cur = store.load(st["item"])
@@ -1438,6 +1444,8 @@ def lease(store, fx, r, now, acts):
             return
         item = st["item"]
         if st.get("needs_back"):       # the ledger still says owner: the next step() clears it first
+            continue
+        if item in r.get("pool_ids_exclude", []):   # back from a stop this tick: retire() takes it on the next
             continue
         reserved = False
         theirs = cfg and (fx.item_state(item) or {}).get("owner") == foreign_seat(r)
