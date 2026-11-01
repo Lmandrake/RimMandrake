@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT: ancient stasis lockers are found in vanilla ancient complexes
+       (Ideology) and ancient ruins (Odyssey), so the locker has a generic, non-Star Wars loot route. The prefabs are
+       in Defs/ColdStorage_StasisLockerPrefabs.xml. Rooms were picked where an ancient cold store makes sense: the
+       frozen storage room, the canteen, the complex's equipment room and lab. Each room's minMaxRange starts at 0,
+       so many rooms hold none and a Kludged (working) locker is rarer than a Wrecked one.
+       Every room here already has a <prefabs> list, so a plain Add is enough; FindMod keeps the patch quiet when a
+       DLC is absent (a failed Add would log an error). -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Odyssey</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/LayoutRoomDef[defName="AncientRuinsFrozenStorageRoom"]/prefabs</xpath>
+          <value>
+            <RM_AncientStasisLocker_Wrecked_Edge>
+              <countPerTenEdgeCells>1</countPerTenEdgeCells>
+              <minMaxRange>0~2</minMaxRange>
+            </RM_AncientStasisLocker_Wrecked_Edge>
+            <RM_AncientStasisLocker_Kludged_Edge>
+              <countPerTenEdgeCells>1</countPerTenEdgeCells>
+              <minMaxRange>0~1</minMaxRange>
+            </RM_AncientStasisLocker_Kludged_Edge>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/LayoutRoomDef[defName="AncientCanteen"]/prefabs</xpath>
+          <value>
+            <RM_AncientStasisLocker_Wrecked_Edge>
+              <countPerTenEdgeCells>1</countPerTenEdgeCells>
+              <minMaxRange>0~1</minMaxRange>
+            </RM_AncientStasisLocker_Wrecked_Edge>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ideology</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/LayoutRoomDef[defName="AncientEquipmentRoom"]/prefabs</xpath>
+          <value>
+            <RM_AncientStasisLocker_Wrecked_Edge>
+              <countPerTenEdgeCells>1</countPerTenEdgeCells>
+              <minMaxRange>0~1</minMaxRange>
+            </RM_AncientStasisLocker_Wrecked_Edge>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/LayoutRoomDef[defName="AncientLab"]/prefabs</xpath>
+          <value>
+            <RM_AncientStasisLocker_Wrecked_Edge>
+              <countPerTenEdgeCells>1</countPerTenEdgeCells>
+              <minMaxRange>0~1</minMaxRange>
+            </RM_AncientStasisLocker_Wrecked_Edge>
+            <RM_AncientStasisLocker_Kludged_Edge>
+              <countPerTenEdgeCells>1</countPerTenEdgeCells>
+              <minMaxRange>0~1</minMaxRange>
+            </RM_AncientStasisLocker_Kludged_Edge>
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

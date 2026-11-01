@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT: the generic (non-Star Wars) loot route for the ancient stasis locker
+       (Defs/ColdStorage_StasisLockers.xml). Nothing else spawns it, so without these the locker is reachable only in
+       dev mode. Patches/ColdStorage_AncientComplexLoot.xml adds the prefabs to vanilla ancient-complex and
+       ancient-ruin rooms; the room sets how many (countPerTenEdgeCells, minMaxRange).
+
+       Only the two broken grades are found: Wrecked (a dead field to study and build over, with Wrecked Machines) and
+       Kludged (a weak working field). Refurbished and Original are built, never found, as the grade ladder intends.
+       Both stand against a wall facing into the room, as the vanilla security terminal does (edgeOnly, Opposite). -->
+
+  <PrefabDef>
+    <defName>RM_AncientStasisLocker_Wrecked_Edge</defName>
+    <edgeOnly>true</edgeOnly>
+    <size>(1,1)</size>
+    <things>
+      <RM_AncientStasisLocker_Wrecked>
+        <relativeRotation>Opposite</relativeRotation>
+      </RM_AncientStasisLocker_Wrecked>
+    </things>
+  </PrefabDef>
+
+  <PrefabDef>
+    <defName>RM_AncientStasisLocker_Kludged_Edge</defName>
+    <edgeOnly>true</edgeOnly>
+    <size>(1,1)</size>
+    <things>
+      <RM_AncientStasisLocker_Kludged>
+        <relativeRotation>Opposite</relativeRotation>
+      </RM_AncientStasisLocker_Kludged>
+    </things>
+  </PrefabDef>
+</Defs>

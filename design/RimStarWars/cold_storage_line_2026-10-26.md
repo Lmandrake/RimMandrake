@@ -174,7 +174,10 @@ break down.
 The stasis chamber spans three layers, as the ancient-machines design requires:
 - **Layer 1, RM.** `RM_AncientStasisLocker` lives in `mandrake.rm.coldstorage`. It is a generic ancient machine
   with no Rakatan words. It takes Wrecked / Kludged / Refurbished grades when Wrecked Machines is present, and it is
-  plain loot when that mod is absent.
+  plain loot when that mod is absent. As built (STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT), it is found against the
+  walls of vanilla ancient rooms: Odyssey frozen storage rooms and canteens, Ideology ancient-complex equipment rooms
+  and labs (`ColdStorage_StasisLockerPrefabs.xml` + `Patches/ColdStorage_AncientComplexLoot.xml`). Only Wrecked and
+  Kludged are found, 0 to 2 per room; Refurbished and Original are built, never found.
 - **Layer 2, RSW.** The Rakatan skin: `RSW_RakatanStasisCasket` (1x2) and `RSW_RakatanStasisVault` (3x3, 36
   stacks at Original: 4 per cell; built 36, not the 30 first drafted, because capacity is per cell). Labels, descriptions and art are Belsavis-styled. These sit in Cuisine until the layer-2 Rakatan mod
   exists, then move there.

@@ -56,6 +56,58 @@ def static_checks():
     fails += encase_static_checks(ET, re)
     fails += cold_aging_dish_checks(ET, re)
     fails += drinks_chiller_checks(ET)
+    fails += ancient_loot_checks(ET)
+    return fails
+
+
+VANILLA_DATA = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
+
+
+def ancient_loot_checks(ET):
+    """STASIS_LOCKER_BUILD_ANCIENT_COMPLEX_LOOT: the locker's generic loot route. Every prefab spawns a found grade
+    (Wrecked or Kludged) of the locker, every prefab the patch adds is defined, each Add sits under a FindMod for its
+    DLC, and (when the game install is readable) each target room exists in that DLC with a <prefabs> list, since an
+    Add on a missing node fails."""
+    fails = []
+    lockers = {el.findtext("defName") for el in ET.parse(os.path.join(HERE, "Defs", "ColdStorage_StasisLockers.xml")).getroot()}
+    prefabs = {}
+    for el in ET.parse(os.path.join(HERE, "Defs", "ColdStorage_StasisLockerPrefabs.xml")).getroot():
+        prefabs[el.findtext("defName")] = [t.tag for t in el.find("things")]
+    if len(prefabs) < 2:
+        return ["ancient loot: read %d locker prefabs (instrument blind?)" % len(prefabs)]
+    for name, things in prefabs.items():
+        if not things or any(t not in lockers or not t.endswith(("_Wrecked", "_Kludged")) for t in things):
+            fails.append("ancient loot: prefab %s spawns %s, want a found grade of RM_AncientStasisLocker" % (name, things))
+    root = ET.parse(os.path.join(HERE, "Patches", "ColdStorage_AncientComplexLoot.xml")).getroot()
+    adds = 0
+    for op in root.findall("Operation"):
+        dlc = [li.text for li in op.findall("mods/li")]
+        if op.get("Class") != "PatchOperationFindMod" or len(dlc) != 1:
+            fails.append("ancient loot: top-level operation must be a one-DLC PatchOperationFindMod")
+            continue
+        rooms_file = os.path.join(VANILLA_DATA, dlc[0], "Defs", "LayoutRoomDefs")
+        vanilla = {}
+        if os.path.isdir(rooms_file):
+            for f in os.listdir(rooms_file):
+                for el in ET.parse(os.path.join(rooms_file, f)).getroot():
+                    vanilla[el.findtext("defName")] = el.find("prefabs") is not None
+        for li in op.iter("li"):
+            if li.get("Class") != "PatchOperationAdd":
+                continue
+            adds += 1
+            xp = li.findtext("xpath") or ""
+            room = xp.split('defName="')[-1].split('"')[0]
+            if not xp.endswith("]/prefabs"):
+                fails.append("ancient loot: %s Add must target the room's prefabs list" % room)
+            if vanilla and not vanilla.get(room):
+                fails.append("ancient loot: %s is no %s LayoutRoomDef with a <prefabs> list" % (room, dlc[0]))
+            for p in li.find("value"):
+                if p.tag not in prefabs:
+                    fails.append("ancient loot: %s gets undefined prefab %s" % (room, p.tag))
+                if not (p.findtext("minMaxRange") or "").startswith("0~"):
+                    fails.append("ancient loot: %s %s minMaxRange must start at 0 (loot, not a fixture)" % (room, p.tag))
+    if adds < 4:
+        fails.append("ancient loot: only %d room Adds read (instrument blind?)" % adds)
     return fails
 
 
