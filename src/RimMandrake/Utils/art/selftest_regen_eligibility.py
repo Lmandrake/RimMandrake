@@ -61,6 +61,15 @@ DEFS = """<Defs>
  <ThingDef><defName>RM_Was</defName><graphicData><texPath>Things/RM_Was</texPath></graphicData></ThingDef>
  <ThingDef><defName>RM_Bound</defName><graphicData><texPath>Things/Item/Cloth</texPath></graphicData></ThingDef>
  <ThingDef><defName>RM_Err</defName><graphicData><texPath>Things/Item/Err</texPath></graphicData></ThingDef>
+ <AlienRace.ThingDef_AlienRace><defName>RM_HarDroid</defName><alienRace><graphicPaths>
+   <body><path>HAR/Droid/RM_HarDroid</path></body><head><path></path></head>
+ </graphicPaths></alienRace></AlienRace.ThingDef_AlienRace>
+ <AlienRace.ThingDef_AlienRace><defName>RM_HarFlat</defName><alienRace><graphicPaths>
+   <body>HAR/Droid/RM_HarFlat</body>
+ </graphicPaths></alienRace></AlienRace.ThingDef_AlienRace>
+ <AlienRace.ThingDef_AlienRace><defName>RM_HarMask</defName><alienRace><graphicPaths>
+   <bodyMasks><path>HAR/Droid/RM_HarMask</path></bodyMasks>
+ </graphicPaths></alienRace><comps><li><path>HAR/Droid/RM_HarStray</path></li></comps></AlienRace.ThingDef_AlienRace>
 </Defs>"""
 
 
@@ -110,6 +119,8 @@ def game_classify(res):
         return {"cat": "VANILLA", "by": "ludeon.rimworld"}
     if res == "Things/Item/Err":
         raise RuntimeError("index blind")
+    if res.startswith("HAR/Droid/"):
+        return {"cat": "DONOR", "by": "donor.outerrim"}
     return {"cat": "MISSING", "by": None}
 
 
@@ -159,10 +170,24 @@ def main() -> int:
         ("fail closed per row: a classifier error refuses the row", row("RM_Err", target_texpath="Things/Item/Err"),
          "REFUSED_UNCONFIRMED"),
         ("a row naming no destination is refused", row("RM_None"), "REFUSED_UNCONFIRMED"),
+        # HAR races draw their body from alienRace/graphicPaths/body (<path> child or bare text), not a TEXTAGS tag
+        # (REGENGATE_ALIENRACE_BODYPATH_FIX_DONOR_BLIND: a donor-art race read 'def no longer exists')
+        ("HAR race: graphicPaths body <path> served by a donor is DONOR",
+         row("RM_HarDroid", target_texpath="HAR/Droid/RM_HarDroid", facing="south"), "DONOR"),
+        ("HAR race: graphicPaths bare-text body served by a donor is DONOR",
+         row("RM_HarFlat", target_texpath="HAR/Droid/RM_HarFlat", facing="south"), "DONOR"),
+        ("HAR race: a path the race does not draw stays refused",
+         row("RM_HarDroid", target_texpath="HAR/Droid/RM_HarOther", facing="south"), "REFUSED_UNCONFIRMED"),
+        ("HAR race: a mask path is not drawn art (def reads as drawing nothing)",
+         row("RM_HarMask", target_texpath="HAR/Droid/RM_HarMask", facing="south"), "REFUSED_UNCONFIRMED"),
+        ("HAR race: a <path> outside graphicPaths is not drawn art",
+         row("RM_HarMask", target_texpath="HAR/Droid/RM_HarStray", facing="south"), "REFUSED_UNCONFIRMED"),
     ]
     for msg, r, want in cases:
         v = g.classify(r)
         check(v["verdict"] == want and v["eligible"] == (want in RE.ELIGIBLE), msg, v)
+    v = g.classify(row("RM_HarDroid", target_texpath="HAR/Droid/RM_HarOther", facing="south"))
+    check("no longer draws" in v["reason"], "HAR race is seen (refused for the path, not as a missing def)", v)
     # TerrainDef / WeatherDef: the art lands at a CONTRACT path only C# names (texturePath is a vanilla stand-in)
     (root / M / "Defs" / "s.xml").write_text(
         "<Defs><TerrainDef><defName>RM_SurfT</defName><texturePath>Terrain/Surfaces/Carpet</texturePath></TerrainDef>"

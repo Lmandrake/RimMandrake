@@ -65,6 +65,22 @@ def _tex_texts(el, d):
             yield el.text.strip() + str(i)
 
 
+# Humanoid Alien Races (HAR): a race draws its body/head from alienRace/graphicPaths/<slot>, the path either as the
+# slot's text or in a <path> child. Only these slots are drawn art (masks are not); a <path> anywhere else is not.
+HAR_GP_SLOTS = {"body", "head", "skeleton", "skull", "stump"}
+
+
+def _har_paths(d):
+    """The texture texts a HAR race def draws through alienRace/graphicPaths (also the older <li> list form)."""
+    for gp in d.findall("alienRace/graphicPaths") + d.findall("alienRace/graphicPaths/li"):
+        for c in gp:
+            if not isinstance(c.tag, str) or c.tag not in HAR_GP_SLOTS:
+                continue
+            p = c if not list(c) else c.find("path")
+            if p is not None and not list(p) and (p.text or "").strip():
+                yield p.text.strip()
+
+
 FACINGS = ("north", "south", "east", "west")
 ELIGIBLE = ("NONE", "PLACEHOLDER", "DONOR")
 REFUSED = ("REFUSED_KEPT", "REFUSED_REGEN", "REFUSED_UNCONFIRMED")
@@ -246,6 +262,10 @@ class Gate:
                             self.def_draws[dn].add(key(t))
                             if race:
                                 self.def_draws[race].add(key(t))
+                for t in _har_paths(d):                    # HAR graphicPaths body/head (not a TEXTAGS tag)
+                    self.def_tex[dn].add(t)
+                    self.drawn[low(t)].add(dn)
+                    self.def_draws[dn].add(key(t))
 
         self._scan_contract_paths(src)
 
