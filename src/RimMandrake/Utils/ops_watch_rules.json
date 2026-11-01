@@ -2,6 +2,17 @@
  "_doc": "Rules for ops_watch.py (the Dispatcher's deterministic measurement arm, V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE). Keys are glob patterns over point keys (family.name). Only MEASURED points feed the band, run and silent rules; a target names the marks it accepts. A target with alarm true files one rimflow item when the condition is NEW, and re-arms only after it clears.",
  "series_days": 8,
  "steve_seats": {"_doc": "c_steve_seats: a seat is up when its tmux screen shows `ready`", "ssh": "mandrake@stevedesktop-wsl", "seats": ["seat-server", "seat-runner"], "ready": "Capacity:|Connected|remote-control is active"},
+ "relentless": {
+  "_doc": "c_relentless (OP2, DI2 in operating_requirements_2026-11-01.md), owner Operations, read from the belt's store under RELENTLESS_ROOT or root. max_age_min: a staffing.json or reading.json stamped longer ago than this is frozen, its readings UNMEASURED, relentless.blind counts it; the tick runs every 3 min and the longest gap in the record is under 7. under_min: keep equal to relentless_rules.json staffing.alarm_after_min (selftest_relentless_watch holds them equal). breaker_open_min, no_live_min: the record's jam ran 6 h behind an open breaker with nothing live. progress_min: the longest gap between progress acts outside the jam was 25.4 min (2026-10-31 to 11-01), and a worker's run may last 60. idle_why: a stop somebody chose reads idle, never distressed: pause, no budget, the day's ceiling",
+  "root": "/home/mandrake/rm/relentless",
+  "max_age_min": 10,
+  "under_min": 30,
+  "breaker_open_min": 30,
+  "no_live_min": 5,
+  "progress_min": 45,
+  "idle_why": ["paused", "budget 0", "share 0", "day_spend_limit"],
+  "progress_acts": ["lease", "done", "check_started", "returned", "blind_fail", "retired", "closed_waiting_for_seat"]
+ },
  "steve_incident": {"_doc": "item-id prefix of the steward's escalation items (testq/steward.py); steve.incident_unclaimed_min is the age of the oldest one no seat holds", "prefix": "STEVE_LANE_UNSTICK_"},
  "band": {
   "_doc": "a point outside the baseline mean +/- k sigma. Baseline: the last baseline_days of MEASURED points, minus the last exclude_recent_h; needs min_points. Sigma is floored (max of sigma_floor_rel x |mean| and sigma_floor_abs) so a flat series does not flag on noise.",
@@ -12,7 +23,7 @@
   "sigma_floor_rel": 0.05,
   "sigma_floor_abs": 0.5,
   "keys": ["*"],
-  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min"]
+  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "relentless.*"]
  },
  "run": {
   "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
@@ -22,7 +33,7 @@
  "silent": {
   "_doc": "a series that was MEASURED within the baseline and has not been MEASURED for its hours: the instrument went blind.",
   "default_h": 2,
-  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6},
+  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "relentless.*": 1},
   "keys": ["*"],
   "skip": ["*._collector"]
  },
@@ -33,6 +44,12 @@
    "why": "a lent account is judged by its loan, not its week (LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK): below 1 its allowance runs out before the lent window ends; 0 is this machine on a closed loan"},
   {"key": "codex.runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
    "why": "owner brief 2026-10-26: Codex runs out before its weekly reset"},
+  {"key": "relentless.distressed", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_DISTRESS", "name": "OPS_RELENTLESS_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "OP2, DI2: the belt ran 6 h behind an open breaker on 2026-11-01 with 382 ready, and the alarm that named it reached only a note. The cause is in the title and in relentless.cause; the limits are in the relentless block"},
+  {"key": "relentless.blind", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_BLIND", "name": "OPS_RELENTLESS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "OP2: a relentless source is missing, torn, frozen, or the collector did not run. Nothing can say the belt is sane until it is seen again; the cause names which source"},
   {"key": "steve.seats_absent_min", "op": ">", "value": 10, "alarm": true, "tag": "STEVE_SEATS", "name": "OPS_STEVE_SEATS_RESTORE", "marks": ["MEASURED"], "title_field": "said",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "owner 2026-10-31: SteveDesktop is ours and no step may need a hand at its keyboard. The logon task \\Claude Fleet returns both seats in about 2 min after a boot; past 10 min they are not coming back alone"},

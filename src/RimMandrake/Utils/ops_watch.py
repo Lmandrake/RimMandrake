@@ -22,6 +22,8 @@ rimflow/dispatcher_schedule.json "measure"):
              tps         tps_record.py --json: tick ratio, stalls, coverage
              production  every RimPulse stream measure (rm-pulse-streams' series.jsonl, reused, not recomputed)
              v3          the section 6 success metrics no instrument measures yet, UNMEASURED with the reason
+             relentless  the belt, from its own store: live, under_min, breaker_open_min, checks_wait, ready, tick_age_s,
+                         progress_age_min; distressed and cause (OP2, DI2); blind when a source is missing or frozen
    STORE   append-only JSONL, one file per family: $RM_OPS_WATCH_DIR/series/<family>.jsonl (default
            D:\\ClaudeWork\\rimmandrake\\ops_watch). Every point is {v, m: MEASURED|ESTIMATE|UNMEASURED, why?, unit?}.
            An instrument that errors writes UNMEASURED with the error, never 0.
@@ -67,7 +69,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "arena")
+            "evidence", "companion", "arena", "relentless")
 
 
 def ops_dir() -> Path:
@@ -1297,12 +1299,184 @@ def c_arena(now, rules, ctx):
     return out
 
 
+# ---------------------------------------------------------------- relentless: the belt read from its own store (OP2, DI2)
+RL_STAFFING = ("relentless.live", "relentless.under_min", "relentless.checks_wait", "relentless.ready")
+RL_KEYS = RL_STAFFING + ("relentless.breaker_open_min", "relentless.tick_age_s", "relentless.progress_age_min",
+                         "relentless.distressed", "relentless.cause")
+
+
+def rl_root(cfg) -> Path:
+    return Path(os.environ.get("RELENTLESS_ROOT") or cfg.get("root") or "/home/mandrake/rm/relentless")
+
+
+def tail_json_lines(p, chunk=1 << 21):
+    """-> the parsed objects at the end of a JSONL file, oldest first. A torn line is skipped; a missing file raises."""
+    with open(p, "rb") as f:
+        f.seek(0, 2)
+        size = f.tell()
+        f.seek(max(0, size - chunk))
+        lines = f.read().split(b"\n")
+    out = []
+    for ln in lines[1:] if size > chunk else lines:
+        try:
+            r = json.loads(ln)
+        except ValueError:
+            continue
+        if isinstance(r, dict):
+            out.append(r)
+    return out
+
+
+def rl_last_progress(store, cfg, now):
+    """Newest thing that proves the belt moved: a journal act named in `progress_acts`, or a running worker's beat.
+    A staffing reading stamped every tick proves only that the tick ran. -> epoch or None."""
+    acts = set(cfg.get("progress_acts") or [])
+    newest = None
+    for d in tail_json_lines(store / "journal.jsonl"):
+        for a in (d.get("acts") if d.get("do") == "tick" else [d]) or []:
+            t = epoch(d.get("at"))
+            if isinstance(a, dict) and a.get("do") in acts and t is not None and t <= now:
+                newest = max(newest or t, t)
+    for f in glob.glob(str(store / "items" / "*" / "state.json")):
+        st = read_json(f)
+        t = st.get("last_beat") if isinstance(st, dict) and st.get("status") == "running" else None
+        if is_num(t) and finite(t) and t <= now:
+            newest = max(newest or t, t)
+    return newest
+
+
+def rl_run_min(rows, now, pred):
+    """Minutes the tail of the staffing record has held `pred`, unbroken, up to now; 0 when its last row does not."""
+    since = None
+    for r in reversed(rows):
+        if not is_num(r.get("t")) or r["t"] > now:
+            continue
+        if not pred(r):
+            break
+        since = r["t"]
+    return 0 if since is None else round((now - since) / 60.0, 1)
+
+
+def rl_verdict(rec, breaker_min, live0_min, progress_min, cfg):
+    """-> (state, cause) for one readable staffing reading: sane, idle or distressed, and the one cause. Idle is a stop
+    somebody chose (`idle_why`), and is not a jam however long it lasts."""
+    why = str(rec.get("why") or "filling")
+    if rec.get("why") in (cfg.get("idle_why") or []):
+        return "idle", "none"
+    said = "%s of %s places, %s ready: %s" % (rec.get("running") if rec.get("places") is None else rec["places"],
+                                             rec.get("target"), rec.get("ready"), why)
+    ready = rec.get("ready") or 0
+    if (rec.get("minutes_under") or 0) >= cfg["under_min"]:
+        return "distressed", "under %.0f min: %s" % (rec["minutes_under"], said)
+    if breaker_min is not None and breaker_min >= cfg["breaker_open_min"]:
+        return "distressed", "breaker open %.0f min: %s" % (breaker_min, said)
+    if ready and live0_min >= cfg["no_live_min"]:
+        return "distressed", "nothing live %.0f min: %s" % (live0_min, said)
+    if ready and progress_min is not None and progress_min >= cfg["progress_min"]:
+        return "distressed", "no progress %.0f min: %s" % (progress_min, said)
+    return "sane", "none"
+
+
+def c_relentless(now, rules, ctx):
+    """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
+    rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
+    in relentless.blind, whose target alarms: nothing here can read sane on a source it did not see move. Freshness is
+    the stamp inside the file, never its mtime; relentless.progress_age_min catches a stamp that moves on a belt that
+    does not."""
+    cfg = rules.get("relentless")
+    if not isinstance(cfg, dict):
+        return {**{k: U("ops_watch_rules.json has no relentless block") for k in RL_KEYS},
+                "relentless.blind": M(1, "sources not seen", cause="ops_watch_rules.json has no relentless block")}
+    store = rl_root(cfg) / "store"
+    limit = cfg["max_age_min"]
+    pts, bad = {}, []
+
+    def missing(k, why):
+        pts[k] = U(why)
+        bad.append(why)
+
+    rec = read_json(store / "staffing.json")
+    t = rec.get("t") if isinstance(rec, dict) else None
+    why = None
+    if not is_num(t) or not finite(t):
+        why = "staffing.json missing or torn in %s" % store
+    elif t > now + 300:
+        why = "staffing.json is dated %d s ahead of the clock" % (t - now)
+    elif now - t > limit * 60:
+        why = "staffing.json frozen: last stamped %s, %.0f min ago, limit %g" % (iso(t), (now - t) / 60.0, limit)
+    fresh = why is None
+    if is_num(t) and finite(t) and t <= now + 300:
+        pts["relentless.tick_age_s"] = M(round(max(now - t, 0)), "s", max_age_min=limit)
+    else:
+        pts["relentless.tick_age_s"] = U(why, "s")
+    if fresh:
+        ch = rec.get("checks") if isinstance(rec.get("checks"), dict) else {}
+        pts["relentless.live"] = M(rec.get("live"), "workers and checks running", target=rec.get("target"),
+                                   places=rec.get("places"), max_age_min=limit)
+        pts["relentless.under_min"] = M(rec.get("minutes_under"), "min", max_age_min=limit)
+        pts["relentless.checks_wait"] = M(ch.get("waiting"), "checks waiting", oldest_wait_s=ch.get("oldest_wait_s"),
+                                          max_age_min=limit)
+        pts["relentless.ready"] = M(rec.get("ready"), "items ready", max_age_min=limit)
+        if not all(is_num(pts[k]["v"]) for k in RL_STAFFING):
+            fresh, why = False, "staffing.json lacks a reading: %s" % sorted(
+                k.split(".")[1] for k in RL_STAFFING if not is_num(pts[k]["v"]))
+    if not fresh:
+        for k in RL_STAFFING:
+            pts[k] = U(why)
+        bad.append(why)
+    rd = read_json(store / "reading.json")
+    rd_t = epoch(rd.get("at")) if isinstance(rd, dict) else None
+    if rd_t is None:
+        bad.append("reading.json missing or torn in %s" % store)
+    elif now - rd_t > limit * 60:
+        bad.append("reading.json frozen: last stamped %s" % iso(rd_t))
+    try:
+        rows = tail_json_lines(store / "staffing.jsonl")
+    except OSError as e:
+        rows = []
+        bad.append("staffing.jsonl unreadable: %s" % e)
+    br = read_json(store / "breaker.json")
+    breaker_min = None
+    if not isinstance(br, dict):
+        missing("relentless.breaker_open_min", "breaker.json missing or torn in %s" % store)
+    else:
+        until = br.get("until")
+        opened = is_num(until) and finite(until) and until > now
+        breaker_min = rl_run_min(rows, now, lambda r: str(r.get("why") or "").startswith("breaker open")) if opened else 0
+        pts["relentless.breaker_open_min"] = M(breaker_min, "min", until=iso(until) if opened else None,
+                                               said=str(br.get("why") or "")[:200], max_age_min=limit)
+    try:
+        last = rl_last_progress(store, cfg, now)
+    except OSError as e:
+        last = None
+        missing("relentless.progress_age_min", "journal.jsonl unreadable: %s" % e)
+    progress_min = None if last is None else round((now - last) / 60.0, 1)
+    if "relentless.progress_age_min" not in pts:
+        pts["relentless.progress_age_min"] = U("no progress act in the journal", "min") if last is None else M(
+            progress_min, "min", max_age_min=cfg["progress_min"])
+    if fresh:
+        state, cause = rl_verdict(rec, breaker_min, rl_run_min(rows, now, lambda r: r.get("live") == 0), progress_min, cfg)
+        pts["relentless.distressed"] = M(int(state == "distressed"), "1 when the belt is distressed", state=state, cause=cause)
+        pts["relentless.cause"] = M(cause)
+    else:
+        pts["relentless.distressed"] = pts["relentless.cause"] = U(why)
+    pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
+    return pts
+
+
+def rl_suppressed(points):
+    """A pass that did not measure relentless.blind (the collector raised, or was taken out of the pass) must not read
+    as a quiet belt: the point is written here so its target alarms, on this pass, whatever stopped the collection."""
+    why = str((points.get("relentless._collector") or {}).get("why") or "the relentless collector did not run this pass")
+    return M(1, "sources not seen", cause=why[:300])
+
+
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
-              "arena": c_arena}
+              "arena": c_arena, "relentless": c_relentless}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "arena")
+         "evidence", "companion", "arena", "relentless")
 
 
 # ==================================================================================================== storage
@@ -1808,6 +1982,14 @@ def fmt(v):
     return str(v)
 
 
+def rl_headline(g):
+    cause = g("relentless.cause").strip()
+    return "relentless %s live, %s ready, under %s min, breaker %s min, %s checks waiting, tick %s s, blind %s%s" % (
+        g("relentless.live").strip(), g("relentless.ready").strip(), g("relentless.under_min").strip(),
+        g("relentless.breaker_open_min").strip(), g("relentless.checks_wait").strip(), g("relentless.tick_age_s").strip(),
+        g("relentless.blind").strip(), "" if cause == "none" else ": " + cause)
+
+
 def headline(points, flags, alarms):
     def g(k):
         p = points.get(k) or {}
@@ -1824,6 +2006,7 @@ def headline(points, flags, alarms):
         g("disk.root_free_gb").strip(), g("disk.c_free_gb").strip(), g("disk.d_free_gb").strip(),
         g("disk.scratch_total_gb").strip(), g("disk.pool_clones").strip(), g("disk.pool_gb").strip(),
         g("disk.pool_oldest_h").strip()))
+    parts.append(rl_headline(g))
     opened = [a for a in alarms.values() if a.get("state") == "OPEN"]
     pend = [a for a in alarms.values() if a.get("state") == "PENDING"]
     parts.append("%d flag(s), %d alarm(s) open, %d pending" % (len(flags), len(opened), len(pend)))
@@ -1901,6 +2084,8 @@ production.G9
 production.O1 production.O2 production.O3 production.O4
 production.P1 production.P2 production.P3 production.P4
 production.V0 production.W1 production.W2 production.W3 production.W4 production.record_age_min
+relentless.blind relentless.breaker_open_min relentless.cause relentless.checks_wait relentless.distressed relentless.live
+relentless.progress_age_min relentless.ready relentless.tick_age_s relentless.under_min
 steve.fault_min steve.heartbeat_age_min steve.invalid_24h steve.invalid_streak steve.jobs_24h steve.last_done_age_min
 steve.seats_absent_min steve.state steve.unowned_stall_min steve.watch_age_min
 testing.archmagi_nothing_h_7d testing.nothing_h_7d testing.steve_nothing_h_7d
@@ -1944,6 +2129,7 @@ def blind_digest_md(dg, rules):
           "disk free / %s GB, C: %s GB, D: %s GB, scratch %s GB, pool %s clones %s GB oldest %s h" % (
               g("disk.root_free_gb"), g("disk.c_free_gb"), g("disk.d_free_gb"), g("disk.scratch_total_gb"),
               g("disk.pool_clones"), g("disk.pool_gb"), g("disk.pool_oldest_h")),
+          rl_headline(g),
           "%d flag(s), %d alarm(s) open, %d pending" % (
               len(fl), len(opened), len([a for a in al.values() if a.get("state") == "PENDING"]))]
     L = ["# Ops watch, health digest %s (an allow-list of health series; account readings are Operations')"
@@ -2075,6 +2261,8 @@ def run(now=None, rules=None, filer=None, families=None):
                 sick.append({"rule": "series_write", "key": "%s._series" % fam, "value": None, "window": "now",
                              "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e)[:160])})
         points.update(pts)
+    if (not families or "relentless" in families) and not counts_as_measured(points.get("relentless.blind")):
+        points["relentless.blind"] = rl_suppressed(points)
     hist, lastm = {}, {}
     for fam, recs in prev.items():
         recs = [r for r in recs if r["t"] <= now + 300]     # a future row would read as just measured, and hide silence
