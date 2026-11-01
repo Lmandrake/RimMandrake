@@ -7,6 +7,7 @@ content whatever path spells the decisions file. Fixture lives under /home/mandr
 """
 from __future__ import annotations
 
+import atexit
 import hashlib
 import json
 import os
@@ -105,6 +106,9 @@ PATCH_XML = """<?xml version="1.0" encoding="utf-8"?>
 def build(root: Path) -> dict:
     if root.exists():
         shutil.rmtree(root)
+    # SOURCE FIX (RM_SCRATCH_FIX_ENACT_DIRS_UNREAPED): every fixture dir is removed when the test process ends, so a
+    # test that forgets its own rmtree (v2, stale_lane, slot_membership did) cannot leave 255 dirs in rm/scratch.
+    atexit.register(shutil.rmtree, root, True)
     src = root / "src"
     led = root / "ledger"
     store = root / "store"
