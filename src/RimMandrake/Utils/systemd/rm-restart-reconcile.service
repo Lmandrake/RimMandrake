@@ -1,0 +1,14 @@
+# CK3: every goodbye or restart request ends in restart_verified or a told incident (restart_reconcile.py).
+# Its own unit on purpose: nothing here runs through the Dispatcher tick that might have dropped the request.
+# Install:  cp src/RimMandrake/Utils/systemd/rm-restart-reconcile.{service,timer} ~/.config/systemd/user/
+#           systemctl --user daemon-reload && systemctl --user enable --now rm-restart-reconcile.timer
+[Unit]
+Description=RimMandrake restart reconcile (requests joined to restart_verified)
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+ExecStart=/usr/bin/python3 /home/mandrake/rm/dispatch/src/RimMandrake/Utils/restart_reconcile.py run
+Nice=10
+MemoryMax=512M
+TimeoutStartSec=100s

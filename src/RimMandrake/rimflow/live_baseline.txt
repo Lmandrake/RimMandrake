@@ -15,6 +15,7 @@ unit=rm-pulse-digest.timer max_age=35h
 unit=rm-pulse-health.timer max_age=2h
 unit=rm-pulse-streams.timer max_age=2h
 unit=rm-pulse-update.timer max_age=2h
+unit=rm-restart-reconcile.timer reading=/mnt/d/ClaudeWork/rimmandrake/ops_watch/restart_reconcile.json max_age=1h
 unit=rm-scratch-reap.timer reading=/home/mandrake/.local/state/rm-scratch-reap/last_run.json max_age=3h
 unit=rm-selftests-nightly.timer max_age=75h
 unit=rm-telemetry-export.timer max_age=2h

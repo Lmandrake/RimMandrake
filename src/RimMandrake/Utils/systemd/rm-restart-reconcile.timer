@@ -1,0 +1,11 @@
+# Period is restart_reconcile_pass_s in dispatcher_schedule.json (selftest_restart_reconcile holds them equal).
+[Unit]
+Description=RimMandrake restart reconcile, every 2 min
+
+[Timer]
+OnBootSec=3min
+OnUnitInactiveSec=120s
+AccuracySec=5s
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,102 @@
+{"at": "2026-11-01T03:30:45Z", "do": "restart_request", "result": "started by the Dispatcher", "seat": "FOUNDRY", "why": "hard context limit: 208409 tokens >= 200000"}
+{"at": "2026-11-01T03:30:45Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "grace: 30 s left"}
+{"at": "2026-11-01T03:32:51Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms), agent-a7dc8fffad0821254 (Lane A5 offline item"}
+{"at": "2026-11-01T03:34:53Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms), agent-a7dc8fffad0821254 (Lane A5 offline item"}
+{"at": "2026-11-01T03:36:55Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms), agent-ab3a06033809e2c2f (Lane C6 review of A4"}
+{"at": "2026-11-01T03:38:58Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 3848858"}
+{"at": "2026-11-01T03:41:00Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 288319, 38"}
+{"at": "2026-11-01T03:43:05Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 288319, 38"}
+{"at": "2026-11-01T03:45:07Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 311465"}
+{"at": "2026-11-01T03:47:10Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 317392"}
+{"at": "2026-11-01T03:49:13Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 317392"}
+{"at": "2026-11-01T03:51:15Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms)"}
+{"at": "2026-11-01T03:53:18Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 348635"}
+{"at": "2026-11-01T03:55:22Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms)"}
+{"at": "2026-11-01T03:57:24Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms)"}
+{"at": "2026-11-01T03:59:27Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 440040"}
+{"at": "2026-11-01T04:01:29Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 462956"}
+{"at": "2026-11-01T04:03:31Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 467179"}
+{"at": "2026-11-01T04:05:34Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 467179"}
+{"at": "2026-11-01T04:07:36Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 467179"}
+{"at": "2026-11-01T04:09:38Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 467179"}
+{"at": "2026-11-01T04:11:42Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 521359"}
+{"at": "2026-11-01T04:13:45Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 521359"}
+{"at": "2026-11-01T04:15:50Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 521359"}
+{"at": "2026-11-01T04:17:59Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms)"}
+{"at": "2026-11-01T04:20:03Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms)"}
+{"at": "2026-11-01T04:22:10Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms)"}
+{"at": "2026-11-01T04:24:12Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 628958"}
+{"at": "2026-11-01T04:26:14Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 645880"}
+{"at": "2026-11-01T04:28:18Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-a22109629455d9459 (Joint pinned apply of all arms); background command(s) running: pid 645880"}
+{"at": "2026-11-01T04:30:23Z", "do": "restart_kill", "result": "killed pid 507109 (SIGTERM)", "seat": "FOUNDRY", "why": "backstop_hard: grace over, nothing held, window quiet"}
+{"at": "2026-11-01T04:32:29Z", "do": "restart_relaunched", "result": null, "seat": "FOUNDRY", "why": "new FOUNDRY window (in-tile) 123 s after the kill"}
+{"at": "2026-11-01T04:34:31Z", "do": "restart_verified", "result": null, "seat": "FOUNDRY"}
+{"at": "2026-11-01T05:38:53Z", "do": "restart_request", "req_ts": 1793511463.9350467, "result": "request taken", "seat": "BENCH", "why": "DEFERRED (only the kill waits) by BENCH: goodbye"}
+{"at": "2026-11-01T05:38:53Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "grace: 50 s left"}
+{"at": "2026-11-01T05:40:55Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "quiet window: 420 s left of goodbye_quiet_s 600 (last activity 2026-11-01T05:37:55Z); helper(s) alive: agent-a1685d1fb83"}
+{"at": "2026-11-01T05:42:58Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "quiet window: 297 s left of goodbye_quiet_s 600 (last activity 2026-11-01T05:37:55Z); helper(s) alive: agent-a1685d1fb83"}
+{"at": "2026-11-01T05:45:00Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "quiet window: 175 s left of goodbye_quiet_s 600 (last activity 2026-11-01T05:37:55Z); helper(s) alive: agent-a1685d1fb83"}
+{"at": "2026-11-01T05:47:05Z", "do": "restart_cancel", "result": null, "seat": "BENCH", "why": "new input in the window at 2026-11-01T05:47:00Z, after the request"}
+{"at": "2026-11-01T05:49:12Z", "do": "restart_request", "req_ts": 1793512033.6895633, "result": "request taken", "seat": "BENCH", "why": "DEFERRED (only the kill waits) by BENCH: goodbye"}
+{"at": "2026-11-01T05:49:12Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "grace: 0 s left"}
+{"at": "2026-11-01T05:51:15Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T05:53:17Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T05:55:20Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T05:57:22Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T05:59:24Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:01:26Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:03:30Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:05:32Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:07:34Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:09:38Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:11:40Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:13:48Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "helper(s) alive: agent-a1685d1fb8390d864 (Build scratch clone expiry, live); bridge/driver lock held by BENCH; backgroun"}
+{"at": "2026-11-01T06:15:50Z", "do": "restart_cancel", "result": null, "seat": "BENCH", "why": "input after the goodbye (any input cancels a Conductor restart): queue-operation <cross-session-message from=\"uds:/run/u"}
+{"at": "2026-11-01T06:38:17Z", "do": "restart_request", "req_ts": 1793514995.600883, "result": "request taken", "seat": "FOUNDRY", "why": "requested by FOUNDRY: ticket ended"}
+{"at": "2026-11-01T06:38:17Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "background command(s) running: pid 1647398"}
+{"at": "2026-11-01T06:40:22Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "background command(s) running: pid 1647398"}
+{"at": "2026-11-01T06:42:24Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "background command(s) running: pid 1647398"}
+{"at": "2026-11-01T06:44:28Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "background command(s) running: pid 1677294"}
+{"at": "2026-11-01T06:46:31Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "background command(s) running: pid 1677294"}
+{"at": "2026-11-01T06:48:33Z", "do": "restart_request", "req_ts": 1793515620.2043483, "result": "request taken", "seat": "BENCH", "why": "DEFERRED (only the kill waits) by BENCH: goodbye"}
+{"at": "2026-11-01T06:48:33Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "grace: 27 s left"}
+{"at": "2026-11-01T06:48:33Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "background command(s) running: pid 1677294"}
+{"at": "2026-11-01T06:50:37Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "quiet window: 24 s left of goodbye_quiet_s 240 (last activity 2026-11-01T06:47:01Z); helper(s) alive: agent-a1685d1fb839"}
+{"at": "2026-11-01T06:50:37Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "background command(s) running: pid 1677294"}
+{"at": "2026-11-01T06:52:39Z", "do": "restart_cancel", "result": null, "seat": "BENCH", "why": "input after the goodbye (any input cancels a Conductor restart): queue-operation <cross-session-message from=\"uds:/run/u"}
+{"at": "2026-11-01T06:52:39Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "window not quiet (status idle, last record assistant_end) 1/3"}
+{"at": "2026-11-01T06:54:42Z", "do": "restart_kill", "result": "killed pid 694633 (SIGTERM)", "seat": "FOUNDRY", "why": "request: grace over, nothing held, window quiet"}
+{"at": "2026-11-01T06:56:46Z", "do": "restart_relaunched", "result": null, "seat": "FOUNDRY", "why": "new FOUNDRY window (in-tile) 121 s after the kill"}
+{"at": "2026-11-01T06:58:48Z", "do": "restart_verified", "result": null, "seat": "FOUNDRY"}
+{"at": "2026-11-01T08:07:03Z", "do": "restart_request", "req_ts": 1793520325.801318, "result": "request taken", "seat": "FOUNDRY", "why": "DEFERRED (only the kill waits) by FOUNDRY: ticket ended"}
+{"at": "2026-11-01T08:07:03Z", "do": "restart_kill", "result": "killed pid 1694010 (SIGTERM)", "seat": "FOUNDRY", "why": "request: grace over, nothing held, window quiet"}
+{"at": "2026-11-01T08:09:07Z", "do": "restart_relaunched", "result": null, "seat": "FOUNDRY", "why": "new FOUNDRY window (in-tile) 121 s after the kill"}
+{"at": "2026-11-01T08:11:09Z", "do": "restart_verified", "result": null, "seat": "FOUNDRY"}
+{"at": "2026-11-01T12:02:05Z", "do": "restart_request", "req_ts": 1793534445.7765324, "result": "request taken", "seat": "BENCH", "why": "requested by BENCH: goodbye"}
+{"at": "2026-11-01T12:02:05Z", "do": "restart_cancel", "result": null, "seat": "BENCH", "why": "new input in the window at 2026-11-01T12:01:27Z, after the request"}
+{"at": "2026-11-01T12:02:05Z", "do": "restart_request", "req_ts": 1793534421.6364193, "result": "request taken", "seat": "FOUNDRY", "why": "DEFERRED (only the kill waits) by FOUNDRY: ticket ended"}
+{"at": "2026-11-01T12:02:05Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-ae6ecbc9380e4f046 (Run sprinkler live rows); bridge/driver lock held by FOUNDRY"}
+{"at": "2026-11-01T12:04:06Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-ae6ecbc9380e4f046 (Run sprinkler live rows); bridge/driver lock held by FOUNDRY; background comma"}
+{"at": "2026-11-01T12:06:08Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "helper(s) alive: agent-ae6ecbc9380e4f046 (Run sprinkler live rows); bridge/driver lock held by FOUNDRY; background comma"}
+{"at": "2026-11-01T12:08:11Z", "do": "restart_hold", "result": null, "seat": "FOUNDRY", "why": "no boundary yet (status idle, last record assistant_end)"}
+{"at": "2026-11-01T12:10:14Z", "do": "restart_kill", "result": "killed pid 1986571 (SIGTERM)", "seat": "FOUNDRY", "why": "request: grace over, nothing held, window quiet"}
+{"at": "2026-11-01T12:12:17Z", "do": "restart_request", "req_ts": 1793535134.2946868, "result": "request taken", "seat": "BENCH", "why": "requested by BENCH: goodbye"}
+{"at": "2026-11-01T12:12:17Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "goodbye countdown: 26 s left; background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:12:17Z", "do": "restart_relaunched", "result": null, "seat": "FOUNDRY", "why": "new FOUNDRY window (in-tile) 121 s after the kill"}
+{"at": "2026-11-01T12:12:48Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:12:48Z", "do": "restart_verified", "result": null, "seat": "FOUNDRY"}
+{"at": "2026-11-01T12:13:18Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:15:23Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:17:25Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:19:28Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:21:38Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:23:44Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:25:52Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667"}
+{"at": "2026-11-01T12:27:56Z", "do": "restart_hold", "result": null, "seat": "BENCH", "why": "background command(s) running: pid 212788, 249667, 3141621"}
+{"at": "2026-11-01T12:28:51Z", "do": "restart_kill", "result": "killed pid 581180 (SIGTERM)", "seat": "BENCH", "why": "request: grace over, nothing held, window quiet"}
+{"at": "2026-11-01T12:29:18Z", "do": "restart_relaunched", "result": null, "seat": "BENCH", "why": "new BENCH window (in-tile) 25 s after the kill"}
+{"at": "2026-11-01T12:31:20Z", "do": "restart_verified", "result": null, "seat": "BENCH"}
+{"at": "2026-11-01T13:10:45Z", "do": "restart_request", "req_ts": 1793538564.142079, "result": "request taken", "seat": "FOUNDRY", "why": "requested by FOUNDRY: ticket ended"}
+{"at": "2026-11-01T13:10:45Z", "do": "restart_kill", "result": "killed pid 3108467 (SIGTERM)", "seat": "FOUNDRY", "why": "request: grace over, nothing held, window quiet"}
+{"at": "2026-11-01T13:12:49Z", "do": "restart_relaunched", "result": null, "seat": "FOUNDRY", "why": "new FOUNDRY window (in-tile) 122 s after the kill"}
+{"at": "2026-11-01T13:14:50Z", "do": "restart_verified", "result": null, "seat": "FOUNDRY"}
