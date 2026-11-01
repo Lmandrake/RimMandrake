@@ -43,8 +43,6 @@ namespace RimMandrake.Wreckage.SelfTest
                             if (want == SpecRank(t)) Check(got == t, $"ShiftTier({t},{shift}) stayed on its rung but renamed itself {got}");
                             // monotone in shift
                             if (shift > -3) Check(SpecRank(RM_WreckageKernel.ShiftTier(t, shift - 1)) <= SpecRank(got), "tier rung fell as the shift rose");
-                            // a tier that moved up or down a rung never keeps the name of the rung it left
-                            if (SpecRank(got) != SpecRank(t)) Check(got != t, "moved rung but kept its name");
                         }
                     // the fold
                     for (int i = 0; i < 20; i++)
@@ -200,7 +198,7 @@ namespace RimMandrake.Wreckage.SelfTest
                     Check(RM_WreckageKernel.PlaceField(Math.Max(1, total), () => { if (++calls > 5000) throw new Exception("the placement loop did not terminate"); return false; }, () => true, () => 6, () => true) == 0 && calls == 3, "nothing fits: not exactly three attempts");
                     // a cluster never overshoots the last slot
                     Check(RM_WreckageKernel.PlaceField(1, () => true, () => true, () => 9, () => true) == 1, "a cluster overshot a target of 1");
-                    Check(RM_WreckageKernel.PlaceField(1, () => true, () => { throw new Exception("rolled a cluster with no slot left"); }, () => 9, () => true) == 1, "x");
+                    Check(RM_WreckageKernel.PlaceField(1, () => true, () => { throw new Exception("rolled a cluster with no slot left"); }, () => 9, () => true) == 1, "a target of 1 rolled a cluster (or did not place its one anchor)");
                     Check(RM_WreckageKernel.PlaceField(5, () => true, () => true, () => 1, () => { throw new Exception("size 1 cluster asked for a member"); }) == 5, "size-1 cluster");
                 }
                 catch (Exception e) { fails.Add($"place seed {seed}: {e.Message}"); }

@@ -175,8 +175,8 @@ namespace RimMandrake.CrackedLands.SelfTest
                                 }
                                 if (s.Phase == FloodPhase.Warned && before.Phase != FloodPhase.Warned) Check(st.ChooseSeed == !seedPendingBefore && st.RingChime == 0, "entering Warned must choose a seed only when none is pending, and ring chime 0" + where);
                                 if (before.Phase == FloodPhase.Dry && s.Phase == FloodPhase.Herald) { Check(st.ChooseSeed && s.HeraldBeat >= 1 && cfg.FiveBeats, "herald entry must choose a seed and need the five beats" + where); enteredHerald = true; heraldEnteredAt = now; HeraldRuns++; }
-                                if (before.Phase == FloodPhase.Herald && s.Phase == FloodPhase.Warned) Check(s.HeraldBeat > 3 || true, "");
-                                if (s.Phase == FloodPhase.Warned && before.Phase != FloodPhase.Warned) Check(rung.Count == 0 || true, "");
+                                if (before.Phase == FloodPhase.Herald && s.Phase == FloodPhase.Warned) Check(s.HeraldBeat == 4 && beats.Count == 3, $"left the herald for Warned with herald beat {s.HeraldBeat} next and beats [{string.Join(",", beats)}] sounded (all three are due before the chime)" + where);
+                                if (s.Phase == FloodPhase.Warned && before.Phase != FloodPhase.Warned) Check(rung.Count == 0, $"entering Warned with staged chimes [{string.Join(",", rung)}] already rung this cycle" + where);
                                 // the silenced rule
                                 Check(RM_FloodKernel.TarruqSilenced(cfg.Active, cfg.FiveBeats, s.Phase, s.HeraldBeat) == (cfg.Active && cfg.FiveBeats && ((s.Phase == FloodPhase.Herald && s.HeraldBeat > 3) || s.Phase == FloodPhase.Warned || s.Phase == FloodPhase.Flooding)), "silenced truth" + where);
                                 // peakstorm: only forward, once per cycle
@@ -313,7 +313,8 @@ namespace RimMandrake.CrackedLands.SelfTest
             var restored = new Dictionary<long, int>();
             var soiled = new List<long>();
             ledger.Recede(k => true, k => terrain[k] == "flood", k => soiled.Add(k), (k, p) => restored[k] = p);
-            Check(soiled.Count == ledger.Active.Count + soiled.Count - ledger.Active.Count && soiled.All(k => terrain[k] == "flood"), "soil put where the terrain was not flood");
+            Check(soiled.All(k => terrain[k] == "flood"), "soil put where the terrain was not flood");
+            Check(soiled.Distinct().Count() == soiled.Count, "a cell was returned to soil twice");
             Check(soiled.Count == terrain.Count(kv => kv.Value == "flood"), "a flood cell was not returned to soil");
             Check(restored.Count == accepts.Count(k => cells.Contains(k)), "a raised cell's fill was not restored");
             foreach (var kv in restored) Check(kv.Value == fill[kv.Key], "a fill was restored to the wrong value");
@@ -424,7 +425,7 @@ namespace RimMandrake.CrackedLands.SelfTest
                     case 4:
                         for (int t = 0, n = a.kind == 4 ? 30 : 1; t < n; t++)
                         {
-                            bool sealedBefore = s.SealedAsleep, initBefore = s.InitialSealDone; int dryBefore = s.DryAccumTicks;
+                            bool sealedBefore = s.SealedAsleep, initBefore = s.InitialSealDone, awakeBefore = awake; int dryBefore = s.DryAccumTicks;
                             var act = RM_PanKernel.Check(s, false, false, startsDormant, wokeUp, awake, canSeal, water, wakeOn, digOn, flooding, interval, hours);
                             switch (act)
                             {
@@ -444,7 +445,12 @@ namespace RimMandrake.CrackedLands.SelfTest
                             // invariants
                             if (s.SealedAsleep) Check(s.DryAccumTicks == 0, "a sealed pan accumulates dry time" + where);
                             if (s.SealedAsleep && wokeUp) { /* the next check clears it */ }
-                            if (!s.SealedAsleep && water) Check(s.DryAccumTicks == 0 || act == RM_PanKernel.Do.Nothing && !digOn || !awake || true, "");
+                            if (!sealedBefore && !s.SealedAsleep)
+                            {
+                                // an unsealed pan: water or a flood beside an awake digger zeroes the dry clock; a sleeper or the dig-in off freezes it
+                                if (digOn && awakeBefore && (water || flooding)) Check(s.DryAccumTicks == 0, $"water beside an awake digging pan left its dry clock at {s.DryAccumTicks}" + where);
+                                if (!digOn || !awakeBefore) Check(s.DryAccumTicks == dryBefore, $"the dry clock moved {dryBefore} -> {s.DryAccumTicks} with the dig-in off or the pan asleep" + where);
+                            }
                             Check(s.DryAccumTicks >= 0, "negative dry clock" + where);
                         }
                         break;
