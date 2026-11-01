@@ -40,6 +40,7 @@ from __future__ import annotations
 import argparse
 import fcntl
 import glob
+import hashlib
 import json
 import os
 import random
@@ -345,8 +346,27 @@ def noise_on_origin(c: Path, path: str) -> bool:
         return False
 
 
+def transcript_kept(c: Path, path: str) -> bool:
+    """A conversations/ record is kept off the clone, content-addressed beside the pool, so it no longer holds the clone:
+    nothing lands a pool clone's records, and every idle clone read stranded on one (this write is why a reading can do it)."""
+    if not (path.startswith("conversations/") and path.endswith(".md")):
+        return False
+    try:
+        data = (c / path).read_bytes()
+        dest = pool_root().parent / "transcripts" / f"{Path(path).stem}-{hashlib.sha1(data).hexdigest()[:12]}.md"
+        if not dest.exists():
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            tmp = dest.with_suffix(f".{os.getpid()}.tmp")
+            tmp.write_bytes(data)
+            os.replace(tmp, dest)
+        return True
+    except OSError:
+        return False
+
+
 def dirty_beyond_origin(c: Path) -> bool:
-    """Dirty or untracked paths, minus the noise origin/main already has. Fails closed: unreadable status is dirty."""
+    """Dirty or untracked paths, minus the noise origin/main already has and the records kept. Fails closed: unreadable
+    status is dirty."""
     r = subprocess.run(["git", "--no-optional-locks", "status", "--porcelain", "-z", "--untracked-files=all"], cwd=c,
                        capture_output=True, text=True, timeout=300)
     if r.returncode != 0:
@@ -358,7 +378,7 @@ def dirty_beyond_origin(c: Path) -> bool:
         i += 1
         if e[:1] in "RC":          # a rename or copy carries its source as the next field
             i += 1
-        if noise_on_origin(c, e[3:]):
+        if noise_on_origin(c, e[3:]) or transcript_kept(c, e[3:]):
             continue
         return True
     return False

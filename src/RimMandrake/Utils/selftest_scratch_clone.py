@@ -69,12 +69,26 @@ def main() -> int:
         commit_to_seed(work, "sub/b.txt", "two\n")
         sh("git", "-C", str(BASE / "mirror.git"), "repack", "-q", "-a", "-d")   # a pack to hard-link
 
-        # transcript residue: noise already on origin is not unpushed work; noise origin lacks, and real edits, still are
+        # transcript residue: noise already on origin is not unpushed work; a record is kept, then not unpushed; a record that
+        # cannot be kept, ledger lines origin lacks, and real edits still are
         nz = BASE / "nz"
         sh("git", "clone", "-q", str(work), str(nz))
         (nz / "conversations").mkdir()
         (nz / "conversations" / "t.md").write_text("talk\n")
-        check(sc.clone_unpushed(nz) == ["dirty"], f"a transcript origin lacks is unpushed: {sc.clone_unpushed(nz)}")
+        kept = BASE / "transcripts"
+        os.environ["RM_POOL_ROOT"] = str(BASE / "nopool")
+        kept.write_text("in the way\n")     # no archive can be made: the record is all there is
+        check(sc.clone_unpushed(nz) == ["dirty"], f"a transcript that cannot be kept is unpushed: {sc.clone_unpushed(nz)}")
+        kept.unlink()
+        check(sc.clone_unpushed(nz) == [], f"a transcript origin lacks is kept, not unpushed: {sc.clone_unpushed(nz)}")
+        check([f.read_text() for f in kept.glob("t-*.md")] == ["talk\n"], "and its bytes are in the keep")
+        (nz / "conversations" / "t.md").write_text("talk\nmore\n")
+        check(sc.clone_unpushed(nz) == [] and len(list(kept.glob("t-*.md"))) == 2, "a grown record is kept again, the old one stays")
+        (nz / "conversations" / "t.md").write_text("talk\n")
+        (nz / "conversations" / "w.txt").write_text("not a record\n")
+        check(sc.clone_unpushed(nz) == ["dirty"], "only a record is excused under conversations/")
+        (nz / "conversations" / "w.txt").unlink()
+        del os.environ["RM_POOL_ROOT"]
         commit_to_seed(work, "conversations/t.md", "talk\n")
         sh("git", "-C", str(nz), "fetch", "-q")
         check(sc.clone_unpushed(nz) == [], f"a transcript origin holds is not: {sc.clone_unpushed(nz)}")
@@ -178,6 +192,13 @@ def main() -> int:
         check(r4 == 0 and (pool / "p4").is_dir() and (pool / "p2").is_dir()
               and sh("git", "-C", str(pool / "p2"), "log", "-1", "--format=%s") == "unpushed",
               "a clone with unpushed work is never reused")
+        # Operations' cause 1, the blind checker's fixture: idle, not in use, at origin, a transcript its only residue
+        (pool / "p4" / "conversations").mkdir(exist_ok=True)
+        (pool / "p4" / "conversations" / "run.md").write_text("a run's record\n")
+        age(pool / "p4", 7300)
+        rd = sc.pool_reading()
+        check(rd["stranded"] == ["p2"] and rd["breach"] == 1, f"a transcript alone strands nothing: {rd['stranded']}")
+        check(sc.pool_reuse(pool / "p6") == pool / "p6" and not (pool / "p4").exists(), "and blocks no reuse")
         os.environ["RM_POOL_MAX_CLONES"] = "9"
         os.environ["RM_POOL_MAX_BYTES"] = "1"
         r5, _ = quiet(sc.clone, "pool test", "p5", True, [], False, False)

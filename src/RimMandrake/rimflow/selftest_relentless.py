@@ -1922,6 +1922,14 @@ def t_pool_jam():
     ok(x.st("P5").get("bundle") is None and x.st("P4").get("bundle") is None, "nothing to carry, nothing recorded")
     x.done()
 
+    # and tick() is what does it: the call above proves the rule, this the wiring
+    x = staffed(n=1)
+    parked(x, "P0", "held", "/c/P0")
+    x.w.pool["/c/P0"] = {"real": ["a.cs"]}
+    x.tick()
+    ok("/c/P0" not in x.w.pool, "a tick releases an idle parked clone, unpressed")
+    x.done()
+
     # a check that ended leaves its clone; one running keeps it
     x = staffed(n=1)
     parked(x, "C0", "queued", None, check={"clone": "/c/check-C0-c1", "run": {"charged": 5}}, not_before=x.now + 10**6)
