@@ -501,6 +501,18 @@ def t_crash_windows():
     ok(R.hook_fence(t, x.s) is None, "the marker still answers without one")
     shutil.rmtree(t, ignore_errors=True)
     x.done()
+    # rimflow's close refuses an alarm item without a live line: the candidate gate catches it first
+    x = Rig(n=1, share=1.0)
+    x.w.items["OPS_X"] = x.w.items["I0"]
+    R.enrol_one(x.s, "OPS_X", "t", x.now - 100)
+    x.tick()
+    if "OPS_X" in [s["item"] for s in x.s.states() if s["status"] == "running"]:
+        st = x.st("OPS_X")
+        R.contract(x.s, "OPS_X", st["gen"], "p")
+        R.finish(x.s, "OPS_X", st["gen"], "s", "e", now=x.now)
+        x.tick()
+        ok(x.st("OPS_X")["failures"].get("bad_candidate") == 1, "an alarm item with no live line is a bad candidate")
+    x.done()
     # overdue reads the beat
     st = dict(R.new_state("I0", 1, ""), started_at=0, last_beat=1000)
     rr = dict(RULES, run_max_s=10 ** 6)

@@ -26,6 +26,7 @@ import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
+ALARM_PREFIXES = ("OPS_", "LIVE_RESTORE_")       # rimflow close refuses these without a live line (cli._live_gate)
 DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 FENCED = 3
 LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring")   # a worker or the supervisor owns the item
@@ -633,7 +634,7 @@ def worker_prompt(st, text, learned, r):
             "at least every 20 minutes. Commit explicit paths and land with ./publish; every commit subject names the item id; `finish` names a sha on "
             "origin/main. Then a blind checker reruns your proof on that sha; it does not see your notes. Never run "
             "`rimflow close`, `implemented`, `release` or `claim` on this item: the supervisor owns its ledger state.",
-            "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change needs --live with one of: "
+            "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change, or an OPS_ alarm item, needs --live with one of: "
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
             "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. Only a "
             "true design/RimMandrake/delegation_policy.md section 2 call goes up: `snag --class owner_call --section "
@@ -950,8 +951,8 @@ def step(store, fx, r, item, now, acts):
             paths = fx.changed(st.get("base"), c["sha"], item)
             if not paths:
                 why = "%s changes nothing" % c["sha"]
-            elif live_line.needs_line(paths) and not (st["contract"] or {}).get("live"):
-                why = "%s touches %s and the contract has no live line" % (c["sha"], live_line.needs_line(paths)[0])
+            elif (live_line.needs_line(paths) or item.startswith(ALARM_PREFIXES)) and not (st["contract"] or {}).get("live"):
+                why = "%s needs a live line in the contract: %s" % (c["sha"], (live_line.needs_line(paths) or ["alarm item"])[0])
         if why:
             with store.lock():
                 st = store.load(item)
