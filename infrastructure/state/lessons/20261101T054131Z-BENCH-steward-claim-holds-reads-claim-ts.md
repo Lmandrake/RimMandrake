@@ -1,0 +1,1 @@
+Steward claim_holds reads claim_ts only, so an item the relentless supervisor started (no claim) still runs the unowned clock under a continuing fault and can reach the T+120 OWNER rung; steward.retire now leaves a doing item alone, the clock does not.
