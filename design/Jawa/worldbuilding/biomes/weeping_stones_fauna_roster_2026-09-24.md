@@ -192,7 +192,7 @@ large in kind and in count.
 |---|---|
 | defName / label | `RM_Vellak` / vellak (working name — BENCH coinage, collision-checked clean 2026-09-24; owner may rename at art) |
 | silhouette FORM | **tall long-legged strider, one dorsal sail-comb running the spine, walking in single file** — the herd silhouette is a LINE, not a cluster |
-| look, one line | Camel-tall striders that walk the dry country between pools in single file down the caravan roads, sail-combs fanned to drink the wind as they come — from the rim, moving lines converging on water: pilgrimage made visible. |
+| look, one line | Stilt-legged striders with a long furred snake of a neck that walk the dry country between pools in single file down the caravan roads, sail-combs fanned to drink the wind as they come — from the rim, moving lines converging on water: pilgrimage made visible. |
 | ring / niche | 🔑 **The RM_ tier's own pilgrim ring** (card ruling: the free mod keeps the pilgrimage identity without canon herds; Bantha/Eopie/Jamel stack on top in the campaign). |
 | size band / commonality | large (bs ~1.6) / **~0.08 in bands** — arrives as a file of several, not a spawn scatter |
 | one-home note | primary home is one of the RM_ deserts (named at that biome's own sitting — not assigned here); appears in the Weeping Stones as the annotated pilgrim-visitor mechanism, the sheet's own carve-out (§4/§10) |

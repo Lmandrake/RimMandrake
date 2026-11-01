@@ -810,7 +810,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Vellak</defName>
     <label>vellak</label>
-    <description>Camel-tall striders that walk the dry country between pools in single file down the caravan roads, dorsal sail-combs fanned to drink the wind as they come. From the rim, moving lines converging on water: pilgrimage made visible. The RM_ tier's own pilgrim ring — the free mod keeps the pilgrimage identity without a canon herd, which only stacks on top in the campaign.</description>
+    <description>Tall, stilt-legged striders with no shoulders to speak of: the body draws straight up into a long boneless neck that is less a neck than a furred snake, swaying and coiling on its own business with a small narrow head at the tip. A rust-red sail-comb stands along the back, fanned open to drink the wind. Vellak walk the dry country between pools in single file down the caravan roads; from the rim they are moving lines converging on water, pilgrimage made visible. Sometimes they are used as pack animals, and they carry a load for days without ever seeming to notice it, though the head may come around, slowly, to look at whoever is tying the knots.</description>
     <statBases>
       <MoveSpeed>2.8</MoveSpeed>
       <MarketValue>320</MarketValue>

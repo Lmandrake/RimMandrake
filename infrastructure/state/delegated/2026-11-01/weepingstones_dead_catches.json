@@ -1,0 +1,16 @@
+{
+ "item": "WEEPINGSTONES_SETTLED_FOLLOWUPS_1",
+ "class": "art",
+ "judge": "gpt_consult (naive GPT, not the maker)",
+ "owner_note": "Make it look like a dead one of these. Of course generate AFTER the source is settled, blocking until",
+ "source_settled": "creatures accepted by owner 2026-10-18 \"Simply accept all art as currently rendered\", commit 9f268c9e2b",
+ "rounds": {
+  "1": "5 of 6 REGEN: floating bodies read as swimming, lost features",
+  "2": "5 of 6 ACCEPT, Skarrin REGEN",
+  "3": "Skarrin ACCEPT, side-by-side pair; the question named the folded pose, so this one verdict was a leading ask"
+ },
+ "verdict": "ACCEPT",
+ "round2_verdict": "- **Huldu \u2014 ACCEPT:** Same creature; sprawled flat with a slack mouth and tongue out, clearly dead; no obvious defects.\n- **Loomu \u2014 ACCEPT:** Same creature; collapsed body and splayed limbs read as a grounded corpse; no obvious defects.\n- **Skarrin \u2014 REGEN:** Same creature with no obvious anatomy defects, but the streamlined horizontal pose still reads as swimming; needs a clearer limp or grounded posture.\n- **Fan eel (vizhik) \u2014 ACCEPT:** Same creature; flattened fins and a sagging, bent body read as dead on the ground; no obvious defects.\n- **Karrek \u2014 ACCEPT:** Same creatures; the low, collapsed heap reads as dead specimens; no obvious cut-off parts or extra limbs.\n- **Ivvol \u2014 ACCEPT:** Same creature; flattened body, dull eye and slack mouth convey death; colours and anatomy remain consistent.",
+ "skarrin_round3_verdict": "ACCEPT \u2014 The silver body, fins, and round sucker mouth match; the doubled-over, grounded pose reads as a limp dead catch.",
+ "also": "RM_Leather_Huldu icon rm_huldufur_icon_v1 read by the installing agent only, no second judge"
+}
