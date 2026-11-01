@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""deadman_check: the outside dead-man for the Dispatcher and ops_watch (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT).
+"""deadman_check: the one sweep of everything that must stay alive (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING).
 
-An arm cannot report its own death. This is a separate, tiny, no-AI program on its own systemd timer
-(rm-deadman.timer, every 10 min). It reads each arm's LAST-RUN STAMP and, when one is older than its limit (or
-missing, or unreadable), files ONE ledger alarm the same way ops_watch does (ops_watch.real_filer: spawn as RUNNER
-from the dispatch clone under ingest.lock, published). Edge-triggered: one item per outage, a note when it clears.
+A separate no-AI program on its own systemd timer (rm-deadman.timer, every 15 min, from the Dispatcher's clone). Each
+pass rechecks (1) every `live` line on the ledger, (2) rimflow/live_baseline.txt, the running system's own promises,
+(3) each arm's LAST-RUN STAMP (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT: an arm cannot report its own death).
+
+On failure it reopens the SAME item (`rimflow live --result broken`), filing LIVE_RESTORE_<NAME> first if the promise
+has no item. On recovery it puts the item back. The ledger is the only state, so one promise has one id and
+`live_repeats` counts its outages; at 2 the report says it needs a fold. The pass writes ops_watch/live_sweep.json,
+whose `line` reads "61 promises, 58 kept, 3 broken". A pass that cannot see systemd says so and touches nothing.
 
     ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; timer every 15 min)  limit 50 min
     dispatcher  $RM_DISPATCHER_STATE/state.json key "last_ok_tick" (ISO; timer every 2 min)            limit 15 min
@@ -17,6 +21,7 @@ from the dispatch clone under ingest.lock, published). Edge-triggered: one item 
 
     python3 src/RimMandrake/Utils/deadman_check.py run [--file-alarms]
     python3 src/RimMandrake/Utils/deadman_check.py install [--apply]    systemd user timer (plan unless --apply)
+    python3 src/RimMandrake/Utils/deadman_check.py baseline [--write]   generate the baseline from what runs today
 """
 import argparse
 import json
@@ -34,6 +39,12 @@ sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent / "rimflow"))
 
 LIMITS = {"ops_watch": 50 * 60, "dispatcher": 15 * 60}
+BASELINE = HERE.parent / "rimflow" / "live_baseline.txt"
+SETTLED = ("done", "built", "validated")
+RETIRED = ("dropped", "superseded")
+MAX_PER_PASS = 10
+FOLD_AT = 2                 # a second outage means the first fix did not fold
+TRIAL_ONLY = ("rm-replay-watch.timer", "rm-arena-anchor.timer")     # they end with the arena trial
 
 
 def ops_dir():
@@ -45,8 +56,8 @@ def dispatcher_dir():
     return Path(doorbell.state_dir())
 
 
-def state_file():
-    return ops_dir() / "deadman.json"
+def sweep_file():
+    return ops_dir() / "live_sweep.json"
 
 
 def _json(p):
@@ -124,82 +135,227 @@ def judge(st, now, limits=None):
     return res
 
 
-def known_ids():
+def item_id(line):
+    """The fixed id of a promise that has no item of its own: same unit, same item, for good."""
+    import live_line
+    p = live_line.parse(line)
+    name = {"unit": lambda: p["unit"].rsplit(".", 1)[0], "hook": lambda: p["hook"].rsplit(".", 1)[0],
+            "role": lambda: p["role"]}[p["kind"]]()
+    return "LIVE_RESTORE_" + re.sub(r"\W+", "_", name).upper()
+
+
+def load_baseline(path=None):
+    """The running system's promises, one live line each ('#' comments). A line that does not parse raises: the
+    sweep must not silently watch less than the file says."""
+    import live_line
+    lines = []
+    for raw in Path(path or BASELINE).read_text(encoding="utf-8").splitlines():
+        line = raw.split("#", 1)[0].strip()
+        if line:
+            live_line.parse(line)
+            lines.append(line)
+    return lines
+
+
+EXCUSED = "(excused)"   # paused on purpose: not broken, and no proof it recovered either
+
+
+def promises(items, baseline):
+    """-> [{"item", "line"}]: the baseline's, then every promise on the ledger. Pure. `once:` is the visible escape and
+    is ignored; an item being worked holds its own promise until it closes again; a retired item holds none."""
+    out = []
+    for line in baseline:
+        iid = item_id(line)
+        it = items.get(iid)
+        if not (it is not None and it.state in RETIRED):
+            out.append({"item": iid, "line": line})
+    seen = {r["item"] for r in out}        # a fixed id answers for its baseline line, whatever it closed with
+    for iid, it in sorted(items.items()):
+        line = getattr(it, "live", None)
+        if not line or line.startswith("once:") or it.state in RETIRED or iid in seen:
+            continue
+        if it.state in SETTLED or it.live_broken:
+            out.append({"item": iid, "line": line})
+    return out
+
+
+def excused(line, runner=subprocess.run):
+    """A timer paused with its own restart armed (timers_guard), or a role the schedule has switched off."""
+    import live_line
+    p = live_line.parse(line)
+    if p["kind"] == "unit":
+        import timers_guard
+        return any(p["unit"] in (units or []) and live_line._systemctl("is-active", resume, runner) == "active"
+                   for resume, units in timers_guard.load_pauses().items())   # an old record excuses nothing
+    if p["kind"] == "role":
+        sched = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text(encoding="utf-8"))
+        return not any(r.get("name") == p["role"] and r.get("enabled") for r in sched.get("roles", []))
+    return False
+
+
+def real_check(line):
+    import live_line
+    return EXCUSED if excused(line) else live_line.check(line)
+
+
+def read_items():
+    import ops_watch  # noqa: F401   puts pulse/ on the path
     import pulse_core as pc
-    return set(pc._model().replay(pc.read_ledger()).items)
+    return pc._model().replay(pc.read_ledger()).items
 
 
-def check(now, filer, ids=None, stamp_map=None):
-    """One pass. -> deadman state. filer(todo, conf) -> {name: None|error}; None files nothing."""
-    import ops_watch as OW
-    verdict = judge(stamps() if stamp_map is None else stamp_map, now)
-    p = state_file()
-    state = _json(p) if p.exists() else {}
-    if not isinstance(state, dict):
-        return {"_state": "UNREADABLE: %s is not a JSON object; filing held" % p}
-    conf = OW.alarm_conf(OW.load_rules())
+def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True):
+    """One pass: recheck every promise, reopen what died, put back what recovered. The ledger is the state, so a pass
+    that could not file simply tries again. filer(todo, conf) -> {item: None|error}; None files nothing. -> the report."""
+    if not sees:
+        report = {"t": now, "line": "promises unread: this pass could not see systemd", "blind": True, "broken": [],
+                  "unpublished": (_json(sweep_file()) or {}).get("unpublished")}
+        OW_atomic(sweep_file(), report)
+        return report
+    rows = [dict(p, why=checker(p["line"])) for p in promises(items, baseline)]
+    excused_n = sum(r["why"] == EXCUSED for r in rows)
+    rows = [r for r in rows if r["why"] != EXCUSED]
+    rows += [{"item": "LIVE_RESTORE_" + arm.upper(), "line": None, "why": why} for arm, why in sorted(arms.items())]
     todo = []
-    for arm, why in verdict.items():
-        cur = state.get(arm)
-        if why is None:
-            if cur:
-                if cur.get("item") and filer:
-                    todo.append({"note_only": True, "item": cur["item"], "name": "note:" + arm,
-                                 "text": "deadman_check: %s is running again (%s)" % (arm, OW.iso(now))})
-                state.pop(arm)
-            continue
-        if cur and cur.get("state") == "OPEN":
-            cur["last_seen"] = OW.iso(now)
-            continue
-        if not cur:
-            cur = state[arm] = {"state": "PENDING", "since": OW.iso(now), "tries": 0}
-        ids_ = ids if ids is not None else known_ids()
-        if cur.get("name") in ids_:
-            cur.update(state="OPEN", item=cur["name"])
-            continue
-        if not cur.get("name"):
-            taken = set(ids_) | {a.get("name") for a in state.values() if isinstance(a, dict)}
-            cur["name"] = OW.mint_name(arm, taken, "OPS_DEADMAN_REVIVE")
-        cur["title"] = ("Dead man: %s" % why)[:160]
-        todo.append({"aid": arm, "name": cur["name"], "title": cur["title"]})
-    if todo:
-        OW.atomic_json(p, state)       # the name is on disk before the spawn: a retry reuses it
+    for r in rows:
+        it = items.get(r["item"])
+        if r["why"] and it is None:
+            todo.append({"item": r["item"], "result": "broken", "detail": r["why"], "spawn": True,
+                         "title": ("Live promise broken: %s" % r["why"])[:160]})
+        elif r["why"] and not it.live_broken:
+            todo.append({"item": r["item"], "result": "broken", "detail": r["why"]})
+        elif not r["why"] and it is not None and it.live_broken:
+            todo.append({"item": r["item"], "result": "kept", "detail": "sweep: running again"})
+    held = todo[MAX_PER_PASS:]        # a mass outage files over several passes, never a wall of commits in one
+    todo = todo[:MAX_PER_PASS]
+    errors = {}
+    prior = _json(sweep_file()) or {}
+    if todo or prior.get("unpublished"):     # a reading that stayed local is pushed by the next pass, not forgotten
         if filer:
+            import ops_watch as OW
             try:
-                res = filer(todo, conf)
+                errors = filer(todo, OW.alarm_conf(OW.load_rules()))
             except Exception as e:  # noqa: BLE001
-                res = {a["name"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for a in todo}
+                errors = {t["item"]: "filer raised %s: %s" % (type(e).__name__, str(e)[:200]) for t in todo}
+                errors["_publish"] = "filer raised after an unknown number of readings"
         else:
-            res = {a["name"]: "filing off (run without --file-alarms)" for a in todo}
-        for a in todo:
-            if a.get("note_only"):
-                continue
-            cur = state[a["aid"]]
-            err = res.get(a["name"])
-            cur["tries"] = cur.get("tries", 0) + (1 if filer else 0)
-            if err is None:
-                cur.update(state="OPEN", item=a["name"], error=None, filed=OW.iso(now))
-            else:
-                cur["error"] = err
-    OW.atomic_json(p, state)
-    return state
+            errors = {t["item"]: "filing off (run without --file-alarms)" for t in todo}
+    broken = [r for r in rows if r["why"]]
+    repeats = {r["item"]: getattr(items.get(r["item"]), "live_repeats", 0) for r in rows}
+    just = {t["item"] for t in todo if t["result"] == "broken" and not errors.get(t["item"])}
+    fold = sorted(i for i, n in repeats.items() if n + (i in just) >= FOLD_AT)
+    report = {"t": now, "promises": len(rows) + excused_n, "kept": len(rows) - len(broken), "excused": excused_n,
+              "broken": [{"item": r["item"], "why": r["why"]} for r in broken], "fold": fold,
+              "held": len(held), "errors": {k: v for k, v in errors.items() if v and not k.startswith("_")},
+              "unpublished": unpushed(errors, prior),
+              "line": "%d promises, %d kept, %d broken%s%s" % (
+                  len(rows) + excused_n, len(rows) - len(broken), len(broken),
+                  ", %d paused" % excused_n if excused_n else "", ", %d need a fold" % len(fold) if fold else "")}
+    OW_atomic(sweep_file(), report)
+    return report
 
 
-UNIT = """# rm-deadman: outside dead-man for the Dispatcher and ops_watch (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT). No AI.
+def unpushed(errors, prior):
+    """Pure. -> why the last reading is still local | None. No publish this pass leaves the old answer standing."""
+    got = errors.get("_publish")
+    if got is None:
+        return prior.get("unpublished")
+    if got == "nothing to publish":     # nothing was tried, so nothing is settled
+        return prior.get("unpublished")
+    return None if got == "pushed" or got.endswith("; pushed") else got
+
+
+def OW_atomic(path, obj):
+    import ops_watch as OW
+    OW.atomic_json(path, obj)
+
+
+def live_filer(todo, conf):
+    """Spawn-if-new then record the reading, as RUNNER from the dispatch clone under QHOME/ingest.lock, published: the
+    same road as ops_watch.real_filer. -> {item: None | error}."""
+    import fcntl
+    import importlib.util
+    import ops_watch as OW
+    path = Path(conf["clone"]) / "src/RimMandrake/Utils/testq/ingest.py"
+    spec = importlib.util.spec_from_file_location("deadman_ingest", str(path))
+    ing = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(ing)
+    res = {}
+    with open(OW.qhome() / "ingest.lock", "w") as lk:
+        t0 = time.time()
+        while True:
+            try:
+                fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.time() - t0 > conf["lock_wait_s"]:
+                    return {t["item"]: "ingest.lock busy for %d s" % conf["lock_wait_s"] for t in todo}
+                time.sleep(2)
+        n = 0
+        for t in todo:
+            rc, out = 0, ""
+            if t.get("spawn"):
+                rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
+                                      "--name", t["item"], "--title", t["title"],
+                                      "--why", "live sweep (deterministic, no AI): " + t["item"])
+            if rc == 0:
+                rc, out = ing.rimflow("live", t["item"], "--result", t["result"], "--detail", t["detail"])
+            res[t["item"]] = None if rc == 0 else out[-300:]
+            n += rc == 0
+        res["_publish"] = ing.publish(n, message="ledger: live sweep %s" % ", ".join(
+            "%s %s" % (t["item"], t["result"]) for t in todo if res.get(t["item"]) is None)) \
+            if n or not todo else "nothing to publish"
+    return res
+
+
+def duration_s(timers):
+    """The period in systemd's `OnUnitInactiveUSec=1h 30min ;` text, seconds | None. Pure."""
+    m = re.search(r"OnUnit(?:In)?[aA]ctiveUSec=([^;]+);", timers or "")
+    unit = {"s": 1, "min": 60, "h": 3600, "d": 86400}
+    return sum(int(n) * unit[u] for n, u in re.findall(r"(\d+)(min|h|s|d)\b", m.group(1))) if m else None
+
+
+def generate_baseline(runner=subprocess.run):
+    """The first lines, from what runs today: each enabled timer (allowed three of its own intervals, at least 2 h),
+    each wired hook, each enabled Dispatcher role. Regenerate only to add; a removed line is a retired promise."""
+    import live_line
+    lines = []
+    r = runner(["systemctl", "--user", "list-unit-files", "rm-*.timer", "timer-guard.timer", "--state=enabled",
+                "--no-legend"], capture_output=True, text=True, timeout=30, stdin=subprocess.DEVNULL)
+    for row in sorted(r.stdout.splitlines()):
+        unit = row.split()[0]
+        if unit in TRIAL_ONLY:
+            continue
+        last = live_line._systemctl_show(unit, "LastTriggerUSec", runner)
+        nxt = live_line._systemctl_show(unit, "NextElapseUSecRealtime", runner)
+        gap = int(nxt) - int(last) if last.isdigit() and nxt.isdigit() else \
+            duration_s(live_line._systemctl_show(unit, "TimersMonotonic", runner)) or 8 * 86400    # unknown: never tighter than a weekly timer allows
+        lines.append("unit=%s max_age=%dh" % (unit, max(2, math.ceil(3 * gap / 3600))))
+    root = HERE.parent.parent.parent
+    wired = json.dumps(json.loads((root / ".claude/settings.json").read_text(encoding="utf-8")).get("hooks") or {})
+    lines += ["hook=%s" % h for h in sorted(set(re.findall(r"([\w.-]+\.(?:py|sh))", wired)))]
+    sched = json.loads((HERE.parent / "rimflow" / "dispatcher_schedule.json").read_text(encoding="utf-8"))
+    lines += ["role=%s max_age=%s" % (r["name"], "6d" if r["name"] == "Innovator" else "3d")   # it runs twice a week
+              for r in sched["roles"] if r.get("enabled")]
+    return lines
+
+
+UNIT = """# rm-deadman: the no-AI sweep of every live promise, with the outside dead-man for the Dispatcher and ops_watch (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING).
 [Unit]
-Description=Dead-man check for the Dispatcher and ops_watch
+Description=Recheck every live promise, and the Dispatcher and ops_watch stamps
 
 [Service]
 Type=oneshot
+WorkingDirectory={deploy}
 ExecStart=/usr/bin/python3 {deploy}/src/RimMandrake/Utils/deadman_check.py run --file-alarms
 TimeoutStartSec=300s
 Nice=10
 """
 TIMER = """[Unit]
-Description=Dead-man check every 10 min
+Description=Live promise sweep every 15 min
 
 [Timer]
-OnCalendar=*:03/10
+OnCalendar=*:03/15
 Persistent=true
 
 [Install]
@@ -234,15 +390,29 @@ def main(argv=None):
     r.add_argument("--file-alarms", action="store_true")
     i = sub.add_parser("install")
     i.add_argument("--apply", action="store_true")
-    i.add_argument("--deploy", default=os.environ.get("RM_PULSE_DEPLOY", "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))
+    i.add_argument("--deploy", default="/home/mandrake/rm/dispatch")
+    b = sub.add_parser("baseline")
+    b.add_argument("--write", action="store_true")
     a = ap.parse_args(argv)
     if a.cmd == "install":
         return install(a.apply, a.deploy)
-    import ops_watch as OW
-    st = check(time.time(), OW.real_filer if a.file_alarms else None)
-    bad = {k: v for k, v in st.items()}
-    print("deadman: %s" % ("all arms alive" if not bad else json.dumps(bad, sort_keys=True)[:400]))
-    return 0
+    if a.cmd == "baseline":
+        lines = generate_baseline()
+        fresh = {item_id(x) for x in lines}
+        lines += [x for x in load_baseline() if item_id(x) not in fresh]   # only a hand removes a promise
+        if a.write:
+            BASELINE.write_text("# The running system's live promises (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING): "
+                                "deadman_check.py sweeps them.\n# A failed line files or reopens LIVE_RESTORE_<NAME>. "
+                                "Delete a line to retire its promise.\n" + "\n".join(lines) + "\n", encoding="utf-8")
+        print("%d lines%s" % (len(lines), " written to %s" % BASELINE if a.write else ""))
+        return 0
+    import live_line
+    report = sweep(time.time(), live_filer if a.file_alarms else None, read_items(), load_baseline(),
+                   judge(stamps(), time.time()), sees=live_line.can_see())
+    print("sweep: %s" % report["line"])
+    for b_ in report["broken"]:
+        print("  %s: %s" % (b_["item"], b_["why"]))
+    return 1 if report.get("blind") or report.get("errors") else 0
 
 
 if __name__ == "__main__":

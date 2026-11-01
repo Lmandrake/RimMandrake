@@ -1083,6 +1083,7 @@ CANONICAL = {
     "reassign":  dict(seat="DECIDE", id="A_B_1", to="CHECK"),
     "reclaim":   dict(seat="BUILD", id="A_B_1"),
     "close":     dict(seat="BUILD", id="A_B_1", sha="abc1234"),
+    "live":      dict(seat="RUNNER", id="A_B_1", result="broken", detail="gone"),
     "drop":      dict(seat="BUILD", id="A_B_1", reason="x"),
     "supersede": dict(seat="BUILD", id="A_B_1", by="B_C_1"),
     "note":      dict(seat="BUILD", id="A_B_1", text="x"),

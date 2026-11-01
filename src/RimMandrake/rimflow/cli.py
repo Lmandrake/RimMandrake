@@ -1437,6 +1437,9 @@ def cmd_show(args, seat):
                                  " (on %s)" % it.blocked_on if it.blocked_on else ""))
     if it.closed_sha:
         print("closed at %s" % it.closed_sha)
+    if it.live or it.live_repeats:
+        print("live: %s  (%d outage(s)%s%s)" % (it.live or "from the baseline", it.live_repeats, ", NEEDS FOLD" if it.live_repeats >= 2 else "",
+                                                 ", BROKEN: " + it.live_broken if it.live_broken else ""))
     if it.superseded_by:
         print("superseded by %s" % it.superseded_by)
     if it.built_sha:
@@ -1957,6 +1960,64 @@ def _unpublished_commit(sha):
     return None
 
 
+_HERE = os.path.dirname(os.path.abspath(__file__))
+LIVE_HELP = ("what must stay alive, checked now and rechecked for good by the sweep: "
+             "`unit=rm-foo.timer reading=<path> max_age=6h` | `unit=rm-foo.timer max_age=6h` | `hook=block_foo.py` | "
+             "`role=Operations max_age=2d` | `once: <why>`")
+
+
+def _sha_paths(sha):
+    """-> the paths a commit changed | None when it does not resolve here (a sha is a literal at close)."""
+    r = subprocess.run(["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "--root", "--diff-merges=first-parent", sha], cwd=_HERE,
+                       capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+    return r.stdout.split("\n")[:-1] if r.returncode == 0 else None
+
+
+def _sha_time(sha):
+    r = subprocess.run(["git", "show", "-s", "--format=%ct", sha], cwd=_HERE, capture_output=True, text=True,
+                       timeout=60, stdin=subprocess.DEVNULL)
+    return int(r.stdout.strip()) if r.returncode == 0 and r.stdout.strip().isdigit() else 0
+
+
+def _live_gate(verb, args, it, sha):
+    """-> the live line to record | None. DONE MEANS RUNNING (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING): a commit touching
+    a hook, a unit, the schedule or the ops rules, an Operations alarm, or an item already holding a promise closes
+    only on a line that holds right now. Everything else passes untouched: nobody classifies anything."""
+    import live_line
+    line = getattr(args, "live", None) or (it.live if it is not None else None)
+    paths = _sha_paths(sha)
+    touched = live_line.needs_line(paths or [])
+    alarm = it is not None and args.id.startswith(("OPS_", "LIVE_RESTORE_"))
+    if not line and not touched and not alarm:
+        return None
+    if not line:
+        die("%s: %s needs a live line: %s.\n\nSay what must stay alive, and rimflow checks it now:\n"
+            "    --live \"unit=rm-foo.timer reading=<path> max_age=6h\"\n    --live \"hook=block_foo.py\"\n"
+            "    --live \"once: <why this is a real one-off>\"\nNothing changed: the item is as it was."
+            % (verb, args.id, ("%s touches %s" % (sha, touched[0])) if touched else "it is an Operations alarm"))
+    why = live_line.check(line, not_before=_sha_time(sha))
+    if why:
+        die("%s: %s: the live line does not hold: %s\nThe promise is checked, not recorded on trust. Fix what it "
+            "names, then run this again. Nothing changed." % (verb, args.id, why))
+    if paths is not None and not line.startswith("once:") \
+            and all(p.startswith("infrastructure/state/ledger/") for p in paths):
+        die("%s: %s changes only the ledger, so it cannot be what keeps %r alive. Name the commit that did the "
+            "work. Nothing changed." % (verb, sha, line))
+    return line
+
+
+def cmd_live(args, seat):
+    """The sweep's reading of a promise (deadman_check.py). RUNNER only, by the verb table."""
+    _, w = load()
+    ev = {"seat": seat, "event": "live", "id": args.id, "result": args.result}
+    if args.detail:
+        ev["detail"] = args.detail[:300]
+    _emit(ev, w, quiet=True)
+    it = _replay_now().items[args.id]
+    print("%s live %s -> %s, outage %d" % (args.id, args.result, it.state, it.live_repeats))
+    return 0
+
+
 def cmd_close(args, seat):
     _, w = load()
     sha = args.sha or head_sha()
@@ -1996,6 +2057,9 @@ def cmd_close(args, seat):
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
     if args.reason:
         ev["reason"] = args.reason
+    line = _live_gate("close", args, it, sha)
+    if line:
+        ev["live"] = line
     _emit(ev, w, quiet=True)
     if holder and holder != seat:
         print("%s closed at %s — ruled by %s (%s's item)%s"
@@ -2189,6 +2253,9 @@ def cmd_implemented(args, seat):
     needs = model.needs_for_levels([c["level"] for c in owed])
     ev = {"seat": seat, "event": "implemented", "id": args.id, "sha": full[:12],
           "ref": ref, "criteria": crit, "needs": needs}
+    line = _live_gate("implemented", args, it, full)
+    if line:
+        ev["live"] = line
     _emit(ev, w, quiet=True)
     after = _replay_now().items[args.id]
     print("%s implemented at %s (%s) -> %s" % (args.id, full[:12], ref, after.state))
@@ -3499,6 +3566,7 @@ def build_parser():
                         "the item's `## criteria` section, every bullet level-tagged")
     s.add_argument("--none-owed", dest="none_owed", action="store_true",
                    help="say out loud that nothing beyond L0 is owed (-> done)")
+    s.add_argument("--live", help=LIVE_HELP)
 
     s = add("reconcile", "judge commits that name an item: complete|partial|unrelated. "
             "Changes NO state; stops `next` re-offering those commits", cmd_reconcile)
@@ -3560,10 +3628,16 @@ def build_parser():
     s.add_argument("id")
     s.add_argument("--token", required=True)
 
+    s = add("live", "the no-AI sweep's reading of a promise; RUNNER only (reopens the same item, or puts it back)",
+            cmd_live)
+    s.add_argument("id")
+    s.add_argument("--result", required=True, choices=("broken", "kept"))
+    s.add_argument("--detail")
     s = add("close", "close it against a commit (any seat; --reason if not yours)",
             cmd_close)
     s.add_argument("id")
     s.add_argument("--sha", help="defaults to git HEAD")
+    s.add_argument("--live", help=LIVE_HELP)
     s.add_argument("--reason", help="why it is done/dead — required in practice when "
                                     "the item is another seat's; the ledger records "
                                     "which seat ruled")
@@ -3894,10 +3968,23 @@ def _resolve_command_seat(args):
     return resolve_seat(getattr(args, "seat", None))
 
 
+def _relentless_guard(args, argv):
+    """A leased relentless item's ledger state belongs to its supervisor (a stale worker cannot close it). Fails open
+    when the store cannot be read: rimflow must work on a host with no store."""
+    try:
+        import relentless
+        why = relentless.guard(getattr(args, "cmd", None), getattr(args, "id", None), argv)
+    except Exception:  # noqa: BLE001
+        return
+    if why:
+        die(why + "\n")
+
+
 def main(argv=None):
     _bind_paths()
     p = build_parser()
     args = p.parse_args(argv)
+    _relentless_guard(args, sys.argv[1:] if argv is None else argv)
     if not getattr(args, "cmd", None):
         p.print_help()
         return 1

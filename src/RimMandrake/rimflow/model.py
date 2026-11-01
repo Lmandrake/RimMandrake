@@ -213,7 +213,7 @@ def display(seat):
 def canonical(seat):
     """-> the ledger seat key for a typed name ("CONDUCTOR" -> "BENCH"); any other name is itself."""
     return SEAT_ALIAS.get(seat, seat)
-RUNNER_VERBS = ("verify", "finding", "note", "spawn", "raise")
+RUNNER_VERBS = ("verify", "finding", "note", "spawn", "raise", "live")
 DISPATCHER_VERBS = ("note",)
 # 🔑 `spawn` and `raise` joined 2026-10-26 for the no-LLM SteveDesktop steward
 # (STEVE_STEWARD_BUILD_NO_LLM_OWNER, design/RimMandrake/work_allocation_framework_2026-10-26.md
@@ -426,7 +426,7 @@ VERBS = {
     # Enters `built`, or `done` when nothing is owed. Any seat, like `close`.
     # ⚠️ A reader older than step 2 refuses the unknown verb into `world.errors`: the item
     # keeps its previous state and needs there (selftest_built_old_reader.py).
-    "implemented": {"who": "any", "req": ("sha",), "opt": ("ref", "criteria", "needs")},
+    "implemented": {"who": "any", "req": ("sha",), "opt": ("ref", "criteria", "needs", "live")},
     "finding":   {"who": "any",   "req": ("from", "type", "severity", "name"), "opt": ()},
     # ⚠️ `spawn` carries no `id`. Its cause is `from` — a finding name, a run name, or
     # an item id — and its product is `name`. Requiring an `id` too forced the caller to
@@ -472,7 +472,12 @@ VERBS = {
     # `reason` on `close` carries WHY, and is what a cross-seat close writes instead of
     # a shrug. ⛔ The BAR is unchanged: done means proven, dead means probed. This
     # removes the seat boundary, never the evidence requirement.
-    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason",)},
+    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live")},
+    # `live` on close and implemented is the promise (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING, live_line.py). The verb
+    # `live` is the no-AI sweep's reading of it, RUNNER only: `broken` takes a done item back to ready, THE ONE PATH OUT
+    # OF `done`, because the record of the close stands in the log and the same id must count the repeat; `kept`
+    # returns it. A reader older than this entry refuses the verb into `world.errors` and leaves the item as it was.
+    "live":      {"who": ("RUNNER",), "req": ("result",), "opt": ("detail",)},
     "drop":      {"who": "any",   "req": ("reason",), "opt": ()},
     "supersede": {"who": "any",   "req": ("by",), "opt": ("reason",)},
     "note":      {"who": "any",   "req": ("text",), "opt": ()},
@@ -1401,7 +1406,7 @@ VERB_RANK = {
     "block": 2, "unblock": 2, "needs": 2, "retarget": 2,
     "reassign": 3, "reclaim": 3, "lease": 3.5,
     "claim": 4, "start": 5,
-    "note": 7, "reconcile": 7, "implemented": 7.5, "verify": 8,
+    "note": 7, "reconcile": 7, "live": 7, "implemented": 7.5, "verify": 8,
     "close": 9, "drop": 9, "supersede": 9,
 }
 _BRIDGE_RANK = {"released": 0, "taken": 1}
@@ -1531,6 +1536,7 @@ class Item(object):
     __slots__ = ("id", "title", "kind", "owner", "row", "target", "needs", "state",
                  "blocked", "blocked_reason", "blocked_on", "blocked_until", "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
+                 "live", "live_broken", "live_repeats", "live_from",
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
                  "built_sha", "built_ref", "built_at", "criteria", "outstanding",
@@ -1547,6 +1553,8 @@ class Item(object):
         self.this_deployment = False
         self.created_at = None
         self.closed_sha = self.superseded_by = self.caused_by = None
+        self.live = self.live_broken = self.live_from = None   # the promise, why it broke now, the state it broke from
+        self.live_repeats = 0           # outages of this promise: the same id counts every return
         self.claim_ts = None            # ts of the claim that holds it (earliest wins)
         self.runs, self.findings, self.history = [], [], []
         # `reconcile` verdicts, in ledger order: [{ts, seat, verdict, shas, remaining}]
@@ -2018,6 +2026,32 @@ def _apply_itemless(ev, seat, world):
         return
 
 
+def _live_promise(ev, item):
+    """A close or implemented that names a promise; either one ends an outage, its check having passed at the CLI."""
+    item.live = ev.get("live") or item.live
+    item.live_broken = item.live_from = None
+
+
+def _apply_live(ev, item):
+    """The sweep's reading. `broken` opens the item, counting the outage once; `kept` puts it back."""
+    if ev["result"] not in ("broken", "kept"):
+        raise SchemaError("live: result must be broken or kept, got %r" % ev["result"])
+    if ev["result"] == "broken":
+        if item.state in ("dropped", "superseded"):
+            raise TransitionError("%s is %s: a retired item holds no promise" % (item.id, item.state))
+        if not item.live_broken:
+            item.live_repeats += 1
+        item.live_broken = ev.get("detail") or "broken"
+        if item.state in ("done", "built", "validated"):
+            item.live_from, item.state = item.state, "ready"
+        return
+    if not item.live_broken:
+        raise TransitionError("%s has no outage for `kept` to end" % item.id)
+    item.live_broken = None
+    if item.state in ("ready", "proposed"):      # a repair someone started stays theirs: kept never closes a doing
+        item.state, item.live_from = item.live_from or "done", None
+
+
 def _apply_implemented(ev, item):
     """`implemented` -> built (live levels owed) or done (nothing owed).
 
@@ -2028,6 +2062,7 @@ def _apply_implemented(ev, item):
     owed = [c["id"] for c in crit if c["level"] != "L0"]
     target = "built" if owed else "done"
     _transition(item, target)
+    _live_promise(ev, item)
     item.built_sha, item.built_ref, item.built_at = ev["sha"], ev.get("ref"), ev["ts"]
     item.criteria, item.outstanding, item.passed = crit, owed, []
     item.level_reached = "L0"
@@ -2191,9 +2226,12 @@ def _apply_item_verb(ev, index, item, seat, world):
         # asked to change. FOUNDRY_QUEUE_NOT_OFFERING_READY_1 / RIMFLOW_RECLAIM_COMMAND_1.
         if item.state == "doing":
             to("ready")
+    elif verb == "live":
+        _apply_live(ev, item)
     elif verb == "close":
         to("done")
         item.closed_sha = ev["sha"]
+        _live_promise(ev, item)
         # ⚠️ ALL THREE, exactly as `unblock` does it. Clearing the flag and leaving the
         # reason behind left 23 live items projecting `blocked False` with a stale
         # `blocked_reason` still attached (measured 2026-09-03). Every reader gates on

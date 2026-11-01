@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""selftest for deadman_check.py (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT). Fixtures only; no ledger/systemd touched.
+"""selftest for deadman_check.py (DISPATCHER_BUILD_OUTSIDE_DEADMAN_HEARTBEAT, LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING). Fixtures only; no ledger/systemd touched.
 
     python3 src/RimMandrake/Utils/selftest_deadman_check.py
 """
@@ -40,6 +40,112 @@ def write_stamps(ops_t, disp_t, dry=False):
         (d / "state.json").write_text(json.dumps({"last_tick": OW.iso(disp_t)}))
 
 
+class It:
+    def __init__(self, state="done", live=None, live_broken=None, live_repeats=0):
+        self.state, self.live, self.live_broken, self.live_repeats = state, live, live_broken, live_repeats
+
+
+GOOD = "unit=rm-good.timer max_age=1h"
+DEAD = "unit=rm-dead.timer max_age=1h"
+
+
+def sweeps():
+    calls = []
+
+    def filer(todo, conf):
+        calls.append(todo)
+        return {t["item"]: None for t in todo}
+
+    chk = lambda line: "it died" if "dead" in line else None
+    # the promise the ledger holds: reopen the SAME item
+    items = {"A_FIX_1": It(live=DEAD), "B_FIX_1": It(live=GOOD)}
+    r = DM.sweep(NOW, filer, items, [], {}, chk)
+    check(len(calls) == 1 and calls[0] == [{"item": "A_FIX_1", "result": "broken", "detail": "it died"}],
+          "a dead promise reopens its own item and files nothing new")
+    check(r["line"] == "2 promises, 1 kept, 1 broken", "the one report line: " + r["line"])
+    check(json.loads((TMP / "ops/live_sweep.json").read_text())["line"] == r["line"], "the line reaches live_sweep.json")
+    # already reopened: nothing to say, the ledger is the state
+    calls.clear()
+    items["A_FIX_1"] = It(state="ready", live=DEAD, live_broken="it died", live_repeats=1)
+    DM.sweep(NOW, filer, items, [], {}, chk)
+    check(not calls, "still dead: no second event")
+    # recovery puts it back
+    items["A_FIX_1"].live = GOOD
+    DM.sweep(NOW, filer, items, [], {}, chk)
+    check(calls and calls[0][0]["item"] == "A_FIX_1" and calls[0][0]["result"] == "kept", "recovery closes the item itself")
+    # a promise with no item: fixed id, spawned once
+    calls.clear()
+    DM.sweep(NOW, filer, {}, [DEAD], {}, chk)
+    check(calls[0][0]["item"] == "LIVE_RESTORE_RM_DEAD" and calls[0][0].get("spawn"), "a baseline promise files its fixed id")
+    calls.clear()
+    DM.sweep(NOW, filer, {"LIVE_RESTORE_RM_DEAD": It(state="done", live_repeats=1)}, [DEAD], {}, chk)
+    check(calls[0][0]["item"] == "LIVE_RESTORE_RM_DEAD" and not calls[0][0].get("spawn"), "a returning outage reuses the id")
+    # the second outage asks for a fold
+    r = DM.sweep(NOW, filer, {"LIVE_RESTORE_RM_DEAD": It(state="done", live_repeats=1)}, [DEAD], {}, chk)
+    check(r["fold"] == ["LIVE_RESTORE_RM_DEAD"] and "1 need a fold" in r["line"], "repeat 2 reads needs-fold")
+    # arms take the same road
+    calls.clear()
+    r = DM.sweep(NOW, filer, {}, [], {"dispatcher": "too old", "ops_watch": None}, chk)
+    check([t["item"] for t in calls[0]] == ["LIVE_RESTORE_DISPATCHER"], "a dead arm has a fixed id too")
+    # once, retired and worked items are not swept; one pass never floods
+    p = DM.promises({"O": It(live="once: repair"), "D": It(state="dropped", live=DEAD), "W": It(state="doing", live=DEAD)}, [])
+    check(p == [], "once, dropped and an item in work are not swept")
+    check(DM.promises({"LIVE_RESTORE_RM_DEAD": It(state="superseded")}, [DEAD]) == [], "a retired fixed id is not swept")
+    calls.clear()
+    many = ["unit=rm-dead%d.timer max_age=1h" % i for i in range(14)]
+    r = DM.sweep(NOW, filer, {}, many, {}, chk)
+    check(len(calls[0]) == DM.MAX_PER_PASS and r["held"] == 4 and len(r["broken"]) == 14, "a mass outage is capped and counted")
+    # blind: nothing moves
+    calls.clear()
+    r = DM.sweep(NOW, filer, {"A": It(live=DEAD)}, [], {}, chk, sees=False)
+    check(not calls and r.get("blind") and "unread" in r["line"], "a blind pass reopens nothing and says so")
+    # a failed filing is reported, and repeats next pass because the ledger did not move
+    def boom(todo, conf):
+        raise RuntimeError("no")
+    r = DM.sweep(NOW, boom, {"A": It(live=DEAD)}, [], {}, chk)
+    check(r["errors"].get("A"), "a filer that raises is reported")
+    # a reading that could not be pushed is retried by the next pass, with nothing new to file
+    seen = []
+    def stuck(todo, conf):
+        seen.append(todo)
+        return {"_publish": "pushed" if len(seen) > 1 else "publish stopped: no"}
+    ok_chk = lambda line: None
+    r = DM.sweep(NOW, stuck, {"A": It(live=DEAD)}, [], {}, chk)
+    check(r["unpublished"] == "publish stopped: no", "a failed publish is on the report")
+    r = DM.sweep(NOW, stuck, {"A": It(state="ready", live=DEAD, live_broken="x")}, [], {}, chk)
+    check(seen[1] == [] and r["unpublished"] is None, "the next pass pushes it, and the flag clears")
+    check(DM.unpushed({"_publish": "nothing to publish"}, {"unpublished": "no"}) == "no", "nothing tried settles nothing")
+    (TMP / "ops/live_sweep.json").write_text(json.dumps({"unpublished": "no"}))
+    r = DM.sweep(NOW, stuck, {}, [], {}, chk, sees=False)
+    check(r["unpublished"] == "no", "a blind pass keeps the debt")
+    (TMP / "ops/live_sweep.json").write_text("{}")
+    # paused: not broken, and not recovered either
+    calls.clear()
+    r = DM.sweep(NOW, filer, {"A": It(state="ready", live=DEAD, live_broken="x")}, [], {}, lambda l: DM.EXCUSED)
+    check(not calls and "1 paused" in r["line"] and not r["broken"], "a paused promise neither reopens nor ends an outage")
+    # a fixed id answers for its baseline line whatever it closed with
+    p = DM.promises({"LIVE_RESTORE_RM_DEAD": It(live=GOOD)}, [DEAD])
+    check(p == [{"item": "LIVE_RESTORE_RM_DEAD", "line": DEAD}], "a ledger line cannot hide a baseline line")
+    # an old pause record excuses nothing; a pending restart does
+    (TMP / "ops/timers_pauses.json").write_text(json.dumps({"timer-resume-1.timer": ["rm-dead.timer"]}))
+    import subprocess as SP
+    run = lambda state: (lambda argv, **kw: SP.CompletedProcess(argv, 0, state, ""))
+    check(not DM.excused(DEAD, run("inactive")), "a pause whose restart is gone excuses nothing")
+    check(DM.excused(DEAD, run("active")), "a pause with its restart armed is excused")
+    check(DM.duration_s("{ OnBootUSec=3min ; x }\n{ OnUnitInactiveUSec=1h 30min ; next }") == 5400, "timer period parsed")
+    check(DM.duration_s("{ OnBootUSec=3min ; x }") is None, "no period is unknown")
+    base = DM.load_baseline()
+    names = [DM.item_id(x) for x in base]
+    check(len(base) > 40 and len(set(names)) == len(names), "baseline: %d lines, one id each" % len(base))
+    bad = TMP / "bad.txt"
+    bad.write_text("unit=rm-x.timer\n")
+    try:
+        DM.load_baseline(bad)
+        check(False, "a bad baseline line must raise")
+    except ValueError:
+        check(True, "a bad baseline line raises")
+
+
 def main():
     j = DM.judge({"ops_watch": NOW - 600, "dispatcher": NOW - 60}, NOW)
     check(j == {"ops_watch": None, "dispatcher": None}, "fresh stamps: both alive")
@@ -76,39 +182,7 @@ def main():
     (TMP / "ops/status.json").write_text("{torn")
     check(DM.stamps(mode="dry")["ops_watch"] is None, "torn status.json -> None, not fresh")
 
-    filed = []
-
-    def filer(todo, conf):
-        filed.append([dict(a) for a in todo])
-        return {a["name"]: None for a in todo}
-
-    ids = set()
-    # dead dispatcher: one filing
-    st = DM.check(NOW, filer, ids, {"ops_watch": NOW - 60, "dispatcher": NOW - 7200})
-    check(len(filed) == 1 and st["dispatcher"]["state"] == "OPEN" and st["dispatcher"]["name"].startswith("OPS_DEADMAN_REVIVE"),
-          "dead dispatcher files one item")
-    check("ops_watch" not in st, "live ops_watch not filed")
-    DM.check(NOW + 600, filer, ids, {"ops_watch": NOW, "dispatcher": NOW - 7200})
-    check(len(filed) == 1, "still dead: no second filing")
-    # recovers: note, state cleared
-    DM.check(NOW + 1200, filer, ids, {"ops_watch": NOW + 1000, "dispatcher": NOW + 1100})
-    check(len(filed) == 2 and filed[1][0].get("note_only") and "dispatcher" not in json.loads((TMP / "ops/deadman.json").read_text()),
-          "recovery notes the item and re-arms")
-    # failed filing stays PENDING and retries under the same name
-    bad = []
-    def failer(todo, conf):
-        bad.append(todo[0]["name"])
-        return {todo[0]["name"]: "boom"}
-    DM.check(NOW + 2000, failer, ids, {"ops_watch": 0.0, "dispatcher": NOW + 1900})
-    st = DM.check(NOW + 2100, failer, ids, {"ops_watch": 0.0, "dispatcher": NOW + 2000})
-    check(st["ops_watch"]["state"] == "PENDING" and len(bad) == 2 and bad[0] == bad[1], "failed filing retried under one name")
-    # no filer: nothing written to a ledger
-    (TMP / "ops/deadman.json").unlink()
-    st = DM.check(NOW, None, ids, {"ops_watch": NOW, "dispatcher": 0.0})
-    check(st["dispatcher"]["state"] == "PENDING", "run without --file-alarms stays PENDING")
-    # unreadable dedup state holds filing
-    (TMP / "ops/deadman.json").write_text("[1]")
-    check("_state" in DM.check(NOW, filer, ids, {"ops_watch": 0.0, "dispatcher": 0.0}), "unreadable state holds filing")
+    sweeps()
     # install plan writes nothing
     home = TMP / "home"
     os.environ["HOME"] = str(home)

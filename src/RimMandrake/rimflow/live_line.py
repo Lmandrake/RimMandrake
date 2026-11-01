@@ -83,14 +83,19 @@ def _hook(name, settings):
     for path in paths:
         try:
             with open(path, encoding="utf-8") as f:
-                text = json.dumps(json.load(f).get("hooks") or {})
+                got = json.load(f)
+            if got.get("disableAllHooks"):
+                return "%s disables all hooks" % path
+            text = json.dumps(got.get("hooks") or {})
         except (OSError, ValueError):
             continue
         readable += 1
         if rx.search(text):
-            target = os.path.join(os.path.dirname(os.path.dirname(path)), ".claude", "hooks", name)
-            if ".claude/hooks/" + name in text and not os.path.exists(target):
-                return "hook %s is wired in %s but %s is absent" % (name, path, target)
+            home = os.path.dirname(os.path.dirname(path))     # the commands name it relative to the project
+            tokens = re.findall(r"[^\s\"']*/" + re.escape(name), text) or [os.path.join(".claude", "hooks", name)]
+            found = [os.path.join(home, os.path.expandvars(os.path.expanduser(re.sub(r"^\$\{?CLAUDE_PROJECT_DIR(:-[^}]*)?\}?/", "", t)))) for t in tokens]
+            if not any(os.path.exists(t) for t in found):
+                return "hook %s is wired in %s but %s is absent" % (name, path, found[0])
             return None
     if not readable:
         return "settings unreadable: %s" % ", ".join(paths)
@@ -100,7 +105,7 @@ def _hook(name, settings):
 def _timer_last(unit, runner):
     """-> epoch of the timer's last firing | None."""
     got = _systemctl_show(unit, "LastTriggerUSec", runner)
-    return int(got) / 1e6 if got.isdigit() and int(got) else None
+    return int(got) if got.isdigit() and int(got) else None    # --timestamp=unix: whole seconds
 
 
 def _systemctl_show(unit, prop, runner):
@@ -113,14 +118,14 @@ def _systemctl_show(unit, prop, runner):
 
 
 def _role_last(role, state_path=None):
-    """-> epoch of a Dispatcher role's newest launch | None. Slot keys are 'YYYY-MM-DD HH:MM'."""
+    """-> the end of the day of a role's newest launch | None. Slot keys begin YYYY-MM-DD; what follows varies."""
     path = state_path or os.path.join(os.environ.get("RM_DISPATCHER_STATE", "/mnt/d/ClaudeWork/rimmandrake/dispatcher"),
                                       "state.json")
     try:
         with open(path, encoding="utf-8") as f:
             done = json.load(f)["roles"][role]["done"]
-        slots = [k for k, v in done.items() if v == "launch"]
-        return max(datetime.strptime(k, "%Y-%m-%d %H:%M").timestamp() for k in slots) if slots else None
+        days = [k[:10] for k, v in done.items() if v == "launch"]
+        return max(datetime.strptime(k, "%Y-%m-%d").timestamp() + 86400 for k in days) if days else None
     except (OSError, ValueError, KeyError, TypeError, AttributeError):
         return None
 
@@ -141,8 +146,9 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         t = _role_last(p["role"], state_path)
         if t is None:
             return "role %s has no recorded launch" % p["role"]
-        return "role %s last launched %d s ago (max %d)" % (p["role"], now - t, p["max_age_s"]) \
-            if now - t > p["max_age_s"] else None
+        if now - t > p["max_age_s"]:
+            return "role %s last launched %d s ago (max %d)" % (p["role"], now - t, p["max_age_s"])
+        return "role %s's last launch predates the commit it should prove" % p["role"] if t < not_before else None
     for verb, want in (("is-enabled", "enabled"), ("is-active", "active")):
         got = _systemctl(verb, p["unit"], runner)
         if got != want:
@@ -158,6 +164,8 @@ def check(line, settings=None, now=None, not_before=0, runner=subprocess.run, st
         if mt is None:
             return "%s has no last firing" % p["unit"]
         name = "last firing of %s" % p["unit"]
+    if mt - now > 300:
+        return "%s is dated %d s in the future" % (name, mt - now)
     if now - mt > p["max_age_s"]:
         return "%s is %d s old (max %d)" % (name, now - mt, p["max_age_s"])
     if mt < not_before:
