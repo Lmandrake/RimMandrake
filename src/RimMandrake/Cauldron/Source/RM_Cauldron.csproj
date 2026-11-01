@@ -62,6 +62,7 @@
     <Compile Include="RM_CauldronBiome.cs" />
     <Compile Include="RM_CompMetalYield.cs" />
     <Compile Include="RM_VentBloomExposure.cs" />
+    <Compile Include="RM_AcidAir.cs" />
     <Compile Include="RM_CompVexxissBehaviour.cs" />
     <Compile Include="RM_CondensateGardens.cs" />
     <Compile Include="RM_CauldronVents.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="RM_GasTap.cs" />
     <Compile Include="RM_CauldronRuinKit.cs" />
     <Compile Include="Kernel\RM_RhossakKernel.cs" />
+    <Compile Include="Kernel\RM_AcidAirKernel.cs" />
     <Compile Include="RM_CompRhossakGrove.cs" />
   </ItemGroup>
 

@@ -118,6 +118,7 @@
           <li><material>Leather</material><capacityFactor>1.0</capacityFactor><holdsHot>false</holdsHot><holdsAcid>false</holdsAcid></li>
           <li><material>Glass</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
           <li><material>Metal</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
+          <li><material>Vexxith</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
         </materials>
       </li>
     </modExtensions>
@@ -213,6 +214,7 @@
         <materials>
           <li><material>Wood</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
           <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
+          <li><material>Vexxith</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
           <li><material>Leather</material><capacityFactor>0.8</capacityFactor><holdsHot>false</holdsHot><holdsAcid>false</holdsAcid></li>
         </materials>
       </li>
@@ -314,6 +316,7 @@
           <li><material>Wood</material><capacityFactor>1.0</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
           <li><material>Metal</material><capacityFactor>1.2</capacityFactor><holdsHot>true</holdsHot><holdsAcid>false</holdsAcid></li>
           <li><material>Plasteel</material><capacityFactor>1.6</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
+          <li><material>Vexxith</material><capacityFactor>1.6</capacityFactor><holdsHot>true</holdsHot><holdsAcid>true</holdsAcid></li>
         </materials>
       </li>
     </modExtensions>

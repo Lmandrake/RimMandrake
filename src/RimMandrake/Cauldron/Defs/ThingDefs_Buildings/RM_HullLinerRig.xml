@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VEXXITH_USES_1, the hull liner (owner 2026-10-09: "Perhaps a liner treatment for the ship's outside to prevent acidic
+  damage to the ship's hull."). One rig standing on a gravship's substructure spares that ship from ambient acid
+  (RM_HullLinerExtension, read in Source/RM_AcidAir.cs). It rides with the ship like any other building on it.
+  PROVISIONAL cost. ART OWED: FlowWorks' liquid-tap texture, tinted.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_HullLinerRig</defName>
+    <label>hull liner rig</label>
+    <description>A pressure vat of ground vexxith plate and a web of spray lines clamped along the ship's frame. It keeps the outer skin glazed with a thin grey coat that acid beads off. One rig serves a whole ship, for as long as it stays aboard.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidTap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(120,104,140)</color>
+    </graphicData>
+    <size>(1,1)</size>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <rotatable>false</rotatable>
+    <canOverlapZones>false</canOverlapZones>
+    <designationCategory>Odyssey</designationCategory>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>6000</WorkToBuild>
+      <Flammability>0</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>30</Mass>
+    </statBases>
+    <costList>
+      <RM_Vexxith>40</RM_Vexxith>
+      <Steel>30</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <researchPrerequisites>
+      <li>OrbitalTech</li>
+    </researchPrerequisites>
+    <placeWorkers>
+      <li>RimMandrake.Cauldron.RM_PlaceWorker_OnShipHull</li>
+    </placeWorkers>
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AcidImmuneExtension" />
+      <li Class="RimMandrake.Cauldron.RM_HullLinerExtension" />
+    </modExtensions>
+  </ThingDef>
+</Defs>

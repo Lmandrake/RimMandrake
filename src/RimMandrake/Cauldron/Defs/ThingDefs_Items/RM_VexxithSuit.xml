@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VEXXITH_USES_1, owner 2026-10-09: "This material could be one of the alternative ingredients to make really great
+  environmental suits too." Odyssey's vacsuit and helmet with vexxith in place of plasteel: same seal (VacuumResistance sums
+  to 1.01, so RM_AcidAirKernel.BurnChance is 0), better armour, heat and speed, acid-proof pieces.
+  Fields copied from Data/Odyssey/Defs/ThingDefs_Misc/Apparel_Various.xml and Apparel_Headgear.xml; every DLC is assumed.
+  No tags: never rolled onto a generated pawn. PROVISIONAL numbers. ART OWED: vanilla's vacsuit art, tinted.
+-->
+<Defs>
+
+  <ThingDef ParentName="ApparelBase">
+    <defName>RM_VexxithSuit</defName>
+    <label>vexxith suit</label>
+    <description>An environmental suit with its outer shell laid up from sheared vexxith plate in place of plasteel. It seals like a vacsuit, shrugs off heat a vacsuit would not, and comes out of a chemical bath unmarked. It is also a little kinder to the legs. Wear it with the helmet: the seal is only as good as the neck ring.</description>
+    <generateAllowChance>0</generateAllowChance>
+    <techLevel>Spacer</techLevel>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>0.9</drawSize>
+      <color>(120,104,140)</color>
+    </graphicData>
+    <statBases>
+      <WorkToMake>60000</WorkToMake>
+      <MaxHitPoints>260</MaxHitPoints>
+      <Mass>12</Mass>
+      <Flammability>0</Flammability>
+      <ArmorRating_Sharp>0.72</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.36</ArmorRating_Blunt>
+      <ArmorRating_Heat>1.0</ArmorRating_Heat>
+      <Insulation_Cold>90</Insulation_Cold>
+      <Insulation_Heat>40</Insulation_Heat>
+      <EquipDelay>14</EquipDelay>
+    </statBases>
+    <equippedStatOffsets>
+      <MoveSpeed>-0.8</MoveSpeed>
+      <VacuumResistance>0.32</VacuumResistance>
+    </equippedStatOffsets>
+    <thingCategories>
+      <li>ApparelArmor</li>
+    </thingCategories>
+    <smeltable>true</smeltable>
+    <apparel>
+      <bodyPartGroups>
+        <li>Torso</li>
+        <li>Neck</li>
+        <li>Shoulders</li>
+        <li>Arms</li>
+        <li>Legs</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/Vacsuit/Vacsuit</wornGraphicPath>
+      <layers>
+        <li>Middle</li>
+        <li>Shell</li>
+      </layers>
+      <defaultOutfitTags>
+        <li>Spacefarer</li>
+      </defaultOutfitTags>
+      <useDeflectMetalEffect>true</useDeflectMetalEffect>
+      <soundWear>Wear_PowerArmor</soundWear>
+      <soundRemove>Remove_PowerArmor</soundRemove>
+    </apparel>
+    <costList>
+      <ComponentIndustrial>4</ComponentIndustrial>
+      <Steel>60</Steel>
+      <RM_Vexxith>35</RM_Vexxith>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>OrbitalTech</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
+      <displayPriority>236</displayPriority>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AcidImmuneExtension" />
+    </modExtensions>
+  </ThingDef>
+
+  <ThingDef ParentName="ArmorHelmetMakeableBase">
+    <defName>RM_VexxithSuitHelmet</defName>
+    <label>vexxith suit helmet</label>
+    <description>The vexxith suit's helmet: a vacsuit helmet with a shell and neck ring of sheared vexxith plate. It seals against vacuum and bad air, and acid beads off the visor frame.</description>
+    <possessionCount>1</possessionCount>
+    <generateAllowChance>0</generateAllowChance>
+    <techLevel>Spacer</techLevel>
+    <graphicData>
+      <texPath>Things/Pawn/Humanlike/Apparel/VacsuitHelmet/VacsuitHelmet</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <color>(120,104,140)</color>
+    </graphicData>
+    <statBases>
+      <WorkToMake>18000</WorkToMake>
+      <MaxHitPoints>170</MaxHitPoints>
+      <Mass>1.5</Mass>
+      <Flammability>0</Flammability>
+      <ArmorRating_Sharp>0.72</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.36</ArmorRating_Blunt>
+      <ArmorRating_Heat>1.0</ArmorRating_Heat>
+      <Insulation_Cold>6</Insulation_Cold>
+      <Insulation_Heat>4</Insulation_Heat>
+      <EquipDelay>4</EquipDelay>
+    </statBases>
+    <equippedStatOffsets>
+      <ToxicEnvironmentResistance>0.8</ToxicEnvironmentResistance>
+      <VacuumResistance>0.69</VacuumResistance>
+    </equippedStatOffsets>
+    <smeltable>true</smeltable>
+    <apparel>
+      <countsAsClothingForNudity>false</countsAsClothingForNudity>
+      <developmentalStageFilter>Child, Adult</developmentalStageFilter>
+      <immuneToToxGasExposure>true</immuneToToxGasExposure>
+      <canBeGeneratedToSatisfyWarmth>false</canBeGeneratedToSatisfyWarmth>
+      <canBeGeneratedToSatisfyToxicEnvironmentResistance>false</canBeGeneratedToSatisfyToxicEnvironmentResistance>
+      <canBeDesiredForIdeo>false</canBeDesiredForIdeo>
+      <bodyPartGroups>
+        <li>FullHead</li>
+      </bodyPartGroups>
+      <wornGraphicPath>Things/Pawn/Humanlike/Apparel/VacsuitHelmet/VacsuitHelmet</wornGraphicPath>
+      <layers>
+        <li>Overhead</li>
+      </layers>
+      <forceEyesVisibleForRotations>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </forceEyesVisibleForRotations>
+      <defaultOutfitTags>
+        <li>Spacefarer</li>
+      </defaultOutfitTags>
+    </apparel>
+    <costList>
+      <ComponentIndustrial>2</ComponentIndustrial>
+      <Steel>25</Steel>
+      <RM_Vexxith>10</RM_Vexxith>
+    </costList>
+    <recipeMaker>
+      <researchPrerequisite>OrbitalTech</researchPrerequisite>
+      <unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
+      <displayPriority>238</displayPriority>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+    </recipeMaker>
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AcidImmuneExtension" />
+    </modExtensions>
+  </ThingDef>
+
+</Defs>

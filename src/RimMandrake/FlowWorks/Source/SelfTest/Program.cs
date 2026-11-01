@@ -1837,6 +1837,12 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("ContainerMat_classify_stuff", () =>
             {
                 Assert(RM_ContainerMaterialMath.Classify("Plasteel", new[] { "Metallic" }) == RM_ContainerMaterial.Plasteel, "plasteel is its own material");
+                Assert(RM_ContainerMaterialMath.Classify("RM_Vexxith", new[] { "Metallic", "RM_VexxithPlate" }) == RM_ContainerMaterial.Vexxith, "vexxith is its own material, not metal");
+                Assert(RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Metal, true, true), "acid eats a steel gate");
+                Assert(!RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Plasteel, true, true), "plasteel gate holds acid");
+                Assert(RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Vexxith, true, true), "a vexxith gate reaches TakeDamage, where the Cauldron's toggled immunity answers");
+                Assert(!RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Metal, false, true), "the corrosion toggle stops gate burn");
+                Assert(!RM_ContainerMaterialMath.GateBurnsInAcid(RM_ContainerMaterial.Metal, true, false), "no acid, no burn");
                 Assert(RM_ContainerMaterialMath.Classify("Steel", new[] { "Metallic" }) == RM_ContainerMaterial.Metal, "steel is metal");
                 Assert(RM_ContainerMaterialMath.Classify("BlocksGranite", new[] { "Stony" }) == RM_ContainerMaterial.Glass, "any stone is glass");
                 Assert(RM_ContainerMaterialMath.Classify("Leather_Plain", new[] { "Leathery" }) == RM_ContainerMaterial.Leather, "leather");

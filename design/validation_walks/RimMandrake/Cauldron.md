@@ -72,6 +72,7 @@ Vexxith ignores acid (VEXXITH_CLOSED_LOOP_BUILD_1)
 - With `vexxithAcidImmunityEnabled` off a vexxith wall loses hit points to the same AcidBurn. → acid.vexxith_acid_toggle_off
 - Warscar's `RM_BloomAcid` (source folder Scarlands, composed beside this biome) is marked acid too, by a patch guarded on the def existing. → load.acid_wiring_shape
 - `vexxithDoorEnabled` exists, defaults on and is writable (it hides the door from the architect menu at the next launch). → settings.vexxithDoorEnabled_roundtrip
+- `acidAirEnabled`, `acidAirHullEnabled`, `vexxithGearEnabled` and `acidAirFactor` exist, default as shipped and are writable; what they do is proven offline by selftest_vexxith_uses (VEXXITH_USES_1). → settings.acidAirEnabled_roundtrip, settings.acidAirHullEnabled_roundtrip, settings.vexxithGearEnabled_roundtrip, settings.acidAirFactor_roundtrip
 
 Nettles on toxic shores
 - Raven nettles colonise land beside toxic water: some at map creation, more over the following weeks. → UNCOVERED: the live pass samples 40 random cells per 2500 ticks over the whole map and only runs where the map biome's roster names the nettle, so it needs days of ticks and a Cauldron-biome map; only the wiring is read (load.nettle_habitat_wired). Proposed tool: CAULDRON_CONDENSATE_SWEEP_HOOK_1

@@ -1209,13 +1209,22 @@ def settings_chain(t):
                   "ventGasDrifts", "ventGasToxicSmoke", "ruinKitEnabled",
                   # RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD: the ON arms are the `grove` chain (A5 a sleeping rhossak sprouts, A6 three
                   # held together root a grove); this roundtrip only proves the fields persist.
-                  "rhossakSproutEnabled", "rhossakGroveEnabled"):
+                  "rhossakSproutEnabled", "rhossakGroveEnabled",
+                  # VEXXITH_USES_1: acid air needs hours on a Cauldron or Forge map with a ship on it, and the gear gate acts
+                  # at startup; both are proven offline (selftest_vexxith_uses); this roundtrip only proves the fields persist.
+                  "acidAirEnabled", "acidAirHullEnabled", "vexxithGearEnabled"):
         with _comp(t, "%s_roundtrip" % field, toggle=field):
             if _live(t):
                 if not _same(_get_setting(t, field), DEFAULTS[field]):
                     _fail("%s is not at its shipped default" % field)
                 with _setting(t, field, not DEFAULTS[field]):
                     pass
+    with _comp(t, "acidAirFactor_roundtrip"):
+        if _live(t):
+            if not _same(_get_setting(t, "acidAirFactor"), DEFAULTS["acidAirFactor"]):
+                _fail("acidAirFactor is not at its shipped default")
+            with _setting(t, "acidAirFactor", 2.0):
+                pass
     with _comp(t, "biomeRarityFactor_roundtrip"):
         if _live(t):
             if not _same(_get_setting(t, "biomeRarityFactor"), DEFAULTS["biomeRarityFactor"]):

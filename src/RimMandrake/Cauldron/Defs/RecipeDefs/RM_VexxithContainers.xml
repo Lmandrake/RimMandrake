@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  VEXXITH_USES_1, owner 2026-10-09: "Barrels, bottles, and buckets that can withstand acid. Similar to Plasteel in that way."
+  One recipe per container, as FlowWorks' RM_ContainerRecipes.xml does for plasteel. They live here because FlowWorks
+  cannot name a Cauldron item; FlowWorks' own material rule is RM_ContainerMaterial.Vexxith.
+  Patches/RM_Cauldron_VexxithContainers.xml keeps the plain metal recipes from eating this rare plate.
+  PROVISIONAL counts and work.
+-->
+<Defs>
+
+  <RecipeDef>
+    <defName>RM_Make_Bottle_Vexxith</defName>
+    <label>make vexxith bottle</label>
+    <description>Machine bottles out of vexxith plate: holds acid like plasteel.</description>
+    <jobString>Machining vexxith bottle.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>2500</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Vexxith</li>
+          </thingDefs>
+        </filter>
+        <count>6</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_Vexxith</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BottleEmpty>5</RM_BottleEmpty>
+    </products>
+    <recipeUsers>
+      <li>TableMachining</li>
+      <li>FabricationBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Bucket_Vexxith</defName>
+    <label>make vexxith bucket</label>
+    <description>Machine a bucket out of vexxith plate: holds acid like plasteel.</description>
+    <jobString>Machining vexxith bucket.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>2000</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Vexxith</li>
+          </thingDefs>
+        </filter>
+        <count>5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_Vexxith</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BucketEmpty>1</RM_BucketEmpty>
+    </products>
+    <recipeUsers>
+      <li>TableMachining</li>
+      <li>FabricationBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RM_Make_Barrel_Vexxith</defName>
+    <label>make vexxith barrel</label>
+    <description>Machine a barrel out of vexxith plate: holds acid like plasteel.</description>
+    <jobString>Machining vexxith barrel.</jobString>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Machining</soundWorking>
+    <workAmount>3500</workAmount>
+    <productHasIngredientStuff>true</productHasIngredientStuff>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RM_Vexxith</li>
+          </thingDefs>
+        </filter>
+        <count>10</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>RM_Vexxith</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RM_BarrelEmpty>1</RM_BarrelEmpty>
+    </products>
+    <recipeUsers>
+      <li>TableMachining</li>
+      <li>FabricationBench</li>
+    </recipeUsers>
+  </RecipeDef>
+
+</Defs>

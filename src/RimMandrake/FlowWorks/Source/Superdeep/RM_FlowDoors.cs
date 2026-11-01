@@ -120,6 +120,35 @@ namespace RimMandrake.FlowWorks
 			}
 		}
 
+		protected override void Tick()
+		{
+			base.Tick();
+			if (this.IsHashIntervalTick(LiquidTypes.RM_ContainerMaterialMath.GateAcidIntervalTicks))
+			{
+				BurnIfTouchingAcid();
+			}
+		}
+
+		/// <summary>VEXXITH_USES_1: an acid body on the gate's own cell or either side of it eats the gate, shut or lifted.</summary>
+		private void BurnIfTouchingAcid()
+		{
+			if (!Spawned || !RimMandrakeFlowWorksSettings.liquidCorrosionEnabled)
+			{
+				return;
+			}
+			bool touches = LiquidTypes.RM_LiquidBottleUtility.LiquidAt(Position.GetTerrain(Map))?.IsAcid == true;
+			for (int i = 0; i < 4 && !touches; i++)
+			{
+				IntVec3 c = Position + GenAdj.CardinalDirections[i];
+				touches = c.InBounds(Map) && LiquidTypes.RM_LiquidBottleUtility.LiquidAt(c.GetTerrain(Map))?.IsAcid == true;
+			}
+			DamageDef acid = DefDatabase<DamageDef>.GetNamedSilentFail("AcidBurn");
+			if (acid != null && LiquidTypes.RM_ContainerMaterialMath.GateBurnsInAcid(LiquidTypes.RM_ContainerMaterials.MaterialOf(Stuff), true, touches))
+			{
+				TakeDamage(new DamageInfo(acid, LiquidTypes.RM_ContainerMaterialMath.GateAcidDamage));
+			}
+		}
+
 		public override void ExposeData()
 		{
 			base.ExposeData();

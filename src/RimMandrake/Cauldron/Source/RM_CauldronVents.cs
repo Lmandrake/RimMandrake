@@ -427,7 +427,7 @@ namespace RimMandrake.Cauldron
                 if (RM_CauldronSettings.vexxissPriesTaps && pawn.IsHashIntervalTick(RM_VentGasKernel.PryIntervalTicks))
                 {
                     RM_CompGasTap tap = vent.CappingTap;
-                    if (tap != null)
+                    if (tap != null && !tap.parent.def.HasModExtension<RM_PryProofExtension>())
                         tap.parent.TakeDamage(new DamageInfo(DamageDefOf.Blunt, RM_VentGasKernel.PryDamage, 0f, -1f, pawn));
                 }
                 float need = vent.def.GetModExtension<RM_VentExtension>()?.suppressionNeeded ?? 6000f;

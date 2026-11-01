@@ -17,7 +17,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="RM_LiquidConverterBase">
+  <ThingDef Name="RM_FilterWorksBase" ParentName="RM_LiquidConverterBase">
     <defName>RM_FilterWorks</defName>
     <label>Filter-Works</label>
     <description>Stacked filter housings, a pressure pump and a drip manifold, built from what the corroded rigs in the Cauldron taught. Liquid pumped through its packed cartridges comes out as something else: tapped vent condensate gives up a valuable reagent, toxic and acid water come out fit to drink. Needs power, filter cartridges, a tank of its input on its line and, for water, another tank to take the product.</description>
@@ -79,6 +79,65 @@
       <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
         <label>Filter-Works (Cauldron)</label>
       </li>
+    </modExtensions>
+  </ThingDef>
+
+  <!-- VEXXITH_USES_1, the filter vessel (owner card 2026-10-09: "filters and vent liners with their machines"): a
+       Filter-Works whose housings are vexxith plate. Same processes and rate; a cartridge lasts four working days, not one,
+       and the works is acid-proof. PROVISIONAL cost. ART OWED: the Filter-Works placeholder, tinted. -->
+  <ThingDef ParentName="RM_FilterWorksBase">
+    <defName>RM_VexxithFilterWorks</defName>
+    <label>vexxith filter vessel</label>
+    <description>A Filter-Works rebuilt around housings of sheared vexxith plate. Whatever runs through it, it does not care: the housings do not etch, so the cartridges in them are not fouled by flakes of their own vessel and last four times as long.</description>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_DetoxWorks_Repaired</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(3,3)</drawSize>
+      <color>(120,104,140)</color>
+    </graphicData>
+    <costList Inherit="False">
+      <Steel>80</Steel>
+      <RM_Vexxith>30</RM_Vexxith>
+      <ComponentIndustrial>4</ComponentIndustrial>
+    </costList>
+    <comps Inherit="False">
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>350</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Refuelable">
+        <fuelLabel>Filter cartridges</fuelLabel>
+        <fuelGizmoLabel>Cartridges</fuelGizmoLabel>
+        <fuelConsumptionRate>1</fuelConsumptionRate>
+        <consumeFuelOnlyWhenUsed>true</consumeFuelOnlyWhenUsed>
+        <fuelCapacity>5</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <fuelFilter>
+          <thingDefs>
+            <li>RM_FilterCartridge</li>
+          </thingDefs>
+        </fuelFilter>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <showFuelGizmo>true</showFuelGizmo>
+      </li>
+      <li Class="RimMandrake.FlowWorks.Machinery.CompProperties_LiquidConverter">
+        <tier>Industrial</tier>
+        <!-- No "filter": FlowWorks takes a liquid's FIRST matching step, and toxic water lists Crude filter (3:1) before
+             Industrial detox (2:1), so carrying filter would make this works run the worse step. -->
+        <processes>
+          <li>refine</li>
+          <li>detox</li>
+        </processes>
+        <inputLitresPerDay>16000</inputLitresPerDay>
+        <fuelPerDay>0.25</fuelPerDay>
+      </li>
+    </comps>
+    <modExtensions Inherit="False">
+      <li Class="RimMandrake.FlowWorks.Machinery.RM_MachineToggleExtension">
+        <label>Vexxith filter vessel (Cauldron)</label>
+      </li>
+      <li Class="RimMandrake.Cauldron.RM_AcidImmuneExtension" />
     </modExtensions>
   </ThingDef>
 

@@ -15,6 +15,8 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         Metal,
         Wood,
         Plasteel,
+        /// <summary>VEXXITH_USES_1: the Cauldron's sheared plate. Metallic stuff that holds acid like plasteel.</summary>
+        Vexxith,
     }
 
     /// <summary>Why a container refuses a liquid. None = it holds it.</summary>
@@ -59,6 +61,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return RM_ContainerMaterial.Plasteel;
             }
+            if (stuffDefName == "RM_Vexxith")
+            {
+                return RM_ContainerMaterial.Vexxith;
+            }
             bool leathery = false, stony = false, metallic = false, woody = false;
             if (stuffCategories != null)
             {
@@ -81,6 +87,18 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         public static bool IsAcid(float pH, bool corrodesApparel, bool acidBurnDamage)
         {
             return corrodesApparel || acidBurnDamage || pH <= 4f;
+        }
+
+        /// <summary>VEXXITH_USES_1: hours between acid bites on a canal gate touching acid. A 100 HP gate lasts about four days.</summary>
+        public const int GateAcidIntervalTicks = 2500;
+        public const float GateAcidDamage = 1f;
+
+        /// <summary>VEXXITH_USES_1, owner: "Acid-proof material for canal doors that can withstand acid shutoff/open flows."
+        /// Acid eats a gate unless plasteel holds it off. Vexxith is NOT excused here: it reaches Thing.TakeDamage and the
+        /// Cauldron's immunity patch refuses the burn, so that mod's toggle keeps meaning what it says.</summary>
+        public static bool GateBurnsInAcid(RM_ContainerMaterial material, bool corrosionEnabled, bool touchesAcid)
+        {
+            return corrosionEnabled && touchesAcid && material != RM_ContainerMaterial.Plasteel;
         }
 
         /// <summary>Hot is checked first: the reason a player reads should name the most obvious hazard.

@@ -97,6 +97,12 @@ acid-proof vexxith door, takes no acid damage (vanilla acid burn, and the
 Warscar bloom acid when that biome is present). This is the mod's one Harmony
 patch, so it now needs Harmony. Both are Mod Settings toggles.
 
+VEXXITH_USES_1: vexxith bottles, buckets and barrels hold acid like plasteel;
+canal gates of vexxith (or plasteel) stand in acid that eats any other gate; a
+lined filter vessel and gas tap; a hull liner rig; a vexxith environmental suit
+and helmet. The air of the Cauldron and the Forge slowly burns anyone unsealed
+under open sky, raiders included, and exposed gravship hulls. All Mod Settings.
+
 The world-map texture is our own (World/Biomes/RM_Cauldron), and every
 inline fauna and flora row is an RM_ def; the former Genetic Rim, Alpha
 Animals, Alpha Memes and Horrors rows are our ports.

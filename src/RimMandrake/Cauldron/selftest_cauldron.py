@@ -1049,8 +1049,9 @@ def source_checks():
             bad.append("TYPES names %s but Source/ declares no such class" % short)
     # 36/30 since CAULDRON_MECHANICS_BUILD_1 parts 1/3/4/5 (2026-10-16): + 8 vent-gas / tap / ruin / hush toggles and the gas factor.
     # 39/33 since RHOSSAK_MIGRATE_ROOTS_TAKE_HOLD (2026-10-19): + the rhossak bind / sprout / grove toggles.
-    if len(V.DEFAULTS) != 39 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 33:
-        bad.append("parsed %d defaults / %d bools, expected 39 / 33" %
+    # 43/36 since VEXXITH_USES_1: + acid air on / hull / factor, vexxith gear.
+    if len(V.DEFAULTS) != 43 or sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool)) != 36:
+        bad.append("parsed %d defaults / %d bools, expected 43 / 36" %
                    (len(V.DEFAULTS), sum(1 for v in V.DEFAULTS.values() if isinstance(v, bool))))
     for needle in ("HeadingPeriodTicks = 60000", "2654435761L", "0x2C1B3C6Du", "h >> 15", "h >> 12", "h % 8u"):
         if needle not in blob and needle not in open(os.path.join(srcdir, "Kernel", "RM_VentGasKernel.cs"), encoding="utf-8").read():
@@ -1073,8 +1074,8 @@ def source_checks():
     # 69/8: RM_Bezzul removed (BEZZUL_DELETE_NOT_NEEDED_ANYMORE); RM_FireSpit projectile restored for RM_Zisska (2026-10-16).
     # 68/16/8: RM_TreeMartyr cut (owner, tree tiers sheet 2026-10-18: "Cut and remove from game").
     # 70/16/9: + RM_Garsulix ThingDef and PawnKindDef (owned port of GR_Beetlefleet, e5c1f01e3, Alpha Animals retirement).
-    if len(V.SHIPPED) != 74 or len(V.FLORA) != 16 or len(V.KINDS) != 11:      # +4 / +2 kinds: RM_Rhossak, RM_GalledRhossak
-        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 74 / 16 / 11); update "
+    if len(V.SHIPPED) != 82 or len(V.FLORA) != 16 or len(V.KINDS) != 11:      # +8 VEXXITH_USES_1: 3 buildings, suit, helmet, 3 recipes
+        bad.append("def census drifted: %d shipped / %d flora / %d kinds (expected 82 / 16 / 11); update "
                    "the walk and this selftest together" % (len(V.SHIPPED), len(V.FLORA), len(V.KINDS)))
     return bad
 

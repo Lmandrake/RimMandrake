@@ -9,7 +9,7 @@
 -->
 <Defs>
 
-  <ThingDef ParentName="BuildingBase">
+  <ThingDef Name="RM_VentGasTapBase" ParentName="BuildingBase">
     <defName>RM_VentGasTap</defName>
     <label>gas-tap scaffold</label>
     <description>A riveted steel collar bolted down over a Cauldron vent, with a pressure cap, a cold coil and a drain cock. It stops the vent's gas leaking into the air and bleeds the flow off as vent condensate, which runs into any liquid tank standing beside it. Must be built exactly over a vent. A drinking vexxiss will pry at it.</description>
@@ -55,6 +55,30 @@
         <condensate>RM_Liquid_VentCondensate</condensate>
       </li>
     </comps>
+  </ThingDef>
+
+  <!-- VEXXITH_USES_1, the vent liner (owner card 2026-10-09: "filters and vent liners with their machines"): the same tap,
+       lined with vexxith plate. Acid-proof, and a vexxiss drinks through it without prying (RM_PryProofExtension).
+       PROVISIONAL cost. ART OWED: the base tap's placeholder, tinted. -->
+  <ThingDef ParentName="RM_VentGasTapBase">
+    <defName>RM_VentGasTapLined</defName>
+    <label>lined gas-tap scaffold</label>
+    <description>A gas-tap scaffold with its collar and cold coil sleeved in sheared vexxith plate. It does the same work as the steel one and needs no looking after: the vent's breath does nothing to it, and a vexxiss drinking at the cap leaves alone a plate that smells of its own flank.</description>
+    <graphicData>
+      <texPath>Things/Building/FlowWorks/Machinery/RM_LiquidTap</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(2,2)</drawSize>
+      <color>(120,104,140)</color>
+    </graphicData>
+    <costList Inherit="False">
+      <Steel>40</Steel>
+      <RM_Vexxith>12</RM_Vexxith>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <modExtensions>
+      <li Class="RimMandrake.Cauldron.RM_AcidImmuneExtension" />
+      <li Class="RimMandrake.Cauldron.RM_PryProofExtension" />
+    </modExtensions>
   </ThingDef>
 
 </Defs>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEXXITH_USES_1: which biomes have air that eats (owner 2026-10-09: "the Forge and Cauldron"). The rule is in
+     Source/RM_AcidAir.cs. Guarded per biome: the Forge and the Utinni twins may be absent, and a top-level MayRequire is inert. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_Cauldron"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/BiomeDef[defName="RM_Cauldron"]</xpath>
+      <value>
+        <li Class="RimMandrake.Cauldron.RM_AcidAirExtension" />
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RUT_Cauldron"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/BiomeDef[defName="RUT_Cauldron"]</xpath>
+      <value>
+        <li Class="RimMandrake.Cauldron.RM_AcidAirExtension" />
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RM_TheForge"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/BiomeDef[defName="RM_TheForge"]</xpath>
+      <value>
+        <li Class="RimMandrake.Cauldron.RM_AcidAirExtension" />
+      </value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>Defs/BiomeDef[defName="RUT_TheForge"]</xpath>
+      <value>
+        <li Class="RimMandrake.Cauldron.RM_AcidAirExtension" />
+      </value>
+    </match>
+  </Operation>
+</Patch>

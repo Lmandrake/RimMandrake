@@ -57,6 +57,11 @@ namespace RimMandrake.Cauldron
         // architect menu (restart to apply).
         public static bool vexxithAcidImmunityEnabled = true;
         public static bool vexxithDoorEnabled = true;
+        // VEXXITH_USES_1: the air of the Cauldron and the Forge burns ship and unsuited pawn alike; vexxith gear answers it.
+        public static bool acidAirEnabled = true;
+        public static bool acidAirHullEnabled = true;
+        public static float acidAirFactor = 1f;
+        public static bool vexxithGearEnabled = true;
         // CAULDRON_ENRICHMENT_VISUALS_1: dewfall beads (+ density), dewfall garden saturation, assay flecks on
         // old metal trees, vexxiss prints on the footprint grid.
         public static bool dewfallBeadsEnabled = true;
@@ -106,6 +111,10 @@ namespace RimMandrake.Cauldron
             Scribe_Values.Look(ref fexxilVenomEnabled, "fexxilVenomEnabled", true, true);
             Scribe_Values.Look(ref vexxithAcidImmunityEnabled, "vexxithAcidImmunityEnabled", true, true);
             Scribe_Values.Look(ref vexxithDoorEnabled, "vexxithDoorEnabled", true, true);
+            Scribe_Values.Look(ref acidAirEnabled, "acidAirEnabled", true, true);
+            Scribe_Values.Look(ref acidAirHullEnabled, "acidAirHullEnabled", true, true);
+            Scribe_Values.Look(ref acidAirFactor, "acidAirFactor", 1f, true);
+            Scribe_Values.Look(ref vexxithGearEnabled, "vexxithGearEnabled", true, true);
             Scribe_Values.Look(ref dewfallBeadsEnabled, "dewfallBeadsEnabled", true, true);
             Scribe_Values.Look(ref dewfallBeadDensity, "dewfallBeadDensity", 1f, true);
             Scribe_Values.Look(ref dewfallSaturationEnabled, "dewfallSaturationEnabled", true, true);
@@ -377,6 +386,30 @@ namespace RimMandrake.Cauldron
                     ref vexxithDoorEnabled,
                     "A door that can only be built from vexxith plate. Off: it leaves the architect menu on the next "
                     + "launch; doors already built stay.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Acid air", RimMandrake.Shared.SettingScope.Now, new[] { "acidAirEnabled", "acidAirHullEnabled", "acidAirFactor" }))
+            {
+                list.CheckboxLabeled("Acid air burns the unsealed",
+                    ref acidAirEnabled,
+                    "On Cauldron and Forge maps anyone under open sky, raiders included, takes a slow acid burn unless "
+                    + "sealed in a vacsuit and helmet. Natives are used to it. Off: the air is harmless.");
+                list.CheckboxLabeled("Acid air eats gravship hulls",
+                    ref acidAirHullEnabled,
+                    "Exposed buildings on a gravship's substructure slowly lose hit points, down to 30%. Vexxith plate "
+                    + "and a hull liner rig stop it. Off: only pawns burn.");
+                list.Label("Acid air strength: " + acidAirFactor.ToStringPercent(), tooltip: "How often the air burns an unsealed pawn. Hull damage does not scale with this.");
+                acidAirFactor = list.Slider(acidAirFactor, 0.25f, 3f);
+                list.GapLine();
+            }
+
+            if (Group(list, "Vexxith gear", RimMandrake.Shared.SettingScope.Now, new[] { "vexxithGearEnabled" }, "[next game start]"))
+            {
+                list.CheckboxLabeled("Vexxith gear (restart to apply)",
+                    ref vexxithGearEnabled,
+                    "Vexxith bottles, buckets and barrels, the lined filter vessel and gas tap, the hull liner rig and the "
+                    + "vexxith suit. Off: they leave the benches and the architect menu on the next launch; what is built stays.");
                 list.GapLine();
             }
 

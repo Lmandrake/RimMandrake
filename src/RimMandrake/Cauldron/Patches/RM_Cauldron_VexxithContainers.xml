@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- VEXXITH_USES_1: vexxith is Metallic, so FlowWorks' metal recipes would spend it on a default bill. Barrels and buckets
+     already bar plasteel the same way; bottles had no list. FlowWorks is a hard dependency, so no guard. -->
+<Patch>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RecipeDef[defName="RM_Make_Barrel_Metal"]/ingredients/li/filter/disallowedThingDefs</xpath>
+    <value>
+      <li>RM_Vexxith</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RecipeDef[defName="RM_Make_Barrel_Metal"]/fixedIngredientFilter/disallowedThingDefs</xpath>
+    <value>
+      <li>RM_Vexxith</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RecipeDef[defName="RM_Make_Bucket_Metal"]/ingredients/li/filter/disallowedThingDefs</xpath>
+    <value>
+      <li>RM_Vexxith</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RecipeDef[defName="RM_Make_Bucket_Metal"]/fixedIngredientFilter/disallowedThingDefs</xpath>
+    <value>
+      <li>RM_Vexxith</li>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RecipeDef[defName="RM_Make_Bottle_Metal"]/ingredients/li/filter</xpath>
+    <value>
+      <disallowedThingDefs>
+        <li>RM_Vexxith</li>
+      </disallowedThingDefs>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RecipeDef[defName="RM_Make_Bottle_Metal"]/fixedIngredientFilter</xpath>
+    <value>
+      <disallowedThingDefs>
+        <li>RM_Vexxith</li>
+      </disallowedThingDefs>
+    </value>
+  </Operation>
+</Patch>
