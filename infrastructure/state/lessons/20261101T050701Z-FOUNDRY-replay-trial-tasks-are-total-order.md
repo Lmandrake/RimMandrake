@@ -1,0 +1,2 @@
+Replay trial tasks are a total order under sibling containment (300/300 pairs, width 1): each later base holds every earlier real fix, so running replay tasks side by side leaks answers; across-task parallel trials need a constructed snapshot workload. Evidence D:\ClaudeWork\rimmandrake\parallel_add_on\evidence\trial25_sibling_relation.json
+home: design/RimMandrake/parallel_add_on_trial_design_2026-11-01.md

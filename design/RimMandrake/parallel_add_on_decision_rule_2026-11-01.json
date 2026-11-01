@@ -1,0 +1,36 @@
+{
+  "rule": "parallel add-on trial decision rule",
+  "version": 1,
+  "declared_before_launch": true,
+  "unit": "one (arm, N) cell, compared with the same arm's fresh N=1 control in the same blocks",
+  "blocks_per_cell_min": 2,
+  "block_order": "randomized with seed 20261101; every block runs all four arms at one N at once",
+  "cutoff_wall_hours_per_run": 12,
+  "unfinished_at_cutoff_scores": 0,
+  "accepted_point": "task landed on integration main AND its hidden check green on the final integrated tree at drain",
+  "metrics": {
+    "acceptance": "accepted points / tasks offered",
+    "accepted_per_hour": "accepted points / hours from first dispatch to drain or cutoff, waits NOT subtracted",
+    "cost_per_point": "reconciled account-total spend for the run / accepted points"
+  },
+  "validity": {
+    "pin_hash_must_match_at_start_and_end": true,
+    "spend_reconciliation_must_be_exact": true,
+    "an_invalid_run_is_rerun_not_scored": true
+  },
+  "escalate_to_next_N_when_all": {
+    "acceptance_drop_vs_N1_at_most": 0.10,
+    "acceptance_drop_upper_bound_at_most": 0.20,
+    "upper_bound_method": "worst block's paired drop over the same tasks",
+    "speedup_accepted_per_hour_at_least": 1.30,
+    "cost_per_point_ratio_at_most": 1.50
+  },
+  "stop_when_any": {
+    "acceptance_drop_vs_N1_more_than": 0.20,
+    "speedup_accepted_per_hour_below": 1.10
+  },
+  "otherwise": "hold: report this N as the measured setting; do not escalate",
+  "N_ladder": [1, 2, 4],
+  "ceiling_claim": "only when N passes the escalate test and the next N fails it; reaching N=4 green states 'no ceiling found up to 4', never a ceiling",
+  "throughput_cost_tradeoff": "the cost ratio bound is the tradeoff; the owner may change any threshold before launch only, which changes this file's sha256 and must be re-recorded in the ledger"
+}

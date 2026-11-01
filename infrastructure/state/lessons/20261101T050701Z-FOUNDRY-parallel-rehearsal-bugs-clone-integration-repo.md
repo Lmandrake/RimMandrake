@@ -1,0 +1,2 @@
+Parallel rehearsal bugs: clone an integration repo with -b main (HEAD may sit on the candidate branch mid fan-in); ralph_c members stay on ralph/wip after publish so a sync must reset wip when nothing is unpublished; board done must mean LANDED before dependents are given; v3_control takes one flock per arm so each stream needs its own V3_LOCK_DIR/ARENA_ROOT; cherry-pick --continue fails on empty picks, use --skip.
+home: design/RimMandrake/parallel_add_on_trial_design_2026-11-01.md

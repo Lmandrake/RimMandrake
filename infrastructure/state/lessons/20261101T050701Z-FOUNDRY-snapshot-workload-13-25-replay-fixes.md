@@ -1,0 +1,2 @@
+Snapshot workload: 13 of 25 replay fixes revert cleanly onto pin 5330ddf9 individually and cumulatively and are pairwise file-disjoint; but task IDs leak into 5-12 files each (conversations/, ledger shards/handoffs/items, arena trial_tasks.json, gate_reference_reds.lock.json, prompt_rewrites.json, trial_exclusions.json, selftest_arena_trial.py) so a snapshot builder must redact them and re-run the leak probe to 0.
+home: design/RimMandrake/parallel_add_on_trial_design_2026-11-01.md
