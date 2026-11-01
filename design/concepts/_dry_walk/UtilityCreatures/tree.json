@@ -1,0 +1,226 @@
+{
+ "schema_version": 1,
+ "subject": "UtilityCreatures",
+ "kind": "mod",
+ "authored_by": "concept",
+ "root_ref": null,
+ "root_state": "none",
+ "root_hash": null,
+ "coverage": null,
+ "floor": {
+  "ref": "concept_floor.json",
+  "hash": "fd87bc5f9c2e73a1016e8f56cfa6a170a1322612b4907c0ffe6895a0b588b04f",
+  "off": []
+ },
+ "exam_waived": null,
+ "waived": [
+  {
+   "id": "w1",
+   "scope": "droids or animals for the first version",
+   "date": "2026-11-01",
+   "ref": "dry_walk:round1",
+   "stand_in": true
+  }
+ ],
+ "advisory": [],
+ "leaves": [
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "probe line per state change, compared with the live job",
+   "tier_reason": null,
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "dig_order_probe",
+   "root": [
+    "rs1"
+   ],
+   "leaf_kind": "instrument",
+   "experience": "The log shows each order: creature, cell, state, reason",
+   "scenario": "A probe that logs every order state change, built first",
+   "false_pass": [
+    "The probe reads the plan, not the job the creature really holds"
+   ],
+   "red": "no probe: the tree refuses, the tier cannot read an order",
+   "tier_proposed": "offline",
+   "by": "concept",
+   "clause_kind": "change",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "dig_order_probe",
+   "oracle_proposed": "probe names the ordered pawn as the digger of that cell",
+   "tier_reason": "needs a live map: a job driver and a gizmo do not exist offline",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "one_creature_digs",
+   "root": [
+    "rs1"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player orders one goat to dig one cell, and that goat walks there and digs it, with other animals idle beside it",
+   "scenario": "Two tamed goats with shovels and one rock cell; order the first",
+   "false_pass": [
+    "The cell empties with no creature adjacent",
+    "The second goat does it"
+   ],
+   "red": "cell still rock after 2 in-game days, or dug by the other goat",
+   "tier_proposed": "quicktest",
+   "owner_part": "yes: he watches one goat dig",
+   "by": "concept",
+   "clause_kind": "change"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "dig_order_probe",
+   "oracle_proposed": "rejection text read from the screen, and zero order records",
+   "tier_reason": "needs a live map: a job driver and a gizmo do not exist offline",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "refused_at_click",
+   "root": [
+    "rs2"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player clicks with no shovel in reach and sees the order refused at once, with the reason on screen",
+   "scenario": "One goat, no shovel on the map; order a cell",
+   "false_pass": [
+    "The order is accepted and the goat stands idle",
+    "A refusal only in the log"
+   ],
+   "red": "no message, or an order record exists after the click",
+   "tier_proposed": "quicktest",
+   "by": "concept",
+   "clause_kind": "change",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "dig_order_probe",
+   "oracle_proposed": "probe shows one order id from start to finish",
+   "tier_reason": "needs a live map: a job driver and a gizmo do not exist offline",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "resumes_same_order",
+   "root": [
+    "rc1"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player sees the goat, interrupted half-way by hunger, go back and finish the same cell with no new order",
+   "scenario": "Order a deep cell, force hunger half-way",
+   "false_pass": [
+    "A new order is created for it",
+    "It finishes only if the player re-clicks"
+   ],
+   "red": "cell unfinished 2 days after it has eaten",
+   "tier_proposed": "quicktest",
+   "by": "concept",
+   "clause_kind": "change",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "per-component timer mean",
+   "tier_reason": "needs a live map: a job driver and a gizmo do not exist offline",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "order_cost",
+   "root": [
+    "rs1"
+   ],
+   "leaf_kind": "constraint",
+   "experience": "at most 1 ms per tick on his machine",
+   "scenario": "Ten goats holding orders in the reference scene",
+   "false_pass": [
+    "Timer measures the Gizmo only"
+   ],
+   "red": "a mean over the limit",
+   "tier_proposed": "quicktest",
+   "by": "concept",
+   "clause_kind": "change",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "dig_order_probe",
+   "oracle_proposed": "probe: no dig by a creature without an order, goat kept free",
+   "tier_reason": "needs a live map: a job driver and a gizmo do not exist offline",
+   "cannot_show": "a creature digging with no order",
+   "wall_expect_h": null,
+   "id": "no_work_toggle",
+   "root": [
+    "rc1"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player never sees a creature dig a cell it was not ordered to",
+   "scenario": "Goat with shovel, a designated mine cell, no order, 3 days",
+   "false_pass": [
+    "The goat is merely busy elsewhere in the test"
+   ],
+   "red": "that cell dug by the goat",
+   "tier_proposed": "quicktest",
+   "clause_kind": "preserve",
+   "by": "concept",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": "dig_order_probe",
+   "oracle_proposed": "probe: work stops the tick the shovel leaves",
+   "tier_reason": "needs a live map: a job driver and a gizmo do not exist offline",
+   "cannot_show": "a creature digging with no shovel",
+   "wall_expect_h": null,
+   "id": "no_bare_paws",
+   "root": [
+    "rc1"
+   ],
+   "leaf_kind": "experience",
+   "experience": "The player never sees a creature dig without a shovel",
+   "scenario": "Remove the shovel mid-order",
+   "false_pass": [
+    "The rule checks only at the click"
+   ],
+   "red": "digging goes on after removal",
+   "tier_proposed": "quicktest",
+   "clause_kind": "preserve",
+   "by": "concept",
+   "owner_part": "no"
+  },
+  {
+   "bundle": null,
+   "scenario_informed_by": [],
+   "needs_instrument": null,
+   "oracle_proposed": "his walk, read from a recording",
+   "tier_reason": "the walk is a played session",
+   "cannot_show": null,
+   "wall_expect_h": null,
+   "id": "first_walk",
+   "root": [
+    "rs1",
+    "rs2",
+    "rc1"
+   ],
+   "leaf_kind": "walk",
+   "experience": "A tester plays the whole order from a fresh colony and sees each promise hold",
+   "scenario": "Give an order, save mid-dig, reload from the save, repeat the order on a second cell, then reverse the order of refused click and successful dig",
+   "false_pass": [
+    "A scripted pass that never reloads"
+   ],
+   "red": "any promise fails after the reload",
+   "tier_proposed": "live_minimal",
+   "owner_part": "yes: he plays the walk",
+   "by": "concept",
+   "clause_kind": "change"
+  }
+ ],
+ "dry_walk": true
+}

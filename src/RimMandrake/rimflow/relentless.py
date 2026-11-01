@@ -681,8 +681,15 @@ class Effects:
                 and (it.owner != foreign_seat(r) or (words is not None and it.id not in words))]
         pool.sort(key=lambda i: (plist.position(i, orders), i.id not in bounce, model.raise_key(i), not i.this_deployment,
                                  priority._row_key(i), i.created_at or "", i.id))
+        pool = [i for i in pool if i.kind != "mod" or not self.concept_refusal(i.id)]   # no tree, no worker
         self.plan = {i.id: plist.position(i, orders) for i in pool if plist.position(i, orders) <= plist.MAX_ENTRIES}
         return [i.id for i in pool], w
+
+    def concept_refusal(self, item):
+        """Why this item may not reach a worker, or None: a mod needs a well-defined tree (concept_tree.gate)."""
+        _, w = self.ledger_items()
+        it = w.items.get(item)
+        return concept_refused(self.books, item, getattr(it, "kind", None))
 
     def item_state(self, item):
         _, w = self.ledger_items()
@@ -1598,6 +1605,12 @@ def ledger_has(item):
         return True
 
 
+def concept_refused(repo, item, kind):
+    """The Concept gate, shut when it cannot read: None for anything that is not a mod and cites no tree."""
+    tree = pkg("concept_tree")
+    return tree.relentless_refusal(repo, item, kind, tree.item_file_text(repo, item))
+
+
 def enrol_one(store, item, why, now):
     """A person's or the Conductor's pick. It queues in enrol order like any other and takes no lease by itself."""
     with store.lock():
@@ -2294,6 +2307,10 @@ def lease(store, fx, r, now, acts):
             acts.append({"do": "wait", "why": why})
             return
         item = st["item"]
+        refusal = getattr(fx, "concept_refusal", lambda _item: None)(item)
+        if refusal:     # enrolled by hand, or its tree went stale in the line: it keeps its place, no worker starts
+            acts.append({"do": "concept_refused", "item": item, "why": refusal})
+            continue
         if st.get("needs_back"):       # the ledger still says owner: the next step() clears it first
             continue
         if item in r.get("pool_ids_exclude", []):   # back from a stop this tick: retire() takes it on the next
@@ -2737,6 +2754,11 @@ def main(argv=None):
         elif a.cmd == "enrol":
             if not ledger_has(a.item):
                 print("relentless: REFUSED: %s has never been filed" % a.item, file=sys.stderr)
+                return 2
+            filed = [e.get("kind") for e in pkg("model").read() if e.get("id") == a.item and e.get("event") == "file"]
+            refusal = concept_refused(pkg("concept_tree").REPO, a.item, filed[-1] if filed else None)
+            if refusal:
+                print("relentless: REFUSED: %s" % refusal, file=sys.stderr)
                 return 2
             st = enrol_one(Store(), a.item, a.why, time.time())
             print("%s %s" % (a.item, st["status"]))

@@ -1,0 +1,27 @@
+{
+ "schema_version": 1,
+ "_doc": "design/RimMandrake/concept_agent_design_2026-11-01.md §8. Every tree inherits this file by hash; a mod states only where it differs (`floor.off`). Numeric lines are PROVISIONAL agent proposals and advisory (reported, never blocking) until the five-mod calibration; Arbiter owns them. `waivable: false` lines are standing rulings: `floor.off` naming one is refused. `open_owner` is a question only he can answer: no default is written for him.",
+ "tiers": ["offline", "quicktest", "live_minimal", "live_full"],
+ "_tiers_doc": "PROVISIONAL: the adapter's real list is RA_S05_INTAKE_ENFORCE_TREE_FIRST's. Everything but offline needs tier_reason.",
+ "lines": [
+  {"id": "tick_cost", "class": "numeric", "advisory": true, "waivable": true, "default": "mod's own mean at most 0.05 ms idle, 1 ms busy, max 20 ms, on his machine, reference scene", "instrument": "per-component timer; one max is rerun before it counts"},
+  {"id": "long_stall", "class": "numeric", "advisory": true, "waivable": true, "default": "no stall over 250 ms from normal play", "instrument": "log per window; attribute before blaming"},
+  {"id": "latency", "class": "numeric", "advisory": true, "waivable": true, "default": "click to visible response within 100 ms", "instrument": "frame time around the action"},
+  {"id": "memory", "class": "numeric", "advisory": true, "waivable": true, "default": "heap flat across a 30-day soak; textures counted in MB", "instrument": "not GC.GetTotalMemory deltas"},
+  {"id": "load_time", "class": "numeric", "advisory": true, "waivable": true, "default": "under 2 s added on the minimal list, median of 3 cold loads", "instrument": "cold load"},
+  {"id": "save_size", "class": "numeric", "advisory": true, "waivable": true, "default": "under 1 MB on the reference save, flat over the soak", "instrument": "measure, never wc or grep"},
+  {"id": "save_compat", "class": "rule", "advisory": false, "waivable": true, "default": "adds to an existing save without errors; old fields default; removal states its outcome", "instrument": "load test on a real prior save"},
+  {"id": "load_order", "class": "rule", "advisory": false, "waivable": true, "default": "loadAfter declared; survives the full list at playtest", "instrument": "check the effect, never the absence of error"},
+  {"id": "log", "class": "rule", "advisory": false, "waivable": true, "default": "zero red, zero mod warnings across the scenario", "instrument": "log tap; beware the Verse.Log cap"},
+  {"id": "mod_settings", "class": "standing", "advisory": false, "waivable": false, "default": "on/off per major feature; tuning where a number is the experience; all-off degrades gracefully; every toggle has a check", "instrument": "modcheck floor"},
+  {"id": "multiplayer", "class": "open_owner", "advisory": true, "waivable": false, "default": null, "instrument": null, "flag": "UNANSWERED: his one line, once for all mods (design §8). Blank on purpose: no default, no leaf, no promise is inferred from this line."},
+  {"id": "art", "class": "rule", "advisory": false, "waivable": true, "default": "real art at GREEN; scale beside a human; facings; textures divisible by 4; art pipeline judged", "instrument": "rimworld-art-evaluation"},
+  {"id": "text", "class": "rule", "advisory": false, "waivable": true, "default": "English, plain, spoiler-free tooltips", "instrument": "spec §10"},
+  {"id": "dlc", "class": "standing", "advisory": false, "waivable": false, "default": "all assumed; no gating work, no degraded mode", "instrument": "standing ruling"},
+  {"id": "worldgen", "class": "standing", "advisory": false, "waivable": false, "default": "none, of any kind; a concept needing it is refused", "instrument": "lint"},
+  {"id": "biome_scope", "class": "standing", "advisory": false, "waivable": false, "default": "promised inside our biomes only; a biome of ours on 0 tiles is expected", "instrument": "standing ruling"},
+  {"id": "flight", "class": "standing", "advisory": false, "waivable": false, "default": "never live-tested without him; verified by state read", "instrument": "lint"},
+  {"id": "naming", "class": "standing", "advisory": false, "waivable": false, "default": "mandrake.<tier>.<mod>, RM_/RSW_/RUT_", "instrument": "lint"},
+  {"id": "test_isolation", "class": "rule", "advisory": false, "waivable": true, "default": "minimal list plus the mod; clean build-up and tear-down", "instrument": "runner spec"}
+ ]
+}

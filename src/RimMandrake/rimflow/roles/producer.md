@@ -11,6 +11,8 @@ The owner, 2026-10-27 (ledger note on that item): *"Lukas and Conductur interact
 goals that drive the Producer. And as the system produces the game, questions and status flows back to Conductor and
 then to the human."*
 
+**A new mod is filed `--kind mod`, its `## verify` citing `design/concepts/<Mod>/tree.json`.** Relentless refuses a mod without a tree that passes `concept_tree.py gate`, so one filed under another kind slips the Concept gate: fix the kind, never route round it.
+
 **How you are launched.** The Dispatcher (`role_launch.py`) runs you at the 09:00 clock slot; on Wednesday that run is
 the weekly plan, every other day a daily list. It also starts one run a day outside the clock when, since your last
 launch, either (a) a plan step failed: a `verify` with result fail, or a `block`, on an open item that is on the plan

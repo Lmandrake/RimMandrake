@@ -46,6 +46,8 @@ copies it, so a second copy cannot drift.
 
 **Corrections this file records.** Budget: Relentless §10 said the Producer proposes it; Concept §7 decided a program sets it, as the Producer is token-blind by his ruling. Relentless §10 is corrected to match. Eight fields: Relentless §3 says a goal is accepted when every leaf has all eight **after** the Setter binds; Concept §7 says the tree alone cannot hold all eight. Both hold: door lint A (a program, Concept §5) checks the tree's six, and intake checks the merged eight.
 
+**Additions at build (`concept_tree.py`, 2026-11-01).** Top-level `dry_walk: true` and a waiver's `stand_in: true` mark a rehearsal: they exist only under `design/concepts/_dry_walk/`, are refused anywhere else, and `gate` refuses every dry tree. A real waiver's `ref` is `OWNER:<tsn>`, and `gate` finds its `scope` in that event's words. `concept_floor.json` carries the provisional tier list until step 5 replaces it.
+
 ## `tree.json`
 
 ```json
