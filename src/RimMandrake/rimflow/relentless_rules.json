@@ -84,5 +84,17 @@
     "tomb_max_s": 172800,
     "foreign_kinds_exclude": ["art", "design", "decision", "decide", "card", "review", "finding", "trial", "goal", "epic"],
     "foreign_exclude": "(^|_| )(ARENA|TRIAL|TRIO|REPLAY|ARM|RALPH|ART|ARTEVAL|SHEET|OWNER|LIVE|FLOWWORKS|GSS|HOSE)(_| |$)|review sheet|redraw|sprite|bridge|in game|in-game|cold load"
+  },
+  "_walls": "What a mode may not see (relentless_wall.py). enforce false changes no launch; `relentless wall --audit` reports what it would deny.",
+  "walls": {
+    "marker": {
+      "enforce": false,
+      "box_root": "/home/mandrake/walled",
+      "deny_children": ["/home/mandrake/rm", "/home/mandrake/dev"],
+      "deny": ["/home/mandrake/.seat-tmp", "/mnt/d/Luke/dev/RimMandrake",
+               "/mnt/d/ClaudeWork/rimmandrake/arena", "/mnt/d/ClaudeWork/rimmandrake/relentless_agent"],
+      "tmpfs": ["/home/mandrake/rm/scratch", "/mnt/d/ClaudeWork/rimmandrake/selftest_tmp"],
+      "tree_exclude": ["conversations", "infrastructure/state/ledger", "infrastructure/state/items", "infrastructure/state/code_review"]
+    }
   }
 }

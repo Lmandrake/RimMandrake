@@ -27,6 +27,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
+import relentless_wall  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
@@ -1094,8 +1095,8 @@ class Effects:
         return int(r.stdout.strip() or 0) if r.returncode == 0 else 0
 
     # the units
-    def launch(self, st, run, prompt, agent, clone, max_s, extra_env):
-        """-> None, or why it did not start. The caller persisted `run` before this call."""
+    def launch(self, st, run, prompt, agent, clone, max_s, extra_env, wall=()):
+        """-> None, or why it did not start. The caller persisted `run` before this call. wall: systemd properties."""
         rl = self.RL
         role = {"name": "relentless", "seat": self.r["seat"], "clone": clone, "model": self.r["model"],
                 "run_max_s": max_s}
@@ -1106,7 +1107,7 @@ class Effects:
         env = []
         for k, v in extra_env.items():
             env += ["--setenv", "%s=%s" % (k, v)]
-        argv = argv[:at] + env + argv[at:]
+        argv = argv[:at] + list(wall) + env + argv[at:]
         o = argv.index("--output-format")
         argv[o:o] = ["--agent", agent]
         r = subprocess.run(argv, capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
@@ -1838,14 +1839,24 @@ def step(store, fx, r, item, now, acts):
         n = (st.get("check_count") or 0) + 1
         unit = unit_name("check", item, st["gen"]) + "-c%d" % n
         desc = run_desc(store, r, unit, now)
+        box = None
+        if relentless_wall.enforced(r):
+            box = relentless_wall.make_box(relentless_wall.profile(r), clean, c["sha"], nonce)
         with store.lock():              # the whole identity is on disk before the unit exists
             st = store.load(item)
             st["status"] = "checking"
             st["check_count"] = n
             st["check"] = {"nonce": nonce, "unit": unit, "at": now, "clone": clean, "run": desc}
+            if box:
+                st["check"]["box"] = box
             store.save(st)
-        why = fx.launch(st, desc, checker_prompt(st, fx.item_text(item), nonce), r["checker_agent"], clean,
-                        r["check_max_s"], {"RELENTLESS_ROOT": store.root})
+        if box:
+            why = fx.launch(st, desc, relentless_wall.marker_prompt(st, fx.item_text(item), box), r["checker_agent"],
+                            os.path.join(box, "tree"), r["check_max_s"], {},
+                            relentless_wall.props(relentless_wall.profile(r), box, [store.root]))
+        else:
+            why = fx.launch(st, desc, checker_prompt(st, fx.item_text(item), nonce), r["checker_agent"], clean,
+                            r["check_max_s"], {"RELENTLESS_ROOT": store.root})
         with store.lock():
             st = store.load(item)
             if why:
@@ -1858,6 +1869,10 @@ def step(store, fx, r, item, now, acts):
 
     if s == "checking":
         chk = st["check"]
+        got = relentless_wall.read_verdict(chk["box"]) if chk.get("box") and not chk.get("expired") else None
+        if got and chk.get("verdict") is None:      # the box is the walled Marker's way out: the nonce is the store's own
+            verdict(store, item, chk["nonce"], got["word"], got["reasons"], now)
+            chk = store.load(item)["check"]
         word = chk.get("verdict")
         if word is None and fx.alive(chk.get("run")) and now - chk["at"] < r["check_max_s"] + r["launch_grace_s"]:
             return
@@ -2631,6 +2646,9 @@ def main(argv=None):
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
     p.add_argument("--option", action="append", required=True, help="idea | the one observation that confirms or kills it")
+    sub.add_parser("wall", help="report only: what the Marker's wall would deny, from the checks' tool calls")
+    p = sub.add_parser("trust")
+    p.add_argument("--set", default="E1")
     p = sub.add_parser("verdict")
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
@@ -2689,6 +2707,19 @@ def main(argv=None):
         elif a.cmd == "reenrol":
             st = reenrol(Store(), a.item, a.why, time.time())
             print("%s %s gen %d" % (a.item, st["status"], st["gen"]))
+        elif a.cmd == "wall":
+            import relentless_seeds
+
+            def session(run):
+                try:
+                    with open((run or {}).get("out") or "", encoding="utf-8") as f:
+                        return json.load(f).get("session_id")
+                except (OSError, ValueError):
+                    return None
+            print(json.dumps(relentless_wall.audit(store, rules(), session, relentless_seeds.tool_inputs), indent=1))
+        elif a.cmd == "trust":
+            import relentless_trust
+            print(relentless_trust.report(store, set_name=a.set)[1], end="")
         elif a.cmd == "verdict":
             verdict(store, a.item, a.nonce, a.word, a.reasons)
         elif a.cmd == "unhold":
