@@ -449,6 +449,17 @@ def t_crash_windows():
     R.enrol_one(x.s, "PICKED", "again", x.now)
     ok(x.st("PICKED")["status"] == "queued" and x.st("PICKED")["why"] == "test", "enrol by name is idempotent")
     x.done()
+    # a worker that reported and then died unmeasured is a lost worker, not a failed launch
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.beat(x.s, "I0", st["gen"], now=x.now)
+    x.w.tok = None
+    x.w.up[st["run"]["unit"]] = False
+    x.tick(30)
+    ok(x.st("I0")["failures"].get("worker_lost") == 1 and x.st("I0")["returns"] == 1,
+       "a worker that beat and died inside the grace is worker_lost")
+    x.done()
     # overdue reads the beat
     st = dict(R.new_state("I0", 1, ""), started_at=0, last_beat=1000)
     rr = dict(RULES, run_max_s=10 ** 6)

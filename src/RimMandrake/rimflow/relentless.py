@@ -918,7 +918,7 @@ def step(store, fx, r, item, now, acts):
                 _take_receipt(store, st, rec, now)
                 return
             tok = (st.get("run") or {}).get("measured")
-            if not tok and now - st["started_at"] < r["launch_grace_s"]:
+            if not tok and not st["last_beat"] and now - st["started_at"] < r["launch_grace_s"]:
                 # dead at once, nothing spent: auth or quota, not the item's fault. Its place is kept
                 st["gen"] += 1
                 st["status"] = "queued"
