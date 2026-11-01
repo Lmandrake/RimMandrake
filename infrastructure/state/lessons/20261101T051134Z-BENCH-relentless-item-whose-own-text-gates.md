@@ -1,0 +1,1 @@
+A relentless item whose own text gates it on other work cannot succeed by restaffing: exclude it in relentless_rules.json pool_ids_exclude (since 0cb07aa0c4 that retires it even once ledger-started and reclaims the ledger). Never finish one on a substitute contract: the blind PASS closes the ledger item.
