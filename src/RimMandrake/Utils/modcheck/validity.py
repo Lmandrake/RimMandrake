@@ -75,12 +75,21 @@ def default_checks(fixtures=()):
 
 def _empty_cell(session, anchor, radius=12):
     """The first cell at or around `anchor` (Chebyshev rings out to `radius`) holding no thing at all, or None. The
-    canary spawns and destroys only there, so its Item cleanup can remove nothing but its own stack."""
+    canary spawns and destroys only there, so its Item cleanup can remove nothing but its own stack.
+    An out-of-bounds cell is skipped, not fatal: rimdrive's cell() raises SessionError (a RuntimeError) there, and each
+    ring is scanned from dx=-r, so an occupied anchor near the map's low edge used to raise before its in-bounds
+    neighbours were looked at, turning the canary red (HARNESS) on a healthy session. A dead bridge (OSError) still raises."""
     x0, z0 = anchor
     for r in range(radius + 1):
         for dx in range(-r, r + 1):
             for dz in range(-r, r + 1):
-                if max(abs(dx), abs(dz)) == r and not session.things_at(x0 + dx, z0 + dz):
+                if max(abs(dx), abs(dz)) != r:
+                    continue
+                try:
+                    occupied = session.things_at(x0 + dx, z0 + dz)
+                except RuntimeError:  # out of bounds (SessionError): not a cell to spawn on
+                    continue
+                if not occupied:
                     return x0 + dx, z0 + dz
     return None
 

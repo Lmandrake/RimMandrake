@@ -352,6 +352,17 @@ def t_validity_module():
     r = validity.canary(s, (10, 10))
     ok(not r["ok"] and "jawa/spawn_batch" not in s.calls and not s.destroyed,
        "canary: no empty cell near the anchor -> red, nothing spawned or destroyed", r)
+    # wave 75: rimdrive's cell() RAISES SessionError (a RuntimeError) off the map, and each ring is scanned from dx=-r,
+    # so an occupied anchor on the low edge raised before (1, 0) was looked at -> a false red (HARNESS) canary.
+    class _EdgeSess(_Sess):
+        def things_at(self, x, z):
+            if x < 0 or z < 0:
+                raise RuntimeError("get_cell_info(%d, %d) failed: out of bounds" % (x, z))
+            return _Sess.things_at(self, x, z)
+    s = _EdgeSess(occupied=[(0, 0)])
+    r = validity.canary(s, (0, 0))
+    ok(r["ok"] and len(s.destroyed) == 1 and s.destroyed[0] != (0, 0) and min(s.destroyed[0]) >= 0,
+       "canary: an occupied anchor on the map edge skips off-map cells and uses an in-bounds neighbour", (r, s.destroyed))
     r = validity.canary(_Sess(readback=False), (10, 10))
     ok(not r["ok"] and any("did not read back" in p for p in r["problems"]), "canary: red when the spawn does not read back", r)
     s = _Sess(state="Entry")
