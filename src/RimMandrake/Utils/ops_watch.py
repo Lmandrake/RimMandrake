@@ -1146,19 +1146,15 @@ def c_timers(now, rules, ctx):
     return out
 
 
-def untriaged_reading(world, events):
-    """Findings with no outcome yet (findings design section 3): typed UNTRIAGED in the replay (a retype moves it), no
-    item of that name, no `spawn --from` it, no `findings_fold.py decide` on it. Only a nonzero count reads the fold's
-    table, so a bad table costs this reading alone and never hides a zero; UNMEASURED then, not a guess."""
-    spawned = {e.get("from") for e in events if e.get("event") == "spawn"}
-    untr = {n for n, f in world.findings.items() if f.get("type") == "UNTRIAGED"
-            and n not in world.items and n not in spawned}
-    if untr:
-        try:
-            import findings_fold
-            untr -= findings_fold.decided_findings()
-        except Exception as e:  # noqa: BLE001  findings_fold.Unmeasured, or a fold that will not import
-            return U("findings fold table: %s: %s" % (type(e).__name__, str(e)[:160]))
+def untriaged_reading(events):
+    """Findings with no outcome yet (findings design section 3). The fold's table is the one judge of an outcome, a spawn
+    --from, a retype, an item of that name or a decide, and of an undo of any of them (findings_fold.no_outcome): this
+    reading adds no test of its own. A bad table costs this reading alone: UNMEASURED, not a guess."""
+    try:
+        import findings_fold
+        untr = findings_fold.no_outcome(events)
+    except Exception as e:  # noqa: BLE001  findings_fold.Unmeasured, or a fold that will not import
+        return U("findings fold table: %s: %s" % (type(e).__name__, str(e)[:160]))
     return M(len(untr), "findings with no outcome yet", first=sorted(untr)[:5])
 
 
@@ -1182,7 +1178,7 @@ def c_flow(now, rules, ctx):
         elif ev.get("event") == "verify" and t >= now - DAY and ev.get("result") == "pass":
             v24 += 1
     ctx["closes"] = closes
-    out = {"flow.untriaged_findings": untriaged_reading(world, events),
+    out = {"flow.untriaged_findings": untriaged_reading(events),
            "flow.closes_24h": M(len(c24), "items closed, 24 h"),
            "flow.verify_pass_24h": M(v24, "verify pass events, 24 h (maker or not)")}
     lapsed = sum(1 for it in world.items.values() if it.open and model.lease_status(it, now) == "lapsed")

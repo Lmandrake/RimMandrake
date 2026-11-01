@@ -11,7 +11,7 @@
  "contradiction_states": ["done", "validated"],
  "_contradiction_states_why": "design section 6: a failing row under an item marked done or validated is a contradiction and goes to the top of the next curation (the quarry item stood validated with 26 fails and 0 passes). Judged per item: the item's own latest PASS/FAIL of each row its done records map to it (ingest.groups_of)",
  "decisions_file": "infrastructure/state/findings/decisions.jsonl",
- "_decisions_file_why": "FOUNDRY's judgment per signature (work / merge / memory / route / retire / undo), appended by `findings_fold.py decide` and committed; a `rimflow spawn --from <finding>` is read from the ledger as a work decision with no line needed",
+ "_decisions_file_why": "FOUNDRY's judgment per signature (work / merge / memory / route / retire / undo), appended by `findings_fold.py decide` and committed; a `rimflow spawn --from <finding>` is read from the ledger as a work decision with no line needed; an undo line on the signature takes back that, a ledger retype or an item of the name alike",
  "memory_roots": ["skills/", "infrastructure/state/facts/", "src/", ".claude/"],
  "_memory_roots_why": "design section 3 and 9.3: memory lands where it is read (a skill, a fact file, a rule or check), never the lessons inbox",
  "normalise": [

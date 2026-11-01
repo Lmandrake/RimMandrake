@@ -1772,25 +1772,58 @@ finally:
 check("scope: through systemctl, transient one-shots out, a transient timer's service and a real service in",
       _t["x"]["units"] == ["rm-pulse.service", "rm-x.service"] and _t["v"] == 2, _t)
 
-# OPS_FINDINGS_DIAGNOSE_17B4: the alarm counts findings with no outcome, and each outcome the design names moves it
+# OPS_FINDINGS_DIAGNOSE_17B4: through the real read_ledger, fold and published table: each outcome the design names moves
+# the alarm, its undo moves it back, and the alarm is always the count of the table's findings with no outcome
 import findings_fold as _FF
-_fw = lambda **f: type("W", (), {"findings": {n: {"type": t} for n, t in f.items()}, "items": {"NAMED": 1}})()
-_dfn = _FF.decided_findings
-_FF.decided_findings = lambda *a: {"DECIDED"}
+import shutil as _sh
+import tempfile as _tf
+sys.path.insert(0, _FF.RIMFLOW)
+import model as _M
+_RT = "2026-10-28T%02d:00:00Z"
+_F = {"seat": "RUNNER", "event": "finding", "id": "IT_R", "type": "UNTRIAGED", "severity": "medium", "from": "IT_R/run-1@x",
+      "name": "X_1", "why": "c1/r1 FAIL on h: boom", "ts": _RT % 1}
+_OUTCOMES = {"spawn --from": {"event": "spawn", "seat": "BENCH", "from": "X_1", "name": "WORK_ITEM", "ts": _RT % 2},
+             "a retype": dict(_F, seat="BENCH", type="TRACKED", ts=_RT % 2),
+             "an item of the name": {"event": "file", "id": "X_1", "seat": "BENCH", "ts": _RT % 2}}
+
+
+def _alarm(events, lines=()):
+    """Fold these events, publish the table, read the alarm -> (reading, findings the table gives no outcome)."""
+    _d = _tf.mkdtemp()
+    _sr, _sp, _so = _M.read, _M.replay, os.environ.get("FINDINGS_FOLD_OUT")
+    _M.read, _M.replay = (lambda: events), (lambda ev: type("W", (), {"items": {}})())
+    os.environ["FINDINGS_FOLD_OUT"] = _d
+    try:
+        rules = _FF.load_rules()
+        t = _FF.fold(*_FF.read_ledger(rules), [], list(lines), rules, _RT % 9)
+        with open(os.path.join(_d, _FF.REPORT), "w", encoding="utf-8") as f:
+            f.write(_FF.render_report(t))
+        return OW.untriaged_reading(events), sorted(n for n, f in t["raw"].items() if not f["outcome"])
+    finally:
+        _M.read, _M.replay = _sr, _sp
+        _sh.rmtree(_d)
+        if _so is None:
+            del os.environ["FINDINGS_FOLD_OUT"]
+        else:
+            os.environ["FINDINGS_FOLD_OUT"] = _so
+
+
+_r, _no = _alarm([_F])
+check("untriaged: a finding with no outcome counts", _r["m"] == "MEASURED" and _r["v"] == 1 and _no == ["X_1"], _r)
+_sig = _FF.signature(_FF.row_key("?", "c1", "r1", "boom", _FF.load_rules(), "X_1"))
+_dec = {"sig": _sig, "as": "retire", "by": "FOUNDRY", "ts": _RT % 2, "why": "x"}
+_undo = dict(_dec, **{"as": "undo", "ts": _RT % 3})
+for _name, _ev, _ln in [(k, [_F, v], []) for k, v in _OUTCOMES.items()] + [("a decide", [_F], [_dec])]:
+    _r, _no = _alarm(_ev, _ln)
+    check("untriaged: %s removes the finding, same count both ways" % _name, _r["m"] == "MEASURED" and _r["v"] == 0 and not _no, _r)
+    _r, _no = _alarm(_ev, _ln + [_undo])
+    check("untriaged: an undo of %s restores it, same count both ways" % _name,
+          _r["m"] == "MEASURED" and _r["v"] == 1 and _no == ["X_1"], (_r, _no))
+_dfn = _FF.no_outcome
+_FF.no_outcome = lambda *a: 1 / 0
 try:
-    _r = OW.untriaged_reading(_fw(OPEN="UNTRIAGED", NAMED="UNTRIAGED", SPAWNED="UNTRIAGED", DECIDED="UNTRIAGED", RETYPED="TRACKED"),
-                              [{"event": "spawn", "from": "SPAWNED"}])
-    check("untriaged: a same-named item, a spawn --from, a decide and a retype are outcomes; the rest counts",
-          _r["m"] == "MEASURED" and _r["v"] == 1 and _r["x"]["first"] == ["OPEN"], _r)
-    _FF.decided_findings = lambda *a: set()
-    check("untriaged: an undo (the table gives no outcome) counts it again",
-          OW.untriaged_reading(_fw(DECIDED="UNTRIAGED"), [])["v"] == 1)
-    _FF.decided_findings = lambda *a: 1 / 0
-    check("untriaged: a bad table is UNMEASURED, never a count",
-          OW.untriaged_reading(_fw(OPEN="UNTRIAGED"), [])["m"] == "UNMEASURED")
-    _z = OW.untriaged_reading(_fw(RETYPED="TRACKED"), [])
-    check("untriaged: nothing open reads 0 without the table", _z["m"] == "MEASURED" and _z["v"] == 0, _z)
+    check("untriaged: a bad table is UNMEASURED, never a count", OW.untriaged_reading([_F])["m"] == "UNMEASURED")
 finally:
-    _FF.decided_findings = _dfn
+    _FF.no_outcome = _dfn
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

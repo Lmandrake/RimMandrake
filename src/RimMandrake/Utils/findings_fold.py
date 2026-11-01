@@ -22,8 +22,9 @@ What it does, with no AI and no ledger writes:
     failure of that signature since it;
   * a finding retyped on the ledger (a later `finding` event of its name with a type outside the folded types, as the
     triage of 2026-10-31 did) has its outcome: it stays in the table, as DECIDED `retype` into the new type. A failure
-    of the signature after that is still counted. `raw[name].outcome` says a finding has an outcome no later than
-    itself; decided_findings() is how the ops_watch alarm flow.untriaged_findings reads a `decide` (OPS_FINDINGS_DIAGNOSE_17B4);
+    of the signature after that is still counted. An item of the finding's own name is an outcome too (`item`).
+    `raw[name].outcome` says a finding has an outcome no later than itself; no_outcome() is the ONLY answer the ops_watch
+    alarm flow.untriaged_findings reads, so report and alarm cannot disagree on an undo (OPS_FINDINGS_DIAGNOSE_17B4);
   * a CONTRADICTION is an item in a `contradiction_states` state (done, validated) whose own latest measured verdict
     of a row (the newest PASS/FAIL among the done records whose rows ingest maps to that item) is FAIL;
   * a machine-health failure (rules machine_health_patterns, case-insensitive) or a paused-lane finding is labelled
@@ -219,6 +220,10 @@ def read_ledger(rules):
     spawns = [e for e in events if e.get("event") == "spawn" and isinstance(e.get("from"), str)]
     spawns += [{"as": "retype", "from": n, "name": e.get("type"), "seat": e.get("seat"), "ts": e.get("ts"),
                 "why": e.get("why") or "retyped %s" % e.get("type")} for n, e in sorted(retyped.items())]
+    # an item of the finding's own name is its outcome whichever came first, so it is dated no earlier than the finding
+    spawns += [{"as": "item", "from": n, "name": n, "seat": e.get("seat"), "ts": max(str(e.get("ts")), finds[n]["ts"]),
+                "why": "an item of that name"} for e in events if e.get("event") in ("file", "spawn")
+               for n in {e.get("id"), e.get("name")} & set(finds)]
     return finds, spawns, states
 
 
@@ -303,7 +308,7 @@ def row_runs(recs):
 
 def latest_decision(sig, names, spawns, lines):
     """The newest of: a decisions-file line on sig, a `rimflow spawn --from <one of its findings>` (work), a ledger
-    retype of one of them (retype, read_ledger). undo -> None."""
+    retype of one of them (retype) or an item of one's name (item), both from read_ledger. undo -> None."""
     ds = [{"as": e.get("as") or "work", "into": e.get("name"), "by": e.get("seat"), "ts": e.get("ts") or "",
            "why": e.get("why") or "spawned from %s" % e["from"], "src": "ledger"}
           for e in spawns if e["from"] in names] + \
@@ -507,11 +512,17 @@ def writer_lock(qdir):
             fcntl.flock(fh, fcntl.LOCK_UN)
 
 
-def decided_findings(out=None):
-    """The finding names the published table gives an outcome: what the ops_watch alarm subtracts. A `decide` lives in
-    the decisions file, which only the table joins to finding names. No report yet: none. Unreadable: Unmeasured."""
-    t = read_prev(os.path.join(out_dir(out, load_rules()), REPORT))[0]
-    return {n for n, f in t["raw"].items() if f.get("outcome")} if t else set()
+def no_outcome(events, out=None):
+    """The folded findings on these ledger events with no outcome in the published table: the ops_watch alarm's whole
+    answer. A finding the table does not hold yet has none. No report yet: all of them. Unreadable, or a table written
+    without `outcome` (an older fold): Unmeasured, never a count."""
+    rules = load_rules()
+    names = {e.get("name") for e in events if e.get("event") == "finding" and e.get("type") in rules["finding_types"]}
+    t = read_prev(os.path.join(out_dir(out, rules), REPORT))[0] if names else None
+    raw = t["raw"] if t else {}
+    if not all(isinstance(f, dict) and "outcome" in f for f in raw.values()):
+        raise Unmeasured("the published table carries no outcome: an older fold wrote it")
+    return {n for n in names if not (raw.get(n) or {}).get("outcome")}
 
 
 def cmd_run(a):

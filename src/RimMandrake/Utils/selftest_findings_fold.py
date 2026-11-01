@@ -558,12 +558,30 @@ check(_t["raw"]["D_1"]["outcome"] is True and _u["raw"]["D_1"]["outcome"] is Fal
       "R4 a decide gives the outcome, its undo takes it back")
 check(_l["raw"]["D_1"]["outcome"] is False, "R5 a failure newer than the decision has no outcome")
 _d = tempfile.mkdtemp()
+_ledev = [dict(_ev[0])]
 try:
-    check(FF.decided_findings(_d) == set(), "R6 no report yet: nothing decided")
+    check(FF.no_outcome(_ledev, _d) == {"D_1"}, "R6 no report yet: every folded finding has no outcome")
     with open(os.path.join(_d, FF.REPORT), "w", encoding="utf-8") as _o:
         _o.write(FF.render_report(_t))
-    check(FF.decided_findings(_d) == {"D_1"}, "R6 decided_findings reads the published table")
+    check(FF.no_outcome(_ledev, _d) == set(), "R6 no_outcome reads the published table")
+    check(FF.no_outcome(_ledev + [fev("N_1", "IT_D", "r9", "new", ts(29, 1))], _d) == {"N_1"},
+          "R6 a finding newer than the table has none yet")
+    check(FF.no_outcome(_ledev + _led(("H_0", ts(27, 1), {"type": "TRACKED"})), _d) == set(),
+          "R6 a hand-typed finding never folded is not the alarm's")
+    _old = json.loads(json.dumps(_t))
+    del _old["raw"]["D_1"]["outcome"]
+    with open(os.path.join(_d, FF.REPORT), "w", encoding="utf-8") as _o:
+        _o.write(FF.render_report(_old))
+    try:
+        FF.no_outcome(_ledev, _d)
+        check(False, "R6 a table with no outcome field is UNMEASURED")
+    except FF.Unmeasured:
+        check(True, "R6 a table with no outcome field is UNMEASURED")
 finally:
     shutil.rmtree(_d)
+_f, _sp, _st = _rl(_led(("I_1", ts(28, 1), {})) + [{"event": "file", "id": "I_1", "seat": "BENCH", "ts": ts(27, 1)}])
+_t = FF.fold(_f, _sp, _st, [], [], RULES, ts(29, 20))
+check(_t["raw"]["I_1"]["outcome"] is True and list(_t["signatures"].values())[0]["decision"]["as"] == "item",
+      "R7 an item of the finding's name is an outcome, even an older one")
 print("\n%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)
