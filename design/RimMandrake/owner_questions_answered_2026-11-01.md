@@ -183,6 +183,7 @@ scenario, how it could falsely pass, and what checks it.
 - A worked hand-off through real intake.
 - Relentless's own tree intake (`RA_S05_INTAKE_ENFORCE_TREE_FIRST`, blocked).
 - The first real exam by hand.
+- Your multiplayer answer, no support, is being written into its minimum bar.
 - The exam script.
 - Calibration across five mods. Until then, its minimum-bar numbers are provisional.
 
@@ -202,7 +203,7 @@ Your time per concept has never been measured. **ESTIMATE**
 
 - 71 items closed, 70 of them today, at 96M tokens. **MEASURED**
 - Planted bugs are caught: 20 of 21. **MEASURED**, small sample.
-- But 4 of 9 sound controls were wrongly failed. **MEASURED**
+- After a second read, 2 of 7 sound controls were wrongly failed (range 8 to 64%). **MEASURED**, small sample. A third verdict, "work holds, proof weak", is being built.
 - 26 of 74 real first checks fail.
 - Escaped defects are UNMEASURED.
 - The agent has 19 build steps: 2 in progress, 17 blocked waiting their turn. Two need the live game.
@@ -306,9 +307,3 @@ hours a day.
 - **A (my pick):** Keep them 2 more weeks, each output tied to one named reader, then cut any still unused.
 - **B:** Cut now.
 - **C:** Leave them alone.
-
-**7. Multiplayer line.** The design agent has a minimum bar every mod must meet, and its multiplayer line is blank.
-
-- **A:** Every mod must work in multiplayer.
-- **B:** Must not break it.
-- **C:** Doesn't matter.
