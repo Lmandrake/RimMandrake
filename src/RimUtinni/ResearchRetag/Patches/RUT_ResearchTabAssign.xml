@@ -6554,4 +6554,38 @@
       <value><researchViewY>3.5</researchViewY></value>
     </match>
   </Operation>
+  <!-- LOAD_RED_BASELINE_DRIFT_1: full-list loads log 'Cocoa: same research view coords and tab as
+       HotTubs: 1, 0(RUT_Tree_Hearth)', though the def dump puts HotTubs at (5,1.5); same unexplained
+       third-party relocation as AdvancedShowers above, same cure. Pin HotTubs where the dump has it.
+       Replace-or-Add, guarded: HotTubs comes from an optional mod. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="HotTubs"]/researchViewX</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ResearchProjectDef[defName="HotTubs"]/researchViewX</xpath>
+      <value><researchViewX>5</researchViewX></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="HotTubs"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="HotTubs"]</xpath>
+        <value><researchViewX>5</researchViewX></value>
+      </match>
+    </nomatch>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="HotTubs"]/researchViewY</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/ResearchProjectDef[defName="HotTubs"]/researchViewY</xpath>
+      <value><researchViewY>1.5</researchViewY></value>
+    </match>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="HotTubs"]</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="HotTubs"]</xpath>
+        <value><researchViewY>1.5</researchViewY></value>
+      </match>
+    </nomatch>
+  </Operation>
+
 </Patch>

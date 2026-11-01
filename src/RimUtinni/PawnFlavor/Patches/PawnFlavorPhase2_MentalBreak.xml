@@ -866,13 +866,13 @@
         <match Class="PatchOperationReplace">
           <xpath>Defs/MentalBreakDef[defName="TargetedInsultingSpree"]/label</xpath>
           <value>
-            <label>riding {0} hard</label>
+            <label>riding someone hard</label>
           </value>
         </match>
         <nomatch Class="PatchOperationAdd">
           <xpath>Defs/MentalBreakDef[defName="TargetedInsultingSpree"]</xpath>
           <value>
-            <label>riding {0} hard</label>
+            <label>riding someone hard</label>
           </value>
         </nomatch>
       </li>

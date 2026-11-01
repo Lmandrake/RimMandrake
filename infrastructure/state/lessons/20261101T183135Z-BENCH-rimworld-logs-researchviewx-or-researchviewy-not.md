@@ -1,0 +1,1 @@
+RimWorld logs 'researchViewX and/or researchViewY not set' for a ResearchProjectDef at a NEGATIVE coordinate, not only an unset one (RR_Organization at x=-2). And a def-dump-vs-patch selftest goes red for any coordinate move until the next load recaptures the dump.

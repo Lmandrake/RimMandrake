@@ -299,9 +299,9 @@ CHECKS = [
     # (expected 17 -> 5). That drop is a real fix, not a pass-count change; any such line returning is a regression.
     # The baseline number below is left for the next measured load to correct.
     ("configerror", "def ConfigErrors (loaded but WRONG)",
-     r"Config error in |Exception in ConfigErrors\(\) of ", 17,
-     "17 LINES over 11 distinct sources (6 RSW_FE + 5 others logged once each, except "
-     "RSW_FE which double-logs - mechanism still unexplained). Read --show configerror "
+     r"Config error in |Exception in ConfigErrors\(\) of ", 10,
+     "10 LINES (2026-11-01, LOAD_RED_BASELINE_DRIFT_1): 2 Worldbuilder NRE + 3 Armoury forcedMiss "
+     "x2 + RM_IceMelter x2, the last owed by FlowWorks. Read --show configerror "
      "BEFORE filing, and check infrastructure/state/facts/config_error_baseline_*.json "
      "or run check_config_errors.py first - it classifies every line so nobody re-derives "
      "this by eye"),
@@ -318,9 +318,9 @@ CHECKS = [
     # that never happens teaches you to wave the whole check through, which is
     # exactly what a no-baseline "?" already encourages. Rule 0.6, instance 4.
     ("patchfail", "patch operations failed",
-     r"[Pp]atch operation .* failed|PatchOperation.*failed", 5,
-     "5 = 3 Intimacy + 1 Mining Outpost + 1 Biomes! Caverns, all pre-existing "
-     "and all other mods. A 6th is NEW - read it with --show patchfail"),
+     r"[Pp]atch operation .* failed|PatchOperation.*failed", 1,
+     "1 = Alien Worlds - Tidally Locked Patches/Settings.xml, third party (2026-11-01, "
+     "LOAD_RED_BASELINE_DRIFT_1). A 2nd is NEW - read it with --show patchfail"),
     # Added 2026-08-20 by BUILD. Both were found by reading a log by hand and both
     # would otherwise have to be re-found the same way every load.
     # 🔴 The dictionary-shape error is the loudest silent bug this project has had:

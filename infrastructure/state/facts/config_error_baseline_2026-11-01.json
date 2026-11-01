@@ -1,0 +1,298 @@
+{
+ "_freeze": "config_error_baseline - read by check_config_errors.py. Edit only with a note saying what changed and why. Class ours-fixed: expected in logs up to fixedOn, a regression in any later one.",
+ "measuredFrom": {
+  "logs": [
+   "D:\\ClaudeWork\\rimmandrake\\scratch\\playerlog_archive\\Player.20261029T014615.log (full-tier load, 2026-10-29)"
+  ],
+  "triage": "LOAD_RED_BASELINE_DRIFT_1"
+ },
+ "supersedes": "config_error_baseline_2026-09-06.json: the 2026-10-08 red (BMT patch failures) no longer occurs; patch failures are 1 (Alien Worlds - Tidally Locked).",
+ "entries": [
+  {
+   "pattern": "Config error in RSW_FE_Ash_Trace: burnedDef is flammable",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "Fire Ecology ash ladder. Owner-ruled not-a-defect 2026-09-03 - TerrainDef.ConfigErrors() is advisory only. Do not fix."
+  },
+  {
+   "pattern": "Config error in RSW_FE_Ash_Light: burnedDef is flammable",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "same ruling as RSW_FE_Ash_Trace"
+  },
+  {
+   "pattern": "Config error in RSW_FE_Ground_Gravel: burnedDef is flammable",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "same ruling as RSW_FE_Ash_Trace"
+  },
+  {
+   "pattern": "Config error in RSW_FE_Ground_Sand: burnedDef is flammable",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "same ruling as RSW_FE_Ash_Trace"
+  },
+  {
+   "pattern": "Config error in RSW_FE_Ground_Soil: burnedDef is flammable",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "same ruling as RSW_FE_Ash_Trace"
+  },
+  {
+   "pattern": "Config error in RSW_FE_Ground_SoilRich: burnedDef is flammable",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "same ruling as RSW_FE_Ash_Trace"
+  },
+  {
+   "pattern": "Config error in Techprint_RR_lighting: description has trailing whitespace",
+   "kind": "configerror",
+   "class": "third-party-cosmetic",
+   "expectCount": 1,
+   "note": "Research Reinvented's own description text. Not fixed - patching it means reproducing their exact string in a Replace, fragile for zero player-visible benefit (LOAD_CONFIG_ERROR_SWEEP_1)."
+  },
+  {
+   "pattern": "Config error in AdvancedShowers: same research view coords and tab as VCE_StewCooking: 2, 0(RUT_Tree_Hearth)",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 1,
+   "note": "OUR ResearchRetag consolidation (RESEARCH_TREE_TABS_1) put two third-party research projects in the same tab. A fix was already committed (14cf4186, RESEARCH_TAB_VIEWCOORD_COLLISION_1, deployed 2026-09-05T01:37 local, forcing AdvancedShowers's researchViewX/Y to 2,1) - but all three logs this baseline is measured from were captured HOURS after that deploy and still show the exact pre-fix (2,0) pair. EXHAUSTIVELY CHECKED (2026-09-06): grepped every one of the 596 active mods' own directories (local Mods AND Steam Workshop content, via manifest.json's rootDir per mod, not just the local Mods folder) for 'AdvancedShowers' - the ONLY hits are Dubs Bad Hygiene Lite's own raw declaration (researchViewX=5, researchViewY=0.5) and our own two ResearchRetag files. No third-party XML patches this def at all, so the original theory of an unidentified mod's compatibility patch clobbering it is RULED OUT. Read the mechanism instead: Verse.ResearchProjectDef.ConfigErrors() compares the ResearchViewX/Y PROPERTIES (private fields x/y), which are ONLY ever populated by the separate static method ResearchProjectDef.GenerateNonOverlappingCoordinates() (called from PlayDataLoader.ResetStaticDataPre()) - it copies researchViewX/Y into x/y for every def, then nudges apart (+/-0.1 per pass, up to 200 passes) any same-tab pair within (0.5, 0.25) of each other. No 'Couldn't relax research project coordinates apart after 200 passes' line appears in any of the three logs, meaning the algorithm believes it fully resolved every collision on the 596-mod research tree - except apparently this one pair, which still reads as an EXACT match. Why our patched Y=1 does not show up as the source value copied into y is unresolved; two candidate explanations neither confirmed nor ruled out: (a) our PatchOperationSequence's second Replace (researchViewY) silently fails to apply while the first (researchViewX) succeeds - consistent with the observed x matching our patched value while y does not match either the raw (0.5) or our patched value (1); or (b) a hot-reload/companion-tooling load path (JawaBench context lines are present in all three logs) runs ConfigErrorsIfAny without a preceding ResetStaticDataPre, reading stale x/y from an earlier pass. NOT re-attempted blind here, to avoid repeating the exact mistake this investigation already found (a fix committed without a real-load confirmation). RESEARCH_TAB_VIEWCOORD_COLLISION_1 should be reopened with this writeup; the next step is a single bridge-driven full-list load with the dev console open on Research to watch x/y directly, or a debug print inside the patch's own Replace ops."
+  },
+  {
+   "pattern": "Config error in VCE_StewCooking: same research view coords and tab as AdvancedShowers: 2, 0(RUT_Tree_Hearth)",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 1,
+   "note": "mirror of the AdvancedShowers entry above - same open bug, same two log lines are one collision"
+  },
+  {
+   "pattern": "Exception in ConfigErrors() of CannibalPirate",
+   "kind": "configerror",
+   "class": "third-party-unattributed",
+   "expectCount": 1,
+   "note": "Worldbuilder IdeoUtility_IsMemeAllowedFor_Patch.Postfix reads Find.FactionManager while no Game exists; only the load-time check of these two factions dies. Harmless; third party. Triaged LOAD_RED_BASELINE_DRIFT_1."
+  },
+  {
+   "pattern": "Exception in ConfigErrors() of PirateYttakin",
+   "kind": "configerror",
+   "class": "third-party-unattributed",
+   "expectCount": 1,
+   "note": "Worldbuilder IdeoUtility_IsMemeAllowedFor_Patch.Postfix reads Find.FactionManager while no Game exists; only the load-time check of these two factions dies. Harmless; third party. Triaged LOAD_RED_BASELINE_DRIFT_1."
+  },
+  {
+   "pattern": "Config error in SignWoodenMulti: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "Fixed by ThirdPartySignConfigErrors_Fix.xml (776cc6ed), sets disableImpassableShotOverConfigError. CONFIRMED gone in all 3 logs this baseline is measured from. Reappearing = regression, investigate the patch's deployment."
+  },
+  {
+   "pattern": "Config error in SignPanelWood: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Config error in SignCairn: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Config error in SignObelisk: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Config error in SignSlab: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Config error in SignPanel: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Config error in SignNature: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Config error in SignBillboard: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Config error in SignRoadLED: impassable, player-buildable building that can be shot/seen over.",
+   "kind": "configerror",
+   "class": "third-party-fixed",
+   "expectCount": 0,
+   "note": "same fix as SignWoodenMulti"
+  },
+  {
+   "pattern": "Could not resolve cross-reference: No Verse.ThingDef named MealSimple10 found to give to Verse.ThingDefCountClass",
+   "kind": "crossref",
+   "class": "third-party-absent",
+   "expectCount": 0,
+   "note": "In the 2026-09-03 baseline (5 total, quest-reward stack defs; investigated as VANILLA_COUNT_PSEUDO_DEF_1). ABSENT from all 3 logs this baseline is measured from - cause of the disappearance not attributed (no fix landed in our repo for it). Reappearing is not a regression we caused, but is worth telling VANILLA_COUNT_PSEUDO_DEF_1 about."
+  },
+  {
+   "pattern": "Could not resolve cross-reference: No Verse.ThingDef named Chemfuel60 found to give to Verse.ThingDefCountClas",
+   "kind": "crossref",
+   "class": "third-party-absent",
+   "expectCount": 0,
+   "note": "see MealSimple10 entry"
+  },
+  {
+   "pattern": "Could not resolve cross-reference: No Verse.ThingDef named Steel75 found to give to Verse.ThingDefCountClass",
+   "kind": "crossref",
+   "class": "third-party-absent",
+   "expectCount": 0,
+   "note": "see MealSimple10 entry"
+  },
+  {
+   "pattern": "Could not resolve cross-reference: No Verse.ThingDef named ComponentIndustrial12 found to give to Verse.ThingD",
+   "kind": "crossref",
+   "class": "third-party-absent",
+   "expectCount": 0,
+   "note": "see MealSimple10 entry"
+  },
+  {
+   "pattern": "Could not resolve cross-reference: No Verse.ThingDef named Silver120 found to give to Verse.ThingDefCountClass",
+   "kind": "crossref",
+   "class": "third-party-absent",
+   "expectCount": 0,
+   "note": "see MealSimple10 entry"
+  },
+  {
+   "pattern": "Config error in RSW_DW_Module_DroidArmorHvy: is smeltable but does not give anything for smelting.",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 2,
+   "note": "DROIDWORKS_MODULE_ABSORB_1 (B2, blocked 2026-09-08) - root cause is DROIDWORKS_APPARELMONEY_MISSING_1, upstream of this line. Not caused by DROIDWORKS_FULL_LIST_COEXIST_1 (A2) or any of this session's B3-B6 work: measured byte-identical (same 3 lines, same x2 counts) across every one of six separate live verify passes today (B3/B4a/B4b/B5/B6, all on the 25-mod minimal list) - it predates and is orthogonal to A2's own three fixed bug classes. Added 2026-09-08 confirming a fresh full-list load; this baseline's own 2026-09-06 measurement predates B2's work entirely, which is why these read as NEW rather than regressions."
+  },
+  {
+   "pattern": "Config error in RSW_DW_Module_DroidArmorLte: is smeltable but does not give anything for smelting.",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 2,
+   "note": "same situation as RSW_DW_Module_DroidArmorHvy"
+  },
+  {
+   "pattern": "Config error in RSW_DW_Module_DroidArmorMid: is smeltable but does not give anything for smelting.",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 2,
+   "note": "same situation as RSW_DW_Module_DroidArmorHvy"
+  },
+  {
+   "pattern": "Config error in RUT_ComplexStructures: LandmarkDef RUT_ComplexStructures has no mutators with a chance of 1 or higher.",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 1,
+   "note": "Ours (RimUtinni tier), unrelated to Droidworks/A2 - not investigated this pass, flagging only. First seen on the 2026-09-08 full-list confirming load for DROIDWORKS_FULL_LIST_COEXIST_1; not in this baseline's 2026-09-06 measurement, so landed sometime between via other-window RUT work. Whoever owns LandmarkDef/mutator authoring should pick this up."
+  },
+  {
+   "pattern": "Config error in Utinni Shellmandrake.rut.shell: defName Utinni Shellmandrake.rut.shell should only contain letters, numbers, underscores, or dashes.",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 1,
+   "note": "Ours (RimUtinni tier) - a defName was authored with a space and/or concatenated with its own packageId (\"Utinni Shell\" + \"mandrake.rut.shell\"), producing an invalid defName string. Unrelated to Droidworks/A2, not investigated this pass. Whoever owns the Utinni Shell def should fix the defName itself."
+  },
+  {
+   "pattern": "Config error in guy762_bowcaster_ceremonial: verb 2: has incorrect forcedMiss",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "Absorbed Kotor weapon: scatter on a non-explosive slug is the weapon's design; its IgnoreConfigErrors silencer went with the donor. Advisory only."
+  },
+  {
+   "pattern": "Config error in guy762_hvyrepeater_massdriver: verb 1: has incorrect forcedMiss",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "As guy762_bowcaster_ceremonial."
+  },
+  {
+   "pattern": "Config error in guy762_lgtrepeater_onderon: verb 1: has incorrect forcedMiss",
+   "kind": "configerror",
+   "class": "ours-accepted",
+   "expectCount": 2,
+   "note": "As guy762_bowcaster_ceremonial."
+  },
+  {
+   "pattern": "Config error in RM_IceMelter: graphicData defines a shadowInfo",
+   "kind": "configerror",
+   "class": "ours-open-bug",
+   "expectCount": 2,
+   "note": "FlowWorks, FOUNDRY's lane: filed ICEMELTER_SHADOW_FIX_DOUBLE_BOOKED_SHADE."
+  },
+  {
+   "pattern": "has duplicate thingCategory",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-10-31",
+   "note": "de8ad06e48 dropped the children repeated from their parents."
+  },
+  {
+   "pattern": "Config error in Cocoa: same research view coords",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-01",
+   "note": "HotTubs pinned at (5,1.5) in RUT_ResearchTabAssign.xml; the mover was never identified, so the next full-list load is what proves it."
+  },
+  {
+   "pattern": "Config error in HotTubs: same research view coords",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-01",
+   "note": "HotTubs pinned at (5,1.5) in RUT_ResearchTabAssign.xml; the mover was never identified, so the next full-list load is what proves it."
+  },
+  {
+   "pattern": "Config error in RR_LateralThinking: researchViewX",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-01",
+   "note": "Was at x=-2; the engine reads a negative coordinate as unset."
+  },
+  {
+   "pattern": "Config error in RR_Organization: researchViewX",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-01",
+   "note": "Was at x=-2; the engine reads a negative coordinate as unset."
+  },
+  {
+   "pattern": "Config error in TargetedInsultingSpree: label contains",
+   "kind": "configerror",
+   "class": "ours-fixed",
+   "expectCount": 0,
+   "fixedOn": "2026-11-01",
+   "note": "Our PawnFlavor label held {0}; a MentalBreakDef label is never formatted."
+  }
+ ]
+}

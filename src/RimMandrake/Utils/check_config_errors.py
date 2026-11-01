@@ -31,6 +31,7 @@ on whatever log you hand it.
 """
 from __future__ import annotations
 import argparse
+import datetime
 import glob
 import json
 import os
@@ -83,6 +84,14 @@ def classify(line: str, entries: list[dict]) -> dict | None:
     return None
 
 
+def log_postdates(path: str, entry: dict) -> bool:
+    """An `ours-fixed` entry names the fix's `fixedOn` (YYYY-MM-DD). A log older than that is history and
+    its line is expected; a log written on a later day still holding the line is a regression. The fix's
+    own day is not trusted either way, so it counts as history."""
+    fixed = datetime.date.fromisoformat(entry["fixedOn"])
+    return datetime.date.fromtimestamp(os.path.getmtime(path)) > fixed
+
+
 def main() -> int:
     # Windows' console defaults to cp1252, which can't encode the emoji this
     # script prints -- reconfigure to UTF-8 so a real, unrelated finding
@@ -130,7 +139,8 @@ def main() -> int:
         print(f"  known [{cls}]: {len(items)} distinct line(s), {total} occurrence(s)")
 
     regressions = by_class.get("third-party-fixed", []) + \
-        [it for it in by_class.get("third-party-absent", []) if it[1] > 0]
+        [it for it in by_class.get("third-party-absent", []) if it[1] > 0] + \
+        [it for it in by_class.get("ours-fixed", []) if log_postdates(a.log, it[2])]
 
     if new_lines:
         print(f"\n\U0001F534 NEW — not in {os.path.basename(baseline_path)} "

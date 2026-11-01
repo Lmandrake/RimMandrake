@@ -51,6 +51,15 @@ def main():
     check("patch coord parse sees the Hearth layout ops (AdvancedShowers 2,1; VCE_CondimentsResearch y 0.6)",
           ov.get("AdvancedShowers") == {"researchViewX": 2.0, "researchViewY": 1.0}
           and ov.get("VCE_CondimentsResearch", {}).get("researchViewY") == 0.6, ov.get("AdvancedShowers"))
+    check("HotTubs is pinned off Cocoa's cell (LOAD_RED_BASELINE_DRIFT_1)",
+          ov.get("HotTubs") == {"researchViewX": 5.0, "researchViewY": 1.5}, ov.get("HotTubs"))
+    import glob
+    import xml.etree.ElementTree as ET
+    here = os.path.dirname(os.path.abspath(__file__))
+    negative = [d.findtext("defName") for f in glob.glob(os.path.join(here, "Defs", "ResearchProjectDefs", "*.xml"))
+                for d in ET.parse(f).getroot().iter("ResearchProjectDef")
+                if float(d.findtext("researchViewX") or 0) < 0 or float(d.findtext("researchViewY") or 0) < 0]
+    check("no shipped project sits at a negative coordinate (the engine reads it as 'not set')", not negative, negative)
     check("break overlap: two nodes 0.2 apart in a column are reported",
           len(v.tab_overlaps([("A", 0, 0), ("B", 0, 0.2), ("C", 0, 1)])) == 1)
     check("float edge: 4.9 vs 5.15 counts as overlap (float32 box edge)",
