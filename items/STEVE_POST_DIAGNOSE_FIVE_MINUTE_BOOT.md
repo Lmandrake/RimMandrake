@@ -1,6 +1,6 @@
 # STEVE_POST_DIAGNOSE_FIVE_MINUTE_BOOT - read-only diagnosis (BENCH, 2026-10-31 ~18:45)
 
-STATUS: PARTIAL. Steve dropped off the network at ~18:38 (ssh and ping time out; Tailscale 100.118.241.96), presumably the owner rebooting/in BIOS. Nothing was changed on Steve. Owed items below are unread.
+STATUS: COMPLETE v2 (19:05). First pass was partial because Steve was rebooting; the update below supersedes the 'NOT MEASURED' and hypothesis sections. Only change on Steve: smartmontools 7.5 installed via winget (no reboot) and scratch files in D:\ClaudeWork (clusters.txt, scan*.ps1, badblock_*.txt).
 
 ## MEASURED
 - Harddisk1 = Samsung 970 EVO Plus 2 TB NVMe, GPT: Recovery 0.5 GB, EFI 0.1 GB, MSR 16 MB, **C: (1.9 TB, the rest of the disk)**. D: is the WD 14 TB (Harddisk0). So every bad block is on C: ("Windows 10"). No partition other than C: is on the drive.
@@ -12,22 +12,36 @@ STATUS: PARTIAL. Steve dropped off the network at ~18:38 (ssh and ping time out;
 - Other 3-day System noise: Kernel-Processor-Power 55 x182, disk 157 x36 ("disk was surprise removed", probably the USB stick), Ntfs 98 x30, Kernel-Power 109 x10 and 172 x10, disk 51 x2. Not decoded further.
 - Brief's figures taken as given (not re-measured): BIOS 3401, ME 14.1.79.2540, FwPOSTTime 292,889 ms, microcode 0x100, 18 of 20 logical CPUs.
 
-## NOT MEASURED (Steve went dark) - owed
-1. File(s) at the bad LBAs: need C: partition start offset (Get-Partition 4 Offset), cluster = (offset - start)/4096, then map to a file (fsutil / FSCTL_GET_RETRIEVAL_POINTERS scan or chkdsk /scan output). Likely one big file or a hot system file in the first 30 GB of C: (candidates to check: WSL ext4.vhdx, pagefile.sys/hiberfil.sys, Defender quarantine/ScanCache, a game/save file).
-2. A process tie: the reads come from System; correlate with Defender (MpCmdRun/Microsoft-Windows-Windows Defender/Operational scans) and WSL VHDX timing.
-3. Boot history: Diagnostics-Performance event 100 (BootTime etc.), FwPOSTTime in HKLM\...\Power, bcdedit numproc/onecpu, Kernel-Power 41/6008/12/13 around the CPU fault. The query was sent but the output was lost to the disconnect.
-4. Full NVMe SMART (Critical Warning, Media and Data Integrity Errors, Available Spare, Percentage Used, Unsafe Shutdowns): `winget install smartmontools` or WSL smartctl (WSL cannot see the NVMe).
-5. chkdsk C: /scan (online, read-only; non-disruptive in principle, but it reads the whole volume, so do it after the reboot and not while the owner works).
-6. Precious / unpushed / only-on-Steve: not enumerated. Recommended read: `git status` and `git log @{u}..` in every repo on C: and D:, plus the lane's results dir. Until then treat Steve's C: results since 10-30 as suspect.
-
-## HYPOTHESES for the 4.9-minute POST, ranked (all HYPOTHESIS)
-1. Firmware memory re-training after the BIOS 3401 / ME 14.1.79.2540 / microcode change. The first ME-update reboot took ~19 min dark; a shrinking first-boot-after-flash time (19 min then 4.9 min) fits retraining that is cached over several cold boots. Cheapest test: cold boot twice more with nothing changed and compare FwPOSTTime; if it falls, it self-heals.
-2. A USB device (the stick that gives I/O errors and has no volume; disk 157 surprise-removal events) stalling enumeration. Cheapest test: boot once with all USB storage unplugged.
-3. The NVMe itself: the BIOS/option ROM waits on a drive that returns media errors on part of the namespace (the unreadable region is at 30 GB, in C:, which the BIOS does not read, so this is weaker for POST but strong for OS slowness). Cheapest test: boot with the drive's temperature/health checked in BIOS, or compare POST with the NVMe slot empty (not a reboot-free test; owner's call).
-4. Degraded CPU / 2 cores masked (18 of 20 logical): the CPU fault (per-CPU SIMD) plus a BIOS core mask causing repeated CPU init retry. Cheapest test: read bcdedit numproc and BIOS "Active Cores"; if mask is in BIOS, restore all cores and see.
-Event-7 bad blocks are OS reads of C: files and are not a proven cause of POST time; they explain a slow, error-laden OS, not necessarily firmware time.
-
-## Lane pause
-KEEP PAUSED. Reasons: C: has unreadable regions being retried thousands of times an hour, the CPU fault already made earlier results suspect, and the machine is mid-reboot with the owner in BIOS. Resume only after: the file at the bad LBAs is identified (and replaced if it is a lane file), NVMe SMART shows Media Errors flat, and one clean boot with FwPOSTTime known.
-
-Raw decoded events (15,950, 08:05-18:37) were saved under the BENCH scratchpad ev7.txt; script is in this note's method (offset at bytes 32-39 of the Binary, little endian).
+## UPDATE v2 (after the coordinator's new evidence: no-stick FwPOSTTime 293450 ms vs 292889; 17:24 pre-ME reboot back in 116 s)
+### Boot history (Kernel-General 13 shutdown -> 12 start, today)
+- 17:23:22 -> 17:24:12 = 50 s (pre-ME, bad blocks already logging)
+- 17:26:53 -> 17:48:40 = 22 min (ME flash)
+- 17:54:05 -> 18:25:58 = 32 min (BIOS flash)
+- 18:27:52 -> 18:33:17 = 5.4 min, 18:38:11 -> 18:43:10 = 5.0 min (FwPOSTTime 292,889 then 293,450 ms)
+So the slowness starts with the ME flash and is a near-constant ~293 s twice running. Diagnostics-Performance event 100 has no entries since 10-25 (log empty for this week), so no earlier FwPOST history exists; only the current registry value (293450).
+### ME state (MEASURED)
+- ME firmware 14.1.79.2540 reads fine from the OS (root\Intel_ME ME_System: FWVersion 14.1.79.2540, CryptoFuseEnabled False, ManageabilityMode 0, PlatformType 1).
+- Intel MEI #1 and WMI Provider: Status OK, no problem code. Driver MEI 2406.5.5.0 (2024-02-07), WMI provider 2408.5.4.0. System log: MEIx64 only event id 2 "driver has started successfully" at every boot (11 in 4 days); no HECI/ME errors in Windows logs.
+- A newer MEI driver is not indicated: the driver talks to the ME and logs clean; the stall is before the OS loads. (Not looked up on ASUS/Intel sites or forums: this seat has no web tool. OWED, a web-capable seat should check ASUS ROG STRIX Z490-G GAMING (WI-FI) BIOS 3401 notes and Intel CSME 14.1 release notes for 'long POST'.)
+- BIOS reads 3401 (2026-05-26), board ROG STRIX Z490-G GAMING (WI-FI). Firmware boot order lists only Windows Boot Manager (displayorder {bootmgr}); UEFI Network/USB entries exist but are not in the order.
+### Full NVMe SMART (smartctl 7.5, /dev/nvme0) - MEASURED. The drive IS failing in part
+Samsung 970 EVO Plus 2TB fw 2B2QEXM7. Overall: PASSED (Critical Warning 0x00). Available Spare 100%, Percentage Used 2%, Power On Hours 36,015, Written 78.3 TB, Unsafe Shutdowns 28, Temp 61 C (sensor 2 68 C). **Media and Data Integrity Errors 203,353; Error Information Log Entries 204,171+** (rising live); log entries are "Unrecovered Read Error" (0xC502) at LBAs 66179312, 66183248, 66185424, 66185682 (x512 B = 33.88-33.89 GB, matching the event-7 offsets).
+### File at the bad sectors (MEASURED; walked all 1,001,304 files on C: with FSCTL_GET_RETRIEVAL_POINTERS)
+C: starts at byte 644,874,240. Of the 74 bad clusters, **all 74 fall in just three files**:
+- 1 cluster (5628895, ~22 GB): C:\Users\sjlewis\AppData\Local\Packages\SpotifyAB.SpotifyMusic_...\LocalCache\Spotify\Browser\Cache\Cache_Data\f_00008e (33 KB, disposable cache)
+- 73 clusters (~30-31.6 GB): C:\Users\sjlewis\OneDrive\Documents\My Games\GoatSim\GoatGame\Mods\Downloaded\250080796\Maps\abugoat.goat (44 MB) and ...\250080796\Textures_AbuGoat.tfc (22 MB): a Steam Workshop download (id 250080796) inside the OneDrive-synced Documents folder, so OneDrive (and/or Defender) re-reads it. Re-downloadable, not precious.
+Owner's view: that explains the retry storm (System reads, same sectors, thousands of times). The files are the symptom; the drive has unreadable LBAs and (203k errors) the count will keep growing while those files are read. NOT done (read-only brief): deleting/redownloading those files, chkdsk /scan (not run: it would read the entire volume and the answer is already known), process-level attribution beyond 'System'.
+### Precious / only on Steve (partial, MEASURED structure only)
+Users: sjlewis, alexa, jessi (C:\Users). D: top level: Dropbox, Google Drive, iCloudDriveCache, SteamLibrary, RimTest, sjlewis, Ubisoft, ClaudeWork, Program Files (x86). C:\Users\sjlewis\OneDrive\Documents is cloud-synced. Git repos found to depth 3: D:\Dropbox\org\org-html-themes, D:\sjlewis\Mods.new\paragon-animal-armor (no unpushed check made). Sizes/sync state of alexa and jessi profiles NOT checked, so whether their files are only here is UNKNOWN. Because the C: drive has a live unrecoverable-read count, back up C:\Users (the ones not covered by OneDrive/Dropbox/Google Drive) before any further heavy use: that is a recommendation, not a measurement.
+### Reranked hypotheses for the ~293 s POST (all HYPOTHESIS)
+1. ME/BIOS post-flash handshake: the ME region was reflashed (22 min dark) and the BIOS then flashed again (32 min); a stuck/timeout step in ME init (HECI/boot-guard/ME-recovery wait) of ~290 s fits a fixed firmware timeout. The OS sees the ME as healthy, so it completes eventually. Cheapest test: none remote (the stall is pre-OS). Needs the owner at a reboot: (a) clear CMOS / load BIOS defaults then save, (b) power-off 30 s with PSU switch to drain the ME standby state, (c) re-run the ME flash with the ASUS-matched ME package/FPT 'full' or 'ME config reset' (only per vendor docs).
+2. BIOS settings reset to defaults by the flashes (e.g. memory training mode, an enabled Network/PXE boot step with a ~290 s timeout, 'Wait for F1' or option-ROM wait). Cheapest test: at next BIOS entry, compare settings with an earlier profile and turn off Network Stack/PXE, CSM option ROMs, enable Fast Boot and Memory Fast Boot.
+3. Memory training done every boot because the cached training data is invalid after the ME/BIOS change (the memory context cache cannot be saved). Lower than 1/2 now: two consecutive ~293 s boots argue for a timeout, not training that would shorten.
+4. Failing NVMe: demoted. The 17:24 boot was 116 s with bad blocks already logging, and the media errors sit in a few user files, not in anything the firmware reads. Still a real drive fault (see SMART) but unrelated to POST time.
+5. USB stick: ruled out by coordinator's test. CPU mask: numproc 18 is a bcdedit (OS) value, i9-10900K shows 9 cores/18 logical, so it is Windows' mask and cannot affect POST.
+### Remote-only tests still available (no reboot)
+- Read-only: `smartctl -l error /dev/nvme0` again to see error growth rate; Kernel-General/Kernel-Boot events for the next boot; `bcdedit /enum firmware`; root\Intel_ME WMI classes (ME_Event, AMT_*); Get-WinEvent System for MEIx64 after each boot.
+- Cheap remote cleanup that is NOT read-only and awaits the owner's go: quarantine the three files (stop OneDrive from re-reading), or remove numproc 18 (applies next boot).
+- Everything about the 293 s itself needs a reboot with the owner: BIOS defaults, CMOS clear, PXE/network stack off, ME re-flash.
+### Lane pause
+Keep paused until the disk has a backup and the three files are handled; the host also reads CPU-fault-suspect results. Resume after one boot with known POST time and flat media-error count.
