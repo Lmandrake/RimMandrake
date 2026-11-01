@@ -66,6 +66,10 @@ incompatible or corrupted mods"` as the failure terminator.
 🔴 Right after a relaunch that grep matches the PREVIOUS session's token until the
 new process truncates `Player.log` — also require a shrunk size / small line count or
 a newer mtime (`rimbridge/references/traps.md`, "`Player.log` PERSISTS between runs").
+✅ **Don't hand-write that wait:** `python3 src/RimMandrake/Utils/logwait.py "Bridge token:" --timeout 900` counts only
+text written after the call and needs no blind-scan override; in code open `logwait.LogCursor()` BEFORE the launch.
+One command for the whole cycle (stop, tier, deploy, launch, wait, quicktest, run):
+`src/RimMandrake/Utils/northstar_driver/live_session.py`.
 
 ⚠️ **A load stuck at 6 active mods (Core + five expansions) is RimWorld's own
 corrupted-mods RECOVERY RESET, not your config write failing.** Check the log for

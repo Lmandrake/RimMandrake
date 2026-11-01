@@ -67,6 +67,9 @@ run-start and run-end checklists line by line.
 
 Every row has a **status** and a **class**.
 
+🔴 **`modcheck record` knows six statuses:** PASS, SKIP, UNCOVERED and UNBUILT are OK; FAIL and UNMEASURED are not. Any
+other word (`RECORD`, `INFO`, `MEASURED`) reads RED; `record` now prints it by word and row id (`record.KNOWN_ROWS`).
+
 | status | means | never means |
 |---|---|---|
 | **PASS** | the check asked the game, got an answer, and the answer met the bar | "nothing went wrong" |
@@ -239,8 +242,9 @@ How to tell the classes apart, the 2026-10-11 tally and the modcheck/walk traps:
   byte-identical to the deployed copy. A bench clone with an older DLL aborted v2 at
   L2.
 - **Staleness.** A recorded proof goes STALE when any mod-folder file changes, except
-  `validation.py`, `human_review.py` and `northstar/`. Finish every mod-folder edit
-  before the run you will record.
+  `validation.py`, `human_review.py`, `northstar/` and whatever the mod lists in
+  `.hashignore` (review tooling and art sources belong there). A loose `.py` in the mod
+  root IS hashed. Finish every mod-folder edit before the run you will record.
 - **Owner rulings.** An owner ruling that *refuses* a behaviour invalidates every
   live site built before it. Re-check scene geometry against the ruling. The offline
   model stays green through that change, because it never modelled the refusal.

@@ -491,6 +491,8 @@ dressed, restyled or re-xenotyped for a shot · you are about to take a screensh
 | `src/RimMandrake/Utils/rimbridge_lineup.py` | one of every pawn kind in a grid, framed and shot |
 | `src/RimMandrake/Utils/rimbench/crater.py` | radial crater: zones, dithered edges, ellipse squash, ejecta rays |
 | `src/RimMandrake/Utils/modset_builder.py` | dependency-complete minimal mod lists (`--tier bridge` = 3 mods) |
+| `src/RimMandrake/Utils/logwait.py` | wait on a literal `Player.log` string; only text after the call counts, no scan override |
+| `src/RimMandrake/Utils/modcheck/reviewmap.py` | review maps: `save_keeper` (before/after Saves stat), `sweep_pawns` (clear hostiles), signs |
 
 ⚠️ **`modset_builder.py --restore` restores the PREVIOUS TIER, not the owner's full list,
 once you chain tiers.** Each `--apply` backs up whatever was live at that moment, so

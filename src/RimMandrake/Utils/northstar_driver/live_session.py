@@ -69,18 +69,14 @@ def launch_and_wait(budget=None):
         sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
         import load_policy
         budget = load_policy.profile_for(load_policy.active_count_from_modsconfig())["process_to_bridge_deadline_s"]
+    import logwait
+    cursor = logwait.LogCursor(PLAYER_LOG)     # before the launch, so the last session's token cannot answer
     sh(["powershell.exe", "-NoProfile", "-Command", "Start-Process 'steam://rungameid/294100'"], timeout=60)
-    t0 = time.time()
     time.sleep(20)
-    while time.time() - t0 < budget:
-        try:
-            fresh = time.time() - os.stat(PLAYER_LOG).st_mtime < 90
-            if fresh and running() and "Bridge token:" in open(PLAYER_LOG, encoding="utf-8", errors="replace").read():
-                return say("4 launch", "bridge up after %d s" % (time.time() - t0))
-        except OSError:
-            pass
-        time.sleep(3)
-    sys.exit("[4 launch] no bridge token within %d s" % budget)
+    r = cursor.wait("Bridge token:", budget - 20, abort=lambda: None if running() else "game process gone")
+    if r["ok"]:
+        return say("4 launch", "bridge up after %d s" % (r["waited_s"] + 20))
+    sys.exit("[4 launch] %s" % r["why"])
 
 
 def main():

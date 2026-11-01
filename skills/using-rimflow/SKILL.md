@@ -70,6 +70,11 @@ rimflow sweep [--transient]    lists stale TRANSIENT_* files. LISTS ONLY, no led
 
 ## Item hygiene
 
+🔴 **An item's prose must not be the only copy of its inputs.** `NORTHSTAR_PROCESS_RETRO_1` named a `Transient/` notes
+file as a first input; Transient is untracked, and the file was gone from every clone when the item came up. Pin the
+file (`transient_pin.py add`) or copy what matters into the item. The same item's helper list had gone stale in the
+meantime (two of six were built under other names), so `grep` the tree before building from an old list.
+
 🔴 **An item filed alongside a finished analysis must cite the report path.**
 Two items carried specs but no pointer to the prior window's `Transient/`
 report, so the next window re-ran both analyses blind.

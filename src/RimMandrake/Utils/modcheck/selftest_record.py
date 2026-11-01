@@ -226,8 +226,29 @@ def t_step4_end_to_end_temp_registry():
     ok(real_before == real_after, "step 4: the real modcheck_status.json was not touched")
 
 
+def t_unknown_status_is_named():
+    rows = [dict(id="A1", status="PASS"), dict(id="N1", status="RECORD"), dict(id="N2", status="RECORD"),
+            dict(id="N3", status="INFO"), dict(id="F1", status="FAIL"), dict(id="U1", status="UNMEASURED")]
+    ok(record.unknown_statuses(rows) == {"RECORD": ["N1", "N2"], "INFO": ["N3"]}, "an unknown status is named by word and id")
+    ok(record.unknown_statuses(ROWS_OK) == {}, "the OK words and FAIL/UNMEASURED are all known")
+    ref, g, why, comp = record.judge(res(rows), "FlowWorks", "H" * 64, TIER)
+    ok(not g and comp["unknown_status"]["RECORD"] == ["N1", "N2"], "an unknown status still reads RED, and now says so")
+    code, msg, entry = record.record("FlowWorks", _write_result(rows), "t", _resolve=lambda t: (TIER, []),
+                                     _record=lambda m, d, r, g, **k: dict(status="RED", hash="0" * 12))
+    ok(code == 0 and "modcheck does not know" in msg and "RECORD: N1, N2" in msg, "record prints the unknown words: " + msg)
+
+
+def _write_result(rows):
+    h = status.mod_hash(runner.find_mod_dir("FlowWorks"))
+    p = os.path.join(tempfile.mkdtemp(), "r.json")
+    with open(p, "w") as f:
+        json.dump(res(rows, h=h), f)
+    return p
+
+
 if __name__ == "__main__":
     t_judge()
+    t_unknown_status_is_named()
     t_hash_ignores_northstar_harness()
     t_end_to_end_temp_registry()
     t_judge_step4()

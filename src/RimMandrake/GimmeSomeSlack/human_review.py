@@ -1653,7 +1653,7 @@ def main(argv=None):
                          "it is applied after the build, which starts from the shipped defaults")
     ap.add_argument("--labels", action="store_true")
     ap.add_argument("--clear", action="store_true")
-    ap.add_argument("--log", default=os.path.join("Transient", "mc_human_review_build_log_20261004.md"))
+    ap.add_argument("--log", default=os.path.join(REPO, "Transient", "mc_human_review_build_log_20261004.md"))
     a = ap.parse_args(argv)
     S = station_list()
     bad_sets = check_sets(a.set)

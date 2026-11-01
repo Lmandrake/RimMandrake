@@ -45,6 +45,10 @@ import json
 import os
 
 OK_ROWS = ("PASS", "SKIP", "UNCOVERED", "UNBUILT")
+# Every status with a meaning here. A word outside this reads RED like a FAIL, so judge() names it (a RECORD row once made a
+# clean proof look failed with nothing saying why). Whether INFO, MEASURED or RECORD should count as OK is a bar question,
+# so this only makes them loud (NORTHSTAR_PROCESS_RETRO_1).
+KNOWN_ROWS = OK_ROWS + ("FAIL", "UNMEASURED")
 
 
 def tally(rows):
@@ -53,6 +57,11 @@ def tally(rows):
     for r in rows:
         out.setdefault(r.get("status") or "?", []).append(r.get("id"))
     return out
+
+
+def unknown_statuses(rows):
+    """{status: [row ids]} for each status modcheck has no meaning for. Pure."""
+    return {st: ids for st, ids in tally(rows).items() if st not in KNOWN_ROWS}
 
 
 def provenance(res, mod, current_hash, expected_pids):
@@ -112,7 +121,7 @@ def judge(res, mod, current_hash, expected_pids):
             ", ".join(open_bars))
     components = {"counts": {k: len(v) for k, v in t.items()},
                   "not_ok": bad, "unbuilt": t.get("UNBUILT", []), "uncovered": t.get("UNCOVERED", []),
-                  "invalid": invalid, "reused": reused}
+                  "invalid": invalid, "reused": reused, "unknown_status": unknown_statuses(rows)}
     return refusals, all_green, refused, components
 
 
@@ -205,5 +214,8 @@ def record(mod, result_path, tier, ext_path=None, _resolve=None, _record=None):
         extra["step4"] = step4
     entry = (_record or status.record_run)(mod, mod_dir, run_id, all_green, walk=walk,
                                            refused=refused, extra=extra)
-    return 0, "recorded %s: %s at %s (%s)%s" % (mod, entry["status"], entry["hash"][:12], run_id,
-                                                 "" if step4 is None else "; step 4 %s" % step4["status"]), entry
+    unknown = components["unknown_status"]
+    note = "" if not unknown else ("\n  RED from row statuses modcheck does not know (%s are the known words): %s" % (
+        ", ".join(KNOWN_ROWS), "; ".join("%s: %s" % (st, ", ".join(map(str, ids[:6]))) for st, ids in sorted(unknown.items()))))
+    return 0, "recorded %s: %s at %s (%s)%s%s" % (mod, entry["status"], entry["hash"][:12], run_id,
+                                                   "" if step4 is None else "; step 4 %s" % step4["status"], note), entry
