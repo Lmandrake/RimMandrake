@@ -149,6 +149,27 @@ def t_churn_tweak():
     w.done()
 
 
+def t_churn_tracked():
+    """The same tweak in a file the base holds, two far-apart numbers at once, with fresh reads and tests between."""
+    w = Worker()
+    body = ["line%d = 0" % n for n in range(300)]
+    w.write("a.py", "\n".join(body) + "\n")
+    w.git("add", "a.py")
+    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "body")
+    st = w.rig.s.load("I0")
+    st["base"] = w.git("rev-parse", "HEAD").strip()
+    w.rig.s.save(st)
+
+    def act(x, i):
+        now = list(body)
+        now[20], now[280] = "line20 = %d" % (i + 1), "line280 = %d" % (i + 1)
+        x.write("a.py", "\n".join(now) + "\n")
+        x.tool("Read", {"file_path": "/new/%d.py" % i}, 5)
+    got = run(w, 34, act)
+    ok("trivial_churn" in got, "S2 two far-apart numbers tweaked in a tracked file named: %s" % sorted(got))
+    w.done()
+
+
 def t_long_read():
     w = Worker()
     w.write("a.py", "x = 1\n")
@@ -159,6 +180,106 @@ def t_long_read():
         x.tool("Bash", {"command": "python3 relentless.py learn --item I0 same words"}, 1)
     got = run(w, 80, act)
     ok(not got, "S3 80 min read-only investigation left alone: %s" % sorted(got))
+    w.done()
+
+
+def t_long_read_scripts():
+    w = Worker()
+    w.write("a.py", "x = 1\n")
+
+    def act(x, i):
+        x.tool("Bash", {"command": "python3 tools/survey.py --part %d > /tmp/o.txt" % i}, 60)
+    got = run(w, 80, act)
+    ok(not got, "S3 80 min investigation through script calls left alone: %s" % sorted(got))
+    w.done()
+
+
+def t_scripts_same_is_no_finding():
+    w = Worker()
+    w.write("a.py", "x = 1\n")
+    got = run(w, 40, lambda x, i: x.tool("Bash", {"command": "python3 tools/survey.py"}, 30))
+    ok("no_change" in got, "the one script over and over finds nothing: %s" % sorted(got))
+    w.done()
+
+
+def cycle(step, cmd="python3 src/run_selftests.py --only selftest_a.py"):
+    """An ordinary worker: `step` every 4 min, a test between, 80 min."""
+    w = Worker()
+
+    def act(x, i):
+        if i % 2 == 0:
+            step(x, i // 2)
+        x.tool("Bash", {"command": cmd}, 60)
+    got = run(w, 80, act)
+    w.done()
+    return got
+
+
+def fix_cycle(x, i):
+    x.write("a.py", "".join("v%d = %s\n" % (n, "fixed" if n <= i else "broken") for n in range(200)))
+
+
+def rewrite(x, i):
+    x.write("a.py", "".join("v%d = 'pass %d line %d'\n" % (n, i, n) for n in range(60)))
+
+
+def t_long_build_fresh_lines():
+    """The diff stays one size and moves on fresh lines: the total line count cannot see it."""
+    got = cycle(fix_cycle)
+    ok(not got, "S3 test-fix cycle, a different line of a new file each step, left alone: %s" % sorted(got))
+    got = cycle(rewrite)
+    ok(not got, "S3 a body rewritten at constant size left alone: %s" % sorted(got))
+    got = cycle(lambda x, i: x.write("a.py", "".join("v%d = 1\n" % n for n in range(i + 1))))
+    ok(not got, "S3 one line added per step left alone: %s" % sorted(got))
+
+
+def t_long_build_tracked():
+    w = Worker()
+    body = ["line%d = 0" % n for n in range(300)]
+    w.write("a.py", "\n".join(body) + "\n")
+    w.git("add", "a.py")
+    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "body")
+    st = w.rig.s.load("I0")
+    st["base"] = w.git("rev-parse", "HEAD").strip()
+    w.rig.s.save(st)
+
+    def act(x, i):
+        if i % 2 == 0:
+            now = list(body)
+            for k in range(i // 2 + 1):
+                now[k * 7] = "line%d = 1" % (k * 7)
+            x.write("a.py", "\n".join(now) + "\n")
+        x.tool("Bash", {"command": "python3 src/run_selftests.py --only selftest_a.py"}, 60)
+    got = run(w, 80, act)
+    ok(not got, "S3 test-fix cycle in a tracked file left alone: %s" % sorted(got))
+    w.done()
+
+
+def t_touched():
+    t = C.touched
+    ok(t({"a": list("abc")}, {"a": list("abc")}) == [], "touched: same marks, nothing moved")
+    ok(t({"a": list("abc")}, {"a": list("axc")}) == [["a", 1, 2]], "touched: one line")
+    ok(t({"a": list("abc")}, {"a": list("xbz")}) == [["a", 0, 1], ["a", 2, 3]], "touched: two apart stay two")
+    ok(t({"a": list("abc")}, {"a": list("ac")}) == [["a", 1, 2]], "touched: a deletion lands somewhere")
+    ok(t({}, {"b": ["x"]}) == [["b", 0, 1]], "touched: a new file")
+    big = {"a": ["x"] * (C.MARKS_MAX + 1)}
+    ok(t(big, {"a": ["y"]}) == [["a", 0, C.MARKS_MAX + 1]], "touched: past the cap, the whole file")
+    win = [{"raw": "1"}, {"raw": "2"}]
+    ok(C._spots(win, 4) is None, "a move with no touched record is unknown, no hit")
+    win = [{"raw": "1"}, {"raw": "2", "touched": [["a", 0, 10**9]]}]
+    ok(len(C._spots(win, 4)) == 5, "spots stop just past the limit")
+
+
+def t_tree_reading_body_lines():
+    """A removed `-- x` line prints as `--- x`: no header, or the next hunk is charged to a wrong file."""
+    w = Worker()
+    w.write("a.sql", "-- one\nselect 1;\n++ two\n")
+    w.git("add", "a.sql")
+    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "s")
+    w.write("a.sql", "select 2;\n")
+    r = C.tree_reading(w.clone, w.base)
+    r2 = C.tree_reading(w.clone, w.git("rev-parse", "HEAD").strip())
+    ok(list(r["marks"]) == ["a.sql"] and list(r2["marks"]) == ["a.sql"], "diff body lines are not headers: %s" % list(r2["marks"]))
     w.done()
 
 
@@ -242,10 +363,15 @@ def t_replay():
     run(bad, 40, lambda x, i: x.tool("Read", {"file_path": "/same.py"}, 5))
     run(fine, 40, lambda x, i: x.tool("Read", {"file_path": "/n/%d.py" % i}, 5))
     gb, gf = bad.rig.st("I0")["gen"], fine.rig.st("I0")["gen"]
-    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "circling"}, {"item": "I0", "gen": gb, "label": "fine"},
-                             {"item": "NOPE", "gen": 0, "label": "fine"}], BLOCK)
-    ok(v["circling"] == 1 and v["missed"] == 0 and v["wrongful"] == 1, "replay counts a wrongful stop")
+    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "circling"}, {"item": "NOPE", "gen": 0, "label": "fine"}], BLOCK)
+    ok(v["circling"] == 1 and v["missed"] == 0 and v["wrongful"] == 0, "replay counts a caught run")
     ok(v["unmeasured"] == ["NOPE gen 0"], "replay: no record is unmeasured")
+    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "fine"}], BLOCK)
+    ok(v["fine"] == 1 and v["wrongful"] == 1, "replay counts a wrongful stop")
+    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "fine"}] * 20, BLOCK)
+    ok(v["measured"] == 1, "replay: one run listed 20 times is one run")
+    v = C.replay(bad.rig.s, [{"item": "I0", "gen": gb, "label": "fine"}, {"item": "I0", "gen": gb, "label": "circling"}], BLOCK)
+    ok(v["measured"] == 0 and len(v["unmeasured"]) == 1, "replay: a run labelled both ways is unmeasured")
     v = C.replay(fine.rig.s, [{"item": "I0", "gen": gf, "label": "circling"}], BLOCK)
     ok(v["missed"] == 1, "replay counts missed waste")
     bad.done()
@@ -266,11 +392,16 @@ def t_classify():
     ok(k("python3 - <<'E'\nprint('selftest_a.py')\nE") == "editing", "a heredoc mentioning a selftest is editing")
     ok(k("python3 - <<'E'\nedit\nE\ntimeout 9 python3 a/selftest_b.py > o; tail o") == "selftest", "a test after a heredoc is a test")
     ok(k("python3 relentless.py learn --item I x") == "other", "a learn line is no finding")
+    ok(C.classify("Bash", {"command": "python3 src/rimflow/relentless.py learn --item I x"})[1] is None, "a learn line has no target")
+    ok(C.classify("Bash", {"command": "python3 tools/x.py"}) == ("other", "python3 tools/x.py"), "a script call has a target")
+    ok(k("git -C /x log -3") == "reading", "git -C log is reading")
 
 
 def main():
-    for t in (t_classify, t_test_share, t_no_change, t_aba, t_aba_needs_the_limit, t_churn_comment, t_churn_tweak,
-              t_long_read, t_long_build, t_blind, t_gate, t_stop_path, t_replay):
+    for t in (t_classify, t_touched, t_tree_reading_body_lines, t_test_share, t_no_change, t_aba, t_aba_needs_the_limit,
+              t_churn_comment, t_churn_tweak, t_churn_tracked, t_long_read, t_long_read_scripts,
+              t_scripts_same_is_no_finding, t_long_build, t_long_build_fresh_lines, t_long_build_tracked, t_blind,
+              t_gate, t_stop_path, t_replay):
         t()
     shutil.rmtree(HOME, ignore_errors=True)
     print("%d failed" % len(FAILS) if FAILS else "ALL PASS")

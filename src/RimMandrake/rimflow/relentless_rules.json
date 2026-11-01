@@ -54,7 +54,7 @@
     "oscillation_limit": 2,
     "churn_min": 25,
     "churn_moves": 5,
-    "churn_max_lines": 6,
+    "churn_max_lines": 4,
     "false_stop_limit": 0.05,
     "replay_min_runs": 20,
     "help_after_circling": 2,
