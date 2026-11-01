@@ -58,7 +58,13 @@ P_TEACH = "Actions\\Teach player animals Obedience (current map)"
 P_CREW_FORCE = "Actions\\Force rival crew NOW (current map)"
 P_CREW_REPORT = "Actions\\Report rival crew (current map)"
 P_CREW_COLLAPSE = "Actions\\Collapse rival crew relations (current map)"
+P_CREW_HASTEN = "Actions\\Hasten scheduled rival crew (current map)"
+P_CREW_DISMISS = "Actions\\Dismiss rival crew (current map)"
+P_CREW_TRADE = "Actions\\Trade salvage with rival crew (current map)"
+P_CLAIM_SLAG = "Actions\\Order one slag claim hauled (current map)"
 CREW_POLLS = 40         # polls of 500 ticks: time to walk in from any edge and dig a piece out
+STEAL_POLLS = 46        # polls of 500 ticks: past RM_ClaimKernel.StealCapTicks (20000), when a hostile crew must run
+STAKE_PASS_TICKS = 300  # past the map component's 250-tick pass, where a dead stake would come down
 
 
 # --------------------------------------------------------------------------- parsed facts (never hand-listed)
@@ -172,7 +178,7 @@ def _flora_shape_findings():
 
 
 try:
-    from modcheck import Suite, ExpectationFailed
+    from modcheck import Suite, ExpectationFailed, clockgate
 except ImportError:                       # offline static run outside the modcheck path
     Suite = None
 
@@ -581,24 +587,50 @@ if Suite is not None:
 
     @suite.chain("claim_stakes")
     def claim_stakes(t):
-        """A stake stands beside every piece the recede exposes; claimStakesEnabled off plants none."""
+        """A stake stands beside every open piece, slag included, past the pass that clears dead ones; off plants none;
+        a haul order claims slag and drops its stake; the mud takes unclaimed slag back."""
         quiet = dict(featureInOtherBiomes=True, floodCycleEnabled=True, recedeFeastEnabled=False, claimCrewEnabled=False,
                      floodWrecksEnabled=False)
         with _comp(t, "stakes_stand_beside_the_salvage", toggle="claimStakesEnabled"):
-            with _arm(t, **quiet):
+            with _arm(t, salvageDecayDays=10.0, **quiet):
                 _settle(t)
-                a = _recede(t)
+                before_pass = _recede(t)
+                t.wait_ticks(STAKE_PASS_TICKS)
+                a = _after(t)
                 if _live(t):
                     if a.get("salvage", 0) < 1:
                         _unmeasured(t, "recede scattered no salvage: no standable dry cell on this site (%r)" % a)
                     if a.get("stakes", 0) < 1:
-                        _fail("no stake stands after a recede: %r" % a)
+                        _fail("no stake stands past the clearing pass: %r" % a)
                     if a.get("stakesBeside") != a.get("stakes"):
                         _fail("a stake is not touching its piece: %r" % a)
+                    if a.get("open") != before_pass.get("open") or a.get("stakes") != a.get("open") - a.get("openUnstaked", 0):
+                        _fail("a piece fell out of the claim with nobody touching it: %r -> %r" % (before_pass, a))
+                    if a.get("openSlag", 0) < 1:
+                        _fail("no slag reads open past the clearing pass: %r" % a)
                 with _arm(t, claimStakesEnabled=False):
                     b = _recede(t)
+                    t.wait_ticks(STAKE_PASS_TICKS)
+                    b = _after(t)
                 if _live(t) and b.get("stakes") != a.get("stakes"):
                     _fail("stakes planted with claimStakesEnabled off: %r -> %r" % (a, b))
+        with _comp(t, "haul_order_claims_slag", beyond_toggle=True):
+            with _arm(t, salvageDecayDays=10.0, **quiet):
+                a = _after(t)
+                _act(t, P_CLAIM_SLAG)
+                t.wait_ticks(STAKE_PASS_TICKS)
+                b = _after(t)
+                if _live(t) and not (b.get("openSlag", 0) < a.get("openSlag", 0) and b.get("stakes", 0) < a.get("stakes", 0)):
+                    _fail("a haul order did not claim the slag: %r -> %r" % (a, b))
+        with _comp(t, "mud_takes_unclaimed_slag_back", beyond_toggle=True):
+            with _arm(t, salvageDecayDays=0.05, **quiet):       # SalvageTicks floors at 2500
+                a = _recede(t)
+                if _live(t) and a.get("salvage", 0) < 1:
+                    _unmeasured(t, "recede scattered no salvage: %r" % a)
+                t.wait_ticks(3300)
+                b = _after(t)
+                if _live(t) and (b.get("salvage") != 0 or b.get("open") != 0 or b.get("stakes") != 0):
+                    _fail("the mud left open salvage or stakes behind at expiry: %r -> %r" % (a, b))
 
     @suite.chain("flood_wreck")
     def flood_wreck(t):
@@ -616,17 +648,39 @@ if Suite is not None:
                 if _live(t) and b.get("floodWrecks") != 0:
                     _fail("the next recede did not take the wreck back: %r" % b)
 
+    def _crew_fight(trigger):
+        """The collapse makes the crew shoot by design: their fight may hurt, down or kill anyone not critical."""
+        return (trigger.get("kind") in ("hurt", "downed", "death", "hostile_arrival")
+                and not trigger.get("critical") and not trigger.get("declared"))
+
     @suite.chain("claim_crew")
     def claim_crew(t):
-        """The crew is a chance per flood; forced, it arrives as visitors, works the claim, trades; hostile only on collapse."""
+        """The crew is a chance per flood; it arrives as visitors, works the claim, trades; hostile only on collapse, then runs."""
         quiet = dict(featureInOtherBiomes=True, floodCycleEnabled=True, recedeFeastEnabled=False, floodWrecksEnabled=False)
         with _comp(t, "crew_comes_on_the_chance", toggle="claimCrewEnabled"):
-            with _arm(t, claimCrewEnabled=True, claimCrewChance=0.0, **quiet):
+            with _arm(t, claimCrewEnabled=True, claimCrewChance=0.0, salvageDecayDays=10.0, **quiet):
                 _settle(t)
+                _act(t, P_CREW_DISMISS)
                 _recede(t)
                 c0 = _crew(t)
                 if _live(t) and int(c0["crewArrivalTick"]) != -1:
                     _fail("chance 0 still scheduled a crew: %r" % c0)
+            with _arm(t, claimCrewEnabled=True, claimCrewChance=1.0, salvageDecayDays=10.0, **quiet):
+                _recede(t)
+                c1 = _crew(t)
+                if _live(t) and int(c1["crewArrivalTick"]) < 0:
+                    _fail("chance 1 scheduled no crew: %r" % c1)
+                c2 = _crew(t, P_CREW_HASTEN)
+                if _live(t) and c2.get("hasten") != "hastened":
+                    _unmeasured(t, "could not bring the crew forward: %r" % c2)
+                t.wait_ticks(STAKE_PASS_TICKS)
+                c3 = _crew(t)
+                if _live(t):
+                    if c3["lordJob"] != "RM_LordJob_SalvageClaim" or c3["hostile"] != "False" or int(c3["crew"]) < 1:
+                        _fail("the scheduled crew did not arrive as visitors: %r" % c3)
+                    for pid in c3.get("crewIds", "").split(","):
+                        t._declare_fixture(pid, "claim crew")
+                _act(t, P_CREW_DISMISS)
         with _comp(t, "visitors_work_claim_trade_turn_only_on_collapse"):
             with _arm(t, claimCrewEnabled=True, claimCrewChance=0.0, salvageDecayDays=10.0, **quiet):
                 a = _recede(t)
@@ -653,6 +707,12 @@ if Suite is not None:
                             break
                     if worked is None:
                         _fail("the crew never worked the claim in %d polls: %r" % (CREW_POLLS, c))
+                c = _crew(t, P_CREW_TRADE)
+                if _live(t):
+                    if c.get("tradeResult") != "done" or c.get("sold") != "True" or c.get("bought") != "True":
+                        _fail("the shop did not close both deals: %r" % c)
+                    if int(c["heldAfterSale"]) != int(c["heldBefore"]) + 1 or int(c["heldAfterBuy"]) != int(c["heldBefore"]):
+                        _fail("the deals did not move salvage through the shop: %r" % c)
                 c = _crew(t, P_CREW_COLLAPSE)
                 if _live(t):
                     if c["hostile"] != "True":
@@ -662,14 +722,18 @@ if Suite is not None:
                     if c["canTrade"] != "False":
                         _fail("a hostile crew still trades: %r" % c)
                     gone = None
-                    for _ in range(CREW_POLLS):
-                        t.wait_ticks(500)
-                        c = _crew(t)
-                        if c["toil"] == "LordToil_ExitMap" or int(c["crew"]) == 0:
-                            gone = c
-                            break
+                    with clockgate.expected_disturbance("the crew's own fight after the collapse", _crew_fight):
+                        for _ in range(STEAL_POLLS):
+                            t.wait_ticks(500)
+                            c = _crew(t)
+                            if c["toil"] == "LordToil_ExitMap" or int(c["crew"]) == 0:
+                                gone = c
+                                break
                     if gone is None:
                         _fail("the hostile crew never left for the edge: %r" % c)
+                    if gone["toil"] != "LordToil_ExitMap":
+                        _unmeasured(t, "the crew died in the fight before it could run: %r" % gone)
+                    _act(t, P_CREW_DISMISS)
 
     @suite.chain("recede_feast")
     def recede_feast(t):

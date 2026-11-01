@@ -115,6 +115,42 @@ namespace RimMandrake.CrackedLands
             Log.Message("[RMCrackedLandsDebug] collapse=" + comp.DebugCollapseRelations() + " " + comp.DebugCrewReport());
         }
 
+        [DebugAction(CAT, "Hasten scheduled rival crew (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void HastenCrew()
+        {
+            RM_MapComponent_RecedeAftermath comp = Find.CurrentMap?.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] hasten=" + comp.DebugHastenCrew() + " " + comp.DebugCrewReport());
+        }
+
+        [DebugAction(CAT, "Dismiss rival crew (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void DismissCrew()
+        {
+            RM_MapComponent_RecedeAftermath comp = Find.CurrentMap?.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] dismissed=" + comp.DebugDismissCrew() + " " + comp.DebugCrewReport());
+        }
+
+        [DebugAction(CAT, "Trade salvage with rival crew (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void TradeCrew()
+        {
+            RM_MapComponent_RecedeAftermath comp = Find.CurrentMap?.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] " + comp.DebugTradeSalvage() + " " + comp.DebugCrewReport());
+        }
+
+        [DebugAction(CAT, "Order one slag claim hauled (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ClaimSlag()
+        {
+            RM_MapComponent_RecedeAftermath comp = Find.CurrentMap?.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] claimSlag=" + comp.DebugClaimSlag() + " aftermath: " + comp.DebugStateReport());
+        }
+
         // CRACKEDLANDS_MECHANICS_BUILD_1 verify: a STATE read of the seams on
         // the map (count per tier), so "fresh seams after a recede" is a
         // before/after number, never a screenshot hunt.

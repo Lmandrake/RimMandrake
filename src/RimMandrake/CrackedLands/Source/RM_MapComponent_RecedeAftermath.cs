@@ -27,7 +27,8 @@ namespace RimMandrake.CrackedLands
     //
     //   FLOODLINE SALVAGE (§6, the scatter half only)  a disciplined handful
     //     of half-buried industrial components and slag on the wetted cells,
-    //     spawned forbidden. Whatever is still lying unclaimed where it was
+    //     components spawned forbidden, slag (which cannot be forbidden) open
+    //     until ordered hauled. Whatever is still lying unclaimed where it was
     //     exposed when the clock runs out is taken back by the mud, with a
     //     message saying so. A claim stake stands beside each piece while it
     //     is open, and on a chance per flood a rival crew comes for what is
@@ -198,10 +199,18 @@ namespace RimMandrake.CrackedLands
             }
         }
 
+        // Core's chunks have no CompForbiddable, so SetForbidden does nothing to slag: the player claims a chunk by ordering it hauled.
+        private bool Unclaimed(Thing t)
+        {
+            return t.TryGetComp<CompForbiddable>() != null
+                ? t.IsForbidden(Faction.OfPlayer)
+                : map.designationManager.DesignationOn(t, DesignationDefOf.Haul) == null;
+        }
+
         private bool IsOpen(RM_FloodlineClaim claim)
         {
             Thing t = claim.piece;
-            return t != null && RM_ClaimKernel.Open(t.Spawned, t.Map == map, t.Position == claim.cell, t.IsForbidden(Faction.OfPlayer));
+            return t != null && RM_ClaimKernel.Open(t.Spawned, t.Map == map, t.Position == claim.cell, Unclaimed(t));
         }
 
         private bool IsStealable(RM_FloodlineClaim claim)
@@ -534,7 +543,7 @@ namespace RimMandrake.CrackedLands
                 int taken = 0;
                 for (int i = 0; i < salvage.Count; i++)
                 {
-                    // Only what still lies forbidden exactly where the mud
+                    // Only what still lies unclaimed exactly where the mud
                     // exposed it — anything a pawn touched, claimed or moved
                     // is the player's now.
                     if (IsOpen(salvage[i]))
@@ -555,11 +564,13 @@ namespace RimMandrake.CrackedLands
 
         public string DebugStateReport()
         {
-            return string.Format("cohort={0} cohortDieTick={1} salvage={2} salvageExpireTick={3} now={4} stakes={5} stakesBeside={6} open={7} floodWrecks={8}",
+            return string.Format("cohort={0} cohortDieTick={1} salvage={2} salvageExpireTick={3} now={4} stakes={5} stakesBeside={6} open={7} floodWrecks={8} openSlag={9} openUnstaked={10}",
                 cohort.Count, cohortDieTick, salvage.Count, salvageExpireTick, Find.TickManager.TicksGame,
                 salvage.FindAll(c => c.stake != null && c.stake.Spawned).Count,
                 salvage.FindAll(c => c.stake != null && c.stake.Spawned && c.stake.Position.AdjacentTo8WayOrInside(c.cell)).Count,
-                OpenCount(), floodWrecks.FindAll(w => w != null && w.Spawned).Count);
+                OpenCount(), floodWrecks.FindAll(w => w != null && w.Spawned).Count,
+                salvage.FindAll(c => IsOpen(c) && c.piece.def == ThingDefOf.ChunkSlagSteel).Count,
+                salvage.FindAll(c => IsOpen(c) && (c.stake == null || !c.stake.Spawned)).Count);
         }
 
         public string DebugCrewReport()
@@ -598,6 +609,104 @@ namespace RimMandrake.CrackedLands
             Faction f = crewLord.faction;
             f.TryAffectGoodwillWith(Faction.OfPlayer, -200, false, false);
             return f.RelationKindWith(Faction.OfPlayer).ToString();
+        }
+
+        /// <summary>Debug: order one open slag piece hauled, the player's own claim on a chunk. Returns the piece, or none.</summary>
+        public string DebugClaimSlag()
+        {
+            RM_FloodlineClaim claim = salvage.Find(c => IsOpen(c) && c.piece.def == ThingDefOf.ChunkSlagSteel);
+            if (claim == null)
+            {
+                return "none";
+            }
+            map.designationManager.AddDesignation(new Designation(claim.piece, DesignationDefOf.Haul));
+            return claim.piece.ThingID;
+        }
+
+        /// <summary>Debug: bring a scheduled crew forward to the next pass, its faction made neutral, so the production arrival runs.</summary>
+        public string DebugHastenCrew()
+        {
+            if (crewArrivalTick < 0)
+            {
+                return "none_scheduled";
+            }
+            RM_ClaimCrewProfileDef profile = RM_CrackedLandsDefOf.RM_ClaimCrew_Scavengers;
+            string picked = RM_ClaimKernel.PickFaction(profile.factionDefs, n => FirstOfDef(n, f => !f.defeated) != null);
+            if (picked == null)
+            {
+                return "no_faction";
+            }
+            Faction faction = FirstOfDef(picked, f => !f.defeated);
+            faction.TryAffectGoodwillWith(Faction.OfPlayer, -faction.GoodwillWith(Faction.OfPlayer), false, false);
+            crewArrivalTick = Find.TickManager.TicksGame;
+            return "hastened";
+        }
+
+        /// <summary>Debug: clear any crew off the map, so a chain starts from no crew on a used map.</summary>
+        public string DebugDismissCrew()
+        {
+            crewArrivalTick = -1;
+            int gone = 0;
+            if (crewLord != null)
+            {
+                foreach (Pawn p in crewLord.ownedPawns.ToList())
+                {
+                    p.Destroy(DestroyMode.Vanish);
+                    gone++;
+                }
+            }
+            CrewTick();
+            return gone.ToString();
+        }
+
+        /// <summary>Debug: one real TradeDeal with the crew's shop: a colonist sells it a component, then buys one back. Returns the
+        /// crew's salvage stock after each deal.</summary>
+        public string DebugTradeSalvage()
+        {
+            if (!CrewOnMap() || crewTrader == null || !crewTrader.CanTradeNow)
+            {
+                return "tradeResult=no_shop";
+            }
+            Pawn negotiator = map.mapPawns.FreeColonistsSpawned.FirstOrDefault(p => !p.Downed);
+            if (negotiator == null)
+            {
+                return "tradeResult=no_negotiator";
+            }
+            foreach (ThingDef def in new[] { ThingDefOf.ComponentIndustrial, ThingDefOf.Silver })
+            {
+                IntVec3 c = CellFinder.RandomClosewalkCellNear(negotiator.Position, map, 3, x => x.GetFirstItem(map) == null);
+                map.areaManager.Home[c] = true;
+                Thing t = ThingMaker.MakeThing(def);
+                t.stackCount = def == ThingDefOf.Silver ? 500 : 1;
+                GenSpawn.Spawn(t, c, map);
+            }
+            int before = CrewHeld();
+            bool sold = OneDeal(negotiator, -1);
+            int afterSale = CrewHeld();
+            bool bought = OneDeal(negotiator, 1);
+            int afterBuy = CrewHeld();
+            return string.Format("tradeResult=done sold={0} bought={1} heldBefore={2} heldAfterSale={3} heldAfterBuy={4}", sold, bought, before, afterSale, afterBuy);
+        }
+
+        // -1 sells one component to the shop, +1 buys one from it (Tradeable's own sign).
+        private bool OneDeal(Pawn negotiator, int count)
+        {
+            TradeSession.SetupWith(crewTrader, negotiator, false);
+            try
+            {
+                Tradeable line = TradeSession.deal.AllTradeables.FirstOrDefault(x => x.ThingDef == ThingDefOf.ComponentIndustrial);
+                if (line == null)
+                {
+                    return false;
+                }
+                line.AdjustBy(count);
+                TradeSession.deal.UpdateCurrencyCount();
+                return TradeSession.deal.TryExecute(out bool traded) && traded;
+            }
+            finally
+            {
+                TradeSession.Close();
+            }
         }
 
         public override void ExposeData()

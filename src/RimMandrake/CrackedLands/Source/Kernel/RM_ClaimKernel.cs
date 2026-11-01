@@ -26,11 +26,11 @@ namespace RimMandrake.CrackedLands
             return enabled && openClaims > 0 && roll < chance;
         }
 
-        /// <summary>A piece is OPEN (its stake stands, the crew may race for it) while it lies forbidden where the mud
-        /// exposed it. Anything allowed, hauled or moved is claimed. Same test as RM_CanyonRulesKernel.SalvageTaken.</summary>
-        public static bool Open(bool spawned, bool sameMap, bool atItsCell, bool stillForbidden)
+        /// <summary>A piece is OPEN (its stake stands, the crew may race for it) while it lies unclaimed where the mud
+        /// exposed it. Anything allowed, ordered hauled or moved is claimed. Same test as RM_CanyonRulesKernel.SalvageTaken.</summary>
+        public static bool Open(bool spawned, bool sameMap, bool atItsCell, bool stillUnclaimed)
         {
-            return RM_CanyonRulesKernel.SalvageTaken(spawned, sameMap, atItsCell, stillForbidden);
+            return RM_CanyonRulesKernel.SalvageTaken(spawned, sameMap, atItsCell, stillUnclaimed);
         }
 
         /// <summary>Hostile, the crew no longer respects a claim: anything still lying where it was exposed is theirs.</summary>
