@@ -571,7 +571,7 @@ namespace RimMandrake.CrackedLands
                 IntVec3 c = salvage.Count > 0 ? salvage[0].cell : crewLord.ownedPawns[0].Position;
                 near = crewLord.ownedPawns.FindAll(p => p.Spawned && p.Position.InHorDistOf(c, 20f)).Count;
             }
-            return string.Format("crew={0} crewArrivalTick={1} faction={2} goodwill={3} hostile={4} raid={5} lordJob={6} toil={7} duty={8} near={9} trader={10} canTrade={11} goods={12} heldGain={13} open={14} prop={15}",
+            return string.Format("crew={0} crewArrivalTick={1} faction={2} goodwill={3} hostile={4} raid={5} lordJob={6} toil={7} duty={8} near={9} trader={10} canTrade={11} goods={12} heldGain={13} open={14} prop={15} crewIds={16}",
                 here ? crewLord.ownedPawns.Count : 0, crewArrivalTick,
                 here ? crewLord.faction.def.defName : "none",
                 here ? crewLord.faction.GoodwillWith(Faction.OfPlayer) : 0,
@@ -584,7 +584,8 @@ namespace RimMandrake.CrackedLands
                 crewTrader != null,
                 crewTrader != null && crewTrader.CanTradeNow,
                 crewTrader?.trader != null ? crewTrader.trader.Goods.Count() : 0,
-                here ? CrewHeld() - crewHeldAtArrival : 0, OpenCount(), crewProp != null && crewProp.Spawned);
+                here ? CrewHeld() - crewHeldAtArrival : 0, OpenCount(), crewProp != null && crewProp.Spawned,
+                here ? string.Join(",", crewLord.ownedPawns.Select(p => p.ThingID)) : "none");
         }
 
         /// <summary>Debug: the production relation drop, so the lord's own trigger fires. Returns the kind it landed on.</summary>

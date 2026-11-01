@@ -13,19 +13,53 @@
       <li>RimMandrake: Baroque Biomes</li>
       <li>RimMandrake: Cracked Lands</li>
     </mods>
-    <match Class="PatchOperationReplace">
-      <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/factionDefs</xpath>
-      <value>
-        <factionDefs>
-          <li>RUT_Jawa_IndigenousTribes</li>
-        </factionDefs>
-        <campProp>RSW_CrawlerTreadWreck</campProp>
-        <arrivalLabel>Jawa salvage crew</arrivalLabel>
-        <arrivalText>Hooded figures from {0} are working the flood line, chittering over what the mud gave up. Utinni! They will have every scrap you leave lying, but a Jawa would always rather haggle than fight: they will sell you what they find and buy salvage back, droid prices and all, for about a day.</arrivalText>
-        <collapseLabel>Jawa claim jumpers</collapseLabel>
-        <collapseText>Relations with {0} are gone. The crew's trade chatter has stopped: they are stripping what is left on the flood line, and every ion blaster among them is up.</collapseText>
-        <leaveText>The Jawa crew from {0} has hauled its finds away from the flood line.</leaveText>
-      </value>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/factionDefs</xpath>
+          <value>
+            <factionDefs>
+              <li>RUT_Jawa_IndigenousTribes</li>
+            </factionDefs>
+          </value>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]</xpath>
+          <value>
+            <campProp>RSW_CrawlerTreadWreck</campProp>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/arrivalLabel</xpath>
+          <value>
+            <arrivalLabel>Jawa salvage crew</arrivalLabel>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/arrivalText</xpath>
+          <value>
+            <arrivalText>Hooded figures from {0} are working the flood line, chittering over what the mud gave up. Utinni! They will have every scrap you leave lying, but a Jawa would always rather haggle than fight: they will sell you what they find and buy salvage back, droid prices and all, for about a day.</arrivalText>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/collapseLabel</xpath>
+          <value>
+            <collapseLabel>Jawa claim jumpers</collapseLabel>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/collapseText</xpath>
+          <value>
+            <collapseText>Relations with {0} are gone. The crew's trade chatter has stopped: they are stripping what is left on the flood line, and every ion blaster among them is up.</collapseText>
+          </value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/leaveText</xpath>
+          <value>
+            <leaveText>The Jawa crew from {0} has hauled its finds away from the flood line.</leaveText>
+          </value>
+        </li>
+      </operations>
     </match>
   </Operation>
 

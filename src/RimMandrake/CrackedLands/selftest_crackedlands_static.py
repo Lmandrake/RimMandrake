@@ -47,6 +47,9 @@ utinni = os.path.normpath(os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPat
 patch = open(utinni, encoding="utf-8").read()
 check("break: Utinni patch naming a dead faction -> red",
       any("no real faction" in f for f in V._claim_crew_findings(patch_xml=patch.replace("RUT_Jawa_IndigenousTribes", "RUT_Jawa_Gone"))))
+check("break: a Replace carrying a sibling field -> red",
+      any("also carries" in f for f in V._claim_crew_findings(patch_xml=patch.replace(
+          "</factionDefs>", "</factionDefs><arrivalLabel>x</arrivalLabel>"))))
 
 
 # FLOOD_DRIVER_OWNERSHIP_CONTRACT_1 A2: the flood driver writes FlowWorks fill only through the outcome contract,

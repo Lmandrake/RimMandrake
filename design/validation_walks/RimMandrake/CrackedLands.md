@@ -2,7 +2,7 @@
 subject: src/RimMandrake/CrackedLands  (packageId `mandrake.rm.crackedlands`)
 deps: `brrainz.harmony`, `mandrake.rm.flowworks` (modDependencies); the soak goes to the Explosive Growth engine, a fellow composed member of `mandrake.rm.biomes`, by a direct `ExplosiveGrowthAPI.SoakCells` call (the flood soaks nothing while that engine is switched off). Fold-aware: if this biome is folded into `mandrake.rm.biomes` it is active under the composed name 'RimMandrake: Baroque Biomes'.
 list: a tier carrying FlowWorks + CrackedLands + ExplosiveGrowth, all five DLCs, plain open biome map (the suite arms `featureInOtherBiomes` itself)
-status-hint: FLOOD_CANYON_BIOME_1 / CRACKEDLANDS_MECHANICS_BUILD_1 — a canyon biome whose map floods on a clock: herald beats, chimes, a wall of water that soaks the ground, recedes to soil, leaves a feast and salvage and re-cuts fossil seams. Script: `src/RimMandrake/CrackedLands/validation.py` (plan `northstar_plan.py`), first script FLOODED_CANYON_FIRST_SCRIPT_1. NEVER RUN LIVE.
+status-hint: FLOOD_CANYON_BIOME_1 / CRACKEDLANDS_MECHANICS_BUILD_1 — a canyon biome whose map floods on a clock: herald beats, chimes, a wall of water that soaks the ground, recedes to soil, leaves a feast and salvage and re-cuts fossil seams. Script: `src/RimMandrake/CrackedLands/validation.py` (plan `northstar_plan.py`), first script FLOODED_CANYON_FIRST_SCRIPT_1. Live so far: claim_stakes, flood_wreck, claim_crew (2026-10-31).
 
 Sources: `About/About.xml`, `Source/RM_CrackedLandsMod.cs` (25 settings), `RM_MapComponent_CanyonFlood.cs`, `RM_MapComponent_RecedeAftermath.cs`, `RM_FossilStrata.cs`, `Source/Debug/RM_CrackedLandsDebugActions.cs` (the state surface), `Defs/`.
 

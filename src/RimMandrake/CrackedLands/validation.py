@@ -2,8 +2,8 @@
 
 First script (debug_process.md section 2), item FLOODED_CANYON_FIRST_SCRIPT_1. Walk:
 design/validation_walks/RimMandrake/CrackedLands.md (`## must be true`, each line ends in
-`-> chain.component` or `-> UNCOVERED: why`). NEVER RUN LIVE YET; every live shape below that is
-unproven degrades to UNMEASURED, never PASS.
+`-> chain.component` or `-> UNCOVERED: why`). Live so far: claim_stakes, flood_wreck, claim_crew (the other chains
+never yet); every live shape below that is unproven degrades to UNMEASURED, never PASS.
 
 Run offline: `python3 src/RimMandrake/CrackedLands/validation.py` -> `STATIC: PASS (0 findings)`.
 Live: modcheck/northstar_driver on a tier carrying `mandrake.rm.crackedlands` + FlowWorks (its hard
@@ -110,6 +110,12 @@ def _claim_crew_findings(profile_xml=None, patch_xml=None):
     fdir = os.path.join(root, "src", "RimUtinni", "UtinniPatches", "Defs", "FactionDefs")
     factions = "".join(open(os.path.join(fdir, f), encoding="utf-8").read() for f in os.listdir(fdir))
     sub = ET.fromstring(patch_xml)
+    for op in sub.iter("li"):
+        value = op.find("value")
+        if op.get("Class") == "PatchOperationReplace" and value is not None:
+            leaf = op.findtext("xpath").rsplit("/", 1)[1]
+            if [c.tag for c in value] != [leaf]:      # a Replace of X carrying Y too duplicates the profile's own Y field
+                bad.append("Utinni claim crew Replace of %s also carries %s" % (leaf, [c.tag for c in value]))
     fnames = [li.text for fd in sub.iter("factionDefs") for li in fd.iter("li")]
     if not fnames:
         bad.append("Utinni claim crew patch substitutes no faction")
@@ -632,6 +638,8 @@ if Suite is not None:
                         _unmeasured(t, "crew not sent: %r" % c)
                     if c["lordJob"] != "RM_LordJob_SalvageClaim" or c["raid"] != "False" or c["hostile"] != "False":
                         _fail("the crew did not arrive as visitors: %r" % c)
+                    for pid in c.get("crewIds", "").split(","):   # the test sent them: their collapse is no surprise raid
+                        t._declare_fixture(pid, "claim crew")
                     if c["canTrade"] != "True" or int(c["goods"]) < 1:
                         _fail("the crew's shop is not open: %r" % c)
                     worked = None

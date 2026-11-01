@@ -1,0 +1,1 @@
+CrackedLands defs_resolve fails on a tier without Vanilla Expanded Framework: RM_CrackedLands_DonorPorts.xml uses VEF.Plants.DualCropExtension, the loader throws and drops RM_GargantuanLithops. Not a crew bug; run defs_resolve on a tier carrying VEF.
