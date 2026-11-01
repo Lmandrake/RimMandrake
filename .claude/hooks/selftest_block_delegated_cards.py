@@ -9,7 +9,8 @@ Even-indexed rows were used to tune the patterns; odd-indexed rows were held out
 fixed by name (2026-10-31), which spent that split. FRESH_IN/FRESH_OUT are later card topics, also spent.
 block_delegated_cards_corpus.json holds real full card texts, see its _note. The hook is a model, so this test replays
 block_delegated_cards_verdicts.json, written only by --remeasure, and refuses a record of other prompts.
-`blind` gates: fresh rows where three independent labellers agree. `sealed` is reported, not gated: one labeller's
+`blind` and `blind2` gate: fresh rows where three independent labellers agree; prompts were tuned on `blind` afterwards, so
+only `blind2` is unspent until it too is tuned on. `sealed` is reported, not gated: one labeller's
 rows, on which a careful reader cannot reach the bar. On a sample of them a fresh Opus scored recall 0.75 with 6 false
 positives and GPT 0.79 with 18, and contested rows are where a refusal is arguable anyway.
 
@@ -230,7 +231,8 @@ SETS = (("tune", TUNE(IN), TUNE(OUT), True, True),
         ("spent2", FRESH_IN, FRESH_OUT, True, True),
         ("s2", [], S2_OUT, True, True),
         ("sealed", CORPUS["sealed_in"], CORPUS["sealed_out"], False, False),
-        ("blind", CORPUS["blind_in"], CORPUS["blind_out"], True, False))
+        ("blind", CORPUS["blind_in"], CORPUS["blind_out"], True, False),
+        ("blind2", CORPUS["blind2_in"], CORPUS["blind2_out"], True, False))
 
 
 def prompts_id():

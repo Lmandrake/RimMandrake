@@ -34,8 +34,8 @@ twin: the ask is only whether an EXISTING ruling or decision should also cover a
 none: everything else. In particular: how a thing should work, look, be named or be numbered; which design, option or approach is right; what should happen to a thing when the options differ in content rather than timing; review verdicts on art or a design; what a ruling meant, or two rulings that conflict; how a process, policy, trial or tool should be set up; a question of fact; asking for his preference or permission on a new kind of act. Also none, whatever the wording, when the answer touches: north-star bars; irreversible acts on work not ours (force-push, deleting others' work, re-freezing the frozen dump); replacing art he kept; changing or reinterpreting one of his rulings; outward or paid acts (publishing, buying, spending, Steam, Workshop); live tests of flying creatures.
 
 Examples.
-scope: "Aiwha's wingspan failed all four renders, so what should we try next?" · "Two art tests stay red until it's settled. What now?" · "Should I queue redraws for all 1,716 sets?" · "Start the runner pilot now?" · "When a decision is open, should I proceed on the plan's default?" · "The redraw is pushed but not deployed. What should happen next?"
-twin: "Should the rest of the fish drop fishskin too?" · "Massassi's skin is sourced. Remove the rest?" · "Should those biomes get it too?"
+scope: "Aiwha's wingspan failed all four renders, so what should we try next?" · "Two art tests stay red until it's settled. What now?" · "Should I queue redraws for all 1,716 sets?" · "Start the runner pilot now?" · "When a decision is open, should I proceed on the plan's default?" · "The redraw is pushed but not deployed. What should happen next?" · "This was held to next week by your card. Today?" · "Which shape should the next sprint take?" · "When should these 14 mods come out?" · a bare topic with a time word: "Grown limbs this sprint", "defname rename now", "Kit art ahead of the sprint"
+twin: "Should the rest of the fish drop fishskin too?" · "This one is 512 px against the 256 canvas rule: shrink it?" · "Massassi's skin is sourced. Remove the rest?" · "Should those biomes get it too?"
 none: "Approve this pass list of 80 rows?" · "How do you want to take the remaining 60 picks?" · "When sand-lock hits, should the sarlacc also be stopped?" (a mechanic) · "Does your ruling cover this heat source?" is twin only if it asks to extend the ruling, none if it asks what the ruling means.
 
 Judge the ask, not the background: a preamble may mention rulings, sprints or the bridge in passing. If several questions are asked, judge the main one. When truly unsure between a class and none, answer none.
@@ -50,8 +50,17 @@ Answer OWNER only if the question is really one of these in disguise:
 - it conflicts with the plain text of a ruling of his, and the card says so;
 - it would replace art he accepted or kept;
 - it sets a blanket rule across every biome, species or mod (an extension to a few named siblings is still LEAK);
-- it chooses between two claims on a shared resource, such as who gets the game, or how he wants to spend his sitting;
-- it asks what a choice should BE (a look, a mechanic, a design), with timing only as a wrapper.
+- it chooses between two claims on a shared resource, such as two seats wanting the game;
+- it asks what a choice should BE (a look, a mechanic, a design), with timing only as a wrapper;
+- it adds a new creature, item or mechanic nobody has ruled on, even when worded "also add the others?";
+- it spends or paces an account's quota or allowance ("how fast", "reset now or next week");
+- it ships something into the game before he has reviewed it;
+- it cuts or keeps content on taste ("should the other off-tone mods be cut too?");
+- it hands over failed work with no plan ("how should it go?", "what do I do with it?");
+- it asks how far a plan should go or how a process should be set up;
+- a bare pronoun with no named subject ("Should those biomes get one?", "Which v2 weeks should it fit?").
+
+These stay LEAK: "Should we start redrawing now?" · "Which batches should I queue now?" · "When should it go?" · "How much should we land today?" · "Grown limbs this sprint" · "Rename now?" · "Art tests red: what now?" · "Which belong in this sprint?" · "This was held to next week. Today?" · "Build now or re-sort first?" · "Which shape should the next sprint take?" · "Which of these controls should I build?" · "This needs a sitting with you. When?" · "How should the helpers be split across the streams?" · "Art you picked is 1024 px but the rule gives 256: shrink?" · "The same on every sunlit map, RUT_ twins included?"
 
 Otherwise answer LEAK. Reply with exactly one word: LEAK or OWNER."""
 
