@@ -26,6 +26,9 @@ import tempfile
 OVERRIDE = re.compile(r"\[owner-asked\]", re.I)
 MODEL = "sonnet"     # a CLI alias: the account behind it is the environment's business
 CALL_TIMEOUT_S = 13  # two stages must fit inside the hook's 30 s in .claude/settings.json
+CLI = ["claude", "-p", "--model", MODEL, "--setting-sources", "", "--strict-mcp-config", "--disable-slash-commands",
+       "--tools", "", "--no-session-persistence", "--system-prompt"]  # then the prompt, then PREFIX + the card
+PREFIX = "CARD QUESTION:\n"
 
 JUDGE = """You classify one question an AI agent wants to put to its human owner on a decision card, in a RimWorld modding project. Agents were told which classes they must decide alone. Decide whether this card is a leak.
 
@@ -67,10 +70,7 @@ Otherwise answer LEAK. Reply with exactly one word: LEAK or OWNER."""
 
 def ask_model(system, text):
     """The model's first word, lower-cased. Run from a temp dir with no settings: no hooks, project files or tools."""
-    cmd = ["claude", "-p", "--model", MODEL, "--setting-sources", "", "--strict-mcp-config",
-           "--disable-slash-commands", "--tools", "", "--no-session-persistence", "--system-prompt", system,
-           "CARD QUESTION:\n" + text]
-    r = subprocess.run(cmd, capture_output=True, text=True, timeout=CALL_TIMEOUT_S, cwd=tempfile.gettempdir(),
+    r = subprocess.run(CLI + [system, PREFIX + text], capture_output=True, text=True, timeout=CALL_TIMEOUT_S, cwd=tempfile.gettempdir(),
                        stdin=subprocess.DEVNULL)
     words = r.stdout.split()
     return words[0].strip(":.,").lower() if r.returncode == 0 and words else ""
@@ -85,8 +85,9 @@ def question_texts(payload):
 
 
 def card_text(question):
-    """What the model reads: header, question, then option labels (an option can change what the card is about)."""
-    labels = [str(o.get("label")) for o in question.get("options") or [] if isinstance(o, dict) and o.get("label")]
+    """What the model reads: header, question, then the options (one can change what the card is about)."""
+    labels = [" - ".join(str(o[k]) for k in ("label", "description") if o.get(k))
+              for o in question.get("options") or [] if isinstance(o, dict) and o.get("label")]
     parts = (str(question.get("header") or ""), str(question.get("question") or ""),
              "Options: " + " | ".join(labels) if labels else "")
     return "\n".join(p for p in parts if p)
@@ -142,7 +143,7 @@ def main():
     try:
         classes, hit = verdict(payload)
     except Exception:
-        return 0
+        classes, hit = [], None  # an unjudged card goes through, but still owes the path check below
     if hit:
         sys.stderr.write(message(classes) + "\n")
         return 2

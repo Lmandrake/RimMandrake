@@ -1,0 +1,1 @@
+A model-read classifier gated on a replay record is only as stable as one read: rereading DELEGATED_CARDS with unchanged prompts moved a 15-row set from recall .93 to .87 and another from 3 FP to 0. Give a model gate enough rows that one flipped row cannot cross the bar, or score several reads.

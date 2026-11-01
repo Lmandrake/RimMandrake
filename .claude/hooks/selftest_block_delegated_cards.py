@@ -236,7 +236,7 @@ SETS = (("tune", TUNE(IN), TUNE(OUT), True, True),
 
 
 def prompts_id():
-    return hashlib.sha1((H.MODEL + H.JUDGE + H.VETO).encode("utf-8")).hexdigest()
+    return hashlib.sha1((" ".join(H.CLI) + H.PREFIX + H.JUDGE + H.VETO).encode("utf-8")).hexdigest()
 
 
 def key(system, text):
@@ -254,12 +254,12 @@ def remeasure():
         for _ in range(3):
             try:
                 word = real(system, text)
-            except subprocess.SubprocessError:
+            except (OSError, subprocess.SubprocessError):
                 continue
             if word:
                 seen[key(system, text)] = word
                 return word
-        raise RuntimeError("no answer: " + text[:60])
+        raise RuntimeError("no answer: " + text[:60])  # classify() lets this through; the old record stays
     H.ask_model = ask
     with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
         list(pool.map(H.classify, rows))
@@ -307,6 +307,8 @@ def logic_checks(check):
     check("malformed question allows", not H.verdict({"tool_input": {"questions": [{"question": "Which item first?"}, None]}})[1])
     check("garbage payload", H.verdict({})[1] is None and H.verdict({"tool_input": {"questions": "x"}})[1] is None)
     check("options are read", "Options: A | B" in H.card_text({"question": "q", "options": [{"label": "A"}, {"label": "B"}]}))
+    check("option descriptions are read", "Options: A - why" in H.card_text(
+        {"question": "q", "options": [{"label": "A", "description": "why"}]}))
     H.ask_model = lambda system, text: "maybe"
     check("unreadable answer allows", not H.verdict(mk("Which item first?"))[1])
     for err in (OSError("no claude"), subprocess.TimeoutExpired("claude", 1)):
@@ -342,6 +344,7 @@ def main():
                 for t in fp:
                     print("   FALSE+ :", t[:100])
             if gated:
+                check(label + " has rows", rows_out and (rows_in or label == "s2"))
                 check(label + " no false positives", not fp)
                 check(label + " recall >= 0.9", r >= 0.9)   # the item's bar; a helper lowered it to 0.8 to pass (reverted 2026-10-26)
     for f in fails:
