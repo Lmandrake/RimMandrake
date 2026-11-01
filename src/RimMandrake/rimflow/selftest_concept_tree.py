@@ -3,6 +3,7 @@
 Relentless cannot hand a mod over without the gate. Runs in a temp dir; touches no real concept and no ledger."""
 import copy
 import json
+import re
 import os
 import shutil
 import sys
@@ -144,6 +145,22 @@ def main():
         check("relentless: passing mod admitted", CT.relentless_refusal(repo, "X", "mod", text) is None)
         check("relentless: one good cite does not vouch for a bad one", "no tree.json" in (CT.relentless_refusal(
             repo, "X", "mod", "<!-- %s -->\n## verify\ndesign/concepts/Missing/tree.json" % text) or ""))
+        check("relentless: a cite in other case is still a cite", "no tree.json" in (CT.relentless_refusal(
+            repo, "X", "mod", text + " design/concepts/Missing/tree.JSON") or ""))
+        check("walk: save is not reload, order is not second order", all(
+            re.search(rx, "Save once and repeat the same order", re.I) is None
+            for name, rx in CT.WALK_NEEDS.items() if name != "repeat"))
+        check("walk: reloader and reversed camera do not count", all(
+            re.search(rx, "Inspect the reloader, repeat the same order, then reverse the camera.", re.I) is None
+            for name, rx in CT.WALK_NEEDS.items() if name != "repeat"))
+        check("walk: the real words count", all(
+            re.search(rx, "Reload, repeat it, then the second order", re.I) for rx in CT.WALK_NEEDS.values()))
+        outside = os.path.join(repo, "design", "elsewhere")
+        os.makedirs(outside, exist_ok=True)
+        os.symlink(outside, os.path.join(repo, "design", "concepts", "Linked"))
+        check("relentless: a symlink may not climb out", "leaves design/concepts" in (CT.relentless_refusal(
+            repo, "X", "mod", "design/concepts/Linked/tree.json") or ""))
+        os.remove(os.path.join(repo, "design", "concepts", "Linked"))
         check("relentless: a cite may not climb out", "leaves design/concepts" in (CT.relentless_refusal(
             repo, "X", "mod", text + " design/concepts/../../elsewhere/tree.json") or ""))
         real_load = CT.load
@@ -180,6 +197,21 @@ def main():
             errs, _ = CT.gate(d, repo)
             check("gate: " + name, any(want in e for e in errs), errs)
         write_raw(d, good)
+        t = copy.deepcopy(good)
+        t["leaves"] = [x for x in t["leaves"] if "cs1" not in (x.get("root") or [])]
+        check("sanity: the fixture has a cs1 leaf to drop", len(t["leaves"]) < len(good["leaves"]))
+        write_raw(d, t)
+        errs, _ = CT.lint(d, repo)
+        check("lint: a north star line on no leaf", any("north star line cs1" in e for e in errs), errs)
+        write_raw(d, good)
+        sp = os.path.join(d, "sheet.md")
+        keep = open(sp, "rb").read()
+        with open(sp, "wb") as f:
+            f.write(keep.replace(b"## does not", b"-\t[leaf:missing] Required\n## does not", 1))
+        errs, _ = CT.lint(d, repo)
+        check("lint: a tab after the bullet is a bullet", any("no such leaf: missing" in e for e in errs), errs)
+        with open(sp, "wb") as f:
+            f.write(keep)
         check("in_words: art is not in start", not CT.in_words("art", "Please start tomorrow"))
         check("in_words: empty is in nothing", not CT.in_words("!!!", "anything"))
         check("in_words: sanity", CT.in_words("the art", "I said: The Art, today"))

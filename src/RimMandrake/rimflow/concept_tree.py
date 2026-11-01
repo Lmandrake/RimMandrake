@@ -44,7 +44,7 @@ OBSERVER = re.compile(r"\b(player|colonist|colonists|viewer|observer|pawn|pawns|
                       re.I)
 CONSTRAINT = re.compile(r"^\s*(at most|at least|under|over|no more than|<=?|>=?)?\s*\d+(\.\d+)?\s*(ms|s|min|mb|gb|kb|tps|fps|%|"
                         r"per [a-z]+|[a-z]+/[a-z]+)\b.*\bon\s+\S+", re.I)
-WALK_NEEDS = {"reload": r"\b(reload|save)", "repeat": r"\brepeat", "second order": r"\b(order|reverse)"}
+WALK_NEEDS = {"reload": r"\breload(s|ed|ing)?\b", "repeat": r"\brepeat", "second order": r"\b(second|another|different|other|opposite|reverse|reversed)\s+order\b|\border\s+reversed\b|\breverse\s+the\s+order\b"}
 TOOL_ROOT = "tool"
 STOP = set("the a an of to in on and or it is at for by this that with how what does do not be are was you your his he "
            "me my i we as if".split())
@@ -114,7 +114,7 @@ def sheet_errors(sheet, tree):
     named = set()
     for sec, allowed in (("does", ("leaf", "floor", "waived", "advisory")), ("does not", ("leaf", "floor", "waived"))):
         for line in sheet.get(sec, []):
-            if not line.lstrip().startswith(("- ", "* ", "+ ", "-[", "*[", "+[")):
+            if not re.match(r"^\s*[-*+](\s|\[)", line):
                 continue
             m = TAG.match(line)
             if not m or m.group(1) not in allowed:
@@ -284,6 +284,9 @@ def shape_errors(tree, root_ids, floor, floor_hash):
         if x.get("id") in seen_w:
             errs.append("leaf %s shares an id with a waiver: a waived line gets no leaf" % x.get("id"))
     walks = [x for x in leaves if x.get("leaf_kind") == "walk"]
+    covered = {r for x in leaves if isinstance(x.get("root"), list) for r in x["root"] if isinstance(r, str)}
+    for r in sorted(root_ids - covered):
+        errs.append("north star line %s is on no leaf" % r)
     if kind == "mod" and len(walks) != 1:
         errs.append("a mod has exactly one walk leaf, found %d" % len(walks))
     if kind == "tool" and walks:
@@ -456,7 +459,7 @@ def item_file_text(repo, item):
         return ""
 
 
-TREE_CITE = re.compile(r"design/concepts/[A-Za-z0-9_./-]+/tree\.json")
+TREE_CITE = re.compile(r"design/concepts/[A-Za-z0-9_./-]+/tree\.json", re.I)
 
 
 def relentless_refusal(repo, item, kind, text):
@@ -469,10 +472,11 @@ def relentless_refusal(repo, item, kind, text):
         return "%s is a mod with no tree: `## verify` cites no design/concepts/<Mod>/tree.json" % item
     errs = []
     for cite in cites:     # every citation: one good tree in a comment does not vouch for the rest
-        if not os.path.normpath(cite).replace(os.sep, "/").startswith("design/concepts/"):
+        d = os.path.join(repo, os.path.dirname(cite))
+        # realpath: a symlink or junction leaves as surely as `..` does; a cite in another case fails shut on Linux
+        if not os.path.realpath(d).startswith(os.path.realpath(os.path.join(repo, "design/concepts")) + os.sep):
             errs.append("%s: leaves design/concepts" % cite)
             continue
-        d = os.path.join(repo, os.path.dirname(cite))
         try:
             errs += gate(d, repo)[0]
             if kind == "mod" and load(d).get("kind") != "mod":
