@@ -1055,13 +1055,19 @@ def step(store, fx, r, item, now, acts):
         acts.append({"do": "done", "item": item})
 
 
-def retire(store, fx, states, now, acts):
+def retire(store, fx, states, now, acts, r=None):
     """The ledger closed an item from outside (his drop, a supersede): fence first, then step() drains the runs."""
     for st in states:
         if st["status"] not in OPEN or st["status"] in ("closing", "retiring"):
             continue
         led = fx.item_state(st["item"])
-        if led is None or led["state"] in ("done", "dropped", "superseded"):
+        if r and st["status"] == "queued" and not st["ledger_started"] and st["item"] in r.get("pool_ids_exclude", []):
+            with store.lock():
+                cur = store.load(st["item"])
+                cur["status"] = "retired"
+                store.save(cur)
+            acts.append({"do": "retire", "item": st["item"], "why": "excluded in the rules"})
+        elif led is None or led["state"] in ("done", "dropped", "superseded"):
             with store.lock():
                 cur = store.load(st["item"])
                 cur["gen"] += 1
@@ -1176,7 +1182,7 @@ def tick(store=None, fx=None, r=None, now=None):
             reading(store, r, now, [{"do": "disabled"}])
             return acts
         fx.sync()
-        retire(store, fx, store.states(), now, acts)
+        retire(store, fx, store.states(), now, acts, r)
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
             for item in store.items():
                 if final and (store.load(item) or {}).get("status") != "stopping":

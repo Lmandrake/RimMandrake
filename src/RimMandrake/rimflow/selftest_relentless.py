@@ -460,6 +460,14 @@ def t_crash_windows():
     ok(x.st("I0")["failures"].get("worker_lost") == 1 and x.st("I0")["returns"] == 1,
        "a worker that beat and died inside the grace is worker_lost")
     x.done()
+    x = Rig(n=2)
+    x.tick()
+    q = [s for s in x.s.states() if s["status"] == "queued"]
+    if q:
+        x.r["pool_ids_exclude"] = [q[0]["item"]]
+        x.tick()
+        ok(x.st(q[0]["item"])["status"] == "retired", "an item excluded in the rules leaves the queue")
+    x.done()
     # overdue reads the beat
     st = dict(R.new_state("I0", 1, ""), started_at=0, last_beat=1000)
     rr = dict(RULES, run_max_s=10 ** 6)
