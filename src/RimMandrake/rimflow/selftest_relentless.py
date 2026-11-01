@@ -709,6 +709,167 @@ def t_launch_fail():
     x.done()
 
 
+def breaker_rig(world_cls=None, **rules):
+    """One tick per try, the clock well past each cool. The real Effects where the path is the fault's: launch, told,
+    conductor log, the alarm item (its rimflow call stubbed: no selftest writes the real ledger)."""
+    d = tempfile.mkdtemp(prefix="rlbrk-")
+    log, seen = os.path.join(d, "conductor.md"), []
+    r = dict(RULES, **dict(dict(share=1.0, launch_breaker=2, breaker_cool_s=900, staffing=dict(STAFF, conductor_log=log)), **rules))
+    x = Rig(n=1, share=1.0)
+    x.r = r
+    real = R.Effects(r, x.s)
+    real.RL = types.SimpleNamespace(launch_argv=lambda role, unit, msg, out, err, claude: [
+        "/bin/sh", "-c", "echo Failed to connect to bus: No medium found >&2; exit 1", "--", "--output-format"])
+    real.rimflow = lambda *a, **k: (seen.append(a), types.SimpleNamespace(returncode=0, stdout="", stderr=""))[1]
+    real.item_state = lambda item: None
+    x.w.launch = real.launch
+    x.w.told = real.told
+    x.w.conductor_alarm = real.conductor_alarm
+    x.w.staffing_alarm = real.staffing_alarm
+    x.w.budget = lambda: 3
+    return x, d, log, seen
+
+
+def emergencies(seen):
+    return sum(1 for a in seen if any("EMERGENCY" in str(v) for v in a))
+
+
+def told_rows(d):
+    p = os.path.join(d, "told.jsonl")
+    return [json.loads(ln) for ln in open(p, encoding="utf-8")] if os.path.exists(p) else []
+
+
+def t_breaker_di2():
+    """DI2, the planted faults: a refusal never charges; a failing launcher opens, reopens, and is told as an emergency."""
+    old = os.environ.get("RM_OPS_WATCH_DIR")
+    x, d, log, seen = breaker_rig()
+    os.environ["RM_OPS_WATCH_DIR"] = d
+    live = R.rules(os.path.join(R.HERE, "relentless_rules.json"))
+    ok(live["breaker_cool_max_s"] == 1800, "the shipped cap is 1800")
+    x.r["breaker_cool_max_s"] = live["breaker_cool_max_s"]
+
+    # the real launcher, failing the real way, on the live rules
+    longest, opens = 0, []
+    for i in range(14):
+        x.tick(10)
+        br = R.load_breaker(x.s)
+        cool = br.get("until", 0) - x.now
+        longest = max(longest, cool)
+        if br.get("until", 0) > x.now and (not opens or opens[-1] < x.now - 300):
+            opens.append(x.now)
+        if br.get("until", 0) > x.now:
+            x.now = br["until"]         # the cool passes; the next tick is the half-open try
+    ok(len(opens) >= 2, "a failing launcher opens the breaker and reopens it, got %d" % len(opens))
+    ok(0 < longest <= 1800, "no cool past the cap, longest %s" % longest)
+    rows = told_rows(d)
+    ok(len(rows) == 1, "one incident, one row, however often it reopens: %s" % len(rows))
+    row = rows[0] if rows else {}
+    ok(row.get("class") == "emergency" and row.get("reader") == "Operations" and row.get("told_at")
+       and row.get("ack_due") and "recover_by" in row and row.get("cause", "").startswith("relentless.breaker:"),
+       "the told row is OP3's: %s" % row)
+    ok("No medium found" in row.get("why", ""), "the row names the cause")
+    with open(log, encoding="utf-8") as f:
+        said = f.read()
+    ok(said.count("EMERGENCY") == 1 and "No medium found" in said, "one line in the Conductor's log")
+    ok(emergencies(seen) == 1, "the alarm item hears it once: %s" % seen)
+    x.done()
+
+    # a road that fails is retried and the others are not repeated
+    x, d, log, seen = breaker_rig()
+    os.environ["RM_OPS_WATCH_DIR"] = os.path.join(d, "no", "such")
+    for i in range(10):
+        x.tick(10)
+        x.now = max(x.now, R.load_breaker(x.s).get("until", 0))
+    ok(emergencies(seen) == 1 and open(log, encoding="utf-8").read().count("EMERGENCY") == 1,
+       "the roads that landed are not repeated while told retries")
+    os.environ["RM_OPS_WATCH_DIR"] = d
+    x.tick(10)
+    ok(len(told_rows(d)) == 1, "told lands once it can")
+    x.done()
+
+    # one open, then a launch that works: still counted; a second open by the same cause is the emergency
+    x, d, log, seen = breaker_rig()
+    os.environ["RM_OPS_WATCH_DIR"] = d
+    br = {}
+    for why in ("rm-relentless-work-A_ONE-g3 died at once with no usage",
+                "rm-relentless-work-B_TWO-g17 died at once with no usage"):
+        x.now += 5000
+        R.launch_failed(x.s, x.r, x.now, why)
+        R.launch_failed(x.s, x.r, x.now, why)
+        R.launch_ok(x.s)
+    br = R.load_breaker(x.s)
+    ok(not br.get("until") and not br.get("fails"), "launch_ok closes it")
+    ok(len(br.get("opens", {})) == 1 and list(br["opens"].values())[0]["n"] == 2, "two runs, one cause: %s" % br)
+    x.tick(10)
+    ok(len(told_rows(d)) == 1, "a flap between two opens does not hide the same cause")
+    x.done()
+
+    # two causes, one open each: not an emergency. Two failures of one tick: one open
+    x, d, log, seen = breaker_rig()
+    os.environ["RM_OPS_WATCH_DIR"] = d
+    for why in ("auth dead", "quota gone"):
+        x.now += 5000
+        for _ in range(3):
+            R.launch_failed(x.s, x.r, x.now, why)
+        R.launch_ok(x.s)
+    x.tick(10)
+    ok(not told_rows(d) and len(R.load_breaker(x.s)["opens"]) == 2, "two causes, once each, is no emergency")
+    # past the window a cause is forgotten
+    x.now += x.r["breaker_same_cause_window_s"] + 1
+    x.w.launch = lambda *a: None
+    x.tick(10)
+    ok(not R.load_breaker(x.s).get("opens"), "the window ends a cause's count")
+    x.done()
+
+    # a cool written under the old cap is cut down on the next look
+    x, d, log, seen = breaker_rig()
+    x.r["breaker_cool_max_s"] = 1800
+    x.s._write(x.s.p("breaker.json"), json.dumps({"fails": 9, "until": x.now + 14000, "why": "old"}))
+    x.tick(10)
+    ok(R.load_breaker(x.s)["until"] - x.now <= 1800, "an old long cool obeys the new cap")
+    x.done()
+
+    # the pool's real refusal, from scratch_clone itself; and memory after a clone
+    x, d, log, seen = breaker_rig(launch_breaker=1)
+    real = R.Effects(x.r, x.s)
+    real.books = os.path.dirname(os.path.dirname(os.path.dirname(R.HERE)))
+    x.w.prepare = real.prepare
+    x.w.clone_path = lambda item, q=0: os.path.join(d, "clones", item)
+    x.w.clone_present = lambda c: False
+    pool = {"RM_POOL_MAX_CLONES": "0", "RM_POOL_ROOT": os.path.join(d, "clones"),
+            "RM_POOL_STATE_GLOB": os.path.join(d, "none*")}
+    env = {k: os.environ.get(k) for k in pool}
+    os.environ.update(pool)
+    try:
+        acts = x.tick()
+    finally:
+        for k, v in env.items():
+            os.environ.pop(k, None) if v is None else os.environ.__setitem__(k, v)
+    ok(any(R.POOL_REFUSED in str(a.get("why")) for a in acts), "planted: the pool really refused: %s" % acts)
+    ok(not R.load_breaker(x.s), "a real pool refusal does not charge the breaker")
+    ok(not told_rows(d), "and tells nobody")
+    x.done()
+    x = Rig(n=1, share=1.0, launch_breaker=1)
+    x.w.lfail = "memory 3.1 GB after the clone"
+    x.tick()
+    ok(not R.load_breaker(x.s), "memory after a clone does not charge the breaker")
+    x.done()
+    # a start the ledger refuses waits on its own and the belt does not stop
+    x = foreign_rig(launch_breaker=1)
+    calls = []
+    x.w.ledger_start = lambda item: calls.append(item) or "refused by a gate"
+    x.tick()
+    n = len(calls)
+    x.tick()
+    ok(n and not R.load_breaker(x.s), "a refused start does not charge the breaker")
+    ok(len(calls) == n, "and is paced by itself: %s" % calls)
+    x.done()
+    if old is None:
+        os.environ.pop("RM_OPS_WATCH_DIR", None)
+    else:
+        os.environ["RM_OPS_WATCH_DIR"] = old
+
+
 def t_retire():
     x = Rig(n=2, share=1.0, max_workers=1)
     x.run_one("I0")
@@ -1249,9 +1410,8 @@ def t_foreign_back_in_line():
     x.tick()
     x.w.ledger_start = orig
     ok(x.st("I0")["status"] == "queued", "a refused start after the hand-over stays in line")
-    x.s._write(x.s.p("breaker.json"), "{}")
-    x.tick()
-    ok(len(x.w.launches) == 1 and x.w.takes == ["I0"], "and runs next tick, not taken twice")
+    x.tick(x.r["breaker_cool_s"] + 1)
+    ok(len(x.w.launches) == 1 and x.w.takes == ["I0"], "and runs once its wait is over, not taken twice")
     x.done()
     x = foreign_rig()
     x.w.lfail = "no unit"
@@ -1839,7 +1999,7 @@ def main():
     for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
-              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):
+              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line):
         print("--", t.__name__)
         t()
     print("selftest_relentless: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

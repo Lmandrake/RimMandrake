@@ -40,6 +40,7 @@ NOT_READ = object()
 ALLOCATION_FRESH_S = 1800
 SLUG_RX = re.compile(r"[^a-z0-9_]+")
 POOL_REFUSED = "POOL REFUSED"        # scratch_clone's word: the pool said no, the launch path is healthy
+CAUSE_TOKEN = re.compile(r"\S*[\d/_]\S*")   # a run name, a path, a number, an item id: what changes between tries of one fault
 POOL_FULL = ("pool full", "pool at")  # make_room's holds: what the staffing reading looks for in the tick's acts
 # dirt no worker made on purpose: session dumps and ledger shards the seats' projection rewrites. Bundled, never restored
 POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastructure/state/code_review/")
@@ -872,6 +873,16 @@ class Effects:
             return str(e)[:200]
         return None
 
+    def told(self, row):
+        """One row of the told ledger (OP3), beside ops_watch's alarms.json. -> None, or why it did not land."""
+        d = os.environ.get("RM_OPS_WATCH_DIR") or self.r["ops_watch_dir"]
+        try:
+            with open(os.path.join(d, "told.jsonl"), "a", encoding="utf-8") as f:
+                f.write(json.dumps(row, sort_keys=True) + "\n")
+        except OSError as e:
+            return str(e)[:200]
+        return None
+
     def check_path(self, st):
         """A new path per check: a quarantined checker may still be running in the last one."""
         return os.path.join(self.base, "clones", "check-%s-c%d" % (st["item"], (st.get("check_count") or 0) + 1))
@@ -1132,6 +1143,9 @@ def worker_cap(fx, r, extra=0, store=None):
 def admission(store, fx, r, now, active, extra=0):
     """-> None when one more run may start, else why not."""
     br = load_breaker(store)
+    if br.get("until", 0) > now + r["breaker_cool_max_s"]:      # set under a higher cap: the rule binds what is on disk
+        br["until"] = now + r["breaker_cool_max_s"]
+        store._write(store.p("breaker.json"), json.dumps(br))
     if br.get("until", 0) > now:        # the cause, not only the state: the alarm quotes this line
         return "breaker open until %s: %s" % (iso(br["until"]), (br.get("why") or "no cause recorded").strip()[:200])
     if active >= worker_cap(fx, r, extra, store):
@@ -1153,19 +1167,69 @@ def load_breaker(store):
         return {}
 
 
+def cause_key(why):
+    """Same fault, same key: run names, paths and numbers differ between tries, the words do not. The tail, because
+    launch and clone errors arrive cut to their last 200-300 characters, so their first words shift with a name's length."""
+    return re.sub(r"\s+", " ", CAUSE_TOKEN.sub("#", why)).strip().lower()[-120:]
+
+
 def launch_failed(store, r, now, why):
+    """The launcher failed. A refusal is not that: the launch path is healthy and something else said no, so it charges
+    nothing here, at any call site. `opens` counts by cause and outlives launch_ok: a flap between two opens is still one fault."""
+    if any(w in why for w in r["breaker_refusal_words"]):
+        return
     br = load_breaker(store)
+    was_open = br.get("until", 0) > now
     br["fails"] = br.get("fails", 0) + 1
     if br["fails"] >= r["launch_breaker"]:
         n = br["fails"] - r["launch_breaker"]
         br["until"] = now + min(r["breaker_cool_s"] * (2 ** n), r["breaker_cool_max_s"])
+        if not was_open:            # a second failure of the same tick extends this open, it is not another one
+            c = br.setdefault("opens", {}).setdefault(cause_key(why), {"n": 0})
+            c.update(n=c["n"] + 1, last=now, why=why[:300])
     br["why"] = why[:300]
     store._write(store.p("breaker.json"), json.dumps(br))
 
 
 def launch_ok(store):
-    if load_breaker(store):
-        store._write(store.p("breaker.json"), "{}")
+    br = load_breaker(store)
+    if br.get("fails") or br.get("until"):
+        store._write(store.p("breaker.json"), json.dumps({"opens": br["opens"]} if br.get("opens") else {}))
+
+
+def breaker_emergency(store, fx, r, now, acts):
+    """The same cause opened the breaker `breaker_same_cause_opens` times inside the window: one incident, told once on
+    each road, a road that failed retried next tick. A cause silent for the window is forgotten and may be told again.
+    Outside launch_failed because that runs under the lock and this blocks."""
+    br = load_breaker(store)
+    opens = {k: c for k, c in br.get("opens", {}).items() if now - c["last"] < r["breaker_same_cause_window_s"]}
+    changed = len(opens) != len(br.get("opens", {}))
+    item = (r.get("staffing") or {}).get("alarm_item")
+    for key, c in opens.items():
+        if c["n"] < r["breaker_same_cause_opens"]:
+            continue
+        said = c.setdefault("said", [])
+        text = "EMERGENCY: the breaker opened %d times on the same cause: %s" % (c["n"], c["why"][:200])
+        row = {"class": "emergency", "cause": "relentless.breaker:" + key, "metric": "relentless.breaker_same_cause",
+               "reader": r["breaker_reader"], "told_at": iso(now), "ack_due": iso(now + r["breaker_ack_min"] * 60),
+               "recover_by": None, "item": item, "opens": c["n"], "why": c["why"]}
+        roads = [("told", lambda: fx.told(row)), ("conductor", lambda: fx.conductor_alarm(text))]
+        if item:
+            roads.append(("item", lambda: fx.staffing_alarm(item, text)))
+        for name, road in roads:
+            if name in said:
+                continue
+            fail = road()
+            if fail:
+                acts.append({"do": "alarm_retry", "why": "%s: %s" % (name, fail)})
+            else:
+                said.append(name)
+                changed = True
+                acts.append({"do": "breaker_emergency", "road": name, "cause": key})
+                store.journal({"at": iso(now), "do": "alarm", "kind": "breaker_emergency", "road": name, "why": c["why"]})
+    if changed:
+        br["opens"] = opens
+        store._write(store.p("breaker.json"), json.dumps(br))
 
 
 def pool_rows(store, fx, r):
@@ -1814,6 +1878,8 @@ def lease(store, fx, r, now, acts):
             continue
         if item in r.get("pool_ids_exclude", []):   # back from a stop this tick: retire() takes it on the next
             continue
+        if now < st.get("start_again_at", 0):
+            continue
         reserved = False
         theirs = cfg and (fx.item_state(item) or {}).get("owner") == foreign_seat(r)
         if cfg and (theirs or st.get("foreign")):
@@ -1834,9 +1900,12 @@ def lease(store, fx, r, now, acts):
                 store.save(cur)
             why = fx.ledger_start(item)
             if why:
-                if reserved:        # handed over, so it stays in line; the breaker paces a start that keeps refusing
+                if reserved:        # handed over, so it stays in line
                     give_back(store, item, "start refused", "queued")
-                    launch_failed(store, r, now, why)
+                with store.lock():  # a ledger refusal is this item's, not the launcher's: it waits, the belt does not
+                    cur = store.load(item)
+                    cur["start_again_at"] = now + r["breaker_cool_s"]
+                    store.save(cur)
                 acts.append({"do": "start_refused", "item": item, "why": why})
                 continue
         with store.lock():
@@ -2118,6 +2187,10 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  a hung rimflow must not lose the tick's flush; a reservation resumes next tick
             acts.append({"do": "error", "item": None, "why": "lease %s: %s" % (type(e).__name__, e)})
             store.journal({"at": iso(now), "do": "alarm", "kind": "lease_raised", "why": str(e)[:300]})
+        try:
+            breaker_emergency(store, fx, r, now, acts)
+        except Exception as e:  # noqa: BLE001  a torn cause record must not lose the tick's flush
+            acts.append({"do": "error", "item": None, "why": "breaker_emergency %s: %s" % (type(e).__name__, e)})
         if r.get("staffing"):
             try:
                 staffing(store, fx, r, now, acts)

@@ -118,8 +118,9 @@ worker gave `snag --class`.
 - `pilot` runs the `rm-testpilot` agent. Flyers' flight is never live-tested: the worker brief says so and the pilot
   brief does.
 - A launch that dies at once with no spend (`launch_fail`: auth, quota) is not the item's fault and counts nothing
-  against it. `launch_breaker` such failures in a row hold all launches for `breaker_cool_s` and alarm once. Items keep
-  their place.
+  against it. `launch_breaker` such failures in a row hold all launches for `breaker_cool_s`, doubling to `breaker_cool_max_s`
+  (1800). Items keep their place. The same cause opening it twice is an emergency (a `told.jsonl` row, the Conductor's
+  log, the alarm item), and a refusal (`breaker_refusal_words`, or a refused ledger start) never charges it.
 - `blind_fail`'s reasons go to the next worker, because a reason a worker has not seen is not a fix it can make.
 
 ## 7. Done means live
