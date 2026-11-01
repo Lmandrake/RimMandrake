@@ -54,7 +54,7 @@ GIT_ERROR = "GIT_ERROR"   # git could not answer (timeout, crash): not the same 
 REVIEW_EXTS = (".py", ".cs", ".xml", ".sh", ".csproj", ".ps1", ".js", ".ts")
 # Any of these flags sends an OPEN claim to tier 2 whatever its score.
 FORCE_T2 = ("gate_or_harness_path", "flowworks_or_live", "past_audit_failed", "reopened_before",
-            "owner_words_after_close", "finding_against_item")
+            "owner_words_after_close", "finding_against_item", "evidence_path_absent", "reason_paths_not_in_sha")
 # Flags that stop a claim being low-risk (so it cannot PASS0, only rank in tier 1).
 NOT_LOW_RISK = FORCE_T2 + ("many_files", "no_check_evidence", "verify_not_pass", "closed_by_maker_only",
                            "short_claim_to_close", "sha_touches_nothing", "review_by_closing_seat_only")
@@ -62,18 +62,10 @@ SLICE_QUANTILE = 0.75     # evidenced OPEN claims scoring at/above this quantile
 CALIB_EVERY = 10          # each gate/rank pass has a 1 in 10 keyed chance of also getting an AI verdict
 TIERS = ("T0_BOUNCE", "T0_PASS", "T1_PASS", "T2_RISK", "T2_NOEVIDENCE", "T2_UNMEASURED")
 
-# A path is local only when nothing host-like ("stevedesktop:") sits right before it; remote paths are not checked.
-_PATH_RX = re.compile(r"(?<![\w.-]:)(?<![\w.-])([A-Za-z]:\\[^;,\s]+|/(?:mnt|home)/[^;,\s]+)")
+_PATH_RX = ap._PATH_RX
+to_posix = ap.to_posix
 _UNRESOLVED_RX = re.compile(r"bad object|unknown revision|ambiguous argument|bad revision|invalid object name|"
                             r"not a valid object|not a tree", re.I)
-
-
-def to_posix(p):
-    p = p.rstrip(":.)]'\"")
-    m = re.match(r"^([A-Za-z]):\\(.*)$", p)
-    if m:
-        return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
-    return p
 
 
 def cited_paths(text):

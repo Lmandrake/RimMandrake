@@ -7,7 +7,8 @@
   "sha_missing",
   "sha_head_literal",
   "sha_unresolvable",
-  "evidence_path_absent"
+  "evidence_path_absent",
+  "reason_paths_not_in_sha"
  ],
  "weights": {
   "no_check_evidence": 1.5,
@@ -15,6 +16,7 @@
   "sha_head_literal": 2,
   "sha_unresolvable": 2,
   "evidence_path_absent": 1.5,
+  "reason_paths_not_in_sha": 2,
   "verify_not_pass": 1.5,
   "sha_touches_nothing": 1,
   "closed_by_maker_only": 1,
@@ -27,6 +29,13 @@
   "followup_after_close": 1.5,
   "noted_after_close": 1
  },
+ "ledger_shard_prefix": "infrastructure/state/ledger/",
+ "reason_source_exts": [".py", ".cs", ".xml", ".sh", ".ps1", ".js", ".ts", ".csproj"],
+ "_reason_source_exts_why": "a close that names a design doc or run artifact is citing it; a close that names source claims it landed. Over 14 days of real closes, all paths: 23 hits, 22 of them innocent citations; source only and not landed by any commit naming the item: the fake and 2 others (AUDITPRESCREEN_FIX_WAVED_THE_FAKE_THROUGH)",
+ "reason_path_skip_prefixes": ["relentless: blind PASS"],
+ "_reason_path_skip_prefixes_why": "that reason quotes the proof command a blind checker reran on the sha: a path in it was run, not claimed landed",
+ "unchecked_path_markers": ["/Transient/", "/.seat-tmp/", "/mnt/c/SteveDesktop/"],
+ "_unchecked_path_markers_why": "not on this disk by design: Transient lives ~14 days in the clone that wrote it, seat-tmp is scratch, C:\\SteveDesktop is the other machine's C:. Without these, 14 of 16 new evidence_path_absent hits on 14 days of real closes were innocent",
  "many_files_threshold": 25,
  "short_claim_seconds": 300,
  "flowworks_id_markers": [

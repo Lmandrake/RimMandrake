@@ -20,6 +20,11 @@ RULES = os.path.join(HERE, "audit_prescreen_rules.json")
 OUT = "/mnt/d/ClaudeWork/rimmandrake/auditor/prescreen.json"
 STAMP = os.path.join(os.path.dirname(OUT), "last_finished_run.json")   # the Auditor's state dir, beside OUT
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+# A path is local only when nothing host-like ("stevedesktop:") sits right before it; remote paths are not checked.
+_PATH_RX = re.compile(r"(?<![\w.-]:)(?<![\w.-])([A-Za-z]:\\[^;,\s]+|/(?:mnt|home)/[^;,\s]+)")
+_REPO_PATH_RX = re.compile(r"(?<![\w/.\\:-])((?:src|skills|infrastructure|tests?|\.claude)/[\w./+-]*\w\.\w+)")
+_SELFTEST_RX = re.compile(r"\bselftest_\w+")
+_READ = object()   # score(known_selftests=_READ): ask git
 
 
 def load_rules(path=RULES):
@@ -44,13 +49,60 @@ def git_files(sha, repo=REPO):
     return [l for l in r.stdout.splitlines() if l]
 
 
-def _checked(evs, close, rules):
+def git_item_files(iid, repo=REPO):
+    """Files touched by every commit whose message names the item, or None if git cannot say."""
+    try:
+        r = subprocess.run(["git", "-C", repo, "log", "--fixed-strings", "--grep", iid, "--format=", "--name-only"],
+                           capture_output=True, text=True, timeout=30)
+    except Exception:
+        return None
+    return [l for l in r.stdout.splitlines() if l] if r.returncode == 0 else None
+
+
+def repo_selftests(repo=REPO):
+    """Stems of the selftest files git tracks, or None if git cannot say."""
+    try:
+        r = subprocess.run(["git", "-C", repo, "ls-files", "*selftest_*"], capture_output=True, text=True, timeout=30)
+    except Exception:
+        return None
+    if r.returncode != 0:
+        return None
+    return {os.path.splitext(os.path.basename(l))[0] for l in r.stdout.splitlines() if l}
+
+
+def to_posix(p):
+    p = p.rstrip(":.)]'\"")
+    m = re.match(r"^([A-Za-z]):\\(.*)$", p)
+    if m:
+        return "/mnt/%s/%s" % (m.group(1).lower(), m.group(2).replace("\\", "/"))
+    return p
+
+
+def cited_paths(text):
+    """Local file paths in prose, POSIX spelled. Only a last segment with an extension counts: anything else is a
+    folder or the head of a path cut at a space ("C:\\Program"), and a glob, a..z range or <placeholder> names no one file."""
+    out = []
+    for m in _PATH_RX.findall(text or ""):
+        p = to_posix(m)
+        if "." in os.path.basename(p).strip(".") and ".." not in p and not re.search(r"[*?<>{}$]", p):
+            out.append(p)
+    return out
+
+
+def close_text(c):
+    return " ".join(str(c.get(k) or "") for k in ("reason", "why"))
+
+
+def _checked(evs, close, rules, close_words_count=True):
     """True if the item shows any sign it was checked: a verify event, or text (close reason/why,
-    notes, finding) naming a test, selftest, review or measurement."""
+    notes, finding) naming a test, selftest, review or measurement. close_words_count=False: the close's own claims
+    failed a test here, so what it says about checks is not evidence of one."""
     if any(e.get("event") in ("verify", "finding") for e in evs):
         return True
     rx = re.compile(rules["check_evidence_regex"], re.I)
     for e in evs:
+        if e.get("event") == "close" and not close_words_count:
+            continue
         if e.get("event") in ("close", "note", "implemented", "reconcile"):
             if rx.search(" ".join(str(e.get(k) or "") for k in ("reason", "why", "text", "note"))):
                 return True
@@ -85,10 +137,15 @@ def signal_rates(rows):
     return {f: [k, round(k / n, 3)] for f, k in sorted(c.items(), key=lambda x: -x[1])}
 
 
-def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), exists=os.path.exists, until=None):
+def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), exists=os.path.exists, until=None,
+          item_files=git_item_files, known_selftests=_READ):
     """Rank closes in [since_epoch, until]. Events after `until` (the audit's --now) are invisible; each item's events
     are taken in time order, not input order."""
     by, kids = {}, {}
+    if known_selftests is _READ:
+        known_selftests = repo_selftests()
+    shard = rules["ledger_shard_prefix"]
+    gone = lambda p: not exists(p) and not any(m in p for m in rules["unchecked_path_markers"])
     T = lambda e: _epoch(e["ts"])
     events = sorted((e for e in events if e.get("ts") and (until is None or T(e) <= until)), key=T)
     for e in events:
@@ -108,8 +165,8 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
         sha = (c.get("sha") or "").strip()
         verifies = [e for e in evs if e.get("event") == "verify"]
         files = None
-        if not _checked(evs, c, rules):
-            flags.append("no_check_evidence")
+        text = close_text(c)
+        hollow = False   # the close's own claims failed a test below, so its words about checks count for nothing
         if verifies and verifies[-1].get("result") != "pass":
             flags.append("verify_not_pass")
         if not sha:
@@ -121,8 +178,15 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
             if files is None:
                 flags.append("sha_unresolvable")
             else:
-                if not files:
+                if all(f.startswith(shard) for f in files):   # also true of []: a ledger line is no work
                     flags.append("sha_touches_nothing")
+                    hollow = True
+                named = {p for p in _REPO_PATH_RX.findall(text) if p.endswith(tuple(rules["reason_source_exts"]))}
+                if text.startswith(tuple(rules["reason_path_skip_prefixes"])):
+                    named = set()
+                if named and not named & set(files) and not named & set(item_files(iid) or ()):
+                    flags.append("reason_paths_not_in_sha")
+                    hollow = True
                 if len(files) >= rules["many_files_threshold"]:
                     flags.append("many_files")
                 if any(m in f for f in files for m in rules["gate_path_markers"]):
@@ -134,6 +198,18 @@ def score(events, rules, since_epoch, git=git_files, past_failed=frozenset(), ex
             if p.startswith("/") and ":" not in p.split("/")[0] and not exists(p):
                 flags.append("evidence_path_absent")
                 break
+            if not p.startswith("/") and any(gone(q) for q in cited_paths(p)):
+                flags.append("evidence_path_absent")
+                break
+        if any(gone(q) for q in cited_paths(text)):
+            hollow = True
+            if "evidence_path_absent" not in flags:
+                flags.append("evidence_path_absent")
+        if known_selftests is not None and any(not any(k.startswith(n) for k in known_selftests)
+                                               for n in _SELFTEST_RX.findall(text)):
+            hollow = True
+        if not _checked(evs, c, rules, close_words_count=not hollow):
+            flags.append("no_check_evidence")
         # the maker: whoever last took the item before the close (`claim`, or `start`/`reclaim` with no lease)
         claims = [e for e in evs if e.get("event") in ("claim", "start", "reclaim") and T(e) <= T(c)]
         if claims and c.get("seat") == claims[-1].get("seat") and not any(

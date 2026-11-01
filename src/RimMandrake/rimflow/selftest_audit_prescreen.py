@@ -158,5 +158,86 @@ uf = ap.score(fut, R, since, git=git, until=ap._epoch("2026-10-26T12:00:00Z"))
 ok("events after --now are invisible", [(r["item"], [f for f in r["flags"] if "after_close" in f]) for r in uf],
    [("U_ITEM", [])])
 
+# AUDITPRESCREEN_FIX_WAVED_THE_FAKE_THROUGH: the real fake close, its real ledger events, real git, the real disk, at
+# the moment the Auditor screened it (2026-10-29T00:45Z). It scored 0 with no flags.
+from rimflow import model                                          # noqa: E402
+FIX = "ARBITERTRIAL_PROVE_FAKE_CLOSE_FAILS"
+fixture = [e for e in model.read() if e.get("id") == FIX]
+ok("fixture events are on the ledger", any(e.get("event") == "close" for e in fixture), True)
+fr = ap.score(fixture, R, ap._epoch("2026-10-28T00:00:00Z"), until=ap._epoch("2026-10-29T00:45:00Z"))
+ok("fixture screened", [r["item"] for r in fr], [FIX])
+if fr:
+    ok("fake close: all four signals", sorted(set(fr[0]["flags"]) & {
+        "evidence_path_absent", "reason_paths_not_in_sha", "sha_touches_nothing", "no_check_evidence"}),
+       ["evidence_path_absent", "no_check_evidence", "reason_paths_not_in_sha", "sha_touches_nothing"])
+    ok("fake close: both hard", sorted(fr[0]["hard"]), ["evidence_path_absent", "reason_paths_not_in_sha"])
+    ok("fake close: scores above zero", fr[0]["score"] > 0, True)
+
+LEDGER = lambda sha: ["infrastructure/state/ledger/events/BENCH.jsonl"]
+cl = lambda reason, **k: [ev("verify", "P_ITEM", "2026-10-26T11:00:00Z", seat="RUNNER", result="pass"),
+                          ev("close", "P_ITEM", "2026-10-26T12:00:00Z", sha="a", reason=reason, **k)]
+fl = lambda evs, **k: ap.score(evs, R, since, **dict({"git": git, "item_files": lambda i: []}, **k))[0]["flags"]
+# gap 1: the path check reads the close's words, Windows paths included
+ok("to_posix maps a drive", ap.to_posix("D:\\ClaudeWork\\a b.txt"), "/mnt/d/ClaudeWork/a b.txt")
+seen = []
+absent = lambda p: seen.append(p) or False
+ok("close reason D:\\ path missing", "evidence_path_absent" in fl(cl("proof D:\\Work\\p.txt"), exists=absent), True)
+ok("...mapped to /mnt/d", seen, ["/mnt/d/Work/p.txt"])
+ok("close why /mnt path missing", "evidence_path_absent" in fl(
+    [ev("close", "P_ITEM", "2026-10-26T12:00:00Z", sha="a", why="see /mnt/d/Work/q.log.")], exists=absent), True)
+for spot in ("C:\\SteveDesktop\\status.json", "/home/mandrake/.seat-tmp/FOUNDRY/p.out", "D:\\Luke\\dev\\R\\Transient\\a.log"):
+    ok("not on this disk by design: " + spot, "evidence_path_absent" in fl(cl("see " + spot), exists=absent), False)
+ok("close reason path present", "evidence_path_absent" in fl(cl("proof D:\\Work\\p.txt"), exists=lambda p: True), False)
+ok("a host-prefixed path is not ours to check", "evidence_path_absent" in fl(
+    cl("copied to stevedesktop:/home/x/y.txt"), exists=absent), False)
+ok("verify evidence on a Windows path is checked", "evidence_path_absent" in fl(
+    [ev("verify", "P_ITEM", "2026-10-26T11:00:00Z", seat="RUNNER", result="pass", evidence="D:\\Work\\e.md"),
+     ev("close", "P_ITEM", "2026-10-26T12:00:00Z", sha="a")], exists=absent), True)
+ok("an unspaced fragment of C:\\Program Files is not a path", ap.cited_paths(
+    "game at C:\\Program Files (x86)\\Steam\\x.dll"), [])
+ok("a glob is not a path", ap.cited_paths("wrote /mnt/d/x/*.json"), [])
+ok("a range is not a path", ap.cited_paths("D:\\x\\result_A..F.json"), [])
+# gap 2: what the reason names against what the sha touches
+named = "built src/RimMandrake/rimflow/new_thing.py"
+ok("named source not in sha", "reason_paths_not_in_sha" in fl(cl(named)), True)
+ok("named source in sha", "reason_paths_not_in_sha" in fl(
+    cl(named), git=lambda s: ["src/RimMandrake/rimflow/new_thing.py"]), False)
+ok("one of two named in sha is enough", "reason_paths_not_in_sha" in fl(
+    cl(named + " after reading src/other.py"), git=lambda s: ["src/other.py"]), False)
+ok("named source landed by another commit of this item", "reason_paths_not_in_sha" in fl(
+    cl(named), item_files=lambda i: ["src/RimMandrake/rimflow/new_thing.py"]), False)
+ok("item-commit lookup failing does not clear it", "reason_paths_not_in_sha" in fl(
+    cl(named), item_files=lambda i: None), True)
+ok("a design doc or run artifact is not a source claim", "reason_paths_not_in_sha" in fl(
+    cl("see design/x/y.md and src/FlowWorks/northstar/run.json")), False)
+ok("unresolvable sha raises only its own flag", "reason_paths_not_in_sha" in fl(cl(named), git=lambda s: None), False)
+ok("a blind checker's quoted proof command claims nothing", "reason_paths_not_in_sha" in fl(
+    cl("relentless: blind PASS at a: run_selftests.py --only src/x/selftest_y.py")), False)
+from rimflow import arbiter_tiers                                  # noqa: E402
+ok("the Arbiter gives a screened claim an AI verdict", {"reason_paths_not_in_sha", "evidence_path_absent"} <=
+   set(arbiter_tiers.FORCE_T2), True)
+ok("reason_paths_not_in_sha is hard", "reason_paths_not_in_sha" in R["hard_flags"], True)
+# ...and the real gap-2 half: a ledger-shard-only sha carries no work
+ok("ledger-only sha touches nothing", "sha_touches_nothing" in fl(cl("done"), git=LEDGER), True)
+ok("a ledger line beside real work does not", "sha_touches_nothing" in fl(
+    cl("done"), git=lambda s: LEDGER(s) + ["src/a.py"]), False)
+# gap 3: words about checks do not satisfy no_check_evidence when the close's own claims failed
+wc = lambda reason: [ev("close", "P_ITEM", "2026-10-26T12:00:00Z", sha="a", reason=reason)]
+ALL = {"selftest_real", "selftest_other"}
+ok("real selftest, real sha: checked", "no_check_evidence" in fl(
+    wc("selftest_real ALL PASS"), known_selftests=ALL), False)
+ok("a selftest that does not exist checks nothing", "no_check_evidence" in fl(
+    wc("selftest_ghost ALL PASS"), known_selftests=ALL), True)
+ok("words on a ledger-only sha check nothing", "no_check_evidence" in fl(
+    wc("selftest_real ALL PASS"), git=LEDGER, known_selftests=ALL), True)
+ok("words beside a missing proof check nothing", "no_check_evidence" in fl(
+    wc("tests PASS, proof D:\\Work\\p.txt"), exists=absent), True)
+ok("a note still counts on a ledger-only sha", "no_check_evidence" in fl(
+    wc("done") + [ev("note", "P_ITEM", "2026-10-26T11:00:00Z", text="measured 3 rows")], git=LEDGER), False)
+ok("a selftest prefix is not a ghost", "no_check_evidence" in fl(
+    wc("selftest_real_ PASS"), known_selftests={"selftest_real_one"}), False)
+ok("unreadable selftest list clears no one's words wrongly", "no_check_evidence" in fl(
+    wc("selftest_ghost PASS"), known_selftests=None), False)
+
 print("FAILED: %s" % FAILED if FAILED else "all ok")
 sys.exit(1 if FAILED else 0)

@@ -2,7 +2,8 @@
 """audit_hardflag_file.py - files every Auditor pre-screen hard flag as a defect ticket, no AI
 (item AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI; roles/auditor.md "The daily audit" step 1).
 
-A hard flag (audit_prescreen_rules.json `hard_flags`: sha missing / HEAD / unresolvable, evidence path absent) is a
+A hard flag (audit_prescreen_rules.json `hard_flags`: sha missing / HEAD / unresolvable, evidence path absent, reason
+paths not in sha) is a
 defect found without a re-check, so filing it must not wait on audit capacity (GPT review #6). The Auditor's
 pre_launch runs this right after audit_prescreen.py; the Auditor then only confirms the filings landed.
 
