@@ -1,0 +1,230 @@
+{"operation": "enqueue", "timestamp": "2026-11-01T14:25:59.821Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T14:25:59.833Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T14:25:59.914Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "task-notification"}, "timestamp": "2026-11-01T14:25:59.853Z", "type": "user"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T14:26:04.121Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T14:26:04.194Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T14:26:04.205Z", "type": "system"}
+{"operation": "enqueue", "timestamp": "2026-11-01T15:32:44.495Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T15:32:44.505Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T15:32:44.597Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "peer"}, "timestamp": "2026-11-01T15:32:44.523Z", "type": "user"}
+{"timestamp": "2026-11-01T15:32:44.756Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T15:32:46.600Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "SendMessage", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T15:32:49.980Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T15:32:50.017Z", "type": "user"}
+{"timestamp": "2026-11-01T15:32:50.074Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T15:32:53.143Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T15:32:53.194Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T15:32:53.202Z", "type": "system"}
+{"timestamp": "2026-11-01T15:33:32.314Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "human"}, "timestamp": "2026-11-01T15:33:32.247Z", "type": "user"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T15:33:34.723Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Agent", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T15:33:39.815Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T15:33:39.980Z", "type": "user"}
+{"timestamp": "2026-11-01T15:33:40.045Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T15:33:42.376Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T15:33:42.418Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T15:33:42.424Z", "type": "system"}
+{"operation": "enqueue", "timestamp": "2026-11-01T15:35:30.426Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T15:35:30.436Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T15:35:30.507Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "task-notification"}, "timestamp": "2026-11-01T15:35:30.452Z", "type": "user"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T15:35:35.824Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T15:35:35.873Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T15:35:35.879Z", "type": "system"}
+{"operation": "enqueue", "timestamp": "2026-11-01T15:35:47.471Z", "type": "queue-operation"}
+{"operation": "remove", "timestamp": "2026-11-01T15:35:47.517Z", "type": "queue-operation"}
+{"operation": "enqueue", "timestamp": "2026-11-01T15:35:49.493Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T15:35:49.500Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T15:35:49.570Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "task-notification"}, "timestamp": "2026-11-01T15:35:49.511Z", "type": "user"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T15:35:51.258Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T15:35:51.299Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T15:35:51.304Z", "type": "system"}
+{"timestamp": "2026-11-01T16:12:32.342Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "human"}, "timestamp": "2026-11-01T16:12:32.243Z", "type": "user"}
+{"attachment": {"type": "edited_text_file"}, "isSidechain": false, "timestamp": "2026-11-01T16:12:32.242Z", "type": "attachment"}
+{"timestamp": "2026-11-01T16:12:32.508Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:34.252Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Skill", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:34.256Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:12:34.327Z", "type": "user"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "user"}, "timestamp": "2026-11-01T16:12:34.323Z", "type": "user"}
+{"attachment": {"type": "command_permissions"}, "isSidechain": false, "timestamp": "2026-11-01T16:12:34.323Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"name": "Read", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:34.894Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:12:35.105Z", "type": "user"}
+{"timestamp": "2026-11-01T16:12:35.155Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:43.038Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:44.082Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:12:44.798Z", "type": "user"}
+{"timestamp": "2026-11-01T16:12:44.852Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:12:53.529Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:53.528Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:55.388Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:12:55.733Z", "type": "user"}
+{"timestamp": "2026-11-01T16:12:55.799Z", "type": "api-request"}
+{"attachment": {"type": "environment"}, "isSidechain": false, "timestamp": "2026-11-01T16:12:55.778Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:57.540Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:12:58.462Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:12:58.743Z", "type": "user"}
+{"timestamp": "2026-11-01T16:12:58.786Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:13:02.309Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:02.309Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:07.760Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:13:08.098Z", "type": "user"}
+{"timestamp": "2026-11-01T16:13:08.150Z", "type": "api-request"}
+{"attachment": {"type": "environment"}, "isSidechain": false, "timestamp": "2026-11-01T16:13:08.128Z", "type": "attachment"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:13:10.169Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:10.168Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:11.400Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:13:12.060Z", "type": "user"}
+{"timestamp": "2026-11-01T16:13:12.111Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:13:14.915Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:14.915Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:13:23.572Z", "type": "user"}
+{"timestamp": "2026-11-01T16:13:23.620Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:13:26.633Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:26.633Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "AskUserQuestion", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:34.568Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:13:38.336Z", "type": "user"}
+{"timestamp": "2026-11-01T16:13:38.389Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:40.355Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "AskUserQuestion", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:13:45.601Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:16:20.822Z", "type": "user"}
+{"timestamp": "2026-11-01T16:16:20.932Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:16:27.961Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:16:32.463Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:16:33.436Z", "type": "user"}
+{"timestamp": "2026-11-01T16:16:33.477Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:16:38.627Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:16:41.153Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:16:43.792Z", "type": "user"}
+{"timestamp": "2026-11-01T16:16:43.842Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:16:45.499Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:16:45.499Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:16:46.127Z", "type": "user"}
+{"timestamp": "2026-11-01T16:16:46.172Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:16:48.025Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:16:48.024Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:16:54.934Z", "type": "user"}
+{"timestamp": "2026-11-01T16:16:54.973Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:17:03.160Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T16:17:03.160Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T16:17:03.213Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T16:17:03.219Z", "type": "system"}
+{"timestamp": "2026-11-01T16:17:58.860Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "human"}, "timestamp": "2026-11-01T16:17:58.802Z", "type": "user"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:18:00.889Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:18:02.170Z", "type": "user"}
+{"timestamp": "2026-11-01T16:18:02.218Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:18:05.451Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:18:05.451Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:18:06.518Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:18:07.173Z", "type": "user"}
+{"timestamp": "2026-11-01T16:18:07.209Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:18:11.359Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:18:11.358Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:18:12.316Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:18:12.499Z", "type": "user"}
+{"timestamp": "2026-11-01T16:18:12.533Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:18:17.032Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:18:17.031Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "AskUserQuestion", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:18:24.031Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:24:33.266Z", "type": "user"}
+{"timestamp": "2026-11-01T16:24:33.481Z", "type": "api-request"}
+{"timestamp": "2026-11-01T16:24:33.716Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:24:35.155Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:24:36.812Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:24:37.111Z", "type": "user"}
+{"timestamp": "2026-11-01T16:24:37.179Z", "type": "api-request"}
+{"attachment": {"type": "environment"}, "isSidechain": false, "timestamp": "2026-11-01T16:24:37.157Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:24:39.944Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:24:45.087Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:24:45.675Z", "type": "user"}
+{"timestamp": "2026-11-01T16:24:45.726Z", "type": "api-request"}
+{"attachment": {"type": "environment"}, "isSidechain": false, "timestamp": "2026-11-01T16:24:45.702Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T16:24:46.866Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T16:24:53.968Z", "type": "user"}
+{"timestamp": "2026-11-01T16:24:54.018Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T16:24:58.814Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T16:24:58.813Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T16:24:58.870Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T16:24:58.878Z", "type": "system"}
+{"operation": "enqueue", "timestamp": "2026-11-01T17:11:10.810Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T17:11:10.833Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T17:11:10.969Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "peer"}, "timestamp": "2026-11-01T17:11:10.862Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:11.167Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:13.245Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:14.456Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:11:21.992Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:22.083Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T17:11:24.205Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:24.205Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:24.473Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:11:25.938Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:26.019Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T17:11:27.748Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:27.747Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:11:29.839Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:29.925Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T17:11:31.301Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:31.301Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:32.255Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:11:32.777Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:32.853Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T17:11:35.137Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:35.136Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "Agent", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:37.817Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:11:38.103Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:38.201Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"name": "Agent", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:41.252Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:11:41.433Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:41.518Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:43.667Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "SendMessage", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:11:45.202Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:11:45.426Z", "type": "user"}
+{"timestamp": "2026-11-01T17:11:45.482Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T17:11:48.758Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T17:11:48.833Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T17:11:48.843Z", "type": "system"}
+{"operation": "enqueue", "timestamp": "2026-11-01T17:50:30.201Z", "type": "queue-operation"}
+{"operation": "remove", "timestamp": "2026-11-01T17:50:33.274Z", "type": "queue-operation"}
+{"operation": "enqueue", "timestamp": "2026-11-01T17:51:47.009Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T17:51:47.025Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T17:51:47.178Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "task-notification"}, "timestamp": "2026-11-01T17:51:47.051Z", "type": "user"}
+{"timestamp": "2026-11-01T17:51:47.345Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:51:49.213Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "SendMessage", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T17:51:50.536Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T17:51:50.661Z", "type": "user"}
+{"timestamp": "2026-11-01T17:51:50.785Z", "type": "api-request"}
+{"attachment": {"type": "agent_listing_delta"}, "isSidechain": false, "timestamp": "2026-11-01T17:51:50.753Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T17:51:52.473Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T17:51:52.529Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T17:51:52.538Z", "type": "system"}
+{"operation": "enqueue", "timestamp": "2026-11-01T18:22:03.219Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T18:22:03.236Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T18:22:03.337Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "task-notification"}, "timestamp": "2026-11-01T18:22:03.259Z", "type": "user"}
+{"timestamp": "2026-11-01T18:22:03.509Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T18:22:08.751Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T18:22:08.828Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T18:22:08.838Z", "type": "system"}
+{"operation": "enqueue", "timestamp": "2026-11-01T18:57:00.549Z", "type": "queue-operation"}
+{"operation": "remove", "timestamp": "2026-11-01T19:00:36.010Z", "type": "queue-operation"}
+{"operation": "enqueue", "timestamp": "2026-11-01T19:16:45.244Z", "type": "queue-operation"}
+{"operation": "dequeue", "timestamp": "2026-11-01T19:16:45.293Z", "type": "queue-operation"}
+{"timestamp": "2026-11-01T19:16:45.650Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": "", "role": "user"}, "origin": {"kind": "task-notification"}, "timestamp": "2026-11-01T19:16:45.373Z", "type": "user"}
+{"timestamp": "2026-11-01T19:16:45.824Z", "type": "api-request"}
+{"isSidechain": false, "message": {"content": [{"type": "thinking"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T19:16:47.824Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"name": "SendMessage", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T19:16:49.378Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T19:16:49.665Z", "type": "user"}
+{"isSidechain": false, "message": {"content": [{"name": "Bash", "type": "tool_use"}], "role": "assistant", "stop_reason": "tool_use"}, "timestamp": "2026-11-01T19:16:50.127Z", "type": "assistant"}
+{"isSidechain": false, "message": {"content": [{"type": "tool_result"}], "role": "user"}, "timestamp": "2026-11-01T19:16:52.850Z", "type": "user"}
+{"timestamp": "2026-11-01T19:16:52.951Z", "type": "api-request"}
+{"attachment": {"type": "deferred_tools_record"}, "isSidechain": false, "timestamp": "2026-11-01T19:16:56.869Z", "type": "attachment"}
+{"isSidechain": false, "message": {"content": [{"type": "text"}], "role": "assistant", "stop_reason": "end_turn"}, "timestamp": "2026-11-01T19:16:56.868Z", "type": "assistant"}
+{"isSidechain": false, "subtype": "stop_hook_summary", "timestamp": "2026-11-01T19:16:56.952Z", "type": "system"}
+{"isSidechain": false, "subtype": "turn_duration", "timestamp": "2026-11-01T19:16:56.964Z", "type": "system"}
