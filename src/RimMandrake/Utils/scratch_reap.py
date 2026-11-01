@@ -250,6 +250,10 @@ def candidates() -> list[tuple[str, Path]]:
         for c in find_clones(r):
             if not any(s == c or s in c.parents for s in c.parents if s in seen) and c not in seen:
                 cands.append(("clone", c))
+        for f in glob.glob(str(r / "*" / "enact_*")):                  # rm/scratch/<SEAT>/enact_*: art.py enact test fixtures
+            fp = Path(f)
+            if fp.is_dir() and not fp.is_symlink() and not (fp / ".git").exists() and not find_clones(fp):
+                cands.append(("fixture", fp))
     return cands
 
 
@@ -385,6 +389,38 @@ def _who(base: str) -> str:
         return f"{comm.partition('(')[2]!r} {rest.split()[0]} ppid {rest.split()[1]}"
     except (OSError, IndexError):
         return "gone"
+
+
+def path_forms(token: str, cwd: str, bare_must_exist: bool = False) -> list[str]:
+    """Every absolute path a command-line word or environment value could name, as written (not normalised).
+
+    One function owns the shapes, so a new one is a row in its test table and not another branch in the scan:
+    a plain path; relative to the process's cwd; `--repo=/p`, `K=v`; `-I../x` and `-isystem/x`; PATH-like lists split on
+    ':' and blanks; a value with a path from its first slash. A bare word (`worker`) names cwd/worker: from argv always,
+    from an environment value only if it is there."""
+    out: list[str] = []
+    for part in re.split(r"[:\s]+", token):
+        if not part:
+            continue
+        cands = [part]
+        if part[:1] == "-":
+            cands += [part.partition("=")[2], part[2:]]
+        elif "=" in part:
+            cands.append(part.partition("=")[2])
+        if "/" in part:
+            cands.append(part[part.index("/"):])
+            m = re.search(r"\.\.?/", part)                 # `-isystem../x`: a relative path glued to a long flag
+            if m:
+                cands.append(part[m.start():])
+        for c in cands:
+            if not c:
+                continue
+            raw = c if c[:1] == "/" else os.path.join(cwd, c)
+            if "/" not in c and bare_must_exist and not os.path.lexists(raw):
+                continue
+            if raw not in out:
+                out.append(raw)
+    return out
 
 
 class Live:
@@ -537,18 +573,21 @@ class Live:
                 continue
         return False
 
+    def _add(self, p: str, pid: str):
+        if p.startswith("/"):
+            self.paths.append((p.removesuffix(" (deleted)"), pid))
+            if not p.startswith(SYSTEM_PATHS):
+                self.named.add(os.path.dirname(p))
+                self.named.add(p.removesuffix(" (deleted)"))    # a directory fd or a variable names the repo itself
+                plain = p.removesuffix(" (deleted)")
+                real = self.resolved.get(plain) or self.resolved.setdefault(plain, os.path.realpath(plain))
+                if real != p:                                   # a shortcut in argv names what it points at
+                    self.paths.append((real, pid))
+                    self.named.update((real, os.path.dirname(real)))
+
     def _read(self, pid: str, base: str, cmds: list[str]):
         def add(p: str):
-            if p.startswith("/"):
-                self.paths.append((p.removesuffix(" (deleted)"), pid))
-                if not p.startswith(SYSTEM_PATHS):
-                    self.named.add(os.path.dirname(p))
-                    self.named.add(p.removesuffix(" (deleted)"))    # a directory fd or a variable names the repo itself
-                    plain = p.removesuffix(" (deleted)")
-                    real = self.resolved.get(plain) or self.resolved.setdefault(plain, os.path.realpath(plain))
-                    if real != p:                                   # a shortcut in argv names what it points at
-                        self.paths.append((real, pid))
-                        self.named.update((real, os.path.dirname(real)))
+            self._add(p, pid)
         for link in ("cwd", "exe", "root"):
             try:
                 t = os.readlink(f"{base}/{link}")
@@ -573,30 +612,20 @@ class Live:
             argv = f.read()
         cmds.append(argv.replace(b"\0", b" ").decode("utf-8", "surrogateescape"))
         cwd = os.readlink(f"{base}/cwd")
-        for a in argv.split(b"\0"):                     # `python3 scratch/x/task.py` names its clone only from its cwd
-            if a[:1] == b"-":                           # `--repo=/path` names one as plainly
-                a = a.partition(b"=")[2] or a[2:]       # and so does `-I../lib`
-            if a and a[:1] != b"-":                     # and `..` in an absolute one hides the name just as well
-                raw = os.path.join(cwd, a.decode("utf-8", "surrogateescape"))
-                q = os.path.normpath(raw)
-                add(q)
-                self.named.add(q)
-                add(os.path.realpath(raw))                 # a link before the `..` means normpath named the wrong dir
+        for a in argv.split(b"\0"):
+            self._name_token(a.decode("utf-8", "surrogateescape"), cwd, pid, False)
         with open(f"{base}/environ", "rb") as f:
             env = f.read()
         self.sessions.update(m.decode() for m in UUID_ANY.findall(env))
         for kv in env.split(b"\0"):
-            _, _, v = kv.partition(b"=")
-            for part in re.split(rb"[:\s]+", v):                 # PATH-like, or flags: CPPFLAGS=-I/x -I/y
-                text = part.decode("utf-8", "surrogateescape")
-                near = os.path.normpath(os.path.join(cwd, text)) if text else cwd
-                if "/" in text:                                 # -isystem/x, ../x: a path from its first slash, and from cwd
-                    add(text[text.index("/"):])
-                    add(near)
-                    if text[:1] == "-":                         # -I../x
-                        add(os.path.normpath(os.path.join(cwd, text[2:])))
-                elif near not in self.resolved and os.path.lexists(near):   # PYTHONPATH=worker: a bare word if it is there
-                    add(near)
+            self._name_token(kv.partition(b"=")[2].decode("utf-8", "surrogateescape"), cwd, pid, True)
+
+    def _name_token(self, token: str, cwd: str, pid: str, bare_must_exist: bool):
+        """Record every place one argv word or environment value could name. The only reader of path shapes."""
+        for raw in path_forms(token, cwd, bare_must_exist):
+            self._add(os.path.normpath(raw), pid)
+            self._add(os.path.realpath(raw), pid)           # a link before the `..` means normpath named the wrong dir
+            self.named.add(os.path.normpath(raw))
 
     def users(self, p: Path) -> list[str]:
         t = str(p)
@@ -1284,10 +1313,28 @@ def judge_session(p: Path, ctx: Ctx) -> tuple[dict, list[dict]]:
     return row, rows
 
 
+def judge_fixture(p: Path, ctx: Ctx) -> dict:
+    """An `enact_*` selftest fixture dir (RM_SCRATCH_FIX_ENACT_DIRS_UNREAPED): regenerable, no repo, so no archive."""
+    bad = guard(p)
+    tree = None if bad else Tree(p)
+    row = base_row("fixture", p, tree, ctx.now)
+    if bad:
+        return refuse(row, [bad])
+    if tree.capped or tree.errors:
+        return refuse(row, ["too big to age safely" if tree.capped else f"unreadable: {tree.errors[0]}"])
+    if ctx.now - tree.newest < ttl_s():
+        row["verdict"] = "YOUNG"
+        return row
+    why = holds(p, "session", ctx, tree) + ctx.borrows.of(p) + [f"a repo nested inside: {n}" for n in tree.nested[:3]]
+    return refuse(row, why) if why else row
+
+
 def judge_all(ctx: Ctx) -> list[dict]:
     rows = []
     for kind, p in candidates():
-        if kind == "clone":
+        if kind == "fixture":
+            rows.append(judge_fixture(p, ctx))
+        elif kind == "clone":
             rows.append(judge_clone(p, ctx))
         else:
             s, inner = judge_session(p, ctx)
@@ -1613,7 +1660,9 @@ def act(row: dict, ctx: Ctx, failures: list[str]) -> int:
     """Re-judge one row, preserve it if asked, delete it. -> bytes freed."""
     ctx.refresh()
     p = Path(row["path"])
-    if row["kind"] == "clone":
+    if row["kind"] == "fixture":
+        again = judge_fixture(p, ctx)
+    elif row["kind"] == "clone":
         again = judge_clone(p, ctx)
     else:
         again, inner = judge_session(p, ctx)
@@ -1701,6 +1750,10 @@ def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str], st
 def fixture_dirs() -> list[Path]:
     """~/.seat-tmp/<SEAT>/selftest_*: a selftest's tempfile prefix, so no agent's work lives there."""
     found = [Path(s) for r in roots() if r.name == ".seat-tmp" for s in glob.glob(str(r / "*" / "selftest_*"))]
+    # tempfile.mkdtemp() names (tmp + 8 of [a-z0-9_]): selftests make them at import and never remove them (27k stood
+    # under ~/.seat-tmp/BENCH on 2026-11-01, past the runner's per-test TMPDIR); same day-old, nothing-uses-it rule.
+    found += [Path(s) for r in roots() if r.name == ".seat-tmp" for s in glob.glob(str(r / "*" / "tmp*"))
+              if re.fullmatch(r"tmp[a-z0-9_]{8}", os.path.basename(s))]
     return [p for p in found if p.is_dir() and not p.is_symlink()]
 
 

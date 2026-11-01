@@ -100,12 +100,19 @@ def sessions_root(root):
     return root / "BENCH" / "claude-1000" / "-proj"
 
 
+def serial_lock():
+    """Every selftest of the reaper takes this before it plants anything, the archive-tags one too (SCRATCHREAP_FIX_SELFTEST_
+    BLINDS_OTHER_RUNS): two runs at once blind each other. Hold the returned file open for the whole run."""
+    lock = open(Path(tempfile.gettempdir()) / "selftest_scratch_reap.lock", "w")
+    fcntl.flock(lock, fcntl.LOCK_EX)
+    return lock
+
+
 def main() -> int:
     """One at a time: a run plants an undumpable process, and the /proc scan of a run beside it rightly holds everything."""
     if os.environ.get("SCRATCH_REAP_SELFTEST_ONCE"):      # the parent below holds the lock: taking it here would deadlock
         return run()
-    lock = open(Path(tempfile.gettempdir()) / "selftest_scratch_reap.lock", "w")
-    fcntl.flock(lock, fcntl.LOCK_EX)
+    lock = serial_lock()
     # A stranger's unreadable pid on a busy machine rightly holds every fixture (Live.blind): one bad attempt says nothing,
     # three in a row say the code. Fresh processes: an attempt that died leaves no patched module behind.
     for attempt in range(1, 4):
@@ -113,7 +120,8 @@ def main() -> int:
         if rc == 0:
             break
         print(f"RETRY: attempt {attempt} failed", flush=True)
-    tags = subprocess.run([sys.executable, str(Path(__file__).with_name("selftest_scratch_reap_archive_tags.py"))])
+    tags = subprocess.run([sys.executable, str(Path(__file__).with_name("selftest_scratch_reap_archive_tags.py"))],
+                          env={**os.environ, "SCRATCH_REAP_SELFTEST_ONCE": "1"})   # this process holds the lock
     return rc or tags.returncode            # apart because that one stubs the live-process gate this one proves
 
 
@@ -1540,6 +1548,11 @@ def fixture_cases(td: Path):
     check(time.time() - R.Tree(look).newest < 3600, "working in it does")
     check("BENCH/closeout" in R.needles(Path("/x/BENCH/closeout"), "clone")
           and "closeout" not in R.needles(Path("/x/BENCH/closeout"), "clone"), "a bare clone name is a word, not a mention")
+    mk_old, mk_young = root / "S" / "tmpab3_x9zq", root / "S" / "tmpab3_x9zr"   # mkdtemp-shaped: swept like selftest_*
+    for d in (mk_old, mk_young):
+        d.mkdir(parents=True)
+        (d / "f").write_text("x")
+    age(mk_old)
     for d in (old / "unpub" / "c", young / "c", used / "c"):
         d.mkdir(parents=True)
         (d / "f").write_text("x")
@@ -1554,13 +1567,15 @@ def fixture_cases(td: Path):
         real = ctx.live.users
         ctx.live.users = lambda p: ["pid 1"] if p == used else real(p)
         dry = R.sweep_fixtures(ctx, False, 0)
-        check(dry["removed"] == 1 and old.exists(), "a dry run counts and removes nothing")
+        check(dry["removed"] == 2 and old.exists() and mk_old.exists(), "a dry run counts and removes nothing")
         got = R.sweep_fixtures(ctx, True, 0)
-        check(got["removed"] == 1 and got["young"] == 1 and got["held"] == 1 and not old.exists() and young.exists()
+        check(got["removed"] == 2 and got["young"] == 2 and got["held"] == 1 and not old.exists() and young.exists()
+              and not mk_old.exists() and mk_young.exists()
               and used.exists() and other.exists(), f"a stale fixture goes; young, in use and non-selftest stay: {got}")
         age(young)
+        age(mk_young)
         late = R.sweep_fixtures(ctx, True, time.time() - 1)
-        check(late["deferred"] == 2 and young.exists(), "the sweep stops at its deadline")
+        check(late["deferred"] == 3 and young.exists(), "the sweep stops at its deadline")
     finally:
         os.environ.pop("SCRATCH_REAP_ROOTS") if saved is None else os.environ.__setitem__("SCRATCH_REAP_ROOTS", saved)
 
