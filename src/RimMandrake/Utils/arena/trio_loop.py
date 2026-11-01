@@ -60,6 +60,15 @@ CRITIC_TRIES = 2
 # build stays pending and no verdict is written.
 CRITIC_INFRA_TRIES = 4
 CRITIC_INFRA_WAIT_S = (30, 120, 300)
+# TRIO_BUILD_FIX_401_CHARGED_AS_REJECT: a BUILDER whose model CLI died on the model API (an auth 401/403, e.g. "OAuth
+# token revoked" when an outside OAuth refresh rotated the token the read-only bound .credentials.json held; a 429; a
+# 5xx) never had its pass: the round is closed by a signed `invalid` (stage "infra", why BUILD_INFRA_MARK) and voided
+# by the harness void at once, so it spends no round. Each retry is a new spawn, so the sandbox binds the CURRENT
+# credentials file (arm_sandbox.plan runs per spawn). BUILD_INFRA_TRIES such voids in a row for a task -> STOP.
+BUILD_INFRA_TRIES = 3
+BUILD_INFRA_WAIT_S = (60, 300)
+BUILD_INFRA_MARK = "builder infrastructure"
+API_INFRA_STATUS = (401, 403, 408, 429)       # plus any 5xx; a 400 (e.g. prompt too long) may be the builder's own doing
 # the ONE harness void arena_analysis.dq_tester honours (arena_analysis.HARNESS_ORPHAN_VOID_WHY, checked by the selftest)
 VOID_WHY = "orphaned by a killed runner: voided at restart under runner.lock"
 VOID_RUN_ID = ARM + ".operator"
@@ -321,6 +330,34 @@ def critic_infra(v):
     return None
 
 
+def builder_infra(log):
+    """-> why a builder pass never ran because the MODEL API failed it, or None. Read from the model CLI's own JSON
+    envelope (`claude -p --output-format json`; the whole build log, else its last line): is_error true AND
+    api_error_status in API_INFRA_STATUS or >= 500, or terminal_reason "api_error" with no status. Anything else
+    (no envelope, a 400, max turns, a kill) is the pass's own failure and stays a round."""
+    try:
+        raw = Path(log).read_text(errors="replace").strip()
+    except OSError:
+        return None
+    j = None
+    for cand in (raw, raw.splitlines()[-1] if raw else ""):
+        try:
+            j = json.loads(cand)
+            break
+        except ValueError:
+            continue
+    if not isinstance(j, dict) or j.get("type") != "result" or j.get("is_error") is not True:
+        return None
+    st = j.get("api_error_status")
+    if isinstance(st, bool) or not (st is None or isinstance(st, int)):
+        return None
+    if st is None and j.get("terminal_reason") != "api_error":
+        return None
+    if st is not None and st not in API_INFRA_STATUS and st < 500:
+        return None
+    return "model API error %s (%s): %s" % (st, j.get("terminal_reason"), str(j.get("result") or "")[:200])
+
+
 def _critic_input(**kw):
     try:
         import arena_critic_calib as CC
@@ -491,6 +528,7 @@ class TrioLoop(RA.Loop):
             self.state["pending"] = None                                            # for it; a fresh build pass runs
             self._save()
             self.status("pending build %s belongs to a voided round: dropped" % pend.get("build_id"))
+        self._void_builder_infra(task)                 # a builder-infra verdict whose void a kill cut off: complete it
         self._drop_lost_pending(task)
         self._recover(task)
         if self.state.get("pending"):
@@ -637,7 +675,63 @@ class TrioLoop(RA.Loop):
             self._verdict(task, "invalid", stage="killed", why="build pass started and never reached a verdict")
         return super().build_pass(task)
 
+    def _void_builder_infra(self, task):
+        """Append the harness void of the task's LATEST verdict when it is a builder-infra `invalid` (stage "infra", why
+        BUILD_INFRA_MARK) not voided yet and nothing follows it: called right after that verdict and at every step, so a
+        runner killed between the verdict and its void completes it on restart (once). -> the void record or None."""
+        seq = L.ordered([r for r in self.recs() if r.get("arm") == ARM])
+        t = L.norm_id(task["id"])
+        mine = [i for i, r in enumerate(seq) if L.norm_id(r.get("task")) == t]
+        crs = [i for i in mine if seq[i].get("event") == "critic_round"]
+        if not crs:
+            return None
+        i = crs[-1]
+        v, d = seq[i], seq[i].get("detail") or {}
+        if not (d.get("kind") == "verdict" and v.get("verdict") == "invalid" and d.get("stage") == "infra"
+                and str(d.get("why") or "").startswith(BUILD_INFRA_MARK) and v.get("sig")):
+            return None
+        if i in round_voids(seq) or any(seq[j].get("event") == "pass_start" for j in mine if j > i):
+            return None
+        rec = self.writer.emit(ARM, "invalid", lane="build", run_id=VOID_RUN_ID, task=task["id"], sha=v.get("sha"),
+                               detail={"build_id": d.get("build_id"), "why": VOID_WHY, "void_verdict_sig": v["sig"],
+                                       "voided_round": d.get("round"),
+                                       "reason": "TRIO_BUILD_FIX_401_CHARGED_AS_REJECT: " + d["why"][:1500],
+                                       "evidence": [str(x) for x in (d.get("evidence") or [])][:4]})
+        return rec
+
+    def _builder_infra_streak(self, tid):
+        """Builder-infra verdicts at the tail of the task's verdicts (raw log, voided ones included): the retry count."""
+        seq = L.ordered([r for r in self.recs() if r.get("arm") == ARM])
+        t, k = L.norm_id(tid), 0
+        for r in reversed([r for r in seq if r.get("event") == "critic_round" and L.norm_id(r.get("task")) == t]):
+            d = r.get("detail") or {}
+            if not (d.get("kind") == "verdict" and d.get("stage") == "infra"
+                    and str(d.get("why") or "").startswith(BUILD_INFRA_MARK)):
+                break
+            k += 1
+        return k
+
     def _failed(self, task, base, head, why, n, record=True):   # record: the base loop's failed-sha ledger; the trio keeps rounds instead
+        log = self.log / ("build.%d.out" % n)
+        inf = builder_infra(log) if why.startswith("build pass: model exit") else None
+        if inf and self._round_open(task["id"]):                   # the model API failed the builder: no round spent
+            # its own build_id (never a build_end's): the harness void must not void an earlier, tested build
+            self._verdict(task, "invalid", sha=head, stage="infra", why=("%s: %s" % (BUILD_INFRA_MARK, inf))[:600],
+                          build_id="%s.builder-infra.%s" % (task["id"], n), evidence=[str(log)])
+            self._void_builder_infra(task)
+            k = self._builder_infra_streak(task["id"])
+            self.state["pending"] = None
+            self._fail_note(task, "item %s: the previous build pass (log %s) died on the model API, not on its work "
+                                  "(%s). It is NOT a round; the work branch keeps whatever it committed.\n" % (
+                                      task["id"], log, inf))
+            self._save()
+            if k >= BUILD_INFRA_TRIES:
+                (self.ctl / "STOP").touch()
+                return self.status("STOP: builder infrastructure failure %d times in a row on %s (last: %s); no "
+                                   "round spent" % (k, task["id"], inf[:200]))
+            self.sleep(BUILD_INFRA_WAIT_S[min(k, len(BUILD_INFRA_WAIT_S)) - 1])
+            return self.status("builder infrastructure failure %d of %d on %s: voided, no round spent; the next pass "
+                               "binds fresh credentials (%s)" % (k, BUILD_INFRA_TRIES, task["id"], inf[:200]))
         if self._round_open(task["id"]):                           # a build-side failure ends the round
             self._verdict(task, "reject", sha=head, stage="build", why=why[:600])
         k = self.rounds(task["id"])
@@ -988,12 +1082,15 @@ class TrioLoop(RA.Loop):
 
 # ------------------------------------------------------------------------------------------------ the infra-reject void
 INFRA_WHY_MARKS = ("no JSON envelope", "critic INVALID (from the log)", "critic infrastructure", "critic raised",
-                   "critic skipped")
+                   "critic skipped", BUILD_INFRA_MARK)
+BUILD_EXIT_WHY = "build pass: model exit"     # a build-stage reject of a failed model run (before the 401 fix)
 
 
-def void_refusal(recs, tid, sig):
+def void_refusal(recs, tid, sig, build_log=None):
     """-> (refusal or None, the verdict record). Only an INFRA reject may be voided: a non-accept critic_round verdict
-    of the task, its LATEST verdict, not voided yet, whose why names an infrastructure failure (INFRA_WHY_MARKS)."""
+    of the task, its LATEST verdict, not voided yet, whose why names an infrastructure failure (INFRA_WHY_MARKS), or
+    (TRIO_BUILD_FIX_401_CHARGED_AS_REJECT) a build-stage "model exit" reject whose OWN build log (`build_log`, named
+    build.<N>.out for the round's pass_start run_id trio.<N>) holds a model-API error envelope (builder_infra)."""
     seq = L.ordered([r for r in recs if r.get("arm") == ARM])
     hit = [i for i, r in enumerate(seq) if r.get("sig") == sig]
     if not sig or len(hit) != 1:
@@ -1015,10 +1112,16 @@ def void_refusal(recs, tid, sig):
         return "verdict %s is not the task's latest critic_round (%s follows)" % (
             sig, (later[0].get("detail") or {}).get("kind")), v
     why = str(d.get("why") or "")
-    if not any(why.startswith(m) for m in INFRA_WHY_MARKS):
-        return "verdict %s's why does not open with an infrastructure failure: %r" % (sig, why[:200]), v
     ps = next((j for j in range(i - 1, -1, -1) if seq[j].get("event") == "pass_start"
                and (seq[j].get("detail") or {}).get("role") == "build" and L.norm_id(seq[j].get("task")) == t), None)
+    if not any(why.startswith(m) for m in INFRA_WHY_MARKS):
+        if not (build_log and why.startswith(BUILD_EXIT_WHY) and d.get("stage") == "build"):
+            return "verdict %s's why does not open with an infrastructure failure: %r" % (sig, why[:200]), v
+        want = "build.%s.out" % str((seq[ps] if ps is not None else {}).get("run_id") or "").rpartition(".")[2]
+        if Path(build_log).name != want:
+            return "verdict %s: build log %s is not its round's (%s)" % (sig, build_log, want), v
+        if not builder_infra(build_log):
+            return "verdict %s: build log %s holds no model-API error envelope" % (sig, build_log), v
     if ps is None:
         return "verdict %s has no build pass_start before it: no round to void" % sig, v
     # any test that ended in this round and is not marked infra (detail.infra) is a critic that answered (pass, fail
@@ -1051,7 +1154,7 @@ def _void_cli(a):
         p = A.paths()
         with L.harness_pass(p) as cap:
             w = SignedWriterT(p, cap)
-            why, v = void_refusal(w.records(), a.task, a.sig)
+            why, v = void_refusal(w.records(), a.task, a.sig, build_log=a.build_log)
             if why:
                 print("refused: " + why)
                 return 2
@@ -1088,6 +1191,8 @@ def main(argv=None):
     ap.add_argument("--sig", help="void-infra-reject: the sig of the infra reject verdict to void")
     ap.add_argument("--reason", help="void-infra-reject: why (recorded in the signed log)")
     ap.add_argument("--evidence", action="append", default=[], help="void-infra-reject: an evidence path (repeatable)")
+    ap.add_argument("--build-log", help="void-infra-reject: the round's build.<N>.out, when the verdict is a build-stage "
+                                        "'model exit' reject that a model-API error envelope proves was infrastructure")
     ap.add_argument("--replay-ctl", default=os.environ.get("ARENA_REPLAY_CTL"),
                     help="void-infra-reject: the replay ctl whose <ctl>/trio/runner.lock is held while appending")
     a = ap.parse_args(argv)

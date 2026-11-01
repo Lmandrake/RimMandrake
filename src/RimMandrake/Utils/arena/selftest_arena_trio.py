@@ -20,6 +20,9 @@ fix reverted), and must go RED there: that is the forced-failure proof.
      a critic answer logged before a kill is recorded on restart, never rerolled
   V  an appended void of an infra reject drops its round from round counting and drops a pending build of that
      round; an accept, a reject a critic answered (whatever its prose) and a parked round are never voidable
+  B  a builder that dies on the model API (401 revoked token, 429, 5xx: TRIO_BUILD_FIX_401_CHARGED_AS_REJECT) spends
+     no round (infra verdict + harness void), stops after BUILD_INFRA_TRIES; its own failures stay rounds; the
+     operator void of a pre-fix charged round needs that round's own build log
   S  the simplify work tree is on the tester root (ext4), never in ctl (TRIO_SIMPLIFY_FIX_TREE_ON_DRVFS_REFUSED)
 """
 import json
@@ -128,7 +131,10 @@ class World:
         self.calls.append(role)
         self.prompts.append((role, prompt))
         if role == "build":
-            src, rc = self.builder(prompt)
+            got = self.builder(prompt)
+            src, rc = got[:2]
+            if len(got) > 2:                                  # the model CLI's stdout (a JSON envelope) into the log
+                Path(log).write_text(got[2])
             self.nb += 1
             if src is not None:
                 src += "# build %d\n" % self.nb              # every pass a new candidate (never an empty one)
@@ -531,6 +537,134 @@ def sc_swept_crash_before_void(tmp, mod, tag):
     print("     SWC%s: out %s, verdicts %s, voids %d" % (tag, out[-1][:50], [r["verdict"] for r in vs],
                                                          len(w.recs("invalid"))))
     return ok
+
+
+def envelope(status=401, reason="api_error", is_error=True, text="Failed to authenticate: OAuth token revoked."):
+    """The model CLI's result envelope, as build.4.out of the real incident held it."""
+    return json.dumps({"type": "result", "subtype": "success", "is_error": is_error, "num_turns": 19,
+                       "terminal_reason": reason, "api_error_status": status, "result": text})
+
+
+def sc_builder_401(tmp, mod, tag):
+    """BA TRIO_BUILD_FIX_401_CHARGED_AS_REJECT: the builder dies on a 401 (rc 1, an api_error envelope), then builds:
+    the 401 round is an infra `invalid` voided by the harness at once, so the item is still at round 1 when the
+    critic accepts; one wait; the next builder is told it was not its failure."""
+    waits, k = [], [0]
+
+    def builder(prompt):
+        k[0] += 1
+        return (None, 1, envelope()) if k[0] == 1 else (GOOD, 0)
+    w = World(tmp, "BA" + tag, mod, builder=builder, critic=Critic(lambda n, c: "accept"), writer=SigWriter(),
+              sleep=waits.append)
+    out = w.run(6)
+    recs = w.writer.records()
+    vs = w.recs("critic_round", "verdict")
+    second = [p for r, p in w.prompts if r == "build"][1:2]
+    ok = (out[-1].startswith("published") and w.calls.count("build") == 2
+          and [(r["verdict"], r["detail"].get("stage")) for r in vs] == [("invalid", "infra"), ("accept", "critic")]
+          and vs[0]["detail"]["why"].startswith(mod.BUILD_INFRA_MARK) and len(w.recs("invalid")) == 1
+          and mod.rounds_used(recs, TASK["id"]) == 1 and len(mod.verdicts(recs, TASK["id"])) == 1
+          and waits == [mod.BUILD_INFRA_WAIT_S[0]] and bool(second) and "NOT a round" in second[0]
+          and "round 1 of" in second[0])
+    print("     BA%s: out %s, verdicts %s, voids %d, waits %s" % (
+        tag, out[-1][:50], [(r["verdict"], r["detail"].get("stage")) for r in vs], len(w.recs("invalid")), waits))
+    return ok
+
+
+def sc_builder_401_stop(tmp, mod, tag):
+    """BS the builder 401s every time: BUILD_INFRA_TRIES voided passes, then STOP; no round spent, no critic."""
+    w = World(tmp, "BS" + tag, mod, builder=lambda p: (None, 1, envelope(status=529, text="Overloaded")),
+              writer=SigWriter(), sleep=lambda s: None)
+    out = w.run(8)
+    recs = w.writer.records()
+    ok = (out[-1].startswith("STOP") and (w.ctl / "STOP").exists() and w.calls.count("build") == mod.BUILD_INFRA_TRIES
+          and mod.rounds_used(recs, TASK["id"]) == 0 and not mod.verdicts(recs, TASK["id"]) and not w.critic.seen
+          and len(w.recs("invalid")) == mod.BUILD_INFRA_TRIES)
+    print("     BS%s: out %s, builds %d, rounds %d" % (tag, out[-1][:60], w.calls.count("build"),
+                                                      mod.rounds_used(recs, TASK["id"])))
+    return ok
+
+
+def sc_builder_own_failure(tmp, mod, tag):
+    """BN a builder's own failure stays a round: rc 1 with a 400 envelope (prompt too long), with an envelope that is
+    not an error, and with no envelope at all are build-stage rejects (spent rounds), never voided."""
+    outs = []
+    for i, env in enumerate((envelope(status=400, text="prompt is too long"), envelope(is_error=False), "")):
+        w = World(tmp, "BN%d%s" % (i, tag), mod, builder=lambda p, e=env: (BROKEN, 1, e), writer=SigWriter(),
+                  sleep=lambda s: None)
+        w.loop.step()
+        recs = w.writer.records()
+        outs.append((mod.rounds_used(recs, TASK["id"]), [(r["verdict"], r["detail"].get("stage"))
+                                                        for r in w.recs("critic_round", "verdict")],
+                     len(w.recs("invalid"))))
+    ok = outs == [(1, [("reject", "build")], 0)] * 3
+    print("     BN%s: %s" % (tag, outs))
+    return ok
+
+
+def sc_builder_401_crash(tmp, mod, tag):
+    """BC killed between the builder-infra verdict and its void: the restart appends exactly one void, then builds."""
+    k = [0]
+
+    def builder(prompt):
+        k[0] += 1
+        return (None, 1, envelope()) if k[0] == 1 else (GOOD, 0)
+    w = World(tmp, "BC" + tag, mod, builder=builder, critic=Critic(lambda n, c: "accept"), writer=DieOnVoid(),
+              sleep=lambda s: None)
+    try:
+        w.loop.step()
+    except Killed:
+        pass
+    w.reopen()
+    out = w.run(5)
+    recs = w.writer.records()
+    vs = w.recs("critic_round", "verdict")
+    ok = (out[-1].startswith("published") and [r["verdict"] for r in vs] == ["invalid", "accept"]
+          and len(w.recs("invalid")) == 1 and mod.rounds_used(recs, TASK["id"]) == 1 and w.calls.count("build") == 2)
+    print("     BC%s: out %s, verdicts %s, voids %d" % (tag, out[-1][:50], [r["verdict"] for r in vs],
+                                                        len(w.recs("invalid"))))
+    return ok
+
+
+def sc_builder_401_operator_void(tmp, mod, tag):
+    """BV the round charged before the fix (a build-stage 'model exit' reject): void-infra-reject's check accepts it
+    only with that round's own build.<N>.out holding a model-API error envelope; a reject with no log, another
+    round's log, or a log with no error envelope is refused."""
+    w = World(tmp, "BV" + tag, mod, builder=lambda p: (None, 1, envelope()), writer=SigWriter(), sleep=lambda s: None)
+    ps = w.loop.emit("pass_start", TASK, detail={"role": "build", "agent": "b"})   # the pre-fix shape, by hand
+    n = ps["run_id"].rpartition(".")[2]
+    w.loop._verdict(TASK, "reject", stage="build", why="build pass: model exit 1 (killed or failed)")
+    sig = w.recs("critic_round", "verdict")[-1]["sig"]
+    logd = w.d / "log"
+    logd.mkdir()
+    (logd / ("build.%s.out" % n)).write_text(envelope())
+    (logd / "build.99.out").write_text(envelope())
+    (logd / "bad").mkdir()
+    (logd / "bad" / ("build.%s.out" % n)).write_text("not json")
+    recs = w.writer.records()
+    r = [mod.void_refusal(recs, TASK["id"], sig, build_log=b)[0] for b in (
+        None, str(logd / "build.99.out"), str(logd / "bad" / ("build.%s.out" % n)), str(logd / ("build.%s.out" % n)))]
+    ok = all(x is not None for x in r[:3]) and r[3] is None
+    print("     BV%s: %s" % (tag, [(x or "OK")[:50] for x in r]))
+    return ok
+
+
+def t_builder_infra():
+    tmp = Path(tempfile.mkdtemp(prefix="selftest_trio_bi_"))
+    try:
+        def f(text):
+            p = tmp / "b.out"
+            p.write_text(text)
+            return T.builder_infra(p)
+        check(bool(f(envelope())) and bool(f(envelope(status=529))) and bool(f(envelope(status=429)))
+              and bool(f(envelope(status=None))) and bool(f("progress\n" + envelope(status=403))),
+              "builder_infra: 401 / 529 / 429 / api_error without status / a last-line 403 are infrastructure")
+        check(not f(envelope(status=400)) and not f(envelope(is_error=False)) and not f(envelope(status=None,
+              reason="max_turns")) and not f("") and not f("Failed to authenticate") and not f(envelope(status="401"))
+              and T.builder_infra(tmp / "absent") is None,
+              "builder_infra: a 400, no error, no api_error, no envelope, bare prose, a string status are not")
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
 
 
 def sc_invalid_critic(tmp, mod, tag):
@@ -1269,12 +1403,30 @@ MUTATIONS = [
      "and (r.get(\"detail\") or {}).get(\"kind\") == \"verdict\" and r.get(\"sig\")}"),
     ("S simplify tree back on ctl (drvfs)", sc_simplify_root, "        troot = self._tester_root()\n",
      "        troot = Path(tempfile.mkdtemp(prefix=\"trio-simplify-\", dir=str(self.ctl)))\n"),
+    ("BA a builder 401 charged as a round", sc_builder_401,
+     "        inf = builder_infra(log) if why.startswith(\"build pass: model exit\") else None", "        inf = None"),
+    ("BC a void cut off by a kill never completed", sc_builder_401_crash,
+     "        self._void_builder_infra(task)                 # a builder-infra verdict", "        pass  # a builder-infra verdict"),
+    ("BS builder infra retried without a cap", sc_builder_401_stop, "            if k >= BUILD_INFRA_TRIES:", "            if False:"),
+    ("BN a 400 read as infrastructure", sc_builder_own_failure,
+     "    if st is not None and st not in API_INFRA_STATUS and st < 500:", "    if False:"),
+    ("BN a non-error envelope read as infrastructure", sc_builder_own_failure,
+     "j.get(\"type\") != \"result\" or j.get(\"is_error\") is not True:", "j.get(\"type\") != \"result\":"),
+    ("BV another round's build log accepted", sc_builder_401_operator_void,
+     "        if Path(build_log).name != want:", "        if False:"),
+    ("BV a build log with no error envelope accepted", sc_builder_401_operator_void,
+     "        if not builder_infra(build_log):", "        if False:"),
     ("G spec integrity check removed", sc_spec_tamper,
      "            if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != want:",
      "            if False:"),
 ]
 
 SCENARIOS = [
+    ("BA a builder 401 is an infra round voided at once: no round spent, the next pass builds", sc_builder_401),
+    ("BS a builder that 401s every time stops after BUILD_INFRA_TRIES voided passes", sc_builder_401_stop),
+    ("BN a builder's own failure (400, no error, no envelope) stays a spent round", sc_builder_own_failure),
+    ("BC killed between the builder-infra verdict and its void: the restart completes it once", sc_builder_401_crash),
+    ("BV void-infra-reject accepts a pre-fix 'model exit' reject only with its round's 401 log", sc_builder_401_operator_void),
     ("SW a pending build swept with its clone is dropped as a harness-voided infra round", sc_swept_pending),
     ("SWG the swept-pending repair refuses on an answered critic, no sweep evidence, a failed probe", sc_swept_guards),
     ("SWC killed between the infra verdict and its void: restart completes it once", sc_swept_crash_before_void),
@@ -1343,6 +1495,7 @@ def main():
     check(ledger0 > 0, "the real-ledger probe can see the shards")
     try:
         t_parse_simplify()
+        t_builder_infra()
         for name, fn in SCENARIOS:
             check(guarded(fn, tmp, T, ""), name)
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
