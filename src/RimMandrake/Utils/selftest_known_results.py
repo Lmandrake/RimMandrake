@@ -214,7 +214,7 @@ def decide(K, root: Path) -> list:
             put("cap")
         check(len(led._load("cap")) == K.RECORDS_PER_TEST, "records per test are capped")
         p.write_text("v0")
-        check(led.lookup("cap")[0] is None or K.RECORDS_PER_TEST < 9, "an old state beyond the cap is gone")
+        check(led.lookup("cap")[0] is None, "an old state beyond the cap is gone")
         p.write_text(f"v{K.RECORDS_PER_TEST + 2}")
         check(led.lookup("cap")[0] is not None, "the newest state answers")
         p.write_text(f"v{K.RECORDS_PER_TEST + 1}")
@@ -363,7 +363,7 @@ MUTANTS = [
     ("env read dropped", 'env = {n for n in envs | set(ENV_ALWAYS) if n not in ENV_PER_RUN}', 'env = {n for n in set(ENV_ALWAYS) if n not in ENV_PER_RUN}'),
     ("per-run env kept", 'env = {n for n in envs | set(ENV_ALWAYS) if n not in ENV_PER_RUN}', 'env = envs | set(ENV_ALWAYS)'),
     ("memo ignores size+mtime", 'k = f"{p}|{st.st_size}|{st.st_mtime_ns}|{st.st_ctime_ns}"', 'k = p'),
-    ("probe drops size", 'f"f{st.st_size}:{mode}"', 'f"f:{mode}"'),
+    ("probe drops size", 'f"f{kind}{st.st_size}:{mode}"', 'f"f{kind}:{mode}"'),
     ("file ignores permissions", 'h = f"{h}:{_stat.S_IMODE(st.st_mode):o}"', 'pass'),
     ("listing ignores the filter", 'entries = [e for e in entries if e.name.split(".")[0] in keep]', 'pass'),
     ("listing is empty", 'entries = sorted(it, key=lambda e: e.name)', 'entries = []'),
@@ -396,7 +396,7 @@ MUTANTS = [
     ("temp root is an input", 'if p in ("/tmp", "/var/tmp") or _under(tmp_root, (p,)):', 'if False:'),
     ("probe ignores permissions", 'mode = oct(_stat.S_IMODE(st.st_mode))', 'mode = ""'),
     ("file ignores link text", 'return link + h if link and h else h', 'return h'),
-    ("probe ignores link text", 'return link + (f"d{mode}"', 'return (f"d{mode}"'),
+    ("probe ignores link text", 'return link + f"f{kind}{st.st_size}:{mode}"', 'return f"f{kind}{st.st_size}:{mode}"'),
     ("shared listing allowed", 'refused.append(f"shares: listed shared temp {p}")', 'pass'),
     ("exec names unprobed", 'if not _under(os.path.normpath(val), EXTERNAL):\n                        probed.add(os.path.normpath(val))', 'pass'),
     ("no bare PATH walk", 'probed.update(_path_walk(val))', 'pass'),

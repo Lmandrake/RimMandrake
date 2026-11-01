@@ -400,7 +400,10 @@ class Hasher:
         except OSError:
             return link or None
         mode = oct(_stat.S_IMODE(st.st_mode))
-        return link + (f"d{mode}" if _stat.S_ISDIR(st.st_mode) else f"f{st.st_size}:{mode}")
+        if _stat.S_ISDIR(st.st_mode):
+            return link + f"d{mode}"
+        kind = "" if _stat.S_ISREG(st.st_mode) else oct(_stat.S_IFMT(st.st_mode))   # a FIFO is not an empty file
+        return link + f"f{kind}{st.st_size}:{mode}"
 
     @staticmethod
     def listing(p: str, keep=None):
