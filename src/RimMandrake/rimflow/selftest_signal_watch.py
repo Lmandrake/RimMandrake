@@ -159,6 +159,47 @@ def test_blind_and_isolated():
     assert "ops:file_failed:b" in kinds and "signal:flags" in kinds and None in kinds, kinds
 
 
+def test_one_shots():
+    class R:
+        def __init__(self, rc, out=""):
+            self.returncode, self.stdout = rc, out
+    asked = []
+
+    def show(*a):
+        asked.append(a)
+        return R(0, "Id=rm-arena-replay-v3.service\nTransient=yes\n\nId=rm-harness-1.scope\nTransient=yes\n\nId=rm-pulse.service\nTransient=no\n")
+    failed = ["rm-arena-replay-v3.service", "rm-harness-1.scope", "rm-pulse.service", "rm-donor.service"]
+    assert SW.one_shots(failed, ["rm-donor.timer"], show) == {"rm-arena-replay-v3.service", "rm-harness-1.scope"}
+    assert "rm-donor.service" not in asked[0], "a same-named timer makes it a failed timer, Transient or not"
+    assert SW.one_shots(failed, [], lambda *a: R(1)) == set(), "no reading excuses nothing"
+
+    def boom(*a):
+        raise OSError("x")
+    assert SW.one_shots(failed, [], boom) == set()
+    assert SW.one_shots([], [], boom) == set()
+
+
+def test_read_units_drops_one_shot_services_keeps_scopes():
+    class R:
+        returncode = 0
+
+        def __init__(self, out):
+            self.stdout = out
+
+    def fake(*a, **k):
+        if a[0] == "list-units":
+            return R('[{"unit":"rm-arena-replay-v3.service"},{"unit":"rm-harness-1.scope"},{"unit":"rm-pulse.service"}]')
+        if a[0] == "list-timers":
+            return R('[{"unit":"rm-pulse.timer"}]')
+        return R("Id=rm-arena-replay-v3.service\nTransient=yes\n\nId=rm-harness-1.scope\nTransient=yes\n")
+    real = SW._systemctl
+    SW._systemctl = fake
+    try:
+        assert SW.read_units() == (["rm-harness-1.scope", "rm-pulse.service"], ["rm-pulse.timer"])
+    finally:
+        SW._systemctl = real
+
+
 if __name__ == "__main__":
     n = 0
     for name, fn in sorted(globals().items()):

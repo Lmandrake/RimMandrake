@@ -892,15 +892,27 @@ def systemctl_json(*args):
     return json.loads(r.stdout or "[]")
 
 
+def one_shot_units(names):
+    """signal_watch.one_shots: a dead harness scope or arena run is reported by whoever started it, not a failed timer
+    (SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS). No timer list, or no reading: nothing is excused."""
+    rf = str(HERE.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    import signal_watch
+    try:
+        timers = [t.get("unit") for t in systemctl_json("list-timers", "--all") if isinstance(t, dict)]
+    except Exception:  # noqa: BLE001
+        return set()
+    return signal_watch.one_shots(names, timers)
+
+
 def c_timers(now, rules, ctx):
     out = {}
     try:                # two sources: neither one's failure takes the other's reading
         failed = systemctl_json("list-units", "--failed", "--all")
         names = sorted(str(u.get("unit") if isinstance(u, dict) else u) for u in failed)
-        # a dead selftest scope is no failed timer: signal_watch clears it within 5 min (SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS)
-        real = [n for n in names if not re.match(r"rm-harness-.*\.scope$", n)]
-        out["timers.failed_units"] = M(len(real), "failed user units", units=real[:12],
-                                       dead_test_scopes=len(names) - len(real))
+        real = [n for n in names if n not in one_shot_units(names)]
+        out["timers.failed_units"] = M(len(real), "failed user units", units=real[:12], one_shots=sorted(set(names) - set(real))[:12])
     except Exception as e:  # noqa: BLE001
         out["timers.failed_units"] = U("list-units: %s: %s" % (type(e).__name__, str(e)[:160]))
     try:

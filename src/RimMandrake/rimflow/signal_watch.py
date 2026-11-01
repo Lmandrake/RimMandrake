@@ -7,7 +7,8 @@ Each every_s, not under PAUSE (schedule key `signal_watch`; off when absent or e
          named by restart_rx (an allow list: a timer alone says nothing about what an early start does, so nightly and
          login-adjacent jobs stay out) with its .timer: reset-failed and one start, at most repairs_per_day, so a broken
          job cannot loop. Past that, or any other unit standing over alarm_after_s: alarm timer:<unit>. deny_rx wins over
-         both. rm-scratch-reap.service sat failed 21 h and rm-scratch-bound scopes 47 h.
+         both. rm-scratch-reap.service sat failed 21 h and rm-scratch-bound scopes 47 h. A one_shot (below) service is
+         left alone: never repaired, never alarmed.
   files  (STEVE_STALL_FIX_FILE_FAILED_ROUTE) ops_watch retries a failed alarm filing every pass; file_tries failures
          mean the filer is broken, and its error sat in alarms_log.jsonl: alarm ops:file_failed:<aid>.
   flags  (OPS_FLAGS_FIX_NO_ACTION) a flag standing flag_after_s means the digest's readers did not move it: a note to
@@ -33,8 +34,30 @@ def _systemctl(*args, timeout=20):
     return subprocess.run(("systemctl", "--user") + args, capture_output=True, text=True, timeout=timeout)
 
 
+def one_shots(failed, timers, show=None):
+    """-> the failed units that are nobody's failed timer: Transient=yes (a systemd-run job, its starter hears the exit)
+    with no .timer of the same name (a transient timer's service IS a failed timer). Shared with ops_watch's
+    timers.failed_units (SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS). A unit whose Transient cannot be read stays failed."""
+    wanted = [u for u in failed if u and u.rsplit(".", 1)[0] + ".timer" not in timers]
+    if not wanted:
+        return set()
+    try:
+        r = (show or _systemctl)("show", "--property=Id,Transient", *wanted)
+    except (OSError, subprocess.TimeoutExpired):
+        return set()
+    if r.returncode != 0:
+        return set()
+    found = set()
+    for block in r.stdout.split("\n\n"):
+        f = dict(line.split("=", 1) for line in block.splitlines() if "=" in line)
+        if f.get("Transient") == "yes" and f.get("Id") in wanted:
+            found.add(f["Id"])
+    return found
+
+
 def read_units():
-    """-> (failed unit names, timer names), or None for no reading."""
+    """-> (failed unit names less the one_shot services, timer names), or None for no reading. A one_shot scope stays:
+    plan() clears it."""
     try:
         out = []
         for args in (("list-units", "--failed", "--all"), ("list-timers", "--all")):
@@ -44,7 +67,8 @@ def read_units():
             out.append([u.get("unit") for u in json.loads(r.stdout or "[]")])
     except (OSError, ValueError, AttributeError, subprocess.TimeoutExpired):
         return None
-    return out[0], out[1]
+    skip = {u for u in one_shots(out[0], out[1]) if not u.endswith(".scope")}
+    return [u for u in out[0] if u not in skip], out[1]
 
 
 def read_json(cfg, name):

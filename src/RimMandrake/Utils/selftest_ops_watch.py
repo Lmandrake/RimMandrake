@@ -1681,14 +1681,38 @@ _a = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
 check("seats: over the line a ledger item is filed, naming the seat", _a.get("state") == "OPEN" and "seat-server absent" in (_a.get("title") or ""), _a)
 check("seats: and the Conductor log has the line", _clog.exists() and _a.get("item", "?") in _clog.read_text() and "seat-server absent" in _clog.read_text())
 # SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS: a dead selftest scope is not a failed timer, a real failed unit still is
-_sj = OW.systemctl_json
-OW.systemctl_json = lambda *a: [{"unit": "rm-harness-11-3.scope"}, {"unit": "rm-arena-x.service"}] \
-    if a[0] == "list-units" else []
+_sj, _osu = OW.systemctl_json, OW.one_shot_units
+OW.systemctl_json = lambda *a: [{"unit": "rm-harness-11-3.scope"}, {"unit": "rm-arena-replay-x.service"}, {"unit": "rm-mirror.service"}] \
+    if a[0] == "list-units" else [{"unit": "rm-mirror.timer"}]
+OW.one_shot_units = lambda names: {"rm-harness-11-3.scope", "rm-arena-replay-x.service"}
+try:
+    _t = OW.c_timers(NOW, RULES, {})["timers.failed_units"]
+    OW.one_shot_units = lambda names: set()
+    _t2 = OW.c_timers(NOW, RULES, {})["timers.failed_units"]
+finally:
+    OW.systemctl_json, OW.one_shot_units = _sj, _osu
+check("scope: dead one-shots are not counted, the real failed timer is", _t["v"] == 1 and _t["x"]["units"] == ["rm-mirror.service"], _t)
+check("scope: what was left out is said", len(_t["x"].get("one_shots")) == 2, _t)
+check("scope: no transient reading, nothing is excused", _t2["v"] == 3, _t2)
+_sjr = OW.subprocess.run
+class _R:
+    returncode, stderr = 0, ""
+    def __init__(self, out): self.stdout = out
+def _fake(argv, **k):
+    if "list-units" in argv:
+        return _R(json.dumps([{"unit": u} for u in ("rm-harness-1.scope", "rm-arena-replay-v3.service", "rm-x.service", "rm-pulse.service")]))
+    if "list-timers" in argv:
+        return _R(json.dumps([{"unit": "rm-x.timer"}, {"unit": "rm-pulse-health.timer"}]))
+    if "show" in argv:     # rm-x is a transient timer's service: never even asked about, a failed timer whatever Transient says
+        assert "rm-x.service" not in argv, argv
+        return _R("Id=rm-harness-1.scope\nTransient=yes\n\nId=rm-arena-replay-v3.service\nTransient=yes\n\nId=rm-pulse.service\nTransient=no\n")
+    return _sjr(argv, **k)
+OW.subprocess.run = _fake
 try:
     _t = OW.c_timers(NOW, RULES, {})["timers.failed_units"]
 finally:
-    OW.systemctl_json = _sj
-check("scope: the dead selftest scope is not counted, the real service is", _t["v"] == 1, _t)
-check("scope: what was left out is said", _t["x"].get("dead_test_scopes") == 1, _t)
+    OW.subprocess.run = _sjr
+check("scope: through systemctl, transient one-shots out, a transient timer's service and a real service in",
+      _t["x"]["units"] == ["rm-pulse.service", "rm-x.service"] and _t["v"] == 2, _t)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
