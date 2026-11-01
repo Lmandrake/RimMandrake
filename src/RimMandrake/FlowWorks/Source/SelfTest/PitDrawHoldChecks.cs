@@ -25,7 +25,8 @@ namespace RimMandrake.FlowWorks.SelfTest
             int i = src.IndexOf(start, StringComparison.Ordinal);
             Assert(i >= 0, "marker present: " + start);
             int j = src.IndexOf(end, i + start.Length, StringComparison.Ordinal);
-            return j < 0 ? src.Substring(i) : src.Substring(i, j - i);
+            Assert(j >= 0, "end marker present after " + start + ": " + end);   // a stale end marker must fail, not slice to the file tail
+            return src.Substring(i, j - i);
         }
 
         // save e's boar pit: 38-39 x 22-23 dug to 8, ground (0) all round; -1 = off the map
@@ -184,7 +185,7 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(src.Contains("RM_PitDrawMath.SunCasters(l, r, a, b, sunVx, sunVz, SunHMax, SunHeightAt, sunCasters)"), "casters gathered per piece");
                 Assert(src.Contains("ed.def.staticSunShadowHeight") && src.Contains("map.edificeGrid["), "casters are edifices with a static sun shadow height");
                 Assert(src.Contains("!MatBases.SunShadow.shader.isSupported"), "only where vanilla draws the layer at all");
-                string update = Between(src, "public override void MapComponentUpdate()", "// cover cell by cell");
+                string update = Between(src, "public override void MapComponentUpdate()", "private void DrawBand(");
                 Assert(update.Contains("ReadSunShadow(edgeShadows);"), "read once per frame, gated like SectionLayer_SunShadows.Visible");
                 Assert(src.Contains("if (casters != 0 || sun)"), "a piece with only a sun shadow on it is shaded too");
             });
@@ -219,7 +220,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             Case("PitSoil_lip_occlusion_wires_the_stop", () =>
             {
                 string src = Src("Superdeep", "RM_PitLipOcclusion.cs");
-                string update = Between(src, "public override void MapComponentUpdate()", "// cover cell by cell");
+                string update = Between(src, "public override void MapComponentUpdate()", "private void DrawBand(");
                 Assert(update.Contains("z0 = Mathf.Max(z0, RM_PitDrawMath.CoverStopZ(cx, lipZ, z0, BlocksCover));"), "the band is clipped at the first edifice south of the lip");
                 string blocks = Between(src, "private System.Func<int, int, bool> BlocksCover", "private int EdgeCasters(");
                 Assert(blocks.Contains("GetEdifice(map)") && blocks.Contains("!(ed is Pits.Building_PitCover)"), "an edifice blocks, a pit lid does not");
@@ -333,8 +334,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(src.Contains("[HarmonyPatch(typeof(RimWorld.FloatMenuOptionProvider_DraftedMove), \"GetSingleOption\")]"), "on the drafted 'go here' option");
                 Assert(patch.Contains("RM_PitDrawMath.PickRowForDrawnClick(c.z, context.clickPosition.z,")
                     && patch.Contains("RM_Patch_PitDepthDrawOffset.RestingSinkAt(pawn, q)"), "the pure picker over the production sink");
-                Assert(Between(src, "[HarmonyFinalizer]", "private static RM_MapComponent_Excavation ExcavationOf(").Length > 0
-                    && src.Contains("ClickedRef(context) = __state;"), "the vanilla clicked cell is put back after the option is built");
+                // the first [HarmonyFinalizer] is the click patch's (the patch slice above ends on it); the restore is inside it
+                string fin = Between(src, "[HarmonyFinalizer]", "ClickedRef(context) = __state;");
+                Assert(fin.Contains("public static void Finalizer(RimWorld.FloatMenuContext context, IntVec3 __state)") && !fin.Contains("class "),
+                    "the vanilla clicked cell is put back after the option is built");
                 string rest = Between(src, "public static float RestingSinkAt(", "private static float Clamped(");
                 Assert(rest.Contains("Clamped(ex, pawn.Map, c, d, RimMandrakeFlowWorksSettings.pitSinkPerLevel)"), "the resting sink is the drawn one (same clamp)");
             });
