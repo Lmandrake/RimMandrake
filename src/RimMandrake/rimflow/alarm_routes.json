@@ -21,6 +21,8 @@
     "Conductor": {"by": "quick run"}
   },
   "routes": [
+    {"match": "roles.*.acted_share", "route": "program", "_why": "RO1: report-only and coarse, nothing rings; the Conductor reads it in role_use"},
+    {"match": "help_raised", "route": "role", "reader": "Operations", "cause": "work_belt", "_why": "relentless asked for help on an item and the ask itself failed"},
     {"match": "relentless.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "seats.*", "route": "role", "reader": "Operations", "cause": "work_belt"},
     {"match": "plan.*", "route": "role", "reader": "Operations", "cause": "plan"},
