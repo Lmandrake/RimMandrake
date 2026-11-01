@@ -88,6 +88,18 @@ namespace RimMandrake.RustCathedral.Hum
 			EndAllSustainers();
 		}
 
+		// MapComponentUpdate runs every frame for every map, paused or not (Map.MapUpdate). The
+		// look-away end in MapComponentTick never runs while the game is paused, and a PerTick
+		// sustainer only expires when TicksGame advances, so without this a map switch made while
+		// paused would keep the Cathedral hum playing over the other map until unpause.
+		public override void MapComponentUpdate()
+		{
+			if (activeSustainers.Count > 0 && Find.CurrentMap != map)
+			{
+				EndAllSustainers();
+			}
+		}
+
 		public override void MapComponentTick()
 		{
 			if (!RustCathedralHumSettings.humMechanicEnabled)

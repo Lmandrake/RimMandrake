@@ -1,0 +1,2 @@
+A Find.CurrentMap gate inside MapComponentTick does not stop an OnCamera PerTick sustainer when the player switches map while PAUSED: ticks stop, and Sustainer.SustainerUpdate only expires a PerTick sustainer when TicksGame passes lastMaintainTick+1, so the sound keeps playing over the other map until unpause. End it in MapComponentUpdate (Map.MapUpdate calls it every frame for every map, paused or not). Found re-reviewing the wave-74 Cathedral hum fix; fixed there in wave 75.
+home: skills/rimworld-modding
