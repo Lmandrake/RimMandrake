@@ -425,3 +425,56 @@ The rest:
 - `SEAT_MEMORY_STANDARD_FALLBACK_1`: Held in Relentless, waiting on you.
 - `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`: Held in Relentless, waiting on you.
 - `WARSCAR_PILGRIM_CAMP_SITES_1`: Held in Relentless, waiting on you.
+
+## Applied 2026-11-01 (second check)
+
+Of the 120 drops, 110 were dropped and 10 moved to park (they hold an action, his words, or the Producer and role work the replan rebuilds). The 103 plus those 10 were parked by `block`, reversible with `rimflow unblock`. Relentless pool is now 289 items. Exclude list gained the 48 biome items awaiting the Designer, the 2 needing you, and the close-gate item.
+
+## The 37 that need you (phone list)
+
+Process calls
+- V3_JUDGMENT_DATE_DECIDE_KEEP_OR_KILL: when is v3 judged? (may be moot now)
+- RELENTLESS_WALL_DECIDE_ENFORCE_AFTER_SPLIT: enforce the wall after the split?
+- RELENTLESS_WEAK_MEASURE_PASS_COLLAPSE: how a weak pass is counted
+- EGROWTH_SWELL_DECIDE_FLIP_OR_GROAN: tremble flip or groan?
+- ARENA_VERDICT_EXPLAIN_PROMISED_AT_GOODBYE: still want the verdict page?
+- PLAYER_ROLE_DESIGN_EMPTY_CHAIR_AT_TABLE: the empty player role
+- BENCH_WIRE_BACKSTOP_STILL_ON_GOODBYE: BENCH context backstop on or off?
+- SEAT_MEMORY_STANDARD_FALLBACK_1: seat memory fallback
+
+Accounts and machines
+- ACCOUNT_MOVE_FIX_ADVICE_WITH_NO_HANDS: burn system to 10% then move to lukas
+- ACCOUNT_SWITCH_FIX_HAND_STEP_BEFORE_MONDAY: hand switch off system before Mon 04:00Z
+- STEVEDESKTOP_BIOS_TUNE_POWER_RESTORE: BIOS power-restore setting
+- STEVEDESKTOP_DHCP_FIX_IP_RESERVATION: router IP reservation
+- STEVE_ETHERNET_INSTALL_SWITCH_FOR_WAKE: wake-on-LAN switch
+- STEVEDESKTOP_POWER_PROVE_CUT_AND_WAKE: cut and wake test by hand
+- STEVEDESKTOP_DIAGNOSE_CPU18_FLUNKS_MATH: the CPU question
+- STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO: crash cause
+
+RimPulse
+- RIMPULSE_DIGEST_REBUILD_THREE_QUESTIONS
+- RIMPULSE_LOOK_ASK_PROMISED_AT_GOODBYE
+- RIMPULSE_REFRESH_BUILD_EIGHT_WERE_ANSWERED
+- RIMPULSE_SOURCES_FIX_SILENCE_READS_HEALTHY
+
+Art and canon
+- ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST
+- BESTIARY_PACK_ART_REDRAW_REAL_SADDLEBAGS
+- MURRINCATCH_REDRAW_KEPT_BUT_OUTSHONE
+- CANON_RULED_LINES_JUDGE_WIKI_SAYS_OTHERWISE
+- FLYER_STABLE_BODY_GATE_1
+- PLANETARY_LOADSCREEN_WIRE_THREE_RINGS_WAIT
+
+Game design
+- ABYSS_DARK_MUFFLE_ALL_SOUNDS_1
+- DRAWBRIDGE_BUILD_MOAT_WITH_MANNERS
+- FINDMOD_ROT_SPORE_KIT_GUARD_1
+- HOSE_RULINGS_BUILD_THREE_REVERSALS_ONE_CARD
+- PIT_ACCESS_BUILD_LADDERS_CLIMBING_JUMPS
+- TITAN_CAMPS_SCAVENGERS_EVENTS_1
+- TWILIGHT_BOTTOM_CAST_1
+- WARSCAR_PILGRIM_CAMP_SITES_1
+- WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE
+- WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE
+- WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE
