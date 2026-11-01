@@ -74,7 +74,7 @@ do nothing, exit.
 ## The running check
 
 1. Read `digest.md`. For each open alarm: is it real (the instrument can see: check the point's mark and `why`), who
-   owns the cause, and what moves it. A RUNWAY_LOW on an ESTIMATE runway is checked against the meter first.
+   owns the cause, and what moves it. A RUNWAY_LOW on an ESTIMATE runway is checked against the meter first. A lent account alarms on `accounts.<account>.loan_runway` (its allowance against the lent window); its `runway` stays the week figure and raises nothing.
 2. For each open flag older than one run: band, run, silent, or target. A silent series is an instrument gone blind:
    find which collector and why (the point's `why`), and file it. A band or run flag on a production KPI: name the
    cause from the ledger or the commit log in two lines, or say it is unexplained.

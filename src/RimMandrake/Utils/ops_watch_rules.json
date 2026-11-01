@@ -29,6 +29,8 @@
  "targets": [
   {"key": "accounts.*.runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
    "why": "owner brief 2026-10-26: an account whose runway is below 1 runs out before its weekly reset"},
+  {"key": "accounts.*.loan_runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
+   "why": "a lent account is judged by its loan, not its week (LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK): below 1 its allowance runs out before the lent window ends; 0 is this machine on a closed loan"},
   {"key": "codex.runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],
    "why": "owner brief 2026-10-26: Codex runs out before its weekly reset"},
   {"key": "steve.seats_absent_min", "op": ">", "value": 10, "alarm": true, "tag": "STEVE_SEATS", "name": "OPS_STEVE_SEATS_RESTORE", "marks": ["MEASURED"], "title_field": "said",

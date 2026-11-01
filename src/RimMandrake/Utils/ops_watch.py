@@ -232,6 +232,47 @@ def flat_rate(readings, now, flat_h=FLAT_H, recent_h=RECENT_H):
     return max(0.0, used - base) / ((now - base_t) / HOUR), since
 
 
+def loan_runway(name, reading, rate, how, src, lent_rules, allowance, live, now):
+    """A lent account's runway against the loan (slot_rules.json lent_accounts), not the week. The rule stops our draw
+    at the end of his window or at the cap, so extrapolating to his weekly reset measures nothing of ours. Open loan:
+    x the hours left in the window that the allowance lasts at this burn. Closed loan (allowance 0: outside the window,
+    at the cap or floor, off-limits): nothing of ours to run out unless this machine is still on it, which is 0. The
+    meter cannot tell his use from ours, so a closed loan with a burn and no live login here is his week, not an alarm.
+    reading: {"left", "used", "h"}; live: this machine's account label, or None when unknown."""
+    unit = "x the time to the end of the loan"
+    def mark(v, why, **x):
+        return M(v, unit, why=why, **x) if src == "MEASURED" else E(v, why + "; the reading is an ESTIMATE", unit, **x)
+    h = reading["h"]
+    if h is None:
+        return U("no reset time, so the lent window cannot be placed")
+    pol = lent_rules["lent_accounts"][name]
+    cap, why = allowance({"account": name, "pct_left": reading["left"], "pct_used": reading["used"], "hours_to_reset": h,
+                          "resets_at": None, "source": src}, lent_rules, now)
+    open_h = h - (168.0 - pol["prefer_start_of_week_h"])
+    if cap > 0 and open_h > 0:
+        rw = runway(cap, rate, open_h)
+        if rw is None:
+            return U("the loan is open and no burn rate is known: " + why)
+        extra = {"rate_pct_h": round(rate, 3), "loan_left_pct": round(cap, 1), "loan_h_left": round(open_h, 1)}
+        if src == "MEASURED" and how.startswith("meter"):
+            return M(rw, unit, rate_from=how, **extra)
+        return E(rw, "rate from %s%s" % (how, "" if src == "MEASURED" else "; the reading is an ESTIMATE"), unit, **extra)
+    if live is None:
+        return U("the loan is closed and this machine's account cannot be read: " + why)
+    if live == name:
+        return mark(0.0, "this machine is on a closed loan: " + why)
+    return mark(10.0, "the loan is closed and this machine is on %s: %s" % (live, why))
+
+
+def live_label(au):
+    """The registry label this machine's sessions are logged in as, or None when that cannot be read."""
+    try:
+        email = au.live_email()
+        return next((label for label, mail in au.registry().items() if email and mail == email), None)
+    except Exception:  # noqa: BLE001  an unknown login is None; the callers hold on it
+        return None
+
+
 # ================================================================================================== collectors
 def c_accounts(now, rules, ctx):
     import account_usage as AU
@@ -241,6 +282,14 @@ def c_accounts(now, rules, ctx):
     if not acc:
         return {"accounts._collector": U("account_usage.read_now() returned no account")}
     fit = {"fit": rules.get("accounts_fit")}
+    live = live_label(AU)
+    try:
+        lent_rules = SA.load_rules()
+        lent = set(lent_rules.get("lent_accounts") or {})
+    except Exception as e:  # noqa: BLE001  no lent set: every account stays judged by its week, which alarms early
+        lent_rules, lent = None, set()
+        out["accounts._collector"] = U("slot_rules.json unreadable, no account is judged by its loan: %s: %s"
+                                       % (type(e).__name__, str(e)[:120]))
     def account(name, a):
         src = a.get("source") or "UNMEASURED"
         if a.get("stale"):
@@ -249,7 +298,7 @@ def c_accounts(now, rules, ctx):
         k = "accounts.%s." % name
         if src not in ("MEASURED", "ESTIMATE") or left is None:
             why = "account_usage: %s" % (a.get("why") or src)
-            for f in ("week_left_pct", "hours_to_reset", "runway"):
+            for f in ("week_left_pct", "hours_to_reset", "runway") + (("loan_runway",) if name in lent else ()):
                 out[k + f] = U(why)
             return
         mk = (lambda v, u, **x: M(v, u, **x)) if src == "MEASURED" else \
@@ -257,20 +306,23 @@ def c_accounts(now, rules, ctx):
         out[k + "week_left_pct"] = mk(left, "% of the weekly quota left", measured_at=a.get("measured_at"))
         out[k + "hours_to_reset"] = mk(h, "h to the weekly reset") if h is not None else U("no reset time")
         rate, how = None, None
-        if src == "MEASURED":
-            try:
-                r, n, span = SA.slope(name, a.get("week_resets_at"), now, fit)
-            except (KeyError, TypeError, ValueError) as e:  # a bad rule costs the slope: the week average still reads
-                r, n, span = None, 0, 0
-                out["accounts._collector"] = U("accounts_fit unusable, runway uses the week average: %s: %s"
-                                               % (type(e).__name__, str(e)[:120]))
-            if r is not None:
-                rate, how = r, "meter slope, %d readings over %.1f h" % (n, span)
-        if rate is None:
+        try:
+            # the slope reads only MEASURED records, so it stays true of an ESTIMATE reading: flat readings mean flat
+            r, n, span = SA.slope(name, a.get("week_resets_at"), now, fit)
+        except (KeyError, TypeError, ValueError) as e:  # a bad rule costs the slope: the week average still reads
+            r, n, span = None, 0, 0
+            out["accounts._collector"] = U("accounts_fit unusable, runway uses the week average: %s: %s"
+                                           % (type(e).__name__, str(e)[:120]))
+        if r is not None:
+            rate, how = r, "meter slope, %d readings over %.1f h" % (n, span)
+        # an ESTIMATE says only that nothing was read: on an account not in use the week's average would invent a draw
+        if rate is None and (src == "MEASURED" or live == name):
             rate, how = week_avg_rate(a.get("week_pct_used"), h)
         rw = runway(left, rate, h)
         if rw is None:
-            out[k + "runway"] = U("no burn rate: no week figure or reset time, and the meter has no slope")
+            out[k + "runway"] = U("no burn rate: the reading is an ESTIMATE of an account not in use, with no slope"
+                                  if src != "MEASURED" and live != name else
+                                  "no burn rate: no week figure or reset time, and the meter has no slope")
         elif rate is None:      # spent before any rate exists: 0 is as certain as the reading
             out[k + "runway"] = (M(0.0, "x the time to reset", why="quota spent") if src == "MEASURED" else
                                  E(0.0, "quota spent per an ESTIMATE reading", "x the time to reset"))
@@ -279,6 +331,10 @@ def c_accounts(now, rules, ctx):
         else:
             out[k + "runway"] = E(rw, "rate from %s%s" % (how, "" if src == "MEASURED" else "; the reading is an ESTIMATE"),
                                   "x the time to reset", rate_pct_h=round(rate, 3))
+        if name in lent:
+            out[k + "loan_runway"] = loan_runway(name, {"left": left, "used": 100.0 - left, "h": h}, rate, how, src,
+                                                 lent_rules, SA.lent_allowance, live, now)
+            out[k + "runway"]["judged_by"] = k + "loan_runway"
     for name, a in sorted(acc.items()):
         try:
             account(name, a)
@@ -1297,6 +1353,12 @@ def good_targets(rules):
     return [t for t in rows if not target_problem(t)] if isinstance(rows, list) else []
 
 
+def judged_elsewhere(p, points):
+    """A week runway of a lent account stays a reading (account_pick and role_launch use it) but raises no alarm: its
+    loan_runway point is the one judged, for as long as that point exists."""
+    return p.get("judged_by") in points
+
+
 def andon(points, hist, last_measured, rules, now):
     """-> [flag]. points: this pass's key -> point; hist: key -> [(t, v)] MEASURED before this pass;
     last_measured: key -> t of its last MEASURED point before this pass."""
@@ -1370,7 +1432,7 @@ def andon(points, hist, last_measured, rules, now):
             if not fnmatch.fnmatchcase(k, tg["key"]):
                 continue
             v = num(p)
-            if v is None or p.get("m") not in marks:
+            if v is None or p.get("m") not in marks or judged_elsewhere(p, points):
                 continue
             if _cmp(v, tg["op"], tg["value"]):
                 flags.append({"rule": "target", "key": k, "value": v, "window": "now", "tag": tg["tag"],
@@ -1397,7 +1459,8 @@ def target_state(points, rules):
                 continue
             aid = "%s:%s" % (tg["tag"], k)
             v = num(p)
-            new = None if (v is None or p.get("m") not in marks) else bool(_cmp(v, tg["op"], tg["value"]))
+            new = False if judged_elsewhere(p, points) else (
+                None if (v is None or p.get("m") not in marks) else bool(_cmp(v, tg["op"], tg["value"])))
             # two targets on one id: a crossing wins, then a hold; the later row never hides an earlier crossing
             old = st.get(aid, False)
             st[aid] = True if True in (old, new) else None if (old is None or new is None) else False
@@ -1697,7 +1760,9 @@ def headline(points, flags, alarms):
         return "%s %s" % (fmt(p.get("v")), "" if p.get("m") == "MEASURED" else "(%s)" % (p.get("m") or "absent"))
     accs = sorted({k.split(".")[1] for k in points if k.startswith("accounts.") and k.count(".") == 2
                    and not k.endswith("_collector")})
-    parts = ["runway " + ", ".join("%s %s" % (a, g("accounts.%s.runway" % a).strip()) for a in accs)
+    parts = ["runway " + ", ".join("%s %s%s" % (a, g("accounts.%s.runway" % a).strip(), (
+        " (loan %s)" % g("accounts.%s.loan_runway" % a).strip() if "accounts.%s.loan_runway" % a in points else ""))
+        for a in accs)
              + ", codex " + g("codex.runway").strip()]
     parts.append("steve %s, INVALID streak %s, unowned stall %s min" % (
         g("steve.state").strip(), g("steve.invalid_streak").strip(), g("steve.unowned_stall_min").strip()))

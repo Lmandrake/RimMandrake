@@ -890,8 +890,9 @@ _saved = {m: sys.modules.get(m) for m in ("account_usage", "slot_allocator")}
 
 
 def _fake_accounts(accts):
-    sys.modules["account_usage"] = types.SimpleNamespace(read_now=lambda now: {"accounts": accts})
-    sys.modules["slot_allocator"] = types.SimpleNamespace(slope=lambda *a: (None, 0, 0.0))
+    sys.modules["account_usage"] = types.SimpleNamespace(read_now=lambda now: {"accounts": accts}, live_email=lambda: "o@x",
+                                                         registry=lambda: {"owned": "o@x", "lent": "l@x"})
+    sys.modules["slot_allocator"] = types.SimpleNamespace(slope=lambda *a: (None, 0, 0.0), load_rules=lambda: {})
 
 
 def _acct(used, h, src="MEASURED"):
@@ -927,6 +928,75 @@ try:
     check("week_avg_rate: under the floor the age counts as FRESH_WEEK_H", r == 3.0 / OW.FRESH_WEEK_H and "fresh" in how,
           (r, how))
     check("week_avg_rate: no figure -> None", OW.week_avg_rate(None, 100.0) == (None, None))
+
+    # ------------------------------------------------------------ LENT_ALARM_MEASURE_THE_LOAN_NOT_WEEK
+    sys.modules.pop("slot_allocator", None)
+    _sa_real = _saved["slot_allocator"] or __import__("importlib").import_module("slot_allocator")
+    _LR = {"lent_accounts": {"lent": {"max_used_by_us_pct": 48, "prefer_start_of_week_h": 48, "floor_pct_left": 10}}}
+    def _lent_pass(accts, slopes=None, email="o@x"):
+        _fake_accounts(accts)
+        sys.modules["account_usage"].live_email = lambda: email
+        sys.modules["slot_allocator"] = types.SimpleNamespace(
+            slope=lambda name, *a: (slopes or {}).get(name, (None, 0, 0.0)), load_rules=lambda: _LR,
+            lent_allowance=_sa_real.lent_allowance)
+        return OW.c_accounts(NOW, RULES, {})
+    _AL = {"targets": [t for t in RULES["targets"] if "accounts." in t["key"] and "runway" in t["key"]]}
+    def _alarmed(pts, key):
+        return (any(f.get("tag") == "RUNWAY_LOW" and f["key"] == key for f in OW.andon(pts, {}, {}, _AL, NOW)),
+                OW.target_state(pts, _AL).get("RUNWAY_LOW:" + key))
+    _slope = {"lent": (0.7, 20, 6.0)}
+    check("lent: a rule row judges accounts.*.loan_runway", any(t["key"] == "accounts.*.loan_runway" for t in _AL["targets"]))
+    # past the window, 52% used, burning at 0.7%/h: the week says 0.74, the loan is closed and we are not on it
+    _o = _lent_pass({"lent": _acct(52.0, 93.0)}, _slope)
+    check("lent: the week runway still reads the week (account_pick and role_launch use it)",
+          _o["accounts.lent.runway"]["v"] == 0.74 and _o["accounts.lent.runway"]["m"] == "MEASURED", _o["accounts.lent.runway"])
+    check("lent: outside the window, not on it: the loan reads closed, no alarm",
+          _o["accounts.lent.loan_runway"]["v"] == 10.0 and _alarmed(_o, "accounts.lent.runway") == (False, False)
+          and _alarmed(_o, "accounts.lent.loan_runway") == (False, False), _o["accounts.lent.loan_runway"])
+    _o = _lent_pass({"lent": _acct(49.0, 140.0)}, _slope)
+    check("lent: over the cap inside the window, not on it: no alarm (the meter cannot tell his use from ours)",
+          _o["accounts.lent.loan_runway"]["v"] == 10.0 and not _alarmed(_o, "accounts.lent.loan_runway")[0])
+    _o = _lent_pass({"lent": _acct(52.0, 93.0)}, _slope, email="l@x")
+    check("lent: this machine still on a closed loan is the alarm, on the loan key only",
+          _o["accounts.lent.loan_runway"]["v"] == 0.0 and _alarmed(_o, "accounts.lent.loan_runway") == (True, True)
+          and _alarmed(_o, "accounts.lent.runway") == (False, False), _o["accounts.lent.loan_runway"])
+    # open loan: 40% left to the cap, 20 h of window left. 1%/h lasts 40 h -> 2.0; the week reads 92/(1*140)=0.66
+    _o = _lent_pass({"lent": {**_acct(8.0, 140.0)}}, {"lent": (1.0, 20, 6.0)})
+    check("lent: inside the window the loan is measured, cap over burn over the window's hours",
+          _o["accounts.lent.loan_runway"]["v"] == 2.0 and _o["accounts.lent.loan_runway"]["m"] == "MEASURED"
+          and not _alarmed(_o, "accounts.lent.loan_runway")[0], _o["accounts.lent.loan_runway"])
+    check("lent: the same burn would have alarmed against the week", _o["accounts.lent.runway"]["v"] == 0.66, _o["accounts.lent.runway"])
+    _o = _lent_pass({"lent": _acct(8.0, 140.0)}, {"lent": (4.0, 20, 6.0)})
+    check("lent: a burn that eats the cap before the window ends alarms",
+          _o["accounts.lent.loan_runway"]["v"] == 0.5 and _alarmed(_o, "accounts.lent.loan_runway") == (True, True))
+    _o = _lent_pass({"lent": _acct(52.0, 93.0)}, _slope, email=None)
+    check("lent: closed loan and the machine's login unreadable is UNMEASURED, never a clean 10",
+          _o["accounts.lent.loan_runway"]["m"] == "UNMEASURED", _o["accounts.lent.loan_runway"])
+    _o = _lent_pass({"lent": {"source": "UNMEASURED", "why": "nothing"}})
+    check("lent: an UNMEASURED reading reads UNMEASURED on the loan too", _o["accounts.lent.loan_runway"]["m"] == "UNMEASURED")
+    check("lent: an owned account has no loan and keeps its week alarm",
+          "accounts.owned.loan_runway" not in _lent_pass({"owned": _acct(90.0, 60.0)}))
+    _fake_accounts({"lent": _acct(52.0, 93.0)})
+    sys.modules["slot_allocator"] = types.SimpleNamespace(slope=lambda *a: (0.7, 20, 6.0), load_rules=lambda: 1 / 0)
+    _o = OW.c_accounts(NOW, RULES, {})
+    check("lent: slot_rules unreadable is said aloud and the week judges, so the alarm fails loud",
+          "slot_rules" in _o["accounts._collector"]["why"] and _alarmed(_o, "accounts.lent.runway")[0], _o["accounts._collector"])
+    # the 2026-10-31 second cause: a parked account whose reading lapses to ESTIMATE read as drawing at its week's average
+    _est = _acct(80.0, 60.0, "ESTIMATE")
+    _o = _lent_pass({"parked": _est}, {"parked": (0.0, 20, 6.0)})
+    check("estimate: a parked account with flat readings reads flat, no alarm",
+          _o["accounts.parked.runway"]["v"] == 10.0 and _o["accounts.parked.runway"]["m"] == "ESTIMATE", _o["accounts.parked.runway"])
+    _o = _lent_pass({"parked": _est})
+    check("estimate: parked with no recorded slope is UNMEASURED, never the week's average (which reads 0.45, an alarm)",
+          _o["accounts.parked.runway"]["m"] == "UNMEASURED" and not _alarmed(_o, "accounts.parked.runway")[0], _o["accounts.parked.runway"])
+    _o = _lent_pass({"parked": _est}, email=None)
+    check("estimate: an unreadable login is not 'live': still no week's average",
+          _o["accounts.parked.runway"]["m"] == "UNMEASURED", _o["accounts.parked.runway"])
+    _o = _lent_pass({"owned": _est})
+    check("estimate: the live account with no slope keeps the week's average",
+          _o["accounts.owned.runway"]["m"] == "ESTIMATE" and _o["accounts.owned.runway"]["v"] == 0.45, _o["accounts.owned.runway"])
+    _o = _lent_pass({"parked": {**_est, "week_pct_left": 0.0, "week_pct_used": 100.0}})
+    check("estimate: a spent parked account still reads 0", _o["accounts.parked.runway"]["v"] == 0.0, _o["accounts.parked.runway"])
 finally:
     for m, v in _saved.items():
         if v is None:
