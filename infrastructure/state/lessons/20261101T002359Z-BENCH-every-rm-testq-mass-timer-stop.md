@@ -1,0 +1,1 @@
+Every rm-*/testq-* mass timer stop-and-start on 2026-10-28/29 (05:04:39, 18:36:50, 20:04:52-20:25:38, 04:37:21-06:34:29) lands to the second on a one-shot Tailscale SSH session from the laptop mandrake-laptop-gmail (100.105.106.71) and also stops timer-guard, so the guard cannot see it; journalctl -g 'audit: SSH login' names the peer. None since 10-29 06:34.

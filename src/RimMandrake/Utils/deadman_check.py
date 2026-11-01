@@ -18,6 +18,8 @@ whose `line` reads "61 promises, 58 kept, 3 broken". A pass that cannot see syst
                 completed and was not blind; last_tick (any attempt) is read only from a state file that has no
                 last_ok_tick key at all (a dispatcher clone older than review round Q).
     A stamp that is not a finite number (NaN, inf, bool) is no stamp.
+    An arm's clock starts no earlier than its own timer did, and a timer paused with its restart armed excuses its arm:
+    after a mass stop this pass restarts beside the arm and would otherwise read the outage as a death (17EC, 129E).
 
     python3 src/RimMandrake/Utils/deadman_check.py run [--file-alarms]
     python3 src/RimMandrake/Utils/deadman_check.py install [--apply]    systemd user timer (plan unless --apply)
@@ -44,6 +46,7 @@ SETTLED = ("done", "built", "validated")
 RETIRED = ("dropped", "superseded")
 MAX_PER_PASS = 10
 FOLD_AT = 2                 # a second outage means the first fix did not fold
+ARM_UNITS = {"ops_watch": "rm-ops-watch.timer", "dispatcher": "rm-dispatcher.timer"}
 TRIAL_ONLY = ("rm-replay-watch.timer", "rm-arena-anchor.timer")     # they end with the arena trial
 
 
@@ -133,6 +136,28 @@ def judge(st, now, limits=None):
         else:
             res[arm] = None
     return res
+
+
+def arm_clocks(st, now, runner=subprocess.run):
+    """-> st with each readable stamp advanced to the moment its timer last started. A missing stamp stays missing."""
+    import live_line
+    out = dict(st)
+    for arm, unit in ARM_UNITS.items():
+        try:
+            began = float(live_line._systemctl_show(unit, "ActiveEnterTimestamp", runner))
+        except ValueError:
+            continue
+        if finite(out.get(arm)) and finite(began) and out[arm] < began <= now:
+            out[arm] = began
+    return out
+
+
+def arm_faults(st, now, runner=subprocess.run):
+    """-> {arm: None | reason}, leaving out a fault whose timer is paused with its restart armed (the same rule as a
+    promise: see excused). A left-out arm files nothing and, if already broken, stays broken until it really runs."""
+    res = judge(arm_clocks(st, now, runner), now)
+    return {a: why for a, why in res.items()
+            if not (why and excused("unit=%s max_age=1h" % ARM_UNITS[a], runner))}
 
 
 def item_id(line):
@@ -409,7 +434,7 @@ def main(argv=None):
         return 0
     import live_line
     report = sweep(time.time(), live_filer if a.file_alarms else None, read_items(), load_baseline(),
-                   judge(stamps(), time.time()), sees=live_line.can_see())
+                   arm_faults(stamps(), time.time()), sees=live_line.can_see())
     print("sweep: %s" % report["line"])
     for b_ in report["broken"]:
         print("  %s: %s" % (b_["item"], b_["why"]))

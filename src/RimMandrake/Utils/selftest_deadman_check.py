@@ -153,6 +153,20 @@ def main():
     check("60 min ago" in j["ops_watch"] and "no readable" in j["dispatcher"], "stale and missing stamps are faults")
     check(DM.judge({"ops_watch": NOW + 3600, "dispatcher": NOW}, NOW)["ops_watch"], "future stamp is a fault")
 
+    # OPS_DEADMAN_REVIVE_17EC: this pass restarts beside the arm after a mass stop, 3 s before its first tick
+    began = lambda t: (lambda argv, **kw: __import__("subprocess").CompletedProcess(argv, 0, "@%d\n" % t, ""))
+    st = {"ops_watch": NOW - 600, "dispatcher": NOW - 21 * 60}
+    check(DM.arm_faults(st, NOW, began(NOW - 3))["dispatcher"] is None, "arm: a timer started 3 s ago is not dead")
+    check("21 min" in DM.arm_faults(st, NOW, began(NOW - 86400))["dispatcher"], "arm: stale stamp + old timer still alarms")
+    check("16 min" in DM.arm_faults({"ops_watch": NOW, "dispatcher": NOW - 40 * 60}, NOW, began(NOW - 16 * 60))["dispatcher"],
+          "arm: a restart buys one limit, not silence")
+    check("no readable" in DM.arm_faults({"ops_watch": NOW, "dispatcher": None}, NOW, began(NOW - 3))["dispatcher"],
+          "arm: a missing stamp stays a fault beside a fresh timer")
+    check("21 min" in DM.judge(DM.arm_clocks(st, NOW, began(NOW + 9999)), NOW)["dispatcher"], "arm: a future start buys nothing")
+    orig_excused, DM.excused = DM.excused, lambda line, runner=None: "rm-dispatcher.timer" in line
+    check("dispatcher" not in DM.arm_faults(st, NOW, began(NOW - 86400)), "arm: paused with its restart armed is excused")
+    DM.excused = orig_excused
+
     write_stamps(NOW - 60, NOW - 60, dry=True)
     s = DM.stamps(mode="dry")
     check(abs(s["dispatcher"] - (NOW - 60)) < 1 and abs(s["ops_watch"] - (NOW - 60)) < 1, "stamps read (dry dispatcher counts)")
