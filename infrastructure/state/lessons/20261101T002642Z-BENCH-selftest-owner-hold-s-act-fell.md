@@ -1,0 +1,1 @@
+selftest_owner_hold's 'the act fell back to the ledger' case goes red when run from a Claude shell and green from a plain env (setsid env -i): the World env leaves agent identity in, so bare ./bridge is correctly off his clock. A close-evidence selftest FAIL on this file from a seat is a false red; rerun in a plain env before reading it as a module fault.
