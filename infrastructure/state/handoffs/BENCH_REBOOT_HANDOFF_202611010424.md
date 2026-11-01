@@ -51,6 +51,9 @@ Work stalls when it lives in a head's attention. The owner's fix tonight: the it
 - `V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR` clone — holds unpushed work, idle, alarm disk.pool_breach firing, protected; NEXT: land or resume that clone's work.
 - `FOUNDRY habit` — it reached for raw git pull --rebase in a dirty tree; NEXT: tell its window to land through ./publish only.
 - `DOORBELL_DELAY_FIX_FRESH_WINDOW_WAITS` — stall cut to 60 s, deployed; NEXT: alarm on a head idle with work waiting, and backdate idle at restart_verified.
+- `TRIO_RELAUNCH_PROVE_FIX_LANDED` — trio stopped since 21:25, fix 8ab6ab3eb0 landed 21:42, selftest only, FOUNDRY ordered to relaunch on a second pin, not yet seen; v3 finished about 25 tasks; NEXT: confirm a real trio critic verdict, then make replay_watch alarm when a stopped arm has its fix landed.
+- `Dispatcher noise` — 128 of about 215 recent alarms repeat one long helper; NEXT: rate-limit repeat alarms so real ones show.
+- `Live helper at wrap` — a1685d1fb8390d864 on scratch expiry still running; NEXT: read its report, land its work, close with a scheduled firing that frees disk.
 
 ## Traps learned
 

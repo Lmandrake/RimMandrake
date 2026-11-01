@@ -9175,3 +9175,6 @@
 {"seat":"BENCH","event":"reassign","id":"SCALD_STEAM_WEATHER_DESIGN_1","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-01T05:15:53Z","tsn":1793510153731986689}
 {"seat":"BENCH","event":"start","id":"SCALD_STEAM_WEATHER_DESIGN_1","why":"relentless supervisor takes the item","ts":"2026-11-01T05:15:57Z","tsn":1793510157125757876}
 {"seat":"BENCH","event":"reclaim","id":"WORLD_REMAKE_FINAL_STEP_1","why":"relentless supervisor: excluded in the rules, back to the pool","ts":"2026-11-01T05:18:34Z","tsn":1793510314065172176}
+{"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T05:13:25Z","expires":"2026-11-01T05:58:25Z","tsn":1793510006941576623}
+{"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T05:21:34Z","expires":"2026-11-01T06:06:34Z","tsn":1793510495325742461}
+{"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T05:29:57Z","expires":"2026-11-01T06:14:57Z","tsn":1793510998063719953}
