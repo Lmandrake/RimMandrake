@@ -267,6 +267,8 @@ def collect(seat, clone, root=None, now=None, force=(), since_s=MAX_AGE_S, max_r
             continue
         reads += 1
         rec = harvest(p, seat, now, root)
+        if os.path.exists(receipt_path(seat, sid, root)):
+            continue                    # a concurrent collector published (maybe acked) it while we parsed: never overwrite
         SR._write_json(receipt_path(seat, sid, root), rec if has_findings(rec) else {"session": sid, "empty": True})
         if has_findings(rec):
             new.append(rec)
@@ -298,11 +300,13 @@ def open_receipts(seat, root=None):
 def ack(seat, session, root=None, now=None):
     """Mark one receipt taken. session may be a unique prefix. -> the sessions acked."""
     done = []
-    for rec in open_receipts(seat, root):
-        if session == "all" or rec["session"].startswith(session):
-            rec["acked_at"] = now or time.time()
-            SR._write_json(receipt_path(seat, rec["session"], root), rec)
-            done.append(rec["session"])
+    hits = [r for r in open_receipts(seat, root) if session == "all" or r["session"].startswith(session)]
+    if session != "all" and len(hits) > 1:
+        return []                       # an ambiguous prefix acks nothing: an unread receipt must not be hidden by a typo
+    for rec in hits:
+        rec["acked_at"] = now or time.time()
+        SR._write_json(receipt_path(seat, rec["session"], root), rec)
+        done.append(rec["session"])
     return done
 
 

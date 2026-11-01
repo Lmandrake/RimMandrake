@@ -226,6 +226,9 @@ def readers(a, e):
           "the Dispatcher's reader returns every open receipt (%d)" % len(got))
 
     check(HR.ack(SEAT, e[:8]) == [e] and e not in [r["session"] for r in HR.open_receipts(SEAT)], "ack closes one receipt")
+    n_open = len(HR.open_receipts(SEAT))
+    check(n_open >= 2 and HR.ack(SEAT, "") == [] and len(HR.open_receipts(SEAT)) == n_open,
+          "NEGATIVE: an ambiguous prefix acks nothing (%d open)" % n_open)
     HR.ack(SEAT, "all")
     check(HR.open_receipts(SEAT) == [] and HR.wake_lines(SEAT, CLONE) == [], "after ack all the wake prints nothing")
     check(D.helper_receipts_obs(sch) == [], "NEGATIVE: an acked receipt no longer alarms")
