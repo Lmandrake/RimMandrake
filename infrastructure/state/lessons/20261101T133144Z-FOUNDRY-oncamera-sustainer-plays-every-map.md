@@ -1,0 +1,2 @@
+A Sustainer spawned with SoundInfo.OnCamera has no source map, and SoundDefHelper.CorrectContextNow only checks map-vs-world when sourceMap is null, so a MapComponent's MapOnly ambient sustainer plays while the player looks at ANY map. Gate on Find.CurrentMap == map (end on look-away, resync on look-back). Found in RM_MapComponent_BiomeAttitude's Cathedral hum (fixed 2e15764b8b).
+home: skills/rimworld-modding

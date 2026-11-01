@@ -1,0 +1,2 @@
+skills/rimworld-modding/SKILL.md:77 points at D:\Luke\dev\reference\rimworld-decompiled, which does not exist. ilspycmd.exe IS installed (C:\Users\<user>\.dotnet\tools\ilspycmd.exe, v8.2): '$T -t Verse.GenSpawn <RimWorld>\RimWorldWin64_Data\Managed\Assembly-CSharp.dll > out.cs' decompiles one type in seconds; put output under D:\ClaudeWork. A static helper may live in Verse rather than Verse.Sound (SoundDefHelper).
+home: skills/rimworld-modding
