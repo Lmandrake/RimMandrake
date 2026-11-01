@@ -9356,3 +9356,4 @@
 {"seat":"BENCH","event":"start","id":"CANON_FAUNA_FLORA_GPT_REVIEW_1","why":"relentless supervisor takes the item","ts":"2026-11-01T06:22:32Z","tsn":1793514152559630366}
 {"seat":"BENCH","event":"reassign","id":"NORTHSTAR_PROCESS_RETRO_1","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-01T06:23:07Z","tsn":1793514187440414577}
 {"seat":"BENCH","event":"start","id":"NORTHSTAR_PROCESS_RETRO_1","why":"relentless supervisor takes the item","ts":"2026-11-01T06:23:09Z","tsn":1793514189720390901}
+{"seat":"BENCH","event":"file","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","title":"Under-staffed 32 min: running 4 of 5 (budget 8), 383 ready, why: breaker open until 2026-11-01T07:16:10Z","kind":"bug","target":"v1","needs":"offline","for":"BENCH","why":"relentless filler: staffing alarm","ts":"2026-11-01T06:59:30Z","tsn":1793516370521835630}
