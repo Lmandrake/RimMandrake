@@ -122,49 +122,57 @@
  },
  "leaningscrub": {
   "biome": "RM_LeaningScrub",
-  "builtUtc": "2026-10-17T02:22:55Z",
-  "bytes": 10419120,
+  "builtUtc": "2026-11-01T07:33:58Z",
+  "bytes": 12581237,
   "census": {
    "natives": {
-    "RM_Crustweevil": 0,
+    "RM_Chikka": 0,
+    "RM_Crustweevil": 20,
+    "RM_Durrok": 0,
     "RM_Dustflutter": 0,
     "RM_Fuzzrunner": 0,
+    "RM_Mullgoth": 0,
     "RM_Rollbug": 0,
     "RM_Shirrel": 3,
-    "RM_Thornhold": 0,
+    "RM_Thornhold": 2,
     "RM_Tikkit": 0,
-    "RM_Vissler": 4
+    "RM_Vissler": 0,
+    "RM_Vurra": 6
    },
    "probe": {
     "applies": true,
-    "downwind": "(0.76, -0.64)",
-    "heading": 319.8999
+    "downwind": "(-1.00, 0.00)",
+    "heading": 180.0
    }
   },
   "censusAfterLoad": {
    "natives": {
-    "RM_Crustweevil": 0,
+    "RM_Chikka": 0,
+    "RM_Crustweevil": 20,
+    "RM_Durrok": 0,
     "RM_Dustflutter": 0,
     "RM_Fuzzrunner": 0,
+    "RM_Mullgoth": 0,
     "RM_Rollbug": 0,
     "RM_Shirrel": 3,
-    "RM_Thornhold": 0,
+    "RM_Thornhold": 2,
     "RM_Tikkit": 0,
-    "RM_Vissler": 4
+    "RM_Vissler": 0,
+    "RM_Vurra": 6
    },
    "probe": {
     "applies": true,
-    "heading": 319.8999,
-    "savedHeading": 319.8999
+    "heading": 180.0,
+    "savedHeading": 180.0
    }
   },
   "head": null,
   "loadVerified": true,
   "mapId": 1,
-  "outdoorAtSave": 12.3863859,
+  "outdoorAtSave": 28.7491245,
   "profile": "danger",
-  "save": "RM_TestSite_leaningscrub_v1",
-  "tile": 3
+  "save": "RM_TestSite_leaningscrub_v2",
+  "tile": 5
  },
  "pyrelands": {
   "biome": "RM_Pyrelands",

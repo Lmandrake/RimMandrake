@@ -1949,9 +1949,9 @@ def islands_chain(t):
     and drives the gated creep pass on / off / at the cap (the runner must be unarmed, under half grown), ProofExempt
     reads that our Explosive Growth exemption roster loaded. Offline: the kernel (count, sizes, growth, gap, reach,
     rooms, runner chance, cap, downwind pick) is table-tested in SelfTest/LeaningScrubIslandCheck.cs.
-    LIVE ROWS OWED (written 2026-10-16, not yet run: the game was up without a bridge for BENCH). UNCOVERED: the step
-    inside real map generation on a Scrub tile (LEANING_SCRUB_LEAN_SITE_1), the downwind bias on a leaning map (the
-    proof map does not lean), and perf/pathing at 15% islands."""
+    Live 2026-11-01 (FOUNDRY, RM_TestSite_leaningscrub_v2): 5/5 PASS. The real-map generation, perf and pathing at
+    15% islands are read by northstar/venomvine_islands_live.py (check), not by this chain. Still UNCOVERED here: the
+    downwind bias on a leaning map (the proof map does not lean)."""
     _proof(t, "islands_laid_share", "RM_VenomvineIslandsProof", "ProofIslands", "", "islands laid",
            toggle="venomvineIslandsEnabled")
     for mode, name in (("on", "creep_runner_unarmed"), ("off", "creep_toggle_off"), ("cap", "creep_cap_stops")):

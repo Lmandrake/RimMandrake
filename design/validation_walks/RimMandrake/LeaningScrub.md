@@ -72,15 +72,17 @@ Venomvine rooms, the runway bloom, sweetline trees
 - `venomvinePassabilityEnabled` exists, defaults on and is writable. → settings.venomvinePassabilityEnabled_roundtrip
 - The canopy reads as one even fuzz carpet all leaning the same way; the Stall reads as still. → UNCOVERED: visual; left to the judge pass (debug_process §4)
 
-Venomvine islands and creep (VENOMVINE_BUILD_SCRUB_GROWS_TEETH, owner cards 2026-10-16; live rows written, OWED a run)
+Venomvine islands and creep (VENOMVINE_BUILD_SCRUB_GROWS_TEETH, owner cards 2026-10-16; live 2026-11-01: islands chain 5/5 PASS)
 - The island map step lays venomvine over about 15% of open ground (at least half the target on any map), keeps the start clear and the start's open ground reachable, and grows at least one room of a rarer form. → islands.islands_laid_share
 - A grown stand puts a runner into a free natural neighbour cell, and the runner is under half grown (no venom yet). → islands.creep_runner_unarmed
 - With `venomvineCreepEnabled` off no runner is laid. → islands.creep_toggle_off
 - At the map cap (`venomvineCreepCap`, default 22%) no runner is laid. → islands.creep_cap_stops
 - Explosive Growth leaves venomvine alone (our exemption roster loads). → islands.growth_exempt_from_explosive_growth
 - About 3 in 4 runners go downwind; island counts, sizes, gaps, the cut-the-map refusal and room roles follow the kernel. → UNCOVERED live: the proof map does not lean; offline in SelfTest/LeaningScrubIslandCheck.cs (selftest_leaningscrub_fuzz.py)
-- Islands on a real Scrub map at generation, with pathing and perf inside bounds at 15%. → UNCOVERED: needs a Scrub-tile site (LEANING_SCRUB_LEAN_SITE_1)
-- Venomvine stands 1.8 to 2.4 cells tall at play zoom. → UNCOVERED: visual; tall-canvas renders queued (tallvv_* artpipe jobs)
+- Islands on a real Scrub map at generation: open-ground share 0.075 to 0.24, at least 3 islands of 20+ cells, rooms of the rarer forms in most islands, an island-free start disc of radius 27 or more. → northstar/venomvine_islands_live.py check (scrub.share, scrub.islands, scrub.rooms, scrub.clearance; PASS 2026-11-01: share 0.158, 46 islands, 12 of 12 room forms, free disc r35)
+- Perf at 15% islands: the creep tick stays under 0.02 ms/tick, a recount under 100 ms, and the TPS ratio at 0.8 or more. → venomvine_islands_live.py check (scrub.perf.*; PASS 2026-11-01: recount 41 ms, TPS 1.0, creep not in the top 40 components)
+- A colonist ordered from the centre to each edge arrives, and the walks down no one. → venomvine_islands_live.py check (scrub.path.*, scrub.path.colony_survives; FAIL 2026-11-01: one drafted walk of about 113 cells leaves RM_VenomvineVenom at 0.56 to 0.87 and downs the walker; filed as VENOMVINE_TAME_ONE_WALK_DOWNS_A_COLONIST)
+- Venomvine stands 1.8 to 2.4 cells tall at play zoom. → UNCOVERED: visual, the owner's judgement; staged walk keeper RM_REVIEW_venomvine_tallrenders_20261101.rws (15 numbered stations, venomvine_islands_live.py stage)
 
 Fauna behaviours (LEANINGSCRUBFAUNA_BUILD_STUBBED_BEHAVIOURS; wiring offline in selftest_leaningscrub_fauna_behaviours.py, live rows NEXT for BENCH)
 - A thornhold's quill lash leaves venomvine venom (`RM_VenomvineVenom`) on what it hits; hunting for food does not. → UNCOVERED live: needs a thornhold fighting a pawn; offline the tool → maneuver → damage → hediff chain resolves
