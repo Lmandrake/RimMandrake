@@ -151,8 +151,10 @@ def main():
     # the other doors: a submit by hand asks the same question, and answers for a reason
     import argparse
     import testq as T
-    saved = T.retest_stop, T.FILLER
+    # hermetic: the live ledger routes items to Test Pilots, and pilot_stop on it pays a modcheck probe per ask (50-150 s)
+    saved = T.retest_stop, T.FILLER, T.pilot_stop
     T.retest_stop = lambda mod: {"a", "b"}
+    T.pilot_stop = lambda mod: {}
     try:
         ask = lambda **k: T.already_tested(argparse.Namespace(mod=MOD, by=k.pop("by", "BENCH"), **k), {}, {"chains": ["a", "b"]})
         check(ask() and "retest" in ask(), "a submit of settled chains is refused")
@@ -164,6 +166,7 @@ def main():
               "one unsettled chain lets the job through")
     finally:
         T.retest_stop = saved[0]
+        T.pilot_stop = saved[2]
 
     # a held chain does not spin
     bad = rec(2, [], outcome="INVALID", cause="HARNESS", note="modcheck exit 5 and no sheet JSON: x", selector={"chains": ["a", "b"]})
