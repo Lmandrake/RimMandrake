@@ -459,6 +459,16 @@ class Effects:
         new = self.git_ok(self.books, "diff", "--name-only", "--no-renames", "--diff-filter=A", "-z", "HEAD", "origin/main").split("\0")
         for p in filter(None, new):
             src = os.path.join(self.books, p)
+            parts = p.split("/")
+            for q in ("/".join(parts[:i]) for i in range(1, len(parts))):       # a file where origin wants a folder
+                at = os.path.join(self.books, q)
+                if os.path.lexists(at) and not os.path.isdir(at) and \
+                        self.git(self.books, "ls-files", "--error-unmatch", "--", q).returncode != 0:
+                    return "books behind: ignored file %s stands where origin now tracks %s" % (q, p)
+            if os.path.isdir(src) and not os.path.islink(src):                  # a folder where origin wants a file
+                if self.git_ok(self.books, "ls-files", "--others", "-z", "--", p).strip("\0"):
+                    return "books behind: ignored files under %s stand where origin now tracks a file" % p
+                continue
             if not os.path.isfile(src) or self.git(self.books, "ls-files", "--error-unmatch", "--", p).returncode == 0:
                 continue
             with open(src, "rb") as f:
@@ -1333,7 +1343,7 @@ def enrol(store, fx, r, now):
     ours = {s["item"] for s in states}
     pool = len(order) + sum(1 for s in live if s["item"] not in order)
     target = math.ceil(share * pool)
-    queued = sum(1 for s in live if s["status"] == "queued")
+    queued = sum(1 for s in live if in_line(s))
     want = target - len(live)
     if r.get("staffing"):       # the filler: a free place is reason enough, whatever the share says of the backlog
         want = max(want, worker_cap(fx, r, 0, store) - sum(1 for s in live if s["status"] in HOLDS_A_PLACE) - queued)
@@ -1742,16 +1752,27 @@ def finished(store, fx, item, c, now, acts, attempt=False):
     acts.append({"do": "done", "item": item})
 
 
+def in_line(st):
+    """Queued and able to start: an item the books have not heard of holds no place, or unpublished work stops enrolment."""
+    return st["status"] == "queued" and not st.get("awaiting_ledger")
+
+
 def retire(store, fx, states, now, acts, r=None):
     """The ledger closed an item from outside (his drop, a supersede): fence first, then step() drains the runs."""
     for st in states:
         if st["status"] not in OPEN or st["status"] in ("closing", "retiring"):
             continue
         led = fx.item_state(st["item"])
+        if st.get("awaiting_ledger") and led is not None:       # published: it takes its place in the count again
+            with store.lock():
+                cur = store.load(st["item"])
+                cur["awaiting_ledger"] = False
+                store.save(cur)
         if r and st["status"] == "queued" and st["item"] in r.get("pool_ids_exclude", []):
             # started means the ledger says doing with no one on it: hand it back or it reads as worked on for good.
             # Back first: `retired` is never looked at again, so a refused hand-back must come round next tick.
-            why = fx.ledger_reclaim(st["item"]) if st["ledger_started"] else None
+            ours = st["ledger_started"] and led and led["state"] == "doing" and led.get("owner") == r.get("seat")
+            why = fx.ledger_reclaim(st["item"]) if ours else None    # a reassigned item was handed back already
             if why:
                 acts.append({"do": "retire_waits", "item": st["item"], "why": why})
                 continue
@@ -2028,7 +2049,7 @@ def staffing(store, fx, r, now, acts):
     target = worker_cap(fx, r, 0, store)
     order, _ = fx.pool_order(r)
     ours = {x["item"] for x in states}
-    queued = sum(1 for x in states if x["status"] == "queued")
+    queued = sum(1 for x in states if in_line(x))
     ready = queued + sum(1 for i in order if i not in ours)
     stepped = 0 < target < room
     why = stuck = None

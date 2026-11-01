@@ -581,6 +581,20 @@ def t_crash_windows():
     ok(x.st("I0")["status"] == "retired", "a started item excluded in the rules leaves the line")
     ok(x.w.items["I0"] == "ready", "and the ledger gets it back, not left doing with nobody on it")
     x.done()
+    # reassigned on the way out: nothing of ours to hand back, and a hand-back would be refused for good
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], "gate_not_met", "waits on others", x.r, now=x.now)
+    x.w.up[st["run"]["unit"]] = False
+    x.r["pool_ids_exclude"] = ["I0"]
+    x.w.owners["I0"] = "FOUNDRY"
+    x.w.reclaim_fail = "not yours"
+    x.tick(600)
+    x.tick(600)
+    ok(x.w.reclaim_fail == "not yours", "a reassigned item is not reclaimed")
+    ok(x.st("I0")["status"] == "retired", "and leaves the line")
+    x.done()
     # a checker past its deadline cannot pass
     x = Rig(n=1, share=1.0)
     x.run_one("I0")
@@ -1793,6 +1807,10 @@ def t_unpublished_enrol_waits():
     R.retire(store, w, store.states(), 1100, acts, dict(RULES))
     ok(store.load("EARLY_ITEM")["status"] == "queued", "an unpublished item stays in line")
     ok([a["do"] for a in acts] == ["awaiting_ledger"], "and says so once: %s" % acts)
+    ok(not R.in_line(store.load("EARLY_ITEM")), "and holds no place in the enrolment count")
+    w.items["EARLY_ITEM"] = "proposed"
+    R.retire(store, w, store.states(), 1150, acts, dict(RULES))
+    ok(R.in_line(store.load("EARLY_ITEM")), "published, it counts again")
     w.items["EARLY_ITEM"] = "dropped"
     R.retire(store, w, store.states(), 1200, acts, dict(RULES))
     ok(store.load("EARLY_ITEM")["status"] == "retiring", "the published drop still ends it")
@@ -1896,6 +1914,30 @@ def t_books_frozen():
         ok(f.read() == "local secret\n", "and it keeps its bytes")
     put(b, "ignored.cfg", "upstream\n")
     ok(fx.sync() is None, "the same bytes level")
+    # a folder where origin wants a file, and a file where origin wants a folder: both lose ignored bytes
+    git(b, "fetch", "-q", "origin")
+    git(b, "reset", "-q", "--hard", "origin/main")
+    put(b, ".git/info/exclude", "cache/\nnote\n")
+    os.makedirs(os.path.join(b, "cache"))
+    put(b, "cache/local.db", "local\n")
+    put(b, "note", "local\n")
+    put(up, "cache", "upstream\n")
+    git(up, "add", "-f", "cache")
+    git(up, "commit", "-qm", "a file over the folder")
+    git(up, "push", "-q", "origin", "main")
+    why = fx.sync()
+    ok(why and "ignored files under cache" in why, "an ignored folder stops the books: %s" % why)
+    shutil.rmtree(os.path.join(b, "cache"))
+    ok(fx.sync() is None, "gone, the books level")
+    os.makedirs(os.path.join(up, "note"))
+    put(up, "note/config.json", "upstream\n")
+    git(up, "add", "-f", "note/config.json")
+    git(up, "commit", "-qm", "a folder over the file")
+    git(up, "push", "-q", "origin", "main")
+    why = fx.sync()
+    ok(why and "ignored file note stands" in why, "an ignored file in the way stops the books: %s" % why)
+    os.remove(os.path.join(b, "note"))
+    ok(fx.sync() is None, "gone, the books level again")
     # the same collision by a rename: git calls that R, and a filter on A alone never sees it
     git(b, "fetch", "-q", "origin")
     git(b, "reset", "-q", "--hard", "origin/main")
