@@ -421,8 +421,10 @@ namespace RimMandrake.FlowWorks.LiquidTypes
         /// set).</summary>
         public int productCount = 1;
 
-        /// <summary>Item fallback when no connected tank takes the product
-        /// liquid: <see cref="productCount"/> of this ThingDef per batch, dropped beside the machine instead.</summary>
+        /// <summary>The product when it is an item: read only when <see cref="product"/> is null, and then
+        /// <see cref="productCount"/> of this ThingDef per batch (via <see cref="OutputUnits"/>) go to the converter's saved
+        /// pending count and are placed beside the machine. Never a fallback for a full product tank: with a liquid
+        /// <see cref="product"/> set, this is ignored and a full tank stops the machine (TAR_REFINERY_FIX_CAN_FALLBACK_DEAD).</summary>
         public ThingDef productThing;
 
         /// <summary>Tank units (decilitres) one batch consumes.</summary>
