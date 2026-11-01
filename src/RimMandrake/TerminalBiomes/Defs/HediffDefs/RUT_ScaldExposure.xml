@@ -123,6 +123,10 @@
       <li Class="RimMandrake.EnvironmentalHazards.HediffCompProperties_EnvironmentalExposure">
         <onlyDuringWeather>RUT_ScaldSteam</onlyDuringWeather>
         <severityPerDayExposed>0.6</severityPerDayExposed>
+        <!-- Measured live: the salinity bands (0.8 fresh, 0.6 brine by default) apply on any map with a salinity
+             axis and slowed the clock to 0.48 a day, past the owner's "dead under two days". Steam has no salinity. -->
+        <freshMultiplier>1</freshMultiplier>
+        <brineMultiplier>1</brineMultiplier>
         <severityPerDayUnexposed>-0.35</severityPerDayUnexposed>
         <protectionStat>ArmorRating_Heat</protectionStat>
         <minDriveFactor>0.08</minDriveFactor>

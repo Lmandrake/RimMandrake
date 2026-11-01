@@ -66,6 +66,10 @@
       <baseHungerRate>0.2</baseHungerRate>
       <foodType>OmnivoreAnimal</foodType>
       <predator>false</predator>
+      <!-- A lake creature: without waterSeeker it is not Aquatic to FlowWorks swimming and drowned in its own
+           water (measured live, dead in 6353 ticks). The only Scald resident that lacked it. -->
+      <waterSeeker>true</waterSeeker>
+      <waterCellCost>1</waterCellCost>
       <trainability>None</trainability>
       <manhunterOnDamageChance>0</manhunterOnDamageChance>
       <lifeExpectancy>3</lifeExpectancy>
