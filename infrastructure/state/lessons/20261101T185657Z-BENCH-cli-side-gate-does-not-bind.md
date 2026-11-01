@@ -1,0 +1,1 @@
+A CLI-side gate does not bind a clone running older code: bench closed an item past the close gate. A rule that must hold for every writer belongs in the model fold (date-gated), where every reader applies it.
