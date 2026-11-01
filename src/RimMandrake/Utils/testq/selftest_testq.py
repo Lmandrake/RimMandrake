@@ -37,12 +37,11 @@ sys.exit(subprocess.run(["bash", "-c", sys.argv[-1]]).returncode)
 '''
 MOCK = r'''
 import json, os, sys, time
-_t0 = time.time()
-while os.path.exists(os.environ.get("MOCK_HOLD", "")) and time.time() - _t0 < 60:   # held mid-run by the test
+_hold, _t0 = os.environ.get("MOCK_HOLD", ""), time.time()
+if os.path.exists(_hold):     # held mid-run by the test, which waits for this marker before its second tick
+    open(_hold + ".parked", "w").close()
+while os.path.exists(_hold) and time.time() - _t0 < 300:     # past two tq timeouts; a dead test's rmtree ends it
     time.sleep(0.05)
-if os.environ.get("MOCK_HOLD"):   # why the hold ended: read back by the second-tick diagnostic below
-    with open(os.environ["MOCK_HOLD"] + ".log", "a") as _f:
-        _f.write("left after %.2fs hold_exists=%s pid=%d\n" % (time.time() - _t0, os.path.exists(os.environ["MOCK_HOLD"]), os.getpid()))
 name = "Mock_%d" % int(time.time() * 1000000)
 summary = {"chains": [{"name": "c1", "components": [{"name": "r1", "verdict": "PASS", "detail": "ok"},
                                                     {"name": "r2", "verdict": "FAIL", "detail": "bad"}]}]}
@@ -463,19 +462,21 @@ def main():
         rc, o = tq("submit", "Mock", "--purpose", "fix", "--by", "BENCH", "--sha", sha)
         check(rc == 2 and "selects nothing" in o, "an empty selection is refused at submit")
 
-        hold = os.path.join(tmp, "hold")      # B stays running until the second tick is checked (no race)
+        # B must still be running at the second tick. Without the hold a worker quicker than the tick finishes B first:
+        # that tick collects B and admits A, the next moves A to done/, and running_attempt(a) dies with
+        # FileNotFoundError (every 03:00 sweep, 2026-10-26..31). Wait for the marker so the tick cannot beat the mock.
+        hold = os.path.join(tmp, "hold")
         open(hold, "w").close()
         tq("tick")
         check(state(b) == "running" and state(a) == "pending", "tick admits the highest priority job first")
         ab = running_attempt(b)
+        t0 = time.time()
+        while not os.path.exists(hold + ".parked") and time.time() - t0 < 40:
+            time.sleep(0.05)
+        check(os.path.exists(hold + ".parked"), "the mock is parked mid-run before the second tick")
+        time.sleep(0.5)     # with no hold a mock past its marker has finished by now, and the check below goes red
         tq("tick")
-        check(state(a) == "pending", "a second tick while B runs admits nothing")
-        if state(a) != "pending":     # TESTQ_SELFTEST_FIX_NIGHTLY_FILE_MISSING: only the 03:00 sweep has ever shown this
-            print("DIAG a=%s b=%s hold=%s" % (state(a), state(b), os.path.exists(hold)))
-            for f in [hold + ".log", sshlog] + sorted(glob.glob(os.path.join(queue, "*.log")))\
-                    + sorted(glob.glob(os.path.join(home, "attempts", "*", "*"))):
-                if os.path.isfile(f):
-                    print("DIAG --- %s\n%s" % (f, open(f, errors="replace").read()[-1500:]))
+        check(state(b) == "running" and state(a) == "pending", "a second tick while B runs admits nothing")
         os.remove(hold)
         check(wait_worker(ab), "the worker finished B")
         tq("tick")

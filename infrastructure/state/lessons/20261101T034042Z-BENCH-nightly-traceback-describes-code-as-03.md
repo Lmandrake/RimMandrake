@@ -1,0 +1,1 @@
+A nightly traceback describes the code as of 03:00, not HEAD: compare its line numbers with the file at the run's commit before theorising. TESTQ_SELFTEST_FIX_NIGHTLY_FILE_MISSING looked like an escaped hold for a day; the crashing run predated the hold.
