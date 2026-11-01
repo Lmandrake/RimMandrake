@@ -7,8 +7,10 @@ A temp queue, a temp ledger (RIMFLOW_LEDGER / RIMFLOW_ITEMS, the steward's own i
 acceptance injections of section 8 and the states around them:
   a brake          BRAKED is a fault: T+10 spawns one BENCH item (needs offline) and a failed steve:lane record, T+30
                    raises it, T+120 with no claim spawns an OWNER item (needs owner); each rung once
-  recovery         RUNNING ends the incident: steve:lane ok, a note on the item; so do the day brake and EXHAUSTED, so
-                   a reboot after them starts a fresh clock; an item a seat started is left to that seat
+  recovery         only a DONE job with its canary on, after the incident began, ends it: steve:lane ok, a note on the
+                   item. RUNNING, then INVALID/CANARY, keeps it open with its clock running; the day brake and
+                   EXHAUSTED freeze it; a reboot after a proof starts a fresh clock; an item a seat started is left
+                   to that seat; the impact clock never pauses; a claim pauses one incident for at most 2 h
   no duplicate     a second incident while the item is open notes it instead of spawning another
   an abandoned claim  a claim's live lease freezes the clock; the lease lapsing (45 min) resumes it
   pauses           a pause with an expiry never escalates before it expires; one without becomes a fault at 60 min;
@@ -105,6 +107,16 @@ def main():
                    T.q("done", job["id"] + ".json"))
             return job
 
+        def finished(outcome, cause, at, canary=True):
+            """A stevedesktop job's done record finished at AT (a hand submission, not a filler)."""
+            job = S.make_job("Mock", {"chains": ["c1"]}, "guard", "BENCH", "abc1234", canary=canary)
+            res = {"schema": S.RESULT_SCHEMA, "job": job["id"], "attempt": job["id"] + ".a1", "outcome": outcome,
+                   "cause": cause, "rows": [], "counts": {}, "runner_sha": "def5678", "artifacts": [], "note": "x",
+                   "finished": W.iso(at)}
+            S.dump({"job": job, "result": res, "attempts": [res["attempt"]], "finished": W.iso(at)},
+                   T.q("done", job["id"] + ".json"))
+            return job
+
         def running(at):
             job = S.make_job("Mock", {"chains": ["c1"]}, "guard", "BENCH", "abc1234")
             S.dump({"job": job, "attempt": job["id"] + ".a1", "sent": S.utcnow(), "attempts": [job["id"] + ".a1"],
@@ -193,10 +205,31 @@ def main():
         # ------------------------------------------------ recovery
         notes0 = len(events("note"))
         rec0_owner = sp[1]["name"]
-        running(base + 9100)
+        # STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING: RUNNING, then INVALID/CANARY, keeps the incident open, clock running
+        u0 = step(base + 9050)["incident"]["unowned_s"]
+        rj = running(base + 9100)
         rec = step(base + 9100)
+        check(rec["state"] == "RUNNING" and rec["incident"] is not None and rec["incident"]["unowned_s"] == u0 + 50,
+              "RUNNING is not recovery: the incident stays open and its clock runs: %s" % rec["incident"])
+        rec = step(base + 9400)
+        check(rec["incident"] and rec["incident"]["unowned_s"] == u0 + 350, "RUNNING 5 min more: the clock ran 300 s")
+        os.remove(T.q("running", rj["id"] + ".json"))
+        finished("INVALID", "CANARY", base + 9450)
+        rec = step(base + 9500)
+        check(rec["incident"] is not None and pulses()[-1]["status"] != "ok",
+              "a run that ends INVALID/CANARY keeps the incident open: %s" % rec["state"])
+        finished("DONE", None, base + 9520, canary=False)
+        rec = step(base + 9530)
+        check(rec["incident"] is not None, "a DONE job with its canary OFF is not proof")
+        check(rec["incident"]["impact_s"] == int(base + 9530 - S.parse_ts(rec["incident"]["since"])),
+              "the impact clock is now minus since, never paused: %s" % rec["incident"].get("impact_s"))
+        finished("DONE", None, base + 9560)
+        running(base + 9600)
+        rec = step(base + 9600)
         check(rec["state"] == "RUNNING" and rec["incident"] is None and rec["last_item"] == item,
-              "RUNNING ends the incident and keeps the item for the next one")
+              "a DONE job with its canary on ends the incident and keeps the item for the next one")
+        check("DONE with its canary on" in events("note")[-1].get("text", ""), "the recovery note names the proof")
+        reset()
         check(pulses()[-1]["status"] == "ok", "recovery records steve:lane ok")
         check(len(events("note")) == notes0 + 1 and events("note")[-1]["id"] == item, "recovery notes the item")
         dropped = sorted(e["id"] for e in events("drop"))
@@ -229,6 +262,25 @@ def main():
               % (b, c1, c))
         check(W.claim_cover(item, exp - 100, exp + 100) == 100 and W.claim_cover(item, exp + 5, exp + 50) == 0
               and W.claim_cover(item, exp - 50, exp - 10) == 40, "claim_cover counts only the seconds under the lease")
+        # STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING: a claim pauses one incident for at most 2 h in all
+        cap_inc = {"item": item, "claim_paused_s": 0}
+        real_cc = W.claim_cover
+        W.claim_cover = lambda i, a, b, w=None: int(b - a)          # a lease renewed forever
+        try:
+            paid = [W.capped_cover(cap_inc, k * 3600, (k + 1) * 3600) for k in range(3)]
+            check(paid == [3600, 3600, 0] and cap_inc["claim_paused_s"] == W.CLAIM_HOLD_S,
+                  "the claim pause is capped at 2 h per incident: %s" % paid)
+            sj = T.read_json(T.q("steward.json"))
+            sj["incident"]["claim_paused_s"] = W.CLAIM_HOLD_S - 200
+            S.dump(sj, T.q("steward.json"))
+            u1 = sj["incident"]["unowned_s"]
+            rec = step(sj["epoch"] + 600)
+            check(rec["incident"]["unowned_s"] == u1 + 400 and rec["incident"]["claim_paused_s"] == W.CLAIM_HOLD_S,
+                  "past the cap a live claim no longer stops the clock: %d -> %d" % (u1, rec["incident"]["unowned_s"]))
+        finally:
+            W.claim_cover = real_cc
+        check(W.claim_holds(item, exp - 60) and not W.claim_pauses(cap_inc, exp - 60),
+              "a live lease no longer pauses an incident that spent its 2 h (no L3 hold, no wake hold)")
 
         inc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}
         check(W.maybe_wake(dict(inc), {"reason": "r"}, exp + 700).startswith("skipped: cooldown") and len(wakes) == 1,
@@ -474,8 +526,11 @@ def main():
                    T.q("steward.json"))
             spawns = len(events("spawn"))
             rec = step(t0)
-            check(rec["state"] == "BRAKED" and not rec["fault"] and rec["incident"] is None,
-                  "the day brake ends an old incident")
+            check(rec["state"] == "BRAKED" and not rec["fault"] and rec["incident"] is not None
+                  and rec["incident"]["unowned_s"] == 4200, "the day brake is not proof: the incident stays, frozen")
+            finished("DONE", None, t0 + 10)
+            rec = step(t0 + 20)
+            check(rec["incident"] is None, "a DONE+canary job after it began ends the old incident")
             S.dump({"down_since": S.utcnow(), "last_probe": t0, "last_error": "timeout"}, T.q("ssh_state.json"))
             step(t0 + 60)
             rec = step(t0 + 360)
@@ -484,7 +539,10 @@ def main():
             os.remove(T.q("ssh_state.json"))
             T.fill_plan = lambda *a, **k: {"verdict": "exhausted", "text": "nothing to fill"}
             rec = step(t0 + 420)
-            check(rec["state"] == "EXHAUSTED" and rec["incident"] is None, "EXHAUSTED ends an incident too")
+            check(rec["state"] == "EXHAUSTED" and rec["incident"] is not None, "EXHAUSTED is not proof either")
+            finished("DONE", None, t0 + 430)
+            rec = step(t0 + 440)
+            check(rec["state"] == "EXHAUSTED" and rec["incident"] is None, "EXHAUSTED plus a DONE+canary ends it")
             # an item a seat started, with no claim (the relentless supervisor), is left to that seat
             held = "STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_BEEF"
             rc, out = W.rimflow("spawn", "--from", W.STEWARD_ITEM, "--for", "BENCH", "--needs", "offline",
@@ -542,7 +600,11 @@ def main():
         restarts = []
         W.restart_tick = lambda: restarts.append(1) or "exit 0"
         running(base)
+        open_inc = (T.read_json(T.q("steward.json")) or {}).get("incident")
+        if open_inc:                                # only a DONE+canary job after it began ends the steward's incident
+            finished("DONE", None, S.parse_ts(open_inc["since"]) + 1)
         rec = step(base)
+        check(rec["incident"] is None, "the steward's incident is proven over before the watcher block")
         n_spawn = len(events("spawn"))
         w0 = W.watch_pass(now=base + 120)
         check(w0["incident"] is None, "a fresh steward.json: no incident")

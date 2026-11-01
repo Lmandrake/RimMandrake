@@ -14,7 +14,7 @@ braked and unowned that morning; nothing in the system noticed, so nobody did.
 What it knows (section 6.1), first match wins:
   UNREACHABLE      ssh_state.json says SteveDesktop is down                         fault
   QUARANTINE       QHOME/quarantine.json exists (an operator's hand quarantine)     fault, escalates at once
-  RUNNING          a SteveDesktop job is running                                    ends an incident
+  RUNNING          a SteveDesktop job is running: not a fault, and NOT recovery (an open incident's clock runs on)
   PAUSED           paused.json: an auto pause (it names an outcome) is a fault at once; a manual pause with an `until`
                    in the future is intentional; any other manual pause (or QHOME/fill.stop, aged by its mtime) turns
                    into a fault 60 min after it began
@@ -34,11 +34,17 @@ What it knows (section 6.1), first match wins:
                    rm-*/testq-* timer at 05:04 and nobody restarted them). An unknown state (no systemd) says nothing.
   STALE_HEARTBEAT  the watcher's: steward.json not written for 5 min
 
-The unowned clock (section 6.1) adds the time between two passes while the state is a fault. RUNNING, the day brake
-and EXHAUSTED end the incident; any other non-fault state (an intentional pause, a young READY) freezes the clock. An
-incident left open across a settled lane resumed its old clock on the next fault: a one-minute reboot read "unowned 70
-min" and took two rungs at once (STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_2DEB). A claim on the escalation item pauses it while the claim's lease is live, or for
-2 h after a claim with no lease; a lapsed or released lease does not.
+The unowned clock (section 6.1) adds the time between two passes while the state is a fault, or RUNNING inside an open
+incident. Only proof ends an incident (STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING, T4 of
+design/RimMandrake/rimflow_v3_risk_response_2026-10-29.md): a stevedesktop job that came back DONE with its canary on,
+finishing after the incident began (testq.lane_proven_after, the filler brake's own predicate). RUNNING is not proof
+(R02 there): a resumed lane on a dead game ran INVALID/CANARY again and again while each RUNNING closed the incident. Any
+other non-fault state (the day brake, EXHAUSTED, an intentional pause, a young READY) freezes the unowned clock and
+leaves the incident open. The impact clock (incident impact_s, now minus since) never pauses. Without a proof a
+reboot after a settled lane resumes the old unowned clock; with one it starts fresh (2DEB: a one-minute reboot read
+"unowned 70 min" across a lane that had since proven itself). A claim on the escalation item pauses the unowned clock
+while the claim's lease is live, or for 2 h after a claim with no lease; a lapsed or released lease does not, and one
+incident pauses for at most CLAIM_HOLD_S (2 h) in all (incident claim_paused_s): a renewed lease is not a fix.
 
 Escalation (section 6.4), each at most once per incident:
   T+10 min   spawn STEVE_LANE_UNSTICK_<STATE>_UNOWNED_<hex4> --for BENCH --needs offline (from the steward's own item),
@@ -46,7 +52,7 @@ Escalation (section 6.4), each at most once per incident:
              a failed `steve:lane` record lights the pulse health row
   T+30 min   `rimflow raise` it: first in `rimflow next --seat BENCH` and a line in the phone brief
   T+120 min  with no claim: spawn for OWNER (needs owner; titled "IN PERSON:" when SteveDesktop is unreachable)
-Recovery (a settled lane) records `steve:lane` ok, notes the item and drops the items the incident spawned.
+Recovery (a DONE+canary job after the incident began) records `steve:lane` ok, notes the item and drops the items the incident spawned.
 
 The LLM wake (the owner's card ruling 2026-10-26 12:27 PDT, "Yes, after 30 min", on STEVE_STEWARD_BUILD_NO_LLM_OWNER):
 once an incident has been raised (T+30) and no claim holds its item, the steward MAY start ONE headless Claude session
@@ -489,7 +495,7 @@ def maybe_wake(inc, ls, now, src="steward"):
         return None
     if os.environ.get("TESTQ_STEWARD_WAKE", "1") == "0" or os.path.exists(path("wake.stop")):
         return None
-    if claim_holds(inc["item"], now):
+    if claim_pauses(inc, now):
         return None
     last = T.read_json(path("wake.json")) or {}
     cool = int(os.environ.get("TESTQ_WAKE_COOLDOWN_S", "14400"))
@@ -561,6 +567,20 @@ def claim_holds(item_id, now, w=None):
         t = model.epoch(it.claim_ts)
         return t is not None and now < t + CLAIM_HOLD_S
     return False
+
+
+def claim_pauses(inc, now, w=None):
+    """True while a claim on INC's item may still pause INC: claim_holds, and the incident has not yet spent its
+    CLAIM_HOLD_S of claim pause (STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING: a renewed lease paused the clock forever)."""
+    return inc.get("claim_paused_s", 0) < CLAIM_HOLD_S and claim_holds(inc.get("item"), now, w)
+
+
+def capped_cover(inc, a, b):
+    """claim_cover over [A, B] for INC's item, capped so one incident never pauses for more than CLAIM_HOLD_S in all;
+    -> the seconds paused, added to inc["claim_paused_s"]."""
+    c = min(claim_cover(inc.get("item"), a, b), max(0, CLAIM_HOLD_S - inc.get("claim_paused_s", 0)))
+    inc["claim_paused_s"] = inc.get("claim_paused_s", 0) + c
+    return c
 
 
 def _window(it, model):
@@ -723,7 +743,7 @@ def escalate(inc, ls, now, last_item, src="steward"):
             return inc["item"]
         inc.update(level=2, error=None)
         jlog({"ts": iso(now), "event": "escalate", "level": 2, "item": inc["item"], "by": src})
-    if inc["level"] < 3 and u >= L3_S and not claim_holds(inc["item"], now, w):
+    if inc["level"] < 3 and u >= L3_S and not claim_pauses(inc, now, w):
         down = inc["state"] == "UNREACHABLE"
         name = mint(w, tag, "OWNER")
         rc, out = rimflow("spawn", "--from", STEWARD_ITEM, "--for", "OWNER", "--needs", "owner", "--name", name,
@@ -759,25 +779,46 @@ def _steward_pass(now, mods):
     settle_wake(inc, now)
     dt = max(0.0, now - prev["epoch"]) if prev.get("epoch") else 0.0
     to_retire = list(prev.get("to_retire") or [])
-    if ls["settled"]:
-        if inc:
-            failreport(True)
-            if inc.get("item"):
-                rimflow("note", inc["item"], "--text", "steward: SteveDesktop lane %s again (%s) after %s, "
-                        "%d min unowned" % (ls["state"], ls["reason"][:120], inc["state"], inc["unowned_s"] // 60))
-            jlog({"ts": iso(now), "event": "recovered", "incident": inc})
-            to_retire += [i for i in (inc.get("item"), inc.get("owner_item")) if i and i not in to_retire]
-            inc = None
+    proof = None
+    if inc:
+        try:
+            began = S.parse_ts(inc["since"])
+        except (KeyError, TypeError, ValueError):     # an unreadable start: it begins now, never "proven" by old jobs
+            began, inc["since"] = now, iso(now)
+        inc["impact_s"] = int(now - began)          # the impact clock: never paused, never frozen
+        proof = T.lane_proven_after([{"finished": inc["since"]}])
+    if inc and proof:
+        pj = (proof.get("job") or {}).get("id") or "?"
+        failreport(True)
+        if inc.get("item"):
+            rimflow("note", inc["item"], "--text", "steward: SteveDesktop lane proven again: job %s DONE with its "
+                    "canary on at %s, after %s since %s (%d min unowned, %d min impact)"
+                    % (pj, proof.get("finished") or (proof.get("result") or {}).get("finished"), inc["state"],
+                       inc["since"], inc["unowned_s"] // 60, inc["impact_s"] // 60))
+        jlog({"ts": iso(now), "event": "recovered", "proof": pj, "incident": inc})
+        to_retire += [i for i in (inc.get("item"), inc.get("owner_item")) if i and i not in to_retire]
+        inc = None
+    if inc is None and (ls["settled"] or proof):
         to_retire = retire(to_retire, "steward: SteveDesktop lane %s again (%s)" % (ls["state"], ls["reason"][:120]),
-                            now)
+                           now)
+    elif inc and ls["state"] == "RUNNING":
+        # RUNNING is not recovery (STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING). The clock keeps running and the ladder climbs;
+        # no wake while a job holds the lane.
+        if prev.get("fault") or prev.get("state") == "RUNNING":
+            inc["unowned_s"] = int(inc["unowned_s"] + dt - capped_cover(inc, now - dt, now))
+        rung = (inc["level"], inc.get("item"), inc.get("owner_item"))
+        last_item = escalate(inc, dict(ls, reason="lane RUNNING again (%s) but no DONE+canary job since %s"
+                                       % (ls["reason"], inc["since"])), now, last_item) or last_item
+        if (inc["level"], inc.get("item"), inc.get("owner_item")) != rung:
+            jlog({"ts": iso(now), "event": "rung_publish", "item": inc.get("item"), "result": safe_publish()})
     elif fault:
         if not inc:
             inc = {"state": ls["state"], "since": iso(now), "unowned_s": 0, "level": 0, "item": None,
                    "owner_item": None}
             dt = 0.0
         inc["state"] = ls["state"]
-        if prev.get("fault"):
-            inc["unowned_s"] = int(inc["unowned_s"] + dt - claim_cover(inc.get("item"), now - dt, now))
+        if prev.get("fault") or prev.get("state") == "RUNNING":
+            inc["unowned_s"] = int(inc["unowned_s"] + dt - capped_cover(inc, now - dt, now))
         if ls["at_once"]:
             inc["unowned_s"] = max(inc["unowned_s"], L1_S)
         rung = (inc["level"], inc.get("item"), inc.get("owner_item"))
@@ -838,8 +879,9 @@ def _watch_pass(now):
             jlog({"ts": iso(now), "event": "state", "state": "STALE_HEARTBEAT", "fault": True, "reason": reason,
                   "by": "watch"})
         prev_t = wst.get("epoch") or now
-        inc["covered_s"] = inc.get("covered_s", 0) + claim_cover(inc.get("item"), prev_t, now)
-        inc["unowned_s"] = int(age - inc["covered_s"])
+        capped_cover(inc, prev_t, now)
+        inc["impact_s"] = int(now - S.parse_ts(inc["since"]))
+        inc["unowned_s"] = int(age - inc["claim_paused_s"])
         if not inc.get("restarted"):
             inc["restarted"] = "%s %s" % (iso(now), restart_tick())
             jlog({"ts": iso(now), "event": "restart", "by": "watch", "result": inc["restarted"]})
