@@ -1,66 +1,52 @@
 {
- "set_at": "2026-11-01T19:16:50Z",
- "set_by": "Conductor",
- "entries": [
-  {
-   "id": "WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "ARENA_HANDOFF_RECONCILE_MODEL_WITH_CODE",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  },
-  {
-   "id": "HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS",
-   "reading": {
-    "mod": "FlowWorks"
-   }
-  },
-  {
-   "id": "FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN",
-   "reading": {
-    "mod": "FlowWorks"
-   }
-  },
-  {
-   "id": "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING",
-   "reading": {
-    "mod": "GimmeSomeSlack"
-   }
-  },
-  {
-   "id": "MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP",
-   "reading": {
-    "file": "infrastructure/state/codebase_health_last.json",
-    "key": "counts.green"
-   }
-  }
- ]
+  "set_at": "2026-11-01T19:16:50Z",
+  "set_by": "Conductor",
+  "entries": [
+    {
+      "id": "CLOSE_GATE_ENFORCE_DONE_IS_EARNED",
+      "reading": {
+        "file": "infrastructure/state/codebase_health_last.json",
+        "key": "counts.green"
+      }
+    },
+    {
+      "id": "ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE",
+      "reading": {
+        "file": "infrastructure/state/codebase_health_last.json",
+        "key": "counts.green"
+      }
+    },
+    {
+      "id": "FOUNDRY_CONTEXT_BUILD_FRESH_PER_TICKET",
+      "reading": {
+        "file": "infrastructure/state/codebase_health_last.json",
+        "key": "counts.green"
+      }
+    },
+    {
+      "id": "HOSE_SPILL_FIX_OFF_SWITCH_STILL_POURS",
+      "reading": {
+        "mod": "FlowWorks"
+      }
+    },
+    {
+      "id": "FLOWWORKS_REDROWS_PROVE_FIXED_STILL_FROWN",
+      "reading": {
+        "mod": "FlowWorks"
+      }
+    },
+    {
+      "id": "GSS_SWITCHES_PROVE_LAST_FOUR_STANDING",
+      "reading": {
+        "mod": "GimmeSomeSlack"
+      }
+    },
+    {
+      "id": "MINERAL_SHEET_REBUILD_FROM_PAINTED_MAP",
+      "reading": {
+        "file": "infrastructure/state/codebase_health_last.json",
+        "key": "counts.green"
+      }
+    }
+  ]
 }
