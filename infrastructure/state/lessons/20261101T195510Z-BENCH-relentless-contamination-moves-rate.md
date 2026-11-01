@@ -1,0 +1,2 @@
+A Marker with no wall reads the books: 6 of 36 Relentless E1 runs read the books or a seat clone unprompted, and those 6 held both seed PASSes, so dropping them moved the pooled catch from 88% to 95%. Report a contaminated drop with the sensitivity line beside it. Also a shell scan built on shlex is blind to newlines, $(...), < and # by default: forgive only what the parser fully read, and scan the raw call otherwise. Control false fail was 4 of 9, so a catch rate alone says nothing about discrimination.
+home: design/RimMandrake/relentless_counting_rules_2026-11-01.md

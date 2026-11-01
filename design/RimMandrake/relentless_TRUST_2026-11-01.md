@@ -47,4 +47,4 @@ Not the number. Six runs were dropped because the Marker read the books or a sea
 - **Anything outside the bank.** Python tooling with selftests only: nothing on C#, XML, live game, art or design, and no fault nobody has found yet.
 - **Stability.** One model, one prompt, one day. Intervals are wide: every class has 10 cases or fewer.
 - **A clean frame.** Six `hunk_green` cases were removed by the blind second read before any run. `escaped` lost 2 of 3 to contamination. One case, SD_72198B7507B7, went red under the Marker though the census read it green, so a class label can depend on the machine (it is one of the six dropped).
-- **Readiness.** Bars are his and stay unset. E1 is now spent for tuning comparison: after tuning, E2 is the evaluation.
+- **Readiness.** Bars are his and stay unset. A rate on E1 after tuning measures adaptation, so E2 replaces it as the evaluation at step 4.
