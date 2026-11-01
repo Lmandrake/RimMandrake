@@ -160,8 +160,8 @@ VIEW_MSG = (
     "leaves\nthis file exactly as stale as it already was.\n"
     "\u2705 These four views are gitignored, so there is nothing to commit either way.")
 
-# 🔴 Refused at the WRITE so no work is ever created that cannot be landed. The commit
-# is refused too (rule 3) — but by then the edit is already stranded in a shared tree.
+# (History: this was refused at the WRITE, and the commit too. Since the 2026-09-19
+# ruling below both only WARN.)
 #
 # 🔑 The route it hands over is not a consolation prize: `file --for <them>` leaves the
 # new item UNCLAIMED, and `owners(root, "unclaimed_filers")` exempts the FILER, so the
@@ -437,7 +437,8 @@ def main():
         if QUEUE in fp and is_generated(fp if os.path.isabs(fp) else os.path.join(
                 os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd(), fp)):
             return deny(VIEW_MSG % fp)
-        # ---- 3a. another seat's ITEM FILE — refused HERE, at the write ------
+        # ---- 3a. another seat's ITEM FILE — WARNED here, at the write (was refused
+        # until the owner's 2026-09-19 ruling; the history below is why it moved here) --
         #
         # 🔴 THE ASYMMETRY THAT MANUFACTURED STRANDED WORK — owner's ruling, 2026-08-22.
         # Rule 3 refused the COMMIT and this branch permitted the WRITE, so a seat could
@@ -485,28 +486,8 @@ def main():
     # HEAD every single time, so a commit-time rule fired on `render --overwrite-queues`
     # (the correct, required action) and never on the hand-edit it was aimed at. The
     # four views are now gitignored as the derived artifacts they are — `derived/` was
-    # already ignored for exactly this reason. Kept as dead code? No: deleted. This
-    # comment is the record.
-    for p in ():
-        if QUEUE in p and is_generated(os.path.join(root, p)) and changed(root, [p]):
-            return deny(
-                "Blocked: %s is a GENERATED VIEW and you are committing an edit to "
-                "it.\n\n"
-                "It is rendered from infrastructure/state/ledger/events.jsonl, so this "
-                "edit is not a small mistake — it is invisible. The next "
-                "`rimflow render` overwrites it, the work is gone, and nobody is "
-                "told.\n\n"
-                "What you probably meant:\n"
-                "  change an item's STATE   -> rimflow claim|start|block|close <ID>\n"
-                "  change its PROSE         -> edit infrastructure/state/items/<ID>.md\n"
-                "  file something new       -> rimflow file --for <SEAT> …\n"
-                "  regenerate the view      -> python3 src/RimMandrake/rimflow/render.py "
-                "--overwrite-queues\n"
-                "\n"
-                "\u26a0\ufe0f  The flag is part of that command. Bare `render.py` writes a "
-                "PREVIEW\nand leaves this file exactly as stale as it already was. "
-                "Corrected 2026-08-21."
-                % p)
+    # already ignored for exactly this reason. The commit-time loop is deleted (the
+    # empty `for p in ():` husk that outlived it went in wave 74); this comment is the record.
 
     # ---- 3. you may file for any seat; you may change only what you own -----
     seat = my_seat(root, ev.get("session_id"))
@@ -555,7 +536,12 @@ def main():
     # Measured 2026-08-21 on a sibling skill repo.
     # A cross-seat item correction warned above; carry that out as exit 1 (visible,
     # non-blocking) rather than swallowing it in the rule-4 return.
-    tracked = set((git(root, "ls-files") or "").split())
+    # 🔴 "Tracked" means IN HEAD, not in the index. A new file can only be committed
+    # by pathspec once `git add` has put it in the index, so `git ls-files` (the index)
+    # called every committable new root .md "tracked" and this rule fired only on the
+    # `git add x && git commit x` compound. Found wave 74, 2026-11-01. Root level only:
+    # anything with a "/" was skipped above.
+    tracked = set((git(root, "ls-tree", "--name-only", "-z", "HEAD") or "").split("\0"))
     for p in paths:
         if "/" in p or not p.endswith(".md"):
             continue

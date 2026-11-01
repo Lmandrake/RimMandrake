@@ -104,7 +104,7 @@ def _template_repo():
     return _TEMPLATE
 
 
-def run(edits, cmd, seat="BUILD", new_files=None, tool=None):
+def run(edits, cmd, seat="BUILD", new_files=None, tool=None, stage=False):
     root = tempfile.mkdtemp(prefix="selftest_ql_")
     try:
         shutil.rmtree(root)
@@ -115,6 +115,8 @@ def run(edits, cmd, seat="BUILD", new_files=None, tool=None):
             open(full, "w", encoding="utf-8").write(body)
         for rel in (new_files or []):
             open(os.path.join(root, rel), "w", encoding="utf-8").write("new\n")
+        if stage and new_files:
+            git(root, "add", "--", *new_files)
         env = dict(os.environ, CLAUDE_PROJECT_DIR=root)
         env.pop("AGENT_SEAT", None)
         if seat:
@@ -321,6 +323,13 @@ CASES = [
     # ---- 4. the repo root is shared ---------------------------------------
     ("DENY  a new root .md that is not TRANSIENT_*", DENY, "TRANSIENT",
      {}, "git commit analysis.md -m x", "BUILD", ["analysis.md"]),
+    # 🔴 Wave 74, 2026-11-01: the case above is one git itself refuses (`git commit
+    # <untracked>` fails "pathspec did not match"), so it never proved the real path.
+    # A new file is committable only once it is IN THE INDEX — and rule 4 compared
+    # against `git ls-files` (the index), so a staged new root .md read as "tracked"
+    # and sailed through. "New" means absent from HEAD.
+    ("DENY  a new root .md that is STAGED (git add, then commit)", DENY, "TRANSIENT",
+     {}, "git commit analysis.md -m x", "BUILD", ["analysis.md"], None, True),
     ("ALLOW a new TRANSIENT_ root file", ALLOW, None,
      {}, "git commit TRANSIENT_new.md -m x", "BUILD", ["TRANSIENT_new.md"]),
     ("ALLOW an already-tracked root file", ALLOW, None,
@@ -361,7 +370,8 @@ def main():
     try:
         for case in CASES:
             name, want, needle, edits, cmd, seat, new = case[:7]
-            got, reason = run(edits, cmd, seat, new, case[7] if len(case) > 7 else None)
+            got, reason = run(edits, cmd, seat, new, case[7] if len(case) > 7 else None,
+                              case[8] if len(case) > 8 else False)
             ok = got == want and (not needle or needle.lower() in (reason or "").lower())
             print("%-5s %s" % ("ok" if ok else "FAIL", name))
             if not ok:
