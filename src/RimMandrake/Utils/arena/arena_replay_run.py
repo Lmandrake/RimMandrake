@@ -163,8 +163,10 @@ def work_loop(arm, clone, spec, *, ctl, model_cmd, p, cap, tt=None):
     tctl = Path(ctl) / arm / spec["id"]
     tctl.mkdir(parents=True, exist_ok=True)
     if arm == "trio":
+        import arena_replay as R
         import trio_loop as TL
         lp = TL.TrioLoop(clone, tctl, [spec], model=TL.CmdModelT(model_cmd), writer=TL.SignedWriterT(p, cap),
+                         critic=R.RealHomeCritic(TL.default_critic()),   # TRIO_CRITIC_FIX_HOME_SWAP_HIDES_CLAUDE
                          lane=None, sync=None, publish_cmd="true",
                          timeout_s=float(os.environ.get("TRIO_PASS_TIMEOUT_S", RA.PASS_TIMEOUT_S)),
                          tester_tmp=str(tt) if tt else None)

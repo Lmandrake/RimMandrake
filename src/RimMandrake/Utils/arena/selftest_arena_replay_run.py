@@ -352,6 +352,39 @@ def t_judge_home(tmp):
     check("pin_data_root()" in Path(RR.__file__).read_text(), "main pins RM_DATA_ROOT")
 
 
+def t_critic_home(tmp):
+    """TRIO_CRITIC_FIX_HOME_SWAP_HIDES_CLAUDE: inside _arm_environ the trio critic's review() sees the REAL home, so
+    sandbox_argv binds ~/.local/bin + ~/.local/share/claude and L4OpusCritic copies ~/.claude/.credentials.json; a bare
+    critic on the swapped HOME sees none of them (the rc 1 failure)."""
+    import pwd
+    import arena_replay as R
+    real = pwd.getpwuid(os.getuid()).pw_dir
+
+    class Fake:
+        deadline = None
+
+        def review(self, c):              # what L4OpusCritic/sandbox_argv derive from Path.home()
+            h = Path(os.path.realpath(Path.home()))
+            return {"home": str(h), "claude": (h / ".local" / "bin" / "claude").exists(),
+                    "tools": [p for p in (h / ".local" / "bin", h / ".local" / "share" / "claude") if p.exists()]}
+    fake = Fake()
+    wrapped = R.RealHomeCritic(fake)
+    with R._arm_environ():
+        swapped = os.environ["HOME"]
+        check(swapped != real, "fixture: _arm_environ moves HOME")
+        bare = fake.review(None)
+        check(not bare["claude"] and not bare["tools"], "reproduced: on the swapped HOME the critic binds no claude")
+        got = wrapped.review(None)
+        check(got["home"] == os.path.realpath(real), "wrapped review() sees the real home")
+        if (Path(real) / ".local" / "bin" / "claude").exists():
+            check(got["claude"] and got["tools"], "wrapped review(): claude resolves and its dirs are bound")
+        check(os.environ["HOME"] == swapped, "HOME is back on arm_home_* after review()")
+        wrapped.deadline = 12.5
+        check(fake.deadline == 12.5 and wrapped.deadline == 12.5, "attributes (run()'s deadline) reach the critic")
+    src = Path(RR.__file__).read_text()
+    check("critic=R.RealHomeCritic(TL.default_critic())" in src, "the replay's trio loop gets the real-home critic")
+
+
 def t_fail_loud(tmp):
     """ARENA_GATE_WORK_REWIRE_OFF_DRVFS: an all-UNMEASURED or invalid gate, or an invalid judge, is named by
     unmeasured_result (since JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: classified, never a halt); a measured pass/fail
@@ -557,7 +590,7 @@ def main():
                       (t_arms, (tmp,)), (t_wired, ()),
                       (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ()),
                       (t_model_cmd, ()), (t_snapshot_gate, (tmp,)), (t_start_repair, (tmp,)),
-                      (t_tester_tmp, (tmp,)), (t_judge_home, (tmp,)), (t_fail_loud, (tmp,)),
+                      (t_tester_tmp, (tmp,)), (t_judge_home, (tmp,)), (t_critic_home, (tmp,)), (t_fail_loud, (tmp,)),
                       (t_judge_policy, (tmp,))):
             try:
                 fn(*a)

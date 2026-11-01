@@ -585,6 +585,42 @@ def _arm_environ():
         shutil.rmtree(home, ignore_errors=True)
 
 
+@contextlib.contextmanager
+def real_home():
+    """TRIO_CRITIC_FIX_HOME_SWAP_HIDES_CLAUDE: HOME back on the REAL home (pwd, never $HOME: inside _arm_environ that
+    is the empty arm_home_*) for one in-process harness call, restored afterwards. The critic reads Path.home() for its
+    tool binds (~/.local/bin, ~/.local/share/claude) and credentials; on arm_home_* it binds nothing and the sandbox's
+    /home mask hides claude (rc 1, no JSON envelope)."""
+    import pwd
+    saved = os.environ.get("HOME")
+    os.environ["HOME"] = pwd.getpwuid(os.getuid()).pw_dir
+    try:
+        yield
+    finally:
+        if saved is None:
+            os.environ.pop("HOME", None)
+        else:
+            os.environ["HOME"] = saved
+
+
+class RealHomeCritic:
+    """A critic whose review() runs under real_home(): the harness-side critic is started from inside _arm_environ
+    (trio's work()), but it is harness code, not arm code. Every other attribute is the wrapped critic's."""
+
+    def __init__(self, inner):
+        object.__setattr__(self, "inner", inner)
+
+    def review(self, c):
+        with real_home():
+            return self.inner.review(c)
+
+    def __getattr__(self, k):
+        return getattr(self.inner, k)
+
+    def __setattr__(self, k, v):
+        setattr(self.inner, k, v)
+
+
 def run_one(arm: str, task: str, base_sha: str, fix_sha: str, work, judge, source=DEFAULT_SOURCE, root=None,
             also_forbidden=(), use_mirror=True):
     """Build the clone, `work(clone)`, `judge(clone)` -> verdict. A clone THIS call created is deleted whatever happens;
