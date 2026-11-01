@@ -20,7 +20,7 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              at the next ended turn with nothing held; no such boundary in backstop_hard_alarm_s alarms the Conductor.
   pending    grace (grace_s; FOUNDRY 30 s); cancelled by new HUMAN input in the window's transcript after the request
              (never by the Dispatcher's ring, a task notification or a seat's cross-session message: _is_human_input;
-             a Conductor's goodbye restart is the exception, cancelled by ANY input: cursor_verdict),
+             a Conductor's goodbye restart cannot be cancelled by text at all: _goodbye),
              or by the window's session changing. No ring while pending (ring_hold, bounded). HELD (never killed) while: a helper is alive (a stale one also alarms), the bridge or
              driver lock is held by the seat or unreadable, the seat's last game event is transitional, PAUSE, or a
              doorbell ring is in flight. Not quiet (idle + last record an ended assistant turn, 30 s old) for 3 ticks
@@ -70,7 +70,7 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "helper_stale_s": 1800, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
             "fence_s": 1020, "ring_hold_s": 600, "orphan_wait_s": 180,
-            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 240,
+            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 30,
             # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (never a Conductor, _busy_on)
             "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
@@ -618,6 +618,34 @@ def last_human(path, peers=None):
     except (OSError, Malformed):
         return None
     return best + (size,)
+
+
+def last_goodbye(path, is_bye, peers=None):
+    """-> (ts, record, end byte offset) of his LAST goodbye in the transcript, (None, None, None) when there is none,
+    or None (unreadable or malformed). What he wrote after it does not undo it (_goodbye)."""
+    if peers is None:
+        peers = peer_names()
+    best = (None, None, None)
+    try:
+        for r, end in scan_records(path, 0):
+            if r.get("type") == "user" and _is_human_input(r, peers) and is_bye(_text(r)):
+                best = (_ts(r.get("timestamp")), r, end)
+    except (OSError, Malformed):
+        return None
+    return best
+
+
+def _tick_soon(*delays):
+    """The Dispatcher ticks every 120 s; a 30 s countdown needs its own ticks. One-shot, best effort: the timer is the
+    backstop."""
+    if os.environ.get("SEAT_RESTART_NO_TICK"):
+        return
+    for d in delays:
+        try:
+            subprocess.run(["systemd-run", "--user", "--quiet", "--on-active=%d" % d, "systemctl", "--user", "start",
+                            "rm-dispatcher.service"], timeout=10, capture_output=True)
+        except (OSError, subprocess.SubprocessError):
+            pass
 
 
 def _non_text(rec):
@@ -1172,20 +1200,29 @@ def _is_helper_notice(r):
     return isinstance(body, str) and body.lstrip().startswith("<task-notification>")
 
 
+def _goodbye(cfg, rs):
+    """Is this the Conductor's goodbye restart? Owner 2026-11-01: "I want a goodbye that cannot be interrupted by text.
+    Period. Additional text is just written to a handoff but does not stop the countdown. And the countdown should be
+    thirty seconds." So no input of any kind cancels, delays or fails it: goodbye_quiet_s runs from the request, then the
+    window is killed, mid-reply if need be. What came after goodbye reaches the next window (_log_after_goodbye, wake).
+    Only what is not text still holds it: a live helper, the bridge, PAUSE, a running command."""
+    return cfg.get("kind") == "conductor" and rs.get("source") == "request"
+
+
 def cursor_verdict(cfg, rs, sc, now, track=True):
     """Judge one full read of the window's transcript from rs's byte cursor (cursor_scan's dict, or None).
     -> ("cancel", why) | ("hold", why) | ("ok", None).
 
-    The Conductor rule (blind review 2 2026-10-29 P0-1, simplified on the coordinator's direction): after his goodbye
-    the window is restarted only once its transcript has been QUIET for goodbye_quiet_s (240 s) with every record
-    parsed cleanly, and ANY input at all since the goodbye cancels — his, a ring, a task notification, a peer; a
-    malformed record cancels; a torn last record holds. Quiet is judged on two clocks: the newest record timestamp
-    after the cursor, and the Dispatcher's own clock since it last saw the file grow (rs seen_size / quiet_since, so a
-    transcript clock that runs backwards cannot shorten it, review 2 P0-3). That turns the final-fence race into a
-    ten-minute margin. The owner's machine idle clock is never read (owner 2026-10-30: "I really, really need you to
-    strip "when I come back to the machine" as an event for anything changing."; and 2026-10-29: "If I'm typing at
-    the same time it's an acceptable risk.").
+    A goodbye (_goodbye) is a countdown from the request and reads nothing else. A Conductor restart of any other source
+    keeps the quiet rule: goodbye_quiet_s of transcript silence on two clocks, the newest record timestamp after the
+    cursor and the Dispatcher's own clock since it last saw the file grow (rs seen_size / quiet_since, so a transcript
+    clock that runs backwards cannot shorten it, review 2 P0-3); any input or malformed record cancels; a torn last
+    record holds. The owner's machine idle clock is never read (owner 2026-10-30: "I really, really need you to strip
+    "when I come back to the machine" as an event for anything changing.").
     A doorbell seat keeps the old rule: only his input cancels; no cursor -> its tail check alone."""
+    if _goodbye(cfg, rs):
+        left = (cfg.get("goodbye_quiet_s") or 0) - (now - rs.get("ts", now))
+        return ("hold", "goodbye countdown: %d s left" % left) if left > 0 else ("ok", None)
     conductor = cfg.get("kind") == "conductor"
     off = rs.get("tx_offset")
     if off is None:
@@ -1270,7 +1307,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
                      "the window's session changed or is gone (%s)" % ((cur or {}).get("sessionId")))
     tx = ro["tx"](seat, cur)
     after = rs.get("cancel_after", rs["ts"])
-    if tx and tx.get("last_user_at") and tx["last_user_at"] > after:
+    goodbye = _goodbye(cfg, rs)
+    if not goodbye and tx and tx.get("last_user_at") and tx["last_user_at"] > after:
         return _cancel(rs, seat, "new input in the window at %s, after the request" % _iso(tx["last_user_at"]), now,
                        act)
     hard = rs.get("hard") is True
@@ -1322,9 +1360,9 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         rs["work_from"] = max([rs.get("work_from", rs["ts"])] + [int(h.get("last_at") or 0) + 1 for h in hs])
     work = ro["work"](seat, rs.get("work_from", rs["ts"])) if ro.get("work") else None
     nw = None if deferred and (live or hs is None) else new_work(work, rs.get("ticket"), drain=deferred)
-    if nw and not sized:                 # forced: taking work is exactly what a busy window does, and the limit stands
+    if nw and not sized and not goodbye:  # forced: taking work is exactly what a busy window does, and the limit stands
         return _cancel(rs, seat, _work_why(nw), now, act)
-    if now - rs["ts"] < cfg["grace_s"]:
+    if not goodbye and now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
         return
     holds = [cursor_hold] if cursor_hold else []
@@ -1376,8 +1414,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         act(do="restart_hold", seat=seat, why="; ".join(holds))
         return
     rs.pop("held_since", None)
-    quiet = (cur.get("status") == "idle" and tx and killable_turn(tx)
-             and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
+    quiet = goodbye or (cur.get("status") == "idle" and tx and killable_turn(tx)
+                        and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
     if not quiet and deferred and not hard:   # its last helper's notice wakes it: working that out is no failed request
         rs.setdefault("busy_since", now)
         why = "no boundary yet (status %s, last record %s)" % (cur.get("status"), (tx or {}).get("last_kind", "unreadable"))
@@ -1601,7 +1639,8 @@ def execute(a, sch, st, apply, now, fx=None):
         return "refused: " + why
     # the re-check right before the kill (conductor B3.3; GPT review HIGH 1): status must SAY idle, and the transcript,
     # helpers and bridge are read again — anything off puts it back to pending, where decide() re-judges next tick
-    holds = [] if sf.get("status") == "idle" else ["the window's status is %s" % sf.get("status")]
+    goodbye = _goodbye(config(sch).get(seat) or {}, rs)
+    holds = [] if goodbye or sf.get("status") == "idle" else ["the window's status is %s" % sf.get("status")]
     holds = holds or fx.get("recheck", recheck_at_kill)(seat, sch, rs, sf)
     if holds:
         rs.update(state="pending", busy=rs.get("busy", 0) + 1)
@@ -1626,13 +1665,11 @@ def execute(a, sch, st, apply, now, fx=None):
     # window accepts from here on is still recovered by the new window's wake (it reads from the record's cursor). In
     # this order, each read AFTER the one before: the transcript from the cursor (it must not have grown since the
     # tick that claimed), and last the window's status. A Conductor got here only
-    # after goodbye_quiet_s of transcript silence (cursor_verdict), so the gap left between the status read and the
-    # signal (milliseconds) needs him to submit within it after ten silent minutes: a margin, not a proof (no Claude
-    # Code API admits input atomically against a kill).
+    # after its countdown (cursor_verdict); what the window took after the goodbye is read back from that cursor.
     late = fx.get("final", final_fence)(seat, sch, rs, sf)
     if not late:
         sf2 = fx.get("session_file", session_file)(a["pid"]) or {}
-        if sf2.get("status") != "idle":
+        if sf2.get("status") != "idle" and not goodbye:
             late = ["the window's status is %s at the fence" % sf2.get("status")]
         elif sf2.get("sessionId") != sf.get("sessionId"):      # /clear or /resume under the same pid: not the one asked for
             late = ["the window now runs session %s at the fence" % sf2.get("sessionId")]
@@ -1648,7 +1685,19 @@ def execute(a, sch, st, apply, now, fx=None):
                   cooldown_until=now + rs.get("cooldown_s", DEFAULTS["cooldown_s"]))
         return "refused: " + how
     rs.update(state="killed", killed_at=kt, kill=how, window_s=rec["window_s"])
+    if goodbye:
+        _log_after_goodbye(seat, config(sch).get(seat), rs)
     return "killed pid %s (%s)" % (a["pid"], how)
+
+
+def _log_after_goodbye(seat, cfg, rs):
+    """Whatever he sent after his goodbye, into the Conductor log the next window reads. The wake replays it too."""
+    try:
+        msgs = human_since_offset(rs.get("tx_path"), rs.get("tx_offset")) or []
+        note = "\n".join("- " + " ".join(_text(r).split()) for r in msgs)
+        append_seat_log(seat, "AFTER GOODBYE", note, cfg=cfg)
+    except Exception:  # noqa: BLE001 - the window is already dead; the wake still reads these from the transcript
+        pass
 
 
 def _do_tell(a, st, seat, apply, now, fx):
@@ -1761,7 +1810,10 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
     path = transcript_for(sf, cfg)
     tx = tx_summary(path or "")
     holds = []
-    if not tx:
+    goodbye = _goodbye(cfg, rs)
+    if goodbye:
+        pass
+    elif not tx:
         holds.append("transcript unreadable")
     elif (tx.get("last_user_at") or 0) > rs.get("cancel_after", rs.get("ts", 0)):
         holds.append("new input at %s" % _iso(tx["last_user_at"]))
@@ -1795,7 +1847,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         holds.append("ledger shard UNMEASURED")
     else:
         nw = new_work(evs, rs.get("ticket"), drain=rs.get("deferred") is True)
-        if nw and rs.get("source") not in FORCED:
+        if nw and rs.get("source") not in FORCED and not goodbye:
             holds.append(_work_why(nw))
     if rs.get("deferred") is True:       # a helper's last append can land between the verdict and the kill
         unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat)
@@ -2084,9 +2136,11 @@ def cmd_request(args):
     in_ts, in_rec, in_end, size = lh or (None, None, None, None)   # a doorbell seat keeps its tail check alone
     if cfg.get("kind") == "conductor":
         import goodbye_phrase as GP
-        if in_rec is None or not GP.is_goodbye(_text(in_rec), GP.phrases(cfg)):
-            print("seat_restart: REFUSED: his last message (%s) is not the goodbye: %r. He wrote after the goodbye: "
-                  "answer him; this window stays open." % (_iso(in_ts), _text(in_rec or {})[:160]))
+        phr = GP.phrases(cfg)
+        in_ts, in_rec, in_end = last_goodbye(path, lambda t: GP.is_goodbye(t, phr)) or (None, None, None)
+        if in_rec is None or (lh[0] or 0) - (in_ts or 0) > cfg["request_max_age_s"]:   # clock-free: a goodbye he talked past
+            print("seat_restart: REFUSED: no goodbye of his within %d s of his last message; this window stays open."
+                  % cfg["request_max_age_s"])
             return 3
         cursor = in_end
     else:
@@ -2110,8 +2164,10 @@ def cmd_request(args):
                  "; shard: %s" % unpub if unpub else "",
                  helper_names(live) or "an unreadable helper inventory", cfg["hold_alarm_s"]))
         return 0
-    wait = ("once this window has been quiet for %d s (goodbye_quiet_s) and nothing holds it. End your turn now; ANY "
-            "new input cancels it" % cfg["goodbye_quiet_s"]) if cfg.get("kind") == "conductor" else (
+    if cfg.get("kind") == "conductor":
+        _tick_soon(cfg["goodbye_quiet_s"] + 2, cfg["goodbye_quiet_s"] + 32)
+    wait = ("in %d s (goodbye_quiet_s). No text stops it; anything he sends goes to the next window. End your turn now"
+            % cfg["goodbye_quiet_s"]) if cfg.get("kind") == "conductor" else (
             "after a %d s grace once this turn has ended and nothing holds it. End your turn now; a new prompt from "
             "the owner cancels it" % cfg["grace_s"])
     print("RESTART REQUESTED for %s (%s; context %s tokens, backstop %d%s). The Dispatcher acts %s."

@@ -345,10 +345,9 @@ def test_old_window_dies_after_the_record_message_at_fence():
     s.owner_says()
     sigkill(s.window)
     check(s.resume("after_record", d) == 0, "death 1, input at the fence: the tick ends")
-    check(s.record().get("aborted"), "the fence read his message and aborted the record")
-    rs, _ = s.tick()
-    check(rs["state"] == "killed" and not s.record().get("aborted"),
-          "%s: the next tick replaces the aborted record, the window is dead (%s)" % (GAP_DEAD, rs["state"]))
+    check(not s.record().get("aborted"), "the fence ignores his message: a goodbye cannot be interrupted by text")
+    rs = s.state()["seat_restart"][s.seat]
+    check(rs["state"] == "killed", "the goodbye proceeds to the kill despite his message (%s)" % rs["state"])
     p, out = s.tile()
     check(wait_for(os.path.join(s.dir, "fresh_up")) and MSG in read(out), "%s: relaunched, and the wake read him" % GAP_DEAD)
     sigkill(p)
@@ -401,20 +400,18 @@ def test_dispatcher_dies_after_the_kill():
     sigkill(p)
 
 
-def test_dispatcher_dies_then_input_cancels_and_the_window_quits():
+def test_dispatcher_dies_then_input_does_not_cancel_the_goodbye():
+    # owner 2026-11-01: a goodbye cannot be interrupted by text. Input after the Dispatcher died changes nothing:
+    # the restarted Dispatcher still claims the kill, and his text is read by the next window's wake.
     s = Scene("DEATHF", wake="live")
     d = s.dispatcher("after_record")
     sigkill(d)
-    s.owner_says()                  # the old window is alive: it answers him, and the restart must be off
+    s.owner_says()
     append(s.tx, end_rec(time.time()))
-    rs, _ = s.tick()
-    check(rs["state"] == "cancelled", "the input cancels the restart (%s)" % rs["state"])
-    check(s.record().get("aborted"), "%s: the cancel aborts the record" % GAP_STALE)
-    sigkill(s.window)               # he quits the window, inside the tile's window
-    p, _ = s.tile()
-    check(p.wait(timeout=30) == 3, "%s: a cancelled restart does not relaunch" % GAP_STALE)
-    check(MSG not in s.fresh_by_hand(s.gen) and not os.path.exists(os.path.join(s.dir, "fresh_up")),
-          "%s: and nothing replays what the old window already answered" % GAP_STALE)
+    rs, acts = s.tick()
+    check(rs["state"] != "cancelled" and any(a["do"] == "restart_kill" for a in acts),
+          "his text does not cancel the goodbye: the restart is claimed (%s %s)" % (rs["state"], [a["do"] for a in acts]))
+    check(not s.record().get("aborted"), "%s: the record is not aborted by his text" % GAP_STALE)
 
 
 def test_dispatcher_dies_then_the_window_dies_alone():

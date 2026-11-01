@@ -34,12 +34,13 @@ with open(ROOT / "src/RimMandrake/rimflow/dispatcher_schedule.json", encoding="u
 PH = G.phrases(LIVE)
 
 YES = ["goodbye", "Goodbye!", "  bye. ", "BYE", "gn", "GN!", "good night", "Good night!!", "good-night",
-       "done for now.", "Done for now", "that's all", "That’s all.", "thats all", "goodbye\n", "good night 🌙"]
+       "done for now.", "Done for now", "that's all", "That’s all.", "thats all", "goodbye\n", "good night 🌙",
+       "This is moronic. Goodbye.", "fix the hose\ngoodbye"]
 NO = ["goodbye to the old pipe system", "bye the way, check the hose", "ok bye", "that's all for the hose, now do Y",
       "gnome", "", "   ", "done", "good", "good night of testing ahead?", "say goodbye to FOUNDRY",
       "no goodbye yet", "goodbye? not yet", "bye bye pipes 2", "done for now with art; next: hoses",
       # review P1-6: non-ASCII words are words, not punctuation
-      "goodbye 取消", "bye ñandú", "さようなら bye", "gn сейчас"]
+      "please check that. goodbye?", "tell Foundry. bye", "do that. that's all", "goodbye 取消", "bye ñandú", "さようなら bye", "gn сейчас"]
 
 
 def test_phrases():
@@ -90,7 +91,7 @@ def test_live_goodbye_restart_is_on_and_backstop_off():
     for need in ("--owner-said", "--for OWNER", "./publish", "conductor/log.md", "Closed out:",
                  "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye"):
         check(need in m, "live: the close-out names %r" % need)
-    check("Fresh Conductor after four quiet minutes" in m and "off pending your choice" not in m,
+    check("Fresh Conductor in thirty seconds" in m and "off pending your choice" not in m,
           "live: the reply line promises the fresh window, not the off notice")
 
 

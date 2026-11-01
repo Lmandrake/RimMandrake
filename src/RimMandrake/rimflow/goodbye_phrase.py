@@ -11,6 +11,8 @@ import re
 DEFAULT_PHRASES = ("goodbye", "good bye", "bye", "gn", "good night", "goodnight", "done for now", "thats all")
 _APOS = re.compile(r"['’‘`ʼ]")
 _SEP = re.compile(r"[\W_]+", re.UNICODE)
+_SENTENCE = re.compile(r"[.!?\n]+")
+TRAILING = ("goodbye", "good bye")
 
 
 def norm(text):
@@ -29,5 +31,13 @@ def phrases(cfg, default=DEFAULT_PHRASES):
 
 
 def is_goodbye(text, phr):
+    """His whole message, or (owner 2026-11-01) a last sentence that says goodbye: the text before it goes to the next
+    window. Only the word itself ends a longer message; "bye", "gn" or "that's all" could end an ordinary request."""
     n = norm(text)
-    return bool(n) and n in set(phr or ())
+    if not n:
+        return False
+    if n in set(phr or ()):
+        return True
+    t = (text or "").rstrip()
+    last = _SENTENCE.split(t.rstrip(".! \n"))[-1]
+    return not t.endswith("?") and len(_SENTENCE.split(t)) > 1 and norm(last) in TRAILING
