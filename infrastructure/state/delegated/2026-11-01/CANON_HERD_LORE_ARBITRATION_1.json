@@ -1,0 +1,589 @@
+{
+ "subject": "CANON_HERD_LORE_ARBITRATION_1",
+ "item": "CANON_HERD_LORE_ARBITRATION_1",
+ "brief": "design/RimStarWars/canon_herd_lore/judge/judge_prompt_1.txt (rounds 1-3 blind to the maker draft) and judge_prompt_4.txt (fresh judge: rebuttals, GROUP map, morphs)",
+ "judge_model": {
+  "gpt": "gpt-6.1-sol via gpt_consult"
+ },
+ "maker": "relentless builder (Claude)",
+ "group_rule": {
+  "verdict": "REDO",
+  "rule": "Established wild schools, hives, flocks, colonies, groups, and pairs map to herd; predators explicitly attacking together map to pack. Territoriality, predation, and defensive cooperation alone do not establish pack behavior. Conditional benefits of grouping do not establish actual wild grouping; those cases remain leave default.",
+  "maker_rule": "GROUP maps to herd, except a predator that attacks together, which maps to pack; pairs stay herd"
+ },
+ "rows": [
+  {
+   "subject": "Lylek",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Queen-led hordes establish grouping; the supplied statement does not establish coordinated predatory attacks.",
+   "round": 2
+  },
+  {
+   "subject": "Kinrath",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "A matriarch-led hive establishes grouping. Territoriality does not establish pack hunting.",
+   "round": 2
+  },
+  {
+   "subject": "Krykna",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "The supplied hive evidence supports grouping, without establishing joint attacks. Difficulty taming them is irrelevant.",
+   "round": 2
+  },
+  {
+   "subject": "Neebray",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Pods establish grouping; no joint predatory attacks are supplied.",
+   "round": 2
+  },
+  {
+   "subject": "Mee",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Traveling in schools of thousands explicitly establishes grouping.",
+   "round": 2
+  },
+  {
+   "subject": "Faa",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "The school statement supplies grouping evidence independently of the pet trade.",
+   "round": 2
+  },
+  {
+   "subject": "Peko-peko",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Large flocks and habitual paired travel both establish grouping.",
+   "round": 2
+  },
+  {
+   "subject": "Porg",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "The collective-group statement supports grouping, although it supplies no typical size.",
+   "round": 2
+  },
+  {
+   "subject": "Voorpak",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Explicitly living in small wild colonies establishes grouping.",
+   "round": 2
+  },
+  {
+   "subject": "Ronto",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Typically occurring in small groups establishes grouping; Legends counts.",
+   "round": 2
+  },
+  {
+   "subject": "Gizka",
+   "verdict": "REDO",
+   "decision": "leave default",
+   "maker_draft": "herd",
+   "confidence": "high",
+   "basis": "The \"temporary colony of gizka\" aboard the Ebon Hawk describes a shipboard infestation, not usable evidence of wild social life.",
+   "round": 1
+  },
+  {
+   "subject": "Dalgo",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Igitz",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Puffer pig",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "maker_draft": "herd",
+   "confidence": "high",
+   "basis": "\"Puffer pigs were raised as livestock for consumption by residents of the planet Batuu\" directly satisfies the standing livestock ruling.",
+   "round": 1
+  },
+  {
+   "subject": "Convor",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Working in pairs establishes grouping. Joint defense against predators is not joint predatory attack.",
+   "round": 2
+  },
+  {
+   "subject": "Bolotaur",
+   "verdict": "REDO",
+   "decision": "leave default",
+   "maker_draft": "herd",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Gelagrub",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Worrt",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "maker_draft": "solitary",
+   "confidence": "low",
+   "basis": "Inferring individual ambush hunting from \"a worrt would settle into the sand\" and \"wait for a prey to pass by it\" supports solitary, although solitude is not explicit.",
+   "round": 1
+  },
+  {
+   "subject": "Saw-toothed grank",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Jamel",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Orray",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Runyip",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Tee-muss",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "maker_draft": "herd",
+   "confidence": "high",
+   "basis": "\"Tee-muss were a species of domesticated farm animals\" directly satisfies the standing farm-animal ruling.",
+   "round": 1
+  },
+  {
+   "subject": "Gorg",
+   "verdict": "REDO",
+   "decision": "herd",
+   "maker_draft": "leave default",
+   "confidence": "low",
+   "basis": "KEEP on rebuttal: Gorgmonger farms qualify as livestock evidence under the stated rule. Individual sales do not establish solitary behavior, and the supplied burrow text does not say gorgs burrow alone.",
+   "round": 2
+  },
+  {
+   "subject": "Blarth",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Can-cell",
+   "verdict": "REDO",
+   "decision": "leave default",
+   "maker_draft": "herd",
+   "confidence": "high",
+   "basis": "\"Would often congregate at landing pads\" establishes attraction to vehicle sounds, but does not establish a flock or grouping for feeding, protection, or breeding.",
+   "round": 1
+  },
+  {
+   "subject": "Dactillion",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Lava flea",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Blurrg",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "maker_draft": "herd",
+   "confidence": "low",
+   "basis": "“They cost 12000 credits for six or 20000 credits for a herd of 12” supports an inference of managed herd grouping, though it does not establish wild social behavior.",
+   "round": 1
+  },
+  {
+   "subject": "Nuna",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "maker_draft": "herd",
+   "confidence": "high",
+   "basis": "Their adaptability, ease of care and quick egg production “made them popular livestock animals.”",
+   "round": 1
+  },
+  {
+   "subject": "Yobshrimp",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "maker_draft": "herd",
+   "confidence": "low",
+   "basis": "“Fishing families cultivated the foreign yobshrimp for consumption” supports an inference of group aquaculture under the livestock ruling.",
+   "round": 1
+  },
+  {
+   "subject": "Boma",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Loth-cat",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "maker_draft": "solitary",
+   "confidence": "high",
+   "basis": "“Loth-cats led solitary lives, coming together only to mate and raise kits.”",
+   "round": 1
+  },
+  {
+   "subject": "Acklay",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Krayt dragon",
+   "verdict": "REDO",
+   "decision": "leave default",
+   "maker_draft": "solitary",
+   "confidence": "high",
+   "basis": "“The collection of frenzied, mating beasts” establishes a breeding gathering, but supplies no evidence of cooperative hunting or a continuing herd lifestyle.",
+   "round": 1
+  },
+  {
+   "subject": "Greater krayt dragon",
+   "verdict": "REDO",
+   "decision": "leave default",
+   "maker_draft": "solitary",
+   "confidence": "high",
+   "basis": "“Swimming beneath the sands in search of prey to ambush and devour” describes hunting technique without establishing lone hunting or social grouping.",
+   "round": 1
+  },
+  {
+   "subject": "Dragonsnake",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "maker_draft": "solitary",
+   "confidence": "low",
+   "basis": "“After snatching its prey, a dragonsnake would then dive back under the water” supports an inference of lone ambush hunting, although solitary living is not explicit.",
+   "round": 1
+  },
+  {
+   "subject": "Sarlacc",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "maker_draft": "solitary",
+   "confidence": "high",
+   "basis": "“Once sarlaccs reached their maturity after 30,000 years, they would burrow themselves nearly 100 meters below the surface,” establishing sessile adults.",
+   "round": 1
+  },
+  {
+   "subject": "Sando aqua monster",
+   "verdict": "REDO",
+   "decision": "leave default",
+   "maker_draft": "solitary",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Opee sea killer",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "maker_draft": "solitary",
+   "confidence": "low",
+   "basis": "“They lay in wait and clung motionless to rocky crags” supports an inference of lone ambush hunting, although solitary living is not explicit.",
+   "round": 1
+  },
+  {
+   "subject": "Colo claw fish",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "maker_draft": "solitary",
+   "confidence": "low",
+   "basis": "“Colo claw fish hid in tunnels along Naboo's oceanic floor where they can lay still for hours waiting for prey” supports an inference of lone ambush hunting, although solitary living is not explicit.",
+   "round": 1
+  },
+  {
+   "subject": "Laa",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "maker_draft": "herd",
+   "confidence": "low",
+   "basis": "The caption \"A group of laas, one about to eat a yobshrimp\" supports an inference of schooling, although persistent grouping is not stated.",
+   "round": 1
+  },
+  {
+   "subject": "Dianoga",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "REDO on rebuttal: One family in one pool and a colony of crash survivors do not establish a general wild grouping habit. Size, diet, and tribal culture do not establish herd or pack behavior.",
+   "round": 2
+  },
+  {
+   "subject": "Urusai",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "The statement \"The urusai nested in the adult sarlacc's large toothy maws\" describes nesting habitat without establishing communal nesting or group hunting.",
+   "round": 1
+  },
+  {
+   "subject": "Fanback",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Jimvu",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Wraid",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Frequent clusters of two to six establish grouping; no coordinated predatory attacks are supplied. The invented alpha inherits this social classification.",
+   "round": 2
+  },
+  {
+   "subject": "K'lor'slug",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "\"They were known to invade the darkest spots on unsanitary space vehicles and breed\" establishes infestation and reproduction without establishing social grouping or cooperative hunting.",
+   "round": 1
+  },
+  {
+   "subject": "Shiro",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Whisper bird",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "maker_draft": "herd",
+   "confidence": "high",
+   "basis": "\"The birds lived in the moon's rain forests, silently traveling in flocks and roosting in the massassi trees that grew there\" explicitly establishes flocking.",
+   "round": 1
+  },
+  {
+   "subject": "Granite slug",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Borcatu",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Blixus",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "\"They dragged insufficiently vigilant individuals into lagoons to eat them\" describes predation without establishing solitary or cooperative hunting.",
+   "round": 1
+  },
+  {
+   "subject": "Ollopom",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "Qormot",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "confidence": "high",
+   "basis": "Small territorial prides establish grouping. Neither territoriality nor the broad wiki category establishes coordinated predatory attacks.",
+   "round": 2
+  },
+  {
+   "subject": "Skalder",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "\"A group of Galactic Republic clone troopers led by Jar Jar Binks managed to mount and ride wild skalder\" describes the riders' grouping without establishing the creatures' normal social life.",
+   "round": 1
+  },
+  {
+   "subject": "Great Devourer",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "\"The Great Devourer was a Gorax\" identifies an individual without establishing a solitary lifestyle.",
+   "round": 1
+  },
+  {
+   "subject": "Ysalamiri",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "confidence": "high",
+   "basis": "Statements about what happens when many are grouped establish a collective effect, not a wild grouping habit. One pet at a livestock exchange establishes neither farming nor wild grouping. This requires an exception to the requested binary row enum.",
+   "round": 2
+  },
+  {
+   "subject": "Brain worm",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "maker_draft": "leave default",
+   "confidence": "high",
+   "basis": "canon silent",
+   "round": 1
+  },
+  {
+   "subject": "RSW_ElderSando",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "basis": "Inherit the parent's social verdict; the invented morph adds no independent evidence.",
+   "round": 2
+  },
+  {
+   "subject": "RSW_StormSando",
+   "verdict": "KEEP",
+   "decision": "leave default",
+   "basis": "Inherit the parent's social verdict; the invented morph adds no independent evidence.",
+   "round": 2
+  },
+  {
+   "subject": "RSW_CrimsonOpee",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "basis": "Inherit the Opee parent's solitary verdict.",
+   "round": 2
+  },
+  {
+   "subject": "RSW_AbyssalColo",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "basis": "Inherit the Colo parent's solitary verdict.",
+   "round": 2
+  },
+  {
+   "subject": "RSW_ThornbackColo",
+   "verdict": "KEEP",
+   "decision": "solitary",
+   "basis": "Inherit the Colo parent's solitary verdict.",
+   "round": 2
+  },
+  {
+   "subject": "RSW_WraidAlpha",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "basis": "Inherit Wraid grouping. The invented alpha designation supplies no additional social lore.",
+   "round": 2
+  },
+  {
+   "subject": "RSW_LongtailGorg",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "basis": "Inherit the generic Gorg verdict as a design convention. The long-tailed species reference supplies no separate social behavior.",
+   "round": 2
+  },
+  {
+   "subject": "RSW_FrilledGorg",
+   "verdict": "KEEP",
+   "decision": "herd",
+   "basis": "Inherit the generic Gorg verdict as a design convention; the donor name supplies no separate social evidence.",
+   "round": 2
+  }
+ ]
+}

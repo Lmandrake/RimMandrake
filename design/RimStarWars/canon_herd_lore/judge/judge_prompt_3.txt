@@ -1,0 +1,149 @@
+You are an independent judge. You did not make this data; decide from it alone.
+TASK (RimWorld Star Wars creature mod, item CANON_HERD_LORE_ARBITRATION_1): for each creature below, Wookieepedia leaves its social life UNCLEAR. Decide one of exactly four values:
+- "herd": lives/moves in groups for grazing, protection, breeding or as a flock/school/colony/livestock. In game: race herdAnimal=true (vanilla JobGiver_WanderHerd keeps them wandering together), wildGroupSize above 1; every herd animal also gets gender art.
+- "pack": a PREDATOR that hunts or attacks in groups. In game: wildGroupSize above 1 with predator=true. NOT RimWorld's race field packAnimal, which only means a caravan load-carrier: ignore that field for this question.
+- "solitary": canon describes a lone lifestyle, lone ambush hunting, or a sessile individual. In game: wildGroupSize 1, not herdAnimal.
+- "leave default": canon gives no usable basis either way; the def keeps today's values and the biome's group-size walk (a separate later pass) sets the number.
+CONSTRAINTS (standing rulings):
+- Herd/pack status is a delegated design call (delegation_policy section 1). Owner, 2026-10-08, by card: each creature is settled at its biome's group-size walk, not as one list; so give a verdict that a biome walk can consume, and do not choose numbers.
+- Do not invent lore. "leave default" is the honest answer when canon is silent; do not guess herd from "it is a big herbivore" alone. Domestication alone (mount, pet) is NOT evidence of grouping; but "raised as livestock / farm animals" is, since livestock is kept in groups. Beasts of burden alone are not.
+- A captive arrangement (arena pair, a pet, a zoo) is not evidence of wild social life.
+- Canon and Legends both count as lore.
+- The "current def" values are context only (what the game does today), not evidence.
+- If your answer rests on an inference rather than a quote, say so and set confidence low.
+OUTPUT: only a JSON array, one object per creature, keys: "subject" (exact), "decision" (one of the four strings), "confidence" ("high"|"low"), "basis" (one sentence quoting the text it rests on, or "canon silent"). If the data truly cannot decide, set "decision":"UNSURE".
+CREATURES:
+### Laa
+report domestic: UNCLEAR ""
+report note: Only an image caption "A group of laas". 
+current def: [{"def": "RSW_Laa", "exists": true, "herdAnimal": "true", "predator": null, "baseBodySize": "0.4", "wildGroupSize": ["3~6"], "biomes": []}, {"def": "RSW_LaaJuv", "exists": true, "herdAnimal": null, "predator": null, "baseBodySize": null, "wildGroupSize": ["unset(1)"], "biomes": ["RUT_Miasma", "RM_Miasma"]}]
+group-word sentences: ["thumb|left|250px|A group of laas, one about to eat a yobshrimp", "In 20 BBY, laa, along with ray, faa and mee, were present in a holding tank aboard the Titavian IV, an exploration vessel formerly operated by the Intergalactic Zoological Society on Mycroft whose mission was to gather and catalog specimens from across the gal"]
+page text: [Laa] The Laa, also known as the Fantailed Laa fish, were a species of scalefish found on the planet Naboo and the moon Jedha. They lived alongside six other scalefish species in the waters around the city Otoh Gunga in Lake Paonga, and could also be found in the Abyss, where they were preyed upon indiscriminately by the large colo claw fish and opee sea killers that dwelt there. Tiny yobshrimp lived in the gills of tee scalefish, and they were then licked out and eaten by laa. ==Biology and appearance== Laa had orange and peach colored skin with an elongated snout. They had two antennalike appendages located between their yellow eyes that streamed behind their body. The tails that were used for propulsion were curved.
+[Laa/Legends] The laa was a scalefish native to the oceans of Naboo. ==Biology and appearance== The typical laa was a green-scaled fish with a long snout and a broad tail. The laa also had a long, thin dorsal fin tipped with a bio-luminescent bulb. This bulb helped attract the favorite prey of the laa, the yobshrimp. Laa also picked out yobshrimp from the gills of tee, which, despite being voracious, did not harm the laa for the yobshrimp were parasitic to the tee.
+Its own predators included sees and opee sea killers. ==Behavior== Like several other fish, the laa were attracted to the bright lights of Otoh Gunga, but learned by experience not to pass through the membrane openings to the air-filled domes.
+
+### Dianoga
+report domestic: UNCLEAR ""
+report note: "A family of dianoga inhabited a pool" (one anecdote). 
+current def: [{"def": "RSW_Dianoga", "exists": true, "herdAnimal": null, "predator": "true", "baseBodySize": "4.0", "wildGroupSize": ["unset(1)"], "biomes": []}]
+group-word sentences: ["The trash squid was part of the Dianoga family.", "The mating process involved partners exchanging eggs with one another.", "The normal skin color of a mature individual was a deep purple, but dianoga could change their color and patterns for active camouflage.", "A family of dianoga inhabited a pool in the Badlands of the junkyard world Bracca during the High Republic Era.", "When, in 232 BBY, a pair of Nihil pirates attempted to conscript four Pikpik scrappers, the captives' friend Eren Kitt and a trio of Jedi Initiates accidentally disturbed the family while crossing the pool on a skiff.", "One of their number, the group's demolitions expert Wrecker, briefly wrestled with the dianoga when he found himself dangling from a cable over the being's watery home.", "Dianoga that survived the impact established a colony in the moon's oceans, invasively joining Kef Bir's ecosystem."]
+page text: [Dianoga] Dianoga were large omnivorous cephalopods that hailed from the planet Vodran in the Si'Klaata Cluster, located in Hutt Space region of the galaxy. Although primitive, they were actually sentient, and some dianoga were sensitive to the Force. ==Biology and appearance== , a juvenile dianoga]]
+Dianoga were sentient cephalopods characterized by seven suckered tentacles, an eyestalk, a mouth of sharp teeth, and several hearts. They could grow to a length of 7 to 10 meters. Their blood had a blue tint. Dianoga were omnivores, feeding on smaller animals like fish and crabs, but also feed on bones and aquatic plants. The trash squid was part of the Dianoga family.
+Although they could survive in the open air for short periods of time, dianoga were entirely dependent on water, lest they completely dried out. While physically hermaphroditic, dianoga could choose to identify as female, diangous (the most common gender), or male. The mating process involved partners exchanging eggs with one another. The normal skin color of a mature individual was a deep purple, but dianoga could change their color and patterns for active camouflage. They could notably turn black, gray, and even transparent. They also had the ability to regenerate lost limbs. They had excellent hearing. ==Society and culture== Dianoga had a primitive tribal culture. When they were not feeding, they often spoke a deep, complex humming language. Because its reverberations carried so completely in the water, that language scared away all nearby prey. Their people venerated water, which they called "the Great Cleanser When It Was Time to Be Cleansed," and believed in reincarnation.
+[Dianoga/Legends] Dianoga were large cephalopods, capable of growing up to ten meters in length, though most specimens grew to app
+
+### Urusai
+report domestic: UNCLEAR ""
+report note: Nests in sarlacc maws. 
+current def: [{"def": "RSW_Urusai", "exists": true, "herdAnimal": "true", "predator": "true", "baseBodySize": "0.75", "wildGroupSize": ["1~3"], "biomes": ["RUT_AridShrubland", "RUT_FeverWood", "RM_FeverWood", "RM_LeaningScrub"]}]
+group-word sentences: ["Urusai were a type of reptavian native to the desert planet Tatooine in the Arkanis sector of the Outer Rim Territories.", "The urusai nested in the adult sarlacc's large toothy maws, creating nests of plant-matter for their eggs and young among the host's teeth.", "Females had two wings, while males had four&mdash;the larger rear wings were used for flying, while the smaller front ones were strictly for mating displays.", "Balancing on their strong tails, they wooed prospective mates, who laid two to three eggs per brood.", "They formed a symbiotic relationship with Sarlaccs (specifically with the gigantic females) - urusai clean the teeth and tentacles of the female Sarlacc while the female Sarlacc offers up killed food to her flying reptavian custodians, which also may nest near"]
+page text: [Urusai] Urusai were four-winged reptavians native to the desert planet Tatooine. They ate sarlaccs that were in the spore stage of their life cycle, but shared a symbiotic relationship with adult sarlaccs, picking their teeth and tentacles clean while nesting amid the much larger creatures' toothy maws. ==Biology and appearance== Urusai were a type of reptavian native to the desert planet Tatooine in the Arkanis sector of the Outer Rim Territories. They were blue and yellow in color and possessed four wings with talons along the outer edge and a white underside. Their fan-shaped tail similarly had spikes along its edge and a white underside, while their jowly, beaked faces had red eyes. Urusai lay large purple eggs. ==Behavior== Urusai shared a symbiotic relationship with the sarlacc species, although they ate paired sets of sarlaccs in the spore stage of their life cycle as they emerged from the desert sands. Those sarlaccs that did reach adulthood and bury themselves in the sand then benefited from bold urusai-now tiny in size relative to the adult sarlaccs-that kept a sarlacc's teeth and tentacles clean in exchange for food.
+The urusai nested in the adult sarlacc's large toothy maws, creating nests of plant-matter for their eggs and young among the host's teeth. The adult urusai then fed upon carrion caught in the maw, including eopie corpses, perching on the tentacles and teeth of the sarlacc. The sarlaccs relied on this act, as it rid their bodies of bacteria before disease could take root. In return, it provided a much-needed food source for the urusai, who would have otherwise struggled to survive in Tatooine's barren deserts.
+[Urusai/Legends] Native to Tatooine, the urusai was a yellow-and-blue reptavian that feasted upon carrion (often to the point of being to
+
+### Fanback
+report domestic: UNCLEAR ""
+report note:  
+current def: [{"def": "RSW_Fanback", "exists": true, "herdAnimal": null, "predator": "true", "baseBodySize": "2.0", "wildGroupSize": ["1~2"], "biomes": ["RUT_WeepingStones", "RM_WeepingStones"]}]
+group-word sentences: []
+page text: [Fanback] The fanback was a cold-blooded amphibian from Naboo. Each fanback had a big dorsal spine along with a sensitive snout.
+Fanbacks were carnivores and had no problems eating the egg-eaters themselves.
+Soon after 32 BBY, the Gungans transported fanbacks and other animals to the moon of Ohma-D'un to try and establish an ecosystem. Most of the flora and fauna of Ohma-D'un, however, was destroyed by Separatists during the Battle of Ohma-D'un.
+
+### Jimvu
+report domestic: UNCLEAR ""
+report note:  
+current def: [{"def": "RSW_Jimvu", "exists": true, "herdAnimal": "true", "predator": null, "baseBodySize": "2.0", "wildGroupSize": ["4~8"], "biomes": ["RUT_Desert", "RM_LongShade"]}]
+group-word sentences: []
+page text: [Jimvu] The jimvu was a large, agile, six-legged reptilian creature native to the planet Naboo. A capable runner due to their six legs, they were considered defenseless from predators if not for their speed and their beak nose. The neck of a jimvu was covered in a row of short knobs. Their predators were the veermok and narglatch, both of which could be found in the Gungan swamps of Naboo.
+
+### K'lor'slug
+report domestic: UNCLEAR ""
+report note:  
+current def: [{"def": "RSW_Klorslug", "exists": true, "herdAnimal": "true", "predator": "true", "baseBodySize": "1.5", "wildGroupSize": ["3~6"], "biomes": ["RUT_Greentide", "RM_Greentide"]}]
+group-word sentences: ["They were speculated to be swamp-dwellers from the Outer Rim Territories."]
+page text: [K'lor'slug] K'lor'slugs were a species whose appearance was used for one of the holographic pieces in the game dejarik. Pink, tubular beasts, they had suction cup-like mouths and sharp teeth, and were clawed, multilimbed creatures considered to be fearsome and nightmarish. They were speculated to be swamp-dwellers from the Outer Rim Territories.
+By around 33 BBY, a k'lor'slug had been stolen from a zoo on Valo and taken to Nar Shaddaa, where it was intended to be sold on to a buyer assembling a set of livin
+[K'lor'slug/Legends] K'lor'slugs were dangerous vermiforms native to the swamps of Noe'ha'on. They were also found on Korriban and Taris. ==Biology and Appearance== ]]
+K'lor'slugs were large worm-like creatures that possessed a serpentine body propelled by many dangerously-edged legs. The mouth was a gaping circular maw filled with concentric rings of teeth. ==Behavior== K'lor'slugs were carnivorous hunters on their homeworld, possessing keen olfactory and visual senses in addition to a deadly venom. For reproduction, the creatures could lay more than 300 eggs in a single birthing period. When hatched, the young k'lor'slug was immediately ravenous for food.
+In addition to their aggressiveness, these creatures were considered pests aboard starships. They were known to invade the darkest spots on unsanitary space vehicles and breed. When dealing with more than 300 eggs hatching, an infestation aboard a space vehicle would become harder to control-and more potentially fatal-the longer it was tolerated.
+
+### Shiro
+report domestic: UNCLEAR ""
+report note: "very popular with Gungan cooks" - eaten, not kept. 
+current def: [{"def": "RSW_Shiro", "exists": true, "herdAnimal": null, "predator": null, "baseBodySize": "0.5", "wildGroupSize": ["unset(1)"], "biomes": ["RUT_Greentide", "RUT_Miasma", "RM_Greentide", "RM_Miasma"]}, {"def": "RSW_ShiroTrap", "exists": true, "herdAnimal": null, "predator": "true", "baseBodySize": "0.75", "wildGroupSize": ["unset(1)"], "biomes": ["RUT_Greentide", "RUT_TheRot", "RM_Greentide", "RM_TheRot"]}]
+group-word sentences: []
+page text: [Shiro] Shiro were a turtle-like species that could be found on Naboo.
+[Shiro/Legends] Shiros were hard-shelled, benign, slow-moving reptiles native to the Gungan Swamps of Naboo.
+A Shiro's main defense was to retract its head, legs and tail into its spiny shell.
+" retracted into its shell.]]
+They fed on mintri, zaela, grahn vine, chak-root, and occasional mud-dwelling crustaceans and mollusks. Shiros were very popular with Gungan cooks.
+Shiros rolled in mud and collected dirt and seeds between their shell ridges. Tooke-trap plants grew and flourished in these "soil pockets", crea
+
+### Whisper bird
+report domestic: UNCLEAR ""
+report note:  
+current def: [{"def": "RSW_Whisperbird", "exists": true, "herdAnimal": "true", "predator": null, "baseBodySize": "0.4", "wildGroupSize": ["2~6"], "biomes": ["RUT_AridShrubland", "RUT_FeverWood", "RUT_Greentide", "RUT_Miasma", "RM_FeverWood", "RM_Greentide", "RM_LeaningScrub", "RM_Miasma"]}]
+group-word sentences: ["Though hunters themselves, packs of predatory stintaril rodents would sometimes attack and overwhelm whisper birds while they were roosting.", "The birds lived in the moon's rain forests, silently traveling in flocks and roosting in the massassi trees that grew there.", "Following the Battle of Yavin, the collector Breac Slaus tasked a group of spacers to hunt and kill an unreasonable number of whisper birds."]
+page text: [Whisper bird] Whisper birds were a species of golden-colored bird native to the moon Yavin 4. ==Biology and appearance== The whisper bird had a distinct low-pitched call. Their ability to fly silently inspired the name 'whisper bird,' and they used that ability when hunting. Wild whisper birds subsisted on a diet of fish and weeds. Though hunters themselves, packs of predatory stintaril rodents would sometimes attack and overwhelm whisper birds while they were roosting. ==Behavior== The birds lived in the moon's rain forests, silently traveling in flocks and roosting in the massassi trees that grew there. The birds could also be found on Coruscant and Null.
+[Whisper bird/Legends] Whisper birds were energetic avians native to the moon Yavin 4. They were known for their radiant plumage and gained their name due to their seemingly noiseless flight. They used their dexterous tongue to emit their sweet, low-pitched song or call.
+Whisper birds were at home in the trees and water of the jungle moon. They would go quiet when they desired food, which consisted of fish and weeds, as well nectar funnels that grew on vines. As with many other certain-sized small animals native to Ya
+
+### Granite slug
+report domestic: UNCLEAR ""
+report note: Deliberately introduced to Coruscant to eat garbage. 
+current def: [{"def": "RSW_GraniteSlug", "exists": true, "herdAnimal": null, "predator": null, "baseBodySize": "0.2", "wildGroupSize": ["2~4"], "biomes": ["RUT_Cauldron", "RUT_ExtremeDesert", "RM_Cauldron", "RM_Stillsand"]}]
+group-word sentences: []
+page text: [Granite slug] Granite slugs were a type of small slug found on the ecumenopolis Coruscant. The slugs were silica parasites capable of consuming mineral matter, excreting acidic saliva as they moved across the surface of buildings and then consuming the resulting slime using their two mouths. This left behind trails of acid on the buildings that created rune-like scars in the duracrete.
+During the Clone Wars, the Senate Rotunda Preservation Committee, a committee within the Galactic Republic's Galactic Senate,
+[Granite slug/Legends] The granite slug was a silica parasite native to the planet Coruscant that left a corrosive acidic slime wherever it travelled. They were preyed upon by Hawk-bats.
+
+### Borcatu
+report domestic: UNCLEAR ""
+report note:  
+current def: [{"def": "RSW_Borcatu", "exists": true, "herdAnimal": null, "predator": "true", "baseBodySize": "0.4", "wildGroupSize": ["1~3"], "biomes": ["RUT_Wastes", "RM_Wastes"]}]
+group-word sentences: ["By the time of the Galactic Civil War, they could be found on planets from the Core Worlds to the Outer Rim Territories."]
+page text: [Borcatu] Borcatus were a type of creatures that was found in the galaxy.
+[Borcatu/Legends] Borcatu were small, bad-tempered scavengers originally found on the planet of Escabar. Their original habitat was the deserts of Serhan, in the northeastern part of the planet. Beginning circa 150 BBY, when the ports of Escabar were opened to interstellar trade, the creatures began to spread from their homeworld by stowing away on departing starships. By the time of the Galactic Civil War, they could be found on planets from the Core Worlds to the Outer Rim Territories. Though originally desert 
+
+### Blixus
+report domestic: UNCLEAR ""
+report note: One pet (D'Nar's). 
+current def: [{"def": "RSW_Blixus", "exists": true, "herdAnimal": null, "predator": "true", "baseBodySize": "4.0", "wildGroupSize": ["unset(1)"], "biomes": ["RM_Miasma"]}]
+group-word sentences: ["They could be found on Scarif and other watery worlds, where they dragged insufficiently vigilant individuals into lagoons to eat them.", "Its well-muscled underbelly concealed a ghastly gash of a mouth filled with sharp teeth, and a pair of pincer-tipped graspers."]
+page text: [Blixus] Blixus were rare, half-shelled semi-aquatic creatures native to Sljee. ==Biology and appearance== They possessed five tentacles and six sharp legs. They shared a common ancestor with the rathtar, vixus, and sarlacc, all possessing a large maw, tentacles, and a voracious appetite. Each was native to different worlds, and the different species had adapted separately to become great hunters in their specific environments.
+[Blixus/Legends] Blixus were large non-sentient carnivorous cephalopods from an unknown planet of origin. ==Biology and appearance== A horrific monstrosity coated with a half-shelled, articulated carapace, with hard chitin covering its six pick-like legs. Its well-muscled underbelly concealed a ghastly gash of a mouth filled with sharp teeth, and a pair of pincer-tipped graspers. Its most terrifying feature, though, were the five sinewy tentacles that terminated in sucker-lined grasping pads.
+
+### Ollopom
+report domestic: UNCLEAR ""
+report note: One pet in a tank (Dok-Ondar). 
+current def: [{"def": "RSW_Ollopom", "exists": true, "herdAnimal": "true", "predator": null, "baseBodySize": "0.6", "wildGroupSize": ["1~3"], "biomes": ["RUT_WeepingStones", "RM_WeepingStones"]}]
+group-word sentences: ["Their underside featured gnawing teeth and a purple beak, used for eating floating flora; three pairs of clawed limbs that operated more as paddles, used to float atop the water; green fur; and a long fluked tail.", "On their underside, they had gnawing teeth and three pairs of paddle-like claws."]
+page text: [Ollopom] Ollopoms were short, gentle non-sentient herbivores native to the swamps of the planet Naboo. A species of rodent, they were often mistaken for pom petals, a plant that was part of their diet. An ollopom named Ollie was owned by the Ithorian Dok-Ondar on the Outer Rim world of Batuu, given to him as a gift by the pirate Hondo Ohnaka. The Amani Bina included Ollie in her interactive book, Bina's Guide to the Creatures of Batuu, and creature enthusiast Ardis San Tekka wrote on entry on ollopoms fo ==Biology and appearance== Ollopoms were a non-sentient species of short and gentle herbivorous rodent found in the Gungan swamps of the planet Naboo. They were sometimes mistaken for plants, such as the pom petal, which they ate along with other swamp-dwelling plants. This was due to their large, flat heads that resembled the leaves of some aquatic plants, as well as their fur and a series of long, pink, bloom-like hair tendrils. Their underside featured gnawing teeth and a purple beak, used for eating floating flora; three pairs of clawed limbs that operated more as paddles, used to float atop the water; green fur; and a long fluked tail. Their eyes, used to astutely study their surroundings for nearby predators, were light brown, while their skin was pink and yellow-green with purple spots.
+[Ollopom/Legends] Ollopoms were aquatic rodents that lived on the surface of the Gungan Swamps of Naboo.
+These short, gentle, dense, green-furred rodents were camouflaged to blend in with the Pom Petals whose edges they fed upon. On their underside, they had gnawing teeth and three pairs of paddle-like claws. Their flukes were used as rudders. Long, bloom-like tendrils grew from their head follicles to mimic Pom Petals. When Pom Petals bloomed, so did sympathetic ollopom hair blo
+
+### Skalder
+report domestic: UNCLEAR "They were not normally ridden by sentient beings"
+report note:  
+current def: [{"def": "RSW_Skalder", "exists": true, "herdAnimal": "true", "predator": null, "baseBodySize": "4.0", "wildGroupSize": ["3~7"], "biomes": ["RUT_AridShrubland", "RUT_Desert", "RM_Cauldron", "RM_LeaningScrub", "RM_LongShade"]}]
+group-word sentences: ["They were not normally ridden by sentient beings, but were surprisingly fast, and during the Clone Wars a group of Galactic Republic clone troopers led by Jar Jar Binks managed to mount and ride wild skalder during their mission to Florrum."]
+page text: [Skalder] The skalder were a mammalian desert species of herbivorous quadrupeds native to the plains of the planet Florrum. Primarily inhabiting lands filled with acidic geysers, the beasts had to ability to sense when the geysers would soon erupt in order to get to a safe distance. They were not normally ridden by sentient beings, but were surprisingly fast, and during the Clone Wars a group of Galactic Republic clone troopers led by Jar Jar Binks managed to mount and ride wild skalder during their missi
+[Skalder/Legends] The skalder was a herbivorous non-sentient pachydermoid animal native to Doshar fields on Florrum. ==Biology and appearance== Skalders had two tusks protruding from either side of their mouth and a large hump protruding from the base of the neck. They moved with surprising speed on four dense legs with three toes on each foot.
+These creatures also had thick hides to protect them from the acid geysers found on the desert fields they made their homes. A skalder hit by a blaster shot didn't appear to have been much affected due to its thick skin.
+
+### Great Devourer
+report domestic: UNCLEAR ""
+report note: One named individual. 
+current def: [{"def": "RSW_GreatDevourer", "exists": false, "herdAnimal": null, "predator": null, "baseBodySize": null, "wildGroupSize": [], "biomes": []}]
+group-word sentences: ["When the Imperial maintenance technician Tern Koyatta came to Endor to locate a secret Imperial weapons cache, his group was attacked by the Great Devourer.", "thumb|right|250px|Han Solo fleeing a pair of infant sarlaccs on I'vorcia Prime", "Luke described this as being the last mistake that he would ever make, but Jabba was unimpressed and had the group escorted out.", "Upon arrival at the Great Pit of Carkoon, Skywalker, using his recently developed skills as a Jedi Knight, rescued the group, and led to a number of Jabba's guards becoming victims of the sarlacc instead.", "Only rare individuals such as Boba Fett resisted due to his tightly sealed armor.", "==Mating and spawning==", "The pair would produce a number of minuscule larvae, very few of which made it to adulthood.", "The fibrous vessels in the stomachs connected prey together.", "The digestive fluids and the sarlacc's blood traveled through the vessels and into the victims, which were connected in the manner of an electrical current, bringing the victims' minds, thoughts, bodies, and spirits together, keeping them at one with the sarla"]
+page text: [Great Devourer] The Great Devourer was a Gorax.
+
+### Brain worm
+report domestic: UNCLEAR ""
+report note: Parasite; herd/pack not applicable. 
+current def: [{"def": "RSW_BrainWorm", "exists": true, "herdAnimal": null, "predator": null, "baseBodySize": "0.1", "wildGroupSize": ["unset(1)"], "biomes": []}]
+group-word sentences: ["Whilst enslaving the minds of clone troopers, the worms were able to accurately behave as their host to remain undetected and could even access any memory that would further their goals, most notably their knowledge of the best means to immobilize Jedi, thus c", "Other Geonosian queens used the worms in the same way, forcing the infected individuals to serve them.", "Stalking Tano's throughout the ship, the pair fought once more in the bridge as the vessel approached the medical station at a dangerous velocity."]
+page text: [Brain worm] Brain worms were a species of parasitic worm from the planet Geonosis which were capable of entering the body of a host and taking control of it and had the potential to control entire societies. During the Clone Wars between the Galactic Republic and the Confederacy of Independent Systems, the Geonosian Queen Karina the Great used brain worms to control a host of undead Geonosians.
+After Republic forces defeated Karina and her minions, a brain worm managed to infect the clone trooper Scythe and
+[Brain worm/Legends] Brain worms were worm-like parasites from Geonosis that had the capability of controlling minds. They hatched from yellow eggs, and were known to be used by the Geonosian Queen Karina the Great during the Clone Wars on her Geonosian minions. The worms would sometimes enter the host via the nose, and were able to control dead Geonosians. ==Biology== The brain worms tend to control the nervous system of their hosts through the biologically archived memory of the Geonosian queens that used them for certain purposes. Even when the enthraller was dead they could continue to control living beings independently, being able to act as extensions of deceased Geonosian queens. Further, infection granted their hosts the ability to speak Geonosian. The brainwashing trance of the brain worms was so powerful that it could control the corpses of different beings turning them into lifeless zombies, like when the self-proclaimed queen of Geonosis Karina the Great created an army of zombie Geonosians during the Clone Wars to serve her in her room. Brain worms reacted negatively to cold temperatures.

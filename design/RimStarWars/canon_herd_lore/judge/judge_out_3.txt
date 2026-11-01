@@ -1,0 +1,92 @@
+[
+  {
+    "subject": "Laa",
+    "decision": "herd",
+    "confidence": "low",
+    "basis": "The caption \"A group of laas, one about to eat a yobshrimp\" supports an inference of schooling, although persistent grouping is not stated."
+  },
+  {
+    "subject": "Dianoga",
+    "decision": "herd",
+    "confidence": "high",
+    "basis": "\"A family of dianoga inhabited a pool\" directly establishes shared habitation outside captivity."
+  },
+  {
+    "subject": "Urusai",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "The statement \"The urusai nested in the adult sarlacc's large toothy maws\" describes nesting habitat without establishing communal nesting or group hunting."
+  },
+  {
+    "subject": "Fanback",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Jimvu",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "K'lor'slug",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "\"They were known to invade the darkest spots on unsanitary space vehicles and breed\" establishes infestation and reproduction without establishing social grouping or cooperative hunting."
+  },
+  {
+    "subject": "Shiro",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Whisper bird",
+    "decision": "herd",
+    "confidence": "high",
+    "basis": "\"The birds lived in the moon's rain forests, silently traveling in flocks and roosting in the massassi trees that grew there\" explicitly establishes flocking."
+  },
+  {
+    "subject": "Granite slug",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Borcatu",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Blixus",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "\"They dragged insufficiently vigilant individuals into lagoons to eat them\" describes predation without establishing solitary or cooperative hunting."
+  },
+  {
+    "subject": "Ollopom",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Skalder",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "\"A group of Galactic Republic clone troopers led by Jar Jar Binks managed to mount and ride wild skalder\" describes the riders' grouping without establishing the creatures' normal social life."
+  },
+  {
+    "subject": "Great Devourer",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "\"The Great Devourer was a Gorax\" identifies an individual without establishing a solitary lifestyle."
+  },
+  {
+    "subject": "Brain worm",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  }
+]

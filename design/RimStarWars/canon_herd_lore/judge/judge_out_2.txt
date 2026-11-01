@@ -1,0 +1,92 @@
+[
+  {
+    "subject": "Dactillion",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Lava flea",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Blurrg",
+    "decision": "herd",
+    "confidence": "low",
+    "basis": "“They cost 12000 credits for six or 20000 credits for a herd of 12” supports an inference of managed herd grouping, though it does not establish wild social behavior."
+  },
+  {
+    "subject": "Nuna",
+    "decision": "herd",
+    "confidence": "high",
+    "basis": "Their adaptability, ease of care and quick egg production “made them popular livestock animals.”"
+  },
+  {
+    "subject": "Yobshrimp",
+    "decision": "herd",
+    "confidence": "low",
+    "basis": "“Fishing families cultivated the foreign yobshrimp for consumption” supports an inference of group aquaculture under the livestock ruling."
+  },
+  {
+    "subject": "Boma",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Loth-cat",
+    "decision": "solitary",
+    "confidence": "high",
+    "basis": "“Loth-cats led solitary lives, coming together only to mate and raise kits.”"
+  },
+  {
+    "subject": "Acklay",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Krayt dragon",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "“The collection of frenzied, mating beasts” establishes a breeding gathering, but supplies no evidence of cooperative hunting or a continuing herd lifestyle."
+  },
+  {
+    "subject": "Greater krayt dragon",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "“Swimming beneath the sands in search of prey to ambush and devour” describes hunting technique without establishing lone hunting or social grouping."
+  },
+  {
+    "subject": "Dragonsnake",
+    "decision": "solitary",
+    "confidence": "low",
+    "basis": "“After snatching its prey, a dragonsnake would then dive back under the water” supports an inference of lone ambush hunting, although solitary living is not explicit."
+  },
+  {
+    "subject": "Sarlacc",
+    "decision": "solitary",
+    "confidence": "high",
+    "basis": "“Once sarlaccs reached their maturity after 30,000 years, they would burrow themselves nearly 100 meters below the surface,” establishing sessile adults."
+  },
+  {
+    "subject": "Sando aqua monster",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Opee sea killer",
+    "decision": "solitary",
+    "confidence": "low",
+    "basis": "“They lay in wait and clung motionless to rocky crags” supports an inference of lone ambush hunting, although solitary living is not explicit."
+  },
+  {
+    "subject": "Colo claw fish",
+    "decision": "solitary",
+    "confidence": "low",
+    "basis": "“Colo claw fish hid in tunnels along Naboo's oceanic floor where they can lay still for hours waiting for prey” supports an inference of lone ambush hunting, although solitary living is not explicit."
+  }
+]

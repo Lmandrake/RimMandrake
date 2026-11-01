@@ -1,0 +1,92 @@
+[
+  {
+    "subject": "Gizka",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "The \"temporary colony of gizka\" aboard the Ebon Hawk describes a shipboard infestation, not usable evidence of wild social life."
+  },
+  {
+    "subject": "Dalgo",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Igitz",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Puffer pig",
+    "decision": "herd",
+    "confidence": "high",
+    "basis": "\"Puffer pigs were raised as livestock for consumption by residents of the planet Batuu\" directly satisfies the standing livestock ruling."
+  },
+  {
+    "subject": "Bolotaur",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Gelagrub",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Worrt",
+    "decision": "solitary",
+    "confidence": "low",
+    "basis": "Inferring individual ambush hunting from \"a worrt would settle into the sand\" and \"wait for a prey to pass by it\" supports solitary, although solitude is not explicit."
+  },
+  {
+    "subject": "Saw-toothed grank",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Jamel",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Orray",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Runyip",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Tee-muss",
+    "decision": "herd",
+    "confidence": "high",
+    "basis": "\"Tee-muss were a species of domesticated farm animals\" directly satisfies the standing farm-animal ruling."
+  },
+  {
+    "subject": "Gorg",
+    "decision": "herd",
+    "confidence": "low",
+    "basis": "The report's \"sewers, where harvesters bred them illegally; and gorgmonger farms\" supports an inference of grouped food livestock for Gorg alone."
+  },
+  {
+    "subject": "Blarth",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "canon silent"
+  },
+  {
+    "subject": "Can-cell",
+    "decision": "leave default",
+    "confidence": "high",
+    "basis": "\"Would often congregate at landing pads\" establishes attraction to vehicle sounds, but does not establish a flock or grouping for feeding, protection, or breeding."
+  }
+]
