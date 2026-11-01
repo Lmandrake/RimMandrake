@@ -253,6 +253,17 @@ SPECIAL_INVOCATIONS = {
 }
 
 
+def _only_path(name: str, tests: list[Path]) -> Path:
+    """An --only entry as a path. A bare stem (selftest_foo) means the one discovered test of that name; none, or two,
+    stays the missing path it is, so main() refuses it by name."""
+    path = Path(name)
+    if len(path.parts) == 1 and not path.is_file():
+        hits = [t for t in tests if t.stem == name or t.name == name]
+        if len(hits) == 1:
+            return hits[0].resolve()
+    return path.resolve()
+
+
 def find_selftests() -> tuple[list[Path], list[tuple[Path, str]]]:
     """Return (runnable, [(path, why_skipped)]) — every selftest file, classified."""
     found: set[Path] = set()
@@ -880,7 +891,7 @@ def _suite(args) -> int:
         return 1
 
     if args.only:
-        want = {Path(o).resolve() for o in args.only}
+        want = {_only_path(o, tests) for o in args.only}
         absent = sorted(str(w) for w in want if not w.is_file())
         if absent:
             # A typo used to yield a green 0/0 (audit §6): naming nothing is an error.

@@ -271,6 +271,62 @@ def test_slot_back():
     check("a later run keeps the marks", not RL.auth_failed_back(rs, r, "Login expired", NOW))
 
 
+def test_alarm_run_retried_after_login_heals():
+    """OPS_ALARM_RETRY_AFTER_AUTH_DEATH, end to end through the real supervise and decide: the 10-30 Operations alarm
+    run dies on the real text, is held while the login is dead, and runs once it works, without running twice."""
+    import selftest_dispatcher as SD
+    os.environ["TZ"] = "UTC"
+    op = SD.operations(runs_local=["07:30"], economy_pass_local=None, alarm_run_gap_s=1000)
+    now = SD.at_local("12:00")
+    ALARMS = {"a1": {"state": "OPEN", "item": "ITEM_ONE"}}
+    ob = SD.robs(SD.ops_status(now, alarms=ALARMS))
+    death = {"is_error": True, "subtype": "success", "result": "Failed to authenticate: OAuth session expired and could "
+             "not be refreshed", "usage": SD.usage()}
+    result = [death]
+    ob.update(unit_state=lambda u: "inactive", result=lambda run: result[0])
+    sch = {"roles": [op]}
+    st = {"roles": {}}
+
+    def decide(at, gate=None):
+        acts = []
+        ob.update({k: v for k, v in SD.robs(SD.ops_status(at, alarms=ALARMS)).items() if k == "ops"})
+        RL.decide_roles(sch, st, ob, at, lambda **k: acts.append(k), set(), gate)
+        launch = [a for a in acts if a.get("do") == "role_launch"]
+        for a in launch:                                # what dispatcher.execute does on a good systemd-run
+            rs = st["roles"]["Operations"]
+            rs.setdefault("runs", []).append({"unit": a["unit"], "at": at, "state": "running", "mode": "alarm",
+                                              "budget": 1000, "item": "ROLES_ITEM_X", "seat": "BENCH", "scope": "sc",
+                                              "consumed": rs.pop("pending_launch")})
+        return launch, acts
+
+    def supervise(at):
+        acts = []
+        RL.supervise_roles(sch, st, ob, at, lambda **k: acts.append(k))
+        return [a for a in acts if str(a.get("kind")).endswith(":failed")]
+
+    first, _ = decide(now)
+    check("the alarm launches a run", len(first) == 1 and "alarm" in str(first[0].get("mode", "alarm")))
+    failed = supervise(now + 120)
+    check("its auth death is told as a rerun", len(failed) == 1 and "reruns once the login works" in failed[0]["raise_first"])
+    dead = lambda kind: (False, {"why": "login dead"})
+    held, acts = decide(now + 240, dead)
+    check("a dead login holds the rerun, and says so", not held and any(a.get("do") == "role_hold" for a in acts))
+    check("still held hours later", not decide(now + 8 * 3600, dead)[0])
+    again, _ = decide(now + 14 * 3600)
+    check("the login back: it runs again", len(again) == 1)
+    result[0] = {"subtype": "success", "result": "fine", "usage": SD.usage(input_tokens=10)}
+    check("a good rerun raises nothing", not supervise(now + 14 * 3600 + 120))
+    check("and is not repeated", not decide(now + 15 * 3600)[0])
+
+    # a second outage the same day still gets its run: the login's return gave the count back
+    rs = st["roles"]["Operations"]
+    rs["auth_backs"] = {"day": RL.day_of(now), "n": RL.AUTH_BACKS_PER_DAY}
+    with tempfile.TemporaryDirectory() as d:
+        lst = {"login": {"dead_since": NOW - 60, "hold": "h", "fails": 2, "first_fail": NOW - 60}, "roles": {"Operations": rs, "x": 1}}
+        run(box(d), lst, obs(GOOD), NOW)
+    check("the login's return restores the per-day count", "auth_backs" not in rs)
+
+
 def test_probe():
     with tempfile.TemporaryDirectory() as d:
         exe = os.path.join(d, "fake")
@@ -355,7 +411,7 @@ def test_release():
 
 
 def main():
-    for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_limit_reset, test_quiet_and_gate, test_slot_back,
+    for t in (test_dead_held, test_blip, test_switch, test_stranded, test_stranded_reader, test_limit_reset, test_quiet_and_gate, test_slot_back, test_alarm_run_retried_after_login_heals,
               test_probe, test_bad_usage_file, test_pick_and_way, test_give_back, test_release):
         t()
     print("selftest_login_watch: %s" % ("FAILED %d" % len(FAILS) if FAILS else "OK"))

@@ -50,6 +50,11 @@ to diagnose and restart the lane. ON by default, with these guards:
   one at a time   a fixed transient unit (systemd-run --user --unit testq-steward-wake); an active one blocks another
   hard caps       --max-budget-usd TESTQ_WAKE_BUDGET_USD (5) and RuntimeMaxSec TESTQ_WAKE_MAX_S (2700 s)
   no loop         one wake per incident, and TESTQ_WAKE_COOLDOWN_S (4 h) between any two (QHOME/wake.json)
+  login           held while `claude auth status` says the login is gone; a wake that dies on auth anyway gives its
+                  cooldown back and goes again, at most TESTQ_WAKE_RETRIES (2) times (OPS_ALARM_RETRY_AFTER_AUTH_DEATH:
+                  10-30 08:58Z died in seconds, was reported started, and a braked lane sat 14 h)
+  told            `started` means systemd took it. settle_wake reads the ended run (log, <log>.exit) once; a death goes
+                  on the item, steward.jsonl, the incident and the Conductor log
   off switch      QHOME/wake.stop, or TESTQ_STEWARD_WAKE=0
 The session runs in TESTQ_WAKE_CLONE (~/rm/bench, the BENCH seat's clone) as RIMFLOW_SEAT=BENCH, with no permission
 flags of its own (the clone's settings decide); its brief (QHOME/wake/<stamp>.brief.md) points at steward.json,
@@ -68,6 +73,7 @@ import fcntl
 import glob
 import json
 import os
+import re
 import secrets
 import shlex
 import shutil
@@ -270,6 +276,9 @@ def restart_tick():
 
 
 WAKE_UNIT = "testq-steward-wake"
+WAKE_AUTH_TEXT_MAX = 400        # an auth death's log IS the short API error; a long log merely quotes one
+WAKE_AUTH_RX = re.compile(r"failed to authenticate|oauth session expired|login expired|please run /login|"
+                          r"authentication_failed|not logged in", re.I)
 RUNBOOK = "infrastructure/stevedesktop/RUNBOOK.md"
 
 
@@ -282,14 +291,100 @@ def wake_active():
     return r.stdout.strip() in ("active", "activating", "reloading")
 
 
+def exit_path(log_path):
+    return log_path + ".exit"
+
+
+def wake_login():
+    """`claude auth status`, the Dispatcher's own probe -> (True | False | None, why); None = no reading, which holds
+    nothing (login_watch alarms a blind probe)."""
+    exe = os.environ.get("TESTQ_WAKE_CLAUDE") or shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
+    if RIMFLOW_DIR not in sys.path:
+        sys.path.insert(0, RIMFLOW_DIR)
+    try:
+        import login_watch
+        return login_watch.probe(exe)
+    except Exception as e:  # noqa: BLE001 - a broken probe must not stop a wake
+        return None, "probe raised %s" % type(e).__name__
+
+
+def wake_outcome(rec):
+    """-> (ok | auth | died, text) for a finished wake. Its log, short and naming the login, is an auth death whatever
+    the exit code says: that is all 20261030T085851Z.log held. No exit file: systemd killed it at its cap."""
+    try:
+        with open(rec["exit"], encoding="utf-8") as f:
+            code = f.read().strip()
+    except OSError:
+        code = None
+    try:
+        with open(rec["log"], encoding="utf-8", errors="replace") as f:
+            log = f.read()
+    except OSError:
+        log = ""
+    tail = " ".join(log[-200:].split())
+    if len(log) <= WAKE_AUTH_TEXT_MAX and WAKE_AUTH_RX.search(log):
+        return "auth", tail
+    if code == "0":
+        return "ok", tail
+    return "died", "exit %s: %s" % (code if code else "unrecorded (killed at its cap?)", tail or "empty log")
+
+
+def conductor_raise(why, first, now):
+    """A RAISE FIRST line in the Conductor log, the line dispatcher.conductor_log writes. -> what happened."""
+    p = os.environ.get("TESTQ_CONDUCTOR_LOG")
+    try:
+        if not p:
+            with open(os.path.join(RIMFLOW_DIR, "dispatcher_schedule.json"), encoding="utf-8") as f:
+                p = json.load(f)["no_handoff"]["conductor_log"]
+        with open(p, "a", encoding="utf-8") as f:
+            f.write("\n%s — STEWARD ESCALATION: %s\n  RAISE FIRST: %s\n" % (iso(now), why, first))
+        return "logged"
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return "conductor log failed: %s" % e
+
+
+def settle_wake(inc, now, src="steward"):
+    """A wake that ended is looked at once, by the pass that launched it. A death is told on the item, the journal,
+    the incident and the Conductor log, because `started` only ever meant systemd took it. An auth death did no work:
+    its cooldown goes back and the incident may wake again, through maybe_wake's login check, TESTQ_WAKE_RETRIES times.
+    -> ok | auth | died, or None when nothing was settled."""
+    rec = T.read_json(path("wake.json")) or {}
+    if not rec.get("exit") or rec.get("outcome") or rec.get("by", "steward") != src or wake_active():
+        return None
+    verdict, text = wake_outcome(rec)
+    rec.update(outcome=verdict, outcome_text=text, settled=iso(now))
+    said = None
+    if verdict != "ok":
+        mine = bool(inc) and inc.get("item") == rec.get("item")
+        said = "the wake started %s died: %s" % (rec.get("ts"), text)
+        again = False
+        if verdict == "auth":
+            rec["epoch"] = None                     # the cooldown paces work done; this did none
+            again = mine and inc.get("wake_retries", 0) < int(os.environ.get("TESTQ_WAKE_RETRIES", "2"))
+        if mine:
+            if again:
+                inc["wake_retries"] = inc.get("wake_retries", 0) + 1
+                inc.pop("wake", None)
+                said += "; it wakes again once the login works"
+            else:
+                inc["wake"] = said
+    S.dump(rec, path("wake.json"))
+    jlog({"ts": iso(now), "event": "wake_result", "by": src, "item": rec.get("item"), "result": verdict, "text": text})
+    if said:
+        rimflow("note", rec.get("item"), "--text", "%s: %s; log %s" % (src, said, rec.get("log")))
+        conductor_raise("%s: %s (item %s, log %s)" % (src, said, rec.get("item"), rec.get("log")),
+                        "A lane wake died: no agent is looking at %s." % rec.get("item"), now)
+    return verdict
+
+
 def launch_wake(clone, brief_path, log_path, budget, max_s):
     """Start the capped session in its own transient unit (it outlives this oneshot pass; systemd kills it at
     RuntimeMaxSec). -> (ok, text)."""
     exe = os.environ.get("TESTQ_WAKE_CLAUDE") or shutil.which("claude") or os.path.expanduser("~/.local/bin/claude")
-    cmd = "exec %s -p \"$(cat %s)\" --max-budget-usd %s%s > %s 2>&1" % (
+    cmd = "%s -p \"$(cat %s)\" --max-budget-usd %s%s > %s 2>&1; echo $? > %s" % (
         shlex.quote(exe), shlex.quote(brief_path), shlex.quote(str(budget)),
         (" --model " + shlex.quote(os.environ["TESTQ_WAKE_MODEL"])) if os.environ.get("TESTQ_WAKE_MODEL") else "",
-        shlex.quote(log_path))
+        shlex.quote(log_path), shlex.quote(exit_path(log_path)))
     try:
         r = subprocess.run(["systemd-run", "--user", "--unit", WAKE_UNIT, "--collect", "-p", "RuntimeMaxSec=%d" % max_s,
                             "-p", "WorkingDirectory=%s" % clone, "--setenv=RIMFLOW_SEAT=BENCH",
@@ -400,6 +495,12 @@ def maybe_wake(inc, ls, now, src="steward"):
     if not os.path.exists(os.path.join(clone, ".git")):
         inc["wake"] = "skipped: no wake clone at %s" % clone
         return inc["wake"]
+    live, why = wake_login()
+    if live is False:                       # it would die on this at once and spend the incident's one wake
+        if "wake_login_held" not in inc:
+            inc["wake_login_held"] = now
+            jlog({"ts": iso(now), "event": "wake_login_held", "by": src, "item": inc["item"], "why": why})
+        return None
     unseen = reach_wake_clone(clone, inc["item"])
     if unseen:
         hold = int(os.environ.get("TESTQ_WAKE_HOLD_S", "600"))
@@ -417,7 +518,8 @@ def maybe_wake(inc, ls, now, src="steward"):
     max_s = int(os.environ.get("TESTQ_WAKE_MAX_S", "2700"))
     ok, out = launch_wake(clone, brief, logp, budget, max_s)
     if ok:
-        S.dump({"ts": iso(now), "epoch": now, "item": inc["item"], "log": logp, "brief": brief}, path("wake.json"))
+        S.dump({"ts": iso(now), "epoch": now, "item": inc["item"], "log": logp, "brief": brief, "by": src,
+                "exit": exit_path(logp)}, path("wake.json"))
         rimflow("note", inc["item"], "--text", "%s: started one capped headless BENCH session (budget $%s, %d s cap); "
                 "log %s" % (src, budget, max_s, logp))
     inc["wake"] = ("started %s, log %s" % (iso(now), logp)) if ok else "launch failed: " + out
@@ -645,6 +747,7 @@ def _steward_pass(now, mods):
     ls = lane_state(now, mods)
     fault = ls["fault_at"] is not None and now >= ls["fault_at"]
     inc, last_item = prev.get("incident"), prev.get("last_item")
+    settle_wake(inc, now)
     dt = max(0.0, now - prev["epoch"]) if prev.get("epoch") else 0.0
     to_retire = list(prev.get("to_retire") or [])
     if ls["state"] == "RUNNING":
@@ -705,6 +808,7 @@ def _watch_pass(now):
     seen = sj["epoch"] if sj and sj.get("epoch") else wst.get("first_seen", now)
     age = now - seen
     inc = wst.get("incident")
+    settle_wake(inc, now, src="steward-watch")
     if age <= STALE_S:
         if inc:
             if not (sj or {}).get("incident"):      # the steward's own incident keeps the shared row failed

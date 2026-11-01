@@ -28,7 +28,8 @@ Each tick (schedule key `login_watch`; off when absent or enabled false):
              stranded_after_s, a rate limit waits for the reset its message names, or limit_wait_s when it names none
              (RATE_LIMIT_FIX_STRANDED_WINDOWS; 200 such records in transcripts, 10-2026).
 
-Role runs that die on an auth error: role_launch.supervise_roles gives their slot back (role_launch.AUTH_RX).
+Role runs that die on an auth error: role_launch.supervise_roles gives their slot back (role_launch.AUTH_RX), and the
+gate above holds it until the login works; each outage that ends starts the per-day count of those again.
 """
 import json
 import datetime
@@ -282,6 +283,11 @@ def step(sch, st, obs, now, act, iso):
                     (now - L["dead_since"]) / 3600.0, iso(L["dead_since"]),
                     "; automatic switch to %s" % L["switched_to"] if L.get("switched_to") else ""),
                 raise_first="Nothing to do unless a seat stays idle: stranded windows are restarted next.")
+            # role_launch.AUTH_BACKS_PER_DAY bounds one login that fails only for role runs; it must not make the day's
+            # second outage lose its run, and the deaths before the hold can spend it all
+            for rs in (st.get("roles") or {}).values():
+                if isinstance(rs, dict):
+                    rs.pop("auth_backs", None)
         for k in ("dead_since", "fails", "hold", "switch_at", "switched_to", "first_fail"):
             L.pop(k, None)
         agents = obs.get("agents") or {}

@@ -115,9 +115,23 @@ def main():
 
         base = time.time() - 60
         wakes = []
-        W.launch_wake = lambda clone, brief, logp, budget, max_s: wakes.append((clone, open(brief).read(), budget,
-                                                                                max_s)) or (True, "ok")
+        real_launch_wake = W.launch_wake
+        wake_ends = ["0", "a session that worked"]      # what the next launched run leaves behind: exit, log
+
+        def fake_launch(clone, brief, logp, budget, max_s):
+            wakes.append((clone, open(brief).read(), budget, max_s))
+            if wake_ends[0] is not None:
+                with open(W.exit_path(logp), "w") as f:
+                    f.write(wake_ends[0] + "\n")
+            with open(logp, "w") as f:
+                f.write(wake_ends[1])
+            return True, "ok"
+        W.launch_wake = fake_launch
         W.wake_active = lambda: False
+        login = [(True, "")]
+        W.wake_login = lambda: login[0]
+        clog = os.path.join(tmp, "conductor_log.md")
+        os.environ["TESTQ_CONDUCTOR_LOG"] = clog
         # the wake clone is a separate clone, as in production: its shards hold only what a pull brought it
         wclone = os.path.join(tmp, "wakeclone")
         wevents = os.path.join(wclone, "infrastructure", "state", "ledger", "events")
@@ -267,6 +281,110 @@ def main():
         ginc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}
         check(W.maybe_wake(ginc, {"reason": "r"}, t0 + 700).startswith("started") and "cli.py claim" in wakes[-1][1],
               "a seen item gets the ordinary claim brief")
+        # ------------------------------------------------ a wake that dies (OPS_ALARM_RETRY_AFTER_AUTH_DEATH)
+        DEATH = "Failed to authenticate: OAuth session expired and could not be refreshed\n"
+        notes = []
+        real_rimflow = W.rimflow
+        W.rimflow = lambda *a: notes.append(a) or (0, "")
+
+        def clog_lines():
+            return open(clog).read().count("RAISE FIRST") if os.path.exists(clog) else 0
+
+        def wake_rec():
+            return T.read_json(T.q("wake.json")) or {}
+
+        def journal(event):
+            return [json.loads(x) for x in open(T.q("steward.jsonl")) if '"%s"' % event in x]
+        n_wakes, t1 = len(wakes), t0 + 800
+        os.remove(T.q("wake.json"))
+        winc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}
+        wake_ends[:] = ["1", DEATH]
+        check(W.maybe_wake(winc, {"reason": "r"}, t1).startswith("started"), "the wake starts")
+        check(W.settle_wake(winc, t1 + 60, src="steward-watch") is None and not wake_rec().get("outcome"),
+              "the other pass leaves it to the one that launched it")
+        W.wake_active = lambda: True
+        check(W.settle_wake(winc, t1 + 60) is None and winc["wake"].startswith("started"), "a running wake is not judged")
+        W.wake_active = lambda: False
+        login[0] = (False, "auth status says not logged in")
+        check(W.settle_wake(winc, t1 + 120) == "auth", "the 73-byte log of 20261030T085851Z is an auth death")
+        check("wake" not in winc and winc["wake_retries"] == 1, "`started` no longer stands, and a retry is owed")
+        check(not wake_rec().get("epoch"), "a dead wake spent no cooldown")
+        def died():
+            return [n for n in notes if n[0] == "note" and n[1] == item and "died" in n[-1]]
+        check(len(died()) == 1 and "OAuth session expired" in died()[0][-1], "the item is told")
+        check(journal("wake_result")[-1]["result"] == "auth", "the journal is told")
+        check(clog_lines() == 1, "the Conductor log is told")
+        check(W.settle_wake(winc, t1 + 180) is None and len(died()) == 1 and clog_lines() == 1, "told once")
+        check(W.maybe_wake(winc, {"reason": "r"}, t1 + 180) is None and len(wakes) == n_wakes + 1,
+              "login dead: no launch")
+        check(W.maybe_wake(winc, {"reason": "r"}, t1 + 240) is None and len(journal("wake_login_held")) == 1,
+              "the hold is said once")
+        login[0] = (None, "no reading")
+        wake_ends[:] = ["0", "a session that worked"]
+        check(W.maybe_wake(winc, {"reason": "r"}, t1 + 300).startswith("started") and len(wakes) == n_wakes + 2,
+              "the login back (or unread, which holds nothing): the wake retries at once, no cooldown")
+        login[0] = (True, "")
+        check(W.settle_wake(winc, t1 + 400) == "ok" and winc["wake"].startswith("started") and len(died()) == 1
+              and wake_rec().get("epoch"), "a run that worked changes nothing and keeps its cooldown")
+        n_wakes = len(wakes)
+        # the retries are bounded
+        os.remove(T.q("wake.json"))
+        winc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800, "wake_retries": 2}
+        wake_ends[:] = ["1", DEATH]
+        W.maybe_wake(winc, {"reason": "r"}, t1)
+        check(W.settle_wake(winc, t1 + 60) == "auth" and "died" in winc["wake"] and
+              W.maybe_wake(winc, {"reason": "r"}, t1 + 120) is None, "out of retries: the incident says it died, and stops")
+        # a death of another kind is told and not retried; a session past its cap leaves no exit file
+        for k, ends, text in ((1, ["3", "Exceeded USD budget"], "exit 3"), (2, [None, "half a session"], "killed at its cap")):
+            os.remove(T.q("wake.json"))
+            winc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}
+            wake_ends[:] = ends
+            W.maybe_wake(winc, {"reason": "r"}, t1 + k)
+            check(W.settle_wake(winc, t1 + 60) == "died" and text in winc["wake"] and wake_rec().get("epoch"),
+                  "%s: told, and its cooldown stands" % text)
+        # long output that quotes the error is a session that ran, not an auth death
+        os.remove(T.q("wake.json"))
+        winc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}
+        wake_ends[:] = ["0", "x" * 500 + DEATH]
+        W.maybe_wake(winc, {"reason": "r"}, t1 + 3)
+        check(W.settle_wake(winc, t1 + 60) == "ok", "a long log quoting the error is not an auth death")
+        # the wake.json of a run started before this code has no exit file to read: never a false alarm
+        rec = dict(wake_rec())
+        rec.pop("exit"), rec.pop("outcome")
+        S.dump(rec, T.q("wake.json"))
+        n = clog_lines()
+        check(W.settle_wake(None, t1 + 90) is None and clog_lines() == n, "an older wake.json is left alone")
+        # a died wake whose incident has gone is still told, through a real pass's settle
+        os.remove(T.q("wake.json"))
+        wake_ends[:] = ["1", DEATH]
+        W.maybe_wake({"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}, {"reason": "r"}, t1 + 4)
+        n = clog_lines()
+        check(W.settle_wake(None, t1 + 60) == "auth" and clog_lines() == n + 1, "no incident left: still told")
+        # the real launcher's command: the session's real exit code reaches the file, past the redirect
+        fake = os.path.join(tmp, "fake_claude")
+        with open(fake, "w") as f:
+            f.write("#!/bin/bash\necho said \"$1\"\nexit 7\n")
+        os.chmod(fake, 0o755)
+        brief_f, log_f = os.path.join(tmp, "b.md"), os.path.join(tmp, "l.log")
+        with open(brief_f, "w") as f:
+            f.write("hi")
+        seen = {}
+        real_run = W.subprocess.run
+
+        def grab(argv, **k):
+            seen["argv"] = argv
+            return real_run(["true"], capture_output=True, text=True)
+        W.subprocess.run, os.environ["TESTQ_WAKE_CLAUDE"] = grab, fake
+        check(real_launch_wake(tmp, brief_f, log_f, "5", 60)[0], "the launcher goes")
+        W.subprocess.run = real_run
+        del os.environ["TESTQ_WAKE_CLAUDE"]
+        subprocess.run(seen["argv"][seen["argv"].index("/bin/bash"):], timeout=30)
+        check(open(W.exit_path(log_f)).read().strip() == "7" and "said" in open(log_f).read(),
+              "the unit records the session's own exit code")
+        W.rimflow = real_rimflow
+        wake_ends[:] = ["0", "a session that worked"]
+        os.remove(T.q("wake.json"))
+
         W.claim_holds = real_claim_holds
         W.publish = lambda: published.append(1) or "pushed"
         # the real pull, on a real origin: a behind clone catches up; a blocked one reports it
