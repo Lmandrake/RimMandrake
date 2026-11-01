@@ -105,6 +105,12 @@
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_agent_without_model.py\" 2>/dev/null || true",
             "timeout": 10,
             "statusMessage": "Checking the subagent carries an explicit model"
+          },
+          {
+            "type": "command",
+            "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_agent_coded_name.py\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Checking the helper is named, not coded"
           }
         ]
       },

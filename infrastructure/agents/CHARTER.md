@@ -84,7 +84,7 @@ called it, and `--reason` is the ruling itself, mandatory in practice on another
 item. ⛔ **The evidence bar is unchanged**: done means proven, dead means probed. This
 removed the seat boundary, not the requirement to have looked. **Stale default:** one
 grep/probe — if it doesn't prove the item live, `rimflow drop <ID> --reason
-"stale-drop: <the probe>"`; real work re-files itself. Naming: CLAUDE.md's "Queue items are NAMED" section. v2 ideas
+"stale-drop: <the probe>"`; real work re-files itself. Naming: CLAUDE.md's "Queue items are NAMED" section. Helpers, lanes and groupings are named too, never coded: no C6, A5 or "Lane A2" (they collide with legacy ledger ids; hook `block_agent_coded_name.py`). v2 ideas
 go straight to `design/V2_DREAMS.md`, any window, no permission.
 
 ## Done means running — owner, 2026-10-31
