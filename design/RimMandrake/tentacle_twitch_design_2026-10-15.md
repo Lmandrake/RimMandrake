@@ -57,6 +57,11 @@ hides them on the desiccated corpse, which uses vanilla art.
 | `Feelers/..._FeelerC` | forked grasping tip | front centre, under the head | (0, -0.42) | 0.85 |
 | `Feelers/..._FeelerD` | thin whip, S-curve | back | (0.15, -0.30) | 1.0 |
 
+The escort bulloos are the race description's *"little escort of smaller ones"*. In the whole-body picture the feelers
+touch them; with the feelers lifted out, two on the east bell and three on the north bell float free of the body, on
+purpose. They are not feeler stubs. `selftest_donor_twitch_render.py` holds that count and their place on the
+whole-body silhouette.
+
 East: the roots run along the underside from -0.95 (back) to +0.45 (front) and trail back 6 to 28 degrees. The twitch is
 slow and gentle for a creature this size: ±10 to 16 degrees, 25 to 90 ticks per move.
 

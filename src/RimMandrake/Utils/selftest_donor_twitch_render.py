@@ -7,6 +7,9 @@ Static, no game. Goes red when:
   * a life stage's body stops being the bell (the feelers would double up with the whole-body picture);
   * a tree's piece or bell lacks a south, east or north picture (Graphic_Multi draws pink), or a root leaves the
     top centre of its canvas (the art contract the pivot relies on);
+  * a bell carries a detached piece beyond what its case allows, or one the whole-body picture does not have there
+    (the bulloo's free-floating islands are its escort bulloos, named in the design table and the race description;
+    an island off that silhouette is a stray or a split leftover);
   * a piece names a body-part group the creature lacks (CanDrawNow would hide it for good);
   * the zhool's life-stage subworker leaves its tree or the committed DLL;
   * RM_Mantrap stops using the RM_Lastvine rearing tree, or the Staged wiring comes back;
@@ -20,6 +23,7 @@ import os
 import sys
 import xml.etree.ElementTree as ET
 
+import numpy as np
 from PIL import Image
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
@@ -28,15 +32,22 @@ FACES = ("south", "east", "north")
 SUBWORKER = "RimMandrake.EnvironmentalHazards.PawnRenderSubWorker_KindLifeStageScale"
 # A piece may start this far down its canvas: the root sits behind the bell (layer -5/-6), so the bell hides the gap.
 TOP_SLACK = 0.16
+# A bell island: at most this many opaque pixels of the 256 canvas, at least this share on the whole-body silhouette
+# (the bell is a re-render of the whole picture, so the two never register exactly; measured low 0.73).
+ALPHA_SOLID = 40
+ISLAND_MAX_PX = 1500
+ISLAND_MIN_COVER = 0.7
 HAZARD_DLL = "EnvironmentalHazards/Assemblies/RimMandrake.EnvironmentalHazards.dll"
 
 CASES = [
     {"mod": "TheForge", "race_file": "Defs/ThingDefs_Races/RM_ColossalAerofleet.xml", "race": "RM_ColossalAerofleet",
      "tree": "RM_ColossalAerofleet_Twitch", "bell": "Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell",
-     "body_file": "Defs/ThingDefs_Races/RM_Bulloo.xml", "body": "RM_JellyfishBody", "stages": 1, "subworker": False},
+     "body_file": "Defs/ThingDefs_Races/RM_Bulloo.xml", "body": "RM_JellyfishBody", "stages": 1, "subworker": False,
+     "whole": "Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet", "islands": {"south": 0, "east": 2, "north": 3}},
     {"mod": "Contagion", "race_file": "Defs/ThingDefs_Races/RM_ContagionBulloos.xml", "race": "RM_OcularJelly",
      "tree": "RM_OcularJelly_Twitch", "bell": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell",
-     "body_file": "Defs/Bodies/RM_BullooBodies.xml", "body": "RM_ZhoolBody", "stages": 3, "subworker": True},
+     "body_file": "Defs/Bodies/RM_BullooBodies.xml", "body": "RM_ZhoolBody", "stages": 3, "subworker": True,
+     "whole": "Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly", "islands": {"south": 0, "east": 0, "north": 0}},
 ]
 
 
@@ -45,6 +56,55 @@ def by_name(root, tag, name):
         if d.findtext("defName") == name:
             return d
     return None
+
+
+def islands(mask):
+    """Every 8-connected piece of a boolean mask but the largest, as boolean masks."""
+    seen = np.zeros(mask.shape, bool)
+    pieces = []
+    for start in zip(*np.nonzero(mask)):
+        if seen[start]:
+            continue
+        seen[start] = True
+        stack, cells = [start], []
+        while stack:
+            y, x = stack.pop()
+            cells.append((y, x))
+            for ny in range(max(y - 1, 0), min(y + 2, mask.shape[0])):
+                for nx in range(max(x - 1, 0), min(x + 2, mask.shape[1])):
+                    if mask[ny, nx] and not seen[ny, nx]:
+                        seen[ny, nx] = True
+                        stack.append((ny, nx))
+        pieces.append(cells)
+    pieces.sort(key=len, reverse=True)
+    out = []
+    for cells in pieces[1:]:
+        m = np.zeros(mask.shape, bool)
+        m[tuple(zip(*cells))] = True
+        out.append(m)
+    return out
+
+
+def check_bell_alpha(case, face, bell, whole):
+    """Rules over one facing's bell and whole-body alpha channels (uint8 arrays); returns findings."""
+    out = []
+    found = islands(bell > ALPHA_SOLID)
+    allowed = case["islands"][face]
+    if len(found) != allowed:
+        out.append(f"{case['bell']}_{face}: {len(found)} detached pieces, want {allowed}")
+    on_whole = whole > ALPHA_SOLID
+    for m in found:
+        ys, xs = np.nonzero(m)
+        where = f"at x{xs.min()}-{xs.max()} y{ys.min()}-{ys.max()}"
+        if m.sum() > ISLAND_MAX_PX:
+            out.append(f"{case['bell']}_{face}: detached piece {where} has {m.sum()} px")
+        if (m & on_whole).sum() < ISLAND_MIN_COVER * m.sum():
+            out.append(f"{case['bell']}_{face}: detached piece {where} is off the whole-body silhouette")
+    return out
+
+
+def alpha(path):
+    return np.array(Image.open(path).convert("RGBA").getchannel("A"))
 
 
 def check_race(case, race_root):
@@ -114,6 +174,14 @@ def main():
         tex = os.path.join(mod, "Textures")
         fails += check_race(case, race_root)
         fails += check_tree(case, tree_root, groups, tex, dll)
+        pairs = {}
+        for face in FACES:
+            bell, whole = (os.path.join(tex, f"{case[k]}_{face}.png") for k in ("bell", "whole"))
+            if os.path.isfile(bell) and os.path.isfile(whole):
+                pairs[face] = alpha(bell), alpha(whole)
+                fails += check_bell_alpha(case, face, *pairs[face])
+            else:
+                fails.append(f"{case['race']}: no bell or whole-body picture on {face}")
         if os.path.isdir(os.path.join(mod, "Staged", "TentacleTwitch")):
             fails.append(f"{case['mod']}/Staged/TentacleTwitch came back")
 
@@ -127,6 +195,17 @@ def main():
         ms.append(("body texPath", check_race(case, m)))
         ms.append(("group", check_tree(case, tree_root, set(), tex, dll)))
         ms.append(("pictures", check_tree(case, tree_root, groups, tex + "_nowhere", dll)))
+        for face, (bell, whole) in pairs.items():
+            stray = bell.copy()
+            stray[:12, :12] = 255  # a corner blob: off every creature's silhouette
+            ms.append((f"stray {face}", check_bell_alpha(case, face, stray, whole)))
+            big = bell.copy()
+            big[-44:, -44:] = 255  # bigger than any escort
+            found = check_bell_alpha(case, face, big, np.full(bell.shape, 255, np.uint8))
+            ms.append((f"big {face}", [f for f in found if " px" in f]))
+            if case["islands"][face]:
+                found = check_bell_alpha(case, face, bell, np.zeros(bell.shape, np.uint8))
+                ms.append((f"off silhouette {face}", [f for f in found if "off the whole" in f]))
         if case["subworker"]:
             ms.append(("dll", check_tree(case, tree_root, groups, tex, b"")))
         for name, found in ms:
