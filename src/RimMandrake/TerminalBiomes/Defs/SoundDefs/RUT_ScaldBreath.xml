@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!--
+  SCALD_STEAM_WEATHER_DESIGN_1 step 9: "the boil's breath", the Scald's own steam loop, replacing the borrowed
+  Ambient_Wind_Fog on RUT_ScaldSteam. A copy of that vanilla def (same sustainer shape, same fade with music and
+  camera altitude) with our clip. The clip is synthesised: src/RimMandrake/Utils/art/make_scald_breath_loop.py.
+  Volume 6 INVENTED: a little over the vanilla fog's 4, because the boil never stops but should be felt.
+  -->
+  <SoundDef>
+    <defName>RUT_ScaldBreath</defName>
+    <sustain>True</sustain>
+    <context>MapOnly</context>
+    <priorityMode>PrioritizeNearest</priorityMode>
+    <subSounds>
+      <li>
+        <name>main</name>
+        <onCamera>True</onCamera>
+        <grains>
+          <li Class="AudioGrain_Clip">
+            <clipPath>Ambience/RM_ScaldBreath_Loop</clipPath>
+          </li>
+        </grains>
+        <volumeRange>6~6</volumeRange>
+        <paramMappings>
+          <li>
+            <inParam Class="SoundParamSource_MusicPlayingFadeOut" />
+            <outParam Class="SoundParamTarget_Volume" />
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li>
+                  <loc>
+                    <x>0</x>
+                    <y>0</y>
+                  </loc>
+                </li>
+                <li>
+                  <loc>
+                    <x>1</x>
+                    <y>1</y>
+                  </loc>
+                </li>
+              </points>
+            </curve>
+          </li>
+          <li>
+            <inParam Class="SoundParamSource_CameraAltitude" />
+            <outParam Class="SoundParamTarget_Volume" />
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li>
+                  <loc>
+                    <x>1</x>
+                    <y>1</y>
+                  </loc>
+                </li>
+                <li>
+                  <loc>
+                    <x>40.93931</x>
+                    <y>0.9981107</y>
+                  </loc>
+                </li>
+                <li>
+                  <loc>
+                    <x>60.05113</x>
+                    <y>-0.001349449</y>
+                  </loc>
+                </li>
+              </points>
+            </curve>
+          </li>
+          <li>
+            <inParam Class="SoundParamSource_External">
+              <inParamName>LerpFactor</inParamName>
+              <defaultValue>0</defaultValue>
+            </inParam>
+            <outParam Class="SoundParamTarget_Volume" />
+            <paramUpdateMode>Constant</paramUpdateMode>
+            <curve>
+              <points>
+                <li>
+                  <loc>
+                    <x>0</x>
+                    <y>0</y>
+                  </loc>
+                </li>
+                <li>
+                  <loc>
+                    <x>1</x>
+                    <y>1</y>
+                  </loc>
+                </li>
+              </points>
+            </curve>
+          </li>
+          <li>
+            <inParam Class="SoundParamSource_AmbientVolume" />
+            <outParam Class="SoundParamTarget_Volume" />
+          </li>
+        </paramMappings>
+      </li>
+    </subSounds>
+  </SoundDef>
+</Defs>

@@ -31,16 +31,11 @@
   layer is presentation, not the R-B rain family (FORGE_MECHANICS_1's own
   scope, not this kit's).
 
-  ambientSounds: Ambient_Wind_Fog reused as-is (real vanilla SoundDef, not
-  invented) rather than a bespoke "boil's breath" cue — the sheet's §9 sound
-  direction ("the boil's endless breath") is real content the audio/art
-  pipeline still owes; this is the nearest already-shipped loop, flagged
-  here rather than left silent or given a guessed defName.
+  ambientSounds: RUT_ScaldBreath (TerminalBiomes SoundDefs), the sheet's §9
+  "the boil's endless breath".
 
-  Texture: RUT_WeatherOverlay_ScaldSteam's own hardcoded path
-  ("Weather/ScaldSteamOverlayWorld") does not exist under any Textures/
-  folder yet — OWED to the art pipeline. Loading with it absent logs an
-  error and shows no overlay panner rather than failing to load.
+  Textures: Weather/RM_ScaldSteam_A and _B (EnvironmentalHazards), read by
+  RUT_WeatherOverlay_ScaldSteam; absent, it falls back to vanilla fog.
   ============================================================================
 -->
 <Defs>
@@ -58,7 +53,7 @@
     <favorability>Neutral</favorability>
     <perceivePriority>1</perceivePriority>
     <ambientSounds>
-      <li>Ambient_Wind_Fog</li>
+      <li>RUT_ScaldBreath</li>
     </ambientSounds>
     <overlayClasses>
       <li>RimMandrake.EnvironmentalHazards.RUT_WeatherOverlay_ScaldSteam</li>

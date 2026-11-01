@@ -151,8 +151,8 @@ spouts vanilla's geyser effecter and `GeyserSpray` sound when the S4 gate is on.
 "geyser percussion", felt map-wide. `averageInterval` 9000 (INVENTED ≈ every 4 in-game hours).
 Gate: `RM_MechanicGates.Enabled("Scald.S1.flash")` checked in `FireEvent`.
 
-**Sound.** `Ambient_Wind_Fog` stays as the loop until a bespoke "boil's breath" SoundDef lands
-(a low continuous hiss-roll; real audio content, owed). `GeyserSpray` (vanilla, MEASURED) is the
+**Sound.** `RUT_ScaldBreath` is the loop: a low continuous hiss-roll, synthesised by
+`src/RimMandrake/Utils/art/make_scald_breath_loop.py`. `GeyserSpray` (vanilla, MEASURED) is the
 percussion.
 
 ### 3.2 Rhythm — pulses, lock, clear spells
@@ -446,7 +446,7 @@ lands with the hediff in step 4).
    one step that needs his eyes.
 7. **Vent-flash** WeatherEvent + eventMakers + `Scald.S1.flash` gate.
 8. **Settings**: S1a/S1b/S7/S8 toggles, the S8 Harmony prefix, settings text.
-9. Sound: bespoke breath loop when audio content exists; not blocking.
+9. Sound: `RUT_ScaldBreath`, built.
 
 Steps 1, 2, 4 and 5 are XML and each is a same-day quicktest; 6 is the only render risk and it
 degrades to today's look if a texture is missing.
