@@ -38,7 +38,7 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              within the limit leaves it alone.
   relaunched a new session with the seat's name; verified once the doorbell is ARMED for that new session (the first
              prompt makes it end a turn), else failed + alarm after arm_s.
-Process death (selftest_seat_restart_death.py, LiveHandoff.tla). The killed record is the persisted claim: state.json is
+Process death (selftest_seat_restart_death.py; TLC: Utils/arena/formal/Handoff.tla, run_tlc.py d_* rows). The killed record is the persisted claim: state.json is
 saved only when a tick ends, so a pending state with an armed record of the same restart whose window is dead reconciles
 to killed; a restart that ends with the window alive disarms its record (restart_abort). A Conductor window that dies by
 itself with his message unanswered is adopted (restart_orphan writes the record the kill would have written; `intile`

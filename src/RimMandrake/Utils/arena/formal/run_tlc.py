@@ -1,21 +1,27 @@
 #!/usr/bin/env python3
 """run_tlc.py — model-check Handoff.tla with TLC over the fixed protocol and its forced-failure mutants.
 
-ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE. One spec (Handoff.tla) covers the goodbye restart, the TestPilot
-handoff and the arena switch. The matrix below is the item's criteria, each row an expectation:
+ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE, reconciled with the code by ARENA_HANDOFF_RECONCILE_MODEL_WITH_CODE
+(the one model: LiveHandoff.tla + check_models.py were deleted, their deaths and mutants ported here). One spec
+(Handoff.tla) covers the goodbye restart, the TestPilot handoff and the arena switch. Each row is an expectation:
 
   known_race   Mode goodbye, Bugs {dead_session_drop}: TLC must find the known goodbye interleaving, i.e. an S5
                violation whose trace sends an owner message while the handoff is in phase `killed` (old window
                dead, fresh one not yet up: conductor_briefing_2026-10-28 B4 row 2).
-  fixed_*      Bugs {} in each mode: S1-S6 hold at BOUNDS (goodbye: L2 too).
+  fixed_*      Bugs {} in each mode, hazard dequeue_gap on: S1-S6 hold at BOUNDS (goodbye: L2 too).
   live_*       Bugs {} in testpilot and arena: S1-S6 and L1, L2 hold under weak fairness with one candidate.
-  m_*          one planted defect per invariant / liveness property: TLC must report exactly that property
-               violated (a property that cannot fail proves nothing).
+  d_*          Bugs {}, one process death allowed (old_alone, dispatcher, wake): must pass, except d_old_alone_gap,
+               the residual (a window dying alone between dequeue and persist loses that prompt).
+  m_*          one planted defect per property: TLC must report exactly that property violated (a property that
+               cannot fail proves nothing). m_S5_no_recheck is the re-check proved load-bearing.
+  h_*          an UNMEASURED environment assumption negated (hazard term_drop): S5 must break, so S5 rests on it.
+  w_*          witnesses: an invariant the fixed protocol must violate (it reaches the state the rows pass over).
 
 Usage:  run_tlc.py [--only NAME[,NAME]] [--out DIR] [--list]
 Exit 0 only when every row met its expectation. Evidence (cfgs, TLC logs, summary.json) goes to --out
 (default D:/ClaudeWork/rimmandrake/formal/handoff/<utc>).
 
+Workers: $RM_TLC_WORKERS (an integer or "auto"), default 4, so a busy machine can cap TLC.
 Java: $TLA_JAVA, else ~/.local/opt/jdk*/bin/java, else `java` on PATH. tla2tools: $TLA2TOOLS, else
 ~/.local/opt/tla2tools.jar. Missing either -> exit 2 (UNMEASURED, never a pass).
 """
@@ -37,28 +43,63 @@ INVS = ["S1", "S2", "S3", "S4", "S5", "S6"]
 PROPS = ["L1", "L2"]
 
 # Bounds: 2 owner messages, 2 candidates, 2 fixes, 1 crash, 1 owner return, 1 failed relaunch, any number of
-# cancels. Liveness rows check one candidate (LIVE): with two, the fair-cycle search exceeds the 480 s row budget
-# (3.7M states, about 7 min, in testpilot); safety holds at two candidates in the safety rows.
-BOUNDS = {"Msgs": ["m1", "m2"], "Cands": ["c1", "c2"], "MaxFix": 2}
+# cancels and aborts, MaxHandoffs consecutive handoffs (goodbye 2; game modes 1, the h=2 game row is f_testpilot).
+# Liveness rows check one candidate (LIVE): with two, the fair-cycle search exceeds the row budget.
+BOUNDS = {"Msgs": ["m1", "m2"], "Cands": ["c1", "c2"], "MaxFix": 2, "MaxHandoffs": 1,
+          "Hazards": ["dequeue_gap"], "Deaths": []}
 LIVE = {"Cands": ["c1"]}
+GB = {"MaxHandoffs": 2}
+NOMSG = {"Msgs": []}                     # arena arms are headless: no owner messages reach them
+ALL_DEATHS = ["old_alone", "dispatcher", "wake"]
 
-# name: (mode, bugs, invariants, properties, expect) ; expect = "pass" or the property TLC must report violated
+# name: (mode, bugs, invariants, properties, expect[, overrides]) ; expect = "pass" or the property TLC must report
 MATRIX = {
-    "known_race":        ("goodbye",   ["dead_session_drop"], INVS, [], "S5"),
-    "fixed_goodbye":     ("goodbye",   [], INVS, ["L2"], "pass"),     # no candidates in goodbye: L1 is vacuous
-    "fixed_testpilot":   ("testpilot", [], INVS, [], "pass"),
-    "fixed_arena":       ("arena",     [], INVS, [], "pass"),
-    "live_testpilot":    ("testpilot", [], INVS, PROPS, "pass", LIVE),
-    "live_arena":        ("arena",     [], INVS, PROPS, "pass", LIVE),
-    "m_S1_overlap":      ("arena",     ["overlap"], ["S1"], [], "S1"),
-    "m_S2_stale":        ("testpilot", ["stale_verdict"], ["S2"], [], "S2"),
-    "m_S3_cs_up":        ("testpilot", ["cs_while_up"], ["S3"], [], "S3"),
-    "m_S4_no_rule":      ("testpilot", ["reload_no_rule"], ["S4"], [], "S4"),
-    "m_S5_mem_queue":    ("testpilot", ["mem_queue"], ["S5"], [], "S5"),
-    "m_S6_straggler":    ("arena",     ["straggler"], ["S6"], [], "S6"),
-    "m_L1_mem_queue":    ("testpilot", ["mem_queue"], [], ["L1"], "L1", LIVE),
-    "m_L2_dead_session": ("goodbye",   ["dead_session_drop"], [], ["L2"], "L2"),
+    "known_race":         ("goodbye",   ["dead_session_drop"], INVS, [], "S5", GB),
+    "fixed_goodbye":      ("goodbye",   [], INVS, ["L2"], "pass", GB),   # no candidates in goodbye: L1 is vacuous
+    "fixed_testpilot":    ("testpilot", [], INVS, [], "pass"),
+    "fixed_arena":        ("arena",     [], INVS, [], "pass", NOMSG),
+    "f_testpilot":        ("testpilot", [], INVS, [], "pass", {"MaxHandoffs": 2, "Cands": ["c1"], "MaxFix": 1}),
+    "live_testpilot":     ("testpilot", [], INVS, PROPS, "pass", LIVE),
+    "live_arena":         ("arena",     [], INVS, ["L1"], "pass", {**LIVE, **NOMSG}),   # no messages: L2 vacuous
+    "d_goodbye":          ("goodbye",   [], INVS, ["L2"], "pass", {**GB, "Hazards": [], "Deaths": ALL_DEATHS}),
+    "d_dispatcher_wake":  ("goodbye",   [], INVS, ["L2"], "pass", {**GB, "Deaths": ["dispatcher", "wake"]}),
+    "d_testpilot":        ("testpilot", [], INVS, PROPS, "pass", {**LIVE, "Hazards": [], "Deaths": ALL_DEATHS}),
+    "d_old_alone_gap":    ("goodbye",   [], ["S5"], [], "S5", {"Deaths": ["old_alone"]}),
+    "no_claim_recheck":   ("goodbye",   ["no_claim_recheck"], INVS, ["L2"], "pass", GB),
+    "m_S5_no_recheck":    ("goodbye",   ["no_recheck"], ["S5"], [], "S5"),
+    "m_S5_no_fence":      ("goodbye",   ["no_fence"], ["S5"], [], "S5"),
+    "m_S5_wake_skips":    ("goodbye",   ["wake_skips_old"], ["S5"], [], "S5"),
+    "m_S5_closeout":      ("goodbye",   ["closeout_skips_queue"], ["S5"], [], "S5"),
+    "m_S5_wake_once":     ("goodbye",   ["wake_once"], ["S5"], [], "S5", {"Deaths": ["wake"]}),
+    "m_L2_no_adopt":      ("goodbye",   ["no_adopt"], [], ["L2"], "L2", {"Deaths": ["old_alone"], "Hazards": []}),
+    "m_S1_overlap":       ("arena",     ["overlap"], ["S1"], [], "S1", NOMSG),
+    "m_S1_survive":       ("goodbye",   ["relaunch_after_survive"], ["S1"], [], "S1"),
+    "m_S2_stale":         ("testpilot", ["stale_verdict"], ["S2"], [], "S2"),
+    "m_S3_cs_up":         ("testpilot", ["cs_while_up"], ["S3"], [], "S3"),
+    "m_S4_no_rule":       ("testpilot", ["reload_no_rule"], ["S4"], [], "S4"),
+    "m_S5_mem_queue":     ("testpilot", ["mem_queue"], ["S5"], [], "S5"),
+    "m_S5_mem_forced":    ("arena",     ["mem_queue"], ["S5"], [], "S5", NOMSG),
+    "m_S6_straggler":     ("arena",     ["straggler"], ["S6"], [], "S6", NOMSG),
+    "m_L1_mem_queue":     ("testpilot", ["mem_queue"], [], ["L1"], "L1", LIVE),
+    "m_L2_dead_session":  ("goodbye",   ["dead_session_drop"], [], ["L2"], "L2"),
+    "h_term_drop":        ("goodbye",   [], ["S5"], [], "S5", {"Hazards": ["dequeue_gap", "term_drop"]}),
+    "w_verified":         ("goodbye",   [], ["NotVerified"], [], "NotVerified"),
+    "w_second_handoff":   ("goodbye",   [], ["NoSecondHandoff"], [], "NoSecondHandoff", GB),
+    "w_gap":              ("goodbye",   [], ["NoGap"], [], "NoGap"),
+    "w_new_drives":       ("testpilot", [], ["NewNeverDrives"], [], "NewNeverDrives"),
+    "w_forced_kill":      ("arena",     [], ["NoForcedKill"], [], "NoForcedKill", NOMSG),
 }
+
+# Rows of a minute or more each (6.6M / 1.3M states at 4 workers): run_tlc.py runs them; the selftest skips them
+# visibly unless RM_TLC_ALL=1, so it stays inside the runner's 240 s budget.
+HEAVY = {"fixed_testpilot", "live_testpilot", "d_testpilot"}
+
+
+def workers():
+    w = (os.environ.get("RM_TLC_WORKERS") or "4").strip()
+    if w != "auto" and not (w.isdigit() and int(w) > 0):
+        raise SystemExit("RM_TLC_WORKERS must be a positive integer or 'auto', not %r" % w)
+    return w
 
 
 def find_java():
@@ -91,7 +132,10 @@ def cfg_text(mode, bugs, invs, props, bounds=BOUNDS):
              "  Msgs = %s" % mset(bounds["Msgs"]),
              "  Cands = %s" % mset([] if mode == "goodbye" else bounds["Cands"]),
              "  MaxFix = %d" % bounds["MaxFix"],
-             "  Bugs = {%s}" % ", ".join('"%s"' % b for b in bugs)]
+             "  MaxHandoffs = %d" % bounds["MaxHandoffs"],
+             "  Bugs = %s" % mset('"%s"' % b for b in bugs),
+             "  Hazards = %s" % mset('"%s"' % h for h in bounds["Hazards"]),
+             "  Deaths = %s" % mset('"%s"' % x for x in bounds["Deaths"])]
     lines += ["  %s = %s" % (v, v) for v in bounds["Msgs"] + ([] if mode == "goodbye" else bounds["Cands"])]
     lines += ["INVARIANT TypeOK"] + ["INVARIANT %s" % i for i in invs] + ["PROPERTY %s" % p for p in props]
     return "\n".join(lines) + "\n"
@@ -135,6 +179,23 @@ def is_known_goodbye_race(trace) -> tuple[bool, str]:
     return False, "no step in phase killed loses a message"
 
 
+def msg_states(state_text: str) -> dict:
+    """TLC prints msg as (m1 :> "inOld" @@ m2 :> "unsent"): key -> state."""
+    return dict(re.findall(r'(\w+) :> "(\w+)"', var_of(state_text, "msg") or ""))
+
+
+def is_taken_then_lost(trace) -> bool:
+    """Some message is takenOld in a claimed/killing state and that same message is lost later in the trace."""
+    taken = set()
+    for s in trace:
+        ms = msg_states(s)
+        if any(ms.get(k) == "lost" for k in taken):
+            return True
+        if var_of(s, "phase") in ('"claimed"', '"killing"'):
+            taken |= {k for k, v in ms.items() if v == "takenOld"}
+    return False
+
+
 def run_row(name, java, jar, out_dir: Path, timeout_s=480):
     mode, bugs, invs, props, expect, bounds = row(name)
     d = out_dir / name
@@ -143,7 +204,7 @@ def run_row(name, java, jar, out_dir: Path, timeout_s=480):
     (d / "Handoff.cfg").write_text(cfg_text(mode, bugs, invs, props, bounds))
     # TLC's state files on a drvfs mount (D:) slow it 30x or more: they go to a local temp dir, deleted after
     meta = Path(tempfile.mkdtemp(prefix="tlc_%s_" % name))
-    cmd = [java, "-XX:+UseParallelGC", "-cp", jar, "tlc2.TLC", "-deadlock", "-workers", "auto",
+    cmd = [java, "-XX:+UseParallelGC", "-cp", jar, "tlc2.TLC", "-deadlock", "-workers", workers(),
            "-metadir", str(meta), "-config", "Handoff.cfg", "Handoff.tla"]
     try:
         p = subprocess.run(cmd, cwd=d, capture_output=True, text=True, timeout=timeout_s)
@@ -158,6 +219,14 @@ def run_row(name, java, jar, out_dir: Path, timeout_s=480):
     why = ""
     if ok and name == "known_race":
         ok, why = is_known_goodbye_race(r["trace"])
+    elif ok and name == "m_S5_no_recheck":
+        # the re-check is load-bearing only if the loss is the dequeued-not-persisted prompt dying with the kill:
+        # the SAME message is takenOld while claimed/killing and later lost
+        ok = is_taken_then_lost(r["trace"])
+        why = "a prompt dequeued after the claim dies with the kill" if ok else "loss is not the re-check's case"
+    elif ok and name == "m_L2_no_adopt":
+        ok = any(var_of(s, "phase") == '"orphaned"' for s in r["trace"])
+        why = "the orphaned window is never adopted" if ok else "counter-example is not the orphan: wrong cause"
     elif ok and expect in PROPS:
         # a liveness mutant must fail BECAUSE something was lost, not through some other unfair loop
         lost = any('"lost"' in (var_of(s, "msg") or "") + (var_of(s, "cand") or "") for s in r["trace"])
@@ -176,7 +245,7 @@ def main(argv=None):
     a = ap.parse_args(argv)
     if a.list:
         for k, v in MATRIX.items():
-            print("%-18s mode=%-9s bugs=%-22s expect=%-4s cands=%s" % (k, v[0], ",".join(v[1]) or "-", v[4],
+            print("%-18s mode=%-9s bugs=%-22s expect=%-15s cands=%s" % (k, v[0], ",".join(v[1]) or "-", v[4],
                   len(row(k)[5]["Cands"])))
         return 0
     names = [n for n in a.only.split(",") if n] or list(MATRIX)
@@ -195,7 +264,7 @@ def main(argv=None):
     for n in names:
         r = run_row(n, java, jar, out)
         rows.append(r)
-        print("%-5s %-18s expect=%-4s got=%s%s states=%s %s" % ("ok" if r["ok"] else "FAIL", n, r["expect"], r["result"],
+        print("%-5s %-18s expect=%-15s got=%s%s states=%s %s" % ("ok" if r["ok"] else "FAIL", n, r["expect"], r["result"],
               "(%s)" % r["violated"] if r["violated"] else "", r["states"], r["why"]), flush=True)
     (out / "summary.json").write_text(json.dumps({"bounds": BOUNDS, "rows": rows}, indent=1))
     print("evidence: %s" % out)

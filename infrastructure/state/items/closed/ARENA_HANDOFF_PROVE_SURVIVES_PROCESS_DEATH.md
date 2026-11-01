@@ -33,3 +33,6 @@ Review text: D:\ClaudeWork\rimmandrake\build\tla\review1.md
 
 ## criteria
 - A1 L0: three death actions modelled, TLC result recorded; any gap filed against seat_restart.py
+
+(ARENA_HANDOFF_RECONCILE_MODEL_WITH_CODE, 2026-11-01: LiveHandoff.tla + check_models.py were deleted; the one model is
+`src/RimMandrake/Utils/arena/formal/Handoff.tla`, runner `run_tlc.py`, whose d_* rows carry these deaths.)

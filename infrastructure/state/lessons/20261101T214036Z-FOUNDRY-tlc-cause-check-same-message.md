@@ -1,0 +1,2 @@
+A TLC mutant row that passes on 'property violated' proves nothing about WHY: check the counter-example's cause, and key it on the same entity. run_tlc's m_S5_no_recheck check first accepted any trace with some message takenOld while claimed; a trace where m1 is taken but m2 is lost would have passed it. It now requires the same message to go takenOld (claimed/killing) to lost (is_taken_then_lost, with a crossed-trace forced failure in the selftest).
+home: src/RimMandrake/Utils/arena/formal/run_tlc.py

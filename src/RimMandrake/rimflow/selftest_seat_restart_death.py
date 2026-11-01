@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """selftest_seat_restart_death.py — the goodbye restart under real process death (ARENA_HANDOFF_PROVE_SURVIVES_PROCESS_DEATH).
 
-The real-process half of the three deaths LiveHandoff.tla models (selftest_seat_restart.py runs on simulated windows).
+The real-process half of the three deaths Utils/arena/formal/Handoff.tla models (selftest_seat_restart.py runs on simulated windows).
 Every window, Dispatcher and fresh window here is a real child process that dies by a real SIGKILL at a stated point of
 the real code: execute(), final_fence(), kill_pid(), decide(), `seat_restart.py intile` and _wake_conductor() are not
 replaced. A child only PAUSES at a point (a wrapper that calls the real function) so that the parent can kill it there.
@@ -10,7 +10,8 @@ this machine's real seats. The live session list is the session files whose pid 
 Claude; assumed: it does not list a dead pid). Nothing outside the temp dir is written and only own children are killed.
 
 The rows named after SEAT_RESTART_FIX_DEAD_WINDOW_UNREAD_LOST, _WAKE_DEATH_READ_LOST and _STALE_RECORD_RELAUNCH pin the
-fixes of the gaps LiveHandoff.tla first reported as a broken S5/L3; check_models.py's death cases expect ok with them.
+fixes of the gaps LiveHandoff.tla (deleted, merged into Handoff.tla) first reported as a broken S5/L3; run_tlc.py's d_*
+rows expect them to pass.
 """
 import json
 import os

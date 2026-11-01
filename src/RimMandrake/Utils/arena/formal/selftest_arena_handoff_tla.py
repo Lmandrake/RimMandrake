@@ -1,13 +1,16 @@
 #!/usr/bin/env python3
 """selftest_arena_handoff_tla.py — Handoff.tla under TLC: the known goodbye race is found, the fixed protocol passes.
 
-ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE criteria, each by forced failure:
+ARENA_HANDOFF_PROVE_MODEL_FINDS_KNOWN_RACE and ARENA_HANDOFF_RECONCILE_MODEL_WITH_CODE criteria, by forced failure:
   parser      run_tlc.parse reads a canned TLC pass, an invariant violation and a temporal violation correctly, and
               calls a run that never finished (no "0 states left on queue") an error, never a pass
   race        the unfixed goodbye (Bugs {dead_session_drop}) violates S5, and the trace is the known interleaving:
               a message sent while phase = killed is lost; is_known_goodbye_race refuses a trace without that step
-  fixed       Bugs {} in goodbye, testpilot and arena: S1-S6 hold (2 candidates); L1, L2 hold (1 candidate)
+  recheck     no_recheck violates S5 through a prompt dequeued after the claim (the re-check is load-bearing)
+  fixed       Bugs {} in goodbye, testpilot and arena: S1-S6 hold; L1, L2 hold; with deaths too (d_*)
   mutants     each of S1..S6, L1, L2 is violated by its own planted defect (a property that cannot fail proves nothing)
+  workers     run_tlc reads its TLC worker count from RM_TLC_WORKERS and refuses a bad value
+Rows in run_tlc.HEAVY are skipped here, printed as SKIP, unless RM_TLC_ALL=1 (run_tlc.py runs them).
 Exit 2 (UNMEASURED) when java or tla2tools.jar is absent. Evidence goes to a temp dir, deleted on success.
 """
 import shutil
@@ -57,10 +60,37 @@ def t_parser():
     calm = [s.replace('"killed"', '"pending"') for s in r["trace"]]
     ok, _ = R.is_known_goodbye_race(calm)
     check(not ok, "parser: the same loss outside phase killed is NOT the known race (forced failure)")
+    def st(phase, m1, m2):
+        return '/\\ phase = "%s"\n/\\ msg = (m1 :> "%s" @@ m2 :> "%s")' % (phase, m1, m2)
+    same = [st("claimed", "takenOld", "unsent"), st("killing", "takenOld", "unsent"), st("killed", "lost", "unsent")]
+    check(R.is_taken_then_lost(same), "parser: the prompt taken while claimed and then lost is the re-check's case")
+    crossed = [st("claimed", "takenOld", "unsent"), st("killing", "readOld", "lost")]
+    check(not R.is_taken_then_lost(crossed),
+          "parser: m1 taken but m2 lost is NOT the re-check's case (forced failure)")
     r = R.parse(TEMP_LOG, ["L1", "L2"])
     check(r["result"] == "violated" and r["prop"] == "L1,L2", "parser: temporal violation names its properties")
     check(R.parse(HALF_LOG, [])["result"] == "error", "parser: an unfinished search is an error, never a pass")
     check(R.parse("", [])["result"] == "error", "parser: empty output is an error")
+
+
+def t_workers():
+    import os
+    saved = os.environ.get("RM_TLC_WORKERS")
+    try:
+        os.environ.pop("RM_TLC_WORKERS", None)
+        check(R.workers() == "4", "workers: default is capped at 4, not auto")
+        os.environ["RM_TLC_WORKERS"] = "2"
+        check(R.workers() == "2", "workers: RM_TLC_WORKERS=2 is used")
+        os.environ["RM_TLC_WORKERS"] = "lots"
+        try:
+            R.workers()
+            check(False, "workers: a bad RM_TLC_WORKERS is refused (forced failure)")
+        except SystemExit:
+            check(True, "workers: a bad RM_TLC_WORKERS is refused (forced failure)")
+    finally:
+        os.environ.pop("RM_TLC_WORKERS", None)
+        if saved is not None:
+            os.environ["RM_TLC_WORKERS"] = saved
 
 
 def t_model():
@@ -70,12 +100,18 @@ def t_model():
         sys.exit(2)
     out = Path(tempfile.mkdtemp(prefix="handoff_tla_"))
     rows = {}
+    import os
+    every = os.environ.get("RM_TLC_ALL") == "1"
     for name in R.MATRIX:
+        if name in R.HEAVY and not every:
+            print("SKIP  %s: heavy row, run by run_tlc.py --only %s (or RM_TLC_ALL=1)" % (name, name))
+            continue
         rows[name] = r = R.run_row(name, java, jar, out)
         check(r["ok"], "%s: expect %s, got %s%s (%s states) %s" % (name, r["expect"], r["result"],
               "(%s)" % r["violated"] if r["violated"] else "", r["states"], r["why"]))
     fixed = [r for n, r in rows.items() if n.startswith(("fixed_", "live_"))]
-    check(len(fixed) == 5 and all(r["states"] and r["states"] > 40 for r in fixed),
+    check(len(fixed) == len([n for n in R.MATRIX if n.startswith(("fixed_", "live_")) and (every or n not in R.HEAVY)])
+          and fixed and all(r["states"] and r["states"] > 40 for r in fixed),
           "fixed rows explored a real state space (not a vacuous init-only model)")
     covered = {r["expect"] for n, r in rows.items() if n.startswith("m_")}
     check(covered == set(R.INVS + R.PROPS), "every S1-S6, L1, L2 has its own mutant: %s" % sorted(covered))
@@ -87,6 +123,7 @@ def t_model():
 
 if __name__ == "__main__":
     t_parser()
+    t_workers()
     t_model()
     print("%d failure(s)" % len(FAILS))
     sys.exit(1 if FAILS else 0)

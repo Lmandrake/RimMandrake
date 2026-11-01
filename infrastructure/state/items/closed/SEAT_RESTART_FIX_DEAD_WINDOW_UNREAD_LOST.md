@@ -17,3 +17,6 @@ terminal state of a dead window with unread input.
 
 ## criteria
 - After a real SIGKILL of the window at each of the two points, a fresh window reads the unread message.
+
+(ARENA_HANDOFF_RECONCILE_MODEL_WITH_CODE, 2026-11-01: LiveHandoff.tla + check_models.py were deleted; the one model is
+`src/RimMandrake/Utils/arena/formal/Handoff.tla`, runner `run_tlc.py`, whose d_* rows carry these deaths.)
