@@ -431,6 +431,30 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(s.LedgerCloses, "ledger");
 			});
 
+			// CANAL_OVERFLOW round 4 (live K 2026-11-01 froze at +0.04 °C): D10 says BELOW 0 °C, so the quantised test is strict.
+			// A reading on the freezing point itself (q 0: anything in (-1/16, +1/16) °C) stays liquid; one step below freezes.
+			Case("Sheet_D10_freezes_strictly_below_zero_on_the_quantised_reading", () =>
+			{
+				Tier FrozenAt(float c)
+				{
+					var w = new World(8, 8);
+					for (int i = 0; i < w.TempDeciC.Length; i++) { w.TempDeciC[i] = RM_SheetTemp.DeciC(RM_SheetTemp.ToSixteenths(c)); w.SoakMilliDl[i] = 0; w.EvapMilliDl[i] = 0; }
+					var p = new Params();
+					var s = new State(8, 8, 7u);
+					ResolveSpills(s, w, p, new[] { Offer(4000, Water, Source.Rain, Idx(w, 4, 4)) });
+					Pulse(s, w, p, new PulseReport());
+					return s.Tiers[Idx(w, 4, 4)];
+				}
+				foreach (float c in new[] { 0.0404f, 0f, -0.03f, 0.0624f })
+				{
+					Assert(FrozenAt(c) != Tier.Ice, $"{c} °C quantises to the freezing point (q {RM_SheetTemp.ToSixteenths(c)}) and stays liquid");
+				}
+				foreach (float c in new[] { -0.0625f, -0.07f, -5f })
+				{
+					Assert(FrozenAt(c) == Tier.Ice, $"{c} °C quantises below 0 (q {RM_SheetTemp.ToSixteenths(c)}) and freezes");
+				}
+			});
+
 			// Stage 1 (§6 item 1): offer → accepted dL. A probe equals the commit and changes nothing.
 			Case("Sheet_preview_changes_nothing_and_counts_a_duplicate_lip_once", () =>
 			{

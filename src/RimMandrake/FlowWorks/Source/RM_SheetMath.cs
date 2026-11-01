@@ -63,7 +63,7 @@ namespace RimMandrake.FlowWorks
 		{
 			public int InfiltrationPermille; // × the cell's soak rate
 			public int EvaporationPermille;  // × the cell's evaporation rate
-			public int FreezeDeciC;          // D10: freezes at or below this (tenths of °C); water 0
+			public int FreezeDeciC;          // D10: freezes strictly below this (tenths of °C, from the quantised reading); water 0
 			public bool NeverFreezes;        // fuels and the like
 			public int BoilMilliDl;          // a liquid that boils at ambient (propane): loses at least this per pulse, roof or not
 			public int BoilAboveDeciC;       // ...while the cell is warmer than its boiling point (tenths of °C)
@@ -662,7 +662,10 @@ namespace RimMandrake.FlowWorks
 			return r;
 		}
 
-		/// <summary>D10: a wet cell at or below its fluid's freezing point turns to the Ice tier, keeping its dL; ice thaws
+		/// <summary>D10 (spec §5: "a sheet below 0 °C freezes"): a wet cell whose QUANTISED reading (RM_SheetTemp: 1/16 °C, then
+		/// deci-°C) is strictly below its fluid's freezing point turns to the Ice tier, keeping its dL; a reading that rounds to
+		/// the freezing point itself (water: anything in (-1/16, +1/16) °C reads 0) stays liquid (live K 2026-11-01 froze at
+		/// +0.04 °C under the old at-or-below test). Ice thaws
 		/// only <see cref="Params.ThawMarginDeciC"/> above it, back to the depth tier its dL calls for. Runs first in the
 		/// pulse, so a cell frozen this pulse neither flows nor returns.</summary>
 		private static void Freeze(State s, World w, Params p, PulseReport rep)
@@ -673,7 +676,7 @@ namespace RimMandrake.FlowWorks
 				Tier t0 = s.Tiers[c];
 				if (t0 != Tier.Ice)
 				{
-					if (fr.NeverFreezes || w.TempDeciC[c] > fr.FreezeDeciC) continue;
+					if (fr.NeverFreezes || w.TempDeciC[c] >= fr.FreezeDeciC) continue; // D10: strictly below
 					s.Tiers[c] = Tier.Ice;
 					s.Calm[c] = 0;
 				}

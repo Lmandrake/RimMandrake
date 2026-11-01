@@ -3032,6 +3032,9 @@ namespace RimMandrake.FlowWorks
 		/// RM_Patch_SaveGame_FinishPulse).</summary>
 		public bool PulseInFlight => flowKernel != null && flowKernel.PulseInFlight;
 
+		/// <summary>CANAL_OVERFLOW round 4 diag (RM_SheetProofs.ProofSheetHash): the tick the next pulse is due at.</summary>
+		internal int ProofNextPulseTick => nextPulseTick;
+
 		/// <summary>Before a save: runs the pulse in flight to its end, lands any rain still owed and draws every waiting picture.</summary>
 		public void FinishPulse()
 		{

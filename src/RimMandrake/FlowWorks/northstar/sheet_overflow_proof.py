@@ -798,9 +798,16 @@ def crops(ctx):
          "filmAlive": film_alive, "control": control, "tiers": tt})
 
 
+def below_zero(t):
+    """D10's bar as the kernel reads it (RM_SheetTemp.ToSixteenths then strictly < 0): 1/16 C truncated toward zero, so a
+    reading in (-1/16, +1/16) C is ON the freezing point and stays liquid; None is not below anything."""
+    return t is not None and int(t * 16) < 0
+
+
 def freeze(ctx):
     """PROVE (D10) 20,000 dL on soil at (4,116); 2 pulses (it settles); ColdSnap + DeepFreeze started; poll in 500-tick steps
-    (<= --cold-ticks) until the cell reads < 0 C and the rect reads ice > 0; then the conditions ended and poll (<= --cold-ticks)
+    (<= --cold-ticks) until the rect reads ice on every wet square (the cell must read below 0 C on the kernel's 1/16 C
+    grid, strictly: D10); then the conditions ended and poll (<= --cold-ticks)
     until ice == 0.
     EXPECT (all read on scene K's rect (-2,110) 14x13, never map-wide: other scenes soak and dry meanwhile) frozen: ice == wet
     (every wet square); while frozen the rect's dL, wet and ice unchanged over 2 pulses (ice neither flows, soaks nor dries);
@@ -823,10 +830,14 @@ def freeze(ctx):
             if (fr.get("ice") or 0) > 0 and fr.get("ice") == fr.get("wet"):
                 froze = k + 500
                 break
-        V.require(any(t is not None and t < 0 for t in temps), "the spill's square got below 0 C", temps[-6:])
         l1 = ledger()
         ctx["pulses"](2)
         fr2, _ = srect(-2, 110, 14, 13)
+        # round 4: the poll stops at the first freeze, and the cell's (vanilla, lagged) reading there can still sit just above
+        # the kernel's: the cold keeps falling, so the square is read once more after the frozen pulses
+        temps.append(fnum((B.call("jawa/cell_temperature", cell=cell) or {}).get("temperature")))
+        # the kernel's own bar (D10 "below 0 C", RM_SheetTemp): 1/16 C truncated toward zero, then strictly below 0
+        V.require(any(below_zero(t) for t in temps), "the spill's square got below 0 C (quantised)", temps[-6:])
         l2 = ledger()
     finally:
         for n in COLD:
@@ -917,13 +928,17 @@ def conserve(ctx):
 
 
 def save_load(ctx):
-    """PROVE (§6 item 4) 20,000 dL on soil at (4,140); 2 pulses; hash h0; save; 3 pulses -> hash hA; load; hash h0'; the same 3
-    pulses -> hash hB.
+    """PROVE (§6 item 4) 20,000 dL on soil at (4,140); 2 pulses; hash h0; save; 3 pulses -> hash hA; load; hash h0'; step to the
+    live run's game tick (the load itself runs one tick) -> hash hB.
     EXPECT h0' == h0 (the save holds the whole state) and hB == hA (continue-uninterrupted == save/load-then-continue: the
     future trajectory, not just the hash); closes after the load. LIES: a hash of the dl grid alone misses loss remainders and
     hysteresis (the owed hash is of RM_SheetMath.Save: the whole continuation state); a save or load the bridge refused is
     UNMEASURED. Runs LAST: the load replaces the map every later row would use."""
     B, row, ledger, P, sp, a = _c(ctx, "B", "row", "ledger", "P", "sp", "a")
+
+    def clock():
+        t = (B.call("jawa/time_clock", _answer=True) or {}).get("ticksGame")
+        return None if t is None else int(t)
     acc, ts = ctx["spill"](P(4, 140), 20000)
     V.require(acc == 20000, "the staged spill was accepted whole", ts)
     ctx["pulses"](2)
@@ -931,7 +946,9 @@ def save_load(ctx):
     name = "RM_SHEET_OVERFLOW_%s" % time.strftime("%Y%m%dT%H%M%S")
     sv = B.call("rimworld/save_game", saveName=name) or {}
     V.require(sv.get("success") is not False, "saved", sv, cls="HARNESS")
+    t_save = clock()
     ctx["pulses"](3)
+    t_live = clock()
     hav = sp("ProofSheetHash")[0]
     ha = hav.get("hash")
     ldr =B.call("rimworld/load_game_ready", saveName=name, timeoutMs=280000) or {}
@@ -944,7 +961,17 @@ def save_load(ctx):
                 break
             time.sleep(2)
     h0b = sp("ProofSheetHash")[0].get("hash")
-    ctx["pulses"](3)
+    # round 4: compare at the SAME game tick, never "the same N pulses". Vanilla's load runs one tick before it pauses
+    # (Game.LoadGame: Prefs.PauseOnLoad -> DoSingleTick, decomp rw16 Verse/Game.cs:638), so the loaded run starts at
+    # t_save + 1 and the old "3 more pulses" compared it one tick AHEAD of the live run (live 2026-11-01 H4/H5:
+    # outdoorTick 321283 vs 321284); the loaded run steps exactly to the live run's tick
+    t_load = clock()
+    V.require(None not in (t_save, t_live, t_load) and t_save <= t_load <= t_live,
+              "the clock reads at the save, the live end and the load", [t_save, t_live, t_load], cls="HARNESS")
+    if t_live > t_load:
+        ctx["ticks"](t_live - t_load)
+    t_end = clock()
+    V.require(t_end == t_live, "the loaded run is compared at the live run's tick", [t_live, t_end], cls="HARNESS")
     hbv = sp("ProofSheetHash")[0]
     hb = hbv.get("hash")
     l1 = ledger()
@@ -954,12 +981,15 @@ def save_load(ctx):
     # pulse: the kernel's own pulse count, so an arm that ran one pulse more (a load that let the clock run) is named, not
     # mistaken for a temperature split (live 2026-11-01: dl and calm agreed while rem and inputs parted)
     # inKind/inTemp/inEvap/inSoak: each input apart; outdoorQ/outdoorTick: the outdoor reading (1/16 C) and the tick it is for
+    # round 4: lastPulseTick / nextPulseTick / ticksGame name a pulse that ran on a different tick in the two runs
     parts = {k: [hav.get(k), hbv.get(k)] for k in ("pulse", "dl", "rem", "calm", "inputs", "indoorWet", "inKind", "inTemp",
-                                                    "inEvap", "inSoak", "outdoorQ", "outdoorTick")}
+                                                    "inEvap", "inSoak", "outdoorQ", "outdoorTick", "lastPulseTick",
+                                                    "nextPulseTick", "ticksGame")}
     split = sorted(k for k, (x, y) in parts.items() if x is not None and x != y)
     row("SAVE_LOAD_CONTINUES_IDENTICAL", "PASS" if good else "FAIL",
         {"h0": h0, "h0AfterLoad": h0b, "hContinued": ha, "hLoadedContinued": hb, "closes": l1["closes"], "save": name,
-         "parts": parts, "split": split})
+         "parts": parts, "split": split, "ticks": {"save": t_save, "live": t_live, "afterLoad": t_load, "loaded": t_end,
+                                                   "loadRan": t_load - t_save}})
 
 
 def perf_rows(ctx):
@@ -1430,7 +1460,10 @@ class FakeBridge(object):
             if self.saved is None:
                 return {"success": False, "error": "no save"}
             self._restore(self.saved)
+            self._advance(1)            # vanilla Game.LoadGame: Prefs.PauseOnLoad runs one tick, then pauses
             return {"success": True}
+        if tool == "jawa/time_clock":
+            return {"success": True, "ticksGame": self.tick}
         if tool == "jawa/map_info":
             return {"success": True, "size": [250, 250]}
         if tool == "jawa/running_mods":

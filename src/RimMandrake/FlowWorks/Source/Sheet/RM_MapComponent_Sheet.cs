@@ -700,6 +700,7 @@ namespace RimMandrake.FlowWorks.Sheet
 			RefreshAround();
 			HandOverTakenCells();
 			NoteNonWater();
+			proofLastPulseTick = Find.TickManager.TicksGame;
 			long k0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			RM_SheetMath.Pulse(state, world, prm, rep);
 			long k1 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -968,6 +969,10 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// (kind, deci-°C, evaporation, soak; FNV over ascending cells) and how many wet cells read an indoor room, so a split
 		/// hash says whether the inputs or the kernel's own state parted. Right after a load the world is rebuilt fail-closed,
 		/// so compare it only after a pulse in both runs.</summary>
+		/// <summary>CANAL_OVERFLOW round 4 diag: TicksGame of the last kernel pulse (not saved: -1 until the first pulse after a
+		/// load), so a live SAVE_LOAD split can say whether the two runs pulsed on different ticks.</summary>
+		private int proofLastPulseTick = -1;
+
 		internal string ProofInputs()
 		{
 			if (state == null || world == null)
@@ -1001,7 +1006,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			}
 			return "inputs=" + h.ToString("x16") + " indoorWet=" + indoor + " inKind=" + hk.ToString("x16") + " inTemp=" + ht.ToString("x16")
 				+ " inEvap=" + he.ToString("x16") + " inSoak=" + hs.ToString("x16") + " outdoorQ=" + RM_SheetTemp.ToSixteenths(OutdoorExactC())
-				+ " outdoorTick=" + outdoorTick;
+				+ " outdoorTick=" + outdoorTick + " lastPulseTick=" + proofLastPulseTick + " nextPulseTick=" + (Engine?.ProofNextPulseTick ?? -1)
+				+ " ticksGame=" + Find.TickManager.TicksGame;
 		}
 		internal long IrrigatedTotal => irrigatedTotal;
 
