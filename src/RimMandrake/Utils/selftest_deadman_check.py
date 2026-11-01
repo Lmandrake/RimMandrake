@@ -183,6 +183,14 @@ def main():
     check(DM.stamps(mode="dry")["ops_watch"] is None, "torn status.json -> None, not fresh")
 
     sweeps()
+    # the pass reads the shard it files into, from a clone no other reader lists
+    import pulse_core as pc
+    seen, keep_rl, keep_cl, keep_here = [], pc.read_ledger, pc.CLONES, DM.HERE
+    pc.read_ledger = lambda clones: seen.extend(clones) or []
+    pc.CLONES, DM.HERE = [Path("/a")], Path("/d/src/RimMandrake/Utils")
+    DM.read_items()
+    pc.read_ledger, pc.CLONES, DM.HERE = keep_rl, keep_cl, keep_here
+    check(seen == [Path("/a"), Path("/d")], "a sweep reads its own clone's shards as well: %r" % seen)
     # install plan writes nothing
     home = TMP / "home"
     os.environ["HOME"] = str(home)

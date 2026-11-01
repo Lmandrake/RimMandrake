@@ -201,7 +201,8 @@ def real_check(line):
 def read_items():
     import ops_watch  # noqa: F401   puts pulse/ on the path
     import pulse_core as pc
-    return pc._model().replay(pc.read_ledger()).items
+    own = HERE.parents[2]                  # this pass's own shard, or it would not see what it filed until others pull
+    return pc._model().replay(pc.read_ledger([*pc.CLONES, *([own] if own not in pc.CLONES else [])])).items
 
 
 def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True):
