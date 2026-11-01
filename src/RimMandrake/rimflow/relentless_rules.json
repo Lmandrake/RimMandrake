@@ -21,7 +21,7 @@
   "stop_force_s": 180,
   "stop_quarantine_s": 600,
   "item_spend_limit": 8000000,
-  "day_spend_limit": 24000000,
+  "day_spend_limit": 60000000,
   "run_reserve": 1200000,
   "min_mem_available_gb": 6,
   "launch_breaker": 3,
