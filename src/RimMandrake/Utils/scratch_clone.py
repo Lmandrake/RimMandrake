@@ -238,6 +238,16 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
         if dest.exists():
             raise RuntimeError(f"{dest} already exists")
         dest.parent.mkdir(parents=True, exist_ok=True)
+        if dest.parent == pool_root():
+            reused = pool_reuse(dest)
+            if reused:
+                rec.update({"ok": True, "reused": True})
+                print(dest)
+                return 0
+            why = pool_admit(dest)
+            if why:
+                rec["refused"] = why
+                raise RuntimeError("POOL REFUSED: " + why)
         if not (store_path() / "HEAD").exists():
             rec["init"] = init()
         try:
@@ -286,6 +296,145 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
     finally:
         rec["wall_s"] = round(time.time() - t0, 2)
         append("uses.jsonl", rec)
+
+
+# ---------------------------------------------------------------- the bounded clone pool
+# WORKER_CLONES_MONITOR_POOL_NOT_RABBITS. Owner, 2026-10-31: bounded pool of about 10 reused clones for writers above 4,
+# "I trust you, but please monitor them carefully. They seem to propagate prolifically." Revert line (PLAN.md section 4):
+# a clone strands work, or the pool passes 40 GB. `git worktree` stays banned. Enforced HERE, at creation, because every
+# pool clone (relentless builders' and checkers') is made by this file; the reading below is what RimPulse and ops_watch show.
+POOL_MAX_CLONES = 10
+POOL_MAX_BYTES = 40 * 10**9
+POOL_IDLE_S = 3600
+
+
+def pool_root() -> Path:
+    return Path(os.environ.get("RM_POOL_ROOT", RM / "relentless" / "clones"))
+
+
+def pool_cap() -> tuple[int, int]:
+    return (int(os.environ.get("RM_POOL_MAX_CLONES", POOL_MAX_CLONES)),
+            int(float(os.environ.get("RM_POOL_MAX_BYTES", POOL_MAX_BYTES))))
+
+
+def clone_bytes(c: Path) -> int:
+    own, linked = own_bytes(c)
+    return own + linked      # allocated, hard links counted once per tree: the cap errs high
+
+
+def clone_unpushed(c: Path) -> list[str]:
+    """What this clone holds that no remote ref does: commits, a stash, dirty or untracked files. Empty = nothing at risk.
+    Fails closed: a clone git cannot read reports itself unreadable."""
+    out = []
+    try:
+        if git("rev-list", "--branches", "--tags", "--not", "--remotes", cwd=c, timeout=120):
+            out.append("commits")
+        if git("stash", "list", cwd=c, timeout=60):
+            out.append("stash")
+        if git("--no-optional-locks", "status", "--porcelain", "--untracked-files=normal", cwd=c, timeout=300):
+            out.append("dirty")
+    except Exception as e:
+        out.append("unreadable: " + str(e)[:80])
+    return out
+
+
+def clone_in_use(c: Path) -> bool:
+    me = os.getpid()
+    pre = str(c) + os.sep
+    for d in glob.glob("/proc/[0-9]*"):
+        if d == f"/proc/{me}":
+            continue
+        try:
+            cwd = os.readlink(d + "/cwd")
+        except OSError:
+            continue
+        if cwd == str(c) or cwd.startswith(pre):
+            return True
+    return False
+
+
+def clone_idle_s(c: Path) -> float:
+    newest = 0.0
+    for n in (".git/index", ".git/HEAD", ".git/FETCH_HEAD", ".git/logs/HEAD", ".git/relentless"):
+        try:
+            newest = max(newest, (c / n).stat().st_mtime)
+        except OSError:
+            pass
+    return time.time() - newest if newest else 0.0
+
+
+def pool_reading() -> dict:
+    """Live: count, bytes, oldest clone, and every clone with unpushed work. Written to pool.json for RimPulse."""
+    root, (cmax, bmax) = pool_root(), pool_cap()
+    rows = []
+    now = time.time()
+    for c in sorted(root.glob("*")) if root.is_dir() else []:
+        if not (c / ".git").exists():
+            continue
+        try:
+            born = c.stat().st_ctime
+        except OSError:
+            born = now
+        risk = clone_unpushed(c)
+        # unpushed work in a clone someone is working in is the job; unpushed work nobody touches for an hour is stranded
+        stranded = bool(risk) and clone_idle_s(c) >= POOL_IDLE_S and not clone_in_use(c)
+        rows.append({"name": c.name, "bytes": clone_bytes(c), "age_h": round((now - born) / 3600, 2),
+                     "unpushed": risk, "stranded": stranded})
+    tot = sum(r["bytes"] for r in rows)
+    held = [r["name"] for r in rows if r["stranded"]]
+    d = {"ts": now_iso(), "epoch": now, "root": str(root), "count": len(rows), "max_clones": cmax,
+         "bytes": tot, "gb": round(tot / 1e9, 2), "max_gb": round(bmax / 1e9, 1),
+         "oldest_h": max([r["age_h"] for r in rows], default=0.0), "unpushed": [r["name"] for r in rows if r["unpushed"]], "stranded": held, "clones": rows}
+    d["breach"] = int(len(rows) > cmax) + int(tot > bmax) + len(held)
+    try:
+        (state_dir() / "pool.json").write_text(json.dumps(d))
+    except OSError:
+        pass
+    return d
+
+
+def pool_admit(dest: Path, reading: dict | None = None) -> str | None:
+    """None = may create; else the refusal. Called before any pool clone is made."""
+    if dest.parent != pool_root():
+        return None
+    r = reading or pool_reading()
+    cmax, bmax = pool_cap()
+    if r["count"] >= cmax:
+        return f"pool full: {r['count']} clones, cap {cmax} (no idle clone to reuse); finish or push one, then retry"
+    if r["bytes"] >= bmax:
+        return f"pool at {r['gb']} GB, cap {bmax / 1e9:.0f} GB (the revert line)"
+    return None
+
+
+def pool_reuse(dest: Path) -> Path | None:
+    """Reuse before create: an idle, fully pushed, unowned pool clone is renamed to dest and brought level with origin."""
+    root = pool_root()
+    if dest.parent != root:
+        return None
+    named = ""
+    for f in glob.glob(os.environ.get("RM_POOL_STATE_GLOB", str(RM / "relentless" / "store" / "*.json"))):
+        try:
+            named += Path(f).read_text()
+        except OSError:
+            pass
+    for c in sorted(root.glob("*"), key=lambda p: clone_idle_s(p), reverse=True):
+        if c == dest or not (c / ".git").exists() or str(c) in named:
+            continue
+        if clone_idle_s(c) < POOL_IDLE_S or clone_in_use(c) or clone_unpushed(c):
+            continue
+        try:
+            os.rename(c, dest)
+            try:
+                refresh()
+            except Exception:
+                pass     # a stale store still serves a level checkout, as `clone` does
+            git("fetch", "-q", str(store_path()), f"+{STORE_REF}:refs/remotes/origin/main", cwd=dest, timeout=900)
+            git("checkout", "-q", "--detach", "refs/remotes/origin/main", cwd=dest)
+            return dest
+        except Exception:
+            if dest.exists() and not c.exists():
+                os.rename(dest, c)
+    return None
 
 
 # ---------------------------------------------------------------- periodic sample
@@ -443,7 +592,7 @@ def main(argv=None) -> int:
     g.add_argument("--sparse", nargs="+", default=[], metavar="PATH", help="cone sparse checkout")
     c.add_argument("--fetch", action="store_true", help="also fetch origin (GitHub) after cloning")
     c.add_argument("--dissociate", action="store_true", help="durable clone: no alternates (hard-linked packs)")
-    for n in ("init", "refresh", "sample", "baseline", "report"):
+    for n in ("init", "refresh", "sample", "baseline", "report", "pool"):
         sub.add_parser(n)
     a = ap.parse_args(argv)
     if a.cmd == "clone":
@@ -451,6 +600,10 @@ def main(argv=None) -> int:
     if a.cmd == "report":
         print(report())
         return 0
+    if a.cmd == "pool":
+        r = pool_reading()
+        print(json.dumps({k: v for k, v in r.items() if k != "clones"}))
+        return 1 if r["breach"] else 0
     out = {"init": init, "refresh": refresh, "sample": sample, "baseline": baseline}[a.cmd]()
     print(json.dumps(out))
     return 0

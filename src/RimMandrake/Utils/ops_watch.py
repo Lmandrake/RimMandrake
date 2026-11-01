@@ -881,6 +881,20 @@ def c_disk(now, rules, ctx):
                                          failures=d.get("failures"), freed_bytes=d.get("freed_bytes"))
     except (OSError, ValueError) as e:
         out["disk.scratch_ok_age_h"] = M(9999, "hours since the expiry last ran clean", why="%s: %s" % (rec, e))
+    # The bounded worker-clone pool (WORKER_CLONES_MONITOR_POOL_NOT_RABBITS): read live each tick, never from a cache.
+    # One number alarms: clones over the cap, bytes over the cap, plus every clone holding unpushed work nobody is using.
+    # A pool that cannot be read is the alarm too (9999), not silence.
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        import scratch_clone
+        pr = scratch_clone.pool_reading()
+        out["disk.pool_clones"] = M(pr["count"], "worker clones in the pool (cap %d)" % pr["max_clones"])
+        out["disk.pool_gb"] = M(pr["gb"], "GB the pool holds (cap %s)" % pr["max_gb"])
+        out["disk.pool_oldest_h"] = M(pr["oldest_h"], "hours since the oldest pool clone was made")
+        out["disk.pool_breach"] = M(pr["breach"], "pool breaches: over count, over bytes, stranded unpushed clones",
+                                    stranded=pr["stranded"], unpushed=pr["unpushed"])
+    except Exception as e:
+        out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e)[:160])
     return out
 
 
@@ -1794,9 +1808,10 @@ def headline(points, flags, alarms):
              + ", codex " + g("codex.runway").strip()]
     parts.append("steve %s, INVALID streak %s, unowned stall %s min" % (
         g("steve.state").strip(), g("steve.invalid_streak").strip(), g("steve.unowned_stall_min").strip()))
-    parts.append("disk free / %s GB, C: %s GB, D: %s GB, scratch %s GB" % (
+    parts.append("disk free / %s GB, C: %s GB, D: %s GB, scratch %s GB, pool %s clones %s GB oldest %s h" % (
         g("disk.root_free_gb").strip(), g("disk.c_free_gb").strip(), g("disk.d_free_gb").strip(),
-        g("disk.scratch_total_gb").strip()))
+        g("disk.scratch_total_gb").strip(), g("disk.pool_clones").strip(), g("disk.pool_gb").strip(),
+        g("disk.pool_oldest_h").strip()))
     opened = [a for a in alarms.values() if a.get("state") == "OPEN"]
     pend = [a for a in alarms.values() if a.get("state") == "PENDING"]
     parts.append("%d flag(s), %d alarm(s) open, %d pending" % (len(flags), len(opened), len(pend)))
@@ -1864,6 +1879,7 @@ BLIND_KEYS = frozenset("""
 companion.grant_hours_left companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
 disk.scratch_ok_age_h disk.scratch_refused_gb disk.scratch_total_gb
+disk.pool_breach disk.pool_clones disk.pool_gb disk.pool_oldest_h
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h
 process.share_24h process.share_7d
 production.A1 production.A2 production.A3 production.A4 production.A5
@@ -1913,8 +1929,9 @@ def blind_digest_md(dg, rules):
     opened = [a for a in al.values() if a.get("state") == "OPEN"]
     hl = ["steve %s, INVALID streak %s, unowned stall %s min" % (
               g("steve.state"), g("steve.invalid_streak"), g("steve.unowned_stall_min")),
-          "disk free / %s GB, C: %s GB, D: %s GB, scratch %s GB" % (
-              g("disk.root_free_gb"), g("disk.c_free_gb"), g("disk.d_free_gb"), g("disk.scratch_total_gb")),
+          "disk free / %s GB, C: %s GB, D: %s GB, scratch %s GB, pool %s clones %s GB oldest %s h" % (
+              g("disk.root_free_gb"), g("disk.c_free_gb"), g("disk.d_free_gb"), g("disk.scratch_total_gb"),
+              g("disk.pool_clones"), g("disk.pool_gb"), g("disk.pool_oldest_h")),
           "%d flag(s), %d alarm(s) open, %d pending" % (
               len(fl), len(opened), len([a for a in al.values() if a.get("state") == "PENDING"]))]
     L = ["# Ops watch, health digest %s (an allow-list of health series; account readings are Operations')"

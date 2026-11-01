@@ -355,6 +355,14 @@ Path(os.environ["RM_SCRATCH_REAP_RUNS"]).write_text(json.dumps({"ts": OW.iso(NOW
 dk = OW.c_disk(NOW, RULES, {})
 check("disk: the fixture mount reads MEASURED", dk["disk.root_free_gb"]["m"] == "MEASURED", dk["disk.root_free_gb"])
 check("disk: scratch = YOUNG + REFUSE (DELETED is gone)", dk["disk.scratch_total_gb"]["v"] == 4.0, dk["disk.scratch_total_gb"])
+os.environ.update({"RM_POOL_ROOT": str(TMP / "pool"), "RM_OBJSTORE_STATE": str(TMP / "objstate"), "RM_POOL_MAX_CLONES": "2"})
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: an empty pool reads 0 breaches, measured", dk["disk.pool_breach"]["v"] == 0 and dk["disk.pool_breach"]["m"] == "MEASURED"
+      and dk["disk.pool_clones"]["v"] == 0, dk["disk.pool_breach"])
+for _i in range(3):
+    subprocess.run(["git", "init", "-q", str(TMP / "pool" / ("c%d" % _i))], check=True)
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: three clones over a cap of two is a breach", dk["disk.pool_breach"]["v"] >= 1 and dk["disk.pool_clones"]["v"] == 3, dk["disk.pool_breach"])
 dk = OW.c_disk(NOW + 10 * H, RULES, {})
 check("disk: a reap log 11 h old -> scratch UNMEASURED", dk["disk.scratch_total_gb"]["m"] == "UNMEASURED", dk["disk.scratch_total_gb"])
 _rec = Path(os.environ["RM_SCRATCH_REAP_RUNS"]).with_name("last_run.json")

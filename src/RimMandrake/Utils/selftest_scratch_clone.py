@@ -124,6 +124,43 @@ def main() -> int:
         rep = sc.report()
         check("corruption incidents" in rep and "VERDICT: BAD" in rep, "report verdict reflects incidents")
         check("4 / 1" in rep, "report counts uses")
+
+        # The bounded pool: cap at creation, reuse before create, stranded work is an alarm and is never reused.
+        pool = BASE / "scratch" / "pool"
+        os.environ.update({"RM_SEAT": "pool", "RM_POOL_ROOT": str(pool), "RM_POOL_MAX_CLONES": "2",
+                           "RM_POOL_STATE_GLOB": str(BASE / "nostate*.json")})
+
+        def age(c: Path, secs: int):
+            for n in (".git/HEAD", ".git/logs/HEAD", ".git/index", ".git/FETCH_HEAD"):
+                if (c / n).exists():
+                    t0 = (c / n).stat().st_mtime - secs
+                    os.utime(c / n, (t0, t0))
+
+        r1, _ = quiet(sc.clone, "pool test", "p1", True, [], False, False)
+        r2, _ = quiet(sc.clone, "pool test", "p2", True, [], False, False)
+        check(r1 == 0 and r2 == 0 and (pool / "p1").is_dir() and (pool / "p2").is_dir(), "pool clones under the cap are made")
+        rd = sc.pool_reading()
+        check(rd["count"] == 2 and rd["breach"] == 0 and (sc.state_dir() / "pool.json").exists(), f"pool reading: {rd['count']}")
+        r3, _ = quiet(sc.clone, "pool test", "p3", True, [], False, False)
+        check(r3 == 1 and not (pool / "p3").exists(), "an over-cap attempt is REFUSED and makes no clone")
+        check("POOL REFUSED" in (sc.read_jsonl("uses.jsonl")[-1].get("error") or ""), "the refusal is on the record")
+        age(pool / "p1", 7200)
+        r3, _ = quiet(sc.clone, "pool test", "p3", True, [], False, False)
+        check(r3 == 0 and (pool / "p3").is_dir() and not (pool / "p1").exists() and sc.pool_reading()["count"] == 2,
+              "at the cap an idle pushed clone is reused (renamed), not added")
+        sh("git", "-C", str(pool / "p2"), "commit", "-q", "--allow-empty", "-m", "unpushed")
+        age(pool / "p2", 7200)
+        age(pool / "p3", 7200)
+        rd = sc.pool_reading()
+        check(rd["stranded"] == ["p2"] and rd["breach"] == 1, f"unpushed idle work is stranded and a breach: {rd['stranded']}")
+        r4, _ = quiet(sc.clone, "pool test", "p4", True, [], False, False)
+        check(r4 == 0 and (pool / "p4").is_dir() and (pool / "p2").is_dir()
+              and sh("git", "-C", str(pool / "p2"), "log", "-1", "--format=%s") == "unpushed",
+              "a clone with unpushed work is never reused")
+        os.environ["RM_POOL_MAX_CLONES"] = "9"
+        os.environ["RM_POOL_MAX_BYTES"] = "1"
+        r5, _ = quiet(sc.clone, "pool test", "p5", True, [], False, False)
+        check(r5 == 1 and not (pool / "p5").exists(), "the byte cap refuses too")
     finally:
         shutil.rmtree(BASE, ignore_errors=True)
     print(f"selftest_scratch_clone: {'FAIL ' + str(len(FAILS)) if FAILS else 'OK'}")

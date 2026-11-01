@@ -269,7 +269,11 @@ Work in your seat clone (`/home/mandrake/rm/bench` or `/home/mandrake/rm/foundry
 `D:\Luke\dev\RimMandrake` is a read-only mirror. Commit explicit paths (never `git add -A`/`.`/`-a`,
 never `--force`, never a file over ~50 MB), push at once (`./publish` prints `PUBLISHED <sha>`),
 and keep file writes and commits in separate Bash calls (hooks refuse a compound command whole).
-🔴 **Worktrees are OFF** (owner, 2026-10-02, by card; `block_worktrees.py`). A committed mod DLL
+🔴 **`git worktree` is OFF** (owner, 2026-10-02, by card; `block_worktrees.py`). **A bounded pool of about 10 reused
+clones is approved** for writers above 4 (owner, 2026-10-31: "I trust you, but please monitor them carefully. They seem to
+propagate prolifically."). Cap 10 clones and 40 GB, refused at creation by `scratch_clone.py` (an idle pushed clone is
+reused first); RimPulse shows count, GB, oldest; one alarm, `disk.pool_breach`; a clone with unpushed work is never
+reaped and is itself an alarm. Revert if a clone strands work or the pool passes 40 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
 ## Code isn't clean until a review says so
