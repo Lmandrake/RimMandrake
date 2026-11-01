@@ -124,6 +124,37 @@ Conductor does. Each time he catches it first, that counts as an escape under C6
 - May Bench close itself when idle with a high context, so it stops depending on his goodbye?
 - What does the trial still need to tell us, given it ran serially?
 
+## 8a. His target shape, 2026-11-01
+
+Four standing parts, in his words. "Gap" is the Conductor's reading on 2026-11-01, to be proved, not a finding.
+
+**Context keeper.** *"Someone maintains context management: when windows get too big, they close out and get restarted
+by Dispatch."* Exists: FOUNDRY's backstop. Gap: the Conductor's backstop is off, so it still needs his goodbye.
+
+**Operations.** *"A periodic Operations process is run to ensure all metrics on the machine, the productivity, the
+process, the resources are sane. They know what sane looks like, idle looks like, what the current plan is, and what
+broken/distressed/emergency looks like. They provide a report to an agent that can take action, and then tell them to
+read it. Possibly also the User if things are beyond agentic help."* Exists: the Operations role twice a day,
+`rm-ops-watch.timer`, `rm-deadman.timer`. Gaps: no written definition of sane, idle, distressed and emergency per
+metric is confirmed; delivery today is a log read at wake, not "tell them to read it"; it did not catch the 6-hour
+relentless jam or a 279-clone pile as such; plan-awareness is unproved.
+
+**Relentless workers.** *"Relentless workers that are aware of low-productivity testing traps or rapidly iterating
+between multiple poor solutions while repeating them. They know when to call for blind review (near the end of a build
+when there's evidence that it's working, to confirm), and they know when to call for help (here's what I'm stuck on,
+help me see other options to consider)."* Exists: `same_failure_limit` forces a change of approach; blind check at the
+end. Gaps: repeats are counted by failure class only, so a worker that fails differently each time while going round in
+circles is not caught; no test-waste awareness (C3, C4); blind review is fixed at cycle end rather than called by the
+worker on evidence; no "help me see other options" call.
+
+**Dispatch.** *"A functional Dispatch that keeps SteveDesktop busy running offline and live testing, topped up with
+work. Keeps local Foundry functional. Launches Operations-monitoring, cleaning programs... anything that's required, on
+schedule, and doesn't forget to keep checking ever. Looks for idle agents and brings them back up on useful items. Is
+plan-aware."* Exists: `rm-dispatcher.timer`, seat rings, role launches, `testq-tick.timer`. Gaps: Steve is parked on the
+CPU retest and failing drive, so topping-up is unproved; timers are systemd's, and nothing yet proves every required one
+stays alive except `rm-deadman` promises; FOUNDRY sat idle with 382 items ready; plan-awareness is unproved (the plan
+lives in the Producer's hands, `CONDUCTOR_GOALS.md`).
+
 ## 9. What this does not claim
 
 C1 to C8 are proposals. None has been tried. Why FlowWorks did not converge is a hypothesis here, not a finding: test
