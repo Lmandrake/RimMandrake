@@ -85,9 +85,12 @@ namespace RimMandrake.FeverWood
                 }
             }
 
+            // VanishOrMoveAside, not the default Vanish: the plug is Impassable, and GenSpawn.SpawningWipes treats an
+            // Item under an Impassable building as wiped, so the default would silently delete any loot, dropped weapon
+            // or corpse lying in the corridor. MoveAside shoves them to a neighbouring cell first.
             for (int i = 0; i < cells.Count; i++)
             {
-                GenSpawn.Spawn(ThingMaker.MakeThing(plugDef), cells[i], map);
+                GenSpawn.Spawn(ThingMaker.MakeThing(plugDef), cells[i], map, WipeMode.VanishOrMoveAside);
             }
 
             if (cells.Count > 0)

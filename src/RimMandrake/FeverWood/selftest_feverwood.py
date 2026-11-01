@@ -69,6 +69,16 @@ def flash_chance_on_bare_ground(cs_path):
     return pts[-1][1]
 
 
+def plug_spawns_move_items_aside(cs_path):
+    """True when every GenSpawn.Spawn in RM_HiveSealing passes WipeMode.VanishOrMoveAside. The default
+    (WipeMode.Vanish) deletes any Item under the Impassable plug (GenSpawn.SpawningWipes, 1.6). None = no spawn found."""
+    import re
+    calls = re.findall(r"GenSpawn\.Spawn\(([^;]*)\);", open(cs_path, encoding="utf-8").read())
+    if not calls:
+        return None
+    return all("WipeMode.VanishOrMoveAside" in c for c in calls)
+
+
 def check(name, cond, detail=""):
     print("%s  %s %s" % ("ok  " if cond else "FAIL", name, ("" if cond else detail)))
     if not cond:
@@ -766,6 +776,18 @@ def main():
         check("break %s -> bare ground never catches" % label, flash_chance_on_bare_ground(tf.name) == 0,
               flash_chance_on_bare_ground(tf.name))
         os.unlink(tf.name)
+
+    # HiveSealing: the resin plug is Impassable, so a default-WipeMode spawn vanishes items/corpses under it
+    # (GenSpawn.SpawningWipes). Every plug spawn must pass WipeMode.VanishOrMoveAside.
+    sealing_cs = os.path.join(os.path.dirname(os.path.abspath(__file__)), "Source", "RM_HiveSealing.cs")
+    check("hive plugs move items aside instead of vanishing them", plug_spawns_move_items_aside(sealing_cs),
+          plug_spawns_move_items_aside(sealing_cs))
+    old = open(sealing_cs, encoding="utf-8").read().replace(", WipeMode.VanishOrMoveAside)", ")")
+    with tempfile.NamedTemporaryFile("w", suffix=".cs", delete=False, encoding="utf-8") as tf:
+        tf.write(old)
+    check("break default-WipeMode plug spawn -> caught", plug_spawns_move_items_aside(tf.name) is False,
+          plug_spawns_move_items_aside(tf.name))
+    os.unlink(tf.name)
 
     # the two source guards, over a synthetic tree
     clean = guards_with({})
