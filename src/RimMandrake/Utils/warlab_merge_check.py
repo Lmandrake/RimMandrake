@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Proof for ASSAILANT_WARLAB_BUILD_MERGE: one item owns the war lab site, the other is superseded by it, nothing live
-still names the superseded id, and the gate order is written once."""
+still names the superseded id, and the gate order is written once and ruled: a non-maker opus judge's KEEP on every hard
+read, or the owner's ruling (verify clause 2)."""
 import json
 import pathlib
 import subprocess
@@ -15,6 +16,8 @@ HISTORY = ("design/RimMandrake/mod_audit/", "design/RimMandrake/gpt_reviews/", "
            "src/RimMandrake/Utils/warlab_merge_check.py", "src/RimMandrake/Utils/pulse/time_ledger_replay/",
            "conversations/", "infrastructure/state/handoffs/", "infrastructure/state/reconcile_manifest_2026-10-07.md",
            f"infrastructure/state/items/{OWNER}.md")  # the last only names where its folded build came from
+RECORD = ROOT / "infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order.json"
+BAN_ITEM = "WARLAB_GATES_DECIDE_BAN_EIGHT_ONE_READ"
 GATE_CELLS = ["**Reveal**", "**Garrison, if early**", "**The codes**", "**The core socket**"]
 
 
@@ -38,6 +41,27 @@ def defects(show_gone: str, show_owner: str, live_hits: list[str], spec: str, or
     return out
 
 
+def ruling_defects(record: dict, spec: str, show_ban: str) -> list[str]:
+    """Clause 2: 'ruled by the owner where it is a judgement'. The maker's own table, however tidy, is not a ruling."""
+    out = []
+    if record.get("owner_ruling"):
+        ruled = True
+    else:
+        judge = str(record.get("judge") or "")
+        ruled = record.get("verdict") == "KEEP" and judge and "gpt" not in judge.lower() and "maker" not in judge.lower()
+        answers = record.get("hard_read_rulings") or {}
+        if ruled and len(answers) != len(record.get("hard_reads") or []):
+            out.append(f"the judge answered {len(answers)} of {len(record.get('hard_reads') or [])} hard reads")
+    if not ruled:
+        out.append(f"gate order not ruled: verdict {record.get('verdict')}, judge {record.get('judge')}, no owner ruling")
+    head = spec.find("**The gate order")
+    if "PROVISIONAL" in spec[head:spec.find("### 2.4", head)]:
+        out.append("§2.3 still says PROVISIONAL")
+    if " proposed " in show_ban.splitlines()[0]:
+        out.append(f"{BAN_ITEM} is unanswered")
+    return out
+
+
 def main() -> int:
     show = lambda i: subprocess.run([sys.executable, "src/RimMandrake/rimflow/cli.py", "show", i], cwd=ROOT,
                                     capture_output=True, text=True).stdout
@@ -49,7 +73,9 @@ def main() -> int:
     copies = [f for f in copies if not f.endswith(("warlab_merge_check.py", "items/ASSAILANT_WARLAB_BUILD_MERGE.md"))
               and "ledger/" not in f
               and "/closed/" not in f and not f.startswith("infrastructure/state/queue")]
-    found = defects(show(GONE), show(OWNER), live, SPEC.read_text(), copies)
+    spec = SPEC.read_text()
+    found = defects(show(GONE), show(OWNER), live, spec, copies)
+    found += ruling_defects(json.loads(RECORD.read_text()), spec, show(BAN_ITEM))
     print(json.dumps({"defects": found}, indent=1))
     return 1 if found else 0
 

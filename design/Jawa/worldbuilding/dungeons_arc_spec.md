@@ -179,9 +179,12 @@ what you came in to.** The socket is inside the door, so the order is forced.
   follow gate 3 or 4 stays §2.9 question 2.
 
 **Who stands where, and when (the §2.5 roster against hard ban #8).** Delegated design as above. The
-ban (`the_propane_lakes.md` §6) and its 2026-09-07 gloss are about the biome: *"live and dangerous
-under containment is not the same as resident weapon-fauna roaming the biome map."* The §2.5 roster
-is a site roster under the Anomaly exception. They apply to different things, so neither changes:
+ban (`the_propane_lakes.md` §6) makes two claims, and both hold at every moment. The lab's own guards
+are mechanoid/ancient: that is the last watch, and nothing else ever guards the lab. The Assailant
+material is the study subject, never resident weapon-fauna: the §2.5 roster is what the lab guards and
+studies, not a guardian of the lab, and it goes live on this site map only, after the wake. The
+2026-09-07 gloss draws that line: *"live and dangerous under containment is not the same as resident
+weapon-fauna roaming the biome map."* So neither the ban nor the §2.5 roster changes:
 
 | who | where | before the wake | after the wake |
 |---|---|---|---|

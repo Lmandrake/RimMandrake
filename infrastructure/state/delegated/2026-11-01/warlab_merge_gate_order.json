@@ -4,11 +4,21 @@
  "subject": "design/Jawa/worldbuilding/dungeons_arc_spec.md §2.3: the gate order, and who stands where and when",
  "judge": null,
  "verdict": "NOT_JUDGED",
- "why_not": "delegation_policy §4 needs a fresh opus judge; this worker runs under a no-subagents brief and may not spawn one",
+ "why_not": "delegation_policy §4 needs a fresh opus judge. A relentless worker runs under 'no subagents' and relentless help returns hypotheses only, so no worker of this item can run one",
  "hard_reads": [
   "Route 6 replaces gate 3 only: the socket survives, and the last watch did the overrunning. His words say the lab is exposed 'for player entrance without action'.",
-  "Hard ban #8 is read as biome-scoped from its 2026-09-07 gloss, so the owner-ruled §2.5 flesh guardians stand inside the lab after the wake. The ban's first clause alone says 'lab guardians are mechanoid/ancient'. If that clause binds the site, this is a §2.4 reserved call.",
+  "Hard ban #8 is applied, not narrowed: 'lab guardians' are the lab's own guards (the last watch), and the §2.5 flesh is the study subject, live on this site map only after the wake. Open question: is that application (delegable) or reinterpretation (delegation_policy §2.4, his)?",
   "Seating the core, not opening the door, starts the 15-day stasis clock."
  ],
- "owed": "one opus judge round on §2.3, then a note on the item"
+ "owed": "one opus judge round on §2.3 from that brief; record judge, verdict KEEP, and hard_read_rulings, then drop PROVISIONAL from §2.3 and settle WARLAB_GATES_DECIDE_BAN_EIGHT_ONE_READ",
+ "gpt_prereview": {
+  "model": "gpt-6.1-sol via gpt_consult.py",
+  "note": "pre-review, not a §4 judgment; not the opus judge of Agent_Policy",
+  "q1_ban8": "APPLY, delegable; 'whole ban is about the biome' too broad, fixed in the spec",
+  "q2_route6": "KEEP",
+  "q3_clock": "KEEP",
+  "q4_table": "no defect",
+  "owner_referral": "none, unless the mechanoid/ancient guard requirement changes"
+ },
+ "brief": "infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order_judge_brief.md"
 }
