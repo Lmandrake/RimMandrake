@@ -118,6 +118,24 @@ substitution, never a hand-typed or pre-computed string. Closing against a
 pre-fix HEAD (closing before committing) leaves a real but misleading sha on
 the event just as surely as a typo does.
 
+## Done means running: `--live`
+
+A commit touching a hook, a systemd unit, `dispatcher_schedule.json` or `ops_watch_rules.json`, an Operations alarm
+(`OPS_*`, `LIVE_RESTORE_*`) and any item already holding a promise closes only with a line that holds right now:
+
+    --live "unit=rm-foo.timer reading=<path> max_age=6h"     the reading must be newer than the commit
+    --live "unit=rm-foo.timer max_age=6h"                    the timer's own last firing
+    --live "hook=block_foo.py"
+    --live "role=Operations max_age=2d"
+    --live "once: <why this is a real one-off>"              the visible escape; never swept
+
+`close` and `implemented` take it alike; a refusal changes nothing. `rm-deadman.timer` (no AI, every 15 min, from the
+dispatch clone) rechecks every line on the ledger and `src/RimMandrake/rimflow/live_baseline.txt`. A dead promise
+reopens the SAME item through the RUNNER-only `live` verb, the one way out of `done`; recovery puts it back. A promise
+with no item files `LIVE_RESTORE_<NAME>`, a fixed id, so a return counts on one item: repeat 2 reads NEEDS FOLD in
+`show`, and Operations owns that. Remove a promise by retiring its item or its baseline line by hand. The last pass
+is `D:\ClaudeWork\rimmandrake\ops_watch\live_sweep.json`.
+
 ## Provenance: `--owner-said`, `--by-card`, `--per-ruling`, `--why`
 
 Owner rulings by question card, 2026-10-11 (the transcript-proof guards were deleted that
