@@ -55,6 +55,7 @@ notes stale is not grounds for destroying them, and the listing is the whole pro
 """
 import argparse
 import calendar
+import datetime
 import json
 import os
 import re
@@ -935,6 +936,7 @@ def cmd_next(args, seat):
     # changing. It's causing so many problems and I don't need it.").
     _apply_grant_preflight(ctx)
     ctx["focus"] = _seat_focus(seat, world=w)
+    ctx["focus_cap"] = _focus_cap(seat)
     # The priority list orders `next`, so the ring's peek and the claim that follows agree (DI3). A redirected ledger
     # is a throwaway: it reads the list only when the same caller redirected that too.
     if os.environ.get("RM_PRIORITY_LIST") or not os.environ.get("RIMFLOW_LEDGER"):
@@ -964,6 +966,9 @@ def cmd_next(args, seat):
                 held = _take_lease(ch["item"], seat, ctx["now"])
             _rerender_queue_views()
     skipped = ch["skipped"]
+    if ch.get("capped"):
+        print("FOCUS CAP: %s holds %d focus items (cap %d, schedule focus_cap): only their next steps are offered. "
+              "`rimflow wait <ID> --until <date> --reason ...` frees a place." % (seat, ch["capped"], ctx["focus_cap"]["per_seat"]))
     if ch["kind"] == "nothing":
         _nothing(w, seat, args, ctx)
         _print_frontier(w, seat)
@@ -1117,6 +1122,19 @@ def _seat_focus(seat, path=None, world=None):
     return {"until": c.get("until"), "prefixes": tuple(fix)}
 
 
+def _focus_cap(seat):
+    """-> the schedule's focus_cap when `next` holds `seat` to it, else None. A redirected ledger is a throwaway: it
+    reads the cap only when the same caller redirected the schedule too. A damaged schedule refuses, as `_seat_focus`:
+    read as no cap, it would lift the cap in silence."""
+    if os.environ.get("RIMFLOW_LEDGER") and not os.environ.get("RIMFLOW_SCHEDULE"):
+        return None
+    try:
+        c = priority.focus_config()
+    except ValueError as e:
+        die("schedule unreadable, %s's focus cap is unknown: %s" % (seat, e))
+    return c if c and seat in c["seats"] else None
+
+
 def _choose(w, seat, args, ctx, idx):
     """-> {"kind", "offer", "item", "claimable", "skipped"}: what `next` offers. Pure over its
     inputs (ctx carries `now`); `cmd_next` calls it inside the dispatcher lock.
@@ -1140,6 +1158,13 @@ def _choose(w, seat, args, ctx, idx):
     if fo:      # seat focus: only items whose id starts with an included prefix are offered
         offers = [a for a in offers if a.item.id.startswith(fo["prefixes"])]
         claimable = [c for c in claimable if c.id.startswith(fo["prefixes"])]
+    cap = ctx.get("focus_cap")
+    if cap:     # RO2: a focus item's next step goes first; at the cap it is all that is offered
+        focus = {i.id for i in priority.focus_items(w, seat, ctx.get("now"), cap["since"])}
+        offers.sort(key=lambda a: a.item.id not in focus)
+        if len(focus) >= cap["per_seat"]:
+            offers, claimable = [a for a in offers if a.item.id in focus], []
+            out["capped"] = len(focus)
     if ctx.get("hold_grant"):
         gneeds = tuple(ctx.get("hold_grant_needs") or GRANT_DEFAULT_NEEDS)
         offers = [a for a in offers if a.item.needs not in gneeds]
@@ -1561,7 +1586,8 @@ def _chain(w, iid, seen=None):
 
 def cmd_why(args, seat):
     _, w = load()
-    for line in priority.why_not(w, seat, args.id, args.target, _ctx(args)):
+    ctx = dict(_ctx(args), focus_cap=_focus_cap(seat))
+    for line in priority.why_not(w, seat, args.id, args.target, ctx):
         print("- " + line)
     return 0
 
@@ -1959,6 +1985,33 @@ def cmd_block(args, seat):
     e = priority.frontier_entry(after, it) if it is not None else None
     if e:
         print("⚠️  already ended: " + priority.frontier_line(it, e[0], e[1]))
+    return 0
+
+
+def cmd_wait(args, seat):
+    """A dated wait on a slow external (RO2). The third at once is refused, under the lock `next` takes, so a wait and a
+    reservation cannot pass each other. Without a focus_cap for the item's seat the wait is recorded and nothing is capped."""
+    day = priority_list.epoch(args.until)
+    if day is None:
+        die("wait --until %r is not a date (YYYY-MM-DD or ISO time). A wait with no date is a block." % args.until)
+    until = datetime.datetime.fromtimestamp(day, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    with lease.dispatch_lock():
+        _, w = load()
+        now, it = model.epoch_now(), w.items.get(args.id)
+        if it is None:
+            die("%s has never been filed." % args.id)
+        if day <= now:
+            die("wait --until %s is not ahead of now: a wait frees a place only while its date runs." % until)
+        cap = _focus_cap(it.owner)
+        if cap:
+            others = [i.id for i in priority.waiting_items(w, it.owner, now) if i.id != it.id]
+            if len(others) >= cap["waits_max"]:
+                die("wait refused: %s already has %d waiting of %d (%s). Depth before breadth: end one first."
+                    % (it.owner, len(others), cap["waits_max"], ", ".join(others)))
+            if not priority.is_focus(it, now, cap["since"]) and not priority.wait_running(it, now):
+                die("wait refused: %s is not a focus item of %s, so a wait would free no place." % (it.id, it.owner))
+        _emit({"seat": seat, "event": "wait", "id": args.id, "until": until, "reason": args.reason}, w, quiet=True)
+    print("wait %s until %s" % (args.id, until))
     return 0
 
 
@@ -3753,6 +3806,15 @@ def build_parser():
     s.add_argument("--until", choices=model.BLOCK_UNTIL,
                    help="the level of --on that ends the wait (default done). Reaching "
                         "it is ANNOUNCED in `next`/`why`, never applied: you unblock")
+
+    s = add("wait", "a dated wait on a slow external: out of focus until the date (RO2)", cmd_wait)
+    s.add_argument("id")
+    s.add_argument("--until", required=True, help="YYYY-MM-DD or an ISO time, ahead of now")
+    s.add_argument("--reason", required=True)
+
+    s = add("unwait", "end a dated wait early", _simple("unwait", (("reason", "reason"),)))
+    s.add_argument("id")
+    s.add_argument("--reason")
 
     s = add("unblock", "the wrong thing is fixed",
             _simple("unblock", (("reason", "reason"),)))

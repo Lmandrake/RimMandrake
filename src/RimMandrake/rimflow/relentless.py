@@ -633,6 +633,15 @@ class Effects:
         self._ledger = None
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
+    def focus_cap(self):
+        """The Producer's WIP cap from the schedule (RO2), the number `next` holds: relentless's open work obeys it too.
+        Absent: no limit. Damaged: 1, the lowest, like an unreadable budget."""
+        try:
+            c = pkg("priority").focus_config()
+        except ValueError:
+            return 1
+        return c["per_seat"] if c else None
+
     # the staffing readings
     def budget(self):
         """The budget of the staffed seat as published; None when not trustworthy now."""
@@ -1174,14 +1183,21 @@ def stage_places(store, fx, r):
     room = v if budget is None else min(v, max(budget - (head or 0), 0))
     if head is None:            # helpers nobody counted are not free places
         room = min(room, low)
-    return v, budget, head, min(room, r["max_workers"])
+    return v, budget, head, min(room, places_ceiling(fx, r))
+
+
+def places_ceiling(fx, r):
+    """max_workers under the WIP cap (RO2). A budget caps workers, not open focus, so the same number binds here; a
+    `held` item is relentless's wait and holds no place. `extra` in worker_cap stays on top: a check always runs."""
+    focus = getattr(fx, "focus_cap", lambda: None)()
+    return r["max_workers"] if focus is None else min(r["max_workers"], focus)
 
 
 def worker_cap(fx, r, extra=0, store=None):
     """The places a run may take now: the stage and the budget under max_workers, stepped back to 1 while available
     memory is under step_back_mem_gb. `extra` is the place a check gets on top (a check runs even at budget 0: it holds
     a place already, and finishing work is never what a budget cut stops)."""
-    cap = stage_places(store, fx, r)[3] if store is not None and r.get("staffing") else r["max_workers"]
+    cap = stage_places(store, fx, r)[3] if store is not None and r.get("staffing") else places_ceiling(fx, r)
     if cap > 1 and fx.mem_gb() < r.get("step_back_mem_gb", 0):
         cap = 1
     return cap + extra

@@ -236,8 +236,7 @@ prefix on the ledger, so approximate):
 | Producer | 30 raises, 10 items | Used: 8 implemented. The plan's WIP line binds nothing | RO2 |
 | Innovator | 4 notes, 2 items, 2 list entries | **Nothing shown adopted; not yet reading finding curves** | RW5, RO1 |
 
-**RO2 WIP cap held by `rimflow next`.** [Producer sets; `next` enforces] MEASURED: no rimflow code reads a WIP cap;
-`producer.md` writes one as a line of prose. Number in `dispatcher_schedule.json`. Foundry at the cap: `next` offers only
+**RO2 WIP cap held by `rimflow next`.** [Producer sets; `next` enforces] The number is `focus_cap.per_seat` in `dispatcher_schedule.json`, read by `priority.focus_config`. Foundry at the cap: `next` offers only
 the next step of a focus item (fix, answer, retest). A wait is a state and the waiting count is capped too. Relentless's
 budget 8 caps workers, not open focus, so it reads the same number. Test: at N focus items `next` offers no new item; a
 dated wait frees a place; a third wait is refused. Minimal design I2.

@@ -146,6 +146,59 @@ def offerable_state(it, now):
     return False
 
 
+def focus_config(path=None):
+    """-> the schedule's `focus_cap` (RO2) checked, or None when the file or key is absent; ValueError when damaged.
+    per_seat: the Producer's WIP cap, the one number `next` and relentless read. seats: who `next` holds to it.
+    waits_max: dated waits at once. since: `doing` work last taken before this is history, not focus (86 FOUNDRY items
+    sat `doing` with no lease on 2026-11-01; counted, they would pin `next` at the cap for good)."""
+    path = path or os.environ.get("RIMFLOW_SCHEDULE") or os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")
+    try:
+        with open(path) as f:
+            c = json.load(f).get("focus_cap")
+    except FileNotFoundError:
+        return None
+    except (OSError, ValueError, AttributeError) as e:
+        raise ValueError("%s: %s" % (path, e))
+    if c is None:
+        return None
+    n = lambda x, low: isinstance(x, int) and not isinstance(x, bool) and x >= low     # noqa: E731
+    if not (isinstance(c, dict) and n(c.get("per_seat"), 1) and n(c.get("waits_max"), 0)
+            and isinstance(c.get("seats"), list) and priority_list.epoch(c.get("since")) is not None):
+        raise ValueError("focus_cap is malformed in %s: per_seat >= 1, waits_max >= 0, seats a list, since a date" % path)
+    return c
+
+
+def wait_running(it, now):
+    """A dated wait still ahead, on started work. Past its date the item counts and is offered again, unprompted."""
+    if not (it.wait_until and it.state in ("ready", "doing")):
+        return False
+    e = priority_list.epoch(it.wait_until)
+    return e is not None and e > now
+
+
+def is_focus(it, now, since):
+    """Started and not done: `doing` taken at or after `since`, or `ready` under a live lease (reserved by `next`, so
+    two callers cannot both pass the cap). A running wait is out of the count; a block is not: it says something is
+    wrong, and the wrong thing still holds the place."""
+    if wait_running(it, now):
+        return False
+    if it.state == "ready":
+        return model.lease_status(it, now) == "live"
+    if it.state != "doing":
+        return False
+    cut = priority_list.epoch(since)
+    return any((priority_list.epoch(t) or 0) >= cut for t in (it.started_at, (it.lease or {}).get("taken")) if t)
+
+
+def focus_items(world, seat, now, since):
+    return [i for i in world.items.values() if i.owner == seat and i.open and is_focus(i, now, since)]
+
+
+def waiting_items(world, seat, now):
+    return [i for i in world.items.values() if i.owner == seat and i.open and wait_running(i, now)]
+
+
 def rank(world, seat, target="v1", ctx=None):
     """-> [Item], best first. Pure over (world, seat, target, ctx incl. `now`). Empty is
     a legitimate and common answer."""
@@ -156,7 +209,7 @@ def rank(world, seat, target="v1", ctx=None):
             continue
         if not offerable_state(it, now):
             continue
-        if it.blocked:
+        if it.blocked or wait_running(it, now):
             continue
         if target and it.target not in (None, target):
             continue
@@ -401,6 +454,14 @@ def why_not(world, seat, iid, target="v1", ctx=None):
         state = state_reason(it)
         if state:
             out.append(state)
+    if wait_running(it, now):
+        out.append("WAITING until %s: %s (`rimflow unwait %s` ends it early)." % (it.wait_until, it.wait_reason, it.id))
+    cap = (ctx or {}).get("focus_cap")
+    if cap and it.owner == seat and not is_focus(it, now, cap["since"]) and not wait_running(it, now):
+        fo = focus_items(world, seat, now, cap["since"])
+        if len(fo) >= cap["per_seat"]:
+            out.append("FOCUS CAP: %s holds %d focus items, the cap is %d, so no new item is offered. Finish one, "
+                       "`rimflow wait` one, or `rimflow reclaim` one." % (seat, len(fo), cap["per_seat"]))
     if it.blocked:
         out.append("BLOCKED: %s%s" % (it.blocked_reason,
                                       (" (on %s)" % it.blocked_on) if it.blocked_on else ""))

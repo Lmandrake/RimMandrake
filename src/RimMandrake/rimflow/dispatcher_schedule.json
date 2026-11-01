@@ -1,5 +1,12 @@
 {
  "_doc": "RimFlow v3.0 Dispatcher schedule (design/RimMandrake/rimflow_v3_2026-10-26.md §3: one schedule file runs every role). Read by src/RimMandrake/rimflow/dispatcher.py. Times in seconds. The owner sets this file; an enabled role with launch keys (instructions, seat, clone, model, ledger_item) is run by role_launch.py; the owner switched every role on 2026-10-28 (Conductor and Operations: Dispatcher wave 1, e35afe1dcc; Arbiter advisory, Producer, Auditor, Innovator: the v3 trial night, 4d9171a1e5). Token caps are admission checks at launch plus after-the-fact overbudget alarms, never a stop mid-run; only run_max_s stops a run (role_launch.py). Every role's throttle_bands are still computed and journaled, but every band runs like GREEN (slots all, quick_cap_x 1.0) since d92c4c825e, owner 2026-10-28: \"Stop the whole account rated RED on runeway crap. Just do the checkout.\"; restoring a band is the owner's.",
+ "focus_cap": {
+  "per_seat": 3,
+  "waits_max": 2,
+  "seats": ["FOUNDRY"],
+  "since": "2026-11-01T16:46:00Z",
+  "_doc": "RO2 in design/RimMandrake/operating_requirements_2026-11-01.md: the Producer's WIP cap, set here by the Producer. `rimflow next` (priority.focus_config) offers only next steps of focus items at per_seat; `rimflow wait` takes an item out of the count until its date, waits_max at once. relentless reads per_seat as a ceiling on its places. since: older `doing` items are history, not focus."
+ },
  "ops_stale_s": 2700,
  "idle_bringback_after_min": 30,
  "fresh_take_s": 900,

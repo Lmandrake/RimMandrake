@@ -1074,6 +1074,8 @@ CANONICAL = {
     "start":     dict(seat="BUILD", id="A_B_1"),
     "block":     dict(seat="BUILD", id="A_B_1", reason="x"),
     "unblock":   dict(seat="BUILD", id="A_B_1"),
+    "wait":      dict(seat="BUILD", id="A_B_1", until="2099-01-01T00:00:00Z", reason="r"),
+    "unwait":    dict(seat="BUILD", id="A_B_1"),
     "verify":    dict(seat="BUILD", id="A_B_1", result="pass", config="full-578"),
     "finding":   dict(seat="BUILD", id="A_B_1", type="integration", severity="high",
                       name="F_B_1", **{"from": "A_B_1"}),

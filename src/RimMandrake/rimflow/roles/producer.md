@@ -143,7 +143,8 @@ Every run then does, in this order:
      with what you did about each).
    - `## Daily list`: per seat (BENCH, FOUNDRY), the ordered item ids for today, each with the goal number it serves
      and its stopping point (finish / strengthen / explore).
-   - `## WIP cap`: one line, `WIP cap: <n> focus items open per seat`, and why in one line.
+   - `## WIP cap`: one line, `WIP cap: <n> focus items open per seat`, and why in one line. A changed number is set in
+     `src/RimMandrake/rimflow/dispatcher_schedule.json`, `focus_cap.per_seat`: that key is what `rimflow next` and relentless obey.
    - `## Test lane`: one line, `TESTQ_FILL_MODS=<mods>` (and `TESTQ_SWEEP_MODS=<mods>` if it should change), and why.
      You decide it; the Conductor applies it (the variable lives in a unit on the test machine, not in this repo).
    - `## Questions for the Conductor`: none, or each one in one line.

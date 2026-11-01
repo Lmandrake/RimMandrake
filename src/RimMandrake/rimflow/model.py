@@ -411,6 +411,10 @@ VERBS = {
     # byte-identical for old readers; a reader from step 2 on strips it (stricter, safe).
     "block":     {"who": "owner", "req": ("reason",), "opt": ("on", "until")},
     "unblock":   {"who": "owner", "req": (), "opt": ("reason",)},
+    # A dated wait (RO2): the item is on a slow external until `until`, so it is neither offered nor counted as focus
+    # while that date is ahead (priority.wait_running). It ends by itself; the cap on waits is priority/cli's, at write.
+    "wait":      {"who": "owner", "req": ("until", "reason"), "opt": ()},
+    "unwait":    {"who": "owner", "req": (), "opt": ("reason",)},
     # `level` / `criterion` (step 2): a pass naming an OUTSTANDING criterion of a built
     # item drops it, built -> validated, and the last one -> done. ⚠️ A reader older than
     # step 2 refuses these two fields and collects the WHOLE run into `world.errors`
@@ -1408,7 +1412,7 @@ def _seconds_between(a, b):
 # Same-second causal order of one window's writes. A verb not listed ranks with `note`.
 VERB_RANK = {
     "file": 0, "spawn": 1, "finding": 1,
-    "block": 2, "unblock": 2, "needs": 2, "retarget": 2,
+    "block": 2, "unblock": 2, "wait": 2, "unwait": 2, "needs": 2, "retarget": 2,
     "reassign": 3, "reclaim": 3, "lease": 3.5,
     "claim": 4, "start": 5,
     "note": 7, "reconcile": 7, "live": 7, "implemented": 7.5, "verify": 8,
@@ -1539,7 +1543,8 @@ class Item(object):
     """The projection of one item. Rebuilt from the ledger every time; never stored."""
 
     __slots__ = ("id", "title", "kind", "owner", "row", "target", "needs", "state",
-                 "blocked", "blocked_reason", "blocked_on", "blocked_until", "this_deployment",
+                 "blocked", "blocked_reason", "blocked_on", "blocked_until", "wait_until", "wait_reason", "started_at",
+                 "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
                  "live", "live_broken", "live_repeats", "live_from",
                  "runs", "findings", "history", "caused_by", "claim_ts",
@@ -1555,6 +1560,8 @@ class Item(object):
         self.state = "proposed"
         self.blocked = False
         self.blocked_reason = self.blocked_on = self.blocked_until = None
+        self.wait_until = self.wait_reason = None   # a dated wait (RO2)
+        self.started_at = None                      # the last `start`: focus is read from it and the lease's `taken`
         self.this_deployment = False
         self.created_at = None
         self.closed_sha = self.superseded_by = self.caused_by = None
@@ -2162,6 +2169,13 @@ def _apply_item_verb(ev, index, item, seat, world):
         # ✅ `verify` and `criteria` remain GOOD PRACTICE and the sections still
         # exist. They are simply not a precondition for doing the work.
         to("doing")
+        item.started_at = ev["ts"]
+    elif verb == "wait":
+        if item.state not in ("ready", "doing"):
+            raise TransitionError("%s is `%s`: only started work waits (ready or doing)." % (item.id, item.state))
+        item.wait_until, item.wait_reason = ev["until"], ev["reason"]
+    elif verb == "unwait":
+        item.wait_until = item.wait_reason = None
     elif verb == "block":
         # 🔑 TERMINAL MEANS TERMINAL, and this guard named ONE of the three terminal
         # states. `block` does not route through `_transition` (blocked is a flag, not a
