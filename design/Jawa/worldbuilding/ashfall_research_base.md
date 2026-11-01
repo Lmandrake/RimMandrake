@@ -183,8 +183,8 @@ place on the peak that pretends none of that is happening.
     up the lake early (harder than you think, but possible) will reveal the War
     Lab even if it cannot be opened yet. Then the Empire's heat will
     significantly increase,and a small Imperial force will garrison outside the
-    War Lab that must be defeated to enter and use the codes."* Owed design:
-    `WARLAB_GARRISON_DESIGN_EARLY_BLAST`.
+    War Lab that must be defeated to enter and use the codes."* Design:
+    `warlab_garrison_early_blast_2026-11-01.md`.
   - Folding the dark tower's built dungeon and this Base's into one building
     is owed: `SPIRE_DUNGEONS_MERGE_DARK_TOWER`.
 

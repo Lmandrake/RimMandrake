@@ -257,8 +257,8 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
     will garrison outside the War Lab that must be defeated to enter and use the
     codes."* So the ending can come before the Spire's codes: the lab is revealed but
     stays shut, Empire heat rises sharply, and an Imperial garrison outside the lab
-    must be beaten before the codes can be used. Owed design:
-    `WARLAB_GARRISON_DESIGN_EARLY_BLAST`.
+    must be beaten before the codes can be used. Design:
+    `../warlab_garrison_early_blast_2026-11-01.md`.
   - **How the player learns the lake opened** (card 9, typed: *"1+2+map change"*):
     all three: the Utinni feels it on the Rakatan band and the ship reacts, the
     Narrator says it, and a map feature appears.

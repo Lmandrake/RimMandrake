@@ -372,7 +372,7 @@ what stasis remains to the reactor, and under Hold them and Take a specimen to t
 lifting the drive after a pick starts nothing and fails no further cell.
 
 **The Specimen Casket.** One sealed casket item, carried as cargo. While held it raises Empire heat
-through the existing machinery (`WARLAB_GARRISON_DESIGN_EARLY_BLAST` forbids a second meter); this
+through the existing machinery (`warlab_garrison_early_blast_2026-11-01.md` §2: no second meter); this
 is the fear of card 1, *"the empire might get ahold of it"*. Studied once, it unlocks one tool that
 kills a reinfection node outright. It never opens by itself and is never a pet or a colonist.
 

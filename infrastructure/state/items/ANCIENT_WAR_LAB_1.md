@@ -39,7 +39,7 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   (`dungeons_arc_spec.md` §2.1, §2.6). The specimen choices, the breakout and what a
   recovery leaves are designed (delegated, `dungeons_arc_spec.md` §2.10) and owed as a
   build (`WARLAB_BREAKOUT_BUILD_SEALS_HOLD_THE_LINE`). Owed: the Imperial garrison
-  after an early blast (`WARLAB_GARRISON_DESIGN_EARLY_BLAST`), and merging the two
+  after an early blast (`WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`), and merging the two
   builds (`ASSAILANT_WARLAB_BUILD_MERGE`). Rulings recorded in
   `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8 (2026-10-10 amendment).
 - ⛔ **NOT the same as** `SCALD_DARK_TOWER_1` (which is the Spire, owner 2026-10-10) (filed 2026-09-07, same sitting): the
