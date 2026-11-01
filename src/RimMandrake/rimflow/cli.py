@@ -2175,22 +2175,27 @@ def _cited_paths(iid):
         return []
 
 
+def _sha_refusals(iid, sha, excused):
+    """-> [("sha", why)]: is `sha` the commit that did this item's work? `excused`: --why or the owner's word, which only
+    answers the cited-paths question. The half of the gate that needs git, shared by every verb that can reach done."""
+    paths, cited = _sha_paths(sha), _cited_paths(iid)
+    if paths is None:
+        return [("sha", "%s does not resolve to a commit here (git fetch, if it is another clone's)" % sha)]
+    if not [p for p in paths if not p.startswith(_LEDGER_ONLY)]:
+        return [("sha", "%s touches nothing but the ledger: name the commit that did the work, or say --no-code "
+                        "\"<what>\" on a close" % sha)]
+    if cited and not excused and not any(p == c or p.startswith(c.rstrip("/") + "/") for p in paths for c in cited):
+        return [("sha", "%s touches none of the %d paths the item cites: say why with --why" % (sha, len(cited)))]
+    return []
+
+
 def _close_gate(args, it, sha, no_code):
     """DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED): RO3 and ruling D1(b). -> nothing, or `die` with every reason.
     The item's own half is `model.close_refusals`; what needs git is here."""
     said = bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or args.seat_is_owner)
     found = model.close_refusals(it, sha, no_code, owner=said)
     if not no_code:
-        paths = _sha_paths(sha)
-        cited = _cited_paths(args.id)
-        if paths is None:
-            found.append(("sha", "%s does not resolve to a commit here (git fetch, if it is another clone's)" % sha))
-        elif not [p for p in paths if not p.startswith(_LEDGER_ONLY)]:
-            found.append(("sha", "%s touches nothing but the ledger: name the commit that did the work, or say "
-                                 "--no-code \"<what>\"" % sha))
-        elif cited and not (said or model.AGENT_WHY) and \
-                not any(p == c or p.startswith(c.rstrip("/") + "/") for p in paths for c in cited):
-            found.append(("sha", "%s touches none of the %d paths the item cites: say why with --why" % (sha, len(cited))))
+        found += _sha_refusals(args.id, sha, said or model.AGENT_WHY)
     if found:
         die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
             "--result pass --config <cfg> --evidence <path>`; a hand close first records a level-tagged pass on that sha "
@@ -2414,7 +2419,8 @@ def cmd_implemented(args, seat):
     """`rimflow implemented <ID> --sha <sha> [--criteria-file F | --none-owed]`
 
     ONE event: published sha + the level-tagged manifest + the `needs` derived from the
-    cheapest owed level. -> `built`, or `done` when nothing beyond L0 is owed."""
+    cheapest owed level. -> `built`, or `done` when nothing beyond L0 is owed and a level-tagged pass is already on the sha.
+    A sha `close` would refuse as not the work (ledger-only, none of the cited paths) is refused here, whatever is owed."""
     _, w = load()
     it = w.items.get(args.id)
     if it is None:
@@ -2432,6 +2438,12 @@ def cmd_implemented(args, seat):
             "then run this again." % (sha, gitindex_ref(), gitindex_ref()))
     full, ref = pub
     crit, source = _manifest(args, args.id)
+    # every later verify counts against this sha, so a build the close would refuse never gets to be built
+    # (a test's RIMFLOW_GITINDEX fixture publishes shas with no object: git has no paths to read. Unset, unreadable refuses)
+    bad = not (os.environ.get("RIMFLOW_GITINDEX") and _sha_paths(full) is None) and _sha_refusals(
+        args.id, full, model.OWNER_SAID or model.BY_CARD or model.PER_RULING or model.AGENT_WHY)
+    if bad:
+        die("implemented: %s\nNothing changed: the item is as it was." % bad[0][1])
     owed = [c for c in crit if c["level"] != "L0"]
     needs = model.needs_for_levels([c["level"] for c in owed])
     ev = {"seat": seat, "event": "implemented", "id": args.id, "sha": full[:12],
@@ -2449,6 +2461,12 @@ def cmd_implemented(args, seat):
         moved = _move_prose_to_closed(args.id)
         if moved:
             print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+        return 0
+    if after.held:
+        print("  holds short of done, nothing owed but:\n%s\n  A level-tagged pass on this sha finishes it: rimflow verify "
+              "%s --sha %s --level L0 --result pass --config <what ran> --evidence <path>"
+              % ("\n".join("    %-9s %s" % f for f in model.run_refusals(after, full[:12])), args.id, full[:12]))
+        _announce_unblocks(args.id)
         return 0
     print("  owes %s; cheapest %s -> needs %s"
           % (", ".join("%s %s" % (c["id"], c["level"]) for c in owed),
@@ -2522,8 +2540,8 @@ def cmd_verify(args, seat):
     if r.result == "pass" and r.criterion and getattr(it, "built_sha", None) and not model.same_sha(r.sha, it.built_sha):
         print("⚠️  %s is not the built sha %s: this pass does NOT count. It tested another artifact." % (r.sha, it.built_sha))
     if getattr(it, "held", False):
-        print("%s holds short of done: the Arbiter FAILED %s and no newer build has passed it."
-              % (args.id, it.arbiter_fail["sha"]))
+        print("%s holds short of done: %s." % (args.id, "the Arbiter FAILED %s and no newer build has passed it"
+              % it.arbiter_fail["sha"] if it.arbiter_fail else "; ".join(w for _, w in model.run_refusals(it, it.built_sha))))
     if r.level and not r.criterion:
         print("ℹ️  --level without --criterion is recorded on the run and drops nothing; "
               "name the criterion to advance the item.")
@@ -2533,7 +2551,7 @@ def cmd_verify(args, seat):
         print("  still owes %s (needs %s)" % (", ".join(it.owed_levels()), it.needs))
         if before is not None and before.state != it.state:
             _announce_unblocks(args.id)         # a `block --until validated` has ended
-    if r.criterion and it.state == "done" and before is not None and before.state != "done":
+    if it.state == "done" and before is not None and before.state not in ("done", "dropped", "superseded"):
         _announce_unblocks(args.id)
         moved = _move_prose_to_closed(args.id)
         if moved:
@@ -3788,7 +3806,7 @@ def build_parser():
                    help="one criterion per line: `A1 L1: what is observed`. Default: "
                         "the item's `## criteria` section, every bullet level-tagged")
     s.add_argument("--none-owed", dest="none_owed", action="store_true",
-                   help="say out loud that nothing beyond L0 is owed (-> done)")
+                   help="say out loud that nothing beyond L0 is owed (-> done on a level-tagged pass at this sha)")
     s.add_argument("--live", help=LIVE_HELP)
 
     s = add("reconcile", "judge commits that name an item: complete|partial|unrelated. "

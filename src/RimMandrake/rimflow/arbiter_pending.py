@@ -234,7 +234,7 @@ def verify_backlog(world, cutoff):
             owed = [L for L in it.owed_levels() if L in BACKLOG_LEVELS]
             if owed:
                 out.append((iid, ",".join(owed)))
-            elif getattr(it, "held", False):      # a new build behind an Arbiter FAIL: nothing else ever offers it
+            elif getattr(it, "held", False):      # nothing owed, not earned (behind an Arbiter FAIL, or no pass on the sha): nothing else ever offers it
                 out.append((iid, "held"))
     return sorted(out)
 

@@ -236,7 +236,7 @@ STATES = ("proposed", "ready", "doing", "built", "validated",
 #              (offline) criterion passes; live levels are still owed.
 #   validated  at least one live level has passed; more are still owed.
 #   done       nothing is owed.
-# Entered ONLY by `implemented` (-> built, or straight to done when nothing is owed) and by
+# Entered ONLY by `implemented` (-> built, or done when nothing is owed and the sha has earned it) and by
 # a passing `verify --criterion` (built -> validated, -> done on the last one). Neither is
 # ever offered by `priority.rank()` (which offers `ready` only) — a built item is
 # ACCEPTANCE work, listed by `rimflow next --acceptance`, never implementation work.
@@ -2076,6 +2076,7 @@ def _apply_live(ev, item):
 # 🔴 DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED, RO3, ruling D1(b) 2026-11-01). A `verify` from this moment on moves
 # state in both directions; an earlier one replays exactly as it was written, so no old item changes under a reader.
 EARNED_FROM = "2026-11-01T17:30:00Z"
+DONE_GATE_FROM = "2026-11-01T18:35:00Z"     # the same, for `implemented`: from here on it reaches done only as `close` does
 ARBITER_CONFIG = "arbiter:"     # a verdict the launcher wrote: --config arbiter:<disposition>, role_launch.verdict_run
 
 
@@ -2145,9 +2146,23 @@ def _earned_run(item, cid, level, run, ev):
         _criterion_passed(item, cid, level, run, ev)
     if item.held and not item.arbiter_fail and not item.outstanding:
         if run.result == "pass":
-            _finish(item, run.sha or item.built_sha)
-        else:
+            if str(ev["ts"]) < DONE_GATE_FROM or not run_refusals(item, run.sha or item.built_sha):
+                _finish(item, run.sha or item.built_sha)
+        elif verdict:
             item.held = False       # a conditional pass lifts the FAIL; its conditions are met by hand, on a close
+
+
+def run_refusals(item, sha, no_code=False):
+    """-> [(kind, why)], the half of `close_refusals` that reads only the run record, the part every way to done shares."""
+    out = []
+    if not no_code and not any(r.result == "pass" and r.level and same_sha(r.sha, sha) for r in item.runs):
+        out.append(("unchecked", "no level-tagged pass is recorded on %s" % str(sha)[:12]))
+    # a pass on another sha says nothing about this one, so it cannot hide a fail
+    newest = next((r for r in reversed(item.runs) if r.result == "fail" or (
+        r.result == "pass" and (no_code or same_sha(r.sha, sha)))), None)
+    if newest is not None and newest.result == "fail":
+        out.append(("fail", "its newest run %s failed at %s" % (newest.name, str(newest.sha)[:12])))
+    return out
 
 
 def close_refusals(item, sha, no_code=False, owner=False):
@@ -2159,20 +2174,14 @@ def close_refusals(item, sha, no_code=False, owner=False):
     verdict   an Arbiter FAIL stands: on this sha, or on an earlier one with no non-maker Arbiter pass since.
               No verdict at all blocks nothing (ruling D1(b), not option c).
     `owner`: his word on the close lifts fail and verdict, which are judgements. Owed and unchecked are facts."""
-    out = []
     owed = [c for c in item.criteria if c["id"] in item.outstanding]
+    out = []
     if owed:
         out.append(("owed", "still owes " + ", ".join("%s %s" % (c["id"], c["level"]) for c in owed)))
     elif item.passed and not no_code and not same_sha(sha, item.built_sha):
         out.append(("owed", "its criteria passed on %s, not on %s" % (str(item.built_sha)[:12], str(sha)[:12])))
-    if not no_code and not owed and not any(
-            r.result == "pass" and r.level and same_sha(r.sha, sha) for r in item.runs):
-        out.append(("unchecked", "no level-tagged pass is recorded on %s" % str(sha)[:12]))
-    # a pass on another sha says nothing about this one, so it cannot hide a fail
-    newest = next((r for r in reversed(item.runs) if r.result == "fail" or (
-        r.result == "pass" and (no_code or same_sha(r.sha, sha)))), None)
-    if not owner and newest is not None and newest.result == "fail":
-        out.append(("fail", "its newest run %s failed at %s" % (newest.name, str(newest.sha)[:12])))
+    out += [(k, why) for k, why in run_refusals(item, sha, no_code) if not (k == "fail" and owner)
+            and not (k == "unchecked" and owed)]
     if not owner and item.arbiter_fail:
         f = item.arbiter_fail
         out.append(("verdict", "the Arbiter FAILED %s (%s)%s" % (
@@ -2182,14 +2191,19 @@ def close_refusals(item, sha, no_code=False, owner=False):
 
 
 def _apply_implemented(ev, item):
-    """`implemented` -> built (live levels owed) or done (nothing owed).
+    """`implemented` -> built (live levels owed) or done (nothing owed, and the sha has earned it).
+
+    From DONE_GATE_FROM a build owing nothing is done only as a close would be: a level-tagged pass on this sha, no newer
+    fail, no standing Arbiter FAIL. Otherwise it stops at `built`, `held`, and that pass finishes it. An L0 manifest
+    attests the criteria; it is no check, and `--none-owed` is no way round a refused close.
 
     A re-implementation (after corrective work, or straight from built/validated)
     REPLACES the manifest and forgets earlier passes: they tested an older artifact.
     The runs themselves stay, immutable, in `item.runs`."""
     crit = [dict(c) for c in ev.get("criteria") or []]
     owed = [c["id"] for c in crit if c["level"] != "L0"]
-    held = not owed and bool(item.arbiter_fail)         # a new build still has to pass the Arbiter
+    held = not owed and (bool(item.arbiter_fail)         # a new build still has to pass the Arbiter
+                         or (str(ev["ts"]) >= DONE_GATE_FROM and bool(run_refusals(item, ev["sha"]))))
     target = "built" if owed or held else "done"
     _transition(item, target)
     _live_promise(ev, item)
@@ -2200,7 +2214,7 @@ def _apply_implemented(ev, item):
     if owed:
         item.needs = ev.get("needs") or needs_for_levels(
             [c["level"] for c in crit if c["id"] in owed])
-    else:
+    elif not held:
         item.closed_sha = ev["sha"]
         item.blocked = False
         item.blocked_reason = item.blocked_on = item.blocked_until = None
@@ -2370,6 +2384,7 @@ def _apply_item_verb(ev, index, item, seat, world):
     elif verb == "close":
         to("done")
         item.closed_sha = ev["sha"]
+        item.held = False
         _live_promise(ev, item)
         # ⚠️ ALL THREE, exactly as `unblock` does it. Clearing the flag and leaving the
         # reason behind left 23 live items projecting `blocked False` with a stale

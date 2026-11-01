@@ -1,0 +1,1 @@
+selftest_built_old_reader has been dead since the file event grew role_unit: the frozen OLD_REF model refuses that field, every fixture item vanishes and report() dies on a KeyError. Seen on origin/main 2026-11-01 while working CLOSE_GATE_ENFORCE_DONE_IS_EARNED; the old-reader promise it guards is no longer tested.

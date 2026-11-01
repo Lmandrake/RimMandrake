@@ -2,16 +2,17 @@
 """selftest_close_gate.py - DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED, RO3, ruling D1(b) of 2026-11-01).
 
 Every case plants its fault on the real path: the real `cli.py` as a subprocess, a throwaway ledger, real commits of this
-repo. S1-S4 of the item's verify section. `--au4` is S5: it re-reads AU4 from the live ledger (close_audit.py).
+repo. S1-S4 of the item's verify section; S6 holds every way to done to the same gate. `--au4` is S5: it re-reads AU4 from the live ledger (close_audit.py).
 
     python3 src/RimMandrake/rimflow/selftest_close_gate.py [--au4]
 """
-import os, shutil, subprocess, sys, tempfile
+import json, os, shutil, subprocess, sys, tempfile
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, os.path.dirname(HERE))
+sys.path.insert(0, HERE)
 from rimflow import model                                       # noqa: E402
 
 FAILS = []
@@ -153,8 +154,7 @@ def s1(a, b, led):
     refused("a pass on ANOTHER sha cannot hide a fail", "fail ", "close", i, "--sha", a)
 
     i = built("L0_ONLY", a, ("C1", "L0"))
-    check(item(i).state == "done", "the setup: an L0 manifest goes straight to done, no run")
-    ok("live", i, "--result", "broken", "--detail", "gone", seat="RUNNER")
+    check(item(i).state == "built" and item(i).held, "the setup: an L0 manifest stops at built, no run on the sha")
     refused("a manifest is no check on the sha", "unchecked", "close", i, "--sha", a)
 
     i = new("NEWER_FAIL")
@@ -362,6 +362,104 @@ def s5_replay():
     check(model.replay(evs).items["OLD_PROBE_FIXTURE"].state == "done", "an old fail on an old close changes nothing")
 
 
+def s6_every_way_to_done(a, b, led):
+    print("-- S6 the gate is one gate: `implemented` and `verify` reach done only as `close` does")
+    held = lambda i: item(i).state == "built" and item(i).held and not item(i).closed_sha
+
+    i = new("NONE_OWED_NO_CHECK")
+    out = ok("implemented", i, "--sha", b, "--none-owed")
+    check(held(i) and "unchecked" in out, "--none-owed with no pass on the sha stops at built and says why")
+    ok("verify", i, "--sha", b, "--level", "L0", "--result", "pass", "--config", "fixture", "--evidence", "e")
+    check(item(i).state == "done" and model.same_sha(item(i).closed_sha, b), "then a level-tagged pass on that sha finishes it")
+
+    i = new("PASS_THEN_IMPLEMENTED")
+    passed(i, b)
+    ok("implemented", i, "--sha", b, "--none-owed")
+    check(item(i).state == "done", "the other order: a pass already on the sha, `implemented` -> done")
+
+    i = new("PASS_ON_ANOTHER_SHA")
+    passed(i, a)
+    ok("implemented", i, "--sha", b, "--none-owed")
+    check(held(i), "a pass on another sha earns nothing at `implemented`")
+    ok("verify", i, "--sha", a, "--level", "L0", "--result", "pass", "--config", "fixture", "--evidence", "e")
+    check(held(i), "nor does one recorded after it")
+
+    i = new("UNTAGGED_PASS")
+    ok("implemented", i, "--sha", b, "--none-owed")
+    ok("verify", i, "--sha", b, "--result", "pass", "--config", "fixture", "--evidence", "e")
+    check(held(i), "a pass with no level finishes nothing")
+
+    i = new("NEWER_FAIL_IMPLEMENTED")
+    passed(i, b)
+    ok("verify", i, "--sha", b, "--level", "L0", "--result", "fail", "--config", "fixture", "--evidence", "broke")
+    ok("implemented", i, "--sha", b, "--none-owed")
+    check(held(i), "a fail newer than the pass, not the Arbiter's, holds `implemented` too")
+
+    i = new("REFUSED_CLOSE_SIDESTEP")
+    refused("the setup: an unchecked close", "unchecked", "close", i, "--sha", b)
+    ok("implemented", i, "--sha", b, "--none-owed")
+    check(held(i), "a refused close is not sidestepped by `implemented --none-owed`")
+    refused("nor closed from built while it holds", "unchecked", "close", i, "--sha", b)
+    ok("close", i, "--no-code", "nothing to check, said out loud")
+    check(item(i).state == "done" and not item(i).held, "--no-code remains the one door, and it lifts the hold")
+
+    i = new("LEDGER_ONLY_NONE_OWED")
+    refused("`implemented` at a ledger-only sha, none owed", "nothing but the ledger", "implemented", i, "--sha", led, "--none-owed")
+    check(item(i).built_sha is None, "and no build is recorded")
+    i = new("LEDGER_ONLY_MANIFEST")
+    refused("`implemented` at a ledger-only sha, L1 owed", "nothing but the ledger", "implemented", i, "--sha", led,
+            "--criteria-file", manifest(i, ("C1", "L1")))
+    check(item(i).state not in ("built", "validated"), "so verify-to-done never starts from a ledger-only build")
+
+    i = new("UNCITED", prose="Cites `design/RimMandrake/no_such_thing.md` and nothing else.\n")
+    refused("`implemented` at a sha touching no cited path", "touches none", "implemented", i, "--sha", b, "--none-owed")
+    ok("implemented", i, "--sha", b, "--none-owed", "--why", "the cited doc moved")
+    check(held(i), "--why answers the cited paths, and only those: still unchecked")
+
+    i = built("STALE_LAST_PASS", a, ("C1", "L1"))
+    ok("implemented", i, "--sha", b, "--criteria-file", manifest(i, ("C1", "L1")))
+    rc, _ = cli("verify", i, "--criterion", "C1", "--sha", a, "--result", "pass", "--config", "fixture", "--evidence", "e")
+    check(item(i).state == "built" and item(i).outstanding == ["C1"], "the last criterion passing on a stale sha is no done")
+
+    print("-- AU4 counts every way to done, and a thin sample is no reading")
+    import close_audit
+    rows = close_audit.dones(events())
+    by = {r["id"]: r for r in rows}
+    check({r["via"] for r in rows} == {"close", "verify", "implemented"}, "AU4 sees all three verbs (%s)"
+          % sorted({r["via"] for r in rows}))
+    good_row = next(r for r in rows if "PASS_THEN_IMPLEMENTED" in r["id"])
+    check(good_row["via"] == "implemented" and good_row["earned"], "an earned `implemented` done counts as earned")
+    t = "2026-11-01T19:00:%02dZ"
+    x = "PLANTED_PROBE_FIXTURE"
+    planted = [{"seat": "BENCH", "event": "file", "ts": t % 0, "id": x, "for": "BENCH", "title": "t", "kind": "task"},
+               {"seat": "BENCH", "event": "close", "ts": t % 1, "id": x, "sha": "abcdef1"}]
+    w, bad, code = close_audit.audit(close_audit.dones(planted), "2026-11-01T18:35:00Z")
+    check(len(w) == 1 and [d["id"] for d in bad] == [x], "a done with no pass on its sha reads as unearned")
+    old = "2026-10-01T00:00:%02dZ"
+    legacy = [dict(e, ts=old % n) for n, e in enumerate(planted)] + \
+             [{"seat": "BENCH", "event": "implemented", "ts": old % 5, "id": x + "2", "sha": "abcdef2", "criteria": []}]
+    legacy.insert(2, {"seat": "BENCH", "event": "file", "ts": old % 2, "id": x + "2", "for": "BENCH", "title": "t", "kind": "task"})
+    legacy.insert(3, {"seat": "BENCH", "event": "claim", "ts": old % 3, "id": x + "2"})
+    rows = close_audit.dones(legacy)
+    check({r["via"] for r in rows} == {"close", "implemented"} and not any(r["earned"] for r in rows),
+          "the old way, `implemented` straight to done, is seen and read unearned (%d)" % len(rows))
+    check(model.replay(legacy).items[x + "2"].state == "done", "and it replays as it was written")
+    rules = json.load(open(close_audit.RULES, encoding="utf-8"))
+    check(rules["min_sample"] >= 5 and rules["since"] == model.DONE_GATE_FROM, "AU4's window starts when this gate did, min_sample holds")
+    keep = model.read
+    try:
+        few = events()[:6]
+        model.read = lambda *a, **k: few
+        tmp = os.path.join(TMP, "rules.json")
+        with open(tmp, "w", encoding="utf-8") as f:
+            json.dump(dict(rules, since="2020-01-01", min_sample=99), f)
+        close_audit.RULES, was = tmp, close_audit.RULES
+        check(close_audit.main() == 2, "a window under min_sample is UNMEASURED, never IN RANGE")
+        close_audit.RULES = was
+    finally:
+        model.read = keep
+
+
 def main():
     if "--au4" in sys.argv:
         return subprocess.call([sys.executable, os.path.join(HERE, "close_audit.py")])
@@ -374,6 +472,7 @@ def main():
         s4(old_c, new_c)
         s4_relentless(old_c)
         s5_replay()
+        s6_every_way_to_done(old_c, new_c, led)
         before = len(events())
         check(before > 40, "the instrument saw the fixture ledger (%d events)" % before)
     finally:

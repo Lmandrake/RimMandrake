@@ -408,10 +408,10 @@ def t_cli_implemented_real_git_fallback_without_index():
     commit on origin/main passes; a fabricated sha is refused."""
     fresh("realgit")
     file_ready()
-    real = subprocess.check_output(("git", "rev-parse", "origin/main~1"),
-                                   cwd=REPO).decode().strip()
-    ok("implemented", IID, "--sha", real[:9], "--none-owed", fixture=False)
-    assert state_of() == "done"
+    real = subprocess.check_output(("git", "log", "-n1", "--format=%H", "origin/main", "--", "src/RimMandrake/Utils/lessons.py"),
+                                   cwd=REPO).decode().strip()     # a code commit: a ledger-only sha is refused as no build
+    out = ok("implemented", IID, "--sha", real[:9], "--none-owed", fixture=False)
+    assert "implemented at" in out and state_of() == "built", out      # published; no pass on it yet, so not done
     file_ready("SECOND_REAL_THING_PROBE_FIXTURE")
     refused("implemented", "SECOND_REAL_THING_PROBE_FIXTURE", "--sha", "0badc0de0badc0de", "--none-owed",
             fixture=False)
@@ -441,7 +441,10 @@ def t_cli_implemented_criteria_file_and_none_owed():
     assert "needs bridge" in out and "cheapest GREEN-FULL" in out, out
     file_ready("OFFLINE_ONLY_THING_PROBE_FIXTURE")
     out = ok("implemented", "OFFLINE_ONLY_THING_PROBE_FIXTURE", "--sha", sha(2)[:9], "--none-owed")
-    assert "-> done" in out, out
+    assert "holds short of done" in out, out
+    out = ok("verify", "OFFLINE_ONLY_THING_PROBE_FIXTURE", "--sha", sha(2)[:9], "--level", "L0", "--result", "pass",
+             "--config", "fixture", "--evidence", "ran it")
+    assert state_of("OFFLINE_ONLY_THING_PROBE_FIXTURE") == "done", out
     err = refused("implemented", "OFFLINE_ONLY_THING_PROBE_FIXTURE", "--sha", sha(2)[:9], "--none-owed")
     assert "already" in err or "terminal" in err, err
 

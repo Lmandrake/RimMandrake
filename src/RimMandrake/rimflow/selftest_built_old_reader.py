@@ -130,6 +130,7 @@ def setup():
         new_ok("reclaim", iid)
     new_ok("implemented", BUILT, "--sha", sha[:9], "--criteria-file", crit)
     new_ok("verify", BUILT, "--criterion", "A1", "--result", "pass", "--config", "min-13")
+    new_ok("verify", DONE, "--sha", sha[:9], "--level", "L0", "--result", "pass", "--config", "min-13")
     new_ok("implemented", DONE, "--sha", sha[:9], "--none-owed")
 
 
