@@ -797,8 +797,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 }
             Check(ok == total && total == 16, "every facing x look: the nozzle coupling rides on top of the reel except facing north, seated on the measured tip (" +
                 ok + "/" + total + fails + ")");
-            var west = new HoseReelRect(10, 10, 2, 2) { Rot = 2 };   // south-facing: nozzle at the bottom
-            Check(!HoseJoints.RelayFittingOnTop(west, new Cell(12, 10)), "can-fail: a relay end on the reel's side (an old crank-side link) stays under the sprite");
+            var south = new HoseReelRect(10, 10, 2, 2) { Rot = 2 };   // south-facing: nozzle at the bottom
+            Check(!HoseJoints.RelayFittingOnTop(south, new Cell(12, 10)), "can-fail: a relay end on the reel's side (an old crank-side link) stays under the sprite");
         }
 
         public static void Run()

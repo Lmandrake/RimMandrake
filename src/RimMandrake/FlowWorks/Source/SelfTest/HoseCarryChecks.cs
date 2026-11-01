@@ -230,9 +230,6 @@ namespace RimMandrake.FlowWorks.SelfTest
             return h;
         }
 
-        /// <summary>Row 6 (stage S2): a reel saved before the carry stage {laid=true, no rmHoseCarry key} reads as Laid with an
-        /// empty trail, and an empty trail lays the PLANNED route byte-identically to HoseMath.Lay (today's geometry). Plus
-        /// LayAlong's own point: a walked detour is laid along the walk, not re-planned.</summary>
         /// <summary>The DrawAll Carrying branch (read as text): it drops the reel's cached laid strand, gated off under FrameLegacy,
         /// BEFORE drawing the carried tail and continuing past the strand path.</summary>
         internal static bool CarryBranchDropsStrand(string src)
@@ -316,6 +313,9 @@ namespace RimMandrake.FlowWorks.SelfTest
             Check(pre2 != comp && !CrossKeyUsesSerials(pre2), "row9 can-fail: a Cached built without a fresh serial is rejected");
         }
 
+        /// <summary>Row 6 (stage S2): a reel saved before the carry stage {laid=true, no rmHoseCarry key} reads as Laid with an
+        /// empty trail, and an empty trail lays the PLANNED route byte-identically to HoseMath.Lay (today's geometry). Plus
+        /// LayAlong's own point: a walked detour is laid along the walk, not re-planned.</summary>
         private static void Row6Legacy()
         {
             Check(HoseCarryLoad.Resolve(true, S, 0) == L && HoseCarryLoad.IsLaid(L), "row6 legacy {laid, no carry key} reads as Laid (laid flag kept)");
