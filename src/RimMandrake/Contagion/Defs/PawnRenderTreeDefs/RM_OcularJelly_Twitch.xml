@@ -16,13 +16,8 @@
   rig's scale shrinks the tentacles AND their attach offsets about the body centre: a baby wears baby-sized tentacles at
   baby-sized attach points. The numbers below are the ADULT's.
 
-  STAGED UNTIL THE ART LANDS (this file sits in Staged/TentacleTwitch/, which the game never loads and
-  texture_gap_lint never scans: shipping a texPath with no picture is a frozen-allowlist gap). The race keeps vanilla's
-  Animal tree and its one whole-body picture. Go-live, once the owner accepts the split art and art.py installs it:
-  move this file into Defs/PawnRenderTreeDefs/, fold the two operations of Staged/TentacleTwitch/Patches/RM_OcularJelly_TwitchWiring.xml
-  into the race def, delete that patch and the Staged hold line in src/DEPLOY_HOLD.txt, then deploy.
 
-  GEOMETRY (cells from the pawn centre, z up, ADULT; PROVISIONAL, tune live in Dialog_DebugRenderTree):
+  GEOMETRY (cells from the pawn centre, z up, ADULT; checked offline with Utils/art/twitch_rig_preview.py; fine tuning is Dialog_DebugRenderTree):
     Tentacles: mesh 1x1 (drawSize 1). Art contract: ROOT at the TOP CENTRE of the canvas, hanging straight down.
     pivot (0.5, 0.05) fixes the root 0.45 above the mesh centre, so it sits at offset + (0, 0, 0.45) at every rotation
     and drawData scale: offset.z = attach.z - 0.45. drawData scale sets the hanging length.
@@ -68,7 +63,7 @@
                   <nextSpasmTicksRange>5~40</nextSpasmTicksRange>
                   <baseLayer>-5</baseLayer>
                   <drawData>
-                    <scale>0.8</scale>
+                    <scale>1.15</scale>
                     <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
                     <dataSouth><offset>(-0.38, 0, -0.57)</offset><rotationOffset>12</rotationOffset></dataSouth>
                     <dataNorth><offset>(0.38, 0, -0.57)</offset><rotationOffset>-12</rotationOffset><flip>true</flip></dataNorth>
@@ -89,7 +84,7 @@
                   <nextSpasmTicksRange>5~40</nextSpasmTicksRange>
                   <baseLayer>-5</baseLayer>
                   <drawData>
-                    <scale>0.8</scale>
+                    <scale>1.15</scale>
                     <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
                     <dataSouth><offset>(0.38, 0, -0.57)</offset><rotationOffset>-12</rotationOffset><flip>true</flip></dataSouth>
                     <dataNorth><offset>(-0.38, 0, -0.57)</offset><rotationOffset>12</rotationOffset></dataNorth>
@@ -112,7 +107,7 @@
                   <nextSpasmTicksRange>5~35</nextSpasmTicksRange>
                   <baseLayer>-5</baseLayer>
                   <drawData>
-                    <scale>0.65</scale>
+                    <scale>0.95</scale>
                     <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
                     <dataSouth><offset>(-0.18, 0, -0.63)</offset><rotationOffset>5</rotationOffset></dataSouth>
                     <dataNorth><offset>(0.18, 0, -0.63)</offset><rotationOffset>-5</rotationOffset><flip>true</flip></dataNorth>
@@ -133,7 +128,7 @@
                   <nextSpasmTicksRange>5~35</nextSpasmTicksRange>
                   <baseLayer>-5</baseLayer>
                   <drawData>
-                    <scale>0.65</scale>
+                    <scale>0.95</scale>
                     <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
                     <dataSouth><offset>(0.18, 0, -0.63)</offset><rotationOffset>-5</rotationOffset><flip>true</flip></dataSouth>
                     <dataNorth><offset>(-0.18, 0, -0.63)</offset><rotationOffset>5</rotationOffset></dataNorth>
@@ -156,7 +151,7 @@
                   <nextSpasmTicksRange>5~30</nextSpasmTicksRange>
                   <baseLayer>-6</baseLayer>
                   <drawData>
-                    <scale>0.75</scale>
+                    <scale>1.05</scale>
                     <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
                     <dataSouth><offset>(0.05, 0, -0.55)</offset><rotationOffset>-3</rotationOffset></dataSouth>
                     <dataNorth><offset>(-0.05, 0, -0.60)</offset><rotationOffset>3</rotationOffset><layer>-5</layer></dataNorth>
@@ -179,7 +174,7 @@
                   <nextSpasmTicksRange>10~45</nextSpasmTicksRange>
                   <baseLayer>-6</baseLayer>
                   <drawData>
-                    <scale>0.55</scale>
+                    <scale>0.7</scale>
                     <defaultData><pivot>(0.5, 0.05)</pivot></defaultData>
                     <dataSouth><offset>(0, 0, -0.67)</offset><layer>5</layer></dataSouth>
                     <dataNorth><offset>(0, 0, -0.62)</offset></dataNorth>

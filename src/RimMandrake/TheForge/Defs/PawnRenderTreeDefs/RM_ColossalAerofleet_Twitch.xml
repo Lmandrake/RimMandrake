@@ -11,13 +11,8 @@
   Anomaly's Toughspike, Trispike and Fingerspike trees use exactly this. It is base game, not the donor's
   AlphaBehavioursAndEvents.PawnRenderNodeProperties_SpasticScaled, and no C# of ours runs here.
 
-  STAGED UNTIL THE ART LANDS (this file sits in Staged/TentacleTwitch/, which the game never loads and
-  texture_gap_lint never scans: shipping a texPath with no picture is a frozen-allowlist gap). The race keeps vanilla's
-  Animal tree and its one whole-body picture. Go-live, once the owner accepts the split art and art.py installs it:
-  move this file into Defs/PawnRenderTreeDefs/, fold the two operations of Staged/TentacleTwitch/Patches/RM_ColossalAerofleet_TwitchWiring.xml
-  into the race def, delete that patch and the Staged hold line in src/DEPLOY_HOLD.txt, then deploy.
 
-  GEOMETRY (cells from the pawn centre, z up; PROVISIONAL, tune live in Dialog_DebugRenderTree):
+  GEOMETRY (cells from the pawn centre, z up; checked offline with Utils/art/twitch_rig_preview.py; fine tuning is Dialog_DebugRenderTree):
     Body: the vanilla Animal body node (1.6), whose mesh is the life stage's drawSize (2.5).
     Feelers: mesh 1x1 (drawSize 1, so Spastic's mesh and scale do not square it). Art contract: the feeler's ROOT is at
     the TOP CENTRE of its canvas and it hangs straight down. pivot (0.5, 0.05) puts the fixed point 0.45 above the mesh

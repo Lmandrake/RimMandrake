@@ -7,10 +7,10 @@
   -25..71.8 is the live value AnimalTolerances_Ashkarr.xml pins on the donor def.
 
   Owner pick "rebuild" (twitching limbs) on Transient/donor_code_creatures_sheet_2026-10-09.
-  PLAIN GRAPHIC for now: the donor drew four twitching feeler sprites with its own SpasticScaled render tree
-  (donor code). Our render (gapall_AA_ColossalAerofleet_v1) bakes the feelers into one whole-body sprite, so the
-  creature gets the vanilla animal render tree and one fixed graphic. Rebuilding the twitch needs new body-only and
-  limb art: the owner's call, Transient/phase0_p3_questions.md Q1. It is not flight and not a wing tree.
+  REBUILT in our code: the donor's SpasticScaled render tree is replaced by RM_ColossalAerofleet_Twitch
+  (Defs/PawnRenderTreeDefs/), the base game's Spastic node over a feeler-less bell and four feeler pictures
+  (owner by card 2026-10-15: "Both twitch"). Design: design/RimMandrake/tentacle_twitch_design_2026-10-15.md.
+  It is not flight and not a wing tree.
   KEPT: vanilla DeathActionWorker_BigExplosion (Core, not donor code). VEF-guarded (a framework we keep): Floating
     (drifts, ignores terrain; kept rather than MaxFlightTime flight, because a bulloo drifts permanently rather than
     flying in bursts from the ground) and the gel product, now our RM_BlueGel (defined with RM_Bulloo in
@@ -79,6 +79,7 @@
       <herdAnimal>true</herdAnimal>
       <herdMigrationAllowed>false</herdMigrationAllowed>
       <canBePredatorPrey>false</canBePredatorPrey>
+      <renderTree>RM_ColossalAerofleet_Twitch</renderTree>
       <body>RM_JellyfishBody</body>
       <baseBodySize>2</baseBodySize>
       <baseHealthScale>2</baseHealthScale>
@@ -116,7 +117,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet</texPath>
+          <texPath>Things/Pawn/Animal/RM_ColossalAerofleet/RM_ColossalAerofleet_Bell</texPath>
           <drawSize>2.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>

@@ -47,7 +47,7 @@ mirror on their own (`DrawData.OffsetForRot`), while flip and rotation are given
 piece carries `linkedBodyPartsGroup Arms`, so the tentacles vanish once every feeler is lost. `rotDrawMode Fresh, Rotting`
 hides them on the desiccated corpse, which uses vanilla art.
 
-### Greater bulloo (`RM_ColossalAerofleet_Twitch`, staged; body drawSize 2.5, one stage)
+### Greater bulloo (`RM_ColossalAerofleet_Twitch`; body drawSize 2.5, one stage)
 
 | picture | look | nodes | attach (south, cells) | length |
 |---|---|---|---|---|
@@ -60,15 +60,15 @@ hides them on the desiccated corpse, which uses vanilla art.
 East: the roots run along the underside from -0.95 (back) to +0.45 (front) and trail back 6 to 28 degrees. The twitch is
 slow and gentle for a creature this size: ±10 to 16 degrees, 25 to 90 ticks per move.
 
-### Zhool (`RM_OcularJelly_Twitch`, staged; body drawSize 0.5 / 1.25 / 1.75, numbers are the adult's)
+### Zhool (`RM_OcularJelly_Twitch`; body drawSize 0.5 / 1.25 / 1.75, numbers are the adult's)
 
 | picture | look | nodes | attach (south, cells) | length |
 |---|---|---|---|---|
 | `RM_OcularJelly_Bell` | the veined dome, eye-spots and mouth; no tentacles, no oral arms, **no painted haze puff** | body | - | 1.75 |
-| `Tentacles/..._TentacleA` | long wavy ribbon, dark red to pale pink | outer left and right | (∓0.38, -0.12) | 0.8 |
-| `Tentacles/..._TentacleB` | shorter, curled tip | inner left and right | (∓0.18, -0.18) | 0.65 |
-| `Tentacles/..._TentacleC` | thin whip | back centre | (0.05, -0.10) | 0.75 |
-| `Tentacles/..._TentacleD` | frilled oral-arm cluster | under the mouth; in front on the south face | (0, -0.22) | 0.55 |
+| `Tentacles/..._TentacleA` | long wavy ribbon, dark red to pale pink | outer left and right | (∓0.38, -0.12) | 1.15 |
+| `Tentacles/..._TentacleB` | shorter, curled tip | inner left and right | (∓0.18, -0.18) | 0.95 |
+| `Tentacles/..._TentacleC` | thin whip | back centre | (0.05, -0.10) | 1.05 |
+| `Tentacles/..._TentacleD` | frilled oral-arm cluster | under the mouth; in front on the south face | (0, -0.22) | 0.7 |
 
 East: the roots run from -0.50 to +0.45 and trail back 10 to 45 degrees (it drifts mouth-first). It twitches faster than
 the bulloo: ±10 to 24 degrees, 10 to 50 ticks per move.
@@ -76,25 +76,14 @@ the bulloo: ±10 to 24 degrees, 10 to 50 ticks per move.
 The bell drops the reddish puff painted into the picked render. The haze is becoming a real in-game effect (separate
 work, Q2), and a painted puff would double it and would turn with the body.
 
-## 3. Fallback until the art lands
+## 3. Go-live (done 2026-11-01, `DONOR_CODE_SHAPE_REBUILD_1`)
 
-- Everything for the twitch is **staged** in `src/RimMandrake/TheForge/Staged/TentacleTwitch/` and
-  `src/RimMandrake/Contagion/Staged/TentacleTwitch/`. Each holds the tree (`Defs/PawnRenderTreeDefs/<creature>_Twitch.xml`)
-  and the wiring patch (`Patches/<creature>_TwitchWiring.xml`, which adds `race/renderTree` and repoints the body `texPath`
-  to the bell). The game never loads a `Staged/` folder, and both are held in `src/DEPLOY_HOLD.txt`.
-- **Why staged and not just unreferenced:** `texture_gap_lint.py` fails every shipped texPath with no picture, and its
-  allowlist is frozen and shrink-only. A tree in `Defs/` naming ten undrawn pictures would be ten new gaps. The first
-  filing (commit 5c28d32a8) put them in `Defs/` and `Patches/`; the same day they moved here.
-- The race defs are untouched, so both creatures keep vanilla's Animal tree and their one whole-body picture.
-- **Go-live, per creature,** once the owner accepts its split art and `art.py install` has placed it at the `install_to`
-  paths:
-  1. Move the tree into the mod's `Defs/PawnRenderTreeDefs/`.
-  2. Fold the wiring patch's two operations into the race def (`renderTree` in `race`; the bell `texPath` in every life
-     stage), then delete the patch.
-  3. Delete that mod's `Staged/*` hold line, and deploy.
-
-  The zhool also needs the EnvironmentalHazards DLL carrying the subworker, which is already committed. With the art
-  missing, the wiring would draw pink squares.
+The split art was installed by `bulk_accept_renders.py` on 2026-10-18. Both trees now live in the mods'
+`Defs/PawnRenderTreeDefs/`, both races name them, and every life stage's body `texPath` is the bell. The `Staged/` folders,
+wiring patches and hold lines are gone. The zhool's tree needs the EnvironmentalHazards DLL, which carries the subworker.
+`src/RimMandrake/Utils/art/twitch_rig_preview.py` draws a tree offline on four facings beside the whole-body picture, using
+the engine's matrix (`PawnRenderTree.ComputeMatrix`). The zhool's first-guess lengths left its tentacles about half the
+master's reach under the bell, so their scales went up: A 1.15, B 0.95, C 1.05, D 0.7.
 
 ## 4. Art rows
 
@@ -112,9 +101,9 @@ Known risks in the filing:
 - The bulloo's feelers are small, so its feeler-less bell may land close to the master. The daemon's
   near-duplicate gate (distance < 4.0) would then fail it, and it would need refiling with a stronger prompt.
 
-## 5. What needs a live look (joint sitting or bridge, after the art is installed)
+## 5. What needs a live look (joint sitting or bridge)
 
-Every attach point, rotation and length above is a first guess from the picked renders. Check them in
+Attach points, rotations and lengths are proved offline at rest, not in motion. Check them in
 `Dialog_DebugRenderTree` (dev mode, which edits offset, pivot and layer live), then write the numbers back:
 1. The roots sit under the rim on all four facings, and west mirrors east correctly. Flip handling for
    `Graphic_Multi` on Spastic nodes copies Toughspike and has not been seen with our art.
@@ -123,4 +112,4 @@ Every attach point, rotation and length above is a first guess from the picked r
 4. Layering: no tentacle draws over the bell, except the zhool's oral arms on the south face.
 
 Not built: a Mod Settings switch for the twitch. The standing rule asks for on/off per major feature. This one is
-cosmetic and needs C# to swap the tree at startup; it is owed when the wiring lifts, if wanted.
+cosmetic and needs C# to swap the tree at startup; it stays owed, if wanted.

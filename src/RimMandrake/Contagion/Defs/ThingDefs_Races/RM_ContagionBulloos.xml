@@ -12,10 +12,10 @@
     REPOINTED to ours: the acid death burst -> RimMandrake.EnvironmentalHazards.DeathActionProperties_ScaledExplosion
       (the values the retired donor death-burst patch (deleted 2026-10-15) set).
   ZHOOL (RM_OcularJelly). Owner pick "rebuild" (twitching limbs).
-    PLAIN GRAPHIC for now: the donor drew four twitching tentacle sprites with its own SpasticScaled render
-    tree (donor code). Every picture of ours bakes the tentacles into one whole-body sprite, so the creature
-    gets the vanilla animal render tree and one fixed graphic per life stage. Rebuilding the twitch needs new
-    body-only and limb art: the owner's call, Transient/phase0_p3_questions.md Q1.
+    REBUILT in our code: the donor's SpasticScaled render tree is replaced by RM_OcularJelly_Twitch
+    (Defs/PawnRenderTreeDefs/), the base game's Spastic node over a tentacle-less bell and four tentacle pictures,
+    sized per life stage by RimMandrake.EnvironmentalHazards.PawnRenderSubWorker_KindLifeStageScale (owner by card
+    2026-10-15: "Both twitch"). Design: design/RimMandrake/tentacle_twitch_design_2026-10-15.md.
     REBUILT in our code: the reddish haze the description names (donor gas AA_OcularGas, Alpha Animals code) is
     RimMandrake.Contagion.CompZhoolHaze (owner, 2026-10-15, phase0_p3_questions.md Q2 "A"): tinted fleck haze;
     plants in it turn into the Contagion's ocular-forest flora, only on our biomes. Mod Settings: "The zhool's red haze".
@@ -225,6 +225,7 @@
     </comps>
     <race>
       <herdAnimal>true</herdAnimal>
+      <renderTree>RM_OcularJelly_Twitch</renderTree>
       <body>RM_ZhoolBody</body>
       <baseBodySize>0.5</baseBodySize>
       <baseHealthScale>1</baseHealthScale>
@@ -271,7 +272,7 @@
     <lifeStages>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly</texPath>
+          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell</texPath>
           <drawSize>0.5</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -281,7 +282,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly</texPath>
+          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell</texPath>
           <drawSize>1.25</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -291,7 +292,7 @@
       </li>
       <li>
         <bodyGraphicData>
-          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly</texPath>
+          <texPath>Things/Pawn/Animal/RM_OcularJelly/RM_OcularJelly_Bell</texPath>
           <drawSize>1.75</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
