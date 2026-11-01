@@ -1,0 +1,1 @@
+A new ops_watch family with a *.blind target breaks every selftest that stubs the other collectors, because a stub omits that blind key and the pass reads 'collector did not run'. selftest_seats_watch, selftest_relentless_watch and selftest_ops_ranges had been red since plan.* and disk.scratch_outside_*; add the key to their stubs in the same commit.
