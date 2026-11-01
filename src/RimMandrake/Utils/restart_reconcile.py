@@ -19,7 +19,9 @@ An unmatched request alarms restart_reconcile_pass_s + restart_reconcile_slack_s
 incident lands INSIDE restart_reconcile_s (a verified restart takes ~250 s, journal 2026-10-30..11-01). A request held
 for its helpers (deferred, Dispatcher-started, or the Dispatcher still journalling restart_hold or a fresh kill) really takes up to 64
 min, so it gets restart_reconcile_held_s from the same file until a cancel takes that away; a goodbye never does. A hold
-line only lengthens a bound that still ends: a dropped request stops producing them.
+line only lengthens a bound that still ends: a dropped request stops producing them. "Still journalling" means a hold
+within restart_reconcile_hold_fresh_s: a tick stamps its lines at its start and writes them as it acts, so a slow tick
+leaves none on disk for its whole length (3 m 56 s on 2026-11-01: a false alarm at 615 s, OPS_RESTART_UNSTICK_FOUNDRY_HDDT).
 
 One open incident per seat, so one outage is one alarm; later requests join it, and a verified restart closes it.
 Told, in order, none through the Dispatcher: the Conductor log, the seat's doorbell if armed and free, one fixed ledger
@@ -48,8 +50,8 @@ import seat_restart as SR  # noqa: E402
 
 SCHEDULE = HERE.parent / "rimflow" / "dispatcher_schedule.json"
 RULES = HERE / "ops_watch_rules.json"
-KEYS = ("restart_reconcile_s", "restart_reconcile_held_s", "restart_reconcile_pass_s", "restart_reconcile_slack_s",
-        "restart_reconcile_lookback_s")
+KEYS = ("restart_reconcile_s", "restart_reconcile_held_s", "restart_reconcile_hold_fresh_s", "restart_reconcile_pass_s",
+        "restart_reconcile_slack_s", "restart_reconcile_lookback_s")
 JOURNAL_SEAT = "JOURNAL"
 TRANSCRIPT_SEAT = "TRANSCRIPT"
 STUCK_PASSES = 3                 # a torn tail clears by the next pass; three in a row is a transcript we cannot read
@@ -207,7 +209,7 @@ def join(rows, journal, now, lim, armed_at, told=()):
         cancelled = [c for c in cancels.get(m["seat"], ()) if c >= ts - 1]
         if cancelled and m.get("synthetic"):
             continue                     # the Dispatcher withdrew its own: nobody asked, nothing is owed
-        holding = now - holds.get(m["seat"], 0) <= 2 * lim["restart_reconcile_pass_s"] \
+        holding = now - holds.get(m["seat"], 0) <= lim["restart_reconcile_hold_fresh_s"] \
             or now - kills.get(m["seat"], 0) <= fire      # killed: the relaunch has the ordinary time to verify
         patient = (m["held"] or holding) and not m["goodbye"] and not cancelled
         limit = held if patient else fire

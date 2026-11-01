@@ -198,6 +198,12 @@ check(not RR.join([], J(rq), T0 + 5000, L, T0 + 1), "history before the first pa
 
 told = {RR.row_key("FOUNDRY", T0)}
 check(RR.join([], J(rq, dict(hold, at=OW.iso(T0 + 3900))), T0 + 3900, L, T0 - 1, told), "held: a later hold never un-alarms a told request")
+# ---- a slow tick: its hold line lands only when it reaches it, so the last one on disk ages past two passes
+# (FOUNDRY 2026-11-01: request 19:23:20, last hold on disk 19:28:21, tick 19:30:25 ran 236 s, false alarm 19:33:35)
+rq = {"at": OW.iso(T0 + 51), "do": "restart_request", "seat": "FOUNDRY", "req_ts": T0, "result": "request taken", "why": "requested by FOUNDRY: owner"}
+sl = dict(hold, at=OW.iso(T0 + 301))
+check(not RR.join([], J(rq, sl), T0 + 615, L, T0 - 1), "a slow tick: a hold 314 s old is still a hold, no false alarm")
+check(RR.join([], J(rq, sl), T0 + 301 + L["restart_reconcile_hold_fresh_s"] + 1, L, T0 - 1), "a slow tick: holds that stop still alarm")
 # ---- a transcript that stays unreadable is an incident; one bad pass is not
 root, sch, log = fresh("torn")
 (d / "s.jsonl").write_text('{"type": "user", "bad line\n', encoding="utf-8")
