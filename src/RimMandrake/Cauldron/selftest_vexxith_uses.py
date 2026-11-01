@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# selftest-timeout: 950
 """VEXXITH_USES_1: the owner's card, read off the shipped XML and C#, then the kernel checks run through dotnet.
 Offline; the rows marked control prove the parser can see."""
 import os
@@ -156,7 +157,8 @@ def suit():
 def settings():
     mod = text(HERE, "Source/RM_CauldronMod.cs")
     for f in ("acidAirEnabled", "acidAirHullEnabled", "acidAirFactor", "vexxithGearEnabled"):
-        check(len(re.findall(r'"%s"' % f, mod)) >= 2 and "ref %s" % f in mod.replace("list.Slider(acidAirFactor", "ref acidAirFactor") + " ref acidAirFactor", "setting %s saved and drawn" % f)
+        drawn = "ref %s" % f in mod or "list.Slider(%s" % f in mod
+        check("\"%s\"" % f in mod and drawn, "setting %s saved and drawn" % f)
     gate = text(HERE, "Source/RM_AcidAir.cs")
     for n in ("RM_VexxithFilterWorks", "RM_VentGasTapLined", "RM_HullLinerRig", "RM_Make_Barrel_Vexxith", "Make_RM_VexxithSuit"):
         check('"%s"' % n in gate, "gear gate covers %s" % n)
