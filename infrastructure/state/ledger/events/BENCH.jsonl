@@ -9372,3 +9372,4 @@
 {"seat":"BENCH","event":"lease","id":"CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S","action":"take","token":"BENCH.pid32017.258079de","expires":"2026-11-01T13:29:41Z","ts":"2026-11-01T12:44:41Z","tsn":1793537081995101504}
 {"seat":"BENCH","event":"claim","id":"CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S","ts":"2026-11-01T12:44:42Z","tsn":1793537082580714022}
 {"seat":"BENCH","event":"start","id":"CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S","ts":"2026-11-01T12:44:43Z","tsn":1793537083158931947}
+{"seat":"BENCH","event":"close","id":"CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S","sha":"fa573c87c2","reason":"guard in dispatcher.conductor_log + sched() temp path + regression test; log backed up to conductor/log.md.bak-pre1970strip; stripped 422 fake (136 dated 1970, 286 dated 2027-01-15) + 1 from my own red-run; kept 34 real","ts":"2026-11-01T12:46:20Z","tsn":1793537180601118838}
