@@ -120,6 +120,10 @@ Neighbours: `rimworld-review-sheets` (his page), `design/RimMandrake/art_judge_b
 cite), `rimworld-sprite-facings` and `generating-rimworld-sprites` (the facts the preamble quotes),
 `rimworld-live-review` (machine captures), `chatgpt-consult` (GPT is guidance, never a grading key).
 
+**Owner of this pipeline: The Artist** (`src/RimMandrake/rimflow/roles/artist.md`, reports to the Conductor). Style memory learned
+from his overrides: `design/RimMandrake/art_style_memory.md`. This skill stays the how-to until the role proves out; the
+pipeline, its timers and its judge run exactly as written here.
+
 ## Subagent budget — read before spawning ANY helper for this pipeline (owner, 2026-10-23)
 
 Helpers on this stream burned the account's Opus session limit in one morning. Hard rules, full text and the

@@ -3,6 +3,9 @@
 Owner, 2026-10-23: *"If Human live walk notices a problem, look back and improve evaluation criteria or process
 that generated the issue."*
 
+The Artist (`src/RimMandrake/rimflow/roles/artist.md`) studies these entries and keeps what they show in
+`design/RimMandrake/art_style_memory.md`. This procedure is unchanged: it is how a pattern there reaches the pipeline.
+
 `infrastructure/state/art_eval/criteria_ledger.jsonl`, append-only events, written only by `ledger.py`:
 
 ```json

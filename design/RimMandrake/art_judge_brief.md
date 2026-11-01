@@ -5,6 +5,9 @@ the one that made the art. Read this whole file, then the subject's canon entry 
 (`design/RimStarWars/canon_references/<slug>/description.md`). Judge only against what is written here and
 there; a constraint you would like to add goes in your report as a proposal, never into a verdict.*
 
+This brief is held by The Artist (`src/RimMandrake/rimflow/roles/artist.md`); what he has shown by overriding the pipeline
+is in `design/RimMandrake/art_style_memory.md`, which is not a constraint and decides no verdict.
+
 Every constraint carries its source. **Owner** = his words or his card, dated. **Lesson** = an agent finding he
 has not ruled on; it may support a REDO only together with an Owner line or a measurement.
 

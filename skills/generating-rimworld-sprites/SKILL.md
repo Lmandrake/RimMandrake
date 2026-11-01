@@ -384,6 +384,11 @@ Before shipping art for a species, check that manifest for where its art already
 
 → full validation plan (PROVE/EXPECT/LIES, how sprite checks lie, worked example): `references/validation-plan.md`.
 
+## Who owns this
+
+Art generation answers to The Artist (`src/RimMandrake/rimflow/roles/artist.md`); what the owner has shown he likes is in
+`design/RimMandrake/art_style_memory.md`. This skill stays the how-to until the role proves out.
+
 ## Reference
 
 - `scripts/validate_sprite.py` — the graded reference-vs-candidate gate; `--describe` to
