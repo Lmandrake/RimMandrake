@@ -216,6 +216,7 @@ def zombie_cases(td: Path):
 
 
 def main() -> int:
+    lock = None if os.environ.get("SCRATCH_REAP_SELFTEST_ONCE") else T.serial_lock()   # run by hand: wait for any other run
     with tempfile.TemporaryDirectory(dir="/tmp") as tds:        # not $TMPDIR: on a seat that is a root the real reaper reaps
         td = Path(tds)
         os.environ.update(GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t",

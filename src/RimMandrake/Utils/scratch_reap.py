@@ -61,7 +61,12 @@ directories and nothing else is not preserved: it holds no bytes and no file nam
 git normalises (a CRLF under text=auto) read as no change: comparing every worktree file to its blob is too much IO for
 an hourly job over hundreds of clones. A process that holds a workspace only through an inotify watch
 (no cwd, no open file, no path in argv or environ) is not seen: /proc shows a watch by inode, and a watcher loses nothing
-it cannot rebuild.
+it cannot rebuild. Also stated limits, from the full-file review: a C-quoted line in an alternates file ("\\303...") is read
+as written; staging alone (`git rm --cached`) changes only .git/index, which the age of a clone does not count; a ref
+that points straight at a blob or tree (`git replace` of a blob) is not a commit and is not preserved. Fixtures named selftest_* are disposable by design: a test's own scratch is removed
+without a bundle, and a reader that starts inside one within the 20 s of a snapshot is not seen (a bind-mount alias of
+a scratch dir likewise). A tmpXXXXXXXX dir with no repo or save in it is Python tempfile residue and goes unpreserved.
+An exited thread leader's own cmdline/environ read empty; its workers' copies are not consulted.
 
 Every run: runs.jsonl (rows), alarms.log (each new refusal once), last_run.json (apply runs: the record ops_watch
 alarms on). An unexpected failure exits non-zero, which fails the unit, which reaches the Conductor (signal_watch).
@@ -99,13 +104,12 @@ DEFAULT_ROOTS = [RM / "scratch", HOME / ".seat-tmp"]
 DEFAULT_CORPUS = [RM / "bench", RM / "foundry"]
 DEFAULT_SCAN = [HOME, Path("/tmp"), Path("/mnt/d/ClaudeWork/rimmandrake/pulse-deploy")]
 PROTECTED = [RM / n for n in ("bench", "foundry", "dispatch", "anchor", "arena", "arena-vet", "store.git", "mirror.git",
-                              "new.git", "retired-trees", "scratch_wallreach_slice",
-                              # unpushed work, held out of even a bundled delete until its owner lands or drops it
-                              "scratch/BENCH/liquidnet_shrink", "scratch/BENCH/surfacegap")] + [Path("/mnt/d/Luke/dev/RimMandrake")]
+                              "new.git", "retired-trees", "scratch_wallreach_slice")] + [Path("/mnt/d/Luke/dev/RimMandrake")]
 UUID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 UUID_ANY = re.compile(rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 TOKEN = re.compile(r"[A-Za-z0-9_-]+")
 TRANSIENT_FIND = re.compile(r"find: .(.+?).: Cannot allocate memory$")
+FIXTURE_RECHECK_S = 20      # a fixture is deleted on a /proc reading no older than this
 CTIME_COUNTS = True         # the selftest ages its fixtures with utime, which cannot set a ctime
 SYSTEM_PATHS = ("/proc/", "/sys/", "/dev/", "/usr/", "/lib/", "/lib64/", "/bin/", "/sbin/", "/etc/", "/opt/", "/init")
 GONE_LENDER = re.compile(r"error: (unable to normalize alternate object path: |object directory .* does not exist; check )")
@@ -391,6 +395,20 @@ def _who(base: str) -> str:
         return "gone"
 
 
+def under(keys: list[str], name: str) -> list[int]:
+    """Indexes of a sorted key list that are `name` or inside it. Not one run: "/a/b-x" and "/a/b.c" sort between "/a/b"
+    and "/a/b/c", so the dir itself and its children are two searches."""
+    out = []
+    i = bisect.bisect_left(keys, name)
+    if i < len(keys) and keys[i] == name:
+        out.append(i)
+    i = bisect.bisect_left(keys, name + "/")
+    while i < len(keys) and keys[i].startswith(name + "/"):
+        out.append(i)
+        i += 1
+    return out
+
+
 def path_forms(token: str, cwd: str, bare_must_exist: bool = False) -> list[str]:
     """Every absolute path a command-line word or environment value could name, as written (not normalised).
 
@@ -399,14 +417,20 @@ def path_forms(token: str, cwd: str, bare_must_exist: bool = False) -> list[str]
     ':' and blanks; a value with a path from its first slash. A bare word (`worker`) names cwd/worker: from argv always,
     from an environment value only if it is there."""
     out: list[str] = []
-    for part in re.split(r"[:\s]+", token):
-        if not part:
+    for part in [token] + re.split(r"[:\s,;()&|\"'`]+", token):      # a whole value too: a path may hold a blank or a colon
+        if not part.strip(":,;()&|\"'` \t\n"):
             continue
         cands = [part]
+        if part[:1] in ("@", "+", "<", ">", "!", "%"):       # @response-file, redirections
+            cands.append(part[1:])
         if part[:1] == "-":
-            cands += [part.partition("=")[2], part[2:]]
+            cands += [part.partition("=")[2]] + [part[k:] for k in range(1, len(part))
+                                                 if part[k - 1] not in "/-" and part[k] != "/"]   # -isystemscratch/c: the flag's length is unknown
         elif "=" in part:
             cands.append(part.partition("=")[2])
+        for pre in ("$HOME", "${HOME}", "~"):                # a shell expands these only after the process was started
+            if pre + "/" in part:                         # never bare HOME: naming it would make every home dir a lender walk
+                cands += [x.replace(pre + "/", str(HOME) + "/", 1) for x in list(cands) if pre + "/" in x]
         if "/" in part:
             cands.append(part[part.index("/"):])
             m = re.search(r"\.\.?/", part)                 # `-isystem../x`: a relative path glued to a long flag
@@ -573,6 +597,27 @@ class Live:
                 continue
         return False
 
+    @staticmethod
+    def _fds_and_maps(base: str, add):
+        for e in os.scandir(f"{base}/fd"):
+            try:
+                add(os.readlink(e.path))
+            except FileNotFoundError:
+                pass
+        with open(f"{base}/maps", errors="surrogateescape") as f:
+            for ln in f:
+                i = ln.find("/")
+                if i > 0:
+                    add(ln[i:].rstrip("\n"))
+                    add(ln[i:].rstrip("\n").replace("\\012", "\n"))    # maps writes a newline in a name so
+
+    @staticmethod
+    def _tasks(base: str) -> list[str]:
+        try:
+            return os.listdir(f"{base}/task")
+        except OSError:
+            return []
+
     def _add(self, p: str, pid: str):
         if p.startswith("/"):
             self.paths.append((p.removesuffix(" (deleted)"), pid))
@@ -592,26 +637,37 @@ class Live:
             try:
                 t = os.readlink(f"{base}/{link}")
             except FileNotFoundError:
-                continue                                        # a zombie has none
+                # a zombie has none; a leader whose main thread exited has none, and its workers still hold theirs
+                for tid in self._tasks(base):
+                    try:
+                        t = os.readlink(f"{base}/task/{tid}/{link}")
+                    except OSError:
+                        continue
+                    if link != "root":
+                        add(t)
+                    if link == "cwd":
+                        self.cwds.add(t)
+                continue
             if link != "root":
                 add(t)
             if link == "cwd":
                 self.cwds.add(t)
-        for e in os.scandir(f"{base}/fd"):
-            try:
-                add(os.readlink(e.path))
-            except FileNotFoundError:
-                pass
-        with open(f"{base}/maps", errors="surrogateescape") as f:
-            for ln in f:
-                i = ln.find("/")
-                if i > 0:
-                    add(ln[i:].rstrip("\n"))
-                    add(ln[i:].rstrip("\n").replace("\\012", "\n"))    # maps writes a newline in a name so
+        try:
+            self._fds_and_maps(base, add)
+        except FileNotFoundError:
+            for tid in self._tasks(base):                       # an exited leader: its workers' tables are under task/
+                try:
+                    self._fds_and_maps(f"{base}/task/{tid}", add)
+                except OSError:
+                    continue
         with open(f"{base}/cmdline", "rb") as f:
             argv = f.read()
         cmds.append(argv.replace(b"\0", b" ").decode("utf-8", "surrogateescape"))
-        cwd = os.readlink(f"{base}/cwd")
+        try:
+            cwd = os.readlink(f"{base}/cwd")
+        except FileNotFoundError:
+            cwd = next((os.readlink(f"{base}/task/{t}/cwd") for t in self._tasks(base)
+                        if os.path.lexists(f"{base}/task/{t}/cwd")), "/")      # an exited leader: a worker's cwd, else the root
         for a in argv.split(b"\0"):
             self._name_token(a.decode("utf-8", "surrogateescape"), cwd, pid, False)
         with open(f"{base}/environ", "rb") as f:
@@ -632,10 +688,8 @@ class Live:
         out = []
         unpinned = str(p.with_name(PIN.sub("", p.name)))  # a crash's pin must not hide who the path belongs to
         for name in sorted({t, os.path.realpath(t), unpinned}):     # /proc reports resolved paths; argv and env may not
-            i = bisect.bisect_left(self.keys, name)
-            while i < len(self.keys) and (self.keys[i] == name or self.keys[i].startswith(name + "/")):
+            for i in under(self.keys, name):
                 out.append(f"pid {self.paths[i][1]} uses {self.keys[i][:120]}")
-                i += 1
                 if len(out) >= 3:
                     break
             if name in self.cmdblob:
@@ -788,12 +842,10 @@ class Borrows:
     def of(self, target: Path) -> list[str]:
         t = os.path.realpath(target)
         out = []
-        i = bisect.bisect_left(self.keys, t)
-        while i < len(self.keys) and (self.keys[i] == t or self.keys[i].startswith(t + "/")):
+        for i in under(self.keys, t):
             holder = self.pairs[i][1]
             if holder != t and not holder.startswith(t + "/"):
                 out.append(f"{holder} borrows objects from it")
-            i += 1
         return sorted(set(out))
 
 
@@ -1757,6 +1809,15 @@ def fixture_dirs() -> list[Path]:
     return [p for p in found if p.is_dir() and not p.is_symlink()]
 
 
+def keeps_work(p: Path) -> bool:
+    """A directory with a git repo or a savegame anywhere inside is work, not a fixture. A walk error says yes."""
+    bad = []
+    for _dp, dns, fns in os.walk(p, onerror=bad.append):
+        if ".git" in dns or ".git" in fns or any(f.endswith(".rws") for f in fns):
+            return True
+    return bool(bad)
+
+
 def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
     """Remove selftest fixtures a day untouched. run_selftests.py cleans its own; this catches a test run by hand or
     killed. Nothing is archived: the commits in a fixture's `c` clone are unpushed by construction. A path anything
@@ -1767,6 +1828,9 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
             out["deferred"] += 1
             continue
         tree = None if guard(p) else Tree(p)
+        if tree is not None and not p.name.startswith("selftest_") and keeps_work(p):
+            out["held"] += 1                        # a mkdtemp name proves nothing: clones and saves get the full judgment
+            continue
         if tree is None or tree.capped or tree.errors:
             out["held"] += 1
         elif ctx.now - tree.newest < FIXTURE_TTL_S:
@@ -1776,6 +1840,13 @@ def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
         else:
             try:
                 if apply:
+                    if time.time() - ctx.live.taken > FIXTURE_RECHECK_S:     # a sweep of hundreds outlives its snapshot
+                        ctx.refresh()
+                        again = Tree(p)
+                        if ctx.global_holds() or ctx.live.users(p) or ctx.borrows.of(p) or again.errors \
+                                or ctx.now - again.newest < FIXTURE_TTL_S:
+                            out["held"] += 1
+                            continue
                     shutil.rmtree(p)
                 out["removed"] += 1
                 out["bytes"] += tree.size
