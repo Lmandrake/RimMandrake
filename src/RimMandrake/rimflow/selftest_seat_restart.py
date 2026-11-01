@@ -2238,7 +2238,7 @@ def test_d3_last_helper_ends_then_kill_never_before():
     o["seat_restart"]["work"] = since
     a = run(sch, st, o, T0 + 600)
     check("restart_kill" in dos(a), "D3 all ended: the kill goes, the final renewal is no new work (%s)" % dos(a))
-    check(work and work[-1] >= T0 + 500, "D3 new work is read from where the last helper stopped (%s)" % work)
+    check(work and work[-1] > T0 + 500, "D3 new work is read from past the second the last helper stopped in (%s)" % work)
     rs = st["seat_restart"]["FOUNDRY"]
     check(sorted(rs.get("drained") or {}) == sorted(h["id"] for h in LIVE4), "D3 the drained helpers stay on the record")
     # after the last helper the SEAT takes a ticket: voided, it would be killed mid-ticket
@@ -2306,6 +2306,15 @@ def test_d7_drain_is_derived_and_bound_to_one_session():
     os.makedirs(SR.restart_dir(root))
     now = T0 + 10
     D = lambda sid: SR.drain_of("FOUNDRY", sid, root=root, now=now)
+    keep = SR._schedule
+    SR._schedule = lambda: {"seats": {"FOUNDRY": {"clone": CLONE}}, "seat_restart": {"enabled": True, "seats": {"FOUNDRY": {}}}}
+    try:
+        _d7(root, D, now)
+    finally:
+        SR._schedule = keep
+
+
+def _d7(root, D, now):
     check(D("sid-old") is None, "D7 nothing on disk: no drain")
     SR._write_json(SR.request_path("FOUNDRY", root), req())
     check(D("sid-old"), "D7 a recorded request drains before any tick has read it")
@@ -2321,6 +2330,10 @@ def test_d7_drain_is_derived_and_bound_to_one_session():
     os.remove(SR.request_path("FOUNDRY", root))
     check("hard" in (D("sid-old") or ""), "D7 the hard limit drains with no request at all")
     check(D("sid-new") is None, "D7 a pending restart of the old session never freezes the next window")
+    on = SR._schedule
+    SR._schedule = lambda: dict(on(), seat_restart={"enabled": False})
+    check(D("sid-old") is None, "D7 restarts switched off: a pending record freezes nobody")
+    SR._schedule = on
     with open(stf, "w") as f:
         f.write("{torn")
     check(D("sid-old") is None, "D7 an unreadable state fails open")

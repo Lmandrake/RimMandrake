@@ -1318,7 +1318,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         seen = rs.setdefault("drained", {})
         seen.update({h["id"]: h.get("desc") or "" for h in live})
     if deferred and hs:
-        rs["work_from"] = max([rs.get("work_from", rs["ts"])] + [h.get("last_at") or 0 for h in hs])
+        # the shard has whole seconds: the second a helper last wrote in is its own, never the seat's
+        rs["work_from"] = max([rs.get("work_from", rs["ts"])] + [int(h.get("last_at") or 0) + 1 for h in hs])
     work = ro["work"](seat, rs.get("work_from", rs["ts"])) if ro.get("work") else None
     nw = None if deferred and (live or hs is None) else new_work(work, rs.get("ticket"), drain=deferred)
     if nw and not sized:                 # forced: taking work is exactly what a busy window does, and the limit stands
@@ -1928,9 +1929,15 @@ def unpublished_shard(seat, clone):
 def drain_of(seat, session_id, root=None, now=None):
     """-> why this window is draining, or None. A restart is on its way (a recorded request, or a pending one the
     Dispatcher holds, the hard limit included), so the window takes no work and spawns no helper; running helpers finish.
-    Derived, never a marker of its own that could outlive the restart: a cancel ends it, and it binds to one session, so
-    a stale record can never freeze the next window. Readers fail open."""
+    Derived, never a marker of its own that could outlive the restart: a cancel ends it, it binds to one session, and
+    a seat taken off restarts stops draining (the Dispatcher no longer serves its record), so a stale record can never
+    freeze a window. Readers fail open."""
     if not seat or not session_id:
+        return None
+    try:
+        if seat not in config(_schedule()):
+            return None
+    except Exception:  # noqa: BLE001 - readers fail open
         return None
     root = root or doorbell.state_dir()
     now = time.time() if now is None else now
