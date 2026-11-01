@@ -182,7 +182,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			world.BodyFluid[idx] = 0;
 			world.SoakMilliDl[idx] = 0;
 			world.EvapMilliDl[idx] = 0;
-			world.TempDeciC[idx] = Mathf.RoundToInt(GenTemperature.GetTemperatureForCell(c, map) * 10f);
+			float cellC = KernelTempAt(c);
+			world.TempDeciC[idx] = Mathf.RoundToInt(cellC * 10f);
 			Building edifice = map.edificeGrid[idx];
 			if (e != null && e.IsExcavated(c))
 			{
@@ -258,10 +259,70 @@ namespace RimMandrake.FlowWorks.Sheet
 			float pulsesPerDay = GenDate.TicksPerDay / (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks;
 			float soakCm = map.terrainGrid.UnderTerrainAt(c) != null ? 0f : SoakCmPerDay(baseT);
 			world.SoakMilliDl[idx] = Mathf.RoundToInt(soakCm * DlPerCm * 1000f / pulsesPerDay);
-			float t = GenTemperature.GetTemperatureForCell(c, map);
+			float t = cellC;
 			float evapCm = t <= 0f ? 0f : RM_SheetSettings.dryCmPerDayAt20C * Mathf.Min(EvapMaxFactor, t / 20f)
 				* (map.roofGrid.Roofed(c) ? RM_SheetSettings.roofedDryPercent / 100f : 1f);
 			world.EvapMilliDl[idx] = Mathf.RoundToInt(evapCm * DlPerCm * 1000f / pulsesPerDay);
+		}
+
+		private static Func<GameConditionManager, float> conditionOffset;
+		private static bool conditionOffsetLooked;
+		private int outdoorTick = int.MinValue;
+		private float outdoorC;
+
+		/// <summary>FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES, second cause: the temperature the kernel reads for a cell (freezing
+		/// and evaporation), from saved state only, so a load continues the same trajectory. The game's own reading is not:
+		/// an outdoor room's temperature is copied every 120 ticks from a 60-tick outdoor cache whose phase restarts on every
+		/// load (TileTemperaturesComp.CheckCache), and a save keeps room temperatures cut to 1/16 °C (TemperatureVacuumSaveLoad).
+		/// Outdoors (no room, or a room that uses the outdoor temperature) this is the tile's temperature at this very tick plus
+		/// the map's game-condition offsets: the value the game's cache holds, without its lag. Indoors it is the room's
+		/// temperature on the save's own 1/16 °C grid, so the reading at a save and after its load agree (an indoor room that
+		/// later crosses a 1/16 °C step a few ticks apart in the two runs can still split them: disclosed, not hidden).</summary>
+		private float KernelTempAt(IntVec3 c)
+		{
+			Room room = c.GetRoom(map);
+			if (room == null || room.UsesOutdoorTemperature)
+			{
+				return OutdoorExactC();
+			}
+			float t = Mathf.Clamp(GenTemperature.GetTemperatureForCell(c, map), -273.15f, 1000f);
+			return (int)(t * 16f) / 16f; // the save's grid (TempFloatToShort / TempShortToFloat)
+		}
+
+		private float OutdoorExactC()
+		{
+			int now = Find.TickManager.TicksAbs;
+			if (now == outdoorTick)
+			{
+				return outdoorC;
+			}
+			outdoorTick = now;
+			if (map.Biome?.constantOutdoorTemperature != null || map.IsPocketMap || Find.World?.tileTemperatures == null)
+			{
+				return outdoorC = map.mapTemperature.OutdoorTemp; // a constant: no cache, nothing to split
+			}
+			if (!conditionOffsetLooked)
+			{
+				conditionOffsetLooked = true;
+				try
+				{
+					System.Reflection.MethodInfo m = HarmonyLib.AccessTools.Method(typeof(GameConditionManager), "AggregateTemperatureOffset");
+					if (m != null)
+					{
+						conditionOffset = HarmonyLib.AccessTools.MethodDelegate<Func<GameConditionManager, float>>(m);
+					}
+				}
+				catch (Exception e)
+				{
+					Log.Warning("[RimMandrake.FlowWorks] spilled water could not read the game-condition temperature offset (" + e.Message
+						+ "); it reads the game's cached outdoor temperature, so a save/load may continue slightly differently.");
+				}
+			}
+			if (conditionOffset == null)
+			{
+				return outdoorC = map.mapTemperature.OutdoorTemp;
+			}
+			return outdoorC = Find.World.tileTemperatures.OutdoorTemperatureAt(map.Tile, now) + conditionOffset(map.gameConditionManager);
 		}
 
 		/// <summary>Soak by the ground's class (§3 step 4: sand/soil/gravel high→low; rock, constructed floor, ice, mud, marsh

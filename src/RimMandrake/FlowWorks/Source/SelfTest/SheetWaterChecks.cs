@@ -845,6 +845,14 @@ namespace RimMandrake.FlowWorks.SelfTest
 				Assert(sheet.Contains("kinds.NextGeneration();"), "each refresh starts a generation");
 				Assert(sheet.Contains("DataExposeUtility.LookByteArray(ref kindData, \"RM_sheetKinds\")"), "the record is saved");
 				Assert(sheet.Contains("kinds = KindMemory.Load(loadedKinds, w * h);"), "and applied when the world is rebuilt");
+				// FLOWWORKS_SHEETS_DIAGNOSE_LOAD_DIVERGES second cause: the kernel's temperature is save-exact (outdoor from the
+				// world's own function of the tick, indoor on the save's 1/16 C grid), never the cached / truncated vanilla read
+				string classify = sheet.Substring(sheet.IndexOf("private void ClassifyCell(") + 1);
+				classify = classify.Substring(0, classify.IndexOf("private "));   // up to the next member (line endings vary)
+				Assert(classify.Contains("KernelTempAt(c)") && !classify.Contains("GenTemperature.GetTemperatureForCell"),
+					"the sheet kernel reads its temperature through KernelTempAt, never vanilla's cached cell temperature");
+				Assert(sheet.Contains("OutdoorTemperatureAt(map.Tile, now)") && sheet.Contains("(int)(t * 16f) / 16f"),
+					"outdoors is the world's function of the tick, indoors the save's 1/16 C grid");
 			});
 
 			// wiring (source text): the owner's two rulings of 2026-10-22 are in the production entries

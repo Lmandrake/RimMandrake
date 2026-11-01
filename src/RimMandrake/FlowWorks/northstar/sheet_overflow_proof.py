@@ -89,6 +89,7 @@ LPROOF = "RimMandrake.FlowWorks.Machinery.RM_LineProofs"         # ProofPitWater
 S_FW = "RimMandrake.FlowWorks.RimMandrakeFlowWorksSettings"     # rainFillPerPulse, rainFillsExcavationsEnabled
 NPROOF = "RimMandrake.FlowWorks.RM_NorthstarProofs"              # ProofPump, ProofResetRect
 DL_PER_CM = 200      # RM_SheetMath.DlPerCm: 1 cm over one square = 20 L
+OFFER_MAX = 50000    # dL one staging offer at an undug origin can land: its 5 lips x the shipped 50 cm cap (see spill_spread)
 U = 10000            # dL per notch-square (RM_Volume.UnitsPerLevel; read live from the ledger's cap/notch when given)
 WATER = "Water"      # proof_hose.LIQUID_WATER on a live run
 STAGE_SRC = "Flood"  # staged spills enter as the driver/kit source (D2), which no stage-1 hook uses: inPump/inRain stay clean
@@ -178,7 +179,7 @@ def main(argv=None):
         ap.error("unknown --mock-faults %s" % ",".join(sorted(set(faults) - set(FakeBridge.FAULTS))))
     global WATER
     if a.mock:
-        raw = FakeBridge(faults)
+        raw = FakeBridge(faults, origin=tuple(int(v) for v in a.origin.split(",")))
     else:
         import proof_hose as PH           # noqa: E402  (bridge-side imports only on a live run)
         raw = PH.PB()
@@ -258,6 +259,20 @@ def main(argv=None):
     def spill(c, dl, src=STAGE_SRC):
         kv, txt = sp("ProofSheetSpill", "%s;%d;%s" % (xz(c), dl, src))
         return num(kv, "accepted"), txt
+
+    def spill_spread(origins, dl, src=STAGE_SRC):
+        """Stage `dl` over several origins, at most OFFER_MAX dL a call. One offer at an UNDUG square reaches only that square
+        and its 4 open neighbours (RM_MapComponent_Sheet.FindLips walks through dug squares only), so 5 x the sheet cap
+        (50,000 dL) is all one origin can take: the 2026-11-01 0114 run's J and L staged 60,000 / 96,000 at one origin and got
+        50,000 (a HARNESS shortfall, not a mod refusal). Each next origin is offered what is still owed. Returns (accepted, texts)."""
+        got, txts = 0, []
+        for c in origins:
+            if got >= dl:
+                break
+            acc, txt = spill(c, min(OFFER_MAX, dl - got), src)
+            txts.append(txt)
+            got += acc or 0
+        return got, txts
 
     def pitwater(x0, z0, w, h):
         kv, txt = _static(LPROOF, "ProofPitWater", "%d,%d,%d,%d" % (P(x0, z0) + (w, h)), False)
@@ -386,7 +401,7 @@ def main(argv=None):
         res["ledgerStart"] = L_START["_txt"]
 
         ctx = dict(a=a, B=B, P=P, xz=xz, row=row, prow=prow, sp=sp, ledger=ledger, ld=ld, srect=srect, scell=scell, spill=spill,
-                   pitwater=pitwater, dig=dig, build=build, ticks=ticks, pulses=pulses, balance=balance, sset=sset, sget=sget,
+                   spill_spread=spill_spread, pitwater=pitwater, dig=dig, build=build, ticks=ticks, pulses=pulses, balance=balance, sset=sset, sget=sget,
                    ring=ring, res=res, save=save, feats=feats, L_START=L_START, CTX=CTX, only=only)
         for rid in ROW_IDS:
             if rid == "SAVE_LOAD_CONTINUES_IDENTICAL" and not a.no_perf and not a.only.strip():
@@ -677,9 +692,15 @@ def door_leak(ctx):
     EXPECT water outside the door ring > 0 (it leaks: doors do not seal) AND the door ring's inside lost less than a quarter of
     what the gap ring's inside lost (slowly); closes. LIES: a door that stood open passes the full flux (the cell's kind must
     read Door); a gap ring whose water stays put (nothing to compare) is SITE, never a pass."""
-    row, ledger, P, ring, srect, scell = _c(ctx, "row", "ledger", "P", "ring", "srect", "scell")
-    ring(0, 70, 4, 74, door=(4, 72))
-    ring(0, 80, 4, 84, gap=(4, 82))
+    B, row, ledger, P, ring, srect, scell = _c(ctx, "B", "row", "ledger", "P", "ring", "srect", "scell")
+    # the 0114 run: a wild RM_Fuzz on a ring square refused the whole wall batch (build_batch wipeExisting=false), so the row
+    # went UNMEASURED. Plants on both rings (and the yards inside) go first; a refused clear is a SITE fault, never a pass.
+    for z0 in (70, 80):
+        cl = B.call("jawa/destroy_batch", rects="%d,%d,5,5" % P(0, z0), categories="Plant") or {}
+        V.require(cl.get("success") is not False, "plants cleared off the ring at z=%d" % z0, cl, cls="SITE")
+    r1 = ring(0, 70, 4, 74, door=(4, 72))
+    r2 = ring(0, 80, 4, 84, gap=(4, 82))
+    V.require(r1.get("success") is not False and r2.get("success") is not False, "both rings built", [r1, r2], cls="SITE")
     ctx["ticks"](2)
     kd, td = scell(P(4, 72))
     V.require(kd.get("kind") == "Door", "the ring's opening is a closed door", td)
@@ -731,7 +752,7 @@ def setting_off(ctx):
 
 def crops(ctx):
     """PROVE (D3) rice x=1..4, z=103..105 (growth 0.3); the crop-drowning delay setting (FEATURES cropDelayField) COMPRESSED to
-    its smallest value and read back; 60,000 dL spilled at (0,104) so the rice squares stand at sheet tier; poll pulse by pulse.
+    its smallest value and read back; 60,000 dL spilled at (0,104) and the squares just above and below it (<= 50,000 an origin) so the rice squares stand at sheet tier; poll pulse by pulse.
     EXPECT before the compressed delay: every rice plant alive and the soak (irrigation) total risen; after it: every rice plant
     on a square read at sheet tier (or deeper) after the first pulse dead, every one on a film square alive (a film irrigates); then the shipped delay restored and read back as 1 week (60,000 x 7 ticks). LIES: a clock jump ages
     nothing (the kernel counts PULSES); a film that never reached sheet tier never drowns (tier read back first); rice that died
@@ -752,7 +773,8 @@ def crops(ctx):
     sset(S_SHEET, field, 2)
     try:
         l0 = ledger()
-        acc, ts = ctx["spill"](P(0, 104), 60000)
+        # one undug origin lands 50,000 at most (spill_spread): the rest goes in beside it, still west of the rice
+        acc, ts = ctx["spill_spread"]([P(0, 104), P(0, 103), P(0, 105)], 60000)
         V.require(acc == 60000, "the staged spill was accepted whole", ts)
         ctx["pulses"](1)
         rice = [P(x, z) for x in range(1, 5) for z in range(103, 106)]
@@ -829,7 +851,7 @@ def freeze(ctx):
 
 
 def lowered_cap(ctx):
-    """PROVE (D10) a wall ring x=0..5, z=126..130 (yard 4x3); 8,000 dL per yard square offered at (2,128) (40 cm); the cap
+    """PROVE (D10) a wall ring x=0..5, z=126..130 (yard 4x3); 8,000 dL per yard square offered across the yard, (2,128) first (40 cm; <= 50,000 an origin); the cap
     setting (FEATURES capField, in cm) lowered to 20 cm (4,000 dL) and read back; a further 10,000 dL offered; 4 pulses; the shipped
     cap restored.
     EXPECT the further offer accepts 0 (no new filling above the lowered cap); the yard's water is NOT cut to the new cap (its
@@ -841,7 +863,9 @@ def lowered_cap(ctx):
     field = feats.get("capField")
     V.require(field and field != "-", "the build names its sheet-cap setting", feats, cls="HARNESS")
     ring(0, 126, 5, 130)
-    acc, ts = ctx["spill"](P(2, 128), 12 * 40 * DL_PER_CM)
+    # one undug origin lands 50,000 at most (spill_spread): offered square by square across the yard, (2,128) first
+    yard = [P(2, 128)] + [P(x, z) for z in (128, 127, 129) for x in (1, 2, 3, 4) if (x, z) != (2, 128)]
+    acc, ts = ctx["spill_spread"](yard, 12 * 40 * DL_PER_CM)
     V.require(acc == 12 * 40 * DL_PER_CM, "the yard filled to 40 cm", ts)
     ctx["pulses"](1)
     shipped = sget(S_SHEET, field)
@@ -1001,15 +1025,19 @@ class FakeBridge(object):
       crops_built        Stage 2 crops present (FEATURES crops=True)           -> CROPS_IRRIGATE_THEN_DROWN measured
       crop_never_dies    MOD (with crops_built): standing water never drowns   -> CROPS_IRRIGATE_THEN_DROWN FAIL
       cap_setting_built  Stage 3 cap setting present (FEATURES capSetting=True) -> LOWERED_CAP... measured
-      cap_lower_cuts     MOD (with cap_setting_built): lowering cuts the water -> LOWERED_CAP_KEEPS_DEEPER_WATER FAIL"""
+      cap_lower_cuts     MOD (with cap_setting_built): lowering cuts the water -> LOWERED_CAP_KEEPS_DEEPER_WATER FAIL
+    Always on (the live map as the 2026-11-01 0114 run met it, so a clean mock proves the harness copes): a wild plant stands
+    on the door ring's wall square (1,74), and build_batch refuses a whole batch that lands on a plant (wipeExisting=false);
+    one offer at an undug square reaches only that square and its 4 open neighbours (production FindLips)."""
     FAULTS = ("no_proofs", "noclock", "canal_not_full", "pump_no_spill", "pump_leaks", "rain_no_spill", "fillin_destroys",
               "no_return", "unbounded", "cap_destroys", "door_seals", "door_open", "off_still_spills", "off_purges",
               "no_freeze", "ice_loses", "never_cold", "ledger_open", "load_drift", "crops_built", "crop_never_dies",
               "cap_setting_built", "cap_lower_cuts")
     RET, QMIN, PULSE, SOAK = 200, 100, 250, 3   # dL (the kernel Params: retention 1 cm, q_min 0.5 cm); soak a pulse
 
-    def __init__(self, faults=()):
+    def __init__(self, faults=(), origin=(30, 30)):
         self.f = set(faults)
+        self.wild = {(origin[0] + 1, origin[1] + 74)}   # stray plants (RM_Fuzz) the site holds before any prep
         self.dug = {}           # cell -> [depth notches, water dL]
         self.sheet = {}         # cell -> dL
         self.walls, self.doors = set(), set()
@@ -1041,32 +1069,20 @@ class FakeBridge(object):
         return self.settings["sheetOverflowEnabled"] == "True"
 
     def _lips(self, origin):
-        """origin's channel body walked outward, its open undug neighbours nearest first (or origin itself when undug), then
-        open squares outward from those, 16 at most (the kernel's MaxLips)."""
-        if origin in self.dug:
-            body, q, seen = [], [origin], {origin}
-            while q:
-                c = q.pop(0)
-                body.append(c)
-                for n in self._nbrs(c):
-                    if n in self.dug and n not in seen:
-                        seen.add(n)
-                        q.append(n)
-            start = []
-            for c in body:
-                for n in self._nbrs(c):
-                    if self._open(n) and n not in start:
-                        start.append(n)
-        else:
-            start = [origin] if self._open(origin) else []
-        out, q, seen = [], list(start), set(start)
+        """Production FindLips: a walk outward from origin through dug squares only; every open undug square it meets is a lip
+        (origin itself first when undug), 16 at most. Open soil is never walked, so an undug origin reaches 5 squares."""
+        out = [origin] if origin not in self.dug and self._open(origin) else []
+        q, seen = [origin], {origin}
         while q and len(out) < 16:
             c = q.pop(0)
-            out.append(c)
             for n in self._nbrs(c):
-                if self._open(n) and n not in seen:
-                    seen.add(n)
+                if n in seen or len(out) >= 16:
+                    continue
+                seen.add(n)
+                if n in self.dug:
                     q.append(n)
+                elif self._open(n):
+                    out.append(n)
         return out
 
     def offer(self, origin, dl, src):
@@ -1308,6 +1324,9 @@ class FakeBridge(object):
             self.sheet.pop(c, None)
             return {"success": True, "depth": d[0]}
         if tool == "jawa/build_batch":
+            hit = [op for op in str(kw.get("ops") or "").split(";") if op and self._xz(op.split(":")[1]) in self.wild]
+            if hit and not kw.get("wipeExisting"):
+                return {"success": False, "error": "%s wipeExisting=false: occupied by RM_Fuzz" % hit[0]}
             for op in str(kw.get("ops") or "").split(";"):
                 if not op:
                     continue
@@ -1334,6 +1353,18 @@ class FakeBridge(object):
             if kw.get("defName") == CROP:
                 return {"success": True, "things": [{"id": "Rice%d_%d" % c} for c in self.plants if inr(c)]}
             return {"success": True, "things": []}
+        if tool == "jawa/destroy_batch":
+            n = 0
+            for r in str(kw.get("rects") or "").split(";"):
+                x, z, w, h = (int(v) for v in r.split(","))
+                inr = lambda c: x <= c[0] < x + w and z <= c[1] < z + h   # noqa: E731
+                if "Plant" in str(kw.get("categories")) or kw.get("categories") == "All":
+                    gone = [c for c in list(self.wild) + list(self.plants) if inr(c)]
+                    for c in gone:
+                        self.wild.discard(c)
+                        self.plants.pop(c, None)
+                    n += len(gone)
+            return {"success": True, "destroyed": n}
         if tool == "jawa/set_plants":
             d, at = str(kw.get("ops")).split(":")
             x, z, w, h = (int(v) for v in at.split(","))
