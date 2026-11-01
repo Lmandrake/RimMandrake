@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CRACKEDLANDS_SALVAGE_CLAIM_CREW_1, owner by card 2026-10-09: an existing scavenger-type faction, no new faction. The
+     first of these at peace with the player sends the crew; none at peace, nobody comes. Core's and Biotech's rough outlanders
+     and tribes first; the civil ones last. Odyssey's Salvagers cannot serve: hidden and a permanent enemy, they never visit.
+     The Utinni campaign replaces faction, prop and text: src/RimUtinni/UtinniPatches/Patches/ClaimCrew_CrackedLands.xml. -->
+<Defs>
+
+  <RimMandrake.CrackedLands.RM_ClaimCrewProfileDef>
+    <defName>RM_ClaimCrew_Scavengers</defName>
+    <label>rival salvage crew</label>
+    <factionDefs>
+      <li>OutlanderRough</li>
+      <li>OutlanderRoughPig</li>
+      <li>TribeRough</li>
+      <li>TribeRoughNeanderthal</li>
+      <li>OutlanderCivil</li>
+      <li>TribeCivil</li>
+    </factionDefs>
+    <traderKind>RM_ClaimCrewTrader</traderKind>
+    <arrivalLabel>Rival salvage crew</arrivalLabel>
+    <arrivalText>A salvage crew from {0} has walked in to work the flood line. They will dig out what the mud exposed unless you claim it first, but they are not here to fight: they keep a small shop on the claim, selling what they find and buying salvage back. They will be gone in about a day.</arrivalText>
+    <collapseLabel>Claim jumpers</collapseLabel>
+    <collapseText>With relations with {0} gone, their salvage crew no longer respects any claim. They are stripping what is left on the flood line and will run with it.</collapseText>
+    <leaveText>The salvage crew from {0} has packed up and is leaving the flood line.</leaveText>
+  </RimMandrake.CrackedLands.RM_ClaimCrewProfileDef>
+
+</Defs>

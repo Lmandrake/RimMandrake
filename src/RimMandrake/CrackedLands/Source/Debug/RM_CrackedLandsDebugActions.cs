@@ -85,6 +85,36 @@ namespace RimMandrake.CrackedLands
             Log.Message("[RMCrackedLandsDebug] aftermath: " + comp.DebugStateReport());
         }
 
+        // CRACKEDLANDS_SALVAGE_CLAIM_CREW_1 verify: the crew forced past the per-flood chance (a hostile
+        // profile faction is set neutral first, since a quicktest world's rough factions often start hostile),
+        // its state read, and the relation collapse driven through the production goodwill path.
+        [DebugAction(CAT, "Force rival crew NOW (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ForceCrew()
+        {
+            RM_MapComponent_RecedeAftermath comp = Find.CurrentMap?.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] forceCrew=" + comp.SendCrew(true).Replace(' ', '_') + " " + comp.DebugCrewReport());
+        }
+
+        [DebugAction(CAT, "Report rival crew (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void ReportCrew()
+        {
+            RM_MapComponent_RecedeAftermath comp = Find.CurrentMap?.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] " + comp.DebugCrewReport());
+        }
+
+        [DebugAction(CAT, "Collapse rival crew relations (current map)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void CollapseCrew()
+        {
+            RM_MapComponent_RecedeAftermath comp = Find.CurrentMap?.GetComponent<RM_MapComponent_RecedeAftermath>();
+            if (comp == null) { Log.Error("[RMCrackedLandsDebug] no RM_MapComponent_RecedeAftermath on this map."); return; }
+            Log.Message("[RMCrackedLandsDebug] collapse=" + comp.DebugCollapseRelations() + " " + comp.DebugCrewReport());
+        }
+
         // CRACKEDLANDS_MECHANICS_BUILD_1 verify: a STATE read of the seams on
         // the map (count per tier), so "fresh seams after a recede" is a
         // before/after number, never a screenshot hunt.

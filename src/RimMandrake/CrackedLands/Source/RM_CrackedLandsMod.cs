@@ -95,11 +95,18 @@ namespace RimMandrake.CrackedLands
         // TUNED: 40 — a carpet on a default flood, without a pawn-count spike.
         public static int irqitCohortMax = 40;
 
-        // §6 — floodline salvage (the scatter; claim stakes and the rival
-        // crew are CRACKEDLANDS_SALVAGE_CLAIM_CREW_1).
+        // §6 — floodline salvage: the scatter, then CRACKEDLANDS_SALVAGE_CLAIM_CREW_1's
+        // claim stakes, the rival crew and the wreck a recede leaves.
         public static bool floodlineSalvageEnabled = true;
         // TUNED: 3 days — "decaying fast" (review §H), shorter than the soak.
         public static float salvageDecayDays = 3f;
+        public static bool claimStakesEnabled = true;
+        public static bool claimCrewEnabled = true;
+        // Owner by card 2026-10-09: a chance per flood, about 1 in 3.
+        public static float claimCrewChance = 0.33f;
+        public static bool floodWrecksEnabled = true;
+        // TUNED: a wreck on every other flood; the wreck field already gives the map its own.
+        public static float floodWreckChance = 0.5f;
 
         // CRACKEDLANDS_FLORA_EXPANSION_BUILD_1 — six admitted flora in the wild roster
         // (applies at startup: off removes the rows on the next launch). The zennaq's
@@ -155,6 +162,11 @@ namespace RimMandrake.CrackedLands
             Scribe_Values.Look(ref irqitCohortMax, "irqitCohortMax", 40, true);
             Scribe_Values.Look(ref floodlineSalvageEnabled, "floodlineSalvageEnabled", true, true);
             Scribe_Values.Look(ref salvageDecayDays, "salvageDecayDays", 3f, true);
+            Scribe_Values.Look(ref claimStakesEnabled, "claimStakesEnabled", true, true);
+            Scribe_Values.Look(ref claimCrewEnabled, "claimCrewEnabled", true, true);
+            Scribe_Values.Look(ref claimCrewChance, "claimCrewChance", 0.33f, true);
+            Scribe_Values.Look(ref floodWrecksEnabled, "floodWrecksEnabled", true, true);
+            Scribe_Values.Look(ref floodWreckChance, "floodWreckChance", 0.5f, true);
             Scribe_Values.Look(ref floraExpansionEnabled, "floraExpansionEnabled", true, true);
             Scribe_Values.Look(ref ledgeRefugeEnabled, "ledgeRefugeEnabled", true, true);
             Scribe_Values.Look(ref chimeAnchorsEnabled, "chimeAnchorsEnabled", true, true);
@@ -264,7 +276,7 @@ namespace RimMandrake.CrackedLands
                 list.GapLine();
             }
 
-            if (Group(list, "After the water recedes", RimMandrake.Shared.SettingScope.NextPulse, new[] { "soakDecayDays", "floodRecutSeamsEnabled", "floodRecutSeamCount", "recedeFeastEnabled", "irqitCohortMax", "floodlineSalvageEnabled", "salvageDecayDays" }))
+            if (Group(list, "After the water recedes", RimMandrake.Shared.SettingScope.NextPulse, new[] { "soakDecayDays", "floodRecutSeamsEnabled", "floodRecutSeamCount", "recedeFeastEnabled", "irqitCohortMax", "floodlineSalvageEnabled", "salvageDecayDays", "claimStakesEnabled", "claimCrewEnabled", "claimCrewChance", "floodWrecksEnabled", "floodWreckChance" }))
             {
                 list.Label("Ground stays soaked for: " + soakDecayDays.ToString("0.0") + " days after the water recedes");
                 soakDecayDays = list.Slider(soakDecayDays, 1f, 10f);
@@ -284,6 +296,17 @@ namespace RimMandrake.CrackedLands
                     + "the flood line. Unclaimed, the mud takes it back.");
                 list.Label("Salvage lies exposed for: " + salvageDecayDays.ToString("0.0") + " days");
                 salvageDecayDays = list.Slider(salvageDecayDays, 1f, 10f);
+                list.CheckboxLabeled("Claim stakes", ref claimStakesEnabled,
+                    "A stake stands beside each piece of floodline salvage until it is claimed, dug out or reclaimed by the mud.");
+                list.CheckboxLabeled("The rival salvage crew", ref claimCrewEnabled,
+                    "On a chance per flood a crew from a faction at peace with you walks in to race you for the salvage. "
+                    + "They keep a small shop while they work, and turn on you only if relations collapse.");
+                list.Label("Chance of a crew per flood: " + claimCrewChance.ToStringPercent());
+                claimCrewChance = list.Slider(claimCrewChance, 0f, 1f);
+                list.CheckboxLabeled("Wrecks on the flood line", ref floodWrecksEnabled,
+                    "A recede can leave a half-buried wreck on the flood line. The next flood takes it back.");
+                list.Label("Chance of a wreck per flood: " + floodWreckChance.ToStringPercent());
+                floodWreckChance = list.Slider(floodWreckChance, 0f, 1f);
                 list.GapLine();
             }
 

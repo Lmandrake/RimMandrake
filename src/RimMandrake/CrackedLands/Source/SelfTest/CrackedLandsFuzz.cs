@@ -495,6 +495,38 @@ namespace RimMandrake.CrackedLands.SelfTest
         // ════════════════════════ rules ════════════════════════
         public static long Salvage, Faces, Seams, Scores;
 
+        // CRACKEDLANDS_SALVAGE_CLAIM_CREW_1: the crew comes only on an enabled, open claim, at about the card's 1 in 3; a
+        // piece open to visitors is always stealable, never the reverse on a claimed piece; the faction is the list's first
+        // eligible name, whatever the list.
+        private static string ClaimCase(int seed)
+        {
+            var r = new Random(seed ^ 0x51);
+            Check(!RM_ClaimKernel.CrewComes(false, 0.0, 1f, 5), "disabled crew came");
+            Check(!RM_ClaimKernel.CrewComes(true, 0.0, 1f, 0), "crew came to an empty claim");
+            Check(!RM_ClaimKernel.CrewComes(true, 0.5, 0f, 5), "chance 0 crew came");
+            int hits = 0, n = 4000;
+            for (int i = 0; i < n; i++) if (RM_ClaimKernel.CrewComes(true, r.NextDouble(), 0.33f, 1 + r.Next(6))) hits++;
+            Check(Math.Abs(hits / (double)n - 0.33) < 0.05, $"crew rate {hits}/{n} is not about 1 in 3");
+            for (int m = 0; m < 16; m++)
+            {
+                bool a = (m & 1) != 0, b = (m & 2) != 0, c = (m & 4) != 0, d = (m & 8) != 0;
+                bool open = RM_ClaimKernel.Open(a, b, c, d), steal = RM_ClaimKernel.Stealable(a, b, c);
+                Check(open == (a && b && c && d), "open truth table");
+                Check(steal == (a && b && c), "stealable truth table");
+                Check(!open || steal, "an open piece must be stealable");
+            }
+            var names = new List<string>(); int len = r.Next(0, 7);
+            for (int i = 0; i < len; i++) names.Add("f" + i);
+            var ok = new HashSet<string>(names.Where(_ => r.Next(3) == 0));
+            string pick = RM_ClaimKernel.PickFaction(names, ok.Contains);
+            string want = names.FirstOrDefault(ok.Contains);
+            Check(pick == want, $"picked {pick}, first eligible is {want}");
+            Check(RM_ClaimKernel.PickFaction(null, _ => true) == null, "null list picks nobody");
+            Check(RM_ClaimKernel.ArrivalDelayMinTicks > 0 && RM_ClaimKernel.ArrivalDelayMinTicks <= RM_ClaimKernel.ArrivalDelayMaxTicks, "arrival window");
+            Check(RM_ClaimKernel.CrewMin >= 1 && RM_ClaimKernel.CrewMin <= RM_ClaimKernel.CrewMax, "crew size window");
+            return null;
+        }
+
         private static string RulesCase(int seed)
         {
             var r = new Random(seed ^ 0xb2);
@@ -639,6 +671,7 @@ namespace RimMandrake.CrackedLands.SelfTest
                 ("pan", () => Family("pan", N(3000), S(1), s => Drive(s, rr => GenActs(rr, 10, 90, new[] { 40, 8, 8, 6, 12, 4, 6, 4, 3 }, PnNames), RunPan) ?? PanUnits(s))),
                 ("rules", () => Family("rules", N(3000), S(1), RulesCase)),
                 ("arm", () => Family("arm", N(600), S(1), ArmCase)),
+                ("claim", () => Family("claim", N(2000), S(1), ClaimCase)),
             };
             foreach (var f in fam)
             {

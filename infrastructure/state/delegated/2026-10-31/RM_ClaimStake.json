@@ -1,0 +1,16 @@
+{
+ "subject": "RM_ClaimStake",
+ "item": "CRACKEDLANDS_SALVAGE_CLAIM_CREW_1",
+ "brief": "design/RimMandrake/art_judge_brief.md",
+ "judge_model": {
+  "gpt": "gpt-6.1-sol via gpt_consult"
+ },
+ "decision": "KEEP",
+ "reasons": [
+  "Weathered wood and torn marker cloth clearly convey the description.",
+  "The 32 px/cell copy retains a readable stake silhouette and distinct cloth accent.",
+  "Scale and footprint fit the prop; the fading base integrates with terrain without visible ground or scenery."
+ ],
+ "round": 2,
+ "note": "round 1 UNSURE: a mud mound in the sprite risked D4; removed, post cut to sink into terrain"
+}

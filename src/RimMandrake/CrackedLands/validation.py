@@ -36,6 +36,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(HERE, "..", "Utils"))      # `python3 validation.py` finds modcheck
 
 SETTINGS = "RimMandrake.CrackedLands.RM_CrackedLandsSettings"
+# Read from each Data/*/Defs/FactionDefs: non-hidden, not permanentEnemy, rough first as the card's scavengers.
+CLAIM_CREW_FACTIONS = ("OutlanderRough", "OutlanderRoughPig", "TribeRough", "TribeRoughNeanderthal", "OutlanderCivil", "TribeCivil")
 TAG = "[RMCrackedLandsDebug]"
 EG_TAG = "[RMExplosiveGrowthDebug]"
 P_ARM = "Actions\\Arm chime + flood soon (current map)"
@@ -53,6 +55,10 @@ P_SOAK_PLACE = "Actions\\Place soak zone (5x5, always)"
 P_MC_REPORT = "Actions\\Report flood triggers and soak zones (current map)"
 MC = "RimMandrake.CrackedLands.MapControls.RM_BiomeMapControls"
 P_TEACH = "Actions\\Teach player animals Obedience (current map)"
+P_CREW_FORCE = "Actions\\Force rival crew NOW (current map)"
+P_CREW_REPORT = "Actions\\Report rival crew (current map)"
+P_CREW_COLLAPSE = "Actions\\Collapse rival crew relations (current map)"
+CREW_POLLS = 40         # polls of 500 ticks: time to walk in from any edge and dig a piece out
 
 
 # --------------------------------------------------------------------------- parsed facts (never hand-listed)
@@ -79,6 +85,44 @@ def shipped_defs():
                     if n and e.get("Abstract") != "True":
                         out.append((e.tag.split(".")[-1], n))
     return out
+
+
+def _claim_crew_findings(profile_xml=None, patch_xml=None):
+    """CRACKEDLANDS_SALVAGE_CLAIM_CREW_1: the crew's data can actually run. Every faction is one that can visit (owner's card:
+    an existing faction, so it must exist and not be a permanent enemy); the Utinni patch names a real faction and prop."""
+    bad = []
+    root = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
+    if profile_xml is None:
+        with open(os.path.join(HERE, "Defs", "RM_ClaimCrewProfileDefs", "RM_ClaimCrew_Scavengers.xml"), encoding="utf-8") as f:
+            profile_xml = f.read()
+    if patch_xml is None:
+        with open(os.path.join(root, "src", "RimUtinni", "UtinniPatches", "Patches", "ClaimCrew_CrackedLands.xml"), encoding="utf-8") as f:
+            patch_xml = f.read()
+    names = [li.text for li in ET.fromstring(profile_xml).iter("li")]
+    if not names:
+        bad.append("claim crew profile names no faction")
+    for n in names:
+        if n not in CLAIM_CREW_FACTIONS:
+            bad.append("claim crew faction %s is not a known visiting vanilla faction" % n)
+    for tag, want in (("arrivalText", "{0}"), ("collapseText", "{0}"), ("leaveText", "{0}")):
+        if want not in (ET.fromstring(profile_xml).findtext(".//" + tag) or ""):
+            bad.append("claim crew %s lost its %s" % (tag, want))
+    fdir = os.path.join(root, "src", "RimUtinni", "UtinniPatches", "Defs", "FactionDefs")
+    factions = "".join(open(os.path.join(fdir, f), encoding="utf-8").read() for f in os.listdir(fdir))
+    sub = ET.fromstring(patch_xml)
+    fnames = [li.text for fd in sub.iter("factionDefs") for li in fd.iter("li")]
+    if not fnames:
+        bad.append("Utinni claim crew patch substitutes no faction")
+    for n in fnames:
+        if "<defName>%s</defName>" % n not in factions:
+            bad.append("Utinni claim crew patch names no real faction: %s" % n)
+    prop = sub.findtext(".//campProp")
+    crawler = os.path.join(root, "src", "RimStarWars", "StructureInjectionsSW", "Defs", "ThingDefs_CrawlerRoad.xml")
+    if not prop or "<defName>%s</defName>" % prop not in open(crawler, encoding="utf-8").read():
+        bad.append("Utinni claim crew patch names no real crawler prop: %r" % prop)
+    if not os.path.isfile(os.path.join(HERE, "Textures", "Things", "Building", "RM_ClaimStake.png")):
+        bad.append("RM_ClaimStake has no art")
+    return bad
 
 
 def _flora_shape_findings():
@@ -513,6 +557,112 @@ if Suite is not None:
                     _unmeasured(t, "recede with salvage on scattered nothing (%r -> %r): no standable dry cell in "
                                    "the footprint on this site, or a real fault; re-run on an open map" % (a0, a1))
 
+    def _recede(t):
+        _flood_once(t)
+        _act(t, P_RECEDE)
+        t.wait_ticks(30)
+        return _after(t)
+
+    def _crew(t, path=P_CREW_REPORT):
+        lines = _act(t, path)
+        if not _live(t):
+            return {}
+        d = dict(re.findall(r"(\w+)=(\S+)", " ".join(l for l in lines if "crew=" in l)))
+        if "lordJob" not in d:
+            _unmeasured(t, "crew report unparseable: %r" % lines[-1][:300])
+        t._record("crew_state", d)
+        return d
+
+    @suite.chain("claim_stakes")
+    def claim_stakes(t):
+        """A stake stands beside every piece the recede exposes; claimStakesEnabled off plants none."""
+        quiet = dict(featureInOtherBiomes=True, floodCycleEnabled=True, recedeFeastEnabled=False, claimCrewEnabled=False,
+                     floodWrecksEnabled=False)
+        with _comp(t, "stakes_stand_beside_the_salvage", toggle="claimStakesEnabled"):
+            with _arm(t, **quiet):
+                _settle(t)
+                a = _recede(t)
+                if _live(t):
+                    if a.get("salvage", 0) < 1:
+                        _unmeasured(t, "recede scattered no salvage: no standable dry cell on this site (%r)" % a)
+                    if a.get("stakes", 0) < 1:
+                        _fail("no stake stands after a recede: %r" % a)
+                    if a.get("stakesBeside") != a.get("stakes"):
+                        _fail("a stake is not touching its piece: %r" % a)
+                with _arm(t, claimStakesEnabled=False):
+                    b = _recede(t)
+                if _live(t) and b.get("stakes") != a.get("stakes"):
+                    _fail("stakes planted with claimStakesEnabled off: %r -> %r" % (a, b))
+
+    @suite.chain("flood_wreck")
+    def flood_wreck(t):
+        """A recede can leave a half-buried wreck; the next recede takes it back."""
+        quiet = dict(featureInOtherBiomes=True, floodCycleEnabled=True, recedeFeastEnabled=False, claimCrewEnabled=False)
+        with _comp(t, "recede_leaves_a_wreck_the_next_takes_back", toggle="floodWrecksEnabled"):
+            with _arm(t, **quiet):
+                _settle(t)
+                with _arm(t, floodWreckChance=1.0):
+                    a = _recede(t)
+                if _live(t) and a.get("floodWrecks", 0) != 1:
+                    _unmeasured(t, "no wreck at chance 1: no 2x2-sized clear site in the footprint, or a fault: %r" % a)
+                with _arm(t, floodWreckChance=0.0):
+                    b = _recede(t)
+                if _live(t) and b.get("floodWrecks") != 0:
+                    _fail("the next recede did not take the wreck back: %r" % b)
+
+    @suite.chain("claim_crew")
+    def claim_crew(t):
+        """The crew is a chance per flood; forced, it arrives as visitors, works the claim, trades; hostile only on collapse."""
+        quiet = dict(featureInOtherBiomes=True, floodCycleEnabled=True, recedeFeastEnabled=False, floodWrecksEnabled=False)
+        with _comp(t, "crew_comes_on_the_chance", toggle="claimCrewEnabled"):
+            with _arm(t, claimCrewEnabled=True, claimCrewChance=0.0, **quiet):
+                _settle(t)
+                _recede(t)
+                c0 = _crew(t)
+                if _live(t) and int(c0["crewArrivalTick"]) != -1:
+                    _fail("chance 0 still scheduled a crew: %r" % c0)
+        with _comp(t, "visitors_work_claim_trade_turn_only_on_collapse"):
+            with _arm(t, claimCrewEnabled=True, claimCrewChance=0.0, salvageDecayDays=10.0, **quiet):
+                a = _recede(t)
+                if _live(t) and a.get("open", 0) < 1:
+                    _unmeasured(t, "no open salvage to send a crew to: %r" % a)
+                c = _crew(t, P_CREW_FORCE)
+                if _live(t):
+                    if not c.get("forceCrew", "").startswith("sent_"):
+                        _unmeasured(t, "crew not sent: %r" % c)
+                    if c["lordJob"] != "RM_LordJob_SalvageClaim" or c["raid"] != "False" or c["hostile"] != "False":
+                        _fail("the crew did not arrive as visitors: %r" % c)
+                    if c["canTrade"] != "True" or int(c["goods"]) < 1:
+                        _fail("the crew's shop is not open: %r" % c)
+                    worked = None
+                    for _ in range(CREW_POLLS):
+                        t.wait_ticks(500)
+                        c = _crew(t)
+                        if c["hostile"] != "False":
+                            _fail("the crew turned hostile with relations intact: %r" % c)
+                        if int(c["heldGain"]) > 0 and int(c["near"]) > 0:
+                            worked = c
+                            break
+                    if worked is None:
+                        _fail("the crew never worked the claim in %d polls: %r" % (CREW_POLLS, c))
+                c = _crew(t, P_CREW_COLLAPSE)
+                if _live(t):
+                    if c["hostile"] != "True":
+                        _fail("collapse left the crew's faction not hostile: %r" % c)
+                    if c["duty"] != "RM_StealSalvageClaim" and c["toil"] != "LordToil_ExitMap":
+                        _fail("the crew did not turn on the claim after the collapse: %r" % c)
+                    if c["canTrade"] != "False":
+                        _fail("a hostile crew still trades: %r" % c)
+                    gone = None
+                    for _ in range(CREW_POLLS):
+                        t.wait_ticks(500)
+                        c = _crew(t)
+                        if c["toil"] == "LordToil_ExitMap" or int(c["crew"]) == 0:
+                            gone = c
+                            break
+                    if gone is None:
+                        _fail("the hostile crew never left for the edge: %r" % c)
+
     @suite.chain("recede_feast")
     def recede_feast(t):
         """The irqit carpet hatches on a recede; recedeFeastEnabled off hatches none."""
@@ -815,10 +965,12 @@ def static_checks():
         if n not in names:
             bad.append("DefOf field %s names no shipped def" % n)
     dbg = open(os.path.join(HERE, "Source", "Debug", "RM_CrackedLandsDebugActions.cs"), encoding="utf-8").read()
-    for p in (P_ARM, P_START, P_REPORT, P_RECEDE, P_AFTER, P_SEAMS, P_REFUGE, P_MARK_REFUGE, P_CLEAR_REFUGE, P_TEACH):
+    for p in (P_ARM, P_START, P_REPORT, P_RECEDE, P_AFTER, P_SEAMS, P_REFUGE, P_MARK_REFUGE, P_CLEAR_REFUGE, P_TEACH, P_CREW_FORCE, P_CREW_REPORT,
+              P_CREW_COLLAPSE):
         if p.split("\\")[1] not in dbg:
             bad.append("debug action label for path %r not in RM_CrackedLandsDebugActions.cs" % p)
     bad.extend(_flora_shape_findings())
+    bad.extend(_claim_crew_findings())
     bad.extend(_tarruq_call_findings())
     bad.extend(_ledge_refuge_findings())
     bad.extend(_map_control_findings())

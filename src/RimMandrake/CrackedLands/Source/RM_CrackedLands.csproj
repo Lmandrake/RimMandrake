@@ -62,6 +62,8 @@
     <Compile Include="RM_CompPanSleeper.cs" />
     <Compile Include="RM_WeatherEvent_DistantFlicker.cs" />
     <Compile Include="RM_MapComponent_RecedeAftermath.cs" />
+    <Compile Include="RM_ClaimCrew.cs" />
+    <Compile Include="Kernel\RM_ClaimKernel.cs" />
     <Compile Include="RM_TarruqHushPatch.cs" />
     <Compile Include="RM_CrackedLandsFlora.cs" />
     <Compile Include="RM_LedgeRefuge.cs" />

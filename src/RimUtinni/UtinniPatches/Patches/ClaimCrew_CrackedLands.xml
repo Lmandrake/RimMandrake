@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  CRACKEDLANDS_SALVAGE_CLAIM_CREW_1: on Utinni the rival salvage crew at the flood line is Jawa: the Trade Moot sends it (the
+  one Jawa faction that trades and is not a permanent enemy of anyone), it parks a dead crawler tread on the claim, and it
+  speaks in the campaign's own terms. The crew itself is the RM layer (RimMandrake: Cracked Lands, composed into Baroque
+  Biomes); everything here is data on its profile def. The prop is read by name, so a list without the crawler road simply
+  shows none.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>RimMandrake: Baroque Biomes</li>
+      <li>RimMandrake: Cracked Lands</li>
+    </mods>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/RimMandrake.CrackedLands.RM_ClaimCrewProfileDef[defName="RM_ClaimCrew_Scavengers"]/factionDefs</xpath>
+      <value>
+        <factionDefs>
+          <li>RUT_Jawa_IndigenousTribes</li>
+        </factionDefs>
+        <campProp>RSW_CrawlerTreadWreck</campProp>
+        <arrivalLabel>Jawa salvage crew</arrivalLabel>
+        <arrivalText>Hooded figures from {0} are working the flood line, chittering over what the mud gave up. Utinni! They will have every scrap you leave lying, but a Jawa would always rather haggle than fight: they will sell you what they find and buy salvage back, droid prices and all, for about a day.</arrivalText>
+        <collapseLabel>Jawa claim jumpers</collapseLabel>
+        <collapseText>Relations with {0} are gone. The crew's trade chatter has stopped: they are stripping what is left on the flood line, and every ion blaster among them is up.</collapseText>
+        <leaveText>The Jawa crew from {0} has hauled its finds away from the flood line.</leaveText>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

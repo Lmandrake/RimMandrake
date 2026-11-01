@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CRACKEDLANDS_SALVAGE_CLAIM_CREW_1: what the rival crew does on the floodline claim (RM_ClaimCrew.cs). -->
+<Defs>
+
+  <!-- As visitors: dig out the open pieces, then stand about the claim where the shop can be found. -->
+  <DutyDef>
+    <defName>RM_WorkSalvageClaim</defName>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="RimMandrake.CrackedLands.RM_JobGiver_TakeClaimSalvage" />
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <wanderRadius>6</wanderRadius>
+          <locomotionUrgencyOutsideRadius>Jog</locomotionUrgencyOutsideRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+  <!-- Hostile: fight what is close, strip whatever is left, claimed or not. The lord leaves when it is gone. -->
+  <DutyDef>
+    <defName>RM_StealSalvageClaim</defName>
+    <alwaysShowWeapon>true</alwaysShowWeapon>
+    <thinkNode Class="ThinkNode_Priority">
+      <subNodes>
+        <li Class="JobGiver_AIFightEnemies">
+          <targetAcquireRadius>18</targetAcquireRadius>
+          <targetKeepRadius>24</targetKeepRadius>
+        </li>
+        <li Class="RimMandrake.CrackedLands.RM_JobGiver_TakeClaimSalvage">
+          <stealing>true</stealing>
+        </li>
+        <li Class="JobGiver_WanderNearDutyLocation">
+          <wanderRadius>6</wanderRadius>
+          <locomotionUrgencyOutsideRadius>Jog</locomotionUrgencyOutsideRadius>
+        </li>
+      </subNodes>
+    </thinkNode>
+  </DutyDef>
+
+</Defs>

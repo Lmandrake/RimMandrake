@@ -36,6 +36,19 @@ else:
     print("UNMEASURED  non-Core SoundDef break (no RimWorld install visible)")
 
 
+# CRACKEDLANDS_SALVAGE_CLAIM_CREW_1: the crew data check can go red.
+check("shipped claim crew data green", V._claim_crew_findings() == [])
+prof = open(os.path.join(HERE, "Defs", "RM_ClaimCrewProfileDefs", "RM_ClaimCrew_Scavengers.xml"), encoding="utf-8").read()
+check("break: Salvagers (a permanent enemy) in the crew -> red",
+      any("Salvagers" in f for f in V._claim_crew_findings(profile_xml=prof.replace("OutlanderRoughPig", "Salvagers"))))
+check("break: text without its faction slot -> red",
+      any("arrivalText" in f for f in V._claim_crew_findings(profile_xml=prof.replace("from {0} has walked", "has walked"))))
+utinni = os.path.normpath(os.path.join(HERE, "..", "..", "RimUtinni", "UtinniPatches", "Patches", "ClaimCrew_CrackedLands.xml"))
+patch = open(utinni, encoding="utf-8").read()
+check("break: Utinni patch naming a dead faction -> red",
+      any("no real faction" in f for f in V._claim_crew_findings(patch_xml=patch.replace("RUT_Jawa_IndigenousTribes", "RUT_Jawa_Gone"))))
+
+
 # FLOOD_DRIVER_OWNERSHIP_CONTRACT_1 A2: the flood driver writes FlowWorks fill only through the outcome contract,
 # never the bool TrySetDriverFill (whose false conflates NotOwned with Refused).
 import re  # noqa: E402

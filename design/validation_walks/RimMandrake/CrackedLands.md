@@ -16,6 +16,10 @@ Sources: `About/About.xml`, `Source/RM_CrackedLandsMod.cs` (25 settings), `RM_Ma
 - Five beats before water: Herald, then Warned (chimes), then Flooding, and the tarruq go silent; with `fiveBeatsEnabled` off there is no Herald and no hush. → warning_sequence_five_beats.herald_then_chime_then_wall, warning_sequence_five_beats.five_beats_off_skips_herald
 - Every cell the flood wets is handed to Explosive Plant Growth as soaked; `growthCouplingEnabled` off hands none. → soak_coupling.flood_soaks_cells_via_explosive_growth
 - The recede scatters floodline salvage; `floodlineSalvageEnabled` off scatters none. → recede_salvage.salvage_scattered_only_when_enabled
+- A claim stake stands beside each piece of salvage the recede exposes; `claimStakesEnabled` off plants none. → claim_stakes.stakes_stand_beside_the_salvage
+- A recede can leave a half-buried wreck on the flood line, and the next recede takes it back. → flood_wreck.recede_leaves_a_wreck_the_next_takes_back
+- The rival crew is a chance per flood (owner's card: about 1 in 3); chance 0 schedules none. → claim_crew.crew_comes_on_the_chance
+- A forced crew arrives as visitors, not a raid, works the claim area and keeps a shop, and turns hostile only after relations collapse, when it strips the claim and leaves. → claim_crew.visitors_work_claim_trade_turn_only_on_collapse
 - The recede hatches the irqit carpet; `recedeFeastEnabled` off hatches none. → recede_feast.irqit_cohort_only_when_enabled
 - The recede re-cuts fresh fossil seams along the wetted wall; `floodRecutSeamsEnabled` off cuts none. → recede_seams.recede_recuts_seams_only_when_enabled
 - A pawn caught in the wall takes one light non-fatal hit; `floodDamageEnabled` off spares it. → UNCOVERED: the footprint is a map-wide BFS from a random seed, so a pawn cannot be placed under it; needs a seed control (named item to file: FLOODED_CANYON_PROBE_SEED_1); chain flood_damage_light_and_nonfatal records UNMEASURED

@@ -1,5 +1,6 @@
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace RimMandrake.CrackedLands
 {
@@ -40,6 +41,14 @@ namespace RimMandrake.CrackedLands
         // Defs/HediffDefs/RM_IrqitFloodBorn.xml).
         public static PawnKindDef RM_Irqit;
         public static HediffDef RM_IrqitFloodBorn;
+
+        // CRACKEDLANDS_SALVAGE_CLAIM_CREW_1 — stakes, the crew (RM_ClaimCrew.cs), the wrecks a recede leaves.
+        public static ThingDef RM_ClaimStake;
+        public static ThingDef RM_CanyonWreckHull;
+        public static ThingDef RM_CanyonWreckSpeeder;
+        public static RM_ClaimCrewProfileDef RM_ClaimCrew_Scavengers;
+        public static DutyDef RM_WorkSalvageClaim;
+        public static DutyDef RM_StealSalvageClaim;
 
         // CRACKEDLANDS_LEDGES_OF_MERCY_1 — ledges cut into the cliff face
         // (Defs/ThingDefs_Buildings/RM_MercyLedges.xml, placed by RM_MercyLedges).

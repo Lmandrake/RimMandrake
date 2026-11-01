@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CRACKEDLANDS_SALVAGE_CLAIM_CREW_1, owner by card 2026-10-08: the rival crew TRADES, a short-lived visitor shop: it sells
+     salvage or buys it back at the claim. What the crew digs out joins this stock in play. Numbers TUNED. Slag has no market
+     (Core: tradeability None): the crew carries it off unsold. commonality 0 + not requestable: never rolled by a faction. -->
+<Defs>
+
+  <TraderKindDef>
+    <defName>RM_ClaimCrewTrader</defName>
+    <label>salvage crew</label>
+    <commonality>0</commonality>
+    <requestable>false</requestable>
+    <stockGenerators>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Silver</thingDef>
+        <countRange>300~500</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>ComponentIndustrial</thingDef>
+        <countRange>1~3</countRange>
+      </li>
+      <li Class="StockGenerator_SingleDef">
+        <thingDef>Steel</thingDef>
+        <countRange>40~90</countRange>
+      </li>
+    </stockGenerators>
+  </TraderKindDef>
+
+</Defs>

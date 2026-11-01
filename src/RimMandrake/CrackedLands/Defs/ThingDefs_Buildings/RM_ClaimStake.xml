@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- CRACKEDLANDS_SALVAGE_CLAIM_CREW_1: stands beside a piece of floodline salvage while it is open (RM_MapComponent_RecedeAftermath).
+     Placed and removed by code, never built; a pawn walks past it. No resources, nothing to deconstruct. -->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_ClaimStake</defName>
+    <label>claim stake</label>
+    <description>A weathered stake with a rag of marker cloth, scoured out of the mud beside something the flood exposed. Nobody remembers whose claim it was. It stands until the find is taken or the mud closes over it.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/RM_ClaimStake</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Standable</passability>
+    <pathCost>0</pathCost>
+    <fillPercent>0.05</fillPercent>
+    <rotatable>false</rotatable>
+    <tickerType>Never</tickerType>
+    <drawerType>MapMeshOnly</drawerType>
+    <clearBuildingArea>false</clearBuildingArea>
+    <statBases>
+      <MaxHitPoints>30</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+      <isEdifice>false</isEdifice>
+      <expandHomeArea>false</expandHomeArea>
+      <ai_chillDestination>false</ai_chillDestination>
+    </building>
+  </ThingDef>
+
+</Defs>

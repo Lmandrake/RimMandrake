@@ -26,6 +26,7 @@
     <Compile Include="..\Kernel\RM_RefugeKernel.cs" />
     <Compile Include="..\Kernel\RM_PanKernel.cs" />
     <Compile Include="..\Kernel\RM_CanyonRulesKernel.cs" />
+    <Compile Include="..\Kernel\RM_ClaimKernel.cs" />
     <Compile Include="CrackedLandsFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
