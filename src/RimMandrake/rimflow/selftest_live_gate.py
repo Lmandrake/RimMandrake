@@ -201,6 +201,9 @@ def gate():
     for i in ("CODE_FIX_ALPHA", "UNIT_FIX_ALPHA", "UNIT_FIX_BRAVO", "UNIT_FIX_CHARLIE", "OPS_FIX_ALPHA", "UNIT_FIX_DELTA"):
         r = rf("file", i, "--for", "BENCH", "--title", "t")
         check(r.returncode == 0, "file %s %s" % (i, r.stderr[-200:]))
+    for i, s in (("CODE_FIX_ALPHA", plain), ("UNIT_FIX_ALPHA", unit), ("UNIT_FIX_BRAVO", unit), ("OPS_FIX_ALPHA", plain)):
+        r = rf("verify", i, "--sha", s, "--level", "L0", "--result", "pass", "--config", "c", "--evidence", "e")
+        check(r.returncode == 0, "the check `close` asks for, on %s %s" % (i, r.stderr[-200:]))
     check(rf("close", "CODE_FIX_ALPHA", "--sha", plain).returncode == 0, "ordinary code closes with no new step")
     r = rf("close", "UNIT_FIX_ALPHA", "--sha", unit)
     check(r.returncode and "needs a live line" in r.stderr and "rm-foo.timer" in r.stderr, "a unit commit is refused without a line")
@@ -209,7 +212,7 @@ def gate():
     r = rf("close", "UNIT_FIX_ALPHA", "--sha", unit, "--live", "banana")
     check(r.returncode and "does not hold" in r.stderr, "a line that does not parse is refused")
     r = rf("close", "UNIT_FIX_BRAVO", "--sha", ledger_only, "--live", "hook=wired_one.py")
-    check(r.returncode and "only the ledger" in r.stderr, "a ledger-only sha is refused")
+    check(r.returncode and "nothing but the ledger" in r.stderr, "a ledger-only sha is refused")
     r = rf("close", "UNIT_FIX_ALPHA", "--sha", unit, "--live", "once: a real one-off")
     check(r.returncode == 0, "`once:` is the visible escape " + r.stderr[-200:])
     r = rf("close", "UNIT_FIX_BRAVO", "--sha", unit, "--live", "hook=wired_one.py")

@@ -139,6 +139,7 @@ def test_enabled_role_slot_untouched():
     st = state(dict(req(), at=t - 60), event_cursor=t - 60, events_seen=[])
     # daily cap room for the run-now beside the two scheduled slots it keeps a reserve for (2 x 100000)
     role = SD.arbiter(slot_when="pending_work", daily_token_cap=400000)
+    RL.PW.live_only = lambda pairs: pairs       # the fixture's sha is no commit: in a real clone live_only drops it
     ro = SD.pwobs(t, [dict(SD.BASE_EV, event="close", id="CLAIMED", sha=SHA, ts=SD.lts(t - 3600))])
     la = launches(SD.role_acts(SD.rdecide([role], st, ro, t)))
     rs = st["roles"]["Arbiter"]
@@ -229,14 +230,19 @@ def test_harvest_notes_and_trial_sink():
           "each verdict is noted on its own claim's item: %r" % [a.get("ticket") for a in notes])
     bad = [a for a in notes if a["ticket"] == "BAD_ONE"]
     check(bad and "FAIL-check" in bad[0]["why"] and "9e68653" in bad[0]["why"] and "causes: check" in bad[0]["why"]
-          and "isolated" in bad[0]["why"] and "advisory" in bad[0]["why"],
-          "the note: disposition, sha, causes, evidence, advisory: %r" % (bad[0]["why"] if bad else None))
+          and "isolated" in bad[0]["why"],
+          "the note: disposition, sha, causes, evidence: %r" % (bad[0]["why"] if bad else None))
+    check(not [a for a in acts if a["do"] == "role_verdict_run" and a["ticket"] == "BAD_ONE"],
+          "FAIL-check settles first: it writes no ledger run (ruling D1(b): FAIL-module and BAR-defect do)")
+    good = [a for a in acts if a["do"] == "role_verdict_run" and a["ticket"] == "GOOD_ONE"]
+    check(good and "arbiter:PASS" in good[0]["run"], "a PASS goes on the ledger as a verdict run: %r" % good)
     acts, run = SD_finish("Arbiter", {"verdicts": [SD_verdict(item="GOOD_ONE")]}, slot="2026-10-28 run-now trial x")
     sink = [a for a in acts if a["do"] == "role_verdicts"]
     notes = [a for a in acts if a["do"] == "role_verdict_note"]
     check(sink and sink[0]["path"] == RL.TRIAL_VERDICTS and RL.TRIAL_VERDICTS != RL.PW.VERDICTS,
           "a trial run's verdicts sink apart (the real store stays the false-reject instrument)")
     check(notes and notes[0]["why"].startswith("TRIAL "), "a trial verdict's note says TRIAL")
+    check(not [a for a in acts if a["do"] == "role_verdict_run"], "a trial verdict never reaches the ledger as a run")
 
 
 def SD_verdict(item="ITEM_A", sha="abcdef1", **kw):

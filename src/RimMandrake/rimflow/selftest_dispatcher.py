@@ -1966,7 +1966,7 @@ def test_role_arbiter_cutoff():
     with tempfile.TemporaryDirectory() as d:
         c = os.path.join(d, "arbiter", "cutoff.json")
         check(RL.PW.read_cutoff(c) is None, "stamp: absent -> None")
-        RL.PW.stamp(c, "2026-10-30T09:00:00Z", by="BENCH", why="advisory enable")
+        RL.PW.stamp(c, "2026-10-30T09:00:00Z", by="BENCH", why="enable")
         check(RL.PW.read_cutoff(c) == RL.PW.epoch("2026-10-30T09:00:00Z"), "stamp: read back")
         try:
             RL.PW.stamp(c, "2026-11-30T09:00:00Z", by="BENCH", why="again")

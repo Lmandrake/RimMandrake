@@ -82,7 +82,7 @@ Read, in this order: the pre-screen output (`D:\ClaudeWork\rimmandrake\auditor\p
 `AUDITOR_BUILD_PRESCREEN_CLOSES_NO_AI`; your `pre_launch` rewrites it over the last day's closes just before you start,
 so its `generated` stamp is minutes old; each ranked row carries the item, its real sha and the flags that put it
 there), the Arbiter's verdicts since your last run
-(`D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl` while advisory; `rimflow verify` events once binding), escapes
+(`D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl`, and the `rimflow verify` events with `--config arbiter:<disposition>`), escapes
 filed since your last run, the alarm and flag lines of `digest_blind.md`, and your own carried picks. A round, zero or
 alarming number is a query bug until a sanity probe proves the instrument can see
 (`infrastructure/state/facts/instrument_traps.md`). A pre-screen file that is missing, or older than its last close,
@@ -108,12 +108,11 @@ carries and goes first next run.
    arbiter.md "The verdict"). Re-check that the false red was reproduced on behaviour shown correct by other means and
    that the corrected check reran. Until you record SOUND on it, the red it set aside still blocks (you say so on the
    item).
-3. **The Arbiter's advisory week** (SUPERSEDED 2026-11-01, D1(b): an Arbiter FAIL blocks a close once `CLOSE_GATE_ENFORCE_DONE_IS_EARNED` lands; calibration then runs on false ACCEPTS, so sample PASSes first). While the schedule says `verdicts: "advisory"`, the interim GPT reviewer still
-   gates closes and the Arbiter's verdicts block nothing. So re-check, first, every claim where the two DISAGREE:
-   an Arbiter FAIL on an interim PASS is a false-reject candidate, an Arbiter PASS on an interim FAIL is a
-   false-pass candidate. Your re-check result is the "later evidence" `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS` counts
-   (arbiter.md: "an Auditor sample"). Then sample interim-reviewer PASSes, because those are the ones that close work.
-   Once `verdicts` is `"binding"`: sample Arbiter PASSes and every CONDITIONAL-PASS instead.
+3. **The Arbiter's PASSes (ruling D1(b), 2026-11-01):** an Arbiter FAIL blocks a close, so calibration runs on false
+   ACCEPTS, not on how many verdicts it has given: sample Arbiter PASSes and every CONDITIONAL-PASS first. A defect
+   you find in one is a false accept; record it with `rimflow verify <ID> --sha <the closed sha> --level L0 --result
+   fail`, which reopens the item. An Arbiter FAIL you find sound is the "later evidence"
+   `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS` counts (arbiter.md: "an Auditor sample").
 4. **Risk-ranked picks:** the pre-screen's ranked list, top down, less the random picks already worked first (above).
    Without that slice the score's blind spots never surface.
 

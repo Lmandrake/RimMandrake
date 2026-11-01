@@ -418,6 +418,13 @@ def t_done_path():
     ok(x.st("I0")["status"] == "done" and x.w.closes == [("I0", "sha1")], "PASS closes, a failed close retries")
     x.done()
     x = Rig(n=1, share=1.0)
+    x.w.close_fail = "close: I0 has not earned its close at sha1: owed still owes C1 L1"
+    full_pass(x, "I0")
+    st = x.st("I0")
+    ok(st["failures"].get("close_refused") == 1 and st["status"] != "closing" and x.w.closes == [],
+       "a close the gate refuses goes back to the top with its reason: no retry for ever")
+    x.done()
+    x = Rig(n=1, share=1.0)
     full_pass(x, "I0", "FAIL")
     st = x.st("I0")
     ok(st["failures"].get("blind_fail") == 1 and st["last_fail"]["detail"] == "ran it", "FAIL returns with its reasons")

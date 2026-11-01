@@ -261,8 +261,8 @@ def t_file_claim_start_close():
     out = ok("claim", "DESERT_STORM_TUNING_PROBE_FIXTURE")
     assert "-> doing" in out and "lease token" in out, out
     assert "-> doing" in ok("start", "DESERT_STORM_TUNING_PROBE_FIXTURE")
-    out = ok("close", "DESERT_STORM_TUNING_PROBE_FIXTURE", "--sha", "deadbee")
-    assert "closed at deadbee" in out, out
+    out = ok("close", "DESERT_STORM_TUNING_PROBE_FIXTURE", "--no-code", "a fixture")
+    assert "closed at" in out, out
 
 
 def _no_git_env():
@@ -300,13 +300,14 @@ def t_close_refuses_unpublished_sha_and_head_fallback():
     ok("claim", "GHOST_SHA_CLOSE_PROBE_FIXTURE")
     rc, out, err = run("close", "GHOST_SHA_CLOSE_PROBE_FIXTURE", "--sha", loc[:10], env=e)
     assert rc != 0 and "Publish FIRST" in (out + err), (rc, out, err)
-    rc, out, err = run("close", "GHOST_SHA_CLOSE_PROBE_FIXTURE", env=e)       # HEAD fallback = local commit
-    assert rc != 0 and "implicit HEAD" in (out + err), (rc, out, err)
+    rc, out, err = run("close", "GHOST_SHA_CLOSE_PROBE_FIXTURE", env=e)       # HEAD is never assumed
+    assert rc != 0 and "--no-code" in (out + err), (rc, out, err)
+    ok("verify", "GHOST_SHA_CLOSE_PROBE_FIXTURE", "--sha", pub[:10], "--level", "L0", "--result", "pass", "--config", "c")
     rc, out, err = run("close", "GHOST_SHA_CLOSE_PROBE_FIXTURE", "--sha", pub[:10], env=e)
     assert rc == 0 and "closed at" in out, (rc, out, err)
 
 
-def t_close_takes_git_head_when_no_sha_given():
+def t_close_no_code_records_where_head_stood():
     fresh()
     c, pub, loc = _git_fixture()
     subprocess.check_call(("git", "push", "-q", "origin", "HEAD:main"), cwd=c, env=_no_git_env())
@@ -315,7 +316,7 @@ def t_close_takes_git_head_when_no_sha_given():
     ok("file", "SHA_FROM_GIT_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
     prose("SHA_FROM_GIT_PROBE_FIXTURE")
     ok("claim", "SHA_FROM_GIT_PROBE_FIXTURE")
-    out = ok("close", "SHA_FROM_GIT_PROBE_FIXTURE", env=e)
+    out = ok("close", "SHA_FROM_GIT_PROBE_FIXTURE", "--no-code", "a fixture", env=e)
     sha = out.split("closed at ")[1].split()[0].strip(" .")
     assert len(sha) >= 7 and subprocess.check_output(("git", "rev-parse", "HEAD"), cwd=c, env=_no_git_env()).decode().strip().startswith(sha), (
         "a close with no commit behind it is a claim, not a close: %s" % out)
@@ -345,7 +346,7 @@ def t_cross_seat_close_lands_and_names_the_ruling_seat():
     ok("file", "BUILDS_OWN_ITEM_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
     prose("BUILDS_OWN_ITEM_PROBE_FIXTURE")
     ok("claim", "BUILDS_OWN_ITEM_PROBE_FIXTURE")
-    out = ok("close", "BUILDS_OWN_ITEM_PROBE_FIXTURE", "--sha", "abc1234",
+    out = ok("close", "BUILDS_OWN_ITEM_PROBE_FIXTURE", "--no-code", "a fixture",
              "--reason", "shipped at 51e0ceb", seat="CHECK")
     assert "ruled by CHECK (BUILD's item)" in out, (
         "a cross-seat close must name the ruling seat AND the owning seat: %s" % out)
@@ -358,7 +359,7 @@ def t_reopening_a_closed_item_is_refused():
     ok("file", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE", "--for", "BUILD", "--title", "t")
     prose("ALREADY_CLOSED_ITEM_PROBE_FIXTURE")
     ok("claim", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE")
-    ok("close", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE", "--sha", "abc1234")
+    ok("close", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE", "--no-code", "a fixture")
     refused(("claim", "ALREADY_CLOSED_ITEM_PROBE_FIXTURE"), "cannot be reopened",
             "a closed item was reopened, which erases that it ever closed")
 
@@ -862,11 +863,11 @@ def t_a_failed_run_does_not_reopen_the_item():
     out = ok("show", "TWICE_RUN_ITEM_PROBE_FIXTURE")
     assert "run-1@min-13  fail" in out and "run-2@min-13  pass" in out, (
         "a failure must stand forever beside the later pass: %s" % out)
-    ok("close", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--sha", "abc1234")
+    ok("close", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--no-code", "a fixture")
     out = ok("verify", "TWICE_RUN_ITEM_PROBE_FIXTURE", "--result", "fail", "--config", "min-13")
-    assert "not reope" in out, out
+    assert "REOPENED" in out, out
     head = ok("show", "TWICE_RUN_ITEM_PROBE_FIXTURE").splitlines()[0].split()
-    assert head[1] == "done", "a failed run changed a closed item's state: %s" % head
+    assert head[1] == "ready", "a fail on the closed work reopens the item (RO3): %s" % head
 
 
 def t_a_verify_after_close_is_no_part_of_the_closed_life():

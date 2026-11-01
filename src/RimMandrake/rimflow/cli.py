@@ -2112,7 +2112,7 @@ LIVE_HELP = ("what must stay alive, checked now and rechecked for good by the sw
 
 def _sha_paths(sha):
     """-> the paths a commit changed | None when it does not resolve here (a sha is a literal at close)."""
-    r = subprocess.run(["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "--root", "--diff-merges=first-parent", sha], cwd=_HERE,
+    r = subprocess.run(["git", "diff-tree", "--no-commit-id", "--name-only", "-r", "--root", "--diff-merges=first-parent", sha], cwd=os.environ.get("RIMFLOW_GIT_CWD") or _HERE,
                        capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
     return r.stdout.split("\n")[:-1] if r.returncode == 0 else None
 
@@ -2129,7 +2129,7 @@ def _live_gate(verb, args, it, sha):
     only on a line that holds right now. Everything else passes untouched: nobody classifies anything."""
     import live_line
     line = getattr(args, "live", None) or (it.live if it is not None else None)
-    paths = _sha_paths(sha)
+    paths = _sha_paths(sha) if sha else None        # None: a --no-code close, no commit to read
     touched = live_line.needs_line(paths or [])
     alarm = it is not None and args.id.startswith(("OPS_", "LIVE_RESTORE_"))
     if not line and not touched and not alarm:
@@ -2139,7 +2139,7 @@ def _live_gate(verb, args, it, sha):
             "    --live \"unit=rm-foo.timer reading=<path> max_age=6h\"\n    --live \"hook=block_foo.py\"\n"
             "    --live \"once: <why this is a real one-off>\"\nNothing changed: the item is as it was."
             % (verb, args.id, ("%s touches %s" % (sha, touched[0])) if touched else "it is an Operations alarm"))
-    why = live_line.check(line, not_before=_sha_time(sha))
+    why = live_line.check(line, not_before=_sha_time(sha) if sha else 0)
     if why:
         die("%s: %s: the live line does not hold: %s\nThe promise is checked, not recorded on trust. Fix what it "
             "names, then run this again. Nothing changed." % (verb, args.id, why))
@@ -2162,26 +2162,69 @@ def cmd_live(args, seat):
     return 0
 
 
+_LEDGER_ONLY = ("infrastructure/state/ledger/", "infrastructure/state/items/", "infrastructure/state/queue/")
+_CITED_PATH_RE = re.compile(r"(?<![\w./-])(?:src|design|skills|infrastructure|world|\.claude)/[\w./-]*\w")
+
+
+def _cited_paths(iid):
+    """-> the repo paths this item's live prose cites; a cited directory counts for everything under it."""
+    try:
+        with open(os.path.join(model.ITEMS, iid + ".md"), encoding="utf-8") as f:
+            return sorted(set(_CITED_PATH_RE.findall(f.read())))
+    except OSError:
+        return []
+
+
+def _close_gate(args, it, sha, no_code):
+    """DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED): RO3 and ruling D1(b). -> nothing, or `die` with every reason.
+    The item's own half is `model.close_refusals`; what needs git is here."""
+    said = bool(model.OWNER_SAID or model.BY_CARD or model.PER_RULING or args.seat_is_owner)
+    found = model.close_refusals(it, sha, no_code, owner=said)
+    if not no_code:
+        paths = _sha_paths(sha)
+        cited = _cited_paths(args.id)
+        if paths is None:
+            found.append(("sha", "%s does not resolve to a commit here (git fetch, if it is another clone's)" % sha))
+        elif not [p for p in paths if not p.startswith(_LEDGER_ONLY)]:
+            found.append(("sha", "%s touches nothing but the ledger: name the commit that did the work, or say "
+                                 "--no-code \"<what>\"" % sha))
+        elif cited and not (said or model.AGENT_WHY) and \
+                not any(p == c or p.startswith(c.rstrip("/") + "/") for p in paths for c in cited):
+            found.append(("sha", "%s touches none of the %d paths the item cites: say why with --why" % (sha, len(cited))))
+    if found:
+        die("close: %s has not earned its close at %s:\n%s\n\nA criterion passes with `rimflow verify %s --criterion <C> "
+            "--result pass --config <cfg> --evidence <path>`; a hand close first records a level-tagged pass on that sha "
+            "(`rimflow verify %s --sha %s --level L0 --result pass --config <what ran> --evidence <path>`); a fail needs a "
+            "pass after it; after an Arbiter FAIL record the new build with `rimflow implemented`, and its next slot judges "
+            "it. Only the owner's word on this close (--owner-said, --by-card, --per-ruling) lifts a fail or a verdict. "
+            "Nothing changed: the item is as it was."
+            % (args.id, sha, "\n".join("  %-9s %s" % f for f in found), args.id, args.id, sha))
+
+
 def cmd_close(args, seat):
     _, w = load()
+    no_code = (args.no_code or "").strip()
+    if args.no_code is not None and not no_code:
+        die("close: --no-code needs the words: what was finished that no commit shows.")
+    if args.sha and no_code:
+        die("close: --sha names the commit that did the work, --no-code says there is none. Pick one.")
+    if not args.sha and not no_code:
+        die("`close` needs --sha <published sha>, or --no-code \"<what was finished that no commit shows>\". HEAD is "
+            "never assumed: the sha is what makes a close checkable a year later, and this clone's HEAD is usually "
+            "somebody else's commit.\n\n🔑 COMMIT THE WORK FIRST, publish it, and pass the sha `./publish` prints:\n\n"
+            "    python3 src/RimMandrake/rimflow/cli.py close %s --sha <sha>\n\n"
+            "⚠️  Nothing is lost by the refusal — the item is untouched and still yours." % args.id)
+    # with --no-code the sha only says where the ledger stood; the `noCode` field says it is no claim about the work
     sha = args.sha or head_sha()
-    bad = _unpublished_commit(sha) if sha else None
+    if not sha:
+        die("close: `git rev-parse --short HEAD` gave nothing: you are outside a repo with commits.")
+    bad = _unpublished_commit(sha) if args.sha else None
     if bad:
-        die("close: %s (%s) is a local commit that %s does not contain.\n\n"
+        die("close: %s (--sha) is a local commit that %s does not contain.\n\n"
             "`./publish` rebases local commits onto origin, so this sha will NOT exist after you\n"
             "publish and the close would cite a commit nobody can find. Publish FIRST, then close\n"
-            "with the sha `./publish` prints (PUBLISHED <sha>); if you named no --sha, HEAD was the\n"
-            "fallback and is not what you meant. If origin/main is merely stale: git fetch origin."
-            % (sha, "implicit HEAD" if not args.sha else "--sha", gitindex_ref()))
-    if not sha:
-        die("`close` needs a sha and `git rev-parse --short HEAD` gave nothing — you are "
-            "probably\nin a repo with no commits yet, or outside one.\n\n"
-            "The sha is what makes a close checkable a year later; a close with no commit "
-            "behind\nit is a claim. 🔑 COMMIT THE WORK FIRST — the commit IS the close:\n\n"
-            "    git commit <the paths you changed> -m \"<what you did>\"\n"
-            "    python3 src/RimMandrake/rimflow/cli.py close %s\n\n"
-            "⚠️  Nothing is lost by the refusal — the item is untouched and still yours."
-            % args.id)
+            "with the sha `./publish` prints (PUBLISHED <sha>). If origin/main is merely stale: git fetch origin."
+            % (sha, gitindex_ref()))
     # 🔴 A CROSS-SEAT CLOSE NAMES ITSELF — owner's ruling, 2026-09-19. Any seat may
     # close any item it has PROVEN done, dead or superseded; the event's `seat` is the
     # record of who ruled, and `--reason` is what that ruling says. The one-line echo
@@ -2189,19 +2232,15 @@ def cmd_close(args, seat):
     # attributable on the screen as well as in the ledger.
     it = w.items.get(args.id)
     holder = getattr(it, "owner", None)
-    owed = [c for c in getattr(it, "criteria", []) if c["id"] in getattr(it, "outstanding", [])]
-    if owed:
-        # ⚠️ A WARNING, not a refusal (step 2 leaves `close` as it was). A close that
-        # skips owed criteria is the shortcut the review says to guard — step 3's call.
-        sys.stderr.write("⚠️  %s still OWES %s — closing anyway skips them. If they "
-                         "passed, record each:\n      rimflow verify %s --criterion <C> "
-                         "--result pass --config <cfg> --evidence <path>\n"
-                         % (args.id, ", ".join("%s %s" % (c["id"], c["level"])
-                                               for c in owed), args.id))
+    if it is not None:
+        args.seat_is_owner = seat == "OWNER"
+        _close_gate(args, it, sha, no_code)
     ev = {"seat": seat, "event": "close", "id": args.id, "sha": sha}
     if args.reason:
         ev["reason"] = args.reason
-    line = _live_gate("close", args, it, sha)
+    if no_code:
+        ev["noCode"] = no_code
+    line = _live_gate("close", args, it, None if no_code else sha)
     if line:
         ev["live"] = line
     _emit(ev, w, quiet=True)
@@ -2419,6 +2458,28 @@ def cmd_implemented(args, seat):
     return 0
 
 
+def _after_close(item, sha):
+    """Is `sha` a commit the closed one is in? -> True then: a fail there is the closed work failing later, not a stale
+    run. The model replays with no git, so the answer is written on the event."""
+    if item is None or item.state != "done" or not item.closed_sha or model.same_sha(item.closed_sha, sha):
+        return False
+    try:
+        return subprocess.run(["git", "merge-base", "--is-ancestor", item.closed_sha, sha], capture_output=True,
+                              cwd=os.environ.get("RIMFLOW_GIT_CWD") or model.ROOT, timeout=60,
+                              stdin=subprocess.DEVNULL).returncode == 0
+    except (OSError, subprocess.TimeoutExpired):
+        return False
+
+
+def _move_prose_back(iid):
+    """A reopened item is live again: its prose comes back into the live glob. Never clobbers. -> (old, new) | None."""
+    old, new = os.path.join(model.CLOSED, iid + ".md"), os.path.join(model.ITEMS, iid + ".md")
+    if not os.path.exists(old) or os.path.exists(new):
+        return None
+    os.rename(old, new)
+    return os.path.relpath(old, model.ROOT), os.path.relpath(new, model.ROOT)
+
+
 def cmd_verify(args, seat):
     _, w = load()
     dead = _dead_evidence(args.evidence)
@@ -2439,15 +2500,30 @@ def cmd_verify(args, seat):
     # manifest when only the criterion was named; the model refuses a contradiction.
     level = args.level or next((c["level"] for c in getattr(before, "criteria", [])
                                 if c["id"] == args.criterion), None)
-    _emit({"seat": seat, "event": "verify", "id": args.id, "result": args.result,
-           "config": args.config, "evidence": args.evidence, "sha": sha,
-           "level": level, "criterion": args.criterion}, w, quiet=True)
+    ev = {"seat": seat, "event": "verify", "id": args.id, "result": args.result,
+          "config": args.config, "evidence": args.evidence, "sha": sha,
+          "level": level, "criterion": args.criterion}
+    if _after_close(before, sha):
+        ev["afterClose"] = True
+    _emit(ev, w, quiet=True)
     it = _replay_now().items[args.id]
     r = it.runs[-1]
-    print("%s recorded, result %s%s. IMMUTABLE — %s is not reopened."
+    print("%s recorded, result %s%s. The run is IMMUTABLE."
           % (r.name, r.result,
              (" for %s %s" % (r.criterion, r.level)) if r.criterion else
-             (" at %s" % r.level) if r.level else "", args.id))
+             (" at %s" % r.level) if r.level else ""))
+    if before is not None and before.state == "done" and it.state == "ready":
+        print("%s REOPENED: a fail on the closed work. done -> ready; the close stands in the log." % args.id)
+        moved = _move_prose_back(args.id)
+        if moved:
+            print("prose moved: %s -> %s — stage BOTH paths in your commit." % moved)
+    elif before is not None and before.state == "validated" and it.state == "built":
+        print("%s demoted: validated -> built; owes %s again." % (args.id, ", ".join(it.owed_levels()) or "nothing new"))
+    if r.result == "pass" and r.criterion and getattr(it, "built_sha", None) and not model.same_sha(r.sha, it.built_sha):
+        print("⚠️  %s is not the built sha %s: this pass does NOT count. It tested another artifact." % (r.sha, it.built_sha))
+    if getattr(it, "held", False):
+        print("%s holds short of done: the Arbiter FAILED %s and no newer build has passed it."
+              % (args.id, it.arbiter_fail["sha"]))
     if r.level and not r.criterion:
         print("ℹ️  --level without --criterion is recorded on the run and drops nothing; "
               "name the criterion to advance the item.")
@@ -3795,7 +3871,9 @@ def build_parser():
     s = add("close", "close it against a commit (any seat; --reason if not yours)",
             cmd_close)
     s.add_argument("id")
-    s.add_argument("--sha", help="defaults to git HEAD")
+    s.add_argument("--sha", help="the published commit that did the work; HEAD is never assumed")
+    s.add_argument("--no-code", dest="no_code", metavar="\"<what>\"",
+                   help="instead of --sha: what was finished that no commit shows")
     s.add_argument("--live", help=LIVE_HELP)
     s.add_argument("--reason", help="why it is done/dead — required in practice when "
                                     "the item is another seat's; the ledger records "

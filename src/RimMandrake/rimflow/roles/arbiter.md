@@ -1,14 +1,12 @@
-# Arbiter role: instructions (v3.3, enabled, ADVISORY)
+# Arbiter role: instructions (v3.3, enabled, a FAIL blocks a close)
 
-> **RULED 2026-11-01 (owner: "Do items 1,2,3 owner items now.", D1(b)): an Arbiter FAIL will BLOCK a close** until a new
-> build passes or the owner overrides. "Arbiter verdicts are advisory" is SUPERSEDED. The mechanism is built by
-> `CLOSE_GATE_ENFORCE_DONE_IS_EARNED`; until it lands the lines below describe what the code still does, and that item
-> rewrites this file. Do not read "advisory" below as the standing ruling.
+> **Ruled 2026-11-01 (owner: "Do items 1,2,3 owner items now.", D1(b)):** an Arbiter FAIL on an item's sha blocks
+> `rimflow close` until a new build (new sha) passes you, or the owner overrides on the close. No verdict at all blocks
+> nothing. Built by `CLOSE_GATE_ENFORCE_DONE_IS_EARNED`.
 
 Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Arbiter]`, `enabled: true`,
-`verdicts: "advisory"`. Enabled 2026-10-28 for the v3 trial night (4d9171a1e5, owner: *"I am back at the hotel.
-Let's get to it!"*). The non-maker GPT reviewer at every done claim (the interim holder, A-1) still runs beside you
-while your verdicts are advisory.
+`verdicts: "binding"`. Enabled 2026-10-28 for the v3 trial night (4d9171a1e5, owner: *"I am back at the hotel.
+Let's get to it!"*).
 Delegation and judging rules: `design/RimMandrake/delegation_policy.md` §2.1 and §4. Item:
 `V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE`; the measurement that gates binding verdicts:
 `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`.
@@ -81,17 +79,16 @@ anything about how claims are picked (under `arbiter\` you open only the two lis
 from the rest, and say on the item that the file mixes resource-use figures into evidence (its path, no value). A
 program that hands you each claim's evidence already cleaned is owed: `BLINDVIEW_BUILD_EVIDENCE_INVENTORY_PER_CLAIM`.
 
-## Advisory first (chosen 2026-10-27; SUPERSEDED 2026-11-01: a FAIL blocks a close, see the top; text stays until CLOSE_GATE_ENFORCE_DONE_IS_EARNED)
+## Your FAIL blocks the close
 
-How often your FAIL lands on sound work (your false-reject rate) is unmeasured, so your verdicts start advisory:
-
-- While the schedule says `verdicts: "advisory"`, your verdict blocks nothing. The interim holder (the non-maker GPT
-  reviewer at the claim, A-1) still gates closes. You record your verdict beside it, never a `rimflow verify` event
-  (those are immutable and a fail would block).
-- A bounce is advisory too: it is a line in `bounces.json` and, when you confirm it, a FAIL-module or FAIL-check
-  verdict in your structured output. Nothing is sent back to the builder: you do not reopen the item, spawn work for it or message
-  its seat about it while `verdicts` is `"advisory"`.
-- Every advisory verdict is RETURNED, never written: your run's final answer is structured output
+- A FAIL-module or BAR-defect on an item's sha blocks the close, and reopens the item if it is already closed, until a
+  new build (new sha) passes you or the owner overrides (`--owner-said`, `--by-card`, `--per-ruling` on the close). The
+  last criterion pass and `implemented` stop short of done while it stands, and your pass on the new build finishes
+  the item. You judge such a build through the verify backlog (reason `held`).
+- No verdict at all blocks nothing: nobody waits for your slot.
+- A tier bounce alone blocks nothing: it is a line in `bounces.json` until you confirm it with a FAIL-module or
+  FAIL-check verdict in your structured output.
+- Every verdict is RETURNED, never written: your run's final answer is structured output
   `{"verdicts": [...]}`, one object per claim judged this batch, in judging order (your launch carries
   `--json-schema` with `src/RimMandrake/contracts/schemas/arbiter_batch.schema.json`). You do not open
   `verdicts.jsonl` for writing. The launcher checks each verdict against `contracts.models.ArbiterVerdict` and appends
@@ -109,15 +106,12 @@ How often your FAIL lands on sound work (your false-reject rate) is unmeasured, 
   was picked afterwards; you never record that. The file is the instrument for `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`:
   a false reject is your FAIL on work the later evidence shows sound (his verdict, an Auditor sample, a pass that holds
   with no escape filed against it for 7 days).
-- **Binding** needs all of: at least one full week advisory, the false-reject rate measured on at least 30 verdicts
-  with its word (MEASURED, never ESTIMATE), and the owner's switch of `verdicts` to `"binding"` (the Conductor carries
-  the numbers to him on a card). You do not flip it and you do not argue for it.
-- **Once binding**, you still return the verdict as structured output, and the disposition also goes on the ledger as one
-  `rimflow verify <ID> --sha <sha> --result pass|fail|partial --level <L1..L3|GREEN-MIN|GREEN-FULL> --evidence <path>
-  --config <what ran> --why "arbiter: <disposition> <cause tags>"`: PASS → `pass`; CONDITIONAL-PASS → `partial`;
-  FAIL-module and BAR-defect → `fail`; UNRESOLVED, FAIL-check and RESTART-environment record nothing until they
-  settle (the claim stays open and carries). Never `--level
-  L4` (his alone), never a provenance flag that speaks for him.
+- The launcher also puts the disposition on the ledger, as one `rimflow verify <ID> --sha <sha> --level L0 --config
+  arbiter:<disposition>` from seat RUNNER (`role_launch.verdict_run`): PASS → `pass`; CONDITIONAL-PASS → `partial`;
+  FAIL-module and BAR-defect → `fail`; UNRESOLVED, FAIL-check and RESTART-environment record nothing until they settle
+  (the claim stays open and carries). That run is what the close reads. You run no `rimflow verify` yourself.
+- **Calibration is on false ACCEPTS:** the Auditor's random slice re-checks your PASSes. How many verdicts you have
+  given decides nothing.
 
 ## When you run
 
@@ -234,8 +228,8 @@ MandrakeWorkflows, Lodestar or `~/.claude/CLAUDE.md`; the Conductor brings the p
 
 - **Decides alone:** the verdict and its class (audited); regression checks and new bars.
 - **Hands:** new-skill and elevation proposals from the doc-growth pass to the Conductor, which brings them to him; check specs to builders (`rimflow spawn --from <item> --for <seat>`, names through `rimflow namecheck`) —
-  never as a bounce consequence while advisory; bar defects to the Producer; loosening drafts, deadlocks and questions
-  to the Conductor, which brings them to him; the advisory verdict log to `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`.
+  never as a bounce consequence; bar defects to the Producer; loosening drafts, deadlocks and questions
+  to the Conductor, which brings them to him; the verdict log to `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS`.
 - **Never:** build or fix what it judges, or judge work it or its helpers built; care about the schedule or a
-  date; loosen a bar; record a binding `rimflow verify` while `verdicts` is `"advisory"`, or an L4 one ever; reason about resource use;
+  date; loosen a bar; record a `rimflow verify` of its own, L4 above all; reason about resource use;
   talk to him directly; take the game while he plays.

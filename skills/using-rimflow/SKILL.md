@@ -42,9 +42,9 @@ rimflow file <ID> --for FOR --title TITLE [--kind K] [--row N]
 rimflow claim <ID>          take ownership; lands in `doing` under a live lease (was `ready` before the 2026-10 lease redesign)
 rimflow start <ID>          begin work; never refused for missing prose
 
-rimflow close <ID> [--sha SHA] [--reason REASON]
+rimflow close <ID> --sha SHA | --no-code "<what>" [--reason REASON]
              close against a commit, any seat; --reason required in practice
-             when the item is another seat's (see close --sha rules below)
+             when the item is another seat's (see `close` is earned, below)
 
 rimflow drop <ID> --reason REASON        this will not be done (reason required)
 rimflow supersede <ID> --by ID [--reason REASON]   a better item replaces it
@@ -103,25 +103,24 @@ that item's own state changes, not just after weeks.** `rimflow lint
 "still open/blocked" that closed the SAME calendar day, one within the same
 session that closed it — a doc can go stale within hours, not just weeks.
 
-## `close --sha` rules
+## `close` is earned (RO3, ruling D1(b), 2026-11-01)
 
-`--sha` defaults to `git HEAD` but does **not validate** what you pass it —
-three distinct traps, all live-caught:
+`close` needs `--sha <published sha>` or `--no-code "<what>"`; HEAD is never assumed, and a sha that does not resolve
+here or touches only the ledger is refused. Then, each refused with its reason and nothing changed:
 
-- **A literal `"HEAD"` string is written verbatim**, not resolved to a hash.
-  Tooling that diffs "commits since" against `sha` breaks silently on it.
-- **Any made-up string is accepted unvalidated** — an item was closed against
-  the literal `"c1"` (a packet's short name typed by mistake) with no error.
-- **A `--sha` that fails to parse (bad quoting, wrong flag position) silently
-  falls back to `git rev-parse HEAD` AT CALL TIME**, not to a resolved value
-  from earlier — in a clone shared by two windows of one seat that can be the other window's commit
-  that landed in the gap between your fix's commit and the close call.
+- **owed:** a criterion still outstanding. No word lifts it; verify it or drop the item.
+- **unchecked:** no level-tagged pass on that sha. Record one first:
+  `rimflow verify <ID> --sha <sha> --level L0 --result pass --config <what ran> --evidence <path>`. A pass on another sha does not count.
+- **fail:** the newest deciding run is a fail. A pass on that sha after it clears it.
+- **verdict:** an Arbiter FAIL stands. It takes `rimflow implemented` at a new sha and an Arbiter pass there. No verdict at all blocks nothing.
+- A sha touching none of the paths the item cites needs `--why`.
 
-Rule: **commit the fix first**, then close with the real hash from *after*
-that commit — `--sha $(git rev-parse --short HEAD)` as a live command
-substitution, never a hand-typed or pre-computed string. Closing against a
-pre-fix HEAD (closing before committing) leaves a real but misleading sha on
-the event just as surely as a typo does.
+`--owner-said`, `--by-card` or `--per-ruling` on the close lifts **fail** and **verdict** only. `--why` lifts neither.
+
+A `verify` now moves state both ways. A fail on the built sha takes `validated` to `built` and owes the criterion again;
+a fail on a closed sha, or on a later commit that contains it, REOPENS the same item (`done` -> `ready`). A pass on any sha
+but the built one counts for nothing. The last pass stops short of done while an Arbiter FAIL stands. A run before
+`model.EARNED_FROM` replays as it was written.
 
 ## Done means running: `--live`
 

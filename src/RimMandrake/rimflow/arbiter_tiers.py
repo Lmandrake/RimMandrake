@@ -13,8 +13,8 @@ Design: design/RimMandrake/rimflow_v3_arbiter_tiers_2026-10-27.md (item ARBITER_
           (T2_UNMEASURED); plus a calibration sample of PASS0/PASS1 claims (keyed per-claim draw, 1 in CALIB_EVERY).
           A tier-2 claim with no AI verdict is HOLD (`--ai-refused` writes it so), never a pass.
 
-Advisory while the schedule says `verdicts: "advisory"`: a bounce is a record in bounces.json, nothing is sent back
-to the builder and nothing blocks.
+A bounce is a record in bounces.json and blocks nothing by itself: only the Arbiter's confirmed verdict reaches the
+ledger and blocks a close (ruling D1(b), role_launch.verdict_run).
 
 Outputs (the Arbiter reads only the two judge-facing files; the tier labels stay out of its reach):
   judge-facing  D:\\ClaudeWork\\rimmandrake\\arbiter\\judge_list.json   item + sha only, keyed-hash order (T2 and
@@ -934,8 +934,7 @@ def main(argv=None, events=None, _inject=None):
                     {"generated": gen, "claims": [] if a.ai_refused else [{"item": r["item"], "sha": r["sha"]}
                                                                            for r in rows] if claims else judge_list(
                         rows, salt, cap=a.cap, exclude=judged, unresolved=unres)})
-        _write_json(os.path.join(a.judge_dir, "bounces.json"), {"generated": gen, "advisory": True,
-                                                                 "bounces": bounce_list(rows)})
+        _write_json(os.path.join(a.judge_dir, "bounces.json"), {"generated": gen, "bounces": bounce_list(rows)})
     print("closes seen: %d  (since %s)  slice cut score: %s  close-evidence records: %d"
           % (len(rows), doc["since"], cut, len(evid)))
     for t, (k, rt) in doc["mix"].items():

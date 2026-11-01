@@ -155,12 +155,15 @@ TOKEN_WEIGHTS = {"input_tokens": Fraction(1), "cache_write_5m": Fraction(5, 4), 
 # A run-now TRIAL's verdicts (role_launch.py run-now --trial) sink to `trial_sink`, never to `sink`: the real store
 # is the false-reject instrument and the pending gate's record of judged claims (arbiter_pending), so a hand-picked
 # trial batch (a fixture claim among them) must not count there. `note_each`: every valid entry is also noted on its
-# own claim's item (arbiter.md: the verdict lives on the item for its holder; advisory, it blocks nothing).
+# own claim's item (arbiter.md: the verdict lives on the item for its holder). `verdict_runs`: a real (never trial) entry
+# whose disposition VERDICT_RESULT maps also goes on the ledger as a `verify`, which is what makes a FAIL block a close.
 TRIAL_VERDICTS = os.path.join(os.path.dirname(PW.VERDICTS), "trial", "verdicts.jsonl")
 TRIAL_TIERS_DATA = os.path.join(os.path.dirname(PW.TIERS_HISTORY), "trial")
 STRUCTURED = {"Arbiter": {"schema": "src/RimMandrake/contracts/schemas/arbiter_batch.schema.json",
                           "key": "verdicts", "model": "ArbiterVerdict", "sink": PW.VERDICTS,
-                          "trial_sink": TRIAL_VERDICTS, "note_each": True}}
+                          "trial_sink": TRIAL_VERDICTS, "note_each": True, "verdict_runs": True}}
+# Ruling D1(b), 2026-11-01. The rest (UNRESOLVED, FAIL-check, RESTART-environment) settle first: they record nothing.
+VERDICT_RESULT = {"PASS": "pass", "CONDITIONAL-PASS": "partial", "FAIL-module": "fail", "BAR-defect": "fail"}
 # A role whose pre-step screens "since my last finished run" (AUDITOR_PRESCREEN_FIX_WINDOW_SINCE_LAST_RUN): a run that
 # ends `done` gets a role_stamp action (dispatcher.execute writes it through AP.write_stamp, so a dry run writes
 # nothing) carrying the run's launch time, which is at or before its pre-screen's `now`: the next window overlaps by the
@@ -459,8 +462,8 @@ def on_plan(item, scope):
 
 def plan_failures(events, world, since, scope, world_filter=True):
     """Pure but for the World it is handed. A failed plan step since `since`, oldest first (producer.md: "an Arbiter
-    FAIL or an item blocked on the critical path"): a `verify` run with result `fail` (an Arbiter FAIL once verdicts
-    are binding; an advisory verdict is not on the ledger and blocks nothing) or a `block`, on an item still open and
+    FAIL or an item blocked on the critical path"): a `verify` run with result `fail` (an Arbiter FAIL, which the launcher
+    records as one, verdict_run) or a `block`, on an item still open and
     on the plan (on_plan). world_filter False: every such event, open or on the plan or not: what a run READ, so an
     event filtered out at that moment is never run later when its item joins the plan (review V, V5).
     -> [(epoch, id, "verify fail" | "block")]."""
@@ -841,11 +844,16 @@ def harvest(name, run, res, act):
             why="%s run %s: %d %s appended to %s" % (name, unit, len(good), key, spec["sink"]))
         for e, _ in good if spec.get("note_each") else ():
             act(do="role_verdict_note", role=name, unit=unit, ticket=e["item"], note=True,
-                why="%s%s verdict (advisory: it blocks nothing and sends nothing back) on %s at sha %s: %s; causes: %s; "
+                why="%s%s verdict on %s at sha %s: %s; causes: %s; "
                     "evidence: %s; run %s; record %s" % (
                         "TRIAL " if trial else "", name, e["item"], e["sha"], e["disposition"],
                         ", ".join(e.get("causes") or []) or "none", "; ".join(e.get("evidence") or []) or "none",
                         unit, spec["sink"]))
+        for e, _ in good if spec.get("verdict_runs") and not trial else ():
+            run = verdict_run(e)
+            if run:
+                act(do="role_verdict_run", role=name, unit=unit, ticket=e["item"], note=False, run=run,
+                    why="%s run %s: %s on %s at %s goes on the ledger" % (name, unit, e["disposition"], e["item"], e["sha"]))
     if bad:
         act(do="alarm", kind="role:%s:verdict_refused" % name, ticket=item, note=True,
             refused=[e for e, _ in bad],
@@ -853,6 +861,16 @@ def harvest(name, run, res, act):
                 % (name, unit, len(bad), len(entries), key, spec["model"], "; ".join(
                     "%s: %s" % (e.get("item") if isinstance(e, dict) else repr(e)[:40], ", ".join(errs)[:200])
                     for e, errs in bad)[:600]))
+
+
+def verdict_run(e):
+    """-> the `rimflow verify` arguments that put verdict `e` on the ledger | None when its disposition records nothing.
+    L0: the Arbiter judges from evidence on disk, it runs nothing live; L4 is his alone. The config is what the model
+    reads as a verdict (model.ARBITER_CONFIG)."""
+    result = VERDICT_RESULT.get(e.get("disposition"))
+    return ["verify", e["item"], "--sha", e["sha"], "--result", result, "--level", "L0",
+            "--config", "arbiter:%s" % e["disposition"],
+            "--evidence", "; ".join(e.get("evidence") or []) or "none"] if result else None
 
 
 def append_verdicts(path, rows):

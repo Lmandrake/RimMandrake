@@ -421,7 +421,7 @@ VERBS = {
     # (selftest_built_old_reader.py measures it); readers from step 2 on strip unknown
     # fields instead (`replay`, UnknownFieldError).
     "verify":    {"who": "owner", "req": ("result", "config"),
-                  "opt": ("evidence", "sha", "level", "criterion")},
+                  "opt": ("evidence", "sha", "level", "criterion", "afterClose")},
     # 🔑 `implemented` (rimflow redesign step 2): the implementation is published at `sha`
     # (the CLI refuses a sha that is not an ancestor of `ref`, origin/main) and every L0
     # criterion passes. `criteria` is the level-tagged manifest, [{"id","level","text"}];
@@ -476,10 +476,10 @@ VERBS = {
     # `reason` on `close` carries WHY, and is what a cross-seat close writes instead of
     # a shrug. ⛔ The BAR is unchanged: done means proven, dead means probed. This
     # removes the seat boundary, never the evidence requirement.
-    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live")},
+    "close":     {"who": "any",   "req": ("sha",), "opt": ("reason", "live", "noCode")},
     # `live` on close and implemented is the promise (LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING, live_line.py). The verb
-    # `live` is the no-AI sweep's reading of it, RUNNER only: `broken` takes a done item back to ready, THE ONE PATH OUT
-    # OF `done`, because the record of the close stands in the log and the same id must count the repeat; `kept`
+    # `live` is the no-AI sweep's reading of it, RUNNER only: `broken` takes a done item back to ready, ONE OF THE TWO PATHS
+    # OUT OF `done` (the other is a `fail` verify on the closed work, `_earned_run`), because the record of the close stands in the log and the same id must count the repeat; `kept`
     # returns it. A reader older than this entry refuses the verb into `world.errors` and leaves the item as it was.
     "live":      {"who": ("RUNNER",), "req": ("result",), "opt": ("detail",)},
     "drop":      {"who": "any",   "req": ("reason",), "opt": ()},
@@ -1518,14 +1518,15 @@ class Run(object):
     ⭐ A failed run is not a defect in the record — it IS the record. The old queues
     reopened an item when its check failed, which erased the fact that it had ever
     failed and made "how many times did we try this" unanswerable. Here a `fail`
-    stands permanently and the follow-up is a NEW item, linked by `caused_by`.
+    stands permanently; what it does to the item's state is `_earned_run`.
     """
 
     __slots__ = ("item", "n", "config", "result", "evidence", "sha", "ts", "index",
-                 "level", "criterion")
+                 "level", "criterion", "seat")
 
     def __init__(self, item, n, config, result, evidence, sha, ts, index,
-                 level=None, criterion=None):
+                 level=None, criterion=None, seat=None):
+        self.seat = seat
         self.item, self.n, self.config = item, n, config
         self.result, self.evidence, self.sha = result, evidence, sha
         self.ts, self.index = ts, index
@@ -1549,8 +1550,9 @@ class Item(object):
                  "live", "live_broken", "live_repeats", "live_from",
                  "runs", "findings", "history", "caused_by", "claim_ts",
                  "reconciles", "cited_shas",
-                 "built_sha", "built_ref", "built_at", "criteria", "outstanding",
-                 "passed", "level_reached", "lease", "raised", "raised_tsn")
+                 "built_sha", "built_ref", "built_at", "built_by", "criteria", "outstanding",
+                 "passed", "level_reached", "lease", "raised", "raised_tsn",
+                 "arbiter_fail", "arbiter_pass", "held")
 
     def __init__(self, iid, index):
         self.id, self.created_index = iid, index
@@ -1580,6 +1582,10 @@ class Item(object):
         self.outstanding = []           # criterion ids still OWED (never L0), in order
         self.passed = []                # [{"criterion","level","run","ts"}] since built
         self.level_reached = None       # highest level passed since built (L0 at built)
+        self.built_by = None            # the seat of the last `implemented`: the maker, for a verdict's non-maker test
+        self.arbiter_fail = None        # the standing Arbiter FAIL, {sha, run, ts}: see `_earned_run`
+        self.arbiter_pass = None        # the last sha the Arbiter passed, so a late FAIL on an older build cannot undo it
+        self.held = False               # nothing is owed, and only that FAIL keeps it from done
         # step 3 — the current lease, or None: {token, seat, taken, expires, renewed,
         # released}. Liveness is a function of the clock: see `lease_status`.
         self.lease = None
@@ -1745,7 +1751,8 @@ def _who_refusal(ev, item):
     # pass on a BENCH-owned item (and BENCH an L4 one on FOUNDRY's). A run with no
     # criterion keeps the owning-seat rule.
     if verb == "verify" and ev.get("criterion") and item is not None and \
-            item.state in ("built", "validated"):
+            (item.state in ("built", "validated") or
+             (item.state == "done" and str(ev.get("ts") or EARNED_FROM) >= EARNED_FROM)):  # a later catch: whoever makes it
         return None
     who = VERBS[verb]["who"]
     if who in ("any", "self"):
@@ -2066,6 +2073,114 @@ def _apply_live(ev, item):
         item.state, item.live_from = item.live_from or "done", None
 
 
+# 🔴 DONE IS EARNED (CLOSE_GATE_ENFORCE_DONE_IS_EARNED, RO3, ruling D1(b) 2026-11-01). A `verify` from this moment on moves
+# state in both directions; an earlier one replays exactly as it was written, so no old item changes under a reader.
+EARNED_FROM = "2026-11-01T17:30:00Z"
+ARBITER_CONFIG = "arbiter:"     # a verdict the launcher wrote: --config arbiter:<disposition>, role_launch.verdict_run
+
+
+def same_sha(a, b):
+    """Two shas name one commit. A sha is a prefix of unknown length on the ledger (close records 12, implemented 40)."""
+    a, b = str(a or "").lower(), str(b or "").lower()
+    return bool(a and b) and (a.startswith(b) or b.startswith(a)) and min(len(a), len(b)) >= 7
+
+
+def current_sha(item):
+    """-> the sha this item's verdicts are about: the closed one once done, else the build, else None."""
+    return (item.closed_sha if item.state == "done" else None) or item.built_sha
+
+
+def _reowe(item, cid, level):
+    """Forget the pass(es) a fail just contradicted: a criterion by id, a level-only run that level, an unscoped run all."""
+    drop = [p for p in item.passed if p["criterion"] == cid or (not cid and level in (None, p["level"]))]
+    ids = [p["criterion"] for p in drop] + ([cid] if cid else [])
+    item.passed = [p for p in item.passed if p not in drop]
+    item.outstanding += [c["id"] for c in item.criteria if c["id"] in ids and c["id"] not in item.outstanding]
+    item.level_reached = max((p["level"] for p in item.passed), key=level_rank, default="L0")
+    item.needs = needs_for_levels(item.owed_levels()) or item.needs
+
+
+def _finish(item, sha):
+    _transition(item, "done")
+    item.closed_sha = sha
+    item.held = False
+    item.blocked = False
+    item.blocked_reason = item.blocked_on = item.blocked_until = None
+
+
+def _earned_run(item, cid, level, run, ev):
+    """A run recorded at or after EARNED_FROM.
+
+    A run on any sha but the current one counts for nothing but the record: the artifact it tested is gone. The one
+    exception is `afterClose`, set by the CLI from git: the sha descends from the closed one, so a fail there is the
+    closed work failing later. A fail on the current work: an open item drops to `built` and owes the criterion again;
+    a done item REOPENS, the same id, because the regression is that item's. An Arbiter FAIL also stands until a
+    non-maker Arbiter pass on a different sha, or the owner's word on the close; `implemented` and the last criterion
+    pass stop short of done while it stands (`held`), and the clearing pass finishes the item."""
+    current = current_sha(item)
+    stale = bool(current) and not same_sha(run.sha, current) and not ev.get("afterClose")
+    verdict = str(run.config or "").startswith(ARBITER_CONFIG) and run.seat != item.built_by
+    if run.result == "fail" and verdict and item.open and not same_sha(item.arbiter_pass, current):
+        # a late FAIL on an older build still stands: the current one has not passed either
+        item.arbiter_fail = {"sha": run.sha, "run": run.name, "ts": ev["ts"]}
+    if stale:
+        return
+    if verdict and run.result in ("pass", "partial"):
+        item.arbiter_pass = run.sha
+    if run.result == "fail":
+        if verdict and not item.arbiter_fail:           # closed work: the FAIL stands on the item it reopens
+            item.arbiter_fail = {"sha": run.sha, "run": run.name, "ts": ev["ts"]}
+        was_done = item.state == "done"
+        _reowe(item, cid, None if verdict else level)   # the Arbiter judged the build, not one level of it
+        if was_done:
+            item.state, item.closed_sha = "ready", None       # past _transition, as `live` is: the close stands in the log
+        elif item.state == "validated":
+            item.state = "built"
+        item.held = False
+        return
+    if verdict and item.arbiter_fail and run.result in ("pass", "partial") \
+            and not same_sha(run.sha, item.arbiter_fail["sha"]):
+        item.arbiter_fail = None
+    if run.result == "pass" and cid:
+        _criterion_passed(item, cid, level, run, ev)
+    if item.held and not item.arbiter_fail and not item.outstanding:
+        if run.result == "pass":
+            _finish(item, run.sha or item.built_sha)
+        else:
+            item.held = False       # a conditional pass lifts the FAIL; its conditions are met by hand, on a close
+
+
+def close_refusals(item, sha, no_code=False, owner=False):
+    """-> [(kind, why)], what stands between `item` and a close at `sha`, empty when it has earned one. Pure.
+
+    owed      a criterion is still owed, or passed on another sha
+    unchecked no level-tagged pass on that sha (the AU4 test); `--no-code` says there was nothing to check
+    fail      the newest deciding run is a fail
+    verdict   an Arbiter FAIL stands: on this sha, or on an earlier one with no non-maker Arbiter pass since.
+              No verdict at all blocks nothing (ruling D1(b), not option c).
+    `owner`: his word on the close lifts fail and verdict, which are judgements. Owed and unchecked are facts."""
+    out = []
+    owed = [c for c in item.criteria if c["id"] in item.outstanding]
+    if owed:
+        out.append(("owed", "still owes " + ", ".join("%s %s" % (c["id"], c["level"]) for c in owed)))
+    elif item.passed and not no_code and not same_sha(sha, item.built_sha):
+        out.append(("owed", "its criteria passed on %s, not on %s" % (str(item.built_sha)[:12], str(sha)[:12])))
+    if not no_code and not owed and not any(
+            r.result == "pass" and r.level and same_sha(r.sha, sha) for r in item.runs):
+        out.append(("unchecked", "no level-tagged pass is recorded on %s" % str(sha)[:12]))
+    # a pass on another sha says nothing about this one, so it cannot hide a fail
+    newest = next((r for r in reversed(item.runs) if r.result == "fail" or (
+        r.result == "pass" and (no_code or same_sha(r.sha, sha)))), None)
+    if not owner and newest is not None and newest.result == "fail":
+        out.append(("fail", "its newest run %s failed at %s" % (newest.name, str(newest.sha)[:12])))
+    if not owner and item.arbiter_fail:
+        f = item.arbiter_fail
+        out.append(("verdict", "the Arbiter FAILED %s (%s)%s" % (
+            str(f["sha"])[:12], f["run"], "" if same_sha(f["sha"], sha) else
+            " and no non-maker Arbiter pass is recorded on a newer build")))
+    return out
+
+
 def _apply_implemented(ev, item):
     """`implemented` -> built (live levels owed) or done (nothing owed).
 
@@ -2074,10 +2189,12 @@ def _apply_implemented(ev, item):
     The runs themselves stay, immutable, in `item.runs`."""
     crit = [dict(c) for c in ev.get("criteria") or []]
     owed = [c["id"] for c in crit if c["level"] != "L0"]
-    target = "built" if owed else "done"
+    held = not owed and bool(item.arbiter_fail)         # a new build still has to pass the Arbiter
+    target = "built" if owed or held else "done"
     _transition(item, target)
     _live_promise(ev, item)
     item.built_sha, item.built_ref, item.built_at = ev["sha"], ev.get("ref"), ev["ts"]
+    item.built_by, item.held = ev.get("seat"), held
     item.criteria, item.outstanding, item.passed = crit, owed, []
     item.level_reached = "L0"
     if owed:
@@ -2125,11 +2242,10 @@ def _criterion_passed(item, cid, level, run, ev):
     if level_rank(level) > level_rank(item.level_reached or "L0"):
         item.level_reached = level
     if not item.outstanding:
-        _transition(item, "done")
-        item.closed_sha = ev.get("sha") or item.built_sha
-        item.blocked = False
-        item.blocked_reason = item.blocked_on = item.blocked_until = None
-        return
+        if not item.arbiter_fail:
+            _finish(item, ev.get("sha") or item.built_sha)
+            return
+        item.held = True                # the verify-to-done gate: an Arbiter FAIL stands
     if level != "L0" and item.state == "built":
         _transition(item, "validated")
     # needs follows the cheapest level still owed, at every acceptance step
@@ -2200,9 +2316,11 @@ def _apply_item_verb(ev, index, item, seat, world):
         level, cid = _verify_target(ev, item)       # refuses BEFORE the run is recorded
         n = sum(1 for r in item.runs if r.config == ev["config"]) + 1
         run = Run(item.id, n, ev["config"], ev["result"], ev.get("evidence"),
-                  ev.get("sha"), ev["ts"], index, level, cid)
+                  ev.get("sha"), ev["ts"], index, level, cid, seat)
         item.runs.append(run)
-        if cid and ev["result"] == "pass":
+        if str(ev["ts"]) >= EARNED_FROM:
+            _earned_run(item, cid, level, run, ev)
+        elif cid and ev["result"] == "pass":
             _criterion_passed(item, cid, level, run, ev)
     elif verb == "implemented":
         _apply_implemented(ev, item)

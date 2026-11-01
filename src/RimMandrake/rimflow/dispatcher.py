@@ -958,6 +958,15 @@ def ledger_note(item, text, run=subprocess.run):
     return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
 
+def ledger_verdict(args, run=subprocess.run):
+    """A verdict's `verify` (role_launch.verdict_run), seat RUNNER: the shard the testq publish carries beside DISPATCHER's."""
+    cli = os.path.join(HERE, "cli.py")
+    env = dict(os.environ, RIMFLOW_SEAT="RUNNER", CLAUDE_PROJECT_DIR=REPO)
+    r = run([sys.executable, cli, *args, "--seat", "RUNNER"], cwd=REPO, env=env,
+            capture_output=True, text=True, timeout=120, stdin=subprocess.DEVNULL)
+    return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
+
+
 def long_helper_alarms(sch, obs, now, act):
     """CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW (owner, 2026-10-29: "Long standing runs beyond n hour should raise an
     alarm in conductor."): one alarm per Conductor-window helper (Agent/Task) still running after long_helper.
@@ -1127,6 +1136,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
     do_lock = fx.get("lock", git_lock)
     do_launch, do_stop = fx.get("role_launch", RL.launch), fx.get("role_stop", RL.stop)
     do_verdicts = fx.get("verdicts_append", RL.append_verdicts)
+    do_verdict_run = fx.get("verdict_run", ledger_verdict)
     do_stamp = fx.get("finish_stamp", RL.AP.write_stamp)
     do_off, do_paused = fx.get("off", RL.off_switch), fx.get("paused", paused_now)
     do_conductor = fx.get("conductor_log", conductor_log)
@@ -1337,6 +1347,18 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 ticket=a.get("ticket"), role=a.get("role"), rows=a["rows"],
                                 why="role %s: %d verdict(s) NOT appended to %s: %s; they are in this journal entry "
                                     "only, their claims stay pending" % (a.get("role"), len(a["rows"]), a["path"], res)))
+                    elif a["do"] == "role_verdict_run":
+                        # the verdict is already in the sink, so it would never be judged again: a refused one is alarmed
+                        try:
+                            ok, res = do_verdict_run(a["run"])
+                        except Exception as e:  # noqa: BLE001 - a rimflow timeout
+                            ok, res = False, "%s: %s" % (type(e).__name__, str(e)[:160])
+                        if not ok:
+                            actions.append(dict(
+                                do="alarm", kind="role:%s:verdict_run" % a.get("role"), at=iso(now), note=True,
+                                ticket=a.get("ticket"), role=a.get("role"),
+                                why="role %s: a verdict did NOT reach the ledger, so it blocks nothing: %s: %s" % (
+                                    a.get("role"), " ".join(a["run"][:6]), res)))
                     elif a["do"] == "role_stamp":
                         # a run finished done (role_launch FINISH_STAMP): the next pre-screen starts here. A failed
                         # write is alarmed: the next run then re-screens from the older stamp (overlap, never a gap)

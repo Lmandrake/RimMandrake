@@ -527,6 +527,7 @@ class Effects:
         self._ledger = None
         self._budget = self._helpers = NOT_READ
         self.bounce = set()
+        self.marked = set()
         import role_launch as RL
         self.RL = RL
 
@@ -806,11 +807,21 @@ class Effects:
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def ledger_close(self, item, sha, reason, live=None):
+        # the blind PASS on that sha is the check `close` asks for; RUNNER may record it on any seat's item
+        if (item, sha) not in self.marked:
+            r = self.rimflow("verify", item, "--sha", sha, "--result", "pass", "--level", "L0",
+                             "--config", "marker:blind-check", "--evidence", reason[:300], seat="RUNNER")
+            if r.returncode != 0:
+                return (r.stderr or r.stdout)[-400:]
+            self.marked.add((item, sha))
         r = self.rimflow("close", item, "--sha", sha, "--reason", reason, "--why", "relentless: blind check passed",
                          *(("--live", live) if live else ()))     # the sweep keeps checking what the contract promised
         if r.returncode == 0:
             return None
-        return None if self.closed(item) else (r.stderr or r.stdout)[-400:]
+        if self.closed(item):
+            return None
+        out = r.stderr or r.stdout
+        return out[:600] if "has not earned its close" in out else out[-400:]     # the gate's reasons are at the top
 
     def closed(self, item):
         self.sync()
@@ -1934,6 +1945,12 @@ def step(store, fx, r, item, now, acts):
         reason = "relentless: blind PASS at %s after %d return(s): %s" % (c["sha"], st["returns"],
                                                                          (st["check"].get("reasons") or "")[:220])
         why = fx.ledger_close(item, c["sha"], reason, (st["contract"] or {}).get("live"))
+        if why and "has not earned its close" in why:    # a refusal is no transient: a retry would refuse for ever
+            with store.lock():
+                st = store.load(item)
+                fail(store, st, "close_refused", why, r, now)
+            acts.append({"do": "close_refused", "item": item, "why": why})
+            return
         if why:
             acts.append({"do": "close_retry", "item": item, "why": why})
             return

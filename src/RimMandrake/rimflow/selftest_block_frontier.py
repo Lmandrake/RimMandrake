@@ -289,7 +289,7 @@ def t_cli_drop_names_confirm_and_next_repeats_it():
 
 
 def t_cli_close_names_satisfied_and_bench_lists_it():
-    out = ok("close", "FRONTIER_BLOCKER_C_PROBE_FIXTURE", "--sha", "598dec613")
+    out = ok("close", "FRONTIER_BLOCKER_C_PROBE_FIXTURE", "--no-code", "a fixture")
     assert "blocker reached requested level (built): FRONTIER_WAITER_D_PROBE_FIXTURE" in out, out
     bench = ok("next", "--bench", seat="BENCH")
     assert "BLOCKERS ENDED" in bench and "blocker reached requested level (built): FRONTIER_WAITER_D_PROBE_FIXTURE" in bench, bench

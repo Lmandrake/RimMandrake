@@ -1,0 +1,1 @@
+selftest_conductor_closeout.py fails when run inside a Claude session whose transcript holds real owner messages (it reads the live transcript, not only its fixture); selftest_block_frontier t_base_reader_tolerates_until fails on clean HEAD too (a role_unit stamp on fixture events). Neither is caused by a close change. Seen 2026-11-01.

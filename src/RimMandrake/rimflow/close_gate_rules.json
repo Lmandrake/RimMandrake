@@ -1,0 +1,6 @@
+{
+ "_": "RO3's threshold for AU4 (unverified closes), read by close_audit.py. since = when the gate landed: earlier closes went through the old `close`. no_code_max_share stops --no-code from laundering the number.",
+ "since": "2026-11-01T18:05:00Z",
+ "code_unverified_max_share": 0.05,
+ "no_code_max_share": 0.25
+}

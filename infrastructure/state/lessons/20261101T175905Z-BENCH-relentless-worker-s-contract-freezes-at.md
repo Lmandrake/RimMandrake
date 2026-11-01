@@ -1,0 +1,1 @@
+A relentless worker's contract freezes at first write, so a worker that sets it before knowing its sha will touch dispatcher_schedule.json cannot add --live later (only a redesign attempt can), and the supervisor's close then refuses for a live line. Decide the live line before the first contract. Found on CLOSE_GATE_ENFORCE_DONE_IS_EARNED, gen 1.

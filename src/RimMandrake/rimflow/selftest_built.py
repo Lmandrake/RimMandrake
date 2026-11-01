@@ -457,17 +457,17 @@ def t_cli_verify_level_without_criterion_moves_nothing():
     assert "no criterion Z1" in err, err
 
 
-def t_cli_close_unchanged_but_warns_when_criteria_owed():
+def t_cli_close_refuses_owed_criteria():
     fresh("close")
     file_ready()
-    ok("close", IID, "--sha", "abcdef1")                     # no manifest: as before
+    ok("close", IID, "--no-code", "a fixture")               # no manifest: nothing owed
     assert state_of() == "done"
     file_ready("OWES_STILL_THING_PROBE_FIXTURE")
     ok("implemented", "OWES_STILL_THING_PROBE_FIXTURE", "--sha", sha(1)[:9], "--criteria-file",
        criteria_file("A1 L2: x\n"))
-    rc, out, err = run("close", "OWES_STILL_THING_PROBE_FIXTURE", "--sha", "abcdef1")
-    assert rc == 0 and "OWES A1 L2" in err, (rc, out, err)
-    assert state_of("OWES_STILL_THING_PROBE_FIXTURE") == "done"
+    rc, out, err = run("close", "OWES_STILL_THING_PROBE_FIXTURE", "--no-code", "a fixture")
+    assert rc != 0 and "owes A1 L2" in err, (rc, out, err)
+    assert state_of("OWES_STILL_THING_PROBE_FIXTURE") == "built"
 
 
 def t_cli_show_prints_the_manifest():

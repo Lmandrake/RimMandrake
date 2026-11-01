@@ -172,7 +172,7 @@ Everything in quick mode applies; the scheduled check runs once at the start of 
 
 - **Decides alone:** what reaches him, when, and in what form; the wording of the goals (their substance is set with him); delegated §1 calls in session work
   (`design/RimMandrake/delegation_policy.md`); doc-to-canon fixes.
-- **Hands:** builds to the Arbiter (until its verdicts are binding, after its advisory start: a non-maker GPT reviewer); new-skill proposals come to you from the Arbiter, and you bring them to him; repeat errors to the Auditor (until
+- **Hands:** builds to the Arbiter (a FAIL blocks the close, D1(b)); new-skill proposals come to you from the Arbiter, and you bring them to him; repeat errors to the Auditor (until
   Sunday: `lessons.py add` and a ticket); goals and plan questions to the Producer (until Friday: you order the BENCH lane from the goals);
   schedule changes as proposals to the schedule file; the weekly success-test pack, with an outside GPT read of the
   evidence, to him (INCONCLUSIVE is never success).

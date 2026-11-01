@@ -30,7 +30,7 @@ or the tiers never ran: every claim is unjudged); an unreadable or torn one rais
 (work may be pending; launching is the safe direction) with the reason in the trigger.
 
     python3 src/RimMandrake/rimflow/arbiter_pending.py                 # print what the next slot would see
-    python3 src/RimMandrake/rimflow/arbiter_pending.py stamp --by BENCH --why "advisory enable" [--at ISO]
+    python3 src/RimMandrake/rimflow/arbiter_pending.py stamp --by BENCH --why "enable" [--at ISO]
 """
 import argparse, calendar, json, os, subprocess, sys, time
 
@@ -234,6 +234,8 @@ def verify_backlog(world, cutoff):
             owed = [L for L in it.owed_levels() if L in BACKLOG_LEVELS]
             if owed:
                 out.append((iid, ",".join(owed)))
+            elif getattr(it, "held", False):      # a new build behind an Arbiter FAIL: nothing else ever offers it
+                out.append((iid, "held"))
     return sorted(out)
 
 

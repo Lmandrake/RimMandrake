@@ -289,7 +289,8 @@ ok("F2 join adds the tier by code", at.main(["join", "--verdicts", os.path.join(
 ok("F2 joined tier", json.loads(open(os.path.join(d8, "verdicts_tiered.jsonl")).readline())["tier"], "T2_RISK")
 
 # F9 / F10 / F11: role and design text
-ok("F9 advisory bounce is a record only", "nothing is sent back to the builder" in role.lower(), True)
+ok("F9 a FAIL blocks the close, a bounce alone does not", "blocks the close" in role.lower()
+   and "a tier bounce alone blocks nothing" in role.lower() and '"advisory"' not in role, True)
 ok("F10 no token, cost or quota talk in the role",
    re.findall(r"(?i)\b(tokens?|token-\w+|quotas?|budgets?|costs?|burn|spend\w*|caps?)\b", role), [])
 ok("F10 role points at blind_view and digest_blind", "blind_view.py" in role and "digest_blind.md" in role, True)

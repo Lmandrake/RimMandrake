@@ -42,7 +42,7 @@ trap, the operational source is `skills/using-rimflow/SKILL.md`; where that file
    for each validation run. Each run is retained; a later run is a new event. A result describes
    the code and configuration that were tested, not later code. When the last owed criterion
    passes, the item becomes `done` on its own.
-6. Only if the item is still open and nothing is owed, `rimflow close <ID> --sha <published sha>`.
+6. Only if the item is still open and nothing is owed, `rimflow close <ID> --sha <published sha>` (it needs a level-tagged pass on that sha, or `--no-code "<what>"` instead of `--sha`).
    Use the explicit published sha of the implementing commit (the one `publish` reported), not
    `$(git rev-parse HEAD)`: in a shared directory `HEAD` may be another agent's commit. A second
    `close` is refused.
