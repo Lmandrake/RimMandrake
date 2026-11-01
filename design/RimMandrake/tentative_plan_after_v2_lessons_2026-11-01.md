@@ -34,8 +34,16 @@ So the gap is not "a checker". He held five jobs, and each needs a named home:
 
 ## 3. New concepts to codify
 
-Each is a program that measures, plus one agent that reads. **No new role is proposed**: roles are part of what we are
-reviewing. The reader is the Conductor unless he rules otherwise.
+Each is a program that measures, plus a v3 role that reads and acts. The v3 roles stay (`rimflow_v3_2026-10-26.md` §2);
+this plan gives them the instruments and gates they lack. No new role is proposed.
+
+| Concept | v3 role that owns it |
+|---|---|
+| C1 Mission, C2 finish line | Producer writes them; Arbiter rules a finish line met |
+| C3 Known results, C4 time ledger, C7 mission page | Operations (the efficiency half of its job) |
+| C5 Finding-kind curve | Operations reads; Innovator acts when a mission is going round |
+| C6 Escape review | Auditor (repeat error becomes an enforced rule); Innovator proposes the better test |
+| C8 Daily mission read | Operations reads and reports; the Conductor acts or brings it to him |
 
 **C1. Mission (replaces the ticket as the unit of focus).** A mission is one mod or system held for days, in the
 spirit of v2's focus, with the persistence of relentless. It has a written finish line, a live state page, and a
@@ -76,7 +84,6 @@ Conductor does. Each time he catches it first, that counts as an escape under C6
 
 - Long focus on one mod, by a window or worker that keeps at it.
 - Two lanes with a clear split: the window with him, and an autonomous one.
-- Fewer roles. v2 had two seats and they did real work.
 - Him available for live looks during a sitting, because some of FlowWorks needed that.
 
 ## 5. What to keep from v3
@@ -120,7 +127,6 @@ Conductor does. Each time he catches it first, that counts as an escape under C6
 
 - Is "mission" the right unit, or is a mod simply the unit?
 - Is FlowWorks the right pilot, or does it risk failing for reasons unrelated to the method?
-- Does the Conductor read pages in C8, or should Operations do it?
 - May Bench close itself when idle with a high context, so it stops depending on his goodbye?
 - What does the trial still need to tell us, given it ran serially?
 
