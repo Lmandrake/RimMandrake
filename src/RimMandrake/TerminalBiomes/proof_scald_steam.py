@@ -71,12 +71,14 @@ def setup():
     c = bridge()
     call(c, "rimworld/pause_game", pause=True)
     tile, temp = warm_tile(c)
-    g = call(c, "jawa/world_tile_map_generate", tile=tile, sizeX=100, sizeZ=100, biome="RM_TheScald",
-             suggestedMapParent="Ambush")
+    # A player settlement: an Ambush parent is removed as soon as the map holds no living colonist.
+    call(c, "jawa/colony_found", tile=tile, name="Scald proof")
+    g = call(c, "jawa/world_tile_map_generate", tile=tile, sizeX=100, sizeZ=100, biome="RM_TheScald")
     call(c, "jawa/set_current_map", mapId=g["mapId"])
     print("tile", tile, "temp", temp, "map", g["mapId"], g.get("mapGenerator"))
-    print(str(call(c, "jawa/settlement_remove", mode="map", tile=call(c, "jawa/set_current_map", mapId=g["mapId"])
-               .get("previousTile", -1), force=True))[:120])
+    # Roofs first: clearing rock under a mountain roof drops it on the first tick and Crush kills the whole roster
+    # (which also made the game remove an Ambush map), and a roofed cell stops the clock anyway.
+    call(c, "jawa/set_roof_batch", ops="None:0,0,100,100")
     call(c, "jawa/destroy_batch", rects="20,30,40,20;20,55,40,30", categories="Plant,Item,Building,Filth")
     call(c, "jawa/set_terrain", x=20, z=30, terrainDef="Soil", width=40, height=20)
     call(c, "jawa/set_terrain", x=20, z=55, terrainDef="RUT_ScaldWaterShallow", width=40, height=30)
@@ -149,7 +151,8 @@ def run(out, ticks, wall=420):
                 row[k] = {"dead": True, "hediffs": []}
             else:
                 row[k] = {"hediffs": hediffs(p)}
-        log.append(row)
+        if not log or log[-1]["tick"] != row["tick"]:
+            log.append(row)
         clear_strays(c, roster)
         json.dump({"log": log, "died": died}, open(out, "w"), indent=0)
         print(row["tick"], row["weather"], "died", died, "naked", row["naked"]["hediffs"][:4], "rind", row["rind"]["hediffs"][:4], flush=True)
@@ -158,6 +161,9 @@ def run(out, ticks, wall=420):
         if time.time() - start > wall:
             print("RESUME: call run again")
             return
+        # A new player settlement opens Dialog_NamePlayerFaction after a while; it force-pauses and play_for then
+        # refuses forever without advancing a tick.
+        c.call("jawa/window_list_close", {"action": "close", "typeName": "Dialog_Name"}, check=False)
         call(c, "rimworld/play_for", durationMs=8000, speed=4)
     kills = [e for e in call(c, "jawa/damage_log", pawnsOnly=True).get("events", []) if e.get("kind") == "kill"]
     judge(out, log, died, ticks, kills)
