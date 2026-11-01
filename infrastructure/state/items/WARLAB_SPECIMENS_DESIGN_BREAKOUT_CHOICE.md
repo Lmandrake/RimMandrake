@@ -22,13 +22,14 @@ Interlocks: `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`, `ASSAILANT_WARLAB_BUILD_MER
 containment fails → Reinfection spreads"*. Propagated to `dungeons_arc_spec.md`
 §2.1 and canon.yml `assailant_reveal_arc.breakout_src`.
 
-## Decided 2026-11-01 (delegated, class design)
+## Drafted 2026-11-01 (delegated, class design), not judge-kept
 `dungeons_arc_spec.md` §2.10 sets the choices, what starts the breakout, and what recover
-and fail each leave. The verify line below predates the 2026-10-22 delegation ruling:
-this is `delegation_policy.md` §1 `design`, not on the §2 list, so a judged decision
-stands in for the sitting and goes to him in the digest. Verdict:
-`infrastructure/state/delegated/2026-11-01/warlab_specimens_breakout.json`. Only the
-strike branch waits on him: `WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`. Build:
+and fail each leave. The verify line below predates the 2026-10-22 delegation ruling: this is
+`delegation_policy.md` §1 `design`, so a judged decision could stand in for the sitting, but
+three opus rounds said REDO, so §4.5 sends it to him flagged:
+`WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE`. Record:
+`infrastructure/state/delegated/2026-11-01/warlab_specimens_breakout.json`. The strike branch
+is his too: `WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`. Build:
 `WARLAB_BREAKOUT_BUILD_SEALS_HOLD_THE_LINE`.
 
 ## verify

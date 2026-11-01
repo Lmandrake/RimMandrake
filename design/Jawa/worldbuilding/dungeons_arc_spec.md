@@ -317,15 +317,19 @@ These are agent-drafted questions. Nothing below is ruled.
 2. **Where is the choice made?** Before the player enters (refuse the strike), or can the player go in first and call the strike later?
 3. **Is the hyperdrive the only way off the planet?** If so, the strike branch leaves the Utinni planet-bound for good. Does that stand?
 4. **Does leaving the planet end the game?** v1 is ruled open-ended, nothing rolls credits (`design/Jawa/campaign/CAMPAIGN_ARC_GATHER.md` G14). What happens after the hyperdrive is fitted is unruled. So is how it relates to the older "punch through the orbital blockade" endgame (`desert_world_design.md` §4-Orbital).
-The specimen choices, what a recovery leaves and a working answer for the strike branch are in §2.10.
+5. **Does the breakout happen on the strike branch?** His ruling *"Breakout always starts"* was given on the specimen choice; the strike branch has no specimen choice. Filed for his ruling: `WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`. §2.10 holds the working answer and builds nothing on it.
+
+The specimen choices and what a recovery leaves are in §2.10.
 
 ### 2.10 The specimens: the choice, the breakout, recover or fail — DELEGATED 2026-11-01, PROVISIONAL
 
 Delegated design (`delegation_policy.md` §1, class `design`; item
-`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`; judge verdict
-`infrastructure/state/delegated/2026-11-01/warlab_specimens_breakout.json`). It works inside his
-rulings of 2026-10-10 and 2026-10-12 (§2.1, §2.6) and overturns none. He has not ruled this
-section: it goes to him in the daily digest, and any line falls to his word. All numbers are
+`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`; judge record
+`infrastructure/state/delegated/2026-11-01/warlab_specimens_breakout.json`). **Not judge-kept:** three
+fresh opus rounds on the whole section all said REDO, the last finding only mechanics gaps and no
+ruling contradiction, so it stands flagged stuck for him (`delegation_policy.md` §4.5, §6):
+`WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE`. It is meant to work inside his rulings of 2026-10-10 and 2026-10-12 (§2.1, §2.6) and overturn none. He has not ruled this
+section, and any line falls to his word. All numbers are
 PROVISIONAL.
 
 **The shape, from his three sentences:** *"Player decides what to do. Then there is the start of a
@@ -339,7 +343,8 @@ and the player cannot take the prize and leave the lab as it was. This is an inv
 section, not a ruling. The drive sits in a bay in the core, and the containment console stands
 beside it.
 
-**What starts the breakout: the first of three things.** It always starts; no path avoids it.
+**What starts the breakout: the first of three things.** On the dive it always starts: no path that
+wakes the lab avoids it. The strike branch is its own paragraph below, and is his to rule.
 
 1. The player's choice finishes at the console.
 2. The hyperdrive is lifted from its bay, with no choice made. That counts as *Leave them* below.
@@ -349,7 +354,7 @@ beside it.
    unattended breakout is a failure when the clock's window closes. A crew that never wakes the lab
    never starts the clock and has not made the dive.
 
-**The choices (open question 5).** One pick, made once at the console. Each sets how bad the
+**The choices.** One pick, made once at the console. Each sets how bad the
 breakout is, never whether it comes. The price of the milder picks is what the lab would otherwise
 have given.
 
@@ -358,11 +363,13 @@ have given.
 | **Burn the cells** | the lab's own purge fires through the tanks | 1 of 4 | 5 days | mildest. Burns the archive, the study records and the frozen experiments with them, and burns out the seated core |
 | **Hold them** | the core is cross-fed to the stasis to take the drive's load | 2 of 4 | 4 days | keeps the records. The originals stay alive under seal for good |
 | **Loose the experiments** | the frozen Rakatan experiments are thawed at the specimens | 2 of 4, plus experiments | 3 days | a third side on the map: the experiments hunt specimens and crew alike. Keeps the records. This is the tyrants' own answer, chosen knowingly |
-| **Take a specimen** | one tank is drawn into a sealed casket, the rest held | 3 of 4 | 3 days | pays the Specimen Casket (below). Worst of the deliberate picks |
+| **Take a specimen** | one tank is drawn into a sealed casket, the other three fail | 3 of 4 | 3 days | pays the Specimen Casket (below). Worst of the deliberate picks |
 | **Leave them** | no pick; the default of triggers 2 and 3 | 4 of 4 | 2 days | the worst breakout, and the only one that came from not deciding |
 
 The hyperdrive is never a stake of the choice: every pick leaves it obtainable, as the strike is
-the branch that loses it (§2.6).
+the branch that loses it (§2.6). A pick takes the load off the drive for good: the console moves
+what stasis remains to the reactor, and under Hold them and Take a specimen to the seated core. So
+lifting the drive after a pick starts nothing and fails no further cell.
 
 **The Specimen Casket.** One sealed casket item, carried as cargo. While held it raises Empire heat
 through the existing machinery (`WARLAB_GARRISON_DESIGN_EARLY_BLAST` forbids a second meter); this
@@ -371,31 +378,48 @@ kills a reinfection node outright. It never opens by itself and is never a pet o
 
 **The breakout (start of the third act).** Failing cells release live originals into the core. They
 move outward band by band, core to interior to approach to the outer gate, the way they moved
-once before. The lab's mechanoid guardians, the last watch (`the_propane_lakes.md` §8), attack them
+once before. The lab's mechanoids, the last watch (`the_propane_lakes.md` §8), attack them
 as readily as the crew: two immoral forces, with the player between them.
 
 **Recover or fail: one check, at the seals.** The band boundaries carry three bulkhead seals, the
-last at the outer gate. A seal is shut by holding its relay for a work period; a shut seal stops
-everything behind it. The window of the table runs from the start of the breakout.
+last at the outer gate. The relays are dead until the breakout starts, and they wake in order from
+the core out: the first at the start, each later one only when the seal before it is shut or a
+specimen has passed it. A relay stands on the breakout's side of its seal; a pawn under attack
+breaks off, and a one-way hatch beside it lets the pawn out once the seal is shut. A failed cell
+opens at once. So no seal is shut in peace by a pawn who waited for it: each one is a fight, and
+the more cells failed the harder it is. Each seal also has a panel on its far side, for reopening
+only, so nothing is lost if the pawn who shut it dies. A shut seal stops everything behind it, and
+reopening it lets that out again. The purge warns one hour ahead and burns any pawn left inside. A cell that did not fail
+stays shut, its specimen still in stasis: it counts as sealed, and the crew can open it to kill what
+is inside. The window of the table runs from the start of the breakout and sets the pace: the old
+emergency doors hold a specimen at each band boundary for a third of the window, so an unopposed
+specimen reaches the outer gate as the window closes. A relay hold takes half a window. A specimen
+in a fight does not advance, so the crew buys a relay's time by fighting. Failure at the gate needs
+no pawn there: it runs on that schedule with the map unloaded.
 
 - **Recover:** before anything below happens, every live specimen is dead or behind a shut seal.
   Whatever is sealed in is then settled by the choice. Under Burn the cells, Leave them and Loose
-  the experiments, the lab's purge fires through the sealed bands and kills every specimen there.
+  the experiments, the lab's purge fires through the sealed bands and kills every specimen there,
+  in the cells or out of them.
   Under Hold them and Take a specimen it stays alive, because the core's feed puts it back in
-  stasis; if the crew killed every specimen instead, those two end as the Shattered Lab. The Specimen Casket is cargo, not a live specimen, for this check.
-- **Fail:** any specimen reaches the outer gate unsealed, or the window closes with one loose, or
+  stasis. The core runs the stasis and the archive on one circuit: when the last held specimen dies,
+  at any time, the feed burns out and takes the records with it, the lab is the Shattered Lab, and
+  no Imperial attempt comes. So the records can be had only by keeping the originals alive. The Specimen Casket is cargo, not a live specimen, for this check. Recovery latches too: seals may be reopened afterwards, because everything behind them is then dead or in stasis, so the drive stays reachable in every end state.
+- **Fail:** any specimen reaches the outer gate unsealed, or
   the crew leaves the map with one loose. That last case is the run with the drive, and it is
   allowed: the player may take the prize and let the planet pay. One specimen out is enough. That
   is how it went the first time: *"immediately sent out some scouts that infected other regions."*
 
-Failure latches the moment it happens and nothing undoes it: killing or sealing everything
-afterwards is the road to stopping the spread (below), not a recovery.
+Failure latches the moment it happens and nothing undoes it: killing everything afterwards is part
+of the road to stopping the spread (below), not a recovery. Sealing alone stops nothing after a
+failure: a sealed specimen is still alive, and no purge or stasis comes to settle it.
 
 Leaving does not freeze the lab: the breakout's state is held at game level, so it resolves whether
 or not the map is loaded.
 
-**What a recovery leaves (open question 6).** Nothing spreads, on any recovery. What stays on the
-planet is the site, in a state set by the choice:
+**What a recovery leaves.** A recovery itself spreads nothing. What stays on the planet is the site,
+in a state set by the choice. The one later road to reinfection after a recovery is the Held Lab's
+Imperial attempt, below, and only if the crew loses it:
 
 | choice recovered | the lab afterwards | on the planet |
 |---|---|---|
@@ -409,19 +433,19 @@ planet is the site, in a state set by the choice:
 from the lake across the world over seasons, game continues harder."*
 
 - A **reinfection node** is a world site. The first opens the moment failure latches, so no failure
-  passes without one: a specimen that reaches the gate leaves the map and is that node. Another
+  passes without one: a specimen that reaches the gate leaves the map and is that node. Any specimen that reaches the gate after that opens the next listed site at once, ahead of the season. Another
   opens each season after that, walking outward from the crater along a fixed, hand-authored list
   of sites. Nodes replicate, as the scouts did: the second and third open in the next two seasons
   whatever has been cleared by then, so a failure always spreads over seasons. Tiles are named at the one painting
   (§1 no-worldgen doctrine). The spread adds and removes sites only: it never rewrites a tile or a
-  biome, rolls nothing and generates no map layout, and the same failure runs the same way in every
-  game.
+  biome and rolls nothing. A node's assault map is one fixed, hand-authored layout, the same at every
+  node, and the same failure runs the same way in every game.
 - A node closes the world site it sits on (trade, quests, landing) until cleared, and sends raids
   at the nearest colony map. It never ends the game, and there is no win or lose state on it (G14).
 - Its palette is the Black Hive and VFEI2 rows of §2.5 only. Anomaly content stays inside the lab
   (canon.yml `anomaly_content`), and the lake's biome stays free of resident Assailant fauna (hard
   ban #8): a node is a site, never ambient wildlife.
-- **It can be pushed back (open question 6).** A node cleared by assault or by the casket tool
+- **It can be pushed back.** A node cleared by assault or by the casket tool
   stays cleared until the list runs out, and its site reopens scarred. After the third node, the list stops advancing for good only when every node is
   cleared and every specimen left in the lab is dead. Both stay possible all game. While either
   remains, a new node opens each season. When the list runs out, the next node retakes the site
@@ -432,15 +456,15 @@ from the lake across the world over seasons, game continues harder."*
 - **The game stays harder after the war is won.** Every open node adds 5% to the threat points of
   all raids, capped at +40%, and the peak reached is a floor that clearing nodes never lowers, so every failure leaves at least +5% for good.
 
-**The strike branch: no breakout, PROVISIONAL and flagged to him (open question 7).** The working
-answer: the strike ends the lab outright, with no choice, no breakout, no recovery and no
+**The strike branch: not decided, his to rule (§2.9 question 5).** The working answer, a placeholder
+and no ruling: the strike ends the lab outright, with no choice, no breakout, no recovery and no
 reinfection, and the drive is lost (§2.6). His words on it: *"destroy them once and for all. Only
 the sad shattered remains of the assailants will survive as homages to patient hatred."* Whether
-that applies *"Breakout always starts"* to a case it does not name, or changes what it says, split
-the judges (one for, two against), so nothing is built on it until he rules:
-`WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`. Whether the strike can still be called after going in
-stays §2.9 question 2. If he rules it can, a strike called before failure latches ends a running
-breakout with the lab lost, and one called after it ends only the lab: the nodes stand.
+that applies *"Breakout always starts"* to a case it does not name, or changes what it says, is the
+question, so nothing is built on it until he rules: `WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`.
+Everything else in this section is the dive. Whether the strike can still be called after going in
+stays §2.9 question 2, unanswered here, so every "always", "for good" and "no path" in this section
+means on the dive with no strike called; how a late strike would meet them is his too.
 
 **Player-facing text (three voices, never mixed; canon.yml `game_fact_voice`, `narrator`,
 `cathedral_voice`).** The word for the player is "specimens"; the enemy stays unnamed.
@@ -461,9 +485,11 @@ breakout with the lab lost, and one called after it ends only the lab: the nodes
 
 **Build notes (not built by this item; owed under `WARLAB_BREAKOUT_BUILD_SEALS_HOLD_THE_LINE`).**
 Live specimens need a confirmed PawnKindDef: none exists, and the cell's props-only shape stays
-right until the breakout (the `RUT_WarLabContainmentCell.xml` header says what to change). The bans
-that keep Assailants out of the lab's ordinary spawn hold before the breakout; after it, his ruling
-puts them on the map. Mod Settings owe a spread-pace knob. The first functional script ships with
+right until the breakout (the `RUT_WarLabContainmentCell.xml` header says what to change). The ban
+on live specimens before the breakout (the same header) holds; after it, his ruling puts them on the
+map. The §2.5 guardian roster and hard ban #8 of `the_propane_lakes.md` do not yet agree on what
+counts as Assailant flesh in the lab; §2.10 does not settle that and needs neither reading:
+`ASSAILANT_WARLAB_BUILD_MERGE` owns it. Mod Settings owe a spread-pace knob. The first functional script ships with
 the build.
 
 ## 3. `VAULT_DUNGEON_BUILD_1` — the six Forsaken vaults

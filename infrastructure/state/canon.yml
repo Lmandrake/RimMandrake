@@ -1652,12 +1652,13 @@ assailant_reveal_arc:
     specimen, Leave them. The hyperdrive powers the stasis. The breakout starts
     on the pick, on lifting the drive, or when a 15-day post-thaw clock ends.
     Recover: every specimen dead or sealed in time. Fail latches: a specimen
-    at the outer gate, the window closing, or leaving one loose. A recovery
+    at the outer gate, or leaving one loose. A recovery
     leaves a Shattered, Held, Feeding or Emptied Lab and no spread. A failure
     opens reinfection nodes, world sites from a fixed authored list that
     rewrite no tile, over seasons, and can be pushed back; a threat floor
-    stays for good. The strike branch having no breakout is a working answer
-    only, flagged to him: WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE.
+    stays for good. Not judge-kept: three opus rounds REDO, flagged stuck to him
+    (WARLAB_DIVE_DECIDE_JUDGES_STUCK_AT_THREE). The strike branch is not
+    decided, his to rule: WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE.
   superseded:
     - value: "a separate flesh complex adjacent to tile 20853 in deep Umbra"
       why: >
