@@ -36,8 +36,9 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   (cards 1–2). Ruled 2026-10-12: the Cradle strike and the player's dive are
   either/or, and the hook for going in is an ancient Rakatan hyperdrive that fits
   the Utinni; the breakout always starts, the specimen choice sets how bad
-  (`dungeons_arc_spec.md` §2.1, §2.6). Owed: the specimen choices and what a
-  recovery leaves (`WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE`), the Imperial garrison
+  (`dungeons_arc_spec.md` §2.1, §2.6). The specimen choices, the breakout and what a
+  recovery leaves are designed (delegated, `dungeons_arc_spec.md` §2.10) and owed as a
+  build (`WARLAB_BREAKOUT_BUILD_SEALS_HOLD_THE_LINE`). Owed: the Imperial garrison
   after an early blast (`WARLAB_GARRISON_DESIGN_EARLY_BLAST`), and merging the two
   builds (`ASSAILANT_WARLAB_BUILD_MERGE`). Rulings recorded in
   `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8 (2026-10-10 amendment).
@@ -157,7 +158,8 @@ unblock`, 2026-09-11) — see that item for the full account.
   (`jawa/list_pawns`).
 - [x] Lab guardians read as mechanoid/ancient, never Assailant-flesh material (hard
   ban #8, `the_propane_lakes.md` §6) — no Assailant fauna roams; live specimens exist
-  only as sealed containment props/props-with-pawn, never a spawned hostile faction.
+  only as sealed containment props/props-with-pawn, never a spawned hostile faction,
+  until the breakout his 2026-10-10 card 3 ruling puts on this map (`dungeons_arc_spec.md` §2.10).
   **CONFIRMED live**: 2×`Mech_Lancer` + 2×`Mech_Centurion`, faction "Kiliri
   Mechhive", `hostile: true`, `isMechanoid: true`; zero Assailant-kind pawns in the
   spawn (`jawa/list_pawns` census of the full placed structure).

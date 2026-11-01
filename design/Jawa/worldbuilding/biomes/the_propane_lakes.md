@@ -280,7 +280,8 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
     always starts and the choice sets how bad; a failed containment spreads
     reinfection. The strike and the dive are either/or, and the reason to go in is
     an ancient Rakatan hyperdrive that fits the Utinni. Quotes in
-    `../dungeons_arc_spec.md` §2.1 and §2.6, open parts §2.9.
+    `../dungeons_arc_spec.md` §2.1 and §2.6; the specimen design (delegated) is §2.10,
+    open parts §2.9.
 
 ## 9. Artistic theme
 

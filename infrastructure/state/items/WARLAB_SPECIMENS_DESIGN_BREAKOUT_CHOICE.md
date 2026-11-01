@@ -20,8 +20,16 @@ Interlocks: `CRADLE_STRIKE_RECONCILE_WITH_LAB_DIVE`, `ASSAILANT_WARLAB_BUILD_MER
 ## Ruled 2026-10-12 (owner, by question card)
 *"Specimen choice vs breakout → Breakout always starts; choice sets how bad; If
 containment fails → Reinfection spreads"*. Propagated to `dungeons_arc_spec.md`
-§2.1 and canon.yml `assailant_reveal_arc.breakout_src`. Still unruled: what the
-choices are and what a recovery leaves (spec §2.9 questions 5–7).
+§2.1 and canon.yml `assailant_reveal_arc.breakout_src`.
+
+## Decided 2026-11-01 (delegated, class design)
+`dungeons_arc_spec.md` §2.10 sets the choices, what starts the breakout, and what recover
+and fail each leave. The verify line below predates the 2026-10-22 delegation ruling:
+this is `delegation_policy.md` §1 `design`, not on the §2 list, so a judged decision
+stands in for the sitting and goes to him in the digest. Verdict:
+`infrastructure/state/delegated/2026-11-01/warlab_specimens_breakout.json`. Only the
+strike branch waits on him: `WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE`. Build:
+`WARLAB_BREAKOUT_BUILD_SEALS_HOLD_THE_LINE`.
 
 ## verify
 - [ ] A design sitting with the owner rules what the choices are, what starts the

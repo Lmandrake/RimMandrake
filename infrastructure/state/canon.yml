@@ -1643,8 +1643,21 @@ assailant_reveal_arc:
     reinfection spreads from the lake across the world over seasons, game
     continues harder." Builds on card 3 of 2026-10-10, typed: "Player decides
     what to do. Then there is the start of a breakout. Then a chance to
-    recover or fail." Still open: what the specimen choices are, and what a
-    recovery leaves (dungeons_arc_spec.md §2.9).
+    recover or fail."
+  breakout_design_src: >
+    delegated:design (WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE, 2026-11-01), not
+    ruled by him; PROVISIONAL. Full text: dungeons_arc_spec.md §2.10. Five
+    picks at the core console set how many of the four cells fail and the
+    seal window: Burn the cells, Hold them, Loose the experiments, Take a
+    specimen, Leave them. The hyperdrive powers the stasis. The breakout starts
+    on the pick, on lifting the drive, or when a 15-day post-thaw clock ends.
+    Recover: every specimen dead or sealed in time. Fail latches: a specimen
+    at the outer gate, the window closing, or leaving one loose. A recovery
+    leaves a Shattered, Held, Feeding or Emptied Lab and no spread. A failure
+    opens reinfection nodes, world sites from a fixed authored list that
+    rewrite no tile, over seasons, and can be pushed back; a threat floor
+    stays for good. The strike branch having no breakout is a working answer
+    only, flagged to him: WARLAB_STRIKE_DECIDE_JUDGES_SPLIT_TWO_ONE.
   superseded:
     - value: "a separate flesh complex adjacent to tile 20853 in deep Umbra"
       why: >
