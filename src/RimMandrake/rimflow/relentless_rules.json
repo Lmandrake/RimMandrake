@@ -25,6 +25,7 @@
   "run_reserve": 1200000,
   "min_mem_available_gb": 6,
   "pool_check_reserve": 1,
+  "pool_parked_release_s": 1800,
   "launch_breaker": 3,
   "breaker_cool_s": 900,
   "breaker_cool_max_s": 1800,

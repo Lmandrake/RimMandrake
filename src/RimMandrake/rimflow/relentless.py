@@ -1523,6 +1523,30 @@ def reclaim_dead(store, fx, r, now, acts):
             evict(store, fx, row, now, acts, "dead: %s %s" % (row["kind"] or "nobody's", row["status"] or ""))
 
 
+def bundle_pointer(store, row, carry):
+    """Records the bundle on the item, so its next clone restores it."""
+    def point(bundle):
+        if carry:
+            with store.lock():
+                cur = store.load(row["item"])
+                cur["bundle"] = bundle
+                store.save(cur)
+    return point
+
+
+def release_parked(store, fx, r, now, acts):
+    """A parked item's idle clone goes back before scratch_clone's idle hour calls it stranded: FLYER_STABLE_BODY_GATE_1 and
+    SEAT_MEMORY_STANDARD_FALLBACK_1 sat held on the owner with real WIP until disk.pool_breach fired, because only pool
+    pressure ever moved them. WIP travels in the bundle; commits stay, no fresh clone can restore them, and the alarm is right."""
+    for row in pool_rows(store, fx, r):
+        if row["rank"] != 1 or fx.clone_busy(row["clone"]) or fx.clone_idle_s(row["clone"]) < r["pool_parked_release_s"]:
+            continue
+        wip = fx.clone_wip(row["clone"])
+        if not wip["kept"]:
+            evict(store, fx, row, now, acts, "parked: %s %s" % (row["kind"], row["status"]),
+                  bundle_pointer(store, row, wip["real"] and row["kind"] == "work"))
+
+
 def make_room(store, fx, r, now, acts, reserve=0):
     """Room for one more clone, or the hold that names who has the pool. Parked clones go first with nothing of theirs
     at risk, then those whose WIP a bundle carries; commits and stashes stay, and a live clone is never touched.
@@ -1543,13 +1567,8 @@ def make_room(store, fx, r, now, acts, reserve=0):
             continue
         parked.append((row["rank"], bool(wip["real"]), order.get(row["status"], 0), row, wip))
     for rank, real, _o, row, wip in sorted(parked, key=lambda p: p[:3]):
-        def point(bundle, item=row["item"], carry=real and row["kind"] == "work" and rank):
-            if carry:
-                with store.lock():
-                    cur = store.load(item)
-                    cur["bundle"] = bundle
-                    store.save(cur)
-        gone, _b = evict(store, fx, row, now, acts, "for room: %s %s" % (row["kind"] or "nobody's", row["status"] or ""), point)
+        gone, _b = evict(store, fx, row, now, acts, "for room: %s %s" % (row["kind"] or "nobody's", row["status"] or ""),
+                         bundle_pointer(store, row, real and row["kind"] == "work" and rank))
         if not gone:
             row["hold"] = "bundle failed"
             continue
@@ -2607,6 +2626,7 @@ def tick(store=None, fx=None, r=None, now=None):
         books_alarm(store, fx, fx.sync(), now, acts, r)
         retire(store, fx, store.states(), now, acts, r)
         reclaim_dead(store, fx, r, now, acts)
+        release_parked(store, fx, r, now, acts)
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
             for item in store.items():
                 if final and (store.load(item) or {}).get("status") != "stopping":

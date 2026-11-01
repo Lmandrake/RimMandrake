@@ -125,7 +125,7 @@ class FakeWorld:
     def pool_load(self): return len(self.pool), 0, self.pool_max, 10**12
     def clone_present(self, c): return c in self.pool
     def clone_busy(self, c): return self.pool[c].get("busy", False)
-    def clone_idle_s(self, c): return 7200
+    def clone_idle_s(self, c): return self.pool[c].get("idle", 7200)
     def clone_wip(self, c): return {"kept": self.pool[c].get("kept", False), "real": self.pool[c].get("real", [])}
     def remove_clone(self, st, before=None):
         if st.get("clone") not in self.pool:
@@ -1800,6 +1800,22 @@ def t_pool_jam():
     x.w.pool["/c/D0"] = {"kept": True}
     x.tick()
     ok("/c/D0" not in x.w.pool, "a dead item's commits are bundled and released")
+    x.done()
+
+    # a parked item's idle clone goes back before the idle hour reads it stranded, whatever the pool's load
+    x = staffed(n=1)
+    for name, status, wip in (("P0", "held", {"real": ["a.cs"]}), ("P1", "held", {"idle": 60, "real": ["a.cs"]}),
+                              ("P2", "held", {"kept": True, "real": ["a.cs"]}), ("P3", "held", {"busy": True}),
+                              ("P4", "queued", {}), ("P5", "held", {})):
+        parked(x, name, status, "/c/" + name)
+        x.w.pool["/c/" + name] = wip
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "Utils"))
+    import scratch_clone
+    ok(x.r["pool_parked_release_s"] < scratch_clone.POOL_IDLE_S, "released before the alarm's idle hour, not after it")
+    R.release_parked(x.s, x.w, x.r, x.now, [])
+    ok(sorted(x.w.pool) == ["/c/P1", "/c/P2", "/c/P3"], "idle parked clones go; fresh, commits and busy stay: %s" % sorted(x.w.pool))
+    ok(x.st("P0").get("bundle") == "/bundle//c/P0", "WIP goes with a bundle the next clone restores")
+    ok(x.st("P5").get("bundle") is None and x.st("P4").get("bundle") is None, "nothing to carry, nothing recorded")
     x.done()
 
     # a check that ended leaves its clone; one running keeps it
