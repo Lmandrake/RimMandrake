@@ -124,7 +124,7 @@ OWED_PROOFS = {
                        "entry, switch respected). 'SPILL offered=N accepted=N'",
     "ProofSheetFillIn": "x,z -> the engine's own fill-in of a wet dug square (the Displace path). 'FILLIN homeless=N spilled=N "
                         "destroyed=N' (homeless = the remainder no channel took)",
-    "ProofSheetHash": "'-' -> 'SHEETHASH hash=H pulse=N dl=H rem=H calm=H inputs=H indoorWet=N' (hash of RM_SheetMath.Save(state): the whole continuation state, §6 item 4; then its field groups and what the last pulse fed the kernel)",
+    "ProofSheetHash": "'-' -> 'SHEETHASH hash=H pulse=N dl=H rem=H calm=H inputs=H indoorWet=N' (hash of RM_SheetMath.Save(state): the whole continuation state, §6 item 4; then its field groups and what the last pulse fed the kernel; the build also appends inKind/inTemp/inEvap/inSoak, outdoorQ/outdoorTick, lastPulseTick/nextPulseTick/ticksGame, pulseOutdoorTick/pulseOutdoorC/pulseQ/pulseOffsetC and evapVals)",
     "ProofSheetFeatures": "'-' -> 'FEATURES crops=T|F soak=T|F capSetting=T|F capField=NAME cropDelayField=NAME' (what the "
                           "loaded build carries; NAME = the RM_SheetSettings field a row may set, '-' when absent: "
                           "capField in cm, cropDelayField in pulses)",
@@ -951,7 +951,7 @@ def save_load(ctx):
     t_live = clock()
     hav = sp("ProofSheetHash")[0]
     ha = hav.get("hash")
-    ldr =B.call("rimworld/load_game_ready", saveName=name, timeoutMs=280000) or {}
+    ldr = B.call("rimworld/load_game_ready", saveName=name, timeoutMs=280000) or {}
     V.require(ldr.get("success") is not False, "loaded", str(ldr)[:300], cls="HARNESS")
     if not a.mock:
         V.require(V._wait_playing(B, leave_s=0)[0], "playing after the load", None, cls="HARNESS")

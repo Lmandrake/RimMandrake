@@ -979,16 +979,16 @@ namespace RimMandrake.FlowWorks.Sheet
 		internal State ProofState => state;
 		internal Params ProofParams { get { Ensure(); return prm; } }
 
-		/// <summary>CANAL_OVERFLOW round 3, for the live SAVE_LOAD rerun: what the last pulse FED the kernel at every wet cell
-		/// (kind, deci-°C, evaporation, soak; FNV over ascending cells) and how many wet cells read an indoor room, so a split
-		/// hash says whether the inputs or the kernel's own state parted. Right after a load the world is rebuilt fail-closed,
-		/// so compare it only after a pulse in both runs.</summary>
 		/// <summary>CANAL_OVERFLOW round 4 diag: TicksGame of the last kernel pulse (not saved: -1 until the first pulse after a
 		/// load), so a live SAVE_LOAD split can say whether the two runs pulsed on different ticks.</summary>
 		private int proofLastPulseTick = -1;
 		private int proofPulseOutdoorTick = int.MinValue;
 		private float proofPulseOutdoorC = float.NaN, proofPulseOffsetC = float.NaN;
 
+		/// <summary>CANAL_OVERFLOW round 3, for the live SAVE_LOAD rerun: what the last pulse FED the kernel at every wet cell
+		/// (kind, deci-°C, evaporation, soak; FNV over ascending cells) and how many wet cells read an indoor room, so a split
+		/// hash says whether the inputs or the kernel's own state parted. Right after a load the world is rebuilt fail-closed,
+		/// so compare it only after a pulse in both runs. Round 4 adds each input apart, the outdoor reading and the pulse ticks.</summary>
 		internal string ProofInputs()
 		{
 			if (state == null || world == null)
