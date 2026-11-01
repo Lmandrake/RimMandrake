@@ -1,0 +1,329 @@
+{
+ "script": "sheet_overflow_proof.py",
+ "started": "2026-11-01T02:39:03",
+ "rows": [
+  {
+   "id": "SAVE_LOAD_CONTINUES_IDENTICAL",
+   "status": "PASS",
+   "class": "MOD",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "h0": "0de801cd6060bc2c",
+    "h0AfterLoad": "0de801cd6060bc2c",
+    "hContinued": "89946318fb900d85",
+    "hLoadedContinued": "89946318fb900d85",
+    "closes": true,
+    "save": "RM_SHEET_OVERFLOW_20261101T023950",
+    "parts": {
+     "pulse": [
+      "5",
+      "5"
+     ],
+     "dl": [
+      "9f499a983ba14d7b",
+      "9f499a983ba14d7b"
+     ],
+     "rem": [
+      "037438e9bc051b54",
+      "037438e9bc051b54"
+     ],
+     "calm": [
+      "8b55add852507c38",
+      "8b55add852507c38"
+     ],
+     "inputs": [
+      "05c011d888579c46",
+      "05c011d888579c46"
+     ],
+     "indoorWet": [
+      "0",
+      "0"
+     ],
+     "inKind": [
+      "87057814aaf943b7",
+      "87057814aaf943b7"
+     ],
+     "inTemp": [
+      "4d92be4e234415fa",
+      "4d92be4e234415fa"
+     ],
+     "inEvap": [
+      "34e3d5ad9e20729a",
+      "34e3d5ad9e20729a"
+     ],
+     "inSoak": [
+      "447700b003e5fdf6",
+      "447700b003e5fdf6"
+     ],
+     "outdoorQ": [
+      "142",
+      "142"
+     ],
+     "outdoorTick": [
+      "316283",
+      "316283"
+     ],
+     "lastPulseTick": [
+      "1251",
+      "1251"
+     ],
+     "nextPulseTick": [
+      "1501",
+      "1501"
+     ],
+     "ticksGame": [
+      "1283",
+      "1283"
+     ],
+     "pulseOutdoorTick": [
+      "316251",
+      "316251"
+     ],
+     "pulseOutdoorC": [
+      "8.909965",
+      "8.88128"
+     ],
+     "pulseQ": [
+      "142",
+      "142"
+     ],
+     "pulseOffsetC": [
+      "0",
+      "0"
+     ],
+     "evapVals": [
+      "185:51",
+      "185:51"
+     ]
+    },
+    "split": [
+     "pulseOutdoorC"
+    ],
+    "ticks": {
+     "save": 533,
+     "live": 1283,
+     "afterLoad": 534,
+     "loaded": 1283,
+     "loadRan": 1
+    }
+   }
+  }
+ ],
+ "perf": [],
+ "args": {
+  "out": "src/RimMandrake/FlowWorks/northstar/sheet_overflow_result_20261101T1039Z_foundry_r4H2.json",
+  "origin": "30,30",
+  "fresh_map": true,
+  "only": "SAVE_LOAD_CONTINUES_IDENTICAL",
+  "no_perf": false,
+  "cold_ticks": 24000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofSheetCell",
+  "ProofSheetFeatures",
+  "ProofSheetFillIn",
+  "ProofSheetHash",
+  "ProofSheetLedger",
+  "ProofSheetPerf",
+  "ProofSheetRect",
+  "ProofSheetSpill"
+ ],
+ "balances": [],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "fe2f391f7e10d923b8a1cddf6b49e36eb231c09e6ec2f18d6cc467acd87d3f3f",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/sheet_overflow_proof.py",
+  "runtime": "55c58da1eac9f5d098ca8a84aa1d5da7b922d6bb46aa85b2a56a9dc95f9cf8c1",
+  "test": "aa824d693c5e345842138e7e7f5a3ab7db94d35123b248012338c0beedb49cba",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/northstar/sheet_overflow_proof.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks"
+  ],
+  "assembly_sha256": "9bb399a983580c4a723940805912f76edf7e20fe458680c1365dd29806ed5892"
+ },
+ "features": {
+  "crops": "True",
+  "soak": "False",
+  "capSetting": "True",
+  "capField": "sheetCapCm",
+  "cropDelayField": "cropDrownPulses",
+  "gravity": "True",
+  "floods": "True",
+  "pawns": "True",
+  "fire": "True",
+  "fuel": "True"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Alpaca46711",
+    "Alpaca46712",
+    "Alpaca46713",
+    "Alpaca46714",
+    "Alpaca46715",
+    "Badger46721",
+    "Bluebird46724",
+    "Bluebird46734",
+    "Boomrat46704",
+    "Boomrat46730",
+    "Cougar46690",
+    "Crow46705",
+    "Crow46706",
+    "Crow46707",
+    "Donkey46735",
+    "Donkey46736",
+    "Donkey46737",
+    "GuineaPig46697",
+    "GuineaPig46698",
+    "GuineaPig46699",
+    "GuineaPig46700",
+    "GuineaPig46701",
+    "GuineaPig46702",
+    "GuineaPig46703",
+    "Hare46686",
+    "Hare46687",
+    "Locust46677",
+    "Locust46679",
+    "Megascarab46675",
+    "Megascarab46678",
+    "Megasloth46728",
+    "Megaspider46674",
+    "Megaspider46676",
+    "Mink46688",
+    "Quail46732",
+    "Quail46733",
+    "Raccoon46710",
+    "Rat46725",
+    "Rat46727",
+    "Rat46731",
+    "Sparrow46717",
+    "Sparrow46718",
+    "Sparrow46719",
+    "Sparrow46720",
+    "Squirrel46689",
+    "Squirrel46708",
+    "Squirrel46709",
+    "Squirrel46716",
+    "Squirrel46722",
+    "Squirrel46726",
+    "Squirrel46729",
+    "Tortoise46696",
+    "Turkey46723",
+    "Yak46691",
+    "Yak46692",
+    "Yak46693",
+    "Yak46694",
+    "Yak46695"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive46665"
+    ],
+    [
+     "GlowPod",
+     "GlowPod46683"
+    ],
+    [
+     "GlowPod",
+     "GlowPod46684"
+    ],
+    [
+     "EggSac",
+     "EggSac46685"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "switchBefore": "False",
+ "ledgerStart": "SHEETLEDGER enabled=True in=0 inPump=0 inRain=0 inFlood=0 inFillIn=0 inGravity=0 standing=0 wet=0 returned=0 joined=0 soaked=0 evaporated=0 burned=0 purged=0 closes=True releaseLost=0 burning=0 destroyedDl=0 pulse=0 pulseTicks=250 retention=200 minReceive=100 cap=10000 maxWet=4000 irrigated=0",
+ "finished": "2026-11-01T02:40:21"
+}

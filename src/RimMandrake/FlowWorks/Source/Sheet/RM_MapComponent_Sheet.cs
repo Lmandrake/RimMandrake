@@ -282,7 +282,8 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// It cannot keep them together after it (review 2026-11-01): a load rebuilds each indoor room's tracker with a freshly
 		/// Rand-shuffled equalizeCells and cycleIndex 0 (RoomTempTracker.RegenerateEqualizeCells; neither is saved), so vanilla's
 		/// wall equalization moves an indoor room's temperature differently live and loaded. Only the outdoor path is
-		/// save/load-exact; ProofSheetHash counts wet squares in an indoor room (indoorWet) so a split there is named, not hidden.</summary>
+		/// save/load-exact, and only because a save also snaps the map tile's base temperature to the 0.1 °C the save writes
+		/// (round 4: a never-saved world read ~0.03 °C off its own load at the same tick); ProofSheetHash counts wet squares in an indoor room (indoorWet) so a split there is named, not hidden.</summary>
 		private int KernelTempAt(IntVec3 c)
 		{
 			Room room = c.GetRoom(map);
@@ -312,6 +313,16 @@ namespace RimMandrake.FlowWorks.Sheet
 						continue;
 					}
 					room.Temperature = RM_SheetTemp.Quantise(room.Temperature);
+				}
+				// round 4: the outdoor reading starts from the planet tile's base temperature, which a save keeps to 0.1 °C;
+				// a world not yet saved holds the finer worldgen value, so the live game read ~0.03 °C off its own load
+				if (map.Tile.Valid && Find.WorldGrid != null)
+				{
+					RimWorld.Planet.Tile tile = Find.WorldGrid[map.Tile];
+					if (tile != null)
+					{
+						tile.temperature = RM_SheetTemp.TileTempSaveGrid(tile.temperature);
+					}
 				}
 				Find.World?.tileTemperatures?.ClearCaches();
 			}

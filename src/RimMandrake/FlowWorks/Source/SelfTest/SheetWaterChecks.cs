@@ -455,6 +455,29 @@ namespace RimMandrake.FlowWorks.SelfTest
 				}
 			});
 
+			// CANAL_OVERFLOW round 4 (live H 2026-11-01, same tick: 8.909965 °C live vs 8.88128 °C loaded): the save keeps a planet
+			// tile's base temperature to 0.1 °C. The snap the sheet applies at a save must equal vanilla's write-then-read
+			// (SurfaceLayer: bytes of ushort RoundToInt((t + 300) * 10), read back as /10 - 300), be idempotent, and move <= 0.05 °C.
+			Case("Sheet_tile_temperature_snaps_to_the_saves_tenth_of_a_degree", () =>
+			{
+				float VanillaRoundTrip(float t)
+				{
+					ushort u = (ushort)Math.Max(0, Math.Min(65535, (int)Math.Round((double)((t + 300f) * 10f))));
+					byte[] b = BitConverter.GetBytes(u);
+					return (float)(int)BitConverter.ToUInt16(b, 0) / 10f - 300f;
+				}
+				var r = new Random(41);
+				for (int i = 0; i < 2000; i++)
+				{
+					float t = (float)(r.NextDouble() * 140.0 - 70.0);
+					float s = RM_SheetTemp.TileTempSaveGrid(t);
+					Assert(s == VanillaRoundTrip(t), $"{t} snaps to {s}, the save reads {VanillaRoundTrip(t)}");
+					Assert(RM_SheetTemp.TileTempSaveGrid(s) == s, $"{t}: snapping twice moves it ({s})");
+					Assert(Math.Abs(s - t) <= 0.0501f, $"{t}: snapped by more than 0.05 °C ({s})");
+				}
+				Assert(RM_SheetTemp.TileTempSaveGrid(8.93f) != 8.93f, "a worldgen value off the grid is moved (the snap has teeth)");
+			});
+
 			// Stage 1 (§6 item 1): offer → accepted dL. A probe equals the commit and changes nothing.
 			Case("Sheet_preview_changes_nothing_and_counts_a_duplicate_lip_once", () =>
 			{

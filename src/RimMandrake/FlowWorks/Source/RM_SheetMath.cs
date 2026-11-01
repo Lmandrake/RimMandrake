@@ -921,6 +921,18 @@ namespace RimMandrake.FlowWorks
 		/// <summary>°C on the save's grid: what a load of this value reads.</summary>
 		public static float Quantise(float c) => FromSixteenths(ToSixteenths(c));
 
+		/// <summary>CANAL_OVERFLOW round 4 (live H, same tick: 8.909965 °C live, 8.88128 °C loaded): a planet tile's base
+		/// temperature on the save's grid, exactly as vanilla writes and reads it (SurfaceLayer: ushort
+		/// RoundToInt((t + 300) * 10), loaded as /10 - 300). A world never saved since it was made keeps the finer value.
+		/// Idempotent; moves a value by at most 0.05 °C.</summary>
+		public static float TileTempSaveGrid(float t)
+		{
+			float scaled = (t + 300f) * 10f;
+			int r = (int)Math.Round((double)scaled); // UnityEngine.Mathf.RoundToInt: Math.Round, ties to even
+			ushort u = (ushort)(r < 0 ? 0 : r > 65535 ? 65535 : r);
+			return (float)(int)u / 10f - 300f;
+		}
+
 		/// <summary>The kernel's deci-°C (freezing, boiling), integer from the sixteenths, half away from zero.</summary>
 		public static int DeciC(int q)
 		{
