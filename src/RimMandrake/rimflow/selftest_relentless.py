@@ -311,6 +311,7 @@ def full_pass(x, i, verdict="PASS"):
     st = x.st(i)
     if not st["contract"]:
         R.contract(x.s, i, st["gen"], "proof", live="once: test")
+    R.learn(x.s, i, st["gen"], "SENTINEL_OF_THE_ATTEMPTS")
     R.finish(x.s, i, st["gen"], "sha1", "evidence")
     x.w.up[st["run"]["unit"]] = False
     x.tick()
@@ -318,7 +319,7 @@ def full_pass(x, i, verdict="PASS"):
     st = x.st(i)
     ok(st["status"] == "checking", "finish reaches the checker")
     prompt = x.w.launches[-1][2]
-    ok("learned" not in prompt and "text of" in prompt, "the checker's brief holds no record of the attempts")
+    ok("SENTINEL_OF_THE_ATTEMPTS" not in prompt and "text of" in prompt, "the checker's brief holds no record of the attempts")
     R.verdict(x.s, i, st["check"]["nonce"], verdict, "ran it")
     x.w.up[st["check"]["run"]["unit"]] = False
     x.tick()
@@ -370,6 +371,17 @@ def t_done_path():
     # an old nonce is refused
     x = Rig(n=1, share=1.0)
     expect_fence(lambda: R.verdict(x.s, "I0", "x", "PASS", "y"), "a verdict with no check is refused")
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "p")
+    R.finish(x.s, "I0", st["gen"], "s", "e")
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    if x.st("I0")["status"] != "checking":
+        x.tick()
+    ok(x.st("I0")["status"] == "checking", "old nonce: planted, a check is running")
+    expect_fence(lambda: R.verdict(x.s, "I0", "not-" + x.st("I0")["check"]["nonce"], "PASS", "y"),
+                 "a wrong nonce on a running check is refused")
     x.done()
 
 
@@ -411,11 +423,18 @@ def t_crash_windows():
     R.contract(x.s, "I0", st["gen"], "p")
     R.finish(x.s, "I0", st["gen"], "s", "e", now=x.now)
     x.w.up[st["run"]["unit"]] = False
+    launch, seen = x.w.launch, []
+
+    def sees(*a, **k):
+        seen.append(x.st("I0")["check"])      # what a crash at this instant would leave on disk
+        return launch(*a, **k)
+    x.w.launch = sees
     x.tick()
     if x.st("I0")["status"] != "checking":
         x.tick()
-    chk = x.st("I0")["check"]
-    ok(chk["run"]["scope"].endswith(".scope") and chk["run"]["out"], "the checker's whole identity is persisted")
+    x.w.launch = launch
+    ok(seen and seen[0] and seen[0]["run"]["scope"].endswith(".scope") and seen[0]["run"]["out"],
+       "the checker's whole identity is on disk before the unit exists")
     n = len(x.w.launches)
     x.tick()
     ok(len(x.w.launches) == n, "a live checker is never launched twice")
@@ -460,13 +479,13 @@ def t_crash_windows():
     ok(x.st("I0")["failures"].get("worker_lost") == 1 and x.st("I0")["returns"] == 1,
        "a worker that beat and died inside the grace is worker_lost")
     x.done()
-    x = Rig(n=2)
+    x = Rig(n=2, share=1.0, max_workers=0)
     x.tick()
     q = [s for s in x.s.states() if s["status"] == "queued"]
-    if q:
-        x.r["pool_ids_exclude"] = [q[0]["item"]]
-        x.tick()
-        ok(x.st(q[0]["item"])["status"] == "retired", "an item excluded in the rules leaves the queue")
+    ok(q, "exclusion: planted, an item waits in the queue")
+    x.r["pool_ids_exclude"] = [q[0]["item"]]
+    x.tick()
+    ok(x.st(q[0]["item"])["status"] == "retired", "an item excluded in the rules leaves the queue")
     x.done()
     # a checker past its deadline cannot pass
     x = Rig(n=1, share=1.0)
@@ -505,13 +524,12 @@ def t_crash_windows():
     x = Rig(n=1, share=1.0)
     x.w.items["OPS_X"] = x.w.items["I0"]
     R.enrol_one(x.s, "OPS_X", "t", x.now - 100)
+    x.run_one("OPS_X")
+    st = x.st("OPS_X")
+    R.contract(x.s, "OPS_X", st["gen"], "p")
+    R.finish(x.s, "OPS_X", st["gen"], "s", "e", now=x.now)
     x.tick()
-    if "OPS_X" in [s["item"] for s in x.s.states() if s["status"] == "running"]:
-        st = x.st("OPS_X")
-        R.contract(x.s, "OPS_X", st["gen"], "p")
-        R.finish(x.s, "OPS_X", st["gen"], "s", "e", now=x.now)
-        x.tick()
-        ok(x.st("OPS_X")["failures"].get("bad_candidate") == 1, "an alarm item with no live line is a bad candidate")
+    ok(x.st("OPS_X")["failures"].get("bad_candidate") == 1, "an alarm item with no live line is a bad candidate")
     x.done()
     # overdue reads the beat
     st = dict(R.new_state("I0", 1, ""), started_at=0, last_beat=1000)
