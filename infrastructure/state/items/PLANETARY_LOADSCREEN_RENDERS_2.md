@@ -19,11 +19,9 @@ to realistic imagery I fear."* ⇒ Gate = `BIOME_PAINT_ONCE_AT_THE_END_1` +
 
 ## spec (executes after both gates)
 
-1. Inputs: the POST-repaint beauty-shot screenshot set (regenerated at the end
-   of `WORLDMAP_BIOME_APPEARANCE_1`; the pre-repaint set at
-   `Transient/final_review/beauty/` — crater, scald+seas, ring wide, limb,
-   cap, each with a `_clean` variant — shows the intended camera language and
-   MUST NOT seed final renders, since its biome faces are the wrong ones).
+1. Inputs: the post-repaint set `D:\ClaudeWork\rimmandrake\art\world_beauty_2026-10-31\`
+   (offline renders with the real faces; no ring, so the ring comes from the prompt), and
+   live captures when `WORLD_BEAUTY_VERIFY_OFFLINE_BEAT_THE_GAME` lands.
 2. A color→reality mapping table: every worldmap tile color in the seeds mapped
    to what that biome really looks like from orbit, written from the frozen
    sheets (post-repaint this is nearly 1:1 because the biomes will wear their

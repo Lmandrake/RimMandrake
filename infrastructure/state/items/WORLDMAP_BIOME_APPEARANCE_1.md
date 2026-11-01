@@ -1,33 +1,16 @@
-# WORLDMAP_BIOME_APPEARANCE_1 — regenerate our biomes' worldmap tile appearance (AFTER the repaint)
+## State (2026-10-31)
+**The 2026-09-27 finding (2 of 29 own faces) is history: `python3 src/RimMandrake/Utils/art/biome_face_census.py` reads
+61 of 61 owned**, 0 vanilla/donor, with no patch rewriting a biome texture; `--deployed` also reads 61 of 61 in the game.
+Faces come from `src/RimMandrake/Utils/art/biome_worldfaces.py` and `world_water_variants.py`. They are throwaway-grade:
+the redo after the Baroque Biomes is `WORLD_GLYPHS_SKETCH_EVERY_BIOME_FIRST_STAB` (owner, 2026-10-24).
 
-Commissioned by the owner's typed message, 2026-09-27 (arrived mid-turn, recorded
-under BENCH): *"please examine the current worldmap imagery for our many custom
-biomes. They don't really look anything like what they should given what we're
-filling them with. Please file a future ticket blocked by the worldmap
-remake/repaint to regenerate the appearance of our biomes. This will also likely
-undo the need for some of our worldmap beautification mods (they will provide
-useful guidance though!)"*
+Beauty set: `D:\ClaudeWork\rimmandrake\art\world_beauty_2026-10-31\` (`world_beauty_render.py`). These are OFFLINE renders
+of the tile record, not game screenshots: no ring, rivers or icons. Judge verdict PASS: `judge_gpt.txt` there. The owner's
+look is delegated (note 2026-10-29); it reaches him in the daily digest.
 
-🔴 **BLOCKED on the terminal repaint** (`BIOME_PAINT_ONCE_AT_THE_END_1` — the planet
-is painted once, at the end, after every biome's content is mod-migrated). Do not
-start this before that pass; biome-to-tile assignment changes wholesale there and
-any appearance work done earlier is judged against tiles that will move.
-
-## The measured finding (2026-09-27)
-
-Of **29 BiomeDefs in src/** (MEASURED, regex over every mod's Defs), only **2**
-carry their own worldmap texture: `World/Biomes/RM_FeverWood` and
-`World/Biomes/RM_GelatinousSlime`. The rest wear someone else's face on the
-planet:
-
-- 4× vanilla `ExtremeDesert` · 4× vanilla `Ocean` · 3× vanilla `IceSheet` ·
-  2× vanilla `TropicalRainforest` · 1× each `AridShrubland`, `Desert`
-- 3× **donor Alpha Biomes textures** (`Biomes/AB_OcularForest`,
-  `AB_RockyCrags`, `AB_MiasmicMangrove`) and 1× `Biomes/PoisonForest` (donor)
-
-So the worldmap shows a boiling sea as vanilla ocean, the Grey/Twilight/Propane
-seas identically, and rich custom biomes as generic desert — nothing like what
-we fill them with.
+Beautification mods: `zal.worldmapenhanced` and `grimterra.worldmap` were cut by owner card 2026-10-10 and stay out (card
+2026-10-23), so no retirement is left to file. No third-party mod in the audit facts ships World textures alone;
+those with biome faces are biome-content mods, retired on their own items. No face shares bytes with a mod's World png.
 
 ## spec (executes after the repaint)
 

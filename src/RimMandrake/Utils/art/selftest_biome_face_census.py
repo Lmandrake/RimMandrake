@@ -36,6 +36,13 @@ with tempfile.TemporaryDirectory() as t:
     kinds = sorted(b.split()[0] for b in bad)
     check(kinds, ["LEGACY_NAME", "NOT_OURS", "PATCHED", "SHARED"], "findings")
 
+import numpy as np
+import world_beauty_render as R
+pts = R.to_xyz(np.random.default_rng(1).uniform(-85, 85, 400), np.random.default_rng(2).uniform(-180, 180, 400))
+tiles = R.to_xyz(np.random.default_rng(3).uniform(-90, 90, 4000), np.random.default_rng(4).uniform(-180, 180, 4000))
+brute = np.argsort(np.linalg.norm(pts[:, None] - tiles[None], axis=2), axis=1)[:, :3]
+check(int((R.Nearest(tiles, cell=0.3).query(pts)[1] != brute).sum()), 0, "beauty render Nearest vs brute force")
+
 x = subprocess.run([sys.executable, C.__file__], capture_output=True, text=True)
 print(x.stdout.strip().splitlines()[-1])
 if x.returncode: print(x.stdout); fails += 1
