@@ -36,6 +36,7 @@ DEFAULT_ROOT = "/home/mandrake/rm/relentless"
 FENCED = 3
 LEASED = ("running", "stopping", "candidate", "checking", "closing", "retiring")   # a worker or the supervisor owns the item
 OPEN = ("queued",) + LEASED + ("held",)
+MAX_WAIT_HOURS = 6     # a worker's word cannot park an item for longer
 HOLDS_A_PLACE = ("running", "checking", "candidate", "stopping", "retiring")    # a run that may be live counts
 ENDED = ("done", "retired")
 SHARD = "infrastructure/state/ledger/events/%s.jsonl"
@@ -310,7 +311,8 @@ def contract(store, item, gen, proof, live=None, why=None, now=None):
         store.save(st)
 
 
-def snag(store, item, gen, klass, detail, r, section=None, now=None):
+def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=0):
+    """`wait_hours`: what stopped the worker is time, not work (a metric's sample filling); no worker starts before then."""
     now = time.time() if now is None else now
     with store.lock():
         st = store.load(item)
@@ -324,6 +326,7 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None):
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "owner_call", "detail": st["hold"]["why"]})
             store.save(st)
             return
+        st["not_before"] = now + min(wait_hours or 0, MAX_WAIT_HOURS) * 3600
         fail(store, st, klass, detail, r, now)
 
 
@@ -2263,6 +2266,8 @@ def lease(store, fx, r, now, acts):
     for st in queue_order(store.states(), getattr(fx, "plan", None)):
         if not st["ledger_started"] and fx.item_state(st["item"]) is None:     # not published yet: see retire()
             continue
+        if st.get("not_before", 0) > now:
+            continue
         if help_pending(st):        # the next brief is the point of the consult; help_step bounds this wait
             continue
         if cfg and launched >= cfg["launch_per_tick"]:   # prepare() blocks and the tick has a timeout
@@ -2652,6 +2657,7 @@ def main(argv=None):
         if name == "snag":
             p.add_argument("--class", dest="klass", required=True)
             p.add_argument("--section")
+            p.add_argument("--wait-hours", type=float, default=0, help="time, not work: no worker before then (at most %g)" % MAX_WAIT_HOURS)
         if name == "finish":
             p.add_argument("--sha", required=True)
             p.add_argument("--evidence", required=True)
@@ -2706,7 +2712,7 @@ def main(argv=None):
         elif a.cmd == "contract":
             contract(store, a.item, a.gen, a.proof, a.live, a.why)
         elif a.cmd == "snag":
-            snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section)
+            snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours)
         elif a.cmd == "finish":
             finish(store, a.item, a.gen, a.sha, a.evidence)
         elif a.cmd == "help":

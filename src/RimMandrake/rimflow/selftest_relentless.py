@@ -270,6 +270,25 @@ def expect_fence(fn, what):
     ok(False, what)
 
 
+def t_snag_wait():
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], "sample_thin", "time, not work", x.r, now=x.now, wait_hours=1)
+    x.w.up[st["run"]["unit"]] = False
+    n = len(x.w.launches)
+    for _ in range(5):
+        x.tick(600)
+    ok(len(x.w.launches) == n, "snag --wait-hours: no worker before the hour is up")
+    x.tick(1200)
+    x.tick(120)
+    ok(len(x.w.launches) > n, "snag --wait-hours: a worker after it")
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], "sample_thin", "again", x.r, now=x.now, wait_hours=1000)
+    ok(x.st("I0")["not_before"] == x.now + R.MAX_WAIT_HOURS * 3600, "a worker's word parks an item for the cap at most")
+
+
 def t_stale_worker():
     x = Rig(n=1, share=1.0)
     x.run_one("I0")
@@ -2328,7 +2347,7 @@ def t_help_lifecycle():
 def main():
     for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
-              t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
+              t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
               t_help_forced_once, t_help_own_call_spends_hits, t_help_reaches_brief, t_help_refused, t_help_lifecycle):
         print("--", t.__name__)
