@@ -390,7 +390,11 @@ try:
         closed("G8 an existing report with %s" % label, lambda text=text: open(rep, "w").write(text),
                lambda: open(rep, "wb").write(good))
     for label, bad in (("counts null (closeout #7)", dict(tbl, counts=None)), ("signatures null", dict(tbl, signatures=None)),
-                       ("a signature that is no row", dict(tbl, signatures={"S1": 7}))):
+                       ("a signature that is no row", dict(tbl, signatures={"S1": 7})),
+                       ("empty counts", dict(tbl, counts={})), ("a signature with no status", dict(tbl, signatures={"S1": {}})),
+                       ("raw null", dict(tbl, raw=None)),
+                       ("a row reduced to its status (closeout r3)",
+                        dict(tbl, signatures=dict(tbl["signatures"], **{next(iter(tbl["signatures"])): {"status": "NEW"}})))):
         closed("G8 an existing report with %s" % label,
                lambda bad=bad: open(rep, "w").write(head + FF.TABLE_FENCE + json.dumps(bad) + FF.TABLE_END),
                lambda: open(rep, "wb").write(good))
@@ -437,12 +441,17 @@ check(not pair("lookup failed: tenant20261027T010203A", "lookup failed: tenant20
       "C1 a timestamp glued inside an identifier is the identifier: no merge")
 check(not pair("opaque=J20261027T010101Z-a1b2c3ff", "opaque=J20261028T020202Z-d4e5f6ff"),
       "C1 a job-shaped prefix of a longer id is kept")
+check(not pair("key=2026-10-27T01:02:03A", "key=2026-10-28T01:02:03A"), "C1 no truncated ISO match: a glued seconds part is kept")
+check(not pair("id J20261027T010101Z-a1b2c3.a2x", "id J20261028T020202Z-d4e5f6.a2x"), "C1 no truncated job match")
+check(pair("at 2026-10-27T01:02:03.5Z failed", "at 2026-10-28 02:02 failed"), "C1 real ISO forms still fold")
 check(pair("at 20261027T010101Z failed", "at 20261028T020202Z failed"), "C1 a real compact timestamp still folds")
 check(pair("run J20261027T010101Z-a1b2c3.a2 failed", "run J20261028T020202Z-d4e5f6 failed"), "C1 a real job id still folds")
 _d = {"sig": "S1", "as": "merge", "into": "X", "by": "F", "ts": ts(29, 1), "why": "w"}
 _u = dict(_d, **{"as": "undo", "into": None})
 check(FF.latest_decision("S1", set(), [], [_d, _u]) is None, "C3 an undo in the same second as the decision wins")
 check((FF.latest_decision("S1", set(), [], [_u, _d]) or {}).get("as") == "merge", "C3 and the later of a tie is what counts")
+_sp = [{"name": "W", "seat": "F", "ts": ts(29, 1), "from": "A_1"}]
+check(FF.latest_decision("S1", {"A_1"}, _sp, [_u]) is None, "C3 an undo in the same second as a spawn wins")
 _r = rec("JX", "FlowWorks", ts(27, 1), [("c1", "r1", "FAIL", "x")], [], "IT_A")
 _r["result"]["outcome"] = "FAILED"
 _r["result"]["rows"] = 7
@@ -458,6 +467,15 @@ except FF.Unmeasured:
     _refused = True
 os.remove(_f.name)
 check(_refused, "C6 a bad replacement template is UNMEASURED at load")
+with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as _f:
+    json.dump(dict(json.load(open(FF.RULES_PATH)), normalise=[["x", "\\g<missing>"]]), _f)
+try:
+    FF.load_rules(_f.name)
+    _refused = False
+except FF.Unmeasured:
+    _refused = True
+os.remove(_f.name)
+check(_refused, "C6 an unknown named group is UNMEASURED at load")
 
 print("\n%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

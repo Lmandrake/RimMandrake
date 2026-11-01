@@ -593,11 +593,27 @@ def test_closeout_review_findings():
     SR._pending("FOUNDRY", dict(sch["seat_restart"]["seats"]["FOUNDRY"], backstop=False), rs2, st2, {}, {}, {"sessionId": "sid-old"},
                 T0 + 1, lambda **k: out.append(k))
     check(rs2["state"] == "cancelled" and [o["do"] for o in out] == ["restart_cancel"], "#2: a pending backstop is cancelled when it is off")
-    a = [{"do": "restart_request", "seat": "FOUNDRY", "req_ts": T0}]
-    sch2 = dict(limits(), ledger_notes=False)
-    D.execute(a, sch2, {"seats": {}, "seat_restart": {}}, ROOT, True, T0,
-              {"persist": lambda: order.append("persist"), "seat_restart": {"consume": lambda seat, **k: order.append("consume")}})
-    check(order == ["persist", "consume"], "#1: pending persisted before the request is consumed (%s)" % order)
+    # #1 through the real planner: what is on disk at the moment of consuming holds the restart's identity
+    sch2, st3, saved = dict(limits(), ledger_notes=False), fresh(), []
+    req = {"seat": "FOUNDRY", "ts": T0, "session_id": "sid-old", "ticket": "T1"}
+    o = obs(request=req, armed=armed())
+    a = run(sch2, st3, o, T0 + 1)
+    pend = [x for x in a if x["do"] == "restart_request"]
+    check(pend and (st3["seat_restart"].get("FOUNDRY") or {}).get("state") == "pending", "#1 the planner marks the restart pending")
+
+    def consume(seat, **k):
+        order.append("consume")
+        raise SystemExit("tick killed at the consume")
+
+    try:
+        D.execute(pend, sch2, st3, ROOT, True, T0 + 1,
+                  {"persist": lambda: (order.append("persist"), saved.append(json.dumps(st3["seat_restart"]))),
+                   "seat_restart": {"consume": consume}})
+    except SystemExit:
+        pass
+    disk = json.loads(saved[0])["FOUNDRY"] if saved else {}
+    check(order == ["persist", "consume"] and disk.get("state") == "pending" and disk.get("session_id") == "sid-old"
+          and disk.get("ts") == T0, "#1 the saved state before a consume that dies still holds the restart (%s)" % disk)
 
 
 def test_live_schedule():

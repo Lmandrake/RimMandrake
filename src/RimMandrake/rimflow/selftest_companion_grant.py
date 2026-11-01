@@ -138,6 +138,13 @@ for label, bad in (("a string", "bridge"), ("an empty list", []), ("an unknown n
     except ValueError:
         refused = True
     ok("load_conf refuses hold_needs as %s" % label, refused, True)
+open(BADC, "w").write(json.dumps(dict(CONF, hold_within_min=1)).replace('"hold_within_min": 1', '"hold_within_min": 1e309'))
+try:
+    cg.load_conf(BADC)
+    refused = False
+except ValueError:
+    refused = True
+ok("load_conf refuses an infinite hold_within_min", refused, True)
 json.dump(dict(CONF, hold_within_min="120"), open(BADC, "w"))
 try:
     cg.load_conf(BADC)

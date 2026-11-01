@@ -17,7 +17,7 @@ This never writes the grant. Renewing it is not this program's call (see compani
 
     python3 src/RimMandrake/rimflow/companion_grant.py [--json]     exit 0 OK, 1 LAPSING/LAPSED, 2 UNMEASURED
 """
-import datetime, json, os, re, sys, time
+import datetime, json, math, os, re, sys, time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CONF_PATH = os.path.join(HERE, "companion_grant.json")
@@ -47,7 +47,7 @@ def load_conf(path=CONF_PATH):
     if not isinstance(prof, list) or not prof or not all(isinstance(x, str) and x for x in prof):
         raise ValueError("test_profiles %r must be a non-empty list of strings" % (prof,))
     hw = conf.get("hold_within_min")
-    if isinstance(hw, bool) or not isinstance(hw, (int, float)) or not hw > 0:
+    if isinstance(hw, bool) or not isinstance(hw, (int, float)) or not hw > 0 or not math.isfinite(hw):
         raise ValueError("hold_within_min %r must be a positive number" % (hw,))
     if not isinstance(conf.get("profile_file"), str) or not conf["profile_file"]:
         raise ValueError("profile_file %r must be a non-empty path" % (conf.get("profile_file"),))

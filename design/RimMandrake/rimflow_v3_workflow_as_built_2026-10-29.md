@@ -571,17 +571,17 @@ The account timers `account-plan` and `claude-account-warm` are [OFF] (disabled)
 
 ---
 
-### 2.19 Designed on 2026-10-29, not built [DESIGNED]
+### 2.19 Designed on 2026-10-29: one built, two parked, one dropped
 
-Four designs were written today. Each is DESIGN ONLY: no code, timer, schedule key or role-file text from them is live. The owner's rulings below are quoted from each item's ledger history (`rimflow show <ID>`). All four items are now owned by FOUNDRY.
+Four designs were written on 10-29. By owner card that day (`RIMFLOW_V3_BUILD_WHAT_WAS_ONLY_PROSE`, "Keep hole-fixers, stop the rest"): (a) was built and is [LIVE]; (b) and (c) are [DESIGNED], parked as patches pending the v3 collapse; (d) was dropped. The owner's rulings below are quoted from each item's ledger history (`rimflow show <ID>`).
 
-**a. Findings curation** (`design/RimMandrake/findings_curation_design_2026-10-29.md`; item `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`, filed by the owner 2026-10-29T15:39Z for FOUNDRY, kind build).
+**a. Findings curation** [LIVE, `testq.py` testq-tick.service ExecStart `findings_fold.py run`] (`design/RimMandrake/findings_curation_design_2026-10-29.md`; item `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`, filed by the owner 2026-10-29T15:39Z for FOUNDRY, kind build; done).
 - Why: the owner refused `FINDINGS_REDESIGN_BORN_AS_ITEMS_NO_LOBBY`; 127 findings were 50 distinct failures, one repeated 27 times.
 - Options: A, a daily FOUNDRY curation ticket; B, a program folds repeats and FOUNDRY judges only what is new; C, a weekly Auditor pass. The owner filed B.
-- Option B actors: a no-AI sorter run after every ingest from the Dispatcher's measure list (like ops_watch). It signs each finding (mod, test row, normalized failure text) into a standing-failures table, and on its own only merges repeats into an existing decision, routes red canaries and refused pulls to Operations' lane item, retires a row after 3 later passes in a row (reopens on a new fail), and flags done-but-failing items (§6 of the design). FOUNDRY judges what is new, daily, with a weekly pass (item title).
-- New handoffs if built: testq ingest → sorter → Operations (rig health) and → FOUNDRY (new failures).
+- As built: `src/RimMandrake/Utils/findings_fold.py`, the last step of testq-tick.service after ingest (not the Dispatcher's measure list). It signs each finding (mod, chain, row, normalized failure text) into a standing-failures table in `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`. It only groups and reports: simplified after blind reviews (`findings_fold_rules.json` `_doc`), it never retires, reopens, merges into a decision or writes the ledger, and the design's "retire after 3 passes" is a count shown to the judge. It marks machine-health rows for Operations' lane item and lists done-but-failing items as contradictions. FOUNDRY judges daily with a Friday memory sweep (`FOUNDRY.md` l.33-40), recording verdicts with `findings_fold.py decide`; the Auditor re-checks merges (`auditor.md` l.180).
+- Handoffs: testq ingest → sorter → FOUNDRY (new failures) and → Operations (rig health).
 
-**b. v3 health daily check** (`design/RimMandrake/v3_health_daily_check_2026-10-29.md`; item `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
+**b. v3 health daily check** [DESIGNED, parked; patch `D:\ClaudeWork\rimmandrake\v3_build\health\parked.patch`] (`design/RimMandrake/v3_health_daily_check_2026-10-29.md`; item `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
 - Owner, verbatim: "1, 2, 3 - should be a daily check performed by a responsible party all the time (could be Ops, could be Arbiter). Everything but 4. Switching off agents is a good idea later when we show that at least a nominative system is functional for awhile."
 - By card 17:06Z: Operations owns all of it (message tagging, planted faults, output tracing, the daily page); the Auditor's weekly re-check guards Operations grading its own usefulness.
 - By card 17:23Z: the kill-test baseline is an Opus gold-labelling of the v2 week; the Haiku tagger is measured against it. A BENCH note at 17:31Z says the spec's §2 still describes the old baseline and is owed a revision.
@@ -589,12 +589,12 @@ Four designs were written today. Each is DESIGN ONLY: no code, timer, schedule k
 - Designed actors and cadences (design §1): `owner_tags.py extract` every 15 min inside the ops_watch pass (no AI); `owner_tags.py tag` hourly on its own timer (Haiku); `health_drill.py plant` on its own timer at a random minute (Auditor's program) and `health_drill.py watch` every 15 min; ops_watch collector `health.trace.*` every 15 min; `v3_health_page.py` as the last step of the ops_watch pass, one dated copy a day. Operations reads the page in its existing 07:30 and 19:30 runs and on health alarms; no new role run. Outputs under `D:\ClaudeWork\rimmandrake\v3_health\`. Using `health.*` keys for dispatch decisions is out of scope.
 - Part 4 (switch roles off to see what breaks) is deferred by his ruling.
 
-**c. Process model v2/v3** (`design/RimMandrake/process_model_v2_v3_design_2026-10-29.md`; item `OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY`).
+**c. Process model v2/v3** [DESIGNED, parked; patch `D:\ClaudeWork\rimmandrake\v3_build\model\parked.patch`] (`design/RimMandrake/process_model_v2_v3_design_2026-10-29.md`; item `OPS_MODEL_BUILD_V3_TWIN_FIT_DAILY`).
 - Owner, verbatim: "Operations should be using a custom v3-based model fit. v2 models should be specific to that v2 workflow and parameterized appropriatley, only fit to past v2 data logs. v3 should have different parameterizations ... v3 model should be tuned at least once a day on the ongoing data record".
 - By card 17:34Z: compare on the shared work core plus v3 tickets re-counted the v2 way; v2 fit window 2026-10-06..10-26 (fit two weeks, predict the third); owner-habit shifts go to the daily summary only, never a direct alert.
 - Designed actor: `rm-process-model.timer` (user systemd) daily at 06:30 local, hard 30-minute timeout, nice 10; deterministic ABC-MCMC (20 chains × 150 steps, 120 members, about 10-15 CPU-minutes on 4 processes); a held-out-day check gates `current.json`; 3 failures in a row → RED, filed as an item. Outputs under `D:\ClaudeWork\rimmandrake\process_model\`, nothing in the repo. ops_watch adds a daily series line and an alarm (no fit for 36 h, or RED). Operations reads `digest.md` at 07:30 and never retunes by hand.
 
-**d. Producer cadence** (`design/RimMandrake/producer_cadence_2026-10-29.md`; item `PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS`).
+**d. Producer cadence** [dropped 10-29, nothing below is live; patch `D:\ClaudeWork\rimmandrake\v3_build\producer\parked.patch`] (`design/RimMandrake/producer_cadence_2026-10-29.md`; item `PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS`).
 - Owner, verbatim: "I think calling the Producer once a week for planning is not at all the entirely of Producer. It also needs to track that schedule (relative to the stats from Operations, Foundry, etc.) and make a daily plan to follow as well. Likely 2-3 times a day may be needed, that's a tuning parameter."
 - By card 19:42-19:43Z: option B, gated check-ins at 12:00 and 18:00 (new schedule key `track_slots_local`); a big slip triggers an immediate Conductor run ("Wake me at once"); on-schedule counts only items built with a real commit (ledger-only or under-5-minute closes excluded as suspect).
 - Designed actors: a no-AI tracker (ops_watch collector `plan.*`) compares the day's plan `today.json` checkpoints with measured progress. A tracking slot launches the Producer only when the newest MEASURED reading shows `BEHIND`, `AHEAD`, `RUNNING_DRY`, a big slip or a failure; a new event kind `plan_slip` (edge-triggered) shares the existing `event_runs_per_day` 1. At most three Producer runs a day inside the existing 2.0M daily cap; add 15:00 if FOUNDRY runs dry between 12:00 and 18:00 most days of the first week.
@@ -867,7 +867,7 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 2. The schedule's top-level `_doc` now states that every role is enabled, that caps are admission checks plus alarms, and that the bands are neutralized; fixed in c2dfc21445.
 3. The throttle bands are neutralized (all "slots: all", ×1.0, commit d92c4c825e). The Conductor `_why` and the operations.md throttle section now say so (2a5ec4a7ee, c2dfc21445). `throttle_order` is read only by the simulator `Utils/sim/rimflow_v3_sim.py`.
 4. Every `_caps_why` now quotes the live caps (Producer 800k run / 2.0M day, Auditor 700k / 875k) (c2dfc21445).
-5. `session_helpers_max` (Conductor, 3) and `helpers_max` (2 on three roles) are read by no program; the schedule `_why` says so (c2dfc21445). Helpers are bounded by the helper hook and `helper_budget.json` only (see item 32).
+5. `session_helpers_max` (Conductor, 3) and `helpers_max` (2 on three roles) are read by no live program (only `selftest_dispatcher.py` names them); the schedule `_why` says so (c2dfc21445). Helpers are bounded by the helper hook and `helper_budget.json` only (see item 32).
 
 **Built but off or missing:**
 
@@ -877,15 +877,15 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 9. The Archmagi test lane needs `TESTQ_ARCHMAGI=1`, which the tick service does not set.
 10. The account timers `account-plan` and `claude-account-warm` are disabled.
 
-**Designed, not built:**
+**Designed on 10-29, and where each stands** (owner card of 10-29 on `RIMFLOW_V3_BUILD_WHAT_WAS_ONLY_PROSE`; closeout `design/RimMandrake/rimflow_v3_build_closeout_2026-10-31.md`):
 
-11. The Conductor goodbye restart.
-12. `INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS`. No Innovator trial can start without it.
-13. `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN` (parked pending the v3 collapse). The hard-flag filer `AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI` is built (5ce76d059b).
-14. `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`. No running consumer turns RUNNER findings into items.
-15. `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME` (status proposed).
-16. The `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reservation pool.
-17. Producer cadence beyond Wednesdays (`PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS`): the owner's card answers were recorded, but the schedule is unchanged.
+11. The Conductor goodbye restart: BUILT and on (`dispatcher_schedule.json` `seat_restart.seats.BENCH.enabled` true; `.claude/hooks/conductor_goodbye.py`). The context backstop is on for FOUNDRY and off for BENCH (`backstop` false; his ruling covered only the goodbye kill).
+12. `INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS`: parked (`D:\ClaudeWork\rimmandrake\v3_build\roles\parked.patch`). No Innovator trial can start without it.
+13. `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`: parked (same patch). The hard-flag filer `AUDITOR_BUILD_HARD_FLAG_FILER_NO_AI` is built (5ce76d059b).
+14. `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`: BUILT (§2.19a).
+15. `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME`: BUILT, warning and offer filter only; nothing renews a grant (§2.16).
+16. The `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` reservation pool: parked (same patch).
+17. Producer cadence beyond Wednesdays (`PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS`): dropped; the schedule is unchanged.
 
 **Caps are admission checks plus alarms, not stops:**
 
@@ -923,9 +923,9 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 30. A cutover on 10-28 at 05:04 stopped every rm-* and testq-* timer, and nobody restarted them. This was the steward's TICK_STOPPED lesson (steward.py header).
 
 31. The v3 cutover moved 691 BENCH items and the FlowWorks/GSS lane to FOUNDRY (§2.20), yet `slot_rules.json` still lists a BENCH seat with `fallback_n` 3, the helper budget carries a BENCH override of 6 until 2026-11-04, and the Conductor's scheduled checks launch as seat BENCH (CONDUCTOR.md:57). The standing text that said BENCH owns all FlowWorks + GSS was corrected to FOUNDRY in CLAUDE.md, the charter and the helper rules (efabf1399a).
-32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Owner's ruling of 10-29 (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6; a helper running over 1 h raises an alarm). The spawn hook `.claude/hooks/block_agent_over_slots.py` applies only to a seat that is both in `slot_rules.json` `enforce_seats` and in `slot_allocator.SEAT_PROJECT` (BENCH, FOUNDRY; the seat is `AGENT_SEAT`, else the `/rm/bench` or `/rm/foundry` cwd); any other seat, or none, is allowed by design. For those seats: (i) the interactive Conductor window (seat BENCH, no `RM_ROLE_UNIT`) has no limit while the owner's last typed message in that window is under `conductor_window.open_min` (20) old; after that its limit is `conductor_window.cap_n` (2), replacing the per-seat budget (an unreadable typed time counts as lapsed); (ii) every other launch (FOUNDRY, and BENCH-seat runs carrying `RM_ROLE_UNIT`) uses the per-seat count in `helper_budget.json` (CONDUCTOR 6 live), falling back to the allocator. A launch is refused when the helpers counted as running already reach the limit. Running means `slot_allocator.running_helpers`: any subagent transcript under the seat's whole Claude project (every session of that clone, not only this window) modified within `helpers.live_window_s` (900 s) whose last assistant record is not a clean `end_turn` with no tool call pending, or has user records after it, or does not exist yet. The hook fails open. Shared cross-role enforcement ("2 across all roles") is unbuilt: `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is parked pending the v3 collapse.
-33. The Producer's test-lane mod choice has no path to the testq units: `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` are set nowhere, so testq fills FlowWorks only (§2.15).
-34. Findings have no consumer on any cadence and no Part 4 duty row; the chosen fix is designed, not built (§2.19a).
+32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no live program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Owner's ruling of 10-29 (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6; a helper running over 1 h raises an alarm). The spawn hook `.claude/hooks/block_agent_over_slots.py` applies only to a seat that is both in `slot_rules.json` `enforce_seats` and in `slot_allocator.SEAT_PROJECT` (BENCH, FOUNDRY; the seat is `AGENT_SEAT`, else the `/rm/bench` or `/rm/foundry` cwd); any other seat, or none, is allowed by design. For those seats: (i) the interactive Conductor window (seat BENCH, no `RM_ROLE_UNIT`) has no limit while the owner's last typed message in that window is under `conductor_window.open_min` (20) old; after that its limit is `conductor_window.cap_n` (2), replacing the per-seat budget (an unreadable typed time counts as lapsed); (ii) every other launch (FOUNDRY, and BENCH-seat runs carrying `RM_ROLE_UNIT`) uses the per-seat count in `helper_budget.json` (CONDUCTOR 6 live), falling back to the allocator. A launch is refused when the helpers counted as running already reach the limit. Running means `slot_allocator.running_helpers`: any subagent transcript under the seat's whole Claude project (every session of that clone, not only this window) modified within `helpers.live_window_s` (900 s) whose last assistant record is not a clean `end_turn` with no tool call pending, or has user records after it, or does not exist yet. The hook fails open. Shared cross-role enforcement ("2 across all roles") is unbuilt: `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is parked pending the v3 collapse.
+33. The Producer's test-lane mod choice has no path to the testq units: `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` are set nowhere, so testq fills FlowWorks only (§2.15). The item that would have wired it, `TESTLANE_PLAN_WIRE_PRODUCER_PICKS_UNHEARD`, was dropped.
+34. Findings have a consumer since 10-29: FOUNDRY's daily curation of `findings_fold.md` (§2.19a). They still have no Part 4 duty row.
 35. The v3 health spec's §2 still describes the pre-ruling kill-test baseline (BENCH note 17:31Z on `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
 36. Part 4 hands a duty over only when its role is enabled and its first run is recorded; it names no record of which duties have handed over. Whether each Wed/Fri/Sun handover happened is answered role by role in §2 (run records), not by a hand-over ledger.
 

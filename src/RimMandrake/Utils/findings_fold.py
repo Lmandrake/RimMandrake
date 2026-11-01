@@ -58,6 +58,7 @@ WHY_RE = re.compile(r"^(?P<chain>[^/ ]*)/(?P<row>\S+) FAIL on (?P<host>\S+): (?P
 REPORT = "findings_fold.md"
 TABLE_FENCE, TABLE_END = "\n\n```json findings_fold table\n", "\n```\n"
 TABLE_KEYS = {"schema", "generated", "counts", "signatures", "contradictions", "raw"}
+SIG_ROW_KEYS = {"chain", "count", "decision", "failed_since_decision", "findings", "first_seen", "health", "items", "last_fail", "last_seen", "mod", "passes_since", "row", "row_latest", "status", "text"}    # every field fold() always writes on a row
 
 
 class Unmeasured(Exception):
@@ -81,7 +82,7 @@ def load_rules(path=None):
         for rx, rep in rules["_norm"]:
             rx.sub(rep, "")                         # a bad replacement template is a rules fault, not a crash mid-fold
         return rules
-    except (OSError, ValueError, KeyError, TypeError, re.error) as e:
+    except (OSError, ValueError, KeyError, IndexError, TypeError, re.error) as e:
         raise Unmeasured("rules %s unreadable: %s: %s" % (path, type(e).__name__, e))
 
 
@@ -287,10 +288,10 @@ def row_runs(recs):
 
 def latest_decision(sig, names, spawns, lines):
     """The newest of: a decisions-file line on sig, a `rimflow spawn --from <one of its findings>` (work). undo -> None."""
-    ds = [dict(d, src="decisions") for d in lines if d["sig"] == sig] + \
-        [{"as": "work", "into": e.get("name"), "by": e.get("seat"), "ts": e.get("ts") or "",
-          "why": "spawned from %s" % e["from"], "src": "ledger"} for e in spawns if e["from"] in names]
-    # ties (one-second clock) go to the later line: an undo right after a decision wins
+    ds = [{"as": "work", "into": e.get("name"), "by": e.get("seat"), "ts": e.get("ts") or "",
+           "why": "spawned from %s" % e["from"], "src": "ledger"} for e in spawns if e["from"] in names] + \
+        [dict(d, src="decisions") for d in lines if d["sig"] == sig]
+    # ties (one-second clock) go to the later entry, and a decisions line outranks a spawn: an undo right after wins
     last = ds[max(range(len(ds)), key=lambda k: (ds[k]["ts"], k))] if ds else None
     return None if not last or last["as"] == "undo" else last
 
@@ -413,6 +414,19 @@ def semantic(t):
     return json.dumps({k: v for k, v in t.items() if k != "generated"}, sort_keys=True)
 
 
+def table_fault(t):
+    """-> why a table of the right keys is still not a whole table, or None."""
+    c, sigs = t["counts"], t["signatures"]
+    if not isinstance(c, dict) or not {"findings", "distinct", "by_status", "contradictions"} <= set(c):
+        return "counts"
+    if not isinstance(sigs, dict) or not all(isinstance(s, dict) and isinstance(s.get("status"), str)
+                                             and SIG_ROW_KEYS <= set(s) for s in sigs.values()):
+        return "signatures"
+    if not isinstance(t["raw"], dict) or not isinstance(t["contradictions"], list):
+        return "raw or contradictions"
+    return None
+
+
 def read_prev(path):
     """(table, file text) of the existing report, or (None, None) when there is none. Unreadable, partial, or a
     table that is not a whole table of this schema: UNMEASURED, never 'no previous table'."""
@@ -428,9 +442,7 @@ def read_prev(path):
         t = json.loads(body[:-len(TABLE_END)]) if fence and body.endswith(TABLE_END) else None
     except ValueError:
         t = None
-    if not isinstance(t, dict) or set(t) != TABLE_KEYS or t["schema"] != SCHEMA \
-            or not isinstance(t.get("counts"), dict) or not isinstance(t.get("signatures"), dict) \
-            or not all(isinstance(s, dict) for s in t["signatures"].values()):
+    if not isinstance(t, dict) or set(t) != TABLE_KEYS or t["schema"] != SCHEMA or table_fault(t):
         raise Unmeasured("existing report %s holds no whole %s table (partial, edited or another version): "
                          "move it aside to start again" % (path, SCHEMA))
     return t, text

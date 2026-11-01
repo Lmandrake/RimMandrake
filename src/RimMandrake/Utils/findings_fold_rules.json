@@ -15,9 +15,9 @@
  "memory_roots": ["skills/", "infrastructure/state/facts/", "src/", ".claude/"],
  "_memory_roots_why": "design section 3 and 9.3: memory lands where it is read (a skill, a fact file, a rule or check), never the lessons inbox",
  "normalise": [
-  ["(?<![0-9A-Za-z])J\\d{8}T\\d{6}Z-[0-9a-fA-F]{6}(?:\\.a\\d+)?(?![0-9A-Za-z])", "<job>"],
-  ["(?<![0-9A-Za-z])\\d{8}T\\d{6}Z?(?![0-9A-Za-z])", "<ts>"],
-  ["(?<![0-9A-Za-z])\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?)?Z?(?![0-9A-Za-z])", "<ts>"],
+  ["(?<![0-9A-Za-z])J\\d{8}T\\d{6}Z-[0-9a-fA-F]{6}(?:\\.a\\d+)?+(?![0-9A-Za-z])", "<job>"],
+  ["(?<![0-9A-Za-z])\\d{8}T\\d{6}Z?+(?![0-9A-Za-z])", "<ts>"],
+  ["(?<![0-9A-Za-z])\\d{4}-\\d{2}-\\d{2}[T ]\\d{2}:\\d{2}(?::\\d{2}(?:\\.\\d+)?+)?+Z?+(?![0-9A-Za-z])", "<ts>"],
   ["\\b(took|elapsed|after|in) \\d+(?:\\.\\d+)? ?(ms|s|sec|seconds|min)\\b", "\\1 <dur>"]
  ],
  "_normalise_why": "Merge only on an exact signature (coordinator ruling 2026-10-29 after blind review 2): mod + chain + row + the failure text with ONLY these removed, in order: testq job ids (with attempt suffix), compact timestamps (thirst_live_result_<ts>.json keeps its stem), ISO timestamps, and durations written as took/elapsed/after/in N s|ms|min. Nothing else (blind review 3: not even whitespace, which can be the bug): hex ids, thing ids, codes, counts, values and spacing are KEPT, and a timestamp or job id glued inside a longer identifier is not one (closeout review 2026-10-31), so two failures that differ in any of them stay two rows. A duplicate row is cheap; a wrong merge loses a bug. Measured over the 2026-10-29 backlog: job ids and compact timestamps were the only volatile tokens"
