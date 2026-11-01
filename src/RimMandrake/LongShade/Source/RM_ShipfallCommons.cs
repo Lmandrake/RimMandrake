@@ -145,7 +145,7 @@ namespace RimMandrake.LongShade
                 return;
             }
             RM_ShipfallCommonsExtension ext = Ext;
-            if (ext == null || !RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.shipfallCommonsEnabled)
+            if (ext == null)
             {
                 return;
             }
@@ -153,13 +153,20 @@ namespace RimMandrake.LongShade
             if (engine == null)
             {
                 // The ship left (or never came): the next landing starts the
-                // ladder from the bottom again.
+                // ladder from the bottom again. This reset runs even while
+                // Long Shade or Shipfall Commons is switched off, so a launch
+                // made while off cannot leave a stale arrivedTick behind that
+                // opens every rung at once on re-enable.
                 arrivedTick = -1;
                 stagesOpen = 0;
                 dispersedThisLaunch = false;
                 commons.Clear();
                 commonsSet.Clear();
                 commonsKey.Invalidate();      // an emptied list must never be served as "fresh" when the ship lands again
+                return;
+            }
+            if (!RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.shipfallCommonsEnabled)
+            {
                 return;
             }
             int now = Find.TickManager.TicksGame;
