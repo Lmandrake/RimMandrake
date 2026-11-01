@@ -1,0 +1,1 @@
+Backblaze's local logs (C:\ProgramData\Backblaze\bzdata\bzbackup\bzdatacenter\bz_done_*.dat) record size, SHA-1, path and time for every version of a backed-up file, deleted ones included. Use them to date a lost file and to prove a rebuild byte-exact. robocopy /L /S /MIN /MAX scans D: by exact size in about a minute; find over /mnt/d timed out at 500 s.
