@@ -1,0 +1,7 @@
+# FOUNDRY handoff 2026-10-31 ~21:00 PDT (context-limit restart)
+State: the joint pinned apply is run by helper a22109629455d9459 (v3 + ralph_a + trio from /home/mandrake/rm/trial_pin at one sha S; PIN/LAUNCH lines in /mnt/d/ClaudeWork/rimmandrake/foundry_arena/replay/launcher.log). Check its result and PROVEN 5MIN lines first.
+- `TRIAL_TREE_PIN_LIVE_CODE_NO_HASH` — pin built, arms relaunching; NEXT: read launcher.log tail, confirm three LAUNCH lines + PROVEN 5MIN, run arena_analysis, watch first finished tasks for UNMEASURED/invalid gate steps.
+- `TRIAL_PARALLEL_DESIGN_ADD_ON_EQUAL_ALLOWANCE` — owner approved; brief noted on the item; NEXT: spawn an rm-builder design helper (brief on the item; deliverable design/RimMandrake/parallel_add_on_trial_design_2026-11-01.md).
+- Verdict caveats owed: each arm crossed 8ff2858a8c -> S; ralph_a 19:42 drift window (gate/judge ran newer disk code after 18:36:55).
+- Owed after trial: code review of dirty arena files; ARENA_ANCHOR_CLOSEOUT (arena_anchor_publish.py --final); deferred TRIO_CRITIC_WIRE_LIVE_PLAN_TOO, ARENA_JUDGE_ENV_FIX_CODEX_OPENAI_PASSTHROUGH.
+Rules: name helpers by item ID or plain words (no lane codes). Freeze lifted after the pin: pull/publish normally (flock /home/mandrake/.seat-tmp/FOUNDRY/publish.lock ./publish). Owed live checks (not scheduled): chiller style, hose cut mid-settle, Shipfall off-reland, fish bill, stasis provisions, Minerals grids, white slime burn, vent condensate.
