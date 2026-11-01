@@ -649,7 +649,7 @@ HEIGHT_CONFLICT = {"FurnaceBeast": 1.636}
 # walking the real Pyrelands FireHawk directory picks up its _Body_/_Wing_ part
 # textures too, which the old 71-file staging did not include. 3 of 88 files
 # (FurnaceBeast_north, FireHawk_east, FireHawk_Wing_east) now fall below
-# KEYLINE_MIN_FRAC. Headroom of 2 so a real new break is not a selftest failure.
+# KEYLINE_MIN_FRAC.
 OUTLINE_MAX_FLAGGED_FILES = 5
 # PROVISIONAL art accepted by owner card 2026-10-12, revisit after his in-game look.
 # Commit 68ee19c27d added these three keyline flags (Bolotaur/FurnaceBeast/Zeer, unchanged
@@ -658,6 +658,11 @@ OUTLINE_MAX_FLAGGED_FILES = 5
 # renders 10-18, icons enact 10-19) keyline-flag too; owner-accepted art, same revisit.
 OUTLINE_PROVISIONAL_FLAGGED = {"Dalgo_east.png", "Orray_east.png", "RM_FE_Quickgrass_b.png", "GizkaW_east.png",
                                "RM_FE_EmberGrassA.png", "RM_FE_QuickgrassA.png", "RM_FE_ScorchFruit.png"}
+# FireWasp (art_eval accept 2026-10-28, not an owner look): every gap is its wing flames, drawn light with no edge on
+# purpose, and a keyline round a flame would be the defect. Excluded by file, so the thresholds and cap stay as they are.
+# Ullai_east and Emberscythe_east (art_eval accept 2026-10-23) stay COUNTED: real small gaps, so the cap has no headroom
+# left, and one new flag fails here on purpose. Look at it; do not raise the cap.
+OUTLINE_FLAME_EDGED = {"FireWasp_east.png", "FireWasp_north.png", "FireWasp_south.png"}
 
 # Facings whose visible content touches a canvas edge and is clipped, re-measured
 # 2026-09-18. The previous pin, `Nuna_f_east.png`, is GONE and legitimately so —
@@ -772,11 +777,11 @@ def selftest() -> int:
     if any(f.check == "outline_coherence" and "Anooba" in f.subject for f in findings):
         fails.append("outline_coherence flagged an Anooba facing; its keyline "
                      "measures 1.000 and must stay clean")
-    # A check that flags most of the corpus carries no information, so cap it: 2 of
-    # 57 facings score below KEYLINE_MIN_FRAC today, and loosening DARK/MIN_FRAC until
-    # everything trips must fail here rather than look like a productive sweep.
+    # A check that flags most of the corpus carries no information, so cap it:
+    # loosening DARK/MIN_FRAC until everything trips must fail here rather than look
+    # like a productive sweep.
     keyed = {f.subject for f in findings if f.check == "outline_coherence"}
-    keyed -= OUTLINE_PROVISIONAL_FLAGGED
+    keyed -= OUTLINE_PROVISIONAL_FLAGGED | OUTLINE_FLAME_EDGED
     if len(keyed) > OUTLINE_MAX_FLAGGED_FILES:
         fails.append("outline_coherence flagged %d files (%s); more than %d means the "
                      "keyline thresholds have stopped discriminating"
