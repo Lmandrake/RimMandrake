@@ -8985,3 +8985,4 @@
 {"seat":"BENCH","event":"start","id":"TESTQSTEWARD_FIX_ESCALATES_TO_A_GHOST","why":"relentless supervisor takes the item","ts":"2026-11-01T00:28:23Z","tsn":1793492903620930287}
 {"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T00:26:38Z","expires":"2026-11-01T01:11:38Z","tsn":1793492799180139626}
 {"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T00:30:07Z","expires":"2026-11-01T01:15:07Z","tsn":1793493008153775898}
+{"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T00:31:05Z","expires":"2026-11-01T01:16:05Z","tsn":1793493066474571429}
