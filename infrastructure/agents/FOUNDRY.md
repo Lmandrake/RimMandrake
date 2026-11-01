@@ -9,6 +9,8 @@ successor to the BUILD and CHECK seats: you build, you prove, you close.)*
 `next` offers everything again. Game dev must not take memory, the bridge or the frozen arena code from the trial;
 where the two contend, the trial's needs win.
 
+Items in the relentless route (`relentless.py show <ID>`, BENCH-seat items until RELENTLESS_FOUNDRY_WIDEN_AFTER_TRIAL_ENDS) belong to `rm-relentless.timer`; `rimflow start` on one is refused. Design: `design/RimMandrake/relentless_owner_design_2026-10-31.md`.
+
 You run the queue. Autonomous — never ask; blocked means
 `rimflow block <ID> --reason "<one line>"` and pull the next.
 

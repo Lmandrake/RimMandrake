@@ -8,7 +8,7 @@ snag/need restart, not whatever happens now." and "treat this as a parameter to 
 And on the blind check: "at the end of the cycle there must be a blind checker, that makes sense, just not inside the
 debugging loop."
 
-Status: BUILDING. Inputs read:
+Status: LIVE on this host since 2026-10-31 (`rm-relentless.timer`, store `/home/mandrake/rm/relentless/store`). See section 12 for what was built differently from this text. Inputs read:
 `parallel_review_2026-10-31/` (arms, handoff_context, use_now, codex_review, folded_into_operations),
 `rimflow/lease.py`, `role_launch.py`, `dispatcher.py`, `testpilot_route.py`, `Utils/arena/ralph_a_loop.py` (`_recover`:
 rebuild state from a signed record, never from memory), `Utils/scratch_clone.py`.
@@ -101,7 +101,7 @@ FOUNDRY cannot pull during the replay, so it holds an old ledger and an old `rim
 race FOUNDRY's own `next`, and no guard on this host can stop that: the `start` event would not reach it. So
 `pool_seats` is `["BENCH"]` until the replay ends. The parameter is read as the share of the pool.
 
-**After the trial, exact step** (filed as RELENTLESS_FOUNDRY_ADOPT_AFTER_TRIAL_ENDS): when the replay has ended, FOUNDRY
+**After the trial, exact step** (filed as RELENTLESS_FOUNDRY_WIDEN_AFTER_TRIAL_ENDS): when the replay has ended, FOUNDRY
 pulls (its normal pre-pull check then passes), then one data commit sets `pool_seats` to `["BENCH","FOUNDRY"]`. Nothing
 else: FOUNDRY's clone is not a dependency of any worker, and no unit changes.
 
@@ -199,7 +199,7 @@ exact sha a checker reran in a clean tree.
 
 That goal asks one agent to own a problem end to end: edit, run, look, edit again, with a blind check at the end, and to
 compare closed items per day with the old route. Sections 1 and 7 are that loop. `relentless.py stats` prints closed per
-day through this route against all other closes. The item is superseded by this one.
+day through this route against all other closes. CLOSED_LOOP_PROVE_EDIT_RUN_LOOK_AGAIN is superseded by this item.
 
 ## 11. Fault table (each has a planted selftest)
 
@@ -213,3 +213,24 @@ day through this route against all other closes. The item is superseded by this 
 | `share` 0 and 1 | None enrolled; the whole pool enrolled |
 | Tick crash between steps | Receipts and persisted status replay; close is idempotent |
 | Two workers race a lease | One wins; the other sees the CAS fail |
+
+## 12. As built
+
+- **The pool is the proposed backlog.** `rank()` offers only items already taken, so the supervisor reads the eligible
+  proposed items itself (`pool_order`, priority sort) and enrols `share` of them. `relentless.py enrol --item X --why "..."`
+  puts one named item in by hand. An item excluded in the rules leaves the queue at the next tick.
+- **`max_workers` is 1 during the trial,** because of its stop lines (system burn, oom on `rm-harness.slice`, host memory).
+  It goes back to 2 with RELENTLESS_FOUNDRY_WIDEN_AFTER_TRIAL_ENDS. Note the tick itself peaked at 4 to 5 GB of host memory
+  during clones; see RELENTLESS_TICK_MEASURE_CLONE_MEMORY_PEAK.
+- **A worker lives in its scope.** `role_launch` puts it in `claude-seat-BENCH-<unit>.scope`; the `.service` wrapper may
+  die and the worker lives on. The supervisor's stop and every kill go to the scope.
+- **A worker that reported and then died is lost,** `worker_lost`, not a failed launch: `launch_fail` needs no `last_beat`.
+- **The fence carries the session generation** (`RELENTLESS_GEN` in the worker's environment, read by `hook_fence`); a
+  checker's nonce expires with its run, and a run is charged once even when it crosses midnight.
+- **Alarm items.** An `OPS_` or `LIVE_RESTORE_` item needs a live line in its contract, as `close` would refuse it
+  after the blind pass. The candidate gate says so before the check is spent, as `bad_candidate`.
+- **Rejected review findings.** Second review, finding 7 (a lease could lose the top place): rejected, a fresh item
+  never precedes a returned one in the queue order. A revocation landing after the hook has passed: accepted under the
+  honest-but-stale threat model of section 2.
+
+Evidence: `D:\ClaudeWork\rimmandrake\relentless\` (`design_review.md`, `code_review.md`, `code_review2.md`).

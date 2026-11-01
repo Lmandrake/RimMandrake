@@ -51,6 +51,10 @@ This rule outranks every other rule in this file and in BENCH.md.
   includes `digest.md`, `status.json`, `account_usage.py`, Operations' proposals, the Dispatcher journal and raw
   `rimflow show` (conductor.md).
 
+## Relentless route (owner, 2026-10-31)
+
+*"just don't let go until it's done."* `rm-relentless.timer` carries `share` of the eligible backlog (`rimflow/relentless_rules.json`, 0.5, his parameter to tune): a snag, a restart or a lost worker returns the item to the TOP of that queue, workers are replaceable, the state is on disk, and done is a blind check at the end of the cycle. `relentless.py show <ID>` reads one item; put one in with `relentless.py enrol --item <ID> --why "..."`. Only a true delegation_policy.md §2 call or a spend limit comes up to you (status `held`). Design: `design/RimMandrake/relentless_owner_design_2026-10-31.md`.
+
 ## Two modes
 
 - **Quick mode** (he writes from his phone, Remote Control): answer from the metrics pack, turn his words into
