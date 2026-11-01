@@ -1,0 +1,1 @@
+A steward 'skipped:' wake must not spend the incident's one wake, and a rung must not land on a doing item whose claim lapsed: both left a braked SteveDesktop lane with nobody on it for hours (OPS_STEVE_UNSTICK_UNCLAIMED_A00D). steve.incident_unclaimed_min cannot see a doing item.

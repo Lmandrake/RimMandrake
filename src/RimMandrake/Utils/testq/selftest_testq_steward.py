@@ -670,13 +670,64 @@ def main():
         check(W.nobody_for(W.ALARM_SEAT, "offline") is None and W.nobody_for("BENCH", "live"),
               "T2: the steward's L1 seat is relentless's pool; a needs=live BENCH item would have no receiver")
         real_nf, real_ol = W.nobody_for, W.open_lane_item
-        W.nobody_for, W.open_lane_item = (lambda s, n: "nobody drains %s" % s), (lambda w: None)
+        W.nobody_for, W.open_lane_item = (lambda s, n: "nobody drains %s" % s), (lambda w, now: None)
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
         sp_n = len(events("spawn"))
         W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
         W.nobody_for, W.open_lane_item = real_nf, real_ol
         check(len(events("spawn")) == sp_n and inc["level"] == 0 and "no receiver: nobody drains BENCH" in str(inc.get("error")),
               "T2: with no receiver the L1 spawn is refused, the reason is on the incident, the rung is retried: %s" % inc)
+        # OPS_STEVE_UNSTICK_UNCLAIMED_A00D: a skip is not the incident's one wake
+        n_wakes = len(wakes)
+        last_wake = base + 40000
+        S.dump({"ts": W.iso(last_wake), "epoch": last_wake}, T.q("wake.json"))
+        cool = int(os.environ.get("TESTQ_WAKE_COOLDOWN_S", "14400"))
+        winc = {"state": "BRAKED", "level": 3, "item": item, "owner_item": None, "unowned_s": 9000}
+        W.reach_wake_clone, real_reach = (lambda c, i: None), W.reach_wake_clone
+        said = W.maybe_wake(winc, {"reason": "r"}, last_wake + 60)
+        check(said.startswith("skipped: cooldown") and len(wakes) == n_wakes, "A00D: inside the cooldown it skips: %s" % said)
+        said = W.maybe_wake(winc, {"reason": "r"}, last_wake + cool + 60)
+        check(said.startswith("started") and len(wakes) == n_wakes + 1,
+              "A00D: the same incident wakes once the cooldown ends: %s" % said)
+        check(W.maybe_wake(winc, {"reason": "r"}, last_wake + 3 * cool) is None and len(wakes) == n_wakes + 1,
+              "A00D: a wake that started is still the one wake of its incident")
+        W.reach_wake_clone = real_reach
+        # OPS_STEVE_UNSTICK_UNCLAIMED_A00D: a rung never lands on an item its holder walked away from
+        left = "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A0D"
+        check(W.rimflow("spawn", "--from", W.STEWARD_ITEM, "--for", "BENCH", "--needs", "offline", "--name", left,
+                        "--title", "left behind")[0] == 0 and cli("claim", left)[0] == 0 and
+              subprocess.run([sys.executable, ingest.CLI, "start", left, "--why", "selftest"], capture_output=True,
+                             text=True, timeout=120, env=dict(os.environ, RIMFLOW_SEAT="BENCH",
+                                                              CLAUDE_PROJECT_DIR=ingest.REPO)).returncode == 0,
+              "A00D: a claimed, started item")
+        fresh, later = time.time(), time.time() + 3 * W.CLAIM_HOLD_S
+        w = W.world()
+        check(w[1].items[left].state == "doing" and not W.abandoned(left, fresh, w) and W.abandoned(left, later, w),
+              "A00D: abandoned once the claim lapsed, not while it holds")
+        n_sp = len(events("spawn"))
+        check(W.open_lane_item(w, fresh) == left and W.open_lane_item(w, later) != left,
+              "A00D: the lost-steward.json search skips a left item")
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
+        W.escalate(inc, {"reason": "r", "jobs": []}, fresh, left)
+        check(inc["item"] == left and len(events("spawn")) == n_sp, "A00D: a live holder keeps the item: %s" % inc)
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
+        W.escalate(inc, {"reason": "r", "jobs": []}, later, left)
+        sp = events("spawn")
+        check(inc["level"] == 1 and inc["item"] != left and len(sp) == n_sp + 1 and sp[-1]["name"] == inc["item"] and
+              sp[-1]["for"] == W.ALARM_SEAT and sp[-1].get("needs") == "offline",
+              "A00D: a new fault mints a fresh item relentless can drain: %s" % inc)
+        fresh_item = inc["item"]
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 1, "item": left, "owner_item": None}
+        W.escalate(inc, {"reason": "r", "jobs": []}, later, None)
+        check(inc["item"] == fresh_item and inc["level"] == 1, "A00D: a rung already on a left item moves off it: %s" % inc)
+        real_drop, real_pb = W.drop_as_bench, W.publish_bench
+        dropped = []
+        W.drop_as_bench, W.publish_bench = (lambda i, r: dropped.append(i) or (0, "ok")), (lambda: "pushed")
+        check(W.retire([left], "w", fresh) == [left] and not dropped, "A00D: retire leaves an item with a live holder")
+        check(W.retire([left], "w", later) == [] and dropped == [left], "A00D: retire drops a left item")
+        W.drop_as_bench, W.publish_bench = real_drop, real_pb
+        for it_id in (left, fresh_item):
+            cli("drop", it_id, "--reason", "selftest", "--why", "selftest")
         reset()
         fd = W.lock_open()
         try:

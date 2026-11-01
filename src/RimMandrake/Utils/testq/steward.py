@@ -511,8 +511,10 @@ cannot fix it, say exactly what the owner must do on the item and stop. You have
 
 
 def maybe_wake(inc, ls, now, src="steward"):
-    """The capped LLM wake, at most once per incident -> what happened (also kept in inc["wake"])."""
-    if inc.get("wake") or inc["level"] < 2 or not inc.get("item"):
+    """The capped LLM wake, at most once per incident -> what happened (also kept in inc["wake"]). A "skipped:" is not
+    that one wake: it is tried again each pass, so a cooldown that ends under a live incident wakes it
+    (OPS_STEVE_UNSTICK_UNCLAIMED_A00D: 26F1's skip at 19:31Z held for good, the cooldown ended 20:33Z, the lane sat)."""
+    if (inc.get("wake") and not inc["wake"].startswith("skipped:")) or inc["level"] < 2 or not inc.get("item"):
         return None
     if os.environ.get("TESTQ_STEWARD_WAKE", "1") == "0" or os.path.exists(path("wake.stop")):
         return None
@@ -588,6 +590,14 @@ def claim_holds(item_id, now, w=None):
         t = model.epoch(it.claim_ts)
         return t is not None and now < t + CLAIM_HOLD_S
     return False
+
+
+def abandoned(item_id, now, w):
+    """True for an open item a seat started under a claim that has lapsed: its holder is gone, relentless drains only
+    proposed/ready, and steve.incident_unclaimed_min does not count it, so a rung parked there is seen by nobody
+    (A00D: the wake's 26F1 took a new fault at 19:10Z). A start with no claim is relentless's live worker, not this."""
+    it = w[1].items.get(item_id) if item_id else None
+    return bool(it and it.open and it.state == "doing" and it.claim_ts and not claim_holds(item_id, now, w))
 
 
 def claim_pauses(inc, now, w=None):
@@ -673,10 +683,10 @@ def lock_open():
             time.sleep(0.1)
 
 
-def open_lane_item(w):
+def open_lane_item(w, now):
     """An open escalation item of ours whose name says so: survives a lost steward.json (spawn landed, dump did not)."""
     for k, it in sorted(w[1].items.items()):
-        if k.startswith("STEVE_LANE_UNSTICK_") and "_UNOWNED_" in k and it.open:
+        if k.startswith("STEVE_LANE_UNSTICK_") and "_UNOWNED_" in k and it.open and not abandoned(k, now, w):
             return k
     return None
 
@@ -706,7 +716,7 @@ def retire(items, why, now):
         w = world()
         if not item_open(item, w):
             continue
-        if claim_holds(item, now, w) or w[1].items[item].state == "doing":
+        if claim_holds(item, now, w) or (w[1].items[item].state == "doing" and not abandoned(item, now, w)):
             left.append(item)
             continue
         rc, out = drop_as_bench(item, why)
@@ -733,11 +743,11 @@ def escalate(inc, ls, now, last_item, src="steward"):
     tag = TAG.get(inc["state"], "STALLED")
     what = "%s: %s%s" % (inc["state"], ls["reason"][:200], (" (jobs %s)" % ",".join(map(str, ls["jobs"])))
                          if ls.get("jobs") else "")
-    if 1 <= inc["level"] < 3 and not item_open(inc.get("item"), w):
-        inc.update(level=0, item=None)              # closed under a continuing fault: open (or reuse) another
+    if 1 <= inc["level"] < 3 and (not item_open(inc.get("item"), w) or abandoned(inc.get("item"), now, w)):
+        inc.update(level=0, item=None)              # closed or left under a continuing fault: open (or reuse) another
     if inc["level"] < 1:
-        if not item_open(last_item, w):
-            last_item = open_lane_item(w)
+        if not item_open(last_item, w) or abandoned(last_item, now, w):
+            last_item = open_lane_item(w, now)
         if item_open(last_item, w):
             rc, out = rimflow("note", last_item, "--text", "%s: SteveDesktop lane %s again since %s, %d min unowned"
                               % (src, what, inc["since"], u // 60))
