@@ -171,8 +171,8 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 
 **Helpers** [LIVE as a rule in the role files]:
 - The owner's limit is 2 helpers at once across ALL roles together.
-- Until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` closes, a headless role runs **no** helpers (auditor.md §Helpers; arbiter.md; conductor.md). The schedule's `helpers_max` 2 (Arbiter, Auditor, Innovator) is therefore not used.
-- The Conductor's interactive session mode has `session_helpers_max` 3 in every band (`sched:52-55`), but no program reads it; the governing rule is the owner's of 10-29: no helper limit only for helpers launched within 20 minutes of his last typed message in the Conductor window; after that, a limit of two helpers counted as running for the seat (see the next bullet) (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6, enforced at launch by `.claude/hooks/block_agent_over_slots.py`; a helper running over 1 h raises an alarm) (§8 item 32).
+- Until `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` closes, a headless role runs **no** helpers (auditor.md §Helpers; arbiter.md; conductor.md).
+- The Conductor's interactive session mode follows the owner's rule of 10-29: no helper limit only for helpers launched within 20 minutes of his last typed message in the Conductor window; after that, a limit of two helpers counted as running for the seat (see the next bullet) (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6, enforced at launch by `.claude/hooks/block_agent_over_slots.py`; a helper running over 1 h raises an alarm) (§8 item 32).
 - [LIVE] The spawn hook `.claude/hooks/block_agent_over_slots.py` applies only to a seat that is both in `slot_rules.json` `enforce_seats` and in `slot_allocator.SEAT_PROJECT` (BENCH, FOUNDRY; the seat is `AGENT_SEAT`, else the `/rm/bench` or `/rm/foundry` cwd); any other seat, or none, is allowed by design. For those seats: (i) the interactive Conductor window (seat BENCH, no `RM_ROLE_UNIT`) has no limit while the owner's last typed message in that window is under `conductor_window.open_min` (20) old; after that its limit is `conductor_window.cap_n` (2), replacing the per-seat budget (an unreadable typed time counts as lapsed); (ii) every other launch (FOUNDRY, and BENCH-seat runs carrying `RM_ROLE_UNIT`) uses the per-seat count in `helper_budget.json` (CONDUCTOR 6 live), falling back to the allocator. A launch is refused when the helpers counted as running already reach the limit. Running means `slot_allocator.running_helpers`: any subagent transcript under the seat's whole Claude project (every session of that clone, not only this window) modified within `helpers.live_window_s` (900 s) whose last assistant record is not a clean `end_turn` with no tool call pending, or has user records after it, or does not exist yet. The hook fails open. Shared cross-role enforcement ("2 across all roles") is unbuilt: `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is parked pending the v3 collapse. (§2.14)
 
 **Scope stop** [LIVE, `rl:116-165`]:
@@ -382,7 +382,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - Its `pre_launch` runs `isolated_evidence.py --budget-s 900`, then `arbiter_tiers.py --cap 6`, with `pre_launch_max_s` 1200.
 - **Disappears.** The run ends, or hits `run_max_s` 2700 (`sched:76`).
 - **Runs/day.** 0 to 2.
-- **Caps** [LIVE]: `run_token_cap` 500000; `daily_token_cap` 1250000; `helpers_max` 2 (unused, §2.1).
+- **Caps** [LIVE]: `run_token_cap` 500000; `daily_token_cap` 1250000.
 - **Verdicts** (arbiter.md): PASS / CONDITIONAL-PASS / FAIL-module / FAIL-check / RESTART-environment / BAR-defect / UNRESOLVED.
   - They go to `D:\ClaudeWork\rimmandrake\arbiter\verdicts.jsonl`, with `cutoff.json`.
   - They are **advisory**: they block nothing, and the interim GPT reviewer still gates closes.
@@ -403,7 +403,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   - Its `pre_launch` runs `audits.py ensure`, then `audit_prescreen.py`, which writes `D:\ClaudeWork\rimmandrake\auditor\prescreen.json`.
 - **Disappears.** The run ends, or hits `run_max_s` 2700 (`sched:92`). Unfinished picks carry over.
 - **Runs/day.** 1.
-- **Caps** [LIVE]: `run_token_cap` 700000; `daily_token_cap` 875000; `helpers_max` 2 (unused).
+- **Caps** [LIVE]: `run_token_cap` 700000; `daily_token_cap` 875000.
 - **Daily order** (auditor.md):
   1. Pre-screen hard flags: each is filed as a defect ticket.
   2. Mandatory re-checks of FAIL-check and RESTART-environment verdicts. The set-aside red keeps blocking until one is SOUND.
@@ -434,7 +434,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - **Appears** [LIVE, `sched:128`]: at `runs_local` "Tue,Fri 15:00" (mode run) and "Sun 15:00" (mode weekly, `weekly_plan_weekday` Sun).
 - **Disappears.** The run ends, or hits `run_max_s` 2700 (`sched:136`).
 - **Runs/day.** 0 or 1, about 3 a week.
-- **Caps** [LIVE]: `run_token_cap` 500000; `daily_token_cap` 625000; `helpers_max` 2 (unused: no helpers until the shared cap item closes, innovator.md lines 83-87).
+- **Caps** [LIVE]: `run_token_cap` 500000; `daily_token_cap` 625000 (no helpers until the shared cap item closes, innovator.md lines 83-87).
 - **Authority** [LIVE as a role-file rule, innovator.md lines 41-69]:
   - It is on **probation, ask first**. Every change it wants is a PROPOSAL, and nothing is applied, trialled or filed as work until the owner says yes.
   - Proposals go to the Conductor, which brings them to him. His answer is recorded with `--owner-said`.
@@ -487,7 +487,7 @@ A role run starts only when every gate below passes, checked in this order [LIVE
 - [LIVE, `D:\ClaudeWork\rimmandrake\dispatcher\helper_budget.json`, read 2026-10-29 12:57 PDT] mode `CRUISE+OWNER`; CONDUCTOR 6, FOUNDRY 4. Why text: account 87% left, 6.08 d to reset, pace P 1.00, no burn rate measured, CRUISE step gives 4; Codex runway 0.25 (<1.0).
 - [LIVE, owner override in the same file] set 2026-10-28 21:53, BENCH 6 until 2026-11-04T14:00-08:00. Owner's words: "For this checkout, use as many subagents as you like. This is taking too long and I'm getting tired." BENCH still has an override after the v3 cutover removed the BENCH seat (§2.20).
 - [LIVE, `src/RimMandrake/Utils/slot_rules.json`] seats BENCH and FOUNDRY; `split.rule` "v3"; `conductor_session_n` 3; `total_max` 10; `fallback_n` BENCH 3, FOUNDRY 1. Token modes: DARK n 0 at ≥98% used; ALMOST_OUT n 1 (enter p<0.5, leave p>0.8, hold 2 h); CRUISE n 6 with steps p 0.8→2, 1.0→3, 1.2→4; BURN n 10 (enter p>1.5 with reset <48 h; leave p<1.2 or reset <6 h); SWEEP n 3, hold 12 h. `cross_hold_h` 2, `min_mode_min` 60, `session_brake_pct_used_gt` 90. Fit: 3 h window, ≥4 points over ≥1.5 h, `msgs_per_pct` 1460. `spare.min_pct_left` 10. Lent account (`lent_accounts.steven`): we may use at most 48%, prefer the first 48 h of its week, floor 10% left, off limits through 2026-10-28T15:00-07:00. Queue paydown: enter when A1>100 or D1≥10, leave when A1<60 and D1<5. Presence: bench_min 30, afk_min 60. Overage: finish_margin_h 6, default_window_h 24, bench_floor 1. `helpers.live_window_s` 900. ops: stale_min 45, disk_brake_free_gb 210, codex_conserve_runway 1.0, steve_stall_min 30, steve_invalid_streak 3.
-- Note: `conductor_session_n` 3 here, `session_helpers_max` 3 in the schedule, the live budget's CONDUCTOR 6 and the role file's "2 across all roles" are four different numbers for Conductor helpers [LIVE, each as cited]. For the interactive window the hook's `conductor_window` (20 min open, then 2) replaces the CONDUCTOR 6 (§2.1).
+- Note: `conductor_session_n` 3 here, the live budget's CONDUCTOR 6 and the role file's "2 across all roles" are three different numbers for Conductor helpers [LIVE, each as cited]. For the interactive window the hook's `conductor_window` (20 min open, then 2) replaces the CONDUCTOR 6 (§2.1).
 - Relation to the role files' "2 helpers across all roles": a separate rule. `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is still open, so no reservation mechanism exists, and headless roles run no helpers.
 
 ### 2.15 testq and the SteveDesktop lane (programs, no AI)
@@ -737,7 +737,6 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | run_max_s | Conductor 1800, Arbiter 2700, Auditor 2700, Operations 1800, Producer 1800, Innovator 2700 | same lines | owner | the only hard stop |
 | Conductor quick_token_cap / daily | 450000 / 1350000 | sched:50 | owner | |
 | Conductor session_week_pct_cap | 6 | sched:51 | owner | |
-| Conductor session_helpers_max | 3, every band | sched:52-55 | owner | role file says 2 across roles |
 | Arbiter run / daily cap | 500000 / 1250000 | sched:66 | owner | |
 | Arbiter pre_launch budget / tiers cap / pre_launch_max_s | 900 s / 6 / 1200 s | Arbiter entry | owner (P4 L-1) | |
 | Auditor run / daily cap | 700000 / 875000 | sched:81 | owner | `_caps_why` matches (c2dfc21445) |
@@ -746,7 +745,6 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | Producer run / daily cap | 800000 / 2000000 | sched:112 | owner | commit de4815dbaa "owner: less caution" |
 | Producer event_runs_per_day | 1 | sched:113 | owner | |
 | Innovator run / daily cap | 500000 / 625000 | sched:128 | owner | |
-| helpers_max (Arbiter, Auditor, Innovator) | 2 | role entries | owner | unused until the shared cap is built |
 | owner helper limit | 2 across all roles | role files | owner | review roles r2 #4 |
 | throttle bands GREEN/AMBER/RED/FLOOR | runway ≥1.5 / ≥1.0 / ≥0 / week_left <10 %; every band "all" with ×1.0 | sched:52-55 and per role | owner | neutralized 10-28, commit d92c4c825e |
 | account_pick switch_when / target_min | runway <0.8 or week_left <10 / runway ≥1.2, week_left ≥20, MEASURED | sched:141-144 | owner | |
@@ -865,9 +863,9 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 **Config and docs that disagree:**
 1. Role file headings now say each role is enabled, with its enabling commit (e35afe1dcc for the Conductor and Operations, 4d9171a1e5 for the rest); fixed in 2a5ec4a7ee.
 2. The schedule's top-level `_doc` now states that every role is enabled, that caps are admission checks plus alarms, and that the bands are neutralized; fixed in c2dfc21445.
-3. The throttle bands are neutralized (all "slots: all", ×1.0, commit d92c4c825e). The Conductor `_why` and the operations.md throttle section now say so (2a5ec4a7ee, c2dfc21445). `throttle_order` is read only by the simulator `Utils/sim/rimflow_v3_sim.py`.
+3. The throttle bands are neutralized (all "slots: all", ×1.0, commit d92c4c825e). The Conductor `_why` and the operations.md throttle section now say so (2a5ec4a7ee, c2dfc21445). `throttle_order` is the simulator's own parameter (`Utils/sim/rimflow_v3_sim_params.json`), no longer a schedule key.
 4. Every `_caps_why` now quotes the live caps (Producer 800k run / 2.0M day, Auditor 700k / 875k) (c2dfc21445).
-5. `session_helpers_max` (Conductor, 3) and `helpers_max` (2 on three roles) are read by no live program (only `selftest_dispatcher.py` names them); the schedule `_why` says so (c2dfc21445). Helpers are bounded by the helper hook and `helper_budget.json` only (see item 32).
+5. Helpers are bounded by the helper hook and `helper_budget.json` only (see item 32).
 
 **Built but off or missing:**
 
@@ -923,7 +921,7 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 30. A cutover on 10-28 at 05:04 stopped every rm-* and testq-* timer, and nobody restarted them. This was the steward's TICK_STOPPED lesson (steward.py header).
 
 31. The v3 cutover moved 691 BENCH items and the FlowWorks/GSS lane to FOUNDRY (§2.20), yet `slot_rules.json` still lists a BENCH seat with `fallback_n` 3, the helper budget carries a BENCH override of 6 until 2026-11-04, and the Conductor's scheduled checks launch as seat BENCH (CONDUCTOR.md:57). The standing text that said BENCH owns all FlowWorks + GSS was corrected to FOUNDRY in CLAUDE.md, the charter and the helper rules (efabf1399a).
-32. Four different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", schedule `session_helpers_max` 3 (read by no live program), `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Owner's ruling of 10-29 (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6; a helper running over 1 h raises an alarm). The spawn hook `.claude/hooks/block_agent_over_slots.py` applies only to a seat that is both in `slot_rules.json` `enforce_seats` and in `slot_allocator.SEAT_PROJECT` (BENCH, FOUNDRY; the seat is `AGENT_SEAT`, else the `/rm/bench` or `/rm/foundry` cwd); any other seat, or none, is allowed by design. For those seats: (i) the interactive Conductor window (seat BENCH, no `RM_ROLE_UNIT`) has no limit while the owner's last typed message in that window is under `conductor_window.open_min` (20) old; after that its limit is `conductor_window.cap_n` (2), replacing the per-seat budget (an unreadable typed time counts as lapsed); (ii) every other launch (FOUNDRY, and BENCH-seat runs carrying `RM_ROLE_UNIT`) uses the per-seat count in `helper_budget.json` (CONDUCTOR 6 live), falling back to the allocator. A launch is refused when the helpers counted as running already reach the limit. Running means `slot_allocator.running_helpers`: any subagent transcript under the seat's whole Claude project (every session of that clone, not only this window) modified within `helpers.live_window_s` (900 s) whose last assistant record is not a clean `end_turn` with no tool call pending, or has user records after it, or does not exist yet. The hook fails open. Shared cross-role enforcement ("2 across all roles") is unbuilt: `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is parked pending the v3 collapse.
+32. Three different numbers govern Conductor helpers: role file and CONDUCTOR.md "two across all roles", `slot_rules.json` `conductor_session_n` 3, live `helper_budget.json` CONDUCTOR 6 (§2.14). Owner's ruling of 10-29 (`CONDUCTOR_HELPERS_TUNE_TWENTY_MINUTE_WINDOW`, d9b43e13a6; a helper running over 1 h raises an alarm). The spawn hook `.claude/hooks/block_agent_over_slots.py` applies only to a seat that is both in `slot_rules.json` `enforce_seats` and in `slot_allocator.SEAT_PROJECT` (BENCH, FOUNDRY; the seat is `AGENT_SEAT`, else the `/rm/bench` or `/rm/foundry` cwd); any other seat, or none, is allowed by design. For those seats: (i) the interactive Conductor window (seat BENCH, no `RM_ROLE_UNIT`) has no limit while the owner's last typed message in that window is under `conductor_window.open_min` (20) old; after that its limit is `conductor_window.cap_n` (2), replacing the per-seat budget (an unreadable typed time counts as lapsed); (ii) every other launch (FOUNDRY, and BENCH-seat runs carrying `RM_ROLE_UNIT`) uses the per-seat count in `helper_budget.json` (CONDUCTOR 6 live), falling back to the allocator. A launch is refused when the helpers counted as running already reach the limit. Running means `slot_allocator.running_helpers`: any subagent transcript under the seat's whole Claude project (every session of that clone, not only this window) modified within `helpers.live_window_s` (900 s) whose last assistant record is not a clean `end_turn` with no tool call pending, or has user records after it, or does not exist yet. The hook fails open. Shared cross-role enforcement ("2 across all roles") is unbuilt: `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` is parked pending the v3 collapse.
 33. The Producer's test-lane mod choice has no path to the testq units: `TESTQ_FILL_MODS` / `TESTQ_SWEEP_MODS` are set nowhere, so testq fills FlowWorks only (§2.15). The item that would have wired it, `TESTLANE_PLAN_WIRE_PRODUCER_PICKS_UNHEARD`, was dropped.
 34. Findings have a consumer since 10-29: FOUNDRY's daily curation of `findings_fold.md` (§2.19a). They still have no Part 4 duty row.
 35. The v3 health spec's §2 still describes the pre-ruling kill-test baseline (BENCH note 17:31Z on `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).

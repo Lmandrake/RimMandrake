@@ -96,7 +96,7 @@ nothing about that knob; 0.2 means it pinned it down hard.
 | `account_used_at_128h` | lukas 0.93, steven 0.69, system 0.71 | account_usage series 2026-10-26 (lukas, steven ESTIMATE) |
 | `account_quota` (DERIVED) | per member | each member's own simulated hour-128 burn / the fractions above, so token results are relative to today's burn |
 | `dispatcher` (CONFIG) | tick 120 s, stall after 240 s, 3 wakes/seat/h, 30/day, 80/day, FOUNDRY only | `dispatcher_schedule.json` |
-| `throttle_order` (CONFIG) | Innovator, Auditor, Producer, Arbiter, Operations | schedule; v3 design §3 |
+| `throttle_order` (CONFIG) | Innovator, Auditor, Producer, Arbiter, Operations | v3 design §3 (the simulator's own parameter) |
 | `auditor_max_per_day` (CONFIG) | 4 | v3 design §2 (since lifted by `RIMFLOW_AUDITOR_RETHINK_DAILY_CAP`) |
 | `n_rig` (CONFIG) | 2 | two test machines |
 | `role_costs` (CONFIG/ASSUMED) | Operations 2 × 60k + 150k a day | schedule caps used as costs; every other role cost is ASSUMED |

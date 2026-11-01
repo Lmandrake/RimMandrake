@@ -274,7 +274,7 @@
     "Operations"
    ],
    "status": "CONFIG",
-   "source": "dispatcher_schedule.json throttle_order; design \u00a73"
+   "source": "design \u00a73 (the sim's own parameter; the live schedule has no such key)"
   },
   "role_costs": {
    "status": "CONFIG/ASSUMED",

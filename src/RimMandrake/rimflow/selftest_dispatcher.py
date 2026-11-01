@@ -989,14 +989,44 @@ def test_role_economy_and_alarms():
 
 
 # Frozen copy of Operations' throttle_bands as of 2460d2cc0a~1 (before the owner neutralized them).
-CON_BANDS_FROZEN = {"GREEN": {"runway_ge": 1.5, "session_helpers_max": 3, "quick_cap_x": 1.0, "slots": "all"},
-                    "AMBER": {"runway_ge": 1.0, "session_helpers_max": 2, "quick_cap_x": 0.75, "slots": "last"},
-                    "RED": {"runway_ge": 0.0, "session_helpers_max": 1, "quick_cap_x": 0.75, "slots": "last"},
-                    "FLOOR": {"week_left_pct_lt": 10, "session_helpers_max": 0, "quick_cap_x": 0.75, "slots": "none"}}
+CON_BANDS_FROZEN = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
+                    "AMBER": {"runway_ge": 1.0, "quick_cap_x": 0.75, "slots": "last"},
+                    "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "last"},
+                    "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}
 OPS_BANDS_FROZEN = {"GREEN": {"runway_ge": 1.5, "quick_cap_x": 1.0, "slots": "all"},
                     "AMBER": {"runway_ge": 1.0, "quick_cap_x": 1.0, "slots": "quick"},
                     "RED": {"runway_ge": 0.0, "quick_cap_x": 0.75, "slots": "quick_one"},
                     "FLOOR": {"week_left_pct_lt": 10, "quick_cap_x": 0.75, "slots": "none"}}
+
+
+PRUNED_SCHEDULE_KEYS = ("throttle_order", "session_helpers_max", "helpers_max")
+
+
+def _schedule_keys(node):
+    if isinstance(node, dict):
+        for k, v in node.items():
+            yield k
+            yield from _schedule_keys(v)
+    elif isinstance(node, list):
+        for v in node:
+            yield from _schedule_keys(v)
+
+
+def test_schedule_keeps_no_unread_helper_keys():
+    # SCHEDULE_PRUNE_UNREAD_HELPER_KEYS_SIM_ONLY: helpers are bounded by block_agent_over_slots.py and helper_budget,
+    # so a helper count here would only mislead. Coming back needs a reader, which is what these rows refuse.
+    here = os.path.dirname(os.path.abspath(__file__))
+    keys = set(_schedule_keys(json.load(open(os.path.join(here, "dispatcher_schedule.json")))))
+    check("roles" in keys and "run_token_cap" in keys, "key walk sees the schedule (sanity probe)")
+    left = sorted(keys & set(PRUNED_SCHEDULE_KEYS))
+    check(not left, "schedule holds none of the pruned keys: %s" % left)
+    root = os.path.abspath(os.path.join(here, "..", "..", ".."))
+    hits = subprocess.run(["git", "-C", root, "grep", "-l", "-E", "|".join(PRUNED_SCHEDULE_KEYS), "--", "*.py"],
+                          capture_output=True, text=True).stdout.split()
+    code = [h for h in hits if h.startswith(("src/", ".claude/")) and not h.endswith("selftest_dispatcher.py")]
+    check("src/RimMandrake/Utils/sim/rimflow_v3_sim.py" in code, "reader scan sees the simulator's own key (sanity probe)")
+    code.remove("src/RimMandrake/Utils/sim/rimflow_v3_sim.py")
+    check(not code, "no code reads a pruned key: %s" % code)
 
 
 def test_role_real_schedule_caps_and_ops_bands():
@@ -1782,7 +1812,7 @@ def test_role_pending_work_gate():
     did not judge it leaves it pending."""
     t, t17 = at_local("11:00"), at_local("17:00")
     arb = arbiter(slot_when="pending_work")
-    sha = "abcdef1234567890"
+    sha = "abcdef1"  # under 10 characters: live_only() drops a long sha git has never seen
 
     def run(st, tt, *a, **kw):
         acts = role_acts(rdecide([arb], st, pwobs(tt, *a, **kw), tt))
@@ -1891,8 +1921,8 @@ def test_role_arbiter_cutoff():
     def acts(role, events, **kw):
         return role_acts(rdecide([role], based(), pwobs(t, events, **kw), t))
     arb = arbiter(slot_when="pending_work")
-    c1 = dict(BASE_EV, event="close", id="NEWER", sha="abcdef1234567890", ts=lts(cut + 7200))
-    c2 = dict(BASE_EV, event="close", id="OLDER", sha="1234567abcdef890", ts=lts(cut + 60))
+    c1 = dict(BASE_EV, event="close", id="NEWER", sha="abcdef1", ts=lts(cut + 7200))
+    c2 = dict(BASE_EV, event="close", id="OLDER", sha="1234567", ts=lts(cut + 60))
     a = acts(arb, [c1, c2], stores={"cutoff": None})
     check(not [x for x in a if x["do"] == "role_launch"]
           and [x.get("kind") for x in a if x["do"] == "alarm"] == ["role:Arbiter:cutoff"]
@@ -3556,7 +3586,7 @@ def main():
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
-              test_role_real_schedule_caps_and_ops_bands, test_role_execute_and_dry, test_review_q,
+              test_role_real_schedule_caps_and_ops_bands, test_schedule_keeps_no_unread_helper_keys, test_role_execute_and_dry, test_review_q,
               test_review_r, test_account_pick_rule, test_account_pick_dispatch,
               test_role_weekday_slots, test_role_done_claims_gate, test_role_pending_work_gate,
               test_role_arbiter_cutoff, test_role_plan_failure_events, test_role_event_skip_keeps_quota, test_role_event_cap_refusal_keeps_quota, test_role_review_r5,
