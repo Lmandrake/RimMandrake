@@ -58,6 +58,12 @@ BASELINE: dict[str, tuple[str, int]] = {
     'src/RimMandrake/FlowWorks/Source/Pits/Suspension/RM_SuspensionProofs.cs::unrestored-on-throw::DebugSettings.godMode': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 3),
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.deepWaterTintEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
     'src/RimMandrake/FlowWorks/Source/RM_WaterLookProofs.cs::unrestored-on-throw::RM_WaterLookSettings.wetWallBandEnabled': ('FLOWWORKS_PROOF_POKES_RESTORE_PRIOR', 1),
+    'src/RimUtinni/BeskarArmorer/Source/ArmorerProbe.cs::unrestored-on-throw::BeskarArmorerSettings.harmRaidEnabled': ('BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET', 2),
+    'src/RimUtinni/BeskarArmorer/Source/ArmorerProbe.cs::unrestored-on-throw::BeskarArmorerSettings.modEnabled': ('BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET', 2),
+    'src/RimUtinni/BeskarArmorer/Source/ArmorerProbe.cs::unrestored-on-throw::BeskarArmorerSettings.prisonBreakEarliestDay': ('BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET', 8),
+    'src/RimUtinni/BeskarArmorer/Source/ArmorerProbe.cs::unrestored-on-throw::BeskarArmorerSettings.routeOneEnabled': ('BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET', 2),
+    'src/RimUtinni/BeskarArmorer/Source/ArmorerProbe.cs::unrestored-on-throw::BeskarArmorerSettings.routeTwoEnabled': ('BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET', 2),
+    'src/RimUtinni/BeskarArmorer/Source/ArmorerProbe.cs::unrestored-on-throw::def.workAmount': ('BESKARPROBE_FIX_EIGHTEEN_POKES_NO_NET', 2),
     'src/RimMandrake/bridgetools/prove_sea_dive_floor.py::unrestored-on-throw::raw': ('SEA_DIVE_PROOF_RESTORE_PRIOR', 1),
 }
 

@@ -1872,6 +1872,44 @@ def t_unpublished_enrol_waits():
         ok(True, "only a retired item")
 
 
+def t_flush_lands_prose_moves():
+    """A close in the books moves the prose; the ledger line lands, so the move must too, or items/ keeps a done item."""
+    d = tempfile.mkdtemp(prefix="rlprose-")
+    store = R.Store(d)
+    os.makedirs(store.dir, exist_ok=True)
+    fx = R.Effects(dict(RULES), store)
+    b, items = fx.books, R.ITEMS_DIR
+    def git(*a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=b, check=True,
+                              capture_output=True, text=True).stdout
+    os.makedirs(os.path.join(b, items, "closed"))
+    subprocess.run(["git", "init", "-q", "-b", "main", b], check=True)
+    for n in ("MOVED.md", "ALONE.md", "live.md"):
+        with open(os.path.join(b, items, n), "w") as f:
+            f.write(n)
+    with open(os.path.join(b, "publish"), "w") as f:
+        f.write('#!/bin/sh\nprintf "%s\\n" "$@" > published.txt\n')
+    os.chmod(os.path.join(b, "publish"), 0o755)
+    git("add", ".")
+    git("commit", "-qm", "base")
+    git("update-ref", "refs/remotes/origin/main", "HEAD")
+    ok(fx.prose_moves() == [], "prose: a clean tree has no move")
+    os.rename(os.path.join(b, items, "MOVED.md"), os.path.join(b, items, "closed", "MOVED.md"))     # what rimflow close does
+    os.remove(os.path.join(b, items, "ALONE.md"))
+    with open(os.path.join(b, items, "closed", "NEW.md"), "w") as f:
+        f.write("no live twin")
+    with open(os.path.join(b, items, "live.md"), "a") as f:
+        f.write("edited")
+    want = [items + "MOVED.md", items + "closed/MOVED.md"]
+    ok(fx.prose_moves() == want, "prose: only the moved pair, never a lone deletion, new file or edit")
+    ok(fx.flush() is None, "prose: flush publishes")
+    with open(os.path.join(b, "published.txt")) as f:
+        said = f.read().split("\n")
+    ok(all(p in said for p in want), "prose: flush names both paths of the move, with no shard dirty")
+    ok(not any(items + n in said for n in ("ALONE.md", "live.md", "closed/NEW.md")), "prose: and nothing else")
+    shutil.rmtree(d, ignore_errors=True)
+
+
 def t_books_frozen():
     """Books that cannot move are an engine that cannot deploy, and nothing else in the readings shows it."""
     d = tempfile.mkdtemp(prefix="rlbooks-")
@@ -2345,7 +2383,7 @@ def t_help_lifecycle():
 
 
 def main():
-    for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

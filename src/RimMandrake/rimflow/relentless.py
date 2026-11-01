@@ -52,7 +52,8 @@ POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastr
 POOL_ORPHAN_IDLE_S = 3600
 POOL_IGNORED_MAX = 2 * 10**9
 LEDGER_DIR = "infrastructure/state/ledger/events/"
-BOOKS_DERIVED = (LEDGER_DIR, "infrastructure/state/items/")
+ITEMS_DIR = "infrastructure/state/items/"
+BOOKS_DERIVED = (LEDGER_DIR, ITEMS_DIR)
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
 NOT_AN_APPROACH = ("worker_lost", "checker_lost")       # a dead process or a silent checker tried nothing
 
@@ -637,13 +638,25 @@ class Effects:
         """Publish the shard: retried each tick until it lands, so a close never stays local."""
         shards = [SHARD % self.r["seat"], SHARD % "RUNNER"]     # RUNNER: the alarm's `live` line
         got = self.git(self.books, "status", "--porcelain", "--", *shards).stdout.strip()
+        moved = self.prose_moves()
         ahead = self.git(self.books, "rev-list", "--count", "origin/main..HEAD").stdout.strip()
-        if not got and ahead in ("0", ""):
+        if not got and not moved and ahead in ("0", ""):
             return None
-        dirty = [x for x in shards if x in got]
+        dirty = [x for x in shards if x in got] + moved
         a = ["./publish"] + (["-m", "ledger: relentless supervisor", *dirty] if dirty else [])
         r = subprocess.run(a, cwd=self.books, capture_output=True, text=True, timeout=90, stdin=subprocess.DEVNULL)
         return None if r.returncode == 0 else "publish exit %d: %s" % (r.returncode, (r.stderr or r.stdout)[-300:])
+
+    def prose_moves(self):
+        """-> both paths of each item whose prose `rimflow close` moved to items/closed/. The ledger line lands; unpublished,
+        the move sits dirty here until level_books undoes it, and selftest_items_glob_live goes red on the done item.
+        A pair only: a lone deletion or a lone new file is not a close, so it stays out of the commit."""
+        rows = self.git(self.books, "status", "--porcelain", "--no-renames", "-z", "--untracked-files=all", "--",
+                        ITEMS_DIR).stdout.split("\0")
+        rows = [(x[:2], x[3:]) for x in rows if x]
+        gone = {p[len(ITEMS_DIR):] for s, p in rows if "D" in s and "/" not in p[len(ITEMS_DIR):]}
+        new = {p[len(ITEMS_DIR) + len("closed/"):] for s, p in rows if s == "??" and p.startswith(ITEMS_DIR + "closed/")}
+        return [p for n in sorted(gone & new) for p in (ITEMS_DIR + n, ITEMS_DIR + "closed/" + n)]
 
     def ledger_items(self):
         if self._ledger is None:

@@ -500,6 +500,7 @@ def _run(argv, hold):
             say("WARNING: raiderLaddersEnabled unread; --no-ladders NOT applied")
         else:
             hold.setdefault("settingsPrior", []).append(("raiderLaddersEnabled", prior_l))
+            # restore-check: ok main()'s finally restores hold["settingsPrior"]; the prior is recorded on the line above
             ok, after = set_setting(B, TRENCH_SETTINGS, "raiderLaddersEnabled", False)
             res["laddersOff"] = {"prior": prior_l, "readBack": after, "ok": ok}
             say("raiderLaddersEnabled %s -> False (read back %s)" % (prior_l, after))
@@ -519,6 +520,7 @@ def _run(argv, hold):
             say("WARNING: raiderFillSpeed unread; --fill-speed NOT applied (%s)" % json.dumps(got, default=str)[:200])
         else:
             hold["fillSpeedPrior"] = prior
+            # restore-check: ok main()'s finally restores hold["fillSpeedPrior"]; the prior is recorded on the line above
             ok, after = set_setting(B, TRENCH_SETTINGS, "raiderFillSpeed", a.fill_speed)
             res["fillSpeed"] = {"prior": prior, "set": a.fill_speed, "readBack": after, "ok": ok}
             say("raiderFillSpeed %s -> %s (read back %s)" % (prior, a.fill_speed, after))
