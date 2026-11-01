@@ -20,6 +20,11 @@ verdict, and the era gate stays shut while any task of the newest era is uncompl
 JUDGE: arena_gate.py (from the harness checkout, --repo the clone) writes the gate record, then
 `arena_judge.py judge` (its own harness pass and signed judge event). Neither is edited or re-implemented here.
 
+INVALID GATE (GATE_TAMPER_FIX_CTYPES_HALTS_ARM, Conductor rule): a measured-invalid gate (signed, some step measured,
+e.g. tests UNMEASURED by arena_gate TAMPER_RE) judged invalid is RECORDED as not accepted (judge.invalid = why +
+steps) and the runner goes on; arena_analysis counts it completed, not accepted, and lists it per arm. Only what
+measured nothing (all-UNMEASURED or unsigned gate, judge fault) still stops the runner (gate_invalid/unmeasured_result).
+
 RESUME. <ctl>/<arm>/runner.json keeps each finished task's record; a restart skips them. A task whose work stopped
 (STOP file, runway, sync, red start) or raised is NOT recorded and is retried on the next start; the runner waits
 for runway before each task. <ctl>/<arm>/STOP stops it between tasks.
@@ -202,21 +207,52 @@ def default_judge(arm, clone, spec, head, *, logdir):
     why = unmeasured_result(g, rec)
     if why:
         raise RunRefused("task %s: %s: not recorded, the runner stops (logs in %s)" % (tid, why, logdir))
+    inv = gate_invalid(g, rec)
+    if inv:
+        out["invalid"] = inv
     return out
 
 
-def unmeasured_result(gate, rec):
-    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS (fail loud): a gate whose every step is UNMEASURED, or a gate or judge verdict
-    `invalid` (UNMEASURED never passes and is no arm's fault), measured nothing about the arm. -> why, or None.
-    The runner then logs ERROR and stops instead of recording it and moving to the next task."""
+def _status(v):
+    return v.get("status") if isinstance(v, dict) else v
+
+
+def gate_invalid(gate, rec):
+    """GATE_TAMPER_FIX_CTYPES_HALTS_ARM (Conductor rule, per CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM; the rule is
+    infrastructure/state/items/GATE_TAMPER_FIX_CTYPES_HALTS_ARM.md): a MEASURED-INVALID gate - signed (`recorded`
+    true), verdict `invalid`, at least one step not UNMEASURED - judged `invalid` counts as NOT ACCEPTED for the arm on
+    that task: recorded, never dropped (arena_analysis counts the same case completed, not accepted), so tripping the
+    gate on purpose (e.g. TAMPER_RE) scores like a reject and an arm gains nothing. -> {"why", "steps"} or None."""
     steps = gate.get("steps") if isinstance(gate.get("steps"), dict) else {}
-    st = [(v.get("status") if isinstance(v, dict) else v) for v in steps.values()]
+    st = [_status(v) for v in steps.values()]
+    if not (gate.get("verdict") == "invalid" and gate.get("recorded") is True and rec.get("verdict") == "invalid"
+            and st and any(x != "UNMEASURED" for x in st)):
+        return None
+    bad = {k: _status(v) for k, v in sorted(steps.items()) if _status(v) not in ("PASS", "NA")}
+    why = "; ".join("%s %s%s" % (k, s, (": %s" % str(steps[k].get("why"))[:300]) if isinstance(steps[k], dict)
+                                 and steps[k].get("why") else "") for k, s in bad.items())
+    return {"why": "gate verdict invalid (%s): counted NOT accepted" % (why or "no failing step named"), "steps": bad}
+
+
+def unmeasured_result(gate, rec):
+    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS (fail loud): what measured nothing about the arm and is no arm's fault -> why,
+    or None. The runner then logs ERROR and stops (the task is NOT recorded and is rerun on the next start):
+      - a gate whose every step is UNMEASURED (the harness measured nothing);
+      - a gate verdict `invalid` that is NOT measured-invalid (gate_invalid: unsigned, no steps, gate crash/no JSON,
+        or a judge verdict other than invalid on it);
+      - a judge verdict `invalid` after a gate that passed or failed (a judge fault: rerun).
+    A measured-invalid gate is NOT here since GATE_TAMPER_FIX_CTYPES_HALTS_ARM: it is recorded as not accepted."""
+    steps = gate.get("steps") if isinstance(gate.get("steps"), dict) else {}
+    st = [_status(v) for v in steps.values()]
     if st and all(x == "UNMEASURED" for x in st):
         return "gate all-UNMEASURED (%d steps)" % len(st)
     if gate.get("verdict") == "invalid":
-        bad = sorted(k for k, v in steps.items() if (v.get("status") if isinstance(v, dict) else v) in
-                     ("UNMEASURED", "INVALID"))
-        return "gate verdict invalid (%s)" % (", ".join(bad) or gate.get("why") or "no steps")
+        if gate_invalid(gate, rec):
+            return None
+        bad = sorted(k for k, v in steps.items() if _status(v) in ("UNMEASURED", "INVALID"))
+        return "gate verdict invalid, not measured-invalid (%s; recorded %r, judge %r)" % (
+            ", ".join(bad) or gate.get("why") or gate.get("error") or "no steps", gate.get("recorded"),
+            rec.get("verdict"))
     if rec.get("verdict") == "invalid":
         return "judge verdict invalid"
     return None
@@ -288,7 +324,10 @@ def run_arm(arm, *, ctl, model_cmd, only=0, steps=None, load=None, run_one=None,
         rec = dict(box, judge=v, ts=time.time())
         st.record(tid, rec)
         res["ran"].append(tid)
-        log("%s: task %s DONE %s verdict %s" % (arm, tid, box.get("outcome"), (v or {}).get("verdict")), out)
+        inv = (v or {}).get("invalid") if isinstance(v, dict) else None
+        log("%s: task %s DONE %s verdict %s%s" % (arm, tid, box.get("outcome"), (v or {}).get("verdict"),
+                                                (" (%s)" % str(inv.get("why"))[:400]) if isinstance(inv, dict) else ""),
+            out)
     log("%s: runner ends: ran %d, skipped %d, stopped %s" % (arm, len(res["ran"]), len(res["skipped"]),
                                                              res["stopped"]), out)
     return res

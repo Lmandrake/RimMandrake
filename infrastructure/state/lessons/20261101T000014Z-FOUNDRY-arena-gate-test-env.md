@@ -1,0 +1,2 @@
+An offline whole-path arena proof (real arena_gate.py on throwaway roots) must set ARENA_GATE_TEST=1 alongside ARENA_CLONES: the gate refuses an ARENA_CLONES override outside a gate selftest (refuse_arm_location), and the refusal looks like an arm failure. Also keep ARENA_EVENT_TOKEN_FILE off /mnt and outside any arm-readable root. (GATE_TAMPER_FIX_CTYPES_HALTS_ARM)
+home: infrastructure/state/facts/instrument_traps.md

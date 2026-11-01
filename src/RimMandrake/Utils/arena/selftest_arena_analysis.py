@@ -1290,6 +1290,116 @@ def t_judge_gate_order():
           (r["final"]["verdict"], r["final"]["disqualified"]))
 
 
+def t_gate_invalid():
+    """GATE_TAMPER_FIX_CTYPES_HALTS_ARM: a judge `invalid` after a MEASURED-INVALID gate (tests UNMEASURED by
+    TAMPER_RE, other steps measured) is COMPLETED, NOT ACCEPTED (denominator kept, tokens counted) and listed per arm;
+    an invalid after an all-UNMEASURED gate, a pass gate (judge fault) or a gate on another sha stays not completed."""
+    def planted(how, k=4):
+        logs, tasks, sp = winner_logs()
+        recs = logs["trio"]["recs"]
+        tid = sorted(tasks)[k]
+        g = next(x for x in recs if x["event"] == "gate" and x["task"] == tid)
+        j = next(x for x in recs if x["event"] == "judge" and x["task"] == tid)
+        j["verdict"] = "invalid"
+        if how == "measured":
+            g.update(verdict="invalid", detail={"steps": {"scope": "PASS", "tests": "UNMEASURED", "proof": "PASS"}})
+        elif how == "all_unmeasured":
+            g.update(verdict="invalid", detail={"steps": {"scope": "UNMEASURED", "tests": "UNMEASURED"}})
+        elif how == "other_sha":
+            g.update(verdict="invalid", sha="f" * 40,
+                     detail={"steps": {"scope": "PASS", "tests": "UNMEASURED"}})
+        elif how == "pending":
+            g.update(verdict="invalid", detail={"steps": {"scope": "PASS", "tests": "UNMEASURED"}})
+            j["detail"] = {"pending": True}
+        return logs, tasks, sp, tid, j
+    logs, tasks, sp, tid, j = planted("measured")
+    comp, why = AA.completions(logs["trio"]["recs"], tasks, sp["trio"], AA.default_conv())
+    row = [c for c in comp if c["task"] == tid]
+    check("measured-invalid gate -> the task is COMPLETED, NOT accepted, tokens counted, reason carried",
+          why is None and len(comp) == 20 and len(row) == 1 and row[0]["accepted"] is False and row[0]["tokens"] > 0
+          and row[0]["gate_invalid"]["steps"] == {"tests": "UNMEASURED"}, (why, len(comp), row))
+    gi = AA.gate_invalids(logs["trio"]["recs"])
+    check("gate_invalids lists it (count 1, the task, the failing step)",
+          gi["count"] == 1 and gi["tasks"][0]["task"] == tid and gi["tasks"][0]["steps"] == {"tests": "UNMEASURED"}, gi)
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS, final=True)
+    iv = r["final"].get("intervals", {}).get("trio", {})
+    check("analyse: report.gate_invalid per arm (trio 1, v3 0) and the capped intervals carry gate_invalid 1, "
+          "one fewer accepted than completed",
+          r["gate_invalid"]["trio"]["count"] == 1 and r["gate_invalid"]["v3"]["count"] == 0
+          and iv.get("gate_invalid") == 1 and iv.get("accepted") == iv.get("completed", 0) - 1, (r["gate_invalid"], iv))
+    # no gain: the same arm with that task an honest reject scores exactly the same acceptance and points
+    logs2, tasks2, sp2 = winner_logs()
+    next(x for x in logs2["trio"]["recs"] if x["event"] == "judge" and x["task"] == tid)["verdict"] = "reject"
+    r2 = AA.analyse(logs2, tasks2, sp2, draws=DRAWS, final=True)
+    iv2 = r2["final"].get("intervals", {}).get("trio", {})
+    check("NO GAIN: tripping the gate scores exactly like a reject (completed, accepted, points, tokens, accept CI)",
+          all(iv.get(k) == iv2.get(k) for k in ("completed", "accepted", "accepted_points", "tokens_total_ite_mixed",
+                                                 "accept_rate_90")), (iv, iv2))
+    # MUTANT: the old rule (invalid never completed) drops the task from the denominator
+    saved = AA.gate_invalid_of
+    AA.gate_invalid_of = lambda seq, t, j, app=None: None
+    try:
+        r3 = AA.analyse(logs, tasks, sp, draws=DRAWS, final=True)
+    finally:
+        AA.gate_invalid_of = saved
+    iv3 = r3["final"].get("intervals", {}).get("trio", {})
+    check("MUTANT old rule (invalid dropped from the denominator): the arm GAINS (higher accept rate than the reject "
+          "it equals) -> the NO GAIN row has teeth",
+          iv3.get("gate_invalid") == 0 and iv3.get("accept_rate_90", [0, 0])[1] > iv2.get("accept_rate_90", [0, 1])[1],
+          (iv3, iv2))
+    for how, what in (("all_unmeasured", "an all-UNMEASURED gate (harness measured nothing)"),
+                      ("other_sha", "a measured-invalid gate on ANOTHER sha"),
+                      ("pass", "a PASS gate (judge fault)")):
+        logs, tasks, sp, tid, j = planted(how)
+        comp, why = AA.completions(logs["trio"]["recs"], tasks, sp["trio"], AA.default_conv())
+        check("invalid after %s -> NOT completed (runner reruns it), not listed" % what,
+              why is None and tid not in {c["task"] for c in comp}
+              and AA.gate_invalids(logs["trio"]["recs"])["count"] == 0, (why, len(comp)))
+    # GPT review: bind the judgment to ITS gate. A second invalid judgment of the same sha with no new gate (its gate
+    # crashed unsigned) must not reuse the first attempt's already-judged gate; a gate logged AFTER j at the same time
+    # is not j's gate.
+    logs, tasks, sp, tid, j = planted("measured")
+    recs = logs["trio"]["recs"]
+    j2 = dict(j, ts=j["ts"] + 60) if isinstance(j.get("ts"), (int, float)) else dict(j)
+    if not isinstance(j.get("ts"), (int, float)):
+        import datetime as _dt
+        j2["ts"] = (_dt.datetime.fromisoformat(j["ts"].replace("Z", "+00:00")) + _dt.timedelta(seconds=60)).isoformat()
+    recs.insert(recs.index(j) + 1, j2)
+    check("a later invalid judgment with no gate of its own (gate crashed) does NOT reuse the judged gate",
+          AA.gate_invalids(recs)["count"] == 0, AA.gate_invalids(recs))
+    logs, tasks, sp, tid, j = planted("pass")
+    recs = logs["trio"]["recs"]
+    g2 = dict(next(x for x in recs if x["event"] == "gate" and x["task"] == tid), ts=j["ts"], verdict="invalid",
+              detail={"steps": {"scope": "PASS", "tests": "UNMEASURED"}})
+    recs.insert(recs.index(j) + 1, g2)
+    check("a measured-invalid gate logged AFTER the judgment (same timestamp) is not that judgment's gate",
+          AA.gate_invalids(recs)["count"] == 0, AA.gate_invalids(recs))
+    logs, tasks, sp, tid, j = planted("pass")
+    recs = logs["trio"]["recs"]
+    g0 = next(x for x in recs if x["event"] == "gate" and x["task"] == tid)
+    g3 = dict(g0, verdict="invalid", detail={"steps": {"scope": "PASS", "tests": "UNMEASURED"}})
+    recs.append(g3)                                     # appended AFTER j, timestamped before it (backwards clock)
+    check("a measured-invalid gate APPENDED after the judgment with an earlier timestamp is not its gate",
+          AA.gate_invalids(recs)["count"] == 0, AA.gate_invalids(recs))
+    logs, tasks, sp, tid, j = planted("measured")
+    recs = logs["trio"]["recs"]
+    pm = dict(j, verdict="invalid", detail={"base": "b", "pending": True})
+    recs.insert(recs.index(j), pm)                      # gate -> pending START marker -> judgment: the normal order
+    comp, why = AA.completions(recs, tasks, sp["trio"], AA.default_conv())
+    check("gate -> pending marker -> invalid judgment (the live order) still binds: completed, not accepted",
+          why is None and AA.gate_invalids(recs)["count"] == 1 and any(c["task"] == tid and c.get("gate_invalid")
+                                                                     for c in comp), (why, AA.gate_invalids(recs)))
+    logs, tasks, sp, tid, j = planted("pending")
+    comp, why = AA.completions(logs["trio"]["recs"], tasks, sp["trio"], AA.default_conv())
+    check("a PENDING marker after a measured-invalid gate is still a pending marker (arm refused), never completed",
+          why and "pending" in why and AA.gate_invalids(logs["trio"]["recs"])["count"] == 0, why)
+    logs, tasks, sp, tid, j = planted("measured")
+    sp["trio"].pop(tid)
+    comp, why = AA.completions(logs["trio"]["recs"], tasks, sp["trio"], AA.default_conv())
+    check("a measured-invalid task with no spend row refuses the arm (fail closed, like any completed task)",
+          why is not None and tid in why, why)
+
+
 def t_hardcap_pick_unit():
     """Day-3 hard-cap clause (Conductor 2026-10-30): simplest arm not credibly worse than control on accept rate
     (P(worse by >= 0.10) < 0.2) AND on accepted points per token (P(< 0.9x control) < 0.2); else the control stays."""
@@ -1785,7 +1895,7 @@ def t_ledger_trust():
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_tester_harness_void, t_tester_last_build, t_final_r2, t_overflow_r2, t_spend_missing_field,
-        t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_hardcap_pick_unit, t_hardcap_pick_scenario,
+        t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_gate_invalid, t_hardcap_pick_unit, t_hardcap_pick_scenario,
         t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial,
         t_stray_logs, t_ledger_trust, t_publish_parked)
 

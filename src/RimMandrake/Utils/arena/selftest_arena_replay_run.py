@@ -359,7 +359,23 @@ def t_fail_loud(tmp):
     check(RR.unmeasured_result({"verdict": "invalid", "steps": {"a": U, "b": U}}, {"verdict": "fail"}),
           "all-UNMEASURED gate refuses")
     check(RR.unmeasured_result({"verdict": "invalid", "steps": {"a": U, "b": {"status": "PASS"}}}, {}),
-          "an invalid gate refuses")
+          "an UNSIGNED invalid gate refuses (not measured-invalid)")
+    # GATE_TAMPER_FIX_CTYPES_HALTS_ARM: a signed, partly measured invalid gate judged invalid is recorded NOT accepted
+    TU = {"status": "UNMEASURED", "why": "changed code can hijack the runner (ctypes): x.py:49"}
+    mg = {"verdict": "invalid", "recorded": True, "steps": {"tests": TU, "scope": {"status": "PASS"},
+                                                             "xml": {"status": "NA"}}}
+    check(RR.unmeasured_result(mg, {"verdict": "invalid"}) is None, "a MEASURED-INVALID gate does not stop the runner")
+    inv = RR.gate_invalid(mg, {"verdict": "invalid"})
+    check(bool(inv) and inv["steps"] == {"tests": "UNMEASURED"} and "counted NOT accepted" in inv["why"]
+          and "ctypes" in inv["why"], "its record carries the reason (step, status, the gate's why): %s" % inv)
+    check(RR.unmeasured_result(dict(mg, recorded=False), {"verdict": "invalid"}), "an unrecorded invalid gate refuses")
+    check(RR.unmeasured_result(dict(mg, steps={}), {"verdict": "invalid"}), "a stepless invalid gate refuses")
+    check(RR.unmeasured_result(mg, {"verdict": "reject"}), "a measured-invalid gate with a non-invalid judge refuses")
+    check(RR.unmeasured_result(dict(mg, steps={"tests": TU, "scope": U}), {"verdict": "invalid"})
+          and RR.gate_invalid(dict(mg, steps={"tests": TU, "scope": U}), {"verdict": "invalid"}) is None,
+          "a signed all-UNMEASURED gate still refuses (harness measured nothing)")
+    check(RR.gate_invalid({"verdict": "fail", "recorded": True, "steps": {"a": {"status": "FAIL"}}},
+                          {"verdict": "reject"}) is None, "a fail gate is a plain reject, no invalid record")
     check(RR.unmeasured_result({"verdict": "pass", "steps": {"a": {"status": "PASS"}}}, {"verdict": "invalid"}),
           "an invalid judge refuses")
     for v in ("pass", "fail"):
@@ -389,6 +405,43 @@ def t_fail_loud(tmp):
         check("all-UNMEASURED" in str(e), "an all-UNMEASURED task stops the runner: %s" % e)
     finally:
         RR.subprocess.run = real_run
+    seen.clear()
+    outs[:] = [json.dumps(mg), json.dumps({"verdict": "invalid", "judge_id": "J1"})]
+    RR.subprocess.run = lambda argv, **k: seen.append(1) or P(outs[len(seen) - 1])
+    try:
+        v = RR.default_judge("v3", tmp, {"id": "T", "base_sha": "b"}, "h", logdir=tmp / "jl3")
+        check(v["verdict"] == "invalid" and v["invalid"]["steps"] == {"tests": "UNMEASURED"},
+              "default_judge returns a measured-invalid gate as a record with its reason")
+    except RR.RunRefused as e:
+        check(False, "default_judge refused a measured-invalid gate: %s" % e)
+    finally:
+        RR.subprocess.run = real_run
+    # run_arm: the invalid task is recorded (reason kept) and the NEXT task runs; a restart skips it
+    st = steps(["G1", "G2", "G3"])
+    seen2 = []
+    fk = fakes(st, seen2, fail_on=("G3",))
+    plain = fk["judge"]
+
+    def judge(arm, clone, spec, head):
+        if spec["id"] == "G1":
+            return {"verdict": "invalid", "head": head, "invalid": RR.gate_invalid(mg, {"verdict": "invalid"})}
+        return plain(arm, clone, spec, head)
+    fk["judge"] = judge
+    buf = io.StringIO()
+    try:
+        RR.run_arm("trio", ctl=tmp / "gi", model_cmd="x", steps=st, runway=OK_RUNWAY, out=buf, **fk)
+    except Exception:  # noqa: BLE001 - G3's work dies on purpose; the runner may raise or stop
+        pass
+    d = json.loads((tmp / "gi" / "trio" / "runner.json").read_text())["done"]
+    check("G1" in d and d["G1"]["judge"]["invalid"]["steps"] == {"tests": "UNMEASURED"} and "G2" in d
+          and "G3" not in d, "run_arm records the invalid task with its reason and goes on (G2 done; G3 died: unrecorded)")
+    check("counted NOT accepted" in buf.getvalue(), "the runner log line says counted NOT accepted")
+    seen2.clear()
+    fk2 = fakes(st, seen2)
+    fk2["judge"] = judge
+    RR.run_arm("trio", ctl=tmp / "gi", model_cmd="x", steps=st, runway=OK_RUNWAY, out=io.StringIO(), **fk2)
+    check([t for k, t in seen2 if k == "start"] == ["G3"], "a restart resumes: G1 (invalid) and G2 are not rerun, "
+          "the interrupted G3 is RERUN: %s" % seen2)
 
 
 def main():
