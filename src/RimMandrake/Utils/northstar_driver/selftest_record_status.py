@@ -127,10 +127,10 @@ def main():
         plan = os.path.join(root, "src", "RimUtinni", "Rites", "northstar_plan.py")
         # The five Ninefold chains (folded in 2026-10) read the live game's DevMode log lines and drive pawns, walls
         # and pregnancies; the plan's mock models only the research gate, shipped defs and Ishko's landmarks, so
-        # those chains are live-only and are skipped here (they would die on "mock: unknown tool").
+        # those chains (and worn_bit_gods, the Worn Bit arc's nine-god read) are live-only and are skipped here (they would die on "mock: unknown tool").
         rc = cli.main(["run", "--mock", "--mod", "Rites", "--plan", plan,
                        "--skip-chains", "research_completed,mental_break_started,building_repaired_and_deconstructed,"
-                                        "birth_outcome,mood_walk_tick",
+                                        "birth_outcome,mood_walk_tick,worn_bit_gods",
                        "--out", os.path.join(tmp, "rites_mock.json")])
         # skipped live-only chains are UNMEASURED rows, so the run is honestly NOT green (rc 1) -- but only because of
         # them: every row the mock can model must PASS (checked below).
@@ -144,7 +144,7 @@ def main():
         check("mock result has the 12 PASS functional rows (2 research, 2 shipped-defs, 8 Ishko)",
               len(ok) == 12, str(len(ok)))
         check("every non-PASS row is an UNMEASURED skipped live-only chain",
-              len(rest) == 6 and all(r.get("status") == "UNMEASURED" and ".skipped#" in str(r.get("id")) for r in rest),
+              len(rest) == 13 and all(r.get("status") == "UNMEASURED" and ".skipped#" in str(r.get("id")) for r in rest),
               str([(r.get("id"), r.get("status")) for r in rest]))
     finally:
         status.LOG_PATH, status.LOCK_PATH = real
