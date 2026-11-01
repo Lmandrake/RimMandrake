@@ -2,6 +2,7 @@
 """relentless.py with planted faults: worker dies, same failure repeats, stale worker publishes, spend limit, restart
 returns to the top, share 0 and 1, plus crash recovery, a two-way lease race and live_line. No units, no ledger, no
 network: Effects is replaced by FakeWorld."""
+import glob
 import json
 import multiprocessing
 import os
@@ -122,9 +123,14 @@ class FakeWorld:
     def clone_busy(self, c): return self.pool[c].get("busy", False)
     def clone_idle_s(self, c): return 7200
     def clone_wip(self, c): return {"kept": self.pool[c].get("kept", False), "real": self.pool[c].get("real", [])}
-    def remove_clone(self, st):
-        got = self.pool.pop(st.get("clone"), None)
-        return "/bundle/" + st["clone"] if got else None
+    def remove_clone(self, st, before=None):
+        if st.get("clone") not in self.pool:
+            return None
+        out = "/bundle/" + st["clone"]
+        if before:
+            before(out)
+        del self.pool[st["clone"]]
+        return out
     def conductor_alarm(self, text):
         if self.jam_fail:
             return self.jam_fail
@@ -1591,11 +1597,91 @@ def t_pool_jam():
     ok(list(x.w.pool) == ["/c/check-C1-c1"], "a dead check clone goes, a running one stays")
     x.done()
 
+    # builders at budget 0: the checks still need clones, and a blocked one still alarms
+    x = jammed()
+    x.w.pool = {"/c/L%d" % i: {"busy": True} for i in range(10)}
+    x.w.budget_v = 0
+    x.tick()
+    x.tick(400)
+    x.tick(120)
+    ok(len(x.w.jams) == 1, "a pool jam alarms at budget 0: %s" % (x.w.jams,))
+    x.done()
+
     x = staffed(n=3)
     x.s._write(x.s.p("breaker.json"), json.dumps({"fails": 4, "why": "auth dead", "until": x.now + 10**5}))
     x.tick()
     ok("auth dead" in reading(x)["why"], "an open breaker's reading carries its cause")
     x.done()
+
+
+def t_books_frozen():
+    """Books that cannot move are an engine that cannot deploy, and nothing else in the readings shows it."""
+    d = tempfile.mkdtemp(prefix="rlbooks-")
+    store = R.Store(d)
+    os.makedirs(store.dir, exist_ok=True)
+    fx = R.Effects(dict(RULES), store)
+    def git(c, *a):
+        return subprocess.run(["git", "-c", "user.name=t", "-c", "user.email=t@t", *a], cwd=c, check=True,
+                              capture_output=True, text=True).stdout
+    def put(c, rel, text):
+        os.makedirs(os.path.dirname(os.path.join(c, rel)) or c, exist_ok=True)
+        with open(os.path.join(c, rel), "w", encoding="utf-8") as f:
+            f.write(text)
+    L, I = "infrastructure/state/ledger/events/B.jsonl", "infrastructure/state/items/A.md"
+    o, up, b = os.path.join(d, "o.git"), os.path.join(d, "up"), fx.books
+    git(d, "init", "-q", "--bare", "-b", "main", o)
+    git(d, "clone", "-q", o, up)
+    git(up, "checkout", "-q", "-b", "main")
+    put(up, L, "one\n")
+    put(up, I, "item\n")
+    put(up, "code.py", "v1\n")
+    git(up, "add", ".")
+    git(up, "commit", "-qm", "base")
+    git(up, "push", "-q", "origin", "main")
+    git(d, "clone", "-q", o, b)
+    # the jam of the books: a ledger commit that landed, a rimflow move, upstream on the same item
+    put(b, L, "one\ntwo\n")
+    git(b, "commit", "-qam", "ledger")
+    put(up, L, "one\ntwo\nthree\n")
+    put(up, I, "item changed\n")
+    put(up, "code.py", "v2\n")
+    git(up, "commit", "-qam", "up")
+    git(up, "push", "-q", "origin", "main")
+    os.remove(os.path.join(b, I))
+    put(b, "infrastructure/state/items/closed/A.md", "item\n")
+    why = fx.sync()
+    ok(why is None, "the frozen books level: %s" % why)
+    with open(os.path.join(b, "code.py"), encoding="utf-8") as f:
+        ok(f.read() == "v2\n", "and the push deploys")
+    ok(git(b, "rev-parse", "HEAD") == git(up, "rev-parse", "HEAD"), "level with origin")
+    ok(glob.glob(store.p("books_dirt", "*", "infrastructure/state/items/closed/A.md")), "the dirt is kept aside")
+    # what is not landed stops it, and says what
+    put(b, L, "one\ntwo\nthree\nunlanded\n")
+    put(up, L, "one\ntwo\nthree\nfour\n")
+    put(up, "code.py", "v3\n")
+    git(up, "commit", "-qam", "up2")
+    git(up, "push", "-q", "origin", "main")
+    why = fx.sync()
+    ok(why and "not landed" in why, "unlanded ledger is never levelled away: %s" % why)
+    with open(os.path.join(b, L), encoding="utf-8") as f:
+        ok("unlanded" in f.read(), "and is still there")
+    put(b, L, "one\ntwo\nthree\n")
+    put(b, "code.py", "hand edit\n")
+    ok("outside the ledger" in str(fx.sync()), "a hand edit stops it")
+    class W:
+        said = []
+        def conductor_alarm(self, t):
+            self.said = self.said + [t]
+    w, acts = W(), []
+    R.books_alarm(store, w, "behind", 1000, acts, RULES)
+    R.books_alarm(store, w, "behind", 1100, acts, RULES)
+    ok(not w.said, "the books alarm waits out a push in flight")
+    for t in (1400, 1600):
+        R.books_alarm(store, w, "behind", t, acts, RULES)
+    ok(len(w.said) == 1 and "not deploying" in w.said[0], "then says it once")
+    R.books_alarm(store, w, None, 1800, acts, RULES)
+    ok(not os.path.exists(store.p("books_stale.json")), "and clears")
+    shutil.rmtree(d, ignore_errors=True)
 
 
 def t_pool_real_git():
@@ -1690,7 +1776,7 @@ def t_pool_real_git():
 
 
 def main():
-    for t in (t_pool_jam, t_pool_real_git, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):

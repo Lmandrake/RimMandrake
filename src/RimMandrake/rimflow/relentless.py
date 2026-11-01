@@ -45,6 +45,8 @@ POOL_FULL = ("pool full", "pool at")  # make_room's holds: what the staffing rea
 POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastructure/state/code_review/")
 POOL_ORPHAN_IDLE_S = 3600
 POOL_IGNORED_MAX = 2 * 10**9
+LEDGER_DIR = "infrastructure/state/ledger/events/"
+BOOKS_DERIVED = (LEDGER_DIR, "infrastructure/state/items/")
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
 
 
@@ -434,9 +436,51 @@ class Effects:
                               stdin=subprocess.DEVNULL)
 
     def sync(self):
+        """The engine runs from books, so a clone that cannot move freezes the engine. -> None, or why it is behind.
+        --ff-only fails without a word on one rimflow-moved item file or one landed ledger commit: 15 hours, 2026-11-01."""
         self.git(self.books, "pull", "--ff-only", "--quiet")
         self._ledger = None
         self._budget = self._helpers = NOT_READ
+        try:
+            return self.level_books()
+        except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
+            return "books cannot level: %s" % str(e)[:300]
+
+    def level_books(self):
+        """Behind origin: level the clone when all it holds is ledger already landed and item files rimflow rewrites."""
+        behind = self.git_ok(self.books, "rev-list", "--count", "HEAD..origin/main").strip()
+        if behind in ("0", ""):
+            return None
+        out = self.git_ok(self.books, "status", "--porcelain", "--no-renames", "-z", "--untracked-files=all")
+        rows = [(x[:2], x[3:]) for x in out.split("\0") if x]
+        alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED)]
+        if alien:
+            return "books %s behind: dirty outside the ledger: %s" % (behind, ", ".join(alien[:5]))
+        changed = self.git_ok(self.books, "diff", "--name-only", "origin/main...HEAD").split()
+        alien = [p for p in changed if not p.startswith(BOOKS_DERIVED)]
+        if alien:
+            return "books %s behind: own commits outside the ledger: %s" % (behind, ", ".join(alien[:5]))
+        for p in sorted({p for p in changed if p.startswith(LEDGER_DIR)} | {p for _s, p in rows if p.startswith(LEDGER_DIR)}):
+            with open(os.path.join(self.books, p), encoding="utf-8") as f:
+                mine = set(f.read().splitlines())
+            lost = mine - set(self.git_ok(self.books, "show", "origin/main:" + p).splitlines())
+            if lost:
+                return "books %s behind: %d lines of %s not landed" % (behind, len(lost), p)
+        keep = self.store.p("books_dirt", time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
+        for state, p in rows:
+            src = os.path.join(self.books, p)
+            if os.path.isfile(src):
+                os.makedirs(os.path.dirname(os.path.join(keep, p)), exist_ok=True)
+                shutil.copy2(src, os.path.join(keep, p))
+            if state == "??":
+                os.remove(src)
+            else:
+                os.makedirs(os.path.dirname(src), exist_ok=True)
+                with open(src, "wb") as f:
+                    f.write(subprocess.run(["git", "-C", self.books, "show", "HEAD:" + p], capture_output=True, check=True, timeout=60).stdout)
+        self.git(self.books, "update-index", "-q", "--refresh")   # same bytes, new stat: reset --keep reads that as dirt
+        self.git_ok(self.books, "reset", "--keep", "origin/main")
+        return None
 
     def flush(self):
         """Publish the shard: retried each tick until it lands, so a close never stays local."""
@@ -639,12 +683,12 @@ class Effects:
                                stdin=subprocess.DEVNULL)
             if r.returncode:
                 return "clone failed: %s" % (r.stderr or r.stdout)[-300:]
-            if st.get("bundle"):
-                self.restore_bundle(st["item"], st["bundle"], c)
-                with self.store.lock():
-                    cur = self.store.load(st["item"])
-                    cur.pop("bundle", None)
-                    self.store.save(cur)
+        if st.get("bundle"):      # outside the clone's making: a tick that died between the two still restores
+            self.restore_bundle(st["item"], st["bundle"], c)
+            with self.store.lock():
+                cur = self.store.load(st["item"])
+                cur.pop("bundle", None)
+                self.store.save(cur)
         with open(os.path.join(c, ".git", "relentless.json"), "w", encoding="utf-8") as f:
             json.dump({"item": st["item"], "gen": st["gen"]}, f)
         return None
@@ -747,6 +791,11 @@ class Effects:
             r = self.git(c, "apply", "--3way", "--whitespace=nowarn", patch, timeout=300)
             if r.returncode:
                 bad.append("patch: %s" % r.stderr[-200:])
+        index, whole = (os.path.join(bundle, x) for x in ("index.patch", "diff.patch"))
+        if os.path.exists(index) and os.path.getsize(index):
+            with open(index, "rb") as a, open(whole, "rb") as b:
+                if a.read() != b.read():
+                    bad.append("the index held content the working tree did not: see index.patch")
         for name in ("real_untracked.tar", "ignored.tar"):
             tar = os.path.join(bundle, name)
             if not os.path.exists(tar):
@@ -763,7 +812,7 @@ class Effects:
                              "come back; it is in %s (%s)\n" % (iso(time.time()), bundle, "; ".join(bad)))
         return bad
 
-    def remove_clone(self, st):
+    def remove_clone(self, st, before=None):
         """Nothing leaves the pool unbundled. -> the bundle dir or None; a bundle that fails keeps the clone."""
         c = st.get("clone")
         if not c or not os.path.abspath(c).startswith(os.path.join(self.base, "clones") + os.sep):
@@ -775,6 +824,8 @@ class Effects:
             except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
                 self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "bundle_failed", "clone": c, "why": str(e)[:300]})
                 return None
+        if before and out:
+            before(out)         # the record learns of the bundle while the clone still stands
         try:
             shutil.rmtree(c)
         except OSError as e:   # still present, so still counted; the bundle stands
@@ -1121,8 +1172,8 @@ def pool_rows(store, fx, r):
     return rows
 
 
-def evict(store, fx, row, now, acts, why):
-    bundle = fx.remove_clone({"clone": row["clone"], "item": row["item"]})
+def evict(store, fx, row, now, acts, why, before=None):
+    bundle = fx.remove_clone({"clone": row["clone"], "item": row["item"]}, before)
     gone = not fx.clone_present(row["clone"])
     if gone:
         store.journal({"at": iso(now), "do": "clone_released", "clone": os.path.basename(row["clone"]), "why": why, "bundle": bundle})
@@ -1157,15 +1208,16 @@ def make_room(store, fx, r, now, acts, reserve=0):
             continue
         parked.append((row["rank"], bool(wip["real"]), order.get(row["status"], 0), row, wip))
     for rank, real, _o, row, wip in sorted(parked, key=lambda p: p[:3]):
-        gone, bundle = evict(store, fx, row, now, acts, "for room: %s %s" % (row["kind"] or "nobody's", row["status"] or ""))
+        def point(bundle, item=row["item"], carry=real and row["kind"] == "work" and rank):
+            if carry:
+                with store.lock():
+                    cur = store.load(item)
+                    cur["bundle"] = bundle
+                    store.save(cur)
+        gone, _b = evict(store, fx, row, now, acts, "for room: %s %s" % (row["kind"] or "nobody's", row["status"] or ""), point)
         if not gone:
             row["hold"] = "bundle failed"
             continue
-        if real and bundle and row["kind"] == "work" and rank:
-            with store.lock():
-                cur = store.load(row["item"])
-                cur["bundle"] = bundle
-                store.save(cur)
         n, size, cmax, bmax = fx.pool_load()
         if n < cmax - reserve and size < bmax:
             return None
@@ -1449,6 +1501,7 @@ def step(store, fx, r, item, now, acts):
         if gb < r["min_mem_available_gb"]:      # the clone itself costs gigabytes; admission saw the host before it
             fx.remove_clone({"clone": clean})
             with store.lock():                  # others go first: the same clone every tick would starve them
+                st = store.load(item)           # make_room may have written this record since it was read
                 st["clone_again_at"] = now + 600
                 store.save(st)
             acts.append({"do": "check_waits", "item": item, "why": "memory after the clone"})
@@ -1884,18 +1937,20 @@ def staffing(store, fx, r, now, acts):
             store.journal({"at": iso(now), "do": "alarm", "kind": "understaffed", "minutes": minutes, "why": why})
             acts.append({"do": "alarm", "item": cfg["alarm_item"]})
     # a jam: nothing runs, or the pool refuses, while work waits. Named within minutes, in the log the Conductor reads
-    if under and why not in NO_ALARM and (live == 0 or str(why).startswith(POOL_FULL)):
+    pool_why = next((a["why"] for a in acts if str(a.get("why", "")).startswith(POOL_FULL)), None)
+    why_jam = why if pool_why is None else pool_why
+    if pool_why or (under and why not in NO_ALARM and live == 0):
         s["jam_since"] = s.get("jam_since") or now
         if now - s["jam_since"] >= cfg["jam_alarm_s"] and not s.get("jam_said"):
             fail = fx.conductor_alarm("%d live of %d wanted, %d checks waiting, %d ready, stalled %.0f min: %s" % (
-                live, target, sum(1 for x in states if x["status"] == "candidate"), ready, (now - s["jam_since"]) / 60.0, why))
+                live, target, sum(1 for x in states if x["status"] == "candidate"), ready, (now - s["jam_since"]) / 60.0, why_jam))
             if fail:
                 alarm_fail = fail
                 acts.append({"do": "alarm_retry", "why": fail})
             else:
                 s["jam_said"] = True
-                store.journal({"at": iso(now), "do": "alarm", "kind": "jam", "why": why})
-                acts.append({"do": "jam_alarm", "why": why})
+                store.journal({"at": iso(now), "do": "alarm", "kind": "jam", "why": why_jam})
+                acts.append({"do": "jam_alarm", "why": why_jam})
     else:
         s.pop("jam_since", None)
         s.pop("jam_said", None)
@@ -1939,6 +1994,23 @@ def staffing(store, fx, r, now, acts):
     return rec
 
 
+def books_alarm(store, fx, stale, now, acts, r):
+    """Frozen books are a frozen engine however green its readings look: said once, and said to the Conductor."""
+    path = store.p("books_stale.json")
+    was = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
+    if not stale:
+        if was:
+            os.remove(path)
+        return
+    was = was or {"since": now}
+    acts.append({"do": "books_stale", "why": stale})
+    if now - was["since"] >= ((r.get("staffing") or {}).get("jam_alarm_s") or 300) and not was.get("said"):
+        was["said"] = not fx.conductor_alarm("the engine is not deploying, a push does nothing: %s" % stale)
+        store.journal({"at": iso(now), "do": "alarm", "kind": "books_stale", "why": stale})
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(was, f)
+
+
 def tick(store=None, fx=None, r=None, now=None):
     r = r or rules()
     store = store or Store()
@@ -1954,7 +2026,7 @@ def tick(store=None, fx=None, r=None, now=None):
         if not r.get("enabled"):
             reading(store, r, now, [{"do": "disabled"}])
             return acts
-        fx.sync()
+        books_alarm(store, fx, fx.sync(), now, acts, r)
         retire(store, fx, store.states(), now, acts, r)
         reclaim_dead(store, fx, r, now, acts)
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now

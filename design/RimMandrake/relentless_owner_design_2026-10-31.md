@@ -323,3 +323,7 @@ charged as a launch failure, so the breaker backed off for hours. The cap of 10 
 - **A jam alarms.** Under target with nothing live, or pool-full, for `jam_alarm_s` (300): one RAISE FIRST line in the Conductor
   log naming the cause and who holds the pool. An open breaker's reading carries its cause.
 - **`running` means live.** The reading's `places` holds what used to be called running: candidates waiting for checks count there.
+- **Books must move, or say so.** The engine runs from `books`; `pull --ff-only` failed silently for 15 hours on one rimflow-moved
+  item file and landed ledger commits, so no push deployed. `level_books` levels the clone when it holds only landed ledger and
+  item files (dirt kept in `store/books_dirt/`); anything else stays, and `books_alarm` tells the Conductor after `jam_alarm_s`.
+- **Check-order facts:** the record learns a bundle before the clone goes; a restore that died is retried; what cannot come back is said.
