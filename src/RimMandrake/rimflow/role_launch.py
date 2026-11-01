@@ -1969,6 +1969,7 @@ def main(argv=None):
     r.add_argument("--claim", action="append", default=[], help="ITEM@SHA (Arbiter only): judge exactly these")
     r.add_argument("--trial", action="store_true", help="verdicts to the trial record, apart from the real one")
     r.add_argument("--days", type=float, default=7, help="the named claims closed within this many days")
+    r.add_argument("--covers-slot", action="store_true", help="this run IS the role's next scheduled run today (its slot is marked covered, the daily cap is asked for one run)")
     r.add_argument("--cancel", action="store_true")
     r.add_argument("--apply", action="store_true")
     s = sub.add_parser("run-status")
@@ -1993,6 +1994,8 @@ def main(argv=None):
             sch = D.load_schedule(a.schedule)
             req = run_now_request(sch, {"role": a.role, "by": a.by, "why": a.why, "mode": a.mode,
                                         "claims": a.claim, "trial": a.trial, "days": a.days}, now)
+            if a.covers_slot:
+                req["covers_slot"] = True
         except (OSError, ValueError) as e:
             print("REFUSED: %s" % e, file=sys.stderr)
             return 2
