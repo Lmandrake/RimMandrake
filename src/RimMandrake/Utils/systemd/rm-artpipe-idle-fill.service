@@ -2,6 +2,8 @@
 # When fewer than 3 job files are in flight, files the next owed art through donor_regen_jobs.py submit (the
 # regen_eligibility gate: confirmed NONE / PLACEHOLDER / DONOR only, never KEPT or already-regenerated), rebuilding
 # the owed list (census -> audit -> build, ~11 min) when it is older than 20 h. Status: <state>/status/idle_fill.json.
+# Each tick first requeues last-24 h codex flakes and their master_failed facings (requeue_flakes.py, 3 per job,
+# ARTPIPE_REQUEUE_AUTOMATION_1); its failure never stops the feeder.
 # Install:  cp src/RimMandrake/Utils/systemd/rm-artpipe-idle-fill.{service,timer} ~/.config/systemd/user/
 #           systemctl --user daemon-reload && systemctl --user enable --now rm-artpipe-idle-fill.timer
 # Remove:   systemctl --user disable --now rm-artpipe-idle-fill.timer
@@ -16,6 +18,7 @@ Environment=ARTPIPE_STATE_DIR=/mnt/d/ClaudeWork/rimmandrake/artpipe
 Environment=ARTPIPE_STATE=/mnt/d/ClaudeWork/rimmandrake/artpipe
 Environment=RM_DATA_ROOT=/mnt/d/ClaudeWork/rimmandrake
 Environment=PYTHONUNBUFFERED=1
+ExecStartPre=-/bin/bash -lc 'exec python3 src/RimMandrake/Utils/artpipe/requeue_flakes.py'
 ExecStart=/bin/bash -lc 'exec python3 src/RimMandrake/Utils/artpipe/idle_fill.py tick'
 Nice=10
 IOSchedulingClass=idle
