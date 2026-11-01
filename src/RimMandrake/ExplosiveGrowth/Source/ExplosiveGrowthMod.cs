@@ -314,8 +314,9 @@ namespace RimMandrake.ExplosiveGrowth
                 chargeHours = list.Slider(chargeHours, 1f, 24f);
                 list.Label("Overgrown up to " + maxOvergrowthScale.ToString("0.00") + "x natural size");
                 maxOvergrowthScale = list.Slider(maxOvergrowthScale, 1f, 3f);
-                list.Label("Trembling plants wobble every " + reprintIntervalTicks + " ticks (lower = smoother, costlier)");
-                reprintIntervalTicks = Mathf.RoundToInt(list.Slider(reprintIntervalTicks, 60f, 2000f));
+                int wobbleGap = RM_ExplosiveGrowthKernel.WobbleGapTicks(reprintIntervalTicks);
+                list.Label("Trembling plants flip size every " + wobbleGap + " ticks, in steps of " + RM_ExplosiveGrowthKernel.PassInterval + " (lower = a faster flip and costlier, not smoother)");
+                reprintIntervalTicks = RM_ExplosiveGrowthKernel.WobbleGapTicks(Mathf.RoundToInt(list.Slider(wobbleGap, RM_ExplosiveGrowthKernel.PassInterval, 2000f)));
                 list.CheckboxLabeled("Swelling plants shift to a wrong hue", ref hueShiftEnabled);
                 list.CheckboxLabeled("Strain sounds (the creak before the top)", ref tellSoundsEnabled);
                 list.CheckboxLabeled("The ground darkens when a plant starts to charge", ref groundTellEnabled);

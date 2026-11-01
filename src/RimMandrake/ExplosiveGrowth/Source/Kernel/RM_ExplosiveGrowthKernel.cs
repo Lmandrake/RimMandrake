@@ -98,6 +98,14 @@ namespace RimMandrake.ExplosiveGrowth
             return s;
         }
 
+        /// <summary>EGROWTH_TREMBLE_DIAGNOSE_SIZE_JUMP_WOBBLE: the real gap between tremble flips. The flip is read on the pass,
+        /// so reprintIntervalTicks rounds UP to a multiple of PassInterval and nothing under it is reachable.</summary>
+        public static int WobbleGapTicks(int reprintIntervalTicks)
+        {
+            int ticks = Math.Max(1, reprintIntervalTicks);
+            return (ticks + PassInterval - 1) / PassInterval * PassInterval;
+        }
+
         // 0 = natural, 1 = fully wrong, quantised to quarters.
         public static float Hue(float charge)
         {

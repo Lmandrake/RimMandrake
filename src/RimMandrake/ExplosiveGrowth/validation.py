@@ -791,6 +791,24 @@ def soak_exempt_plants(t):
                 _fail("topNone/exempt=%r but %d never-soak plants are in the soaked disk" % (tl["topNone/exempt"], placed))
 
 
+# EGROWTH_TREMBLE_DIAGNOSE_SIZE_JUMP_WOBBLE (2026-11-01, offline, code read plus a computed series; nothing here was
+# watched live). The owner saw mushrooms jump big/small/big and asked whether a gentle swell was failing on framerate.
+# CONFIRMED by code: nothing in this mod animates. No draw-loop, frame-time or real-time read exists in Source. A drawn
+# plant size changes only on tick -> the 250-tick pass -> MapMeshDirty -> Plant.Print -> VisualScale. So a paused game
+# does not flip, and the size is a function of TPS, never of FPS.
+# CONFIRMED: the tremble band (.70 to .95) is a map-wide two-state jump of +3.5% / -3.5% (7.25% peak to peak, map-global
+# wobbleParity, no per-plant phase), one flip per 250 ticks: 4.17 s at 60 TPS, 0.69 s at 360 TPS. One 6h climb is 15 flips.
+# The jump is relative, so its size is the plant: Wrinklecap 8 px, Shinecap 27 px, DribblingCap 45 px at 2x.
+# CONFIRMED: a larger, slower swing exists: wet/dry charge moves the 8-step swell up and down, with no hysteresis at a
+# step edge (a step lasts 1594 ticks wet, 797 dry). Full 2x to 1x dry takes 7500 ticks.
+# CONFIRMED defect, fixed: reprintIntervalTicks is read on the pass, so 60-259 all meant 250 and "lower = smoother" was
+# false twice over. The slider now snaps to the pass grid (WobbleGapTicks) and the label says what it does.
+# FALSE THEORIES, kept because each is the obvious next guess: a Sin/breathing animation at low FPS (none exists); growth
+# stage art or Plant_GrowthStaged (stage plants only, and monotone); weather graphic swap (grey crown only); the
+# CrackedLands flood cohort (Irqit pawns); TreeMushroom jumping (roster top None, it never charges); the resow cycle
+# (the parent dies and sprouts at .05, not a seconds-scale event); immature plants (arming needs growth >= .999).
+# LIVE ONLY, still unproven: which def he saw, that it held a charge in band, flip versus wet/dry on that map, the frame
+# cost of a flip (up to 225 sections on a 250 map), actual TPS and FPS. Series: D:\ClaudeWork\rimmandrake\egrowth_tremble_diag
 # --------------------------------------------------------------------------- the charge and the churn top
 
 def _churn_cycle(t, comp, produce_expected, **arm):

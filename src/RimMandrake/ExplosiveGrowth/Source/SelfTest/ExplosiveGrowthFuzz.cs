@@ -420,6 +420,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                 Check(RM_ExplosiveGrowthKernel.Hue(0.45f) == 0f && RM_ExplosiveGrowthKernel.Hue(0.4501f) == 0.25f && RM_ExplosiveGrowthKernel.Hue(1f) == 1f, "Hue edges");
                 Check(RM_ExplosiveGrowthKernel.VisualScale(0.15f, 2f, true) == 1f && RM_ExplosiveGrowthKernel.VisualScale(0.1501f, 2f, true) > 1f, "swell starts strictly above 0.15");
                 Check(Math.Abs(RM_ExplosiveGrowthKernel.VisualScale(0.95f, 2f, true) - (1f + RM_ExplosiveGrowthKernel.SizeStep(0.95f) / 8f)) < 1e-4f && Math.Abs(RM_ExplosiveGrowthKernel.VisualScale(1f, 2f, true) - 2f) < 1e-5f, "scale at the silent moment has no wobble and reaches max at charge 1");
+                Check(RM_ExplosiveGrowthKernel.WobbleGapTicks(60) == 250 && RM_ExplosiveGrowthKernel.WobbleGapTicks(250) == 250 && RM_ExplosiveGrowthKernel.WobbleGapTicks(251) == 500 && RM_ExplosiveGrowthKernel.WobbleGapTicks(2000) == 2000, "the wobble gap rounds up to the pass grid");
                 Check(RM_ExplosiveGrowthKernel.PassDelta(5000, 100) == 2000 && RM_ExplosiveGrowthKernel.PassDelta(100, 100) == 1 && RM_ExplosiveGrowthKernel.PassDelta(0, -1) == 250, "PassDelta edges");
                 Cases++;
             }
