@@ -20,16 +20,7 @@
   -->
 
   <PropertyGroup>
-    <!-- net48, not net472: Killathon.ArtificialBeings.SynCore's own DLL
-         declares itself built against 4.8, and the .NET SDK's reference
-         resolver refuses a lower-targeted project's reference to a
-         higher-targeted assembly outright (MSB3274 downgrades the reference
-         to unresolved, not just a warning). RimWorld's actual Mono runtime
-         does not enforce this distinction at runtime: every other mod
-         here (0Harmony included) already runs fine regardless of its
-         declared TFM, so raising OUR declared target is the correct fix,
-         not a real behavior change. -->
-    <TargetFramework>net48</TargetFramework>
+    <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>JawaArmoury</AssemblyName>
     <RootNamespace>JawaArmoury</RootNamespace>
