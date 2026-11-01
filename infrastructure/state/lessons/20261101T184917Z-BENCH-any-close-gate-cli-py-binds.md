@@ -1,0 +1,1 @@
+Any close gate in cli.py binds only clones that have pulled it: KNOWN_RESULTS_BUILD_MEASURED_DEPENDENCIES closed at 18:44Z 2026-11-01 with no pass on its sha, 39 minutes after the gate landed. AU4 (close_audit.py) shows such a close as unearned; expect a tail of these until every seat clone syncs, and do not move the AU4 window to hide it.
