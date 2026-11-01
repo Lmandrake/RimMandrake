@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Proof for WARLAB_GARRISON_DESIGN_EARLY_BLAST: the design note says what the item owes, and every existing
 system it cites resolves in src/. Names the note introduces are listed, and must NOT exist yet or be built."""
+import json
 import pathlib
 import subprocess
 import sys
 
 ROOT = pathlib.Path(__file__).resolve().parents[3]
 NOTE = ROOT / "design/Jawa/worldbuilding/warlab_garrison_early_blast_2026-11-01.md"
+VERDICT = ROOT / "infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json"
 SECTIONS = ["## 2. The heat rise", "## 4. The garrison", "## 5. The codes", "## 6. Where it meets other rulings",
             "## 7. Mod Settings", "## Judgment"]
 PHRASES = ["**Who.**", "**Where.**", "**Persistence.**", "RaiseFloor", "AdjustVisibility", "CodesUsable"]
@@ -19,6 +21,22 @@ EXISTING = ["WarLabCraterMutation", "GameComponent_WarLabCrater", "CompIgniteCra
             "launchResetMultiplier", "ANCIENT_WAR_LAB_1", "ASSAILANT_WARLAB_BUILD_MERGE"]
 
 
+def ruling_defects(text: str) -> list[str]:
+    """The item owes a RULED note: a judge other than the maker returned KEEP, on file and stated in the note."""
+    bad = []
+    if "not yet ruled" in text.split("## Judgment", 1)[-1]:
+        bad.append("note's ## Judgment still says not yet ruled")
+    try:
+        rec = json.loads(VERDICT.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as e:
+        return bad + [f"no readable verdict file: {e}"]
+    if rec.get("verdict") != "KEEP":
+        bad.append(f"verdict is not KEEP: {str(rec.get('verdict'))[:60]}")
+    if not rec.get("judge"):
+        bad.append("verdict names no judge")
+    return bad
+
+
 def main() -> int:
     text = NOTE.read_text(encoding="utf-8")
     bad = [f"missing section/phrase: {s}" for s in SECTIONS + PHRASES if s not in text]
@@ -29,7 +47,8 @@ def main() -> int:
         hit = subprocess.run(["git", "-C", str(ROOT), "grep", "-q", "-F", sym, "--", "src", "infrastructure/state/items"])
         if hit.returncode != 0:
             bad.append(f"cited symbol resolves nowhere: {sym}")
-    print("\n".join(bad) if bad else f"OK {len(EXISTING)} symbols, {len(SECTIONS + PHRASES)} sections")
+    bad += ruling_defects(text)
+    print("\n".join(bad) if bad else f"OK {len(EXISTING)} symbols, {len(SECTIONS + PHRASES)} sections, ruled KEEP")
     return 1 if bad else 0
 
 

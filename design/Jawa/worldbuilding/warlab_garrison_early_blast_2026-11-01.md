@@ -268,7 +268,8 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 ## Judgment
 
 Status: **not yet ruled.** The opus judge required by `delegation_policy.md` §4 has not run. The
-maker may not rule its own design, and the worker that wrote this note could not spawn one.
+maker may not rule its own design, and the worker that wrote this note could not spawn one. Brief:
+`infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast_judge_brief.md`.
 
 Pre-review only, by GPT (not a valid §4 judge for this class): three rounds, each REDO, five
 defects, all fixed in this text. Its last two defects (`groundOpen` and the Route 6 clock) came
