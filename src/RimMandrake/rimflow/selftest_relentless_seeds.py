@@ -216,6 +216,9 @@ def test_contamination_scan():
     check("a read between cd and the verdict is seen",
           C("cd %s; cat /home/mandrake/rm/relentless/store/x; %s" % (own, verdict), own=own) != [])
     check("the fix's sha is seen", C("git show abcdef0123") == ["abcdef0123"])
+    ev = []
+    S.contamination([{"command": "ls /home/mandrake/rm/bench/src"}], k, evidence=ev)
+    check("a hit keeps the text around it", len(ev) == 1 and ev[0]["hit"] == "/rm/bench" and "ls /home/mandrake/rm/bench/src" in ev[0]["text"])
     check("no transcript is not clean", S.contamination(None, k) == ["unscanned"])
     nested = {"message": {"content": [{"type": "text", "text": "cat /rm/bench"}, {"type": "tool_use", "input": {"command": "x"}}]},
               "toolUseResult": {"inner": [{"type": "tool_use", "input": {"file_path": "y"}}]}}

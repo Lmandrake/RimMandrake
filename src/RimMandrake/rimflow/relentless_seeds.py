@@ -681,8 +681,10 @@ def scan_text(inp, box=None):
     return json.dumps(rest)
 
 
-def contamination(inputs, k, own=None, box=None):
-    """-> the forbidden things the Marker's tool calls named (counting rules: Contaminated). An audit, not a wall."""
+def contamination(inputs, k, own=None, box=None, evidence=None):
+    """-> the forbidden things the Marker's tool calls named (counting rules: Contaminated). An audit, not a wall.
+    A list passed as evidence gets the text around each first hit: the box is deleted after the run, so a hit
+    without its text can never be judged real."""
     if inputs is None:
         return ["unscanned"]
     bad = (str(PRIVATE), "rimmandrake/arena", "dev/RimMandrake", "ClaudeWork/rimmandrake/relentless_agent", "relentless-seeds",
@@ -694,7 +696,11 @@ def contamination(inputs, k, own=None, box=None):
             text = text.replace(str(own), "")
         for b in bad:
             if b in text:
-                got.add("private" if b == str(PRIVATE) else b)
+                name = "private" if b == str(PRIVATE) else b
+                if evidence is not None and name not in got:
+                    i = text.index(b)
+                    evidence.append({"hit": name, "text": text[max(0, i - 100):i + 100]})
+                got.add(name)
     return sorted(got)
 
 
@@ -771,10 +777,12 @@ def run_case(k, sources, wall=False, arm=None):
             pass
         verdict = chk.get("verdict")
         late = bool(verdict and chk["verdict_at"] > limit)
+        proof = []
         res = {"item": k["item"], "cls": k["cls"], "set": k["set"], "task": k["task"], "attempt": attempt,
                "verdict": None if late else verdict, "late": late, "reasons": chk.get("reasons"), "at": chk["at"],
                "secs": (chk.get("verdict_at") or time.time()) - chk["at"], "tokens": fx.tokens(desc),
-               "contaminated": contamination(tool_inputs(session, box), k, box or chk["clone"], box), "unit": desc["unit"],
+               "contaminated": contamination(tool_inputs(session, box), k, box or chk["clone"], box, proof), "unit": desc["unit"],
+               "contaminated_text": proof,
                "walled": bool(box),
                "sha": st["candidate"]["sha"], "model": rules["model"], "agent": rules["checker_agent"],
                "fingerprint": k["fingerprint"], "path": k.get("path"), "paths": k.get("paths")}

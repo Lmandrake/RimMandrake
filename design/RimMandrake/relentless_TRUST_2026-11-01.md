@@ -61,6 +61,10 @@ Item: MARKER_VERDICT_FIX_WORK_HOLDS_PROOF_WEAK. Set E1, 22 cases (11 controls, 8
 - **Old-arm scan:** 12 of 22 old runs read `unscanned`, a seed-harness fault fixed for the new arm. The table counts them, since the wall stood in every run. The new arm scanned all 22; one seed run, SD_6F24ED62DE45, named a seat clone, and without it seeds are 7 FAIL and 3 WEAK of 10.
 - **Unmeasured:** whether a proof-only round exposes a seeded fault under WEAK, and whether the 7 control WEAKs show gaps worth paying for. SD_D9C2A8207229, the 1 remaining false fail, has had no second read.
 
+## WEAK on faulted seeds, read by hand, 2026-11-01
+
+Item: SEED_CHECK_FIX_WEAK_NAMES_BAD_WORK. The three seeds called "work holds" (SD_0DF5BE3AFE17, SD_D7B45D2D4FE4, SD_FEBABF2B1FCD) were read against their keys. For the two `hunk_green` seeds the removed hunk (a `_gone_for_good` guard in `repo_deleted`; the `offmap_problems` backstop in `main`) is not what the Marker's named gap points at: its gaps were a different function (`worktree_deleted` quoting) and a different path (the bridge ops), so a proof-only round that pins those gaps would not have exposed the seeded fault (read, 0 of 2; no round was run). The `escaped` seed named a real lane-letter fix as significant and still said WEAK. So WEAK is "proof has holes", not "work is sound", and must not be counted as a catch (`relentless_trust.py` already keeps it apart). No prompt change: E1 is spent. A seat clone named once (SD_6F24ED62DE45) could not be judged because the box was deleted with its transcript; the seed run now keeps the text around each hit (`contaminated_text`).
+
 ## What this does not show
 
 - **Discrimination.** `all_red` and `hunk_red` 100% means the Marker reran a proof that was red. Only `hunk_green` and `escaped` ask for judgment, and they have 7 counted cases.
