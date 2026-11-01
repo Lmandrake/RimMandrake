@@ -1,0 +1,1 @@
+A count of a path name in a backup's local logs is not coverage: Backblaze logs held about 1M lines naming Desktop/old_computer, yet the folder's current path had no records; the entries were for earlier locations. Check the current path's records, or restore a file.

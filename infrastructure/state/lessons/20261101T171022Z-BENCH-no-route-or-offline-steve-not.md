@@ -1,0 +1,1 @@
+A 'no route' or offline Steve is not evidence of drive failure: steve-cpu-retest deliberately rebooted it at 08:37 on 2026-11-01. Read the Windows event log (1074, 41, 6008) and the controller's journal before theorising.
