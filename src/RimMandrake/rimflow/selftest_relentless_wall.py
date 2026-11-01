@@ -151,6 +151,16 @@ def test_review_two():
         box = W.make_box({"box_root": "boxes", "tree_exclude": []}, src, sha, "n3")
     finally:
         os.chdir(cwd)
+    root_sha = git(src, "rev-list", "--max-parents=0", "HEAD")
+    b2 = W.make_box({"box_root": root, "tree_exclude": []}, src, root_sha, "n4")
+    check("a root commit exports, its diff is all of it", "+one" in Path(b2, "change.diff").read_text(encoding="utf-8"))
+    W.remove_box(b2)
+    try:
+        W.make_box({"box_root": root + "/a b", "tree_exclude": []}, src, sha, "n5")
+        check("a box root with whitespace is refused", False)
+    except RuntimeError:
+        check("a box root with whitespace is refused", True)
+    check("a path inside another is not the denied one", W.would_deny([{"command": "cat /tmp/store/f"}], {"deny": ["/store"], "tree_exclude": []}) == [])
     check("a relative box root exports", Path(box, "tree/a.py").exists() and os.path.isabs(box), box)
     W.remove_box(box)
 

@@ -310,6 +310,8 @@ def test_verdict_and_journal():
         with open(S.PRIVATE / "attempts/SD_T.jsonl", "a", encoding="utf-8") as f:
             f.write('{"state":"started"')
         check("a torn journal line is skipped, not fatal", S.attempts_used("SD_T") == 1)
+        S.journal("SD_T", {"state": "started"})
+        check("an append after a torn line is its own row", S.attempts_used("SD_T") == 2)
         for bad in ("wall", "", "a/b", ".."):
             try:
                 S.pin_arm(bad, "fp")

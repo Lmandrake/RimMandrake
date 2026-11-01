@@ -81,6 +81,8 @@ def excludes(prof):
 
 def make_box(prof, source, sha, nonce):
     """-> the box's path. Tree at sha with no .git and none of tree_exclude, the diff against sha's parent, the verdict script."""
+    if any(c.isspace() for c in str(prof["box_root"]) + nonce):
+        raise RuntimeError("box root with whitespace: systemd splits BindPaths on it")
     box = Path(os.path.abspath(Path(prof["box_root"], nonce)))      # git runs in the source: a relative path would move
     tree = box / "tree"
     tree.mkdir(parents=True)
@@ -96,7 +98,11 @@ def make_box(prof, source, sha, nonce):
     (box / "export.index").unlink(missing_ok=True)
     if x.returncode:
         raise RuntimeError("export failed: %s" % x.stderr[-200:])
-    d = subprocess.run(["git", "diff", "--no-renames", sha + "^", sha, "--", ".", *ex], cwd=source, capture_output=True,
+    if subprocess.run(["git", "rev-parse", "-q", "--verify", sha + "^"], cwd=source, capture_output=True).returncode:
+        parent = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"     # a root commit's change is all of it: diff from the empty tree
+    else:
+        parent = sha + "^"
+    d = subprocess.run(["git", "diff", "--no-renames", parent, sha, "--", ".", *ex], cwd=source, capture_output=True,
                        timeout=300, check=True)
     (box / "change.diff").write_bytes(d.stdout)
     (box / "nonce").write_text(nonce, encoding="ascii")
@@ -146,7 +152,8 @@ def would_deny(inputs, prof):
     hits = set()
     for inp in inputs:
         text = json.dumps(inp, ensure_ascii=False)
-        hits.update(p for p in denied(prof) + list(prof.get("tmpfs", ())) if re.search(re.escape(p) + r"(?![\w.-])", text))
+        hits.update(p for p in denied(prof) + list(prof.get("tmpfs", ()))
+                    if re.search(r"(?<![\w.-])" + re.escape(p) + r"(?![\w.-])", text))
         # the path at a word edge: after a slash, space, quote, = ( ; | & < > : or the start - shell quoting does not hide it
         hits.update(p for p in prof["tree_exclude"] if re.search(r"(?<![\w.-])" + re.escape(p) + r"(?![\w.-])", text))
     return sorted(hits)

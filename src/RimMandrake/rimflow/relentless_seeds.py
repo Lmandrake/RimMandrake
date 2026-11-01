@@ -295,8 +295,11 @@ def cmd_census(a):
 
     def worker(n):
         clone = make_clone(WORK / "census", "w%d" % n, "relentless seed census")
-        while todo:
-            t, hid = todo.pop(0)
+        while True:
+            try:
+                t, hid = todo.pop(0)      # not `while todo`: another worker may take the last one between the two
+            except IndexError:
+                break
             try:
                 census_task(clone, t, hid, done, log)
             except Exception as e:          # noqa: BLE001  one bad task must not stop the census
@@ -712,8 +715,9 @@ def results_dir(wall=False, arm=None):
 def journal(item, row):
     p = PRIVATE / "attempts" / (item + ".jsonl")
     p.parent.mkdir(parents=True, exist_ok=True)
+    torn = p.exists() and p.stat().st_size and p.read_bytes()[-1:] != b"\n"      # an interrupted append: start a fresh line
     with open(p, "a", encoding="utf-8") as f:
-        f.write(json.dumps(row) + "\n")
+        f.write(("\n" if torn else "") + json.dumps(row) + "\n")
 
 
 def attempts_used(item):
