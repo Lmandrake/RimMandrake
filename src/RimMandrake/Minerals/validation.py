@@ -31,6 +31,10 @@ QUARRY_PROOF_TYPE = NS + "RM_MineralQuarryProof"
 SURFACE_PROOF_TYPE = NS + "RM_MineralSurfaceProof"
 METEOR_PROOF_TYPE = NS + "RM_MineralMeteoriteProof"
 LISTS_TYPE = NS + "RM_MineralExplicitLists"
+GRIDS_TYPE = NS + "RM_MineralLayoutGrids"
+# MINESITES_GRIDS_BUILD_STEEL_FOR_BANNED_ORE: the def dump 2026-10-28 holds 10 Ancient mining industry layouts with 398 plasteel + 392
+# components cells (exact scan: SelfTest with the dump as 4th argument)
+GRID_LAYOUTS = 10
 # PLASTEEL_AUDIT_EXPLICIT_MINEABLE_LISTS: lists that name mineables directly; each must lose the two the 2026-09-25 ruling bars
 EXPLICIT_LISTS = ["GenStepDef PreciousLump.", "GeneratedLocationDef VGE_IceAsteroids.", "GenStepDef BigAsteroidBasic.",
                   "QuestScriptDef OpportunitySite_DeepOrbit_BigAsteroids.", "GenStepDef KOTOR_JunkPileClusters."]
@@ -143,6 +147,13 @@ def static_checks():
                    "public static string ProofState(string filter)", "GenDefDatabase.AllDefTypesWithDatabases()"):
         if needle not in el:
             bad.append("RM_MineralExplicitLists.cs lacks %s" % needle)
+    if "RM_MineralLayoutGrids.Refresh(decisions, why)" not in pol:
+        bad.append("RM_MineralPolicy.Apply no longer refreshes the ruin layout grids (Ancient mining walls would hold plasteel again)")
+    lg = _read("Source", "RM_MineralLayoutGrids.cs")
+    for needle in ("RM_LayoutGridKernel.Rewrite(", "RM_LayoutGridKernel.SwapOut(", "RM_MineralsSettings.enabled", "\"_layouts\"",
+                   "\"KCSG.StructureLayoutDef\"", "public static string ProofState(string filter)"):
+        if needle not in lg:
+            bad.append("RM_MineralLayoutGrids.cs lacks %s" % needle)
 
     proj = _read("Source", "RimMandrake_Minerals.csproj")
     classes = set()
@@ -517,6 +528,48 @@ def _build_suite():
                 s = _list_rows(_lists(t, "PreciousLump"))
                 if any("MineablePlasteel" in v.split("|", 1)[0] for v in s.values()):
                     raise ExpectationFailed("master back on: PreciousLump still names plasteel: %r" % s)
+
+    def _grids(t):
+        r = t.bridge_call("jawa/static_call", type=GRIDS_TYPE, method="ProofState", args=_one_arg(""))
+        if not isinstance(r, dict) or r.get("success") is False:
+            raise ExpectationFailed("ruin grids ProofState could not run: %r" % (r,))
+        s = _parse_state(str(r.get("result", "")))
+        return s, {k: v for k, v in s.items() if k not in ("layouts", "reason")}
+
+    def _grid_counts(v):
+        """'rows:P/C/S,grid:P/C/S' (grid:- unresolved) -> (rows tuple, grid tuple or None)."""
+        rows, grid = v.split(",", 1)
+        g = grid.split(":", 1)[1]
+        return tuple(int(x) for x in rows.split(":", 1)[1].split("/")), (None if g == "-" else tuple(int(x) for x in g.split("/")))
+
+    @suite.chain("ruin_grids")
+    def ruin_grids(t):
+        with t.component("ruin_grids_hold_no_banned_ore", toggle="enabled"):
+            if _live(t):
+                s, rows = _grids(t)
+                if "KCSG not loaded" in s.get("reason", "") or int(s.get("layouts", 0)) == 0:
+                    _unmeasured(t, "no KCSG layout holds plasteel/components cells on this list (Ancient mining industry absent?): %r" % s)
+                    return
+                if int(s["layouts"]) != GRID_LAYOUTS:
+                    raise ExpectationFailed("%s layouts hold scope cells, the dump has %d: %r" % (s["layouts"], GRID_LAYOUTS, sorted(rows)))
+                for k, v in rows.items():
+                    r, g = _grid_counts(v)
+                    if r[0] or r[1] or g is None or g[0] or g[1] or not r[2] or not g[2]:
+                        raise ExpectationFailed("%s still holds banned ore (or KCSG grid unresolved): %s" % (k, v))
+        with t.component("master_off_restores_ruin_grids", toggle="enabled"):
+            if _live(t) and not t.upstream_failed:
+                try:
+                    _set(t, "enabled", False)
+                    _call(t, "ProofApply", "master off")
+                    _, rows = _grids(t)
+                    back = sum(sum(_grid_counts(v)[1][:2]) for v in rows.values())
+                    if back != 790:
+                        raise ExpectationFailed("master off: %d plasteel+components grid cells back, the dump ships 790: %r" % (back, rows))
+                finally:
+                    _restore(t, "enabled")
+                _, rows = _grids(t)
+                if any(sum(_grid_counts(v)[1][:2]) for v in rows.values()):
+                    raise ExpectationFailed("master back on: banned ore still in a ruin grid: %r" % rows)
 
     @suite.chain("settings_roundtrip")
     def settings_roundtrip(t):

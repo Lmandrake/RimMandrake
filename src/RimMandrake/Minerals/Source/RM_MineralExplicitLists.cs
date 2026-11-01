@@ -5,7 +5,7 @@
 // (KOTOR_JunkPileClusters). Canon (minerals design, 2026-09-25 / 2026-10-09): components and plasteel are never mined from rock.
 // This drops every registry-disabled mineable from those lists, from the list as first seen, so a settings change or the
 // master toggle restores them. Found by reflection, so no donor mod is referenced; a list it would empty is kept whole.
-// NOT touched: StructureLayoutDef grids (authored ruins: Ancient mining industry) - filed as their own decision.
+// NOT touched here: StructureLayoutDef grids (authored ruins: Ancient mining industry) - RM_MineralLayoutGrids.cs swaps those to steel.
 using System;
 using System.Collections;
 using System.Collections.Generic;

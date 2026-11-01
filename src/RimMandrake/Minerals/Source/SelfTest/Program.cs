@@ -1,6 +1,6 @@
 // MINERAL_POLICY_CODE_STARTUP_ZEROING L0. Run: python3 src/RimMandrake/Utils/selftest_minerals.py
 // The production kernel over the shipped registry XML, DeepDrill's shipped home table and the def-dump fixture (real weights).
-// args: <RM_MineralRegistry.xml> <RM_DeepHomeTable.xml> <mineral_defs.tsv>
+// args: <RM_MineralRegistry.xml> <RM_DeepHomeTable.xml> <mineral_defs.tsv> [<def dump StructureLayoutDef.json>]
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -377,6 +377,33 @@ namespace RimMandrake.Minerals.SelfTest
                   "a list that would empty is kept whole (RandomElement of nothing throws)");
             Check(!RM_ExplicitListKernel.Prune(new List<IList<string>>(), disOn).FellBack, "an empty list is not a fallback");
 
+            // --- MINESITES_GRIDS_BUILD_STEEL_FOR_BANNED_ORE: authored ruin grids swap plasteel/components cells to steel
+            HashSet<string> swapOn = RM_LayoutGridKernel.SwapOut(disOn), swapOff = RM_LayoutGridKernel.SwapOut(disOff);
+            Check(swapOn.SetEquals(RM_LayoutGridKernel.Scope) && swapOff.Count == 0,
+                  "policy on swaps both scope mineables, master toggle off swaps none: " + string.Join(",", swapOn));
+            Check(!disOn.Contains(RM_LayoutGridKernel.Replacement), "the replacement ore is never itself disabled");
+            var grid = new List<IList<string>> {
+                new List<string> { ".,MineablePlasteel,Wall_Plasteel,,MineableComponentsIndustrial", "Plasteel,MineablePlasteelX,MineableSteel,." },
+                new List<string> { "MineableComponentsIndustrial", "." } };
+            List<GridCell> gc = RM_LayoutGridKernel.Find(grid, new HashSet<string>(RM_LayoutGridKernel.Scope));
+            Check(gc.Count == 3 && gc[0].Layer == 0 && gc[0].Row == 0 && gc[0].Col == 1 && gc[1].Col == 4 && gc[2].Layer == 1 && gc[2].Col == 0,
+                  "Find sees exact tokens only (not Wall_Plasteel, Plasteel, MineablePlasteelX) at KCSG's split positions: " + gc.Count);
+            List<List<string>> rw = RM_LayoutGridKernel.Rewrite(grid, swapOn, RM_LayoutGridKernel.Replacement);
+            Check(rw[0][0] == ".,MineableSteel,Wall_Plasteel,,MineableSteel" && rw[0][1] == (string)grid[0][1] && rw[1][0] == "MineableSteel" && rw[1][1] == ".",
+                  "Rewrite swaps tokens and keeps every other character: " + rw[0][0]);
+            Check((string)grid[0][0] == ".,MineablePlasteel,Wall_Plasteel,,MineableComponentsIndustrial", "Rewrite never writes its input");
+            List<IList<string>> rwI = rw.Select(l => (IList<string>)l).ToList();
+            Check(RM_LayoutGridKernel.Rewrite(rwI, swapOn, RM_LayoutGridKernel.Replacement).Zip(rw, (a, b) => a.SequenceEqual(b)).All(x => x),
+                  "Rewrite applied twice equals once");
+            Check(RM_LayoutGridKernel.Rewrite(grid, swapOff, RM_LayoutGridKernel.Replacement).Zip(grid, (a, b) => a.SequenceEqual(b)).All(x => x),
+                  "an empty swap set restores the rows as shipped");
+            var onlyP = new HashSet<string> { "MineablePlasteel" };
+            Check(RM_LayoutGridKernel.Rewrite(grid, onlyP, RM_LayoutGridKernel.Replacement)[0][0] == ".,MineableSteel,Wall_Plasteel,,MineableComponentsIndustrial",
+                  "a scope mineable the registry keeps is left alone");
+            Check(RM_LayoutGridKernel.SwapOut(new HashSet<string> { "MineableGold", "MineablePlasteel" }).SetEquals(onlyP), "a disabled mineable outside the scope is never swapped");
+            if (args.Length > 3) LayoutDump(args[3]);
+            else Console.WriteLine("UNMEASURED dump layouts: pass the def dump's StructureLayoutDef.json as a 4th argument for the full-grid count");
+
             var two = new List<QuarryEntry> { new QuarryEntry("a", 1f, "a"), new QuarryEntry("b", 3f, "b") };
             Check(RM_QuarryKernel.PickWeighted(two, 0.2).Item == "a" && RM_QuarryKernel.PickWeighted(two, 0.3).Item == "b"
                   && RM_QuarryKernel.PickWeighted(two, 1.0).Item == "b", "weighted pick boundaries");
@@ -501,6 +528,35 @@ namespace RimMandrake.Minerals.SelfTest
             Console.WriteLine((fails == 0 ? "PASS " : "FAIL ") + (checks - fails) + "/" + checks + " checks; " + rows.Count + " registry rows, "
                             + defs.Count + " fixture defs, " + on.Count + " decided");
             return fails == 0 ? 0 : 1;
+        }
+
+        /// <summary>The production Rewrite over every KCSG layout of a def dump: before and after counts of the scope and steel cells.
+        /// Optional (the driver passes 3 args); a by-hand run with the dump path is the exact offline scan of the decision's numbers.</summary>
+        static void LayoutDump(string path)
+        {
+            using var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(path));
+            string[] tok = { RM_LayoutGridKernel.Scope[0], RM_LayoutGridKernel.Scope[1], RM_LayoutGridKernel.Replacement };
+            var before = tok.ToDictionary(t => t, t => 0); var after = tok.ToDictionary(t => t, t => 0);
+            int defsSeen = 0, touched = 0, cells = 0;
+            var swap = new HashSet<string>(RM_LayoutGridKernel.Scope);
+            foreach (var d in doc.RootElement.GetProperty("defs").EnumerateArray())
+            {
+                defsSeen++;
+                if (!d.GetProperty("fields").TryGetProperty("layouts", out var ls) || ls.ValueKind != System.Text.Json.JsonValueKind.Array) continue;
+                var layers = ls.EnumerateArray().Select(l => (IList<string>)l.EnumerateArray().Select(r => r.GetString()).ToList()).ToList();
+                List<GridCell> found = RM_LayoutGridKernel.Find(layers, swap);
+                List<IList<string>> rw = RM_LayoutGridKernel.Rewrite(layers, swap, RM_LayoutGridKernel.Replacement).Select(l => (IList<string>)l).ToList();
+                Dictionary<string, int> b = RM_LayoutGridKernel.Count(layers, tok), a = RM_LayoutGridKernel.Count(rw, tok);
+                foreach (string t in tok) { before[t] += b[t]; after[t] += a[t]; }
+                if (found.Count > 0) { touched++; cells += found.Count; Console.WriteLine("  layout " + d.GetProperty("defName").GetString() + ": " + found.Count + " cells"); }
+                Check(rw.Zip(layers, (x, y) => x.Count == y.Count && x.Zip(y, (p, q) => p.Split(',').Length == q.Split(',').Length).All(z => z)).All(z => z),
+                      "dump: rewrite keeps every row's width in " + d.GetProperty("defName").GetString());
+            }
+            Console.WriteLine("dump layouts: " + defsSeen + " defs, " + touched + " touched, " + cells + " cells; before "
+                            + string.Join(" ", tok.Select(t => t + "=" + before[t])) + "; after " + string.Join(" ", tok.Select(t => t + "=" + after[t])));
+            Check(defsSeen >= 100 && before[RM_LayoutGridKernel.Replacement] > 1000, "dump: instrument can see layouts and steel cells");
+            Check(before[tok[0]] + before[tok[1]] == cells && after[tok[0]] == 0 && after[tok[1]] == 0
+                  && after[tok[2]] == before[tok[2]] + cells, "dump: every scope cell becomes steel, nothing else moves");
         }
     }
 }

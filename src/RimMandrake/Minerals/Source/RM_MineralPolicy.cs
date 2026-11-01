@@ -158,6 +158,9 @@ namespace RimMandrake.Minerals
             // explicit placement lists (PreciousLump, asteroid GenSteps and sites, asteroid quests) follow the same decisions
             try { RM_MineralExplicitLists.Refresh(decisions, why); }
             catch (System.Exception e) { Log.Error("[RM Minerals] explicit mineable lists refresh failed (" + why + "): " + e); }
+            // authored ruin grids (KCSG StructureLayoutDef: Ancient mining industry): plasteel/components cells become steel
+            try { RM_MineralLayoutGrids.Refresh(decisions, why); }
+            catch (System.Exception e) { Log.Error("[RM Minerals] ruin layout grids refresh failed (" + why + "): " + e); }
         }
     }
 

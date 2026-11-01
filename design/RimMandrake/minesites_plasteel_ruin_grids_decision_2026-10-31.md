@@ -7,8 +7,9 @@ Build item: `MINESITES_GRIDS_BUILD_STEEL_FOR_BANNED_ORE`.
 
 Measured from the def dump capture 2026-10-28T23-26-38Z, `StructureLayoutDef.json` (126 KCSG layouts; sanity
 probe: 3396 `MineableSteel` cells counted by the same walk). Mod "Ancient mining industry"
-(packageId `xmb.ancientminingindustry.mo...`). Eleven layouts, not ten: `AncientOpenPitMiningSite_A` was
-missing from the finding's list.
+(packageId `xmb.ancientminingindustry.mo...`). Ten layouts (`AncientOpenPitMiningSite_A` was missing from the
+finding's list). Correction 2026-10-31 (lane A4 build): this record first said "eleven"; its own table and an exact re-scan of
+the same capture both give ten.
 
 | layout | MineableComponentsIndustrial | MineablePlasteel |
 |---|---:|---:|
@@ -35,7 +36,7 @@ missing from the finding's list.
 ## Decision
 
 Swap the symbol, keep the geometry: every `MineablePlasteel` and `MineableComponentsIndustrial` cell in these
-eleven layouts becomes `MineableSteel`.
+ten layouts becomes `MineableSteel`.
 
 - Not "keep as salvage flavour": a plasteel or components wall is mined from rock, which the 2026-09-25 ruling
   forbids outright. A ruin is not an exception to it.
@@ -55,4 +56,14 @@ Layout cells are comma-joined strings, so a PatchOperation cannot rewrite one sy
 in Minerals C# beside `RM_MineralExplicitLists` (reflection, KCSG not referenced). Read the KCSG source first for
 when layouts are parsed: if `StructureLayoutDef` resolves its rows into a symbol grid in `ResolveReferences`, the
 rewrite must also (or instead) fix that resolved grid, or run before it. Verify offline against the dump counts above
-(398 + 392 cells to 0) and live (L1) by `ProofState`-style read of the eleven layouts after load.
+(398 + 392 cells to 0) and live (L1) by `ProofState`-style read of the ten layouts after load.
+
+## Built (MINESITES_GRIDS_BUILD_STEEL_FOR_BANNED_ORE, 2026-10-31)
+
+- KCSG 1.6 (decompiled): `StructureLayoutDef.layouts` strings are parsed into `_layouts` (`List<SymbolDef[,]>`) once, in
+  `KCSG.StartupActions`' static constructor; generation reads only `_layouts`. `src/RimMandrake/Minerals/Source/RM_MineralLayoutGrids.cs`
+  therefore rewrites both, from the rows as first seen, on every `RM_MineralPolicy.Apply` (startup, settings change, FinalizeInit).
+  Pure part: `Source/Kernel/RM_MineralLayoutKernel.cs`.
+- Offline exact scan through the production kernel over the 2026-10-28 capture: 126 layouts, 10 touched, 790 cells; before
+  plasteel 398 / components 392 / steel 3396, after 0 / 0 / 4186.
+- Owed L1: `validation.py` chain `ruin_grids` (rows and resolved grid hold 0 banned cells; master off brings back 790).
