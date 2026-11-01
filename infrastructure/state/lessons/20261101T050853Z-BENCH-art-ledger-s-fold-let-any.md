@@ -1,0 +1,2 @@
+The art ledger's fold let any event whose prev matched the current sha win regardless of age, so re-picking an older picture (A->B long ago, B->A now) was undone by the old event in a later shard, and the pre-push guard refused the PNG. follows now applies only within one hour of clock skew; measured 3 of 11307 live slots changed, all three now agree with disk.
+home: src/RimMandrake/Utils/art/artledger.py

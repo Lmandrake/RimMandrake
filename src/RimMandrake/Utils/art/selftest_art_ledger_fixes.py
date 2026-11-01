@@ -358,6 +358,20 @@ def test_e():
           "a different hash is a real install: the ruling names the new sha only")
 
 
+def test_f():
+    """A re-install of an old picture stays live over the old chain link read from a later shard."""
+    import artledger as L
+    live = lambda sha, prev, ts, i: {"type": "live", "id": i, "mod": "M", "rel": "a.png",
+                                     "sha": sha, "prev": prev, "ts": ts}
+    newer = live("B", "A", "2026-10-31T21:00:00-0700", "n")
+    old = live("A", "B", "2026-10-23T10:00:00-0700", "o")
+    idx = L.Index([newer, old])
+    check(next(iter(idx.live.values()))["sha"] == "B", "an old A<-B link must not undo a newer B<-A")
+    skewed = live("C", "B", "2026-10-31T20:30:00-0700", "s")
+    idx = L.Index([newer, skewed])
+    check(next(iter(idx.live.values()))["sha"] == "C", "a chain link inside the clock skew still follows")
+
+
 def main():
     sys.path.insert(0, str(HERE))
     tmp = fixture()
@@ -366,6 +380,7 @@ def main():
     test_c()
     test_d()
     test_e()
+    test_f()
     print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failure(s)")
     return 1 if FAILS else 0
 

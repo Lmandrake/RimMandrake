@@ -45,6 +45,7 @@ import time
 import uuid
 import xml.etree.ElementTree as ET
 from collections import defaultdict
+from datetime import datetime as _datetime
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[4]
@@ -619,6 +620,20 @@ def normalise_verdict(raw: str) -> str:
     return r or ""
 
 
+FOLD_SKEW_S = 3600      # the seats' clocks may disagree by this much; `follows` beats ts only inside it
+
+
+def _older_by_more_than_skew(ev, cur) -> bool:
+    """Is `ev` plainly older than `cur`? Then a matching `prev` is a re-install of an old picture
+    (A->B long ago, B->A now), not a chain: FOUNDRY's 10-23 bbaf->3a06 undid BENCH's 10-31
+    3a06->bbaf in the fold, which the pre-push guard then refused. Unreadable ts: not older."""
+    try:
+        gap = _datetime.fromisoformat(cur["ts"]) - _datetime.fromisoformat(ev["ts"])
+    except (KeyError, TypeError, ValueError):
+        return False
+    return gap.total_seconds() > FOLD_SKEW_S
+
+
 class Index:
     """Folded view of every shard. Cheap enough to rebuild on each CLI call."""
 
@@ -705,7 +720,8 @@ class Index:
         # read from a later shard must not resurrect a slot a newer retire emptied (BENCH retired Brightbell_p3a,
         # FOUNDRY's 01:00 install of it folded afterwards and read it live again, 2026-10-10)
         cur = self.live.get(key) or self._retired.get(key)
-        follows = cur is not None and cur.get("sha") is not None and ev.get("prev") == cur.get("sha")
+        follows = (cur is not None and cur.get("sha") is not None and ev.get("prev") == cur.get("sha")
+                   and not _older_by_more_than_skew(ev, cur))
         if cur is None or follows or ev.get("ts", "") >= cur.get("ts", ""):
             if ev.get("sha") is None:           # retire: the file was archived and removed
                 self.live.pop(key, None)
