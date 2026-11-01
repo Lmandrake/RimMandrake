@@ -577,3 +577,4 @@
 {"seat":"DISPATCHER","event":"note","id":"DIRTY_CODE_REVIEW_LOOP_CONTINUE_NOT_DONE","text":"dispatcher restart_verified FOUNDRY: fresh FOUNDRY window a945d1dc-3db7-40f7-a1e6-18ae43fab7f8 (pid 2088094), doorbell armed at 1793570075.0024467","ts":"2026-11-01T21:54:42Z","tsn":1793570082715362280}
 {"seat":"DISPATCHER","event":"note","id":"ARTPIPE_DONE_RECORDS_AUDIT_LOST_PNG","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T21:54:48Z","ts":"2026-11-01T21:55:16Z","tsn":1793570116768698325}
 {"seat":"DISPATCHER","event":"note","id":"RIMFLOW_V3_BUILD_DISPATCHER_FIRST","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T22:02:39Z","ts":"2026-11-01T22:04:38Z","tsn":1793570678450257276}
+{"seat":"DISPATCHER","event":"note","id":"ACCOUNTS_PLAN_BUILD_STANDARD_SWITCHING","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T22:07:04Z","ts":"2026-11-01T22:09:13Z","tsn":1793570953942042286}
