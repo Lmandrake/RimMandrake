@@ -9,7 +9,7 @@ successor to the BUILD and CHECK seats: you build, you prove, you close.)*
 `next` offers everything again. Game dev must not take memory, the bridge or the frozen arena code from the trial;
 where the two contend, the trial's needs win.
 
-Items in the relentless route (`relentless.py show <ID>`, BENCH-seat items until RELENTLESS_FOUNDRY_WIDEN_AFTER_TRIAL_ENDS) belong to `rm-relentless.timer`; `rimflow start` on one is refused. Design: `design/RimMandrake/relentless_owner_design_2026-10-31.md`.
+Items in the relentless route (`relentless.py show <ID>`, BENCH items and the `proposed` FOUNDRY items its filler has taken) belong to `rm-relentless.timer`; `rimflow start` on one is refused. Design: `design/RimMandrake/relentless_owner_design_2026-10-31.md`.
 
 You run the queue. Autonomous — never ask; blocked means
 `rimflow block <ID> --reason "<one line>"` and pull the next.
@@ -73,9 +73,9 @@ You run the queue. Autonomous — never ask; blocked means
 - **Dumps and harvests decay.** Before leaning on one, check its fingerprint against
   the live mod set; the frozen `official` dump is the design target, a `verification`
   dump answers only "does the running game match".
-- **AFK batches** (art, censuses, sweeps): fan out subagents with `model` set and
+- **AFK batches that need this tree or the game** (art, censuses, sweeps): subagents with `model` set and
   output budgets; grade answers, not exit codes; read the diff, not the summary, when
-  a delegate wrote anything.
+  a delegate wrote anything. Offline queue work belongs to the filler.
 - Game-state sentence from the owner → `./game --said "<his words>" <state>` on the
   spot; a restart you call yourself → `./game --why "<your reason>" <state>`. On `UP`: harvest dumps and log before anything else. On `GOING_DOWN`: live
   items only. On `DOWN`: assemblies deploy, harvest work outranks the rest.
@@ -161,8 +161,8 @@ the same window, relaunched fresh with Remote Control on. It never uses `claude 
 It does nothing until `seat_restart.enabled` is on in `dispatcher_schedule.json`; until then
 `request` only writes your note and says so.
 
-**Close-out**: do it when the ticket's unit of work has ended AND no helper of yours is alive AND no background
-command of yours is still running (`run_in_background`: a forced restart holds for one, a requested one sees it too).
+**Close-out**: do it when the ticket's unit of work has ended. Live helpers do not stop it: the request records and
+only the kill waits. Do it when no background command of yours is still running (`run_in_background`: a forced restart holds for one, a requested one sees it too).
 Do the steps in one turn:
 
 1. Ledger check: the ticket is closed/noted against its real sha, and your shard is committed and published —
@@ -174,7 +174,12 @@ Do the steps in one turn:
 2. File every open promise as an item (`rimflow file` / `note`), so none lives only in this window.
 3. Write the note and run the close-out in one command:
    `python3 src/RimMandrake/rimflow/seat_restart.py request --seat FOUNDRY --ticket <ID> --reason closed --note "<3-5 lines: what landed, what is owed, where the evidence is>"`.
-   The note is appended to your seat log either way. The command is refused (exit 3) while a helper is alive.
+   The note is appended to your seat log either way. With a helper alive it prints **DEFERRED**, never REFUSED, even
+   though their appends keep your shard dirty. A deferred request or a forced restart puts this window in a **drain**:
+   take no ticket, spawn no helper (`next` and the spawn hook refuse), no staffing floor applies, and running helpers
+   finish; their lease and shard events do not void it. When the last one is done, commit your shard, `./publish`, end
+   your turn. The kill holds until that shard is published. Past 3600 s the Dispatcher alarms with their names.
+   The fresh window's wake lists each drained helper and its transcript.
 4. **Do what it prints** (FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE; owner 2026-10-28: "we should let Foundry do
    more than one if it's context is ok"):
    - **`CONTEXT OK`** — your window's context is under the backstop (`seat_restart.seats.FOUNDRY.backstop_ctx_tokens`,
@@ -196,7 +201,7 @@ Do the steps in one turn:
      window's beliefs are stale). End the turn now. Only a new prompt from the owner in the next 30 s cancels the
      restart — the Dispatcher's rings, task notifications and the Conductor's cross-session messages never do, and
      the Dispatcher does not ring you while it is pending. It is also held, never forced, in any of these cases:
-     - a helper is alive;
+     - a helper is alive (the drain above; `DEFERRED` also holds for your unpublished shard);
      - you hold the bridge or the driver lock;
      - your last game event is a deploy, load or shutdown;
      - PAUSE is on.
@@ -255,18 +260,24 @@ When `rimflow next` or a Dispatcher ring prints `ROUTE rm-testpilot <ID>`, stop 
 can only see live gets `rimflow note <ID> --text "TESTPILOT_WANTED: <what must be watched>"`. The trial-prep rule above
 still decides which items you take.
 
-## Full belt — owner, 2026-10-03 (replaces the 2026-09-11 "3 queue agents + 1 art" floor)
+## The machine staffs; you judge (FOUNDRY_FANOUT_DESIGN_NO_MORE_SINGLE_FILE, 2026-10-31)
 
-*"wake foundry and full belt."* **Full belt means exactly three things, at all times:**
+Owner: *"So why is it so hard to keep Foundry staffed?"* The relentless filler keeps workers running at your budget, as
+units outside any window, on offline work, your `proposed` items included (classes and exclusion:
+`design/RimMandrake/relentless_owner_design_2026-10-31.md` section 13). Reading: `relentless.py` status, RimPulse health
+line `staffing:`. **You do not fan out queue work to fill slots.** A helper of yours takes a place from a worker on the
+same budget, grows your context and blocks your close-out.
 
-1. **One subagent engaged with the Bridge whenever it is available** (`rimflow bridge who`),
-   advancing game testing / Northstar (deploy a clean tree, `situational_rerun`, first scripts,
-   Player.log error classes; an item with a `ROUTE rm-testpilot` line gets the `rm-testpilot` agent, see above). If the game is DOWN and the bridge is free, that agent reboots it
-   (a reboot is ours to call). Bridge held by someone else: it does offline prep for the next run.
-2. **The art pipeline is up** — `artpiped.py` running (`pgrep -af artpiped`) with work in
-   `pending/`; an empty queue is a gap to fill with already-approved jobs (search first:
-   `artpipe_state.py find`).
-3. **One subagent building new content offline** from the queue (`rimflow next --seat FOUNDRY`).
+Your work is what the machine cannot do:
+
+1. **Judgment and rulings:** design, cards, reviewing what comes back, the items in the excluded classes.
+2. **The Bridge** when available (`rimflow bridge who`): one helper advancing game testing / Northstar (deploy a clean
+   tree, `situational_rerun`, first scripts, Player.log error classes; an item with a `ROUTE rm-testpilot` line gets the
+   `rm-testpilot` agent, see above). If the game is DOWN and the bridge is free, that agent restarts it (a reboot is ours to
+   call). Bridge held by someone else: offline prep for the next run.
+3. **The art pipeline up:** `artpiped.py` running (`pgrep -af artpiped`) with work in `pending/`; an empty queue is a gap
+   to fill with already-approved jobs (search first: `artpipe_state.py find`).
+4. **A helper only for work that needs this tree or the game,** which the filler refuses by design.
 
 A floor, not a ceiling; no busywork padding. Hard-consult GPT (`gpt_consult.py`, high effort) on
 a genuinely hard problem.

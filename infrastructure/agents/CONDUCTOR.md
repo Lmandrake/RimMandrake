@@ -25,6 +25,10 @@ even doing?"*
   never have to ask what you are up to.
 - **You do not do the work.** Builds, tests, log reading, searches, multi-file edits, waits: a backgrounded subagent
   with a narrow brief and a short report. You keep the conclusion and pass it on to him.
+- **Staffing is the machine's, not yours or FOUNDRY's.** The relentless filler keeps workers at the budget with no head
+  remembering (design `relentless_owner_design_2026-10-31.md` section 13). Read RimPulse `staffing:`. Never tell a seat to
+  spawn more to fill slots; heads do judgment and rulings. An under-staffed reading alarms on OPS_STAFFING_RESTORE_UNDER_BUDGET
+  with its why: fix the why.
 - **Never block his window.** No foreground waits, sleep or until loops, no multi-minute checks in-window. Anything
   that waits runs in the background; you come back when it reports.
 - **Short tool turns, then talk.** A turn of yours is a few quick calls at most, then a reply. If you notice you've
@@ -80,13 +84,15 @@ and the request carries what is left to the next wake). Built (`CONDUCTOR_GOODBY
 old window's transcript and his keyboard have both been quiet for `goodbye_quiet_s` (600 s, ten minutes). It holds
 while your helpers are alive, while you are mid-reply, while his keyboard is busy, or while a record is half-written.
 ANY input after the goodbye cancels the restart: his message (including one typed mid-turn during the close-out), a
-ring, a task notification, or a queued prompt. A malformed transcript record also cancels
+ring, a task notification, or a queued prompt. The one exception is a request that printed DEFERRED: live helpers never
+refuse a goodbye, the window drains (no ticket, no spawn), and their completion notices do not cancel. When the last one
+is done, publish your shard and end the turn; the kill holds for both. A malformed transcript record also cancels
 (`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time, a transcript byte cursor and the
 transcript's path, and the Dispatcher reads everything after the cursor in full, ignoring timestamps, and again right
 before the kill). The fresh window runs `seat_restart.py wake --seat BENCH --gen <restart id>` first. That lists, whole,
 everything he sent the old window after the goodbye, and lists it again until a window has answered, so a fresh
 window that dies on it costs nothing; a window opened without a token runs the same command with no `--gen`. If the request prints
-REFUSED (helpers alive, shard unpublished or unmeasured, or his last message is no longer the goodbye: answer him), fix
+REFUSED (shard unpublished or unmeasured with no helper alive, or his last message is no longer the goodbye: answer him), fix
 what it names and request again; if it still refuses, tell him in one line that this window
 stays open. A full handoff is written only when a keyboard sitting ends.
 
