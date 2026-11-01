@@ -54,6 +54,15 @@ ARM_DIR = HERE / "trio"
 ROUND_CAP = 4
 SIMPLIFY_AFTER = 2
 CRITIC_TRIES = 2
+# TRIO_CRITIC_FIX_RC1_REREAD_BURNS_ROUNDS: a critic that never ran (raised, e.g. a sandbox refusal; no JSON envelope;
+# rc != 0; skipped) is an INFRASTRUCTURE failure, not a verdict: it is retried up to CRITIC_INFRA_TRIES times
+# (CRITIC_INFRA_WAIT_S apart, outside CRITIC_TRIES) and never recorded as a round's verdict. Exhausted -> Refused, the
+# build stays pending and no verdict is written.
+CRITIC_INFRA_TRIES = 4
+CRITIC_INFRA_WAIT_S = (30, 120, 300)
+# the ONE harness void arena_analysis.dq_tester honours (arena_analysis.HARNESS_ORPHAN_VOID_WHY, checked by the selftest)
+VOID_WHY = "orphaned by a killed runner: voided at restart under runner.lock"
+VOID_RUN_ID = ARM + ".operator"
 MAX_PARTS = 3
 DEFAULT_CTL = "/mnt/d/ClaudeWork/rimmandrake/trio"
 FAILED_BRANCH = "trio/failed/%s"
@@ -62,11 +71,77 @@ SPEC_KEEP = ("prompt", "criteria")            # the only fields a simplify/split
 
 
 # ------------------------------------------------------------------------------------------------ the hard check
+def round_voids(seq):
+    """{index of a voided verdict: index of the void} over time-ordered trio records. A void is a signed `invalid`
+    event on run_id VOID_RUN_ID with detail.void_verdict_sig = the sig of a NON-accept `critic_round` verdict of the
+    same task, a non-empty detail.reason, and detail.why VOID_WHY (so arena_analysis voids the round's untested
+    build too). Appended by `trio_loop.py void-infra-reject`, never an edit."""
+    sigs = {r.get("sig"): i for i, r in enumerate(seq) if r.get("event") == "critic_round"
+            and (r.get("detail") or {}).get("kind") == "verdict" and r.get("verdict") != "accept" and r.get("sig")}
+    out = {}
+    for k, v in enumerate(seq):
+        d = v.get("detail") if isinstance(v.get("detail"), dict) else {}
+        i = sigs.get(d.get("void_verdict_sig"))
+        if (v.get("event") == "invalid" and v.get("run_id") == VOID_RUN_ID and i is not None and i < k
+                and d.get("why") == VOID_WHY and str(d.get("reason") or "").strip()
+                and L.norm_id(v.get("task")) == L.norm_id(seq[i].get("task"))):
+            out.setdefault(i, k)
+    return out
+
+
+def _void_spans(seq):
+    """Indexes dropped by the voids: for each voided verdict, every record of its task from the build pass_start that
+    opened that round (the task's latest build pass_start before the verdict) through the verdict. The round then
+    never happened for rounds_used / verdicts / recovery; the signed records themselves stay in the log."""
+    drop = set()
+    for i in round_voids(seq):
+        t = L.norm_id(seq[i].get("task"))
+        ps = next((j for j in range(i - 1, -1, -1) if seq[j].get("event") == "pass_start"
+                   and (seq[j].get("detail") or {}).get("role") == "build" and L.norm_id(seq[j].get("task")) == t), None)
+        if ps is None:
+            continue
+        drop.update(j for j in range(ps, i + 1) if L.norm_id(seq[j].get("task")) == t)
+    return drop
+
+
+def voided_build(recs, tid, bid):
+    """True when the LATEST build_end of (task, build_id) lies inside a voided round: a pending build of that id is
+    stale (an unchanged build repeats its build_id across rounds, so an earlier round's build_end does not save it)."""
+    seq = L.ordered([r for r in recs if r.get("arm") == ARM])
+    t = L.norm_id(tid)
+    ends = [i for i, r in enumerate(seq) if r.get("event") == "build_end" and L.norm_id(r.get("task")) == t
+            and (r.get("detail") or {}).get("build_id") == bid]
+    return bool(bid and ends) and ends[-1] in _void_spans(seq)
+
+
+def round_tests(recs, tid):
+    """-> (the task's latest build_end, the test_start / test_end of its build_id after it), over the trio's ordered
+    records with the voids honoured but NOT canon_records' repeated-build_end dedupe: an unchanged build repeats its
+    (build_id, sha) in a later round, and THAT round's build_end (not round 1's, with its finished critic) is the one
+    whose critic may still be owed. (None, []) when the task has no build_end."""
+    seq = L.ordered([r for r in recs if r.get("arm") == ARM])
+    drop = _void_spans(seq)
+    seq = [r for i, r in enumerate(seq) if i not in drop]
+    t = L.norm_id(tid)
+    last = next((i for i in range(len(seq) - 1, -1, -1) if seq[i].get("event") == "build_end"
+                 and L.norm_id(seq[i].get("task")) == t), None)
+    if last is None:
+        return None, []
+    bid = (seq[last].get("detail") or {}).get("build_id")
+    return seq[last], [r for r in seq[last + 1:] if r.get("event") in ("test_start", "test_end")
+                       and L.norm_id(r.get("task")) == t and (r.get("detail") or {}).get("build_id") == bid]
+
+
 def canon_records(recs):
     """The trio's records, builder/tester ids folded with ralph_a's agent_key, a repeated build_end of the same
-    (task, build_id, sha) dropped (same rules as ralph_a_loop.canon_records, for arm trio)."""
+    (task, build_id, sha) dropped (same rules as ralph_a_loop.canon_records, for arm trio), and the records of a
+    round voided by round_voids dropped (_void_spans)."""
     out, seen = [], set()
-    for r in L.ordered([r for r in recs if r.get("arm") == ARM]):
+    seq = L.ordered([r for r in recs if r.get("arm") == ARM])
+    drop = _void_spans(seq)
+    for i, r in enumerate(seq):
+        if i in drop:
+            continue
         d = r.get("detail")
         if isinstance(d, dict) and r.get("event") in ("build_end", "test_start"):
             k = "builder" if r["event"] == "build_end" else "tester"
@@ -225,6 +300,25 @@ def default_critic():
 def critic_base():
     import arena_critic_calib as CC
     return CC.work_base()
+
+
+def critic_infra(v):
+    """-> why the critic never ran (an infrastructure failure), or None when it ran and answered. Read from the
+    verdict's meta only, never its prose (a critic's own reasons may say anything; arena_critic_calib.L4OpusCritic is
+    not touched): raised, skipped, an is_error envelope, no JSON envelope (stderr_tail), rc != 0."""
+    meta = getattr(v, "meta", None) or {}
+    if meta.get("raised"):
+        return "critic raised %s" % meta["raised"]
+    if meta.get("skipped"):
+        return "critic skipped"
+    if meta.get("is_error"):                   # the CLI's own error envelope (arena_critic_calib: rc 0 possible)
+        return "critic error envelope (rc %s)" % meta.get("rc")
+    if "stderr_tail" in meta:
+        return "no JSON envelope (rc %s)" % meta.get("rc")
+    rc = meta.get("rc")
+    if isinstance(rc, int) and not isinstance(rc, bool) and rc != 0:
+        return "critic rc %d" % rc
+    return None
 
 
 def _critic_input(**kw):
@@ -392,6 +486,11 @@ class TrioLoop(RA.Loop):
         why = self.runway_refusal()
         if why:
             return self.status("runway: " + why)
+        pend = self.state.get("pending")
+        if pend and voided_build(self.recs(), task["id"], pend.get("build_id")):   # its round was voided: no verdict
+            self.state["pending"] = None                                            # for it; a fresh build pass runs
+            self._save()
+            self.status("pending build %s belongs to a voided round: dropped" % pend.get("build_id"))
         self._recover(task)
         if self.state.get("pending"):
             return self.tester_pass(task)
@@ -406,19 +505,21 @@ class TrioLoop(RA.Loop):
         """ralph_a's recovery from the signed log, over the trio's records."""
         if self.state.get("pending") or self.state.get("lane_wait"):
             return None
-        recs = canon_records(self.recs())
-        tid = L.norm_id(task["id"])
-        last = None
-        for i, r in enumerate(recs):
-            if r.get("event") == "build_end" and L.norm_id(r.get("task")) == tid:
-                last = i
-        if last is None:
+        if not self._round_open(task["id"]):               # the round has its verdict: no critic is owed
             return None
-        b = recs[last]
+        b, tests = round_tests(self.recs(), task["id"])
+        if b is None:
+            return None
         d = b.get("detail") or {}
         bid = d.get("build_id")
-        if any(r.get("event") in ("test_start", "test_end") and (r.get("detail") or {}).get("build_id") == bid
-               for r in recs[last + 1:]):
+        # a critic attempt that never ran (test_end detail.infra, TRIO_CRITIC_FIX_RC1_REREAD_BURNS_ROUNDS) is no test,
+        # and an answered invalid below CRITIC_TRIES leaves the critic owed (tester_pass counts it from the log). The
+        # build is not recovered once a critic answered pass/fail, the invalid tries are used up, or a critic started
+        # and never ended (killed mid-review: build_pass spends the round, as before).
+        ends = [r for r in tests if r.get("event") == "test_end" and not (r.get("detail") or {}).get("infra")]
+        ended = {(r.get("detail") or {}).get("tester") for r in tests if r.get("event") == "test_end"}
+        if any(r.get("verdict") in ("pass", "fail") for r in ends) or len(ends) >= CRITIC_TRIES or any(
+                r.get("event") == "test_start" and (r.get("detail") or {}).get("tester") not in ended for r in tests):
             return None
         sha = b.get("sha")
         if not (isinstance(sha, str) and d.get("base") and d.get("builder")) or \
@@ -427,7 +528,7 @@ class TrioLoop(RA.Loop):
                 RA.SG.git_run(self.root, "merge-base", "--is-ancestor", sha, RA.MAIN,
                               capture_output=True).returncode == 0:
             return None
-        self.state["pending"] = {"build_id": bid, "base": d["base"], "head": sha, "builder": d["builder"],
+        self.state["pending"] = {"build_id": bid, "base": d["base"], "head": sha, "builder": agent_key(d["builder"]),
                                  "recovered": True}
         self._save()
         self.status("recovered from the log: build %s has no critic yet; the critic runs next" % bid)
@@ -477,7 +578,9 @@ class TrioLoop(RA.Loop):
                   json.dumps(RA.public_spec(frozen), indent=1, sort_keys=True) + "\n\n## ROUND VERDICTS\n" +
                   json.dumps(last, indent=1) + "\n\n## LAST FAILURE\n" + self._note("last_failure.md")[-4000:] +
                   "\n\n## LAST CRITIC VERDICT\n" + self._note("last_verdict.md")[-4000:] + "\n")
-        troot = Path(tempfile.mkdtemp(prefix="trio-simplify-", dir=str(self.ctl)))
+        # TRIO_SIMPLIFY_FIX_TREE_ON_DRVFS_REFUSED: the work tree is made where tester roots are (ext4, never inside
+        # ctl / clone / harness); ctl lives on drvfs, where arm_sandbox refuses the rw bind. Always removed below.
+        troot = self._tester_root()
         try:
             work = self._export_tree(RA.MAIN, troot / "tree")
             self.status("simplify pass running (%s)" % agent)
@@ -623,7 +726,18 @@ class TrioLoop(RA.Loop):
         if task.get("_last", True) and task.get("_part_label"):
             criteria += "\n\nTHE ITEM'S FROZEN CRITERIA (must hold too):\n" + self.frozen()["criteria"]
         v, critic = None, None
-        for _ in range(CRITIC_TRIES):
+        b, tests = round_tests(self.recs(), task["id"])          # the answers THIS round's critics already gave
+        answered = [r for r in tests if r.get("event") == "test_end" and not (r.get("detail") or {}).get("infra")
+                    ] if b is not None and (b.get("detail") or {}).get("build_id") == pend.get("build_id") else []
+        final = next((r for r in answered if r.get("verdict") in ("pass", "fail")), None)
+        tries, infra = len(answered), 0
+        logged = final is not None or tries >= CRITIC_TRIES
+        if logged:                                       # killed after the answer, before the round verdict: no reroll
+            verdict = {"pass": "accept", "fail": "reject"}.get((final or {}).get("verdict"), "invalid")
+            critic = ((final or answered[-1]).get("detail") or {}).get("tester")
+            v = type("V", (), {"verdict": verdict, "reasons": ["logged answer of critic %s (its test_end; killed "
+                                                               "before the round verdict)" % critic], "meta": {}})()
+        while not logged:
             critic = self.new_id("critic")
             if agent_key(critic) == agent_key(pend["builder"]) or not agent_key(critic):
                 raise Refused("critic id %r equals the builder's: refused" % critic)
@@ -641,7 +755,7 @@ class TrioLoop(RA.Loop):
                                                          criteria=criteria, diff=diff, tree=tree, work=work))
                 except Exception as e:  # noqa: BLE001 - a crashed critic is an invalid verdict, never an accept
                     v = type("V", (), {"verdict": "invalid", "reasons": ["critic raised %s: %s" % (
-                        type(e).__name__, str(e)[:300])], "meta": {}})()
+                        type(e).__name__, str(e)[:300])], "meta": {"raised": type(e).__name__}})()
                 finally:
                     if mirror is not None:
                         mirror.stop()
@@ -651,9 +765,21 @@ class TrioLoop(RA.Loop):
                 shutil.rmtree(work, ignore_errors=True)
             verdict = getattr(v, "verdict", None)
             verdict = verdict if verdict in ("accept", "reject") else "invalid"
+            inf = critic_infra(v) if verdict == "invalid" else None
             self.emit("test_end", task, sha=pend["head"], verdict={"accept": "pass", "reject": "fail"}.get(
-                verdict, "invalid"), detail={"tester": critic, "build_id": pend["build_id"], "role": "critic"})
-            if verdict != "invalid":
+                verdict, "invalid"), detail={"tester": critic, "build_id": pend["build_id"], "role": "critic",
+                                             **({"infra": inf} if inf else {})})
+            if inf:                                    # the critic never ran: retried, never a verdict
+                infra += 1
+                self._infra_note(critic, pend, infra, inf, v)
+                if infra >= CRITIC_INFRA_TRIES:
+                    self._save()                       # pending kept: the critic reruns on the next start
+                    raise Refused("refused: critic infrastructure failure %d times on build %s (last: %s); no "
+                                  "verdict recorded" % (infra, pend["build_id"], inf))
+                self.sleep(CRITIC_INFRA_WAIT_S[min(infra, len(CRITIC_INFRA_WAIT_S)) - 1])
+                continue
+            tries += 1
+            if verdict != "invalid" or tries >= CRITIC_TRIES:
                 break
         reasons = [str(x)[:500] for x in (getattr(v, "reasons", None) or [])][:8]
         self.state["n"] = n + 1
@@ -667,9 +793,14 @@ class TrioLoop(RA.Loop):
         return self._after_accept(task, pend, n)
 
     def _logged_verdict(self, task, pend):
-        """Killed after this build's verdict was logged, before state was saved: the logged verdict stands."""
-        seen = [v for v in verdicts(self.recs(), task["id"])
-                if (v.get("detail") or {}).get("build_id") == pend.get("build_id")]
+        """Killed after this build's verdict was logged, before state was saved: the logged verdict stands. Only a
+        verdict of THIS round counts (TRIO_CRITIC_FIX_RC1_REREAD_BURNS_ROUNDS): an unchanged build gets the same
+        build_id in a later round, and an earlier round's verdict is never reused as this round's."""
+        recs = self.recs()
+        k = rounds_used(recs, task["id"])
+        seen = [v for v in verdicts(recs, task["id"])
+                if (v.get("detail") or {}).get("build_id") == pend.get("build_id")
+                and (v.get("detail") or {}).get("round", k) == k]
         if not seen:
             return None
         v, n = seen[-1], self.state["n"]
@@ -683,6 +814,21 @@ class TrioLoop(RA.Loop):
             return self.status("accepted %s part %s (from the log); the next part builds next" % (
                 task["id"], (v.get("detail") or {}).get("part")))
         return self._after_accept(task, pend, n)
+
+    def _infra_note(self, critic, pend, k, why, v):
+        """The whole failure kept where the operator reads it (the critic's meta: rc, stderr_tail, wall_s)."""
+        try:
+            self.log.mkdir(parents=True, exist_ok=True)
+            (self.log / ("critic_infra.%s.json" % critic)).write_text(json.dumps({
+                "ts": L.now_ts(), "critic": critic, "build_id": pend.get("build_id"), "head": pend.get("head"),
+                "attempt": k, "of": CRITIC_INFRA_TRIES, "infra": why,
+                "reasons": [str(x)[:500] for x in (getattr(v, "reasons", None) or [])][:8],
+                "meta": {a: b for a, b in (getattr(v, "meta", None) or {}).items()
+                         if a not in ("answer", "answer_tail")}}, indent=1, sort_keys=True, default=str))
+        except OSError as e:
+            print("trio: critic infra note not written: %s" % e, file=sys.stderr)
+        self.status("critic infrastructure failure %d of %d on %s: %s" % (k, CRITIC_INFRA_TRIES, pend.get("build_id"),
+                                                                        why))
 
     def _after_accept(self, task, pend, n):
         if not task.get("_last", True):
@@ -757,16 +903,115 @@ class TrioLoop(RA.Loop):
         return self._advance(task, "published %s %s" % (task["id"], pend["head"][:12]))
 
 
+# ------------------------------------------------------------------------------------------------ the infra-reject void
+INFRA_WHY_MARKS = ("no JSON envelope", "critic INVALID (from the log)", "critic infrastructure", "critic raised",
+                   "critic skipped")
+
+
+def void_refusal(recs, tid, sig):
+    """-> (refusal or None, the verdict record). Only an INFRA reject may be voided: a non-accept critic_round verdict
+    of the task, its LATEST verdict, not voided yet, whose why names an infrastructure failure (INFRA_WHY_MARKS)."""
+    seq = L.ordered([r for r in recs if r.get("arm") == ARM])
+    hit = [i for i, r in enumerate(seq) if r.get("sig") == sig]
+    if not sig or len(hit) != 1:
+        return "no single trio record has sig %r" % sig, None
+    i = hit[0]
+    v = seq[i]
+    d = v.get("detail") if isinstance(v.get("detail"), dict) else {}
+    if v.get("event") != "critic_round" or d.get("kind") != "verdict":
+        return "record %s is not a critic_round verdict" % sig, v
+    if L.norm_id(v.get("task")) != L.norm_id(tid):
+        return "verdict %s is of %s, not %s" % (sig, v.get("task"), tid), v
+    if v.get("verdict") == "accept":
+        return "verdict %s is an accept: never voided" % sig, v
+    if i in round_voids(seq):
+        return "verdict %s is already voided" % sig, v
+    t = L.norm_id(tid)
+    later = [r for r in seq[i + 1:] if r.get("event") == "critic_round" and L.norm_id(r.get("task")) == t]
+    if later:                                  # a later verdict, simplify OR park: a void cannot undo a terminal park
+        return "verdict %s is not the task's latest critic_round (%s follows)" % (
+            sig, (later[0].get("detail") or {}).get("kind")), v
+    why = str(d.get("why") or "")
+    if not any(why.startswith(m) for m in INFRA_WHY_MARKS):
+        return "verdict %s's why does not open with an infrastructure failure: %r" % (sig, why[:200]), v
+    ps = next((j for j in range(i - 1, -1, -1) if seq[j].get("event") == "pass_start"
+               and (seq[j].get("detail") or {}).get("role") == "build" and L.norm_id(seq[j].get("task")) == t), None)
+    if ps is None:
+        return "verdict %s has no build pass_start before it: no round to void" % sig, v
+    # any test that ended in this round and is not marked infra (detail.infra) is a critic that answered (pass, fail
+    # or an answered invalid): the verdict is real, whatever its prose. Only a round no critic answered is voidable.
+    answered = [r for r in seq[ps:i] if r.get("event") == "test_end" and L.norm_id(r.get("task")) == t
+                and not (r.get("detail") or {}).get("infra")]
+    if answered:
+        return "verdict %s: a critic answered in this round (%s by %s): not an infrastructure reject" % (
+            sig, answered[-1].get("verdict"), (answered[-1].get("detail") or {}).get("tester")), v
+    return None, v
+
+
+def _void_cli(a):
+    """Append ONE signed `invalid` (run_id VOID_RUN_ID) that voids an infra reject: round_voids then drops its round.
+    Held under the replay arm's runner.lock (no trio runner may be live), signed through the harness pass."""
+    if os.environ.get("RM_ARM"):
+        print("refused: harness code; run it without RM_ARM")
+        return 2
+    if not (a.task and a.sig and (a.reason or "").strip() and a.evidence):
+        print("refused: void-infra-reject needs --task, --sig, --reason and at least one --evidence")
+        return 2
+    import arena_replay_run as RR
+    import arena_tasks as A
+    try:
+        lock = RR.arm_lock(a.replay_ctl or RR.DEFAULT_CTL, ARM)
+    except RR.RunRefused as e:
+        print("refused: %s" % e)
+        return 2
+    try:
+        p = A.paths()
+        with L.harness_pass(p) as cap:
+            w = SignedWriterT(p, cap)
+            why, v = void_refusal(w.records(), a.task, a.sig)
+            if why:
+                print("refused: " + why)
+                return 2
+            d = v.get("detail") or {}
+            build_id = d.get("build_id")
+            if not build_id:   # the reject of a build-stage failure names its build by the round's build_end
+                seq = L.ordered([r for r in w.records() if r.get("arm") == ARM])
+                bes = [r for r in seq[:seq.index(v)] if r.get("event") == "build_end"
+                       and L.norm_id(r.get("task")) == L.norm_id(a.task)]
+                build_id = (bes[-1].get("detail") or {}).get("build_id") if bes else None
+            rec = w.emit(ARM, "invalid", lane="build", run_id=VOID_RUN_ID, task=v.get("task"), sha=v.get("sha"),
+                         detail={"build_id": build_id, "why": VOID_WHY, "void_verdict_sig": a.sig,
+                                 "voided_round": d.get("round"), "reason": a.reason.strip()[:2000],
+                                 "evidence": [str(x)[:400] for x in a.evidence][:12]})
+            print("appended void %s of verdict %s (round %s, build %s)" % (rec.get("sig") if isinstance(rec, dict)
+                                                                         else "?", a.sig, d.get("round"), build_id))
+            recs = w.records()
+            print("%s rounds=%d verdicts=%d" % (a.task, rounds_used(recs, a.task), len(verdicts(recs, a.task))))
+        return 0
+    finally:
+        lock.close()
+
+
 # ------------------------------------------------------------------------------------------------ CLI
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("action", choices=("run", "check-tested", "status"))
-    ap.add_argument("--root", required=True, help="the trio arm clone")
+    ap.add_argument("action", choices=("run", "check-tested", "status", "void-infra-reject"))
+    ap.add_argument("--root", help="the trio arm clone (required unless void-infra-reject)")
     ap.add_argument("--ctl", default=os.environ.get("TRIO_CTL", DEFAULT_CTL))
     ap.add_argument("--tasks", default="", help="comma-separated frozen task ids, worked in order")
     ap.add_argument("--model-cmd", default=os.environ.get("TRIO_MODEL_CMD"))
     ap.add_argument("--max-steps", type=int, default=0)
+    ap.add_argument("--task", help="void-infra-reject: the task id")
+    ap.add_argument("--sig", help="void-infra-reject: the sig of the infra reject verdict to void")
+    ap.add_argument("--reason", help="void-infra-reject: why (recorded in the signed log)")
+    ap.add_argument("--evidence", action="append", default=[], help="void-infra-reject: an evidence path (repeatable)")
+    ap.add_argument("--replay-ctl", default=os.environ.get("ARENA_REPLAY_CTL"),
+                    help="void-infra-reject: the replay ctl whose <ctl>/trio/runner.lock is held while appending")
     a = ap.parse_args(argv)
+    if a.action == "void-infra-reject":
+        return _void_cli(a)
+    if not a.root:
+        ap.error("--root is required for %s" % a.action)
     root = Path(a.root).resolve()
     if os.environ.get("RM_ARM") or Path.cwd().resolve().is_relative_to(root):
         print("refused: the loop is harness code; run it from outside the arm clone, without RM_ARM")

@@ -13,6 +13,14 @@ fix reverted), and must go RED there: that is the forced-failure proof.
   E  killed between build_end and the critic: the restart runs the critic on that build (from the log)
   F  a critic that never gives a verdict spends the round; a killed build pass spends the round
   G  a simplified spec on disk that is not the one the log recorded refuses
+  I  a critic infrastructure failure (rc 1, no envelope) retries and is never a verdict; an earlier round's verdict
+     is never reused (TRIO_CRITIC_FIX_RC1_REREAD_BURNS_ROUNDS); an is_error envelope is infrastructure too; log
+     recovery restores a build whose critic attempts were all infrastructure; answered invalids spent before an
+     infra Refused stay spent across a restart (pending kept or lost), and a critic killed mid-review is not recovered;
+     a critic answer logged before a kill is recorded on restart, never rerolled
+  V  an appended void of an infra reject drops its round from round counting and drops a pending build of that
+     round; an accept, a reject a critic answered (whatever its prose) and a parked round are never voidable
+  S  the simplify work tree is on the tester root (ext4), never in ctl (TRIO_SIMPLIFY_FIX_TREE_ON_DRVFS_REFUSED)
 """
 import json
 import os
@@ -415,6 +423,352 @@ def sc_invalid_critic(tmp, mod, tag):
     return ok
 
 
+class InfraCritic(Critic):
+    """`decide(k, c)` -> "infra" gives the real L4 no-envelope failure shape (rc 1, stderr_tail), else a verdict."""
+    def review(self, c):
+        self.seen.append({"cid": c.cid})
+        v = self.decide(len(self.seen), c)
+        if v == "infra":
+            return CC.CriticVerdict(verdict="invalid", reasons=["no JSON envelope from claude (rc 1)"],
+                                    meta={"rc": 1, "stderr_tail": "sandbox: bind refused", "wall_s": 3.0})
+        return CC.CriticVerdict(verdict=v, reasons=["fake critic says %s" % v], meta={"rc": 0})
+
+
+def sc_infra_retry(tmp, mod, tag):
+    """I1 two critic infra failures (rc 1, no envelope) then an accept: retried, never a verdict; one build, one
+    accept, published; each failure is noted with its stderr."""
+    waits = []
+    w = World(tmp, "I1" + tag, mod, critic=InfraCritic(lambda k, c: "infra" if k <= 2 else "accept"),
+              sleep=waits.append)
+    out = w.run(6)
+    vs = w.recs("critic_round", "verdict")
+    notes = sorted((w.ctl / "log").glob("critic_infra.*.json"))
+    ok = (out[-1].startswith("published") and w.calls.count("build") == 1 and len(w.critic.seen) == 3
+          and [r["verdict"] for r in vs] == ["accept"] and len(notes) == 2 and len(waits) == 2
+          and all("bind refused" in n.read_text() for n in notes)
+          and sum(1 for r in w.recs("test_end") if (r.get("detail") or {}).get("infra")) == 2)
+    print("     I1%s: out %s, critic calls %d, verdicts %s, notes %d" % (
+        tag, out[-1][:50], len(w.critic.seen), [r["verdict"] for r in vs], len(notes)))
+    return ok
+
+
+def sc_infra_exhausted(tmp, mod, tag):
+    """I2 the critic never runs: CRITIC_INFRA_TRIES attempts, then Refused with NO verdict and the build kept
+    pending (no round spent by the infrastructure)."""
+    w = World(tmp, "I2" + tag, mod, critic=InfraCritic(lambda k, c: "infra"), sleep=lambda s: None)
+    refused = None
+    try:
+        w.run(6)
+    except RA.Refused as e:
+        refused = str(e)
+    pend = json.loads((w.ctl / "state.json").read_text()).get("pending")
+    ok = (refused is not None and "no verdict recorded" in refused and not w.recs("critic_round", "verdict")
+          and len(w.critic.seen) == mod.CRITIC_INFRA_TRIES and bool(pend) and w.calls.count("build") == 1)
+    print("     I2%s: refused %s, critic calls %d" % (tag, (refused or "")[:60], len(w.critic.seen)))
+    return ok
+
+
+def sc_logged_verdict_round(tmp, mod, tag):
+    """I3 an earlier round's verdict of the same build_id is never reused as this round's (the rc 1 reread that
+    burned round 2 of the real task)."""
+    w = World(tmp, "I3" + tag, mod, critic=Critic(lambda k, c: "invalid"))
+    w.run(1)                                            # build round 1, critic invalid x2 -> round 1 verdict
+    vs = w.recs("critic_round", "verdict")
+    if len(vs) != 1:
+        return False
+    d = vs[0]["detail"]
+    t = w.loop.task()
+    w.loop.emit("pass_start", t, detail={"role": "build"})                 # round 2 opens, same build_id pending
+    pend = {"build_id": d["build_id"], "head": vs[0].get("sha"), "base": w.main0, "builder": "trio-build-x"}
+    got = w.loop._logged_verdict(t, pend)
+    print("     I3%s: logged verdict reused -> %r" % (tag, got and str(got)[:60]))
+    return got is None and len(w.recs("critic_round", "verdict")) == 1
+
+
+def _sign(w):
+    for i, r in enumerate(w.writer.recs):
+        r.setdefault("sig", "SIG%03d" % i)
+
+
+def sc_void_round(tmp, mod, tag):
+    """V an appended void of an infra reject drops its whole round: rounds and verdicts fall back by one, the voided
+    round's pending build is dropped and the next step is a fresh build of that round (not simplify); a plain reject
+    is never voidable. Round 2 is the real incident's shape: its critic never answered (infra only) and a legacy
+    `critic INVALID (from the log)` reject was written for it."""
+    w = World(tmp, "V" + tag, mod, critic=InfraCritic(lambda k, c: "reject" if k == 1 else "infra"),
+              sleep=lambda s: None)
+    try:
+        w.run(2)                                        # round 1 a critic reject; round 2 infra x4 -> Refused
+    except RA.Refused:
+        pass
+    tid = TASK["id"]
+    if len(w.recs("critic_round", "verdict")) != 1 or not w.loop.state.get("pending"):
+        print("     V%s: %d verdicts, pending %s" % (tag, len(w.recs("critic_round", "verdict")),
+                                                     w.loop.state.get("pending")))
+        return False
+    w.loop._verdict(w.loop.task(), "reject", stage="build", why="fake critic says reject")   # the legacy reject
+    vs = w.recs("critic_round", "verdict")
+    _sign(w)
+    plain = mod.void_refusal(w.writer.records(), tid, vs[1]["sig"])[0]     # a non-infra why: refused
+    vs[1]["detail"]["why"] = "critic INVALID (from the log): no JSON envelope from claude (rc 1)"
+    first = mod.void_refusal(w.writer.records(), tid, vs[0]["sig"])[0]     # not the latest: refused
+    why, v = mod.void_refusal(w.writer.records(), tid, vs[1]["sig"])
+    bes = [r for r in w.recs("build_end")]
+    w.writer.emit(mod.ARM, "invalid", lane="build", run_id=mod.VOID_RUN_ID, task=tid, sha=v.get("sha"),
+                  detail={"build_id": bes[-1]["detail"]["build_id"], "why": mod.VOID_WHY,
+                          "void_verdict_sig": vs[1]["sig"], "reason": "infra reject", "evidence": ["x"]})
+    _sign(w)
+    recs = w.writer.records()
+    again = mod.void_refusal(recs, tid, vs[1]["sig"])[0]
+    r_used, n_v = mod.rounds_used(recs, tid), len(mod.verdicts(recs, tid))
+    import arena_analysis as AN
+    seq = [r for r in recs]
+    voided = AN.harness_voided_builds(seq)
+    b2 = max(i for i, r in enumerate(seq) if r["event"] == "build_end")
+    w.reopen()
+    be2 = seq[b2]                                       # killed before pending was cleared: the voided build pending
+    w.loop.state["pending"] = {"build_id": be2["detail"]["build_id"], "base": be2["detail"].get("base"),
+                               "head": be2.get("sha"), "builder": be2["detail"].get("builder")}
+    w.loop._save()
+    w.critic.decide = lambda k, c: "reject"
+    w.loop.step()
+    after = w.recs("critic_round", "simplify")
+    recs = w.writer.records()
+    r2, n2 = mod.rounds_used(recs, tid), len(mod.verdicts(recs, tid))
+    ok = (plain is not None and first is not None and why is None and again is not None
+          and r_used == 1 and n_v == 1 and b2 in voided and not after and w.calls.count("build") == 3
+          and n2 <= r2 == 2)
+    print("     V%s: plain %s / first %s / why %s / again %s, rounds %d verdicts %d, build2 voided %s, builds %d, "
+          "after the step rounds %d verdicts %d" % (tag, bool(plain), bool(first), why, bool(again), r_used, n_v,
+                                                    b2 in voided, w.calls.count("build"), r2, n2))
+    return ok
+
+
+def sc_void_guards(tmp, mod, tag):
+    """VG a void is refused for a real reject whose prose names an infra mark (a critic answered in the round), and
+    for a round followed by a park (a void cannot undo a terminal park)."""
+    tid = TASK["id"]
+    w = World(tmp, "VG" + tag, mod, critic=Critic(lambda k, c: "reject"), sleep=lambda s: None)
+    w.run(1)
+    _sign(w)
+    vs = w.recs("critic_round", "verdict")
+    if len(vs) != 1:
+        return False
+    vs[0]["detail"]["why"] = "no JSON envelope for invalid requests; the structured error response is absent"
+    prose = mod.void_refusal(w.writer.records(), tid, vs[0]["sig"])[0]
+    w3 = World(tmp, "VI" + tag, mod, critic=Critic(lambda k, c: "invalid"), sleep=lambda s: None)
+    w3.run(1)                                           # two ANSWERED invalids (no infra) -> a real invalid verdict
+    _sign(w3)
+    v3 = w3.recs("critic_round", "verdict")
+    if len(v3) != 1:
+        return False
+    v3[0]["detail"]["why"] = "critic infrastructure changes cannot be assessed: the migration contract is omitted"
+    inval = mod.void_refusal(w3.writer.records(), tid, v3[0]["sig"])[0]
+    w2 = World(tmp, "VP" + tag, mod, critic=Critic(lambda k, c: "invalid"), sleep=lambda s: None)
+    w2.run(8)                                           # 4 answered invalid rounds -> parked
+    _sign(w2)
+    v2 = w2.recs("critic_round", "verdict")
+    if not v2 or not w2.recs("critic_round", "park"):
+        print("     VG%s: no park (%d verdicts)" % (tag, len(v2)))
+        return False
+    v2[-1]["detail"]["why"] = "no JSON envelope from claude (rc 1)"
+    park = mod.void_refusal(w2.writer.records(), tid, v2[-1]["sig"])[0]
+    print("     VG%s: prose -> %s / invalid -> %s / park -> %s" % (tag, (prose or "")[:50], (inval or "")[:50],
+                                                               (park or "")[:50]))
+    return (prose is not None and "answered" in prose and inval is not None and "answered" in inval
+            and park is not None and "park" in park)
+
+
+def sc_infra_recover(tmp, mod, tag):
+    """IR infra retries exhausted, then the state's pending is lost: recovery from the log still restores the build
+    (its infra attempts are no test), and the critic reviews it: no new build, no "killed" round, one accept."""
+    w = World(tmp, "IR" + tag, mod, critic=InfraCritic(lambda k, c: "infra"), sleep=lambda s: None)
+    try:
+        w.run(6)
+    except RA.Refused:
+        pass
+    w.critic.decide = lambda k, c: "accept"
+    w.reopen()
+    w.loop.state["pending"] = None
+    w.loop._save()
+    w.loop.step()
+    vs = w.recs("critic_round", "verdict")
+    print("     IR%s: builds %d, verdicts %s" % (tag, w.calls.count("build"), [(r["verdict"], (r.get("detail") or {})
+                                                                               .get("stage")) for r in vs]))
+    return w.calls.count("build") == 1 and [r["verdict"] for r in vs] == ["accept"]
+
+
+def sc_infra_recover_repeat(tmp, mod, tag):
+    """IR2 an unchanged build repeats round 1's (build_id, sha) in round 2 and its critic only ever fails on
+    infrastructure; pending lost: recovery restores ROUND 2's build (not hidden by the repeated-build_end dedupe)
+    and its critic runs: no simplify, no new build. A build_end repeated after the round's verdict recovers nothing."""
+    w = World(tmp, "IR2" + tag, mod, critic=InfraCritic(lambda k, c: "reject" if k == 1 else "accept"),
+              sleep=lambda s: None)
+    w.run(1)                                            # round 1: build B, critic reject
+    t = w.loop.task()
+    be = w.recs("build_end")[-1]
+    w.loop.emit("build_end", t, sha=be.get("sha"), detail=dict(be["detail"]))    # a repeat after the verdict
+    w.loop.state["pending"] = None
+    closed = w.loop._recover(t)
+    w.loop.emit("pass_start", t, detail={"role": "build"})                       # round 2: the same build again
+    w.loop.emit("build_end", t, sha=be.get("sha"), detail=dict(be["detail"]))
+    for c in ("trio-critic-infra000001", "trio-critic-infra000002"):
+        w.loop.emit("test_start", t, sha=be.get("sha"), detail={"tester": c, "build_id": be["detail"]["build_id"],
+                                                                 "role": "critic"})
+        w.loop.emit("test_end", t, sha=be.get("sha"), verdict="invalid", detail={
+            "tester": c, "build_id": be["detail"]["build_id"], "role": "critic", "infra": "no JSON envelope (rc 1)"})
+    w.loop._save()
+    w.reopen()
+    w.loop.step()
+    vs = w.recs("critic_round", "verdict")
+    print("     IR2%s: after-verdict repeat recovered %r; builds %d, simplify %s, verdicts %s" % (
+        tag, closed, w.calls.count("build"), bool(w.recs("critic_round", "simplify")), [r["verdict"] for r in vs]))
+    return (closed is None and w.calls.count("build") == 1 and not w.recs("critic_round", "simplify")
+            and [r["verdict"] for r in vs] == ["reject", "accept"])
+
+
+def sc_infra_mixed(tmp, mod, tag):
+    """IX an answered invalid, then CRITIC_INFRA_TRIES infra failures -> Refused; on resume (pending kept, and again
+    with pending lost) the answered invalid already spent stays spent: the NEXT answered invalid closes the round as
+    invalid and the critic is never asked again (no unbounded critic attempts across restarts), with no new build.
+    A critic killed mid-review (test_start, no test_end) is never recovered past: that round is spent, as before."""
+    res = []
+    for lose in (False, True):
+        seq = ["invalid"] + ["infra"] * mod.CRITIC_INFRA_TRIES + ["invalid", "accept"]
+        w = World(tmp, "IX%d%s" % (lose, tag), mod, critic=InfraCritic(lambda k, c: seq[min(k, len(seq)) - 1]),
+                  sleep=lambda s: None)
+        refused = False
+        try:
+            w.run(6)
+        except RA.Refused:
+            refused = True
+        w.reopen()
+        if lose:
+            w.loop.state["pending"] = None
+            w.loop._save()
+        w.loop.step()
+        vs = w.recs("critic_round", "verdict")
+        res.append(refused and len(w.critic.seen) == mod.CRITIC_INFRA_TRIES + 2 and w.calls.count("build") == 1
+                   and [r["verdict"] for r in vs] == ["invalid"])
+        print("     IX%s lose=%s: refused %s, critic calls %d, builds %d, verdicts %s" % (
+            tag, lose, refused, len(w.critic.seen), w.calls.count("build"), [r["verdict"] for r in vs]))
+    w = World(tmp, "IK" + tag, mod, critic=InfraCritic(lambda k, c: "infra"), sleep=lambda s: None)
+    try:
+        w.run(6)
+    except RA.Refused:
+        pass
+    t = w.loop.task()
+    be = w.recs("build_end")[-1]                        # then a critic killed mid-review: test_start, no test_end
+    w.loop.emit("test_start", t, sha=be.get("sha"), detail={"tester": "trio-critic-killed00001",
+                                                             "build_id": be["detail"]["build_id"], "role": "critic"})
+    w.loop.state["pending"] = None
+    killed = w.loop._recover(t)
+    print("     IX%s killed critic recovered %r" % (tag, killed))
+    return all(res) and killed is None
+
+
+def sc_logged_answer(tmp, mod, tag):
+    """IL killed after a critic's test_end and before the round verdict, the build kept pending: the restart records
+    the LOGGED answer (two answered invalids -> invalid; an answered reject -> reject) and never asks a new critic,
+    so a crash cannot reroll an answer or exceed CRITIC_TRIES."""
+    res = []
+    for name, seq, want in (("inv", ["invalid"] + ["infra"] * mod.CRITIC_INFRA_TRIES + ["invalid", "accept"], "invalid"),
+                            ("rej", ["reject", "accept"], "reject")):
+        w = World(tmp, "IL%s%s" % (name, tag), mod, critic=InfraCritic(lambda k, c, q=seq: q[min(k, len(q)) - 1]),
+                  sleep=lambda s: None)
+        try:
+            w.run(6) if name == "inv" else None
+        except RA.Refused:
+            pass
+        if name == "inv":
+            w.reopen()
+
+        def boom(*a, **k):
+            raise KeyboardInterrupt("killed before the round verdict")
+        w.loop._verdict = boom
+        try:
+            w.loop.step() if name == "inv" else w.run(1)
+        except KeyboardInterrupt:
+            pass
+        calls = len(w.critic.seen)
+        w.reopen()
+        w.loop.step()
+        vs = w.recs("critic_round", "verdict")
+        res.append(len(w.critic.seen) == calls and [r["verdict"] for r in vs] == [want]
+                   and w.calls.count("build") == 1)
+        print("     IL%s %s: critic calls %d -> %d, builds %d, verdicts %s" % (
+            tag, name, calls, len(w.critic.seen), w.calls.count("build"), [r["verdict"] for r in vs]))
+    return all(res)
+
+
+def sc_infra_prose(tmp, mod, tag):
+    """IP an ANSWERED invalid whose prose starts "no JSON envelope" is a verdict, never infrastructure."""
+    class ProseCritic(Critic):
+        def review(self, c):
+            self.seen.append({"cid": c.cid})
+            return CC.CriticVerdict(verdict="invalid", reasons=[
+                "no JSON envelope is produced by the submitted endpoint; its contract cannot be assessed"],
+                meta={"rc": 0, "is_error": False, "answer": "{}", "answer_tail": "{}"})
+    w = World(tmp, "IP" + tag, mod, critic=ProseCritic(lambda k, c: "invalid"), sleep=lambda s: None)
+    w.run(1)
+    vs = w.recs("critic_round", "verdict")
+    print("     IP%s: critic calls %d, verdicts %s" % (tag, len(w.critic.seen), [r["verdict"] for r in vs]))
+    return (len(w.critic.seen) == 2 and [r["verdict"] for r in vs] == ["invalid"]
+            and not any((r.get("detail") or {}).get("infra") for r in w.recs("test_end")))
+
+
+def sc_infra_error_envelope(tmp, mod, tag):
+    """IE an is_error envelope with rc 0 (arena_critic_calib's `claude error:` path) is infrastructure too."""
+    class EnvCritic(Critic):
+        def review(self, c):
+            self.seen.append({"cid": c.cid})
+            if len(self.seen) <= 2:
+                return CC.CriticVerdict(verdict="invalid", reasons=["claude error: sandbox: bind refused"],
+                                        meta={"rc": 0, "is_error": True})
+            return CC.CriticVerdict(verdict="accept", reasons=["ok"], meta={"rc": 0})
+    w = World(tmp, "IE" + tag, mod, critic=EnvCritic(lambda k, c: "accept"), sleep=lambda s: None)
+    w.run(6)
+    vs = w.recs("critic_round", "verdict")
+    print("     IE%s: critic calls %d, verdicts %s" % (tag, len(w.critic.seen), [r["verdict"] for r in vs]))
+    return len(w.critic.seen) == 3 and [r["verdict"] for r in vs] == ["accept"]
+
+
+def sc_void_accept(tmp, mod, tag):
+    """VA an accept is never voided, and a void naming an accept drops nothing."""
+    w = World(tmp, "VA" + tag, mod, critic=Critic(lambda k, c: "accept"))
+    w.run(4)
+    _sign(w)
+    vs = w.recs("critic_round", "verdict")
+    tid = TASK["id"]
+    if not vs:
+        return False
+    vs[-1].setdefault("detail", {})["why"] = "no JSON envelope from claude (rc 1)"   # only the accept rule refuses
+    refused = mod.void_refusal(w.writer.records(), tid, vs[-1]["sig"])[0]
+    w.writer.emit(mod.ARM, "invalid", lane="build", run_id=mod.VOID_RUN_ID, task=tid,
+                  detail={"why": mod.VOID_WHY, "void_verdict_sig": vs[-1]["sig"], "reason": "r"})
+    recs = w.writer.records()
+    return refused is not None and "accept" in refused and len(mod.verdicts(recs, tid)) == len(vs)
+
+
+def sc_simplify_root(tmp, mod, tag):
+    """S the simplify work tree is made under the tester root (ext4), never inside ctl (drvfs), and removed."""
+    cwds = []
+    w = World(tmp, "S" + tag, mod, simplifier=lambda p: SIMPLE)
+    real = w.model
+
+    def model(role, prompt, *, cwd, **kw):
+        if role != "build":
+            cwds.append(Path(cwd))
+        return real(role, prompt, cwd=cwd, **kw)
+    w.loop.model = model
+    w.run(5)
+    ok = (bool(cwds) and all(not c.resolve().is_relative_to(w.ctl.resolve()) for c in cwds)
+          and all(c.resolve().is_relative_to(Path(TBASE[0]).resolve()) for c in cwds)
+          and not any(c.exists() for c in cwds) and not list(w.ctl.glob("trio-simplify-*")))
+    print("     S%s: simplify cwds %s" % (tag, [str(c)[-40:] for c in cwds]))
+    return ok
+
+
 def sc_killed_build(tmp, mod, tag):
     """A builder killed every time (rc -9): no critic runs, each pass is a spent round, park after 4."""
     w = World(tmp, "FK" + tag, mod, builder=lambda p: (BROKEN, -9), simplifier=lambda p: SIMPLE)
@@ -742,6 +1096,52 @@ MUTATIONS = [
     ("LN park keeps an evidence branch with no round", sc_live_no_plan,
      "self.git(\"rev-parse\", \"--verify\", \"-q\", RA.WIP, check=False) if k else None",
      "self.git(\"rev-parse\", \"--verify\", \"-q\", RA.WIP, check=False)"),
+    ("I1 critic infra failure counted as a verdict", sc_infra_retry,
+     "            inf = critic_infra(v) if verdict == \"invalid\" else None\n", "            inf = None\n"),
+    ("I2 exhausted infra retries record a verdict", sc_infra_exhausted,
+     "            inf = critic_infra(v) if verdict == \"invalid\" else None\n", "            inf = None\n"),
+    ("I3 an earlier round's verdict reused", sc_logged_verdict_round,
+     "                and (v.get(\"detail\") or {}).get(\"round\", k) == k]", "]"),
+    ("V void not honoured by round counting", sc_void_round, "    drop = _void_spans(seq)\n    for i, r in enumerate(seq):\n",
+     "    drop = set()\n    for i, r in enumerate(seq):\n"),
+    ("V a non-infra reject voidable", sc_void_round, "    if not any(why.startswith(m) for m in INFRA_WHY_MARKS):",
+     "    if False:"),
+    ("V a voided round's pending build reviewed", sc_void_round,
+     "        if pend and voided_build(self.recs(), task[\"id\"], pend.get(\"build_id\")):", "        if False:"),
+    ("VG an answered reject voidable through its prose", sc_void_guards, "    if answered:\n        return \"verdict %s: a critic answered",
+     "    if False:\n        return \"verdict %s: a critic answered"),
+    ("VG a void after a park allowed", sc_void_guards,
+     "    later = [r for r in seq[i + 1:] if r.get(\"event\") == \"critic_round\" and L.norm_id(r.get(\"task\")) == t]",
+     "    later = [r for r in seq[i + 1:] if r.get(\"event\") == \"critic_round\" and L.norm_id(r.get(\"task\")) == t\n"
+     "             and (r.get(\"detail\") or {}).get(\"kind\") in (\"verdict\", \"simplify\")]"),
+    ("IR infra attempts block log recovery", sc_infra_recover,
+     "        ends = [r for r in tests if r.get(\"event\") == \"test_end\" and not (r.get(\"detail\") or {}).get(\"infra\")]",
+     "        ends = [r for r in tests if r.get(\"event\") == \"test_end\"]"),
+    ("IE an is_error envelope is a verdict", sc_infra_error_envelope, "    if meta.get(\"is_error\"):", "    if False:"),
+    ("IR2 recovery over the deduped log", sc_infra_recover_repeat,
+     "    seq = [r for i, r in enumerate(seq) if i not in drop]\n    t = L.norm_id(tid)\n",
+     "    seq = L.ordered(canon_records(recs))\n    t = L.norm_id(tid)\n"),
+    ("IR2 a closed round recovered", sc_infra_recover_repeat,
+     "        if not self._round_open(task[\"id\"]):               # the round has its verdict", "        if False:  # the round has its verdict"),
+    ("IX infra exhaustion resets the answered-invalid budget", sc_infra_mixed,
+     "        tries, infra = len(answered), 0\n", "        tries, infra = 0, 0\n"),
+    ("IX an earlier answered invalid vetoes log recovery", sc_infra_mixed,
+     "        if any(r.get(\"verdict\") in (\"pass\", \"fail\") for r in ends) or len(ends) >= CRITIC_TRIES or any(",
+     "        if ends or any("),
+    ("IX a critic killed mid-review recovered past", sc_infra_mixed,
+     "        if any(r.get(\"verdict\") in (\"pass\", \"fail\") for r in ends) or len(ends) >= CRITIC_TRIES or any(",
+     "        if any(r.get(\"verdict\") in (\"pass\", \"fail\") for r in ends) or len(ends) >= CRITIC_TRIES or False and any("),
+    ("IL a logged answer rerolled after a kill", sc_logged_answer,
+     "        logged = final is not None or tries >= CRITIC_TRIES\n", "        logged = False\n"),
+    ("IP an answered invalid read as infra", sc_infra_prose,
+     "    if \"stderr_tail\" in meta:", "    if \"stderr_tail\" in meta or \"no JSON envelope\" in str(getattr(v, \"reasons\", \"\")):"),
+    ("VA an accept voidable", sc_void_accept,
+     "    if v.get(\"verdict\") == \"accept\":\n        return \"verdict %s is an accept", "    if False:\n        return \"verdict %s is an accept"),
+    ("VA a void drops an accept's round", sc_void_accept,
+     "and (r.get(\"detail\") or {}).get(\"kind\") == \"verdict\" and r.get(\"verdict\") != \"accept\" and r.get(\"sig\")}",
+     "and (r.get(\"detail\") or {}).get(\"kind\") == \"verdict\" and r.get(\"sig\")}"),
+    ("S simplify tree back on ctl (drvfs)", sc_simplify_root, "        troot = self._tester_root()\n",
+     "        troot = Path(tempfile.mkdtemp(prefix=\"trio-simplify-\", dir=str(self.ctl)))\n"),
     ("G spec integrity check removed", sc_spec_tamper,
      "            if not f.is_file() or hashlib.sha256(f.read_bytes()).hexdigest() != want:",
      "            if False:"),
@@ -762,6 +1162,19 @@ SCENARIOS = [
     ("E killed between build_end and the critic: the restart runs the critic", sc_killed_before_critic),
     ("F a critic with no verdict spends the round", sc_invalid_critic),
     ("FK a killed build pass spends the round; the simplified spec reaches round 3", sc_killed_build),
+    ("I1 critic infra failures retry and are never a verdict", sc_infra_retry),
+    ("I2 exhausted critic infra retries refuse with no verdict, build kept pending", sc_infra_exhausted),
+    ("I3 an earlier round's verdict of the same build is never reused", sc_logged_verdict_round),
+    ("V an appended infra-reject void drops its round; rounds and verdicts honour it", sc_void_round),
+    ("VA an accept is never voided", sc_void_accept),
+    ("VG a void refuses an answered reject (prose marks) and a parked round", sc_void_guards),
+    ("IR log recovery restores a build whose critic attempts were all infra", sc_infra_recover),
+    ("IE an is_error envelope (rc 0) retries as infrastructure", sc_infra_error_envelope),
+    ("IR2 recovery finds round 2's repeated build and runs its critic", sc_infra_recover_repeat),
+    ("IX answered invalids spent before an infra Refused stay spent; a killed critic is not recovered", sc_infra_mixed),
+    ("IL a critic answer logged before a kill is recorded, never rerolled", sc_logged_answer),
+    ("IP an answered invalid is a verdict whatever its prose", sc_infra_prose),
+    ("S the simplify work tree is on the tester root, not ctl, and removed", sc_simplify_root),
     ("PL a parked item with its spec file lost still advances", sc_parked_spec_lost),
     ("PF a park files one Conductor item, once", sc_park_files_item),
     ("PX a failed or crashing filing loses nothing and is retried", sc_park_filing_fails),
@@ -805,6 +1218,10 @@ def main():
         for i, (name, fn, old, new) in enumerate(MUTATIONS):
             m = variant(old, new)
             check(not guarded(fn, tmp, m, ".m%d" % i), "RED with the fix reverted: " + name)
+        import arena_analysis as AN
+        check(T.VOID_WHY == AN.HARNESS_ORPHAN_VOID_WHY and
+              AN.stream_of("trio.3") + AN.HARNESS_VOID_STREAM_SUFFIX == T.VOID_RUN_ID,
+              "the trio void is the one harness void arena_analysis.dq_tester honours")
         check("trio_loop.py" in __import__("arena_eventlog").ENTRYPOINTS, "trio_loop.py is a harness entrypoint")
         check(real_ledger_mentions() == ledger0, "no scenario wrote the fixture park into the real ledger")
     finally:
