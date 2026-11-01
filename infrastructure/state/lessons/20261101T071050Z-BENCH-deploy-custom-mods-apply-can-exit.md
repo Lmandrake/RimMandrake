@@ -1,0 +1,1 @@
+deploy_custom_mods --apply can exit 1 printing 'Deployed N file(s)' with STILL DIFFERS and leave the game copy old: the summary line is not the proof, read VERIFIED in sync. A whole live proof ran on stale code this way (Scald, 2026-11-01). ./game down only stamps the ledger; a running game needs taskkill.

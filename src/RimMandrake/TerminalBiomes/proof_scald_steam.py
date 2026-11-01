@@ -8,10 +8,11 @@ it with Windows python, on a throwaway quicktest colony on a list holding mandra
 setup: a real surface RM_TheScald map on a warm tile (jawa/world_tile_map_generate, so the biome itself wires
 RUT_ScaldSteamLock and RUT_ScaldSteamCarrier; a quicktest home map is a foreign biome with its own weather lock and
 wildlife, which stopped the clock and killed the test pawns). A naked colonist, one in RM_Apparel_RindCoat and one in
-the boil-suit stand on land; RM_Noohm, RM_Shulla and a control Muffalo stand in RUT_ScaldWaterShallow. run: the naked
-one dies with RUT_ScaldExposure under 120000 ticks (two days, the owner's card), the rind wearer lives them out,
-natives carry neither burns nor exposure, the control burns (proves the water bites). run resumes: call it again
-with the same out file until it prints its verdict.
+the boil-suit stand on land, each ringed by an unroofed wall; RM_Noohm, RM_Shulla and a control Muffalo stand in RUT_ScaldWaterShallow. run: the naked
+one dies with RUT_ScaldExposure under 120000 ticks (two days, the owner's card), the rind wearer lives them
+out, the boil-suit wearer comes through a full day at stage 0 or 1, natives carry neither burns nor exposure, the control burns (proves the water bites). Other pawns are
+removed at setup and on every sample, so no stray predator decides a row. run resumes: call it again with the same
+out file until it prints its verdict.
 """
 import json
 import os
@@ -91,13 +92,32 @@ def setup():
         call(c, "jawa/pawn_gear", pawn=roster[k], action="clear")
     print(str(call(c, "jawa/pawn_gear", pawn=roster["rind"], action="wear", **{"def": "RM_Apparel_RindCoat"}))[:120])
     print(str(call(c, "jawa/pawn_gear", pawn=roster["boilsuit"], action="wear", **{"def": "RM_Apparel_BoilSuit"}))[:120])
-    for k in ("naked", "rind", "boilsuit"):  # idle colonists otherwise wander into the boil and burn
+    # A draft alone did not hold them: a naked pawn walked into the boil at 39000 ticks and drowned, spoiling the row
+    # (a mental break undrafts). An unroofed steel ring keeps each one on its cell and still under the open sky.
+    ring = ";".join("Wall:%d,%d" % (x + dx, 40 + dz) for x in (30, 36, 42)
+                    for dx in (-1, 0, 1) for dz in (-1, 0, 1) if dx or dz)
+    print(str(call(c, "jawa/build_batch", ops=ring, stuff="Steel").get("survived")))
+    for k in ("naked", "rind", "boilsuit"):
         call(c, "jawa/set_draft", pawnId=roster[k], drafted=True)
     t0 = call(c, "rimworld/get_game_info")["ticksGame"]
+    clear_strays(c, roster)
+    # The ruling is two days OF STEAM. A still day (RUT_ScaldSteamLock's Clear burst) stops the clock by design, and
+    # one landing inside the window left the naked pawn alive at 0.87 and falling: hold the steam for the whole run.
+    print(str(call(c, "jawa/weather_set", weather="RUT_ScaldSteam", lockWeather=True))[:120])
+    call(c, "jawa/damage_log", action="clear")
     json.dump({"roster": roster, "t0": t0}, open(STATE, "w"))
     print(json.dumps(roster))
     w = call(c, "jawa/weather_get")
     print(w.get("weather"), [q["def"] for q in w.get("conditions", [])])
+
+
+def clear_strays(c, roster):
+    """Wild predators on the site killed test pawns (a rind wearer died of a Bruise): only the roster may stay."""
+    keep = set(roster.values())
+    for p in pawns(c):
+        pid = p.get("id") or p.get("thingId")
+        if pid and pid not in keep and not p.get("dead") and not p.get("downed"):
+            c.call("jawa/pawn_force_incapacitate", {"pawn": pid, "action": "vanish"}, check=False)
 
 
 def read(c, pid):
@@ -130,6 +150,7 @@ def run(out, ticks, wall=420):
             else:
                 row[k] = {"hediffs": hediffs(p)}
         log.append(row)
+        clear_strays(c, roster)
         json.dump({"log": log, "died": died}, open(out, "w"), indent=0)
         print(row["tick"], row["weather"], "died", died, "naked", row["naked"]["hediffs"][:4], "rind", row["rind"]["hediffs"][:4], flush=True)
         if now - t0 >= ticks:
@@ -138,20 +159,28 @@ def run(out, ticks, wall=420):
             print("RESUME: call run again")
             return
         call(c, "rimworld/play_for", durationMs=8000, speed=4)
-    judge(out, log, died, ticks)
+    kills = [e for e in call(c, "jawa/damage_log", pawnsOnly=True).get("events", []) if e.get("kind") == "kill"]
+    judge(out, log, died, ticks, kills)
 
 
-def judge(out, log, died, ticks):
+def judge(out, log, died, ticks, kills):
     last = log[-1]
     burn = lambda r: [h for h in r.get("hediffs", []) if "urn" in str(h[0]) or "Scald" in str(h[0])]  # noqa: E731
     exposure = [h[1] for r in log for h in r["naked"]["hediffs"] if h[0] == "RUT_ScaldExposure"]
+    steam = sum(b["tick"] - a["tick"] for a, b in zip(log, log[1:]) if a["weather"] == "RUT_ScaldSteam")
     v = {
+        "steam_held": steam >= 0.9 * last["tick"],
         "naked_dies_under_2d": "naked" in died and died["naked"] < 2 * DAY and bool(exposure) and max(exposure) > 0.8,
-        "rind_survives": "rind" not in died and last["tick"] >= 2 * DAY,
+        "rind_survives": died.get("rind", 2 * DAY + 1) > 2 * DAY and last["tick"] >= 2 * DAY,
+        # The spec's own bar (section 8 step 5): a full day out, still at stage 0 or 1. Heatstroke is the sun's, not the
+        # steam's, and runs on past a day in the open, so a suit wearer needs a roof at night like anyone.
+        "boilsuit_full_day": died.get("boilsuit", 2 * DAY) > DAY and all(
+            h[1] < 0.35 for r in log if r["tick"] <= DAY and not r["boilsuit"].get("dead")
+            for h in r["boilsuit"]["hediffs"] if h[0] == "RUT_ScaldExposure"),
         "natives_no_burn_no_exposure": not any(burn(r[k]) for r in log for k in ("noohm", "shulla")),
         "control_burns": any(burn(r["control"]) for r in log) or "control" in died,
     }
-    json.dump({"verdict": v, "log": log, "died": died}, open(out, "w"), indent=0)
+    json.dump({"verdict": v, "kills": kills, "log": log, "died": died}, open(out, "w"), indent=0)
     print(json.dumps(v))
     sys.exit(0 if all(v.values()) else 1)
 
@@ -160,4 +189,4 @@ if __name__ == "__main__":
     if sys.argv[1] == "setup":
         setup()
     else:
-        run(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 2 * DAY + 2000)
+        run(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 2 * DAY + 500)

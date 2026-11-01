@@ -143,7 +143,8 @@
       <Mass>6</Mass>
       <EquipDelay>6</EquipDelay>
       <Beauty>-3</Beauty>
-      <Insulation_Heat>-20</Insulation_Heat>
+      <!-- Measured live: -20 killed the wearer of Heatstroke in under a day on a 14 C tile, the suit's whole job undone. -->
+      <Insulation_Heat>-5</Insulation_Heat>
       <Insulation_Cold>18</Insulation_Cold>
       <ArmorRating_Heat>0.85</ArmorRating_Heat>
       <ArmorRating_Blunt>0.10</ArmorRating_Blunt>

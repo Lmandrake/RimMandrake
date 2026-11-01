@@ -20,40 +20,19 @@ namespace RimMandrake.EnvironmentalHazards
     // so a shared generic could not serve two biomes' art anyway. This is
     // a Scald-scoped one-off, in vanilla's own shape.
     //
-    // ── The look: copy vanilla's fog material, swap its textures, tint it ─
-    // Three engine facts settle the route, all MEASURED against the 1.6
-    // decompile:
+    // ── The look: vanilla fog as the haze, our own two cloud layers on top ─
+    // Swapping our textures into a copy of the fog material showed nothing
+    // (measured live: same camera, steam against clear, no cloud shape, only a
+    // tint). So the fog material stays vanilla, and the clouds are two plain
+    // Transparent materials this class pans and draws itself.
     //
-    //  1. `MatLoader.LoadMat(path)` is `Resources.Load("Materials/" + path)`
-    //     — Unity Resources ONLY. No mod folder is ever searched. Handing it
-    //     a mod path returns null, and building a Material from null throws
-    //     inside this type initializer, which blacks the whole map. 🔴 Never
-    //     call it with anything but a vanilla path.
-    //  2. Copying a Material carries its shader and every property with it,
-    //     so a copy of the fog material already pans correctly; only the
-    //     textures need replacing. ⚠️ `MaterialAllocator.Create(Material)`,
-    //     which the spec's draft snippet used, is `internal static` to
-    //     Assembly-CSharp and is NOT callable from a mod assembly — it would
-    //     not compile. `new Material(src)` is what that method does anyway
-    //     (plus leak bookkeeping the tracker only uses for a warning), so
-    //     that is what this uses.
-    //  3. `SkyOverlay.ForcedOverlayColor` is honoured by SkyManager — a
-    //     forced colour replaces the sky's own overlay colour for that
-    //     overlay. Anomaly's WeatherOverlay_BloodFog tints exactly this way.
+    // ⚠️ MatLoader.LoadMat reads Unity Resources only: never hand it a mod path.
+    // MeshPool.wholeMapPlane maps one UV to 10 map cells, so a texture needs a
+    // scale well under 1 or a billow is two cells wide.
+    // SkyOverlay.ForcedOverlayColor is honoured by SkyManager, which sets its
+    // alpha to the weather's lerp factor, so the clouds fade with the weather.
     //
-    // ── Graceful by construction ─────────────────────────────────────────
-    // With the two mod textures absent, `ContentFinder.Get(..., false)`
-    // returns null, nothing is swapped, and this class is EXACTLY the
-    // previous shipped look (vanilla fog, borrowed). So the art can land
-    // later without another code change and nothing is broken meanwhile.
-    // That matters because the textures are real art content, queued to the
-    // artpipe as scaldsteam_overlay_a/_b, not written here.
-    //
-    // ⚠️ UNMEASURED, to settle on the first live run (both harmless either
-    // way, which is why they are guarded rather than assumed): whether
-    // vanilla's fog material declares `_MainTex2` at all, and whether
-    // ForcedOverlayColor on a WORLD overlay reads as a tint rather than a
-    // wash at the shipped alpha.
+    // With the textures absent this is plain vanilla fog and nothing breaks.
     [StaticConstructorOnStartup]
     public class RUT_WeatherOverlay_ScaldSteam : WeatherOverlayDualPanner
     {
@@ -61,43 +40,77 @@ namespace RimMandrake.EnvironmentalHazards
         private const string SteamTexA = "Weather/RM_ScaldSteam_A";
         private const string SteamTexB = "Weather/RM_ScaldSteam_B";
 
-        private static readonly Material SteamOverlayWorld = BuildMaterial();
+        // INVENTED, judged live: a tile spans 70 and 50 cells; billows at 0.5 opacity, streaks at 0.4.
+        private const float ScaleA = 0.143f;
+        private const float ScaleB = 0.2f;
+        private const float OpacityA = 0.5f;
+        private const float OpacityB = 0.4f;
 
-        private static Material BuildMaterial()
+        private static readonly Material FogMat = MatLoader.LoadMat(VanillaFogMatPath);
+        private static readonly Material CloudA = BuildCloud(SteamTexA, ScaleA);
+        private static readonly Material CloudB = BuildCloud(SteamTexB, ScaleB);
+
+        private Vector2 panA;
+        private Vector2 panB;
+
+        private static Material BuildCloud(string path, float scale)
         {
-            Material vanillaFog = MatLoader.LoadMat(VanillaFogMatPath);
-            if (vanillaFog == null)
+            Texture2D tex = ContentFinder<Texture2D>.Get(path, false);
+            if (tex == null)
             {
-                // Should be impossible (vanilla path), but a null here would
-                // otherwise throw in the type initializer and black the map.
-                Log.ErrorOnce(
-                    "[RM EnvironmentalHazards] could not load vanilla material '" + VanillaFogMatPath
-                    + "'; the Scald's steam overlay will not draw.", 0x5CA1D0);
                 return null;
             }
+            Material m = new Material(ShaderDatabase.Transparent) { mainTexture = tex };
+            m.mainTextureScale = new Vector2(scale, scale);
+            m.color = Color.clear;
+            return m;
+        }
 
-            Texture2D a = ContentFinder<Texture2D>.Get(SteamTexA, false);
-            Texture2D b = ContentFinder<Texture2D>.Get(SteamTexB, false);
-            if (a == null && b == null)
+        public override void TickOverlay(Map map, float lerpFactor)
+        {
+            base.TickOverlay(map, lerpFactor);
+            float rate = Find.TickManager.TickRateMultiplier;
+            if (CloudA != null)
             {
-                return vanillaFog; // no owned art yet — vanilla fog, unchanged, no copy allocated
+                panA -= worldPanDir1 * (worldOverlayPanSpeed1 * ScaleA * rate);
+                CloudA.mainTextureOffset = panA;
             }
+            if (CloudB != null)
+            {
+                panB -= worldPanDir2 * (worldOverlayPanSpeed2 * ScaleB * rate);
+                CloudB.mainTextureOffset = panB;
+            }
+        }
 
-            Material steam = new Material(vanillaFog);
-            if (a != null)
+        public override void DrawOverlay(Map map)
+        {
+            base.DrawOverlay(map);
+            if (CloudA != null)
             {
-                steam.SetTexture("_MainTex", a);
+                DrawWorldOverlay(map, CloudA);
             }
-            if (b != null && steam.HasProperty("_MainTex2"))
+            if (CloudB != null)
             {
-                steam.SetTexture("_MainTex2", b);
+                DrawWorldOverlay(map, CloudB);
             }
-            return steam;
+        }
+
+        public override void SetOverlayColor(Color color)
+        {
+            base.SetOverlayColor(color);
+            if (CloudA != null)
+            {
+                CloudA.color = new Color(color.r, color.g, color.b, color.a * OpacityA);
+            }
+            if (CloudB != null)
+            {
+                CloudB.color = new Color(color.r, color.g, color.b, color.a * OpacityB);
+            }
         }
 
         public RUT_WeatherOverlay_ScaldSteam()
         {
-            worldOverlayMat = SteamOverlayWorld;
+            worldOverlayMat = FogMat;
 
             // Sheet §9: "cyan glow under white steam". White, with the
             // water's own cyan bleeding up through it — never a grey blind.
