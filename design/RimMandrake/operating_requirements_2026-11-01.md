@@ -326,6 +326,8 @@ All owned by FOUNDRY, acceptance in the item file, each proved by its planted fa
 | 11 | `FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT` | RO2 | enrolled |
 | 12 | `WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT` | RW1 | enrolled |
 | 13 | `MISSION_PAGE_BUILD_READ_ONLY_STATE` | C7, MI1 | enrolled |
+
+Queue note, 2026-11-01: the first five were retired by a tick because they were enrolled before publication; restored by hand and all 13 placed ahead of the older queued items. Bug filed: `RELENTLESS_ENROL_FIX_UNPUBLISHED_RETIRED`.
 | 14 | `CIRCLING_WATCH_BUILD_REPORT_ONLY_FIRST` | RW2 | filed |
 | 15 | `HELP_CALL_BUILD_FRESH_EYES_ON_FAILURES` | RW3 | filed |
 | 16 | `ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED` | RO1 | filed |
