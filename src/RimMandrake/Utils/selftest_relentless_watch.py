@@ -153,12 +153,52 @@ for gone in ("staffing.json", "reading.json", "breaker.json", "staffing.jsonl", 
     pts = OW.read_json(OW.ops_dir() / "status.json")["points"]
     check("missing %s alarms" % gone, "RELENTLESS_BLIND:relentless.blind" in dg["alarms"] and gone in FILED[-1]["title"],
           dg["alarms"])
-    check("missing %s never reads sane" % gone, pts["relentless.distressed"]["v"] != 0 or gone != "staffing.json")
+    check("missing %s never reads sane" % gone, all(pts[k]["m"] == "UNMEASURED" for k in (
+        "relentless.distressed", "relentless.cause")), pts)
     if gone == "staffing.json":
         check("every staffing reading UNMEASURED", all(pts[k]["m"] == "UNMEASURED" for k in (
             OW.RL_STAFFING + ("relentless.tick_age_s", "relentless.distressed", "relentless.cause"))), pts)
     if gone == "breaker.json":
         check("the breaker reading UNMEASURED", pts["relentless.breaker_open_min"]["m"] == "UNMEASURED")
+for gone in ("staffing.jsonl", "breaker.json", "journal.jsonl", "reading.json"):    # idle is a verdict too
+    fresh()
+    add("journal.jsonl", {"at": OW.iso(T0 - 60), "do": "lease"})
+    tick({**sane_row(T0), "why": "paused"})
+    (STORE / gone).unlink()
+    check("missing %s never reads idle" % gone, OW.c_relentless(T0 + 60, RULES, {})["relentless.distressed"]["m"] == "UNMEASURED")
+
+
+def breaker_pts(row, drop):
+    """An open breaker on a fresh reading, with `drop` taken away or emptied."""
+    fresh()
+    add("journal.jsonl", {"at": OW.iso(T0 - 60), "do": "lease"})
+    tick(row)
+    put("breaker.json", {"until": T0 + 3600, "fails": 3, "why": "POOL REFUSED: pool full"})
+    drop()
+    return OW.c_relentless(T0 + 60, RULES, {})
+
+
+for name, drop in (("gone", lambda: (STORE / "staffing.jsonl").unlink()),
+                   ("empty", lambda: (STORE / "staffing.jsonl").write_text("")),
+                   ("stale", lambda: (STORE / "staffing.jsonl").write_text(json.dumps(sane_row(T0 - 3600)) + "\n"))):
+    pts = breaker_pts(sane_row(T0), drop)
+    check("an open breaker with staffing.jsonl %s is not closed" % name, pts["relentless.breaker_open_min"]["m"] == "UNMEASURED"
+          and "for how long unseen" in pts["relentless.breaker_open_min"]["why"] and pts["relentless.distressed"]["m"] == "UNMEASURED"
+          and pts["relentless.blind"]["v"] >= 1, pts)
+pts = breaker_pts({**sane_row(T0), "minutes_under": 45, "under": True, "why": "breaker open until x: y"},
+                  lambda: (STORE / "staffing.jsonl").unlink())
+check("distress the fresh reading already proves survives a blind source", pts["relentless.distressed"]["v"] == 1
+      and "under 45 min" in pts["relentless.cause"]["v"] and pts["relentless.blind"]["v"] >= 1, pts)
+fresh()
+add("journal.jsonl", {"at": OW.iso(T0 - 5400), "do": "done"})
+tick({**sane_row(T0)})
+(STORE / "reading.json").unlink()
+pts = OW.c_relentless(T0, RULES, {})
+check("so does no-progress distress with reading.json gone", pts["relentless.distressed"]["v"] == 1 and "no progress" in pts["relentless.cause"]["v"], pts)
+fresh()
+tick(sane_row(T0))
+pts = OW.c_relentless(T0, RULES, {})
+check("a journal with no progress act is blind, not sane", pts["relentless.distressed"]["m"] == "UNMEASURED" and pts["relentless.blind"]["v"] == 1, pts)
 fresh()
 (STORE / "staffing.json").write_text('{"t": 1793')
 check("a torn staffing.json is blind", OW.c_relentless(T0, RULES, {})["relentless.blind"]["v"] >= 1)

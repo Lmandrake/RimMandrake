@@ -1359,7 +1359,8 @@ def rl_run_min(rows, now, pred):
 
 def rl_verdict(rec, breaker_min, live0_min, progress_min, cfg):
     """-> (state, cause) for one readable staffing reading: sane, idle or distressed, and the one cause. Idle is a stop
-    somebody chose (`idle_why`), and is not a jam however long it lasts."""
+    somebody chose (`idle_why`), and is not a jam however long it lasts. A limit whose input was not seen (None) is not
+    judged, so only "distressed" means anything when an input is None: the caller reads the rest as UNMEASURED."""
     why = str(rec.get("why") or "filling")
     if rec.get("why") in (cfg.get("idle_why") or []):
         return "idle", "none"
@@ -1370,7 +1371,7 @@ def rl_verdict(rec, breaker_min, live0_min, progress_min, cfg):
         return "distressed", "under %.0f min: %s" % (rec["minutes_under"], said)
     if breaker_min is not None and breaker_min >= cfg["breaker_open_min"]:
         return "distressed", "breaker open %.0f min: %s" % (breaker_min, said)
-    if ready and live0_min >= cfg["no_live_min"]:
+    if ready and live0_min is not None and live0_min >= cfg["no_live_min"]:
         return "distressed", "nothing live %.0f min: %s" % (live0_min, said)
     if ready and progress_min is not None and progress_min >= cfg["progress_min"]:
         return "distressed", "no progress %.0f min: %s" % (progress_min, said)
@@ -1380,9 +1381,9 @@ def rl_verdict(rec, breaker_min, live0_min, progress_min, cfg):
 def c_relentless(now, rules, ctx):
     """The belt's own readings (OP2), judged here (DI2: a stall names one cause) with no AI. Every limit is in
     rules["relentless"]. A source that is missing, torn, frozen or dated ahead makes its readings UNMEASURED and counts
-    in relentless.blind, whose target alarms: nothing here can read sane on a source it did not see move. Freshness is
-    the stamp inside the file, never its mtime; relentless.progress_age_min catches a stamp that moves on a belt that
-    does not."""
+    in relentless.blind, whose target alarms: nothing here can read sane on a source it did not see move, so with any
+    source blind the verdict is UNMEASURED unless what was seen already proves distress. Freshness is the stamp inside
+    the file, never its mtime; relentless.progress_age_min catches a stamp that moves on a belt that does not."""
     cfg = rules.get("relentless")
     if not isinstance(cfg, dict):
         return {**{k: U("ops_watch_rules.json has no relentless block") for k in RL_KEYS},
@@ -1432,9 +1433,13 @@ def c_relentless(now, rules, ctx):
         bad.append("reading.json frozen: last stamped %s" % iso(rd_t))
     try:
         rows = tail_json_lines(store / "staffing.jsonl")
+        newest = max((r["t"] for r in rows if is_num(r.get("t")) and finite(r["t"]) and r["t"] <= now), default=None)
+        rows_why = "staffing.jsonl has no reading" if newest is None else (
+            "staffing.jsonl frozen: last row %s" % iso(newest) if now - newest > limit * 60 else None)
     except OSError as e:
-        rows = []
-        bad.append("staffing.jsonl unreadable: %s" % e)
+        rows, rows_why = [], "staffing.jsonl unreadable: %s" % e
+    if rows_why:
+        bad.append(rows_why)
     br = read_json(store / "breaker.json")
     breaker_min = None
     if not isinstance(br, dict):
@@ -1442,9 +1447,12 @@ def c_relentless(now, rules, ctx):
     else:
         until = br.get("until")
         opened = is_num(until) and finite(until) and until > now
-        breaker_min = rl_run_min(rows, now, lambda r: str(r.get("why") or "").startswith("breaker open")) if opened else 0
-        pts["relentless.breaker_open_min"] = M(breaker_min, "min", until=iso(until) if opened else None,
-                                               said=str(br.get("why") or "")[:200], max_age_min=limit)
+        if opened and rows_why:         # how long it has been open is only in the record
+            pts["relentless.breaker_open_min"] = U("breaker open until %s, for how long unseen: %s" % (iso(until), rows_why))
+        else:
+            breaker_min = rl_run_min(rows, now, lambda r: str(r.get("why") or "").startswith("breaker open")) if opened else 0
+            pts["relentless.breaker_open_min"] = M(breaker_min, "min", until=iso(until) if opened else None,
+                                                   said=str(br.get("why") or "")[:200], max_age_min=limit)
     try:
         last = rl_last_progress(store, cfg, now)
     except OSError as e:
@@ -1452,14 +1460,19 @@ def c_relentless(now, rules, ctx):
         missing("relentless.progress_age_min", "journal.jsonl unreadable: %s" % e)
     progress_min = None if last is None else round((now - last) / 60.0, 1)
     if "relentless.progress_age_min" not in pts:
-        pts["relentless.progress_age_min"] = U("no progress act in the journal", "min") if last is None else M(
-            progress_min, "min", max_age_min=cfg["progress_min"])
+        if last is None:
+            missing("relentless.progress_age_min", "journal.jsonl holds no progress act and no worker beats")
+        else:
+            pts["relentless.progress_age_min"] = M(progress_min, "min", max_age_min=cfg["progress_min"])
+    state, cause = "unseen", why
     if fresh:
-        state, cause = rl_verdict(rec, breaker_min, rl_run_min(rows, now, lambda r: r.get("live") == 0), progress_min, cfg)
+        live0_min = None if rows_why else rl_run_min(rows, now, lambda r: r.get("live") == 0)
+        state, cause = rl_verdict(rec, breaker_min, live0_min, progress_min, cfg)
+    if state == "distressed" or (fresh and not bad):
         pts["relentless.distressed"] = M(int(state == "distressed"), "1 when the belt is distressed", state=state, cause=cause)
         pts["relentless.cause"] = M(cause)
     else:
-        pts["relentless.distressed"] = pts["relentless.cause"] = U(why)
+        pts["relentless.distressed"] = pts["relentless.cause"] = U(why or "; ".join(bad)[:300])
     pts["relentless.blind"] = M(len(bad), "sources not seen", cause="; ".join(bad)[:300] or "none")
     return pts
 
