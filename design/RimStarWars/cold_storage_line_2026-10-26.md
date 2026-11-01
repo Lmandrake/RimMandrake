@@ -205,7 +205,10 @@ Wrecked Machines ladder line (`replaceTags`), which is how that mod restores eve
 Capacity is per cell (`maxItemsInCell` 1 / 3 / 4). The Rakatan chambers draw 400 W × 1/strength
 (`scalePowerByStrength`). The RM locker draws nothing. A flicker can be switched off in Mod Settings.
 Vault loot, as built: `RUT_VaultType3_FrozenRakata` places one Wrecked vault and two caskets (one Wrecked, one
-Kludged). The war-lab rooms and `RUT_StasisHeldProvisions` are not built yet.
+Kludged). The war lab (`RUT_WarLab_Complex`) places two caskets in its core room (one Kludged, one Wrecked). In
+both layouts a second layout layer puts 1-4 `RUT_StasisHeldProvisions` (symbol `RUT_Symbol_StasisHeldProvisions`,
+`maxStackSize` 4) on the Kludged casket's cell, so the stack spawns into the one grade that still has a field. The
+food def needs no mod; the symbols need Cuisine and Cold Storage. The RUT on/off setting (§6) is not built yet.
 
 ### 4.3 Carbon-freezing (Sealed mode, CarbonFreeze; canon)
 

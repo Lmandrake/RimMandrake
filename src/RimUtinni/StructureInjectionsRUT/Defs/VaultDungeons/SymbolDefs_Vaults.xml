@@ -78,6 +78,12 @@
     <thing>RSW_RakatanStasisCasket_Kludged</thing>
     <spawnPartOfFaction>false</spawnPartOfFaction>
   </KCSG.SymbolDef>
+  <KCSG.SymbolDef MayRequire="mandrake.rsw.cuisine,mandrake.rm.coldstorage">
+    <defName>RUT_Symbol_StasisHeldProvisions</defName>
+    <thing>RUT_StasisHeldProvisions</thing>
+    <maxStackSize>4</maxStackSize>
+    <spawnRotten>false</spawnRotten>
+  </KCSG.SymbolDef>
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_RakataCasket</defName>
     <thing>AncientCryptosleepCasket</thing>

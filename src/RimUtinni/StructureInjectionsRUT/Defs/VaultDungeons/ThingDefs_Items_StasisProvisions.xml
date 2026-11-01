@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- RAKATAN_STASIS_LOOT_BUILD_HELD_PROVISIONS (design/RimStarWars/cold_storage_line_2026-10-26.md §5): food found
+       only inside the Kludged Rakatan stasis caskets of RUT_VaultType3_FrozenRakata and RUT_WarLab_Complex (layer 2
+       of those layouts, symbol RUT_Symbol_StasisHeldProvisions). The casket's weak field kept it fresh for millennia.
+       Out of the field it is an ordinary fine meal that rots in 4 days (MealCookedIngredientless), so it is eaten
+       soon rather than stockpiled.
+
+       The def has no mod requirement: it is plain food. Only the placing symbol needs Cuisine and Cold Storage,
+       because without them there is no casket to find it in. -->
+  <ThingDef ParentName="MealFineBase">
+    <defName>RUT_StasisHeldProvisions</defName>
+    <label>stasis-held provisions</label>
+    <description>Ration packs from a Rakatan stasis casket. They were sealed before the Infinite Empire fell, and the field kept them exactly as they were. Now that the field is gone, they will rot like any other meal.\n\nThe taste is rich and unfamiliar. Some who eat it feel strangely moved, and a rare few come away with an idea that seems to belong to another age.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/SurvivalPack</texPath>
+      <graphicClass>Graphic_MealVariants</graphicClass>
+      <color>(150,190,230)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>45</MarketValue>
+      <Mass>0.3</Mass>
+    </statBases>
+    <tradeability>Sellable</tradeability>
+    <ingestible>
+      <outcomeDoers>
+        <li Class="RimMandrake.Utinni.StructureInjectionsRUT.IngestionOutcomeDoer_StasisHeld">
+          <strange>RUT_AteStasisHeldProvisions</strange>
+          <strangeChance>0.3</strangeChance>
+          <visionChance>0.05</visionChance>
+        </li>
+      </outcomeDoers>
+    </ingestible>
+  </ThingDef>
+
+  <!-- The "strange, wonderful" taste (design §5): a small lift on top of the fine-meal thought, not a penalty. -->
+  <ThoughtDef>
+    <defName>RUT_AteStasisHeldProvisions</defName>
+    <durationDays>1</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>tasted a lost age</label>
+        <description>The food from the stasis casket tasted of a world that no longer exists. Strange, and somehow wonderful.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

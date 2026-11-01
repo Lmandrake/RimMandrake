@@ -82,19 +82,14 @@ OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "Defs", "WarLab")
 # --- Symbols this template needs that SymbolDefs_Vaults.xml does NOT
 # already ship (RUT_Symbol_MechLancer/MechCenturion ARE already shipped
 # there, same mod, used BARE below by their own defName - never redefined).
+# RUT_Symbol_Slurrypede was removed 2026-10-18 (AA_Slurrypede is Alpha Animals, retired, no port). The XML was
+# hand-edited then; this generator now reproduces it (RAKATAN_STASIS_LOOT_BUILD_HELD_PROVISIONS, 2026-10-31).
 PAWN_SYMBOLS = [
     # (symbolDefName, pawnKindDef, note, faction, defendSpawnPoint)
-    ("RUT_Symbol_Slurrypede", "AA_Slurrypede",
-     "Lab fauna, the prisoner-feeder (the_propane_lakes.md SS4: 'kept, "
-     "re-read: a bio-mechanoid built to feed prisoners efficiently is lab "
-     "fauna, the containment facility's feeder, still running'). Docile, "
-     "'almost never hostile' per its own ThingDef description - "
-     "spawnPartOfFaction false, no faction override needed (Animal-"
-     "intelligence, unlike the Mech_Lancer/Mech_Centurion crash case "
-     "documented in gen_vault_layouts.py, which is specific to Mechanoid-"
-     "intelligence pawns on a null-ParentFaction map), defendSpawnPoint "
-     "false to match its docile temperament rather than the guardians'.",
-     None, "false"),
+]
+REMOVED_SYMBOL_NOTES = [
+    "RUT_Symbol_Slurrypede removed 2026-10-18: AA_Slurrypede (Alpha Animals, retired) has no port; "
+    "its one layout cell is now empty.",
 ]
 
 THING_SYMBOLS = [
@@ -140,7 +135,7 @@ SYMBOLDEF_THING_TMPL = """  <KCSG.SymbolDef>
 
 
 def gen_symboldefs():
-    body = []
+    body = ["  <!-- %s -->\n" % note for note in REMOVED_SYMBOL_NOTES]
     for name, kind, note, faction, defend in PAWN_SYMBOLS:
         faction_xml = "\n    <faction>%s</faction>" % faction if faction else ""
         body.append(SYMBOLDEF_PAWN_TMPL.format(
@@ -206,14 +201,24 @@ DOORS = {OUTER_DOOR, INNER_DOOR, CORE_DOOR}
 # Arsenal garrison roster the item names explicitly ("reuse the vault
 # type-(1) Forsaken Arsenal garrison roster, e.g. Mech_Lancer/Mech_Centurion").
 LABINT_CONTENTS = [
-    "RUT_Symbol_MechLancer", "RUT_Symbol_Slurrypede",
+    "RUT_Symbol_MechLancer", ".",  # "." was RUT_Symbol_Slurrypede (removed 2026-10-18)
     "RUT_Symbol_MechCenturion", "Turret_AutoInferno",
-    "RUT_Symbol_MechLancer", "RUT_Symbol_Slurrypede",
+    "RUT_Symbol_MechLancer", ".",
     "Turret_AutoMortar", "RUT_Symbol_MechCenturion",
 ]
 
 CORE_CONTAINMENT = ["RUT_Symbol_WarLabContainmentCell"] * 4
 CORE_HUG_TURRETS = ["Turret_MiniTurret", "Turret_MiniTurret"]
+
+# RAKATAN_STASIS_LOOT_BUILD_HELD_PROVISIONS (design/RimStarWars/cold_storage_line_2026-10-26.md §4.2): the lab kept
+# its specimens' rations in Rakatan stasis caskets. One still holds a weak field (Kludged) with provisions in it
+# (layer 2); one is dead (Wrecked). The symbols are the vault's (Defs/VaultDungeons/SymbolDefs_Vaults.xml), which
+# need Cuisine and Cold Storage: without them KCSG finds no symbol and leaves the cell empty, as in the vault.
+# A casket is 1x2 (north half one row up) with its interaction cell one to the east; both stand in the core's
+# north-west and north-east quarters, clear of the containment cells, the turrets and the archive.
+CORE_STASIS = [("RUT_Symbol_RakataStasisCasket_Kludged", (MID - 4, MID - 6)),
+               ("RUT_Symbol_RakataStasisCasket_Wrecked", (MID - 4, MID + 5))]
+PROVISIONS_SYM = "RUT_Symbol_StasisHeldProvisions"
 
 
 def dist(r, c, n):
@@ -290,7 +295,23 @@ def build():
         if layout[r][c] == "." and dist(r, c, n) >= CORE_START_D:
             layout[r][c] = sym
 
+    # Stasis caskets: the root cell, the north half (r-1) and the interaction cell (c+1) must all be clear core.
+    for sym, (r, c) in CORE_STASIS:
+        for cr, cc in ((r, c), (r - 1, c), (r, c + 1), (r - 1, c + 1)):
+            assert layout[cr][cc] == "." and dist(cr, cc, n) >= CORE_START_D, \
+                "stasis casket %s at %s overlaps (%d,%d)=%s" % (sym, (r, c), cr, cc, layout[cr][cc])
+        layout[r][c] = sym
+
     return layout, terrain
+
+
+def provisions_layer(layout):
+    """Layer 2: provisions on the root cell of each Kludged casket, so KCSG spawns them after the casket."""
+    layer = [["."] * len(row) for row in layout]
+    for sym, (r, c) in CORE_STASIS:
+        if sym.endswith("_Kludged"):
+            layer[r][c] = PROVISIONS_SYM
+    return layer
 
 
 def reachable_core(layout):
@@ -319,8 +340,11 @@ def reachable_core(layout):
     return (MID, MID) in seen
 
 
-def render(layout, terrain, defname):
-    rows_xml = "\n".join("        <li>%s</li>" % ",".join(row) for row in layout)
+def render(layout, terrain, defname, extra_layers=()):
+    layers_xml = "\n".join(
+        "      <li>\n%s\n      </li>" % "\n".join("        <li>%s</li>" % ",".join(row) for row in layer)
+        for layer in [layout] + list(extra_layers)
+    )
     terr_xml = "\n".join("      <li>%s</li>" % ",".join(row) for row in terrain)
     return f"""  <KCSG.StructureLayoutDef>
     <defName>{defname}</defName>
@@ -329,9 +353,7 @@ def render(layout, terrain, defname):
 {terr_xml}
     </terrainGrid>
     <layouts>
-      <li>
-{rows_xml}
-      </li>
+{layers_xml}
     </layouts>
   </KCSG.StructureLayoutDef>
 """
@@ -347,7 +369,7 @@ def main():
         raise SystemExit("REFUSING TO WRITE: the core is not reachable through the "
                           "authored door sequence - fix the geometry before shipping.")
 
-    xml = render(layout, terrain, "RUT_WarLab_Complex")
+    xml = render(layout, terrain, "RUT_WarLab_Complex", extra_layers=[provisions_layer(layout)])
     with open(os.path.join(OUT_DIR, "StructureLayoutDefs_WarLab.xml"), "w") as f:
         f.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n")
         f.write(xml)

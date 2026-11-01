@@ -260,11 +260,19 @@ def cold_aging_dish_checks(ET, re):
             or fresh.findtext("modExtensions/li/settingInverted") != "true" \
             or "RSW_BlastChilledCream" not in [li.text for li in pies["RSW_CookCarboniteNCreamPie"].iter("li")]:
         fails.append("pie recipes: want the cream pie plus its inverted fresh-milk twin, found %s" % sorted(pies))
-    # The VCE reskin runs only under the Cuisine setting it names.
+    # The VCE reskin runs only under the Cuisine setting it names: every top-level Operation (one per VCE mod since
+    # 87329d67e2 added the fish-canning bill) is a FindMod whose match is a PatchOperation_CuisineSetting on a real bool.
     vce = ET.parse(os.path.join(cuisine, "Patches", "RSW_VceRationSealer.xml")).getroot()
-    sw = [m for m in vce.iter("match") if m.get("Class") == "RimMandrake.StarWars.Cuisine.PatchOperation_CuisineSetting"]
-    if len(sw) != 1 or not re.search(r"public\s+static\s+bool\s+%s\s*=" % re.escape(sw[0].findtext("setting") or "?"), settings):
-        fails.append("RSW_VceRationSealer.xml: the reskin is not under one PatchOperation_CuisineSetting naming a real bool")
+    tops = [op for op in vce if op.tag == "Operation"]
+    for op in tops:
+        sw = op.find("match")
+        if op.get("Class") != "PatchOperationFindMod" or sw is None \
+                or sw.get("Class") != "RimMandrake.StarWars.Cuisine.PatchOperation_CuisineSetting" \
+                or not re.search(r"public\s+static\s+bool\s+%s\s*=" % re.escape(sw.findtext("setting") or "?"), settings):
+            fails.append("RSW_VceRationSealer.xml: a reskin operation is not a FindMod under a "
+                         "PatchOperation_CuisineSetting naming a real bool")
+    if not tops:
+        fails.append("RSW_VceRationSealer.xml: no top-level Operation (instrument blind?)")
     if aging < 3 or inverted < 1 or bestiary < 3:
         fails.append("cold aging check: aging=%d inverted=%d bestiary=%d, want >=3/>=1/>=3 (instrument blind?)" % (aging, inverted, bestiary))
     return fails
@@ -385,6 +393,62 @@ def stasis_unlock_checks(ET):
             fails.append("stasis unlock: %s placed %d times in the V6 vault, want 1" % (name, v6.count(name)))
     if placed < 2:
         fails.append("stasis unlock: only %d Rakatan chamber symbols in the RUT vault symbols" % placed)
+    fails += held_provisions_checks(ET, rut, syms)
+    return fails
+
+
+def held_provisions_checks(ET, rut, syms):
+    """RAKATAN_STASIS_LOOT_BUILD_HELD_PROVISIONS: RUT_StasisHeldProvisions is a RUT food def, placed by a
+    MayRequire'd item symbol in a LATER layout layer than the casket (so it spawns into it), and only ever on the
+    cell of a Kludged casket (the one grade with a field). The V6 vault and the war lab each hold exactly one such
+    stack; the war lab also places one Kludged and one Wrecked casket."""
+    fails = []
+    item = ET.parse(os.path.join(rut, "ThingDefs_Items_StasisProvisions.xml")).getroot()
+    things = {el.findtext("defName"): el for el in item if el.tag == "ThingDef"}
+    thoughts = {el.findtext("defName") for el in item if el.tag == "ThoughtDef"}
+    food = things.get("RUT_StasisHeldProvisions")
+    if food is None:
+        return ["held provisions: no ThingDef RUT_StasisHeldProvisions"]
+    doer = food.find("ingestible/outcomeDoers/li")
+    if doer is None or doer.get("Class") != "RimMandrake.Utinni.StructureInjectionsRUT.IngestionOutcomeDoer_StasisHeld":
+        fails.append("held provisions: the food has no IngestionOutcomeDoer_StasisHeld")
+    elif doer.findtext("strange") not in thoughts:
+        fails.append("held provisions: the doer's strange thought %r is not defined" % doer.findtext("strange"))
+    cs = os.path.join(rut, "..", "..", "Source", "VaultDungeons", "IngestionOutcomeDoer_StasisHeld.cs")
+    if not os.path.isfile(cs) or "class IngestionOutcomeDoer_StasisHeld" not in open(cs, encoding="utf-8").read():
+        fails.append("held provisions: Source/VaultDungeons/IngestionOutcomeDoer_StasisHeld.cs is missing the class")
+    sym = syms.get("RUT_Symbol_StasisHeldProvisions")
+    if sym is None or sym.findtext("thing") != "RUT_StasisHeldProvisions":
+        return fails + ["held provisions: no symbol RUT_Symbol_StasisHeldProvisions spawning the food"]
+    if set((sym.get("MayRequire") or "").split(",")) != {"mandrake.rsw.cuisine", "mandrake.rm.coldstorage"}:
+        fails.append("held provisions: the symbol must MayRequire cuisine and coldstorage")
+    if not (sym.findtext("maxStackSize") or "").isdigit():
+        fails.append("held provisions: the symbol sets no maxStackSize (KCSG would roll up to the full stack)")
+    kludged = "RUT_Symbol_RakataStasisCasket_Kludged"
+    layouts = [(os.path.join(rut, "StructureLayoutDefs_Vaults.xml"), "RUT_VaultType3_FrozenRakata", {kludged: 1}),
+               (os.path.join(rut, "..", "WarLab", "StructureLayoutDefs_WarLab.xml"), "RUT_WarLab_Complex",
+                {kludged: 1, "RUT_Symbol_RakataStasisCasket_Wrecked": 1})]
+    for path, name, want in layouts:
+        el = next((d for d in ET.parse(path).getroot() if d.findtext("defName") == name), None)
+        if el is None:
+            fails.append("held provisions: no layout %s" % name)
+            continue
+        layers = [[row.text.split(",") for row in li] for li in el.find("layouts")]
+        counts = {}
+        for row in layers[0]:
+            for v in row:
+                counts[v] = counts.get(v, 0) + 1
+        for s, n in want.items():
+            if counts.get(s, 0) != n:
+                fails.append("held provisions: %s places %s %d times, want %d" % (name, s, counts.get(s, 0), n))
+        food_cells = [(k, r, c) for k, layer in enumerate(layers) for r, row in enumerate(layer)
+                      for c, v in enumerate(row) if v == "RUT_Symbol_StasisHeldProvisions"]
+        if len(food_cells) != 1:
+            fails.append("held provisions: %s places the food %d times, want 1" % (name, len(food_cells)))
+        for k, r, c in food_cells:
+            if k == 0 or layers[0][r][c] != kludged:
+                fails.append("held provisions: %s food at layer %d (%d,%d) is not on a Kludged casket in a later layer"
+                             % (name, k + 1, r, c))
     return fails
 
 
