@@ -1,0 +1,1 @@
+audit_prescreen sha_unresolvable is mostly rebase noise, not bad closes: 135 of 1251 closes in 14 days (2026-10-18..11-01) carry a sha that ./publish rebased away (e.g. fe4b9d8152, note on ledger: origin has 35f1622154). A hard flag at 11% of closes is a landing artifact; look at the close-after-publish order before reading one as a defect.
