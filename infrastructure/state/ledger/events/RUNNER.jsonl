@@ -1724,3 +1724,8 @@
 {"seat":"RUNNER","event":"spawn","name":"LIVE_RESTORE_OPS_WATCH","kind":"task","needs":"offline","title":"Live promise broken: ops_watch last ran 70 min ago (limit 50 min)","for":"BENCH","from":"V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE","why":"live sweep (deterministic, no AI): LIVE_RESTORE_OPS_WATCH","ts":"2026-11-01T10:03:12Z","tsn":1793527392190392915}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_OPS_WATCH","result":"broken","detail":"ops_watch last ran 70 min ago (limit 50 min)","ts":"2026-11-01T10:03:13Z","tsn":1793527393984230565}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_EXPIRY_RESTORE_YAQA","result":"broken","detail":"Ops alarm SCRATCH_EXPIRY_DOWN: disk.scratch_ok_age_h = 3.47 hours since the expiry last ran clean (MEASURED), line > 3","ts":"2026-11-01T10:08:00Z","tsn":1793527680145456819}
+{"seat":"RUNNER","event":"live","id":"LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:06Z","tsn":1793528286067297701}
+{"seat":"RUNNER","event":"live","id":"OPS_DEADMAN_REVIVE_129E","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:08Z","tsn":1793528288368939533}
+{"seat":"RUNNER","event":"live","id":"OPS_DEADMAN_REVIVE_AEA3","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:10Z","tsn":1793528290548479180}
+{"seat":"RUNNER","event":"live","id":"WORKER_CLONES_MONITOR_POOL_NOT_RABBITS","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:12Z","tsn":1793528292738905967}
+{"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_OPS_WATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:14Z","tsn":1793528294938001345}
