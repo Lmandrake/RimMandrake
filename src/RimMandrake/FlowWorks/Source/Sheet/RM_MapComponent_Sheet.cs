@@ -975,24 +975,33 @@ namespace RimMandrake.FlowWorks.Sheet
 				return "inputs=0 indoorWet=0";
 			}
 			ulong h = 1469598103934665603UL;
-			void Mix(int v)
+			// live 2026-11-01: an all-outdoor sheet still split its inputs, so each input is also hashed apart (with its cell)
+			ulong hk = h, ht = h, he = h, hs = h;
+			void MixInto(ref ulong acc, int v)
 			{
 				for (int b = 0; b < 4; b++, v >>= 8)
 				{
-					h = unchecked((h ^ (byte)v) * 1099511628211UL);
+					acc = unchecked((acc ^ (byte)v) * 1099511628211UL);
 				}
 			}
 			int indoor = 0;
 			foreach (int c in state.Occ)
 			{
-				Mix(c); Mix((int)world.Kinds[c]); Mix(world.TempDeciC[c]); Mix(world.EvapMilliDl[c]); Mix(world.SoakMilliDl[c]);
+				MixInto(ref h, c); MixInto(ref h, (int)world.Kinds[c]); MixInto(ref h, world.TempDeciC[c]);
+				MixInto(ref h, world.EvapMilliDl[c]); MixInto(ref h, world.SoakMilliDl[c]);
+				MixInto(ref hk, c); MixInto(ref hk, (int)world.Kinds[c]);
+				MixInto(ref ht, c); MixInto(ref ht, world.TempDeciC[c]);
+				MixInto(ref he, c); MixInto(ref he, world.EvapMilliDl[c]);
+				MixInto(ref hs, c); MixInto(ref hs, world.SoakMilliDl[c]);
 				Room room = map.cellIndices.IndexToCell(c).GetRoom(map);
 				if (room != null && !room.UsesOutdoorTemperature)
 				{
 					indoor++;
 				}
 			}
-			return "inputs=" + h.ToString("x16") + " indoorWet=" + indoor;
+			return "inputs=" + h.ToString("x16") + " indoorWet=" + indoor + " inKind=" + hk.ToString("x16") + " inTemp=" + ht.ToString("x16")
+				+ " inEvap=" + he.ToString("x16") + " inSoak=" + hs.ToString("x16") + " outdoorQ=" + RM_SheetTemp.ToSixteenths(OutdoorExactC())
+				+ " outdoorTick=" + outdoorTick;
 		}
 		internal long IrrigatedTotal => irrigatedTotal;
 

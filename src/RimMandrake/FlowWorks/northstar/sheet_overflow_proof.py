@@ -951,7 +951,11 @@ def save_load(ctx):
     good = h0 is not None and h0b == h0 and ha is not None and hb == ha and l1["closes"]
     # round 3: which part parted (dl / rem = soak+evap remainders / calm = calm+tier+stand / inputs = what the last pulse was
     # fed: kind, deci-C, evaporation, soak) and how many wet squares read an indoor room; absent on an older build
-    parts = {k: [hav.get(k), hbv.get(k)] for k in ("dl", "rem", "calm", "inputs", "indoorWet")}
+    # pulse: the kernel's own pulse count, so an arm that ran one pulse more (a load that let the clock run) is named, not
+    # mistaken for a temperature split (live 2026-11-01: dl and calm agreed while rem and inputs parted)
+    # inKind/inTemp/inEvap/inSoak: each input apart; outdoorQ/outdoorTick: the outdoor reading (1/16 C) and the tick it is for
+    parts = {k: [hav.get(k), hbv.get(k)] for k in ("pulse", "dl", "rem", "calm", "inputs", "indoorWet", "inKind", "inTemp",
+                                                    "inEvap", "inSoak", "outdoorQ", "outdoorTick")}
     split = sorted(k for k, (x, y) in parts.items() if x is not None and x != y)
     row("SAVE_LOAD_CONTINUES_IDENTICAL", "PASS" if good else "FAIL",
         {"h0": h0, "h0AfterLoad": h0b, "hContinued": ha, "hLoadedContinued": hb, "closes": l1["closes"], "save": name,

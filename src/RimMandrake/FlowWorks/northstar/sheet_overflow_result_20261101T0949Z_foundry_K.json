@@ -1,0 +1,207 @@
+{
+ "script": "sheet_overflow_proof.py",
+ "started": "2026-11-01T01:49:28",
+ "rows": [
+  {
+   "id": "SHEET_FREEZES_AND_THAWS",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "conditions": [
+     true,
+     true
+    ],
+    "frozeAfterTicks": 500,
+    "temps": [
+     0.0404160023
+    ],
+    "frozen": {
+     "dl": 19831,
+     "wet": 45,
+     "maxDl": 642,
+     "edgeMaxDl": 583,
+     "ice": 45,
+     "film": 0,
+     "sheet": 0,
+     "pool": 0
+    },
+    "frozenLater": {
+     "dl": 19831,
+     "wet": 45,
+     "maxDl": 642,
+     "edgeMaxDl": 583,
+     "ice": 45,
+     "film": 0,
+     "sheet": 0,
+     "pool": 0
+    },
+    "keptWhileFrozen": true,
+    "rectFellWhileCooling": 81,
+    "mapExitsWhileCooling": 81,
+    "thawAfterTicks": 500,
+    "thawed": "SHEETRECT dl=19664 wet=54 maxDl=568 edgeMaxDl=568 ice=0 film=50 sheet=4 pool=0",
+    "closes": true,
+    "verdictWithheld": "PASS",
+    "unmeasuredBecause": [
+     {
+      "scope": "SHEET_FREEZES_AND_THAWS",
+      "what": "the spill's square got below 0 C",
+      "why": "[0.0404160023]",
+      "class": "SITE"
+     }
+    ]
+   }
+  }
+ ],
+ "perf": [],
+ "args": {
+  "out": "src/RimMandrake/FlowWorks/northstar/sheet_overflow_result_20261101T0949Z_foundry_K.json",
+  "origin": "30,30",
+  "fresh_map": true,
+  "only": "SHEET_FREEZES_AND_THAWS",
+  "no_perf": false,
+  "cold_ticks": 24000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofSheetCell",
+  "ProofSheetFeatures",
+  "ProofSheetFillIn",
+  "ProofSheetHash",
+  "ProofSheetLedger",
+  "ProofSheetPerf",
+  "ProofSheetRect",
+  "ProofSheetSpill"
+ ],
+ "balances": [],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "a495cd35b3e624b3cf44404195e699538b51419f77da9755320553fcdc4ef1f8",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/sheet_overflow_proof.py",
+  "runtime": "54ae9f169b3d10916e93ac2d9b29a59ffbd862b5180f16de92acc24061685a97",
+  "test": "7373cb16b590bdad8cfd0a33a6c76072871bdeb03b3de349f30d14f9972460f6",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/northstar/sheet_overflow_proof.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks"
+  ],
+  "assembly_sha256": "44e0da27110f0bc208e6ecf93322bf6d93eb39e0c5af54081a0d796446b8f54d"
+ },
+ "features": {
+  "crops": "True",
+  "soak": "False",
+  "capSetting": "True",
+  "capField": "sheetCapCm",
+  "cropDelayField": "cropDrownPulses",
+  "gravity": "True",
+  "floods": "True",
+  "pawns": "True",
+  "fire": "True",
+  "fuel": "True"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Caribou25941",
+    "Caribou25942",
+    "Caribou25943",
+    "Caribou25944",
+    "Caribou25945",
+    "Caribou25946",
+    "Caribou25947",
+    "Caribou25948"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "switchBefore": "False",
+ "ledgerStart": "SHEETLEDGER enabled=True in=0 inPump=0 inRain=0 inFlood=0 inFillIn=0 inGravity=0 standing=0 wet=0 returned=0 joined=0 soaked=0 evaporated=0 burned=0 purged=0 closes=True releaseLost=0 burning=0 destroyedDl=0 pulse=0 pulseTicks=250 retention=200 minReceive=100 cap=10000 maxWet=4000 irrigated=0",
+ "finished": "2026-11-01T01:50:37"
+}
