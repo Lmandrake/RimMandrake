@@ -1,0 +1,1 @@
+A seat in a lease-renewal wait reads busy to the Dispatcher, so it is never rung: FOUNDRY sat about 4 hours on 2026-11-01 with 424 items ready, and the account gate was a false suspect. Busy must be measured by work moving.
