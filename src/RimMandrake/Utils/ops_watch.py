@@ -1390,14 +1390,37 @@ def alarm_conf(rules):
 
 
 def mint_name(tag, known, prefix):
+    """A name for a new ledger item. A prefix that already is a whole name (it ends on a twist, as alarm_prefix makes
+    it) is used as it stands, and is the same on every call (OPS_ALARMS_FIX_FIXED_ITEM_ID): a repeat of an alarm
+    reopens one item through `rimflow live` and is counted. A bare prefix gets a random twist, as before."""
     import secrets
     import pulse_core as pc
     model = pc._model()
+    if prefix in known or not model.mint_problems(prefix, known):
+        return prefix
     for _ in range(20):
         name = "%s_%s" % (prefix, secrets.token_hex(2).upper())
         if not model.mint_problems(name, known):
             return name
     raise RuntimeError("no mintable alarm name for " + tag)
+
+
+def alarm_twist(base):
+    """A twist that is the same on every call for one alarm base: four letters from the name itself (a name's last
+    word needs a letter, so hex digits alone would not do)."""
+    import zlib
+    n = zlib.crc32(base.encode())
+    return "".join(chr(65 + (n // 26 ** i) % 26) for i in range(4))
+
+
+def alarm_prefix(tg, tag, key, state, aid):
+    """One fixed name per alarm. A rule's own name serves a rule with one key; a wildcard key, an unnamed rule, or a
+    name another alarm already holds gets the tag or the key's tail so two alarms never share an item."""
+    base = tg.get("name") or "OPS_ALARM_DIAGNOSE_" + re.sub(r"\W+", "_", tag).upper()
+    held = {a.get("name") for k, a in state.items() if k != aid and isinstance(a, dict)}
+    if "*" in tg.get("key", "") or base in held:
+        base = "%s_%s" % (base, re.sub(r"\W+", "_", key.split(".", 1)[-1]).upper())
+    return "%s_%s" % (base, alarm_twist(base))
 
 
 def real_filer(todo, conf):
@@ -1424,6 +1447,8 @@ def real_filer(todo, conf):
             try:    # one alarm the spawn cannot carry (a NUL in an argument) costs itself, not the alarms behind it
                 if a.get("note_only"):
                     rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
+                elif a.get("reopen"):     # a repeat: the same item goes back to work and the outage is counted
+                    rc, out = ing.rimflow("live", a["name"], "--result", "broken", "--detail", a["title"][:300])
                 else:
                     rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
                                           "--name", a["name"], "--title", a["title"],
@@ -1492,7 +1517,7 @@ def run_alarms(points, rules, now, known_ids, filer):
             cur.update(state="OPEN", item=None, error=None, title=token_alarm_title(aid), **{"for": "Operations"})
             cur.pop("name", None)
             log.append({"ts": iso(now), "event": "moved_to_operations", "aid": aid, "legacy_item": cur.get("legacy_item")})
-        if cur and cur.get("state") == "PENDING" and cur.get("name") in known_ids:
+        if cur and cur.get("state") == "PENDING" and cur.get("name") in known_ids and not cur.get("reopen"):
             # filed by a pass that died before saving its state: the ledger has it, never file it twice
             cur.update(state="OPEN", item=cur["name"], error=None, filed=cur.get("filed") or iso(now))
             log.append({"ts": iso(now), "event": "found_filed", "aid": aid, "item": cur["name"]})
@@ -1531,7 +1556,7 @@ def run_alarms(points, rules, now, known_ids, filer):
             if cur and cur.get("name") and cur.get("title"):
                 # PENDING, not crossed now (UNMEASURED, or clear but not for clear_passes yet): the crossing was
                 # real, so keep retrying the filing under the name and title it got when it crossed
-                todo.append({"aid": aid, "name": cur["name"], "title": cur["title"]})
+                todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "reopen": bool(cur.get("reopen"))})
             return
         key = aid.split(":", 1)[1]
         tag = aid.split(":", 1)[0]
@@ -1552,7 +1577,9 @@ def run_alarms(points, rules, now, known_ids, filer):
         if not cur.get("name"):  # mint once; a retry keeps the saved name
             taken = set(known_ids) | {a["name"] for a in state.values() if isinstance(a, dict) and isinstance(a.get("name"), str)}
             try:
-                cur["name"] = mint_name(tag, taken, tg.get("name") or "OPS_ALARM_DIAGNOSE")
+                cur["name"] = mint_name(tag, taken, alarm_prefix(tg, tag, key, state, aid))
+                # the name is already on the ledger: a repeat of an alarm that filed before. It reopens that item.
+                cur["reopen"] = cur["name"] in known_ids
             except Exception as e:  # noqa: BLE001  one unnameable alarm stays PENDING and counted (signal_watch tells); the pass goes on
                 cur.update(error=str(e)[:200], tries=_tries(cur) + 1)
                 log.append({"ts": iso(now), "event": "mint_failed", "aid": aid})
@@ -1564,7 +1591,8 @@ def run_alarms(points, rules, now, known_ids, filer):
         if isinstance(said, str) and said:
             title = "Ops alarm %s: %s -- %s" % (tag, said, title.split(": ", 1)[1])
         cur["title"] = title[:160]
-        todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log")})
+        todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
+                     "reopen": bool(cur.get("reopen"))})
     for aid in sorted(set(ts) | set(state)):
         try:
             one(aid)

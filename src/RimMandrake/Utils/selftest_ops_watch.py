@@ -30,6 +30,8 @@ os.environ["RM_SCRATCH_REAP_RUNS"] = str(TMP / "reap.jsonl")
 os.environ["RM_OPS_DISKS"] = "root=%s" % TMP
 os.environ["RM_TESTING_METRICS_DIR"] = str(TMP / "no_testing_metrics")     # no collector call may read the real one
 import ops_watch as OW  # noqa: E402
+REAL_MINT = OW.mint_name
+FIX = "OPS_TIMER_REPAIR_" + OW.alarm_twist("OPS_TIMER_REPAIR")   # the timers rule's fixed id
 
 for _k in [k for k in os.environ if k.startswith("GIT_")]:      # nor may a collector's git follow a hook's GIT_DIR out of the fixture
     del os.environ[_k]
@@ -161,13 +163,13 @@ check("alarm: an unnameable alarm stays PENDING and said, the pass survives",
 OW.mint_name = fake_mint
 st = OW.run_alarms(pts, RULES, NOW, known, filer_bad)
 a = st.get("TIMER_FAILED:timers.failed_units") or {}
-check("alarm: a NEW crossing tries to file", len(calls) == 1 and calls[0][0]["name"] == "OPS_TIMER_REPAIR_AB12", calls)
+check("alarm: a NEW crossing tries to file", len(calls) == 1 and calls[0][0]["name"] == FIX + "_AB12", calls)
 check("alarm: a failed filing stays PENDING with the error", a.get("state") == "PENDING" and a.get("error") == "push refused", a)
 st = OW.run_alarms(pts, RULES, NOW + 900, known, filer_ok)
 a = st.get("TIMER_FAILED:timers.failed_units") or {}
 check("alarm: PENDING is retried next pass and opens", len(calls) == 2 and a.get("state") == "OPEN" and a.get("item"), a)
-check("alarm: the retry keeps the same name and mints nothing", calls[1][0]["name"] == "OPS_TIMER_REPAIR_AB12"
-      and MINTS.count("OPS_TIMER_REPAIR") == 1, (calls[1], MINTS))
+check("alarm: the retry keeps the same name and mints nothing", calls[1][0]["name"] == FIX + "_AB12"
+      and MINTS.count(FIX) == 1, (calls[1], MINTS))
 st = OW.run_alarms(pts, RULES, NOW + 1800, known, filer_ok)
 check("alarm: still crossed and OPEN -> nothing filed again", len(calls) == 2, calls)
 st = OW.run_alarms({"timers.failed_units": OW.U("systemctl failed")}, RULES, NOW + 2700, known, filer_ok)
@@ -188,10 +190,10 @@ for i in range(CP):
               (st.get("TIMER_FAILED:timers.failed_units") or {}).get("state") == "OPEN" and len(calls) == 2, st)
 check("alarm: clear_passes clear readings in a row re-arm the alarm and note the item",
       "TIMER_FAILED:timers.failed_units" not in st and len(calls) == 3 and calls[2][0].get("note_only")
-      and calls[2][0]["item"] == "OPS_TIMER_REPAIR_AB12", calls[-1])
+      and calls[2][0]["item"] == FIX + "_AB12", calls[-1])
 st = OW.run_alarms(pts, RULES, NOW + 4500, known, filer_ok)
 check("alarm: a second crossing after the clear files a NEW item under a NEW name", len(calls) == 4
-      and not calls[3][0].get("note_only") and calls[3][0]["name"] != "OPS_TIMER_REPAIR_AB12", calls)
+      and not calls[3][0].get("note_only") and calls[3][0]["name"] != FIX + "_AB12", calls)
 calls.clear()
 st = OW.run_alarms({"disk.root_free_gb": M(50.0)}, RULES, NOW, known, None)
 a = st.get("DISK_LOW:disk.root_free_gb") or {}
@@ -229,7 +231,7 @@ except SystemExit:
 check("alarm: (fixture) the first pass died inside the spawn after one call", died and len(calls) == 1, calls)
 saved = OW.read_json(TMP / "ops" / "alarms.json") or {}
 nm = (saved.get("DISK_LOW:disk.d_free_gb") or {}).get("name")
-check("alarm: the minted name is on disk before the spawn", nm == "OPS_DISK_DRAIN_AB12", saved)
+check("alarm: the minted name is on disk before the spawn", nm == OW.alarm_prefix({"name": "OPS_DISK_DRAIN", "key": "disk.d_free_gb"}, "DISK_LOW", "disk.d_free_gb", {}, "x") + "_AB12", saved)
 st = OW.run_alarms({"disk.d_free_gb": M(10.0)}, RULES, NOW + 900, {nm}, filer_ok)
 a = st.get("DISK_LOW:disk.d_free_gb") or {}
 check("alarm: a name already in the ledger opens without a second spawn (the retry adds no call)",
@@ -619,6 +621,43 @@ check("alarm: an unreadable alarms.json holds all filing (no duplicate items) an
       len(calls) == n0 and st.get("_alarm_state", {}).get("state") == "UNREADABLE"
       and (TMP / "ops" / "alarms.json").read_text().endswith('"OP'), st)
 (TMP / "ops" / "alarms.json").unlink()
+# OPS_ALARMS_FIX_FIXED_ITEM_ID: planted repeat and clear. One alarm, one id; the repeat reopens it and is counted.
+_fake_mint, OW.mint_name = OW.mint_name, REAL_MINT
+read_alarms = lambda: json.loads((TMP / "ops" / "alarms.json").read_text())
+calls.clear()
+_known = set()
+_f1 = lambda todo, conf: (calls.append([dict(a) for a in todo]), _known.update(a["name"] for a in todo if not a.get("note_only")),
+                          {a["name"]: None for a in todo})[2]
+_pts = {"timers.failed_units": M(2)}
+OW.run_alarms(_pts, RULES, NOW, _known, _f1)
+check("fixed id: the first crossing spawns under the rule's own name, no random suffix",
+      len(calls) == 1 and calls[0][0]["name"] == FIX and not calls[0][0]["reopen"], calls)
+for _i in range(RULES["alarm"]["clear_passes"]):
+    OW.run_alarms({"timers.failed_units": M(0)}, RULES, NOW + 60 * (_i + 1), _known, _f1)
+check("fixed id: a clear re-arms the alarm", "TIMER_FAILED:timers.failed_units" not in read_alarms(), read_alarms())
+calls.clear()
+OW.run_alarms(_pts, RULES, NOW + 3600, _known, _f1)
+check("fixed id: a repeat reuses the SAME name and asks to reopen it, not to spawn a new item",
+      len(calls) == 1 and calls[0][0]["name"] == FIX and calls[0][0]["reopen"] is True, calls)
+# the filer turns a reopen into `rimflow live <same id> --result broken`, never a spawn
+_stub = TMP / "stubclone" / "src/RimMandrake/Utils/testq"
+_stub.mkdir(parents=True)
+(_stub / "ingest.py").write_text("import json, os\ndef rimflow(*a):\n    open(os.environ['STUB_LOG'], 'a').write(json.dumps(a) + '\\n')\n    return 0, ''\n"
+                                 "def publish(n, message=''):\n    return 'ok'\n")
+_qh = os.environ.get("TESTQ_QUEUE")
+os.environ["TESTQ_QUEUE"] = str(TMP / "qhome")
+os.environ["STUB_LOG"] = str(TMP / "stub.log")
+(TMP / "qhome").mkdir(exist_ok=True)
+_cf = {"clone": str(TMP / "stubclone"), "lock_wait_s": 1, "parent": "P", "for": "BENCH", "needs": "none"}
+_res = OW.real_filer(calls[0], _cf)
+_seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
+check("fixed id: the filer records `live <same id> --result broken` and spawns nothing",
+      _res.get(FIX) is None and len(_seen) == 1 and _seen[0][:4] == ["live", FIX, "--result", "broken"], (_res, _seen))
+if _qh is None:
+    os.environ.pop("TESTQ_QUEUE", None)
+else:
+    os.environ["TESTQ_QUEUE"] = _qh
+OW.mint_name = _fake_mint
 OW.append("disk", {"schema": OW.SCHEMA, "t": NOW + 10, "family": "disk", "points": {"disk.weird": 7}})
 saved = dict(OW.COLLECTORS)
 

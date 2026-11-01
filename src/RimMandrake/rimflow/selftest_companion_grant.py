@@ -259,19 +259,19 @@ try:
     pts, st = ow_pass(NOW, P)
     ok("e2e healthy (30 h): visible, nothing filed", (pts["companion.grant_visible"]["v"], filed), (1, []))
     pts, st = ow_pass(NOW + 18.5 * 3600, P)     # 11.5 h left
-    ok("e2e 11.5 h left: GRANT_LAPSING filed once", [a["name"].rsplit("_", 1)[0] for a in filed], ["OPS_GRANT_ASK"])
+    ok("e2e 11.5 h left: GRANT_LAPSING filed once", [a["name"].rsplit("_", 2)[0] for a in filed], ["OPS_GRANT_ASK"])
     BLIND = os.path.join(D, "gone", "JawaBench", "companion_profile.json")
     pts, st = ow_pass(NOW + 19 * 3600, BLIND)
     ok("e2e folder gone: hours UNMEASURED, visible MEASURED 0",
        (pts[KEY]["m"], pts["companion.grant_visible"]["m"], pts["companion.grant_visible"]["v"]), ("UNMEASURED", "MEASURED", 0))
     ok("e2e folder gone: GRANT_UNSEEN filed (fail closed, not silent)",
-       [a["name"].rsplit("_", 1)[0] for a in filed if not a.get("note_only")], ["OPS_GRANT_ASK", "OPS_GRANT_PROBE"])
+       [a["name"].rsplit("_", 2)[0] for a in filed if not a.get("note_only")], ["OPS_GRANT_ASK", "OPS_GRANT_PROBE"])
     put({"profile": "test", "expiresUtc": ISO(NOW + 100 * 3600)})   # renewed
     for i in range(int(R["alarm"]["clear_passes"])):
         pts, st = ow_pass(NOW + 20 * 3600 + i * 900, P)
     ok("e2e renewed: both alarms clear after clear_passes", sorted(k for k in st if k.startswith("GRANT_")), [])
     ok("e2e renewed: nothing new filed, only clear notes",
-       [a["name"].rsplit("_", 1)[0] for a in filed if not a.get("note_only")], ["OPS_GRANT_ASK", "OPS_GRANT_PROBE"])
+       [a["name"].rsplit("_", 2)[0] for a in filed if not a.get("note_only")], ["OPS_GRANT_ASK", "OPS_GRANT_PROBE"])
     def boom2(*a, **k):
         raise RuntimeError("reader broke")
     mods = [m for m in (cg, sys.modules.get("companion_grant")) if m]   # ops_watch imports it top-level
