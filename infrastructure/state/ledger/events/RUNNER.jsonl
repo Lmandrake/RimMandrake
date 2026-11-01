@@ -1867,3 +1867,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"broken","detail":"Ops alarm PLAN_DISTRESS: priority list closed_entry -- plan.distressed = 1 1 when the plan list is distressed or worse (MEASURED), line > 0","ts":"2026-11-01T23:37:53Z","tsn":1793576273845874224}
 {"seat":"RUNNER","event":"raise","id":"OPS_PLAN_LIST_FIX_VMIV","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-01T23:37:56Z","tsn":1793576276157431277}
 {"seat":"RUNNER","event":"live","id":"OPS_PLAN_LIST_FIX_VMIV","result":"kept","detail":"sweep: running again","ts":"2026-11-01T23:48:07Z","tsn":1793576887698920438}
+{"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","text":"ops_watch: cleared at 2026-11-01T23:52:00Z (disk.scratch_dirty_start now 0)","ts":"2026-11-01T23:52:53Z","tsn":1793577173577911673}
