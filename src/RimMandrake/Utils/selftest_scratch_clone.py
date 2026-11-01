@@ -161,6 +161,65 @@ def main() -> int:
         os.environ["RM_POOL_MAX_BYTES"] = "1"
         r5, _ = quiet(sc.clone, "pool test", "p5", True, [], False, False)
         check(r5 == 1 and not (pool / "p5").exists(), "the byte cap refuses too")
+
+        # A helper's clone outside the pool: its unlanded work is an alarm too, and PROTECTED is no excuse for one.
+        import scratch_reap as sr
+        scr = BASE / "scratch" / "BENCH"
+        os.environ.update({"SCRATCH_REAP_MIRRORS": str(BASE / "mirror.git"), "RM_SESSION_GLOB": str(BASE / "nosession*"),
+                           "SCRATCH_REAP_PROTECTED": str(scr / "held"), "RM_SCRATCH_ROOT": str(scr)})
+        sr._MIRROR_TIPS = sc._MAIN_PRINTS = None
+
+        def plant(name: str) -> Path:
+            c = scr / name
+            sh("git", "clone", "-q", "--shared", str(work), str(c))
+            sh("git", "-C", str(c), "update-ref", "refs/remotes/origin/main", "HEAD")
+            return c
+
+        def idle(c: Path):
+            age(c, 7200)
+            for f in c.rglob("*"):
+                if ".git" not in f.parts and f.is_file():
+                    t0 = f.stat().st_mtime - 7200
+                    os.utime(f, (t0, t0))
+
+        for n in ("pushed", "unpushed", "dirty", "built", "held", "fresh", "rewritten"):
+            plant(n)
+        subprocess.run(["git", "-C", str(scr / "unpushed"), "commit", "-q", "--allow-empty", "-m", "never pushed"], check=True,
+                       env={**os.environ, "GIT_AUTHOR_DATE": "1700000000 +0000", "GIT_COMMITTER_DATE": "1700000000 +0000"})
+        # a local tracking ref at the tip is what read as pushed before: only the mirror proves a push
+        sh("git", "-C", str(scr / "unpushed"), "update-ref", "refs/remotes/origin/main", "HEAD")
+        (scr / "dirty" / "a.txt").write_text("edited, never committed\n")
+        (scr / "built" / "out.dll").write_text("built\n")
+        (scr / "held" / "a.txt").write_text("held in PROTECTED\n")
+        (scr / "fresh" / "a.txt").write_text("being worked on now\n")
+        # main rewritten under the clone: same dates, new message and blobs, so the old commit is not reachable from the mirror
+        cw = scr / "rewritten"
+        (cw / "n.txt").write_text("old blob\n")
+        sh("git", "-C", str(cw), "add", "n.txt")
+        sh("git", "-C", str(cw), "commit", "-q", "-m", "before the rewrite")
+        at, ct = sh("git", "-C", str(cw), "log", "-1", "--format=%at %ct").split()
+        (work / "n.txt").write_text("rewritten blob\n")
+        sh("git", "-C", str(work), "add", "n.txt")
+        subprocess.run(["git", "-C", str(work), "commit", "-q", "-m", "after the rewrite"], check=True,
+                       env={**os.environ, "GIT_AUTHOR_DATE": at + " +0000", "GIT_COMMITTER_DATE": ct + " +0000"})
+        sh("git", "-C", str(work), "push", "-q", str(BASE / "mirror.git"), "HEAD:refs/remotes/origin/main")
+        sr._MIRROR_TIPS = None
+        sh("git", "-C", str(cw), "update-ref", "refs/remotes/origin/main", "HEAD")
+        for n in ("pushed", "unpushed", "dirty", "built", "held", "rewritten"):
+            idle(scr / n)
+        ss = sc.scratch_stranded()
+        rows = {Path(r["path"]).name: r for r in ss["rows"]}
+        names = {Path(p).name for p in ss["stranded"]}
+        check(names == {"unpushed", "dirty", "held"}, f"exactly the unlanded idle clones are stranded: {sorted(names)}")
+        check("1 commit(s) on no remote" in rows.get("unpushed", {}).get("holds", []), f"the commit is named: {rows.get('unpushed')}")
+        check("fresh" in rows and not rows["fresh"]["stranded"], "work edited a minute ago is held but not stranded yet")
+        check("pushed" not in names and "built" not in names and "rewritten" not in names, "pushed, built and rewritten stay silent")
+        check((sc.state_dir() / "scratch_stranded.json").exists(), "the reading is written where the alarm says")
+        sr_git, sr.git = sr.git, lambda *a, **k: subprocess.CompletedProcess(a, 128, "", "fatal: planted")
+        try:
+            check("unreadable" in " ".join(sc.clone_unlanded(scr / "pushed")[0]), "a clone that cannot be read is held, not clean")
+        finally:
+            sr.git = sr_git
     finally:
         shutil.rmtree(BASE, ignore_errors=True)
     print(f"selftest_scratch_clone: {'FAIL ' + str(len(FAILS)) if FAILS else 'OK'}")

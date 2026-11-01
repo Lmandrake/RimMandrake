@@ -272,8 +272,8 @@ and keep file writes and commits in separate Bash calls (hooks refuse a compound
 🔴 **`git worktree` is OFF** (owner, 2026-10-02, by card; `block_worktrees.py`). **A bounded pool of about 10 reused
 clones is approved** for writers above 4 (owner, 2026-10-31: "I trust you, but please monitor them carefully. They seem to
 propagate prolifically."). Cap 10 clones and 40 GB, refused at creation by `scratch_clone.py` (an idle pushed clone is
-reused first); RimPulse shows count, GB, oldest; one alarm, `disk.pool_breach`; a clone with unpushed work is never
-reaped and is itself an alarm. Revert if a clone strands work or the pool passes 40 GB. A committed mod DLL
+reused first); RimPulse shows count, GB, oldest; one alarm, `disk.pool_breach`; any helper clone with unlanded work
+(pool, `rm/scratch`, session dir; PROTECTED is no excuse) is that alarm after an idle hour, and a pool one is never reused. Revert if a clone strands work or the pool passes 40 GB. A committed mod DLL
 travels with its `.srchash`. More: `standing_rulings.md` §Git.
 
 ## Code isn't clean until a review says so

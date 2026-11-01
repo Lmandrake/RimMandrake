@@ -898,17 +898,19 @@ def c_disk(now, rules, ctx):
         except (OSError, ValueError, AttributeError) as e:
             out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
     # The bounded worker-clone pool (WORKER_CLONES_MONITOR_POOL_NOT_RABBITS): read live each tick, never from a cache.
-    # One number alarms: clones over the cap, bytes over the cap, plus every clone holding unpushed work nobody is using.
+    # One number alarms: clones over the cap, bytes over the cap, plus every clone holding unpushed work nobody is using,
+    # in the pool or anywhere else a helper clones (rm/scratch, session dirs: LIQUIDNET_SURFACEGAP_FIX_UNLANDED_CLONES).
     # A pool that cannot be read is the alarm too (9999), not silence.
     try:
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         import scratch_clone
         pr = scratch_clone.pool_reading()
+        ss = scratch_clone.scratch_stranded()
         out["disk.pool_clones"] = M(pr["count"], "worker clones in the pool (cap %d)" % pr["max_clones"])
         out["disk.pool_gb"] = M(pr["gb"], "GB the pool holds (cap %s)" % pr["max_gb"])
         out["disk.pool_oldest_h"] = M(pr["oldest_h"], "hours since the oldest pool clone was made")
-        out["disk.pool_breach"] = M(pr["breach"], "pool breaches: over count, over bytes, stranded unpushed clones",
-                                    stranded=pr["stranded"], unpushed=pr["unpushed"])
+        out["disk.pool_breach"] = M(pr["breach"] + len(ss["stranded"]), "pool breaches: over count, over bytes, stranded unpushed clones",
+                                    stranded=pr["stranded"] + ss["stranded"], unpushed=pr["unpushed"])
     except Exception as e:
         out["disk.pool_breach"] = M(9999, "pool breaches", why="pool unreadable: %s" % str(e)[:160])
     return out

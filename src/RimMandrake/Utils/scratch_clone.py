@@ -393,6 +393,101 @@ def pool_reading() -> dict:
     return d
 
 
+# Every other helper clone. LIQUIDNET_SURFACEGAP_FIX_UNLANDED_CLONES: two clones under rm/scratch sat four days holding work
+# nothing alarmed on, because the pool reading above sees only relentless/clones and the reaper only reports what it may delete.
+# Tracking refs prove nothing here (a clone's origin may be a seat clone, and a stale one reads "ahead 8" after a rewrite):
+# only the mirror proves a push, as in scratch_reap. A pre-rewrite clone's commits are excused by main carrying the same author
+# AND committer second: the rewrite changed subjects, emails and blobs (measured on 56 commits of liquidnet_shrink), never dates.
+SCRATCH_SCAN_DEPTH = 5
+_MAIN_PRINTS: set | None = None
+
+
+def scratch_clone_dirs() -> list[Path]:
+    """Clones under rm/scratch, and those of this repo in agents' session dirs. Not the rest of ~/.seat-tmp: 1,400 selftest
+    fixtures live there, and 499 of the 512 session rows measured on 2026-11-01 were toy repos a test had made."""
+    import scratch_reap as sr
+    out = set(sr.find_clones(scratch_root(), depth=SCRATCH_SCAN_DEPTH))
+    for s in glob.glob(os.environ.get("RM_SESSION_GLOB", str(Path.home() / ".seat-tmp/*/claude-*/*/*"))):
+        for c in sr.find_clones(Path(s), depth=SCRATCH_SCAN_DEPTH):
+            if any(n in sr.git(c, "remote", "-v").stdout for n in ("RimMandrake", str(RM) + "/")):
+                out.add(c)
+    return sorted(out)
+
+
+def main_prints() -> set:
+    """{"author-second committer-second"} on main. Asked only when a clone holds commits the mirror's refs do not reach."""
+    global _MAIN_PRINTS
+    if _MAIN_PRINTS is None:
+        import scratch_reap as sr
+        r = sr.git(sr.origin_mirrors()[0], "log", sr.mirror_tips()[0], "--format=%at %ct")
+        if r.returncode:
+            raise RuntimeError("cannot read main on the mirror")
+        _MAIN_PRINTS = set(r.stdout.splitlines())
+    return _MAIN_PRINTS
+
+
+def clone_unlanded(c: Path) -> tuple[list[str], float]:
+    """(what this clone alone holds, mtime of its newest dirty file). Branches, HEAD and stash; a tag is an archive, not work.
+    Fails closed: what git cannot read reports itself unreadable."""
+    import scratch_reap as sr
+    tips = sr.mirror_tips()
+    if not tips:
+        raise RuntimeError("no mirror to judge a push against")
+    r = sr.git(c, "rev-list", "--ignore-missing", "--exclude=refs/remotes/*", "--exclude=refs/tags/*", "--all", "--stdin",
+               stdin="".join(f"^{t}\n" for t in tips))
+    if r.returncode:
+        return ["unreadable: " + r.stderr.strip()[:80]], 0.0
+    out = []
+    if r.stdout.split():
+        d = sr.git(c, "log", "--no-walk=unsorted", "--stdin", "--format=%at %ct", stdin=r.stdout)
+        if d.returncode:
+            return ["unreadable: the commits the mirror lacks"], 0.0
+        prints = main_prints()
+        n = sum(x not in prints for x in d.stdout.splitlines())
+        if n:
+            out.append(f"{n} commit(s) on no remote")
+    st = sr.git(c, "status", "--porcelain=v1", "-z", "--untracked-files=normal")
+    if st.returncode:
+        return out + ["unreadable: " + st.stderr.strip()[:80]], 0.0
+    recs, paths, i = st.stdout.split("\0"), [], 0
+    while i < len(recs):
+        x = recs[i]
+        i += 1
+        if len(x) >= 4:
+            i += x[0] in "RC"                # -z: the old name is the next field
+            if not sr.disposable(x[3:]) and not x.endswith((".dll", ".dll.srchash")):      # a build writes those again
+                paths.append(x[3:])
+    newest = 0.0
+    for p in paths:
+        try:
+            newest = max(newest, os.lstat(c / p).st_mtime)
+        except OSError:
+            pass
+    if paths:
+        out.append(f"{len(paths)} dirty file(s)")
+    return out, newest
+
+
+def scratch_stranded() -> dict:
+    """Live: every helper clone holding work nowhere else that nobody has touched for an hour. A clone on the reaper's PROTECTED
+    list counts like any other: protected from deletion is not excused from landing. Written for RimPulse; ops_watch alarms."""
+    now = time.time()
+    rows = []
+    for c in scratch_clone_dirs():
+        idle = clone_idle_s(c)               # read before git touches anything in it
+        risk, newest = clone_unlanded(c)
+        if risk:
+            idle = min(idle, now - newest) if newest else idle
+            rows.append({"path": str(c), "holds": risk, "idle_h": round(idle / 3600, 2),
+                         "stranded": idle >= POOL_IDLE_S and not clone_in_use(c)})
+    d = {"ts": now_iso(), "epoch": now, "stranded": [r["path"] for r in rows if r["stranded"]], "rows": rows}
+    try:
+        (state_dir() / "scratch_stranded.json").write_text(json.dumps(d))
+    except OSError:
+        pass
+    return d
+
+
 def pool_admit(dest: Path, reading: dict | None = None) -> str | None:
     """None = may create; else the refusal. Called before any pool clone is made."""
     if dest.parent != pool_root():
@@ -602,8 +697,9 @@ def main(argv=None) -> int:
         return 0
     if a.cmd == "pool":
         r = pool_reading()
-        print(json.dumps({k: v for k, v in r.items() if k != "clones"}))
-        return 1 if r["breach"] else 0
+        s = scratch_stranded()
+        print(json.dumps({**{k: v for k, v in r.items() if k != "clones"}, "scratch_stranded": s["stranded"]}))
+        return 1 if r["breach"] or s["stranded"] else 0
     out = {"init": init, "refresh": refresh, "sample": sample, "baseline": baseline}[a.cmd]()
     print(json.dumps(out))
     return 0

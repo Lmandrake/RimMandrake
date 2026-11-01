@@ -14,6 +14,7 @@ import copy
 import json
 import os
 import re
+import shutil
 import subprocess
 import types
 import sys
@@ -355,10 +356,29 @@ Path(os.environ["RM_SCRATCH_REAP_RUNS"]).write_text(json.dumps({"ts": OW.iso(NOW
 dk = OW.c_disk(NOW, RULES, {})
 check("disk: the fixture mount reads MEASURED", dk["disk.root_free_gb"]["m"] == "MEASURED", dk["disk.root_free_gb"])
 check("disk: scratch = YOUNG + REFUSE (DELETED is gone)", dk["disk.scratch_total_gb"]["v"] == 4.0, dk["disk.scratch_total_gb"])
-os.environ.update({"RM_POOL_ROOT": str(TMP / "pool"), "RM_OBJSTORE_STATE": str(TMP / "objstate"), "RM_POOL_MAX_CLONES": "2"})
+os.environ.update({"RM_POOL_ROOT": str(TMP / "pool"), "RM_OBJSTORE_STATE": str(TMP / "objstate"), "RM_POOL_MAX_CLONES": "2",
+                   "RM_SCRATCH_ROOT": str(TMP / "scr"), "RM_SESSION_GLOB": str(TMP / "nosession*"), "SCRATCH_REAP_MIRRORS": str(TMP / "m.git")})
 dk = OW.c_disk(NOW, RULES, {})
 check("disk: an empty pool reads 0 breaches, measured", dk["disk.pool_breach"]["v"] == 0 and dk["disk.pool_breach"]["m"] == "MEASURED"
       and dk["disk.pool_clones"]["v"] == 0, dk["disk.pool_breach"])
+# a helper's clone outside the pool, with a commit no mirror holds and idle two hours: the same alarm, with no pool in sight
+_g = {**os.environ, "GIT_CONFIG_GLOBAL": "/dev/null", "GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t",
+      "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t"}
+subprocess.run(["git", "init", "-q", "--bare", str(TMP / "m.git")], check=True)
+subprocess.run(["git", "init", "-q", "-b", "main", str(TMP / "scr" / "b")], check=True)
+subprocess.run(["git", "-C", str(TMP / "scr" / "b"), "commit", "-q", "--allow-empty", "-m", "base"], check=True, env=_g)
+subprocess.run(["git", "-C", str(TMP / "scr" / "b"), "push", "-q", str(TMP / "m.git"), "HEAD:refs/remotes/origin/main"], check=True, env=_g)
+subprocess.run(["git", "-C", str(TMP / "scr" / "b"), "commit", "-q", "--allow-empty", "-m", "stranded"], check=True,
+               env={**_g, "GIT_AUTHOR_DATE": "1700000000 +0000", "GIT_COMMITTER_DATE": "1700000000 +0000"})
+for _n in ("HEAD", "logs/HEAD", "index"):
+    if (TMP / "scr/b/.git" / _n).exists():
+        os.utime(TMP / "scr/b/.git" / _n, (time.time() - 7200, time.time() - 7200))
+import scratch_reap as _sr
+import scratch_clone as _sc
+_sr._MIRROR_TIPS = _sc._MAIN_PRINTS = None
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: a stranded clone under rm/scratch raises disk.pool_breach", dk["disk.pool_breach"]["v"] == 1, dk["disk.pool_breach"])
+shutil.rmtree(TMP / "scr")
 for _i in range(3):
     subprocess.run(["git", "init", "-q", str(TMP / "pool" / ("c%d" % _i))], check=True)
 dk = OW.c_disk(NOW, RULES, {})
