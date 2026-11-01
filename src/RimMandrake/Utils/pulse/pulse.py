@@ -1014,25 +1014,29 @@ def compact_metrics(path: Path) -> tuple[int, int]:
     return before, after
 
 
+# Worst case of one health run; rm-pulse-health.service's TimeoutStartSec must cover it (selftest_pulse_health.py).
+HEALTH_ASK_S, HEALTH_RETRY_S, HEALTH_RESTART_S = 10, 15, 20
+
+
 def health(restart: bool) -> int:
     import subprocess
     import urllib.request
-    for attempt in (1, 2):      # one beat missed on a loaded box is no outage: ask twice before restarting the spine
+    for attempt in (1, 2):      # one beat missed (a loaded box, a spine mid-restart: ~6 s to serve) is no outage: ask twice before restarting the spine
         try:
-            snap = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{PORT}/api/now", timeout=10).read())
+            snap = json.loads(urllib.request.urlopen(f"http://127.0.0.1:{PORT}/api/now", timeout=HEALTH_ASK_S).read())
             age = time.time() - snap.get("collected_at", 0)
         except Exception as e:
             age, snap = None, {"error": str(e)}
         if age is not None and age < 60:
             break
         if attempt == 1:
-            time.sleep(15)
+            time.sleep(HEALTH_RETRY_S)
     ok = age is not None and age < 60
     print(f"pulse health: {'ok' if ok else 'BAD'} age={None if age is None else round(age)}s"
           + (f" error={snap['error']}" if snap.get("error") else ""))
     if not ok and restart:
         append("metrics.jsonl", {"m": "spine_restart", "age_s": age})
-        subprocess.run(["systemctl", "--user", "restart", "rm-pulse.service"], timeout=20)
+        subprocess.run(["systemctl", "--user", "restart", "rm-pulse.service"], timeout=HEALTH_RESTART_S)
     return 0 if ok else 1
 
 
