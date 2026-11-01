@@ -3,7 +3,8 @@
   <!--
     RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT: offline selftest of the woken-ancients
     counting rule. Compiles the REAL production WokenAncientsKernel.cs (no Verse
-    dependency, so no RimWorld references). NOT the mod build: the mod's csproj one
+    dependency, so no RimWorld references), and the REAL SpireEntry.cs against the
+    small engine stand-ins in SpireEngineStubs.cs. NOT the mod build: the mod's csproj one
     directory up sets EnableDefaultCompileItems false and never lists this folder.
 
     Run via the wrapper:
@@ -31,6 +32,9 @@
   <ItemGroup>
     <Compile Include="..\VaultDungeons\WokenAncientsKernel.cs" />
     <Compile Include="..\Spire\SpireEntryKernel.cs" />
+    <Compile Include="..\Spire\SpireEntry.cs" />
+    <Compile Include="SpireEngineStubs.cs" />
+    <Compile Include="SpireChainTest.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

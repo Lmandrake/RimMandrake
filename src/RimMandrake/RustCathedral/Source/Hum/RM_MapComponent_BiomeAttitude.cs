@@ -292,7 +292,7 @@ namespace RimMandrake.RustCathedral.Hum
 		public static int GetStage(Map map)
 		{
 			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
-			return comp?.stage ?? -1;
+			return comp?.GetDef() == null ? -1 : comp.stage;
 		}
 
 		/// <summary>Sets this map's conduct-stage. Not a second attitude system and not ratcheted here -- the arc's GM blackboard (item 1) owns the one-way-knowledge/two-way-standing rules; this is a dumb setter, including the dark-flip case (drive back to 0/WARY at any time, regardless of history).</summary>

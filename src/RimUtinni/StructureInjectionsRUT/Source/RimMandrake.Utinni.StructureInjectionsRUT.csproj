@@ -51,6 +51,7 @@
     <Compile Include="Ashfall\CompRedeemRakatanCommandCodes.cs" />
     <Compile Include="Spire\SpireEntryKernel.cs" />
     <Compile Include="Spire\SpireEntry.cs" />
+    <Compile Include="Spire\GenStep_SpireRoof.cs" />
     <Compile Include="StructureInjectionsRUTSettings.cs" />
   </ItemGroup>
 

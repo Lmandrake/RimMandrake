@@ -80,10 +80,7 @@ namespace StructureInjectionsRUT.SelfTest
             Check(SpireEntryKernel.SealOpens(true, 3), "spire: REVEALED opens the seal");
             Check(!SpireEntryKernel.SealOpens(true, -1), "spire: no reading keeps the seal shut");
             Check(SpireEntryKernel.SealOpens(false, 0), "spire: gate setting off opens it at any stage");
-            Check(SpireEntryKernel.Fold(2, new int[0]) == 2, "spire: no Cathedral map loaded keeps the last reading");
-            Check(SpireEntryKernel.Fold(0, new[] { 2 }) == 2, "spire: a loaded map raises the reading");
-            Check(SpireEntryKernel.Fold(2, new[] { 0 }) == 0, "spire: a dark flip on a loaded map drops the reading");
-            Check(SpireEntryKernel.Fold(0, new[] { 0, 2 }) == 2, "spire: the warmest of several maps speaks");
+            SpireChainTest.Run(Check);
 
             Console.WriteLine($"{checks - failures}/{checks} checks passed");
             return failures == 0 ? 0 : 1;

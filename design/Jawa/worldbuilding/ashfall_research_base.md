@@ -213,7 +213,10 @@ inside the Spire, not a second place.
   pass requires, but not the pass itself: the pass is a priced boon, entry is the
   standing. The hull takes no damage and carries thick rock overhead, so the seal is
   the only way in; it opens within a second of game time once the stage stands, and
-  stays open if trust later falls. A Mod Setting removes the gate.
+  stays open if trust later falls. The stage lives on Cathedral maps, so the game keeps
+  the last reading: leaving the Cathedral forgets nothing, and only the map that set the
+  reading can lower it (a fresh Cathedral map starts at WARY and has not been told).
+  A Mod Setting removes the gate.
 - **The codes** are taken from the isolated room, and nothing else hands them out. The
   cold access is in the text of the console and the item: no challenge, no record.
 - **Open:** the ocular warped Assailants are still only the breach trail (the strain

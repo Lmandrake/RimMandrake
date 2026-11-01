@@ -20,20 +20,31 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             return !gated || TrustStands(stage);
         }
 
-        // A Cathedral map loaded right now speaks for the stage, up or down (a dark flip drops it);
-        // with none loaded the last reading stands. Several maps: the warmest, since trust is the
-        // Cathedral's one relationship with the clan and a map it has not been pushed to reads low.
-        public static int Fold(int recorded, IEnumerable<int> observed)
+        // Each reading is (map id, stage); -1 is a map off Cathedral ground and never wins. The warmest
+        // loaded Cathedral map raises the reading, since trust is the Cathedral's one relationship with
+        // the clan. Only the map that set the reading can lower it (a dark flip): a fresh Cathedral map
+        // starts at 0 and has not been told, so it must not erase trust earned on a map now gone.
+        // With no such map loaded the last reading stands.
+        public static int Fold(int recorded, ref int sourceMap, IEnumerable<KeyValuePair<int, int>> observed)
         {
             int best = -1;
-            foreach (int stage in observed)
+            int bestMap = -1;
+            bool sourceSeen = false;
+            foreach (KeyValuePair<int, int> reading in observed)
             {
-                if (stage > best)
+                sourceSeen |= reading.Key == sourceMap;
+                if (reading.Value > best || (reading.Value == best && reading.Key == sourceMap))
                 {
-                    best = stage;
+                    best = reading.Value;
+                    bestMap = reading.Key;
                 }
             }
-            return best < 0 ? recorded : best;
+            if (best < 0 || !(sourceSeen || best > recorded))
+            {
+                return recorded;
+            }
+            sourceMap = bestMap;
+            return best;
         }
     }
 }

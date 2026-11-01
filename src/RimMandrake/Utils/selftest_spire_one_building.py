@@ -2,13 +2,15 @@
 """SPIRE_DUNGEONS_MERGE_DARK_TOWER: the Spire is one building, and its entry is the Cathedral's trust.
 
 Offline. Reads the shipped defs and source, runs the layout audit against the committed XML, compiles and
-runs the real SpireEntryKernel.cs through the StructureInjectionsRUT selftest, then plants one defect at a
-time in a copy and requires the checks to catch it.
+runs the real SpireEntryKernel.cs and SpireEntry.cs (against engine stand-ins) through the
+StructureInjectionsRUT selftest, then plants one defect at a time in a copy and requires the checks to catch
+it, source defects by compiling and running the copy.
 
     python3 src/RimMandrake/Utils/selftest_spire_one_building.py [--static-only]
 """
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -24,6 +26,7 @@ LAYOUT = os.path.join(SPIRE, "StructureLayoutDefs_Spire.xml")
 AUDIT = os.path.join(SOURCE, "Spire", "audit_spire_layout.py")
 LANDMARKS = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches", "Defs", "LandmarkDefs")
 SELFTEST = os.path.join(SOURCE, "SelfTest", "StructureInjectionsRUT.SelfTest.csproj")
+ATTITUDE = os.path.join(REPO, "src", "RimMandrake", "RustCathedral", "Source", "Hum", "RM_MapComponent_BiomeAttitude.cs")
 DOTNET_CANDIDATES = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]
 OLD_NAMES = ("RUT_DarkTower", "RUT_Ashfall_Spire", "RUT_GenStep_DarkTower", "RUT_Symbol_DarkTower")
 
@@ -53,6 +56,12 @@ def text(path):
 
 def uncommented(path):
     return re.sub(r"<!--.*?-->", "", text(path), flags=re.S)
+
+
+def stage_reads_minus_one_off_cathedral(source):
+    """The component is on every map, so the stand-in's -1 is only true while the real GetStage says so."""
+    body = re.search(r"public static int GetStage\(Map map\)\s*\{(.*?)\n\t\t\}", source, re.S)
+    return bool(body and "GetDef() == null ? -1 : comp.stage" in body.group(1))
 
 
 def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
@@ -88,10 +97,16 @@ def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
           "the comps absorb every hit")
     check("SpireEntry.SealOpens" in entry and "SpireEntryKernel.SealOpens(StructureInjectionsRUTSettings.spireEntryGated" in entry,
           "the seal reads the trust rule and its Mod Setting")
+    check("parent.IsHashIntervalTick(60) && SpireEntry.SealOpens)" in entry, "the seal opens on the rule, not against it")
     check("VouchedStage = 2" in kernel, "trust is VOUCHED, stage 2 of the arc")
-    check("RM_MapComponent_BiomeAttitude" in entry, "the stage is read from the Cathedral's one attitude system")
+    check("RimMandrake.RustCathedral.Hum.RM_MapComponent_BiomeAttitude" in entry, "the stage is read from the Cathedral's one attitude system")
+    attitude = text(ATTITUDE)
+    check("namespace RimMandrake.RustCathedral.Hum" in attitude, "the type name the reflection reads is the real one")
+    check(stage_reads_minus_one_off_cathedral(attitude), "the real GetStage answers -1 off Cathedral ground")
+    check(not stage_reads_minus_one_off_cathedral(attitude.replace("GetDef() == null ? -1 : comp.stage", "stage ?? -1")),
+          "the GetStage pin catches the old read")
     csproj = text(os.path.join(source, "RimMandrake.Utinni.StructureInjectionsRUT.csproj"))
-    for name in ("Spire\\SpireEntryKernel.cs", "Spire\\SpireEntry.cs"):
+    for name in ("Spire\\SpireEntryKernel.cs", "Spire\\SpireEntry.cs", "Spire\\GenStep_SpireRoof.cs"):
         check(name in csproj, "the mod compiles %s" % name)
 
     codes = ET.parse(os.path.join(defs, "Spire", "ThingDefs_Items", "RUT_RakatanCommandCodes.xml")).getroot()
@@ -133,12 +148,12 @@ def layout_checks():
 
 def plant_static():
     """Each planted tree must turn static_checks red; the list is restored around each one."""
-    import shutil
     plants = [
         ("a second tower site", "Defs/Spire/SitePartDefs_Spire.xml", "<SitePartDef>\n    <defName>RUT_SpireSite",
          "<SitePartDef><defName>RUT_DarkTowerSite</defName></SitePartDef>\n  <SitePartDef>\n    <defName>RUT_SpireSite"),
         ("the roof step dropped", "Defs/Spire/SitePartDefs_Spire.xml", "<order>401</order>", "<order>399</order>"),
         ("the seal open to anyone", "Source/Spire/SpireEntryKernel.cs", "VouchedStage = 2", "VouchedStage = 0"),
+        ("the gate inverted", "Source/Spire/SpireEntry.cs", "&& SpireEntry.SealOpens", "&& !SpireEntry.SealOpens"),
         ("the hull takes damage", "Source/Spire/SpireEntry.cs", "absorbed = true;", "absorbed = false;"),
         ("the codes for sale", "Defs/Spire/ThingDefs_Items/RUT_RakatanCommandCodes.xml",
          "<tradeability>None</tradeability>", "<tradeability>All</tradeability>"),
@@ -166,21 +181,77 @@ def plant_static():
                 f.write(good)
 
 
-def kernel_run():
+EXPECTED_SPIRE_LINES = 20
+COMPILED_PLANTS = [
+    ("the gate inverted", "Spire/SpireEntry.cs", "&& SpireEntry.SealOpens", "&& !SpireEntry.SealOpens"),
+    ("the seal ignores the stage", "Spire/SpireEntry.cs", "SpireEntryKernel.SealOpens(StructureInjectionsRUTSettings.spireEntryGated, CathedralStage)",
+     "!StructureInjectionsRUTSettings.spireEntryGated"),
+    ("the poll throws its answer away", "Spire/SpireEntry.cs", "cathedralStage = SpireEntryKernel.Fold(", "SpireEntryKernel.Fold("),
+    ("the attitude component never matched", "Spire/SpireEntry.cs", "comp.GetType().FullName != AttitudeType", "comp.GetType().FullName == AttitudeType"),
+    ("the source map not saved", "Spire/SpireEntry.cs", 'Scribe_Values.Look(ref sourceMap, "rutSpireCathedralSourceMap", -1);', ""),
+    ("any map may lower the reading", "Spire/SpireEntryKernel.cs", "if (best < 0 || !(sourceSeen || best > recorded))", "if (best < 0)"),
+    ("a dark flip ignored", "Spire/SpireEntryKernel.cs", "if (best < 0 || !(sourceSeen || best > recorded))", "if (best <= recorded)"),
+]
+
+
+def find_dotnet():
     dotnet = next((c for c in DOTNET_CANDIDATES if os.path.isfile(c)), None)
     if dotnet is None:
         check(False, "UNMEASURED: no dotnet.exe at %s" % DOTNET_CANDIDATES)
+    return dotnet
+
+
+def run_project(dotnet, project):
+    return subprocess.run([dotnet, "run", "--project", project, "-c", "Release"], capture_output=True, text=True)
+
+
+def kernel_run():
+    dotnet = find_dotnet()
+    if dotnet is None:
         return
     sys.path.insert(0, HERE)
     from selftest_winstage import windows_project_path
-    out = subprocess.run([dotnet, "run", "--project", windows_project_path(SELFTEST), "-c", "Release"],
-                         capture_output=True, text=True)
+    out = run_project(dotnet, windows_project_path(SELFTEST, whole_src=False))
     spire = [ln.strip() for ln in out.stdout.splitlines() if "spire:" in ln]
-    check(out.returncode == 0 and len(spire) == 10, "kernel checks pass (%d spire lines, exit %d)" % (len(spire), out.returncode))
+    check(out.returncode == 0 and len(spire) == EXPECTED_SPIRE_LINES,
+          "compiled chain passes (%d spire lines, exit %d)" % (len(spire), out.returncode))
     for line in spire:
         print("      " + line)
     if out.returncode:
-        print(out.stderr[-800:])
+        print(out.stdout[-800:], out.stderr[-800:])
+
+
+def compiled_plants():
+    """Plant each source defect in a copy of the selftest's sources and require the compiled run to go red.
+    A copy that does not compile proves nothing, so a build failure is a FAIL, not a catch."""
+    dotnet = find_dotnet()
+    if dotnet is None:
+        return
+    sys.path.insert(0, HERE)
+    import winbuild
+    from selftest_winstage import stage_name_for, windows_project_path
+    stage = os.path.join(winbuild.BUILD_ROOT, stage_name_for("spire_plants", REPO))
+    shutil.rmtree(stage, ignore_errors=True)
+    for sub in ("Spire", "SelfTest", "VaultDungeons"):
+        shutil.copytree(os.path.join(SOURCE, sub), os.path.join(stage, sub), ignore=shutil.ignore_patterns("obj", "bin"))
+    project = windows_project_path(os.path.join(stage, "SelfTest", os.path.basename(SELFTEST)))
+    try:
+        for name, rel, old, new in COMPILED_PLANTS:
+            path = os.path.join(stage, rel)
+            good = text(path)
+            check(old in good, "plant applies: %s" % name)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(good.replace(old, new))
+            out = run_project(dotnet, project)
+            built = "checks passed" in out.stdout
+            check(built, "plant still compiles: %s" % name)
+            if not built:
+                print(out.stdout[-600:])
+            check(built and out.returncode != 0, "compiled run catches: %s" % name)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(good)
+    finally:
+        shutil.rmtree(stage, ignore_errors=True)
 
 
 def main():
@@ -189,6 +260,7 @@ def main():
     plant_static()
     if "--static-only" not in sys.argv:
         kernel_run()
+        compiled_plants()
     print("FAIL %d" % len(failures) if failures else "OK")
     return 1 if failures else 0
 
