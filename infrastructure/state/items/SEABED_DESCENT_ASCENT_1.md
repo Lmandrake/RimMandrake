@@ -20,3 +20,18 @@ planetary layer called sea floor."* Phase 2 of the seabed plan
 - From a sea tile, the ship's launch dialog offers the floor below; landing there builds a floor map;
   launching from it returns to the beach (land-layer) tile above.
 - Proven live with a bridge state read (`Find.CurrentMap.Tile.Layer`), not a screenshot hunt.
+
+## reshaped 2026-11-01 after a code read (owner card: "Read code, then reshape")
+
+The idea stands (owner 2026-10-01: the ship flies to a new planetary layer called sea floor). The BUILD
+mostly exists and is vanilla-driven, not ours: `RM_SeabedLayer.xml` registers the layer with
+`defaultMapWorldObject RM_SeabedSite`; `RM_SeabedSiteParent` (91 lines) picks the floor generator from the
+tile's biome (`RM_SeabedGenerators.xml`); a gravship landing on a layer tile makes that world object
+through vanilla `GravshipUtility` (RimSage-read 2026-10-03). So spec steps 1-2 are the stock Odyssey
+launch dialog plus our site object. What is still UNMEASURED, and is this item's real work:
+1. does the launch dialog list a floor tile when launching from an impassable sea tile (and the beach tile
+   from the floor)? (`SEA_FLOOR_AND_CATCH_PASS_1` line 23 flags the same unknown)
+2. does the return trip from the floor reach the beach (land-layer) tile above, with fuel cost per depth?
+3. leftovers: `RM_SeaDiveHatch` is retired by `SEA_DIVE_HATCH_REMOVE_1`; nothing here depends on it.
+NEXT: one bridge state read of `Find.CurrentMap.Tile.Layer` before/after a descent (see criteria); then
+either close with that evidence or fix only the failing step. Do not rebuild the layer or site object.
