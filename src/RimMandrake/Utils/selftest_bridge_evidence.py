@@ -16,6 +16,7 @@ import tempfile
 d = tempfile.mkdtemp()
 os.environ["RIMBRIDGE_EVIDENCE_LOG"] = os.path.join(d, "bridge_calls.jsonl")
 os.environ["RIMBRIDGE_SESSION_LOG"] = ""
+os.environ["RIMFLOW_DRIVER_LOCK"] = os.path.join(d, "no_driver_lock.json")   # a real holder must not redden this
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import rimbridge_client as C  # noqa: E402
 

@@ -98,6 +98,25 @@ def _reentrant(path):
     return None
 
 
+def crossing(path=None):
+    """-> the refusal text when this process would change a game another live driver holds, else None
+    (BRIDGE_LOCK_PROBE_PROOF_CROSSED_HOLDER). Reads only, takes nothing; rimbridge_client asks it before every
+    mutating call, because a proof or a checker that connects directly never comes near `take`. Errs toward allowing:
+    no lock path, an unreadable lock, or a Windows python (its parent chain cannot show the holder's window, and
+    acquire() cannot see that either) all pass."""
+    path = path or lock_path()
+    if not path or os.name == "nt":
+        return None
+    cur, problem = driver_lock._read(path)
+    if problem or not cur or _reentrant(path) is not None:
+        return None
+    alive, how = driver_lock._alive(cur)
+    if not alive:
+        return None
+    return "the driver lock is held by %s for %r (%s); this call would change the game under it" % (
+        cur.get("seat"), cur.get("purpose"), how)
+
+
 def _shared_window_holder(seat):
     """Archmagi only: a live window holder named by the cross-clone shared bridge file, else None."""
     m = _model()

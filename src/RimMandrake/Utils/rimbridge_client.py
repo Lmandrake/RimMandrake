@@ -359,6 +359,30 @@ def _deadline_left():
     return at - time.time()
 
 
+class DriverHeldError(RimBridgeError):
+    """A mutating call on this machine's game while another live process holds the driver lock."""
+
+
+CROSS_ENV = "RM_BRIDGE_CROSS_WHY"       # a deliberate crossing: the reason, recorded on the call's evidence row
+_LOOPBACK = ("127.0.0.1", "localhost", "::1")
+
+
+def _driver_crossing(host):
+    """The holder's refusal text if a mutation here would cross him, else None. Only this machine's game: the lock
+    file is this machine's. The guard lives next door in rimflow; a client copied without it says so and goes on."""
+    if host not in _LOOPBACK:
+        return None
+    try:
+        rimflow_dir = str(_rm_pl.Path(__file__).resolve().parents[1] / "rimflow")
+        if rimflow_dir not in sys.path:
+            sys.path.append(rimflow_dir)
+        import host_guard
+        return host_guard.crossing()
+    except Exception as ex:
+        print("[rimbridge_client] driver lock not checked: %s" % ex, file=sys.stderr)
+        return None
+
+
 class UnknownParameterError(RimBridgeError):
     """A tool was called with an argument key its schema does not declare.
 
@@ -708,7 +732,12 @@ class RimBridge:
             if unchecked:
                 print("[rimbridge_client] %s -> %s" % (tool, unchecked), file=sys.stderr)
         mutating = not self.looks_read_only(tool)
+        crossed = None
         if mutating:
+            crossed = _driver_crossing(self.host)
+            if crossed and not os.environ.get(CROSS_ENV):
+                raise DriverHeldError("refusing %s: %s. Wait for `rimflow bridge who` to read free, or take the bridge; "
+                                      "to cross him on purpose set %s=<why>" % (tool, crossed, CROSS_ENV))
             left = _deadline_left()
             if left is not None and left < self.timeout + self.connect_timeout:
                 raise DeadlineError("refusing %s: %.0f s to %s (=%r), less than this call's %.0f s timeout + %.0f s "
@@ -728,6 +757,8 @@ class RimBridge:
                  "seat": os.environ.get("RIMFLOW_SEAT") or os.environ.get("AGENT_SEAT"),
                  "script": os.path.basename(sys.argv[0]) if sys.argv else "", "client": self.client_name,
                  "endpoint": "%s:%s" % (self.host, self.port)}
+        if crossed:
+            start["crossed_holder"] = "%s: %s" % (os.environ[CROSS_ENV], crossed)
         try:
             _evidence(start, required=mutating)
             if mutating:
