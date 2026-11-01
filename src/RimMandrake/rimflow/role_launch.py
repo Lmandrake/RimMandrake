@@ -1295,9 +1295,13 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             # the day's scheduled runs not yet run keep their budget: an event run may spend only what they leave,
             # so it can never make the 09:00 (Wednesday: the weekly plan) refuse on the daily cap (review U, N3)
             # a slot this band will block never runs, so it reserves nothing (review V, V6)
+            # an incident run (covers_slot) IS the next scheduled run: it reads the same open incidents first, so it
+            # takes that slot's share instead of asking the daily cap for a second one (INCIDENTS_FIX_ONE_READER)
+            cover = covered_slot(rs, today, now) if (job.get("manual") or {}).get("covers_slot") else None
             reserve = sum(int(c * (float(b.get("quick_cap_x", 1.0)) if m in ("quick", "run", "weekly") else 1.0))
                           for i, (hh, m, c) in enumerate(today if role.get("enabled") else [])
-                          if c and slot_key(now, hh) not in rs["done"]
+                          if hh != cover
+                          and c and slot_key(now, hh) not in rs["done"]
                           # a run-now does not keep budget for a slot already past its late window (it never runs)
                           and not (job.get("manual") and now - slot_epoch(now, hh) > float(cfg["slot_late_s"]))
                           and not slot_blocked(allowed, {"slot": hh, "first": i == 0, "mode": m}, cfg, now))
@@ -1344,6 +1348,11 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
                                 "alarm_day": json.loads(json.dumps(rs.get("alarm_day"))),
                                 "events_seen": rs.get("events_seen"), "alarm_last_run": rs.get("alarm_last_run")}
         if job.get("manual"):
+            cover = covered_slot(rs, today, now) if (job["manual"] or {}).get("covers_slot") else None
+            if cover is not None:
+                ck = slot_key(now, cover)
+                rs["pending_launch"]["covered"] = [ck, rs["done"].get(ck), ck in rs["done"]]
+                rs["done"][ck] = "covered by " + job["key"]
             rs["pending_launch"]["run_now"] = rs.get("run_now")
             rs["run_now_last"] = dict(rs.pop("run_now"), outcome="launched", unit=unit, decided=now)
         rs.pop("event_skip", None)
@@ -1418,6 +1427,12 @@ def unlaunch(rs, unit):
             rs.pop(k, None)
         else:
             rs[k] = p[k]
+    if p.get("covered"):                      # the slot an incident run covered is due again
+        ck, was, had = p["covered"]
+        if had:
+            rs.setdefault("done", {})[ck] = was
+        else:
+            rs.setdefault("done", {}).pop(ck, None)
     if p.get("run_now") is not None:          # a run-now that did not launch is asked again, not lost
         rs["run_now"] = p["run_now"]
         rs.pop("run_now_last", None)
@@ -1530,6 +1545,15 @@ def run_now_job(cfg, req, now):
     return {"key": "%s run-now%s %s" % (day_of(now), " trial" if trial else "", iso(req.get("at") or now)),
             "slot": None, "first": False, "mode": req.get("mode") or "run", "cap": run_now_cap(cfg, req.get("mode")),
             "item": cfg["ledger_item"], "trigger": trigger, "manual": req, "pre_launch": pre}
+
+
+def covered_slot(rs, today, now):
+    """Pure. The slot (as the schedule writes it) an incident run covers: today's first scheduled run still to come,
+    not past its late window; None when none is left."""
+    for hh, m, c in today:
+        if c and slot_key(now, hh) not in rs.get("done", {}) and slot_epoch(now, hh) > now:
+            return hh
+    return None
 
 
 def refuse_now(rs, how, now, job=None):

@@ -435,8 +435,10 @@ def signal_alarm(sch, st, kind, why, now):
         st["incident_failed"] = "signal of %s lost: %s: %s" % (kind, type(e).__name__, str(e)[:160])
 
 
-def incident_run(sch, st, role, mode, why, now):
-    """One run the chain asks for, inside the shared per-hour budget. -> what happened."""
+def incident_run(sch, st, role, mode, why, now, ids=None):
+    """One run the chain asks for, inside the shared per-hour budget. -> what happened. `ids`: the incidents this run
+    answers; an Operations run for them covers the next scheduled slot (role_launch.covered_slot), so the daily cap
+    is asked for one run, not two, and a refusal on it is read back by denied_runs."""
     ist = st.setdefault("incident", {})
     runs = [t for t in ist.get("runs") or [] if now - t < 3600]
     limit = IN.load_table()["policy"]["runs_per_hour"]
@@ -446,8 +448,38 @@ def incident_run(sch, st, role, mode, why, now):
     if len(runs) >= limit:
         return "held: %d runs this hour, the budget" % len(runs)
     rs["run_now"] = RL.run_now_request(sch, {"role": role, "by": "DISPATCHER", "why": why[:300], "mode": mode}, now)
+    if role == "Operations":
+        rs["run_now"]["covers_slot"] = True
+        rs["run_now"]["ids"] = list(ids or [])
     ist["runs"] = runs + [now]
     return "%s run asked for" % role
+
+
+def denied_runs(sch, st, root, now, do_conductor):
+    """A run the incidents asked of Operations that the launcher REFUSED is not a silent end: the incidents it named
+    go on to the owner rung now, with the reason in their plan, and the Conductor is told (INCIDENTS_FIX_ONE_READER)."""
+    ist = st.setdefault("incident", {})
+    last = ((st.get("roles") or {}).get("Operations") or {}).get("run_now_last") or {}
+    if (last.get("by") != "DISPATCHER" or not str(last.get("outcome", "")).startswith("refused")
+            or last.get("outcome") == "refused: expired"       # the ladder's own clock moves an expired ask
+            or ist.get("denied_seen") == last.get("decided")):
+        return None
+    ist["denied_seen"] = last.get("decided")
+    rows = IN.read_rows()
+    if rows is None:
+        return "denied run not read: told.jsonl torn"
+    incs = IN.fold(rows)[0]
+    moved = []
+    for iid in last.get("ids") or []:
+        inc = incs.get(iid)
+        if inc and inc.get("state") == "open" and inc.get("rung", 0) < IN.OWNER_RUNG:
+            f = dict(rung=IN.OWNER_RUNG, rung_t=now, acked_t=None, ack_by=None, recover_by=None, recover_by_t=None,
+                     plan="Operations run %s; moved to him now, not left waiting" % last["outcome"])
+            IN.append([dict(f, ev="escalated", id=iid, at=iso(now), t=now, was_acked=False, ack_due=None, ack_due_t=None)])
+            moved.append(iid)
+    do_conductor(sch, {"kind": "incident:denied", "why": "Operations run for %s %s" % (
+        ", ".join(last.get("ids") or []) or "incidents", last["outcome"]), "raise_first": "An incident run was denied."}, now)
+    return "Operations run denied (%s): %s to the owner rung" % (last["outcome"], ", ".join(moved) or "none open")
 
 
 def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
@@ -456,7 +488,11 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
     IN.append(a["rows"]) if a["rows"] else None
     ist["cursor"] = a["cursor"]     # the rows it read: a signal landing behind ours is still ahead of it
     said = []
+    denied = denied_runs(sch, st, root, now, do_conductor)
+    if denied:
+        said.append(denied)
     held, ist["held"] = ist.get("held") or [], []
+    fresh = []
     for r in held + a["rings"]:
         if r["how"] == "doorbell":
             pending = (st.get("seats", {}).get(r["seat"]) or {}).get("ring")
@@ -466,10 +502,22 @@ def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
             do_ring(root, r["seat"], "inc-%s-%d" % (r["id"], int(now)), r["text"])
         elif r["how"] == "quick_run":
             do_conductor(sch, {"kind": "incident:" + r["id"], "why": r["text"], "raise_first": "An incident is unacked."}, now)
-            said.append(incident_run(sch, st, "Conductor", "quick", r["text"], now))
+            res = incident_run(sch, st, "Conductor", "quick", r["text"], now)
+            said.append(res)
+            if res.startswith("held"):
+                ist["held"].append(r)           # a held run is asked again, never dropped
         elif r["how"] == "fresh_run":
-            said.append(incident_run(sch, st, "Operations", "run", r["text"], now))
+            fresh.append(r)                     # every fresh-run ring of this pass is ONE Operations run
         said.append("%s: %s" % (r["id"], r["how"]))
+    if fresh:
+        ids = [r["id"] for r in fresh]
+        text = fresh[0]["text"] if len(fresh) == 1 else (
+            "INCIDENTS %s all reach him next: one run, take them in order (rimflow incidents); write his line for each "
+            "(rimflow incident-line <id> \"<line>\"). First: %s" % (", ".join(ids), fresh[0]["text"]))
+        res = incident_run(sch, st, "Operations", "run", text, now, ids)
+        said.append(res)
+        if res.startswith("held") or "already asked" in res:
+            ist["held"].extend(fresh)           # asked again next tick, as one run
     IN.write_snapshot(a["snapshot"])
     a["snapshot"] = None
     return "; ".join(said) or "stamped"

@@ -27,6 +27,7 @@ import incident as IN  # noqa: E402
 import ops_watch as OW  # noqa: E402
 import phone_push as PP  # noqa: E402
 import relentless as RN  # noqa: E402
+import role_launch as RL  # noqa: E402
 import replay_watch as RW  # noqa: E402
 import pulse_core as PC  # noqa: E402
 
@@ -266,6 +267,41 @@ def test_one_outage():
     check("the runs share a per-hour budget", "budget" in said[-1], said)
 
 
+def test_batched_run_held_and_covers_slot():
+    r = Rig("batch")
+    sch = r.sch
+    ring = lambda i: {"how": "fresh_run", "id": i, "reader": "Operations:fresh", "seat": None, "text": "INCIDENT %s" % i}
+    a = lambda rings: {"rows": [], "rings": rings, "cursor": 0, "snapshot": {"t": T0, "at": IN.iso(T0), "fresh": True, "open": [], "owner": []}}
+    nop = lambda *x: None
+    st = {"roles": {}}
+    D.incident_execute(a([ring("a-1"), ring("b-2"), ring("c-3")]), sch, st, "/nonexistent", T0, nop, nop)
+    req = st["roles"]["Operations"]["run_now"]
+    check("three incidents at once are ONE Operations run that names all three and covers the next slot",
+          req["ids"] == ["a-1", "b-2", "c-3"] and req.get("covers_slot") and "b-2" in req["why"], req)
+    st["roles"]["Operations"].pop("run_now")
+    st["incident"]["runs"] = [T0, T0 + 1]
+    D.incident_execute(a([ring("d-4")]), sch, st, "/nonexistent", T0 + 5, nop, nop)
+    check("a run held by the hour budget is kept, not dropped", [h["id"] for h in st["incident"]["held"]] == ["d-4"], st["incident"])
+    st["incident"]["runs"] = []
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 3700, nop, nop)
+    check("the held run is asked once the hour has room",
+          st["roles"]["Operations"].get("run_now", {}).get("ids") == ["d-4"], st)
+    IN.append([{"ev": "opened", "id": "dn-1", "at": IN.iso(T0), "t": T0, "state": "open", "rung": 2, "cause": "dn",
+                "class": "distressed", "metrics": {"dn.m": {"class": "distressed"}}, "items": [], "reader": "Operations",
+                "told_t": T0, "rung_t": T0, "acked_t": None}])
+    pinged = []
+    st["roles"]["Operations"]["run_now_last"] = {"by": "DISPATCHER", "ids": ["dn-1"], "decided": T0 + 9,
+                                                 "outcome": "refused: daily cap"}
+    D.incident_execute(a([]), sch, st, "/nonexistent", T0 + 3800, nop, lambda sc, x, n: pinged.append(x))
+    check("a run refused on the daily cap moves its incident to him now and tells the Conductor",
+          IN.fold(IN.read_rows())[0]["dn-1"]["rung"] == IN.OWNER_RUNG and len(pinged) == 1, (IN.read_rows()[-1:], pinged))
+    today = [("07:30", "economy", 1), ("19:30", "run", 1)]
+    now = time.mktime(time.strptime("2026-11-01 14:00", "%Y-%m-%d %H:%M"))
+    check("an incident run covers today's next slot still to come, not one already done",
+          RL.covered_slot({"done": {}}, today, now) == "19:30"
+          and RL.covered_slot({"done": {RL.slot_key(now, "19:30"): "done"}}, today, now) is None)
+
+
 def test_relapse():
     r = Rig("relapse")
     r.tick(T0, relentless__under_min=40)
@@ -495,7 +531,7 @@ def _refuses():
 
 
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
-          test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes):
+          test_batched_run_held_and_covers_slot, test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)
