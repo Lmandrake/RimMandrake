@@ -461,6 +461,8 @@
    "why": "v3 section 6 target: test hours that catch nothing <= 18 h/wk"},
   {"key": "process.share_7d", "op": ">=", "value": 61, "alarm": false, "tag": "PROCESS_SHARE",
    "why": "v3 section 6 target: process-commit share 70% -> under 61%"},
+  {"key": "process.bridge_h_7d", "op": "<", "value": 56, "alarm": false, "tag": "BRIDGE_LANE_LOW",
+   "why": "FOUNDRY_THROUGHPUT_MEASURE_V2_GAP: bridge held 14.6 h/day in the best v2 week, 2.5 in early v3; flag under 8 h/day while live checks are owed"},
   {"key": "tokentalk.*.share", "op": ">=", "value": 10, "alarm": false, "tag": "TOKEN_TALK_DRIFT",
    "why": "owner 2026-10-27: token-blind roles must not talk tokens; cold 7-day baseline BENCH/FOUNDRY ledger (BENCH left the measure 2026-10-31) and commits was 2-6%, so 10% is about double"},
   {"key": "testing.nightly_news", "op": ">", "value": 0, "alarm": true, "tag": "NIGHTLY_NEWS", "name": "OPS_NIGHTLY_RED_DIAGNOSE", "marks": ["MEASURED"], "title_field": "said", "note_field": "news",

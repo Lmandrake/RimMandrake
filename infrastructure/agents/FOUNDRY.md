@@ -280,6 +280,11 @@ Your work is what the machine cannot do:
    tree, `situational_rerun`, first scripts, Player.log error classes; an item with a `ROUTE rm-testpilot` line gets the
    `rm-testpilot` agent, see above). If the game is DOWN and the bridge is free, that agent restarts it (a reboot is ours to
    call). Bridge held by someone else: offline prep for the next run.
+   **This lane has no other owner and is the first thing to staff** (FOUNDRY_THROUGHPUT_MEASURE_V2_GAP: held 14.6 h a day
+   in the best v2 week, 2.5 h in early v3, with 549 items owing a live check). While the bridge is free and nothing of the
+   trial's needs it, keep exactly one live helper running on `rimflow next --acceptance --seat FOUNDRY`, cheapest level
+   first, whatever the offline ticket you were rung for. It takes the bridge, batches the level in one sitting and
+   releases when it stops driving. Reading: `process.bridge_h_7d`, flagged under 56.
 3. **The art pipeline up:** `artpiped.py` running (`pgrep -af artpiped`) with work in `pending/`; an empty queue is a gap
    to fill with already-approved jobs (search first: `artpipe_state.py find`).
 4. **A helper only for work that needs this tree or the game,** which the filler refuses by design.

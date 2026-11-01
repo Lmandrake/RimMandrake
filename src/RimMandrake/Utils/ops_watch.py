@@ -1236,6 +1236,15 @@ def c_process(now, rules, ctx):
         p = sum(1 for fs in cs if all(rx.match(f) for f in fs))
         out["process." + key] = M(round(100.0 * p / len(cs), 1), "% of commits touching process paths only",
                                   commits=len(cs), process_only=p)
+    try:  # the live lane's occupancy (FOUNDRY_THROUGHPUT_MEASURE_V2_GAP); a ledger that will not read must not cost the shares above
+        import bridge_hours as BH
+        import pulse_core as pc
+        evs = pc._model().read_clone(str(data_clone() / "infrastructure" / "state" / "ledger" / "events.jsonl"))
+        for key, span in (("bridge_h_24h", DAY), ("bridge_h_7d", 7 * DAY)):
+            out["process." + key] = M(BH.held_hours(evs, now, span), "hours the bridge lock was held (each hold cut at 6 h)")
+    except Exception as e:  # noqa: BLE001
+        for key in ("bridge_h_24h", "bridge_h_7d"):
+            out["process." + key] = U("ledger: %s: %s" % (type(e).__name__, str(e)[:120]))
     return out
 
 
