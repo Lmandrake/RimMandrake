@@ -1,0 +1,1 @@
+A relentless finish with a --live timer reading is checked once, at once: if the reading's mtime predates the commit it fails live_broken with nothing wrong. A pulse-deploy timer (rm-ops-watch) also runs code only after rm-pulse-update (10 min) fast-forwards. Wait for deploy HEAD to contain the sha, then one tick, then finish.
