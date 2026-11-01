@@ -221,8 +221,7 @@ the dung-and-mat economy.**
 - `SCALD_DARK_TOWER_1` (filed 2026-09-07) — the Rakatan high-command dungeon,
   which is the Spire (owner 2026-10-10): in the mountains, visible from the lake.
   Rust Cathedral control systems, fierce defenses, ocular warped Assailants that
-  pressed their way in. Folding its build into the Spire's is owed:
-  `SPIRE_DUNGEONS_MERGE_DARK_TOWER`.
+  pressed their way in. One build with the Spire's: `../ashfall_research_base.md` §7.
 - **Roster** — rides the full assignment pass: the four sorts into
   `RUT_TheScald`'s waiting empty `wildAnimals`; mats as flora/terrain
   dressing; `FISH_BY_BIOME_1`'s strangest table.

@@ -23,7 +23,7 @@
 
   Art: reuses Things/Building/Ship/ShipCryptosleepCasket at native (1,2)
   drawSize with a (1,1) footprint, the same size-vs-drawSize split
-  RUT_WarLabContainmentCell/RUT_VaultHeart/RUT_DarkTowerControlConsole all
+  RUT_WarLabContainmentCell/RUT_VaultHeart/RUT_SpireControlConsole all
   use - no new art authored this pass.
 -->
 <Defs>

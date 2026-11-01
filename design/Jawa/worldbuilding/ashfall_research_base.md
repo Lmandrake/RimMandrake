@@ -185,9 +185,39 @@ place on the peak that pretends none of that is happening.
     significantly increase,and a small Imperial force will garrison outside the
     War Lab that must be defeated to enter and use the codes."* Design:
     `warlab_garrison_early_blast_2026-11-01.md`.
-  - Folding the dark tower's built dungeon and this Base's into one building
-    is owed: `SPIRE_DUNGEONS_MERGE_DARK_TOWER`.
+  - The dark tower's built dungeon and this Base's are one building: section 7.
 
-Still owed: the dungeon sitting (KCSG templates, datafile text, cast,
-set-pieces) and the live verify (landmark reads back; dungeon placed and
-screenshotted).
+Still owed: the dungeon sitting (datafile text, cast, set-pieces) and the live
+verify (landmark reads back; dungeon placed and screenshotted).
+
+## 7. One building: what was built (`SPIRE_DUNGEONS_MERGE_DARK_TOWER`)
+
+Two closed items built two dungeons for this one building; they are one now. One
+site `RUT_SpireSite`, one template `RUT_Spire_HighCommand` (generator
+`src/RimUtinni/StructureInjectionsRUT/Source/Spire/gen_spire_layout.py`, audit beside
+it), one landmark `RUT_AshfallSpire`. "The Ashfall Research Base" is the Helix's study
+inside the Spire, not a second place.
+
+- **Which layout survived:** the dark tower's two-ward 121-cell grammar, the only one
+  ruled LARGE. Its moat is gone: the building stands in the mountains and is seen from
+  the lake, not in it.
+- **How the Helix study and the Rakatan high command share it,** outside in: gravel
+  apron; the hull and its one seal; the outer ward, the Helix's containment line and
+  specimen galleries; a shut door; the inner ward, the Rakatan garrison that never
+  stood down, with the breach trail past the door; the command deck with the
+  Cathedral's control systems; a second door; the isolated room with the command
+  console and the codes. The two garrisons are a door apart because the Helix's pass
+  is not an engine fact here: in sight of each other the machines and the Helix fight.
+- **Entry on the Cathedral's trust:** trust is conduct-stage VOUCHED or later
+  (`design/Jawa/cathedral_concealment_arc_spec.md` §1), the same stage the Mechanoid
+  pass requires, but not the pass itself: the pass is a priced boon, entry is the
+  standing. The hull takes no damage and carries thick rock overhead, so the seal is
+  the only way in; it opens within a second of game time once the stage stands, and
+  stays open if trust later falls. A Mod Setting removes the gate.
+- **The codes** are taken from the isolated room, and nothing else hands them out. The
+  cold access is in the text of the console and the item: no challenge, no record.
+- **Open:** the ocular warped Assailants are still only the breach trail (the strain
+  question has not been put to the owner); the stage's live source is the GM blackboard,
+  shadow-mode until `CATHEDRAL_REGARD_BLACKBOARD_1` goes live; the site and landmark are
+  not yet on a tile. That tile must be a mountain tile in sight of the Scald's lake and
+  still carry the Contagion peak of section 3.

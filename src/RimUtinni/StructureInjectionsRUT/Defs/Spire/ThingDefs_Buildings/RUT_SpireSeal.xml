@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Spire's shell (SPIRE_DUNGEONS_MERGE_DARK_TOWER). Owner, 2026-10-10, card 7:
+  "Earning the Cathedral's trust allows you to enter the Spire to obtain the codes
+  needed to get into the War Lab".
+
+  RUT_SpireHullWall: the fortified ancient wall, black, taking no damage
+  (CompSpireHull). RUT_SpireSeal: the one opening, taking no damage, gone the moment
+  the Cathedral's trust stands (CompSpireSeal, SpireEntry.cs). Neither is buildable
+  or deconstructible. Art: the Odyssey atlas tinted black, and the ship-computer
+  placeholder the dungeon consoles share, until an artpipe job lands.
+-->
+<Defs>
+  <ThingDef ParentName="AncientFortifiedWall">
+    <defName>RUT_SpireHullWall</defName>
+    <label>the Spire's hull</label>
+    <description>Dead-black ultratech polymer, unweathered, and it does not mark. Blades, blasts and fire leave it as they found it.</description>
+    <graphicData>
+      <color>(24,24,28)</color>
+    </graphicData>
+    <comps>
+      <li Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_SpireHull" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_SpireSeal</defName>
+    <label>the Spire's seal</label>
+    <description>A slab of the same black polymer as the hull, set flush, with no handle, no lock and no seam a tool can find. Something behind it decides who it opens for. The machines of the Cathedral pass through here without slowing.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipComputerCore</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <color>(24,24,28)</color>
+      <drawSize>(1.15,1.15)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <blockWind>true</blockWind>
+    <blockLight>true</blockLight>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>9999</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>false</claimable>
+      <isInert>true</isInert>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_SpireSeal" />
+    </comps>
+  </ThingDef>
+</Defs>

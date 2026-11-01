@@ -53,7 +53,7 @@
   <ThingDef ParentName="ResourceBase">
     <defName>RUT_RakatanCommandCodes</defName>
     <label>Rakatan command codes</label>
-    <description>A data-core seized from an isolated system deep in the Spire — Rakatan military cryptography, never ceded to any cathedral, never meant to leave this room. Whatever it unlocks, it was built to unlock only once.</description>
+    <description>A data-core seized from an isolated system deep in the Spire — Rakatan military cryptography, never ceded to any cathedral, never meant to leave this room. It came away from the console without a word: no challenge, no record, no sign that anything noticed. Whatever it unlocks, it was built to unlock only once.</description>
     <thingClass>ThingWithComps</thingClass>
     <graphicData>
       <texPath>Things/Item/Special/SubpersonaCoreTechprof</texPath>

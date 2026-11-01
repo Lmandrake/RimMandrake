@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The Spire's one site (SPIRE_DUNGEONS_MERGE_DARK_TOWER). Same site-part/gen-step
+  shape as VaultDungeons/SitePartDefs_Vaults.xml, carrying RUT_Spire_HighCommand
+  from StructureLayoutDefs_Spire.xml (Source/Spire/gen_spire_layout.py).
+
+  minMapSize is the vaults' floor (dungeons_arc_spec.md SS3.9), which holds the
+  121 footprint with room for the mountain around it. wantsThreatPoints is false:
+  the fixed garrisons ARE the threat.
+
+  RUT_GenStep_SpireRoof runs after the structure: it roofs the hull in thick rock,
+  so no pod and no shell comes through the top of a building whose only way in is
+  its seal (Source/Spire/GenStep_SpireRoof.cs).
+
+  Not placed on any tile: that is a bridge sitting on the one frozen world, with the
+  landmark RUT_AshfallSpire on the same tile (ashfall_research_base.md section 7).
+-->
+<Defs>
+  <SitePartDef>
+    <defName>RUT_SpireSite</defName>
+    <label>the Spire</label>
+    <description>A thin black needle in the Scald's mountains, seen from the lake on the days the turbulence lets it be seen: the Rakatan's ground-based high command. Its garrison never got the order to stand down, and the Helix have set up shop inside its walls. Nothing about it opens from the outside.</description>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/AncientStructure</expandingIconTexture>
+    <minMapSize>(325,1,325)</minMapSize>
+    <wantsThreatPoints>false</wantsThreatPoints>
+    <gravShipsCanLandOn>false</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <forceExitAndRemoveMapCountdownDurationDays>4</forceExitAndRemoveMapCountdownDurationDays>
+    <tags>
+      <li>RUT_Spire</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_SpireSite</defName>
+    <linkWithSite>RUT_SpireSite</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RUT_Spire_HighCommand</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_SpireRoof</defName>
+    <linkWithSite>RUT_SpireSite</linkWithSite>
+    <order>401</order>
+    <genStep Class="RimMandrake.Utinni.StructureInjectionsRUT.GenStep_SpireRoof" />
+  </GenStepDef>
+</Defs>

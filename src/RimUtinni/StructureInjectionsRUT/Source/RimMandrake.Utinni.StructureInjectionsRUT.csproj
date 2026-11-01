@@ -49,6 +49,8 @@
     <Compile Include="Ashfall\GameComponent_AshfallCommandCodes.cs" />
     <Compile Include="Ashfall\AshfallCommandCodesFlag.cs" />
     <Compile Include="Ashfall\CompRedeemRakatanCommandCodes.cs" />
+    <Compile Include="Spire\SpireEntryKernel.cs" />
+    <Compile Include="Spire\SpireEntry.cs" />
     <Compile Include="StructureInjectionsRUTSettings.cs" />
   </ItemGroup>
 

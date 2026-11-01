@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   ANCIENT_WAR_LAB_1: the site-part/gen-step wiring, same shape as
-  VaultDungeons/SitePartDefs_Vaults.xml and DarkTower/SitePartDefs_DarkTower.xml
+  VaultDungeons/SitePartDefs_Vaults.xml and Spire/SitePartDefs_Spire.xml
   - a SitePartDef the world can carry plus a linked GenStepDef that runs
   KCSG.GenStep_CustomStructureGen against the RUT_WarLab_Complex template
   authored in StructureLayoutDefs_WarLab.xml.

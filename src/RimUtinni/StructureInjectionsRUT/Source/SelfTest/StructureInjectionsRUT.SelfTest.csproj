@@ -30,6 +30,7 @@
 
   <ItemGroup>
     <Compile Include="..\VaultDungeons\WokenAncientsKernel.cs" />
+    <Compile Include="..\Spire\SpireEntryKernel.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

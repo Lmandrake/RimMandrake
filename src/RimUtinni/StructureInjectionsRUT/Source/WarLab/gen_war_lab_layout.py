@@ -5,8 +5,8 @@ the war lab beneath the propane lake, over the Impact Site.
 Full spec: infrastructure/state/items/ANCIENT_WAR_LAB_1.md ("build spec (FOUNDRY,
 2026-09-08 — consolidated") and the frozen the_propane_lakes.md SS3/SS8. Precedent
 this follows, not duplicates: StructureInjectionsRUT/Source/VaultDungeons/
-gen_vault_layouts.py (VAULT_DUNGEON_BUILD_1) and .../DarkTower/
-gen_dark_tower_layout.py (SCALD_DARK_TOWER_1) - same KCSG StructureLayoutDef/
+gen_vault_layouts.py (VAULT_DUNGEON_BUILD_1) and .../Spire/
+gen_spire_layout.py (SCALD_DARK_TOWER_1) - same KCSG StructureLayoutDef/
 SymbolDef format, same "every third-party or our-own ThingDef/PawnKindDef needs
 an explicit KCSG.SymbolDef wrapper, vanilla/DLC content is safe bare" rule (KCSG's
 own ResolveSymbols(), cited in full in gen_vault_layouts.py's header - not
@@ -50,7 +50,7 @@ invent, confirm at build time" per the item's own build-spec note):
     RUT_Symbol_MechLancer/RUT_Symbol_MechCenturion defNames already shipped
     in the SAME mod (mandrake.rut.injections) via VaultDungeons/
     SymbolDefs_Vaults.xml - no redefinition needed, same convention
-    gen_dark_tower_layout.py already used for this exact pair. Roster
+    gen_spire_layout.py already used for this exact pair. Roster
     choice matches MECHANOID_BIOME_PRESENCE_REVIEW_1's own 2026-09-09 draft
     table, which already reads AB_PropaneLakes/RUT_PropaneLake as
     "RULED ALLOW... the lab IS the danger" - not an invented placement.
@@ -59,7 +59,7 @@ invent, confirm at build time" per the item's own build-spec note):
     combo, auto-symbol'd bare, safe) - not a new material invented here.
   - Study-records prop: RUT_WarLabArchive (new ThingDef, this pass - see
     its own file header for why it is narrative-anchor-only, matching
-    RUT_DarkTowerControlConsole's precedent).
+    RUT_SpireControlConsole's precedent).
   - Live/trapped-specimen containment prop: RUT_WarLabContainmentCell (new
     ThingDef, this pass - see its own file header for why it is a sealed,
     non-openable prop rather than a props-with-pawn casket, and why that
@@ -91,7 +91,7 @@ THING_SYMBOLS = [
     ("RUT_Symbol_WarLabArchive", "RUT_WarLabArchive",
      "The study-records reveal-beat (see that ThingDef's own header). Our "
      "own ThingDef -> needs this wrapper. Spawned factionless like "
-     "RUT_Symbol_VaultHeart/RUT_Symbol_DarkTowerConsole so the crew can "
+     "RUT_Symbol_VaultHeart/RUT_Symbol_SpireControlConsole so the crew can "
      "claim it once the guardians are cleared."),
     ("RUT_Symbol_WarLabContainmentCell", "RUT_WarLabContainmentCell",
      "The live/trapped-specimen prop (see that ThingDef's own header - "
@@ -142,7 +142,7 @@ def gen_symboldefs():
 
 # --- Layout geometry -----------------------------------------------------
 # Concentric SQUARE rings by Chebyshev distance-to-border, same technique as
-# gen_dark_tower_layout.py's dist(). Three bands, matching the item's own
+# gen_spire_layout.py's dist(). Three bands, matching the item's own
 # three-band spec exactly (approach / lab interior / core), each behind its
 # own wall on a DIFFERENT face so reaching the core is always a full lap of
 # both bands, never a straight line (same discipline as both siblings):

@@ -38,7 +38,7 @@
   Art: reuses Things/Building/Ship/ShipCryptosleepCasket (Core,
   Buildings_Misc.xml) at its native (1,2) proportions via drawSize only
   (footprint kept (1,1) so it never collides in a dense KCSG grid cell -
-  the same size-vs-drawSize split RUT_VaultHeart/RUT_DarkTowerControlConsole
+  the same size-vs-drawSize split RUT_VaultHeart/RUT_SpireControlConsole
   already use for their own oversized single-cell props). Reading the shape
   of a sealed vertical pod without touching the vanilla ThingDef itself
   (Building_AncientCryptosleepCasket's className carries the openable/

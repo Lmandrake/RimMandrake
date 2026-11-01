@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- RUT_AshfallSpire — "The Spire", the Ashfall Research Base site in the
-       Ashfall Range (ASHFALL_SPIRE_LANDMARK_1, design/Jawa/worldbuilding/
-       ashfall_research_base.md SS3/SS6). Owner's display register, verbatim:
+  <!-- RUT_AshfallSpire — "The Spire", the one landmark of the one building
+       (the Rakatan high command, the Scald's dark tower and the Helix's Ashfall
+       Research Base; design/Jawa/worldbuilding/ashfall_research_base.md SS3/SS6/
+       SS7). Its dungeon is RUT_SpireSite on the same tile. Owner's display register, verbatim:
        "a mysterious thin black needle of a building with a disc landing near
        the top, visible only occasionally due to the atmospheric turbulence
        over the Scald's mountains." That register is what this def draws and
-       describes — the dungeon shell, the KCSG interior and the campaign
-       function are explicitly NOT in scope (owner: "Not ready to resolve this
-       yet"), so nothing here invents what is inside it or who put it there.
+       describes; what is inside it belongs to StructureInjectionsRUT's Spire.
 
        A distinct LandmarkDef rather than a reskin of AncientLaunchSite or
        AncientWarehouse because the silhouette IS the content: every existing
@@ -21,7 +20,7 @@
        2026-08-15: players receive a savegame holding the fixed world; worldgen
        never rolls anything). A nonzero commonality would let the generator
        scatter second and third Spires across the planet. It exists only to be
-       force-placed ONCE, on a live-checked Ashfall Range tile, by the
+       force-placed ONCE, on a live-checked mountain tile, by the
        world-edit step this item still owes — not by this authoring pass.
 
        mutatorChances: AncientUplink, Required="True". LandmarkDef.ConfigErrors()

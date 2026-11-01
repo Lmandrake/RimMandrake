@@ -6,8 +6,8 @@
   band 3): "the study records (terminal/archive prop — exact defName HELD,
   confirm at hand-finish; the payoff is informational/reveal-beat, not
   loot-ladder)." This IS that hand-finish pass. Same discipline as
-  RUT_DarkTowerControlConsole (StructureInjectionsRUT/Defs/DarkTower/
-  ThingDefs_Buildings/RUT_DarkTowerControlConsole.xml): a narrative anchor
+  RUT_SpireControlConsole (StructureInjectionsRUT/Defs/Spire/
+  ThingDefs_Buildings/RUT_SpireControlConsole.xml): a narrative anchor
   object, not a new mechanic. No C# reveal system exists yet for "the study
   records" (no analog to RUST_CATHEDRAL_MECHANICS_1's hum-mood kit is filed
   for this beat) - so this ships as a claimable, non-mechanical building
@@ -22,7 +22,7 @@
   nothing new is invented here, only compiled into an in-fiction object.
 
   Art: reuses Things/Building/Ship/ShipComputerCore, the SAME placeholder
-  RUT_VaultHeart and RUT_DarkTowerControlConsole already use (both of those
+  RUT_VaultHeart and RUT_SpireControlConsole already use (both of those
   files say so explicitly - "no new art authored this pass" is the
   established convention for this narrative-anchor class of object, not a
   shortcut unique to this file).

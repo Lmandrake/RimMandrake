@@ -10,6 +10,7 @@
     <spawnRotten>false</spawnRotten>
     <defendSpawnPoint>true</defendSpawnPoint>
   </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_HelixHeavy</defName>
     <pawnKindDef>RUT_Jawa_Helix_Heavy</pawnKindDef>
@@ -20,6 +21,7 @@
     <spawnRotten>false</spawnRotten>
     <defendSpawnPoint>true</defendSpawnPoint>
   </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_HelixSpecialist</defName>
     <pawnKindDef>RUT_Jawa_Helix_Specialist</pawnKindDef>
@@ -30,6 +32,7 @@
     <spawnRotten>false</spawnRotten>
     <defendSpawnPoint>true</defendSpawnPoint>
   </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_HelixLeader</defName>
     <pawnKindDef>RUT_Jawa_Helix_Leader</pawnKindDef>
@@ -40,24 +43,54 @@
     <spawnRotten>false</spawnRotten>
     <defendSpawnPoint>true</defendSpawnPoint>
   </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_TeslaTurret</defName>
     <thing>VFES_Turret_TeslaBlaster</thing>
   </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_Railgun</defName>
     <thing>VFES_Turret_ChargeRailgun</thing>
   </KCSG.SymbolDef>
+
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_SpireHull</defName>
+    <thing>RUT_SpireHullWall</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_SpireSeal</defName>
+    <thing>RUT_SpireSeal</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_SpireDoor</defName>
+    <thing>Door</thing>
+    <stuff>Plasteel</stuff>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_SpireControlConsole</defName>
+    <thing>RUT_SpireControlConsole</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_SpireCommandConsole</defName>
     <thing>RUT_SpireCommandConsole</thing>
     <spawnPartOfFaction>false</spawnPartOfFaction>
   </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_AshfallSpecimenCell</defName>
     <thing>RUT_AshfallSpecimenCell</thing>
     <spawnPartOfFaction>false</spawnPartOfFaction>
   </KCSG.SymbolDef>
+
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_RakatanCommandCodes</defName>
     <thing>RUT_RakatanCommandCodes</thing>

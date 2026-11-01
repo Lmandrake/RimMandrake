@@ -15,6 +15,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
     {
         public static bool warLabCraterEnabled = true;
         public static bool ashfallCommandCodesEnabled = true;
+        public static bool spireEntryGated = true;
         public static bool fleshSealEnabled = true;
         // RECLAMATION_TRIGGER_REWIRE_WOKEN_COUNT: the Reclamation starts when this
         // many ancients have been woken (owner card 13, 2026-10-10; the number is
@@ -27,6 +28,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
             base.ExposeData();
             Scribe_Values.Look(ref warLabCraterEnabled, "warLabCraterEnabled", true);
             Scribe_Values.Look(ref ashfallCommandCodesEnabled, "ashfallCommandCodesEnabled", true);
+            Scribe_Values.Look(ref spireEntryGated, "spireEntryGated", true);
             Scribe_Values.Look(ref fleshSealEnabled, "fleshSealEnabled", true);
             Scribe_Values.Look(ref reclamationByWokenCount, "reclamationByWokenCount", true);
             Scribe_Values.Look(ref reclamationWokenThreshold, "reclamationWokenThreshold", 10);
@@ -43,9 +45,14 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
               + "extra to the worldmap.");
 
             list.CheckboxLabeled("Rakatan command codes unlock the war lab", ref ashfallCommandCodesEnabled,
-                "Redeeming the Rakatan command codes from the Ashfall Research Base sets the "
+                "Redeeming the Rakatan command codes from the Spire sets the "
               + "flag whichever war-lab gate check consults to open its shielding. Off: "
               + "redeeming the codes does nothing (the item is still consumed).");
+
+            list.CheckboxLabeled("The Spire opens only on the Cathedral's trust", ref spireEntryGated,
+                "The Spire's hull takes no damage and its one seal opens when the Rust Cathedral has "
+              + "come to vouch for the clan. Off: the seal opens as the Spire is built, so the way "
+              + "in is simply open.");
 
             list.CheckboxLabeled("Flesh seal on the Slough vault door", ref fleshSealEnabled,
                 "The Slough vault's inner door is plugged with flesh that nothing but a slime chunk "
@@ -72,6 +79,7 @@ namespace RimMandrake.Utinni.StructureInjectionsRUT
         {
             warLabCraterEnabled = true;
             ashfallCommandCodesEnabled = true;
+            spireEntryGated = true;
             fleshSealEnabled = true;
             reclamationByWokenCount = true;
             reclamationWokenThreshold = 10;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_SpireControlConsole - the Rust Cathedral's control systems on the Spire's
+  command deck (owner, 2026-09-07: the high command "has control systems for the
+  Rust Cathedral in it as well"; the Spire IS that tower, card 6).
+
+  A narrative anchor: a labelled, claimable, powered building. The Cathedral's
+  attitude system is RM_MapComponent_BiomeAttitude; hook that, never a second one.
+  Unlike RUT_VaultHeart nothing here needs waking: the garrison never stood down.
+  It is NOT the isolated system: RUT_SpireCommandConsole, in its own room, holds
+  the codes, which were never ceded to the Cathedral.
+
+  Art: the ShipComputerCore placeholder the dungeon consoles share.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_SpireControlConsole</defName>
+    <label>high command console</label>
+    <description>A Forsaken command console, still drawing power after all this time. Its data-spikes run to a socket built for interfaces that no longer exist - and among the runs still live, the fittings match nothing found anywhere else on the plateau except the Rust Cathedral itself.\n\nThis was the Rakata's ground-based high command. Whatever it commanded is not obvious from the console alone.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipComputerCore</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.6,1.6)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>1000</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>true</claimable>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-1200</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>9</glowRadius>
+        <glowColor>(180,220,255,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

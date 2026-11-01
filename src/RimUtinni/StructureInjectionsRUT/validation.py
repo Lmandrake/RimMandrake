@@ -92,7 +92,7 @@ suite = Suite("StructureInjectionsRUT")
 # (Source/StructureInjectionsRUTSettings.cs). The GenStep/TileMutator
 # mechanism's own gate (RM_StructureInjectionsSettings.enabled) belongs to
 # the ENGINE mod, see module docstring.
-suite.toggles = ["warLabCraterEnabled", "ashfallCommandCodesEnabled", "reclamationByWokenCount"]
+suite.toggles = ["warLabCraterEnabled", "ashfallCommandCodesEnabled", "spireEntryGated", "reclamationByWokenCount"]
 
 ENGINE_SETTINGS_TYPE = "RimMandrake.StructureInjections.RM_StructureInjectionsSettings"
 
@@ -264,6 +264,7 @@ def whisper_subsystem_rolls_correctly(t):
 RUT_SETTINGS_TYPE = "RimMandrake.Utinni.StructureInjectionsRUT.StructureInjectionsRUTSettings"
 WARLAB_TYPE = "RimMandrake.Utinni.StructureInjectionsRUT.WarLabCraterMutation"
 ASHFALL_TYPE = "RimMandrake.Utinni.StructureInjectionsRUT.AshfallCommandCodesFlag"
+SPIRE_TYPE = "RimMandrake.Utinni.StructureInjectionsRUT.SpireEntry"
 
 
 def _mod_dir():
@@ -332,7 +333,7 @@ def static_wiring_offline(t):
     with t.component("compclass_types_exist_and_are_wired", beyond_toggle=True):
         for rel, needle in (("WarLab/ThingDefs_Buildings/RUT_WarLabReactorCore.xml",
                              "CompProperties_IgniteCraterOnDestroy"),
-                            ("Ashfall/ThingDefs_Items/RUT_RakatanCommandCodes.xml",
+                            ("Spire/ThingDefs_Items/RUT_RakatanCommandCodes.xml",
                              "CompProperties_RedeemRakatanCommandCodes")):
             txt = open(os.path.join(defs, rel), encoding="utf-8").read()
             if "<li Class=\"RimMandrake.Utinni.StructureInjectionsRUT.%s\"" % needle not in txt:
@@ -343,6 +344,7 @@ def static_wiring_offline(t):
 def coverage_defs_load(t):
     with t.component("war_lab_and_ashfall_defs_loaded", beyond_toggle=True):
         for d in ("ThingDef/RUT_WarLabReactorCore", "ThingDef/RUT_RakatanCommandCodes",
+                  "ThingDef/RUT_SpireHullWall", "ThingDef/RUT_SpireSeal", "SitePartDef/RUT_SpireSite",
                   "TerrainDef/PavedTile", "TileMutatorDef/RUT_HomesteadAbode"):
             r = t.bridge_call("jawa/get_defs", defs=d)
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
@@ -368,6 +370,20 @@ def war_lab_crater_gate(t):
             "RUT_PropaneLake/RM_TheChill tiles and a read of GameComponent_WarLabCrater."
             "Triggered/CrateredTileIds; no jawa tool exposes that GameComponent and the "
             "quicktest world has none of those tiles (add a ProofIgnite static to the mod)")
+
+
+@suite.chain("spire_seal_gate")
+def spire_seal_gate(t):
+    """spireEntryGated: with no Cathedral trust the seal stays shut; OFF it opens."""
+    with t.component("seal_respects_toggle_without_trust", toggle="spireEntryGated"):
+        if _need_static(t, SPIRE_TYPE, "get_CathedralStage") != "0":
+            raise ExpectationFailed("a fresh game should read conduct-stage 0")
+        shut = _need_static(t, SPIRE_TYPE, "get_SealOpens")
+        t.set_setting(RUT_SETTINGS_TYPE, {"spireEntryGated": False})
+        opened = _need_static(t, SPIRE_TYPE, "get_SealOpens")
+        t.set_setting(RUT_SETTINGS_TYPE, {"spireEntryGated": True})
+        if shut != "false" or opened != "true":
+            raise ExpectationFailed("seal opens: gated %s, ungated %s" % (shut, opened))
 
 
 @suite.chain("ashfall_command_codes_gate")
