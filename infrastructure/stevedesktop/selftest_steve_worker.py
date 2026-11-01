@@ -346,6 +346,11 @@ def main():
               % (res.get("cause"), res.get("note")))
         check(os.path.exists(ndowns) and len(open(ndowns).readlines()) == 1 and "cold-starts" in (res.get("note") or ""),
               "a no_game run stops the game once so the next job cold-starts: %s" % res.get("note"))
+        rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  TESTQ_CMD_DOWN="echo 'REFUSED: never stops the owner game'; exit 3", **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("cause") == "HARNESS" and "game NOT stopped (never stops the owner game)" in (res.get("note") or ""),
+              "a lane that may not stop the game says so in the note: %s" % res.get("note"))
         hdowns = os.path.join(tmp, "harness_downs")
         rc, o = w(["start"], job(), MOCK_MODE="crash", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
                   TESTQ_CMD_DOWN="echo down >> %s" % hdowns, **load)

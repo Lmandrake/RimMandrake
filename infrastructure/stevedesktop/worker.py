@@ -37,6 +37,8 @@ How a job runs (one attempt at a time on this machine):
     When load KEEPS a running game that carries markers older than the load (a driver killed mid-call), the game is
     restarted once first, so the fresh start resolves them, instead of the job ending INVALID/HARNESS. Only once per
     marker (TESTQ_HOME/marker_bounces.json): a marker a restart did not clear fails later jobs fast, no restart loop.
+  * A run that ends with a red canary or with the bridge's no_game (INVALID/HARNESS) stops the game, so the next job
+    cold-starts instead of inheriting it; a lane that may not stop the game says so in the note.
   * A start that finds this machine's game guard HELD by a live driver (no testq attempt running) is deferred: busy,
     exit 75, the job stays pending; no attempt is made.
 
