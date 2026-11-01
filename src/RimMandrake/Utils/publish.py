@@ -179,11 +179,13 @@ def rebase(top):
     up, head = out(top, "rev-parse", track), out(top, "rev-parse", "HEAD")
     if is_ancestor(top, up, head) or is_ancestor(top, head, up):
         return rebuilt                                   # already on top of origin, or nothing local
+    # git cherry never lists a merge, so a resolution edited inside one would vanish at the reset: ask rev-list
+    merges = out(top, "rev-list", "--merges", "%s..%s" % (up, head)).split()
+    if merges:
+        raise Refuse("local commit %s is a merge; publish cannot replay it" % merges[0][:12])
     todo = [ln[2:].strip() for ln in out(top, "cherry", up, head).splitlines() if ln.startswith("+")]
     tip = up
     for c in todo:
-        if len(out(top, "rev-list", "--parents", "-n1", c).split()) != 2:
-            raise Refuse("local commit %s is a merge; publish cannot replay it" % c[:12])
         r = run(top, "merge-tree", "--write-tree", "--name-only", "--merge-base=%s^" % c, tip, c, check=False)
         tree = r.stdout.split("\n", 1)[0].strip()
         if r.returncode:

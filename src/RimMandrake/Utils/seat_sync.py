@@ -35,6 +35,7 @@ import argparse
 import collections
 import ctypes
 import fcntl
+import hashlib
 import os
 import shutil
 import subprocess
@@ -355,7 +356,7 @@ def _carry(g: Git, it: dict, park: Path) -> None:
         finally:
             os.close(fd)                                # closing releases the flock
         raise DirtyConflict([p])
-    tmp = park / f"swap-{it['blob']}.tmp"
+    tmp = park / f"swap-{hashlib.sha1(p.encode()).hexdigest()}.tmp"   # per path: two files can share a target blob
     for _ in range(5):
         cur = _read_wt(g, p)
         merged = None if cur is None else (cur if cur == theirs else merge3(cur, base, theirs))
@@ -444,7 +445,9 @@ def plan(g: Git) -> dict:
         if cherry.get(c) == "-":
             p["local"].append((subj, "patch-equivalent"))
             continue
-        touched = g.lines("diff-tree", "--no-commit-id", "--name-only", "-r", "-z", "--root", c)
+        parents = g.run("rev-list", "--parents", "-n1", c).split()[1:]
+        touched = (g.lines("diff", "--name-only", "-z", "--no-renames", parents[0], c) if len(parents) > 1
+                   else g.lines("diff-tree", "--no-commit-id", "--name-only", "-r", "-z", "--root", c))
         a, b = g.blobs(head, touched), g.blobs(up, touched)
         if all(a.get(t) == b.get(t) for t in touched):
             p["local"].append((subj, "content-equivalent"))

@@ -263,6 +263,66 @@ def t_shard_is_never_swapped_even_if_a_merge_exists(a, b):
     assert show(a, "h.txt") == "mine\n"
 
 
+def evil_merge(a):
+    """A local merge whose resolution changes a line neither side had: git cherry and diff-tree both miss it."""
+    sh(a, "checkout", "-q", "-b", "side")
+    write(a, "s.txt", "side\n")
+    sh(a, "add", "s.txt")
+    sh(a, "commit", "-q", "-m", "side", "--", "s.txt")
+    sh(a, "checkout", "-q", "main")
+    write(a, "m.txt", "main\n")
+    sh(a, "add", "m.txt")
+    sh(a, "commit", "-q", "-m", "main", "--", "m.txt")
+    sh(a, "merge", "-q", "--no-ff", "--no-commit", "side")
+    write(a, "g.txt", "only in the merge\n")
+    sh(a, "add", "g.txt")
+    sh(a, "commit", "-q", "-m", "merge")
+
+
+def t_a_local_merge_refuses_never_vanishes(a, b):
+    evil_merge(a)
+    peer_push(b, "f.txt", LINES.replace("line 2", "ORIGIN 2"))
+    head = sh(a, "rev-parse", "HEAD")
+    write(a, "h.txt", "mine\n")
+    why = refused(P.publish, a, ["h.txt"], "mine")
+    assert why and "is a merge" in why, why
+    assert sh(a, "rev-parse", "HEAD^") == head and show(a, "g.txt", "HEAD") == "only in the merge\n"
+
+
+def t_sync_refuses_a_merge_it_would_drop(a, b):
+    import seat_sync as S
+    evil_merge(a)
+    peer_push(b, "s.txt", "side\n")                            # both plain commits are upstream: only the merge is not
+    peer_push(b, "m.txt", "main\n")
+    sh(a, "fetch", "-q")
+    try:
+        S.plan(S.Git(a))
+    except S.Refused as e:
+        assert "NOT on origin/main" in str(e), e
+        return
+    raise AssertionError("plan accepted a merge whose change is on no other commit")
+
+
+def t_carried_files_sharing_a_target_blob_keep_their_own_inodes(a, b):
+    for n in ("p.txt", "q.txt"):
+        peer_push(b, n, LINES)
+    sh(a, "pull", "-q", "--rebase")
+    up = LINES.replace("line 2", "ORIGIN 2")
+    sh(b, "pull", "-q", "--rebase")
+    for n in ("p.txt", "q.txt"):
+        write(b, n, up)
+    sh(b, "add", "p.txt", "q.txt")
+    sh(b, "commit", "-q", "-m", "same blob", "--", "p.txt", "q.txt")
+    sh(b, "push", "-q", "origin", "HEAD:main")
+    write(a, "p.txt", LINES.replace("line 5", "PEER P"))
+    write(a, "q.txt", LINES.replace("line 7", "PEER Q"))
+    write(a, "h.txt", "mine\n")
+    sha, log = quiet(P.publish, a, ["h.txt"], "mine")
+    assert "WRITE LANDED" not in log, log
+    assert "PEER P" in open(os.path.join(a, "p.txt")).read() and "ORIGIN 2" in open(os.path.join(a, "q.txt")).read()
+    assert "PEER Q" in open(os.path.join(a, "q.txt")).read()
+
+
 def t_unmerged_index_is_left_alone(a, b):
     peer_push(b, "f.txt", LINES.replace("line 2", "ORIGIN 2"))
     sh(a, "fetch", "-q")
