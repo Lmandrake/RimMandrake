@@ -9668,3 +9668,4 @@
 {"seat":"FOUNDRY","event":"lease","id":"PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS","action":"take","token":"FOUNDRY.pid33700.cb1bed74","expires":"2026-11-01T03:15:59Z","ts":"2026-11-01T02:30:59Z","tsn":1793500259604345422}
 {"seat":"FOUNDRY","event":"claim","id":"PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS","ts":"2026-11-01T02:31:00Z","tsn":1793500260226858076}
 {"seat":"FOUNDRY","event":"start","id":"PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS","ts":"2026-11-01T02:31:00Z","tsn":1793500260851631793}
+{"seat":"FOUNDRY","event":"implemented","id":"HOSE_CROSS_FIX_LEGACY_TOGGLE_STALE_INDEX","sha":"79f7ac98faeb","ref":"origin/main","criteria":[],"why":"FrameLegacy is a debug-only toggle; offline SelfTest HX4 covers the fix","ts":"2026-11-01T02:31:36Z","tsn":1793500296230787147}
