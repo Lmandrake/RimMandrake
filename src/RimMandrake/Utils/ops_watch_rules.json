@@ -9,7 +9,9 @@
  },
  "seats": {
   "_doc": "c_seats (OP2 in operating_requirements_2026-11-01.md), read from the Dispatcher's journal.jsonl and state.json under RM_DISPATCHER_STATE or state_dir. Every limit is in the ranges block. Bringing the seat back is DI1's, not this metric's",
-  "state_dir": "/mnt/d/ClaudeWork/rimmandrake/dispatcher"
+  "state_dir": "/mnt/d/ClaudeWork/rimmandrake/dispatcher",
+  "journal_grace_s": 600,
+  "_journal_grace_s_doc": "rm-dispatcher.service's TimeoutStartSec: a tick that holds a ring in state.json has journalled it or died by then"
  },
  "plan": {
   "_doc": "c_plan (DI3, MI1 in operating_requirements_2026-11-01.md). status_rank: a mod's modcheck status as the number an entry's finish-line reading rises on; a status not here is a reading not seen. Every limit is in the ranges block: list_max_age_h is plan.list_age_h's distressed bound, advance_max_days is plan.days_since_advance's",

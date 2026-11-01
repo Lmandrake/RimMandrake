@@ -256,6 +256,16 @@ fresh()
 put_state({"last_ok_tick": OW.iso(T0), "seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-7-1", "rung_at": T0 - 30}, "idle_since": T0 - 30}}})
 pts = OW.c_seats(T0, RULES, {})
 check("a ring 30 s old, journalled when its tick ends, is not blind", pts["seats.blind"]["v"] == 0, pts)
+fresh()
+put_state({"last_ok_tick": OW.iso(T0), "seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-7-1", "rung_at": T0 + 25}, "idle_since": T0 + 25}}})
+pts = OW.c_seats(T0, RULES, {})
+check("a ring rung after this run began (the 21:22 alarm) is not blind", pts["seats.blind"]["v"] == 0, pts)
+fresh()
+put_state({"last_ok_tick": OW.iso(T0), "seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-7-1", "rung_at": T0 - 590}, "idle_since": T0 - 590}}})
+pts = OW.c_seats(T0, RULES, {})
+check("a ring inside the tick's whole life (past its 420 s budget) is not blind", pts["seats.blind"]["v"] == 0, pts)
+blind_when("a ring dated an hour ahead with no journal row", lambda: put_state(
+    {"last_ok_tick": OW.iso(T0), "seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-7-1", "rung_at": T0 + 3600}, "idle_since": T0}}}))
 
 no_block = {k: v for k, v in RULES.items() if k != "seats"}
 fresh()

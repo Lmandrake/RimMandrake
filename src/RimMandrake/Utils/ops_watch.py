@@ -1925,8 +1925,9 @@ def c_seats(now, rules, ctx):
             found = st_idle_since(rows, seat, ss, now)
             if found is None:
                 rung = (ss.get("ring") or {}).get("rung_at") if isinstance(ss.get("ring"), dict) else None
-                if is_num(rung) and finite(rung) and 0 <= now - rung < 300:
-                    continue        # a tick journals its actions when it ends, after the ring is out and in state.json
+                if is_num(rung) and finite(rung) and abs(now - rung) < cfg["journal_grace_s"]:
+                    continue        # the tick journals after state.json holds the ring; `now` is this run's start, so
+                                    # a ring rung during the run is dated after it (21:22 alarm: now 21:22:00, ring 21:22:25)
                 why = "journal.jsonl lacks the rings state.json holds open for %s" % seat
                 break
             per[seat] = round((now - found[0]) / 60.0, 1)
