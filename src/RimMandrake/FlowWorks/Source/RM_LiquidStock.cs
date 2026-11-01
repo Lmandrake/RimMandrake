@@ -853,7 +853,7 @@ namespace RimMandrake.FlowWorks
 		}
 
 		/// <summary>THIRST_FIX_SALT_DRUNK_ROUTINELY / THIRST_FIX_DESPERATE_SKIPS_BOTTLE: a terrain registered to a liquid that is
-		/// not fresh water. A liquid with no canalFluid (salt water, brine, acid, the coloured waters) gets no FluidDef of its own,
+		/// not fresh water. A liquid with no canalFluid (salt water, brine, the coloured waters) gets no FluidDef of its own,
 		/// so FormBody stamps its body RM_Fluid_Water; without this the drawdown restaged a salt or brine pond onto the FRESHWATER
 		/// ladder (RM_WaterThin ...), which thirst reads as potable, and colonists drank "fresh" water out of the sea.</summary>
 		internal static bool IsOtherLiquidTerrain(TerrainDef t)

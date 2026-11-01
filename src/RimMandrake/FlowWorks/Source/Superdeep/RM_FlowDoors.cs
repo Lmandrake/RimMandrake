@@ -136,11 +136,10 @@ namespace RimMandrake.FlowWorks
 			{
 				return;
 			}
-			bool touches = LiquidTypes.RM_LiquidBottleUtility.LiquidAt(Position.GetTerrain(Map))?.IsAcid == true;
+			bool touches = RM_FluidIdentity.CellHoldsAcid(Map, Position);
 			for (int i = 0; i < 4 && !touches; i++)
 			{
-				IntVec3 c = Position + GenAdj.CardinalDirections[i];
-				touches = c.InBounds(Map) && LiquidTypes.RM_LiquidBottleUtility.LiquidAt(c.GetTerrain(Map))?.IsAcid == true;
+				touches = RM_FluidIdentity.CellHoldsAcid(Map, Position + GenAdj.CardinalDirections[i]);
 			}
 			DamageDef acid = DefDatabase<DamageDef>.GetNamedSilentFail("AcidBurn");
 			if (acid != null && LiquidTypes.RM_ContainerMaterialMath.GateBurnsInAcid(LiquidTypes.RM_ContainerMaterials.MaterialOf(Stuff), true, touches))

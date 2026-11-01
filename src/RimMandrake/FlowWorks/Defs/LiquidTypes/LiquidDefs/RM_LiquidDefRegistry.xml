@@ -278,6 +278,7 @@
       <shallow>RM_AcidShallow</shallow>
       <deep>RM_AcidDeep</deep>
     </terrainSuite>
+    <canalFluid>RM_Fluid_AcidWater</canalFluid>
     <bottled>
       <bottle>RM_Bottle_AcidWater</bottle>
       <litresPerBottle>1.5</litresPerBottle>
@@ -329,6 +330,7 @@
       <shallow>RM_ReactionLiquorShallow</shallow>
       <deep>RM_ReactionLiquorDeep</deep>
     </terrainSuite>
+    <canalFluid>RM_Fluid_ReactionLiquor</canalFluid>
     <useClass>Never</useClass>
     <surfaceLook>
       <tint>(0.95,0.88,1.08)</tint>

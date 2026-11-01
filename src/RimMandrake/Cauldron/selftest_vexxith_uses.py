@@ -78,7 +78,24 @@ def containers():
 
 def gates():
     src = text(FW, "Source/Superdeep/RM_FlowDoors.cs")
-    check("BurnIfTouchingAcid" in src and "GateBurnsInAcid" in src and "IsAcid" in src, "a canal gate burns where acid touches it")
+    check("BurnIfTouchingAcid" in src and "GateBurnsInAcid" in src, "a canal gate burns where acid touches it")
+    check(src.count("RM_FluidIdentity.CellHoldsAcid(Map") == 2 and "GenAdj.CardinalDirections" in src, "the gate reads canal fluid on its own cell and all four sides")
+    ident = text(FW, "Source/RM_FluidIdentity.cs")
+    check("ex.FillAt(c) > 0 ? ex.FluidAt(c)" in ident, "a recorded fluid counts only while the cell holds some")
+    check("index.AddFluid(f.defName, f.floodTerrain" in ident and "f.fillTerrainSuperdeep" in ident, "the in-game index reads every canal fill terrain")
+    # The production index on the shipped defs (FlowWorks SelfTest, GateAcidChecks.cs): red slime, acid water, reaction liquor
+    # canal fills burn steel not plasteel, every other fluid is the control.
+    stock = os.path.join(SRC, "Utils", "selftest_flowworks_stock.py")
+    for _ in range(2):  # a drvfs stage can fail with rsync ENOMEM: "env/build failure, not a selftest verdict"
+        p = subprocess.run([sys.executable, stock, "--only", "GateAcid_*,ContainerMat_*"], capture_output=True, text=True, timeout=250)
+        if "env/build failure" not in p.stdout + p.stderr:
+            break
+    tail = (p.stdout + p.stderr).strip().splitlines()[-3:]
+    check(p.returncode == 0, "gate touch detection on the shipped defs (exit %s: %s)" % (p.returncode, " | ".join(tail)))
+    plate = defs(root(HERE, "Defs/ThingDefs_Items/RM_CauldronItems.xml")).get("RM_Vexxith")
+    check(plate is not None and has_ext(plate, "RM_AcidImmuneExtension") and plate.find("stuffProps/categories/li").text == "Metallic",
+          "a vexxith gate can be built (Metallic, DoorBase's stuff) and its stuff refuses the burn at TakeDamage")
+    check("HasModExtension<RM_AcidImmuneExtension>" in text(HERE, "Source/RM_VexxithAcidImmunity.cs"), "the immunity reads a building's Stuff")
     check("liquidCorrosionEnabled" in src, "gate burn sits behind the corrosion toggle")
     doors = defs(root(FW, "Defs/Canals/ThingDefs/FlowWorks_Doors.xml"))
     for d in ("RM_Sluice", "RM_SecurityGrateDoor"):

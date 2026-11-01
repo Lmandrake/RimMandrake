@@ -40,6 +40,45 @@ namespace RimMandrake.FlowWorks
 			}
 			return byTerrain.TryGetValue(terrain, out FluidDef f) ? f : null;
 		}
+
+		private static RM_CanalLiquidIndex liquidIndex;
+
+		/// <summary>VEXXITH_USES_1: the shipped defs as a RM_CanalLiquidIndex. Lazily built after defs load; never mutated after.</summary>
+		private static RM_CanalLiquidIndex LiquidIndex
+		{
+			get
+			{
+				if (liquidIndex == null)
+				{
+					var index = new RM_CanalLiquidIndex();
+					foreach (LiquidDef l in DefDatabase<LiquidDef>.AllDefsListForReading)
+					{
+						LiquidTerrainSuite s = l.terrainSuite;
+						index.AddLiquid(l.defName, l.IsAcid, l.canalFluid?.defName, s?.shallow?.defName, s?.deep?.defName, s?.chestDeep?.defName);
+					}
+					foreach (FluidDef f in DefDatabase<FluidDef>.AllDefsListForReading)
+					{
+						index.AddFluid(f.defName, f.floodTerrain?.defName, f.fillTerrainVeryShallow?.defName, f.fillTerrainHalf?.defName,
+							f.fillTerrainBrim?.defName, f.fillTerrainSuperdeep?.defName);
+					}
+					liquidIndex = index;
+				}
+				return liquidIndex;
+			}
+		}
+
+		/// <summary>VEXXITH_USES_1: acid stands in this cell, natural pool or canal. A canal's fill terrain is on no terrainSuite, so
+		/// the terrain alone cannot tell; the fluid the excavation recorded counts only while the cell actually holds some.</summary>
+		public static bool CellHoldsAcid(Map map, IntVec3 c)
+		{
+			if (!c.InBounds(map))
+			{
+				return false;
+			}
+			RM_MapComponent_Excavation ex = map.GetComponent<RM_MapComponent_Excavation>();
+			FluidDef held = ex != null && ex.FillAt(c) > 0 ? ex.FluidAt(c) : null;
+			return LiquidIndex.CellIsAcid(c.GetTerrain(map)?.defName, held?.defName);
+		}
 	}
 
 	/// <summary>static_call census (LIQUID_BODY_FLUID_IDENTITY_1 step 1): on the current map, wet excavated cells

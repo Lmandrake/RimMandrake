@@ -1,5 +1,5 @@
 # project: RimMandrake/Cauldron/Source/RM_Cauldron.csproj
-# dll: 79b930fce05eac00bfad25527a8c8f752c65472f6bd655b6ac153203d6e793d9
+# dll: 695aae24456de045c116495f42ccd014d76adbb72d4fca0e20fb7bb2dda73b4c
 03c25f530bf0d810307c0966129eda5fa64ab76f24ba39c670d658bbb07ee3f8 RM_CauldronRuinKit.cs
 1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../_Shared/HarmonyResilience/PatchApplier.cs
 196a23da49dab9f37a97eae509e630543587281fcbebbd0d36ebf5ed380df417 RM_GasTap.cs

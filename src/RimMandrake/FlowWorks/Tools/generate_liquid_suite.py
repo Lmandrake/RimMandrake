@@ -1050,6 +1050,7 @@ LIQUID_DEF_ROWS = {
         "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 3},
         "corrodesApparel": True,
         "terrainSuite": {"shallow": "RM_AcidShallow", "deep": "RM_AcidDeep"},
+        "canalFluid": "RM_Fluid_AcidWater",  # VEXXITH_USES_1: without it a canal off an acid pool ran fresh water
         "bottled": {"bottle": "RM_Bottle_AcidWater", 
                     "bucket": "RM_Bucket_AcidWater", "barrel": "RM_Barrel_AcidWater"},
     },
@@ -1068,6 +1069,7 @@ LIQUID_DEF_ROWS = {
         "damageOnImmersion": {"damageDef": "AcidBurn", "amount": 5},
         "corrodesApparel": True,
         "terrainSuite": {"shallow": "RM_ReactionLiquorShallow", "deep": "RM_ReactionLiquorDeep"},
+        "canalFluid": "RM_Fluid_ReactionLiquor",  # VEXXITH_USES_1
     },
     "tar": {
         "defName": "RM_Liquid_Tar",

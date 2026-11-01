@@ -178,4 +178,36 @@
     <recededTerrain>Mud</recededTerrain>
   </RimMandrake.FlowWorks.FluidDef>
 
+  <!-- VEXXITH_USES_1: acid that really flows; Building_RM_FlowDoor burns where it touches. -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_AcidWater</defName>
+    <label>acid water</label>
+    <floodTerrain>RM_Fill_AcidWater_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_AcidWater_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_AcidWater_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_AcidWater_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
+  <!-- VEXXITH_USES_1: acid that really flows; Building_RM_FlowDoor burns where it touches. -->
+  <RimMandrake.FlowWorks.FluidDef>
+    <defName>RM_Fluid_ReactionLiquor</defName>
+    <label>reaction liquor</label>
+    <floodTerrain>RM_Fill_ReactionLiquor_Trace</floodTerrain>
+    <fillTerrainHalf>RM_Fill_ReactionLiquor_Half</fillTerrainHalf>
+    <fillTerrainBrim>RM_Fill_ReactionLiquor_Brim</fillTerrainBrim>
+    <fillTerrainSuperdeep>RM_Fill_ReactionLiquor_Superdeep</fillTerrainSuperdeep>
+    <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
+    <groundOozePerSourceCellPerDay>0.13</groundOozePerSourceCellPerDay>
+    <rainRefillFactor>3</rainRefillFactor>
+    <recededTerrain>Mud</recededTerrain>
+  </RimMandrake.FlowWorks.FluidDef>
+
 </Defs>

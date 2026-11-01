@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- VEXXITH_USES_1: the canal ladders of the two pH 2 liquids, on the shape of RM_Fill_Poison_*. Before these, a canal
+       cut into an acid pool ran fresh water (FormBody falls back to RM_Fluid_Water for a liquid with no canalFluid), so
+       no acid could reach a gate. RM_LiquidProperties is the natural pool's own block: LiquidCorrosion reads it. -->
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_AcidWater_Trace</defName>
+    <label>knee-deep acid water (under 0.75 m)</label>
+    <description>Acid water standing ankle-to-knee deep. Wading it is easy. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(199,245,56)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>1</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>3</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_AcidWater</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_AcidWater_Half</defName>
+    <label>shallow acid water (about 1 m)</label>
+    <description>Acid water standing knee-to-waist deep. Wading it is slow work. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(199,245,56)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>1</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>3</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_AcidWater</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_AcidWater_Brim</defName>
+    <label>chest-deep acid water (about 1.5 m)</label>
+    <description>Acid water standing chest-deep. Crossing it is punishing, but anyone can stand in it. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(199,245,56)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>1</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>3</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_AcidWater</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_AcidWater_Superdeep</defName>
+    <label>deep acid water (2 m or more)</label>
+    <description>Acid water filling a very deep pit. Whatever falls in is held there, and the acid water goes to work on it. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(199,245,56)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>1</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>3</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_AcidWater</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_ReactionLiquor_Trace</defName>
+    <label>knee-deep reaction liquor (under 0.75 m)</label>
+    <description>Reaction liquor standing ankle-to-knee deep. Wading it is easy. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterShallowRamp</texturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(235,219,255)</color>
+    <pathCost>100</pathCost>
+    <renderPrecedence>394</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>2</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>5</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_ReactionLiquor</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_ReactionLiquor_Half</defName>
+    <label>shallow reaction liquor (about 1 m)</label>
+    <description>Reaction liquor standing knee-to-waist deep. Wading it is slow work. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterChestDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterChestDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(235,219,255)</color>
+    <pathCost>200</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>320</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>395</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshShallowStill</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>2</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>5</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_ReactionLiquor</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_ReactionLiquor_Brim</defName>
+    <label>chest-deep reaction liquor (about 1.5 m)</label>
+    <description>Reaction liquor standing chest-deep. Crossing it is punishing, but anyone can stand in it. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(235,219,255)</color>
+    <pathCost>300</pathCost>
+    <extraDraftedPerceivedPathCost>60</extraDraftedPerceivedPathCost>
+    <extraNonDraftedPerceivedPathCost>400</extraNonDraftedPerceivedPathCost>
+    <renderPrecedence>396</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshShallow</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>2</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>5</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_ReactionLiquor</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+  <TerrainDef ParentName="WaterShallow">
+    <defName>RM_Fill_ReactionLiquor_Superdeep</defName>
+    <label>deep reaction liquor (2 m or more)</label>
+    <description>Reaction liquor filling a very deep pit. Whatever falls in is held there, and the reaction liquor goes to work on it. It burns skin and eats cloth, more the deeper you stand.</description>
+    <texturePath>Terrain/Surfaces/WaterDeepRamp</texturePath>
+    <pollutedTexturePath>Terrain/Surfaces/WaterDeepRampPolluted</pollutedTexturePath>
+    <!-- P14: a BASE-layer def (wet dug squares are base writes); its own water-body type, no fish. -->
+    <waterBodyType>Other</waterBodyType>
+    <dangerous>true</dangerous>
+    <driesTo></driesTo>
+    <canFreeze>false</canFreeze>
+    <takeSplashes>true</takeSplashes>
+    <color>(235,219,255)</color>
+    <pathCost>300</pathCost>
+    <passability>Standable</passability>
+    <renderPrecedence>397</renderPrecedence>
+    <tags>
+      <li>Water</li>
+      <li>WaterFreshDeep</li>
+      <li>Flood</li>
+    </tags>
+    <modExtensions>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_LiquidProperties">
+        <viscosityClass>Water</viscosityClass>
+        <pH>2</pH>
+        <damageOnContact>
+          <damageDef>AcidBurn</damageDef>
+          <amount>2</amount>
+        </damageOnContact>
+        <damageOnImmersion>
+          <damageDef>AcidBurn</damageDef>
+          <amount>5</amount>
+        </damageOnImmersion>
+        <corrodesApparel>true</corrodesApparel>
+      </li>
+      <li Class="RimMandrake.FlowWorks.LiquidTypes.RM_DrinkableTerrainExtension">
+        <liquid>RM_Liquid_ReactionLiquor</liquid>
+      </li>
+    </modExtensions>
+  </TerrainDef>
+
+</Defs>

@@ -362,6 +362,7 @@
     <!-- LIQUID_BOTTLE_LOOP_1: the fill/use/dirty/wash JobDriver/WorkGiver pair. -->
     <Compile Include="LiquidTypes\RM_LiquidBottleUtility.cs" />
     <Compile Include="LiquidTypes\RM_ContainerMaterialMath.cs" />
+    <Compile Include="LiquidTypes\RM_CanalLiquidIndex.cs" />
     <Compile Include="LiquidTypes\RM_ContainerMaterials.cs" />
     <Compile Include="LiquidTypes\RM_ContainerStyleMath.cs" />
     <Compile Include="LiquidTypes\RM_TankDebugMath.cs" />
