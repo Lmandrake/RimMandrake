@@ -1,5 +1,6 @@
 // LeaningScrub offline fuzz entry. Knobs (forwarded by selftest_leaningscrub_fuzz.py): --fuzz-scale F (multiplies every case
-// count, 0 skips), --fuzz-seed N (replay one seed of every family), --fuzz-only NAME (lean|smother|blaze|guardian|forms|walk|coat).
+// count; a scale that runs no case at all, e.g. 0, FAILS with "no cases ran"), --fuzz-seed N (replay one seed of every family),
+// --fuzz-only NAME (lean|smother|blaze|forms|walk|coat; any other name FAILS).
 using System;
 
 namespace RimMandrake.LeaningScrub.SelfTest
