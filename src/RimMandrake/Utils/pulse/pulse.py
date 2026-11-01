@@ -835,7 +835,7 @@ def make_handler(col: Collector):
             elif self.path in ("/", "/index.html"):
                 self._hdr(200, "text/html; charset=utf-8")
                 self.wfile.write(WIDGET_HTML.read_bytes())
-            elif self.path.split("?")[0] in ("/brief", "/brief/", "/heartbeat", "/brief.json", "/streams", "/streams/", "/streams.json", "/agents", "/agents/", "/agents.json") or self.path.startswith("/item/"):
+            elif self.path.split("?")[0] in ("/brief", "/brief/", "/heartbeat", "/brief.json", "/streams", "/streams/", "/streams.json", "/agents", "/agents/", "/agents.json") or self.path.startswith(("/item/", "/mission")):
                 import brief   # RIMPULSE_BRIEF_BUILD_MORNING_PAPER_PHONE: the same pages his phone gets over the tailnet
                 code, ctype, body = brief.page(self.path, lambda: col.snapshot, DIGEST_DIR)
                 self._hdr(code, ctype)

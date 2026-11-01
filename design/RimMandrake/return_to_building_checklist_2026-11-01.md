@@ -27,7 +27,7 @@ Plan this belongs with: `tentative_plan_after_v2_lessons_2026-11-01.md`.
 | # | Concept | State |
 |---|---|---|
 | 12 | Time ledger: where worker hours go | Filed `WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT` |
-| 13 | Mission page per mod | Not filed; waits on the plan |
+| 13 | Mission page per mod | Built read-only: `/mission/<Mod>` on RimPulse (`MISSION_PAGE_BUILD_READ_ONLY_STATE`) |
 | 14 | Finish line for the pilot mission, written with him | Not started |
 | 15 | Known-result ledger | Not filed; decide after 12 shows the waste |
 
