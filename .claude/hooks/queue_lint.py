@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""PreToolUse/Bash hook — BLOCKS the four commits that would corrupt the ledger.
+"""PreToolUse hook (Bash|Write|Edit) — guards the ledger and the shared state files.
+
+CURRENT BEHAVIOUR (the sections below keep their history): DENIES hand-writes of the ledger (rule 2),
+DENIES edits of generated queue views at the write (rule 1), DENIES a new non-TRANSIENT root .md (rule 4);
+WARNS (exit 1, never blocks) on another seat's item (rule 3, owner ruling 2026-09-19).
 
 WHY A HOOK AND NOT A PARAGRAPH
 ==============================
