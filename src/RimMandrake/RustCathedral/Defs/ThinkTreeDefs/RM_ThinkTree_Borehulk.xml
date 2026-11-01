@@ -15,10 +15,11 @@
          belongs to RUSTCATHEDRAL_BASE_FINISH_BUILD_1, which has not built it;
          add its node here when it exists.
     5.   Queued job.
-    6.   Slow wander with long pauses (PROVISIONAL numbers). Sacred wall
-         cells are impassable buildings, so it never enters one; it mines
-         nothing in any state (RM_CompBorehulkDrill).
-    7.   IdleError backstop.
+    6.   RM_JobGiver_BorehulkWork (RUSTCATHEDRAL_WORN_BIT_ARC_1): a Restored
+         hulk's dig. Gives nothing to a Worn or Unbitted one.
+    7.   Slow wander with long pauses (PROVISIONAL numbers). Sacred wall
+         cells are impassable buildings, so it never enters one.
+    8.   IdleError backstop.
 -->
 <Defs>
   <ThinkTreeDef>
@@ -49,6 +50,8 @@
         </li>
 
         <li Class="ThinkNode_QueuedJob" />
+
+        <li Class="RimMandrake.RustCathedral.RM_JobGiver_BorehulkWork" />
 
         <li Class="ThinkNode_Tagger">
           <tagToGive>Idle</tagToGive>

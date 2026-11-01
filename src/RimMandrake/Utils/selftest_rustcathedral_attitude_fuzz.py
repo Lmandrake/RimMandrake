@@ -24,7 +24,8 @@ CSPROJ = os.path.join(SELFTEST, "RimMandrake.RustCathedral.Attitude.SelfTest.csp
 
 def main(argv):
     rc, rec = winbuild.stage_build(CSPROJ, stage_name="RustCathedralAttitudeFuzz",
-                                   extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "RustCathedral", "Source", "Hum")])
+                                   extra_dirs=[os.path.join(REPO, "src", "RimMandrake", "RustCathedral", "Source", "Hum"),
+                                               os.path.join(REPO, "src", "RimMandrake", "RustCathedral", "Source", "RustCathedral")])
     if rc:
         print("selftest build FAILED")
         return rc

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUSTCATHEDRAL_WORN_BIT_ARC_1. All four are given by order or by RM_ThinkTree_Borehulk, never by a work type. -->
+<Defs>
+  <JobDef>
+    <defName>RM_Job_UnbitBorehulk</defName>
+    <driverClass>RimMandrake.RustCathedral.RM_JobDriver_UnbitBorehulk</driverClass>
+    <reportString>unbolting the drill head.</reportString>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+  <JobDef>
+    <defName>RM_Job_RestoreBorehulk</defName>
+    <driverClass>RimMandrake.RustCathedral.RM_JobDriver_RestoreBorehulk</driverClass>
+    <reportString>restoring the borehulk.</reportString>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+  <JobDef>
+    <defName>RM_Job_ServiceBorehulk</defName>
+    <driverClass>RimMandrake.RustCathedral.RM_JobDriver_ServiceBorehulk</driverClass>
+    <reportString>servicing the borehulk.</reportString>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
+  </JobDef>
+  <JobDef>
+    <defName>RM_Job_BorehulkDig</defName>
+    <driverClass>RimMandrake.RustCathedral.RM_JobDriver_BorehulkDig</driverClass>
+    <reportString>boring into TargetA.</reportString>
+  </JobDef>
+</Defs>

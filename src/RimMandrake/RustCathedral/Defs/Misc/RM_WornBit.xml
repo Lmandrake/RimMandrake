@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_WORN_BIT_ARC_1 stage 4. The restoration's parts, tunable by patch. PowerfocusChip measured in
+  Data/Biotech/Defs (Bossgroups.xml reward; every DLC is assumed).
+-->
+<Defs>
+  <RimMandrake.RustCathedral.RM_BorehulkRestorationDef>
+    <defName>RM_BorehulkRestoration</defName>
+    <label>borehulk restoration</label>
+    <minCrafting>10</minCrafting>
+    <ingredients>
+      <RM_RefurbishedDrillHead>1</RM_RefurbishedDrillHead>
+      <RM_DeadSmartsteel>12</RM_DeadSmartsteel>
+      <ComponentSpacer>6</ComponentSpacer>
+      <RM_BoltShedCuriosity>3</RM_BoltShedCuriosity>
+      <RM_CoolantEelCatch>2</RM_CoolantEelCatch>
+      <PowerfocusChip>1</PowerfocusChip>
+    </ingredients>
+  </RimMandrake.RustCathedral.RM_BorehulkRestorationDef>
+
+  <HistoryEventDef>
+    <defName>RM_WornBitChoiceMade</defName>
+    <label>the Worn Bit</label>
+  </HistoryEventDef>
+</Defs>

@@ -61,6 +61,36 @@ namespace RimMandrake.RustCathedral
         public static bool straysEnabled = true;
         public static int strayCount = 5;
 
+        // RUSTCATHEDRAL_WORN_BIT_ARC_1 §7. The fee, refurbishment days, second-demand chance, maintenance interval and
+        // cost, and political multiplier are the item's numbers; the deltas, dig work totals, cooldown and bore
+        // interval are PROVISIONAL (the item says "a setting", "a few times a year", "now and then").
+        public static bool wornBitEnabled = true;
+        public static int wornBitFee = 1500;
+        public static float wornBitRefurbishDays = 10f;
+        public static float wornBitSecondDemandChance = 0.35f;
+        public static float wornBitUnbitWork = 6000f;
+        public static float wornBitRestoreWork = 12000f;
+        public static float wornBitSessionWork = 6000f;
+        public static bool wornBitMaintenanceEnabled = true;
+        public static float wornBitMaintenanceDays = 5f;
+        public static int wornBitServiceComponents = 2;
+        public static int wornBitServiceChemfuel = 30;
+        public static float wornBitDigSpeed = 10f;
+        public static bool wornBitPoliticsEnabled = true;
+        public static float wornBitPoliticalMultiplier = 3f;
+        public static int wornBitKeepGoodwill = -15;
+        public static float wornBitKeepIrritation = 10f;
+        public static int wornBitFreeGoodwill = 15;
+        public static float wornBitFreeIrritation = -10f;
+        public static bool wornBitLandingBandEnabled = true;
+        public static float wornBitLandingIrritation = 25f;
+        public static int wornBitSacrilegeStanding = 15;
+        public static bool wornBitFavoursEnabled = true;
+        public static float wornBitFavourCooldownDays = 15f;
+        public static float wornBitFavourDays = 3f;
+        public static bool wornBitFreeBoreEnabled = true;
+        public static float wornBitFreeBoreHours = 12f;
+
         // RUSTCATHEDRAL_RM_MOD_BUILD_1 §6a / MOD_OPTIONS_RETROFIT_1: reserved
         // fields for letting this biome's mechanics run on OTHER biomes too.
         // Persisted and exposed here honestly as NOT YET WIRED to any
@@ -92,6 +122,32 @@ namespace RimMandrake.RustCathedral
             Scribe_Values.Look(ref coolantEelCount, "coolantEelCount", 4);
             Scribe_Values.Look(ref straysEnabled, "straysEnabled", true);
             Scribe_Values.Look(ref strayCount, "strayCount", 5);
+            Scribe_Values.Look(ref wornBitEnabled, "wornBitEnabled", true);
+            Scribe_Values.Look(ref wornBitFee, "wornBitFee", 1500);
+            Scribe_Values.Look(ref wornBitRefurbishDays, "wornBitRefurbishDays", 10f);
+            Scribe_Values.Look(ref wornBitSecondDemandChance, "wornBitSecondDemandChance", 0.35f);
+            Scribe_Values.Look(ref wornBitUnbitWork, "wornBitUnbitWork", 6000f);
+            Scribe_Values.Look(ref wornBitRestoreWork, "wornBitRestoreWork", 12000f);
+            Scribe_Values.Look(ref wornBitSessionWork, "wornBitSessionWork", 6000f);
+            Scribe_Values.Look(ref wornBitMaintenanceEnabled, "wornBitMaintenanceEnabled", true);
+            Scribe_Values.Look(ref wornBitMaintenanceDays, "wornBitMaintenanceDays", 5f);
+            Scribe_Values.Look(ref wornBitServiceComponents, "wornBitServiceComponents", 2);
+            Scribe_Values.Look(ref wornBitServiceChemfuel, "wornBitServiceChemfuel", 30);
+            Scribe_Values.Look(ref wornBitDigSpeed, "wornBitDigSpeed", 10f);
+            Scribe_Values.Look(ref wornBitPoliticsEnabled, "wornBitPoliticsEnabled", true);
+            Scribe_Values.Look(ref wornBitPoliticalMultiplier, "wornBitPoliticalMultiplier", 3f);
+            Scribe_Values.Look(ref wornBitKeepGoodwill, "wornBitKeepGoodwill", -15);
+            Scribe_Values.Look(ref wornBitKeepIrritation, "wornBitKeepIrritation", 10f);
+            Scribe_Values.Look(ref wornBitFreeGoodwill, "wornBitFreeGoodwill", 15);
+            Scribe_Values.Look(ref wornBitFreeIrritation, "wornBitFreeIrritation", -10f);
+            Scribe_Values.Look(ref wornBitLandingBandEnabled, "wornBitLandingBandEnabled", true);
+            Scribe_Values.Look(ref wornBitLandingIrritation, "wornBitLandingIrritation", 25f);
+            Scribe_Values.Look(ref wornBitSacrilegeStanding, "wornBitSacrilegeStanding", 15);
+            Scribe_Values.Look(ref wornBitFavoursEnabled, "wornBitFavoursEnabled", true);
+            Scribe_Values.Look(ref wornBitFavourCooldownDays, "wornBitFavourCooldownDays", 15f);
+            Scribe_Values.Look(ref wornBitFavourDays, "wornBitFavourDays", 3f);
+            Scribe_Values.Look(ref wornBitFreeBoreEnabled, "wornBitFreeBoreEnabled", true);
+            Scribe_Values.Look(ref wornBitFreeBoreHours, "wornBitFreeBoreHours", 12f);
             Scribe_Values.Look(ref crossBiomeEnabled, "crossBiomeEnabled", false);
             Scribe_Values.Look(ref crossBiomeEverywhere, "crossBiomeEverywhere", false);
             Scribe_Values.Look(ref crossBiomeBiomeList, "crossBiomeBiomeList", "");
@@ -164,7 +220,7 @@ namespace RimMandrake.RustCathedral
         }
 
         private static Vector2 scrollPos;
-        private static float viewHeight = 1400f;
+        private static float viewHeight = 2400f;
         private static string searchQuery = "";
         private static readonly HashSet<string> collapsedSections = new HashSet<string> { "Not wired yet (these change nothing)" };
 
@@ -245,6 +301,57 @@ namespace RimMandrake.RustCathedral
                     "Map generation only: applies to maps generated afterwards. Off: no new map gets the desiccated animal dead at its edges.");
                 list.Label("Dead per map: " + strayCount);
                 strayCount = (int)list.Slider(strayCount, 0f, 20f);
+                list.GapLine();
+            }
+
+            if (Group(list, "The Worn Bit", RimMandrake.Shared.SettingScope.Now, new[] { "wornBitEnabled", "wornBitFee", "wornBitRefurbishDays", "wornBitSecondDemandChance", "wornBitUnbitWork", "wornBitRestoreWork", "wornBitSessionWork", "wornBitMaintenanceEnabled", "wornBitMaintenanceDays", "wornBitServiceComponents", "wornBitServiceChemfuel", "wornBitDigSpeed", "wornBitPoliticsEnabled", "wornBitPoliticalMultiplier", "wornBitKeepGoodwill", "wornBitKeepIrritation", "wornBitFreeGoodwill", "wornBitFreeIrritation", "wornBitLandingBandEnabled", "wornBitLandingIrritation", "wornBitSacrilegeStanding", "wornBitFavoursEnabled", "wornBitFavourCooldownDays", "wornBitFavourDays", "wornBitFreeBoreEnabled", "wornBitFreeBoreHours" }))
+            {
+                list.CheckboxLabeled("The Worn Bit arc", ref wornBitEnabled,
+                    "Off: no order to unbolt the drill is offered. An arc already under way carries on.");
+                list.Label("Unbolting work: " + wornBitUnbitWork.ToString("0") + " ticks");
+                wornBitUnbitWork = list.Slider(wornBitUnbitWork, 500f, 20000f);
+                list.Label("Restoration work: " + wornBitRestoreWork.ToString("0") + " ticks, at most " + wornBitSessionWork.ToString("0") + " a session");
+                wornBitRestoreWork = list.Slider(wornBitRestoreWork, 1000f, 40000f);
+                wornBitSessionWork = list.Slider(wornBitSessionWork, 500f, 20000f);
+                list.Label("Yard fee before wealth scaling: " + wornBitFee + " silver");
+                wornBitFee = (int)list.Slider(wornBitFee, 0f, 10000f);
+                list.Label("Refurbishment takes " + wornBitRefurbishDays.ToString("0.0") + " days");
+                wornBitRefurbishDays = list.Slider(wornBitRefurbishDays, 1f, 30f);
+                list.Label("Chance of a second demand on the return visit: " + wornBitSecondDemandChance.ToStringPercent());
+                wornBitSecondDemandChance = list.Slider(wornBitSecondDemandChance, 0f, 1f);
+                list.CheckboxLabeled("A kept borehulk needs servicing", ref wornBitMaintenanceEnabled,
+                    "Off: a kept borehulk digs forever with no service job.");
+                list.Label("Service every " + wornBitMaintenanceDays.ToString("0.0") + " days, costing " + wornBitServiceComponents + " components and " + wornBitServiceChemfuel + " chemfuel");
+                wornBitMaintenanceDays = list.Slider(wornBitMaintenanceDays, 1f, 30f);
+                wornBitServiceComponents = (int)list.Slider(wornBitServiceComponents, 0f, 10f);
+                wornBitServiceChemfuel = (int)list.Slider(wornBitServiceChemfuel, 0f, 100f);
+                list.Label("Dig speed: " + wornBitDigSpeed.ToString("0.0") + " times a colonist");
+                wornBitDigSpeed = list.Slider(wornBitDigSpeed, 1f, 30f);
+                list.CheckboxLabeled("The choice moves goodwill and the hum", ref wornBitPoliticsEnabled,
+                    "Off: keeping or freeing the borehulk changes no goodwill, no irritation, and tells the campaign nothing.");
+                list.Label("Political multiplier: " + wornBitPoliticalMultiplier.ToString("0.0"));
+                wornBitPoliticalMultiplier = list.Slider(wornBitPoliticalMultiplier, 0f, 6f);
+                list.Label("Keep: droid goodwill " + wornBitKeepGoodwill + ", irritation " + wornBitKeepIrritation.ToString("0"));
+                wornBitKeepGoodwill = (int)list.Slider(wornBitKeepGoodwill, -30f, 0f);
+                wornBitKeepIrritation = list.Slider(wornBitKeepIrritation, 0f, 30f);
+                list.Label("Free: droid goodwill " + wornBitFreeGoodwill + ", irritation " + wornBitFreeIrritation.ToString("0"));
+                wornBitFreeGoodwill = (int)list.Slider(wornBitFreeGoodwill, 0f, 30f);
+                wornBitFreeIrritation = list.Slider(wornBitFreeIrritation, -30f, 0f);
+                list.CheckboxLabeled("While kept, each landing on Cathedral ground starts the hum a band lower", ref wornBitLandingBandEnabled,
+                    "Off: a kept borehulk leaves the hum of a new landing alone.");
+                list.Label("Landing irritation: " + wornBitLandingIrritation.ToString("0"));
+                wornBitLandingIrritation = list.Slider(wornBitLandingIrritation, 0f, 60f);
+                list.Label("Sacrilege per sacred cell mined: " + wornBitSacrilegeStanding + " standing");
+                wornBitSacrilegeStanding = (int)list.Slider(wornBitSacrilegeStanding, 0f, 50f);
+                list.CheckboxLabeled("A freed borehulk answers favours", ref wornBitFavoursEnabled,
+                    "Off: no request is offered at the comms console.");
+                list.Label("At most one favour every " + wornBitFavourCooldownDays.ToString("0") + " days, each lasting " + wornBitFavourDays.ToString("0.0") + " days");
+                wornBitFavourCooldownDays = list.Slider(wornBitFavourCooldownDays, 1f, 60f);
+                wornBitFavourDays = list.Slider(wornBitFavourDays, 0.5f, 10f);
+                list.CheckboxLabeled("A freed borehulk bores plain plate on its own", ref wornBitFreeBoreEnabled,
+                    "Off: a freed borehulk mines nothing unless asked.");
+                list.Label("About one cell every " + wornBitFreeBoreHours.ToString("0") + " hours");
+                wornBitFreeBoreHours = list.Slider(wornBitFreeBoreHours, 1f, 96f);
                 list.GapLine();
             }
 

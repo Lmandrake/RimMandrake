@@ -19,6 +19,7 @@ CHAINS
   hum_attitude        the attitude def targets this biome and carries the five-band thresholds.
   harmony_gates       the Walls deep-scan gate and the Hum watched-bolt / fishing / infestation hooks are installed.
   roach_gate          the roach think tree carries the cleaning toggle node ahead of the eat-cleanable node.
+  worn_bit            RUSTCATHEDRAL_WORN_BIT_ARC_1: each criterion a case, read through RM_WornBitProof on the current map.
   map_mechanics       bolt dance and freeze, curiosity pricing, eel fishing consequence, drill response, wall tiers
                       at mapgen: UNMEASURED, each says what it needs (a generated RM_RustCathedral map, game time).
 
@@ -149,6 +150,7 @@ def static_checks():
     bad.extend(basefinish_problems()[0])
     bad.extend(hullbolts_problems())
     bad.extend(commentary_problems())
+    bad.extend(wornbit_problems()[0])
     return bad
 
 
@@ -595,6 +597,109 @@ def hullbolts_problems(mod_root=None):
     return bad
 
 
+WORNBIT_DEFS = (("ThingDef", "RM_WornDrillHead"), ("ThingDef", "RM_RefurbishedDrillHead"), ("JobDef", "RM_Job_UnbitBorehulk"),
+                ("JobDef", "RM_Job_RestoreBorehulk"), ("JobDef", "RM_Job_ServiceBorehulk"), ("JobDef", "RM_Job_BorehulkDig"),
+                ("QuestScriptDef", "RM_WornBitRefurbishment"), ("WorldObjectDef", "RM_RefurbishYard"),
+                ("RimMandrake.RustCathedral.RM_BorehulkRestorationDef", "RM_BorehulkRestoration"),
+                ("HistoryEventDef", "RM_WornBitChoiceMade"))
+WORNBIT_PARTS = ("RM_RefurbishedDrillHead", "RM_DeadSmartsteel", "ComponentSpacer", "RM_BoltShedCuriosity",
+                 "RM_CoolantEelCatch", "PowerfocusChip")
+WORNBIT_TOGGLES = ("wornBitEnabled", "wornBitMaintenanceEnabled", "wornBitPoliticsEnabled", "wornBitLandingBandEnabled",
+                   "wornBitFavoursEnabled", "wornBitFreeBoreEnabled")
+RUT_WORNBIT = os.path.join(SRC_ROOT, "RimUtinni", "UtinniPatches", "Patches", "RUT_WornBit_Junkers.xml")
+RITES_WORNBIT = os.path.join(SRC_ROOT, "RimUtinni", "Rites", "Source", "Patch_WornBitChoice.cs")
+_BUFF_WORDS = ("AddHediff", "health.AddHediff", "HediffMaker", "ApplyThought", "TryGainMemory", "StatOffset")
+
+
+def wornbit_problems(mod_root=None, rut_patch=None, rites_hook=None):
+    """(bad, unmeasured) for the arc's static wiring: defs, masses, parts, tier split, ownership path, tree, toggles."""
+    mod_root = mod_root or HERE
+    bad, unmeasured = [], []
+    defs, roots = {}, []
+    for f in _xml_files(os.path.join(mod_root, "Defs")):
+        root = ET.parse(f).getroot()
+        roots.append(root)
+        for el in root:
+            n = el.findtext("defName")
+            if n:
+                defs[(el.tag, n)] = el
+    for key in WORNBIT_DEFS:
+        if key not in defs:
+            bad.append("worn bit: missing %s/%s" % key)
+    for name in ("RM_WornDrillHead", "RM_RefurbishedDrillHead"):
+        el = defs.get(("ThingDef", name))
+        if el is not None:
+            try:
+                mass = float(el.findtext("statBases/Mass"))
+            except (TypeError, ValueError):
+                mass = 0
+            if mass < 200:
+                bad.append("worn bit: %s mass %s is under 200" % (name, mass))
+    rest = defs.get(WORNBIT_DEFS[8])
+    if rest is not None:
+        rows = {c.tag: c.text for c in (rest.find("ingredients") if rest.find("ingredients") is not None else [])}
+        if set(rows) != set(WORNBIT_PARTS):
+            bad.append("worn bit: restoration parts %s differ from the item's %s" % (sorted(rows), sorted(WORNBIT_PARTS)))
+        for k, v in (("RM_DeadSmartsteel", "12"), ("ComponentSpacer", "6"), ("RM_BoltShedCuriosity", "3"), ("RM_CoolantEelCatch", "2")):
+            if rows.get(k) != v:
+                bad.append("worn bit: restoration wants %s of %s, the item says %s" % (rows.get(k), k, v))
+    hulk = defs.get(("ThingDef", "RM_Borehulk"))
+    if hulk is not None:
+        comps = hulk.find("comps")
+        if comps is None or comps.get("Inherit") != "False":
+            bad.append("worn bit: RM_Borehulk inherits CompOverseerSubject; a kept hulk would demand a mechanitor")
+        elif any("Overseer" in (li.get("Class") or "") for li in comps):
+            bad.append("worn bit: RM_Borehulk carries an overseer comp")
+    tree = defs.get(("ThinkTreeDef", "RM_ThinkTree_Borehulk"))
+    tree_classes = [] if tree is None else [e.get("Class") or "" for e in tree.iter("li")]
+    if not any(c.endswith("RM_JobGiver_BorehulkWork") for c in tree_classes):
+        bad.append("worn bit: the think tree gives no dig job")
+    # the free tier's patch, then the campaign's move
+    patch = os.path.join(mod_root, "Patches", "RM_WornBit.xml")
+    text = open(patch, encoding="utf-8").read() if os.path.isfile(patch) else ""
+    for need in ('FactionDef[defName="Pirate"]', "RM_DrillRefurbisherExtension", 'defName="CommsConsole"', "RM_CompProperties_BorehulkFavour",
+                 'defName="RM_SacredWall_Conduit"', "RM_SacredCellExtension"):
+        if need not in text:
+            bad.append("worn bit: Patches/RM_WornBit.xml lacks %s" % need)
+    rut_patch = rut_patch or RUT_WORNBIT
+    if os.path.isfile(rut_patch):
+        text = open(rut_patch, encoding="utf-8").read()
+        for need in ('PatchOperationRemove', 'FactionDef[defName="Pirate"]', 'FactionDef[defName="RUT_Jawa_Junkers"]',
+                     'FactionDef[defName="RUT_Jawa_FreeDroidEnclaves"]', "RM_NeutralDroidsExtension", "Scraplord"):
+            if need not in text:
+                bad.append("worn bit: campaign patch lacks %s" % need)
+        if re.search(r"<Operation[^>]*MayRequire", text):
+            bad.append("worn bit: MayRequire on a top-level Operation is ignored")
+    else:
+        unmeasured.append("campaign patch not found at %s" % rut_patch)
+    rites_hook = rites_hook or RITES_WORNBIT
+    if os.path.isfile(rites_hook):
+        text = open(rites_hook, encoding="utf-8").read()
+        for need in ('"The Worn Bit"', "God.Ohm", "God.MobUnloo", "God.Ozzik", '"Announce"', "Regard would-be"):
+            if need not in text:
+                bad.append("worn bit: Rites hook lacks %s" % need)
+    else:
+        unmeasured.append("Rites hook not found at %s" % rites_hook)
+    # settings: every toggle has a real read; no buff anywhere in the arc's source
+    srcs = _cs_all(mod_root)
+    arc = {k: v for k, v in srcs.items() if "RM_WornBit" in os.path.basename(k)} if isinstance(srcs, dict) else {}
+    joined = "\n".join(arc.values())
+    if not joined:
+        bad.append("worn bit: probe found no RM_WornBit source (sanity)")
+    for tog in WORNBIT_TOGGLES:
+        if ("RM_RustCathedralSettings." + tog) not in _nocomment(joined + _read_opt(mod_root)):
+            bad.append("worn bit: toggle %s is read by nothing" % tog)
+    for w in _BUFF_WORDS:
+        if w in _nocomment(joined):
+            bad.append("worn bit: %s in the arc's source; no stage may buff a colonist" % w)
+    return bad, unmeasured
+
+
+def _read_opt(mod_root):
+    p = os.path.join(mod_root, "Source", "RustCathedral", "RM_CompBorehulkDrill.cs")
+    return open(p, encoding="utf-8").read() if os.path.isfile(p) else ""
+
+
 def _build_suite():
     suite = Suite("RustCathedral")
     suite.toggles = sorted(n for (_t, n), (ty, _v) in settings_fields().items() if ty == "bool")
@@ -835,6 +940,66 @@ def _build_suite():
         r = t.bridge_call("jawa/static_call", **kw)
         return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
 
+    def _wb(t, method, args=None):
+        kw = dict(typeName="RimMandrake.RustCathedral.RM_WornBitProof", method=method)
+        if args is not None:
+            kw["args"] = args
+        r = t.bridge_call("jawa/static_call", **kw)
+        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+    def _kv(line):
+        w = line.split()
+        return {w[i]: w[i + 1] for i in range(1, len(w) - 1, 2)}
+
+    @suite.chain("worn_bit")
+    def worn_bit(t):
+        with t.component("defs_resolve_and_heads_heavy", beyond_toggle=True):
+            r = t.bridge_call("jawa/get_defs", defs=",".join("%s/%s" % k for k in WORNBIT_DEFS if "." not in k[0]), fields="defName", limit=20)
+            if _live(t) and isinstance(r, dict) and r.get("notFound"):
+                raise ExpectationFailed("worn bit defs absent: %s" % r.get("notFound"))
+        with t.component("stage1_lone_worker_two_workers_band_stop_quest_yard", beyond_toggle=True):
+            line = _wb(t, "ProofStage1")
+            if _live(t):
+                v = _kv(line)
+                if not line.startswith("STAGE1") or float(v.get("lone", 1)) != 0 or float(v.get("two", 0)) <= 0:
+                    raise ExpectationFailed("lone/two gate wrong: " + line)
+                if v.get("band") != "2" and float(v.get("stopped", 0)) != float(v.get("two", -1)):
+                    raise ExpectationFailed("band did not stop the work: " + line)
+                if v.get("state") != "Unbitted" or v.get("heads") != "1" or v.get("quests") != "1":
+                    raise ExpectationFailed("completion reads wrong: " + line)
+                if v.get("yardfaction") not in ("Pirate", "RUT_Jawa_Junkers"):
+                    raise ExpectationFailed("yard faction: " + line)
+        with t.component("yard_timer_and_attack_ends_quest", beyond_toggle=True):
+            line = _wb(t, "ProofYard")
+            if _live(t):
+                v = _kv(line)
+                if v.get("timer") != v.get("expected") or v.get("after") != "Failed" or v.get("yard") != "gone":
+                    raise ExpectationFailed(line)
+        with t.component("restoration_refuses_naming_the_missing_item", beyond_toggle=True):
+            line = _wb(t, "ProofRestoreGate")
+            if _live(t) and (not line.startswith("GATE all:null") or line.count("missing") != len(WORNBIT_PARTS)):
+                raise ExpectationFailed(line)
+        with t.component("keep_branch", beyond_toggle=True):
+            line = _wb(t, "ProofBranch", args="true")
+            if _live(t):
+                v = _kv(line)
+                if v.get("faction") != "PlayerColony" and "Player" not in v.get("faction", ""):
+                    raise ExpectationFailed("keep faction: " + line)
+                if v.get("controllable") != "False" or v.get("mayDigAfter5d") != "False" or v.get("hostile") != "False":
+                    raise ExpectationFailed(line)
+        with t.component("kept_dig_counts_down_and_sacred_cell_recorded_free_bore_plate_only", beyond_toggle=True):
+            line = _wb(t, "ProofDig")
+            if _live(t):
+                v = _kv(line)
+                if v.get("left") != "0" or v.get("sacred") != "1" or v.get("warned") != "1" or v.get("plateOnly") != "True":
+                    raise ExpectationFailed(line)
+        with t.component("free_branch", beyond_toggle=True):
+            line = _wb(t, "ProofBranch", args="false")
+            if _live(t):
+                v = _kv(line)
+                if v.get("faction") != "null" or v.get("gizmos") != "0" or v.get("state") != "Restored":
+                    raise ExpectationFailed(line)
+
     @suite.chain("map_mechanics")
     def map_mechanics(t):
         for name, toggle, why in (
@@ -924,5 +1089,7 @@ if __name__ == "__main__":
     for u in basefinish_problems()[1]:
         print("  UNMEASURED " + u)
     for u in borehulk_problems()[1]:
+        print("  UNMEASURED " + u)
+    for u in wornbit_problems()[1]:
         print("  UNMEASURED " + u)
     sys.exit(1 if problems else 0)

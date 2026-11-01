@@ -18,8 +18,12 @@
   butcher yield. Item-quoted: body size about 6, drawSize about 5,
   manhunterOnDamageChance 0, animal-class intelligence.
 
-  NOT YET: the drill head in the butcher yield - RM_WornDrillHead is defined
-  by RUSTCATHEDRAL_WORN_BIT_ARC_1, which has not built it.
+  OWNERSHIP (RUSTCATHEDRAL_WORN_BIT_ARC_1, measured against the decompiled
+  engine): comps Inherit="False" drops BaseMechanoid's CompOverseerSubject and
+  CompMechRepairable. MechanitorUtility.EverControllable is vanilla's own
+  "no overseer subject" state: a player-faction RM_Borehulk is IsColonyMech but
+  never RequiringMechanitor, so it never goes feral, needs no mechanitor and no
+  Harmony. It is not a Biotech mech in the fiction.
   ART: texPath below is where the art install is expected to put the Worn
   sprite (RM_Borehulk, rustcathedral_turn1_2026-10-02.csv). Not installed
   yet: east/north are generated, south failed in the artpipe.
@@ -84,7 +88,15 @@
       <Plasteel>40</Plasteel>
       <ComponentIndustrial>12</ComponentIndustrial>
     </butcherProducts>
-    <comps>
+    <comps Inherit="False">
+      <li Class="CompProperties_CanBeDormant">
+        <compClass>CompMechanoid</compClass>
+      </li>
+      <li Class="CompProperties_WakeUpDormant">
+        <wakeUpOnDamage>true</wakeUpOnDamage>
+        <wakeUpCheckRadius>30</wakeUpCheckRadius>
+        <wakeUpSound>MechanoidsWakeUp</wakeUpSound>
+      </li>
       <li Class="RimMandrake.RustCathedral.RM_CompProperties_BorehulkDrill">
         <grindSound>RM_BorehulkGrind</grindSound>
         <checkIntervalTicks>250</checkIntervalTicks>

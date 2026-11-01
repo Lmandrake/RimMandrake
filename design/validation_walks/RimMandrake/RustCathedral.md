@@ -7,6 +7,11 @@ status-hint: RUST_CATHEDRAL_FIRST_SCRIPT_1 — mechanoid plateau biome plus the 
 Sources: `src/RimMandrake/RustCathedral/About/About.xml` description, `Defs/**`, `Source/RustCathedral/RM_RustCathedralMod.cs`, `Source/Hum/*`, `Source/Walls/*`, item `RUST_CATHEDRAL_MECHANICS_1`.
 
 ## must be true
+- The Worn Bit: a lone worker adds nothing and two do; band 2 stops the work; completion leaves one drill head, one active quest and one yard of the refurbisher faction. → worn_bit.stage1_lone_worker_two_workers_band_stop_quest_yard
+- The Worn Bit: delivering the head starts the set timer; attacking the yard ends the quest with the head lost. → worn_bit.yard_timer_and_attack_ends_quest
+- The Worn Bit: with any one part missing the restoration refuses, naming it. → worn_bit.restoration_refuses_naming_the_missing_item
+- The Worn Bit, keep: player faction, no mechanitor state, stops digging after 5 days unserviced, never hostile; the dig area counts down and a sacred cell records sacrilege. → worn_bit.keep_branch, worn_bit.kept_dig_counts_down_and_sacred_cell_recorded_free_bore_plate_only
+- The Worn Bit, free: no faction, no dig gizmo, plain plate only. → worn_bit.free_branch
 - Every def the mod ships (biome, terrain, gen steps, bolts, roaches, eel, walls, curiosity, attitude def, hum sounds, coolant hediff, drill-response incident) loads and resolves; a bogus name reads notFound. → defs_resolve.every_shipped_def_resolves, defs_resolve.namespaced_attitude_def_resolves
 - Every Mod Settings field of the three settings classes (own, Hum, Walls) round-trips through the bridge and the absorbed fields are Scribed by the one registered settings class. → settings_roundtrip.settings_probe_finds_fields_in_all_three_classes
 - `RM_RustCathedral` has animalDensity > 0 so its roster (roach, mecharat, living bolt) can spawn at all. → biome_wiring.animal_density_positive_and_deep_read_succeeds

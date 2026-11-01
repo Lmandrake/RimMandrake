@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_WORN_BIT_ARC_1 stage 2. Fired only from RM_WornBitGame.OfferQuest (unbitting), never rolled at random.
+  The stages live in the game component; RM_QuestNode_WornBit adds the part that shows them and reserves the hulk.
+-->
+<Defs>
+  <QuestScriptDef>
+    <defName>RM_WornBitRefurbishment</defName>
+    <randomlySelectable>false</randomlySelectable>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <isRootSpecial>true</isRootSpecial>
+    <autoAccept>true</autoAccept>
+    <defaultChallengeRating>3</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+    <affectedByPoints>false</affectedByPoints>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Worn Bit</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->The borehulk's drill head is off, and one yard will take the work. It is a truce and nothing more: the order stands only while nobody fires on the yard.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="RimMandrake.RustCathedral.RM_QuestNode_WornBit" />
+  </QuestScriptDef>
+</Defs>

@@ -1,5 +1,5 @@
 // Cathedral attitude fuzz entry. Knobs (forwarded by selftest_rustcathedral_attitude_fuzz.py): --fuzz-scale F,
-// --fuzz-seed N (replay one seed of every family), --fuzz-only seq|band|decay|commentary.
+// --fuzz-seed N (replay one seed of every family), --fuzz-only seq|band|decay|commentary|wornbit (the Worn Bit kernel, run only on that word).
 using System;
 
 namespace RimMandrake.RustCathedral.Hum.SelfTest
@@ -17,6 +17,7 @@ namespace RimMandrake.RustCathedral.Hum.SelfTest
             string only = null;
             i = Array.IndexOf(args, "--fuzz-only");
             if (i >= 0) only = args[i + 1];
+            if (only == "wornbit") return WornBitFuzz.Run() ? 0 : 1;
             return AttitudeFuzz.Run(scale, one, only) ? 0 : 1;
         }
     }

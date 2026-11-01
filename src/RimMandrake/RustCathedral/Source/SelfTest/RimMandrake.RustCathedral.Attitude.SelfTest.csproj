@@ -24,6 +24,8 @@
     <Compile Include="..\Hum\RM_AttitudeKernel.cs" />
     <Compile Include="AttitudeFuzz.cs" />
     <Compile Include="CommentaryPick.cs" />
+    <Compile Include="..\RustCathedral\RM_WornBitKernel.cs" />
+    <Compile Include="WornBitFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

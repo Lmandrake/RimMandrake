@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUSTCATHEDRAL_WORN_BIT_ARC_1 stage 2: vanilla PeaceTalks' shape; its art stands in, no timeout comp (the quest ends it). -->
+<Defs>
+  <WorldObjectDef ParentName="StaticWorldObjectBase">
+    <defName>RM_RefurbishYard</defName>
+    <label>truce yard</label>
+    <description>A scrap yard working under a truce, for as long as the work order stands.</description>
+    <worldObjectClass>RimMandrake.RustCathedral.RM_RefurbishYard</worldObjectClass>
+    <texture>World/WorldObjects/PeaceTalks</texture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconTexture>World/WorldObjects/Expanding/PeaceTalks</expandingIconTexture>
+    <expandingIconPriority>70</expandingIconPriority>
+  </WorldObjectDef>
+</Defs>

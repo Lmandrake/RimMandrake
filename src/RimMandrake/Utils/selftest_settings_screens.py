@@ -299,7 +299,7 @@ MODS = {
 
     "RustCathedral": ("RustCathedral/RM_RustCathedralMod.cs", "RustCathedral/RM_RustCathedral.csproj", {
         "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly", "Cathedral roaches": "Now",
-        "The borehulk on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly", "Borehulk grinding": "Now",
+        "The borehulk on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly", "Borehulk grinding": "Now", "The Worn Bit": "Now",
         "Canal eels and dried-out dead on new maps (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Not wired yet (these change nothing)": "Now"}, ()),
     "RustCathedral#Hum": ("Hum/RustCathedralHumSettings.cs", "Hum/RimMandrake.RustCathedral.Hum.csproj", {

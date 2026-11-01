@@ -57,6 +57,14 @@
     <Compile Include="RM_JobGiver_BorehulkBackAway.cs" />
     <Compile Include="RM_GenStep_BorehulkPlacement.cs" />
     <Compile Include="RM_CathedralFinish.cs" />
+    <Compile Include="RM_WornBitKernel.cs" />
+    <Compile Include="RM_WornBitDefs.cs" />
+    <Compile Include="RM_WornBit.cs" />
+    <Compile Include="RM_WornBitGame.cs" />
+    <Compile Include="RM_WornBitJobs.cs" />
+    <Compile Include="RM_WornBitYard.cs" />
+    <Compile Include="RM_WornBitDig.cs" />
+    <Compile Include="RM_WornBitProof.cs" />
   </ItemGroup>
 
   <ItemGroup>

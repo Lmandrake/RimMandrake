@@ -680,6 +680,27 @@ def birth_outcome(t):
         t.screenshot()
 
 
+@suite.chain("worn_bit_gods")
+def worn_bit_gods(t):
+    """RUSTCATHEDRAL_WORN_BIT_ARC_1: Mob'Unloo +, Ohm +, Ozzik displeased on keep; Mob'Unloo annoyed, Ohm + on free."""
+    with _independent(t, "live_game_present"):
+        if not _live(t):
+            _unmeasured(t, "needs a live game with mandrake.rut.rites and the Rust Cathedral")
+    if not _live(t):
+        return
+    for keep, want in (("true", dict(ohm=1, mob=1, ozzik=-1)), ("false", dict(ohm=1, mob=-1, ozzik=0))):
+        with t.component("branch_" + keep, beyond_toggle=True):
+            r = t.bridge_call("jawa/static_call", typeName="RimMandrake.Utinni.Rites.Patch_WornBitChoice", method="ProofDeltas", args=keep)
+            words = str((r or {}).get("result", "")).split()
+            got = {words[i]: float(words[i + 1]) for i in range(1, len(words) - 1, 2)}
+            for god, sign in want.items():
+                moved = got.get(god, 0.0)
+                if (sign > 0 and moved <= 0) or (sign < 0 and moved >= 0) or (sign == 0 and moved != 0):
+                    _fail("%s moved %s on keep=%s" % (god, moved, keep))
+            if got.get("rekko", 1.0) != 0:
+                _fail("a god the branch does not name moved: %s" % got)
+
+
 @suite.chain("mood_walk_tick")
 def mood_walk_tick(t):
     """UNVERIFIED BY DESIGN (see docstring's MOOD paragraph) -- Mood has no

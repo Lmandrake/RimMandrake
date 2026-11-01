@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_WORN_BIT_ARC_1 part 6 (Q11a: the free mod plays the same arc). The refurbisher is data: this moves it
+  from vanilla Pirate to the Junkers and gives the yard their voice, and names the neutral droids. PatchOperationConditional
+  on the mod's own def, because MayRequire on a top-level Operation is ignored and the mod may load under the composed
+  name. mandrake.rm.biomes is a dependency of this mod, so RimMandrake's patch has already run.
+-->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="RM_Borehulk"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/FactionDef[defName="Pirate"]/modExtensions/li[@Class="RimMandrake.RustCathedral.RM_DrillRefurbisherExtension"]</xpath>
+        </li>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_Junkers"]</xpath>
+          <value>
+            <li Class="RimMandrake.RustCathedral.RM_DrillRefurbisherExtension">
+              <bossLabel>the Scraplord</bossLabel>
+              <greeting>The Scraplord reads the work order with his thumb and grins through a bribe of teeth. Your head rests easy here, he says, for as long as the order stands. Nobody on this yard has ever said anything else twice.</greeting>
+              <secondDemand>"The price went up," says the Scraplord. "Rust does that."</secondDemand>
+            </li>
+          </value>
+        </li>
+        <li Class="PatchOperationAddModExtension">
+          <xpath>Defs/FactionDef[defName="RUT_Jawa_FreeDroidEnclaves"]</xpath>
+          <value>
+            <li Class="RimMandrake.RustCathedral.RM_NeutralDroidsExtension" />
+          </value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>

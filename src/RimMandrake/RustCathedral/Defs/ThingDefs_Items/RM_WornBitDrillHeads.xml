@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUSTCATHEDRAL_WORN_BIT_ARC_1 stages 1-3. Mass 250 is the item's number: one colonist on foot cannot caravan it
+  (35 kg of capacity), a pack animal, a vehicle or the gravship can. A pod carries 150, so no pod lifts it, and the
+  yard offers pods no way in. Untradeable and unspoiling: losing one is the player's act, never the weather's.
+  ART: the texPath is the mod's stand-in until art install lands RM_WornDrillHead / RM_RefurbishedDrillHead
+  (infrastructure/artpipe/art_lists/rustcathedral_turn1_2026-10-02.csv), the same stand-in RM_BoltShedCuriosity uses.
+-->
+<Defs>
+  <ThingDef ParentName="ResourceBase" Name="RM_DrillHeadBase" Abstract="True">
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <graphicData>
+      <texPath>Things/Item/Resource/ComponentIndustrial</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>2.5</drawSize>
+    </graphicData>
+    <stackLimit>1</stackLimit>
+    <useHitPoints>false</useHitPoints>
+    <deteriorateFromEnvironmentalEffects>false</deteriorateFromEnvironmentalEffects>
+    <tradeability>None</tradeability>
+    <alwaysHaulable>true</alwaysHaulable>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_DrillHeadBase">
+    <defName>RM_WornDrillHead</defName>
+    <label>worn drill head</label>
+    <description>A massive conical drill bit as big as a man, taken off a borehulk's boom. Its spiral flutes are ground almost smooth. It is far too heavy for one person to walk anywhere with, and only someone with the right lathe and no scruples could bring it back.</description>
+    <statBases>
+      <MarketValue>600</MarketValue>
+      <Mass>250</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_DrillHeadBase">
+    <defName>RM_RefurbishedDrillHead</defName>
+    <label>refurbished drill head</label>
+    <description>A massive conical drill bit as big as a man, its spiral flutes reground and greased, the bolt seats bright. It waits for the boom it came off.</description>
+    <statBases>
+      <MarketValue>2400</MarketValue>
+      <Mass>250</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+  </ThingDef>
+</Defs>
