@@ -1,0 +1,32 @@
+Image 1 is the exact camera, composition and geography of a real planet, ASH'KARR, from a false-colour map render. Keep every landmass boundary, the planet's size and position on the canvas, the ring's ellipse and the day/night line exactly where they are in image 1. Repaint image 1 as a photograph taken from orbit by a real spacecraft, for a game loading screen: real terrain with depth, wind-streaked dune fields, canyons, thin dust haze, a thin pale atmosphere rim.
+
+What each colour in image 1 really is, seen from orbit:
+- pale tan: pale gold and bone dune sheets, machined-regular ripple, glass glints, utterly dry
+- dark slate: dark frozen nightside under perpetual green and violet aurora
+- warm tan: amber and ochre sand with rust outcrops and long cool blue shadows near the terminator
+- violet: wet dark ground under bone white, lilac and milk-white growth with faint glow-blue and lantern gold
+- putty grey: salt white and ash-grey flats with vitrified black-green scars
+- pale grey: dirty white ice sheet over blue-black rock at the fractures, faint aurora
+- black: obsidian-black crags with rime-frost grey and tiny glow-blue points
+- slate blue-grey: pale blue-white water-ice sand and blue ice fields in dim twilight
+- brick red: grey-white cracked clay pans with red-brown flood stain
+- olive tan: root-bound dun crust with a dusty grey-olive scrub fuzz
+- deep navy: a torn, elongated dark sea, deep green and kelp-bronze water, near the terminator
+- slate olive: wet black and slate ground with bone-pale forest, a dark margin against the ochre
+- slate blue: a torn, elongated grey sea, salt-encrusted and shrinking, bone-pale shoals, near the terminator
+- turquoise: a perfectly round crater ocean, scald cyan water with boiling white steam and a dark basalt rim
+- deep rust with dark grid: rust film over a dark buried metal lattice, a vast derelict machine plain with verdigris streaks
+- saturated green: dense wet jungle of every green with white steam and black mud
+- bone white: bone-white sunlit stone with wet black streaks and green held in shade
+- khaki: grass-gold plains crossed by migrating ash-black burn bands and week-old green regrowth
+- dusty rose: red water and red fog over grey-white husk ground
+- dark green: every dark green veiled in dead white silk
+- yellow-green: translucent green and amber living film over dark ground
+- muddy olive: muck-brown and mangrove green swamp with salt crust on its sea edge
+- dark mauve-brown: black glassed war scars with rust and acid-bright pools
+- night blue: black mirror lakes of liquid fuel, frost white at the edges, aurora reflected
+- charcoal: basalt black and obsidian with thin glowing red lava seams under ash grey
+- moss green: a raised table of living-wood brown and moss green forest
+- near black: every black, wet and glassy, with amber horizon glints
+
+The planet is a tidally locked desert world: the sunward face is scorched ochre sand, the seas lie torn and elongated near the terminator, the far side is frozen dark under faint green and violet aurora. One small hard white sun lights everything from the right direction in image 1, and the sun itself stays out of frame. The ring is a vast thin sheet of fine grey-brown dust and pulverised wreckage circling the equator, seen from thousands of kilometres away: smooth soft translucent bands with dark gaps, an airbrushed continuous haze with stars faintly visible through it, exactly like Saturn's rings photographed by the Cassini probe but dustier and grey-brown. Its surface is a smooth gradient: at this distance it holds zero separate rocks, boulders or objects. It casts no broad shadow because the sun lies in its plane. The part of the ring inside the planet's shadow is dark. Black space with a few faint real stars. Every border between terrains is an irregular natural transition feathered by dust and erosion, with continuous natural ground from edge to edge at planetary scale. This is one planet with one sun. Wide landscape composition, full bleed, pure image with no lettering.

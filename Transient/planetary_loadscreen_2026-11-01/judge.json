@@ -1,0 +1,24 @@
+{
+ "candidate_crater_ring.png": {
+  "ring": true,
+  "not_mars": true,
+  "one_sun": true,
+  "no_text": true,
+  "defect": "Oversized terrain relief and sharply patterned regions make the surface look illustrated rather than photographic."
+ },
+ "candidate_twilight_terminator.png": {
+  "ring": true,
+  "not_mars": true,
+  "one_sun": true,
+  "no_text": true,
+  "defect": "Some terrain has an exaggerated, carved texture that weakens the photographic orbital look."
+ },
+ "candidate_grey_sea_limb.png": {
+  "ring": true,
+  "not_mars": true,
+  "one_sun": true,
+  "no_text": true,
+  "defect": "Abrupt, nearly black surface patches near the upper-right limb look like texture artifacts."
+ },
+ "best": "candidate_twilight_terminator.png"
+}

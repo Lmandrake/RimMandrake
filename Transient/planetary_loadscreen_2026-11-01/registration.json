@@ -1,0 +1,52 @@
+{
+ "candidate_crater_ring.png": {
+  "terminator_day_night_lum_ratio": [
+   4.16,
+   true
+  ],
+  "sea_Scald_bluer_than_shore": [
+   44.3,
+   true
+  ],
+  "sea_TwilightSea_bluer_than_shore": [
+   28.8,
+   true
+  ],
+  "ring_vs_sky_lum": [
+   31.7,
+   true
+  ]
+ },
+ "candidate_grey_sea_limb.png": {
+  "terminator_day_night_lum_ratio": [
+   5.69,
+   true
+  ],
+  "sea_GreySea_bluer_than_shore": [
+   22.6,
+   true
+  ],
+  "ring_vs_sky_lum": [
+   23.7,
+   true
+  ]
+ },
+ "candidate_twilight_terminator.png": {
+  "terminator_day_night_lum_ratio": [
+   5.09,
+   true
+  ],
+  "sea_Scald_bluer_than_shore": [
+   74.3,
+   true
+  ],
+  "sea_TwilightSea_bluer_than_shore": [
+   36.2,
+   true
+  ],
+  "ring_vs_sky_lum": [
+   32.0,
+   true
+  ]
+ }
+}
