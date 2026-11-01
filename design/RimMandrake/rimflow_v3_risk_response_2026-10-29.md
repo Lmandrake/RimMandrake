@@ -382,7 +382,7 @@ Everything else in this response is within delegation and can be ticketed as wri
 - (c) Containment first by machine (pause the lane, restart the game, re-ring), then FOUNDRY for the residue.
 - **Recommend (c)**, which T2 and T4 already build toward; (b) only if the residue is still large after two weeks.
 
-**D3. The lessons queue (§2 #4: the fold duty is a standing practice in his role files)**
+**D3. The lessons queue (§2 #4: he answered a card on 2026-10-29 15:53Z, *"The Auditor once a week."*; (a) and (c) reverse that answer)**
 - (a) Retire it as a queue (T7): keep the files as a searchable corpus, promote a lesson only when it recurs, and
   stop counting the backlog.
 - (b) Fund a real weekly fold: about 600 lessons a week means a dedicated role run of several hours, all process.
