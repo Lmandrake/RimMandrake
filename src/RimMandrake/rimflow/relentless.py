@@ -207,7 +207,7 @@ def charge(store, st, tokens, now, r, unit):
     so a crash before the item's own marker is saved cannot count a run twice."""
     n = int(tokens) if tokens else r["run_reserve"]
     d = _day(store, now)
-    if unit not in d["runs"]:
+    if unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]:
         d["runs"][unit] = n
         d["spent"] += n
         store._write(store.p("spend-%s.json" % day_key(now)), json.dumps(d))
@@ -311,7 +311,7 @@ def verdict(store, item, nonce, word, reasons, now=None):
     with store.lock():
         st = store.load(item)
         chk = (st or {}).get("check") or {}
-        if not st or st["status"] != "checking" or chk.get("nonce") != nonce:
+        if not st or st["status"] != "checking" or chk.get("nonce") != nonce or chk.get("expired"):
             raise Fenced("%s: no check is waiting for that nonce" % item)
         chk["verdict"] = word
         chk["reasons"] = (reasons or "")[:4000]
@@ -337,7 +337,8 @@ def hook_fence(toplevel, store=None):
             m = json.load(f)
     except (OSError, ValueError):
         return None
-    return fence_check(store or Store(), m["item"], m["gen"])
+    gen = os.environ.get("RELENTLESS_GEN")     # set at launch, so a resumed old session cannot read the new marker
+    return fence_check(store or Store(), m["item"], int(gen) if gen else m["gen"])
 
 
 def guard(verb, item, argv, env=None, store=None):
@@ -902,13 +903,18 @@ def step(store, fx, r, item, now, acts):
                 with store.lock():
                     st = store.load(item)
                     late = overdue(st, act, now, r) if st["status"] == "running" else None
+                    rec = store.read_receipt(item, st["gen"]) if late else None
+                    if rec:
+                        _take_receipt(store, st, rec, now)
+                        return
                     if late:
                         fail(store, st, late[0], late[1], r, now)
                 if late:
                     fx.stop(run, force=False)
                     acts.append({"do": late[0], "item": item})
             return
-        settle(store, fx, r, item, "run", st["started_at"], now, acts)
+        if not settle(store, fx, r, item, "run", st["started_at"], now, acts):
+            return
         with store.lock():
             st = store.load(item)
             if st["status"] != "running":
@@ -993,6 +999,12 @@ def step(store, fx, r, item, now, acts):
         word = chk.get("verdict")
         if word is None and fx.alive(chk.get("run")) and now - chk["at"] < r["check_max_s"] + r["launch_grace_s"]:
             return
+        if word is None and not chk.get("expired"):    # fence the nonce before the stop: late is no verdict
+            with store.lock():
+                cur = store.load(item)
+                if cur["status"] == "checking":
+                    cur["check"]["expired"] = cur["check"].get("verdict") is None
+                    store.save(cur)
         since = chk.get("verdict_at") or chk["at"] + r["check_max_s"] + r["launch_grace_s"]
         if not settle(store, fx, r, item, "check", min(since, now), now, acts):
             return
@@ -1107,6 +1119,8 @@ def lease(store, fx, r, now, acts):
             acts.append({"do": "wait", "why": why})
             return
         item = st["item"]
+        if st.get("needs_back"):       # the ledger still says owner: the next step() clears it first
+            continue
         if not st["ledger_started"]:
             why = fx.ledger_start(item)
             if why:
@@ -1133,7 +1147,7 @@ def lease(store, fx, r, now, acts):
             prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r)
             agent = r["pilot_agent"] if st["approach"] == "pilot" else r["worker_agent"]
             why = fx.launch(st, st["run"], prompt, agent, st["clone"], r["run_max_s"],
-                            {"RELENTLESS_ROOT": store.root})
+                            {"RELENTLESS_ROOT": store.root, "RELENTLESS_GEN": str(st["gen"])})
         with store.lock():
             cur = store.load(item)
             if why:

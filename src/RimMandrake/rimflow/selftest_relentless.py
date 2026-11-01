@@ -468,6 +468,39 @@ def t_crash_windows():
         x.tick()
         ok(x.st(q[0]["item"])["status"] == "retired", "an item excluded in the rules leaves the queue")
     x.done()
+    # a checker past its deadline cannot pass
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "p")
+    R.finish(x.s, "I0", st["gen"], "s", "e", now=x.now)
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    if x.st("I0")["status"] != "checking":
+        x.tick()
+    chk = x.st("I0")["check"]
+    x.w.unkillable.add(chk["run"]["unit"])
+    x.tick(x.r["check_max_s"] + x.r["launch_grace_s"] + 5)
+    try:
+        R.verdict(x.s, "I0", chk["nonce"], "PASS", "late")
+        ok(False, "an expired checker is fenced")
+    except R.Fenced:
+        ok(True, "an expired checker is fenced")
+    x.done()
+    # a dead session's own generation beats the clone's newer marker
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    t = tempfile.mkdtemp(prefix="rlh-")
+    os.makedirs(os.path.join(t, ".git"))
+    with open(os.path.join(t, ".git", "relentless.json"), "w") as f:
+        json.dump({"item": "I0", "gen": st["gen"]}, f)
+    os.environ["RELENTLESS_GEN"] = str(st["gen"] - 1)
+    ok(R.hook_fence(t, x.s), "the session's generation, not the marker's, is fenced")
+    del os.environ["RELENTLESS_GEN"]
+    ok(R.hook_fence(t, x.s) is None, "the marker still answers without one")
+    shutil.rmtree(t, ignore_errors=True)
+    x.done()
     # overdue reads the beat
     st = dict(R.new_state("I0", 1, ""), started_at=0, last_beat=1000)
     rr = dict(RULES, run_max_s=10 ** 6)
