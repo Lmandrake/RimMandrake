@@ -123,7 +123,7 @@ def canary(session, anchor):
             return out
         x, z = cell
         # marked BEFORE the call: a spawn that raises in flight (rimdrive Reconnected: "effect UNKNOWN") may still have
-        # landed the stack, and the cell read empty, so cleaning Items there can remove nothing but the canary's own
+        # landed the stack, and the cell read empty, so cleaning Items there can remove nothing but the canary's own stack
         spawned = cell
         r = session.call("jawa/spawn_batch", ops="%s:%d,%d" % (CANARY_DEF, x, z)) or {}
         out["steps"].append("spawn_batch %s at %d,%d: success=%r" % (CANARY_DEF, x, z, r.get("success")))

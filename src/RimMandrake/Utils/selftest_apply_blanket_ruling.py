@@ -32,7 +32,7 @@ def run(tmp, doc, *extra):
                         "--said", "replace everything", "--apply", *extra], capture_output=True, text=True)
     with open(dec, encoding="utf-8") as fh:
         after = fh.read()
-    return p.returncode, after != raw, json.loads(after)
+    return p.returncode, after != raw, json.loads(after), p.stderr
 
 
 def main():
@@ -40,17 +40,18 @@ def main():
     with tempfile.TemporaryDirectory() as tmp:
         for stamp in ("review-sheet-sidecar", "review-sheet-page", "artifact-db-merge",
                       "decisions_v2 --accept-looks (owner's words)", "some-future-sitting-route"):
-            rc, changed, _ = run(tmp, dict(sat, savedBy=stamp))
+            rc, changed, _, _ = run(tmp, dict(sat, savedBy=stamp))
             check("refuses over a sitting stamped %r" % stamp, rc != 0 and not changed, (rc, changed))
-        rc, changed, _ = run(tmp, dict(sat, writeCount=3))
-        check("refuses over a writeCount with no stamp", rc != 0 and not changed, (rc, changed))
-        rc, changed, d = run(tmp, {"decisions": {"r1": {"decision": "keep"}}})
+        rc, changed, _, err = run(tmp, dict(sat, writeCount=3))
+        check("refuses over a writeCount with no stamp, naming the writeCount (not 'None')",
+              rc != 0 and not changed and "3 time(s)" in err and "None" not in err, (rc, changed, err))
+        rc, changed, d, _ = run(tmp, {"decisions": {"r1": {"decision": "keep"}}})
         check("replaces an unstamped pre-fill on every sheet row",
               rc == 0 and changed and sorted(d["decisions"]) == ["r1", "r2"] and d["savedBy"] == "owner-blanket-ruling",
               (rc, d.get("savedBy")))
-        rc, changed, d = run(tmp, dict(sat, savedBy="owner-blanket-ruling", writeCount=5))
+        rc, changed, d, _ = run(tmp, dict(sat, savedBy="owner-blanket-ruling", writeCount=5))
         check("replaces a previous blanket ruling", rc == 0 and changed, rc)
-        rc, changed, d = run(tmp, dict(sat, savedBy="decisions_v2 --accept-looks (owner's words)"), "--over-sitting")
+        rc, changed, d, _ = run(tmp, dict(sat, savedBy="decisions_v2 --accept-looks (owner's words)"), "--over-sitting")
         check("--over-sitting still overrides", rc == 0 and changed, rc)
     print("RESULT", "FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0

@@ -87,7 +87,8 @@ def main():
     # never write savedBy, so ANY stamp but a previous blanket ruling, or any writeCount, is a sitting.
     prior = doc.get("savedBy")
     if prior != "owner-blanket-ruling" and (prior or doc.get("writeCount")) and not a.over_sitting:
-        sys.exit(f"REFUSED: {a.decisions} was written by '{prior}' — that is a real sitting, and a "
+        how = f"written by '{prior}'" if prior else f"written {doc.get('writeCount')} time(s) with no stamp"
+        sys.exit(f"REFUSED: {a.decisions} was {how} — that is a real sitting, and a "
                  "blanket ruling would overwrite per-row judgements. Pass --over-sitting only if "
                  "the owner explicitly said to discard them.")
 
