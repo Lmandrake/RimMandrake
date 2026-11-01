@@ -53,7 +53,7 @@ Escalation (section 6.4), each at most once per incident:
              when rimflow incident.receiver_problem says nobody would pick it up (T2, ALARMS_REWIRE_OFF_RETIRED_BENCH);
              a failed `steve:lane` record lights the pulse health row
   T+30 min   `rimflow raise` it: first in relentless pool_order and `rimflow next --seat BENCH`, a line in the phone brief
-  T+120 min  with no claim: spawn for OWNER (needs owner, the Conductor's sitting; titled "IN PERSON:" when
+  T+120 min  with no claim: spawn for OWNER (needs owner, the Conductor's sitting; a seat's item stays open beside it; titled "IN PERSON:" when
              SteveDesktop is unreachable)
 Recovery (a DONE+canary job after the incident began) records `steve:lane` ok, notes the item and drops the items the incident spawned.
 
@@ -737,14 +737,17 @@ def escalate(inc, ls, now, last_item, src="steward"):
     """Advance INC up the ladder by its unowned clock. -> the item the incident escalated (or None). Each rung is
     recorded in the incident only once its ledger write succeeded, so a refused write is retried next pass."""
     u = inc["unowned_s"]
-    if inc["level"] >= 3 or u < L1_S:
+    if u < L1_S:
         return None
     w = world()
+    left = not item_open(inc.get("item"), w) or abandoned(inc.get("item"), now, w)
+    if inc["level"] >= 3 and not left:
+        return None
     tag = TAG.get(inc["state"], "STALLED")
     what = "%s: %s%s" % (inc["state"], ls["reason"][:200], (" (jobs %s)" % ",".join(map(str, ls["jobs"])))
                          if ls.get("jobs") else "")
-    if 1 <= inc["level"] < 3 and (not item_open(inc.get("item"), w) or abandoned(inc.get("item"), now, w)):
-        inc.update(level=0, item=None)              # closed or left under a continuing fault: open (or reuse) another
+    if inc["level"] >= 1 and left:                  # closed or left under a continuing fault: open (or reuse) another.
+        inc.update(level=0, item=None)              # At L3 too: the OWNER rung is no seat's to drain (ETBS)
     if inc["level"] < 1:
         if not item_open(last_item, w) or abandoned(last_item, now, w):
             last_item = open_lane_item(w, now)
@@ -777,6 +780,9 @@ def escalate(inc, ls, now, last_item, src="steward"):
         inc.update(level=2, error=None)
         jlog({"ts": iso(now), "event": "escalate", "level": 2, "item": inc["item"], "by": src})
     if inc["level"] < 3 and u >= L3_S and not claim_pauses(inc, now, w):
+        if item_open(inc.get("owner_item"), w):     # a reissued item: he already holds this incident's rung
+            inc.update(level=3, error=None)
+            return inc["item"]
         down = inc["state"] == "UNREACHABLE"
         name = mint(w, tag, "OWNER")
         rc, out = rimflow("spawn", "--from", STEWARD_ITEM, "--for", "OWNER", "--needs", "owner", "--name", name,

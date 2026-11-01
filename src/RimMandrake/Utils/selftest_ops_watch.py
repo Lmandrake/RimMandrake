@@ -1104,6 +1104,10 @@ r = OW.steve_incident_unclaimed(_w(_it("OTHER_ITEM", "proposed", 90), _it(_P + "
 check("incident: other items and closed incidents do not count", r["v"] == 0.0, r)
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "proposed", 5), _it(_P + "B", "proposed", 30)), _M, NOW, RULES)
 check("incident: the oldest of several counts", abs(r["v"] - 30) < 0.1, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "BRAKED_OWNER_2E27", "proposed", 36), _it(_P + "BRAKED_UNOWNED_A", "ready", 36, lease="live")), _M, NOW, RULES)
+check("incident: an OWNER rung beside a held item -> 0 (ETBS: 2E27 read 35.9 with a wake on the incident)", r["v"] == 0.0, r)
+r = OW.steve_incident_unclaimed(_w(_it(_P + "BRAKED_OWNER_2E27", "proposed", 90), _it(_P + "BRAKED_UNOWNED_A", "proposed", 12)), _M, NOW, RULES)
+check("incident: an OWNER rung hides no unclaimed seat item", abs(r["v"] - 12) < 0.1 and r["x"]["first"] == [_P + "BRAKED_UNOWNED_A"], r)
 
 # ---------------------------------------------------------------- arena alarm reader (ARENA_SWITCH_BUILD_ONE_ARM_LIVE_ONLY)
 # The pre-push hook appends PUSH_REFUSED / PUSH_HOOK_CRASH lines to <arena>/alarms/arena.jsonl; ARENA_PUSH_REFUSED is

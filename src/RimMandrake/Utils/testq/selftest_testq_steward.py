@@ -693,7 +693,7 @@ def main():
               "A00D: a wake that started is still the one wake of its incident")
         W.reach_wake_clone = real_reach
         # OPS_STEVE_UNSTICK_UNCLAIMED_A00D: a rung never lands on an item its holder walked away from
-        left = "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0A0D"
+        left = "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_000A"  # sorts before any mintable hex (digits-only is refused): open_lane_item takes the first
         check(W.rimflow("spawn", "--from", W.STEWARD_ITEM, "--for", "BENCH", "--needs", "offline", "--name", left,
                         "--title", "left behind")[0] == 0 and cli("claim", left)[0] == 0 and
               subprocess.run([sys.executable, ingest.CLI, "start", left, "--why", "selftest"], capture_output=True,
@@ -706,7 +706,7 @@ def main():
               "A00D: abandoned once the claim lapsed, not while it holds")
         n_sp = len(events("spawn"))
         check(W.open_lane_item(w, fresh) == left and W.open_lane_item(w, later) != left,
-              "A00D: the lost-steward.json search skips a left item")
+              "A00D: the lost-steward.json search skips a left item: %s" % W.open_lane_item(w, fresh))
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
         W.escalate(inc, {"reason": "r", "jobs": []}, fresh, left)
         check(inc["item"] == left and len(events("spawn")) == n_sp, "A00D: a live holder keeps the item: %s" % inc)
@@ -720,6 +720,21 @@ def main():
         inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 1, "item": left, "owner_item": None}
         W.escalate(inc, {"reason": "r", "jobs": []}, later, None)
         check(inc["item"] == fresh_item and inc["level"] == 1, "A00D: a rung already on a left item moves off it: %s" % inc)
+        # OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: the OWNER rung is no seat's, so L3 keeps a drainable item beside it
+        rung = "STEVE_LANE_UNSTICK_BRAKED_OWNER_0E7B"
+        check(W.rimflow("spawn", "--from", W.STEWARD_ITEM, "--for", "OWNER", "--needs", "owner", "--name", rung,
+                        "--title", "his rung")[0] == 0, "ETBS: an open OWNER rung")
+        n_sp, n_up = len(events("spawn")), len(events("raise"))
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 8000, "level": 3, "item": left, "owner_item": rung}
+        W.escalate(inc, {"reason": "r", "jobs": []}, fresh, None)
+        check(inc["item"] == left and inc["level"] == 3 and len(events("raise")) == n_up,
+              "ETBS: a live holder at L3 keeps the item: %s" % inc)
+        W.escalate(inc, {"reason": "r", "jobs": []}, later, None)
+        check(inc["item"] == fresh_item and inc["level"] == 3 and inc["owner_item"] == rung and
+              len(events("spawn")) == n_sp and len(events("raise")) == n_up + 1,
+              "ETBS: a left item at L3 moves to a raised drainable item, no second OWNER rung: %s" % inc)
+        W.escalate(inc, {"reason": "r", "jobs": []}, later, None)
+        check(len(events("raise")) == n_up + 1, "ETBS: settled at L3, the next pass adds nothing: %s" % inc)
         real_drop, real_pb = W.drop_as_bench, W.publish_bench
         dropped = []
         W.drop_as_bench, W.publish_bench = (lambda i, r: dropped.append(i) or (0, "ok")), (lambda: "pushed")

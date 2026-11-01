@@ -1194,11 +1194,14 @@ def steve_incident_unclaimed(world, model, now, rules):
     """steve.incident_unclaimed_min: the age of the OLDEST open steward incident item (id prefix
     rules steve_incident.prefix) that no seat holds: still proposed/ready (not doing/built/validated) (claim/start), no live lease, not blocked. The steward
     escalating a stall makes c_steve call it owned; this is the point that says nobody has picked the escalation up
-    (owner 2026-10-28: the lane sat paused 21 min with an open STEVE_LANE_UNSTICK item and no alarm)."""
-    pre = (rules.get("steve_incident") or {}).get("prefix", "STEVE_LANE_UNSTICK_")
+    (owner 2026-10-28: the lane sat paused 21 min with an open STEVE_LANE_UNSTICK item and no alarm). An OWNER rung is
+    no seat's to claim, so it never counts: the steward keeps a seat's UNOWNED item open beside it, and that one does
+    (OPS_STEVE_UNSTICK_UNCLAIMED_ETBS: 2E27 read 35.9 and went on rising with a wake working the incident)."""
+    cfg = rules.get("steve_incident") or {}
+    pre, rung = cfg.get("prefix", "STEVE_LANE_UNSTICK_"), cfg.get("owner_rung", "_OWNER_")
     ages, names = [], []
     for it in world.items.values():
-        if not it.id.startswith(pre) or it.state not in ("proposed", "ready") or it.blocked:
+        if not it.id.startswith(pre) or rung in it.id or it.state not in ("proposed", "ready") or it.blocked:
             continue
         if model.lease_status(it, now) == "live":
             continue

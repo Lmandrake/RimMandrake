@@ -359,7 +359,7 @@
    }
   }
  },
- "steve_incident": {"_doc": "item-id prefix of the steward's escalation items (testq/steward.py); steve.incident_unclaimed_min is the age of the oldest one no seat holds", "prefix": "STEVE_LANE_UNSTICK_"},
+ "steve_incident": {"_doc": "item-id prefix of the steward's escalation items (testq/steward.py); steve.incident_unclaimed_min is the age of the oldest one no seat holds; owner_rung marks the T+120 rung for OWNER, no seat's to claim, never counted", "prefix": "STEVE_LANE_UNSTICK_", "owner_rung": "_OWNER_"},
  "band": {
   "_doc": "a point outside the baseline mean +/- k sigma. Baseline: the last baseline_days of MEASURED points, minus the last exclude_recent_h; needs min_points. Sigma is floored (max of sigma_floor_rel x |mean| and sigma_floor_abs) so a flat series does not flag on noise.",
   "baseline_days": 7,
