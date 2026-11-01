@@ -24,7 +24,7 @@ def git(d, *a):
     return subprocess.run(["git", *a], cwd=d, capture_output=True, text=True, check=True).stdout.strip()
 
 
-def repo():
+def repo(attr=False):
     d = tempfile.mkdtemp(prefix="wallrepo")
     git(d, "init", "-q")
     git(d, "config", "user.email", "t@t")
@@ -33,6 +33,10 @@ def repo():
         p = Path(d, rel)
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_text(body, encoding="utf-8")
+    if attr:
+        Path(d, ".gitattributes").write_text("tests/proof.py export-ignore\n", encoding="utf-8")
+        Path(d, "tests").mkdir()
+        Path(d, "tests/proof.py").write_text("p\n", encoding="utf-8")
     git(d, "add", ".")
     git(d, "commit", "-qm", "base")
     Path(d, "a.py").write_text("two\n", encoding="utf-8")
@@ -95,6 +99,11 @@ def test_box():
     bad = subprocess.run([sys.executable, box + "/verdict", "MAYBE", "x"], capture_output=True, text=True)
     check("a bad word is refused", bad.returncode != 0)
     W.remove_box(box)
+    src2, sha2 = repo(attr=True)
+    box2 = W.make_box(p, src2, sha2, "n2")
+    check("export-ignore does not drop a tracked proof", Path(box2, "tree/tests/proof.py").exists() and not Path(box2, "tree/.git").exists()
+          and not Path(box2, "export.index").exists())
+    W.remove_box(box2)
     check("the box goes", not Path(box).exists())
 
 
@@ -117,6 +126,9 @@ def test_would_deny():
     check("a clean run denies nothing", W.would_deny([{"command": "python3 x.py"}], p) == [])
     check("a read in a seat clone is reported", W.would_deny([{"file_path": kid + "/a"}], p) == [kid])
     check("an excluded folder is reported", W.would_deny([{"command": "cat conversations/x"}], p) == ["conversations"])
+    q = {"deny": [], "tree_exclude": ["secret.txt"]}
+    check("a quoted relative path is reported", W.would_deny([{"command": "cat 'secret.txt'"}], q) == ["secret.txt"])
+    check("a longer name is not the path", W.would_deny([{"command": "cat my-secret.txt"}], q) == [])
 
 
 def main():

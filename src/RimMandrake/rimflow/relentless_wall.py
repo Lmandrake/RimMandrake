@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import shutil
 import subprocess
 import time
@@ -84,10 +85,15 @@ def make_box(prof, source, sha, nonce):
     tree.mkdir(parents=True)
     (box / "projects").mkdir()
     ex = excludes(prof)
-    a = subprocess.Popen(["git", "archive", "--format=tar", sha, "--", ".", *ex], cwd=source, stdout=subprocess.PIPE)
-    x = subprocess.run(["tar", "-x", "-C", str(tree)], stdin=a.stdout, capture_output=True, timeout=500)
-    a.stdout.close()
-    if a.wait(timeout=60) or x.returncode:
+    # not `git archive`: it honours export-ignore, which would drop tracked proof files from the Marker's tree
+    env = dict(os.environ, GIT_INDEX_FILE=str(box / "export.index"))
+    subprocess.run(["git", "read-tree", sha], cwd=source, env=env, capture_output=True, timeout=300, check=True)
+    names = subprocess.run(["git", "ls-files", "-z", "--", ".", *ex], cwd=source, env=env, capture_output=True,
+                           timeout=300, check=True).stdout
+    x = subprocess.run(["git", "checkout-index", "-z", "--stdin", "--prefix=%s/" % tree], cwd=source, env=env,
+                       input=names, capture_output=True, timeout=500)
+    (box / "export.index").unlink(missing_ok=True)
+    if x.returncode:
         raise RuntimeError("export failed: %s" % x.stderr[-200:])
     d = subprocess.run(["git", "diff", "--no-renames", sha + "^", sha, "--", ".", *ex], cwd=source, capture_output=True,
                        timeout=300, check=True)
@@ -139,7 +145,8 @@ def would_deny(inputs, prof):
     for inp in inputs:
         text = json.dumps(inp)
         hits.update(p for p in denied(prof) + list(prof.get("tmpfs", ())) if p in text)
-        hits.update(p for p in prof["tree_exclude"] if ("/" + p) in text or (" " + p) in text)
+        # the path at a word edge: after a slash, space, quote, = ( ; | & < > : or the start - shell quoting does not hide it
+        hits.update(p for p in prof["tree_exclude"] if re.search(r"(?<![\w.-])" + re.escape(p), text))
     return sorted(hits)
 
 

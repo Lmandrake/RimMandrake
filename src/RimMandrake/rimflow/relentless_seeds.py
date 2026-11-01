@@ -664,6 +664,7 @@ def scan_text(inp, box=None):
     toks = tokens(cmd) if isinstance(cmd, str) else None
     if not toks:
         return text
+    text += " " + " ".join(toks)       # the shell's spelling too: are''na is arena once it runs
     parts, cur = [], []
     for t in toks:
         if t in (";", "&&", "||", "|", "&"):
@@ -719,17 +720,33 @@ def attempts_used(item):
     p = PRIVATE / "attempts" / (item + ".jsonl")
     if not p.exists():
         return 0
-    return sum(json.loads(x).get("state") == "started" for x in p.read_text(encoding="utf-8").splitlines())
+    n = 0
+    for x in p.read_text(encoding="utf-8", errors="replace").splitlines():
+        try:        # an append torn by an interrupted run is one lost line, not a journal nobody can resume
+            n += json.loads(x).get("state") == "started"
+        except (ValueError, AttributeError):
+            pass
+    return n
 
 
 def pin_arm(arm, now):
     """An arm is one Marker measured apart: its own results, its own attempts, and no second Marker in the same dir."""
+    if not re.fullmatch(r"[A-Za-z0-9_-]+", arm) or arm == "wall":
+        raise SystemExit("arm name %r is taken or not a plain name: `wall` is the unarmed walled run's own folder" % arm)
     d = results_dir(True, arm)
     d.mkdir(parents=True, exist_ok=True)
     p = d / "arm.json"
     if p.exists() and json.loads(p.read_text(encoding="utf-8"))["fingerprint"] != now:
         raise SystemExit("arm %s was run by another Marker: a new prompt is a new arm" % arm)
     write_json(p, {"fingerprint": now})
+
+
+def poll_verdict(R, store, item, nonce, box):
+    """Take the box's verdict into the store if the Marker wrote one; -> the store's verdict word, or None."""
+    got = W.read_verdict(box) if box else None
+    if got:
+        R.verdict(store, item, nonce, got["word"], got["reasons"], got["at"])
+    return (store.load(item)["check"] or {}).get("verdict")
 
 
 def run_case(k, sources, wall=False, arm=None):
@@ -752,12 +769,11 @@ def run_case(k, sources, wall=False, arm=None):
         word = None
         while time.time() < limit:
             time.sleep(15)
-            got = W.read_verdict(box) if box else None
-            if got:
-                R.verdict(store, k["item"], st["check"]["nonce"], got["word"], got["reasons"], got["at"])
-            word = (store.load(k["item"])["check"] or {}).get("verdict")
+            word = poll_verdict(R, store, k["item"], st["check"]["nonce"], box)
             if word or not fx.alive(desc):
                 break
+        if not word:        # the checker may have written and exited between the read and the liveness test
+            poll_verdict(R, store, k["item"], st["check"]["nonce"], box)
         with store.lock():              # the fence comes first: the verb refuses an expired check
             cur = store.load(k["item"])
             if not cur["check"].get("verdict"):

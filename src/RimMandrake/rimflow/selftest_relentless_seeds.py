@@ -127,6 +127,9 @@ def test_counting():
     check("control false fail, with reasons", (c["control"]["false_fail"], c["control"]["n"]) == (1, 2)
           and c["control"]["reasons"] == {"j": "bad"})
     check("escaped has no on-target test", c["classes"]["escaped"]["on_target"] is None)
+    check("on target: a name with a space", T.on_target({"path": "src/a b.py", "reasons": "Regression in src/a b.py"}))
+    check("on target: a Windows path", T.on_target({"path": "src/a.py", "reasons": r"Regression in C:\repo\src\a.py"}))
+    check("on target: another file is no hit", not T.on_target({"path": "src/a.py", "reasons": "b.py and ba.py and a.pyc"}))
     lo, hi = T.wilson(0, 30)
     check("Wilson is Wilson at zero, not 3/n", lo == 0.0 and 0.11 < hi < 0.12, hi)
     live = {"done": 0, "ended": 0, "first_checks": 0, "first_fails": 0}
@@ -200,6 +203,7 @@ def test_contamination_scan():
     check("the books beyond the verdict are seen", C("git -C /home/mandrake/rm/relentless/books log") == ["/relentless/"])
     check("a seat clone is seen", C("ls /home/mandrake/rm/bench") == ["/rm/bench"])
     check("the repo's own arena folder is no alarm", C("ls src/RimMandrake/Utils/arena/") == [])
+    check("shell quoting does not hide the arena", C("cat %s/are''na/judge/hidden/T.json" % "/mnt/d/ClaudeWork/rimmandrake") != [])
     own = "/home/mandrake/rm/relentless-seeds/cases/SD_A-a1"
     check("its own case dir is no alarm", C("ls %s/src" % own, own=own) == [])
     check("the case parent is", C("ls /home/mandrake/rm/relentless-seeds/cases", own=own) == ["relentless-seeds"])
@@ -297,6 +301,36 @@ def test_verdict_and_journal():
     S.journal(item, {"item": item, "verdict": None})
     S.journal(item, {"state": "started", "attempt": 2})
     check("attempts count across invocations, by the started rows", S.attempts_used(item) == 2)
+    old = S.PRIVATE
+    S.PRIVATE = Path(tempfile.mkdtemp(prefix="jr-"))
+    try:
+        S.journal("SD_T", {"state": "started"})
+        with open(S.PRIVATE / "attempts/SD_T.jsonl", "a", encoding="utf-8") as f:
+            f.write('{"state":"started"')
+        check("a torn journal line is skipped, not fatal", S.attempts_used("SD_T") == 1)
+        for bad in ("wall", "", "a/b", ".."):
+            try:
+                S.pin_arm(bad, "fp")
+                check("arm name refused: %r" % bad, False)
+            except SystemExit:
+                check("arm name refused: %r" % bad, True)
+    finally:
+        S.PRIVATE = old
+
+    class Store:
+        def load(self, i):
+            return {"check": {"verdict": self.v}}
+        v = None
+
+    class Rl:
+        def verdict(self, store, i, n, word, why, at):
+            store.v = word
+
+    box = tempfile.mkdtemp(prefix="pv-")
+    st = Store()
+    check("no verdict file, no word", S.poll_verdict(Rl(), st, "I", "n", box) is None)
+    Path(box, "verdict.json").write_text('{"word": "FAIL", "reasons": "r", "at": 1}', encoding="utf-8")
+    check("a verdict written before the Marker exits is taken on the reread", S.poll_verdict(Rl(), st, "I", "n", box) == "FAIL")
 
 
 def main():
