@@ -5,10 +5,12 @@
 
 The planted fault runs on the real path: cli.py as a subprocess on a throwaway ledger, a schedule copied from the real
 dispatcher_schedule.json so the number under test is the shipped one. N+1 ready items and N started: `next` offers no new
-item; a dated wait frees one place; a third wait is refused; an expired wait counts again. Relentless reads the same key.
+item; a dated wait frees one place; a third wait is refused; an expired wait counts again. The cap is also reached the way
+workers reach it, by non-peek `next` reservations of filed items. Relentless reads the same key on its live staffing path.
 """
 import json
 import os
+import re
 import subprocess
 import sys
 import tempfile
@@ -152,6 +154,53 @@ def unlisted_seat_and_damage():
     check(r.returncode != 0 and "focus cap is unknown" in r.stdout + r.stderr, "a damaged cap refuses, never lifts in silence")
 
 
+def focus_count(x):
+    w = model.replay(model_read(x))
+    return len(priority.focus_items(w, "FOUNDRY", model.epoch_now(), x.cap["since"]))
+
+
+def reserve(x):
+    """A worker's non-peek `next`: -> (the new item it leased or None, its token or None, the output)."""
+    out = x.ok("next")
+    m = re.search(r"rimflow claim (\S+) --token (\S+)", out)
+    return (m.group(1), m.group(2), out) if m else (None, None, out)
+
+
+def reservations_hold_the_cap():
+    """Workers do not peek. Each `next` leases a filed (`proposed`) item, and the lease must hold a place before the claim."""
+    x = Sandbox()
+    n = x.cap["per_seat"]
+    for k in range(n - 1):
+        x.item("STARTED%s_FIX_STILL_OPEN" % "ABCDEFGHIJ"[k], start=True)
+    for k in range(3):
+        x.item("FILED%s_FIX_NOT_STARTED" % "ABC"[k])
+
+    first, tok, out = reserve(x)
+    check(first is not None and "FOCUS CAP" not in out, "N-1 focus: the first worker's `next` leases a new item (%s)" % first)
+    check(focus_count(x) == n, "that reservation holds a place: focus reads %d of %d before any claim" % (focus_count(x), n))
+    second, _, out = reserve(x)
+    check(second is None and "FOCUS CAP" in out, "the second worker's `next` gets no new item (%s)" % second)
+    third, _, out = reserve(x)
+    check(third is None and "FOCUS CAP" in out, "the third worker's `next` gets none either (%s)" % third)
+
+    bad = x.run("wait", first, "--until", "2099-01-01", "--reason", "x")
+    check(bad.returncode != 0 and "reserved, not started" in bad.stdout + bad.stderr, "a reservation cannot wait: it would free no place")
+    w = model.replay(model_read(x))
+    later = model.epoch_now() + 7 * 86400
+    check(not priority.is_focus(w.items[first], later, x.cap["since"]), "a lapsed reservation is not focus")
+
+    x.ok("release", first, "--token", tok)
+    check(focus_count(x) == n - 1, "a released reservation gives its place back")
+    again, tok, out = reserve(x)
+    check(again is not None and "FOCUS CAP" not in out, "and the next worker takes that place (%s)" % again)
+    x.ok("claim", again, "--token", tok)
+    x.ok("start", again)
+    check(focus_count(x) == n, "the claim under that lease stays one place: focus %d of %d" % (focus_count(x), n))
+    fourth, _, out = reserve(x)
+    check(fourth is None and "FOCUS CAP" in out, "at the cap after the claim, still no new item")
+    check(focus_count(x) == n, "no sequence of workers took focus past the cap")
+
+
 def relentless_reads_the_same_number():
     x = Sandbox()
     os.environ["RIMFLOW_SCHEDULE"] = x.sched
@@ -169,6 +218,21 @@ def relentless_reads_the_same_number():
 
         check(relentless.worker_cap(F, {"max_workers": 10}) == n, "the number is the ceiling on its places")
         check(relentless.worker_cap(F, {"max_workers": 10}, extra=1) == n + 1, "a check still runs on top")
+
+        class Live(F):     # the path a run really takes: staffing set, top stage, budget wide, the Effects reader
+            focus_cap = staticmethod(lambda: relentless.Effects.focus_cap(fx))
+            budget = staticmethod(lambda: n + 5)
+            head_helpers = staticmethod(lambda: 0)
+            paused = staticmethod(lambda: False)
+
+        store = relentless.Store(os.path.join(x.d, "relentless"))
+        r = dict(relentless.rules(), max_workers=n + 7)
+        assert r.get("staffing"), "the shipped rules no longer set staffing: this no longer drives the live path"
+        with open(store.p("staffing_state.json"), "w") as f:
+            json.dump({"stage": len(r["staffing"]["stages"]) - 1}, f)
+        check(relentless.stage_places(store, Live, r)[3] == n, "stage_places, the live path, is held to the number")
+        check(relentless.admission(store, Live, r, 0, n) == "max_workers", "admission refuses the run past the number")
+        check(relentless.admission(store, Live, r, 0, n - 1) != "max_workers", "and admits the one under it")
         with open(x.sched, "w") as f:
             f.write("{broken")
         check(relentless.Effects.focus_cap(fx) == 1, "damaged: the lowest, not unlimited")
@@ -180,6 +244,7 @@ def main():
     planted_overflow()
     expired_wait_and_history()
     unlisted_seat_and_damage()
+    reservations_hold_the_cap()
     relentless_reads_the_same_number()
     print("FAILS: %d" % len(FAILS) if FAILS else "ALL PASS")
     return 1 if FAILS else 0

@@ -2010,6 +2010,8 @@ def cmd_wait(args, seat):
                     % (it.owner, len(others), cap["waits_max"], ", ".join(others)))
             if not priority.is_focus(it, now, cap["since"]) and not priority.wait_running(it, now):
                 die("wait refused: %s is not a focus item of %s, so a wait would free no place." % (it.id, it.owner))
+            if it.state == "proposed":      # reserved, so focus; but only started work can wait (priority.wait_running)
+                die("wait refused: %s is reserved, not started, so a wait would free no place. Claim it or release the lease." % it.id)
         _emit({"seat": seat, "event": "wait", "id": args.id, "until": until, "reason": args.reason}, w, quiet=True)
     print("wait %s until %s" % (args.id, until))
     return 0

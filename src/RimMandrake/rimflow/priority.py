@@ -178,12 +178,13 @@ def wait_running(it, now):
 
 
 def is_focus(it, now, since):
-    """Started and not done: `doing` taken at or after `since`, or `ready` under a live lease (reserved by `next`, so
-    two callers cannot both pass the cap). A running wait is out of the count; a block is not: it says something is
-    wrong, and the wrong thing still holds the place."""
+    """Started and not done: `doing` taken at or after `since`, or `proposed`/`ready` under a live lease. `next` leases
+    both (a filed item is `proposed`), and the reservation is counted so two callers cannot both pass the cap; a lapsed
+    one gives its place back. A running wait is out of the count; a block is not: it says something is wrong, and the
+    wrong thing still holds the place."""
     if wait_running(it, now):
         return False
-    if it.state == "ready":
+    if it.state in ("proposed", "ready"):
         return model.lease_status(it, now) == "live"
     if it.state != "doing":
         return False
