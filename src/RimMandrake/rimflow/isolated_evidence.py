@@ -299,6 +299,10 @@ def child_env(seat, item):
     return env
 
 
+# close evidence has to be a run that happened: a stored answer is not evidence (review AD2)
+FRESH_BECAUSE = "close evidence: the claim's commit has to be shown passing, not remembered passing"
+
+
 def run_claim(p, seat, root, runner=subprocess.run, out_dir=None, timeout=None):
     """Make the checkout, run the plan in it, read back what was recorded, delete the checkout. -> journal row.
     timeout: the batch budget left (None = RUN_TIMEOUT); each tool gets what is left of it when it starts."""
@@ -311,7 +315,7 @@ def run_claim(p, seat, root, runner=subprocess.run, out_dir=None, timeout=None):
         env = child_env(seat, p["item"])
         cmds = []
         if p["selftests"]:
-            cmds.append(("selftest", [sys.executable, RUN_SELFTESTS, "--full", "--only"] +
+            cmds.append(("selftest", [sys.executable, RUN_SELFTESTS, "--full", "--because", FRESH_BECAUSE, "--only"] +
                          [os.path.join(co, f) for f in p["selftests"]]))
         if p["validate"]:
             cmd = [sys.executable, VALIDATE_PATCH] + [os.path.join(co, f) for f in p["validate"]]

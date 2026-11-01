@@ -80,6 +80,7 @@
     {"match": "dry:*", "route": "program"},
     {"match": "blind:*", "route": "role", "reader": "Operations", "cause": "replay"},
     {"match": "paged:*", "route": "role", "reader": "Operations", "cause": "replay"},
+    {"match": "selftest_false_hit", "route": "role", "reader": "Operations", "cause": "selftest_ledger"},
     {"match": "stalled:*", "route": "role", "reader": "Operations", "cause": "replay"},
     {"match": "twice_dead:*", "route": "role", "reader": "Operations", "cause": "replay"}
   ]

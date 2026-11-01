@@ -108,7 +108,7 @@ check("a non-PASS (forget) removes the entry", SC.lookup(REL, base) is None)
 src = (HERE / "run_selftests.py").read_text()
 check("the runner has --no-cache", '"--no-cache"' in src)
 unit = (HERE / "systemd" / "rm-selftests-nightly.service").read_text()
-check("the nightly sweep runs with --no-cache", "run_selftests.py --no-cache" in unit)
+check("the nightly sweep runs with --nightly (declared cache off, known results audited)", "run_selftests.py --nightly" in unit)
 check("every real declaration names an existing test",
       all((HERE.parents[2] / r).is_file() for r in SC.DECLS if r != REL))
 

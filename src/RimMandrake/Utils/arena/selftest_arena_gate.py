@@ -904,7 +904,7 @@ def t_real(tmp):
     # a real selftest that needs no harness capability (the eventlog one, which opens harness_pass, is run through the
     # runner below: it must PASS there, ARENA_GATE_FIX_EVENTLOG_SELFTEST_CANT_PASS)
     target = HERE.parent / "selftest_about_dependency_urls.py"
-    out = subprocess.run([sys.executable, str(root / UT / "run_selftests.py"), "--only", str(target), "--no-cache"],
+    out = subprocess.run([sys.executable, str(root / UT / "run_selftests.py"), "--only", str(target), "--no-cache", "--because", "the gate must see this run, not a stored one"],
                          cwd=str(root), capture_output=True, text=True, env=env, timeout=300)
     check(out.returncode == 0 and "RESULT: GREEN" in out.stdout,
           "the real run_selftests.py --only passes %s (rc %s)" % (target.name, out.returncode))

@@ -143,7 +143,7 @@ def main():
         eq(st.get("src/selftest_flaky.py"), "PASS", "run 4: after a FAIL the record is gone, so it runs again")
         eq(st.get("src/selftest_reads_data.py"), "SKIPPED", "run 4: the re-recorded v2 input is skipped again")
 
-        p, st = run(root, "--full")
+        p, st = run(root, "--full", "--because", "fixture: records are ignored on request")
         eq(st.get("src/selftest_reads_data.py"), "PASS", "--full runs a test whose record says unchanged")
 
         recs = list((root / ".state/records").rglob("*.json.z"))

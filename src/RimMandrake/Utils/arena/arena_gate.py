@@ -1883,7 +1883,7 @@ class Gate:
         try:
             self.checkout()
         except (GateError, subprocess.SubprocessError, OSError) as e:
-            self.results = {s: unmeasured("no checkout: %s" % str(e)[:160]) for s in STEPS}
+            self.results = {s: unmeasured("no checkout: %s" % str(e)[:400]) for s in STEPS}
             return self.finish()
         self.sandbox_probe()
         fns = {"scope": self.s_scope, "placeholders": self.s_placeholders, "tests": self.s_tests, "xml": self.s_xml,

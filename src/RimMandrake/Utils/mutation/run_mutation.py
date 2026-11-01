@@ -57,6 +57,7 @@ PROBE = "\nraise RuntimeError('mutation-reach-probe')\n"
 
 U, R = "src/RimMandrake/Utils/", "src/RimMandrake/rimflow/"
 TARGETS = {
+    "known_results": (U + "known_results.py", [U + "selftest_known_results.py"]),
     # the property test is ~1.3 s and drives _top_level/lookup/summarize hard (run 20261027a ran without it)
     "close_evidence": (U + "close_evidence.py", [U + "selftest_close_evidence.py",
                                                 U + "selftest_close_evidence_props.py",

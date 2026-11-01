@@ -353,7 +353,11 @@ def _harness_child(argv: list) -> int:
     if not _in_harness(cg):
         print(_MARKER + json.dumps({"placement": cg, "ok": False}), file=sys.stderr, flush=True)
         return _PLACEMENT_RC
-    rc = subprocess.call(argv) if argv else 0
+    env = None
+    if argv and os.environ.get("RM_SELFTEST_ARM"):
+        import known_results as K       # the measurement starts at the test: this wrapper is not one of its dependencies
+        env = K.armed()
+    rc = subprocess.call(argv, env=env) if argv else 0
     base = "/sys/fs/cgroup" + cg
     ev = _kv(base + "/memory.events")
     rep = {"ok": True, "placement": cg, "oom_kill": ev.get("oom_kill", 0),
@@ -472,6 +476,9 @@ def _run_capped(path: Path, timeout: int, cap: int = 0, est: int = 0, env=None):
     argv, cwd = special(root) if special else ([sys.executable, str(path)], root)
     if _HARNESS:
         argv = _scope_argv(cap, timeout, argv)
+    elif env is not None and env.get("RM_SELFTEST_ARM"):
+        import known_results as K
+        env = K.armed(env)
     p = subprocess.Popen(argv, cwd=cwd, text=True, env=env,
                          stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                          start_new_session=True)
@@ -559,6 +566,8 @@ def classify(rc: int, out: str, rep=None, cap: int = 0) -> tuple[str, str]:
 
 # Evidence context for skip-when-unchanged (suite_evidence.py); None when skipping is off.
 _EVID = None
+# The known-result ledger (known_results.py): {"led", "shim", "unrecorded": {why: count}, "recorded": n}; None = off.
+_KNOWN = None
 
 
 def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, str]:
@@ -568,13 +577,22 @@ def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, s
     rel = _rel(path)
     skip_ev = ev is None or not rel or path not in ev["eligible"]
     cov = _cov_clone(path)          # coverage trace: only where close evidence can count (an isolated checkout)
-    if skip_ev and not cov:
+    kn = _KNOWN if rel and not cov else None
+    if skip_ev and not cov and not kn:
         return _run_one(path, cap, est)
     seq = next(_SEQ)
     tdir = Path(os.environ.get("RM_SELFTEST_CACHE_DIR") or STATE_DIR) / "trace" / f"{os.getpid()}-{seq}"
     import suite_evidence as E
+    began = time.time()
     try:
-        r = _run_one(path, cap, est, env=(ev["store"] if ev else E.Store(REPO_ROOT, STATE_DIR)).trace_env(tdir))
+        if kn:
+            import known_results as K
+            env = K.arm_env(tdir, kn["shim"])
+        else:
+            env = (ev["store"] if ev else E.Store(REPO_ROOT, STATE_DIR)).trace_env(tdir)
+        r = _run_one(path, cap, est, env=env)
+        if kn:
+            _known_record(kn, rel, r, tdir, began)
         if cov:
             _note_covers(path, cov, tdir)
         if not skip_ev:
@@ -595,6 +613,8 @@ def _own_tmp(env) -> tuple[dict, str]:
         tdir = tempfile.mkdtemp(prefix="selftest_run_")
     except OSError:
         return env, ""
+    if env is not None and env.get("RM_SELFTEST_ARM"):
+        (Path(json.loads(env["RM_SELFTEST_ARM"])["trace"]) / "own_tmp").write_text(tdir)    # exempt from the manifest
     return dict(env if env is not None else os.environ, TMPDIR=tdir), tdir
 
 
@@ -660,10 +680,18 @@ def _parser():
                          "live-install checks — run after a deploy, a game update or a mod subscribe. all: both")
     ap.add_argument("--full", "--no-skip", dest="full", action="store_true",
                     help="run every selected test even where an evidence record says its inputs are unchanged "
-                         "(still records fresh evidence on PASS)")
+                         "(still records fresh evidence on PASS). Needs --because")
     ap.add_argument("--no-cache", dest="no_cache", action="store_true",
-                    help="ignore the declared-input PASS cache (selftest_cache.py) and run every test; a PASS still "
-                         "refreshes its entry. The nightly full sweep runs with this. --full implies it")
+                    help="ignore every stored answer (known results, declared cache) and run every test; a PASS still "
+                         "refreshes its entry. Needs --because. --full implies it")
+    ap.add_argument("--because", metavar="WHAT_COULD_DIFFER",
+                    help="what you expect could differ from the stored answer: rerunning known results is an "
+                         "accusation against the instrument, so it has to say what it suspects. Logged. Also clears "
+                         "a false-hit quarantine for a test that passes")
+    ap.add_argument("--nightly", action="store_true",
+                    help="the nightly sweep: stored answers stand, except a fixed sampled share "
+                         "(known_results.AUDIT_RATE) that runs for real; a PASS that comes back anything else is a "
+                         "false hit: an alarm and a red run. The declared cache is off, as it always was overnight")
     ap.add_argument("--quick", action="store_true",
                     help="leave out slow tests (last run > $RM_SELFTEST_QUICK_S s, default 20) ONLY when their "
                          "last run PASSED and their source/dependency hash is unchanged since; each is printed "
@@ -899,8 +927,140 @@ def main(argv=None) -> int:
                 os.environ.pop("RM_SELFTEST_NESTED", None)
 
 
+def _known_start():
+    """The ledger context for this run, or None (nothing is measured and everything simply runs). Off inside another
+    run, and on a fixture repo unless the fixture asks. Never fails the run."""
+    want = os.environ.get("RM_SELFTEST_KNOWN_RESULTS")
+    if want == "0" or (want != "1" and (_OUTER[0] is False or os.environ.get("RM_SELFTEST_REPO_ROOT"))):
+        return None
+    try:
+        import known_results as K
+        shim = K.build_shim(STATE_DIR)
+        if shim is None:
+            return None
+        return {"led": K.Ledger(REPO_ROOT, STATE_DIR), "shim": shim, "mod": K, "unrecorded": {}, "recorded": 0,
+                "expected": {}, "false_hits": [], "known_red": 0}
+    except Exception as exc:  # noqa: BLE001 - the ledger is an optimisation: never let it break a run
+        print(f"known results unavailable ({type(exc).__name__}: {exc}) - running everything", file=sys.stderr)
+        return None
+
+
+def _known_record(kn, rel, r, tdir, began) -> None:
+    """After a real run: write down what it measured, and compare it with what the ledger said it would be."""
+    K, led, state = kn["mod"], kn["led"], r[1]
+    try:
+        stored = kn["expected"].get(rel)
+        if stored and K.false_hit(stored, state):
+            why = f"stored {stored}, ran {state}: {str(r[3]).splitlines()[0] if r[3] else ''}"[:300]
+            kn["false_hits"].append((rel, why))
+            led.forget(rel)
+            led.quarantine(rel, why)
+            return
+        own = Path(tdir, "own_tmp").read_text() if Path(tdir, "own_tmp").is_file() else ""
+        ok, why = led.record(rel, state, r[2], Path(tdir), own, began, r[0])
+        if ok:
+            kn["recorded"] += 1
+        elif state in ("PASS", "FAIL"):
+            bucket = why.split(":")[0]
+            kn["unrecorded"].setdefault(bucket, []).append(rel)
+        if kn.get("clears") and state == "PASS":
+            led.clear_quarantine(rel)
+    except Exception as exc:  # noqa: BLE001
+        kn["unrecorded"].setdefault(f"ledger error {type(exc).__name__}", []).append(rel)
+
+
+def _known_select(kn, tests, args):
+    """Split `tests` by what the ledger knows. Returns (still to run, stored answers). Audited and forced tests stay
+    in the run with their stored answer remembered: a run on the same inputs that disagrees is a false hit either way."""
+    K, led = kn["mod"], kn["led"]
+    forced = args.no_cache or args.full
+    kn["clears"] = forced
+    jail = led.quarantined()
+    day = time.strftime("%Y-%m-%d")
+    rate = K.AUDIT_RATE
+    if os.environ.get("RM_SELFTEST_REPO_ROOT"):     # a fixture may set its own; the real sweep's rate is not a knob
+        rate = float(os.environ.get("RM_SELFTEST_AUDIT_RATE", rate))
+    keep, known = [], []
+    kn["ran_why"] = {}
+    for t in tests:
+        rel = _rel(t)
+        if not rel:
+            keep.append(t)
+            continue
+        if rel in jail:
+            print(f"QUARANTINED {rel}: {jail[rel]} - runs until a passing --because run clears it", flush=True)
+            keep.append(t)
+            continue
+        rec, why = led.lookup(rel)
+        if rec is None:
+            kn["ran_why"].setdefault("no record" if why == "no record" else "an input changed", []).append((rel, why))
+            keep.append(t)
+        elif rec["state"] != "PASS":
+            kn["known_red"] += 1
+            print(f"KNOWN RED {rel}: failed on these same inputs at {rec['date']} ({rec['sha']}); reds always rerun",
+                  flush=True)
+            keep.append(t)
+        elif forced or (args.nightly and K.audit_sample(rel, day, rate)):
+            kn["expected"][rel] = "PASS"
+            keep.append(t)
+        else:
+            print(f"KNOWN PASS {rel} inputs unchanged since {rec['date']} ({rec['sha']}), {rec['secs']:.1f}s not spent",
+                  flush=True)
+            known.append((t, "PASS", 0.0, "cached"))
+            led.run["saved_s"] += rec["secs"]
+    led.hash.save()
+    return keep, known
+
+
+def _known_summary(kn, known, n_run, wall) -> int:
+    """Print the ledger's line, log the run, raise the alarm. The exit code this run owes: 1 on a false hit."""
+    led = kn["led"]
+    asked = len(known) + n_run
+    share = len(known) / asked if asked else 0.0
+    print(f"known results: {len(known)}/{asked} answered from the ledger (selftests.cache_hit_share {share:.3f}), "
+          f"{led.run['saved_s']:.0f}s not spent; {n_run} ran, {kn['recorded']} recorded, "
+          f"{len(kn['expected'])} checked against a stored PASS, {kn['known_red']} known red")
+    for why, rows in sorted(kn.get("ran_why", {}).items()):
+        print(f"  ran ({len(rows)}): {why}" + (": " + "; ".join(f"{r} <- {w}" for r, w in rows[:3])
+                                               if why != "no record" else ""))
+    for why, rels in sorted(kn["unrecorded"].items(), key=lambda kv: -len(kv[1])):
+        print(f"  not recordable ({len(rels)}): {why}: " + ", ".join(sorted(rels)[:4]) + (" ..." if len(rels) > 4 else ""))
+    try:
+        led.hash.save()
+        led.note_run({"answered": len(known), "ran": n_run, "share": round(share, 4), "saved_s": round(led.run["saved_s"], 1),
+                      "wall_s": round(wall, 1), "recorded": kn["recorded"], "checked": len(kn["expected"]),
+                      "false_hits": [r for r, _ in kn["false_hits"]],
+                      "unrecorded": {w: len(r) for w, r in kn["unrecorded"].items()}})
+    except OSError as exc:
+        print(f"known results: could not log the run: {exc}", file=sys.stderr)
+    if not kn["false_hits"]:
+        return 0
+    for rel, why in kn["false_hits"]:
+        print(f"!!! FALSE HIT {rel}: {why}")
+    print("!!! the ledger held a PASS that a real run contradicted: those records are deleted and the tests quarantined; "
+          "a hidden dependency is likely. Reproduce with --no-cache --because \"<what you suspect>\"")
+    _known_alarm(kn["false_hits"])
+    return 1
+
+
+def _known_alarm(hits) -> None:
+    if _OUTER[0] is False or os.environ.get("RM_SELFTEST_REPO_ROOT"):
+        return
+    try:
+        sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "rimflow"))
+        import incident as IN
+        IN.signal({"incident": {"enabled": True}}, "selftest_false_hit",
+                  f"known-result ledger false hit: {', '.join(r for r, _ in hits)[:300]}", time.time())
+    except Exception as exc:  # noqa: BLE001 - the red run still stands
+        print(f"!!! could not raise the incident ({type(exc).__name__}: {exc})", file=sys.stderr)
+
+
 def _suite(args) -> int:
-    global _HARNESS
+    global _HARNESS, _KNOWN
+    if (args.no_cache or args.full) and not (args.because or "").strip():
+        print("REFUSED: --no-cache/--full rerun what is already known. Say what you expect could differ: "
+              "--because \"<what could differ>\"")
+        return 2
     _HARNESS, why_not = probe_harness()
     if _HARNESS:
         workers = args.workers or DEFAULT_WORKERS
@@ -975,10 +1135,17 @@ def _suite(args) -> int:
     elig = {t: why for t in tests if _rel(t) and (why := E.eligible(t, _head(t)))}
     _EVID = {"store": store, "eligible": elig, "recorded": [], "unrecorded": [], "mod": E}
     reused = []
+    _KNOWN = kn = _known_start()
+    if kn and (args.no_cache or args.full):
+        kn["led"].note_forced(args.because, len(tests), sys.argv[1:])
     if not args.full:
         keep = []
+        day = time.strftime("%Y-%m-%d")
         for t in tests:
             ok, why = store.unchanged(_rel(t)) if t in elig else (False, "")
+            if ok and kn and args.nightly and kn["mod"].audit_sample(_rel(t), day):   # the sample covers this layer too
+                kn["expected"][_rel(t)] = "PASS"
+                ok = False
             (reused.append((t, why)) if ok else keep.append(t))
         tests = keep
 
@@ -990,7 +1157,7 @@ def _suite(args) -> int:
         SC = None
         print(f"selftest cache unavailable ({type(exc).__name__}: {exc}) - running everything", file=sys.stderr)
     if SC is not None and not os.environ.get("RM_SELFTEST_REPO_ROOT"):
-        use = not (args.no_cache or args.full or os.environ.get("RM_SELFTEST_NO_CACHE"))
+        use = not (args.no_cache or args.full or args.nightly or os.environ.get("RM_SELFTEST_NO_CACHE"))
         keep = []
         for t in tests:
             rel = _rel(t)
@@ -1008,6 +1175,13 @@ def _suite(args) -> int:
             else:
                 keep.append(t)
         tests = keep
+
+    known_res = []
+    if kn:
+        audited = [t for t in tests if _rel(t) in kn["expected"]]       # the evidence layer's sample: nothing to look up
+        rest = [t for t in tests if _rel(t) not in kn["expected"]]
+        rest, known_res = _known_select(kn, rest, args)
+        tests = audited + rest
 
     ISOLATED = SEQUENTIAL_ISOLATED | (set() if _HARNESS else MEMORY_HEAVY)
     pooled = [t for t in tests if t.name not in ISOLATED]
@@ -1075,8 +1249,11 @@ def _suite(args) -> int:
     skipped = [(path, "SKIPPED", 0.0, why) for path, why in excluded + off_tier + reused + (quick_skipped or [])]
     _evidence_summary(_EVID, reused, len(elig), args.full)
     print(f"cache: {len(cached_res)} CACHED PASS, {len(cache_keys) - len(cached_res)} declared test(s) ran")
-    return report(results + cached_res, skipped, len(tests) + len(cached_res) + len(skipped), wall_elapsed, contain_note,
-                  ISOLATED, args.timings, quick=None if quick_skipped is None else len(quick_skipped))
+    alarm = _known_summary(kn, known_res, len(tests), wall_elapsed) if kn else 0
+    rc = report(results + cached_res + known_res, skipped, len(tests) + len(cached_res) + len(known_res) + len(skipped),
+                wall_elapsed, contain_note, ISOLATED, args.timings,
+                quick=None if quick_skipped is None else len(quick_skipped))
+    return rc or alarm
 
 
 def _evidence_summary(ev, reused, n_elig, full) -> None:

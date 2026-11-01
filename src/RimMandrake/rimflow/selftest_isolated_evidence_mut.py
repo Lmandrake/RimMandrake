@@ -388,7 +388,7 @@ co = CO[0]
 ok("run_claim: row shape", sorted(row), sorted(["item", "sha", "key", "seat", "checkout_s", "runs", "records", "total_s", "ts"]))
 ok("run_claim: identity", (row["item"], row["sha"], row["key"], row["seat"]), ("IT_RC", S1, ie.plan_key(PLAN), "DISPATCHER"))
 ok("run_claim: the selftest command, then validate_patch with every --defs", [r[0] for r in runs],
-   [[sys.executable, ie.RUN_SELFTESTS, "--full", "--only", co + "/src/A/selftest_a.py", co + "/selftest_foo.py"],
+   [[sys.executable, ie.RUN_SELFTESTS, "--full", "--because", ie.FRESH_BECAUSE, "--only", co + "/src/A/selftest_a.py", co + "/selftest_foo.py"],
     [sys.executable, ie.VALIDATE_PATCH, co + "/src/Z/Defs/q.xml", "--defs", "/d1", "--defs", "/d2"]])
 ok("run_claim: cwd is the checkout, text+capture on, env carries the runner seat and item, no per-claim deadline -> RUN_TIMEOUT",
    [(os.path.realpath(r[1]["cwd"]) == co, r[1]["capture_output"], r[1]["text"], r[1]["timeout"], r[1]["env"]["RIMFLOW_SEAT"],
