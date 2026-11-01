@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Selftest for account_pick.pick: a lent account the machine is ON, off-limits, with no other account fit, is HELD
 (never KEEP, which would keep releasing work on it). python3 src/RimMandrake/rimflow/selftest_account_pick.py"""
+import json
 import os
 import sys
 import time
@@ -53,6 +54,12 @@ def main():
     check(p["state"] == "HOLD" and p["hold"], "min draw 0: lent current at allowance 0, none fit -> HOLD, not KEEP")
     p = AP.pick(r0, status({"borrowed": (2.0, 50), "mine": (0.2, 5)}), "mine", LENT, off, NOW)
     check(p["state"] == "KEEP" and p["to"] is None, "min draw 0: an off-limits lent account is never a SWITCH target")
+    # owner by card 2026-11-01 "Burn system down first": the REAL schedule rule keeps system at runway 0.23 / 29% left
+    real = json.load(open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "dispatcher_schedule.json")))["account_pick"]
+    p = AP.pick(real, status({"system": (0.23, 29), "lukas": (10.0, 100)}), "system", LENT, ok, NOW)
+    check(p["state"] == "KEEP", "real rule: system runway 0.23, 29%% left -> KEEP (burn system down), got %s" % p["state"])
+    p = AP.pick(real, status({"system": (0.23, 9), "lukas": (10.0, 100)}), "system", LENT, ok, NOW)
+    check(p["state"] == "SWITCH" and p["to"] == "lukas", "real rule: system 9%% left -> SWITCH to lukas, got %s" % p["state"])
     priority(ok, off)
     print("\n%s" % ("FAILED %d" % len(FAILS) if FAILS else "all passed"))
     sys.exit(1 if FAILS else 0)

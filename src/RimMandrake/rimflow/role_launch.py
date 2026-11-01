@@ -613,10 +613,12 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
         lines += ["Throttle band: %s (account runway %.2f %s, week left %.0f%% %s; ops_watch status at %s)." % (
                       band_name, reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
                       reading["at"]),
+                  ("DEGRADED READING: %s. Report it first." % reading["degraded"]) if reading.get("degraded") else "",
                   "Token budget for this run: %d weighted tokens (cap %d x %.1f); daily cap %d, %d already used today. "
                   "Weighted = input-equivalent: a cache read counts 0.1, a cache write 1.25 (5m) or 2 (1h), an "
                   "output token 5. The Dispatcher checks it after the run; it does not stop you at it." % (
                       budget, cap, factor, role.get("daily_token_cap") or 0, spent)]
+    lines = [x for x in lines if x]
     lines.append("You work as seat %s in %s. Never take the bridge, restart the game or deploy." % (
         role["seat"], role["clone"]))
     return "\n".join(lines)
@@ -1233,6 +1235,13 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             return
         rs.pop("waiting", None)
         r = reading()
+        if r["state"] != "MEASURED" and cfg.get("degraded_reading_ok") is True:
+            # the role that reports the problem must not be refused by it (owner-authority brief 2026-11-01, Operations
+            # slot 07:30 REFUSED 'accounts.system.runway is absent'): launch on the most cautious reading, say so
+            act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
+                why="%s %s LAUNCHED on a degraded ops reading (the most cautious band): %s" % (name, job["trigger"], r["why"]))
+            r = {"state": "MEASURED", "degraded": r["why"], "account": None, "at": "UNREADABLE", "runway": 0.0,
+                 "runway_m": "UNMEASURED", "week_left": 100.0, "week_left_m": "UNMEASURED"}
         if r["state"] != "MEASURED":
             refuse_now(rs, "ops reading " + r["state"], now, job)
             act(do="alarm", kind="role:%s:ops" % name, ticket=job["item"], note=True,
