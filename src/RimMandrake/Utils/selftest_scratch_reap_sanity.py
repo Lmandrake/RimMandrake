@@ -50,7 +50,27 @@ def heard(sd: Path):
     return sorted(a["kind"] for a in acts)
 
 
+def borrower_retry():
+    """drvfs answers ENOMEM under load: a retry that reads clears the hold, one that does not keeps it."""
+    real_walk, real_sleep, real_roots = R.Borrows._walk, R.time.sleep, R.scan_roots
+    bad = "find: \u2018/x/Defs\u2019: Cannot allocate memory"
+    try:
+        R.time.sleep = lambda s: None
+        R.scan_roots = lambda: [Path("/")]
+        seen = []
+        def once(tops):
+            seen.append(tops)
+            return (1, b"", [bad]) if len(seen) == 1 else (0, b"", [])
+        R.Borrows._walk = staticmethod(once)
+        check(R.Borrows().hold == [] and seen[1] == ["/x/Defs"], "a directory that reads on retry holds nothing")
+        R.Borrows._walk = staticmethod(lambda tops: (1, b"", [bad]))
+        check(R.Borrows().hold == [bad], "a directory that never reads still holds every deletion")
+    finally:
+        R.Borrows._walk, R.time.sleep, R.scan_roots = staticmethod(real_walk), real_sleep, real_roots
+
+
 def main():
+    borrower_retry()
     td = Path(tempfile.mkdtemp(prefix="selftest_sanity_"))
     root, sd, lim = td / ".seat-tmp", td / "state", td / "limits.json"
     root.mkdir()

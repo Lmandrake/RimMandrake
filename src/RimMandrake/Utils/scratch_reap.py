@@ -105,6 +105,7 @@ PROTECTED = [RM / n for n in ("bench", "foundry", "dispatch", "anchor", "arena",
 UUID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 UUID_ANY = re.compile(rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 TOKEN = re.compile(r"[A-Za-z0-9_-]+")
+TRANSIENT_FIND = re.compile(r"find: .(.+?).: Cannot allocate memory$")
 CTIME_COUNTS = True         # the selftest ages its fixtures with utime, which cannot set a ctime
 SYSTEM_PATHS = ("/proc/", "/sys/", "/dev/", "/usr/", "/lib/", "/lib64/", "/bin/", "/sbin/", "/etc/", "/opt/", "/init")
 GONE_LENDER = re.compile(r"error: (unable to normalize alternate object path: |object directory .* does not exist; check )")
@@ -667,6 +668,13 @@ class Borrows:
     """Who points into whom: every objects/info/alternates and every `.git` FILE in the scan roots. An unreadable
     one means we no longer know what must stay, so `hold` stops every deletion."""
 
+    @staticmethod
+    def _walk(tops: list[str]) -> tuple[int, bytes, list[str]]:
+        p = subprocess.run(["find", *tops, "(", "-path", "*.git/objects/[0-9a-f][0-9a-f]", "-o", "-path", "*.git/objects/pack",
+                            ")", "-prune", "-o", "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
+                            "-type", "f", ")", ")", "-print0"], capture_output=True, timeout=900)
+        return p.returncode, p.stdout, [ln for ln in p.stderr.decode("utf-8", "replace").splitlines() if ln.strip()]
+
     def __init__(self):
         self.taken = time.time()
         self.hold: list[str] = []
@@ -680,21 +688,28 @@ class Borrows:
         if not tops:
             raise RuntimeError("no scan root exists: the borrower map would be empty")
         try:
-            p = subprocess.run(["find", *tops, "(", "-path", "*.git/objects/[0-9a-f][0-9a-f]", "-o", "-path", "*.git/objects/pack",
-                                ")", "-prune", "-o", "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
-                                "-type", "f", ")", ")", "-print0"], capture_output=True, timeout=900)
+            rc, out, lines = self._walk(tops)
+            # A drvfs directory answers ENOMEM under load and reads clean a moment later; one such line held every deletion.
+            for wait in (0.5, 5, 30):
+                again = [m.group(1) for m in (TRANSIENT_FIND.match(ln) for ln in lines) if m]
+                if not again:
+                    break
+                time.sleep(wait)
+                lines = [ln for ln in lines if not TRANSIENT_FIND.match(ln)]
+                _, more, tail = self._walk(again)
+                out += more
+                lines += tail
         except subprocess.TimeoutExpired:
             # A hold, not a crash: the run refuses from here on and still writes its record of what it freed.
             self.hold.append("find outran 900 s: the borrower map is partial")
             return
-        lines = [ln for ln in p.stderr.decode("utf-8", "replace").splitlines() if ln.strip()]
         for ln in lines:
             if "No such file" in ln:
                 continue                        # gone mid-walk is fine
             (self.blind if "Permission denied" in ln and self._harmless(ln) else self.hold).append(ln)
-        if p.returncode < 0 or (p.returncode and not lines):
-            self.hold.append(f"find ended {p.returncode} with no reason given: the borrower map is partial")
-        for raw in p.stdout.split(b"\0"):
+        if rc < 0 or (rc and not lines):
+            self.hold.append(f"find ended {rc} with no reason given: the borrower map is partial")
+        for raw in out.split(b"\0"):
             if not raw:
                 continue
             f = os.fsdecode(raw)
