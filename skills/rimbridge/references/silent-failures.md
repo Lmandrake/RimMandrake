@@ -197,15 +197,13 @@ check when the batch matters.
 joined by `;`), NOT a `rect` parameter. Passing `rect` fails loudly — `success: false`,
 *"ops is required"* — so this one is safe, but a compiler that emits `rect` loses every cell.
 
-## Nothing reads a `Room` or a pawn's `StatDef` from outside the game
+## `rimworld/get_cell_info` has no room object
 
-`rimworld/get_cell_info` has **no room object** (terrain, roof, fog, walkable, zone, areas,
-things, designations — that is all), and no tool in the 246 reads room temperature or role.
-`jawa/pawn_get` returns identity, apparel, equipment, hediffs, needs, skills, traits and xenotype
-and **no stats**; `rimworld/select_pawn` is colonist-only and `Dialog_InfoCard` has no
-parameterless constructor, so the UI route is shut too.
-🔑 A question about `Room.Role`, room temperature or `ComfortableTemperatureRange` is
-**UNMEASURED** today — not "probably fine".
+It returns terrain, roof, fog, walkable, zone, areas, things and designations, and no room.
+Read a room with `jawa/room_get` (Role, stats), a temperature with `jawa/cell_temperature` or
+`jawa/thing_ambient_temp`, and a pawn's `StatDef` values with `jawa/pawn_stats` or `jawa/stat_explain`.
+`jawa/pawn_get` returns no stats. `rimworld/select_pawn` is colonist-only and `Dialog_InfoCard` has
+no parameterless constructor, so the UI route is shut.
 
 ## `jawa/fire_raid` — `resolved.faction` is the REQUEST, not what raided
 
