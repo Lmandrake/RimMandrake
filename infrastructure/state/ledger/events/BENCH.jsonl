@@ -8924,3 +8924,5 @@
 {"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T00:08:16Z","expires":"2026-11-01T00:53:16Z","tsn":1793491697415001194}
 {"seat":"BENCH","event":"lease","id":"LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING","action":"renew","token":"BENCH.pid12077.9cf705bd","ts":"2026-11-01T00:08:32Z","expires":"2026-11-01T00:53:32Z","tsn":1793491713384430734}
 {"seat":"BENCH","event":"lease","id":"DEAD_FIXES_REPAIR_TEN_NOT_WORKING","action":"renew","token":"BENCH.pid11857.379cc136","ts":"2026-11-01T00:10:18Z","expires":"2026-11-01T00:55:18Z","tsn":1793491819280528849}
+{"seat":"BENCH","event":"bridge","state":"taken","why":"delegated: bridge free (free)","purpose":"fresh tools/list dump for BRIDGE_SKILL_FIX_TOOL_COUNT_STALE","role_unit":"rm-relentless-work-b7c4003545-g3","ts":"2026-11-01T00:07:18Z","tsn":1793491638996714149}
+{"seat":"BENCH","event":"bridge","state":"released","role_unit":"rm-relentless-work-b7c4003545-g5","ts":"2026-11-01T00:11:55Z","tsn":1793491915361552625}
