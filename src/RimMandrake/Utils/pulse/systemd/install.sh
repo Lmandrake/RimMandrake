@@ -22,6 +22,7 @@ else
   git -C "$DEPLOY" sparse-checkout set $SPARSE
 fi
 UNITS=~/.config/systemd/user
+mkdir -p "$UNITS"   # absent on a machine that has never had a user unit: cp would fail under set -e
 for u in rm-pulse.service rm-pulse-digest.service rm-pulse-digest.timer rm-pulse-brief.service rm-pulse-brief.timer rm-pulse-health.service rm-pulse-health.timer \
          rm-pulse-update.service rm-pulse-update.timer rm-pulse-streams.service rm-pulse-streams.timer; do
   cp "$HERE/$u" "$UNITS/$u"
