@@ -10,11 +10,13 @@ Read-only: the routes write nothing, the CLI writes only --out (stdout without i
 time; a page is never a stored claim.
 
 A row's status is a reading, never a statement:
-    PROVEN      a row of the mod's recorded result claims this bar (its id, or `shows=`), all PASS, at today's mod hash
-    FAIL        such a row failed, at today's mod hash
+    PROVEN      a row of the mod's recorded result claims this bar (its id, or `shows=`), all PASS, and modcheck's judge
+                cleared the bar on every row that claims it by `shows=` (`visual`: pass true, the verdict the bar's
+                polarity needs), at today's mod hash. A state PASS alone is not proof: modcheck proves a bar only by the judge.
+    FAIL        such a row failed, or the judge refuted the bar, at today's mod hash
     STALE       the mod changed since the run that holds the row: old proof is no proof
     UNMEASURED  anything else. No run, no result file, no row claiming the bar, a SKIP, an invalid or reused row, a
-                torn entry. Missing evidence is never read as done.
+                torn entry, no judge verdict, UNJUDGEABLE. Missing evidence is never read as done.
 `MET` needs a VALIDATED north star with at least one bar, every bar PROVEN, and a GREEN entry at today's hash with
 step 4 PASS or not owed. A mod with no bars reads UNMEASURED however green its modcheck entry is.
 
@@ -37,7 +39,6 @@ import os                 # noqa: E402
 import re                 # noqa: E402
 import time               # noqa: E402
 from pathlib import Path  # noqa: E402
-from types import SimpleNamespace  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -50,6 +51,7 @@ TIME_ITEM = "WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT"
 MOD_RE = r"[A-Za-z][A-Za-z0-9_]{1,63}"
 FUTURE_SLACK = 300
 UNM = "UNMEASURED"
+MATCH_NOTE = "Items are matched by id, title, the FlowWorks lane, or two or more paths into the mod in their spec."
 
 
 def _root():
@@ -155,17 +157,50 @@ def _rows_of(doc):
     return [r for r in out if isinstance(r, dict)]
 
 
+def _shows(row):
+    return row.get("shows") if isinstance(row.get("shows"), list) else []
+
+
 def _claims(bar, rows):
     hit = []
     for r in rows:
         rid = str(r.get("id") or r.get("name") or "")
-        shows = r.get("shows") if isinstance(r.get("shows"), list) else []
-        if rid == bar or rid.endswith("." + bar) or bar in shows:
+        if rid == bar or rid.endswith("." + bar) or bar in _shows(r):
             hit.append(r)
     return hit
 
 
-def _bar_status(claims, hash_moved, run_seen):
+def _verdicts(bar, row):
+    v = row.get("visual")
+    return [x for x in v if isinstance(x, dict) and x.get("id") == bar] if isinstance(v, list) else []
+
+
+def _refuted(bar, polarity, claims, doc):
+    """The judge's refutation of a bar, or None. Read first: a SKIP or reused row beside it must not hide it."""
+    side, word = ("must", "NO") if polarity == "must show" else ("cannot", "YES")
+    for v in [v for r in claims for v in _verdicts(bar, r)] + _verdicts(bar, doc):
+        if v.get("verdict") == word and v.get("polarity") == side:
+            return f"judge said {word}: {str(v.get('why') or '')[:120]}"
+    return None
+
+
+def _judged(bar, polarity, claims, doc):
+    """The judge's word on one bar -> (status, why). The run's flat `visual` counts against a bar, never for it: a claim
+    by `shows=` needs its own verdict, because judge_run writes one on every claiming component."""
+    side, cleared = ("must", "YES") if polarity == "must show" else ("cannot", "NO")
+    own = [v for r in claims for v in _verdicts(bar, r)]
+    seen = own + _verdicts(bar, doc)
+    if not seen:
+        return UNM, "row passed, no judge verdict recorded"
+    for v in seen:
+        if v.get("pass") is not True or v.get("verdict") != cleared or v.get("polarity") != side:
+            return UNM, f"judge read {str(v.get('verdict'))[:20]}: {str(v.get('why') or '')[:120]}"
+    if any(bar in _shows(r) and not _verdicts(bar, r) for r in claims) or not own:
+        return UNM, "a claiming row has no judge verdict"
+    return "PROVEN", ""
+
+
+def _bar_status(bar, polarity, claims, doc, hash_moved, run_seen):
     """-> (status, why) for one bar."""
     if not run_seen:
         return UNM, "no recorded run"
@@ -176,11 +211,14 @@ def _bar_status(claims, hash_moved, run_seen):
     words = [str(r.get("status") or r.get("verdict") or "") for r in claims]
     if any(w == "FAIL" for w in words):
         return "FAIL", ""
+    refuted = _refuted(bar, polarity, claims, doc)
+    if refuted:
+        return "FAIL", refuted
     bad = [r for r in claims if r.get("validity") == "invalid" or str(r.get("freshness") or "").startswith("reused@")]
     if bad:
         return UNM, "invalid or reused row"
     if words and all(w == "PASS" for w in words):
-        return "PROVEN", ""
+        return _judged(bar, polarity, claims, doc)
     return UNM, "row reads " + ", ".join(sorted(set(w or "nothing" for w in words)))
 
 
@@ -204,10 +242,10 @@ def finish_line(mod, root, now):
     out = []
     for bar, polarity, text in bars:
         claims = _claims(bar, rows)
-        st, w = _bar_status(claims, moved, run_seen)
+        st, w = _bar_status(bar, polarity, claims, doc or {}, moved, run_seen)
         if st == UNM and not claims:
             w = why if not run_seen else (doc_why or w)
-        age = ("proof " + age_words(run_age) if claims and run_seen
+        age = ("proof " + age_words(run_age) if st in ("PROVEN", "STALE")
                else ("no proof; last run " + age_words(run_age) if run_seen else "no proof; " + (why or "never run")))
         out.append({"id": bar, "polarity": polarity, "text": text, "status": st, "why": w, "age": age, "age_s": run_age if claims else None})
     if not out:
@@ -230,10 +268,32 @@ def finish_line(mod, root, now):
             "rows": out}
 
 
-def _concerns(iid, item, mod):
-    """The brief's reading of an item's goal, row set aside: a spec that only mentions this mod names another goal."""
-    bare = SimpleNamespace(row=None, title=item.title)
-    return brief.goal_of(iid, bare, brief.item_words(iid), {**brief.packages(), mod.lower(): mod}) == mod
+def _lane(mod, root):
+    """FlowWorks only: the lane file lists item ids that name no mod (PIT_SUPERDEEP_...). GSS's patterns share it."""
+    if mod != "FlowWorks":
+        return []
+    try:
+        pats = json.loads((root / "infrastructure" / "state" / "flowworks_lane.json").read_text(encoding="utf-8"))["id_patterns"]
+        return [re.compile(p) for p in pats if "GSS_" not in p]
+    except (OSError, ValueError, KeyError, TypeError, re.error):
+        return []
+
+
+def _prose(iid, root):
+    p = root / "infrastructure" / "state" / "items" / f"{iid}.md"
+    if os.environ.get("RM_MISSION_ROOT"):
+        return p.read_text(encoding="utf-8", errors="replace") if p.is_file() else ""
+    return brief.item_words(iid)
+
+
+def _concerns(iid, item, mod, root, lane):
+    """An item concerns a mod by its id, its title, the lane file, or a spec that keeps naming the mod's folder. brief.goal_of
+    is too eager here: one 'e.g.' path in another job's spec, or a title saying non-FlowWorks, is not work on the mod."""
+    if mod.lower() in str(iid).lower().split("_") or any(p.search(iid) for p in lane):
+        return True
+    if mod[1:].lower() != mod[1:] and re.search(rf"(?<![\w-]){mod}\b", item.title or ""):     # CamelCase names only
+        return True
+    return len(re.findall(rf"\bsrc[/\\]Rim\w+[/\\]{mod}[/\\]", _prose(iid, root))) >= 2
 
 
 def ledger_view(mod, now):
@@ -255,9 +315,12 @@ def ledger_view(mod, now):
             first.setdefault(iid, t)
             if ev.get("event") == "start":
                 started[iid] = t
-    running, decisions = [], []
+    running, decisions, root = [], [], _root()
+    lane = _lane(mod, root)
     for iid, it in world.items.items():
-        if not it.open or not _concerns(iid, it, mod):
+        if not it.open or not (it.state == "doing" or it.needs == "owner" or it.blocked_on == "OWNER"):
+            continue
+        if not _concerns(iid, it, mod, root, lane):
             continue
         if it.state == "doing":
             run = {"id": iid, "title": it.title or "", "seat": it.owner or "?",
@@ -387,7 +450,7 @@ def render(d, base=""):
             + f"<h2>{e(d['mod'])}</h2><div class='v {'PROVEN' if f['verdict'] == 'MET' else 'UNMEASURED'}'>{e(f['verdict'])}</div>"
             f"<div class=m>{e(head)} · {e(ns)} · modcheck {e(mc['status'])}{' (stale)' if mc['stale'] else ''}, "
             f"{e(mc['age'])} old{' · step 4 ' + e(mc['step4']) if mc['step4'] else ''}</div>"
-            f"<h2>Running now</h2>{run}<h2>Open decisions</h2>{dec}<h2>Reading advance</h2>{adv_html}"
+            f"<h2>Running now</h2>{run}<p class=m>{e(MATCH_NOTE)}</p><h2>Open decisions</h2>{dec}<h2>Reading advance</h2>{adv_html}"
             f"<h2>Time ledger</h2>{tm}<h2>Finish line</h2><ul>{bars}</ul>"   # last: 83 bars must not bury the rest on a phone
             f"<div class=foot>Read {e(time.strftime('%Y-%m-%d %H:%M', time.localtime(d['at'])))}. Machine-written, read-only.</div>"
             f"</main></body></html>")

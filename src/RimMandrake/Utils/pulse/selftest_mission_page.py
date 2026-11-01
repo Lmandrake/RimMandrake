@@ -63,9 +63,17 @@ def ev(ago, event, iid, **kw):
             "tsn": int(t * 1e9), **kw}
 
 
+def seen(bar, verdict="YES", ok=True):
+    return {"id": bar, "polarity": "must", "verdict": verdict, "pass": ok, "why": "<judge words>", "image": "x.png"}
+
+
 def good_rows():
-    return [{"id": "c1", "status": "PASS", "shows": ["alpha_reads"]}, {"id": "chain." + LONG_ID, "status": "PASS"},
-            {"id": "never_broken", "status": "PASS"}, {"id": "unrelated", "status": "FAIL"}]
+    """The shapes modcheck writes: judge_run's `visual` on a claiming component. never_broken is a cannot-show bar: NO clears it."""
+    return [{"id": "c1", "status": "PASS", "shows": ["alpha_reads"], "visual": [seen("alpha_reads")]},
+            {"id": "chain." + LONG_ID, "status": "PASS", "shows": [LONG_ID], "visual": [seen(LONG_ID)]},
+            {"id": "never_broken", "status": "PASS", "shows": ["never_broken"],
+             "visual": [{**seen("never_broken", "NO"), "polarity": "cannot"}]},
+            {"id": "unrelated", "status": "FAIL"}]
 
 
 def now_hash():
@@ -187,9 +195,38 @@ def owe_step4():
     (MOD_DIR / "northstar" / "extension_proof.py").write_text("", encoding="utf-8")
 
 
+def visual(v):
+    """Plant `v` as the first bar's judge record; the row's state stays PASS, which is the trap."""
+    return rows_edit(lambda rs: [{**rs[0], "visual": v}] + rs[1:])
+
+
 fault("no row claims the bar", rows_edit(lambda rs: rs[1:]), "UNMEASURED", "alpha_reads")
+d = fault("state PASS, claim with no judge entry", rows_edit(lambda rs: [{k: v for k, v in rs[0].items() if k != "visual"}] + rs[1:]), "UNMEASURED", "alpha_reads")
+check("no judge entry names it", "no judge verdict" in row(d, "alpha_reads")["why"], row(d, "alpha_reads"))
+fault("state PASS, bar named by id, no shows, no judge", rows_edit(lambda rs: [{"id": "chain.alpha_reads", "status": "PASS"}] + rs[1:]), "UNMEASURED", "alpha_reads")
+fault("state PASS, empty judge list", visual([]), "UNMEASURED", "alpha_reads")
+fault("state PASS, judge record torn", visual("garbled"), "UNMEASURED", "alpha_reads")
+fault("state PASS, judge entry for another bar", visual([seen("other_bar")]), "UNMEASURED", "alpha_reads")
+d = fault("state PASS, UNJUDGEABLE (no screenshot)", visual([seen("alpha_reads", "UNJUDGEABLE", False)]), "UNMEASURED", "alpha_reads")
+check("UNJUDGEABLE is named", "UNJUDGEABLE" in row(d, "alpha_reads")["why"] and row(d, "alpha_reads")["age"].startswith("no proof"), row(d, "alpha_reads"))
+d = fault("state PASS, judge said NO", visual([seen("alpha_reads", "NO", False)]), "FAIL", "alpha_reads")
+check("the refusal shows on the page", ">FAIL<" in route()[2] and "judge said NO" in row(d, "alpha_reads")["why"], row(d, "alpha_reads"))
+fault("cannot-show bar, judge said YES: the defect is there",
+      rows_edit(lambda rs: rs[:2] + [{**rs[2], "visual": [{**seen("never_broken", "YES", False), "polarity": "cannot"}]}] + rs[3:]), "FAIL", "never_broken")
+fault("judge record contradicts itself: pass true, UNJUDGEABLE", visual([seen("alpha_reads", "UNJUDGEABLE", True)]), "UNMEASURED", "alpha_reads")
+fault("one of two claimers unjudged", rows_edit(lambda rs: rs + [{"id": "c2", "status": "PASS", "shows": ["alpha_reads"]}]), "UNMEASURED", "alpha_reads")
+fault("one of two claimers refuted", rows_edit(lambda rs: rs + [{"id": "c2", "status": "PASS", "shows": ["alpha_reads"], "visual": [seen("alpha_reads", "NO", False)]}]), "FAIL", "alpha_reads")
+fault("the run's flat visual refutes it", lambda: res(good_rows(), visual=[seen("alpha_reads", "NO", False)]), "FAIL", "alpha_reads")
+fault("verdict of the wrong polarity", visual([{**seen("alpha_reads"), "polarity": "cannot"}]), "UNMEASURED", "alpha_reads")
+fault("verdict with no polarity", visual([{k: v for k, v in seen("alpha_reads").items() if k != "polarity"}]), "UNMEASURED", "alpha_reads")
+fault("refutation with pass true is still a refutation", visual([seen("alpha_reads", "NO", True)]), "FAIL", "alpha_reads")
+fault("a SKIP row does not hide a refutation", rows_edit(lambda rs: [{**rs[0], "visual": [seen("alpha_reads", "NO", False)]},
+                                                                    {"id": "c2", "status": "SKIP", "shows": ["alpha_reads"]}] + rs[1:]), "FAIL", "alpha_reads")
+fault("a reused row does not hide a refutation", rows_edit(lambda rs: [{**rs[0], "freshness": "reused@old.json", "visual": [seen("alpha_reads", "NO", False)]}] + rs[1:]), "FAIL", "alpha_reads")
+fault("named by id, flat visual alone", lambda: res([{"id": "chain.alpha_reads", "status": "PASS"}] + good_rows()[1:], visual=[seen("alpha_reads")]), "UNMEASURED", "alpha_reads")
+fault("flat visual alone proves nothing", lambda: res([{"id": "c1", "status": "PASS", "shows": ["alpha_reads"]}] + good_rows()[1:], visual=[seen("alpha_reads")]), "UNMEASURED", "alpha_reads")
 d = fault("a SKIP row", rows_edit(lambda rs: [{**rs[0], "status": "SKIP"}] + rs[1:]), "UNMEASURED", "alpha_reads")
-check("UNMEASURED row names why and still has an age", "SKIP" in row(d, "alpha_reads")["why"] and row(d, "alpha_reads")["age"] == "proof 3 d", row(d, "alpha_reads"))
+check("UNMEASURED row names why and has an age, never 'proof'", "SKIP" in row(d, "alpha_reads")["why"] and row(d, "alpha_reads")["age"] == "no proof; last run 3 d", row(d, "alpha_reads"))
 fault("a reused row", rows_edit(lambda rs: [{**rs[0], "freshness": "reused@old.json"}] + rs[1:]), "UNMEASURED", "alpha_reads")
 fault("an invalid row", rows_edit(lambda rs: [{**rs[0], "validity": "invalid"}] + rs[1:]), "UNMEASURED", "alpha_reads")
 fault("a failed row", rows_edit(lambda rs: [{**rs[0], "status": "FAIL"}] + rs[1:]), "FAIL", "alpha_reads")
@@ -230,6 +267,42 @@ body = route()[2]
 piece = body[body.index("alpha_reads") - 60:body.index("alpha_reads")]
 check("page: the unproved row prints UNMEASURED", "UNMEASURED" in piece and "PROVEN" not in piece, piece)
 check("page: headline is NOT MET", ">NOT MET<" in body)
+
+# the checker's own plant: RED entry, both bars judged off, nothing may print PROVEN
+build()
+entry_edit(status="RED")()
+res([{"name": "c1", "verdict": "PASS", "shows": ["alpha_reads"], "visual": [seen("alpha_reads", "UNJUDGEABLE", False)]},
+     {"name": "c2", "verdict": "PASS", "shows": [LONG_ID], "visual": [seen(LONG_ID, "NO", False)]}])
+body = route()[2]
+check("page: judge refused, no bar prints PROVEN", "'st PROVEN'" not in body and "0 of 3 bars proven" in body, body[:400])
+
+
+# ---------------------------------------------------------------- running now: what is matched, what is not
+def doing(iid, title, prose=None):
+    with open(BASE / "ledger.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(ev(DAY, "file", iid, title=title, kind="task", target="v1", needs="offline", **{"for": "BENCH"})) + "\n")
+        f.write(json.dumps(ev(DAY, "start", iid)) + "\n")
+    if prose:
+        p = ROOT / "infrastructure" / "state" / "items" / f"{iid}.md"
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(prose, encoding="utf-8")
+
+
+build()
+PATH = f"src/RimMandrake/{MOD}/Source/x.cs"
+doing("DIRTY_LOOP_CONTINUE_NOT_DONE", f"Review loop over the non-{MOD} files")
+doing("SYMLINK_RETIRE_ONE_MENTION", "Retire a symlink", f"Live breaks, e.g. `{PATH}:25`.")
+doing("OTHER_WORK_NO_MENTION", "Something else")
+doing("GRATE_FIX_TWO_PATHS", "Fix the grate", f"`{PATH}` and `{PATH}` again.")
+got = {r["id"] for r in read()["running"]}
+check("running: id and repeated path match, the rest do not", {ITEM, "GRATE_FIX_TWO_PATHS"} == got, got)
+titled = lambda t: mission_page._concerns("SOME_ITEM", type("I", (), {"title": t}), "FlowWorks", ROOT, [])    # noqa: E731
+check("running: a CamelCase title names the mod, a negated one does not",
+      titled("FlowWorks slime") and titled("rain + FlowWorks flooding") and not titled("dirty non-FlowWorks/GSS files"))
+LANE = ROOT / "infrastructure" / "state" / "flowworks_lane.json"
+jw(LANE, {"seat": "FOUNDRY", "id_patterns": ["^PIT_(SUPERDEEP)", "^(GSS_|CORD_)"]})
+check("lane: FlowWorks only, GSS patterns left out",
+      [bool(p.search("PIT_SUPERDEEP_X")) for p in mission_page._lane("FlowWorks", ROOT)] == [True] and not mission_page._lane("Other", ROOT))
 
 # ---------------------------------------------------------------- the other sections
 build()
