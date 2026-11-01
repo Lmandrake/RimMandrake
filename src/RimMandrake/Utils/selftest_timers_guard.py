@@ -3,6 +3,7 @@
 
     python3 src/RimMandrake/Utils/selftest_timers_guard.py
 """
+import json
 import os
 import subprocess as SP
 import sys
@@ -15,6 +16,7 @@ sys.path.insert(0, str(HERE))
 TMP = Path(tempfile.mkdtemp(prefix="selftest_timers_guard_"))
 os.environ["RM_OPS_WATCH_DIR"] = str(TMP / "ops")
 os.environ["TESTQ_QUEUE"] = str(TMP / "q")
+os.environ["RM_TIMER_GUARD_READING"] = str(TMP / "reading")
 import timers_guard as TG  # noqa: E402
 
 FAILS = []
@@ -96,6 +98,13 @@ def main():
     st = TG.check(NOW + 2100, lambda t, c: (f2.append("N"), {})[1], ids2, {"rm-b.timer": "inactive"}, {"rm-b.timer"})
     check(st.get("state") == "OPEN" and f2.count("N") == 0, "pause covering the fault keeps the episode (no 'active again' note)")
     TG.check(NOW + 2200, None, ids2, {"rm-b.timer": "active"}, set())
+
+    # the real id reader, as the unit runs it: every other case hands check() its ids, so a missing reader crashed only live
+    TG.state_file().unlink(missing_ok=True)
+    st = TG.check(NOW + 3000, None, None, {"rm-b.timer": "inactive"}, False)
+    check(st.get("name") and st.get("state") == "PENDING", "ids=None reads the real ledger and mints a name (%s)" % st)
+    TG.state_file().unlink(missing_ok=True)
+    check(TG.main(["run"]) == 0 and json.loads(TG.reading_file().read_text()).get("at"), "a completed pass leaves its reading")
 
     # pause helper: arms restart BEFORE stopping, against a throwaway timer
     cmds = []

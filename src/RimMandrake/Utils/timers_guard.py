@@ -41,6 +41,12 @@ def state_file():
     return ops_dir() / "timers_guard.json"
 
 
+def reading_file():
+    """Touched at the end of a completed pass: `unit=timer-guard.timer` alone proves the timer fired, not that the pass
+    survived (OPS_TIMER_REPAIR_PRXC: the guard crashed at each alarm while its timer stayed active)."""
+    return Path(os.environ.get("RM_TIMER_GUARD_READING", "/home/mandrake/rm/relentless/store/timer_guard_reading"))
+
+
 def pauses_file():
     return ops_dir() / "timers_pauses.json"
 
@@ -254,7 +260,10 @@ def main(argv=None):
     import ops_watch as OW
     st = check(time.time(), OW.real_filer if a.file_alarms else None)
     print("timers_guard: %s" % ("all watched timers active" if not st else json.dumps(st, sort_keys=True)[:400]))
-    return 1 if "_state" in st else 0     # an unreadable state file must fail the unit, not hide as success
+    if "_state" in st:
+        return 1                          # an unreadable state file must fail the unit, not hide as success
+    OW.atomic_json(reading_file(), {"at": iso(time.time()), "state": st.get("state") or "clear"})
+    return 0
 
 
 if __name__ == "__main__":

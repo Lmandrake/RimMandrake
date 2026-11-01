@@ -233,6 +233,11 @@ def read_items():
     return pc._model().replay(pc.read_ledger([*pc.CLONES, *([own] if own not in pc.CLONES else [])])).items
 
 
+def known_ids():
+    """Every item id ever filed, closed ones too (timers_guard mints an alarm name against these)."""
+    return set(read_items())
+
+
 def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, pusher=None):
     """One pass: recheck every promise, reopen what died, put back what recovered. The ledger is the state, so a pass
     that could not file simply tries again. filer(todo, conf) -> {item: None|error}; None files nothing. pusher (see
