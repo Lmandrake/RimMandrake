@@ -55,6 +55,10 @@ Gates, in order, each journaled (and each refusal an ALARM when it needs a human
      than `ops_stale_s` (45 min, conductor.md), its account cannot be resolved, or the account's runway or
      week_left_pct point is UNMEASURED. (conductor.md's table puts UNMEASURED/stale in AMBER; the build brief of
      2026-10-27 says refuse: refusing is the stricter of the two, so a quick run never launches on a blind reading.)
+     EXCEPT a role with `degraded_reading_ok: true` (Operations, the role that reads the watch; items
+     OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE and the 2026-11-01 brief): it launches on the most cautious band with a
+     noted alarm, its message marking the reading UNMEASURED and saying to diagnose the watch first. Caps and the
+     account gate still apply; every other role is still refused.
      The account is the switcher-registry label whose email is the one this machine is logged in as
      (account_usage.registry()/live_email()): no account is named here.
   3. throttle band (role `throttle_bands`, as conductor.md writes them): FLOOR when week_left_pct < its line, else
@@ -613,7 +617,7 @@ def prompt(role, mode, trigger, band_name, reading, budget, cap, factor, spent, 
         lines += ["Throttle band: %s (account runway %.2f %s, week left %.0f%% %s; ops_watch status at %s)." % (
                       band_name, reading["runway"], reading["runway_m"], reading["week_left"], reading["week_left_m"],
                       reading["at"]),
-                  ("DEGRADED READING: %s. Report it first." % reading["degraded"]) if reading.get("degraded") else "",
+                  ("DEGRADED READING: %s. The ops reading is UNMEASURED (runway and week left above are placeholders for the most cautious band, not readings): diagnose the watch first (ops_watch status.json, its unit and timer) and report it before any work that relies on the reading." % reading["degraded"]) if reading.get("degraded") else "",
                   "Token budget for this run: %d weighted tokens (cap %d x %.1f); daily cap %d, %d already used today. "
                   "Weighted = input-equivalent: a cache read counts 0.1, a cache write 1.25 (5m) or 2 (1h), an "
                   "output token 5. The Dispatcher checks it after the run; it does not stop you at it." % (
