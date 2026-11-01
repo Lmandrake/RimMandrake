@@ -165,7 +165,7 @@ then layers them.
 
 Every flyer's row on a sheet shows a `flyer:` flag beside its other marks (`flyer_gate.cell_for`, read from the
 committed plan): `flyer: convertible ✓`, `flyer: partial: <why>` or `flyer: ✗ <G why>`. A keep of a `✗` row leaves a
-todo in `art.py enact`, so a good-looking dead end is never settled silently; `--mark-done <row>` says the keep stands.
+conflict in `art.py enact`: it installs nothing and is never settled silently. The row is redone, or rebuilt until the cell clears. A sheet shows no frames of a set that fails the body lock, and `serve_gated.py` refuses a sheet that carries one.
 
 ## 4. Regeneration order and job counts
 

@@ -29,6 +29,9 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import selftest_enact as T  # noqa: E402
+import flyer_gate as FG  # noqa: E402
+
+FG._cache = {}     # RSW_Strill here is a fixture row; the live flyer plan would refuse its pick (selftest_flyer_gate tests that)
 
 FAILS = []
 

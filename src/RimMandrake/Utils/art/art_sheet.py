@@ -2978,6 +2978,7 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
                 prefixes.append(x["res"][6:])
         flips = [c for c in flipbook_cols(idx, words, r.get("artpipe_state_jobs") or [], prefixes)
                  if not (set(c["faces"].values()) & have)]
+        flips, r["flyer_withheld"] = FG.withhold_books([r["key"], r.get("port"), *(r.get("defNames") or [])], flips)
         flip_shas = {s for c in flips for s in c["faces"].values()}
         named = [c for c in name_render_cols(idx, words, r.get("artpipe_state_jobs") or [],
                                              defs={r["key"], r.get("port"), *(r.get("defNames") or [])},
@@ -3313,6 +3314,8 @@ def generate_biome(biome: str, census_path: Path = CENSUS, out_html: Path | None
         _fc = FG.cell_for([key, r.get("port"), *(r.get("defNames") or [])])
         if _fc:
             flags.append(_fc)      # FLYER_STABLE_BODY_GATE_1: no flyer's static is ruled without its cell showing
+        if r.get("flyer_withheld"):
+            flags.append(r["flyer_withheld"])
         # a row the owner decided whose pictures changed since the snapshot he ruled on (a redo landed, a pick was
         # installed under new bytes, or the row was renamed and its decision carried over under `carriedFrom`)
         _od = ((old or {}).get("decisions") or {}).get(key) or {}

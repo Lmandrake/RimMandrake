@@ -37,4 +37,4 @@ and `RM_Thozzik`'s family has no wings drawn.
 - Each regenerated flip-book passes the body-lock test, by its script's exit code, before he sees it.
 - Flight is verified by a `Pawn_FlightTracker` state read and never by an unattended live visual hunt.
 
-Study: `design/RimMandrake/flyer_stable_body_study.md`. Gate: `src/RimMandrake/Utils/art/flyer_gate.py`. Regeneration moved to the four `FLYER_TIER_*` items.
+Study: `design/RimMandrake/flyer_stable_body_study.md`. Gate: `src/RimMandrake/Utils/art/flyer_gate.py`. The four `FLYER_TIER_*` items are this item's scope, staged; they do not discharge it. The split was an agent's, not a ruling.

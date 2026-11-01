@@ -31,6 +31,7 @@ sys.path.insert(0, str(HERE))
 import scaled_review_gate as SG  # noqa: E402
 import nonart_sheet as NA  # noqa: E402
 import prereview as PR  # noqa: E402
+import flyer_gate as FG  # noqa: E402
 import sheet_live_guard as LIVE  # noqa: E402
 
 REPO = HERE.parents[3]
@@ -201,6 +202,10 @@ def serve_with_followed_guard(argv: list[str], fresh=None, sheet: Path | None = 
 
 def prereview_gate(p: Path) -> int:
     """0 = an agent or naive judge looked at every row as it is now (prereview.py); 4 = refused, the fix named."""
+    book = FG.sheet_refusal(p.read_text(errors="replace"))
+    if book:
+        print(f"REFUSED serve_gated: {book} (flyer_gate.py flipbook; rebuild the sheet after the set passes)", file=sys.stderr)
+        return 4
     ok, msg = PR.verify(p)
     if not ok:
         print(f"REFUSED serve_gated: nothing reaches the owner unread: {msg}", file=sys.stderr)

@@ -147,6 +147,51 @@ def flipbook_rc(name: str) -> int:
                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=200, cwd=REPO).returncode
 
 
+_rc: dict = {}
+
+
+def book_rc(name: str) -> int:
+    """flipbook_rc, once per process: a sheet asks per row and the frames do not change under it."""
+    if name not in _rc:
+        _rc[name] = flipbook_rc(name)
+    return _rc[name]
+
+
+def failing_sets(names) -> list[str]:
+    """The cut-out sets of these defs that do not exit 0, as `Set (exit n)`."""
+    sets = dict.fromkeys(s for n in names for s in DEF_SETS.get(n, []))
+    return [f"{s} (exit {book_rc(s)})" for s in sets if book_rc(s) != 0]
+
+
+def withhold_books(names, flips: list[dict]) -> tuple[list[dict], str]:
+    """Criterion 3: the flip-book columns he may see, and the flag saying what was held back.
+
+    A def with a cut-out set shows no frames until every set exits 0. A def with none keeps its old shipped frames, whose
+    state the `flyer:` cell states, but a new render (kind artpipe) has no gate to pass, so it is held back."""
+    names = [n for n in names if n]
+    if not flips:
+        return flips, ""
+    bad = failing_sets(names)
+    if bad:
+        return [], f"flip-book withheld: {', '.join(bad)} fails the body lock"
+    if any(n in DEF_SETS for n in names) or not cell_for(names):
+        return flips, ""
+    kept = [c for c in flips if c.get("kind") != "artpipe"]
+    if len(kept) == len(flips):
+        return flips, ""
+    return kept, f"flip-book withheld: {len(flips) - len(kept)} render(s) with no cut-out set to pass the body lock"
+
+
+def sheet_refusal(html: str) -> str:
+    """The last door: a built sheet naming frames of a failing set in a live lane. Empty = may be served."""
+    sets = {s for row in DEF_SETS.values() for s in row}     # not every json there is a set: Uvak_south_layers is a sidecar
+    by_prefix = {json.loads((SETS / f"{s}.json").read_text())["prefix"]: s for s in sets if (SETS / f"{s}.json").exists()}
+    seen = {m.rpartition("/")[2] for m in re.findall(r'"res": ?"_flip:([^"]+)"', html)}
+    bad = [f"{by_prefix[s]} (exit {book_rc(by_prefix[s])})" for s in sorted(seen)
+           if s in by_prefix and book_rc(by_prefix[s]) != 0]
+    return f"flip-book fails the body lock: {', '.join(bad)}" if bad else ""
+
+
 def run_census(out: Path) -> list[dict]:
     r = subprocess.run([sys.executable, str(HERE / "flyer_census.py"), "--no-art", "--out", str(out)],
                        capture_output=True, text=True, timeout=300, cwd=REPO)
