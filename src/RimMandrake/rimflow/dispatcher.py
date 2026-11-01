@@ -402,6 +402,14 @@ def incident_step(sch, st, obs, now, act):
         roles["ops"] = ops
 
 
+def signal_alarm(sch, st, kind, why, now):
+    """An alarm that fired joins the incident ledger. One that cannot still went its own roads; the next tick says so."""
+    try:
+        IN.signal(sch, kind, why, now)
+    except Exception as e:  # noqa: BLE001
+        st["incident_failed"] = "signal of %s lost: %s: %s" % (kind, type(e).__name__, str(e)[:160])
+
+
 def incident_run(sch, st, role, mode, why, now):
     """One run the chain asks for, inside the shared per-hour budget. -> what happened."""
     ist = st.setdefault("incident", {})
@@ -1393,10 +1401,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 if not told and (a.get("ledger") or a.get("conductor_log")):
                     st["alarms"].pop(a["kind"], None) if last is None else st["alarms"].update({a["kind"]: last})
             if stamped and apply and a["kind"] in st["alarms"]:
-                try:
-                    IN.signal(sch, a["kind"], a.get("why"), now)
-                except Exception as e:  # noqa: BLE001 - an alarm that cannot join the ledger still went its own roads
-                    st["incident_failed"] = "signal of %s lost: %s: %s" % (a["kind"], type(e).__name__, str(e)[:160])
+                signal_alarm(sch, st, a["kind"], a.get("why"), now)
             if a["do"] == "incident" and not a["rows"] and not a["rings"]:
                 continue        # the snapshot stamp of a quiet tick is not a journal line
             a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
@@ -1419,6 +1424,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 key = "publish:index_lock" if "index.lock" in out else "publish:stuck"
                 if now - st["alarms"].get(key, -1e18) >= sch.get("alarm_every_s", 6 * 3600):
                     st["alarms"][key] = now
+                    signal_alarm(sch, st, key, "ledger publish: " + out[:240], now)
                     al = dict(do="alarm", kind=key, at=iso(now), note=True, result="raised",
                               why="ledger publish: " + out[:240])
                     al["conductor"] = do_conductor(sch, dict(al, raise_first="Ledger publishing is stuck."), now)
@@ -1809,7 +1815,8 @@ def tick(sch, apply, obs=None, now=None, fx=None):
                     acts.append(dry)
             execute(acts, sch, st, root, apply, now, fx, persist=lambda: save(st, root), deadline=deadline)
             # the helper budget every seat's spawn hook reads (HELPER_BUDGET_MIGRATE_INTO_DISPATCHER); never raises
-            bud = HB.tick_step(sch, st, root, now, journal=lambda rec: journal(root, rec))
+            bud = HB.tick_step(sch, st, root, now, journal=lambda rec: (
+                journal(root, rec), apply and signal_alarm(sch, st, rec["kind"], rec["why"], now)))
             if bud:
                 acts.append(bud)
             if apply:

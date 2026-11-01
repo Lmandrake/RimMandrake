@@ -1,5 +1,5 @@
 {
-  "_doc": "RO4, OP3, OP4 in design/RimMandrake/operating_requirements_2026-11-01.md. Operations owns this table. routes: first match wins, by fnmatch on an ops_watch metric or alarm key, or a Dispatcher alarm kind. route program = the program contained it, the journal holds it, no incident; role = an incident for `reader`, rising the chain; owner = an incident that starts at him. cause: readings sharing it are one incident. class: for an alarm with no ranges class. readers: who may be filed for, and what wakes them. selftest_incident.py fails on a kind this table misses and `rimflow file --for` refuses a reader not here.",
+  "_doc": "RO4, OP3, OP4 in design/RimMandrake/operating_requirements_2026-11-01.md. Operations owns this table. routes: first match wins, by fnmatch on an ops_watch metric or alarm key, or a Dispatcher alarm kind. route program = the program contained it, the journal holds it, no incident; role = an incident for `reader`, rising the chain; owner = an incident that starts at him. cause: readings sharing it are one incident. class: for an alarm with no ranges class. readers: who may be filed for, and what wakes them. breaker_emergency is program because its own told row (relentless.breaker_same_cause) is the signal; dry:* because a dry tick writes nothing and its operator reads the alarm. selftest_incident.py fails on a kind this table misses (alarm_census.py reads them from the source) and `rimflow file --for` refuses a reader not here.",
   "policy": {
     "_doc": "chain[0] is the route's reader. ladder: minutes from told_at to chain[2] and chain[3]; chain[1] comes at the reading's ack_within_min. OP4: emergency reaches him at 60 unacked, distressed after 4 h. min_step_min: at least this long on a rung, which is what spaces the rungs after an expired recover_by. event_quiet_min covers a Dispatcher alarm, a reading with no sane value: 7 h clears the 6 h alarm_every_s rate limit, so a repeat is seen. runs_per_hour: the Conductor and fresh Operations runs incidents may ask for, shared by all incidents; the reader's own alarm run is held by the role's alarm_run_gap_s and daily limits.",
     "ack_within_min": 30,
@@ -64,6 +64,22 @@
     {"match": "role:*:overbudget*", "route": "program"},
     {"match": "role:*:cap", "route": "program"},
     {"match": "role:*:cutoff", "route": "program"},
-    {"match": "role:*", "route": "role", "reader": "Operations", "cause": "roles"}
+    {"match": "role:*", "route": "role", "reader": "Operations", "cause": "roles"},
+    {"match": "jam", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "understaffed", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "books_stale", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "step_raised", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "lease_raised", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "quarantine", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "bundle_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "remove_failed", "route": "role", "reader": "Operations", "cause": "work_belt"},
+    {"match": "breaker_emergency", "route": "program"},
+    {"match": "publish:*", "route": "role", "reader": "Operations", "cause": "publish"},
+    {"match": "budget:*", "route": "role", "reader": "Operations", "cause": "helpers"},
+    {"match": "dry:*", "route": "program"},
+    {"match": "blind:*", "route": "role", "reader": "Operations", "cause": "replay"},
+    {"match": "paged:*", "route": "role", "reader": "Operations", "cause": "replay"},
+    {"match": "stalled:*", "route": "role", "reader": "Operations", "cause": "replay"},
+    {"match": "twice_dead:*", "route": "role", "reader": "Operations", "cause": "replay"}
   ]
 }

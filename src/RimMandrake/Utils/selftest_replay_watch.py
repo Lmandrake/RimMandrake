@@ -48,6 +48,9 @@ def st(t):
 
 
 class Fake(W.World):
+    def told(self, kind, why, now):
+        self.__dict__.setdefault("told_rows", []).append(kind)
+
     def __init__(self, cfg):
         super().__init__(cfg)
         self.t = T0

@@ -468,6 +468,17 @@ class World:
                                timeout=90, stdin=subprocess.DEVNULL)
         return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
+    def told(self, kind, why, now):
+        """The incident ledger hears an alarm the first time it is told (OP3). A ledger that fails costs no sink."""
+        rf = str(Path(__file__).resolve().parent.parent / "rimflow")
+        if rf not in sys.path:
+            sys.path.insert(0, rf)
+        try:
+            import incident as IN
+            IN.signal({"incident": {"enabled": True}}, kind, why, now)
+        except Exception as e:  # noqa: BLE001
+            print("replay_watch: told ledger: %s: %s" % (type(e).__name__, str(e)[:160]), file=sys.stderr)
+
     def conductor(self, line):
         sch = json.loads(Path(self.cfg["schedule"]).read_text("utf-8"))
         with open((sch.get("no_handoff") or {}).get("conductor_log"), "a", encoding="utf-8") as f:
@@ -590,6 +601,8 @@ def send_alarms(w, st, acts, now, cfg):
             except Exception as e:  # noqa: BLE001 - a failed sink must not cost the other sink or the board
                 ok, out = False, "%s: %s" % (type(e).__name__, str(e)[:160])
             if ok:
+                if sent is None and sink == "conductor":
+                    w.told(kind, rec["why"], now)
                 rec[sink] = now
                 rec.pop("owed_" + sink, None)
             else:

@@ -2252,7 +2252,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
         cur["title"] = title[:160]
         cur["noted"] = fresh_news(cur, aid, points, rules)[1]
         todo.append({"aid": aid, "name": cur["name"], "title": cur["title"], "conductor_log": tg.get("conductor_log"),
-                     "reopen": bool(cur.get("reopen"))})
+                     "key": key, "reopen": bool(cur.get("reopen"))})
     for aid in sorted(set(ts) | set(state)):
         try:
             one(aid)
@@ -2262,6 +2262,7 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             cur = cur if isinstance(cur, dict) else state.setdefault(aid, {"state": "PENDING", "since": iso(now), "tries": 0})
             cur["error"] = why
             log.append({"ts": iso(now), "event": "step_failed", "aid": aid, "error": why})
+    said_causes = set()
     if todo and filer:
         atomic_json(p, state)   # the name is on disk before the spawn: a pass that dies mid-filing retries it, not a new one
     if todo:
@@ -2288,7 +2289,8 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                     # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
                     log.append({"ts": iso(now), "event": "filed", "aid": a["aid"], "item": a["name"],
                                 "publish": res.get("_publish")})
-                    if a.get("conductor_log"):      # a rule that also owes the Conductor a line (rules key conductor_log)
+                    # a rule that also owes the Conductor a line (rules key conductor_log), one per cause: an outage is one ring
+                    if a.get("conductor_log") and conductor_line_owed(a.get("key"), said_causes):
                         try:
                             with open(a["conductor_log"], "a", encoding="utf-8") as f:
                                 f.write("\n- %s ops_watch ALARM %s: %s\n" % (iso(now), a["name"], a["title"]))
@@ -2306,6 +2308,19 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
             for r in log:
                 f.write(json.dumps(r, sort_keys=True) + "\n")
     return state
+
+
+def conductor_line_owed(key, said):
+    """incident.line_owed on this pass's told ledger. A ledger that cannot answer owes the line: telling twice is the
+    cheap failure."""
+    rf = str(Path(__file__).resolve().parent.parent / "rimflow")
+    if rf not in sys.path:
+        sys.path.insert(0, rf)
+    try:
+        import incident as IN
+        return IN.line_owed(key, said, str(ops_dir() / "told.jsonl"))
+    except Exception:  # noqa: BLE001
+        return True
 
 
 # ===================================================================================================== digest

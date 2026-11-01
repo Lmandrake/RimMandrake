@@ -72,7 +72,12 @@ def iso(t):
 
 # ---------------------------------------------------------------- the store (host-wide, ext4, one flock)
 
+ALARM_TOLD_EVERY_S = 6 * 3600     # inside incident.py event_quiet_min, so a standing alarm keeps its incident open
+
+
 class Store:
+    on_alarm = None     # the real Fx sets it: an alarm on the journal is a signal on the told ledger
+
     def __init__(self, base=None):
         self.root = base or root()
         self.dir = os.path.join(self.root, "store")
@@ -132,6 +137,8 @@ class Store:
 
     def journal(self, rec):
         self._append(self.p("journal.jsonl"), json.dumps(rec, sort_keys=True))
+        if self.on_alarm and rec.get("do") == "alarm":
+            self.on_alarm(rec)
 
     def attempts(self, item):
         try:
@@ -894,6 +901,27 @@ class Effects:
         except OSError as e:
             return str(e)[:200]
         return None
+
+    def alarm_signal(self, rec):
+        """A journalled alarm joins the told ledger, each kind at most once in ALARM_TOLD_EVERY_S: step_raised can fire
+        every tick. A failure stays on the journal and never stops the tick that alarmed."""
+        import incident as IN
+        path, now = self.store.p("alarm_told.json"), time.time()
+        try:
+            try:
+                with open(path, encoding="utf-8") as f:
+                    said = json.load(f)
+            except (OSError, ValueError):
+                said = {}
+            if now - said.get(rec["kind"], -1e18) < ALARM_TOLD_EVERY_S:
+                return
+            d = os.environ.get("RM_OPS_WATCH_DIR") or self.r["ops_watch_dir"]
+            if IN.signal({"incident": {"enabled": True}}, rec["kind"], rec.get("why"), now, os.path.join(d, "told.jsonl")):
+                said[rec["kind"]] = now
+                self.store._write(path, json.dumps(said))
+        except Exception as e:  # noqa: BLE001
+            self.store._append(self.store.p("journal.jsonl"), json.dumps({
+                "at": iso(now), "do": "told_failed", "kind": rec["kind"], "why": "%s: %s" % (type(e).__name__, str(e)[:200])}))
 
     def check_path(self, st):
         """A new path per check: a quarantined checker may still be running in the last one."""
@@ -2188,7 +2216,9 @@ def tick(store=None, fx=None, r=None, now=None):
             fcntl.flock(lk, fcntl.LOCK_EX | fcntl.LOCK_NB)
         except BlockingIOError:
             return [{"do": "skip", "why": "a tick is running"}]
-        fx = fx or Effects(r, store)
+        if fx is None:
+            fx = Effects(r, store)
+            store.on_alarm = fx.alarm_signal
         acts = []
         if not r.get("enabled"):
             reading(store, r, now, [{"do": "disabled"}])

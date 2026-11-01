@@ -324,6 +324,17 @@ def signal(sch, kind, why, now, path=None):
     return False
 
 
+def line_owed(key, said, path=None):
+    """ops_watch's direct Conductor line: the first of a cause, in this pass (`said`, a set it adds to) and while no
+    incident of that cause is open. One outage is one line however many metrics it trips."""
+    rt = route_of(load_table(), key) or {}
+    cause = rt.get("cause") or key
+    if cause in said:
+        return False
+    said.add(cause)
+    return not any(x["cause"] == cause and x["state"] == "open" for x in fold(read_rows(path))[0].values())
+
+
 def write_snapshot(snap, path=None):
     path = path or snapshot_path()
     guard(path)

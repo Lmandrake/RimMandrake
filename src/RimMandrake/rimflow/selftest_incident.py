@@ -20,11 +20,14 @@ TMP = tempfile.mkdtemp(prefix="selftest_incident_")
 os.environ["RM_OPS_WATCH_DIR"] = os.path.join(TMP, "ops")
 os.environ["RM_DISPATCHER_STATE"] = os.path.join(TMP, "state")
 sys.path[:0] = [HERE, os.path.join(HERE, "..", "Utils"), os.path.join(HERE, "..", "Utils", "pulse")]
+import alarm_census as AC  # noqa: E402
 import dispatcher as D  # noqa: E402
 import doorbell  # noqa: E402
 import incident as IN  # noqa: E402
 import ops_watch as OW  # noqa: E402
 import phone_push as PP  # noqa: E402
+import relentless as RN  # noqa: E402
+import replay_watch as RW  # noqa: E402
 import pulse_core as PC  # noqa: E402
 
 os.makedirs(os.environ["RM_OPS_WATCH_DIR"])
@@ -33,8 +36,10 @@ H, M = 3600, 60
 T0 = float(int(time.time()))
 TABLE = IN.load_table()
 RULES = OW.load_rules()
+OPS_LOG = os.path.join(TMP, "ops_conductor.md")      # the rules' own conductor_log lines, counted: not the real log
 for tg in RULES["targets"]:
-    tg.pop("conductor_log", None)
+    if tg.get("conductor_log"):
+        tg["conductor_log"] = OPS_LOG
 BASE = {"accounts.acct.runway": 9.0, "accounts.acct.week_left_pct": 90.0}
 SANE = {"relentless.under_min": 0, "relentless.breaker_open_min": 0, "relentless.no_live_min": 0, "relentless.progress_age_min": 0,
         "relentless.blind": 0, "relentless.ready": 5, "relentless.why": "running", "relentless.distressed": 0,
@@ -63,6 +68,7 @@ class Rig:
         self.runs, self.notes, self.log = [], [], self.root + "/conductor.md"
         open(self.log, "w").close()
         self.dead = False
+        self.fx = {}
         real = json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))
         self.sch = dict(real, seats={}, ledger_notes=False, publish=False,
                         signal_watch={"enabled": False}, no_handoff={"conductor_log": self.log}, seat_restart={"enabled": False},
@@ -106,6 +112,7 @@ class Rig:
             return True, "launched", {}
         fx = {"role_launch": launch, "lock": lambda: None, "note": lambda *a: (True, ""), "publish": lambda n: None,
               "paused": lambda: None, "off": lambda p: None, "verdicts_append": lambda *a: None}
+        fx.update(self.fx)
         acts = D.tick(self.sch, True, obs=self.obs(), now=now, fx=fx)
         self.runs += [a for a in acts if a["do"] == "role_launch"]
         return acts
@@ -232,6 +239,7 @@ def test_ring_or_read_is_no_ack():
 
 def test_one_outage():
     r = Rig("one")
+    open(OPS_LOG, "w").close()
     r.tick(T0, **{k.replace(".", "__"): v for k, v in SEVERE.items()})
     x = r.inc()
     bad = sorted(x[0]["metrics"]) if x else []
@@ -241,6 +249,13 @@ def test_one_outage():
     r.tick(T0 + 240, **{k.replace(".", "__"): v for k, v in SEVERE.items()})
     check("still one incident, one ring, one run", len(r.inc()) == 1 and len(r.evs("opened")) == 1 and len(r.alarm_runs()) == 1,
           (r.evs("opened"), r.alarm_runs()))
+    lines = [x for x in open(OPS_LOG) if "ALARM" in x]
+    filed = [a for a in json.load(open(os.environ["RM_OPS_WATCH_DIR"] + "/alarms.json")).values()
+             if isinstance(a, dict) and a.get("state") == "OPEN"]
+    check("the rules' conductor_log lines of that outage are one line, with several alarms filed",
+          len(lines) == 1 and len(filed) >= 3, (lines, len(filed)))
+    check("a later alarm of a cause with an open incident owes no line, another cause's does",
+          not IN.line_owed("seats.blind", set()) and IN.line_owed("steve.seats_absent_min", set()))
     # the budget: many causes together spend at most runs_per_hour fresh and quick runs
     st = {"roles": {}}
     sch = r.sch
@@ -322,24 +337,104 @@ def test_ledger_unwritable():
     check("a pass that cannot write alarms on the next tick", "could not be written" in open(r.log).read(), open(r.log).read())
 
 
+FORMS = """
+K = "module_k:v"
+def a(seat, kind, run, st):
+    act(do="alarm", kind="lit:one")
+    act(do="alarm", kind="dead:" + seat)
+    act(do="alarm", kind="role:%s:cap" % run["n"])
+    act(do="alarm", kind="r:%s:%s" % (seat, run))
+    act(do="alarm", kind=f"fs:{seat}:z")
+    key = "var:one" if st else "var:two"
+    act(do="alarm", kind=key)
+    act(do="alarm", kind=K)
+    rec = {"do": "alarm", "kind": "dict:one", "why": "w"}
+    return {"at": 1, "do": "alarm", "kind": key + ":tail"}
+def b(x):
+    def alarm(kind, why):
+        acts.append({"do": "alarm", "kind": "%s:%s" % (kind, x)})
+    alarm("param", "w")
+    alarms.append({"kind": "appended:one", "why": "w"})
+"""
+
+
 def source_kinds():
-    """Every alarm kind the Dispatcher's modules can raise, literal prefix normalised, plus the ops_watch target keys."""
-    kinds = set()
-    for f in ("dispatcher", "role_launch", "signal_watch", "login_watch", "seat_restart", "helper_budget"):
-        s = open(os.path.join(HERE, f + ".py"), encoding="utf-8").read()
-        for m in re.finditer(r'kind="([^"]+)"', s):
-            kinds.add(m.group(1).replace("%s", "x").replace("%d", "1") + ("x" if m.group(1).endswith(":") else ""))
-    kinds = {k for k in kinds if ":" in k or k in ()}
-    return kinds | {t["key"].replace("*", "x") for t in RULES["targets"] if t.get("alarm")} | set(OW.ranges_of(RULES))
+    """The census of the real tree, with what it could not read."""
+    return AC.census(os.path.join(HERE, ".."))
+
+
+def test_census_forms():
+    k, bad = AC.of_source(FORMS)
+    want = {"lit:one", "dead:x", "role:x:cap", "r:x:x", "fs:x:z", "var:one", "var:two", "module_k:v", "dict:one",
+            "var:one:tail", "var:two:tail", "param:x", "appended:one"}
+    check("the census reads every form a kind is written in", k == want and not bad, (sorted(k ^ want), bad))
+    for src, name in (('def f(a):\n    act(do="alarm", kind=a["kind"])\n', "a subscript"),
+                      ('def f(k):\n    act(do="alarm", kind=k)\n', "a parameter nobody passes"),
+                      ('def f(q):\n    act(do="alarm", kind=g(q))\n', "a call"),
+                      ('def f(a):\n    act(do="alarm", kind="%s" % a)\n', "a format with no literal")):
+        check("the census fails loudly on " + name, AC.of_source(src)[1], src)
+
+
+def test_alarms_reach_ledger():
+    r = Rig("publish")
+    r.sch["publish"], r.sch["publish_stuck_s"] = True, 0
+    r.fx = {"lock": lambda: open(os.devnull), "publish": lambda n: "error: index.lock exists"}
+    r.tick(T0)
+    r.fx["publish"] = lambda n: "error: not fast-forward"
+    r.tick(T0 + 120)
+    got = {x.get("kind") for x in IN.read_rows()}
+    check("a stuck publish reaches told.jsonl on its real path", {"publish:index_lock", "publish:stuck"} <= got, got)
+    r.tick(T0 + 240)
+    check("and opens one incident of its cause", [i["cause"] for i in r.inc()].count("publish") == 1, r.inc())
+    r = Rig("budget")
+    r.sch["helper_budget"] = {"enabled": True}
+    real, D.HB.publish = D.HB.publish, lambda *a, **k: 1 / 0
+    try:
+        r.tick(T0)
+        r.tick(T0 + 120)
+    finally:
+        D.HB.publish = real
+    check("a failed helper budget reaches told.jsonl, once for one alarm",
+          [x.get("kind") for x in IN.read_rows()].count("budget:failed") == 1, IN.read_rows())
+    r = Rig("relentless")
+    s = RN.Store(r.root + "/rn")
+    fx = RN.Effects(dict(RN.rules(), ops_watch_dir=r.root + "/ops"), s)
+    s.on_alarm = fx.alarm_signal
+    for rec in ({"kind": "jam", "why": "w"}, {"kind": "jam", "why": "again"}, {"kind": "step_raised", "why": "w"},
+                {"kind": "breaker_emergency", "why": "w"}):
+        s.journal(dict(rec, do="alarm", at="t"))
+    s.journal({"do": "enrol", "kind": "jam"})
+    check("relentless alarms join the ledger, a repeat inside the limit does not, breaker_emergency has its own row",
+          [x.get("kind") for x in IN.read_rows()] == ["jam", "step_raised"], IN.read_rows())
+    check("relentless's journalled alarms are the real sites: the journal keeps all four",
+          open(s.p("journal.jsonl")).read().count('"do": "alarm"') == 4)
+    r.tick(T0 + 60)
+    check("they open the work_belt incident", any(i["cause"] == "work_belt" for i in r.inc()), r.inc())
+    w = object.__new__(RW.World)
+    w.told("stalled:a1:abcd1234", "w", T0)
+    check("a replay watch alarm joins the ledger", IN.read_rows()[-1].get("kind") == "stalled:a1:abcd1234", IN.read_rows()[-1])
 
 
 def test_routes():
-    kinds = source_kinds()
-    check("the census sees kinds of every source", len(kinds) > 50 and "dead:x" in kinds and "disk.pool_breach" in kinds, len(kinds))
+    found, unread, files = source_kinds()
+    check("no alarm site in the tree is unreadable by the census", not unread, unread)
+    named = {"publish:index_lock", "publish:stuck", "budget:failed", "dry:live_runs_unsupervised", "breaker_emergency", "jam",
+             "understaffed", "books_stale", "step_raised", "lease_raised", "quarantine", "dead:x", "stalled:x:x"}
+    check("the census sees the variable and dict forms, relentless and replay_watch", named <= found, sorted(named - found))
+    check("the census walked every module that raises one", {os.path.basename(f) for f in files} >= {
+        "dispatcher.py", "relentless.py", "helper_budget.py", "role_launch.py", "signal_watch.py", "login_watch.py",
+        "seat_restart.py", "replay_watch.py"}, files)
+    literal = set()
+    for f in files:
+        literal |= {m for m in re.findall(r'kind="([a-z_]+:[a-z_:]+)"', open(f, encoding="utf-8").read())
+                    if not m.endswith(":")}
+    check("every plain kind= literal is in the census", literal <= found, sorted(literal - found))
+    kinds = found | {t["key"].replace("*", "x") for t in RULES["targets"] if t.get("alarm")} | set(OW.ranges_of(RULES))
     missing = [k for k in sorted(kinds) if IN.route_of(TABLE, k) is None]
     check("every alarm kind is in the routing table", not missing, missing)
-    t2 = dict(TABLE, routes=[x for x in TABLE["routes"] if not fnmatch.fnmatchcase("dead:x", x["match"])])
-    check("a kind dropped from the table is seen missing", [k for k in sorted(kinds) if IN.route_of(t2, k) is None] == ["dead:x"])
+    for kind in ("dead:x", "publish:stuck", "budget:failed", "jam"):
+        t2 = dict(TABLE, routes=[x for x in TABLE["routes"] if not fnmatch.fnmatchcase(kind, x["match"])])
+        check("%s dropped from the table is seen missing" % kind, kind in [k for k in sorted(kinds) if IN.route_of(t2, k) is None])
     bad = [x for x in TABLE["routes"] if x["route"] == "role" and x["reader"] not in TABLE["readers"]]
     check("every role route names a reader the table wakes", not bad, bad)
     check("every doorbell reader is really woken by the schedule",
@@ -382,7 +477,7 @@ def _refuses():
 
 
 for t in (test_silent_reader, test_emergency_all_dead, test_ack_then_killed, test_ring_or_read_is_no_ack, test_one_outage,
-          test_relapse, test_blind_and_signal, test_ledger_unwritable, test_routes):
+          test_relapse, test_blind_and_signal, test_ledger_unwritable, test_census_forms, test_alarms_reach_ledger, test_routes):
     t()
 print("selftest_incident: %s (%d fails)" % ("FAIL" if FAILS else "OK", len(FAILS)))
 sys.exit(1 if FAILS else 0)
