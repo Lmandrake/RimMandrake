@@ -142,7 +142,7 @@ All reversible. No bar loosened, no ruling changed, no goodbye changed.
 
 | Change | Before | After |
 |---|---|---|
-| FOUNDRY ring text, `seats.FOUNDRY.extra` in `dispatcher_schedule.json` | no `extra` key; rings named only the ticket | `extra` present, sending the bridge-lane line in each FOUNDRY ring |
+| FOUNDRY ring text, `seats.FOUNDRY.extra` in `dispatcher_schedule.json` | no `extra` key; rings named only the ticket | `extra` present in the Dispatcher's own clone at 13:52 PST (dispatch 576d18e115), landed in be6bf6c7af33. No ring read back yet |
 | `infrastructure/agents/FOUNDRY.md`, the Bridge lane | one line, "when available" | names the lane as first to staff, with its reading |
 | New reading `process.bridge_h_24h` and `process.bridge_h_7d` in the ops watch process family | no reading existed | 3.63 and 45.94 hours, MEASURED at 13:46 PST |
 | Rule `BRIDGE_LANE_LOW`: flags `process.bridge_h_7d` under 56 hours a week. A flag, no alarm | no rule | not firing yet: the 7 days still hold BENCH's long holds of 25 and 26 October, so expect it to fire within two days unless the lane is staffed |
