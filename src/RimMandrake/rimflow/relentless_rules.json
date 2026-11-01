@@ -8,6 +8,8 @@
   "pool_targets": ["v1"],
   "pool_kinds_exclude": ["goal", "epic"],
   "pool_ids_exclude": ["CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH", "LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING", "ACCOUNTPICK_HOLD_RESTORE_WHEN_HE_LANDS", "RUNNERCLONE_FIX_STRANDED_BY_HISTORY_REWRITE", "OPS_STAFFING_RESTORE_UNDER_BUDGET", "WORLD_REMAKE_FINAL_STEP_1", "BIOME_PAINT_ONCE_AT_THE_END_1", "RA_S00_BASELINE_MEASURE_BEFORE_BOASTING", "RA_S01_WALL_ENFORCE_MARKER_SEES_NOTHING", "RA_TREE_SCHEMA_DESIGN_TWO_PENS"],
+  "_proof_paths": "What a proof-only worker may land after a WEAK, as regexes on repo paths; a path the contract names counts too. Anything else is code and is refused without spending a Marker.",
+  "proof_paths": ["(^|/)selftest_[^/]*$", "(^|/)test_[^/]*$", "(^|/)tests?/", "(^|/)testdata/", "^infrastructure/state/", "^conversations/"],
   "enrol_per_tick": 2,
   "max_queued": 8,
   "max_workers": 10,

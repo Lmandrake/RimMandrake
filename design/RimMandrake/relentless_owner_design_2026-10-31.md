@@ -108,7 +108,7 @@ Nothing touches `/home/mandrake/rm/foundry`. No code under `src/RimMandrake/Util
 ## 6. Failure, then change of approach
 
 Every return names a class: `worker_lost` (unit gone, no receipt), `worker_stale` (silent past `stale_s`, unit up),
-`worker_full` (hit `run_max_s`), `no_receipt` (clean exit, nothing reported), `blind_fail`, `live_broken`, or a slug the
+`worker_full` (hit `run_max_s`), `no_receipt` (clean exit, nothing reported), `blind_fail`, `proof_weak`, `proof_rework`, `proof_unchanged`, `proof_found_defect`, `live_broken`, or a slug the
 worker gave `snag --class`.
 
 - `same_failure_limit` (3) of the same class forces a **change of approach**, never a stop. Order: `pilot` when the item

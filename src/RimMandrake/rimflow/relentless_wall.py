@@ -18,11 +18,26 @@ import time
 from pathlib import Path
 
 HOME = str(Path.home())
+WORDS = ("PASS", "WEAK", "FAIL")
+RULE = (   # both Marker prompts: the unwalled and the walled one must never differ in what the words mean
+    "Decide one thing: did this commit do what the item says, proven by running it? Run the proof yourself. Judge "
+    "the contract against the item's words: a contract that is easier than the item is a FAIL. A proof that "
+    "cannot run is a FAIL. Do not fix anything, do not push, do not touch the ledger.",
+    "One case is not a FAIL: the work holds and only the proof is short. If you think a clause is unproven or the "
+    "contract skipped it, run that clause yourself against the code. Your run shows the clause is done: that is WEAK. "
+    "Your run shows it is not done, or you cannot show it either way: that is FAIL.",
+    "A gap must be in the item's own words: the mutant breaks something a clause of the item asks for. A mutant of an "
+    "inner detail, or of an edge the item never named, is no gap, and every test has those.",
+    "PASS: every clause of the item is done, you ran it, and you found no gap in the proof that you could show. "
+    "WEAK: every clause is done, shown by your own runs, and you can show a gap: a mutant that stays green, or a "
+    "clause the proof never reaches. A weak proof is not a pass: the item stays open and the next worker strengthens "
+    "the proof without touching the code. FAIL: a clause is not done, or the proof is red or cannot run. A gap you "
+    "only suspect and did not show is no gap. Look for a clause that is missing before you look for a thin test.")
 VERDICT_SCRIPT = '''#!/usr/bin/env python3
 import json, os, sys, time
 HERE = os.path.dirname(os.path.abspath(__file__))
-if len(sys.argv) != 3 or sys.argv[1].upper() not in ("PASS", "FAIL"):
-    sys.exit('usage: verdict PASS|FAIL "what you ran and saw"')
+if len(sys.argv) != 3 or sys.argv[1].upper() not in ("PASS", "WEAK", "FAIL"):
+    sys.exit('usage: verdict PASS|WEAK|FAIL "what you ran and saw"')
 with open(HERE + "/verdict.tmp", "w", encoding="utf-8") as f:
     json.dump({"word": sys.argv[1].upper(), "reasons": sys.argv[2], "at": time.time()}, f)
 os.replace(HERE + "/verdict.tmp", HERE + "/verdict.json")
@@ -93,11 +108,11 @@ def marker_prompt(st, text, box):
     return "\n".join([
         "You are a blind checker. You did not do this work and you have no record of how it went. Your cwd is a clean "
         "export of commit %s, with no git history." % c["sha"],
-        "Decide one thing: did this commit do what the item says, proven by running it? Run the proof yourself. Judge "
-        "the contract against the item's words: a contract that is easier than the item is a FAIL. A proof that "
-        "cannot run is a FAIL. Do not fix anything, do not push, do not touch the ledger.",
+        *RULE,
         "Then run exactly one of:",
         "  python3 %s/verdict PASS \"what you ran and saw\"" % box,
+        "  python3 %s/verdict WEAK \"the runs that show the work holds, then each gap and the mutant or probe that "
+        "shows it, so the next worker can pin it\"" % box,
         "  python3 %s/verdict FAIL \"what is wrong, so the next worker can fix it\"" % box,
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
@@ -109,7 +124,7 @@ def read_verdict(box):
         v = json.loads(Path(box, "verdict.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
-    if not isinstance(v, dict) or v.get("word") not in ("PASS", "FAIL"):
+    if not isinstance(v, dict) or v.get("word") not in WORDS:
         return None
     return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "at": float(v.get("at") or time.time())}
 

@@ -234,8 +234,8 @@ the real worker launch path; §13 step 1 proves it there. `RELENTLESS_ROOT` leav
 a narrow bound path holding only its nonce.
 
 **The Marker:** packet check first; **then, before reading `how_to_check` or the diff, writes its own check plan from the tree alone**, so Build's route cannot anchor it; reruns everything itself in its tree; runs hold-outs; judges the contract against the item
-(a too-easy contract is a FAIL); hunts `DEFECTS` classes; must state per clause what it ran and saw. Verdict: PASS, FAIL,
-REJECT-PACKET, or UNJUDGEABLE, which never collapses to a pass. It never proposes a fix's design. It uses a purpose-written
+(a too-easy contract is a FAIL); hunts `DEFECTS` classes; must state per clause what it ran and saw. Verdict: PASS, WEAK, FAIL,
+REJECT-PACKET, or UNJUDGEABLE, which never collapses to a pass. WEAK (MARKER_VERDICT_FIX_WORK_HOLDS_PROOF_WEAK): every clause is done by the Marker's own runs and it can show a gap in the proof. It is not a pass: the item stays open with a blind-check note, and the next round is a proof-only worker that strengthens the proof and leaves good code alone. A proof round that changes no proof path, or nothing, is counted as such before any Marker is spent; three such ends hold the item. A proof round that finds a real defect goes back to the normal failure path. It never proposes a fix's design. It uses a purpose-written
 agent: today `checker_agent` is `rm-judge`, the art judge.
 
 Leniency is the known failure. Logged Marker/human disagreements feed the Arbiter's tuning, with seeded misses as the regression set.

@@ -404,7 +404,7 @@ def fingerprint():
     rules = json.loads((HERE / "relentless_rules.json").read_text(encoding="utf-8"))
     st = {"item": "X", "candidate": {"sha": "S", "evidence": "E"}, "contract": {}}
     text = "|".join([(REPO / ".claude/agents/rm-judge.md").read_text(encoding="utf-8"), rules["model"],
-                     rules["checker_agent"], R.checker_prompt(st, "T", "N")])
+                     rules["checker_agent"], R.checker_prompt(st, "T", "N"), W.marker_prompt(st, "T", "B")])
     return hashlib.sha256(text.encode()).hexdigest()
 
 
@@ -610,11 +610,12 @@ def tool_calls(node):
 
 
 def tool_inputs(session, box=None):
-    """Every tool call's input in a run's transcripts, subagents too; None when nothing could be read."""
-    roots = [Path(box, "projects")] if box else [Path.home() / ".claude/projects"] + [
+    """Every tool call's input in a run's transcripts, subagents too; None when nothing could be read.
+    A box holds one run, so every transcript in it is that run's, and no session id is needed to find them."""
+    roots = [Path.home() / ".claude/projects"] + [
         Path(os.environ[v], "projects") for v in ("CLAUDE_CONFIG_DIR",) if os.environ.get(v)]
-    files = []
-    for r in roots if session else []:
+    files = list(Path(box, "projects").rglob("*.jsonl")) if box else []
+    for r in roots if session and not box else []:
         files += list(r.glob("*/%s.jsonl" % session)) + list(r.glob("*/%s/**/*.jsonl" % session))
     out, parsed = [], 0
     for f in files:
@@ -697,8 +698,8 @@ def contamination(inputs, k, own=None, box=None):
     return sorted(got)
 
 
-def results_dir(wall=False):
-    return PRIVATE / ("results_wall" if wall else "results")
+def results_dir(wall=False, arm=None):
+    return PRIVATE / ("results_" + arm if arm else "results_wall" if wall else "results")
 
 
 def journal(item, row):
@@ -715,10 +716,20 @@ def attempts_used(item):
     return sum(json.loads(x).get("state") == "started" for x in p.read_text(encoding="utf-8").splitlines())
 
 
-def run_case(k, sources, wall=False):
+def pin_arm(arm, now):
+    """An arm is one Marker measured apart: its own results, its own attempts, and no second Marker in the same dir."""
+    d = results_dir(True, arm)
+    d.mkdir(parents=True, exist_ok=True)
+    p = d / "arm.json"
+    if p.exists() and json.loads(p.read_text(encoding="utf-8"))["fingerprint"] != now:
+        raise SystemExit("arm %s was run by another Marker: a new prompt is a new arm" % arm)
+    write_json(p, {"fingerprint": now})
+
+
+def run_case(k, sources, wall=False, arm=None):
     R, rules, store, fx = store_rl()
-    res_path = results_dir(wall) / (k["item"] + ".json")
-    tag = k["item"] + (".wall" if wall else "")
+    res_path = results_dir(wall, arm) / (k["item"] + ".json")
+    tag = k["item"] + ("." + arm if arm else ".wall" if wall else "")
     res = None
     while attempts_used(tag) <= LOST_RETRIES:
         attempt = attempts_used(tag) + 1
@@ -787,7 +798,10 @@ def cmd_run(a):
     if live.strip():
         raise SystemExit("a seed check is still running:\n" + live)
     now = fingerprint()
-    if any(k["fingerprint"] != now for k in keys):
+    if a.arm:
+        a.wall = True       # the wall is the condition every arm is compared under
+        pin_arm(a.arm, now)
+    elif any(k["fingerprint"] != now for k in keys):
         raise SystemExit("the Marker changed since this set was picked: a set is one Marker")
     p = PRIVATE / "second_reads.json"
     reads = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
@@ -799,9 +813,9 @@ def cmd_run(a):
             continue
         if a.only and k["item"] not in a.only and k["cls"] not in a.only:
             continue
-        res = results_dir(a.wall) / (k["item"] + ".json")
+        res = results_dir(a.wall, a.arm) / (k["item"] + ".json")
         got = res.exists() and json.loads(res.read_text(encoding="utf-8")).get("verdict")
-        if not got and attempts_used(k["item"] + (".wall" if a.wall else "")) <= LOST_RETRIES:
+        if not got and attempts_used(k["item"] + ("." + a.arm if a.arm else ".wall" if a.wall else "")) <= LOST_RETRIES:
             todo.append(k)
     todo.sort(key=lambda k: h("order|" + k["item"]))        # controls and seeds interleaved
     if a.limit:
@@ -812,7 +826,7 @@ def cmd_run(a):
 
     def one(k):
         try:
-            r = run_case(k, sources, a.wall)
+            r = run_case(k, sources, a.wall, a.arm)
             print(r["item"], r["verdict"], round(r["secs"]), flush=True)
         except Exception as e:          # noqa: BLE001  the set goes on; a case with no verdict is reported, never hidden
             print("ERROR", k["item"], repr(e)[-300:], flush=True)
@@ -839,6 +853,7 @@ def main(argv=None):
     c.add_argument("--limit", type=int, default=0)
     c.add_argument("--only", nargs="*")
     c.add_argument("--wall", action="store_true", help="behind the Marker's wall; results apart")
+    c.add_argument("--arm", help="a changed Marker measured against the set's old one: behind the wall, in results_<arm>")
     a = p.parse_args(argv)
     return {"census": cmd_census, "split": cmd_split, "pick": cmd_pick, "read": cmd_read, "run": cmd_run}[a.cmd](a)
 

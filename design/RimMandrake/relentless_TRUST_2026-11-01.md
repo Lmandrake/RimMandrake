@@ -39,6 +39,28 @@ Population: {"capable": {"all_red": 39, "hunk_green": 28, "hunk_red": 36}, "drop
 
 Not the number. Six runs were dropped because the Marker read the books or a seat clone, and each was checked by hand as a real read. Two of them read a seat clone, which is a real future. Counting them anyway gives `hunk_green` 6 of 8, `escaped` 2 of 3, control false fail 5 of 11, pooled seeds 22 of 25. Both seed PASSes among the six are in these runs, so the drop raised the seed rate from 88% to 95%.
 
+## Third verdict, 2026-11-01
+
+Item: MARKER_VERDICT_FIX_WORK_HOLDS_PROOF_WEAK. Set E1, 22 cases (11 controls, 8 `hunk_green`, 3 `escaped`), one run each, behind the wall. Old is today's prompt on the same cases; new is rm-judge fingerprint `4d63df5d864e`. Per case: `D:\ClaudeWork\rimmandrake\relentless_agent\verdict3\compare.txt`.
+
+**In short:** the third word fixed the sorting it was built for and false fails fell from 4 of 9 to 1 of 9 (MEASURED). But PASS on controls fell from 5 of 11 to 1 of 11, and three faulted seeds were called "work holds". The false fails mostly became WEAK, so most good items now cost a proof round.
+
+| Measure, all 22 run | Old prompt | New prompt |
+|---|---|---|
+| Control false fail, second-read defects out | 4 of 9 (19-73%) | 1 of 9 (2-44%) |
+| Control PASS | 5 of 11 (21-72%) | 1 of 11 (2-38%) |
+| Control WEAK | not a word | 7 of 11 (35-85%) |
+| The 4 second-read controls sorted right | 2 of 4 | 4 of 4 (51-100%) |
+| Seeds caught (FAIL) | 10 of 11 (62-98%) | 8 of 11 (43-90%) |
+| Seeds held open (WEAK) | not a word | 3 of 11 (10-57%) |
+| Seeds passed | 1 of 11 | 0 of 11 |
+
+- **Tuned on:** the 17-case tune set only. One sentence was added there (a gap must be in the item's own words), then the prompt was frozen before E1 ran.
+- **Held out:** the 7 control cases outside the second read and all 11 E1 seeds. The 4 second-read controls inspired the third word, so they are not held out.
+- **Tuning did not hold:** control WEAK was 5 of 12 on tune and 7 of 11 on E1. E1 is now spent for this prompt; any further change needs fresh cases.
+- **Old-arm scan:** 12 of 22 old runs read `unscanned`, a seed-harness fault fixed for the new arm. The table counts them, since the wall stood in every run. The new arm scanned all 22; one seed run, SD_6F24ED62DE45, named a seat clone, and without it seeds are 7 FAIL and 3 WEAK of 10.
+- **Unmeasured:** whether a proof-only round exposes a seeded fault under WEAK, and whether the 7 control WEAKs show gaps worth paying for. SD_D9C2A8207229, the 1 remaining false fail, has had no second read.
+
 ## What this does not show
 
 - **Discrimination.** `all_red` and `hunk_red` 100% means the Marker reran a proof that was red. Only `hunk_green` and `escaped` ask for judgment, and they have 7 counted cases.

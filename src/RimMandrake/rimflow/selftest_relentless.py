@@ -428,6 +428,110 @@ def full_pass(x, i, verdict="PASS"):
     x.tick()
 
 
+def weak_round(x, i, sha, word="WEAK"):
+    """One proof-only worker: finish at sha, then the check speaks if the gate let it through."""
+    x.run_one(i)
+    st = x.st(i)
+    R.finish(x.s, i, st["gen"], sha, "evidence")
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st(i)
+    if st["status"] == "checking":
+        R.verdict(x.s, i, st["check"]["nonce"], word, "holds; mutant M stays green")
+        x.w.up[st["check"]["run"]["unit"]] = False
+        x.tick()
+        x.tick()
+
+
+def t_proof_weak():
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    st = x.st("I0")
+    ok(x.w.closes == [] and st["status"] != "done", "WEAK does not close: a weak proof is not a pass")
+    ok(st["failures"].get("proof_weak") == 1 and st["proof_only"]["sha"] == "sha1", "WEAK returns the item, proof only, at that sha")
+    ok(st["approach"] == "build" and st.get("failures").get("blind_fail") is None, "WEAK is no failed approach and no FAIL")
+    ok(any("work holds, proof weak" in n and "sha1" in n for n in x.w.notes), "the ledger says why the item is still open")
+    x.run_one("I0")
+    p = x.w.launches[-1][2]
+    ok("PROOF ONLY" in p and "Leave the code alone" in p and "mutant M" not in p and "ran it" in p, "the next worker is told proof only, with the gaps")
+    gen = x.st("I0")["gen"]
+    R.contract(x.s, "I0", gen, "stronger proof", why="reach the skipped clause")
+    ok(x.st("I0")["contract"]["proof"] == "stronger proof", "a proof-only worker may strengthen the contract")
+    x.done()
+
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    checks = sum(1 for l in x.w.launches if "blind checker" in l[2] and "You did not do this work" in l[2])
+    weak_round(x, "I0", "sha1")
+    st = x.st("I0")
+    ok(st["failures"].get("proof_unchanged") == 1, "a finish on the weak sha is refused")
+    x.w.touched = ["src/foo.py", "src/selftest_foo.py"]
+    weak_round(x, "I0", "sha2")
+    st = x.st("I0")
+    ok(st["failures"].get("proof_rework") == 1 and "src/foo.py" in st["last_fail"]["detail"] and "selftest_foo" not in st["last_fail"]["detail"],
+       "code moved after a WEAK is refused, proof files are not named")
+    now = sum(1 for l in x.w.launches if "blind checker" in l[2] and "You did not do this work" in l[2])
+    ok(now == checks, "neither refusal spent a Marker")
+    ok(st["status"] == "held" or st["hold"], "three returns on the proof stop, open and said")
+    ok(st["hold"]["kind"] == "proof_weak" and st["approach"] == "build" and x.w.closes == [], "no redesign of good code, however long the proof takes")
+    x.tick()
+    x.tick()
+    ok(x.st("I0")["status"] == "held" and "I0" in x.w.needs, "the stop reaches the ledger")
+    R.unhold(x.s, "I0", "go on")
+    st = x.st("I0")
+    ok(st["proof_only"] and not any(st["failures"].get(k) for k in R.PROOF_ENDS), "unhold buys the proof fresh tries, still proof only")
+    x.done()
+
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    x.w.touched = ["src/RimMandrake/rimflow/selftest_foo.py", "infrastructure/state/items/I0.md"]
+    weak_round(x, "I0", "sha2", "PASS")
+    ok(x.w.closes and x.w.closes[-1][1] == "sha2", "a stronger proof read PASS by a fresh Marker closes at the new sha")
+    x.done()
+
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    x.w.touched = ["src/selftest_foo.py"]
+    weak_round(x, "I0", "sha2", "FAIL")
+    st = x.st("I0")
+    ok(st["proof_only"] is None and st["failures"].get("blind_fail") == 1, "a FAIL on the stronger proof frees the code")
+    x.done()
+
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], R.PROOF_DEFECT, "new test red on the code", x.r)
+    x.w.up[st["run"]["unit"]] = False
+    ok(x.st("I0")["proof_only"] is None, "a proof that goes red on the held code frees the code")
+    x.done()
+
+    x = Rig(n=1, share=1.0)
+    full_pass(x, "I0", "WEAK")
+    ok(R.proof_gate(x.w, x.r, x.st("I0"), {"sha": "sha1"})[0] == "proof_unchanged", "the gate reads the sha it was held at")
+    ok(R.proof_gate(x.w, x.r, dict(x.st("I0"), proof_only=None), {"sha": "sha1"}) == (None, None), "no WEAK, no gate")
+    x.w.touched = ["tools/check_it.sh"]
+    st = dict(x.st("I0"), contract={"proof": "bash tools/check_it.sh"})
+    ok(R.proof_gate(x.w, x.r, st, {"sha": "sha2"}) == (None, None), "a path the contract names is proof")
+    x.done()
+    bad = None
+    try:
+        R.verdict(Rig(n=0).s, "I0", "n", "MAYBE", "x")
+    except ValueError as e:
+        bad = str(e)
+    ok(bad and "WEAK" in bad, "a fourth word is refused")
+
+
+def t_marker_prompts_one_rule():
+    st = {"item": "I", "candidate": {"sha": "S", "evidence": "E"}, "contract": {}}
+    a, b = R.checker_prompt(st, "T", "N"), R.relentless_wall.marker_prompt(st, "T", "/b")
+    for p in (a, b):
+        ok("a contract that is easier than the item is a FAIL" in p, "the line stays, word for word")
+        ok(all(line in p for line in R.relentless_wall.RULE), "both prompts carry the whole rule")
+        ok("WEAK" in p and "is not a pass" in p, "WEAK is offered and is no pass")
+
+
 def t_done_path():
     x = Rig(n=1, share=1.0)
     x.close_fail = None
@@ -2399,7 +2503,7 @@ def t_help_lifecycle():
 
 
 def main():
-    for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

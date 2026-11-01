@@ -55,7 +55,7 @@ def compute(results, second_reads=None, keys=None):
         elif r.get("contaminated"):
             tally[cls]["contaminated"] += 1
             out["contaminated"].append(r["item"])
-        elif r.get("verdict") not in ("PASS", "FAIL"):
+        elif r.get("verdict") not in ("PASS", "WEAK", "FAIL"):
             tally[cls]["lost"] += 1
             out["lost"].append(r["item"])
         else:
@@ -63,12 +63,15 @@ def compute(results, second_reads=None, keys=None):
     for cls in CLASSES:
         mine = [r for r in rows if r["cls"] == cls]
         caught = sum(r["verdict"] == "FAIL" for r in mine)
+        weak = sum(r["verdict"] == "WEAK" for r in mine)
         target = sum(on_target(r) for r in mine if r["verdict"] == "FAIL")
-        out["classes"][cls] = dict(tally[cls], caught=caught, n=len(mine), ci=wilson(caught, len(mine)),
+        out["classes"][cls] = dict(tally[cls], caught=caught, weak=weak, n=len(mine), ci=wilson(caught, len(mine)),
                                    on_target=None if cls == "escaped" else target)
     ctl = [r for r in rows if r["cls"] == "control"]
     fails = [r for r in ctl if r["verdict"] == "FAIL"]
+    weak = [r for r in ctl if r["verdict"] == "WEAK"]
     out["control"] = dict(tally["control"], false_fail=len(fails), n=len(ctl), ci=wilson(len(fails), len(ctl)),
+                          weak=len(weak), weak_items=[r["item"] for r in weak],
                           items=[r["item"] for r in fails], reasons={r["item"]: r.get("reasons") for r in fails})
     return out
 
@@ -77,13 +80,14 @@ def live_rates(states, attempts):
     """Live store. Finish: done / ended. First-check fail: on unseeded work, so never a catch rate."""
     done = sum(s["status"] == "done" for s in states)
     ended = done + sum(s["status"] in ("held", "retired") for s in states)
-    first = fails = 0
+    first = fails = weak = 0
     for rows in attempts:
-        checks = [a for a in rows if a.get("end") in ("blind_fail", "done")]
+        checks = [a for a in rows if a.get("end") in ("blind_fail", "proof_weak", "done")]
         if checks:
             first += 1
             fails += checks[0]["end"] == "blind_fail"
-    return {"done": done, "ended": ended, "first_checks": first, "first_fails": fails}
+            weak += checks[0]["end"] == "proof_weak"
+    return {"done": done, "ended": ended, "first_checks": first, "first_fails": fails, "first_weak": weak}
 
 
 def fmt(k, n, ci):
@@ -112,15 +116,18 @@ def render(c, live, label, frame=None):
     for cls in CLASSES:
         x = c["classes"][cls]
         tail = "" if x["on_target"] is None or not x["n"] else ", %d named the file" % x["on_target"]
-        miss = rule3(x["n"] - x["caught"], x["n"], "misses")
-        lines.append("| Marker catch, %s, %s | %s%s%s; %s |" % (cls, label, fmt(x["caught"], x["n"], x["ci"]), miss, tail, tallies(x)))
+        miss = rule3(x["n"] - x["caught"] - x["weak"], x["n"], "misses")
+        weak = ", %d more WEAK (held open, not caught)" % x["weak"] if x["weak"] else ""
+        lines.append("| Marker catch, %s, %s | %s%s%s%s; %s |" % (cls, label, fmt(x["caught"], x["n"], x["ci"]), weak, miss, tail, tallies(x)))
     x = c["control"]
     lines.append("| Control false fail, %s | %s%s; %s |" % (label, fmt(x["false_fail"], x["n"], x["ci"]),
                                                             rule3(x["false_fail"], x["n"], "false fails"), tallies(x)))
+    lines.append("| Control WEAK (kept open on a proof, no code rework asked), %s | %s |" % (label, fmt(x["weak"], x["n"], wilson(x["weak"], x["n"]))))
     lines.append("| Contaminated packets, repeat work, true stops, help value | %s |" % UNMEASURED)
     if live["first_checks"]:
         lines.append("| Live first-check FAIL rate (unseeded work, not a catch rate) | %d of %d |" % (
             live["first_fails"], live["first_checks"]))
+        lines.append("| Live first-check WEAK rate | %d of %d |" % (live.get("first_weak", 0), live["first_checks"]))
     notes = []
     for name in ("lost", "contaminated", "removed_equivalent", "unread"):
         if c[name]:

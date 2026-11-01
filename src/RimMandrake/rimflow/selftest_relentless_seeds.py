@@ -138,6 +138,56 @@ def test_counting():
     check("the report carries the population and the control's reason", "in_set" in text and "control FAIL j: bad" in text, text)
 
 
+def test_counting_weak():
+    res = [r("a", "hunk_green", "FAIL", path="x/g.py", reasons="g.py wrong"), r("b", "hunk_green", "WEAK", path="x/g.py"),
+           r("c", "hunk_green", "PASS", path="x/g.py"), r("d", "control", "WEAK"), r("e", "control", "PASS"),
+           r("f", "control", "FAIL", reasons="bad")]
+    c = T.compute(res, {"a": "observable", "b": "observable", "c": "observable"}, [dict(item=x["item"], cls=x["cls"]) for x in res])
+    g = c["classes"]["hunk_green"]
+    check("WEAK on a seed is no catch and no miss", (g["caught"], g["weak"], g["n"]) == (1, 1, 3), g)
+    x = c["control"]
+    check("WEAK on a control is no false fail, and is counted", (x["false_fail"], x["weak"], x["n"], x["weak_items"]) == (1, 1, 3, ["d"]), x)
+    check("WEAK is no lost run", not c["lost"])
+    text = T.render(c, {"done": 0, "ended": 0, "first_checks": 2, "first_fails": 0, "first_weak": 1}, "x")
+    check("the report prints WEAK apart", "1 more WEAK" in text and "Control WEAK" in text and "first-check WEAK rate | 1 of 2" in text, text)
+    a = [{"end": "proof_weak"}, {"end": "done"}]
+    live = T.live_rates([], [a])
+    check("a first WEAK counts as a first check", (live["first_checks"], live["first_weak"], live["first_fails"]) == (1, 1, 0), live)
+
+
+def test_box_transcripts_need_no_session():
+    d = Path(tempfile.mkdtemp())
+    f = d / "projects" / "-x" / "abc.jsonl"
+    f.parent.mkdir(parents=True)
+    f.write_text(json.dumps({"message": {"content": [{"type": "tool_use", "name": "Bash", "input": {"command": "ls /rm/bench"}}]}}) + "\n", encoding="utf-8")
+    check("a box is scanned with no session id", S.tool_inputs(None, str(d)) == [{"command": "ls /rm/bench"}])
+    check("an empty box stays unscanned", S.tool_inputs(None, tempfile.mkdtemp()) is None)
+
+
+def test_arm_pins_one_marker():
+    d = Path(tempfile.mkdtemp(prefix="arm-"))
+    old = S.PRIVATE
+    S.PRIVATE = d
+    try:
+        S.pin_arm("v1", "fp1")
+        S.pin_arm("v1", "fp1")
+        check("an arm has its own results dir", S.results_dir(True, "v1") == d / "results_v1" and S.results_dir(True) == d / "results_wall")
+        try:
+            S.pin_arm("v1", "fp2")
+            check("a second Marker in one arm is refused", False)
+        except SystemExit as e:
+            check("a second Marker in one arm is refused", "another Marker" in str(e), e)
+    finally:
+        S.PRIVATE = old
+    now = S.fingerprint()
+    orig = S.W.RULE
+    S.W.RULE = orig[:1]
+    try:
+        check("the fingerprint covers the Marker's words", S.fingerprint() != now)
+    finally:
+        S.W.RULE = orig
+
+
 def test_contamination_scan():
     k = {"fix": "abcdef0123456789abcd"}
     C = lambda *cmds, **kw: S.contamination([{"command": c} for c in cmds], k, **kw)    # noqa: E731
@@ -250,6 +300,9 @@ def main():
     test_hunks_and_candidates()
     test_one_path_all_classes()
     test_counting()
+    test_counting_weak()
+    test_arm_pins_one_marker()
+    test_box_transcripts_need_no_session()
     test_contamination_scan()
     test_outcome_reads_lines()
     test_split_and_pick_are_hash_only()

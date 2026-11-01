@@ -55,6 +55,9 @@ LEDGER_DIR = "infrastructure/state/ledger/events/"
 ITEMS_DIR = "infrastructure/state/items/"
 BOOKS_DERIVED = (LEDGER_DIR, ITEMS_DIR)
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
+PROOF_ENDS = ("proof_weak", "proof_rework", "proof_unchanged")     # one road: strengthen the proof, never redesign the code
+PROOF_DEFECT = "proof_found_defect"     # a worker's stronger proof went red on the held code: back to ordinary work
+REJECT_ENDS = ("blind_fail", "proof_weak")
 NOT_AN_APPROACH = ("worker_lost", "checker_lost")       # a dead process or a silent checker tried nothing
 
 
@@ -216,6 +219,24 @@ def fail(store, st, klass, detail, r, now):
     st["total_failures"] += 1
     st["last_fail"] = {"class": klass, "detail": (detail or "")[:2000], "at": now}
     limit = r["same_failure_limit"]
+    if klass == "proof_weak":
+        st["proof_only"] = {"sha": st["candidate"]["sha"], "at": now}
+    elif klass in ("blind_fail", PROOF_DEFECT):     # the work itself is in doubt again: the code may move
+        st["proof_only"] = None
+        for k in PROOF_ENDS:
+            st["failures"].pop(k, None)
+    if klass in PROOF_ENDS:
+        # good code gets no redesign however long its proof takes; enough tries stop and say so, open
+        st["total_at_change"] = (st.get("total_at_change") or 0) + 1
+        n = sum(st["failures"].get(k, 0) for k in PROOF_ENDS)
+        if n >= limit:
+            st["hold"] = {"why": "%d returns and the proof still reads weak, last: %s" % (n, (detail or "")[:400]),
+                          "kind": "proof_weak", "delivered": False, "at": now}
+        store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
+                                   "sha": (st.get("candidate") or {}).get("sha")})
+        store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
+        store.save(st)
+        return
     # rotating slugs cannot dodge this: enough returns with no new sha also change the approach
     unchanged = st["total_failures"] - (st.get("total_at_change") or 0) >= r.get("unchanged_returns_limit", limit * 3)
     if st["failures"][klass] >= limit or unchanged:
@@ -302,8 +323,8 @@ def contract(store, item, gen, proof, live=None, why=None, now=None):
     with store.lock():
         st = store.load(item)
         _fence(st, item, gen)
-        if st["contract"] and st["approach"] != "redesign":
-            raise ValueError("the contract is set; only a redesign attempt may change it")
+        if st["contract"] and st["approach"] != "redesign" and not st.get("proof_only"):
+            raise ValueError("the contract is set; only a redesign attempt or a proof-only worker may change it")
         if st["contract"] and not why:
             raise ValueError("changing the contract needs --why")
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
@@ -444,8 +465,8 @@ def help_answer(store, item, nonce, options, r, now=None):
 def verdict(store, item, nonce, word, reasons, now=None):
     now = time.time() if now is None else now
     word = word.upper()
-    if word not in ("PASS", "FAIL"):
-        raise ValueError("verdict is PASS or FAIL")
+    if word not in relentless_wall.WORDS:
+        raise ValueError("verdict is PASS, WEAK or FAIL")
     with store.lock():
         st = store.load(item)
         chk = (st or {}).get("check") or {}
@@ -455,6 +476,22 @@ def verdict(store, item, nonce, word, reasons, now=None):
         chk["reasons"] = (reasons or "")[:4000]
         chk["verdict_at"] = now
         store.save(st)
+
+
+def proof_gate(fx, r, st, c):
+    """-> (class, why) when a proof-only worker's candidate may not spend a Marker, else (None, None). A candidate
+    that moved no proof changed nothing the check could read; one that moved code is the rework a WEAK forbids."""
+    held = st.get("proof_only")
+    if not held:
+        return None, None
+    if c["sha"] == held["sha"]:
+        return "proof_unchanged", "%s is the sha the proof was found weak at: no proof moved" % c["sha"]
+    text = json.dumps(st["contract"] or {})
+    rework = [p for p in fx.changed(held["sha"], c["sha"], st["item"])
+              if p not in text and not any(re.search(x, p) for x in r["proof_paths"])]
+    if rework:
+        return "proof_rework", "proof-only worker moved code: %s" % ", ".join(rework[:10])
+    return None, None
 
 
 def fence_check(store, item, gen):
@@ -509,6 +546,9 @@ def unhold(store, item, said, now=None):
         st = store.load(item)
         if not st or st["status"] != "held":
             raise ValueError("%s is not held" % item)
+        if st["hold"].get("kind") == "proof_weak":
+            for k in PROOF_ENDS:
+                st["failures"].pop(k, None)
         st["hold"] = None
         st["status"] = "queued"
         st["returned_at"] = now
@@ -1268,10 +1308,19 @@ def worker_prompt(st, text, learned, r):
             "none); its options land in the state file (`relentless.py show <item>`) and in the next worker's brief.",
             "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, no subagents, "
             "bulk output to files. FOUNDRY's tree and src/RimMandrake/Utils/arena/ are not yours to touch."]
-    if st["approach"] == "redesign":
+    if st.get("proof_only"):
+        head.append("PROOF ONLY: a blind checker ran the code at %s and it holds, but the proof would stay green if it "
+                    "broke. The gaps are in the last ending below. Leave the code alone. Strengthen the proof until each "
+                    "gap goes red when its clause is broken: show that with the mutant or probe the checker named, then "
+                    "restore the code. Land proof files only: the supervisor refuses anything else, and refuses a finish "
+                    "with no new commit. Never loosen or remove an existing check. The contract may change with --why, "
+                    "only to reach more of the item. If the stronger proof is red on the code as it stands, the code "
+                    "does not hold: land the proof, then `snag --class %s` with what went red, and the next worker may "
+                    "fix the code." % (st["proof_only"]["sha"], PROOF_DEFECT))
+    elif st["approach"] == "redesign":
         head.append("REDESIGN: the same failure came back too often. Read the record below, write a DIFFERENT approach "
                     "with `learn` before you edit anything, and change the contract with --why if it was the problem.")
-    if st["approach"] == "pilot":
+    if st["approach"] == "pilot" and not st.get("proof_only"):
         head.append("PILOT: this needs eyes on the running thing. Run `python3 src/RimMandrake/rimflow/cli.py pilot %s`, "
                     "follow that brief yourself, and report what you saw with `learn`." % i)
     if st["contract"]:
@@ -1310,11 +1359,11 @@ def checker_prompt(st, text, nonce):
     return "\n".join([
         "You are a blind checker. You did not do this work and you have no record of how it went. Your cwd is a clean "
         "tree at exactly commit %s." % c["sha"],
-        "Decide one thing: did this commit do what the item says, proven by running it? Run the proof yourself. Judge "
-        "the contract against the item's words: a contract that is easier than the item is a FAIL. A proof that "
-        "cannot run is a FAIL. Do not fix anything, do not push, do not touch the ledger.",
+        *relentless_wall.RULE,
         "Then run exactly one of:",
         "  %s verdict --item %s --nonce %s PASS \"what you ran and saw\"" % (rc, i, nonce),
+        "  %s verdict --item %s --nonce %s WEAK \"the runs that show the work holds, then each gap and the mutant or "
+        "probe that shows it, so the next worker can pin it\"" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\"" % (rc, i, nonce),
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
         "See the change with: git show %s" % c["sha"], "", "--- item ---", text])
@@ -1857,6 +1906,14 @@ def step(store, fx, r, item, now, acts):
                 why = "%s changes nothing" % c["sha"]
             elif (live_line.needs_line(paths) or item.startswith(ALARM_PREFIXES)) and not (st["contract"] or {}).get("live"):
                 why = "%s needs a live line in the contract: %s" % (c["sha"], (live_line.needs_line(paths) or ["alarm item"])[0])
+        klass, proof_why = proof_gate(fx, r, st, c) if not why else (None, None)
+        if klass:
+            with store.lock():
+                st = store.load(item)
+                if st["status"] == "candidate":
+                    fail(store, st, klass, proof_why, r, now)
+            acts.append({"do": klass, "item": item})
+            return
         if why:
             with store.lock():
                 st = store.load(item)
@@ -1966,6 +2023,16 @@ def step(store, fx, r, item, now, acts):
                 fail(store, st, "blind_fail", st["check"].get("reasons"), r, now)
                 acts.append({"do": "blind_fail", "item": item})
                 return
+            if word == "WEAK":
+                reasons = st["check"].get("reasons")
+                fail(store, st, "proof_weak", reasons, r, now)
+                weak = "blind check at %s: work holds, proof weak; item stays open: %s" % (c["sha"], reasons or "")
+                acts.append({"do": "proof_weak", "item": item})
+            else:
+                weak = None
+        if weak:        # the ledger's own write, out of the store's lock
+            fx.ledger_note(item, weak)
+            return
         live = (st["contract"] or {}).get("live")
         broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
         if not broken and not fx.published(c["sha"]):
@@ -2437,11 +2504,11 @@ def clean_window(store, s, fx, r, now):
     ends = []
     for st in store.states():
         got = [a for a in store.attempts(st["item"])
-               if a.get("end") in ("done", "blind_fail") and str(a.get("at", "")) > since]
-        ends += [a["end"] for a in got if a["end"] == "blind_fail"]
+               if a.get("end") in ("done",) + REJECT_ENDS and str(a.get("at", "")) > since]
+        ends += [a["end"] for a in got if a["end"] in REJECT_ENDS]
         # a crash in closing can write the same `done` twice; one sha is one pass
         ends += ["done"] * len({a.get("sha") for a in got if a["end"] == "done"})
-    bad = ends.count("blind_fail")
+    bad = sum(e in REJECT_ENDS for e in ends)
     if s.get("full_s", 0) < cfg["hold_s"]:
         return "held full for %d of %d s" % (s.get("full_s", 0), cfg["hold_s"])
     if len(ends) < cfg["min_verdicts"]:
