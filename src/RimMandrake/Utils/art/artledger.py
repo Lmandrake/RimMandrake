@@ -1092,10 +1092,10 @@ def install(mod: str, rel: str, sha: str, *, ruling_id: str | None = None,
         tag = reason or "agent --why"
         if idx.was_purged(sha):
             raise Refused(f"{sha[:12]} was purged by the owner (since unpurged by his words) — a mechanical install "
-                          f"({tag}) may not bring it back; it needs his ruling (--ruling <keep id> or --owner-said)")
+                          f"({tag}) may not bring it back; it needs his ruling (--ruling <keep id>, --owner-said or --per-ruling)")
         bad = rejection_refusal(idx, rel, sha)
         if bad:
-            raise Refused(bad + " — only his ruling can bring it back (--ruling <keep id> or --owner-said)")
+            raise Refused(bad + " — only his ruling can bring it back (--ruling <keep id>, --owner-said or --per-ruling)")
     else:
         raise Refused("install needs an owner keep ruling id, the owner's typed words (--owner-said), his card pick "
                       "(--by-card), a standing ruling of his (--per-ruling), a mechanical reason "
@@ -1224,8 +1224,10 @@ def held_elsewhere(idx, sha: str, key) -> bool:
     return any(k != tuple(key) and ev.get("sha") == sha for k, ev in idx.live.items())
 
 
-def retire(dest, *, reason: str | None = None, owner_said: str | None = None) -> dict:
+def retire(dest, *, reason: str | None = None, owner_said: str | None = None, per_ruling: str | None = None,
+           why: str | None = None) -> dict:
     """Remove a Textures file through the ledger: archive, delete, `live` with sha None."""
+    owner_said = conductor_authority.words(owner_said, per_ruling, why)
     mod, rel = locate(dest)
     target = src_root().parent / mod / "Textures" / rel
     if not target.is_file():
@@ -1233,7 +1235,8 @@ def retire(dest, *, reason: str | None = None, owner_said: str | None = None) ->
     idx = cached_index()
     old = sha256_file(target)
     if idx.protected(old) and not owner_said and not held_elsewhere(idx, old, (mod, rel)):
-        raise Refused(f"{target} is owner-kept ({old[:12]}) — retiring it needs his words")
+        raise Refused(f"{target} is owner-kept ({old[:12]}) — retiring it needs his words or "
+                      + conductor_authority.ROUTE)
     if not owner_said:
         if not reason:
             raise Refused("retire needs the owner's words or a mechanical reason")
@@ -1558,7 +1561,7 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         # archived under the 19:06 rule; a bare purge must not finish it - his newer ✕ goes through x_delete (card
         # 19:54, delete forever + ban), anything else needs his words
         raise Refused(f"{sha[:12]} is in the art archive (his ✕ moved it out of the game) — a bare purge does not "
-                      f"delete it; a newer ✕ of his deletes + bans it, or `art.py purge {sha[:12]} --owner-said \"…\"`")
+                      f"delete it; a newer ✕ of his deletes + bans it, or `art.py purge {sha[:12]} --owner-said \"…\"` (or --per-ruling)")
     prot = idx.protected(sha)
     w = Writer({e["id"] for e in idx.events})
     if release_keep is True:

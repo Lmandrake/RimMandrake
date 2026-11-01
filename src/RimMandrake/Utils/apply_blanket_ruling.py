@@ -26,6 +26,7 @@ WHY THIS EXISTS
 
     python3 apply_blanket_ruling.py --decisions F.json --sheet S.html \
         --decision replace --said "<his words, verbatim>" [--apply]
+    A Conductor instruction takes the place of --said: conductor_authority.ROUTE.
 """
 import argparse
 import datetime
@@ -33,6 +34,9 @@ import json
 import os
 import re
 import sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import conductor_authority  # noqa: E402
 
 
 def sheet_row_ids(path):
@@ -56,13 +60,18 @@ def main():
     ap.add_argument("--decisions", required=True)
     ap.add_argument("--sheet", required=True)
     ap.add_argument("--decision", required=True, help="the option key, e.g. replace")
-    ap.add_argument("--said", required=True, help="his words (typo fixes and joining his own sentences are fine; meaning unchanged)")
+    ap.add_argument("--said", help="his words (typo fixes and joining his own sentences are fine; meaning unchanged)")
+    ap.add_argument("--per-ruling", help="with --why: a Conductor instruction under conductor_authority.RULING, in place of --said")
+    ap.add_argument("--why", help="the Conductor's text; alone it grants nothing")
     ap.add_argument("--note", default="", help="extra one-line note per row")
     ap.add_argument("--item", default="", help="ledger item that executes this ruling")
     ap.add_argument("--over-sitting", action="store_true",
                     help="allow overwriting rows a real sitting wrote (think first)")
     ap.add_argument("--apply", action="store_true", help="write; otherwise report only")
     a = ap.parse_args()
+    said = conductor_authority.words(a.said, a.per_ruling, a.why)
+    if not said:
+        ap.error("needs --said with his words or a Conductor instruction (" + conductor_authority.ROUTE + ")")
 
     ids = sheet_row_ids(a.sheet)
     doc = json.load(open(a.decisions, encoding="utf-8"))
@@ -89,7 +98,7 @@ def main():
     doc["decisionRowCount"] = len(ids)
     doc["savedBy"] = "owner-blanket-ruling"
     doc["approvedAt"] = now
-    doc["approvedSaid"] = a.said
+    doc["approvedSaid"] = said
     doc["approvalRoute"] = (
         f"BLANKET ruling in conversation, applied uniformly to all {len(ids)} rows. The sheet was "
         "NOT clicked: every row carries the SAME decision and the same note, and no row carries an "

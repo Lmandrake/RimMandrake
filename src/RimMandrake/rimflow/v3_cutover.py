@@ -8,6 +8,7 @@ him; FOUNDRY is the one autonomous builder.
 
     python3 src/RimMandrake/rimflow/v3_cutover.py plan
     python3 src/RimMandrake/rimflow/v3_cutover.py apply --owner-said "<his words>" [--why ..] [--commit]
+    python3 src/RimMandrake/rimflow/v3_cutover.py apply --per-ruling <conductor_authority.RULING> --why "<the Conductor's text>" [--commit]
     python3 src/RimMandrake/rimflow/v3_cutover.py revert (--owner-said "<his words>" | --why "..") [--commit]
 
 Run it at the switch, when no BENCH window is working: classification reads the ledger once, so a lease a
@@ -148,8 +149,9 @@ def plan_text(paths, now):
     return "\n".join(lines) + "\n"
 
 
-def _provenance(owner_said, why):
+def _provenance(owner_said, why, per_ruling=None):
     model.OWNER_SAID = owner_said or ""
+    model.PER_RULING = per_ruling or ""
     model.AGENT_WHY = why or ""
 
 
@@ -185,6 +187,12 @@ def _write_record(paths, rec):
         fh.write("\n")
 
 
+def _conductor_authority():
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils"))
+    import conductor_authority
+    return conductor_authority
+
+
 def _said_ok(said):
     try:
         cli._check_owner_said(said)
@@ -211,12 +219,13 @@ def _merge_record(rec, **kw):
     return rec
 
 
-def apply(paths, owner_said, why, now, commit=False):
+def apply(paths, owner_said, why, now, commit=False, per_ruling=None):
     """Every precondition first; then the record is written as a JOURNAL before any other write (state
     "applying", the lane seat and docs state it found), extended with each id as it moves, and set "applied"
     last — so a failure part-way leaves revert everything it needs, and a re-run resumes from it."""
-    if not owner_said or not _said_ok(owner_said):
-        print("refused: apply needs --owner-said quoting his INSTRUCTION (not a question)", file=sys.stderr)
+    if not _conductor_authority().carried(per_ruling, why) and (not owner_said or not _said_ok(owner_said)):
+        print("refused: apply needs --owner-said quoting his INSTRUCTION (not a question), or "
+              + _conductor_authority().ROUTE, file=sys.stderr)
         return 2
     ok, pst = patch_status(paths)
     if not ok:
@@ -235,7 +244,7 @@ def apply(paths, owner_said, why, now, commit=False):
         print("nothing to do: cutover already applied; move 0, keep %d, defer %d" % (len(r["keep"]), len(r["defer"])))
         return _commit(paths, "OWNER", "v3 cutover: record (%s)" % CUTOVER_ITEM) if commit else 0
     rec = _merge_record(
-        prior if resuming else {}, state="applying", item=CUTOVER_ITEM, ownerSaid=owner_said, why=why or "",
+        prior if resuming else {}, state="applying", item=CUTOVER_ITEM, ownerSaid=owner_said, perRuling=per_ruling or "", why=why or "",
         moved=list(prior.get("moved", [])) if resuming else [],
         lane_seat_before=prior.get("lane_seat_before", lane_now) if resuming else lane_now,
         docs_patched_by_cutover=bool(prior.get("docs_patched_by_cutover")) if resuming else False,
@@ -243,7 +252,7 @@ def apply(paths, owner_said, why, now, commit=False):
         kept=[i.id for i, _ in r["keep"]], deferred=[i.id for i, _ in r["defer"]])
     _write_record(paths, rec)
     moved = []
-    _provenance(owner_said, why)
+    _provenance(owner_said, why, per_ruling)
     try:
         for iid in ids:
             _reassign_all([iid], TO_SEAT, "OWNER", "v3 cutover: BENCH lane -> FOUNDRY", w)
@@ -269,7 +278,7 @@ def apply(paths, owner_said, why, now, commit=False):
     rec.update(state="applied", applied_at=model.now(),
                runs=rec.get("runs", []) + [{"at": model.now(), "moved": len(moved)}])
     _write_record(paths, rec)
-    _provenance(owner_said, why)
+    _provenance(owner_said, why, per_ruling)
     try:
         _note("OWNER", "v3 cutover applied: moved %d BENCH items to FOUNDRY (keep %d, defer %d); lane seat "
               "FOUNDRY; docs patch %s. Record: infrastructure/state/v3_cutover/record.json" % (
@@ -289,7 +298,7 @@ def apply(paths, owner_said, why, now, commit=False):
     return 0
 
 
-def revert(paths, owner_said, why, now, commit=False):
+def revert(paths, owner_said, why, now, commit=False, per_ruling=None):
     """Undo from the record. Preflight (record, words, docs reversible) before any write; items still under a
     live lease stay listed as `revert_pending` (state "reverting") so a later revert finishes them."""
     rec = read_record(paths)
@@ -320,7 +329,7 @@ def revert(paths, owner_said, why, now, commit=False):
     rec.update(state="reverting", revert_pending=sorted(set(back) | set(skipped)))
     _write_record(paths, rec)
     done = []
-    _provenance(owner_said, why)
+    _provenance(owner_said, why, per_ruling)
     try:
         for iid in back:
             _reassign_all([iid], FROM_SEAT, seat, "v3 cutover reverted", w)
@@ -358,6 +367,7 @@ def main(argv=None):
     for name in ("apply", "revert"):
         s = sub.add_parser(name)
         s.add_argument("--owner-said")
+        s.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
         s.add_argument("--why")
         s.add_argument("--commit", action="store_true")
     a = ap.parse_args(argv)
@@ -371,8 +381,8 @@ def main(argv=None):
         sys.stdout.write(txt if not a.out else txt.split("\n== KEEP")[0] + "\n(full list: %s)\n" % a.out)
         return 0
     if a.cmd == "apply":
-        return apply(paths, a.owner_said, a.why, now, commit=a.commit)
-    return revert(paths, a.owner_said, a.why, now, commit=a.commit)
+        return apply(paths, a.owner_said, a.why, now, commit=a.commit, per_ruling=a.per_ruling)
+    return revert(paths, a.owner_said, a.why, now, commit=a.commit, per_ruling=a.per_ruling)
 
 
 if __name__ == "__main__":

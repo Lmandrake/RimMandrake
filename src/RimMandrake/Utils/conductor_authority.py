@@ -15,3 +15,12 @@ ROUTE = "--per-ruling %s --why \"<the Conductor's instruction>\"" % RULING
 def carried(per_ruling, why):
     """True when the caller cites this ruling and carries the Conductor's text."""
     return (per_ruling or "").strip() == RULING and bool((why or "").strip())
+
+
+def words(owner_said, per_ruling, why):
+    """The authority text a his-words gate records: his words, else the ruling and the Conductor's text, tagged so a
+    reader never takes it for his own sentence; None when the caller has neither."""
+    said = (owner_said or "").strip()
+    if said:
+        return said
+    return "PER RULING %s: %s" % (RULING, why.strip()) if carried(per_ruling, why) else None

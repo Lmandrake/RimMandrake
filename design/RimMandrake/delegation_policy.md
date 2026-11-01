@@ -51,8 +51,9 @@ Each line is reserved by a ruling of his that says so; nothing else is.
 This list binds who may decide alone. The Conductor holds it for him: a seat or helper that receives a Conductor
 instruction acts on it and does not re-open this list against it (owner, 2026-10-30, ledger
 `CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`: *"No more "I need the user to confirm."*). Tool gates that take his words
-take that ruling too (`src/RimMandrake/Utils/conductor_authority.py`), except the north-star gates of line 1, which
-record his own words against a hash.
+take that ruling too (`src/RimMandrake/Utils/conductor_authority.py`), the north-star gates of line 1 included: the
+hash then records the ruling and the Conductor's text, tagged, never as his sentence. An agent acting on its own still
+may not validate.
 
 1. **North-star bars.** The `## north star` sections are hash-bound and his: agents write and approve the
    functional scripts, *"the owner's hash-bound `## north star` bars stay his"* (CHARTER, How we debug;

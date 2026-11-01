@@ -144,11 +144,17 @@ def main(argv=None):
                             "print the lines that would bind and change nothing")
     p_val.add_argument("--by-card", help="a decision he took by question card: "
                        "'<question -> option>'. Stands in for --owner-said")
+    p_val.add_argument("--per-ruling", help="with --why: a Conductor instruction "
+                       "(conductor_authority.RULING). Stands in for --owner-said")
+    p_val.add_argument("--why", help="the Conductor's text; alone it grants nothing")
 
     p_rev = sub.add_parser("review", help="record that the owner reviewed a "
                                           "mod's sheet -- once, before its first GREEN")
     p_rev.add_argument("mod")
-    p_rev.add_argument("--owner-said", required=True)
+    p_rev.add_argument("--owner-said")
+    p_rev.add_argument("--per-ruling", help="with --why: a Conductor instruction "
+                       "(conductor_authority.RULING). Stands in for --owner-said")
+    p_rev.add_argument("--why", help="the Conductor's text; alone it grants nothing")
     p_rev.add_argument("--run-id", help="defaults to the mod's last recorded run")
 
     p_rec = sub.add_parser("record", help="record a functional script's live result "
@@ -306,11 +312,19 @@ def main(argv=None):
         return 0
 
     if args.cmd == "validate":
-        return _validate(args.mod, args.owner_said or ("BY CARD: " + args.by_card if args.by_card else None))
+        import conductor_authority as CA
+        return _validate(args.mod, ("BY CARD: " + args.by_card if args.by_card and not args.owner_said else None)
+                         or CA.words(args.owner_said, args.per_ruling, args.why))
 
     if args.cmd == "review":
+        import conductor_authority as CA
         import status
-        entry = status.record_owner_review(args.mod, args.owner_said,
+        said = CA.words(args.owner_said, args.per_ruling, args.why)
+        if not said:
+            print("refused: review needs --owner-said with his words or a Conductor instruction (%s)" % CA.ROUTE,
+                  file=sys.stderr)
+            return 2
+        entry = status.record_owner_review(args.mod, said,
                                           run_id=args.run_id)
         print("%s: owner review recorded against run %s -> %s"
               % (args.mod, entry["owner_review"]["run_id"], entry["status"]))
@@ -497,7 +511,8 @@ def _validate(mod, owner_said):
         print("\n%d must-show + %d cannot-show lines would bind %s."
               % (len(ns["must_show"]), len(ns["cannot_show"]), mod))
         print("Nothing written. Read these to him; then re-run with "
-              "--owner-said \"<his verbatim words>\".")
+              "--owner-said \"<his verbatim words>\", or the Conductor's "
+              "instruction with --per-ruling.")
         return 1
 
     written = northstar.record_validation(walk, owner_said)

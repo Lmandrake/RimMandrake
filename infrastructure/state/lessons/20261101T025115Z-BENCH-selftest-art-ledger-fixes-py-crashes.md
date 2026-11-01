@@ -1,0 +1,1 @@
+selftest_art_ledger_fixes.py crashes (git add BUILD.jsonl pathspec) when AGENT_SEAT/RIMFLOW_SEAT are set, as in a relentless worker: the seat env wins over its ART_SEAT=BUILD. Run it with env -u AGENT_SEAT -u RIMFLOW_SEAT -u RM_ROLE_UNIT; it passes.

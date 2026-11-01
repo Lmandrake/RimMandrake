@@ -174,7 +174,7 @@ def main():
     out.write_text(json.dumps(log, indent=1))
     print("log:", out)
     if log["needs_his_words"]:
-        print(f"{len(log['needs_his_words'])} destination(s) need his words (owner keep / rejection / purge): see the log")
+        print(f"{len(log['needs_his_words'])} destination(s) need his words or a Conductor instruction (owner keep / rejection / purge): see the log")
     if a.apply and (log["installed"] or log["repointed"]):
         print("next: commit the touched Textures/ + Defs/ paths by name, and the art ledger shard; deploy as usual")
 

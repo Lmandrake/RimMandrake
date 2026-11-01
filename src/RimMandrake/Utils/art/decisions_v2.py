@@ -52,6 +52,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import sheet_slots as SL  # noqa: E402
+sys.path.insert(0, str(HERE.parent))
+import conductor_authority as CA  # noqa: E402
 
 SCHEMA = 2
 STATES = ("pick", "accept", "redraw", "not_drawn")
@@ -190,7 +192,7 @@ def mark_returned(path: Path, said: str, apply: bool = False, at: str | None = N
     """Stamp his return of the sheet: every slot he left alone keeps its in-game art. `said` must be his words."""
     said = (said or "").strip()
     if len(said) < 8:
-        return {"ok": False, "error": "--returned needs his words (the sentence where he said the sheet is done)"}
+        return {"ok": False, "error": "--returned needs his words (the sentence where he said the sheet is done) or " + CA.ROUTE}
     raw = path.read_bytes()
     doc = json.loads(raw.decode("utf-8"))
     if not (doc.get("savedBy") and int(doc.get("writeCount") or 0) > 0):
@@ -217,7 +219,7 @@ def accept_looks(path: Path, said: str, prefer: dict | None = None, apply: bool 
     offered one lane only) is dropped and kept under `assignSuperseded`. `said` must be his words."""
     said = (said or "").strip()
     if len(said) < 8:
-        return {"ok": False, "error": "--accept-looks needs his words (the sentence where he accepted the art)"}
+        return {"ok": False, "error": "--accept-looks needs his words (the sentence where he accepted the art) or " + CA.ROUTE}
     raw = path.read_bytes()
     doc = json.loads(raw.decode("utf-8"))
     if snapshot is None:
@@ -610,28 +612,30 @@ def main(argv=None) -> int:
     ap.add_argument("files", nargs="*")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--fold-old-ticks", action="store_true")
-    ap.add_argument("--returned", metavar="HIS_WORDS",
+    ap.add_argument("--returned", metavar="HIS_WORDS", nargs="?", const="",
                     help="stamp the owner's return of each file's sheet (his words); unchanged slots keep their in-game art")
-    ap.add_argument("--accept-looks", metavar="HIS_WORDS",
+    ap.add_argument("--accept-looks", metavar="HIS_WORDS", nargs="?", const="",
                     help="pick the render in EVERY look lane of every row (all looks together); his words")
+    ap.add_argument("--per-ruling", help="with --why, in place of HIS_WORDS: a Conductor instruction (conductor_authority.RULING)")
+    ap.add_argument("--why", help="the Conductor's text; alone it grants nothing")
     ap.add_argument("--prefer", nargs="*", default=[], metavar="ROW=LETTER",
                     help="with --accept-looks: the render to take in a lane that holds several")
     a = ap.parse_args(argv)
-    if a.accept_looks:
+    if a.accept_looks is not None:
         pref: dict = {}
         for x in a.prefer:
             r_, _, l_ = x.partition("=")
             pref.setdefault(r_, []).append(l_)
         rc = 0
         for f in a.files:
-            r = accept_looks(Path(f), a.accept_looks, pref, apply=a.apply)
+            r = accept_looks(Path(f), CA.words(a.accept_looks, a.per_ruling, a.why), pref, apply=a.apply)
             print(json.dumps(r, indent=1))
             rc |= 0 if r["ok"] else 1
         return rc
-    if a.returned:
+    if a.returned is not None:
         rc = 0
         for f in a.files:
-            r = mark_returned(Path(f), a.returned, apply=a.apply)
+            r = mark_returned(Path(f), CA.words(a.returned, a.per_ruling, a.why), apply=a.apply)
             print(json.dumps(r))
             rc |= 0 if r["ok"] else 1
         return rc

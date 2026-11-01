@@ -120,7 +120,7 @@ def main(argv: list[str]) -> int:
         idx = A.cached_index()
         if idx.protected(sha) and not A.held_elsewhere(idx, sha, (mod, rel)):
             bad += 1
-            print("KEPT    %s  %s  owner-kept; retiring it needs his words" % (sha[:12], p))
+            print("KEPT    %s  %s  owner-kept; retiring it needs his words or a Conductor instruction" % (sha[:12], p))
             continue
         if not a.apply:
             print("WOULD   %s  %s" % (sha[:12], p))

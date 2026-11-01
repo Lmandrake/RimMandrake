@@ -28,6 +28,8 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import policy as P  # noqa: E402
+sys.path.insert(0, str(HERE.parent))
+import conductor_authority as CA  # noqa: E402
 
 STATE = P.ROOT / "infrastructure/state/art_eval"
 SOURCES = ("owner_override", "live_walk", "owner_key", "agent_review")
@@ -67,7 +69,7 @@ def add(subject, template, source, missed, decision, owner_said=None, run=None, 
     if source not in SOURCES:
         raise SystemExit(f"--source must be one of {SOURCES}")
     if source in ("owner_override", "live_walk") and not owner_said:
-        raise SystemExit("an owner override or live-walk finding carries his words (--owner-said)")
+        raise SystemExit("an owner override or live-walk finding carries his words (--owner-said) or " + CA.ROUTE)
     n = 1 + max([int(i.split("-")[1]) for i in entries(path)] or [0])
     cid = f"CL-{n:03d}"
     _append({"event": "add", "id": cid, "at": _now(), "subject": subject, "template": template, "source": source,
@@ -100,13 +102,14 @@ def main(argv=None):
     a.add_argument("--subject", required=True); a.add_argument("--template", required=True, choices=P.TEMPLATES)
     a.add_argument("--source", required=True, choices=SOURCES); a.add_argument("--missed", required=True)
     a.add_argument("--decision", required=True); a.add_argument("--owner-said"); a.add_argument("--run")
+    a.add_argument("--per-ruling"); a.add_argument("--why")
     f = sub.add_parser("fix")
     f.add_argument("id"); f.add_argument("--change", required=True); f.add_argument("--files", nargs="+", required=True)
     f.add_argument("--regression"); f.add_argument("--expect", choices=("ACCEPT", "NOT_ACCEPT")); f.add_argument("--why")
     l = sub.add_parser("list"); l.add_argument("--open", action="store_true")
     o = ap.parse_args(argv)
     if o.cmd == "add":
-        print(add(o.subject, o.template, o.source, o.missed, o.decision, o.owner_said, o.run))
+        print(add(o.subject, o.template, o.source, o.missed, o.decision, CA.words(o.owner_said, o.per_ruling, o.why), o.run))
     elif o.cmd == "fix":
         fix(o.id, o.change, o.files, o.regression, o.expect, o.why)
         print(f"{o.id} fixed")

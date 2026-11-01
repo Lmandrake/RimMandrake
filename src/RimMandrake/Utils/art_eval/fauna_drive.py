@@ -38,6 +38,8 @@ import runner as R  # noqa: E402
 import cards as C  # noqa: E402
 import policy as P  # noqa: E402
 import round_series as RS  # noqa: E402
+sys.path.insert(0, str(HERE.parent))
+import conductor_authority as CA  # noqa: E402
 
 ROOT = C.ROOT
 P_KEPT_CARD = P.KEPT_ART_CARD
@@ -394,11 +396,12 @@ def cmd_stop(a):
 
 
 def cmd_owner_prompt(a):
-    if not (a.owner_said or a.by_card):
-        print("the text must be his: give --owner-said (his words) or --by-card")
+    if not (a.owner_said or a.by_card or CA.carried(a.per_ruling, a.why)):
+        print("the text must be his: give --owner-said (his words), --by-card or " + CA.ROUTE)
         return 2
     rec = {"at": R.now(), "def": a.defname, "text": a.text, "source": a.source}
-    rec.update({k: v for k, v in (("owner_said", a.owner_said), ("by_card", a.by_card)) if v})
+    rec.update({k: v for k, v in (("owner_said", a.owner_said), ("by_card", a.by_card), ("per_ruling", a.per_ruling),
+                                  ("why", a.why)) if v})
     with RS.OWNER_PROMPTS.open("a") as fh:
         fh.write(json.dumps(rec) + "\n")
     print(f"{a.defname}: owner prompt recorded; next `rows` uses it verbatim")
@@ -452,6 +455,8 @@ def main(argv=None):
     o.add_argument("--text", required=True)
     o.add_argument("--owner-said")
     o.add_argument("--by-card")
+    o.add_argument("--per-ruling")
+    o.add_argument("--why")
     o.add_argument("--source", default="chat")
     q = sub.add_parser("prompts", help="owner prompts found and where from")
     q.add_argument("defs", nargs="*")

@@ -362,6 +362,12 @@ def guard(verb, item, argv, env=None, store=None):
     return None
 
 
+def _conductor_authority():
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "Utils"))
+    import conductor_authority
+    return conductor_authority
+
+
 def unhold(store, item, said, now=None):
     now = time.time() if now is None else now
     with store.lock():
@@ -1300,7 +1306,9 @@ def main(argv=None):
     p.add_argument("--why", required=True)
     p = sub.add_parser("unhold")
     p.add_argument("item")
-    p.add_argument("--owner-said", required=True)
+    p.add_argument("--owner-said")
+    p.add_argument("--per-ruling", help="with --why: a Conductor instruction (conductor_authority.RULING)")
+    p.add_argument("--why")
     a = ap.parse_args(argv)
     store = Store()
     try:
@@ -1334,7 +1342,10 @@ def main(argv=None):
         elif a.cmd == "verdict":
             verdict(store, a.item, a.nonce, a.word, a.reasons)
         elif a.cmd == "unhold":
-            unhold(store, a.item, a.owner_said)
+            said = _conductor_authority().words(a.owner_said, a.per_ruling, a.why)
+            if not said:
+                raise ValueError("unhold needs --owner-said or " + _conductor_authority().ROUTE)
+            unhold(store, a.item, said)
     except Fenced as e:
         print("FENCED: %s" % e, file=sys.stderr)
         return FENCED
