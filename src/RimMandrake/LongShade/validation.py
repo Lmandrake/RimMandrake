@@ -205,6 +205,15 @@ def shipfall_problems():
         bad.append("RM_JobGiver_ShipfallCommons.TryGiveJob no longer gates on shipfallCommonsEnabled (off arm still gathers)")
     if "shipfallCommonsEnabled" not in src.split("bool Active", 1)[1].split(";", 1)[0]:
         bad.append("RM_MapComponent_ShipfallCommons.Active no longer gates on shipfallCommonsEnabled")
+    # LONGSHADE_MASTER_SWITCH_FIX_SHIPFALL_IGNORES: the master switch must reach all three read sites.
+    sites = {
+        "Active": src.split("bool Active", 1)[1].split(";", 1)[0],
+        "MapComponentTick": src.split("void MapComponentTick", 1)[1][:500],
+        "TryGiveJob": src.split("class RM_JobGiver_ShipfallCommons", 1)[1].split("TryGiveJob", 1)[1][:400],
+    }
+    for name, body in sites.items():
+        if "modEnabled" not in body:
+            bad.append("Shipfall Commons %s ignores the master switch modEnabled (runs with Long Shade off)" % name)
     tt = _def(_xml("ThinkTreeDefs", "RM_LongShade_ShipfallCommons.xml"), "ThinkTreeDef", "RM_ThinkTree_ShipfallCommons")
     if tt is None or tt.findtext("insertTag") != "Animal_PreWander":
         bad.append("think tree does not insert into Animal_PreWander (wildlife never consults it)")

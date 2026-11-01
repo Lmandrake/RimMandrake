@@ -31,13 +31,13 @@ namespace RimMandrake.LongShade
     // second, redundant gate that could silently disagree with the kit's own
     // switch.
     //
-    // So this mod's own screen gates the master switch (§6a's "Master" row)
-    // PLUS the one mechanic that is now genuinely this mod's own: the
-    // dewfringe's rim gate. Turning modEnabled off does not (and should not)
-    // also flip dewfringeShadeLineGateEnabled — that field controls a C#
-    // Harmony patch that stays armed regardless (same reason Leachmoss's own
-    // gate reads its own bool rather than a shared kit's), so the two are
-    // separate checkboxes, not one master collapsing into the other.
+    // So this mod's own screen holds the master switch (§6a's "Master" row)
+    // plus one switch per mechanic this mod genuinely owns (the dewfringe's
+    // rim gate, the mapgen steps, Shipfall Commons, the shade extras). The
+    // master does not overwrite any per-mechanic field: each stays its own
+    // checkbox and keeps its value. Instead every read site checks
+    // modEnabled AND its own field, so master off stops every mechanic below
+    // it (the dewfringe Harmony patch stays applied but returns early).
     // ════════════════════════════════════════════════════════════════════
     public class RM_LongShadeSettings : ModSettings
     {

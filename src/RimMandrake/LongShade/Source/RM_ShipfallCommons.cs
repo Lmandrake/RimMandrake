@@ -128,7 +128,7 @@ namespace RimMandrake.LongShade
 
         public RM_ShipfallCommonsExtension Ext => map.Biome?.GetModExtension<RM_ShipfallCommonsExtension>();
 
-        public bool Active => RM_LongShadeSettings.shipfallCommonsEnabled && arrivedTick >= 0 && Ext != null;
+        public bool Active => RM_LongShadeSettings.modEnabled && RM_LongShadeSettings.shipfallCommonsEnabled && arrivedTick >= 0 && Ext != null;
 
         public override void ExposeData()
         {
@@ -145,7 +145,7 @@ namespace RimMandrake.LongShade
                 return;
             }
             RM_ShipfallCommonsExtension ext = Ext;
-            if (ext == null || !RM_LongShadeSettings.shipfallCommonsEnabled)
+            if (ext == null || !RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.shipfallCommonsEnabled)
             {
                 return;
             }
@@ -318,7 +318,7 @@ namespace RimMandrake.LongShade
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            if (!RM_LongShadeSettings.shipfallCommonsEnabled || pawn?.Map == null || pawn.Faction != null
+            if (!RM_LongShadeSettings.modEnabled || !RM_LongShadeSettings.shipfallCommonsEnabled || pawn?.Map == null || pawn.Faction != null
                 || !pawn.RaceProps.Animal || pawn.Downed || pawn.InMentalState || pawn.roping?.IsRoped == true)
             {
                 return null;
