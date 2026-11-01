@@ -8,7 +8,15 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
-## From Sat 2026-10-31: closed-loop building (block 3, on top)
+## From Sun 2026-11-01: operating requirements (block 4, on top)
+
+Set: 2026-11-01. His words: *"please improve these requirements to a useful level. Then do a GPT review, and then let's
+get to work on this right away."* Requirements: `design/RimMandrake/operating_requirements_2026-11-01.md`.
+
+1. **Operating requirements**: make the four standing parts trustworthy (context keeper, Operations, relentless workers,
+   Dispatch), catches for jams and idle first, then the read-only time ledger and mission page.
+
+## From Sat 2026-10-31: closed-loop building (block 3, on top of block 2)
 
 Set: 2026-10-31. His words (`CLOSED_LOOP_PROVE_EDIT_RUN_LOOK_AGAIN`): *"Yes. Please make that a high priority. That's how I see Claude mostly write software: edits the code, runs the code, looks at the outcome, edits again."* · *"at the end of the cycle there must be a blind checker, that makes sense, just not inside the debugging loop."*
 
