@@ -100,7 +100,7 @@ runs `TryExecute` with `Find.World` as the target. `World` is an `IIncidentTarge
 
 **Names are resolved at fire time, never tiles.** The planet is painted once at the end, and tile ids
 in this note are readings from the paint inputs. Settlements match on `Settlement.Name`, the same way
-`RM_GenStep_DisplayTank` finds Sporefall. Landmarks match on `Landmark.name`. A name that finds
+`RM_GenStep_DisplayTank` finds Sporefall, and must still belong to `RUT_Jawa_WildsteamClan`. Landmarks match on `Landmark.name`. A name that finds
 nothing logs one warning and is skipped; the event still fires. This is one authored mutation of a
 fixed list at runtime. It generates nothing and has no variants, so it is not worldgen.
 
