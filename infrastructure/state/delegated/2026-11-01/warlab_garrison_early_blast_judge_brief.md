@@ -70,6 +70,9 @@ contradicts.
 
 ## Your return
 
+You are the §4.5 round 2 judge, reached as this item's blind checker (`rm-judge`, opus). KEEP is your PASS;
+REDO or UNSURE is your FAIL. A WEAK verdict rules nothing here: if the note cannot stand, say FAIL.
+
 `KEEP` the note, or `REDO` quoting each violated constraint and its source, or `UNSURE` where the
 written constraints do not decide it. A provisional number the maker labelled is not a REDO unless
 it contradicts a ruling. Write your reasons so the next worker can act on them without you.

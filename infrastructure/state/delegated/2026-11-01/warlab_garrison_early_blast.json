@@ -2,7 +2,7 @@
  "item": "WARLAB_GARRISON_DESIGN_EARLY_BLAST",
  "class": "design",
  "subject": "design/Jawa/worldbuilding/warlab_garrison_early_blast_2026-11-01.md",
- "verdict": "PENDING: round 1 REDO; round 2 judge (§4.5) has not returned",
+ "verdict": "ROUND2_AT_BLIND_CHECK",
  "gpt_prereview": {
   "model": "gpt-6.1-sol via gpt_consult.py",
   "note": "pre-review, not a §4 judgment",
@@ -33,7 +33,7 @@
    }
   ]
  },
- "all_defects_fixed_in": "the note as committed with this file; round 2 has not judged the fixed text",
+ "all_defects_fixed_in": "the note as committed with this file; round 2 judges this text",
  "judge_rounds": [
   {
    "round": 1,
@@ -46,5 +46,10 @@
    ],
    "owed": "fix both, remove the clock and the routes-spec sentence from cc00d23b40, file the clock as an owner question, re-ask one new judge with a rebuttal"
   }
- ]
+ ],
+ "round_2": {
+  "judge": "rm-judge opus, relentless blind checker on the finishing sha",
+  "rule": "its PASS is KEEP, its FAIL is REDO or UNSURE; §4.5: it stands",
+  "record": "the item's ledger close event, or its blind_fail in relentless"
+ }
 }

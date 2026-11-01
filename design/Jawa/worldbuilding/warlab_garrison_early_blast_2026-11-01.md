@@ -280,9 +280,11 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 
 ## Judgment
 
-Status: **not yet ruled.** Round 1, a fresh opus judge under `delegation_policy.md` §4 (rm-consult):
+Round 1, a fresh opus judge under `delegation_policy.md` §4 (rm-consult):
 **REDO**, two defects. Strike and defeat left Route 6 live, and a blast-lit Route 6 changed a ruled
 route. Both are fixed in this text. Heat, garrison, codes gate and the cited engine facts it found
-sound stand unchanged. Round 2, one new judge with a written rebuttal under §4.5, has not returned.
+sound stand unchanged. Round 2 is the blind check: a new opus judge under §4.5, with no maker notes, rules on this text from the brief
+below, and its verdict stands. **While this item is open this note is not ruled. The item's blind-check
+close is the KEEP**, and its close event names the sha. A REDO or UNSURE sends the item back.
 Brief: `infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast_judge_brief.md`.
 Record: `infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`.

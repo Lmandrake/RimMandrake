@@ -14,6 +14,7 @@ SECTIONS = ["## 2. The heat rise", "## 4. The garrison", "## 5. The codes", "## 
 PHRASES = ["**Who.**", "**Where.**", "**Persistence.**", "RaiseFloor", "AdjustVisibility", "CodesUsable",
            "labFate", "Route6Live", "WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE"]
 ROUTES = ROOT / "design/Jawa/worldbuilding/biomes/the_chill_warlab_routes_spec_2026-09-27.md"
+BLIND_ROUTE = "Round 2 is the blind check"
 # Judge round 1 removed the blast-lit Route 6: a ruled route is not edited on an agent's reading.
 GONE = {NOTE: ["Route 6 clock", "Days until the Empire"], ROUTES: ["warlab_garrison_early_blast", "ordnance clock"]}
 EXISTING = ["WarLabCraterMutation", "GameComponent_WarLabCrater", "CompIgniteCraterOnDestroy", "EmpireSearch",
@@ -26,18 +27,21 @@ EXISTING = ["WarLabCraterMutation", "GameComponent_WarLabCrater", "CompIgniteCra
 
 
 def ruling_defects(text: str) -> list[str]:
-    """The item owes a RULED note: a judge other than the maker returned KEEP, on file and stated in the note."""
+    """The record is honest about the ruling. A KEEP on file is one way. The other leaves it to the blind check, whose
+    own verdict rules (contract step 2): this script cannot rule, so it passes only with round 1 and that route on file."""
     bad = []
-    if "not yet ruled" in text.split("## Judgment", 1)[-1]:
-        bad.append("note's ## Judgment still says not yet ruled")
+    if BLIND_ROUTE not in text.split("## Judgment", 1)[-1]:
+        bad.append(f"note's ## Judgment does not say: {BLIND_ROUTE}")
     try:
         rec = json.loads(VERDICT.read_text(encoding="utf-8"))
     except (OSError, ValueError) as e:
         return bad + [f"no readable verdict file: {e}"]
-    if rec.get("verdict") != "KEEP":
-        bad.append(f"verdict is not KEEP: {str(rec.get('verdict'))[:60]}")
-    if not rec.get("judge"):
+    if rec.get("verdict") not in ("KEEP", "ROUND2_AT_BLIND_CHECK"):
+        bad.append(f"verdict neither KEEP nor sent to the blind check: {str(rec.get('verdict'))[:60]}")
+    if rec.get("verdict") == "KEEP" and not rec.get("judge"):
         bad.append("verdict names no judge")
+    if not any(r.get("round") == 1 and r.get("verdict") == "REDO" for r in rec.get("judge_rounds", [])):
+        bad.append("round 1 REDO is not on file")
     return bad
 
 
@@ -54,7 +58,7 @@ def main() -> int:
     for path, phrases in GONE.items():
         bad += [f"{path.name} still says: {p}" for p in phrases if p in path.read_text(encoding="utf-8")]
     bad += ruling_defects(text)
-    print("\n".join(bad) if bad else f"OK {len(EXISTING)} symbols, {len(SECTIONS + PHRASES)} sections, ruled KEEP")
+    print("\n".join(bad) if bad else f"OK {len(EXISTING)} symbols, {len(SECTIONS + PHRASES)} sections; the ruling is contract step 2")
     return 1 if bad else 0
 
 
