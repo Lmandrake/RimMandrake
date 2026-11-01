@@ -5,7 +5,7 @@
 //          independent component spec; one flood per fogged unroofed component; idempotent; cells outside the rect never seed a flood
 //   gate   Enabled and IsRoot exhaustively
 //   units  edge cases (empty rect, 1x1 map, rect wholly off the map)
-// A failing case is printed as `family seed N: message | detail`; --fuzz-seed N replays it.
+// A failing case is printed as `family seed N: message`; --fuzz-seed N replays it.
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
