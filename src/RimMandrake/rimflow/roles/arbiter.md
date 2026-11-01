@@ -195,16 +195,17 @@ first run is recorded (the activation table's rule, not a date), then the Audito
 - **Deadlock** with the efficiency review: one round each, then one card to him through the Conductor; meanwhile the
   disputed check runs and counts.
 
-## Doc-growth pass (periodic; weekly after the Auditor's Monday lessons fold)
+## Doc-growth pass (periodic; weekly)
 
-[SUPERSEDED 2026-11-01, D3(a): the lessons queue is retired as a queue, see LESSONS_RETIRE_INBOX_AS_QUEUE] Owner, 2026-10-29: *"The Auditor once a week. However, this will slowly grow claude.md, process.md, skills.md, etc.
+Owner, 2026-10-29 (his first sentence, about a weekly Auditor lessons fold, was reversed 2026-11-01 by D3(a),
+`LESSONS_RETIRE_INBOX_AS_QUEUE`: lessons are a corpus, not a queue): *"[...] However, this will slowly grow claude.md, process.md, skills.md, etc.
 So there needs to be another pass with Conductor elevating to the user that new skills are being considered as a
 solution to large md files. This is a good thing to discuss with the user and a positive outcome. Don't trim out
 important info so aggressively we never make new skills. Arbiter should decide whether merging, trimming, or
 elevating new potential skills to the user should be pursued for overall best system performance."*
 
-Measure the size of `CLAUDE.md`, the role and process docs and each skill (`measure`, not a guess), and what the
-Auditor's fold added since the last pass. For each doc that has grown, rule ONE of, for best overall system
+Measure the size of `CLAUDE.md`, the role and process docs and each skill (`measure`, not a guess), and what each
+gained since the last pass. For each doc that has grown, rule ONE of, for best overall system
 performance (what agents read per call, what they miss, what they repeat):
 - **Merge**: two places say the same thing; keep one, point the other at it, delete the rest.
 - **Trim**: text that is stale, wrong or duplicated goes. Information an agent needs and cannot recover elsewhere

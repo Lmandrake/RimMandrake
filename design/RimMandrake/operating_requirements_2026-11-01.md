@@ -253,7 +253,8 @@ table. Test: selftest fails on an alarm kind not in the table; a filing for an u
 
 **RO5 Reds the Auditor reads become rules.** [Auditor] A repeat error class in escapes or his `repeat` messages becomes
 an enforced hook or program rule, not a prose line. Metric AU3 (lessons → rules). Test: a fixture class repeated
-twice reads owed until a hook names it. Exists: weekly lessons fold.
+twice reads owed until a hook names it. Exists: the findings fold and the Auditor's repeat check (the weekly lessons
+fold was retired 2026-11-01, D3(a), `LESSONS_RETIRE_INBOX_AS_QUEUE`).
 
 ## 8. His 19 questions: instrument, gate, reader
 

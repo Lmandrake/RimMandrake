@@ -93,6 +93,11 @@ Work in this order. No fixed count: go down the list until the run ends; what is
 weekly pass (below) runs right after step 2, before steps 3 and 4, so a backlog of discretionary picks cannot starve it
 (review roles r2 #8).
 
+**The random slice runs first in each pass, before mandatory work** (risk response T7): right after step 1 (the hard
+flags, which need no re-check), work every pick the pre-screen marks random (one in five, a uniform draw from all
+closes), then step 2 and the rest. The unbiased sample is never the part a short run cuts; what it leaves unsettled
+carries and goes first next run.
+
 1. **Pre-screen hard flags, first and always:** each is a defect ticket on its item, no re-check needed (the flag
    is the evidence). Your pre_launch files them with no AI (`audit_hardflag_file.py`, right after the pre-screen; one
    `AUDIT_HARDFLAG_FIX_*` ticket per item and sha, caused_by the item, deduped on the ledger) and records what it did
@@ -109,10 +114,8 @@ weekly pass (below) runs right after step 2, before steps 3 and 4, so a backlog 
    false-pass candidate. Your re-check result is the "later evidence" `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS` counts
    (arbiter.md: "an Auditor sample"). Then sample interim-reviewer PASSes, because those are the ones that close work.
    Once `verdicts` is `"binding"`: sample Arbiter PASSes and every CONDITIONAL-PASS instead.
-4. **Risk-ranked picks with the calibration slice inside them:** the pre-screen's ranked list, top down; the picks
-   it marks random (one in five, a uniform draw from all closes) are worked where they sit in that list, and if the
-   list puts them together, one after every four ranked picks: never saved for the end. Without them the score's
-   blind spots never surface.
+4. **Risk-ranked picks:** the pre-screen's ranked list, top down, less the random picks already worked first (above).
+   Without that slice the score's blind spots never surface.
 
 **Carried picks.** A pick left unsettled because the run ended goes first next run, in its place in the order above.
 A pick UNRESOLVED because evidence is missing is **waiting**: its audit line says what it waits for (`waiting_for`);
@@ -166,15 +169,12 @@ is tracked on its own: the status-up note lists each as done or carried. A duty 
 next run (any day) and goes right after step 2 there, ahead of steps 3 and 4, until done; the next Monday's pass does
 not replace a carried one, it adds to it.
 
-- **Lessons → skills** (SUPERSEDED 2026-11-01, D3(a): the queue is retired by `LESSONS_RETIRE_INBOX_AS_QUEUE`, which deletes this duty and its 40-a-pass quota; until it lands this still runs) (a kept duty, not a carry-forward; owner, 2026-10-29: *"The Auditor once a week."*): fold
-  lessons from `infrastructure/state/lessons/` into the skill, fact sheet or doc that owns each topic (fresh context:
-  no maker of the lesson curates it), then delete the lesson's file. **Budget per pass: every file filed since the
-  last pass, then the oldest files until 40 are folded in all**; a lesson with no owner goes to the Arbiter's
-  doc-growth pass as a new-skill candidate, and its file is deleted once that candidate is filed. The pass reads the
-  skill before editing it, folds the substance (no thinning of a skill to make room), and commits explicit paths. File the
-  AU3 count (commits touching `.claude/hooks/` ÷ new lesson files, per week) and the inbox count before and after. This
-  duty stays on the carried list until the inbox holds no file older than 14 days; the one-time backlog drain
-  (`LESSONS_BACKLOG_DRAIN_SINCE_SEPTEMBER`) is FOUNDRY's, not this pass's. You edit `skills/` for this duty only.
+- **Lessons are a corpus, not a queue** (owner ruling 2026-11-01, D3(a), `LESSONS_RETIRE_INBOX_AS_QUEUE`; this
+  reverses his 2026-10-29 answer that the Auditor fold lessons weekly). The files in `infrastructure/state/lessons/`
+  stay in the tree as a searchable corpus: you read them for repeats (above), you do not fold, delete, count or age
+  them, and no number of them is owed work. A lesson earns work only when its class **recurs**: the findings fold and
+  your repeat check promote it to one rule or one ticket (RO5). File the AU3 count (commits touching `.claude/hooks/`
+  ÷ new lesson files, per week) as the measure of that promotion, not as a backlog.
 - **Pre-screen weights**: per flag, the audit yield of the week (DEFECT ÷ picks it raised) and the random slice's
   yield. A flag that finds nothing for two weeks, or a defect class the random slice found that no flag caught, is a
   ticket to retune the pre-screen's rules file.
