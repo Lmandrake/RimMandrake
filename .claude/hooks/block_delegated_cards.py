@@ -6,84 +6,65 @@ Item CARDS_ENFORCE_DELEGATED_CLASSES_STOP. design/RimMandrake/delegation_policy.
   s2.4 `twin`  - applying an existing ruling to a case it does not name (campaign copy, sister biome, sibling def)
 Measured: 29 ordering cards (81% agreement), ~235 typed go-aheads, 9 twin cards (8 yes) in 3 weeks.
 
+A model reads each question, because regexes never generalised: five sealed reads of tuned patterns gave recall
+0.19, 0.62, 0.90, 0.50, 0.58 (DELEGATED_CARDS_FIX_HELD_OUT_RECALL). JUDGE names the class, VETO re-reads a positive.
 False positives are the only way this hook does harm, so it refuses only when
-  * EVERY question in the call matches a delegated class, AND
-  * no ask or option carries a s2 trigger (north star, irreversible on others' work, kept art, his rulings
-    changing, outward/paid acts, flyer live tests), AND
+  * EVERY question in the call is judged delegated and survives the veto, AND
   * no question carries the override marker [owner-asked] (he asked to be asked).
-Exit 2 blocks (this machine runs bypassPermissions); anything unparseable exits 0.
+A failed, late or unreadable model call allows the card. Exit 2 blocks; anything unparseable exits 0.
+The prompts are measured text: change either one and run the selftest with --remeasure.
 
-    python3 .claude/hooks/selftest_block_delegated_cards.py
+    python3 .claude/hooks/selftest_block_delegated_cards.py [--remeasure]
 """
+import concurrent.futures
 import json
 import re
+import subprocess
 import sys
+import tempfile
 
 OVERRIDE = re.compile(r"\[owner-asked\]", re.I)
+MODEL = "sonnet"     # a CLI alias: the account behind it is the environment's business
+CALL_TIMEOUT_S = 13  # two stages must fit inside the hook's 30 s in .claude/settings.json
 
-CLASSES = {
-    "scope": [
-        # order / which next / which first
-        r"^(?!\s*(when|if)\b[^,]*,)(?!.*\bhappen\b).*\b(what|which)\b[^?]{0,90}\b(first|next)\b(?! (\w+ing|version|time|case)\b)",
-        r"\bwhat'?s? next\b|\bwhat next\b|\bnext build\b|\bbuild order\b|\b\w+ order\b|\bin what order\b",
-        r"\b(which|what)\b(?![^?]{0,25}\b(version|layout|look|design|variant|style|form|approach|way|model)\b)[^?]{0,50}\b(should|shall|will|would)\b (i|we)\b[^?]{0,30}\b(build|drive|start|do(?! with\b| about\b)(?!\?)|take|work on|tackle|commission|run)\b",
-        r"\b\w+ next\??$",
-        r"\b(day|night|week|sprint|shift) shape\b",
-        r"\bwhen (should|do|shall|can|will)\b[^?]*\b(build|built|take|start|run|do|go|come out|get|file|begin)\b|^\s*when (?!(may|can|should|do|does|did|is|are|will|would|a|an|the)\b)\w+\b[^,?]{0,40}\?$",
-        r"\bhow to staff\b|\baim for\b[^?]{0,20}\bthis (week|sprint|cycle)\b",
-        r"\b(wait|hold) for\b[^?]{0,40}\bor come first\b|\bor (come|go) first\b",
-        r"\bshould (i|we)\b[^?]{0,30}\b(build|start|queue|do)\b[^?]{0,30}\b(now|first|next|this (cycle|sprint|week))\b",
-        r"\bshould (we|i) build this (cycle|sprint|week)\b|^(?!\s*(how|what)\b).*\bthis (cycle|sprint)\?$",
-        r"\bwho builds\b|\bwhat should be built first\b",
-        r"\b(do|should|shall) (we|i) build\b[^?]*\bnow\?",
-        r"\bwhich\b[^?]{0,40}\bto (build|commission|start|do|work on|tackle)\b",
-        r"\b(prioriti[sz]e|sequence|sequencing|what priority|priority order)\b",
-        # helper count
-        r"\bhow many (helpers?|agents?|subagents?|slots?|seats?|workers?|builders?)\b",
-        r"\b(helpers?|agents?|subagents?)\b[^?]{0,40}\b(at once|in parallel|working at once|concurrently)\b",
-        # continue / start / now or later
-        r"^(?!.*\bwhich\b)(?!\s*(how|what|why)\b).*\b(should|shall|may|can|want me to|do you want me to|would you like me to)\b[^?]{0,20}\b(i|we)?\s*(continue|keep going|proceed|go ahead|carry on|start (now|building|redrawing|on)|begin)\b",
-        r"^(?!\s*(how|what|why)\b).*\bshould\b[^?]{0,30}\b(start|begin|proceed)\?",
-        r"\bday'?s work\b|\b(helpers?|builders?|agents?) work on\b|\bnow,? or\b[^?]{0,30}\?$",
-        r"\b(run|rewrite|walk|review|deploy|pass|sitting)\b[^?]{0,20}\bhappen\?|\bwhen should (it|this|that|they) deploy\b",
-        r"\b(may|can|should) (we|i) start\b",
-        r"\b(now|today|this sprint) or (later|next|tomorrow|after)\b|\bnow or later\b|\bwhen (should|do|shall)\b[^?]{0,30}\b(build|start|run|do|file|begin)\b|\b(?!from\b)\w+ when\?$",
-        r"\bdoes it join the sprint\b|\bjoin the (next )?sprint\b|\bshape should the next sprint\b|\bahead of the sprint\b",
-        # status-led "what now" only: after a design fact ("the rite lost its ingredient; what now?") it is not scope
-        r"\b(red|broken|failing|blocked|stuck|done)\b[^?]{0,20}\bwhat now\?",
-        # timing as the whole ask: trailing "now?/today?", or an imperative with "now"
-        r"(^|[.!?:]\s+)(?!(what|how|why|who|where|which|when)\b)[^.!?]{0,45}(?<!for )\b(now|today|tonight|this (sprint|week))\??$",
-        r"\b(build|rebuild|fix|redraw|draw|start|run|rename)\b[^?.]{0,50}(?<!from )(?<!for )\bnow\b",
-    ],
-    "twin": [
-        r"\b(twins?|sibling|sister|campaign copy|counterpart)\b",
-        r"\b(rut|rsw|rm)_ twins?\b",
-        r"\b(does|do) (this|that|the|your|'?all)\b[^?]{0,50}\b(ruling|rule|cut|decision)\b[^?]{0,20}\b(apply|extend|include|cover)\b",
-        r"\bdoes (the|this|that|your)[^?]{0,40}\b(rule|ruling)\b[^?]{0,30}\b(extend|apply)\b",
-        r"\b(extend|apply|carry)\b[^?]{0,30}\b(to|onto)\b[^?]{0,30}\b(the same|its|their|both|the other|also)\b",
-        r"\b(ban|cut|drop|remove|retire) (it|them|that) too\b",
-        r"\bdoes '?all [\w ]+'? include\b",
-        r"^(?!.*\b(can|could) (it|they|this|that)\b[^,]{0,40}\btoo\b).*\btoo\??$",
-        r"\bthe rest of\b|\bthe same\b[^?]{0,60}\b(genes?|traits?|case|problem)\b",
-        r"\bagainst the [\w ]{0,20}\brule\b",
-        r"\bas (the )?[\w ]{1,30} did\?$|\bremove the rest\b",
-        r"\b(rule|ruling) (gives|says|wants|requires)\b",
-    ],
-}
-CLASSES = {k: [re.compile(p, re.I) for p in v] for k, v in CLASSES.items()}
+JUDGE = """You classify one question an AI agent wants to put to its human owner on a decision card, in a RimWorld modding project. Agents were told which classes they must decide alone. Decide whether this card is a leak.
 
-# s2 triggers: any hit anywhere in the payload means the call is not purely delegated.
-TRIGGERS = [re.compile(p, re.I) for p in [
-    r"north[- ]?star",
-    r"force[- ]?push|reset --hard|\bpurge\b|re-?freeze|frozen",
-    r"\bkept\b|\bkeep\b[^?]{0,15}\b(art|picture|version)|owner[- ]kept|newest mark|(?<!-)\bmarks?\b",
-    r"standing ruling|overturn|reinterpret|change what (it|the ruling) says|\bcontradict|canon\b",
-    r"workshop|publish|\bpaid?\b|\bpay\b|spend|purchase|\bbuy\b|\bmoney\b|\bsubscription|plan usage|\blogin\b|log in|credential|\bupload",
-    r"flyer|flier|(?<!in )flight|\bfly\b|human present",
-    r"delete|\bdrop\b[^?]{0,20}(work|item)|irreversible|not ours|someone else",
-    r"\bbroadcast\b|\bbridge\b",
-    r"\bsteam\b|(?<!this )\bpush\b",
-]]
+scope: the ask is only about WORK MANAGEMENT of work already understood: what to do or build next or first, the order of items, which items from a list to build or queue now, when to do something, whether to start, continue, go ahead or wait, how many helpers or agents to run.
+twin: the ask is only whether an EXISTING ruling or decision should also cover a further similar case it did not name: "should X go too?", "same treatment for the sibling def / sister biome / campaign copy?", "shrink these too, as you approved for that one?".
+none: everything else. In particular: how a thing should work, look, be named or be numbered; which design, option or approach is right; what should happen to a thing when the options differ in content rather than timing; review verdicts on art or a design; what a ruling meant, or two rulings that conflict; how a process, policy, trial or tool should be set up; a question of fact; asking for his preference or permission on a new kind of act. Also none, whatever the wording, when the answer touches: north-star bars; irreversible acts on work not ours (force-push, deleting others' work, re-freezing the frozen dump); replacing art he kept; changing or reinterpreting one of his rulings; outward or paid acts (publishing, buying, spending, Steam, Workshop); live tests of flying creatures.
+
+Examples.
+scope: "Aiwha's wingspan failed all four renders, so what should we try next?" · "Two art tests stay red until it's settled. What now?" · "Should I queue redraws for all 1,716 sets?" · "Start the runner pilot now?" · "When a decision is open, should I proceed on the plan's default?" · "The redraw is pushed but not deployed. What should happen next?"
+twin: "Should the rest of the fish drop fishskin too?" · "Massassi's skin is sourced. Remove the rest?" · "Should those biomes get it too?"
+none: "Approve this pass list of 80 rows?" · "How do you want to take the remaining 60 picks?" · "When sand-lock hits, should the sarlacc also be stopped?" (a mechanic) · "Does your ruling cover this heat source?" is twin only if it asks to extend the ruling, none if it asks what the ruling means.
+
+Judge the ask, not the background: a preamble may mention rulings, sprints or the bridge in passing. If several questions are asked, judge the main one. When truly unsure between a class and none, answer none.
+
+Reply with exactly one word: scope, twin or none."""
+
+VETO = """An AI agent wants to put a question to its human owner on a decision card, in a RimWorld modding project. A first reader marked the question as one agents settle alone: plain work order or timing ("which next", "when", "start now?", "what now?", "shall I deploy?"), helper count, or one more sibling case of an existing ruling ("X too?", "the rest too?").
+
+Most such marks are right. Questions about when to do something, what to do first, or whether to go ahead stay LEAK even if the work is big, needs a game restart, or involves him: scheduling is delegated.
+
+Answer OWNER only if the question is really one of these in disguise:
+- it conflicts with the plain text of a ruling of his, and the card says so;
+- it would replace art he accepted or kept;
+- it sets a blanket rule across every biome, species or mod (an extension to a few named siblings is still LEAK);
+- it chooses between two claims on a shared resource, such as who gets the game, or how he wants to spend his sitting;
+- it asks what a choice should BE (a look, a mechanic, a design), with timing only as a wrapper.
+
+Otherwise answer LEAK. Reply with exactly one word: LEAK or OWNER."""
+
+
+def ask_model(system, text):
+    """The model's first word, lower-cased. Run from a temp dir with no settings: no hooks, project files or tools."""
+    cmd = ["claude", "-p", "--model", MODEL, "--setting-sources", "", "--strict-mcp-config",
+           "--disable-slash-commands", "--tools", "", "--no-session-persistence", "--system-prompt", system,
+           "CARD QUESTION:\n" + text]
+    r = subprocess.run(cmd, capture_output=True, text=True, timeout=CALL_TIMEOUT_S, cwd=tempfile.gettempdir(),
+                       stdin=subprocess.DEVNULL)
+    words = r.stdout.split()
+    return words[0].strip(":.,").lower() if r.returncode == 0 and words else ""
 
 
 def question_texts(payload):
@@ -91,44 +72,36 @@ def question_texts(payload):
     qs = ti.get("questions")
     if not isinstance(qs, list):
         return []
-    return [q for q in qs if isinstance(q, dict)]
+    return qs if all(isinstance(q, dict) for q in qs) else []  # a card we cannot fully read goes through
 
 
-def ask_parts(question):
-    """The parts that state the ask: the header, then each sentence ending in '?' (the whole text if none does).
-    A card's preamble cites rulings, times and sprints freely; matching it refused cards that asked something else."""
-    body = str(question.get("question") or "")
-    asks = [s for s in re.split(r"(?<=[.!?])\s+", body.strip()) if s.endswith("?")]
-    return [str(question.get("header") or "")] + (asks or [body])
+def card_text(question):
+    """What the model reads: header, question, then option labels (an option can change what the card is about)."""
+    labels = [str(o.get("label")) for o in question.get("options") or [] if isinstance(o, dict) and o.get("label")]
+    parts = (str(question.get("header") or ""), str(question.get("question") or ""),
+             "Options: " + " | ".join(labels) if labels else "")
+    return "\n".join(p for p in parts if p)
 
 
-def classify(parts):
-    """Return the delegated class any part falls in, or None."""
-    for cls, pats in CLASSES.items():
-        if any(p.search(part) for p in pats for part in parts):
-            return cls
-    return None
+def classify(text):
+    """The delegated class of one question, or None. Any failure reads as None: an unjudged card goes through."""
+    try:
+        cls = ask_model(JUDGE, text)
+        if cls not in ("scope", "twin"):
+            return None
+        return cls if ask_model(VETO, text) == "leak" else None
+    except (OSError, subprocess.SubprocessError):
+        return None
 
 
 def verdict(payload):
     """(classes, reason) -> reason is None when the call is allowed."""
     qs = question_texts(payload)
-    if not qs:
+    if not qs or OVERRIDE.search(json.dumps(payload.get("tool_input"), ensure_ascii=False)):
         return [], None
-    if OVERRIDE.search(json.dumps(payload.get("tool_input"), ensure_ascii=False)):
-        return [], None
-    classes = []
-    scoped = []
-    for q in qs:
-        parts = ask_parts(q)
-        c = classify(parts)
-        if c is None:
-            return [], None
-        classes.append(c)
-        scoped += parts + [json.dumps(q.get("options"), ensure_ascii=False)]
-    # Triggers read the ask and its options, not the preamble: a card's background names the bridge, canon or a delete
-    # in passing, and that hid plain "which first" asks (5 of 12 misses on a held-out sample).
-    if any(t.search(part) for t in TRIGGERS for part in scoped):
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(qs)) as pool:
+        classes = list(pool.map(classify, map(card_text, qs)))
+    if None in classes:
         return [], None
     return sorted(set(classes)), True
 
@@ -145,8 +118,8 @@ def message(classes):
     lines.append("Decide it yourself, log it `rimflow note <ID> --why \"delegated: %s\" --text \"<the decision>\"`, "
                  "and list it in the daily digest (policy s3)." % "/".join(classes))
     lines.append("If this is NOT really that class (a north star, kept art, his rulings changing, an outward or paid act, "
-                 "a flyer live test), say so in the question text. If he asked to be asked, put [owner-asked] in the "
-                 "question text. Check: CARDS_ENFORCE_DELEGATED_CLASSES_STOP.")
+                 "a flyer live test), say so in the question text: a model read it and can be wrong. If he asked to be "
+                 "asked, put [owner-asked] in the question text. Check: CARDS_ENFORCE_DELEGATED_CLASSES_STOP.")
     return "\n".join(lines)
 
 
@@ -155,7 +128,7 @@ def main():
         payload = json.load(sys.stdin)
     except Exception:
         return 0
-    if (payload.get("tool_name") or "AskUserQuestion") != "AskUserQuestion":
+    if not isinstance(payload, dict) or (payload.get("tool_name") or "AskUserQuestion") != "AskUserQuestion":
         return 0
     try:
         classes, hit = verdict(payload)

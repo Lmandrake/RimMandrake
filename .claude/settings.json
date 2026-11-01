@@ -92,7 +92,7 @@
           {
             "type": "command",
             "command": "python3 \"${CLAUDE_PROJECT_DIR:-.}/.claude/hooks/block_delegated_cards.py\"",
-            "timeout": 10,
+            "timeout": 30,
             "statusMessage": "Checking the card is not about a delegated class"
           }
         ]
