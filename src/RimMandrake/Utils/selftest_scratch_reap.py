@@ -353,10 +353,10 @@ def run_cases(env):
     R.Live._read = flaky
     try:
         stuck = 2
-        check(not [b for b in R.Live(time.time()).blind if f"pid {os.getppid()}:" in b], "a process unreadable for a moment is not a blind spot")
+        check(not [b for b in R.Live(time.time()).blind if f"pid {os.getppid()} " in b], "a process unreadable for a moment is not a blind spot")
         calls.clear()
         stuck = 99
-        check(any(f"pid {os.getppid()}:" in b for b in R.Live(time.time()).blind), "a process that stays unreadable is a blind spot")
+        check(any(f"pid {os.getppid()} " in b for b in R.Live(time.time()).blind), "a process that stays unreadable is a blind spot")
     finally:
         R.Live._read = real_read
     check(rc == 0, "a dry run exits 0")

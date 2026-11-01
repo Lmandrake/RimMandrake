@@ -346,6 +346,15 @@ def undumpable_system(base: str) -> bool:
 _SYSTEM_PIDS: set[str] = set()
 
 
+def _who(base: str) -> str:
+    """Name a blind process in the record: comm, state and parent are world-readable."""
+    try:
+        comm, _, rest = open(f"{base}/stat").read().rpartition(") ")
+        return f"{comm.partition('(')[2]!r} {rest.split()[0]} ppid {rest.split()[1]}"
+    except (OSError, IndexError):
+        return "gone"
+
+
 class Live:
     """One /proc + transcript snapshot: what is in use right now. Re-taken before each deletion batch."""
 
@@ -389,7 +398,7 @@ class Live:
                 if undumpable_system(base):
                     _SYSTEM_PIDS.add(pid)
                 else:
-                    self.blind.append(f"pid {pid}: {e.strerror}")
+                    self.blind.append(f"pid {pid} {_who(base)}: {e.strerror}")
         self.paths.append((os.getcwd(), str(me)))               # this job is a process too, and may stand in a candidate
         self._listeners()
         for cwd in sorted(self.cwds):
