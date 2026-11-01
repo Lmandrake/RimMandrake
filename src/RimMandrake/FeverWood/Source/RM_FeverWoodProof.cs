@@ -25,6 +25,28 @@ namespace RimMandrake.FeverWood
             return s;
         }
 
+        /// <summary>ANT_HIVE_REAL_GEOMETRY_1: "walls=N reachEdge=B reachQueen=B enclosed=B roofed=F" for the current map:
+        /// the entrance room reaches the map edge and the queen's room, and the queen's room is an indoor room.</summary>
+        public static string ProofHiveGeometry(string unused)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null) return "ERROR no current map";
+            RM_MapComponent_AntHive h = map.GetComponent<RM_MapComponent_AntHive>();
+            if (h == null || !h.HasHive) return "ERROR no hive on this map";
+            ThingDef wall = DefDatabase<ThingDef>.GetNamedSilentFail(RM_GenStep_AntHiveDungeon.WallDefName);
+            int roofed = 0;
+            foreach (IntVec3 c in h.roomCenters)
+            {
+                if (c.Roofed(map)) roofed++;
+            }
+            Room queen = h.QueenRoom.GetRoom(map);
+            return "walls=" + (wall == null ? -1 : map.listerThings.ThingsOfDef(wall).Count)
+                + " reachEdge=" + map.reachability.CanReachMapEdge(h.EntranceRoom, TraverseParms.For(TraverseMode.PassDoors))
+                + " reachQueen=" + map.reachability.CanReach(h.EntranceRoom, h.QueenRoom, Verse.AI.PathEndMode.OnCell, TraverseMode.PassDoors)
+                + " enclosed=" + (queen != null && !queen.PsychologicallyOutdoors)
+                + " roofed=" + roofed + "/" + h.roomCenters.Count;
+        }
+
         /// <summary>"limbs=N cap=N pressure=N chorusSilenced=B sentinels=N blockedUntil=T cooldownLeft=T" for the current map.</summary>
         public static string ProofLimbs(string unused)
         {

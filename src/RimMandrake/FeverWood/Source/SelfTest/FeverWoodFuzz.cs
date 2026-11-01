@@ -5,6 +5,8 @@
 //   pool     the pool's ambient clock (block respites, Uranium suppression, pressure, Great Emergence), the pending-gift
 //            queue and the sentinel counter
 //   weights  the ambient limb table and the deep's gift roll (weighted picks, retry-on-no-footprint)
+//   hive     RM_HiveLayoutKernel on open, rocky, pooled and cluttered grids: every plan judged here by its own brute-force
+//            checks of the footprint, the walls, the mouth and the chain, not by the planner's Validate
 //   units    exhaustive truth tables for the small decisions (trader gates, display-tank gates, charges, ticks)
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
@@ -18,6 +20,163 @@ namespace RimMandrake.FeverWood.SelfTest
     {
         public static long Cases, Steps;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
+
+        // ------------------------------------------------------------------ hive
+        private static long HivePlans, HiveOpenPlans, HiveDugPlans, HiveWalledPlans, HivePooledPlans, HiveNoPlan, HiveFullChains;
+
+        private static HiveGrid HiveScene(Random r, int kind)
+        {
+            int size = r.Next(4) == 0 ? 250 : r.Next(70, 130);
+            var g = new HiveGrid(size, size);
+            for (int i = 0; i < g.Passable.Length; i++) g.Passable[i] = kind != 1;
+            Action<int, int, int, Action<int>> blob = (cx, cz, rad, act) =>
+            {
+                for (int dz = -rad; dz <= rad; dz++)
+                    for (int dx = -rad; dx <= rad; dx++)
+                        if (dx * dx + dz * dz <= rad * rad && g.InBounds(cx + dx, cz + dz)) act(cx + dx + (cz + dz) * size);
+            };
+            int Coord() => r.Next(size);
+            if (kind == 1) // mountain with a walkable rim
+            {
+                for (int i = 0; i < g.Passable.Length; i++)
+                {
+                    int x = i % size, z = i / size;
+                    if (Math.Min(Math.Min(x, z), Math.Min(size - 1 - x, size - 1 - z)) < 14) g.Passable[i] = true;
+                }
+                for (int n = r.Next(2, 8); n > 0; n--) blob(Coord(), Coord(), r.Next(4, 14), c => g.Passable[c] = true);
+            }
+            if (kind == 2 || kind == 4) for (int n = r.Next(3, 25); n > 0; n--) blob(Coord(), Coord(), r.Next(3, 16), c => g.Passable[c] = false);
+            if (kind == 3 || kind == 4) for (int n = r.Next(1, 8); n > 0; n--) blob(Coord(), Coord(), r.Next(2, 7), c => { g.Water[c] = true; g.Forbidden[c] = true; });
+            if (kind == 4) for (int n = r.Next(5, 60); n > 0; n--) blob(Coord(), Coord(), r.Next(0, 3), c => { g.Forbidden[c] = true; g.Passable[c] = false; });
+            if (kind == 5) for (int i = 0; i < g.Forbidden.Length; i++) g.Forbidden[i] = true; // nothing fits
+            return g;
+        }
+
+        // 4-connected flood over the built hive: stricter than the game's 8-step rule, and shares no code with the kernel.
+        private static bool[] HiveFlood(HiveGrid g, Func<int, bool> walk, IEnumerable<int> seeds)
+        {
+            var seen = new bool[g.Width * g.Height];
+            var open = new Stack<int>();
+            foreach (int c in seeds) if (walk(c) && !seen[c]) { seen[c] = true; open.Push(c); }
+            int[] dx = { 1, -1, 0, 0 }, dz = { 0, 0, 1, -1 };
+            while (open.Count > 0)
+            {
+                int c = open.Pop();
+                for (int k = 0; k < 4; k++)
+                {
+                    int x = c % g.Width + dx[k], z = c / g.Width + dz[k];
+                    if (!g.InBounds(x, z)) continue;
+                    int n = x + z * g.Width;
+                    if (!seen[n] && walk(n)) { seen[n] = true; open.Push(n); }
+                }
+            }
+            return seen;
+        }
+
+        private static string HiveJudge(HiveGrid g, HivePlanParams p, HiveLayout h)
+        {
+            int w = g.Width;
+            if (h.Rooms.Count < 2 || h.Rooms.Count > p.TargetRooms) return $"room count {h.Rooms.Count}";
+            if (h.Mouth.Count == 0) return "no mouth";
+            if (h.Wall.Overlaps(h.Floor)) return "a wall stands on the floor";
+            if (!h.Mouth.IsSubsetOf(h.Floor)) return "mouth is not floor";
+
+            var pools = new List<int>();
+            for (int c = 0; c < g.Water.Length; c++) if (g.Water[c]) pools.Add(c);
+            foreach (int c in h.Floor.Concat(h.Wall))
+            {
+                if (g.Forbidden[c]) return "footprint on a forbidden cell";
+                foreach (int q in pools)
+                {
+                    int ax = c % w - q % w, az = c / w - q / w;
+                    if (ax * ax + az * az <= p.WaterClearance * p.WaterClearance) return "footprint inside the water clearance";
+                }
+            }
+
+            for (int i = 0; i < h.Rooms.Count; i++)
+            {
+                var a = h.Rooms[i];
+                if (a.Radius < p.RadiusMin || a.Radius > p.RadiusMax) return "room radius out of range";
+                foreach (int c in RM_HiveLayoutKernel.Disc(g, a.X, a.Z, a.Radius)) if (!h.Floor.Contains(c)) return $"room {i} is not all floor";
+                for (int j = i + 1; j < h.Rooms.Count; j++)
+                {
+                    var b = h.Rooms[j];
+                    double gap = Math.Sqrt((a.X - b.X) * (a.X - b.X) + (a.Z - b.Z) * (a.Z - b.Z)) - a.Radius - b.Radius;
+                    if (gap < 2) return $"rooms {i} and {j} leave no wall between them ({gap:F2})";
+                }
+            }
+
+            foreach (int c in h.Floor)
+            {
+                if (h.Mouth.Contains(c)) continue;
+                for (int dz = -1; dz <= 1; dz++)
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        int x = c % w + dx, z = c / w + dz;
+                        if (!g.InBounds(x, z)) return "floor on the map edge";
+                        int n = x + z * w;
+                        if (!h.Floor.Contains(n) && !h.Wall.Contains(n) && g.Passable[n]) return "open ground touches the hive beyond its mouth";
+                    }
+            }
+
+            var edge = new List<int>();
+            for (int i = 0; i < w; i++) { edge.Add(i); edge.Add(i + (g.Height - 1) * w); edge.Add(i * w); edge.Add(w - 1 + i * w); }
+            Func<int, bool> built = c => h.Floor.Contains(c) || (g.Passable[c] && !h.Wall.Contains(c));
+            bool[] reach = HiveFlood(g, built, edge);
+            foreach (int c in h.Floor) if (!reach[c]) return "a floor cell cannot be reached from the map edge";
+            bool[] before = HiveFlood(g, c => g.Passable[c], edge);
+            for (int c = 0; c < before.Length; c++) if (before[c] && !reach[c] && !h.Wall.Contains(c)) return "the hive shut off outdoor ground";
+            bool[] shut = HiveFlood(g, c => built(c) && !h.Mouth.Contains(c), edge);
+            foreach (int c in h.Floor) if (!h.Mouth.Contains(c) && shut[c]) return "there is a second way in";
+
+            // A chain: stop any middle room and the rooms past it fall out of reach from the entrance.
+            for (int i = 1; i < h.Rooms.Count - 1; i++)
+            {
+                var stop = RM_HiveLayoutKernel.Disc(g, h.Rooms[i].X, h.Rooms[i].Z, h.Rooms[i].Radius);
+                var first = h.Rooms[0];
+                bool[] inner = HiveFlood(g, c => h.Floor.Contains(c) && !stop.Contains(c), new[] { first.X + first.Z * w });
+                for (int j = i + 1; j < h.Rooms.Count; j++)
+                    if (inner[h.Rooms[j].X + h.Rooms[j].Z * w]) return $"room {j} is reached around room {i}: tunnels cross";
+            }
+            return null;
+        }
+
+        private static List<string> Hive(int cases, int? oneSeed)
+        {
+            var fails = new List<string>();
+            for (int seed = 0; seed < cases; seed++)
+            {
+                if (oneSeed.HasValue && seed != oneSeed.Value) continue;
+                var r = new Random(unchecked(seed * 7919 + 31));
+                int kind = seed % 6;
+                HiveGrid g = HiveScene(r, kind);
+                bool shipped = seed % 2 == 0;
+                var p = new HivePlanParams
+                {
+                    TargetRooms = r.Next(4, 8), EdgeMargin = 10, Attempts = 60, CorridorRadius = shipped ? 1 : r.Next(1, 3),
+                    RadiusMin = 2.5f, RadiusMax = shipped ? 4f : 5f, HopMin = 6f, HopMax = 11f, WaterClearance = shipped ? 12f : r.Next(0, 15),
+                };
+                HiveLayout h = RM_HiveLayoutKernel.TryPlan(g, p, (a, b) => a + (float)r.NextDouble() * (b - a), r.Next);
+                Cases++; Steps += p.TargetRooms;
+                if (h == null)
+                {
+                    HiveNoPlan++;
+                    if (kind == 0) fails.Add($"hive seed {seed}: no plan on bare open ground");
+                    continue;
+                }
+                if (kind == 5) fails.Add($"hive seed {seed}: planned on a map where nothing fits");
+                string bad = HiveJudge(g, p, h);
+                if (bad != null) fails.Add($"hive seed {seed} kind {kind}: {bad}");
+                HivePlans++;
+                if (kind == 0) HiveOpenPlans++;
+                if (h.Wall.Count > 0) HiveWalledPlans++;
+                if (h.Floor.Any(c => !g.Passable[c])) HiveDugPlans++;
+                if (g.Water.Any(b => b)) HivePooledPlans++;
+                if (h.Rooms.Count == p.TargetRooms) HiveFullChains++;
+                if (fails.Count > 5) break;
+            }
+            return fails;
+        }
         private static bool Near(double a, double b, double tol = 1e-5) { return Math.Abs(a - b) <= tol; }
 
         internal static List<T> Shrink<T>(List<T> acts, Func<List<T>, bool> fails)
@@ -791,6 +950,7 @@ namespace RimMandrake.FeverWood.SelfTest
                 ("tank", () => Tank(N(4000), S(1))),
                 ("pool", () => Pool(N(4000), S(1))),
                 ("weights", () => Weights(N(300), S(1))),
+                ("hive", () => Hive(oneSeed.HasValue ? oneSeed.Value + 1 : N(1500), oneSeed)),
                 ("units", () => Units()),
             };
             foreach (var f in fam)
@@ -804,12 +964,14 @@ namespace RimMandrake.FeverWood.SelfTest
             }
             if (only != null && !fam.Any(f => f.name == only)) { Console.WriteLine("FAIL unknown --fuzz-only family: " + only); return false; }
             if (Cases == 0) { Console.WriteLine("FAIL no cases ran (--fuzz-scale too small?); a fuzz that checked nothing is not a pass"); return false; }
+            Console.WriteLine($"hive: plans {HivePlans} (open ground {HiveOpenPlans}, dug rock {HiveDugPlans}, walled {HiveWalledPlans}, pooled {HivePooledPlans}), no footprint {HiveNoPlan}, rooms at target {HiveFullChains}");
             Console.WriteLine($"tally: letters fired {LettersFired}, display tanks freed {TankFrees}, boldness at cap {BoldnessCapped}");
             Console.WriteLine($"tank: neglect rolls due {NeglectRolls}, neglect escapes {NeglectEscapes}, damage escapes {DamageEscapes}, display breaches {DisplayBreaches}, tanks destroyed {TankDestroyed} (occupant breached out {DestroyEscapes}, let out {DestroyReleases})");
             Console.WriteLine($"pool: ordinary {Ordinary}, great {Great}, forced {Forced}, suppressions {Suppressions}, gifts delivered {GiftsDelivered}, hushes {Hushes}, restores {Restores}; weighted picks {Picks}, gift retries {Retries}");
             if (!oneSeed.HasValue && scale >= 1 && only == null)
             {
                 var blind = new List<string>();
+                if (HiveOpenPlans == 0 || HiveDugPlans == 0 || HiveWalledPlans == 0 || HivePooledPlans == 0 || HiveNoPlan == 0 || HiveFullChains == 0) blind.Add("hive never saw every kind of ground");
                 if (LettersFired == 0) blind.Add("tally never fired a letter");
                 if (TankFrees == 0) blind.Add("tally never freed a display tank");
                 if (NeglectRolls == 0 || NeglectEscapes == 0 || DamageEscapes == 0 || DisplayBreaches == 0) blind.Add("tank never reached a neglect/damage/display escape");

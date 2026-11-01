@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ANT_HIVE_REAL_GEOMETRY_1. What bounds a kurreth hive on open ground (RM_GenStep_AntHiveDungeon, spawned in code, never
+     built by a player). Same class of thing as vanilla CollapsedRocks and RaisedRocks: mineable, holds a roof,
+     isNaturalRock false so it can never be drawn as a world's rock type, no yield. It does not decay, unlike the
+     RM_KurrethResinPlug it is made of. Art: the vanilla rock atlas tinted resin-brown; bespoke art is owed. -->
+<Defs>
+  <ThingDef ParentName="RockBase">
+    <defName>RM_KurrethHiveWall</defName>
+    <label>kurreth hive wall</label>
+    <description>Chewed earth and hardened resin, packed by generations of kurreth workers into a wall that holds up its own tunnels. It can be mined through.</description>
+    <graphicData>
+      <color>(125,74,48)</color>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>500</MaxHitPoints>
+    </statBases>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <filthLeaving>Filth_RubbleRock</filthLeaving>
+    <building>
+      <isNaturalRock>false</isNaturalRock>
+      <claimable>false</claimable>
+      <mineablePreventMeteorite>true</mineablePreventMeteorite>
+    </building>
+  </ThingDef>
+</Defs>

@@ -25,6 +25,7 @@
     <Compile Include="..\Kernel\RM_BroodKernel.cs" />
     <Compile Include="..\Kernel\RM_TankKernel.cs" />
     <Compile Include="..\Kernel\RM_PoolKernel.cs" />
+    <Compile Include="..\Kernel\RM_HiveLayoutKernel.cs" />
     <Compile Include="FeverWoodFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

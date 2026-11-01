@@ -213,8 +213,8 @@ namespace RimMandrake.FeverWood
         /// "Release lure" once this specific stake has drawn a raid.</summary>
         public static bool twoFrontLureLockOnceTriggered = false;
 
-        /// <summary>ANT_HIVE_REAL_GEOMETRY_1 (worldgen): hive rooms keep real water clearance, never overlap, and are
-        /// dug out of natural rock. Off: the old centre-cell water test, overlapping hops, painted-only rooms.</summary>
+        /// <summary>ANT_HIVE_REAL_GEOMETRY_1 (worldgen): hive rooms keep real water clearance, never overlap, are dug out of
+        /// natural rock and walled on open ground. Off: the old centre-cell water test, overlapping hops, roof paint.</summary>
         public static bool antHiveRealGeometry = true;
 
         /// <summary>FEVERWOOD_OIL_BOIL_WEATHER_1: hot still days boil the seep oil into a flammable haze.</summary>
@@ -421,8 +421,9 @@ namespace RimMandrake.FeverWood
                 list.Label("Hive frequency multiplier (lower = rarer): " + antHiveChanceMultiplier.ToString("0.00"));
                 antHiveChanceMultiplier = list.Slider(antHiveChanceMultiplier, 0f, 3f);
                 list.CheckboxLabeled("Ant hives are really dug (worldgen)", ref antHiveRealGeometry,
-                    "On: a new hive keeps its rooms well clear of the pools, never stacks one room on another, and digs its rooms "
-                  + "and tunnels out of any rock they cross. Off: the old layout, which could paint a hive under solid rock. "
+                    "On: a new hive keeps its whole footprint well clear of the pools, never stacks one room on another, digs its rooms "
+                  + "and tunnels out of any rock they cross, walls them with resin on open ground and leaves one mouth open. "
+                  + "Off: the old layout, roof patches with no walls that could paint a hive under solid rock. "
                   + "Affects new maps only.");
                 list.CheckboxLabeled("Ant hive farm chamber (worldgen)", ref antHiveFarmChamberEnabled,
                     "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "

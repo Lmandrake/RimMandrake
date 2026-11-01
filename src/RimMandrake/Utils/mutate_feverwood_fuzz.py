@@ -37,6 +37,14 @@ MUTATIONS = [
     ("RM_PoolKernel.cs", "public static int Extend(int blockedUntil, int until) { return until > blockedUntil ? until : blockedUntil; }", "public static int Extend(int blockedUntil, int until) { return until; }", "a short respite cuts a long one short"),
     ("RM_PoolKernel.cs", "long u = (long)now + ticks;", "long u = (long)(now + ticks);", "block clock wraps instead of saturating"),
     ("RM_PoolKernel.cs", "return kind == AmbientKind.Great ? 0 : pressure + 1;", "return pressure + 1;", "a Great Emergence does not spend the pressure"),
+    ("RM_HiveLayoutKernel.cs", "blocked[x + dx + (z + dz) * g.Width] = true;", "blocked[x + z * g.Width] = true;", "the water clearance is a yes/no on the pool cell again"),
+    ("RM_HiveLayoutKernel.cs", "float min = r.Radius + next.Radius + 2f;", "float min = 0f;", "rooms may stack on rooms"),
+    ("RM_HiveLayoutKernel.cs", "|| TouchesFloor(g, plan, tunnel, prevCells) || TouchesFloor(g, plan, roomCells, NoCells))", "|| TouchesFloor(g, plan, roomCells, NoCells))", "a tunnel may cross the hive"),
+    ("RM_HiveLayoutKernel.cs", "|| TouchesFloor(g, plan, tunnel, prevCells) || TouchesFloor(g, plan, roomCells, NoCells))", "|| TouchesFloor(g, plan, tunnel, prevCells))", "a room may land on a tunnel"),
+    ("RM_HiveLayoutKernel.cs", "if (!plan.Floor.Contains(n) && g.Passable[n])", "if (!plan.Floor.Contains(n) && g.Passable[n] && d % 2 == 0)", "no wall at the corners"),
+    ("RM_HiveLayoutKernel.cs", "if (!FootprintFree(g, p, blocked, stub) || TouchesFloor(g, plan, stub, roomCells))", "if (TouchesFloor(g, plan, stub, roomCells))", "the mouth ignores what it is cut through"),
+    ("RM_HiveLayoutKernel.cs", "for (int dz = -1; dz <= 1; dz++)\n                {\n                    for (int dx = -1; dx <= 1; dx++)\n                    {\n                        if (blocked[", "for (int dz = 0; dz <= 0; dz++)\n                {\n                    for (int dx = 0; dx <= 0; dx++)\n                    {\n                        if (blocked[", "walls may stand on blocked cells"),
+    ("RM_HiveLayoutKernel.cs", "if (outdoors[c] && !open[c] && !plan.Wall.Contains(c))", "if (false)", "a hive may shut off outdoor ground"),
     ("RM_PoolKernel.cs", "hush = count == 1;", "hush = count >= 1;", "every sentinel hushes the chorus again"),
 ]
 
