@@ -278,7 +278,11 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// later crosses a 1/16 °C step a few ticks apart in the two runs can still split them: disclosed, not hidden).
 		/// CANAL_OVERFLOW round 3: EVERY path is quantised at read to the save's grid (RM_SheetTemp.ToSixteenths) and returned
 		/// as the integer, so nothing downstream can see a finer value than a load would; and a save snaps the indoor room
-		/// trackers to that same grid (SnapTemperaturesForSave), so the live game continues from exactly what its load reads.</summary>
+		/// trackers to that same grid (SnapTemperaturesForSave), so at the save tick the live game holds what its load reads.
+		/// It cannot keep them together after it (review 2026-11-01): a load rebuilds each indoor room's tracker with a freshly
+		/// Rand-shuffled equalizeCells and cycleIndex 0 (RoomTempTracker.RegenerateEqualizeCells; neither is saved), so vanilla's
+		/// wall equalization moves an indoor room's temperature differently live and loaded. Only the outdoor path is
+		/// save/load-exact; ProofSheetHash counts wet squares in an indoor room (indoorWet) so a split there is named, not hidden.</summary>
 		private int KernelTempAt(IntVec3 c)
 		{
 			Room room = c.GetRoom(map);
@@ -294,7 +298,9 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// the finer value and the old cache phase, so it continued from a state its own save does not hold. While spilled
 		/// liquid stands, saving makes the live game hold what the load will read: every indoor room's temperature is cut to
 		/// the save's grid (the very value written, so idempotent and at most 1/16 °C), and the outdoor cache is cleared as a
-		/// load leaves it (it refills on the next read). Outdoor rooms copy the outdoor temperature anyway and are left alone.</summary>
+		/// load leaves it (it refills on the next read). Outdoor rooms are left alone: the kernel reads outdoors from
+		/// OutdoorExactC, not their trackers (a load sets them to the 1/16 grid too until their next equalize, which only an
+		/// indoor neighbour's wall equalization can see: the indoor limit above).</summary>
 		private void SnapTemperaturesForSave()
 		{
 			try

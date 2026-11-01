@@ -9,7 +9,9 @@ namespace RimMandrake.FlowWorks.Sheet
 	/// <summary>CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED: the bridge surface northstar/sheet_overflow_proof.py reads
 	/// (jawa/static_call; contracts in that script's OWED_PROOFS). One string arg each, one line out: a word then key=value
 	/// tokens; "REFUSED: why" on bad args. Read-only except ProofSheetSpill / ProofSheetFillIn (staging through the production
-	/// entries) and ProofSheetPerf "reset".</summary>
+	/// entries) and ProofSheetPerf "reset". Not quite read-only: ProofSheetCell and ProofSheetRect (dry open neighbours) classify
+	/// through RM_MapComponent_Sheet.KindAt, which records the kind in the saved wake record and wakes a changed cell's
+	/// neighbours, exactly as the next pulse's refresh would (review 2026-11-01: call them symmetrically in any A/B arm).</summary>
 	public static class RM_SheetProofs
 	{
 		private static string B(bool b) => b ? "True" : "False";
