@@ -10,12 +10,13 @@
   Owner decisions by question card 2026-10-08: ONE quest, destination = the branch; the
   half-extracted core is waste only (no fuel, no Hutt sale).
   HOW THE CHOICE IS MADE: the cask bay gains a command (RUT_CompWasteRunPlanner) while this
-  quest is Ongoing; picking a destination destroys all cask-bay waste and sends the signal
+  quest is Ongoing; with the ship there, picking a destination destroys all cask-bay waste and sends the signal
   Quest<id>.WasteDest_<Name>. No vanilla XML node lets a player choose.
   FIRING: route 2, IncidentDef RUT_WasteRunOffer (root weight 0, isRootSpecial).
-  ALL NUMBERS PROVISIONAL. STUBS (filed as items): flight to the destination is not required,
-  the Throat cask and Junker warcasket are not involved, the war-lab breach and Slime results
-  only record history events.
+  CONSEQUENCES (WASTE_RUN_STUBS_1): the command refuses until the ship stands at the destination
+  (WasteRunWorld.Gate); every branch runs RUT_QuestNode_WasteRunEffect, which gives the crew a mood
+  memory and, on the lake, burns the crater; the Slime outcomes change world pollution, and Unknown
+  answers weeks later. ALL NUMBERS PROVISIONAL.
 -->
 <Defs>
   <QuestScriptDef>
@@ -33,7 +34,7 @@
     </questNameRules>
     <questDescriptionRules>
       <rulesStrings>
-        <li>questDescription->Your cask bays hold waste that cannot stay and cannot be left: wastepacks, and reactor cores cut half-free of the ruins that powered them. The ship can carry it anywhere. There is nowhere it can be taken that is not somebody's problem.\n\nAccept, then open any cask bay and choose where it goes. You can drop it on the Empire, freeze it on the cold side, entomb it on the Assailants, sink it in the propane lakes, or pour the Slime experiment down the Throat. Each is a verdict, none can be taken back, and the window closes in [windowTicks_duration].</li>
+        <li>questDescription->Your cask bays hold waste that cannot stay and cannot be left: wastepacks, and reactor cores cut half-free of the ruins that powered them. The ship can carry it anywhere. There is nowhere it can be taken that is not somebody's problem.\n\nAccept, fly the ship there, then open any cask bay and choose. You can drop it on the Empire, freeze it on the cold side, entomb it on the Assailants, sink it in the propane lakes, or pour the Slime experiment down the Throat. Each is a verdict, none can be taken back, and the window closes in [windowTicks_duration].</li>
       </rulesStrings>
     </questDescriptionRules>
     <root Class="QuestNode_Sequence">
@@ -65,6 +66,7 @@
                 <reason>RUT_WasteRunDroppedOnEmpire</reason>
               </li>
               <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunDroppedOnEmpire</historyDef></li>
+              <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_WasteRunEffect"><effect>DroppedOnEmpire</effect></li>
               <li Class="QuestNode_Letter">
                 <label TKey="L_WasteDest_DropOnEmpire">Dropped on the Empire</label>
                 <letterDef>NegativeEvent</letterDef>
@@ -83,6 +85,7 @@
           <node Class="QuestNode_Sequence">
             <nodes>
               <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunFrozen</historyDef></li>
+              <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_WasteRunEffect"><effect>Frozen</effect></li>
               <li Class="QuestNode_Letter">
                 <label TKey="L_WasteDest_FreezeColdSide">Frozen on the cold side</label>
                 <letterDef>NeutralEvent</letterDef>
@@ -101,6 +104,7 @@
           <node Class="QuestNode_Sequence">
             <nodes>
               <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunEntombed</historyDef></li>
+              <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_WasteRunEffect"><effect>Entombed</effect></li>
               <li Class="QuestNode_Letter">
                 <label TKey="L_WasteDest_EntombAssailants">Entombed on the Assailants</label>
                 <letterDef>NeutralEvent</letterDef>
@@ -119,10 +123,11 @@
           <node Class="QuestNode_Sequence">
             <nodes>
               <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunPropaneIgnited</historyDef></li>
+              <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_WasteRunEffect"><effect>PropaneIgnited</effect></li>
               <li Class="QuestNode_Letter">
                 <label TKey="L_WasteDest_IgnitePropaneLake">Sunk in the propane lake</label>
                 <letterDef>NeutralEvent</letterDef>
-                <text TKey="T_WasteDest_IgnitePropaneLake">The core went down into cryogenic propane and the lake caught. It burned for days on the nightside, a sustained melt a long way from anyone. Something under that lake may now be open that was not before.\n\n(The war lab itself is not yet built; the breach is recorded and waits.)</text>
+                <text TKey="T_WasteDest_IgnitePropaneLake">The core went down into cryogenic propane and the lake caught. It burned for days on the nightside, a sustained melt a long way from anyone. The lake is a crater now, and something under it is open that was not before.</text>
               </li>
               <li Class="QuestNode_End">
                 <outcome>Success</outcome>
@@ -136,15 +141,15 @@
           <inSignal>WasteDest_SlimeExperiment</inSignal>
           <node Class="QuestNode_Sequence">
             <nodes>
-              <!-- PROVISIONAL: the outcome is rolled once at quest generation (a runtime roll needs
-                   a C# QuestPart). Each outcome only records a history event; the world effects
-                   below the Throat are a stub (WASTE_RUN_SLIME_RESULTS_1). -->
+              <!-- PROVISIONAL: the outcome is rolled once at quest generation, so a reload cannot
+                   re-roll it. The world effects live in RUT_QuestNode_WasteRunEffect. -->
               <li Class="QuestNode_RandomNode">
                 <nodes>
               <li Class="QuestNode_Sequence">
                 <selectionWeight>1</selectionWeight>
                 <nodes>
               <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunSlimeNeutralized</historyDef></li>
+              <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_WasteRunEffect"><effect>SlimeNeutralized</effect></li>
                   <li Class="QuestNode_Letter">
                     <label TKey="L_Slime_RUT_WasteRunSlimeNeutralized">The pit went quiet</label>
                     <letterDef>NeutralEvent</letterDef>
@@ -156,6 +161,7 @@
                 <selectionWeight>1</selectionWeight>
                 <nodes>
               <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunSlimeBloomed</historyDef></li>
+              <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_WasteRunEffect"><effect>SlimeBloomed</effect></li>
                   <li Class="QuestNode_Letter">
                     <label TKey="L_Slime_RUT_WasteRunSlimeBloomed">The pit answered</label>
                     <letterDef>NeutralEvent</letterDef>
@@ -167,6 +173,7 @@
                 <selectionWeight>1</selectionWeight>
                 <nodes>
               <li Class="QuestNode_RecordHistoryEvent"><historyDef>RUT_WasteRunSlimeUnknown</historyDef></li>
+              <li Class="RimMandrake.Utinni.WasteRun.RUT_QuestNode_WasteRunEffect"><effect>SlimeUnknown</effect></li>
                   <li Class="QuestNode_Letter">
                     <label TKey="L_Slime_RUT_WasteRunSlimeUnknown">Nothing you can measure</label>
                     <letterDef>NeutralEvent</letterDef>

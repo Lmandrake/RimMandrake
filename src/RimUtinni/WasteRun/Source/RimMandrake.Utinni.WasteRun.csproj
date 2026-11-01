@@ -28,6 +28,7 @@
     <Compile Include="WasteRunSettings.cs" />
     <Compile Include="WasteRunDisposal.cs" />
     <Compile Include="WasteRunProof.cs" />
+    <Compile Include="WasteRunEffects.cs" />
     <Compile Include="ThroatCask.cs" />
   </ItemGroup>
   <ItemGroup>

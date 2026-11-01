@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WASTE_RUN_STUBS_1. One colony-wide memory per quest outcome, keyed RUT_WasteRunMood_<WasteEffect>. Numbers PROVISIONAL. -->
+<Defs>
+  <ThoughtDef>
+    <defName>RUT_WasteRunMood_DroppedOnEmpire</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>15</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>we started a war with a cargo hold</label>
+        <description>We dropped the casks on the Empire and called it sanitation. Everyone aboard knows what it was.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RUT_WasteRunMood_Frozen</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>left it for someone else</label>
+        <description>The waste is in the ice. It will keep, and someone will find it, and it will not be us.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RUT_WasteRunMood_Entombed</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>12</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>did what the Rakata did</label>
+        <description>We buried the worst thing in the second worst thing and sealed it. We knew better.</description>
+        <baseMoodEffect>-4</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RUT_WasteRunMood_PropaneIgnited</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>10</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>watched the lake burn</label>
+        <description>The nightside burned for days. Nobody aboard can stop thinking about what was under it.</description>
+        <baseMoodEffect>-3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RUT_WasteRunMood_SlimeNeutralized</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>12</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>the pit went quiet</label>
+        <description>The groaning under the Stenchlands stopped. For once something got better.</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RUT_WasteRunMood_SlimeBloomed</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>12</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>the pit answered</label>
+        <description>What we poured did not die. We fed it.</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+  <ThoughtDef>
+    <defName>RUT_WasteRunMood_SlimeUnknown</defName>
+    <thoughtClass>Thought_Memory</thoughtClass>
+    <durationDays>8</durationDays>
+    <stackLimit>1</stackLimit>
+    <stages>
+      <li>
+        <label>poured it and heard nothing</label>
+        <description>The Slime went down and nothing came back. Waiting is the worst part.</description>
+        <baseMoodEffect>-2</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

@@ -82,12 +82,13 @@ namespace RimMandrake.Utinni.WasteRun
             if (!WasteRunSettings.masterEnabled || parent.Faction != Faction.OfPlayer) yield break;
             Quest quest = WasteDisposalQuest();
             if (quest == null) yield break;
+            Map map = parent.Map;
             yield return new Command_Action
             {
                 defaultLabel = "Waste run: choose destination",
-                defaultDesc = "Haul everything in the cask bays to a destination and be done with it. Every destination is a verdict; the choice cannot be taken back.",
+                defaultDesc = "Dump everything in the cask bays at a destination and be done with it. The ship must be there first: fly it, then choose. Every destination is a verdict; the choice cannot be taken back.",
                 icon = parent.def.uiIcon,
-                action = delegate { OpenMenu(quest); }
+                action = delegate { OpenMenu(quest, map); }
             };
         }
 
@@ -97,28 +98,36 @@ namespace RimMandrake.Utinni.WasteRun
             return q != null && WasteRunDisposal.WasteInBays().Count > 0 ? q : null;
         }
 
-        private static void OpenMenu(Quest quest)
+        private static void OpenMenu(Quest quest, Map map)
         {
             List<FloatMenuOption> options = new List<FloatMenuOption>();
             foreach (WasteDestination d in System.Enum.GetValues(typeof(WasteDestination)))
             {
                 if (!WasteRunSettings.DestinationEnabled(d)) continue;
                 WasteDestination dest = d;
+                if (!WasteRunKernel.MayCommit(WasteRunWorld.Gate(map, dest)))
+                {
+                    options.Add(new FloatMenuOption(WasteRunKernel.Label(dest) + " (" + WasteRunKernel.AwayReason(dest) + ")", null));
+                    continue;
+                }
                 options.Add(new FloatMenuOption(WasteRunKernel.Label(dest), delegate
                 {
                     Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(
                         WasteRunKernel.Label(dest) + "? This cannot be undone.",
-                        delegate { Commit(quest, dest); }, destructive: true));
+                        delegate { Commit(quest, dest, map); }, destructive: true));
                 }));
             }
             if (options.Count > 0) Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        internal static void Commit(Quest quest, WasteDestination dest)
+        // The gate is rechecked here: a dialog left open is not a flight.
+        internal static bool Commit(Quest quest, WasteDestination dest, Map map)
         {
-            if (quest.State != QuestState.Ongoing) return;
+            if (quest.State != QuestState.Ongoing || !WasteRunKernel.MayCommit(WasteRunWorld.Gate(map, dest))) return false;
             WasteRunDisposal.DisposeAll();
+            Current.Game.GetComponent<GameComponent_WasteRunAftermath>().shipTileId = map.Tile.Layer.IsRootSurface ? map.Tile.tileId : -1;
             Find.SignalManager.SendSignal(new Signal(WasteRunKernel.FullSignal(quest.id, dest)));
+            return true;
         }
     }
 

@@ -41,6 +41,26 @@ namespace RimMandrake.Utinni.WasteRun
             }
         }
 
+        /// <summary>args = WasteDestination name, or empty for all five. "name=gate ..." for the first bay's map. Pure read.</summary>
+        public static string ProofGate(string dest)
+        {
+            try
+            {
+                Map map = WasteRunDisposal.CaskBays().Select(b => b.Map).FirstOrDefault();
+                if (map == null) return "ERROR no cask bay";
+                string line = "";
+                foreach (WasteDestination d in System.Enum.GetValues(typeof(WasteDestination)))
+                {
+                    if (string.IsNullOrEmpty(dest) || dest == d.ToString()) line += d + "=" + WasteRunWorld.Gate(map, d) + " ";
+                }
+                return line.TrimEnd();
+            }
+            catch (System.Exception e)
+            {
+                return "ERROR " + e.GetType().Name + ": " + e.Message;
+            }
+        }
+
         /// <summary>args = WasteDestination name (DropOnEmpire, FreezeColdSide, EntombAssailants, IgnitePropaneLake, SlimeExperiment).
         /// Returns "signal=.. stateBefore=.. stateAfter=.. wasteBefore=N wasteAfter=N". Needs an Ongoing waste-run quest.</summary>
         public static string ProofPress(string dest)
@@ -53,8 +73,11 @@ namespace RimMandrake.Utinni.WasteRun
                 if (q == null) return "ERROR no Ongoing waste-run quest (accept it first)";
                 string before = q.State.ToString();
                 int wasteBefore = WasteRunDisposal.WasteInBays().Count;
-                RUT_CompWasteRunPlanner.Commit(q, d);
-                return "signal=" + WasteRunKernel.FullSignal(q.id, d) + " stateBefore=" + before + " stateAfter=" + q.State
+                Map map = WasteRunDisposal.CaskBays().Select(b => b.Map).FirstOrDefault();
+                if (map == null) return "ERROR no cask bay";
+                FlightGate gate = WasteRunWorld.Gate(map, d);
+                bool committed = RUT_CompWasteRunPlanner.Commit(q, d, map);
+                return "gate=" + gate + " committed=" + committed + " signal=" + WasteRunKernel.FullSignal(q.id, d) + " stateBefore=" + before + " stateAfter=" + q.State
                     + " wasteBefore=" + wasteBefore + " wasteAfter=" + WasteRunDisposal.WasteInBays().Count;
             }
             catch (System.Exception e)

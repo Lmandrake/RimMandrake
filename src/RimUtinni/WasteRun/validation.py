@@ -7,7 +7,9 @@ Defs/HistoryEventDefs, Patches/RUT_CaskBay_WasteRunPlanner.xml, Source/*.cs.
 WHAT IS PROVEN OFFLINE (static_checks, run `python3 validation.py`): every destination in the C# enum has
 a QuestNode_Signal listening on the exact signal name the cask-bay command sends; every history event
 the quest records is defined; the comp patch names a class that exists; every settings field is Scribed
-and listed in suite.toggles; the walk exists.
+and listed in suite.toggles; the walk exists; every branch runs its effect node, has a mood memory, the
+crater reflection target exists, and Commit rechecks the flight gate (WASTE_RUN_STUBS_1). The kernel half
+(gate table, pollution, delayed answer) runs in selftest_wasterun_kernel.py.
 
 WHAT IS UNMEASURED UNTIL THE FIRST LIVE RUN: that the quest generates (jawa/fire_quest), that the
 RM_CaskBay gizmo appears, and that choosing a destination fires the signal. No bridge tool presses a
@@ -29,6 +31,7 @@ from modcheck import Suite, ExpectationFailed
 suite = Suite("WasteRun")
 suite.toggles = ["masterEnabled", "offerEnabled", "dropOnEmpireEnabled", "freezeColdSideEnabled",
                  "entombAssailantsEnabled", "propaneLakeEnabled", "slimeExperimentEnabled",
+                 "flightRequiredEnabled", "warLabBreachEnabled", "slimeWorldEffectsEnabled", "moodMemoriesEnabled",
                  "throatCaskEnabled", "throatRadiationEnabled", "throatShipFaultsEnabled",
                  "throatBurstEnabled", "throatDecayEnabled"]
 SETTINGS = "RimMandrake.Utinni.WasteRun.WasteRunSettings"
@@ -36,6 +39,7 @@ QUEST = "RUT_WasteRun"
 HISTORY = ["RUT_WasteRunDroppedOnEmpire", "RUT_WasteRunFrozen", "RUT_WasteRunEntombed",
            "RUT_WasteRunPropaneIgnited", "RUT_WasteRunSlimeNeutralized", "RUT_WasteRunSlimeBloomed",
            "RUT_WasteRunSlimeUnknown"]
+EFFECTS = ["DroppedOnEmpire", "Frozen", "Entombed", "PropaneIgnited", "SlimeNeutralized", "SlimeBloomed", "SlimeUnknown"]
 _FIELD = re.compile(r"public static (bool|int|float) (\w+)\s*=")
 
 
@@ -58,7 +62,7 @@ def settings_fields():
 
 @suite.chain("defs_and_load")
 def defs_and_load(t):
-    shipped = ["QuestScriptDef/%s" % QUEST, "ThingDef/RUT_ThroatCask", "ThoughtDef/RUT_ThroatCaskNear", "IncidentDef/RUT_WasteRunOffer"] + ["HistoryEventDef/%s" % h for h in HISTORY]
+    shipped = ["QuestScriptDef/%s" % QUEST, "ThingDef/RUT_ThroatCask", "ThoughtDef/RUT_ThroatCaskNear", "IncidentDef/RUT_WasteRunOffer"] + ["HistoryEventDef/%s" % h for h in HISTORY] + ["ThoughtDef/RUT_WasteRunMood_%s" % e for e in EFFECTS]
     with t.component("defs_resolve"):
         r = t.bridge_call("jawa/get_defs", defs=";".join(shipped), fields="defName")
         if _live(t):
@@ -102,6 +106,43 @@ def settings_roundtrip(t):
                 raw("set", old)
 
 
+def effect_branches(quest):
+    """(history event, effect) pairs in file order: each history record must be followed by its own effect node."""
+    return re.findall(r"<historyDef>RUT_WasteRun\w+</historyDef></li>\s*<li Class=\"[\w.]*RUT_QuestNode_WasteRunEffect\"><effect>(\w+)</effect>", quest)
+
+
+def consequence_checks(quest, kernel):
+    """WASTE_RUN_STUBS_1: the four stubs stay gone."""
+    bad = []
+    enum = re.search(r"enum WasteEffect\s*\{([^}]*)\}", kernel)
+    effects = [n.strip() for n in enum.group(1).split(",")] if enum else []
+    if effects != EFFECTS:
+        bad.append("WasteEffect enum %r differs from EFFECTS (sanity probe)" % effects)
+    if effect_branches(quest) != EFFECTS:
+        bad.append("branches do not each run their effect node: %r" % effect_branches(quest))
+    # CONTROL: strip the nodes and the same reader must see nothing.
+    if effect_branches(re.sub(r"RUT_QuestNode_WasteRunEffect", "Gone", quest)):
+        bad.append("effect reader is blind")
+    moods = _src("Defs", "ThoughtDefs", "RUT_WasteRunMoods.xml")
+    for e in EFFECTS:
+        if "<defName>RUT_WasteRunMood_%s</defName>" % e not in moods:
+            bad.append("no mood memory for %s" % e)
+    fx = _src("Source", "WasteRunEffects.cs")
+    if 'RimMandrake.Utinni.StructureInjectionsRUT.WarLabCraterMutation' not in fx or 'GetMethod("Ignite"' not in fx:
+        bad.append("the propane branch no longer reaches WarLabCraterMutation.Ignite")
+    crater = os.path.join(HERE, "..", "StructureInjectionsRUT", "Source", "WarLab", "WarLabCraterMutation.cs")
+    body = open(crater, encoding="utf-8").read()
+    if "namespace RimMandrake.Utinni.StructureInjectionsRUT" not in body or "public static bool Ignite()" not in body:
+        bad.append("reflection target moved: WarLabCraterMutation.Ignite() is not where WasteRunEffects looks")
+    for stale in ("not yet built", "WASTE_RUN_SLIME_RESULTS_1", "only record history events"):
+        if stale in quest:
+            bad.append("stub text survives in the quest: %r" % stale)
+    disposal = _src("Source", "WasteRunDisposal.cs")
+    if "MayCommit(WasteRunWorld.Gate(map, dest))" not in disposal.split("internal static bool Commit", 1)[-1]:
+        bad.append("Commit does not recheck the flight gate")
+    return bad
+
+
 def static_checks():
     bad = []
     quest = _src("Defs", "QuestScriptDefs", "RUT_WasteRun.xml")
@@ -124,6 +165,7 @@ def static_checks():
     for h in HISTORY:
         if h not in events:
             bad.append("history event %s missing from Defs" % h)
+    bad.extend(consequence_checks(quest, kernel))
     if "WasteRunKernel.QuestScriptDefName = \"%s\"" % QUEST not in kernel.replace("const string QuestScriptDefName", "WasteRunKernel.QuestScriptDefName").replace(" =", " ="):
         if 'QuestScriptDefName = "%s"' % QUEST not in kernel:
             bad.append("kernel QuestScriptDefName does not match the quest defName")

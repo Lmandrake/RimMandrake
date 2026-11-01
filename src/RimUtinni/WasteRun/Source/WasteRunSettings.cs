@@ -15,6 +15,11 @@ namespace RimMandrake.Utinni.WasteRun
         public static bool entombAssailantsEnabled = true;
         public static bool propaneLakeEnabled = true;
         public static bool slimeExperimentEnabled = true;
+        // WASTE_RUN_STUBS_1 (numbers PROVISIONAL)
+        public static bool flightRequiredEnabled = true;
+        public static bool warLabBreachEnabled = true;
+        public static bool slimeWorldEffectsEnabled = true;
+        public static bool moodMemoriesEnabled = true;
         // THROAT_CASK_ITEM_1 (numbers PROVISIONAL)
         public static bool throatCaskEnabled = true;
         public static bool throatRadiationEnabled = true;
@@ -44,6 +49,10 @@ namespace RimMandrake.Utinni.WasteRun
             Scribe_Values.Look(ref entombAssailantsEnabled, "entombAssailantsEnabled", true);
             Scribe_Values.Look(ref propaneLakeEnabled, "propaneLakeEnabled", true);
             Scribe_Values.Look(ref slimeExperimentEnabled, "slimeExperimentEnabled", true);
+            Scribe_Values.Look(ref flightRequiredEnabled, "flightRequiredEnabled", true);
+            Scribe_Values.Look(ref warLabBreachEnabled, "warLabBreachEnabled", true);
+            Scribe_Values.Look(ref slimeWorldEffectsEnabled, "slimeWorldEffectsEnabled", true);
+            Scribe_Values.Look(ref moodMemoriesEnabled, "moodMemoriesEnabled", true);
             Scribe_Values.Look(ref throatCaskEnabled, "throatCaskEnabled", true);
             Scribe_Values.Look(ref throatRadiationEnabled, "throatRadiationEnabled", true);
             Scribe_Values.Look(ref throatShipFaultsEnabled, "throatShipFaultsEnabled", true);
@@ -126,9 +135,22 @@ namespace RimMandrake.Utinni.WasteRun
                 list.CheckboxLabeled("Destination: entomb it on the Assailants", ref entombAssailantsEnabled,
                     "Shipped default: ON. The Rakatan solution, re-enacted. Buys decades; costs a conscience.");
                 list.CheckboxLabeled("Destination: the propane lakes", ref propaneLakeEnabled,
-                    "Shipped default: ON. A melt that ignites the nightside lake and marks the war lab breached (the lab itself is a stub until ANCIENT_WAR_LAB_1 ships).");
+                    "Shipped default: ON. A melt that ignites the nightside lake.");
                 list.CheckboxLabeled("Destination: the Slime experiment", ref slimeExperimentEnabled,
                     "Shipped default: ON. The only option that is an experiment rather than a verdict. Results are random and provisional.");
+                list.GapLine();
+            }
+
+            if (Group(list, "Consequences", RimMandrake.Shared.SettingScope.NextPulse, new[] { "flightRequiredEnabled", "warLabBreachEnabled", "slimeWorldEffectsEnabled", "moodMemoriesEnabled" }))
+            {
+                list.CheckboxLabeled("The ship must fly to the destination", ref flightRequiredEnabled,
+                    "Shipped default: ON. Off: any destination can be chosen from anywhere. A place this planet does not have stays open either way.");
+                list.CheckboxLabeled("The lake burning opens the war lab", ref warLabBreachEnabled,
+                    "Shipped default: ON. The propane lakes burn to a crater on the world map, permanently, for this save. Needs Structure Injections. Off: the fire stays a story.");
+                list.CheckboxLabeled("The Slime experiment changes the world", ref slimeWorldEffectsEnabled,
+                    "Shipped default: ON. Pollution falls or rises around the Stenchlands, and a bloom brings toxic fallout. An unknown result answers weeks later. Off: only the letter.");
+                list.CheckboxLabeled("The crew remembers", ref moodMemoriesEnabled,
+                    "Shipped default: ON. Every free colonist carries a mood memory of the verdict.");
                 list.GapLine();
             }
 

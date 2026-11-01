@@ -146,7 +146,7 @@ DOTNET_LANE = {"selftest_atmosphericbase_kernel.py", "selftest_flowworks_kernel_
                "selftest_flowworks_trench_cover.py", "selftest_gimmesomeslack.py",
                "selftest_property_fabric.py", "selftest_reclamation_trigger.py",
                "selftest_seashores.py", "selftest_stun_scaling.py", "selftest_sun_heat.py",
-               "selftest_track_grid.py"}
+               "selftest_track_grid.py", "selftest_wasterun_kernel.py"}
 
 
 def _lane_of(path: Path):
