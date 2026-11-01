@@ -1734,3 +1734,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_EXPIRY_RESTORE_YAQA","text":"ops_watch: cleared at 2026-11-01T14:37:03Z (disk.scratch_ok_age_h now 0.12)","ts":"2026-11-01T14:37:40Z","tsn":1793543860110426325}
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"broken","detail":"Under-staffed 32 min: running 0 of 3 (budget 8), 416 ready, why: day_spend_limit","ts":"2026-11-01T15:11:41Z","tsn":1793545901055653076}
 {"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-01T15:18:05Z","tsn":1793546285554073070}
+{"seat":"RUNNER","event":"note","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","text":"ops_watch: cleared at 2026-11-01T15:22:08Z (disk.scratch_dirty_start now 0)","ts":"2026-11-01T15:22:56Z","tsn":1793546576195031457}
