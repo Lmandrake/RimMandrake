@@ -1278,7 +1278,7 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 if back else "no reservation to give back")))
                 if a.get("note") and sch.get("ledger_notes"):
                     who = (a["do"], a.get("seat") or a.get("role") or "")
-                    item, text = route_note(sch, a.get("ticket") or sch.get("alarm_item"), "dispatcher %s %s: %s" % (
+                    item, text = route_note(sch, SR.note_item(a.get("ticket")) or sch.get("alarm_item"), "dispatcher %s %s: %s" % (
                         # the full text (what Operations' item gets when a blind role's note is diverted)
                         who + (a.get("evidence") or a.get("why") or a.get("ring_id") or "",)),
                         # a blind item gets only the closed-set text (None: diverted) - review dispatcher-full #2

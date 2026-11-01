@@ -188,6 +188,23 @@ def t_concurrent_claimable_offers_are_reserved_too():
     assert ids == ["PROPOSED_ITEM_HERE_PROBE_FIXTURE", "PROPOSED_ITEM_HERE_PROBE_N2", "PROPOSED_ITEM_HERE_PROBE_N3"], ids
 
 
+def t_another_seats_next_is_a_read():
+    """A Conductor window reading FOUNDRY's next item takes no lease; FOUNDRY's own window does."""
+    fresh("otherseat")
+    ready("OTHER_READ_ITEM_PROBE_FIXTURE")
+    before = len(events())
+    e = env()
+    e.pop("RIMFLOW_SEAT")
+    e["AGENT_SEAT"] = "BENCH"
+    p = subprocess.run([sys.executable, CLI, "next", "--seat", "FOUNDRY"], capture_output=True, cwd=REPO, env=e)
+    out = p.stdout.decode("utf-8", "replace")
+    assert p.returncode == 0 and "read-only" in out and "OTHER_READ_ITEM_PROBE_FIXTURE" in out, out
+    assert len(events()) == before, "a read wrote events: %r" % events()[before:]
+    e["AGENT_SEAT"] = "FOUNDRY"
+    subprocess.run([sys.executable, CLI, "next", "--seat", "FOUNDRY"], capture_output=True, cwd=REPO, env=e)
+    assert len(events()) > before, "sanity: the seat's own next must lease, or this case proves nothing"
+
+
 def t_wrong_token_refused():
     fresh("wrong_token")
     ready("TOKEN_CHECK_ITEM_PROBE_FIXTURE")
@@ -394,6 +411,7 @@ if __name__ == "__main__":
         for fn in (t_peek_callers_race_for_one_item_sanity_probe,
                    t_concurrent_next_callers_get_different_items,
                    t_concurrent_claimable_offers_are_reserved_too,
+                   t_another_seats_next_is_a_read,
                    t_wrong_token_refused,
                    t_renew_keeps_it_and_expiry_reoffers_through_the_git_check,
                    t_expired_claim_comes_back_as_reconcile_when_git_names_it,

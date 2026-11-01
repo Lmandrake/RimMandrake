@@ -766,6 +766,36 @@ def work_since(clone, seat, req_ts):
     return out
 
 
+# --ticket values that name a moment, not an item (.claude/hooks/conductor_goodbye.py): the seat log and the journal
+# hold them; the ledger has nothing to note. Noting one failed "never been filed" at every goodbye (journal, 2026-11-01).
+LABEL_TICKETS = ("GOODBYE",)
+
+
+def note_item(ticket):
+    """The item a note about this restart lands on, or None when the ticket is a label, not an item."""
+    return None if ticket in LABEL_TICKETS else ticket
+
+
+def _ledger_unfiled(ticket):
+    try:
+        import model
+        if any(e.get("id") == ticket for e in model.read()):
+            return None
+    except Exception:  # noqa: BLE001
+        return None
+    return ("seat_restart: REFUSED: --ticket %s was never filed. Name the item you just finished (notes land on it), "
+            "or file it first." % ticket)
+
+
+UNFILED = _ledger_unfiled
+
+
+def unfiled_ticket(ticket):
+    """--ticket is typed by hand and every later note lands on it: -> a refusal line if the ledger has never heard of
+    it, else None. Fails open: an unreadable ledger must not stop a restart."""
+    return None if note_item(ticket) is None else UNFILED(ticket)
+
+
 def new_work(events, ticket, drain=False):
     """-> the first event in events that is NEW work after a restart request for ticket, or None. Taking, claiming or
     starting any ticket is new work; renewing a lease is new work only on a ticket other than the request's own, and
@@ -1167,7 +1197,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         tx = ro["tx"](seat, mine[0]) if mine else None
         if tx and tx.get("last_kind") == "assistant_end" and (tx.get("last_at") or 0) >= rs.get("killed_at", 0):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
-            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=True,
+            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=note_item(rs.get("ticket")) is not None,
                 evidence="fresh %s window %s (pid %s) ended its first turn at %s" % (
                     seat, rs["new_session"], rs.get("new_pid"), _iso(tx["last_at"])))
         elif now - rs["relaunched_at"] >= cfg["arm_s"]:
@@ -1182,7 +1212,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         if armed.get("session_id") and armed.get("session_id") == rs.get("new_session") and mine \
                 and tx and not tx.get("api_end"):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
-            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=True,
+            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=note_item(rs.get("ticket")) is not None,
                 evidence="fresh %s window %s (pid %s), doorbell armed at %s" % (
                     seat, rs["new_session"], rs.get("new_pid"), armed.get("armed_at")))
         elif now - rs["relaunched_at"] >= cfg["arm_s"]:
@@ -2099,6 +2129,10 @@ def cmd_request(args):
     elif unpub:
         print("seat_restart: REFUSED: %s. Close-out step 1: commit it by explicit path, then ./publish, then request "
               "again (ledger-only tickets too)." % unpub)
+        return 3
+    bad = unfiled_ticket(args.ticket)
+    if bad:
+        print(bad)
         return 3
     logged = append_seat_log(seat, args.ticket, args.note, cfg=cfgs.get(seat))
     if logged:

@@ -892,12 +892,28 @@ def _draining(seat):
         return None
 
 
+def _other_seats_read(seat):
+    """The window's own seat when it differs from the seat `next` was asked about, else None. A Conductor reading
+    FOUNDRY's next item must not lease FOUNDRY's work (found 2026-11-01: the read took a lease as a side effect).
+    --seat names the view; the lease belongs to the window. RIMFLOW_SEAT is the scripts' explicit override and acts."""
+    if os.environ.get("RIMFLOW_SEAT"):
+        return None
+    home = os.environ.get("AGENT_SEAT") or _role_file_seat()
+    home = model.canonical(home.strip().upper()) if home else None
+    return home if home and home != seat else None
+
+
 def cmd_next(args, seat):
     if getattr(args, "bench", False):
         return cmd_bench(args, seat)
     if getattr(args, "acceptance", False):
         return _print_acceptance(args, seat)
     peek = bool(getattr(args, "peek", False))
+    other = _other_seats_read(seat)
+    if other and not peek:
+        print("[read-only: this window is %s, so `next --seat %s` is a read; it takes no lease. Only %s's own window "
+              "(or RIMFLOW_SEAT=%s) takes one.]" % (other, seat, seat, seat))
+        peek = True
     why = None if peek else _draining(seat)
     if why:
         print("DRAINING: this window's restart is under way (%s). Take no work: finish what runs, publish, end your "
@@ -3556,14 +3572,16 @@ def build_parser():
         s.set_defaults(fn=fn)
         return s
 
-    s = add("next", "the one item to work now", cmd_next)
+    s = add("next", "the one item to work now. It LEASES what it offers, under the seat, for a window asking about "
+            "itself; asked about another seat (--seat beside a different AGENT_SEAT) it is a read, as --peek",
+            cmd_next)
     s.add_argument("--bench", action="store_true",
                    help="REP/OWNER only: the whole board triaged — per-seat "
                         "counts, RIPE, IN TROUBLE, and what needs him")
     s.add_argument("--ringed", action="store_true",
                    help="accepted and ignored (owner 2026-10-30: his presence at the machine withholds nothing)")
     s.add_argument("--peek", action="store_true",
-                   help="read-only: writes nothing (no measured game-state stamp, no "
+                   help="read-only: writes nothing (no lease, no measured game-state stamp, no "
                         "git-index cache write); shows the recorded game state")
     s.add_argument("--acceptance", action="store_true",
                    help="read-only: built/validated items grouped by the cheapest level "

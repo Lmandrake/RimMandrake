@@ -2442,7 +2442,26 @@ def test_d9_torn_helper_alive_and_wake_lists_them():
     check(not buf.getvalue(), "D9 an aborted record lists nothing")
 
 
+def test_ticket_that_is_no_item():
+    real = SR.UNFILED
+    SR.UNFILED = lambda t: None if t == "FILED_ITEM" else "REFUSED: --ticket %s was never filed" % t
+    try:
+        check(SR.unfiled_ticket("GOODBYE") is None, "the goodbye label is no unfiled item")
+        check(SR.unfiled_ticket("FILED_ITEM") is None, "a filed ticket passes")
+        check("never filed" in (SR.unfiled_ticket("TYPO_DONE") or ""), "a free-typed ticket is refused")
+    finally:
+        SR.UNFILED = real
+    check(SR.note_item("GOODBYE") is None and SR.note_item("X_Y_Z") == "X_Y_Z", "only a label has no note item")
+    st = {"seat_restart": {"BENCH": {"state": "relaunched", "new_session": "sid-new", "killed_at": T0, "relaunched_at": T0,
+                                     "ticket": "GOODBYE", "kind": "conductor"}}}
+    a = run(bsched(), st, obs(sessions=[bsess(sid="sid-new", pid=5555)],
+                              tx={"last_kind": "assistant_end", "last_at": T0 + 5}), T0 + 10)
+    v = [x for x in a if x.get("do") == "restart_verified"]
+    check(v and not v[0]["note"], "a goodbye restart notes no ledger item")
+
+
 def main():
+    SR.UNFILED = lambda t: None      # fixtures name no real item; test_ticket_that_is_no_item drives the refusal
     for name, fn in sorted(globals().items()):
         if name.startswith("test_") and callable(fn):
             try:
