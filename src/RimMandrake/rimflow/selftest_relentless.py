@@ -2077,6 +2077,9 @@ def t_pool_real_git():
     shutil.rmtree(d, ignore_errors=True)
 
 
+HELP = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["circling"], enabled=False)      # the consult, not the watch
+
+
 def consults(rig):
     return [x for x in rig.w.launches if "-help-" in x[1]]
 
@@ -2102,7 +2105,7 @@ def answer(rig, item="I0", *options):
 
 def t_help_forced_once():
     """S1: two circling hits, exactly one consult. One hit, none. Hits inside the cool wait; after it, one more."""
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     circle(g, detail="first round")
     for _ in range(3):
         g.tick()
@@ -2133,7 +2136,7 @@ def t_help_forced_once():
 
 
 def t_help_own_call_spends_hits():
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     circle(g)
     circle(g)
     g.tick()
@@ -2145,7 +2148,7 @@ def t_help_own_call_spends_hits():
     g.tick()
     ok(len(consults(g)) == 1, "the cool running out is no hit: spent hits never ask twice")
     g.done()
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     circle(g)
     g.run_one("I0")
     R.ask_help(g.s, "I0", g.st("I0")["gen"], "stuck", g.r, now=g.now)
@@ -2167,7 +2170,7 @@ def t_help_own_call_spends_hits():
 
 def t_help_reaches_brief():
     """S2: the options reach the next worker's brief, and the consult itself is cold."""
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     g.run_one("I0")
     R.learn(g.s, "I0", g.st("I0")["gen"], "THE STORY THAT DROVE IT", now=g.now)
     circle(g, detail="evidence one")
@@ -2194,7 +2197,7 @@ def t_help_reaches_brief():
 
 def t_help_refused():
     """S3, by the real command: no failed approach on record, no consult."""
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     g.run_one("I0")
     env = {k: v for k, v in os.environ.items() if k != "RELENTLESS_GEN"}
     env["RELENTLESS_ROOT"] = g.d
@@ -2227,7 +2230,7 @@ def t_help_refused():
 
 
 def t_help_lifecycle():
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     circle(g)
     circle(g)
     g.tick()
@@ -2256,7 +2259,7 @@ def t_help_lifecycle():
     ok(not g.st("I0").get("help_options") and "FRESH EYES" not in workers(g)[-1][2], "no options, no paragraph")
     g.done()
     # overrun: stopped, the nonce fenced before the stop
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     circle(g)
     circle(g)
     g.tick()
@@ -2268,7 +2271,7 @@ def t_help_lifecycle():
     expect_fence(lambda: R.help_answer(g.s, "I0", h["nonce"], ["a | b"], g.r, now=g.now), "a late answer")
     g.done()
     # no room: bounded
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     circle(g)
     circle(g)
     g.w.refuse = True
@@ -2283,7 +2286,7 @@ def t_help_lifecycle():
     ok(g.st("I0")["status"] == "running", "and the worker goes")
     g.done()
     # the item ends under a running consult
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     circle(g)
     circle(g)
     g.tick()
@@ -2298,7 +2301,7 @@ def t_help_lifecycle():
     ok(g.st("I0")["help"]["status"] == "dropped" and not g.w.up[u], "an ended item takes its consult down")
     g.done()
     # the pool sees the clone
-    g = Rig(1)
+    g = Rig(1, circling=HELP)
     g.w.pool = {"/c/other": {"busy": True}}
     g.w.pool_max = 10
     circle(g)
