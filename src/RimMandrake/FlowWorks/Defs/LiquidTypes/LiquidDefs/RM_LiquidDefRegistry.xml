@@ -383,7 +383,6 @@
         <product>RM_Liquid_Chemfuel</product>
         <inputLitres>800</inputLitres>
         <outputLitres>200</outputLitres>
-        <productThing>Chemfuel</productThing>
       </li>
     </conversions>
   </RimMandrake.FlowWorks.LiquidTypes.LiquidDef>

@@ -322,7 +322,7 @@
   <ThingDef ParentName="RM_LiquidWorksRuinBase">
     <defName>RM_TarRefinery_Wrecked</defName>
     <label>wrecked tar refinery</label>
-    <description>What is left of a tar-cracking refinery: a heated column that cracks tar into chemfuel. With no tank on its line to take the chemfuel it fills cans and stacks them beside itself. Split casings, seized valves, nothing running. It can be patched back to work where it stands: build a kludged tar refinery over it.</description>
+    <description>What is left of a tar-cracking refinery: a heated column that cracks tar into chemfuel. Split casings, seized valves, nothing running. It can be patched back to work where it stands: build a kludged tar refinery over it.</description>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Machinery/RM_TarRefinery_Wrecked</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -345,7 +345,7 @@
   <ThingDef ParentName="RM_LiquidWorksBase">
     <defName>RM_TarRefinery_Kludged</defName>
     <label>kludged tar refinery</label>
-    <description>A tar-cracking refinery: a heated column that cracks tar into chemfuel. With no tank on its line to take the chemfuel it fills cans and stacks them beside itself. Patched back to work with mismatched plate and hope; it runs at half its old rate. Needs power, a tank of its input on its line, and another tank to take the product.</description>
+    <description>A tar-cracking refinery: a heated column that cracks tar into chemfuel. Patched back to work with mismatched plate and hope; it runs at half its old rate. Needs power, a tank of its input on its line, and another tank to take the product.</description>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Machinery/RM_TarRefinery_Kludged</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -393,7 +393,7 @@
   <ThingDef ParentName="RM_LiquidWorksBase">
     <defName>RM_TarRefinery_Repaired</defName>
     <label>repaired tar refinery</label>
-    <description>A tar-cracking refinery: a heated column that cracks tar into chemfuel. With no tank on its line to take the chemfuel it fills cans and stacks them beside itself. Restored properly; it runs at its full industrial rate. Needs power, a tank of its input on its line, and another tank to take the product.</description>
+    <description>A tar-cracking refinery: a heated column that cracks tar into chemfuel. Restored properly; it runs at its full industrial rate. Needs power, a tank of its input on its line, and another tank to take the product.</description>
     <graphicData>
       <texPath>Things/Building/FlowWorks/Machinery/RM_TarRefinery_Repaired</texPath>
       <graphicClass>Graphic_Single</graphicClass>

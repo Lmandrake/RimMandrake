@@ -885,7 +885,7 @@ LIQUID_CONVERSIONS = {
         {"tier": "Industrial", "process": "detox", "product": "RM_Liquid_FreshWater", "inputLitres": 600, "outputLitres": 200},
     ],
     "tar": [
-        {"tier": "Industrial", "process": "refine", "product": "RM_Liquid_Chemfuel", "inputLitres": 800, "outputLitres": 200, "productThing": "Chemfuel"},
+        {"tier": "Industrial", "process": "refine", "product": "RM_Liquid_Chemfuel", "inputLitres": 800, "outputLitres": 200},
     ],
 }
 
