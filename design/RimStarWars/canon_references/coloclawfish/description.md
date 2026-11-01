@@ -40,8 +40,9 @@ Their stomachs could expand to accommodate larger prey, resulting in some colos 
 - [ ] BODY PLAN: a huge sea predator with a very long, flat, eel/serpent body — a thick crocodilian head and neck at one end, tapering back into a long ribbon tail ending in a flat paddle — with a pair of jointed, clawed arm-like appendages directly behind the head, ending in large curved talons; not a stout fish, no paired fins along the body
 - [ ] COLOUR LAYOUT: olive to khaki-brown, finely textured back and flanks with scattered dark blue-black spots; belly a grey/grey-blue band distinct from the khaki back; a glowing cyan/teal fringe along the edge between back and belly and a row of glowing teal nodules down the spine and flanks; yellow eye
 - [ ] Crocodile-like head with a long snout, large curved white/cream front fangs, and a yellow slit-pupil eye set high on a bony brow
-- [ ] Mandible-like jaw appendages (Legends render) kept subtle, not required in canon art
+- [ ] Mandible-like jaw appendages, kept subtle (canon prose lists "a set of mandibles")
 - [ ] Realistic rendering: natural wet, finely textured eel/crocodilian skin and underwater lighting, no outlines, no cartoon shading
+- [ ] Giant scale: canon length 40 m (canon infobox, Databank)
 - [ ] NEGATIVE: not a plain eel or moray (must have the croc head and the two clawed arms), not a crocodile or sea serpent with legs/flippers; not the deleted comic's plain unspotted olive body with small tucked claws and bright red mouth
 
 ## Engine limits

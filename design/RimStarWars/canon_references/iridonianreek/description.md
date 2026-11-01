@@ -48,6 +48,7 @@ The stylised SWTOR game render (the grey, green-glowing Rakghoul-plague reek) wa
 - [ ] COLOUR LAYOUT: brown base colour all over (diet sets the hue; the Legends Iridonian subspecies is gray), with a red-headed meat-fed variant: blood-red knobbly head, neck and shoulders against a dull olive-grey-brown body and legs
 - [ ] Face: heavy brow with small deep-set eyes, wrinkled snout, wide mouth with a hanging lower lip
 - [ ] Realistic rendering: natural leathery hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] Scale: about 2.24 m tall, 4 m long (canon infobox)
 - [ ] NEGATIVE: not a plain one-horned rhino (the two forward cheek tusks are required), not a bull or ox (no long legs, no upright horns from the crown); not the grey green-glowing Rakghoul-plague game reek
 
 ## Engine limits

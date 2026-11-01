@@ -63,6 +63,7 @@ Four images (two canon, two Legends) that show three clearly different looks, so
 - [ ] Huge wedge head with a wide mouth packed with rows of conical white teeth and a long tongue; a small hooked horn or barb on the side of the head
 - [ ] Short bony dorsal spikes down the neck and back
 - [ ] Able to show a yellow-green acid spray from the mouth when attacking
+- [ ] Leviathan scale: 184 m long, 28.68 m tall (canon infobox)
 - [ ] NEGATIVE: not the Legends four-legged crocodile-dragon (no four-legs-only body, no big upswept brow horns, no green-olive or blue-grey hide); not a winged dragon
 
 ## Engine limits

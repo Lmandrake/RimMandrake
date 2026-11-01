@@ -39,6 +39,7 @@ Two images: the CANON infobox render (a Clone Wars CG skalder being ridden by a 
 - [ ] Two long pale ivory tusks projecting forward and out from the sides of the lower jaw, clearly visible against the face
 - [ ] Broad dark feet with three pale clawed toes
 - [ ] Realistic rendering: natural thick wrinkled pachyderm hide and horny plated mantle, natural desert lighting, no outlines, no cartoon shading
+- [ ] About 3.5 m tall (canon and Legends infoboxes)
 - [ ] NEGATIVE: not a rhino or elephant: no nose horn, no trunk longer than the tusks, no long legs or tall neck; not a turtle: the head is not retracted into a shell and the legs are not reptile-sprawled
 
 ## Engine limits

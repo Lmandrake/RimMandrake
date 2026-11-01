@@ -70,6 +70,7 @@ especially the hanging beard under the chin.
 - [ ] A very wide, flat, slit-like mouth running nearly the full width of the muzzle below a broad flat nose (owner ruling 2026-10-04: "it MUST have that very wide-slit mouth as shown in the canon imagery")
 - [ ] Long beard-like fringe of fur hanging from the chin and chest
 - [ ] Fully fur-covered body with no bare skin visible
+- [ ] A long tail dragging on the ground and wide flat four-digit feet, where the fur lets them show (canon page)
 - [ ] NEGATIVE: not a yak, bison or ram (no short coat, no visible slim legs, no narrow goat muzzle, no forward-pointing bison horns); horns are spirals, never straight or antler-like
 
 ## Engine limits

@@ -1,6 +1,6 @@
 # Proposed Must show / Engine limits edits (for the owner)
 
-Verified against Wookieepedia, NOT applied (owner art law). Each: entry, proposed edit, reason, source.
+Verified against Wookieepedia. Each: entry, proposed edit, reason, source. Every bullet's fate is in `MUSTSHOW_TRIAGE.json` (`triage_mustshow.py`): most were overtaken by the 2026-10-09 Must-show rollout or only relabel a bar; 16 applied; 6 touching his rulings are `CANON_RULED_LINES_JUDGE_WIKI_SAYS_OTHERWISE`.
 
 
 ## Batch 01

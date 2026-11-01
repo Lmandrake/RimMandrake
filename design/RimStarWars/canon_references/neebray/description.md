@@ -55,7 +55,7 @@ Neebray are a species of large winged creatures seen across the galaxy in variou
 - [ ] BODY PLAN (baby): a bird-sized, limbless body that is proportionally much bigger relative to its wings than an adult's; two large partially translucent wings on the sides plus two significantly smaller tail-fin wings at the rear; no legs or arms at all
 - [ ] COLOUR LAYOUT: a solid body colour (e.g. red, light-orange, light-blue or pink/purple) with a slightly to much lighter belly; wings translucent in a contrasting or matching tint (e.g. light-blue, beige, pink)
 - [ ] Head: a large mouth with a red tongue and sharp teeth, and a cluster of large eyes (canon text: six)
-- [ ] Adult form (if used): a huge flattened manta shape with very wide wings, a deep head with a gaping toothed mouth and red inner mouth, a small cluster of eyes on the brow, and thin whip tendrils trailing below the jaw
+- [ ] Adult form (if used): a huge flattened manta shape with very wide wings, a deep head with a gaping toothed mouth and red inner mouth, a small cluster of eyes on the brow, and one long tendril under the jaw (canon page; a stub on infants)
 - [ ] Realistic rendering: natural wet amphibian skin and translucent fin-membrane texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
 - [ ] NEGATIVE: not a bird or bat (no legs, no feathers, no furred body), not a mynock (no clinging limbs), not a flat ray for the baby form, not opaque solid wings
 

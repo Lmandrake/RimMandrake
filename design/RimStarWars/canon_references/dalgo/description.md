@@ -50,6 +50,7 @@ underside palette and dorsal crest.
 - [ ] Wide, curling, blade/fin-like tail tip
 - [ ] Realistic rendering: natural smooth reptile-skin texture and muscle under real lighting, no outlines, no cartoon shading
 - [ ] Owner rulings carried: 2026-09-14 picked the *Stay on Target* art and noted "But the Donor mod really isn't too bad this time." (palette and crest, per the brief); 2026-10-04 on the redo: "Canon shows somthing more like C. We need a high quality version of that. Look at Canon please." (C = the sail-crested orange dalgo render `pyrelands_dalgo_v1`)
+- [ ] Three forward-facing nostrils (canon infobox distinction)
 - [ ] NEGATIVE: not a dachshund-shaped low stocky quadruped with short stubby legs and a curled tail (the donor's proportions), not a raptor/theropod biped, not a horse (scaly reptile skin, crest, blade tail, no mane)
 
 ## Engine limits

@@ -36,7 +36,7 @@ Three images: one CANON (the Complete Visual Dictionary New Edition illustration
 - [ ] COLOUR LAYOUT: charcoal-black to maroon-purple glossy hide over body and legs alike (legs the same dark colour as the body); large round glowing red/orange eyes are the brightest element; lava-orange rim light on the edges
 - [ ] Head: bulbous, heavily wrinkled, set low and forward under the carapace, with an elephant-trunk-like segmented proboscis and small curved mandibles at its sides; no antennae
 - [ ] Leg ends taper to a single pointed claw or a blunt two-toed hoof; knobby joints
-- [ ] Mount sized: a rider sits on its back, back about waist-to-chest height of a person
+- [ ] Mount sized: a rider sits on its back; canon height 4-5 m (canon infobox)
 - [ ] NEGATIVE: not a beetle or flea crawling low on short legs (belly well off the ground), no tail, no antennae, not brightly coloured
 
 ## Engine limits

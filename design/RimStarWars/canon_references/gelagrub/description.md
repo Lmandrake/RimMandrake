@@ -52,6 +52,7 @@ Gelagrubs were favored mounts on Felucia and similar worlds because of their abi
 - [ ] Face: a bulbous front with a wide drooping lipless mouth at the bottom and two round black eyes stacked vertically on the side of a raised, wrinkled brow mound
 - [ ] Smooth, wet, gelatinous, semi-translucent skin with a glossy sheen; no fur and no hard shell (larval form)
 - [ ] Realistic rendering: wet translucent gelatinous skin and natural lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] About 4 m long (canon infobox)
 - [ ] NEGATIVE: not a hard-shelled beetle (that is the adult, shown in no image), not a jointed-legged insect; no spiky green dorsal ridges and no saturated blue-purple back with lime flanks (the deleted painted plate)
 
 ## Engine limits

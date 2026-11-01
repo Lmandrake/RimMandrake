@@ -55,6 +55,7 @@ Removed: the flat-coloured ink illustration from *Alien Archive* (`Mynock-AA.png
 - [ ] COLOUR LAYOUT: body and head the darkest part (dark olive-brown to black, wrinkled); wing membranes the same hue or slightly lighter and translucent where thin; bristle ring and inner tooth plate paler. Pale straw/tan all over only as a variant
 - [ ] Wing edges ragged between the finger ribs, with a thumb-claw at each wrist
 - [ ] Realistic rendering: natural wrinkled leathery hide and translucent membrane texture and lighting, no outlines, no cartoon shading
+- [ ] Adult scale: 1.6 to 2 m long, 8 kg (canon infobox), not cat-sized
 - [ ] NEGATIVE: not a dragon, wyvern or pterosaur (no long neck, no beak, no crest, no jaw-forward head); not a bird (no feathers); not a manta ray; no snout or muzzle — the face is a round sucker
 
 ## Engine limits

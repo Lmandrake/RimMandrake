@@ -55,6 +55,7 @@ visually in this candidate set.
 - [ ] COLOUR LAYOUT: sandy tan-brown to olive/grey-brown mottled coloration over the whole body — no bright colours, no contrasting markings
 - [ ] Small eyes set high on the head
 - [ ] Thick, wrinkled/tuberculate reptilian hide — leathery/pebbled, not hard-scaled plates
+- [ ] State shown is one of two canon forms: wild with a long intact tail, or arena mount with the tail cut and the stump metal-capped, saddled
 - [ ] NEGATIVE: not a horse or tall-legged mount (legs are stubby, the body low-slung), not a crocodile with hard plate-scales, no bright colours
 
 ## Engine limits

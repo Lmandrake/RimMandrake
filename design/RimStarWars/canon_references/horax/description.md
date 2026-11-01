@@ -87,6 +87,7 @@ flag as a text/image mismatch this time.
 - [ ] Fangs: multiple long saber-like fangs in the upper and lower jaw, visible outside the mouth even when it is mostly closed
 - [ ] COLOUR LAYOUT: deep blue, heavily wrinkled hide over the whole body; horns, claws and tail spikes pale tan/beige, the lightest elements; eyes orange/yellow
 - [ ] Realistic rendering: natural heavily wrinkled hide, keratin horns and lighting, no outlines, no flat-animation shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] Enormous scale: towers over a humanoid, over 15 m tall (Legends infobox, Databank)
 - [ ] NEGATIVE: not a rhino, dinosaur or dragon in green/grey/brown (it is BLUE), no wings, not a biped; not a horn on the forehead only; not a plain tapering tail without the spiked club
 
 ## Engine limits

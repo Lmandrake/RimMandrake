@@ -47,6 +47,7 @@ A similar species could be found on the planet Alzoc III, with longer fur to sui
 - [ ] Small flat splayed three-toed feet
 - [ ] Smooth bare skin with deep neck and leg folds
 - [ ] Realistic rendering: matte, finely wrinkled hippo-like hide and natural daylight, no outlines, no cartoon shading
+- [ ] About 1.8 m tall (canon infobox, Databank): giant for its egg shape, not ronto-sized
 - [ ] NEGATIVE: not a hippo or pig (no thick legs, no broad blunt muzzle), not the stylised render's bold cream-and-brown swirl marbling, no fur
 
 ## Engine limits

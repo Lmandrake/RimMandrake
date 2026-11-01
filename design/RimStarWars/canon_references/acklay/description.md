@@ -59,6 +59,7 @@ color should very likely be corrected to green on any regen.
 - [ ] Hide reads as hard studded/ridged, wrinkled leathery skin, not separate armoured shell plates (owner 2026-09-14: "It would just be nice to get more of that surface texture on it")
 - [ ] Open mouth full of razor-sharp teeth on the elongated head
 - [ ] Realistic rendering: natural wrinkled, ridged leathery hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] Three eyes on the head (canon infobox distinction, *Attack of the Clones*)
 - [ ] NEGATIVE: not blue-teal (the donor's invented colour); not a spider or mantis (no segmented abdomen, no eight legs, no insect head), not a plated crab shell
 
 ## Engine limits

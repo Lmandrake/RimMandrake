@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Send the Star Wars fauna/flora canon entries to GPT for review (CANON_FAUNA_FLORA_GPT_REVIEW_1).
 TEXT ONLY: each entry's description.md (existing description + web citations); no image is ever sent.
-Entries = every INDEX.md row with category 'creature' (119; plants such as chak_root are filed under it).
+Entries = REVIEWED_SLUGS.txt, the 119 INDEX.md 'creature' rows of 2026-10-07 (plants such as chak_root are filed under it).
+Later entries were never sent: CANON_LATE_ENTRIES_VET_ARRIVED_AFTER_PARTY.
 Batches of BATCH entries, serial, one gpt_consult per batch, output gpt_review/batch_NN.md.
 usage: run_canon_review.py [batch numbers...]"""
 import os, re, subprocess, sys, time
@@ -10,7 +11,7 @@ LIB = os.path.dirname(HERE)
 ROOT = os.path.abspath(os.path.join(LIB, "..", "..", ".."))
 BATCH = 10
 
-slugs = [m.group(1) for m in re.finditer(r"^\| \[([^\]]+)\]\([^)]*\) \| creature \|", open(os.path.join(LIB, "INDEX.md")).read(), re.M)]
+slugs = open(os.path.join(HERE, "REVIEWED_SLUGS.txt")).read().split()  # frozen: the INDEX has grown, and re-deriving it reshuffles every batch
 batches = [slugs[i:i + BATCH] for i in range(0, len(slugs), BATCH)]
 want = [int(a) for a in sys.argv[1:]] or list(range(1, len(batches) + 1))
 prompt = open(os.path.join(HERE, "PROMPT.md")).read()

@@ -1,0 +1,1813 @@
+{
+ "owner_item": "CANON_RULED_LINES_JUDGE_WIKI_SAYS_OTHERWISE",
+ "rows": [
+  {
+   "entry": "acklay",
+   "n": 0,
+   "proposal": "Change Must show last bullet \"Skin/hide reads as textured or ridged, not armored shell plates\" to allow hard bony-nodule studding on the hide (avoid a separate turtle-like shell); reason: canon text says \"hard, shell-like carapace of bony nodules\". Source: https://starwars.fandom.com/wiki/Acklay",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "acklay",
+   "n": 1,
+   "proposal": "Change \"Two of the six legs raised ... grappling arms\" to \"forelimbs capable of grappling and striking\" (not mandatory raised pose); reason: text says six legs and grappling hands, no 2+4 split. Source: https://starwars.fandom.com/wiki/Acklay",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "acklay",
+   "n": 2,
+   "proposal": "Make \"Paler cream/yellow underside\" optional; reason: canon page gives only Green; Legends says belly flesh less tough, hide green to brown. Source: https://starwars.fandom.com/wiki/Acklay/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "acklay",
+   "n": 3,
+   "proposal": "Add \"three eyes\" to Must show; reason: infobox distinction cited to AotC. Source: https://starwars.fandom.com/wiki/Acklay",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Three eyes on the head (canon infobox distinction, *Attack of the Clones*)"
+  },
+  {
+   "entry": "anooba",
+   "n": 0,
+   "proposal": "Must show \"Tiger-like dark stripes\" and \"pink/red-toned interior\" ears: mark as image-derived (reference phenotype), not canon text; canon text gives fur \"varying tones of gray\" / black / blue, only the Legends Citadel pack is called striped. Source: https://starwars.fandom.com/wiki/Anooba , https://starwars.fandom.com/wiki/Anooba/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "bantha",
+   "n": 0,
+   "proposal": "Must show \"Fully fur-covered body with no bare skin visible\": relax to \"fur obscures most anatomy; mouth and horns stay readable\". Reason: canon text says only shaggy fur and a wide mouth. Source: https://starwars.fandom.com/wiki/Bantha",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "bantha",
+   "n": 1,
+   "proposal": "Add \"long tail dragging on the ground\" and \"wide flat four-digit feet\" to Must show. Reason: canon page lists both. Source: https://starwars.fandom.com/wiki/Bantha",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "A long tail dragging on the ground and wide flat four-digit feet, where the fur lets them show (canon page)"
+  },
+  {
+   "entry": "bantha",
+   "n": 2,
+   "proposal": "Female short-horn variant: label as Legends-derived (single spiral); canon says both sexes have horns. Source: https://starwars.fandom.com/wiki/Bantha/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "beldon",
+   "n": 0,
+   "proposal": "Must show last bullet: split into external palette (unsourced in canon text) and gas-bladder colour (orange, per the page). Source: https://starwars.fandom.com/wiki/Beldon",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "blarth",
+   "n": 0,
+   "proposal": "Must show: tag pale blue-grey hide, spiral dimples, lower tusks, and (as currently worded) half-lidded eyes as \"Legends-image reconstruction\"; canon core to be central = long prehensile tail with finger-like tip, visible drool. Reason: canon text gives no colour or face detail. Source: https://starwars.fandom.com/wiki/Blarth",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "blarth",
+   "n": 1,
+   "proposal": "Must show \"tongue lolling out\": treat as pose, not organ requirement. Source: image-only (UNVERIFIABLE in text).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "blixus",
+   "n": 0,
+   "proposal": "Must show: replace \"Low armoured half-shell ... (teal-blue ...)\" scale framing; add canon scale 6.48 m high / 13.33 m long and \"teal OR red\" as canon-attested palettes (do not call red non-canon). Source: https://starwars.fandom.com/wiki/Blixus",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "blixus",
+   "n": 1,
+   "proposal": "Must show eyes: \"Two small amber eyes\" -> yellow eyes per Databank infobox; keep placement as image-derived. Source: https://starwars.fandom.com/wiki/Blixus",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "blixus",
+   "n": 2,
+   "proposal": "Add \"two pincer graspers beside the mouth are not walking legs\" (Legends text, consistent with image). Source: https://starwars.fandom.com/wiki/Blixus/Legends",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "bloddle",
+   "n": 0,
+   "proposal": "Must show: label bulb/cream/papery wrapper as \"Legends item-model interpretation\"; any foliage is project reconstruction. Reason: wikitext gives no botanical detail; image is a Star Wars Galaxies foraged-component model. Source: https://starwars.fandom.com/wiki/Bloddle",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "bloddle",
+   "n": 1,
+   "proposal": "Rename candidate image `wookieepedia_canon_1.webp` to a Legends label (page is Legends). Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "blurrg",
+   "n": 0,
+   "proposal": "Must show \"paler belly\": drop it; no source gives belly colour. Source: https://starwars.fandom.com/wiki/Blurrg",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "blurrg",
+   "n": 1,
+   "proposal": "Must show \"about 2 m at the shoulder / hip line\": replace with \"about 2 m tall (2.5-3 m on Endor), rider-scale; reference point unspecified\". Source: https://starwars.fandom.com/wiki/Blurrg",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "blurrg",
+   "n": 2,
+   "proposal": "Must show \"Large head\": keep, but drop any \"long-jawed\" reading; add \"unusually high hip joint\". Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "bogwing",
+   "n": 0,
+   "proposal": "Must show colour bullet: state teal/blue-green as the GREATER bogwing; lesser is dark brown (canon). Source: https://starwars.fandom.com/wiki/Bogwing",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "bogwing",
+   "n": 1,
+   "proposal": "Must show \"one round ... eye\": say \"round eye visible in profile\". Source: image reading, logic only.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "bolotaur",
+   "n": 0,
+   "proposal": "Must show last bullet (\"Body colour within tan/golden-brown-to-olive-green range\"): reword as \"one documented palette per def (two depictions, no text colour)\". Source: https://starwars.fandom.com/wiki/Bolotaur",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "shirotrap",
+   "n": 0,
+   "proposal": "Must show bullet 1: drop \"or green segmented carapace\"; carrier is a turtle-like spiny-shelled reptile (retracts head/legs/tail). Reason: Shiro/Legends calls it hard-shelled reptile, canon Shiro is turtle-like. Source: https://starwars.fandom.com/wiki/Shiro/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "shirotrap",
+   "n": 1,
+   "proposal": "Add note that the references are Legends (not canon) in the Must show header context. Source: https://starwars.fandom.com/wiki/Shiro-trap",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "shyrack",
+   "n": 0,
+   "proposal": "Must show: label colours (tan/pink body, blue-violet limbs, purple membrane) as depiction-specific to the one painting; keep eyeless head, wings, talons as sourced (eyeless is in prose: \"eyeless beasts\"). Source: https://starwars.fandom.com/wiki/Shyrack/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "silooth",
+   "n": 0,
+   "proposal": "Must show bullet 1: append \"(Dark Side Sourcebook says eight; JATM/Book of Sith art and the wiki's choice are six)\". Source: https://starwars.fandom.com/wiki/Silooth/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "silooth",
+   "n": 1,
+   "proposal": "Must show bullet 6 \"No wings, no fur, no tail\": wiki prose does not state absence of wings; treat as depiction-based only. Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "sith_wyrm",
+   "n": 0,
+   "proposal": "Engine limits / Must show: mark purple colouration, spine row and snout feeler as depiction-specific (wiki gives no anatomy text). Owner ruling covers four eyes etc., so no change proposed to ruled items. Source: https://starwars.fandom.com/wiki/Sith_wyrm",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "skalders",
+   "n": 0,
+   "proposal": "Must show bullet 1: reword \"armoured, layered, ridged mantle\" to \"large hump at the base of the neck with thick folded hide (layered look is the CG depiction)\". Reason: wiki text says hump and thick hide only. Source: https://starwars.fandom.com/wiki/Skalder/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "skalders",
+   "n": 1,
+   "proposal": "Must show bullet 5: add \"about 3.5 m tall (wiki)\". Source: https://starwars.fandom.com/wiki/Skalder",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "About 3.5 m tall (canon and Legends infoboxes)"
+  },
+  {
+   "entry": "sketto",
+   "n": 0,
+   "proposal": "Must show bullets 3 and 5: mark tail tuft/fan and the two long upper fangs as Legends-painting details (text says only \"mouth full of fangs\", prehensile tail). Source: https://starwars.fandom.com/wiki/Sketto",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "sketto",
+   "n": 1,
+   "proposal": "Add note: living colour unsettled (stuffed specimen vs Legends painting). Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "snoruuk",
+   "n": 0,
+   "proposal": "Must show last bullet: change \"Colour is free (canon gives none)\" to \"Red cap is canon-supported (Snoruuk mushroom, red); stalk colour unsourced\". Source: https://starwars.fandom.com/wiki/Snoruuk_mushroom",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "snoruuk",
+   "n": 1,
+   "proposal": "Must show bullet 3: label ring of 5-30 as Legends behaviour. Source: https://starwars.fandom.com/wiki/Snoruuk/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "strill",
+   "n": 0,
+   "proposal": "Must show last bullet (\"not required until a better image exists\"): Legends prose and infobox state six legs, folded skin that forms gliding membranes, fur (gold or gray-tan). Propose splitting: \"Legends anatomy: six legs, flank membranes, gold/gray-tan fur; art shows four limbs, so owner to choose\". Source: https://starwars.fandom.com/wiki/Strill/Legends",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "strill",
+   "n": 1,
+   "proposal": "Engine limits: six legs cannot be drawn on a standard quadruped rig (rig-limit candidate). Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "tauntaun",
+   "n": 0,
+   "proposal": "Must show bullet 3: \"big nostrils\" -> note a Legends-only second smaller pair (four nostrils); optional. Source: https://starwars.fandom.com/wiki/Tauntaun/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "tauntaun",
+   "n": 1,
+   "proposal": "Must show bullet 7: tail is \"well-muscled\" (Legends, one metre); keep \"long thin pointed\" as render-derived. Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "teemuss",
+   "n": 0,
+   "proposal": "Must show bullet 3: \"a hooked dark lower tusk\" -> \"two lower-jaw tusks\" (Legends prose: two tusks on the lower jaw); horn nubs optional. Source: https://starwars.fandom.com/wiki/Tee-muss/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "teemuss",
+   "n": 1,
+   "proposal": "Must show bullet 5: \"Two broad cream-coloured hooved toes\" -> mark provisional; Legends says odd-toed. Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "teemuss",
+   "n": 2,
+   "proposal": "Must show bullet 2: mane/mottling are render-derived, not in text.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "laascalefish",
+   "n": 0,
+   "proposal": "Rewrite Must show chin-filament bullet to \"two long filaments streaming behind; bulb attachment per the single chosen reference\" and make eye colour provisional (canon text: yellow). Reason: canon text places both appendages between the eyes; bulb is Legends dorsal. Source: https://starwars.fandom.com/wiki/Laa",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "lavaflea",
+   "n": 0,
+   "proposal": "Drop \"back about waist-to-chest height\" and \"lava-orange rim light\"/\"charcoal-black\" as mandatory; canon says red skin and 4-5 m height. Source: https://starwars.fandom.com/wiki/Lava_flea",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Mount sized: a rider sits on its back; canon height 4-5 m (canon infobox)"
+  },
+  {
+   "entry": "longtailgorg",
+   "n": 0,
+   "proposal": "Relabel entry as \"gorg - tailed film depiction\" and link it to the `gorg` entry; make \"tail roughly body length\" reference-matched. Reason: canon page treats gorg as a general term for several species, no canon longtail taxon. Source: https://starwars.fandom.com/wiki/Gorg",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "lothcat",
+   "n": 0,
+   "proposal": "Must show coat bullet: replace \"orange-amber ... (white-fluffy is the alternate)\" with \"fawn/dark yellow/brown or white coat with dark spotting, per one identified Canon individual\". Reason: canon infobox lists fawn, dark yellow, brown, white; white cat appears in Rebels. Source: https://starwars.fandom.com/wiki/Loth-cat",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "lothcat",
+   "n": 1,
+   "proposal": "Must show: make \"webbed/three-toed\" and \"tail curled over the back\" reference-dependent; size note 0.54 m tall, 0.94 m long. Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "lylek",
+   "n": 0,
+   "proposal": "Must show: add a separate queen note (\"gigantic lylek queen, unseen in references\") rather than a visual requirement; demote \"pincer-arms read as extra heads\" to optional. Reason: canon text gives only spiked pincers and mandibles with a pair of tentacles near them. Source: https://starwars.fandom.com/wiki/Lylek",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "marshhaunt",
+   "n": 0,
+   "proposal": "Relabel the entry Legends everywhere (done in prose); in Must show drop \"far taller than a person\", the clustered red berry-eyes and trailing moss strands as mandatory; keep bipedal headless silhouette with skull set between shoulders, peeling gray-green skin, red eyes. Reason: Legends-only subject; text gives no size or eye count. Source: https://starwars.fandom.com/wiki/Marsh_haunt",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "massiff",
+   "n": 0,
+   "proposal": "Must show: \"short, thick limbs\" and eye colour made reference-dependent; relabel the AotC frame as canon film evidence. Reason: canon page gives only 'squat quadruped about 1 m high'; Outlaws render differs. Source: https://starwars.fandom.com/wiki/Massiff",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "meescalefish",
+   "n": 0,
+   "proposal": "Must show: drop \"One very long ... longer than the body\" to \"poisonous spine(s) along the centreline\"; make whiskers and blue tail tips reference-dependent; add that Koboh Survivor mee have hundreds of small razor-like teeth. Reason: canon text says a poisonous spine, no length or count; Survivor adds teeth. Source: https://starwars.fandom.com/wiki/Mee",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "mudhorn",
+   "n": 0,
+   "proposal": "Must show: reword \"entirely covered in ... fur\" to \"extensively covered, with bare creased hide visible on the face\"; reason: infobox skin Gray + hair Brown and the entry's own brief notes exposed facial hide. Source: https://starwars.fandom.com/wiki/Mudhorn",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "horax",
+   "n": 0,
+   "proposal": "Add Must show bullet: enormous quadrupedal scale relative to a humanoid (Legends: over 15 m tall). Reason: most consequential feature absent from checklist. Source: https://starwars.fandom.com/wiki/Horax/Legends",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Enormous scale: towers over a humanoid, over 15 m tall (Legends infobox, Databank)"
+  },
+  {
+   "entry": "horax",
+   "n": 1,
+   "proposal": "Add Engine limits/note: snow setting does not imply cold adaptation (Legends habitat \"Not cold\"). Source: https://starwars.fandom.com/wiki/Horax/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "hrumph",
+   "n": 0,
+   "proposal": "Consider Must show note \"canon text says lightly tanned; selected illustrations read cool grey-lavender\" (already the entry's Visual brief position). Reason: GPT calls \"not tan\" categorical; owner/library policy decides. Source: https://starwars.fandom.com/wiki/Hrumph",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "hssiss",
+   "n": 0,
+   "proposal": "Must show line 1: change \"thick tail about as long as the body\" to match 3 m body + 1 m tail. Reason: contradicts the cited prose. Source: https://starwars.fandom.com/wiki/Hssiss",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "hssiss",
+   "n": 1,
+   "proposal": "Relabel reference set continuity as Legends (entry header/Must show context). Reason: base-title page is Legends-tagged. Source: https://starwars.fandom.com/wiki/Hssiss",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "hubba_gourd",
+   "n": 0,
+   "proposal": "Must show line 1: drop \"not on a tall plant\"; mark plant stems/leaves/height as unspecified by sources. Reason: sources describe only the fruit and that it grew in rock recesses/cliff shadows. Source: https://starwars.fandom.com/wiki/Hubba_gourd/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "igitz",
+   "n": 0,
+   "proposal": "Must show last bullet \"Pet-sized, small\" is fine (text: \"small amphibians\"); Must show \"finned back end\" matches prose. Only action: relabel entry continuity as Legends. Source: https://starwars.fandom.com/wiki/Igitz",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "insectomorph",
+   "n": 0,
+   "proposal": "Must show line 3: drop \"(reared, leaping-insect stance)\"; text gives hind legs twice front length only. Source: https://starwars.fandom.com/wiki/Insectomorph/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "insectomorph",
+   "n": 1,
+   "proposal": "Must show line 6: \"no shiny chitinous segmentation / bony/skeletal\" is image-derived; sources class it Arthropod, no material stated. Mark as image observation only. Source: https://starwars.fandom.com/wiki/Insectomorph",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "insectomorph",
+   "n": 2,
+   "proposal": "Must show line 5: \"Glowing red eye(s)\" -> \"Red eye(s)\" (text says red only). Source: https://starwars.fandom.com/wiki/Insectomorph",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "iriaz",
+   "n": 0,
+   "proposal": "Must show \"Smooth hide with no visible fur\": no source text describes the skin; \"pelts\" is the only word. Mark as image observation. Source: https://starwars.fandom.com/wiki/Iriaz",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "iriaz",
+   "n": 1,
+   "proposal": "Must show \"Four legs\" etc. unchanged; horn count is owner art spec (ruling), not source-derived. Flag in Must show as \"owner art specification\". Source: https://starwars.fandom.com/wiki/Iriaz",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "iridonianreek",
+   "n": 0,
+   "proposal": "Must show line 4 (\"Brown base colour, with a red-headed meat-fed variant\"): for the Iridonian subspecies the sourced colour is gray, with sharper, longer, tattooed horns and compact tough hide; the brown/red is the generic reek. Decide: generic reek or Iridonian. Source: https://starwars.fandom.com/wiki/Reek/Legends",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "iridonianreek",
+   "n": 1,
+   "proposal": "Add Must show note: canon reek height 2.24 m, length 4 m. Source: https://starwars.fandom.com/wiki/Reek",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Scale: about 2.24 m tall, 4 m long (canon infobox)"
+  },
+  {
+   "entry": "jakobeast",
+   "n": 0,
+   "proposal": "Must show line 3: \"long thick curved ivory tusks\" conflicts with Legends text \"two thin tusks\"; mark as image observation. Source: https://starwars.fandom.com/wiki/Jakobeast/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "jakobeast",
+   "n": 1,
+   "proposal": "Add Must show/canon note: canon variant = brown fur (TROS fur, Visual Dictionary); grey/white stripes are Legends only. Source: https://starwars.fandom.com/wiki/Jakobeast",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "jamel",
+   "n": 0,
+   "proposal": "Must show lines 2-5 (stripes, blue-grey mottling, brow nubs, neck flaps, toes, trooper height) are concept-sheet observations; text-sourced core is tall spindly legs, large hump, drawn-out face, red snout, yellow skin, black eyes. Mark the rest \"concept art detail\". Source: https://starwars.fandom.com/wiki/Jamel",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "mynock",
+   "n": 0,
+   "proposal": "Must show \"Small body with huge, broad... wings\": reword so scale is not implied small; canon length is 1.6 to 2 m, 8 kg. Reason: GPT claim verified against infobox. Source https://starwars.fandom.com/wiki/Mynock",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Adult scale: 1.6 to 2 m long, 8 kg (canon infobox), not cat-sized"
+  },
+  {
+   "entry": "mynock",
+   "n": 1,
+   "proposal": "Must show tail (\"whip-like tail ending in a small flare\") and eye-stalks/legs: mark as reference-specific (Legends art); canon wikitext gives no tail anatomy and Legends says legs vary (some legless). Source https://starwars.fandom.com/wiki/Mynock/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "neebray",
+   "n": 0,
+   "proposal": "Must show \"Adult form: thin whip tendrils below the jaw\": canon says ONE long tendril from jaw underside (stub on infants); propose \"a long tendril under the jaw\". Source https://starwars.fandom.com/wiki/Neebray",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "one long tendril under the jaw (canon page; a stub on infants)"
+  },
+  {
+   "entry": "neebray",
+   "n": 1,
+   "proposal": "Must show adult line: record that adult wingspan is gigantic (record 1,674 m) and needs space-scale handling; add Engine limits note (adult space form vs terrestrial livestock scale). Source same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "nerf",
+   "n": 0,
+   "proposal": "Must show \"Curved horns\": canon infobox says four curving horns (SW 2015 #17); consider \"curving horns (canon infobox: four; illustrations show two large)\". Source https://starwars.fandom.com/wiki/Nerf",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "nuna",
+   "n": 0,
+   "proposal": "Must show \"Heavy domed/ridged shell-like back\": canon says nunas are flightless BIRDS; \"shell-like\" risks turtle plates. Propose \"hunched domed/ridged back\" without shell wording. Source https://starwars.fandom.com/wiki/Nuna",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "nuna",
+   "n": 1,
+   "proposal": "Must show \"no feather texture, beak or wings anywhere\": canon says nunas could grow blue and red feathers (Doctor Aphra (2016) #33). Propose dropping the blanket \"no feather\" and keeping \"no wings\". Source same. (Owner ruling 2026-09-14 selected the infobox image; do not override that image choice.)",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "nysillin",
+   "n": 0,
+   "proposal": "Must show \"Grown in dense rows as a crop\": that is the farm presentation (Akira village crop), not a wild-plant feature; relabel as cultivated-only. Source https://starwars.fandom.com/wiki/Nysillin",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "nysillin",
+   "n": 1,
+   "proposal": "Must show \"pods\": mark as \"teardrop-shaped spotted terminal structures (botanical identity not stated by any source)\". Source same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "ollopom",
+   "n": 0,
+   "proposal": "Must show \"Pale, semi-translucent... legs... claws tipped violet\": translucency and violet claw tips are image-derived, not in any text source; consider marking optional. Source https://starwars.fandom.com/wiki/Ollopom (no mention).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "opeeseakiller",
+   "n": 0,
+   "proposal": "Must show \"Bulbous orange-red eyes\": canon says yellow eyes (Phantom Menace); propose \"bulbous yellow to amber eyes (images read orange-red)\". Source https://starwars.fandom.com/wiki/Opee_sea_killer",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "opeeseakiller",
+   "n": 1,
+   "proposal": "Must show antennae \"with dark blue-purple lure tips\": canon says only \"antennae used as lures\"; lure-tip colour/length image-derived; mark reference-specific. Source same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "opeeseakiller",
+   "n": 2,
+   "proposal": "Engine limits: aquatic ambush predator, 20 m scale, jet propulsion movement. Source same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "orray",
+   "n": 0,
+   "proposal": "Must show/visual: add wild (intact long tail) vs arena (tail removed, stump capped with metal, saddled) variants; canon states both. Source https://starwars.fandom.com/wiki/Orray",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "State shown is one of two canon forms: wild with a long intact tail, or arena mount with the tail cut and the stump metal-capped, saddled"
+  },
+  {
+   "entry": "paleyobshrimp",
+   "n": 0,
+   "proposal": "Must show (all four lines): label as \"Legends-derived provisional design (Wildlife of Star Wars sketch)\"; canon establishes only a small aquatic decapod native to Naboo. Purple shell, swordlike rostrum and huge scissor claws are not canon. Source https://starwars.fandom.com/wiki/Yobshrimp and https://starwars.fandom.com/wiki/Yobshrimp_Noodle_Salad",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "pekopeko",
+   "n": 0,
+   "proposal": "Must show \"elongated, toothy-looking beak/skull\": no source mentions teeth; canon says \"prominent beak\". Propose \"distinctive strong beak profile; no invented teeth\". Source https://starwars.fandom.com/wiki/Peko-peko",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "pekopeko",
+   "n": 1,
+   "proposal": "Must show gold crest and gold tail edging: only the Battlefront II painting shows them; mark reference-specific. Source same. (Owner ruled 2026-09-14 for `wookieepedia_fieldguide.jpg`; do not override.)",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "womprat",
+   "n": 0,
+   "proposal": "Must show line 1: replace \"a bit bigger than a big dog\" with \"large (canon: not much bigger than two metres in length, axis uncertain)\". Reason: canon figure is a length, not a dog comparison. Source https://starwars.fandom.com/wiki/Womp_rat",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "womprat",
+   "n": 1,
+   "proposal": "Must show line 2: label grey-black hide as the Galactic Atlas / Alien Archive design; brown shaggy BoBF design is also canon. Source same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "woolamander",
+   "n": 0,
+   "proposal": "Must show 2 and 3: mark cream-white belly band, mandrill-like face and eye colour as image-dependent. Canon text says only blue fur with patches of red and yellow. Source https://starwars.fandom.com/wiki/Woolamander",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "worrt",
+   "n": 0,
+   "proposal": "Must show: add \"very large mouth and long purple prehensile tongue (ambush predator)\" as a priority line; canon distinctions list toothy mouth and purple prehensile tongue. Source https://starwars.fandom.com/wiki/Worrt",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Long purple prehensile tongue from the very large mouth (canon distinction, *Return of the Jedi*)"
+  },
+  {
+   "entry": "worrt",
+   "n": 1,
+   "proposal": "Must show last line: record 1.5 m height (Databank).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "wraid",
+   "n": 0,
+   "proposal": "Must show: prefix \"Legends appearance reference\"; replace mandatory gorilla fists and permanently folded hind legs with posture of the chosen model (page says only very powerful front legs, two small back legs, claws, sharp teeth). Source https://starwars.fandom.com/wiki/Wraid",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "wyyyschokk",
+   "n": 0,
+   "proposal": "Must show: add \"ordinary Fallen Order model; the Albino Wyyyschokk subspecies is exempt from the ordinary colour checklist\". Reason: Albino Wyyyschokk is a canon subspecies. Source https://starwars.fandom.com/wiki/Wyyyschokk",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "wyyyschokk",
+   "n": 1,
+   "proposal": "Must show: add \"taller than 2 m, giant-spider proportions with prominent mandibles\" (Bestiary height; mandibles fire the web enzyme). Source same.",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "wyyyschokk",
+   "n": 2,
+   "proposal": "Engine limits currently reads \"none known\"; propose \"not assessed\" (no engine test performed).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "yobshrimp",
+   "n": 0,
+   "proposal": "Must show: label lilac-purple shell, green eyes and long spiky pincers as \"Legends plate appearance (adopted)\", not canon; no canon appearance exists. Source https://starwars.fandom.com/wiki/Yobshrimp/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "yobshrimp",
+   "n": 1,
+   "proposal": "Must show: add \"tiny, aquatic presentation\". Source https://starwars.fandom.com/wiki/Yobshrimp",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "yobshrimp",
+   "n": 2,
+   "proposal": "Cooked-form line belongs to a separate food-item checklist, not the living animal.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "ysalamir",
+   "n": 0,
+   "proposal": "Must show: split into canon-supported (lizard-like, four eyes) and Legends living-design choices (white fur per Fate of the Jedi: Abyss infobox, 50 cm, bark-gripping claws, climbing posture, golden painted colour). Source https://starwars.fandom.com/wiki/Ysalamiri and /Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "ysalamir",
+   "n": 1,
+   "proposal": "Must show line 2: the \"four-eyed\" detail is canon (BTS gallery); ear-flaps, spots and prehensile tail depend on the chosen Legends painting.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "zakkeg",
+   "n": 0,
+   "proposal": "Must show: prefix \"Legends living appearance\"; drop \"battle tank scale\" in favour of \"greater than 4 m long (Operation: Shadowpoint)\"; delete the parenthetical about a darker brown-black variant being a separate life stage. Source https://starwars.fandom.com/wiki/Zakkeg/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "zakkeg",
+   "n": 1,
+   "proposal": "Colour: the red anchor is KOTOR II's quote but the KOTOR II model image (Zakkeg.jpg) is dark; the rust-red render is the SWTOR Cartel Market pet. The owner ruled the red image; flag that the ruling picked a SWTOR pet render mislabelled as KOTOR II. Source https://starwars.fandom.com/wiki/File:JuvenileZakkeg.png",
+   "disposition": "OWNER",
+   "why": "The ruled file wookieepedia_kotor2_juvenile.png is a SWTOR Cartel Market pet render, not KOTOR II. Does the ruling stand knowing that?",
+   "applied_text": null
+  },
+  {
+   "entry": "zakkeg",
+   "n": 2,
+   "proposal": "Engine limits currently reads \"none known\"; propose \"not assessed\".",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "zeer",
+   "n": 0,
+   "proposal": "Must show: add height reference 15 ft (about 4.57 m) height and 9 ft length; horns \"swiveling\" per source, so head shape of horns is unresolved against the \"swept back, fixed\" reading. Source https://starwars.fandom.com/wiki/Zeer",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "zeer",
+   "n": 1,
+   "proposal": "Engine limits currently reads \"none known\"; propose \"not assessed\".",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "jerba",
+   "n": 0,
+   "proposal": "Delete Must show bullet \"Reads as smaller and more agile than a bantha\" and any \"undershot jaw with visible teeth\" as species-wide text: Wookieepedia text supports neither agility nor size relation to bantha (only \"ridged horns\", \"shaggy\"/\"smooth-haired\"). Keep jaw/teeth only as Alien Archive image-specific (owner ruled that image).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "jerba",
+   "n": 1,
+   "proposal": "Source: https://starwars.fandom.com/wiki/Jerba",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "kinrath",
+   "n": 0,
+   "proposal": "Must show Legends bullet: replace \"long, upward-curving segmented neck ending in a small mantis-like head\" with \"four legs plus a distinct leg-like venomous appendage projecting from the face\". Reason: Legends page text. Source: https://starwars.fandom.com/wiki/Kinrath/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "kinrath",
+   "n": 1,
+   "proposal": "Add netcaster bullet: each leg ends in claws ringed by petal-shaped flaps; four legs (three pairs of eyes). Source: https://starwars.fandom.com/wiki/Kinrath",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "kinrath",
+   "n": 2,
+   "proposal": "Engine limits: none; but note \"four legs\" Must-show line is accurate for both lineages per page text.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "klorslug",
+   "n": 0,
+   "proposal": "Must show: change \"Orange-red body (canon art)\" to \"pink through reddish/orange, matched to the chosen reference\" ; canon text says Pink (Ewoks book), orange-red is one comic panel. Source: https://starwars.fandom.com/wiki/K%27lor%27slug",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "klorslug",
+   "n": 1,
+   "proposal": "Add scale bullet: about 1.98 m tall (Databank via infobox). Source: same.",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "kowakianmonkeylizard",
+   "n": 0,
+   "proposal": "Must show last bullet: make colour explicitly per-individual, adding that tan/brown (Legends) and olive-brown (Resistance) individuals are equally valid; canon render's blue/yellow/orange is one individual. Source: https://starwars.fandom.com/wiki/Kowakian_monkey-lizard",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "kraytdragon",
+   "n": 0,
+   "proposal": "Must show: retitle target \"leviathan krayt dragon form\" and change the bullet \"no big brow horns (those are Legends only)\" to \"leviathan: armoured smooth head; canyon krayt (canon) is horned and brown with yellow eyes\". Source: https://starwars.fandom.com/wiki/Canyon_krayt_dragon",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "kraytdragon",
+   "n": 1,
+   "proposal": "Must show limbs bullet: delete \"four-legged only for the Legends type\"; Legends greater krayts have ten legs. Source: https://starwars.fandom.com/wiki/Krayt_dragon/Legends",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "kraytdragon",
+   "n": 2,
+   "proposal": "Add scale bullet: leviathan 184 m long, 28.68 m tall. Source: https://starwars.fandom.com/wiki/Leviathan_krayt_dragon",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Leviathan scale: 184 m long, 28.68 m tall (canon infobox)"
+  },
+  {
+   "entry": "kreetle",
+   "n": 0,
+   "proposal": "Must show: add \"five leg pairs per text (game model Republic Commando shows three)\" as a note under the legs bullet; the legs bullet currently says only \"many\". Source: https://starwars.fandom.com/wiki/Kreetle",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "krykna",
+   "n": 0,
+   "proposal": "Must show: add \"SIX legs (canon), beaked mouth with a pair of fanged pedipalps\" ; current bullet on face says \"tiny mouth with two short fangs\" and legs bullet gives no count. Source: https://starwars.fandom.com/wiki/Krykna",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "krykna",
+   "n": 1,
+   "proposal": "Must show: delete \"whole animal clearly larger than a human\" is OK but add height about 2 m (6 ft 7 in) per infobox; skin gray, eyes black. Source: same.",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "krykna",
+   "n": 2,
+   "proposal": "Engine limits: none; the old unresolved 8-vs-6 leg discrepancy no longer applies.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "kwi",
+   "n": 0,
+   "proposal": "Must show: change \"yellow-pale slit-pupil eye and pale spade teeth\" and \"tiger-like stripes\" to image-specific optional notes; text says bloodred eyes, black spade teeth, long black tongue, lavender-iridescent skull scales. Source: https://starwars.fandom.com/wiki/Kwi",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "kwi",
+   "n": 1,
+   "proposal": "Add scale bullet: about 3 m tall, 4 m long. Source: same.",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "kybuck",
+   "n": 0,
+   "proposal": "Do NOT adopt GPT's \"delete horse/yak quadruped option, biped in both continuities\": the Legends page gives no limb count (only \"similar to tauntauns\"). Instead mark Legends stance unresolved; ask owner/image check. Source: https://starwars.fandom.com/wiki/Kybuck/Legends",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "kybuck",
+   "n": 1,
+   "proposal": "Must show: horn line is fine; add \"two hoofed legs\" is already canon-only per the page (https://starwars.fandom.com/wiki/Kybuck).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "gelagrub",
+   "n": 0,
+   "proposal": "Must show: add \"Length about 4 m (canon infobox)\" scale note; keep eye line as \"match the reference eye arrangement\" and describe back as soft translucent blue, not rigid plates. Reason: canon infobox gives 4 m, only Legends text gives the stacked eyes. Source: https://starwars.fandom.com/wiki/Gelagrub",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "About 4 m long (canon infobox)"
+  },
+  {
+   "entry": "gizka",
+   "n": 0,
+   "proposal": "Must show: prefix checklist \"KOTOR / Legends model design (owner-approved reference)\". Reason: all anatomy comes from game model, wiki gives none; current canon is a stub. Source: https://starwars.fandom.com/wiki/Gizka",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "gizka",
+   "n": 1,
+   "proposal": "Owner-ruled bars (bipedal, \"vestigial\") untouched; GPT's suggestion to drop \"vestigial\" is a wording question for the owner only.",
+   "disposition": "OWNER",
+   "why": "The vestigial wording in your ruling: GPT suggests dropping it. Keep?",
+   "applied_text": null
+  },
+  {
+   "entry": "gorg",
+   "n": 0,
+   "proposal": "Must show: add optional bullet \"Castilon gorg (canon, Resistance): gray (or blue/orange) skin, blue/turquoise eyes, carnivorous, about 0.2 m (Bitey)\". Reason: canon subspecies omitted from the entry. Source: https://starwars.fandom.com/wiki/Castilon_gorg",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "gorg",
+   "n": 1,
+   "proposal": "Must show: \"Two legs only\" is owner-supplied, GPT disputes (limb count vs \"feet front and back\"); wiki has no limb count. Owner decision, flagged only.",
+   "disposition": "OWNER",
+   "why": "Your supplied line says two legs only; the wiki gives no limb count and the film gorg has feet front and back. Keep?",
+   "applied_text": null
+  },
+  {
+   "entry": "gornt",
+   "n": 0,
+   "proposal": "Must show: prefix living-animal bullets \"Legends reconstruction (Gornt/Legends art)\". Reason: canon has only meat; anatomy is Legends only. Source: https://starwars.fandom.com/wiki/Gornt",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "graniteslug",
+   "n": 0,
+   "proposal": "Must show: relabel the colour/fronds/starburst-tail bullets \"Legends illustration option\"; make \"small slug leaving acid trails/etched masonry\" the primary bar; require second mouth only where positioned by the chosen image. Reason: canon says only \"two mouths\", no placement or colour. Source: https://starwars.fandom.com/wiki/Granite_slug",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "grank",
+   "n": 0,
+   "proposal": "Must show: reword \"visible even with the jaw closed\" to \"prominent interlocking teeth matching the reference\"; label palette as illustration target (wiki gives no colour). Reason: wiki states only \"sharp teeth and powerful jaws\". Source: https://starwars.fandom.com/wiki/Saw-toothed_grank",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "grazer",
+   "n": 0,
+   "proposal": "Must show: replace \"(the whole point of 'feral')\" with \"(wild grazer, Legends)\"; title checklist \"Alderaanian wild grazer — Legends\". Reason: wiki says \"wild\", not \"feral\". Source: https://starwars.fandom.com/wiki/Grazer_(Alderaan)",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "greaterkraytdragon",
+   "n": 0,
+   "proposal": "Must show: \"Ten legs across five pairs\" conflicts with the owner ruling (7-8 pairs) and the wiki's leviathan form (sixteen legs, eight pairs). Propose: \"Leviathan form (Mandalorian): sixteen legs / eight pairs\"; ten legs only for a non-leviathan greater dragon. Source: https://starwars.fandom.com/wiki/Leviathan_krayt_dragon",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "greaterkraytdragon",
+   "n": 1,
+   "proposal": "Must show: add \"large head protected by bony armor; spiny tail\" (leviathan distinctions). Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "greaterkraytdragon",
+   "n": 2,
+   "proposal": "Must show: spit colour — wiki says \"greenish yellow acidic fluid\", entry says \"bright yellow-white\" and \"no green\". Propose \"yellow to greenish-yellow\". Source: https://starwars.fandom.com/wiki/Krayt_dragon_venom",
+   "disposition": "OWNER",
+   "why": "Must show says bright yellow-white spit, no green; canon says greenish-yellow acid. Ruled render: keep or change?",
+   "applied_text": null
+  },
+  {
+   "entry": "greaterkraytdragon",
+   "n": 3,
+   "proposal": "Must show: \"tail that curls\" is image-derived, not in wiki; make optional.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "gutkurr",
+   "n": 0,
+   "proposal": "Must show: \"Larger than a human (about 2 m tall)\" -> \"Considerably taller than an average humanoid (canon); approx. 2 m is Legends\". Source: https://starwars.fandom.com/wiki/Gutkurr",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "gutkurr",
+   "n": 1,
+   "proposal": "Must show: tail bar and \"also drops onto forelimbs\" (Visual brief) are image-only; make tail optional. Source: no wiki text.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "hawkbat",
+   "n": 0,
+   "proposal": "Must show: prefix \"Legends Field Guide adult\"; add \"tiny-toothed hooked beak, spiky membrane growths\" (Legends text); the owner-ruled hooks note stays. Reason: canon page has only \"beak with sharp contours\". Source: https://starwars.fandom.com/wiki/Hawk-bat/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "hawkbat",
+   "n": 1,
+   "proposal": "Must show: forehead horn is image-only (no wiki text); make optional.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "boma",
+   "n": 0,
+   "proposal": "Must show \"Moderate-length tail\": page text says \"long tails\"; proposed: change to \"Tail present; page says long, chosen image shows moderate\" or drop length. Source: https://starwars.fandom.com/wiki/Boma",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "borcatu",
+   "n": 0,
+   "proposal": "Must show \"Smooth mottled hide, not overlapping pointed pangolin-style scales\" and \"not scaled pangolin-grey\": Legends text says scales / scaly thick hide. Propose relabel as owner-ruled adaptation (ruling says mix #1 and #2), or drop the anti-scale clause. Source: https://starwars.fandom.com/wiki/Borcatu/Legends",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "borcatu",
+   "n": 1,
+   "proposal": "Add must-show: dark mottled skin camouflage; digging claws; powerful jaws; ~0.2-0.5 m long (small). Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "brainworm",
+   "n": 0,
+   "proposal": "Must show \"Small: about a forearm long, finger-thick\": canon infobox says 1 m (Legends ~0.5 m). Propose: \"Small, 1 m long per canon infobox (Legends 0.5 m); thickness from image only\". Source: https://starwars.fandom.com/wiki/Brain_worm",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "cancell",
+   "n": 0,
+   "proposal": "Must show: page says \"quad wings and large eyes\" and lengths >3 m; consider adding \"~3 m long body (large)\". Source: https://starwars.fandom.com/wiki/Can-cell",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "cannok",
+   "n": 0,
+   "proposal": "Add must-show: four broad three-toed feet with spatulate claws; short stubby tail; bony dorsal ridge bearing thin fleshy spines; upward-facing jaw with needle teeth projecting from lower jaw. Source: https://starwars.fandom.com/wiki/Cannok",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "cannok",
+   "n": 1,
+   "proposal": "Reword last must-show: \"Two eyes on short stalks, independently moving; far eye may be hidden in profile\". Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "cannok",
+   "n": 2,
+   "proposal": "\"Pale/whitish belly\" and \"spiked tail tip\" are image observations, not in page text; mark image-dependent.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "chak_root",
+   "n": 0,
+   "proposal": "Must show lines (3-4 stubby root legs, tall carrot-like fronds) rest on one Legends-page image only; the Legends text supports only \"red plant, marshland\". Propose label \"image-derived, Legends-derived design\". Source: https://starwars.fandom.com/wiki/Chak-root/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "clodhopper",
+   "n": 0,
+   "proposal": "Must show \"Juveniles are smaller... lacking adult red head\": page states no juvenile colouring; propose mark image-only/optional. Source: https://starwars.fandom.com/wiki/Clodhopper",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "clodhopper",
+   "n": 1,
+   "proposal": "Must show \"Sturdy clawed forelimbs\": page supports \"powerful forelegs to forage and hop\"; keep, but note \"claws\" is image-derived.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "coloclawfish",
+   "n": 0,
+   "proposal": "Add must-show: giant scale, canon length 40 m (131 ft); this is an engine/def scale point (consider Engine limits note on body size vs RimWorld cell scale). Source: https://starwars.fandom.com/wiki/Colo_claw_fish",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Giant scale: canon length 40 m (canon infobox, Databank)"
+  },
+  {
+   "entry": "coloclawfish",
+   "n": 1,
+   "proposal": "Must show \"Mandible-like jaw appendages ... not required in canon art\": canon prose lists \"a set of mandibles\"; propose making it required. Source: same.",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Mandible-like jaw appendages, kept subtle (canon prose lists \"a set of mandibles\")"
+  },
+  {
+   "entry": "coloclawfish",
+   "n": 2,
+   "proposal": "Must show \"yellow slit-pupil eye\": page gives yellow only; pupil shape image-dependent (Legends: stalked eyes).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "coloclawfish",
+   "n": 3,
+   "proposal": "Add: serpentine, spine-studded body (canon text). Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "convor",
+   "n": 0,
+   "proposal": "Must show \"Large amber-gold eyes with black pupils\": infobox gives black eyes; Morai green. Propose \"eyes: image-dependent (infobox black)\". Source: https://starwars.fandom.com/wiki/Convor",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "convor",
+   "n": 1,
+   "proposal": "Must show \"Dense brown/cream/gold mottled plumage\": page gives gold, brown and green plumage; Morai green and white. Propose adding green. Source: same + https://starwars.fandom.com/wiki/Morai",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "convor",
+   "n": 2,
+   "proposal": "\"Ringed\" tail banding is image-only; page says prehensile tail.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "corinathoth",
+   "n": 0,
+   "proposal": "Must show \"Bony head frill with multiple horns\": text supports \"multihorned\" only; frill is image-only. Propose \"multiple horns (text); frill (image-only)\". Source: https://starwars.fandom.com/wiki/Corinathoth/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "corinathoth",
+   "n": 1,
+   "proposal": "Must show \"Visibly smaller young present\": page gives no young; propose drop or mark optional. Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "corinathoth",
+   "n": 2,
+   "proposal": "Add must-show: gigantic/massive, slow-moving quadruped, short tail, orange hide with brown spots (Legends). Source: same.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "pikobis",
+   "n": 0,
+   "proposal": "Must show line 3 (\"Olive-tan skin ...\") and the 1 m / heron-size framing: the canon infobox gives skin colour Grey (Episode I) while the Must show asks olive-tan; consider rewording to \"colour per the chosen reference; canon infobox says grey\". Reason: sourced colour disagrees with the image-derived colour. Source: https://starwars.fandom.com/wiki/Pikobi",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "pikobis",
+   "n": 1,
+   "proposal": "Must show line 5 \"wading feet\": webbed feet appear only in the Legends page (Field Guide), so mark as Legends-sourced. Source: https://starwars.fandom.com/wiki/Pikobi/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "porg",
+   "n": 0,
+   "proposal": "Must show last line: change \"warm orange-tan cheek/eye patches\" to \"orange eye plumage on males only\". Reason: the infobox and body text make orange plumage around the eyes a male trait. Source: https://starwars.fandom.com/wiki/Porg",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "pufferpig",
+   "n": 0,
+   "proposal": "Must show last bullet: drop \"dog-sized, not pig-sized\"; replace with \"slightly under 1 m long uninflated\". Reason: the page states uninflated size; \"dog-sized\" is the entry's own comparison. Source: https://starwars.fandom.com/wiki/Puffer_pig",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "pufferpig",
+   "n": 1,
+   "proposal": "Must show colour bullet: add that the infobox gives Yellow skin and Blue eyes (Idiot's Array). Source: https://starwars.fandom.com/wiki/Puffer_pig",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "pufferpig",
+   "n": 2,
+   "proposal": "Engine limits: note that inflation to a sphere conflicts with the 9 m x 60 cm text, so inflated form needs a separate sprite or is out of scope. Source: https://starwars.fandom.com/wiki/Puffer_pig",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "qormot",
+   "n": 0,
+   "proposal": "Add a header line to Must show: \"Legends design (no canon article)\". Reason: the only wiki page is a Legends article. Source: https://starwars.fandom.com/wiki/Qormot",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "qormot",
+   "n": 1,
+   "proposal": "Must show eye bullet is prose-sourced and is the single-eye anatomy; keep, but the \"rears up on hind legs\" bullet is image-only: prose says stocky quadrupeds, so make rearing optional. Source: https://starwars.fandom.com/wiki/Qormot",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "ronto",
+   "n": 0,
+   "proposal": "Must show colour bullet: the canon page text gives no colour; colour, nose horn, banding and warts come only from images. Consider marking them \"per anchor film still\" rather than categorical. Reason: wiki text lists only small eyes, pointed ears, beak-like mouth and facial skin flaps. Source: https://starwars.fandom.com/wiki/Ronto",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "ronto",
+   "n": 1,
+   "proposal": "Must show: \"clawed/hoofed\" is not decided by the text; pick one from the film still. Source: https://starwars.fandom.com/wiki/Ronto",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "runyip",
+   "n": 0,
+   "proposal": "Must show: bullets for \"tall branching antlers\", \"tuft at tail tip\" and \"dark solid shoulder\" are image-only; canon text says just \"antlered heads\", flexible nose, front-toe claw, stripes. Mark them reference-dependent. Source: https://starwars.fandom.com/wiki/Runyip",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "runyip",
+   "n": 1,
+   "proposal": "Must show: \"Broad padded multi-toed feet with front claws\" - canon says only a claw on the front toes. Source: https://starwars.fandom.com/wiki/Runyip",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "sandoaquamonster",
+   "n": 0,
+   "proposal": "Engine limits: add that the species is 160 to 200 m long and aquatic (infobox, Databank), so ordinary animal scale and pathing do not apply. Source: https://starwars.fandom.com/wiki/Sando_aqua_monster",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "sandoaquamonster",
+   "n": 1,
+   "proposal": "Must show fluke bullet: canon text says only \"finned claws\"; the broad horizontal tail fluke is image-only. Mark reference-dependent. Source: https://starwars.fandom.com/wiki/Sando_aqua_monster",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "scurrier",
+   "n": 0,
+   "proposal": "Must show bullet \"Semi-upright running posture, trunk near-horizontal\": change to \"ran on all fours in a fully horizontal posture; semi-upright stance and hind-limb standing at rest\". Reason: canon text says running was fully horizontal. Source: https://starwars.fandom.com/wiki/Scurrier",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "scurrier",
+   "n": 1,
+   "proposal": "Must show last bullet: the male-thick-curved/female-thin-straight horn rule is Legends-only; canon says only \"some scurriers boasted antlers\". Move the sex rule out of the canon checklist. Source: https://starwars.fandom.com/wiki/Scurrier/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "shaaks",
+   "n": 0,
+   "proposal": "Must show: add \"approximately 1.8 m tall (canon infobox, Databank)\". Reason: sourced height. Source: https://starwars.fandom.com/wiki/Shaak",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "About 1.8 m tall (canon infobox, Databank): giant for its egg shape, not ronto-sized"
+  },
+  {
+   "entry": "shaaks",
+   "n": 1,
+   "proposal": "Must show hide bullet: canon sources give only brown leathery skin; cream marbling or streaks come from images, so mark reference-dependent. Source: https://starwars.fandom.com/wiki/Shaak",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "shaaks",
+   "n": 2,
+   "proposal": "Must show \"three-toed feet\": not in wiki text; image-only. Source: https://starwars.fandom.com/wiki/Shaak",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "shiro",
+   "n": 0,
+   "proposal": "Must show line 1 (green skin as colour anchor): the green skin is sourced only to Disney Infinity 3.0 and the page has a Noncanon banner; relabel the checklist \"game adaptation (Disney Infinity 3.0 colour) over Legends shell anatomy\". Source: https://starwars.fandom.com/wiki/Shiro",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "shiro",
+   "n": 1,
+   "proposal": "Must show lines 2-4 (ridged spiny shell, retractable extremities) are Legends-only (Field Guide); label them so. Source: https://starwars.fandom.com/wiki/Shiro/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "dactillion",
+   "n": 0,
+   "proposal": "Must show \"Pterosaur-shaped body\": reword to \"reptilian flyer with elongated neck, beaked head with paired projections, membranous wings, tail\" (drop the Earth-pterosaur analogy; limb count not stated by any page). Reason: wiki gives no limb count.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "dactillion",
+   "n": 1,
+   "proposal": "Must show \"Red/orange eyes\": reword to \"light-coloured eyes (Legends: blue or gray)\"; red/orange is not supported by text. Source: https://starwars.fandom.com/wiki/Dactillion and /Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "dactillion",
+   "n": 2,
+   "proposal": "\"toothless\"/gold beak tips: image-only claims, no text support; mark as image-observed, optional.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "dalgo",
+   "n": 0,
+   "proposal": "Must show \"(raptor/theropod stance)\": delete that parenthetical; wording should be \"tall, long-legged four-legged reptilian runner\". Reason: Legends page says \"four-legged animals\"; no source says theropod stance. Source: https://starwars.fandom.com/wiki/Dalgo/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "dalgo",
+   "n": 1,
+   "proposal": "Add \"three forward nostrils\" (canon infobox distinction, https://starwars.fandom.com/wiki/Dalgo) to Must show.",
+   "disposition": "APPLIED",
+   "why": "Verified fact, adds to or corrects the bar, conflicts with no ruling.",
+   "applied_text": "Three forward-facing nostrils (canon infobox distinction)"
+  },
+  {
+   "entry": "dewback",
+   "n": 0,
+   "proposal": "Must show \"Long heavy tail\": replace with \"short tail\" ; reason: wiki states \"long, rounded heads and short tails\" (A New Hope). Source: https://starwars.fandom.com/wiki/Dewback",
+   "disposition": "OWNER",
+   "why": "Must show says long heavy tail and NEGATIVE 'not short-tailed'; canon text (A New Hope) says short tails. The ruled image decides: keep or change?",
+   "applied_text": null
+  },
+  {
+   "entry": "dewback",
+   "n": 1,
+   "proposal": "Must show \"elongated low-slung body\": hedge to \"bulky reptilian body\"; thick hides per Databank, no source says elongated/low-slung. Image-derived claim; owner ruled infobox art.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "dianoga",
+   "n": 0,
+   "proposal": "Must show \"Single dark reddish eyestalk\": add \"(Omi: green eye with red sclera)\"; reason: Omi page. Source: https://starwars.fandom.com/wiki/Omi",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "dianoga",
+   "n": 1,
+   "proposal": "Must show \"Several long, thin, tapering tentacles\": tighten to \"seven suckered tentacles\" (canon infobox, Join the Resistance, The Baptist); source https://starwars.fandom.com/wiki/Dianoga",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "dragonsnake",
+   "n": 0,
+   "proposal": "Must show \"Shown as an aquatic ambush predator, partially submerged\": keep; GPT suggests water as pose not component, but wiki confirms \"hid under the muddy water\" so no change needed. No proposal beyond: add Bright-Eyes variant palette (mottled blue-gray, yellow eyes) as an allowed variation. Source: https://starwars.fandom.com/wiki/Bright-Eyes",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "eopie",
+   "n": 0,
+   "proposal": "Must show \"never brown\": delete \"never brown\"; canon gives no colour, Legends lists brown/pale/white. Source: https://starwars.fandom.com/wiki/Eopie/Legends",
+   "disposition": "OWNER",
+   "why": "Must show says never brown; canon gives no colour, Legends lists brown. Ruled image: keep or change?",
+   "applied_text": null
+  },
+  {
+   "entry": "eopie",
+   "n": 1,
+   "proposal": "Must show \"One large dark eye\": reword to \"large dark eye(s), one visible in profile\"; wiki has no eye count (GPT: paired) - UNVERIFIED either way.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "eopie",
+   "n": 2,
+   "proposal": "Add a separate variant note for the horned eopie (At Achrann). Source: https://starwars.fandom.com/wiki/Eopie",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "faascalefish",
+   "n": 0,
+   "proposal": "Must show \"Very large concentric-ringed eye\" and brow/chin spikes: image-only; mark optional (no text support; canon text only says \"protruding features\", orange/tan blue mottle). Source: https://starwars.fandom.com/wiki/Faa",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "falumpaset",
+   "n": 0,
+   "proposal": "Add Must show size anchor \"3 m tall (about a fambaa's 4.3 m smaller)\": height 3 m per https://starwars.fandom.com/wiki/Falumpaset (4.3 m fambaa comparison is GPT's, checked below).",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "fambaa",
+   "n": 0,
+   "proposal": "Must show \"A single curved tusk jutting from the lower jaw\": mark optional/unsourced; no wiki text on tusks. Source: https://starwars.fandom.com/wiki/Fambaa",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "fambaa",
+   "n": 1,
+   "proposal": "Must show \"Long, tapering cartilage tail\": reword to \"long tapering tail\" (cartilage is internal, though the page says it).",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "fanback",
+   "n": 0,
+   "proposal": "Must show: prefix whole checklist \"Legends adaptation\" (page is Legends). Source: https://starwars.fandom.com/wiki/Fanback",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "fanback",
+   "n": 1,
+   "proposal": "Must show \"Tan/khaki-olive base coat with darker brown mottled spots\": the owner ruled olive green (see ruling); infobox text says Green. Owner-ruled; flag for review only. Black sail edge/mottling: image-only, no text support.",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "tibidee",
+   "n": 0,
+   "proposal": "Soften Must show bullet \"drawn in flight, never as a walking animal\" to \"use a flight pose for this asset\": page has no text barring ground movement; the restriction is an art choice. Source https://starwars.fandom.com/wiki/Tibidee",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "tibidee",
+   "n": 1,
+   "proposal": "Consider reclassifying \"Gasbag-plump torso with short blue-grey claws\" as image-only (gasbags are internal per the page; torso inflation rests on the Homeworlds card art alone). Source https://starwars.fandom.com/wiki/Tibidee",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "urusai",
+   "n": 0,
+   "proposal": "Must show bullets on concentric blue eye-spot rings, dotted blue belly and wing-size hierarchy (two larger rear / two smaller front): mark as Legends-art-derived, not canon text. The canon page gives only four wings with talons, white undersides, spiked fan tail, jowly beaked red-eyed face, blue and yellow. Source https://starwars.fandom.com/wiki/Urusai and /Urusai/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "urusai",
+   "n": 1,
+   "proposal": "Engine limits is \"not yet assessed\"; no verified fact changes it.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "uvak",
+   "n": 0,
+   "proposal": "Label the whole entry Legends (Sourced text heading and image captions were corrected in the prose). The must-show list is unchanged in content but should carry \"Legends\" provenance.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "uvak",
+   "n": 1,
+   "proposal": "Must show \"Dark grey or charcoal ... with red-orange to pink wing membrane\": the wiki gives purple and orange only; treat charcoal/red as a chosen palette from images 1/3. Source https://starwars.fandom.com/wiki/Uvak",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "uvak",
+   "n": 2,
+   "proposal": "Must show \"Round eye on the side of the head\": text says eyes at the front of the head; reconcile against panels. Source https://starwars.fandom.com/wiki/Uvak",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "vaapad",
+   "n": 0,
+   "proposal": "Must show \"Many thin whip-like tentacles (at least seven)\": acceptable (Legends: most at least seven, max examined 23). The visual-brief phrase \"visibly more than seven\" is owner-ruled extrapolation, not sourced. Source https://starwars.fandom.com/wiki/Vaapad/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "vaapad",
+   "n": 1,
+   "proposal": "Optional: tag the tripod/blue orb/red eye-cluster bullets \"owner-directed extrapolation from sprites\" per the ruling. Source as above.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "varactyl",
+   "n": 0,
+   "proposal": "Must show bullet 1 contains \"horse-sized\": replace with \"giant (canon 15 m long, 4 m at shoulder)\". Reason: false vs the Databank figures on the canon page. Source https://starwars.fandom.com/wiki/Varactyl",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "varactyl",
+   "n": 1,
+   "proposal": "Must show \"Huge five-toed clawed climbing feet\": five toes and hairlike adhesion are Legends-only; for canon use \"broad gripping feet\". Source https://starwars.fandom.com/wiki/Varactyl/Legends",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "varactyl",
+   "n": 2,
+   "proposal": "Must show \"paler yellow-green throat and belly\" and \"tuft at tail tip\": image-derived only (canon text says green skin, blue-green feathered ridges along back). Source https://starwars.fandom.com/wiki/Varactyl",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "voorpak",
+   "n": 0,
+   "proposal": "Must show last bullet \"Hand-sized pet creature\": replace with \"small pet scale, about 60 cm tall (Buggles 0.7 m); never palm-sized\". Reason: canon infobox heights. Source https://starwars.fandom.com/wiki/Voorpak and /Buggles",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "voorpak",
+   "n": 1,
+   "proposal": "Must show \"Thin, long, stick-like jointed legs (six per the text)\": keep six for canon; eight-legged is the Legends original only. Source https://starwars.fandom.com/wiki/Voorpak/Legends",
+   "disposition": "MET",
+   "why": "The current Must show already carries this (rollout 2026-10-09 or a later ruling).",
+   "applied_text": null
+  },
+  {
+   "entry": "voorpak",
+   "n": 2,
+   "proposal": "Must show tufts/stalks, mask-like eye rings, needle-tooth smile: image-derived, not in text; mark reference-dependent. Source https://starwars.fandom.com/wiki/Buggles",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "vornskyr",
+   "n": 0,
+   "proposal": "Must show bullet 1 \"canine/reptile-hybrid\": change to \"canine predator\". Reason: text says \"canine beast\"; reptile hybrid comes from reading one hairless-looking illustration. Source https://starwars.fandom.com/wiki/Vornskr",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "vornskyr",
+   "n": 1,
+   "proposal": "Add \"Legends\" provenance to the Must show header: there is no canon vornskr creature article. Source https://starwars.fandom.com/wiki/Vornskr_(disambiguation)",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "vulptex",
+   "n": 0,
+   "proposal": "Must show \"Long, thin legs and an upright, deer-like stance\": text says only \"fox-like\"; reword to \"slender, agile fox-like proportions\". Source https://starwars.fandom.com/wiki/Vulptex",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "vulptex",
+   "n": 1,
+   "proposal": "Must show \"Coat colour is grey-blue-white\": infobox says White; blue-grey is image/lighting. Source as above.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "vulptex",
+   "n": 2,
+   "proposal": "Must show \"Tail is a dense brush of spike-like points\" and \"ears very large\": image-only; keep as ruled infobox-image details.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "wampa",
+   "n": 0,
+   "proposal": "Must show \"Dark, bald-looking bare skin confined to around the eyes/muzzle only\": text gives only white fur and black eyes; the bare-skin pattern is read from the ESB suit still and the unused costume. Mark reference-dependent. Source https://starwars.fandom.com/wiki/Wampa",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "wampa",
+   "n": 1,
+   "proposal": "Must show \"Visible ... fangs / Small cranial horns\": both supported (razor-sharp fangs and claws; small cranial horns). No change.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "wampa",
+   "n": 2,
+   "proposal": "Add note under \"bipedal\": ruling says \"capable of standing upright\"; crouched/reaching poses allowed. (Owner ruling text unchanged.)",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "whisperbird",
+   "n": 0,
+   "proposal": "Must show \"Bald, blue-gray, vulture-like head ... reddish tip\", \"four sharp curved claws\", \"dark chest/belly patch\", \"barred underwing\": only golden colour is in the text; all other details are from the single Alien Archive plate. Mark as image-derived; golden plumage and an avian flying/perching body are the text-backed core. Source https://starwars.fandom.com/wiki/Whisper_bird",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  },
+  {
+   "entry": "whisperbird",
+   "n": 1,
+   "proposal": "Must show last bullet \"bird-of-prey/vulture silhouette\": keep, but note the text does not describe scavenging.",
+   "disposition": "REJECTED",
+   "why": "Demotes a Must show line to a provenance label or optional, or only comments on it. AGENT_BRIEF: the checklist follows the images, and Must show is the pass bar; the text being silent is no reason to loosen it.",
+   "applied_text": null
+  }
+ ]
+}
