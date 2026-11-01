@@ -1693,3 +1693,4 @@
 {"seat":"RUNNER","event":"note","id":"HARNESS_REPAIR_CAUSE_4D2C5B87","text":"seen again in testq J20261031T221022Z-4754ed.a1: modcheck exit 1; {'PASS': 23, 'UNMEASURED': 12}","ts":"2026-10-31T22:25:43Z","tsn":1793485543096264701}
 {"seat":"RUNNER","event":"live","id":"LIVE_DRILL_PROVE_SWEEP_REOPENS","result":"broken","detail":"reading /mnt/d/ClaudeWork/rimmandrake/live_proof/drill_reading is 7601 s old (max 3600)","ts":"2026-11-01T00:18:03Z","tsn":1793492283023269410}
 {"seat":"RUNNER","event":"live","id":"LIVE_DRILL_PROVE_SWEEP_REOPENS","result":"kept","detail":"sweep: running again","ts":"2026-11-01T00:22:56Z","tsn":1793492576692884735}
+{"seat":"RUNNER","event":"live","id":"LIVE_DRILL_PROVE_SWEEP_REOPENS","result":"broken","detail":"reading /mnt/d/ClaudeWork/rimmandrake/live_proof/drill_reading is 7202 s old (max 3600)","ts":"2026-11-01T00:23:32Z","tsn":1793492612583418902}
