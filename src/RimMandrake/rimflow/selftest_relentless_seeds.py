@@ -130,6 +130,8 @@ def test_counting():
     check("on target: a name with a space", T.on_target({"path": "src/a b.py", "reasons": "Regression in src/a b.py"}))
     check("on target: a Windows path", T.on_target({"path": "src/a.py", "reasons": r"Regression in C:\repo\src\a.py"}))
     check("on target: another file is no hit", not T.on_target({"path": "src/a.py", "reasons": "b.py and ba.py and a.pyc"}))
+    check("on target: a longer extension is no hit", not T.on_target({"path": "src/a.py", "reasons": "in a.py.bak and a.py-old"}))
+    check("on target: end of sentence is a hit", T.on_target({"path": "src/a.py", "reasons": "the guard in a.py."}))
     lo, hi = T.wilson(0, 30)
     check("Wilson is Wilson at zero, not 3/n", lo == 0.0 and 0.11 < hi < 0.12, hi)
     live = {"done": 0, "ended": 0, "first_checks": 0, "first_fails": 0}

@@ -32,7 +32,7 @@ def on_target(r):
     """Reasons name the reverted file, whole. Only a mechanical reading: it is not a proof the Marker saw the fault."""
     names = {p.replace("\\", "/").rsplit("/", 1)[-1] for p in ([r["path"]] if r.get("path") else (r.get("paths") or []))}
     why = (r.get("reasons") or "").replace("\\", "/")     # a Windows path in the reasons names the file too
-    return any(n and re.search(r"(?<![\w.-])" + re.escape(n) + r"(?!\w)", why) for n in names)
+    return any(n and re.search(r"(?<![\w.-])" + re.escape(n) + r"(?![\w-]|\.\w)", why) for n in names)
 
 
 def compute(results, second_reads=None, keys=None):

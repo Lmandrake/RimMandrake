@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import shlex
 import shutil
 import subprocess
 import time
@@ -80,7 +81,7 @@ def excludes(prof):
 
 def make_box(prof, source, sha, nonce):
     """-> the box's path. Tree at sha with no .git and none of tree_exclude, the diff against sha's parent, the verdict script."""
-    box = Path(prof["box_root"], nonce)
+    box = Path(os.path.abspath(Path(prof["box_root"], nonce)))      # git runs in the source: a relative path would move
     tree = box / "tree"
     tree.mkdir(parents=True)
     (box / "projects").mkdir()
@@ -111,15 +112,16 @@ def remove_box(box):
 def marker_prompt(st, text, box):
     """The checker's words, its way to the change and its way to a verdict being the box's."""
     c = st["candidate"]
+    qv = shlex.quote(str(box) + "/verdict")     # a box path with a space still runs
     return "\n".join([
         "You are a blind checker. You did not do this work and you have no record of how it went. Your cwd is a clean "
         "export of commit %s, with no git history." % c["sha"],
         *RULE,
         "Then run exactly one of:",
-        "  python3 %s/verdict PASS \"what you ran and saw\"" % box,
-        "  python3 %s/verdict WEAK \"the runs that show the work holds, then each gap and the mutant or probe that "
-        "shows it, so the next worker can pin it\"" % box,
-        "  python3 %s/verdict FAIL \"what is wrong, so the next worker can fix it\"" % box,
+        "  python3 %s PASS \"what you ran and saw\"" % qv,
+        "  python3 %s WEAK \"the runs that show the work holds, then each gap and the mutant or probe that "
+        "shows it, so the next worker can pin it\"" % qv,
+        "  python3 %s FAIL \"what is wrong, so the next worker can fix it\"" % qv,
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
         "See the change in: %s/change.diff" % box, "", "--- item ---", text])
 
@@ -134,7 +136,7 @@ def read_verdict(box):
         return None
     try:
         at = float(v.get("at") or time.time())
-    except (TypeError, ValueError):     # the Marker writes this file: a bad stamp is its to get wrong, not ours to crash on
+    except (TypeError, ValueError, OverflowError):     # the Marker writes this file: a bad stamp is its to get wrong, not ours to crash on
         at = time.time()
     return {"word": v["word"], "reasons": str(v.get("reasons") or ""), "at": at}
 
@@ -143,10 +145,10 @@ def would_deny(inputs, prof):
     """-> the denied paths a run's tool calls named. For enforce false: the wall's report."""
     hits = set()
     for inp in inputs:
-        text = json.dumps(inp)
-        hits.update(p for p in denied(prof) + list(prof.get("tmpfs", ())) if p in text)
+        text = json.dumps(inp, ensure_ascii=False)
+        hits.update(p for p in denied(prof) + list(prof.get("tmpfs", ())) if re.search(re.escape(p) + r"(?![\w.-])", text))
         # the path at a word edge: after a slash, space, quote, = ( ; | & < > : or the start - shell quoting does not hide it
-        hits.update(p for p in prof["tree_exclude"] if re.search(r"(?<![\w.-])" + re.escape(p), text))
+        hits.update(p for p in prof["tree_exclude"] if re.search(r"(?<![\w.-])" + re.escape(p) + r"(?![\w.-])", text))
     return sorted(hits)
 
 

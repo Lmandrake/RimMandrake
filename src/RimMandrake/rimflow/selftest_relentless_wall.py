@@ -131,11 +131,36 @@ def test_would_deny():
     check("a longer name is not the path", W.would_deny([{"command": "cat my-secret.txt"}], q) == [])
 
 
+def test_review_two():
+    q = {"deny": ["/srv/private", "/srv/café"], "tree_exclude": ["secrets"]}
+    check("a longer path is not the denied one", W.would_deny([{"command": "cat /srv/private-copy/f secrets-public/f"}], q) == [])
+    check("a unicode path is seen", W.would_deny([{"command": "cat /srv/café/f"}], q) == ["/srv/café"])
+    check("the denied path itself is seen", W.would_deny([{"command": "cat /srv/private/f"}], q) == ["/srv/private"])
+    box = tempfile.mkdtemp(prefix="wallv")
+    Path(box, "verdict.json").write_text('{"word": "PASS", "at": %s}' % ("1" + "0" * 400), encoding="utf-8")
+    got = W.read_verdict(box)
+    check("a huge stamp keeps the word", got is not None and got["word"] == "PASS")
+    st = {"candidate": {"sha": "s", "evidence": "e"}, "contract": {}}
+    check("a box path with a space is quoted", "python3 '/t m/n/verdict' PASS" in W.marker_prompt(st, "I", "/t m/n"))
+    check("a plain box path is not", "python3 /t/n/verdict PASS" in W.marker_prompt(st, "I", "/t/n"))
+    root = tempfile.mkdtemp(prefix="wallrel")
+    src, sha = repo()
+    cwd = os.getcwd()
+    os.chdir(root)
+    try:
+        box = W.make_box({"box_root": "boxes", "tree_exclude": []}, src, sha, "n3")
+    finally:
+        os.chdir(cwd)
+    check("a relative box root exports", Path(box, "tree/a.py").exists() and os.path.isabs(box), box)
+    W.remove_box(box)
+
+
 def main():
     test_profile_and_props()
     test_box()
     test_read_verdict_malformed()
     test_would_deny()
+    test_review_two()
     if FAILS:
         print(json.dumps(FAILS, default=str)[:1500])
     print("selftest_relentless_wall:", "FAIL" if FAILS else "OK")
