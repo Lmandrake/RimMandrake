@@ -2779,6 +2779,43 @@ def test_review_w_alarm_rearm():
           % [x.get("why", "")[:80] for x in a])
 
 
+def test_slot_run_covers_open_alarms():
+    """ALARM_RUN_DEDUPE_SAID_IT_TWICE: through decide, a scheduled run that finishes done suppresses the alarm run for
+    what was open at its launch, a failed one does not, and a clear and re-cross still runs, also during that run."""
+    ops = operations(alarm_runs=True, runs_local=["12:00"], economy_pass_local=None, alarm_run_gap_s=0)
+    key, A = "ITEM_ONE", {"a1": {"state": "OPEN", "item": "ITEM_ONE"}}
+
+    def launched(state="done", mid=None):
+        """A 12:00 slot launch with the alarm open, `mid` readings during the run, then its finish. -> st, rs, t"""
+        t = at_local("12:00")
+        st = fresh()
+        st["roles"] = {"Operations": {"done": {}, "runs": []}}
+        rs = st["roles"]["Operations"]
+        la = [x for x in role_acts(rdecide([ops], st, robs(ops_status(t, alarms=A)), t)) if x["do"] == "role_launch"]
+        check(len(la) == 1 and la[0]["mode"] != "alarm" and rs["slot_alarms"]["keys"] == [key],
+              "slot run: launches on its slot and holds the open alarm: %s" % rs.get("slot_alarms"))
+        unit = la[0]["unit"]
+        rs["runs"] = [{"unit": unit, "state": "running", "at": t, "mode": "run"}]       # the executor's record: busy
+        for i, alarms in enumerate(mid or []):
+            now = t + 60 * (i + 1)
+            check(not alarm_runs(st, now, alarms), "no alarm run over a scheduled run still running")
+        rs["runs"] = []
+        RL.finish_slot_alarms(rs, {"unit": unit, "state": state})
+        return st, rs, t
+
+    def alarm_runs(st, now, alarms):
+        return [x for x in role_acts(rdecide([ops], st, robs(ops_status(now, alarms=alarms)), now))
+                if x["do"] == "role_launch" and x["mode"] == "alarm"]
+    st, rs, t = launched()
+    check(not alarm_runs(st, t + 300, A), "slot run done: no alarm run for the alarm it covered")
+    check(not alarm_runs(st, t + 900, {}) and rs["alarms_seen"] == [], "slot run covered it, it clears: re-armed")
+    check(len(alarm_runs(st, t + 1800, A)) == 1, "slot run covered it, it clears and re-crosses: the alarm runs")
+    st, rs, t = launched("failed")
+    check(len(alarm_runs(st, t + 300, A)) == 1, "slot run failed: it covered nothing, the alarm runs")
+    st, rs, t = launched(mid=[{}, A])
+    check(len(alarm_runs(st, t + 300, A)) == 1, "cleared and re-crossed during the slot run: the alarm runs")
+
+
 def test_review_x_alarm_flap():
     """Review X, X1: a runway alarm flapping near its line (open 15 min, clear 60 min, every 75 min, all day) must not
     crowd out the 07:30 / 19:30 scheduled runs: alarm runs reserve the scheduled runs' budget, and the schedule's
@@ -3594,7 +3631,7 @@ def main():
               test_role_review_night_r3,
               test_role_ledger_unmeasured, test_role_real_schedule_triggers, test_review_t,
               test_account_hold_dispatch, test_review_u_notes,
-              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_review_x_alarm_flap,
+              test_review_u_lent_unmeasured, test_review_u_group4, test_review_v, test_review_w_alarm_rearm, test_slot_run_covers_open_alarms, test_review_x_alarm_flap,
               test_golive_b1_busy_until_ended, test_golive_b2_blind_fixed_outcomes,
               test_golive_b3_wave1_config, test_golive_trial_set_from_schedule, test_golive_m4_disabled_parent_holds,
               test_golive_m5_malformed_obs, test_golive_m8_ring_withdraw_and_pause,

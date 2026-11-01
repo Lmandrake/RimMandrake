@@ -1096,6 +1096,8 @@ def decide_roles(sch, st, obs, now, act, busy=None, gate=None):
             else:
                 rs.pop("alarm_blind", None)
                 rs["alarms_seen"] = [k for k in rs.get("alarms_seen") or [] if k in open_items]
+                if rs.get("slot_alarms"):       # cleared mid-run: its re-crossing is news to the run that held it
+                    rs["slot_alarms"]["keys"] = [k for k in rs["slot_alarms"]["keys"] if k in open_items]
                 fresh = [k for k in open_items if k not in rs["alarms_seen"]]
                 # daily limits, held as data in the schedule (review X, X1): at most alarm_runs_per_alarm_per_day runs
                 # for one alarm key and alarm_runs_per_day alarm runs in all, so a flapping alarm cannot make a paid
