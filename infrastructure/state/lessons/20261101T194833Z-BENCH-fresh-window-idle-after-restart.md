@@ -1,0 +1,2 @@
+A restart spent one 120 s tick on killed->relaunched and another on relaunched->verified while one_seat skipped the seat: the fresh FOUNDRY window sat 4 m 23 s after the kill (19:36:21 to 19:40:44Z) with 424 ready. Fixed in ae07aa74b1: both steps on one tick, the doorbell kicks that tick when it arms, the dead window's stall clock and backoff die at verified.
+home: src/RimMandrake/rimflow/seat_restart.py
