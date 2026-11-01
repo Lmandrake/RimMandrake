@@ -5,7 +5,7 @@ namespace RimMandrake.TerminalBiomes
 {
     // CHILL_FLOOR_GROWING_BED_1 — placement gate: the bed may only be built on
     // the Chill's own seabed pocket map (biome RM_TheChill AND a pocket map,
-    // never the surface/shore map that carries the same biome). Mirrors
+    // never any non-pocket map carrying the same biome; there is no surface place, owner 2026-11-01). Mirrors
     // DivingInteraction's RM_ChillFireGate.IsChillSeabedMap, which this
     // assembly does not reference.
     public class RM_PlaceWorker_ChillFloorOnly : PlaceWorker

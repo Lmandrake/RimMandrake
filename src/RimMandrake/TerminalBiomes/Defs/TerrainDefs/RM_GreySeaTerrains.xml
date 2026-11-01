@@ -6,7 +6,7 @@
   The Grey Sea's own ground, above and below the waterline. Five terrains
   serving four filed items:
 
-    RM_SaltCrustShore   GREYSEA_SHORE_MUTATOR_SPECIFICS_1  (surface)
+    RM_SaltCrustShore   GREYSEA_SHORE_MUTATOR_SPECIFICS_1  (shore)
     RM_BrineChannel     GREYSEA_FLOOR_FORMATIONS_1         (floor, Q3)
     RM_ChimneySeepFloor GREYSEA_FLOOR_FORMATIONS_1         (floor)
     RM_BrinePoolShallow GREYSEA_BRINE_POOL_DEFENCE_1       (floor)
@@ -77,7 +77,7 @@
 <Defs>
 
   <!-- ==================================================================
-       SURFACE — the crusted white shoreline. Carried onto every Grey
+       SHORE — the crusted white shoreline. Carried onto every Grey
        shore by RM_SeaShoreExtension's beachTerrain field, which
        RM_TileMutatorWorker_SeaCoast already reads per-sea (measured
        2026-09-26: the route exists, only the data was missing).
@@ -112,7 +112,7 @@
        FLOOR — the brine channel. RULED 2026-09-26 (Q3): the kelp spec's
        "brine rivers" are a CHANNEL TERRAIN STRIP running from the
        chimney field downhill into a pool. No vanilla river machinery —
-       the pocket map has no river genstep and the surface sea is
+       the pocket map has no river genstep and RM_GreySea itself is
        allowRivers false.
 
        It gives RM_GlassVeilKelp its only home (wildTerrainTags

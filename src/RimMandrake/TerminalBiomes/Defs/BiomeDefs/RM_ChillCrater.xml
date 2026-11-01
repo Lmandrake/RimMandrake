@@ -39,7 +39,7 @@
     Map.Biome reads the tile's biome directly (Map.cs: Biome => TileInfo.PrimaryBiome).
     FishingUtility.GetCatchesFor dereferences Map.Biome.fishTypes with no null
     check, and a WaterBody keeps the fish list it rolled at generation. So if the
-    swap ever lands under a live surface map, a null fishTypes would NRE on the
+    swap ever lands under a live non-pocket map, a null fishTypes would NRE on the
     next fishing job.
   - No wildAnimals, no wildPlants, animalDensity/plantDensity 0: nothing lives
     here. baseWeatherCommonalities is non-empty so WeatherDecider has something

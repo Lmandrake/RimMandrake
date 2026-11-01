@@ -9,14 +9,14 @@
   🔴 HELD, same as the design doc's own instruction — this def LANDED wave 1
   but is NOT wired into any BiomeDef.fishTypes, and STAYS THAT WAY this wave
   (wave 5, 2026-09-18) even though the other 7 species now land alongside
-  it. `RUT_TwilightSea` is one BiomeDef shared by the ruled no-fish SURFACE
+  it. `RUT_TwilightSea` is one BiomeDef shared by the ruled no-fish non-floor side ("surface" in 2026-09; owner 2026-11-01: no surface place)
   and the fishable UNDER-ROOF deep water (§2D, `_def_bindings` row 25);
-  binding this table there today would make the surface fishable too, which
+  binding this table there today would make that side fishable too, which
   is wrong.
 
   🔴 RE-CHECKED, not just re-cited, before landing the remaining 7 (wave 5):
   `RUT_TwilightSea.xml` is still a single BiomeDef (read in full this wave —
-  no surface/deep split exists on disk), and the "diving-mods map layer"
+  no non-floor/floor split exists on disk), and the "diving-mods map layer"
   half of the doc's own escape hatch is now MEASURED closed, not just
   undecided — GravTide (`gravtide.mod`, active in the live list) dives onto
   its OWN pocket seabed maps (`Defs/BiomeDefs/Biomes_Seabed.xml`,

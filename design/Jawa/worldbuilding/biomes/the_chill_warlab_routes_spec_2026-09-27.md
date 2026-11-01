@@ -403,7 +403,7 @@ items named.)
    everyone on the planet noticed.
 2. **The surgical wound** (Route 2). One clean circle of absence at the entrance
    hill, edges fused smooth — archotech leaves no rubble. The garden otherwise
-   intact; the Tarnn vigil ringing the scar; the lake and surface unchanged, and
+   intact; the Tarnn vigil ringing the scar; the lake and its shore unchanged, and
    no other faction ever learns how the ground opened unless the player tells
    them. Campaign state: the Cathedral's favor is on the books, with both its
    strings live.
@@ -510,7 +510,7 @@ papered over):
    interaction or any hot source as a live crater trigger. The fire-ban physics
    (owner, 2026-09-27: no oxygen below) plus the routes card (every violent
    route brings its own oxidizer or exotica; no accidents) supersede this for
-   the floor. A surface-side hot-source story may still exist above the crust,
+   the floor. A shore-side hot-source story may still exist on the beach,
    where the atmosphere is — but the crater-as-accident is dead, and this spec
    treats hard ban 4 as satisfied by construction: every trigger below is a
    deliberate, chemical-or-archotech, hand-carried source.

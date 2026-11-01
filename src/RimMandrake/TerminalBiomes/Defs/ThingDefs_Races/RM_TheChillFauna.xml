@@ -220,7 +220,7 @@
   </PawnKindDef>
 
   <!-- =================================================================
-       RM_Hoolen — ice-sheet rim skimmer, the SURFACE face. Not caught —
+       RM_Hoolen — ice-sheet rim skimmer, the SHORE face (owner 2026-11-01: no surface place). Not caught —
        verdict 4: no shelf biome, so hoolen lives on RM_TheChill's own
        wildAnimals beside the lake-proper residents.
        ================================================================= -->

@@ -98,7 +98,7 @@ Abyss with the Dark. The Dark is aurora-ash, blown toward the terminator
 ### Ignition has an engine
 
 A propane sea under an electrojet: induced ground currents, static off blowing ice sand,
-dry lightning. The lab beneath the surface has survived since the war — ten thousand years,
+dry lightning. The lab beneath the lake has survived since the war — ten thousand years,
 it is believed, though little is truly known — because nothing
 hot has touched that lake since; a spacecraft's thruster is the first (§8).
 
@@ -198,7 +198,7 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
 ## 8. Inhabited objects
 
 - ⭐ **The ancient war lab** (owner's rulings, `ANCIENT_WAR_LAB_1`): **beneath the propane
-  lake's surface, directly over the Impact Site where the first infection occurred** —
+  lake, directly over the Impact Site where the first infection occurred** —
   where the Assailants were first contained and studied. 🔑 **This is the Assailant's
   single impact site; there is no other** (owner, 2026-10-10, story sitting card 5,
   typed): *"It's the same location. It landed, secretly, and unfortunately immediately

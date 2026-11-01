@@ -1,5 +1,7 @@
 # The Chill (the Propane Lake) — floor-pass sitting agenda (draft, 2026-10-02)
 
+> 🔑 **Read note 2026-11-01** (owner, 2026-11-01: *"You are either on their sea floor, or you are on their beach. There is no 'on their surface' location."*): where this agenda says "surface" as a place (the surface sitting, surface animals, a surface home), read the shore (beach). The live statements were re-scoped; the asked-and-ruled Q1 option text is left as asked. Open questions: `design/RimMandrake/sea_surface_removal_2026-11-01.md`.
+
 Track (b) of `BEDAZZLE_TOP_SHAPE_PROGRAM_1` ("finish the two seas' floor passes"), the
 Propane Lake's half. The owner renamed the biome **the Chill** on 2026-09-27 (*"Let's call it
 the Chill"*); the free-tier defs are `RM_TheChill*`, the frozen campaign twin is still
@@ -44,7 +46,7 @@ filed that evening), and **every one of those items is closed as built** by 2026
 | V-wake pump agitation verified end to end | `CHILL_VWAKE_WIRING_VERIFY_1` |
 | Enclosed cryoponics grower + a floor-only growing bed (2026-09-30) | `CHILL_CRYOPONICS_GROWER_1`, `CHILL_FLOOR_GROWING_BED_1` |
 
-Also already ruled, and not to be re-asked: the **surface** gets its own separate sitting
+Also already ruled, and not to be re-asked: the **shore** (beach) gets its own separate sitting
 (`CHILL_SURFACE_SITTING_1`, open) — the Burner Ascendant guards one authored rim location; the
 vaunoom → zhiil → V-wake life cycle is **flavour only** (no fishing-thins-the-wakes loop).
 Flora rulings: plantDensity 0.18, fuel-from-flora allowed very late game, stonewater is cooking
@@ -119,7 +121,7 @@ All ten `RM_` cast defs have their own pawn art in `TerminalBiomes/Textures/Thin
 The six "floor life" bodies (`RM_TheChillFloorLife.xml`) were authored 2026-09-26 from their
 catch items' own descriptions (`SEA_FISHABLES_ALIVE_IN_DEPTHS_1`).
 
-### 1.6 Surface-side mechanics (not this sitting, listed for completeness)
+### 1.6 Shore-side mechanics (not this sitting, listed for completeness)
 
 `src/RimUtinni/PropaneLakeMechanics/`: pipe network, pumps, valves, rupture, gas vent,
 saturation tracker + deflagration, the saturation heist raid, V-wake pump agitation
@@ -141,14 +143,14 @@ not a sitting question.
 | Elders / a trade or novelty economy | none; the fuel chain and stonewater are the economy | judgement — §4 |
 | Cuisine / economy items | hydrocarbon flesh → refinery; stonewater; rime euphoric; AuroraGlass | no |
 | Sessile layer | oddu (never moves), tarnn (colony), fessu (drifts) | no |
-| Shore mutator specifics | FlowWorks propane suite on shore maps | no (surface sitting) |
+| Shore mutator specifics | FlowWorks propane suite on shore maps | no (shore sitting) |
 | Catch reconciliation (tier) | Grey renamed its catch to `RM_*Catch` (`GREYSEA_CATCH_TIER_RENAME_1`). The Chill's seven are still `RUT_`, so the **free mod's Chill catches two species**; rare table duplicated across tiers. | **yes — Q2** |
 | Every catch species also alive on the floor | 8 of 9: zhiil has **no** floor body (its comment pairs it with the adult vaunoom by life stage). | **yes — Q3** |
 | Every floor species owes a catch | vaunoom, hoolen, and the two Alpha Animals have none — but see Q1 for whether they belong on the floor at all. | via Q1 |
 | Roster JSON amended | `rosters/the_propane_lakes.json` (2026-09-09) still says *"ruled no-fish … CREATURES owed as new defs, not fishTypes"* — overturned by the 2026-09-25 cast sitting. | **yes — housekeeping** |
 | Live review sitting: owner walks the floor | not held | **yes — closes the item** |
 
-One more seam, measured: **the floor map uses the same BiomeDef as the surface tile**, so
+One more seam, measured: **the floor map uses the same BiomeDef as the sea's world tile**, so
 `RM_TheChill`'s `wildAnimals` IS the floor roster. Four of its twelve rows are not floor
 animals by their own descriptions — hoolen *"runs the frozen sheets between the Chill's
 pools"*, the vaunoom's *"V-shaped ripple … across the black mirror of the lake"*, and the
@@ -247,7 +249,7 @@ recommendation is BENCH's, the call is his. In one line each:
 
 ### Q1 — Who actually lives on the floor? (four animals that may belong upstairs)
 
-The floor and the lake's surface share one biome, so its animal list is the floor's cast.
+The floor and the lake's world tile share one biome, so its animal list is the floor's cast.
 Four animals on it are, by their own descriptions, not floor creatures: the **hoolen** (a
 skimmer that runs on the frozen sheets between pools), the **vaunoom** (the V-wake hunter of
 the lake's *surface*), and two borrowed creatures from another mod, a floating **aurora sylph**

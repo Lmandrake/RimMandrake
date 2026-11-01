@@ -255,7 +255,7 @@ plant is green or blue-green with *lustre* — the art rule for this biome is th
 of the Grey's "marred, never manufactured": **wet, glossy, translucent where thin, catching
 gold where a shaft touches it** — and none is an Earth seaweed by name or read (ban 6:
 "kelp analog" is the register, never the label). The frozen sheet exempts the floor from
-`terminator_sea.md`'s surface bans by its own scoping line (*"neither world leaks into the
+`terminator_sea.md`'s shore bans by its own scoping line (*"neither world leaks into the
 other"*), so a plant here may be lush, may stand in forests, may open and close. Silhouette
 spread, deliberately: **towers ×2, bladders ×2, fan ×1, drifters ×2, mats ×2, encruster ×1,
 rope ×1, frond ×2, veil ×1.** Nine of fourteen are interactable beyond harvest. Engine
@@ -854,8 +854,8 @@ looking down and look at what is lit.
   same list with weights.
 - **A Deepwater settlement manifest and its four district templates exist** —
   `SettlementManifestDefs_DeepwaterHold.xml` (cistern hall, gate bastion, hospital ward,
-  hydroponics bay) with `Templates/deepwater_*.txt`, on **tile 2919, a surface
-  AridShrubland shore tile** — the Hold is a *surface* seat and stays one.
+  hydroponics bay) with `Templates/deepwater_*.txt`, on **tile 2919, an
+  AridShrubland shore tile** — the Hold is a *shore* (beach) seat and stays one.
 - **A water-hold place archetype exists** — `RM_InhabitedPlace_WaterHold` (`Resident`,
   larder meals + medicine, stock silver + medicine + potatoes).
 - **The faction never raids** — `raidsForbidden true`, *"IS THE FACTION"* in the def's own
@@ -956,7 +956,7 @@ Compact. Ban 4 holds by the FactionDef; the houses are `Resident` and never a wa
 `the_twilight_deep.md` is 🧊 FROZEN (`BIOME_FREEZE_FABLE_REVIEW_1`, 2026-09-07):
 amendments add detail, never change a ruling; the unfreeze is his call at a sitting. Read
 against every section of the sheet, and against `terminator_sea.md` where the sheet
-inherits it (surface and shore only, by the sheet's own scoping line), the drop and this
+inherits it (shore only, by the sheet's own scoping line), the drop and this
 document sort as follows. **BENCH does not resolve any FLAG below.** The two rulings of §2
 are recorded where they land.
 
@@ -965,12 +965,12 @@ are recorded where they land.
 | item | sheet hook | why it is additive |
 |---|---|---|
 | the waveglass (§2.1) | §0 *"the waveglass is the mechanism"*, §1, §3, §4 | **RULED 2026-09-26 (card, then the name typed):** the roof stays, reskinned; every mechanism the sheet hangs on it is untouched; the word changes |
-| fourteen seaweeds (§3) | §4 *"the kelp forests — real plant life … food, fiber, and the wet lattice-timber"*; §7 kelp agriculture | the sheet named kelp and promised three products; this supplies fourteen forms and the three products by name. Nothing here touches a ban: ban 6 holds (all invented), and the surface bans on lush/open-close flora are scoped away from the floor by the sheet itself |
+| fourteen seaweeds (§3) | §4 *"the kelp forests — real plant life … food, fiber, and the wet lattice-timber"*; §7 kelp agriculture | the sheet named kelp and promised three products; this supplies fourteen forms and the three products by name. Nothing here touches a ban: ban 6 holds (all invented), and the shore bans on lush/open-close flora are scoped away from the floor by the sheet itself |
 | the clinging layer (§4) | §4 *"the abundance around them — the roster pass populates generously here"* and *"yes, and another"* | the sheet's one explicit license to be generous |
 | fish bodies for ten catches (§5) | §4 the shoals, the river-fauna; §7 fishing | the standing every-fishable-lives rule, applied |
 | bioluminescent creatures (§6) | §9 *"darkness between, busy and alive"*; already shipped in four catch descriptions | a third light beside the sheet's two (flag 6 for the record) |
 | skylights as glower things (§6.3) | §3 ⭐ the skylights; ban 5 | the engine shape of a ruling already made; drift is kept |
-| lighting-only weather (§7.1) | his drop; the sheet has no weather section | pure addition; removes a vanilla `Rain` that was against the surface ban anyway |
+| lighting-only weather (§7.1) | his drop; the sheet has no weather section | pure addition; removes a vanilla `Rain` that was against the no-rain ban anyway |
 | the whale's shadow (§7.3) | §4 the gardener *"tends the roof"*; §9 *"the gardener's vast gentle bulk at the ceiling"* | the gardener's work as an event; ban 2 served |
 | skylight rights (§8.1) | §7 *"skylight rights — bright columns as claimable, contestable, expiring real estate; the Compact meters them"* | the sheet's words, mechanised |
 | bank / shaft / bed (§8.2) | §3 the rivers *"their banks are the richest ground"*; ban 3 | **RULED 2026-09-26 (card):** the current stays live; banks are harvest; the design is written to the ruling |
@@ -1019,8 +1019,8 @@ are recorded where they land.
    *lanternwhale*, the Compact calls it *the gardener*, both in the description.
 10. **Houses: per-tile world objects (a) or one biome-wide cast (b)** (§9.2).
     **Position:** (a). And whether the bottom cast is NEW prose (position: yes, six to
-    eight, §9.3) or the Hold's people descending (position: no — the Hold is a surface
-    seat and its cast has surface hooks).
+    eight, §9.3) or the Hold's people descending (position: no — the Hold is a shore
+    seat and its cast has shore hooks).
 11. **Ban 2's object under the reskin** — *"no roof without the gardener"* stands by the
     ruling; but the gardener's job is now to tend the *waveglass*, and §7.3 Grade A makes
     the gardener *move skylights*. Is that too much agency for a placid animal?
@@ -1056,7 +1056,7 @@ steps in §12. Numbering continues §10.2's flags where a flag is also a questio
   overlapping prose before the fish-body wave ships.
 - **Q4 — Unlimited fishing.** ✅ MOOT 2026-09-26, owner typed: *"you don't fish at the
   bottom of the ocean, I had meant the shoreline fishing."* Fishing is the SHORELINE's
-  verb (the surface biome's catch, per the standing floor-and-catch ruling); the floor
+  verb (the shore's catch, per the standing floor-and-catch ruling); the floor
   has no fishing at all — its fish are hunted and its beds gathered.
 - **Q5 — Fourteen seaweeds.** ✅ RULED 2026-09-26 (ledger, gating rows): KEEP ALL
   FOURTEEN — twelve was a floor, not a ceiling.
@@ -1091,7 +1091,7 @@ generator.
 
 | # | step | new defs (rough) | C# | needs | unlocks |
 |---|---|---|---|---|---|
-| 1 | **Fix the surface defect** — drop vanilla `Rain` from `RM_TwilightSea`; set `plantDensity`; list `Plants` on the generator | 0 (edits) | none | nothing | honesty; every later plant can spawn |
+| 1 | **Fix the rain defect** — drop vanilla `Rain` from `RM_TwilightSea`; set `plantDensity`; list `Plants` on the generator | 0 (edits) | none | nothing | honesty; every later plant can spawn |
 | 2 | **The four lighting weathers** (§7.1) | 4 WeatherDefs | none | 1 | the floor has a sky |
 | 3 | **Skylights as glower things + shaft water** (§6.3, §5) — scatter genstep, `RM_Skylight`, `RM_ShaftWater`; the breathing-radius ticker | 2 ThingDef/TerrainDef + 1 GenStep | tiny | 1 | kelp has a place to grow; fishing has water; the biome's image |
 | 4 | **The eight roof-independent plants that need no comp** — oruvell, ghallowyn, sennefan, thessmoss, murrgrave, vaalstone, illuvane, skirroth; `<wildPlants>`; `RM_LatticeTimber`, `RM_SeaSilk`, `RM_VaalGreen`, `RM_NetCord` items | 8 plants + 4 items | none | 3 | the floor is a forest |

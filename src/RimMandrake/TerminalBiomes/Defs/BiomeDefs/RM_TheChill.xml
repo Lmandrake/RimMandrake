@@ -51,9 +51,9 @@
     </modExtensions>
 
     <!-- CHILL_FLOOR_CAST_TRIM_1 (sitting 2026-10-02 Q1a): the floor is its own
-         strange solvent-world. The hoolen and vaunoom (surface animals) and the
+         strange solvent-world. The hoolen and vaunoom (shore animals by their descriptions) and the
          two Alpha Animals borrowings (AuroraSylph, Skyeel) are OFF this roster;
-         they wait for a surface home at the surface sitting. Their ThingDefs
+         they wait for a shore home at the shore sitting (CHILL_SURFACE_SITTING_1). Their ThingDefs
          (RM_TheChillFauna.xml) stay. The living zhiil body is
          RM_Zhiil (CHILL_ZHIIL_FLOOR_BODY_1). Heemin/oovanam: lake residents from
          RM_TheChillFauna.xml. -->

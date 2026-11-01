@@ -3,7 +3,7 @@
   RM_TwilightSeaCatch.xml                TerminalBiomes — authored 2026-09-24
   ==========================================================================
   terminal_seas_cast_proposal_2026-09-25.md, the Twilight Sea section: noolim
-  and weloon join the existing ten-species surface catch as two ADDITIONAL
+  and weloon join the existing ten-species catch as two ADDITIONAL
   rows in RM_TwilightSea.xml's own fishTypes block — noolim common, weloon
   uncommon.
 

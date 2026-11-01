@@ -88,7 +88,7 @@ waterline, under a pale overcast sky, the sea a dull steel colour. **For:** ever
 shore, above water. The crust is a *growth* on the stones — knobbly, popcorn-like — not a
 flat pan.
 
-**BENCH NOTE:** this is the SURFACE shore, so it lands on `terminator_sea.md`'s ground
+**BENCH NOTE:** this is the shore (beach), so it lands on `terminator_sea.md`'s ground
 (the sheet already has *"the ground is salt crust, white, and it takes a footprint"*) and
 on `RM_SeaShoreExtension` (`mandrake.rm.seashores`, already wired on `RM_GreySea`). The
 existing `RUT_Jawa_SaltCrust` terrain (`src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml`)
@@ -198,7 +198,7 @@ defs and defined by none. Building it closes that gap.
 
 > **Every Grey Sea shoreline carries the crusty whiteness** of image 02.
 
-Reference: image 02 (§1.2). This is a surface-and-shore statement and so belongs to
+Reference: image 02 (§1.2). This is a shore statement and so belongs to
 `terminator_sea.md`'s domain (which the Grey Deep inherits). "Every" is a coverage rule:
 no Grey Sea shore tile without the crust.
 
@@ -380,7 +380,7 @@ One weather, his:
 
 > On the sea floor, a special weather event: **precipitating salt crystals, like snow.**
 
-It is *on the sea floor* — a pocket-map weather, not a surface one. Salt crystallising out
+It is *on the sea floor* — a pocket-map weather, not a beach one. Salt crystallising out
 of the water column and drifting down: the biome's one visible motion besides the pools
 breathing, and (BENCH inference) the natural trigger for the Brine Crown's retraction
 (§4.3) and the feed for the shrimp/clam layer (§3).
@@ -396,10 +396,10 @@ colour already. Accumulation, if wanted, would be a filth or a terrain tint via 
 component as the Pyrelands does (`RM_FE_Filth_LooseAsh`), never `snowRate`.
 
 ⚠️ `terminator_sea.md` §6 bans *"no rain, no thunderstorms, no snow, no ice"* — for the
-SURFACE. This weather is on the floor, is salt not water, and the sheet's own §9 already
+SHORE (beach). This weather is on the floor, is salt not water, and the sheet's own §9 already
 has *"the crackle of growing crystal"* and *"scrape-dust falling"*. Flagged in §8;
 position: additive, not a contradiction. Note also that `RM_GreySea` currently carries
-vanilla `Rain 4` in `baseWeatherCommonalities`, which IS against the surface ban and
+vanilla `Rain 4` in `baseWeatherCommonalities`, which IS against that ban and
 predates this drop — a defect to fix in the same pass, not part of the drop.
 
 MEASURED: zero own WeatherDefs in the Grey Sea today; the only terminal-sea weather is the
@@ -519,7 +519,7 @@ five to ten cells wide before dividing into massive cubic and faceted limbs that
 upward into the lighter saline ocean."* A body that is *"living ionic lattices."*
 — BENCH NOTE: *"five to ten cells wide"* is a map-scale instruction: the trunk is a
 multi-cell building-sized thing, the limbs reach up out of the pocket map's "floor" toward
-the surface sea. In engine terms this is a large multi-cell `ThingDef` (a building or a
+the sea above. In engine terms this is a large multi-cell `ThingDef` (a building or a
 `RockBase`-family thing) with a comp, not a `PawnKindDef` — it *"cannot leave"*, has no
 locomotion and trades from where it stands. The largest shipped precedent for a
 building-sized living thing with its own map component is the greatbole
@@ -688,10 +688,10 @@ follows. **BENCH does not resolve any FLAG below — that is the sitting's job.*
    plant keeping a day on a world with none); the Crown moves on a chemical cue and the
    palm's panes track nothing. Sheet §4a carries the sentence.
 4. **Salt snow vs "no snow, no ice".** `terminator_sea.md` §6. **BENCH position:** that
-   ban is about water weather on the surface (its own reason: *"at +14 °C with no lift, the
+   ban is about water weather on the shore (beach) (its own reason: *"at +14 °C with no lift, the
    only water delivery is thin fog"*); the drop's weather is salt, on the floor. Additive.
    ⚠️ The def's existing vanilla `Rain 4` IS against the ban and is a pre-existing defect.
-   **RULED 2026-09-26: ADDITIVE — merges in.** "No snow" stands for the surface; salt
+   **RULED 2026-09-26: ADDITIVE — merges in.** "No snow" stands for the shore; salt
    falling out of supersaturated brine onto the floor is not weather-snow (sheet §4c).
 5. **Chemosynthetic symbionts** (Salt Chimney Vines, §4.5) vs `terminator_sea.md` §6 *"no
    cold gas vents … those belong to the poison forest."* **BENCH position:** warm mineral
@@ -750,7 +750,7 @@ inference, and the unassigned liquid/jacket defNames.
   **RULED 2026-09-26: yes.** Salt chimneys also crystallise, at shorter range; the plume
   is a standing hazard cluster; chimneys are the visible teacher. Sheet §4b.
 - **Q3 — Brine rivers.** Glass Veil Kelp grows *"over trenches and brine rivers"*; the
-  pocket map has no river genstep and the surface sea has `allowRivers false`.
+  pocket map has no river genstep and `RM_GreySea` has `allowRivers false`.
   **Position:** a floor "brine channel" terrain strip from a chimney field down to a pool
   (the super-brine flows downhill into the basin), generated as a terrain line, no
   vanilla river machinery. It gives the kelp its home and gives the floor a legible
@@ -832,11 +832,11 @@ nothing waits on an open question it does not need. Everything below lands in
 
 | # | step | new defs (rough) | C# | needs | unlocks |
 |---|---|---|---|---|---|
-| 1 | **Fix the pre-existing surface defect** — drop vanilla `Rain` from `RM_GreySea`'s `baseWeatherCommonalities` (`terminator_sea.md` ban) | 0 (edit) | none | nothing | honesty |
+| 1 | **Fix the pre-existing rain defect** — drop vanilla `Rain` from `RM_GreySea`'s `baseWeatherCommonalities` (`terminator_sea.md` ban) | 0 (edit) | none | nothing | honesty |
 | 2 | **Salt-snow weather** on the floor (§5) — clone the AshFall pattern with an off-white overlay; wire it into the pocket map's weather | 1 WeatherDef | none | nothing | the Brine Crown's trigger; the floor moves |
 | 3 | **The jacket mineral** — a salt twin of `SolidIce` (mineable, yields a salt-crystal item) + the **huge salt crystal** node (§2.2) + the salt-crystal item | 2 ThingDefs + 1 item | none | nothing | the statuary becomes real; §6 loot protection; Q1(b) |
 | 4 | **Pillars and domes** (§2.4, §2.5) — two natural building/feature families, scattered by a Grey-only genstep on the floor; the pillar is the mason's work | 2–4 ThingDefs + 1 GenStep/scatterer | tiny (scatter) | 3 (they are the same mineral) | the navigation law has something to navigate; four existing descriptions stop lying |
-| 5 | **Crusted shore** (§2.6) — a Grey shore terrain with image-02's texture via `RM_SeaShoreExtension`; domes as shore scatter if Q4 = both | 1 TerrainDef (+ reuse of 4) | none | 4 | the surface reads as the Grey |
+| 5 | **Crusted shore** (§2.6) — a Grey shore terrain with image-02's texture via `RM_SeaShoreExtension`; domes as shore scatter if Q4 = both | 1 TerrainDef (+ reuse of 4) | none | 4 | the shore reads as the Grey |
 | 6 | **The seven flora** (§4) — Crucible Pod, Mosaic Fan Palm, cubic sculpture, sphere plant, Glass Veil Kelp, Brine Crown, Salt Chimney Vine; `<wildPlants>` on `RM_GreySea`; the two that hurt use the `RM_Venomvine` shape | 7 plant ThingDefs (+ colour variants as graphics, not defs) | small (retraction state; chimney adjacency) | 3–4 for cluster rules; 7 for the vine | the floor is a wonderland |
 | 7 | **Salt chimneys** (§2.1) + brine channel if Q3 = yes | 1 ThingDef (+1 TerrainDef) | small (plume effecter; hazard if Q2) | 3 | the vines' host; the teacher for §6 |
 | 8 | **Coloured salts → cuisine** (§2.3) — 3–4 salt ingredient items `RM_`; `MayRequire`-guarded recipes in `mandrake.rsw.cuisine` | 3–4 items + recipes | none | 3 | the treasury has a use |
@@ -861,7 +861,7 @@ BENCH files, not this pass):
   def's authoring note; the "marred, never manufactured" art rule on every artpipe job.
 - `GREYSEA_SALT_SNOW_WEATHER_1` — step 2 (small enough to be its own quick win) plus the
   step-1 rain fix.
-- `GREYSEA_SHORE_CRUST_1` — step 5, surface-side, and Q4.
+- `GREYSEA_SHORE_CRUST_1` — step 5, shore-side, and Q4.
 - `GREYSEA_BRINE_POOL_DEFENCE_1` — steps 10–11: the pool grade, the jacket-encasing of
   pawns and loot, the chisel job; carries Q1–Q2.
 - `GREYSEA_BRINE_ELDERS_1` — step 12 whole; carries Q7–Q10 and the Q11a tier split of

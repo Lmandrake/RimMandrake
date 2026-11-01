@@ -469,7 +469,7 @@ ones:
   **canon, kept on purpose** — flora def and fauna def, side by side, contradicting
   each other. That is the biome's joke about its own admission test. **Do not fix it**:
   no future consistency pass, census or review sheet reconciles these two descriptions.
-- **The snow column feeds in order.** The **oovu** bells catch the fall at the surface;
+- **The snow column feeds in order.** The **oovu** bells catch the fall high in the column;
   what they miss, the **fessu** grow their plates from mid-water; what reaches the floor,
   the **tarspool** resolves and the **pitchpearl** ripens; what even they leave, the
   **oovanam** sifts out of the tholin dust. Four trophic stations on one snowflake's

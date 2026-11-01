@@ -673,7 +673,7 @@ Everything below is ruled and recorded; the sitting spends no time on it.
 **The five "contradiction" flags — ALL RULED ADDITIVE, 2026-09-26** (the Elders beside
 the one giant lineage · "abundant" sessiles as individual placements, never groups ·
 chemically-cued retraction and pane-rotation are not the banned open-and-close ·
-floor salt-snow is not the banned surface weather · warm mineral seeps are not the
+floor salt-snow is not the banned shore weather · warm mineral seeps are not the
 banned cold gas vents). The sheet states each non-contradiction in place.
 
 **The content drop's ten questions — ALL RULED at the bench, 2026-09-26**
@@ -722,6 +722,6 @@ banned cold gas vents). The sheet states each non-contradiction in place.
 - Invented exotic names ship in the free `RM_` tier; only genuine canon routes
   through the campaign patch layer (the Elder's three canon treasures are patched).
 - The floor's animal density is set (0.1 — the roster is live); the biome is
-  impassable-surface with a walkable pocket floor, which is the intended shape.
+  impassable on the world map, with a walkable pocket floor, which is the intended shape.
 - His one aesthetic rule, on every art brief for this biome: *"marred slightly,
   don't make them too perfect or they look manufactured."*

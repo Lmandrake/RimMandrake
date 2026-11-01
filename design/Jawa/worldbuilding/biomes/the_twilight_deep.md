@@ -20,7 +20,7 @@
 _Owner + BENCH, 2026-09-07, one round and ratified ("Let's show what we can do.
 Write it up!"). Defines **the bottom of the Twilight Sea** — the underwater
 biome beneath `RUT_TwilightSea` (479 Ocean-painted tiles plus ice fringe;
-surface and shore stay with `terminator_sea.md`). 🔑 **Implementation deferred
+the shore (beach) stays with `terminator_sea.md`; there is no surface location, owner 2026-11-01). 🔑 **Implementation deferred
 by standing ruling** to the diving mods — but the DESIGN is full-rich by the
 owner's word: **"a biome as rich and varied as the land."** Thematic handle:
 **the last ordinary sea** — and its image: **golden light-wells in dim green
@@ -28,7 +28,7 @@ water, kelp towers, crowds — and lamplit dwellings on the bottom, where the
 Deepwater Compact has been living all along.**_
 
 🔴 **The solitary law's boundary, written**: `terminator_sea.md`'s bans (no
-schools, sparse roster, monoculture) govern the SURFACE and SHORE, where they
+schools, sparse roster, monoculture) govern the SHORE (the beach), where they
 stay absolutely true. **The waveglass is a roof**, and beneath it the exception
 lives — this sheet owns the below, and neither world leaks into the other
 (scoping line added to the base sheet this pass).
@@ -92,7 +92,7 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
   shore: an inverted reef of filter-feeders and grazers working the lid,
   dripping the detritus rain that feeds the floor.
 - **The shoals** — schools, finally and only here: silver crowds in the
-  light columns (the surface ban broken below the roof, by ruling, with
+  light columns (the shore's no-schools ban broken below the roof, by ruling, with
   the physics to justify it).
 - **The river-fauna** — bank-dwellers of the mud channels: burrowers,
   sifters, and the fat slow things that ride the invisible current.
@@ -112,7 +112,7 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
 
 - The roof holds, the skylights drift, the rivers run dry-looking and
   full.
-- The crowds are real and belong; the surface above stays solitary and
+- The crowds are real and belong; the shore stays solitary and
   must never learn otherwise from below.
 - The gardener tends; the Compact tends beside it.
 - The banks are the wealth; the columns are the light; the dark between
@@ -122,8 +122,8 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
 
 ## 6. Never true — 🔴 HARD BANS (checkable)
 
-1. 🔴 **No crowding above the roof** — the surface/shore biome keeps every
-   `terminator_sea.md` ban; nothing schools, herds, or thickens up there.
+1. 🔴 **No crowding on the shore** — the beach keeps every
+   `terminator_sea.md` ban; nothing schools, herds, or thickens there.
 2. 🔴 **No roof without the gardener** — no story, def, or event removes
    the giant and leaves the waveglass standing; they are one system.
 3. 🔴 **No swimmable river** — entering a bottom channel means sinking
@@ -209,7 +209,7 @@ to trade or keep.)
   canon (scoping line added this pass); the skylight/roof physics into
   the hydrology doc.
 - **Cross-flow ledger**: `the_grey_deep.md` (the sister underworld — the
-  statuary against the ark); `terminator_sea.md` (surface law, scoped);
+  statuary against the ark); `terminator_sea.md` (shore law, scoped);
   the Miasma (the Grey's crèche; whether the Twilight's life needs one is
   answered: it has a whole sea); `LIQUID_TYPES_MOD_1` (density-current
   water as a grade).

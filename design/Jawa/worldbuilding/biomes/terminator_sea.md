@@ -9,11 +9,13 @@
 _First pass, 2026-09-05, to the grammar in `README_BIOME_GRAMMAR.md`._
 
 🔴 **Scope (added 2026-09-07):** this sheet's law — solitary, monoculture, the
-no-schools and sparse-roster bans — governs the seas' **SURFACE and SHORE**,
+no-schools and sparse-roster bans — governs the seas' **SHORE (the beach)**,
 where it stays absolutely true. The sea BOTTOMS are their own biomes with their
 own sheets: `the_grey_deep.md` (the statuary) and `the_twilight_deep.md` (the
 last ordinary sea — where, beneath the mat-roof, the crowding exception lives
 by the owner's ruling). Neither world leaks into the other.
+
+🔴 **Amended 2026-11-01 — there is no sea surface** (owner, 2026-11-01: *"You are either on their sea floor, or you are on their beach. There is no 'on their surface' location."*). This owner ruling unfreezes exactly this point: every statement in this family of sheets that gave the sea's SURFACE as a place now reads as the SHORE (beach) or the sea floor; nothing stands, lives or happens "on" the water. Engine fact behind it: `RM_GreySea`, `RM_TwilightSea` and `RM_TheChill` are all `impassable` + `isBackgroundBiome`, so the only map carrying each sea biome is its floor pocket map; the beach is the neighbouring land tile. Open questions: `design/RimMandrake/sea_surface_removal_2026-11-01.md`.
 
 🔑 **Def reconciliation done 2026-09-06** (`LIQUID_BIOMES_MAP_1`, offline half): the
 Twilight Sea and Grey Sea this sheet defines are now `RUT_TwilightSea`/`RUT_GreySea`

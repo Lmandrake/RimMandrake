@@ -17,7 +17,7 @@
 
 _Owner + BENCH, 2026-09-07, two rounds and ratified ("Ok! Write it up!"). Defines
 **the bottom of the Grey Sea** — the underwater biome beneath `RUT_GreySea`'s
-waters (381 Ocean-painted tiles plus its ice fringe; surface and shore canon
+waters (381 Ocean-painted tiles plus its ice fringe; shore (beach) canon
 stays with `terminator_sea.md`, which this sheet inherits and never repeats).
 🔑 **Implementation is deferred by standing ruling** (owner, 2026-09-07: the
 ocean/lake-bottom biomes wait "for those mods when they need it") — this sheet
@@ -261,11 +261,11 @@ Owner, 2026-09-26, six things in the order he gave them. Reference images by pat
 - **Brine channels** — the *"brine rivers"* of the kelp spec. **RULED 2026-09-26: a
   brine CHANNEL TERRAIN STRIP, generated from a chimney field downhill into a pool** —
   the super-brine flows to the basin. No vanilla river machinery (the pocket map has no
-  river genstep; the surface sea is `allowRivers false`). It gives the kelp its home and
+  river genstep; `RM_GreySea` itself is `allowRivers false`). It gives the kelp its home and
   the floor a legible gradient toward the danger.
 - **The crusted shoreline** — *"the crusty whiteness that should be on every Grey Sea
   shoreline"* (image 02): knobbly, cauliflower-textured salt grown over the stones, not
-  a flat pan. Surface-and-shore, so it lands on `terminator_sea.md`'s ground (*"salt
+  a flat pan. A shore feature, so it lands on `terminator_sea.md`'s ground (*"salt
   crust, white, and it takes a footprint"*) and its carrier is `RM_SeaShoreExtension`
   (`mandrake.rm.seashores`, already on `RM_GreySea`); `RUT_Jawa_SaltCrust` is a flat
   evaporite pan — right family, wrong texture. **RULED 2026-09-26: the shore = the
@@ -281,13 +281,13 @@ down: the floor's one visible motion besides the pools breathing. It is the natu
 trigger for the Brine Crown's retraction and the feed for the sessile layer.
 
 *Why it does not cross the inherited "no rain, no thunderstorms, no snow, no ice"
-(`terminator_sea.md` §6):* that ban is about WATER weather on the SURFACE, and gives its
+(`terminator_sea.md` §6):* that ban is about WATER weather on the SHORE (beach), and gives its
 own reason — *"at +14 °C with no lift, the only water delivery is thin fog."* Salt
 falling out of supersaturated brine onto the floor is not weather-snow and not water;
 this sheet already had *"the crackle of growing crystal"* and *"scrape-dust falling."*
 RULED additive, 2026-09-26. Build: the Pyrelands `AshFall` pattern (own `<overlay>`
 colour, `snowRate` stays 0). ⚠️ Pre-existing defect found in the same pass: `RM_GreySea`
-carries vanilla `Rain 4`, which IS against the surface ban — fix it alongside.
+carries vanilla `Rain 4`, which IS against that ban — fix it alongside (done: removed, see `RM_GreySea.xml`).
 
 ## 4d. Brine pools — the crystallisation defence [+2026-09-26]
 
@@ -491,7 +491,7 @@ cells yield more; the fessk watches from the rim) gained their numbers at the
   drink the richness), their shores the harvest ground.
 - **Deepwater's soundings** — weighted lines and marker buoys from above:
   the death-ledger's instruments, metering the sea's retreat from the
-  surface canon's vigil.
+  shore canon's vigil.
 - **[+2026-09-26] The salt chimneys** — venting white super-brine, vines
   spiralled up their black rock, a jacketing plume at their feet; the brine
   channels running from them downhill to the pools.
@@ -572,7 +572,7 @@ words on each in the content doc §1):
   beneath — a wholly different underworld).
 - **Roster** — the three residents into the assignment pass;
   `sea_beasts_roster.md` pairing (the giant ↔ the Miasma's warden mothers).
-- **Cross-flow ledger**: `terminator_sea.md` (surface and shore, inherited
+- **Cross-flow ledger**: `terminator_sea.md` (shore, inherited
   law); `the_miasma.md` (the crèche); the preservation triptych
   (`the_sump.md`, `the_scarlands.md`); `LIQUID_TYPES_MOD_1` (saturated
   brine as a liquid grade); the future dry-statuary archaeology as plot

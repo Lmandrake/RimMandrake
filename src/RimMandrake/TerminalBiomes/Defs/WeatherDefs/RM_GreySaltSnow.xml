@@ -47,7 +47,7 @@
   WHY THIS DOES NOT CROSS "NO SNOW, NO ICE"
   ============================================================================
   RULED ADDITIVE 2026-09-26 (sheet §4c, content doc §8.2 item 4).
-  terminator_sea.md §6's ban is about WATER weather on the SURFACE and gives
+  terminator_sea.md §6's ban is about WATER weather on the SHORE (beach) and gives
   its own reason: "at +14 degC with no lift, the only water delivery is thin
   fog." This is salt, on the floor, out of the water column. The Grey Deep
   sheet already carried "the crackle of growing crystal" and "scrape-dust
@@ -58,7 +58,7 @@
   pocket map RM_SeaDiveGenerator_GreySea generates. A coastal land tile keeps
   its own land biome. So putting this in RM_GreySea's baseWeatherCommonalities
   puts it on the FLOOR and nowhere else, which is what "on the sea floor" asks
-  for. It is not a surface weather by the back door.
+  for. It is not a beach weather by the back door.
 
   favorability Neutral, not Bad, on purpose: WeatherDecider refuses any
   weather below Neutral for the first 8 days after settling

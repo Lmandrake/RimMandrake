@@ -55,7 +55,7 @@ must also live below — and does not oblige the converse; the anchors
 (reefback, fessk) already stand as floor-only precedent. For catchability: a
 thirteenth-plus catch row would be free variety. Against, and decisive: the
 orruhmu is not in the water column — it is a shore-walker at the pool lips of
-the floor pocket map, no more fishable from the surface shore than a pillar
+the floor pocket map, no more fishable from the shore than a pillar
 is; and a creature whose organ is a crystallising weapon, hauled up on a
 line, invites exactly the "harvest the squirt" economy that Q7 just refused
 for the anti-crystal sprig (pure dressing, no product). The sea is not

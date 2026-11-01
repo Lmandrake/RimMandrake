@@ -8,7 +8,7 @@
   other biome-scoped atmosphere incident: this is a light-economy pressure,
   not a combat threat, so it stays out of the vanilla Storyteller's
   ThreatSmall/ThreatBig queues. allowedBiomes RM_TwilightSea covers both the
-  world-surface tile AND the sea-dive floor pocket map, which sets
+  world-map tile AND the sea-dive floor pocket map, which sets
   pocketMapProperties.biome to the same defName (RM_SeaDiveGenerators.xml,
   mandrake.rm.divinginteraction) — the same shape RUT_WalkerSurfacing already
   relies on for RM_TheScald/RUT_TheScald.

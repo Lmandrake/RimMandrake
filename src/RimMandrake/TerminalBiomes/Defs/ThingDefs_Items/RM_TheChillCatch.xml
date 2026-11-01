@@ -5,7 +5,7 @@
   terminal_seas_cast_proposal_2026-09-25.md verdict 3: the Chill IS
   fishable — heemin common, oovanam uncommon dredge become the catch. Since
   CHILL_FREE_TIER_CATCH_1 (2026-10-03) the other seven catches live here too
-  and RM_TheChill's whole fishTypes block is RM_*Catch. hoolen is NOT a catch (surface wildAnimals only, verdict 4).
+  and RM_TheChill's whole fishTypes block is RM_*Catch. hoolen is NOT a catch (verdict 4; off the floor roster since CHILL_FLOOR_CAST_TRIM_1, awaiting a shore home).
 
   Item-only catch defs (heemin/oovanam's own floor-resident forms are the
   SEPARATE roster work in RM_TheChillFauna.xml). Register stats follow

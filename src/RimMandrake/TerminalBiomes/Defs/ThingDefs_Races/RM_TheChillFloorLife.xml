@@ -361,7 +361,7 @@
 
   <!-- ==================================================================
        RM_OOVU — "frost-bell." A harmless bell of frozen hydrocarbon
-       jelly riding the fuel's surface, catching the nightly snow. No
+       jelly riding high in the fuel column, catching the nightly snow. No
        sting; "almost nothing." Faintly green under the aurora.
        ================================================================== -->
   <ThingDef ParentName="AnimalThingBase">
@@ -612,7 +612,7 @@
          spawner, so that GenStep — which runs only when generating the
          Chill's seabed pocket map — is the only place a Tarnn is ever
          created), so starting dormant here can never strand a hypothetical
-         surface-spawned Tarnn. jobDormancy=true (not signal-driven — the
+         non-pocket-map Tarnn. jobDormancy=true (not signal-driven — the
          wake is always an explicit RM_MapComponent_ChillGardenDefense call,
          WakeUp() + a forced ManhunterPermanent, never a passive proximity
          trigger) shows the sleeping Zzz and keeps a dormant Tarnn from
