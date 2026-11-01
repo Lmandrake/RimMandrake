@@ -1857,3 +1857,6 @@
 {"seat":"RUNNER","event":"note","id":"HARNESS_REPAIR_CAUSE_AC81755A","text":"seen again in testq J20261101T224057Z-c05a47.a1: modcheck exit 1; {'PASS': 10, 'UNMEASURED': 3, 'NOT_RUN': 4}","ts":"2026-11-01T22:48:22Z","tsn":1793573302987684429}
 {"seat":"RUNNER","event":"note","id":"HARNESS_REPAIR_CAUSE_AC81755A","text":"seen again in testq J20261101T224727Z-2cf991.a1: modcheck exit 1; {'PASS': 7, 'UNMEASURED': 3, 'NOT_RUN': 4}","ts":"2026-11-01T22:54:39Z","tsn":1793573679343530356}
 {"seat":"RUNNER","event":"note","id":"OPS_TIMERS_REVIVE_AC46","text":"timers_guard: watched timers are active again (2026-11-01T22:58:08Z)","ts":"2026-11-01T22:58:10Z","tsn":1793573890547191674}
+{"seat":"RUNNER","event":"note","id":"OPS_PLAN_LIST_FIX_VMIV","text":"ops_watch: cleared at 2026-11-01T23:07:01Z (plan.distressed now 0)","ts":"2026-11-01T23:07:49Z","tsn":1793574469456496976}
+{"seat":"RUNNER","event":"note","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","text":"ops_watch: cleared at 2026-11-01T23:07:01Z (steve.incident_unclaimed_min now 0.0)","ts":"2026-11-01T23:07:51Z","tsn":1793574471869331609}
+{"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC","text":"ops_watch: cleared at 2026-11-01T23:07:01Z (timers.failed_units now 0)","ts":"2026-11-01T23:07:54Z","tsn":1793574474154812151}
