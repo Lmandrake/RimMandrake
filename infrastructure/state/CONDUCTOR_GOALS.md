@@ -8,7 +8,16 @@ deleted, git holds the history. His words are cited from the ledger notes on `V3
 
 ---
 
-## From Sun 2026-11-01: operating requirements (block 4, on top)
+## From Sun 2026-11-01: the Relentless Agent (block 5, on top)
+
+His words: *"Then get to work at max priority. This is VITAL, it's the core of reliable building and testing in the new
+system and reusable beyond RimMandrake. I'd like to officially call this the Relentless Agent."*
+
+1. **The Relentless Agent**: efficient memory between generations, loop-trap awareness, calling for blind review and for
+   help, a Build and a Judge mode, written to be reusable with RimMandrake as its first target. Design:
+   `design/RimMandrake/relentless_agent_design_2026-11-01.md`.
+
+## From Sun 2026-11-01: operating requirements (block 4, on top of block 3)
 
 Set: 2026-11-01. His words: *"please improve these requirements to a useful level. Then do a GPT review, and then let's
 get to work on this right away."* Requirements: `design/RimMandrake/operating_requirements_2026-11-01.md`.
