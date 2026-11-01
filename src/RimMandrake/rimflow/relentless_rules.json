@@ -1,4 +1,5 @@
 {
+  "_max_workers": "3 at once (owner health brief 2026-10-31: 25 GB of memory free; the trial has priority, not exclusion). Steps back to 1 while available memory is under step_back_mem_gb (8); under min_mem_available_gb (6) nothing launches. relentless.worker_cap does the step-back.",
   "_": "The owner's tunable parameter and every limit of relentless.py, in data. See design/RimMandrake/relentless_owner_design_2026-10-31.md section 8 for why each number is what it is.",
   "enabled": true,
   "share": 0.5,
@@ -9,7 +10,8 @@
   "pool_ids_exclude": ["LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING", "ACCOUNTPICK_HOLD_RESTORE_WHEN_HE_LANDS", "RUNNERCLONE_FIX_STRANDED_BY_HISTORY_REWRITE"],
   "enrol_per_tick": 2,
   "max_queued": 8,
-  "max_workers": 1,
+  "max_workers": 3,
+  "step_back_mem_gb": 8,
   "same_failure_limit": 3,
   "unchanged_returns_limit": 9,
   "run_max_s": 3600,

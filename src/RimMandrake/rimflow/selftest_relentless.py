@@ -678,6 +678,18 @@ def t_concurrency():
     run = [s2 for s2 in states if s2["status"] == "running"]
     ok(len(run) == 3 and len({s2["clone"] for s2 in run}) == 3, "max_workers holds, one clone each")
     x.done()
+    # memory under step_back_mem_gb (8) but over the launch floor: one worker only
+    x = Rig(n=6, share=1.0, max_workers=3, step_back_mem_gb=8)
+    x.w.mem = 7
+    x.tick()
+    x.tick()
+    ok(len([s2 for s2 in x.s.states() if s2["status"] == "running"]) == 1, "available memory under 8 GB steps back to 1 worker")
+    x.w.mem = 20
+    x.tick()
+    x.tick()
+    ok(len([s2 for s2 in x.s.states() if s2["status"] == "running"]) == 3, "memory back over 8 GB: 3 workers again")
+    ok(R.worker_cap(FakeWorld(0), dict(RULES, max_workers=3, step_back_mem_gb=8), 1) == 4, "a check keeps its place on top of the cap")
+    x.done()
     shutil.rmtree(d, ignore_errors=True)
 
 

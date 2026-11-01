@@ -701,12 +701,21 @@ def unit_name(kind, item, gen):
     return "rm-relentless-%s-%s-g%d" % (kind, short(item), gen)
 
 
-def admission(store, fx, r, now, active):
+def worker_cap(fx, r, extra=0):
+    """The places a run may take now: max_workers, stepped back to 1 while available memory is under step_back_mem_gb.
+    `extra` is the place a check gets on top (the cap is never below 1 + extra)."""
+    cap = r["max_workers"]
+    if cap > 1 and fx.mem_gb() < r.get("step_back_mem_gb", 0):
+        cap = 1
+    return cap + extra
+
+
+def admission(store, fx, r, now, active, extra=0):
     """-> None when one more run may start, else why not."""
     br = load_breaker(store)
     if br.get("until", 0) > now:
         return "breaker open until %s" % iso(br["until"])
-    if active >= r["max_workers"]:
+    if active >= worker_cap(fx, r, extra):
         return "max_workers"
     if fx.paused():
         return "paused"
@@ -979,7 +988,7 @@ def step(store, fx, r, item, now, acts):
         if not settle(store, fx, r, item, "run", c["at"], now, acts):
             return
         active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["item"] != item)
-        hold = admission(store, fx, dict(r, max_workers=r["max_workers"] + 1), now, active)   # checks get a place
+        hold = admission(store, fx, r, now, active, extra=1)   # checks get a place
         if hold:
             acts.append({"do": "check_waits", "item": item, "why": hold})
             return
