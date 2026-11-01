@@ -532,6 +532,47 @@ function Register-FleetTask {
     return 'registered \Claude Fleet'
 }
 
+function Register-SeatsWatchTask {
+    # OPS_STEVE_SEATS_RESTORE_QTWK: the logon tasks fire only at a logon, so a WSL-only stop (wsl --export, --terminate,
+    # --shutdown) lost the keepalive, the ssh door and both seats until a Windows restart (2026-11-01, 16:02Z to 16:43Z).
+    # Every 5 min: put the keepalive back, then hand a missing seat to \Claude Fleet. Steps aside during a boot, a
+    # running Fleet, or an export or import, which own the distro. Log: seats_watch.log, actions only.
+    $ps = Join-Path $Root 'seats_watch.ps1'
+    $vbs = Join-Path $Root 'seats_watch.vbs'
+    $psText = @'
+$log = 'C:\SteveDesktop\seats_watch.log'
+function Say($m) { Add-Content -LiteralPath $log -Value ((Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ') + ' ' + $m) }
+$wsl = @(Get-CimInstance Win32_Process -Filter "Name='wsl.exe'" | ForEach-Object { $_.CommandLine })
+if ($wsl -match '--export|--import|--unregister') { exit 0 }
+if ((Get-ScheduledTask -TaskName 'Claude Fleet').State -eq 'Running') { exit 0 }
+if (((Get-Date) - (Get-CimInstance Win32_OperatingSystem).LastBootUpTime).TotalMinutes -lt 5) { exit 0 }
+if (-not ($wsl -match 'sleep infinity')) {
+    Say 'keepalive missing: starting \WSL Keepalive'
+    Start-ScheduledTask -TaskName 'WSL Keepalive'
+    Start-Sleep -Seconds 10
+}
+& wsl.exe -d Ubuntu -u mandrake --exec bash -c 'tmux has-session -t seat-server && tmux has-session -t seat-runner' *> $null
+if ($LASTEXITCODE -eq 0) { exit 0 }
+Say 'a seat is missing: starting \Claude Fleet'
+Start-ScheduledTask -TaskName 'Claude Fleet'
+'@
+    Set-Content -LiteralPath $ps -Value $psText -Encoding ASCII
+    $vbsText = @(
+        "' seats_watch.vbs - runs seats_watch.ps1 with no console window, as wsl_keepalive.vbs does.",
+        "CreateObject(`"WScript.Shell`").Run `"powershell.exe -NoProfile -ExecutionPolicy Bypass -File `"`"$ps`"`"`", 0, True"
+    )
+    Set-Content -LiteralPath $vbs -Value $vbsText -Encoding ASCII
+    $action = New-ScheduledTaskAction -Execute 'wscript.exe' -Argument "`"$vbs`""
+    $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 5) `
+        -RepetitionDuration (New-TimeSpan -Days 3650)
+    $principal = New-ScheduledTaskPrincipal -UserId $TaskUserSid -LogonType Interactive
+    $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries `
+        -ExecutionTimeLimit (New-TimeSpan -Minutes 4) -MultipleInstances IgnoreNew
+    Register-ScheduledTask -TaskName 'Steve Seats Watch' -TaskPath '\' -Action $action -Trigger $trigger `
+        -Principal $principal -Settings $settings -Description 'SteveDesktop: returns WSL and the two Claude seats after a stop that was not a logon.' -Force | Out-Null
+    return 'registered \Steve Seats Watch'
+}
+
 function Register-SelfUpgradeTask {
     $ps = Join-Path $Root 'selfupgrade_windows.ps1'
     $body = @(
@@ -699,6 +740,7 @@ function Invoke-Main {
     Invoke-Step 'rdp' { Enable-RdpIfPro }
     Invoke-Step 'task_keepalive' { Register-KeepaliveTask }
     Invoke-Step 'task_fleet' { Register-FleetTask }
+    Invoke-Step 'task_seats_watch' { Register-SeatsWatchTask }
     Invoke-Step 'task_selfupgrade' { Register-SelfUpgradeTask }
     Invoke-Step 'tailscale_login' { Start-TailscaleLogin }
     $script:Status.phase = 'B_done'

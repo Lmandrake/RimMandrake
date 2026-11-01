@@ -243,6 +243,9 @@ The agent then gets PASS on every door.
     (`claude remote-control`) and "Claude Runner (SteveDesktop)" in `~/rm/runner`. This supersedes step 9's
     "do not turn on Remote Control" now that the owner wants SteveDesktop controllable from his phone.
   - **Fleet after a reboot:** the logon task `\Claude Fleet` runs it with `-Logon` (log `C:\SteveDesktop\fleet.log`).
+    **After a WSL-only stop** (`wsl --export`, `--terminate`, `--shutdown`) no logon fires: `\Steve Seats Watch` (every 5 min,
+    log `C:\SteveDesktop\seats_watch.log`, actions only) starts `\WSL Keepalive`, then `\Claude Fleet`. It stands aside for
+    the first 5 min of a boot, a running Fleet, and a `wsl.exe` export, import or unregister.
     Each seat is a tmux session, `seat-server` in `~/seat-server` and `seat-runner` in `~/rm/runner`; a Windows
     Terminal tile only views it. From anywhere: `ssh stevedesktop-wsl tmux capture-pane -p -t seat-runner`, and
     `tmux send-keys` to answer it. The Server must never run in `~`: Claude does not save trust for a home directory,
@@ -346,7 +349,7 @@ physical access to it, so you need to be able to do anything needed for testing.
 | Driver updates | could swap the GPU driver | `ExcludeWUDriversInQualityUpdate=1` |
 | Sleep / hibernate | standby on AC never | standby + hibernate never on AC, hibernate off |
 | Windows Update reboot | AUOptions=4, no auto reboot while signed in, active hours 7-1 | none needed |
-| WSL alive | `\WSL Keepalive` at logon | none needed |
+| WSL alive | `\WSL Keepalive` at logon; `\Steve Seats Watch` every 5 min returns it, and both seats, after a WSL-only stop | none needed |
 
 **Still needs a human (no remote route):** a Steam Guard code or re-login after a password change
 or token expiry (Steam UI plus the account's phone); anything before Windows starts (BIOS,
