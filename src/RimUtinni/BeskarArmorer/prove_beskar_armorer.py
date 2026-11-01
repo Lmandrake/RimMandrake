@@ -23,7 +23,8 @@ UTILS = os.path.join(REPO, "src", "RimMandrake", "Utils")
 sys.path.insert(0, UTILS)
 LOCALLOW = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 PROBE = os.path.join(LOCALLOW, "BeskarArmorerProbe.jsonl")
-PLAYER_LOG = os.path.join(LOCALLOW, "..", "..", "..", "LocalLow", "Ludeon Studios", "RimWorld by Ludeon Studios", "Player.log")
+WIN_PROBE = os.path.expandvars(r"%USERPROFILE%\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\BeskarArmorerProbe.jsonl")
+PLAYER_LOG = os.path.join(LOCALLOW, "Player.log")
 OUT = "/mnt/d/ClaudeWork/rimmandrake/scratch/beskar_armorer_proof.json"
 CRITERIA = {
     "L4": ["L4.other_pawn_no_quest", "L4.hunter_is_prisoner", "L4.quest_offered", "L4.no_covert_yet", "L4.delay_2_to_5_days",
@@ -39,7 +40,7 @@ CRITERIA = {
           + ["L8.%s.%s" % (h, k) for h in ("guard", "building", "forge", "capture", "kill") for k in ("lost", "heat_max", "raid")],
     "L9": ["L9.not_before_day_30", "L9.not_while_revealed", "L9.not_while_lost", "L9.offered", "L9.site_is_empire", "L9.map_made",
            "L9.detainee_with_you", "L9.no_heat_yet", "L9.plate_in_locker", "L9.large_heat", "L9.pursuit_delay_running", "L9.pursuit_raid",
-           "L9.covert_revealed", "L9.quest_success", "L9.he_went_home", "L9.death_fails", "L9.death_no_covert", "L9.timeout_armed", "L9.timeout_fails"],
+           "L9.covert_revealed", "L9.quest_success", "L9.he_went_home", "L9.heat_tool_reads_it", "L9.death_fails", "L9.death_no_covert", "L9.timeout_armed", "L9.timeout_fails"],
     "L10": ["L10.route1_off", "L10.route2_off", "L10.harm_raid_off", "L10.mod_off_no_gate", "L10.mod_off_no_quest", "L10.mod_off_smelt_is_not_ours"],
 }
 
@@ -97,17 +98,18 @@ class Game:
 
 
 STEPS = ["Probe reset", "Probe L4 route one", 120, "Probe L4 read", "Probe L6 colony benches",
-         "Probe visit by map path", "Probe L5 forge setup", 1500, "Probe L5 status", 1500, "Probe L5 status", 1500, "Probe L5 status", 3000, "Probe L5 status", 3000, "Probe L5 status", "Probe L5 read", "Probe cast read", "Probe leave",
+         "Probe visit by map path", "Probe L5 forge setup", "WAIT_REFORGE", "Probe L5 read", "Probe cast read", "Probe leave",
          "Probe visit by map path", "Probe leave", "Probe visit by map path", "Probe leave",
          "Probe L8 fresh covert", "Probe L8 harm guard", "Probe L8 fresh covert", "Probe L8 harm building",
          "Probe L8 fresh covert", "Probe L8 harm forge", "Probe L8 fresh covert", "Probe L8 harm capture",
          "Probe L8 fresh covert", "Probe L8 harm killed",
-         "Probe L9 offer", 120, "Probe L9 breakout", 240, "Probe L9 out read", 120, "Probe L9 done read",
+         "Probe L9 offer", 120, "Probe L9 breakout", 240, "Probe L9 out read", 120, "Probe L9 done read", "HEAT_TOOL",
          "Probe L9 failure paths", 240, "Probe L9 death read", 120, "Probe L9 timeout read", "Probe L10 toggles", "Probe gravship build"]
 
 
 def drive():
     """Runs under Windows Python: RimBridge binds Windows loopback, and WSL2 cannot reach it."""
+    t0 = time.time()
     g = Game()
     st = g.call("rimworld/get_game_info")
     print("game:", str(st)[:160])
@@ -120,9 +122,14 @@ def drive():
     for s in STEPS:
         if isinstance(s, int):
             g.ticks(s)
+        elif s == "WAIT_REFORGE":
+            wait_reforge(g)
+        elif s == "HEAT_TOOL":
+            heat_tool(g)
         else:
             print("  ", s, flush=True)
             g.act(s)
+    print("  flying from %.0f s" % (time.time() - t0), flush=True)
     for leg in ("Probe gravship launch out", "Probe gravship read covert", "Probe gravship launch home", "Probe gravship read home",
                 "Probe gravship launch out", "Probe gravship read covert"):
         if "read" in leg:
@@ -131,6 +138,31 @@ def drive():
         print("  ", leg, flush=True)
         g.act(leg)
         fly(g)
+    print("  driven in %.0f s" % (time.time() - t0), flush=True)
+
+
+def probe_rows(path=None):
+    with open(path or WIN_PROBE) as f:
+        return [json.loads(line) for line in f if line.strip()]
+
+
+def wait_reforge(g):
+    """step_game_ticks gives back what the frame budget allowed, not the ticks asked: poll the bills, never count on a tick total."""
+    for _ in range(30):
+        g.ticks(600)
+        g.act("Probe L5 status")
+        st = [r for r in probe_rows() if r["row"] == "L5.status"]
+        if st and "meltLeft=0 reforgeLeft=0" in st[-1]["detail"]:
+            return
+
+
+def heat_tool(g):
+    """Spec 6: the bridge read the blackboard takes, against the rows the game holds. Written as a probe row, from this side."""
+    r = g.call("jawa/heat_events")
+    ev = r.get("events") or []
+    ok = r.get("modLoaded") is True and any(e["amount"] == 30 and e["faction"] == "Empire" for e in ev)
+    with open(WIN_PROBE, "a") as f:
+        f.write(json.dumps({"row": "L9.heat_tool_reads_it", "pass": ok, "detail": str(ev)[:300]}) + "\n")
 
 
 def fly(g):
@@ -144,8 +176,9 @@ def fly(g):
             time.sleep(3)
             g.ticks(120)
             return
-        g.ticks(300)
-        time.sleep(2)
+        g.ticks(900)
+        if st.get("cutsceneInProgress"):
+            time.sleep(1)
     print("     NEVER LANDED", flush=True)
 
 
@@ -156,9 +189,23 @@ def win_python():
     sys.exit("no Windows python found; the bridge cannot be reached from WSL")
 
 
+def generator_log():
+    """L2's live half: both startup lines are present and no error line names this mod's defs. A log with neither line is UNMEASURED."""
+    with open(PLAYER_LOG, errors="replace") as f:
+        lines = f.read().splitlines()
+    gen = [l for l in lines if l.startswith("[BeskarArmorer] generated ")]
+    patched = [l for l in lines if l.startswith("[BeskarArmorer] Harmony: patched ")]
+    errs = [l for l in lines if any(w in l for w in ("RM_Reforge_", "RM_Armorer", "RM_Quest_Armorer", "RM_Quest_ImperialPrisonBreak", "RM_ImperialDetentionPost"))
+            and any(w in l for w in ("rror", "xception", "Could not"))]
+    if not gen or not patched:
+        return "UNMEASURED", "startup lines not in the log"
+    ok = not errs and patched[-1].endswith("missing 0") and " 0 reforge" not in gen[-1]
+    return ("PASS" if ok else "FAIL"), "; ".join([gen[-1], patched[-1]] + errs[:5])
+
+
 def live():
     me = subprocess.run(["wslpath", "-w", os.path.abspath(__file__)], capture_output=True, text=True).stdout.strip()
-    r = subprocess.run([win_python(), me, "--drive"], timeout=500)
+    r = subprocess.run([win_python(), me, "--drive"], timeout=525)
     if r.returncode:
         return ["drive"]
     rows = {}
@@ -174,6 +221,10 @@ def live():
         print(crit, verdicts[crit], "; ".join(failing + ["missing " + m for m in missing])[:1500])
         if verdicts[crit] != "PASS":
             bad.append(crit)
+    verdicts["L2"], detail = generator_log()
+    print("L2", verdicts["L2"], detail[:500])
+    if verdicts["L2"] != "PASS":
+        bad.append("L2")
     stray = [r["row"] + ": " + r["detail"] for rs in rows.values() for r in rs if not r["pass"] and not any(r["row"] in w for w in CRITERIA.values())]
     for s in stray:
         print("STRAY", s[:400])

@@ -25,10 +25,12 @@ Design: design/RimMandrake/beskar_armorer_quest_design_2026-10-09.md</descriptio
     <li>
       <packageId>mandrake.rsw.armoury</packageId>
       <displayName>Jawa Armoury Rebalance</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
     <li>
       <packageId>mandrake.rut.patches</packageId>
       <displayName>RimUtinni Patches</displayName>
+      <downloadUrl>https://github.com/Lmandrake/RimMandrake</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

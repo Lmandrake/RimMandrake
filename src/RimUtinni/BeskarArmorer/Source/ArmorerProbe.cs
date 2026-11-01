@@ -43,6 +43,8 @@ namespace RimMandrake.Utinni.BeskarArmorer
             Guarded("reset", () =>
             {
                 File.WriteAllText(FilePath, "");
+                firstCast = null;      // statics outlive a run: a second proof in one game session must not compare against the last run's cast
+                visits = 0;
                 foreach (Quest q in Find.QuestManager.QuestsListForReading.Where(q => q.root == ArmorerDefOf.RM_Quest_ArmorerDebt || q.root == ArmorerDefOf.RM_Quest_ImperialPrisonBreak).ToList())
                     Find.QuestManager.Remove(q);
                 SoftReset();
