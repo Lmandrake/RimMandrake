@@ -83,7 +83,7 @@ headed `OPS DECISION <id>` with the right provenance flag; Operations carries it
 | he writes in the BENCH tile (the Conductor window) from his phone, Remote Control | quick | quick mode below |
 | he is at the keyboard, or asks for workshop work (design, a build, a live test) and says yes to a sitting | session | the workshop below |
 
-**Owner 2026-10-29, after blind review 3: *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."* The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`). The context backstop for this window is OFF (`backstop: false`): he ruled only on the goodbye kill, and review 3's backstop findings are open.** His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
+**Owner 2026-10-29, after blind review 3: *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."* The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`). The context backstop for this window is ON (owner by card 2026-11-01: "Should the Conductor restart itself like Foundry? → Same limits as Foundry"; `seat_restart.seats.BENCH._why_backstop`): over 110k, idle 30 min, no message from him for 4 h, no helper alive; over 200k it restarts at the next ended turn plus 20 s of quiet **even mid-conversation**, because Foundry's hard limit does not wait for him (his typing cancels and the next tick re-arms). A goodbye outranks all of it: instant, uninterruptible, joining any pending backstop.** His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
 window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like your design. Go with it."*). The goodbye
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
 a 3-5 line note to the Conductor log read at wake; the program is `conductor_closeout.py check`, and
@@ -93,8 +93,7 @@ restarts the window as a fresh Remote Control `CONDUCTOR` at once (`goodbye_quie
 it (owner 2026-11-01), his or a machine's: the window is killed mid-reply if need be, and what he sent after the goodbye
 goes to the Conductor log and the wake. Only a live helper, the bridge or PAUSE holds it; the window's own background commands end with it. A
 request that printed DEFERRED (live helpers) drains. The fresh window's wake (`--gen` binds it to that one restart) lists, whole
-and once, what he sent the old one after the goodbye. A context backstop (OFF since 2026-10-29) would also restart the window, but only after 4 h with no message
-from him. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in
+and once, what he sent the old one after the goodbye. The context backstop (above) restarts it too: after 4 h with no message from him at 110k, at any ended turn at 200k. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in
 `src/RimMandrake/rimflow/seat_restart.py` (`seat_restart.seats.BENCH`, kind `conductor`; the Conductor design:
 `design/RimMandrake/conductor_briefing_2026-10-28.md` Part B). The Dispatcher launches only the
 `quick_checks_local` runs, and none while a live `CONDUCTOR` window exists (that window writes the findings itself).

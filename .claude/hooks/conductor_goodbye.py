@@ -7,7 +7,7 @@ the light close-out into that window's context on that turn: his rulings onto th
 OWNER, 3-5 lines to the Conductor log, then `seat_restart.py request --seat BENCH --fresh`, and the Dispatcher
 relaunches a fresh CONDUCTOR window at once, and no text can stop it (seat_restart.py, kind "conductor", goodbye_quiet_s).
 The kill is his accepted risk (owner 2026-10-29: "Leave the goodbye kill on. If I'm typing at the same time it's an
-acceptable risk."); the context backstop for this window stays off (seat_restart.seats.BENCH.backstop false).
+acceptable risk."); the context backstop for this window is on with Foundry's limits (seat_restart.seats.BENCH._why_backstop).
 
 Only a whole-message goodbye fires: src/RimMandrake/rimflow/goodbye_phrase.py (case-folded, apostrophes dropped,
 every run of non-word characters read as one space; letters of any script stay) compared WHOLE against

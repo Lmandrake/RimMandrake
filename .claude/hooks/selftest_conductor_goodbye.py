@@ -81,12 +81,12 @@ def _on(sch):
     return on
 
 
-def test_live_goodbye_restart_is_on_and_backstop_off():
-    # owner 2026-10-29 after blind review 3: the goodbye kill stays on; the backstop stays off (he ruled only on goodbye)
+def test_live_goodbye_restart_is_on_and_backstop_on():
+    # owner 2026-10-29 after blind review 3: the goodbye kill stays on; the backstop came on by his card of 2026-11-01
     raw = LIVE["seat_restart"]["seats"]["BENCH"]
-    check(raw.get("enabled") is True and raw.get("backstop") is False and "_why_off" not in raw
+    check(raw.get("enabled") is True and raw.get("backstop") is True and "_why_off" not in raw
           and "acceptable risk" in (raw.get("_why_enabled") or ""),
-          "live: seat_restart.seats.BENCH enabled true (his words in _why_enabled), backstop false, no _why_off")
+          "live: seat_restart.seats.BENCH enabled true (his words in _why_enabled), backstop true, no _why_off")
     m = G.message(LIVE, ok_why="ok")
     for need in ("./publish", "conductor/log.md", "instantly",
                  "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye"):

@@ -44,10 +44,10 @@ The Conductor's gap list was marked "to be proved". Proved against the ledger an
 *"When windows get too big, they close out and get restarted by Dispatch."*
 
 **CK1 Every seat closes itself.** [Dispatcher runs; Operations reads] A seat over its context limit at a boundary is restarted by Dispatcher, with no human.
-Signal: `dispatcher.jsonl` context reading per seat. Threshold: `dispatcher_schedule.json` seats (FOUNDRY 110k, BENCH
-120k). Told: nobody on success; a `restart_verified` line. Test: a stub seat at limit+1 at a boundary is restarted and
-verified. Exists: FOUNDRY. Missing: BENCH `backstop: false`; his §8a words settle the open question, so it goes on once
-its open review findings close. Tentative plan §8 question closed by his words.
+Signal: `dispatcher.jsonl` context reading per seat. Threshold: `dispatcher_schedule.json` seats (FOUNDRY and BENCH 110k,
+hard 200k). Told: nobody on success; a `restart_verified` line. Test: a stub seat at limit+1 at a boundary is restarted and
+verified. Exists: FOUNDRY, and BENCH with the same limits since 2026-11-01 (by card, `_why_backstop`), once review 3's F2 and F3
+closed. Tentative plan §8 question closed by his words.
 
 **CK2 No seat outruns the hard limit.** [Dispatcher measures; Operations reads] A seat over `hard` with no boundary for `hard_alarm_s` raises an acked alarm.
 Signal: `hard_no_boundary`. Threshold: same file. Told: the seat's reader by OP3. Test: stub seat over hard, no boundary;

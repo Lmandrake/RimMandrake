@@ -211,8 +211,8 @@ Do the steps in one turn:
      - your last game event is a deploy, load or shutdown;
      - PAUSE is on.
 
-**The size limit reaches a busy window too** (SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO; FOUNDRY only, never the
-Conductor). Measured as above: the last true usage in your transcript. A blind reading, or one just reset by a
+**The size limit reaches a busy window too** (SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO; the Conductor's
+window has the same limits since 2026-11-01). Measured as above: the last true usage in your transcript. A blind reading, or one just reset by a
 compaction, does nothing.
    - **Over 110000 tokens: told once.** A `[RimFlow context]` message comes through your doorbell, at the next ended
      turn if a ring has disarmed it. Reach a stopping point, write your handoff, commit, run

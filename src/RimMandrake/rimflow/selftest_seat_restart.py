@@ -1284,10 +1284,10 @@ def test_g4_bench_backstop_only_after_long_human_idle():
     for lu, why in ((T0 - 600, "he wrote 10 min ago"), (None, "no human message readable (fails closed)"),
                     (T0 - 14_000, "he wrote 3.9 h ago")):
         st = fresh()
-        run(sch, st, obs(sessions=[bsess()], tx=dict(over, last_user_at=lu)), T0)
+        run(sch, st, obs(sessions=[bsess()], tx=dict(over, last_user_at=lu), last_human=(lu, {}, 10, 100)), T0)
         check(bstate(st) is None, "G4 BENCH backstop does not fire: %s" % why)
     st = fresh()
-    run(sch, st, obs(sessions=[bsess()], tx=dict(over, last_user_at=T0 - 15_000)), T0)
+    run(sch, st, obs(sessions=[bsess()], tx=dict(over, last_user_at=T0 - 15_000), last_human=(T0 - 15_000, {}, 10, 100)), T0)
     check(bstate(st) == "pending" and st["seat_restart"]["BENCH"]["source"] == "backstop",
           "G4 control: context over, idle 1 h, no human message for 4 h+ -> backstop pending")
     st = fresh()
@@ -1299,15 +1299,14 @@ def test_g5_live_schedule_has_the_conductor_entry():
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         live = json.load(f)
     raw = ((live.get("seat_restart") or {}).get("seats") or {}).get("BENCH") or {}
-    # BENCH is OFF in the live schedule (blind review 3, test_k1); the entry stays complete for his choice, so judge it
-    # as it would run if switched back on
+    # judged as it would run with enabled forced true, so a later off switch does not blind this test
     on = json.loads(json.dumps(live))
     on["seat_restart"]["seats"]["BENCH"]["enabled"] = True
     c = SR.config(on).get("BENCH") or {}
     check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "opus"
           and c.get("clone") == "/home/mandrake/rm/bench", "G5 the live schedule restarts BENCH as the Conductor (%s)"
           % {k: c.get(k) for k in ("kind", "session_name", "model", "clone")})
-    check(c.get("grace_s") == 0 and c.get("goodbye_quiet_s") == 0, "G5 BENCH goodbye fires instantly (%s)" % c.get("grace_s"))
+    check(c.get("goodbye_quiet_s") == 0, "G5 BENCH goodbye fires instantly (%s; grace_s never times a goodbye)" % c.get("goodbye_quiet_s"))
     check(c.get("backstop") is not True or ((c.get("backstop_human_idle_s") or 0) >= 7200
                                             and (c.get("backstop_idle_s") or 0) >= 1800),
           "G5 a BENCH backstop waits >= 2 h without a human message and >= 30 min idle (%s / %s)"
@@ -1832,8 +1831,8 @@ def test_j4_no_clock_filter_after_the_cursor():
     st = fresh()
     run(sch, st, obs(sessions=[bsess()], tx=over, last_human=(T0 - 15_000, {}, 4321, 9000)), T0)
     rs = st["seat_restart"].get("BENCH") or {}
-    check(rs.get("source") == "backstop" and rs.get("tx_offset") == 4321,
-          "J4 the backstop cursor is the end of his last input (%s)" % rs.get("tx_offset"))
+    check(rs.get("source") == "backstop" and rs.get("tx_offset") == 9000,
+          "J4 the backstop cursor is EOF of the read that found his last input (%s)" % rs.get("tx_offset"))
     st = fresh()
     run(sch, st, obs(sessions=[bsess()], tx=over, last_human=None), T0)
     check(bstate(st) is None, "J4 an unreadable transcript gives no backstop (fail closed)")
@@ -1946,15 +1945,117 @@ def test_j8_request_stores_the_transcript_it_read():
 
 
 
+def _conductor_like_foundry():
+    """BENCH's limits, read from the live schedule, on the test seat."""
+    with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+        raw = json.load(f)["seat_restart"]["seats"]["BENCH"]
+    keys = ("grace_s", "quiet_s", "goodbye_quiet_s", "backstop", "backstop_ctx_tokens", "backstop_busy", "backstop_hard_tokens",
+            "backstop_hard_alarm_s", "backstop_idle_s", "backstop_human_idle_s", "helper_stale_s")
+    return bsched(**{k: raw[k] for k in keys})
+
+
+def test_conductor_backstop_foundry_limits():
+    # owner by card 2026-11-01: "Should the Conductor restart itself like Foundry? -> Same limits as Foundry"
+    with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+        seats = json.load(f)["seat_restart"]["seats"]
+    b, f_ = seats["BENCH"], seats["FOUNDRY"]
+    same = ("backstop", "backstop_ctx_tokens", "backstop_busy", "backstop_hard_tokens", "backstop_hard_alarm_s",
+            "backstop_idle_s", "grace_s", "quiet_s", "helper_stale_s")
+    check({k: b.get(k) for k in same} == {k: f_.get(k) for k in same}, "CB live: BENCH has every one of FOUNDRY's limits (%s)"
+          % {k: (b.get(k), f_.get(k)) for k in same if b.get(k) != f_.get(k)})
+    check(b.get("backstop_human_idle_s") == 14_400 and b.get("goodbye_quiet_s") == 0,
+          "CB live: his human-idle gate and his instant goodbye stand")
+    check("mid-conversation" in b.get("_why_backstop", ""), "CB live: the schedule states the hard line outruns human idle")
+    sch = _conductor_like_foundry()
+    recent = (T0 - 600, {}, 10, 100)
+
+    soft = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 4000, "last_user_at": T0 - 600}
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], tx=soft, last_human=recent), T0)
+    check(bstate(st) is None, "CB soft: over 110k, idle, but he wrote 10 min ago: no restart")
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], tx=dict(soft, last_user_at=T0 - 15_000), last_human=(T0 - 15_000, {}, 10, 100)), T0)
+    check(bstate(st) == "pending", "CB soft control: 4 h+ since he wrote: pending (%s)" % bstate(st))
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], tx=dict(soft, last_user_at=T0 - 15_000), last_human=recent), T0)
+    check(bstate(st) is None, "CB soft: a stale tx read cannot outrun the read that found his last input")
+
+    big = {"ctx_tokens": 210_000, "last_kind": "assistant_end", "last_at": T0 - 600, "last_user_at": T0 - 600}
+    st = fresh()
+    a = run(sch, st, obs(sessions=[bsess(status="busy")], tx=dict(big, last_kind="tool_use", last_at=T0), last_human=recent), T0)
+    rs = st["seat_restart"].get("BENCH") or {}
+    check(rs.get("source") == "backstop_hard" and "restart_kill" not in dos(a), "CB hard: a busy 200k Conductor goes pending, unkilled")
+    a = run(sch, st, obs(sessions=[bsess()], tx=dict(big, last_at=T0 + 25), last_human=recent), T0 + 30)
+    check("restart_kill" not in dos(a), "CB hard: 5 s of quiet is not quiet_s 20 (%s)" % dos(a))
+    a = run(sch, st, obs(sessions=[bsess()], tx=dict(big, last_at=T0), last_human=recent), T0 + 30)
+    check("restart_kill" in dos(a), "CB hard: ended turn, grace 20, quiet 20: killed although he wrote 10 min ago (%s)" % dos(a))
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess(status="busy")], tx=dict(big, last_kind="tool_use", last_at=T0), last_human=recent), T0)
+    run(sch, st, obs(sessions=[bsess()], tx=dict(big, last_user_at=T0 + 10), last_human=recent), T0 + 30)
+    check(bstate(st) == "cancelled", "CB hard: his typing cancels it (%s)" % bstate(st))
+
+    # a goodbye: instant from rest, and instant through either pending backstop, whatever he typed with it
+    bye = dict(breq(ts=T0 + 5), input_ts=T0 + 4, tx_offset=77, tx_path="/x", closeout=True, gaps=["g"])
+    st = fresh()
+    a = run(sch, st, obs(sessions=[bsess()], request=dict(bye), last_human=recent), T0 + 5)
+    check("restart_kill" in dos(a), "CB goodbye: grace_s 20 does not delay it (%s)" % dos(a))
+    for name, tx, sid in (("soft", dict(soft, last_user_at=T0 - 15_000), "backstop"),
+                         ("hard", dict(big, last_user_at=T0 - 15_000), "backstop_hard")):
+        st = fresh()
+        run(sch, st, obs(sessions=[bsess(status="busy" if name == "hard" else "idle")], last_human=(T0 - 15_000, {}, 10, 100),
+                         tx=dict(tx, last_kind="tool_use", last_at=T0) if name == "hard" else tx), T0)
+        rs = st["seat_restart"].get("BENCH") or {}
+        check(rs.get("source") == sid and rs.get("state") == "pending", "CB goodbye %s: the backstop is pending first" % name)
+        a = run(sch, st, obs(sessions=[bsess(status="busy")], request=dict(bye), last_human=recent,
+                             tx=dict(tx, last_user_at=T0 + 4, last_kind="tool_use", last_at=T0 + 5)), T0 + 5)
+        rs = st["seat_restart"]["BENCH"]
+        check("restart_kill" in dos(a) and rs.get("source") == "request",
+              "CB goodbye %s: fires on the same tick, mid-reply, his input cancelling nothing (%s)" % (name, dos(a)))
+        check(rs.get("tx_offset") == 77 and rs.get("closeout") is True and rs.get("gaps") == ["g"],
+              "CB goodbye %s: its cursor and closeout survive the join" % name)
+    st = fresh()
+    run(sch, st, obs(sessions=[bsess()], tx=dict(soft, last_user_at=T0 - 15_000), last_human=(T0 - 15_000, {}, 10, 100)), T0)
+    old = dict(breq(ts=T0 - 90_000), input_ts=T0 - 90_001)
+    a = run(sch, st, obs(sessions=[bsess()], request=old, tx=dict(soft, last_user_at=T0 - 15_000)), T0 + 5)
+    check(st["seat_restart"]["BENCH"].get("source") == "backstop" and "restart_kill" not in dos(a),
+          "CB goodbye: a stale request in the same session does not join")
+
+
+def test_conductor_backstop_cursor_is_eof_of_its_read():
+    # blind review 3 F2 and F3, on a real transcript: what came before the bind cannot cancel, what comes after does
+    def note(ts):
+        return {"type": "user", "timestamp": ts, "origin": {"kind": "task-notification"},
+                "message": {"role": "user", "content": "<task-notification>done</task-notification>"}}
+    p, ends = _bt("sid-old", [_hu("1970-01-12T09:00:00Z", "last thing he said"), _ha("1970-01-12T09:00:10Z"),
+                              note("1970-01-12T09:30:00Z"), _ha("1970-01-12T09:30:10Z")])
+    lh = SR.last_human(p, [])
+    check(lh and lh[2] == ends[0] and lh[3] > ends[0], "CB cursor fixture: the notification sits after his last input (%s)" % (lh,))
+    sc = SR.cursor_scan(p, lh[2], [])
+    verdict = SR.cursor_verdict({"kind": "conductor"}, {"source": "backstop", "tx_offset": lh[2], "ts": T0}, sc, T0)
+    check(verdict[0] == "cancel", "CB cursor control: from his input the old notification would cancel (%s)" % (verdict,))
+    sch, st = _conductor_like_foundry(), fresh()
+    over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 4000, "last_user_at": T0 - 15_000}
+    o = obs(sessions=[bsess()], tx=over, last_human=(T0 - 15_000, {}, lh[2], lh[3]))
+    o["seat_restart"]["cursor"] = lambda seat, s_, rs: SR.cursor_scan(p, rs.get("tx_offset"), [])
+    a = run(sch, st, o, T0) + run(sch, st, o, T0 + 25) + run(sch, st, o, T0 + 50)
+    check(st["seat_restart"]["BENCH"].get("tx_offset") == lh[3] and "restart_kill" in dos(a),
+          "CB cursor: bound at EOF, the old notification cancels nothing and it reaches the kill (%s %s)" % (bstate(st), dos(a)))
+    with open(p, "a", encoding="utf-8") as f:
+        f.write(json.dumps(_hu("1970-01-12T10:00:00Z", "still here")) + "\n")
+    sc = SR.cursor_scan(p, lh[3], [])
+    verdict = SR.cursor_verdict({"kind": "conductor"}, {"source": "backstop", "tx_offset": lh[3], "ts": T0}, sc, T0)
+    check(verdict[0] == "cancel", "CB cursor: his message after the bind cancels (%s)" % (verdict,))
+
+
 def test_k1_goodbye_kill_on_backstop_off():
     # owner 2026-10-29 after blind review 3: "Leave the goodbye kill on. If I'm typing at the same time it's an
-    # acceptable risk." The context backstop stays off: he ruled only on the goodbye kill
+    # acceptable risk." The context backstop came on by his card of 2026-11-01 (test_conductor_backstop_foundry_limits)
     with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
         live = json.load(f)
     raw = live["seat_restart"]["seats"]["BENCH"]
-    check(raw.get("enabled") is True and raw.get("backstop") is False and "_why_off" not in raw
+    check(raw.get("enabled") is True and raw.get("backstop") is True and "_why_off" not in raw
           and "acceptable risk" in (raw.get("_why_enabled") or "") and "2026-10-29" in raw.get("_why_enabled", ""),
-          "K1 live: BENCH enabled true with his words and date in _why_enabled, backstop false, no _why_off")
+          "K1 live: BENCH enabled true with his words and date in _why_enabled, backstop true, no _why_off")
     check("BENCH" in SR.config(live) and "FOUNDRY" in SR.config(live),
           "K1 live: BENCH and FOUNDRY are both in seat_restart.config (%s)" % sorted(SR.config(live)))
     over = {"ctx_tokens": 150_000, "last_kind": "assistant_end", "last_at": T0 - 40_000, "last_user_at": T0 - 40_000}
@@ -1966,8 +2067,8 @@ def test_k1_goodbye_kill_on_backstop_off():
                                  last_human=(T0 - 40_000, {}, 10, 100)), T0 + t)
             seen += [x["do"] for x in a if x.get("seat") == "BENCH"]
         return seen
-    # the live backstop setting, on the test seat: no goodbye, so only a backstop could kill
-    off = bsched(backstop=raw.get("backstop"))
+    # the backstop switched off, on the test seat: no goodbye, so only a backstop could kill
+    off = bsched(backstop=False)
     seen = []
     for start in (None, "cancelled"):
         st = fresh()

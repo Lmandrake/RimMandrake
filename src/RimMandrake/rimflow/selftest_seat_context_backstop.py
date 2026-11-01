@@ -156,7 +156,8 @@ def test_off_unless_keyed():
     check(not state(st) and "restart_tell" not in dos(a), "backstop off for the seat: nothing")
     sch = limits(kind="conductor")
     a = run(sch, st, busy(500_000, sessions=[sess(status="busy")]), T0)
-    check(not state(st) and "restart_tell" not in dos(a), "a Conductor is never on the busy path, whatever the keys say")
+    check(state(st) == "pending" and "restart_kill" not in dos(a),
+          "a Conductor that keys the limits is on the busy path (card 2026-11-01), still waiting for a boundary (%s)" % state(st))
 
 
 def test_hard_waits_for_the_boundary_then_restarts():
@@ -628,8 +629,8 @@ def test_live_schedule():
     fo, be = s["FOUNDRY"], s["BENCH"]
     check(fo.get("backstop_busy") is True and fo.get("backstop_ctx_tokens") == SOFT and fo.get("backstop_hard_tokens") == HARD,
           "live: FOUNDRY runs the busy limits, %s/%s" % (fo.get("backstop_ctx_tokens"), fo.get("backstop_hard_tokens")))
-    check(be.get("backstop") is False and not be.get("backstop_busy") and not be.get("backstop_hard_tokens"),
-          "live: BENCH stays backstop false, no busy limit")
+    check(be.get("backstop") is True and be.get("backstop_busy") is True and be.get("backstop_ctx_tokens") == SOFT
+          and be.get("backstop_hard_tokens") == HARD, "live: BENCH runs the same limits (owner by card 2026-11-01)")
     dead = D.load_schedule(os.path.join(HERE, "dispatcher_schedule.json"))
     check(fo.get("backstop_hard_alarm_s", 0) > 0 and SR.config(dead)["FOUNDRY"]["backstop_hard_tokens"] == HARD,
           "config() passes the new keys")

@@ -15,7 +15,7 @@ Flow (state per seat in the Dispatcher's state.json, key "seat_restart"):
              <dispatcher state>/restart/<SEAT>.request.json.
              Refused while any helper of the window is alive. Backstop: the Dispatcher also starts one for a window that
              is idle, has no live helper, and whose context (last usage in its transcript) is past a threshold.
-             Busy windows (backstop_busy, never a Conductor): past backstop_ctx_tokens the seat is told once through its
+             Busy windows (backstop_busy): past backstop_ctx_tokens the seat is told once through its
              doorbell (restart_tell); past backstop_hard_tokens a restart goes pending whatever the window does, killed
              at the next ended turn with nothing held; no such boundary in backstop_hard_alarm_s alarms the Conductor.
   pending    grace (grace_s; FOUNDRY 20 s); cancelled by new HUMAN input in the window's transcript after the request
@@ -75,7 +75,7 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
             "fence_s": 1020, "ring_hold_s": 600, "orphan_wait_s": 180,
             "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 0,
-            # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (never a Conductor, _busy_on)
+            # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (_busy_on)
             "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
 OWNS = ("claimed", "killed", "relaunched")      # pending leaves ring/recover running (review2: no recovery deadlock)
@@ -1197,9 +1197,11 @@ def _born(ro, cur):
 
 
 def _busy_on(cfg):
-    """The size limit reaches a busy window only where the schedule keys it, and never a window the owner talks to
-    (his ruling on the Conductor covers the goodbye kill alone, so its backstop stays the idle one, and off)."""
-    return cfg.get("backstop_busy") is True and cfg.get("kind") != "conductor"
+    """The size limit reaches a busy window only where the schedule keys it. Owner by card 2026-11-01 ("Should the
+    Conductor restart itself like Foundry? -> Same limits as Foundry") keys it on the window he talks to as well: the soft
+    line still waits out backstop_human_idle_s; the hard line does not, it waits for an ended turn and quiet_s, and his
+    typing cancels it (the next tick re-arms). A goodbye outranks all of it (_join_request)."""
+    return cfg.get("backstop_busy") is True
 
 
 def _size_line(cfg, rs):
@@ -1261,7 +1263,7 @@ def _hard_pending(seat, cfg, R, st, ro, cur, tx, now, act):
     boundary. -> the record, or None while the window cannot be bound (unbound birth, unreadable transcript)."""
     sc = _context_memo(st, seat, cur)
     sc.setdefault("hard_since", now)
-    # a window the owner talks to stays exempt by _busy_on; his typing still cancels below (and the next tick re-arms)
+    # his typing cancels this below (and the next tick re-arms); a Conductor's backstop_human_idle_s gates the soft line only
     born = _born(ro, cur)
     if born is None or ro["start"](cur.get("pid")) != born:
         _no_boundary(seat, cfg, sc, now, act, "the window's birth identity is unbound")
@@ -1274,10 +1276,34 @@ def _hard_pending(seat, cfg, R, st, ro, cur, tx, now, act):
                     "pid": cur.get("pid"), "start": born, "ticket": None, "ctx_tokens": tx["ctx_tokens"],
                     "reason": "hard context limit: %d tokens >= %d" % (tx["ctx_tokens"], cfg["backstop_hard_tokens"]),
                     "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending",
-                    "cancel_after": tx.get("last_user_at") or now, "tx_offset": lh[2] or 0,
+                    "cancel_after": lh[0] or tx.get("last_user_at") or now, "tx_offset": lh[3] or 0,
                     "tx_path": transcript_for(cur, cfg)}
     act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
     return rs
+
+
+def _join_request(seat, cfg, rs, ro, now, act):
+    """A forced restart is pending and the seat's own request has come: it joins, and is consumed, so source says request
+    from here on (on a Conductor that makes it a goodbye: _goodbye, nothing cancels or waits). The fields a goodbye
+    carries come with it: its cursor, so what he sent after goodbye reaches the next window, and its closeout."""
+    req = ro["request"](seat)
+    if not (req and req.get("ts") is not None and req.get("ts") != rs.get("req_ts")
+            and req.get("session_id") == rs.get("session_id") and now - float(req["ts"]) <= cfg["request_max_age_s"]):
+        return
+    # his own request stands even if a compaction would cancel the forced one: source no longer says size
+    rs.update(req_ts=req["ts"], ticket=req.get("ticket") or rs.get("ticket"), source="request", work_from=req["ts"])
+    for k in ("tx_offset", "tx_path", "closeout", "gaps"):
+        if req.get(k) is not None:
+            rs[k] = req[k]
+    if req.get("input_ts") is not None:
+        rs["cancel_after"] = float(req["input_ts"])
+    if req.get("handoff") is True:
+        rs["handoff"] = True
+    if req.get("deferred") is True:
+        rs["deferred"] = True
+        rs.setdefault("drained", {}).update({h["id"]: h.get("desc") or "" for h in req.get("helpers") or []})
+    act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
+        req_ts=req["ts"], why="the seat's own request joins the forced restart: %s" % req.get("reason"))
 
 
 def _fail(rs, seat, cls, why, now, act):
@@ -1348,10 +1374,15 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 return
             if tx.get("last_kind") != "assistant_end" or now - (tx.get("last_at") or now) < cfg["backstop_idle_s"]:
                 return
+            # bind the cursor to EOF of the one read that found his LAST input (blind review 3 F2, F3): nothing before
+            # it can be a later human message, so a notification since then cannot cancel and nothing lands behind it
+            lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
+            if lh is None:
+                return                           # unreadable or malformed transcript: no backstop (fail closed)
             # a window the owner talks to (the Conductor) is backstopped only after he has typed nothing for
-            # backstop_human_idle_s; no readable human message -> no backstop (fail closed, never kill a conversation)
+            # backstop_human_idle_s, by that same read; no readable human message -> no backstop (never kill a conversation)
             hi = cfg.get("backstop_human_idle_s") or 0
-            if hi and (tx.get("last_user_at") is None or now - tx["last_user_at"] < hi):
+            if hi and (lh[0] is None or now - lh[0] < hi):
                 return
             hs = ro["helpers"](seat, cur)
             if hs is None or any(h.get("alive") for h in hs):
@@ -1359,17 +1390,13 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             born = _born(ro, cur)                # the window's own registration names its birth (review4 #1)
             if born is None or ro["start"](cur.get("pid")) != born:
                 return
-            # bind the cursor just past his LAST input (blind review 2 P0-3), never offset 0 plus a time filter
-            lh = ro["last_human"](seat, cur) if callable(ro.get("last_human")) else None
-            if lh is None:
-                return                           # unreadable or malformed transcript: no backstop (fail closed)
             rs = R[seat] = {"source": "backstop", "ts": now, "session_id": cur.get("sessionId"), "pid": cur.get("pid"),
                             "start": born,
                             "ticket": None, "reason": "backstop: context %d tokens >= %d, idle %d s" % (
                                 tx["ctx_tokens"], cfg["backstop_ctx_tokens"], now - tx["last_at"]),
                             "busy": 0, "cooldown_s": cfg["cooldown_s"], "state": "pending",
                             # the whole transcript is scanned for a human input after the last one this read saw
-                            "cancel_after": tx.get("last_user_at") or now, "tx_offset": lh[2] or 0,
+                            "cancel_after": lh[0] or tx.get("last_user_at") or now, "tx_offset": lh[3] or 0,
                             "tx_path": transcript_for(cur, cfg)}
             act(do="restart_request", seat=seat, session_id=rs["session_id"], synthetic=True, why=rs["reason"])
         else:
@@ -1624,6 +1651,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     if cur is None or cur.get("sessionId") != rs.get("session_id"):
         return _gone(seat, cfg, rs, obs, ro, now, act,
                      "the window's session changed or is gone (%s)" % ((cur or {}).get("sessionId")))
+    if cfg.get("kind") == "conductor" and rs.get("source") in FORCED:
+        _join_request(seat, cfg, rs, ro, now, act)   # before anything that cancels: his goodbye must not wait a tick
     tx = ro["tx"](seat, cur)
     after = rs.get("cancel_after", rs["ts"])
     goodbye = _goodbye(cfg, rs)
@@ -1641,19 +1670,7 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
                            now, act)
         rs["ctx_tokens"] = size
     if hard:
-        req = ro["request"](seat)        # the seat answered the tell: its request joins this restart and is consumed
-        if (req and req.get("ts") is not None and req.get("ts") != rs.get("req_ts")
-                and req.get("session_id") == rs.get("session_id")):
-            # his own request stands even if a compaction would cancel the forced one: source no longer says size
-            rs.update(req_ts=req["ts"], ticket=req.get("ticket") or rs.get("ticket"), source="request",
-                      work_from=req["ts"])
-            if req.get("handoff") is True:
-                rs["handoff"] = True
-            if req.get("deferred") is True:
-                rs["deferred"] = True
-                rs.setdefault("drained", {}).update({h["id"]: h.get("desc") or "" for h in req.get("helpers") or []})
-            act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
-                req_ts=req["ts"], why="the seat's own request joins the hard restart: %s" % req.get("reason"))
+        _join_request(seat, cfg, rs, ro, now, act)   # the seat answered the tell
     sc = None
     if rs.get("tx_offset") is not None:
         try:
