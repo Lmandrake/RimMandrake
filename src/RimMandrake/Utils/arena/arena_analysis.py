@@ -30,8 +30,12 @@ WHAT IT READS (only fields some harness code writes, or the section 1.7 schema n
     latest gate event on the task and sha at or before it is `invalid` with some step not UNMEASURED (e.g. tests
     UNMEASURED by arena_gate TAMPER_RE). That case is completed, NOT accepted (never dropped from the denominator: an
     arm cannot gain by tripping the gate), its tokens count, and it is listed per arm in report["gate_invalid"] and
-    the intervals' `gate_invalid` count. An invalid after an all-UNMEASURED gate, no gate, or a pass/fail gate (judge
-    fault) stays not completed: the runner stops and reruns those (arena_replay_run.unmeasured_result).
+    the intervals' `gate_invalid` count. JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT (Conductor order 2026-10-31, per
+    CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): a judge `invalid` caused by the ARM's work (arena_replay_run.
+    classify_invalid: unparseable answer, tripwire, prompt leak) is followed by a signed runner `invalid` event
+    (lane "runner", verdict "not_accepted", same task and sha): that task is completed, NOT accepted, counted in the
+    intervals' `judge_invalid`. Any other invalid (infrastructure: a failed model call, an all-UNMEASURED gate, no
+    gate) stays NOT COMPLETED: the runner retries it and then parks it unscored.
   - the frozen task specs <arena>/tasks/<id>.json: kind (arena_tasks.KINDS) and size (1/2/4 = points).
   - TOKENS, from a spend file (--spend, schema arena_task_spend/2, written by arena_spend.py), never from the record
     `ite` field: {"schema", "window", "logs", "blocking", "arms": {arm: {task: row}}, "overhead", "flags"}, row = {"claude": {model: {input,
@@ -800,6 +804,32 @@ def gate_invalid_of(seq, t, j, app=None):
     return {"sha": j.get("sha"), "steps": {k: s for k, s in sorted(st.items()) if s not in ("PASS", "NA")}}
 
 
+RUNNER_LANE, NOT_ACCEPTED = "runner", "not_accepted"
+
+
+def judge_invalid_of(t, j, app):
+    """JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: judge event j (task t, verdict `invalid`, not pending) is COMPLETED, NOT
+    ACCEPTED when the runner signed that it was the arm's fault: an `invalid` event, lane RUNNER_LANE, verdict
+    NOT_ACCEPTED, on t and j's sha, APPENDED after j with no other judge event of t appended between them (log order,
+    never the clock). -> {"sha", "class", "reason"} or None."""
+    if j.get("verdict") != "invalid" or _pending(j):
+        return None
+    seen = False
+    for r in app:
+        if r is j:
+            seen = True
+            continue
+        if not seen or _tkey(r.get("task")) != t:
+            continue
+        if r.get("event") == "judge":
+            return None                     # a later judgment of t: j's verdict is not the one the runner judged
+        if (r.get("event") == "invalid" and r.get("lane") == RUNNER_LANE and r.get("verdict") == NOT_ACCEPTED
+                and _sha_eq(r.get("sha"), j.get("sha"))):
+            d = r.get("detail") if isinstance(r.get("detail"), dict) else {}
+            return {"sha": j.get("sha"), "class": d.get("class"), "reason": d.get("reason")}
+    return None
+
+
 def gate_invalids(recs, cap=None):
     """{"count", "tasks": [{task, sha, steps}]}: an arm's measured-invalid tasks (gate_invalid_of on each task's last
     judge event by time), independent of spend and specs, so the report shows them even for an UNMEASURED arm."""
@@ -857,7 +887,9 @@ def completions(recs, tasks, spend_arm, conv, cap=None):
         inv = None
         if j.get("verdict") not in JUDGE_DONE:
             inv = gate_invalid_of(seq, t, j, recs)
-            if inv is None:
+            jinv = None if inv is not None else judge_invalid_of(t, j, [r for r in recs if cap is None
+                                                                          or _ep(r) <= cap])
+            if inv is None and jinv is None:
                 continue
         spec = tasks.get(t)
         if not _spec_ok(spec):
@@ -873,6 +905,8 @@ def completions(recs, tasks, spend_arm, conv, cap=None):
              "points": spec["size"], "tokens": tok, "tta_min": tta}
         if inv is not None:
             c["gate_invalid"] = inv
+        elif j.get("verdict") not in JUDGE_DONE:
+            c["judge_invalid"] = jinv
         out.append(c)
     out.sort(key=lambda c: (c["t"], c["task"]))
     if not math.isfinite(sum(c["tokens"] for c in out)):
@@ -1294,6 +1328,7 @@ def arm_summary(post, data, arms, control=None):
         pts = sum(c["points"] for c in data[a] if c["accepted"])
         tok = sum(c["tokens"] for c in data[a])
         s = {"completed": n, "accepted": k, "gate_invalid": sum(1 for c in data[a] if c.get("gate_invalid")),
+             "judge_invalid": sum(1 for c in data[a] if c.get("judge_invalid")),
              "kinds": sorted({c["kind"] for c in data[a]}),
              "accepted_points": pts, "tokens_total_ite_mixed": tok,
              "points_per_mtoken_observed": (pts / tok * 1e6) if tok else None,

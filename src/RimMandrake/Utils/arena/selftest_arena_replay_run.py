@@ -353,8 +353,9 @@ def t_judge_home(tmp):
 
 
 def t_fail_loud(tmp):
-    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS: an all-UNMEASURED or invalid gate, or an invalid judge, stops the runner
-    loudly; a measured pass/fail goes through; the gate's checkouts are on ext4, not the /mnt/d data root."""
+    """ARENA_GATE_WORK_REWIRE_OFF_DRVFS: an all-UNMEASURED or invalid gate, or an invalid judge, is named by
+    unmeasured_result (since JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: classified, never a halt); a measured pass/fail
+    goes through; the gate's checkouts are on ext4, not the /mnt/d data root."""
     U = {"status": "UNMEASURED"}
     check(RR.unmeasured_result({"verdict": "invalid", "steps": {"a": U, "b": U}}, {"verdict": "fail"}),
           "all-UNMEASURED gate refuses")
@@ -398,11 +399,11 @@ def t_fail_loud(tmp):
     outs = [json.dumps({"verdict": "invalid", "steps": {"a": U}}), json.dumps({"verdict": "invalid"})]
     real_run = RR.subprocess.run
     RR.subprocess.run = lambda argv, **k: seen.append(1) or P(outs[len(seen) - 1])
-    try:
-        RR.default_judge("v3", tmp, {"id": "T", "base_sha": "b"}, "h", logdir=tmp / "jl2")
-        check(False, "an all-UNMEASURED task stops the runner")
+    try:   # JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: no longer a halt - INFRA (retried, then parked unscored)
+        v = RR.default_judge("v3", tmp, {"id": "T", "base_sha": "b"}, "h", logdir=tmp / "jl2")
+        check(v["class"] == RR.INFRA and "all-UNMEASURED" in v["why"], "an all-UNMEASURED task is INFRA: %s" % v)
     except RR.RunRefused as e:
-        check("all-UNMEASURED" in str(e), "an all-UNMEASURED task stops the runner: %s" % e)
+        check(False, "an all-UNMEASURED task raised: %s" % e)
     finally:
         RR.subprocess.run = real_run
     seen.clear()
@@ -444,6 +445,111 @@ def t_fail_loud(tmp):
           "the interrupted G3 is RERUN: %s" % seen2)
 
 
+def t_judge_policy(tmp):
+    """JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: classify_invalid on the judge's own records; judge_policy retries
+    infra, parks it unscored past the bound, signs a true invalid NOT accepted; no judge outcome halts run_arm."""
+    P = {"verdict": "pass", "recorded": True, "steps": {"a": {"status": "PASS"}}}
+    iv = {"verdict": "invalid", "judge_id": "J0123456789ab"}
+    gpt_down = {"votes": [{"judge": "opus", "verdict": "accept", "reasons": []},
+                          {"judge": "gpt", "verdict": "invalid", "why": "gpt judge exit 1: ERROR: no answer"}]}
+    check(RR.classify_invalid(P, iv, gpt_down)[:2] == (RR.INFRA, "model_call_failed"),
+          "the RP_RIVERSITE halt (a gpt call that failed) is INFRA")
+    check(RR.classify_invalid(P, iv, None)[0] == RR.INFRA, "no verdict.json is INFRA")
+    check(RR.classify_invalid({"verdict": "invalid", "steps": {"a": {"status": "UNMEASURED"}}}, iv, gpt_down)[1]
+          == "gate_unmeasured", "an all-UNMEASURED gate is INFRA whatever the votes say")
+    trip = {"votes": [{"judge": "gpt", "verdict": "invalid", "why": "gpt judge tripwire: read", "tools": {}}]}
+    check(RR.classify_invalid(P, iv, trip)[:2] == (RR.ARM_RETRY, "judge_tripwire"), "a tripwire vote is ARM_RETRY")
+    junk = {"votes": [{"judge": "gpt", "verdict": "invalid", "why": "no JSON verdict in the answer"}]}
+    check(RR.classify_invalid(P, iv, junk)[:2] == (RR.ARM_RETRY, "unparseable_answer"), "no JSON is ARM_RETRY")
+    check(RR.classify_invalid(P, iv, {"why": "prompt leaks the arm: x"})[:2] == (RR.ARM, "prompt_leak"),
+          "a prompt leak is ARM")
+    check(RR.classify_invalid(P, iv, {"why": "replay task T has no hidden-check file: refusing"})[0] == RR.HARNESS,
+          "a missing hidden-check file is HARNESS")
+    check(RR.classify_invalid(P, iv, {"why": "judge sandbox did not start: x"})[0] == RR.INFRA, "sandbox is INFRA")
+    check(RR.classify_invalid(P, iv, {"why": "something new"})[:2] == (RR.INFRA, "unknown"), "unknown is INFRA")
+    check(RR.judge_record("../x") is None and RR.judge_record(None) is None, "judge_record refuses a non-id")
+    spec = {"id": "T", "base_sha": "b" * 40}
+    seq, slept, signed = [], [], []
+
+    def run(results, **kw):
+        it = iter(results)
+
+        def judge(a, c, s, h):
+            r = next(it)
+            seq.append(r)
+            if isinstance(r, Exception):
+                raise r
+            return r
+        return RR.judge_policy(judge, "v3", "/c", spec, "e" * 40, sleep=slept.append,
+                               sign=lambda *a: signed.append(a), out=io.StringIO(), **kw)
+    inf = {"verdict": "invalid", "class": RR.INFRA, "reason": "model_call_failed", "why": "gpt down"}
+    v = run([inf, RuntimeError("judge printed nothing"), {"verdict": "accept"}])
+    check(v["verdict"] == "accept" and "not_completed" not in v and len(seq) == 3 and slept == [120, 600]
+          and not signed, "infra twice (one a raise) then accept: retried with backoff, scored: %s %s" % (v, slept))
+    seq.clear(); slept.clear()
+    v = run([inf, inf, inf])
+    check(v["not_completed"]["class"] == RR.INFRA and v["not_completed"]["tries"] == 3 and not signed
+          and "invalid" not in v, "infra past the bound: parked NOT COMPLETED, never signed: %s" % v)
+    seq.clear(); slept.clear()
+    v = run([{"verdict": "invalid", "class": RR.ARM, "reason": "prompt_leak", "why": "x"}])
+    check(len(seq) == 1 and v["invalid"]["signed"] and signed == [("v3", "T", "e" * 40, "b" * 40, RR.ARM,
+                                                                     "prompt_leak")],
+          "a true invalid: signed NOT accepted at once: %s" % signed)
+    seq.clear(); signed.clear()
+    ar = {"verdict": "invalid", "class": RR.ARM_RETRY, "reason": "unparseable_answer", "why": "x"}
+    v = run([ar, ar, ar])
+    check(len(seq) == 3 and v["invalid"]["class"] == RR.ARM_RETRY and len(signed) == 1,
+          "ARM_RETRY: retried, then NOT accepted")
+    seq.clear(); signed.clear()
+    v = run([{"verdict": "invalid", "class": RR.HARNESS, "reason": "hidden_check_unusable", "why": "x"}])
+    check(len(seq) == 1 and v["not_completed"]["class"] == RR.HARNESS and not signed, "HARNESS parks at once")
+    seq.clear()
+
+    def boom(*a):
+        raise RuntimeError("log refused")
+    v = RR.judge_policy(lambda *a: {"verdict": "invalid", "class": RR.ARM, "reason": "prompt_leak"}, "v3", "/c",
+                        spec, "e" * 40, sleep=slept.append, sign=boom, out=io.StringIO())
+    check(v["not_completed"]["reason"] == "not_accepted_unsigned", "an unsigned NOT accepted parks loudly")
+    v = run([{"verdict": "reject", "class": RR.INFRA, "reason": "gate_unmeasured", "why": "g"}] * 3)
+    check("not_completed" in v, "a reject on an unmeasured gate is never scored")
+    # run_arm: every judge outcome is recorded and the next task runs; work timeout is judged at the base
+    st = steps(["J1", "J2", "J3", "J4"])
+    seen = []
+    fk = fakes(st, seen)
+    plain = fk["judge"]
+    calls = {}
+
+    def judge(arm, clone, spec, head):
+        calls[spec["id"]] = calls.get(spec["id"], 0) + 1
+        if spec["id"] == "J1":
+            raise RR.RunRefused("judge printed no record")
+        if spec["id"] == "J2":
+            return {"verdict": "invalid", "class": RR.ARM, "reason": "prompt_leak"}
+        return plain(arm, clone, spec, head)
+    fk["judge"] = judge
+    w0 = fk["work"]
+
+    def work(arm, clone, spec):
+        if spec["id"] == "J3":
+            raise subprocess.TimeoutExpired("gate", 10800)
+        return w0(arm, clone, spec)
+    fk["work"] = work
+    signed.clear()
+    buf = io.StringIO()
+    r = RR.run_arm("ralph_a", ctl=tmp / "jp", model_cmd="x", steps=st, runway=OK_RUNWAY, out=buf, sleep=lambda s: None,
+                   sign=lambda *a: signed.append(a), **fk)
+    d = json.loads((tmp / "jp" / "ralph_a" / "runner.json").read_text())["done"]
+    check(r["stopped"] is None and r["parked"] == ["J1"] and set(d) == {"J1", "J2", "J3", "J4"} and calls["J1"] == 3,
+          "run_arm never halts on a verdict: J1 parked after 3 tries, J2..J4 run: %s %s" % (r, calls))
+    check(d["J2"]["judge"]["invalid"]["class"] == RR.ARM and len(signed) == 1 and signed[0][1] == "J2",
+          "J2 NOT accepted, signed")
+    check(d["J3"]["outcome"] == "timeout" and d["J3"]["judge"]["verdict"] == "reject",
+          "a work timeout is judged at the base (reject), not a halt")
+    check("PARKED NOT COMPLETED" in buf.getvalue() and "counted NOT accepted" in buf.getvalue(), "both logged")
+    src = Path(RR.__file__).read_text()
+    check("not recorded, the runner stops" not in src, "the old halt message is gone")
+
+
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="st_replay_run_"))
     try:
@@ -451,7 +557,8 @@ def main():
                       (t_arms, (tmp,)), (t_wired, ()),
                       (t_unit_all, (tmp,)), (t_lock, (tmp,)), (t_token_home, ()),
                       (t_model_cmd, ()), (t_snapshot_gate, (tmp,)), (t_start_repair, (tmp,)),
-                      (t_tester_tmp, (tmp,)), (t_judge_home, (tmp,)), (t_fail_loud, (tmp,))):
+                      (t_tester_tmp, (tmp,)), (t_judge_home, (tmp,)), (t_fail_loud, (tmp,)),
+                      (t_judge_policy, (tmp,))):
             try:
                 fn(*a)
             except Exception as e:  # noqa: BLE001

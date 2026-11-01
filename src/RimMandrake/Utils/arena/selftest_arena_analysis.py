@@ -1290,6 +1290,56 @@ def t_judge_gate_order():
           (r["final"]["verdict"], r["final"]["disqualified"]))
 
 
+def t_judge_invalid():
+    """JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: a judge `invalid` (pass gate) followed by the runner's signed
+    not_accepted event on the same task and sha is COMPLETED, NOT ACCEPTED (judge_invalid); without it, or bound to
+    another sha / lane / an earlier judgment, it stays not completed (infra: unscored)."""
+    def planted(k=4):
+        logs, tasks, sp = winner_logs()
+        recs = logs["trio"]["recs"]
+        tid = sorted(tasks)[k]
+        j = next(x for x in recs if x["event"] == "judge" and x["task"] == tid)
+        j["verdict"] = "invalid"
+        na = dict(j, event="invalid", lane="runner", run_id="runner", verdict="not_accepted",
+                  detail={"base": "b", "class": "arm", "reason": "prompt_leak"})
+        return logs, tasks, sp, tid, j, na, recs
+    logs, tasks, sp, tid, j, na, recs = planted()
+    recs.insert(recs.index(j) + 1, na)
+    comp, why = AA.completions(recs, tasks, sp["trio"], AA.default_conv())
+    row = [c for c in comp if c["task"] == tid]
+    check("runner not_accepted after a judge invalid -> COMPLETED, NOT accepted, judge_invalid carried",
+          why is None and len(comp) == 20 and len(row) == 1 and row[0]["accepted"] is False
+          and row[0]["judge_invalid"]["class"] == "arm" and "gate_invalid" not in row[0], (why, len(comp), row))
+    r = AA.analyse(logs, tasks, sp, draws=DRAWS, final=True)
+    iv = r["final"].get("intervals", {}).get("trio", {})
+    check("analyse: intervals carry judge_invalid 1, one fewer accepted than completed",
+          iv.get("judge_invalid") == 1 and iv.get("gate_invalid") == 0
+          and iv.get("accepted") == iv.get("completed", 0) - 1, iv)
+    logs2, tasks2, sp2 = winner_logs()
+    next(x for x in logs2["trio"]["recs"] if x["event"] == "judge" and x["task"] == tid)["verdict"] = "reject"
+    iv2 = AA.analyse(logs2, tasks2, sp2, draws=DRAWS, final=True)["final"].get("intervals", {}).get("trio", {})
+    check("NO GAIN: a true judge invalid scores exactly like a reject",
+          all(iv.get(k) == iv2.get(k) for k in ("completed", "accepted", "accepted_points", "tokens_total_ite_mixed",
+                                                 "accept_rate_90")), (iv, iv2))
+    for how in ("none", "other_sha", "lane", "before", "later_judge", "pending"):
+        logs, tasks, sp, tid, j, na, recs = planted()
+        if how == "other_sha":
+            recs.insert(recs.index(j) + 1, dict(na, sha="f" * 40))
+        elif how == "lane":
+            recs.insert(recs.index(j) + 1, dict(na, lane="judge"))
+        elif how == "before":
+            recs.insert(recs.index(j), na)
+        elif how == "later_judge":
+            recs.insert(recs.index(j) + 1, na)      # j, its not_accepted, then a NEW invalid judgment with none
+            recs.insert(recs.index(na) + 1, dict(j))
+        elif how == "pending":
+            j["detail"] = {"pending": True}
+            recs.insert(recs.index(j) + 1, na)
+        comp, why = AA.completions(recs, tasks, sp["trio"], AA.default_conv())
+        check("judge invalid with runner event %s -> NOT completed" % how,
+              tid not in {c["task"] for c in comp} and (why is None or how == "pending"), (how, why))
+
+
 def t_gate_invalid():
     """GATE_TAMPER_FIX_CTYPES_HALTS_ARM: a judge `invalid` after a MEASURED-INVALID gate (tests UNMEASURED by
     TAMPER_RE, other steps measured) is COMPLETED, NOT ACCEPTED (denominator kept, tokens counted) and listed per arm;
@@ -1895,7 +1945,7 @@ def t_ledger_trust():
 CORE = (t_rule_probs, t_rule_verdict, t_tokens_and_inputs, t_cli, t_winner, t_fluke, t_loser, t_tie,
         t_hardcap_determinism, t_dq, t_exact_boundaries, t_malformed, t_chronology, t_dq_identity, t_nig_oracle,
         t_ratio_boundaries, t_chronology_r2, t_tester_masking, t_tester_harness_void, t_tester_last_build, t_final_r2, t_overflow_r2, t_spend_missing_field,
-        t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_gate_invalid, t_hardcap_pick_unit, t_hardcap_pick_scenario,
+        t_dq_measured_for_winner, t_control_absent, t_judge_gate_order, t_gate_invalid, t_judge_invalid, t_hardcap_pick_unit, t_hardcap_pick_scenario,
         t_refused_spend_doc_withholds_blocks, t_era_map, t_era_gate, t_stop_gate_fixes, t_cut_trial,
         t_stray_logs, t_ledger_trust, t_publish_parked)
 

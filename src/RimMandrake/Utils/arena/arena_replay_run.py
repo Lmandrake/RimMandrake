@@ -22,11 +22,25 @@ JUDGE: arena_gate.py (from the harness checkout, --repo the clone) writes the ga
 
 INVALID GATE (GATE_TAMPER_FIX_CTYPES_HALTS_ARM, Conductor rule): a measured-invalid gate (signed, some step measured,
 e.g. tests UNMEASURED by arena_gate TAMPER_RE) judged invalid is RECORDED as not accepted (judge.invalid = why +
-steps) and the runner goes on; arena_analysis counts it completed, not accepted, and lists it per arm. Only what
-measured nothing (all-UNMEASURED or unsigned gate, judge fault) still stops the runner (gate_invalid/unmeasured_result).
+steps) and the runner goes on; arena_analysis counts it completed, not accepted, and lists it per arm.
 
-RESUME. <ctl>/<arm>/runner.json keeps each finished task's record; a restart skips them. A task whose work stopped
-(STOP file, runway, sync, red start) or raised is NOT recorded and is retried on the next start; the runner waits
+INVALID JUDGE (JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT, Conductor order 2026-10-31 per
+CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM): NO verdict halts the runner. Every other invalid is classified
+(classify_invalid, from the gate record and the judge's own <judge work>/<judge_id>/verdict.json; nothing keyed is
+edited) and the runner goes on to the next task:
+  infra      the harness failed (a model call failed, no record, a timeout, sandbox/judge unavailable, a gate that
+             measured nothing): RETRIED (JUDGE_TRIES, backoff JUDGE_BACKOFF_S), never scored; still failing ->
+             PARKED NOT COMPLETED (judge.not_completed) and recorded, so the task is not rerun.
+  harness    the task cannot be judged (hidden-check / reader file faults): parked not completed at once.
+  arm_retry  maybe the arm's work (unparseable answer, judge tripwire, a hidden check that could not finish, an
+             incomplete diff): retried, then NOT ACCEPTED.
+  arm        the arm's work (prompt leaks the arm, binary change, unsafe tree path): NOT ACCEPTED at once.
+NOT ACCEPTED is signed (sign_not_accepted: event `invalid`, lane "runner", verdict "not_accepted", the class and a
+fixed reason label, never the judge id) and arena_analysis counts it completed, not accepted (judge_invalid). A work
+step that times out (subprocess.TimeoutExpired, e.g. a loop's 3 h gate) is judged at the base like a parked task.
+
+RESUME. <ctl>/<arm>/runner.json keeps each finished (or parked) task's record; a restart skips them. A task whose
+work stopped (STOP file, runway, sync, red start) or raised is NOT recorded and is retried on the next start; the runner waits
 for runway before each task. <ctl>/<arm>/STOP stops it between tasks.
 
 CLI: arena.py trial-runner --arm {ralph_a,trio,v3} [--ctl DIR] [--model-cmd CMD] [--only N]
@@ -57,6 +71,10 @@ DEFAULT_CTL = "/mnt/d/ClaudeWork/rimmandrake/foundry_arena/replay/ctl"
 HARNESS_REPO = HERE.parents[3]
 STOPPED = ("STOP", "runway", "red start", "sync failed")
 RUNWAY_WAIT_S = 600
+JUDGE_TRIES = 3                  # JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: judge calls per task for a retryable class
+JUDGE_BACKOFF_S = (120, 600)     # sleep before the 2nd, 3rd... call (the last value repeats)
+RUNNER_LANE, NOT_ACCEPTED = "runner", "not_accepted"     # arena_analysis.judge_invalid_of reads exactly these
+INFRA, HARNESS, ARM_RETRY, ARM = "infra", "harness", "arm_retry", "arm"
 
 
 class RunRefused(Exception):
@@ -179,38 +197,194 @@ def default_work(arm, clone, spec, *, ctl, model_cmd):
 
 
 def default_judge(arm, clone, spec, head, *, logdir):
-    """arena_gate.py then arena_judge.py judge, both as the harness's own CLIs from the harness checkout."""
+    """arena_gate.py then arena_judge.py judge, both as the harness's own CLIs from the harness checkout. Never raises
+    for a verdict: -> {"verdict", "judge_id", "gate", "gate_verdict"} plus, for an invalid, "invalid" (a measured-
+    invalid gate: counted not accepted, GATE_TAMPER_FIX_CTYPES_HALTS_ARM) or "class"/"reason"/"why"
+    (classify_invalid; run_arm's judge policy retries, parks or counts it NOT accepted)."""
     logdir = Path(logdir)
     logdir.mkdir(parents=True, exist_ok=True)
     tid, base = spec["id"], spec["base_sha"]
-    g = subprocess.run([sys.executable, str(HERE / "arena_gate.py"), "--task", tid, "--base", base, "--head", head,
-                        "--arm", arm, "--repo", str(clone)], cwd=str(HARNESS_REPO), capture_output=True, text=True,
-                       timeout=3 * 3600, env=harness_env())
     gate = logdir / ("%s.gate.json" % tid)
+    try:
+        g = subprocess.run([sys.executable, str(HERE / "arena_gate.py"), "--task", tid, "--base", base, "--head",
+                            head, "--arm", arm, "--repo", str(clone)], cwd=str(HARNESS_REPO), capture_output=True,
+                           text=True, timeout=3 * 3600, env=harness_env())
+    except (subprocess.TimeoutExpired, OSError) as e:
+        return {"verdict": None, "gate": gate.name, "class": INFRA, "reason": "gate_call_failed",
+                "why": "gate %s: %s" % (type(e).__name__, str(e)[:300])}
     gate.write_text(g.stdout)
     (logdir / ("%s.gate.log" % tid)).write_text(g.stderr)
     try:
         json.loads(g.stdout)
     except ValueError:
         gate.write_text(json.dumps({"verdict": "invalid", "why": "gate printed no JSON (rc %s)" % g.returncode}))
-    j = subprocess.run([sys.executable, str(HERE / "arena_judge.py"), "judge", "--task", tid, "--clone", str(clone),
-                        "--base", base, "--head", head, "--arm", arm, "--gate", str(gate)], cwd=str(HARNESS_REPO),
-                       capture_output=True, text=True, timeout=3 * 3600, env=harness_env())
+    try:
+        j = subprocess.run([sys.executable, str(HERE / "arena_judge.py"), "judge", "--task", tid, "--clone",
+                            str(clone), "--base", base, "--head", head, "--arm", arm, "--gate", str(gate)],
+                           cwd=str(HARNESS_REPO), capture_output=True, text=True, timeout=3 * 3600, env=harness_env())
+    except (subprocess.TimeoutExpired, OSError) as e:
+        return {"verdict": None, "gate": gate.name, "class": INFRA, "reason": "judge_call_failed",
+                "why": "judge %s: %s" % (type(e).__name__, str(e)[:300])}
     (logdir / ("%s.judge.log" % tid)).write_text(j.stdout + "\n--- stderr\n" + j.stderr)
     try:
         rec = json.loads(j.stdout.strip().splitlines()[-1])
+        if not isinstance(rec, dict):
+            raise ValueError("not an object")
     except (ValueError, IndexError):
-        raise RunRefused("judge printed no record for %s (rc %s): %s" % (tid, j.returncode, j.stderr[-400:]))
+        return {"verdict": None, "gate": gate.name, "class": INFRA, "reason": "no_judge_record",
+                "why": "judge printed no record (rc %s): %s" % (j.returncode, j.stderr[-400:])}
     g = json.loads(gate.read_text())
     out = {"verdict": rec.get("verdict"), "judge_id": rec.get("judge_id"), "gate": gate.name,
            "gate_verdict": g.get("verdict")}
-    why = unmeasured_result(g, rec)
-    if why:
-        raise RunRefused("task %s: %s: not recorded, the runner stops (logs in %s)" % (tid, why, logdir))
     inv = gate_invalid(g, rec)
     if inv:
         out["invalid"] = inv
+        return out
+    why = unmeasured_result(g, rec)
+    if why and why != "judge verdict invalid":       # the gate measured nothing: no verdict on it is scored
+        out.update({"class": INFRA, "reason": "gate_unmeasured", "why": why})
+        return out
+    if rec.get("verdict") in ("accept", "reject"):
+        return out
+    cls, reason, why = classify_invalid(g, rec, judge_record(rec.get("judge_id")))
+    out.update({"class": cls, "reason": reason, "why": why})
     return out
+
+
+def judge_record(jid):
+    """The judge's full record <arena_judge.work_root()>/<judge_id>/verdict.json (it prints only id/task/verdict),
+    or None. Read only: arena_judge.py is the vet key and is not edited."""
+    import re
+    if not isinstance(jid, str) or not re.fullmatch(r"J[0-9a-f]{6,64}", jid):
+        return None
+    try:
+        import arena_judge as J
+        f = J.work_root() / jid / "verdict.json"
+        rec = json.loads(f.read_text(encoding="utf-8"))
+    except Exception:                      # noqa: BLE001 - unreadable is "unknown": infra, retried
+        return None
+    return rec if isinstance(rec, dict) else None
+
+
+_HARNESS_WHYS = ("replay task", "reader exclusion", "the reader pass unscored", "hidden-check file is malformed")
+_INFRA_WHYS = ("judge sandbox did not start", "judge unavailable before any call", "gate verdict",
+               "cat-file --batch out of step", "unreadable .git file", "no object store", "git ")
+_ARM_WHYS = (("prompt leaks the arm", "prompt_leak"), ("neutralised diff still identifies the arm", "diff_leak"),
+             ("tree path", "unsafe_tree_path"))
+_PARSE_WHYS = ("no JSON verdict in the answer", "more than one verdict object")
+
+
+def classify_invalid(gate, rec, vrec):
+    """JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: an invalid that is NOT a measured-invalid gate -> (class, reason label,
+    why). The gate cases (unmeasured_result) and a missing judge record are INFRA. Else the judge's verdict.json: a
+    pre-model `why` (arena_judge.judge's done(...)) or, with none, its votes (combine: any invalid vote).
+    A vote that failed AS A CALL (no parsed answer, no tripwire meta) is INFRA - the RP_RIVERSITE_FIX_RETILE_NONE_CRASH
+    halt was a gpt vote 'gpt judge exit 1 ... no answer (WSL UtilAcceptVsock)'. An unknown cause is INFRA."""
+    why = unmeasured_result(gate, rec)
+    if why and why != "judge verdict invalid":
+        return INFRA, "gate_unmeasured", why
+    if not isinstance(vrec, dict):
+        return INFRA, "no_judge_record", "judge %r: no readable verdict.json" % (rec.get("judge_id"),)
+    w = vrec.get("why")
+    if isinstance(w, str) and w:
+        if w.startswith(_HARNESS_WHYS):
+            return HARNESS, "hidden_check_unusable", w[:400]
+        if w.startswith("a hidden check could not finish"):
+            return ARM_RETRY, "hidden_check_unfinished", w[:400]
+        for pre, label in _ARM_WHYS:
+            if w.startswith(pre):
+                return ARM, label, w[:400]
+        if w.startswith("changed file") and "binary change" in w:
+            return ARM, "binary_change", w[:400]
+        if w.startswith("changed file") and "produced no diff" in w:
+            return ARM_RETRY, "diff_incomplete", w[:400]
+        if w.startswith(_INFRA_WHYS):
+            return INFRA, "judge_unavailable", w[:400]
+        return INFRA, "unknown", w[:400]
+    votes = [v for v in (vrec.get("votes") or []) if isinstance(v, dict) and v.get("verdict") == "invalid"]
+    if not votes:
+        return INFRA, "unknown", "judge invalid with no why and no invalid vote"
+    calls = [v for v in votes if "tools" not in v and "reasons" not in v
+             and not str(v.get("why") or "").startswith(_PARSE_WHYS)]
+    if calls:
+        return INFRA, "model_call_failed", "; ".join("%s: %s" % (v.get("judge"), str(v.get("why"))[:300])
+                                                     for v in calls)
+    if any("tools" in v for v in votes):
+        return ARM_RETRY, "judge_tripwire", "; ".join(str(v.get("why"))[:200] for v in votes)
+    return ARM_RETRY, "unparseable_answer", "; ".join(str(v.get("why") or "verdict outside the label set")[:200]
+                                                      for v in votes)
+
+
+def sign_not_accepted(arm, tid, head, base, cls, reason):
+    """The signed record arena_analysis.judge_invalid_of reads: this task's last judgment is the arm's fault and
+    counts completed, NOT accepted. Opens its own harness pass (the runner runs as arena.py, an entrypoint)."""
+    import arena_eventlog as L
+    import arena_tasks as A
+    p = A.paths()
+    with L.harness_pass(p) as cap:
+        return L.HarnessWriter(p, cap=cap).emit(arm, "invalid", lane=RUNNER_LANE, run_id=RUNNER_LANE, task=tid,
+                                                sha=head, verdict=NOT_ACCEPTED,
+                                                detail={"base": base, "class": cls, "reason": reason})
+
+
+def _tries():
+    try:
+        return max(1, int(os.environ.get("ARENA_REPLAY_JUDGE_TRIES", JUDGE_TRIES)))
+    except ValueError:
+        return JUDGE_TRIES
+
+
+def _backoff(i):
+    raw = os.environ.get("ARENA_REPLAY_JUDGE_BACKOFF_S")
+    try:
+        b = tuple(float(x) for x in raw.split(",")) if raw else JUDGE_BACKOFF_S
+    except ValueError:
+        b = JUDGE_BACKOFF_S
+    return b[min(i, len(b) - 1)] if b else 0
+
+
+def judge_policy(judge, arm, clone, spec, head, *, sleep=time.sleep, sign=None, out=None):
+    """JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT: call `judge` until it gives a scoreable result, never raise. -> the
+    judge dict; a parked one carries "not_completed" {class, reason, why, tries}, a not-accepted one "invalid"
+    {why, class, reason, signed}. A judge exception is INFRA. An invalid with no class (an injected judge) is INFRA."""
+    sign = sign or sign_not_accepted
+    tid, n = spec["id"], _tries()
+    v = {}
+    for i in range(n):
+        try:
+            v = judge(arm, clone, spec, head)
+        except Exception as e:             # noqa: BLE001 - a judge that raised measured nothing: infra
+            v = {"verdict": None, "class": INFRA, "reason": "judge_raised", "why": "%s: %s" % (type(e).__name__, e)}
+        v = dict(v) if isinstance(v, dict) else {"verdict": None, "class": INFRA, "reason": "judge_returned_junk",
+                                                 "why": repr(v)[:300]}
+        if v.get("invalid") or (v.get("verdict") in ("accept", "reject") and not v.get("class")):
+            return v
+        cls = v.get("class") or INFRA
+        v.setdefault("class", cls)
+        v.setdefault("reason", "unknown")
+        log("%s: task %s judge try %d/%d %s (%s): %s" % (arm, tid, i + 1, n, cls, v["reason"],
+                                                       str(v.get("why"))[:400]), out)
+        if cls in (INFRA, ARM_RETRY) and i + 1 < n:
+            d = _backoff(i)
+            log("%s: task %s judge RETRY in %ds" % (arm, tid, d), out)
+            sleep(d)
+            continue
+        break
+    cls = v["class"]
+    if cls in (ARM, ARM_RETRY):
+        try:
+            sign(arm, tid, head, spec["base_sha"], cls, v["reason"])
+        except Exception as e:             # noqa: BLE001 - not signed: analysis cannot count it; park, loudly
+            v["not_completed"] = {"class": INFRA, "reason": "not_accepted_unsigned",
+                                  "why": "NOT ACCEPTED but the signed record failed: %s: %s" % (type(e).__name__, e),
+                                  "tries": i + 1}
+            log("%s: task %s NOT-ACCEPTED SIGN FAILED %s" % (arm, tid, v["not_completed"]["why"][:400]), out)
+            return v
+        v["invalid"] = {"why": "judge verdict invalid (%s, %s): counted NOT accepted" % (cls, v["reason"]),
+                        "class": cls, "reason": v["reason"], "signed": True}
+        return v
+    v["not_completed"] = {"class": cls, "reason": v["reason"], "why": str(v.get("why"))[:1000], "tries": i + 1}
+    return v
 
 
 def _status(v):
@@ -236,11 +410,12 @@ def gate_invalid(gate, rec):
 
 def unmeasured_result(gate, rec):
     """ARENA_GATE_WORK_REWIRE_OFF_DRVFS (fail loud): what measured nothing about the arm and is no arm's fault -> why,
-    or None. The runner then logs ERROR and stops (the task is NOT recorded and is rerun on the next start):
+    or None. Since JUDGE_INVALID_FIX_ARM_HALTS_ON_VERDICT these are INFRA in classify_invalid (retried, then parked
+    not completed; the runner never stops on them):
       - a gate whose every step is UNMEASURED (the harness measured nothing);
       - a gate verdict `invalid` that is NOT measured-invalid (gate_invalid: unsigned, no steps, gate crash/no JSON,
         or a judge verdict other than invalid on it);
-      - a judge verdict `invalid` after a gate that passed or failed (a judge fault: rerun).
+      - a judge verdict `invalid` after a gate that passed or failed (classify_invalid reads the judge's record).
     A measured-invalid gate is NOT here since GATE_TAMPER_FIX_CTYPES_HALTS_ARM: it is recorded as not accepted."""
     steps = gate.get("steps") if isinstance(gate.get("steps"), dict) else {}
     st = [_status(v) for v in steps.values()]
@@ -260,7 +435,7 @@ def unmeasured_result(gate, rec):
 
 # ------------------------------------------------------------------------------------------------ the run
 def run_arm(arm, *, ctl, model_cmd, only=0, steps=None, load=None, run_one=None, work=None, judge=None,
-            runway=None, sleep=time.sleep, out=None):
+            runway=None, sleep=time.sleep, out=None, sign=None):
     """Every trial task for `arm`, in order. -> {"ran": [...], "skipped": [...], "stopped": why|None}."""
     if arm not in REPLAY_ARMS:
         raise RunRefused("arm %r is not a replay arm %s" % (arm, REPLAY_ARMS))
@@ -280,7 +455,7 @@ def run_arm(arm, *, ctl, model_cmd, only=0, steps=None, load=None, run_one=None,
     actl = Path(ctl) / arm
     actl.mkdir(parents=True, exist_ok=True)
     st = State(actl)
-    res = {"ran": [], "skipped": [], "stopped": None}
+    res = {"ran": [], "skipped": [], "stopped": None, "parked": []}
     log("%s: plan %d tasks, %d already done" % (arm, len(steps), sum(st.done(t) for t, _ in steps)), out)
     for tid, t in steps:
         if st.done(tid):
@@ -310,11 +485,17 @@ def run_arm(arm, *, ctl, model_cmd, only=0, steps=None, load=None, run_one=None,
         box = {}
 
         def w(clone):
-            box.update(work(arm, clone, spec))
+            try:
+                box.update(work(arm, clone, spec))
+            except subprocess.TimeoutExpired as e:   # e.g. a loop's own 3 h gate: judged at the base, like a park
+                box.update({"outcome": "timeout", "head": spec["base_sha"], "why": str(e)[:300]})
             log("%s: task %s work %s head %s" % (arm, tid, box.get("outcome"), str(box.get("head"))[:12]), out)
 
+        def jd(clone):
+            return judge_policy(judge, arm, clone, spec, box["head"], sleep=sleep, sign=sign, out=out)
+
         try:
-            v = run_one(arm, tid, t["base_sha"], t["fix_sha"], w, lambda clone: judge(arm, clone, spec, box["head"]))
+            v = run_one(arm, tid, t["base_sha"], t["fix_sha"], w, jd)
         except Exception as e:                    # noqa: BLE001 - recorded and retried on the next start
             why = "%s: %s" % (type(e).__name__, e)
             st.error(tid, why)
@@ -325,6 +506,12 @@ def run_arm(arm, *, ctl, model_cmd, only=0, steps=None, load=None, run_one=None,
         st.record(tid, rec)
         res["ran"].append(tid)
         inv = (v or {}).get("invalid") if isinstance(v, dict) else None
+        nc = (v or {}).get("not_completed") if isinstance(v, dict) else None
+        if isinstance(nc, dict):
+            log("%s: task %s PARKED NOT COMPLETED %s (%s, %s tries): %s" % (
+                arm, tid, nc.get("class"), nc.get("reason"), nc.get("tries"), str(nc.get("why"))[:400]), out)
+            res["parked"].append(tid)
+            continue
         log("%s: task %s DONE %s verdict %s%s" % (arm, tid, box.get("outcome"), (v or {}).get("verdict"),
                                                 (" (%s)" % str(inv.get("why"))[:400]) if isinstance(inv, dict) else ""),
             out)
