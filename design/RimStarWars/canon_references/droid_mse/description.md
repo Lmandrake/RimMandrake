@@ -19,12 +19,12 @@ rows; there is no separate `droid_mse6` entry and there should not be one.
   reuses graphic path `OuterRim/Droid/MSE` for a *different* primitive race, with an inline
   comment saying so ("small, boxy"). So changing this art changes two races, not one.
 
-Sprites: `src/RimStarWars/Droidworks/Textures/OuterRim/Droid/MSE_{south,east}.png` (256×256),
+Sprites: `src/RimStarWars/Droidworks/Textures/OuterRim/Droid/MSE_{south,east,north}.png` (256×256),
 graphic path `OuterRim/Droid/MSE`.
 
 🔑 **This is the only chassis in this batch where the repo has AUTHORED new art.**
-`src/RimStarWars/MSEDroidFix/` is our own mod (`mandrake.rsw.msedroidfix`) supplying the
-missing `MSE_north.png` (256×256), because the donor Outer Rim - Droid Depot ships **only
+`src/RimStarWars/Droidworks/Textures/OuterRim/Droid/MSE_north.png` (256×256) is our own art
+supplying the missing north, because the donor Outer Rim - Droid Depot ships **only
 south and east** while the def declares `Graphic_Multi`, so a droid walking away silently
 fell back to its front view. The absence was verified against the 1.6 AssetBundle manifest,
 not the loose folder. Silhouette and keyline are copied pixel-for-pixel from `MSE_south`;
@@ -220,7 +220,7 @@ Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, 
   Legends counterpart), `Polar mouse droid`, `chak-chak`, `command order tray`.
 - Repo defs: `src/RimStarWars/Droidworks/Defs/Races_OuterRim.xml`,
   `Defs/PawnKinds_OuterRim.xml`, `Defs/Races_Primitive.xml` (second consumer of the texture)
-- Repo mod: `src/RimStarWars/MSEDroidFix/` (our authored `MSE_north.png`)
+- Repo art: `src/RimStarWars/Droidworks/Textures/OuterRim/Droid/MSE_north.png` (our authored north; redraw script `src/RimStarWars/Droidworks/Source/draw_mse_north.py`)
 - Index rows: `design/RimStarWars/canon_references/DROIDS_INDEX.md:1176` and `:1177`
 - ⚠️ **Unresolvable contradiction in the sources themselves:** height is **0.25 m** per two
   sources and **0.4 m** per a third; the wiki records the conflict rather than settling it, and
@@ -247,7 +247,7 @@ Shared texture: `Races_Primitive.xml` reuses graphic path `OuterRim/Droid/MSE`, 
 - `donor_current_sprite_east.png` (256×256) — donor `MSE_east`. Correctly wide and low; no
   wheels.
 - `donor_msedroidfix_north.png` (256×256) — **our own** `MSE_north` from
-  `src/RimStarWars/MSEDroidFix/`, silhouette copied pixel-for-pixel from the donor's south with
+  `src/RimStarWars/Droidworks/Textures/OuterRim/Droid/`, silhouette copied pixel-for-pixel from the donor's south with
   a re-authored rear panel (vent seam + two panel joints).
 
 ## ruling

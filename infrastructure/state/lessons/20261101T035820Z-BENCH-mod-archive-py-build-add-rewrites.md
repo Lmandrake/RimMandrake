@@ -1,0 +1,1 @@
+mod_archive.py build/add rewrites every About copy and the whole ALL_ORIGINAL_MODS.tsv from the live disk (32 about files, 1500 tsv lines on 2026-10-31): after 'add', restore all but your row. required_checks.py load_error embeds the clone's absolute path (DeepDrill, TileFeatures), so every regen churns those two rows.

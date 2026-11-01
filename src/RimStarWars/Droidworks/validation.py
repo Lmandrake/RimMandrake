@@ -741,3 +741,26 @@ def mindstone_head_wiring(t):
         missing = ["%s: %s" % (f, s) for f, ss in need.items() for s in ss if s not in read(src, f)]
         if missing:
             raise ExpectationFailed("mindstone wiring missing: %s" % "; ".join(missing))
+
+
+# ==================================================== MSE droid north (offline)
+@suite.chain("mse_droid_north_art")
+def mse_droid_north_art(t):
+    """The north of the MSE repair droid came in from the retired MSEDroidFix
+    (MSEDROIDFIX_RETIRE_DEPOT_DEPENDENCY_GONE). Graphic_Multi falls back to south with no log line
+    when only north is missing, so a load can never catch its loss: this reads the files. Which
+    picture the live droid resolves is not proven here."""
+    import os
+    from PIL import Image
+    mod = os.path.dirname(os.path.abspath(__file__))
+    with t.component("mse_all_facings_ship_and_north_registers_with_south", toggle=None, beyond_toggle=True):
+        art = os.path.join(mod, "Textures", "OuterRim", "Droid", "MSE_%s.png")
+        missing = [f for f in ("south", "east", "north") if not os.path.isfile(art % f)]
+        if missing:
+            raise ExpectationFailed("MSE sprite facings missing: %r" % missing)
+        boxes = {}
+        for f in ("south", "north"):
+            with Image.open(art % f) as im:
+                boxes[f] = (im.size, im.convert("RGBA").getchannel("A").getbbox())
+        if boxes["south"] != boxes["north"]:
+            raise ExpectationFailed("MSE north does not register with south: %r" % boxes)

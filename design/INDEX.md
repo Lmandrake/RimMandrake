@@ -3099,7 +3099,6 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `JawaVoice.md` | JawaVoice — validation walk | — |
 | `KotORBandolierNorthFix.md` | KotORBandolierNorthFix — validation walk | — |
 | `Livestock.md` | Livestock — validation walk | — |
-| `MSEDroidFix.md` | MSEDroidFix — validation walk | — |
 | `SWBestiary.md` | SWBestiary — validation walk | — |
 | `Sarlacc.md` | RimStarWars: Sarlacc — validation walk | — |
 | `SeaBeasts.md` | SeaBeasts — validation walk | — |

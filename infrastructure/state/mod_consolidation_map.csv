@@ -57,7 +57,6 @@ stay,RimStarWars/StarWarsPatches,,RimStarWars,,,HIGH,RSW patches cell; destinati
 merge-into,RimStarWars/BlastDoorFrameAsyncFix,RimStarWars/StarWarsPatches,RimStarWars,mandrake.rsw.patches,folds-into-patches,MEDIUM,donor Lumi.doorsexpanded (SW ed.) active with no retirement item; 6 textures
 merge-into,RimStarWars/CereanManeFix,RimStarWars/StarWarsPatches,RimStarWars,mandrake.rsw.patches,folds-into-patches,MEDIUM,donor OuterRim GalacticDiversity NOT on sunset list; would die later if it retires
 stay,RimStarWars/KotORBandolierNorthFix,,RimStarWars,,dies-with-donor,HIGH,donor guy762.mm.kotorcore; retirement owned by WEAPONS_DONOR_RETIREMENT_1 + ARMOURY_SWMODS_DONOR_GAP_1
-stay,RimStarWars/MSEDroidFix,,RimStarWars,,dies-with-donor,HIGH,donor neronix17.outerrim.droiddepot; STARWARS_DONOR_SUNSET_1 wave 3 / DROID_SYSTEM_BUILD_1
 stay,RimUtinni/AftermathRites,,RimUtinni,mandrake.rut.chroniclerites,,HIGH,R5 RULED: renames ChronicleRites (name RATIFIED) — RimChronicle's RUT data pack; a spine-spec consumer per CHRONICLE_EVENT_SPINE_1
 stay,RimUtinni/Antiquities,,RimUtinni,,,HIGH,mechanic (urn research system); Rites' dep survives its move to Salvation
 stay,RimUtinni/AshkarrFlora,,RimUtinni,,,HIGH,plants cell RUT; grows as owned tree art lands

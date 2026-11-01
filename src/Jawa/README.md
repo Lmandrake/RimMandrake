@@ -58,7 +58,7 @@ textures spanning several donors — Outer Rim Galactic Diversity, Outer Rim Dro
 Depot, and at least one research-kit and one apparel mod — and its description
 documents only 2 of the 7.
 
-✅ **Split done 2026-08-13** into `CereanManeFix/`, `MSEDroidFix/`, `ToolBeltFix/`
+✅ **Split done 2026-08-13** into `CereanManeFix/`, `MSEDroidFix/` (since folded into Droidworks), `ToolBeltFix/`
 and `ResearchKitEastFix/`, all seven files now described. **`MissingArtFixes/`
 itself was deliberately left intact** — it is LIVE in `ModsConfig.xml`, so
 retiring it is a live change the owner sequences. Do not copy it as a pattern,
@@ -93,7 +93,6 @@ This folder is the **source** for eight authored mods, not one:
 | `GravshipAstronautFix/` | `mandrake.rm.gravshipastronautfix` | Vanilla Gravship Expanded — Ch.1 (`vanillaexpanded.gravship`) | ✅ loose |
 | `SauridFrillFix/` | `mandrake.rm.sauridfrillfix` | VRE - Saurid (`vanillaracesexpanded.saurid`) | ✅ loose |
 | `CereanManeFix/` | `mandrake.rsw.cereanmanefix` | Outer Rim - Galactic Diversity (`Neronix17.OuterRim.GalacticDiversity`) | ❌ **AssetBundle donor** |
-| `MSEDroidFix/` | `mandrake.rsw.msedroidfix` | Outer Rim - Droid Depot (`Neronix17.OuterRim.DroidDepot`) | ❌ **AssetBundle donor** |
 | `ToolBeltFix/` | `mandrake.rm.toolbeltfix` | VAE - Accessories (`VanillaExpanded.VAEAccessories`) | ✅ loose |
 | `ResearchKitEastFix/` | `mandrake.rm.researchkiteastfix` | Research Reinvented + Retextured — **both** ship loose blank easts | ✅ loose, **both named** |
 

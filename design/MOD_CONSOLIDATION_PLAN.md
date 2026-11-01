@@ -128,7 +128,6 @@ keeping `mandrake.rm.property` unchanged saves every existing MayRequire.
 | BlastDoorFrameAsyncFix | Lumi.doorsexpanded (SW ed., no retirement item) | folds-into-patches → StarWarsPatches |
 | CereanManeFix | Neronix17.OuterRim.GalacticDiversity (NOT on the sunset list) | folds-into-patches → StarWarsPatches |
 | KotORBandolierNorthFix | guy762.MM.KotORCore | **dies-with-donor** — WEAPONS_DONOR_RETIREMENT_1 / ARMOURY_SWMODS_DONOR_GAP_1 |
-| MSEDroidFix | Neronix17.OuterRim.DroidDepot | **dies-with-donor** — STARWARS_DONOR_SUNSET_1 wave 3 / DROID_SYSTEM_BUILD_1 (Depot rides OuterRim Core) |
 
 A folded fix keeps its PatchOperationFindMod guard inside the tier patches
 mod, so it stays inert when its donor is absent — same behavior, one fewer
@@ -295,7 +294,7 @@ solo mechanics    FlowWorks Oracle Pits    JawaRules JawaVoice (R13)        Anti
                   StrandedQuest(VERIFY tier)                                  RestrainingBolts ShipMemory
 dev-only (stay)   LoadTracer PlanetPresetPrime RimDefDump
 stay pending(R14)                            SeasWaterline                    BirthHatchDemo (gate closed 2026-09-09; retirement itself still owner-owed)
-dies-with-donor                              KotORBandolierNorthFix · MSEDroidFix
+dies-with-donor                              KotORBandolierNorthFix
 ```
 
 ## 7. Decisions — ALL RULED (owner sitting 2026-09-08, R1–R15)

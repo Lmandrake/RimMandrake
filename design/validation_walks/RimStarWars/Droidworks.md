@@ -12,6 +12,7 @@ status-hint: the one droid platform — five states (functional/ion-stunned/powe
 - The three charging buildings (RSW_DW_ChargeSocket/ChargeDock/ChargeNimbus) exist as CompPowerTrader buildings at their documented basePowerConsumption (100/150/800).
 - IonBuildup_PowersDownDroid.xml is a FindMod-gated no-op when Jawa Ion Weapons is absent, and adds HediffCompProperties_IonOverloadsDroid onto RSW_JawaIon_Stun's comps when present.
 - Two DEAD ends are known and NOT bugs to "fix" in this walk: RSW_DW_ClampBolt (JobDef) has no WorkGiver/float-menu that ever issues it (JobDefs_Droidworks.xml's own header says so), and CompDroidDetonation is built but never wired onto any race (Races_OuterRim.xml:1034 says so directly).
+- The MSE repair droid (`RSW_DW_OuterRim_MSEDroid`, texPath `OuterRim/Droid/MSE`) has all of `MSE_south`, `MSE_east` and `MSE_north` in this mod; Droidworks took the north over from the retired MSEDroidFix, because a missing north falls back silently to the south (front) view.
 
 ## the walk
 1. [L] Player.log after load contains no "Config error in mandrake.rsw.droidworks" and no XML error naming HediffDefs_Droidworks.xml, JobDefs_Droidworks.xml, NeedDefs_Droidworks.xml, RecipeDefs_Droidworks.xml, Races_Base.xml, Races_JDS.xml, Races_KotOR.xml, Races_OuterRim.xml, or Races_Families.xml
@@ -47,6 +48,12 @@ least certain. `### the experience` is his to dictate.
 - [ ] `droidworks_droid_facings_hold` — each droid reads as the same chassis from
       north, east and south.
 
+**The MSE droid walking away**
+- [ ] `mse_north_shows_back` — an MSE droid walking north shows a back view, not
+      its front face.
+- [ ] `mse_north_registers_with_south` — turning from south to north the droid
+      keeps the same size and footprint; it does not jump or shrink.
+
 **The five states**
 - [ ] `droidworks_states_distinguishable` — a functional droid, an ion-stunned
       one and a powered-down one (`RSW_DW_PoweredDown`) are distinguishable at a
@@ -61,6 +68,8 @@ least certain. `### the experience` is his to dictate.
 
 ### cannot show
 
+- [ ] `mse_never_front_when_walking_away` — the silent `Graphic_Multi` fallback
+      that shows `MSE_south` on a north-facing droid.
 - [ ] `droidworks_never_downed_like_flesh` — a powered-down droid drawn as a
       bleeding, collapsed flesh pawn. (guess)
 - [ ] `droidworks_never_magenta` — a missing-texture square on any droid or droid

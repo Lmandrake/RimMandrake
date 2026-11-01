@@ -74,7 +74,7 @@ Jawaese-bubble framework is RSW; the authored line corpus is campaign flavor
 — skim the lines in Phase 1 and extract RUT content if they name the
 clan/ship/gods) · Jawa_Armoury (SW gun rebalance; campaign armory-doctrine
 patches extract to RimUtinni) · BlastDoorFrameAsyncFix · CereanManeFix ·
-KotORBandolierNorthFix · MSEDroidFix.
+KotORBandolierNorthFix.
 
 **RimUtinni (6 + the future Salvation pack):** Jawa_Doctrine ·
 JawaFactionSlate · JawaPlantGrowth (**VERIFY in Phase 1**: a generic growth
