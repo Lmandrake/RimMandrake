@@ -525,7 +525,7 @@ SteveDesktop is a second Windows machine. It runs RimWorld test jobs over SSH. T
   - A claim with a live lease pauses the clock.
 - **ops_watch Steve alarms** (`ops_watch_rules.json` targets):
   - `steve.unowned_stall_min` >30.
-  - `steve.incident_unclaimed_min` >10 (owner 2026-10-28 15:50 PDT: "Keep SteveDesktop ...").
+  - `steve.incident_unclaimed_min` >30 (owner 2026-10-28 15:50 PDT: "Keep SteveDesktop ..."; the line stays above the steward's 20-minute gap between filing the item and waking).
   - `steve.invalid_streak` ≥3.
   - These spawn `OPS_STEVE_*` items. Operations takes them as alarm runs.
 - **Usefulness measure** [LIVE, flag only]: `testing.nothing_h_7d` counts test hours on runs that caught nothing (no FAIL, no finding, no close within `close_after_h` 24). Its target >18 is `alarm: false`, a flag only.
@@ -756,7 +756,7 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | alarm clear_passes / lock_wait_s | 4 / 90 | ops_watch_rules.json `alarm` | not named | |
 | target: runway (accounts, codex) | <1.0 alarm | targets | owner brief 10-26 | |
 | target: steve.unowned_stall_min | >30 alarm | targets | owner brief | |
-| target: steve.incident_unclaimed_min | >10 alarm | targets | owner 10-28 15:50 | |
+| target: steve.incident_unclaimed_min | >30 alarm | targets | owner 10-28 15:50 | |
 | target: steve.invalid_streak | ≥3 alarm | targets | owner brief | |
 | target: disk root / C: / D: free GB | <210 / <200 / <200 alarm; root <420 flag | targets | not named | scratch grew 207 GB in one day |
 | target: timers.failed_units / evidence.tamper | >0 alarm | targets | not named | |

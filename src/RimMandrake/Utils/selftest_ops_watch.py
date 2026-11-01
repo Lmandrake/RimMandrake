@@ -1031,7 +1031,12 @@ _P = "STEVE_LANE_UNSTICK_"
 r = OW.steve_incident_unclaimed(_w(_it(_P + "PAUSED_UNOWNED_C45B", "proposed", 21)), _M, NOW, RULES)
 check("incident: today's 21 min unclaimed case -> 21 MEASURED", r["m"] == "MEASURED" and abs(r["v"] - 21) < 0.1, r)
 _tg = [t for t in RULES["targets"] if t["key"] == "steve.incident_unclaimed_min"][0]
-check("incident: 21 min is over the alarm line and the line is 10", _tg["alarm"] and _tg["value"] == 10 and r["v"] > _tg["value"], _tg)
+check("incident: 21 min is under the alarm line: the steward's wake is still due", _tg["alarm"] and r["v"] <= _tg["value"], _tg)
+_lad = re.search(r"^L1_S, L2_S, L3_S = (\d+), (\d+), (\d+)", (OW.HERE / "testq" / "steward.py").read_text(encoding="utf-8"), re.M)
+_gap = (int(_lad.group(2)) - int(_lad.group(1))) / 60.0
+check("incident: the line sits above the steward's ladder gap (item born T+10, wake at T+30)", _tg["value"] > _gap, (_tg["value"], _gap))
+for _v, _want in ((20.3, False), (22.2, False), (17.8, False), (24.2, False), (38.9, True), (55.8, True), (348.8, True)):
+    check("incident: %.1f min %s the line (a measured alarm or ladder age)" % (_v, "breaches" if _want else "stays under"), (_v > _tg["value"]) == _want, _tg["value"])
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "doing", 40)), _M, NOW, RULES)
 check("incident: a claimed (doing) incident -> 0", r["v"] == 0.0, r)
 r = OW.steve_incident_unclaimed(_w(_it(_P + "A", "ready", 40, lease="live")), _M, NOW, RULES)
