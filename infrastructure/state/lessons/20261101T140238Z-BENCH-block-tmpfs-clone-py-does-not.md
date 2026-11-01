@@ -1,0 +1,1 @@
+block_tmpfs_clone.py does not see a repo tree exported into /tmp without git clone/cp/rsync text: /tmp/arb_ff (3.6 GB, no .git) sat there when an arbiter seat hit 6 GB shmem and its git was OOM-killed at the 6G tool cap, 2026-10-30 11:07. Exact command unfound; route inferred. Do not grow the hook: the fix is SEAT_MEMORY_STANDARD_FALLBACK_1, /tmp off tmpfs.

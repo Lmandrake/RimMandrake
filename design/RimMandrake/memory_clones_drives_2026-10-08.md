@@ -467,3 +467,26 @@ Ubuntu. After that, delete `block_tmpfs_clone.py` and its settings entry, and dr
 lines from `claude_bounded.sh`. Keep the scope caps and the tool cap; they are the standard safety net.
 The test runner's fallback is a fixed worker count inside `rm-harness.slice`, with no admission logic.
 Item: `SEAT_MEMORY_STANDARD_FALLBACK_1`.
+
+### 9.1 Symptom measured, 2026-11-01: the fallback is triggered
+
+`journalctl -k`, 2026-10-30 11:07: four tool-cap OOM kills of `git` in
+`claude-seat-BENCH-rm-role-arbiter-1793383222.scope/claude-code-bash`, with `shmem` at 5.9-6.0 GB. That is the
+`/tmp`-shaped OOM named above. The likely cause is on disk: `/tmp/arb_ff` (3.6 GB, a repo tree with no `.git`,
+last changed one minute before the kills) and `/tmp/arb` (1.4 GB). A repo tree without `.git` suggests an export
+rather than a clone; `block_tmpfs_clone.py` matches `git clone`, `cp` and `rsync` text, so it would not see
+`git archive | tar -x`. The command that made it was not found, so that route is inferred.
+
+Not symptoms, same reading: the tool cgroup still lands under the seat scope on Claude Code 2.1.309
+(`/proc/self/cgroup` of a tool command); the 128 MB `rm-harness-*.scope` kills have `shmem` 0; the other seat
+tool-cap kills have `shmem` under 25 MB.
+
+**Order matters.** Dropping the `TMPDIR` lines or the hook while `/tmp` is still tmpfs puts seat temp back on RAM,
+so the agent steps wait for `findmnt -no FSTYPE --target /tmp` to print something other than `tmpfs`:
+
+1. The owner's step: `sudo systemctl mask tmp.mount`, then `wsl --shutdown` at a stopping point. `/tmp` is lost
+   (disposable scratch). On ext4 it ages at 10 days (`/usr/lib/tmpfiles.d/tmp.conf`).
+2. Then agents delete `.claude/hooks/block_tmpfs_clone.py`, its selftest, its `.claude/settings.json` entry and its
+   `src/RimMandrake/rimflow/live_baseline.txt` line; drop the `TMPDIR`/`CLAUDE_CODE_TMPDIR` lines from
+   `src/RimMandrake/Utils/claude_bounded.sh`; and replace admission in `src/RimMandrake/Utils/run_selftests.py` with
+   a fixed worker count.
