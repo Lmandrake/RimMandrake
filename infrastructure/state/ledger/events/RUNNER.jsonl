@@ -1860,3 +1860,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_PLAN_LIST_FIX_VMIV","text":"ops_watch: cleared at 2026-11-01T23:07:01Z (plan.distressed now 0)","ts":"2026-11-01T23:07:49Z","tsn":1793574469456496976}
 {"seat":"RUNNER","event":"note","id":"OPS_STEVE_UNSTICK_UNCLAIMED_ETBS","text":"ops_watch: cleared at 2026-11-01T23:07:01Z (steve.incident_unclaimed_min now 0.0)","ts":"2026-11-01T23:07:51Z","tsn":1793574471869331609}
 {"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC","text":"ops_watch: cleared at 2026-11-01T23:07:01Z (timers.failed_units now 0)","ts":"2026-11-01T23:07:54Z","tsn":1793574474154812151}
+{"seat":"RUNNER","event":"note","id":"OPS_STEVE_DIAGNOSE_INVALID_MBTX","text":"ops_watch: cleared at 2026-11-01T23:22:00Z (steve.invalid_streak now 0)","ts":"2026-11-01T23:23:45Z","tsn":1793575425561849863}
