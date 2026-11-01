@@ -407,7 +407,11 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
             return "commit failed: " + c.stderr.strip()[-200:]
     p = None
     for _ in range(3):
-        r = git("pull", "-q", "--rebase", "origin", "main")
+        # Never `pull --rebase`: it reads FETCH_HEAD, where a peer's fetch in this clone leaves a second line, and then
+        # refuses with "Cannot rebase onto multiple branches" (8 stopped publishes by 2026-11-01). origin/main is one ref.
+        r = git("fetch", "-q", "origin", "main")
+        if r.returncode == 0:
+            r = git("rebase", "-q", "origin/main")
         if r.returncode != 0:
             # A failed rebase leaves a detached, conflicted tree: pushing HEAD then pushes origin's own tip and
             # "succeeds" while the RUNNER commit sits unapplied (drill 2026-10-26). Abort, keep the commit local,
@@ -416,7 +420,7 @@ def _publish(n, shard_rel=SHARD_REL, message=None):
             rebasing = any(os.path.isdir(os.path.join(REPO, gd, d)) for d in ("rebase-merge", "rebase-apply"))
             if rebasing:
                 git("rebase", "--abort")
-            return "publish stopped: pull --rebase failed%s, the commit stays local (the next ingest retries): " % \
+            return "publish stopped: fetch and rebase failed%s, the commit stays local (the next ingest retries): " % \
                 (", rebase aborted" if rebasing else "") + (r.stderr or r.stdout).strip()[-200:]
         bad = lint_refusal()
         if bad:

@@ -168,7 +168,7 @@ def publish_checks():
         sh("fetch", "-q", "origin", cwd=disp)
         ahead = sh("rev-list", "--count", "origin/main..HEAD", cwd=disp).stdout.strip()
         tip = sh("log", "-1", "--format=%s", "origin/main", cwd=disp).stdout.strip()
-        check(out.startswith("publish stopped"), "a conflicting pull --rebase stops publication: %r" % out)
+        check(out.startswith("publish stopped"), "a conflicting rebase stops publication: %r" % out)
         check(not rebasing and branch == "main", "the rebase is aborted, back on main (rebasing=%s branch=%r)"
               % (rebasing, branch))
         check(ahead == "1" and tip == "rival", "the RUNNER commit stays local, origin untouched (ahead=%s tip=%r)"
@@ -180,13 +180,21 @@ def publish_checks():
         import ingest as I
         with open(os.path.join(disp, I.SHARD_REL), "a") as f:   # a publish that died before its commit
             f.write('{"runner":"stranded"}\n')
+        real, ran = I.subprocess.run, []
+        def run(cmd, **kw):
+            ran.append(cmd)
+            return real(cmd, **kw)
         old, I.REPO = I.REPO, disp
+        I.subprocess.run = run
         try:
             stranded = I.unpublished()
             I.publish(0)
             left = I.unpublished()
         finally:
             I.REPO = old
+            I.subprocess.run = real
+        check(ran and not any("pull" in c for c in ran), "publish never pulls: a peer's fetch in the clone gives "
+              "FETCH_HEAD a second line and pull --rebase refuses on it")
         check(stranded and not left, "RUNNER lines left uncommitted count as unpublished and the next publish "
               "ships them (before=%s after=%s)" % (stranded, left))
         sh("fetch", "-q", "origin", cwd=disp)
