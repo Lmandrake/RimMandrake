@@ -45,12 +45,12 @@ and a CGI/photo still of one in a bounding run).
 
 ## Must show
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the three live-action images; the Legends painting is an outlier for colour.*
-- [ ] BODY PLAN: a tiny, skinny four-legged runner with a near-horizontal trunk, thin hind legs clearly longer than the front legs, a neck curving UP to a small head, and a long thin hairless tail held straight out behind, at least as long as the body
+- [ ] BODY PLAN: a tiny, skinny four-legged runner with a near-horizontal trunk at rest, fully horizontal when running on all fours, thin hind legs clearly longer than the front legs, a neck curving UP to a small head, and a long thin hairless tail held straight out behind, at least as long as the body
 - [ ] Head: two very long upright tubular ears (nearly as long as the head) and a long tapering snout ending in a flat pink disc nose
 - [ ] COLOUR LAYOUT: naked wrinkled grey-brown skin on the back, head and outer legs; paler pink on belly, muzzle tip, inner legs and tail; no stripes (orange stripes are the Legends painting only)
 - [ ] Hairless: no fur anywhere
 - [ ] Very small — vermin-sized, shown running between pedestrians' feet
-- [ ] Horns only on some individuals (males thick and curved, females thin and straight); canon film images show none
+- [ ] Horns only on some individuals (Legends only: males thick and curved, females thin and straight); canon film images show none
 - [ ] NEGATIVE: not a furry rodent, rabbit, kangaroo or deer (no fur, no thick kangaroo tail, no antlers on the default hornless form); not a dinosaur (no scales, no crest)
 
 ## Engine limits

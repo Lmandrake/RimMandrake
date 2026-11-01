@@ -24,17 +24,39 @@ want = {(e.split("\n")[0].strip(), i) for e in re.split(r"^### ", src, flags=re.
 tri = json.load(open(os.path.join(HERE, "MUSTSHOW_TRIAGE.json"), encoding="utf-8"))
 rows = tri["rows"]
 need({(r["entry"], r["n"]) for r in rows} == want, f"every one of {len(want)} proposals has a disposition")
-need(all(r["disposition"] in ("APPLIED", "MET", "REJECTED", "OWNER") and r["why"] for r in rows), "each disposition is valid and reasoned")
-gone = []
-for r in rows:
-    if r["disposition"] == "APPLIED":
-        t = open(os.path.join(LIB, r["entry"], "description.md"), encoding="utf-8").read()
-        m = re.search(r"^## Must show\n(.*?)(?=^## )", t, re.M | re.S)
-        if not m or r["applied_text"] not in m.group(1): gone.append(r["entry"])
+need(all(r["disposition"] in ("APPLIED", "MET", "REJECTED", "OWNER") for r in rows), "each disposition is valid")
+# Judged one by one: no shared or short reason, no default in the tool, and MET points at text really in the entry.
+whys = [r["why"] for r in rows]
+need(len(set(whys)) == len(whys) and min(map(len, whys)) >= 30, f"every row has its own reason ({len(set(whys))} distinct of {len(whys)})")
+tool = open(os.path.join(HERE, "triage_mustshow.py"), encoding="utf-8").read()
+need("DEFAULT" not in tool and "no decision for" in tool, "triage tool has no default: an undecided bullet stops it")
+entry = lambda s: open(os.path.join(LIB, s, "description.md"), encoding="utf-8").read()
+must = lambda s: (re.search(r"^## Must show\n(.*?)(?=^## )", entry(s), re.M | re.S) or [None, ""])[1]
+gone = [f"{r['entry']}#{r['n']}" for r in rows if r["disposition"] == "MET" and (not r.get("met_quote") or r["met_quote"] not in entry(r["entry"]))]
+need(not gone, f"each MET row quotes text really in its entry; missing: {gone}")
+gone = [r["entry"] for r in rows if r["disposition"] == "APPLIED" and r["applied_text"] not in must(r["entry"])]
 need(not gone, f"each applied edit is inside its entry's Must show; missing: {gone}")
+state = {(r["entry"], r["n"]): r["disposition"] for r in rows}
+want_state = {("teemuss", 0): "APPLIED", ("uvak", 2): "APPLIED", ("worrt", 1): "APPLIED", ("coloclawfish", 3): "MET", ("kinrath", 1): "MET"}
+need(all(state.get(k) == v for k, v in want_state.items()), "sanity probe: the five rows a blind checker named are not rejected")
 flagged = [r for r in rows if r["disposition"] == "OWNER"]
-ledger = "".join(open(os.path.join(ROOT, "infrastructure/state/ledger/events", f), errors="ignore").read() for f in os.listdir(os.path.join(ROOT, "infrastructure/state/ledger/events")) if f.endswith(".jsonl"))
-need(tri["owner_item"] in ledger and flagged, f"{len(flagged)} ruling conflicts flagged to the owner in {tri['owner_item']}")
+events = []
+evdir = os.path.join(ROOT, "infrastructure/state/ledger/events")
+for f in os.listdir(evdir):
+    if f.endswith(".jsonl"):
+        for ln in open(os.path.join(evdir, f), errors="ignore"):
+            if tri["owner_item"] in ln: events.append(json.loads(ln))
+need(any(e.get("event") == "file" for e in events) and flagged, f"{len(flagged)} ruling conflicts flagged to the owner in {tri['owner_item']}")
+filed = " ".join(e.get("spec", "") + " " + e.get("text", "") for e in events)
+miss = [r["entry"] for r in flagged if r["entry"] not in filed]
+need(not miss, f"each conflict is named in the decision item; missing: {miss}")
+notes = [e for e in events if str(e.get("why", "")).startswith("delegated:")]
+told = " ".join(json.dumps(e, ensure_ascii=False) for e in notes)
+miss = sorted({r["entry"] for r in rows if r["disposition"] == "APPLIED" and r["entry"] not in told})
+need(not miss, f"every applied edit has a delegated: ledger event on the decision item; missing: {miss}")
+ruled_told = " ".join(json.dumps(e, ensure_ascii=False) for e in notes if "ruled" in str(e.get("text", "")))
+miss = sorted({r["entry"] for r in rows if r["disposition"] == "APPLIED" and r["ruled_entry"] and r["entry"] not in ruled_told})
+need(not miss, f"every edit on a ruled entry is flagged to the owner as such; missing: {miss}")
 c = json.load(open(os.path.join(HERE, "census_no_entry.json")))
 need(c["races"] > 500 and len(c["matched"]) > 100, f"census saw {c['races']} races, joined {len(c['matched'])} to entries (instrument can see)")
 for known in ("RSW_Tauntaun", "RSW_Bantha", "RSW_Wampa"):

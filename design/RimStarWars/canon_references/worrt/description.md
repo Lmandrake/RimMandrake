@@ -50,6 +50,7 @@ Three Wookieepedia images plus the blog card, very consistent: a big warty toad.
 - [ ] Two long thin curved antenna-like palp stalks rising from the crown, plus a ring of short conical spikes around the head, shoulders and down the arms
 - [ ] Skin covered in warts/tubercles, not smooth
 - [ ] Long purple prehensile tongue from the very large mouth (canon distinction, *Return of the Jedi*)
+- [ ] About 1.5 m tall (Databank, canon page)
 - [ ] NEGATIVE: not a plain frog or toad: no smooth skin, no long jumping hind legs visible, no tail, and the arms are clearly longer and thinner than any frog's
 
 ## Engine limits

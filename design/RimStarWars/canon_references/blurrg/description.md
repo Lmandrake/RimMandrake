@@ -62,6 +62,8 @@ is 1.0; the def's adult drawSize is 2.4.
 - [ ] Enormous wide mouth with purplish-grey lips and ragged rows of long, uneven, outward-jutting yellowed fangs; pink tongue
 - [ ] Small dark eyes set high on the sides of the head under a heavy brow ridge
 - [ ] Realistic rendering: natural thick wrinkled hide texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] About 2 m tall, up to 2.5-3 m on Endor (canon page; it gives no hip or shoulder reference point)
+- [ ] Hip joints set unusually high on the body (canon text)
 - [ ] NEGATIVE: not a T-rex or raptor (no long neck, no separate slim head, no slim legs); not quadrupedal; not the mottled blue/green Clone Wars cartoon
 
 ## Engine limits

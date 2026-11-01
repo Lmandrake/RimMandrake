@@ -72,6 +72,7 @@ From the live-action images:
 - [ ] Head: long rat-like snout with a small dark nose, tall pointed ears with tufted tips, small dull reddish eyes, a pale wispy chin tuft
 - [ ] Long-fingered dark clawed hand-like paws
 - [ ] Realistic rendering: natural mangy fur and wrinkled skin under harsh desert daylight, no outlines, no ink hatching or cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")
+- [ ] Canon size: slightly over 2 m (canon text; the axis is not stated)
 - [ ] NEGATIVE: not an ordinary small rat or a sleek-furred rodent (mangy, wrinkled, dog-sized+), not the deleted illustration's grey-black hide with a stiff black spike mohawk, big yellow eyes and long upward fangs
 
 ## Engine limits

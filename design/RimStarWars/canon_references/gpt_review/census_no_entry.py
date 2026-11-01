@@ -95,7 +95,7 @@ def main():
     matched, rest = {}, {}
     for n, v in sorted(R.items()):
         bare = n.split("_", 1)[1]
-        cands = {norm(bare), norm(LIFE_SUFFIX.sub("", bare)), norm(v["label"])}
+        cands = (norm(bare), norm(LIFE_SUFFIX.sub("", bare)), norm(v["label"]))  # ordered: the exact name wins, every run
         hit = next((slugs[c] for c in cands if c in slugs), None)
         if not hit:
             hit = next((d for d, t in blob.items() if re.search(r"\b" + re.escape(n) + r"\b", t)), None)

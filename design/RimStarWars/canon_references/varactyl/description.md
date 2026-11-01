@@ -42,6 +42,7 @@ Four images: the canon page's infobox image `Varactyl DK.png` (a saddled CG rend
 - [ ] Feathers: a ruff of long stiff teal-blue and green feathers fanned around the back of the head and neck, and a ridge of shorter feathery spines running down the spine and along the top of the tail to a feathery tuft at the tip
 - [ ] Head: beaked, bird-like, with a tan hooked armoured beak plate and brow cap
 - [ ] Feet: huge splayed five-toed climbing feet with long curved claws
+- [ ] Canon scale: 15 m long, 4 m at the shoulder (Databank)
 - [ ] NEGATIVE: not a horse-sized lizard or an upright theropod by default (sprawling four-legged stance, giant scale), not a bird (scaly body, four legs), not the orange-brown Legends male colouring
 
 ## Engine limits

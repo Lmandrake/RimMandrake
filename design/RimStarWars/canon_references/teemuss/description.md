@@ -37,7 +37,7 @@ One CANON image (`wookieepedia_canon_1`, a Clone Wars CG render of a tee-muss in
 *Rewritten 2026-10-09 to the canon_check leniency lesson (`Transient/canon_check_leniency_2026-10-09.md`): body plan, colour layout and a negative, each checkable on a 256px sprite. Grounded in the one canon Clone Wars render as read in the visual brief.*
 - [ ] BODY PLAN: a camel/llama-like quadruped: slender long legs with knobby knees, a deep chest, a short level back, an arched neck carried forward and slightly down, and a long thin tail ending in a dark brush hanging to the hock
 - [ ] COLOUR LAYOUT: mottled tan to sandy-brown short hide with lighter and darker blotches over the body; a shaggy darker-gold mane along the top of the neck and back; ears dark brown; hooves cream, the lightest element
-- [ ] Head: blunt, wide, wrinkled head with a deep muzzle, a short trunk-like nose boss, small spike-like horn nubs on snout and brow, and a hooked dark lower tusk below the chin
+- [ ] Head: blunt, wide, wrinkled head with a deep muzzle, a short trunk-like nose boss, small spike-like horn nubs on snout and brow, and two hooked dark tusks on the lower jaw (Legends prose: "two tusks on their lower jaw")
 - [ ] Long wide pointed dark ears bent back and out
 - [ ] Two broad cream-coloured hooved toes on each foot
 - [ ] Realistic rendering: natural mottled hide, coarse mane hair and hoof keratin under natural lighting, no outlines, no Clone Wars shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using.")

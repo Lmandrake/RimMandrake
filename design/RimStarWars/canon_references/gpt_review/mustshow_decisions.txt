@@ -1,0 +1,227 @@
+# One hand-judged line per MUSTSHOW_PROPOSALS bullet: slug n DISPOSITION ~ why ~ quote (MET: exact text in the entry; APPLIED/OWNER: empty).
+acklay 0 MET ~ Rollout wording now allows hard studding on leathery skin, no separate shell, which is what the bullet asked. ~ Hide reads as hard studded/ridged
+acklay 1 REJECTED ~ The raised grappling pair is the pose of acklay_wookieepedia_2.jpg, which the owner picked 2026-09-14; the bullet would loosen a pose he ruled. ~
+acklay 2 REJECTED ~ Underside now reads grey-green to cream from the ruled image; canon giving only "Green" is silence, not a contradiction, and the line stays on the ruled render's evidence. ~
+acklay 3 APPLIED ~ Three eyes is a canon infobox distinction absent from the list; adds to the bar, contradicts nothing ruled. ~
+anooba 0 REJECTED ~ Stripes and pink ear skin come from the Bestiary plate and the Galaxy's Edge prop, and the header already names those images as the grounds; a sprite check cannot use a provenance tag. ~
+bantha 0 REJECTED ~ The film bantha shows no bare hide, and BODY PLAN already keeps mouth and horns visible; relaxing the line would admit shaved art for no gain in canon. ~
+bantha 1 APPLIED ~ Tail and four-digit feet are on the canon page and missing from the list; hedged "where the fur lets them show" so it cannot fight the ruled coat. ~
+bantha 2 REJECTED ~ The owner's own sheet note reads "Female short-horn version of above" and Legends text agrees; canon saying both sexes have horns does not contradict short ones, so no label is owed. ~
+beldon 0 MET ~ The combined palette bullet is gone; the layout now separates bladders, fins and underside and the owner's orange ruling has its own line. ~ bladders orange-to-peach with paler highlights
+blarth 0 REJECTED ~ The header already says the plates give anatomy only and the tail text is canon; a Legends tag on each line is not checkable on a sprite, and the tail and drool are already required. ~
+blarth 1 REJECTED ~ Tongue-out is the plates' signature read and the bar is image-derived by design; text silence on a tongue is no reason to weaken it. ~
+blixus 0 APPLIED ~ Scale half applied: the Databank infobox height and length are in the entry and the list had no size. Palette half refused: the owner's 2026-10-08 ruling deleted the red comic, and the NEGATIVE stands on the teal Clone Wars render. ~
+blixus 1 MET ~ Eyes now read amber/yellow, covering the Databank yellow. ~ Two small amber/yellow eyes
+blixus 2 MET ~ The two pincers are now listed beside the mouth, apart from the six legs. ~ with two small pincer claws beside it
+bloddle 0 MET ~ The header already says the one image is a game model with no text support, and the list forbids invented foliage. ~ No evidence for leaves or flowers: do not invent them as canon
+bloddle 1 REJECTED ~ A file rename, not a Must show edit; the filename is cited by the header and the candidate list, and the entry's sourced text already states the continuity. ~
+blurrg 0 MET ~ The pale belly line is gone and the opposite is now stated. ~ no pale belly
+blurrg 1 APPLIED ~ The shoulder wording it targets is gone, but the sourced height range was absent; added with no hip or shoulder reference, as the page gives none. ~
+blurrg 2 APPLIED ~ Hip joints set unusually high is sourced prose and missing from the list; the "long-jawed" half is moot, that wording is gone. ~
+bogwing 0 MET ~ The colour bullet is now headed as the greater bogwing. ~ COLOUR LAYOUT (canon, greater bogwing)
+bogwing 1 MET ~ Eye wording now says one is visible in profile. ~ (one visible in profile)
+bolotaur 0 MET ~ The tan-to-olive range is gone; one palette is fixed and the tan render is a NEGATIVE, which is the one-palette-per-def the bullet wanted. ~ dark olive/moss-green on the back and limbs
+shirotrap 0 REJECTED ~ canon_2 shows the green segmented carapace and the entry keeps both images as targets; Legends' hard shell does not exclude it, so dropping it would fail art drawn from the entry's own reference. ~
+shirotrap 1 REJECTED ~ The sourced text already heads both pages Legends and says there is no canon Shiro-trap; a repeat inside Must show checks nothing on a sprite. ~
+shyrack 0 REJECTED ~ The header already says the single Jedi Academy painting grounds the list; with one image its colours are the whole colour target, so a depiction-only tag would leave no colour bar. ~
+silooth 0 REJECTED ~ A sprite needs one count and the entry's prose and images settle on six; a Dark Side Sourcebook aside inside the checklist can only blur that. ~
+silooth 1 REJECTED ~ No wings/fur is a read of both images and guards against donor drift; lack of prose stating an absence is no objection to a negative. ~
+sith_wyrm 0 REJECTED ~ Owner 2026-10-05: "unique coloration. Follow the canon art closely." Tagging the art's colour, spines and feeler as depiction-only would weaken exactly what he ordered. ~
+skalders 0 REJECTED ~ The layered mantle is what both images show and is the species' silhouette; "hump and thick hide" is text brevity, not a contradiction. ~
+skalders 1 APPLIED ~ Height is in both infoboxes and the list had no size. ~
+sketto 0 REJECTED ~ The tail fan and two hanging fangs are visible in the images the list is grounded on; the text's shorter wording does not contradict them. ~
+sketto 1 MET ~ The colour bullet now says the body colour is unsettled and allows either. ~ body colour unsettled between canon's pale cream-pink and Legends olive/blue
+snoruuk 0 MET ~ The "colour is free" line now names canon's red. ~ colour is free beyond canon's "red" mushroom
+snoruuk 1 REJECTED ~ The ring line already carries "where the format allows", so it is soft; a Legends label on top adds nothing a judge can check. ~
+strill 0 MET ~ Overtaken by the owner's facings-sheet ruling of 2026-10-17, which requires six legs and membranes; no art choice is left to put to him. ~ SIX legs, FOUR ears
+strill 1 REJECTED ~ False premise: a RimWorld animal is one whole-body texture per facing with no leg rig, so six legs can be painted, and the owner requires them; no Engine limits line is owed. ~
+tauntaun 0 REJECTED ~ The ruled entry's visible pair is what a sprite can show; the second pair is Legends-only and sealing, so "optional" would add a line that fails nothing. ~
+tauntaun 1 REJECTED ~ The bullet itself keeps "long thin pointed"; a one-metre Legends tail does not contradict it, so no edit results. ~
+teemuss 0 APPLIED ~ Correction: the entry's own sourced prose says two tusks on the lower jaw, the list said one; unruled entry. Horn-nub half refused, the render shows them. ~
+teemuss 1 REJECTED ~ Two toes are what the one canon render shows, and the visual brief already records the odd-toed conflict as unresolved; "provisional" would leave no foot check on a sprite. ~
+teemuss 2 REJECTED ~ Mane and mottling are visible in the only render and the header says so; with one image, removing them leaves no colour layout to judge. ~
+laascalefish 0 REJECTED ~ The header says to trust the renders over the prose here, and both canon and Legends renders show one head filament and one chin filament with the bulb; eye colour is already unstated ("Large round eye"), so that half has nothing to change. ~
+lavaflea 0 APPLIED ~ Height half applied, the waist-to-chest guess contradicted 4-5 m. Colour half refused: one canon and two Legends images agree on dark hide, and the rim light is the images' too, so "red skin" text does not override them. ~
+longtailgorg 0 REJECTED ~ The tail lines carry the owner's 2026-10-04 words, and the entry's sourced text already says canon has no longtail taxon; a relabel is not a Must show edit and the tail stays required. ~
+lothcat 0 REJECTED ~ The orange-amber line is gone; the list now follows the live-action stills per the owner ruling in the brief, pale cream, and the infobox's white covers it, so naming one individual's coat is moot. ~
+lothcat 1 APPLIED ~ Size note applied, the infobox numbers were absent and "cat-sized" alone undersells 0.94 m. The webbed-toe and curled-tail wording it targets is gone. ~
+lylek 0 REJECTED ~ The queen is unseen in any reference, per the visual brief, so no sprite can be judged on her; the extra-heads read is a direct reading of the painting. ~
+marshhaunt 0 REJECTED ~ The red-bulb head, moss and height come from the single Corroney illustration, the only picture this Legends-only subject has; dropping them leaves "headless and grey-green", too weak to pass or fail. ~
+massiff 0 MET ~ "Short, thick limbs" is gone (now digitigrade legs), eye colour allows either, and the Outlaws render is a NEGATIVE. ~ a large round dark or yellow eye
+meescalefish 0 REJECTED ~ canon_1 and legends_1 show the long needle spine, and the blue tips already say "(canon) or dark"; Koboh teeth are small and the conflict banner keeps both forms, so the Naboo image target stands. ~
+mudhorn 0 MET ~ The list now names bare hide on the face beside the coat. ~ creased, mud-caked bare hide around the eyes and mouth
+horax 0 APPLIED ~ Scale was the feature missing from the list; Legends infobox gives over 15 m. ~
+horax 1 REJECTED ~ Habitat "Not cold" is biome-design knowledge the sourced text already records; Engine limits is about what a render can show, and a horax in snow looks no different. ~
+hrumph 0 REJECTED ~ The visual brief already records the conflict and says trust the images, and this is its own decision; the note would duplicate it in a list judges read for pass or fail. ~
+hssiss 0 MET ~ Body plan now states the 3 m body plus 1 m tail from the prose. ~ (prose: 3 m body plus a 1 m tail)
+hssiss 1 MET ~ The header now says the ground is the Legends prose; no further relabel is owed. ~ Grounded in the Legends prose, `canon_1`
+hubba_gourd 0 REJECTED ~ "Not hanging from a tall plant" keeps the sprite to the sourced rock-recess habit; the list already says the sources give no leaves or stems, so unspecified is stated and only the negative would be lost. ~
+igitz 0 MET ~ The bullet asks only for a Legends label and the header carries it. ~ Grounded in the Legends prose and the single small infobox render
+insectomorph 0 MET ~ The reared stance is gone; the line now gives the Legends leg ratio only. ~ hind legs markedly longer (Legends: roughly twice the front legs)
+insectomorph 1 REJECTED ~ Matte, bony, unsegmented is the visible read of both remaining images and separates this from a beetle; the header already says images ground it. ~
+insectomorph 2 MET ~ "Glowing" is gone from the eye wording. ~ eye(s) red
+iriaz 0 REJECTED ~ Smooth fine hide is what both images show and the NEGATIVE's no-fur-coat rests on it; "pelts" in text is not a claim of visible fur. ~
+iriaz 1 MET ~ The horn line already cites the owner's ruling as its source. ~ (owner ruling 2026-10-04: "Four legs, two horns, greenish")
+iridonianreek 0 MET ~ He decided this by card 2026-10-09: the target is the generic reek, and the gray subspecies is noted in the colour line. ~ the target is the **generic reek**
+iridonianreek 1 APPLIED ~ Canon infobox size was absent. Additive on a ruled entry, so listed in the owner item. ~
+jakobeast 0 REJECTED ~ Thin vs thick tusks: his 2026-10-09 card says the Must show stands unchanged and the only image shows thick tusks; closed by him. ~
+jakobeast 1 MET ~ The colour line already says canon prose says brown and no image supports it. ~ canon prose says brown, no image supports it
+jamel 0 REJECTED ~ The concept sheets are the only full-body images and the header names them; marking most of the list "concept art detail" would strip the bar to a text sketch. ~
+mynock 0 APPLIED ~ Infobox scale is real and the art read as cat-sized; verified against the infobox. ~
+mynock 1 REJECTED ~ The tail and knob eyes are visible in the ESB film frame canon_2, so they are film canon, not Legends-only art; varying Legends legs do not touch a film-based list. ~
+neebray 0 APPLIED ~ Correction: the canon page gives one long jaw tendril, a stub on infants; the old line said several whips. On a ruled entry, but his ruling only removed an image, so it goes in the owner item. ~
+neebray 1 REJECTED ~ The Must show adult line is "if used" and the entry's subject is the baby; a 1,674 m record belongs to no def here, so no scale note can be checked. Engine limits stays unassessed. ~
+nerf 0 MET ~ He settled it by card 2026-10-09: four horns; the wish to hedge is overtaken. ~ FOUR curving horns (two pairs, per the canon infobox and Legends text
+nuna 0 APPLIED ~ The word "shell-like" is the visual brief's image comparison, never the owner's; canon calls nunas flightless birds and the word invites turtle plates. Ruled image unchanged, listed in the owner item. ~
+nuna 1 MET ~ The NEGATIVE now allows canon's feathers and keeps no wings. ~ canon allows some blue/red feathers, never a feather coat
+nysillin 0 REJECTED ~ The single Clone Wars frame shows the crop and nothing else; there is no wild-form image, so a cultivated-only tag would leave the line nothing to compare against. ~
+nysillin 1 REJECTED ~ "Teardrop bud/pod" with spots already describes the shape without a botanical claim; the long replacement changes nothing a judge sees. ~
+ollopom 0 REJECTED ~ The 2024 Bestiary painting anchors the list and shows the pale legs and violet claws; optional would loosen an image bar over text silence. ~
+opeeseakiller 0 MET ~ The eye line now spans orange-red to amber-yellow, covering canon yellow and the images. ~ Bulbous orange-red (to amber-yellow) eyes
+opeeseakiller 1 REJECTED ~ All four images ground the list; the lure tips are what makes "antennae used as lures" readable on a sprite, so they stay required. ~
+opeeseakiller 2 REJECTED ~ Scale and jet propulsion are behaviour and def facts, and the sourced text holds them; Engine limits lists what a render cannot do, and none of these is that. ~
+orray 0 APPLIED ~ Canon states both forms and the list named only the tail in passing; the variant line lets either pass. ~
+paleyobshrimp 0 MET ~ The header already marks the whole list provisional and from the Legends sketch. ~ **PROVISIONAL (2026-10-09):**
+pekopeko 0 MET ~ "Toothy-looking" is gone; the beak line has no invented teeth. ~ Strong hooked, nut-cracking beak
+pekopeko 1 REJECTED ~ Owner ruling "Follow #3 closely." and the gold tail edging is in the current colour line from that plate and the painting; he ruled the look, so no reference-specific tag. ~
+womprat 0 APPLIED ~ Canon size added beside the dog comparison, which is kept because the canon still "reads dog-sized or larger" per the brief. Listed in the owner item, ruled entry. ~
+womprat 1 REJECTED ~ He ordered the Legends references removed 2026-10-17, and the grey-black design is now a named NEGATIVE; relabelling it as valid would reverse his cut. ~
+woolamander 0 REJECTED ~ The Galactic Atlas illustration and Legends plate both show the belly band and mandrill face; the text's "patches of red and yellow" is compatible, so nothing is contradicted. ~
+worrt 0 APPLIED ~ The tongue is a canon distinction missing from the list; the mouth was already there. Ruled entry, listed in the owner item. ~
+worrt 1 APPLIED ~ Databank height 1.50 m is in the entry's prose and the list had no size; same class as the other scale lines. Ruled entry, listed in the owner item. ~
+wraid 0 REJECTED ~ Both Legends game renders show the knuckle stance and folded hind legs, and the silhouette depends on them; the page's terse wording does not dispute it, and the header states Legends. ~
+wyyyschokk 0 REJECTED ~ No albino form exists in the entry, in REVIEWED_SLUGS or as a def, so there is nothing to exempt; the owner's cross marking stays absolute. ~
+wyyyschokk 1 MET ~ BODY PLAN now states the height and the mandibles. ~ a gigantic spider (taller than 2 m)
+wyyyschokk 2 REJECTED ~ The entry's Engine limits line goes on to say no donor sprite could be obtained, so it already discloses that nothing was tested; no false claim to fix. ~
+yobshrimp 0 MET ~ The header marks the Legends plate as the only living-animal evidence and the list as provisional. ~ the only living-animal evidence
+yobshrimp 1 MET ~ The list opens with a small crustacean; "aquatic presentation" is a scene, not a sprite check. ~ a small crustacean
+yobshrimp 2 REJECTED ~ The line is already scoped "(food item only)" and the entry serves both; no separate food checklist exists to move it to. ~
+ysalamir 0 REJECTED ~ The header names the two realistic Legends paintings as the target, and his 2026-10-08 realism ruling put them there; white fur from one novel infobox has no image, and splitting the list adds no check. ~
+ysalamir 1 REJECTED ~ The head line already says four-eyed is canon text, clear in no image; ear-flaps and spots follow the paintings by the header's own statement, so a further tag adds nothing. ~
+zakkeg 0 REJECTED ~ "Built like a Baragwin battle tank" is the sourced quote and the entry is ruled; the header already states Legends text, and a bare 4 m would shrink a line about mass. ~
+zakkeg 1 OWNER ~ The ruled file wookieepedia_kotor2_juvenile.png is a SWTOR Cartel Market pet render, not KOTOR II. Does the ruling stand knowing that? ~
+zakkeg 2 REJECTED ~ Its Engine limits line already adds that art ships in AssetBundles and nothing on disk could be tested; the "none known" is qualified, not a false pass. ~
+zeer 0 MET ~ Height now in BODY PLAN. Swivelling horns are unshowable on a still sprite, and length adds no read on a giraffe plan. ~ (about 4.6 m tall)
+zeer 1 REJECTED ~ Engine limits there says the donor mod is on no disk here, which states the lack of a test; the proposed wording says the same in fewer words. ~
+jerba 0 MET ~ "Smaller and more agile" is gone; the undershot jaw stays only because he ruled the Alien Archive image, which is the keep the bullet asked for. ~ a blunt, slightly undershot lower jaw and visible teeth
+jerba 1 REJECTED ~ Not a proposal: this bullet is the source citation for the one above. ~
+kinrath 0 REJECTED ~ His card of 2026-10-09 passes the KOTOR/Legends long-necked design as drawn; the Legends text's face appendage is not visible in that art, and the design is his pick. ~
+kinrath 1 MET ~ Netcaster legs with petal flaps are in BODY PLAN. ~ ending in claws surrounded by petal-shaped flaps
+kinrath 2 MET ~ A remark asking for no edit; both designs say four legs. ~ FOUR long, thin, multi-jointed segmented legs
+klorslug 0 MET ~ Orange is gone; pink is the colour and orange a NEGATIVE, stronger than the bullet asked. ~ pink to dusky rose-magenta skin
+klorslug 1 MET ~ Height stated in BODY PLAN, rounded from 1.98 m. ~ about 2 m tall when reared
+kowakianmonkeylizard 0 REJECTED ~ The live-action Crumb puppet is the stated target and fixes tan-beige skin; admitting olive-brown or per-individual colour would leave the colour line unable to fail. ~
+kraytdragon 0 MET ~ The header names the leviathan as shipping design and the head line is smooth of brow horns; the canyon krayt is not this def. ~ the canon leviathan text, which the visual brief names as the shipping design
+kraytdragon 1 REJECTED ~ The NEGATIVE names the Legends four-legged krayt, which is what legends images in this entry show; ten-legged greater krayts have their own entry, so the wording is true here. ~
+kraytdragon 2 APPLIED ~ Infobox scale for the leviathan, absent from the list. ~
+kreetle 0 MET ~ The leg count is in BODY PLAN. ~ (five pairs per the text)
+krykna 0 MET ~ Six legs and beaked mouth with pedipalps are in. ~ a beaked mouth with two short curved fanged pedipalps
+krykna 1 MET ~ Height, grey skin and black eyes are all in. ~ clearly larger than a human (2 m tall)
+krykna 2 MET ~ A remark asking for no edit; the list says six and the NEGATIVE refuses eight. ~ not an eight-legged spider
+kwi 0 REJECTED ~ The visual brief says to trust the images on eye and tooth colour, and the Legends comic frames are the only images; the stripes are in both. Lavender scales are already in. ~
+kwi 1 MET ~ The sourced height and length are in BODY PLAN. ~ (about 3 m tall, 4 m long)
+kybuck 0 MET ~ His ruling of 2026-10-20 closed it: a four-legged hoofed animal, not the biped. ~ NOT the biped pronghorn/antelope
+kybuck 1 REJECTED ~ "Two hoofed legs" is the canon biped he overruled 2026-10-20; adding it would contradict BODY PLAN. ~
+gelagrub 0 APPLIED ~ Canon infobox length, absent from the list; eye and back wording half not needed, the back line is translucent already. ~
+gizka 0 REJECTED ~ The header already names the owner's two KOTOR images as the ground; a prefix on a list he ruled three times adds nothing a judge can use. ~
+gizka 1 OWNER ~ The vestigial wording in your ruling: GPT suggests dropping it. Keep? ~
+gorg 0 REJECTED ~ Sourced text already has Castilon; an optional bullet fails no sprite, and the base-colour list is broad enough to pass a grey one. ~
+gorg 1 OWNER ~ Your supplied note says two legs, with feet front and back; the wiki gives no limb count and the Must show has four splayed limbs. Which? ~
+gornt 0 MET ~ The header already says the only living image is Legends and the canon photo is meat only. ~ the only living-animal image
+graniteslug 0 REJECTED ~ His card of 2026-10-09 says the Must show stands: the spotted, frond-crested slug. Making those an option reverses it. ~
+grank 0 REJECTED ~ Jaw-closed teeth are in both watercolours and are the species' read; the header already says text gives no colour and the images do. ~
+grazer 0 MET ~ "Whole point of feral" is gone; the line quotes Legends' wild. ~ Wild grazers were significantly leaner
+greaterkraytdragon 0 MET ~ The ten-legs line is gone; 7-8 pair is his ruling. ~ (7-8 pair)
+greaterkraytdragon 1 MET ~ Ramming-bone head and spined tail are both listed. ~ Broad head with a shelf-like ramming bone top.
+greaterkraytdragon 2 OWNER ~ Must show says bright yellow-white spit, no green; canon says greenish-yellow acid. Ruled render: keep or change? ~
+greaterkraytdragon 3 REJECTED ~ Both Mandalorian images show it and the ruled render carries it; the header says the images and ruling win over text. ~
+gutkurr 0 MET ~ Line reads larger than a human, with the size given; the canon/Legends split is prose detail. ~ larger than a human (about 2 m)
+gutkurr 1 REJECTED ~ canon_1 shows the segmented tail and the list follows it; canon text being silent on a tail does not make it optional. ~
+hawkbat 0 REJECTED ~ He ruled the Legends infobox image and his hooks note covers the signature; tiny teeth and membrane spikes are below 256 px and in no line he asked for, and the header already says Legends. ~
+hawkbat 1 REJECTED ~ The forehead growth is visible in the image he ruled as canon, so it stays; text silence is not grounds on a ruled image. ~
+boma 0 REJECTED ~ He picked boma_wookieepedia_1.jpg 2026-09-13 and that image's tail is moderately long; the current wording follows it and "long" in text is not a number. ~
+borcatu 0 MET ~ The anti-scale clause is gone after his #3 card; large pointed scales are required. ~ the body is covered in large overlapping pointed scales
+borcatu 1 MET ~ Mottling, digging feet and jaws are in; "small" covers the size. ~ short clawed digging feet
+brainworm 0 MET ~ He confirmed forearm-length by card 2026-10-09 and the line cites both figures. ~ (canon infobox gives 1 m, Legends about 0.5 m)
+cancell 0 MET ~ Size is in BODY PLAN; four wings and the eyes follow the render he ruled. ~ a large (over 3 m long) flying insect
+cannok 0 MET ~ Feet, tail, spined ridge and upward needle teeth are all listed now. ~ needle teeth of the lower jaw jutting up over the upper lip
+cannok 1 MET ~ The eye line says they read independently. ~ Two eyes on short stalks that read independently
+cannok 2 REJECTED ~ Pale belly is in the KOTOR II concept art and game model named as ground, and the spiked tail tip wording is gone; a tag would add no check for the pale underside. ~
+chak_root 0 REJECTED ~ The header already says the one image is on the Legends page; for a plant with one picture, the forked legs and fronds are the only thing separating it from a carrot. ~
+clodhopper 0 REJECTED ~ His card of 2026-10-09 says this Must show stands unchanged; the juvenile line comes from the field-guide plate it was confirmed against. ~
+clodhopper 1 REJECTED ~ The bullet itself says keep; "claws" on forelegs that forage is the same card-confirmed list, and a note beside it would check nothing. ~
+coloclawfish 0 APPLIED ~ Canon infobox length, absent from the list. Scale-versus-cell question left to the def. ~
+coloclawfish 1 APPLIED ~ Canon prose lists mandibles, so "not required" was wrong; now required, kept subtle. ~
+coloclawfish 2 REJECTED ~ Slit pupil is read from the Phantom Menace render the list targets; stalked eyes are Legends text with no image, and canon's yellow is already in. ~
+coloclawfish 3 MET ~ Serpentine body and the spine studding are both in the list already. ~ a row of glowing teal nodules down the spine and flanks
+convor 0 MET ~ Large amber eyes are gone: eyes are now dark and normal-sized, and huge amber is a NEGATIVE. ~ normal-sized eyes (not oversized cartoon eyes)
+convor 1 MET ~ Green is named in the colour line. ~ (text: gold, green or brown)
+convor 2 REJECTED ~ Ringing is in the Card Trader render the header uses for the tail; the text's "prehensile" does not exclude it, and it is what separates this tail from a plain one. ~
+corinathoth 0 REJECTED ~ The frill is in the sole image and the header says so; without it the donor's frill-less rhino passes again, the failure the NEGATIVE names. ~
+corinathoth 1 MET ~ The line is now conditional on a herd and says the page does not call them young. ~ the page does not say they are young
+corinathoth 2 MET ~ Gigantic, slow-moving, short tail and orange with spots are all stated. ~ a gigantic, massive, stocky, slow-moving quadruped
+pikobis 0 REJECTED ~ All three images, the Episode I still among them, show olive-tan; an infobox "Grey" for a film creature that looks tan is a weak source, and "per the chosen reference" would leave no colour bar. ~
+pikobis 1 MET ~ The feet line already pins wading feet to the plate. ~ (spread, flattened wading feet in the plate)
+porg 0 MET ~ The patches are marked male-only. ~ (males only, per canon)
+pufferpig 0 REJECTED ~ His card of 2026-10-09 keeps this Must show unchanged, and the line already gives under 1 m long; dog-sized is the same scale in a form a judge can see. ~
+pufferpig 1 MET ~ Yellow skin and blue eyes are both in the colour bullet. ~ in brown-tan, tan, yellow or amber
+pufferpig 2 REJECTED ~ The def is the uninflated animal and no inflated sprite is asked for; inflation is a behaviour and its size conflict is prose, nothing a render here can break. ~
+qormot 0 MET ~ The header says the ground is Legends prose and the one illustration. ~ Grounded in the Legends prose and the single ink illustration
+qormot 1 REJECTED ~ Strong hind legs are the drawing's main read and BODY PLAN only says "able to rear", already permissive; nothing to soften. ~
+ronto 0 REJECTED ~ The header names the two film stills as target; "per anchor film still" repeats that on every line, and the horn and banding are what a judge compares. ~
+ronto 1 REJECTED ~ The brief itself leaves it clawed/hoofed; on a 256 px foot the two cannot be told apart, so forcing a pick adds a check nobody can apply. ~
+runyip 0 REJECTED ~ legends_1 is the only clear image, and its antlers, tuft and shoulder patch are the silhouette; "antlered heads" in text supports rather than loosens that. ~
+runyip 1 REJECTED ~ The feet line is "broad padded feet with pale front claws", which already matches the claw text, and "multi-toed" is gone; nothing left to change. ~
+sandoaquamonster 0 REJECTED ~ Length and water habitat are def facts held in the sourced text; Engine limits there still reads not yet assessed, and scale alone is no render limit to record. ~
+sandoaquamonster 1 REJECTED ~ His ruling of 2026-10-05 says the canon images rule; the fluke is in those images. ~
+scurrier 0 APPLIED ~ Correction: canon text says they ran on all fours fully horizontal; the near-horizontal figure is the rest posture. Both now stated. ~
+scurrier 1 APPLIED ~ Correction: the sex rule for horns is Legends text; canon says only that some had antlers. The line now says Legends. ~
+shaaks 0 APPLIED ~ Sourced height, absent from the list. ~
+shaaks 1 MET ~ Marbling is out and is now a NEGATIVE. ~ not the stylised render's bold cream-and-brown swirl marbling
+shaaks 2 REJECTED ~ Three toes are what the Attack of the Clones still shows, and silent text does not weaken an image bar. ~
+shiro 0 REJECTED ~ His ruled target is shiros_group_legends.jpg with olive-moss colour, and the Infinity toy is a NEGATIVE; the premise that green rests on Infinity no longer holds. ~
+shiro 1 REJECTED ~ The ruled image is Legends and the header says so by filename; "retractable extremities" is not in the list, so no line needs a label. ~
+dactillion 0 REJECTED ~ All three images show the pterosaur plan and the analogy tells a judge exactly what to look for; absent limb counts contradict nothing. ~
+dactillion 1 REJECTED ~ Canon "light-colored" names no hue and Legends blue/gray has no image; every image close enough to read shows red/orange, and images decide here. ~
+dactillion 2 REJECTED ~ The bicorn beak is the species' read, and all three images show it without teeth, so toothless stays a check; gold tips are colour from the same images. ~
+dalgo 0 MET ~ The theropod parenthetical is gone and the opposite is a NEGATIVE. ~ not a raptor/theropod biped
+dalgo 1 APPLIED ~ Canon infobox distinction missing from the list. Ruled entry, listed in the owner item. ~
+dewback 0 OWNER ~ Must show says long heavy tail and NEGATIVE 'not short-tailed'; canon text (A New Hope) says short tails. The ruled image decides: keep or change? ~
+dewback 1 REJECTED ~ He ruled "Follow #4 closest", the ANH live-action dewback, which is elongated and low-slung; the bullet itself says image-derived and owner-ruled. ~
+dianoga 0 REJECTED ~ Omi is one named individual, and the eye line follows his ruled #2/#1 mix; one character's sclera is not species art law. ~
+dianoga 1 MET ~ The canon count of seven is stated in BODY PLAN. ~ (seven in the sourced text)
+dragonsnake 0 MET ~ The partial-submersion line is gone; slate in the colour range admits the Bright-Eyes blue-gray, and the bullet itself asks no other change. ~ dark olive-to-slate scaly hide
+eopie 0 OWNER ~ Must show says never brown; canon gives no colour, Legends lists brown. Ruled image: keep or change? ~
+eopie 1 MET ~ The eye line now gives one on each side. ~ One large heavy-lidded eye set far back on each side
+eopie 2 REJECTED ~ One comic's horned eopie has no def here and no image in the entry; a variant note fails or passes nothing. ~
+faascalefish 0 REJECTED ~ Both images show the ringed eye and it is the second-largest feature of the fish; the brow and chin spikes are no longer listed, so only the eye is at issue. ~
+falumpaset 0 MET ~ The size line carries the 3 m; the fambaa comparison is GPT's and adds nothing for a judge. ~ (canon height 3 m)
+fambaa 0 REJECTED ~ The three CGI images show the lower tusks, and the entry's line follows them; absent wiki text on tusks is silence, and "short" on each side is the corrected reading. ~
+fambaa 1 MET ~ "Cartilage" is gone; the tail line reads as the bullet wanted. ~ a long tapering tail
+fanback 0 REJECTED ~ The header says the one image and Legends text ground it; a blanket "Legends adaptation" prefix on a list he ruled adds no check. ~
+fanback 1 MET ~ Tan/khaki is gone; his olive ruling is quoted in the colour line. The dark sail edge stays as the image shows. ~ it's supposed to be olive green, not just brown
+tibidee 0 REJECTED ~ Both images show it airborne and "in flight" is the check; softening adds nothing, since a walking pose has no reference, and the flip-book is separate work. ~
+tibidee 1 REJECTED ~ The plump torso is what the Homeworlds card shows and the entry has only two images; separating internal gasbags from outer shape changes no pixel. ~
+urusai 0 REJECTED ~ His card of 2026-10-09 says this Must show stands unchanged, with four wings always; the eye-spots and dots are the Legends sheets' clear views. ~
+urusai 1 MET ~ A remark asking for no edit; the entry still reads as the bullet says. ~ not yet assessed
+uvak 0 REJECTED ~ The sourced text already heads the page Legends and the header names canon_3 as the ground, so a repeat in Must show checks nothing; the file's name "canon_3" is a slot label, not a continuity claim. ~
+uvak 1 MET ~ The red-orange wing line is gone; the palette is now one fixed choice from the painting, and the comics' red and purple are refused. ~ never the comics' vivid red-orange wings or purple/pink
+uvak 2 APPLIED ~ Correction: prose says emerald eyes "at the front of their heads". The canon_3 painting shows a side eye set well forward on the skull, so the line now says both. ~
+vaapad 0 MET ~ The bullet itself calls the line acceptable; it reads visibly more than seven per his extrapolation. ~ (visibly more than seven)
+vaapad 1 REJECTED ~ The header and colour line already cite his 2026-10-05 ruling for these; a further tag on an optional basis changes nothing. ~
+varactyl 0 APPLIED ~ "Horse-sized" survives only as a NEGATIVE; the Databank figures it wanted were absent, so they are added. ~
+varactyl 1 REJECTED ~ The four images show broad clawed climbing feet; five toes is a countable check and canon does not dispute it, only stays silent. ~
+varactyl 2 REJECTED ~ Pale throat and tail tuft are visible in the images; the header says images are the ground, and the canon text's short summary excludes neither. ~
+voorpak 0 MET ~ "Hand-sized" is gone; size is 60 cm and not palm-sized. ~ about 60 cm tall (canon infobox)
+voorpak 1 MET ~ The line says six; eight is Legends and appears nowhere in it. ~ (six per the text; canon shows long ostrich-like legs)
+voorpak 2 REJECTED ~ Stalks, eye rings and teeth are in all four images and are most of the face; without them a white ball on legs passes. ~
+vornskyr 0 REJECTED ~ His ruled #1 and #3 show the hairless hide, and "no shaggy coat" is his own rejection of #2; "reptile-hybrid" just names that look. ~
+vornskyr 1 REJECTED ~ The sourced text opens by saying everything below is Legends; he ruled the images, so a header tag adds nothing to judging. ~
+vulptex 0 REJECTED ~ Long legs and the deer-like stance are in wookieepedia_infobox.jpg, which he ruled; "slender" would pass the low-slung donor the NEGATIVE refuses. ~
+vulptex 1 REJECTED ~ The ruled image reads grey-blue-white; infobox White is the same animal under film lighting, and the list goes with the ruled picture. ~
+vulptex 2 MET ~ A remark that keeps the details as ruled-image lines, and they stand. ~ Tail is a dense brush of spike-like crystalline points
+wampa 0 REJECTED ~ He ruled wookieepedia_infobox_esb.jpg and the bare face is on that still; the line is an image bar on a ruled image. ~
+wampa 1 MET ~ A remark asking for no edit; horns and fangs are there. ~ Two small dark ram-like cranial horns
+wampa 2 MET ~ BODY PLAN already allows standing or reaching, with his words. ~ standing or reaching upright, not on all fours
+whisperbird 0 MET ~ The claws, belly patch, barring and red tip it objected to are gone; the list now reads the Battlefront II render and refuses them. ~ no heavy black barring and no dark belly patch
+whisperbird 1 MET ~ "Bird-of-prey/vulture silhouette" is gone and now reads as a NEGATIVE, past what the bullet asked. ~ not a vulture (long thin neck and golden coat, long tail streamer)

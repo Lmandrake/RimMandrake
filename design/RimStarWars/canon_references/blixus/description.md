@@ -33,6 +33,7 @@ Blixus were large non-sentient carnivorous cephalopods from an unknown planet of
 - [ ] Wide lip-lined slit mouth low on the front of the underbelly, with two small pincer claws beside it
 - [ ] Two small amber/yellow eyes tucked under the carapace brim
 - [ ] Realistic rendering: natural wet chitin and ringed soft-flesh texture and lighting, no outlines, no cartoon shading (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using")
+- [ ] Canon scale: 6.48 m high, 13.33 m long (Databank infobox)
 - [ ] NEGATIVE: not a squid or octopus (has a shell and six rigid legs), not a plain crab (five long tentacles); not the red-orange/yellow Legends comic palette
 
 ## Engine limits

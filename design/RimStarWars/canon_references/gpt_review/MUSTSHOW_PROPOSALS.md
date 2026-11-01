@@ -1,6 +1,6 @@
 # Proposed Must show / Engine limits edits (for the owner)
 
-Verified against Wookieepedia. Each: entry, proposed edit, reason, source. Every bullet's fate is in `MUSTSHOW_TRIAGE.json` (`triage_mustshow.py`): most were overtaken by the 2026-10-09 Must-show rollout or only relabel a bar; 16 applied; 6 touching his rulings are `CANON_RULED_LINES_JUDGE_WIKI_SAYS_OTHERWISE`.
+Verified against Wookieepedia. Each: entry, proposed edit, reason, source. Every bullet's fate, with its own reason, is in `MUSTSHOW_TRIAGE.json`, written by `triage_mustshow.py` from the hand-judged `mustshow_decisions.txt`: 28 applied, 81 met, 111 rejected; 6 touching his rulings are `CANON_RULED_LINES_JUDGE_WIKI_SAYS_OTHERWISE`.
 
 
 ## Batch 01

@@ -30,6 +30,7 @@ Realistic live-action creature (all images are Ahsoka / Mandalorian stills, `can
 - [ ] COLOUR LAYOUT: dense soft pale cream-to-oatmeal fur over the body, with sparse dark brown spots on the flanks and on the ears; ear tips dark and tufted, pinkish-grey inside; legs thin dark grey and scaly, the darkest part, contrasting with the fluffy pale body; pale chin pouch
 - [ ] Face: broad and flat with a wide CLOSED frog-like mouth, heavy drooping jowls, small round black eyes set wide, small flat nose, fine whiskers
 - [ ] Realistic photographic fur rendering: no outlines, no cartoon gloss, no reptile skin (owner ruling 2026-10-08: "That's realistic, not these cartoon versions you keep using."; earlier he rejected a glossy frog-lizard render with "Nope. Try this." and the live-action Ahsoka puppet photo)
+- [ ] Canon size: 0.54 m tall, 0.94 m long (canon infobox)
 - [ ] NEGATIVE: not an ordinary house cat (no cat face, no short ears, no furred cat legs), not a glossy frog or lizard, not the animated Rebels cartoon, no open toothy grin
 
 ## Engine limits
