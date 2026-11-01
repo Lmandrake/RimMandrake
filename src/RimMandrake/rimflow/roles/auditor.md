@@ -103,7 +103,7 @@ weekly pass (below) runs right after step 2, before steps 3 and 4, so a backlog 
    arbiter.md "The verdict"). Re-check that the false red was reproduced on behaviour shown correct by other means and
    that the corrected check reran. Until you record SOUND on it, the red it set aside still blocks (you say so on the
    item).
-3. **The Arbiter's advisory week.** While the schedule says `verdicts: "advisory"`, the interim GPT reviewer still
+3. **The Arbiter's advisory week** (SUPERSEDED 2026-11-01, D1(b): an Arbiter FAIL blocks a close once `CLOSE_GATE_ENFORCE_DONE_IS_EARNED` lands; calibration then runs on false ACCEPTS, so sample PASSes first). While the schedule says `verdicts: "advisory"`, the interim GPT reviewer still
    gates closes and the Arbiter's verdicts block nothing. So re-check, first, every claim where the two DISAGREE:
    an Arbiter FAIL on an interim PASS is a false-reject candidate, an Arbiter PASS on an interim FAIL is a
    false-pass candidate. Your re-check result is the "later evidence" `RIMFLOW_ARBITER_MEASURE_FALSE_REJECTS` counts
@@ -166,7 +166,7 @@ is tracked on its own: the status-up note lists each as done or carried. A duty 
 next run (any day) and goes right after step 2 there, ahead of steps 3 and 4, until done; the next Monday's pass does
 not replace a carried one, it adds to it.
 
-- **Lessons → skills** (a kept duty, not a carry-forward; owner, 2026-10-29: *"The Auditor once a week."*): fold
+- **Lessons → skills** (SUPERSEDED 2026-11-01, D3(a): the queue is retired by `LESSONS_RETIRE_INBOX_AS_QUEUE`, which deletes this duty and its 40-a-pass quota; until it lands this still runs) (a kept duty, not a carry-forward; owner, 2026-10-29: *"The Auditor once a week."*): fold
   lessons from `infrastructure/state/lessons/` into the skill, fact sheet or doc that owns each topic (fresh context:
   no maker of the lesson curates it), then delete the lesson's file. **Budget per pass: every file filed since the
   last pass, then the oldest files until 40 are folded in all**; a lesson with no owner goes to the Arbiter's

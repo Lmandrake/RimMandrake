@@ -412,3 +412,18 @@ Everything else in this response is within delegation and can be ticketed as wri
   decision forever, as GPT notes.
 - (c) No formal reading; he judges by feel.
 - **Recommend (a)**, with the date his.
+
+## 7. Decided 2026-11-01
+
+Owner: *"Do items 1,2,3 owner items now."* The Conductor ruled D1-D5 under that word (`CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM`); D6 stays his.
+
+| D | Ruling | Effect |
+|---|---|---|
+| D1 | **(b)** An Arbiter FAIL blocks a close until a new build passes or the owner overrides. SUPERSEDES "Arbiter verdicts are advisory". | Carried by `CLOSE_GATE_ENFORCE_DONE_IS_EARNED` (T1, T3 folded in). Standing text marked superseded in `roles/arbiter.md`, `roles/auditor.md`. |
+| D2 | **(c)** Containment by machine first, FOUNDRY for the residue. | `STEWARD_FIX_ENDS_ON_GREEN_NOT_RUNNING`, `ALARMS_REWIRE_OFF_RETIRED_BENCH` (shrunk), `OPERATIONS_FIX_RUNS_BLIND_WHEN_STALE`, `DEADMAN_WIRE_PHONE_WITHOUT_AI`; relentless already drains offline BENCH alarms. |
+| D3 | **(a)** Retire the lessons queue. REVERSES his 10-29 card answer "The Auditor once a week." | `LESSONS_RETIRE_INBOX_AS_QUEUE`. |
+| D4 | **(a)** Visibility only. | `OWNER_ASKS_MEASURE_AGE_IN_DIGEST`. |
+| D5 | **(c)** P0 at maximum, P1 behind it, no process-freeze rule: T16 is NOT filed. | P0 raised: T2, T4, T5, T6, T7, CLOSE_GATE; P1 normal. T17 kept. |
+| D6 | His. Not decided. | Card item `V3_JUDGMENT_DATE_DECIDE_KEEP_OR_KILL`, needs=owner. |
+
+Not filed: T18 (proven unneeded), T13 (done elsewhere), T16 (D5(c)). Filed: T2, T4, T5, T6, T7, T8-T12, T14, T15, T17.

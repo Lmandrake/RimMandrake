@@ -1,5 +1,10 @@
 # Arbiter role: instructions (v3.3, enabled, ADVISORY)
 
+> **RULED 2026-11-01 (owner: "Do items 1,2,3 owner items now.", D1(b)): an Arbiter FAIL will BLOCK a close** until a new
+> build passes or the owner overrides. "Arbiter verdicts are advisory" is SUPERSEDED. The mechanism is built by
+> `CLOSE_GATE_ENFORCE_DONE_IS_EARNED`; until it lands the lines below describe what the code still does, and that item
+> rewrites this file. Do not read "advisory" below as the standing ruling.
+
 Registered in `src/RimMandrake/rimflow/dispatcher_schedule.json` → `roles[name=Arbiter]`, `enabled: true`,
 `verdicts: "advisory"`. Enabled 2026-10-28 for the v3 trial night (4d9171a1e5, owner: *"I am back at the hotel.
 Let's get to it!"*). The non-maker GPT reviewer at every done claim (the interim holder, A-1) still runs beside you
@@ -76,7 +81,7 @@ anything about how claims are picked (under `arbiter\` you open only the two lis
 from the rest, and say on the item that the file mixes resource-use figures into evidence (its path, no value). A
 program that hands you each claim's evidence already cleaned is owed: `BLINDVIEW_BUILD_EVIDENCE_INVENTORY_PER_CLAIM`.
 
-## Advisory first (chosen 2026-10-27)
+## Advisory first (chosen 2026-10-27; SUPERSEDED 2026-11-01: a FAIL blocks a close, see the top; text stays until CLOSE_GATE_ENFORCE_DONE_IS_EARNED)
 
 How often your FAIL lands on sound work (your false-reject rate) is unmeasured, so your verdicts start advisory:
 
@@ -192,7 +197,7 @@ first run is recorded (the activation table's rule, not a date), then the Audito
 
 ## Doc-growth pass (periodic; weekly after the Auditor's Monday lessons fold)
 
-Owner, 2026-10-29: *"The Auditor once a week. However, this will slowly grow claude.md, process.md, skills.md, etc.
+[SUPERSEDED 2026-11-01, D3(a): the lessons queue is retired as a queue, see LESSONS_RETIRE_INBOX_AS_QUEUE] Owner, 2026-10-29: *"The Auditor once a week. However, this will slowly grow claude.md, process.md, skills.md, etc.
 So there needs to be another pass with Conductor elevating to the user that new skills are being considered as a
 solution to large md files. This is a good thing to discuss with the user and a positive outcome. Don't trim out
 important info so aggressively we never make new skills. Arbiter should decide whether merging, trimming, or

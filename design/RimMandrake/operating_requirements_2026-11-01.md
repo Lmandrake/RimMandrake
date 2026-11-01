@@ -99,8 +99,7 @@ tripping 10 metrics: one incident, one run. Recover, then relapse: same incident
 writes the line he sees, so the rule *nothing reaches him unread* holds. Only if no agent can run does a fixed-template
 line go out unread: that is his accepted exception. Route: RimPulse owner banner and desktop toast. Threshold: emergency
 goes to him at 60 min unacked, distressed only after 4 h. Test: all agents stubbed dead; his banner shows the template
-inside the limit. Exists: toast route, pulse. Missing: banner, chain. **Phone push is off (`PHONE_PUSH_ENABLED=False`),
-his decision pending.**
+inside the limit. Exists: toast route, pulse. Missing: banner, chain. **Phone push is ON since 2026-11-01 (3645471658).**
 
 **OP5 An alarm proves its origin.** [Auditor (instrument trust)] Alarm lines carry writer and a sane timestamp; anything else is refused and counted
 (`alarms.rejected`). Weekly a DRILL alarm walks the real path to an ack; a failed drill is itself an emergency. Test: a
@@ -333,4 +332,4 @@ Queue note, 2026-11-01: the first five were retired by a tick because they were 
 | 16 | `ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED` | RO1 | filed |
 | 17 | `CLOSE_GATE_ENFORCE_DONE_IS_EARNED` | RO3 | filed |
 
-Needs him: whether to turn phone push on (OP4). It is the only off-machine route, so until then a machine-wide failure reaches him on the desktop or the RimPulse page only.
+Phone push (OP4): ON since 2026-11-01 (3645471658, Todoist due-now task, one send per incident, red only); the earlier "needs him" is answered.
