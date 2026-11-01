@@ -1,38 +1,15 @@
-# SHADECRAFT_LESSONS_DESIGN_1 — shade gear learned by study: the mapping and the cross-biome conflict
+## answers (all ruled; the design is `design/RimMandrake/shadecraft_lessons_design_2026-10-31.md`)
 
-Split from `LONGSHADE_GPT_ENRICHMENT_1` §5 (owner-picked by card 2026-09-30). The picked spec:
-*"Parasol, shade tent and standing shield unlock by studying a dewfringe rim, a herd crossing and a
-mirrak hide (hidden research or a knowledge GameComponent), instead of being known from the start.
-Coordinate with `SHADE_GEAR_FAMILY_1`."* Nothing was built, because three questions decide the
-design and none of them is answered.
-
-Built and shipping today: all three pieces are craftable from the start
-(`EnvironmentalHazards/Defs/ThingDefs_Buildings/RM_ShadeGear.xml`, `SHADE_GEAR_FAMILY_1`, closed).
-The Long Carry GenStep hands a dead traveller a parasol (`RM_GenStep_SunGraves`, `gearDef
-RM_Parasol`). Mirrak hide exists (`RM_LongShade_Mirrak.xml`) and is the deepest shade cloth.
-
-## open questions (the owner's)
-
-⚠️ 2026-10-19: the three-piece list above predates the parasols-and-tents ruling; question 1 now maps lessons onto two pieces (or onto ideas), and the shield lesson has no piece.
-
-1. **Which lesson unlocks which piece.** The spec lists the gear and the lessons in two parallel
-   lists (parasol / tent / shield against dewfringe rim / herd crossing / mirrak hide). The consult
-   instead ties the lessons to *ideas* (condensation geometry, portable shade, deeper shade cloth),
-   not to pieces. Is it read in order, or some other way?
-2. **Cross-biome availability. This is a conflict with a ruling.** `SHADE_GEAR_FAMILY_1` was ruled
-   with *"this MUST be applied on other biomes where heat is extreme too"*, and since 2026-10-19 the
-   gear is parasols and tents only, working the same at every sun angle (owner: *"Keep only Parasols
-   and Tents, and Tents are just a quick structure (any roof structure will do the same)"*; the
-   standing shield is removed, `DIRECT_SUN_UNIFY_GEOMETRY_ALONE_DECIDES`). So only two pieces remain
-   to lock, and a tent is any roof, which cannot be locked at all. Every lesson named is Long Shade-only:
-   the dewfringe and the mirrak live nowhere else. So a colony that never visits the Long Shade could
-   never learn the gear its own biome needs. Options: the lock applies only to colonies that start
-   there; each hot biome teaches its own lesson; or the lessons speed research up rather than gate it.
-3. **What "studying a herd crossing" is mechanically.** It might be a colonist watching a shade
-   dash happen nearby, a job at a patch rim, or something that counts crossings seen.
-4. **Hidden research or a knowledge GameComponent.** A vanilla research project gives the familiar
-   UI. A GameComponent gives letters and progress of its own.
+1. **Which lesson unlocks which piece.** Lessons teach ideas, and each piece needs two ideas (cards
+   2026-10-03 and 2026-10-09). Parasol: portable shade + deeper shade cloth. Tent: portable shade +
+   keeping dew off.
+2. **Cross-biome availability.** Plain research always unlocks the gear; lessons only make it faster
+   or cheaper (card 2026-10-03). Each hot biome teaches its own lesson for the same gear (card
+   2026-10-08).
+3. **What studying a herd crossing is.** It progresses automatically for a colonist within sight of
+   a crossing (card 2026-10-03).
+4. **Hidden research or a GameComponent.** Vanilla hidden research, by the Forge spunstone pattern
+   (cards 2026-10-03 and 2026-10-08).
 
 ## criteria
-
 - The owner answers 1–3. Then a build item is filed with the answers as its spec.
