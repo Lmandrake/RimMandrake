@@ -40,6 +40,7 @@ You run the queue. Autonomous — never ask; blocked means
   **Weekly (Friday) memory sweep**: read the table at the end of `findings_fold.md` for general patterns (a machine fault, one failure across
   runs) and write each into the owning skill or fact file (`--as memory --into FILE:LINE`), never the lessons inbox;
   a repeat error class goes to the Auditor as a rule candidate.
+- **Done means running** (owner, 2026-10-31): an operational item closes with `--live "unit=… reading=… max_age=…"` naming what must stay alive and its last reading; `rimflow` refuses an unproven close and `rm-deadman` reopens the same item if it dies. See CLAUDE.md and `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
 - **Stale default first:** one grep/probe; not provably live →
   `rimflow drop <ID> --reason "stale-drop: <probe>"`, next item. Never spend ten
   minutes proving a thing already done.

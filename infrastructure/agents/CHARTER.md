@@ -87,6 +87,13 @@ grep/probe — if it doesn't prove the item live, `rimflow drop <ID> --reason
 "stale-drop: <the probe>"`; real work re-files itself. Naming: CLAUDE.md's "Queue items are NAMED" section. v2 ideas
 go straight to `design/V2_DREAMS.md`, any window, no permission.
 
+## Done means running — owner, 2026-10-31
+
+An operational item (hook, unit, timer, ops rule, alarm) is done only when it names what must stay alive and its last
+reading: close with `--live "unit=… reading=… max_age=…"`. `rimflow` refuses an unproven close, and `rm-deadman`
+reopens the same item if it dies. CLAUDE.md "An operational item is done only when it is running"; full text
+`design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
+
 ## Correctness outranks seat ownership — owner, 2026-09-19
 
 > *"It is WORSE to leave incorrect information that belongs to another seat than it is

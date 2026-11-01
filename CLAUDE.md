@@ -258,6 +258,10 @@ at. He gets the survivors plus one line of what was caught. Sheet tools refuse w
 
 ## Owner authority on the ledger — one field per kind of authority (owner, by question card 2026-10-11): `--owner-said` = his words (typo fixes and joining his own sentences are fine, meaning unchanged) · `--by-card "<question → option>"` = a decision he took by card (the label is our text) · `--per-ruling <item-id|event>` = a standing ruling cited by reference (it stands until he changes it) · `--why "…"` = your own words. No transcript proof runs; nothing checks a quote but its shape.
 
+## 🔴 An operational item is done only when it is running — owner, 2026-10-31
+
+*"We keep finding problems, making tickets, and they never get folded into operations."* An operational item (a hook, a unit, a timer, the schedule, ops rules, an alarm) closes only on a promise that names **what must stay alive and its last reading**: `rimflow close <ID> --sha <sha> --live "unit=rm-foo.timer reading=<path> max_age=6h"` (or `hook=<file>`, or `once: <why>`). `rimflow` runs the check at close and **refuses an unproven close**; `rm-deadman` (`deadman_check.py`) rechecks every promise for good and **reopens the same item** (`rimflow live --result broken`, outage counted) if it dies. An alarm has one fixed item id, so a repeat reopens it instead of filing a new one. Never file a second ticket for a dead fix. Full text: `design/RimMandrake/parallel_review_2026-10-31/folded_into_operations.md`.
+
 ## Git
 
 **Operating doc: `design/RimMandrake/GIT_WORKFLOW.md`** — read it before touching git.
