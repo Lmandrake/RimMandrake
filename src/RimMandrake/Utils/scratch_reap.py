@@ -1557,7 +1557,7 @@ def make_index_state(c: Path, work: Path) -> list[Path]:
     top = work / "staged"
     for meta, path in zip(f[0::2], f[1::2]):
         w = meta.split()
-        if w[4] == "D" or w[3] == "160000" or w[2] == "160000":
+        if w[4] == "D" or w[1] == "160000" or w[0] == ":160000":
             continue                                    # index.txt carries a deletion and a gitlink's commit
         if w[4] == "U":
             raise PreserveFailed(f"{path} is unmerged")

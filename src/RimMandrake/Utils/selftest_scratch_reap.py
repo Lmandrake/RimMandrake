@@ -1048,6 +1048,15 @@ def second_review_cases(td: Path, origin: Path):
         finally:
             R.git = real_git
 
+        gl = clone(origin, s3 / "staged_gitlink_clone")
+        git(gl, "update-index", "--add", "--cacheinfo", "160000", git(gl, "rev-parse", "HEAD"), "vendor/dep")
+        wg = Path(tempfile.mkdtemp(dir=str(s3)))
+        try:
+            R.make_index_state(gl, wg)
+            check(True, "a staged gitlink is carried by index.txt, not read as a blob")
+        except R.PreserveFailed as e:
+            check(False, "NEGATIVE: a staged gitlink must not fail the preservation (%s)" % e)
+
         real_preserve = R.preserve
 
         def import_after_tar(row):
