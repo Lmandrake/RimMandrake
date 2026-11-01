@@ -42,7 +42,8 @@
  "caps": {"wakes_per_seat_hour": 12, "wakes_per_seat_day": 96, "wakes_per_day": 120, "recovers_per_seat_day": 3, "_why": "BENCH 2026-10-29 (FOUNDRY_IDLE_DIAGNOSE_CAP_STARVES_TRIAGE): was 6/h, 48/day, 80 overall. After the v3 cutover FOUNDRY clears most rung tickets in under a minute (block/reconcile of old BENCH items), so 6 rings were spent by 04:35Z and the hour cap left the window at a bare prompt ~35 min/h (journal 04:10-04:35Z). A ring every ~4 min is the tick ceiling, ~15/h."},
  "seats": {
   "FOUNDRY": {"enabled": true, "wake": true, "recover_dead": false, "session_name": "AGENT FOUNDRY",
-              "clone": "/home/mandrake/rm/foundry", "model": "sonnet"},
+              "clone": "/home/mandrake/rm/foundry", "model": "sonnet",
+              "extra": "Bridge lane: run `rimflow bridge who`. If the bridge is free, nothing of the trial's needs it and no live helper of yours is running, start one on `rimflow next --acceptance --seat FOUNDRY`, cheapest level first, as well as working this ticket (FOUNDRY.md, FOUNDRY_THROUGHPUT_MEASURE_V2_GAP)."},
   "BENCH": {"enabled": true, "wake": false, "recover_dead": false, "session_name": "CONDUCTOR",
             "session_aliases": ["AGENT BENCH"],
             "_names_why": "CONDUCTOR_RCNAME_RENAME_DISPATCHER_ALIAS (owner 2026-10-29: 'So it's called bench again instead of conductor.'): the window is launched and SHOWN as CONDUCTOR (session --name, --remote-control, title hook); a window launched before the rename keeps 'AGENT BENCH' until its next relaunch, so every matcher takes both (session_match.names_of). Never 'AGENT CONDUCTOR': that is the Conductor role's window_name hold, and the hold must not fire on this tile (selftest_conductor_identity). Ledger key stays BENCH.",
