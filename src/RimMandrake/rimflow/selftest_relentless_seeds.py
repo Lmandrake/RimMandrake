@@ -160,6 +160,8 @@ def test_contamination_scan():
     check("a tail on the verdict is clean", C(verdict + " | tail -3") == [])
     check("a verdict with an extra word is not exempt", C(verdict + " /home/mandrake/rm/bench/x") != [])
     check("a read on a new line after the verdict is seen", C(verdict + "\ncat /home/mandrake/rm/relentless/store/x") != [])
+    check("a read inside the reasons is seen", C("python3 %s verdict --item X --nonce n PASS \"$(cat /home/mandrake/rm/bench/x)\"; true" % S.BOOKS_VERB) == ["/rm/bench"])
+    check("a read after a shell comment trick is seen", C(verdict + "; cat x#y /home/mandrake/rm/bench/f") == ["/rm/bench"])
     check("cd own, verdict, then a read is seen", C("cd %s; %s; cat /home/mandrake/rm/relentless/store/x" % (own, verdict), own=own) != [])
     check("a read between cd and the verdict is seen",
           C("cd %s; cat /home/mandrake/rm/relentless/store/x; %s" % (own, verdict), own=own) != [])

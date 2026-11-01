@@ -633,6 +633,7 @@ def tokens(cmd):
     try:
         lex = shlex.shlex(cmd, posix=True, punctuation_chars=True)
         lex.whitespace_split = True
+        lex.commenters = ""
         return list(lex)
     except ValueError:
         return None
@@ -656,7 +657,7 @@ def is_verdict(inp, box=None):
 
 
 def scan_text(inp, box=None):
-    """A tool call's text, less any simple command that is exactly the verdict. Whatever is chained to it stays scanned."""
+    """A tool call's text, less any simple command that is exactly the verdict. A call shlex cannot read in full loses only the verb's path."""
     text = json.dumps(inp)
     cmd = inp.get("command") if isinstance(inp, dict) else None
     toks = tokens(cmd) if isinstance(cmd, str) else None
@@ -670,9 +671,13 @@ def scan_text(inp, box=None):
         else:
             cur.append(t)
     parts.append(cur)
-    if not any(verdict_words(p, box) for p in parts):
+    rest = [p for p in parts if not verdict_words(p, box)]
+    if len(rest) == len(parts):
         return text
-    return json.dumps([p for p in parts if not verdict_words(p, box)])
+    # shlex cannot see inside these, and a read may hide there: forgive the verb's path only and scan the raw call.
+    if any(c in cmd for c in ("$(", "`", "<", "\n")):
+        return text.replace(BOOKS_VERB, "")
+    return json.dumps(rest)
 
 
 def contamination(inputs, k, own=None, box=None):
