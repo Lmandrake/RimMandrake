@@ -1912,6 +1912,9 @@ def c_seats(now, rules, ctx):
                 continue            # no ring out, and no idle seat left with an unanswered one
             found = st_idle_since(rows, seat, ss, now)
             if found is None:
+                rung = (ss.get("ring") or {}).get("rung_at") if isinstance(ss.get("ring"), dict) else None
+                if is_num(rung) and finite(rung) and 0 <= now - rung < 300:
+                    continue        # a tick journals its actions when it ends, after the ring is out and in state.json
                 why = "journal.jsonl lacks the rings state.json holds open for %s" % seat
                 break
             per[seat] = round((now - found[0]) / 60.0, 1)

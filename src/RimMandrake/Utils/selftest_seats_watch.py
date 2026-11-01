@@ -250,6 +250,13 @@ blind_when("the open ring is not the journal's last", lambda: (
     put_state({"last_ok_tick": OW.iso(T0), "seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-9-1"}, "idle_since": T0}}}),
     (ROOT / "journal.jsonl").write_text(json.dumps({"at": OW.iso(T0 - 600), "do": "ring", "seat": "FOUNDRY", "ring_id": "FOUNDRY-8-1"}) + "\n")))
 
+blind_when("a ring out 10 min with no journal row", lambda: put_state(
+    {"last_ok_tick": OW.iso(T0), "seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-7-1", "rung_at": T0 - 600}, "idle_since": T0 - 600}}}))
+fresh()
+put_state({"last_ok_tick": OW.iso(T0), "seats": {"FOUNDRY": {"ring": {"ring_id": "FOUNDRY-7-1", "rung_at": T0 - 30}, "idle_since": T0 - 30}}})
+pts = OW.c_seats(T0, RULES, {})
+check("a ring 30 s old, journalled when its tick ends, is not blind", pts["seats.blind"]["v"] == 0, pts)
+
 no_block = {k: v for k, v in RULES.items() if k != "seats"}
 fresh()
 put_state(sane_state(T0))
