@@ -29,7 +29,7 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   wildlife on the biome map. `wastes.md` §10 point 4 is updated to point here by
   name instead of re-describing a second station.
 - ⭐ **2026-10-10 story sitting (owner)**: this lab IS the Assailant's one impact
-  site and the flesh complex of `ASSAILANT_DUNGEON_BUILD_1` — the Rakata *"built the
+  site and the flesh complex — the Rakata *"built the
   war lab over it, and eventually excavated a huge site around the impact crater"*
   (card 5; full quote canon.yml `assailant_reveal_arc.site_src`). Inside wait the
   original Assailants, fully armed, frozen mid-combat with the Rakatan experiments
@@ -39,8 +39,8 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   (`dungeons_arc_spec.md` §2.1, §2.6). The specimen choices, the breakout and what a
   recovery leaves are designed (delegated, `dungeons_arc_spec.md` §2.10) and owed as a
   build (`WARLAB_BREAKOUT_BUILD_SEALS_HOLD_THE_LINE`). Owed: the Imperial garrison
-  after an early blast (`WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`), and merging the two
-  builds (`ASSAILANT_WARLAB_BUILD_MERGE`). Rulings recorded in
+  after an early blast (`WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`). This item owns the whole site since
+  `ASSAILANT_WARLAB_BUILD_MERGE` folded the flesh dungeon in (`## folded build` below). Rulings recorded in
   `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §8 (2026-10-10 amendment).
 - ⛔ **NOT the same as** `SCALD_DARK_TOWER_1` (which is the Spire, owner 2026-10-10) (filed 2026-09-07, same sitting): the
   owner's "nearby lab concept" from earlier drafts was reborn as a **separate** dungeon
@@ -76,7 +76,7 @@ Owner rulings 2026-09-06 (`the_propane_lakes.md` §3 "The machine" and §8).
   holds.
 
 ## build spec (FOUNDRY, 2026-09-08 — consolidated, follows the `dungeons_arc_spec.md`
-pattern already used for `ASSAILANT_DUNGEON_BUILD_1`/`VAULT_DUNGEON_BUILD_1`)
+pattern already used for `VAULT_DUNGEON_BUILD_1`)
 
 **Technical route — confirmed, same pipeline as the vault/Assailant dungeons**: KCSG
 via `jawa/kcsg_place` (`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchKcsgTools.cs`),
@@ -156,8 +156,9 @@ unblock`, 2026-09-11) — see that item for the full account.
   (never a bare ThingDef for a live pawn). **CONFIRMED live**: 2×`AA_Slurrypede`
   spawned inside the lab-interior band, faction null, `intelligence: Animal`
   (`jawa/list_pawns`).
-- [x] Lab guardians read as mechanoid/ancient, never Assailant-flesh material (hard
-  ban #8, `the_propane_lakes.md` §6) — no Assailant fauna roams; live specimens exist
+- [x] Before the wake, the only guardians are the mechanoid/ancient last watch, and no
+  flesh pawn exists (hard ban #8, `the_propane_lakes.md` §6; who stands where and when:
+  `dungeons_arc_spec.md` §2.3) — no Assailant fauna roams; live specimens exist
   only as sealed containment props/props-with-pawn, never a spawned hostile faction,
   until the breakout his 2026-10-10 card 3 ruling puts on this map (`dungeons_arc_spec.md` §2.10).
   **CONFIRMED live**: 2×`Mech_Lancer` + 2×`Mech_Centurion`, faction "Kiliri
@@ -176,6 +177,31 @@ unblock`, 2026-09-11) — see that item for the full account.
   ignition/save-load/world_commit quicktest is still owed — not attempted this
   pass (needs a world tile that actually carries `RUT_PropaneLake`, which a fresh
   quicktest world does not; the campaign's own frozen world does).
+
+## folded build (from `ASSAILANT_DUNGEON_BUILD_1`, `ASSAILANT_WARLAB_BUILD_MERGE` 2026-11-01)
+
+The flesh dungeon is this lab, so its unbuilt work lives here. Gate order and who stands where:
+`dungeons_arc_spec.md` §2.3, nowhere else. Bands, palette and text: §2.4, §2.5, §2.8.
+
+- [ ] **Socket.** A `RUT_VaultHeart`-pattern refuelable taking one `AIPersonaCore`, at the inner
+  wall of the approach band, wired as a QuestNode + map signal (§2.7). Seating it sets a one-way
+  wake state and starts the 15-day clock of §2.10.
+- [ ] **Sealed inner wall.** The layout's doors into the interior stay shut until the wake.
+  `gen_war_lab_layout.py` today spawns the interior guardians live with no seal.
+- [ ] **Flesh guardians.** The 70-row palette (`blanket: keep-for-dungeon`, §2.5, not a menu to
+  re-curate) as stasis dressing before the wake and live hostiles after it, this site map only.
+  `DeadColumnMod`, `Trispike` and `Metalhorror` appear nowhere else in the campaign;
+  `AA_BlackDefiler` present on its turret assignment.
+- [ ] **Pale Geonosian turret reskin.** New art, visually distinct from Hive turrets on sight.
+- [ ] **Quicktest end to end by state reads:** dormant on arrival, no guardian met before the
+  socket, seating the core flips it, the reveal beat fires.
+- [ ] **Register guard:** no ambient tyranny content pre-reveal; the Assailant is never named,
+  never sympathetic.
+- [ ] **Reveal-beat letters** (§2.8 draft) fire on entering and looting the core.
+- [ ] **Site committed to the real world** at the one painting.
+
+⛔ Do not weld this site to the Abyss (`03_deep_history.md`: *"two alien facts are richer than one
+explained one"*).
 
 ## Watch out
 🔶 Same discipline as the sibling dungeons in `dungeons_arc_spec.md`: this stays

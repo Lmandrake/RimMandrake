@@ -15,7 +15,7 @@ vault, vault dungeon. **The vaults exist; no seal def existed when searched.** T
   patch** (landmark `RUT_Slough_GelatinousBreach`). The Slime is the Assailant's bioweapon (sheet
   `the_slime.md`, the Rot's sibling).
 - **Sealed doors in the record:** V6's arrival text (*"The doors are sealed from both sides"*, spec §3.10) and the
-  Assailant complex's *"previously-sealed passages"* that open on the thaw (spec §2.3, `ASSAILANT_DUNGEON_BUILD_1`).
+  Assailant complex's *"previously-sealed passages"* that open on the thaw (spec §2.3, `ANCIENT_WAR_LAB_1`).
   Neither is called an Assailant seal, and **no seal mechanic, door def or "nothing else opens it" rule exists**.
 
 ## spec

@@ -188,8 +188,7 @@ settles the question the item XML left open, in every route and not only the ear
 is at the lab.
 
 Entry and the codes are one gate: the shielding is intact, so nothing enters until the door does.
-The gate order `ASSAILANT_WARLAB_BUILD_MERGE` owes is therefore **reveal → garrison if early →
-codes → core socket**.
+The whole gate order is written once, in `dungeons_arc_spec.md` §2.3 (`ASSAILANT_WARLAB_BUILD_MERGE`).
 
 ## 6. Where it meets other rulings
 

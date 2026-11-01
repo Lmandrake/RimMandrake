@@ -3,7 +3,7 @@
 First north-star script (ASSAILANT_SALVAGE_FIRST_SCRIPT_1, debug_process.md section 2). NEVER RUN LIVE YET.
 The mod is 22 owned RUT_ set-dressing ThingDefs (airlocks, turrets, landmine, terminals, heater, black box,
 bed, pod ...) replacing the retired Cryptoforge donor props, with the donor's gameplay unchanged. It ships no
-C# and no Mod Settings, and is not wired into any map generation yet (ASSAILANT_DUNGEON_BUILD_1 is separate).
+C# and no Mod Settings, and is not wired into any map generation yet (ANCIENT_WAR_LAB_1 is separate).
 
 WHAT IT PROVES (state reads):
   * defs_resolve: every ThingDef parsed from the mod's own XML resolves live (a def with an unresolvable

@@ -9,8 +9,8 @@
 > `VAULT_DUNGEON_CONCEPT_1` (both closed 2026-08-30) into one buildable spec, adds
 > the technical route (KCSG via the bridge, confirmed available), drafts the safe
 > pieces for real, and marks every remaining creative call HELD FOR OWNER.
-> Written to resolve the "thin item" flag on `ASSAILANT_DUNGEON_BUILD_1` and
-> `VAULT_DUNGEON_BUILD_1` (`infrastructure/state/items/`).
+> Build items: `ANCIENT_WAR_LAB_1` (§2) and `VAULT_DUNGEON_BUILD_1` (§3), in
+> `infrastructure/state/items/`.
 
 Sources this leans on, not restated in full: `reconciled_lore/03_deep_history.md`
 (the canon triad, the Assailant, the vaults), `infrastructure/state/canon.yml`
@@ -59,7 +59,7 @@ the same dark — one pilgrimage, two revelations.**
   already-painted world, authored in place via the bridge's KCSG tools
   (§3.5) exactly the way every other piece of Ash'karr content is authored.
 
-## 2. `ASSAILANT_DUNGEON_BUILD_1` — the impact site: the war lab
+## 2. `ANCIENT_WAR_LAB_1` — the impact site: the war lab
 
 ### 2.1 What it is
 
@@ -116,9 +116,7 @@ Region **The Umbra** is the named gazetteer region (`ASHKARR_WORLD_DEFINITION.md
 §3). Vault V6 (tile 20853) is a separate site on the same nightside. The FDE's two deep-nightside refugee seats (Coldfire,
 The Cracking Station) are "the last waypoint, rumor carriers" (owner ruling,
 `ASSAILANT_FLESH_DUNGEON_1` history 2026-08-30). The
-entry gate is the war lab's, not a separate one: the lake's ending (or an
-early blast) reveals it, and the Spire's command codes open it (§2.6). The
-lake's ending is also when the Fever Wood's sekkulaath rises; its damage is confined
+entry gate is the war lab's, not a separate one (§2.3). The lake's ending is also when the Fever Wood's sekkulaath rises; its damage is confined
 to its own region, permanently (owner by question card 2026-10-12: *"How far
 does the sekkulaath rising reach? → Its region only, permanently"*; design in
 `biomes/kits/fever_wood_kit_spec.md` F4). Bridge
@@ -138,37 +136,74 @@ location."*
 - **Pre-thaw state**: the complex is inert on arrival — dormant fleshmass
   terrain/growths present as set-dressing (no guardian spawns, no hostile
   faction), the frozen witness scene visible but unreachable/sealed, a single
-  legible objective (a socket, altar, or console requiring "an old power
-  core") sited at or near the complex's hidden inner point.
-- **Trigger**: the player HAULS/DELIVERS a power-core item (an existing salvage
-  tier item, not a new artifact — candidate: whatever the campaign's highest
-  scavenged power cell/AI persona core already is; confirm the exact def at
-  build time rather than invent one) to that socket.
+  legible objective (a socket requiring "an old power core") at the inner wall
+  of the approach band (§2.4), the one warm chamber of §2.8. Its hiding place
+  is the sealed door itself: no one reaches it without passing gates 1 to 3
+  below.
+- **Trigger**: the player HAULS/DELIVERS a power-core item (`AIPersonaCore`,
+  §2.7) to that socket.
 - **Thaw = activation**: delivering the core flips the complex from dormant to
-  hostile — guardian spawns come online (Anomaly entities + the pale Geonosian
-  turret reskin, §2.5), previously-sealed passages open, and the reveal beat
-  (§2.6) becomes reachable. This is a one-way state change, authored as a quest
-  signal/map event (rides `rimworld-quests` at build time — the "custom C# node
-  needed?" call is HELD FOR OWNER, most likely answerable as "no, a QuestNode +
-  map trigger suffices" but not proven this pass).
+  hostile — guardians come online (the register below), previously-sealed
+  passages open, and the reveal beat (§2.6) becomes reachable. This is a
+  one-way state change, a QuestNode + map signal (§2.7). `RUT_VaultHeart` is
+  the proven socket: a refuelable that takes one `AIPersonaCore` and never
+  gives it back (`vault_thaw_quest_family.md` §2.1, §6).
 - Gating context: entry itself is mid-campaign, after the sleeper-sympathy arc
   is established (owner ruling point 5, `ASSAILANT_FLESH_DUNGEON_1`) — the
   quest chain that leads a crew here is downstream of droid trust → Cathedral
   trust (§2.6), not an early-game find.
-- Since the complex is the war lab (§2.1), this core socket and the war lab's
-  own gate (lake ending or early blast, then the Spire's codes) are one
-  dungeon's gates. How they sit together, and how `ASSAILANT_DUNGEON_BUILD_1`
-  and `ANCIENT_WAR_LAB_1` become one build, is owed:
-  `ASSAILANT_WARLAB_BUILD_MERGE`.
+
+**The gate order — the one place it is written.** Delegated design (`delegation_policy.md` §1;
+item `ASSAILANT_WARLAB_BUILD_MERGE`; record and judge status `infrastructure/state/delegated/2026-11-01/warlab_merge_gate_order.json`), PROVISIONAL: not yet judged.
+The core socket and the two-key gate do not compete: **the two keys let you in; the core wakes
+what you came in to.** The socket is inside the door, so the order is forced.
+
+| # | gate | what passes it | what it changes | source |
+|---|---|---|---|---|
+| 1 | **Reveal** (the ground key) | a route opens the ground: the lake's ending, an early blast, or Routes 2 to 5 | `groundOpen`; the door can be seen. A blast lights the Route 6 clock | 2026-09-12 and 2026-09-27 rulings; `the_chill_warlab_routes_spec_2026-09-27.md` |
+| 2 | **Garrison, if early** | beating it. Only a blast with no codes in hand posts one | nothing, until the last guard is down | card 8; `warlab_garrison_early_blast_2026-11-01.md` §5 |
+| 3 | **The codes** (the door key) | `RUT_RakatanCommandCodes` used at the lab | the door opens; the Route 6 clock stops. The crew stands in the approach band, and the complex is still dormant | 2026-09-12: *"the command codes are the only way into the base"*; card 7 |
+| 4 | **The core socket** (the wake) | an `AIPersonaCore` seated. One-way | inner passages open, guardians wake, and the 15-day stasis clock of §2.10 starts. Everything past here is §2.10 | 2026-08-30 and 2026-09-01 rulings |
+
+- **Why the wake starts the clock.** Nothing here is a third key to the lab. Gate 4 is the
+  deliberate step the 2026-08-30 ruling asked for, the same one the vaults use. The stasis has
+  run for an age on the drive alone (§2.10); powering the complex on draws on it. A crew that opens
+  the door and leaves has broken nothing, and no clock runs.
+- **Route 6 replaces gate 3 only.** The door is broken and *"exposing the War Lab for player entrance
+  without action"* is about the entrance, so the approach band stands open, with Imperial dead in it.
+  The socket still stands sealed and unwoken behind it, the player still decides whether to seat a
+  core, and no clock starts until then. *"Nothing the player does bypasses the door"* is unaffected;
+  gate 4 is not a door. What overran the Empire is the last watch at the inner wall, which goes back
+  to its posts.
+- **The strike branch** skips all of this: it ends the lab from outside (§2.6). Whether a strike can
+  follow gate 3 or 4 stays §2.9 question 2.
+
+**Who stands where, and when (the §2.5 roster against hard ban #8).** Delegated design as above. The
+ban (`the_propane_lakes.md` §6) and its 2026-09-07 gloss are about the biome: *"live and dangerous
+under containment is not the same as resident weapon-fauna roaming the biome map."* The §2.5 roster
+is a site roster under the Anomaly exception. They apply to different things, so neither changes:
+
+| who | where | before the wake | after the wake |
+|---|---|---|---|
+| **The last watch**: `Mech_Lancer`, `Mech_Centurion`, the turrets | interior band, behind the inner wall | on post behind a sealed wall, unseen; never in the approach band | active, and hostile to crew and flesh alike |
+| **The §2.5 guardians**: the frozen mutations of card 2, the Assailant's fabric and growths | interior and core bands | inert in the stasis, set-dressing; no live pawn | live hostiles, this site map only |
+| **The originals**: the four specimens | the four `RUT_WarLabContainmentCell` | props | props until the §2.10 breakout, then live |
+
+No `wildAnimals` row and no biome spawn for any of them, before or after. The criterion *"no guardian
+spawns before the trigger"* means none the crew can meet: the approach band stays empty and no flesh
+pawn exists. *"The last watch"* stays continuously on duty, behind the wall.
 
 ### 2.4 Layout concept (drafted, not authored)
 
 One dungeon, not six — no concentric-grammar requirement here (that's the
 vault doctrine, §3.3). Proposed three-band structure keyed to the thaw state:
 
-1. **Approach / outer galleries** — frozen, inert, dressed in dormant fabric
-   (Floor/wall-fabric + Growths groups, §2.5): the complex reads as ancient and
-   sealed, not yet dangerous. The socket/altar for the power core sits at the
+One three-band dungeon: this one and `gen_war_lab_layout.py`'s approach, interior
+and core are the same bands.
+
+1. **Approach / outer galleries** — behind the door, frozen, inert, Rakatan
+   shielding dressed in dormant fabric (Floor/wall-fabric + Growths groups,
+   §2.5): the complex reads as ancient and sealed, not yet dangerous. The socket for the power core sits at the
    transition into band 2, so delivering it is a deliberate, irreversible step
    inward, not something a crew stumbles into by accident.
 2. **Interior — the digested works** — post-thaw, guardians online. Set-pieces
@@ -348,8 +383,8 @@ wakes the lab avoids it. The strike branch is its own paragraph below, and is hi
 
 1. The player's choice finishes at the console.
 2. The hyperdrive is lifted from its bay, with no choice made. That counts as *Leave them* below.
-3. The stasis decay runs out, also as *Leave them*. Waking the lab (§2.3; `ASSAILANT_WARLAB_BUILD_MERGE`
-   owns the gate order) started a 15-day clock, shown as a plain game-fact countdown. A crew that
+3. The stasis decay runs out, also as *Leave them*. Seating the core (§2.3, gate 4)
+   started a 15-day clock, shown as a plain game-fact countdown. A crew that
    walks away from the lab therefore still gets a breakout, on a map it may not be standing on: an
    unattended breakout is a failure when the clock's window closes. A crew that never wakes the lab
    never starts the clock and has not made the dive.
@@ -487,9 +522,7 @@ means on the dive with no strike called; how a late strike would meet them is hi
 Live specimens need a confirmed PawnKindDef: none exists, and the cell's props-only shape stays
 right until the breakout (the `RUT_WarLabContainmentCell.xml` header says what to change). The ban
 on live specimens before the breakout (the same header) holds; after it, his ruling puts them on the
-map. The §2.5 guardian roster and hard ban #8 of `the_propane_lakes.md` do not yet agree on what
-counts as Assailant flesh in the lab; §2.10 does not settle that and needs neither reading:
-`ASSAILANT_WARLAB_BUILD_MERGE` owns it. Mod Settings owe a spread-pace knob. The first functional script ships with
+map. Who counts as a guardian in the lab is §2.3. Mod Settings owe a spread-pace knob. The first functional script ships with
 the build.
 
 ## 3. `VAULT_DUNGEON_BUILD_1` — the six Forsaken vaults
@@ -779,7 +812,7 @@ only AT the reveal.
   wake/loot/leave branches, the ship-claim thread and the Reclamation.
 - `design/Jawa/reconciled_lore/FUTURE_VECTORS.md` — "the dungeons arc" bullet
   now points here.
-- `infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md` — spec/verify point
+- `infrastructure/state/items/ANCIENT_WAR_LAB_1.md` — spec/verify point
   here.
 - `infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md` — spec/verify point
   here.

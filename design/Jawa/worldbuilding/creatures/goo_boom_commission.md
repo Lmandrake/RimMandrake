@@ -208,7 +208,7 @@ the owner picks it or not (§6)**.
 - **Roster:** added to `design/Jawa/worldbuilding/review/round2/reserved_groups_draft.md`
   §1 dungeon-guardians as an **Assailant** row (this pass, same table style as the four
   VQEA Splice rows), under the 2026-09-10 ruling "ONE roster with a dungeon-owner column".
-- **Where it spawns:** inside the Assailant complex only — `ASSAILANT_DUNGEON_BUILD_1`
+- **Where it spawns:** inside the Assailant complex only — `ANCIENT_WAR_LAB_1`
   (`dungeons_arc_spec.md` §2: the impact site, which is the war lab beneath the Chill; thaw-gated). It is
   placed by that dungeon's layout generator as a **pawn symbol**, the way
   `gen_vault_layouts.py` registers `PAWN_SYMBOLS` for the Forsaken vaults (the pattern
@@ -316,14 +316,14 @@ Left open for the owner / BENCH, with the default that ships if nobody rules:
 | butchery yield | 0 meat, no leather | whether a "vhessk sac" goo item exists (fuel? a crafting reagent?) is new economy, not this commission |
 | a real BodyDef | reuse `QuadrupedAnimalWithHoovesAndHump` for its Hump part | a bespoke body with "sac" parts is cleaner but is its own small build |
 | glow | none — the glow is painted into the sprite only | a `CompProperties_Glower` on a pawn is a mod-pattern question, not confirmed here |
-| spawn-on-activation vs pre-placed | prefer on-activation | depends on how `ASSAILANT_DUNGEON_BUILD_1`'s thaw-gate is actually wired (itself HELD FOR OWNER) |
+| spawn-on-activation vs pre-placed | prefer on-activation | depends on how `ANCIENT_WAR_LAB_1`'s thaw-gate is actually wired (itself HELD FOR OWNER) |
 | directory | this file lives at `design/Jawa/worldbuilding/creatures/` (new) | the only prior single-commission brief (`fish_bestiary_commission_2026-09-10.md`) sits flat in `worldbuilding/`; BENCH may prefer to move this beside it |
 
 ---
 
 ## 7. Sources read for this brief (so the next reader need not re-derive)
 
-- `infrastructure/state/items/closed/BOOM_FAMILY_CUT_1.md`, `ASSAILANT_FLESH_DUNGEON_1.md`, `ASSAILANT_DUNGEON_BUILD_1.md`
+- `infrastructure/state/items/closed/BOOM_FAMILY_CUT_1.md`, `ASSAILANT_FLESH_DUNGEON_1.md`, `infrastructure/state/items/ANCIENT_WAR_LAB_1.md`
 - `design/Jawa/worldbuilding/review/round2/reserved_groups_draft.md` §1, §9, rulings 2026-09-10
 - `src/RimUtinni/UtinniPatches/Patches/AncientsAreRakata.xml` header; `ANCIENTS_AS_RAKATA_SPEC.md`; `reconciled_lore/03_deep_history.md`; `infrastructure/state/canon.yml` `assailant_reveal_arc`, `anomaly_content`; `dungeons_arc_spec.md` §1–2; `biomes/assailant_weapon_remnants.md`, `the_contagion.md` §9, `the_slime.md` palette line
 - `design/NAMING_SCHEME_PLAN.md`; `Alien_Bestiary.md` §1; `creature_names_ashkarr.md`; `creature_recognizability_rule.md`; `creature_normalization_doctrine.md`; `creature_size_model.md` §1, §4; `beast_normalization_spec.md` Law 3

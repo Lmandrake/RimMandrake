@@ -1,0 +1,14 @@
+{
+ "item": "ASSAILANT_WARLAB_BUILD_MERGE",
+ "class": "design",
+ "subject": "design/Jawa/worldbuilding/dungeons_arc_spec.md §2.3: the gate order, and who stands where and when",
+ "judge": null,
+ "verdict": "NOT_JUDGED",
+ "why_not": "delegation_policy §4 needs a fresh opus judge; this worker runs under a no-subagents brief and may not spawn one",
+ "hard_reads": [
+  "Route 6 replaces gate 3 only: the socket survives, and the last watch did the overrunning. His words say the lab is exposed 'for player entrance without action'.",
+  "Hard ban #8 is read as biome-scoped from its 2026-09-07 gloss, so the owner-ruled §2.5 flesh guardians stand inside the lab after the wake. The ban's first clause alone says 'lab guardians are mechanoid/ancient'. If that clause binds the site, this is a §2.4 reserved call.",
+  "Seating the core, not opening the door, starts the 15-day stasis clock."
+ ],
+ "owed": "one opus judge round on §2.3, then a note on the item"
+}

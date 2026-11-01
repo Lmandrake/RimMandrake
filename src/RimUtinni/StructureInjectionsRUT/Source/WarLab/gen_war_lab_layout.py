@@ -23,16 +23,10 @@ were both dropped by card ruling "do we really need it? / Drop both"). This
 generator does NOT touch that footprint or the crater mechanism - only the
 dungeon interior, which does not need a world tile to exist as authored XML.
 
-WHY NO THAW-GATE: gen_dark_tower_layout.py's own docstring speculates "ANCIENT_
-WAR_LAB_1: frozen/inert on arrival, a delivered AIPersonaCore is the thaw-gate
-that turns the guardians hostile" - written 2026-09-07, BEFORE this item's own
-"build spec (FOUNDRY, 2026-09-08 — consolidated)" section landed. That
-consolidated spec describes the approach band as "powered... dark but not
-breached" (i.e. ALREADY LIVE, not dead-until-fed) and never mentions a core,
-a thaw quest, or a dormant state anywhere in its three-band layout or its
-criteria list. the_propane_lakes.md SS8 calls the lab guardians "the last
-watch" - continuously on duty, not woken by the player. This generator
-follows the ITEM'S OWN current spec over the sibling's stale aside.
+NO THAW-GATE YET: this layout predates the merge of the Assailant dungeon into
+this item. The core socket and the sealed inner wall are owed here
+(ANCIENT_WAR_LAB_1, dungeons_arc_spec.md SS2.3); today the interior guardians
+are live from generation.
 
 2026-09-18 PASS: places RUT_WarLabReactorCore (built+deployed 2026-09-12 for
 WAR_LAB_CRATER_HOOK_1, the "dropped reactor core" ignition source, but never

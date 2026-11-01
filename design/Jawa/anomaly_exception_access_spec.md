@@ -140,7 +140,7 @@ ever capturing anything — the material itself is what she remembers.
 **Trigger (scripted): the Assailant core.** The GameComponent implements
 `ISignalReceiver` (VERIFIED, `SignalManager.RegisterReceiver`, L17) and reveals
 on any signal whose tag ends with `RUT_ShipMemory_Containment`. The Assailant
-dungeon's QuestScriptDef (`ASSAILANT_DUNGEON_BUILD_1`, thaw-gate = QuestNode +
+dungeon's QuestScriptDef (`ANCIENT_WAR_LAB_1`, thaw-gate = QuestNode +
 map-trigger signal, ruled 2026-09-01) sends it from its core band via
 `QuestNode_SendSignals` (VERIFIED, class exists) when the ship memory-fragment
 loot is taken — canon `assailant_reveal_arc`: *"loot recovered here triggers ship

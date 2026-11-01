@@ -17,7 +17,7 @@
 > `rakata.woken_brutality`, `rakata.reclamation`, `helix_lineage`,
 > `rust_cathedral`, `narrator`, `cradle_memory`; `reconciled_lore/03_deep_history.md`;
 > `antiquities_design.md` (CARTOGRAPHY reveals vaults; the frozen vault requires
-> VOICE); `ASSAILANT_DUNGEON_BUILD_1` (frozen-first-impact).
+> VOICE); `ANCIENT_WAR_LAB_1` (frozen-first-impact).
 
 ## 0. Ruled / built / proposed — read this table before anything else
 
@@ -273,7 +273,7 @@ spawn factionless and without a lord, so they may read as wildlife rather
 than guardians. Both are `VAULT_DUNGEON_BUILD_1`'s template files, out of
 this pass's scope, and both are quicktest questions.
 
-## 6. Alignment with `ASSAILANT_DUNGEON_BUILD_1`
+## 6. Alignment with `ANCIENT_WAR_LAB_1`
 
 Same player-facing shape on purpose: inert on arrival → the crew's own
 delivered `AIPersonaCore` is the irreversible step inward → the place wakes

@@ -1,6 +1,6 @@
 # RimUtinni: Assailant Salvage — validation walk
 subject: src/RimMandrake/AssailantSalvage  (dev source folder, own About.xml packageId `mandrake.rut.assailantsalvage`)
-deps: `Ludeon.RimWorld` only; no C#, no Mod Settings; not wired into any map generation (ASSAILANT_DUNGEON_BUILD_1 is separate)
+deps: `Ludeon.RimWorld` only; no C#, no Mod Settings; not wired into any map generation (ANCIENT_WAR_LAB_1 is separate)
 status-hint: CRYPTOFORGE_HARVEST_RETIRE_1 step 1 — 22 owned RUT_ ThingDef replacements for the Cryptoforge salvage props (airlocks, shielded turret and autocannon, landmine, terminals, floor heater, black box, wargaming table, blueprints bench, cryptosleep pod, ruined hospital bed), same stats as the donor, owned defNames; script = `src/RimMandrake/AssailantSalvage/validation.py`, never run live yet
 
 Sources: `About/About.xml`, the three `Defs/ThingDefs/RUT_*.xml` files (their header comments name each donor def and its stats), `design/Jawa/art/SALVAGE_PALETTE.md`.

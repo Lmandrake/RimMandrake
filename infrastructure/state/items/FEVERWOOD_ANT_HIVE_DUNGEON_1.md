@@ -67,7 +67,7 @@ player cannot retreat through open ground.
 ## ⚠️ What does NOT exist yet: procedural, non-plot dungeons
 
 MEASURED 2026-09-22: this project has a dungeon spec (`design/Jawa/worldbuilding/dungeons_arc_spec.md`)
-and two dungeon build items — `ASSAILANT_DUNGEON_BUILD_1` and `VAULT_DUNGEON_BUILD_1`. **Both are
+and two dungeon build items — `ANCIENT_WAR_LAB_1` and `VAULT_DUNGEON_BUILD_1`. **Both are
 FIXED, plot-bearing sites** (a crashed killer at a named tile; a frozen vault at an adjacent one), with
 hand-placed content palettes and quest-signal gates.
 

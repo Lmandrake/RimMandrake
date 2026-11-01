@@ -1421,7 +1421,7 @@ research_tree:
     (2) GhoulInfusion — restored, but PLACEMENT-RESTRICTED: owner: "back in,
     but only in key places (like the dungeons). NOT to occur randomly or by
     Anomaly timeclock progression." Ghoul content must be hand-placed
-    (dungeon authoring, e.g. ASSAILANT_DUNGEON_BUILD_1/VAULT_DUNGEON_BUILD_1
+    (dungeon authoring, e.g. ANCIENT_WAR_LAB_1/VAULT_DUNGEON_BUILD_1
     territory), never wired to the vanilla Anomaly monolith-level/timeclock
     spawn system. This is a placement rule for whoever builds ghoul content,
     not just an un-cut.

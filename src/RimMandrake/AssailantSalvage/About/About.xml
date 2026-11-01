@@ -27,6 +27,6 @@ their busted/jammed/forced variants), a landmine, a ship terminal + bank, a tran
 landing beacon, a floor heater, a wargaming table, a blueprints bench, a frozen cryptosleep pod
 and a ruined hospital bed. They are staged here as standalone content, not yet wired into any
 map generation — the frozen first-impact complex they were originally harvested for
-(ASSAILANT_DUNGEON_BUILD_1, the Assailant dungeon) is separately blocked on a joint
-owner+BENCH creative-lock-in session and is not this item's scope.</description>
+(ANCIENT_WAR_LAB_1, the war lab dungeon) is a separate build
+and is not this mod's scope.</description>
 </ModMetaData>

@@ -16,7 +16,7 @@
      (§8.1), and the faction semi-permanent bases seed
      (design/Jawa/faction_semipermanent_bases_seed.md).
      Feeds RESEARCH_TREE_NORMALIZATION_1, VAULT_DUNGEON_CONCEPT_1,
-     ASSAILANT_DUNGEON_BUILD_1, and the Rites/ShipMemory line.
+     ANCIENT_WAR_LAB_1, and the Rites/ShipMemory line.
      Execution: ANTIQUITIES_TREE_BUILD_1 — UNBLOCKED 2026-09-04 (owner:
      the expansion/review sitting this was waiting on concluded; tree
      rebrand names/merges stay open, but slices 1-2 do not depend on them).

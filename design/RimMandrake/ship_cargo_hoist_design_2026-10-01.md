@@ -185,7 +185,7 @@ Owner: *"Yes for small test site."* Not Gorga's Palace yet.
 |---|---|---|
 | Foundry towers | live (`RUT_FoundryTowerEntrance`) | a ruined head-frame beside the tower mouth carries heavy salvage up without carrying |
 | Breached vaults V1–V6 | `VAULT_DUNGEON_BUILD_1` | dead vault lifts. The frozen Rakata (V6) come up sealed. |
-| Assailant first-impact site | `ASSAILANT_DUNGEON_BUILD_1` | the thaw-gate's *"old power core"* is lowered to its socket, a reason to bring the ship |
+| Assailant first-impact site | `ANCIENT_WAR_LAB_1` | the thaw-gate's *"old power core"* is lowered to its socket, a reason to bring the ship |
 | Sarlacc (D-1) | `sarlacc_discussion_pack.md` | feeding the sarlacc by cable, and pulling a swallowed colonist up |
 
 ### 3c. Lantern Deeps cave mouths
