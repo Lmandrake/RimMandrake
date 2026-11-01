@@ -1976,8 +1976,10 @@ namespace RimMandrake.FlowWorks.Hose
             foreach (CompHoseReel r in reels) { layeredIds.Add(r.parent.thingIDNumber); layeredLays.Add(r.lay); }
             layeredPlump = RM_HoseSettings.plumpAmount;
             // HOSE_DRAW_FIX_CROSS_SHADOW_QUADRATIC: only the strands whose rank moved (and those near them) re-check their
-            // crossing shadows -- the old poseVersion++ here re-checked all of them on every rebuild
-            if (!LegacyFrame) RanksMoved(was, layering);
+            // crossing shadows -- the old poseVersion++ here re-checked all of them on every rebuild.
+            // HOSE_CROSS_FIX_LEGACY_TOGGLE_STALE_INDEX: marked under FrameLegacy too (only dirty flags; the legacy draw never asks
+            // the index), else ranks that moved while it was on leave Keyed strands' spans built on old lower sets once it is off
+            RanksMoved(was, layering);
             return layering;
         }
 

@@ -285,7 +285,9 @@ namespace RimMandrake.FlowWorks.SelfTest
                 RiverSwitchFlipChecks.Has(src, @"crossIndex\.Set\(r\.parent\.thingIDNumber, rp\);", "a built strand is indexed");
                 RiverSwitchFlipChecks.Has(src, @"meshes\.Remove\(r\); crossIndex\.Drop\(r\.parent\.thingIDNumber\);", "a dropped strand leaves the index");
                 RiverSwitchFlipChecks.Has(src, @"meshes\.Clear\(\);\s*crossIndex\.Clear\(\);", "a removed map clears it");
-                RiverSwitchFlipChecks.Has(src, @"if \(!LegacyFrame\) RanksMoved\(was, layering\);", "a layering rebuild marks only moved ranks");
+                RiverSwitchFlipChecks.Has(src, @"RanksMoved\(was, layering\);", "a layering rebuild marks only moved ranks");
+                // HOSE_CROSS_FIX_LEGACY_TOGGLE_STALE_INDEX: marked under FrameLegacy too, so toggling it off finds no stale strand
+                Assert(!System.Text.RegularExpressions.Regex.IsMatch(src, @"LegacyFrame\)\s*RanksMoved\("), "RanksMoved is not gated on FrameLegacy");
                 RiverSwitchFlipChecks.Has(src, @"crossIndex\.Check\(id, rank, ", "the shadow asks the index");
                 Assert(!src.Contains("private int poseVersion") && !src.Contains("poseVersion++;") && !src.Contains("crossVer != poseVersion"), "the global poseVersion is gone");
             });
