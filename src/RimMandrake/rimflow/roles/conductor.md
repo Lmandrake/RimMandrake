@@ -90,7 +90,7 @@ a 3-5 line note to the Conductor log read at wake; the program is `conductor_clo
 `seat_restart.py request` stores its verdict and gaps, which the next wake prints until recorded or dismissed). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
 his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh`. The Dispatcher
 restarts the window as a fresh Remote Control `CONDUCTOR` only once the old transcript and his keyboard have been quiet for
-`goodbye_quiet_s` (600 s). It holds while helpers are alive, while the window is mid-reply, while his keyboard is busy,
+`goodbye_quiet_s` (240 s). It holds while helpers are alive, while the window is mid-reply, while his keyboard is busy,
 or while a record is half-written. ANY input after the goodbye cancels it: his message, a ring, a task notification
 or a queued prompt, read in full from a transcript cursor with no timestamp filter. A request that printed DEFERRED (live
 helpers) drains instead, and their completion notices do not cancel it. A malformed record also cancels, and

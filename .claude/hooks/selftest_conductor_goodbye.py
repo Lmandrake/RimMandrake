@@ -90,7 +90,7 @@ def test_live_goodbye_restart_is_on_and_backstop_off():
     for need in ("--owner-said", "--for OWNER", "./publish", "conductor/log.md", "Closed out:",
                  "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye"):
         check(need in m, "live: the close-out names %r" % need)
-    check("Fresh Conductor after ten quiet minutes" in m and "off pending your choice" not in m,
+    check("Fresh Conductor after four quiet minutes" in m and "off pending your choice" not in m,
           "live: the reply line promises the fresh window, not the off notice")
 
 

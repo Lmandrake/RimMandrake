@@ -81,7 +81,7 @@ to the Conductor log; `src/RimMandrake/rimflow/conductor_closeout.py check` list
 and the request carries what is left to the next wake). Built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): the UserPromptSubmit hook
 `.claude/hooks/conductor_goodbye.py` prints the steps on that turn, ending in `seat_restart.py request --seat BENCH
 --fresh --reason goodbye --note "<3-5 lines>"`. The Dispatcher then relaunches a fresh `CONDUCTOR` window only after the
-old window's transcript and his keyboard have both been quiet for `goodbye_quiet_s` (600 s, ten minutes). It holds
+old window's transcript and his keyboard have both been quiet for `goodbye_quiet_s` (240 s, four minutes; owner 2026-10-31). It holds
 while your helpers are alive, while you are mid-reply, while his keyboard is busy, or while a record is half-written.
 ANY input after the goodbye cancels the restart: his message (including one typed mid-turn during the close-out), a
 ring, a task notification, or a queued prompt. The one exception is a request that printed DEFERRED: live helpers never

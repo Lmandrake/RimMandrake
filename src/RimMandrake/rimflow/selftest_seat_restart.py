@@ -1169,7 +1169,7 @@ BLOG = os.path.join(TMP, "conductor", "log.md")
 
 
 def bsched(**seat_kw):
-    seat = {"kind": "conductor", "grace_s": 120, "seat_log": BLOG, "backstop": True,
+    seat = {"kind": "conductor", "grace_s": 120, "goodbye_quiet_s": 600, "seat_log": BLOG, "backstop": True,
             "backstop_ctx_tokens": 120_000, "backstop_idle_s": 3600, "backstop_human_idle_s": 14_400}
     seat.update(seat_kw)
     s = {"seats": {"BENCH": {"enabled": True, "wake": False, "recover_dead": False, "session_name": "CONDUCTOR",
@@ -1669,8 +1669,8 @@ def _j_run(sch, st, o, times):
 
 
 def test_j1_conductor_waits_a_quiet_window_not_the_grace():
-    # P0-1 simplified: after a goodbye the kill needs goodbye_quiet_s (600 s) of silence on the transcript
-    check(SR.DEFAULTS.get("goodbye_quiet_s") == 600, "J1 goodbye_quiet_s defaults to 600 s (%s)"
+    # P0-1 simplified: after a goodbye the kill needs goodbye_quiet_s (240 s) of silence on the transcript
+    check(SR.DEFAULTS.get("goodbye_quiet_s") == 240, "J1 goodbye_quiet_s defaults to 240 s (%s)"
           % SR.DEFAULTS.get("goodbye_quiet_s"))
     sch = bsched()
     st = fresh()

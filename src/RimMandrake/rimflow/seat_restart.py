@@ -70,7 +70,7 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "helper_stale_s": 1800, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
             "fence_s": 1020, "ring_hold_s": 600, "orphan_wait_s": 180,
-            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 600,
+            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 240,
             # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (never a Conductor, _busy_on)
             "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
@@ -1177,7 +1177,7 @@ def cursor_verdict(cfg, rs, sc, now, track=True):
     -> ("cancel", why) | ("hold", why) | ("ok", None).
 
     The Conductor rule (blind review 2 2026-10-29 P0-1, simplified on the coordinator's direction): after his goodbye
-    the window is restarted only once its transcript has been QUIET for goodbye_quiet_s (600 s) with every record
+    the window is restarted only once its transcript has been QUIET for goodbye_quiet_s (240 s) with every record
     parsed cleanly, and ANY input at all since the goodbye cancels — his, a ring, a task notification, a peer; a
     malformed record cancels; a torn last record holds. Quiet is judged on two clocks: the newest record timestamp
     after the cursor, and the Dispatcher's own clock since it last saw the file grow (rs seen_size / quiet_since, so a
