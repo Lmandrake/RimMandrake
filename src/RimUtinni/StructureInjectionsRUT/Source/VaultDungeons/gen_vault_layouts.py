@@ -439,8 +439,8 @@ def main():
         # a casket is (1,2) with its interaction cell one to the east - a gap
         # between each keeps every casket openable
         # Rows of 9 from (r0+2, c0+2). Index 49 = (r0+7, c0+6): the 3x3 stasis vault, centred in the
-        # core. Indices 72 and 80 = (r0+10, c0+2) and (r0+10, c0+10): two stasis caskets (1x2, north
-        # half on r0+9), clear of the door column c0+6. COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS.
+        # core. Indices 72 and 80 = (r0+10, c0+2) and (r0+10, c0+10): two stasis caskets (1x2; KCSG row 0 is
+        # south, so the second cell is r0+11), clear of the door column c0+6. COLD_STORAGE_STASIS_BUILD_RAKATAN_CHAMBERS.
         core_items=(["RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket", ".",
                      "RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket"]
                     + ["."] * (49 - 7) + ["RUT_Symbol_RakataStasisVault_Wrecked"]

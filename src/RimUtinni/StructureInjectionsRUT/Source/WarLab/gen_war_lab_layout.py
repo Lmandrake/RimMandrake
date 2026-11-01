@@ -214,8 +214,8 @@ CORE_HUG_TURRETS = ["Turret_MiniTurret", "Turret_MiniTurret"]
 # its specimens' rations in Rakatan stasis caskets. One still holds a weak field (Kludged) with provisions in it
 # (layer 2); one is dead (Wrecked). The symbols are the vault's (Defs/VaultDungeons/SymbolDefs_Vaults.xml), which
 # need Cuisine and Cold Storage: without them KCSG finds no symbol and leaves the cell empty, as in the vault.
-# A casket is 1x2 (north half one row up) with its interaction cell one to the east; both stand in the core's
-# north-west and north-east quarters, clear of the containment cells, the turrets and the archive.
+# A casket is 1x2 with no interaction cell; KCSG row 0 is the SOUTH row, so its second cell is r+1. Both stand in the core's
+# south-west and south-east quarters (rows MID-4 and MID-3), clear of the containment cells, the turrets and the archive.
 CORE_STASIS = [("RUT_Symbol_RakataStasisCasket_Kludged", (MID - 4, MID - 6)),
                ("RUT_Symbol_RakataStasisCasket_Wrecked", (MID - 4, MID + 5))]
 PROVISIONS_SYM = "RUT_Symbol_StasisHeldProvisions"
@@ -295,9 +295,10 @@ def build():
         if layout[r][c] == "." and dist(r, c, n) >= CORE_START_D:
             layout[r][c] = sym
 
-    # Stasis caskets: the root cell, the north half (r-1) and the interaction cell (c+1) must all be clear core.
+    # Stasis caskets: both cells of the 1x2 footprint, the root (r, c) and the second cell (r+1, c) (KCSG row 0 is south),
+    # must be clear core. The casket has no interaction cell.
     for sym, (r, c) in CORE_STASIS:
-        for cr, cc in ((r, c), (r - 1, c), (r, c + 1), (r - 1, c + 1)):
+        for cr, cc in ((r, c), (r + 1, c)):
             assert layout[cr][cc] == "." and dist(cr, cc, n) >= CORE_START_D, \
                 "stasis casket %s at %s overlaps (%d,%d)=%s" % (sym, (r, c), cr, cc, layout[cr][cc])
         layout[r][c] = sym
