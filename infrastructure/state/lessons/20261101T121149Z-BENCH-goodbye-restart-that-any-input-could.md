@@ -1,0 +1,1 @@
+A goodbye restart that any input could cancel, with no alarm on cancel, silently cost a whole night: a peer session's message counted as owner input. A cancel of something he asked for must re-arm or alarm.
