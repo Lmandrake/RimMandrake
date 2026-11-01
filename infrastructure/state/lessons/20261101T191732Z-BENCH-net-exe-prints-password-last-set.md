@@ -1,0 +1,1 @@
+net.exe prints 'Password last set' at today's UTC offset, not the offset of the stamp's date, so on the DST fall-back (2026-11-01) codex_image.py's sandbox gate saw a false 1 h gap and refused every codex launch; artpiped --sync-sandbox cannot cure that. Exact 3600 s gap on a DST date = this bug.

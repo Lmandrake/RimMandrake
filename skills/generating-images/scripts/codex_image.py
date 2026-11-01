@@ -261,8 +261,9 @@ def machine_sandbox_password_set() -> datetime | None:
             return None
         txt = m.group(1)
         fmt = "%m/%d/%Y %I:%M:%S %p" if txt.endswith("M") else "%m/%d/%Y %H:%M:%S"
-        # net.exe prints Windows local time; WSL shares the Windows clock/zone.
-        when = datetime.strptime(txt, fmt).astimezone().astimezone(timezone.utc)
+        # net.exe prints the stamp at TODAY's UTC offset, not the offset of its own date, so a
+        # stamp from before a DST change must not be read at its date's offset (a false 1 h gap).
+        when = datetime.strptime(txt, fmt).replace(tzinfo=datetime.now().astimezone().tzinfo).astimezone(timezone.utc)
         newest = when if newest is None or when > newest else newest
     return newest
 
