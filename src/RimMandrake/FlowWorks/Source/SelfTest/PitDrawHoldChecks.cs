@@ -176,6 +176,11 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(src.Contains("Shader.GetGlobalVector(ShaderPropertyIDs.MapSunLightDirection)"), "the cast vector vanilla's shader displaces by (_CastVect)");
                 Assert(src.Contains("MatBases.SunShadow.color"), "the shadow tint SkyManager sets each frame");
                 Assert(src.Contains("RM_PitDrawMath.SunShadowedBy(x, z, sunVx, sunVz, sunCasters)"), "each shade vertex tests the vanilla sweep");
+                // PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS: the per-frame shade buffers are reused lists, never fresh arrays
+                Assert(src.Contains("m.SetVertices(verts);") && src.Contains("m.SetColors(cols);") && src.Contains("m.SetTriangles(tris, 0);"),
+                    "the shade mesh is filled from the reused lists");
+                Assert(!src.Contains("new Vector3[nv]") && !src.Contains("new Color32[nv]") && !src.Contains("new int[nx * nz * 6]"),
+                    "can-fail: no shade buffer is allocated per call");
                 Assert(src.Contains("RM_PitDrawMath.SunCasters(l, r, a, b, sunVx, sunVz, SunHMax, SunHeightAt, sunCasters)"), "casters gathered per piece");
                 Assert(src.Contains("ed.def.staticSunShadowHeight") && src.Contains("map.edificeGrid["), "casters are edifices with a static sun shadow height");
                 Assert(src.Contains("!MatBases.SunShadow.shader.isSupported"), "only where vanilla draws the layer at all");

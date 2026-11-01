@@ -123,6 +123,10 @@ namespace RimMandrake.FlowWorks
 			return sunCasters.Count > 0;
 		}
 
+		private readonly System.Collections.Generic.List<Vector3> shadeVerts = new System.Collections.Generic.List<Vector3>();
+		private readonly System.Collections.Generic.List<Color32> shadeCols = new System.Collections.Generic.List<Color32>();
+		private readonly System.Collections.Generic.List<int> shadeTris = new System.Collections.Generic.List<int>();
+
 		private void DrawEdgeShade(IntVec3 g, float l, float r, float a, float b, int casters, bool sun, float y)
 		{
 			if (edgeShadeMat == null)
@@ -131,9 +135,12 @@ namespace RimMandrake.FlowWorks
 				edgeShadeMat = new Material(MatBases.EdgeShadow) { renderQueue = RM_FaceMaterial.OccluderQueue + 1 };
 			}
 			int nx = Mathf.Max(1, Mathf.CeilToInt((r - l) / ShadeStep)), nz = Mathf.Max(1, Mathf.CeilToInt((b - a) / ShadeStep));
-			int nv = (nx + 1) * (nz + 1);
-			var verts = new Vector3[nv];
-			var cols = new Color32[nv];
+			// PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS: this runs per shaded piece every frame, so the vertex, colour and
+			// triangle buffers are reused lists (Mesh.SetVertices/SetColors/SetTriangles copy them), not fresh arrays
+			var verts = shadeVerts;
+			var cols = shadeCols;
+			verts.Clear();
+			cols.Clear();
 			bool any = false;
 			for (int iz = 0; iz <= nz; iz++)
 				for (int ix = 0; ix <= nx; ix++)
@@ -146,26 +153,25 @@ namespace RimMandrake.FlowWorks
 						col = new Color(v * sunCol.r, v * sunCol.g, v * sunCol.b, 1f);   // both multiply the ground: their product
 					}
 					if (col.r < 0.999f || col.g < 0.999f || col.b < 0.999f) any = true;
-					int k = iz * (nx + 1) + ix;
-					verts[k] = new Vector3(x, 0f, z);
-					cols[k] = col;
+					verts.Add(new Vector3(x, 0f, z));   // index iz * (nx + 1) + ix: row-major, as the triangles below read it
+					cols.Add(col);
 				}
 			if (!any) return;
-			var tris = new int[nx * nz * 6];
-			int t = 0;
+			var tris = shadeTris;
+			tris.Clear();
 			for (int iz = 0; iz < nz; iz++)
 				for (int ix = 0; ix < nx; ix++)
 				{
 					int v0 = iz * (nx + 1) + ix, v1 = v0 + nx + 1;
-					tris[t++] = v0; tris[t++] = v1; tris[t++] = v1 + 1;
-					tris[t++] = v0; tris[t++] = v1 + 1; tris[t++] = v0 + 1;
+					tris.Add(v0); tris.Add(v1); tris.Add(v1 + 1);
+					tris.Add(v0); tris.Add(v1 + 1); tris.Add(v0 + 1);
 				}
 			if (shadeUsed >= shadeMeshes.Count) shadeMeshes.Add(new Mesh { name = "RM_PitLipEdgeShade" });
 			Mesh m = shadeMeshes[shadeUsed++];
 			m.Clear();
-			m.vertices = verts;
-			m.colors32 = cols;
-			m.triangles = tris;
+			m.SetVertices(verts);
+			m.SetColors(cols);
+			m.SetTriangles(tris, 0);
 			Graphics.DrawMesh(m, Matrix4x4.TRS(new Vector3(0f, y, 0f), Quaternion.identity, Vector3.one), edgeShadeMat, 0);
 		}
 
