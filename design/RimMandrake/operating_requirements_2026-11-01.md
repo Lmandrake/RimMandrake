@@ -82,7 +82,7 @@ with no owner; a fixture value in each filled class reports it. Exists: targets,
 record; each metric reads distressed at the same minute the record says. Point a metric at a missing file: it reads
 UNMEASURED and alarms, never sane. **Freshness:** every metric carries `max_age_min` and, where work is claimed, a
 progress reading; a source frozen at a sane value while work has stopped must alarm. Second test: freeze `staffing.json`
-sane; keep the timers firing with collection suppressed. Both alarm within two passes. Exists: staffing alarm inside relentless, `pool_breach`. Missing: all of the family.
+sane; keep the timers firing with collection suppressed. Both alarm within two passes. Exists: `relentless.*`, `seats.*`, `disk.scratch_outside_cap` (limits in `ops_watch_rules.json` ranges, owner Operations). Missing: `selftests.*`.
 
 **OP3 One incident, from told to recovered.** [Dispatcher delivers; each role acks] A distressed or emergency reading
 opens one row in `told.jsonl` beside `alarms.json`: cause key, metric, reader, told_at, ack_due, recover_by. It rings the

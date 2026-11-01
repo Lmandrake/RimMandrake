@@ -144,6 +144,26 @@
     }
    }
   },
+  "disk.scratch_outside_cap": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 150,
+   "why": "OP2: 279 clones once sat outside the pool cap, which counts relentless/clones alone. The reading is rm_scratch_clones in the newest phase of scratch_reap's sanity record. Distressed one past that record's start line of 12 (near twice a quiet machine); the selftest holds the two equal. max_age_min: two hourly reaper starts plus the timer's 5 min jitter and a margin, so one missed run is not an alarm and two are.",
+   "classes": {
+    "sane": {"at_least": 0},
+    "distressed": {"at_least": 13}
+   }
+  },
+  "disk.scratch_outside_blind": {
+   "owner": "Operations",
+   "ack_within_min": 30,
+   "max_age_min": 150,
+   "why": "The sanity record is missing, torn, stale or holds no reading: nothing can say the clones are inside the cap. Agrees with the disk.scratch_outside_blind target.",
+   "classes": {
+    "sane": {"at_least": 0},
+    "distressed": {"at_least": 1}
+   }
+  },
   "seats.paused": {
    "owner": "Operations",
    "max_age_min": 10,
@@ -212,7 +232,7 @@
   "sigma_floor_rel": 0.05,
   "sigma_floor_abs": 0.5,
   "keys": ["*"],
-  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "relentless.*", "seats.*"]
+  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "disk.scratch_outside_*", "relentless.*", "seats.*"]
  },
  "run": {
   "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
@@ -236,6 +256,12 @@
   {"key": "relentless.distressed", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_DISTRESS", "name": "OPS_RELENTLESS_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2, DI2: the belt ran 6 h behind an open breaker on 2026-11-01 with 382 ready, and the alarm that named it reached only a note. The cause is in the title and in relentless.cause; the limits are in the ranges block"},
+  {"key": "disk.scratch_outside_distressed", "op": ">", "value": 0, "alarm": true, "tag": "SCRATCH_OUTSIDE_CAP", "name": "OPS_SCRATCH_OUTSIDE_CAP_DRAIN", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "OP2: helper clones are piling up where the pool cap cannot see them. The count is in the title; the limit is in the ranges block; the source is ~/.local/state/rm-scratch-reap/sanity.json"},
+  {"key": "disk.scratch_outside_blind", "op": ">", "value": 0, "alarm": true, "tag": "SCRATCH_OUTSIDE_BLIND", "name": "OPS_SCRATCH_OUTSIDE_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "OP2: the scratch_reap sanity record is missing, torn, stale or empty of the count, or the disk collector did not run. Nothing can say the clones are inside the cap until it is seen again; the cause names which"},
   {"key": "seats.distressed", "op": ">", "value": 0, "alarm": true, "tag": "SEAT_IDLE_WITH_WORK", "name": "OPS_SEAT_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: FOUNDRY sat idle with work ready on 2026-10-30 and 10-31, rung, and nothing brought it back. The seat and the minutes are in the title; the limits are in the ranges block"},

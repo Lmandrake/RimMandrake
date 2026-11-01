@@ -15,6 +15,7 @@ rimflow/dispatcher_schedule.json "measure"):
                          busy hours on runs that caught nothing (no FAIL, no finding, no close within 24 h)
              disk        free GB on / (WSL ext4), C:, D:; D: used GB (agent storage growth); scratch under the reaper
                          (the last line of rm-scratch-reap's runs.jsonl, written hourly: no 160 s dry run here)
+                         clones outside the pool cap (scratch_outside: the reaper's sanity record, read only)
              timers      systemctl --user: failed units, timers overdue
              flow        the rimflow ledger (pulse_core.read_ledger, the union of clones): untriaged findings,
                          closes and verify passes in 24 h, lapsed leases
@@ -941,6 +942,43 @@ def disk_mounts():
     return {"root": "/", "c": "/mnt/c", "d": "/mnt/d"}
 
 
+SO_RANGES = ("disk.scratch_outside_cap", "disk.scratch_outside_blind")
+
+
+def scratch_outside(san, now, rules):
+    """disk.scratch_outside_cap (OP2): clones the pool cap cannot see, from the newest phase of the cleaner's sanity
+    record. Read only. A record that is missing, torn, stale, dated ahead or without the count reads UNMEASURED and
+    counts in disk.scratch_outside_blind, whose target alarms: unlike disk.scratch_dirty_*, no record is never a pass.
+    Freshness is the stamp inside the file, never its mtime."""
+    ms, why, phase = ranges_of(rules), need_ranges(rules, SO_RANGES), None
+    limit = None if why else ms["disk.scratch_outside_cap"]["max_age_min"]
+    if why is None:
+        d = read_json(san)
+        rows = [(r["at"], n) for n, r in (d.items() if isinstance(d, dict) else ())
+                if n in ("start", "end") and isinstance(r, dict) and is_num(r.get("at")) and finite(r["at"])]
+        if not rows:
+            why = "sanity record missing or torn: %s" % san
+        else:
+            at, phase = max(rows)
+            got = d[phase].get("measures")
+            v = got.get("rm_scratch_clones") if isinstance(got, dict) else None
+            if at > now + 300:
+                why = "sanity record is dated %d s ahead of the clock" % (at - now)
+            elif now - at > limit * 60:
+                why = "sanity record frozen: last stamped %s, %.0f min ago, limit %g" % (iso(at), (now - at) / 60.0, limit)
+            elif not is_num(v) or not finite(v) or v < 0:
+                why = "sanity record holds no rm_scratch_clones at its %s: %s" % (phase, str(d[phase].get("problems"))[:160])
+    if why:
+        return {"disk.scratch_outside_cap": U(why, "clones"), "disk.scratch_outside_distressed": U(why),
+                "disk.scratch_outside_blind": M(1, "sources not seen", cause=why[:300])}
+    pts = {"disk.scratch_outside_cap": M(v, "clones", phase=phase, at=iso(at), max_age_min=limit)}
+    state = read_class(ms, "disk.scratch_outside_cap", pts)
+    cause = "%s clones outside the pool cap at the %s of the reaper run of %s" % (fmt(v), phase, iso(at)) if state in ALARMED else "none"
+    pts["disk.scratch_outside_distressed"] = M(int(state in ALARMED), "1 when clones pile up outside the cap", state=state, cause=cause)
+    pts["disk.scratch_outside_blind"] = M(0, "sources not seen", cause="none")
+    return pts
+
+
 def c_disk(now, rules, ctx):
     out = {}
     for name, mnt in disk_mounts().items():
@@ -1013,6 +1051,7 @@ def c_disk(now, rules, ctx):
                                                  problems=(row.get("problems") or [])[:6])
         except (OSError, ValueError, AttributeError) as e:
             out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
+    out.update(scratch_outside(san, now, rules))
     # The bounded worker-clone pool (WORKER_CLONES_MONITOR_POOL_NOT_RABBITS): read live each tick, never from a cache.
     # One number alarms: clones over the cap, bytes over the cap, plus every clone holding unpushed work nobody is using,
     # in the pool or anywhere else a helper clones (rm/scratch, session dirs: LIQUIDNET_SURFACEGAP_FIX_UNLANDED_CLONES).
@@ -2345,7 +2384,8 @@ TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 BLIND_KEYS = frozenset("""
 companion.grant_hours_left companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
-disk.scratch_dirty_end disk.scratch_dirty_start disk.scratch_ok_age_h disk.scratch_refused_gb disk.scratch_total_gb
+disk.scratch_dirty_end disk.scratch_dirty_start disk.scratch_ok_age_h disk.scratch_outside_blind disk.scratch_outside_cap
+disk.scratch_outside_distressed disk.scratch_refused_gb disk.scratch_total_gb
 disk.pool_breach disk.pool_clones disk.pool_gb disk.pool_oldest_h
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h
 process.share_24h process.share_7d
@@ -2538,9 +2578,9 @@ def run(now=None, rules=None, filer=None, families=None):
                 sick.append({"rule": "series_write", "key": "%s._series" % fam, "value": None, "window": "now",
                              "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e)[:160])})
         points.update(pts)
-    for fam in ("relentless", "seats"):
-        if (not families or fam in families) and not counts_as_measured(points.get(fam + ".blind")):
-            points[fam + ".blind"] = st_suppressed(points, fam)
+    for fam, key in (("relentless", "relentless.blind"), ("seats", "seats.blind"), ("disk", "disk.scratch_outside_blind")):
+        if (not families or fam in families) and not counts_as_measured(points.get(key)):
+            points[key] = st_suppressed(points, fam)
             stamp_ranges(points, rules)
     hist, lastm = {}, {}
     for fam, recs in prev.items():
