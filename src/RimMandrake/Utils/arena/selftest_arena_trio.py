@@ -24,6 +24,7 @@ fix reverted), and must go RED there: that is the forced-failure proof.
 """
 import json
 import os
+import time
 import shlex
 import shutil
 import subprocess
@@ -409,6 +410,126 @@ def sc_killed_before_critic(tmp, mod, tag):
     out = w.run(4)
     ok = out[-1].startswith("published") and w.calls.count("build") == 1 and len(w.critic.seen) == 1
     print("     E%s: out %s, builds %d" % (tag, out[-1][:70], w.calls.count("build")))
+    return ok
+
+
+class SigWriter(RA.ListWriter):
+    """ListWriter whose records carry a sig, as the signed log's do (a void names its verdict by sig)."""
+    def emit(self, arm, event, **kw):
+        rec = super().emit(arm, event, **kw)
+        rec["sig"] = "SIG%04d" % len(self.recs)
+        return rec
+
+
+def _swept_world(tmp, name, mod, critic=None, marker=True, writer=None, before_kill=None):
+    """A trio world killed before its critic verdict, whose clone is then replaced as arena_replay_run.start_repair
+    + a fresh clone leave it: only main, the pending head's objects pruned, a ready marker created after the build
+    (marker=False: no marker). state.json still names the pending build. -> (world, pending head, head gone?)."""
+    import arena_replay as R
+    w = World(tmp, name, mod, critic=critic or Critic(lambda k, c: "accept"), writer=writer or SigWriter())
+    real = w.loop.tester_pass
+
+    def die(task):
+        if before_kill:
+            before_kill(w, task)
+        raise Killed()
+    w.loop.tester_pass = die
+    try:
+        w.loop.step()
+    except Killed:
+        pass
+    w.loop.tester_pass = real
+    head = json.loads((w.ctl / "state.json").read_text())["pending"]["head"]
+    if sh(w.root, "git", "rev-parse", "--abbrev-ref", "HEAD") != "main":
+        sh(w.root, "git", "switch", "-q", "main")
+    sh(w.root, "git", "branch", "-f", RA.WIP, "main")                # the fresh clone: only main
+    sh(w.root, "git", "reflog", "expire", "--expire=now", "--all")
+    sh(w.root, "git", "gc", "-q", "--prune=now")
+    if marker:
+        R._write_marker(w.root, {"nonce": "0" * 32, "created": time.time() + 2, "arm": "trio", "task": TASK["id"],
+                                 "pid": os.getpid(), "state": "ready"})
+    gone = subprocess.run(["git", "cat-file", "-e", head + "^{commit}"], cwd=str(w.root)).returncode != 0
+    w.reopen()                                                      # state.json kept: the stale pointer
+    return w, head, gone
+
+
+def _refused_kept(w, n=3):
+    try:
+        w.run(n)
+    except RA.Refused as e:
+        pend = json.loads((w.ctl / "state.json").read_text()).get("pending")
+        return str(e), bool(pend) and not w.recs("invalid") and not w.recs("critic_round", "verdict")
+    return None, False
+
+
+def sc_swept_pending(tmp, mod, tag):
+    """SW TRIO_RESUME_FIX_SWEEP_DELETES_PENDING_BUILD: killed before the critic, then the runner's start sweep
+    replaces the clone (the pending head's commit is gone) while state.json still names it. The stale pending is
+    dropped with ONE infra invalid verdict voided by the harness orphan void (no round spent); a fresh build is
+    critic-reviewed and published."""
+    w, head, gone = _swept_world(tmp, "SW" + tag, mod)
+    out = w.run(5)
+    vs = w.recs("critic_round", "verdict")
+    ok = (gone and out[-1].startswith("published") and w.calls.count("build") == 2 and len(w.critic.seen) == 1
+          and [r["verdict"] for r in vs] == ["invalid", "accept"]
+          and (vs[0].get("detail") or {}).get("stage") == "infra" and vs[1].get("sha") != head
+          and [(r.get("detail") or {}).get("void_verdict_sig") for r in w.recs("invalid")] == [vs[0]["sig"]]
+          and [r["verdict"] for r in mod.verdicts(w.writer.records(), TASK["id"])] == ["accept"]
+          and mod.rounds_used(w.writer.records(), TASK["id"]) == 1)
+    print("     SW%s: gone %s, out %s, builds %d, verdicts %s" % (
+        tag, gone, out[-1][:60], w.calls.count("build"), [r["verdict"] for r in vs]))
+    return ok
+
+
+def sc_swept_guards(tmp, mod, tag):
+    """SWG the repair refuses (pending kept, no verdict, no void) when: a critic already answered in the round; the
+    clone has no marker newer than the build (no evidence of a sweep); a git probe fails (never read as absence)."""
+    def answer(w, task):                                           # a critic answered fail, killed before the verdict
+        p = w.loop.state["pending"]
+        w.loop.emit("test_start", task, sha=p["head"], detail={"tester": "trio-critic-x1", "build_id": p["build_id"],
+                                                               "role": "critic"})
+        w.loop.emit("test_end", task, sha=p["head"], verdict="fail", detail={"tester": "trio-critic-x1",
+                                                                             "build_id": p["build_id"], "role": "critic"})
+    w1, _, g1 = _swept_world(tmp, "SWa" + tag, mod, before_kill=answer)
+    e1, k1 = _refused_kept(w1)
+    w2, _, g2 = _swept_world(tmp, "SWm" + tag, mod, marker=False)
+    e2, k2 = _refused_kept(w2)
+    w3, _, g3 = _swept_world(tmp, "SWp" + tag, mod)
+    w3.loop._commit_state = lambda sha: None
+    e3, k3 = _refused_kept(w3)
+    ok = (g1 and g2 and g3 and k1 and "critic answered" in (e1 or "") and k2 and "marker" in (e2 or "")
+          and k3 and "probe failed" in (e3 or ""))
+    print("     SWG%s: answered %s | no marker %s | probe %s" % (tag, (e1 or "-")[-70:], (e2 or "-")[-60:],
+                                                                 (e3 or "-")[-50:]))
+    return ok
+
+
+class DieOnVoid(SigWriter):
+    """Dies once on the first harness-void `invalid` append (after the infra verdict was written)."""
+    armed = True
+
+    def emit(self, arm, event, **kw):
+        if event == "invalid" and self.armed:
+            self.armed = False
+            raise Killed()
+        return super().emit(arm, event, **kw)
+
+
+def sc_swept_crash_before_void(tmp, mod, tag):
+    """SWC killed between the infra verdict and its void: the restart reuses that verdict and appends exactly one
+    void (never a second verdict, never a NotTested wedge), then a fresh build publishes."""
+    w, _, gone = _swept_world(tmp, "SWc" + tag, mod, writer=DieOnVoid())
+    try:
+        w.run(1)
+    except Killed:
+        pass
+    w.reopen()
+    out = w.run(5)
+    vs = w.recs("critic_round", "verdict")
+    ok = (gone and out[-1].startswith("published") and [r["verdict"] for r in vs] == ["invalid", "accept"]
+          and len(w.recs("invalid")) == 1 and w.calls.count("build") == 2)
+    print("     SWC%s: out %s, verdicts %s, voids %d" % (tag, out[-1][:50], [r["verdict"] for r in vs],
+                                                         len(w.recs("invalid"))))
     return ok
 
 
@@ -1036,6 +1157,12 @@ def sc_pilot_lane_no_fallback(tmp, mod, tag):
 
 
 MUTATIONS = [
+    ("SW stale pending of a swept clone not dropped", sc_swept_pending,
+     "        self._drop_lost_pending(task)\n", ""),
+    ("SWG an answered critic does not stop the repair", sc_swept_guards,
+     "        if answered:\n            refuse(", "        if False:\n            refuse("),
+    ("SWC a closed infra round is not completed by the repair", sc_swept_crash_before_void,
+     "            if not (v.get(\"verdict\") == \"invalid\" and", "            if True or not (v.get(\"verdict\") == \"invalid\" and"),
     ("A cap off by one", sc_never_satisfied, "ROUND_CAP = 4\n", "ROUND_CAP = 5\n"),
     ("A simplify trigger removed", sc_never_satisfied,
      "        if k >= SIMPLIFY_AFTER and simplify_rec(self.recs(), task[\"id\"]) is None:\n", "        if False:\n"),
@@ -1148,6 +1275,9 @@ MUTATIONS = [
 ]
 
 SCENARIOS = [
+    ("SW a pending build swept with its clone is dropped as a harness-voided infra round", sc_swept_pending),
+    ("SWG the swept-pending repair refuses on an answered critic, no sweep evidence, a failed probe", sc_swept_guards),
+    ("SWC killed between the infra verdict and its void: restart completes it once", sc_swept_crash_before_void),
     ("A never satisfied: simplify after 2, park after 4, never a 5th", sc_never_satisfied),
     ("R round count survives a restart with state.json lost", sc_restart_counts),
     ("B split: parts share the budget; the last part publishes once", sc_split),

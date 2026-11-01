@@ -491,6 +491,7 @@ class TrioLoop(RA.Loop):
             self.state["pending"] = None                                            # for it; a fresh build pass runs
             self._save()
             self.status("pending build %s belongs to a voided round: dropped" % pend.get("build_id"))
+        self._drop_lost_pending(task)
         self._recover(task)
         if self.state.get("pending"):
             return self.tester_pass(task)
@@ -500,6 +501,88 @@ class TrioLoop(RA.Loop):
         if k >= SIMPLIFY_AFTER and simplify_rec(self.recs(), task["id"]) is None:
             return self.simplify_pass(task)
         return self.build_pass(task)
+
+    def _commit_state(self, sha):
+        """'present' | 'missing' (git said so: `cat-file --batch-check` prints '<sha> missing') | None (the probe
+        itself failed or the sha is malformed: never read as absence)."""
+        if not (isinstance(sha, str) and len(sha) == 40 and all(c in "0123456789abcdef" for c in sha)):
+            return None
+        r = RA.SG.git_run(self.root, "cat-file", "--batch-check=%(objectname) %(objecttype)", input=sha + "\n",
+                          capture_output=True, text=True)
+        out = (r.stdout or "").strip()
+        if r.returncode != 0:
+            return None
+        if out == sha + " commit":
+            return "present"
+        return "missing" if out == sha + " missing" else None
+
+    def _drop_lost_pending(self, task):
+        """TRIO_RESUME_FIX_SWEEP_DELETES_PENDING_BUILD: state.pending names a build whose base or head commit git
+        reports MISSING from this clone (the runner's start sweep rmtrees a killed run's clone and the new clone is
+        fetched at base only; the build's commits lived only in the old one). No critic can review it, so the round is
+        closed by a signed `invalid` verdict (stage "infra") and that verdict is voided by the ONE harness orphan void
+        (VOID_WHY, run_id VOID_RUN_ID), so require_tested and arena_analysis.dq_tester both see an untested build
+        voided by the harness. Both records stay in the log; like every critic-infra failure it spends no round.
+        Voided ONLY when all hold, else Refused with pending kept (an operator decides, `void-infra-reject` exists):
+        the probe answered (a failed git probe is never absence); pending is the log's latest build of the task (same
+        build_id and sha); the clone's marker was created AFTER that build_end (the clone was replaced, the loss is
+        not the builder's); no critic answered in the round (as void_refusal); not a split part (earlier accepted
+        parts may be lost with the clone). Idempotent: a verdict written by an earlier attempt that died before the
+        void is reused, never doubled."""
+        pend = self.state.get("pending")
+        if not pend:
+            return None
+        hs, bs = self._commit_state(pend.get("head")), self._commit_state(pend.get("base"))
+        if hs == "present" and bs == "present":
+            return None
+        bid, tid = pend.get("build_id"), task["id"]
+
+        def refuse(why):
+            raise Refused("refused: pending build %s is not in the clone (head %s, base %s) and %s; pending kept, "
+                          "no verdict or void written" % (bid, hs, bs, why))
+        if None in (hs, bs):
+            refuse("a git probe failed (not read as absence)")
+        recs = self.recs()
+        b, tests = round_tests(recs, tid)
+        if b is None or (b.get("detail") or {}).get("build_id") != bid or b.get("sha") != pend.get("head"):
+            refuse("it is not the log's latest build of %s" % tid)
+        if task.get("_part"):
+            refuse("it is %s of a split item (the earlier parts may be lost with the clone)" % task.get("_part_label"))
+        import arena_replay as R
+        m = R._marker_ok(self.root)
+        if not m or m["created"] <= L.ts_epoch(b.get("ts")):
+            refuse("the clone's marker does not show it was created after that build (no evidence of a sweep)")
+        answered = [r for r in tests if r.get("event") == "test_end" and not (r.get("detail") or {}).get("infra")]
+        if answered:
+            refuse("a critic answered in its round (%s by %s)" % (answered[-1].get("verdict"),
+                                                                 (answered[-1].get("detail") or {}).get("tester")))
+        why = ("critic infrastructure: the pending build's commits are absent from the clone (swept at runner start); "
+               "no critic could run")
+        if self._round_open(tid):
+            v = self._verdict(task, "invalid", sha=pend.get("head"), stage="infra", build_id=bid,
+                              builder=pend.get("builder"), why=why)
+        else:
+            vs = verdicts(self.recs(), tid)
+            v = vs[-1] if vs else {}
+            vd = v.get("detail") or {}
+            if not (v.get("verdict") == "invalid" and vd.get("stage") == "infra" and vd.get("build_id") == bid
+                    and vd.get("why") == why):
+                refuse("its round already has a verdict that is not this repair's (%s)" % v.get("verdict"))
+        sig = v.get("sig") if isinstance(v, dict) else None
+        if not sig:
+            raise Refused("refused: the infra verdict of lost build %s has no sig: it cannot be voided" % bid)
+        self.writer.emit(ARM, "invalid", lane="build", run_id=VOID_RUN_ID, task=tid, sha=pend.get("head"),
+                         detail={"build_id": bid, "why": VOID_WHY, "void_verdict_sig": sig,
+                                 "voided_round": (v.get("detail") or {}).get("round"),
+                                 "reason": "TRIO_RESUME_FIX_SWEEP_DELETES_PENDING_BUILD: pending build %s (base %s "
+                                           "head %s) missing from the replaced clone (marker created %s after "
+                                           "build_end %s); no critic could run" % (
+                                               bid, pend.get("base"), pend.get("head"), m["created"], b.get("ts")),
+                                 "evidence": [str(self.ctl / "state.json"), str(self.root / R.MARKER)]})
+        self.state["pending"] = None
+        self._save()
+        self.status("pending build %s lost with its clone: dropped (infra verdict, harness-voided)" % bid)
+        return bid
 
     def _recover(self, task):
         """ralph_a's recovery from the signed log, over the trio's records."""
