@@ -1691,9 +1691,58 @@ def cmd_namecheck(args, seat):
     return 0
 
 
+def _reader_or_die(reader):
+    """RO4: nobody files for a reader nothing wakes. A test ledger (RIMFLOW_LEDGER) keeps its fixture seats unless it
+    names a table with RIMFLOW_ROUTES."""
+    if os.environ.get("RIMFLOW_LEDGER") and not os.environ.get("RIMFLOW_ROUTES"):
+        return
+    import incident
+    why = incident.reader_problem(reader, _schedule_or_none())
+    if why:
+        die("refused: %s. File for a reader in src/RimMandrake/rimflow/alarm_routes.json.\n" % why)
+
+
+def _schedule_or_none():
+    try:
+        with open(os.path.join(_HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def cmd_ack(args, seat):
+    import incident
+    try:
+        row = incident.ack(args.id, seat, args.plan, args.recover_min)
+    except ValueError as e:
+        die("%s\n" % e)
+    print("%s acked by %s; recover by %s. An ack gives ownership: past that time it moves up the chain, acked or not."
+          % (args.id, seat, row["recover_by"]))
+
+
+def cmd_incident_line(args, seat):
+    import incident
+    try:
+        incident.write_line(args.id, seat, args.line)
+    except ValueError as e:
+        die("%s\n" % e)
+    print("%s: his line written. This is not an ack." % args.id)
+
+
+def cmd_incidents(args, seat):
+    import incident
+    incs = incident.fold(incident.read_rows() or [])[0]
+    for x in sorted(incs.values(), key=lambda a: a["told_t"]):
+        if args.all or x.get("state") == "open":
+            print("%s  %s %s rung %s reader %s told %s ack_due %s recover_by %s by %s plan %s  %s" % (
+                x["id"], x.get("state"), x.get("class"), x.get("rung"), x.get("reader"), x.get("told_at"), x.get("ack_due"),
+                x.get("recover_by"), x.get("ack_by"), x.get("plan"), ", ".join(sorted(x.get("metrics") or {}))))
+
+
 def cmd_file(args, seat):
     _, w = load()
     _mint_or_die(args.id, w)
+    _reader_or_die(args.for_)
     ev = {"seat": seat, "event": "file", "id": args.id, "title": args.title,
           "kind": args.kind, "row": args.row, "target": args.target_field,
           "needs": args.needs, "spec": args.spec, "caused_by": args.caused_by}
@@ -2389,6 +2438,7 @@ def cmd_spawn(args, seat):
     nominating some third item as the host was an artefact of the old schema.
     ⛔ Do not reintroduce `--id` here.
     """
+    _reader_or_die(args.for_)
     _, w = load()
     _mint_or_die(args.name, w)
     known = (args.from_ in w.items or args.from_ in w.findings
@@ -3624,6 +3674,18 @@ def build_parser():
             cmd_namecheck)
     s.add_argument("name", nargs="?")
     s.add_argument("--bank", action="store_true", help="list the intent words")
+
+    s = add("ack", "take ownership of an incident; a ring or a read is not one", cmd_ack)
+    s.add_argument("id")
+    s.add_argument("--plan", required=True, help="what happens next")
+    s.add_argument("--recover-min", dest="recover_min", type=int, help="minutes to recovery (default: the table's)")
+
+    s = add("incident-line", "write the line he sees first; not an ack", cmd_incident_line)
+    s.add_argument("id")
+    s.add_argument("line")
+
+    s = add("incidents", "the told ledger's open incidents", cmd_incidents)
+    s.add_argument("--all", action="store_true")
 
     s = add("file", "create work — for any seat, including another's", cmd_file)
     s.add_argument("id", help="SUBJECT_INTENT_TWIST, e.g. BRIDGE_HANG_UNSTICK_THIRD_TIME_LUCKY "

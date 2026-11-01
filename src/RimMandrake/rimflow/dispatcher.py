@@ -87,6 +87,7 @@ import role_launch as RL  # noqa: E402
 import seat_restart as SR  # noqa: E402
 import login_watch as LW  # noqa: E402
 import signal_watch as SW  # noqa: E402
+import incident as IN  # noqa: E402
 import account_pick as AP  # noqa: E402
 import helper_budget as HB  # noqa: E402
 import schema as S  # noqa: E402  (testq: dump, utcnow, parse_ts)
@@ -369,6 +370,78 @@ def message(seat, cfg, ticket, ring_id):
     return "\n".join(lines)
 
 
+def incident_step(sch, st, obs, now, act):
+    """OP3: one pass of the told ledger (incident.py). Before PAUSE returns: an outage does not stop climbing the chain
+    because the work is paused. Its Operations rung joins the alarm keys the role launcher reads, so an outage's first
+    run is the one alarm run, under that path's gap and daily limits."""
+    reader = obs.get("incident")
+    if not reader or not (sch.get("incident") or {}).get("enabled"):
+        return
+    failed = st.pop("incident_failed", None)
+    if failed:
+        act(do="alarm", kind="incident:write", note=True, conductor_log=True, why=failed,
+            raise_first="The incident ledger could not be written.")
+    rows = reader["rows"]()
+    if rows is None:
+        act(do="alarm", kind="incident:ledger", note=True, conductor_log=True, why="told.jsonl does not read: no incident moved",
+            raise_first="The incident ledger is torn.")
+        return
+    cursor = (st.get("incident") or {}).get("cursor", 0)
+    res = IN.step(reader["table"](), rows, reader["status"](), now, cursor=cursor if cursor <= len(rows) else 0,
+                  events=reader.get("events"))
+    act(do="incident", **{k: res[k] for k in ("rows", "rings", "cursor", "snapshot")})
+    roles = obs.get("roles")
+    if roles and res["keys"]:
+        base = roles["ops"]
+
+        def ops():
+            s = base()
+            if isinstance(s, dict) and isinstance(s.get("alarms"), dict) and "_alarm_state" not in s["alarms"]:
+                s = dict(s, alarms=dict(s["alarms"], **{k: {"state": "OPEN", "for": "Operations"} for k in res["keys"]}))
+            return s
+        roles["ops"] = ops
+
+
+def incident_run(sch, st, role, mode, why, now):
+    """One run the chain asks for, inside the shared per-hour budget. -> what happened."""
+    ist = st.setdefault("incident", {})
+    runs = [t for t in ist.get("runs") or [] if now - t < 3600]
+    limit = IN.load_table()["policy"]["runs_per_hour"]
+    rs = st.setdefault("roles", {}).setdefault(role, {})
+    if rs.get("run_now"):
+        return "a run of %s is already asked for" % role
+    if len(runs) >= limit:
+        return "held: %d runs this hour, the budget" % len(runs)
+    rs["run_now"] = RL.run_now_request(sch, {"role": role, "by": "DISPATCHER", "why": why[:300], "mode": mode}, now)
+    ist["runs"] = runs + [now]
+    return "%s run asked for" % role
+
+
+def incident_execute(a, sch, st, root, now, do_ring, do_conductor):
+    """The writes of one incident pass. Rows first: a ring the ledger does not hold would ring again."""
+    ist = st.setdefault("incident", {})
+    IN.append(a["rows"]) if a["rows"] else None
+    ist["cursor"] = a["cursor"]     # the rows it read: a signal landing behind ours is still ahead of it
+    said = []
+    held, ist["held"] = ist.get("held") or [], []
+    for r in held + a["rings"]:
+        if r["how"] == "doorbell":
+            pending = (st.get("seats", {}).get(r["seat"]) or {}).get("ring")
+            if pending and not pending.get("consumed_at"):
+                ist["held"].append(r)           # one inbox file per seat: this ring waits, the Dispatcher's stays
+                continue
+            do_ring(root, r["seat"], "inc-%s-%d" % (r["id"], int(now)), r["text"])
+        elif r["how"] == "quick_run":
+            do_conductor(sch, {"kind": "incident:" + r["id"], "why": r["text"], "raise_first": "An incident is unacked."}, now)
+            said.append(incident_run(sch, st, "Conductor", "quick", r["text"], now))
+        elif r["how"] == "fresh_run":
+            said.append(incident_run(sch, st, "Operations", "run", r["text"], now))
+        said.append("%s: %s" % (r["id"], r["how"]))
+    IN.write_snapshot(a["snapshot"])
+    a["snapshot"] = None
+    return "; ".join(said) or "stamped"
+
+
 def decide(sch, st, obs, now, apply, out=None):
     """-> actions. Mutates st (the seat bookkeeping). Pure except for the lazy calls in obs (peek(seat),
     events(seat, since), consumed(seat, ring_id), armed(seat), alive(pid)) so a selftest can drive every path.
@@ -405,6 +478,11 @@ def decide(sch, st, obs, now, apply, out=None):
     except Exception as e:  # noqa: BLE001 - never stops the tick, and alarms
         act(do="alarm", kind="signal:watch", note=True, conductor_log=True,
             why="signal watch raised %s: %s" % (type(e).__name__, str(e)[:200]))
+    try:
+        incident_step(sch, st, obs, now, act)
+    except Exception as e:  # noqa: BLE001 - never stops the tick, and alarms
+        act(do="alarm", kind="incident:step", note=True, conductor_log=True, raise_first="The incident ledger is not running.",
+            why="incident step raised %s: %s" % (type(e).__name__, str(e)[:200]))
     if obs.get("paused"):
         act(do="skip", why="PAUSE file present: %s" % obs["paused"])
         for seat, ss in sorted(st["seats"].items()):     # a ring already in an inbox would still wake its window
@@ -1088,6 +1166,11 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                                 LW.switch_failed(st)
                             if a.get("conductor_log"):
                                 res = "%s; %s" % (res, do_conductor(sch, a, now))
+                    elif a["do"] == "incident":
+                        try:
+                            res = incident_execute(a, sch, st, root, now, fx.get("incident_ring", lambda rt, s, rid, m: ring(rt, s, rid, m)), do_conductor)
+                        except Exception as e:  # noqa: BLE001 - said by the next tick; the deadman reads incidents.json's age
+                            st["incident_failed"] = res = "FAILED: %s: %s" % (type(e).__name__, str(e)[:200])
                     elif a["do"] == "unit_repair":
                         paused = do_paused()
                         if paused:
@@ -1303,6 +1386,13 @@ def execute(actions, sch, st, root, apply, now, fx=None, persist=None, deadline=
                 told = a.get("ledger") == "noted" or (a.get("conductor_log") and str(res).startswith("conductor log appended"))
                 if not told and (a.get("ledger") or a.get("conductor_log")):
                     st["alarms"].pop(a["kind"], None) if last is None else st["alarms"].update({a["kind"]: last})
+            if stamped and apply and a["kind"] in st["alarms"]:
+                try:
+                    IN.signal(sch, a["kind"], a.get("why"), now)
+                except Exception as e:  # noqa: BLE001 - an alarm that cannot join the ledger still went its own roads
+                    st["incident_failed"] = "signal of %s lost: %s: %s" % (a["kind"], type(e).__name__, str(e)[:160])
+            if a["do"] == "incident" and not a["rows"] and not a["rings"]:
+                continue        # the snapshot stamp of a quiet tick is not a journal line
             a["result"] = res if apply else ("DRY: " + (res or "would %s" % a["do"]))
             journal(root, dict(a, message=None, pending=None) if a.get("message") or a.get("pending") else a)
         if apply and ledger_ok and sch.get("publish"):
@@ -1495,6 +1585,19 @@ def signal_obs(sch):
             "flags": lambda: SW.read_json(cfg, "flags.json"), "sanity": lambda: SW.read_sanity(cfg)}
 
 
+def incident_obs(sch):
+    cache = {}
+
+    def events():
+        if "e" not in cache:
+            try:
+                cache["e"] = RL.read_ledger()["events"]
+            except Exception:  # noqa: BLE001 - no reading of the items: no ack by action this tick
+                cache["e"] = []
+        return cache["e"]
+    return {"rows": IN.read_rows, "table": IN.load_table, "status": lambda: RL.read_ops(RL.ops_status_path(sch)), "events": events}
+
+
 def default_obs(sch, root, st=None):
     seats = sch.get("seats") or {}
     return {
@@ -1510,6 +1613,7 @@ def default_obs(sch, root, st=None):
         "seat_restart": SR.default_obs(sch, seat_events_since) if SR.config(sch) else None,
         "login": login_obs(sch),
         "signals": signal_obs(sch),
+        "incident": incident_obs(sch),
     }
 
 

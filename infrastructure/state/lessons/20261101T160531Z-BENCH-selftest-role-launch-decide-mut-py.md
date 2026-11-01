@@ -1,0 +1,1 @@
+selftest_role_launch_decide_mut.py pins its temp path in golden output: it reads FAIL under run_selftests.py (decide_off_switch_and_window, decide_off_switch_on_event_run_is_not_spent) because the runner nests TMPDIR, and all ok run alone. Not a code failure; read the want/got paths before chasing it.

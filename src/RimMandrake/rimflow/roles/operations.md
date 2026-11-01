@@ -79,6 +79,12 @@ do nothing, exit.
 
 ## The running check
 
+0. **Incidents first** (OP3, `rimflow/incident.py`, `D:\ClaudeWork\rimmandrake\ops_watch\told.jsonl`). `rimflow incidents` lists
+   the open ones; an alarm key `alarm:incident:<id>#<n>` means you are that incident's reader. Take it:
+   `rimflow ack <id> --plan "<next>"`. An ack gives ownership only and sets recover_by; a read or a note is not one, and
+   past recover_by it moves up the chain, acked or not. It closes on its readings alone. Launched as a fresh run for an
+   incident about to reach him, write the line he sees: `rimflow incident-line <id> "<line>"`, which is not an ack. The
+   routing table `rimflow/alarm_routes.json` is yours: every alarm kind has a route there or a selftest fails.
 1. Read `digest.md`. For each open alarm: is it real (the instrument can see: check the point's mark and `why`), who
    owns the cause, and what moves it. A RUNWAY_LOW on an ESTIMATE runway is checked against the meter first. A lent account alarms on `accounts.<account>.loan_runway` (its allowance against the lent window); its `runway` stays the week figure and raises nothing.
 2. For each open flag older than one run: band, run, silent, or target. A silent series is an instrument gone blind:

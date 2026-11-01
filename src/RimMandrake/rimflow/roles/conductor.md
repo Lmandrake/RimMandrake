@@ -132,6 +132,8 @@ newer `CUT LIST` replaced goes back to him on the newest one. You only RAISE it;
    `--per-ruling`), then propagate it (`deciding-and-superseding`) or file the propagation as an item; an
    instruction → a ticket for the right seat (`rimflow namecheck`, `rimflow spawn --for …`) or a schedule-change
    proposal; game-state words → `./game --said`; a canon line → `canon.yml`.
+   An incident rung to you (a `DISPATCHER ESCALATION (incident:<id>)` line in your log, or `rimflow incidents`): take it with
+   `rimflow ack <id> --plan "<next>"`, or it goes on to a fresh Operations run and then him. Reading it is not an ack.
 3. **The scheduled check** (no message needed): (a) pending enact items from his rulings: each one has a builder
    ticket or gets one; a reconciler mismatch older than a day gets a note and a re-ticket; (b) canon-check findings:
    fix the doc to canon, never canon to the doc, when the fix is a wording edit in one file; otherwise file it to the

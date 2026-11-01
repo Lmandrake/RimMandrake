@@ -1967,6 +1967,28 @@ def live_sweep_line(sweep: dict | None, now: float) -> str:
     return sweep["line"] if -300 <= age <= LIVE_SWEEP_STALE_SECS else "live promises: sweep silent"
 
 
+def read_incidents(path: str | None = None) -> dict | None:
+    """The Dispatcher's incidents.json (rimflow/incident.py); None when there is none."""
+    p = path or os.environ.get("RM_INCIDENTS", "/mnt/d/ClaudeWork/rimmandrake/ops_watch/incidents.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def classify_incidents(snap: dict | None, acks: dict, now: float) -> list[dict]:
+    """OP4: his banner, the rows that sort first. An incident that reached him: red when emergency (the phone follows
+    in pulse.py, one send per key), amber when distressed. The agent's line, or the template said to be unread."""
+    out = []
+    for o in (snap or {}).get("owner") or []:
+        kind, key = ("red" if o.get("class") == "emergency" else "amber"), "incident:" + str(o.get("id"))
+        text = ("UNREAD: " if o.get("unread") else "") + str(o.get("line"))
+        out.append(_row(key, kind, "incident", text, o.get("since") or now, src="incidents", incident=key,
+                        label=str(o.get("id")), detail=text, acked=key in acks))
+    return out
+
+
 def read_staffing(path: str | None = None) -> dict | None:
     """relentless.py's staffing reading (design section 13); None when there is none."""
     p = path or os.environ.get("RM_STAFFING_READING", "/home/mandrake/rm/relentless/store/staffing.json")
@@ -2095,7 +2117,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     tel, tel_eps = telemetry_episodes(raw.get("telemetry"), state.get("tel_episodes"), now)
     owner_play = owner_play_session((raw.get("probe") or {}).get("rimworld_running")
                                     or (raw.get("telemetry") or {}).get("game_running"), raw.get("bridge"))
-    rows = (oom + srows + lrows + looks
+    rows = (classify_incidents(raw.get("incidents"), acks, now) + oom + srows + lrows + looks
             + classify_artpipe(raw.get("artpipe", {}), now, raw.get("at", {}).get("artpipe", now))
             + classify_game(raw.get("probe"), raw.get("bridge"), now)
             + classify_telemetry(tel, acks, now, owner_play)
