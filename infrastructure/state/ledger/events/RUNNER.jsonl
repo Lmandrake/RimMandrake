@@ -1729,3 +1729,4 @@
 {"seat":"RUNNER","event":"live","id":"OPS_DEADMAN_REVIVE_AEA3","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:10Z","tsn":1793528290548479180}
 {"seat":"RUNNER","event":"live","id":"WORKER_CLONES_MONITOR_POOL_NOT_RABBITS","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:12Z","tsn":1793528292738905967}
 {"seat":"RUNNER","event":"live","id":"LIVE_RESTORE_OPS_WATCH","result":"kept","detail":"sweep: running again","ts":"2026-11-01T10:18:14Z","tsn":1793528294938001345}
+{"seat":"RUNNER","event":"note","id":"OPS_TIMER_REPAIR_PRXC","text":"ops_watch: cleared at 2026-11-01T13:52:03Z (timers.failed_units now 0)","ts":"2026-11-01T13:53:21Z","tsn":1793541201343043966}
