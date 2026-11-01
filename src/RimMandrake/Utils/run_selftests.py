@@ -255,6 +255,11 @@ SPECIAL_INVOCATIONS = {
 }
 
 
+def _only_names(entries: list[str]) -> list[str]:
+    """--only entries, split on commas: a,b means a b. An entry that is a real file stays whole."""
+    return [n for e in entries for n in ([e] if Path(e).is_file() else e.split(",")) if n]
+
+
 def _only_path(name: str, tests: list[Path]) -> Path:
     """An --only entry as a path. A bare stem (selftest_foo) means the one discovered test of that name; none, or two,
     stays the missing path it is, so main() refuses it by name."""
@@ -674,7 +679,7 @@ def _parser():
     ap.add_argument("--timings", action="store_true",
                     help="print the 10 slowest tests after the summary")
     ap.add_argument("--only", nargs="+", metavar="PATH",
-                    help="run just these selftest files, whatever their tier (still contained, still N/N; no suite lock)")
+                    help="run just these selftest files (spaces or commas), whatever their tier (still contained, still N/N; no suite lock)")
     ap.add_argument("--tier", choices=TIERS + ("all",), default="default",
                     help="default: every unit test (deployed-tier tests print SKIPPED). deployed: only the "
                          "live-install checks — run after a deploy, a game update or a mod subscribe. all: both")
@@ -1080,7 +1085,7 @@ def _suite(args) -> int:
         return 1
 
     if args.only:
-        want = {_only_path(o, tests) for o in args.only}
+        want = {_only_path(o, tests) for o in _only_names(args.only)}
         absent = sorted(str(w) for w in want if not w.is_file())
         if absent:
             # A typo used to yield a green 0/0 (audit §6): naming nothing is an error.

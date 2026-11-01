@@ -115,6 +115,7 @@ eq((r.returncode, "no such file" in r.stdout), (1, True), "--only on a missing p
 # A bare stem names the one discovered test; a stem that matches nothing stays a refusal.
 _tests = [Path("/r/a/selftest_one.py"), Path("/r/b/selftest_two.py"), Path("/r/c/selftest_two.py")]
 eq(rs._only_path("selftest_one", _tests), Path("/r/a/selftest_one.py"), "--only takes a bare stem")
+eq(rs._only_names(["a,b", "c"]), ["a", "b", "c"], "--only takes commas as well as spaces")
 eq(rs._only_path("selftest_one.py", _tests), Path("/r/a/selftest_one.py"), "--only takes a bare file name")
 eq(rs._only_path("selftest_two", _tests).name, "selftest_two", "an ambiguous stem stays a missing path, refused")
 eq(rs._only_path("selftest_nope", _tests).is_file(), False, "an unknown stem stays a missing path, refused")
