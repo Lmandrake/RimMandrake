@@ -4,6 +4,7 @@ it with Windows python, on a throwaway quicktest colony on a list holding mandra
 
     python.exe src/RimMandrake/TerminalBiomes/proof_scald_steam.py setup          stage the two sites, print the roster
     python.exe src/RimMandrake/TerminalBiomes/proof_scald_steam.py run <out.json> [ticks]   advance and judge
+    python.exe src/RimMandrake/TerminalBiomes/proof_scald_steam.py rejudge <out.json>       judge a finished run again
 
 setup: a real surface RM_TheScald map on a warm tile (jawa/world_tile_map_generate, so the biome itself wires
 RUT_ScaldSteamLock and RUT_ScaldSteamCarrier; a quicktest home map is a foreign biome with its own weather lock and
@@ -11,9 +12,10 @@ wildlife, which stopped the clock and killed the test pawns). Two naked colonist
 the boil-suit stand on land, each ringed by an unroofed wall; RM_Noohm, RM_Shulla and a control Muffalo stand in RUT_ScaldWaterShallow. Deaths are judged
 from the damage log's kill events, never from sampled severity (samples sit 6000+ ticks apart).
 run: a naked pawn dies under 120000 ticks (two days, the owner's card). The open sky also gives it Direct Sun
-Heatstroke, and capacity death comes before exposure reaches 1.0 with the two stacked, so the kill may be credited to
-either. The row that isolates the steam is naked_nosun: its Heatstroke is removed at every sample, so only
-RUT_ScaldExposure can kill it. The rind wearer lives the two days, the boil-suit wearer comes through a full day at
+Heatstroke, and the stacked capacity losses kill it before exposure reaches 1.0, so the kill log credits whichever
+slow hediff tipped it (seen: RUT_ScaldExposure, Malnutrition): that row asks only for a death by no wound with the
+clock already past 0.7. The row that isolates the steam is naked_nosun: its Heatstroke is removed at every sample and
+its kill must name RUT_ScaldExposure. The rind wearer lives the two days, the boil-suit wearer comes through a full day at
 stage 0 or 1, natives carry neither burns nor exposure while logged standing in boiling water, and the control carries
 a real Burn (it then usually drowns: burns down it and a downed pawn drowns in shallows, the swim rule's design).
 Other pawns are removed at setup and on every sample, so no stray predator decides a row. run resumes: call it again
@@ -140,9 +142,7 @@ def read(c, pid):
 
 def terrain_under(c, p):
     pos = p.get("position") or p
-    cell = call(c, "rimworld/get_cell_info", x=pos.get("x"), z=pos.get("z"))
-    t = cell.get("terrain") or (cell.get("cell") or {}).get("terrain")
-    return t.get("defName") if isinstance(t, dict) else t
+    return (call(c, "rimworld/get_cell_info", x=pos.get("x"), z=pos.get("z")).get("cell") or {}).get("terrainDefName")
 
 
 def hediffs(p):
@@ -194,14 +194,16 @@ def judge(out, log, died, kills, roster, t0):
     has = lambda r, name: any(h[0] == name for h in r.get("hediffs", []))  # noqa: E731
     kill = {k: next((e for e in kills if str(e.get("victimId")).replace("Thing_", "") == str(pid).replace("Thing_", "")), None)
             for k, pid in roster.items()}
-    killed = lambda k, *why: bool(kill[k]) and kill[k]["tick"] - t0 < 2 * DAY and kill[k].get("culpritHediff") in why  # noqa: E731
+    exposure = [h[1] for r in log for h in r["naked"]["hediffs"] if h[0] == "RUT_ScaldExposure"]
     in_water = {k: [r[k].get("terrain") for r in log if not r[k].get("dead")] for k in NATIVES}
     wet = lambda k: sum(str(t).startswith("RUT_ScaldWater") for t in in_water[k])  # noqa: E731
     steam = sum(b["tick"] - a["tick"] for a, b in zip(log, log[1:]) if a["weather"] == "RUT_ScaldSteam")
     v = {
         "steam_held": steam >= 0.9 * last["tick"],
-        "naked_dies_under_2d": killed("naked", "RUT_ScaldExposure", "Heatstroke"),
-        "steam_alone_kills_under_2d": killed("naked_nosun", "RUT_ScaldExposure"),
+        "naked_dies_under_2d": bool(kill["naked"]) and kill["naked"]["tick"] - t0 < 2 * DAY
+        and not kill["naked"].get("damageDef") and max(exposure, default=0) > 0.7,
+        "steam_alone_kills_under_2d": bool(kill["naked_nosun"]) and kill["naked_nosun"]["tick"] - t0 < 2 * DAY
+        and kill["naked_nosun"].get("culpritHediff") == "RUT_ScaldExposure",
         "rind_survives": died.get("rind", 2 * DAY + 1) > 2 * DAY and last["tick"] >= 2 * DAY,
         # The spec's own bar (section 8 step 5): a full day out, still at stage 0 or 1. Heatstroke is the sun's, not the
         # steam's, and runs on past a day in the open, so a suit wearer needs a roof at night like anyone.
@@ -224,5 +226,8 @@ def judge(out, log, died, kills, roster, t0):
 if __name__ == "__main__":
     if sys.argv[1] == "setup":
         setup()
+    elif sys.argv[1] == "rejudge":   # re-read a finished run's json with this judge; no bridge
+        d, st = json.load(open(sys.argv[2])), json.load(open(STATE))
+        judge(sys.argv[2], d["log"], d["died"], d["kills"], st["roster"], st["t0"])
     else:
         run(sys.argv[2], int(sys.argv[3]) if len(sys.argv) > 3 else 2 * DAY + 500)
