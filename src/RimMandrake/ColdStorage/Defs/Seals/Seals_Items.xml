@@ -57,7 +57,6 @@
       <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
     </graphicData>
     <thingCategories>
-      <li>RM_AgedFoods</li>
       <li>PlantFoodRaw</li>
     </thingCategories>
     <ingestible>
@@ -123,7 +122,6 @@
       <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
     </graphicData>
     <thingCategories>
-      <li>RM_AgedFoods</li>
       <li>MeatRaw</li>
     </thingCategories>
     <ingestible>
@@ -189,7 +187,6 @@
       <texPath>Things/Item/Resource/AnimalProductRaw/InsectJelly</texPath>
     </graphicData>
     <thingCategories>
-      <li>RM_AgedFoods</li>
     </thingCategories>
     <ingestible>
       <ingestEffect>EatVegetarian</ingestEffect>

@@ -40,9 +40,6 @@
     </replaceTags>
     <tradeability>Sellable</tradeability>
     <minifiedDef>MinifiedThing</minifiedDef>
-    <thingCategories>
-      <li>BuildingsFurniture</li>
-    </thingCategories>
   </ThingDef>
 
   <!-- Wrecked: a dead field. Not storage; study it, then build a better grade over it. -->

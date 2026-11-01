@@ -92,7 +92,6 @@
       <drawSize>0.88</drawSize>
     </graphicData>
     <thingCategories>
-      <li>RM_AgedFoods</li>
       <li>MeatRaw</li>
     </thingCategories>
     <statBases>
@@ -158,7 +157,6 @@
       <drawSize>0.88</drawSize>
     </graphicData>
     <thingCategories>
-      <li>RM_AgedFoods</li>
       <li>MeatRaw</li>
     </thingCategories>
     <statBases>
@@ -224,7 +222,6 @@
       <drawSize>0.88</drawSize>
     </graphicData>
     <thingCategories>
-      <li>RM_AgedFoods</li>
       <li>EggsUnfertilized</li>
     </thingCategories>
     <statBases>
@@ -290,7 +287,6 @@
       <drawSize>0.88</drawSize>
     </graphicData>
     <thingCategories>
-      <li>RM_AgedFoods</li>
       <li>PlantFoodRaw</li>
     </thingCategories>
     <statBases>

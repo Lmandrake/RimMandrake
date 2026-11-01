@@ -65,9 +65,6 @@
     </replaceTags>
     <tradeability>Sellable</tradeability>
     <minifiedDef>MinifiedThing</minifiedDef>
-    <thingCategories>
-      <li>BuildingsFurniture</li>
-    </thingCategories>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.coldstorage">
@@ -235,9 +232,6 @@
     </replaceTags>
     <tradeability>Sellable</tradeability>
     <minifiedDef>MinifiedThing</minifiedDef>
-    <thingCategories>
-      <li>BuildingsFurniture</li>
-    </thingCategories>
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase" MayRequire="mandrake.rm.coldstorage">
