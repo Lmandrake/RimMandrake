@@ -28,6 +28,7 @@
     art.py doctor    [--rev REV] [--out FILE]   every slot where the folded ledger and REV's committed tree
                                             (default HEAD) disagree, with the worktree bytes; read-only
     art.py purge     <sha> (--owner-said "..." | --by-card "q → option" | --per-ruling <item|event>) [--why "..."]
+                                            [--ban --subject DEF]  also ban it on those words (no sheet mark needed)
                      [--release-keep]       reject+purge (owner only, one field per kind of his authority, as install);
                                             a kept picture is refused unless --release-keep names his authority for it
     art.py unpurge   <sha> (--owner-said "..." | --per-ruling CONDUCTOR_AUTHORITY_DECIDE_NO_ASKING_MOM --why "...")
@@ -326,7 +327,8 @@ def cmd_purge(a):
         return 2
     try:
         r = L.purge(full[0], owner_said=a.owner_said, by_card=a.by_card, per_ruling=a.per_ruling, why=a.why,
-                    release_keep=a.release_keep, archived_ok=True)    # his words/card/ruling, typed for this picture
+                    release_keep=a.release_keep, archived_ok=True,    # his words/card/ruling, typed for this picture
+                    ban=a.ban, subject=a.subject)
     except L.Refused as e:
         print(f"REFUSED: {e}")
         return 2
@@ -511,6 +513,8 @@ def main(argv=None):
     p.add_argument("--per-ruling", help="a standing ruling of his, cited by item id or ledger event")
     p.add_argument("--why", help="the agent's own reason (recorded; grants nothing)")
     p.add_argument("--release-keep", action="store_true")
+    p.add_argument("--ban", action="store_true", help="also ban it (exact + near-duplicate), as his sheet ✕ does")
+    p.add_argument("--subject", help="the def the ban names, e.g. RM_FireWasp")
     p = sp.add_parser("archive"); p.add_argument("sha"); p.add_argument("--decisions", required=True)
     p.add_argument("--row", required=True); p.add_argument("--dry-run", action="store_true")
     p = sp.add_parser("restore"); p.add_argument("ref"); p.add_argument("--owner-said")

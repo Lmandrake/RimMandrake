@@ -107,7 +107,68 @@ class Counter:
         os.stat, os.lstat, os.scandir = self.st, self.ls, self.sd
 
 
+def same_bytes_survives_enomem():
+    """same_bytes waits out ENOMEM and compares across short reads (2026-10-31)."""
+    import errno
+    tmp = tempfile.mkdtemp()
+    try:
+        a, b, c = (os.path.join(tmp, n) for n in "abc")
+        body = os.urandom(40000)
+        for path, data in ((a, body), (b, body), (c, body[:-1] + bytes([body[-1] ^ 1]))):
+            with open(path, "wb") as f:
+                f.write(data)
+
+        class Flaky:
+            """Fails once with ENOMEM, then returns short reads."""
+            def __init__(self, f, step):
+                self.f, self.step, self.failed = f, step, False
+
+            def read(self, n):
+                if not self.failed:
+                    self.failed = True
+                    raise OSError(errno.ENOMEM, "Cannot allocate memory")
+                return self.f.read(min(n, self.step))
+        with open(a, "rb") as f:
+            flaky = Flaky(f, 1000)
+            sleep, D.time.sleep = D.time.sleep, lambda _s: None
+            try:
+                got = D._read_retry(flaky)
+            finally:
+                D.time.sleep = sleep
+            ok_retry = len(got) == 1000
+        opened = open
+        steps = iter((7000, 16384))
+
+        def short_open(path, *args, **kw):
+            return Flaky0(opened(path, "rb"), next(steps))
+
+        class Flaky0:
+            def __init__(self, f, step):
+                self.f, self.step = f, step
+
+            def read(self, n):
+                return self.f.read(min(n, self.step))
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *exc):
+                self.f.close()
+        D.open = short_open
+        try:
+            ok_short = D.same_bytes(a, b, len(body), len(body))
+        finally:
+            del D.open
+        return (ok_retry and ok_short and D.same_bytes(a, b, len(body), len(body))
+                and not D.same_bytes(a, c, len(body), len(body)))
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
+    if not same_bytes_survives_enomem():
+        print("FAIL same_bytes under ENOMEM and short reads")
+        return 1
     tmp = tempfile.mkdtemp(prefix="deploywalk-")
     try:
         repo, game = os.path.join(tmp, "repo"), os.path.join(tmp, "game")

@@ -194,6 +194,20 @@ def main():
         okev = {"type": "live", "id": "g_ok", "mod": T.MOD, "rel": "Things/x.png", "sha": L.sha256_bytes(other_b),
                 "prev": None, "reason": "backfill-observed", "ts": "2999-01-01T00:00:00"}
         check("banned" not in (G._authorized(okev, idx) or ""), "art_guard still allows an unbanned distinct picture")
+
+        # ── purge --ban: his typed words ban a picture no sheet row marked (firewasp, 2026-10-31)
+        word_sha = L.store_put_bytes(XB.sprite(211))
+        res = L.purge(word_sha, owner_said="purge them", ban=True, subject="RM_Word")
+        idx = L.Index()
+        wb = idx.bans.get(word_sha) or {}
+        check(res["bytes_removed"] and not L.store_has(word_sha) and idx.is_purged(word_sha) and wb.get("said") == "purge them"
+              and bool(wb.get("ph")) and bool(wb.get("ph_mirror")), f"purge --ban deletes the bytes and bans on his words ({wb})")
+        check(L.ban_match(idx, data=near_dup(XB.sprite(211), 60)) is not None, "purge --ban also refuses a near-duplicate")
+        try:
+            L.purge("0" * 64, owner_said="purge them", ban=True)
+            check(False, "purge --ban refuses a picture with no bytes and no hash")
+        except L.Refused:
+            check(True, "purge --ban refuses a picture with no bytes and no hash")
     finally:
         shutil.rmtree(F["root"], ignore_errors=True)
     print(f"\n{'ALL PASS' if not FAILS else f'{len(FAILS)} FAILED'}")

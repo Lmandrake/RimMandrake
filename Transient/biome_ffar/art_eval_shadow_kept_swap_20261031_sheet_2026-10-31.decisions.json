@@ -1,0 +1,293 @@
+{
+  "biome": "SUBJECTS_art_eval_shadow_kept_swap_20261031",
+  "criterion": "Rows: fauna, flora, fish, alphabetical; related rows banded together. Columns: what the game shows now first, then shadowed copies, renders newest first, history oldest first, donor last. The order ranks RECENCY and RUNTIME, never quality or worth.",
+  "decidedCount": 9,
+  "decisions": {
+    "RM_Barbslinger": {
+      "at": "2026-11-01T04:09:14.244Z",
+      "decidedAt": "2026-11-01T04:07:39.758Z",
+      "decision": "C",
+      "note": "It is supposed to have two tails, that was the whole original definition. How in the world that was dropped I don't know. I wrote this creature originally. ",
+      "prefill": "C",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger": {
+          "at": "2026-11-01T04:07:39.758Z",
+          "pick": "C",
+          "set_id": "fd77cf99b86ab5a9",
+          "slot_id": "RM_Barbslinger/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Bileworm": {
+      "at": "2026-11-01T04:09:43.896Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "Things/Pawn/Animal/RM_Bileworm/RM_BilewormV_C": "C"
+      },
+      "pool": {
+        "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "01b5260881e8f040"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_CrystalMit": {
+      "at": "2026-11-01T04:10:13.109Z",
+      "decidedAt": "2026-11-01T04:10:13.108Z",
+      "decision": "A",
+      "note": "",
+      "picks": {
+        "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B": "D",
+        "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C": "E"
+      },
+      "prefill": "A",
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit": {
+          "at": "2026-11-01T04:10:13.108Z",
+          "pick": "A",
+          "set_id": "3614249a6f302943",
+          "slot_id": "RM_CrystalMit/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Emberscythe": {
+      "at": "2026-11-01T04:10:37.755Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "a6149d0c3f26d269a726d29bdf3437ee73e0bd70219c3fcaf16ac3117392d010",
+        "20ee13cf94f45139c30a2f283d045380b9d289c18775acebb5ce00e0483f512c",
+        "6291c078765be7bc37fd53bb3996e58b9995a4680ac268232be6b25f6f7bebf2"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {}
+    },
+    "RM_FireWasp": {
+      "at": "2026-11-01T04:12:50.186Z",
+      "decidedAt": "2026-11-01T04:12:32.443Z",
+      "decision": "B",
+      "note": "",
+      "picks": {},
+      "prefill": "A",
+      "purge": [
+        "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7",
+        "774c704211a6cb102a453d75109b1358b727a1752769d5b0aefd1682e548ceb9",
+        "dec2a9a8defa2c3be552738a5fe629470d0d6d000a64ef202dc61f7b6db46bcd"
+      ],
+      "purgeTouched": true,
+      "q": {},
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp": [
+          "A"
+        ],
+        "_flip:Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_": [
+          "F"
+        ]
+      },
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp": {
+          "at": "2026-11-01T04:12:32.443Z",
+          "pick": "B",
+          "set_id": "22b1e88312799b9f",
+          "slot_id": "RM_FireWasp/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        },
+        "_flip:Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_": {
+          "at": "2026-11-01T04:12:50.186Z",
+          "slot_id": "RM_FireWasp/flyingAnimationFramePathPrefix",
+          "state": "redraw"
+        }
+      }
+    },
+    "RM_FurnaceBeast": {
+      "at": "2026-11-01T04:13:42.775Z",
+      "decidedAt": "2026-11-01T04:13:27.137Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "A",
+      "purge": [
+        "6479dd3fcc1f7b003c875dfff88748826cbe2d4504566284d1e606c7ccf45729",
+        "41f69d0ecf8904682e0f5867503b166f79a2239ef04ae8fa64ea4ecc69f5cafc",
+        "514019df85afb284c582666ad3bee2eba9abab90752bc03dbe15fb158a14e14c",
+        "bcae124636caba515772d7f3c4d6529448ca81224596c97b38419f0ebd790c4a",
+        "6d9b24e9a070535021078684908864db6683ebce637653bd3cbfbd056fa1a56f",
+        "16c2891bd443b5b15b21baa4cc3da084efb256572d0ad3e59b3fe647932e8fb1"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant": {
+          "at": "2026-11-01T04:13:27.137Z",
+          "pick": "A",
+          "set_id": "39a8f6da92209594",
+          "slot_id": "RM_FurnaceBeast/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Suush": {
+      "at": "2026-11-01T04:15:09.773Z",
+      "decidedAt": "2026-11-01T04:15:08.141Z",
+      "decision": "A",
+      "note": "",
+      "picks": {},
+      "pool": {
+        "Things/Pawn/Animal/RM_Suush/RM_Suush": {
+          "add": [
+            "B"
+          ],
+          "baseline": [
+            "e98a4b3d36fc74ba"
+          ],
+          "remove": []
+        }
+      },
+      "prefill": "A",
+      "purge": [
+        "9316d67739073805bcacb4f25535ca053fbfe8f7e7dce37f0259be624404d5bd",
+        "84463d0fdb7b6fd71bde04fcee85a53bd2ca74adb2ef8935280216100e04f1fe",
+        "11b918234ac7a17c6a4419acf92feb6694506f6c16d1dc48004b7b8cdf23cec3"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/RM_Suush/RM_Suush": {
+          "at": "2026-11-01T04:15:08.141Z",
+          "pick": "A",
+          "set_id": "e98a4b3d36fc74ba",
+          "slot_id": "RM_Suush/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_TruffleMole": {
+      "at": "2026-11-01T04:15:59.228Z",
+      "decidedAt": "2026-11-01T04:15:54.419Z",
+      "decision": "C",
+      "note": "",
+      "prefill": "C",
+      "purge": [
+        "a8c8bd892f4812f5ef86ccfa88b8f9b21900e0a0934c4263fbbe5a31fbc05e5a",
+        "0181d8b3064889b212d1b0cea6cbc70ae2ef80c69fb41d8b548d45c455244458",
+        "4b05bd38793fec5c2a4ccc69590110b51b3afaffe562d0d6b3e7c28aae5e3460"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole": [
+          "A"
+        ]
+      },
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {
+        "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole": {
+          "at": "2026-11-01T04:15:54.419Z",
+          "pick": "C",
+          "set_id": "9581b0b599e7b420",
+          "slot_id": "RM_TruffleMole/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    },
+    "RM_Ullai": {
+      "at": "2026-11-01T04:16:27.979Z",
+      "decidedAt": "2026-11-01T04:16:25.115Z",
+      "decision": "A",
+      "note": "",
+      "prefill": "B",
+      "purge": [
+        "9edac5d0ca1d28d3ec09a9f3ca862b112e0f2ab11aa34f5b449541b3d9f8a65e",
+        "faee289c7a7293efe8c9a8ace31c4d35d9b683785b5605e89e5f42f68178a447",
+        "450b8f0f483305964f248e0fb90521c157b2496d835a8f266ec80d3620259a63"
+      ],
+      "purgeTouched": true,
+      "qPrefill": {
+        "pipeline_check": "keep"
+      },
+      "reject": {},
+      "retire": {},
+      "rev": "c9db74d1510eb0b1",
+      "schema": 2,
+      "slots": {
+        "Things/Pawn/Animal/Pyrelands/Ullai/Ullai": {
+          "at": "2026-11-01T04:16:25.115Z",
+          "pick": "A",
+          "set_id": "01cd17c8e9e1e24e",
+          "slot_id": "RM_Ullai/lifeStages[2].bodyGraphicData",
+          "state": "pick"
+        }
+      }
+    }
+  },
+  "posture": "pick-one",
+  "reviewStatus": {
+    "at": null,
+    "by": null,
+    "evidence": "generated by art_sheet.py --biome; rows marked sit1 carry the owner's desert sitting 1 picks, no human has ruled on this sheet; every qPrefill is an agent guess, his answers land in q",
+    "state": "prefill"
+  },
+  "savedAt": "2026-10-31T21:16:28-0700",
+  "savedBy": "review-sheet-sidecar",
+  "sheetId": "art_eval_shadow_kept_swap_20261031_sheet_2026-10-31",
+  "snapshot": "infrastructure/state/art/sheets/art_eval_shadow_kept_swap_20261031_sheet_2026-10-31.snapshot.json",
+  "snapshotId": "c9db74d1510eb0b1",
+  "writeCount": 46
+}

@@ -123,10 +123,10 @@ def main() -> int:
     if got:
         check(got == {"Cobra": "serpent", "Iguana": "lowslung", "Chicken": "flyer", "Horse": "quadruped",
                       "Megascarab": "insect", "Tortoise": "lowslung"}, "body plan: real vanilla races classify from their BodyDef", got)
-    # the three owner-approved Pyrelands rescales: OLD art (git 3791e139ea^) must flag, the new art must pass
+    # the owner-approved Pyrelands rescales: OLD art (git 3791e139ea^) must flag, the new art must pass.
+    # FireWasp left this set 2026-10-31: he purged that art and banned it.
     fx = HERE / "fixtures" / "facing_known_positives"
-    for kind, base, plan in (("FireWasp", "FireWasp", "insect"), ("Anooba male", "Anooba_m", "quadruped"),
-                             ("Furnace beast", "FurnaceBeast_Giant", "quadruped")):
+    for kind, base, plan in (("Anooba male", "Anooba_m", "quadruped"), ("Furnace beast", "FurnaceBeast_Giant", "quadruped")):
         res = {}
         for ver in ("old", "new"):
             mm = {f: F.measure_file(fx / ver / f"{base}_{f}.png") for f in ("east", "south", "north")}

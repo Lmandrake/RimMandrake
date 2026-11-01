@@ -758,11 +758,7 @@
       <ArmorRating_Heat>1</ArmorRating_Heat>
       <Flammability>0</Flammability>
       <Wildness>0.7</Wildness>
-    
-      <!-- Flight, per the owner's standing rule 2026-09-19. Vanilla-Core mechanism;
-           MaxFlightTime>0 is what Pawn_FlightTracker.CanEverFly actually tests. -->
-      <MaxFlightTime>10</MaxFlightTime>
-      <FlightCooldown>5</FlightCooldown></statBases>
+    </statBases>
     <tools>
       <li>
         <label>sting</label>
@@ -834,10 +830,7 @@
       <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
       <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
       <soundEating>Insectoid_Eat</soundEating>
-    
-      <flightStartChanceOnJobStart>0.1</flightStartChanceOnJobStart>
-      <flightSpeedFactor>2.5</flightSpeedFactor>
-      <canFlyIntoMap>true</canFlyIntoMap></race>
+    </race>
     <tradeTags>
       <li>AnimalUncommon</li>
       <li>AnimalInsect</li>
@@ -895,14 +888,6 @@
         </dessicatedBodyGraphicData>
       </li>
     </lifeStages>
-    <!-- 8-frame wing-beat flip-book (FLYER_FLIPBOOK_ART_1; owner note "Needs flyer art now").
-         Scales with the life stage's drawSize. -->
-    <flyingAnimationFramePathPrefix>Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_</flyingAnimationFramePathPrefix>
-    <flyingAnimationFrameCount>8</flyingAnimationFrameCount>
-    <flyingAnimationTicksPerFrame>2</flyingAnimationTicksPerFrame>
-    <flyingAnimationDrawSize>1</flyingAnimationDrawSize>
-    <flyingAnimationDrawSizeIsMultiplier>true</flyingAnimationDrawSizeIsMultiplier>
-    <flyingAnimationInheritColors>true</flyingAnimationInheritColors>
   </PawnKindDef>
 
 </Defs>

@@ -1538,7 +1538,7 @@ def purge_authority(owner_said: str | None = None, by_card: str | None = None, p
 def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", release_keep=False,
           release_from_sheet: tuple[str, str] | None = None, live_paths: list[str] | None = None,
           by_card: str | None = None, per_ruling: str | None = None, why: str | None = None,
-          archived_ok: bool = False) -> dict:
+          archived_ok: bool = False, ban: bool = False, subject: str | None = None) -> dict:
     """Reject+purge: the owner deletes an erroneous render so it stops polluting option
     space. Removes the bytes from the store and records a `purge` event; every sheet and
     every later registration skips the sha. Refuses a picture that is live in a mod
@@ -1547,7 +1547,10 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
       * release_keep=True — the owner's explicit `art purge --release-keep` (his words recorded on the release);
       * release_keep={keep ids} — exactly those keeps (enact: the keeps this same sheet row minted);
       * release_from_sheet=(via, row) — the keeps that same sheet row minted (ingest).
-    Any other keep on the picture refuses the purge. Authority: `purge_authority` (words, card, standing ruling)."""
+    Any other keep on the picture refuses the purge. Authority: `purge_authority` (words, card, standing ruling).
+    ban=True also bans it (exact + near-duplicate), as his sheet ✕ does but on his words or card instead of a mark:
+    2026-10-31, "purge all the terran-like yellow-black wasp images" named pictures no sheet row had marked. The ban
+    is on disk before the bytes go, as in x_delete; no mark means no game file is removed here (a live picture refuses)."""
     auth = purge_authority(owner_said, by_card, per_ruling, why)
     idx = Index()
     if live_paths is None:
@@ -1581,6 +1584,23 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         w.add({"type": "ruling", "id": det_id("release", k["id"], sha), "target": {"sha": sha},
                "verdict": "release", "releases": k["id"], "by": "owner", **auth,
                "trust": "ruled", "via": via})
+    bid = None
+    if ban:
+        data = store_get(sha) if store_has(sha) else None
+        ph = ph_of(idx, sha, data)
+        if not ph:
+            raise Refused(f"{sha[:12]}: no bytes and no stored hash, so a ban could only match this exact file - "
+                          f"`art.py put` the picture first")
+        bid = det_id("ban", sha, "words")
+        bev = {"type": "ban", "id": bid, "sha": sha, "ph": ph, "subject": subject, "by": "owner", **auth, "via": via}
+        if data is not None:
+            try:
+                bev["ph_mirror"] = mirror_dhash(data)
+            except Exception:
+                pass
+        if w.add(bev):
+            w.flush()
+            _absorb([bev])
     removed = False
     p = store_path(sha)
     if p.is_file():
@@ -1588,6 +1608,8 @@ def purge(sha: str, *, owner_said: str | None = None, via: str = "art purge", re
         removed = True
     pev = {"type": "purge", "id": det_id("purge", sha), "sha": sha, "by": "owner",
            **auth, "via": via, "bytes_removed": removed}
+    if bid:
+        pev["ban"] = bid
     un = idx.unpurged.get(sha)
     if un:                                       # a re-purge after his unpurge: a new id (not deduped), ordered after it
         pev.update(id=det_id("purge", sha, un["id"]), follows=un["id"])

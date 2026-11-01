@@ -612,7 +612,7 @@ SELFTEST_ROSTER = (
 # Flamefang, Bolotaur and Orray left this set 2026-10-20: their N/S/E were redrawn and installed by the owner's
 # 2026-10-16 "Facings stand tall" batch and the 2026-10-07 Long Shade picks, and no longer flag (re-measured).
 HEIGHT_MUST_FLAG = {
-    "FrozenAnooba_m", "FrozenFireWasp",
+    "FrozenAnooba_m",
     "GR_Mantistanis",
 }
 # Dalgo moved FLAG -> PASS 2026-10-12: PROVISIONAL art (commit 68ee19c27d) accepted by owner
@@ -634,9 +634,9 @@ HEIGHT_MUST_PASS = {"Nuna_f", "AA_GreenGoo", "FireHawk", "Zeer", "Anooba_f", "Da
 # rest of the set approved by eye — and now sits in HEIGHT_MUST_FLAG.
 HEIGHT_REGRESSION = {}
 
-# FrozenAnooba_m / FrozenFireWasp are the pre-rescale bytes (3791e139e^ / 1ad73a28a^) in
-# Utils/selftest_fixtures: the owner-directed rescales of 2026-10-15 FIXED the live
-# Anooba_m and FireWasp, so the live files can no longer be the known-bad calibration inputs.
+# FrozenAnooba_m is the pre-rescale bytes (3791e139e^) in Utils/selftest_fixtures: the owner-directed
+# rescale of 2026-10-15 FIXED the live Anooba_m, so the live file can no longer be the known-bad
+# calibration input. FrozenFireWasp left this set 2026-10-31: he purged that art and banned it.
 # 🔴 FurnaceBeast was handed to me as known-GOOD at 1.03x, and it is NOT. That 1.03x
 # is the RAW alpha bbox, inflated by 3901 px of alpha 1..16 dust reaching to y=480
 # while the painted body stops at y=400. Its real east/north visible mismatch is the

@@ -1,0 +1,22 @@
+[
+ {
+  "id": "arteval_RM_FireWasp_r1",
+  "rimflow_item_id": "ART_EVAL_PIPELINE_BUILD_OPUS_GRADES_FIRST",
+  "target_def": "RM_FireWasp",
+  "prompt": "A single alien flying insect, the fire wasp, painted in the vanilla RimWorld sprite style: painterly, realistic, with a clean dark outline, on a fully transparent background. It is a slow, drifting glider that lives inside the heat, shown hanging in mid-air among a few discrete tongues of orange-red flame and a faint shimmer of heat-haze, with clear transparent gaps between the flames. It has a blunt shielded head with dark compound eyes, short antennae, a broad heavy rounded thorax, and a stout tapering abdomen joined to the thorax without a narrow waist, with six jointed legs tucked under the body. The head, thorax, abdomen and legs are covered in overlapping heavy scales, like shingled armour plates, matte and ash-toned, each scale edged with a clean dark outline. The scale plating sets the whole colour and pattern: soot-grey and ember-bronze scales in a mottled, scalloped pattern, one uniform palette across the whole body. The scale edges, the seams between plates and the wing margins carry a strong, bright ember-orange glow, so the insect looks at home in the fire, while the scales themselves stay intact, clean and uncharred. Two pairs of broad, wide-chord membranous wings with dark veining are held spread wide in slow, shallow gliding strokes, riding the rising hot air. Seen from the front, the eyes face the viewer. Seen from the side, the insect is in profile with head, thorax and abdomen in a row. Seen from behind, from the game's angled camera, the abdomen tip is nearest the viewer and foreshortened, the thorax recedes behind it, the head is hidden beyond the thorax, and the wings angle up and back from the shoulders, matching the angle of the front view. The body, scale pattern, palette, proportions and rendering stay exactly the same in every view; the head, thorax and abdomen keep the same shape and size. The silhouette reads as an armoured drifting glider, clearly unlike a hornet. Only the insect and its surrounding flames are drawn, centred in the square canvas for a 2.0 by 2.0 draw size, with a transparent background.",
+  "canvas_w": 256,
+  "canvas_h": 256,
+  "facings": [
+   "south",
+   "east",
+   "north"
+  ],
+  "style_notes": "art_eval regen round 1; fixes: F_TOPDOWN, DEPARTURE_MISSING, F_TOPDOWN, DEPARTURE_MISSING",
+  "reference": "",
+  "priority": 40,
+  "source_run": "firewasp_brown_20261031",
+  "drawsize": 2.0,
+  "module": "flyer",
+  "target_texpath": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp"
+ }
+]

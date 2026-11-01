@@ -58,9 +58,11 @@ REMOVING a def that a save already references is not.
 
 import argparse
 import fnmatch
+import errno
 import os
 import shutil
 import sys
+import time
 import xml.etree.ElementTree as ET
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -437,16 +439,40 @@ def split_held(holds, name, rels):
     return free, held
 
 
+def _read_retry(f, n=1 << 14):
+    """One read, waiting out ENOMEM: a /mnt/c read needs contiguous kernel memory, which a
+    fragmented page cache denies for seconds at a time (measured 2026-10-31, even at 64 KiB)."""
+    for wait in (0.5, 1, 2, 4, 8):
+        try:
+            return f.read(n)
+        except OSError as e:
+            if e.errno != errno.ENOMEM:
+                raise
+            time.sleep(wait)
+    return f.read(n)
+
+
 def same_bytes(a, b, size_a, size_b):
     """Byte-equal? Differing sizes are differing bytes; equal sizes are READ, never
-    trusted on size+mtime alone."""
+    trusted on size+mtime alone. Unbuffered small reads, with _read_retry for ENOMEM."""
     if size_a != size_b:
         return False
-    with open(a, "rb") as fa, open(b, "rb") as fb:
+    with open(a, "rb", buffering=0) as fa, open(b, "rb", buffering=0) as fb:
         while True:
-            x, y = fa.read(1 << 20), fb.read(1 << 20)
+            x, y = _read_retry(fa), _read_retry(fb)
             if x != y:
-                return False
+                # A raw read may return short on either mount: refill before calling it different.
+                while len(x) != len(y):
+                    short, longer = (x, y) if len(x) < len(y) else (y, x)
+                    more = _read_retry(fa if short is x else fb, len(longer) - len(short))
+                    if not more:
+                        return False
+                    if short is x:
+                        x += more
+                    else:
+                        y += more
+                if x != y:
+                    return False
             if not x:
                 return True
 
