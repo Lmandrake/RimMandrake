@@ -98,6 +98,10 @@ HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
 PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
 PROBE_GAP_S = 15        # between its two tries, so a game mid-autosave is not mistaken for a wedged one
+# STEVE_GAME_FIX_UNBOUNDED_MAPS: a kept game is recycled before a job at either limit, both under pid 7460 (17 h, 27 maps,
+# 20.9 GB on a 128 GB host, then deaf). Maps grow because river_site.py founds a site per run and keeps earlier sites.
+MAX_GAME_AGE_S = int(os.environ.get("TESTQ_MAX_GAME_AGE_S") or 8 * 3600)
+MAX_GAME_MAPS = int(os.environ.get("TESTQ_MAX_GAME_MAPS") or 20)
 SHEET_DIR = os.environ.get("TESTQ_SHEET_DIR") or os.path.join(RUNNER, "Transient", "modcheck")
 
 
@@ -572,27 +576,30 @@ class Attempt:
             return self.fail("INVALID", "LOAD", "game load failed: " + tail)
         m = re.search(r"started pid (\d+)", tail)      # rw_game.sh up: a fresh process, not "already running"
         if not m:
-            wedged = re.search(r"already running \(pid \d+\)", tail) and self.kept_game_wedged()
-            if wedged:
+            kept = re.search(r"already running \(pid \d+\)", tail)
+            wedged = kept and self.kept_game_wedged()
+            overgrown = kept and not wedged and self.kept_game_overgrown(tail)
+            if wedged or overgrown:
                 # STEVE_LANE_FIX_WEDGED_KEPT_GAME: 2026-10-30 08:10Z the kept game (pid 7460, 17 h old, 27 maps, 21 GB)
                 # stopped answering; `up --wait` only sees the process, so five jobs each reused it (load 1 s), died in
                 # ensure_playing_map on the same 30 s timeout, braked the filler and left the lane dark 14 h. We hold
-                # the guard: restart it. A wedged game cannot run a job, so this needs no once-only memory.
-                self.res["bounced_unresponsive"] = wedged
-                self.say("kept game does not answer the bridge (%s): restarting it" % wedged)
+                # the guard: restart it. A wedged game cannot run a job, so this needs no once-only memory; an overgrown
+                # one comes back fresh, under both limits.
+                self.res["bounced_unresponsive" if wedged else "recycled_kept_game"] = wedged or overgrown
+                why = "kept game does not answer the bridge (%s)" % wedged if wedged else "kept game %s" % overgrown
+                self.say(why + ": restarting it")
                 rc, tail = self.sh(self.cmd_down(), timeout=300)
                 if rc != 0:
                     return self.fail("REFUSED" if refused_line(tail) else "INVALID", "LOAD",
-                                     "kept game does not answer the bridge (%s); game down failed: %s"
-                                     % (wedged, refused_line(tail) or tail))
+                                     "%s; game down failed: %s" % (why, refused_line(tail) or tail))
                 since = S.utcnow()
                 rc, tail = self.sh(cmd, timeout=900)
                 if rc != 0:
-                    return self.fail("INVALID", "LOAD", "game reload after the wedged-game restart failed: " + tail)
+                    return self.fail("INVALID", "LOAD", "game reload failed, %s: %s" % (why, tail))
                 m = re.search(r"started pid (\d+)", tail)
                 if not m:
-                    return self.fail("INVALID", "LOAD", "restarted a wedged game, but load did not report a fresh "
-                                     "process: %s" % tail[-200:])
+                    return self.fail("INVALID", "LOAD", "restarted the game, %s, but load did not report a fresh "
+                                     "process: %s" % (why, tail[-200:]))
         if not m:
             stale = self.pending_markers(since)
             if stale:
@@ -671,6 +678,31 @@ class Attempt:
                 return None
             why = "bridge probe rc %s: %s" % (r.returncode, ((r.stderr or "") + (r.stdout or "")).strip()[-160:])
         return why
+
+    def kept_game_overgrown(self, load_tail):
+        """-> why a kept game (it answered the probe) is past a limit, or None. Age comes from `rw_game.sh up`'s status
+        line (age_s=), the map count from a read-only call. Either unreadable decides nothing: the other limit stands."""
+        if HOST != "stevedesktop" and not os.environ.get("TESTQ_CMD_MAPS"):
+            return None                     # the archmagi lane's kept game is the owner's: never probed, never stopped
+        age = re.search(r"\bage_s=(\d+)", load_tail)
+        if age and int(age.group(1)) >= MAX_GAME_AGE_S:
+            return "is %.1f h old (limit %.1f h)" % (int(age.group(1)) / 3600, MAX_GAME_AGE_S / 3600)
+        cmd = os.environ.get("TESTQ_CMD_MAPS") or (self.bridge_cmd()
+                                                   + " --timeout %d --call rimworld/get_game_info" % PROBE_TIMEOUT_S)
+        try:
+            r = subprocess.run(["bash", "-c", cmd], cwd=RUNNER, capture_output=True, text=True,
+                               timeout=PROBE_TIMEOUT_S + 30)
+        except (OSError, subprocess.TimeoutExpired) as e:
+            self.say("could not count the kept game's maps: %s" % e)
+            return None
+        maps = re.search(r'mapCount\\?"\s*:\s*(\d+)', r.stdout or "")
+        if not maps:
+            self.say("could not count the kept game's maps: rc %s, no mapCount" % r.returncode)
+            return None
+        self.res["kept_game_maps"] = int(maps.group(1))
+        if int(maps.group(1)) >= MAX_GAME_MAPS:
+            return "holds %s maps (limit %d)" % (maps.group(1), MAX_GAME_MAPS)
+        return None
 
     def pending_markers(self, before):
         """-> cids of the bridge client's unresolved UNKNOWN-outcome markers sent before `before` ([] if none or the

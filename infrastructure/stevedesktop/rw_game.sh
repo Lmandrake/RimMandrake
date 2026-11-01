@@ -40,7 +40,7 @@ port_in_log() { [ -f "$LOG" ] && grep -a -o '\[RimBridge\].*on port *[0-9]*' "$L
 status() {
     local pid; pid=$(pid_of)
     if [ -n "$pid" ]; then
-        local info; info=$(ps_q "\$p=Get-Process -Id $pid; '{0} session={1} started={2:yyyy-MM-dd HH:mm:ss}' -f \$p.Id,\$p.SessionId,\$p.StartTime")
+        local info; info=$(ps_q "\$p=Get-Process -Id $pid; '{0} session={1} started={2:yyyy-MM-dd HH:mm:ss} age_s={3}' -f \$p.Id,\$p.SessionId,\$p.StartTime,[int]((Get-Date)-\$p.StartTime).TotalSeconds")
         local args; args=$(ps_q "(Get-CimInstance Win32_Process -Filter 'ProcessId=$pid').CommandLine")
         echo "running pid=$info"
         echo "  cmdline: $args"

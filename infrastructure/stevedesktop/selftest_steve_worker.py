@@ -293,6 +293,47 @@ def main():
         check(res.get("outcome") == "DONE" and not os.path.exists(wdowns),
               "one missed probe (autosave) keeps the game: %s %s" % (res.get("outcome"), res.get("note")))
 
+        # 3e. an overgrown kept game is recycled before the job (STEVE_GAME_FIX_UNBOUNDED_MAPS: 17 h, 27 maps, then deaf)
+        rdowns = os.path.join(tmp, "recycle_downs")
+        grown = os.path.join(tmp, "recycle_load.sh")
+        ok_maps = "echo '{\"status\": \"Playing\", \"mapCount\": 3}'"
+        def recycle(status_line, maps, down_rc=0):
+            open(grown, "w").write("if [ -f %s ]; then echo 'started pid 4242'; else echo 'already running (pid 4242)'; "
+                                   "echo '%s'; fi\n" % (rdowns, status_line))
+            if os.path.exists(rdowns):
+                os.remove(rdowns)
+            rc, o = w(["start"], job(), TESTQ_CMD_LOAD="bash " + grown, TESTQ_CMD_PROBE="true", TESTQ_CMD_MAPS=maps,
+                      TESTQ_CMD_DOWN="echo down >> %s; exit %d" % (rdowns, down_rc),
+                      TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'")
+            return wait_result(o.get("attempt", "x"))
+        young, old = "running pid=4242 session=1 age_s=600", "running pid=4242 session=1 age_s=28801"
+        res = recycle(old, ok_maps)
+        check(res.get("outcome") == "DONE" and "h old" in (res.get("recycled_kept_game") or "")
+              and len(open(rdowns).read().split()) == 1, "a kept game past the age limit is restarted, the job runs: %s %s"
+              % (res.get("outcome"), res.get("recycled_kept_game")))
+        res = recycle(young, "echo '{\"mapCount\": 20}'")
+        check(res.get("outcome") == "DONE" and "20 maps" in (res.get("recycled_kept_game") or "")
+              and os.path.exists(rdowns), "a kept game at the map limit is restarted: %s" % res.get("recycled_kept_game"))
+        res = recycle(young, ok_maps)
+        check(res.get("outcome") == "DONE" and not os.path.exists(rdowns) and "recycled_kept_game" not in res
+              and res.get("kept_game_maps") == 3, "a young small game is kept: %s %s" % (res.get("outcome"), res.get("note")))
+        res = recycle(young, "echo 'bridge error' >&2; exit 1")
+        check(res.get("outcome") == "DONE" and not os.path.exists(rdowns),
+              "a map count that cannot be read keeps a young game: %s" % res.get("note"))
+        res = recycle(old, "echo 'bridge error' >&2; exit 1")
+        check(res.get("outcome") == "DONE" and os.path.exists(rdowns),
+              "an unread map count does not excuse an old game: %s" % res.get("outcome"))
+        res = recycle(old, ok_maps, down_rc=1)
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "LOAD" and res.get("modcheck_exit") is None,
+              "an overgrown game that cannot be stopped -> INVALID/LOAD, no run: %s %s" % (res.get("cause"), res.get("note")))
+        open(grown, "w").write("echo 'already running (pid 4242)'; echo '%s'\n" % old)
+        os.remove(rdowns) if os.path.exists(rdowns) else None
+        rc, o = w(["start"], job(), TESTQ_CMD_LOAD="bash " + grown, TESTQ_WORKER_HOST="archmagi",
+                  TESTQ_CMD_DOWN="echo down >> %s" % rdowns, TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'")
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "DONE" and not os.path.exists(rdowns) and "recycled_kept_game" not in res,
+              "the archmagi lane's kept game is never recycled, however old: %s %s" % (res.get("outcome"), res.get("note")))
+
         cdowns = os.path.join(tmp, "canary_downs")
         rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
                   TESTQ_CMD_DOWN="echo down >> %s" % cdowns, **load)

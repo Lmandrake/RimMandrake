@@ -188,6 +188,9 @@ class TestqResult(Strict):
     note: str = ""
     moot_markers: list[str] = []
     bounced_for_markers: list[str] = []
+    bounced_unresponsive: str | None = None
+    recycled_kept_game: str | None = None
+    kept_game_maps: int | None = None
 
     @model_validator(mode="after")
     def _rules(self):

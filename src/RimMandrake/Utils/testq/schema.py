@@ -330,6 +330,8 @@ def json_schema():
             "artifacts": {"type": "array", "items": {"type": "object", "required": ["name", "path", "sha256", "bytes"]}},
             "started": {"type": "string"}, "finished": {"type": ["string", "null"]}, "note": {"type": "string"},
             "moot_markers": names_free, "bounced_for_markers": names_free,
+            "bounced_unresponsive": {"type": "string"}, "recycled_kept_game": {"type": "string"},
+            "kept_game_maps": {"type": "integer"},
         },
         "description": "a non-DONE outcome needs a cause; attempt is <job>.a<n>",
     }

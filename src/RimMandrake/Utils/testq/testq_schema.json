@@ -193,6 +193,9 @@
      },
      "type": "array"
     },
+    "bounced_unresponsive": {
+     "type": "string"
+    },
     "cause": {
      "enum": [
       null,
@@ -237,6 +240,9 @@
      "pattern": "^J\\d{8}T\\d{6}Z-[0-9a-f]{6}$",
      "type": "string"
     },
+    "kept_game_maps": {
+     "type": "integer"
+    },
     "modcheck_exit": {
      "type": [
       "integer",
@@ -262,6 +268,9 @@
     },
     "phase_s": {
      "type": "object"
+    },
+    "recycled_kept_game": {
+     "type": "string"
     },
     "retries": {
      "type": "integer"
