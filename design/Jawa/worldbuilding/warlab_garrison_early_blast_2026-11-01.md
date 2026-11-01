@@ -211,6 +211,10 @@ codes → core socket**.
      there and the state goes `Moot`. This is the one bypass the two-key rule allows, and the
      ending *"the world supplies when the player declines"*.
 
+  A blast after the codes are already used (Routes 2 to 5 can open the lab first) starts no clock
+  and posts no garrison: `HasBeenSeized` is true, there is no sealed door to bomb, and only the heat
+  applies.
+
   Beating the garrison does **not** stop the clock, because a leak is never undone. Only using the
   codes does, and a clan that holds them when the lake blows is on the same clock. Paths A and B can still fire earlier, with the same result. Route 6's own
   consequences are not built: this design only starts the clock and calls Route 6's entry, and the
@@ -263,4 +267,10 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 
 ## Judgment
 
-Status: DESIGN NOTE WRITTEN, §4 JUDGE PENDING.
+Status: **not yet ruled.** The opus judge required by `delegation_policy.md` §4 has not run. The
+maker may not rule its own design, and the worker that wrote this note could not spawn one.
+
+Pre-review only, by GPT (not a valid §4 judge for this class): three rounds, each REDO, five
+defects, all fixed in this text. Its last two defects (`groundOpen` and the Route 6 clock) came
+after earlier fixes, so the Route 6 section is the part most worth a hard read. Record:
+`infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`.

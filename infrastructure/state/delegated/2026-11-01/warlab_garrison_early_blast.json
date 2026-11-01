@@ -1,0 +1,37 @@
+{
+ "item": "WARLAB_GARRISON_DESIGN_EARLY_BLAST",
+ "class": "design",
+ "subject": "design/Jawa/worldbuilding/warlab_garrison_early_blast_2026-11-01.md",
+ "verdict": "PENDING: no delegation_policy §4 opus judge has run",
+ "gpt_prereview": {
+  "model": "gpt-6.1-sol via gpt_consult.py",
+  "note": "pre-review, not a §4 judgment",
+  "rounds": [
+   {
+    "round": 1,
+    "verdict": "REDO",
+    "defects": [
+     "Route 6 exemption contradicted 'The Empire learns the place exists'",
+     "pre-blast site with state None passed CodesUsable"
+    ]
+   },
+   {
+    "round": 2,
+    "verdict": "REDO",
+    "defects": [
+     "codes-in-hand blast had no Route 6 clock",
+     "peaceful opening shared the blast latch Triggered"
+    ]
+   },
+   {
+    "round": 3,
+    "verdict": "REDO+UNSURE",
+    "defects": [
+     "blast after the lab was already open restarted the clock"
+    ],
+    "unsure": "Route 6 text and lake amendment were not attached, so their constraints were unchecked"
+   }
+  ]
+ },
+ "all_defects_fixed_in": "the note as committed with this file; the fixed text has had no judge"
+}
