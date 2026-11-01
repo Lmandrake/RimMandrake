@@ -13,6 +13,7 @@
  "_idle_bringback_doc": "DI1, CK4 in design/RimMandrake/operating_requirements_2026-11-01.md; seat_restart.py _bringback. A seat idle with ready work and nothing taken for idle_bringback_after_min is restarted once; its replacement has fresh_take_s to take work, else the alarm idle_bringback:<seat>, one incident in the told ledger. Unset or 0 turns it off. The limit, not no_handoff.escalate_after, starts the restart: the three rings of rering_s take 50 min, the target is 30.",
  "tick_s": 120,
  "stall_after_s": 60,
+ "busy_waiting": {"enabled": true, "turn_s": 600, "tool_s": 1200, "_doc": "BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK: `claude agents` keeps a window busy after its turn ended while a background helper or command lives (FOUNDRY 2026-11-01, about 4 h, 424 ready). dispatcher.busy_waiting reads such a window as idle turn_s past an ended turn, or tool_s inside one tool call with no helper alive and no question open; tool_s stands above the 600 s limit on a foreground command. Reads the main transcript; unreadable means busy. The restart fences keep the raw status: no window is killed on this reading."},
  "verify_s": 300,
  "handoff_s": 600,
  "max_retries": 2,

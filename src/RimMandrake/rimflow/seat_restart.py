@@ -398,20 +398,27 @@ def _assistant_kind(rec):
     return "assistant_end" if sr == "end_turn" else "assistant_tool" if sr == "tool_use" else "assistant_other"
 
 
+def _tool_name(rec):
+    c = (rec.get("message") or {}).get("content")
+    names = [x.get("name") for x in c if isinstance(x, dict) and x.get("type") == "tool_use"] if isinstance(c, list) else []
+    return names[-1] if names else None
+
+
 def tx_summary(path, tail_bytes=4 << 20, peers=None):
-    """-> {last_kind, last_at, last_user_at, ctx_tokens} from the main transcript's tail, or None (unreadable).
+    """-> {last_kind, last_at, last_user_at, ctx_tokens, open_tool} from the main transcript's tail, or None (unreadable).
     last_kind: assistant_end (turn ended) | assistant_tool | assistant_other | user. ctx_tokens: the last assistant
     record's input + cache read + cache creation tokens (what the next call re-sends). A record with a zero total is
     an API error's synthetic reply, not a size: the last true reading stands. A compact_boundary ends the old reading:
     None until the next call, so a size the window no longer has can start nothing. last_user_at: the last HUMAN input
-    only (_is_human_input; peers default to every scheduled seat's names) — that is what cancels a restart."""
+    only (_is_human_input; peers default to every scheduled seat's names) — that is what cancels a restart. open_tool:
+    the tool the last record asked for, None once its result is in."""
     if peers is None:
         peers = peer_names()
     try:
         recs = _tail_records(path, tail_bytes)
     except (OSError, Malformed):          # fail closed: an unreadable or torn tail is no reading at all
         return None
-    s = {"last_kind": None, "last_at": None, "last_user_at": None, "ctx_tokens": None}
+    s = {"last_kind": None, "last_at": None, "last_user_at": None, "ctx_tokens": None, "open_tool": None}
     for r in recs:
         q = _queued_as_user(r)
         if q is not None:                # typed mid-turn: counts as his input, does not change the turn's state
@@ -428,6 +435,7 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
         if t == "assistant":
             s["last_kind"] = _assistant_kind(r)
             s["api_end"] = api_ended(r)
+            s["open_tool"] = _tool_name(r)
             u = (r.get("message") or {}).get("usage") or {}
             size = sum(int(u.get(k) or 0) for k in (
                 "input_tokens", "cache_read_input_tokens", "cache_creation_input_tokens"))
@@ -436,6 +444,7 @@ def tx_summary(path, tail_bytes=4 << 20, peers=None):
         else:
             s["last_kind"] = "user"
             s["api_end"] = None
+            s["open_tool"] = None
             if _is_human_input(r, peers):
                 s["last_user_at"] = at
         s["last_at"] = at

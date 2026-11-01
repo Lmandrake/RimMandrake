@@ -4,7 +4,8 @@
 
 Every tick (the rm-dispatcher.timer, every 2 min) it, for each seat in the schedule:
   1. OBSERVES the seat's window: `claude agents --json` (status idle/busy, session id). If that command fails the
-     whole tick is UNMEASURED and nothing is done (never act on a blind instrument).
+     whole tick is UNMEASURED and nothing is done (never act on a blind instrument). A busy window whose main transcript
+     shows no work moving counts as idle (busy_waiting; BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK).
   2. WAKES a stalled window — idle for `stall_after_s`, and its queue has work (`rimflow next --peek` in the seat's
      clone) — by RINGING its doorbell (doorbell.py, an asyncRewake Stop hook): it writes inbox/<SEAT>.json with the
      hand-off message. The message tells the window to run `rimflow next`, which takes the item under a LEASE (the
@@ -171,6 +172,30 @@ def claude_exe():
 def sessions_ok(data):
     """A `claude agents --json` reading: a list whose every entry is an object (review dispatcher-full #5)."""
     return CC.sessions_ok(data)
+
+
+def busy_waiting(sch, obs, seat, sess, status, now):
+    """-> why a window that `claude agents` calls busy is doing no work, or None (BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK).
+    MEASURED 2026-11-01: status stays busy after the main turn ended while a background helper or command lives, so
+    FOUNDRY (end_turn 14:26, 424 ready) went unrung until 19:19. Work moving is read from the main transcript:
+    `turn_s` past an ended turn, or `tool_s` (above the longest foreground command) inside one tool call with no helper
+    alive to be doing it and no question to the owner open. A live command is not work moving. No `busy_waiting` block,
+    no transcript or an unreadable one: busy stands, never act on a blind instrument."""
+    rule, ro = sch.get("busy_waiting") or {}, obs.get("seat_restart") or {}
+    if status != "busy" or not rule.get("enabled") or not ro.get("tx"):
+        return None
+    tx = ro["tx"](seat, sess)
+    if not tx or tx.get("last_at") is None:
+        return None
+    quiet = now - tx["last_at"]
+    if tx.get("last_kind") == "assistant_end":
+        if quiet >= rule["turn_s"]:
+            return "%s reads busy but its turn ended %d s ago" % (seat, quiet)
+    elif tx.get("last_kind") == "assistant_tool" and quiet >= rule["tool_s"] and tx.get("open_tool") != "AskUserQuestion":
+        hs = ro["helpers"](seat, sess)
+        if hs is not None and not any(h.get("alive") for h in hs):
+            return "%s reads busy but has sat %d s in one %s call with no helper alive" % (seat, quiet, tx.get("open_tool"))
+    return None
 
 
 def observe_agents(timeout=60):
@@ -553,6 +578,14 @@ def decide(sch, st, obs, now, apply, out=None):
         if sess:     # learned before any early return (pending ring, cooldown, restart, recover): a later recover
             ss["session_id"] = sess.get("sessionId") or ss.get("session_id")   # resumes the CURRENT session (night review N1)
         status = (sess or {}).get("status") or (sess or {}).get("state")
+        waiting = busy_waiting(sch, obs, seat, sess, status, now) if enabled and cfg.get("wake", True) else None
+        if waiting:
+            if not ss.get("waiting"):    # once a spell, not once a tick
+                act(do="busy_waiting", seat=seat, why=waiting)
+            ss["waiting"] = True
+            status = "idle"              # every reading below, stall clock included, sees what the window is doing
+        else:
+            ss.pop("waiting", None)
         pend = ss.get("ring")
         # ---- a ring in flight: verify it
         if pend:

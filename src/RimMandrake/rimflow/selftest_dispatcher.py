@@ -149,6 +149,55 @@ def test_blind_pause_roles_caps():
     check(kinds(stall(sch, st, obs())) == ["alarm"], "80 wakes today overall: capped")
 
 
+def test_busy_waiting_seat():
+    """BUSY_SEAT_FIX_WAITING_COUNTS_AS_WORK: 2026-11-01, FOUNDRY's turn ended, a helper lived, status stayed busy, no ring."""
+    sch = sched()
+    sch["busy_waiting"] = {"enabled": True, "turn_s": 600, "tool_s": 1200}
+    t0, session = 10000.0, [sess(status="busy")]
+
+    def reading(tx, helpers=()):
+        o = obs(sessions=session)
+        o["seat_restart"] = {"tx": lambda seat, s: tx, "helpers": lambda seat, s: helpers}
+        st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+        D.decide(sch, st, o, t0, True)
+        return D.decide(sch, st, o, t0 + sch["stall_after_s"], True), st
+
+    def tx(kind, age, tool=None):
+        return {"last_kind": kind, "last_at": t0 - age, "open_tool": tool}
+
+    live = [{"id": "agent-a", "alive": True}]
+    a, st = reading(tx("assistant_end", 601), live)
+    check("ring" in kinds(a), "turn ended past the limit, helper alive, status busy: the seat is rung")
+    check(st["seats"]["FOUNDRY"].get("waiting"), "the waiting spell is on the seat's record")
+    a, _ = reading(tx("assistant_end", 300), live)
+    check(kinds(a) == [], "turn ended under the limit: busy stands")
+    a, _ = reading(tx("assistant_tool", 60, "Bash"))
+    check(kinds(a) == [], "a tool running under the limit: busy stands")
+    a, _ = reading(tx("user", 5000))
+    check(kinds(a) == [], "the model is answering a result: busy stands")
+    a, _ = reading(None)
+    check(kinds(a) == [], "unreadable transcript: busy stands, no action on a blind instrument")
+    a, _ = reading(tx("assistant_tool", 1300, "Bash"))
+    check("ring" in kinds(a), "one foreground command past the limit, no helper: a live command is not work moving")
+    a, _ = reading(tx("assistant_tool", 1300, "Agent"), live)
+    check(kinds(a) == [], "a foreground helper alive and past the limit: work is moving")
+    a, _ = reading(tx("assistant_tool", 1300, "Bash"), None)
+    check(kinds(a) == [], "helpers unreadable: busy stands")
+    a, _ = reading(tx("assistant_tool", 9000, "AskUserQuestion"))
+    check(kinds(a) == [], "a question open to the owner: busy stands")
+    sch.pop("busy_waiting")
+    a, _ = reading(tx("assistant_end", 9000), live)
+    check(kinds(a) == [], "no busy_waiting block: off")
+
+    sch["busy_waiting"] = {"enabled": True, "turn_s": 600, "tool_s": 1200}
+    o = obs(sessions=session, ticket={})
+    o["seat_restart"] = {"tx": lambda seat, s: tx("assistant_end", 9000), "helpers": lambda seat, s: []}
+    st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
+    first = D.decide(sch, st, o, t0, True)
+    check(kinds(first) == ["busy_waiting"], "the spell is journaled when it starts")
+    check(kinds(D.decide(sch, st, o, t0 + 120, True)) == [], "once a spell, and an empty queue rings nobody")
+
+
 def test_verify_retry():
     sch = sched()
     st = {"seats": {}, "wakes": [], "recovers": [], "alarms": {}}
@@ -3640,7 +3689,7 @@ def test_unring_gives_back_a_backoff_and_bad_roles_are_skipped():
 
 
 def main():
-    for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
+    for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_busy_waiting_seat, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,
