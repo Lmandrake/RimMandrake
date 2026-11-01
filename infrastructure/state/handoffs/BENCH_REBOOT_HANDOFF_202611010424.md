@@ -47,6 +47,8 @@ Work stalls when it lives in a head's attention. The owner's fix tonight: the it
 - `CHECKER_PROMPT_FIX_WORKER_REASONING_LEAK` — blind check is leaking worker reasoning; NEXT: fix it before raising workers past 3.
 - `Code review` — DIRTY: relentless.py, cli.py, model.py, pulse_core.py, publish.py, steve retest files, close-out files; NEXT: run a Codex full-file pass, starting with relentless.py.
 - `Old pointers` — prior handoff's items not worked: SHIRO_REDRAW_CANON_PAINTERLY, SWBESTIARY_DEPLOY_HELD_FOREIGN_DRIFT, LOOK_SITTING_BUILD_ONE_SAVE, Day 2 live half card; NEXT: leave them to the filler and raise the live half card after the verdict.
+- `TRIO_CRITIC_FIX_HOME_SWAP_HIDES_CLAUDE` — trio stopped 21:25, cause reproduced: the arm's temp HOME hides claude from the critic sandbox; FOUNDRY's fresh window owns it, and trio gets a later pin than v3 and ralph_a; NEXT: confirm trio passes several tasks, and that the verdict states its later sha.
+- `V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR` clone — holds unpushed work, idle, alarm disk.pool_breach firing, protected; NEXT: land or resume that clone's work.
 
 ## Traps learned
 

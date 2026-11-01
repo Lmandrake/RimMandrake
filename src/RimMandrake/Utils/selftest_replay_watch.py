@@ -662,7 +662,7 @@ def test_no_runner_json():
 
 
 def test_time():
-    ok(W.STOP_LINE == 1793545200, "the stop line is 15:00Z")
+    ok(W.STOP_LINE == 1794150000, "the watch line is 15:00Z, 2026-11-08")
     ok(W.clock(W.STOP_LINE) == "7:00 AM PST", "8 AM PDT is 7 AM on the wall clock after DST: " + W.clock(W.STOP_LINE))
     ok(W.parse_stamp("2026-11-01T01:30:00-0800") == 1793525400, "a PST stamp parses")
     ok(W.parse_stamp("nonsense") is None, "a bad stamp is None")

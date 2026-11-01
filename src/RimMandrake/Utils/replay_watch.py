@@ -60,8 +60,8 @@ REPO = HERE.parents[2]
 ARMS = ("ralph_a", "trio", "v3")
 TOTAL = 29
 TZ = zoneinfo.ZoneInfo("America/Los_Angeles")
-# "8 AM PDT Sunday": fixed at -07:00. DST ends 02:00 that morning, so the wall clock reads 7:00 AM PST at this instant.
-STOP_LINE = calendar.timegm((2026, 11, 1, 15, 0, 0))
+# The watch line, not a deadline: owner 2026-10-31, "Forget about deadlines and things, those are arbitrary."
+STOP_LINE = calendar.timegm((2026, 11, 8, 15, 0, 0))
 
 DEFAULTS = {"replay": "/mnt/d/ClaudeWork/rimmandrake/foundry_arena/replay", "arena": "/mnt/d/ClaudeWork/rimmandrake/arena",
             "dispatcher": "/mnt/d/ClaudeWork/rimmandrake/dispatcher", "testq": "/mnt/d/ClaudeWork/rimmandrake/testq",
