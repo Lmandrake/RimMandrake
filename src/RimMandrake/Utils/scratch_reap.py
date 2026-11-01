@@ -1887,14 +1887,27 @@ def pool_measures() -> dict:
         return {"pool_clones": None, "pool_clones_cap": None, "pool_gb": None, "pool_gb_cap": None}
 
 
+def fixture_age_h(p: Path, now: float) -> float | None:
+    """Hours since anything inside a fixture was touched: the SAME newest-content reading sweep_fixtures judges YOUNG
+    by. A directory's own mtime is not it (an epoch-stamped dir holding fresh files read 498211 h old while the reaper
+    rightly kept it). A tree the walk cannot read whole falls back to the directory's own stamps."""
+    try:
+        tree = Tree(p)
+        if not (tree.capped or tree.errors):
+            return max(0.0, now - tree.newest) / 3600
+        st = p.lstat()
+        return max(0.0, now - max(touched(st))) / 3600
+    except OSError:
+        return None
+
+
 def measure(now: float, rows: list[dict] | None, prev: dict) -> dict:
     """The readings. Before work, `rows` is None and what only a judged run knows comes from the last run's record."""
     fx_ages = []
     for p in fixture_dirs():
-        try:
-            fx_ages.append((now - p.stat().st_mtime) / 3600)
-        except OSError:
-            pass
+        age = fixture_age_h(p, now)
+        if age is not None:
+            fx_ages.append(age)
     sessions = sum(1 for r in roots() for s in glob.glob(str(r / "*" / "claude-*" / "*" / "*"))
                    if UUID.match(os.path.basename(s)))
     scratch = rm_scratch()

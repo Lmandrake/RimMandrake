@@ -13,6 +13,7 @@ HERE = Path(__file__).resolve().parent
 sys.path[:0] = [str(HERE), str(HERE.parent / "rimflow")]
 import scratch_reap as R  # noqa: E402
 import signal_watch as SW  # noqa: E402
+R.CTIME_COUNTS = False   # utime ages a fixture's mtime only; the content reading is what the counter now shares with the reaper
 
 FAILS = []
 OLD = 3 * 86400
@@ -154,6 +155,12 @@ def main():
     shipped = json.loads((HERE / "scratch_reap_sanity.json").read_text())
     check(shipped.get("_why") and set(shipped["start"]) <= set(LOOSE) and set(shipped["end"]) <= set(LOOSE),
           "the shipped limits say why and name only real readings")
+    # the counter reads what the reaper reads: an epoch-stamped dir holding a fresh file is young, not 498211 h old
+    fx = td / "epoch_fx"
+    fx.mkdir()
+    (fx / "f").write_text("fresh")
+    os.utime(fx, (0, 0))
+    check((R.fixture_age_h(fx, time.time()) or 1e9) < 1, "a fixture dir with fresh contents is young by content, not by dir mtime")
     import shutil
     shutil.rmtree(td)
     print(f"selftest_scratch_reap_sanity: {'FAIL' if FAILS else 'PASS'}")

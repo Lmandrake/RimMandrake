@@ -69,6 +69,27 @@ def main() -> int:
         commit_to_seed(work, "sub/b.txt", "two\n")
         sh("git", "-C", str(BASE / "mirror.git"), "repack", "-q", "-a", "-d")   # a pack to hard-link
 
+        # transcript residue: noise already on origin is not unpushed work; noise origin lacks, and real edits, still are
+        nz = BASE / "nz"
+        sh("git", "clone", "-q", str(work), str(nz))
+        (nz / "conversations").mkdir()
+        (nz / "conversations" / "t.md").write_text("talk\n")
+        check(sc.clone_unpushed(nz) == ["dirty"], f"a transcript origin lacks is unpushed: {sc.clone_unpushed(nz)}")
+        commit_to_seed(work, "conversations/t.md", "talk\n")
+        sh("git", "-C", str(nz), "fetch", "-q")
+        check(sc.clone_unpushed(nz) == [], f"a transcript origin holds is not: {sc.clone_unpushed(nz)}")
+        (nz / "a.txt").write_text("edited\n")
+        check(sc.clone_unpushed(nz) == ["dirty"], "a real edit alongside it still is")
+        sh("git", "-C", str(nz), "checkout", "-q", "--", "a.txt")
+        led = nz / "infrastructure/state/ledger/events"
+        led.mkdir(parents=True)
+        (led / "X.jsonl").write_text('{"a":1}\n{"a":2}\n')
+        commit_to_seed(work, "infrastructure/state/ledger/events/X.jsonl", '{"a":1}\n{"a":2}\n{"a":3}\n')
+        sh("git", "-C", str(nz), "fetch", "-q")
+        check(sc.clone_unpushed(nz) == [], "ledger lines already on origin are not unpushed")
+        (led / "X.jsonl").write_text('{"a":1}\n{"a":9}\n')
+        check(sc.clone_unpushed(nz) == ["dirty"], "a ledger line origin lacks is")
+
         r = sc.init()
         check(r["created"] and r["packs_linked"] >= 2, f"init hard-links seed packs: {r}")
         for k, v in sc.STORE_CONFIG.items():

@@ -322,6 +322,48 @@ def clone_bytes(c: Path) -> int:
     return own + linked      # allocated, hard links counted once per tree: the cap errs high
 
 
+# Paths every clone dirties by running (transcripts, ledger shards, review state); relentless.py POOL_NOISE is the same list.
+POOL_NOISE = ("conversations/", "infrastructure/state/ledger/events/", "infrastructure/state/code_review/")
+
+
+def noise_on_origin(c: Path, path: str) -> bool:
+    """A dirty noise file whose content origin/main already holds: the same bytes, or (a ledger, appended to) every
+    line of it already a line of origin's copy. Anything else, or any doubt, is not covered."""
+    if not path.startswith(POOL_NOISE):
+        return False
+    f = c / path
+    try:
+        if not f.is_file():
+            return False
+        blob = subprocess.run(["git", "cat-file", "blob", "origin/main:" + path], cwd=c, capture_output=True, timeout=60)
+        if blob.returncode != 0:
+            return False
+        mine = f.read_bytes()
+        return mine == blob.stdout or (path.endswith(".jsonl") and
+                                       set(mine.splitlines()) <= set(blob.stdout.splitlines()))
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+
+def dirty_beyond_origin(c: Path) -> bool:
+    """Dirty or untracked paths, minus the noise origin/main already has. Fails closed: unreadable status is dirty."""
+    r = subprocess.run(["git", "--no-optional-locks", "status", "--porcelain", "-z", "--untracked-files=all"], cwd=c,
+                       capture_output=True, text=True, timeout=300)
+    if r.returncode != 0:
+        raise RuntimeError("git status: " + (r.stderr or r.stdout).strip()[:200])
+    ents = [e for e in r.stdout.split("\0") if e]
+    i = 0
+    while i < len(ents):
+        e = ents[i]
+        i += 1
+        if e[:1] in "RC":          # a rename or copy carries its source as the next field
+            i += 1
+        if noise_on_origin(c, e[3:]):
+            continue
+        return True
+    return False
+
+
 def clone_unpushed(c: Path) -> list[str]:
     """What this clone holds that no remote ref does: commits, a stash, dirty or untracked files. Empty = nothing at risk.
     Fails closed: a clone git cannot read reports itself unreadable."""
@@ -331,7 +373,7 @@ def clone_unpushed(c: Path) -> list[str]:
             out.append("commits")
         if git("stash", "list", cwd=c, timeout=60):
             out.append("stash")
-        if git("--no-optional-locks", "status", "--porcelain", "--untracked-files=normal", cwd=c, timeout=300):
+        if dirty_beyond_origin(c):
             out.append("dirty")
     except Exception as e:
         out.append("unreadable: " + str(e)[:80])
