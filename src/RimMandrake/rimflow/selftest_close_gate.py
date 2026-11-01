@@ -421,6 +421,19 @@ def s6_every_way_to_done(a, b, led):
     rc, _ = cli("verify", i, "--criterion", "C1", "--sha", a, "--result", "pass", "--config", "fixture", "--evidence", "e")
     check(item(i).state == "built" and item(i).outstanding == ["C1"], "the last criterion passing on a stale sha is no done")
 
+    print("-- a clone's old cli: a `close` written past the cli gate is refused by the fold")
+    t = "2026-11-01T19:20:%02dZ"
+    x, bare = "STALE_CLI_FIXTURE", {"seat": "BENCH", "event": "close", "id": "STALE_CLI_FIXTURE", "sha": "abcdef1"}
+    base = [{"seat": "BENCH", "event": "file", "ts": t % 0, "id": x, "for": "BENCH", "title": "t", "kind": "task"}]
+    w = model.replay(base + [dict(bare, ts=t % 1)])
+    check(w.items[x].state != "done" and w.errors, "a close with no pass on its sha reaches no done, and is reported")
+    w = model.replay(base + [dict(bare, ts=t % 1, perRuling="X")])
+    check(w.items[x].state != "done", "the owner's word lifts no missing check")
+    w = model.replay(base + [dict(bare, ts=t % 1, noCode="a decision")])
+    check(w.items[x].state == "done", "--no-code has no check to want")
+    w = model.replay(base + [dict(bare, ts=model.CLOSE_FOLD_FROM.replace("19:15:00", "19:14:59"))])
+    check(w.items[x].state == "done", "an event before CLOSE_FOLD_FROM replays as written")
+
     print("-- AU4 counts every way to done, and a thin sample is no reading")
     import close_audit
     rows = close_audit.dones(events())

@@ -2077,6 +2077,7 @@ def _apply_live(ev, item):
 # state in both directions; an earlier one replays exactly as it was written, so no old item changes under a reader.
 EARNED_FROM = "2026-11-01T17:30:00Z"
 DONE_GATE_FROM = "2026-11-01T18:35:00Z"     # the same, for `implemented`: from here on it reaches done only as `close` does
+CLOSE_FOLD_FROM = "2026-11-01T19:15:00Z"    # from here the fold judges a `close` too: a clone's old cli cannot write a done
 ARBITER_CONFIG = "arbiter:"     # a verdict the launcher wrote: --config arbiter:<disposition>, role_launch.verdict_run
 
 
@@ -2188,6 +2189,19 @@ def close_refusals(item, sha, no_code=False, owner=False):
             str(f["sha"])[:12], f["run"], "" if same_sha(f["sha"], sha) else
             " and no non-maker Arbiter pass is recorded on a newer build")))
     return out
+
+
+def _fold_close_gate(ev, item):
+    """Raise if this `close` has not earned done, whichever clone's cli wrote it. The event stays on the ledger, in `world.errors`.
+
+    `cmd_close` refuses first; this is for the writer that lacks that code (KNOWN_RESULTS_BUILD_MEASURED_DEPENDENCIES,
+    closed from a clone behind the gate). His word on the event lifts a fail, as on the cli; `unchecked` is a fact."""
+    if str(ev["ts"]) < CLOSE_FOLD_FROM or ev.get("noCode"):
+        return
+    said = any(ev.get(k) for k in ("ownerSaid", "byCard", "perRuling")) or ev.get("seat") == "OWNER"
+    found = [why for k, why in run_refusals(item, ev["sha"]) if not (k == "fail" and said)]
+    if found:
+        raise TransitionError("%s: close at %s has not earned done: %s" % (item.id, str(ev["sha"])[:12], "; ".join(found)))
 
 
 def _apply_implemented(ev, item):
@@ -2382,6 +2396,7 @@ def _apply_item_verb(ev, index, item, seat, world):
     elif verb == "live":
         _apply_live(ev, item)
     elif verb == "close":
+        _fold_close_gate(ev, item)
         to("done")
         item.closed_sha = ev["sha"]
         item.held = False
