@@ -1668,6 +1668,10 @@ def t_books_frozen():
     put(b, L, "one\ntwo\nthree\n")
     put(b, "code.py", "hand edit\n")
     ok("outside the ledger" in str(fx.sync()), "a hand edit stops it")
+    put(b, "code.py", git(b, "show", "HEAD:code.py"))
+    put(b, L, "staged event\n")
+    git(b, "add", L)
+    ok("staged" in str(fx.sync()), "a staged change stops it")
     class W:
         said = []
         def conductor_alarm(self, t):
@@ -1681,6 +1685,10 @@ def t_books_frozen():
     ok(len(w.said) == 1 and "not deploying" in w.said[0], "then says it once")
     R.books_alarm(store, w, None, 1800, acts, RULES)
     ok(not os.path.exists(store.p("books_stale.json")), "and clears")
+    with open(store.p("books_stale.json"), "w", encoding="utf-8") as f:
+        f.write("{")
+    R.books_alarm(store, w, "behind", 2000, acts, RULES)
+    ok(json.load(open(store.p("books_stale.json"), encoding="utf-8"))["since"] == 2000, "a torn file is a new count, not a dead tick")
     shutil.rmtree(d, ignore_errors=True)
 
 

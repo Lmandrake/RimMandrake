@@ -438,10 +438,10 @@ class Effects:
     def sync(self):
         """The engine runs from books, so a clone that cannot move freezes the engine. -> None, or why it is behind.
         --ff-only fails without a word on one rimflow-moved item file or one landed ledger commit: 15 hours, 2026-11-01."""
-        self.git(self.books, "pull", "--ff-only", "--quiet")
         self._ledger = None
         self._budget = self._helpers = NOT_READ
         try:
+            self.git(self.books, "pull", "--ff-only", "--quiet")
             return self.level_books()
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
             return "books cannot level: %s" % str(e)[:300]
@@ -453,6 +453,9 @@ class Effects:
             return None
         out = self.git_ok(self.books, "status", "--porcelain", "--no-renames", "-z", "--untracked-files=all")
         rows = [(x[:2], x[3:]) for x in out.split("\0") if x]
+        staged = self.git_ok(self.books, "diff", "--cached", "--name-only").split()
+        if staged:      # the index is nobody's projection, and the checks below read the working tree
+            return "books %s behind: staged: %s" % (behind, ", ".join(staged[:5]))
         alien = [p for _s, p in rows if not p.startswith(BOOKS_DERIVED)]
         if alien:
             return "books %s behind: dirty outside the ledger: %s" % (behind, ", ".join(alien[:5]))
@@ -460,15 +463,20 @@ class Effects:
         alien = [p for p in changed if not p.startswith(BOOKS_DERIVED)]
         if alien:
             return "books %s behind: own commits outside the ledger: %s" % (behind, ", ".join(alien[:5]))
+        read = {}
         for p in sorted({p for p in changed if p.startswith(LEDGER_DIR)} | {p for _s, p in rows if p.startswith(LEDGER_DIR)}):
-            with open(os.path.join(self.books, p), encoding="utf-8") as f:
-                mine = set(f.read().splitlines())
-            lost = mine - set(self.git_ok(self.books, "show", "origin/main:" + p).splitlines())
+            with open(os.path.join(self.books, p), "rb") as f:
+                read[p] = f.read()
+            lost = set(read[p].decode("utf-8").splitlines()) - set(self.git_ok(self.books, "show", "origin/main:" + p).splitlines())
             if lost:
                 return "books %s behind: %d lines of %s not landed" % (behind, len(lost), p)
         keep = self.store.p("books_dirt", time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()))
         for state, p in rows:
             src = os.path.join(self.books, p)
+            if p in read:
+                with open(src, "rb") as f:
+                    if f.read() != read[p]:     # a writer came in behind the check
+                        return "books %s behind: %s moved while levelling" % (behind, p)
             if os.path.isfile(src):
                 os.makedirs(os.path.dirname(os.path.join(keep, p)), exist_ok=True)
                 shutil.copy2(src, os.path.join(keep, p))
@@ -1997,9 +2005,13 @@ def staffing(store, fx, r, now, acts):
 def books_alarm(store, fx, stale, now, acts, r):
     """Frozen books are a frozen engine however green its readings look: said once, and said to the Conductor."""
     path = store.p("books_stale.json")
-    was = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else None
+    try:
+        with open(path, encoding="utf-8") as f:
+            was = json.load(f)
+    except (OSError, ValueError):       # absent, or torn by a killed tick: a new count, never a dead supervisor
+        was = None
     if not stale:
-        if was:
+        if os.path.exists(path):
             os.remove(path)
         return
     was = was or {"since": now}
