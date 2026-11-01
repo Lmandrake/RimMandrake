@@ -1,36 +1,87 @@
 {
   "rule": "parallel add-on trial decision rule",
-  "version": 1,
+  "version": 2,
+  "supersedes": "version 1, sha256 6f63f192dfb4b6c35835e4ca2b4247886afe4a1ba6b013a1b360b0c4b80ba6dc (fresh-Opus audit PARALLEL_TRIAL_AUDIT_BY_FRESH_OPUS said fix first; the trial had not launched)",
   "declared_before_launch": true,
-  "unit": "one (arm, N) cell, compared with the same arm's fresh N=1 control in the same blocks",
-  "blocks_per_cell_min": 2,
-  "block_order": "randomized with seed 20261101; every block runs all four arms at one N at once",
-  "cutoff_wall_hours_per_run": 12,
-  "unfinished_at_cutoff_scores": 0,
-  "accepted_point": "task landed on integration main AND its hidden check green on the final integrated tree at drain",
-  "metrics": {
-    "acceptance": "accepted points / tasks offered",
-    "accepted_per_hour": "accepted points / hours from first dispatch to drain or cutoff, waits NOT subtracted",
-    "cost_per_point": "reconciled account-total spend for the run / accepted points"
-  },
+  "seed": 20261101,
+  "cost_unit": "ITE (Opus-input-equivalent tokens) as weighted by arena_analysis.py at the pinned commit, from raw per-model counts; never the account's percent-of-window figure",
   "validity": {
-    "pin_hash_must_match_at_start_and_end": true,
-    "spend_reconciliation_must_be_exact": true,
-    "an_invalid_run_is_rerun_not_scored": true
+    "pin_manifest_must_match_at_start_and_end": true,
+    "every_model_call_must_carry_a_full_key": "arm, stream, task, attempt, role (helpers: role=helper plus parent call id). One unkeyed or half-keyed call voids the run. There is no shared-overhead bucket inside a run.",
+    "record_level_reconcile": "for every claude -p pass: the CLI result envelope (modelUsage) against the transcript census of that session including <sid>/subagents/*; input-side shortfall at most 0.05 (helper_capture.RECONCILE_SHORT_MAX), no message id counted twice",
+    "block_level_account_check": "the account's own usage delta over the block against the sum of keyed ITE of every run in that block; reported, and a run is voided only if the account shows a switch of account or a usage drop (failover); it cannot attribute spend per arm",
+    "an_invalid_run_is_rerun_not_scored": true,
+    "max_reruns_per_run": 1,
+    "a_run_invalid_twice_makes_its_cell": "unmeasured"
   },
-  "escalate_to_next_N_when_all": {
-    "acceptance_drop_vs_N1_at_most": 0.10,
-    "acceptance_drop_upper_bound_at_most": 0.20,
-    "upper_bound_method": "worst block's paired drop over the same tasks",
-    "speedup_accepted_per_hour_at_least": 1.30,
-    "cost_per_point_ratio_at_most": 1.50
+  "aggregation": {
+    "pairing": "each cell run is paired with the same arm's fresh control run started in the SAME block at the same moment, under the same block load",
+    "pooled": "ratio of sums over the cell's blocks: acceptance = sum accepted points / sum workload size; accepted_per_hour = sum accepted points / sum wall hours; cost_per_point = sum ITE / sum accepted points (a cell with 0 accepted points has cost_per_point infinite)",
+    "speedup": "pooled cell accepted_per_hour / pooled control accepted_per_hour",
+    "cost_ratio": "pooled cell cost_per_point / pooled control cost_per_point",
+    "acceptance_drop": "pooled control acceptance - pooled cell acceptance (negative is a gain)",
+    "worst_block_drop": "max over blocks of (control acceptance - cell acceptance) in that block"
   },
-  "stop_when_any": {
-    "acceptance_drop_vs_N1_more_than": 0.20,
-    "speedup_accepted_per_hour_below": 1.10
+  "part_one": {
+    "what_changes": "helper allowance H: 0 (control) vs 2 (cell), N = 1, the 25 replay tasks in replay order",
+    "blocks_min": 2,
+    "block_content": "every block runs, for each of the four arms, one H=2 run and one H=0 run at once (8 runs)",
+    "block_order": "arm-to-slice assignment shuffled per block with the seed",
+    "workload_size": 25,
+    "one_task_is": 0.04,
+    "cutoff_wall_hours_per_run": "max(12, 1.5 x that arm's measured replay wall hours for the same task set); the replay figure is written into the pin manifest before block 1",
+    "fallback_subset": "the last 10 tasks in the total order (workload_size 10), chosen now; no subset may be picked after launch",
+    "verdict_per_arm": {
+      "helpers_help_when_all": {
+        "acceptance_drop_at_most": 0.04,
+        "worst_block_drop_at_most": 0.12,
+        "speedup_at_least_or": 1.20,
+        "acceptance_gain_at_least": 0.08,
+        "cost_ratio_at_most": 1.50
+      },
+      "helpers_hurt_when_any": {
+        "acceptance_drop_more_than": 0.08,
+        "cost_ratio_more_than": 2.00,
+        "speedup_below": 0.80
+      },
+      "otherwise": "no measured effect"
+    },
+    "part_one_does_not_gate_part_two": "Part Two keeps H = 2 for every arm whatever Part One finds; an arm may decline helpers, and that shows as a measured zero"
   },
-  "otherwise": "hold: report this N as the measured setting; do not escalate",
-  "N_ladder": [1, 2, 4],
-  "ceiling_claim": "only when N passes the escalate test and the next N fails it; reaching N=4 green states 'no ceiling found up to 4', never a ceiling",
+  "part_two": {
+    "what_changes": "streams N, with H = 2 in cell and control alike",
+    "workload_size": 13,
+    "one_task_is": 0.0769,
+    "blocks_min_per_N": 2,
+    "block_content": "every block runs, for each of the four arms, one run at N and one fresh N = 1 control run at once (8 runs)",
+    "block_order": "N ladder order fixed (2 then 4); within an N, arm-to-slice assignment shuffled per block with the seed",
+    "dispatch_order": "one seeded permutation of the 13 tasks (seed above), the same for every arm, every N and the control; a stream takes the first givable task in that order",
+    "task_green_at_dispatch": "not dispatched; recorded as pre_green; it scores as accepted only if green on the final integrated tree; counted in the family sensitivity below",
+    "family": ["RP_SARLACC_UNMEASURED_FIX_BORROWED_REASON", "RP_BRAINWORMS_VALIDATION_FIX_BORROWED_REASON", "RP_GRAFFITIIMPERIAL_VALIDATION_FIX_LOST_REASON"],
+    "family_sensitivity": "the verdict is computed twice: on all 13 tasks, and on the 10 without the family (workload_size 10). If the two verdicts differ, the cell reads hold, flagged family_confounded",
+    "cutoff_wall_hours_per_run": 12,
+    "unfinished_at_cutoff_scores": 0,
+    "accepted_point": "task landed on integration main AND its hidden check green on the final integrated tree at drain",
+    "N_ladder": [1, 2, 4],
+    "escalate_to_next_N_when_all": {
+      "acceptance_drop_at_most": 0.10,
+      "worst_block_drop_at_most": 0.20,
+      "speedup_at_least": 1.30,
+      "cost_ratio_at_most": 1.50
+    },
+    "in_task_counts_at_13_tasks_2_blocks": "pooled drop 0.10 allows at most 2 lost task-slots of 26; worst block 0.20 allows at most 2 lost tasks of 13",
+    "stop_when_any": {
+      "acceptance_drop_more_than": 0.20,
+      "speedup_below": 1.10
+    },
+    "otherwise": "hold: report the previous passing N as the measured setting; do not escalate",
+    "pass_means": "escalate only; hold and stop are both not-pass",
+    "n4_runway_gate": "the N=4 blocks run only if, after the N=2 blocks, the measured account burn per N=4 block (launch probe P11 scaled by the N=2 blocks' keyed ITE) fits the remaining runway above the 0.15 floor for 2 blocks; otherwise every arm's N=4 reads not_measured, decided by this formula and logged before any N=4 block",
+    "ralph_c_N4": "run only if ralph_c_loop's two-member limit has been generalised to N members with its selftest green before block 1; otherwise ralph_c@N4 reads not_measured (never a fail, never a ceiling)"
+  },
+  "claims": {
+    "ceiling": "claimed only when N passes (escalate) and the next N stops. A hold at the next N reads 'highest passing N = N; next N held', no ceiling claim. A pass at N=4 reads 'no ceiling found up to 4', never '4 is the ceiling'.",
+    "external_validity": "the 13 tasks were chosen because they revert cleanly and touch disjoint files, so textual conflicts will be rare; the result speaks to easy-to-integrate work only"
+  },
   "throughput_cost_tradeoff": "the cost ratio bound is the tradeoff; the owner may change any threshold before launch only, which changes this file's sha256 and must be re-recorded in the ledger"
 }
