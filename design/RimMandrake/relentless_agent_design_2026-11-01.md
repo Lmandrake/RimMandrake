@@ -292,7 +292,7 @@ met, reports say "accepted by Judge", never "trusted".
 | Owner | Experience statements; VALIDATES roots; loosens; first look; sets TRUST bars |
 | Conductor | Receives `stuck`, §2 holds and loosening requests; reads TRUST. Never marks work |
 | Concept agent | Upstream supplier, not a chair here: delivers the tree. Designed under its own item |
-| Producer | Sets order; files goals; admits a mod once its tree exists. Proposes `budget`. WIP cap (RO2) reads the leaf count |
+| Producer | Sets order; files goals; admits a mod once its tree exists. WIP cap (RO2) reads the leaf count |
 | Arbiter | Co-owns roots; signs coverage; tunes the Marker from disagreements. A Marker PASS is the non-maker verdict RO3 needs; an Arbiter FAIL blocks the close (ruling D1(b)) |
 | Auditor | Samples closes, classifies escapes by layer; repeated classes become rules (RO5) |
 | Operations | Reads signals, time ledger, `trust`; owns alarm routing (RO4) |
@@ -365,7 +365,7 @@ then wall, then change**, so the baseline exists before any improvement claims i
 | 17 | Trust trial: a fixed set of modest goals, unattended | `relentless trust` numbers given to him to set bars |
 | 18 | Extraction, toy adapter, conformance | Same selftests pass before and after; word lint clean; fault table passes on both adapters |
 
-Owed: the tree's file format, shared with the Concept Agent; one rimflow item per step; thresholds added to `relentless_rules.json` as each signal lands.
+The tree's file format, shared with the Concept Agent: `relentless_tree_schema_2026-11-01.md`. One rimflow item per step: `RA_S00_...` to `RA_S18_...`. Owed: thresholds added to `relentless_rules.json` as each signal lands.
 
 ## 14. The Conductor's judgment of GPT's review
 
