@@ -233,6 +233,12 @@ Gate, before raising fan-out:
    running helpers finish. Bound: at 3600 s alarm with their names. Helper lease events and shard appends do not count as
    new work during a drain.
 
+3a. Clones stay reclaimable. Every helper that makes a clone leaves it reclaimable: under a scratch root the expiry
+    covers, work pushed or bundleable, no keeper inside, no live process left in it. Many subagents make this a capacity
+    requirement, not tidiness: 8-10 helpers per seat multiply clones and session dirs, and before expiry ran the root disk
+    lost 47 GB in a day. The expiry timer and its last-run alarm must be green before fan-out rises
+    (`rimflow_v3_2026-10-26.md` section 3.1).
+
 Next:
 
 4. Helper registry on disk, one file per helper, written at spawn and updated by the helper: brief, item id, lease token,

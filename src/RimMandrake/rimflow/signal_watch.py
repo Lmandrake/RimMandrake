@@ -21,7 +21,7 @@ import subprocess
 
 DEFAULTS = {"enabled": False, "every_s": 300, "repairs_per_day": 2, "alarm_after_s": 3600, "file_tries": 3,
             "flag_after_s": 72 * 3600, "flag_every_s": 7 * 86400, "flags_stale_s": 6 * 3600, "ops_dir": None,
-            "restart_rx": "^(rm-scratch-reap|rm-pulse-update)\\.service$",
+            "restart_rx": "^(rm-scratch-reap|rm-scratch-pressure|rm-pulse-update)\\.service$",
             "deny_rx": "(?i)switch|login|logout|account|rm-role-"}
 
 

@@ -1,0 +1,9 @@
+[Unit]
+Description=RimMandrake scratch expiry: start a run now if the root disk is low
+
+[Service]
+Type=oneshot
+WorkingDirectory=/home/mandrake/rm/dispatch
+Nice=19
+IOSchedulingClass=idle
+ExecStart=/usr/bin/python3 src/RimMandrake/Utils/scratch_reap.py --pressure-check

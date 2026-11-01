@@ -1,5 +1,5 @@
 [Unit]
-Description=Hourly scratch-clone / session-scratchpad reaper report (scratch_reap.py)
+Description=Hourly scratch expiry (a failed run alarms through signal_watch and ops_watch)
 
 [Timer]
 OnCalendar=hourly

@@ -43,7 +43,7 @@ units = []                   # production owns NO member units: a unit belongs t
 #   bench:   seat scope, rm-selftests-nightly.timer (WorkingDirectory=/home/mandrake/rm/bench)
 #   foundry: seat scope, rm-artpiped.service (zz-foundry-workdir.conf), rm-codebase-health.timer
 # UNCLASSIFIED (neither production-live nor substrate; decide before relying on them): testq-sweep.timer (runs in the
-#   dispatch clone, not in v3's list), rm-scratch-reap.timer (foundry workdir housekeeping), rm-objstore.service,
+#   dispatch clone, not in v3's list), rm-scratch-reap.timer + rm-scratch-pressure.timer (dispatch workdir housekeeping), rm-objstore.service,
 #   rm-v3-vs-v2 (not enabled), account-plan, claude-account-warm (not enabled), hestia.
 # Substrate (in NO arm, never checked): account-usage, deadman, memwatch, mirror, pulse-*, ops-watch, timer-guard,
 #   telemetry-*, claude-account-*. No conductor unit file exists.

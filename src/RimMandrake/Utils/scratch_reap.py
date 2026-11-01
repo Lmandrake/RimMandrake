@@ -1,103 +1,155 @@
 #!/usr/bin/env python3
-"""scratch_reap.py — delete stale scratch clones and agent session scratchpads, but ONLY when nothing in
-them exists nowhere else. Dry run by default; --apply deletes.
+"""scratch_reap.py — expire stale scratch clones and agent session dirs so nobody has to tidy them. Dry run by
+default; --apply deletes. Anything that exists nowhere else is BUNDLED first, loudly, or the path is skipped.
 
-Owner, 2026-10-18, by card (BUILDUP_BUILD_CLONES_STOP_BREEDING, Q2): "Reaper may delete stale scratch
-clones? -> Yes, after 24h, if fully pushed". Design: design/RimMandrake/buildup_prevention_design_2026-10-18.md
-Source 1. Lesson behind the ledger check: a session scratchpad held the ONLY copy of CRACKEDLANDS_FULL_RENAME_1's
-three commits and a hand cleanup deleted it (2026-10-18, lessons/20261018T192736Z-…).
+Owner, 2026-10-18, by card (BUILDUP_BUILD_CLONES_STOP_BREEDING, Q2): "Reaper may delete stale scratch clones?
+-> Yes, after 24h, if fully pushed". Owner, 2026-10-31 (SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES): build it fully,
+folded into the operating design. Authority for bundle-then-delete: design/RimMandrake/delegation_policy.md §2.2,
+class `leftovers`; the archive root and acts.jsonl are leftovers.py's, so the digest lists every act.
+Lesson behind the ledger check: a session scratchpad held the ONLY copy of CRACKEDLANDS_FULL_RENAME_1's three
+commits and a hand cleanup deleted it (2026-10-18). Lesson behind inner clones: one bad clone kept a whole session
+dir, and 150 GB stood REFUSED behind 15 session dirs.
 
-    scratch_reap.py                 report: DELETE / REFUSE (with reasons) / YOUNG for every candidate
-    scratch_reap.py --apply         delete the DELETE rows (each re-checked immediately before rmtree)
+    scratch_reap.py                 report every candidate: DELETE / ARCHIVE / REFUSE / YOUNG
+    scratch_reap.py --apply         act on DELETE and ARCHIVE rows (each re-judged immediately before rmtree)
     scratch_reap.py --json          machine-readable rows
+    scratch_reap.py --max-seconds N stop starting deletions after N seconds; the next run takes the rest
+    scratch_reap.py --pressure-check  if the root disk is low and no run is recent, start the reaper's unit now
 
-Candidates (never anything else — loose files and other dirs are counted and left alone):
+Candidates (never anything else — loose files and other dirs are left alone):
   * a git clone anywhere under /home/mandrake/rm/scratch/** or ~/.seat-tmp/** (a dir holding `.git`);
-  * an agent session dir  ~/.seat-tmp/<SEAT>/claude-*/<project>/<session-uuid>/  (its scratchpad/ and tasks/).
+  * an agent session dir  ~/.seat-tmp/<SEAT>/claude-*/<project>/<session-uuid>/ . Its inner clones are judged one by
+    one, so one bad clone no longer keeps the rest; the session shell goes only when none of its clones is kept.
 
-A candidate is deleted only if EVERY rule passes; any failure REFUSES it and writes an alarm line:
-  1. older than the TTL (24 h): the NEWEST mtime anywhere inside it, not the dir's own;
-  2. for every clone (the candidate, or each clone inside a session dir):
-       no commit reachable from any local ref (branches, tags, HEAD, stash, backup/rescue refs) that is
-       missing from every remote-tracking ref; at least one remote; no remote that is a vanished local path;
-       `git status --porcelain` empty (no tracked change and no untracked file; ignored files do not count);
-       no stash; no rebase/merge/cherry-pick in progress; not a linked worktree (`.git` file);
-  3. no other repo borrows its objects (objects/info/alternates pointing inside it);
-  4. no ledger event, live or closed item, or handoff in either seat clone names its path, its session
-     uuid, or (for a distinctive name) its directory name — "committed LOCALLY, not pushed" notes name these;
-  5. no running process has it as cwd or names it on its command line.
+Verdicts:
+  YOUNG    newest mtime or ctime anywhere inside (a session: anywhere in the session) is within the TTL. The TTL is 24 h and
+           disk pressure never shortens it.
+  DELETE   old, and nothing in it is missing elsewhere.
+  ARCHIVE  old, and it holds a commit the mirror lacks (any ref, reflog or stash; a local tracking ref proves nothing),
+           a dirty or untracked file, ignored files that are not build output, or loose session files: bundle + tar +
+           index and worktree patches to a new archive dir, restore-tested, an acts.jsonl line, then delete. A commit
+           whose author, dates and subject match main but whose content does not is kept as a patch: main's history was
+           rewritten once, so old clones hold every commit under another hash, and a whole-history bundle is huge.
+  REFUSE   skipped and reported. FAILS CLOSED: anything we cannot read or prove lands here.
+           * protected: a seat, dispatch or anchor clone, arena, arena-vet, the replay root, store.git, mirror.git,
+             retired-trees, the D: mirror; or a path inside or holding one of those;
+           * a live session or process: running cwd, open file, mapping, exe, argv or environment inside it; session
+             uuid in a process environment; transcript touched within the TTL. A process of ours we cannot inspect
+             holds EVERYTHING;
+           * borrowed: objects/info/alternates or a worktree `.git` file elsewhere points into it. An alternates
+             file we cannot read holds EVERYTHING;
+           * unreadable: any error walking it; git cannot read it; rebase/merge in progress; linked worktree;
+             submodule; a nested repo; an assume-unchanged file; over the preserve caps; bundle or restore test failed;
+           * a canonical save inside whose exact bytes the mirror does not hold;
+           * named by an open item or, within 7 days, by a ledger event, closed item, handoff; or by a systemd unit.
 
-Env (the selftest uses them): SCRATCH_REAP_ROOTS (os.pathsep list), SCRATCH_REAP_CORPUS (os.pathsep list of
-clone roots whose infrastructure/state is grepped), SCRATCH_REAP_TTL_HOURS, SCRATCH_REAP_STATE.
+Deletion is pinned: after the re-judgment and preservation the path is renamed aside, a fresh /proc scan and a fresh
+walk prove nothing arrived, and only then is it removed; any doubt renames it back. The rename is what closes the gap
+a check cannot: nothing new can reach the path once it is gone from under that name.
+
+Stated limits, each a choice: hostile local processes are out of scope (a same-uid process calling itself ssh-agent
+and going undumpable is not looked into, and root-owned processes cannot be inspected: they are counted in the record,
+and nothing root-owned works in these roots). A borrower that is not running, beneath a dir of ours we cannot list under
+/tmp or a reap root, or beneath another user's dir outside our trees, is not seen (a running one is, through its cwd; a
+dir unreadable anywhere else holds everything). Tool caches named in DISPOSABLE_NAMES are never preserved, whatever they
+hold. Hard links are a clone's own: a pinned tree's signature does not follow one out of the tree.
+A borrower created in the two minutes between the borrower scan and a removal is not seen. A process whose cwd was
+deleted has no repo left to name. An unreadable dir of ours can hide a borrower that is not running. A session of empty
+directories and nothing else is not preserved: it holds no bytes and no file names, only directory names. Line endings
+git normalises (a CRLF under text=auto) read as no change: comparing every worktree file to its blob is too much IO for
+an hourly job over hundreds of clones. A process that holds a workspace only through an inotify watch
+(no cwd, no open file, no path in argv or environ) is not seen: /proc shows a watch by inode, and a watcher loses nothing
+it cannot rebuild.
+
+Every run: runs.jsonl (rows), alarms.log (each new refusal once), last_run.json (apply runs: the record ops_watch
+alarms on). An unexpected failure exits non-zero, which fails the unit, which reaches the Conductor (signal_watch).
+
+Env (the selftest uses them): SCRATCH_REAP_ROOTS, _CORPUS, _SCAN, _MIRRORS, _PROTECTED (os.pathsep lists);
+SCRATCH_REAP_TTL_HOURS, _STATE, _TRANSCRIPTS, _PRESSURE_GB, _COOLDOWN_MIN, _UNIT; LEFTOVERS_ARCHIVE_ROOT.
 """
 from __future__ import annotations
 
 import argparse
+import bisect
+import datetime as dt
+import errno
+import fcntl
 import glob
+import hashlib
 import json
+import ctypes
 import os
 import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import leftovers  # noqa: E402  (archive root, canonical marks: one definition, leftovers.py's)
+
 HOME = Path.home()
-DEFAULT_ROOTS = [Path("/home/mandrake/rm/scratch"), HOME / ".seat-tmp", Path("/home/mandrake/rm/arena/replay")]
-DEFAULT_CORPUS = [Path("/home/mandrake/rm/bench"), Path("/home/mandrake/rm/foundry")]
-NEVER = {Path("/home/mandrake/rm/bench"), Path("/home/mandrake/rm/foundry"), Path("/home/mandrake/rm/store.git"),
-         Path("/home/mandrake/rm/mirror.git"), Path("/mnt/d/Luke/dev/RimMandrake"), HOME}
+RM = Path("/home/mandrake/rm")
+# The replay root is deliberately NOT a root: it sits under arena, which the brief protects.
+DEFAULT_ROOTS = [RM / "scratch", HOME / ".seat-tmp"]
+DEFAULT_CORPUS = [RM / "bench", RM / "foundry"]
+DEFAULT_SCAN = [HOME, Path("/tmp"), Path("/mnt/d/ClaudeWork/rimmandrake/pulse-deploy")]
+PROTECTED = [RM / n for n in ("bench", "foundry", "dispatch", "anchor", "arena", "arena-vet", "store.git", "mirror.git",
+                              "new.git", "retired-trees", "scratch_wallreach_slice")] + [Path("/mnt/d/Luke/dev/RimMandrake")]
 UUID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+UUID_ANY = re.compile(rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
+TOKEN = re.compile(r"[A-Za-z0-9_-]+")
 GENERIC = {"scratch", "scratchpad", "clone", "repo", "tmp", "temp", "work", "test", "tasks", "foundry", "bench",
            "rimmandrake", "backup", "src", "build", "out", "old", "new"}
-WALK_CAP = 400_000          # entries; a tree bigger than this is not aged (REFUSE: too big to age)
+CTIME_COUNTS = True         # the selftest ages its fixtures with utime, which cannot set a ctime
+SYSTEM_PATHS = ("/proc/", "/sys/", "/dev/", "/usr/", "/lib/", "/lib64/", "/bin/", "/sbin/", "/etc/", "/opt/", "/init")
+GONE_LENDER = re.compile(r"error: (unable to normalize alternate object path: |object directory .* does not exist; check )")
+MOUNTINFO = "/proc/self/mountinfo"
+UNIX_SOCKETS = "/proc/net/unix"
+# A clone's config may tell git to look less hard than this job must: it answers for the bytes on disk, on this filesystem.
+HONEST_STATUS = [w for k in ("core.ignorecase=false", "core.trustctime=true", "core.checkStat=default", "core.fileMode=true",
+                                    "core.symlinks=true", "core.ignoreStat=false", "core.fsmonitor=false", "core.untrackedCache=false") for w in ("-c", k)]
+WALK_CAP = 3_000_000        # entries; a tree bigger than this is not aged (REFUSE: too big to age)
+DIRTY_CAP = 2 * 1024 ** 3   # dirty/untracked bytes we will tar; more is skipped and reported
+RESIDUE_CAP = 512 * 1024 ** 2   # a session's loose files
+BUNDLE_CAP = 5 * 1024 ** 3
+MENTION_DAYS = 7
+BLIND_RETRIES = 5
+PRESSURE_GB = 420.0         # ops_watch_rules' DISK_TWO_DAYS line
+COOLDOWN_MIN = 30
+BORROW_REFRESH_S = 120
+CHANGED_CAP = 2000          # commits kept as patches; more is refused
+EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+PIN = re.compile(r"^\.reaping-\d+-")      # a path renamed aside for deletion; a crash leaves one to be judged again
+DISPOSABLE_NAMES = {"__pycache__", ".pytest_cache", ".mypy_cache", "node_modules"}     # tool caches by definition
+DISPOSABLE_EXACT = {"Transient/codebase_health.html", "Transient/codebase_health.json", "Transient/codebase_health_artifact.html",
+                    "Transient/codebase_health_hook.log", "infrastructure/state/codebase_health_last.json",
+                    "infrastructure/state/codebase_health_last.json.lock"}
+DISPOSABLE_DIRS = ("infrastructure/dashboards/hub/data/", "infrastructure/state/queue/")     # rendered from the ledger
+
+
+def env_paths(name: str, default: list[Path]) -> list[Path]:
+    v = os.environ.get(name)
+    return [Path(x) for x in v.split(os.pathsep) if x] if v is not None else default
 
 
 def roots() -> list[Path]:
-    v = os.environ.get("SCRATCH_REAP_ROOTS")
-    return [Path(x) for x in v.split(os.pathsep) if x] if v else DEFAULT_ROOTS
+    return env_paths("SCRATCH_REAP_ROOTS", DEFAULT_ROOTS)
 
 
-REPLAY_MARKER = ".git/rm_arena_replay.json"       # written by arena/arena_replay.py (nonce + created time)
-DEFAULT_REPLAY_ROOTS = [Path("/home/mandrake/rm/arena/replay")]
+def scan_roots() -> list[Path]:
+    dflt = roots() + corpus_roots() if os.environ.get("SCRATCH_REAP_ROOTS") else DEFAULT_SCAN
+    return env_paths("SCRATCH_REAP_SCAN", dflt)
 
 
-def replay_roots() -> list[Path]:
-    v = os.environ.get("SCRATCH_REAP_REPLAY_ROOTS")
-    return [Path(x) for x in v.split(os.pathsep) if x] if v else DEFAULT_REPLAY_ROOTS
-
-
-def replay_ttl_s() -> float:
-    return float(os.environ.get("SCRATCH_REAP_REPLAY_TTL_HOURS", "6")) * 3600
-
-
-def replay_clone_marked(c: Path, now: float) -> bool:
-    """True only for an arena replay clone: exactly <replay root>/<arm>/<task>, a real .git directory, and a regular
-    marker file (nonce + created) older than the replay TTL. Such a clone never holds unpushed work by construction
-    (it has no remote and the arm's work is discarded), so the remote/unpushed checks do not apply to it."""
-    try:
-        rp = c.resolve()
-        if c.is_symlink() or not (c / ".git").is_dir() or (c / ".git").is_symlink():
-            return False
-        if not any(r.exists() and rp.parent.parent == r.resolve() for r in replay_roots()):
-            return False
-        m = c / REPLAY_MARKER
-        if m.is_symlink() or not m.is_file():
-            return False
-        d = json.loads(m.read_text())
-        if not isinstance(d, dict) or d.get("state", "ready") not in ("building", "ready"):
-            return False                              # a list / scalar / unknown state is not a marker
-        if not (isinstance(d.get("nonce"), str) and re.fullmatch(r"[0-9a-f]{32}", d["nonce"])):
-            return False
-        return now - float(d["created"]) >= replay_ttl_s()
-    except (OSError, ValueError, TypeError, KeyError, AttributeError):
-        return False
+def protected() -> list[Path]:
+    return PROTECTED + env_paths("SCRATCH_REAP_PROTECTED", [])
 
 
 def corpus_roots() -> list[Path]:
-    v = os.environ.get("SCRATCH_REAP_CORPUS")
-    return [Path(x) for x in v.split(os.pathsep) if x] if v else DEFAULT_CORPUS
+    return env_paths("SCRATCH_REAP_CORPUS", DEFAULT_CORPUS)
 
 
 def ttl_s() -> float:
@@ -109,9 +161,34 @@ def state_dir() -> Path:
                                Path(os.environ.get("XDG_STATE_HOME", HOME / ".local" / "state")) / "rm-scratch-reap"))
 
 
-def git(repo: Path, *a, check=False) -> subprocess.CompletedProcess:
-    return subprocess.run(["git", "-C", str(repo), *a], capture_output=True, text=True,
-                          env=dict(os.environ, GIT_OPTIONAL_LOCKS="0"))
+def origin_mirrors() -> list[Path]:
+    return env_paths("SCRATCH_REAP_MIRRORS", [RM / "mirror.git", RM / "store.git"])
+
+
+def read_objects() -> list[str]:
+    """Object dirs every read may use: a --shared clone whose lender lost objects still reads through these, and a
+    commit found only here is on the mirror or store by definition."""
+    out = []
+    for m in origin_mirrors():
+        for o in (m / "objects", m / ".git" / "objects"):
+            if o.is_dir():
+                out.append(str(o))
+    return out
+
+
+def git(repo: Path, *a, stdin: str | None = None, timeout: int = 600) -> subprocess.CompletedProcess:
+    env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_") or k in ("GIT_CONFIG_GLOBAL", "GIT_CONFIG_SYSTEM")}
+    env.update(GIT_OPTIONAL_LOCKS="0", GIT_TERMINAL_PROMPT="0", GIT_NO_REPLACE_OBJECTS="1")
+    ro = read_objects()
+    if ro:
+        env["GIT_ALTERNATE_OBJECT_DIRECTORIES"] = os.pathsep.join(ro)
+    try:
+        r = subprocess.run(["git", "-C", str(repo), *HONEST_STATUS, *a], capture_output=True, env=env, timeout=timeout,
+                           input=None if stdin is None else stdin.encode("utf-8", "surrogateescape"))
+        return subprocess.CompletedProcess(a, r.returncode, r.stdout.decode("utf-8", "surrogateescape"),
+                                           r.stderr.decode("utf-8", "surrogateescape"))     # bytes: text mode eats a \r
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(a, 124, "", "git timed out")
 
 
 # ---------------------------------------------------------------- discovery
@@ -119,8 +196,9 @@ def is_clone(d: Path) -> bool:
     return os.path.lexists(d / ".git")
 
 
-def find_clones(top: Path, depth: int = 6) -> list[Path]:
-    """Every git work tree under `top` (top itself included), not descending into a found clone."""
+def find_clones(top: Path, depth: int = 8) -> list[Path]:
+    """Every git work tree under `top` (top itself included), not descending into a found clone. A dir we cannot
+    list is not a hole: walk() reports it and the containing candidate is REFUSED there."""
     out: list[Path] = []
 
     def walk(d: Path, k: int):
@@ -140,187 +218,780 @@ def find_clones(top: Path, depth: int = 6) -> list[Path]:
     return out
 
 
-def candidates() -> tuple[list[tuple[str, Path]], int]:
-    """-> ([(kind, path)], count of other entries left alone)."""
+def candidates() -> list[tuple[str, Path]]:
+    """[(kind, path)]: session dirs, then clones outside any session."""
     cands: list[tuple[str, Path]] = []
     seen: set[Path] = set()
-    others = 0
     for r in roots():
         if not r.is_dir():
             continue
-        # session dirs first: ~/.seat-tmp/<SEAT>/claude-*/<project>/<uuid>
-        for s in glob.glob(str(r / "*" / "claude-*" / "*" / "*")):
+        sess = glob.glob(str(r / "*" / "claude-*" / "*" / "*")) + glob.glob(str(r / "*" / "claude-*" / "*" / ".reaping-*"))
+        for s in sess:                                                 # ~/.seat-tmp/<SEAT>/claude-*/<project>/<uuid>
             p = Path(s)
-            if UUID.match(p.name) and p.is_dir() and not p.is_symlink():
+            if UUID.match(PIN.sub("", p.name)) and p.is_dir() and not p.is_symlink():
                 cands.append(("session", p))
                 seen.add(p)
         for c in find_clones(r):
-            if any(c == s or s in c.parents for s in seen):
-                continue                     # judged as part of its session
-            cands.append(("clone", c))
-    return cands, others
+            if not any(s == c or s in c.parents for s in c.parents if s in seen) and c not in seen:
+                cands.append(("clone", c))
+    return cands
 
 
 # ---------------------------------------------------------------- measurements
-def newest_mtime_and_size(d: Path) -> tuple[float, int, bool]:
-    """(newest mtime of anything inside, total bytes, capped?) — never follows symlinks."""
-    newest, size, n = 0.0, 0, 0
-    stack = [str(d)]
-    while stack:
-        cur = stack.pop()
-        try:
-            st = os.lstat(cur)
-            newest = max(newest, st.st_mtime)
-            it = os.scandir(cur)
-        except OSError:
-            continue
-        with it:
-            for e in it:
-                n += 1
-                if n > WALK_CAP:
-                    return newest, size, True
-                try:
-                    st = e.stat(follow_symlinks=False)
-                except OSError:
-                    continue
-                newest = max(newest, st.st_mtime)
-                if e.is_dir(follow_symlinks=False):
-                    stack.append(e.path)
-                else:
-                    size += st.st_size
-    return newest, size, False
+def touched(st: os.stat_result) -> tuple:
+    """`cp -a` and a tar extract keep old mtimes on a dir made a minute ago; the ctime says when it arrived."""
+    return (st.st_mtime, st.st_ctime) if CTIME_COUNTS else (st.st_mtime,)
 
 
-def origin_mirrors() -> list[Path]:
-    v = os.environ.get("SCRATCH_REAP_MIRRORS")
-    if v is not None:
-        return [Path(x) for x in v.split(os.pathsep) if x]
-    return [Path("/home/mandrake/rm/mirror.git"), Path("/home/mandrake/rm/store.git")]
+class Tree:
+    """One walk of a candidate: newest mtime, bytes, unreadable spots, saves. Never follows symlinks."""
 
-
-def still_unpushed(c: Path, unpushed: list[str]) -> list[str]:
-    """A clone's remote-tracking refs go stale (its commits were pushed from elsewhere, or landed later):
-    a local ref tip that is an ANCESTOR of origin/main in the locally kept mirror/store is on origin, and so is
-    everything it reaches. Only exact commits count — a patch-equivalent replay is still refused."""
-    # Every local ref, not a namespace list: `rev-list --all` (the caller) counts commits held by ANY ref, so a
-    # commit held only by e.g. refs/wip/x or refs/original/... must be a tip here too, or none of `left` names
-    # it and the clone reads as fully pushed (review 2026-10-26). refs/remotes is the remote side, never a tip.
-    tips = {ln.split()[0] for ln in git(c, "for-each-ref", "--format=%(objectname) %(refname)").stdout.splitlines()
-            if ln.strip() and not ln.split()[1].startswith("refs/remotes/")}
-    h = git(c, "rev-parse", "-q", "--verify", "HEAD").stdout.strip()
-    if h:
-        tips.add(h)
-    uset = set(unpushed)
-    left = [t for t in tips if t in uset]
-    for m in origin_mirrors():
-        if not left:
-            break
-        ref = next((r for r in ("refs/remotes/origin/main", "refs/heads/main")
-                    if git(m, "rev-parse", "-q", "--verify", r).returncode == 0), None)
-        if ref:
-            left = [t for t in left if git(m, "merge-base", "--is-ancestor", t, ref).returncode]
-    if left:
-        return unpushed
-    return []
-
-
-def clone_problems(c: Path) -> list[str]:
-    """Every reason this clone may NOT be deleted; empty means it holds nothing that is not on a remote."""
-    why: list[str] = []
-    dotgit = c / ".git"
-    if dotgit.is_file() or dotgit.is_symlink():
-        return [f"{c}: .git is a file/link (linked worktree or submodule) — its real repo is elsewhere"]
-    if git(c, "rev-parse", "--git-dir").returncode:
-        return [f"{c}: git cannot read it (corrupt or not a repo) — inspect by hand"]
-    gd = dotgit
-    for m in ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD", "BISECT_LOG"):
-        if (gd / m).exists():
-            why.append(f"{c}: a {m} is in progress")
-    remotes = [x for x in git(c, "remote").stdout.split() if x]
-    if not remotes:
-        why.append(f"{c}: no remote at all — every commit here exists only here")
-    for rm in remotes:
-        url = git(c, "remote", "get-url", rm).stdout.strip()
-        local = url[7:] if url.startswith("file://") else url
-        if local.startswith("/") and not os.path.exists(local):
-            why.append(f"{c}: remote '{rm}' is a local path that no longer exists ({local})")
-    if git(c, "rev-parse", "-q", "--verify", "refs/stash").returncode == 0:
-        n = len(git(c, "stash", "list").stdout.splitlines())
-        why.append(f"{c}: {n} stash entr{'y' if n == 1 else 'ies'}")
-    r = git(c, "rev-list", "--all", "HEAD", "--not", "--remotes")
-    if r.returncode:
-        r = git(c, "rev-list", "--all", "--not", "--remotes")      # unborn HEAD
-    unpushed = [x for x in r.stdout.split() if x]
-    if unpushed and not r.returncode:
-        unpushed = still_unpushed(c, unpushed)
-    if r.returncode:
-        why.append(f"{c}: cannot list commits ({r.stderr.strip()[:120]})")
-    elif unpushed:
-        why.append(f"{c}: {len(unpushed)} commit(s) on no remote (e.g. {unpushed[0][:10]})")
-    st = git(c, "status", "--porcelain=v1", "-z", "--untracked-files=normal")
-    if st.returncode:
-        why.append(f"{c}: git status failed ({st.stderr.strip()[:120]})")
-    else:
-        recs = [x for x in st.stdout.split("\0") if x]
-        untracked = sum(1 for x in recs if x.startswith("??"))
-        tracked = len(recs) - untracked
-        if tracked:
-            why.append(f"{c}: {tracked} tracked file(s) changed")
-        if untracked:
-            why.append(f"{c}: {untracked} untracked file(s)")
-    return why
-
-
-def all_repos_for_alternates() -> list[Path]:
-    repos = list(DEFAULT_CORPUS) + [Path("/home/mandrake/rm/store.git"), Path("/home/mandrake/rm/mirror.git")]
-    for r in roots():
-        if r.is_dir():
-            repos += find_clones(r)
-    return repos
-
-
-def borrowers_of(target: Path, repos: list[Path]) -> list[str]:
-    out = []
-    t = str(target.resolve()) + os.sep
-    for r in repos:
-        if r == target or target in r.parents:
-            continue
-        for alt in (r / ".git" / "objects" / "info" / "alternates", r / "objects" / "info" / "alternates"):
+    def __init__(self, d: Path):
+        self.newest, self.size, self.capped, self.errors, self.saves = 0.0, 0, False, [], []
+        self.nested: list[str] = []                     # a `.git` below the top: another repo, ignored or not
+        self.top_ctime = 0                              # the pin must see this unmoved: see act
+        self.sig = 0                                    # order-free sum over every entry below the top; see signature()
+        n = 0
+        top = len(str(d))
+        stack = [str(d)]
+        while stack:
+            cur = stack.pop()
             try:
-                lines = alt.read_text().splitlines()
+                st = os.lstat(cur)
+                self.newest = max(self.newest, *touched(st))
+                if cur == str(d):                       # a rename leaves the top's mtime and mode alone, not its ctime
+                    self.top_ctime = st.st_ctime_ns
+                    self.sig += int.from_bytes(hashlib.sha256(b"top %d %d" % (st.st_mtime_ns, st.st_mode)).digest(), "big")
+                it = os.scandir(cur)
+            except OSError as e:
+                self.errors.append(f"{cur}: {e.strerror}")
+                continue
+            with it:
+                for e in it:
+                    n += 1
+                    if n > WALK_CAP:
+                        self.capped = True
+                        return
+                    try:
+                        st = e.stat(follow_symlinks=False)
+                        isdir = e.is_dir(follow_symlinks=False)
+                    except OSError as x:
+                        self.errors.append(f"{e.path}: {x.strerror}")
+                        continue
+                    self.newest = max(self.newest, *touched(st))
+                    self.sig += int.from_bytes(hashlib.sha256(os.fsencode(f"{e.path[top:]}\0{st.st_ino}\0{st.st_mode}\0{st.st_size}\0"
+                                               f"{st.st_mtime_ns}\0{st.st_ctime_ns}")).digest(), "big")
+                    if e.name == ".git" and cur != str(d):
+                        self.nested.append(e.path)
+                    if isdir:
+                        stack.append(e.path)
+                    else:
+                        self.size += st.st_size
+                        if e.name.endswith(".rws"):
+                            self.saves.append(e.path)
+
+    def signature(self) -> str:
+        """Names, inodes, modes, sizes, mtimes and ctimes of everything below the top; the top's mtime and mode."""
+        return f"{self.sig % 2 ** 256:064x}"
+
+
+_CANON: set[str] | None = None
+
+
+def canon_save_names() -> set[str]:
+    global _CANON
+    if _CANON is None:
+        _CANON = set()
+        for r in corpus_roots():
+            _CANON |= set(leftovers.Ctx.canon_save_names(type("C", (), {"repo": str(r), "_canon_saves": None})()))
+    return _CANON
+
+
+def canonical_saves(saves: list[str]) -> list[str]:
+    names = canon_save_names()
+    base = [(s, os.path.basename(s)) for s in saves]
+    return [s for s, b in base if b in names or any(m in b for m in leftovers.CANONICAL_MARKS)]
+
+
+def mirror_holds(f: Path) -> bool:
+    """These exact bytes are a blob the mirror holds. Read from the worktree, so no index flag can hide a change."""
+    try:
+        st = os.lstat(f)
+        if not os.path.isfile(f) or os.path.islink(f):
+            return False
+        h = hashlib.sha1(f"blob {st.st_size}\0".encode())
+        with open(f, "rb") as fh:
+            for chunk in iter(lambda: fh.read(1 << 20), b""):
+                h.update(chunk)
+    except OSError:
+        return False
+    return any(git(m, "cat-file", "-e", h.hexdigest()).returncode == 0 for m in origin_mirrors())
+
+
+def unpreserved_canon(c: Path, saves: list[str]) -> list[str]:
+    """Canonical saves in clone `c` that exist only here. A checkout of the repo always carries the tracked ones."""
+    return [os.path.relpath(s, c) for s in canonical_saves(saves) if not mirror_holds(Path(s))]
+
+
+NONDUMPABLE = {"systemd", "(sd-pam)", "ssh-agent"}     # ours by uid, unreadable by design, never an agent session
+
+
+def undumpable_system(base: str) -> bool:
+    try:
+        return open(f"{base}/comm").read().strip() in NONDUMPABLE
+    except OSError:
+        return False
+
+
+_SYSTEM_PIDS: set[str] = set()
+
+
+class Live:
+    """One /proc + transcript snapshot: what is in use right now. Re-taken before each deletion batch."""
+
+    def __init__(self, now: float):
+        self.taken = time.time()
+        self.paths: list[tuple[str, str]] = []
+        self.sessions: set[str] = set()
+        self.resolved: dict[str, str] = {}                  # the same few paths recur across hundreds of environments
+        self.blind: list[str] = []
+        self.other_uid = 0
+        self.cwds: set[str] = set()
+        self.named: set[str] = set()                    # every place a process names, for the same question
+        cmds = []
+        me, uid = os.getpid(), os.getuid()
+        for pid in os.listdir("/proc"):
+            if not pid.isdigit() or int(pid) == me:
+                continue
+            base = f"/proc/{pid}"
+            try:
+                real_uid = next(int(ln.split()[1]) for ln in open(f"{base}/status") if ln.startswith("Uid:"))
+            except (FileNotFoundError, ProcessLookupError, StopIteration, ValueError):
+                continue                                        # the process just ended
+            except OSError as e:
+                self.blind.append(f"pid {pid}: status: {e.strerror}")
+                continue
+            if real_uid != uid:
+                self.other_uid += 1                             # root daemons: unreadable by design, counted
+                continue
+            try:
+                self._read(pid, base, cmds)
+            except FileNotFoundError:
+                continue
+            except ProcessLookupError:
+                continue
+            except OSError as e:
+                # Exempt only what stays unreadable: a forked child still called systemd must get to its exec.
+                if pid in _SYSTEM_PIDS and undumpable_system(base):
+                    continue
+                if self._settles(pid, base, cmds):
+                    continue
+                if undumpable_system(base):
+                    _SYSTEM_PIDS.add(pid)
+                else:
+                    self.blind.append(f"pid {pid}: {e.strerror}")
+        self.paths.append((os.getcwd(), str(me)))               # this job is a process too, and may stand in a candidate
+        self._listeners()
+        for cwd in sorted(self.cwds):
+            self._lenders(cwd)
+        for d in sorted(self.named - self.cwds):        # a path merely named may be anyone's: not seeing into it is not blind
+            self._lenders(d, quiet=True)
+        self.paths.sort()
+        self.keys = [p for p, _ in self.paths]
+        self.cmdblob = "\0".join(cmds)
+        self.fresh = transcripts_fresh(now)
+        if self.fresh is None:
+            self.blind.append("transcript tree unreadable")
+            self.fresh = {}
+
+    def _listeners(self):
+        """A listening socket's owner holds only `socket:[n]`, which names no path, and tar drops the socket. A dead one
+        is in no table, so it holds nothing."""
+        try:
+            with open(UNIX_SOCKETS, errors="surrogateescape") as f:
+                for ln in list(f)[1:]:
+                    w = ln.rstrip("\n").split(None, 7)
+                    if len(w) == 8 and w[7].startswith("/"):
+                        self.paths.append((w[7], "a socket"))
+        except OSError as e:
+            self.blind.append(f"unix sockets: {e.strerror}")
+
+    def _lenders(self, cwd: str, quiet: bool = False):
+        """A running clone anywhere keeps what it borrows, even outside the scan roots.
+
+        quiet: cwd is only a directory some process named, so a denial on the way up to a repo says nothing. Once a
+        .git is found the rest counts: an unreadable one, or unreadable alternates, stay blind."""
+        repo = self._repo_of(cwd.removesuffix(" (deleted)"), quiet)
+        if repo is None:
+            return
+        todo, seen = [os.path.join(repo, "objects")], set()
+        while todo:
+            o = todo.pop()
+            if o in seen:
+                continue
+            seen.add(o)
+            try:
+                text = open(os.path.join(o, "info", "alternates"), errors="surrogateescape").read()
+            except FileNotFoundError:
+                continue
+            except OSError as e:
+                self.blind.append(f"alternates of {o}: {e.strerror}")
+                continue
+            for ln in text.splitlines():
+                if ln.strip() and not ln.startswith("#"):
+                    t = os.path.realpath(os.path.join(o, ln.strip()))
+                    self.paths.append((t, "a live clone borrows it"))
+                    todo.append(t)
+
+    def _repo_of(self, cwd: str, quiet: bool = False) -> str | None:
+        """The git dir holding objects for a cwd, through a linked worktree's `.git` file. Not knowing is blind."""
+        d = cwd
+        while True:
+            g = os.path.join(d, ".git")
+            try:
+                if os.path.lexists(g):
+                    os.stat(g)
+                    break
+                os.stat(os.path.join(d, "."))           # lexists swallows a denial; this does not
+                if os.path.isfile(os.path.join(d, "HEAD")) and os.path.isdir(os.path.join(d, "objects")):
+                    return d                            # inside a bare repo
+            except (FileNotFoundError, NotADirectoryError):
+                pass
+            except OSError as e:
+                if not quiet:
+                    self.blind.append(f"cannot see the repo of {cwd}: {e.strerror}")
+                return None
+            if os.path.dirname(d) == d:                 # and "//x" never reaches "/"
+                return None
+            d = os.path.dirname(d)
+        if os.path.isdir(g):
+            return g
+        try:
+            m = re.match(r"gitdir:\s*(.+)", open(g, errors="surrogateescape").read())
+            if not m:
+                raise OSError(0, "no gitdir line")
+            gd = os.path.join(d, m.group(1).strip())
+            os.stat(gd)                                 # a gitdir that is not there is not a repo that borrows nothing
+            try:
+                common = os.path.realpath(os.path.join(gd, open(os.path.join(gd, "commondir")).read().strip()))
+            except FileNotFoundError:
+                common = os.path.realpath(gd)
+        except OSError as e:
+            self.blind.append(f"{g}: {e.strerror}")
+            return None
+        self.paths.append((common, "a live worktree's repo"))
+        return common
+
+    def _settles(self, pid: str, base: str, cmds: list[str]) -> bool:
+        """A child systemd has forked is undumpable until its exec, so every unit start would otherwise read as a
+        blind spot and hold the whole run. Blind means it stays unreadable; retrying costs only when one is found."""
+        for _ in range(BLIND_RETRIES):
+            time.sleep(0.1)
+            try:
+                self._read(pid, base, cmds)
+                return True
+            except (FileNotFoundError, ProcessLookupError):
+                return True
             except OSError:
                 continue
+        return False
+
+    def _read(self, pid: str, base: str, cmds: list[str]):
+        def add(p: str):
+            if p.startswith("/"):
+                self.paths.append((p.removesuffix(" (deleted)"), pid))
+                if not p.startswith(SYSTEM_PATHS):
+                    self.named.add(os.path.dirname(p))
+                    self.named.add(p.removesuffix(" (deleted)"))    # a directory fd or a variable names the repo itself
+                    plain = p.removesuffix(" (deleted)")
+                    real = self.resolved.get(plain) or self.resolved.setdefault(plain, os.path.realpath(plain))
+                    if real != p:                                   # a shortcut in argv names what it points at
+                        self.paths.append((real, pid))
+                        self.named.update((real, os.path.dirname(real)))
+        for link in ("cwd", "exe", "root"):
+            try:
+                t = os.readlink(f"{base}/{link}")
+            except FileNotFoundError:
+                continue                                        # a zombie has none
+            if link != "root":
+                add(t)
+            if link == "cwd":
+                self.cwds.add(t)
+        for e in os.scandir(f"{base}/fd"):
+            try:
+                add(os.readlink(e.path))
+            except FileNotFoundError:
+                pass
+        with open(f"{base}/maps", errors="surrogateescape") as f:
+            for ln in f:
+                i = ln.find("/")
+                if i > 0:
+                    add(ln[i:].rstrip("\n"))
+                    add(ln[i:].rstrip("\n").replace("\\012", "\n"))    # maps writes a newline in a name so
+        with open(f"{base}/cmdline", "rb") as f:
+            argv = f.read()
+        cmds.append(argv.replace(b"\0", b" ").decode("utf-8", "surrogateescape"))
+        cwd = os.readlink(f"{base}/cwd")
+        for a in argv.split(b"\0"):                     # `python3 scratch/x/task.py` names its clone only from its cwd
+            if a[:1] == b"-":                           # `--repo=/path` names one as plainly
+                a = a.partition(b"=")[2] or a[2:]       # and so does `-I../lib`
+            if a and a[:1] != b"-":                     # and `..` in an absolute one hides the name just as well
+                raw = os.path.join(cwd, a.decode("utf-8", "surrogateescape"))
+                q = os.path.normpath(raw)
+                add(q)
+                self.named.add(q)
+                add(os.path.realpath(raw))                 # a link before the `..` means normpath named the wrong dir
+        with open(f"{base}/environ", "rb") as f:
+            env = f.read()
+        self.sessions.update(m.decode() for m in UUID_ANY.findall(env))
+        for kv in env.split(b"\0"):
+            _, _, v = kv.partition(b"=")
+            for part in re.split(rb"[:\s]+", v):                 # PATH-like, or flags: CPPFLAGS=-I/x -I/y
+                text = part.decode("utf-8", "surrogateescape")
+                near = os.path.normpath(os.path.join(cwd, text)) if text else cwd
+                if "/" in text:                                 # -isystem/x, ../x: a path from its first slash, and from cwd
+                    add(text[text.index("/"):])
+                    add(near)
+                    if text[:1] == "-":                         # -I../x
+                        add(os.path.normpath(os.path.join(cwd, text[2:])))
+                elif near not in self.resolved and os.path.lexists(near):   # PYTHONPATH=worker: a bare word if it is there
+                    add(near)
+
+    def users(self, p: Path) -> list[str]:
+        t = str(p)
+        out = []
+        unpinned = str(p.with_name(PIN.sub("", p.name)))  # a crash's pin must not hide who the path belongs to
+        for name in sorted({t, os.path.realpath(t), unpinned}):     # /proc reports resolved paths; argv and env may not
+            i = bisect.bisect_left(self.keys, name)
+            while i < len(self.keys) and (self.keys[i] == name or self.keys[i].startswith(name + "/")):
+                out.append(f"pid {self.paths[i][1]} uses {self.keys[i][:120]}")
+                i += 1
+                if len(out) >= 3:
+                    break
+            if name in self.cmdblob:
+                out.append("a running command line names it")
+        for part in (PIN.sub("", q) for q in p.parts):
+            if UUID.match(part):
+                if part in self.sessions:
+                    out.append(f"live session {part}: a running process carries it")
+                if part in self.cmdblob:
+                    out.append(f"live session {part}: a running command line names it")
+                if part in self.fresh:
+                    out.append(f"live session {part}: transcript touched within the TTL")
+        return out
+
+
+def transcript_roots() -> list[Path]:
+    cfg = Path(os.environ.get("CLAUDE_CONFIG_DIR", HOME / ".claude"))
+    return env_paths("SCRATCH_REAP_TRANSCRIPTS", [cfg / "projects"])
+
+
+def _raise(e: OSError):
+    if not isinstance(e, FileNotFoundError):         # gone mid-walk is an ended process's tidying; the rest is blindness
+        raise e
+
+
+def newest_jsonl(top: str) -> float:
+    t = 0.0
+    for dp, _, fns in os.walk(top, onerror=_raise):
+        for n in fns:
+            if n.endswith(".jsonl"):
+                t = max(t, os.lstat(os.path.join(dp, n)).st_mtime)
+    return t
+
+
+def transcripts_fresh(now: float) -> dict[str, float] | None:
+    """{session uuid: newest transcript mtime} for transcripts inside the TTL (a subagent's counts); None = blind."""
+    out: dict[str, float] = {}
+    ttl = ttl_s()
+    try:
+        for r in transcript_roots():
+            for proj in os.scandir(r):
+                if not proj.is_dir(follow_symlinks=False):
+                    continue
+                for e in os.scandir(proj.path):
+                    name = e.name.removesuffix(".jsonl")
+                    if not UUID.match(name):
+                        continue
+                    t = e.stat(follow_symlinks=False).st_mtime
+                    if e.is_dir(follow_symlinks=False):
+                        t = max(t, newest_jsonl(e.path))
+                    if now - t < ttl:
+                        out[name] = t
+    except OSError:
+        return None
+    return out
+
+
+class Borrows:
+    """Who points into whom: every objects/info/alternates and every `.git` FILE in the scan roots. An unreadable
+    one means we no longer know what must stay, so `hold` stops every deletion."""
+
+    def __init__(self):
+        self.taken = time.time()
+        self.hold: list[str] = []
+        self.blind: list[str] = []
+        pairs: list[tuple[str, str]] = []
+        tops = [str(r) for r in scan_roots() if r.exists()]
+        p = subprocess.run(["find", *tops, "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
+                            "-type", "f", ")", ")", "-print0"], capture_output=True, timeout=300) if tops else None
+        if p is None:
+            raise RuntimeError("no scan root exists: the borrower map would be empty")
+        lines = [ln for ln in p.stderr.decode("utf-8", "replace").splitlines() if ln.strip()]
+        for ln in lines:
+            if "No such file" in ln:
+                continue                        # gone mid-walk is fine
+            (self.blind if "Permission denied" in ln and self._harmless(ln) else self.hold).append(ln)
+        if p.returncode < 0 or (p.returncode and not lines):
+            self.hold.append(f"find ended {p.returncode} with no reason given: the borrower map is partial")
+        for raw in p.stdout.split(b"\0"):
+            if not raw:
+                continue
+            f = os.fsdecode(raw)
+            try:
+                text = open(f, errors="surrogateescape").read()
+            except FileNotFoundError:
+                continue                        # gone since find met it: its repo borrows nothing now
+            except OSError as e:
+                self.hold.append(f"{f}: {e.strerror}")
+                continue
+            if f.endswith("/.git"):
+                holder = os.path.dirname(f)
+                m = re.match(r"gitdir:\s*(.+)", text)
+                t = m.group(1).strip() if m else ""
+                lines = [t if os.path.isabs(t) else os.path.join(holder, t)] if t else []
+            else:
+                holder = os.path.dirname(os.path.dirname(os.path.dirname(f)))    # <repo>/objects or <repo>/.git/objects
+                base = os.path.dirname(os.path.dirname(f))
+                lines = [ln.strip() for ln in text.splitlines() if ln.strip() and not ln.startswith("#")]
+                lines = [ln if os.path.isabs(ln) else os.path.join(base, ln) for ln in lines]
+                holder = holder.removesuffix("/.git")
             for ln in lines:
-                p = ln.strip()
-                if p and not os.path.isabs(p):
-                    p = os.path.normpath(os.path.join(alt.parent.parent, p))
-                if p and (os.path.realpath(p) + os.sep).startswith(t):
-                    out.append(f"{r} borrows objects from it ({alt})")
+                pairs.append((os.path.realpath(ln), holder))
+        pairs.sort()
+        self.pairs, self.keys = pairs, [k for k, _ in pairs]
+
+    @staticmethod
+    def _harmless(ln: str) -> bool:
+        """Another user's dir outside our trees cannot hold our borrower, and one on an ancestor of a live cwd goes
+        blind through _lenders. Ours under a reap root is refused with its candidate, as is /tmp's selftest residue.
+        Unreadable anywhere else holds."""
+        m = re.search(r"(/.*?)['’]?: Permission denied", ln)
+        if not m:
+            return False
+        rp = Path(m.group(1))
+        try:
+            foreign = os.lstat(rp).st_uid != os.getuid()
+        except FileNotFoundError:
+            return True                                 # gone since find met it: it holds nothing now
+        except OSError:
+            return False
+        if foreign:
+            return not any(r == rp or r in rp.parents for r in scan_roots() if r != Path("/tmp"))
+        return any(r in rp.parents for r in [Path("/tmp"), *roots()])
+
+    def of(self, target: Path) -> list[str]:
+        t = os.path.realpath(target)
+        out = []
+        i = bisect.bisect_left(self.keys, t)
+        while i < len(self.keys) and (self.keys[i] == t or self.keys[i].startswith(t + "/")):
+            holder = self.pairs[i][1]
+            if holder != t and not holder.startswith(t + "/"):
+                out.append(f"{holder} borrows objects from it")
+            i += 1
+        return sorted(set(out))
+
+
+# ---------------------------------------------------------------- what exists only here
+def mirror_tips() -> list[str]:
+    """origin/main per each mirror we can read: the proof a commit is pushed even when a clone's refs are stale."""
+    global _MIRROR_TIPS
+    if _MIRROR_TIPS is None:
+        _MIRROR_TIPS = []
+        for m in origin_mirrors():
+            for ref in ("refs/remotes/origin/main", "refs/heads/main"):
+                r = git(m, "rev-parse", "-q", "--verify", ref + "^{commit}")
+                if r.returncode == 0:
+                    _MIRROR_TIPS.append(r.stdout.strip())
+                    break
+    return _MIRROR_TIPS
+
+
+_MIRROR_TIPS: list[str] | None = None
+_MAIN_KEYS: dict[str, set[str]] | None = None
+
+
+def commit_digests(repo: Path, *args, stdin: str | None = None) -> dict[str, tuple[str, str]] | None:
+    """{sha: (author, dates and subject; digest of each changed path's mode, blob and name)}. Reads trees, never blobs.
+    NUL ends every field: a path can hold a newline, never a NUL. None = unreadable."""
+    a, b = f"<{os.urandom(16).hex()}>", f"<{os.urandom(16).hex()}>"    # a subject or a path may hold any fixed mark
+    r = git(repo, "log", *args, "--no-renames", "--no-abbrev", "--raw", "-z", "--diff-merges=first-parent",
+            f"--format={a}%H %at %ct %ae %s{b}", stdin=stdin, timeout=300)
+    if r.returncode:
+        return None
+    out = {}
+    for rec in r.stdout.split(a)[1:]:
+        head, _, raw = rec.partition(b)
+        sha, _, key = head.partition(" ")
+        f = raw.lstrip("\0\n").split("\0")
+        if not all(f[i].startswith(":") for i in range(0, len(f) - 1, 2)):
+            return None                                 # a record not understood must not read as a commit with no changes
+        ents = sorted("\0".join((f[i].split()[1], f[i].split()[3], f[i + 1], "")) for i in range(0, len(f) - 1, 2))
+        out[sha] = (key, hashlib.sha1("".join(ents).encode("utf-8", "surrogateescape")).hexdigest())
+    return out
+
+
+def main_keys() -> dict[str, set[str]]:
+    """A rewrite of main left old clones holding every commit under another hash. {key: digests on main}: a commit
+    with main's key and digest is that commit, on main. An unreadable mirror yields nothing, so nothing is excused."""
+    global _MAIN_KEYS
+    if _MAIN_KEYS is None:
+        _MAIN_KEYS = {}
+        tips = mirror_tips()
+        d = commit_digests(origin_mirrors()[0], tips[0]) if tips else None
+        for key, dig in (d or {}).values():
+            _MAIN_KEYS.setdefault(key, set()).add(dig)
+    return _MAIN_KEYS
+
+
+def reflog_tips(c: Path) -> tuple[set[str], str | None]:
+    tips: set[str] = set()
+    logs = c / ".git" / "logs"
+    for dp, _, fns in os.walk(logs, onerror=None):
+        for n in fns:
+            try:
+                with open(os.path.join(dp, n), errors="surrogateescape") as f:
+                    for ln in f:
+                        w = ln.split(None, 2)
+                        if len(w) >= 2 and len(w[1]) == 40:     # git keeps an entry's old value alive as well as its new
+                            tips.update(x for x in w[:2] if x.strip("0"))
+            except OSError as e:
+                return tips, f"reflog unreadable: {e.strerror}"
+    return tips, None
+
+
+def unique_commits(c: Path) -> tuple[list[str], int, list[str], str | None]:
+    """(heads to bundle, commits the mirror lacks, commits like main's with other content, error). Every ref, HEAD,
+    stash and reflog entry counts. Only the mirror proves a push: a local tracking ref is local."""
+    fe = git(c, "for-each-ref", "--format=%(objectname) %(objecttype) %(refname)")
+    said = [x for x in fe.stderr.splitlines() if x.strip() and not GONE_LENDER.match(x)]    # judged elsewhere
+    if fe.returncode or said:                           # git warns past a ref it cannot read, and succeeds
+        return [], 0, [], f"cannot list refs ({' '.join(said)[:120] or fe.stderr.strip()[:120]})"
+    tips, nots = set(), set(mirror_tips())
+    for ln in fe.stdout.splitlines():
+        sha, typ, ref = ln.split(None, 2)
+        if typ in ("commit", "tag"):
+            tips.add(sha)
+    h = git(c, "rev-parse", "-q", "--verify", "HEAD^{commit}")
+    if h.returncode == 0:
+        tips.add(h.stdout.strip())
+    elif git(c, "symbolic-ref", "-q", "HEAD").returncode:
+        return [], 0, [], "HEAD is unreadable"
+    logged, err = reflog_tips(c)
+    if err:
+        return [], 0, [], err
+    logged -= tips
+    if logged:                               # a reflog line may name a commit gc already took: only live ones count
+        chk = git(c, "cat-file", "--batch-check", stdin="\n".join(sorted(logged)) + "\n")
+        if chk.returncode:
+            return [], 0, [], f"cannot read reflog commits ({chk.stderr.strip()[:120]})"
+        tips |= {w[0] for w in (ln.split() for ln in chk.stdout.splitlines()) if len(w) >= 2 and w[1] == "commit"}
+    if not tips:
+        return [], 0, [], None
+    r = git(c, "rev-list", "--stdin", stdin="\n".join(sorted(tips) + ["^" + n for n in sorted(nots)]) + "\n")
+    if r.returncode:
+        return [], 0, [], f"cannot list commits ({r.stderr.strip()[:120]})"
+    unique = r.stdout.split()
+    if not unique:
+        return [], 0, [], None
+    d = commit_digests(c, "--no-walk=unsorted", "--stdin", stdin="\n".join(sorted(unique)) + "\n")
+    if d is None or set(d) != set(unique):
+        return [], 0, [], "cannot read the commits the mirror lacks"
+    keys = main_keys()
+    changed = sorted(x for x, (k, dig) in d.items() if k in keys and dig not in keys[k])
+    alone = {x for x, (k, _) in d.items() if k not in keys}
+    if not alone:
+        return [], 0, changed, None
+    par = git(c, "rev-list", "--parents", "--no-walk=unsorted", "--stdin", stdin="\n".join(sorted(alone)) + "\n")
+    if par.returncode:
+        return [], 0, [], f"cannot read parents ({par.stderr.strip()[:120]})"
+    parents = {w for ln in par.stdout.splitlines() for w in ln.split()[1:]}
+    return sorted(alone - parents), len(alone), changed, None
+
+
+def disposable(path: str) -> bool:
+    """Ignored is not disposable: only what a build or a hook writes again may go unpreserved."""
+    p = path.rstrip("/")
+    return (bool(DISPOSABLE_NAMES & set(p.split("/"))) or p.endswith(".pyc") or p in DISPOSABLE_EXACT
+            or (path + "/").startswith(DISPOSABLE_DIRS))
+
+
+def dirty_files(c: Path) -> tuple[list[str], int, int, int, str | None]:
+    """(paths that exist, tracked changed, untracked, bytes, error)."""
+    st = git(c, "status", "--porcelain=v1", "-z", "--untracked-files=normal", "--ignored=matching")
+    if st.returncode:
+        return [], 0, 0, 0, f"git status failed ({st.stderr.strip()[:120]})"
+    recs = st.stdout.split("\0")
+    paths, tracked, untracked, size = [], 0, 0, 0
+    i = 0
+    while i < len(recs):
+        x = recs[i]
+        i += 1
+        if len(x) < 4:
+            continue
+        code, path = x[:2], x[3:]
+        if code[0] in "RC":
+            i += 1                           # -z: the old name is the next field
+        if code == "!!" and disposable(path):
+            continue
+        untracked += code in ("??", "!!")
+        tracked += code not in ("??", "!!")
+        full = c / path
+        if os.path.lexists(full):
+            paths.append(path)
+            t = Tree(full) if full.is_dir() and not full.is_symlink() else None
+            size += t.size if t else os.lstat(full).st_size
+    return paths, tracked, untracked, size, None
+
+
+def filtered_paths(c: Path) -> list[str]:
+    """Tracked paths a content filter stands between: git's status answers for the filtered bytes, not the file. A filter
+    is named by an attribute and defined in any config, so the attribute is what is asked. Unreadable counts as filtered."""
+    listed = git(c, "ls-files", "-z")
+    attrs = git(c, "check-attr", "-z", "--stdin", "filter", stdin=listed.stdout)
+    if listed.returncode or attrs.returncode:
+        return ["?"]
+    f = attrs.stdout.split("\0")
+    return [f[i] for i in range(0, len(f) - 2, 3) if f[i + 2] not in ("unspecified", "unset")]
+
+
+def gitlink_files(c: Path) -> list[str]:
+    """git steps over the directory of an uninitialised submodule, so a file put there is in nobody's status."""
+    out = []
+    for ln in git(c, "ls-files", "-s", "-z").stdout.split("\0"):
+        if ln.startswith("160000 "):
+            path = ln.split("\t", 1)[1]
+            try:
+                with os.scandir(c / path) as it:
+                    if any(it):
+                        out.append(f"the submodule dir {path} holds files git does not look at")
+            except (FileNotFoundError, NotADirectoryError):
+                pass
+            except OSError as e:
+                out.append(f"the submodule dir {path}: {e.strerror}")
+    return out
+
+
+def clone_state(c: Path) -> dict:
+    """{hard: reasons to skip, soft: reasons to bundle, tips, unique, dirty}."""
+    out = {"hard": [], "soft": [], "tips": [], "unique": 0, "dirty": [], "changed": [], "tracked": 0}
+    hard, soft = out["hard"], out["soft"]
+    dotgit = c / ".git"
+    if dotgit.is_file() or dotgit.is_symlink():
+        hard.append(f"{c}: .git is a file/link (linked worktree or submodule) — its real repo is elsewhere")
+        return out
+    if git(c, "rev-parse", "--git-dir").returncode:
+        hard.append(f"{c}: git cannot read it (corrupt or not a repo) — inspect by hand")
+        return out
+    for m in ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD", "BISECT_LOG"):
+        if (dotgit / m).exists():
+            hard.append(f"{c}: a {m} is in progress")
+    for sub, what in (("worktrees", "linked worktrees"), ("modules", "submodules")):
+        d = dotgit / sub
+        try:
+            if d.exists() and any(d.iterdir()):
+                hard.append(f"{c}: has {what}; a bundle would not carry them")
+        except OSError as e:
+            hard.append(f"{c}: .git/{sub}: {e.strerror}")
+    try:
+        lfs = any(fns for _, _, fns in os.walk(dotgit / "lfs", onerror=_raise))
+    except OSError as e:
+        lfs = True
+        hard.append(f"{c}: .git/lfs: {e.strerror}")
+    if lfs or filtered_paths(c):
+        hard.append(f"{c}: git-lfs or a content filter: a bundle holds the pointers, not the bytes")
+    hard.extend(f"{c}: {x}" for x in gitlink_files(c))
+    tips, n, changed, err = unique_commits(c)
+    if err:
+        hard.append(f"{c}: {err}")
+    elif n:
+        out["tips"], out["unique"] = tips, n
+        no_remote = "" if git(c, "remote").stdout.strip() else ", no remote at all"
+        soft.append(f"{c}: {n} commit(s) on no remote{no_remote}")
+    if len(changed) > CHANGED_CAP:
+        hard.append(f"{c}: {len(changed)} commits differ from main's under the same author and dates")
+    elif changed:
+        out["changed"] = changed
+        soft.append(f"{c}: {len(changed)} commit(s) with main's author and dates but other content")
+    flags = git(c, "ls-files", "-v", "-z")
+    if flags.returncode:
+        hard.append(f"{c}: cannot read the index flags")
+    elif any(e and (e[0].islower() or (e[0] == "S" and os.path.lexists(c / e[2:]))) for e in flags.stdout.split("\0")):
+        hard.append(f"{c}: a file is marked assume-unchanged or skip-worktree, so git status cannot vouch for it")
+    paths, tracked, untracked, size, err = dirty_files(c)
+    if err:
+        hard.append(f"{c}: {err}")
+    else:
+        out["dirty"], out["tracked"] = paths, tracked
+        if tracked:
+            soft.append(f"{c}: {tracked} tracked file(s) changed")
+        if untracked:
+            soft.append(f"{c}: {untracked} untracked file(s)")
+        if size > DIRTY_CAP:
+            hard.append(f"{c}: {human(size)} of dirty files, over the {human(DIRTY_CAP)} preserve cap")
     return out
 
 
 _CORPUS: list[tuple[str, str]] | None = None
+_VOCAB: set[str] | None = None
+
+
+def listed(d: Path, suffix: str, required: bool = False) -> list[str]:
+    """The safety evidence in a dir. A required dir that is missing, or any dir we cannot list, stops the run."""
+    try:
+        with os.scandir(d) as it:
+            return [e.path for e in it if e.name.endswith(suffix)]
+    except FileNotFoundError:
+        if required:
+            raise RuntimeError(f"ledger corpus missing: {d}")
+        return []
+    except OSError as e:
+        raise RuntimeError(f"ledger corpus unreadable: {d}: {e.strerror}")
 
 
 def corpus() -> list[tuple[str, str]]:
-    """[(file, text)] of every ledger file, item (live + closed) and handoff in each seat clone."""
+    """[(file, text)] of every ledger file, item (live + closed), handoff in each seat clone, and our systemd units."""
     global _CORPUS
     if _CORPUS is None:
         _CORPUS = []
+        files: list[str] = []
         for cr in corpus_roots():
             st = cr / "infrastructure" / "state"
-            pats = [st / "ledger" / "events.jsonl", st / "ledger" / "events" / "*.jsonl", st / "items" / "*.md",
-                    st / "items" / "closed" / "*.md", st / "handoffs" / "*.md"]
-            for pat in pats:
-                for f in glob.glob(str(pat)):
-                    try:
-                        _CORPUS.append((f, open(f, encoding="utf-8", errors="replace").read()))
-                    except OSError:
-                        pass
+            if (st / "ledger" / "events.jsonl").exists():
+                files.append(str(st / "ledger" / "events.jsonl"))
+            files += listed(st / "ledger" / "events", ".jsonl", True) + listed(st / "items", ".md", True)
+            files += listed(st / "items" / "closed", ".md") + listed(st / "handoffs", ".md")
+        if not os.environ.get("SCRATCH_REAP_CORPUS"):
+            files += listed(HOME / ".config" / "systemd" / "user", ".service", True)
+        for f in files:
+            try:
+                _CORPUS.append((f, open(f, encoding="utf-8", errors="replace").read()))
+            except OSError as e:
+                raise RuntimeError(f"ledger corpus unreadable: {f}: {e.strerror}")
     return _CORPUS
 
 
+def vocab() -> set[str]:
+    global _VOCAB
+    if _VOCAB is None:
+        _VOCAB = set()
+        for _, text in corpus():
+            _VOCAB.update(TOKEN.findall(text))
+    return _VOCAB
+
+
 def needles(p: Path, kind: str) -> list[str]:
+    p = p.with_name(PIN.sub("", p.name))                # a crash's pin is still the path the ledger names
     n = {str(p), str(p).replace(str(HOME), "~", 1)}
     if kind == "session":
         n.add(p.name)                                   # the session uuid
@@ -329,73 +1000,201 @@ def needles(p: Path, kind: str) -> list[str]:
     return sorted(n)
 
 
-def ledger_mentions(p: Path, kind: str) -> list[str]:
+def mention_blocks(f: str, line: str, now: float) -> bool:
+    """An old mention is history and a bundle keeps the work; an open item, a unit, or anything recent still holds.
+    A mention we cannot date holds."""
+    limit = MENTION_DAYS * 86400
+    if f.endswith(".jsonl"):
+        try:
+            ts = json.loads(line)["ts"]
+            return now - dt.datetime.fromisoformat(str(ts).replace("Z", "+00:00")).timestamp() < limit
+        except (ValueError, KeyError, TypeError):
+            return True
+    if "/items/closed/" in f or "/handoffs/" in f:
+        try:
+            return now - os.stat(f).st_mtime < limit
+        except OSError:
+            return True
+    return True
+
+
+def ledger_mentions(p: Path, kind: str, now: float | None = None) -> list[str]:
+    now = time.time() if now is None else now
     hits = []
     for nd in needles(p, kind):
+        # The needle's last token stands alone in any text that names it (the lookarounds below say so), so a set
+        # lookup settles the common miss without touching ~100 MB of text once per candidate.
+        keys = TOKEN.findall(nd)
+        if keys and keys[-1] not in vocab():
+            continue
         rx = re.compile(r"(?<![A-Za-z0-9_.-])" + re.escape(nd) + r"(?![A-Za-z0-9_-])")
         for f, text in corpus():
-            if nd not in text:      # C-speed substring prefilter: the lookaround regex over ~100 MB x every needle hit the 1800 s timeout
+            if nd not in text:
                 continue
-            m = rx.search(text)
-            if m:
-                line = text[text.rfind("\n", 0, m.start()) + 1: text.find("\n", m.end())][:160]
-                hits.append(f"{os.path.basename(f)} names '{nd}': …{line.strip()}…")
+            found = None
+            for m in rx.finditer(text):
+                line = text[text.rfind("\n", 0, m.start()) + 1: (text.find("\n", m.end()) + 1 or len(text) + 1) - 1]
+                if mention_blocks(f, line, now):
+                    found = line
+                    break
+            if found is not None:
+                hits.append(f"{os.path.basename(f)} names '{nd}': …{found[:160].strip()}…")
                 break
     return hits
 
 
-def live_users(p: Path) -> list[str]:
-    out = []
-    t = str(p)
-    for pid in os.listdir("/proc"):
-        if not pid.isdigit() or int(pid) == os.getpid():
-            continue
-        try:
-            cwd = os.readlink(f"/proc/{pid}/cwd")
-            if cwd == t or cwd.startswith(t + os.sep):
-                out.append(f"pid {pid} has cwd inside it")
-                continue
-            cmd = open(f"/proc/{pid}/cmdline", "rb").read().replace(b"\0", b" ").decode("utf-8", "replace")
-            if t in cmd or (UUID.match(p.name) and p.name in cmd):
-                out.append(f"pid {pid} names it: {cmd[:100]}")
-        except OSError:
-            continue
-    return out
-
-
 # ---------------------------------------------------------------- verdicts
-def judge(kind: str, p: Path, repos: list[Path], now: float) -> dict:
-    row = {"kind": kind, "path": str(p), "verdict": "DELETE", "why": [], "age_h": None, "bytes": None}
+def mount_points() -> list[str]:
+    """A bind mount has no mark a walk can see, and rmtree would go through it. Unreadable raises, which holds."""
+    with open(MOUNTINFO, encoding="utf-8", errors="surrogateescape") as f:
+        return [re.sub(r"\\([0-7]{3})", lambda m: chr(int(m[1], 8)), ln.split()[4]) for ln in f if ln.strip()]
+
+
+class Ctx:
+    def __init__(self, now: float):
+        self.now = now
+        self.live = Live(now)
+        self.borrows = Borrows()
+
+    def mounted(self, p: Path) -> list[str]:
+        try:
+            rp = os.path.realpath(p)
+            ours = [os.path.realpath(r) for r in roots()]       # a bind above the candidate makes its name an alias
+            return [f"a mount inside or above: {m}" for m in mount_points() if m == rp or m.startswith(rp + "/")
+                    or (rp.startswith(m + "/") and any(m == r or m.startswith(r + "/") for r in ours))]
+        except OSError as e:
+            return [f"cannot read the mount table: {e.strerror}"]
+
+    def refresh(self):
+        self.now = time.time()
+        self.live = Live(self.now)
+        if self.now - self.borrows.taken > BORROW_REFRESH_S:
+            self.borrows = Borrows()
+
+    def global_holds(self) -> list[str]:
+        return [f"cannot see a process: {x}" for x in self.live.blind[:3]] \
+            + [f"cannot read a borrower file: {x}" for x in self.borrows.hold[:3]]
+
+
+def guard(p: Path) -> str | None:
     rp = p.resolve()
-    if p.is_symlink() or rp in NEVER or not any(rp == r.resolve() or r.resolve() in rp.parents for r in roots()) \
-            or any(rp == r.resolve() for r in roots()):
-        row.update(verdict="REFUSE", why=["outside the reap roots, a root itself, a symlink, or a protected repo"])
-        return row
-    newest, size, capped = newest_mtime_and_size(p)
-    row["age_h"], row["bytes"] = round((now - newest) / 3600, 1), size
-    if capped:
-        row.update(verdict="REFUSE", why=[f"more than {WALK_CAP} entries — too big to age safely; inspect by hand"])
-        return row
-    replay = kind == "clone" and replay_clone_marked(p, now)
-    row["replay"] = replay
-    if now - newest < (replay_ttl_s() if replay else ttl_s()):
+    if p.is_symlink():
+        return "a symlink"
+    rs = [r.resolve() for r in roots()]
+    if not any(r in rp.parents for r in rs):
+        return "outside the reap roots, or a root itself"
+    for q in protected():
+        q = q.resolve()
+        if rp == q or q in rp.parents or rp in q.parents:
+            return f"protected: {q}"
+    return None
+
+
+def base_row(kind: str, p: Path, tree: Tree | None, now: float) -> dict:
+    row = {"kind": kind, "path": str(p), "verdict": "DELETE", "why": [], "age_h": None, "bytes": None}
+    if tree:
+        row["age_h"], row["bytes"], row["sig"] = round((now - tree.newest) / 3600, 1), tree.size, tree.signature()
+        row["top_ctime"] = tree.top_ctime
+    return row
+
+
+def refuse(row: dict, why: list[str]) -> dict:
+    row.update(verdict="REFUSE", why=row["why"] + why)
+    return row
+
+
+def holds(p: Path, kind: str, ctx: Ctx, tree: Tree) -> list[str]:
+    """Reasons that hold a whole candidate; common to clones and sessions."""
+    why = list(ctx.global_holds()) + ctx.mounted(p)
+    why += [f"unreadable: {e}" for e in tree.errors[:3]]
+    why += ctx.live.users(p)
+    why += ledger_mentions(p, kind, ctx.now)
+    return why
+
+
+def judge_clone(p: Path, ctx: Ctx) -> dict:
+    tree = None
+    bad = guard(p)
+    if not bad:
+        tree = Tree(p)
+    row = base_row("clone", p, tree, ctx.now)
+    if bad:
+        return refuse(row, [bad])
+    if tree.capped:
+        return refuse(row, [f"more than {WALK_CAP} entries: too big to age safely; inspect by hand"])
+    # Unreadable beats young: age cannot be proven over a tree we cannot read.
+    if tree.errors:
+        return refuse(row, [f"unreadable: {e}" for e in tree.errors[:3]])
+    if ctx.now - tree.newest < ttl_s():
         row["verdict"] = "YOUNG"
         return row
-    why = []
-    clones = [p] if kind == "clone" else find_clones(p, depth=8)
-    for c in clones:
-        if not replay:
-            why += clone_problems(c)
-        why += borrowers_of(c, repos)
-    why += ledger_mentions(p, kind)
-    for c in clones:
-        if c != p:
-            why += ledger_mentions(c, "clone")
-    why += live_users(p)
+    why = holds(p, "clone", ctx, tree) + ctx.borrows.of(p)
+    st = clone_state(p)
+    why += st["hard"]
+    why += [f"canonical save inside: {s}" for s in unpreserved_canon(p, tree.saves)[:3]]
+    why += [f"a repo nested inside: {n}" for n in tree.nested[:3]]
     if why:
-        row.update(verdict="REFUSE", why=why)
-    row["clones"] = [str(c) for c in clones]
+        return refuse(row, why)
+    if st["soft"]:
+        row.update(verdict="ARCHIVE", why=st["soft"], tips=st["tips"], unique=st["unique"], dirty=st["dirty"],
+                   changed=st["changed"], tracked=st["tracked"])
     return row
+
+
+def has_loose_file(p: Path, clones: list[str]) -> bool:
+    """An empty file still has a name someone chose. Only asked when a session's loose bytes come to nothing."""
+    for dp, dns, fns in os.walk(p, onerror=_raise):
+        if fns:
+            return True
+        dns[:] = [d for d in dns if os.path.join(dp, d) not in clones]
+    return False
+
+
+def judge_session(p: Path, ctx: Ctx) -> tuple[dict, list[dict]]:
+    """(the session's row, one row per inner clone). A session's `bytes` is its loose residue, so no byte counts twice."""
+    tree = None
+    bad = guard(p)
+    if not bad:
+        tree = Tree(p)
+    row = base_row("session", p, tree, ctx.now)
+    if bad:
+        return refuse(row, [bad]), []
+    if tree.capped:
+        return refuse(row, [f"more than {WALK_CAP} entries — too big to age safely; inspect by hand"]), []
+    if ctx.now - tree.newest < ttl_s():
+        row["verdict"] = "YOUNG"
+        return row, []
+    whole = [f"unreadable: {e}" for e in tree.errors[:3]] + ctx.global_holds() + ctx.mounted(p) + ctx.live.users(p) \
+        + ledger_mentions(p, "session", ctx.now)        # what cannot be read may be what makes the session young
+    if whole:
+        return refuse(row, whole), []
+    rows = [judge_clone(c, ctx) for c in find_clones(p, depth=8)]
+    row["clones"] = [r["path"] for r in rows]
+    row["bytes"] = max(0, tree.size - sum(r["bytes"] or 0 for r in rows))
+    kept = [r for r in rows if r["verdict"] not in ("DELETE", "ARCHIVE")]
+    why = ctx.borrows.of(p)                             # a bare repo is no clone: this is its only check
+    loose = [s for s in tree.saves if not any(s.startswith(r["path"] + "/") for r in rows)]    # a clone answers for its own
+    why += [f"canonical save inside: {s}" for s in canonical_saves(loose)[:3]]
+    if kept:
+        why.append(f"{len(kept)} inner clone(s) kept: {kept[0]['path']}: {(kept[0]['why'] or ['?'])[0][:160]}")
+    if row["bytes"] > RESIDUE_CAP:
+        why.append(f"{human(row['bytes'])} of loose files, over the {human(RESIDUE_CAP)} preserve cap")
+    if why:
+        return refuse(row, why), rows
+    if row["bytes"] or has_loose_file(p, row["clones"]):
+        row.update(verdict="ARCHIVE", why=[f"{p}: {human(row['bytes'])} of loose session files"])
+    return row, rows
+
+
+def judge_all(ctx: Ctx) -> list[dict]:
+    rows = []
+    for kind, p in candidates():
+        if kind == "clone":
+            rows.append(judge_clone(p, ctx))
+        else:
+            s, inner = judge_session(p, ctx)
+            rows += inner + [s]
+    return rows
 
 
 def human(n: int | None) -> str:
@@ -408,51 +1207,387 @@ def human(n: int | None) -> str:
     return "?"
 
 
-def main(argv=None) -> int:
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--apply", action="store_true", help="delete the DELETE rows (default: report only)")
-    ap.add_argument("--json", action="store_true")
-    a = ap.parse_args(argv)
-    now = time.time()
-    cands, _ = candidates()
-    repos = all_repos_for_alternates()
-    rows = [judge(k, p, repos, now) for k, p in cands]
+# ---------------------------------------------------------------- bundle, restore-test, log
+class PreserveFailed(Exception):
+    pass
+
+
+class OverCap(PreserveFailed):
+    """Too big to keep: a refusal, reported, not a malfunction of the tool."""
+
+
+def must(r: subprocess.CompletedProcess, what: str) -> subprocess.CompletedProcess:
+    if r.returncode:
+        raise PreserveFailed(f"{what}: {(r.stderr or r.stdout).strip()[:160]}")
+    return r
+
+
+def sha256(p: Path) -> str:
+    h = hashlib.sha256()
+    with open(p, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+def archive_root() -> Path:
+    """Never created here: a missing root means the D: drive is not mounted, and writing there would fill /."""
+    try:
+        a = Path(leftovers.default_archive_root())
+    except SystemExit as e:                 # leftovers.py is a CLI: it exits when agent storage cannot be read
+        raise PreserveFailed(f"archive root unknown: {e}")
+    if not a.is_dir():
+        raise PreserveFailed(f"archive root {a} is missing")
+    return a
+
+
+def make_bundle(c: Path, tips: list[str], work: Path) -> Path:
+    """A bundle built in a throwaway repo that borrows the clone: the clone is not written (a pin ref there would
+    reset its age), and a restore into an empty repo that sees only the store proves nothing is left behind."""
+    src, dst, out = work / "src.git", work / "dst.git", work / "clone.bundle"
+    for r in (src, dst):
+        must(subprocess.run(["git", "init", "-q", "--bare", str(r)], capture_output=True, text=True), "git init")
+    (src / "objects" / "info" / "alternates").write_text(str(c / ".git" / "objects") + "\n")
+    for i, t in enumerate(tips):
+        must(git(src, "update-ref", f"refs/rm/{i}", t), "pin tip")
+    must(git(src, "bundle", "create", "-q", str(out), *[f"refs/rm/{i}" for i in range(len(tips))],
+             *["^" + b for b in sorted(set(mirror_tips()))], timeout=1800), "git bundle create")
+    if out.stat().st_size > BUNDLE_CAP:
+        raise OverCap(f"bundle is {human(out.stat().st_size)}, over the {human(BUNDLE_CAP)} cap")
+    must(git(dst, "bundle", "verify", str(out)), "git bundle verify")
+    must(git(dst, "fetch", "-q", str(out), "refs/rm/*:refs/rm/*", timeout=1800), "restore test")
+    got = git(dst, "for-each-ref", "--format=%(objectname)", "refs/rm/").stdout.split()
+    if sorted(got) != sorted(tips):
+        raise PreserveFailed(f"restore test: {len(got)} of {len(tips)} tips came back")
+    return out
+
+
+def write_text_out(out: Path, r: subprocess.CompletedProcess, what: str) -> Path:
+    must(r, what)
+    out.write_bytes(r.stdout.encode("utf-8", "surrogateescape"))
+    return out
+
+
+def make_index_state(c: Path, work: Path) -> list[Path]:
+    """What a tar of the worktree cannot hold: every index entry with its mode, and the staged blobs, by id. Applying a
+    patch here, even to a private index, refreshes the clone's object files, and that is a write, so nothing is applied
+    in the clone. The clone's config chooses a diff's drivers, so those are switched off; the patches are for reading."""
+    plain = ("-c", "diff.autoRefreshIndex=false", "diff", "--binary", "--no-ext-diff", "--no-textconv", "--no-color")
+    made = [write_text_out(work / "status.txt", git(c, "status", "--porcelain=v2", "--branch"), "git status"),
+            write_text_out(work / "unstaged.patch", git(c, *plain), "git diff"),
+            write_text_out(work / "staged.patch", git(c, *plain, "--cached"), "git diff --cached"),
+            write_text_out(work / "index.txt", git(c, "ls-files", "-s", "-z"), "git ls-files")]
+    base = "HEAD" if git(c, "rev-parse", "-q", "--verify", "HEAD").returncode == 0 else EMPTY_TREE
+    f = must(git(c, "diff-index", "--cached", "--no-renames", "--no-abbrev", "-z", base), "git diff-index").stdout.split("\0")
+    top = work / "staged"
+    for meta, path in zip(f[0::2], f[1::2]):
+        w = meta.split()
+        if w[4] == "D" or w[3] == "160000" or w[2] == "160000":
+            continue                                    # index.txt carries a deletion and a gitlink's commit
+        if w[4] == "U":
+            raise PreserveFailed(f"{path} is unmerged")
+        blob = must(git(c, "cat-file", "blob", w[3]), f"staged {path}").stdout.encode("utf-8", "surrogateescape")
+        if hashlib.sha1(b"blob %d\0" % len(blob) + blob).hexdigest() != w[3]:
+            raise PreserveFailed(f"staged {path}: the bytes read are not the blob")
+        top.mkdir(exist_ok=True)
+        (top / w[3]).write_bytes(blob)
+    if top.exists():
+        make_tar(top, None, work / "staged.tar.gz")
+        made.append(work / "staged.tar.gz")
+    return made
+
+
+def make_changed(c: Path, shas: list[str], out: Path) -> Path:
+    """Commits that main rewrote with other content: their own diffs, not the old history under them."""
+    with open(out, "wb") as f:
+        for sha in shas:
+            r = git(c, "show", "--binary", "--no-ext-diff", "--no-textconv", "--no-color", "--diff-merges=first-parent", "--format=fuller", sha)
+            must(r, f"git show {sha[:10]}")
+            f.write(r.stdout.encode("utf-8", "surrogateescape"))
+    if out.stat().st_size > BUNDLE_CAP:
+        raise OverCap(f"rewritten commits are {human(out.stat().st_size)}, over the {human(BUNDLE_CAP)} cap")
+    return out
+
+
+def make_tar(top: Path, paths: list[str] | None, out: Path):
+    cmd = ["tar", "-C", str(top), "-czf", str(out)]
+    if paths is None:
+        cmd.append(".")
+        inp = None
+    else:
+        cmd += ["--null", "--verbatim-files-from", "-T", "-"]
+        inp = b"\0".join(os.fsencode(x) for x in paths) + b"\0"
+    env = {k: v for k, v in os.environ.items() if k not in ("TAR_OPTIONS", "GZIP")}    # the options here are all of them
+    r = subprocess.run(cmd, input=inp, capture_output=True, timeout=1800, env=env)
+    if r.returncode:
+        raise PreserveFailed(f"tar: {r.stderr.decode('utf-8', 'replace').strip()[:160]}")
+    t = subprocess.run(["tar", "-tzf", str(out)], capture_output=True, timeout=600, env=env)
+    if t.returncode or not t.stdout.strip():
+        raise PreserveFailed("tar: the archive does not list back")
+
+
+def acts_append(root: Path, rec: dict):
+    with open(root / "acts.jsonl", "a", encoding="utf-8") as f:
+        f.write(json.dumps(rec) + "\n")
+
+
+def local_ts() -> str:
+    return dt.datetime.now().astimezone().isoformat(timespec="seconds")
+
+
+def durable(p: Path, must_sync: bool = True) -> None:
+    """On disk, not in a cache: the source is about to go. Some filesystems do not implement a directory fsync, and only
+    that refusal is forgiven: a failed one raises, and the source stays."""
+    fd = os.open(p, os.O_RDONLY)
+    try:
+        os.fsync(fd)
+    except OSError as e:
+        if must_sync or e.errno not in (errno.EINVAL, errno.ENOTSUP):
+            raise
+    finally:
+        os.close(fd)
+
+
+def rename_new(src: Path, dst: Path):
+    """rename(2) would swallow an empty dir someone has just made and entered; RENAME_NOREPLACE cannot."""
+    libc = ctypes.CDLL(None, use_errno=True)
+    if libc.renameat2(-100, os.fsencode(src), -100, os.fsencode(dst), 1):   # AT_FDCWD, RENAME_NOREPLACE
+        n = ctypes.get_errno()
+        raise OSError(n, os.strerror(n), str(dst))
+
+
+def preserve(row: dict) -> str:
+    """Bundle and tar one ARCHIVE row, proved restorable, logged to acts.jsonl. -> the archive dir."""
+    p = Path(row["path"])
+    root = archive_root()
+    slug = re.sub(r"[^A-Za-z0-9._-]+", "_", p.name)[:60] + "-" + hashlib.sha1(str(p).encode()).hexdigest()[:8]
+    day = root / time.strftime("%Y-%m-%d") / "scratch_expiry"
+    sd = state_dir() / "work"
+    sd.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(dir=sd) as td:
+        work = Path(td)
+        made = []
+        if row["kind"] == "clone":
+            if row.get("unique") and not row.get("tips"):
+                raise PreserveFailed("commits are unique here, yet there is no tip to bundle")
+            if row.get("tips"):
+                made.append(make_bundle(p, row["tips"], work))
+            if row.get("changed"):
+                made.append(make_changed(p, row["changed"], work / "rewritten.patch"))
+            if row.get("tracked"):
+                made += make_index_state(p, work)
+            if row.get("dirty"):
+                make_tar(p, row["dirty"], work / "dirty.tar.gz")
+                made.append(work / "dirty.tar.gz")
+        else:
+            make_tar(p, None, work / "residue.tar.gz")
+            made.append(work / "residue.tar.gz")
+        if not made:
+            raise PreserveFailed("nothing to preserve, yet the row says ARCHIVE")
+        day.mkdir(parents=True, exist_ok=True)
+        tmp = Path(tempfile.mkdtemp(dir=day, prefix=".incoming-"))      # a new dir per attempt: nothing is overwritten
+        files = {}
+        for f in made:
+            h = sha256(f)
+            shutil.copyfile(f, tmp / f.name)
+            if sha256(tmp / f.name) != h:
+                raise PreserveFailed(f"copy of {f.name} to the archive does not match")
+            files[f.name] = h
+        (tmp / "manifest.json").write_text(json.dumps({
+            "path": row["path"], "kind": row["kind"], "bytes": row["bytes"], "age_h": row["age_h"], "why": row["why"],
+            "tips": row.get("tips", []), "unique_commits": row.get("unique", 0), "dirty_paths": row.get("dirty", []),
+            "rewritten_commits": row.get("changed", []), "files": files,
+            "restore": "git clone --shared /home/mandrake/rm/store.git r && git -C r fetch clone.bundle "
+                       "'refs/rm/*:refs/heads/rescued/*'; check out status.txt's base; tar -xzf staged.tar.gz -C blobs; "
+                       "git -C r hash-object -w --no-filters blobs/*; git -C r read-tree --empty; "
+                       "git -C r update-index -z --index-info < index.txt; tar -xzf dirty.tar.gz -C r; "
+                       "the patches are for reading"}, indent=1))
+        for f in tmp.iterdir():
+            durable(f)
+        durable(tmp, False)
+        dest = day / f"{slug}-{int(time.time())}-{os.path.basename(tmp)[-8:]}"
+        os.rename(tmp, dest)
+        for q in (day, day.parent, root):               # each new link, up to the root that outlives them
+            durable(q, False)
+    manifest = dest / "manifest.json"
+    acts_append(root, {"ts": local_ts(), "kind": "scratch-" + row["kind"], "path": row["path"], "size": row["bytes"],
+                       "archive": str(dest), "manifest": str(manifest),
+                       "verify": "bundle restored into an empty repo; tar listed; sha256 matched on the archive",
+                       "evidence": "; ".join(row["why"])[:300]})
+    return str(dest)
+
+
+def act(row: dict, ctx: Ctx, failures: list[str]) -> int:
+    """Re-judge one row, preserve it if asked, delete it. -> bytes freed."""
+    ctx.refresh()
+    p = Path(row["path"])
+    if row["kind"] == "clone":
+        again = judge_clone(p, ctx)
+    else:
+        again, inner = judge_session(p, ctx)
+        if inner:
+            again = refuse(again, [f"{len(inner)} inner clone(s) still present"])
+    if again["verdict"] not in ("DELETE", "ARCHIVE"):
+        row.update(verdict=again["verdict"], why=["changed since the scan:"] + again["why"])
+        return 0
+    row.update({k: v for k, v in again.items() if k not in ("verdict",)})
+    row["verdict"] = again["verdict"]
+    if row["verdict"] == "ARCHIVE":
+        try:
+            row["archive"] = preserve(row)
+        except (PreserveFailed, OSError, subprocess.SubprocessError) as e:
+            row.update(verdict="REFUSE", why=[f"could not preserve it, so it stays: {e}"] + row["why"])
+            if not isinstance(e, OverCap):
+                failures.append(f"{row['path']}: {e}")
+            return 0
+    try:
+        moved = os.lstat(p).st_ctime_ns != row.get("top_ctime")
+    except OSError:
+        moved = True
+    if moved:                                           # the last moment the top's ctime means anything
+        row.update(verdict="REFUSE", why=["its top changed while it was being preserved"])
+        return 0
+    pin = p.with_name(f".reaping-{os.getpid()}-{PIN.sub('', p.name)}")
+    try:
+        os.rename(p, pin)
+    except OSError as e:
+        failures.append(f"pin {p}: {e}")
+        row.update(verdict="REFUSE", why=[f"could not pin it: {e}"])
+        return 0
+    late = pinned_holds(p, pin, row, ctx)
+    if late:
+        try:
+            rename_new(pin, p)
+        except FileExistsError:
+            failures.append(f"unpin {p}: a new {p.name} stands there; the old tree waits at {pin}")
+            row.update(verdict="REFUSE", why=[f"left pinned at {pin}: a new dir took its name"] + late)
+            return 0
+        except OSError as e:
+            failures.append(f"unpin {p}: {e}")
+        row.update(verdict="REFUSE", why=["arrived while it was being reaped:"] + late)
+        return 0
+    try:
+        size = row["bytes"] or 0
+        shutil.rmtree(pin)
+    except OSError as e:
+        failures.append(f"rmtree {pin}: {e}")
+        row.update(verdict="REFUSE", why=[f"rmtree failed part way: {e}"])
+        return 0
+    row["verdict"] = "DELETED"
+    return size
+
+
+def pinned_holds(p: Path, pin: Path, row: dict, ctx: Ctx) -> list[str]:
+    """The last look, with the path out of reach: anything using it now, or written to it since it was judged."""
+    ctx.refresh()
+    why = ctx.global_holds() + ctx.mounted(pin) + ctx.live.users(pin) + ctx.live.users(p) + ctx.borrows.of(pin) + ctx.borrows.of(p)
+    tree = Tree(pin)
+    if tree.errors:
+        why.append(f"unreadable: {tree.errors[0]}")
+    if tree.capped:
+        why.append("grew past the walk's cap: not read whole")
+    if tree.signature() != row.get("sig"):
+        why.append("not the tree that was judged and preserved")     # every entry: an old mtime proves nothing
+    return why
+
+
+def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str]) -> tuple[int, int]:
+    """Clones biggest first, then session shells, so a shell is judged with its clones already gone."""
+    started, freed, deferred = time.time(), 0, 0
+    todo = [r for r in rows if r["verdict"] in ("DELETE", "ARCHIVE")]
+    todo.sort(key=lambda r: (r["kind"] != "clone", -(r["bytes"] or 0)))
+    for r in todo:
+        if max_s and time.time() - started > max_s:
+            r["deferred"] = True
+            deferred += 1
+            continue
+        freed += act(r, ctx, failures)
+    return freed, deferred
+
+
+# ---------------------------------------------------------------- records
+def free_gb(path: str = "/") -> float:
+    return round(shutil.disk_usage(path).free / 1e9, 1)
+
+
+def write_json(p: Path, obj):
+    tmp = p.with_suffix(".tmp")
+    tmp.write_text(json.dumps(obj, indent=1))
+    os.replace(tmp, p)
+
+
+def record(sd: Path, rec: dict):
+    """last_run.json: the record ops_watch alarms on. last_ok_epoch survives failed runs, so failure keeps aging."""
+    try:
+        prev = json.loads((sd / "last_run.json").read_text()).get("last_ok_epoch")
+    except (OSError, ValueError, AttributeError):
+        prev = None
+    rec["last_ok_epoch"] = rec["end_epoch"] if rec["ok"] else prev
+    write_json(sd / "last_run.json", rec)
+
+
+def rotate(p: Path, cap: int = 64 * 1024 ** 2):
+    try:
+        if p.stat().st_size > cap:
+            os.replace(p, p.with_name(p.name + ".1"))
+    except FileNotFoundError:
+        pass
+
+
+def new_alarms(rows: list[dict], sd: Path, stamp: str, apply: bool):
+    """Each refusal once: a row an hour for 3,000 paths is noise nobody reads. Dry runs do not spend the memory."""
+    if not apply:
+        return
+    seen_f = sd / "alarms_seen.json"
+    try:
+        seen = set(json.loads(seen_f.read_text()))
+    except (OSError, ValueError):
+        seen = set()
+    cur, fresh = set(), []
+    for r in rows:
+        if r["verdict"] != "REFUSE":
+            continue
+        key = r["path"] + "|" + re.sub(r"\d+", "#", (r["why"] or [""])[0])[:120]
+        cur.add(key)
+        if key not in seen:
+            fresh.append(f"{stamp} REFUSE {r['path']} ({human(r['bytes'])}, {r['age_h']} h): {(r['why'] or ['?'])[0]}"
+                         + (f" (+{len(r['why']) - 1} more)" if len(r["why"]) > 1 else ""))
+    rotate(sd / "alarms.log")
+    with open(sd / "alarms.log", "a") as f:
+        for ln in fresh:
+            f.write(ln + "\n")
+    write_json(seen_f, sorted(cur))
+
+
+def pressure_check() -> int:
+    """Runs on its own short timer. The TTL does not move; the point is not to wait for the next hour."""
     sd = state_dir()
     sd.mkdir(parents=True, exist_ok=True)
-    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))
-    deleted = 0
-    for r in rows:
-        if r["verdict"] != "DELETE" or not a.apply:
-            continue
-        again = judge(r["kind"], Path(r["path"]), all_repos_for_alternates(), time.time())   # TOCTOU re-check
-        if again["verdict"] != "DELETE":
-            r.update(verdict="REFUSE", why=["changed since the scan: "] + again["why"])
-            continue
-        if again.get("replay"):                       # a judge may have left chmod-000 directories
-            stack = [r["path"]]
-            while stack:
-                d = stack.pop()
-                try:
-                    if not os.path.islink(d):
-                        os.chmod(d, 0o700)
-                        stack += [e.path for e in os.scandir(d) if e.is_dir(follow_symlinks=False)]
-                except OSError:
-                    pass
-        shutil.rmtree(r["path"])
-        r["verdict"] = "DELETED"
-        deleted += 1
-    with open(sd / "runs.jsonl", "a") as f:
-        f.write(json.dumps({"ts": stamp, "apply": a.apply, "rows": rows}) + "\n")
-    refused = [r for r in rows if r["verdict"] == "REFUSE"]
-    if refused:
-        with open(sd / "alarms.log", "a") as f:
-            for r in refused:
-                f.write(f"{stamp} REFUSE {r['path']} ({human(r['bytes'])}, {r['age_h']} h): {r['why'][0]}"
-                        + (f" (+{len(r['why']) - 1} more)" if len(r["why"]) > 1 else "") + "\n")
-    if a.json:
-        print(json.dumps(rows, indent=1))
+    line = float(os.environ.get("SCRATCH_REAP_PRESSURE_GB", PRESSURE_GB))
+    cool = float(os.environ.get("SCRATCH_REAP_COOLDOWN_MIN", COOLDOWN_MIN)) * 60
+    free = free_gb()
+    if free >= line:
+        print(f"pressure: {free} GB free, line {line}: nothing to do")
         return 0
-    order = {"DELETED": 0, "DELETE": 1, "REFUSE": 2, "YOUNG": 3}
+    try:
+        last = json.loads((sd / "last_run.json").read_text()).get("end_epoch", 0)
+    except (OSError, ValueError, AttributeError):
+        last = 0
+    rec = {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "free_gb": free, "line_gb": line}
+    if time.time() - last < cool:
+        print(f"pressure: {free} GB free, but a run ended within {cool / 60:.0f} min")
+        return 0
+    unit = os.environ.get("SCRATCH_REAP_UNIT", "rm-scratch-reap.service")
+    r = subprocess.run(["systemctl", "--user", "start", "--no-block", unit], capture_output=True, text=True, timeout=30)
+    rec.update(started=r.returncode == 0, unit=unit, err=r.stderr.strip()[:200])
+    with open(sd / "pressure.jsonl", "a") as f:
+        f.write(json.dumps(rec) + "\n")
+    print(json.dumps(rec))
+    return r.returncode
+
+
+def report(rows: list[dict], a, sd: Path, freed: int):
+    order = {"DELETED": 0, "DELETE": 1, "ARCHIVE": 2, "REFUSE": 3, "YOUNG": 4}
     for r in sorted(rows, key=lambda r: (order[r["verdict"]], r["path"])):
         print(f"{r['verdict']:7} {r['kind']:7} {human(r['bytes']):>9} {str(r['age_h']):>7}h  {r['path']}")
         for w in r["why"][:4]:
@@ -460,12 +1595,86 @@ def main(argv=None) -> int:
         if len(r["why"]) > 4:
             print(f"          - … {len(r['why']) - 4} more")
     tot = {v: sum(1 for r in rows if r["verdict"] == v) for v in order}
-    take = sum(r["bytes"] or 0 for r in rows if r["verdict"] in ("DELETE", "DELETED"))
+    take = freed if a.apply else sum(r["bytes"] or 0 for r in rows if r["verdict"] in ("DELETE", "ARCHIVE"))
     print(f"\n{len(rows)} candidate(s): " + ", ".join(f"{v} {n}" for v, n in tot.items() if n)
           + f"; {'freed' if a.apply else 'would free'} {human(take)}"
-          + ("" if a.apply else "  (dry run — --apply deletes the DELETE rows)"))
+          + ("" if a.apply else "  (dry run — --apply acts on DELETE and ARCHIVE rows)"))
     print(f"alarms: {sd / 'alarms.log'}")
-    return 0
+
+
+def run(a, sd: Path) -> int:
+    start = time.time()
+    stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(start))
+    before = free_gb()
+    ctx = Ctx(start)
+    rows = judge_all(ctx)
+    failures: list[str] = []
+    freed, deferred = 0, 0
+    if a.apply:
+        freed, deferred = apply_rows(rows, ctx, a.max_seconds, failures)
+    rotate(sd / "runs.jsonl")
+    with open(sd / "runs.jsonl", "a") as f:
+        f.write(json.dumps({"ts": stamp, "apply": a.apply, "rows": rows}) + "\n")
+    new_alarms(rows, sd, stamp, a.apply)
+    done = [r for r in rows if r["verdict"] == "DELETED"]
+    if done:
+        root = archive_root()
+        dest = root / time.strftime("%Y-%m-%d") / "scratch_expiry"
+        dest.mkdir(parents=True, exist_ok=True)
+        m = dest / f"run-{stamp.replace(':', '')}.manifest.json"
+        m.write_text(json.dumps([{k: r.get(k) for k in ("kind", "path", "bytes", "age_h", "archive", "why")}
+                                 for r in done], indent=1))
+        acts_append(root, {"ts": local_ts(), "kind": "scratch-expiry-run", "path": f"{len(done)} scratch path(s)",
+                           "size": freed, "archive": str(dest), "manifest": str(m),
+                           "verify": "every path re-judged immediately before rmtree",
+                           "evidence": str(sd / "runs.jsonl")})
+    counts = {}
+    for r in rows:
+        counts[r["verdict"]] = counts.get(r["verdict"], 0) + 1
+    end = time.time()
+    rec = {"ts": stamp, "end_epoch": end, "seconds": round(end - start), "apply": a.apply, "ok": not failures,
+           "failures": failures[:10], "counts": counts, "freed_bytes": freed, "deferred": deferred,
+           "archived": sum(1 for r in done if r.get("archive")), "root_free_gb_before": before,
+           "root_free_gb_after": free_gb(), "global_holds": ctx.global_holds(),
+           "blind_dirs": len(ctx.borrows.blind), "other_uid_procs": ctx.live.other_uid,
+           "refused_bytes": sum(r["bytes"] or 0 for r in rows if r["verdict"] == "REFUSE")}
+    if a.apply:
+        record(sd, rec)
+    else:
+        write_json(sd / "last_dry_run.json", rec)
+    if a.json:
+        print(json.dumps(rows, indent=1))
+    else:
+        report(rows, a, sd, freed)
+    return 1 if failures else 0
+
+
+def main(argv=None) -> int:
+    global _CORPUS, _VOCAB, _MIRROR_TIPS, _CANON
+    _CORPUS = _VOCAB = _MIRROR_TIPS = _CANON = None
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--apply", action="store_true", help="act on the DELETE and ARCHIVE rows (default: report only)")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--max-seconds", type=float, default=0, help="stop starting deletions after this long (0 = no limit)")
+    ap.add_argument("--pressure-check", action="store_true", help="start the reaper's unit if the root disk is low")
+    a = ap.parse_args(argv)
+    if a.pressure_check:
+        return pressure_check()
+    sd = state_dir()
+    sd.mkdir(parents=True, exist_ok=True)
+    with open(sd / "run.lock", "w") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            print("another reaper run holds the lock")
+            return 0
+        try:
+            return run(a, sd)
+        except Exception as e:      # the record must say so; re-raised, so the unit fails and signal_watch sees it
+            if a.apply:
+                record(sd, {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "end_epoch": time.time(),
+                            "apply": True, "ok": False, "failures": [f"{type(e).__name__}: {e}"]})
+            raise
 
 
 if __name__ == "__main__":

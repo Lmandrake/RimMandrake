@@ -10,7 +10,7 @@
                arm; caller's arm order does not matter; interleaved slots hold each (arm, task) once and mix arms
   deleted      run_one leaves no clone after judging, after an exception in work, in judge, and in build; a runner that skips
                deletion is DETECTED by leftovers(); sweep removes it; run_schedule records an error and keeps going
-  reap root    scratch_reap.DEFAULT_ROOTS contains the arena/replay tree
+  reap root    scratch_reap protects the arena tree: DEFAULT_ROOTS holds no part of it (owner 2026-10-31)
 Everything lives under a temp dir (root= argument); the real arena tree is never touched.
 """
 import os
@@ -196,7 +196,8 @@ def t_deleted(tmp, src, A, B, C):
 
 def t_reap():
     import scratch_reap as S
-    check(Path("/home/mandrake/rm/arena/replay") in S.DEFAULT_ROOTS, "rm-scratch-reap default roots include arena/replay")
+    check(not any("arena" in str(r) for r in S.DEFAULT_ROOTS), "rm-scratch-reap default roots hold no part of the arena tree")
+    check(Path("/home/mandrake/rm/arena") in S.PROTECTED, "scratch_reap refuses the arena tree by name")
 
 
 def t_round1(tmp, src, A, B, C):
@@ -338,54 +339,7 @@ def t_reaper_marker(tmp, src, A, B):
     check(left.is_dir() and marker.is_file(), "SIGKILLed run leaves a clone with the harness marker")
     d = json.loads(marker.read_text())
     check(len(d["nonce"]) == 32 and d["created"] > 0, "marker holds nonce + created time")
-    os.environ["SCRATCH_REAP_ROOTS"] = str(root / "replay")
-    os.environ["SCRATCH_REAP_REPLAY_ROOTS"] = str(root / "replay")
-    try:
-        now = time.time()
-        (left / "work.txt").write_text("arm output")           # untracked work: normal rules would refuse
-        j = S.judge("clone", left, [], now + 7 * 3600)
-        check(j["verdict"] == "DELETE", "D2: marked replay clone > 6 h with no remote/untracked work is reapable: %s" % j["why"][:1])
-        check(S.judge("clone", left, [], now + 3600)["verdict"] == "YOUNG", "D2: marked clone younger than 6 h is YOUNG")
-        os.environ["SCRATCH_REAP_REPLAY_TTL_HOURS"] = "1"
-        check(S.judge("clone", left, [], now + 7 * 3600)["verdict"] == "DELETE", "D2: TTL is configurable")
-        del os.environ["SCRATCH_REAP_REPLAY_TTL_HOURS"]
-        saved = marker.read_text()
-        marker.unlink()
-        j = S.judge("clone", left, [], now + 48 * 3600)
-        check(j["verdict"] == "REFUSE" and any("no remote" in w for w in j["why"]), "D2 FORCED: clone WITHOUT marker still protected (no remote)")
-        marker.write_text(saved)
-        # non-replay root: same marked clone under an ordinary scratch root stays protected
-        os.environ["SCRATCH_REAP_REPLAY_ROOTS"] = str(tmp / "elsewhere")
-        j = S.judge("clone", left, [], now + 48 * 3600)
-        check(j["verdict"] == "REFUSE", "D2 FORCED: marked clone under a non-replay root still REFUSED")
-        os.environ["SCRATCH_REAP_REPLAY_ROOTS"] = str(root / "replay")
-        marker.write_text('{"nonce": "xx", "created": 1}')
-        check(S.judge("clone", left, [], now + 48 * 3600)["verdict"] == "REFUSE", "D2 FORCED: malformed marker (bad nonce) not trusted")
-        marker.write_text(saved)
-        # --apply actually deletes it, even with a chmod-000 dir left by a judge
-        (left / "locked").mkdir()
-        (left / "locked" / "f").write_text("x")
-        os.chmod(left / "locked", 0)
-        rc = None
-        os.environ["SCRATCH_REAP_STATE"] = str(tmp / "reapstate")
-        os.environ["SCRATCH_REAP_CORPUS"] = str(tmp / "nocorpus")
-        old = time.time() - 8 * 3600
-        d["created"] = old
-        marker.write_text(json.dumps(d))
-        for dp in (left, left / ".git"):
-            os.utime(dp, (old, old))
-        for f in list(left.rglob("*")):
-            if f.name != "locked" and f.parent.name != "locked":
-                try:
-                    os.utime(f, (old, old), follow_symlinks=False)
-                except OSError:
-                    pass
-        os.utime(left / "locked", (old, old))
-        rc = S.main(["--apply"])
-        check(not left.exists(), "D2: scratch_reap --apply deletes the SIGKILL leftover (rc=%s)" % rc)
-    finally:
-        for k in ("SCRATCH_REAP_ROOTS", "SCRATCH_REAP_REPLAY_ROOTS", "SCRATCH_REAP_STATE", "SCRATCH_REAP_CORPUS", "SCRATCH_REAP_REPLAY_TTL_HOURS"):
-            os.environ.pop(k, None)
+    check(not hasattr(S, "replay_clone_marked"), "D2 FORCED: the marker earns no exemption from scratch_reap")
 
 
 def t_rmtree(tmp):
@@ -455,16 +409,6 @@ def t_round2(tmp, src, A, B, C):
             (c / ".git" / "rm_arena_replay.json").write_text(payload)
         res = raises(Exception, R.run_one, "mk", "T1", A, B, w3, lambda c: 0, src, root)
         check(res is None and not (rep / "mk" / "T1").exists(), "R2-3 FORCED: marker %s: run removes its own clone, no crash (%s)" % (label, res))
-    # reaper side: a list marker is just 'not a marker', not an AttributeError
-    c = rep / "mk2" / "T1"
-    (c / ".git").mkdir(parents=True)
-    (c / ".git" / "rm_arena_replay.json").write_text("[1]")
-    os.environ["SCRATCH_REAP_REPLAY_ROOTS"] = str(rep)
-    try:
-        check(S.replay_clone_marked(c, time.time() + 99 * 3600) is False, "R2-3 FORCED: scratch_reap on a list marker -> False, no AttributeError")
-    finally:
-        os.environ.pop("SCRATCH_REAP_REPLAY_ROOTS", None)
-    shutil.rmtree(rep / "mk2")
     # a clone renamed away mid-run: nothing at the path -> run neither crashes nor deletes anything else; replaced dir refused
     def w3b(c):
         os.rename(c, c.parent / "moved")
@@ -485,13 +429,6 @@ def t_round2(tmp, src, A, B, C):
     check(pr.returncode == -signal.SIGKILL and mk.is_file(), "R2-4 FORCED: SIGKILL mid-build (rc=%s) leaves a clone WITH a marker" % pr.returncode)
     d = json.loads(mk.read_text()) if mk.is_file() else {}
     check(d.get("state") == "building", "R2-4 marker state is 'building'")
-    os.environ["SCRATCH_REAP_REPLAY_ROOTS"] = str(rep)
-    try:
-        now = time.time()
-        check(S.replay_clone_marked(left, now + 7 * 3600) is True, "R2-4 reaper takes a 'building' clone older than the TTL")
-        check(S.replay_clone_marked(left, now + 60) is False, "R2-4 reaper leaves a 'building' clone younger than the TTL")
-    finally:
-        os.environ.pop("SCRATCH_REAP_REPLAY_ROOTS", None)
     check(R.sweep(root) == [left], "R2-4 sweep (lock free, marker valid) removes the dead build")
     ok = R.build_replay_clone("kc", "T1", A, B, src, root)
     check(json.loads((ok / ".git" / "rm_arena_replay.json").read_text())["state"] == "ready", "R2-4 finished build is state 'ready'")

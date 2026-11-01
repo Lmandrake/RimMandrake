@@ -22,7 +22,7 @@ A replay task re-does work that already exists, so the clone an arm works in mus
                       the list given by trial= / --trial-tasks (pass the same one to the analysis). A task set that
                       differs from the list is REFUSED before anything runs (ARENA_REPLAY_TASKS_WIRE_TRIAL_LIST): a
                       replay on another set would leave the era gate unopened or analyse the wrong population.
-  leftovers / sweep   clones still on disk; `rm-scratch-reap` also has the replay tree among its roots.
+  leftovers / sweep   clones still on disk. `rm-scratch-reap` keeps out of the arena tree since 2026-10-31 (protected by name).
 
 RESIDUAL (known, accepted, not fixed here):
   - sandbox_masks() is a CONTRACT: the caller (judge / sandbox layer) must hide those paths from the arm. This module cannot.
@@ -62,7 +62,7 @@ SHA = re.compile(r"[0-9a-f]{40}")
 SHA_IN = re.compile(r"[0-9a-fA-F]{7,40}")
 HASH64 = re.compile(r"[0-9a-f]{64}")
 CHRONO_SALTS = 50                         # salts tried per arm for a distinct chronological order (not a task count)
-MARKER = ".git/rm_arena_replay.json"      # scratch_reap.py reads the same name (REPLAY_MARKER)
+MARKER = ".git/rm_arena_replay.json"
 
 # D4 - WHAT THIS DOES NOT STOP. The clone has no remote, no url, no include and no alternates, and it is filled from a
 # harness-private bare mirror (not the live bench clone). But the arm is an ordinary process of the same user on the
