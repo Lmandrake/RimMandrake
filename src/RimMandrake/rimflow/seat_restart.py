@@ -100,6 +100,10 @@ CONDUCTOR_PROMPT = ("[RimFlow seat restart] You are a FRESH Conductor window (se
                     "wake --seat {seat}{gen}`: answer FIRST any owner message it lists as sent to the old window after the "
                     "close-out. Then report in a few lines what is open and what needs him, and wait for him.")
 PROMPTS = {"doorbell": PROMPT, "conductor": CONDUCTOR_PROMPT}
+# The whole text of a first prompt, built from the templates so it cannot drift; a person quoting one among his own words
+# does not match. Claude Code stamps an argv prompt exactly as it stamps typing, so structure cannot tell them apart.
+RESTART_PROMPT_RE = re.compile("|".join(
+    ".*?".join(re.escape(x) for x in re.split(r"\{(?:seat|why|gen)\}", t)) for t in PROMPTS.values()), re.S)
 TELL = ("[RimFlow context] This window is at {ctx} tokens, over the {soft} line (backstop_ctx_tokens). Reach a stopping "
         "point, write your handoff, commit by explicit path, then run `python3 src/RimMandrake/rimflow/seat_restart.py "
         "request --seat {seat} --ticket <ticket> --fresh --note \"<3-5 lines: what is done, what is open>\"` and end your "
@@ -329,6 +333,11 @@ def _is_human_input(rec, peers):
         return not (name and SM.name_matches(name, list(peers or [])))
     if o.get("kind") in MACHINE_ORIGINS or rec.get("promptSource") in MACHINE_SOURCES \
             or rec.get("turnOrigin") in MACHINE_TURNS:
+        return False
+    # MEASURED 2026-11-01 over 281 seat transcripts: a relaunch's first prompt (relaunch_argv) lands as promptSource typed,
+    # origin human, turnOrigin human; nobody typed it. Counted human, a fresh window read as "a human is here" for its
+    # first limit, the bring-back's fresh deadline left it alone instead of raising, and his 45-min chat clock restarted.
+    if RESTART_PROMPT_RE.fullmatch(text.rstrip()):
         return False
     # Structure over text (SEAT_RESTART_FIX_HUMAN_INPUT_MARKERS, Codex review 2026-10-29 P1 2): a record Claude Code
     # stamped as typed/queued by a person is human whatever it quotes (the owner may paste a ring or ask about "a

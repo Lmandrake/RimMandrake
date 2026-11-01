@@ -10,6 +10,8 @@ the bridge and PAUSE readings, and the launch of a fallback tile.
   ignores      a window that ignores rings is SIGTERMed once at the limit, not before; its replacement, which ignores
                them too, raises one incident (one told row, one Conductor line) after fresh_take_s; two more hours of
                ticks bring no second kill
+               every replacement opens on the record the real path leaves: the killed record's own argv prompt, stamped
+               typed/human as Claude Code stamps it (12 of 12 sampled relaunches), which must not read as a human
   takes        a replacement that takes work ends the machine: no incident
   human        a human input in the window leaves it alone at the limit
   overlap      a replacement slow to arrive, and two windows at once, never get a second restart
@@ -75,6 +77,7 @@ class World:
         self.claimed = set()
         self.tile_delay = 0
         self.owed = None
+        self.first_prompt = None
         self.takes_on_ring = False
         self.acts = []
         self.sch = self.schedule()
@@ -115,6 +118,8 @@ class World:
             json.dump({"pid": p.pid, "sessionId": w["sid"], "cwd": self.clone, "name": "AGENT " + SEAT, "status": status,
                        "procStart": SR.proc_start(p.pid)}, f)
         os.makedirs(os.path.dirname(self.tx(w)), exist_ok=True)
+        if self.first_prompt:
+            self.write(w, relaunch_record(self.first_prompt))
         self.end_turn(w)
         if arm:
             doorbell.arm(SEAT, w["sid"], pid=p.pid)
@@ -144,6 +149,7 @@ class World:
         if SR.intile_claim(SEAT, rec["killed_at"] + 5):    # the tile claims seconds after its window died
             self.claimed.add(rec["killed_at"])
             self.owed = self.now + self.tile_delay
+            self.first_prompt = rec["argv"][-1]              # what the real tile hands the new window
 
     def step(self):
         self.now += TICK
@@ -199,6 +205,12 @@ class World:
     def close(self):
         for w in self.windows:
             w["proc"].kill()
+
+
+def relaunch_record(prompt):
+    """What a relaunch's first prompt becomes in a real transcript: every structural field says a person typed it."""
+    return {"type": "user", "promptSource": "typed", "turnOrigin": "human", "origin": {"kind": "human"},
+            "message": {"role": "user", "content": prompt}}
 
 
 def patch(world):
@@ -328,6 +340,28 @@ def test_off():
     w.close()
 
 
+def test_first_prompt():
+    argv = SR.relaunch_argv
+    cfg = {"session_name": "X", "clone": "/c"}
+    peers = ["AGENT FOUNDRY"]
+    for kind in ("doorbell", "conductor"):
+        for why, gen in (("ticket ended", None), ("idle with ready work (X_Y_Z) for 1800 s\nand no ring", "ab12")):
+            text = argv(SEAT, dict(cfg, kind=kind), why, gen)[-1]
+            check(not SR._is_human_input(relaunch_record(text), peers), "%s first prompt is not human (%s)" % (kind, why[:12]))
+            check(not SR._is_human_input(relaunch_record(text + "\n"), peers), "nor with a trailing newline")
+            check(SR._is_human_input(relaunch_record("why did this happen?\n" + text), peers), "he quotes it: still his")
+            check(SR._is_human_input(relaunch_record(text + "\nthat was wrong"), peers), "he answers it: still his")
+    w = start("first_prompt")
+    w.first_prompt = SR.PROMPTS["doorbell"].format(seat=SEAT, why="idle", gen="")
+    fresh = w.spawn()
+    s = SR.tx_summary(w.tx(fresh), peers=peers)
+    check(s and s["last_user_at"] is None, "a fresh window nobody typed in has no human input: %s" % s)
+    check(SR.last_human(w.tx(fresh), peers=peers)[0] is None, "last_human agrees")
+    w.human(fresh)
+    check(SR.tx_summary(w.tx(fresh), peers=peers)["last_user_at"] is not None, "his first real line is read")
+    w.close()
+
+
 def test_schedule():
     check(REAL.get("idle_bringback_after_min") == 30, "dispatcher_schedule.json: idle_bringback_after_min 30")
     check(REAL.get("fresh_take_s") == 900, "dispatcher_schedule.json: fresh_take_s 900")
@@ -341,7 +375,7 @@ def test_schedule():
 
 if __name__ == "__main__":
     try:
-        for t in (test_schedule, test_ignores, test_takes, test_human, test_overlap, test_work, test_no_doorbell, test_off):
+        for t in (test_schedule, test_first_prompt, test_ignores, test_takes, test_human, test_overlap, test_work, test_no_doorbell, test_off):
             t()
     finally:
         shutil.rmtree(TMP, ignore_errors=True)

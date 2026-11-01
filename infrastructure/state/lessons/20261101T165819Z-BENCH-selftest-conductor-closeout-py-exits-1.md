@@ -1,0 +1,1 @@
+selftest_conductor_closeout.py exits 1 with 4 FAILs (request check stores verdict and gaps, once recorded the wake stops printing it, goodbye hook close-out) on origin/main independent of seat_restart _is_human_input changes: identical FAIL list with the 2026-11-01 first-prompt fix disabled. Reads the real ledger for quotes, so suspect an environment-dependent fixture.
