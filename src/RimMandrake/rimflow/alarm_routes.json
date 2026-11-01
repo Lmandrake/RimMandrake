@@ -38,6 +38,7 @@
     {"match": "companion.*", "route": "role", "reader": "Operations", "cause": "companion"},
     {"match": "arena.*", "route": "role", "reader": "FOUNDRY", "cause": "arena"},
     {"match": "flow.*", "route": "role", "reader": "Operations", "cause": "flow"},
+    {"match": "testing.*", "route": "role", "reader": "Operations", "cause": "testing"},
     {"match": "timers.*", "route": "role", "reader": "Operations", "cause": "timers"},
     {"match": "timer:*", "route": "role", "reader": "Operations", "cause": "timers"},
     {"match": "signal:*", "route": "role", "reader": "Operations", "cause": "timers"},

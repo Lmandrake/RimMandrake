@@ -39,6 +39,8 @@ BASE = {"accounts.acct.runway": 9.0, "accounts.acct.week_left_pct": 90.0}
 SANE = {"relentless.under_min": 0, "relentless.breaker_open_min": 0, "relentless.no_live_min": 0, "relentless.progress_age_min": 0,
         "relentless.blind": 0, "relentless.ready": 5, "relentless.why": "running", "relentless.distressed": 0,
         "seats.idle_with_work_min": 0, "seats.blind": 0, "seats.distressed": 0, "seats.paused": 0, "disk.pool_breach": 0}
+# ops_watch.run writes a family's unmeasured blind key as 1, and this rig stubs every collector: a blind key landed later is sane here too
+SANE.update({t["key"]: 0 for t in RULES["targets"] if t.get("alarm") and t["key"].endswith("blind")})
 SEVERE = {"relentless.under_min": 150, "relentless.breaker_open_min": 150, "relentless.no_live_min": 150,
           "relentless.progress_age_min": 150, "relentless.blind": 1, "relentless.distressed": 1,
           "seats.idle_with_work_min": 200, "seats.blind": 1, "seats.distressed": 1, "disk.pool_breach": 1}
@@ -306,6 +308,8 @@ def test_blind_and_signal():
 def test_ledger_unwritable():
     r = Rig("torn")
     r.tick(T0)
+    if os.path.exists(IN.told_path()):
+        os.remove(IN.told_path())
     os.mkdir(IN.told_path())                 # no file can be read or written there
     r.tick(T0 + 120, relentless__under_min=40)
     check("a ledger that does not read alarms by the Conductor log", "incident ledger is torn" in open(r.log).read(), open(r.log).read())
