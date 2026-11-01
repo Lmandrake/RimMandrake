@@ -38,9 +38,9 @@ Work stalls when it lives in a head's attention. The owner's fix tonight: the it
 - `ARENA_VERDICT` — arms on the pin; NEXT: when arms finish, have FOUNDRY publish the anchor, run analysis with its caveats, and write him a readable page.
 - `TRIAL_PARALLEL_DESIGN_ADD_ON_EQUAL_ALLOWANCE` — he approved it, FOUNDRY designing to Codex's seven conditions; NEXT: launch after the replay only once every arm passes several tasks on the full path.
 - `WORKER_CLONES_MONITOR_POOL_NOT_RABBITS` — helper acbdfead7189b44b3 running; NEXT: read its report and confirm the cap refused a planted over-cap attempt.
-- `STEVE_POST_DIAGNOSE_FIVE_MINUTE_BOOT` — helper a7b8a6835b39b331b removing the Goat Simulator files and writing the NVMe plan; NEXT: read D:\\ClaudeWork\\rimmandrake\\steve_diag\\nvme_replacement.md and give him the purchase line.
+- `STEVE_POST_DIAGNOSE_FIVE_MINUTE_BOOT` — Goat Simulator files deleted, cloud copies too, bad blocks 48 a minute to 0; 293 s POST unexplained; NEXT: verify OneDrive is up to date, then give him the purchase line in D:\ClaudeWork\rimmandrake\steve_diag\nvme_replacement.md for a swap after the CPU verdict.
 - `CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH` — running unattended, 20 CPUs on, verdict due about 2026-11-07 04:00Z; NEXT: read D:\\ClaudeWork\\rimmandrake\\steve_diag\\retest\\events.jsonl and close with --live at the verdict.
-- `KEPT_SWAP_SHEET_BUILD_SHOW_ME_AFTER` — helper a40dfba97611cddb9 enacting his marks and the Fire Wasp purge, install, judge, flight; NEXT: read its report; flight visuals are a joint look with him, never alone.
+- `FIREWASP_FLIGHT_BUILD_AFTER_BROWN_REGEN` — sheet enacted, 37 yellow-black images purged and banned, brown art installed, wasp grounded; the art pipeline says REGEN, deployed, game restart owed; NEXT: regen from the brown image, have a fresh rm-judge rule it, then build flight; first flight look is joint with him.
 - `STAFFING_SPEND_DECIDE_DAY_CAP_UNDER_BUDGET` — limit 60M, stage 3 workers; NEXT: read spend after a day, then step to 5 only on clean readings.
 - `CONTRACTS_IMPORT_DIAGNOSE_SYSCONFIG_TRIPWIRE` — C6 fails, cause unknown; NEXT: find the new import in dispatcher before touching the check.
 - `HARNESS_MEMORY_MEASURE_WHO_HIT_TWELVE_GIG` — slice raised to 20 GB, peak 17.4 GB; NEXT: name the 12.5 GB process and add per-arm caps.
@@ -49,6 +49,8 @@ Work stalls when it lives in a head's attention. The owner's fix tonight: the it
 - `Old pointers` — prior handoff's items not worked: SHIRO_REDRAW_CANON_PAINTERLY, SWBESTIARY_DEPLOY_HELD_FOREIGN_DRIFT, LOOK_SITTING_BUILD_ONE_SAVE, Day 2 live half card; NEXT: leave them to the filler and raise the live half card after the verdict.
 - `TRIO_CRITIC_FIX_HOME_SWAP_HIDES_CLAUDE` — trio stopped 21:25, cause reproduced: the arm's temp HOME hides claude from the critic sandbox; FOUNDRY's fresh window owns it, and trio gets a later pin than v3 and ralph_a; NEXT: confirm trio passes several tasks, and that the verdict states its later sha.
 - `V3_WORKFLOW_AUDIT_EVERY_CLOCK_AND_DOOR` clone — holds unpushed work, idle, alarm disk.pool_breach firing, protected; NEXT: land or resume that clone's work.
+- `FOUNDRY habit` — it reached for raw git pull --rebase in a dirty tree; NEXT: tell its window to land through ./publish only.
+- `DOORBELL_DELAY_FIX_FRESH_WINDOW_WAITS` — stall cut to 60 s, deployed; NEXT: alarm on a head idle with work waiting, and backdate idle at restart_verified.
 
 ## Traps learned
 
