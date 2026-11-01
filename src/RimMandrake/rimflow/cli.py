@@ -2776,7 +2776,7 @@ def _delegated_gate(holder, seat, holder_idle, purpose, flyer, owner=None):
                       "a free or stale bridge" % (holder, holder_idle // 60))
     if flyer or flight_purpose(purpose):
         return None, "refused: flyer flight is never delegated (needs a human present)"
-    return {"why": "delegated: bridge free (%s)" % (
+    return {"why": "delegated: bridge idle (%s)" % (
         "the OWNER's hold: %s" % owner[1] if holder == "OWNER" and holder != seat
         else "held by %s, stale" % holder if holder not in (None, seat)
         else "ours" if holder == seat else "free")}, None

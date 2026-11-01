@@ -72,6 +72,9 @@ DRY_DIR = os.path.join(SCRATCH, "dry")
 ERRORS = os.path.join(SCRATCH, "errors.log")
 LEFTOVERS = "/mnt/d/ClaudeWork/backups/leftovers/acts.jsonl"
 STATE_SCHEMA = "rimflow.delegated-digest-state/2"
+# `delegated:` is the rule (delegation_policy.md §3); the 29 Oct backlog triage wrote `delegated backlog triage:` and 20
+# calls never reached a digest (DIGEST_GAPS_FIX_TWENTY_CALLS_WENT_MISSING). Both are read; blind.class_of classes the second.
+DELEGATED_PREFIXES = ("delegated:", "delegated backlog triage")
 SKIP_VERBS = {"lease", "renew", "release"}    # lease bookkeeping a claim already shows
 SOURCES = ("ledger", "verdict", "commit", "marks", "art_install", "leftovers")
 FAILED_TEXT = ("# Delegated digest %s NOT BUILT\n\nThe program failed; the error is in Operations' log. The Conductor "
@@ -115,7 +118,7 @@ def ledger_read(events):
             r["malformed"] += 1
             continue
         why = ev.get("why")
-        if not isinstance(why, str) or not why.startswith("delegated:") or ev.get("event") in SKIP_VERBS:
+        if not isinstance(why, str) or not why.startswith(DELEGATED_PREFIXES) or ev.get("event") in SKIP_VERBS:
             continue
         t = utc(ev.get("ts"))
         if t is None:

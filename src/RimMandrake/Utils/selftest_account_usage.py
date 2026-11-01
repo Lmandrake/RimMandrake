@@ -44,6 +44,7 @@ f = au.parse_usage(TEXT, NOW)
 check("parse: session pct", f and f["session_pct_used"] == 16.0, f)
 check("parse: session reset with zone", f and f["session_resets_at"] == "2026-10-26T16:10-07:00", f)
 check("parse: week pct + reset", f and f["week_pct_used"] == 59.0 and f["week_resets_at"] == "2026-10-28T13:00-07:00", f)
+check("record: MEASURED week with no session line says why", (lambda r: r["session_pct_used"] is None and "no session window" in r["why"])(au.record("x", 1.0, "MEASURED", "m", None, {"week_pct_used": 5.0}, "t")))
 check("parse: other model week kept apart", f and f["other_weeks"] == {"Fable": {"pct_used": 0.0,
       "resets_at": "2026-10-28T13:00-07:00"}}, f)
 check("parse: year rolls over at new year", au.parse_reset("resets Jan 2, 1am (UTC)", 1798675200.0)  # 2026-12-31Z

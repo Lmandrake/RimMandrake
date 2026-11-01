@@ -372,6 +372,11 @@ class Lock:
 # ------------------------------------------------------------------ records
 def record(name, now, source, method, machine, fig=None, measured_at=None, why="") -> dict:
     fig = fig or {}
+    if source == "MEASURED" and fig.get("session_pct_used") is None and not why:
+        # SESSION_METER_DIAGNOSE_SYSTEM_BLANK: /usage prints no `Current session` line, and the plan endpoint's
+        # five_hour is null, for EVERY account when no 5-hour window is open. A blank session figure beside a
+        # MEASURED week is the instrument's answer, not a fault of one account.
+        why = "no session window reported (the plan shows none open); week figure is MEASURED"
     return {"schema": SCHEMA, "ts": iso(now), "account": name, "source": source, "method": method,
             "machine": machine, "session_pct_used": fig.get("session_pct_used"),
             "session_resets_at": fig.get("session_resets_at"), "week_pct_used": fig.get("week_pct_used"),

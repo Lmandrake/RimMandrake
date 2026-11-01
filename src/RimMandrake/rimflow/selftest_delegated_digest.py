@@ -373,10 +373,21 @@ def test_real():
         check(not os.path.exists(os.path.join(tmp, "s.json")), "real: a dry run writes no state")
 
 
+def test_triage_and_bridge_free_classed():
+    """DIGEST_GAPS_FIX_TWENTY_CALLS_WENT_MISSING: `delegated backlog triage:` calls are read (scope); `bridge free` is
+    the bridge idle class, not unclassified."""
+    from contracts.blind import class_of
+    ev = [{"seat": "OWNER", "event": "drop", "id": "A_B_C", "why": "delegated backlog triage: moot", "ts": "2026-10-29T10:00:00Z"},
+          {"seat": "OWNER", "event": "drop", "id": "A_B_D", "why": "not delegated", "ts": "2026-10-29T10:00:00Z"}]
+    check(len(D.ledger_read(ev)["items"]) == 1, "triage-worded call read, other not")
+    check(class_of("delegated backlog triage: moot") == "scope", "triage -> scope")
+    check(class_of("delegated: bridge free (ours)") == "bridge idle", "bridge free -> bridge idle")
+
+
 def main():
     global IDS
     IDS = _ids()
-    for t in (test_blind_counts_body_malformed, test_window_fail_force_pending, test_identity,
+    for t in (test_triage_and_bridge_free_classed, test_blind_counts_body_malformed, test_window_fail_force_pending, test_identity,
               test_refusals_prelaunch, test_real):
         try:
             t()

@@ -238,14 +238,22 @@ RAW_FIELDS = {
 }
 
 
+# wordings seats logged before the class list was enforced: triage closes/drops are `scope`; a take of a free bridge
+# was logged "bridge free" (9 acts on 30 Oct) and is the `bridge idle` class
+_LABEL_ALIAS = {"backlog triage": "scope", "delegated backlog triage": "scope", "bridge free": "bridge idle"}
+
+
 def class_of(why):
     """`delegated: art facing judge 2026-10-26, …` -> the policy class it starts with, else "unclassified". Reads the
     label, never copies it: the page shows only the closed class."""
     rest = str(why or "").strip()
     while rest.lower().startswith("delegated:"):
         rest = rest[len("delegated:"):].strip()
+    if rest.lower().startswith("delegated backlog triage"):
+        rest = "backlog triage"
     label = re.split(r"\s+[—–-]\s+|--|[—–;,(:\[]|\.\s|\s+per\s+|\s+\d{4}-\d{2}-\d{2}", rest,
                      maxsplit=1)[0].strip().rstrip(".").lower()
+    label = _LABEL_ALIAS.get(label, label)
     for c in POLICY_CLASSES:
         if label == c or re.match(re.escape(c) + r"[\s/\-]", label):
             return c
