@@ -1,0 +1,2 @@
+sheet_overflow_proof row K (SHEET_FREEZES_AND_THAWS) bar 'rect fell <= map exits' assumes scene K's water stays inside its 14x13 rect; rerunning K on the same map accumulates spills (live 2026-11-01: 42682 dL / 119 wet vs 20000 / ~49 fresh, water at the rect edge) and outflow across the edge reads as loss (FAIL 9476 > 8664, ledger closes). Run K on --fresh-map, or the bar should book flux across the rect boundary.
+home: NONE
