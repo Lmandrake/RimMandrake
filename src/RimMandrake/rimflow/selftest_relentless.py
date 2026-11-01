@@ -146,6 +146,13 @@ class FakeWorld:
         if self.pool:
             self.pool["/c/check-" + st["item"]] = {"busy": True}
         return "/c/check", None
+    def help_checkout(self, st, sha):
+        if self.refuse or (self.pool and len(self.pool) >= self.pool_max):
+            return None, "help clone failed: scratch_clone: FAILED: POOL REFUSED: pool full: 10 clones, cap 10\n"
+        c = "/c/help-%s-c%d" % (st["item"], (st.get("help_count") or 0) + 1)
+        if self.pool:
+            self.pool[c] = {"busy": False}
+        return c, None
     def published(self, sha): return self.is_pub
     def changed(self, base, sha, item): return self.touched
     def head(self): return "base"
@@ -2070,11 +2077,250 @@ def t_pool_real_git():
     shutil.rmtree(d, ignore_errors=True)
 
 
+def consults(rig):
+    return [x for x in rig.w.launches if "-help-" in x[1]]
+
+
+def workers(rig):
+    return [x for x in rig.w.launches if "-work-" in x[1]]
+
+
+def circle(rig, item="I0", detail="went round"):
+    """A hit by the path RW2's tick rule will use: the fence-first fail, class circling, then the unit goes down."""
+    rig.run_one(item)
+    gen = rig.st(item)["gen"]
+    unit = rig.st(item)["run"]["unit"]
+    R.snag(rig.s, item, gen, "circling", detail, rig.r, now=rig.now)
+    rig.w.up[unit] = False
+
+
+def answer(rig, item="I0", *options):
+    R.help_answer(rig.s, item, rig.st(item)["help"]["nonce"], list(options) or ["try the other seam | seam log shows X"],
+                  rig.r, now=rig.now)
+    rig.w.up[rig.st(item)["help"]["run"]["unit"]] = False
+
+
+def t_help_forced_once():
+    """S1: two circling hits, exactly one consult. One hit, none. Hits inside the cool wait; after it, one more."""
+    g = Rig(1)
+    circle(g, detail="first round")
+    for _ in range(3):
+        g.tick()
+    ok(not consults(g), "one circling hit asks for no consult")
+    ok(g.st("I0")["status"] == "running", "and the item simply goes on")
+    circle(g, detail="second round")
+    ok(g.st("I0")["help"]["status"] == "wanted", "the second hit wants the consult at once, under the fail's own lock")
+    runs = len(workers(g))
+    for _ in range(4):
+        g.tick()
+    ok(len(consults(g)) == 1, "two hits give exactly one consult: %d" % len(consults(g)))
+    ok(consults(g)[0][3] == g.r["help_agent"] == "rm-consult", "it is the read-only agent")
+    ok(len(workers(g)) == runs, "no worker starts while the consult is out")
+    answer(g)
+    g.tick()
+    ok(g.st("I0")["help"]["status"] == "answered" and len(consults(g)) == 1, "answered, and no second one")
+    circle(g)
+    circle(g)
+    for _ in range(4):
+        g.tick()
+    answered_alone = g.st("I0")["status"] == "running"
+    ok(len(consults(g)) == 1 and answered_alone, "two more hits inside help_cool_h: no second consult, no wait either")
+    g.now += g.r["circling"]["help_cool_h"] * 3600
+    for _ in range(2):
+        g.tick()
+    ok(len(consults(g)) == 2, "past the cool the hits held back get their one: %d" % len(consults(g)))
+    g.done()
+
+
+def t_help_own_call_spends_hits():
+    g = Rig(1)
+    circle(g)
+    circle(g)
+    g.tick()
+    g.tick()
+    answer(g)
+    g.tick()
+    g.now += g.r["circling"]["help_cool_h"] * 3600
+    g.tick()
+    g.tick()
+    ok(len(consults(g)) == 1, "the cool running out is no hit: spent hits never ask twice")
+    g.done()
+    g = Rig(1)
+    circle(g)
+    g.run_one("I0")
+    R.ask_help(g.s, "I0", g.st("I0")["gen"], "stuck", g.r, now=g.now)
+    g.tick()
+    answer(g)
+    circle(g)
+    circle(g)
+    g.tick()
+    ok(len(consults(g)) == 1, "the hit before a worker's own call is spent, and the two after wait out its cool")
+    g.now += g.r["circling"]["help_cool_h"] * 3600
+    g.tick()
+    g.tick()
+    ok(len(consults(g)) == 2, "two hits after a worker's own call earn their one, past the cool: %d" % len(consults(g)))
+    with open(os.path.join(R.HERE, "..", "..", "..", ".claude", "agents", g.r["help_agent"] + ".md"), encoding="utf-8") as f:
+        head = f.read().split("---")[1]
+    ok("tools: Bash, Read\n" in head, "the consult's agent exists and cannot Write or Edit")
+    g.done()
+
+
+def t_help_reaches_brief():
+    """S2: the options reach the next worker's brief, and the consult itself is cold."""
+    g = Rig(1)
+    g.run_one("I0")
+    R.learn(g.s, "I0", g.st("I0")["gen"], "THE STORY THAT DROVE IT", now=g.now)
+    circle(g, detail="evidence one")
+    circle(g, detail="evidence two")
+    g.tick()
+    g.tick()
+    p = consults(g)[0][2]
+    ok("evidence one" in p and "evidence two" in p, "the consult reads the failed approaches")
+    ok("THE STORY THAT DROVE IT" not in p, "and not learned.md")
+    ok(g.st("I0")["contract"] is None and "text of I0" in p, "it reads the problem")
+    answer(g, "I0", "swap the seam | seam log names X", "the fixture lies | rerun on clean tree")
+    ok(g.st("I0")["help_options"]["options"][1]["observe"] == "rerun on clean tree", "the options are in the state file")
+    n = len(workers(g))
+    for _ in range(3):
+        g.tick()
+    ok(len(workers(g)) == n + 1, "the worker the consult held back starts")
+    b = workers(g)[-1][2]
+    ok("FRESH EYES" in b and "swap the seam" in b and "seam log names X" in b and "the fixture lies" in b,
+       "the next brief carries each option and its test")
+    ok("refute each" in b, "and what the worker owes for them")
+    ok("relentless.py help --item I0" in workers(g)[0][2], "every brief names the call")
+    g.done()
+
+
+def t_help_refused():
+    """S3, by the real command: no failed approach on record, no consult."""
+    g = Rig(1)
+    g.run_one("I0")
+    env = {k: v for k, v in os.environ.items() if k != "RELENTLESS_GEN"}
+    env["RELENTLESS_ROOT"] = g.d
+    tool = os.path.join(R.HERE, "relentless.py")
+    def call(*a):
+        return subprocess.run(["python3", tool, "help", "--item", "I0", *a], env=env, capture_output=True, text=True, timeout=60)
+    res = call("--gen", str(g.st("I0")["gen"]), "stuck")
+    ok(res.returncode == 2 and "no failed approach" in res.stderr, "refused, by name: %d %s" % (res.returncode, res.stderr[-120:]))
+    ok(not g.st("I0").get("help"), "and nothing is wanted")
+    g.tick()
+    ok(not consults(g), "and the tick sends nobody")
+    res = call("--gen", "99")
+    ok(res.returncode == R.FENCED, "a stale worker is fenced, not refused: %d" % res.returncode)
+    # a process that died tried nothing
+    R.fail(g.s, g.st("I0"), "worker_lost", "unit gone", g.r, g.now)
+    g.w.up[g.st("I0")["run"]["unit"]] = False
+    g.run_one("I0")
+    res = call()
+    ok(res.returncode == 2 and "no failed approach" in res.stderr, "worker_lost is no failed approach: %s" % res.stderr[-120:])
+    # with one on record the same call goes through, once
+    R.snag(g.s, "I0", g.st("I0")["gen"], "dead_end", "tried the pump", g.r, now=g.now)
+    g.w.up[g.st("I0")["run"]["unit"]] = False
+    res = call()
+    ok(res.returncode == 0 and g.st("I0")["help"]["by"] == "operator", "with one on record it goes: %s" % res.stderr[-120:])
+    res = call()
+    ok(res.returncode == 2 and "already has a consult" in res.stderr, "a second while one is out is refused")
+    g.tick()
+    ok(len(consults(g)) == 1, "one consult")
+    g.done()
+
+
+def t_help_lifecycle():
+    g = Rig(1)
+    circle(g)
+    circle(g)
+    g.tick()
+    g.tick()
+    nonce = g.st("I0")["help"]["nonce"]
+    for bad in ([], ["no test here"], ["a | b"] * 4):
+        expect = False
+        try:
+            R.help_answer(g.s, "I0", nonce, bad, g.r, now=g.now)
+        except ValueError:
+            expect = True
+        ok(expect, "a malformed answer is refused: %s" % (bad,))
+    expect_fence(lambda: R.help_answer(g.s, "I0", "wrong", ["a | b"], g.r, now=g.now), "a wrong nonce")
+    # dies with no answer: another try, then the item carries on without
+    for n in range(1, g.r["circling"]["help_launch_tries"] + 1):
+        g.w.up[g.st("I0")["help"]["run"]["unit"]] = False
+        ok(len(consults(g)) == n, "try %d launched: %d" % (n, len(consults(g))))
+        g.tick()
+        if n < g.r["circling"]["help_launch_tries"]:
+            ok(g.st("I0")["status"] == "queued", "the worker waits for the retry")
+            g.tick()
+    ok(g.st("I0")["help"]["status"] == "failed", "three dead consults: failed")
+    ok(any("consult" in x for x in g.w.notes), "said on the item")
+    g.tick()
+    ok(g.st("I0")["status"] == "running", "and a dead consult does not hold the worker for good")
+    ok(not g.st("I0").get("help_options") and "FRESH EYES" not in workers(g)[-1][2], "no options, no paragraph")
+    g.done()
+    # overrun: stopped, the nonce fenced before the stop
+    g = Rig(1)
+    circle(g)
+    circle(g)
+    g.tick()
+    g.tick()
+    h = g.st("I0")["help"]
+    g.now += g.r["circling"]["help_max_s"]
+    g.tick()
+    ok(h["run"]["unit"] in [u for u, _ in g.w.stops], "an overrun consult is stopped")
+    expect_fence(lambda: R.help_answer(g.s, "I0", h["nonce"], ["a | b"], g.r, now=g.now), "a late answer")
+    g.done()
+    # no room: bounded
+    g = Rig(1)
+    circle(g)
+    circle(g)
+    g.w.refuse = True
+    g.tick()
+    ok(g.st("I0")["help"]["status"] == "wanted" and g.st("I0")["status"] == "queued", "a full pool waits, the item keeps its place")
+    g.w.refuse = False
+    g.w.help_checkout = lambda st, sha: (None, "x POOL REFUSED y")
+    g.now += g.r["circling"]["help_wait_s"]
+    g.tick()
+    ok(g.st("I0")["help"]["status"] == "failed", "the wait is bounded")
+    g.tick()
+    ok(g.st("I0")["status"] == "running", "and the worker goes")
+    g.done()
+    # the item ends under a running consult
+    g = Rig(1)
+    circle(g)
+    circle(g)
+    g.tick()
+    g.tick()
+    u = g.st("I0")["help"]["run"]["unit"]
+    with g.s.lock():
+        st = g.st("I0")
+        st["status"] = "retired"
+        g.s.save(st)
+    g.tick()
+    g.tick()
+    ok(g.st("I0")["help"]["status"] == "dropped" and not g.w.up[u], "an ended item takes its consult down")
+    g.done()
+    # the pool sees the clone
+    g = Rig(1)
+    g.w.pool = {"/c/other": {"busy": True}}
+    g.w.pool_max = 10
+    circle(g)
+    circle(g)
+    g.tick()
+    g.tick()
+    c = g.st("I0")["help"]["clone"]
+    row = [x for x in R.pool_rows(g.s, g.w, g.r) if x["clone"] == c][0]
+    ok(row["kind"] == "help" and row["rank"] == 2, "a running consult's clone is live: %s" % row)
+    answer(g)
+    g.tick()
+    ok(c not in g.w.pool, "and an answered consult gives it back")
+    ok(R.clone_item("/x/help-AB_C-c2") == "AB_C", "help clones read back")
+    g.done()
+
+
 def main():
     for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
-              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line):
+              t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
+              t_help_forced_once, t_help_own_call_spends_hits, t_help_reaches_brief, t_help_refused, t_help_lifecycle):
         print("--", t.__name__)
         t()
     print("selftest_relentless: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

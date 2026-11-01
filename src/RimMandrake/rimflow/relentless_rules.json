@@ -38,10 +38,12 @@
   "worker_agent": "rm-builder",
   "pilot_agent": "rm-testpilot",
   "checker_agent": "rm-judge",
+  "help_agent": "rm-consult",
   "model": "opus",
   "seat": "BENCH",
   "_staffing": "The no-AI filler, design section 13. Rises 3, 5, budget, each step only after a clean reading: hold_s at full stage, min_verdicts blind verdicts in that stage's window, at most max_reject_share rejected, memory never under step_back_mem_gb, no OOM kill, burn at most burn_max_pct_h. foreign_* are what a worker may take from the other seat without pulling its tree.",
   "_circling": "RW2, circling.py. Thresholds unmeasured: replay real runs before trusting one. stop stays false until circling_replay.json, written by `circling.py replay --write` from hand-labelled runs on this code and these numbers, shows wrongful stops under false_stop_limit; the flag alone stops nothing.",
+  "_help": "RW3 in operating_requirements_2026-11-01.md. help_after_circling stops of class circling force one consult; one per item per help_cool_h, a worker's own call included. help_launch_tries runs a consult may die with no answer before the item carries on without it, help_max_s one run's limit, help_wait_s how long a wanted consult may wait for room while it holds the next worker back.",
   "circling": {
     "enabled": true,
     "stop": false,
@@ -54,7 +56,13 @@
     "churn_moves": 5,
     "churn_max_lines": 6,
     "false_stop_limit": 0.05,
-    "replay_min_runs": 20
+    "replay_min_runs": 20,
+    "help_after_circling": 2,
+    "help_cool_h": 6,
+    "help_options_max": 3,
+    "help_max_s": 1200,
+    "help_wait_s": 2400,
+    "help_launch_tries": 3
   },
   "staffing": {
     "seat": "FOUNDRY",

@@ -136,7 +136,7 @@ and a long build with a moving diff left alone. Exists: `unchanged_returns_limit
 failed approaches and returns options into the state file. Forced after two circling hits on an item; a worker may call
 it any time. Threshold: `help_after_circling` 2, one per item per `help_cool_h`. Test: a planted item with two hits gets
 exactly one consult; its options reach the next run's brief; a consult from a run with no failed approach is refused.
-Exists: `snag`→redesign. Missing: the call.
+Exists: `relentless.py help`, `help-answer`, the `circling` block, agent `rm-consult`; the force waits on RW2 stopping runs. Missing: round two by a second vendor (design §7).
 
 **RW4 Blind review is called on evidence.** [Arbiter] The worker calls `finish` near the end, on its own evidence; that triggers
 the blind judge. Stated as a rule only. Test: existing relentless selftests.

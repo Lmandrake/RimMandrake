@@ -52,6 +52,7 @@ POOL_IGNORED_MAX = 2 * 10**9
 LEDGER_DIR = "infrastructure/state/ledger/events/"
 BOOKS_DERIVED = (LEDGER_DIR, "infrastructure/state/items/")
 GUARDED_VERBS = ("close", "implemented", "renew", "release", "reclaim", "claim", "start")
+NOT_AN_APPROACH = ("worker_lost", "checker_lost")       # a dead process or a silent checker tried nothing
 
 
 def pkg(name):
@@ -224,6 +225,9 @@ def fail(store, st, klass, detail, r, now):
     store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
                                "approach_next": st["approach"]})
     store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
+    if klass == "circling":     # under this lock, so no tick can lease the next worker ahead of the consult
+        st["circling_hits"] = st.get("circling_hits", 0) + 1
+        force_help(store, st, r, now)
     store.save(st)
 
 
@@ -342,6 +346,94 @@ def _take_receipt(store, st, rec, now):
     st["last_sha"] = rec["sha"]
     store.attempt(st["item"], {"at": iso(now), "gen": rec["gen"], "end": "finish", "sha": rec["sha"]})
     store.save(st)
+
+
+# ---------------------------------------------------------------- calling for help (RW3, design relentless_agent 7)
+
+def failed_approaches(store, item):
+    """What was tried and ended in failure, from the record the supervisor wrote, never a worker's say-so."""
+    return [a for a in store.attempts(item) if "approach_next" in a and a.get("end") not in NOT_AN_APPROACH]
+
+
+def help_pending(st):
+    return ((st or {}).get("help") or {}).get("status") in ("wanted", "running")
+
+
+def help_cool_left(st, r, now):
+    last = st.get("help_last_at")
+    return max(0, last + r["circling"]["help_cool_h"] * 3600 - now) if last is not None else 0
+
+
+def _want_help(store, st, why, by, now):
+    """Any consult uses up the hits so far: a worker's own call and the forced one are not two."""
+    st["help"] = {"status": "wanted", "why": (why or "")[:600], "by": by, "at": now, "tries": 0, "gen": st["gen"]}
+    st["help_last_at"] = now
+    st["help_hits_used"] = st.get("circling_hits", 0)
+    store.journal({"at": iso(now), "do": "help_wanted", "item": st["item"], "by": by})
+
+
+def force_help(store, st, r, now):
+    """Under the lock; the caller saves. -> True when this call asked for the consult."""
+    n = (r.get("circling") or {}).get("help_after_circling")
+    if not n or st.get("circling_hits", 0) - st.get("help_hits_used", 0) < n:
+        return False
+    if help_pending(st) or help_cool_left(st, r, now) or not failed_approaches(store, st["item"]):
+        return False
+    _want_help(store, st, "forced: %d circling stops" % st["circling_hits"], "tick", now)
+    return True
+
+
+def ask_help(store, item, gen, why, r, now=None):
+    """A worker's call, any time. `gen` None is someone outside the lease (an operator): nothing to fence."""
+    now = time.time() if now is None else now
+    with store.lock():
+        st = store.load(item)
+        if gen is not None:
+            _fence(st, item, gen)
+        elif st is None:
+            raise ValueError("%s is not enrolled" % item)
+        if st["status"] in ENDED:
+            raise ValueError("%s is %s" % (item, st["status"]))
+        if not failed_approaches(store, item):
+            raise ValueError("%s has no failed approach on record: nothing for a fresh eye to read. Fail first." % item)
+        if help_pending(st):
+            raise ValueError("%s already has a consult %s" % (item, st["help"]["status"]))
+        left = help_cool_left(st, r, now)
+        if left:
+            raise ValueError("%s had a consult; the next in %d min (help_cool_h)" % (item, left // 60 + 1))
+        _want_help(store, st, why, "gen %d" % gen if gen is not None else "operator", now)
+        if gen is not None:
+            st["last_beat"] = now
+        store.save(st)
+
+
+def parse_options(options, r):
+    """'idea | the one observation that confirms or kills it', each. A hypothesis with no test is refused."""
+    most = r["circling"]["help_options_max"]
+    if not options or len(options) > most:
+        raise ValueError("give 1 to %d options" % most)
+    out = []
+    for o in options:
+        idea, _, see = o.partition("|")
+        if not idea.strip() or not see.strip():
+            raise ValueError("an option is 'idea | the one observation that confirms or kills it': %s" % o[:80])
+        out.append({"idea": idea.strip()[:600], "observe": see.strip()[:600]})
+    return out
+
+
+def help_answer(store, item, nonce, options, r, now=None):
+    """The consult's return. Into the state file at once, so nothing past this line depends on the unit."""
+    now = time.time() if now is None else now
+    got = parse_options(options, r)
+    with store.lock():
+        st = store.load(item)
+        h = (st or {}).get("help") or {}
+        if not h or h.get("status") != "running" or h.get("nonce") != nonce or h.get("expired") or h.get("answered_at"):
+            raise Fenced("%s: no consult is waiting for that nonce" % item)
+        h["answered_at"] = now
+        st["help_options"] = {"options": got, "at": now, "by_unit": h["run"]["unit"]}
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": "answered", "options": len(got)})
+        store.save(st)
 
 
 def verdict(store, item, nonce, word, reasons, now=None):
@@ -957,15 +1049,28 @@ class Effects:
         d = self.check_path(st)
         for old in self.old_checks(st):
             shutil.rmtree(old, ignore_errors=True)
+        return self._detached_clone(d, sha, "check", st["item"])
+
+    def _detached_clone(self, d, sha, what, item):
         env = dict(os.environ, RM_SCRATCH_ROOT=os.path.dirname(os.path.dirname(d)), RM_SEAT="clones")
         r = subprocess.run(["python3", os.path.join(self.books, "src/RimMandrake/Utils/scratch_clone.py"), "clone",
-                            "relentless check " + st["item"], "--name", os.path.basename(d), "--checkout", "--fetch"],
+                            "relentless %s %s" % (what, item), "--name", os.path.basename(d), "--checkout", "--fetch"],
                            cwd=self.books, env=env, capture_output=True, text=True, timeout=400,
                            stdin=subprocess.DEVNULL)
         if r.returncode:
-            return None, "checker clone failed: %s" % (r.stderr or r.stdout)[-300:]
+            return None, "%s clone failed: %s" % ({"check": "checker"}.get(what, what), (r.stderr or r.stdout)[-300:])
         r = self.git(d, "checkout", "--quiet", "--detach", sha)
         return (d, None) if r.returncode == 0 else (None, "checkout %s: %s" % (sha, r.stderr[-200:]))
+
+    def help_path(self, st):
+        return os.path.join(self.base, "clones", "help-%s-c%d" % (st["item"], (st.get("help_count") or 0) + 1))
+
+    def help_checkout(self, st, sha):
+        """The consult's clean tree. Not the item's clone: its uncommitted work is the story being withheld."""
+        d, why = self._detached_clone(self.help_path(st), sha, "help", st["item"])
+        if d:
+            self.git(d, "remote", "set-url", "--push", "origin", "read-only-consult")
+        return d, why
 
     def published(self, sha):
         self.git(self.books, "fetch", "--quiet", "origin", "main")
@@ -1070,9 +1175,12 @@ class Effects:
 
 
 def clone_item(c):
-    """The item a pool clone's folder is named for: ITEM, ITEM.qN or check-ITEM-cN."""
+    """The item a pool clone's folder is named for: ITEM, ITEM.qN, check-ITEM-cN or help-ITEM-cN."""
     name = os.path.basename(c.rstrip("/"))
-    return re.sub(r"\.q\d+$", "", name[6:].rsplit("-c", 1)[0] if name.startswith("check-") else name)
+    for pre in ("check-", "help-"):
+        if name.startswith(pre):
+            return name[len(pre):].rsplit("-c", 1)[0]
+    return re.sub(r"\.q\d+$", "", name)
 
 
 def foreign_seat(r):
@@ -1112,6 +1220,7 @@ def worker_prompt(st, text, learned, r):
             "[--live \"<live line>\"] [--why ...]" % (rc, i, g),
             "  %s snag --item %s --gen %d --class <slug> \"what stopped you\"" % (rc, i, g),
             "  %s finish --item %s --gen %d --sha <published sha> --evidence \"<paths and results>\"" % (rc, i, g),
+            "  %s help --item %s --gen %d \"what you need a fresh eye on\"" % (rc, i, g),
             "Set the contract BEFORE you edit, from the item's own words. A line of `learn` after every finding and "
             "at least every 20 minutes. Commit explicit paths and land with ./publish; every commit subject names the item id; `finish` names a sha on "
             "origin/main. Then a blind checker reruns your proof on that sha; it does not see your notes. Never run "
@@ -1120,7 +1229,8 @@ def worker_prompt(st, text, learned, r):
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
             "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. Only a "
             "true design/RimMandrake/delegation_policy.md section 2 call goes up: `snag --class owner_call --section "
-            "<what, quoted> ...`.",
+            "<what, quoted> ...`. `help` sends a fresh agent the failed approaches on record (refused if there are "
+            "none); its options land in the state file (`relentless.py show <item>`) and in the next worker's brief.",
             "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, no subagents, "
             "bulk output to files. FOUNDRY's tree and src/RimMandrake/Utils/arena/ are not yours to touch."]
     if st["approach"] == "redesign":
@@ -1133,7 +1243,29 @@ def worker_prompt(st, text, learned, r):
         head.append("Contract so far: %s" % json.dumps(st["contract"]))
     if st["last_fail"]:
         head.append("Last ending: %s: %s" % (st["last_fail"]["class"], st["last_fail"]["detail"]))
+    if st.get("help_options"):
+        head.append("FRESH EYES: an agent with no history read the failed approaches and offers these hypotheses. Pick "
+                    "one, or refute each with evidence; record which with `learn` before you edit.")
+        head += ["  %d. %s (confirm or kill by: %s)" % (n + 1, o["idea"], o["observe"])
+                 for n, o in enumerate(st["help_options"]["options"])]
     return "\n".join(head + ["", "--- item ---", text, "", "--- learned so far ---", learned[-8000:]])
+
+
+def help_prompt(st, text, tried, nonce, r):
+    """Cold on purpose: the record of what ended and how, never learned.md, the story that drove the circling."""
+    rc = "python3 src/RimMandrake/rimflow/relentless.py"
+    most = r["circling"]["help_options_max"]
+    rows = ["  gen %s ended %s: %s" % (a.get("gen"), a.get("end"), a.get("detail") or "") for a in tried[-12:]]
+    return "\n".join([
+        "You are a fresh pair of eyes. You have no history with this item and no stake in it. Workers tried, and the "
+        "attempts below failed. Your cwd is a clean tree at origin/main. Read anything; change nothing: no edits, no "
+        "push, no ledger.",
+        "Give up to %d options the workers have not tried. Each is a hypothesis, never a verdict, and carries the "
+        "single observation that would confirm or kill it." % most,
+        "Then run this once and stop:",
+        "  %s help-answer --item %s --nonce %s --option \"idea | the one observation\" [--option ...]" % (rc, st["item"], nonce),
+        "", "Why you were called: %s" % st["help"]["why"], "Contract: %s" % json.dumps(st["contract"]),
+        "", "--- failed approaches ---"] + rows + ["", "--- item ---", text])
 
 
 def checker_prompt(st, text, nonce):
@@ -1314,6 +1446,8 @@ def pool_rows(store, fx, r):
             own[os.path.abspath(st["clone"])] = ("work", st)
         if (st.get("check") or {}).get("clone"):
             own[os.path.abspath(st["check"]["clone"])] = ("check", st)
+        if (st.get("help") or {}).get("clone"):
+            own[os.path.abspath(st["help"]["clone"])] = ("help", st)
     for st in store.states():
         for q in st["quarantined"]:
             if q.get("clone") and not q.get("reaped"):
@@ -1324,8 +1458,10 @@ def pool_rows(store, fx, r):
         status = st["status"] if st else None
         if st is None:
             rank = 0 if fx.clone_idle_s(c) >= POOL_ORPHAN_IDLE_S else 2
-        elif kind == "quarantine" or (run_of(st, "run" if kind == "work" else "check") or {"charged": 0}).get("charged") is None:
+        elif kind == "quarantine" or (run_of(st, "run" if kind == "work" else kind) or {"charged": 0}).get("charged") is None:
             rank = 2
+        elif kind == "help":
+            rank = 2 if help_pending(st) else 0
         elif status in ENDED:
             rank = 0
         elif kind == "check":
@@ -1465,7 +1601,7 @@ def reenrol(store, item, why, now):
 
 
 def run_of(st, key):
-    return st.get("run") if key == "run" else (st.get("check") or {}).get("run")
+    return st.get("run") if key == "run" else (st.get(key) or {}).get("run")
 
 
 def settle(store, fx, r, item, key, since, now, acts):
@@ -1484,7 +1620,7 @@ def settle(store, fx, r, item, key, since, now, acts):
             cur = store.load(item)
             live = run_of(cur, key)
             cur["quarantined"].append({"run": dict(live), "at": now,
-                                       "clone": cur["clone"] if key == "run" else (cur["check"] or {}).get("clone"),
+                                       "clone": cur["clone"] if key == "run" else (cur[key] or {}).get("clone"),
                                        "reaped": False})
             live["charged"] = 0
             if key == "run":
@@ -1799,6 +1935,149 @@ def step(store, fx, r, item, now, acts):
         finished(store, fx, item, c, now, acts, attempt=True)
 
 
+def help_over(store, fx, item, word, now, acts):
+    """One consult done with, however. Under no lock on entry; removes its clone unless a quarantined run still sits in it."""
+    with store.lock():
+        st = store.load(item)
+        h = st["help"]
+        h["status"] = word
+        keep = any(q.get("clone") == h.get("clone") and not q.get("reaped") for q in st["quarantined"])
+        store.attempt(item, {"at": iso(now), "gen": st["gen"], "help": word})
+        store.save(st)
+    if h.get("clone") and not keep:
+        fx.remove_clone({"clone": h["clone"], "item": item})
+    if word == "failed":
+        fx.ledger_note(item, "relentless: a consult gave no options (%s); the item carries on without" % h.get("end", "no answer"))
+    acts.append({"do": "help_" + word, "item": item})
+
+
+def help_retry(store, fx, item, why, r, now, acts):
+    """No options from this try. Another, or the item carries on: a consult never holds a worker back for good."""
+    with store.lock():
+        st = store.load(item)
+        h = st["help"]
+        h["end"] = why[:200]
+        again = h["tries"] < r["circling"]["help_launch_tries"]
+        if again:
+            h.update(status="wanted", run=None, nonce=None, clone=None)
+        store.save(st)
+    if again:
+        acts.append({"do": "help_retry", "item": item, "why": why[:200]})
+    else:
+        help_over(store, fx, item, "failed", now, acts)
+
+
+def help_start(store, fx, r, item, now, acts):
+    """Launch the fresh agent. The shape of the check's launch: a place, room, a clean clone, identity on disk first."""
+    st = store.load(item)
+    h = st["help"]
+    if now - h["at"] >= r["circling"]["help_wait_s"]:
+        h_end = "no room in %d s" % (now - h["at"])
+        with store.lock():
+            cur = store.load(item)
+            cur["help"]["end"] = h_end
+            store.save(cur)
+        help_over(store, fx, item, "failed", now, acts)
+        return
+    active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["status"] != "candidate") + helps_running(store)
+    hold = admission(store, fx, r, now, active, extra=1)
+    if not hold and r.get("staffing") and clones_this_tick(acts) >= r["staffing"]["launch_per_tick"]:
+        hold = "clones per tick"
+    hold = hold or ("memory after its last clone" if now < st.get("clone_again_at", 0) else None)
+    hold = hold or make_room(store, fx, r, now, acts)
+    if hold:
+        acts.append({"do": "help_waits", "item": item, "why": hold})
+        return
+    acts.append({"do": "clone_try"})
+    sha = fx.head()
+    clean, why = fx.help_checkout(st, sha) if sha else (None, "origin/main not read")
+    if why:
+        if POOL_REFUSED not in why:
+            launch_failed(store, r, now, why)
+        acts.append({"do": "help_waits", "item": item, "why": "pool full: " + why if POOL_REFUSED in why else why})
+        return
+    gb = fx.mem_gb()
+    acts.append({"do": "mem_after_clone", "gb": gb})
+    if gb < r["min_mem_available_gb"]:
+        fx.remove_clone({"clone": clean, "item": item})
+        with store.lock():
+            st = store.load(item)
+            st["clone_again_at"] = now + 600
+            store.save(st)
+        acts.append({"do": "help_waits", "item": item, "why": "memory after the clone"})
+        return
+    nonce = hashlib.sha256(os.urandom(16)).hexdigest()[:24]
+    n = (st.get("help_count") or 0) + 1
+    desc = run_desc(store, r, unit_name("help", item, st["gen"]) + "-h%d" % n, now)
+    with store.lock():              # the whole identity is on disk before the unit exists
+        st = store.load(item)
+        st["help_count"] = n
+        h = st["help"]
+        h.update(status="running", nonce=nonce, clone=clean, run=desc, started_at=now, tries=h["tries"] + 1)
+        store.save(st)
+    tried = failed_approaches(store, item)
+    why = fx.launch(st, desc, help_prompt(st, fx.item_text(item), tried, nonce, r), r["help_agent"], clean,
+                    r["circling"]["help_max_s"], {"RELENTLESS_ROOT": store.root})
+    if why:
+        fx.remove_clone({"clone": clean, "item": item})
+        launch_failed(store, r, now, why)
+        help_retry(store, fx, item, why, r, now, acts)
+        return
+    acts.append({"do": "help_started", "item": item, "unit": desc["unit"]})
+
+
+def help_step(store, fx, r, item, now, acts):
+    """One item's consult, beside its run and independent of it. Pure lifecycle: the worker's status only ends it."""
+    st = store.load(item)
+    if not st or not r.get("circling"):
+        return
+    gone = st["status"] in ENDED or st["status"] == "retiring"
+    if not help_pending(st):
+        if gone:
+            return
+        with store.lock():
+            cur = store.load(item)
+            if not force_help(store, cur, r, now):      # one held back by the cool, now over
+                return
+            store.save(cur)
+        st = cur
+    h = st["help"]
+    if h["status"] == "wanted":
+        if gone:
+            help_over(store, fx, item, "dropped", now, acts)
+        else:
+            help_start(store, fx, r, item, now, acts)
+        return
+    limit = h["started_at"] + r["circling"]["help_max_s"]
+    answered = h.get("answered_at")
+    if not gone and not answered and fx.alive(h.get("run")) and now < limit:
+        return
+    if not answered and not h.get("expired"):       # fence the nonce before the stop: late is no answer
+        with store.lock():
+            cur = store.load(item)
+            cur["help"]["expired"] = cur["help"].get("answered_at") is None
+            store.save(cur)
+    if not settle(store, fx, r, item, "help", min(answered or limit, now), now, acts):
+        return
+    cur = store.load(item)
+    if cur["help"].get("answered_at"):
+        help_over(store, fx, item, "answered", now, acts)
+    elif gone:
+        help_over(store, fx, item, "dropped", now, acts)
+    else:
+        with store.lock():      # the next try is a new consult: its nonce must not read as expired
+            cur = store.load(item)
+            cur["help"]["expired"] = False
+            store.save(cur)
+        if not any(q.get("clone") == h.get("clone") for q in cur["quarantined"]):
+            fx.remove_clone({"clone": h.get("clone"), "item": item})
+        help_retry(store, fx, item, "no answer", r, now, acts)
+
+
+def helps_running(store):
+    return sum(1 for x in store.states() if (x.get("help") or {}).get("status") == "running")
+
+
 def finished(store, fx, item, c, now, acts, attempt=False):
     with store.lock():
         st = store.load(item)
@@ -1952,10 +2231,12 @@ def lease(store, fx, r, now, acts):
     for st in queue_order(store.states(), getattr(fx, "plan", None)):
         if not st["ledger_started"] and fx.item_state(st["item"]) is None:     # not published yet: see retire()
             continue
+        if help_pending(st):        # the next brief is the point of the consult; help_step bounds this wait
+            continue
         if cfg and launched >= cfg["launch_per_tick"]:   # prepare() blocks and the tick has a timeout
             return
         # a stopping item holds its place: its slot is not free for a fresh item while it returns to the top
-        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE)
+        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE) + helps_running(store)
         why = admission(store, fx, r, now, active)
         if not why and not fx.clone_present(st["clone"] or fx.clone_path(st["item"], len(st["quarantined"]))):
             why = make_room(store, fx, r, now, acts, r.get("pool_check_reserve", 0))
@@ -2269,6 +2550,12 @@ def tick(store=None, fx=None, r=None, now=None):
                     acts.append({"do": "error", "item": item, "why": "%s: %s" % (type(e).__name__, e)})
                     store.journal({"at": iso(now), "do": "alarm", "kind": "step_raised", "item": item,
                                    "why": str(e)[:300]})
+        for item in store.items():
+            try:
+                help_step(store, fx, r, item, now, acts)
+            except Exception as e:  # noqa: BLE001  a consult is an extra: it never costs the tick its workers
+                acts.append({"do": "error", "item": item, "why": "help %s: %s" % (type(e).__name__, e)})
+                store.journal({"at": iso(now), "do": "alarm", "kind": "help_raised", "item": item, "why": str(e)[:300]})
         try:
             circling.watch(store, fx, r, now, acts, fail)
         except Exception as e:  # noqa: BLE001  the watch never stops the belt
@@ -2336,6 +2623,14 @@ def main(argv=None):
         if name == "finish":
             p.add_argument("--sha", required=True)
             p.add_argument("--evidence", required=True)
+    p = sub.add_parser("help", help="send a fresh agent the failed approaches; its options reach the next brief")
+    p.add_argument("--item", required=True)
+    p.add_argument("--gen", type=int, help="your lease; default RELENTLESS_GEN, set at launch")
+    p.add_argument("text", nargs="?", default="")
+    p = sub.add_parser("help-answer", help="the consult's return")
+    p.add_argument("--item", required=True)
+    p.add_argument("--nonce", required=True)
+    p.add_argument("--option", action="append", required=True, help="idea | the one observation that confirms or kills it")
     p = sub.add_parser("verdict")
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
@@ -2379,6 +2674,12 @@ def main(argv=None):
             snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section)
         elif a.cmd == "finish":
             finish(store, a.item, a.gen, a.sha, a.evidence)
+        elif a.cmd == "help":
+            env_gen = os.environ.get("RELENTLESS_GEN")
+            gen = a.gen if a.gen is not None else int(env_gen) if env_gen else None
+            ask_help(store, a.item, gen, a.text, rules())
+        elif a.cmd == "help-answer":
+            help_answer(store, a.item, a.nonce, a.option, rules())
         elif a.cmd == "enrol":
             if not ledger_has(a.item):
                 print("relentless: REFUSED: %s has never been filed" % a.item, file=sys.stderr)
