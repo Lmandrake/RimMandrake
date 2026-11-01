@@ -89,6 +89,17 @@ def main() -> int:
         rc, out = run(seat)
         check(rc == 0, "same path syncs once it holds upstream bytes")
 
+        # a peer's live hunk upstream also moved, away from upstream's lines -> carried in place
+        write(seat, "m.txt", "1\n2\n3\n4\n5\n6\n7\n8\n9\n")
+        git(seat, "add", "m.txt"); git(seat, "commit", "-qm", "m"); git(seat, "push", "-q", "origin", "HEAD:main")
+        write(seat, "m.txt", "1\n2\n3\n4\n5\n6\n7\n8\nPEER\n")
+        peer_push(peer, {"m.txt": "ORIGIN\n2\n3\n4\n5\n6\n7\n8\n9\n"}, "m2")
+        rc, out = run(seat)
+        check(rc == 0 and "SYNCED" in out, "a dirty file that merges cleanly does not stop the sync")
+        check(Path(seat, "m.txt").read_text() == "ORIGIN\n2\n3\n4\n5\n6\n7\n8\nPEER\n", "both sides kept in the file")
+        check("+PEER" in git(seat, "diff", "HEAD") and "-1\n" not in git(seat, "diff", "HEAD"), "only the peer's hunk is dirty")
+        write(seat, "m.txt", "ORIGIN\n2\n3\n4\n5\n6\n7\n8\n9\n")
+
         # land.sh sha shape: a local commit replayed upstream (patch-equivalent duplicate)
         write(seat, "c.txt", "c1\n"); git(seat, "add", "--", "c.txt"); git(seat, "commit", "-q", "-m", "c1", "--", "c.txt")
         local = git(seat, "rev-parse", "HEAD")

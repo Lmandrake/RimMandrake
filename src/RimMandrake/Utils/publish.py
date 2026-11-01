@@ -15,7 +15,12 @@ A push that fails for any reason other than a clean non-fast-forward is AMBIGUOU
 have accepted it before the client gave up): it fetches and checks `merge-base --is-ancestor HEAD
 <target>` before retrying, and an ancestor means it landed. A rebase that stops on a real conflict
 leaves your commit intact locally and names the conflicted paths; so does an uncommitted edit to a file
-origin changed. Unrelated dirty files are never touched.
+origin changed and that really overlaps it. Unrelated dirty files are never touched.
+
+Live dirty files do not stop a landing (PUBLISH_SHARDS_FIX_APPENDS_BLOCK_LANDING). A peer's hunks or a shard being
+appended to, in a file origin also moved, are merged in the working tree and the branch moves over them
+(seat_sync.reset_merging). If a dirty file REALLY overlaps origin, the replayed commits are still pushed; only the
+clone's branch stays where it is, the output says so, and the peer's file is left exactly as it was.
 
 Committed mod DLLs are landed here, never by hand: a replay conflict on ONLY .dll/.dll.srchash pairs takes
 origin's side and then rebuilds each such DLL from the source committed at the new HEAD, in a throwaway src-only
@@ -45,6 +50,13 @@ LOCK_TIMEOUT = float(os.environ.get("PUBLISH_LOCK_TIMEOUT", "600"))
 
 class Refuse(Exception):
     pass
+
+
+class Stranded(Refuse):
+    """The replay at `tip` is good but a dirty file really overlaps it, so this clone's branch cannot move yet."""
+    def __init__(self, why, tip):
+        super().__init__(why)
+        self.tip = tip
 
 
 def run(top, *args, check=True):
@@ -157,7 +169,8 @@ def rebase(top):
     that is not already upstream (git cherry) is re-created on the new tip by `git merge-tree` + `commit-tree`
     (plumbing: no index, no worktree), and the branch moves there with `git reset --keep`, which rewrites only
     files that differ between the old HEAD and the new tip (upstream's changes) and refuses rather than overwrite
-    a dirty one. Your commit is intact on HEAD after any refusal."""
+    a dirty one. reset_merging first carries dirty files and shards past that refusal. Your commit is intact on HEAD
+    after any refusal."""
     run(top, "fetch", "-q", REMOTE, check=False)
     _, track, _ = target_ref(top)
     rebuilt = set()
@@ -185,8 +198,8 @@ def rebase(top):
             rebuilt.update(dll_of(p) for p in paths)
             print("replay of %s: DLL conflict in %s; took origin's side, will rebuild from committed source"
                   % (c[:12], ", ".join(sorted(set(paths)))))
-            if tree == out(top, "rev-parse", tip + "^{tree}"):
-                continue                                 # the commit was only that DLL pair: nothing left of it
+        if tree == out(top, "rev-parse", tip + "^{tree}"):
+            continue                                     # nothing left of it: a DLL pair, or already on origin
         meta = out(top, "show", "-s", "--format=%an%x00%ae%x00%aI", c).split("\0")
         env = dict(os.environ, GIT_AUTHOR_NAME=meta[0], GIT_AUTHOR_EMAIL=meta[1], GIT_AUTHOR_DATE=meta[2])
         body = out(top, "show", "-s", "--format=%B", c) + "\n"
@@ -204,11 +217,19 @@ def rebase(top):
                      "this publish). Not resetting: that would discard it. Nothing was lost; re-run ./publish."
                      % (head[:12], now[:12]))
     try:
-        seat_sync.reset_keep(seat_sync.Git(top), head, tip)
+        note = seat_sync.reset_merging(seat_sync.Git(top), head, tip)
+    except seat_sync.DirtyConflict as e:
+        msg = ("origin/main changed a file with uncommitted edits, and they really overlap, so this clone's branch was "
+               "not moved. Your commit is intact on HEAD and the edit was not touched. Commit or move that edit, then "
+               "re-run ./publish or ./sync.\n%s%s" % (blockers(top, head, tip), e))
+        if rebuilt:                                      # the DLL rebuild needs the branch moved; do not land half of it
+            raise Refuse(msg)
+        raise Stranded(msg, tip)
     except seat_sync.Refused as e:
-        raise Refuse("origin/main changed a file you have uncommitted edits to, so the branch was not moved "
-                     "(git reset --keep refused). Your commit is intact on HEAD. Publish or move aside that edit, "
-                     "then re-run ./publish.\n%s%s" % (blockers(top, head, tip), e))
+        raise Refuse("the branch was not moved. Your commit is intact on HEAD and nothing was lost; re-run ./publish.\n"
+                     "%s%s" % (blockers(top, head, tip), e))
+    if note:
+        print("moved the branch: %s" % note)
     return rebuilt
 
 
@@ -328,30 +349,45 @@ def guard_dlls(err):
     return {m.group(2) for m in re.finditer(r"^(?:remote: )?\s*(MISMATCH|STAMP_MISSING) (\S+\.dll)\s*$", err, re.M)}
 
 
+def warn_stranded(stranded):
+    if stranded:
+        print("LANDED, CLONE NOT MOVED: %s" % stranded)
+
+
 def land(top):
     dest, track, label = target_ref(top)
     guard_retried = False
     for attempt in range(MAX_TRIES):
-        rebuilt = rebase(top)
-        if rebuilt:
-            rebuild_dlls(top, rebuilt)
-        head = out(top, "rev-parse", "HEAD")
+        stranded = None
+        try:
+            rebuilt = rebase(top)
+            if rebuilt:
+                rebuild_dlls(top, rebuilt)
+            head = out(top, "rev-parse", "HEAD")
+        except Stranded as s:
+            stranded, head = s, s.tip                    # land the replay; only this clone's branch waits
         if label == BRANCH and is_ancestor(top, head, track):
+            warn_stranded(stranded)
             return head                                  # nothing local left to push
         if before_push:
             before_push(attempt)
-        r = run(top, "push", "-q", REMOTE, "HEAD:" + dest, check=False)
+        r = run(top, "push", "-q", REMOTE, "%s:%s" % (head, dest), check=False)
         if not r.returncode:
             run(top, "fetch", "-q", REMOTE, check=False)
+            warn_stranded(stranded)
             return head
         err = (r.stderr or r.stdout).strip()
         # Ambiguity check before any retry: the remote may have taken it before we gave up.
         run(top, "fetch", "-q", REMOTE, check=False)
         if ref_exists(top, track) and is_ancestor(top, head, track):
             print("push reported failure but %s already contains %s — it landed" % (label, head[:12]))
+            warn_stranded(stranded)
             return head
         bad = guard_dlls(err)
         if bad:
+            if stranded:
+                raise Refuse("the DLL/source-stamp guard refused, and this clone's branch cannot move to rebuild:\n"
+                             "%s\n%s" % (stranded, err))
             if guard_retried:
                 raise Refuse("the DLL/source-stamp guard refused again after a rebuild from committed source:\n%s"
                              % err)
