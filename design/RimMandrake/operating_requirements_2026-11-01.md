@@ -37,6 +37,7 @@ The Conductor's gap list was marked "to be proved". Proved against the ledger an
 | A helper's fake alarms | OP5 | at write time |
 | A goodbye cancelled silently | CK3 | 10 min |
 | A machine stuck testing what it already knew | RW1, RW2, TE2 | within the run, 30 min |
+| Busy for days with no real advance (GPT) | MI1 | `advance_max_days` |
 
 ## 2. Context keeper
 
@@ -70,8 +71,8 @@ like."*
 
 **OP1 Ranges are data.** [Operations] Each watched metric has idle, sane, distressed, emergency ranges with an owner and
 `ack_within_min`, in a `ranges` block in `Utils/ops_watch_rules.json`, beside the existing rules. Programs check every
-15 min. A range change names why. Test: lint refuses a metric with no owner or a range gap; a fixture value in each band
-reports that band. Exists: targets, bands. Missing: the classes.
+15 min. A range change names why. A metric fills only the classes it can act on; the four words are the vocabulary, not a form. Test: lint refuses a metric
+with no owner; a fixture value in each filled class reports it. Exists: targets, bands. Missing: the classes.
 
 **OP2 It watches the work, not just the machine.** [Dispatcher measures; Operations reads] New collector family, in the digest: `relentless.live`,
 `relentless.under_min`, `relentless.breaker_open_min`, `relentless.checks_wait`, `relentless.ready`,
@@ -79,14 +80,20 @@ reports that band. Exists: targets, bands. Missing: the classes.
 `selftests.red_nights`. Sources: `relentless/store/staffing.json`, `reading.json`, `breaker.json`; `dispatcher.jsonl`;
 `scratch_reap` sanity record; `selftests_nightly.log`. Test: replay the 04:00-13:00Z staffing record and the 10-31 idle
 record; each metric reads distressed at the same minute the record says. Point a metric at a missing file: it reads
-UNMEASURED and alarms, never sane. Exists: staffing alarm inside relentless, `pool_breach`. Missing: all of the family.
+UNMEASURED and alarms, never sane. **Freshness:** every metric carries `max_age_min` and, where work is claimed, a
+progress reading; a source frozen at a sane value while work has stopped must alarm. Second test: freeze `staffing.json`
+sane; keep the timers firing with collection suppressed. Both alarm within two passes. Exists: staffing alarm inside relentless, `pool_breach`. Missing: all of the family.
 
-**OP3 Delivery counts only when acted on.** [Dispatcher delivers; each role acks] Every distressed or emergency reading writes one row to a told ledger
-(`told.jsonl` beside `alarms.json`): metric, reader, told_at, ack_due, and rings that reader's seat by doorbell.
-Acknowledged means the reader's action on the named item (a `note`, `start`, `close`), or a recorded
-`rimflow ack <id> --plan "<what next>"`. A ring, or a read, is not an ack. Past `ack_within_min` (default 30) it goes to
-the next reader; chain in OP4. Test: plant a distressed reading with the reader's seat stubbed silent; second reader rung
-on time; then him. Plant one with an ack; chain stops. Exists: rings, alarm items. Missing: told ledger, ack verb, chain.
+**OP3 One incident, from told to recovered.** [Dispatcher delivers; each role acks] A distressed or emergency reading
+opens one row in `told.jsonl` beside `alarms.json`: cause key, metric, reader, told_at, ack_due, recover_by. It rings the
+reader's seat by doorbell. Readings sharing a cause key join that incident, so one outage is one ring. An **ack** gives
+ownership only: the reader's action on the named item or `rimflow ack <id> --plan "<next>"`, and sets `recover_by`. A ring
+or a read is not an ack. An incident **closes only on reading**: the metric sane for `sustain_min`. Past `ack_within_min`
+(default 30) or past `recover_by`, acked or not, it moves to the next reader; relapse inside `relapse_h` reopens it.
+Alarm-launched runs share a per-hour budget so an outage cannot spend the capacity to repair it. Test: reader stubbed
+silent, next reader on time. Reader acks "investigating", fault stays, reader killed: escalates anyway. Plant one outage
+tripping 10 metrics: one incident, one run. Recover, then relapse: same incident reopens. Exists: rings, alarm items,
+`alarm_limit_hold`. Missing: everything else. OP3, OP4 and RO4 are one build.
 
 **OP4 Reaching him.** [Conductor] Chain: role owner → Conductor → fresh Operations run → owner. The last agent reads the alarm and
 writes the line he sees, so the rule *nothing reaches him unread* holds. Only if no agent can run does a fixed-template
@@ -100,8 +107,8 @@ his decision pending.**
 selftest writing to the real log is refused; a drill with the reader stubbed silent escalates; a drill with the told
 ledger unwritable alarms by the deadman path. Exists: guard `fa573c87c2`. Missing: `alarms.rejected`, drill.
 
-**OP6 A flag has an end.** [Operations] A flag standing past `flag_max_age_h` must become an item, a changed range, or a retirement
-with reason. Test: an aged fixture flag reddens the twice-daily report until one of the three happens. Exists:
+**OP6 A flag has an end.** [Operations] A flag standing past `flag_max_age_h` must become an incident, a changed range, or a retirement
+with reason; a bare new item does not end it. Test: an aged fixture flag reddens the twice-daily report until one of the three happens. Exists:
 `signal_watch` flags. Missing: the end state.
 
 **OP7 The twice-daily run reads and judges.** [Operations] It reads the report plus the priority list (DI3), and handles what ranges
@@ -114,15 +121,17 @@ explain. Test: a fixture where 3 workers run sanely on items not on the priority
 *"Aware of low-productivity testing traps or rapidly iterating between multiple poor solutions."*
 
 **RW1 Time ledger, per run.** [Operations reads] Each run's hours are charged to selftest, live, build, reading, editing, waiting, from
-tool records (reuse `pulse/agents_timeline.py`). Threshold: `relentless_rules.json` new `circling` block. Test: a fixture
-transcript of known split reads within 5%. Missing: all (`WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT`).
+tool records (reuse `pulse/agents_timeline.py`). Threshold: `relentless_rules.json` new `circling` block. Test: a fixture transcript of known split reads within 5%; then replay real runs labelled by
+hand, measuring both missed waste and wrongful stops. Missing: all (`WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT`).
 
 **RW2 Circling is seen from outside and interrupts.** [relentless runs; Operations reads] Tick-side rule, reading RW1 and the run's clone, never the worker's
 own words: (a) testing share over `test_share_limit` for `test_share_min` with the diff hash unchanged; (b) `no_change_min`
 with no new code and no new finding; (c) a diff hash returning to an earlier hash, A-B-A, `oscillation_limit` times. A hit
 stops the run by the existing path, class `circling`, carrying the reading to the next run, and counts as a forced
-change of approach. Test: planted workers for each of (a), (b), (c) stopped within the limit; a worker with a long build
-and moving diff is left alone. Exists: `unchanged_returns_limit`, between runs only. Missing: inside-the-run reading.
+change of approach. It starts **report-only**, and may stop runs only after a replay of hand-labelled real runs shows wrongful
+stops under `false_stop_limit`. A stop keeps the clone's work and the fencing `gen`, so nothing is lost or doubled. Test:
+planted workers for each of (a), (b), (c) stopped within the limit; trivial churn caught; a long read-only investigation
+and a long build with a moving diff left alone. Exists: `unchanged_returns_limit`, between runs only. Missing: inside-the-run reading.
 
 **RW3 Help is a built-in call.** [Foundry worker calls] `relentless.py help --item X` sends a fresh agent, with no history, the problem and the
 failed approaches and returns options into the state file. Forced after two circling hits on an item; a worker may call
@@ -134,15 +143,15 @@ Exists: `snag`→redesign. Missing: the call.
 the blind judge. Stated as a rule only. Test: existing relentless selftests.
 
 **RW5 Finding-kind meter.** [Operations reads; Innovator acts] Per item and per mod, count new kinds of finding per day and where caught. Flat new kinds
-with rising run count reads `going_round`. Source: receipts and `finding` events; kind is the class slug. Test: fixture
-history reads converging and going-round correctly. Missing: all. Reports only; Operations reads it (C5).
+with rising run count reads `going_round`. Source: receipts and `finding` events; kind is the class slug. Test: fixture history reads converging and going-round correctly. Missing: all. Reports only; Operations reads it (C5).
+Deferred until the pilot: class slugs can be gamed, so it is built after RW1 and MI1 show a need.
 
 ## 5. Dispatch
 
 *"Doesn't forget to keep checking ever. Looks for idle agents and brings them back up on useful items. Is plan-aware."*
 Dispatch stays a plain program.
 
-**DI1 Idle with work is ended, not just rung.** [Dispatcher runs; Operations reads] Seat idle with ready work: ring, then after `no_handoff.escalate_after`
+**DI1 Idle with work is ended, not just rung (one state machine with CK4).** [Dispatcher runs; Operations reads] Seat idle with ready work: ring, then after `no_handoff.escalate_after`
 rings the Dispatcher restarts it once (a window that does not take work is treated as dead), then alarms. Threshold:
 `dispatcher_schedule.json` new `idle_bringback_after_min` 30. Told: the told ledger. Test: stub window that ignores rings
 restarted at the limit; still silent, alarm; a seat with a human active is left alone. Exists: rings, `idle_full_queue`.
@@ -161,7 +170,8 @@ ranked one; a stale list alarms; a missing list falls back to today's order and 
 V1 rows, `priority.py`. Missing: the file. `raise` stays as the way to add one.
 
 **DI4 Nothing falls off the schedule.** [Operations] Every enabled `rm-*` timer appears in the deadman baseline or in an explicit
-exempt list with reason. Test: enable a stub timer; the next pass reports it. Exists: guard, baseline. Missing: the
+exempt list with reason. Test: enable a stub timer; the next pass reports it. Keep a timer firing while its job does nothing:
+OP2's freshness catches that, not this. Exists: guard, baseline. Missing: the
 coverage check.
 
 **DI5 Steve is kept topped up, or parked with an end.** [Producer picks; Operations reads] Steve's queue depth stays in range while it is available; a park
@@ -182,17 +192,27 @@ log, the policy number. Missing: list, metric. Items: `SELFTEST_NIGHTLY_SILENCE_
 **TE2 Known results return without running (C3).** [Operations] Same test, same dependency hash: the stored answer comes back.
 `--no-cache` needs `--because "<what could differ>"`. Live keyed on deployed hash via the modcheck gate. Metric:
 `selftests.cache_hit_share`, and a worker rerunning a known result feeds RW2(a). Test: identical rerun takes under 1 s and
-says so; a touched dependency reruns; `--no-cache` with no reason is refused. Exists: `selftest_cache.py` (6 tests),
+says so; a touched declared dependency reruns; change an undeclared one (config, toolchain, seed) with the key held: it must
+rerun, or the test is excluded from caching with a reason; `--no-cache` with no reason is refused. Exists: `selftest_cache.py` (6 tests),
 `--quick`. Missing: coverage, reason. Build after RW1 shows the size of the waste.
 
 **TE3 Tests that say nothing are named.** [Operations proposes; Arbiter proves detection kept] Tests that never failed in `retire_after_days` and cost over `slow_test_flag_s`
-are listed as retirement candidates in the report. Listed only; no automatic removal. Test: fixture history lists the
+are candidates only. Never failing is no proof of no value: a candidate leaves only when a mutation run shows detection
+kept. No automatic removal. Test: fixture history lists the
 right test. Exists: `testing.nothing_h`. Missing: the list.
 
 **TE4 Every escape yields a test or a reason (C6).** [Auditor; Arbiter specifies the check] A bug found by him, live, or blind and not by tests is counted; its
-item cannot close without a test or a stated reason. Test: close refused on a fixture escape with neither. Missing: all.
+item cannot close without a test or a stated reason. The added test must fail on the old build. Test: close refused on a fixture
+escape with neither; a new test that passes on the old build is refused. Missing: all.
 
-## 7. Roles: rules move into programs, the chairs stay
+## 7. Mission progress
+
+**MI1 Busy is not progress.** [Producer writes; Operations reads; Conductor acts] Every entry on the priority list (DI3)
+names a finish-line reading. `plan.days_since_advance` per entry: a list entry with no rise in that reading past
+`advance_max_days` is distressed, however many tickets closed. Exists: `modcheck floor`, north-star bars. Test: fixture with
+20 closes and a flat reading on a listed mod alarms; a rise clears it. The rest of C1, C2, C7, C8 waits for the pilot.
+
+## 7a. Roles: rules move into programs, the chairs stay
 
 The chairs stay. `rimflow_v3_minimal_opus_2026-10-29.md` found rules written in role prose were not enforced; its
 invariants go into `next`, `close` and programs here, and the role keeps the judgment: **a role sets the number, a program
@@ -201,7 +221,8 @@ holds it, and a role that is not read is a defect in the wiring, not a reason to
 **RO1 Every role proves its use.** [Operations reads; Conductor acts] Metric `roles.<role>.acted_share` per week:
 its outputs (items, notes, verdicts, reports) with a later action by another role ÷ outputs; plus `runs` and `silent_days`.
 Source: ledger, `role_done` notes. Threshold: `ranges`, `roles.*`. A role under range for two weeks gets a named fix of
-its input or its reader. Test: fixture ledger with an ignored Auditor item reads under range. MEASURED since 10-25 (name
+its input or its reader. Report-only and coarse: it is not a target a role can
+earn, and it never gates anyone. Test: fixture ledger with an ignored Auditor item reads under range. MEASURED since 10-25 (name
 prefix on the ledger, so approximate):
 
 | Role | Output | Used? | To fix |
@@ -221,7 +242,7 @@ dated wait frees a place; a third wait is refused. Minimal design I2.
 **RO3 Done is earned at `close`.** [Arbiter rules; `close` enforces; Auditor samples] A close needs a named sha that
 touches more than the ledger, or `--no-code "<what>"`; owed checks passed on that sha; a non-maker verdict on that sha; no
 newer fail. Relentless's path has the blind judge; hand closes do not. Test: each of the four missing is refused; a fail
-after a pass demotes. Minimal design I1. Metric AU4 (unverified closes, 813 of 823 on 10-26) must be re-read and falls in
+after a pass demotes; seed a behavioural regression that passes current checks and confirm a later catch reopens it. Minimal design I1. Metric AU4 (unverified closes, 813 of 823 on 10-26) must be re-read and falls in
 range, else this is not done.
 
 **RO4 Every alarm lands on a role that wakes.** [Operations owns the table; `file` enforces] One routing table: alarm
@@ -268,12 +289,46 @@ item or goes to Foundry; D1-D5 doubles are not reopened. Status of those items i
 
 ## 10. Build order
 
-Smallest proof first; anything that catches jams and idle first, then read-only pages. Items in §12.
+Smallest proof first; jams and idle first; then read-only pages. Enrolled in this order in relentless (§12). DI4, DI5,
+OP5, OP6, OP7, CK1, CK2, TE2-TE4 and RW5 are filed when the first batch is proven, so a watcher exists to prove them.
 
 ## 11. GPT review
 
-Pending.
+Asked for missing failure classes, weak tests, and cuts (one consult; the answer was a 471-word list).
+
+**Applied.** Freshness and frozen-source test (OP2, DI4). Ack gives ownership only; closing needs a sustained reading;
+escalation runs despite ack; relapse reopens; one outage is one incident; alarm-run budget (OP3, OP6). Interruption starts
+report-only with a false-stop limit, and keeps clone and fencing (RW2). New MI1 for busy with no advance. Sharper tests:
+RW1 replay, TE2 undeclared dependency, RO3 seeded regression, TE4 old-build red. Merged CK4 into DI1 and OP3, OP4, RO4 into
+one build. Deferred RW5. TE3 needs mutation proof. OP1 no longer forces four bands.
+
+**Rejected, with why.**
+- Cut RO1 acted-share: kept, by the owner's word that roles need proof of use. Made report-only so it cannot be gamed into a target.
+- An independent off-machine alarm path: needs his phone push decision, and Steve is parked. Stated in §12 as his.
+- Mission deadlines and total effort budget: `item_spend_limit` and MI1's flat reading do this without a date he never asked for.
 
 ## 12. Items
 
-Pending.
+All owned by FOUNDRY, acceptance in the item file, each proved by its planted fault.
+
+| # | Item | Requirement | State |
+|---|---|---|---|
+| 1 | `JAM_WATCH_BUILD_RELENTLESS_IN_OPS_DIGEST` | OP2, DI2 | enrolled |
+| 2 | `IDLE_WATCH_BUILD_SEAT_MINUTES_IN_DIGEST` | OP2 | enrolled |
+| 3 | `BREAKER_COOL_FIX_SAME_CAUSE_ALARMS_EMERGENCY` | DI2 | enrolled |
+| 4 | `ALARM_RANGES_BUILD_CLASSES_AS_DATA` | OP1 | enrolled |
+| 5 | `INCIDENT_LEDGER_BUILD_TOLD_ACKED_RECOVERED` | OP3, OP4, RO4 | enrolled |
+| 6 | `IDLE_SEAT_RESTART_BUILD_BRINGS_QUIET_BACK` | DI1, CK4 | enrolled |
+| 7 | `RESTART_JOIN_BUILD_EVERY_GOODBYE_ENDS` | CK3 | enrolled |
+| 8 | `DISK_WATCH_BUILD_SCRATCH_OUTSIDE_CAP` | OP2 | enrolled |
+| 9 | `SELFTEST_NIGHTLY_SILENCE_KNOWN_REDS` | TE1 | enrolled |
+| 10 | `PRIORITY_LIST_BUILD_ONE_SHORT_FILE` | DI3, MI1 | enrolled |
+| 11 | `FOCUS_CAP_ENFORCE_IN_RIMFLOW_NEXT` | RO2 | enrolled |
+| 12 | `WORKER_TIME_LEDGER_BUILD_WHERE_HOURS_WENT` | RW1 | enrolled |
+| 13 | `MISSION_PAGE_BUILD_READ_ONLY_STATE` | C7, MI1 | enrolled |
+| 14 | `CIRCLING_WATCH_BUILD_REPORT_ONLY_FIRST` | RW2 | filed |
+| 15 | `HELP_CALL_BUILD_FRESH_EYES_ON_FAILURES` | RW3 | filed |
+| 16 | `ROLE_USE_MEASURE_OUTPUT_READ_AND_ACTED` | RO1 | filed |
+| 17 | `CLOSE_GATE_ENFORCE_DONE_IS_EARNED` | RO3 | filed |
+
+Needs him: whether to turn phone push on (OP4). It is the only off-machine route, so until then a machine-wide failure reaches him on the desktop or the RimPulse page only.
