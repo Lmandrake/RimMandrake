@@ -1,0 +1,368 @@
+{
+ "script": "sprinkler_live.py",
+ "started": "2026-11-01T04:06:23",
+ "rows": [
+  {
+   "id": "sprinkler.draws_and_wets",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "units": [
+     99875,
+     99750
+    ],
+    "drop": 125,
+    "cells": 25,
+    "inspect": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+    "pulseAfterTicks": 2500,
+    "sprayedUnits": [
+     125,
+     250
+    ],
+    "soakedCovered": true,
+    "soakedFar": false,
+    "probe": {
+     "success": true,
+     "cmd": "sprinkler:125,140",
+     "id": 46308,
+     "def": "RM_SprinklerHead",
+     "cell": [
+      125,
+      140
+     ],
+     "state": "Spraying",
+     "status": "Spraying fresh water \u00b7 12.5 L/h \u00b7 25 cells",
+     "featureEnabled": true,
+     "switchOn": true,
+     "pumpOnNet": true,
+     "radius": 2.9,
+     "liquid": "RM_Liquid_FreshWater",
+     "lastUnits": 125,
+     "lastLitres": 12.5,
+     "lastCells": 25,
+     "lastNeed": 125,
+     "lastAvailable": 97875,
+     "totalUnits": 250,
+     "nextPulseTick": 7692,
+     "sprayCells": 25,
+     "wetOwnCells": 25,
+     "sample": [
+      {
+       "cell": [
+        125,
+        140
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        140
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        125,
+        139
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        125,
+        141
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        126,
+        140
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        139
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        124,
+        141
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      },
+      {
+       "cell": [
+        126,
+        139
+       ],
+       "wetUntil": 7942,
+       "wet": true,
+       "owner": 46308,
+       "liquid": "RM_Fluid_Water"
+      }
+     ],
+     "liveCellsMap": 25,
+     "pulses": 2,
+     "sprayedUnits": 250,
+     "tick": 5251
+    },
+    "bad": []
+   }
+  },
+  {
+   "id": "sprinkler.dries_when_starved",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "last": [
+     "Dry: nothing in the tanks on this network",
+     false
+    ],
+    "ticks": 2750,
+    "wetBefore": true
+   }
+  },
+  {
+   "id": "sprinkler.walls_stop_spray",
+   "status": "PASS",
+   "class": "MOD",
+   "detail": {
+    "behindWall": [
+     [
+      125,
+      171
+     ],
+     false
+    ],
+    "openSide": [
+     [
+      125,
+      166
+     ],
+     true
+    ],
+    "inspect": "Spraying fresh water \u00b7 10.5 L/h \u00b7 21 cells"
+   }
+  }
+ ],
+ "args": {
+  "out": "src/RimMandrake/FlowWorks/northstar/sprinkler_live_result_20261101_B.json",
+  "only": "draws,dries,walls",
+  "dry_run": false,
+  "mock": false,
+  "mock_faults": "",
+  "origin": "120,140"
+ },
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "ddbd8ca78e1e83cf0a6e099273a57509646480b9083a9df3c2fc793ae3d123d7",
+ "manifest": {
+  "schema": 1,
+  "script": null,
+  "runtime": null,
+  "test": null,
+  "test_files": [],
+  "unresolved": [
+   "manifest: ValueError: path is on mount 'D:', start on mount '\\\\\\\\wsl.localhost\\\\Ubuntu'"
+  ]
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "oskarpotocki.vanillafactionsexpanded.core",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks",
+   "mandrake.rm.luminouspigment",
+   "mandrake.rm.biomes"
+  ],
+  "assembly_sha256": "a3aa53dee6af20165ab7ec11b89ffc68e7b57158e5907cd2fe5477456a298ebc"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Alpaca46206",
+    "Alpaca46207",
+    "Alpaca46208",
+    "Alpaca46209",
+    "Alpaca46210",
+    "Boomalope46211",
+    "Boomalope46212",
+    "Boomalope46213",
+    "Cassowary46173",
+    "Cassowary46174",
+    "Cassowary46175",
+    "Cassowary46183",
+    "Cassowary46184",
+    "Cassowary46185",
+    "Cassowary46186",
+    "Cassowary46187",
+    "Cassowary46189",
+    "Cassowary46190",
+    "Cassowary46193",
+    "Cassowary46194",
+    "Cassowary46195",
+    "Cassowary46196",
+    "Cassowary46197",
+    "Cassowary46198",
+    "Cassowary46199",
+    "Cassowary46201",
+    "Cassowary46203",
+    "Cassowary46204",
+    "Cassowary46217",
+    "Cassowary46219",
+    "Cassowary46220",
+    "Cassowary46221",
+    "Cassowary46222",
+    "Cassowary46223",
+    "Cassowary46224",
+    "Cassowary46225",
+    "Cassowary46227",
+    "Cassowary46228",
+    "Cassowary46229",
+    "Cassowary46232",
+    "Cassowary46233",
+    "Chinchilla46188",
+    "Gorilla46231",
+    "Panther46192",
+    "Peacock46200",
+    "Peacock46215",
+    "Peacock46226",
+    "RM_Diplocaulus46181",
+    "RM_Diplocaulus46182",
+    "RM_Platyhystrix46234",
+    "Rat46191",
+    "Rat46202",
+    "Rat46205",
+    "Rat46214",
+    "Rat46218",
+    "Rat46230",
+    "Tortoise46216",
+    "WildBoar46176",
+    "WildBoar46177",
+    "WildBoar46178",
+    "WildBoar46179",
+    "WildBoar46180"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "net0": {
+  "tank": [
+   120,
+   140
+  ],
+  "pump": [
+   123,
+   140
+  ],
+  "head": [
+   125,
+   140
+  ],
+  "covered": [
+   126,
+   141
+  ],
+  "far": [
+   130,
+   144
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead46308",
+  "pumpId": "RM_LiquidPump46307"
+ },
+ "net2": {
+  "tank": [
+   120,
+   168
+  ],
+  "pump": [
+   123,
+   168
+  ],
+  "head": [
+   125,
+   168
+  ],
+  "covered": [
+   126,
+   169
+  ],
+  "far": [
+   130,
+   172
+  ],
+  "build": [
+   [
+    5,
+    []
+   ],
+   [
+    5,
+    []
+   ]
+  ],
+  "headId": "RM_SprinklerHead46367",
+  "pumpId": "RM_LiquidPump46366"
+ },
+ "ended": "2026-11-01T04:06:57"
+}
