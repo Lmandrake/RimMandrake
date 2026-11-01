@@ -341,19 +341,35 @@ def main():
         ndowns = os.path.join(tmp, "no_game_downs")
         logdir = os.path.join(tmp, "gamelog")
         os.makedirs(logdir, exist_ok=True)
-        with open(os.path.join(logdir, "Player.log"), "w") as f:
-            f.write("XML error noise Exception loading def\nSystem.BadImageFormatException: AlienRace.dll\nlast line\n")
-        rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
-                  TESTQ_CMD_DOWN="echo down >> %s" % ndowns, RM_GAME_LOGDIR=logdir, **load)
-        res = wait_result(o.get("attempt", "x"))
-        kept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player.log")
-        check(os.path.exists(kept) and "BadImageFormat" in open(kept).read()
-              and "first fatal: System.BadImageFormatException" in (res.get("note") or ""),
-              "a no_game run keeps Player.log in the attempt and names the fault: %s" % res.get("note"))
+        game_log = os.path.join(logdir, "Player.log")
+
+        def no_game_run(text, downs):
+            """Stopping the mock game deletes Player.log, as a cold start does: a copy made after the stop finds nothing."""
+            with open(game_log, "w") as f:
+                f.write(text)
+            rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                      TESTQ_CMD_DOWN="echo down >> %s; rm -f %s" % (downs, game_log), RM_GAME_LOGDIR=logdir, **load)
+            return wait_result(o.get("attempt", "x")), os.path.join(home, "attempts", o.get("attempt", "x"), "Player.log")
+
+        res, kept = no_game_run("XML error noise Exception loading def\nSystem.BadImageFormatException: AlienRace.dll\n"
+                                "System.TypeLoadException: WorldGenStep\nlast line\n", ndowns)
+        note = res.get("note") or ""
+        check(not os.path.exists(game_log), "the stop in this case really takes the game's log away: %s" % game_log)
+        check(os.path.exists(kept) and "BadImageFormat" in open(kept).read() and "TypeLoadException" in open(kept).read(),
+              "a no_game run keeps Player.log, whole, in the attempt BEFORE the stop takes it: %s" % note)
+        check("first fatal: System.BadImageFormatException" in note and "TypeLoadException" not in note,
+              "of two fatal lines the note names the FIRST, and only it: %s" % note)
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS", "no_game, game alive -> HARNESS: %s %s"
               % (res.get("cause"), res.get("note")))
         check(os.path.exists(ndowns) and len(open(ndowns).readlines()) == 1 and "cold-starts" in (res.get("note") or ""),
               "a no_game run stops the game once so the next job cold-starts: %s" % res.get("note"))
+        res, kept = no_game_run("Exception early\nException late\nend\n", ndowns + "_generic")
+        note = res.get("note") or ""
+        check(os.path.exists(kept) and "last exception: Exception late" in note and "first fatal" not in note,
+              "no fatal line: the last exception is reported and labelled as that, never as the first fatal: %s" % note)
+        res, kept = no_game_run("a clean log\n", ndowns + "_clean")
+        check(os.path.exists(kept) and "no exception in it" in (res.get("note") or ""),
+              "a log with no exception is kept and says so: %s" % res.get("note"))
         rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
                   TESTQ_CMD_DOWN="echo 'REFUSED: never stops the owner game'; exit 3", **load)
         res = wait_result(o.get("attempt", "x"))
