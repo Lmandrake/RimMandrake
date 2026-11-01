@@ -980,12 +980,12 @@ def t_foreign_take():
         x.w.words = None
     x.w.on_settle = blind
     x.tick()
-    ok(x.st("I0")["status"] == "retired" and not x.w.takes, "its tree gone unreadable mid-wait: not taken")
+    ok(x.st("I0")["status"] == "queued" and not x.w.takes, "its tree gone unreadable mid-wait: not taken, waits")
     x.done()
     x = foreign_rig()
     x.w.take_fail = "refused"
     x.tick()
-    ok(x.st("I0")["status"] == "retired" and not x.w.launches, "a refused hand-over backs out")
+    ok(x.st("I0")["status"] == "queued" and not x.w.launches, "a refused hand-over launches nothing")
     x.done()
     x = foreign_rig()
     orig = x.w.ledger_start
@@ -1178,6 +1178,23 @@ def t_foreign_back_in_line():
     x.w.on_settle = lambda: seen.append(x.st("I0")["status"])
     x.tick()
     ok(seen == ["running"] and len(x.w.launches) == 1, "a failed launch comes back through the reservation")
+    x.done()
+    # a take that fails once is no reason to lose the item for good
+    x = foreign_rig()
+    orig = x.w.ledger_take
+    x.w.ledger_take = lambda item: "no"
+    x.tick()
+    ok(x.st("I0")["status"] == "queued", "one failed take stays in line")
+    x.tick(), x.tick()
+    ok(x.st("I0")["status"] == "retired", "three end it")
+    x.done()
+    x = foreign_rig()
+    orig = x.w.ledger_take
+    x.w.ledger_take = lambda item: "no"
+    x.tick()
+    x.w.ledger_take = orig
+    x.tick()
+    ok(len(x.w.launches) == 1, "and a recovered take runs")
     x.done()
     # after the hand-over the ledger says ours: backing out must not strand it
     x = foreign_rig()

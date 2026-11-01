@@ -1400,12 +1400,16 @@ def reserve_foreign(store, fx, r, item, now, acts):
         why = "its tree is unreadable" if words is None else "its seat has an unpublished word on it"
         # a crash or a failed launch brings it back here already handed over: retired, it would strand as ours
         # and a word on it waits too: once published the ledger says what it was, and `retire` or the line acts on that
-        give_back(store, item, why, "retired" if theirs else "queued")
+        give_back(store, item, why, "retired" if theirs and words is not None else "queued")
         acts.append({"do": "give_back", "item": item, "why": why})
         return False
     why = fx.ledger_take(item) if theirs else None
-    if why:
-        give_back(store, item, why)
+    if why:     # often a passing failure, and `retired` is for good: only a take that keeps failing ends the item here
+        with store.lock():
+            cur = store.load(item)
+            cur["take_fails"] = fails = cur.get("take_fails", 0) + 1
+            store.save(cur)
+        give_back(store, item, why, "retired" if fails >= 3 else "queued")
         acts.append({"do": "give_back", "item": item, "why": why})
         return False
     return True

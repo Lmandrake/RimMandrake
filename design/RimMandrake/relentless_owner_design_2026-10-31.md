@@ -277,10 +277,10 @@ and its own helpers.
    OWNER shards). A tree that cannot be read or holds a torn line refuses all of that seat's items.
 2. Reserve: under the lock the store says `running` with no run. From here its guard refuses claim and start.
 3. Wait `settle_s` (15), so a claim that passed the guard just before reaches its shard.
-4. Read the unpublished lines again. A word on the id, or a blind tree: back out, `retired`, never taken again. Once the
+4. Read the unpublished lines again. A word on the id: back out, `retired`, never taken again. A blind tree only waits. Once the
    ledger already says ours (a crash or a failed launch brought it back), either only waits in `queued`: retired, it would
    strand as ours. Once the word is published the ledger says what it was.
-5. `reassign --to BENCH`, then `start`, then launch. A refused take backs out; a refused start stays `queued` under the launch breaker. A crash inside the reservation returns the
+5. `reassign --to BENCH`, then `start`, then launch. A refused take waits, and retires on the third; a refused start stays `queued` under the launch breaker. A crash inside the reservation returns the
    item to the line at the next tick.
 6. At the end: closed on the ledger, the store stays `closing` (`tomb_since`, no place held, clones gone) until its tree
    shows that close (parsed: this id, event close, newer than the run), or 48 h pass. Without this a stale head reads `proposed` and no guard, the moment we say done.
