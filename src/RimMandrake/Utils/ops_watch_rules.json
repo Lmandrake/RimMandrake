@@ -474,6 +474,7 @@
   "parent": "V3_ROLES_BUILD_EIGHT_CHAIRS_ONE_TABLE",
   "for": "BENCH",
   "needs": "offline",
+  "_for_doc": "BENCH is relentless's home pool (relentless_rules.json pool_seats/pool_needs), which its workers drain: the 10-31 re-measure, D2. ops_watch and the dead-man file here only while rimflow incident.receiver_problem(for, needs) says somebody picks it up, else the alarm stays PENDING with 'no receiver' on it; every item filed or reopened is raised, so it comes first in relentless pool_order (T2, ALARMS_REWIRE_OFF_RETIRED_BENCH)",
   "lock_wait_s": 90,
   "clear_passes": 4,
   "_clear_passes_doc": "an open alarm clears (and re-arms) only after 4 clear readings in a row (1 h at 15 min): a reading that wobbles across its line files one item, not one per wobble. UNMEASURED readings neither clear nor reset the count (a flaky instrument must not pin an alarm open forever)"

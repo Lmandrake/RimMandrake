@@ -697,11 +697,34 @@ _qh = os.environ.get("TESTQ_QUEUE")
 os.environ["TESTQ_QUEUE"] = str(TMP / "qhome")
 os.environ["STUB_LOG"] = str(TMP / "stub.log")
 (TMP / "qhome").mkdir(exist_ok=True)
-_cf = {"clone": str(TMP / "stubclone"), "lock_wait_s": 1, "parent": "P", "for": "BENCH", "needs": "none"}
+_cf = {"clone": str(TMP / "stubclone"), "lock_wait_s": 1, "parent": "P", "for": "BENCH", "needs": "offline"}
 _res = OW.real_filer(calls[0], _cf)
 _seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
 check("fixed id: the filer records `live <same id> --result broken` and spawns nothing",
-      _res.get(FIX) is None and len(_seen) == 1 and _seen[0][:4] == ["live", FIX, "--result", "broken"], (_res, _seen))
+      _res.get(FIX) is None and len(_seen) == 2 and _seen[0][:4] == ["live", FIX, "--result", "broken"], (_res, _seen))
+# T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): a reopened alarm is raised, so relentless pool_order takes it first
+check("T2: a reopened alarm is raised after its `live`", _seen[1][:2] == ["raise", FIX], _seen)
+(TMP / "stub.log").write_text("")
+_res = OW.real_filer([{"name": "OPS_T2_NEW_X", "title": "t", "aid": "a"}], _cf)
+_seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
+check("T2: a new alarm for relentless's pool is spawned --for BENCH --needs offline, then raised",
+      _res.get("OPS_T2_NEW_X") is None and [x[0] for x in _seen] == ["spawn", "raise"]
+      and _seen[0][_seen[0].index("--for") + 1] == "BENCH" and _seen[1][1] == "OPS_T2_NEW_X", (_res, _seen))
+(TMP / "stub.log").write_text("")
+_res = OW.real_filer([{"name": "OPS_T2_NEW_Y", "title": "t", "aid": "a"}], dict(_cf, needs="live"))
+_seen = [json.loads(l) for l in (TMP / "stub.log").read_text().splitlines()]
+check("T2: a needs=live alarm for BENCH (no program wakes it) is not filed: no receiver, nothing spawned",
+      "no receiver" in str(_res.get("OPS_T2_NEW_Y")) and not _seen, (_res, _seen))
+(TMP / "stub.log").write_text("")
+_res = OW.real_filer([{"name": "OPS_T2_NEW_Z", "title": "t", "aid": "a"}], dict(_cf, **{"for": "NOBODY"}))
+check("T2: an alarm for a seat nobody wakes is not filed",
+      "no receiver" in str(_res.get("OPS_T2_NEW_Z")) and not (TMP / "stub.log").read_text(), _res)
+(_stub / "ingest.py").write_text("import json, os\ndef rimflow(*a):\n    open(os.environ['STUB_LOG'], 'a').write(json.dumps(a) + '\\n')\n"
+                                 "    return (1, 'raise refused') if a[0] == 'raise' else (0, '')\n"
+                                 "def publish(n, message=''):\n    return 'ok'\n")
+_res = OW.real_filer([{"name": "OPS_T2_NEW_W", "title": "t", "aid": "a"}], _cf)
+check("T2: a failed raise leaves the alarm filed (a retry would re-spawn) and says so under _raise",
+      _res.get("OPS_T2_NEW_W") is None and "raise refused" in str((_res.get("_raise") or {}).get("OPS_T2_NEW_W")), _res)
 if _qh is None:
     os.environ.pop("TESTQ_QUEUE", None)
 else:
@@ -1381,7 +1404,7 @@ _fc.mkdir(parents=True, exist_ok=True)
     "def rimflow(*a):\n    if any('\\x00' in x for x in a):\n        raise ValueError('embedded null byte')\n    return 0, ''\n"
     "def publish(n, message=''):\n    return None\n", encoding="utf-8")
 _fr = OW.real_filer([{"name": "A", "title": "bad\x00", "aid": "x"}, {"name": "B", "title": "good", "aid": "y"}],
-                    {"clone": str(TMP / "fake_clone"), "parent": "P", "for": "F", "needs": "n", "lock_wait_s": 1})
+                    {"clone": str(TMP / "fake_clone"), "parent": "P", "for": "FOUNDRY", "needs": "offline", "lock_wait_s": 1})
 check("filer: an alarm the spawn cannot carry costs itself, the next still files",
       "ValueError" in str(_fr.get("A")) and _fr.get("B") is None and "B" in _fr, _fr)
 _cxm, _dirs = sys.modules.get("csuite_codex_limits"), OW.codex_dirs

@@ -191,6 +191,32 @@ def phones():
     check("phone" not in r, "no pusher (run without --file-alarms): no phone")
 
 
+def receivers():
+    """T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): the real live_filer against a stub ingest in a stub clone."""
+    stub = TMP / "stubclone/src/RimMandrake/Utils/testq"
+    stub.mkdir(parents=True, exist_ok=True)
+    (TMP / "q").mkdir(exist_ok=True)
+    log = TMP / "stub.log"
+    os.environ["STUB_LOG"] = str(log)
+    (stub / "ingest.py").write_text("import json, os\ndef rimflow(*a):\n    open(os.environ['STUB_LOG'], 'a').write("
+                                    "json.dumps(a) + '\\n')\n    return 0, ''\ndef publish(n, message=''):\n    return 'ok'\n")
+    conf = {"clone": str(TMP / "stubclone"), "parent": "P", "for": "BENCH", "needs": "offline", "lock_wait_s": 1}
+    todo = [{"item": "LIVE_RESTORE_X", "spawn": True, "title": "t", "result": "broken", "detail": "d"},
+            {"item": "LIVE_RESTORE_Y", "result": "kept", "detail": "back"}]
+    res = DM.live_filer(todo, conf)
+    seen = [json.loads(x) for x in log.read_text().splitlines()]
+    check(res.get("LIVE_RESTORE_X") is None and [s[:2] for s in seen] == [["spawn", "--from"], ["live", "LIVE_RESTORE_X"],
+          ["raise", "LIVE_RESTORE_X"], ["live", "LIVE_RESTORE_Y"]] and seen[0][seen[0].index("--for") + 1] == "BENCH",
+          "a broken promise is spawned for relentless's pool, recorded, then raised; a kept one is not raised: %s" % seen)
+    log.write_text("")
+    res = DM.live_filer(todo, dict(conf, needs="live"))
+    seen = [json.loads(x) for x in log.read_text().splitlines()]
+    check("no receiver" in str(res.get("LIVE_RESTORE_X")) and [s[:2] for s in seen] == [["live", "LIVE_RESTORE_Y"]],
+          "a new item nobody would pick up is not spawned; a reading on a filed item still goes: %s %s" % (res, seen))
+    check(OW.alarm_receiver_problem(dict(OW.alarm_conf(OW.load_rules()), clone=str(TMP))) is None,
+          "the real alarm conf (ops_watch_rules.json) files for a receiver")
+
+
 def main():
     j = DM.judge({"ops_watch": NOW - 600, "dispatcher": NOW - 60}, NOW)
     check(j == {"ops_watch": None, "dispatcher": None}, "fresh stamps: both alive")
@@ -243,6 +269,7 @@ def main():
 
     sweeps()
     phones()
+    receivers()
     # the pass reads the shard it files into, from a clone no other reader lists
     import pulse_core as pc
     seen, keep_rl, keep_cl, keep_here = [], pc.read_ledger, pc.CLONES, DM.HERE

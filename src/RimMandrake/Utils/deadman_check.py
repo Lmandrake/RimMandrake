@@ -277,7 +277,7 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, push
     report = {"t": now, "promises": len(rows) + excused_n, "kept": len(rows) - len(broken), "excused": excused_n,
               "broken": [{"item": r["item"], "why": r["why"]} for r in broken], "fold": fold,
               "held": len(held), "errors": {k: v for k, v in errors.items() if v and not k.startswith("_")},
-              "unpublished": unpushed(errors, prior),
+              "unpublished": unpushed(errors, prior), "raise_failed": errors.get("_raise") or {},
               "line": "%d promises, %d kept, %d broken%s%s" % (
                   len(rows) + excused_n, len(rows) - len(broken), len(broken),
                   ", %d paused" % excused_n if excused_n else "", ", %d need a fold" % len(fold) if fold else "")}
@@ -366,14 +366,21 @@ def live_filer(todo, conf):
                     return {t["item"]: "ingest.lock busy for %d s" % conf["lock_wait_s"] for t in todo}
                 time.sleep(2)
         n = 0
+        nobody = OW.alarm_receiver_problem(conf)     # T2: no item is filed for a receiver nobody wakes
         for t in todo:
             rc, out = 0, ""
-            if t.get("spawn"):
+            if t.get("spawn") and nobody:
+                rc, out = 1, "no receiver: " + nobody
+            elif t.get("spawn"):
                 rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
                                       "--name", t["item"], "--title", t["title"],
                                       "--why", "live sweep (deterministic, no AI): " + t["item"])
             if rc == 0:
                 rc, out = ing.rimflow("live", t["item"], "--result", t["result"], "--detail", t["detail"])
+            if rc == 0 and t["result"] == "broken":    # a broken promise is first in relentless pool_order
+                rrc, rout = ing.rimflow("raise", t["item"], "--reason", OW.RAISE_REASON)
+                if rrc != 0:
+                    res.setdefault("_raise", {})[t["item"]] = rout[-300:]
             res[t["item"]] = None if rc == 0 else out[-300:]
             n += rc == 0
         res["_publish"] = ing.publish(n, message="ledger: live sweep %s" % ", ".join(

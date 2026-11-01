@@ -47,11 +47,14 @@ while the claim's lease is live, or for 2 h after a claim with no lease; a lapse
 incident pauses for at most CLAIM_HOLD_S (2 h) in all (incident claim_paused_s): a renewed lease is not a fix.
 
 Escalation (section 6.4), each at most once per incident:
-  T+10 min   spawn STEVE_LANE_UNSTICK_<STATE>_UNOWNED_<hex4> --for BENCH --needs offline (from the steward's own item),
-             naming the state and job ids, or note the still-open item of an earlier incident (never a duplicate);
+  T+10 min   spawn STEVE_LANE_UNSTICK_<STATE>_UNOWNED_<hex4> --for ALARM_SEAT (BENCH, relentless's home pool, which
+             its workers drain) --needs offline (from the steward's own item), naming the state and job ids, or note
+             the still-open item of an earlier incident (never a duplicate); refused, with the reason on the incident,
+             when rimflow incident.receiver_problem says nobody would pick it up (T2, ALARMS_REWIRE_OFF_RETIRED_BENCH);
              a failed `steve:lane` record lights the pulse health row
-  T+30 min   `rimflow raise` it: first in `rimflow next --seat BENCH` and a line in the phone brief
-  T+120 min  with no claim: spawn for OWNER (needs owner; titled "IN PERSON:" when SteveDesktop is unreachable)
+  T+30 min   `rimflow raise` it: first in relentless pool_order and `rimflow next --seat BENCH`, a line in the phone brief
+  T+120 min  with no claim: spawn for OWNER (needs owner, the Conductor's sitting; titled "IN PERSON:" when
+             SteveDesktop is unreachable)
 Recovery (a DONE+canary job after the incident began) records `steve:lane` ok, notes the item and drops the items the incident spawned.
 
 The LLM wake (the owner's card ruling 2026-10-26 12:27 PDT, "Yes, after 30 min", on STEVE_STEWARD_BUILD_NO_LLM_OWNER):
@@ -215,6 +218,24 @@ def publish():
 
 
 BENCH_SHARD = "infrastructure/state/ledger/events/BENCH.jsonl"
+# the L1 item's seat: relentless's home pool (relentless_rules.json pool_seats), which its workers drain; the T2 check
+# (rimflow incident.receiver_problem) refuses the spawn if no program would pick it up
+ALARM_SEAT = "BENCH"
+
+
+def nobody_for(seat, needs):
+    """-> why nobody would pick up an item filed --for seat --needs needs, or None (incident.receiver_problem in this
+    tree). A tree that cannot answer is reported as a problem, so an alarm is never filed blind."""
+    try:
+        import importlib.util
+        import ingest
+        spec = importlib.util.spec_from_file_location(
+            "steward_incident", os.path.join(ingest.REPO, "src/RimMandrake/rimflow/incident.py"))
+        inc = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(inc)
+        return inc.receiver_problem(seat, needs)
+    except Exception as e:     # noqa: BLE001
+        return "receiver check failed: %s: %s" % (type(e).__name__, e)
 
 
 def drop_as_bench(item, reason):
@@ -721,9 +742,11 @@ def escalate(inc, ls, now, last_item, src="steward"):
             rc, out = rimflow("note", last_item, "--text", "%s: SteveDesktop lane %s again since %s, %d min unowned"
                               % (src, what, inc["since"], u // 60))
             item = last_item
+        elif nobody_for(ALARM_SEAT, "offline"):     # T2: never an item nobody picks up; the error is on the incident
+            rc, out = 1, "no receiver: " + nobody_for(ALARM_SEAT, "offline")
         else:
             item = mint(w, tag, "UNOWNED")
-            rc, out = rimflow("spawn", "--from", STEWARD_ITEM, "--for", "BENCH", "--needs", "offline", "--name", item,
+            rc, out = rimflow("spawn", "--from", STEWARD_ITEM, "--for", ALARM_SEAT, "--needs", "offline", "--name", item,
                               "--title", ("SteveDesktop lane %s, unowned %d min: %s" % (inc["state"], u // 60,
                                                                                         ls["reason"]))[:160])
         if rc != 0:

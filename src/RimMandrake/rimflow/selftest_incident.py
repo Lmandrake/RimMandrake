@@ -441,6 +441,24 @@ def test_routes():
           IN.reader_problem("FOUNDRY", json.load(open(os.path.join(HERE, "dispatcher_schedule.json")))) is None)
     check("a seat with waking off is unwoken", "waking is off" in IN.reader_problem(
         "FOUNDRY", {"seats": {"FOUNDRY": {"wake": False}}}))
+    # T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): who picks up an alarm item, asked by every program that files one
+    rel = json.load(open(IN.RELENTLESS_RULES))
+    on = {"enabled": True, "pool_seats": ["BENCH", "FOUNDRY"], "pool_needs": ["offline"]}
+    check("T2: the live relentless rules drain BENCH offline, so ops_watch's alarm conf has a receiver",
+          IN.receiver_problem("BENCH", "offline") is None and "BENCH" in rel["pool_seats"] and rel["enabled"])
+    check("T2: an offline alarm for a pool seat is picked up", IN.receiver_problem("BENCH", "offline", relentless=on) is None)
+    check("T2: with relentless off, BENCH (no doorbell) is no receiver",
+          "relentless is off" in str(IN.receiver_problem("BENCH", "offline", relentless=dict(on, enabled=False))))
+    check("T2: with relentless off, FOUNDRY's doorbell still wakes it",
+          IN.receiver_problem("FOUNDRY", "offline", relentless={}) is None)
+    check("T2: a non-offline alarm for BENCH has no receiver",
+          "needs=live" in str(IN.receiver_problem("BENCH", "live", relentless=on)))
+    check("T2: a needs=owner alarm goes to OWNER, and only OWNER",
+          IN.receiver_problem("OWNER", "owner", relentless=on) is None
+          and "goes to OWNER" in str(IN.receiver_problem("BENCH", "owner", relentless=on)))
+    check("T2: a seat nobody names is no receiver", IN.receiver_problem("NOBODY", "offline", relentless=on) is not None)
+    check("T2: a doorbell seat whose waking is off is no receiver", "waking is off" in str(IN.receiver_problem(
+        "FOUNDRY", "live", {"seats": {"FOUNDRY": {"wake": False}}}, relentless=on)))
     led = os.path.join(TMP, "cli_ledger.jsonl")
     open(led, "w").close()
     env = {k: v for k, v in os.environ.items() if not k.startswith("GIT_")}

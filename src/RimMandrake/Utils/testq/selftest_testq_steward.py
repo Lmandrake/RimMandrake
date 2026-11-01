@@ -666,6 +666,17 @@ def main():
         W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, item)
         check(inc["level"] == 1 and inc.get("error"), "a refused raise is not recorded as level 2")
         W.rimflow = real_rf
+        # T2 (ALARMS_REWIRE_OFF_RETIRED_BENCH): the L1 item goes only to a seat somebody picks up
+        check(W.nobody_for(W.ALARM_SEAT, "offline") is None and W.nobody_for("BENCH", "live"),
+              "T2: the steward's L1 seat is relentless's pool; a needs=live BENCH item would have no receiver")
+        real_nf, real_ol = W.nobody_for, W.open_lane_item
+        W.nobody_for, W.open_lane_item = (lambda s, n: "nobody drains %s" % s), (lambda w: None)
+        inc = {"state": "BRAKED", "since": "x", "unowned_s": 700, "level": 0, "item": None, "owner_item": None}
+        sp_n = len(events("spawn"))
+        W.escalate(inc, {"reason": "r", "jobs": []}, base + 5, "STEVE_CLOSED_UNDER_ITEM")
+        W.nobody_for, W.open_lane_item = real_nf, real_ol
+        check(len(events("spawn")) == sp_n and inc["level"] == 0 and "no receiver: nobody drains BENCH" in str(inc.get("error")),
+              "T2: with no receiver the L1 spawn is refused, the reason is on the incident, the rung is retried: %s" % inc)
         reset()
         fd = W.lock_open()
         try:

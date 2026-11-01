@@ -2198,14 +2198,37 @@ def alarm_prefix(tg, tag, key, state, aid):
     return "%s_%s" % (base, alarm_twist(base))
 
 
+def alarm_receiver_problem(conf):
+    """T2: -> why nobody would pick up an alarm filed with this conf's `for`/`needs`, or None. Asks rimflow
+    incident.receiver_problem in the filing clone, the tree whose ledger and relentless rules the item lands under
+    (this tree's when that clone has none). A tree that cannot answer is a problem too: an alarm filed blind may rot
+    unread."""
+    try:
+        path = Path(conf["clone"]) / "src/RimMandrake/rimflow/incident.py"
+        if not path.is_file():
+            path = Path(__file__).resolve().parents[1] / "rimflow/incident.py"
+        spec = importlib.util.spec_from_file_location("ops_watch_incident", str(path))
+        inc = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(inc)
+        return inc.receiver_problem(conf.get("for"), conf.get("needs"))
+    except Exception as e:     # noqa: BLE001 -- any failure to answer is reported, never swallowed
+        return "receiver check failed: %s: %s" % (type(e).__name__, e)
+
+
+RAISE_REASON = "alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)"
+
+
 def real_filer(todo, conf):
     """todo: [{"name", "title"}] -> {name: None | error}, plus "_publish". Spawns as RUNNER from the dispatch clone
-    under QHOME/ingest.lock and publishes its RUNNER shard (testq ingest.py does both)."""
+    under QHOME/ingest.lock and publishes its RUNNER shard (testq ingest.py does both). Nothing is filed for a
+    receiver nobody picks up (alarm_receiver_problem), and every alarm it files or reopens is raised, so relentless
+    pool_order takes it before unraised work."""
     import fcntl
     path = Path(conf["clone"]) / "src/RimMandrake/Utils/testq/ingest.py"
     spec = importlib.util.spec_from_file_location("ops_watch_ingest", str(path))
     ing = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(ing)
+    nobody = alarm_receiver_problem(conf)     # only a NEW item needs it: a note or a reopen goes to one already filed
     res = {}
     with open(qhome() / "ingest.lock", "w") as lk:
         t0 = time.time()
@@ -2224,10 +2247,16 @@ def real_filer(todo, conf):
                     rc, out = ing.rimflow("note", a["item"], "--text", a["text"])
                 elif a.get("reopen"):     # a repeat: the same item goes back to work and the outage is counted
                     rc, out = ing.rimflow("live", a["name"], "--result", "broken", "--detail", a["title"][:300])
+                elif nobody:            # stays PENDING with the reason on its entry, retried every pass
+                    rc, out = 1, "no receiver: " + nobody
                 else:
                     rc, out = ing.rimflow("spawn", "--from", conf["parent"], "--for", conf["for"], "--needs", conf["needs"],
                                           "--name", a["name"], "--title", a["title"],
                                           "--why", "ops_watch alarm (deterministic, no AI): " + a["aid"])
+                if rc == 0 and not a.get("note_only"):
+                    rrc, rout = ing.rimflow("raise", a["name"], "--reason", RAISE_REASON)
+                    if rrc != 0:    # filed but not first: the alarm stands (a retry would re-spawn), the miss is logged
+                        res.setdefault("_raise", {})[a["name"]] = rout[-300:]
             except (ValueError, OSError) as e:
                 rc, out = 1, "%s: %s" % (type(e).__name__, e)
             res[a["name"]] = None if rc == 0 else out[-300:]
@@ -2428,6 +2457,9 @@ def run_alarms(points, rules, now, known_ids, filer, open_ids=None):
                     # next testq ingest (testq/ingest.py _publish keeps the lines), so OPEN is right either way
                     log.append({"ts": iso(now), "event": "filed", "aid": a["aid"], "item": a["name"],
                                 "publish": res.get("_publish")})
+                    if (res.get("_raise") or {}).get(a["name"]):
+                        log.append({"ts": iso(now), "event": "raise_failed", "aid": a["aid"], "item": a["name"],
+                                    "error": res["_raise"][a["name"]]})
                     # a rule that also owes the Conductor a line (rules key conductor_log), one per cause: an outage is one ring
                     if a.get("conductor_log") and conductor_line_owed(a.get("key"), said_causes):
                         try:
