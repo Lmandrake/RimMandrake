@@ -146,6 +146,51 @@ def sweeps():
         check(True, "a bad baseline line raises")
 
 
+def phones():
+    """DEADMAN_WIRE_PHONE_WITHOUT_AI: a dead arm or a broken timer rings the phone through the real phone_push (its
+    transport faked, its state in TMP), once per outage, whatever the filer did; recovery closes the key."""
+    sys.path.insert(0, str(HERE / "pulse"))
+    import phone_push as pp
+    pp.STATE = TMP / "phone_push.json"
+    sent = []
+    pp.todoist_transport = lambda title, body: sent.append((title, body))
+    chk = lambda line: "rm-dead.timer is inactive" if "dead" in line else None
+    refused = lambda todo, conf: {t["item"]: "ledger write refused" for t in todo}
+    arms = {"dispatcher": None, "ops_watch": "ops_watch last ran 61 min ago (limit 50 min)"}
+    r = DM.sweep(NOW, refused, {"B_FIX_1": It(live=GOOD)}, [DEAD], arms, chk, pusher=pp)
+    titles = sorted(t for t, _ in sent)
+    check(titles == ["RimMandrake: dead-man LIVE_RESTORE_OPS_WATCH is red", "RimMandrake: dead-man LIVE_RESTORE_RM_DEAD is red"],
+          "a dead ops_watch and a broken timer each ring the phone, though the ledger write was refused: %s" % titles)
+    body = dict((t, b) for t, b in sent)["RimMandrake: dead-man LIVE_RESTORE_OPS_WATCH is red"]
+    check(body == "deadman_check (no AI): ops_watch last ran 61 min ago (limit 50 min). The ledger holds "
+                  "LIVE_RESTORE_OPS_WATCH; restore it, then the sweep puts it back.", "the fixed phone line: " + body)
+    check(sorted(r["phone"]) == ["pushed deadman:LIVE_RESTORE_OPS_WATCH", "pushed deadman:LIVE_RESTORE_RM_DEAD"],
+          "the report says what was pushed: %s" % r["phone"])
+    DM.sweep(NOW, refused, {}, [DEAD], arms, chk, pusher=pp)
+    check(len(sent) == 2, "still dead: no second ring")
+    DM.sweep(NOW, refused, {}, [DEAD], {"dispatcher": "dispatcher last ran 20 min ago (limit 15 min)",
+                                        "ops_watch": None}, chk, pusher=pp)
+    check(len(sent) == 3 and "LIVE_RESTORE_DISPATCHER" in sent[-1][0], "a dead Dispatcher rings too")
+    DM.sweep(NOW, refused, {}, [DEAD], arms, chk, pusher=pp)
+    check(len(sent) == 4 and "OPS_WATCH" in sent[-1][0], "ops_watch recovered then died again: a new ring")
+    sent.clear()
+    DM.sweep(NOW, refused, {"X": It(live="hook=block_x.py")}, [], {}, lambda l: "hook missing", pusher=pp)
+    check(not sent, "a broken non-timer promise goes to the ledger only")
+
+    class Boom:
+        def send(self, row):
+            raise OSError("no network")
+
+        def close(self, key):
+            pass
+    r = DM.sweep(NOW, refused, {}, [], arms, chk, pusher=Boom())
+    check(r["phone"] and r["phone"][0].startswith("push failed LIVE_RESTORE_OPS_WATCH: OSError")
+          and json.loads((TMP / "ops/live_sweep.json").read_text()).get("phone") == r["phone"],
+          "a failing phone is reported and the sweep still writes its line: %s" % r["phone"])
+    r = DM.sweep(NOW, refused, {}, [], arms, chk)
+    check("phone" not in r, "no pusher (run without --file-alarms): no phone")
+
+
 def main():
     j = DM.judge({"ops_watch": NOW - 600, "dispatcher": NOW - 60}, NOW)
     check(j == {"ops_watch": None, "dispatcher": None}, "fresh stamps: both alive")
@@ -197,6 +242,7 @@ def main():
     check(DM.stamps(mode="dry")["ops_watch"] is None, "torn status.json -> None, not fresh")
 
     sweeps()
+    phones()
     # the pass reads the shard it files into, from a clone no other reader lists
     import pulse_core as pc
     seen, keep_rl, keep_cl, keep_here = [], pc.read_ledger, pc.CLONES, DM.HERE

@@ -9,6 +9,9 @@ On failure it reopens the SAME item (`rimflow live --result broken`), filing LIV
 has no item. On recovery it puts the item back. The ledger is the only state, so one promise has one id and
 `live_repeats` counts its outages; at 2 the report says it needs a fold. The pass writes ops_watch/live_sweep.json,
 whose `line` reads "61 promises, 58 kept, 3 broken". A pass that cannot see systemd says so and touches nothing.
+With --file-alarms a dead arm (Dispatcher, ops_watch) or a broken timer promise (`unit=`) also rings the owner's phone
+through pulse/phone_push.py, a fixed template with no AI in the path, once per outage (the key closes on recovery),
+whatever the ledger write did (DEADMAN_WIRE_PHONE_WITHOUT_AI). RM_DEADMAN_PUSH=0 turns the phone off.
 
     ops_watch   $RM_OPS_WATCH_DIR/status.json  key "t" (epoch of the last pass; timer every 15 min)  limit 50 min
     dispatcher  $RM_DISPATCHER_STATE/state.json key "last_ok_tick" (ISO; timer every 2 min)            limit 15 min
@@ -230,9 +233,10 @@ def read_items():
     return pc._model().replay(pc.read_ledger([*pc.CLONES, *([own] if own not in pc.CLONES else [])])).items
 
 
-def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True):
+def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True, pusher=None):
     """One pass: recheck every promise, reopen what died, put back what recovered. The ledger is the state, so a pass
-    that could not file simply tries again. filer(todo, conf) -> {item: None|error}; None files nothing. -> the report."""
+    that could not file simply tries again. filer(todo, conf) -> {item: None|error}; None files nothing. pusher (see
+    phone): a dead arm or a broken timer also rings the owner's phone, whatever the filer did. -> the report."""
     if not sees:
         report = {"t": now, "line": "promises unread: this pass could not see systemd", "blind": True, "broken": [],
                   "unpublished": (_json(sweep_file()) or {}).get("unpublished")}
@@ -277,8 +281,52 @@ def sweep(now, filer, items, baseline, arms, checker=real_check, sees=True):
               "line": "%d promises, %d kept, %d broken%s%s" % (
                   len(rows) + excused_n, len(rows) - len(broken), len(broken),
                   ", %d paused" % excused_n if excused_n else "", ", %d need a fold" % len(fold) if fold else "")}
+    if pusher:
+        report["phone"] = phone(rows, pusher)
     OW_atomic(sweep_file(), report)
     return report
+
+
+def phone_worthy(row):
+    """A dead arm (Dispatcher, ops_watch) or a broken timer promise (`unit=`): what must reach the owner's phone with
+    no AI in the path (DEADMAN_WIRE_PHONE_WITHOUT_AI). Pure."""
+    return row["line"] is None or "unit=" in (row["line"] or "")
+
+
+def phone_row(row):
+    """-> the phone_push row for a sweep ROW. Pure: a fixed template, no agent writes it."""
+    return {"key": "deadman:" + row["item"], "kind": "red", "label": "dead-man %s" % row["item"],
+            "detail": "deadman_check (no AI): %s. The ledger holds %s; restore it, then the sweep puts it back."
+                      % (row["why"], row["item"])}
+
+
+def phone(rows, pusher):
+    """Push every phone-worthy broken row, close the key of every one that is kept again. pusher: an object with
+    send(row) -> bool and close(key) (pulse/phone_push; a selftest double). The push dedups by key, so a broken row
+    pushes once per outage and a failed send retries next pass. -> [what happened], for the report."""
+    out = []
+    for r in rows:
+        if not phone_worthy(r):
+            continue
+        pr = phone_row(r) if r["why"] else None
+        try:
+            if pr:
+                if pusher.send(pr):
+                    out.append("pushed %s" % pr["key"])
+            else:
+                pusher.close("deadman:" + r["item"])
+        except Exception as e:  # noqa: BLE001  the phone failing must not stop the sweep or its report
+            out.append("push failed %s: %s: %s" % (r["item"], type(e).__name__, str(e)[:160]))
+    return out
+
+
+def real_pusher():
+    """pulse/phone_push (Todoist due-now task), unless RM_DEADMAN_PUSH=0."""
+    if os.environ.get("RM_DEADMAN_PUSH", "1") == "0":
+        return None
+    sys.path.insert(0, str(HERE / "pulse"))
+    import phone_push
+    return phone_push
 
 
 def unpushed(errors, prior):
@@ -434,7 +482,8 @@ def main(argv=None):
         return 0
     import live_line
     report = sweep(time.time(), live_filer if a.file_alarms else None, read_items(), load_baseline(),
-                   arm_faults(stamps(), time.time()), sees=live_line.can_see())
+                   arm_faults(stamps(), time.time()), sees=live_line.can_see(),
+                   pusher=real_pusher() if a.file_alarms else None)
     print("sweep: %s" % report["line"])
     for b_ in report["broken"]:
         print("  %s: %s" % (b_["item"], b_["why"]))
