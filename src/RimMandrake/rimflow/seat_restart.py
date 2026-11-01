@@ -776,6 +776,11 @@ def note_item(ticket):
     return None if ticket in LABEL_TICKETS else ticket
 
 
+def takes_note(ticket):
+    """Does a note about this restart land anywhere? A label does not; no ticket falls back to the alarm item."""
+    return ticket not in LABEL_TICKETS
+
+
 def _ledger_unfiled(ticket):
     try:
         import model
@@ -1197,7 +1202,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         tx = ro["tx"](seat, mine[0]) if mine else None
         if tx and tx.get("last_kind") == "assistant_end" and (tx.get("last_at") or 0) >= rs.get("killed_at", 0):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
-            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=note_item(rs.get("ticket")) is not None,
+            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=takes_note(rs.get("ticket")),
                 evidence="fresh %s window %s (pid %s) ended its first turn at %s" % (
                     seat, rs["new_session"], rs.get("new_pid"), _iso(tx["last_at"])))
         elif now - rs["relaunched_at"] >= cfg["arm_s"]:
@@ -1212,7 +1217,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
         if armed.get("session_id") and armed.get("session_id") == rs.get("new_session") and mine \
                 and tx and not tx.get("api_end"):
             rs.update(state="verified", ended_at=now, cooldown_until=now + cfg["cooldown_s"])
-            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=note_item(rs.get("ticket")) is not None,
+            act(do="restart_verified", seat=seat, ticket=rs.get("ticket"), note=takes_note(rs.get("ticket")),
                 evidence="fresh %s window %s (pid %s), doorbell armed at %s" % (
                     seat, rs["new_session"], rs.get("new_pid"), armed.get("armed_at")))
         elif now - rs["relaunched_at"] >= cfg["arm_s"]:

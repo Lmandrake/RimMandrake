@@ -2451,6 +2451,8 @@ def test_ticket_that_is_no_item():
         check("never filed" in (SR.unfiled_ticket("TYPO_DONE") or ""), "a free-typed ticket is refused")
     finally:
         SR.UNFILED = real
+    check(SR.takes_note(None) and SR.takes_note("X_Y_Z") and not SR.takes_note("GOODBYE"),
+          "an automatic restart with no ticket still notes its alarm item; only a label does not")
     check(SR.note_item("GOODBYE") is None and SR.note_item("X_Y_Z") == "X_Y_Z", "only a label has no note item")
     st = {"seat_restart": {"BENCH": {"state": "relaunched", "new_session": "sid-new", "killed_at": T0, "relaunched_at": T0,
                                      "ticket": "GOODBYE", "kind": "conductor"}}}
