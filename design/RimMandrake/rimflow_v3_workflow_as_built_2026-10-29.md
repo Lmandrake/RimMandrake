@@ -262,11 +262,11 @@ A role run starts only when every gate below passes, checked in this order [LIVE
   | ring_hold_s | 600 | | |
 
 - **Kill and relaunch** [LIVE]:
-  - Only human input cancels a pending restart.
+  - On FOUNDRY only human input cancels a pending restart. After the goodbye on BENCH any input cancels, rings, task notifications, queue enqueues and malformed records included.
   - The kill is SIGTERM, then SIGKILL after 10 s.
   - The tile relaunches through `seat_loop.sh` / intile, with `launch_fleet.ps1` as the fallback.
 - **Day-one state** [LIVE]: the FOUNDRY restart record reads `cancelled` (new input).
-- **BENCH / the Conductor** [BUILT 2026-10-29]: kind `conductor`. The goodbye hook (`.claude/hooks/conductor_goodbye.py`) triggers the request. The fresh window is verified when it ends its first turn. The context backstop fires only after 4 h with no human message.
+- **BENCH / the Conductor** [BUILT 2026-10-29]: kind `conductor`. The goodbye hook (`.claude/hooks/conductor_goodbye.py`) triggers the request. The fresh window is verified when it ends its first turn. The context backstop is OFF here (`backstop` false); if turned on it would fire only after 4 h with no human message.
 - **Off switch.** `seat_restart.enabled: false`, or `dry: true`.
 
 ### 2.5 FOUNDRY seat (interactive AI worker)
@@ -534,7 +534,7 @@ SteveDesktop is a second Windows machine. It runs RimWorld test jobs over SSH. T
   - Health check: 109 jobs finished in 24 h, 10 of them INVALID. Test hours catching nothing: 37.05 h/7 d (ESTIMATE).
   - 128 UNTRIAGED findings, all seat RUNNER. `FLOWWORKS_QUARRY_DIGGING_1` shows 26 fail and 0 pass verifies while the item reads `validated`.
 - **Results to the ledger.** `ingest.py` writes RUNNER ledger events: verify partial/pass/fail and findings. Since the cutover there were 308 events: 227 verify (181 partial, 30 pass, 16 fail) and 19 findings (health check).
-- **Who consumes findings.** Nobody on a cadence [LIVE as evidence: the untriaged count rises, 128 on day one; no role file or timer names a consumer]. Part 4 gives no duty row to findings triage. `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X` (option B of the findings curation design, §2.19) is the owner-chosen design, filed for FOUNDRY, not built [DESIGNED].
+- **Who consumes findings.** FOUNDRY, daily, through `findings_fold.md`; the Auditor samples weekly [LIVE, §2.19a]. Part 4 gives no duty row to findings triage.
 - **Mod choice** [LIVE, `~/.config/systemd/user/testq-tick.service:10`, `testq-sweep.service:9`]: the filler and sweep loop over `${TESTQ_FILL_MODS:-FlowWorks}` and `${TESTQ_SWEEP_MODS:-FlowWorks}`. Neither unit sets the variable (no `Environment=` for it, no drop-in directory, absent from the user manager's environment, checked 2026-10-29), so both run FlowWorks only.
 - **Off switches.** `fill.stop`, `testq.py pause`, `quarantine.json`, or stopping `testq-tick.timer`.
 
@@ -542,8 +542,8 @@ SteveDesktop is a second Windows machine. It runs RimWorld test jobs over SSH. T
 
 - **Bridge lock** [LIVE as a rimflow verb]: `rimflow bridge take/release/who` serializes driving of the live game (the RimBridge server). The Archmagi lane honours it.
 - **Companion test grant** [LIVE, manual]: `companion_profile.json` holds a test grant with an expiry.
-  - It lapsed at 03:00Z on 10-28/29 and 5 FOUNDRY tickets bounced (Conductor night audit). It was renewed by hand.
-  - The item that would automate it, `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME`, is `proposed` [DESIGNED].
+  - It lapsed at 03:00Z on 10-28/29 and FOUNDRY tickets bounced (4 in the item's prose and `companion_grant.json`, 5 in its filing title; the Conductor night audit was not re-counted). It was renewed by hand.
+  - `COMPANION_GRANT_WIRE_LAPSES_AT_BEDTIME` built the warning and the offer hold [LIVE]: `ops_watch` alarms, `rimflow next` withholds live items. Renewal stays manual.
   - [LIVE, `src/RimMandrake/Utils/modcheck/runner.py:104-110`] modcheck refuses to start a suite when the companion is not in its TEST profile or the grant lapses within `PROFILE_MIN_MINUTES` = 45.
   - UNVERIFIED: the grant file's path and current expiry. I did not find or open the live file.
 
@@ -578,7 +578,7 @@ Four designs were written on 10-29. By owner card that day (`RIMFLOW_V3_BUILD_WH
 **a. Findings curation** [LIVE, `testq.py` testq-tick.service ExecStart `findings_fold.py run`] (`design/RimMandrake/findings_curation_design_2026-10-29.md`; item `FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X`, filed by the owner 2026-10-29T15:39Z for FOUNDRY, kind build; done).
 - Why: the owner refused `FINDINGS_REDESIGN_BORN_AS_ITEMS_NO_LOBBY`; 127 findings were 50 distinct failures, one repeated 27 times.
 - Options: A, a daily FOUNDRY curation ticket; B, a program folds repeats and FOUNDRY judges only what is new; C, a weekly Auditor pass. The owner filed B.
-- As built: `src/RimMandrake/Utils/findings_fold.py`, the last step of testq-tick.service after ingest (not the Dispatcher's measure list). It signs each finding (mod, chain, row, normalized failure text) into a standing-failures table in `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`. It only groups and reports: simplified after blind reviews (`findings_fold_rules.json` `_doc`), it never retires, reopens, merges into a decision or writes the ledger, and the design's "retire after 3 passes" is a count shown to the judge. It marks machine-health rows for Operations' lane item and lists done-but-failing items as contradictions. FOUNDRY judges daily with a Friday memory sweep (`FOUNDRY.md` l.33-40), recording verdicts with `findings_fold.py decide`; the Auditor re-checks merges (`auditor.md` l.180).
+- As built: `src/RimMandrake/Utils/findings_fold.py`, the last step of testq-tick.service after ingest. `dispatcher_schedule.json` lists `findings_fold` in `measure`, but it executes in that unit. It signs each finding (mod, chain, row, normalized failure text) into a standing-failures table in `D:\ClaudeWork\rimmandrake\findings_fold\findings_fold.md`. It only groups and reports: simplified after blind reviews (`findings_fold_rules.json` `_doc`), it never retires, reopens, merges into a decision or writes the ledger, and the design's "retire after 3 passes" is a count shown to the judge. It marks machine-health rows for Operations' lane item and lists done-but-failing items as contradictions. FOUNDRY judges daily with a Friday memory sweep (`FOUNDRY.md` l.33-40), recording verdicts with `findings_fold.py decide`; the Auditor re-checks merges (`auditor.md` l.180).
 - Handoffs: testq ingest → sorter → FOUNDRY (new failures) and → Operations (rig health).
 
 **b. v3 health daily check** [DESIGNED, parked; patch `D:\ClaudeWork\rimmandrake\v3_build\health\parked.patch`] (`design/RimMandrake/v3_health_daily_check_2026-10-29.md`; item `V3_HEALTH_BUILD_DAILY_PULSE_DAY_ONE`).
@@ -688,12 +688,12 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
 | Auditor → Arbiter | escapes | ticket | Read at the next Arbiter run. [LIVE] |
 | Auditor → Conductor | waiting picks after 3 runs; charter drafts; questions | ledger note | Next Conductor run. [LIVE as a rule] |
 | Innovator → Conductor → owner | proposals | ledger, then the Conductor card | Nothing happens until he answers. [LIVE as a rule] |
-| testq → ledger | test results and findings | `ingest.py` RUNNER events | Findings pile up UNTRIAGED: 128 on day one. No running consumer (§2.15). [LIVE] |
+| testq → ledger | test results and findings | `ingest.py` RUNNER events | Findings land UNTRIAGED (128 on day one). The sorter folds them for FOUNDRY (§2.19a). [LIVE] |
 | steward → BENCH → owner | Steve lane fault | `STEVE_LANE_UNSTICK_*` item at T+10; raise at T+30; owner item at T+120 | BENCH absent: it escalates to the owner at 120 min. [LIVE] |
 | seat_restart → FOUNDRY | kill and relaunch | SIGTERM/SIGKILL, then `seat_loop.sh` | Cancelled by any human input. The live kill path is unexercised. [LIVE] |
 | Conductor → owner | everything above, batched | question cards, `conductor\log.md`, BENCH session | Held until he is present. [LIVE] |
 | owner → system | rulings | `--owner-said` notes, schedule edits, OFF files, PAUSE, `slot_override.json` | n/a |
-| testq ingest → findings sorter → Operations / FOUNDRY | repeats merged, rig health routed, new failures | standing-failures table, outcome events | [DESIGNED, §2.19a] |
+| testq ingest → findings sorter → Operations / FOUNDRY | repeats merged, rig health routed, new failures | standing-failures table in `findings_fold.md`; no ledger events | [LIVE, §2.19a] |
 | ops_watch health pass → Operations | message tags, trace, drill catches, the health page | `v3_health\` files, `health.*` keys in `status.json` | Read at 07:30 / 19:30 and on alarm. [DESIGNED, §2.19b] |
 | Auditor planter → secret register → Conductor (live) / Arbiter (ended only) | planted faults | secret register; public reveal verb | Ships OFF until the owner turns it on. [DESIGNED, §2.19b] |
 | process-model timer → Operations | daily v3 fit, held-out check, drift | `process_model\digest.md`, `current.json` | Read at 07:30. [DESIGNED, §2.19c] |
@@ -794,7 +794,7 @@ Also continuous: FOUNDRY wakes on doorbell rings, at most 12 an hour and 96 a da
    - a Producer-raised goal ticket;
    - a seat or owner `rimflow file`.
 
-   The name must pass `rimflow namecheck`. RUNNER findings land as UNTRIAGED; 128 were untriaged on day one. No program turns them into items yet (`FINDINGS_FOLD_BUILD_QUARRY_SAID_IT_23X` is [DESIGNED]). [LIVE]
+   The name must pass `rimflow namecheck`. RUNNER findings land as UNTRIAGED; 128 were untriaged on day one. `findings_fold.py` groups and reports them; it opens no item. FOUNDRY judges them (§2.19a). [LIVE]
 2. **Ordered.** The Producer's 09:00 daily list, or Wednesday's plan, raises it in the queue. Before a raise it writes a `## verify` bar on the item. [LIVE as a role-file rule]
 3. **Delivered.**
    - The Dispatcher peeks the queue. If FOUNDRY has been idle ≥240 s with its doorbell armed, and the caps, owner-idle gate (game, bridge, deploy tickets) and account gate pass, it rings. [LIVE]
@@ -937,6 +937,6 @@ These are statements of fact, with no judgement. Sources: this document's reads;
 5. Archmagi lane run history behind the 4.39 h in 7 days (§2.15).
 6. Whether the Arbiter's weekly pass, designed in `roles/arbiter.md`, has ever run (§2.10).
 
-Resolved in the second pass: helper_budget numbers and MAX_AGE_S; `after_role` semantics; local-day timezone; PAUSE versus role launches; the scope-stop trigger; FOUNDRY's charter and owner touchpoints; the accepted-state definition (none exists); the interim reviewer's mechanism (a closing-seat ritual); how the TESTQ mod choice is applied (it is not); the owner-proposal timeout (none); the lease constants; the findings consumer (none); the "who may change" column (Part 4 L-1 and O-14).
+Resolved in the second pass: helper_budget numbers and MAX_AGE_S; `after_role` semantics; local-day timezone; PAUSE versus role launches; the scope-stop trigger; FOUNDRY's charter and owner touchpoints; the accepted-state definition (none exists); the interim reviewer's mechanism (a closing-seat ritual); how the TESTQ mod choice is applied (it is not); the owner-proposal timeout (none); the lease constants; the findings consumer (FOUNDRY daily, the Auditor sampling, since 10-29); the "who may change" column (Part 4 L-1 and O-14).
 
 **Sources read for the second pass:** the four 2026-10-29 designs and their ledger rulings (`rimflow show`); `rimflow_v3_responsibilities_2026-10-26.md` Part 4; `infrastructure/agents/CHARTER.md`, `CONDUCTOR.md`, `FOUNDRY.md`, `Agent_Policy.md` (targeted); `slot_rules.json`; `idle_probe.py`; `lease.py`; `helper_budget.py` and the live `helper_budget.json`; `v3_cutover.py` with `record.json`; the testq systemd units. Not read: `conductor_briefing_2026-10-28.md`, `delegation_policy.md` beyond what FOUNDRY.md cites.

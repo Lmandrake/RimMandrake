@@ -477,5 +477,47 @@ except FF.Unmeasured:
 os.remove(_f.name)
 check(_refused, "C6 an unknown named group is UNMEASURED at load")
 
+# Codex review at 96e854cc: a literal marker is not a timestamp; Unicode letters guard a stamp like ASCII ones
+check(not pair("missing result_<ts>.json", "missing result_20261027T010203.json"), "C7 a literal <ts> is not a timestamp")
+check(not pair("missing <lit:ts>", "missing <ts>"), "C7 the escape cannot collide with itself")
+check(not pair("id=\u03b120261027T010203\u03b2", "id=\u03b120261028T020304\u03b2"), "C7 a Unicode identifier keeps its stamp")
+for _bad in ('"finding_types": null', '"normalise": ["ab"]'):
+    _r = dict(json.load(open(FF.RULES_PATH, encoding="utf-8")))
+    _k, _v = _bad.split(": ")
+    _r[_k.strip('"')] = json.loads(_v)
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as _f:
+        json.dump(_r, _f)
+    try:
+        FF.load_rules(_f.name)
+        _refused = False
+    except FF.Unmeasured:
+        _refused = True
+    os.remove(_f.name)
+    check(_refused, "C7 rules with %s are UNMEASURED at load" % _bad)
+_d = tempfile.mkdtemp()
+_p = os.path.join(_d, "decisions.jsonl")
+open(_p, "w").close()
+os.chmod(_d, 0)
+try:
+    if os.access(_p, os.R_OK):
+        check(True, "C7 running as a user no mode stops: search-denied case not measurable")
+    else:
+        try:
+            FF.read_decisions(_p)
+            _refused = False
+        except FF.Unmeasured:
+            _refused = True
+        check(_refused, "C7 a decisions file behind a denied directory is UNMEASURED, not absent")
+finally:
+    os.chmod(_d, 0o700)
+    shutil.rmtree(_d)
+# two jobs fail alike in one second and ingest filed only the first: both still count after the decision
+_ev = [fev("A_1", "IT_A", "r1", "boom", ts(28, 1))]
+_rc = [rec("JA", "FlowWorks", ts(28, 1), [("c1", "r1", "FAIL", "boom")], ["A_1"], "IT_A"),
+       rec("JB", "FlowWorks", ts(28, 1), [("c1", "r1", "FAIL", "boom")], [], "IT_A")]
+_, _s = one(_ev, _rc)
+_t, _ = one(_ev, _rc, None, [{"sig": _s["A_1"], "as": "retire", "by": "FOUNDRY", "ts": ts(27, 1), "why": "x"}])
+check(_t["signatures"][_s["A_1"]]["failed_since_decision"] == 2,
+      "C7 two jobs failing in the same second are two failures (got %s)" % _t["signatures"][_s["A_1"]]["failed_since_decision"])
 print("\n%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

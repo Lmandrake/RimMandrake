@@ -1400,6 +1400,53 @@ def test_g8b_recovery_does_not_replay_what_a_dead_window_answered():
           "G8b the wake gives the unanswered message and not the answered one (%r)" % out.getvalue()[:300])
 
 
+def test_g8c_a_recovered_message_is_not_replayed_after_the_next_message():
+    """Codex review at 96e854cc, goodbye #2: B recovers X and answers it, takes Y and dies. C gets Y, not X.
+    If B died before ending a turn, C must still get X."""
+    import contextlib
+    import io
+    def iso(t):
+        return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(t))
+
+    for answered_x in (True, False):
+        root = os.path.join(TMP, "g8c%d" % answered_x)
+        os.makedirs(os.path.join(root, "restart"))
+        old = _tx_file("g8c_old%d" % answered_x, [_u("1970-01-12T13:45:00Z", "goodbye", origin={"kind": "human"},
+                                                     promptSource="typed")])
+        off = os.path.getsize(old)
+        with open(old, "a") as f:
+            f.write(json.dumps(dict(_u("1970-01-12T13:46:00Z", "OLD_NOTE", origin={"kind": "human"}, promptSource="typed"),
+                                    uuid="u-old")) + "\n")
+        a = _tx_file("g8c_a%d" % answered_x, [dict(_u("1970-01-12T13:50:00Z", "NOTE_X", origin={"kind": "human"},
+                                                      promptSource="typed"), uuid="u-x")])
+        rec = {"seat": "BENCH", "session_id": "sid-old", "killed_at": T0, "req_ts": T0, "gen": "g", "tx_path": old,
+               "tx_offset": off, "woken_tx": a}
+        b = os.path.join(TMP, "g8c_b%d.jsonl" % answered_x)
+        open(b, "w").close()
+        real = SR.transcript_for
+        try:
+            SR.transcript_for = lambda me, cfg: {"b": b}.get(me["sessionId"], "/tx/" + me["sessionId"])
+            first = io.StringIO()
+            with contextlib.redirect_stdout(first):
+                SR._wake_conductor("BENCH", SR.config(bsched())["BENCH"], rec, root=root, me={"sessionId": "b"})
+            check("NOTE_X" in first.getvalue() and "OLD_NOTE" in first.getvalue(), "G8c B recovers X and the old note")
+            r2 = SR._read_json(SR.killed_path("BENCH", root))
+            later = iso(r2["woken_at"] + 5)
+            recs = [{"type": "assistant", "timestamp": later, "message": {"stop_reason": "end_turn"}}] if answered_x else []
+            recs.append(dict(_u(iso(r2["woken_at"] + 9), "NOTE_Y", origin={"kind": "human"}, promptSource="typed"), uuid="u-y"))
+            with open(b, "w") as f:
+                f.write("".join(json.dumps(x) + "\n" for x in recs))
+            out = io.StringIO()
+            with contextlib.redirect_stdout(out):
+                SR._wake_conductor("BENCH", SR.config(bsched())["BENCH"], r2, root=root, me={"sessionId": "c"})
+        finally:
+            SR.transcript_for = real
+        o = out.getvalue()
+        check("NOTE_Y" in o, "G8c C gets Y (%r)" % o[:300])
+        check(("NOTE_X" in o) != answered_x and ("OLD_NOTE" in o) != answered_x,
+              "G8c X and the old note come back only if B never ended a turn on them (ended=%s, %r)" % (answered_x, o[:300]))
+
+
 def test_g9_wt_bench_keeps_the_conductor_wake_under_seat_loop():
     import install_wt_seat_profiles as W
     real = W.restart_seats

@@ -569,12 +569,30 @@ def answered(rec):
         return True
     if not path:
         return False
+    return unanswered(path, 0) == [] and _turn_ended_since(path, rec["woken_at"])
+
+
+def _turn_ended_since(path, at):
     try:
-        return unanswered(path, 0) == [] and any(
-            r.get("type") == "assistant" and _assistant_kind(r) == "assistant_end"
-            and (_ts(r.get("timestamp")) or 0) >= rec["woken_at"] for r, _ in scan_records(path))
+        return any(r.get("type") == "assistant" and _assistant_kind(r) == "assistant_end"
+                   and (_ts(r.get("timestamp")) or 0) >= at for r, _ in scan_records(path))
     except (Malformed, OSError):
         return False
+
+
+def _msg_key(r):
+    """One owner message across transcripts and recoveries."""
+    return r.get("uuid") or "%s|%s" % (r.get("timestamp"), _text(r)[:200])
+
+
+def recovered_done(rec):
+    """-> the keys of messages a wake has already recovered and a window ended a turn on. A later message to that window
+    must not bring them back when the next window recovers (Codex review at 96e854cc, goodbye #2)."""
+    done = set(rec.get("acked") or [])
+    if rec.get("shown") and rec.get("woken_at") and rec.get("woken_tx") \
+            and _turn_ended_since(rec["woken_tx"], rec["woken_at"]):
+        done |= set(rec["shown"])
+    return done
 
 
 def human_since_offset(path, offset, peers=None):
@@ -1976,7 +1994,9 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
     me = me or {}
     mine = transcript_for(me, cfg) if me.get("sessionId") else None
     prior = [t for t in list(rec.get("prior_tx") or []) + [rec.get("woken_tx")] if t and t != mine]
-    rec = dict({k: v for k, v in rec.items() if k != "woken_at"}, woken_tx=mine, prior_tx=prior)
+    done = recovered_done(rec)           # read before woken_at goes: it dates the last reader's ended turn
+    rec = dict({k: v for k, v in rec.items() if k not in ("woken_at", "shown")}, woken_tx=mine, prior_tx=prior,
+               acked=sorted(done))
     write_killed(seat, rec, root)        # on the chain before the read: this window's death leaves it findable
     path = rec.get("tx_path")
     off = rec.get("tx_offset")
@@ -1997,6 +2017,7 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
         msgs = msgs + (((sc or {}).get("human") or []) if owed is None else owed) + undelivered(tx)
         if sc is None or sc["malformed"] or sc["torn"]:
             blind.append(tx)
+    msgs = [r for r in msgs if _msg_key(r) not in done]
     if not msgs:
         print("(none)")
     else:
@@ -2009,7 +2030,8 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
         print("Answer these FIRST, before anything else.")
     for tx in blind:
         print("UNMEASURED: %s could not be read to its end. Say so to him in one line; ask what he sent that window." % tx)
-    write_killed(seat, dict(rec, woken_at=time.time(), woken_by=me.get("sessionId") or "unknown", owed=len(msgs)), root)
+    write_killed(seat, dict(rec, woken_at=time.time(), woken_by=me.get("sessionId") or "unknown", owed=len(msgs),
+                               shown=[_msg_key(r) for r in msgs]), root)
 
 
 FORCED = ("backstop", "backstop_hard")          # the window did not close itself out, so its open work is read out of it

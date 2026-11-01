@@ -77,6 +77,11 @@ def load_rules(path=None):
         for k in ("finding_types", "lane_item", "machine_health_patterns", "contradiction_states",
                   "decisions_file", "normalise", "memory_roots"):
             rules[k]
+        for k in ("finding_types", "machine_health_patterns", "contradiction_states", "memory_roots"):
+            if not (isinstance(rules[k], list) and all(isinstance(x, str) for x in rules[k])):
+                raise ValueError("%s is not a list of strings" % k)
+        if not all(isinstance(x, list) and len(x) == 2 and all(isinstance(y, str) for y in x) for x in rules["normalise"]):
+            raise ValueError("normalise is not a list of [pattern, replacement]")
         rules["_mh"] = [re.compile(p, re.I) for p in rules["machine_health_patterns"]]
         rules["_norm"] = [(re.compile(p), r) for p, r in rules["normalise"]]
         for rx, rep in rules["_norm"]:
@@ -222,8 +227,6 @@ def decision_fault(d):
 
 
 def read_decisions(path):
-    if not os.path.exists(path):
-        return []                                   # legitimately absent until FOUNDRY's first decision
     out = []
     try:
         with open(path, encoding="utf-8") as f:
@@ -233,6 +236,8 @@ def read_decisions(path):
                     if decision_fault(d):
                         raise ValueError("line %d: %s" % (k, decision_fault(d)))
                     out.append(d)
+    except FileNotFoundError:
+        return []                                   # legitimately absent until FOUNDRY's first decision
     except (OSError, ValueError) as e:
         raise Unmeasured("decisions %s unreadable: %s" % (path, e))
     return out
@@ -303,7 +308,8 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now):
         mod, chain, row, text, at, ok = locate(name, ev, idx.get(name))
         key = row_key(mod, chain, row, text, rules, None if ok else name)
         raw[name] = {"key": key, "sig": signature(key), "item": ev["id"], "mod": mod, "chain": chain, "row": row,
-                     "text": text, "at": at, "from": ev.get("from"), "resolved": ok}
+                     "text": text, "at": at, "from": ev.get("from"), "resolved": ok,
+                     "job": idx[name]["job"]["id"] if ok else None}
     groups = {}
     for name, f in sorted(raw.items(), key=lambda kv: (kv[1]["at"], kv[0])):
         s = groups.setdefault(f.pop("key"), {k: f[k] for k in ("sig", "mod", "chain", "row", "text")} |
@@ -330,9 +336,9 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now):
         d = latest_decision(sig, set(s["findings"]), spawns, decision_lines)
         s["decision"] = d
         s["failed_since_decision"] = sum(1 for n in s["findings"] if d and raw[n]["at"] > d["ts"]) + \
-            sum(1 for at, _, v, dt, _ in tl if d and v == "FAIL" and at > d["ts"] and
+            sum(1 for at, j, v, dt, _ in tl if d and v == "FAIL" and at > d["ts"] and
                 row_key(s["mod"], s["chain"], s["row"], dt, rules) == key and
-                not any(raw[n]["at"] == at for n in s["findings"]))
+                not any(raw[n]["job"] == j for n in s["findings"]))
         s["status"] = "HEALTH" if s["health"] else "DECIDED" if d else "NEW"
     contra = []
     for (mod, chain, row), tl in sorted(runs.items()):
