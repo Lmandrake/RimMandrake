@@ -24,6 +24,8 @@ rimflow/dispatcher_schedule.json "measure"):
              v3          the section 6 success metrics no instrument measures yet, UNMEASURED with the reason
              relentless  the belt, from its own store: live, under_min, breaker_open_min, checks_wait, ready, tick_age_s,
                          progress_age_min; distressed and cause (OP2, DI2); blind when a source is missing or frozen
+             seats       idle_with_work_min: how long a seat has sat idle through rings it did not answer with work, from
+                         the Dispatcher's journal.jsonl and state.json (OP2); blind when either is missing or frozen
    STORE   append-only JSONL, one file per family: $RM_OPS_WATCH_DIR/series/<family>.jsonl (default
            D:\\ClaudeWork\\rimmandrake\\ops_watch). Every point is {v, m: MEASURED|ESTIMATE|UNMEASURED, why?, unit?}.
            An instrument that errors writes UNMEASURED with the error, never 0.
@@ -69,7 +71,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "arena", "relentless")
+            "evidence", "companion", "arena", "relentless", "seats")
 
 
 def ops_dir() -> Path:
@@ -1477,19 +1479,134 @@ def c_relentless(now, rules, ctx):
     return pts
 
 
-def rl_suppressed(points):
-    """A pass that did not measure relentless.blind (the collector raised, or was taken out of the pass) must not read
-    as a quiet belt: the point is written here so its target alarms, on this pass, whatever stopped the collection."""
-    why = str((points.get("relentless._collector") or {}).get("why") or "the relentless collector did not run this pass")
+def st_suppressed(points, fam):
+    """A pass that did not measure <fam>.blind (the collector raised, or was taken out of the pass) must not read as
+    quiet: the point is written here so its target alarms, on this pass, whatever stopped the collection."""
+    why = str((points.get(fam + "._collector") or {}).get("why") or "the %s collector did not run this pass" % fam)
     return M(1, "sources not seen", cause=why[:300])
+
+
+# ---------------------------------------------------------------- seats: idle with work ready, from the Dispatcher (OP2)
+ST_KEYS = ("seats.idle_with_work_min", "seats.distressed", "seats.cause")
+
+
+def st_dir(cfg) -> Path:
+    return Path(os.environ.get("RM_DISPATCHER_STATE") or cfg.get("state_dir") or "/mnt/d/ClaudeWork/rimmandrake/dispatcher")
+
+
+def st_paused(rows, now, limit):
+    """The Dispatcher journals a skip each tick while its PAUSE file is up: a stop somebody chose."""
+    for r in reversed(rows):
+        t = epoch(r.get("at"))
+        if t is None or t > now:
+            continue
+        if now - t > limit * 60:
+            return False
+        if r.get("do") == "skip" and str(r.get("why") or "").startswith("PAUSE file present"):
+            return True
+    return False
+
+
+def st_idle_since(rows, seat, ss, now):
+    """-> (epoch the seat's idle run began, rings in it), or None when the journal does not hold the rings state.json
+    says are open. `ss` is that seat's state.json entry, already known to be open.
+    Each ring row carries the seat's idle_since, which the Dispatcher restarts at a ring and drops the tick it sees the
+    seat busy. So a ring whose idle_since is no later than the ring before it continues that idle; a later one means
+    the seat worked in between (2026-10-31: no ring from 05:43 joins the 14:18 one, whose idle began 14:14:17). A
+    verified hand-off ends the run. Reading from the end of the record, never from nh_streak, which a busy spell keeps."""
+    rings = []
+    for r in reversed(rows):
+        t = epoch(r.get("at"))
+        if r.get("seat") != seat or t is None or t > now:
+            continue
+        if r.get("do") == "verified":
+            break
+        if r.get("do") == "ring":
+            since = r.get("idle_since")
+            since = since if is_num(since) and finite(since) and since <= t else t
+            if rings and rings[-1][1] > t + 1:
+                break
+            rings.append((t, since))
+    want = (ss.get("ring") or {}).get("ring_id") if isinstance(ss.get("ring"), dict) else None
+    if not rings or (want and not any(r.get("ring_id") == want for r in rows)):
+        return None
+    return rings[-1][1], len(rings)
+
+
+def c_seats(now, rules, ctx):
+    """seats.idle_with_work_min (OP2): the longest any seat has sat idle since its first unanswered ring's idle began.
+    A ring goes out only when the seat's queue has work, so an open ring run is idle WITH work; a seat at work, or with
+    an empty queue, holds none. Limits in rules["seats"]. A state.json whose last_ok_tick stands still, dated ahead, or
+    a journal that lacks a ring state.json calls open, reads UNMEASURED and counts in seats.blind, whose target alarms:
+    nothing here reads sane on a source it did not see move. Freshness is the stamp inside the file, never its mtime."""
+    cfg = rules.get("seats")
+    if not isinstance(cfg, dict):
+        return {**{k: U("ops_watch_rules.json has no seats block") for k in ST_KEYS},
+                "seats.tick_age_s": U("ops_watch_rules.json has no seats block", "s"),
+                "seats.blind": M(1, "sources not seen", cause="ops_watch_rules.json has no seats block")}
+    root = st_dir(cfg)
+    limit = cfg["max_age_min"]
+    st = read_json(root / "state.json")
+    t = epoch(st.get("last_ok_tick")) if isinstance(st, dict) else None
+    why = None
+    if t is None or not isinstance(st.get("seats"), dict):
+        why = "state.json missing or torn in %s" % root
+    elif t > now + 300:
+        why = "state.json is dated %d s ahead of the clock" % (t - now)
+    elif now - t > limit * 60:
+        why = "state.json frozen: last good tick %s, %.0f min ago, limit %g" % (iso(t), (now - t) / 60.0, limit)
+    rows = []
+    if why is None:
+        try:
+            rows = tail_json_lines(root / "journal.jsonl")
+        except OSError as e:
+            why = "journal.jsonl unreadable: %s" % e
+    sch = read_json(Path(cfg.get("schedule") or HERE.parent / "rimflow" / "dispatcher_schedule.json"))
+    if why is None and not (isinstance(sch, dict) and isinstance(sch.get("seats"), dict)):
+        why = "dispatcher_schedule.json missing or torn"
+    worst, per, cause = 0, {}, "none"
+    if why is None:
+        for seat, ss in sorted(st["seats"].items()):
+            sc = sch["seats"].get(seat) if isinstance(sch["seats"].get(seat), dict) else {}
+            if not isinstance(ss, dict) or not sc.get("enabled", True) or not sc.get("wake", True):
+                continue
+            if not (ss.get("ring") or (ss.get("nh_streak") and ss.get("idle_since"))):
+                continue            # no ring out, and no idle seat left with an unanswered one
+            found = st_idle_since(rows, seat, ss, now)
+            if found is None:
+                why = "journal.jsonl lacks the rings state.json holds open for %s" % seat
+                break
+            per[seat] = round((now - found[0]) / 60.0, 1)
+            if per[seat] >= worst:
+                worst = per[seat]
+                cause = "%s idle %.0f min with work: %d ring(s) unanswered, since %s" % (seat, worst, found[1], iso(found[0]))
+    pts = {}
+    if t is not None and t <= now + 300:
+        pts["seats.tick_age_s"] = M(round(max(now - t, 0)), "s", max_age_min=limit)
+    else:
+        pts["seats.tick_age_s"] = U(why, "s")
+    if why is not None:
+        for k in ST_KEYS:
+            pts[k] = U(why, "min" if k.endswith("_min") else None)
+        pts["seats.blind"] = M(1, "sources not seen", cause=why[:300])
+        return pts
+    state = "sane"
+    if worst >= cfg["distressed_min"]:
+        state = "idle" if st_paused(rows, now, limit) else "distressed"
+    cause = cause if state == "distressed" else "none"
+    pts["seats.idle_with_work_min"] = M(worst, "min", per_seat=per, state=state, max_age_min=limit)
+    pts["seats.distressed"] = M(int(state == "distressed"), "1 when a seat is idle with work", state=state, cause=cause)
+    pts["seats.cause"] = M(cause)
+    pts["seats.blind"] = M(0, "sources not seen", cause="none")
+    return pts
 
 
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
-              "arena": c_arena, "relentless": c_relentless}
+              "arena": c_arena, "relentless": c_relentless, "seats": c_seats}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "arena", "relentless")
+         "evidence", "companion", "arena", "relentless", "seats")
 
 
 # ==================================================================================================== storage
@@ -2003,6 +2120,13 @@ def rl_headline(g):
         g("relentless.blind").strip(), "" if cause == "none" else ": " + cause)
 
 
+def st_headline(g):
+    cause = g("seats.cause").strip()
+    return "seats idle with work %s min, tick %s s, blind %s%s" % (
+        g("seats.idle_with_work_min").strip(), g("seats.tick_age_s").strip(), g("seats.blind").strip(),
+        "" if cause == "none" else ": " + cause)
+
+
 def headline(points, flags, alarms):
     def g(k):
         p = points.get(k) or {}
@@ -2020,6 +2144,7 @@ def headline(points, flags, alarms):
         g("disk.scratch_total_gb").strip(), g("disk.pool_clones").strip(), g("disk.pool_gb").strip(),
         g("disk.pool_oldest_h").strip()))
     parts.append(rl_headline(g))
+    parts.append(st_headline(g))
     opened = [a for a in alarms.values() if a.get("state") == "OPEN"]
     pend = [a for a in alarms.values() if a.get("state") == "PENDING"]
     parts.append("%d flag(s), %d alarm(s) open, %d pending" % (len(flags), len(opened), len(pend)))
@@ -2099,6 +2224,7 @@ production.P1 production.P2 production.P3 production.P4
 production.V0 production.W1 production.W2 production.W3 production.W4 production.record_age_min
 relentless.blind relentless.breaker_open_min relentless.cause relentless.checks_wait relentless.distressed relentless.live
 relentless.progress_age_min relentless.ready relentless.tick_age_s relentless.under_min
+seats.blind seats.cause seats.distressed seats.idle_with_work_min seats.tick_age_s
 steve.fault_min steve.heartbeat_age_min steve.invalid_24h steve.invalid_streak steve.jobs_24h steve.last_done_age_min
 steve.seats_absent_min steve.state steve.unowned_stall_min steve.watch_age_min
 testing.archmagi_nothing_h_7d testing.nothing_h_7d testing.steve_nothing_h_7d
@@ -2143,6 +2269,7 @@ def blind_digest_md(dg, rules):
               g("disk.root_free_gb"), g("disk.c_free_gb"), g("disk.d_free_gb"), g("disk.scratch_total_gb"),
               g("disk.pool_clones"), g("disk.pool_gb"), g("disk.pool_oldest_h")),
           rl_headline(g),
+          st_headline(g),
           "%d flag(s), %d alarm(s) open, %d pending" % (
               len(fl), len(opened), len([a for a in al.values() if a.get("state") == "PENDING"]))]
     L = ["# Ops watch, health digest %s (an allow-list of health series; account readings are Operations')"
@@ -2274,8 +2401,9 @@ def run(now=None, rules=None, filer=None, families=None):
                 sick.append({"rule": "series_write", "key": "%s._series" % fam, "value": None, "window": "now",
                              "detail": "this pass's %s points were not kept: %s: %s" % (fam, type(e).__name__, str(e)[:160])})
         points.update(pts)
-    if (not families or "relentless" in families) and not counts_as_measured(points.get("relentless.blind")):
-        points["relentless.blind"] = rl_suppressed(points)
+    for fam in ("relentless", "seats"):
+        if (not families or fam in families) and not counts_as_measured(points.get(fam + ".blind")):
+            points[fam + ".blind"] = st_suppressed(points, fam)
     hist, lastm = {}, {}
     for fam, recs in prev.items():
         recs = [r for r in recs if r["t"] <= now + 300]     # a future row would read as just measured, and hide silence

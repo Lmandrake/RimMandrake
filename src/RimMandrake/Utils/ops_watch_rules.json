@@ -13,6 +13,12 @@
   "idle_why": ["paused", "budget 0", "share 0", "day_spend_limit"],
   "progress_acts": ["lease", "done", "check_started", "returned", "blind_fail", "retired", "closed_waiting_for_seat"]
  },
+ "seats": {
+  "_doc": "c_seats (OP2 in operating_requirements_2026-11-01.md), owner Operations, read from the Dispatcher's journal.jsonl and state.json under RM_DISPATCHER_STATE or state_dir. max_age_min: a state.json whose last_ok_tick is older than this is frozen, its readings UNMEASURED, seats.blind counts it; the tick runs every 2 min. distressed_min: DI1's 30 min, the owner's limit for FOUNDRY idle with work ready; the 2026-10-31 run crossed it at 14:44Z, before the idle_full_queue alarm of 14:55Z. A PAUSE file reads idle, never distressed: a stop somebody chose. Bringing the seat back is DI1's, not this metric's",
+  "state_dir": "/mnt/d/ClaudeWork/rimmandrake/dispatcher",
+  "max_age_min": 10,
+  "distressed_min": 30
+ },
  "steve_incident": {"_doc": "item-id prefix of the steward's escalation items (testq/steward.py); steve.incident_unclaimed_min is the age of the oldest one no seat holds", "prefix": "STEVE_LANE_UNSTICK_"},
  "band": {
   "_doc": "a point outside the baseline mean +/- k sigma. Baseline: the last baseline_days of MEASURED points, minus the last exclude_recent_h; needs min_points. Sigma is floored (max of sigma_floor_rel x |mean| and sigma_floor_abs) so a flat series does not flag on noise.",
@@ -23,7 +29,7 @@
   "sigma_floor_rel": 0.05,
   "sigma_floor_abs": 0.5,
   "keys": ["*"],
-  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "relentless.*"]
+  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "relentless.*", "seats.*"]
  },
  "run": {
   "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
@@ -33,7 +39,7 @@
  "silent": {
   "_doc": "a series that was MEASURED within the baseline and has not been MEASURED for its hours: the instrument went blind.",
   "default_h": 2,
-  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "relentless.*": 1},
+  "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "relentless.*": 1, "seats.*": 1},
   "keys": ["*"],
   "skip": ["*._collector"]
  },
@@ -47,6 +53,12 @@
   {"key": "relentless.distressed", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_DISTRESS", "name": "OPS_RELENTLESS_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2, DI2: the belt ran 6 h behind an open breaker on 2026-11-01 with 382 ready, and the alarm that named it reached only a note. The cause is in the title and in relentless.cause; the limits are in the relentless block"},
+  {"key": "seats.distressed", "op": ">", "value": 0, "alarm": true, "tag": "SEAT_IDLE_WITH_WORK", "name": "OPS_SEAT_UNSTICK", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "OP2: FOUNDRY sat idle with work ready on 2026-10-30 and 10-31, rung, and nothing brought it back. The seat and the minutes are in the title; the limit is in the seats block"},
+  {"key": "seats.blind", "op": ">", "value": 0, "alarm": true, "tag": "SEATS_BLIND", "name": "OPS_SEATS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
+   "why": "OP2: the Dispatcher's state or journal is missing, frozen or disagreeing, or the collector did not run. Nothing can say the seats are sane until it is seen again; the cause names which source"},
   {"key": "relentless.blind", "op": ">", "value": 0, "alarm": true, "tag": "RELENTLESS_BLIND", "name": "OPS_RELENTLESS_READING_RESTORE", "marks": ["MEASURED"], "title_field": "cause",
    "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "OP2: a relentless source is missing, torn, frozen, or the collector did not run. Nothing can say the belt is sane until it is seen again; the cause names which source"},

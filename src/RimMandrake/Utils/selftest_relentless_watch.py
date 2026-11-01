@@ -28,7 +28,7 @@ for tg in RULES["targets"]:     # never the real Conductor log
 RECORD = [json.loads(ln) for ln in (HERE / "testdata/relentless_jam_2026-11-01.jsonl").read_text(encoding="utf-8").splitlines()]
 for k in OW.ORDER:              # one family's collector and the real pass around it
     if k != "relentless":
-        OW.COLLECTORS[k] = lambda now, rules, ctx: {}
+        OW.COLLECTORS[k] = lambda now, rules, ctx: {"seats.blind": OW.M(0)}
 FILED = []
 
 
