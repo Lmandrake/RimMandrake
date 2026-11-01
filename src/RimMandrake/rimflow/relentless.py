@@ -441,10 +441,30 @@ class Effects:
         self._ledger = None
         self._budget = self._helpers = NOT_READ
         try:
-            self.git(self.books, "pull", "--ff-only", "--quiet")
+            self.git(self.books, "fetch", "--quiet", "origin")
+            why = self.ignored_collision()
+            if why:
+                return why
+            self.git(self.books, "merge", "--ff-only", "--quiet", "origin/main")
             return self.level_books()
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
             return "books cannot level: %s" % str(e)[:300]
+
+    def ignored_collision(self):
+        """-> why, when origin newly tracks a path the clone holds as an IGNORED file with other bytes. Neither a merge
+        nor `reset --keep` protects it and `status` cannot see it, so the check is the only thing between it and loss."""
+        new = self.git_ok(self.books, "diff", "--name-only", "--diff-filter=A", "-z", "HEAD", "origin/main").split("\0")
+        for p in filter(None, new):
+            src = os.path.join(self.books, p)
+            if not os.path.isfile(src) or self.git(self.books, "ls-files", "--error-unmatch", "--", p).returncode == 0:
+                continue
+            with open(src, "rb") as f:
+                here = f.read()
+            there = subprocess.run(["git", "-C", self.books, "show", "origin/main:" + p], capture_output=True,
+                                   check=True, timeout=60).stdout
+            if here != there:
+                return "books behind: ignored file %s differs from what origin now tracks there" % p
+        return None
 
     def level_books(self):
         """Behind origin: level the clone when all it holds is ledger already landed and item files rimflow rewrites."""
@@ -1269,6 +1289,14 @@ def enrol(store, fx, r, now):
     return took
 
 
+def ledger_has(item):
+    """The caller's own ledger, published or not: a typed id that names nothing never enters the line. Unreadable: yes."""
+    try:
+        return any(e.get("id") == item for e in pkg("model").read())
+    except Exception:  # noqa: BLE001
+        return True
+
+
 def enrol_one(store, item, why, now):
     """A person's or the Conductor's pick. It queues in enrol order like any other and takes no lease by itself."""
     with store.lock():
@@ -1277,6 +1305,24 @@ def enrol_one(store, item, why, now):
             st = new_state(item, now, why)
             store.save(st)
             store.journal({"at": iso(now), "do": "enrol", "item": item, "why": why})
+        return st
+
+
+def reenrol(store, item, why, now):
+    """Back in line after `retired`, which is otherwise for good: a named verb, journalled, for a retirement that was
+    wrong. A fresh start with the old spend: `gen` moves on, so a run of the old life stays fenced."""
+    if not (why or "").strip():
+        raise ValueError("reenrol: --why is required")
+    with store.lock():
+        old = store.load(item)
+        if not old or old["status"] != "retired":
+            raise ValueError("%s is %s, only a retired item can be re-enrolled" % (
+                item, old["status"] if old else "not enrolled"))
+        st = new_state(item, now, why)
+        st.update(gen=old["gen"] + 1, spent=old.get("spent", 0), quarantined=old.get("quarantined", []),
+                  attempts=old.get("attempts", 0))
+        store.save(st)
+        store.journal({"at": iso(now), "do": "reenrol", "item": item, "why": why})
         return st
 
 
@@ -1643,6 +1689,16 @@ def retire(store, fx, states, now, acts, r=None):
             # started means the ledger says doing with no one on it: hand it back or it reads as worked on for good
             why = fx.ledger_reclaim(st["item"]) if st["ledger_started"] else None
             acts.append({"do": "retire", "item": st["item"], "why": "excluded in the rules", "ledger": why})
+        elif led is None and st["status"] == "queued" and not st["ledger_started"]:
+            # filed but not published yet: the books have not heard of it, and that is no close (five items ended
+            # this way, 2026-11-01). It waits in line; the launch skips it until the ledger names it.
+            if not st.get("awaiting_ledger"):
+                with store.lock():
+                    cur = store.load(st["item"])
+                    cur["awaiting_ledger"] = True
+                    store.save(cur)
+                    store.journal({"at": iso(now), "do": "awaiting_ledger", "item": st["item"]})
+                acts.append({"do": "awaiting_ledger", "item": st["item"]})
         elif led is None or led["state"] in ("done", "dropped", "superseded"):
             with store.lock():
                 cur = store.load(st["item"])
@@ -1741,6 +1797,8 @@ def lease(store, fx, r, now, acts):
             acts.append({"do": "wait", "why": "check_backlog"})
             return
     for st in queue_order(store.states()):
+        if not st["ledger_started"] and fx.item_state(st["item"]) is None:     # not published yet: see retire()
+            continue
         if cfg and launched >= cfg["launch_per_tick"]:   # prepare() blocks and the tick has a timeout
             return
         # a stopping item holds its place: its slot is not free for a fresh item while it returns to the top
@@ -2118,6 +2176,9 @@ def main(argv=None):
     p = sub.add_parser("enrol", help="carry one named item, ahead of the share's next picks")
     p.add_argument("--item", required=True)
     p.add_argument("--why", required=True)
+    p = sub.add_parser("reenrol", help="put a retired item back in line; journals why")
+    p.add_argument("--item", required=True)
+    p.add_argument("--why", required=True)
     p = sub.add_parser("unhold")
     p.add_argument("item")
     p.add_argument("--owner-said")
@@ -2151,8 +2212,14 @@ def main(argv=None):
         elif a.cmd == "finish":
             finish(store, a.item, a.gen, a.sha, a.evidence)
         elif a.cmd == "enrol":
+            if not ledger_has(a.item):
+                print("relentless: REFUSED: %s has never been filed" % a.item, file=sys.stderr)
+                return 2
             st = enrol_one(Store(), a.item, a.why, time.time())
             print("%s %s" % (a.item, st["status"]))
+        elif a.cmd == "reenrol":
+            st = reenrol(Store(), a.item, a.why, time.time())
+            print("%s %s gen %d" % (a.item, st["status"], st["gen"]))
         elif a.cmd == "verdict":
             verdict(store, a.item, a.nonce, a.word, a.reasons)
         elif a.cmd == "unhold":

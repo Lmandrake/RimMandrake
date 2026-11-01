@@ -1614,6 +1614,41 @@ def t_pool_jam():
     x.done()
 
 
+def t_unpublished_enrol_waits():
+    """Filed and enrolled, not published yet: the books read None. Five items ended this way, 2026-11-01."""
+    d = tempfile.mkdtemp(prefix="rlunpub-")
+    store, w = R.Store(d), FakeWorld(0)
+    os.makedirs(store.dir, exist_ok=True)
+    R.enrol_one(store, "EARLY_ITEM", "picked", 1000)
+    acts = []
+    R.retire(store, w, store.states(), 1000, acts, dict(RULES))
+    R.retire(store, w, store.states(), 1100, acts, dict(RULES))
+    ok(store.load("EARLY_ITEM")["status"] == "queued", "an unpublished item stays in line")
+    ok([a["do"] for a in acts] == ["awaiting_ledger"], "and says so once: %s" % acts)
+    w.items["EARLY_ITEM"] = "dropped"
+    R.retire(store, w, store.states(), 1200, acts, dict(RULES))
+    ok(store.load("EARLY_ITEM")["status"] == "retiring", "the published drop still ends it")
+    st = store.load("EARLY_ITEM")
+    st["status"] = "retired"
+    store.save(st)
+    gen = st["gen"]
+    ok(R.enrol_one(store, "EARLY_ITEM", "again", 1300)["status"] == "retired", "enrol does not bring it back")
+    for bad, why in (("EARLY_ITEM", " "), ("NEVER_ENROLLED", "w")):
+        try:
+            R.reenrol(store, bad, why, 1300)
+            ok(False, "reenrol must refuse %s" % bad)
+        except ValueError:
+            ok(True, "reenrol refuses %r" % bad)
+    st = R.reenrol(store, "EARLY_ITEM", "wrongly retired", 1300)
+    ok(st["status"] == "queued" and st["gen"] == gen + 1, "the named verb does, with a new gen")
+    ok(any(j.get("do") == "reenrol" and j.get("why") == "wrongly retired" for j in map(json.loads, open(store.p("journal.jsonl"), encoding="utf-8"))), "and journals why")
+    try:
+        R.reenrol(store, "EARLY_ITEM", "twice", 1400)
+        ok(False, "reenrol of a queued item must refuse")
+    except ValueError:
+        ok(True, "only a retired item")
+
+
 def t_books_frozen():
     """Books that cannot move are an engine that cannot deploy, and nothing else in the readings shows it."""
     d = tempfile.mkdtemp(prefix="rlbooks-")
@@ -1672,6 +1707,23 @@ def t_books_frozen():
     put(b, L, "staged event\n")
     git(b, "add", L)
     ok("staged" in str(fx.sync()), "a staged change stops it")
+    git(b, "reset", "-q")
+    put(b, L, git(b, "show", "HEAD:" + L))
+    # an ignored file origin newly tracks: status cannot see it, and a merge or reset --keep would overwrite it
+    git(b, "fetch", "-q", "origin")
+    git(b, "reset", "-q", "--hard", "origin/main")
+    put(b, ".git/info/exclude", "ignored.cfg\n")
+    put(b, "ignored.cfg", "local secret\n")
+    put(up, "ignored.cfg", "upstream\n")
+    git(up, "add", "-f", "ignored.cfg")
+    git(up, "commit", "-qm", "track it")
+    git(up, "push", "-q", "origin", "main")
+    why = fx.sync()
+    ok(why and "ignored file ignored.cfg" in why, "an ignored file origin now tracks stops the books: %s" % why)
+    with open(os.path.join(b, "ignored.cfg"), encoding="utf-8") as f:
+        ok(f.read() == "local secret\n", "and it keeps its bytes")
+    put(b, "ignored.cfg", "upstream\n")
+    ok(fx.sync() is None, "the same bytes level")
     class W:
         said = []
         def conductor_alarm(self, t):
@@ -1784,7 +1836,7 @@ def t_pool_real_git():
 
 
 def main():
-    for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_pool_jam, t_pool_real_git, t_books_frozen, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_retire, t_concurrency, t_live_line):
