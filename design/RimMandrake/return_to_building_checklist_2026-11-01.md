@@ -35,8 +35,8 @@ Plan this belongs with: `tentative_plan_after_v2_lessons_2026-11-01.md`.
 
 | # | What | State |
 |---|---|---|
-| 16 | `ralph_a` | Stopped itself 13:39Z at 8 judged tasks: a task's hidden check was readable in `v3.jsonl`, so it refused. Target was 12 |
-| 17 | `trio` | Running, 7 judged tasks |
+| 16 | `ralph_a` | Stopped itself 10:46 PT at 9 judged tasks: the allowance brake (runway 0.14 below 0.15). Job 10 was started and one failed build lost; it restarts from base. Target was 12. Resumes when the brake reopens (move to the lukas account) |
+| 17 | `trio` | Stopped itself 11:08 PT at 9 judged tasks, same brake and same job-10 loss. Target was 12 |
 | 18 | Same-task comparison, invalid verdicts, v3 task count | FOUNDRY, `ARENA_VERDICT_BUILD_PAGE_AFTER_ARMS_FINISH` |
 | 19 | Fan-out simulators and refit | Helper running |
 
