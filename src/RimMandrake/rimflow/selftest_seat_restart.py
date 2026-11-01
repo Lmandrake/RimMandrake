@@ -187,10 +187,10 @@ def test_helper_alive_holds():
           "a STALE live-looking helper still holds, and alarms (never read as dead) (%s)" % dos(a2))
 
 
-def test_request_refused_with_live_helper():
+def test_request_gate_is_identity_only():
     ok, why = SR.check_request("FOUNDRY", {"pid": 4242, "sessionId": "sid-old", "name": "AGENT FOUNDRY"},
                                [{"id": "agent-a1", "alive": True, "last_at": T0}])
-    check(not ok and "agent-a1" in why, "seat-side request refuses while a helper is alive (%s)" % why)
+    check(ok, "a live helper never refuses a request: only the kill waits (%s)" % why)
     ok, why = SR.check_request("FOUNDRY", {"pid": 4242, "sessionId": "sid-old", "name": "AGENT FOUNDRY"}, [])
     check(ok, "no helper -> request allowed (%s)" % why)
     ok, why = SR.check_request("FOUNDRY", {"pid": 4242, "sessionId": "sid-old", "name": "AGENT BENCH"}, [])
@@ -1751,7 +1751,7 @@ def test_j3_malformed_cancels_and_torn_holds():
     os.makedirs(sub, exist_ok=True)
     with open(os.path.join(sub, "agent-torn.jsonl"), "w") as f:
         f.write(json.dumps(_ha("1970-01-12T13:45:10Z")) + "\n" + '{"type": "assi')
-    check(SR.helpers_of(p) is None, "J3 helpers_of is UNMEASURED on a torn helper transcript")
+    check([h["alive"] for h in SR.helpers_of(p)] == [True], "J3 a torn helper transcript is alive, never UNMEASURED")
     os.remove(os.path.join(sub, "agent-torn.jsonl"))
 
 
@@ -2129,6 +2129,240 @@ def test_k5_review_of_the_death_fixes():
     finally:
         SR.intile_claim, SR.orphan_owed, SR.os.execv = saved
     check(rc == 7, "K5 the tile claims once more before it gives up (%s)" % rc)
+
+
+LIVE4 = [{"id": "agent-h%d" % i, "alive": True, "last_at": T0 + 100, "desc": "job %d" % i} for i in range(4)]
+
+
+def _deferred(ctx=300_000, helpers=LIVE4, unpub=None):
+    """cmd_request with helpers live, the shard dirty as theirs always makes it -> (exit, printed, the request)."""
+    import contextlib
+    import io
+    raw = {"seats": {"FOUNDRY": {"session_name": "AGENT FOUNDRY", "clone": CLONE}},
+           "seat_restart": {"enabled": True, "seats": {"FOUNDRY": {}}}}
+    rp = SR.request_path("FOUNDRY")
+    names = ("unpublished_shard", "helpers_of", "_schedule", "session_file", "reg_start", "proc_start", "tx_summary",
+             "last_human")
+    saved = {k: getattr(SR, k) for k in names}
+    try:
+        SR.helpers_of = lambda path, now=None, stale_s=None: helpers
+        SR.last_human = lambda path, peers=None: (T0 - 5, {"message": {"content": "x"}}, 100, 200)
+        SR.unpublished_shard = lambda seat, clone: unpub
+        SR._schedule = lambda: raw
+        SR.session_file = lambda pid: {"pid": pid, "sessionId": "sid-old", "name": "AGENT FOUNDRY", "cwd": CLONE,
+                                       "procStart": "77"}
+        SR.reg_start = lambda sf: 77
+        SR.proc_start = lambda pid: 77
+        SR.tx_summary = lambda path, *a, **k: {"last_kind": "assistant_tool", "last_at": T0, "last_user_at": T0 - 5,
+                                               "ctx_tokens": ctx}
+        if os.path.exists(rp):
+            os.remove(rp)
+        buf = io.StringIO()
+        with contextlib.redirect_stdout(buf):
+            rc = SR.main(["request", "--seat", "FOUNDRY", "--ticket", "T_DONE", "--pid", "4242", "--note", "landed x"])
+        return rc, buf.getvalue(), SR._read_json(rp)
+    finally:
+        for k, v in saved.items():
+            setattr(SR, k, v)
+
+
+def test_d1_request_records_and_only_the_kill_waits():
+    rc, out, rq = _deferred(unpub="infrastructure/state/ledger/events/FOUNDRY.jsonl has uncommitted lines")
+    check(rc == 0 and "DEFERRED" in out and "REFUSED" not in out, "D1 4 live helpers and a dirty shard: DEFERRED (%s)" % out[:200])
+    check(rq and rq.get("deferred") is True and rq.get("ctx_tokens") == 300_000
+          and [h["id"] for h in rq["helpers"]] == [h["id"] for h in LIVE4] and "uncommitted" in rq.get("shard_owed", ""),
+          "D1 the request records intent, context reading, helpers and what is owed (%s)" % rq)
+    check("job 2" in out, "D1 the print names the helpers by what they do")
+    rc, out, rq = _deferred(helpers=None)
+    check(rc == 0 and "DEFERRED" in out and rq and rq.get("deferred") is True, "D1 an unreadable inventory defers too")
+    rc, out, rq = _deferred(ctx=1000)
+    check(rc == 0 and "CONTEXT OK" in out and "DEFERRED" not in out, "D1 under the backstop a helper changes nothing")
+    rc, out, rq = _deferred(helpers=[], unpub="x has uncommitted lines")
+    check(rc == 3 and "REFUSED" in out, "D1 no helper alive: a dirty shard is the seat's own and is still refused")
+
+
+def _defer_req():
+    return dict(req(), deferred=True)
+
+
+def _renew(ts_s, ticket="HELPER_ITEM"):
+    return {"event": "lease", "action": "renew", "id": ticket, "seat": "FOUNDRY", "ts": SR._iso(ts_s)}
+
+
+def test_d10_listed_helper_gone_by_first_poll_still_reaches_the_wake():
+    sch, st = sched(), fresh()
+    rq = dict(_defer_req(), helpers=[{"id": "agent-quick", "desc": "quick job"}])
+    run(sch, st, obs(request=rq, helpers=[]), T0 + 30)
+    check(st["seat_restart"]["FOUNDRY"].get("drained") == {"agent-quick": "quick job"},
+          "D10 a helper done before the first poll is still listed (%s)" % st["seat_restart"]["FOUNDRY"])
+
+
+def test_d11_shard_rechecked_at_the_kill():
+    sch = sched()
+    rs = {"ts": T0, "ticket": "T_DONE", "session_id": "sid-old", "deferred": True}
+    sf = {"pid": 1, "sessionId": "sid-old", "cwd": CLONE}
+    holds = SR.recheck_at_kill("FOUNDRY", sch, rs, sf, paused=lambda: None, work=lambda s_, ts: [],
+                               shard=lambda s_: "x has uncommitted lines")
+    check(any("unpublished" in h for h in holds), "D11 an append after the verdict holds the kill (%s)" % holds)
+    holds = SR.recheck_at_kill("FOUNDRY", sch, rs, sf, paused=lambda: None, work=lambda s_, ts: [], shard=lambda s_: None)
+    check(not any("unpublished" in h for h in holds), "D11 a published shard does not hold (%s)" % holds)
+    holds = SR.recheck_at_kill("FOUNDRY", sch, dict(rs, deferred=False), sf, paused=lambda: None, work=lambda s_, ts: [],
+                               shard=lambda s_: "x has uncommitted lines")
+    check(not any("unpublished" in h for h in holds), "D11 no deferral: the request gate already spoke (%s)" % holds)
+
+
+def test_d2_helper_events_never_void_a_drain():
+    sch, st = sched(), fresh()
+    ev = [_renew(T0 + 50), {"event": "start", "id": "HELPER_ITEM", "seat": "FOUNDRY", "ts": SR._iso(T0 + 60)}]
+    a = run(sch, st, obs(request=_defer_req(), helpers=LIVE4, work=ev), T0 + 30)
+    a += run(sch, st, obs(helpers=LIVE4, work=ev), T0 + 300)
+    check(state(st) == "pending" and "restart_kill" not in dos(a), "D2 helper claims and renewals do not cancel a drain (%s)" % a)
+    check(st["seat_restart"]["FOUNDRY"].get("deferred") is True, "D2 the deferral reaches the Dispatcher's record")
+    # planted fault: the same events on a request with no deferral still cancel (the old guard stands)
+    st2 = fresh()
+    a2 = run(sch, st2, obs(request=req(), helpers=[], work=ev), T0 + 30)
+    check(state(st2) != "pending", "D2 no deferral: new work still voids the request (%s)" % dos(a2))
+
+
+def test_d3_last_helper_ends_then_kill_never_before():
+    sch, st = sched(), fresh()
+    run(sch, st, obs(request=_defer_req(), helpers=LIVE4), T0 + 30)
+    a = run(sch, st, obs(helpers=LIVE4[:1]), T0 + 400)
+    check("restart_kill" not in dos(a) and any("job 0" in (x.get("why") or "") for x in a), "D3 one left: held, by name")
+    done = [dict(h, alive=False, last_at=T0 + 500) for h in LIVE4]
+    work = []
+    def since(seat, ts):
+        work.append(ts)
+        return [_renew(T0 + 490)]
+    o = obs(helpers=done)
+    o["seat_restart"]["work"] = since
+    a = run(sch, st, o, T0 + 600)
+    check("restart_kill" in dos(a), "D3 all ended: the kill goes, the final renewal is no new work (%s)" % dos(a))
+    check(work and work[-1] >= T0 + 500, "D3 new work is read from where the last helper stopped (%s)" % work)
+    rs = st["seat_restart"]["FOUNDRY"]
+    check(sorted(rs.get("drained") or {}) == sorted(h["id"] for h in LIVE4), "D3 the drained helpers stay on the record")
+    # after the last helper the SEAT takes a ticket: voided, it would be killed mid-ticket
+    sch, st = sched(), fresh()
+    run(sch, st, obs(request=_defer_req(), helpers=LIVE4), T0 + 30)
+    done = [dict(h, alive=False, last_at=T0 + 200) for h in LIVE4]
+    a = run(sch, st, obs(helpers=done, work=[{"event": "start", "id": "SEAT_ITEM", "seat": "FOUNDRY",
+                                              "ts": SR._iso(T0 + 300)}]), T0 + 400)
+    check(state(st) != "pending", "D3 real new work after the drain ended still cancels (%s)" % dos(a))
+
+
+def test_d4_alarm_names_them_at_the_bound():
+    sch, st = sched(), fresh()
+    run(sch, st, obs(request=_defer_req(), helpers=LIVE4), T0 + 30)
+    run(sch, st, obs(helpers=LIVE4), T0 + 300)
+    fresh4 = [dict(h, last_at=T0 + 2900) for h in LIVE4]
+    a = run(sch, st, obs(helpers=fresh4), T0 + 3000)
+    check(not any(x["do"] == "alarm" for x in a), "D4 no alarm before the bound (%s)" % dos(a))
+    live = [dict(h, last_at=T0 + 3800) for h in LIVE4]
+    a = run(sch, st, obs(helpers=live), T0 + 3950)
+    al = [x for x in a if x["do"] == "alarm"]
+    check(al and all(h["id"] in al[0]["why"] and h["desc"] in al[0]["why"] for h in LIVE4),
+          "D4 past 3600 s the alarm carries every name (%s)" % al[:1])
+    check("restart_kill" not in dos(a) and state(st) == "pending", "D4 the alarm kills nothing")
+
+
+def test_d5_hold_for_the_shard_and_no_busy_failure():
+    sch, st = sched(), fresh()
+    run(sch, st, obs(request=_defer_req(), helpers=LIVE4), T0 + 30)
+    done = [dict(h, alive=False, last_at=T0 + 200) for h in LIVE4]
+    o = obs(helpers=done)
+    o["seat_restart"]["shard"] = lambda seat: "shard has uncommitted lines"
+    a = run(sch, st, o, T0 + 400)
+    check("restart_kill" not in dos(a) and any("unpublished" in (x.get("why") or "") for x in a),
+          "D5 the shard the refusal skipped holds the kill (%s)" % dos(a))
+    # its last helper's notice wakes it: busy for many ticks is no failed request
+    sb = obs(helpers=done, sessions=[sess(status="busy")], tx={"last_kind": "assistant_tool", "last_at": T0 + 500})
+    for t in range(5):
+        a = run(sch, st, sb, T0 + 500 + 60 * t)
+    check(state(st) == "pending", "D5 a window working out its helper's result is held, not failed (%s)" % state(st))
+    # planted fault: without the deferral the same ticks fail
+    st2 = fresh()
+    run(sch, st2, obs(request=req(), helpers=[]), T0 + 30)
+    for t in range(5):
+        run(sch, st2, obs(helpers=[], sessions=[sess(status="busy")], tx={"last_kind": "assistant_tool", "last_at": T0 + 500}), T0 + 500 + 60 * t)
+    check(state(st2) != "pending", "D5 no deferral: the busy failure still fires (%s)" % state(st2))
+
+
+def test_d6_conductor_drain_survives_a_notice_not_his_word():
+    cfg = dict(SR.DEFAULTS, kind="conductor", goodbye_quiet_s=600)
+    notice = {"type": "attachment", "attachment": {"type": "queued_command", "commandMode": "task-notification",
+                                                   "prompt": "<task-notification> done"}}
+    peer = {"type": "user", "message": {"content": "peer says hi"}, "origin": {"kind": "peer"}}
+    base = {"human": [], "inputs": [notice], "last_at": T0, "size": 10, "malformed": None, "torn": None}
+    rs = {"ts": T0, "tx_offset": 1, "source": "request"}
+    check(SR.cursor_verdict(cfg, dict(rs), dict(base), T0 + 1)[0] == "cancel", "D6 no deferral: any input cancels a goodbye")
+    check(SR.cursor_verdict(cfg, dict(rs, deferred=True), dict(base), T0 + 1)[0] != "cancel",
+          "D6 deferred: a helper's notice does not void the goodbye")
+    check(SR.cursor_verdict(cfg, dict(rs, deferred=True), dict(base, inputs=[notice, peer]), T0 + 1)[0] == "cancel",
+          "D6 deferred: any other input still cancels")
+
+
+def test_d7_drain_is_derived_and_bound_to_one_session():
+    root = tempfile.mkdtemp(prefix="drain_", dir=TMP)
+    os.makedirs(SR.restart_dir(root))
+    now = T0 + 10
+    D = lambda sid: SR.drain_of("FOUNDRY", sid, root=root, now=now)
+    check(D("sid-old") is None, "D7 nothing on disk: no drain")
+    SR._write_json(SR.request_path("FOUNDRY", root), req())
+    check(D("sid-old"), "D7 a recorded request drains before any tick has read it")
+    check(D("sid-new") is None, "D7 another session is not drained by it")
+    check(D(None) is None, "D7 an unknown session fails open")
+    check(SR.drain_of("FOUNDRY", "sid-old", root=root, now=T0 + 2 * SR.DEFAULTS["request_max_age_s"]) is None,
+          "D7 a request nobody read ages out")
+    stf = os.path.join(root, "state.json")
+    SR._write_json(stf, {"seat_restart": {"FOUNDRY": {"state": "cancelled", "session_id": "sid-old", "req_ts": T0}}})
+    check(D("sid-old") is None, "D7 a cancelled restart ends the drain though the request file stays")
+    SR._write_json(stf, {"seat_restart": {"FOUNDRY": {"state": "pending", "session_id": "sid-old", "hard": True,
+                                                      "reason": "hard context limit"}}})
+    os.remove(SR.request_path("FOUNDRY", root))
+    check("hard" in (D("sid-old") or ""), "D7 the hard limit drains with no request at all")
+    check(D("sid-new") is None, "D7 a pending restart of the old session never freezes the next window")
+    with open(stf, "w") as f:
+        f.write("{torn")
+    check(D("sid-old") is None, "D7 an unreadable state fails open")
+
+
+def test_d8_ring_held_through_a_drain():
+    sch, st = sched(), fresh()
+    run(sch, st, obs(request=_defer_req(), helpers=LIVE4), T0 + 30)
+    check("draining" in (SR.ring_hold(st, "FOUNDRY", sch, T0 + 99999) or ""), "D8 no ring however long a drain runs")
+    st2 = fresh()
+    run(sch, st2, obs(request=req(), helpers=[]), T0 + 1)
+    check(SR.ring_hold(st2, "FOUNDRY", sch, T0 + 99999) is None, "D8 a plain request keeps its bounded ring hold")
+
+
+def test_d9_torn_helper_alive_and_wake_lists_them():
+    root = tempfile.mkdtemp(prefix="torn_", dir=TMP)
+    main = os.path.join(root, "s.jsonl")
+    sub = os.path.join(root, "s", "subagents")
+    os.makedirs(sub)
+    open(main, "w").close()
+    p = os.path.join(sub, "agent-t.jsonl")
+    with open(p, "w") as f:
+        f.write('{"type":"assistant","message":{"stop_reason":"end_turn","content":[{"type":"text","text":"x"}]}}\n{"type":"us')
+    SR._write_json(os.path.join(sub, "agent-t.meta.json"), {"description": "torn job"})
+    h = SR.helpers_of(main, now=time.time())
+    check(h and h[0]["alive"] and h[0].get("desc") == "torn job", "D9 a transcript mid-write is alive, never UNMEASURED (%s)" % h)
+    os.utime(p, (time.time() - 99999, time.time() - 99999))
+    h = SR.helpers_of(main, now=time.time())
+    check(h and not h[0]["alive"] and h[0].get("retired"), "D9 torn and silent past the bound retires (%s)" % h)
+    with open(p, "w") as f:
+        f.write('not json\n')
+    check(SR.helpers_of(main, now=time.time()) is None, "D9 a whole bad line stays UNMEASURED")
+    import contextlib
+    import io
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        SR._wake_helpers({"tx_path": main, "drained": {"agent-t": "torn job"}})
+    check("agent-t" in buf.getvalue() and "torn job" in buf.getvalue() and sub in buf.getvalue(), "D9 the wake lists each drained helper and its transcript")
+    buf = io.StringIO()
+    with contextlib.redirect_stdout(buf):
+        SR._wake_helpers({"tx_path": main, "drained": {"a": ""}, "aborted": True})
+    check(not buf.getvalue(), "D9 an aborted record lists nothing")
 
 
 def main():

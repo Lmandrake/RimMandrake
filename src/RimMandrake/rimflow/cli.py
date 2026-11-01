@@ -881,12 +881,28 @@ def cmd_bench(args, seat):
     return 0
 
 
+def _draining(seat):
+    """Why this window is draining for a restart, or None. Readable or not, `next` still works: this never stops a seat."""
+    try:
+        import seat_restart as SR
+        pid = SR.doorbell.claude_ancestor()
+        sf = SR.session_file(pid) if pid else None
+        return SR.drain_of(seat, (sf or {}).get("sessionId"))
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def cmd_next(args, seat):
     if getattr(args, "bench", False):
         return cmd_bench(args, seat)
     if getattr(args, "acceptance", False):
         return _print_acceptance(args, seat)
     peek = bool(getattr(args, "peek", False))
+    why = None if peek else _draining(seat)
+    if why:
+        print("DRAINING: this window's restart is under way (%s). Take no work: finish what runs, publish, end your "
+              "turn. The fresh window takes the next item." % why)
+        return 0
     evs, w = load()
     # 🔴 MEASURE BEFORE OFFERING. `next` decides what a seat may work on, and half of
     # that decision is the game state — so it reads it from the machine, not from what

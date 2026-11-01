@@ -69,6 +69,17 @@ def last_typed(payload):
         return None
 
 
+def draining(seat, payload, now):
+    """Why this window is draining, or None. Its own failure must leave the slot logic standing, so it is caught here."""
+    try:
+        if str(RIMFLOW) not in sys.path:
+            sys.path.insert(0, str(RIMFLOW))
+        import seat_restart as SR
+        return SR.drain_of(seat, payload.get("session_id"), now=now)
+    except Exception:  # noqa: BLE001
+        return None
+
+
 def session_exempt(seat, payload, rules, now):
     """True when the helper cap does not apply: the interactive Conductor window (seat BENCH, no RM_ROLE_UNIT: a
     scheduled or Dispatcher role run always carries it) while the owner typed within conductor_window.open_min.
@@ -121,6 +132,13 @@ def decide(payload, now=None):
     rules = SA.load_rules(os.environ.get("RM_SLOT_RULES") or UTILS / "slot_rules.json")
     if seat not in (rules.get("enforce_seats") or []) or seat not in SA.SEAT_PROJECT:
         return None
+    drain = draining(seat, payload, now)
+    if drain:
+        return (
+            f"Blocked: this {SA.seat_label(seat)} window is draining for its restart ({drain}). Running helpers finish; "
+            "no new one starts, because the kill waits on every helper alive. File what you wanted it to do in the "
+            "ledger: the fresh window picks it up. (CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE)"
+        )
     if session_exempt(seat, payload, rules, now):
         return None
     n, mode, why, src = allowed_n(SA, rules, seat, now)

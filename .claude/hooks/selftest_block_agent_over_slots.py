@@ -216,5 +216,29 @@ rc, dec, why = run(session=True)
 check("a lapsed word no longer lifts it", dec == "deny", (dec, why[:300]))
 (streams / "slot_override.json").unlink()
 
+# ---- CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE: a window draining for its restart spawns nothing, the owner's open policy
+# included; the drain binds to one session, so no other window and no stale record is touched
+state_f = disp / "state.json"
+keep_state = state_f.read_text() if state_f.exists() else None
+# his word raises N to 9, so a refusal below can only be the drain's
+(streams / "slot_override.json").write_text(json.dumps({"ownerSaid": "run nine", "until": iso(time.time() + H),
+                                                        "seats": {"BENCH": 9}}))
+body = lambda sid: json.dumps({"tool_name": "Agent", "cwd": "/x", "session_id": sid,
+                               "tool_input": {"prompt": "p", "model": "sonnet"}})
+state_f.write_text(json.dumps({"seat_restart": {"BENCH": {"state": "pending", "session_id": "sid-drain", "hard": True,
+                                                          "reason": "hard context limit: 400000 tokens"}}}))
+rc, dec, why = run(stdin=body("sid-drain"), session=True)
+check("the draining window is refused, with the reason", dec == "deny" and "draining" in why and "hard context" in why, (dec, why[:300]))
+rc, dec, why = run(stdin=body("sid-other"), session=True)
+check("another session of the seat is not", dec != "deny", (dec, why[:300]))
+state_f.write_text("{torn")
+rc, dec, why = run(stdin=body("sid-drain"), session=True)
+check("an unreadable state leaves the slot logic standing", dec != "deny", (dec, why[:300]))
+(streams / "slot_override.json").unlink()
+if keep_state is None:
+    state_f.unlink()
+else:
+    state_f.write_text(keep_state)
+
 print(f"\n{'GREEN' if not FAILS else 'RED'}: {len(FAILS)} failed")
 sys.exit(1 if FAILS else 0)

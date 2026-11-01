@@ -649,7 +649,9 @@ def helpers_of(path, now=None, stale_s=None):
         try:
             mt = os.path.getmtime(f)
             recs = [r for r in _tail_records(f, 256 << 10) if r.get("type") in ("user", "assistant")]
-        except (OSError, Malformed):     # a helper mid-write or with a bad line: inventory UNMEASURED (review2 P0-2)
+        except Torn:                     # no newline at EOF: it is being written this instant, so it is alive; a helper
+            recs = []                    # that died mid-write still retires by silence below. Never UNMEASURED: a busy
+        except (OSError, Malformed):     # helper would blind every tick (a bad line whole in the file still does)
             return None
         alive = not (recs and recs[-1].get("type") == "assistant" and _assistant_kind(recs[-1]) == "assistant_end")
         retired = None                   # proof of death (lesson 20261030T163434Z): an API/auth error is the last record
@@ -659,9 +661,15 @@ def helpers_of(path, now=None, stale_s=None):
             retired = "transcript silent %d s" % (now - mt)   # or silent past the bound (above the 600 s subagent watchdog)
         if retired:
             alive = False
+        desc = (_read_json(f[:-len(".jsonl")] + ".meta.json") or {}).get("description")
         out.append({"id": os.path.basename(f)[:-len(".jsonl")], "alive": alive, "last_at": mt,
-                    **({"retired": retired} if retired else {})})
+                    **({"retired": retired} if retired else {}), **({"desc": desc} if desc else {})})
     return out
+
+
+def helper_names(hs):
+    """The ids a human can act on: each with the description it was spawned under."""
+    return ", ".join("%s (%s)" % (h["id"], h["desc"]) if h.get("desc") else h["id"] for h in hs)
 
 
 def bridge_reading(seat):
@@ -730,12 +738,14 @@ def work_since(clone, seat, req_ts):
     return out
 
 
-def new_work(events, ticket):
+def new_work(events, ticket, drain=False):
     """-> the first event in events that is NEW work after a restart request for ticket, or None. Taking, claiming or
-    starting any ticket is new work; renewing a lease is new work only on a ticket other than the request's own."""
+    starting any ticket is new work; renewing a lease is new work only on a ticket other than the request's own, and
+    never during a drain: a renewal is the ticket of a helper finishing, which shares the seat's shard."""
     for ev in events or []:
         if ev.get("event") == "lease":
-            if ev.get("action") not in WORK_LEASE or (ev.get("action") == "renew" and ticket and ev.get("id") == ticket):
+            if (ev.get("action") not in WORK_LEASE
+                    or (ev.get("action") == "renew" and (drain or (ticket and ev.get("id") == ticket)))):
                 continue
         elif ev.get("event") not in WORK_EVENTS:
             continue
@@ -767,6 +777,7 @@ def default_obs(sch, events_since, now_fn=time.time):
         "request": lambda seat: _read_json(request_path(seat)),
         "tx": lambda seat, s: tx_summary(transcript_for(s, cfgs[seat]) or ""),
         "helpers": lambda seat, s: helpers_of(transcript_for(s, cfgs[seat]), now_fn(), cfgs[seat].get("helper_stale_s")),
+        "shard": lambda seat: unpublished_shard(seat, cfgs[seat].get("clone") or REPO),
         "killed": killed_reading,
         "start": proc_start,
         "bridge": bridge_reading,
@@ -850,6 +861,8 @@ def ring_hold(st, seat, sch, now):
     if rs.get("state") != "pending" or rs.get("ts") is None:
         return None
     age = now - rs["ts"]
+    if rs.get("deferred"):               # a drain has no ring window: the kill waits on helpers, not on a clock
+        return "seat restart deferred (%d s old): draining, no ring until it ends" % age
     if age >= cfg["grace_s"] + cfg["ring_hold_s"] + (cfg["backstop_hard_alarm_s"] if rs.get("hard") else 0):
         return None
     return "seat restart pending (%d s old): no ring until it ends" % age
@@ -1009,8 +1022,12 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                    "cancel_after": float(req["input_ts"]) if req.get("input_ts") is not None else ts,
                    "tx_offset": req.get("tx_offset"), "tx_path": req.get("tx_path"),
                    "closeout": req.get("closeout"), "gaps": req.get("gaps")}
+            if req.get("deferred") is True:
+                new["deferred"] = True
+                new["drained"] = {h["id"]: h.get("desc") or "" for h in req.get("helpers") or []}
             act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
-                req_ts=req["ts"], why="requested by %s: %s" % (seat, req.get("reason")))
+                req_ts=req["ts"], why="%s by %s: %s" % ("DEFERRED (only the kill waits)" if new.get("deferred")
+                                                        else "requested", seat, req.get("reason")))
             R[seat] = new
             if req.get("seat") not in (None, seat):
                 return _cancel(new, seat, "request is for seat %s" % req.get("seat"), now, act)
@@ -1146,6 +1163,15 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                 else "has an unreadable transcript" if not tx else "never armed its doorbell"), cfg["arm_s"]), now, act)
 
 
+def _is_helper_notice(r):
+    """A record of a helper's completion notice, in any of the three shapes the transcript holds one."""
+    a = r.get("attachment") or {}
+    if (r.get("origin") or {}).get("kind") == "task-notification" or a.get("commandMode") == "task-notification":
+        return True
+    body = _text(r) or a.get("prompt") or r.get("content") or ""
+    return isinstance(body, str) and body.lstrip().startswith("<task-notification>")
+
+
 def cursor_verdict(cfg, rs, sc, now, track=True):
     """Judge one full read of the window's transcript from rs's byte cursor (cursor_scan's dict, or None).
     -> ("cancel", why) | ("hold", why) | ("ok", None).
@@ -1171,8 +1197,10 @@ def cursor_verdict(cfg, rs, sc, now, track=True):
         r = sc["human"][-1]
         return "cancel", "new input in the window at %s, after the cursor (cursor scan): %s" % (
             _iso(_ts(r.get("timestamp"))), _text(r)[:80])
-    if conductor and sc.get("inputs"):
-        r = sc["inputs"][-1]
+    # a drain waits for helpers to finish, so their notices must not void it; every other input still cancels
+    inputs = [r for r in sc.get("inputs") or [] if not (rs.get("deferred") and _is_helper_notice(r))]
+    if conductor and inputs:
+        r = inputs[-1]
         return "cancel", "input after the goodbye (any input cancels a Conductor restart): %s %s" % (
             r.get("type"), (_text(r) or str(r.get("content") or ""))[:80])
     if sc.get("malformed"):
@@ -1262,6 +1290,9 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
             # his own request stands even if a compaction would cancel the forced one: source no longer says size
             rs.update(req_ts=req["ts"], ticket=req.get("ticket") or rs.get("ticket"), source="request",
                       work_from=req["ts"])
+            if req.get("deferred") is True:
+                rs["deferred"] = True
+                rs.setdefault("drained", {}).update({h["id"]: h.get("desc") or "" for h in req.get("helpers") or []})
             act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
                 req_ts=req["ts"], why="the seat's own request joins the hard restart: %s" % req.get("reason"))
     sc = None
@@ -1277,20 +1308,29 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     # SEAT_RESTART_FIX_KILL_AFTER_NEW_WORK (Codex review 2026-10-29 P1 1): machine input no longer cancels (0cf054ade8),
     # so a seat that took a ticket after its request and then idled on external input would be killed mid-ticket.
     # Its own ledger says so: any claim/start/lease take after the request voids it. Unreadable -> held below.
+    # A drain (CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE): helpers write to the seat's own shard under the seat's name, and
+    # nothing there tells them from the seat. So while one runs nothing counts, and the clock for new work starts where
+    # the last helper stopped writing. The seat's own `next` refuses meanwhile (drain_of).
+    hs = ro["helpers"](seat, cur)
+    live = [h for h in hs or [] if h.get("alive")]
+    deferred = rs.get("deferred") is True
+    if live:                             # the wake lists them whatever they became: a helper's result dies with it
+        seen = rs.setdefault("drained", {})
+        seen.update({h["id"]: h.get("desc") or "" for h in live})
+    if deferred and hs:
+        rs["work_from"] = max([rs.get("work_from", rs["ts"])] + [h.get("last_at") or 0 for h in hs])
     work = ro["work"](seat, rs.get("work_from", rs["ts"])) if ro.get("work") else None
-    nw = new_work(work, rs.get("ticket"))
+    nw = None if deferred and (live or hs is None) else new_work(work, rs.get("ticket"), drain=deferred)
     if nw and not sized:                 # forced: taking work is exactly what a busy window does, and the limit stands
         return _cancel(rs, seat, _work_why(nw), now, act)
     if now - rs["ts"] < cfg["grace_s"]:
         act(do="restart_hold", seat=seat, why="grace: %d s left" % (cfg["grace_s"] - (now - rs["ts"])))
         return
     holds = [cursor_hold] if cursor_hold else []
-    hs = ro["helpers"](seat, cur)
-    live = [h for h in hs or [] if h.get("alive")]
     if hs is None:
         holds.append("helper inventory UNMEASURED (transcript or a subagent file unreadable)")
     if live:
-        holds.append("helper(s) alive: %s" % ", ".join(h["id"] for h in live))
+        holds.append("helper(s) alive: %s" % helper_names(live))
         stale = [h for h in live if now - (h.get("last_at") or now) > cfg["helper_stale_s"]]
         if stale:
             act(do="alarm", kind="restart:%s:helper_stale" % seat, seat=seat, note=True,
@@ -1298,6 +1338,10 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
                     seat, cfg["helper_stale_s"], ", ".join(h["id"] for h in stale)))
     if work is None:
         holds.append("the seat's ledger shard is UNMEASURED (cannot tell whether it took new work)")
+    if deferred and hs is not None and not live and callable(ro.get("shard")):   # the refusal the deferral skipped
+        unpub = ro["shard"](seat)
+        if unpub:
+            holds.append("ledger shard unpublished: %s" % unpub)
     br = ro["bridge"](seat) or {}
     if br.get("state") != "MEASURED":
         holds.append("bridge unreadable (%s)" % br.get("why"))
@@ -1333,6 +1377,14 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
     rs.pop("held_since", None)
     quiet = (cur.get("status") == "idle" and tx and killable_turn(tx)
              and now - (tx.get("last_at") or now) >= cfg["quiet_s"])
+    if not quiet and deferred and not hard:   # its last helper's notice wakes it: working that out is no failed request
+        rs.setdefault("busy_since", now)
+        why = "no boundary yet (status %s, last record %s)" % (cur.get("status"), (tx or {}).get("last_kind", "unreadable"))
+        if now - rs["busy_since"] >= cfg["hold_alarm_s"]:
+            act(do="alarm", kind="restart:%s:held" % seat, seat=seat, ticket=rs.get("ticket"), note=True,
+                why="deferred restart of %s never reached a boundary in %d s: %s" % (seat, now - rs["busy_since"], why))
+        act(do="restart_hold", seat=seat, why=why)
+        return
     if not quiet and hard:               # the window working on is what this limit waits out: no fail, no kill
         why = "no boundary yet (status %s, last record %s)" % (cur.get("status"), (tx or {}).get("last_kind", "unreadable"))
         _no_boundary(seat, cfg, memo, now, act, why)
@@ -1470,7 +1522,7 @@ def _kill_record(seat, a, sch, rs, start, now):
             "input_ts": rs.get("cancel_after"), "tx_offset": rs.get("tx_offset"),   # the wake reads on from here (P1-5)
             # the transcript the request named (review 2 P1-4) and this restart's generation, which only the relaunch
             # prompt carries (review 2 P1-5)
-            "tx_path": rs.get("tx_path"), "gen": a.get("gen") or rs.get("gen"),
+            "tx_path": rs.get("tx_path"), "gen": a.get("gen") or rs.get("gen"), "drained": rs.get("drained"),
             "closeout": closeout, "gaps": gaps,                                  # close-out gaps: the wake retries them
             "source": rs.get("source"), "ctx_tokens": rs.get("ctx_tokens"),      # a forced restart's wake digests the old window
             "reads": cfg.get("kind") == "conductor", "arm_s": cfg["arm_s"],      # a wake that must be answered (`answered`)
@@ -1700,7 +1752,7 @@ def paused_now():
         return "PAUSE unreadable: %s" % e
 
 
-def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pending_holds):
+def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pending_holds, shard=None):
     """-> the holds found by reading transcript, helpers, bridge and PAUSE again at the kill
     (empty = go). Between this and the signal there is no barrier: that gap is one /proc start read, the killed-record
     write, the pidfd open and its start re-check (milliseconds)."""
@@ -1730,7 +1782,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
     if hs is None:
         holds.append("helper inventory UNMEASURED")
     elif any(h.get("alive") for h in hs):
-        holds.append("helper(s) alive: %s" % ", ".join(h["id"] for h in hs if h.get("alive")))
+        holds.append("helper(s) alive: %s" % helper_names([h for h in hs if h.get("alive")]))
     br = bridge_reading(seat)
     if br.get("state") != "MEASURED" or seat in (br.get("holders") or []):
         holds.append("bridge %s" % (br.get("why") or "held by %s" % seat))
@@ -1741,9 +1793,13 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
     if evs is None:
         holds.append("ledger shard UNMEASURED")
     else:
-        nw = new_work(evs, rs.get("ticket"))
+        nw = new_work(evs, rs.get("ticket"), drain=rs.get("deferred") is True)
         if nw and rs.get("source") not in FORCED:
             holds.append(_work_why(nw))
+    if rs.get("deferred") is True:       # a helper's last append can land between the verdict and the kill
+        unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat)
+        if unpub:
+            holds.append("ledger shard unpublished: %s" % unpub)
     return holds
 
 
@@ -1835,18 +1891,14 @@ def orphan_owed(seat, sch, st):
 
 
 def check_request(seat, sf, helpers):
-    """Seat-side gate: the calling window must be the seat's window, and no helper of it may be alive."""
+    """Seat-side gate: the calling window must be the seat's window. A live helper never refuses: only the kill waits
+    (CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE)."""
     if not sf or not sf.get("sessionId"):
         return False, "no ~/.claude/sessions/<pid>.json for the calling window"
     names = SM.seat_names(seat)
     if not SM.name_matches(sf.get("name"), names):
         return False, "this window is %r, not %s" % (sf.get("name"), " / ".join("'%s'" % n for n in names))
-    if helpers is None:
-        return False, "helper inventory UNMEASURED (transcript or a subagent file unreadable)"
-    live = [h["id"] for h in helpers if h.get("alive")]
-    if live:
-        return False, "helper(s) still alive: %s: wait for them (or stop them) before the close-out" % ", ".join(live)
-    ret = ["%s (%s)" % (h["id"], h["retired"]) for h in helpers if h.get("retired")]
+    ret = ["%s (%s)" % (h["id"], h["retired"]) for h in helpers or [] if h.get("retired")]
     return True, ("ok; retired dead helper(s): %s" % ", ".join(ret)) if ret else "ok"
 
 
@@ -1870,6 +1922,25 @@ def unpublished_shard(seat, clone):
         return "%s has uncommitted lines" % rel
     if ahead.stdout.strip():
         return "%s has %d commit(s) not pushed" % (rel, len(ahead.stdout.strip().splitlines()))
+    return None
+
+
+def drain_of(seat, session_id, root=None, now=None):
+    """-> why this window is draining, or None. A restart is on its way (a recorded request, or a pending one the
+    Dispatcher holds, the hard limit included), so the window takes no work and spawns no helper; running helpers finish.
+    Derived, never a marker of its own that could outlive the restart: a cancel ends it, and it binds to one session, so
+    a stale record can never freeze the next window. Readers fail open."""
+    if not seat or not session_id:
+        return None
+    root = root or doorbell.state_dir()
+    now = time.time() if now is None else now
+    rs = ((_read_json(os.path.join(root, "state.json")) or {}).get("seat_restart") or {}).get(seat) or {}
+    if rs.get("session_id") == session_id and rs.get("state") in ("pending", "claimed"):
+        return rs.get("reason") or "restart pending (%s)" % rs.get("source")
+    req = _read_json(request_path(seat, root)) or {}
+    if (req.get("session_id") == session_id and req.get("ts") is not None and req["ts"] != rs.get("req_ts")
+            and 0 <= now - req["ts"] < DEFAULTS["request_max_age_s"]):
+        return req.get("reason") or "restart requested"
     return None
 
 
@@ -1947,7 +2018,18 @@ def cmd_request(args):
         print("seat_restart: no seat (--seat or AGENT_SEAT)")
         return 2
     unpub = unpublished_shard(seat, REPO)
-    if unpub and unpub.startswith("UNMEASURED"):    # fail closed (blind review 2026-10-29 P1-4)
+    cfgs = config(_schedule())
+    pid = args.pid or doorbell.claude_ancestor()
+    sf = session_file(pid) if pid else None
+    path = transcript_path(sf["cwd"], sf["sessionId"]) if sf and sf.get("cwd") and sf.get("sessionId") else None
+    helpers = helpers_of(path, time.time(), (cfgs.get(seat) or {}).get("helper_stale_s"))
+    live = [h for h in helpers or [] if h.get("alive")]
+    # A live helper appends to this shard, so the two refusals below were always true while one lived: the trap. Only the
+    # kill waits; the Dispatcher holds it for the helpers, then for this same shard.
+    deferred = bool(path) and seat in cfgs and (helpers is None or bool(live))
+    if deferred:
+        pass
+    elif unpub and unpub.startswith("UNMEASURED"):    # fail closed (blind review 2026-10-29 P1-4)
         print("seat_restart: REFUSED: could not tell whether your ledger shard is published (%s). Run `git status "
               "infrastructure/state/ledger/events/%s.jsonl` and `./publish`, then request again." % (unpub, seat))
         return 3
@@ -1955,7 +2037,6 @@ def cmd_request(args):
         print("seat_restart: REFUSED: %s. Close-out step 1: commit it by explicit path, then ./publish, then request "
               "again (ledger-only tickets too)." % unpub)
         return 3
-    cfgs = config(_schedule())
     logged = append_seat_log(seat, args.ticket, args.note, cfg=cfgs.get(seat))
     if logged:
         print("seat log: appended to %s" % logged)
@@ -1963,10 +2044,7 @@ def cmd_request(args):
         print("seat_restart is not enabled for %s (dispatcher_schedule.json seat_restart): no restart requested. "
               "Carry on in this window." % seat)
         return 0
-    pid = args.pid or doorbell.claude_ancestor()
-    sf = session_file(pid) if pid else None
-    path = transcript_path(sf["cwd"], sf["sessionId"]) if sf and sf.get("cwd") and sf.get("sessionId") else None
-    ok, why = check_request(seat, sf, helpers_of(path, time.time(), (cfgs.get(seat) or {}).get("helper_stale_s")))
+    ok, why = check_request(seat, sf, helpers)
     if not ok:
         print("seat_restart: REFUSED: %s" % why)
         return 3
@@ -2010,9 +2088,21 @@ def cmd_request(args):
            "reason": args.reason, "ts": time.time(), "ctx_tokens": ctx,
            "input_ts": in_ts if cfg.get("kind") == "conductor" else None, "tx_offset": cursor,
            "tx_path": path}             # the transcript actually read, carried to the kill and the wake (review 2 P1-4)
+    if deferred:
+        req.update(deferred=True, helpers=[{"id": h["id"], "desc": h.get("desc")} for h in live], shard_owed=unpub)
     if cfg.get("kind") == "conductor":
         req.update(closeout_check(path, cfg))
     _write_json(request_path(seat), req)
+    if deferred:
+        print("DEFERRED for %s: request recorded (%s; context %s tokens%s). Waiting on %s. Nothing is stopped: running "
+              "helpers finish, and each one's notice reaches you. You are DRAINING now: take no ticket, spawn no helper "
+              "(`next` and the spawn hook refuse), the staffing floor is off. When the last one is done, commit your "
+              "ledger shard by explicit path, ./publish, and end your turn; the Dispatcher then kills this window at "
+              "the next safe boundary. It alarms the Conductor by name if they outlast %d s."
+              % (seat, sf["sessionId"], "UNMEASURED" if ctx is None else ctx,
+                 "; shard: %s" % unpub if unpub else "",
+                 helper_names(live) or "an unreadable helper inventory", cfg["hold_alarm_s"]))
+        return 0
     wait = ("once this window has been quiet for %d s (goodbye_quiet_s) and nothing holds it. End your turn now; ANY "
             "new input cancels it" % cfg["goodbye_quiet_s"]) if cfg.get("kind") == "conductor" else (
             "after a %d s grace once this turn has ended and nothing holds it. End your turn now; a new prompt from "
@@ -2186,6 +2276,19 @@ def wake_digest(rec, clone=None, seat=None, reader=None, tree=None, inputs=6, fi
     return out
 
 
+def _wake_helpers(rec):
+    """The helpers the old window drained: their results lived in its conversation, so the transcripts are the only
+    copy left. A pointer, not a registry (that one is HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS)."""
+    drained = rec.get("drained") or {}
+    if rec.get("aborted") or not drained:
+        return
+    base = (rec.get("tx_path") or "")[:-len(".jsonl")]
+    print("\n== helpers the old window drained: check each result landed; the last record of each transcript is its "
+          "final message")
+    for hid, desc in sorted(drained.items()):
+        print("- %s%s: %s" % (hid, " (%s)" % desc if desc else "", os.path.join(base, "subagents", hid + ".jsonl")))
+
+
 def cmd_wake(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
     cfg = config(_schedule()).get(seat) or {}
@@ -2200,6 +2303,7 @@ def cmd_wake(args):
     if rec:
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
             rec.get("session_id"), _iso(rec.get("killed_at") or 0), rec.get("ticket") or "-"))
+    _wake_helpers(rec)
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
         _wake_conductor(seat, cfg, rec, gen=args.gen, me=session_file(pid) if pid else None)

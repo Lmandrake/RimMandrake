@@ -333,6 +333,12 @@ def test_a_request_during_a_hard_pending_is_adopted():
           "the seat's own request joins the hard restart and is consumed (%s)" % rs)
     n = run(sch, st, busy(HARD, request=req), T0 + 360)
     check("restart_request" not in dos(n), "adopted once")
+    sch, st = limits(), fresh()
+    run(sch, st, busy(HARD), T0)
+    run(sch, st, busy(HARD, request=dict(req, deferred=True, helpers=[{"id": "agent-q", "desc": "quick"}])), T0 + 240)
+    rs = st["seat_restart"]["FOUNDRY"]
+    check(rs.get("deferred") is True and rs.get("drained") == {"agent-q": "quick"},
+          "a deferred request joining a hard restart keeps its helpers for the wake (%s)" % rs)
 
 
 def test_rings_wait_on_a_hard_pending():

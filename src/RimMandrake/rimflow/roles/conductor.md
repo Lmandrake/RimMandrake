@@ -92,7 +92,8 @@ his WHOLE message and prints the close-out, which ends in `seat_restart.py reque
 restarts the window as a fresh Remote Control `CONDUCTOR` only once the old transcript and his keyboard have been quiet for
 `goodbye_quiet_s` (600 s). It holds while helpers are alive, while the window is mid-reply, while his keyboard is busy,
 or while a record is half-written. ANY input after the goodbye cancels it: his message, a ring, a task notification
-or a queued prompt, read in full from a transcript cursor with no timestamp filter. A malformed record also cancels, and
+or a queued prompt, read in full from a transcript cursor with no timestamp filter. A request that printed DEFERRED (live
+helpers) drains instead, and their completion notices do not cancel it. A malformed record also cancels, and
 a request after he wrote again is refused. The fresh window's wake (`--gen` binds it to that one restart) lists, whole
 and once, what he sent the old one after the goodbye. A context backstop (OFF since 2026-10-29) would also restart the window, but only after 4 h with no message
 from him. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in
