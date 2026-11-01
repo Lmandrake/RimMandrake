@@ -1,0 +1,1 @@
+Check a Windows folder's contents and size before a recursive copy off a failing drive: OneDrive\Desktop held the 168k-file old_computer that a '19 own files' count had excluded, and robocopy took all of it.
