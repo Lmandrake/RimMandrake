@@ -18,7 +18,7 @@ Plan this belongs with: `tentative_plan_after_v2_lessons_2026-11-01.md`.
 | 6 | Nightly selftests carry news | RED: 16 FAIL and 6 CRASH of 851. A red that is always red tells nobody anything | FOUNDRY | `SELFTEST_DISPATCHER_FIX_NINE_RED_BEFORE_ME` and siblings; needs a triage item |
 | 7 | Alarms are real and read | Fake writers removed `fa573c87c2`. 34 real entries kept. Long-helper and replay alarms working | done | closed |
 | 8 | Seat restarts need no human | Goodbye instant, first clean goodbye not yet proven. Conductor context backstop off | Conductor | `SEAT_GOODBYE_FIX_QUEUED_PROMPT_LOST`, `SEAT_GOODBYE_FIX_REPLACEMENT_DIED_UNREAD`, `CONDUCTOR_GOODBYE_FIX_QUEUED_WAIT_SKIPPED` |
-| 9 | Helpers survive a dead parent | Open | FOUNDRY | `HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS` |
+| 9 | Helpers survive a dead parent | Built: a dead window leaves a receipt, read at wake and alarmed by the Dispatcher; closes on its live reading | BENCH | `HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS` |
 | 10 | Disk growth is under control | Root 56%, but `ROOT_DISK_FIX_NIGHT_GROWTH_OUTRUNS_REAPER` saw 75 GB in 90 min, and the replay root has no reaper | FOUNDRY | that item, `REPLAY_ROOT_BUILD_REAPER_FOR_27GB` |
 | 11 | Test lane on Steve is usable | Drive replacement bought; CPU verdict about 2026-11-07; 5-minute boot unexplained | Conductor | `STEVE_POST_DIAGNOSE_FIVE_MINUTE_BOOT`, `CPU_RETEST_PROVE_MASKED_PAIR_AFTER_FLASH` |
 

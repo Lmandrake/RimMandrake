@@ -2533,7 +2533,7 @@ def wake_digest(rec, clone=None, seat=None, reader=None, tree=None, inputs=6, fi
 
 def _wake_helpers(rec):
     """The helpers the old window drained: their results lived in its conversation, so the transcripts are the only
-    copy left. A pointer, not a registry (that one is HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS)."""
+    copy left. These were drained on purpose; what no drain covered is in _wake_receipts."""
     drained = rec.get("drained") or {}
     if rec.get("aborted") or not drained:
         return
@@ -2542,6 +2542,18 @@ def _wake_helpers(rec):
           "final message")
     for hid, desc in sorted(drained.items()):
         print("- %s%s: %s" % (hid, " (%s)" % desc if desc else "", os.path.join(base, "subagents", hid + ".jsonl")))
+
+
+def _wake_receipts(seat, cfg, rec):
+    """The dead windows' receipts (helper_receipts.py): helpers that died mid-work, reports nobody read, background
+    commands with no reader. Nothing here may stop the wake reaching its last line."""
+    try:
+        import helper_receipts as HR
+        lines = HR.wake_lines(seat, cfg.get("clone") or REPO, force=[rec["session_id"]] if rec.get("session_id") else [])
+    except Exception as e:               # noqa: BLE001
+        lines = ["\n== RECEIPTS UNMEASURED (%r): dead windows of this seat were not read" % e]
+    if lines:
+        print("\n".join(lines))
 
 
 def cmd_wake(args):
@@ -2559,6 +2571,7 @@ def cmd_wake(args):
         print("\n== the restart that made this window: killed %s at %s after ticket %s" % (
             rec.get("session_id"), _iso(rec.get("killed_at") or 0), rec.get("ticket") or "-"))
     _wake_helpers(rec)
+    _wake_receipts(seat, cfg, rec)
     if cfg.get("kind") == "conductor":
         pid = doorbell.claude_ancestor()
         _wake_conductor(seat, cfg, rec, gen=args.gen, me=session_file(pid) if pid else None)

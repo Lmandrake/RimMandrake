@@ -40,6 +40,14 @@ Moved from the project `CLAUDE.md` on 2026-10-11 (weekly cleaning), text unchang
   (`DEBUG_GAME_READY_WORLDUI_CRASH_1`). Harness: `src/RimMandrake/bridgetools/prove_quicktest_world.py`.
 - 🔴 **A `PreToolUse` hook added to `.claude/settings.json` mid-session does not fire** — not for this window's Bash calls and not for its subagents' — until a new session starts; a hook already present at session start does fire for subagents. Test a new hook in a fresh window, never by exercising it in the one that added it.
 
+- 🔴 **What outlives a dead parent (MEASURED 2026-11-01, real `claude_bounded` runs; `D:\ClaudeWork\rimmandrake\helpers_dead_parent\probe`).**
+  SIGTERM (goodbye, ticket restart, backstop): background Bash and a subagent's running Bash die with exit 137, no report.
+  SIGKILL (crash, kill fallback): the LLM loops die, but both Bash commands run on as orphans, finish, and nobody reads
+  them. `/clear`: the only route that lost helpers in 7 days, and it has no restart record. Reboot or WSL restart: all of
+  it, `setsid` included. Only `setsid`/`systemd-run` outlives TERM and KILL, and a watcher in `run_in_background` dies
+  at the next goodbye while the remote work it watches carries on. `helper_receipts.py` reports all of these to the
+  next window; it does not keep them alive.
+
 - 🔴 **A backgrounded `Agent` dies at 600 s of silence and leaves NOTHING on disk.** Three died
   that way 2026-09-17, all mid-read before their first write, all leaving a clean tree — so each
   cost a whole run rather than being truncated; the two that survived streamed output at 385 s

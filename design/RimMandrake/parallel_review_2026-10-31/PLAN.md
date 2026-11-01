@@ -8,7 +8,7 @@ Removed as shipped: publish lock, rm-deadman, relentless worker, unwakeable alar
 
 - **Replay needs attention now.** Its watchdog timer stopped at 17:15 when the arms were relaunched; the arms have run unwatched for over an hour. The last reading was 1 of 29 accepted; trio died of out-of-memory twice. It very likely misses the 07:00 stop line (ESTIMATE). Its code changed mid-run, on top of the unpinned tree.
 - **Close-out still refuses** while any helper lives; no drain state or spawn freeze exists (`seat_restart.py:1808`).
-- **Nothing on disk knows the helpers.** No registry, no receipts for seat helpers, no reclaim of a dead helper's lease. An unread final message loses the result.
+- **No reclaim of a dead helper's lease.** Receipts are built: a dead window's helpers and background commands reach the next window (`helper_receipts.py`).
 - **The lease lock is per clone** (`lease.py`), and a reclaimed item has no generation number, so an old holder could still close it.
 - **No seat helper tests an exact, stable candidate.** Tests can run on a peer's half-written file.
 - **Also open:** 4 of 4 fixes spawned by Ops are unbuilt; nightly reds unhandled; review and test queues unmeasured.
@@ -21,7 +21,7 @@ Removed as shipped: publish lock, rm-deadman, relentless worker, unwakeable alar
 | 0 | Restart the replay watchdog today; read the replay as serial evidence only | No item | Honest replay | Ticks resume |
 | 1 | Land shard appends without blocking; stop a peer's dirty file jamming the pull | PUBLISH_SHARDS_FIX_APPENDS_BLOCK_LANDING (shards only; **the code half is unfiled**) | Clones stay level | A clone with dirty peer hunks and shard appends lands |
 | 2 | Close-out always records; deferred, not refused; drain and spawn freeze | CLOSEOUT_TRAP_FIX_HELPERS_ALWAYS_ALIVE | Restart at full belt | A real restart with 4 helpers alive loses nothing |
-| 3 | Helper registry and durable receipts, read by wake and handoff | **Unfiled** | Survive a dead parent | Kill a parent; its successor collects the result |
+| 3 | Helper registry and durable receipts, read by wake and the Dispatcher (`helper_receipts.py`; HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS) | Built | Survive a dead parent | Kill a parent; its successor collects the result |
 | 4 | Fencing generations; host-wide lease lock; auto-reclaim of a dead lease | LEDGER_LEASE_HARDEN_ATTEMPT_TOKEN; **the lock and reclaim are unfiled** | 6 helpers | Old holder refused on close; two clones race `next`, one wins |
 | 5 | Exact stable candidate: each writer tests and is accepted at one sha, the relentless pattern | **Unfiled for seats**; relentless has it | 8 helpers | A planted peer edit cannot enter a tested sha |
 | 6 | Declared write paths at spawn and commit | **Unfiled** | Fewer collisions | Overlap refused at spawn |

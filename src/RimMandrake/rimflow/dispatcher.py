@@ -498,6 +498,7 @@ def decide(sch, st, obs, now, apply, out=None):
                 act(do="withdraw", seat=seat, ring_id=ss["ring"]["ring_id"], pending=ss.pop("ring"))
         return actions
     long_helper_alarms(sch, obs, now, act)
+    helper_lost_alarms(sch, obs, act)
     # a seat switched off, or its waking switched off, keeps no deliverable ring in its inbox (review dispatcher-full
     # #8), decided BEFORE the agents gate like PAUSE above: a blind `claude agents` must not leave it ringing (review
     # r2 #6). A ring the doorbell already took stays pending and is verified (one_seat)
@@ -992,6 +993,27 @@ def long_helper_alarms(sch, obs, now, act):
                     str(h["id"])[:12], h["age_s"] / 60, limit / 60),
                 why="Conductor helper %s has been running %.0f min (> %.0f min): check it is not stuck or burning "
                     "context; stop it or let it finish" % (str(h["id"])[:12], h["age_s"] / 60, limit / 60))
+
+
+def helper_lost_alarms(sch, obs, act):
+    """HELPER_REGISTRY_BUILD_DURABLE_RECEIPTS: one alarm per open receipt of a dead window, repeating at alarm_every_s
+    until `helper_receipts.py ack`. The route for the deaths no wake reads: /clear, a quit, a crash, a reboot. Off only
+    when helper_receipts.enabled is false; a failing reader alarms, because silence here is the loss it exists to stop."""
+    fn = obs.get("helper_receipts")
+    if (sch.get("helper_receipts") or {}).get("enabled") is False or not fn:
+        return
+    try:
+        found = fn() or []
+    except Exception as e:  # noqa: BLE001
+        act(do="alarm", kind="helper_lost:reader", note=True, why="helper-receipt reader raised %s: %s" % (
+            type(e).__name__, str(e)[:200]))
+        return
+    for r in found:
+        act(do="alarm", kind="helper_lost:" + str(r["session"])[:8], note=True, conductor_log=True,
+            ticket=(sch.get("helper_receipts") or {}).get("item") or sch.get("alarm_item"),
+            raise_first="Work lost with a dead window: " + r["line"] + ".",
+            why="%s. Read: helper_receipts.py list --seat %s; then ack --seat %s %s" % (
+                r["line"], r["seat"], r["seat"], str(r["session"])[:8]))
 
 
 def conductor_log(sch, a, now):
@@ -1591,6 +1613,19 @@ def long_helpers_obs(now=None):
     return out
 
 
+def helper_receipts_obs(sch):
+    """Read the dead windows of every seat's clone -> [{seat, session, line}] of the open receipts."""
+    import helper_receipts as HR
+    out, clones = [], set()
+    for seat, cfg in sorted(SR.config(sch).items()):
+        clone = cfg.get("clone") or REPO
+        if clone not in clones:          # a clone shared by two seats has one project and is read once
+            clones.add(clone)
+            HR.collect(seat, clone)
+        out += [{"seat": seat, "session": r["session"], "line": HR.one_line(r)} for r in HR.open_receipts(seat)]
+    return out
+
+
 def login_obs(sch):
     """login_watch's readings. account() -> (live account or None, lent accounts); neither may stop a probe."""
     cfg = LW.config(sch)
@@ -1643,6 +1678,7 @@ def default_obs(sch, root, st=None):
         "armed": lambda seat: doorbell._read_json(doorbell.armed_path(seat)),
         "alive": pid_alive,
         "long_helpers": long_helpers_obs,
+        "helper_receipts": lambda: helper_receipts_obs(sch),
         "roles": role_obs(sch),
         "seat_restart": SR.default_obs(sch, seat_events_since) if SR.config(sch) else None,
         "login": login_obs(sch),

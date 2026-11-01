@@ -64,6 +64,7 @@
     {"match": "restart:*:held", "route": "program"},
     {"match": "restart:*", "route": "role", "reader": "Operations", "cause": "seats"},
     {"match": "long_helper:*", "route": "role", "reader": "Operations", "cause": "helpers"},
+    {"match": "helper_lost:*", "route": "role", "reader": "Operations", "cause": "helpers"},
     {"match": "role:*:overbudget*", "route": "program"},
     {"match": "role:*:cap", "route": "program"},
     {"match": "role:*:cutoff", "route": "program"},
