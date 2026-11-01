@@ -98,6 +98,7 @@ HOST = os.environ.get("TESTQ_WORKER_HOST") or "stevedesktop"
 GAME = "infrastructure/stevedesktop/rw_game.sh"
 PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
 PROBE_GAP_S = 15        # between its two tries, so a game mid-autosave is not mistaken for a wedged one
+NO_GAME_RE = re.compile(r'"status":\s*"no_game"')      # the bridge's answer when the game has no current game
 # STEVE_GAME_FIX_UNBOUNDED_MAPS: a kept game is recycled before a job at either limit, both under pid 7460 (17 h, 27 maps,
 # 20.9 GB on a 128 GB host, then deaf). Maps grow because river_site.py founds a site per run and keeps earlier sites.
 MAX_GAME_AGE_S = int(os.environ.get("TESTQ_MAX_GAME_AGE_S") or 8 * 3600)
@@ -815,7 +816,11 @@ class Attempt:
                 if self.liveness_unknown:
                     self.res["note"] = (self.res.get("note") or "") + "; " + self.liveness_unknown
                 if self.res.get("cause") == "CANARY":
-                    self.stop_game_after_red_canary()
+                    self.stop_game_for_next_job("canary red")
+                elif self.res.get("cause") == "HARNESS" and NO_GAME_RE.search(tail or ""):
+                    # STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP: pid 30296 answered the bridge but could not make a map
+                    # (10-31, AlienRace BadImageFormat): 00238b and dd60e2 both reused it. Other HARNESS deaths keep it.
+                    self.stop_game_for_next_job("no game loaded")
                 return ok
             self.say("run %d hung past %ss: killed" % (attempt_no, timeout))
             if attempt_no == 2:
@@ -833,7 +838,7 @@ class Attempt:
             self.phase = "run"
         return False
 
-    def stop_game_after_red_canary(self):
+    def stop_game_for_next_job(self, why):
         """STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: the game a red canary ran on is not handed to the next job. A kept game
         with a dead colony (load 1-2 s) voided every later job until someone ran rw_game.sh down by hand (10-27,
         10-29 03:28, 18:54); stopping it here, after the liveness check, makes the next job cold-start a fresh colony.
@@ -841,7 +846,7 @@ class Attempt:
         rc_down, tail_down = self.sh(self.cmd_down(), timeout=300)
         down = "game stopped so the next job cold-starts" if rc_down == 0 else "game NOT stopped (%s)" % (
             refused_line(tail_down) or "rc %s: %s" % (rc_down, (tail_down or "")[-120:]))
-        self.say("canary red: " + down)
+        self.say("%s: %s" % (why, down))
         self.res["note"] = (self.res.get("note") or "") + "; " + down
 
     def read_sheet(self, tail):

@@ -55,6 +55,9 @@ if mode == "refuse":
     print("REFUSED: every selected chain of Mock is offline (c0)"); sys.exit(2)
 if mode == "crash":
     print("Traceback: boom"); sys.exit(3)
+if mode == "no_game":
+    print('{"status": "no_game", "message": "No game is currently loaded", "state": {"programState": "Entry"}}')
+    print("hasCurrentGame: False mapCount: None -> NOT READY"); sys.exit(1)
 if mode == "fatal":
     print("Windows fatal exception: access violation\n\nThread 0x1: File gate.py line 9 in hash\n" + "x" * 800)
     print("[modcheck] long tail " * 40); sys.exit(5)
@@ -333,6 +336,22 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("outcome") == "DONE" and not os.path.exists(rdowns) and "recycled_kept_game" not in res,
               "the archmagi lane's kept game is never recycled, however old: %s %s" % (res.get("outcome"), res.get("note")))
+
+        # STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP: a live game that cannot hold a map is not handed to the next job
+        ndowns = os.path.join(tmp, "no_game_downs")
+        rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  TESTQ_CMD_DOWN="echo down >> %s" % ndowns, **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS", "no_game, game alive -> HARNESS: %s %s"
+              % (res.get("cause"), res.get("note")))
+        check(os.path.exists(ndowns) and len(open(ndowns).readlines()) == 1 and "cold-starts" in (res.get("note") or ""),
+              "a no_game run stops the game once so the next job cold-starts: %s" % res.get("note"))
+        hdowns = os.path.join(tmp, "harness_downs")
+        rc, o = w(["start"], job(), MOCK_MODE="crash", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
+                  TESTQ_CMD_DOWN="echo down >> %s" % hdowns, **load)
+        res = wait_result(o.get("attempt", "x"))
+        check(res.get("cause") == "HARNESS" and not os.path.exists(hdowns),
+              "a HARNESS death that names no lost game keeps the game: %s %s" % (res.get("cause"), res.get("note")))
 
         cdowns = os.path.join(tmp, "canary_downs")
         rc, o = w(["start"], job(), MOCK_MODE="canary", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",

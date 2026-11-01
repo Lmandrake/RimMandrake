@@ -47,7 +47,7 @@ The alarm crossed again on 10-30 and 10-31. Those are not this streak:
 | jobs | cause | owner |
 |---|---|---|
 | 5f50de, 77e9fd, 86ef58, f0c31c, 28a21e (10-30) | kept game stopped answering the bridge | OPS_STEVE_DIAGNOSE_INVALID_630C, STEVE_LANE_FIX_WEDGED_KEPT_GAME |
-| 1fe7ea, 00238b, dd60e2 (10-31) | game died, then a wounded game was reused (`no_game`) | STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP; alarm item OPS_STEVE_DIAGNOSE_INVALID_577B still open |
+| 1fe7ea, 00238b, dd60e2 (10-31) | game died, then a wounded game was reused (`no_game`) | STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP; `infrastructure/state/evidence/OPS_STEVE_DIAGNOSE_INVALID_577B.md` |
 | 1e76b1, 74d756, d766a0 (10-31) | modcheck exit 5 with no sheet | MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET |
 | e1966f (10-31) | `relpath` ValueError on the UNC clone | RETEST_RULE_ONCE_PER_CODE_VERSION, done: 8197e06e6e removed `relpath` from `status.py` |
 | 74f811 (`embedded null character`), 78564c (exit 9) (10-31) | python.exe on Steve: a NUL inside a walked path, then a native death 3 s into the next job's run, about a minute later | STEVE_CRASHES_DIAGNOSE_DEFENDER_FALLS_TOO (open; both jobs noted there); 78564c also noted on MODCHECK_DIAGNOSE_EXIT_FIVE_NO_SHEET (open) |
