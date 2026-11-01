@@ -463,7 +463,7 @@ def cmd_read(a):
     (d / (a.set + ".prompt.md")).write_text(body, encoding="utf-8")
     out = d / (a.set + ".answer.md")
     sh("python3", str(REPO / "src/RimMandrake/Utils/gpt_consult.py"), "--prompt-file", str(d / (a.set + ".prompt.md")),
-       "--out", str(out), "--timeout", "480", cwd=str(REPO), timeout=540)
+       "--out", str(out), "--timeout", "1500", cwd=str(REPO), timeout=1600)
     path = PRIVATE / "second_reads.json"
     reads = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
     got = dict(re.findall(r"^\W*(c\d+)\W+(observable|equivalent)\b", out.read_text(encoding="utf-8"), re.M))
@@ -628,8 +628,9 @@ def tool_inputs(session, box=None):
     return out if parsed else None
 
 
-def is_verdict(inp):
-    """Exactly the verdict command the prompt gave, nothing chained: verb, 2 flags with values, word, reasons."""
+def is_verdict(inp, box=None):
+    """Exactly the verdict command the prompt gave, nothing chained. Books: verb, 2 flags with values, word, reasons.
+    Walled: the box's script, word, reasons."""
     cmd = inp.get("command") if isinstance(inp, dict) else None
     if not isinstance(cmd, str):
         return False
@@ -639,10 +640,12 @@ def is_verdict(inp):
         toks = list(lex)
     except ValueError:
         return False
+    if box:
+        return len(toks) == 4 and toks[:2] == ["python3", "%s/verdict" % box]
     return len(toks) == 9 and toks[:3] == ["python3", BOOKS_VERB, "verdict"]
 
 
-def contamination(inputs, k, own=None):
+def contamination(inputs, k, own=None, box=None):
     """-> the forbidden things the Marker's tool calls named (counting rules: Contaminated). An audit, not a wall."""
     if inputs is None:
         return ["unscanned"]
@@ -650,7 +653,7 @@ def contamination(inputs, k, own=None):
            "/rm/bench", "/rm/foundry", "/relentless/", k["fix"], k["fix"][:10])
     got = set()
     for inp in inputs:
-        if is_verdict(inp):
+        if is_verdict(inp, box):
             continue
         text = json.dumps(inp)
         if own:
@@ -727,7 +730,7 @@ def run_case(k, sources, wall=False):
         res = {"item": k["item"], "cls": k["cls"], "set": k["set"], "task": k["task"], "attempt": attempt,
                "verdict": None if late else verdict, "late": late, "reasons": chk.get("reasons"), "at": chk["at"],
                "secs": (chk.get("verdict_at") or time.time()) - chk["at"], "tokens": fx.tokens(desc),
-               "contaminated": contamination(tool_inputs(session, box), k, box or chk["clone"]), "unit": desc["unit"],
+               "contaminated": contamination(tool_inputs(session, box), k, box or chk["clone"], box), "unit": desc["unit"],
                "walled": bool(box),
                "sha": st["candidate"]["sha"], "model": rules["model"], "agent": rules["checker_agent"],
                "fingerprint": k["fingerprint"], "path": k.get("path"), "paths": k.get("paths")}

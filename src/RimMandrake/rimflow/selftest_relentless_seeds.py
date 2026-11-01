@@ -220,6 +220,10 @@ def test_census_log():
 
 
 def test_verdict_and_journal():
+    check("the walled verdict is the verdict", S.is_verdict({"command": 'python3 /b/x/verdict FAIL "a b"'}, "/b/x"))
+    check("a chained walled verdict is not", not S.is_verdict({"command": 'python3 /b/x/verdict FAIL "a" ; cat y'}, "/b/x"))
+    check("a walled verdict names no contaminant", S.contamination(
+        [{"command": 'python3 /b/x/verdict FAIL "see /rm/bench"'}], {"fix": "f" * 40}, "/b/x", "/b/x") == [])
     check("words must match the prompt's verdict", not S.is_verdict({"command": "python3 src/x.py verdict --item X --nonce n PASS r"}))
     check("no command, no verdict", not S.is_verdict({"file_path": "x"}))
     item = "SD_J"
