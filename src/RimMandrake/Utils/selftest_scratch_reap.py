@@ -1429,6 +1429,20 @@ def third_review_cases(td: Path, origin: Path):
         R.preserve = real_preserve
         check(cr.exists() and row["verdict"] == "REFUSE" and "top changed" in " ".join(row["why"]), "a same-mode chmod during preservation stops the pin")
         os.rename(cr, pin)
+        for states, want, says in ((["Z"], True, "a zombie holds nothing"), (["Z", "Z"], True, "a zombie group holds nothing"),
+                                   (["Z", "S"], False, "a zombie leader with a running thread is still a process"), ([], False, "no threads read is no proof")):
+            proc = Path(tempfile.mkdtemp(dir=str(pin.parent)))
+            for i, st in enumerate(states):
+                (proc / "task" / str(i)).mkdir(parents=True)
+                (proc / "task" / str(i) / "stat").write_text(f"{i} (a) b) {st} 1 1\n")
+            check(R.dead(str(proc)) is want, says)
+            shutil.rmtree(proc)
+        real_run, R.subprocess.run = R.subprocess.run, lambda *a, **k: (_ for _ in ()).throw(subprocess.TimeoutExpired("find", 900))
+        try:
+            late = R.Borrows()
+        finally:
+            R.subprocess.run = real_run
+        check(late.hold and "partial" in late.hold[0], "a borrower walk that times out is a hold, not a crash")
         real_of, R.Borrows.of = R.Borrows.of, lambda self, p: ["a borrower arrived"]
         check("a borrower arrived" in R.pinned_holds(cr, pin, row, ctx), "a borrower found at the last look holds")
         R.Borrows.of = real_of

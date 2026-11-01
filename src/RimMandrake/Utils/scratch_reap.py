@@ -346,6 +346,17 @@ def undumpable_system(base: str) -> bool:
 _SYSTEM_PIDS: set[str] = set()
 
 
+def dead(base: str) -> bool:
+    """A zombie has let go of its cwd and files yet reads as denied, and a busy machine always has one exiting. A leader
+    that exited while its threads run also shows Z and they hold everything, so every thread must be Z."""
+    try:
+        states = [open(f"{base}/task/{t}/stat", errors="replace").read().rsplit(")", 1)[1].split()[0]
+                  for t in os.listdir(f"{base}/task")]
+    except (OSError, IndexError):
+        return False
+    return bool(states) and all(st in ("Z", "X") for st in states)
+
+
 def _who(base: str) -> str:
     """Name a blind process in the record: comm, state and parent are world-readable."""
     try:
@@ -393,7 +404,7 @@ class Live:
                 # Exempt only what stays unreadable: a forked child still called systemd must get to its exec.
                 if pid in _SYSTEM_PIDS and undumpable_system(base):
                     continue
-                if self._settles(pid, base, cmds):
+                if self._settles(pid, base, cmds) or dead(base):
                     continue
                 if undumpable_system(base):
                     _SYSTEM_PIDS.add(pid)
@@ -640,12 +651,22 @@ class Borrows:
         self.taken = time.time()
         self.hold: list[str] = []
         self.blind: list[str] = []
+        self.pairs: list[tuple[str, str]] = []
+        self.keys: list[str] = []
         pairs: list[tuple[str, str]] = []
         tops = [str(r) for r in scan_roots() if r.exists()]
-        p = subprocess.run(["find", *tops, "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
-                            "-type", "f", ")", ")", "-print0"], capture_output=True, timeout=300) if tops else None
-        if p is None:
+        # Git's own loose objects and packs hold no borrower: skipping them turns a walk that outran 300 s at idle IO
+        # into two minutes. Only inside a *.git directory, so a tree that merely has an objects/ab directory is walked.
+        if not tops:
             raise RuntimeError("no scan root exists: the borrower map would be empty")
+        try:
+            p = subprocess.run(["find", *tops, "(", "-path", "*.git/objects/[0-9a-f][0-9a-f]", "-o", "-path", "*.git/objects/pack",
+                                ")", "-prune", "-o", "(", "-path", "*/objects/info/alternates", "-o", "(", "-name", ".git",
+                                "-type", "f", ")", ")", "-print0"], capture_output=True, timeout=900)
+        except subprocess.TimeoutExpired:
+            # A hold, not a crash: the run refuses from here on and still writes its record of what it freed.
+            self.hold.append("find outran 900 s: the borrower map is partial")
+            return
         lines = [ln for ln in p.stderr.decode("utf-8", "replace").splitlines() if ln.strip()]
         for ln in lines:
             if "No such file" in ln:
