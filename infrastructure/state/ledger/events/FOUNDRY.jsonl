@@ -9871,3 +9871,6 @@
 {"seat":"FOUNDRY","event":"lease","id":"PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS","action":"take","token":"FOUNDRY.pid31155.ee192bc0","expires":"2026-11-01T12:57:59Z","ts":"2026-11-01T12:12:59Z","tsn":1793535180313695442}
 {"seat":"FOUNDRY","event":"reconcile","id":"PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS","verdict":"complete","sha":"21a23765d","ts":"2026-11-01T12:13:07Z","tsn":1793535187816800793}
 {"seat":"FOUNDRY","event":"close","id":"PIT_LIP_SHADE_TAME_PER_FRAME_ARRAYS","sha":"21a23765d","ts":"2026-11-01T12:13:10Z","tsn":1793535190069696756}
+{"seat":"FOUNDRY","event":"lease","id":"COPY_DAMAGED_FAUNA_REDRAW_OWNER_PROMPTS","action":"take","token":"FOUNDRY.pid31226.eac66f13","expires":"2026-11-01T13:02:31Z","ts":"2026-11-01T12:17:31Z","tsn":1793535452312536093}
+{"seat":"FOUNDRY","event":"lease","id":"COPY_DAMAGED_FAUNA_REDRAW_OWNER_PROMPTS","action":"renew","token":"FOUNDRY.pid31226.eac66f13","expires":"2026-11-01T13:02:35Z","ts":"2026-11-01T12:17:35Z","tsn":1793535456170642785}
+{"seat":"FOUNDRY","event":"drop","id":"COPY_DAMAGED_FAUNA_REDRAW_OWNER_PROMPTS","reason":"all five series stopped 2026-10-24 after owner keeps/picks; no owner prompt ever written; nothing left to redraw","why":"dead item swept by FOUNDRY","ts":"2026-11-01T12:17:42Z","tsn":1793535462550918195}
