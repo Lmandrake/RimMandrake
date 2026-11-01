@@ -1771,5 +1771,26 @@ finally:
     OW.subprocess.run = _sjr
 check("scope: through systemctl, transient one-shots out, a transient timer's service and a real service in",
       _t["x"]["units"] == ["rm-pulse.service", "rm-x.service"] and _t["v"] == 2, _t)
+
+# OPS_FINDINGS_DIAGNOSE_17B4: the alarm counts findings with no outcome, and each outcome the design names moves it
+import findings_fold as _FF
+_fw = lambda **f: type("W", (), {"findings": {n: {"type": t} for n, t in f.items()}, "items": {"NAMED": 1}})()
+_dfn = _FF.decided_findings
+_FF.decided_findings = lambda *a: {"DECIDED"}
+try:
+    _r = OW.untriaged_reading(_fw(OPEN="UNTRIAGED", NAMED="UNTRIAGED", SPAWNED="UNTRIAGED", DECIDED="UNTRIAGED", RETYPED="TRACKED"),
+                              [{"event": "spawn", "from": "SPAWNED"}])
+    check("untriaged: a same-named item, a spawn --from, a decide and a retype are outcomes; the rest counts",
+          _r["m"] == "MEASURED" and _r["v"] == 1 and _r["x"]["first"] == ["OPEN"], _r)
+    _FF.decided_findings = lambda *a: set()
+    check("untriaged: an undo (the table gives no outcome) counts it again",
+          OW.untriaged_reading(_fw(DECIDED="UNTRIAGED"), [])["v"] == 1)
+    _FF.decided_findings = lambda *a: 1 / 0
+    check("untriaged: a bad table is UNMEASURED, never a count",
+          OW.untriaged_reading(_fw(OPEN="UNTRIAGED"), [])["m"] == "UNMEASURED")
+    _z = OW.untriaged_reading(_fw(RETYPED="TRACKED"), [])
+    check("untriaged: nothing open reads 0 without the table", _z["m"] == "MEASURED" and _z["v"] == 0, _z)
+finally:
+    _FF.decided_findings = _dfn
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)

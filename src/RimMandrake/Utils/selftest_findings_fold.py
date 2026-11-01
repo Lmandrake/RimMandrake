@@ -519,5 +519,51 @@ _, _s = one(_ev, _rc)
 _t, _ = one(_ev, _rc, None, [{"sig": _s["A_1"], "as": "retire", "by": "FOUNDRY", "ts": ts(27, 1), "why": "x"}])
 check(_t["signatures"][_s["A_1"]]["failed_since_decision"] == 2,
       "C7 two jobs failing in the same second are two failures (got %s)" % _t["signatures"][_s["A_1"]]["failed_since_decision"])
+
+# OPS_FINDINGS_DIAGNOSE_17B4: a ledger retype is an outcome; the finding stays, and read_ledger finds it unaided
+def _led(*extra):
+    base = {"seat": "RUNNER", "event": "finding", "id": "IT_R", "type": "UNTRIAGED", "severity": "medium", "from": "IT_R/run-1@x"}
+    return [dict(base, name=n, why="c1/r1 FAIL on h: boom", ts=at, **k) for n, at, k in extra]
+
+
+def _rl(events):
+    sys.path.insert(0, FF.RIMFLOW)
+    import model as _m
+    _sr, _sp = _m.read, _m.replay
+    _m.read, _m.replay = (lambda: events), (lambda ev: type("W", (), {"items": {}})())
+    try:
+        return FF.read_ledger(RULES)
+    finally:
+        _m.read, _m.replay = _sr, _sp
+
+
+_rt = {"type": "TRACKED", "seat": "BENCH"}
+_f, _sp, _st = _rl(_led(("R_1", ts(28, 1), {}), ("R_1", ts(29, 1), _rt)))
+_t = FF.fold(_f, _sp, _st, [], [], RULES, ts(29, 20))
+_r = list(_t["signatures"].values())[0]
+check(_t["counts"]["findings"] == 1 and _r["status"] == "DECIDED" and _r["decision"]["as"] == "retype"
+      and _r["decision"]["into"] == "TRACKED" and _t["raw"]["R_1"]["outcome"] is True,
+      "R1 a retyped finding stays in the table, DECIDED, with an outcome (got %s)" % _r["decision"])
+_f, _sp, _st = _rl(_led(("R_1", ts(28, 1), {}), ("R_1", ts(29, 1), _rt), ("R_1", ts(28, 1), {})))
+check([e["from"] for e in _sp if e.get("as") == "retype"] == ["R_1"], "R2 a union-merge duplicate after the retype keeps it")
+_f, _sp, _st = _rl(_led(("R_0", ts(27, 1), _rt)))
+check(not _f and not _sp, "R3 a hand-typed finding never folded is no retype")
+_ev = [fev("D_1", "IT_D", "r1", "boom", ts(28, 1))]
+_, _s = one(_ev, [])
+_dl = {"sig": _s["D_1"], "as": "retire", "by": "FOUNDRY", "ts": ts(28, 2), "why": "x"}
+_t, _ = one(_ev, [], None, [_dl])
+_u, _ = one(_ev, [], None, [_dl, dict(_dl, **{"as": "undo", "ts": ts(28, 3)})])
+_l, _ = one(_ev, [], None, [dict(_dl, ts=ts(28, 0))])
+check(_t["raw"]["D_1"]["outcome"] is True and _u["raw"]["D_1"]["outcome"] is False,
+      "R4 a decide gives the outcome, its undo takes it back")
+check(_l["raw"]["D_1"]["outcome"] is False, "R5 a failure newer than the decision has no outcome")
+_d = tempfile.mkdtemp()
+try:
+    check(FF.decided_findings(_d) == set(), "R6 no report yet: nothing decided")
+    with open(os.path.join(_d, FF.REPORT), "w", encoding="utf-8") as _o:
+        _o.write(FF.render_report(_t))
+    check(FF.decided_findings(_d) == {"D_1"}, "R6 decided_findings reads the published table")
+finally:
+    shutil.rmtree(_d)
 print("\n%d failure(s)" % len(FAILS))
 sys.exit(1 if FAILS else 0)

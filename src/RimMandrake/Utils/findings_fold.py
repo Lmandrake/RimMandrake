@@ -20,6 +20,10 @@ What it does, with no AI and no ledger writes:
     last failure (`passes_since`) and the row's latest measured verdict. There is no automatic retirement, reopening
     or merge into a decision: FOUNDRY (or a human) records a decision with `decide` and the report shows it, plus any
     failure of that signature since it;
+  * a finding retyped on the ledger (a later `finding` event of its name with a type outside the folded types, as the
+    triage of 2026-10-31 did) has its outcome: it stays in the table, as DECIDED `retype` into the new type. A failure
+    of the signature after that is still counted. `raw[name].outcome` says a finding has an outcome no later than
+    itself; decided_findings() is how the ops_watch alarm flow.untriaged_findings reads a `decide` (OPS_FINDINGS_DIAGNOSE_17B4);
   * a CONTRADICTION is an item in a `contradiction_states` state (done, validated) whose own latest measured verdict
     of a row (the newest PASS/FAIL among the done records whose rows ingest maps to that item) is FAIL;
   * a machine-health failure (rules machine_health_patterns, case-insensitive) or a paused-lane finding is labelled
@@ -197,9 +201,13 @@ def read_ledger(rules):
         states = {i: it.state for i, it in model.replay(events).items.items()}
     except Exception as e:  # noqa: BLE001 - every ledger failure is UNMEASURED
         raise Unmeasured("ledger unreadable: %s: %s" % (type(e).__name__, str(e)[:200]))
-    finds = {}
+    finds, retyped = {}, {}
     for e in events:
-        if e.get("event") != "finding" or e.get("type") not in rules["finding_types"]:
+        if e.get("event") != "finding":
+            continue
+        if e.get("type") not in rules["finding_types"]:
+            if e.get("name") in finds:                  # a retype: an outcome recorded on the ledger
+                retyped[e["name"]] = e
             continue
         if not all(isinstance(e.get(k), str) and e.get(k) for k in ("name", "id", "why")) \
                 or not ISO_RE.match(str(e.get("ts"))):
@@ -209,6 +217,8 @@ def read_ledger(rules):
             raise Unmeasured("finding name %s is used by two different findings" % e["name"])
         finds[e["name"]] = core
     spawns = [e for e in events if e.get("event") == "spawn" and isinstance(e.get("from"), str)]
+    spawns += [{"as": "retype", "from": n, "name": e.get("type"), "seat": e.get("seat"), "ts": e.get("ts"),
+                "why": e.get("why") or "retyped %s" % e.get("type")} for n, e in sorted(retyped.items())]
     return finds, spawns, states
 
 
@@ -292,9 +302,11 @@ def row_runs(recs):
 
 
 def latest_decision(sig, names, spawns, lines):
-    """The newest of: a decisions-file line on sig, a `rimflow spawn --from <one of its findings>` (work). undo -> None."""
-    ds = [{"as": "work", "into": e.get("name"), "by": e.get("seat"), "ts": e.get("ts") or "",
-           "why": "spawned from %s" % e["from"], "src": "ledger"} for e in spawns if e["from"] in names] + \
+    """The newest of: a decisions-file line on sig, a `rimflow spawn --from <one of its findings>` (work), a ledger
+    retype of one of them (retype, read_ledger). undo -> None."""
+    ds = [{"as": e.get("as") or "work", "into": e.get("name"), "by": e.get("seat"), "ts": e.get("ts") or "",
+           "why": e.get("why") or "spawned from %s" % e["from"], "src": "ledger"}
+          for e in spawns if e["from"] in names] + \
         [dict(d, src="decisions") for d in lines if d["sig"] == sig]
     # ties (one-second clock) go to the later entry, and a decisions line outranks a spawn: an undo right after wins
     last = ds[max(range(len(ds)), key=lambda k: (ds[k]["ts"], k))] if ds else None
@@ -340,6 +352,8 @@ def fold(finds, spawns, states, recs, decision_lines, rules, now):
                 row_key(s["mod"], s["chain"], s["row"], dt, rules) == key and
                 not any(raw[n]["job"] == j for n in s["findings"]))
         s["status"] = "HEALTH" if s["health"] else "DECIDED" if d else "NEW"
+        for n in s["findings"]:
+            raw[n]["outcome"] = bool(d) and raw[n]["at"] <= d["ts"]
     contra = []
     for (mod, chain, row), tl in sorted(runs.items()):
         latest = {}
@@ -491,6 +505,13 @@ def writer_lock(qdir):
                 yield
         finally:
             fcntl.flock(fh, fcntl.LOCK_UN)
+
+
+def decided_findings(out=None):
+    """The finding names the published table gives an outcome: what the ops_watch alarm subtracts. A `decide` lives in
+    the decisions file, which only the table joins to finding names. No report yet: none. Unreadable: Unmeasured."""
+    t = read_prev(os.path.join(out_dir(out, load_rules()), REPORT))[0]
+    return {n for n, f in t["raw"].items() if f.get("outcome")} if t else set()
 
 
 def cmd_run(a):

@@ -466,7 +466,7 @@
   {"key": "testing.nightly_news", "op": ">", "value": 0, "alarm": true, "tag": "NIGHTLY_NEWS", "name": "OPS_NIGHTLY_RED_DIAGNOSE", "marks": ["MEASURED"], "title_field": "said", "note_field": "news",
    "why": "TE1: a nightly red not on the known-red list, or an entry past its age. A listed red is silence. Fix it, or at known_red_after_nights nights list it under an open item: python3 src/RimMandrake/Utils/known_reds.py add <test> --item <ID> --why ..."},
   {"key": "flow.untriaged_findings", "op": ">", "value": 0, "alarm": true, "tag": "UNTRIAGED", "name": "OPS_FINDINGS_DIAGNOSE",
-   "why": "findings filed UNTRIAGED and not yet turned into items"}
+   "why": "findings filed UNTRIAGED with no outcome yet: no same-named item, spawn --from, ledger retype or findings_fold decide (findings design section 3)"}
  ],
  "alarm": {
   "_doc": "Filing: spawn as RUNNER from the dispatch clone (its testq/ingest.py: rimflow + publish) under QHOME/ingest.lock, the lock the ingest and the Dispatcher take. RM_OPS_ALARM_CLONE / RM_OPS_ALARM_PARENT override.",
