@@ -1007,7 +1007,8 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
                    # request's own time minutes later (blind review 2026-10-29 P0-1); tx_offset is the byte cursor
                    # just past that input, so every later record is read in full, never through a tail (P0-2)
                    "cancel_after": float(req["input_ts"]) if req.get("input_ts") is not None else ts,
-                   "tx_offset": req.get("tx_offset"), "tx_path": req.get("tx_path")}
+                   "tx_offset": req.get("tx_offset"), "tx_path": req.get("tx_path"),
+                   "closeout": req.get("closeout"), "gaps": req.get("gaps")}
             act(do="restart_request", seat=seat, ticket=req.get("ticket"), session_id=req.get("session_id"),
                 req_ts=req["ts"], why="requested by %s: %s" % (seat, req.get("reason")))
             R[seat] = new
@@ -1459,6 +1460,9 @@ def run_fallback(argv):
 
 def _kill_record(seat, a, sch, rs, start, now):
     cfg = config(sch).get(seat, DEFAULTS)
+    # a forced restart ran no close-out: the record it overwrites may hold the last window's open gaps
+    gaps = rs.get("gaps") if rs.get("closeout") else (inherited_gaps() if cfg.get("kind") == "conductor" else None)
+    closeout = rs.get("closeout") or ("partial" if gaps else None)
     wall = time.time()      # the tile's window starts at the real kill, not the tick's start (GPT review P1)
     return {"seat": seat, "old_pid": a["pid"], "old_start": start, "session_id": a["session_id"],
             "killed_at": max(now, wall) if abs(wall - now) < 600 else now,
@@ -1467,6 +1471,7 @@ def _kill_record(seat, a, sch, rs, start, now):
             # the transcript the request named (review 2 P1-4) and this restart's generation, which only the relaunch
             # prompt carries (review 2 P1-5)
             "tx_path": rs.get("tx_path"), "gen": a.get("gen") or rs.get("gen"),
+            "closeout": closeout, "gaps": gaps,                                  # close-out gaps: the wake retries them
             "source": rs.get("source"), "ctx_tokens": rs.get("ctx_tokens"),      # a forced restart's wake digests the old window
             "reads": cfg.get("kind") == "conductor", "arm_s": cfg["arm_s"],      # a wake that must be answered (`answered`)
             "window_s": cfg["intile_window_s"]}   # the tile obeys decide()'s deadline (review4 #2)
@@ -1888,6 +1893,54 @@ def _schedule():
         return {}
 
 
+def closeout_check(path, cfg):
+    """-> {closeout, gaps} for a goodbye request: B2 step 1 by program (conductor_closeout.py), printed to the window.
+    Never refuses: a gap makes the close-out partial and travels on the request to the next window's wake (B2 step 4).
+    A crash in the check is UNMEASURED, which is not ok, and must not strand his goodbye."""
+    try:
+        import conductor_closeout as CC
+        import goodbye_phrase as GP
+        phr = GP.phrases(cfg)
+        res = CC.evaluate(CC.as_msgs(human_since_offset(path, 0), _msg_key, _text, _ts),
+                          lambda t: GP.is_goodbye(t, phr), REPO, CC.dismissed_path(cfg.get("seat_log")))
+        if res["closeout"] == "unmeasured":
+            res["gaps"] = [CC.blind_gap(path, res["why"])]
+        res = CC.merge_gaps(res, CC.still_open(inherited_gaps(), REPO, CC.dismissed_path(cfg.get("seat_log"))))
+        print("\n".join(CC.report(res)))
+        return {"closeout": res["closeout"], "gaps": res["gaps"]}
+    except Exception as e:  # noqa: BLE001
+        print("CLOSEOUT UNMEASURED: the check failed (%r). Check his messages by hand; this is not ok." % e)
+        import conductor_closeout as CC
+        return {"closeout": "unmeasured", "gaps": [CC.blind_gap(path, repr(e))]}
+
+
+def inherited_gaps():
+    """-> the gaps on the last killed record: overwritten by the next kill unless the next request carries them on."""
+    rec = _read_json(killed_path("BENCH")) or {}      # only the Conductor closes out
+    return [] if rec.get("aborted") else rec.get("gaps") or []
+
+
+def _wake_gaps(rec, cfg):
+    """B2 step 4: what the old window left off the ledger, printed until it is recorded or dismissed, on every wake."""
+    if rec.get("closeout") not in ("partial", "unmeasured"):
+        return
+    print("\n== the old window's close-out was %s." % rec["closeout"].upper())
+    if rec["closeout"] == "unmeasured":
+        print("UNMEASURED: nothing checked his messages against the ledger. Check them in %s." % rec.get("tx_path"))
+    try:
+        import conductor_closeout as CC
+        gaps = CC.still_open(rec.get("gaps"), REPO, CC.dismissed_path(cfg.get("seat_log")))
+    except Exception:  # noqa: BLE001 - the wake must reach its last line; the stored gaps stand
+        gaps = rec.get("gaps") or []
+    if not gaps:
+        print("Its gaps have since been recorded.")
+        return
+    print("His messages with no words on the ledger. Do these FIRST: `cli.py note <ITEM> --text ... --owner-said "
+          "\"<his words>\"`, or `conductor_closeout.py dismiss --key <key> --why ...` if it ruled on nothing:")
+    for g in gaps:
+        print("- key %s at %s:\n%s" % (g.get("key"), _iso(g.get("ts") or 0), g.get("text") or "(no text)"))
+
+
 def cmd_request(args):
     seat = (args.seat or doorbell.seat_name() or "").upper()
     if not seat:
@@ -1957,6 +2010,8 @@ def cmd_request(args):
            "reason": args.reason, "ts": time.time(), "ctx_tokens": ctx,
            "input_ts": in_ts if cfg.get("kind") == "conductor" else None, "tx_offset": cursor,
            "tx_path": path}             # the transcript actually read, carried to the kill and the wake (review 2 P1-4)
+    if cfg.get("kind") == "conductor":
+        req.update(closeout_check(path, cfg))
     _write_json(request_path(seat), req)
     wait = ("once this window has been quiet for %d s (goodbye_quiet_s) and nothing holds it. End your turn now; ANY "
             "new input cancels it" % cfg["goodbye_quiet_s"]) if cfg.get("kind") == "conductor" else (
@@ -1982,6 +2037,7 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
         print("\n== no restart record: the last restart (%s) was ABORTED before any kill (%s); the old window was "
               "never killed, so there is nothing to recover." % (rec.get("gen") or "?", str(rec["aborted"])[:160]))
         return
+    _wake_gaps(rec, cfg)
     if answered(rec):
         print("\n== restart %s was already recovered by a wake at %s: not replayed." % (rec.get("gen"), _iso(rec["woken_at"])))
         return

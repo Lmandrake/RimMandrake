@@ -73,7 +73,8 @@ This rule outranks every other rule in this file and in BENCH.md.
 
 **Owner 2026-10-29, after blind review 3: *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."* The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`). The context backstop for this window is OFF (`backstop: false`): he ruled only on the goodbye kill, and review 3's backstop findings are open.** His whole message `goodbye` / `bye` / `gn` / `good night` / `done for now` / `that's all` runs the light close-out
 (conductor_briefing Part B2: his rulings on the ledger with his words, open promises filed `--for OWNER`, 3-5 lines
-to the Conductor log). Built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): the UserPromptSubmit hook
+to the Conductor log; `src/RimMandrake/rimflow/conductor_closeout.py check` lists his messages with no words on the ledger,
+and the request carries what is left to the next wake). Built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): the UserPromptSubmit hook
 `.claude/hooks/conductor_goodbye.py` prints the steps on that turn, ending in `seat_restart.py request --seat BENCH
 --fresh --reason goodbye --note "<3-5 lines>"`. The Dispatcher then relaunches a fresh `CONDUCTOR` window only after the
 old window's transcript and his keyboard have both been quiet for `goodbye_quiet_s` (600 s, ten minutes). It holds

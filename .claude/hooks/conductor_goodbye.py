@@ -88,13 +88,16 @@ def is_conductor(env, sf, sch):
 
 CLOSE_OUT = """GOODBYE (conductor_goodbye.py): his whole message was a goodbye. Do the light close-out NOW, in this order, \
 briefly (B2, design/RimMandrake/conductor_briefing_2026-10-28.md; window: {why}):
-1. Every ruling he gave in this window that is not on the ledger yet: `python3 src/RimMandrake/rimflow/cli.py note \
-<ITEM> --text "..." --owner-said "<his exact words>"` (or file/close with --owner-said). His words only; your own reasons \
-take --why.
+1. Run `python3 src/RimMandrake/rimflow/conductor_closeout.py check`: it lists every message of his in this window \
+with no ledger quote. For each one that ruled or answered: `python3 src/RimMandrake/rimflow/cli.py note <ITEM> --text \
+"..." --owner-said "<his exact words>"` (or file/close with --owner-said). His words only; your own reasons take --why. \
+For each that ruled on nothing: `python3 src/RimMandrake/rimflow/conductor_closeout.py dismiss --key <key> --why "..."`. \
+Run check again until it says OK; what you cannot settle goes to the next window with the restart request.
 2. Every promise you made him that is still open: file it for him, `python3 src/RimMandrake/rimflow/cli.py file \
 <SUBJECT>_<INTENT>_PROMISED_AT_GOODBYE --for OWNER --why "<what was promised, where>"` (name it with `rimflow \
 namecheck` first).
-3. Commit the BENCH ledger shard (infrastructure/state/ledger/events/BENCH.jsonl) by explicit path, then `./publish`.
+3. Commit the ledger shards by explicit path (infrastructure/state/ledger/events/BENCH.jsonl, and OWNER.jsonl, where \
+--owner-said writes), then `./publish`.
 4. {restart}
 5. Reply to him in ONE line: "Closed out: N rulings on the ledger, M promises filed. {tail}" Then end the turn. \
 Do not start new work."""

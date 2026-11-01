@@ -86,8 +86,8 @@ headed `OPS DECISION <id>` with the right provenance flag; Operations carries it
 **Owner 2026-10-29, after blind review 3: *"Leave the goodbye kill on. If I'm typing at the same time it's an acceptable risk."* The goodbye restart below is ON (`seat_restart.seats.BENCH._why_enabled`). The context backstop for this window is OFF (`backstop: false`): he ruled only on the goodbye kill, and review 3's backstop findings are open.** His message is not a Dispatcher trigger, with one exception: his **goodbye** in the standing Remote Control `CONDUCTOR`
 window (owner 2026-10-27/28: *"Goodbye should be the trigger."*, *"Yes I like your design. Go with it."*). The goodbye
 runs the LIGHT close-out (a program check of his rulings and answers against the ledger, open promises filed `--for OWNER`,
-a 3-5 line note to the Conductor log read at wake; the program check of B2 step 1 is not built, so the window checks
-by hand). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
+a 3-5 line note to the Conductor log read at wake; the program is `conductor_closeout.py check`, and
+`seat_restart.py request` stores its verdict and gaps, which the next wake prints until recorded or dismissed). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
 his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh`. The Dispatcher
 restarts the window as a fresh Remote Control `CONDUCTOR` only once the old transcript and his keyboard have been quiet for
 `goodbye_quiet_s` (600 s). It holds while helpers are alive, while the window is mid-reply, while his keyboard is busy,
