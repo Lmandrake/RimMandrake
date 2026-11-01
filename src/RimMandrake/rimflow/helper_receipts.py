@@ -273,6 +273,15 @@ def collect(seat, clone, root=None, now=None, force=(), since_s=MAX_AGE_S, max_r
     return new
 
 
+def stamp(seats, root=None, now=None):
+    """The reading a `rimflow close --live` promise watches: a tick read every seat's dead windows, whether or not any
+    died. A dead reader goes stale here long before anyone misses a receipt."""
+    path = os.path.join(root or doorbell.state_dir(), "receipts", "last_read.json")
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    SR._write_json(path, {"read_at": now or time.time(), "seats": sorted(seats)})
+    return path
+
+
 def open_receipts(seat, root=None):
     out = []
     try:

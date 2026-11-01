@@ -1623,6 +1623,7 @@ def helper_receipts_obs(sch):
             clones.add(clone)
             HR.collect(seat, clone)
         out += [{"seat": seat, "session": r["session"], "line": HR.one_line(r)} for r in HR.open_receipts(seat)]
+    HR.stamp(SR.config(sch))
     return out
 
 

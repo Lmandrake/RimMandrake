@@ -220,6 +220,8 @@ def readers(a, e):
     check([x["kind"] for x in acts] == ["helper_lost:reader"], "a failing reader alarms, it never reads as nothing lost")
     sch = {"seat_restart": {"enabled": True, "seats": {SEAT: {"clone": CLONE}}}, "seats": {SEAT: {"clone": CLONE}}}
     got = D.helper_receipts_obs(sch)
+    check(SR._read_json(os.path.join(doorbell.state_dir(), "receipts", "last_read.json"))["seats"] == [SEAT],
+          "a tick leaves the reading the --live promise watches")
     check(sorted(x["session"] for x in got) == sorted(r["session"] for r in HR.open_receipts(SEAT)) and len(got) >= 5,
           "the Dispatcher's reader returns every open receipt (%d)" % len(got))
 
