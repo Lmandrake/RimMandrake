@@ -38,16 +38,23 @@ and how Route 1 blows the lake), `design/Jawa/worldbuilding/biomes/the_propane_l
 - Standing: no worldgen of any kind; a biome of ours on 0 tiles is expected, not a defect; every DLC
   is assumed; every mod ships Mod Settings.
 
-## Rebuttal: this is round 2 (delegation_policy §4.5, your verdict stands)
+## Rebuttal: this is round 3 (delegation_policy §4.5)
 
-Round 1 returned REDO. The maker does not contest it; every defect was taken and fixed. The record is
-`infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`, field `judge_rounds`.
+Rounds 1 and 2 returned REDO. The maker contests neither; every defect was taken and fixed. The record
+is `infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`, field `judge_rounds`.
 
-- **Defect 1, strike and defeat left Route 6 live.** Fixed by a second state, `labFate`, and one guard,
-  `Route6Live`: §4 tables, §6. A strike sets `Lost` and nothing reopens it.
-- **Defect 2, every blast lit Route 6.** The clock is deleted, with its setting, and the sentence added to
-  the routes spec is removed. The question is filed for him as `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE`,
-  and the design stands whichever way he answers. What is left of the tension is said in §6.
+- **Round 1, strike and defeat left Route 6 live.** `labFate` and `Route6Live`: §4 tables, §6.
+- **Round 1, every blast lit Route 6.** The clock and its setting are deleted, the routes-spec sentence
+  is removed, and the question is `WARLAB_ROUTE6_ASK_DOES_LAKE_LIGHT_FUSE`.
+- **Round 2, the garrison did not persist.** §4 Behaviour now names `LordJob_DefendPoint` with
+  `addFleeToil` false; §4 Food and rest feeds them; §8 adds a 10-day hold to the live proof.
+- **Round 2, the clock survived in `dungeons_arc_spec.md` §2.3.** Both clauses are deleted and the note
+  check now guards that file.
+- **Round 2's correction.** §6 no longer says the dive is `Open`.
+
+Found by the maker since round 2, not by a judge: `Turret_Autocannon` needs power, so the camp has no
+turrets; the guards' faction is now the pursuit code's own lookup, not bare `Faction.OfEmpire`; the
+write-back has a named hook.
 
 ## Hard reads: where the maker extended beyond his words
 
@@ -63,15 +70,17 @@ Round 1 returned REDO. The maker does not contest it; every defect was taken and
 6. **Codes usable only on the lab's map**, which settles a question the item XML left open.
 7. **The numbers:** +80 Visibility, floor 2, 12 pawns, 1,314 points. Does "small" and "significantly"
    hold? All are marked PROVISIONAL.
+8. **Full food and rest for hostile pawns, by decree.** Does that keep a garrison beatable and honest?
 
 Also check: any second heat meter, any worldgen by another name, any softlock, any state in the
 garrison table the text does not reach or cannot leave, and any cited engine fact that the source
-contradicts.
+contradicts. The 1.6 decompile is at `D:\ClaudeWork\rimmandrake\decomp\rw16\all`.
 
 ## Your return
 
-You are the §4.5 round 2 judge, reached as this item's blind checker (`rm-judge`, opus). KEEP is your PASS;
+You are the §4.5 round 3 judge, reached as this item's blind checker (`rm-judge`, opus). KEEP is your PASS;
 REDO or UNSURE is your FAIL. A WEAK verdict rules nothing here: if the note cannot stand, say FAIL.
+A third REDO goes to his set flagged.
 
 `KEEP` the note, or `REDO` quoting each violated constraint and its source, or `UNSURE` where the
 written constraints do not decide it. A provisional number the maker labelled is not a REDO unless

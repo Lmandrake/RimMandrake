@@ -40,7 +40,7 @@ Status and judge record: see `## Judgment` at the end of this note.
 | blast-to-heat precedent | `FuelBlastInvestigation`, which binds a soft event by reflection and calls `EmpireLadderMath.BlastVisibility` | built |
 | the codes | `RUT_RakatanCommandCodes`, redeemed by `CompRedeemRakatanCommandCodes`, which sets `AshfallCommandCodesFlag.HasBeenSeized` | built, with two defects below |
 | the lab site | `RUT_WarLabSite`, `RUT_GenStep_WarLabSite` | built, with two defects below |
-| an Imperial post | `RM_GenStep_DetentionPost`: spawns guards under `LordJob_DefendBase` | built, the pattern to copy |
+| an Imperial post | `RM_GenStep_DetentionPost`: spawns guards on a site | built; the pattern for the spawning, not its lord (§4) |
 
 Four findings shape the rest. Each would have broken the card as ruled.
 
@@ -116,11 +116,15 @@ replaced by the revealed one.
 
 The site part is a new `SitePartDef`, `RUT_WarLabRevealedSite`, linked to the same layout as
 `RUT_WarLabSite` but with `gravShipsCanLandOn` true and `disallowsAutomaticDetectionTimerStart`
-true. It is carried by a `Site` subclass, `RUT_Site_WarLab`, whose `ShouldRemoveMapNow` always
+true. It is carried by a `Site` subclass, `RUT_Site_WarLab` (with its own `WorldObjectDef`), whose `ShouldRemoveMapNow` always
 answers `alsoRemoveWorldObject = false`. The world object is permanent, while the map may unload.
 The camp is a small authored layout, `RUT_WarLabGarrisonCamp`, outside the lab's outer gate: vanilla
-`Sandbags` and `Barricade`, and two `Turret_Autocannon` covering the approach. No new art. The
+`Sandbags` and `Barricade`, and no turrets: a vanilla autocannon draws 150 W and fires only with
+power on, and a camp on the night side has no plant. The men are the whole force. No new art. The
 guards stand *outside* the shielding, as the card says. They never enter it.
+
+The site and the guards belong to the pursuing faction, read as the pursuit code reads it:
+`EmpireSearch.Part?.PursuitFaction ?? Faction.OfEmpire`. This note calls that "the Empire" throughout.
 
 **Who.** A fixed roster, not a points roll, so that "small" stays small:
 
@@ -140,8 +144,20 @@ them. Each guard gets one new hediff, `RUT_GarrisonColdSealed`, which offsets
 these 12, and it is removed from nobody: it is their kit. `RM_ChillHeatedSuit` is not the tool,
 because it is charge-gated and needs a `RM_HeatedSuitCharger`.
 
-**Behaviour.** One lord, `LordJob_DefendBase` on the camp, as `RM_GenStep_DetentionPost` does. They
-stay in the camp until the player comes.
+**Behaviour.** One lord, `LordJob_DefendPoint(campCentre, wanderRadius: 8, defendRadius: 28,
+isCaravanSendable: false, addFleeToil: false)`. That job is one toil with no transitions, so nothing
+turns it into an assault and no casualty count makes it flee. They fight whatever comes inside the
+radius and go back to the camp.
+
+Vanilla `LordJob_DefendBase` is ruled out, though `RM_GenStep_DetentionPost` uses it: it goes to
+`LordToil_AssaultColony` on a 3% roll per 2,500 ticks, on a timer and on hunger, so the guards would
+leave with the player doing nothing (`skills/rimbridge/references/pawn-authoring.md`). `RM_LordJob_ScrubCamp`
+drops those triggers but still assaults a player enemy, which this garrison always is.
+
+**Food and rest.** Nobody on the crater can eat, so a siege would beat them the way the cold would.
+Every 2,500 ticks while the map is loaded, `GameComponent_WarLabGarrison` sets each standing guard's
+food and rest to full: sustenance is present, not produced, the answer `RM_MapComponent_ScrubCamps`
+gives. That class is the pattern and not the tool, because it skips hostile pawns.
 
 **Persistence.** `GameComponent_WarLabGarrison` is scribed and holds the garrison `state`, the
 survivors by kind, and the lab's fate. The two tables are separate facts: who stands outside the door,
@@ -165,7 +181,8 @@ and what became of the door.
   contact adds to it. It ends only by the player's hand or when the lab's fate changes under it.
 - A guard counts as out when dead, downed, held prisoner by the player, or off the map. When none
   stands, the state latches to `Beaten`, and a downed guard who rises later changes nothing.
-- If the player leaves and the map unloads, the survivors are written back by kind and the next
+- If the player leaves and the map unloads, `RUT_Site_WarLab.Notify_MyMapAboutToBeRemoved` writes the
+  survivors back by kind and the next
   map generates those, not a full roster. Wounds heal; losses stay. A fight can be walked away from
   and resumed.
 - A map already loaded at the blast (a crew on site when it blew) gets the camp spawned onto it
@@ -224,7 +241,9 @@ The whole gate order is written once, in `dungeons_arc_spec.md` §2.3 (`ASSAILAN
   fate `Broken`, a standing garrison dies there (`Moot`), and the lab stands open with no codes
   needed. This is the one bypass the two-key rule allows. Route 6's own consequences are not built,
   so the build item owes this guard and a stub entry until Route 6 has an item of its own.
-- **Strike or dive.** Dive means `Open`; strike means `Lost`. A Cradle strike on a sealed lab sets
+- **Strike or dive.** `Open` is only the door: the dive itself is the wake, gate 4 of
+  `dungeons_arc_spec.md` §2.3, and §2.10 holds that a crew which never wakes the lab has not made
+  it. This design tracks the door, so strike means `Lost` and the wake stays §2.10's. A Cradle strike on a sealed lab sets
   `Lost`, kills a standing garrison (`Moot`) and cancels Route 6 through `Route6Live`, so no door ever
   breaks afterwards and the codes never work. A later blast raises heat and places nothing. Whether
   a strike can still be called on a lab already `Open` or `Broken` is `dungeons_arc_spec.md` §2.9's
@@ -235,7 +254,7 @@ The whole gate order is written once, in `dungeons_arc_spec.md` §2.3 (`ASSAILAN
   touches it.
 - **Specimen Casket** (`dungeons_arc_spec.md` §2.10). Its heat goes through
   `EmpireSearch.AdjustVisibility`, which is this same meter.
-- **The Empire defeated.** If `Faction.OfEmpire` is defeated at the blast, no garrison is posted and
+- **The Empire defeated.** If the Empire is defeated at the blast, no garrison is posted and
   the state stays `None`. A defeated Empire bombs nothing: `Route6Live` is false.
 - **A biome of ours on 0 tiles** is the expected state, and `RM_ChillCrater` stays that until the
   blast. No paint is owed by this design.
@@ -264,7 +283,9 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 4. The gizmo gate.
 5. Live proof on a test map, by state reads: `Ignite()` once → Visibility, floor, site on tile,
    state `Posted`. Refused gizmo on and off site. Leave with a part-killed garrison and return:
-   survivors, not 12. Last guard down → `Beaten` → gizmo works. A second run calls the Route 6 stub
+   survivors, not 12. With a player pawn on the map outside the radius and the guards not engaged, run
+   10 days: state `Posted`, every guard alive and inside the radius, the lord still on its one toil,
+   food above Hungry. Last guard down → `Beaten` → gizmo works. A second run calls the Route 6 stub
    with the garrison standing → `Moot`, `Broken`, gizmo refused. A third strikes the lab → `Moot`,
    `Lost`, and the Route 6 stub refuses. A second `Ignite()` does nothing.
 
@@ -272,8 +293,8 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 
 - Tile 5873's biome after the swap and what map it generates, since the crag may or may not sit in
   the swapped set. The site must land either way.
-- Whether `LordJob_DefendBase`'s `delayBeforeAssault` needs raising above the post's 25,000 for a
-  guard that holds.
+- Whether 28 cells cover the approach on the real map. The Defend duty acquires targets at 65 and
+  keeps them at 72, so the guards may shoot past the radius they walk.
 - Whether the −80 °C offset on `ComfyTemperatureMin` holds on the tile's real temperature.
 - Whether pursuit's `PostMapGenerate` timers, which run on any generated map, should be stopped on
   this site. The ladder should not reinforce it.
@@ -283,8 +304,15 @@ Filed as `WARLAB_GARRISON_BUILD_TWELVE_MEN_ON_GLASS`. It ships with its slice of
 Round 1, a fresh opus judge under `delegation_policy.md` §4 (rm-consult):
 **REDO**, two defects. Strike and defeat left Route 6 live, and a blast-lit Route 6 changed a ruled
 route. Both are fixed in this text. Heat, garrison, codes gate and the cited engine facts it found
-sound stand unchanged. Round 2 is the blind check: a new opus judge under §4.5, with no maker notes, rules on this text from the brief
-below, and its verdict stands. **While this item is open this note is not ruled. The item's blind-check
+sound stand unchanged.
+
+Round 2, a new opus judge under §4.5 (the item's blind check): **REDO**, two defects. The guards under
+`LordJob_DefendBase` would not have held and had no food, and `dungeons_arc_spec.md` §2.3 still carried
+the deleted clock. Both are fixed: §4 Behaviour and Food and rest, and §2.3's two clauses are
+gone. The judge's correction on `Open` and the dive is taken in §6. All 7 hard reads were sound.
+
+Round 3 is the blind check: a new opus judge with no maker notes rules on this text from the brief
+below. A third REDO goes to his set flagged under §4.5. **While this item is open this note is not ruled. The item's blind-check
 close is the KEEP**, and its close event names the sha. A REDO or UNSURE sends the item back.
 Brief: `infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast_judge_brief.md`.
 Record: `infrastructure/state/delegated/2026-11-01/warlab_garrison_early_blast.json`.

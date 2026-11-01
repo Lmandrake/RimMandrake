@@ -5,9 +5,10 @@ the lab's fate, and the codes gate. Route 6's own consequences are unbuilt: this
 `Route6Live` guard and a stub entry.
 
 Watch: a vanilla `Site` deletes itself when the player leaves, so the revealed site needs the
-`Site` subclass in §4. The redeem gizmo works anywhere today, and §5 closes that for every route.
+`Site` subclass in §4, and `LordJob_DefendBase` walks out on its own, so the lord is §4's `LordJob_DefendPoint`. The redeem gizmo works anywhere today, and §5 closes that for every route.
 
 ## verify
 - [ ] The kernel's selftests cover each row of both §4 tables and the §5 `CodesUsable` cases.
 - [ ] The §8 live proof passes by state reads in the mod's `validation.py`.
 - [ ] Leaving with a part-killed garrison and returning finds the survivors, not 12.
+- [ ] Ten days with a player pawn on the map and the guards not engaged: still `Posted`, in camp, fed.

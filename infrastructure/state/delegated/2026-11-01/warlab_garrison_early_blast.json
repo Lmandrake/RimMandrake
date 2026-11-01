@@ -2,7 +2,7 @@
  "item": "WARLAB_GARRISON_DESIGN_EARLY_BLAST",
  "class": "design",
  "subject": "design/Jawa/worldbuilding/warlab_garrison_early_blast_2026-11-01.md",
- "verdict": "ROUND2_AT_BLIND_CHECK",
+ "verdict": "ROUND3_AT_BLIND_CHECK",
  "gpt_prereview": {
   "model": "gpt-6.1-sol via gpt_consult.py",
   "note": "pre-review, not a §4 judgment",
@@ -45,11 +45,22 @@
     "Route 6 on every blast changed a ruled route on an agent's reading ('The route nobody buys, nobody places and nobody arms'; card 8 gives heat and a garrison); hard read 2 fell with the clock"
    ],
    "owed": "fix both, remove the clock and the routes-spec sentence from cc00d23b40, file the clock as an owner question, re-ask one new judge with a rebuttal"
+  },
+  {
+   "round": 2,
+   "judge": "rm-judge opus, relentless blind check, unit rm-relentless-check-effed59c1b-g7-c1",
+   "verdict": "REDO",
+   "sound": "all 7 hard reads; heat, siting and codes gate; cited engine facts it checked",
+   "defects": [
+    "LordJob_DefendBase leaves the camp on a 3% roll per 2500 ticks, a timer and hunger, and the guards had no food, so the garrison did not persist until beaten (skills/rimbridge/references/pawn-authoring.md:67)",
+    "dungeons_arc_spec.md §2.3 still carried 'A blast lights the Route 6 clock' and 'the Route 6 clock stops', and the note points at that table"
+   ],
+   "correction": "§6 'Dive means Open' conflicted with dungeons_arc_spec.md §2.3 and §2.10: Open is the door, the dive is the wake"
   }
  ],
- "round_2": {
+ "round_3": {
   "judge": "rm-judge opus, relentless blind checker on the finishing sha",
-  "rule": "its PASS is KEEP, its FAIL is REDO or UNSURE; §4.5: it stands",
+  "rule": "its PASS is KEEP, its FAIL is REDO or UNSURE; a third REDO goes to his set flagged, §4.5",
   "record": "the item's ledger close event, or its blind_fail in relentless"
  }
 }

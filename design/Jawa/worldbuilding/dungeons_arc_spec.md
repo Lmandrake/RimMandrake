@@ -160,9 +160,9 @@ what you came in to.** The socket is inside the door, so the order is forced.
 
 | # | gate | what passes it | what it changes | source |
 |---|---|---|---|---|
-| 1 | **Reveal** (the ground key) | a route opens the ground: the lake's ending, an early blast, or Routes 2 to 5 | `groundOpen`; the door can be seen. A blast lights the Route 6 clock | 2026-09-12 and 2026-09-27 rulings; `the_chill_warlab_routes_spec_2026-09-27.md` |
-| 2 | **Garrison, if early** | beating it. Only a blast with no codes in hand posts one | nothing, until the last guard is down | card 8; `warlab_garrison_early_blast_2026-11-01.md` §5 |
-| 3 | **The codes** (the door key) | `RUT_RakatanCommandCodes` used at the lab | the door opens; the Route 6 clock stops. The crew stands in the approach band, and the complex is still dormant | 2026-09-12: *"the command codes are the only way into the base"*; card 7 |
+| 1 | **Reveal** (the ground key) | a route opens the ground: the lake's ending, an early blast, or Routes 2 to 5 | `groundOpen`; the door can be seen | 2026-09-12 and 2026-09-27 rulings; `the_chill_warlab_routes_spec_2026-09-27.md` |
+| 2 | **Garrison, if early** | beating it. Only a blast with no codes in hand posts one | nothing, until the last guard is down | card 8; `warlab_garrison_early_blast_2026-11-01.md` §4 |
+| 3 | **The codes** (the door key) | `RUT_RakatanCommandCodes` used at the lab | the door opens. The crew stands in the approach band, and the complex is still dormant | 2026-09-12: *"the command codes are the only way into the base"*; card 7 |
 | 4 | **The core socket** (the wake) | an `AIPersonaCore` seated. One-way | inner passages open, guardians wake, and the 15-day stasis clock of §2.10 starts. Everything past here is §2.10 | 2026-08-30 and 2026-09-01 rulings |
 
 - **Why the wake starts the clock.** Nothing here is a third key to the lab. Gate 4 is the
