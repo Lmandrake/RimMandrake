@@ -245,7 +245,9 @@ dated wait frees a place; a third wait is refused. Minimal design I2.
 touches more than the ledger, or `--no-code "<what>"`; owed checks passed on that sha; a non-maker verdict on that sha; no
 newer fail. Relentless's path has the blind judge; hand closes do not. Test: each of the four missing is refused; a fail
 after a pass demotes; seed a behavioural regression that passes current checks and confirm a later catch reopens it. Minimal design I1. Metric AU4 (unverified closes, 813 of 823 on 10-26) must be re-read and falls in
-range, else this is not done.
+range, else this is not done. AU4 re-read 2026-11-01T23:06Z (`close_audit.py`, window from 2026-11-01T18:35Z): 1 of 32 code dones
+unearned, --no-code 6 of 38, IN RANGE (limits 0.05, 0.25). The one is `KNOWN_RESULTS_BUILD_MEASURED_DEPENDENCIES`, written by a stale clone before
+the fold gate of 2026-11-01T19:15Z; none since.
 
 **RO4 Every alarm lands on a role that wakes.** [Operations owns the table; `file` enforces] One routing table: alarm
 kind → program containment, role, or him. `rimflow file --for` a reader nothing wakes is refused. The OP3 chain reads this
