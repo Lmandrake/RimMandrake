@@ -649,8 +649,17 @@ if Suite is not None:
                     _fail("the next recede did not take the wreck back: %r" % b)
 
     def _crew_fight(trigger):
-        """The collapse makes the crew shoot by design: their fight may hurt, down or kill anyone not critical."""
+        """The collapse makes the crew shoot by design: their fight may hurt, down or kill anyone not critical, and their
+        own collapse letter (ThreatSmall) comes with it. A raid's ThreatBig letter still stops the clock."""
+        if trigger.get("critical") or trigger.get("declared"):
+            return False
         return (trigger.get("kind") in ("hurt", "downed", "death", "hostile_arrival")
+                or (trigger.get("kind") == "letter" and "ThreatSmall" in str(trigger.get("detail"))))
+
+    def _wild_noise(trigger):
+        """Wildlife hurting and dying on the map (a hazard biome's spores, measured 2026-11-01): info or threat severity, never
+        a colonist's damage severity. Says nothing about the crew, whose own reads decide the row."""
+        return (trigger.get("kind") in ("hurt", "downed", "death") and trigger.get("severity") in ("info", "threat")
                 and not trigger.get("critical") and not trigger.get("declared"))
 
     @suite.chain("claim_crew")
@@ -697,18 +706,20 @@ if Suite is not None:
                     if c["canTrade"] != "True" or int(c["goods"]) < 1:
                         _fail("the crew's shop is not open: %r" % c)
                     worked = None
-                    for _ in range(CREW_POLLS):
-                        t.wait_ticks(500)
-                        c = _crew(t)
-                        if c["hostile"] != "False":
-                            _fail("the crew turned hostile with relations intact: %r" % c)
-                        if int(c["heldGain"]) > 0 and int(c["near"]) > 0:
-                            worked = c
-                            break
+                    with clockgate.expected_disturbance("wildlife on the map", _wild_noise):
+                        for _ in range(CREW_POLLS):
+                            t.wait_ticks(500)
+                            c = _crew(t)
+                            if c["hostile"] != "False":
+                                _fail("the crew turned hostile with relations intact: %r" % c)
+                            if int(c["heldGain"]) > 0 and int(c["near"]) > 0:
+                                worked = c
+                                break
                     if worked is None:
                         _fail("the crew never worked the claim in %d polls: %r" % (CREW_POLLS, c))
                 c = _crew(t, P_CREW_TRADE)
                 if _live(t):
+                    print("[claim_crew] trade: %r" % c, file=sys.stderr, flush=True)    # a PASS keeps no evidence in the report
                     if c.get("tradeResult") != "done" or c.get("sold") != "True" or c.get("bought") != "True":
                         _fail("the shop did not close both deals: %r" % c)
                     if int(c["heldAfterSale"]) != int(c["heldBefore"]) + 1 or int(c["heldAfterBuy"]) != int(c["heldBefore"]):
@@ -731,6 +742,7 @@ if Suite is not None:
                                 break
                     if gone is None:
                         _fail("the hostile crew never left for the edge: %r" % c)
+                    print("[claim_crew] after the collapse: %r" % gone, file=sys.stderr, flush=True)
                     if gone["toil"] != "LordToil_ExitMap":
                         _unmeasured(t, "the crew died in the fight before it could run: %r" % gone)
                     _act(t, P_CREW_DISMISS)
