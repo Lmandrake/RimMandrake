@@ -1272,6 +1272,7 @@ check("win_path maps a drive mount and leaves /mnt/wsl on the Linux side",
 LS = {"line": "61 promises, 58 kept, 3 broken", "t": NOW - 900}
 check("the sweep's line reaches health", "61 promises, 58 kept, 3 broken" in pc.collect_snapshot({**raw, "live_sweep": LS}, {}, NOW)[0]["health"])
 check("a stale sweep says so", "silent" in pc.live_sweep_line({**LS, "t": NOW - 7200}, NOW), pc.live_sweep_line({**LS, "t": NOW - 7200}, NOW))
+check("a future or NaN stamp is not fresh", all("silent" in pc.live_sweep_line({**LS, "t": t}, NOW) for t in (NOW + 7200, float("nan"))))
 check("no report says so", "no sweep report" in pc.live_sweep_line(None, NOW) and "no sweep report" in pc.live_sweep_line([], NOW))
 check("an unreadable report is none", pc.read_live_sweep("/nonexistent/live_sweep.json") is None)
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")

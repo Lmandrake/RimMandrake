@@ -1961,7 +1961,7 @@ def live_sweep_line(sweep: dict | None, now: float) -> str:
     if not isinstance(sweep, dict) or not sweep.get("line"):
         return "live promises: no sweep report"
     age = now - (sweep.get("t") or 0)
-    return f"live promises: sweep silent {int(age // 3600)} h" if age > LIVE_SWEEP_STALE_SECS else sweep["line"]
+    return sweep["line"] if -300 <= age <= LIVE_SWEEP_STALE_SECS else "live promises: sweep silent"
 
 
 def not_shown_line(rows: list[dict]) -> str:

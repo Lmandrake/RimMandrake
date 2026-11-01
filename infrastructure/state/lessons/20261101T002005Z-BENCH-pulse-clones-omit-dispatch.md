@@ -1,0 +1,1 @@
+pulse_core.CLONES lists bench and foundry only: a program running from the Dispatcher clone that reads read_ledger() does not see its own RUNNER shard until a listed clone pulls. Pass the running clone too (deadman_check.read_items).
