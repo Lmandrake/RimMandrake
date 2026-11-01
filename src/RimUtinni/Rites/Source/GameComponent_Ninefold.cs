@@ -171,6 +171,12 @@ namespace RimMandrake.Utinni.Rites
 
         public float GetSatiation(God god) => satiation[(int)god];
 
+        /// <summary>Proof seam (validation.py, worn_bit_gods): sees every delta with the reason it carried. Null in play.</summary>
+        public static System.Action<God, float, string> DeltaWatcher;
+
+        /// <summary>Proof seam: lets a proof start from a band with room to move and put the god back after.</summary>
+        public void ProofSetSatiation(God god, float value) { satiation[(int)god] = value; }
+
         public float GetMood(God god) => mood[(int)god];
 
         public SatiationBand GetBand(God god) => SatiationBandUtility.BandFor(satiation[(int)god]);
@@ -263,6 +269,7 @@ namespace RimMandrake.Utinni.Rites
             float rawAmount = amount; // pre-multiplier, for MaybeFlipFrontOnViolentSwing
             amount *= RM_NinefoldSettings.eventMagnitudeMultiplier;
             satiation[i] = RM_NinefoldKernel.AddSatiation(satiation[i], amount);
+            DeltaWatcher?.Invoke(god, amount, reason);
             if (reason != null && Prefs.DevMode)
                 Log.Message("[Ninefold] " + god + " satiation " +
                             (amount >= 0 ? "+" : "") + amount.ToString("F1") +

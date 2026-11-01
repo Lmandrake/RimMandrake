@@ -86,9 +86,9 @@ class FakeGame(object):
         return {"success": True}
 
 
-def run_chain(v, session):
+def run_chain(v, session, chain="worn_bit"):
     from modcheck.suite import TestContext
-    name_fn = dict(v.suite.chains)["worn_bit"]
+    name_fn = dict(v.suite.chains)[chain]
     t = TestContext(session)
     import clockgate
     real = clockgate.advance_chunk
@@ -174,6 +174,75 @@ def live_chain(v):
     check("a proof that refuses is UNMEASURED, not a pass", got["no_stage_buffs_a_colonist"][0] == "UNMEASURED", got["no_stage_buffs_a_colonist"])
 
 
+def _line(keep, politics=True, movers=None, tags=None):
+    v = ("Ohm:8,MobUnloo:8,Ozzik:-8" if keep else "Ohm:8,MobUnloo:-8") if movers is None else movers
+    if tags is None:
+        tags = ";".join("%s>The Worn Bit: %s" % (g, "keep" if keep else "free") for g in (("Ohm", "MobUnloo", "Ozzik") if keep else ("Ohm", "MobUnloo")))
+    return "DELTAS keep=%s|politics=%s|gods=9|movers=%s|tags=%s" % (keep, politics, v, tags)
+
+
+def _logs(keep):
+    word = "keep" if keep else "free"
+    rows = [("Ohm", "+8.0"), ("MobUnloo", "+8.0" if keep else "-8.0")] + ([("Ozzik", "-8.0")] if keep else [])
+    return ["[Ninefold] %s satiation %s (The Worn Bit: %s) -> 8.0 [Calm]" % (g, a, word) for g, a in rows]
+
+
+class GodsGame(object):
+    """The worn_bit_gods chain's bridge: canned proof lines keyed "<method><args>", canned log texts keyed "keep"/"free"."""
+
+    def __init__(self, lines=None, logs=None):
+        self.lines, self.logs, self.tick = lines or {}, logs or {}, 1000
+
+    def _ticks(self):
+        return self.tick
+
+    def call(self, tool, **kw):
+        if tool == "jawa/static_call":
+            key = kw["method"] + kw["args"]
+            keep, off = kw["args"] == "true", kw["method"].endswith("Off")
+            line = self.lines.get(key, _line(keep, False, "none", "none") if off else _line(keep))
+            return {"result": line} if line is not None else {}
+        if tool == "jawa/drain_log":
+            word = "keep" if "keep" in kw["contains"] else "free"
+            return {"messages": [{"text": x} for x in self.logs.get(word, _logs(word == "keep"))]}
+        return {"success": True}
+
+
+def gods_chain(v):
+    """worn_bit_gods: the mover set must EQUAL the branch's gods, with its signs and the tag, on the seam, in the log, silenced by the toggle."""
+    want = ["live_game_present"] + [r + w for w in ("keep", "free") for r in ("exactly_the_branch_gods_signed_and_tagged_", "ninefold_log_carries_the_tag_", "politics_off_silences_every_god_")]
+    rows = run_chain(v, None, "worn_bit_gods")
+    check("gods no game: every branch is a row", sorted(rows) == sorted(want), sorted(set(want) ^ set(rows)))
+    check("gods no game: all UNMEASURED naming the need", all(x[0] == "UNMEASURED" and "needs a live game" in x[1] for x in rows.values()), rows)
+    rows = run_chain(v, GodsGame(), "worn_bit_gods")
+    check("gods good lines: all green", all(x[0] == "PASS" for x in rows.values()), rows)
+
+    def red(label, lines=None, logs=None, row="exactly_the_branch_gods_signed_and_tagged_keep", verdict="FAIL"):
+        got = run_chain(v, GodsGame(lines, logs), "worn_bit_gods")
+        check("gods bad line: " + label, got.get(row, ("?",))[0] == verdict, got.get(row))
+
+    key = "ProofDeltastrue"
+    red("an extra god", {key: _line(True, movers="Ohm:8,MobUnloo:8,Ozzik:-8,Ishko:8")})
+    red("an extra god of the five the old row never read", {key: _line(True, movers="Ohm:8,MobUnloo:8,Ozzik:-8,Oomo:-8")})
+    red("a missing god", {key: _line(True, movers="Ohm:8,MobUnloo:8")})
+    red("Ozzik pleased on keep", {key: _line(True, movers="Ohm:8,MobUnloo:8,Ozzik:8")})
+    red("Mob'Unloo pleased on free", {"ProofDeltasfalse": _line(False, movers="Ohm:8,MobUnloo:8")}, row="exactly_the_branch_gods_signed_and_tagged_free")
+    red("a wrong tag", {key: _line(True).replace("Ozzik>The Worn Bit: keep", "Ozzik>The Worn Bit: free")})
+    red("a missing tag", {key: _line(True, tags="none")})
+    red("a proof that walked four gods", {key: _line(True).replace("gods=9", "gods=4")})
+    red("a free line answering keep", {key: _line(False)})
+    red("empty reply", {key: None}, verdict="UNMEASURED")
+    red("empty string reply", {key: ""}, verdict="UNMEASURED")
+    red("a refusing proof", {key: "DELTAS refused: engineEnabled is off"}, verdict="UNMEASURED")
+    red("the toggle silences nothing", {"ProofDeltasOfftrue": _line(True, False)}, row="politics_off_silences_every_god_keep")
+    red("the toggle left one god", {"ProofDeltasOfffalse": _line(False, False, "Ohm:8", "Ohm>The Worn Bit: free")}, row="politics_off_silences_every_god_free")
+    log = "ninefold_log_carries_the_tag_keep"
+    red("the log is empty", logs={"keep": []}, row=log)
+    red("the log tags an extra god", logs={"keep": _logs(True) + ["[Ninefold] Ishko satiation +8.0 (The Worn Bit: keep) -> 8.0 [Calm]"]}, row=log)
+    red("the log lacks a god", logs={"keep": _logs(True)[:2]}, row=log)
+    red("the log has the wrong sign", logs={"keep": [x.replace("Ozzik satiation -", "Ozzik satiation +") for x in _logs(True)]}, row=log)
+
+
 def main():
     spec = importlib.util.spec_from_file_location("rc_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -220,6 +289,10 @@ def main():
     check("no campaign patch says UNMEASURED", any("campaign patch" in u for u in v.wornbit_problems(rut_patch="/nonexistent")[1]))
 
     live_chain(v)
+    spec = importlib.util.spec_from_file_location("rites_v", os.path.join(REPO, "src", "RimUtinni", "Rites", "validation.py"))
+    rites = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(rites)
+    gods_chain(rites)
 
     sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
     fuzz = os.path.join(REPO, "src", "RimMandrake", "Utils", "selftest_rustcathedral_attitude_fuzz.py")

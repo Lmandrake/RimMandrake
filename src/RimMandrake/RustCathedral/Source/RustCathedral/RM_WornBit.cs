@@ -256,8 +256,8 @@ namespace RimMandrake.RustCathedral
             if (RM_RustCathedralSettings.wornBitPoliticsEnabled)
             {
                 ApplyPolitics(hulk, choice == RM_WornBitChoice.Keep);
-                Announce(hulk, choice == RM_WornBitChoice.Keep);
             }
+            AnnounceChoice(hulk, choice == RM_WornBitChoice.Keep);
         }
 
         /// <summary>Goodwill and the hum, each delta a setting times the political multiplier. Goodwill only moves where a
@@ -277,8 +277,13 @@ namespace RimMandrake.RustCathedral
             RM_MapComponent_BiomeAttitude.AddIrritation(hulk.Map, irritation);
         }
 
-        /// <summary>The seam the campaign patches (RimUtinni Rites, Patch_WornBitChoice): RM tier knows no gods. Called only with
-        /// the politics toggle on, so the toggle silences the campaign's deltas too.</summary>
+        /// <summary>The politics toggle over the campaign seam, so the toggle silences the campaign's deltas too.</summary>
+        public static void AnnounceChoice(Pawn hulk, bool keep)
+        {
+            if (RM_RustCathedralSettings.wornBitPoliticsEnabled) Announce(hulk, keep);
+        }
+
+        /// <summary>The seam the campaign patches (RimUtinni Rites, Patch_WornBitChoice): RM tier knows no gods.</summary>
         public static void Announce(Pawn hulk, bool keep)
         {
             Log.Message("[" + CampaignTag + "] the choice: " + (keep ? "keep" : "free"));

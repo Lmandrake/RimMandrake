@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using Verse;
@@ -25,14 +29,54 @@ namespace RimMandrake.Utinni.Rites
             return AccessTools.Method(AccessTools.TypeByName("RimMandrake.RustCathedral.RM_WornBit"), "Announce");
         }
 
-        /// <summary>jawa/static_call read for validation.py: the satiation each god moves by for one branch. Moves them for real.</summary>
+        /// <summary>jawa/static_call read for validation.py, politics toggle on: which gods moved and the reason each delta carried.</summary>
         public static string ProofDeltas(bool keep)
         {
+            return Drive(keep, true);
+        }
+
+        /// <summary>The same drive with the politics toggle off: no god may move.</summary>
+        public static string ProofDeltasOff(bool keep)
+        {
+            return Drive(keep, false);
+        }
+
+        /// <summary>Every god starts at 0 so none is clamped, the real RM_WornBit.AnnounceChoice runs through the Harmony patch,
+        /// then the gods, the toggle and the watcher go back as they were. Reflection: Rites has no compile dependency here.</summary>
+        private static string Drive(bool keep, bool politics)
+        {
             GameComponent_Ninefold comp = GameComponent_Ninefold.Instance;
-            float ohm = comp.GetSatiation(God.Ohm), mob = comp.GetSatiation(God.MobUnloo), ozzik = comp.GetSatiation(God.Ozzik), rekko = comp.GetSatiation(God.Rekko);
-            Postfix(keep);
-            return "DELTAS ohm " + (comp.GetSatiation(God.Ohm) - ohm) + " mob " + (comp.GetSatiation(God.MobUnloo) - mob)
-                + " ozzik " + (comp.GetSatiation(God.Ozzik) - ozzik) + " rekko " + (comp.GetSatiation(God.Rekko) - rekko);
+            if (comp == null) return "DELTAS refused: no Ninefold component";
+            if (!RM_NinefoldSettings.engineEnabled) return "DELTAS refused: engineEnabled is off";
+            MethodInfo choice = AccessTools.Method(AccessTools.TypeByName("RimMandrake.RustCathedral.RM_WornBit"), "AnnounceChoice");
+            FieldInfo toggle = AccessTools.Field(AccessTools.TypeByName("RimMandrake.RustCathedral.RM_RustCathedralSettings"), "wornBitPoliticsEnabled");
+            if (choice == null || toggle == null) return "DELTAS refused: the Rust Cathedral seam is not loaded";
+            God[] gods = (God[])Enum.GetValues(typeof(God));
+            float[] saved = gods.Select(g => comp.GetSatiation(g)).ToArray();
+            object wasOn = toggle.GetValue(null);
+            var tags = new List<string>();
+            var movers = new List<string>();
+            GameComponent_Ninefold.DeltaWatcher = (g, amount, reason) => tags.Add(g + ">" + reason);
+            try
+            {
+                foreach (God g in gods) comp.ProofSetSatiation(g, 0f);
+                toggle.SetValue(null, politics);
+                choice.Invoke(null, new object[] { null, keep });
+                foreach (God g in gods)
+                {
+                    float moved = comp.GetSatiation(g);
+                    if (moved != 0f) movers.Add(g + ":" + moved.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            finally
+            {
+                GameComponent_Ninefold.DeltaWatcher = null;
+                toggle.SetValue(null, wasOn);
+                for (int i = 0; i < gods.Length; i++) comp.ProofSetSatiation(gods[i], saved[i]);
+            }
+            return "DELTAS keep=" + keep + "|politics=" + politics + "|gods=" + gods.Length
+                + "|movers=" + (movers.Count == 0 ? "none" : string.Join(",", movers.ToArray()))
+                + "|tags=" + (tags.Count == 0 ? "none" : string.Join(";", tags.ToArray()));
         }
 
         [HarmonyPostfix]

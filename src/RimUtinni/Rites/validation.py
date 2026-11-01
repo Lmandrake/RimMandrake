@@ -680,25 +680,96 @@ def birth_outcome(t):
         t.screenshot()
 
 
+WB_TAG = "The Worn Bit"
+WB_NINE = 9  # the God enum (Source/God.cs); the proof reports how many it walked
+WB_BRANCH = {True: {"Ohm": 1, "MobUnloo": 1, "Ozzik": -1}, False: {"Ohm": 1, "MobUnloo": -1}}
+
+
+def _wb_reason(keep):
+    return "%s: %s" % (WB_TAG, "keep" if keep else "free")
+
+
+def wb_gods_problem(line, keep, politics=True):
+    """Judge one Patch_WornBitChoice.ProofDeltas line. None is clean; a string starting UNMEASURED means the proof gave no
+    reading; any other string is a fail. Movers must equal the branch's gods exactly, with its signs, each delta tagged."""
+    if not line or "refused:" in line or not line.startswith("DELTAS "):
+        return "UNMEASURED: ProofDeltas gave no reading: %r" % (line or "")[:160]
+    f = dict(p.split("=", 1) for p in line[len("DELTAS "):].split("|") if "=" in p)
+    if f.get("gods") != str(WB_NINE):
+        return "the proof walked %s gods, not all nine: %s" % (f.get("gods"), line)
+    if f.get("keep") != str(keep) or f.get("politics") != str(politics):
+        return "the proof ran another branch than asked (keep=%s politics=%s): %s" % (keep, politics, line)
+    want = WB_BRANCH[keep] if politics else {}
+    movers = {}
+    for item in ([] if f.get("movers") == "none" else f.get("movers", "").split(",")):
+        god, _, amount = item.partition(":")
+        try:
+            movers[god] = float(amount)
+        except ValueError:
+            return "unreadable mover %r: %s" % (item, line)
+    if set(movers) != set(want):
+        return "movers %s are not exactly %s" % (sorted(movers), sorted(want))
+    for god, sign in want.items():
+        if movers[god] * sign <= 0:
+            return "%s moved %s, the branch's sign is %+d" % (god, movers[god], sign)
+    tags = [] if f.get("tags") == "none" else f.get("tags", "").split(";")
+    wanted = sorted("%s>%s" % (god, _wb_reason(keep)) for god in want)
+    if sorted(tags) != wanted:
+        return "reason tags %s are not %s" % (tags, wanted)
+    return None
+
+
+def wb_log_problem(texts, keep):
+    """The Ninefold log lines (ApplyDelta's own, DevMode) carrying this branch's tag: exactly the branch's gods, with its signs."""
+    reason = "(%s)" % _wb_reason(keep)
+    seen = {}
+    for text in texts:
+        if reason not in text or " satiation " not in text:
+            continue
+        god, amount = text.split("[Ninefold] ", 1)[-1].split(" satiation ", 1)
+        seen.setdefault(god, set()).add(1 if amount.startswith("+") else -1)
+    want = WB_BRANCH[keep]
+    if set(seen) != set(want):
+        return "the log tags %s, not exactly %s" % (sorted(seen), sorted(want))
+    for god, sign in want.items():
+        if seen[god] != {sign}:
+            return "the log shows %s moving %s, the branch's sign is %+d" % (god, sorted(seen[god]), sign)
+    return None
+
+
+def _wb_gods_call(t, method, keep):
+    r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.Rites.Patch_WornBitChoice", method=method, args="true" if keep else "false")
+    return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+
+
+def _wb_gods_judged(t, problem):
+    if _live(t) and problem:
+        if problem.startswith("UNMEASURED"):
+            _unmeasured(t, problem[len("UNMEASURED: "):])
+        _fail(problem)
+
+
 @suite.chain("worn_bit_gods")
 def worn_bit_gods(t):
-    """RUSTCATHEDRAL_WORN_BIT_ARC_1: Mob'Unloo +, Ohm +, Ozzik displeased on keep; Mob'Unloo annoyed, Ohm + on free."""
-    with _independent(t, "live_game_present"):
+    """RUSTCATHEDRAL_WORN_BIT_ARC_1: Mob'Unloo +, Ohm +, Ozzik displeased on keep; Mob'Unloo annoyed, Ohm + on free. All nine gods
+    are read and the deltas come through the Harmony patch on RM_WornBit.Announce, so a god the branch does not name reddens;
+    the tag is read twice, as ApplyDelta received it and as it logged it; the politics toggle off silences all of it."""
+    with t.component("live_game_present", beyond_toggle=True):
         if not _live(t):
-            _unmeasured(t, "needs a live game with mandrake.rut.rites and the Rust Cathedral")
-    if not _live(t):
-        return
-    for keep, want in (("true", dict(ohm=1, mob=1, ozzik=-1)), ("false", dict(ohm=1, mob=-1, ozzik=0))):
-        with t.component("branch_" + keep, beyond_toggle=True):
-            r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.Rites.Patch_WornBitChoice", method="ProofDeltas", args=keep)
-            words = str((r or {}).get("result", "")).split()
-            got = {words[i]: float(words[i + 1]) for i in range(1, len(words) - 1, 2)}
-            for god, sign in want.items():
-                moved = got.get(god, 0.0)
-                if (sign > 0 and moved <= 0) or (sign < 0 and moved >= 0) or (sign == 0 and moved != 0):
-                    _fail("%s moved %s on keep=%s" % (god, moved, keep))
-            if got.get("rekko", 1.0) != 0:
-                _fail("a god the branch does not name moved: %s" % got)
+            _unmeasured(t, "worn_bit_gods needs a live game with mandrake.rut.rites and mandrake.rm.rustcathedral loaded, a map, "
+                           "jawa/static_call, jawa/prefs and jawa/drain_log on the bridge (WORN_BIT_LIVE_PROVE_UNMET_GAME)")
+        _devmode_on(t)
+    for keep in (True, False):
+        word = "keep" if keep else "free"
+        with _independent(t, "exactly_the_branch_gods_signed_and_tagged_" + word):
+            _wb_gods_judged(t, _live(t) and wb_gods_problem(_wb_gods_call(t, "ProofDeltas", keep), keep))
+        with _independent(t, "ninefold_log_carries_the_tag_" + word):
+            r = t.bridge_call("jawa/drain_log", limit=200, contains="(%s)" % _wb_reason(keep))
+            if _live(t) and not isinstance(r, dict):
+                _unmeasured(t, "jawa/drain_log gave no reading: %r" % (r,))
+            _wb_gods_judged(t, _live(t) and wb_log_problem([m.get("text", "") for m in r.get("messages") or []], keep))
+        with _independent(t, "politics_off_silences_every_god_" + word):
+            _wb_gods_judged(t, _live(t) and wb_gods_problem(_wb_gods_call(t, "ProofDeltasOff", keep), keep, politics=False))
 
 
 @suite.chain("mood_walk_tick")
