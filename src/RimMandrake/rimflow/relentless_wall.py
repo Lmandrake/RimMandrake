@@ -134,7 +134,7 @@ def marker_prompt(st, text, box):
         *RULE,
         "Then run exactly one of:",
         "  python3 %s PASS \"what you ran and saw\"" % qv,
-        "  python3 %s WEAK \"the runs that show the work holds, then each gap and the mutant or probe that "
+        "  python3 %s WEAK \"the runs you made and what each showed, then each gap and the mutant or probe that "
         "shows it, so the next worker can pin it\"" % qv,
         "  python3 %s FAIL \"what is wrong, so the next worker can fix it\"" % qv,
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],

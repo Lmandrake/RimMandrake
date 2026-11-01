@@ -185,7 +185,7 @@ class Rig:
         self.d = tempfile.mkdtemp(prefix="rl-")
         self.s = R.Store(self.d)
         self.w = FakeWorld(n)
-        self.r = dict(RULES, **rules)
+        self.r = dict(RULES, **{"snag_again_wait_h": 0, **rules})
         self.now = 1000000.0
 
     def tick(self, dt=120):
@@ -452,7 +452,7 @@ def t_proof_weak():
     ok(x.w.closes == [] and st["status"] != "done", "WEAK does not close: a weak proof is not a pass")
     ok(st["failures"].get("proof_weak") == 1 and st["proof_only"]["sha"] == "sha1", "WEAK returns the item, proof only, at that sha")
     ok(st["approach"] == "build" and st.get("failures").get("blind_fail") is None, "WEAK is no failed approach and no FAIL")
-    ok(any("work holds, proof weak" in n and "sha1" in n for n in x.w.notes), "the ledger says why the item is still open")
+    ok(any("the proof has holes and the work is unproven" in n and "sha1" in n for n in x.w.notes), "the ledger says why the item is still open")
     x.run_one("I0")
     p = x.w.launches[-1][2]
     ok("PROOF ONLY" in p and "Leave the code alone" in p and "mutant M" not in p and "ran it" in p, "the next worker is told proof only, with the gaps")
@@ -2610,6 +2610,106 @@ def t_review_findings_core():
     x.done()
 
 
+def t_weak_is_not_good():
+    ok("proof_weak" in R.REJECT_ENDS, "the reading counts WEAK as a rejection, not a pass")
+    for m in (R, R.relentless_wall):
+        src = open(m.__file__, encoding="utf-8").read().replace("the work holds and only the proof is short", "")
+        ok("work holds" not in src, "%s: no WEAK text calls the work good" % m.__name__)
+
+
+def t_live_line_widens():
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    with R.Store.lock(x.s):
+        st = x.st("I0")
+        st["contract"] = {"proof": "p", "live": None, "by_gen": 1, "why": None}
+        x.s.save(st)
+    g = st["gen"]
+    for live, proof, why in (("once: x", "q", "w"),):
+        try:
+            R.contract(x.s, "I0", g, proof, live, why, now=x.now)
+            ok(False, "a build worker may not change the proof")
+        except ValueError:
+            pass
+    try:
+        R.contract(x.s, "I0", g, "p", None, "w", now=x.now)
+        ok(False, "nor rewrite it with no live line")
+    except ValueError:
+        pass
+    try:
+        R.contract(x.s, "I0", g, "p", "once: x", None, now=x.now)
+        ok(False, "the widening says why")
+    except ValueError:
+        pass
+    R.contract(x.s, "I0", g, "p", "once: x", "the hook needs it", now=x.now)
+    ok(x.st("I0")["contract"]["live"] == "once: x", "any worker adds a missing live line, proof unchanged")
+    try:
+        R.contract(x.s, "I0", g, "p", "once: y", "w", now=x.now)
+        ok(False, "a live line once set is frozen")
+    except ValueError:
+        pass
+
+
+def t_time_is_no_failed_approach():
+    x = Rig(n=1, share=1.0, snag_again_wait_h=1)
+    for i in range(4):
+        x.run_one("I0")
+        st = x.st("I0")
+        R.snag(x.s, "I0", st["gen"], "sample_thin", "time", x.r, now=x.now, wait_hours=0.5)
+        x.w.up[st["run"]["unit"]] = False
+        got = x.st("I0")
+        ok(got["approach"] == "build", "a time wait is no failed approach (%d)" % i)
+        ok(got["not_before"] == x.now + max(0.5, i) * 3600, "the same class waits longer each time (%d)" % i)
+        x.tick(max(0.5, i) * 3600 + 1)
+        x.tick(240)
+    x = Rig(n=1, share=1.0, snag_again_wait_h=1)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], "thin", "first", x.r, now=x.now)
+    ok(x.st("I0")["not_before"] == x.now, "a first snag with no wait named waits nothing")
+    x.w.up[st["run"]["unit"]] = False
+    x.tick(240)
+    x.tick(240)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.snag(x.s, "I0", st["gen"], "thin", "second", x.r, now=x.now)
+    ok(x.st("I0")["not_before"] == x.now + 3600, "the same class again waits though no wait was named")
+
+
+def t_one_builder_per_mod():
+    x = Rig(n=3, share=1.0, max_workers=3, staffing=None)
+    x.r["one_builder_per_mod"] = True
+    m = {"I0": ["RimMandrake/Abyss"], "I1": ["RimMandrake/Abyss", "RimUtinni/Rites"], "I2": ["RimUtinni/Other"]}
+    x.w.item_mods = lambda st: m[st["item"]]
+    for i in range(6):
+        x.tick(60)
+    run = {i for i in m if x.st(i)["status"] in R.HOLDS_A_PLACE}
+    ok(run == {"I0", "I2"}, "one mod, one builder; another mod still starts: %s" % sorted(run))
+    x.r["one_builder_per_mod"] = False
+    x.tick(60)
+    ok(x.st("I1")["status"] in R.HOLDS_A_PLACE, "the rule is the only thing that kept it out")
+
+
+def t_item_mods_real():
+    import tempfile
+    b = tempfile.mkdtemp()
+    for p in ("RimMandrake/Abyss", "RimMandrake/RustCathedral", "RimUtinni/Rites"):
+        os.makedirs(os.path.join(b, "src", p, "About"))
+        open(os.path.join(b, "src", p, "About", "About.xml"), "w").close()
+    os.makedirs(os.path.join(b, "src", "RimMandrake", "Utils"))
+    os.makedirs(os.path.join(b, "infrastructure", "state", "items"))
+    with open(os.path.join(b, "infrastructure", "state", "items", "RUST_CATHEDRAL_X.md"), "w") as f:
+        f.write("see src/RimUtinni/Rites/Defs/a.xml and src/RimMandrake/Utils/b.py")
+    fx = R.Effects.__new__(R.Effects)
+    fx.books = b
+    class It:
+        title = "fix the abyss floor"
+    fx.ledger_items = lambda: (None, type("W", (), {"items": {"RUST_CATHEDRAL_X": It}}))
+    got = fx.item_mods({"item": "RUST_CATHEDRAL_X", "last_sha": None})
+    ok(got == ["RimMandrake/Abyss", "RimMandrake/RustCathedral", "RimUtinni/Rites"], "real: mods from id, title and prose paths: %s" % got)
+
+
 def t_review_findings_rig():
     a, b = FakeWorld(0), FakeWorld(0)
     a.pool["/c/L0"] = {"busy": True}
@@ -2625,7 +2725,7 @@ def t_review_findings_rig():
 
 
 def main():
-    for t in (t_review_findings_core, t_review_findings_rig, t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

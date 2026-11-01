@@ -207,7 +207,7 @@ def queue_order(states, plan=None):
                   else (2, s["enrolled_at"], s["item"]))
 
 
-def fail(store, st, klass, detail, r, now):
+def fail(store, st, klass, detail, r, now, time_not_work=False):
     """Under the lock. Fence first: gen moves here, before anything is stopped. The item goes to the TOP."""
     klass = SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag"
     st["gen"] += 1
@@ -226,7 +226,7 @@ def fail(store, st, klass, detail, r, now):
         for k in PROOF_ENDS:
             st["failures"].pop(k, None)
     if klass in PROOF_ENDS:
-        # good code gets no redesign however long its proof takes; enough tries stop and say so, open
+        # WEAK is not good code, it is unproven code: the road is a stronger proof, not a redesign. Enough tries stop and say so, open
         st["total_at_change"] = (st.get("total_at_change") or 0) + 1
         n = sum(st["failures"].get(k, 0) for k in PROOF_ENDS)
         if n >= limit:
@@ -239,7 +239,7 @@ def fail(store, st, klass, detail, r, now):
         return
     # rotating slugs cannot dodge this: enough returns with no new sha also change the approach
     unchanged = st["total_failures"] - (st.get("total_at_change") or 0) >= r.get("unchanged_returns_limit", limit * 3)
-    if st["failures"][klass] >= limit or unchanged:
+    if (st["failures"][klass] >= limit and not time_not_work) or unchanged:
         st["failures"][klass] = 0
         st["total_at_change"] = st["total_failures"]
         st["approach_changes"] += 1
@@ -315,7 +315,9 @@ def learn(store, item, gen, text, now=None):
 
 
 def contract(store, item, gen, proof, live=None, why=None, now=None):
-    """Set by the first worker before it edits; only a redesign may change it, and says why."""
+    """Set by the first worker before it edits; only a redesign may change it, and says why. One exception: any worker
+    may add a live line the contract lacks with the proof unchanged, since that only asks more of the work. Three
+    workers of CLOSE_GATE_ENFORCE_DONE_IS_EARNED died on the lock before a redesign could add it."""
     import live_line
     if live:
         live_line.parse(live)
@@ -323,8 +325,10 @@ def contract(store, item, gen, proof, live=None, why=None, now=None):
     with store.lock():
         st = store.load(item)
         _fence(st, item, gen)
-        if st["contract"] and st["approach"] != "redesign" and not st.get("proof_only"):
-            raise ValueError("the contract is set; only a redesign attempt or a proof-only worker may change it")
+        widens = st["contract"] and live and not st["contract"].get("live") and proof == st["contract"]["proof"]
+        if st["contract"] and not widens and st["approach"] != "redesign" and not st.get("proof_only"):
+            raise ValueError("the contract is set; only a redesign attempt or a proof-only worker may change it (any worker may "
+                             "add a missing --live with the same --proof)")
         if st["contract"] and not why:
             raise ValueError("changing the contract needs --why")
         st["contract"] = {"proof": proof, "live": live, "by_gen": gen, "why": why}
@@ -334,7 +338,9 @@ def contract(store, item, gen, proof, live=None, why=None, now=None):
 
 
 def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=0):
-    """`wait_hours`: what stopped the worker is time, not work (a metric's sample filling); no worker starts before then."""
+    """`wait_hours`: what stopped the worker is time, not work (a metric's sample filling); no worker starts before then,
+    and the wait is no failed approach. The same class again waits even when the worker named no wait, longer each time:
+    a worker costs a million tokens to read that nothing has changed, and CLOSE_GATE_ENFORCE_DONE_IS_EARNED paid three."""
     now = time.time() if now is None else now
     with store.lock():
         st = store.load(item)
@@ -348,8 +354,10 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "owner_call", "detail": st["hold"]["why"]})
             store.save(st)
             return
-        st["not_before"] = now + min(wait_hours or 0, MAX_WAIT_HOURS) * 3600
-        fail(store, st, klass, detail, r, now)
+        again = st["failures"].get(SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag", 0)
+        wait = max(wait_hours or 0, again * r.get("snag_again_wait_h", 0))
+        st["not_before"] = now + min(wait, MAX_WAIT_HOURS) * 3600
+        fail(store, st, klass, detail, r, now, time_not_work=bool(wait_hours))
 
 
 def finish(store, item, gen, sha, evidence, now=None):
@@ -742,6 +750,36 @@ class Effects:
         _, w = self.ledger_items()
         it = w.items.get(item)
         return concept_refused(self.books, item, getattr(it, "kind", None))
+
+    def mod_names(self):
+        """{lowercase folder: tier/folder} of every game mod in the books: a folder with an About.xml."""
+        if self.__dict__.get("_mods") is None:
+            self._mods = {os.path.basename(os.path.dirname(os.path.dirname(p))).lower():
+                          "/".join(p.split(os.sep)[-4:-2]) for p in glob.glob(os.path.join(self.books, "src", "*", "*", "About", "About.xml"))}
+        return self._mods
+
+    def item_mods(self, st):
+        """The game mods an item is known to touch: named in its id or title, a src/ path in its prose, or changed by
+        its commits so far. Tooling (Utils, rimflow) is shared and no mod. A wrong guess only delays a worker."""
+        item, known = st["item"], self.mod_names()
+        memo = self.__dict__.setdefault("_item_mods", {})
+        key = (item, st.get("last_sha"))
+        if key not in memo:
+            _, w = self.ledger_items()
+            it = w.items.get(item)
+            words = [x.lower() for x in re.split(r"[^A-Za-z0-9]+", "%s %s" % (item, getattr(it, "title", "") or "")) if x]
+            names = set(words) | {a + b for a, b in zip(words, words[1:])}
+            try:
+                with open(os.path.join(self.books, "infrastructure", "state", "items", item + ".md"), encoding="utf-8") as f:
+                    prose = f.read()
+            except OSError:
+                prose = ""
+            names |= {x.lower() for x in re.findall(r"src/[A-Za-z]+/([A-Za-z0-9_]+)/", prose)}
+            if st.get("last_sha"):
+                names |= {p.split("/")[2].lower() for p in self.changed(st.get("base"), st["last_sha"], item)
+                          if p.startswith("src/") and p.count("/") >= 3}
+            memo[key] = sorted(known[n] for n in names if n in known)
+        return memo[key]
 
     def item_state(self, item):
         _, w = self.ledger_items()
@@ -1314,15 +1352,17 @@ def worker_prompt(st, text, learned, r):
             "`rimflow close`, `implemented`, `release` or `claim` on this item: the supervisor owns its ledger state.",
             "A hook, systemd unit, dispatcher_schedule.json or ops_watch_rules.json change, or an OPS_ alarm item, needs --live with one of: "
             "`unit=rm-foo.timer reading=<path> max_age=6h`, `hook=block_foo.py`, `once: why`.",
-            "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. Only a "
+            "A contract with no live line may gain one from any worker: the same --proof plus --live and --why.",
+            "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. If "
+            "what stopped you is time, not work (a sample filling), say so: `snag --wait-hours N`. Only a "
             "true design/RimMandrake/delegation_policy.md section 2 call goes up: `snag --class owner_call --section "
             "<what, quoted> ...`. `help` sends a fresh agent the failed approaches on record (refused if there are "
             "none); its options land in the state file (`relentless.py show <item>`) and in the next worker's brief.",
             "Never live-test a flyer's flight. No worldgen. Foreground commands, timeouts under 540 s, no subagents, "
             "bulk output to files. FOUNDRY's tree and src/RimMandrake/Utils/arena/ are not yours to touch."]
     if st.get("proof_only"):
-        head.append("PROOF ONLY: a blind checker ran the code at %s and it holds, but the proof would stay green if it "
-                    "broke. The gaps are in the last ending below. Leave the code alone. Strengthen the proof until each "
+        head.append("PROOF ONLY: a blind checker read the code at %s as WEAK: the proof has holes, so the work is unproven, not "
+                    "sound. The proof would stay green if it broke. The gaps are in the last ending below. Leave the code alone. Strengthen the proof until each "
                     "gap goes red when its clause is broken: show that with the mutant or probe the checker named, then "
                     "restore the code. Land proof files only: the supervisor refuses anything else, and refuses a finish "
                     "with no new commit. Never loosen or remove an existing check. The contract may change with --why, "
@@ -1374,7 +1414,7 @@ def checker_prompt(st, text, nonce):
         *relentless_wall.RULE,
         "Then run exactly one of:",
         "  %s verdict --item %s --nonce %s PASS \"what you ran and saw\"" % (rc, i, nonce),
-        "  %s verdict --item %s --nonce %s WEAK \"the runs that show the work holds, then each gap and the mutant or "
+        "  %s verdict --item %s --nonce %s WEAK \"the runs you made and what each showed, then each gap and the mutant or "
         "probe that shows it, so the next worker can pin it\"" % (rc, i, nonce),
         "  %s verdict --item %s --nonce %s FAIL \"what is wrong, so the next worker can fix it\"" % (rc, i, nonce),
         "", "Contract: %s" % json.dumps(st["contract"]), "Evidence the commit names: %s" % c["evidence"][:1500],
@@ -2042,7 +2082,7 @@ def step(store, fx, r, item, now, acts):
             if word == "WEAK":
                 reasons = st["check"].get("reasons")
                 fail(store, st, "proof_weak", reasons, r, now)
-                weak = "blind check at %s: work holds, proof weak; item stays open: %s" % (c["sha"], reasons or "")
+                weak = "blind check at %s: WEAK, the proof has holes and the work is unproven; item stays open: %s" % (c["sha"], reasons or "")
                 acts.append({"do": "proof_weak", "item": item})
             else:
                 weak = None
@@ -2386,6 +2426,12 @@ def reserve_foreign(store, fx, r, item, now, acts):
     return True
 
 
+def mods_held(store, fx, item):
+    """The mods some other item's worker or candidate holds: {mod: that item}. A candidate counts, its FAIL comes back."""
+    return {m: x["item"] for x in store.states() if x["status"] in HOLDS_A_PLACE and x["item"] != item
+            for m in fx.item_mods(x)}
+
+
 def lease(store, fx, r, now, acts):
     """Fill the free places, top of the queue first. An item the machine cannot run now keeps its place."""
     cfg = r.get("staffing") or {}
@@ -2407,6 +2453,12 @@ def lease(store, fx, r, now, acts):
             continue
         if cfg and launched >= cfg["launch_per_tick"]:   # prepare() blocks and the tick has a timeout
             return
+        if r.get("one_builder_per_mod") and hasattr(fx, "item_mods"):
+            held = mods_held(store, fx, st["item"])
+            taken = sorted(m for m in fx.item_mods(st) if m in held)
+            if taken:       # keeps its place; the next item, on another mod, may start
+                acts.append({"do": "mod_busy", "item": st["item"], "mod": taken[0], "by": held[taken[0]]})
+                continue
         # a stopping item holds its place: its slot is not free for a fresh item while it returns to the top
         active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE) + helps_running(store)
         why = admission(store, fx, r, now, active)

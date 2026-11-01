@@ -193,6 +193,14 @@ state file is written by temp and rename. Workers never touch the ledger or each
 shared-tree hazards of `handoff_context.md` Finding 5 and the first Codex finding for this lane: a candidate is the
 exact sha a checker reran in a clean tree.
 
+Several workers run at once on different mods; one game mod has one builder (`one_builder_per_mod`). `Effects.item_mods`
+reads an item's mods from its id, its title, src paths in its prose and its commits so far; an item whose mod another
+item holds keeps its place while the next one starts. A candidate holds its mod until checked, since a FAIL comes back.
+Before this rule the store shows four mods worked by two workers at once, about 1.9 hours (RimUtinni/UtinniPatches,
+TerminalBiomes, EnvironmentalHazards, Rites). Utils and rimflow are shared tooling, not mods, and ./publish refuses a
+real conflict there. Workers have no subagents today: a worker's token count reads its own result only, so a subagent's
+spend would go uncounted (RELENTLESS_SUBAGENTS_DECIDE_THREE_PER_BUILDER).
+
 ## 10. How it replaces CLOSED_LOOP_PROVE_EDIT_RUN_LOOK_AGAIN
 
 That goal asks one agent to own a problem end to end: edit, run, look, edit again, with a blind check at the end, and to
