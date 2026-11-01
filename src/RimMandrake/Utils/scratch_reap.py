@@ -447,6 +447,11 @@ def path_forms(token: str, cwd: str, bare_must_exist: bool = False) -> list[str]
     return out
 
 
+def proc_entries() -> list[str]:
+    """The scan's whole world. A selftest narrows it to its own process tree; the reaper never does."""
+    return os.listdir("/proc")
+
+
 class Live:
     """One /proc + transcript snapshot: what is in use right now. Re-taken before each deletion batch."""
 
@@ -461,7 +466,7 @@ class Live:
         self.named: set[str] = set()                    # every place a process names, for the same question
         cmds = []
         me, uid = os.getpid(), os.getuid()
-        for pid in os.listdir("/proc"):
+        for pid in proc_entries():
             if not pid.isdigit() or int(pid) == me:
                 continue
             base = f"/proc/{pid}"

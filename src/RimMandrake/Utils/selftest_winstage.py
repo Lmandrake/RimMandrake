@@ -34,9 +34,10 @@ def stage_name_for(csproj, root):
     return "selftest_%s_%s" % (base, tag)
 
 
-def windows_project_path(csproj, restage=True):
+def windows_project_path(csproj, restage=True, whole_src=True):
     """`restage=False` (a `--no-build` run, SELFTEST_FILTER_BUILD_SERIAL_DLL): reuse the stage the last call built
-    instead of re-rsyncing and rebuilding it (~55 s); falls back to staging when that stage does not exist yet."""
+    instead of re-rsyncing and rebuilding it (~55 s); falls back to staging when that stage does not exist yet.
+    `whole_src=False`: a test that reads no shipped file stages only what its csproj compiles, not the 3 GB src tree."""
     p = os.path.abspath(csproj)
     if os.path.realpath(p).startswith("/mnt/") and len(p) > 6 and p[6] == "/":
         return "%s:\\%s" % (p[5].upper(), p[7:].replace("/", "\\"))
@@ -46,7 +47,7 @@ def windows_project_path(csproj, restage=True):
     if not restage and os.path.isfile(os.path.join(stage, os.path.relpath(os.path.realpath(p), winbuild.ROOT))):
         return winbuild.staged_win({"stage": stage}, p)
     rc, record = winbuild.stage_build(p, stage_name=name,
-                                    extra_dirs=[os.path.join(winbuild.ROOT, "src")])
+                                    extra_dirs=[os.path.join(winbuild.ROOT, "src")] if whole_src else [])
     if rc:
         sys.exit("staged build of %s failed (rc=%d) - env/build failure, not a selftest verdict" % (p, rc))
     return winbuild.staged_win(record, p)

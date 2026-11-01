@@ -25,6 +25,28 @@ import scratch_reap as R  # noqa: E402
 
 os.environ["SCRATCH_REAP_RM_SCRATCH"] = "/nonexistent"    # the sanity reading is proved in selftest_scratch_reap_sanity.py:
 R.pool_measures = lambda: {}                              # here a du of the real rm/scratch per run would cost 18 s each
+REAL_PROC_ENTRIES = R.proc_entries
+
+
+def own_tree() -> list[str]:
+    """This test's descendants and its parent. A scan of the machine costs ~3 s under a full fleet, once per candidate,
+    and one stranger's unreadable pid holds every fixture: 3 passes at 340+ s each overran the 530 s budget."""
+    parents = {}
+    for pid in filter(str.isdigit, REAL_PROC_ENTRIES()):
+        try:
+            with open(f"/proc/{pid}/stat", encoding="utf-8", errors="replace") as f:
+                parents[pid] = f.read().rpartition(")")[2].split()[1]
+        except (OSError, IndexError):
+            continue
+    mine, grew = {str(os.getpid())}, True
+    while grew:
+        more = {p for p, up in parents.items() if up in mine} - mine
+        mine |= more
+        grew = bool(more)
+    return sorted(mine | {str(os.getppid())})
+
+
+R.proc_entries = own_tree
 R.CTIME_COUNTS = False                                  # age() can only reach mtimes; third_review_cases turns it back on
 
 FAILS = []
@@ -126,6 +148,7 @@ def main() -> int:
 
 
 def run() -> int:
+    check("1" in REAL_PROC_ENTRIES() and "1" not in R.proc_entries(), "the reaper's own scan is the whole machine; only this test narrows it")
     with tempfile.TemporaryDirectory() as tds:
         td = Path(tds)
         for k, v in {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t", "GIT_COMMITTER_NAME": "t",

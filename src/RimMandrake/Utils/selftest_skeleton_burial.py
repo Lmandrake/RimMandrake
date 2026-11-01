@@ -56,7 +56,7 @@ def main():
             "dotnet.exe not found at any of %r — this selftest needs the "
             "user-local Windows-side .NET SDK; UNMEASURED, not a pass or a fail"
             % DOTNET_CANDIDATES)
-    cmd = [dotnet, "run", "--project", windows_project_path(CSPROJ), "-c", "Release"]
+    cmd = [dotnet, "run", "--project", windows_project_path(CSPROJ, whole_src=False), "-c", "Release"]
     result = subprocess.run(cmd, capture_output=True, text=True)
     print(result.stdout, end="")
     if result.stderr.strip():

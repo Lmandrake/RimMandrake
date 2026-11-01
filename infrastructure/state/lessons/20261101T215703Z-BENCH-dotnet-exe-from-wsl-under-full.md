@@ -1,0 +1,1 @@
+dotnet.exe from WSL under a full worker fleet can fail with 'UtilAcceptVsock: accept4 failed 110' (interop timeout), seen 2 of 3 consecutive runs of selftest_skeleton_burial; a retry passes, it is not a build verdict
