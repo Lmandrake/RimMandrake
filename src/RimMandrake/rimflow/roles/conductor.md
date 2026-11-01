@@ -89,9 +89,9 @@ runs the LIGHT close-out (a program check of his rulings and answers against the
 a 3-5 line note to the Conductor log read at wake; the program is `conductor_closeout.py check`, and
 `seat_restart.py request` stores its verdict and gaps, which the next wake prints until recorded or dismissed). BUILT (2026-10-29, `CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): `.claude/hooks/conductor_goodbye.py` matches
 his WHOLE message and prints the close-out, which ends in `seat_restart.py request --seat BENCH --fresh`. The Dispatcher
-restarts the window as a fresh Remote Control `CONDUCTOR` `goodbye_quiet_s` (30 s) after the request, and no text stops
+restarts the window as a fresh Remote Control `CONDUCTOR` at once (`goodbye_quiet_s` 0, owner 2026-11-01), and no text stops
 it (owner 2026-11-01), his or a machine's: the window is killed mid-reply if need be, and what he sent after the goodbye
-goes to the Conductor log and the wake. Only non-text holds it: a live helper, the bridge, PAUSE, a running command. A
+goes to the Conductor log and the wake. Only a live helper, the bridge or PAUSE holds it; the window's own background commands end with it. A
 request that printed DEFERRED (live helpers) drains. The fresh window's wake (`--gen` binds it to that one restart) lists, whole
 and once, what he sent the old one after the goodbye. A context backstop (OFF since 2026-10-29) would also restart the window, but only after 4 h with no message
 from him. A full handoff is written only when a keyboard sitting ends. The restart is the shared one in

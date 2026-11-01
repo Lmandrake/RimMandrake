@@ -70,7 +70,7 @@ DEFAULTS = {"grace_s": 120, "quiet_s": 30, "busy_ticks": 3, "verify_s": 90, "arm
             "helper_stale_s": 1800, "game_hold_s": 3600, "cooldown_s": 1800,
             "hold_alarm_s": 3600, "request_max_age_s": 3600, "claimed_max_s": 300,
             "fence_s": 1020, "ring_hold_s": 600, "orphan_wait_s": 180,
-            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 30,
+            "kind": "doorbell", "backstop_human_idle_s": 0, "goodbye_quiet_s": 0,
             # SEAT_CONTEXT_BACKSTOP_BUILD_BUSY_WINDOWS_TOO: off unless a seat keys them (never a Conductor, _busy_on)
             "backstop_busy": False, "backstop_hard_tokens": 0, "backstop_hard_alarm_s": 3600}
 ACTIVE = ("pending", "claimed", "killed", "relaunched")
@@ -636,7 +636,7 @@ def last_goodbye(path, is_bye, peers=None):
 
 
 def _tick_soon(*delays):
-    """The Dispatcher ticks every 120 s; a 30 s countdown needs its own ticks. One-shot, best effort: the timer is the
+    """The Dispatcher ticks every 120 s; an instant goodbye needs its own ticks. One-shot, best effort: the timer is the
     backstop."""
     if os.environ.get("SEAT_RESTART_NO_TICK"):
         return
@@ -1203,9 +1203,11 @@ def _is_helper_notice(r):
 def _goodbye(cfg, rs):
     """Is this the Conductor's goodbye restart? Owner 2026-11-01: "I want a goodbye that cannot be interrupted by text.
     Period. Additional text is just written to a handoff but does not stop the countdown. And the countdown should be
-    thirty seconds." So no input of any kind cancels, delays or fails it: goodbye_quiet_s runs from the request, then the
+    thirty seconds." Then, the same morning: "I now want a goodbye that fires instantly. No waiting at all." So no input
+    of any kind cancels, delays or fails it: goodbye_quiet_s (0) runs from the request, then the
     window is killed, mid-reply if need be. What came after goodbye reaches the next window (_log_after_goodbye, wake).
-    Only what is not text still holds it: a live helper, the bridge, PAUSE, a running command."""
+    Only a live helper, the bridge or PAUSE still holds it; a leftover background command held one 14 minutes and ends
+    with the window instead."""
     return cfg.get("kind") == "conductor" and rs.get("source") == "request"
 
 
@@ -1400,7 +1402,8 @@ def _pending(seat, cfg, rs, st, obs, ro, cur, now, act):
         holds.append("no context reading (blind, or just compacted)")
     if callable(ro.get("pending")):
         p = ro["pending"](seat, cur)
-        holds += ["pending input or background work UNMEASURED"] if p is None else p
+        if not goodbye:                  # a goodbye does not wait for this window's commands: they end with it
+            holds += ["pending input or background work UNMEASURED"] if p is None else p
     memo = _context_memo(st, seat, cur) if hard else {}
     if hard:
         memo.setdefault("hard_since", rs["ts"])
@@ -1829,7 +1832,8 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
             holds.append("no context reading at the kill")
         elif rs.get("source") in FORCED and size < _size_line(cfg, rs):
             holds.append("context fell to %d tokens" % size)
-    holds += pending(seat, sf.get("pid"), path) if cfg.get("kind") != "conductor" else background_holds(sf.get("pid"))
+    if not goodbye:
+        holds += pending(seat, sf.get("pid"), path) if cfg.get("kind") != "conductor" else background_holds(sf.get("pid"))
     holds += final_fence(seat, sch, rs, sf, path=rs.get("tx_path") or path)
     hs = helpers_of(path, time.time(), cfg.get("helper_stale_s"))
     if hs is None:
@@ -2165,8 +2169,8 @@ def cmd_request(args):
                  helper_names(live) or "an unreadable helper inventory", cfg["hold_alarm_s"]))
         return 0
     if cfg.get("kind") == "conductor":
-        _tick_soon(cfg["goodbye_quiet_s"] + 2, cfg["goodbye_quiet_s"] + 32)
-    wait = ("in %d s (goodbye_quiet_s). No text stops it; anything he sends goes to the next window. End your turn now"
+        _tick_soon(cfg["goodbye_quiet_s"] + 1, cfg["goodbye_quiet_s"] + 30)
+    wait = ("now (goodbye_quiet_s %d). No text stops it; anything he sends goes to the next window. End your turn now"
             % cfg["goodbye_quiet_s"]) if cfg.get("kind") == "conductor" else (
             "after a %d s grace once this turn has ended and nothing holds it. End your turn now; a new prompt from "
             "the owner cancels it" % cfg["grace_s"])

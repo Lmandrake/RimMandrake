@@ -80,11 +80,11 @@ This rule outranks every other rule in this file and in BENCH.md.
 to the Conductor log; `src/RimMandrake/rimflow/conductor_closeout.py check` lists his messages with no words on the ledger,
 and the request carries what is left to the next wake). Built (`CONDUCTOR_GOODBYE_DESIGN_FRESH_EACH_TIME`): the UserPromptSubmit hook
 `.claude/hooks/conductor_goodbye.py` prints the steps on that turn, ending in `seat_restart.py request --seat BENCH
---fresh --reason goodbye --note "<3-5 lines>"`. The Dispatcher then relaunches a fresh `CONDUCTOR` window `goodbye_quiet_s` (30 s) after the request. Owner, 2026-11-01:
+--fresh --reason goodbye --note "<3-5 lines>"`. The Dispatcher then relaunches a fresh `CONDUCTOR` window at once (`goodbye_quiet_s` 0; owner 2026-11-01: *"I now want a goodbye that fires instantly. No waiting at all."*). Owner, 2026-11-01:
 *"I want a goodbye that cannot be interrupted by text. Period. Additional text is just written to a handoff but does not
 stop the countdown. And the countdown should be thirty seconds."* No input cancels or delays it, his or any machine's, and
 the window is killed mid-reply if need be; what he sent after the goodbye lands in the Conductor log and the wake. A message
-whose last sentence is "goodbye" counts. Only non-text holds it: a live helper, the bridge, PAUSE, a running command. A
+whose last sentence is "goodbye" counts. Only a live helper, the bridge or PAUSE holds it; the window's own background commands end with it. A
 request that printed DEFERRED drains: live helpers never refuse a goodbye, the window takes no ticket and spawns nothing.
 When the last one is done, publish your shard and end the turn; the kill holds for both.
 (`seat_restart.seats.BENCH`, kind `conductor`; the request binds his goodbye's time, a transcript byte cursor and the

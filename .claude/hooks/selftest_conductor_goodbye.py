@@ -88,17 +88,17 @@ def test_live_goodbye_restart_is_on_and_backstop_off():
           and "acceptable risk" in (raw.get("_why_enabled") or ""),
           "live: seat_restart.seats.BENCH enabled true (his words in _why_enabled), backstop false, no _why_off")
     m = G.message(LIVE, ok_why="ok")
-    for need in ("--owner-said", "--for OWNER", "./publish", "conductor/log.md", "Closed out:",
+    for need in ("./publish", "conductor/log.md", "instantly",
                  "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye"):
         check(need in m, "live: the close-out names %r" % need)
-    check("Fresh Conductor in thirty seconds" in m and "off pending your choice" not in m,
+    check("Fresh Conductor now" in m and "off pending your choice" not in m,
           "live: the reply line promises the fresh window, not the off notice")
 
 
 def test_message():
     m = G.message(_on(LIVE), ok_why="ok")
-    for need in ("--owner-said", "--for OWNER", "--why", "conductor/log.md", "./publish",
-                 "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye", "Closed out:",
+    for need in ("conductor/log.md", "./publish", "instantly",
+                 "seat_restart.py request --seat BENCH", "--fresh", "--reason goodbye",
                  "nothing you send is lost", "REFUSED"):
         check(need in m, "the close-out names %r" % need)
     off = json.loads(json.dumps(LIVE))

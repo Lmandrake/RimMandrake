@@ -1307,7 +1307,7 @@ def test_g5_live_schedule_has_the_conductor_entry():
     check(c.get("kind") == "conductor" and c.get("session_name") == "CONDUCTOR" and c.get("model") == "opus"
           and c.get("clone") == "/home/mandrake/rm/bench", "G5 the live schedule restarts BENCH as the Conductor (%s)"
           % {k: c.get(k) for k in ("kind", "session_name", "model", "clone")})
-    check(c.get("grace_s") == 30 and c.get("goodbye_quiet_s") == 30, "G5 BENCH grace and goodbye countdown are 30 s (%s)" % c.get("grace_s"))
+    check(c.get("grace_s") == 0 and c.get("goodbye_quiet_s") == 0, "G5 BENCH goodbye fires instantly (%s)" % c.get("grace_s"))
     check(c.get("backstop") is not True or ((c.get("backstop_human_idle_s") or 0) >= 7200
                                             and (c.get("backstop_idle_s") or 0) >= 1800),
           "G5 a BENCH backstop waits >= 2 h without a human message and >= 30 min idle (%s / %s)"
@@ -1691,7 +1691,7 @@ def _j_run(sch, st, o, times):
 
 def test_j1_conductor_goodbye_counts_down_goodbye_quiet_s_whatever_happens():
     # owner 2026-11-01: thirty seconds from the request, then the kill; transcript growth restarts nothing
-    check(SR.DEFAULTS.get("goodbye_quiet_s") == 30, "J1 goodbye_quiet_s defaults to 30 s (%s)"
+    check(SR.DEFAULTS.get("goodbye_quiet_s") == 0, "J1 goodbye_quiet_s defaults to 0 s (%s)"
           % SR.DEFAULTS.get("goodbye_quiet_s"))
     sch = bsched(goodbye_quiet_s=30)
     st = fresh()

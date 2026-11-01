@@ -5,7 +5,7 @@ WHY THIS EXISTS. The Conductor window (seat key BENCH, session CONDUCTOR) is mea
 back (design/RimMandrake/conductor_briefing_2026-10-28.md B2/B3). When his WHOLE message is a goodbye, this hook puts
 the light close-out into that window's context on that turn: his rulings onto the ledger, open promises filed for
 OWNER, 3-5 lines to the Conductor log, then `seat_restart.py request --seat BENCH --fresh`, and the Dispatcher
-relaunches a fresh CONDUCTOR window after a thirty-second countdown no text can stop (seat_restart.py, kind "conductor", goodbye_quiet_s).
+relaunches a fresh CONDUCTOR window at once, and no text can stop it (seat_restart.py, kind "conductor", goodbye_quiet_s).
 The kill is his accepted risk (owner 2026-10-29: "Leave the goodbye kill on. If I'm typing at the same time it's an
 acceptable risk."); the context backstop for this window stays off (seat_restart.seats.BENCH.backstop false).
 
@@ -86,21 +86,12 @@ def is_conductor(env, sf, sch):
     return (True, "session %r" % name) if ok else (False, "session %r is not one of %s" % (name, names))
 
 
-CLOSE_OUT = """GOODBYE (conductor_goodbye.py): his whole message was a goodbye. Do the light close-out NOW, in this order, \
-briefly (B2, design/RimMandrake/conductor_briefing_2026-10-28.md; window: {why}):
-1. Run `python3 src/RimMandrake/rimflow/conductor_closeout.py check`: it lists every message of his in this window \
-with no ledger quote. For each one that ruled or answered: `python3 src/RimMandrake/rimflow/cli.py note <ITEM> --text \
-"..." --owner-said "<his exact words>"` (or file/close with --owner-said). His words only; your own reasons take --why. \
-For each that ruled on nothing: `python3 src/RimMandrake/rimflow/conductor_closeout.py dismiss --key <key> --why "..."`. \
-Run check again until it says OK; what you cannot settle goes to the next window with the restart request.
-2. Every promise you made him that is still open: file it for him, `python3 src/RimMandrake/rimflow/cli.py file \
-<SUBJECT>_<INTENT>_PROMISED_AT_GOODBYE --for OWNER --why "<what was promised, where>"` (name it with `rimflow \
-namecheck` first).
-3. Commit the ledger shards by explicit path (infrastructure/state/ledger/events/BENCH.jsonl, and OWNER.jsonl, where \
---owner-said writes), then `./publish`.
-4. {restart}
-5. Reply to him in ONE line: "Closed out: N rulings on the ledger, M promises filed. {tail}" Then end the turn. \
-Do not start new work."""
+CLOSE_OUT = """GOODBYE (conductor_goodbye.py): his message was a goodbye, and it fires instantly (owner 2026-11-01: "I now \
+want a goodbye that fires instantly. No waiting at all."; window: {why}). Do only this, in as few calls as you can:
+1. If infrastructure/state/ledger/events/BENCH.jsonl or OWNER.jsonl is dirty, commit them by explicit path, then `./publish`.
+2. {restart}
+3. Reply to him in ONE line: "{tail}" Then end the turn. Do not start new work. His unrecorded words travel with the \
+request (`conductor_closeout.py` gaps, read by the next wake); name open promises in the note."""
 
 RESTART = """3-5 lines for the next window go in via the request itself (they land in {log}): \
 `python3 src/RimMandrake/rimflow/seat_restart.py request --seat BENCH --ticket GOODBYE --reason goodbye --fresh \
@@ -130,7 +121,7 @@ def message(sch, ok_why=""):
         tail = "This window stays open (%s)." % reason
     else:
         step4 = RESTART.format(log=log)
-        tail = "Fresh Conductor in thirty seconds; nothing you send is lost."
+        tail = "Fresh Conductor now; nothing you send is lost."
     return CLOSE_OUT.format(why=ok_why or "-", restart=step4, tail=tail)
 
 
