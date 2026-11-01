@@ -61,31 +61,57 @@ def static_checks():
 
 def drinks_chiller_checks(ET):
     """COLD_STORAGE_CHAMBER_BUILD_DRINKS_CHILLER pins. The drinks chiller is the cooling chamber with a drinks filter
-    and a 4 C start: it inherits from the chamber, is MayRequire'd on Cold Storage, restates the chamber's comps
-    (comps Inherit="False", so a lost comp would be silent) with the same range, detents and fuel option, starts on a
-    detent, and every non-vanilla filter entry is MayRequire'd on the mod that ships it."""
+    and a 4 C start: chamber and chiller are siblings under the abstract RSW_CoolingChamberBase, MayRequire'd on Cold
+    Storage, with the same range, detents and fuel option; the chiller starts on a detent, and every non-vanilla filter
+    entry is MayRequire'd on the mod that ships it.
+    DRINKS_CHILLER_FIX_COMPS_DROP_STYLEABLE: no def on either chain may restate <comps Inherit="False">, which would
+    drop vanilla ShelfBase's CompProperties_Styleable (and any comp other mods patch onto the shelf parents); each def
+    resolves to the shared power/flick/breakdown comps plus exactly one climate comp."""
     fails = []
     path = os.path.join(os.path.dirname(HERE), "..", "RimStarWars", "Cuisine", "Defs", "RSW_CoolingUnits.xml")
-    defs = {d.findtext("defName"): d for d in ET.parse(path).getroot() if d.tag == "ThingDef"}
+    bases = os.path.join(HERE, "Defs", "ColdStorage_Bases.xml")
+    nodes = list(ET.parse(path).getroot()) + list(ET.parse(bases).getroot())
+    defs = {d.findtext("defName"): d for d in nodes if d.tag == "ThingDef" and d.findtext("defName")}
+    named = {d.get("Name"): d for d in nodes if d.tag == "ThingDef" and d.get("Name")}
     chamber, chiller = defs.get("RSW_CoolingChamber"), defs.get("RSW_DrinksChiller")
     if chamber is None or chiller is None:
         return ["RSW_CoolingUnits.xml: RSW_CoolingChamber or RSW_DrinksChiller missing (instrument blind?)"]
-    if chamber.get("Name") != "RSW_CoolingChamber" or chiller.get("ParentName") != "RSW_CoolingChamber":
-        fails.append("RSW_DrinksChiller must inherit from the chamber (Name/ParentName RSW_CoolingChamber)")
-    if chiller.get("MayRequire") != "mandrake.rm.coldstorage":
-        fails.append("RSW_DrinksChiller: MayRequire %r, want mandrake.rm.coldstorage" % chiller.get("MayRequire"))
+    body = named.get("RSW_CoolingChamberBase")
+    if body is None or body.get("Abstract") != "True":
+        fails.append("RSW_CoolingChamberBase must exist and be Abstract")
+    for d in (chamber, chiller):
+        if d.get("ParentName") != "RSW_CoolingChamberBase":
+            fails.append("%s: ParentName %r, want RSW_CoolingChamberBase" % (d.findtext("defName"), d.get("ParentName")))
+        if d.get("MayRequire") != "mandrake.rm.coldstorage":
+            fails.append("%s: MayRequire %r, want mandrake.rm.coldstorage" % (d.findtext("defName"), d.get("MayRequire")))
     climate = "RimMandrake.ColdStorage.CompProperties_StorageClimate"
+    shared = {"CompProperties_Power", "CompProperties_Flickable", "CompProperties_Breakdownable"}
 
-    def comp_classes(d):
-        return sorted(li.get("Class") for li in d.find("comps").findall("li"))
+    def resolved(d):
+        """Comp classes down the in-repo parent chain, stopping where it leaves our files (vanilla StorageShelfBase)."""
+        classes, chain, node = [], [], d
+        while node is not None:
+            chain.append(node.get("Name") or node.findtext("defName"))
+            comps = node.find("comps")
+            if comps is not None:
+                classes += [li.get("Class") for li in comps.findall("li")]
+                if comps.get("Inherit") == "False":
+                    fails.append("%s: <comps Inherit=\"False\"> drops the shelf parents' CompProperties_Styleable"
+                                 % chain[-1])
+                    return classes
+            node = named.get(node.get("ParentName"))
+        if chain[-1] != "RM_ColdStorageUnitBase":
+            fails.append("%s: parent chain %s does not reach RM_ColdStorageUnitBase (instrument blind?)" % (chain[0], chain))
+        return classes
 
-    if chiller.find("comps") is None or chiller.find("comps").get("Inherit") != "False":
-        fails.append("RSW_DrinksChiller: comps must be Inherit=\"False\" (else the climate comp is listed twice)")
-    elif comp_classes(chiller) != comp_classes(chamber):
-        fails.append("RSW_DrinksChiller comps %s differ from the chamber's %s" % (comp_classes(chiller), comp_classes(chamber)))
-    else:
-        a = [li for li in chamber.find("comps") if li.get("Class") == climate][0]
-        b = [li for li in chiller.find("comps") if li.get("Class") == climate][0]
+    for d in (chamber, chiller):
+        classes = resolved(d)
+        if classes.count(climate) != 1 or not shared <= set(classes) or len(classes) != len(set(classes)):
+            fails.append("%s resolves to comps %s; want %s plus one climate comp, no duplicates"
+                         % (d.findtext("defName"), sorted(classes), sorted(shared)))
+    climates = [[li for li in d.find("comps") if li.get("Class") == climate] for d in (chamber, chiller)]
+    if all(len(c) == 1 for c in climates):
+        a, b = climates[0][0], climates[1][0]
         for tag in ("mode", "method", "minSetpoint", "maxSetpoint", "fuelAlternative", "fuelAlternativePerDay",
                     "fuelAlternativeCapacity"):
             if a.findtext(tag) != b.findtext(tag):
@@ -95,6 +121,8 @@ def drinks_chiller_checks(ET):
             fails.append("RSW_DrinksChiller detents %s differ from the chamber's" % detents)
         if b.findtext("defaultSetpoint") != "4" or "4" not in detents:
             fails.append("RSW_DrinksChiller must start on the 4 C Cool detent, got %r" % b.findtext("defaultSetpoint"))
+    else:
+        fails.append("chamber and chiller must each declare their own climate comp")
     flt = chiller.find("building/defaultStorageSettings/filter")
     if flt is None or chiller.find("building/defaultStorageSettings").get("Inherit") != "False":
         fails.append("RSW_DrinksChiller: needs its own defaultStorageSettings (Inherit=\"False\") with a filter")

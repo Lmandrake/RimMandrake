@@ -167,11 +167,11 @@
     </comps>
   </ThingDef>
 
-  <!-- 2x2 walk-in larder: 12 stacks. Power, or chemfuel 6 a day by Mod Settings. -->
-  <ThingDef Name="RSW_CoolingChamber" ParentName="RSW_CoolingUnitBase" MayRequire="mandrake.rm.coldstorage">
-    <defName>RSW_CoolingChamber</defName>
-    <label>cooling chamber</label>
-    <description>A walk-in cooling chamber for a whole larder. Holds twelve stacks at down to -10 C. Draws power, or can be set (in Mod Settings) to burn chemfuel instead.</description>
+  <!-- 2x2 walk-in larder body, shared by the cooling chamber and the drinks chiller. Each child adds only its own
+       CompProperties_StorageClimate, so neither restates <comps Inherit="False"> and both keep every comp the shelf
+       parents carry (vanilla ShelfBase's CompProperties_Styleable, and anything other mods patch onto them).
+       DRINKS_CHILLER_FIX_COMPS_DROP_STYLEABLE. -->
+  <ThingDef Name="RSW_CoolingChamberBase" ParentName="RSW_CoolingUnitBase" Abstract="True" MayRequire="mandrake.rm.coldstorage">
     <graphicData>
       <texPath>Things/Building/Furniture/ShelfSmall</texPath>
       <graphicClass>Graphic_Multi</graphicClass>
@@ -198,6 +198,15 @@
       </li>
       <li Class="CompProperties_Flickable" />
       <li Class="CompProperties_Breakdownable" />
+    </comps>
+  </ThingDef>
+
+  <!-- 2x2 walk-in larder: 12 stacks. Power, or chemfuel 6 a day by Mod Settings. -->
+  <ThingDef ParentName="RSW_CoolingChamberBase" MayRequire="mandrake.rm.coldstorage">
+    <defName>RSW_CoolingChamber</defName>
+    <label>cooling chamber</label>
+    <description>A walk-in cooling chamber for a whole larder. Holds twelve stacks at down to -10 C. Draws power, or can be set (in Mod Settings) to burn chemfuel instead.</description>
+    <comps>
       <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
         <mode>Chill</mode>
         <method>RM_ColdMethod_Chill</method>
@@ -217,10 +226,10 @@
   </ThingDef>
 
   <!-- COLD_STORAGE_CHAMBER_BUILD_DRINKS_CHILLER (design §3.1, "drinks-chiller label variant"): the cooling chamber
-       stocked for a cantina, like the drinks chillers of The Acolyte and the Outlander Club. Same build, power and
+       stocked for a cantina, like the drinks chillers of The Acolyte and the Outlander Club. Same body, power and
        range as the chamber, but it starts at the Cool detent (4 C, chilled rather than frozen) and its default
        filter takes drinks only. The player can widen the filter like any shelf. Interim art: the chamber's. -->
-  <ThingDef ParentName="RSW_CoolingChamber" MayRequire="mandrake.rm.coldstorage">
+  <ThingDef ParentName="RSW_CoolingChamberBase" MayRequire="mandrake.rm.coldstorage">
     <defName>RSW_DrinksChiller</defName>
     <label>drinks chiller</label>
     <description>A walk-in cooling chamber fitted out for a cantina's drinks. Holds twelve stacks at down to -10 C, and starts at a cellar-cool 4 C. Its shelves are set for drinks (beer, milk and blue or green milk), though it takes any food. Draws power, or can be set (in Mod Settings) to burn chemfuel instead.</description>
@@ -240,13 +249,7 @@
         </filter>
       </defaultStorageSettings>
     </building>
-    <comps Inherit="False">
-      <li Class="CompProperties_Power">
-        <compClass>CompPowerTrader</compClass>
-        <basePowerConsumption>150</basePowerConsumption>
-      </li>
-      <li Class="CompProperties_Flickable" />
-      <li Class="CompProperties_Breakdownable" />
+    <comps>
       <li Class="RimMandrake.ColdStorage.CompProperties_StorageClimate">
         <mode>Chill</mode>
         <method>RM_ColdMethod_Chill</method>
