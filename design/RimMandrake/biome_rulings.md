@@ -206,3 +206,7 @@ planet-wide, not only on Pyrelands. Intentional Utinni placement is undesigned. 
 *"no biome-specific heat, no biome-specific sun. It's a matter of geometry"* A biome sheet or
 BiomeDef never declares a heat kind, a sun-heat number or a shade rule. Its sun is its tile's
 position; its hot air is its temperature. Full text: `standing_rulings.md` §Direct Sun.
+
+## Natives drink their own environmental water — owner, 2026-11-01
+
+*"Yes, natives should drink their own environmental water. That's a ruling for all Baroque Biomes, period, including this one."* A native creature standing in or beside its biome's own water (the Scald's boil included) must not accrue thirst/dehydration from it; applies to every Baroque Biome. Consequence for the player is unchanged (Scald ban 1, never potable). First finding: `SCALD_NATIVES_THIRST_PROBE_PARCHED_LAKESIDE`; a roster-wide audit is filed as `NATIVES_DRINK_OWN_WATER_AUDIT_EVERY_BIOME`.
