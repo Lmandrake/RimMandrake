@@ -1,5 +1,5 @@
 # project: RimMandrake/RustCathedral/Source/Walls/RimMandrake.RustCathedral.Walls.csproj
-# dll: 0ac060ba4431d0bfc2bb265745fe7c45a2916919bdc9ddfcbfd7b5e7d5f6a826
+# dll: b849b60409563321c7a2561b648036e0e27dc6778cea2036a866c5816f53da91
 1477cbba0ae8d933ac91f75340163aeac9ddac9befb6c03fc8142f793e93dec2 ../../../_Shared/HarmonyResilience/PatchApplier.cs
 28477b7ceeeb7e1b65406a88160919447409e41d26891b1278de9f9e3dd5f37e ../../../_Shared/SettingsKit/SettingsKitCore.cs
 61369ae2e52f52026ff54dd97e212e103c79d7562f326387b347e6ccadb53cc8 HarmonyPatch_GateLivePatternMetal.cs

@@ -87,7 +87,7 @@ namespace RimMandrake.RustCathedral
             {
                 return "another drill head is already out";
             }
-            if (!RM_WornBitKernel.CalmEnough(RM_MapComponent_BiomeAttitude.GetBand(comp.parent.Map)))
+            if (!RM_WornBitKernel.CalmEnough(RM_MapComponent_BiomeAttitude.GetRawBand(comp.parent.Map)))
             {
                 return "the hum is not calm enough";
             }
@@ -171,7 +171,7 @@ namespace RimMandrake.RustCathedral
         public static float UnbitTick(RM_CompBorehulkDrill comp, int workers, float speed)
         {
             Pawn hulk = (Pawn)comp.parent;
-            float delta = RM_WornBitKernel.UnbitDelta(workers, speed, RM_MapComponent_BiomeAttitude.GetBand(hulk.Map), hulk.pather?.Moving == true);
+            float delta = RM_WornBitKernel.UnbitDelta(workers, speed, RM_MapComponent_BiomeAttitude.GetRawBand(hulk.Map), hulk.pather?.Moving == true);
             comp.unbitProgress += delta;
             if (comp.unbitProgress >= RM_RustCathedralSettings.wornBitUnbitWork)
             {
@@ -301,7 +301,7 @@ namespace RimMandrake.RustCathedral
             if (comp.State == RM_BorehulkDrillState.Worn && comp.unbitProgress > 0f)
             {
                 Line("Bolts out: " + (comp.unbitProgress / RM_RustCathedralSettings.wornBitUnbitWork).ToStringPercent() + ".");
-                if (hulk?.Spawned == true && !RM_WornBitKernel.CalmEnough(RM_MapComponent_BiomeAttitude.GetBand(hulk.Map)))
+                if (hulk?.Spawned == true && !RM_WornBitKernel.CalmEnough(RM_MapComponent_BiomeAttitude.GetRawBand(hulk.Map)))
                 {
                     Line("The hum has dropped. The work has stopped.");
                 }

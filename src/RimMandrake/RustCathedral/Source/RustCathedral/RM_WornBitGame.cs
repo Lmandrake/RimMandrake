@@ -308,8 +308,14 @@ namespace RimMandrake.RustCathedral
             }
         }
 
+        /// <summary>Proof only: this map counts as not yet landed on.</summary>
+        public void ProofForgetLanding(Map map)
+        {
+            landedMaps.Remove(map.uniqueID);
+        }
+
         // Kept: each new landing on Cathedral ground starts the hum a band lower.
-        private void NoticeLandings()
+        public void NoticeLandings()
         {
             bool kept = hulk != null && !hulk.Dead && hulk.TryGetComp<RM_CompBorehulkDrill>()?.Kept == true;
             foreach (Map m in Find.Maps)

@@ -160,6 +160,21 @@ namespace RimMandrake.RustCathedral.Hum
 		/// <summary>RUSTCATHEDRAL_BASE_FINISH_BUILD_1 part 1: while a line-cycle rolls the hum drops one band (one hum
 		/// layer fewer, the band one lower); the worst band is already silent and stays where it is. Not a second
 		/// meter: irritation and standing are untouched, only what the hum shows moves.</summary>
+		/// <summary>The band before the stage ceiling, -1 off Cathedral ground. RUSTCATHEDRAL_WORN_BIT_ARC_1: a stage only caps what the
+		/// hum DISPLAYS; stage 0 (WARY, where the free tier stays for good) holds GetBand at 0 however angry the ground is, so a
+		/// gate on real anger reads this.</summary>
+		public static int GetRawBand(Map map)
+		{
+			RM_MapComponent_BiomeAttitude comp = map?.GetComponent<RM_MapComponent_BiomeAttitude>();
+			RM_BiomeAttitudeDef def = comp?.GetDef();
+			if (def == null)
+			{
+				return -1;
+			}
+			int band = comp.currentBand < 0 ? 0 : comp.currentBand;
+			return comp.lineCycleDrop ? DroppedBand(band, def) : band;
+		}
+
 		public static int DroppedBand(int band, RM_BiomeAttitudeDef def)
 		{
 			if (def == null)

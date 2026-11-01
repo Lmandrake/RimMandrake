@@ -196,6 +196,13 @@ namespace RimMandrake.RustCathedral
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
+            Thing target = WorkTarget(pawn);
+            return target == null ? null : JobMaker.MakeJob(RM_WornBitDefOf.RM_Job_BorehulkDig, target);
+        }
+
+        /// <summary>What the hulk would dig now, null for nothing. The proof's toggle rows read this same decision.</summary>
+        public static Thing WorkTarget(Pawn pawn)
+        {
             RM_CompBorehulkDrill comp = pawn.TryGetComp<RM_CompBorehulkDrill>();
             if (comp == null || comp.State != RM_BorehulkDrillState.Restored || !RM_RustCathedralSettings.wornBitEnabled)
             {
@@ -221,7 +228,7 @@ namespace RimMandrake.RustCathedral
                     target = RM_DigFinder.SelfBoreTarget(pawn);
                 }
             }
-            return target == null ? null : JobMaker.MakeJob(RM_WornBitDefOf.RM_Job_BorehulkDig, target);
+            return target;
         }
     }
 

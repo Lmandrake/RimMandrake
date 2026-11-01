@@ -690,7 +690,7 @@ def worn_bit_gods(t):
         return
     for keep, want in (("true", dict(ohm=1, mob=1, ozzik=-1)), ("false", dict(ohm=1, mob=-1, ozzik=0))):
         with t.component("branch_" + keep, beyond_toggle=True):
-            r = t.bridge_call("jawa/static_call", typeName="RimMandrake.Utinni.Rites.Patch_WornBitChoice", method="ProofDeltas", args=keep)
+            r = t.bridge_call("jawa/static_call", type="RimMandrake.Utinni.Rites.Patch_WornBitChoice", method="ProofDeltas", args=keep)
             words = str((r or {}).get("result", "")).split()
             got = {words[i]: float(words[i + 1]) for i in range(1, len(words) - 1, 2)}
             for god, sign in want.items():

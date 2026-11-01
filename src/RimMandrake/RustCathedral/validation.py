@@ -695,6 +695,150 @@ def wornbit_problems(mod_root=None, rut_patch=None, rites_hook=None):
     return bad, unmeasured
 
 
+# ---- the worn_bit chain's judges: one proof line in, a problem string or None out, so the selftest can feed them bad lines ----
+
+# What each toggle's OFF must remove, and nothing else (ProofToggle's keys).
+WORNBIT_TOGGLE_EFFECTS = {
+    "wornBitEnabled": ("unbit", "dig", "freeBore"),
+    "wornBitMaintenanceEnabled": ("stops", "service"),
+    "wornBitPoliticsEnabled": ("politics",),
+    "wornBitLandingBandEnabled": ("landing",),
+    "wornBitFavoursEnabled": ("favour",),
+    "wornBitFreeBoreEnabled": ("freeBore",),
+}
+FREE_BORE_TICKS = 60000
+KEPT_DIG_TICKS = 6000
+
+
+def wb_kv(line):
+    w = line.split()
+    return {w[i]: w[i + 1] for i in range(1, len(w) - 1, 2)}
+
+
+def _wb_float(v, key):
+    try:
+        return float(v.get(key))
+    except (TypeError, ValueError):
+        return None
+
+
+def wb_defs_problem(line):
+    v = wb_kv(line)
+    if v.get("restorationDefs") != "1":
+        return "RM_BorehulkRestorationDef count is not one: " + line
+    for k in ("wornMass", "refurbishedMass"):
+        if (_wb_float(v, k) or 0) < 200:
+            return "%s under 200: %s" % (k, line)
+    return None
+
+
+def wb_stage1_problem(line):
+    v = wb_kv(line)
+    if not line.startswith("STAGE1") or _wb_float(v, "lone") != 0 or (_wb_float(v, "two") or 0) <= 0:
+        return "lone/two gate wrong: " + line
+    if v.get("band") != "2" or _wb_float(v, "stopped") != _wb_float(v, "two"):
+        return "band 2 did not stop the work: " + line
+    if v.get("state") != "Unbitted" or v.get("heads") != "1" or v.get("quests") != "1" or v.get("yards") != "1":
+        return "completion reads wrong: " + line
+    if v.get("yardCarries") != "True":
+        return "the yard's faction carries no RM_DrillRefurbisherExtension: " + line
+    want = ("RUT_Jawa_Junkers", "False") if v.get("campaign") == "True" else ("Pirate", "True")
+    if (v.get("yardfaction"), v.get("pirateCarries")) != want:
+        return "refurbisher should be %s with Pirate carrying=%s: %s" % (want[0], want[1], line)
+    return None
+
+
+def wb_yard_problem(line):
+    v = wb_kv(line)
+    days = _wb_float(v, "days")
+    if days is None or _wb_float(v, "timer") != days * 60000:
+        return "the timer is not the setting's days: " + line
+    if v.get("staged") != "Refurbishing" or v.get("after") != "Failed" or v.get("yard") != "gone" or v.get("quest") != "EndedFailed":
+        return "attacking did not end the quest with the head lost: " + line
+    return None
+
+
+def wb_gate_problem(line):
+    rows = line.split(" | ")
+    if rows[0] != "GATE all:null order:offered":
+        return "with every item present the order is not offered: " + rows[0]
+    if len(rows) - 1 != len(WORNBIT_PARTS):
+        return "%d item rows, the def has %d: %s" % (len(rows) - 1, len(WORNBIT_PARTS), line)
+    for part, row in zip(sorted(WORNBIT_PARTS), sorted(rows[1:])):
+        if not row.startswith(part + ":missing") or "order:refused" not in row or "named:True" not in row:
+            return "item %s absent should refuse naming it: %s" % (part, row)
+    return None
+
+
+def wb_branch_problem(line, keep, base_irritation, multiplier):
+    """The irritation multiple comes from the settings, not from the proof's own arithmetic."""
+    v = wb_kv(line)
+    if v.get("state") != "Restored":
+        return "state: " + line
+    want = base_irritation * multiplier
+    got = _wb_float(v, "irritationDelta")
+    if got is None or abs(got - want) > 1e-3:
+        return "irritation moved %s, the settings say %s: %s" % (got, want, line)
+    if keep:
+        if "Player" not in v.get("faction", ""):
+            return "keep faction: " + line
+        if v.get("controllable") != "False" or v.get("mayDigAfter5d") != "False" or v.get("hostile") != "False":
+            return "kept hulk after 5 days unserviced: " + line
+        if v.get("gizmos") != "3" or v.get("floats") != "1":
+            return "kept orders: " + line
+    elif v.get("faction") != "null" or v.get("gizmos") != "0" or v.get("floats") != "0" or v.get("draftable") != "False":
+        return "a freed hulk reads as ordered: " + line
+    return None
+
+
+def wb_goodwill_problem(line, base_goodwill, multiplier):
+    v = wb_kv(line)
+    want = int(round(base_goodwill * multiplier))
+    if v.get("goodwillDelta") != str(want):
+        return "goodwill moved %s, the settings say %s: %s" % (v.get("goodwillDelta"), want, line)
+    return None
+
+
+def wb_dig_problem(line, sacrilege):
+    v = wb_kv(line)
+    if v.get("left") != "0" or v.get("sacred") != "1" or v.get("warned") != "1" or v.get("plateOnly") != "True":
+        return line
+    if v.get("standingDelta") != str(-sacrilege):
+        return "a sacred cell did not cost %s standing: %s" % (sacrilege, line)
+    return None
+
+
+def wb_timed_problem(line, keep):
+    v = wb_kv(line)
+    mined = _wb_float(v, "mined")
+    if mined is None:
+        return "no count: " + line
+    if keep:
+        if v.get("plateLeft") != "0" or mined != 3:
+            return "the dig area did not count down to 0: " + line
+    elif mined < 1 or v.get("sacredMined") != "0" or v.get("sacredLeft") != "1":
+        return "a freed hulk must bore at least one plate and no sacred cell: " + line
+    return None
+
+
+def wb_nobuff_problem(line):
+    v = wb_kv(line)
+    if v.get("changed") != "0" or (_wb_float(v, "colonists") or 0) < 1 or v.get("stages") != "6":
+        return line
+    return None
+
+
+def wb_toggle_problem(base, line, toggle):
+    base_v, off = wb_kv(base), wb_kv(line)
+    if not base_v or any(x != "1" for x in base_v.values()):
+        return "the baseline does not show every effect: " + base
+    lost = sorted(k for k in base_v if off.get(k) != "1")
+    want = sorted(WORNBIT_TOGGLE_EFFECTS[toggle])
+    if lost != want:
+        return "%s off removed %s, it owns %s: %s" % (toggle, lost, want, line)
+    return None
+
+
 def _read_opt(mod_root):
     p = os.path.join(mod_root, "Source", "RustCathedral", "RM_CompBorehulkDrill.cs")
     return open(p, encoding="utf-8").read() if os.path.isfile(p) else ""
@@ -941,64 +1085,103 @@ def _build_suite():
         return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
 
     def _wb(t, method, args=None):
-        kw = dict(typeName="RimMandrake.RustCathedral.RM_WornBitProof", method=method)
+        """The proof's line; a game that cannot answer, or a proof that refuses, is UNMEASURED and names why."""
+        kw = dict(type="RimMandrake.RustCathedral.RM_WornBitProof", method=method)
         if args is not None:
             kw["args"] = args
         r = t.bridge_call("jawa/static_call", **kw)
-        return str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if not _live(t):
+            return ""
+        line = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
+        if not line or "refused:" in line:
+            _unmeasured(t, "%s(%s) gave no reading: %s" % (method, args or "", (line or str(r))[:160]))
+        return line
 
-    def _kv(line):
-        w = line.split()
-        return {w[i]: w[i + 1] for i in range(1, len(w) - 1, 2)}
+    def _wb_set(t, field):
+        """A setting's live value, read through the settings tool rather than from the proof that uses it."""
+        if not _live(t):
+            return 0.0
+        got = _raw(t, OWN_SETTINGS, "get", field).get("value")
+        try:
+            return float(got)
+        except (TypeError, ValueError):
+            _unmeasured(t, "mod_settings_field gave no number for %s: %r" % (field, got))
+            return 0.0
 
-    @suite.chain("worn_bit")
+    def _judged(t, problem):
+        if _live(t) and problem:
+            raise ExpectationFailed(problem)
+
+    @suite.chain("worn_bit", tick_cap=FREE_BORE_TICKS + KEPT_DIG_TICKS + 2000)
     def worn_bit(t):
+        """Every row runs on a loaded map with a colonist who can craft. With no session the first row says so and the rest
+        record UNMEASURED naming it; the campaign's own rows live in src/RimUtinni/Rites/validation.py (worn_bit_gods)."""
+        with t.component("live_game_present", beyond_toggle=True):
+            if t.session is None:
+                _unmeasured(t, "worn_bit needs a live game: a loaded map with a colonist who can craft, mandrake.rm.rustcathedral deployed, "
+                               "jawa/static_call and jawa/mod_settings_field on the bridge; game time for the two timed rows "
+                               "(WORN_BIT_LIVE_PROVE_UNMET_GAME)")
         with t.component("defs_resolve_and_heads_heavy", beyond_toggle=True):
-            r = t.bridge_call("jawa/get_defs", defs=",".join("%s/%s" % k for k in WORNBIT_DEFS if "." not in k[0]), fields="defName", limit=20)
+            r = t.bridge_call("jawa/get_defs", defs=";".join("%s/%s" % k for k in WORNBIT_DEFS if "." not in k[0]), fields="defName", limit=20)
             if _live(t) and isinstance(r, dict) and r.get("notFound"):
                 raise ExpectationFailed("worn bit defs absent: %s" % r.get("notFound"))
+            line = _wb(t, "ProofDefs")
+            _judged(t, _live(t) and wb_defs_problem(line))
         with t.component("stage1_lone_worker_two_workers_band_stop_quest_yard", beyond_toggle=True):
             line = _wb(t, "ProofStage1")
-            if _live(t):
-                v = _kv(line)
-                if not line.startswith("STAGE1") or float(v.get("lone", 1)) != 0 or float(v.get("two", 0)) <= 0:
-                    raise ExpectationFailed("lone/two gate wrong: " + line)
-                if v.get("band") != "2" and float(v.get("stopped", 0)) != float(v.get("two", -1)):
-                    raise ExpectationFailed("band did not stop the work: " + line)
-                if v.get("state") != "Unbitted" or v.get("heads") != "1" or v.get("quests") != "1":
-                    raise ExpectationFailed("completion reads wrong: " + line)
-                if v.get("yardfaction") not in ("Pirate", "RUT_Jawa_Junkers"):
-                    raise ExpectationFailed("yard faction: " + line)
+            _judged(t, _live(t) and wb_stage1_problem(line))
         with t.component("yard_timer_and_attack_ends_quest", beyond_toggle=True):
             line = _wb(t, "ProofYard")
-            if _live(t):
-                v = _kv(line)
-                if v.get("timer") != v.get("expected") or v.get("after") != "Failed" or v.get("yard") != "gone":
-                    raise ExpectationFailed(line)
-        with t.component("restoration_refuses_naming_the_missing_item", beyond_toggle=True):
+            _judged(t, _live(t) and wb_yard_problem(line))
+        with t.component("restoration_offered_and_refuses_naming_the_missing_item", beyond_toggle=True):
             line = _wb(t, "ProofRestoreGate")
-            if _live(t) and (not line.startswith("GATE all:null") or line.count("missing") != len(WORNBIT_PARTS)):
-                raise ExpectationFailed(line)
+            _judged(t, _live(t) and wb_gate_problem(line))
+        keep_line = free_line = ""
         with t.component("keep_branch", beyond_toggle=True):
-            line = _wb(t, "ProofBranch", args="true")
-            if _live(t):
-                v = _kv(line)
-                if v.get("faction") != "PlayerColony" and "Player" not in v.get("faction", ""):
-                    raise ExpectationFailed("keep faction: " + line)
-                if v.get("controllable") != "False" or v.get("mayDigAfter5d") != "False" or v.get("hostile") != "False":
-                    raise ExpectationFailed(line)
+            keep_line = _wb(t, "ProofBranch", args="true")
+            base, mult = _wb_set(t, "wornBitKeepIrritation"), _wb_set(t, "wornBitPoliticalMultiplier")
+            _judged(t, _live(t) and wb_branch_problem(keep_line, True, base, mult))
         with t.component("kept_dig_counts_down_and_sacred_cell_recorded_free_bore_plate_only", beyond_toggle=True):
             line = _wb(t, "ProofDig")
+            sacrilege = int(_wb_set(t, "wornBitSacrilegeStanding"))
+            _judged(t, _live(t) and wb_dig_problem(line, sacrilege))
+        with t.component("kept_dig_area_empties_over_game_time", beyond_toggle=True):
+            _wb(t, "ProofTimedBegin", args="true")
             if _live(t):
-                v = _kv(line)
-                if v.get("left") != "0" or v.get("sacred") != "1" or v.get("warned") != "1" or v.get("plateOnly") != "True":
-                    raise ExpectationFailed(line)
+                t.wait_ticks(KEPT_DIG_TICKS)
+            line = _wb(t, "ProofTimedEnd")
+            _judged(t, _live(t) and wb_timed_problem(line, True))
         with t.component("free_branch", beyond_toggle=True):
-            line = _wb(t, "ProofBranch", args="false")
+            free_line = _wb(t, "ProofBranch", args="false")
+            base, mult = _wb_set(t, "wornBitFreeIrritation"), _wb_set(t, "wornBitPoliticalMultiplier")
+            _judged(t, _live(t) and wb_branch_problem(free_line, False, base, mult))
+        with t.component("free_bores_plate_never_sacred_over_60000_ticks", beyond_toggle=True):
+            _wb(t, "ProofTimedBegin", args="false")
             if _live(t):
-                v = _kv(line)
-                if v.get("faction") != "null" or v.get("gizmos") != "0" or v.get("state") != "Restored":
-                    raise ExpectationFailed(line)
+                t.wait_ticks(FREE_BORE_TICKS)
+            line = _wb(t, "ProofTimedEnd")
+            _judged(t, _live(t) and wb_timed_problem(line, False))
+        with t.component("no_stage_buffs_a_colonist", beyond_toggle=True):
+            line = _wb(t, "ProofNoBuff")
+            _judged(t, _live(t) and wb_nobuff_problem(line))
+        base_line = ""
+        with t.component("toggles_baseline_shows_every_effect", beyond_toggle=True):
+            base_line = _wb(t, "ProofToggle", args="none")
+            _judged(t, _live(t) and any(x != "1" for x in wb_kv(base_line).values()) and "baseline: " + base_line)
+        for toggle in WORNBIT_TOGGLES:
+            with t.component("toggle_off_removes_exactly_its_effect_" + toggle, toggle=toggle):
+                line = _wb(t, "ProofToggle", args=toggle)
+                _judged(t, _live(t) and wb_toggle_problem(base_line, line, toggle))
+        # Last, because the free tier stops here: no faction carries RM_NeutralDroidsExtension without the campaign patch.
+        with t.component("droid_goodwill_moved_by_the_multiple", beyond_toggle=True):
+            if _live(t):
+                if wb_kv(keep_line).get("droids") == "none":
+                    _unmeasured(t, "needs the campaign list: RUT_Jawa_FreeDroidEnclaves in the world carrying RM_NeutralDroidsExtension; "
+                                   "the free tier has no such faction, so no goodwill line applies")
+                else:
+                    mult = _wb_set(t, "wornBitPoliticalMultiplier")
+                    keep_gw, free_gw = _wb_set(t, "wornBitKeepGoodwill"), _wb_set(t, "wornBitFreeGoodwill")
+                    _judged(t, _live(t) and (wb_goodwill_problem(keep_line, keep_gw, mult) or wb_goodwill_problem(free_line, free_gw, mult)))
 
     @suite.chain("map_mechanics")
     def map_mechanics(t):
