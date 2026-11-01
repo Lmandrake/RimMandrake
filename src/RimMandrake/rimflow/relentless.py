@@ -978,7 +978,7 @@ def step(store, fx, r, item, now, acts):
         # the finishing worker leaves first: nothing of its survives into the check
         if not settle(store, fx, r, item, "run", c["at"], now, acts):
             return
-        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["status"] != "candidate")
+        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["item"] != item)
         hold = admission(store, fx, dict(r, max_workers=r["max_workers"] + 1), now, active)   # checks get a place
         if hold:
             acts.append({"do": "check_waits", "item": item, "why": hold})
@@ -1116,12 +1116,13 @@ def retire(store, fx, states, now, acts, r=None):
 def spend_holds(store, fx, r, now, acts):
     for st in store.states():
         limit = r["item_spend_limit"] + (st.get("spent_grace") or 0)
-        if st["status"] == "queued" and st["spent"] >= limit:
+        owed = sum(1 for q in st["quarantined"] if not q.get("reaped")) * r["run_reserve"]   # charged when reaped
+        if st["status"] == "queued" and st["spent"] + owed >= limit:
             with store.lock():
                 cur = store.load(st["item"])
                 cur["status"] = "held"
                 cur["hold"] = {"why": "item spend limit: %d of %d weighted tokens. Lift with relentless.py unhold"
-                               % (cur["spent"], limit), "kind": "spend", "delivered": False, "at": now}
+                               % (cur["spent"] + owed, limit), "kind": "spend", "delivered": False, "at": now}
                 store.save(cur)
             acts.append({"do": "hold_spend", "item": st["item"]})
 

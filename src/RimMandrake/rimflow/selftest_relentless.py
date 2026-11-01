@@ -537,6 +537,17 @@ def t_third_review():
     ok(x.w.items["I0"] == "doing" and not x.st("I0")["ledger_started"], "crash window: planted after start")
     x.tick()
     ok(x.st("I0")["status"] == "running", "a crash after start leaves the item ours, and it is leased")
+    # a quarantined run's cost counts against the item before it is reaped
+    x = Rig(n=1, share=1.0)
+    x.tick()
+    with x.s.lock():
+        st = x.s.load("I0")
+        st["status"] = "queued"
+        st["spent"] = RULES["item_spend_limit"] - RULES["run_reserve"]
+        st["quarantined"].append({"run": {"unit": "gone"}, "clone": None, "reaped": False})
+        x.s.save(st)
+    R.spend_holds(x.s, x.w, RULES, x.now, [])
+    ok(x.st("I0")["status"] == "held", "an unreaped quarantined run counts toward the item's spend limit")
     # a retiring item's run still holds its place
     x = Rig(n=2, share=1.0, max_workers=1)
     x.run_one("I0")
