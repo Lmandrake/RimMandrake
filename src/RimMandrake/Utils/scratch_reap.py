@@ -99,12 +99,12 @@ DEFAULT_ROOTS = [RM / "scratch", HOME / ".seat-tmp"]
 DEFAULT_CORPUS = [RM / "bench", RM / "foundry"]
 DEFAULT_SCAN = [HOME, Path("/tmp"), Path("/mnt/d/ClaudeWork/rimmandrake/pulse-deploy")]
 PROTECTED = [RM / n for n in ("bench", "foundry", "dispatch", "anchor", "arena", "arena-vet", "store.git", "mirror.git",
-                              "new.git", "retired-trees", "scratch_wallreach_slice")] + [Path("/mnt/d/Luke/dev/RimMandrake")]
+                              "new.git", "retired-trees", "scratch_wallreach_slice",
+                              # unpushed work, held out of even a bundled delete until its owner lands or drops it
+                              "scratch/BENCH/liquidnet_shrink", "scratch/BENCH/surfacegap")] + [Path("/mnt/d/Luke/dev/RimMandrake")]
 UUID = re.compile(r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
 UUID_ANY = re.compile(rb"[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}")
 TOKEN = re.compile(r"[A-Za-z0-9_-]+")
-GENERIC = {"scratch", "scratchpad", "clone", "repo", "tmp", "temp", "work", "test", "tasks", "foundry", "bench",
-           "rimmandrake", "backup", "src", "build", "out", "old", "new"}
 CTIME_COUNTS = True         # the selftest ages its fixtures with utime, which cannot set a ctime
 SYSTEM_PATHS = ("/proc/", "/sys/", "/dev/", "/usr/", "/lib/", "/lib64/", "/bin/", "/sbin/", "/etc/", "/opt/", "/init")
 GONE_LENDER = re.compile(r"error: (unable to normalize alternate object path: |object directory .* does not exist; check )")
@@ -113,8 +113,11 @@ UNIX_SOCKETS = "/proc/net/unix"
 # A clone's config may tell git to look less hard than this job must: it answers for the bytes on disk, on this filesystem.
 HONEST_STATUS = [w for k in ("core.ignorecase=false", "core.trustctime=true", "core.checkStat=default", "core.fileMode=true",
                                     "core.symlinks=true", "core.ignoreStat=false", "core.fsmonitor=false", "core.untrackedCache=false") for w in ("-c", k)]
+SANITY_DU_S = 240           # 94 GB took 18 s on 2026-11-01
+FIXTURE_TTL_S = 24 * 3600   # owner-authority brief 2026-11-01: disposable selftest_* a day old may go
 WALK_CAP = 3_000_000        # entries; a tree bigger than this is not aged (REFUSE: too big to age)
 DIRTY_CAP = 2 * 1024 ** 3   # dirty/untracked bytes we will tar; more is skipped and reported
+BROKEN_CAP = DIRTY_CAP      # a .git no bundle can read is tarred whole, up to this
 RESIDUE_CAP = 512 * 1024 ** 2   # a session's loose files
 BUNDLE_CAP = 5 * 1024 ** 3
 MENTION_DAYS = 7
@@ -195,7 +198,17 @@ def git(repo: Path, *a, stdin: str | None = None, timeout: int = 600) -> subproc
 
 # ---------------------------------------------------------------- discovery
 def is_clone(d: Path) -> bool:
-    return os.path.lexists(d / ".git")
+    """A `.git` dir with no repo in it is a selftest's sandbox marker: 1,640 read as refused clones on 2026-11-01."""
+    g = d / ".git"
+    if not os.path.lexists(g):
+        return False
+    if g.is_symlink() or not g.is_dir():
+        return True
+    try:
+        with os.scandir(g) as it:
+            return any(e.name in ("HEAD", "objects", "refs") for e in it)
+    except OSError:
+        return True                 # unreadable stays a candidate, and is refused for it
 
 
 def find_clones(top: Path, depth: int = 8) -> list[Path]:
@@ -256,11 +269,15 @@ class Tree:
         n = 0
         top = len(str(d))
         stack = [str(d)]
+        # Reading a clone is not working in it: `git status` rewrites .git/index, and so .git's mtime. One look at sixteen
+        # clones on 2026-11-01 made 94 GB a day younger.
+        reads = {f"{d}/.git", f"{d}/.git/index"}
         while stack:
             cur = stack.pop()
             try:
                 st = os.lstat(cur)
-                self.newest = max(self.newest, *touched(st))
+                if cur not in reads:
+                    self.newest = max(self.newest, *touched(st))
                 if cur == str(d):                       # a rename leaves the top's mtime and mode alone, not its ctime
                     self.top_ctime = st.st_ctime_ns
                     self.sig += int.from_bytes(hashlib.sha256(b"top %d %d" % (st.st_mtime_ns, st.st_mode)).digest(), "big")
@@ -280,7 +297,8 @@ class Tree:
                     except OSError as x:
                         self.errors.append(f"{e.path}: {x.strerror}")
                         continue
-                    self.newest = max(self.newest, *touched(st))
+                    if e.path not in reads:
+                        self.newest = max(self.newest, *touched(st))
                     self.sig += int.from_bytes(hashlib.sha256(os.fsencode(f"{e.path[top:]}\0{st.st_ino}\0{st.st_mode}\0{st.st_size}\0"
                                                f"{st.st_mtime_ns}\0{st.st_ctime_ns}")).digest(), "big")
                     if e.name == ".git" and cur != str(d):
@@ -1058,10 +1076,9 @@ def vocab() -> set[str]:
 def needles(p: Path, kind: str) -> list[str]:
     p = p.with_name(PIN.sub("", p.name))                # a crash's pin is still the path the ledger names
     n = {str(p), str(p).replace(str(HOME), "~", 1)}
-    if kind == "session":
-        n.add(p.name)                                   # the session uuid
-    elif len(p.name) >= 6 and p.name.lower() not in GENERIC:
-        n.add(p.name)
+    # A bare clone name is a word: 'linked', 'closeout' and 'stream-metrics' in any ledger line held 66 GB (2026-11-01).
+    # Only a path, or `SEAT/name`, says which clone.
+    n.add(p.name if kind == "session" else f"{p.parent.name}/{p.name}")   # session: its uuid
     return sorted(n)
 
 
@@ -1277,8 +1294,27 @@ class PreserveFailed(Exception):
     pass
 
 
-class OverCap(PreserveFailed):
-    """Too big to keep: a refusal, reported, not a malfunction of the tool."""
+class Refused(PreserveFailed):
+    """The clone cannot be preserved through no fault of the tool: a refusal, reported, not a failed run."""
+
+
+class OverCap(Refused):
+    """Too big to keep."""
+
+
+class Unreadable(Refused):
+    """Git cannot read the clone's own objects, so there is nothing whole to bundle. It stays, and stays reported."""
+
+
+BROKEN_OBJECTS = re.compile(r"Could not read|bad object|missing (blob|tree|commit|object)|nonexistent object|"
+                            r"revision walk setup failed|unable to read")
+
+
+def must_read(r: subprocess.CompletedProcess, what: str) -> subprocess.CompletedProcess:
+    """must(), for a step that reads the clone: its broken objects are a refusal, any other error is ours."""
+    if r.returncode and BROKEN_OBJECTS.search(r.stderr or ""):
+        raise Unreadable(f"{what}: {r.stderr.strip()[:160]}")
+    return must(r, what)
 
 
 def must(r: subprocess.CompletedProcess, what: str) -> subprocess.CompletedProcess:
@@ -1314,9 +1350,9 @@ def make_bundle(c: Path, tips: list[str], work: Path) -> Path:
         must(subprocess.run(["git", "init", "-q", "--bare", str(r)], capture_output=True, text=True), "git init")
     (src / "objects" / "info" / "alternates").write_text(str(c / ".git" / "objects") + "\n")
     for i, t in enumerate(tips):
-        must(git(src, "update-ref", f"refs/rm/{i}", t), "pin tip")
-    must(git(src, "bundle", "create", "-q", str(out), *[f"refs/rm/{i}" for i in range(len(tips))],
-             *["^" + b for b in sorted(set(mirror_tips()))], timeout=1800), "git bundle create")
+        must_read(git(src, "update-ref", f"refs/rm/{i}", t), "pin tip")
+    must_read(git(src, "bundle", "create", "-q", str(out), *[f"refs/rm/{i}" for i in range(len(tips))],
+                  *["^" + b for b in sorted(set(mirror_tips()))], timeout=1800), "git bundle create")
     if out.stat().st_size > BUNDLE_CAP:
         raise OverCap(f"bundle is {human(out.stat().st_size)}, over the {human(BUNDLE_CAP)} cap")
     must(git(dst, "bundle", "verify", str(out)), "git bundle verify")
@@ -1496,6 +1532,14 @@ def preserve(row: dict) -> str:
                     (work / "clone.bundle").unlink(missing_ok=True)
                     files, row["residual"] = make_residual(p, row["tips"], work, str(e))
                     made += files
+                except Unreadable as e:       # no bundle can read it: the store itself is all there is to keep
+                    size = Tree(p / ".git").size
+                    if size > BROKEN_CAP:
+                        raise Unreadable(f"{e}; {human(size)} of .git, over the {human(BROKEN_CAP)} preserve cap") from e
+                    (work / "clone.bundle").unlink(missing_ok=True)
+                    make_tar(p, [".git"], work / "broken_git.tar.gz")
+                    made.append(work / "broken_git.tar.gz")
+                    row["broken"] = str(e)
             if row.get("dead_refs"):
                 (work / "dead_refs.txt").write_text("\n".join(row["dead_refs"]) + "\n", errors="surrogateescape")
                 make_tar(p, [".git/objects"], work / "objects.tar.gz")
@@ -1525,6 +1569,7 @@ def preserve(row: dict) -> str:
             "path": row["path"], "kind": row["kind"], "bytes": row["bytes"], "age_h": row["age_h"], "why": row["why"],
             "tips": row.get("tips", []), "unique_commits": row.get("unique", 0), "dirty_paths": row.get("dirty", []),
             "rewritten_commits": row.get("changed", []), "files": files, "residual": row.get("residual"),
+            "broken": row.get("broken"),
             "restore": "git clone --shared /home/mandrake/rm/store.git r && git -C r fetch clone.bundle "
                        "'refs/rm/*:refs/heads/rescued/*'; check out status.txt's base; tar -xzf staged.tar.gz -C blobs; "
                        "git -C r hash-object -w --no-filters blobs/*; git -C r read-tree --empty; "
@@ -1568,7 +1613,7 @@ def act(row: dict, ctx: Ctx, failures: list[str]) -> int:
             row["archive"] = preserve(row)
         except (PreserveFailed, OSError, subprocess.SubprocessError) as e:
             row.update(verdict="REFUSE", why=[f"could not preserve it, so it stays: {e}"] + row["why"])
-            if not isinstance(e, OverCap):
+            if not isinstance(e, Refused):
                 failures.append(f"{row['path']}: {e}")
             return 0
     try:
@@ -1637,6 +1682,169 @@ def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str], st
     return freed, deferred
 
 
+def fixture_dirs() -> list[Path]:
+    """~/.seat-tmp/<SEAT>/selftest_*: a selftest's tempfile prefix, so no agent's work lives there."""
+    found = [Path(s) for r in roots() if r.name == ".seat-tmp" for s in glob.glob(str(r / "*" / "selftest_*"))]
+    return [p for p in found if p.is_dir() and not p.is_symlink()]
+
+
+def sweep_fixtures(ctx: Ctx, apply: bool, deadline: float) -> dict:
+    """Remove selftest fixtures a day untouched. run_selftests.py cleans its own; this catches a test run by hand or
+    killed. Nothing is archived: the commits in a fixture's `c` clone are unpushed by construction. A path anything
+    uses, mounts or borrows from, or that cannot be read whole, stays."""
+    out = {"removed": 0, "bytes": 0, "young": 0, "held": 0, "deferred": 0}
+    for p in fixture_dirs():
+        if apply and deadline and time.time() > deadline:
+            out["deferred"] += 1
+            continue
+        tree = None if guard(p) else Tree(p)
+        if tree is None or tree.capped or tree.errors:
+            out["held"] += 1
+        elif ctx.now - tree.newest < FIXTURE_TTL_S:
+            out["young"] += 1
+        elif ctx.global_holds() or ctx.mounted(p) or ctx.live.users(p) or ctx.borrows.of(p):
+            out["held"] += 1
+        else:
+            try:
+                if apply:
+                    shutil.rmtree(p)
+                out["removed"] += 1
+                out["bytes"] += tree.size
+            except OSError:
+                out["held"] += 1
+    return out
+
+
+# ---------------------------------------------------------------- sanity: speak up at both ends of a run
+def sanity_limits() -> dict:
+    p = os.environ.get("SCRATCH_REAP_SANITY") or str(Path(__file__).with_name("scratch_reap_sanity.json"))
+    return json.loads(Path(p).read_text())
+
+
+def rm_scratch() -> Path:
+    return Path(os.environ.get("SCRATCH_REAP_RM_SCRATCH", RM / "scratch"))
+
+
+def unique_gb(p: Path) -> float | None:
+    """One du over the tree counts a hardlink once: clones share their packs. None: no reading, which is itself a problem."""
+    if not p.is_dir():
+        return 0.0
+    try:
+        r = subprocess.run(["du", "-s", "-B1", str(p)], capture_output=True, text=True, timeout=SANITY_DU_S)
+    except subprocess.TimeoutExpired:
+        return None
+    return round(int(r.stdout.split()[0]) / 1e9, 2) if r.stdout.strip() else None
+
+
+def pool_measures() -> dict:
+    """The worker pool, as its cap sees it. It counts relentless/clones alone; rm/scratch has its own lines."""
+    try:
+        import scratch_clone
+        d = scratch_clone.pool_reading()
+        return {k: d[j] for k, j in (("pool_clones", "count"), ("pool_clones_cap", "max_clones"), ("pool_gb", "gb"),
+                                     ("pool_gb_cap", "max_gb"))}
+    except Exception:  # noqa: BLE001 - a sanity reading never kills the run it reports on
+        return {"pool_clones": None, "pool_clones_cap": None, "pool_gb": None, "pool_gb_cap": None}
+
+
+def measure(now: float, rows: list[dict] | None, prev: dict) -> dict:
+    """The readings. Before work, `rows` is None and what only a judged run knows comes from the last run's record."""
+    fx_ages = []
+    for p in fixture_dirs():
+        try:
+            fx_ages.append((now - p.stat().st_mtime) / 3600)
+        except OSError:
+            pass
+    sessions = sum(1 for r in roots() for s in glob.glob(str(r / "*" / "claude-*" / "*" / "*"))
+                   if UUID.match(os.path.basename(s)))
+    scratch = rm_scratch()
+    m = pool_measures()
+    m.update(rm_scratch_clones=len(find_clones(scratch)) if scratch.is_dir() else 0, rm_scratch_gb=unique_gb(scratch),
+             selftest_dirs=len(fx_ages), selftest_stale=sum(1 for a in fx_ages if a * 3600 >= FIXTURE_TTL_S),
+             session_dirs=sessions, root_disk_pct=round(100 * (lambda u: u.used / u.total)(shutil.disk_usage("/")), 1))
+    if rows is None:
+        m.update(refused=(prev.get("counts") or {}).get("REFUSE"), refused_gb=round(prev.get("refused_bytes", 0) / 1e9, 2),
+                 oldest_h=round(max(fx_ages + [prev.get("oldest_h") or 0.0]), 1))
+    else:
+        left = [r for r in rows if r["verdict"] not in ("DELETED", "YOUNG")]
+        bad = [r for r in rows if r["verdict"] == "REFUSE"]
+        m.update(refused=len(bad), refused_gb=round(sum(r["bytes"] or 0 for r in bad) / 1e9, 2),
+                 oldest_h=round(max([r["age_h"] or 0.0 for r in left] + fx_ages, default=0.0), 1))
+    return m
+
+
+def judge_sanity(phase: str, m: dict) -> list[str]:
+    """-> every line this reading is over, by the limits of that end of the run. No reading is a problem, never a pass."""
+    lim = sanity_limits()[phase]
+    out = []
+    for key in ("pool_clones", "pool_gb"):
+        if m.get(key) is None:
+            out.append(f"{key}: no reading")
+        elif m[key] > m[key + "_cap"]:
+            out.append(f"{key} {m[key]} over the pool cap {m[key + '_cap']}")
+    for key, line in lim.items():
+        if m.get(key) is None:
+            out.append(f"{key}: no reading")
+        elif m[key] > line:
+            out.append(f"{key} {m[key]} over {line}")
+    return out
+
+
+def refusal_reasons(rows: list[dict], top: int = 4) -> list[str]:
+    """The residual, by why: the first reason of each refused row with its paths taken out."""
+    n: dict[str, list] = {}
+    for r in rows:
+        if r["verdict"] == "REFUSE":
+            why = re.sub(r"\S*/\S*:? ?", "", (r["why"] or ["?"])[0])[:60]
+            n.setdefault(why, [0, 0])
+            n[why][0] += 1
+            n[why][1] += r["bytes"] or 0
+    return [f"{c} refused, {human(b)}: {w}" for w, (c, b) in sorted(n.items(), key=lambda kv: -kv[1][1])[:top]]
+
+
+def sanity_write(sd: Path, phase: str, m: dict, problems: list[str]):
+    """On disk before the work starts: the Dispatcher reads this, so a run that dies has already spoken. A new start
+    drops the last run's end, whose alarm belongs to that run."""
+    p = sd / "sanity.json"
+    rec = {}
+    if phase != "start":
+        try:
+            rec = json.loads(p.read_text())
+        except (OSError, ValueError):
+            rec = {}
+    rec[phase] = {"at": time.time(), "measures": m, "problems": problems}
+    write_json(p, rec)
+    durable(p)
+    durable(sd, False)
+
+
+def sanity_start(sd: Path, now: float) -> dict:
+    """Never raises: a bad reading or limits file is said aloud in the record, and the run still runs."""
+    try:
+        m = measure(now, None, last_record(sd))
+        problems = judge_sanity("start", m)
+    except Exception as e:  # noqa: BLE001
+        m, problems = {}, [f"sanity start blind: {type(e).__name__}: {str(e)[:160]}"]
+    sanity_write(sd, "start", m, problems)
+    return m
+
+
+def sanity_end(sd: Path, now: float, rows: list[dict], rec: dict):
+    try:
+        m = measure(now, rows, rec)
+        problems = judge_sanity("end", m)
+    except Exception as e:  # noqa: BLE001
+        m, problems = {}, [f"sanity end blind: {type(e).__name__}: {str(e)[:160]}"]
+    if rec.get("failures"):
+        problems.append(f"{len(rec['failures'])} failure(s): {rec['failures'][0][:160]}")
+    if rec.get("deferred"):
+        problems.append(f"{rec['deferred']} row(s) deferred past the time budget")
+    if problems:
+        problems += refusal_reasons(rows)
+    sanity_write(sd, "end", m, problems)
+    rec["oldest_h"] = m.get("oldest_h")
+
+
 # ---------------------------------------------------------------- records
 def free_gb(path: str = "/") -> float:
     return round(shutil.disk_usage(path).free / 1e9, 1)
@@ -1656,6 +1864,14 @@ def record(sd: Path, rec: dict):
         prev = None
     rec["last_ok_epoch"] = rec["end_epoch"] if rec["ok"] else prev
     write_json(sd / "last_run.json", rec)
+
+
+def last_record(sd: Path) -> dict:
+    try:
+        rec = json.loads((sd / "last_run.json").read_text())
+        return rec if isinstance(rec, dict) else {}
+    except (OSError, ValueError):
+        return {}
 
 
 def rotate(p: Path, cap: int = 64 * 1024 ** 2):
@@ -1738,7 +1954,10 @@ def run(a, sd: Path) -> int:
     start = time.time()
     stamp = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(start))
     before = free_gb()
+    if a.apply:
+        sanity_start(sd, start)
     ctx = Ctx(start)
+    fixtures = sweep_fixtures(ctx, a.apply, start + a.max_seconds / 2 if a.max_seconds else 0)
     rows = judge_all(ctx)
     failures: list[str] = []
     freed, deferred = 0, 0
@@ -1765,12 +1984,13 @@ def run(a, sd: Path) -> int:
         counts[r["verdict"]] = counts.get(r["verdict"], 0) + 1
     end = time.time()
     rec = {"ts": stamp, "end_epoch": end, "seconds": round(end - start), "apply": a.apply, "ok": not failures,
-           "failures": failures[:10], "counts": counts, "freed_bytes": freed, "deferred": deferred,
+           "failures": failures[:10], "counts": counts, "fixtures": fixtures, "freed_bytes": freed, "deferred": deferred,
            "archived": sum(1 for r in done if r.get("archive")), "root_free_gb_before": before,
            "root_free_gb_after": free_gb(), "global_holds": ctx.global_holds(),
            "blind_dirs": len(ctx.borrows.blind), "other_uid_procs": ctx.live.other_uid,
            "refused_bytes": sum(r["bytes"] or 0 for r in rows if r["verdict"] == "REFUSE")}
     if a.apply:
+        sanity_end(sd, end, rows, rec)
         record(sd, rec)
     else:
         write_json(sd / "last_dry_run.json", rec)
@@ -1778,6 +1998,7 @@ def run(a, sd: Path) -> int:
         print(json.dumps(rows, indent=1))
     else:
         report(rows, a, sd, freed)
+        print(f"selftest fixtures: {fixtures}")
     return 1 if failures else 0
 
 
@@ -1787,6 +2008,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--apply", action="store_true", help="act on the DELETE and ARCHIVE rows (default: report only)")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--sanity", action="store_true", help="print the sanity reading and its problems; touches nothing")
     ap.add_argument("--max-seconds", type=float, default=0, help="stop starting deletions after this long (0 = no limit)")
     ap.add_argument("--pressure-check", action="store_true", help="start the reaper's unit if the root disk is low")
     a = ap.parse_args(argv)
@@ -1794,6 +2016,10 @@ def main(argv=None) -> int:
         return pressure_check()
     sd = state_dir()
     sd.mkdir(parents=True, exist_ok=True)
+    if a.sanity:
+        m = measure(time.time(), None, last_record(sd))
+        print(json.dumps({"measures": m, "problems": judge_sanity("start", m)}, indent=1))
+        return 0
     with open(sd / "run.lock", "w") as lock:
         try:
             fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -1804,6 +2030,7 @@ def main(argv=None) -> int:
             return run(a, sd)
         except Exception as e:      # the record must say so; re-raised, so the unit fails and signal_watch sees it
             if a.apply:
+                sanity_write(sd, "end", {}, [f"the run died: {type(e).__name__}: {str(e)[:200]}"])
                 record(sd, {"ts": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "end_epoch": time.time(),
                             "apply": True, "ok": False, "failures": [f"{type(e).__name__}: {e}"]})
             raise

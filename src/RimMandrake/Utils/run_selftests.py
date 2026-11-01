@@ -59,9 +59,11 @@ import itertools
 import json
 import os
 import re
+import shutil
 import signal
 import subprocess
 import sys
+import tempfile
 import time
 from concurrent.futures import FIRST_COMPLETED, ThreadPoolExecutor, wait
 from pathlib import Path
@@ -586,8 +588,35 @@ def run_one(path: Path, cap: int = 0, est: int = 0) -> tuple[Path, str, float, s
         E.clear_trace(tdir)
 
 
+def _own_tmp(env) -> tuple[dict, str]:
+    """(env, dir): a TMPDIR of the test's own. Selftests mkdtemp at import and never remove it: 65,000 dirs stood under
+    ~/.seat-tmp on 2026-11-01. "" = could not make one; the test still runs, in the shared TMPDIR."""
+    try:
+        tdir = tempfile.mkdtemp(prefix="selftest_run_")
+    except OSError:
+        return env, ""
+    return dict(env if env is not None else os.environ, TMPDIR=tdir), tdir
+
+
+def _drop_tmp(tdir: str) -> None:
+    if not tdir:
+        return
+    shutil.rmtree(tdir, ignore_errors=True)
+    if os.path.lexists(tdir):               # a test that chmods its fixtures read-only
+        subprocess.run(["chmod", "-R", "u+rwx", tdir], capture_output=True)
+        shutil.rmtree(tdir, ignore_errors=True)
+
+
 def _run_one(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path, str, float, str]:
     """(path, state, seconds, detail). detail's first line is the reason for any non-PASS."""
+    env, tdir = _own_tmp(env)
+    try:
+        return _run_one_in(path, cap, est, env)
+    finally:
+        _drop_tmp(tdir)
+
+
+def _run_one_in(path: Path, cap: int = 0, est: int = 0, env=None) -> tuple[Path, str, float, str]:
     start = time.monotonic()
     try:
         proc, rep = _run_capped(path, per_test_timeout(path), cap, est, env)

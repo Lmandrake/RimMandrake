@@ -11,6 +11,9 @@ Each every_s, not under PAUSE (schedule key `signal_watch`; off when absent or e
          left alone: never repaired, never alarmed.
   files  (STEVE_STALL_FIX_FILE_FAILED_ROUTE) ops_watch retries a failed alarm filing every pass; file_tries failures
          mean the filer is broken, and its error sat in alarms_log.jsonl: alarm ops:file_failed:<aid>.
+  sanity (CLEANER_SANITY_BUILD_SPEAKS_UP_WHEN_FILTHY) scratch_reap writes sanity.json before any work and again at the
+         end, so a run that dies has already spoken: a record with problems is one alarm scratch:sanity:<end> to the
+         Conductor log. ops_watch files or reopens its fixed item (OPS_SCRATCH_DIRT_MEASURE_AT_START / _END).
   flags  (OPS_FLAGS_FIX_NO_ACTION) a flag standing flag_after_s means the digest's readers did not move it: a note to
          Operations; still standing flag_every_s later, the Conductor too. A flag with a known answer is a rule with
          alarm true instead, which files an item for Operations (flow.untriaged_findings, ops_watch_rules.json).
@@ -22,6 +25,7 @@ import subprocess
 
 DEFAULTS = {"enabled": False, "every_s": 300, "repairs_per_day": 2, "alarm_after_s": 3600, "file_tries": 3,
             "flag_after_s": 72 * 3600, "flag_every_s": 7 * 86400, "flags_stale_s": 6 * 3600, "ops_dir": None,
+            "sanity_file": "~/.local/state/rm-scratch-reap/sanity.json",
             "restart_rx": "^(rm-scratch-reap|rm-scratch-pressure|rm-pulse-update)\\.service$",
             "deny_rx": "(?i)switch|login|logout|account|rm-role-"}
 
@@ -77,6 +81,32 @@ def read_json(cfg, name):
             return json.load(f)
     except (OSError, ValueError, TypeError):
         return None
+
+
+def read_sanity(cfg):
+    """-> the cleaner's sanity record; {} before its first run; None for a record that cannot be read."""
+    try:
+        with open(os.path.expanduser(cfg["sanity_file"]), encoding="utf-8") as f:
+            d = json.load(f)
+    except FileNotFoundError:
+        return {}
+    except (OSError, ValueError, TypeError):
+        return None
+    return d if isinstance(d, dict) else None
+
+
+def _sanity_step(S, rec, act):
+    seen = S.setdefault("sanity", {})
+    for end, first in (("start", "The cleaner started far out of equilibrium, before doing any work."),
+                       ("end", "The cleaner finished and left dirt behind.")):
+        row = rec.get(end) or {}
+        if not row.get("at") or row["at"] == seen.get(end):
+            continue
+        seen[end] = row["at"]
+        if row.get("problems"):
+            act(do="alarm", kind="scratch:sanity:" + end, note=True, conductor_log=True, raise_first=first,
+                why="scratch cleaner, %s of run: %s; item OPS_SCRATCH_DIRT_MEASURE_AT_%s" % (
+                    end, "; ".join(str(p) for p in row["problems"])[:400], end.upper()))
 
 
 def plan(cfg, unit, timers):
@@ -179,6 +209,12 @@ def step(sch, st, obs, now, act, iso, ts):
         blind("alarms", "alarms.json unreadable, unfiled alarms unseen this pass")
     else:
         guarded("alarms", lambda: _files_step(cfg, alarms, act))
+    if "sanity" in so:
+        sanity = read("sanity")
+        if sanity is None:
+            blind("sanity", "the cleaner's sanity.json is unreadable, its alarms unseen this pass")
+        else:
+            guarded("sanity", lambda: _sanity_step(S, sanity, act))
     flags = read("flags")
     try:
         at = ts(flags.get("at")) if isinstance(flags, dict) else None

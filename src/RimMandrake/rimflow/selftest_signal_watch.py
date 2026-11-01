@@ -14,7 +14,7 @@ def ts(s):
     return float(s) if s is not None else None
 
 
-def run(failed=(), timers=(), alarms=None, flags=None, st=None, now=T0, reading=True, paused=None, sch=SCH):
+def run(failed=(), timers=(), alarms=None, flags=None, st=None, now=T0, reading=True, paused=None, sch=SCH, sanity=None):
     st = {} if st is None else st
     acts = []
     alarms = {} if alarms is None else alarms
@@ -23,8 +23,24 @@ def run(failed=(), timers=(), alarms=None, flags=None, st=None, now=T0, reading=
         flags = dict(flags, at=str(now))
     obs = {"paused": paused, "signals": {"units": lambda: (list(failed), list(timers)) if reading else None,
                                          "alarms": lambda: alarms, "flags": lambda: flags}}
+    if sanity is not None:
+        obs["signals"]["sanity"] = lambda: sanity if sanity != "unreadable" else None
     SW.step(sch, st, obs, now, lambda **a: acts.append(a), str, ts)
     return acts, st
+
+
+def test_sanity():
+    dirty = {"start": {"at": 5.0, "problems": ["selftest_stale 900 over 500"]}}
+    acts, st = run(sanity=dirty)
+    assert [a["kind"] for a in acts] == ["scratch:sanity:start"]
+    assert acts[0]["conductor_log"] and acts[0]["raise_first"] and "900 over 500" in acts[0]["why"]
+    assert "OPS_SCRATCH_DIRT_MEASURE_AT_START" in acts[0]["why"], "the alarm names its one fixed item"
+    assert run(sanity=dirty, st=st, now=T0 + 400)[0] == [], "one record is one alarm"
+    dirty = dict(dirty, end={"at": 6.0, "problems": ["1 refused"]})
+    assert [a["kind"] for a in run(sanity=dirty, st=st, now=T0 + 800)[0]] == ["scratch:sanity:end"]
+    assert run(sanity={"start": {"at": 7.0, "problems": []}, "end": {"at": 8.0, "problems": []}})[0] == [], "clean is silent"
+    assert run(sanity={})[0] == [], "no run yet"
+    assert [a["kind"] for a in run(sanity="unreadable")[0]] == ["signal:sanity"], "a torn record is blindness, said aloud"
 
 
 def test_gates():

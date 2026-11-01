@@ -881,6 +881,18 @@ def c_disk(now, rules, ctx):
                                          failures=d.get("failures"), freed_bytes=d.get("freed_bytes"))
     except (OSError, ValueError) as e:
         out["disk.scratch_ok_age_h"] = M(9999, "hours since the expiry last ran clean", why="%s: %s" % (rec, e))
+    # The cleaner's own sanity at each end of its last run (CLEANER_SANITY_BUILD_SPEAKS_UP_WHEN_FILTHY). The Dispatcher
+    # carries it to the Conductor log; these file or reopen its one fixed item. No record yet is a clean reading of 0:
+    # disk.scratch_ok_age_h above already alarms on a cleaner that never ran.
+    san = rec.with_name("sanity.json")
+    for end in ("start", "end"):
+        try:
+            d = json.loads(san.read_text()) if san.exists() else {}
+            row = d.get(end) or {}
+            out["disk.scratch_dirty_" + end] = M(len(row.get("problems") or []), "sanity problems at the %s of the last run" % end,
+                                                 problems=(row.get("problems") or [])[:6])
+        except (OSError, ValueError, AttributeError) as e:
+            out["disk.scratch_dirty_" + end] = M(9999, "sanity problems at the %s of the last run" % end, why="%s: %s" % (san, e))
     # The bounded worker-clone pool (WORKER_CLONES_MONITOR_POOL_NOT_RABBITS): read live each tick, never from a cache.
     # One number alarms: clones over the cap, bytes over the cap, plus every clone holding unpushed work nobody is using.
     # A pool that cannot be read is the alarm too (9999), not silence.
@@ -1878,7 +1890,7 @@ TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 BLIND_KEYS = frozenset("""
 companion.grant_hours_left companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
-disk.scratch_ok_age_h disk.scratch_refused_gb disk.scratch_total_gb
+disk.scratch_dirty_end disk.scratch_dirty_start disk.scratch_ok_age_h disk.scratch_refused_gb disk.scratch_total_gb
 disk.pool_breach disk.pool_clones disk.pool_gb disk.pool_oldest_h
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h
 process.share_24h process.share_7d

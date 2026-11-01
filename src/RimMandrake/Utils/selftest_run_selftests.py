@@ -198,6 +198,27 @@ eq(rs._lane_of(Path("selftest_sun_heat.py")), "dotnet", "sun_heat is in the dotn
 eq(rs._lane_of(Path("selftest_mandrakepatches.py")), "heavy", "memory-heavy lane unchanged")
 eq(rs._lane_of(Path("selftest_ledger_lint.py")), None, "an ordinary test has no lane")
 
+# Each test gets a TMPDIR of its own, gone after the run, pass or fail; read-only fixtures and all.
+with tempfile.TemporaryDirectory() as _td:
+    _base, _saved_tmp, _saved_harness = Path(_td), tempfile.tempdir, rs._HARNESS
+    tempfile.tempdir, rs._HARNESS = str(_base), False
+    _leak = _base / "selftest_leak_probe.py"
+    _leak.write_text("import os, sys, tempfile\n"
+                     "d = tempfile.mkdtemp(prefix='fx_')\n"
+                     "os.mkdir(d + '/ro'); open(d + '/ro/f', 'w').close(); os.chmod(d + '/ro', 0o500)\n"
+                     "print('ok', tempfile.gettempdir())\n"
+                     "sys.exit(int(os.environ.get('LEAK_RC', '0')))\n")
+    try:
+        _st = rs._run_one(_leak)[1]
+        eq(_st, "PASS", "the leak probe passes")
+        eq(sorted(p.name for p in _base.iterdir()), ["selftest_leak_probe.py"], "a passing test's TMPDIR is removed")
+        os.environ["LEAK_RC"] = "1"
+        rs._run_one(_leak)
+        eq(sorted(p.name for p in _base.iterdir()), ["selftest_leak_probe.py"], "a failing test's TMPDIR is removed")
+    finally:
+        os.environ.pop("LEAK_RC", None)
+        tempfile.tempdir, rs._HARNESS = _saved_tmp, _saved_harness
+
 if FAILS:
     print("FAIL selftest_run_selftests.py")
     for f in FAILS:

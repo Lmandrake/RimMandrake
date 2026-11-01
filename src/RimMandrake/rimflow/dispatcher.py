@@ -1492,7 +1492,7 @@ def signal_obs(sch):
     if not cfg["enabled"]:
         return None
     return {"units": SW.read_units, "alarms": lambda: SW.read_json(cfg, "alarms.json"),
-            "flags": lambda: SW.read_json(cfg, "flags.json")}
+            "flags": lambda: SW.read_json(cfg, "flags.json"), "sanity": lambda: SW.read_sanity(cfg)}
 
 
 def default_obs(sch, root, st=None):

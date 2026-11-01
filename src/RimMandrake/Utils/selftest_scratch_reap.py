@@ -23,6 +23,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import scratch_reap as R  # noqa: E402
 
+os.environ["SCRATCH_REAP_RM_SCRATCH"] = "/nonexistent"    # the sanity reading is proved in selftest_scratch_reap_sanity.py:
+R.pool_measures = lambda: {}                              # here a du of the real rm/scratch per run would cost 18 s each
 R.CTIME_COUNTS = False                                  # age() can only reach mtimes; third_review_cases turns it back on
 
 FAILS = []
@@ -343,7 +345,7 @@ def run() -> int:
         R.re.compile = real_compile
         R._CORPUS = R._VOCAB = None
     check(len(hit) >= 1 and "a.md" in hit[0], "ledger_mentions still finds a real mention")
-    check(miss == [] and _Rx.n == 1, f"ledger_mentions skips the regex when the needle is absent (scans={_Rx.n}, want 1)")
+    check(miss == [] and _Rx.n == 2, f"ledger_mentions skips the regex when the needle is absent (scans={_Rx.n}, want 2: path and SEAT/name of the hit)")
     print("ALL PASS" if not FAILS else f"{len(FAILS)} FAIL")
     return 1 if FAILS else 0
 
@@ -580,6 +582,36 @@ def run_cases(env):
     rc, rows = run_reaper("--apply")
     R.make_tar = real_cap
     check(rc == 0 and over.exists() and rows["over_cap_clone"]["verdict"] == "REFUSE", "too big to keep is a refusal, not a failure")
+
+    # broken objects in the clone itself: it stays and is reported, and the unit does not fail for it
+    def bad_objects(*a, **k):
+        return subprocess.CompletedProcess(a, 128, "", "error: Could not read eb0ee87d\nfatal: revision walk setup failed")
+    real_git = R.git
+    R.git = lambda repo, *a, **k: bad_objects() if a[:2] == ("bundle", "create") else real_git(repo, *a, **k)
+    commit(over, "b.txt", "unique")
+    age(over)
+    real_broken_cap, R.BROKEN_CAP = R.BROKEN_CAP, 1
+    rc, rows = run_reaper("--apply")
+    R.BROKEN_CAP = real_broken_cap
+    rec = json.loads((td / "state/last_run.json").read_text())
+    check(rc == 0 and rec["ok"] is True and over.exists() and rows["over_cap_clone"]["verdict"] == "REFUSE"
+          and "Could not read" in rows["over_cap_clone"]["why"][0],
+          "broken objects too big to tar are a reported refusal, exit 0")
+    rc, rows = run_reaper("--apply")
+    R.git = real_git
+    rec = json.loads((td / "state/last_run.json").read_text())
+    kept = Path(rows["over_cap_clone"].get("archive") or "/nonexistent")
+    check(rc == 0 and rec["ok"] is True and not over.exists() and rows["over_cap_clone"]["verdict"] == "DELETED"
+          and (kept / "broken_git.tar.gz").exists() and "Could not read" in json.loads((kept / "manifest.json").read_text())["broken"],
+          "broken objects that fit: .git is tarred whole, the clone goes, exit 0")
+    git_died = subprocess.CompletedProcess([], 128, "", "fatal: write error: No space left on device")
+    try:
+        R.must_read(git_died, "git bundle create")
+        check(False, "an error of ours is not read as broken objects")
+    except R.PreserveFailed as e:
+        check(not isinstance(e, R.Refused), "an error of ours is not read as broken objects")
+
+    fixture_cases(td)
 
     # the run-time cap defers, never skips the checks
     d1 = clone_old(origin, seat / "deferred_clone")
@@ -1480,6 +1512,57 @@ def third_review_cases(td: Path, origin: Path):
                 os.environ.pop(k, None)
             else:
                 os.environ[k] = val
+
+
+def fixture_cases(td: Path):
+    """selftest_* under .seat-tmp: a day old goes unarchived, young or in use stays. An empty `.git` is no clone."""
+    root = td / "fx" / ".seat-tmp"
+    old, young, used = (root / "S" / n for n in ("selftest_old_x", "selftest_young_x", "selftest_used_x"))
+    other = root / "S" / "keep_x" / "work.txt"
+    other.parent.mkdir(parents=True)
+    other.write_text("w")
+    marker = root / "S" / "tmp_marker"
+    (marker / ".git").mkdir(parents=True)
+    check(not R.is_clone(marker), "an empty .git dir is not a clone")
+    (marker / ".git" / "rm_isolated").write_text("x")
+    check(not R.is_clone(marker), "nor is one holding a sandbox marker")
+    (marker / ".git" / "HEAD").write_text("x")
+    check(R.is_clone(marker), "a .git dir with a HEAD is, however broken")
+    (marker / ".git" / "HEAD").unlink()
+    look = root / "S" / "looked_at"
+    (look / ".git").mkdir(parents=True)
+    (look / ".git" / "index").write_text("i")
+    (look / ".git" / "HEAD").write_text("h")
+    age(look)
+    (look / ".git" / "index").write_text("rewritten by git status")
+    check(time.time() - R.Tree(look).newest > 3600, "reading a clone does not make it young")
+    (look / ".git" / "HEAD").write_text("committed")
+    check(time.time() - R.Tree(look).newest < 3600, "working in it does")
+    check("BENCH/closeout" in R.needles(Path("/x/BENCH/closeout"), "clone")
+          and "closeout" not in R.needles(Path("/x/BENCH/closeout"), "clone"), "a bare clone name is a word, not a mention")
+    for d in (old / "unpub" / "c", young / "c", used / "c"):
+        d.mkdir(parents=True)
+        (d / "f").write_text("x")
+    age(old)
+    age(used)
+    age(other.parent)
+    saved = os.environ.get("SCRATCH_REAP_ROOTS")
+    os.environ["SCRATCH_REAP_ROOTS"] = str(root)
+    try:
+        ctx = R.Ctx(time.time())
+        ctx.borrows.hold = []            # the unreadable clones planted by earlier cases hold everything, rightly
+        real = ctx.live.users
+        ctx.live.users = lambda p: ["pid 1"] if p == used else real(p)
+        dry = R.sweep_fixtures(ctx, False, 0)
+        check(dry["removed"] == 1 and old.exists(), "a dry run counts and removes nothing")
+        got = R.sweep_fixtures(ctx, True, 0)
+        check(got["removed"] == 1 and got["young"] == 1 and got["held"] == 1 and not old.exists() and young.exists()
+              and used.exists() and other.exists(), f"a stale fixture goes; young, in use and non-selftest stay: {got}")
+        age(young)
+        late = R.sweep_fixtures(ctx, True, time.time() - 1)
+        check(late["deferred"] == 2 and young.exists(), "the sweep stops at its deadline")
+    finally:
+        os.environ.pop("SCRATCH_REAP_ROOTS") if saved is None else os.environ.__setitem__("SCRATCH_REAP_ROOTS", saved)
 
 
 def clone_old(origin, dest):

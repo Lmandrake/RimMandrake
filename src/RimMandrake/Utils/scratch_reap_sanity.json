@@ -1,0 +1,23 @@
+{
+ "_why": "Lines between a cleaner that keeps up and one that does not: start reads before any work, end reads what the run left. Over a line, the reaper writes sanity.json and the Dispatcher raises it to the Conductor log; ops_watch files or reopens one fixed item per end. The pool's own cap comes from scratch_clone, not from here. Start lines are the wildly-dirty ones, set near twice a quiet machine: 2026-11-01 it was 14,199 stale fixtures, and 16 clones at 94 GB in rm/scratch that the pool cap cannot see. End lines are what a finished run may honestly leave: young work, and refusals with a real reason.",
+ "start": {
+  "rm_scratch_clones": 12,
+  "rm_scratch_gb": 60,
+  "selftest_stale": 500,
+  "session_dirs": 400,
+  "refused": 100,
+  "refused_gb": 40,
+  "oldest_h": 720,
+  "root_disk_pct": 85
+ },
+ "end": {
+  "rm_scratch_clones": 8,
+  "rm_scratch_gb": 50,
+  "selftest_stale": 20,
+  "session_dirs": 300,
+  "refused": 60,
+  "refused_gb": 25,
+  "oldest_h": 480,
+  "root_disk_pct": 80
+ }
+}
