@@ -431,3 +431,4 @@
 {"seat":"DISPATCHER","event":"note","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T06:59:00Z","ts":"2026-11-01T07:01:04Z","tsn":1793516464784830146}
 {"seat":"DISPATCHER","event":"note","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T07:03:20Z","ts":"2026-11-01T07:05:16Z","tsn":1793516716226195048}
 {"seat":"DISPATCHER","event":"note","id":"OPS_WORKER_CLONE_POOL_RESTORE_HMOQ","text":"dispatcher role_done Operations: Operations alarm run rm-role-operations-1793516458 done: 436751 weighted tokens of a 450000 budget (raw 1746191), model claude-opus-5-5, success","ts":"2026-11-01T07:11:28Z","tsn":1793517088384046423}
+{"seat":"DISPATCHER","event":"note","id":"VENOMVINE_BUILD_SCRUB_GROWS_TEETH","text":"dispatcher verified FOUNDRY: lease take at 2026-11-01T07:25:59Z","ts":"2026-11-01T07:27:59Z","tsn":1793518079329905038}
