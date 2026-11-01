@@ -1,0 +1,2 @@
+A local 'git clone <path>' HARDLINKS the object files, so 'chmod -R a-w' (or u+w) on the new clone rewrites the mode bits of the SOURCE repo's objects too (same inodes; link counts 3-7 in foundry/.git/objects). For a read-only pinned copy use --no-hardlinks (foundry: ~14 GB, ~1 min) or clone from origin. Hit while building make_pin.sh; foundry's object modes ended 644, the repo's own norm for link-count-1 objects.
+home: skill git-efficiency
