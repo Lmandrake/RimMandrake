@@ -149,6 +149,8 @@ def test_schedule():
     check(SR.says_handoff_ready("x\n\n**HANDOFF READY**") and SR.says_handoff_ready("HANDOFF READY.")
           and SR.says_handoff_ready("HANDOFF READY: all closed") and SR.says_handoff_ready("HANDOFF READY\n\nbye"),
           "the words, bold, stopped, opening a last line, or a line of their own")
+    check(not SR.says_handoff_ready("> HANDOFF READY") and not SR.says_handoff_ready("`HANDOFF READY`")
+          and not SR.says_handoff_ready("e.g.\n```\nHANDOFF READY\n```\nok"), "NEGATIVE: a quote, code span or fence is not the signal")
     check(not SR.says_handoff_ready("I will say HANDOFF READY soon\nok") and not SR.says_handoff_ready("")
           and not SR.says_handoff_ready("say `HANDOFF READY` once `--check` passes"), "the words inside a sentence are not")
 

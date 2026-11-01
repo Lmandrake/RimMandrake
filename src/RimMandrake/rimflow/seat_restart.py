@@ -803,8 +803,15 @@ REFUSED_ALARM_S = 120                          # a refused handoff the window di
 def says_handoff_ready(text):
     """A message that closes a seat's handoff: a line of its own reading HANDOFF READY (bold or a full stop allowed), or
     a last line opening with those words. The words inside a sentence, a quote or a code span are not the signal."""
-    lines = [x.strip().strip("*_`#> ").strip() for x in (text or "").splitlines()]
-    lines = [x for x in lines if x]
+    lines, fenced = [], False
+    for x in (text or "").splitlines():
+        x = x.strip()
+        if x.startswith("```"):
+            fenced = not fenced             # a fenced block is an example, not the signal
+            continue
+        x = x.strip("*_# ").strip()
+        if x and not fenced and not x.startswith((">", "`")):   # a quote line or a code span is not the signal either
+            lines.append(x)
     return bool(lines) and (any(x.rstrip(".!") == "HANDOFF READY" for x in lines)
                             or bool(re.match(r"HANDOFF READY\b", lines[-1])))
 
@@ -835,6 +842,11 @@ def handoff_drain(seat, session_id, root=None, now=None):
     """-> True while this session's handoff restart stands, recorded or pending. Nothing may reach the window then: the
     20 s of quiet are the whole wait. Readers fail open (False), as drain_of's do."""
     if not seat or not session_id:
+        return False
+    try:
+        if seat not in config(_schedule()):
+            return False                    # a seat taken off restarts is not served: a stale record must not hold its window
+    except Exception:  # noqa: BLE001 - readers fail open
         return False
     root = root or doorbell.state_dir()
     now = time.time() if now is None else now
