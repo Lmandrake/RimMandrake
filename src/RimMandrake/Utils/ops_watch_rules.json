@@ -45,6 +45,7 @@
   {"key": "disk.root_free_gb", "op": "<", "value": 210, "alarm": true, "tag": "DISK_LOW", "name": "OPS_DISK_DRAIN", "marks": ["MEASURED"],
    "why": "the WSL ext4 volume holds every clone and agent scratch; scratch grew 207 GB on 2026-10-26 (181 -> 389 GB, rm-scratch-reap runs.jsonl), the worst day seen. Under 210 GB free, one more such day fills it and git, builds and the ledger fail together"},
   {"key": "disk.scratch_ok_age_h", "op": ">", "value": 3, "alarm": true, "tag": "SCRATCH_EXPIRY_DOWN", "name": "OPS_SCRATCH_EXPIRY_RESTORE", "marks": ["MEASURED"],
+   "conductor_log": "/mnt/d/ClaudeWork/rimmandrake/conductor/log.md",
    "why": "the hourly expiry (rm-scratch-reap) has not finished a clean run in 3 h, or its record is missing: nothing is expiring clones, and two days of agent scratch can fill the root disk. Read ~/.local/state/rm-scratch-reap/last_run.json and journalctl --user -u rm-scratch-reap"},
   {"key": "disk.root_free_gb", "op": "<", "value": 420, "alarm": false, "tag": "DISK_TWO_DAYS",
    "why": "two worst days of scratch growth left: a warning flag, not an alarm"},

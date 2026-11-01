@@ -877,7 +877,7 @@ def c_disk(now, rules, ctx):
             raise ValueError("no successful run on record")
         if ok_t > now + 900:    # one pass of slack, as `now` is taken before this runs; a record from a fast clock would hold the alarm off for as long as it was fast
             raise ValueError("last clean run is in the future")
-        out["disk.scratch_ok_age_h"] = M(round((now - ok_t) / HOUR, 2), "hours since the expiry last ran clean",
+        out["disk.scratch_ok_age_h"] = M(math.ceil((now - ok_t) / HOUR * 100) / 100, "hours since the expiry last ran clean",
                                          failures=d.get("failures"), freed_bytes=d.get("freed_bytes"))
     except (OSError, ValueError) as e:
         out["disk.scratch_ok_age_h"] = M(9999, "hours since the expiry last ran clean", why="%s: %s" % (rec, e))

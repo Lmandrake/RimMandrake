@@ -371,6 +371,12 @@ check("disk: a clean run in the future proves nothing and alarms", dk["disk.scra
 _rec.write_text(json.dumps({"ok": True, "last_ok_epoch": NOW - H}))
 dk = OW.c_disk(NOW, RULES, {})
 check("disk: a clean expiry an hour ago is under the line", dk["disk.scratch_ok_age_h"]["v"] == 1.0, dk["disk.scratch_ok_age_h"])
+_rec.write_text(json.dumps({"ok": True, "last_ok_epoch": NOW - 3 * H - 10}))
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: ten seconds past the line is past it, rounding never clears a stale record", dk["disk.scratch_ok_age_h"]["v"] > 3, dk["disk.scratch_ok_age_h"])
+check("disk: a stale expiry owes the Conductor a line, an OPEN alarm reaches no one else",
+      [t for v in RULES.values() if isinstance(v, list) for t in v if isinstance(t, dict) and t.get("tag") == "SCRATCH_EXPIRY_DOWN"
+       and t.get("conductor_log")], "no conductor_log")
 _rec.unlink()
 os.environ["RM_OPS_DISKS"] = "root=/no/such/mount_ops_watch"
 dk = OW.c_disk(NOW, RULES, {})
