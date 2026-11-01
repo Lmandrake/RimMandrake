@@ -339,9 +339,17 @@ def main():
 
         # STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP: a live game that cannot hold a map is not handed to the next job
         ndowns = os.path.join(tmp, "no_game_downs")
+        logdir = os.path.join(tmp, "gamelog")
+        os.makedirs(logdir, exist_ok=True)
+        with open(os.path.join(logdir, "Player.log"), "w") as f:
+            f.write("XML error noise Exception loading def\nSystem.BadImageFormatException: AlienRace.dll\nlast line\n")
         rc, o = w(["start"], job(), MOCK_MODE="no_game", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
-                  TESTQ_CMD_DOWN="echo down >> %s" % ndowns, **load)
+                  TESTQ_CMD_DOWN="echo down >> %s" % ndowns, RM_GAME_LOGDIR=logdir, **load)
         res = wait_result(o.get("attempt", "x"))
+        kept = os.path.join(home, "attempts", o.get("attempt", "x"), "Player.log")
+        check(os.path.exists(kept) and "BadImageFormat" in open(kept).read()
+              and "first fatal: System.BadImageFormatException" in (res.get("note") or ""),
+              "a no_game run keeps Player.log in the attempt and names the fault: %s" % res.get("note"))
         check(res.get("outcome") == "INVALID" and res.get("cause") == "HARNESS", "no_game, game alive -> HARNESS: %s %s"
               % (res.get("cause"), res.get("note")))
         check(os.path.exists(ndowns) and len(open(ndowns).readlines()) == 1 and "cold-starts" in (res.get("note") or ""),
@@ -351,6 +359,8 @@ def main():
         res = wait_result(o.get("attempt", "x"))
         check(res.get("cause") == "HARNESS" and "game NOT stopped (never stops the owner game)" in (res.get("note") or ""),
               "a lane that may not stop the game says so in the note: %s" % res.get("note"))
+        check("game log NOT kept" in (res.get("note") or ""), "a Player.log it cannot read is said, never fatal: %s"
+              % res.get("note"))
         hdowns = os.path.join(tmp, "harness_downs")
         rc, o = w(["start"], job(), MOCK_MODE="crash", TESTQ_CMD_STATUS="echo 'running pid=4242 session=1'",
                   TESTQ_CMD_DOWN="echo down >> %s" % hdowns, **load)

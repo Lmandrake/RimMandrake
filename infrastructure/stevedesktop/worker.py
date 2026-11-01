@@ -101,6 +101,7 @@ GAME = "infrastructure/stevedesktop/rw_game.sh"
 PROBE_TIMEOUT_S = 30    # the kept-game bridge probe: modcheck's own client timeout (ensure_playing_map)
 PROBE_GAP_S = 15        # between its two tries, so a game mid-autosave is not mistaken for a wedged one
 NO_GAME_RE = re.compile(r'"status":\s*"no_game"')      # the bridge's answer when the game has no current game
+GAME_FATAL_RE = re.compile(r"BadImageFormat|TypeLoadException")   # a game that loads but cannot make a world (10-31)
 # STEVE_GAME_FIX_UNBOUNDED_MAPS: a kept game is recycled before a job at either limit, both under pid 7460 (17 h, 27 maps,
 # 20.9 GB on a 128 GB host, then deaf). Maps grow because river_site.py founds a site per run and keeps earlier sites.
 MAX_GAME_AGE_S = int(os.environ.get("TESTQ_MAX_GAME_AGE_S") or 8 * 3600)
@@ -822,6 +823,7 @@ class Attempt:
                 elif self.res.get("cause") == "HARNESS" and NO_GAME_RE.search(tail or ""):
                     # STEVE_WORKER_UNSTICK_WOUNDED_GAME_KEPT_UP: pid 30296 answered the bridge but could not make a map
                     # (10-31, AlienRace BadImageFormat): 00238b and dd60e2 both reused it. Other HARNESS deaths keep it.
+                    self.keep_game_log()
                     self.stop_game_for_next_job("no game loaded")
                 return ok
             self.say("run %d hung past %ss: killed" % (attempt_no, timeout))
@@ -839,6 +841,25 @@ class Attempt:
                 return False
             self.phase = "run"
         return False
+
+    def keep_game_log(self):
+        """OPS_STEVE_DIAGNOSE_INVALID_MBTX: the next cold start overwrites Player.log, and a second one its -prev copy,
+        so 186d97's world-start failure (Entry for 371 s, 11-01) went unread: no crash report, log gone within two jobs.
+        Keep it beside the attempt BEFORE the game stops, and put the fault in the note. Never fails the result."""
+        src = os.path.join(os.environ.get("RM_GAME_LOGDIR") or os.environ.get("RM_GAME_USERDATA", ""), "Player.log")
+        dst = os.path.join(self.d, "Player.log")
+        try:
+            shutil.copyfile(src, dst)
+            with open(dst, encoding="utf-8", errors="replace") as f:
+                lines = f.read().splitlines()
+        except OSError as e:
+            self.res["note"] = (self.res.get("note") or "") + "; game log NOT kept (%s)" % e
+            return
+        fatal = [ln for ln in lines if GAME_FATAL_RE.search(ln)]
+        other = [ln for ln in lines if "Exception" in ln]
+        fault = "first fatal: " + fatal[0].strip()[:200] if fatal else (
+            "last exception: " + other[-1].strip()[:200] if other else "no exception in it")
+        self.res["note"] = (self.res.get("note") or "") + "; game log kept at %s, %s" % (dst, fault)
 
     def stop_game_for_next_job(self, why):
         """STEVE_LANE_FIX_DEAD_COLONY_CANARY_RED: the game a red canary ran on is not handed to the next job. A kept game
