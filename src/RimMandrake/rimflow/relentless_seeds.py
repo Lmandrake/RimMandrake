@@ -628,21 +628,51 @@ def tool_inputs(session, box=None):
     return out if parsed else None
 
 
-def is_verdict(inp, box=None):
-    """Exactly the verdict command the prompt gave, nothing chained. Books: verb, 2 flags with values, word, reasons.
-    Walled: the box's script, word, reasons."""
-    cmd = inp.get("command") if isinstance(inp, dict) else None
-    if not isinstance(cmd, str):
-        return False
+def tokens(cmd):
+    """-> shell tokens, control operators as tokens of their own; None when the line does not parse."""
     try:
         lex = shlex.shlex(cmd, posix=True, punctuation_chars=True)
         lex.whitespace_split = True
-        toks = list(lex)
+        return list(lex)
     except ValueError:
-        return False
+        return None
+
+
+def verdict_words(toks, box=None):
+    """One simple command, exactly the verdict the prompt gave. Books: verb, 2 flags with values, word, reasons.
+    Walled: the box's script, word, reasons."""
+    if toks[-3:] == ["2", ">&", "1"]:
+        toks = toks[:-3]
     if box:
         return len(toks) == 4 and toks[:2] == ["python3", "%s/verdict" % box]
     return len(toks) == 9 and toks[:3] == ["python3", BOOKS_VERB, "verdict"]
+
+
+def is_verdict(inp, box=None):
+    """The whole tool call is the verdict command, nothing chained."""
+    cmd = inp.get("command") if isinstance(inp, dict) else None
+    toks = tokens(cmd) if isinstance(cmd, str) else None
+    return bool(toks) and verdict_words(toks, box)
+
+
+def scan_text(inp, box=None):
+    """A tool call's text, less any simple command that is exactly the verdict. Whatever is chained to it stays scanned."""
+    text = json.dumps(inp)
+    cmd = inp.get("command") if isinstance(inp, dict) else None
+    toks = tokens(cmd) if isinstance(cmd, str) else None
+    if not toks:
+        return text
+    parts, cur = [], []
+    for t in toks:
+        if t in (";", "&&", "||", "|", "&"):
+            parts.append(cur)
+            cur = []
+        else:
+            cur.append(t)
+    parts.append(cur)
+    if not any(verdict_words(p, box) for p in parts):
+        return text
+    return json.dumps([p for p in parts if not verdict_words(p, box)])
 
 
 def contamination(inputs, k, own=None, box=None):
@@ -653,9 +683,7 @@ def contamination(inputs, k, own=None, box=None):
            "/rm/bench", "/rm/foundry", "/relentless/", k["fix"], k["fix"][:10])
     got = set()
     for inp in inputs:
-        if is_verdict(inp, box):
-            continue
-        text = json.dumps(inp)
+        text = scan_text(inp, box)
         if own:
             text = text.replace(str(own), "")
         for b in bad:

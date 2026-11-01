@@ -153,6 +153,16 @@ def test_contamination_scan():
     own = "/home/mandrake/rm/relentless-seeds/cases/SD_A-a1"
     check("its own case dir is no alarm", C("ls %s/src" % own, own=own) == [])
     check("the case parent is", C("ls /home/mandrake/rm/relentless-seeds/cases", own=own) == ["relentless-seeds"])
+    check("cd to its own case, then the verdict, is clean", C("cd %s; %s" % (own, verdict), own=own) == [])
+    check("cd && verdict is clean", C("cd %s && %s" % (own, verdict), own=own) == [])
+    check("a status echo after the verdict is clean", C("cd %s; %s; echo exit=$?" % (own, verdict), own=own) == [])
+    check("2>&1 on the verdict is clean", C(verdict + " 2>&1") == [])
+    check("a tail on the verdict is clean", C(verdict + " | tail -3") == [])
+    check("a verdict with an extra word is not exempt", C(verdict + " /home/mandrake/rm/bench/x") != [])
+    check("a read on a new line after the verdict is seen", C(verdict + "\ncat /home/mandrake/rm/relentless/store/x") != [])
+    check("cd own, verdict, then a read is seen", C("cd %s; %s; cat /home/mandrake/rm/relentless/store/x" % (own, verdict), own=own) != [])
+    check("a read between cd and the verdict is seen",
+          C("cd %s; cat /home/mandrake/rm/relentless/store/x; %s" % (own, verdict), own=own) != [])
     check("the fix's sha is seen", C("git show abcdef0123") == ["abcdef0123"])
     check("no transcript is not clean", S.contamination(None, k) == ["unscanned"])
     nested = {"message": {"content": [{"type": "text", "text": "cat /rm/bench"}, {"type": "tool_use", "input": {"command": "x"}}]},
