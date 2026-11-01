@@ -701,6 +701,9 @@ namespace RimMandrake.FlowWorks.Sheet
 			HandOverTakenCells();
 			NoteNonWater();
 			proofLastPulseTick = Find.TickManager.TicksGame;
+			proofPulseOutdoorTick = outdoorTick; // the outdoor reading this pulse's classification used (OutdoorExactC cache)
+			proofPulseOutdoorC = outdoorC;
+			proofPulseOffsetC = conditionOffset != null && map.gameConditionManager != null ? conditionOffset(map.gameConditionManager) : float.NaN;
 			long k0 = System.Diagnostics.Stopwatch.GetTimestamp();
 			RM_SheetMath.Pulse(state, world, prm, rep);
 			long k1 = System.Diagnostics.Stopwatch.GetTimestamp();
@@ -972,6 +975,8 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// <summary>CANAL_OVERFLOW round 4 diag: TicksGame of the last kernel pulse (not saved: -1 until the first pulse after a
 		/// load), so a live SAVE_LOAD split can say whether the two runs pulsed on different ticks.</summary>
 		private int proofLastPulseTick = -1;
+		private int proofPulseOutdoorTick = int.MinValue;
+		private float proofPulseOutdoorC = float.NaN, proofPulseOffsetC = float.NaN;
 
 		internal string ProofInputs()
 		{
@@ -1007,7 +1012,30 @@ namespace RimMandrake.FlowWorks.Sheet
 			return "inputs=" + h.ToString("x16") + " indoorWet=" + indoor + " inKind=" + hk.ToString("x16") + " inTemp=" + ht.ToString("x16")
 				+ " inEvap=" + he.ToString("x16") + " inSoak=" + hs.ToString("x16") + " outdoorQ=" + RM_SheetTemp.ToSixteenths(OutdoorExactC())
 				+ " outdoorTick=" + outdoorTick + " lastPulseTick=" + proofLastPulseTick + " nextPulseTick=" + (Engine?.ProofNextPulseTick ?? -1)
-				+ " ticksGame=" + Find.TickManager.TicksGame;
+				+ " ticksGame=" + Find.TickManager.TicksGame
+				+ " pulseOutdoorTick=" + proofPulseOutdoorTick + " pulseOutdoorC=" + proofPulseOutdoorC.ToString("R", System.Globalization.CultureInfo.InvariantCulture)
+				+ " pulseQ=" + (float.IsNaN(proofPulseOutdoorC) ? "-" : RM_SheetTemp.ToSixteenths(proofPulseOutdoorC).ToString())
+				+ " pulseOffsetC=" + proofPulseOffsetC.ToString("R", System.Globalization.CultureInfo.InvariantCulture)
+				+ " evapVals=" + EvapValues();
+		}
+
+		/// <summary>CANAL_OVERFLOW round 4 diag: the distinct per-pulse evaporation inputs over the wet cells ("value:count;..."),
+		/// so a split inEvap names its values instead of a hash.</summary>
+		private string EvapValues()
+		{
+			var counts = new SortedDictionary<int, int>();
+			foreach (int c in state.Occ)
+			{
+				int v = world.EvapMilliDl[c];
+				counts[v] = counts.TryGetValue(v, out int n) ? n + 1 : 1;
+			}
+			var sb = new System.Text.StringBuilder();
+			foreach (var kv in counts)
+			{
+				if (sb.Length > 0) sb.Append(';');
+				sb.Append(kv.Key).Append(':').Append(kv.Value);
+			}
+			return sb.Length == 0 ? "-" : sb.ToString();
 		}
 		internal long IrrigatedTotal => irrigatedTotal;
 

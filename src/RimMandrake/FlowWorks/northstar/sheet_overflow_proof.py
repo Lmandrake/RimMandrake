@@ -984,7 +984,8 @@ def save_load(ctx):
     # round 4: lastPulseTick / nextPulseTick / ticksGame name a pulse that ran on a different tick in the two runs
     parts = {k: [hav.get(k), hbv.get(k)] for k in ("pulse", "dl", "rem", "calm", "inputs", "indoorWet", "inKind", "inTemp",
                                                     "inEvap", "inSoak", "outdoorQ", "outdoorTick", "lastPulseTick",
-                                                    "nextPulseTick", "ticksGame")}
+                                                    "nextPulseTick", "ticksGame", "pulseOutdoorTick", "pulseOutdoorC",
+                                                    "pulseQ", "pulseOffsetC", "evapVals")}
     split = sorted(k for k, (x, y) in parts.items() if x is not None and x != y)
     row("SAVE_LOAD_CONTINUES_IDENTICAL", "PASS" if good else "FAIL",
         {"h0": h0, "h0AfterLoad": h0b, "hContinued": ha, "hLoadedContinued": hb, "closes": l1["closes"], "save": name,
