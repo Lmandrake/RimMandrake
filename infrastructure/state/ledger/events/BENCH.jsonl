@@ -8979,3 +8979,5 @@
 {"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T00:20:42Z","expires":"2026-11-01T01:05:42Z","tsn":1793492443445796186}
 {"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T00:21:23Z","expires":"2026-11-01T01:06:23Z","tsn":1793492484161863154}
 {"seat":"BENCH","event":"lease","id":"LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING","action":"renew","token":"BENCH.pid12077.9cf705bd","ts":"2026-11-01T00:22:18Z","expires":"2026-11-01T01:07:18Z","tsn":1793492538892491406}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"dead-fix L1/L2 proofs","override":"took the driver lock from a dead or forced holder","ts":"2026-11-01T00:23:17Z","tsn":1793492597526392109}
+{"seat":"BENCH","event":"lease","id":"SCRATCH_CLONES_BUILD_EXPIRY_NO_ONE_TIDIES","action":"renew","token":"BENCH.pid98119.060a0a33","ts":"2026-11-01T00:23:40Z","expires":"2026-11-01T01:08:40Z","tsn":1793492620618775645}
