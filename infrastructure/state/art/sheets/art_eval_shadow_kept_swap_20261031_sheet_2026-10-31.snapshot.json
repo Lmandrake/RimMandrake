@@ -1,0 +1,461 @@
+{
+ "biome": "SUBJECTS_art_eval_shadow_kept_swap_20261031",
+ "built": "2026-10-31T19:24:02-0700",
+ "census": "Transient/biome_ffar/art_eval_shadow_kept_swap_20261031.subjects.json",
+ "census_git_head": null,
+ "loadOrder": "ModsConfig.FULL.LATEST.xml (live list has 14 mods \u2014 a test list): 321 active",
+ "rows": {
+  "RM_Barbslinger": {
+   "columns": {
+    "A": {
+     "east": "3a060d3291d903ca5a9adddee75f37ad4c5c649a5a1d47189ec692aa0be938c9",
+     "north": "8edf11d778f8fc2e03f0a458afa2eab45183ac51d28b79ce3e05eed9e6e01521",
+     "south": "949dce37cbb433ebf5aaaaf61bec788056718bce9fa482c4695d418ef2aa0333"
+    },
+    "B": {
+     "single": "c1e90b758454cc362566ea1cb56dec017c3e4c856e23c6c87443f9e20c55f734"
+    },
+    "C": {
+     "east": "bbaf33113a1097ac646f2a635c148f9b2c28923afd8d7fcab23b4917e01d2995",
+     "north": "b690d85f1fee3de081bb9a73525c2b10bf95aba1b9f291b8c02b74708618a995",
+     "south": "d2217327b73ce22b3e05a66ef32d66aaa375998b1f8ad09b14422868b0b8def3"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+    "B": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+    "C": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render pyr_barbslinger_spike",
+    "C": "render barbslinger_redesign_v1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/Barbslinger/Barbslinger",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "barbslinger"
+  },
+  "RM_Bileworm": {
+   "columns": {
+    "A": {
+     "east": "68f76e19614b15a6aa3e055858196d33c0a219657bcb6a7223fa62290c7f3346",
+     "north": "f3e28a68a5e8c464c0b349bdb5249a680575b4b43ce53549d661ba0a8fa53fff",
+     "south": "cc3df1dd187da2318cfeb104d54da0c334e7d7a1e3292e18850675d9672c7e47"
+    },
+    "B": {
+     "east": "6d7b75d174c929141b09db3e779e289d52cc854afb1d2a3705ee8e62ef4afd08",
+     "north": "4a4269d6c820953b2a13fc166addb51849021fd131b3cdeef2484d8e9ba3c606",
+     "south": "32c0286b6fb0dec9ad53f0fab21da6848a5eda92440a9b147f09d9cdecd43164"
+    },
+    "C": {
+     "east": "6d7b75d174c929141b09db3e779e289d52cc854afb1d2a3705ee8e62ef4afd08",
+     "north": "4a4269d6c820953b2a13fc166addb51849021fd131b3cdeef2484d8e9ba3c606",
+     "south": "32c0286b6fb0dec9ad53f0fab21da6848a5eda92440a9b147f09d9cdecd43164"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+    "B": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+    "C": "Things/Pawn/Animal/RM_Bileworm/RM_BilewormV_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Scarlands",
+    "B": "render arteval_RM_Bileworm_r2",
+    "C": "IN GAME \u2014 Scarlands"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+    "Things/Pawn/Animal/RM_Bileworm/RM_BilewormV_C"
+   ],
+   "res": "Things/Pawn/Animal/RM_Bileworm/RM_Bileworm",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "bileworm"
+  },
+  "RM_CrystalMit": {
+   "columns": {
+    "A": {
+     "east": "a6b9d420a74bfd970400352335d50d46118fc2b3c48021451ee65eb9924ad80c",
+     "north": "30d08eaaa55f5869e59beec098f64b5850425cea462ac25970190125697ac9a0",
+     "south": "b6382e202eee62ba34dd17642eda49c1f9b5d68cbecd4018cf5845d190b42901"
+    },
+    "B": {
+     "east": "73f5a881f4b0dac614bfcd93d798edd370799fba82ee7b8615986b747a6a9215",
+     "north": "2752feb810aa5bcd43b09de775ea53bde4332ada32ac8b5423b3fece91a87012",
+     "south": "dbd1169127396341a231d5e0937093fcc799dd79c4f90acb5505ba3f8285baf2"
+    },
+    "C": {
+     "east": "efb3ef238a5ca9bb5077c13f1707f68d50dbe9112ab2fb2944a15b795a628a79",
+     "north": "b4ea8ff160b4bc352262139dc7a6975b6e0e3a94b19cdfb3d3fa70abbc043585",
+     "south": "9ed0ecb55e73d74d2e007c7ee4c74670fe985b3d42afa21b5eb1f15a30b6fcf6"
+    },
+    "D": {
+     "east": "73f5a881f4b0dac614bfcd93d798edd370799fba82ee7b8615986b747a6a9215",
+     "north": "2752feb810aa5bcd43b09de775ea53bde4332ada32ac8b5423b3fece91a87012",
+     "south": "dbd1169127396341a231d5e0937093fcc799dd79c4f90acb5505ba3f8285baf2"
+    },
+    "E": {
+     "east": "efb3ef238a5ca9bb5077c13f1707f68d50dbe9112ab2fb2944a15b795a628a79",
+     "north": "b4ea8ff160b4bc352262139dc7a6975b6e0e3a94b19cdfb3d3fa70abbc043585",
+     "south": "9ed0ecb55e73d74d2e007c7ee4c74670fe985b3d42afa21b5eb1f15a30b6fcf6"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "B": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "C": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "D": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B",
+    "E": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render arteval_RM_CrystalMit_r1",
+    "C": "render arteval_RM_CrystalMit_r2",
+    "D": "IN GAME \u2014 Cauldron",
+    "E": "IN GAME \u2014 Cauldron"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+    "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_B",
+    "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMitV_C"
+   ],
+   "res": "Things/Pawn/Animal/RM_CrystalMit/RM_CrystalMit",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "crystalmit"
+  },
+  "RM_Emberscythe": {
+   "columns": {
+    "A": {
+     "east": "18bf2cbf10be8728ab194270207a0f430c3aa1b376cc1d0c3ad27e0f7a4d43c4",
+     "north": "9c4c69da434da1d422c5e7d22c7793831de9769740d644ae9b80d1b73b67eebd",
+     "south": "8d796459d372987d2c71771895a42d8d8581836fd4302c1519866ef1a2954945"
+    },
+    "B": {
+     "east": "20ee13cf94f45139c30a2f283d045380b9d289c18775acebb5ce00e0483f512c",
+     "north": "6291c078765be7bc37fd53bb3996e58b9995a4680ac268232be6b25f6f7bebf2",
+     "south": "a6149d0c3f26d269a726d29bdf3437ee73e0bd70219c3fcaf16ac3117392d010"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe",
+    "B": "Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "history Pyrelands 2026-10-04"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/Emberscythe/Emberscythe",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "emberscythe"
+  },
+  "RM_FireWasp": {
+   "columns": {
+    "A": {
+     "east": "a4b2e4c0e15a087c0caf0d6a954d60e4f46b1c01f7778fda35f5f637eea36749",
+     "north": "8f850ec9f69bdd42b856ec32e383a1f7e8fd6cecc3d1106f12e2eaff27f7c89e",
+     "south": "a3fb7df40f4025a401cfb57f684e66b6815efd5adad640d70233c649fd21589a"
+    },
+    "B": {
+     "east": "7d07c98beb283420e8e78834058ddab34954032d592bf77bb9737c19364b88cc",
+     "north": "e866e93cdf465441ab38455143679989c1b34366ce22291833f08352c676a9da",
+     "south": "ac8a03da58da657fc59cb8a7582d9987c1c2da244ddab6d6d4e0322ba0cdd06a"
+    },
+    "C": {
+     "single": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7"
+    },
+    "D": {
+     "east": "774c704211a6cb102a453d75109b1358b727a1752769d5b0aefd1682e548ceb9",
+     "north": "dec2a9a8defa2c3be552738a5fe629470d0d6d000a64ef202dc61f7b6db46bcd",
+     "south": "e34a4477ffc04f9c954a8911b3dc99042598a59f1fad712f5defbd13963a86c7"
+    },
+    "E": {
+     "east": "a3b66c856889e41f4480b7ae7bd211ea4e2a6a8385f9767f542807521ba626fc",
+     "north": "a189159b72a9ec28a50d2f6af534ee49a81f8da9c0dcecb75f51ce6c9d626d30",
+     "south": "b63b017ea96f1b7477c2f9d05d64ee217ac25ebd606a15cad451140d68ed38f3"
+    },
+    "F": {
+     "1_east": "b5b70b2487df689cc243750d8d502fb3ade04fe151c86b7ec8cd4b9888380f76",
+     "1_north": "03bc70df127e8ca115416fc612df48cc1e0c17e7a57ecf442ec7a2bd88a93626",
+     "1_south": "ec847d3e66917a7af39b303fb643222f4da2fb271ae5f558400ae1071aab4666",
+     "2_east": "eb3fcc0d3c943a0e9f6668116fcc49d6c28ca6d5b3472519a3b6eb60ef1bc229",
+     "2_north": "fe000b1bcd41a0ea06f333e4f6e5370e5f34565242540bbff92a85b7482a1281",
+     "2_south": "aff779d73500acfd0af6dae715226dc84436f0f233a95b9f9688b95765437af7",
+     "3_east": "a0dbd1ccda8de56c8f98ec55be33ba327a2e3418b9cdee9787b79809a543d38b",
+     "3_north": "1cee70deccd6a1c5d7b0a448ed6ccba3c0c600b0f6359e867d8323217f830227",
+     "3_south": "f5410897d2d56d9ff84dc2101283f3994273b5acb9a11424034fb810723d9e2d",
+     "4_east": "2a83c28a6fc7d33ebefdde211e4bca6ecb57ccfbda2857d784c6da9a179eb64a",
+     "4_north": "40ee6240ad761ad7206cf55493e2aedd011c048a37d23b871dd59b04a36c40d0",
+     "4_south": "f3d06f7e3ea26ffe092f41173852ee98aaf01a12393c1e53939d1454f7963949",
+     "5_east": "f4d3418c78d443c4c7766086cfea1be5106399492cac91c2af2f4ebe6dc31d9e",
+     "5_north": "a8428faa7369949fccd448284164efd300e2be0aaa791e613d156b50add74d7b",
+     "5_south": "742af602bb99e1fe9c92527f703f7ace67fde114343aec32cb289a92c909b7c3",
+     "6_east": "a9a9892444fb2af953af1a5d5ee3e36fbd445223f437053563b87f0f938befe7",
+     "6_north": "ba25755e8f59b10c0ec7a9fb04f6fc9dc0096b022bac80d2a0423a6bed242332",
+     "6_south": "8f4c61d3ae61f1ba370c50d5b66548e8a80a7e6dcad50dd91dbc3a18fc260e01",
+     "7_east": "bdbc75edeff91085aaef47b090bb53e236c1cf85d41fe746d9bb59dcde66cb05",
+     "7_north": "20166049190d552d0368bdee530c7830bd45a9a442f518b8d7d1c59be006a2d9",
+     "7_south": "16ea9c1abd084bf190b08ee8ab732ef1a0b95c1cd6d63ef5137491ded8427c56",
+     "8_east": "6f0cb319646e1e3f34d11699b4b75fa202debaebaef9a47ce6b94a81c866de65",
+     "8_north": "78a1f6b267eac1f72c2041e5043fff45ea6b5d35dc3ace90c1381ebe25428c9f",
+     "8_south": "3ae4eb8cc3e681b4858d75e6d8d02c9bf9782c733fe894504cc5f047a3445039"
+    },
+    "G": {
+     "1_east": "b5b70b2487df689cc243750d8d502fb3ade04fe151c86b7ec8cd4b9888380f76",
+     "1_north": "03bc70df127e8ca115416fc612df48cc1e0c17e7a57ecf442ec7a2bd88a93626",
+     "1_south": "ec847d3e66917a7af39b303fb643222f4da2fb271ae5f558400ae1071aab4666",
+     "2_east": "eb3fcc0d3c943a0e9f6668116fcc49d6c28ca6d5b3472519a3b6eb60ef1bc229",
+     "2_north": "fe000b1bcd41a0ea06f333e4f6e5370e5f34565242540bbff92a85b7482a1281",
+     "2_south": "aff779d73500acfd0af6dae715226dc84436f0f233a95b9f9688b95765437af7",
+     "3_east": "a0dbd1ccda8de56c8f98ec55be33ba327a2e3418b9cdee9787b79809a543d38b",
+     "3_north": "1cee70deccd6a1c5d7b0a448ed6ccba3c0c600b0f6359e867d8323217f830227",
+     "3_south": "f5410897d2d56d9ff84dc2101283f3994273b5acb9a11424034fb810723d9e2d",
+     "4_east": "2a83c28a6fc7d33ebefdde211e4bca6ecb57ccfbda2857d784c6da9a179eb64a",
+     "4_north": "40ee6240ad761ad7206cf55493e2aedd011c048a37d23b871dd59b04a36c40d0",
+     "4_south": "f3d06f7e3ea26ffe092f41173852ee98aaf01a12393c1e53939d1454f7963949",
+     "5_east": "f4d3418c78d443c4c7766086cfea1be5106399492cac91c2af2f4ebe6dc31d9e",
+     "5_north": "a8428faa7369949fccd448284164efd300e2be0aaa791e613d156b50add74d7b",
+     "5_south": "742af602bb99e1fe9c92527f703f7ace67fde114343aec32cb289a92c909b7c3",
+     "6_east": "a9a9892444fb2af953af1a5d5ee3e36fbd445223f437053563b87f0f938befe7",
+     "6_north": "ba25755e8f59b10c0ec7a9fb04f6fc9dc0096b022bac80d2a0423a6bed242332",
+     "6_south": "8f4c61d3ae61f1ba370c50d5b66548e8a80a7e6dcad50dd91dbc3a18fc260e01",
+     "7_east": "bdbc75edeff91085aaef47b090bb53e236c1cf85d41fe746d9bb59dcde66cb05",
+     "7_north": "20166049190d552d0368bdee530c7830bd45a9a442f518b8d7d1c59be006a2d9",
+     "7_south": "16ea9c1abd084bf190b08ee8ab732ef1a0b95c1cd6d63ef5137491ded8427c56",
+     "8_north": "78a1f6b267eac1f72c2041e5043fff45ea6b5d35dc3ace90c1381ebe25428c9f",
+     "8_south": "3ae4eb8cc3e681b4858d75e6d8d02c9bf9782c733fe894504cc5f047a3445039"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "B": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "C": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "D": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "E": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+    "F": "_flip:Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_",
+    "G": "_flip:Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp_Fly_"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render arteval_RM_FireWasp_r1",
+    "C": "render AA_FireWasp_south_eyelevel_v1",
+    "D": "history UtinniPatches 2026-09-19",
+    "E": "history UtinniPatches 2026-09-20",
+    "F": "IN GAME \u2014 FireWasp_Fly_",
+    "G": "flight frames pyrelands_firewasp_flight8"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/FireWasp/FireWasp",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G"
+   ],
+   "shownBase": [],
+   "subject_key": "firewasp"
+  },
+  "RM_FurnaceBeast": {
+   "columns": {
+    "A": {
+     "east": "86a7bb6060532c603caf23819f5cfde873ab327ad28a93060c72302f3f4bc802",
+     "north": "517d9fa881ca2421bf3cbf91f158f34eb68576934d54339a7eaf5f2f4498cdf6",
+     "south": "1631fc0e6811e40c0f00aac23dafbc59e7bf297d177feb606f89d2655a86839f"
+    },
+    "B": {
+     "east": "41f69d0ecf8904682e0f5867503b166f79a2239ef04ae8fa64ea4ecc69f5cafc",
+     "north": "514019df85afb284c582666ad3bee2eba9abab90752bc03dbe15fb158a14e14c",
+     "south": "6479dd3fcc1f7b003c875dfff88748826cbe2d4504566284d1e606c7ccf45729"
+    },
+    "C": {
+     "east": "6d9b24e9a070535021078684908864db6683ebce637653bd3cbfbd056fa1a56f",
+     "north": "16c2891bd443b5b15b21baa4cc3da084efb256572d0ad3e59b3fe647932e8fb1",
+     "south": "bcae124636caba515772d7f3c4d6529448ca81224596c97b38419f0ebd790c4a"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
+    "B": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
+    "C": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render RM_FurnaceBeast_Giant",
+    "C": "render arteval_RM_FurnaceBeast_r1"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/FurnaceBeast/FurnaceBeast_Giant",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "furnacebeast"
+  },
+  "RM_Suush": {
+   "columns": {
+    "A": {
+     "east": "c2fe9145bc007ff37f20c31940cec8ce4b39f1c66944518ddafac81ef16da1a3",
+     "north": "69ac78cf8bd3fa64fbeb8085cc5fb2f65977a7a1453904b0ff002c67c998dffe",
+     "south": "c421bf092409f09416135e4f60cb51081dce74698ef27efe78dcfb233f84cece"
+    },
+    "B": {
+     "east": "d6ce27e2b1b11c146d95ca2e5ca682a5520f4ce108ec0bc2ffa7fb3f4da56006",
+     "north": "7f2d504d4d4033b757751c65d3ac5b5df7eb34e8e6436c7cef9fab74efa031c4",
+     "south": "7a7f0aac11957916d8f65b51240234811fbf2164cbd08b86e0b848d5ae72290e"
+    },
+    "C": {
+     "east": "84463d0fdb7b6fd71bde04fcee85a53bd2ca74adb2ef8935280216100e04f1fe",
+     "north": "11b918234ac7a17c6a4419acf92feb6694506f6c16d1dc48004b7b8cdf23cec3",
+     "south": "9316d67739073805bcacb4f25535ca053fbfe8f7e7dce37f0259be624404d5bd"
+    },
+    "D": {
+     "east": "d6ce27e2b1b11c146d95ca2e5ca682a5520f4ce108ec0bc2ffa7fb3f4da56006",
+     "north": "7f2d504d4d4033b757751c65d3ac5b5df7eb34e8e6436c7cef9fab74efa031c4",
+     "south": "7a7f0aac11957916d8f65b51240234811fbf2164cbd08b86e0b848d5ae72290e"
+    },
+    "E": {
+     "east": "84463d0fdb7b6fd71bde04fcee85a53bd2ca74adb2ef8935280216100e04f1fe",
+     "north": "11b918234ac7a17c6a4419acf92feb6694506f6c16d1dc48004b7b8cdf23cec3",
+     "south": "9316d67739073805bcacb4f25535ca053fbfe8f7e7dce37f0259be624404d5bd"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/RM_Suush/RM_Suush",
+    "B": "Things/Pawn/Animal/RM_Suush/RM_Suush",
+    "C": "Things/Pawn/Animal/RM_Suush/RM_Suush",
+    "D": "Things/Pawn/Animal/RM_Suush/RM_SuushV_B",
+    "E": "Things/Pawn/Animal/RM_Suush/RM_SuushV_C"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Cauldron",
+    "B": "render arteval_RM_Suush_r1",
+    "C": "render cauldron_suush",
+    "D": "IN GAME \u2014 Cauldron",
+    "E": "IN GAME \u2014 Cauldron"
+   },
+   "pools": [
+    "Things/Pawn/Animal/RM_Suush/RM_Suush",
+    "Things/Pawn/Animal/RM_Suush/RM_SuushV_B",
+    "Things/Pawn/Animal/RM_Suush/RM_SuushV_C"
+   ],
+   "res": "Things/Pawn/Animal/RM_Suush/RM_Suush",
+   "reserved": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E"
+   ],
+   "shownBase": [],
+   "subject_key": "suush"
+  },
+  "RM_TruffleMole": {
+   "columns": {
+    "A": {
+     "east": "0181d8b3064889b212d1b0cea6cbc70ae2ef80c69fb41d8b548d45c455244458",
+     "north": "4b05bd38793fec5c2a4ccc69590110b51b3afaffe562d0d6b3e7c28aae5e3460",
+     "south": "7289fe692f80b163c5e56358f0e7e4c9a620246a7ee76bd44e46eb5c98d2efbe"
+    },
+    "B": {
+     "east": "0181d8b3064889b212d1b0cea6cbc70ae2ef80c69fb41d8b548d45c455244458",
+     "north": "4b05bd38793fec5c2a4ccc69590110b51b3afaffe562d0d6b3e7c28aae5e3460",
+     "south": "a8c8bd892f4812f5ef86ccfa88b8f9b21900e0a0934c4263fbbe5a31fbc05e5a"
+    },
+    "C": {
+     "east": "2d1a22bd0a52cf8369673d7eaa4e7f8a96afb6f60d72469081fbc9074c8d27b3",
+     "north": "fb8f53e926779191a054214f047a480247cdefbacd76d690870a0c54c9f03b14",
+     "south": "61d3f0154f390757b082d669406c0abda4079094834a6825d72d52c8287d9a24"
+    }
+   },
+   "graphic_of": {
+    "A": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole",
+    "B": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole",
+    "C": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 SWBestiary",
+    "B": "render arteval_RM_TruffleMole_r1",
+    "C": "render RM_TruffleMole"
+   },
+   "pools": [
+    "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole"
+   ],
+   "res": "swanimals/BiomesTeam/BMT_Caverns/Things/Animal/TruffleMole/TruffleMole",
+   "reserved": [
+    "A",
+    "B",
+    "C"
+   ],
+   "shownBase": [],
+   "subject_key": "trufflemole"
+  },
+  "RM_Ullai": {
+   "columns": {
+    "A": {
+     "east": "2939cadad89e7b5c9d2d4ac49251b4b28a94a79fe14e4a532f6437746f09c2f8",
+     "north": "15249cc6269e806e1282f5ef85afd9fb9b834619164d2d5bce5052d537ae875c",
+     "south": "18312618ccc3ef2fe767fcbdc5ac9bdc0740249caea8f395b919d1eb56f74336"
+    },
+    "B": {
+     "east": "faee289c7a7293efe8c9a8ace31c4d35d9b683785b5605e89e5f42f68178a447",
+     "north": "450b8f0f483305964f248e0fb90521c157b2496d835a8f266ec80d3620259a63",
+     "south": "9edac5d0ca1d28d3ec09a9f3ca862b112e0f2ab11aa34f5b449541b3d9f8a65e"
+    }
+   },
+   "graphic_of": {
+    "A": "Things/Pawn/Animal/Pyrelands/Ullai/Ullai",
+    "B": "Things/Pawn/Animal/Pyrelands/Ullai/Ullai"
+   },
+   "labels": {
+    "A": "IN GAME \u2014 Pyrelands",
+    "B": "render RM_Ullai"
+   },
+   "pools": [
+    "Things/Pawn/Animal/Pyrelands/Ullai/Ullai"
+   ],
+   "res": "Things/Pawn/Animal/Pyrelands/Ullai/Ullai",
+   "reserved": [
+    "A",
+    "B"
+   ],
+   "shownBase": [],
+   "subject_key": "ullai"
+  }
+ },
+ "sheetId": "art_eval_shadow_kept_swap_20261031_sheet_2026-10-31",
+ "snapshotId": "c9db74d1510eb0b1"
+}

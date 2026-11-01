@@ -77,7 +77,7 @@ def synthetic():
         check(len(refs) == 2 and refs[0].get("img") and (Path(td).parent / refs[0]["img"]).exists(),
               "a reference texture renders a true-scale panel")
         check(refs[1].get("missing") is True, "a missing reference path is reported, not dropped")
-        check(set(refs[0]) == {"path", "img", "full"}, f"a reference panel carries no letter/sha/faces: {sorted(refs[0])}")
+        check(set(refs[0]) == {"path", "img", "full", "old"}, f"a reference panel carries no letter/sha/faces: {sorted(refs[0])}")
         check(L.store_has(sha) == had, "a reference texture is never put in the art store (so no column can name it)")
         # a sized entry {path, size} renders at ITS size, not the row's (a composite of several pieces: a joined weir wall)
         wide = {"path": rel, "size": {"drawSize": [6, 2], "footprint": [6, 2], "source": "selftest composite"}}
@@ -85,7 +85,7 @@ def synthetic():
         check(len(sized) == 2 and sized[1].get("img") and sized[1]["img"] != sized[0]["img"]
               and (Path(td).parent / sized[1]["img"]).exists(),
               "a sized reference entry renders its own panel at its own size")
-        check(set(sized[1]) == {"path", "img", "full"} and sized[1]["path"] == rel, "a sized entry reports its path only")
+        check(set(sized[1]) == {"path", "img", "full", "old"} and sized[1]["path"] == rel, "a sized entry reports its path only")
 
 
 def built_sheets():

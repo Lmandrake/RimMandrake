@@ -1,0 +1,74 @@
+{
+ "key": "pipeline_check",
+ "label": "Did the pipeline decide right?",
+ "explain": "The pipeline already decided each row (accept / regenerate / hold). KEEP agrees; an OVERRIDE teaches the criteria ledger. A blank answer counts as nothing.",
+ "options": [
+  [
+   "keep",
+   "KEEP the pipeline's decision"
+  ],
+  [
+   "should_accept",
+   "OVERRIDE: the art is fine, accept it"
+  ],
+  [
+   "should_regen",
+   "OVERRIDE: the art is bad, regenerate"
+  ],
+  [
+   "other",
+   "OVERRIDE: something else (write a note)"
+  ],
+  [
+   "revert",
+   "REVERT: put my kept version back (rows that replaced your kept art)"
+  ]
+ ],
+ "rows": {
+  "RM_Ullai": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-23 over your kept south, east, north (3 pictures)",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_Emberscythe": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-23 over your kept north (1 picture)",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_Barbslinger": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-23 over your kept south, east, north (3 pictures)",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_Suush": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-24 over your kept south, north (2 pictures)",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_Bileworm": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-24 over your kept south, east, north (3 pictures)",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_CrystalMit": {
+   "prefill": "keep",
+   "why": "PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NO OLD PICTURE TO SHOW OR REVERT TO",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_FurnaceBeast": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-28 over your kept south, north (2 pictures)",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_TruffleMole": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-28 over your kept south, east, north (3 pictures)",
+   "context": "judged candidate - (image sha ); "
+  },
+  "RM_FireWasp": {
+   "prefill": "keep",
+   "why": "REPLACED YOUR KEPT ART \u00b7 PIPELINE: ACCEPT \u00b7 Opus - \u00b7 NEW installed 2026-10-28 over your kept south, east, north (3 pictures)",
+   "context": "judged candidate - (image sha ); "
+  }
+ }
+}

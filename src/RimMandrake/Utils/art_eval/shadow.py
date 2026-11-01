@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import json
+import os
 import re
 import subprocess
 import sys
@@ -56,6 +57,8 @@ def row_line(r: dict) -> tuple[str, str]:
     why += f" · Opus {o.get('band', '-')}" + (f": {', '.join(sorted(set(ob)))}" if ob else "")
     if g:
         why += f" · GPT {g['reply'].get('verdict')}" + (f", unsettled {', '.join(g['detail']['unsettled'])}" if g['detail']['unsettled'] else "")
+    if r.get("sheet_note"):
+        why += " · " + r["sheet_note"]
     seen = "; ".join(f"{f['code']}: {f.get('seen', '')[:140]}" for f in (o.get("detail") or {}).get("blocking", [])[:3])
     ctx = f"judged candidate {r.get('candidate') or '-'} (image sha {next(iter(r['image_sha256'].values()), '')[:10]}); {seen}"
     return why, ctx
@@ -177,6 +180,12 @@ def build(run_id: str, name: str | None = None) -> Path:
             "(owner, 2026-10-23: <i>build human review sheets AFTER the process works for quick human feedback</i>). "
             "Each row shows its decision and the reviewers' blocking reasons; press KEEP or an OVERRIDE. Skipping a "
             "row changes nothing.</p>" % run_id)
+    if recs and all(r.get("replaces_kept") or r.get("sheet_note") for r in recs):   # a kept-art swap sheet is not a "did the pipeline decide right" check
+        lead = ("<p><b>Your kept art was replaced — here is old beside new.</b> You allowed the pipeline to redraw kept pictures "
+                "that were judged really bad (<i>Yes, but show me after</i>, 2026-10-23). Each row: the <b>NEW</b> picture is the "
+                "IN GAME column; the <b>OLD</b> picture you kept sits in the OLD panels at the foot of the row, at true scale "
+                "beside a human, one panel per facing that was replaced. Press KEEP the new one, or REVERT to put your old one back. "
+                "Nothing has been reverted or installed.</p>")
     refs = reference_map(recs)
     for k, files in kept_references(recs, qdir).items():
         refs.setdefault(k, []).extend(f for f in files if f not in refs.get(k, []))
@@ -213,7 +222,7 @@ def write_prereview(sheet: Path, recs: list):
     """Fill <stem>.prereview.json from the pipeline's look: OK for a decided row, FLAG for held/escalated ones."""
     models = sorted({m for r in recs for k in ("opus", "gpt") for meta in (r["models"].get(k) or [])
                      for m in (meta.get("models_reported") or [meta.get("model_reported")]) if m})
-    by = "judge:" + "+".join(models or ["UNMEASURED"])
+    by = ("judge:" + "+".join(models)) if models else "seat:" + (os.environ.get("RIMFLOW_SEAT") or "BENCH")   # no model looked: say who did (the seat reading the sheet), never "judge:UNMEASURED"
     subprocess.run([sys.executable, str(ART / "prereview.py"), "init", str(sheet), "--by", by],
                    cwd=str(ROOT), capture_output=True, text=True, timeout=120, check=True)
     rp = sheet.with_name(sheet.stem + ".prereview.json")

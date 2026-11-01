@@ -2136,7 +2136,7 @@ function scaleBlock(it) {
   const pg = (it.graphics || []).find(g => g.primary);
   const each = (pg ? pg.cols : []).filter(c => c.scale && c.scale.img);
   const all = each.length > 1 ? `<details class="bs-scall" open><summary class="sub">every set at its true scale beside the human (${each.length}) — click one to enlarge</summary>${each.map(c => `<div class="bs-scone${c.letter === s.set ? ' on' : ''}" data-zoom="${c.scale.full}" data-cap="${esc(it.label)} · set ${esc(c.letter)} · ${esc(c.scale.face)} · max zoom ${c.scale.zoomFullPpc || '?'} px/cell (human | this), then normal play 32 and zoomed out 18"><b>${esc(c.letter)}</b> <span class="sub">${c.scale.ppc} px/cell</span><img src="${c.scale.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
-  const refs = (s.refs || []).length ? `<details class="bs-scall bs-refs" open><summary class="sub"><b>installed canon twin, reference only</b> — not pickable, never installed from here; same true scale beside the human</summary>${s.refs.map(r => r.missing ? `<div class="sub">missing: ${esc(r.path)}</div>` : `<div class="bs-scone" data-zoom="${r.full}" data-cap="REFERENCE ONLY (not pickable) · ${esc(r.path)}"><span class="sub">${esc(r.path.split('/').pop())}</span><img src="${r.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
+  const refs = (s.refs || []).length ? `<details class="bs-scall bs-refs" open><summary class="sub">${s.refs.every(r => r.old) ? '<b>OLD — the picture of yours that was replaced (the IN GAME column above is the NEW one)</b> — not pickable here; REVERT in the question puts it back; same true scale beside the human' : '<b>installed canon twin, reference only</b> — not pickable, never installed from here; same true scale beside the human'}</summary>${s.refs.map(r => r.missing ? `<div class="sub">missing: ${esc(r.path)}</div>` : `<div class="bs-scone" data-zoom="${r.full}" data-cap="${r.old ? 'OLD (your replaced kept picture)' : 'REFERENCE ONLY (not pickable)'} · ${esc(r.path)}"><span class="sub">${r.old ? 'OLD · ' : ''}${esc(r.path.split('/').pop())}</span><img src="${r.img}" loading="lazy" alt=""></div>`).join('')}</details>` : '';
   return `<div class="bs-scale"><div class="bs-head bs-schead"><b>in-game size</b><span>vanilla human beside it at the same scale · max zoom ${s.zoomPpc ? s.zoomPpc + ' px/cell' : ''}${s.zoomFitted ? ' (shrunk to fit)' : ''}${s.zoomCropped ? ' (cropped, not shrunk)' : ''} + normal play 32 · click to enlarge</span></div>${pic}${all}${refs}
     <div class="bs-scl bs-scsize" title="${esc(sizeTip)}">${size}</div>${res}
     <div class="bs-scsrc ${s.status === 'measured' ? '' : 'bs-fallback'}" title="${esc(s.source)}">${s.status === 'measured' ? 'MEASURED' : 'FALLBACK'} · ${esc(s.source)}</div></div>`;
@@ -2633,7 +2633,8 @@ def _reference_panels(row: dict, size: dict, imgdir: Path) -> list[dict]:
         comp, full = imgdir / f"scale_{stem}.png", imgdir / f"scale_{stem}_full.png"
         if not (comp.exists() and full.exists()):
             SP.render_panel(b, esize, comp, full)
-        out.append({"path": rel, "img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}"})
+        out.append({"path": rel, "img": f"{imgdir.name}/{comp.name}", "full": f"{imgdir.name}/{full.name}",
+                    "old": Path(rel).name.startswith("kept_")})   # shadow.py kept_references: the owner's kept picture a redraw replaced
     return out
 
 

@@ -1,0 +1,38 @@
+{
+ "RM_Ullai": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_Ullai_south_9edac5d0ca1d.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_Ullai_east_faee289c7a72.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_Ullai_north_450b8f0f4833.png"
+ ],
+ "RM_Emberscythe": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_Emberscythe_north_499db40cb6db.png"
+ ],
+ "RM_Barbslinger": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_Barbslinger_south_d2217327b73c.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_Barbslinger_east_bbaf33113a10.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_Barbslinger_north_b690d85f1fee.png"
+ ],
+ "RM_Suush": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_RM_Suush_south_b599ac8df9ea.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_RM_Suush_north_96254924c22c.png"
+ ],
+ "RM_Bileworm": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_RM_Bileworm_south_7dec057170ba.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_RM_Bileworm_east_7778ee23e92f.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_RM_Bileworm_north_fb0a4cae2598.png"
+ ],
+ "RM_FurnaceBeast": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_FurnaceBeast_Giant_south_b9dec3bb6e87.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_FurnaceBeast_Giant_north_3036e8deeff2.png"
+ ],
+ "RM_TruffleMole": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_TruffleMole_south_61d3f0154f39.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_TruffleMole_east_2d1a22bd0a52.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_TruffleMole_north_fb8f53e92677.png"
+ ],
+ "RM_FireWasp": [
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_FireWasp_south_af326d21048b.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_FireWasp_east_029f7aa9e27c.png",
+  "infrastructure/state/art_eval/runs/kept_swap_20261031/kept/kept_FireWasp_north_69b43fa0517e.png"
+ ]
+}
