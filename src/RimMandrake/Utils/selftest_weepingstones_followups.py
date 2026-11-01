@@ -33,9 +33,27 @@ def installs() -> dict[str, str]:
         for line in shard.read_text(encoding="utf-8").splitlines():
             if ITEM in line:
                 ev = json.loads(line)
-                if ev.get("sha"):
+                # the binding carries the source creature, so it wins over the same sha's live event
+                if ev.get("sha") and (ev.get("source_creature") or ev["sha"] not in out):
                     out[ev["sha"]] = line
     return out
+
+
+def source_of(ledger: dict[str, str], cur: str, n: str) -> str | None:
+    """Why the catch of RM_<n> whose live sha is `cur` fails its source record, or None: a ledger event of this item
+    must name the creature and a settled picture of it, and that picture must really be RM_<n>'s in the ledger."""
+    ev = json.loads(ledger.get(cur, "{}"))
+    if ev.get("source_creature") != f"RM_{n}":
+        return f"names source {ev.get('source_creature')!r}"
+    src = ev.get("source_sha") or ""
+    folder = f"Things/Pawn/Animal/RM_{n}/RM_{n}_"
+    if folder not in (ev.get("source_rel") or ""):
+        return f"source_rel {ev.get('source_rel')!r} is not RM_{n}'s art"
+    for shard in (ROOT / "infrastructure/state/art/events").glob("*.jsonl"):
+        for line in shard.read_text(encoding="utf-8").splitlines():
+            if src and src in line and folder in line and '"type":"binding"' not in line:
+                return None
+    return f"source_sha {src[:12]!r} is not a ledger picture of RM_{n}"
 
 
 def main() -> int:
@@ -66,6 +84,8 @@ def main() -> int:
             bad.append(f"RM_{n}Catch is still the old gapall picture")
         if cur not in ledger:
             bad.append(f"RM_{n}Catch {cur[:12]} has no ledger event naming {ITEM}")
+        elif why := source_of(ledger, cur, n):
+            bad.append(f"RM_{n}Catch {cur[:12]} source record: {why}")
     if (MOD / "Textures/Things/Item/Fish/RM_IvvolCatch_east.png").exists():
         bad.append("stray RM_IvvolCatch_east.png: the catch is Graphic_Single, the game never reads it")
     if not sha(MOD / "Textures/Things/Item/RM_MurrinCatch.png").startswith(MURRIN_KEPT):
