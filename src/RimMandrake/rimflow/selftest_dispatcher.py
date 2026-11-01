@@ -46,7 +46,9 @@ def sched(**kw):
     s = {"seats": {"FOUNDRY": {"enabled": True, "wake": True, "recover_dead": True, "session_name": "AGENT FOUNDRY",
                                "clone": clone, "model": "sonnet"},
                    "BENCH": {"enabled": True, "wake": False, "session_name": "AGENT BENCH", "clone": clone}},
-         "roles": [{"name": "Arbiter", "enabled": False}], "alarm_item": "DISPATCHER_ALARMS_X"}
+         "roles": [{"name": "Arbiter", "enabled": False}], "alarm_item": "DISPATCHER_ALARMS_X",
+         # never the real Conductor log (CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S): every test schedule logs to TMP
+         "no_handoff": {"conductor_log": os.path.join(TMP, "conductor_log.md")}}
     s.update(kw)
     path = os.path.join(TMP, "sched.json")
     with open(path, "w") as f:
@@ -707,6 +709,25 @@ def test_alarm_rate():
     for t in (0.0, 60.0):
         D.execute([{"do": "alarm", "kind": "k", "why": "w", "note": True}], sch, st, root, True, t, fx)
     check(noted == ["DISPATCHER_ALARMS_X"], "an alarm is noted once per alarm_every_s, not every tick")
+
+
+def test_conductor_log_guard_blocks_real_path():
+    """CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S: a test process can never write the real Conductor log, and the
+    default test schedule points elsewhere. Red if the guard in dispatcher.conductor_log is removed."""
+    real = D.NH_DEFAULTS["conductor_log"]
+    check(os.environ.get("RM_DISPATCHER_STATE") != doorbell.DEFAULT_STATE, "guard premise: test state dir is temp")
+    check(D.no_handoff_rule(sched())["conductor_log"] != real, "sched() default conductor_log is a temp path")
+    before = os.path.getsize(real) if os.path.exists(real) else None
+    raised = False
+    try:
+        D.conductor_log({"no_handoff": {"conductor_log": real}}, {"kind": "k", "why": "w"}, 1.0)
+    except RuntimeError:
+        raised = True
+    after = os.path.getsize(real) if os.path.exists(real) else None
+    check(raised and before == after, "conductor_log refuses the real log path from a test process (raised=%s)" % raised)
+    p = D.no_handoff_rule(sched())["conductor_log"]
+    check(D.conductor_log(sched(), {"kind": "k", "why": "w"}, 1.0).startswith("conductor log appended")
+          and os.path.exists(p), "a temp conductor_log still appends")
 
 
 def test_review_s():
@@ -3619,7 +3640,7 @@ def test_unring_gives_back_a_backoff_and_bad_roles_are_skipped():
 
 
 def main():
-    for t in (test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
+    for t in (test_conductor_log_guard_blocks_real_path, test_parse_peek, test_wake_and_owner, test_blind_pause_roles_caps, test_verify_retry,
               test_no_handoff_rering_and_escalation, test_new_ticket_skips_the_backoff, test_alarm_delivery_and_lock, test_answered_ring_is_not_no_handoff, test_dead_recover,
               test_never_adopt_or_resume_a_stranger, test_review_fixes, test_ts_skip_journalled_once, test_doorbell, test_end_to_end, test_dry_run, test_alarm_rate, test_review_s, test_seat_rule, test_ringed_next_withholds_nothing,
               test_role_reading_and_band, test_role_gates, test_role_economy_and_alarms,

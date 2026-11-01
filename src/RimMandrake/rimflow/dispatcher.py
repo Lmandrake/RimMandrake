@@ -899,6 +899,12 @@ def conductor_log(sch, a, now):
     path = no_handoff_rule(sch).get("conductor_log")
     if not path:
         return "conductor log off"
+    # CONDUCTOR_LOG_FIX_FAKE_ALARMS_SINCE_1970S: a selftest process (it points RM_DISPATCHER_STATE at a temp dir) must
+    # never append to the REAL Conductor log: 422 fake alarms dated 1970 / 2027-01-15 got in that way. Fail loud.
+    if (os.path.abspath(path) == os.path.abspath(NH_DEFAULTS["conductor_log"])
+            and os.environ.get("RM_DISPATCHER_STATE", doorbell.DEFAULT_STATE) != doorbell.DEFAULT_STATE):
+        raise RuntimeError("refusing to write the REAL conductor log from a test process (RM_DISPATCHER_STATE is "
+                           "not the real state dir): point no_handoff.conductor_log at a temp path: " + path)
     line = "\n%s — DISPATCHER ESCALATION (%s): %s\n  RAISE FIRST: %s\n" % (
         iso(now), a.get("kind"), a.get("blind") or a.get("why"), a.get("raise_first") or ("%s idle with work waiting." % a.get("seat") if a.get("seat") else "Read the line above."))
     with open(path, "a", encoding="utf-8") as f:
