@@ -11,3 +11,7 @@ Packet schema and lint, report-only
 Planted contaminated packets rejected; 48 real ones scored by hand for false rejects
 
 Order is measure, wall, change: a step does not start before the step it is blocked on lands. New rules run report-only first. State the narrow thing the proof shows.
+
+## state, 2026-11-01
+
+Schema and word lint: `src/RimMandrake/rimflow/relentless_packet.py`, report-only, journal `packet_report` on each receipt. 14 planted packets refused by `selftest_relentless_packet.py`. Real set: 121 finish receipts, not 48, `relentless_packet.py scan`, rows at `D:\ClaudeWork\rimmandrake\relentless_agent\packet_scan.json`. 15 hit after dropping `attempts`, which false-rejected "Steve attempts". Those 15 were read by hand: all are history or reasons; 2 ("DIRTY before this change") are plain facts in history words, so a floor of 2 false rejects of 121. The other 106 were not read, so misses are unmeasured. Still owed: Build authoring the packet at finish, the Marker reading it instead of evidence prose, `packet_reject_limit`, and the rejects going live.

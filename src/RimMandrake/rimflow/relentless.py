@@ -27,6 +27,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
+import relentless_packet  # noqa: E402
 import relentless_wall  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -376,6 +377,9 @@ def finish(store, item, gen, sha, evidence, now=None):
 
 def _take_receipt(store, st, rec, now):
     st["candidate"] = {"sha": rec["sha"], "gen": rec["gen"], "evidence": rec["evidence"], "at": now}
+    words = relentless_packet.report(rec)
+    if words:       # report-only: the packet lint reads the evidence prose and changes nothing (RA_S02)
+        store.journal({"at": iso(now), "do": "packet_report", "item": st["item"], "gen": rec["gen"], "words": words})
     st["status"] = "candidate"
     st["last_sha"] = rec["sha"]
     store.attempt(st["item"], {"at": iso(now), "gen": rec["gen"], "end": "finish", "sha": rec["sha"]})
