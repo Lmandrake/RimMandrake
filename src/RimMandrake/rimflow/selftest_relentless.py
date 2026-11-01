@@ -59,7 +59,7 @@ class FakeWorld:
     def item_text(self, item): return "text of " + item
     def ledger_start(self, item):
         self.items[item] = "doing"
-    def ledger_close(self, item, sha, reason):
+    def ledger_close(self, item, sha, reason, live=None):
         if self.close_fail:
             why, self.close_fail = self.close_fail, None
             return why
@@ -464,6 +464,8 @@ def t_real_effects():
                         pool_kinds_exclude=[], pool_ids_exclude=[]), store)
     order, w = fx.pool_order(fx.r)
     ok(isinstance(order, list) and len(w.items) > 100, "real: pool_order reads the real ledger")
+    want = {i.id for i in w.items.values() if R.eligible(i, fx.r) and i.target in (None, "v1")}
+    ok(want and set(order) == want, "real: the pool is every eligible item, the proposed backlog included")
     ok(fx.item_state("NO_SUCH_ITEM_X") is None, "real: item_state")
     ok(fx.paused() in (True, False, None) or isinstance(fx.paused(), str), "real: paused answers")
     ok(fx.mem_gb() > 0, "real: memory reading")

@@ -424,22 +424,16 @@ class Effects:
 
     def pool_order(self, r):
         """Open items in the pool, best first: raised, then Test Pilot bouncers, then rank()."""
-        priority, testpilot_route = pkg("priority"), pkg("testpilot_route")
+        priority, testpilot_route, model = pkg("priority"), pkg("testpilot_route"), pkg("model")
         evs, w = self.ledger_items()
         bounce = self.bounce = {v["id"] for v in testpilot_route.routed(w, evs)}
-        ranked = []
-        for seat in r["pool_seats"]:
-            for target in r.get("pool_targets") or ["v1"]:
-                ranked += [getattr(x, "id", x) for x in priority.rank(w, seat, target)]
-        seen, out = set(), []
-        for i in ranked:
-            it = w.items.get(i)
-            if i in seen or it is None:
-                continue
-            seen.add(i)
-            if eligible(it, r):
-                out.append((i not in bounce, len(out), i))
-        return [i for _, _, i in sorted(out)], w
+        targets = r.get("pool_targets") or ["v1"]
+        # not priority.rank(): `next` offers only what a seat already took up, and the pool is the proposed backlog.
+        # The same sort, so raised work and the campaign rows still go first
+        pool = [it for it in w.items.values() if eligible(it, r) and it.target in (None, *targets)]
+        pool.sort(key=lambda i: (i.id not in bounce, model.raise_key(i), not i.this_deployment, priority._row_key(i),
+                                 i.created_at or "", i.id))
+        return [i.id for i in pool], w
 
     def item_state(self, item):
         _, w = self.ledger_items()
@@ -454,8 +448,9 @@ class Effects:
         r = self.rimflow("start", item, "--why", "relentless supervisor takes the item")
         return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
-    def ledger_close(self, item, sha, reason):
-        r = self.rimflow("close", item, "--sha", sha, "--reason", reason, "--why", "relentless: blind check passed")
+    def ledger_close(self, item, sha, reason, live=None):
+        r = self.rimflow("close", item, "--sha", sha, "--reason", reason, "--why", "relentless: blind check passed",
+                         *(("--live", live) if live else ()))     # the sweep keeps checking what the contract promised
         if r.returncode == 0:
             return None
         return None if self.closed(item) else (r.stderr or r.stdout)[-400:]
@@ -1044,7 +1039,7 @@ def step(store, fx, r, item, now, acts):
         c = st["candidate"]
         reason = "relentless: blind PASS at %s after %d return(s): %s" % (c["sha"], st["returns"],
                                                                          (st["check"].get("reasons") or "")[:220])
-        why = fx.ledger_close(item, c["sha"], reason)
+        why = fx.ledger_close(item, c["sha"], reason, (st["contract"] or {}).get("live"))
         if why:
             acts.append({"do": "close_retry", "item": item, "why": why})
             return
