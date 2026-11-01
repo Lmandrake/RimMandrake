@@ -1805,3 +1805,4 @@
 {"seat":"RUNNER","event":"note","id":"OPS_PLAN_LIST_FIX_VMIV","text":"ops_watch: cleared at 2026-11-01T20:07:01Z (plan.distressed now 0)","ts":"2026-11-01T20:08:30Z","tsn":1793563710124981751}
 {"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"broken","detail":"Ops alarm SCRATCH_DIRTY_START: disk.scratch_dirty_start = 1 sanity problems at the start of the last run (MEASURED), line > 0","ts":"2026-11-01T20:08:33Z","tsn":1793563713087318923}
 {"seat":"RUNNER","event":"raise","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","reason":"alarm: first in relentless pool_order (ALARMS_REWIRE_OFF_RETIRED_BENCH)","ts":"2026-11-01T20:08:35Z","tsn":1793563715909108095}
+{"seat":"RUNNER","event":"live","id":"OPS_SCRATCH_DIRT_MEASURE_AT_START_SANF","result":"kept","detail":"sweep: running again","ts":"2026-11-01T20:18:05Z","tsn":1793564285124685639}
