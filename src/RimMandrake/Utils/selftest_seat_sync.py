@@ -235,6 +235,12 @@ def main() -> int:
         peer_push(peer, {shard: "base\nmine\ntheirs\nmore\n"}, "other line")
         rc, out = run(seat)
         check(rc == 1 and "NOT on origin/main" in out, "a shard line not upstream is still refused")
+        sha = git(seat, "rev-parse", "--short", "HEAD")
+        rc, out = run(seat, "--dry-run", "--superseded", "0000000")
+        check(rc == 1, "another commit's name frees nothing")
+        rc, out = run(seat, "--superseded", sha)
+        check(rc == 0 and "unpublished" not in Path(seat, shard).read_text() and "named superseded" in out, "a named commit goes: " + out[-120:])
+        check(git(seat, "branch", "--list", "backup/*") != "", "the backup branch keeps it")
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 

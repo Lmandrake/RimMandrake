@@ -435,7 +435,7 @@ def reset_merging(g: Git, head: str, target: str, keep: list[str] | None = None)
     return f"{note}; {done}" if note else done
 
 
-def plan(g: Git) -> dict:
+def plan(g: Git, superseded: tuple = ()) -> dict:
     gd = Path(g.run("rev-parse", "--absolute-git-dir").strip())
     for marker in ("rebase-merge", "rebase-apply", "MERGE_HEAD", "CHERRY_PICK_HEAD", "REVERT_HEAD"):
         if (gd / marker).exists():
@@ -454,6 +454,9 @@ def plan(g: Git) -> dict:
         subj = g.run("show", "-s", "--format=%h %s", c).strip()
         if cherry.get(c) == "-":
             p["local"].append((subj, "patch-equivalent"))
+            continue
+        if any(c.startswith(x) for x in superseded):    # a person's word, not a proof: the backup branch keeps it
+            p["local"].append((subj, "named superseded"))
             continue
         parents = g.run("rev-list", "--parents", "-n1", c).split()[1:]
         touched = (g.lines("diff", "--name-only", "-z", "--no-renames", parents[0], c) if len(parents) > 1
@@ -531,6 +534,8 @@ def main(argv=None) -> int:
     ap.add_argument("--repo")
     ap.add_argument("--no-fetch", action="store_true")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--superseded", action="append", default=[], metavar="SHA",
+                    help="a local commit you have checked is landed in another form (a replay after a merge)")
     a = ap.parse_args(argv)
     start = a.repo or os.getcwd()
     r = subprocess.run(["git", "-C", start, "rev-parse", "--show-toplevel"], capture_output=True, text=True)
@@ -542,7 +547,7 @@ def main(argv=None) -> int:
     try:
         if not a.no_fetch:
             g.run("fetch", "-q", "origin")
-        p = plan(g)
+        p = plan(g, tuple(a.superseded))
         if p["already"]:
             print(f"IN SYNC {p['head'][:9]}")
             return 0
