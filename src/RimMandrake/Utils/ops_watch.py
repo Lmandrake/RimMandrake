@@ -29,6 +29,9 @@ rimflow/dispatcher_schedule.json "measure"):
    STORE   append-only JSONL, one file per family: $RM_OPS_WATCH_DIR/series/<family>.jsonl (default
            D:\\ClaudeWork\\rimmandrake\\ops_watch). Every point is {v, m: MEASURED|ESTIMATE|UNMEASURED, why?, unit?}.
            An instrument that errors writes UNMEASURED with the error, never 0.
+   RANGES  the rules' ranges block (OP1): each metric's idle, sane, distressed, emergency classes with owner, ack_within_min
+           and max_age_min. The relentless and seats verdicts read it; each reading carries its class. `lint` refuses a
+           metric short of any of these, and so does load_rules, which then keeps the last good copy and flags it.
    FLAG    Andon rules from ops_watch_rules.json over MEASURED points: band (outside the 7-day mean +/- 3 sigma),
            run (n same-direction changes), silent (a series that stopped being MEASURED), target (a line crossed).
            Each flag names the series and the window. flags.json keeps when each flag first opened.
@@ -99,6 +102,117 @@ def nonfinite_at(x, at="rules"):
     return at if isinstance(x, float) and not finite(x) else None
 
 
+CLASSES = ("idle", "sane", "distressed", "emergency")     # OP1's vocabulary; a metric fills the ones it can act on
+ALARMED = ("distressed", "emergency")
+
+
+def ranges_of(rules) -> dict:
+    """The metrics of the ranges block, {} when there is none."""
+    r = rules.get("ranges")
+    return {k: v for k, v in r.items() if not k.startswith("_")} if isinstance(r, dict) else {}
+
+
+def is_limit(v):
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
+
+
+def metric_problem(key, m, metrics):
+    """-> what is wrong with one metric of the ranges block, or None. Numeric classes are lower bounds, so they cannot
+    gap or overlap; the lowest must be 0 or a reading could fall outside every class."""
+    if not isinstance(m, dict):
+        return "%s is not an object" % key
+    if not isinstance(m.get("owner"), str) or not m["owner"].strip():
+        return "%s has no owner" % key
+    if not isinstance(m.get("why"), str) or not m["why"].strip():
+        return "%s names no why" % key
+    if not is_limit(m.get("max_age_min")) or m["max_age_min"] <= 0:
+        return "%s has no max_age_min" % key
+    cl = m.get("classes")
+    if not isinstance(cl, dict) or not cl:
+        return "%s fills no class" % key
+    odd = sorted(set(cl) - set(CLASSES))
+    if odd:
+        return "%s fills unknown classes %s" % (key, odd)
+    if any(c in cl for c in ALARMED) and (not is_limit(m.get("ack_within_min")) or m["ack_within_min"] <= 0):
+        return "%s can read distressed or emergency and has no ack_within_min" % key
+    specs = list(cl.values())
+    if not all(isinstance(c, dict) and len(c) == 1 for c in specs):
+        return "%s: a class is one of at_least, in, otherwise" % key
+    if all("at_least" in c for c in specs):
+        bounds = [c["at_least"] for c in specs]
+        if not all(is_limit(b) for b in bounds) or len(set(bounds)) != len(bounds):
+            return "%s: bounds are numbers and differ: %s" % (key, bounds)
+        if min(bounds) != 0:
+            return "%s: the lowest class starts at %s, not 0: a reading could fit no class" % (key, min(bounds))
+    else:
+        rest = [c for c in specs if c.get("otherwise") is True]
+        lists = [c.get("in") for c in specs if "otherwise" not in c]
+        if len(rest) != 1 or not all(isinstance(x, list) and x and all(isinstance(t, str) for t in x) for x in lists):
+            return "%s: text classes are in-lists and exactly one otherwise" % key
+    for g in m.get("idle_if") or []:
+        gate = metrics.get(g)
+        if not isinstance(gate, dict) or "idle" not in (gate.get("classes") or {}) or gate.get("idle_if"):
+            return "%s: idle_if %s must name a metric that fills idle and has no idle_if of its own" % (key, g)
+    return None
+
+
+def ranges_problems(rules):
+    """-> what `lint` and load_rules refuse: no ranges block, or any metric short of an owner, class, age or why."""
+    r = rules.get("ranges")
+    if not isinstance(r, dict):
+        return ["no ranges block"]
+    ms = ranges_of(rules)
+    return [p for p in (metric_problem(k, ms[k], ms) for k in sorted(ms)) if p] or ([] if ms else ["the ranges block is empty"])
+
+
+def base_class(m, v):
+    """The class a reading falls in by value alone, None when it fits none."""
+    cl = m["classes"]
+    if isinstance(v, str):
+        hit = [c for c, s in cl.items() if v in (s.get("in") or [])]
+        return hit[0] if hit else next((c for c, s in cl.items() if s.get("otherwise")), None)
+    if not is_num(v):
+        return None
+    fit = [(s["at_least"], c) for c, s in cl.items() if "at_least" in s and v >= s["at_least"]]
+    return max(fit)[1] if fit else None
+
+
+def read_class(ms, key, points):
+    """The class of points[key] under the ranges metrics `ms`, or None: a reading not MEASURED has no class, and a
+    gate not MEASURED leaves it unjudged, so nothing reads sane or idle on what was not seen."""
+    p, m = points.get(key), ms.get(key)
+    if not isinstance(p, dict) or not isinstance(m, dict) or p.get("m") != "MEASURED":
+        return None
+    gates = [read_class({g: ms.get(g)}, g, points) for g in m.get("idle_if") or []]
+    return "idle" if "idle" in gates else None if None in gates else base_class(m, p.get("v"))
+
+
+def stamp_ranges(points, rules):
+    """Every reading the ranges block names carries its class, owner, ack_within_min and max_age_min. -> the keys of
+    MEASURED readings that fit no class: a value the block did not foresee, flagged by the caller."""
+    ms, lost = ranges_of(rules), []
+    for k, m in ms.items():
+        p = points.get(k)
+        if not isinstance(p, dict) or not isinstance(m, dict) or not isinstance(m.get("classes"), dict):
+            continue
+        p["class"] = read_class(ms, k, points)
+        p["owner"] = m.get("owner")
+        p["max_age_min"] = m.get("max_age_min")
+        if "ack_within_min" in m:
+            p["ack_within_min"] = m["ack_within_min"]
+        if p["class"] is None and p.get("m") == "MEASURED" and all(
+                (points.get(g) or {}).get("m") == "MEASURED" for g in m.get("idle_if") or []):
+            lost.append(k)
+    return lost
+
+
+def need_ranges(rules, keys):
+    """-> why these metrics cannot be judged, or None: a limit that is missing must read blind, never sane."""
+    ms = ranges_of(rules)
+    bad = [k for k in keys if metric_problem(k, ms.get(k), ms)]
+    return "the ranges block cannot judge %s" % ", ".join(bad) if bad else None
+
+
 def load_rules(path=None) -> dict:
     """The rules, or the last good copy with `_load_error` set when the file is torn: a bad write to the rules must not
     stop every reading and alarm. With no good copy yet it raises, and the unit fails aloud."""
@@ -113,6 +227,8 @@ def load_rules(path=None) -> dict:
         at = nonfinite_at(rules)
         if at:      # 1e309 parses as infinity: every comparison against that limit would silently stay false
             raise ValueError("%s is not a finite number" % at)
+        if "ranges" in rules and ranges_problems(rules):      # a metric nobody answers for must not reach a pass
+            raise ValueError("ranges refused: " + "; ".join(ranges_problems(rules))[:300])
     except (OSError, ValueError) as e:
         saved = read_json(last_good)
         if not isinstance(saved, dict):
@@ -1306,7 +1422,9 @@ def c_arena(now, rules, ctx):
 # ---------------------------------------------------------------- relentless: the belt read from its own store (OP2, DI2)
 RL_STAFFING = ("relentless.live", "relentless.under_min", "relentless.checks_wait", "relentless.ready")
 RL_KEYS = RL_STAFFING + ("relentless.breaker_open_min", "relentless.tick_age_s", "relentless.progress_age_min",
-                         "relentless.distressed", "relentless.cause")
+                         "relentless.no_live_min", "relentless.why", "relentless.distressed", "relentless.cause")
+RL_RANGES = ("relentless.why", "relentless.ready", "relentless.tick_age_s", "relentless.under_min",
+             "relentless.breaker_open_min", "relentless.no_live_min", "relentless.progress_age_min", "relentless.blind")
 
 
 def rl_root(cfg) -> Path:
@@ -1361,25 +1479,22 @@ def rl_run_min(rows, now, pred):
     return 0 if since is None else round((now - since) / 60.0, 1)
 
 
-def rl_verdict(rec, breaker_min, live0_min, progress_min, cfg):
-    """-> (state, cause) for one readable staffing reading: sane, idle or distressed, and the one cause. Idle is a stop
-    somebody chose (`idle_why`), and is not a jam however long it lasts. A limit whose input was not seen (None) is not
-    judged, so only "distressed" means anything when an input is None: the caller reads the rest as UNMEASURED."""
-    why = str(rec.get("why") or "filling")
-    if rec.get("why") in (cfg.get("idle_why") or []):
+def rl_verdict(rec, points, ms):
+    """-> (state, cause) for one readable staffing reading, from the classes of the ranges block: the worst class, and
+    the first metric standing in it. Idle is a stop somebody chose, not a jam however long it lasts. A metric whose
+    input was not seen has no class and is not judged, so only "distressed" and "emergency" mean anything when an
+    input is missing: the caller reads the rest as UNMEASURED."""
+    if read_class(ms, "relentless.why", points) == "idle":
         return "idle", "none"
     said = "%s of %s places, %s ready: %s" % (rec.get("running") if rec.get("places") is None else rec["places"],
-                                             rec.get("target"), rec.get("ready"), why)
-    ready = rec.get("ready") or 0
-    if (rec.get("minutes_under") or 0) >= cfg["under_min"]:
-        return "distressed", "under %.0f min: %s" % (rec["minutes_under"], said)
-    if breaker_min is not None and breaker_min >= cfg["breaker_open_min"]:
-        return "distressed", "breaker open %.0f min: %s" % (breaker_min, said)
-    if ready and live0_min is not None and live0_min >= cfg["no_live_min"]:
-        return "distressed", "nothing live %.0f min: %s" % (live0_min, said)
-    if ready and progress_min is not None and progress_min >= cfg["progress_min"]:
-        return "distressed", "no progress %.0f min: %s" % (progress_min, said)
-    return "sane", "none"
+                                             rec.get("target"), rec.get("ready"), str(rec.get("why") or "filling"))
+    worst = "sane", "none"
+    for key, name in (("relentless.under_min", "under"), ("relentless.breaker_open_min", "breaker open"),
+                      ("relentless.no_live_min", "nothing live"), ("relentless.progress_age_min", "no progress")):
+        c = read_class(ms, key, points)
+        if c in ALARMED and worst[0] != "emergency" and c != worst[0]:
+            worst = c, "%s %.0f min: %s" % (name, points[key]["v"], said)
+    return worst
 
 
 def c_relentless(now, rules, ctx):
@@ -1392,8 +1507,13 @@ def c_relentless(now, rules, ctx):
     if not isinstance(cfg, dict):
         return {**{k: U("ops_watch_rules.json has no relentless block") for k in RL_KEYS},
                 "relentless.blind": M(1, "sources not seen", cause="ops_watch_rules.json has no relentless block")}
+    no_range = need_ranges(rules, RL_RANGES)
+    if no_range:
+        return {**{k: U(no_range) for k in RL_KEYS}, "relentless.blind": M(1, "sources not seen", cause=no_range[:300])}
+    ms = ranges_of(rules)
     store = rl_root(cfg) / "store"
-    limit = cfg["max_age_min"]
+    limit = ms["relentless.tick_age_s"]["max_age_min"]
+    rows_limit = ms["relentless.no_live_min"]["max_age_min"]
     pts, bad = {}, []
 
     def missing(k, why):
@@ -1439,7 +1559,7 @@ def c_relentless(now, rules, ctx):
         rows = tail_json_lines(store / "staffing.jsonl")
         newest = max((r["t"] for r in rows if is_num(r.get("t")) and finite(r["t"]) and r["t"] <= now), default=None)
         rows_why = "staffing.jsonl has no reading" if newest is None else (
-            "staffing.jsonl frozen: last row %s" % iso(newest) if now - newest > limit * 60 else None)
+            "staffing.jsonl frozen: last row %s" % iso(newest) if now - newest > rows_limit * 60 else None)
     except OSError as e:
         rows, rows_why = [], "staffing.jsonl unreadable: %s" % e
     if rows_why:
@@ -1467,13 +1587,17 @@ def c_relentless(now, rules, ctx):
         if last is None:
             missing("relentless.progress_age_min", "journal.jsonl holds no progress act and no worker beats")
         else:
-            pts["relentless.progress_age_min"] = M(progress_min, "min", max_age_min=cfg["progress_min"])
+            pts["relentless.progress_age_min"] = M(progress_min, "min")
+    if fresh and not rows_why:
+        pts["relentless.no_live_min"] = M(rl_run_min(rows, now, lambda r: r.get("live") == 0), "min")
+    else:
+        pts["relentless.no_live_min"] = U(rows_why or why, "min")
+    pts["relentless.why"] = M(str(rec.get("why") or "filling")) if fresh else U(why)
     state, cause = "unseen", why
     if fresh:
-        live0_min = None if rows_why else rl_run_min(rows, now, lambda r: r.get("live") == 0)
-        state, cause = rl_verdict(rec, breaker_min, live0_min, progress_min, cfg)
-    if state == "distressed" or (fresh and not bad):
-        pts["relentless.distressed"] = M(int(state == "distressed"), "1 when the belt is distressed", state=state, cause=cause)
+        state, cause = rl_verdict(rec, pts, ms)
+    if state in ALARMED or (fresh and not bad):
+        pts["relentless.distressed"] = M(int(state in ALARMED), "1 when the belt is distressed or worse", state=state, cause=cause)
         pts["relentless.cause"] = M(cause)
     else:
         pts["relentless.distressed"] = pts["relentless.cause"] = U(why or "; ".join(bad)[:300])
@@ -1489,7 +1613,8 @@ def st_suppressed(points, fam):
 
 
 # ---------------------------------------------------------------- seats: idle with work ready, from the Dispatcher (OP2)
-ST_KEYS = ("seats.idle_with_work_min", "seats.distressed", "seats.cause")
+ST_KEYS = ("seats.idle_with_work_min", "seats.paused", "seats.distressed", "seats.cause")
+ST_RANGES = ("seats.paused", "seats.tick_age_s", "seats.idle_with_work_min", "seats.blind")
 
 
 def st_dir(cfg) -> Path:
@@ -1546,8 +1671,13 @@ def c_seats(now, rules, ctx):
         return {**{k: U("ops_watch_rules.json has no seats block") for k in ST_KEYS},
                 "seats.tick_age_s": U("ops_watch_rules.json has no seats block", "s"),
                 "seats.blind": M(1, "sources not seen", cause="ops_watch_rules.json has no seats block")}
+    no_range = need_ranges(rules, ST_RANGES)
+    if no_range:
+        return {**{k: U(no_range) for k in ST_KEYS}, "seats.tick_age_s": U(no_range, "s"),
+                "seats.blind": M(1, "sources not seen", cause=no_range[:300])}
+    ms = ranges_of(rules)
     root = st_dir(cfg)
-    limit = cfg["max_age_min"]
+    limit = ms["seats.tick_age_s"]["max_age_min"]
     st = read_json(root / "state.json")
     t = epoch(st.get("last_ok_tick")) if isinstance(st, dict) else None
     why = None
@@ -1592,12 +1722,12 @@ def c_seats(now, rules, ctx):
             pts[k] = U(why, "min" if k.endswith("_min") else None)
         pts["seats.blind"] = M(1, "sources not seen", cause=why[:300])
         return pts
-    state = "sane"
-    if worst >= cfg["distressed_min"]:
-        state = "idle" if st_paused(rows, now, limit) else "distressed"
-    cause = cause if state == "distressed" else "none"
-    pts["seats.idle_with_work_min"] = M(worst, "min", per_seat=per, state=state, max_age_min=limit)
-    pts["seats.distressed"] = M(int(state == "distressed"), "1 when a seat is idle with work", state=state, cause=cause)
+    pts["seats.paused"] = M(int(bool(st_paused(rows, now, limit))), "1 while a PAUSE file stands")
+    pts["seats.idle_with_work_min"] = M(worst, "min", per_seat=per)
+    state = read_class(ms, "seats.idle_with_work_min", pts)
+    cause = cause if state in ALARMED else "none"
+    pts["seats.idle_with_work_min"]["x"]["state"] = state
+    pts["seats.distressed"] = M(int(state in ALARMED), "1 when a seat is idle with work", state=state, cause=cause)
     pts["seats.cause"] = M(cause)
     pts["seats.blind"] = M(0, "sources not seen", cause="none")
     return pts
@@ -2167,6 +2297,8 @@ def build_digest(points, hist, flags, alarms, now, run_s):
                    "d24": None if (v is None or d24 is None) else round(v - d24, 3),
                    "d7": None if (v is None or d7 is None) else round(v - d7, 3),
                    "n7": len([1 for t, _ in hs if t >= now - 7 * DAY]), "flags": by.get(k, [])}
+        if "class" in p:
+            kpis[k].update({f: p.get(f) for f in ("class", "owner", "ack_within_min", "max_age_min")})
     return {"schema": SCHEMA, "at": iso(now), "t": now, "run_s": run_s, "headline": headline(points, flags, alarms),
             "alarms": alarms, "flags": flags, "kpis": kpis}
 
@@ -2191,10 +2323,10 @@ def digest_md(dg):
         f = k.split(".", 1)[0]
         if f != fam:
             fam = f
-            L += ["## " + f, "key | now | mark | d24h | d7d | n7d | flags", "---|---|---|---|---|---|---"]
-        L.append("%s | %s | %s | %s | %s | %d | %s" % (
+            L += ["## " + f, "key | now | class | mark | d24h | d7d | n7d | flags", "---|---|---|---|---|---|---|---"]
+        L.append("%s | %s | %s | %s | %s | %s | %d | %s" % (
             k.split(".", 1)[1], fmt(r["v"]) + (" " + r["unit"] if r.get("unit") and len(r["unit"]) < 40 else ""),
-            r["m"] if r["m"] == "MEASURED" else "%s: %s" % (r["m"], (r.get("why") or "")[:90]),
+            r.get("class") or "", r["m"] if r["m"] == "MEASURED" else "%s: %s" % (r["m"], (r.get("why") or "")[:90]),
             fmt(r["d24"]), fmt(r["d7"]), r["n7"], "; ".join(x[:80] for x in r["flags"]) or ""))
     return "\n".join(L) + "\n"
 
@@ -2225,8 +2357,8 @@ production.O1 production.O2 production.O3 production.O4
 production.P1 production.P2 production.P3 production.P4
 production.V0 production.W1 production.W2 production.W3 production.W4 production.record_age_min
 relentless.blind relentless.breaker_open_min relentless.cause relentless.checks_wait relentless.distressed relentless.live
-relentless.progress_age_min relentless.ready relentless.tick_age_s relentless.under_min
-seats.blind seats.cause seats.distressed seats.idle_with_work_min seats.tick_age_s
+relentless.no_live_min relentless.progress_age_min relentless.ready relentless.tick_age_s relentless.under_min
+seats.blind seats.cause seats.distressed seats.idle_with_work_min seats.paused seats.tick_age_s
 steve.fault_min steve.heartbeat_age_min steve.invalid_24h steve.invalid_streak steve.jobs_24h steve.last_done_age_min
 steve.seats_absent_min steve.state steve.unowned_stall_min steve.watch_age_min
 testing.archmagi_nothing_h_7d testing.nothing_h_7d testing.steve_nothing_h_7d
@@ -2236,7 +2368,7 @@ v3.accepted_per_day v3.failure_signal_share v3.keep_going_per_day
 """.split())
 # the fields of an allowed point a blind role may see: value, mark, unit, the why of a non-MEASURED mark, the 24 h /
 # 7 d change. Never d24/d7 of a withheld key, never the full digest's headline (it names runway).
-BLIND_FIELDS = ("v", "m", "unit", "why", "d24", "d7")
+BLIND_FIELDS = ("v", "m", "unit", "why", "d24", "d7", "class")
 
 
 def blind_keep(key, p, rx):
@@ -2296,9 +2428,10 @@ def blind_digest_md(dg, rules):
         f = k.split(".", 1)[0]
         if f != fam:
             fam = f
-            body += ["## " + f, "key | now | mark | d24h | d7d", "---|---|---|---|---"]
-        body.append("%s | %s | %s | %s | %s" % (
+            body += ["## " + f, "key | now | class | mark | d24h | d7d", "---|---|---|---|---|---"]
+        body.append("%s | %s | %s | %s | %s | %s" % (
             k.split(".", 1)[1], fmt(r["v"]) + (" " + r["unit"] if r.get("unit") and len(r["unit"]) < 40 else ""),
+            r.get("class") or "",
             r["m"] if r["m"] == "MEASURED" else "%s: %s" % (r["m"], (r.get("why") or "")[:90]),
             fmt(r["d24"]), fmt(r["d7"])))
     out = [x for x in L + body if not rx.search(x)]
@@ -2379,6 +2512,7 @@ def run(now=None, rules=None, filer=None, families=None):
     since = now - rules.get("series_days", 8) * DAY
     prev = {}
     sick = []
+    unfit = []
     for fam in ORDER:
         if families and fam not in families:
             continue
@@ -2392,6 +2526,7 @@ def run(now=None, rules=None, filer=None, families=None):
             pts = {k: U(why, p.get("unit") if isinstance(p, dict) else None) for k, p in last.items()
                    if not k.endswith("._collector")}
             pts["%s._collector" % fam] = U(why)
+        unfit += stamp_ranges(pts, rules)
         rec = {"schema": SCHEMA, "t": now, "at": iso(now), "family": fam, "points": pts}
         if fam == "production" and ctx.get("production_src_t"):
             rec["src_t"] = ctx["production_src_t"]
@@ -2406,6 +2541,7 @@ def run(now=None, rules=None, filer=None, families=None):
     for fam in ("relentless", "seats"):
         if (not families or fam in families) and not counts_as_measured(points.get(fam + ".blind")):
             points[fam + ".blind"] = st_suppressed(points, fam)
+            stamp_ranges(points, rules)
     hist, lastm = {}, {}
     for fam, recs in prev.items():
         recs = [r for r in recs if r["t"] <= now + 300]     # a future row would read as just measured, and hide silence
@@ -2431,7 +2567,13 @@ def run(now=None, rules=None, filer=None, families=None):
     flags += [{"rule": "collector", "key": k, "value": None, "window": "now", "detail": str(p.get("why"))[:200]}
               for k, p in sorted(points.items()) if k.endswith("._collector") and isinstance(p, dict)
               and p.get("m") == "UNMEASURED"]
+    flags += [{"rule": "bad_rule", "key": "rules.range." + k, "value": points[k].get("v"), "window": "now",
+               "detail": "%s reads %s, which fits no class of the ranges block" % (k, fmt(points[k].get("v")))} for k in unfit]
     if not families:    # a key no collector reports would keep its alarm silent for good; a limited pass cannot tell
+        for k in sorted(ranges_of(rules)):
+            if k.split(".")[0] + "._collector" not in points and k not in points:
+                flags.append({"rule": "bad_rule", "key": "rules.range." + k, "value": None, "window": "now",
+                              "detail": "range %s matches no reading: it can report no class" % k})
         for t in good_targets(rules):
             fam = t["key"].split(".")[0]
             if fam + "._collector" not in points and not any(fnmatch.fnmatchcase(k, t["key"]) for k in points):
@@ -2573,6 +2715,8 @@ def main(argv=None):
     d = sub.add_parser("digest")
     d.add_argument("--blind", action="store_true", help="print digest_blind.md (the token-blind roles' digest)")
     sub.add_parser("backfill", help="seed an empty production series from rm-pulse-streams' history")
+    ln = sub.add_parser("lint", help="refuse a ranges block with a metric short of owner, class, age, ack or why")
+    ln.add_argument("--rules", help="the rules file, default the shipped one")
     i = sub.add_parser("install")
     i.add_argument("--apply", action="store_true")
     i.add_argument("--deploy", default=os.environ.get("RM_PULSE_DEPLOY", "/mnt/d/ClaudeWork/rimmandrake/pulse-deploy"))
@@ -2585,6 +2729,10 @@ def main(argv=None):
             return 0
         print(dg["headline"])
         return 0
+    if a.cmd == "lint":
+        problems = ranges_problems(json.loads(Path(a.rules or rules_path()).read_text(encoding="utf-8")))
+        print("\n".join("REFUSED: " + p for p in problems) or "ranges clean")
+        return 1 if problems else 0
     if a.cmd == "backfill":
         print("production records backfilled: %d" % backfill_production())
         return 0

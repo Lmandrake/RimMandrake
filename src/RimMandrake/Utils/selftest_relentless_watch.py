@@ -117,7 +117,7 @@ check("recovered once the record does", back["relentless.distressed"]["v"] == 0,
 check("blind never rose on a whole record", all(pts["relentless.blind"]["v"] == 0 for _, pts in seen),
       next((pts["relentless.blind"] for _, pts in seen if pts["relentless.blind"]["v"]), None))
 limits = json.loads((HERE.parent / "rimflow/relentless_rules.json").read_text(encoding="utf-8"))
-check("the line is relentless's own alarm line", RULES["relentless"]["under_min"] == limits["staffing"]["alarm_after_min"])
+check("the line is relentless's own alarm line", RULES["ranges"]["relentless.under_min"]["classes"]["distressed"]["at_least"] == limits["staffing"]["alarm_after_min"])
 
 # the same record through full passes at the timer's 15 min: the alarm, its item, the digests
 fresh()
@@ -253,7 +253,7 @@ check("a beating worker is progress", OW.c_relentless(T0 + 3600, RULES, {})["rel
 # a stop somebody chose is idle, and all of it is not a jam
 fresh()
 add("journal.jsonl", {"at": OW.iso(T0), "do": "done"})
-for w in RULES["relentless"]["idle_why"]:
+for w in RULES["ranges"]["relentless.why"]["classes"]["idle"]["in"]:
     tick({**sane_row(T0 + 7200), "live": 0, "under": True, "minutes_under": 90, "why": w})
     pts = OW.c_relentless(T0 + 7200, RULES, {})
     check("%s reads idle" % w, pts["relentless.distressed"]["v"] == 0 and pts["relentless.distressed"]["x"]["state"] == "idle", pts)
