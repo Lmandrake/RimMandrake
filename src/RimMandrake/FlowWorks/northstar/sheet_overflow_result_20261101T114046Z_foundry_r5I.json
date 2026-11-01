@@ -1,0 +1,204 @@
+{
+ "script": "sheet_overflow_proof.py",
+ "started": "2026-11-01T03:40:47",
+ "rows": [
+  {
+   "id": "CROPS_IRRIGATE_THEN_DROWN",
+   "status": "UNMEASURED",
+   "class": "SITE",
+   "item": "CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED",
+   "detail": {
+    "field": "cropDrownPulses",
+    "shipped": "1680",
+    "aliveEarly": 12,
+    "soakedEarly": 0,
+    "drownedAfterPulses": 0,
+    "filmAlive": 10,
+    "control": 4,
+    "tiers": {
+     "sheet": 0,
+     "film": 10
+    },
+    "verdictWithheld": "FAIL",
+    "unmeasuredBecause": [
+     {
+      "scope": "CROPS_IRRIGATE_THEN_DROWN",
+      "what": "some rice stands at sheet tier",
+      "why": "{(31, 133): 'Ice', (31, 134): 'Ice', (31, 135): 'None', (32, 133): 'None', (32, 134): 'None', (32, 135): 'None', (33, 133): 'None', (33, 134): 'None', (33, 135): 'None', (34, 133): 'None', (34, 134): 'None', (34, 135): 'None'}",
+      "class": "SITE"
+     }
+    ]
+   }
+  }
+ ],
+ "perf": [],
+ "args": {
+  "out": "src/RimMandrake/FlowWorks/northstar/sheet_overflow_result_20261101T114046Z_foundry_r5I.json",
+  "origin": "30,30",
+  "fresh_map": true,
+  "only": "CROPS_IRRIGATE_THEN_DROWN",
+  "no_perf": false,
+  "cold_ticks": 24000,
+  "mock": false,
+  "mock_faults": ""
+ },
+ "owedProofs": [
+  "ProofSheetCell",
+  "ProofSheetFeatures",
+  "ProofSheetFillIn",
+  "ProofSheetHash",
+  "ProofSheetLedger",
+  "ProofSheetPerf",
+  "ProofSheetRect",
+  "ProofSheetSpill"
+ ],
+ "balances": [],
+ "mode": "live",
+ "mod": "FlowWorks",
+ "mod_hash": "ddbd8ca78e1e83cf0a6e099273a57509646480b9083a9df3c2fc793ae3d123d7",
+ "manifest": {
+  "schema": 1,
+  "script": "northstar/sheet_overflow_proof.py",
+  "runtime": "bbce0de7f53d601b6fd2db4c0ec4925aa62ca0e49a784e96b44fca1352c25035",
+  "test": "b37862061a35b9a9cfeaf95faf1134022b2af3a8736f6476de2ed605619504fa",
+  "test_files": [
+   "FlowWorks/northstar/driver_stamp.py",
+   "FlowWorks/northstar/proof_hose.py",
+   "FlowWorks/northstar/sheet_overflow_proof.py",
+   "FlowWorks/validation_hose.py",
+   "FlowWorks/validation_style_hose.py",
+   "Utils/biomes_compose.py",
+   "Utils/close_evidence.py",
+   "Utils/deploy_custom_mods.py",
+   "Utils/deploy_def_guard.py",
+   "Utils/evidence_covers.py",
+   "Utils/focus_heal.py",
+   "Utils/game_focus.py",
+   "Utils/game_paths.py",
+   "Utils/harness_run.py",
+   "Utils/modcheck/__init__.py",
+   "Utils/modcheck/bland_world.py",
+   "Utils/modcheck/clockgate.py",
+   "Utils/modcheck/contract.py",
+   "Utils/modcheck/detectors.py",
+   "Utils/modcheck/drivers.py",
+   "Utils/modcheck/floor.py",
+   "Utils/modcheck/gate.py",
+   "Utils/modcheck/helpers.py",
+   "Utils/modcheck/jev_questions.py",
+   "Utils/modcheck/jev_triage.py",
+   "Utils/modcheck/judge.py",
+   "Utils/modcheck/launch_gate.py",
+   "Utils/modcheck/northstar.py",
+   "Utils/modcheck/preconditions.py",
+   "Utils/modcheck/report.py",
+   "Utils/modcheck/reuse.py",
+   "Utils/modcheck/run_identity.py",
+   "Utils/modcheck/runner.py",
+   "Utils/modcheck/scene_report.py",
+   "Utils/modcheck/snapshot.py",
+   "Utils/modcheck/status.py",
+   "Utils/modcheck/suite.py",
+   "Utils/modcheck/surprise.py",
+   "Utils/modcheck/targeting.py",
+   "Utils/modcheck/testenv_guards.py",
+   "Utils/modcheck/validity.py",
+   "Utils/modcheck/walklint.py",
+   "Utils/modcheck/watch.py",
+   "Utils/modset_builder.py",
+   "Utils/retired_mods.py",
+   "Utils/rimbridge_client.py",
+   "Utils/rimdrive/__init__.py",
+   "Utils/rimdrive/session.py",
+   "Utils/rimdrive/verify.py",
+   "Utils/rmpaths.py",
+   "Utils/run_selftests.py",
+   "Utils/selftest_cache.py",
+   "Utils/suite_evidence.py",
+   "Utils/validation_core.py",
+   "Utils/winbuild.py"
+  ],
+  "unresolved": []
+ },
+ "env": {
+  "running": [
+   "brrainz.harmony",
+   "ludeon.rimworld",
+   "ludeon.rimworld.royalty",
+   "ludeon.rimworld.ideology",
+   "ludeon.rimworld.biotech",
+   "ludeon.rimworld.anomaly",
+   "ludeon.rimworld.odyssey",
+   "brrainz.rimbridgeserver",
+   "ray1203.simplecamerasetting",
+   "mandrake.rm.gimmesomeslack",
+   "mandrake.rm.flowworks"
+  ],
+  "assembly_sha256": "a3aa53dee6af20165ab7ec11b89ffc68e7b57158e5907cd2fe5477456a298ebc"
+ },
+ "features": {
+  "crops": "True",
+  "soak": "False",
+  "capSetting": "True",
+  "capField": "sheetCapCm",
+  "cropDelayField": "cropDrownPulses",
+  "gravity": "True",
+  "floods": "True",
+  "pawns": "True",
+  "fire": "True",
+  "fuel": "True"
+ },
+ "site_calm": {
+  "ok": true,
+  "storyteller": {
+   "enableStoryteller": false,
+   "enableRandomMentalStates": false,
+   "enableRandomDiseases": false,
+   "logRaidInfo": true,
+   "threatScale": 0.0,
+   "allowBigThreats": false
+  },
+  "wildSpawner": "blocked (read back)",
+  "removed": {
+   "removed": [
+    "Ibex41559",
+    "Locust41549",
+    "Locust41551",
+    "Megascarab41547",
+    "Muffalo41560",
+    "Muffalo41561",
+    "Muffalo41562",
+    "Muffalo41563",
+    "Muffalo41564",
+    "Muffalo41565",
+    "Muffalo41566",
+    "Spelopede41548",
+    "Spelopede41550",
+    "Spelopede41552",
+    "Spelopede41553"
+   ],
+   "left": []
+  },
+  "threatStructures": {
+   "removed": [
+    [
+     "Hive",
+     "Hive41536"
+    ],
+    [
+     "GlowPod",
+     "GlowPod41557"
+    ],
+    [
+     "EggSac",
+     "EggSac41558"
+    ]
+   ],
+   "threatsAfter": 0,
+   "error": null
+  }
+ },
+ "switchBefore": "False",
+ "ledgerStart": "SHEETLEDGER enabled=True in=0 inPump=0 inRain=0 inFlood=0 inFillIn=0 inGravity=0 standing=0 wet=0 returned=0 joined=0 soaked=0 evaporated=0 burned=0 purged=0 closes=True releaseLost=0 burning=0 destroyedDl=0 pulse=0 pulseTicks=250 retention=200 minReceive=100 cap=10000 maxWet=4000 irrigated=0",
+ "finished": "2026-11-01T03:41:31"
+}
