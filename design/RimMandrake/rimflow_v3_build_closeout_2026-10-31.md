@@ -42,7 +42,7 @@ Those reviews read fragments of an uncommitted tree, so no sha can be given for 
 | `AUDITOR_BUILD_WAITING_INDEX_REQUEUE_SCAN`, `INNOVATOR_BUILD_EXPIRY_WATCHDOG_REVERTS`, `HELPERS_BUILD_SHARED_CAP_ACROSS_ROLES` | parked | `D:\ClaudeWork\rimmandrake\v3_build\roles\parked.patch` |
 | `PRODUCER_CADENCE_DESIGN_MORE_THAN_WEDNESDAYS`, `TESTLANE_PLAN_WIRE_PRODUCER_PICKS_UNHEARD` | dropped | `D:\ClaudeWork\rimmandrake\v3_build\producer\parked.patch` |
 
-The five parked items still read `doing` with no lease. Their state is the supervisor's and the Conductor's to settle once the collapse is decided (`RIMFLOW_V3_SHRINK_FEWER_CHAIRS_SAME_JOBS`).
+The five parked items still read `doing` with no lease. They wait on `V3_COLLAPSE_BUILD_AFTER_THE_QUIET_MONTH`, which settles them against the trial's winner (`design/RimMandrake/rimflow_v3_collapse_settlement_2026-10-31.md`).
 
 ## Open
 

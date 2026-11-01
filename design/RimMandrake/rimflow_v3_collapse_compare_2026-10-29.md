@@ -301,7 +301,7 @@ acceptance that cannot be moved for missing data, and I recommend adopting it.
 
 ---
 
-## 6. Proposed frozen design, and the cost of getting there
+## 6. Proposed design, and the cost of getting there
 
 **The design.**
 - **Four AI actors.**
@@ -356,5 +356,5 @@ P0 alarms only.
    SteveDesktop heartbeat and the git-independent queue delivery are filed as separate later items, each going
    through the same loop.
 
-**What I need from you.** Rulings on D1-D6, or "take the recommendations". After that, the design above is frozen and
-step 1 goes to FOUNDRY as the only item in focus.
+**Not frozen.** The arena trial settles the shape, and this build order is on hold. See
+`D:\Luke\dev\RimMandrake\design\RimMandrake\rimflow_v3_collapse_settlement_2026-10-31.md`.
