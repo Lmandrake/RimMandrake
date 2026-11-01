@@ -19,8 +19,10 @@ namespace RimMandrake.RustCathedral
     // edits) — only their standalone `Mod`-derived wrapper classes
     // (RustCathedralHumSettingsMod / RustCathedralWallsSettingsMod) are
     // retired, replaced by this ONE settings screen for the whole mod,
-    // which calls GetSettings<T>() for both their data classes plus this
-    // mod's own new master/roach/cross-biome section.
+    // which draws both their data classes plus this mod's own new
+    // master/roach/cross-biome section. Only RM_RustCathedralSettings is
+    // registered; it scribes the kits' statics as hum_*/walls_* (see
+    // RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1 in ExposeData).
     //
     // Master toggle shape follows the sibling biome-worker mods
     // (RM_MiasmaSettings.biomeRarityFactor / RM_CauldronMod): 0 = never

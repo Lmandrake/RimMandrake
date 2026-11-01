@@ -69,7 +69,8 @@ namespace RimMandrake.RustCathedral.Walls
         private static readonly HashSet<string> collapsedSections = new HashSet<string> { "unused" };
 
         /// <summary>Section header (click to collapse), a scope tag line, and a per-section reset. Returns whether the controls
-        /// should draw. Scope the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).ED per setting against its read site (2026-10-10): the biome worker (GetScore) and three GenSteps (borehulk placement, canal eels, strays) run at world or map generation ([new maps only]); the roach think node, the borehulk drill comp's tick and its grind roll read live ([now]). The four cross-biome fields are read by nothing, so they sit in the collapsed change-nothing group (crossBiomeBiomeList is a string with no control and is kept only as a saved key).</summary>
+        /// should draw. Scope is tagged per group against its read site: wall tiers and sacred walls are read when a map
+        /// generates ([new maps only]); the Live Pattern Metal deep-scan gate is read live ([now]).</summary>
         private static bool Group(Listing_Standard list, string title, RimMandrake.Shared.SettingScope scope, string[] names, string tagOverride = null)
         {
             bool searching = !string.IsNullOrWhiteSpace(searchQuery);
@@ -131,9 +132,9 @@ namespace RimMandrake.RustCathedral.Walls
     // RUSTCATHEDRAL_RM_MOD_BUILD_1: the standalone RustCathedralWallsSettingsMod
     // wrapper (one Mod-derived class per satellite kit) is RETIRED now that
     // Hum/Walls/Roaches/the biome all ship in one mod, mandrake.rm.rustcathedral.
-    // This settings DATA class is unchanged and still read from everywhere it
-    // always was; it is now surfaced through the single
-    // RimMandrake.RustCathedral.RM_RustCathedralMod settings screen instead of
-    // its own category, so GetSettings<RustCathedralWallsSettings>() is called
-    // from that Mod's constructor.
+    // This settings DATA class is still read from everywhere it always was and
+    // is drawn on the single RimMandrake.RustCathedral.RM_RustCathedralMod
+    // settings screen. It is NEVER registered with Verse (no GetSettings call;
+    // RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1): RM_RustCathedralSettings.ExposeData
+    // scribes its static fields directly under "walls_*" keys.
 }

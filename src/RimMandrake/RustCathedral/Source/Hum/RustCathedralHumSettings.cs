@@ -298,9 +298,9 @@ namespace RimMandrake.RustCathedral.Hum
 	// RUSTCATHEDRAL_RM_MOD_BUILD_1: the standalone RustCathedralHumSettingsMod
 	// wrapper (one Mod-derived class per satellite kit) is RETIRED now that
 	// Hum/Walls/Roaches/the biome all ship in one mod, mandrake.rm.rustcathedral.
-	// This settings DATA class is unchanged and still read from everywhere it
-	// always was; it is now surfaced through the single
-	// RimMandrake.RustCathedral.RM_RustCathedralMod settings screen instead of
-	// its own category, so GetSettings<RustCathedralHumSettings>() is called
-	// from that Mod's constructor.
+	// This settings DATA class is still read from everywhere it always was and
+	// is drawn on the single RimMandrake.RustCathedral.RM_RustCathedralMod
+	// settings screen. It is NEVER registered with Verse (no GetSettings call;
+	// RUSTCATHEDRAL_SETTINGS_DOUBLE_READ_BUG_1): RM_RustCathedralSettings.ExposeData
+	// scribes its static fields directly under "hum_*" keys.
 }
