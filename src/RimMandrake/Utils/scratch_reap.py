@@ -696,7 +696,8 @@ class Borrows:
                     break
                 time.sleep(wait)
                 lines = [ln for ln in lines if not TRANSIENT_FIND.match(ln)]
-                _, more, tail = self._walk(again)
+                last, more, tail = self._walk(again)
+                rc = rc if rc < 0 else last
                 out += more
                 lines += tail
         except subprocess.TimeoutExpired:
