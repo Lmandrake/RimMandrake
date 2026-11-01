@@ -64,4 +64,30 @@
       </match>
     </match>
   </Operation>
+  <!-- VCE_CANFISH_FIX_RESKIN_SKIPS_BILL: VCE_CanFish exists only when VCE's VanillaFishingExpanded(NoOdyssey) load
+       folder is active (Vanilla Fishing Expanded present), so it is relabelled here behind a Conditional, apart from
+       the main Sequence above, which must not fail when the recipe is absent. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Vanilla Cooking Expanded</li>
+    </mods>
+    <match Class="RimMandrake.StarWars.Cuisine.PatchOperation_CuisineSetting">
+      <setting>vceReskinEnabled</setting>
+      <match Class="PatchOperationConditional">
+        <xpath>Defs/RecipeDef[defName="VCE_CanFish"]</xpath>
+        <match Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationReplace">
+              <xpath>Defs/RecipeDef[defName="VCE_CanFish"]/label</xpath>
+              <value><label>seal fish ration tins x20</label></value>
+            </li>
+            <li Class="PatchOperationReplace">
+              <xpath>Defs/RecipeDef[defName="VCE_CanFish"]/jobString</xpath>
+              <value><jobString>Sealing ration tins.</jobString></value>
+            </li>
+          </operations>
+        </match>
+      </match>
+    </match>
+  </Operation>
 </Patch>

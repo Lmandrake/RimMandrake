@@ -86,6 +86,32 @@ def static_checks():
     cats = fungus.xpath('//ThingDef[defName="RSW_MarshFungus"]/thingCategories/li/text()')
     if cats != ["RSW_CultureStarters"]:
         bad.append("RSW_MarshFungus thingCategories = %r" % cats)
+    bad.extend(vce_sealer_problems())
+    return bad
+
+
+VCE_SEALER_PATCH = os.path.join(HERE, "Patches", "RSW_VceRationSealer.xml")
+
+
+def vce_sealer_problems(path=VCE_SEALER_PATCH):
+    """VCE_CANFISH_FIX_RESKIN_SKIPS_BILL: the ration-sealer reskin relabels VCE_CanFish too (label and jobString), and
+    only behind a PatchOperationConditional on that recipe, because VCE loads it from a Vanilla Fishing Expanded load
+    folder; inside the main Sequence a missing recipe would fail every other relabel. Sanity probe: the main Sequence
+    must be found and must relabel VCE_CanMeats, or nothing is measured."""
+    from lxml import etree
+    doc = etree.parse(path)
+    seqs = doc.xpath('/Patch/Operation/match/match[@Class="PatchOperationSequence"]')
+    if not seqs or not seqs[0].xpath('.//xpath[contains(text(), "VCE_CanMeats")]'):
+        return ["sanity: %s has no main Sequence relabelling VCE_CanMeats" % path]
+    bad = []
+    if seqs[0].xpath(".//xpath[contains(text(), 'VCE_CanFish\"')]"):
+        bad.append("VCE_CanFish is patched inside the main Sequence (fails every relabel without Vanilla Fishing Expanded)")
+    conds = doc.xpath("//*[@Class='PatchOperationConditional'][xpath[contains(text(), 'VCE_CanFish\"')]]")
+    if len(conds) != 1:
+        return bad + ["VCE_CanFish is not relabelled behind exactly one PatchOperationConditional (%d found)" % len(conds)]
+    for field in ("label", "jobString"):
+        if not conds[0].xpath(".//xpath[contains(text(), 'VCE_CanFish\"') and contains(text(), '/%s')]" % field):
+            bad.append("VCE_CanFish %s is not relabelled by the ration-sealer reskin" % field)
     return bad
 
 
