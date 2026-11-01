@@ -117,6 +117,10 @@ namespace RimMandrake.RustCathedral.Hum.SelfTest
             int layers = RM_AttitudeKernel.DesiredLayers(s.displayBand, d.Worst, d.layers, s.lineCycleDrop);
             Check(layers >= 0 && layers <= d.layers, $"layers {layers} outside [0,{d.layers}]");
             Check(s.displayBand < d.Worst || layers == 0, $"worst band must be silent, got {layers} layers");
+            Check(RM_AttitudeKernel.DesiredLayers(s.displayBand, d.Worst, d.layers, s.lineCycleDrop, true) == layers,
+                "the viewed map's hum must match the plain layer count");
+            Check(RM_AttitudeKernel.DesiredLayers(s.displayBand, d.Worst, d.layers, s.lineCycleDrop, false) == 0,
+                "an unviewed map's OnCamera hum must be silent, or it plays over whatever map is on screen");
             if (s.displayBand + 1 < d.Worst)
             {
                 int up = RM_AttitudeKernel.DesiredLayers(s.displayBand + 1, d.Worst, d.layers, s.lineCycleDrop);

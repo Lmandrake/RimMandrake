@@ -105,11 +105,28 @@ namespace RimMandrake.RustCathedral.Hum
 				return;
 			}
 
-			// PerTick sustainers end once TicksGame > lastMaintainTick + 1, so every
-			// live layer must be maintained on EVERY tick, before the interval gate.
-			for (int i = 0; i < activeSustainers.Count; i++)
+			// The hum plays only while this map is the one on screen (see the 5-arg
+			// RM_AttitudeKernel.DesiredLayers): looking away ends the layers, looking
+			// back restores them on that tick rather than at the next interval check.
+			if (Find.CurrentMap != map)
 			{
-				activeSustainers[i]?.Maintain();
+				if (activeSustainers.Count > 0)
+				{
+					EndAllSustainers();
+				}
+			}
+			else
+			{
+				if (activeSustainers.Count == 0 && displayBand >= 0)
+				{
+					SyncSustainers(def, displayBand);
+				}
+				// PerTick sustainers end once TicksGame > lastMaintainTick + 1, so every
+				// live layer must be maintained on EVERY tick, before the interval gate.
+				for (int i = 0; i < activeSustainers.Count; i++)
+				{
+					activeSustainers[i]?.Maintain();
+				}
 			}
 
 			if (!map.IsHashIntervalTick(def.checkIntervalTicks))
@@ -420,7 +437,8 @@ namespace RimMandrake.RustCathedral.Hum
 			// rising one layer per band up to the layer list length, and
 			// SILENCE (0 layers) at the worst band -- the sheet's own
 			// survival tell that the hum has "dropped".
-			int desiredLayers = RM_AttitudeKernel.DesiredLayers(band, def.WorstBand, def.humLayers.Count, lineCycleDrop);
+			int desiredLayers = RM_AttitudeKernel.DesiredLayers(band, def.WorstBand, def.humLayers.Count, lineCycleDrop,
+				Find.CurrentMap == map);
 
 			while (activeSustainers.Count > desiredLayers)
 			{

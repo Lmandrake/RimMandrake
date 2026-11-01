@@ -78,6 +78,15 @@ namespace RimMandrake.RustCathedral.Hum
 			return band - 1;
 		}
 
+		/// <summary>DesiredLayers for a map that may not be the one on screen: none unless it is. The hum sustainers are
+		/// spawned OnCamera (no source map), and SoundDefHelper.CorrectContextNow only tells map view from world view
+		/// when the source map is null, so an unviewed Cathedral map's MapOnly hum would otherwise play over every other
+		/// map the player looks at.</summary>
+		public static int DesiredLayers(int band, int worstBand, int layerCount, bool lineCycleDrop, bool mapViewed)
+		{
+			return mapViewed ? DesiredLayers(band, worstBand, layerCount, lineCycleDrop) : 0;
+		}
+
 		/// <summary>Hum layers to play: none at the worst band, otherwise band + 1 up to the layer list, one fewer in a line-cycle drop.</summary>
 		public static int DesiredLayers(int band, int worstBand, int layerCount, bool lineCycleDrop)
 		{
