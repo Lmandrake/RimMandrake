@@ -9,5 +9,5 @@ WorkingDirectory=/home/mandrake/rm/dispatch
 Nice=19
 IOSchedulingClass=idle
 CPUSchedulingPolicy=batch
-TimeoutStartSec=3000
-ExecStart=/usr/bin/python3 src/RimMandrake/Utils/scratch_reap.py --apply --max-seconds 2400
+TimeoutStartSec=5400
+ExecStart=/usr/bin/python3 src/RimMandrake/Utils/scratch_reap.py --apply --max-seconds 1800

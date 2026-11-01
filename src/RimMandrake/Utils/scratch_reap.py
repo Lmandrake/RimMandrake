@@ -13,7 +13,7 @@ dir, and 150 GB stood REFUSED behind 15 session dirs.
     scratch_reap.py                 report every candidate: DELETE / ARCHIVE / REFUSE / YOUNG
     scratch_reap.py --apply         act on DELETE and ARCHIVE rows (each re-judged immediately before rmtree)
     scratch_reap.py --json          machine-readable rows
-    scratch_reap.py --max-seconds N stop starting deletions after N seconds; the next run takes the rest
+    scratch_reap.py --max-seconds N stop starting deletions N seconds after the run began; the next run takes the rest
     scratch_reap.py --pressure-check  if the root disk is low and no run is recent, start the reaper's unit now
 
 Candidates (never anything else — loose files and other dirs are left alone):
@@ -1622,9 +1622,10 @@ def pinned_holds(p: Path, pin: Path, row: dict, ctx: Ctx) -> list[str]:
     return why
 
 
-def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str]) -> tuple[int, int]:
-    """Clones biggest first, then session shells, so a shell is judged with its clones already gone."""
-    started, freed, deferred = time.time(), 0, 0
+def apply_rows(rows: list[dict], ctx: Ctx, max_s: float, failures: list[str], started: float) -> tuple[int, int]:
+    """Clones biggest first, then session shells, so a shell is judged with its clones already gone. The budget runs
+    from the start of the run: a long scan spends it too, or systemd's limit kills the run before it writes its record."""
+    freed, deferred = 0, 0
     todo = [r for r in rows if r["verdict"] in ("DELETE", "ARCHIVE")]
     todo.sort(key=lambda r: (r["kind"] != "clone", -(r["bytes"] or 0)))
     for r in todo:
@@ -1742,7 +1743,7 @@ def run(a, sd: Path) -> int:
     failures: list[str] = []
     freed, deferred = 0, 0
     if a.apply:
-        freed, deferred = apply_rows(rows, ctx, a.max_seconds, failures)
+        freed, deferred = apply_rows(rows, ctx, a.max_seconds, failures, start)
     rotate(sd / "runs.jsonl")
     with open(sd / "runs.jsonl", "a") as f:
         f.write(json.dumps({"ts": stamp, "apply": a.apply, "rows": rows}) + "\n")
