@@ -7,8 +7,8 @@ Rows and tables: `D:\ClaudeWork\rimmandrake\fanout_sim_2026-11-01\`.
 ## Answer
 
 - **Was the owner right?** Half. v2 and v3 did model fan-out (seat cap 2 to 4, defects rising with helpers) but paid no
-  merge cost. All Ralph arms were serial, with their fan-out reduced to a wall-clock divisor and the collision term forced
-  off; trio and TP inherited that divisor. So the comparison was unequal: fan-out was credited to v2/v3 and denied to
+  merge cost. No Ralph arm had a worker pool: A and AB_test were serial with kappa forced to 0 and fan-out reduced to a wall-clock
+  divisor, AB_build and C were two fixed lanes with assumed collisions, TP inherited the divisor, and trio was serial. So the comparison was unequal: fan-out was credited to v2/v3 and denied to
   Ralph, and that fed the `RALPH_A_CAPACITY = 0.5` assumption (`arena_analysis.py:250`).
 - **Efficient?** Yes. One 860-line module over the existing sims, no base sim edited. 43,920 runs took about 16 minutes on 12
   processes.
@@ -179,7 +179,8 @@ more workers close behind.
 **Experiment: a small 2 × 2 crossover on live unattended work.** Cap 2 against cap 6, Ralph against v3, alternating randomised
 3-hour blocks, 16 in all, over about two days, drawing from one relentless queue. Record every attempted iteration with its
 disposition, not only landings, because a landed-only sample cannot see off-track work, and give every landing the same blind
-checker. Seed about ten tickets with known defects so the checker's hit and false-alarm rates are known; without that it measures
+checker. Seed about ten tickets with known defects and about ten known-clean ones so the checker's hit and false-alarm rates are
+estimated; without that it measures
 checker outcomes, not latent defects.
 
 Direct cost is about 130 checks at 200k ITE, say 26M ITE, about a sixth of one day's usual spend, assuming relentless's 2.7
