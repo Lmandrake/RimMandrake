@@ -44,7 +44,72 @@
    "why": "The ledger, an entry's reading or the advance record was not seen, or the collector did not run: nothing can then say the plan is advancing.",
    "classes": {"sane": {"at_least": 0}, "distressed": {"at_least": 1}}
   },
-  "_doc": "OP1 in operating_requirements_2026-11-01.md: the watched metrics' classes as data, read by the collectors and by ops_watch.run, which stamps class, owner, ack_within_min and max_age_min on each reading. A metric fills only the classes it can act on, of idle, sane, distressed, emergency; every class is one of {\"at_least\": n}, the class of a reading from n up to the next class's n, or {\"in\": [text]} with one {\"otherwise\": true}. owner: who answers for it. ack_within_min: required with distressed or emergency. max_age_min: an older source reads UNMEASURED. idle_if: this metric reads idle while any metric named here does. why: a range change rewrites it. `ops_watch.py lint` and load_rules refuse a metric short of any of these. classes: a limit lives here and nowhere else",
+  "roles.Operations.acted_share": {
+   "owner": "Operations",
+   "max_age_min": 60,
+   "why": "RO1: the share of Operations's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
+   "classes": {
+    "under": {
+     "at_least": 0
+    },
+    "sane": {
+     "at_least": 0.25
+    }
+   }
+  },
+  "roles.Auditor.acted_share": {
+   "owner": "Operations",
+   "max_age_min": 60,
+   "why": "RO1: the share of Auditor's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
+   "classes": {
+    "under": {
+     "at_least": 0
+    },
+    "sane": {
+     "at_least": 0.25
+    }
+   }
+  },
+  "roles.Arbiter.acted_share": {
+   "owner": "Operations",
+   "max_age_min": 60,
+   "why": "RO1: the share of Arbiter's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target. Most verdicts feed gates or pass an item, with no ledger action to see, so this one reads low on a working Arbiter: read it beside the gates.",
+   "classes": {
+    "under": {
+     "at_least": 0
+    },
+    "sane": {
+     "at_least": 0.25
+    }
+   }
+  },
+  "roles.Producer.acted_share": {
+   "owner": "Operations",
+   "max_age_min": 60,
+   "why": "RO1: the share of Producer's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
+   "classes": {
+    "under": {
+     "at_least": 0
+    },
+    "sane": {
+     "at_least": 0.25
+    }
+   }
+  },
+  "roles.Innovator.acted_share": {
+   "owner": "Operations",
+   "max_age_min": 60,
+   "why": "RO1: the share of Innovator's outputs somebody later acted on. Report-only and coarse: under range two weeks running gets a named fix of its input or its reader from the Conductor, and nothing rings. 0.25 is a first line, set by hand from the 2026-11-01 reading, not a target.",
+   "classes": {
+    "under": {
+     "at_least": 0
+    },
+    "sane": {
+     "at_least": 0.25
+    }
+   }
+  },
+  "_doc": "OP1 in operating_requirements_2026-11-01.md: the watched metrics' classes as data, read by the collectors and by ops_watch.run, which stamps class, owner, ack_within_min and max_age_min on each reading. A metric fills only the classes it can act on, of idle, sane, distressed, emergency (roles.* alone: under, sane; under rings nothing, RO1 is report-only); every class is one of {\"at_least\": n}, the class of a reading from n up to the next class's n, or {\"in\": [text]} with one {\"otherwise\": true}. owner: who answers for it. ack_within_min: required with distressed or emergency. max_age_min: an older source reads UNMEASURED. idle_if: this metric reads idle while any metric named here does. why: a range change rewrites it. `ops_watch.py lint` and load_rules refuse a metric short of any of these. classes: a limit lives here and nowhere else",
   "relentless.why": {
    "owner": "Operations",
    "max_age_min": 10,
@@ -254,6 +319,46 @@
    }
   }
  },
+ "roles": {
+  "_doc": "RO1, role_use.py: how the ledger shows a role's outputs. Report-only: the metric gates nothing and is no target. marked: the words a role's own output carries. coarse: the design's first reading of a role's items, a file event's why opening with the word; reported beside the marked count, acted_share does not use it. action_events: what counts as somebody acting on an item; a note, raise, lease or reassign moves no work.",
+  "week_days": 7,
+  "action_events": [
+   "claim",
+   "start",
+   "implemented",
+   "close",
+   "drop",
+   "supersede",
+   "verify"
+  ],
+  "roles": {
+   "Operations": {
+    "marked": "^Operations (diagnosis|run|alarm)|^OPS PROPOSAL|rm-role-operations-\\d",
+    "coarse": "(?i)^(operations\\b|ops )",
+    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
+   },
+   "Auditor": {
+    "marked": "^AUDITOR\\b|^audit: |^audit hard flag|rm-role-auditor-\\d",
+    "coarse": "(?i)^audit",
+    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
+   },
+   "Arbiter": {
+    "marked": "(?i)^arbiter \\d\\d:\\d\\d batch|role_verdict_note Arbiter|rm-role-arbiter-\\d",
+    "coarse": "(?i)^arbiter\\b",
+    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
+   },
+   "Producer": {
+    "marked": "(?i)^producer (status|daily|weekly|event|run)|rm-role-producer-\\d",
+    "coarse": "(?i)^producer\\b",
+    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
+   },
+   "Innovator": {
+    "marked": "(?i)^innovator run|rm-role-innovator-\\d",
+    "coarse": "(?i)^innovator\\b",
+    "not_output": "^dispatcher (alarm|role_done|role_launch|role_stop)"
+   }
+  }
+ },
  "steve_incident": {"_doc": "item-id prefix of the steward's escalation items (testq/steward.py); steve.incident_unclaimed_min is the age of the oldest one no seat holds", "prefix": "STEVE_LANE_UNSTICK_"},
  "band": {
   "_doc": "a point outside the baseline mean +/- k sigma. Baseline: the last baseline_days of MEASURED points, minus the last exclude_recent_h; needs min_points. Sigma is floored (max of sigma_floor_rel x |mean| and sigma_floor_abs) so a flat series does not flag on noise.",
@@ -264,7 +369,7 @@
   "sigma_floor_rel": 0.05,
   "sigma_floor_abs": 0.5,
   "keys": ["*"],
-  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "disk.scratch_outside_*", "relentless.*", "seats.*"]
+  "skip": ["*.hours_to_reset", "*.age_min", "*.heartbeat_age_min", "*.watch_age_min", "disk.*_used_gb", "disk.scratch_ok_age_h", "production.record_age_min", "steve.last_done_age_min", "disk.scratch_outside_*", "relentless.*", "seats.*", "roles.*"]
  },
  "run": {
   "_doc": "n consecutive same-direction changes (equal neighbours collapse) in the KPI series named here; a drift the band cannot see yet.",
@@ -276,7 +381,7 @@
   "default_h": 2,
   "per_key": {"tps.*": 1000000, "codex.*": 1000000, "production.*": 3, "process.*": 6, "testing.*": 6, "accounts.*": 3, "tokentalk.*": 6, "relentless.*": 1, "seats.*": 1},
   "keys": ["*"],
-  "skip": ["*._collector"]
+  "skip": ["*._collector", "roles.*"]
  },
  "targets": [
   {"key": "accounts.*.runway", "op": "<", "value": 1.0, "alarm": true, "tag": "RUNWAY_LOW", "name": "OPS_RUNWAY_RESCUE", "marks": ["MEASURED", "ESTIMATE"],

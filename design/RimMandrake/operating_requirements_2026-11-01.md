@@ -225,13 +225,13 @@ holds it, and a role that is not read is a defect in the wiring, not a reason to
 its outputs (items, notes, verdicts, reports) with a later action by another role ÷ outputs; plus `runs` and `silent_days`.
 Source: ledger, `role_done` notes. Threshold: `ranges`, `roles.*`. A role under range for two weeks gets a named fix of
 its input or its reader. Report-only and coarse: it is not a target a role can
-earn, and it never gates anyone. Test: fixture ledger with an ignored Auditor item reads under range. MEASURED since 10-25 (name
+earn, and it never gates anyone. Test: fixture ledger with an ignored Auditor item reads under range. Built: `src/RimMandrake/rimflow/role_use.py`, `ops_watch` family `roles`; class `under` rings nothing and `ops_watch.py lint` refuses any roles alarm. MEASURED since 10-25 (name
 prefix on the ledger, so approximate):
 
 | Role | Output | Used? | To fix |
 |---|---|---|---|
 | Operations | 26 run notes; diagnosed the jam | The diagnosis sat unread for 5.5 h | OP3 |
-| Auditor | 14 items filed | **9 untouched** | RO1; its items reach `next`, `audit` findings get a reader |
+| Auditor | 14 items filed | **9 untouched.** By hand: 6 of the 14 only open their why with the word "audit"; the 8 the Auditor really filed are all untouched | RO1; its items reach `next`, `audit` findings get a reader |
 | Arbiter | 179 run notes, 2 items filed | Verdicts feed gates; both filed items untouched | RO1 |
 | Producer | 30 raises, 10 items | Used: 8 implemented. The plan's WIP line binds nothing | RO2 |
 | Innovator | 4 notes, 2 items, 2 list entries | **Nothing shown adopted; not yet reading finding curves** | RW5, RO1 |

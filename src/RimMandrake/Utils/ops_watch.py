@@ -27,6 +27,8 @@ rimflow/dispatcher_schedule.json "measure"):
                          progress_age_min; distressed and cause (OP2, DI2); blind when a source is missing or frozen
              seats       idle_with_work_min: how long a seat has sat idle through rings it did not answer with work, from
                          the Dispatcher's journal.jsonl and state.json (OP2); blind when either is missing or frozen
+             roles       RO1, report-only: roles.<role>.acted_share, runs, silent_days, weeks_under, from the ledger
+                         (role_use.py); class under rings nothing and lint refuses anything that would
    STORE   append-only JSONL, one file per family: $RM_OPS_WATCH_DIR/series/<family>.jsonl (default
            D:\\ClaudeWork\\rimmandrake\\ops_watch). Every point is {v, m: MEASURED|ESTIMATE|UNMEASURED, why?, unit?}.
            An instrument that errors writes UNMEASURED with the error, never 0.
@@ -75,7 +77,7 @@ SCHEMA = "rm.ops_watch/1"
 HOUR = 3600.0
 DAY = 24 * HOUR
 FAMILIES = ("accounts", "codex", "steve", "testing", "disk", "timers", "flow", "process", "tps", "production", "v3", "tokentalk",
-            "evidence", "companion", "arena", "relentless", "seats", "plan")
+            "evidence", "companion", "arena", "relentless", "seats", "plan", "roles")
 
 
 def ops_dir() -> Path:
@@ -103,8 +105,9 @@ def nonfinite_at(x, at="rules"):
     return at if isinstance(x, float) and not finite(x) else None
 
 
-CLASSES = ("idle", "sane", "distressed", "emergency")     # OP1's vocabulary; a metric fills the ones it can act on
+CLASSES = ("idle", "sane", "under", "distressed", "emergency")     # OP1's vocabulary; a metric fills the ones it can act on
 ALARMED = ("distressed", "emergency")
+REPORT_ONLY = "roles."      # RO1: these metrics are read, never rung: only they may read under, and none may alarm
 
 
 def ranges_of(rules) -> dict:
@@ -134,6 +137,10 @@ def metric_problem(key, m, metrics):
     odd = sorted(set(cl) - set(CLASSES))
     if odd:
         return "%s fills unknown classes %s" % (key, odd)
+    if key.startswith(REPORT_ONLY) and any(c in cl for c in ALARMED):
+        return "%s is report-only (RO1) and may not fill distressed or emergency" % key
+    if "under" in cl and not key.startswith(REPORT_ONLY):
+        return "%s: under is the report-only class of %s*: this reading would ring nobody" % (key, REPORT_ONLY)
     if any(c in cl for c in ALARMED) and (not is_limit(m.get("ack_within_min")) or m["ack_within_min"] <= 0):
         return "%s can read distressed or emergency and has no ack_within_min" % key
     specs = list(cl.values())
@@ -163,6 +170,10 @@ def ranges_problems(rules):
     if not isinstance(r, dict):
         return ["no ranges block"]
     ms = ranges_of(rules)
+    gating = sorted(str(t.get("key")) for t in rules.get("targets") or [] if isinstance(t, dict)
+                    and (str(t.get("key")).startswith(REPORT_ONLY) or fnmatch.fnmatchcase(REPORT_ONLY + "x.y", str(t.get("key")))))
+    if gating:
+        return ["a target on a report-only metric (RO1): %s" % ", ".join(gating)]
     return [p for p in (metric_problem(k, ms[k], ms) for k in sorted(ms)) if p] or ([] if ms else ["the ranges block is empty"])
 
 
@@ -1762,6 +1773,45 @@ ST_KEYS = ("seats.idle_with_work_min", "seats.paused", "seats.distressed", "seat
 ST_RANGES = ("seats.paused", "seats.tick_age_s", "seats.idle_with_work_min", "seats.blind")
 
 
+def role_use_module():
+    p = HERE.parent / "rimflow" / "role_use.py"
+    spec = importlib.util.spec_from_file_location("role_use", p)
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod
+
+
+def c_roles(now, rules, ctx):
+    """roles.<role>.* (RO1): report-only, from role_use.py over the ledger c_flow read. A share under range two weeks
+    running asks the Conductor for a named fix. Nothing here alarms; a ledger not seen is UNMEASURED, and so is a role
+    with no output, whose share does not exist."""
+    cfg = rules.get("roles")
+    if not isinstance(cfg, dict) or not isinstance(cfg.get("roles"), dict):
+        return {"roles._collector": U("ops_watch_rules.json has no roles block")}
+    RU = role_use_module()
+    events = ctx.get("events")
+    if events is None:
+        import pulse_core as pc
+        events = pc.read_ledger()
+    if not events:
+        return {"roles._collector": U("the ledger read empty")}
+    span, ms, pts = cfg["week_days"] * DAY, ranges_of(rules), {}
+    this, last = RU.read(events, cfg, now - span, now), RU.read(events, cfg, now - 2 * span, now - span)
+    for role, g in this.items():
+        key, m = "roles.%s.acted_share" % role, {"m": "MEASURED"}
+        detail = {k: g[k] for k in ("outputs", "acted", "items", "items_coarse")}
+        detail.update(untouched=len(g["untouched"]), untouched_coarse=len(g["untouched_coarse"]))
+        names = g["untouched"][:20]
+        pts[key] = M(g["acted_share"], "share", untouched_items=names, **detail) if g["outputs"] \
+            else U("%s has no output this week: runs and silent_days say why" % role, "share")
+        pts["roles.%s.runs" % role] = M(g["runs"], "runs")
+        pts["roles.%s.silent_days" % role] = M(g["silent_days"], "days of %d" % g["days"])
+        was = last[role]["acted_share"]
+        pts["roles.%s.weeks_under" % role] = M(RU.weeks_under(g["acted_share"], was, lambda v: base_class(ms[key], v) == "under"),
+                                               "weeks", last_week=was) if key in ms else U("no range for " + key, "weeks")
+    return pts
+
+
 def st_dir(cfg) -> Path:
     return Path(os.environ.get("RM_DISPATCHER_STATE") or cfg.get("state_dir") or "/mnt/d/ClaudeWork/rimmandrake/dispatcher")
 
@@ -1881,9 +1931,9 @@ def c_seats(now, rules, ctx):
 COLLECTORS = {"accounts": c_accounts, "codex": c_codex, "steve": c_steve_all, "flow": c_flow, "testing": c_testing,
               "disk": c_disk, "timers": c_timers, "process": c_process, "tps": c_tps, "production": c_production,
               "v3": c_v3, "tokentalk": c_tokentalk, "evidence": c_evidence, "companion": c_companion,
-              "arena": c_arena, "relentless": c_relentless, "seats": c_seats, "plan": c_plan}
+              "arena": c_arena, "relentless": c_relentless, "seats": c_seats, "plan": c_plan, "roles": c_roles}
 ORDER = ("accounts", "codex", "steve", "flow", "testing", "disk", "timers", "process", "tps", "production", "v3", "tokentalk",
-         "evidence", "companion", "arena", "relentless", "seats", "plan")
+         "evidence", "companion", "arena", "relentless", "seats", "plan", "roles")
 
 
 # ==================================================================================================== storage

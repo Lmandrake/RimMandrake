@@ -31,7 +31,7 @@ for tg in RULES["targets"]:     # never the real Conductor log
 RECORD = [json.loads(ln) for ln in (HERE / "testdata/seats_idle_2026-10-31.jsonl").read_text(encoding="utf-8").splitlines()]
 for k in OW.ORDER:              # one family's collector and the real pass around it
     if k != "seats":
-        OW.COLLECTORS[k] = lambda now, rules, ctx: {"relentless.blind": OW.M(0)}
+        OW.COLLECTORS[k] = lambda now, rules, ctx: {k2: OW.M(0) for k2 in ("relentless.blind", "plan.blind", "disk.scratch_outside_blind")}
 FILED = []
 ALARM = "SEAT_IDLE_WITH_WORK:seats.distressed"
 BLIND = "SEATS_BLIND:seats.blind"
