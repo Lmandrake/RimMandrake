@@ -129,9 +129,10 @@ the dung-and-mat economy.**
 3. 🔴 **No boiling-immune traversal for free** — crossing scald water
    always costs (the built burn values stand); no native land predator
    hunts the water.
-4. 🔴 **No macro-life in the boil itself** — the walkers live at depth
-   where it is merely hot; nothing swims the roiling surface layer but
-   bubbles and sails.
+4. 🔴 **Alien macro-life lives in the boil** — owner, 2026-11-01: there is
+   now alien macro life down there; the earlier "no macro-life" ban is
+   withdrawn. A pawn is on the beach beside the Scald (steam) or on the
+   seafloor under boiling water (bubbles); nothing stands "on" the boil.
 5. 🔴 **No drained, cooled, or tamed Scald** — the boil is load-bearing
    for the whole dayside; nothing in any register switches it off.
 6. 🔴 **No vanilla-Earth flora or fauna** (standard eviction).

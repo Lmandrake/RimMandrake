@@ -41,7 +41,7 @@ Answers, verified against source:
    values stand. ⇒ every protection in §5 has a price (research, materials, speed, heat) and
    **gear never reaches zero** (a floor on the exposure clock, §3.3). Native immunity (§6) is
    not traversal-for-free: natives are the water's own life, not a route the player can wear.
-4. **No macro-life in the boil itself** — no creature this spec adds swims the surface layer.
+4. **Alien macro-life lives in the boil** (owner, 2026-11-01: there is now alien macro life down there; the earlier "no macro-life" ban is withdrawn). The Scald has two places a pawn can be: the beach beside it (steam) and the seafloor under boiling water (bubbles). Nothing stands "on" the boil.
 5. **No drained, cooled or tamed Scald** — no building reduces the boil; the still day (§3.2) is a
    pause in the *breath*, never in the *boil*.
 6. **No vanilla-Earth flora or fauna.**
