@@ -868,6 +868,19 @@ def c_disk(now, rules, ctx):
     except (OSError, ValueError, KeyError, TypeError) as e:
         out["disk.scratch_total_gb"] = U("scratch_reap runs.jsonl (%s): %s" % (p, e))
         out["disk.scratch_refused_gb"] = U("scratch_reap runs.jsonl: %s" % e)
+    # The expiry's own record. A missing or torn record is the alarm, not silence: nothing proves the expiry runs.
+    rec = p.with_name("last_run.json")
+    try:
+        d = json.loads(rec.read_text())
+        ok_t = d.get("last_ok_epoch") if isinstance(d, dict) else None
+        if not (is_num(ok_t) and finite(ok_t)):
+            raise ValueError("no successful run on record")
+        if ok_t > now + 900:    # one pass of slack, as `now` is taken before this runs; a record from a fast clock would hold the alarm off for as long as it was fast
+            raise ValueError("last clean run is in the future")
+        out["disk.scratch_ok_age_h"] = M(round((now - ok_t) / HOUR, 2), "hours since the expiry last ran clean",
+                                         failures=d.get("failures"), freed_bytes=d.get("freed_bytes"))
+    except (OSError, ValueError) as e:
+        out["disk.scratch_ok_age_h"] = M(9999, "hours since the expiry last ran clean", why="%s: %s" % (rec, e))
     return out
 
 
@@ -884,7 +897,10 @@ def c_timers(now, rules, ctx):
     try:                # two sources: neither one's failure takes the other's reading
         failed = systemctl_json("list-units", "--failed", "--all")
         names = sorted(str(u.get("unit") if isinstance(u, dict) else u) for u in failed)
-        out["timers.failed_units"] = M(len(names), "failed user units", units=names[:12])
+        # a dead selftest scope is no failed timer: signal_watch clears it within 5 min (SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS)
+        real = [n for n in names if not re.match(r"rm-harness-.*\.scope$", n)]
+        out["timers.failed_units"] = M(len(real), "failed user units", units=real[:12],
+                                       dead_test_scopes=len(names) - len(real))
     except Exception as e:  # noqa: BLE001
         out["timers.failed_units"] = U("list-units: %s: %s" % (type(e).__name__, str(e)[:160]))
     try:
@@ -1835,7 +1851,7 @@ TOKEN_FAMILIES = ("accounts", "codex", "tokentalk")
 BLIND_KEYS = frozenset("""
 companion.grant_hours_left companion.grant_visible
 disk.c_free_gb disk.c_used_gb disk.d_free_gb disk.d_used_gb disk.root_free_gb disk.root_used_gb
-disk.scratch_refused_gb disk.scratch_total_gb
+disk.scratch_ok_age_h disk.scratch_refused_gb disk.scratch_total_gb
 flow.closes_24h flow.lapsed_leases flow.untriaged_findings flow.verify_pass_24h
 process.share_24h process.share_7d
 production.A1 production.A2 production.A3 production.A4 production.A5

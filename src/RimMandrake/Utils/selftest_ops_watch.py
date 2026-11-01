@@ -357,6 +357,21 @@ check("disk: the fixture mount reads MEASURED", dk["disk.root_free_gb"]["m"] == 
 check("disk: scratch = YOUNG + REFUSE (DELETED is gone)", dk["disk.scratch_total_gb"]["v"] == 4.0, dk["disk.scratch_total_gb"])
 dk = OW.c_disk(NOW + 10 * H, RULES, {})
 check("disk: a reap log 11 h old -> scratch UNMEASURED", dk["disk.scratch_total_gb"]["m"] == "UNMEASURED", dk["disk.scratch_total_gb"])
+_rec = Path(os.environ["RM_SCRATCH_REAP_RUNS"]).with_name("last_run.json")
+_rec.unlink(missing_ok=True)
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: no expiry record reads over the alarm line, never silent", dk["disk.scratch_ok_age_h"]["v"] > 3
+      and dk["disk.scratch_ok_age_h"]["m"] == "MEASURED", dk["disk.scratch_ok_age_h"])
+_rec.write_text(json.dumps({"ok": False, "failures": ["rmtree x"], "last_ok_epoch": NOW - 5 * H}))
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: a failing expiry keeps aging from its last CLEAN run", dk["disk.scratch_ok_age_h"]["v"] == 5.0, dk["disk.scratch_ok_age_h"])
+_rec.write_text(json.dumps({"ok": True, "last_ok_epoch": NOW + 12 * H}))
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: a clean run in the future proves nothing and alarms", dk["disk.scratch_ok_age_h"]["v"] > 3, dk["disk.scratch_ok_age_h"])
+_rec.write_text(json.dumps({"ok": True, "last_ok_epoch": NOW - H}))
+dk = OW.c_disk(NOW, RULES, {})
+check("disk: a clean expiry an hour ago is under the line", dk["disk.scratch_ok_age_h"]["v"] == 1.0, dk["disk.scratch_ok_age_h"])
+_rec.unlink()
 os.environ["RM_OPS_DISKS"] = "root=/no/such/mount_ops_watch"
 dk = OW.c_disk(NOW, RULES, {})
 check("disk: a missing mount -> UNMEASURED, never 0", dk["disk.root_free_gb"]["m"] == "UNMEASURED"
@@ -1660,5 +1675,15 @@ _st = OW.run_alarms({"steve.seats_absent_min": OW.M(20.0, "min", said="seat-serv
 _a = _st.get("STEVE_SEATS:steve.seats_absent_min") or {}
 check("seats: over the line a ledger item is filed, naming the seat", _a.get("state") == "OPEN" and "seat-server absent" in (_a.get("title") or ""), _a)
 check("seats: and the Conductor log has the line", _clog.exists() and _a.get("item", "?") in _clog.read_text() and "seat-server absent" in _clog.read_text())
+# SCOPE_ALARM_FIX_DEAD_SELFTEST_STILL_SHOUTS: a dead selftest scope is not a failed timer, a real failed unit still is
+_sj = OW.systemctl_json
+OW.systemctl_json = lambda *a: [{"unit": "rm-harness-11-3.scope"}, {"unit": "rm-arena-x.service"}] \
+    if a[0] == "list-units" else []
+try:
+    _t = OW.c_timers(NOW, RULES, {})["timers.failed_units"]
+finally:
+    OW.systemctl_json = _sj
+check("scope: the dead selftest scope is not counted, the real service is", _t["v"] == 1, _t)
+check("scope: what was left out is said", _t["x"].get("dead_test_scopes") == 1, _t)
 print("GREEN" if not FAILS else "RED: %d failed: %s" % (len(FAILS), ", ".join(FAILS)))
 sys.exit(1 if FAILS else 0)
