@@ -1,0 +1,2 @@
+Building the known-result ledger: a per-thread busy flag in an audit tracer drops events raced by other threads; selftest timing files carry non-test keys; --no-cache did not stop the evidence-layer skip until --because existed; arena_gate truncated a why to 160 chars so a long TMPDIR hid '9p' (fixed to 400). Clone BENCH sits ahead 5/behind 48 with commits 446ac7cef3..06c7cddb05 unlanded; land.sh of one sha still publishes.
+home: design/RimMandrake/testing_policy_2026-10-28.md

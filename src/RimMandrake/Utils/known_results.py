@@ -143,6 +143,19 @@ def _under(p: str, roots) -> bool:
     return any(p == r or p.startswith(r.rstrip("/") + "/") for r in roots if r)
 
 
+def _path_walk(name: str) -> list:
+    """The PATH candidates up to the one that answers: later ones cannot matter. Windows folders on WSL's PATH are skipped:
+    a stat there is a slow reach onto another drive, and a file called exactly `python3` appearing in one is the audit's."""
+    out = []
+    for d in os.environ.get("PATH", "").split(os.pathsep):
+        p = os.path.join(d or ".", name)
+        if not _under(p, EXTERNAL):
+            out.append(p)
+            if os.path.isfile(p) and os.access(p, os.X_OK):
+                break
+    return out
+
+
 def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
     """{"refused": [reasons], "files", "absent", "lists", "import_lists", "probes", "env"}. Any reason means no record."""
     repo = str(Path(repo).resolve())
@@ -196,9 +209,10 @@ def analyse(trace_dir: Path, repo: Path, own_tmp: str, started: float) -> dict:
                 if os.path.basename(val) in CLOCK_TOOLS:
                     refused.append(f"clock: ran {os.path.basename(val)}")
                 if "/" in val:          # @ only hashes where it landed: the name is what a retargeted link changes
-                    probed.add(os.path.normpath(val))
+                    if not _under(os.path.normpath(val), EXTERNAL):
+                        probed.add(os.path.normpath(val))
                 else:                   # execvp walks PATH: a new file early on it takes the place of the one found
-                    probed.update(os.path.join(d or ".", val) for d in os.environ.get("PATH", "").split(os.pathsep))
+                    probed.update(_path_walk(val))
             elif op == "F":
                 execs -= 1
             elif op == "N":

@@ -299,6 +299,12 @@ def decide(K, root: Path) -> list:
     check("/x/bin1/tool" in m["probes"], "a failed exec candidate must stay absent")
     m = K.analyse(trace(tr, [SH, "X fix-tool", "F fix-tool"]), repo, own, later)
     check(any(p.endswith("/fix-tool") for p in m["probes"]), "a bare name walks PATH")
+    walk = K._path_walk("sh")
+    check(walk[-1:] and os.path.isfile(walk[-1]) and sum(os.path.isfile(p) for p in walk) == 1, "the PATH walk stops at the answer")
+    old = os.environ["PATH"]
+    os.environ["PATH"] = "/mnt/c/Windows:/nowhere"
+    check(K._path_walk("zzz") == ["/nowhere/zzz"], "the PATH walk stays off the Windows drives")
+    os.environ["PATH"] = old
     check(K.ENV_WHOLE in m["env"], "a shell makes the whole environment an input")
     check(K.ENV_WHOLE not in K.analyse(trace(tr, ["@ /usr/bin/true"]), repo, own, later)["env"], "and only a shell")
     (repo / "kind").mkdir()
@@ -392,8 +398,10 @@ MUTANTS = [
     ("file ignores link text", 'return link + h if link and h else h', 'return h'),
     ("probe ignores link text", 'return link + (f"d{mode}"', 'return (f"d{mode}"'),
     ("shared listing allowed", 'refused.append(f"shares: listed shared temp {p}")', 'pass'),
-    ("exec names unprobed", 'changes\n                    probed.add(os.path.normpath(val))', 'changes\n                    pass'),
-    ("no bare PATH walk", 'probed.update(os.path.join(d or ".", val) for d', 'list(os.path.join(d or ".", val) for d'),
+    ("exec names unprobed", 'if not _under(os.path.normpath(val), EXTERNAL):\n                        probed.add(os.path.normpath(val))', 'pass'),
+    ("no bare PATH walk", 'probed.update(_path_walk(val))', 'pass'),
+    ("PATH walk runs on", 'if os.path.isfile(p) and os.access(p, os.X_OK):\n                break', 'pass'),
+    ("PATH walk reaches windows", 'if not _under(p, EXTERNAL):\n            out.append(p)', 'if True:\n            out.append(p)'),
     ("listing without kinds", 'e.name + ("@" if e.is_symlink() else "/" if e.is_dir() else "")', 'e.name'),
     ("shell env not whole", '& ENV_IMPORTERS:', '& set():'),
     ("dotdot allowed", '"/../" in val and os.path', 'False and os.path'),
