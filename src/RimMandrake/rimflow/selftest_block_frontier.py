@@ -301,7 +301,8 @@ def t_cli_already_satisfied_typed_cycle_is_accepted():
     a, b = "FRONTIER_TYPED_A_PROBE_FIXTURE", "FRONTIER_TYPED_B_PROBE_FIXTURE"
     ok("file", a, "--for", "FOUNDRY", "--title", "t")
     ok("file", b, "--for", "FOUNDRY", "--title", "t")
-    sha = subprocess.check_output(("git", "rev-parse", "origin/main"), cwd=REPO).decode().strip()
+    sha = subprocess.check_output(("git", "log", "-n1", "--format=%H", "origin/main", "--", "src/RimMandrake/Utils/lessons.py"),
+                                  cwd=REPO).decode().strip()     # a code commit: a ledger-only sha is refused
     crit = os.path.join(CTX["root"], "crit.txt")
     with open(crit, "w") as fh:
         fh.write("O1 L0: compiles\nA1 L1: defs resolve\n")
