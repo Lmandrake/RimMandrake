@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- BESKAR_ARMORER_QUEST_1 spec section 2. -->
+  <WorldObjectDef ParentName="SpaceBase">
+    <defName>RM_ArmorerCovert</defName>
+    <label>the Armorer's covert</label>
+    <description>A derelict platform in orbit, a cryo-furnace beside a corridor open to the void. The Armorer forges here. Only a gravship reaches it. Bring beskar, keep your hands down, and you may return whenever you like.</description>
+    <worldObjectClass>RimMandrake.Utinni.BeskarArmorer.RM_ArmorerCovert</worldObjectClass>
+    <canBePlayerHome>false</canBePlayerHome>
+    <overrideMapSize>(120,1,120)</overrideMapSize>
+    <mapGenerator>RM_ArmorerCovertMap</mapGenerator>
+    <expandingIconTexture>World/WorldObjects/Expanding/SettlementPlatform</expandingIconTexture>
+  </WorldObjectDef>
+
+  <MapGeneratorDef ParentName="SpaceMapGenerator">
+    <defName>RM_ArmorerCovertMap</defName>
+    <label>Armorer's covert</label>
+    <genSteps>
+      <li>RM_GenStep_ArmorerCovertLayout</li>
+      <li>RM_GenStep_ArmorerCast</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_ArmorerCovertLayout</defName>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>false</fullClear>
+      <clearFogInRect>true</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RM_ArmorerCovertLayout</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_ArmorerCast</defName>
+    <order>500</order>
+    <genStep Class="RimMandrake.Utinni.BeskarArmorer.RM_GenStep_ArmorerCast" />
+  </GenStepDef>
+
+  <FactionDef ParentName="AncientsBase">
+    <defName>RM_TribeOfTheArmorer</defName>
+    <label>tribe of the Armorer</label>
+    <fixedName>The Tribe</fixedName>
+    <pawnSingular>Mandalorian</pawnSingular>
+    <pawnsPlural>Mandalorians</pawnsPlural>
+    <requiredCountAtGameStart>0</requiredCountAtGameStart>
+    <maxConfigurableAtWorldCreation>0</maxConfigurableAtWorldCreation>
+    <permanentEnemy>false</permanentEnemy>
+    <rescueesCanJoin>false</rescueesCanJoin>
+  </FactionDef>
+
+  <HediffDef>
+    <defName>RM_ArmorerOfTheTribe</defName>
+    <label>Armorer of the Tribe</label>
+    <description>She keeps the forge. Her armour holds the void and the cold, and only she works beskar.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.85, 0.95)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <stages>
+      <li>
+        <statOffsets>
+          <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+          <ComfyTemperatureMin>-150</ComfyTemperatureMin>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <HediffDef>
+    <defName>RM_CovertSwornMark</defName>
+    <label>sworn to the covert</label>
+    <description>Sworn to guard the Armorer's forge. Sealed armour holds the void and the cold.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.85, 0.95)</defaultLabelColor>
+    <isBad>false</isBad>
+    <everCurableByItem>false</everCurableByItem>
+    <stages>
+      <li>
+        <statOffsets>
+          <VacuumResistance MayRequire="Ludeon.RimWorld.Odyssey">1</VacuumResistance>
+          <ComfyTemperatureMin>-150</ComfyTemperatureMin>
+        </statOffsets>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <PawnKindDef Name="RM_CovertPawnBase" Abstract="True">
+    <race>Human</race>
+    <defaultFactionDef>RM_TribeOfTheArmorer</defaultFactionDef>
+    <combatPower>120</combatPower>
+    <isFighter>true</isFighter>
+    <weaponMoney>700~840</weaponMoney>
+    <apparelMoney>0~0</apparelMoney>
+    <initialResistanceRange>60~90</initialResistanceRange>
+    <initialWillRange>10~14</initialWillRange>
+    <weaponTags>
+      <li>SWKotORWeaponCategoryTag_heavyranged</li>
+      <li>KotORRanged_strong</li>
+    </weaponTags>
+    <apparelRequired>
+      <li>guy762_MandoArmor_supercom</li>
+      <li>guy762_MandoHelmet_supercom</li>
+    </apparelRequired>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="RM_CovertPawnBase">
+    <defName>RM_TheArmorer</defName>
+    <label>Armorer</label>
+    <fixedGender>Female</fixedGender>
+    <requiredWorkTags>
+      <li>Crafting</li>
+    </requiredWorkTags>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="RM_CovertPawnBase">
+    <defName>RM_CovertSworn</defName>
+    <label>covert sworn</label>
+  </PawnKindDef>
+
+  <ThingDef ParentName="BenchBase">
+    <defName>RM_ArmorerForge</defName>
+    <label>Armorer's forge</label>
+    <description>A cryo-furnace older than the Empire. Beskar answers to it and to the one who keeps it. Only she works here: leave a bill and your beskar, and wait.</description>
+    <thingClass>Building_WorkTable</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Production/ElectricSmelter</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(3.5,1.5)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <fillPercent>0.5</fillPercent>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>600</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <size>(3,1)</size>
+    <tickerType>Rare</tickerType>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <surfaceType>Item</surfaceType>
+    <inspectorTabs>
+      <li>ITab_Bills</li>
+    </inspectorTabs>
+    <comps>
+      <li Class="RimMandrake.Utinni.BeskarArmorer.CompProperties_ArmorerForge" />
+    </comps>
+  </ThingDef>
+
+  <KCSG.SymbolDef>
+    <defName>RM_Symbol_ArmorerForge</defName>
+    <thing>RM_ArmorerForge</thing>
+  </KCSG.SymbolDef>
+
+  <WorkGiverDef>
+    <defName>RM_DoBillsArmorerForge</defName>
+    <label>reforge beskar</label>
+    <giverClass>WorkGiver_DoBill</giverClass>
+    <workType>Crafting</workType>
+    <priorityInType>1</priorityInType>
+    <fixedBillGiverDefs>
+      <li>RM_ArmorerForge</li>
+    </fixedBillGiverDefs>
+    <verb>reforge at</verb>
+    <gerund>reforging at</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+  <RecipeDef>
+    <defName>RM_Recipe_ArmorerMeltBeskar</defName>
+    <label>melt beskar</label>
+    <description>The Armorer melts anything carrying beskar down to ingots. She keeps her tribute for the foundlings.</description>
+    <jobString>Melting beskar.</jobString>
+    <workerClass>RimMandrake.Utinni.BeskarArmorer.RM_RecipeWorker_ArmorerMelt</workerClass>
+    <workAmount>3000</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <workSkill>Crafting</workSkill>
+    <effectWorking>Smith</effectWorking>
+    <soundWorking>Recipe_Smith</soundWorking>
+    <recipeUsers>
+      <li>RM_ArmorerForge</li>
+    </recipeUsers>
+    <!-- the real list is whatever gear this mod list holds: ArmorerStartup.GenerateRecipes widens both filters -->
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>KOTOR_RawBeskar</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>KOTOR_RawBeskar</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+  </RecipeDef>
+</Defs>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- BESKAR_ARMORER_QUEST_1 spec 4.3. -->
+  <SitePartDef>
+    <defName>RM_ImperialDetentionPost</defName>
+    <label>Imperial detention post</label>
+    <description>A small prefab post the Empire keeps off the books. One Mandalorian in a cell, his plate in the evidence locker, guards who have been told nothing.</description>
+    <workerClass>RimMandrake.Utinni.BeskarArmorer.RM_SitePartWorker_ImperialDetainee</workerClass>
+    <siteTexture>World/WorldObjects/Sites/GenericSite</siteTexture>
+    <expandingIconTexture>World/WorldObjects/Expanding/Sites/Prisoner</expandingIconTexture>
+    <wantsThreatPoints>true</wantsThreatPoints>
+    <gravShipsCanLandOn>true</gravShipsCanLandOn>
+    <considerEnteringAsAttack>true</considerEnteringAsAttack>
+    <handlesWorldObjectTimeoutInspectString>true</handlesWorldObjectTimeoutInspectString>
+    <tags>
+      <li>RM_ImperialDetentionPost</li>
+    </tags>
+  </SitePartDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_DetentionPostLayout</defName>
+    <linkWithSite>RM_ImperialDetentionPost</linkWithSite>
+    <order>400</order>
+    <genStep Class="KCSG.GenStep_CustomStructureGen">
+      <fullClear>true</fullClear>
+      <clearFogInRect>false</clearFogInRect>
+      <structureLayoutDefs>
+        <li>RM_ImperialDetentionPostLayout</li>
+      </structureLayoutDefs>
+    </genStep>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RM_GenStep_DetentionPost</defName>
+    <linkWithSite>RM_ImperialDetentionPost</linkWithSite>
+    <order>450</order>
+    <genStep Class="RimMandrake.Utinni.BeskarArmorer.RM_GenStep_DetentionPost" />
+  </GenStepDef>
+
+  <IncidentDef>
+    <defName>RM_BlackstarPrisonBreakOffer</defName>
+    <label>Blackstar offer: prison break</label>
+    <category>GiveQuest</category>
+    <targetTags>
+      <li>World</li>
+    </targetTags>
+    <workerClass>RimMandrake.Utinni.BeskarArmorer.RM_IncidentWorker_PrisonBreakOffer</workerClass>
+    <questScriptDef>RM_Quest_ImperialPrisonBreak</questScriptDef>
+    <baseChance>1</baseChance>
+    <earliestDay>30</earliestDay>
+    <minRefireDays>60</minRefireDays>
+  </IncidentDef>
+</Defs>

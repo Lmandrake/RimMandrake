@@ -342,6 +342,12 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.oracle"],
         "dlc": True,
     },
+    "beskar_armorer": {
+        "why": "Prove BESKAR_ARMORER_QUEST_1 live (src/RimUtinni/BeskarArmorer/prove_beskar_armorer.py --live): "
+               "the covert, both routes, the forge and the harm rule, with the Armoury's gear and Blackstar's kinds.",
+        "want": [BRIDGE, "mandrake.rut.beskararmorer"],
+        "dlc": True,
+    },
     "bacta": {
         "why": "Prove BACTA_TANK_CORE_1's live healing loop (tuned-rate heal, "
                "scar erasure, organ-heals-but-doesn't-regrow, brain untouched, "

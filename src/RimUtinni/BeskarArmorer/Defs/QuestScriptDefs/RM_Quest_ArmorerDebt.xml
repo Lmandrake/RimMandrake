@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- BESKAR_ARMORER_QUEST_1 spec 3.2. Fired from C# (Patch_PrisonerRelease), which sets hunter and revealTicks on the slate. -->
+  <QuestScriptDef>
+    <defName>RM_Quest_ArmorerDebt</defName>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <autoAccept>true</autoAccept>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->The Creed Keeps Its Debts</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[hunter_nameDef] walked out of your gate alive. A Blackstar Mandalorian does not thank anyone, but the Creed keeps its debts: someone will hear of the clan that let him go, and in a few days coordinates will come.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>true</canBeSpace>
+        </li>
+        <li Class="QuestNode_Letter">
+          <label>A debt owed</label>
+          <text>[hunter_nameDef] walks out of your gate. A Blackstar Mandalorian does not thank anyone. He says the Creed keeps its debts, and that someone will hear of the clan that let him go.</text>
+        </li>
+        <li Class="QuestNode_Delay">
+          <delayTicks>$revealTicks</delayTicks>
+          <outSignalComplete>RevealDue</outSignalComplete>
+          <isQuestTimeout>false</isQuestTimeout>
+        </li>
+        <li Class="RimMandrake.Utinni.BeskarArmorer.RM_QuestNode_RevealArmorerCovert">
+          <inSignal>RevealDue</inSignal>
+          <outSignal>CovertRevealed</outSignal>
+          <outSignalRefused>RevealRefused</outSignalRefused>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>CovertRevealed</inSignal>
+          <outcome>Success</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>RevealRefused</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+</Defs>

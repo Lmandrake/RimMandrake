@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Beskar Armorer</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.beskararmorer</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>A Blackstar quest to a rare Mandalorian armorer, the only one who can reforge beskar.
+
+Beskar is salvage. Your colony wears it as found, and no colony bill can consume it; smelting it gives steel and slag. Free a captured Blackstar Mandalorian, or break one out of an Imperial detention post, and the Armorer sends coordinates to her covert in orbit. Reach it by gravship, carry your beskar up, and she melts it (keeping one part in five for the foundlings) and reforges it into the gear you choose. Return whenever you like. Raise a hand there and the covert is lost for good, and Blackstar comes for you at once.
+
+Design: design/RimMandrake/beskar_armorer_quest_design_2026-10-09.md</description>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2023507013</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rsw.armoury</packageId>
+      <displayName>Jawa Armoury Rebalance</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rut.patches</packageId>
+      <displayName>RimUtinni Patches</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Royalty</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+    <li>mandrake.rsw.armoury</li>
+    <li>mandrake.rut.patches</li>
+  </loadAfter>
+</ModMetaData>

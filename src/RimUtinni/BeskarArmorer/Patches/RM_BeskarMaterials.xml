@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BESKAR_ARMORER_QUEST_1 spec 5.1 and 5.2. Conditional on the def itself, so a donor mod that is absent is a no-op with no mod name to keep in step. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KOTOR_IngotBeskar"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="KOTOR_IngotBeskar"]</xpath>
+      <value><li Class="RimMandrake.Utinni.BeskarArmorer.RM_BeskarMaterial" /></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KOTOR_RawBeskar"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="KOTOR_RawBeskar"]</xpath>
+      <value><li Class="RimMandrake.Utinni.BeskarArmorer.RM_BeskarMaterial" /></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="OuterRim_Beskar"]</xpath>
+      <value><li Class="RimMandrake.Utinni.BeskarArmorer.RM_BeskarMaterial" /></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="OuterRim_PureBeskar"]</xpath>
+      <value><li Class="RimMandrake.Utinni.BeskarArmorer.RM_BeskarMaterial" /></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="LKBeskar_Ore"]</xpath>
+      <value><li Class="RimMandrake.Utinni.BeskarArmorer.RM_BeskarMaterial" /></value>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_crystalitem_beskar"]</xpath>
+    <match Class="PatchOperationAddModExtension">
+      <xpath>/Defs/ThingDef[defName="guy762_crystalitem_beskar"]</xpath>
+      <value><li Class="RimMandrake.Utinni.BeskarArmorer.RM_BeskarMaterial" /></value>
+    </match>
+  </Operation>
+  <!-- The colony bench must not list bills it can never fill. Only the pieces whose cost names beskar: CANON_MATERIALS_BUILD_1 moved the
+       other Mando pieces to RSW_Durasteel, and those stay colony-made. IsNull, not Remove: each def inherits a recipeMaker from its
+       abstract parent, so removing the child's block only brings the parent's back. -->
+  <Operation Class="PatchOperationReplace">
+    <success>Always</success>
+    <xpath>/Defs/ThingDef[starts-with(defName, "guy762_") and costList/KOTOR_IngotBeskar]/recipeMaker</xpath>
+    <value><recipeMaker IsNull="True" /></value>
+  </Operation>
+</Patch>

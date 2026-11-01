@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- BESKAR_ARMORER_QUEST_1 spec 4.2. Offered by the incident RM_BlackstarPrisonBreakOffer. -->
+  <QuestScriptDef>
+    <defName>RM_Quest_ImperialPrisonBreak</defName>
+    <isRootSpecial>true</isRootSpecial>
+    <rootSelectionWeight>0</rootSelectionWeight>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+    <sendAvailableLetter>true</sendAvailableLetter>
+    <defaultChallengeRating>2</defaultChallengeRating>
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->Breaking [detainee_nameDef] Out</li>
+        <li>questName->A Debt in Durasteel</li>
+      </rulesStrings>
+    </questNameRules>
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->Blackstar sends word, and for once no threat comes with it. One of their Mandalorians, [detainee_nameDef], is held at a small Imperial detention post near [map_definite]. Get him out alive.\n\nThe Empire will not forget this: expect your heat with them to climb sharply, and a pursuit to find you. He pays his debts the way his Creed allows, and that is worth more than silver: coordinates to the Armorer who reforges beskar.</li>
+      </rulesStrings>
+    </questDescriptionRules>
+    <root Class="QuestNode_Sequence">
+      <nodes>
+        <li Class="QuestNode_SubScript">
+          <def>Util_RandomizePointsChallengeRating</def>
+          <parms>
+            <pointsFactorTwoStar>1.5</pointsFactorTwoStar>
+            <pointsFactorThreeStar>2</pointsFactorThreeStar>
+          </parms>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_AdjustPointsForDistantFight</def>
+        </li>
+        <li Class="QuestNode_GetMap">
+          <canBeSpace>true</canBeSpace>
+        </li>
+        <li Class="QuestNode_GetSiteTile">
+          <storeAs>siteTile</storeAs>
+          <preferCloserTiles>true</preferCloserTiles>
+        </li>
+        <li Class="RimMandrake.Utinni.BeskarArmorer.RM_QuestNode_GetEmpire">
+          <storeAs>siteFaction</storeAs>
+        </li>
+        <li Class="QuestNode_Set">
+          <name>sitePartDefs</name>
+          <value>
+            <li>RM_ImperialDetentionPost</li>
+          </value>
+        </li>
+        <li Class="QuestNode_GetDefaultSitePartsParams">
+          <tile>$siteTile</tile>
+          <faction>$siteFaction</faction>
+          <sitePartDefs>$sitePartDefs</sitePartDefs>
+          <storeSitePartsParamsAs>sitePartsParams</storeSitePartsParamsAs>
+        </li>
+        <li Class="QuestNode_SubScript">
+          <def>Util_GenerateSite</def>
+        </li>
+        <li Class="QuestNode_SpawnWorldObjects">
+          <worldObjects>$site</worldObjects>
+          <defsToExcludeFromHyperlinks>Human</defsToExcludeFromHyperlinks>
+        </li>
+        <li Class="QuestNode_WorldObjectTimeout">
+          <worldObject>$site</worldObject>
+          <isQuestTimeout>true</isQuestTimeout>
+          <delayTicks>$(randInt(10,20)*60000)</delayTicks>
+          <inSignalDisable>site.MapGenerated</inSignalDisable>
+          <node Class="QuestNode_End">
+            <outcome>Fail</outcome>
+            <sendStandardLetter>true</sendStandardLetter>
+          </node>
+        </li>
+        <li Class="RimMandrake.Utinni.BeskarArmorer.RM_QuestNode_Breakout">
+          <inSignalArrived>site.MapGenerated</inSignalArrived>
+          <outSignalOut>DetaineeOut</outSignalOut>
+          <outSignalDead>DetaineeDead</outSignalDead>
+          <outSignalSiteGone>SiteGone</outSignalSiteGone>
+          <detainee>$detainee</detainee>
+          <site>$site</site>
+        </li>
+        <li Class="RimMandrake.Utinni.BeskarArmorer.RM_QuestNode_AddHeat">
+          <inSignal>DetaineeOut</inSignal>
+          <faction>$siteFaction</faction>
+          <amount>30</amount>
+          <source>Imperial prison break</source>
+        </li>
+        <li Class="QuestNode_Delay">
+          <inSignalEnable>DetaineeOut</inSignalEnable>
+          <delayTicks>$(randInt(2,4)*60000)</delayTicks>
+          <outSignalComplete>PursuitDue</outSignalComplete>
+          <isQuestTimeout>false</isQuestTimeout>
+        </li>
+        <li Class="RimMandrake.Utinni.BeskarArmorer.RM_QuestNode_PursuitRaid">
+          <inSignal>PursuitDue</inSignal>
+          <faction>$siteFaction</faction>
+          <pointsFactor>1.5</pointsFactor>
+        </li>
+        <li Class="RimMandrake.Utinni.BeskarArmorer.RM_QuestNode_DetaineeLeaves">
+          <inSignal>PursuitDue</inSignal>
+          <detainee>$detainee</detainee>
+        </li>
+        <li Class="RimMandrake.Utinni.BeskarArmorer.RM_QuestNode_RevealArmorerCovert">
+          <inSignal>PursuitDue</inSignal>
+          <outSignal>CovertRevealed</outSignal>
+          <outSignalRefused>RevealRefused</outSignalRefused>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>CovertRevealed</inSignal>
+          <outcome>Success</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>RevealRefused</inSignal>
+          <outcome>Success</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>DetaineeDead</inSignal>
+          <outcome>Fail</outcome>
+          <sendStandardLetter>true</sendStandardLetter>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>SiteGone</inSignal>
+          <outcome>Unknown</outcome>
+        </li>
+      </nodes>
+    </root>
+  </QuestScriptDef>
+</Defs>
