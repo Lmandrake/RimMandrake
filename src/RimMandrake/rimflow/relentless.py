@@ -506,14 +506,19 @@ def fence_check(store, item, gen):
 
 
 def hook_fence(toplevel, store=None):
-    """pre-push. No marker file in .git: not a relentless clone, nothing to say."""
+    """pre-push. No marker file in .git: not a relentless clone, nothing to say. A marker there but unreadable is a
+    relentless clone whose lease nobody can name: it fails closed."""
     try:
         with open(os.path.join(toplevel, ".git", "relentless.json"), encoding="utf-8") as f:
             m = json.load(f)
-    except (OSError, ValueError):
+        item, mark = m["item"], int(m["gen"])
+        gen = os.environ.get("RELENTLESS_GEN")     # set at launch, so a resumed old session cannot read the new marker
+        gen = int(gen) if gen else mark
+    except FileNotFoundError:
         return None
-    gen = os.environ.get("RELENTLESS_GEN")     # set at launch, so a resumed old session cannot read the new marker
-    return fence_check(store or Store(), m["item"], int(gen) if gen else m["gen"])
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        return "fence marker unreadable, no push: %s" % str(e)[:120]
+    return fence_check(store or Store(), item, gen)
 
 
 def guard(verb, item, argv, env=None, store=None):
@@ -620,13 +625,20 @@ class Effects:
                 if self.git_ok(self.books, "ls-files", "--others", "-z", "--", p).strip("\0"):
                     return "books behind: ignored files under %s stand where origin now tracks a file" % p
                 continue
-            if not os.path.isfile(src) or self.git(self.books, "ls-files", "--error-unmatch", "--", p).returncode == 0:
+            if not os.path.lexists(src) or self.git(self.books, "ls-files", "--error-unmatch", "--", p).returncode == 0:
                 continue
-            with open(src, "rb") as f:
-                here = f.read()
+            link = os.path.islink(src)      # dangling or not, its bytes are its target string
+            if not link and not os.path.isfile(src):
+                return "books behind: ignored %s is no file and origin now tracks a file there" % p
+            if link:
+                here = os.fsencode(os.readlink(src))
+            else:
+                with open(src, "rb") as f:
+                    here = f.read()
             there = subprocess.run(["git", "-C", self.books, "show", "origin/main:" + p], capture_output=True,
                                    check=True, timeout=60).stdout
-            if here != there:
+            mode = self.git_ok(self.books, "ls-tree", "origin/main", "--", p).split(" ")[0]
+            if here != there or link != (mode == "120000"):
                 return "books behind: ignored file %s differs from what origin now tracks there" % p
         return None
 
@@ -923,8 +935,8 @@ class Effects:
                 cur = self.store.load(st["item"])
                 cur.pop("bundle", None)
                 self.store.save(cur)
-        with open(os.path.join(c, ".git", "relentless.json"), "w", encoding="utf-8") as f:
-            json.dump({"item": st["item"], "gen": st["gen"]}, f)
+        self.store._write(os.path.join(c, ".git", "relentless.json"),     # atomic: the pre-push hook may be reading
+                          json.dumps({"item": st["item"], "gen": st["gen"]}))
         return None
 
     def scratch_clone(self):
@@ -1693,7 +1705,7 @@ def enrol_one(store, item, why, now):
 def reenrol(store, item, why, now):
     """Back in line after `retired`, which is otherwise for good: a named verb, journalled, for a retirement that was
     wrong. A fresh start with the old spend: `gen` moves on, so a run of the old life stays fenced, and `check_count`
-    stays, so a new checker never lands in the path a quarantined one may still be running in."""
+    stays, so a new checker never lands in the path a quarantined one may still be running in; `help_count` likewise."""
     if not (why or "").strip():
         raise ValueError("reenrol: --why is required")
     with store.lock():
@@ -1701,9 +1713,13 @@ def reenrol(store, item, why, now):
         if not old or old["status"] != "retired":
             raise ValueError("%s is %s, only a retired item can be re-enrolled" % (
                 item, old["status"] if old else "not enrolled"))
+        live = [k for k in ("run", "check", "help") if (run_of(old, k) or {}).get("charged", 0) is None]
+        if live:    # the new state would forget what they cost and could never stop them
+            raise ValueError("%s still has an unsettled %s: re-enrol once it is over" % (item, ", ".join(live)))
         st = new_state(item, now, why)
         st.update(gen=old["gen"] + 1, spent=old.get("spent", 0), quarantined=old.get("quarantined", []),
-                  attempts=old.get("attempts", 0), check_count=old.get("check_count", 0))
+                  attempts=old.get("attempts", 0), check_count=old.get("check_count", 0),
+                  help_count=old.get("help_count", 0))
         store.save(st)
         store.journal({"at": iso(now), "do": "reenrol", "item": item, "why": why})
         return st
@@ -1925,7 +1941,7 @@ def step(store, fx, r, item, now, acts):
         if not settle(store, fx, r, item, "run", c["at"], now, acts):
             return
         # checks get a place, and a waiting candidate runs nothing: counted, two would wait on each other for good
-        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["status"] != "candidate")
+        active = sum(1 for x in store.states() if x["status"] in HOLDS_A_PLACE and x["status"] != "candidate") + helps_running(store)
         hold = admission(store, fx, r, now, active, extra=1)
         if not hold and r.get("staffing") and clones_this_tick(acts) >= r["staffing"]["launch_per_tick"]:
             hold = "clones per tick"
@@ -2075,8 +2091,8 @@ def step(store, fx, r, item, now, acts):
                 st["tomb_since"] = now
                 store.attempt(item, {"at": iso(now), "end": "done", "sha": c["sha"]})
                 store.save(st)
+            remove_check_clone(fx, st)
             fx.remove_clone(st)
-            fx.remove_clone({"clone": (st.get("check") or {}).get("clone")})
             acts.append({"do": "closed_waiting_for_seat", "item": item})
             return
         finished(store, fx, item, c, now, acts, attempt=True)
@@ -2225,6 +2241,13 @@ def helps_running(store):
     return sum(1 for x in store.states() if (x.get("help") or {}).get("status") == "running")
 
 
+def remove_check_clone(fx, st):
+    """A quarantined checker still sits in its clone: the reaper removes it when the run is dead, nobody before."""
+    c = (st.get("check") or {}).get("clone")
+    if not any(q.get("clone") == c and not q.get("reaped") for q in st["quarantined"]):
+        fx.remove_clone({"clone": c})
+
+
 def finished(store, fx, item, c, now, acts, attempt=False):
     with store.lock():
         st = store.load(item)
@@ -2233,8 +2256,8 @@ def finished(store, fx, item, c, now, acts, attempt=False):
         if attempt:
             store.attempt(item, {"at": iso(now), "end": "done", "sha": c["sha"]})
         store.save(st)
+    remove_check_clone(fx, st)
     fx.remove_clone(st)
-    fx.remove_clone({"clone": (st.get("check") or {}).get("clone")})
     store.journal({"at": iso(now), "do": "done", "item": item, "sha": c["sha"], "returns": st["returns"]})
     acts.append({"do": "done", "item": item})
 

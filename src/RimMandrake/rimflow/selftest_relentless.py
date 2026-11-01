@@ -61,6 +61,7 @@ class FakeWorld:
         self.on_settle = None
         self.alarms = []
         self.alarm_fail = None
+        self.pool = {}          # per world: a class-level dict leaks one test's clones into the next
 
     def budget(self): return self.budget_v
     def head_helpers(self): return self.helpers
@@ -116,7 +117,6 @@ class FakeWorld:
     def prepare(self, st):
         return "clone failed: POOL REFUSED: pool full" if self.refuse else None
     # the clone pool: path -> {busy, kept, real}. Empty unless a test plants one
-    pool = {}
     pool_max = 10
     refuse = False
     jams = ()
@@ -143,9 +143,10 @@ class FakeWorld:
         self.mem_once = getattr(self, "mem_after", None)
         if self.refuse or (self.pool and len(self.pool) >= self.pool_max):
             return None, "checker clone failed: scratch_clone: FAILED: POOL REFUSED: pool full: 10 clones, cap 10\n"
+        c = "/c/check-%s-c%d" % (st["item"], (st.get("check_count") or 0) + 1)    # as Effects names it
         if self.pool:
-            self.pool["/c/check-" + st["item"]] = {"busy": True}
-        return "/c/check", None
+            self.pool[c] = {"busy": True}
+        return c, None
     def help_checkout(self, st, sha):
         if self.refuse or (self.pool and len(self.pool) >= self.pool_max):
             return None, "help clone failed: scratch_clone: FAILED: POOL REFUSED: pool full: 10 clones, cap 10\n"
@@ -2510,8 +2511,121 @@ def t_help_lifecycle():
     g.done()
 
 
+def t_review_findings_core():
+    """Five findings of the first full review of relentless.py, each by its failing sequence."""
+    # the fence: a marker there but unreadable fails closed; absent still says nothing
+    x = Rig(n=1, share=1.0, max_workers=1)
+    x.run_one("I0")
+    gitd = os.path.join(x.d, "cl", ".git")
+    os.makedirs(gitd)
+    for torn in ("", '{"item": "I0"', '{"gen": 1}', '{"item": "I0", "gen": "x"}', "[]"):
+        with open(os.path.join(gitd, "relentless.json"), "w") as f:
+            f.write(torn)
+        ok(R.hook_fence(os.path.join(x.d, "cl"), x.s), "a torn marker refuses the push: %r" % torn)
+    os.remove(os.path.join(gitd, "relentless.json"))
+    ok(R.hook_fence(os.path.join(x.d, "cl"), x.s) is None, "no marker still says nothing")
+    x.done()
+    # the ignored symlink: dangling, its target string is what would be lost
+    d = tempfile.mkdtemp(prefix="rlsym-")
+    def g(*a):
+        subprocess.run(("git", "-C", d) + a, check=True, capture_output=True,
+                       env=dict(os.environ, GIT_AUTHOR_NAME="t", GIT_AUTHOR_EMAIL="t@t", GIT_COMMITTER_NAME="t", GIT_COMMITTER_EMAIL="t@t"))
+    g("init", "-q", "-b", "main")
+    with open(os.path.join(d, ".gitignore"), "w") as f:
+        f.write("local.cfg\n")
+    g("add", ".gitignore")
+    g("commit", "-qm", "a")
+    base = subprocess.run(["git", "-C", d, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    with open(os.path.join(d, "local.cfg"), "w") as f:
+        f.write("origin\n")
+    g("add", "-f", "local.cfg")
+    g("commit", "-qm", "b")
+    tip = subprocess.run(["git", "-C", d, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
+    g("update-ref", "refs/remotes/origin/main", tip)
+    g("reset", "-q", "--soft", base)
+    g("reset", "-q")
+    os.remove(os.path.join(d, "local.cfg"))
+    os.symlink("/nowhere/at/all", os.path.join(d, "local.cfg"))
+    fx = R.Effects.__new__(R.Effects)
+    fx.books = d
+    ok("local.cfg" in (fx.ignored_collision() or ""), "a dangling ignored symlink is a collision")
+    os.remove(os.path.join(d, "local.cfg"))
+    with open(os.path.join(d, "local.cfg"), "w") as f:
+        f.write("origin\n")
+    ok(fx.ignored_collision() is None, "same bytes in a plain file is none")
+    os.remove(os.path.join(d, "local.cfg"))
+    os.symlink("origin\n", os.path.join(d, "local.cfg"))
+    ok("local.cfg" in (fx.ignored_collision() or ""), "a link whose target equals the file's bytes still is one")
+    shutil.rmtree(d, ignore_errors=True)
+    # reenrol keeps what is still live and the consult count
+    x = Rig(n=1)
+    with x.s.lock():
+        st = R.new_state("Z", x.now, "t")
+        st.update(status="retired", help_count=3, help={"status": "stopping", "run": {"unit": "h", "charged": None}})
+        x.s.save(st)
+    try:
+        R.reenrol(x.s, "Z", "wrong", x.now)
+        ok(False, "reenrol must refuse while a consult is unsettled")
+    except ValueError as e:
+        ok("help" in str(e), "reenrol waits for a live consult: %s" % e)
+    with x.s.lock():
+        st = x.s.load("Z")
+        st["help"]["run"]["charged"] = 5
+        x.s.save(st)
+    ok(R.reenrol(x.s, "Z", "wrong", x.now)["help_count"] == 3, "and the consult count stays, so its path is never reused")
+    x.done()
+    # a running consult takes a place at check admission too
+    x = Rig(n=3, share=1.0, max_workers=1, staffing=None)
+    for i in ("A", "B"):
+        with x.s.lock():
+            st = R.new_state(i, x.now, "t")
+            x.w.items[i] = "doing"
+            st.update(status="candidate", gen=1, ledger_started=True, candidate={"sha": "s", "at": x.now - 10, "evidence": "e"},
+                      contract={"proof": "p"}, base="b")
+            x.s.save(st)
+    with x.s.lock():
+        st = x.s.load("A")
+        st["help"] = {"status": "running", "run": {"unit": "h", "charged": None}, "at": x.now, "tries": 1}
+        x.s.save(st)
+    acts = []
+    for i in ("A", "B"):
+        R.step(x.s, x.w, x.r, i, x.now, acts)
+    running = sum(1 for i in ("A", "B") if x.st(i)["status"] == "checking")
+    ok(running == 1, "cap 1 plus one check, one consult running: one checker, not two: %d %s" % (running, acts))
+    x.done()
+    # a quarantined checker keeps its clone until the reaper
+    x = Rig(n=1)
+    x.w.pool = {"/c/check-Q-c1": {}, "/c/Q.0": {}}
+    st = R.new_state("Q", x.now, "t")
+    st.update(status="closing", clone="/c/Q.0", check={"clone": "/c/check-Q-c1"},
+              quarantined=[{"clone": "/c/check-Q-c1", "run": {"unit": "u"}, "reaped": False}])
+    x.s.save(st)
+    R.finished(x.s, x.w, "Q", {"sha": "s"}, x.now, [])
+    ok("/c/check-Q-c1" in x.w.pool and "/c/Q.0" not in x.w.pool, "completion leaves a quarantined checker's clone")
+    st = x.s.load("Q")
+    st["quarantined"][0]["reaped"] = True
+    x.s.save(st)
+    R.remove_check_clone(x.w, x.s.load("Q"))
+    ok("/c/check-Q-c1" not in x.w.pool, "reaped, it may go")
+    x.done()
+
+
+def t_review_findings_rig():
+    a, b = FakeWorld(0), FakeWorld(0)
+    a.pool["/c/L0"] = {"busy": True}
+    ok(b.pool_load()[0] == 0, "worlds share no clone pool")
+    w = FakeWorld(0)
+    w.pool = {"/c/L%d" % i: {} for i in range(9)}
+    c, _ = w.clean_checkout({"item": "I0"}, "s")
+    ok(c in w.pool, "the checkout returns the path it records")
+    w.remove_clone({"clone": c})
+    ok(len(w.pool) == 9, "so it can be removed")
+    d, _ = w.clean_checkout({"item": "I0", "check_count": 1}, "s")
+    ok(c != d, "and two checks of an item are two clones")
+
+
 def main():
-    for t in (t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_review_findings_core, t_review_findings_rig, t_proof_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,
