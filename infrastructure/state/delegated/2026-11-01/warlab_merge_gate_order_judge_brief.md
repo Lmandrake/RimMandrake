@@ -5,8 +5,8 @@ Decide: **may `design/Jawa/worldbuilding/dungeons_arc_spec.md` §2.3 (from "The 
 "Who stands where") stand as the ruled gate order?** Answer KEEP, REDO or UNSURE per §4.4, for the whole
 and for each hard read.
 
-**Item criteria** (`ASSAILANT_WARLAB_BUILD_MERGE`): the gate order (reveal, garrison if early, codes, core
-socket) is ruled by the owner where it is a judgement, and written once.
+**Item criteria** (`ASSAILANT_WARLAB_BUILD_MERGE`): the gate order (the four gates of the §2.3 table) is
+ruled by the owner where it is a judgement, and written once.
 
 **Read yourself:** `design/Jawa/worldbuilding/biomes/the_chill_warlab_routes_spec_2026-09-27.md`,
 `design/Jawa/worldbuilding/biomes/the_propane_lakes.md` §6 and §8,
