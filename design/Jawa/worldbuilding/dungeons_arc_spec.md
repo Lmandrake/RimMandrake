@@ -119,7 +119,7 @@ The Cracking Station) are "the last waypoint, rumor carriers" (owner ruling,
 entry gate is the war lab's, not a separate one (§2.3). The lake's ending is also when the Fever Wood's sekkulaath rises; its damage is confined
 to its own region, permanently (owner by question card 2026-10-12: *"How far
 does the sekkulaath rising reach? → Its region only, permanently"*; design in
-`biomes/kits/fever_wood_kit_spec.md` F4). Bridge
+`sekkulaath_rising_crater_event_2026-11-01.md`). Bridge
 placement stays HELD FOR OWNER/FOUNDRY at a down-window
 (`rimworld-world-editing`'s `world_commit`, one driver at a time).
 

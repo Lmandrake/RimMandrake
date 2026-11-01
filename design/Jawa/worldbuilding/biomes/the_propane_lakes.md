@@ -271,8 +271,8 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
     world sites no longer accessible. Shows "the whole world is now upset and more
     dangerous" and this is merely the shadow of the Assailants re-arrival."* Its
     reach, ruled 2026-10-12 by question card: *"Its region only, permanently"*
-    (canon.yml `crater_event.sekkulaath_reach_src`). Which sites it harms or closes
-    is still owed: `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`.
+    (canon.yml `crater_event.sekkulaath_reach_src`). The sites it harms or closes:
+    `../sekkulaath_rising_crater_event_2026-11-01.md`.
   - **What the lab holds and what is done with it** (cards 1–3, 11): the original
     Assailants, fully armed, frozen mid-combat with the Rakatan experiments; the
     player decides their fate, then a breakout, then recover or fail; and the Rust

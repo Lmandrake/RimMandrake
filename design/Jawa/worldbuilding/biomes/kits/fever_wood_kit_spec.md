@@ -141,33 +141,28 @@ it: *"damage confined to its own region, permanently (Wildsteam sites damaged, a
 handful of regional sites close for good); elsewhere only threat rises."*
 (canon.yml `crater_event.sekkulaath_reach_src`.)
 
-**Open, for the owner (agent-drafted, not decided):** which Wildsteam sites in
-the Fever Wood's region it damages, and how; which regional world sites close
-for good, and how many make "a handful"; what "threat rises" means elsewhere
-(a storyteller threat bump, raids, both?); how the rising reads in the crater
-cut-scene.
+**The named sites, the threat elsewhere and the cut-scene beat:**
+`../../sekkulaath_rising_crater_event_2026-11-01.md`, delegated design; that note's `## Judgment`
+carries its state.
 
 **Engine route.** Defs + art + the emergence machinery, gated OFF:
 
-- **Body plan per the sarlacc family register** (`sarlacc_spec.md`, engine
-  measurements 2026-08-31): tentacles must be PAWNS (no non-pawn animator);
-  a central emerged mass as building/pawn with tentacle pawns around it;
-  emergence via the `GroundSpawner` family — `BuildingGroundSpawner` exists
-  *(verified, `Source/RimWorld/BuildingGroundSpawner.cs` — it even re-terrains
-  for affordance on spawn, line 35)*. Defs: `RUT_TenantEmergedMass`,
-  `RUT_TenantTentacle` (PawnKindDef), `RUT_TenantEmergenceSpawner`
-  (GroundSpawner). Player-facing labels name it: the sekkulaath.
+- **Body plan:** a central emerged mass as a building, with the six built
+  `RM_Sekkulaath_*` limbs around it (`FEVERWOOD_TENTACLE_BESTIARY_1` built them
+  as stationary buildings, not pawns). Emergence via the `GroundSpawner` family:
+  `BuildingGroundSpawner` exists *(verified, `Source/RimWorld/BuildingGroundSpawner.cs`,
+  it even re-terrains for affordance on spawn, line 35)*. Defs: `RUT_TenantEmergedMass`,
+  `RUT_TenantEmergenceSpawner` (GroundSpawner). Player-facing labels name it: the sekkulaath.
 - **Art**: commissioned under the standing art pipeline against
   `sarlacc_spec.md`'s family register (aquatic palette per §9: black water,
   oil-sheen). Rides the art queue, listed here so the item's "built in full"
   is complete.
 - **The gate**: the emergence spawner def is referenced by NOTHING in this
   kit. The emergence *event* rides the crater event; its reach is ruled (region
-  only, permanently, above) and the named sites are owed in
-  `SEKKULAATH_RISING_DESIGN_CRATER_EVENT`. This kit's deliverable is that the
-  event is one IncidentDef of XML.
+  only, permanently, above). The event is one IncidentDef, `RUT_SekkulaathRising`,
+  specified in `../../sekkulaath_rising_crater_event_2026-11-01.md`.
 
-**Effort**: **L** (creature defs + tentacle-pawn wiring + art), but all of it
+**Effort**: **L** (mass defs + limb placement + art), but all of it
 off the critical path of the playable biome. **v1: defs + art ship dormant;
 zero runtime presence.**
 
@@ -342,7 +337,7 @@ quest exists — do not promise before it ships).
 | `RUT_MapComponent_TheTenant` (+ `RM_LurkingWaterExtension`, `RM_TenantTruceExtension`) | F1 | M |
 | evidence/mirror-break IncidentWorkers (thin) | F2 | S |
 | `RM_CompUseEffect_RevealHazards` + overlay draw | F3 | S/M |
-| `RUT_TenantEmergedMass` + tentacle-pawn wiring (dormant) | F4 | L |
+| `RUT_TenantEmergedMass` + limb placement (dormant) | F4 | L |
 | — (XML only) | F5 | S |
 | `RM_GenStep_RootCauseways` Fever Wood profile (sibling class) | F6 | M |
 | — (XML profile on Greentide M12) | F7 | S |
