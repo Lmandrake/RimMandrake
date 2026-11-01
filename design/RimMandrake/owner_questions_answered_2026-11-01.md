@@ -241,8 +241,9 @@ This message got only a hand-off in reply.
 
 - **Bringing back focus:** partly. A cap allows 3 items per seat. A read-only mission page exists per mod. The list of
   top priorities has 9 entries. No rule yet stops unrelated runs (`FOCUS_ENFORCE_HEADLESS_LAUNCH_ALLOWLIST`, not started).
-- **"Blocked by":** not built. A block today is only free text, so nothing can compute what waits on what. Filed:
-  `PLAN_BUILD_BLOCKED_BY_IS_TEXT_ONLY`.
+- **"Blocked by":** half built. `rimflow block --on X` is a real link, on 49 of 126 blocked open items (`RA_S02` to `RA_S18`
+  are a chain of them). The gaps: one blocker per item, a link never lifts itself, and no view of a chain. Answered in
+  `design/RimMandrake/planning_session_design_2026-11-01.md` section 4.
 - **A plan REALLY ticked off:** not yet. The Close gate is the piece that makes "done" earned, and it's being finished.
   You said no UI, so the answer is the data: with blocked-by links and the Close gate, each tick would be a measured fact.
 - **Tracking work:** RimPulse has "Who worked when" (`/agents`), plus the mission page.
