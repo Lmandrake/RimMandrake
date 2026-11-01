@@ -13,6 +13,9 @@ acceptance injections of section 8 and the states around them:
   pauses           a pause with an expiry never escalates before it expires; one without becomes a fault at 60 min;
                    an auto pause (a red canary) is a fault at once; a quarantine and a HARNESS-class brake escalate at once
   quiet states     EXHAUSTED and the day budget are not faults; a ready job is not one for 5 min
+  a ghost item     a rung is published the pass it is written; the wake session runs in another clone, so an item
+                   that clone cannot see is published and pulled for, held, and only then woken on, with a brief that
+                   says so and never tells it to claim or file the id (TESTQSTEWARD_FIX_ESCALATES_TO_A_GHOST)
   a stopped tick   the watcher sees steward.json go stale, restarts the tick timer ONCE, then escalates; a fresh
                    steward pass recovers it
 """
@@ -115,7 +118,20 @@ def main():
         W.launch_wake = lambda clone, brief, logp, budget, max_s: wakes.append((clone, open(brief).read(), budget,
                                                                                 max_s)) or (True, "ok")
         W.wake_active = lambda: False
-        os.environ["TESTQ_WAKE_CLONE"] = REPO
+        # the wake clone is a separate clone, as in production: its shards hold only what a pull brought it
+        wclone = os.path.join(tmp, "wakeclone")
+        wevents = os.path.join(wclone, "infrastructure", "state", "ledger", "events")
+        os.makedirs(os.path.join(wclone, ".git"))
+        os.makedirs(wevents)
+        os.environ["TESTQ_WAKE_CLONE"] = wclone
+        published = []
+
+        def sync_clone(clone):
+            shutil.copy(shard, os.path.join(wevents, "RUNNER.jsonl"))
+            return "pulled"
+        selftest_real_pull = W.pull_wake_clone
+        W.pull_wake_clone = sync_clone
+        W.publish = lambda: published.append(1) or "pushed"
         # ------------------------------------------------ a brake (MOD-class: the normal clock)
         reset()
         j1, j2 = filler("INVALID", "GAME_DIED", base - 3600), filler("INVALID", "HANG", base - 1800)
@@ -142,6 +158,7 @@ def main():
         rec = step(base + 1800)
         rz = events("raise")
         check(rec["incident"]["level"] == 2 and len(rz) == 1 and rz[0]["id"] == item, "T+30: the item is raised")
+        check(len(published) >= 2, "each rung is published the pass it is written: %d" % len(published))
         check(len(wakes) == 1 and "RUNBOOK.md" in wakes[0][1] and T.q("steward.json") in wakes[0][1] and
               item in wakes[0][1] and wakes[0][2] == "5" and wakes[0][3] == 2700 and
               (T.read_json(T.q("wake.json")) or {}).get("item") == item,
@@ -211,6 +228,70 @@ def main():
         W.wake_active = lambda: False
         check(W.maybe_wake(dict(inc), {"reason": "r"}, exp + 20000).startswith("started") and len(wakes) == 2,
               "after the cooldown a new incident may wake again")
+
+        # ------------------------------------------------ a ghost: the wake clone cannot see the item
+        check(W.wake_clone_sees(wclone, item), "the pulled clone sees the spawn")
+        check(not W.wake_clone_sees(wclone, item + "X"), "a longer name is not the item")
+        ghost = "STEVE_LANE_UNSTICK_BRAKED_UNOWNED_0G05"
+        with open(os.path.join(wevents, "BENCH.jsonl"), "w") as f:
+            f.write(json.dumps({"event": "note", "id": ghost, "text": ghost}) + "\n")
+        check(not W.wake_clone_sees(wclone, ghost), "a note naming it does not make the item exist")
+        os.remove(os.path.join(wevents, "BENCH.jsonl"))
+        pulls, n_wakes = [], len(wakes)
+
+        def stuck(clone):
+            pulls.append(clone)
+            return "pull failed: dirty"
+        W.pull_wake_clone = stuck
+        W.publish = lambda: "publish stopped: pull --rebase failed"
+        os.remove(T.q("wake.json"))
+        real_claim_holds, W.claim_holds = W.claim_holds, lambda *a: False
+        ginc = {"state": "BRAKED", "level": 2, "item": ghost, "unowned_s": 1800}
+        t0 = exp + 40000
+        check(W.maybe_wake(ginc, {"reason": "r"}, t0) is None and "wake" not in ginc and len(wakes) == n_wakes
+              and pulls == [wclone], "an unseen item holds the wake, and the pass tried to reach it")
+        held = [json.loads(x) for x in open(T.q("steward.jsonl")) if '"wake_held"' in x]
+        check(len(held) == 1 and "publish stopped" in held[0]["why"] and "pull failed" in held[0]["why"],
+              "the hold is logged with why: %s" % held)
+        check(W.maybe_wake(ginc, {"reason": "r"}, t0 + 599) is None and len(wakes) == n_wakes,
+              "still held inside the window")
+        check(W.maybe_wake(ginc, {"reason": "r"}, t0 + 600).startswith("started") and len(wakes) == n_wakes + 1,
+              "the hold is bounded: a stuck publish still wakes (F27F's session is what fixed it)")
+        gb = wakes[-1][1]
+        check(ghost in gb and "NOT in this clone" in gb and T.REPO in gb and "publish stopped" in gb
+              and "cli.py claim" not in gb, "the late brief says the item is unpublished, and gives no claim line")
+        n_held = len([x for x in open(T.q("steward.jsonl")) if '"wake_held"' in x])
+        check(n_held == 1, "one hold line per incident, not one per pass")
+        W.pull_wake_clone = sync_clone
+        os.remove(T.q("wake.json"))
+        ginc = {"state": "BRAKED", "level": 2, "item": item, "unowned_s": 1800}
+        check(W.maybe_wake(ginc, {"reason": "r"}, t0 + 700).startswith("started") and "cli.py claim" in wakes[-1][1],
+              "a seen item gets the ordinary claim brief")
+        W.claim_holds = real_claim_holds
+        W.publish = lambda: published.append(1) or "pushed"
+        # the real pull, on a real origin: a behind clone catches up; a blocked one reports it
+        ogit, wgit = os.path.join(tmp, "o"), os.path.join(tmp, "w")
+
+        def git(cwd, *a):
+            return subprocess.run(["git", "-C", cwd, "-c", "user.name=t", "-c", "user.email=t@t"] + list(a),
+                                  capture_output=True, text=True, timeout=60)
+        os.makedirs(ogit)
+        git(ogit, "init", "-q", "-b", "main")
+        rel = os.path.join("infrastructure", "state", "ledger", "events")
+        os.makedirs(os.path.join(ogit, rel))
+        open(os.path.join(ogit, rel, "RUNNER.jsonl"), "w").close()
+        git(ogit, "add", "."), git(ogit, "commit", "-q", "-m", "a")
+        subprocess.run(["git", "clone", "-q", ogit, wgit], check=True, timeout=60)
+        with open(os.path.join(ogit, rel, "RUNNER.jsonl"), "w") as f:
+            f.write(json.dumps({"event": "spawn", "name": ghost}) + "\n")
+        git(ogit, "add", "."), git(ogit, "commit", "-q", "-m", "b")
+        os.environ["TESTQ_INGEST_PUSH"] = "1"
+        check(not W.wake_clone_sees(wgit, ghost) and selftest_real_pull(wgit) == "pulled" and W.wake_clone_sees(wgit, ghost),
+              "a real behind clone is fast-forwarded and then sees the spawn")
+        git(ogit, "commit", "-q", "--allow-empty", "-m", "c")
+        git(wgit, "commit", "-q", "--allow-empty", "-m", "diverged")
+        check(selftest_real_pull(wgit).startswith("pull failed"), "a diverged clone refuses, it is never merged")
+        os.environ["TESTQ_INGEST_PUSH"] = "0"
 
         class It:
             open, owner, lease = True, "BENCH", None

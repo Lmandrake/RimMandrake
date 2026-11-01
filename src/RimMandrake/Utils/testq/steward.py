@@ -55,11 +55,17 @@ The session runs in TESTQ_WAKE_CLONE (~/rm/bench, the BENCH seat's clone) as RIM
 flags of its own (the clone's settings decide); its brief (QHOME/wake/<stamp>.brief.md) points at steward.json,
 steward.jsonl, tick.log, the escalation item and infrastructure/stevedesktop/RUNBOOK.md. Its output:
 QHOME/wake/<stamp>.log.
+A rung is published the pass it is written, and the session is never pointed at an item its clone cannot see: the spawn
+lives on this clone's RUNNER shard, and the wake runs in another clone (BE53: that clone was behind; F27F: the publish
+was blocked), where `claim` says "never been filed" (TESTQSTEWARD_FIX_ESCALATES_TO_A_GHOST). maybe_wake publishes and
+pulls the wake clone with --ff-only, holds for up to TESTQ_WAKE_HOLD_S (600 s), then wakes anyway with a brief saying
+the item is unpublished: a blocked publish can be the very fault the session has to fix (F27F).
 
 Files (QHOME): steward.json {ts, epoch, state, fault, reason, jobs, incident, last_item} every pass; steward.jsonl one
 line per state change or escalation; steward_watch.json the watcher's own state.
 """
 import fcntl
+import glob
 import json
 import os
 import secrets
@@ -294,14 +300,71 @@ def launch_wake(clone, brief_path, log_path, budget, max_s):
     return r.returncode == 0, (r.stdout + r.stderr).strip()[-200:]
 
 
-def wake_brief(inc, ls, clone):
+def wake_clone_sees(clone, item):
+    """True when CLONE's ledger shards hold the event that creates ITEM: what `claim` there will replay."""
+    for shard in glob.glob(os.path.join(clone, "infrastructure", "state", "ledger", "events", "*.jsonl")):
+        try:
+            with open(shard, encoding="utf-8", errors="replace") as f:
+                for line in f:
+                    if item not in line:
+                        continue
+                    try:
+                        ev = json.loads(line)
+                    except ValueError:
+                        continue
+                    if ev.get("name" if ev.get("event") == "spawn" else "id") == item \
+                            and ev.get("event") in ("spawn", "file"):
+                        return True
+        except OSError:
+            continue
+    return False
+
+
+def pull_wake_clone(clone):
+    """Fast-forward only: a dirty or diverged clone refuses, and the hold below then tells the truth about it."""
+    if os.environ.get("TESTQ_INGEST_PUSH", "1") == "0":
+        return "pull off"
+    try:
+        r = subprocess.run(["git", "-C", clone, "pull", "-q", "--ff-only", "origin", "main"], capture_output=True,
+                           text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        return "pull failed: %s" % e
+    return "pulled" if r.returncode == 0 else "pull failed: " + (r.stderr or r.stdout).strip()[-200:]
+
+
+def safe_publish():
+    """A publish that dies must not lose the pass: the rung is on the shard and ingest retries it."""
+    try:
+        return publish()
+    except (OSError, subprocess.SubprocessError) as e:
+        return "publish failed: %s" % e
+
+
+def reach_wake_clone(clone, item):
+    """Make ITEM visible in CLONE -> None, or why it still is not."""
+    if wake_clone_sees(clone, item):
+        return None
+    pub = safe_publish()
+    pull = pull_wake_clone(clone)
+    return None if wake_clone_sees(clone, item) else "publish: %s; pull: %s" % (pub, pull)
+
+
+def wake_brief(inc, ls, clone, unseen=None):
+    item_line = "escalation item: %s  (claim it first: `python3 src/RimMandrake/rimflow/cli.py claim %s --seat BENCH`)" \
+        % (inc.get("item"), inc.get("item"))
+    if unseen:
+        item_line = """escalation item: %s is NOT in this clone yet. It is written in %s's RUNNER shard and has not
+  reached you (%s).
+  Do not claim it and do not `rimflow file` it: a second filing of that id is refused at replay. A stuck publish is
+  part of the fault, so look at that clone first. Once it has published, `git pull --ff-only` here and claim it.""" \
+            % (inc.get("item"), T.REPO, unseen[:300])
     return """You are a BENCH session started by the SteveDesktop lane steward (testq steward.py), not by a person. The
 owner allowed this by card on 2026-10-26: one capped session when a lane alert is unanswered for 30 min.
 
 The lane has been in a fault for %d min with no seat on it.
   state: %s
   why:   %s
-  escalation item: %s  (claim it first: `python3 src/RimMandrake/rimflow/cli.py claim %s --seat BENCH`)
+  %s
 
 Read, in this order, and nothing large into context:
   %s            the steward's current state and incident
@@ -313,7 +376,7 @@ Your job: diagnose why the lane is not RUNNING and restore it with the existing 
 once a pause's cause is dealt with, the RUNBOOK's restart paths). Do not live-test anything, do not deploy, do not
 touch the owner's game. Note what you found and did on the item; close it only if the lane is RUNNING again. If you
 cannot fix it, say exactly what the owner must do on the item and stop. You have a hard spending and time cap.
-""" % (inc["unowned_s"] // 60, inc["state"], ls["reason"][:300], inc.get("item"), inc.get("item"),
+""" % (inc["unowned_s"] // 60, inc["state"], ls["reason"][:300], item_line,
        path("steward.json"), path("steward.jsonl"), path("tick.log"), os.path.join(clone, RUNBOOK))
 
 
@@ -337,11 +400,19 @@ def maybe_wake(inc, ls, now, src="steward"):
     if not os.path.exists(os.path.join(clone, ".git")):
         inc["wake"] = "skipped: no wake clone at %s" % clone
         return inc["wake"]
+    unseen = reach_wake_clone(clone, inc["item"])
+    if unseen:
+        hold = int(os.environ.get("TESTQ_WAKE_HOLD_S", "600"))
+        if "wake_held" not in inc:
+            inc["wake_held"] = now
+            jlog({"ts": iso(now), "event": "wake_held", "by": src, "item": inc["item"], "why": unseen})
+        if now - inc["wake_held"] < hold:
+            return None
     stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime(now))
     os.makedirs(path("wake"), exist_ok=True)
     brief, logp = path("wake", stamp + ".brief.md"), path("wake", stamp + ".log")
     with open(brief, "w", encoding="utf-8") as f:
-        f.write(wake_brief(inc, ls, clone))
+        f.write(wake_brief(inc, ls, clone, unseen))
     budget = os.environ.get("TESTQ_WAKE_BUDGET_USD", "5")
     max_s = int(os.environ.get("TESTQ_WAKE_MAX_S", "2700"))
     ok, out = launch_wake(clone, brief, logp, budget, max_s)
@@ -596,8 +667,11 @@ def _steward_pass(now, mods):
             inc["unowned_s"] = int(inc["unowned_s"] + dt - claim_cover(inc.get("item"), now - dt, now))
         if ls["at_once"]:
             inc["unowned_s"] = max(inc["unowned_s"], L1_S)
+        rung = (inc["level"], inc.get("item"), inc.get("owner_item"))
         item = escalate(inc, ls, now, last_item)
         last_item = item or last_item
+        if (inc["level"], inc.get("item"), inc.get("owner_item")) != rung:
+            jlog({"ts": iso(now), "event": "rung_publish", "item": inc.get("item"), "result": safe_publish()})
         maybe_wake(inc, ls, now)
     rec = {"ts": iso(now), "epoch": now, "state": ls["state"], "fault": fault, "reason": ls["reason"],
            "jobs": ls["jobs"], "incident": inc, "last_item": last_item, "to_retire": to_retire,
@@ -659,9 +733,9 @@ def _watch_pass(now):
             lvl = inc["level"]
             ls = {"reason": reason + "; restarting testq-tick.timer did not bring it back", "jobs": []}
             escalate(inc, ls, now, (sj or {}).get("last_item"), src="steward-watch")
-            maybe_wake(inc, ls, now, src="steward-watch")
             if inc["level"] != lvl:
-                publish()
+                safe_publish()
+            maybe_wake(inc, ls, now, src="steward-watch")
         wst["incident"] = inc
     wst["to_retire"] = retire(wst.get("to_retire") or [], "steward-watch: the steward is writing again", now)
     flush_bench()       # the watch has its own timer, so this retry outlives a stopped tick
