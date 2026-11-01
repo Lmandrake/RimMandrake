@@ -892,6 +892,50 @@ namespace RimMandrake.FlowWorks
 		}
 	}
 
+	/// <summary>CANAL_OVERFLOW_BUILD_EVERY_PUDDLE_AUDITED, save/load round 3: the ONE temperature the kernel reads for a cell,
+	/// quantised at read on every path (outdoor, constant, indoor) to the save's own grid, 1/16 °C truncated toward zero
+	/// (vanilla TemperatureVacuumSaveLoad.TempFloatToShort), and everything the kernel derives from it (freezing's deci-°C,
+	/// evaporation's milli-dL) derived from that integer alone. A live game and its load therefore feed the kernel the same
+	/// numbers whenever the game's own readings agree to the grid; the old path computed evaporation from the raw float, so a
+	/// sub-grid gap (diag_loadtwice read 7.0745 live vs 7.0625 after load) could change EvapMilliDl, and with it the carried
+	/// milli-dL remainder, whenever the formula sat near a rounding edge (at 7.07 °C, open sky, both round to 74: not proven to
+	/// be THE split; ProofSheetHash's inputs/rem parts name the carrier on the live rerun). Verse-free, so the selftest proves it.</summary>
+	public static class RM_SheetTemp
+	{
+		public const int PerDegree = 16;
+
+		/// <summary>°C → sixteenths, exactly as a save stores a room's temperature.</summary>
+		public static int ToSixteenths(float c)
+		{
+			if (float.IsNaN(c)) c = 0f;
+			c = Math.Max(-273.15f, Math.Min(1000f, c));
+			return (int)(c * PerDegree);
+		}
+
+		/// <summary>The °C a save hands back for <paramref name="q"/> sixteenths (exact in a float).</summary>
+		public static float FromSixteenths(int q) => q / (float)PerDegree;
+
+		/// <summary>°C on the save's grid: what a load of this value reads.</summary>
+		public static float Quantise(float c) => FromSixteenths(ToSixteenths(c));
+
+		/// <summary>The kernel's deci-°C (freezing, boiling), integer from the sixteenths, half away from zero.</summary>
+		public static int DeciC(int q)
+		{
+			int n = q * 10;
+			return n >= 0 ? (n + PerDegree / 2) / PerDegree : -((-n + PerDegree / 2) / PerDegree);
+		}
+
+		/// <summary>Evaporation per pulse in milli-dL at <paramref name="q"/> sixteenths: none at or below 0 °C, else
+		/// dryCmPerDayAt20C × min(maxFactor, t/20) × roofFactor (the formula ClassifyCell used, now fed the grid value only).</summary>
+		public static int EvapMilliDl(int q, float dryCmPerDayAt20C, float maxFactor, float roofFactor, int dlPerCm, float pulsesPerDay)
+		{
+			if (q <= 0 || pulsesPerDay <= 0f) return 0;
+			float t = FromSixteenths(q);
+			double evapCm = dryCmPerDayAt20C * Math.Min(maxFactor, t / 20f) * roofFactor;
+			return (int)Math.Round(evapCm * dlPerCm * 1000.0 / pulsesPerDay, MidpointRounding.AwayFromZero);
+		}
+	}
+
 	/// <summary>D5 widened (owner 2026-10-22: <i>"Build for all flowworks liquids."</i>): every FlowWorks liquid spills as a
 	/// sheet, and each follows its own FluidDef. Verse-free, so the selftest proves the mapping: the component feeds it the
 	/// FluidDef's fields.</summary>

@@ -186,7 +186,29 @@ namespace RimMandrake.FlowWorks.Sheet
 			{
 				h = unchecked((h ^ b) * 1099511628211UL);
 			}
-			return "SHEETHASH hash=" + h.ToString("x16") + " pulse=" + s.Pulse;
+			// CANAL_OVERFLOW round 3: the field groups apart (a split names its carrier) and what the last pulse was fed
+			ulong dl = FnvOver(s, c => s.Dl[c]), rem = FnvOver(s, c => s.SoakRem[c] ^ (s.EvapRem[c] << 12)),
+				calm = FnvOver(s, c => s.Calm[c] | ((int)s.Tiers[c] << 8) | (s.Stand[c] << 12));
+			return "SHEETHASH hash=" + h.ToString("x16") + " pulse=" + s.Pulse + " dl=" + dl.ToString("x16") + " rem=" + rem.ToString("x16")
+				+ " calm=" + calm.ToString("x16") + " " + sheet.ProofInputs();
+		}
+
+		private static ulong FnvOver(State s, Func<int, int> field)
+		{
+			ulong h = 1469598103934665603UL;
+			foreach (int c in s.Occ)
+			{
+				int v = field(c);
+				for (int b = 0; b < 4; b++, v >>= 8)
+				{
+					h = unchecked((h ^ (byte)v) * 1099511628211UL);
+				}
+				for (int b = 0, k = c; b < 4; b++, k >>= 8)
+				{
+					h = unchecked((h ^ (byte)k) * 1099511628211UL);
+				}
+			}
+			return h;
 		}
 
 		/// <summary>'-' → what the loaded build carries (and which RM_SheetSettings fields a row may set).</summary>

@@ -851,8 +851,74 @@ namespace RimMandrake.FlowWorks.SelfTest
 				classify = classify.Substring(0, classify.IndexOf("private "));   // up to the next member (line endings vary)
 				Assert(classify.Contains("KernelTempAt(c)") && !classify.Contains("GenTemperature.GetTemperatureForCell"),
 					"the sheet kernel reads its temperature through KernelTempAt, never vanilla's cached cell temperature");
-				Assert(sheet.Contains("OutdoorTemperatureAt(map.Tile, now)") && sheet.Contains("(int)(t * 16f) / 16f"),
-					"outdoors is the world's function of the tick, indoors the save's 1/16 C grid");
+				Assert(sheet.Contains("OutdoorTemperatureAt(map.Tile, now)"), "outdoors is the world's function of the tick");
+				// CANAL_OVERFLOW round 3: every path is cut to the save's 1/16 C grid at read, and deci + evaporation come from that integer only
+				Assert(sheet.Contains("return RM_SheetTemp.ToSixteenths(OutdoorExactC());")
+					&& sheet.Contains("return RM_SheetTemp.ToSixteenths(GenTemperature.GetTemperatureForCell(c, map));"),
+					"KernelTempAt quantises outdoors AND indoors to sixteenths");
+				Assert(classify.Contains("int cellQ = KernelTempAt(c);") && classify.Contains("RM_SheetTemp.DeciC(cellQ)")
+					&& classify.Contains("RM_SheetTemp.EvapMilliDl(cellQ,") && !classify.Contains("float cellC"),
+					"ClassifyCell derives freezing and evaporation from the quantised integer, never a raw float");
+				string expose = sheet.Substring(sheet.IndexOf("public override void ExposeData()"));
+				Assert(expose.Contains("Scribe.mode == LoadSaveMode.Saving") && expose.Contains("SnapTemperaturesForSave();"),
+					"a save snaps the live room trackers to the grid the load will read");
+			});
+
+			// CANAL_OVERFLOW round 3 (diag_loadtwice: a cell read 7.0745 C live, 7.0625 C after its load). Teeth: the old
+			// raw-float evaporation splits a live run from its load for a temperature inside one 1/16 C step; the quantised feed cannot.
+			Case("Sheet_temperature_is_quantised_at_read_so_a_load_continues_the_live_run", () =>
+			{
+				const float ppd = 240f, dry = 0.5f, maxF = 3f;   // 250-tick pulses; shipped drying settings
+				int OldEvap(float t, float roof)   // the pre-round-3 ClassifyCell formula (Mathf.RoundToInt = round half to even)
+				{
+					float evapCm = t <= 0f ? 0f : dry * Math.Min(maxF, t / 20f) * roof;
+					return (int)Math.Round(evapCm * DlPerCm * 1000f / ppd);
+				}
+				Assert(RM_SheetTemp.ToSixteenths(7.0745f) == 113 && RM_SheetTemp.ToSixteenths(7.0625f) == 113,
+					"the diag's live and loaded readings are the same sixteenth");
+				Assert(RM_SheetTemp.ToSixteenths(-0.03f) == 0 && RM_SheetTemp.ToSixteenths(-1.07f) == -17,
+					"truncation toward zero, as the save's TempFloatToShort");
+				Assert(RM_SheetTemp.ToSixteenths(float.NaN) == 0 && RM_SheetTemp.ToSixteenths(5000f) == 16000, "NaN and clamp are safe");
+				Assert(RM_SheetTemp.DeciC(113) == 71 && RM_SheetTemp.DeciC(-17) == -11 && RM_SheetTemp.DeciC(8) == 5,
+					"deci-C is integer, half away from zero");
+				int splitLive = 0, splitAt = -1; float splitT = 0f, splitRoof = 1f;
+				foreach (float roof in new[] { 1f, 0.3f })
+					for (int k = -400; k < 480; k++)
+					{
+						float loaded = k / 16f;                 // what a load reads
+						float live = loaded + (k >= 0 ? 0.6f : -0.6f) / 16f;   // the live tracker, finer, same step
+						int q = RM_SheetTemp.ToSixteenths(live);
+						Assert(q == k && RM_SheetTemp.ToSixteenths(loaded) == k && RM_SheetTemp.Quantise(RM_SheetTemp.Quantise(live)) == loaded,
+							"live and loaded share the sixteenth, and Quantise is idempotent: " + k);
+						Assert(RM_SheetTemp.EvapMilliDl(q, dry, maxF, roof, DlPerCm, ppd) == RM_SheetTemp.EvapMilliDl(k, dry, maxF, roof, DlPerCm, ppd)
+							&& RM_SheetTemp.DeciC(q) == RM_SheetTemp.DeciC(k), "the quantised feed is identical live and loaded");
+						if (OldEvap(live, roof) != OldEvap(loaded, roof)) { splitLive++; if (splitAt < 0 && k > 0) { splitAt = k; splitT = live; splitRoof = roof; } }
+					}
+				Assert(splitLive > 0 && splitAt > 0, "control: the old raw-float evaporation differs live vs loaded inside one step: " + splitLive);
+				Assert(RM_SheetTemp.EvapMilliDl(0, dry, maxF, 1f, DlPerCm, ppd) == 0 && RM_SheetTemp.EvapMilliDl(-5, dry, maxF, 1f, DlPerCm, ppd) == 0,
+					"nothing dries at or below 0 C");
+				// the kernel: the same puddle, saved, then pulsed live (finer tracker) vs loaded (save grid)
+				ulong RunWith(Func<float, int> evap, float t, bool reload)
+				{
+					var w = new World(12, 3);
+					for (int c = 0; c < w.TempDeciC.Length; c++) { w.SoakMilliDl[c] = 0; }
+					var p = new Params();
+					var s = new State(12, 3, 9u);
+					ResolveSpills(s, w, p, new[] { Offer(6000, Water, Source.Flood, Idx(w, 5, 1)) });
+					Run(s, w, p, 3);
+					if (reload) s = Load(Save(s));
+					for (int c = 0; c < w.TempDeciC.Length; c++) { w.TempDeciC[c] = RM_SheetTemp.DeciC(RM_SheetTemp.ToSixteenths(t)); w.EvapMilliDl[c] = evap(t); }
+					Run(s, w, p, 6);
+					Assert(s.LedgerCloses, "ledger closes");
+					return Hash(s);
+				}
+				float tLoaded = RM_SheetTemp.Quantise(splitT);
+				Func<float, int> oldFeed = t => OldEvap(t, splitRoof);
+				Func<float, int> newFeed = t => RM_SheetTemp.EvapMilliDl(RM_SheetTemp.ToSixteenths(t), dry, maxF, splitRoof, DlPerCm, ppd);
+				Assert(RunWith(oldFeed, splitT, false) != RunWith(oldFeed, tLoaded, true),
+					"control: raw-float evaporation splits the live run from its load (the state diverges with equal dL totals)");
+				Assert(RunWith(newFeed, splitT, false) == RunWith(newFeed, tLoaded, true),
+					"the quantised feed: save/load then 6 pulses equals 6 uninterrupted pulses at " + splitT + " C");
 			});
 
 			// wiring (source text): the owner's two rulings of 2026-10-22 are in the production entries

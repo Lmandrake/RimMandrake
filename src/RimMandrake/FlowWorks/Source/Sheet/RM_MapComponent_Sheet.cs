@@ -182,8 +182,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			world.BodyFluid[idx] = 0;
 			world.SoakMilliDl[idx] = 0;
 			world.EvapMilliDl[idx] = 0;
-			float cellC = KernelTempAt(c);
-			world.TempDeciC[idx] = Mathf.RoundToInt(cellC * 10f);
+			int cellQ = KernelTempAt(c);   // sixteenths of a °C: the only temperature the kernel sees (RM_SheetTemp)
+			world.TempDeciC[idx] = RM_SheetTemp.DeciC(cellQ);
 			Building edifice = map.edificeGrid[idx];
 			if (e != null && e.IsExcavated(c))
 			{
@@ -259,10 +259,8 @@ namespace RimMandrake.FlowWorks.Sheet
 			float pulsesPerDay = GenDate.TicksPerDay / (float)RimMandrakeFlowWorksSettings.PulseIntervalTicks;
 			float soakCm = map.terrainGrid.UnderTerrainAt(c) != null ? 0f : SoakCmPerDay(baseT);
 			world.SoakMilliDl[idx] = Mathf.RoundToInt(soakCm * DlPerCm * 1000f / pulsesPerDay);
-			float t = cellC;
-			float evapCm = t <= 0f ? 0f : RM_SheetSettings.dryCmPerDayAt20C * Mathf.Min(EvapMaxFactor, t / 20f)
-				* (map.roofGrid.Roofed(c) ? RM_SheetSettings.roofedDryPercent / 100f : 1f);
-			world.EvapMilliDl[idx] = Mathf.RoundToInt(evapCm * DlPerCm * 1000f / pulsesPerDay);
+			world.EvapMilliDl[idx] = RM_SheetTemp.EvapMilliDl(cellQ, RM_SheetSettings.dryCmPerDayAt20C, EvapMaxFactor,
+				map.roofGrid.Roofed(c) ? RM_SheetSettings.roofedDryPercent / 100f : 1f, DlPerCm, pulsesPerDay);
 		}
 
 		private static Func<GameConditionManager, float> conditionOffset;
@@ -277,16 +275,45 @@ namespace RimMandrake.FlowWorks.Sheet
 		/// Outdoors (no room, or a room that uses the outdoor temperature) this is the tile's temperature at this very tick plus
 		/// the map's game-condition offsets: the value the game's cache holds, without its lag. Indoors it is the room's
 		/// temperature on the save's own 1/16 °C grid, so the reading at a save and after its load agree (an indoor room that
-		/// later crosses a 1/16 °C step a few ticks apart in the two runs can still split them: disclosed, not hidden).</summary>
-		private float KernelTempAt(IntVec3 c)
+		/// later crosses a 1/16 °C step a few ticks apart in the two runs can still split them: disclosed, not hidden).
+		/// CANAL_OVERFLOW round 3: EVERY path is quantised at read to the save's grid (RM_SheetTemp.ToSixteenths) and returned
+		/// as the integer, so nothing downstream can see a finer value than a load would; and a save snaps the indoor room
+		/// trackers to that same grid (SnapTemperaturesForSave), so the live game continues from exactly what its load reads.</summary>
+		private int KernelTempAt(IntVec3 c)
 		{
 			Room room = c.GetRoom(map);
 			if (room == null || room.UsesOutdoorTemperature)
 			{
-				return OutdoorExactC();
+				return RM_SheetTemp.ToSixteenths(OutdoorExactC());
 			}
-			float t = Mathf.Clamp(GenTemperature.GetTemperatureForCell(c, map), -273.15f, 1000f);
-			return (int)(t * 16f) / 16f; // the save's grid (TempFloatToShort / TempShortToFloat)
+			return RM_SheetTemp.ToSixteenths(GenTemperature.GetTemperatureForCell(c, map)); // the save's grid (TempFloatToShort)
+		}
+
+		/// <summary>CANAL_OVERFLOW round 3 (diag_loadtwice: the cell read 7.0745 °C live, 7.0625 °C after its load). A save keeps
+		/// each room's temperature cut to 1/16 °C and a load restarts the world's outdoor-temperature cache; the live game kept
+		/// the finer value and the old cache phase, so it continued from a state its own save does not hold. While spilled
+		/// liquid stands, saving makes the live game hold what the load will read: every indoor room's temperature is cut to
+		/// the save's grid (the very value written, so idempotent and at most 1/16 °C), and the outdoor cache is cleared as a
+		/// load leaves it (it refills on the next read). Outdoor rooms copy the outdoor temperature anyway and are left alone.</summary>
+		private void SnapTemperaturesForSave()
+		{
+			try
+			{
+				foreach (Room room in map.regionGrid.AllRooms)
+				{
+					if (room == null || room.Dereferenced || room.UsesOutdoorTemperature)
+					{
+						continue;
+					}
+					room.Temperature = RM_SheetTemp.Quantise(room.Temperature);
+				}
+				Find.World?.tileTemperatures?.ClearCaches();
+			}
+			catch (Exception e)
+			{
+				Log.Warning("[RimMandrake.FlowWorks] spilled water could not align room temperatures with the save (" + e.Message
+					+ "); a save/load may continue slightly differently. No water is lost.");
+			}
 		}
 
 		private float OutdoorExactC()
@@ -930,6 +957,37 @@ namespace RimMandrake.FlowWorks.Sheet
 		// ── proof accessors (RM_SheetProofs) ──
 		internal State ProofState => state;
 		internal Params ProofParams { get { Ensure(); return prm; } }
+
+		/// <summary>CANAL_OVERFLOW round 3, for the live SAVE_LOAD rerun: what the last pulse FED the kernel at every wet cell
+		/// (kind, deci-°C, evaporation, soak; FNV over ascending cells) and how many wet cells read an indoor room, so a split
+		/// hash says whether the inputs or the kernel's own state parted. Right after a load the world is rebuilt fail-closed,
+		/// so compare it only after a pulse in both runs.</summary>
+		internal string ProofInputs()
+		{
+			if (state == null || world == null)
+			{
+				return "inputs=0 indoorWet=0";
+			}
+			ulong h = 1469598103934665603UL;
+			void Mix(int v)
+			{
+				for (int b = 0; b < 4; b++, v >>= 8)
+				{
+					h = unchecked((h ^ (byte)v) * 1099511628211UL);
+				}
+			}
+			int indoor = 0;
+			foreach (int c in state.Occ)
+			{
+				Mix(c); Mix((int)world.Kinds[c]); Mix(world.TempDeciC[c]); Mix(world.EvapMilliDl[c]); Mix(world.SoakMilliDl[c]);
+				Room room = map.cellIndices.IndexToCell(c).GetRoom(map);
+				if (room != null && !room.UsesOutdoorTemperature)
+				{
+					indoor++;
+				}
+			}
+			return "inputs=" + h.ToString("x16") + " indoorWet=" + indoor;
+		}
 		internal long IrrigatedTotal => irrigatedTotal;
 
 		/// <summary>What the kernel takes this square to be now (classified fresh from the authoritative layers).</summary>
@@ -1072,6 +1130,10 @@ namespace RimMandrake.FlowWorks.Sheet
 		{
 			base.ExposeData();
 			byte[] data = Scribe.mode == LoadSaveMode.Saving && state != null && (state.WetCount > 0 || state.TotalIn > 0) ? Save(state) : null;
+			if (Scribe.mode == LoadSaveMode.Saving && state != null && state.WetCount > 0)
+			{
+				SnapTemperaturesForSave();
+			}
 			if (Scribe.mode != LoadSaveMode.Saving || data != null)
 			{
 				DataExposeUtility.LookByteArray(ref data, "RM_sheetState");

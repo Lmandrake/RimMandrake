@@ -124,7 +124,7 @@ OWED_PROOFS = {
                        "entry, switch respected). 'SPILL offered=N accepted=N'",
     "ProofSheetFillIn": "x,z -> the engine's own fill-in of a wet dug square (the Displace path). 'FILLIN homeless=N spilled=N "
                         "destroyed=N' (homeless = the remainder no channel took)",
-    "ProofSheetHash": "'-' -> 'SHEETHASH hash=H pulse=N' (hash of RM_SheetMath.Save(state): the whole continuation state, §6 item 4)",
+    "ProofSheetHash": "'-' -> 'SHEETHASH hash=H pulse=N dl=H rem=H calm=H inputs=H indoorWet=N' (hash of RM_SheetMath.Save(state): the whole continuation state, §6 item 4; then its field groups and what the last pulse fed the kernel)",
     "ProofSheetFeatures": "'-' -> 'FEATURES crops=T|F soak=T|F capSetting=T|F capField=NAME cropDelayField=NAME' (what the "
                           "loaded build carries; NAME = the RM_SheetSettings field a row may set, '-' when absent: "
                           "capField in cm, cropDelayField in pulses)",
@@ -802,8 +802,9 @@ def freeze(ctx):
     """PROVE (D10) 20,000 dL on soil at (4,116); 2 pulses (it settles); ColdSnap + DeepFreeze started; poll in 500-tick steps
     (<= --cold-ticks) until the cell reads < 0 C and the rect reads ice > 0; then the conditions ended and poll (<= --cold-ticks)
     until ice == 0.
-    EXPECT frozen: ice == wet (every wet square), the sheet's dL + its losses unchanged across the freeze (volume kept: standing
-    falls only by soaked+evaporated, which are x0 at or below 0 C), wet count unchanged while frozen (ice does not flow);
+    EXPECT (all read on scene K's rect (-2,110) 14x13, never map-wide: other scenes soak and dry meanwhile) frozen: ice == wet
+    (every wet square); while frozen the rect's dL, wet and ice unchanged over 2 pulses (ice neither flows, soaks nor dries);
+    while cooling the rect fell by 0 .. the map's booked soaked+evaporated+returned (volume kept, never grown);
     thawed: ice 0 and water standing again; closes. LIES: a map that never got cold (SITE: the cell temperature is read); a
     stale vanilla ThinIce is not our tier (our tier is read off the kernel, not terrain)."""
     B, row, ledger, ld, P, srect, a = _c(ctx, "B", "row", "ledger", "ld", "P", "srect", "a")
@@ -838,15 +839,21 @@ def freeze(ctx):
             break
     l3 = ledger()
     th, tth = srect(-2, 110, 14, 13)
-    kept = (ld(l1, l2, "standing") == 0 and ld(l1, l2, "soaked") == 0 and ld(l1, l2, "evaporated") == 0
-            and (fr2.get("wet") == fr.get("wet")))
-    vol = None if ld(l0, l1, "standing") is None else ld(l0, l1, "standing") + (ld(l0, l1, "soaked") or 0) + \
-        (ld(l0, l1, "evaporated") or 0) + (ld(l0, l1, "returned") or 0)
-    good = (froze is not None and kept and vol == 0 and thaw is not None and (th.get("dl") or 0) > 0
+    # scene K's own area only (round 3, live 20261101T0155: map-wide ledger deltas picked up the other scenes' soak and
+    # evaporation while K's rect read frozen == frozenLater to the dL). Frozen: K's rect keeps its dL, wet and ice exactly
+    # (ice neither flows, soaks nor dries). Cooling: K's rect lost no more than the map's own exits booked (never grew).
+    kept = (fr.get("dl") is not None and fr2.get("dl") == fr.get("dl") and fr2.get("wet") == fr.get("wet")
+            and fr2.get("ice") == fr.get("ice"))
+    exits0 = None if any(ld(l0, l1, k) is None for k in ("soaked", "evaporated", "returned")) else \
+        ld(l0, l1, "soaked") + ld(l0, l1, "evaporated") + ld(l0, l1, "returned")
+    vol = None if r0.get("dl") is None or fr.get("dl") is None else r0["dl"] - fr["dl"]
+    vol_ok = vol is not None and exits0 is not None and 0 <= vol <= exits0
+    good = (froze is not None and kept and vol_ok and thaw is not None and (th.get("dl") or 0) > 0
             and (th.get("ice") or 0) == 0 and l3["closes"])
     row("SHEET_FREEZES_AND_THAWS", "PASS" if good else "FAIL",
         {"conditions": [g.get("success") for g in gcs], "frozeAfterTicks": froze, "temps": temps[-8:], "frozen": fr,
-         "frozenLater": fr2, "keptWhileFrozen": kept, "volumeDelta": vol, "thawAfterTicks": thaw, "thawed": tth,
+         "frozenLater": fr2, "keptWhileFrozen": kept, "rectFellWhileCooling": vol, "mapExitsWhileCooling": exits0,
+         "thawAfterTicks": thaw, "thawed": tth,
          "closes": l3["closes"]})
 
 
@@ -925,8 +932,9 @@ def save_load(ctx):
     sv = B.call("rimworld/save_game", saveName=name) or {}
     V.require(sv.get("success") is not False, "saved", sv, cls="HARNESS")
     ctx["pulses"](3)
-    ha = sp("ProofSheetHash")[0].get("hash")
-    ldr = B.call("rimworld/load_game_ready", saveName=name, timeoutMs=280000) or {}
+    hav = sp("ProofSheetHash")[0]
+    ha = hav.get("hash")
+    ldr =B.call("rimworld/load_game_ready", saveName=name, timeoutMs=280000) or {}
     V.require(ldr.get("success") is not False, "loaded", str(ldr)[:300], cls="HARNESS")
     if not a.mock:
         V.require(V._wait_playing(B, leave_s=0)[0], "playing after the load", None, cls="HARNESS")
@@ -937,11 +945,17 @@ def save_load(ctx):
             time.sleep(2)
     h0b = sp("ProofSheetHash")[0].get("hash")
     ctx["pulses"](3)
-    hb = sp("ProofSheetHash")[0].get("hash")
+    hbv = sp("ProofSheetHash")[0]
+    hb = hbv.get("hash")
     l1 = ledger()
     good = h0 is not None and h0b == h0 and ha is not None and hb == ha and l1["closes"]
+    # round 3: which part parted (dl / rem = soak+evap remainders / calm = calm+tier+stand / inputs = what the last pulse was
+    # fed: kind, deci-C, evaporation, soak) and how many wet squares read an indoor room; absent on an older build
+    parts = {k: [hav.get(k), hbv.get(k)] for k in ("dl", "rem", "calm", "inputs", "indoorWet")}
+    split = sorted(k for k, (x, y) in parts.items() if x is not None and x != y)
     row("SAVE_LOAD_CONTINUES_IDENTICAL", "PASS" if good else "FAIL",
-        {"h0": h0, "h0AfterLoad": h0b, "hContinued": ha, "hLoadedContinued": hb, "closes": l1["closes"], "save": name})
+        {"h0": h0, "h0AfterLoad": h0b, "hContinued": ha, "hLoadedContinued": hb, "closes": l1["closes"], "save": name,
+         "parts": parts, "split": split})
 
 
 def perf_rows(ctx):
