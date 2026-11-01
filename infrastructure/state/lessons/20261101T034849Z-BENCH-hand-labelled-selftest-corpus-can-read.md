@@ -1,0 +1,1 @@
+A hand-labelled selftest corpus can read 1.00 while the same regex hook reads 0.19 to 0.90 on unseen real cards (block_delegated_cards, 2026-10-31): the old rows were short ledger topics, real cards carry a preamble. Any recall bar on a tuned classifier needs a fresh sealed read each round; the rows you tune on stop measuring.
