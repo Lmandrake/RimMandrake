@@ -262,6 +262,7 @@ class Collector:
         raw["bridge"] = src("bridge", pc.read_bridge)
         raw["telemetry"] = src("telemetry", pc.read_telemetry)
         raw["testing"] = src("testing", pc.read_testing)
+        raw["live_sweep"] = src("live_sweep", pc.read_live_sweep)
         raw["services"] = src("services", pc.read_services) or {}
         raw["burn"], raw["burn_error"] = self._burn(now, force, src, status)
         if now - self.usage["at"] > usage.REFETCH and not self.usage["busy"]:

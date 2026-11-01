@@ -1268,5 +1268,11 @@ check("win_path leaves a native Windows path alone (no doubled drive)",
 check("win_path maps a drive mount and leaves /mnt/wsl on the Linux side",
       pc.win_path("/mnt/d/a/b") == "D:\\a\\b" and pc.win_path("/mnt/wsl/x").startswith("\\\\wsl.localhost"),
       (pc.win_path("/mnt/d/a/b"), pc.win_path("/mnt/wsl/x")))
+# --- LIVE_PROOF_ENFORCE_DONE_MEANS_RUNNING: one line, and a silent sweep never reads as all kept ---
+LS = {"line": "61 promises, 58 kept, 3 broken", "t": NOW - 900}
+check("the sweep's line reaches health", "61 promises, 58 kept, 3 broken" in pc.collect_snapshot({**raw, "live_sweep": LS}, {}, NOW)[0]["health"])
+check("a stale sweep says so", "silent" in pc.live_sweep_line({**LS, "t": NOW - 7200}, NOW), pc.live_sweep_line({**LS, "t": NOW - 7200}, NOW))
+check("no report says so", "no sweep report" in pc.live_sweep_line(None, NOW) and "no sweep report" in pc.live_sweep_line([], NOW))
+check("an unreadable report is none", pc.read_live_sweep("/nonexistent/live_sweep.json") is None)
 print(f"\n{'FAIL' if FAILS else 'OK'}: {len(FAILS)} failing")
 sys.exit(1 if FAILS else 0)

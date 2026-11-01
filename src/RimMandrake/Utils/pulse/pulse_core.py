@@ -1925,6 +1925,9 @@ def owner_view(rows: list[dict], now: float) -> list[dict]:
     return out
 
 
+LIVE_SWEEP_STALE_SECS = 3600   # the sweep fires every 15 min
+
+
 def health_lines(rows: list[dict], chips: list[dict], now: float) -> list[str]:
     """One sentence about the run, replacing the 'finished, idle, waiting for you' pills: a seat that
     stopped is a health fact (the belt), not a request."""
@@ -1940,6 +1943,25 @@ def health_lines(rows: list[dict], chips: list[dict], now: float) -> list[str]:
     if line:   # asks kept off his list are never hidden silently: one dim line says how many and why
         lines.append(line)
     return lines
+
+
+def read_live_sweep(path: str | None = None) -> dict | None:
+    """deadman_check.py's report of the live promises (done means running); None when there is none."""
+    p = path or os.path.join(os.environ.get("RM_OPS_WATCH_DIR", "/mnt/d/ClaudeWork/rimmandrake/ops_watch"),
+                             "live_sweep.json")
+    try:
+        with open(p, encoding="utf-8") as f:
+            return json.load(f)
+    except (OSError, ValueError):
+        return None
+
+
+def live_sweep_line(sweep: dict | None, now: float) -> str:
+    """The sweep's one line, '61 promises, 58 kept, 3 broken'; a silent sweep must not read as all kept."""
+    if not isinstance(sweep, dict) or not sweep.get("line"):
+        return "live promises: no sweep report"
+    age = now - (sweep.get("t") or 0)
+    return f"live promises: sweep silent {int(age // 3600)} h" if age > LIVE_SWEEP_STALE_SECS else sweep["line"]
 
 
 def not_shown_line(rows: list[dict]) -> str:
@@ -2066,7 +2088,7 @@ def collect_snapshot(raw: dict, state: dict, now: float) -> tuple[dict, dict, li
     new_state = dict(state)
     new_state.update({"seen": seen, "open": open_now, "incidents": incidents, "tel_episodes": tel_eps})
     snap = {
-        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": chips, "health": health_lines(rows, chips, now), "counts": counts,
+        "v": 2, "collected_at": now, "rows": rows, "strip": build_strip(rows), "chips": chips, "health": health_lines(rows, chips, now) + [live_sweep_line(raw.get("live_sweep"), now)], "counts": counts,
         "done_since": since, "sources": source_freshness(raw.get("source_status", {}), raw, now),
         "sparks": None,          # sparklines are Grafana's, not his
         # his two burn charts: tokens/hour (transcripts) and tickets/day opened/closed (ledger); absent = UNMEASURED
