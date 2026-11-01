@@ -121,7 +121,6 @@
     <Compile Include="JumppackForMeleeAI\JobDriver_CastJumpOnce.cs" />
     <Compile Include="JumppackForMeleeAI\JobGiver_AIMeleeJumppack.cs" />
     <Compile Include="JumppackForMeleeAI\Patch_JobGiver_AIFightEnemy.cs" />
-    <Compile Include="guy762_IonizationABF\DamageWorker_Ionize.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -143,16 +142,6 @@
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
-      <Private>false</Private>
-    </Reference>
-    <!-- Killathon.ArtificialBeings.SynCore stays active (this pass never
-         retires it): guy762_IonizationABF\DamageWorker_Ionize.cs is a
-         verbatim port of guy762.mm.kotorcore's own AdditionalMods/MHC DLL,
-         which depends on ABF_Utils from this assembly. Compile-only, same
-         reasoning as 0Harmony above: at runtime the game has already loaded
-         ABF's own copy. -->
-    <Reference Include="Artificial Beings Framework">
-      <HintPath>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3284097810\1.6\Assemblies\Artificial Beings Framework.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>

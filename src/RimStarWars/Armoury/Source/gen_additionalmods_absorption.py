@@ -28,9 +28,8 @@ requirement is that the FILE ITSELF still gets loaded by an active mod, hence
 SABER_GUARD_NAMES_WRONG_MOD_1 already established.
 
 `guy762_IonizationABF.dll` (in kotorcore's own MHC subfolder, 6.6 KB, distinct
-from the already-ported `guy762_Ionization`) is NOT handled by this script --
-it needs a real C# port into JawaArmoury.dll, same discipline as pass 4's 11
-DLLs, done separately.
+from the already-ported `guy762_Ionization`) is NOT absorbed: no Def names its
+two workers and it needs ABF, which is retired.
 """
 import os
 import shutil

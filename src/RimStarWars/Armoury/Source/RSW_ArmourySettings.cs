@@ -87,7 +87,7 @@ namespace RimMandrake.StarWars.Armoury
         public static bool returningWeaponEnabled = true;
         public static float returningWeaponSpeed = 1f;
 
-        // ── Ion / stun damage (guy762_Ionization + guy762_IonizationABF) ─
+        // ── Ion / stun damage (guy762_Ionization) ─
         public static bool ionDamageEnabled = true;
         public static float ionSeverity = 1f;
         public static bool plasmaGrenadeFires = true;

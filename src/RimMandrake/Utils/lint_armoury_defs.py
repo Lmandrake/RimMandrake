@@ -33,7 +33,7 @@ SRC = os.path.join(REPO, "src")
 DEFAULT_MOD = os.path.join(SRC, "RimStarWars", "Armoury")
 PACKAGE = "mandrake.rsw.armoury"
 ION_WORKERS_THAT_READ = {"DamageWorker_Humanlikes", "DamageWorker_Animals", "DamageWorker_Insectoids", "DamageWorker_Mechanoids", "DamageWorker_Organics",
-                         "DamageWorker_Ionization", "DamageWorker_Ionize", "DamageWorker_AllDroids"}
+                         "DamageWorker_Ionization"}
 HG_FIELDS = {"hediffToAdd", "hediffResistanceStat", "severityFixed", "severityVariesBySize", "hediffAppliedToWholeBody"}
 
 
@@ -319,7 +319,7 @@ def main(argv):
     cd = strip_cs(read(os.path.join(src, "SelfHediffVerb", "CompVerbWithCooltime.cs")))
     if "RSW_GearKernel.Tick(" not in cd or "RSW_GearKernel.AfterUse(" not in cd:
         E("ar-kernel", "CompVerbWithCooltime does not call the cooldown kernel")
-    for rel, need in (("guy762_Ionization/DamageWorker_RaceHediffBase.cs", "RSW_IonKernel.Decide("), ("guy762_IonizationABF/DamageWorker_Ionize.cs", "RSW_IonKernel.Decide("),
+    for rel, need in (("guy762_Ionization/DamageWorker_RaceHediffBase.cs", "RSW_IonKernel.Decide("),
                       ("SecondaryMineableYield/SecondaryMineableYield.cs", "RSW_YieldKernel.Pick("), ("KoltoTank/Building_KoltoTank.cs", "RSW_KoltoKernel.Step(")):
         if need not in read(os.path.join(src, *rel.split("/"))):
             E("ar-kernel", f"{rel} no longer calls {need}")

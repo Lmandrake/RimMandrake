@@ -22,7 +22,7 @@ OWN_NAMESPACES = ("RimMandrake", "RimStarWars", "RimUtinni", "JawaBench",
                   "CompExtraSounds", "CrystalFormations", "InstantHealingDrug", "JumppackForMeleeAI", "KoltoTank",
                   "LongHunger", "MentalBreakBlocker", "MinePocket", "RuthlessPursuingMechanoids",
                   "SecondaryMineableYield", "SelfHediffVerb", "Spinning_Projectile", "StructureInjectionsRUT",
-                  "guy762_Ionization", "guy762_IonizationABF")
+                  "guy762_Ionization")
 PAT = re.compile(r"Could not find (?:a )?type named (?:%s)(?![\w])[.\w]*"
                  % "|".join(re.escape(n) for n in sorted(OWN_NAMESPACES, key=len, reverse=True)))
 PROBE = "Bridge token:"

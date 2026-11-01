@@ -41,7 +41,7 @@ Workshop self-declarations (`<packageId>` in the donor's own About.xml) are left
 
 **guy762.kotordroids (24).** Gated, 6: `Absorbed_KotorWeapons_OrbitalTrader_Baragwin.xml` 3, `Absorbed_KotorWeapons_BaseTrader_Baragwin.xml` 3. Load order: `RimStarWars/Armoury/About/About.xml`. Comments, 17: `DroidDonor_ABFGate.xml` 8, `BTD_DistressCall_Repoint.xml` 5, and one each in `Absorbed_KotorDroidModules_Tech.xml`, `WeaponTags_Renormalise.xml`, `DroidsAreMachines.xml`, `PawnFlavorPhase2_Xenotype.xml`.
 
-**killathon.artificialbeings, bare (4).** Load order: `Armoury/About/About.xml`, `StarWarsPatches/About/About.xml`. Comments: `DamageWorker_Ionize.cs`, `DroidDonor_ABFGate.xml`.
+**killathon.artificialbeings, bare (3).** Load order: `Armoury/About/About.xml`, `StarWarsPatches/About/About.xml`. Comments: `DroidDonor_ABFGate.xml`.
 
 **killathon.artificialbeings.syncore (8).** Gated: `Absorbed_KotorCore__BASE_SWKotORApparel.xml` 2. Load order: `Armoury`, `PawnFlavor`, `ResearchRetag` About.xml. Comments: `Doctrine/About/About.xml`, `DroidDonor_ABFGate.xml`. Plus the ATC FindMod above.
 
@@ -71,7 +71,7 @@ The `RSW_DW_*OuterRim_*` names (142 in `src`) are ours and do not reference the 
 
 `Asimov_*` in `src`, live: 19, all Patches: `Asimov_WirelessCharging` 16 (ResearchRetag), `Asimov_Automaton` 3 (`DroidsAreMachines.xml`, FindMod on `Asimov`).
 
-**C# reference to a donor type:** `src/RimStarWars/Armoury/Source/guy762_IonizationABF/DamageWorker_Ionize.cs` has `using ArtificialBeings;` and calls `ABF_Utils.IsArtificial` twice, in `DamageWorker_Ionize` and `DamageWorker_AllDroids`. `JawaArmoury.csproj` compiles it against ABF's DLL in the Workshop folder, and its comment says SynCore stays active, which is no longer true. No Def in `src` names either class: the ion DamageDefs use `guy762_Ionization.*`, and the namespace `guy762_IonizationABF` appears in one XML comment only. Filed: `ARMOURY_IONIZE_RETIRE_ABF_REFERENCE_DEAD`.
+**C# reference to a donor type:** none. The one that existed, `DamageWorker_Ionize.cs`, was unused dead code named by no Def, and was removed with the csproj's ABF reference under `ARMOURY_IONIZE_RETIRE_ABF_REFERENCE_DEAD`; the ion DamageDefs use `guy762_Ionization.*`.
 
 ## Workshop: who else names a donor
 
@@ -92,4 +92,4 @@ Limits: `findstr` skipped 40 UTF-16 files, all `Languages` translations, and cou
 
 ## Conclusion
 
-No active mod and no `src` Def depends on a donor at load. Two leftovers, both filed: MSEDroidFix's `modDependencies`, and the `DamageWorker_Ionize` dead code. A save can still hold donor state no mod grep sees: check the save directly before calling a retirement safe (`rimworld-savegame`).
+No active mod and no `src` Def depends on a donor at load. One leftover, filed: MSEDroidFix's `modDependencies`. A save can still hold donor state no mod grep sees: check the save directly before calling a retirement safe (`rimworld-savegame`).

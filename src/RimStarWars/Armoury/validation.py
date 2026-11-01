@@ -6,12 +6,12 @@ Run with:
 
 SCOPE (read, not guessed): `Source/RSW_ArmourySettings.cs` -- "This mod is an
 'absorbed' bundle: one assembly carrying a dozen otherwise-unrelated runtime
-mechanisms, each in its own namespace." 24 toggle/tuning fields across 12
+mechanisms, each in its own namespace." 24 toggle/tuning fields across 11
 mechanisms (`CompExtraSounds`, `CrystalFormations`, `InstantHealingDrug`,
 `JumppackForMeleeAI`, `KoltoTank`, `MentalBreakBlocker`, `MinePocket`,
 `SecondaryMineableYield`, `SelfHediffVerb`, `Spinning_Projectile`,
-`guy762_Ionization`, `guy762_IonizationABF`). This is not a playtest of all
-12 (spec §1: "not exhaustive") -- it grounds every toggle in what its C#
+`guy762_Ionization`). This is not a playtest of all
+11 (spec §1: "not exhaustive") -- it grounds every toggle in what its C#
 ACTUALLY does, at whatever depth is honestly reachable offline+bridge:
 
   TIER 1 -- real behavior, live damage/hediff read-back (the ion mechanism):

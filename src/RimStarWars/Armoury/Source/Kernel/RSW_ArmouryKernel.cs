@@ -13,7 +13,7 @@ namespace RimMandrake.StarWars.Armoury
         public static int RoundToInt(float f) { return (int)Math.Round(f); }
     }
 
-    /// <summary>Ion / stun damage: what a hit adds to a pawn (guy762_Ionization and guy762_IonizationABF workers).</summary>
+    /// <summary>Ion / stun damage: what a hit adds to a pawn (guy762_Ionization workers).</summary>
     public static class RSW_IonKernel
     {
         public struct Plan
