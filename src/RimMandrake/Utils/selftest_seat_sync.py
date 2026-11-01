@@ -221,6 +221,20 @@ def main() -> int:
         before = git(seat, "rev-parse", "HEAD")
         rc, out = run(seat, "--dry-run")
         check(rc == 0 and "WOULD SYNC" in out and git(seat, "rev-parse", "HEAD") == before, "dry run changes nothing")
+        shard = "infrastructure/state/ledger/events/SEAT.jsonl"
+        run(seat)
+        peer_push(peer, {shard: "base\n"}, "shard")
+        run(seat)
+        write(seat, shard, "base\nmine\n")
+        git(seat, "commit", "-q", "-m", "ledger", "--", shard)
+        peer_push(peer, {shard: "base\nmine\ntheirs\n"}, "shard landed by union")
+        rc, out = run(seat)
+        check(rc == 0 and Path(seat, shard).read_text() == "base\nmine\ntheirs\n", "a shard whose lines are all upstream syncs: " + out[-160:])
+        write(seat, shard, "base\nmine\ntheirs\nunpublished\n")
+        git(seat, "commit", "-q", "-m", "ledger two", "--", shard)
+        peer_push(peer, {shard: "base\nmine\ntheirs\nmore\n"}, "other line")
+        rc, out = run(seat)
+        check(rc == 1 and "NOT on origin/main" in out, "a shard line not upstream is still refused")
     print(f"{'ALL PASS' if not FAILS else f'{len(FAILS)} FAIL'}")
     return 1 if FAILS else 0
 

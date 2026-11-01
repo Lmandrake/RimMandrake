@@ -44,6 +44,8 @@ import tempfile
 import time
 from pathlib import Path
 
+LEDGER_SHARDS = "infrastructure/state/ledger/events/"
+
 
 class Refused(Exception):
     pass
@@ -79,6 +81,14 @@ class Git:
                 meta, p = rec.split("\t", 1)
                 out[p] = meta.split()[2]
         return out
+
+    def shard_upstream(self, head: str, up: str, path: str) -> bool:
+        """True for a ledger shard whose every line at head is upstream. Shards are union-merged, so a landed one differs
+        as a blob for ever while losing nothing."""
+        if not (path.startswith(LEDGER_SHARDS) and path.endswith(".jsonl")):
+            return False
+        ours, theirs = (self.run("show", f"{r}:{path}", check=False) for r in (head, up))
+        return bool(ours and theirs) and set(ours.splitlines()) <= set(theirs.splitlines())
 
     def wt_hashes(self, paths: list[str]) -> dict[str, str]:
         """path -> blob sha of the working-tree file (absent / non-file paths omitted)."""
@@ -452,7 +462,10 @@ def plan(g: Git) -> dict:
         if all(a.get(t) == b.get(t) for t in touched):
             p["local"].append((subj, "content-equivalent"))
             continue
-        diff = [t for t in touched if a.get(t) != b.get(t)]
+        diff = [t for t in touched if a.get(t) != b.get(t) and not g.shard_upstream(head, up, t)]
+        if not diff:
+            p["local"].append((subj, "ledger lines upstream"))
+            continue
         raise Refused(f"local commit {subj} is NOT on origin/main ({len(diff)} path(s) differ, e.g. {diff[0]}). "
                       f"Land it first (land.sh <sha> <paths>), then sync")
     # 2. files upstream stopped tracking stay on disk (with any local edit), so they never block the move
