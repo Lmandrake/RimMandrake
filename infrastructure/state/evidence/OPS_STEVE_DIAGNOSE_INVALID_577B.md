@@ -30,8 +30,9 @@ from c775d5, which went DONE on a cold start; it was not replayed.
 
 ## Not proven
 
-- The fix has run only against the selftest's mock modcheck, not a real wounded game on Steve. It reaches Steve when the
-  runner clone next updates.
+- The fix has run only against the selftest's mock modcheck, not a real wounded game on Steve. It is on Steve's runner
+  clone since 2026-11-01 (pulled by hand at d92a34e3e4; the clone was 183 commits behind). `worker.py` runs per attempt,
+  so the next job uses it. A job pinned to a `source_sha` older than 02f1d91b53 runs without it.
 - A `no_game` line that falls outside the output tail the worker receives would not trigger the stop. Both real records
   had it inside the 300-character note.
 - Why the DLL failed to load was not examined. The Steve job logs for these jobs were not found on a search of its
@@ -42,13 +43,10 @@ from c775d5, which went DONE on a cold start; it was not replayed.
 ## Rerun
 
     python3 infrastructure/stevedesktop/selftest_steve_worker.py
+    python3 src/RimMandrake/Utils/testq/invalid_census.py --since 2026-10-31T07:30Z --until 2026-10-31T07:40Z --require-all GAME_DIED --min 1
     python3 src/RimMandrake/Utils/testq/invalid_census.py --since 2026-10-31T07:40Z --until 2026-10-31T08:20Z --require-all no_game --min 2
+    ssh stevedesktop-wsl 'git -C ~/rm/runner merge-base --is-ancestor 02f1d91b53 HEAD'
 
-The second window starts after 1fe7ea on purpose: that job is GAME_DIED and carries no `no_game`.
-
-**The item's locked contract words this check wrongly.** It reads `--since 2026-10-31T07:30Z --until
-2026-10-31T08:20Z --require-all no_game...`, which exits 1 as written: the window includes 1fe7ea, and the `...` was
-shorthand, not text. The contract cannot be changed from a build attempt, so the command above is a replacement, not the
-contract's own. Run without `--require-all`, the contract's window lists all three jobs and exits 0.
+Two census windows because the streak has two causes: 1fe7ea is GAME_DIED and carries no `no_game`.
 
 Later INVALID jobs on 10-31 had other causes: see `infrastructure/state/evidence/OPS_STEVE_DIAGNOSE_INVALID_CE0E.md`.
