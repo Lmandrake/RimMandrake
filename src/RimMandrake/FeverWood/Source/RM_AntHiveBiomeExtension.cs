@@ -18,9 +18,8 @@ namespace RimMandrake.FeverWood
     // race without the comp.
     //
     // Chambers: the farm (chamber 1 of 3) is farmKind. The parasite chamber
-    // (2 of 3) was cut 2026-10-23 (design/RimMandrake/fluff_cuts_2026-10-23.md). The guard chamber needs a creature not yet
-    // invented (FEVERWOOD_HIVE_GUARD_CHAMBER_1); RM_MapComponent_AntHive
-    // records every room center for it.
+    // (2 of 3) was cut 2026-10-23 (design/RimMandrake/fluff_cuts_2026-10-23.md). The guard chamber (3 of 3) is
+    // guardKind (FEVERWOOD_HIVE_GUARD_CHAMBER_1).
     public class RM_AntHiveBiomeExtension : DefModExtension
     {
         // Required. The ordinary ant caste that fills every non-entrance room.
@@ -74,6 +73,15 @@ namespace RimMandrake.FeverWood
         public IntRange farmStockRange = new IntRange(3, 5);
 
         public float farmHerdRadius = 5f;
+
+        // FEVERWOOD_HIVE_GUARD_CHAMBER_1, chamber 3 of 3: "a larger creature
+        // fed and housed by the hive, stationed where corridors narrow".
+        // Optional: null = no guard. One per corridor from the deepest up,
+        // never the entrance's or the farm's corridor, so a short hive may
+        // carry fewer than rolled. INVENTED counts.
+        public PawnKindDef guardKind;
+
+        public IntRange guardCountRange = new IntRange(1, 2);
 
         // FEVERWOOD_HIVE_SEALED_PASSAGES_1: the reaction tag the defenders'
         // RM_CompReactionSource rings with; an alarm carrying it seals the

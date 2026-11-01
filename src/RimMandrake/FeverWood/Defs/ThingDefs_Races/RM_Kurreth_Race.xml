@@ -111,7 +111,7 @@
          within 7 cells, or is hurt, rings an alarm; the alarm hops resident to
          resident (9 cells per hop, through the corridors) and each one reached
          rallies after the intruder. BUDGET, stated as a total: one disturbance
-         rallies at most 11 kurreth (the ringer + 10 reached by propagation;
+         rallies at most 11 hive residents, guards too (the ringer + 10 by propagation;
          rallying itself costs nothing so the total is exactly the hop count).
          Telegraph: an angry chitter + a ThreatBig message once per alarm, and
          a "!" over every kurreth that answers. Raiding-column kurreth carry a

@@ -176,6 +176,7 @@
         <workerKind>RM_Kurreth</workerKind>
         <queenKind>RM_KurrethQueen</queenKind>
         <farmKind>RM_Thornbug</farmKind>
+        <guardKind>RM_Bostrach</guardKind>
       </li>
       <!-- FEVERWOOD_CROWN_SOUND_HEAT_1 / SOLAR_HEAT_EXPOSURE_1: sun heat kind "ambient" - still, shadeless
            heat under the crown: shade does nothing, only insulation or leaving helps. Vanilla temperature

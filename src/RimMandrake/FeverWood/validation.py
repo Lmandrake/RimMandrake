@@ -43,6 +43,7 @@ stack-size key on list_things rows. A component that cannot read a shape it need
 (`_unmeasured`), never PASS.
 """
 import contextlib
+import csv
 import json
 import math
 import os
@@ -278,7 +279,7 @@ for _fn in sorted(os.listdir(_PATCH_DIR)) if os.path.isdir(_PATCH_DIR) else []:
 BY_NAME = [("HediffDef", "RM_CaptivityMemory"), ("HediffDef", "RM_LureStaked"),
            ("ThingDef", "RM_Sekkulaath_Bloom"), ("PawnKindDef", "RM_Sekkulaath_Juvenile"),
            ("FactionDef", "RM_FactionDef_KurrethSwarm"), ("PawnKindDef", "RM_Kurreth"),
-           ("PawnKindDef", "RM_KurrethQueen"), ("JobDef", "RM_FoulPool"), ("JobDef", "RM_StunForStaking"),
+           ("PawnKindDef", "RM_KurrethQueen"), ("PawnKindDef", "RM_Bostrach"), ("JobDef", "RM_FoulPool"), ("JobDef", "RM_StunForStaking"),
            ("JobDef", "RM_HaulToStake"), ("DesignationDef", "RM_Designation_FoulPool"),
            ("DesignationDef", "RM_Designation_StakeLure"), ("ThingDef", "RM_RadioactiveSuppressant"),
            ("ThingDef", "RM_LureStake"), ("ThingDef", "RM_SeveredTentacleFlesh"),
@@ -1779,6 +1780,111 @@ def hive_rally(t):
                 if t.session is not None:
                     t.session.call("jawa/mod_settings_field", typeName=CB_SETTINGS, action="set",
                                    field="reactionDetectionEnabled", value="True")
+    finally:
+        _teardown(t)
+
+
+# ------------------------------------------------------------------------- hive guard
+
+GUARD = "RM_Bostrach"
+GUARD_RALLY_TAG = "KurrethHive"
+GUARD_ART_LIST = os.path.join(_HERE, "..", "..", "..", "infrastructure", "artpipe", "art_lists",
+                              "feverwood_bostrach_2026-10-31.csv")
+
+
+def hive_guard_wiring(here=None, art_list=None):
+    """FEVERWOOD_HIVE_GUARD_CHAMBER_1, the source half. A list of what is wrong, empty when wired: the race is
+    larger than the queen, tethered tight, a reaction source and responder on the hive's tag with the workers'
+    budget; the biome names it; the GenStep places it at a measured choke and the hive feeds it; the setting
+    gates both; its art is queued. The selftest breaks each on a copy to prove every line can go red."""
+    here = here or _HERE
+    art_list = art_list or GUARD_ART_LIST
+    bad = []
+    races = os.path.join(here, "Defs", "ThingDefs_Races")
+    guard = ET.parse(os.path.join(races, "RM_Bostrach_Race.xml")).getroot()
+    kurreth = ET.parse(os.path.join(races, "RM_Kurreth_Race.xml")).getroot()
+    g = guard.find("ThingDef[defName='%s']" % GUARD)
+    if g is None or guard.find("PawnKindDef[defName='%s']" % GUARD) is None:
+        return ["no %s ThingDef + PawnKindDef" % GUARD]
+    queen = kurreth.find("ThingDef[defName='RM_KurrethQueen']")
+    if float(g.findtext("race/baseBodySize", "0")) <= float(queen.findtext("race/baseBodySize")):
+        bad.append("guard body is not larger than the queen's")
+    props = {(li.get("Class") or "").rsplit(".", 1)[-1]: li for li in g.findall("comps/li")}
+    tether = props.get("RM_CompProperties_HomeTether")
+    if tether is None or float(tether.findtext("tetherRadius", "99")) > 3:
+        bad.append("guard has no tight RM_CompHomeTether")
+    src = props.get("RM_CompProperties_ReactionSource")
+    worker = next(li for li in kurreth.find("ThingDef[defName='RM_Kurreth']").findall("comps/li")
+                  if (li.get("Class") or "").endswith("RM_CompProperties_ReactionSource"))
+    if src is None or src.findtext("tag") != GUARD_RALLY_TAG:
+        bad.append("guard's reaction source does not carry the hive's tag")
+    else:
+        if src.findtext("eventBudget") != worker.findtext("eventBudget"):
+            bad.append("guard's eventBudget differs from the workers': the stated rally total no longer holds")
+        if src.findtext("response/mentalState") != HIVE_RALLY:
+            bad.append("guard does not answer with %s" % HIVE_RALLY)
+    tags = [li.findtext("tag") for li in g.findall("modExtensions/li")
+            if (li.get("Class") or "").endswith("RM_AlarmResponderExtension")]
+    if tags != [GUARD_RALLY_TAG]:
+        bad.append("guard has no RM_AlarmResponderExtension on the hive's tag")
+    with open(os.path.join(here, "Defs", "BiomeDefs", "RM_FeverWood.xml"), encoding="utf-8") as fh:
+        if "<guardKind>%s</guardKind>" % GUARD not in fh.read():
+            bad.append("RM_FeverWood's hive extension names no guardKind")
+    with open(os.path.join(here, "Source", "RM_GenStep_AntHiveDungeon.cs"), encoding="utf-8") as fh:
+        gen = fh.read()
+    if "PlaceGuards(map, ext, rooms);" not in gen or "TryFindChoke(map, rooms[i - 1], rooms[i]" not in gen:
+        bad.append("the GenStep does not station guards on a corridor's measured choke")
+    if "ext.guardKind == null || !RM_FeverWoodSettings.antHiveGuardChamberEnabled" not in gen:
+        bad.append("the setting does not gate guard placement")
+    with open(os.path.join(here, "Source", "RM_MapComponent_AntHive.cs"), encoding="utf-8") as fh:
+        comp = fh.read()
+    if "needs.food.CurLevelPercentage = 1f" not in comp or "!HasWildFeeder()" not in comp:
+        bad.append("the hive does not feed its guards from living workers")
+    if not ('Scribe_Collections.Look(ref guards, "guards", LookMode.Reference)' in comp
+            and 'Scribe_Defs.Look(ref guardFeederRace' in comp):
+        bad.append("guards or their feeder are not saved")
+    if not os.path.isfile(art_list):
+        bad.append("no art list row queues the guard's art")
+    else:
+        with open(art_list, encoding="utf-8") as fh:
+            if not any(r.get("id") == GUARD for r in csv.DictReader(fh)):
+                bad.append("no art list row queues the guard's art")
+    return bad
+
+
+@suite.chain("hive_guard")
+def hive_guard(t):
+    """FEVERWOOD_HIVE_GUARD_CHAMBER_1. Source: hive_guard_wiring. Live: a wild worker in sight of a colonist with a
+    guard one hop behind it; the alarm reaches the guard and it rallies at the same intruder. A hive generated on a
+    real Fever Wood map is NOT reached by a quicktest pad: first look on one, RM_FeverWoodProof.ProofHive."""
+    with _comp(t, "guard_is_wired", independent=True):
+        if t.session is not None:
+            bad = hive_guard_wiring()
+            if bad:
+                _fail("; ".join(bad))
+
+    _enter(t)
+    try:
+        with _comp(t, "the_alarm_rallies_the_guard_at_the_intruder"):
+            _reset_pad(t)
+            x, z = t.anchor
+            ant = _spawn(t, "RM_Kurreth", x, z, "none")
+            guard = _spawn(t, GUARD, x + 6, z, "none")
+            col = _spawn(t, "Colonist", x - 4, z, "player")
+            t.wait_ticks(400)
+            if _live(t):
+                rows = _census(t, [ant, guard])
+                states = [((rows.get(a) or {}).get("mentalState") or {}) for a in (ant, guard)]
+                _note(t, "hive states", states)
+                if states[0].get("def") != HIVE_RALLY:
+                    jobs = [(((rows.get(a) or {}).get("job") or {}).get("def")) for a in (ant, guard)]
+                    if jobs[0] == "LayDown":
+                        _unmeasured(t, "the sentry was asleep (a sleeping sentry notices nothing by design)")
+                    _fail("the sentry never rang: %r jobs=%r" % (states, jobs))
+                if states[1].get("def") != HIVE_RALLY:
+                    _fail("the alarm reached the worker but the guard did not rally: %r" % states)
+                if str(states[1].get("causedByPawn") or "").replace("Thing_", "") != str(col).replace("Thing_", ""):
+                    _fail("the guard is not aimed at the intruder %s: %r" % (col, states))
     finally:
         _teardown(t)
 

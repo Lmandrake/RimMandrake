@@ -22,8 +22,7 @@ namespace RimMandrake.FeverWood
     // blob, linked room-to-room by a straight corridor, all roofed so the
     // whole thing reads as a dug-out enclosure — then populates every
     // non-entrance room with workers and the last (deepest) room with one
-    // queen. See RM_AntHiveBiomeExtension's own header for what is
-    // deliberately NOT built here (the guard chamber) and why.
+    // queen. The farm and guard chambers follow (PlaceFarm, PlaceGuards).
     public class RM_GenStep_AntHiveDungeon : GenStep
     {
         private static readonly IntVec3[] EightDirs =
@@ -31,6 +30,9 @@ namespace RimMandrake.FeverWood
             new IntVec3(1, 0, 0), new IntVec3(1, 0, 1), new IntVec3(0, 0, 1), new IntVec3(-1, 0, 1),
             new IntVec3(-1, 0, 0), new IntVec3(-1, 0, -1), new IntVec3(0, 0, -1), new IntVec3(1, 0, -1),
         };
+
+        // Just wider than a corridor (radius 1), so a room mouth reads as open.
+        private const float ChokeProbeRadius = 2.9f;
 
         public override int SeedPart => 1758952022;
 
@@ -96,6 +98,7 @@ namespace RimMandrake.FeverWood
 
             Populate(map, ext, rooms);
             PlaceFarm(map, ext, rooms);
+            PlaceGuards(map, ext, rooms);
 
             Log.Message("[RM FeverWood] RM_GenStep_AntHiveDungeon: placed a " + rooms.Count
                 + "-room ant hive on " + map.Biome.defName + " at " + start + ".");
@@ -334,6 +337,97 @@ namespace RimMandrake.FeverWood
                 GenSpawn.Spawn(stock, cell, map);
                 hive.farmStock.Add(stock);
             }
+        }
+
+        // Chamber 3 of 3, the kept guard (FEVERWOOD_HIVE_GUARD_CHAMBER_1): one
+        // guard per corridor, deepest first, each at that corridor's narrowest
+        // cell. Corridors into rooms 0 and 1 stay clear (the door and the
+        // farm), so the top of the hive is free to enter and depth is what
+        // gets gated. Always an adult: a newborn gate is no gate.
+        private static void PlaceGuards(Map map, RM_AntHiveBiomeExtension ext, List<IntVec3> rooms)
+        {
+            if (ext.guardKind == null || !RM_FeverWoodSettings.antHiveGuardChamberEnabled)
+            {
+                return;
+            }
+
+            RM_MapComponent_AntHive hive = map.GetComponent<RM_MapComponent_AntHive>();
+            if (hive == null)
+            {
+                return;
+            }
+
+            hive.guardFeederRace = ext.workerKind.race;
+            int wanted = ext.guardCountRange.RandomInRange;
+            for (int i = rooms.Count - 1; i >= 2 && hive.guards.Count < wanted; i--)
+            {
+                if (!TryFindChoke(map, rooms[i - 1], rooms[i], out IntVec3 choke))
+                {
+                    continue; // a corridor with no standable centre line has nowhere to stand a guard
+                }
+
+                float age = ext.guardKind.race.race.lifeExpectancy * 0.5f;
+                Pawn guard = PawnGenerator.GeneratePawn(new PawnGenerationRequest(ext.guardKind, null,
+                    PawnGenerationContext.NonPlayer, -1, fixedBiologicalAge: age, fixedChronologicalAge: age));
+                if (guard == null)
+                {
+                    continue;
+                }
+
+                GenSpawn.Spawn(guard, choke, map);
+                SettleDefender(guard, choke);
+                hive.guards.Add(guard);
+            }
+        }
+
+        // "Stationed where corridors narrow", measured rather than assumed:
+        // rooms are random blobs that can swallow most of a short corridor, and
+        // their radii are not recorded. Walks the centre line a -> b and takes
+        // the cell with the fewest standable cells around it, ties to the deep
+        // end. Stays clear of the midpoint where RM_HiveSealing drops its plug,
+        // which would wall the guard in; a corridor too short to offer such a
+        // cell gives up that preference rather than its guard.
+        private static bool TryFindChoke(Map map, IntVec3 a, IntVec3 b, out IntVec3 choke)
+        {
+            IntVec3 mid = new IntVec3((a.x + b.x) / 2, 0, (a.z + b.z) / 2);
+            float clearSq = (RM_HiveSealing.PlugRadius + 1f) * (RM_HiveSealing.PlugRadius + 1f);
+            int steps = Mathf.CeilToInt((b - a).LengthHorizontal);
+            int bestOpen = int.MaxValue;
+            bool bestClear = false;
+            choke = IntVec3.Invalid;
+            for (int i = 1; i < steps; i++)
+            {
+                float t = (float)i / steps;
+                IntVec3 c = new IntVec3(Mathf.RoundToInt(a.x + (b.x - a.x) * t), 0, Mathf.RoundToInt(a.z + (b.z - a.z) * t));
+                if (!c.InBounds(map) || !c.Standable(map))
+                {
+                    continue;
+                }
+
+                bool clear = (c - mid).LengthHorizontalSquared > clearSq;
+                int open = OpenCellsAround(map, c);
+                if ((clear && !bestClear) || (clear == bestClear && open <= bestOpen))
+                {
+                    bestOpen = open;
+                    bestClear = clear;
+                    choke = c;
+                }
+            }
+
+            return choke.IsValid;
+        }
+
+        private static int OpenCellsAround(Map map, IntVec3 at)
+        {
+            int open = 0;
+            foreach (IntVec3 c in GenRadial.RadialCellsAround(at, ChokeProbeRadius, true))
+            {
+                if (c.InBounds(map) && c.Standable(map))
+                {
+                    open++;
+                }
+            }
+            return open;
         }
 
         // REACTION_MECHANISM_GENERALISE_1 step 3. A defender whose race

@@ -512,8 +512,9 @@ class FWGame(MockGame):
         + rally, as the C# does: wild kurreth only, the intruder is the event's instigator."""
         if not (self.sb("reactionDetectionEnabled") or "hive_ignores_toggle" in self.brk) or "hive_blind" in self.brk:
             return
-        wild = [q for q in self.pawns if q["kindDef"] == "RM_Kurreth" and q["faction"] is None]
-        intruders = [q for q in self.pawns if q["kindDef"] != "RM_Kurreth" and q["faction"] is not None]
+        hive = ["RM_Kurreth"] + ([V.GUARD] if "guard_deaf" not in self.brk else [])
+        wild = [q for q in self.pawns if q["kindDef"] in hive and q["faction"] is None]
+        intruders = [q for q in self.pawns if q["kindDef"] not in hive and q["faction"] is not None]
         for a in wild:
             if a.get("mental"):
                 continue
@@ -617,13 +618,58 @@ def guards_with(extra_files, leak_text=None, faction=CLEAN_FACTION):
         shutil.rmtree(tmp, ignore_errors=True)
 
 
+def guard_wiring_breaks():
+    """Each break, on a copy of the sources, reddens hive_guard_wiring with its own line."""
+    files = ["Defs/ThingDefs_Races/RM_Bostrach_Race.xml", "Defs/ThingDefs_Races/RM_Kurreth_Race.xml",
+             "Defs/BiomeDefs/RM_FeverWood.xml", "Source/RM_GenStep_AntHiveDungeon.cs",
+             "Source/RM_MapComponent_AntHive.cs"]
+    race, gen, comp, biome = files[0], files[3], files[4], files[2]
+    breaks = [
+        (race, "<baseBodySize>3<", "<baseBodySize>1<", "not larger"),
+        (race, "<tetherRadius>2<", "<tetherRadius>20<", "no tight"),
+        (race, "<tag>KurrethHive</tag>\n        <eventBudget>", "<tag>Other</tag>\n        <eventBudget>", "hive's tag"),
+        (race, "<eventBudget>10<", "<eventBudget>40<", "eventBudget"),
+        (race, "<mentalState>RM_HiveRally<", "<mentalState>Manhunter<", "does not answer"),
+        (race, "<tag>KurrethHive</tag>\n      </li>", "<tag>Other</tag>\n      </li>", "RM_AlarmResponderExtension"),
+        (biome, "<guardKind>RM_Bostrach</guardKind>", "", "no guardKind"),
+        (gen, "PlaceGuards(map, ext, rooms);", "", "measured choke"),
+        (gen, "ext.guardKind == null || !RM_FeverWoodSettings.antHiveGuardChamberEnabled", "ext.guardKind == null", "does not gate"),
+        (comp, "needs.food.CurLevelPercentage = 1f", "needs.food.CurLevelPercentage = 0f", "does not feed"),
+        (comp, 'Scribe_Collections.Look(ref guards, "guards", LookMode.Reference);', "", "not saved"),
+    ]
+    tmp = tempfile.mkdtemp()
+    try:
+        for f in files:
+            os.makedirs(os.path.dirname(os.path.join(tmp, f)), exist_ok=True)
+            shutil.copy(os.path.join(V._HERE, f), os.path.join(tmp, f))
+        check("hive guard wiring is clean on the real sources", V.hive_guard_wiring() == [], V.hive_guard_wiring())
+        check("hive guard wiring is clean on the copy", V.hive_guard_wiring(tmp) == [], V.hive_guard_wiring(tmp))
+        for f, old, new, word in breaks:
+            path = os.path.join(tmp, f)
+            with open(path, encoding="utf-8", newline="") as fh:
+                text = fh.read()
+            broken = text.replace(old.replace("\n", "\r\n") if "\r\n" in text else old, new, 1)
+            check("break %r changes the source" % old, broken != text, f)
+            with open(path, "w", encoding="utf-8", newline="") as fh:
+                fh.write(broken)
+            got = V.hive_guard_wiring(tmp)
+            check("break %r reddens exactly its line" % old, len(got) == 1 and word in got[0], got)
+            with open(path, "w", encoding="utf-8", newline="") as fh:
+                fh.write(text)
+        missing = os.path.join(tmp, "nope.csv")
+        check("break no art row reddens its line", V.hive_guard_wiring(tmp, missing) == ["no art list row queues the guard's art"])
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
 def main():
+    guard_wiring_breaks()
     # -- the instrument itself ------------------------------------------------------------------
     check("source parse is clean", not V._ERRORS, V._ERRORS)
     for group, _, names, floor in V.GROUPS:
         check("floor met: %s (%d >= %d)" % (group, len(names), floor), len(names) >= floor)
     check("settings parsed (%d fields, %d toggles)" % (len(V.SETTING_FIELDS), len(V.BOOL_TOGGLES)),
-          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 20, V.BOOL_TOGGLES)  # 2026-10-23 fluff cuts: -antHiveParasiteChamberEnabled, -antTheftEnabled, -kurrethColumnEnabled, -kurrethTheftPerColumn, -kurrethLossFinalize; +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled, +tentacleLimbLingerEnabled (FV-1); 2026-10-09: -naturalPlacementEnabled, +foulingWithdrawsLimbs, +kurrethTheftPerColumn, +twoFrontLureTrueFronts, +tentaclePoolsAreClusters, +kurrethLossFinalize, +antHiveRealGeometry
+          len(V.SETTING_FIELDS) >= 24 and len(V.BOOL_TOGGLES) == 21, V.BOOL_TOGGLES)  # +antHiveGuardChamberEnabled; 2026-10-23 fluff cuts: -antHiveParasiteChamberEnabled, -antTheftEnabled, -kurrethColumnEnabled, -kurrethTheftPerColumn, -kurrethLossFinalize; +sillochAmbushEnabled, brathekBoresWood (cast pass 2), +broodRansomEnabled, +tentacleLimbLingerEnabled (FV-1); 2026-10-09: -naturalPlacementEnabled, +foulingWithdrawsLimbs, +kurrethTheftPerColumn, +twoFrontLureTrueFronts, +tentaclePoolsAreClusters, +kurrethLossFinalize, +antHiveRealGeometry
     check("sap-sucker kinds derived", [k for k, _, _, _ in V.SAP_KINDS] == ["RM_Vaulm", "RM_Drommath"], V.SAP_KINDS)
     check("harvest flora derived", len(V.FLORA_PRODUCTS) == 6, V.FLORA_PRODUCTS)  # +RM_Crimmelroot, +RM_LumbrelTree (PLANT_TIERS_RECONCILE_MOST_ARE_BAROQUE 2026-10-16)
     check("crown plants derived", len(V.CROWN_PLANTS) >= 5, V.CROWN_PLANTS)
@@ -688,10 +734,11 @@ def main():
         ("flora_noop", {"flora_harvest.every_flora_yields_its_harvest_item"}),
         ("raid_ignores_toggle", {"lure_raid.with_the_lure_toggle_off_no_raid_comes"}),
         ("raid_never", {"lure_raid.a_staked_lure_draws_the_swarm"}),
-        ("hive_blind", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
-        ("hive_no_hop", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
+        ("hive_blind", {"hive_rally.a_seen_intruder_rallies_the_whole_line", "hive_guard.the_alarm_rallies_the_guard_at_the_intruder"}),
+        ("hive_no_hop", {"hive_rally.a_seen_intruder_rallies_the_whole_line", "hive_guard.the_alarm_rallies_the_guard_at_the_intruder"}),
         ("hive_silent", {"hive_rally.a_seen_intruder_rallies_the_whole_line"}),
         ("hive_ignores_toggle", {"hive_rally.with_detection_off_the_same_layout_rallies_nobody"}),
+        ("guard_deaf", {"hive_guard.the_alarm_rallies_the_guard_at_the_intruder"}),
         ("gate_stuck", {"oil_boil.gate_follows_the_temperature_setting"}),
         ("yield_flat", {"oil_boil.seepril_yield_doubles_while_boiling"}),
         ("haze_inert", {"oil_boil.a_spark_in_the_haze_flashes_and_burns_it_off"}),

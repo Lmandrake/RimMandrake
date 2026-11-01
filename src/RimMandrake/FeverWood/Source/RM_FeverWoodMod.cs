@@ -144,6 +144,11 @@ namespace RimMandrake.FeverWood
         /// being herded back to its room. Default ON.</summary>
         public static bool antHiveFarmChamberEnabled = true;
 
+        /// <summary>Chamber 3 of 3, FEVERWOOD_HIVE_GUARD_CHAMBER_1. Off: a new
+        /// hive carries no guard (WORLDGEN-AFFECTING), and an existing guard is
+        /// no longer fed. Default ON.</summary>
+        public static bool antHiveGuardChamberEnabled = true;
+
         /// <summary>FEVERWOOD_HIVE_SEALED_PASSAGES_1. Off: a hive alarm never
         /// plugs the corridor behind the intruder. Default ON.</summary>
         public static bool antHiveSealingEnabled = true;
@@ -286,6 +291,7 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref antHiveDungeonEnabled, "antHiveDungeonEnabled", true);
             Scribe_Values.Look(ref antHiveChanceMultiplier, "antHiveChanceMultiplier", 1f);
             Scribe_Values.Look(ref antHiveFarmChamberEnabled, "antHiveFarmChamberEnabled", true);
+            Scribe_Values.Look(ref antHiveGuardChamberEnabled, "antHiveGuardChamberEnabled", true);
             Scribe_Values.Look(ref antHiveSealingEnabled, "antHiveSealingEnabled", true);
             Scribe_Values.Look(ref twoFrontLureEnabled, "twoFrontLureEnabled", true);
             Scribe_Values.Look(ref twoFrontLureRaidMtbHours, "twoFrontLureRaidMtbHours", 6f);
@@ -405,7 +411,7 @@ namespace RimMandrake.FeverWood
                 list.GapLine();
             }
 
-            if (Group(list, "Ant hive dungeons (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "antHiveDungeonEnabled", "antHiveChanceMultiplier", "antHiveRealGeometry", "antHiveFarmChamberEnabled" }))
+            if (Group(list, "Ant hive dungeons (WORLDGEN-AFFECTING)", RimMandrake.Shared.SettingScope.NewMapsOnly, new[] { "antHiveDungeonEnabled", "antHiveChanceMultiplier", "antHiveRealGeometry", "antHiveFarmChamberEnabled", "antHiveGuardChamberEnabled" }))
             {
                 list.CheckboxLabeled("Ant hive dungeons", ref antHiveDungeonEnabled,
                     "A rare, procedurally-laid-out chain of dug tunnels and rooms, populated with kurreth "
@@ -422,6 +428,10 @@ namespace RimMandrake.FeverWood
                     "The shallowest hive room keeps a herd of thornbugs the kurreth tend and herd back when "
                   + "they stray: the hive is a farm. Off: new hives carry no herd and an existing herd is no "
                   + "longer herded.");
+                list.CheckboxLabeled("Ant hive guard chamber (worldgen)", ref antHiveGuardChamberEnabled,
+                    "A bostrach, a huge blind creature the kurreth feed, sits at the narrowest point of the deep "
+                  + "tunnels and answers the hive's alarm. Off: new hives carry no guard and an existing "
+                  + "guard is no longer fed.");
                 list.GapLine();
             }
 

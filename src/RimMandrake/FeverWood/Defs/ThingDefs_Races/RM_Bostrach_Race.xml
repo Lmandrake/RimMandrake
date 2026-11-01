@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FEVERWOOD_HIVE_GUARD_CHAMBER_1. Chamber 3 of 3 of the kurreth hive (owner ruling 2026-09-22, recorded in
+     FEVERWOOD_ANT_HIVE_DUNGEON_1): "A kept guard at the chokepoints: a larger creature fed and housed by the hive,
+     stationed where corridors narrow." It turns layout into difficulty: depth is gated rather than merely long.
+
+     bostrach: INVENTED name (RM_ tier per Q11a, franchise-free). Never a wildAnimals row: RM_GenStep_AntHiveDungeon
+     places it (RM_AntHiveBiomeExtension.guardKind), tethered tight to the narrowest cell of a deep corridor, and
+     RM_MapComponent_AntHive feeds it while wild kurreth live. Kill the workers and it starves at its post.
+
+     It is one more resident of the hive's reaction network, not a boss with its own logic: same reaction source, same
+     KurrethHive tag, same RM_HiveRally. It can ring the alarm and it answers one, and every bostrach reached is
+     charged to the one 10-neighbour event budget stated on RM_Kurreth, so a guard adds no rally reach. Near-blind:
+     detectRadius 4 against the worker's 7, so a player who sees it can choose how to open.
+
+     All numbers INVENTED, unmeasured until a hive is played. Body 3 is the top of the tough-chitin rung
+     (canon_materials_design 3.10). combatPower says "worth a squad", not "unbeatable".
+
+     Art: PLACEHOLDER, the kurreth renders tinted bone-brown and drawn larger. Bespoke art queued in
+     infrastructure/artpipe/art_lists/feverwood_bostrach_2026-10-31.csv. -->
+<Defs>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RM_Bostrach</defName>
+    <label>bostrach</label>
+    <description>A blind, plate-browed brute as wide as the tunnel it sits in, its belly swollen with the regurgitated slurry the kurreth carry to it. It did not dig here. The workers raised it in the narrowest part of their tunnels, and they have fed it there ever since.\n\nIt does not wander. It waits, and everything that goes deeper goes through it, until the hive raises the alarm and it comes looking.</description>
+    <statBases>
+      <MoveSpeed>2.2</MoveSpeed>
+      <MarketValue>420</MarketValue>
+      <ComfyTemperatureMin>5</ComfyTemperatureMin>
+      <ComfyTemperatureMax>50</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.55</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.3</ArmorRating_Blunt>
+      <Wildness>1</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>crushing mandibles</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>22</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>Mouth</linkedBodyPartsGroup>
+        <chanceFactor>1</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <!-- One chitin ladder (canon_materials_design 3.10): tough chitin, the rung 1.5-3 bodied bugs of ours take. -->
+      <leatherDef>RM_MediumChitin</leatherDef>
+      <body>BeetleLikeWithClaw</body>
+      <herdAnimal>false</herdAnimal>
+      <predator>false</predator>
+      <baseBodySize>3</baseBodySize>
+      <baseHealthScale>4</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>CarnivoreAnimal</foodType>
+      <manhunterOnDamageChance>0.1</manhunterOnDamageChance>
+      <manhunterOnTameFailChance>0.1</manhunterOnTameFailChance>
+      <trainability>None</trainability>
+      <fleshType>Insectoid</fleshType>
+      <bloodDef>Filth_BloodInsect</bloodDef>
+      <bloodSmearDef>Filth_BloodSmear</bloodSmearDef>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <lifeExpectancy>12</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.4</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.8</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+      <soundEating>Insectoid_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalInsect</li>
+    </tradeTags>
+    <!-- Same reaction as RM_Kurreth (see its comment), eyes aside. eventBudget MUST stay equal to the workers': a
+         guard that rings first spends the same stated total. Tether 2: it sits in the tunnel, it does not patrol. -->
+    <comps>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_ReactionSource">
+        <tag>KurrethHive</tag>
+        <eventBudget>10</eventBudget>
+        <cooldownTicks>2500</cooldownTicks>
+        <detectRadius>4</detectRadius>
+        <detectIntervalTicks>120</detectIntervalTicks>
+        <propagation Class="RimMandrake.CreatureBehaviors.RM_ReactionPropagationRule_RespondersWithinRadius">
+          <radius>9</radius>
+          <budgetPerNeighbor>1</budgetPerNeighbor>
+        </propagation>
+        <response Class="RimMandrake.CreatureBehaviors.RM_ReactionResponseRule_Rally">
+          <mentalState>RM_HiveRally</mentalState>
+          <disengageRadius>45</disengageRadius>
+          <budgetCost>0</budgetCost>
+          <alarmSound>Pawn_Megascarab_Angry</alarmSound>
+          <alarmMessage>The kurreth hive has noticed you. The alarm is spreading through the tunnels.</alarmMessage>
+        </response>
+      </li>
+      <li Class="RimMandrake.CreatureBehaviors.RM_CompProperties_HomeTether">
+        <tetherRadius>2</tetherRadius>
+      </li>
+    </comps>
+    <modExtensions>
+      <li Class="RimMandrake.CreatureBehaviors.RM_AlarmResponderExtension">
+        <tag>KurrethHive</tag>
+      </li>
+    </modExtensions>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RM_Bostrach</defName>
+    <label>bostrach</label>
+    <race>RM_Bostrach</race>
+    <combatPower>220</combatPower>
+    <canArriveManhunter>false</canArriveManhunter>
+    <ecoSystemWeight>0</ecoSystemWeight>
+    <wildGroupSize>1~1</wildGroupSize>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.0</drawSize>
+          <color>(176,156,124)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>2.6</drawSize>
+          <color>(176,156,124)</color>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Kurreth/Kurreth</texPath>
+          <graphicClass>Graphic_Multi</graphicClass>
+          <drawSize>3.2</drawSize>
+          <color>(176,156,124)</color>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

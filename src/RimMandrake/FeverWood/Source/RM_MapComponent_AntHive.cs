@@ -8,9 +8,9 @@ namespace RimMandrake.FeverWood
 {
     // FEVERWOOD_ANT_HIVE_DUNGEON_1. Records what RM_GenStep_AntHiveDungeon
     // actually carved on this map (and its farm chamber's herd, which it
-    // keeps herded), so follow-on work (the parasite/guard chambers once
-    // their creatures exist) can place content into the already-generated layout instead of
-    // re-deriving room positions from scratch. A map with no generated hive
+    // keeps herded, and its guards, which it feeds), so follow-on work can
+    // place content into the already-generated layout instead of re-deriving
+    // room positions from scratch. A map with no generated hive
     // simply has an empty RoomCenters list — always present, never null,
     // same "component always exists, data may be empty" shape as
     // RM_MapComponent_LivingRegrowth.BoleCenters.
@@ -37,7 +37,15 @@ namespace RimMandrake.FeverWood
 
         public List<Pawn> farmStock = new List<Pawn>();
 
+        // Chamber 3 of 3, the kept guards (RM_GenStep_AntHiveDungeon.PlaceGuards)
+        // and the wild race that feeds them.
+        public List<Pawn> guards = new List<Pawn>();
+
+        public ThingDef guardFeederRace;
+
         private const int HerdIntervalTicks = 500;
+
+        private const int FeedIntervalTicks = 2500;
 
         public RM_MapComponent_AntHive(Map map) : base(map)
         {
@@ -51,6 +59,7 @@ namespace RimMandrake.FeverWood
         public override void MapComponentTick()
         {
             base.MapComponentTick();
+            FeedGuards();
             if (farmStock.Count == 0 || !farmRoom.IsValid || Find.TickManager.TicksGame % HerdIntervalTicks != 0)
             {
                 return;
@@ -90,6 +99,52 @@ namespace RimMandrake.FeverWood
             }
         }
 
+        // "Fed and housed by the hive": a guard never leaves its post to eat
+        // while one wild worker lives to bring it food. The workers gone (or
+        // the setting off), its food need runs down like any animal's: a hive
+        // you have emptied loses its guard slowly, and the player can see why.
+        // A guard that died, left the map or gained a faction drops off the list.
+        private void FeedGuards()
+        {
+            if (guards.Count == 0 || Find.TickManager.TicksGame % FeedIntervalTicks != 0)
+            {
+                return;
+            }
+
+            guards.RemoveAll(p => p == null || p.Dead || p.Destroyed || p.Faction != null || p.Map != map);
+            if (!RM_FeverWoodSettings.antHiveGuardChamberEnabled || !HasWildFeeder())
+            {
+                return;
+            }
+
+            for (int i = 0; i < guards.Count; i++)
+            {
+                if (guards[i].needs?.food != null)
+                {
+                    guards[i].needs.food.CurLevelPercentage = 1f;
+                }
+            }
+        }
+
+        // Raiding-column workers carry a faction and bring nothing to the hive.
+        public bool HasWildFeeder()
+        {
+            if (guardFeederRace == null)
+            {
+                return false;
+            }
+
+            List<Thing> workers = map.listerThings.ThingsOfDef(guardFeederRace);
+            for (int i = 0; i < workers.Count; i++)
+            {
+                if (workers[i].Faction == null)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
@@ -98,6 +153,8 @@ namespace RimMandrake.FeverWood
             Scribe_Values.Look(ref farmHerdRadius, "farmHerdRadius", 5f);
             Scribe_Values.Look(ref alarmTag, "alarmTag");
             Scribe_Collections.Look(ref farmStock, "farmStock", LookMode.Reference);
+            Scribe_Collections.Look(ref guards, "guards", LookMode.Reference);
+            Scribe_Defs.Look(ref guardFeederRace, "guardFeederRace");
             if (roomCenters == null)
             {
                 roomCenters = new List<IntVec3>();
@@ -106,9 +163,14 @@ namespace RimMandrake.FeverWood
             {
                 farmStock = new List<Pawn>();
             }
+            if (guards == null)
+            {
+                guards = new List<Pawn>();
+            }
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 farmStock.RemoveAll(p => p == null);
+                guards.RemoveAll(p => p == null);
                 if (alarmTag == null && HasHive)
                 {
                     alarmTag = new RM_AntHiveBiomeExtension().alarmTag; // a hive generated before sealing existed

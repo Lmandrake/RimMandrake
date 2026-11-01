@@ -24,7 +24,7 @@ namespace RimMandrake.FeverWood
         public const string PlugDefName = "RM_KurrethResinPlug";
 
         /// <summary>Plug radius around the corridor midpoint. Corridors are painted RadialCellsAround(cell, width=1), so 1.5 spans them.</summary>
-        private const float PlugRadius = 1.5f;
+        internal const float PlugRadius = 1.5f;
 
         public static void OnAlarm(RM_ReactionEvent evt)
         {
