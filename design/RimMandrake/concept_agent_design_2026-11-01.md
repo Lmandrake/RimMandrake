@@ -1,7 +1,7 @@
 # The Concept Agent: design (2026-11-01)
 
-Item: CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING. Status: DESIGN, under skeptical review
-(`concept_agent_gpt_review_2026-11-01.md`), findings not applied; the Conductor judges them. Downstream contract:
+Item: CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING. Status: DESIGN, GPT review judged and applied by the
+Conductor (§15; verbatim review: `concept_agent_gpt_review_2026-11-01.md`). Downstream contract:
 `relentless_agent_design_2026-11-01.md` §3-4 and `MandrakeWorkflows/relentless/agent/RELENTLESS_AGENT.md`.
 
 Owner, 2026-11-01: *"It gets really detailed, dialectic, debating, and works out a thorough understanding of what the mod
@@ -103,34 +103,30 @@ a fresh agent gets, so a sentence that depends on the conversation is a bug in t
 Relentless §4 defines "well defined" as a program's check. That is necessary and not enough: a perfectly formed tree can be
 wrong. So there are two gates.
 
-**Gate A, a program (the door lint).** Sheet and tree parse. Every `does` and `does not` maps to a leaf, a floor line, or `waived`.
+**Gate A, a program (the door lint).** Sheet and tree parse. Every `does not` maps to a leaf, a floor line or `waived`. Every `does` maps to one of those or is marked `advisory` (the builder aims at it, nobody blocks on it). The tree has a whole-mod walk leaf.
 Every waiver carries his words. Every constraint has number, unit and test machine. No leaf id is orphaned. Every leaf passes the
 pruning question (§7).
 
 **Gate B, the Cold Reader exam.** Restating does/doesn't is too weak: a model can paraphrase what it does not understand. The test
 is prediction of *his verdict*, against his real verdict, by an agent that never heard the debate.
 
-1. A fresh **Examiner**, reading only the sheet, writes 16 short play scenarios, each a picture or storyboard: dumb versions that
-   obey the text, edge cases, things inside `waived`, and plain successes.
-2. Two fresh **Readers** get the sheet and tree, no transcript, and predict for each: *accept*, *reject* or *doesn't matter*, citing a clause.
-3. A fresh **Control** gets only his first message and predicts the same.
+1. A fresh **Examiner**, reading only the sheet, writes short play scenarios, with a picture only where seeing settles it: dumb versions that
+   obey the text, edge cases, things inside `waived`, and plain successes. A fresh **Challenger** adds at least three that do not come from the sheet: from his raw words, from past mods he rejected, and from a hunt for a missing dimension (frequency, tedium, interruption, what repeated play feels like). The sheet cannot examine its own omissions.
+2. After the freeze, two fresh **Readers** get the sheet and tree, no transcript, and predict for each: *accept*, *reject* or *doesn't matter*, citing a clause.
+3. A fresh **Control** gets only his first message and predicts the same. Control is a diagnostic and has no pass mark: a strong Control means little elaboration was needed, not that the sheet failed.
 4. Before spending him: Readers who disagree with each other mean the sheet is ambiguous. Fix it and restart, at no cost to him.
-5. Keep 10 scenarios, at least 6 of them where Readers and Control differ. Easy scenarios that everybody gets right prove nothing,
-   and this filter stops his minutes being spent on them.
+5. **Freeze 10 scenarios before any Reader or Control prediction is seen**, marking which exercise core lines, Challenger scenarios included. Selection may not look at predictions.
 6. **He answers the 10 on one sheet**, phone-sized, same three answers, one optional line of why. The verdicts go to the store, not
    to the transcript, and not to any Reader.
 
 **Pass, all three:** Readers score at least 9 of 10; **zero** cases of predicted accept where he said reject on a core line (that
-is the Pit direction, and it costs more than the reverse); Control scores at least 3 fewer than the Readers. If Control does as
-well, the sheet added nothing or the exam was soft, and the result does not count.
+is the Pit direction, and it costs more than the reverse); and no miss on a Challenger scenario goes unaccounted: each adds a line to the sheet or a recorded reason why not.
 
 **On a miss:** the sheet has a hole. His one line of why goes in, those scenarios are burned, and fresh ones are drawn. After two
 failed retakes the agent stops and tells the Conductor the concept is not ready to build, which is a legitimate outcome.
 
-**Why this is defensible, and how far.** It measures the actual property, that the written record carries his judgment; it has a
-control, so it can be seen to fail; and the direct cost to him is ten glances. Its limits: 10 of 10 only rules out a miss rate above
-about 26% (95%), so this is a smoke alarm, not a proof. Examiner and Readers can share blind spots (research §6), and he may rule
-differently on a different day. So its thresholds are PROVISIONAL, and the real reading comes later: `contract_gap` escapes per
+**Why this is defensible, and how far.** It measures whether the written record carries his judgment on these scenarios. It does not prove the record is complete, and the scenarios are chosen and correlated, so no general miss rate follows: this is a smoke alarm, not a proof. Examiner and Readers can share blind spots (research §6), and he may rule
+differently on a different day. Where timing, frequency or feel is the core experience, pictures cannot settle it: the scratch spike from stage 0 goes in front of him instead. So its thresholds are PROVISIONAL, and the real reading comes later: `contract_gap` escapes per
 concept (Relentless §9) are what say whether the exam earns its minutes. He can override with *"enough, lock it"*; the tree then
 carries `exam_waived` with his words, and that reading is kept apart in TRUST.
 
@@ -140,7 +136,7 @@ carries `exam_waived` with his words, and that reading is kept apart in TRUST.
 |---|---|---|
 | Yes | `does` line, his words where he gave them | Becomes a leaf if it passes pruning |
 | No | `does not` line, with why | A **must-not**, a `cannot show` leaf: testable and binding. Not the same as a waiver |
-| **"This doesn't matter to me"** | **`waived`**: scope in his words, date, `--owner-said` (or `--per-ruling` via the Conductor) | **Ruled non-goal.** No leaf, no question, no hold-out; the Marker may not fail on it; the builder may do anything there; a defect there is not an escape. **The agent never raises it again**, in any wording, in any later sitting. A lint matches each new question against `waived` and a fresh reviewer reads the question log, because a program cannot catch a rewording. Only he reinstates it |
+| **"This doesn't matter to me"** | **`waived`**: scope in his words, date, `--owner-said` (or `--per-ruling` via the Conductor) | **Ruled non-goal.** No leaf, no question, no hold-out; the Marker may not fail on it; the builder may do anything there; a defect there is not an escape. **The agent never raises the preference again**, in any wording, in any later sitting. A waiver removes only the obligation he named and grants no exception to any other leaf; recording one runs a conflict check against every leaf. A lint matches each new question against `waived` and a fresh reviewer reads the question log, because a program cannot catch a rewording. Only he reinstates it |
 | "You decide" | Delegated decision, `--why "delegated: <class>"` | The agent picks through a judge if taste (§1 policy), and lists it on the sheet |
 | "Not sure, show me" | `open` | A picture next round. An `open` on a core line blocks Gate A; he may also convert it to waived |
 | "Not now" | `later`, target v2 | Not in this tree. Not a waiver: later is a date, waived is a verdict |
@@ -153,14 +149,15 @@ Three rules keep "doesn't matter" honest:
 - **A waiver is narrow.** It covers what he named. Applying it to a twin is delegated (§2.4); widening its meaning is not.
 - **A waiver can hit a floor default** (§8): the floor line is off for this mod, by his words. Only that line.
 - **A clash is a build problem, not a re-raise.** If a core leaf cannot be met because of something in `waived`, the builder sorts
-  it out inside the core leaf. The agent does not reopen the waiver to save the builder trouble.
+  it out inside the core leaf. The agent does not reopen the waiver to save the builder trouble. Only if the remaining contract is truly impossible may one narrow dependency question go up, stating what depends on it. The preference stays settled.
 
 ## 7. The tree
 
 **Only what must be true for the mod to pass.** The pruning question, applied to every leaf: *"If everything else worked and only
 this was false, would you reject the mod?"* If the agent cannot say yes from his words, the line leaves the tree: it goes on the
-sheet as `does` (the builder aims at it, nobody blocks on it) or goes to him. Target about 5-12 experience leaves per mod. The target is a
-PROVISIONAL guide, and a tree above it means the concept should split or the pruning failed.
+sheet as an `advisory` `does` or goes to him. Ask it of coherent bundles too: four small annoyances can each survive alone and together make the feature irritating enough to disable. Keep the bundle. Leaf count is an observation, never a target.
+
+**Walk leaf (required).** One whole-mod leaf plays the mod end to end and tests accumulated friction and interaction, not just each leaf in turn.
 
 **Leaf fields**, as in Relentless §3. This agent writes the leaf; the Setter binds it and may not add, drop or reword a criterion.
 One line in the brief needs correcting: the tree cannot hold all eight fields finished, because Relentless gives two of them to others.
@@ -170,10 +167,10 @@ One line in the brief needs correcting: the tree cannot hold all eight fields fi
 | `experience` | Concept | Observer's line in plain words. For a constraint: limit, unit, test machine |
 | `scenario` | Concept | Setup and action, and which exam scenarios informed it |
 | `false_pass` (the wrong world) | Concept | The dumb version from the debate, ready-made. The seeded `guard` that creates it is the Setter's |
-| `red` (proof it can fail) | Concept states what red must look like | Receipts come from the supervisor (§3.1) |
+| `red` (proof it can fail) | Concept states what red must look like; this specification is what intake requires | The receipt comes later, from the supervisor on a candidate (§3.1), and blocks done, not intake |
 | `oracle` | Concept proposes; Setter binds | |
 | `tier` | Concept proposes the cheapest that can settle it; Setter binds | Live only with a stated reason |
-| `budget` | A program, from history by leaf class | **Conflict found:** Relentless §10 gives `budget` to the Producer, which is token-blind by his ruling. Neither should reason about it. Concept states only wall-time expectations |
+| `budget` | A program, from history by leaf class | Decided: the program sets it, not the Producer, which is token-blind by his ruling. Relentless §10 must match. Concept states only wall-time expectations |
 | `owner_part` | Concept | `no`, or what he looks at. Default `no`: minutes are spent where only he can judge. First GREEN stays `yes` |
 
 **Root.** The walk's `## north star`, the location he ruled. `the experience` is his words, verbatim, lifted from the sittings, the
@@ -190,7 +187,7 @@ some hold-outs test what he actually ruled rather than what a model guessed he w
 He should not need to state these. A shared file, `concept_floor.json`, is inherited by every tree by hash, as one floor bound to
 one reference scene. The tree stays small, and a mod states only where it differs. Numbers are PROVISIONAL agent proposals unless
 cited, a `design` class call under delegation, and the Arbiter owns them as new bars; he may overrule any of them. **They have
-not been calibrated on any mod yet**, and the first job of the build is to measure five shipped mods against them.
+not been calibrated on any mod yet**, so numeric lines are **advisory, reported but not blocking**, until a five-mod calibration fixes each one's workload, observation window, noise rule and aggregate headroom (twenty mods at 1 ms busy would spend the whole 16.67 ms tick, so limits must compose). Standing rulings in this table bind now. Non-numeric lines (naming, worldgen, flight) are lints or refusals, not measurements. At intake the Setter expands each binding floor line into a versioned leaf with instrument and receipt; a missing instrument becomes its own first leaf, and returns here only if it changes a criterion. Candidates to add at calibration: save-time cost, preserving existing save state, burst allocation, scaling with feature count, interaction workloads.
 
 | Class | Default | Instrument and known trap |
 |---|---|---|
@@ -216,8 +213,7 @@ not been calibrated on any mod yet**, and the first job of the build is to measu
 | **Test isolation** | Minimal list plus the mod; clean build-up and tear-down; cross-mod is playtest's | Runner spec rulings |
 
 **He said "and likely others."** The agent adds a class when a concept calls for one and says so as a proposal, e.g. pawn pathing cost,
-save-time cost, or AI colony job load. A class that recurs moves into the floor (Arbiter). The floor must also earn its keep: each line
-names the escape or ruling behind it, and one that catches nothing across ten mods is proposed for removal.
+save-time cost, or AI colony job load. A class that recurs moves into the floor (Arbiter). Each line names the escape or ruling behind it. A quiet line is not evidence against it, since it may be preventing the defect: a line is retired only on applicability, by the Arbiter.
 
 ## 9. The implementation plan
 
@@ -230,8 +226,7 @@ one that does not fit comes back here to split.
 
 Relentless §4 owns the machinery; this agent obeys it.
 
-- **Tighten (findings):** a Marker, an escape or a finding adds a clause under an existing leaf, at once. Old PASSes on that leaf are void.
-  Nobody asks him.
+- **Tighten (findings):** a Marker, an escape or a finding adds a clause under an existing leaf, at once, citing the obligation it enforces and passing a conflict check against rulings and waivers. Old PASSes on that leaf are void. Nobody asks him. A clause that changes what behaviour is acceptable beyond that obligation is a new concept, however it is labelled.
 - **New concept:** a finding that is not under any leaf comes back here. A short amendment: one card, or a round. Never added by a worker.
 - **Loosen (his):** any edit or removal, every waiver, any floor line off. `--owner-said` (or the Conductor's authority, tagged). The
   agent drafts with evidence. A leaf that proves impossible goes up as a loosening request, with what is lost.
@@ -320,8 +315,26 @@ beats the one-liner on exactly what the debate settled.
 | All floor numbers except 16.67 ms and the 20 ms precedent | **Agent's guesses, uncalibrated** |
 | Cold Reader predicts `contract_gap` escapes | **Unmeasured**, and the thing most worth finding out |
 
-**Back-test, before any live concept:** take a mod's first recorded concept words (the Pit is the pre-registered case), run stages 0-3 with an agent
-playing him only from his words at that date, and check whether the tree reaches `pit_reads_as_hole` or an equivalent. If the dumb-version move
-does not surface it, this design has not earned a sitting of his.
+**Back-test, before any live concept:** the Pit is a regression fixture only, since it inspired the design. The real test is a different historical rejection, with the decisive later evidence withheld: run stages 0-3 with an agent
+playing him only from his words at that date, and see whether the tree reaches what he later rejected. If it does not, this design has not earned a sitting of his.
 
-**Build order:** `roles/concept.md`, tree schema (shared with Relentless), floor file calibrated on five mods, exam script, back-test, first real concept.
+**Build order:** `roles/concept.md`, tree schema (shared with Relentless), a schema-level handoff of the worked example through real `intake` (floor expansion, a Setter refusal, an instrument leaf, the walk leaf, the receipt lifecycle), back-test, first real concept with the exam run by hand, then the exam script, then floor calibration on five mods.
+
+**Owner time is measured, not assumed:** active minutes, interruptions, elapsed time, retakes and later corrections per concept, compared through his first accepted build. If the agent costs him more than it saves, that decides its future.
+
+## 15. The Conductor's judgment of GPT's review
+
+| # | GPT's attack | Verdict | Done |
+|---|---|---|---|
+| 1 | Control gap is rigged by selection | **Agree.** The arithmetic holds | Quota and gap cut; scenarios frozen before predictions; 26% claim removed |
+| 2 | The exam shares the sheet's omissions | **Agree, the strongest finding** | Challenger added; spike for feel |
+| 3 | Waivers grant immunity | **Agree in part.** The hard ban stays for the preference, because repeats are his exact complaint | Waiver is narrow; conflict check; one dependency question only if truly impossible |
+| 4 | Tightening smuggles in requirements | **Agree** | Must cite its obligation; conflict check |
+| 5 | Contract mismatches | **Agree**, all five | Advisory `does`, walk leaf, floor expansion, budget owner, red spec vs receipt; handoff test added |
+| 6 | Owner-time saving is unmeasured | **Agree** | Measured per concept |
+| 7 | Floor numbers uncalibrated, don't compose | **Agree.** Standing rulings still bind | Numbers advisory until calibrated |
+| 8 | A new role isn't established as necessary | **Disagree on the conclusion.** He asked for an agent, and it costs nothing when idle. Agree on one point: separation must be enforced per item, not by prose | Non-builder identity to be enforced per item at intake |
+| 9 | Pruning misses combined friction | **Agree** | Bundles; walk leaf; count no longer a target |
+| 10 | Back-test contaminated; quiet rules retired | **Agree** | Pit is a fixture; different case; retirement on applicability |
+
+Postponing the exam **script** until one concept has run by hand: agreed. Postponing the agent itself: rejected.
