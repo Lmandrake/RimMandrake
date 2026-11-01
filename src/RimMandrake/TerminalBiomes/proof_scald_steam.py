@@ -7,12 +7,17 @@ it with Windows python, on a throwaway quicktest colony on a list holding mandra
 
 setup: a real surface RM_TheScald map on a warm tile (jawa/world_tile_map_generate, so the biome itself wires
 RUT_ScaldSteamLock and RUT_ScaldSteamCarrier; a quicktest home map is a foreign biome with its own weather lock and
-wildlife, which stopped the clock and killed the test pawns). A naked colonist, one in RM_Apparel_RindCoat and one in
-the boil-suit stand on land, each ringed by an unroofed wall; RM_Noohm, RM_Shulla and a control Muffalo stand in RUT_ScaldWaterShallow. run: the naked
-one dies with RUT_ScaldExposure under 120000 ticks (two days, the owner's card), the rind wearer lives them
-out, the boil-suit wearer comes through a full day at stage 0 or 1, natives carry neither burns nor exposure, the control burns (proves the water bites). Other pawns are
-removed at setup and on every sample, so no stray predator decides a row. run resumes: call it again with the same
-out file until it prints its verdict.
+wildlife, which stopped the clock and killed the test pawns). Two naked colonists, one in RM_Apparel_RindCoat and one in
+the boil-suit stand on land, each ringed by an unroofed wall; RM_Noohm, RM_Shulla and a control Muffalo stand in RUT_ScaldWaterShallow. Deaths are judged
+from the damage log's kill events, never from sampled severity (samples sit 6000+ ticks apart).
+run: a naked pawn dies under 120000 ticks (two days, the owner's card). The open sky also gives it Direct Sun
+Heatstroke, and capacity death comes before exposure reaches 1.0 with the two stacked, so the kill may be credited to
+either. The row that isolates the steam is naked_nosun: its Heatstroke is removed at every sample, so only
+RUT_ScaldExposure can kill it. The rind wearer lives the two days, the boil-suit wearer comes through a full day at
+stage 0 or 1, natives carry neither burns nor exposure while logged standing in boiling water, and the control carries
+a real Burn (it then usually drowns: burns down it and a downed pawn drowns in shallows, the swim rule's design).
+Other pawns are removed at setup and on every sample, so no stray predator decides a row. run resumes: call it again
+with the same out file until it prints its verdict.
 """
 import json
 import os
@@ -24,6 +29,8 @@ import rimbridge_client as rb  # noqa: E402
 
 STATE = os.path.join(os.environ.get("TEMP", "."), "proof_scald_steam_roster.json")
 DAY = 60000
+LAND = ("naked", "rind", "boilsuit", "naked_nosun")
+NATIVES = ("noohm", "shulla")
 
 
 def bridge():
@@ -86,20 +93,21 @@ def setup():
         "naked": spawn(c, "Colonist", 30, 40, "player"),
         "rind": spawn(c, "Colonist", 36, 40, "player"),
         "boilsuit": spawn(c, "Colonist", 42, 40, "player"),
+        "naked_nosun": spawn(c, "Colonist", 48, 40, "player"),
         "noohm": spawn(c, "RM_Noohm", 30, 70),
         "shulla": spawn(c, "RM_Shulla", 38, 70),
         "control": spawn(c, "Muffalo", 46, 70),
     }
-    for k in ("naked", "rind", "boilsuit"):
+    for k in LAND:
         call(c, "jawa/pawn_gear", pawn=roster[k], action="clear")
     print(str(call(c, "jawa/pawn_gear", pawn=roster["rind"], action="wear", **{"def": "RM_Apparel_RindCoat"}))[:120])
     print(str(call(c, "jawa/pawn_gear", pawn=roster["boilsuit"], action="wear", **{"def": "RM_Apparel_BoilSuit"}))[:120])
     # A draft alone did not hold them: a naked pawn walked into the boil at 39000 ticks and drowned, spoiling the row
     # (a mental break undrafts). An unroofed steel ring keeps each one on its cell and still under the open sky.
-    ring = ";".join("Wall:%d,%d" % (x + dx, 40 + dz) for x in (30, 36, 42)
+    ring = ";".join("Wall:%d,%d" % (x + dx, 40 + dz) for x in (30, 36, 42, 48)
                     for dx in (-1, 0, 1) for dz in (-1, 0, 1) if dx or dz)
     print(str(call(c, "jawa/build_batch", ops=ring, stuff="Steel").get("survived")))
-    for k in ("naked", "rind", "boilsuit"):
+    for k in LAND:
         call(c, "jawa/set_draft", pawnId=roster[k], drafted=True)
     t0 = call(c, "rimworld/get_game_info")["ticksGame"]
     clear_strays(c, roster)
@@ -130,6 +138,13 @@ def read(c, pid):
     return (r.get("pawns") or [r])[0]
 
 
+def terrain_under(c, p):
+    pos = p.get("position") or p
+    cell = call(c, "rimworld/get_cell_info", x=pos.get("x"), z=pos.get("z"))
+    t = cell.get("terrain") or (cell.get("cell") or {}).get("terrain")
+    return t.get("defName") if isinstance(t, dict) else t
+
+
 def hediffs(p):
     return [(h.get("def") or h.get("defName") or h.get("label"), h.get("severity")) for h in p.get("hediffs", [])]
 
@@ -151,6 +166,10 @@ def run(out, ticks, wall=420):
                 row[k] = {"dead": True, "hediffs": []}
             else:
                 row[k] = {"hediffs": hediffs(p)}
+                if k == "naked_nosun" and any(h[0] == "Heatstroke" for h in row[k]["hediffs"]):
+                    call(c, "jawa/pawn_health", pawn=pid, action="remove", hediff="Heatstroke")
+                if k in NATIVES:
+                    row[k]["terrain"] = terrain_under(c, p)
         if not log or log[-1]["tick"] != row["tick"]:
             log.append(row)
         clear_strays(c, roster)
@@ -164,29 +183,40 @@ def run(out, ticks, wall=420):
         # A new player settlement opens Dialog_NamePlayerFaction after a while; it force-pauses and play_for then
         # refuses forever without advancing a tick.
         c.call("jawa/window_list_close", {"action": "close", "typeName": "Dialog_Name"}, check=False)
-        call(c, "rimworld/play_for", durationMs=8000, speed=4)
-    kills = [e for e in call(c, "jawa/damage_log", pawnsOnly=True).get("events", []) if e.get("kind") == "kill"]
-    judge(out, log, died, ticks, kills)
+        # The control can burn, down and drown inside 10000 ticks: sample tight early or its Burn is never seen.
+        call(c, "rimworld/play_for", durationMs=1500 if now - t0 < 9000 else 8000, speed=4)
+    kills = call(c, "jawa/damage_log", pawnsOnly=True, kind="kill", limit=4096).get("events", [])
+    judge(out, log, died, kills, roster, t0)
 
 
-def judge(out, log, died, ticks, kills):
+def judge(out, log, died, kills, roster, t0):
     last = log[-1]
-    burn = lambda r: [h for h in r.get("hediffs", []) if "urn" in str(h[0]) or "Scald" in str(h[0])]  # noqa: E731
-    exposure = [h[1] for r in log for h in r["naked"]["hediffs"] if h[0] == "RUT_ScaldExposure"]
+    has = lambda r, name: any(h[0] == name for h in r.get("hediffs", []))  # noqa: E731
+    kill = {k: next((e for e in kills if str(e.get("victimId")).replace("Thing_", "") == str(pid).replace("Thing_", "")), None)
+            for k, pid in roster.items()}
+    killed = lambda k, *why: bool(kill[k]) and kill[k]["tick"] - t0 < 2 * DAY and kill[k].get("culpritHediff") in why  # noqa: E731
+    in_water = {k: [r[k].get("terrain") for r in log if not r[k].get("dead")] for k in NATIVES}
+    wet = lambda k: sum(str(t).startswith("RUT_ScaldWater") for t in in_water[k])  # noqa: E731
     steam = sum(b["tick"] - a["tick"] for a, b in zip(log, log[1:]) if a["weather"] == "RUT_ScaldSteam")
     v = {
         "steam_held": steam >= 0.9 * last["tick"],
-        "naked_dies_under_2d": "naked" in died and died["naked"] < 2 * DAY and bool(exposure) and max(exposure) > 0.8,
+        "naked_dies_under_2d": killed("naked", "RUT_ScaldExposure", "Heatstroke"),
+        "steam_alone_kills_under_2d": killed("naked_nosun", "RUT_ScaldExposure"),
         "rind_survives": died.get("rind", 2 * DAY + 1) > 2 * DAY and last["tick"] >= 2 * DAY,
         # The spec's own bar (section 8 step 5): a full day out, still at stage 0 or 1. Heatstroke is the sun's, not the
         # steam's, and runs on past a day in the open, so a suit wearer needs a roof at night like anyone.
         "boilsuit_full_day": died.get("boilsuit", 2 * DAY) > DAY and all(
             h[1] < 0.35 for r in log if r["tick"] <= DAY and not r["boilsuit"].get("dead")
             for h in r["boilsuit"]["hediffs"] if h[0] == "RUT_ScaldExposure"),
-        "natives_no_burn_no_exposure": not any(burn(r[k]) for r in log for k in ("noohm", "shulla")),
-        "control_burns": any(burn(r["control"]) for r in log) or "control" in died,
+        "natives_no_burn_no_exposure": not any(has(r[k], "Burn") or has(r[k], "RUT_ScaldExposure")
+                                               for r in log for k in NATIVES),
+        # Half the samples in boiling water, or the row above could pass on a native that walked ashore.
+        "natives_stood_in_boil": all(wet(k) >= max(5, len(in_water[k]) / 2) for k in NATIVES),
+        "control_burns": any(has(r["control"], "Burn") for r in log),
     }
-    json.dump({"verdict": v, "kills": kills, "log": log, "died": died}, open(out, "w"), indent=0)
+    credit = {k: (kill[k]["tick"] - t0, kill[k].get("culpritHediff")) if kill[k] else None for k in roster}
+    json.dump({"verdict": v, "kills": kills, "credit": credit, "t0": t0, "log": log, "died": died}, open(out, "w"), indent=0)
+    print(json.dumps(credit))
     print(json.dumps(v))
     sys.exit(0 if all(v.values()) else 1)
 
