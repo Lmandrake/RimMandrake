@@ -9794,3 +9794,4 @@
 {"seat":"FOUNDRY","event":"verify","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","result":"pass","config":"live quicktest, game DLL srchash MATCH, lp_lacquer_press_rightclick.py e6173069e7","evidence":"D:\\ClaudeWork\\rimmandrake\\lacquer_press\\live_rc\\rc_20261101T072148.json","sha":"057761248699","why":"R1 powered: 3/3 options, job ran, deepfire 10->7; R2 unpowered: 3/3 greyed with reason","ts":"2026-11-01T07:22:27Z","tsn":1793517747758890767}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-11-01T07:22:30Z","tsn":1793517750961175608}
 {"seat":"FOUNDRY","event":"lease","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","action":"release","token":"FOUNDRY.pid17140.4deb09b5","ts":"2026-11-01T07:22:36Z","tsn":1793517756716625916}
+{"seat":"FOUNDRY","event":"close","id":"LACQUER_PRESS_REWIRE_BILL_PLUS_RIGHT_CLICK","sha":"e14d48d0a77f","why":"both owed live checks pass (verify run-1)","ts":"2026-11-01T07:22:51Z","tsn":1793517771119721335}
