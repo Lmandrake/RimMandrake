@@ -8,8 +8,8 @@ Report-only. Stopping needs `stop` on AND a replay verdict from this code on the
     python3 circling.py replay --labels <file.json> [--write]
 """
 import argparse
+import collections
 import datetime
-import difflib
 import hashlib
 import json
 import os
@@ -18,7 +18,7 @@ import subprocess
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 UNTRACKED_MAX = 5 * 10**6
-MARKS_MAX = 20000       # lines of one file past which a move is read as the whole file, not line by line
+DELTA_MAX = 256         # changed lines past which a sample keeps no delta: a move that big is no churn
 VERDICT = os.path.join(HERE, "circling_replay.json")
 LIMITS = ("test_share_limit", "test_share_min", "no_change_min", "finding_min_new", "oscillation_limit",
           "churn_min", "churn_moves", "churn_max_lines")
@@ -33,6 +33,9 @@ READ_RX = re.compile(r"(grep|rg|cat|head|tail|sed|awk|ls|find|wc|diff|jq|git\s+(
 REPORT_RX = re.compile(r"\brelentless\.py\b")    # a worker's beat and learn lines: every run writes them
 HEREDOC_RX = re.compile(r"<<-?\s*['\"]?(\w+)['\"]?[^\n]*\n.*?\n\s*\1\b", re.S)
 PREFIX_RX = re.compile(r"^(\s*(timeout\s+\S+|\w+=\S*|cd\s+\S+|set\s+-o\s+\w+)\s+)+")
+WRITE_RX = re.compile(r"open\([^)]*['\"][wax]b?\+?['\"]|(?<!stdout)(?<!stderr)\.write(_text|_bytes|lines)?\(|json\.dump\(|os\.replace\(|shutil\.")
+OUT_RX = re.compile(r"(?:\d?>>?|&>>?|\btee(?:\s+-\w+)*|\s--?o(?:ut(?:put)?)?[= ])\s*['\"]?([^\s;&|<>'\"]+)")
+OUTPUT_EXT = (".log", ".out", ".tmp")     # an untracked file of these, or one a command redirected into, is a result, not work
 COMMENT = {".py": "#", ".sh": "#", ".yml": "#", ".yaml": "#", ".toml": "#", ".cs": "//", ".js": "//", ".ts": "//",
            ".xml": "<!--", ".html": "<!--"}
 
@@ -44,19 +47,19 @@ def classify(name, inp):
         return "editing", None
     if name == "Read":
         return "reading", "read:%s:%s" % (inp.get("file_path"), inp.get("offset") or 0)
-    if name in ("Grep", "Glob"):
-        return "reading", "search:%s:%s" % (inp.get("pattern"), inp.get("path") or "")
+    if name in ("Grep", "Glob", "WebFetch", "WebSearch", "ToolSearch") or str(name).startswith("mcp__"):
+        return "other" if str(name).startswith("mcp__") else "reading", "%s:%s" % (name, json.dumps(inp, sort_keys=True, default=str))
     if name != "Bash":
-        return "reading" if name in ("WebFetch", "WebSearch", "ToolSearch") else "other", None
+        return "other", None
     cmd = str(inp.get("command") or "")
     segs = [PREFIX_RX.sub("", x.strip()) for x in re.split(r"[;&|\n]+", HEREDOC_RX.sub("", cmd))]
     target = " ".join(cmd.split())
     for kind, rx in (("selftest", TEST_RX), ("live", LIVE_RX), ("build", BUILD_RX), ("waiting", WAIT_RX),
                      ("editing", EDIT_RX)):
         if any(rx.match(x) for x in segs):
-            return kind, target
-    if "<<" in cmd:
-        return "editing", None
+            return kind, None if kind == "editing" else target
+    if "<<" in cmd:     # a script: it says what it looked at unless its body writes
+        return ("editing", None) if WRITE_RX.search(cmd) else ("other", target)
     if any(READ_RX.match(x) for x in segs):
         return "reading", target
     return "other", None if REPORT_RX.search(cmd) else target
@@ -117,24 +120,30 @@ def _window(samples, start):
     return samples[at:] if all(s.get("raw") for s in samples[at:]) else []
 
 
-def _spots(win, limit):
-    """The distinct changed-line positions the moves in `win` landed on, counted to just past `limit`. None when a move
-    in the window was not measured line by line: unknown is no hit."""
-    spots = set()
+def _net(win):
+    """Lines the window changed end to end, the sum of its moves' deltas: a tweak undone or redone nets nothing, so a
+    move that lands on a fresh line always adds one, wherever in a file it lands. None when a move was not measured
+    line by line: unknown is no hit."""
+    sums = collections.Counter()
     for a, b in zip(win, win[1:]):
         if a["raw"] == b["raw"]:
             continue
-        if b.get("touched") is None:
+        if b.get("delta") is None:
             return None
-        for path, first, end in b["touched"]:
-            spots.update((path, i) for i in range(first, min(end, first + limit + 1)))
-    return spots
+        for path, marks in b["delta"].items():
+            for mark, n in marks.items():
+                sums[(path, mark)] += n
+    sides = collections.Counter()
+    for (path, mark), n in sums.items():
+        sides[(path, mark[0], n > 0)] += abs(n)
+    # a line replaced shows as one "+" mark and one "-" mark, and a line retried as one in and one out: the larger of each
+    return sum(max(max(sides[(p, s, True)], sides[(p, s, False)]) for s in "+-") for p in {k[0] for k in sides})
 
 
 def judge(samples, tools, c, now):
-    """Pure. samples: time-ordered {at, raw, sub, lines, touched}, or {at, unmeasured}.
-    Churn is where the moves landed, not how big the diff is: a real diff of stable size moves too, on fresh lines. -> [{kind, reading}]. A window the samples
-    do not cover says nothing: too young is not clean, and not a hit."""
+    """Pure. samples: time-ordered {at, raw, sub, lines, delta}, or {at, unmeasured}. -> [{kind, reading}].
+    Churn is many moves netting few lines. churn_max_lines must stay under churn_moves: a line per move is then never
+    churn. A window the samples do not cover says nothing: too young is not clean, and not a hit."""
     hits = []
     tools = [t for t in tools if t["t0"] <= now]
 
@@ -155,7 +164,7 @@ def judge(samples, tools, c, now):
     w = c["no_change_min"] * 60
     win = _window(samples, now - w)
     if win and len({s["sub"] for s in win}) == 1:
-        looks = [t for t in tools if t["kind"] in ("reading", "other") and t["target"]]     # a script call reads too
+        looks = [t for t in tools if t["target"] and t["kind"] not in ("selftest", "build", "waiting")]
         old = {t["target"] for t in looks if t["t0"] < now - w}
         new = {t["target"] for t in looks if t["t0"] >= now - w} - old
         if len(new) < c["finding_min_new"]:
@@ -170,10 +179,10 @@ def judge(samples, tools, c, now):
     win = _window(samples, now - c["churn_min"] * 60)
     if win:
         moves = len(_collapse([s["raw"] for s in win])) - 1
-        spots = _spots(win, c["churn_max_lines"])
-        if moves >= c["churn_moves"] and spots is not None and len(spots) <= c["churn_max_lines"]:
-            hits.append({"kind": "trivial_churn", "reading": "diff moved %d times in %d min, all in %d changed lines"
-                         % (moves, c["churn_min"], len(spots))})
+        net = _net(win)
+        if moves >= c["churn_moves"] and net is not None and net <= c["churn_max_lines"]:
+            hits.append({"kind": "trivial_churn", "reading": "diff moved %d times in %d min, netting %d changed lines"
+                         % (moves, c["churn_min"], net)})
     return hits
 
 
@@ -185,23 +194,27 @@ def _substance(path, text):
 
 
 def _mark(marks, path, sign, text):
-    marks.setdefault(path, []).append(hashlib.sha256((sign + " ".join(text.split())).encode()).hexdigest()[:8])
+    marks.setdefault(path, []).append(sign + hashlib.sha256(" ".join(text.split()).encode()).hexdigest()[:8])
 
 
-def touched(old, new):
-    """Two samples' marks -> [[path, first, end]], the changed-line positions that moved, on the new side."""
-    out = []
+def delta(old, new):
+    """Two samples' marks -> {path: {mark: +n/-n}}, what moved, whatever the position. None past DELTA_MAX."""
+    out, size = {}, 0
     for path in sorted(set(old) | set(new)):
-        a, b = old.get(path, []), new.get(path, [])
-        if a == b:
-            continue
-        if max(len(a), len(b)) > MARKS_MAX:
-            out.append([path, 0, max(len(a), len(b))])
-            continue
-        for tag, _i1, _i2, j1, j2 in difflib.SequenceMatcher(None, a, b, autojunk=False).get_opcodes():
-            if tag != "equal":
-                out.append([path, j1, max(j2, j1 + 1)])
+        d = collections.Counter(new.get(path, []))
+        d.subtract(collections.Counter(old.get(path, [])))
+        d = {m: n for m, n in d.items() if n}
+        size += sum(abs(n) for n in d.values())
+        if size > DELTA_MAX:
+            return None
+        if d:
+            out[path] = d
     return out
+
+
+def outputs_of(tools):
+    """The file names commands wrote results into, by name alone: `cd x; y > o.txt` is o.txt whatever the directory."""
+    return {os.path.basename(m) for t in tools if t["target"] for m in OUT_RX.findall(t["target"])} - {""}
 
 
 def _git(clone, *args):
@@ -212,10 +225,11 @@ def _git(clone, *args):
     return r.stdout
 
 
-def tree_reading(clone, base, noise=()):
+def tree_reading(clone, base, noise=(), outputs=()):
     """Read-only (no index refresh, no objects). -> {raw, sub, lines, marks} of the clone against `base`, untracked
-    files included: raw moves on any byte, sub only on a line that is neither whitespace nor comment. marks: per file, a
-    short hash of each such line in order, what the next sample is compared to; watch keeps them out of the sample."""
+    files included, past results (OUTPUT_EXT, `outputs`) left out: a tracked file overwritten is still work. raw moves on
+    any byte, sub only on a line that is neither whitespace nor comment. marks: per file, the signed short hash of each
+    such line, what the next sample is compared to; watch keeps them out of the sample."""
     spec = ["--", "."] + [":(exclude)%s" % n.rstrip("/") for n in noise]
     raw = hashlib.sha256(_git(clone, "diff", "--no-ext-diff", "--binary", base, *spec))
     sub, lines, path, head, marks = hashlib.sha256(), 0, "", False, {}
@@ -231,20 +245,20 @@ def tree_reading(clone, base, noise=()):
         elif head and ln.startswith("Binary files "):
             sub.update(hashlib.sha256(ln.encode()).digest())
             lines += 1
-            _mark(marks, path or ln, "", ln)
+            _mark(marks, path or ln, "+", ln)
         elif not head and ln[:1] in "+-" and ln and _substance(path, ln[1:]):
             sub.update((path + ":" + ln).encode())
             lines += 1
             _mark(marks, path, ln[0], ln[1:])
     for rel in _git(clone, "ls-files", "-z", "--others", "--exclude-standard", *spec).decode("utf-8", "replace").split("\0"):
-        if not rel:
+        if not rel or rel.endswith(OUTPUT_EXT) or os.path.basename(rel) in outputs:
             continue
         full = os.path.join(clone, rel)
         if os.path.getsize(full) > UNTRACKED_MAX:       # a stray dump: its size and time say whether it moved
             stamp = "%s %s %s" % (rel, os.path.getsize(full), os.path.getmtime(full))
             raw.update(stamp.encode())
             sub.update(stamp.encode())
-            _mark(marks, rel, "", stamp)
+            _mark(marks, rel, "+", stamp)
             continue
         with open(full, "rb") as f:
             data = f.read()
@@ -266,9 +280,9 @@ def transcript_paths(clone, since=0):
         return []
 
 
-def with_touched(store, item, gen, one):
-    """A reading -> its sample: marks swapped for `touched`, against the last readable tree of this run. They live in
-    one file per item, rewritten each tick, so the sample stays small. `touched` stays absent with nothing to compare."""
+def with_delta(store, item, gen, one):
+    """A reading -> its sample: marks swapped for `delta`, against the last readable tree of this run. They live in
+    one file per item, rewritten each tick, so the sample stays small. `delta` stays absent with nothing to compare."""
     path = os.path.join(store.item_dir(item), "circling_marks.json")
     try:
         with open(path, encoding="utf-8") as f:
@@ -280,7 +294,7 @@ def with_touched(store, item, gen, one):
     if marks is None:
         return one
     if last.get("gen") == gen:
-        one["touched"] = touched(last["marks"], marks)
+        one["delta"] = delta(last["marks"], marks)
     with open(path + ".tmp", "w", encoding="utf-8") as f:
         json.dump({"gen": gen, "marks": marks}, f)
     os.replace(path + ".tmp", path)
@@ -340,14 +354,14 @@ def watch(store, fx, r, now, acts, fail):
         if st["status"] != "running" or st.get("reserving") or not st.get("run") or not st.get("clone"):
             continue
         item, gen = st["item"], st["gen"]
+        tools = tool_rows(fx.transcripts(st), st["started_at"])
         try:
-            one = fx.circling_tree(st)
+            one = fx.circling_tree(st, outputs_of(tools))
         except (RuntimeError, OSError, ValueError, subprocess.SubprocessError) as e:
             one = {"unmeasured": str(e)[:200]}
         store._append(os.path.join(store.item_dir(item), "circling.jsonl"),
-                      json.dumps(dict(with_touched(store, item, gen, one), at=now, gen=gen, clone=st["clone"])))
+                      json.dumps(dict(with_delta(store, item, gen, one), at=now, gen=gen, clone=st["clone"])))
         samples = samples_of(store, item, gen)
-        tools = tool_rows(fx.transcripts(st), st["started_at"])
         hits = judge(samples, tools, c, now)
         for h in hits:
             if (item, gen, h["kind"]) not in seen:

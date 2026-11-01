@@ -255,19 +255,19 @@ def t_long_build_tracked():
     w.done()
 
 
-def t_touched():
-    t = C.touched
-    ok(t({"a": list("abc")}, {"a": list("abc")}) == [], "touched: same marks, nothing moved")
-    ok(t({"a": list("abc")}, {"a": list("axc")}) == [["a", 1, 2]], "touched: one line")
-    ok(t({"a": list("abc")}, {"a": list("xbz")}) == [["a", 0, 1], ["a", 2, 3]], "touched: two apart stay two")
-    ok(t({"a": list("abc")}, {"a": list("ac")}) == [["a", 1, 2]], "touched: a deletion lands somewhere")
-    ok(t({}, {"b": ["x"]}) == [["b", 0, 1]], "touched: a new file")
-    big = {"a": ["x"] * (C.MARKS_MAX + 1)}
-    ok(t(big, {"a": ["y"]}) == [["a", 0, C.MARKS_MAX + 1]], "touched: past the cap, the whole file")
-    win = [{"raw": "1"}, {"raw": "2"}]
-    ok(C._spots(win, 4) is None, "a move with no touched record is unknown, no hit")
-    win = [{"raw": "1"}, {"raw": "2", "touched": [["a", 0, 10**9]]}]
-    ok(len(C._spots(win, 4)) == 5, "spots stop just past the limit")
+def t_delta():
+    d = C.delta
+    ok(d({"a": list("abc")}, {"a": list("abc")}) == {}, "delta: same marks, nothing moved")
+    ok(d({"a": ["+1"]}, {"a": ["+2"]}) == {"a": {"+1": -1, "+2": 1}}, "delta: one line replaced")
+    ok(d({"a": ["+1", "+1"]}, {"a": ["+1"]}) == {"a": {"+1": -1}}, "delta: twin lines are counted, not merged")
+    ok(d({}, {"a": ["+%d" % n for n in range(C.DELTA_MAX + 1)]}) is None, "delta: past the cap, none kept")
+    net = C._net
+    move = lambda *m: {"raw": str(m), "delta": {"a": {x[1:]: 1 if x[0] == "^" else -1 for x in m}}}
+    ok(net([{"raw": "0"}, {"raw": "1"}]) is None, "a move with no delta is unknown, no hit")
+    ok(net([{"raw": "0"}, move("^+1"), move("v+1", "^+2"), move("v+2", "^+3")]) == 1, "one line tweaked three times nets 1")
+    ok(net([{"raw": "0"}, move("^+1", "^-0"), move("v+1", "^+2")]) == 1, "a replaced line nets 1 against the base")
+    ok(net([{"raw": "0"}] + [move("^+%d" % n) for n in range(6)]) == 6, "a fresh line a move nets a line a move")
+    ok(BLOCK["churn_max_lines"] < BLOCK["churn_moves"], "shipped thresholds: a line per move can never read as churn")
 
 
 def t_tree_reading_body_lines():
@@ -293,6 +293,122 @@ def t_long_build():
     got = run(w, 80, act)
     ok(not got, "S3 80 min build with a moving diff left alone: %s" % sorted(got))
     w.done()
+
+
+def tracked_worker(n=300):
+    w = Worker()
+    body = ["line%d = 0" % k for k in range(n)]
+    w.write("a.py", "\n".join(body) + "\n")
+    w.git("add", "a.py")
+    w.git("-c", "user.email=a@b", "-c", "user.name=a", "commit", "-q", "-m", "body")
+    st = w.rig.s.load("I0")
+    st["base"] = w.git("rev-parse", "HEAD").strip()
+    w.rig.s.save(st)
+    return w, body
+
+
+def t_long_build_any_direction():
+    """Blind checker's plants: a real line a step lands ahead of the earlier ones, so it is no new list position."""
+    test = "python3 src/run_selftests.py --only selftest_a.py"
+
+    def stepper(w, make):
+        def act(x, i):
+            if i % 2 == 0:
+                x.write("a.py", make(i // 2))
+            x.tool("Bash", {"command": test}, 60)
+        got = run(w, 80, act)
+        w.done()
+        return got
+
+    def fixed(body, at):
+        def make(k):
+            now = list(body)
+            for j in range(k + 1):
+                now[at(j)] = "line%d = 1" % at(j)
+            return "\n".join(now) + "\n"
+        return make
+    w, body = tracked_worker()
+    got = stepper(w, fixed(body, lambda j: 290 - j * 7))
+    ok(not got, "S3 tracked file, a fresh line a step working upward, left alone: %s" % sorted(got))
+    w, body = tracked_worker()
+    got = stepper(w, fixed(body, lambda j: 10 + j * 7))
+    ok(not got, "S3 the same working downward left alone: %s" % sorted(got))
+    got = stepper(Worker(), lambda k: "".join("v%d = 1\n" % n for n in range(k, -1, -1)))
+    ok(not got, "S3 new file, a new line a step at the top, left alone: %s" % sorted(got))
+    w, body = tracked_worker()
+    got = stepper(w, lambda k: "\n".join(body[:50] + ["new%d = 1" % n for n in range(k, -1, -1)] + body[50:]) + "\n")
+    ok(not got, "S3 tracked file, new entries newest first at one anchor, left alone: %s" % sorted(got))
+    w, body = tracked_worker()
+    got = stepper(w, lambda k: "\n".join(body[:100] + body[100 + k + 1:]) + "\n")
+    ok(not got, "S3 tracked file, a line deleted a step, left alone: %s" % sorted(got))
+
+
+def t_churn_tweak_upward():
+    """The other side of the same plants: moves that land anywhere but net nothing are still churn."""
+    w, body = tracked_worker()
+
+    def act(x, i):
+        now = list(body)
+        now[290 - (i % 3) * 7] = "line%d = %d" % (290 - (i % 3) * 7, i + 1)
+        x.write("a.py", "\n".join(now) + "\n")
+        x.tool("Read", {"file_path": "/new/%d.py" % i}, 5)
+    got = run(w, 34, act)
+    ok("trivial_churn" in got, "S2 one line a time tried and put back, three spots, named: %s" % sorted(got))
+    w.done()
+
+
+def t_long_read_any_tool():
+    """Blind checker's plants: an investigation by heredoc, by proof runs, through the web, an output file in the clone."""
+    def still(act):
+        w = Worker()
+        w.write("a.py", "x = 1\n")
+        got = run(w, 80, act)
+        w.done()
+        return got
+    got = still(lambda x, i: x.tool("Bash", {"command": "python3 - <<'E'\nimport json\nprint(%d)\nE" % i}, 60))
+    ok(not got, "S3 read-only through differing heredocs left alone: %s" % sorted(got))
+    got = still(lambda x, i: x.tool("Bash", {"command": "python3 src/proof_a.py --case %d" % i}, 100))
+    ok(not got, "S3 read-only through differing proof runs left alone: %s" % sorted(got))
+    got = still(lambda x, i: x.tool("WebFetch", {"url": "https://x/%d" % i}, 60))
+    ok(not got, "S3 read-only through the web left alone: %s" % sorted(got))
+
+    def redirected(x, i):
+        x.write("o.txt", "result %d\n" % i)
+        x.tool("Bash", {"command": "grep -n thing /repo/%d.txt > o.txt" % i}, 30)
+    got = still(redirected)
+    ok(not got, "S3 short output redirected into the clone left alone: %s" % sorted(got))
+
+    def alternating(x, i):
+        x.write("run.log", "result %d\n" % (i % 2))
+        x.write("o.txt", "result %d\n" % (i % 2))
+        x.tool("Bash", {"command": "grep -n thing /repo/%d.txt > o.txt" % i}, 30)
+    got = still(alternating)
+    ok(not got, "S3 output files flipping back and forth are no oscillation: %s" % sorted(got))
+
+
+def t_outputs_hide_no_circling():
+    """A result file must not read as the tree moving: the planted circlers still get named through it."""
+    w = Worker()
+    w.write("a.py", "x = 1\n")
+
+    def act(x, i):
+        x.write("o.txt", "stamp %d\n" % i)
+        x.tool("Bash", {"command": "python3 src/run_selftests.py --only selftest_x.py > o.txt 2>&1"}, 110)
+    got = run(w, 40, act)
+    ok("test_share" in got and "trivial_churn" not in got, "S1 tests redirected into the clone still test share: %s" % sorted(got))
+    w.done()
+    w, _ = tracked_worker(20)
+    w.write("a.py", "changed = 1\n")
+    w.tick_only()
+
+    def act2(x, i):
+        x.write("a.py", "changed = %d\n" % (i % 2))
+        x.tool("Bash", {"command": "grep -n x /repo/%d.txt > a.py" % i}, 30)
+    got = run(w, 16, act2)
+    ok("oscillation" in got, "a tracked file is work whatever redirected into it: %s" % sorted(got))
+    w.done()
+    ok(C.outputs_of([{"target": "cd x; python3 a.py --out=r.json 2>&1 | tee -a t.txt >> u.txt"}, {"target": None}])
+       == {"r.json", "t.txt", "u.txt"}, "outputs_of: --out, tee, append; 2>&1 is no file")
 
 
 def t_blind():
@@ -389,8 +505,12 @@ def t_classify():
     ok(k("set -o pipefail; cd /x; python3 -m pytest -q | tail -5") == "selftest", "classify pytest in a chain")
     ok(k("grep -n def src/x/selftest_a.py") == "reading", "a grep of a selftest file is reading")
     ok(k("cat > src/x/selftest_a.py <<'E'\nrun_selftests\nE") == "editing", "a heredoc writing a selftest is editing")
-    ok(k("python3 - <<'E'\nprint('selftest_a.py')\nE") == "editing", "a heredoc mentioning a selftest is editing")
+    ok(k("python3 - <<'E'\nprint('selftest_a.py')\nE") == "other", "a heredoc mentioning a selftest runs none")
     ok(k("python3 - <<'E'\nedit\nE\ntimeout 9 python3 a/selftest_b.py > o; tail o") == "selftest", "a test after a heredoc is a test")
+    ok(k("python3 - <<'E'\nopen('a.py', 'w').write('x')\nE") == "editing", "a heredoc that writes is editing")
+    ok(C.classify("Bash", {"command": "python3 - <<'E'\nprint(1)\nE"})[1], "a heredoc that only looks has a target")
+    ok(C.classify("Bash", {"command": "sed -i s/a/b/ f.py"})[1] is None, "an edit is no look")
+    ok(C.classify("mcp__x__y", {"q": 1})[1] and C.classify("WebSearch", {"query": "q"})[1], "web and MCP calls have targets")
     ok(k("python3 relentless.py learn --item I x") == "other", "a learn line is no finding")
     ok(C.classify("Bash", {"command": "python3 src/rimflow/relentless.py learn --item I x"})[1] is None, "a learn line has no target")
     ok(C.classify("Bash", {"command": "python3 tools/x.py"}) == ("other", "python3 tools/x.py"), "a script call has a target")
@@ -398,9 +518,10 @@ def t_classify():
 
 
 def main():
-    for t in (t_classify, t_touched, t_tree_reading_body_lines, t_test_share, t_no_change, t_aba, t_aba_needs_the_limit,
+    for t in (t_classify, t_delta, t_tree_reading_body_lines, t_test_share, t_no_change, t_aba, t_aba_needs_the_limit,
               t_churn_comment, t_churn_tweak, t_churn_tracked, t_long_read, t_long_read_scripts,
-              t_scripts_same_is_no_finding, t_long_build, t_long_build_fresh_lines, t_long_build_tracked, t_blind,
+              t_scripts_same_is_no_finding, t_long_build, t_long_build_fresh_lines, t_long_build_tracked, t_long_build_any_direction,
+              t_churn_tweak_upward, t_long_read_any_tool, t_outputs_hide_no_circling, t_blind,
               t_gate, t_stop_path, t_replay):
         t()
     shutil.rmtree(HOME, ignore_errors=True)

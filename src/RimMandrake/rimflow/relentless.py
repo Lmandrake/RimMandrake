@@ -1149,8 +1149,8 @@ class Effects:
         except Exception:  # noqa: BLE001
             return 0
 
-    def circling_tree(self, st):
-        return circling.tree_reading(st["clone"], st.get("base") or "HEAD", POOL_NOISE)
+    def circling_tree(self, st, outputs=()):
+        return circling.tree_reading(st["clone"], st.get("base") or "HEAD", POOL_NOISE, outputs)
 
     def transcripts(self, st):
         return circling.transcript_paths(st["clone"], st["started_at"])
