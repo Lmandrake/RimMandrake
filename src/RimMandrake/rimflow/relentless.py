@@ -1674,7 +1674,7 @@ def ledger_has(item):
 
 
 def concept_refused(repo, item, kind):
-    """The Concept gate, shut when it cannot read: None for anything that is not a mod and cites no tree."""
+    """The Designer's gate, shut when it cannot read: None for anything that is not a mod and cites no tree."""
     tree = pkg("concept_tree")
     return tree.relentless_refusal(repo, item, kind, tree.item_file_text(repo, item))
 

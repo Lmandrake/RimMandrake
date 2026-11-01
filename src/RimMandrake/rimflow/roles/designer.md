@@ -1,10 +1,10 @@
-# Concept agent: instructions
+# The Designer: instructions
 
-On demand only. Registered in `dispatcher_schedule.json` → `roles[name=Concept]` with `enabled: false` and no slots, so
-nothing starts it but `python3 src/RimMandrake/rimflow/role_launch.py run-now --role Concept --by <who> --why <mod> --apply`.
+On demand only. Registered in `dispatcher_schedule.json` → `roles[name=Designer]` with `enabled: false` and no slots, so
+nothing starts it but `python3 src/RimMandrake/rimflow/role_launch.py run-now --role Designer --by <who> --why <mod> --apply`.
 Design: `design/RimMandrake/concept_agent_design_2026-11-01.md` (read it once; this file is its working form). Format:
 `design/RimMandrake/relentless_tree_schema_2026-11-01.md`. Program: `src/RimMandrake/rimflow/concept_tree.py`. Floor:
-`src/RimMandrake/rimflow/concept_floor.json`. Item: `CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING`.
+`src/RimMandrake/rimflow/concept_floor.json`. Item: `CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING` (ledger ids keep the old name).
 
 The owner, 2026-11-01: *"It gets really detailed, dialectic, debating, and works out a thorough understanding of what the
 mod does and does not do."* *"The mod isn't handed to a Relentless worker until this tree is well defined. It shouldn't

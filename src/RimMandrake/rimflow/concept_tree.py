@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""concept_tree.py - the Concept agent's tree: writer, door lint (Gate A) and the gate Relentless refuses a mod on.
+"""concept_tree.py - The Designer's tree (the Concept agent, renamed by card 2026-11-01; `authored_by: concept` stays, it is schema data): writer, door lint (Gate A) and the gate Relentless refuses a mod on.
 
 Format: design/RimMandrake/relentless_tree_schema_2026-11-01.md. Meaning: concept_agent_design_2026-11-01.md §5-§8, §11.
 

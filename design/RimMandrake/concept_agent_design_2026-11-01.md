@@ -1,4 +1,4 @@
-# The Concept Agent: design (2026-11-01)
+# The Designer (the Concept Agent, renamed by card 2026-11-01): design (2026-11-01)
 
 Item: CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING. Status: DESIGN, GPT review judged and applied by the
 Conductor (§15; verbatim review: `concept_agent_gpt_review_2026-11-01.md`). Downstream contract:
@@ -37,7 +37,7 @@ Most of this already exists, and the agent stitches it together rather than repl
 | C. Conductor does it inline | Already talks to him, already holds authority | Its context is the most expensive in the system; a design debate would crowd out running the shop; two jobs, one head |
 | D. A skill any seat loads at a sitting | Cheapest to build | No stable non-builder guarantee: the seat that debates may build. Nobody owns the exit test |
 
-**Recommendation: B.** A definition `src/RimMandrake/rimflow/roles/concept.md`, launched per concept by him or the Conductor,
+**Recommendation: B.** A definition `src/RimMandrake/rimflow/roles/designer.md`, launched per concept by him or the Conductor,
 one fresh run per stage, state on disk. It has a roster line and **no schedule entry**, so in the sense that matters for
 cost it is not a chair: it does not run unless there is a concept. This matches Relentless §10 (*"Upstream supplier, not a
 chair here"*). The Producer keeps what it already has: it admits the mod once the tree exists, then orders the leaves. It
@@ -318,7 +318,7 @@ beats the one-liner on exactly what the debate settled.
 **Back-test, before any live concept:** the Pit is a regression fixture only, since it inspired the design. The real test is a different historical rejection, with the decisive later evidence withheld: run stages 0-3 with an agent
 playing him only from his words at that date, and see whether the tree reaches what he later rejected. If it does not, this design has not earned a sitting of his.
 
-**Build order:** `roles/concept.md`, tree schema (shared with Relentless), a schema-level handoff of the worked example through real `intake` (floor expansion, a Setter refusal, an instrument leaf, the walk leaf, the receipt lifecycle), back-test, first real concept with the exam run by hand, then the exam script, then floor calibration on five mods.
+**Build order:** `roles/designer.md`, tree schema (shared with Relentless), a schema-level handoff of the worked example through real `intake` (floor expansion, a Setter refusal, an instrument leaf, the walk leaf, the receipt lifecycle), back-test, first real concept with the exam run by hand, then the exam script, then floor calibration on five mods.
 
 **Owner time is measured, not assumed:** active minutes, interruptions, elapsed time, retakes and later corrections per concept, compared through his first accepted build. If the agent costs him more than it saves, that decides its future.
 

@@ -13,7 +13,7 @@ reword cannot happen by accident, and a changed leaf hash voids its binding by a
 
 | File | Written by | Readable by | Lives in |
 |---|---|---|---|
-| `tree.json` | Concept agent; for a tooling goal, its filer. A Setter's unsaid sweep appends `preserve` leaves with `by: setter_sweep` | Everyone, public | `design/concepts/<Mod>/tree.json`; tooling: `<store>/items/<ITEM>/tree.json` |
+| `tree.json` | The Designer; for a tooling goal, its filer. A Setter's unsaid sweep appends `preserve` leaves with `by: setter_sweep` | Everyone, public | `design/concepts/<Mod>/tree.json`; tooling: `<store>/items/<ITEM>/tree.json` |
 | `binding.json` | Setter | Build, Marker, public | `<store>/items/<ITEM>/binding.json` |
 | `holdouts.json` | Setter | Marker only, behind the wall | `<store>/judge/<ITEM>/holdouts.json` |
 | `budget.json` | A program, from history by leaf class | Everyone | `<store>/items/<ITEM>/budget.json` |
@@ -133,7 +133,7 @@ Computed, hash-locked, one clause per bound leaf plus clauses added by a tighten
 | Add a clause under a leaf (tighten) | Marker, escape, finding | New `contract.v<N+1>`, old PASSes on that leaf void, tree untouched |
 | Add a `preserve` leaf | Setter's unsaid sweep, tooling goals only, before lock | New tree hash, `by: setter_sweep` |
 | Edit or remove a leaf, a waiver, floor line off | His word (`--owner-said`, or the Conductor's tag) | A loosening: new tree hash, Arbiter re-signs |
-| A new concept | Concept agent, in an amendment | New tree hash, Arbiter re-signs |
+| A new concept | The Designer, in an amendment | New tree hash, Arbiter re-signs |
 | A worker, anywhere | Nothing | Build reads; it holds no pen on any of these files |
 
 ## Not decided here

@@ -12,7 +12,7 @@ Owner, 2026-11-01: *"a fire-and-forget agent you can point at a modest goal and 
 
 The promise: **a goal accepted at intake reaches a Judge-accepted, checkable done, or stops with a true statement of why.**
 Everything else serves that sentence. **Its limit: done means the contract was met. It does not mean the contract was complete.** A
-missing requirement passes every stage here, by construction; that risk is fought upstream (Concept Agent's Challenger, the tooling sweep in §3) and by escapes, and every report says "accepted against contract <hash>".
+missing requirement passes every stage here, by construction; that risk is fought upstream (The Designer's Challenger, the tooling sweep in §3) and by escapes, and every report says "accepted against contract <hash>".
 
 The enemy is the Pit (`north_star_validation_spec.md` §Why): state assertions all true, recorded GREEN, the screen wrong, and
 the walk had dismissed the visual pass in writing. Relentless today can repeat it. MEASURED on the live store: 48 done, all
@@ -39,7 +39,7 @@ filler staffing, pool rules, `pilot`/`redesign` approaches, the live line. Nothi
 ## 3. Intake and the acceptance contract
 
 **No tree, no item.** Owner, 2026-11-01: *"The mod isn't handed to a Relentless worker until this tree is well defined."* The
-acceptance tree comes from the concept agent (item CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING, `concept_agent_design_2026-11-01.md`) after
+acceptance tree comes from the Designer (item CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING, `concept_agent_design_2026-11-01.md`) after
 its debate with him: human experience criteria plus mechanical constraints (resource consumption, latency, more). It holds
 only *"the core concepts that must be true for the mod to pass"*. Relentless treats the tree as the research's **non-builder
 contract**: input, read-only, never authored here. An item with no tree is refused at `intake`, before any worker starts.
@@ -102,7 +102,7 @@ is **burned**: disclosed to Build, moved into the public contract (a tightening)
 ## 4. The goal tree and the finish line
 
 **A mod is a tree, received whole.** Root: the experience statement, owned by owner and Arbiter (the walk's `## north star`,
-VALIDATED by his word). The concept agent delivers the tree. Relentless owns delivering its leaves, never its shape. **Well
+VALIDATED by his word). The Designer delivers the tree. Relentless owns delivering its leaves, never its shape. **Well
 defined** is a program's check at intake: tree hash locked; every leaf typed (experience or constraint) or `waived`; each
 constraint numeric; no orphan, no uncovered root line (`modcheck floor`); the Arbiter's coverage signature present. A DRAFT root binds nothing: a model judging an
 agent-written bar is two agents agreeing (spec §4), so a leaf under a DRAFT root can only close as `not experience-proven`.
@@ -291,7 +291,7 @@ met, reports say "accepted by Judge", never "trusted".
 |---|---|
 | Owner | Experience statements; VALIDATES roots; loosens; first look; sets TRUST bars |
 | Conductor | Receives `stuck`, §2 holds and loosening requests; reads TRUST. Never marks work |
-| Concept agent | Upstream supplier, not a chair here: delivers the tree. Designed under its own item |
+| The Designer | Upstream supplier, not a chair here: delivers the tree. Designed under its own item |
 | Producer | Sets order; files goals; admits a mod once its tree exists. WIP cap (RO2) reads the leaf count |
 | Arbiter | Co-owns roots; signs coverage; tunes the Marker from disagreements. A Marker PASS is the non-maker verdict RO3 needs; an Arbiter FAIL blocks the close (ruling D1(b)) |
 | Auditor | Samples closes, classifies escapes by layer; repeated classes become rules (RO5) |
@@ -365,7 +365,7 @@ then wall, then change**, so the baseline exists before any improvement claims i
 | 17 | Trust trial: a fixed set of modest goals, unattended | `relentless trust` numbers given to him to set bars |
 | 18 | Extraction, toy adapter, conformance | Same selftests pass before and after; word lint clean; fault table passes on both adapters |
 
-The tree's file format, shared with the Concept Agent: `relentless_tree_schema_2026-11-01.md`. One rimflow item per step: `RA_S00_...` to `RA_S18_...`. Owed: thresholds added to `relentless_rules.json` as each signal lands.
+The tree's file format, shared with the The Designer: `relentless_tree_schema_2026-11-01.md`. One rimflow item per step: `RA_S00_...` to `RA_S18_...`. Owed: thresholds added to `relentless_rules.json` as each signal lands.
 
 ## 14. The Conductor's judgment of GPT's review
 

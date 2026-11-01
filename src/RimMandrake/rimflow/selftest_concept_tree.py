@@ -401,11 +401,11 @@ def main():
         # the role cannot start on its own
         with open(os.path.join(HERE, "dispatcher_schedule.json"), encoding="utf-8") as f:
             sched = json.load(f)
-        row = [r for r in sched["roles"] if r["name"] == "Concept"]
-        check("Concept row exists, off, no slots", len(row) == 1 and row[0]["enabled"] is False
+        row = [r for r in sched["roles"] if r["name"] == "Designer"]
+        check("Designer row exists, off, no slots", len(row) == 1 and row[0]["enabled"] is False
               and not row[0].get("runs_local"), row)
-        check("Concept not in golive", "Concept" not in sched["golive"]["roles"])
-        check("role file exists", os.path.isfile(os.path.join(HERE, "roles", "concept.md")))
+        check("Designer not in golive", "Designer" not in sched["golive"]["roles"])
+        check("role file exists", os.path.isfile(os.path.join(HERE, "roles", "designer.md")))
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
     print("selftest_concept_tree: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
