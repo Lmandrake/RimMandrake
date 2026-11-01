@@ -1281,6 +1281,41 @@ check("codex: a newer record with a text window leaves the older reading a floor
       _ct["codex.week_used_pct"]["m"] == "ESTIMATE" and _ct["codex.week_used_pct"]["v"] == 90.0, _ct["codex.week_used_pct"])
 check("codex: negative usage is no reading; the older one stays, as a floor",
       _cn["codex.week_used_pct"]["v"] == 100.0 and _cn["codex.week_used_pct"]["m"] == "ESTIMATE", _cn["codex.week_used_pct"])
+def _cxrun(*pts, reset=_rs):
+    """c_codex over weekly readings given as (hours ago, used %)."""
+    _cxs.readings = lambda *a, **k: ([(OW.iso(NOW - h * 3600), u, 10080, reset, None, None, None, "x") for h, u in pts], 1)
+    return OW.c_codex(NOW, RULES, {})["codex.runway"]
+_cbusy = _cxrun((10, 20.0), (5, 30.0), (0.5, 40.0))         # moving: the 24 h slope, 20% over 9.5 h
+_cfl4 = _cxrun((22, 20.0), (18, 40.0), (8, 44.0), (4, 46.0))    # flat 4 h: 2% over the last 6 h
+_cfl20 = _cxrun((23, 10.0), (20, 60.0))                     # yesterday's burst (16.7%/h), silent for 20 h
+_cfl30 = _cxrun((35, 10.0), (30, 60.0))                     # silent past the 24 h window: no week average either
+_cone = _cxrun((4, 30.0))                                   # one reading, 4 h ago, nothing before it
+_cwob = _cxrun((12, 20.0), (5, 41.0), (2, 40.0), (1, 41.0))     # moved an hour ago: not flat
+_cxs.readings = lambda *a, **k: ([(OW.iso(NOW - 12 * 3600), 20.0, 10080, _rs, None, None, None, "x"),
+                                   (OW.iso(NOW - 8 * 3600), 40.0, 10080, _rs, None, None, None, "x"),
+                                   (OW.iso(NOW - 60), "broken", 10080, _rs, None, None, None, "x")], 1)
+_cnew = OW.c_codex(NOW, RULES, {})["codex.runway"]          # silent only because the newest record cannot be read
+_cspent = _cxrun((30, 90.0), (10, 100.0))
+_cdrop = _cxrun((9, 50.0), (7, 20.0), (4, 20.0))             # the window fell: never a negative rate
+check("codex: a moving meter keeps the 24 h slope, MEASURED",
+      _cbusy["m"] == "MEASURED" and _cbusy["x"]["rate_pct_h"] == round(20 / 9.5, 3), _cbusy)
+check("codex: flat 4 h reads the last 6 h to now, not the 24 h slope",
+      _cfl4["x"]["rate_pct_h"] == round(2 / 6, 3) and _cfl4["x"]["rate_from"] == "flat", _cfl4)
+check("codex: a flat rate is marked: ESTIMATE, and the why says flat and names the spot blind to other machines",
+      _cfl4["m"] == "ESTIMATE" and "flat since" in _cfl4["why"] and "elsewhere" in _cfl4["why"], _cfl4)
+check("codex: yesterday's burst no longer haunts a silent 20 h (no burn, capped)",
+      _cfl20["v"] == 10.0 and _cfl20["x"]["rate_pct_h"] == 0 and _cfl20["m"] == "ESTIMATE", _cfl20)
+check("codex: past the slope window a silent meter does not fall back to the week average",
+      _cfl30["x"]["rate_from"] == "flat" and _cfl30["x"]["rate_pct_h"] == 0, _cfl30)
+check("codex: one old reading counts as flat, zero burn since it", _cone["x"]["rate_pct_h"] == 0, _cone)
+check("codex: a wobble that came back an hour ago is not flat", _cwob["m"] == "MEASURED", _cwob)
+check("codex: a spent quota stays 0 however flat", _cspent["v"] == 0.0, _cspent)
+check("codex: a falling meter is no burn, never negative", _cdrop["x"]["rate_pct_h"] == 0, _cdrop)
+check("flat_rate: moved inside flat_h -> None", OW.flat_rate([(NOW - 7200, 5.0), (NOW - 60, 6.0)], NOW, 3, 6) is None)
+check("flat_rate: no reading before the window: span runs from the first reading to now",
+      OW.flat_rate([(NOW - 5 * 3600, 5.0), (NOW - 4 * 3600, 15.0)], NOW, 3, 6) == (2.0, NOW - 4 * 3600))
+check("codex: an unreadable newer record is not flatness",
+      _cnew["m"] == "ESTIMATE" and _cnew["x"]["rate_from"] != "flat" and _cnew["x"]["rate_pct_h"] == 5.0, _cnew)
 OW.codex_dirs = _dirs
 if _cxm is not None:
     sys.modules["csuite_codex_limits"] = _cxm

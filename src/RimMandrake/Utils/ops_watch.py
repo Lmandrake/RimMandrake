@@ -194,6 +194,8 @@ def runway(left_pct, rate_pct_h, hours_to_reset):
 
 
 FRESH_WEEK_H = 6.0  # a week younger than this has its age floored here when its average burn is the rate
+FLAT_H = 3.0        # a Codex meter unmoved this long up to now is flat: a real pause, not a gap between jobs
+RECENT_H = 6        # a flat meter's burn is its slope over this many hours ending now
 
 
 def week_avg_rate(used_pct, hours_to_reset, week_h=168.0):
@@ -209,6 +211,25 @@ def week_avg_rate(used_pct, hours_to_reset, week_h=168.0):
         return used_pct / elapsed, "the week's average burn (%.0f%% over %.0f h)" % (used_pct, elapsed)
     return used_pct / FRESH_WEEK_H, "a fresh week's burn (%.0f%% in its first %.1f h, counted over %.0f h)" % (
         used_pct, max(0.0, elapsed), FRESH_WEEK_H)
+
+
+def flat_rate(readings, now, flat_h=FLAT_H, recent_h=RECENT_H):
+    """The burn while the meter is flat, or None if it moved inside flat_h. `readings` are (epoch, used %) of one
+    weekly window, oldest first. Codex writes a reading only when used, so silence up to `now` counts as flatness;
+    a slope over the readings alone ends at the last one and would keep the last burst's rate through the quiet.
+    -> (% per h over the last recent_h ending now, time the meter reached today's value) | None."""
+    t, used = readings[-1]
+    since = t
+    for a, b in reversed(readings):
+        if b != used:
+            break
+        since = a
+    if (now - since) / HOUR < flat_h:
+        return None
+    start = now - recent_h * HOUR
+    before = [b for a, b in readings if a <= start]
+    base, base_t = (before[-1], start) if before else (readings[0][1], readings[0][0])
+    return max(0.0, used - base) / ((now - base_t) / HOUR), since
 
 
 # ================================================================================================== collectors
@@ -324,9 +345,14 @@ def c_codex(now, rules, ctx):
     else:
         out["codex.week_used_pct"] = M(used, "% of the weekly quota used", reading_at=iso(t), files=nfiles)
     out["codex.hours_to_reset"] = M(round(h, 1), "h to the weekly reset")
-    same = [(a, b) for a, b, c in week if abs(c - reset) < HOUR and a >= now - cr["slope_window_h"] * HOUR]
+    window = [(a, b) for a, b, c in week if abs(c - reset) < HOUR]
+    same = [w for w in window if w[0] >= now - cr["slope_window_h"] * HOUR]
     rate, how = None, None
-    if len(same) >= 2 and (same[-1][0] - same[0][0]) / HOUR >= cr["slope_min_span_h"]:
+    flat = None if newer else flat_rate(window, now)
+    if flat:
+        rate, how = flat[0], "the last %d h to now: the meter is flat since %s; spend elsewhere is unseen" % (
+            RECENT_H, iso(flat[1]))
+    elif len(same) >= 2 and (same[-1][0] - same[0][0]) / HOUR >= cr["slope_min_span_h"]:
         rate = max(0.0, (same[-1][1] - same[0][1]) / ((same[-1][0] - same[0][0]) / HOUR))
         how = "readings over the last %d h" % cr["slope_window_h"]
     if rate is None:
@@ -341,7 +367,8 @@ def c_codex(now, rules, ctx):
     elif how.startswith("readings") and out["codex.week_used_pct"]["m"] == "MEASURED":
         out["codex.runway"] = M(rw, "x the time to reset", rate_pct_h=round(rate, 3), rate_from=how)
     else:
-        out["codex.runway"] = E(rw, "rate from " + how, "x the time to reset", rate_pct_h=round(rate, 3))
+        out["codex.runway"] = E(rw, "rate from " + how, "x the time to reset", rate_pct_h=round(rate, 3),
+                                rate_from="flat" if flat else how)
     return out
 
 
