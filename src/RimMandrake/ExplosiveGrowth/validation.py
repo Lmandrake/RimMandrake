@@ -471,6 +471,21 @@ def _count(t, defName, rect=None):
     return r["countMatched"]
 
 
+def _stack_total(t, defName, rect):
+    """Sum of stackCount of one def over rect. countMatched counts THINGS: a Tinder burst's 8-14 hay is one stack and
+    reads 1, the same as a plain Burst's 3-6 (EGROWTH_TINDER_HAY_PROVE_COMES_UP_EMPTY). An incomplete list raises."""
+    r = t.bridge_call("jawa/list_things", defName=defName, rect=rect, limit=200)
+    if not _live(t):
+        return 0
+    _ok(r, "list_things(%s)" % defName)
+    if not r.get("scanned") or r.get("isCompleteList") is not True:
+        _fail("list_things(%s) stack total unreadable (scanned 0 or list incomplete): %r" % (defName, str(r)[:200]))
+    things = r.get("things") or []
+    if any(not isinstance(x.get("stackCount"), int) for x in things):
+        _fail("list_things(%s) row without an int stackCount: %r" % (defName, str(things)[:200]))
+    return sum(x["stackCount"] for x in things)
+
+
 def _ids(t, defName, rect):
     r = t.bridge_call("jawa/list_things", defName=defName, rect=rect, limit=50)
     if not _live(t):
@@ -1132,10 +1147,14 @@ def top_tinder(t):
     def obs(t, x, z):
         o = _obs_common(t, x, z, ["Hay"])
         o["plant_at_cell"] = _count(t, t._eg_donor, "%d,%d,1,1" % (x, z))
+        o["Hay_stack"] = _stack_total(t, "Hay", "%d,%d,10,10" % (x - 5, z - 5))
         return o
+    # Hay_stack 8..14 is Burst(tinder: true)'s own range; a plain Burst leaves 3..6, so a Tinder routed to
+    # Burst(tinder: false) reads red here (pinned offline by selftest_explosivegrowth_top_donors.py).
     _top_chain(t, "tinder_leaves_fuel", "tinder_off_falls_back_to_churn", "Tinder", "tinderEnabled", obs,
                {"plant_at_cell": ((lambda v: v == 0), "the tinder plant must be gone"),
-                "Hay": ((lambda v: v >= 1), "a Tinder burst leaves hay (8-14)")},
+                "Hay": ((lambda v: v >= 1), "a Tinder burst leaves hay (8-14)"),
+                "Hay_stack": ((lambda v: 8 <= v <= 14), "a Tinder burst leaves 8-14 hay in total, not Burst's 3-6")},
                {"Hay": ((lambda v: v == 0), "tinderEnabled=false falls back to Churn: no hay")},
                "RM_TopResolver.Burst(tinder: true)")
 

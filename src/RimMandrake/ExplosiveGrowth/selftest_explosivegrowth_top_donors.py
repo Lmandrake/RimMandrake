@@ -8,7 +8,12 @@ has been top=Churn since the 2026-10-16 C3 ruling, so RM_TopResolver never reach
 validation.TOP_DONORS to the shipped rosters: each name is a non-tree ThingDef in src/ with a roster row of exactly that
 top, every _top_chain call names a TOP_DONORS key, and an empty list is allowed only while no non-tree row of that top
 exists. A built-in control runs the same check on the pre-fix donor and must FAIL.
+
+It also pins the Tinder bar's NUMBER (blind check 2026-11-02: Hay >= 1 stayed green on a plain Burst's 3-6): the
+top_tinder Hay_stack predicate, evaluated over 0..30, must hold exactly on 8..14, and RM_TopResolver.cs must route
+OwnTop/Tinder to Burst(tinder: true), the Burst outcome to Burst(tinder: false), and spawn 8-14 hay only when tinder.
 """
+import re
 import ast
 import os
 import sys
@@ -18,6 +23,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
 SRC = os.path.join(REPO, "src")
 VALIDATION = os.path.join(HERE, "validation.py")
+RESOLVER = os.path.join(HERE, "Source", "RM_TopResolver.cs")
 ROSTER_TAG = "RimMandrake.ExplosiveGrowth.RM_ExplosiveGrowthRosterDef"
 fails = []
 
@@ -104,6 +110,38 @@ def parse_validation():
     return donors, chain_tops, literal_places
 
 
+def tinder_predicates():
+    """-> {key: predicate} of the expect_on dict of the top_tinder _top_chain call, compiled from validation.py."""
+    tree = ast.parse(open(VALIDATION, encoding="utf-8").read())
+    for node in ast.walk(tree):
+        if (isinstance(node, ast.Call) and isinstance(node.func, ast.Name) and node.func.id == "_top_chain"
+                and len(node.args) >= 7 and isinstance(node.args[3], ast.Constant) and node.args[3].value == "Tinder"):
+            out = {}
+            for k, v in zip(node.args[6].keys, node.args[6].values):
+                lam = v.elts[0]
+                out[k.value] = eval(compile(ast.Expression(lam), VALIDATION, "eval"))
+            return out
+    return {}
+
+
+def hay_range_errors(pred):
+    """Every value of 0..30 where `pred` disagrees with 'Burst(tinder: true) total hay, 8..14'; [] when exact."""
+    return [v for v in range(31) if bool(pred(v)) != (8 <= v <= 14)]
+
+
+def resolver_errors(cs):
+    """Every reason RM_TopResolver.cs no longer sends Tinder to an 8-14 hay burst; [] when it does."""
+    errs = []
+    flat = re.sub(r"\s+", " ", re.sub(r"//[^\n]*", "", cs))
+    if not re.search(r"case RM_GrowthTop\.Tinder: Burst\(plant, prof, comp, tinder: true\); break;", flat):
+        errs.append("OwnTop/Tinder does not call Burst(..., tinder: true)")
+    if not re.search(r"case RM_Outcome\.Burst: Burst\(plant, prof, comp, tinder: false\); break;", flat):
+        errs.append("the Burst outcome does not call Burst(..., tinder: false)")
+    if not re.search(r"SpawnNear\(ThingDefOf\.Hay, tinder \? Rand\.RangeInclusive\(8, 14\) : Rand\.RangeInclusive\(3, 6\)", flat):
+        errs.append("Burst's hay is not 'tinder ? 8-14 : 3-6'")
+    return errs
+
+
 def main():
     rows, defs = load_xml()
     check("sanity: the rosters parse (rows found)", len(rows) >= 20, len(rows))
@@ -127,6 +165,18 @@ def main():
     check("no chain places a hard-coded roster plant", not placed, placed)
     control = donor_errors({"Tinder": ("RM_FE_Plant_Quickgrass",)}, rows, defs)
     check("control: the pre-fix Tinder donor (Quickgrass) is refused", bool(control), control)
+    preds = tinder_predicates()
+    check("top_tinder's ON arm has a Hay_stack predicate", "Hay_stack" in preds, sorted(preds))
+    if "Hay_stack" in preds:
+        bad = hay_range_errors(preds["Hay_stack"])
+        check("Hay_stack holds exactly on 8..14 (a plain Burst's 3..6 is red)", not bad, bad)
+    check("control: the pre-fix predicate (Hay >= 1) is refused", bool(hay_range_errors(lambda v: v >= 1)))
+    cs = open(RESOLVER, encoding="utf-8").read()
+    rerr = resolver_errors(cs)
+    check("RM_TopResolver sends Tinder to Burst(tinder: true), 8-14 hay", not rerr, "; ".join(rerr))
+    mut = cs.replace("case RM_GrowthTop.Tinder: Burst(plant, prof, comp, tinder: true)",
+                     "case RM_GrowthTop.Tinder: Burst(plant, prof, comp, tinder: false)")
+    check("control: a Tinder routed to Burst(tinder: false) is refused", mut != cs and bool(resolver_errors(mut)))
     print("%d check(s) failed" % len(fails) if fails else "ALL PASS")
     return 1 if fails else 0
 
