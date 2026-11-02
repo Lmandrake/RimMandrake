@@ -27,6 +27,7 @@ import time
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import circling  # noqa: E402
+import relentless_disk  # noqa: E402
 import relentless_integrity  # noqa: E402
 import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
@@ -1288,11 +1289,23 @@ class Effects(relentless_game.GameFx):
                 return None
         if before and out:
             before(out)         # the record learns of the bundle while the clone still stands
-        try:
-            shutil.rmtree(c)
-        except OSError as e:   # still present, so still counted; the bundle stands
-            self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "remove_failed", "clone": c, "why": str(e)[:300]})
+        warm = relentless_disk.park(c, os.path.join(self.base, "clones"), self.r.get("warm_clones", 0),
+                                    relentless_integrity.clone_damage) if os.path.isdir(os.path.join(c, ".git")) else None
+        if warm:                # reused by the next clone instead of a fresh 3.6 GB checkout (DISK_CHURN_MEASURE_CLONES_EAT_THE_VHDX)
+            self.store.journal({"at": iso(time.time()), "do": "clone_parked", "clone": os.path.basename(c),
+                                "warm": os.path.basename(warm), "bundle": out})
+            return out
+        why = relentless_disk.remove_tree(c)
+        if why:                 # still present, so still counted; the bundle stands. A clone already gone is removed.
+            self.store.journal({"at": iso(time.time()), "do": "alarm", "kind": "remove_failed", "clone": c, "why": why})
         return out
+
+    def warm_count(self):
+        return len(relentless_disk.warm_clones(os.path.join(self.base, "clones")))
+
+    def box_in_use(self, box):
+        sc = self.scratch_clone()
+        return sc.clone_in_use(sc.Path(box))
 
     def conductor_alarm(self, text):
         """The line the Conductor reads first. -> None, or why it did not land."""
@@ -1351,7 +1364,7 @@ class Effects(relentless_game.GameFx):
         """A clean tree at exactly `sha`, for the checker. Tracked files only: no worker scratch leaks in."""
         d = self.check_path(st)
         for old in self.old_checks(st):
-            shutil.rmtree(old, ignore_errors=True)
+            self.remove_clone({"clone": old, "item": st["item"]})     # a clean checkout: parked warm, or removed
         return self._detached_clone(d, sha, "check", st["item"])
 
     def _detached_clone(self, d, sha, what, item):
@@ -1839,6 +1852,8 @@ def pool_rows(store, fx, r):
                 own[os.path.abspath(q["clone"])] = ("quarantine", st)
     rows = []
     for c in fx.pool_clones():
+        if relentless_disk.is_warm(c):      # the pool's spare stock: reused before anything is cloned, never evicted
+            continue
         kind, st = own.get(os.path.abspath(c), (None, None))
         status = st["status"] if st else None
         if st is None:
@@ -1861,7 +1876,10 @@ def evict(store, fx, row, now, acts, why, before=None):
     bundle = fx.remove_clone({"clone": row["clone"], "item": row["item"]}, before)
     gone = not fx.clone_present(row["clone"])
     if gone:
-        store.journal({"at": iso(now), "do": "clone_released", "clone": os.path.basename(row["clone"]), "why": why, "bundle": bundle})
+        rec = {"at": iso(now), "do": "clone_released", "clone": os.path.basename(row["clone"]), "why": why, "bundle": bundle}
+        if bundle is None:      # a removal with no bundle says why (check-WALK_SAVE-c1, 2026-11-02, said nothing)
+            rec["no_bundle"] = "nothing unpushed: no changed, untracked or ignored file, commit or stash"
+        store.journal(rec)
         acts.append({"do": "clone_released", "clone": os.path.basename(row["clone"]), "why": why})
     return gone, bundle
 
@@ -1903,7 +1921,8 @@ def make_room(store, fx, r, now, acts, reserve=0):
     `reserve`: places a builder may not take, so a finished item can always get its check."""
     n, size, cmax, bmax = fx.pool_load()
     reserve = min(reserve, cmax - 1)   # a pool of one still has to take a builder
-    if n < cmax - reserve and size < bmax:
+    warm = getattr(fx, "warm_count", lambda: 0)()     # a warm clone is room: the next clone reuses it, no bytes added
+    if n - warm < cmax - reserve and (size < bmax or warm):
         return None
     rows, order = pool_rows(store, fx, r), {"candidate": 0, "held": 1, "queued": 2}
     parked = []
@@ -1923,7 +1942,8 @@ def make_room(store, fx, r, now, acts, reserve=0):
             row["hold"] = "bundle failed"
             continue
         n, size, cmax, bmax = fx.pool_load()
-        if n < cmax - reserve and size < bmax:
+        warm = getattr(fx, "warm_count", lambda: 0)()     # an eviction may have parked it warm: room all the same
+        if n - warm < cmax - reserve and (size < bmax or warm):
             return None
     held = ", ".join("%s (%s)" % (clone_item(x["clone"]), x.get("hold") or x["status"]) for x in rows if fx.clone_present(x["clone"]))
     if size >= bmax:
@@ -3130,6 +3150,10 @@ def tick(store=None, fx=None, r=None, now=None):
         except Exception as e:  # noqa: BLE001  the watch never stops the belt
             acts.append({"do": "error", "item": None, "why": "circling %s: %s" % (type(e).__name__, e)})
         reap_quarantined(store, fx, r, now, acts)
+        try:
+            relentless_disk.reap_boxes(store, r, now, getattr(fx, "box_in_use", lambda b: True), acts)
+        except Exception as e:  # noqa: BLE001  disk housekeeping never stops the belt
+            acts.append({"do": "error", "item": None, "why": "reap_boxes %s: %s" % (type(e).__name__, e)})
         spend_holds(store, fx, r, now, acts)
         enrol_acts = enrol(store, fx, r, now)
         acts += [{"do": "enrol", "item": i} for i in enrol_acts]

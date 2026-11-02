@@ -32,6 +32,8 @@
   "min_mem_available_gb": 6,
   "pool_check_reserve": 1,
   "pool_parked_release_s": 1800,
+  "_warm_clones": "Released clones kept warm (reset to origin/main) for the next item instead of deleted and re-cloned at 3.6 GB each; counted in the pool cap (relentless_disk.py, DISK_CHURN_MEASURE_CLONES_EAT_THE_VHDX).",
+  "warm_clones": 3,
   "launch_breaker": 3,
   "breaker_cool_s": 900,
   "breaker_cool_max_s": 1800,

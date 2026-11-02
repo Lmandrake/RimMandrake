@@ -307,6 +307,7 @@ def clone(purpose: str, name: str | None, checkout: bool, sparse: list[str], fet
 POOL_MAX_CLONES = 10
 POOL_MAX_BYTES = 40 * 10**9
 POOL_IDLE_S = 3600
+POOL_WARM = "warm-"     # relentless_disk.WARM
 
 
 def pool_root() -> Path:
@@ -574,10 +575,12 @@ def pool_reuse(dest: Path) -> Path | None:
             named += Path(f).read_text()
         except OSError:
             pass
-    for c in sorted(root.glob("*"), key=lambda p: clone_idle_s(p), reverse=True):
+    # a warm clone (relentless_disk.park: WIP bundled, reset level and clean) is ready now; any other waits its idle hour
+    for c in sorted(root.glob("*"), key=lambda p: (not p.name.startswith(POOL_WARM), -clone_idle_s(p))):
         if c == dest or not (c / ".git").exists() or str(c) in named:
             continue
-        if clone_idle_s(c) < POOL_IDLE_S or clone_in_use(c) or clone_unpushed(c):
+        idle_ok = c.name.startswith(POOL_WARM) or clone_idle_s(c) >= POOL_IDLE_S
+        if not idle_ok or clone_in_use(c) or clone_unpushed(c):
             continue
         try:
             os.rename(c, dest)
@@ -586,7 +589,7 @@ def pool_reuse(dest: Path) -> Path | None:
             except Exception:
                 pass     # a stale store still serves a level checkout, as `clone` does
             git("fetch", "-q", str(store_path()), f"+{STORE_REF}:refs/remotes/origin/main", cwd=dest, timeout=900)
-            git("checkout", "-q", "--detach", "refs/remotes/origin/main", cwd=dest)
+            git("checkout", "-q", "-B", "main", "refs/remotes/origin/main", cwd=dest)    # on main, as a fresh clone is
             return dest
         except Exception:
             if dest.exists() and not c.exists():
