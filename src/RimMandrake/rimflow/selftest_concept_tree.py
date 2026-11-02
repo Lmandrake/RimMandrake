@@ -388,6 +388,13 @@ def main():
                 ("core tag mid-line", "- a plain open line does not block", "Q: [core] do goats tire?", "core line is still open"),
                 ("fenced heading cannot re-section", "- a plain open line does not block",
                  "```\n## delegated\n```\n- [core] do goats obey a cancel?", "core line is still open"),
+                ("a fence closer with text after it is no closer", "- a plain open line does not block",
+                 "```text\n```not-a-close\n## delegated\n```\n- [core] do goats obey a cancel?", "core line is still open"),
+                ("unknown section", "## delegated\n", "## unanswered\n- [core] do goats tire?\n## delegated\n",
+                 "no section of the sheet"),
+                ("core line in delegated", "- the name of the order", "- [core] the name of the order", "outside `## open`"),
+                ("a dry walk's root section in a real sheet", "## delegated\n", "## root\n- ms1: x\n## delegated\n",
+                 "no section of the sheet"),
                 ("unbulleted promise in does", "- [advisory] Dirt flies", "- [advisory] Dirt flies\nGoats stop when cancelled.",
                  "not a bullet"),
                 ("numbered does line names no leaf", "- [floor:log] Clean log", "1) [leaf:ghost] Clean log", "no such leaf")):
@@ -399,6 +406,23 @@ def main():
         with open(sp, "w", encoding="utf-8") as f:
             f.write(SHEET.replace("- goat_digs:", "* goat_digs:"))
         check("sheet: a star bullet answers pruning too", CT.lint(d, repo)[0] == [], CT.lint(d, repo)[0])
+        with open(sp, "w", encoding="utf-8") as f:
+            f.write(SHEET + "\n## later\n- goats that swim, v2\n")
+        check("sheet: `## later` is a section (sanity)", CT.lint(d, repo)[0] == [], CT.lint(d, repo)[0])
+        tp = os.path.join(d, "tree.json")
+        keep_tree = open(tp, "rb").read()
+        deep = '{"x":' + "[" * 200000 + "0" + "]" * 200000 + "}"     # deep enough to raise RecursionError in json
+        with open(tp, "w", encoding="utf-8") as f:
+            f.write(deep)
+        check("deep nesting: lint refuses, not raises", any("does not parse" in e for e in CT.lint(d, repo)[0]))
+        check("deep nesting: hash and askcheck exit 1", CT.main(["hash", d]) == 1 and CT.main(["askcheck", d, "q"]) == 1)
+        with open(tp, "wb") as f:
+            f.write(keep_tree)
+        dj2 = os.path.join(tmp, "deep_draft.json")
+        with open(dj2, "w", encoding="utf-8") as f:
+            f.write(deep)
+        check("deep nesting: cli write exit 1", CT.main(["write", d, "--draft", dj2]) == 1)
+        check("deep nesting: and tree.json is untouched", open(tp, "rb").read() == keep_tree)
         with open(sp, "wb") as f:
             f.write(SHEET.encode("utf-8") + b"\xff\n")
         got = CT.lint(d, repo)[0]

@@ -95,6 +95,7 @@ def flags(floor):
 # ---------------------------------------------------------------- sheet
 
 SECTIONS = ("his words", "does", "does not", "waived", "open", "delegated", "pruning")
+OPTIONAL_SECTIONS = ("later",)      # "Not now": v2, not in the tree. A dry walk adds `root` (its stand-in north star)
 BULLET = r"^\s*(?:[-*+]|[0-9]+[.)])"      # an unordered or an ordered Markdown bullet
 TAG = re.compile(BULLET + r"\s*\[(leaf|floor|waived|advisory|core)(?::([A-Za-z0-9_]+))?\]\s*(.*)$")
 
@@ -105,9 +106,11 @@ def parse_sheet(path):
     out, cur, fence = {}, None, None
     with open(path, encoding="utf-8") as f:
         for line in f:
-            fm = re.match(r"^\s*(`{3,}|~{3,})", line)
-            if fm and (fence is None or fm.group(1)[0] == fence[0] and len(fm.group(1)) >= len(fence)):
-                fence = None if fence else fm.group(1)
+            fm = re.match(r"^\s*(`{3,}|~{3,})(.*)$", line.rstrip("\n"))
+            if fm and fence is None:
+                fence = fm.group(1)
+            elif fm and fm.group(1)[0] == fence[0] and len(fm.group(1)) >= len(fence) and not fm.group(2).strip():
+                fence = None    # CommonMark: a closer is the opener's character, at least as long, and nothing after it
             m = None if fence or fm else re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
             if m:
                 cur = m.group(1).strip().lower()
@@ -122,6 +125,14 @@ def sheet_errors(sheet, tree, floor=None):
     for s in SECTIONS:
         if s not in sheet:
             errs.append("sheet: no `## %s` section" % s)
+    known = SECTIONS + OPTIONAL_SECTIONS + (("root",) if tree.get("dry_walk") is True else ())
+    for s in sheet:     # an unknown section is unchecked text: a [core] question could sit there unseen
+        if s not in known:
+            errs.append("sheet: `## %s` is no section of the sheet" % s)
+        elif s != "open":
+            for line in sheet[s]:
+                if re.search(r"\[core\]", line, re.I):
+                    errs.append("sheet: a [core] line outside `## open`: %s" % line.strip()[:80])
     if not sheet.get("his words"):
         errs.append("sheet: `his words` is empty")
     leaves = {x.get("id"): x for x in lst(tree.get("leaves")) if isinstance(x, dict) and isinstance(x.get("id"), str)}
@@ -376,8 +387,11 @@ def load(d):
     """tree.json, parsed. ValueError (bad UTF-8, bad JSON, or text no hash can encode, e.g. a lone surrogate) for the
     caller to report as "does not parse"; FileNotFoundError when there is none."""
     with open(os.path.join(d, "tree.json"), encoding="utf-8") as f:
-        tree = json.load(f)
-    canon(tree).encode("utf-8")
+        try:
+            tree = json.load(f)
+            canon(tree).encode("utf-8")
+        except RecursionError:
+            raise ValueError("nested too deep") from None
     return tree
 
 
@@ -658,6 +672,8 @@ def main(argv=None):
             with open(a.draft, encoding="utf-8") as f:
                 draft = json.load(f)
             errs = write(a.dir, draft, dry=a.dry_walk)
+        except RecursionError:
+            errs = ["draft %s: nested too deep" % a.draft]
         except (OSError, ValueError) as e:
             errs = ["draft %s: %s" % (a.draft, e)]
         return report(errs, flags(load_floor()[0]), "write")

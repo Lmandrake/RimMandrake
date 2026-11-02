@@ -76,7 +76,7 @@ The five moves, the agent's only tools:
 | "This doesn't matter to me" | `waived` with his words, as narrowly as he said them. Never raised again, not by you, not by a Marker, not as a hold-out |
 | "You decide" | `delegated`: you pick, you say what you picked, he can undo it |
 | "Not sure, show me" | `open`. Build a spike if that is the cheapest answer. An open core line blocks Gate A |
-| "Not now" | `later`, for v2. Not in the tree |
+| "Not now" | `## later`, for v2. Not in the tree |
 | His own idea | Verbatim, into `his words`, then argue it like anything else |
 | "Wrong question" | A note in `log.md`, and your frame was wrong: find out why |
 | Silence | Nothing. Silence is never consent |
@@ -104,7 +104,11 @@ of his words. Fifteen leaves is a warning sign; a small mod should fit in eight.
 ## open          - [core] ... blocks the gate; plain lines do not
 ## delegated     what you chose for him
 ## pruning       - <leaf id>: the citation that answers the pruning question
+## later         optional: what he put off to v2
 ```
+
+`lint` refuses any other `##` section, any line in `does`/`does not` that is not a tagged bullet, and a `[core]` tag
+anywhere but `## open`. A dry walk adds `## root`.
 
 ## The tree
 
