@@ -1,0 +1,1 @@
+live-proof B3: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/KOTOR_MineableJunk --has ThingDef/RSW_Durasteel && python3 src/RimMandrake/Utils/live_log_check.py --absent ronzium

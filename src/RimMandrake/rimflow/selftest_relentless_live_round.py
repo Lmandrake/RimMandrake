@@ -112,7 +112,7 @@ class FakeFx(object):
     def items(self):
         return self.its
 
-    def prose(self, i):
+    def proofs(self, i):
         return PROSE
 
     def foundry_seat(self, i):
@@ -266,6 +266,32 @@ def t_log_judge():
                   ["RUT_Loot"])[0] == G.FAIL)
 
 
+def t_proofs_file():
+    """LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST: proofs live in live_proofs/<ID>.txt, never the item's prose (the
+    Marker's box drops infrastructure/state/items, so a proof there could never be checked blind)."""
+    fx = R.RoundFx.__new__(R.RoundFx)
+    with tempfile.TemporaryDirectory() as d:
+        fx.books = d
+        os.makedirs(os.path.join(d, R.PROOFS_DIR))
+        os.makedirs(os.path.join(d, "infrastructure/state/items"))
+        with open(os.path.join(d, R.PROOFS_DIR, "EG_A.txt"), "w") as f:
+            f.write("live-proof A1: echo a\n")
+        with open(os.path.join(d, "infrastructure/state/items/EG_B.md"), "w") as f:
+            f.write("live-proof A1: echo b\n")
+        check("proofs: read from live_proofs/<ID>.txt", R.proof_lines(fx.proofs("EG_A")) == {"A1": "echo a"})
+        check("proofs: an item's prose is not a source", fx.proofs("EG_B") == "")
+    real = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(HERE))), R.PROOFS_DIR)
+    names = sorted(os.listdir(real)) if os.path.isdir(real) else []
+    bad = []
+    for n in names:
+        with open(os.path.join(real, n), encoding="utf-8") as f:
+            for line in f:
+                if line.strip() and not line.startswith("#") and not R.PROOF_LINE.match(line.rstrip("\n")):
+                    bad.append("%s: %s" % (n, line[:60]))
+    check("proofs: every real live_proofs file is .txt and every line parses", names and all(
+        n.endswith(".txt") for n in names) and not bad, "%s %s" % (names[:3], bad[:3]))
+
+
 def t_real_lane():
     """The real lane lookup imports priority as the package does (a plain `import priority` fails on its relative
     imports, and the fakes above never reach it)."""
@@ -279,7 +305,7 @@ def t_real_lane():
 
 
 def main():
-    for t in (t_proof_lines, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_real_lane,
+    for t in (t_proof_lines, t_proofs_file, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_real_lane,
               t_history_review, t_tick_env):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))

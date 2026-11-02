@@ -7,9 +7,12 @@ live criterion it owes gets relentless_live.run(), several per sitting (RA_S09_L
 
 The supervisor (relentless.py tick, live_tick) starts `round` detached, at most one at a time, every live.round_every_s.
 
-WHERE A PROOF COMES FROM: a line in the item's prose (infrastructure/state/items/<ID>.md), one per criterion:
+WHERE A PROOF COMES FROM: a line in infrastructure/state/live_proofs/<ID>.txt, one per criterion:
 
     live-proof A2: python3 src/RimMandrake/Utils/live_log_check.py --absent RUT_PaleMoss
+
+Not the item's prose: the Marker's box leaves infrastructure/state/items out (walls.marker.tree_exclude), so a proof kept
+there could never be checked blind. The prose keeps the why; the .txt holds only the lines.
 
 Nothing here turns a criterion's English into a proof: a guessed proof would pass criteria nobody proved. A criterion with
 no line is counted as `no proof` in `eligible` and waits for one.
@@ -42,6 +45,7 @@ import relentless_live as L     # noqa: E402
 PROOF_LINE = re.compile(r"^\s*(?:[-*]\s+)?(?:`live-proof\s+(?P<cid1>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd1>[^`\s][^`]*?)`"
                         r"|live-proof\s+(?P<cid2>[A-Z]{1,3}\d{1,3})\s*:\s*(?P<cmd2>\S.*?))\s*$")
 FOUNDRY_MODS = ("FlowWorks", "GimmeSomeSlack")
+PROOFS_DIR = "infrastructure/state/live_proofs"
 DEFAULTS = {"round_max": 6, "unmeasured_retry_s": 6 * 3600, "round_every_s": 1800}
 STOP = ("no running game to test", "bridge not taken")
 
@@ -93,8 +97,9 @@ def due(last, sha, now, retry_s):
     return None
 
 
-def candidates(items, prose_of, foundry_seat, hist, now, retry_s):
-    """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from prose_of/foundry_seat.
+def candidates(items, proofs_of, foundry_seat, hist, now, retry_s):
+    """-> (todo [(item id, criterion, proof, built sha)], counts {why skipped: n}). Pure apart from proofs_of/foundry_seat.
+    proofs_of(item id) -> the text of its live_proofs file, empty when it has none.
     `items` are ledger items in relentless_live.Fx.item's shape (criteria already whole or marked cut)."""
     todo, counts = [], {}
 
@@ -111,7 +116,7 @@ def candidates(items, prose_of, foundry_seat, hist, now, retry_s):
         if foundry_seat(it["id"]):
             skip("FOUNDRY's lane")
             continue
-        proofs = proof_lines(prose_of(it["id"]))
+        proofs = proof_lines(proofs_of(it["id"]))
         for cid in owed:
             if cid not in proofs:
                 skip("no proof")
@@ -151,6 +156,13 @@ class RoundFx(L.Fx):
                         "outstanding": list(it.outstanding or [])})
         return out
 
+    def proofs(self, item_id):
+        p = os.path.join(self.books, PROOFS_DIR, item_id + ".txt")
+        if not os.path.isfile(p):
+            return ""
+        with open(p, encoding="utf-8", errors="replace") as f:
+            return f.read()
+
     def deploy_plan(self, args, timeout):
         if args not in self._plans:
             self._plans[args] = L.Fx.deploy_plan(self, args, timeout)
@@ -189,7 +201,7 @@ def plan(fx, root, r, now):
     """-> (todo, counts) for this moment. Read-only."""
     lr = rules(r)
     hist = history(read_rows(os.path.join(root, "live", "runs.jsonl")))
-    return candidates(fx.items(), fx.prose, fx.foundry_seat, hist, now, lr["unmeasured_retry_s"])
+    return candidates(fx.items(), fx.proofs, fx.foundry_seat, hist, now, lr["unmeasured_retry_s"])
 
 
 def run_round(fx, root, r, now=None, max_items=None, run=L.run):

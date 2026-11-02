@@ -1,0 +1,1 @@
+live-proof A2: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/RM_FlameStatue_Ember=RM_CompProperties_FlamePoints --has ThingDef/RM_FlameStatue_Dancer=RM_CompProperties_FlamePoints --has ThingDef/RM_FlameStatue_Colossus=RM_CompProperties_FlamePoints && python3 src/RimMandrake/Utils/live_log_check.py --absent RM_FlameStatue

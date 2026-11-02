@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has QuestScriptDef/RUT_Reckoning_CartelOffer --has QuestScriptDef/RUT_Reckoning_Rumor && python3 src/RimMandrake/Utils/live_log_check.py --absent successHistoryEvent --absent failedOrExpiredHistoryEvent

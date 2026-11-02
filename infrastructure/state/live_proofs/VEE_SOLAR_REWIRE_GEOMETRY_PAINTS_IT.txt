@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has TileMutatorDef/RM_StrongInsolation --has TileMutatorDef/RM_Sunless && python3 src/RimMandrake/Utils/live_log_check.py --absent SolarMirrors --absent 'Solar Mirrors' --absent RM_StrongInsolation --absent RM_Sunless

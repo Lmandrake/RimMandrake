@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/live_def_check.py --has PrefabDef/RM_AncientStasisLocker_Wrecked_Edge --has PrefabDef/RM_AncientStasisLocker_Kludged_Edge && python3 src/RimMandrake/Utils/live_log_check.py --absent ColdStorage_AncientComplexLoot --absent RM_AncientStasisLocker_

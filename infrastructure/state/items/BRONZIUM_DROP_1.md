@@ -23,4 +23,4 @@ the layout export and alias the old stuff through RM_DefAliasDef.
 The supervisor's live round runs this line on a game-up sitting (LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST). The donor junk
 pile and RSW_Durasteel must resolve first, so the load had both the donor and Armoury: a log silent about bronzium in a
 load without them is not a pass. "ronzium" matches Bronzium and bronzium in any defName, recipe or patch file.
-live-proof B3: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/KOTOR_MineableJunk --has ThingDef/RSW_Durasteel && python3 src/RimMandrake/Utils/live_log_check.py --absent ronzium
+Live proofs (one line per criterion, read by relentless_live_round.py): infrastructure/state/live_proofs/BRONZIUM_DROP_1.txt

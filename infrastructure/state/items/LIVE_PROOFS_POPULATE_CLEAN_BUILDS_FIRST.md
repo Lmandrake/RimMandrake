@@ -3,12 +3,13 @@
 ## spec
 
 The supervisor's tick starts a paced live round (`relentless_live_round.py round`, rules `live.*` in
-relentless_rules.json). A round runs only the criteria that have a proof line in the item's prose:
+relentless_rules.json). A round runs only the criteria that have a proof line in `infrastructure/state/live_proofs/<ID>.txt` (not the item's
+prose: the Marker's box drops infrastructure/state/items, so a proof there can never be checked blind):
 
     live-proof A2: python3 src/RimMandrake/Utils/live_log_check.py --absent RUT_PaleMoss
 
 Nothing turns a criterion's English into a proof, so each line is written by hand. The worked example is
-items/EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS.md. Make the def resolve first (live_def_check.py --has), so a log silent
+live_proofs/EGROSTER_DEAD_ROWS_PRUNE_SILENT_SKIPS.txt. Make the def resolve first (live_def_check.py --has), so a log silent
 about a def the load never had cannot pass.
 
 The scan of 2026-11-01 (D:\ClaudeWork\rimmandrake\RA_S09\scan.json) found 34 built items with 52 live-level criteria
