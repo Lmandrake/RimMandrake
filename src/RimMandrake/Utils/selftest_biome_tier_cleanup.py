@@ -14,6 +14,10 @@ literals only. Checks:
  5 every alias in RM_BiomeTierCleanup_Aliases.xml maps a RETIRED name to the RM_ def of the same type defined
    under src/RimMandrake
  6 no Force / dianoga / Lekku / Bantha / Jawaese in the text or defNames of the item's biome mods
+ 6b no RM_-prefixed defName or Name= anywhere under src/ (every tier: an RM_ name is free-tier by its prefix,
+   wherever the def lives) carries one of those words; the Slime riders in UtinniPatches were renamed
+   RM_Gene_B2_VestigialHeadTails / _B4_ThunderSnore / _B12_StartleShout (their campaign-layer labels may
+   still say lekku/bantha/Jawaese: that text is UtinniPatches', not a free mod's)
  7 Miasma: About.xml description names no RSW_/RUT_/Star Wars; RM_Miasma lists no Rain* weather; the
    thessamor names no Grey Sea
  8 Greentide: RM_Greentide carries RM_RoilLock and RM_RoilWeather is defined in the free mod
@@ -232,6 +236,33 @@ def check_ip():
     return seen
 
 
+def rm_name_ip_hits(root):
+    """(name, word) for every RM_ defName / Name= under an XML root that carries an IP word."""
+    hits = []
+    for el in root.iter():
+        names = [el.attrib.get("Name") or ""]
+        if el.tag == "defName":
+            names.append((el.text or "").strip())
+        for n in names:
+            if n.startswith("RM_"):
+                m = IP_RE.search(n)
+                if m:
+                    hits.append((n, m.group(0)))
+    return hits
+
+
+def check_rm_names_ip():
+    seen = 0
+    for p in walk(SRC, (".xml",)):
+        r = xml_root(p)
+        if r is None:
+            continue
+        seen += 1
+        for n, w in rm_name_ip_hits(r):
+            fail(f"6b IP word {w!r} in RM_ name {n} ({os.path.relpath(p, REPO)})")
+    return seen
+
+
 def check_miasma_greentide():
     about = xml_root(os.path.join(RM, "Miasma", "About", "About.xml"))
     desc = about.findtext("description") if about is not None else None
@@ -281,6 +312,10 @@ def probes(names):
     lits = cs_literals('var a = "RUT_Foo"; // "RUT_Bar"\n')
     if lits != ["RUT_Foo"]:
         saved.append(f"9 probe: cs_literals read {lits}")
+    planted = ET.fromstring('<Defs><GeneDef><defName>RM_Gene_B2_VestigialLekku</defName></GeneDef>'
+                            '<ThingDef Name="RM_BanthaBase"/><GeneDef><defName>RUT_Lekku</defName></GeneDef></Defs>')
+    if sorted(n for n, _ in rm_name_ip_hits(planted)) != ["RM_BanthaBase", "RM_Gene_B2_VestigialLekku"]:
+        saved.append("9 probe: rm_name_ip_hits")
     if not IP_RE.search("a faint sense of the Force") or IP_RE.search("a forced march"):
         saved.append("9 probe: IP_RE")
     fails = saved
@@ -298,14 +333,16 @@ def main():
     n_xml = check_retired(names)
     n_alias = check_aliases(mods, names)
     n_ip = check_ip()
+    n_all = check_rm_names_ip()
     check_miasma_greentide()
     probes(names)
-    if n_el < 10000 or n_xml < 1000 or n_ip < 1000:
-        fail(f"0 sanity: scanned {n_el} elements, {n_xml} xml files, {n_ip} IP strings (instrument blind?)")
+    if n_el < 10000 or n_xml < 1000 or n_ip < 1000 or n_all < 2000:
+        fail(f"0 sanity: scanned {n_el} elements, {n_xml} xml files, {n_ip} IP strings, {n_all} src xml files "
+             "(instrument blind?)")
     for f in fails:
         print("FAIL", f)
     print(f"{'PASS' if not fails else 'FAIL'} selftest_biome_tier_cleanup: {len(mods)} rm mods, {n_el} elements, "
-          f"{n_xml} xml files, {n_alias} aliases, {n_ip} IP strings, {len(fails)} failures")
+          f"{n_xml} xml files, {n_alias} aliases, {n_ip} IP strings, {n_all} src xml files for 6b, {len(fails)} failures")
     return 1 if fails else 0
 
 
