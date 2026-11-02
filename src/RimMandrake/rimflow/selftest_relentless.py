@@ -2808,8 +2808,89 @@ def t_review_findings_rig():
     ok(c != d, "and two checks of an item are two clones")
 
 
+def t_review_wrong_verdicts():
+    """GPT review of the verdict machinery: each row is red without its fix."""
+    # a moving ref is no candidate
+    x = Rig(n=1, share=1.0)
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "p")
+    for bad in ("origin/main", "HEAD", "main", "abc~1", "a..b", "a b", "-x"):
+        try:
+            R.finish(x.s, "I0", st["gen"], bad, "e")
+            ok(False, "finish refuses %r" % bad)
+        except ValueError:
+            ok(True, "finish refuses %r" % bad)
+    x.done()
+    # contract prose does not authorize a production edit for a proof-only worker
+    class FxC:
+        def changed(self, b, s, i): return ["src/runtime.py"]
+    st = {"item": "I", "proof_only": {"sha": "A"}, "contract": {"proof": "run t", "why": "leave src/runtime.py unchanged"}}
+    k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
+    ok(k == "proof_rework", "a path named only in the why prose is still rework")
+    st["contract"]["proof"] = "python3 src/runtime.py"
+    k, _ = R.proof_gate(FxC(), RULES, st, {"sha": "B"})
+    ok(k is None, "a path the proof command names is the proof")
+    # an unreadable spend record blocks, never reads as an empty day
+    x = Rig(n=1, share=1.0)
+    ok(R.spent_today(x.s, x.now) == 0, "no day file is a new day")
+    with open(x.s.p("spend-%s.json" % R.day_key(x.now)), "w") as f:
+        f.write('{"spent": 5, "ru')
+    ok(R.spent_today(x.s, x.now) >= R.UNREADABLE_SPEND, "a truncated day file blocks spending")
+    R.charge(x.s, {"spent": 0}, 7, x.now, RULES, "u1")
+    with open(x.s.p("spend-%s.json" % R.day_key(x.now))) as f:
+        ok(f.read() == '{"spent": 5, "ru', "and is not overwritten by a partial history")
+    x.done()
+    # the pause that cannot be read is a pause
+    sys.modules["dispatcher"] = types.SimpleNamespace(paused_now=lambda: 1 / 0)
+    try:
+        ok(R.Effects.paused(None) is True, "an unreadable pause gate holds the launch")
+    finally:
+        del sys.modules["dispatcher"]
+    # a refusal survives the cut
+    out = "w" * 650 + " I0 has not earned its close"
+    ok("has not earned its close" in R.close_why(out) and len(R.close_why(out)) <= 700, "the refusal words survive the cut")
+    ok(R.close_why("x" * 900) == "x" * 400, "other output keeps its tail")
+    # an origin that cannot be asked is a wait, not a verdict on the candidate
+    x = Rig(n=1, share=1.0)
+    x.w.is_pub = None
+    x.run_one("I0")
+    st = x.st("I0")
+    R.contract(x.s, "I0", st["gen"], "p")
+    R.finish(x.s, "I0", st["gen"], "sha1", "e")
+    x.w.up[st["run"]["unit"]] = False
+    x.tick()
+    x.tick()
+    st = x.st("I0")
+    ok(st["status"] == "candidate" and not st["failures"], "published()=None waits: no bad_candidate")
+    x.w.is_pub = True
+    x.tick()
+    ok(x.st("I0")["status"] in ("checking", "candidate"), "and proceeds once origin answers")
+    x.done()
+    # a close retry asks again whether the sha is still on origin
+    x = Rig(n=1, share=1.0)
+    x.w.close_fail = "git hiccup"
+    full_pass(x, "I0")
+    ok(x.st("I0")["status"] in ("closing", "done"), "first close tried")
+    if x.st("I0")["status"] == "closing":
+        x.w.close_fail = "git hiccup"
+        x.w.is_pub = False
+        x.tick()
+        ok(x.st("I0")["failures"].get("live_broken") == 1 and x.w.closes == [], "a retry does not close a sha that left origin")
+    x.done()
+    # the pause that arrives while the clone is prepared stops the launch
+    x = Rig(n=1, share=1.0)
+    def prep(st):
+        x.w.pause = True
+    x.w.prepare = prep
+    for _ in range(4):
+        x.tick()
+    ok(not x.w.launches, "a pause set during prepare launches nothing")
+    x.done()
+
+
 def main():
-    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
+    for t in (t_help_round_two_vendor, t_weak_is_not_good, t_live_line_widens, t_time_is_no_failed_approach, t_one_builder_per_mod, t_item_mods_real, t_review_findings_core, t_review_findings_rig, t_review_wrong_verdicts, t_proof_weak, t_shadow_narrow_weak, t_marker_prompts_one_rule, t_pool_jam, t_pool_real_git, t_books_frozen, t_flush_lands_prose_moves, t_unpublished_enrol_waits, t_staffing_places, t_staffing_backlog, t_staffing_rise, t_foreign_take, t_foreign_tomb,
               t_foreign_eligible, t_foreign_tree, t_foreign_back_in_line, t_staffing_edges, t_staffing_alarm, t_alarm_routes,
               t_worker_dies, t_same_failure, t_snag_wait, t_stale_worker, t_stop_order, t_spend, t_top_of_queue, t_share,
               t_done_path, t_crash_recovery, t_crash_windows, t_third_review, t_real_effects, t_launch_fail, t_breaker_di2, t_retire, t_concurrency, t_live_line,

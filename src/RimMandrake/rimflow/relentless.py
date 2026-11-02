@@ -267,23 +267,32 @@ def _day(store, now):
     try:
         with open(store.p("spend-%s.json" % day_key(now)), encoding="utf-8") as f:
             return json.load(f)
-    except (OSError, ValueError):
-        return {"spent": 0, "runs": {}}
+    except FileNotFoundError:
+        return {"spent": 0, "runs": {}}         # a new day has no file; a file that is there and unreadable is not a new day
+
+
+UNREADABLE_SPEND = 10 ** 15      # an accounting record we cannot read blocks spending; it never reads as an empty day
 
 
 def spent_today(store, now):
-    return int(_day(store, now).get("spent", 0))
+    try:
+        return int(_day(store, now).get("spent", 0))
+    except (OSError, ValueError, TypeError, AttributeError):
+        return UNREADABLE_SPEND
 
 
 def charge(store, st, tokens, now, r, unit):
     """Under the lock. A run with no measured usage is charged the reserve, never less. The day file is keyed by run,
     so a crash before the item's own marker is saved cannot count a run twice."""
     n = int(tokens) if tokens else r["run_reserve"]
-    d = _day(store, now)
-    if unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]:
-        d["runs"][unit] = n
-        d["spent"] += n
-        store._write(store.p("spend-%s.json" % day_key(now)), json.dumps(d))
+    try:
+        d = _day(store, now)
+        if unit not in d["runs"] and unit not in _day(store, now - 86400)["runs"]:
+            d["runs"][unit] = n
+            d["spent"] += n
+            store._write(store.p("spend-%s.json" % day_key(now)), json.dumps(d))
+    except (OSError, ValueError, TypeError, KeyError, AttributeError):
+        pass        # never replace a damaged day file with a partial history; spent_today keeps refusing until it is fixed
     st["spent"] += n
     return n
 
@@ -364,6 +373,9 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
         fail(store, st, klass, detail, r, now, time_not_work=bool(wait_hours))
 
 
+REV_EXPR = re.compile(r"[\s/:~^@{}*?\[\\]|\.\.|^-")
+
+
 def finish(store, item, gen, sha, evidence, now=None):
     """The durable receipt. The result never depends on a notification: the tick finds it here."""
     now = time.time() if now is None else now
@@ -372,6 +384,8 @@ def finish(store, item, gen, sha, evidence, now=None):
         _fence(st, item, gen)
         if not st["contract"]:
             raise ValueError("no contract: set it with `contract` before finishing")
+        if not isinstance(sha, str) or REV_EXPR.search(sha) or sha.upper().startswith(("HEAD", "FETCH_HEAD")) or sha in ("main", "master"):
+            raise ValueError("sha must be one commit id, not a ref or revision expression that can move: %r" % (sha,))
         rec = {"item": item, "gen": gen, "sha": sha, "evidence": evidence, "at": iso(now), "contract": st["contract"],
                "hash": hashlib.sha256(json.dumps(st["contract"], sort_keys=True).encode()).hexdigest()}
         store._write(store.receipt_path(item, gen), json.dumps(rec, indent=1, sort_keys=True))
@@ -599,7 +613,8 @@ def proof_gate(fx, r, st, c):
         return None, None
     if c["sha"] == held["sha"]:
         return "proof_unchanged", "%s is the sha the proof was found weak at: no proof moved" % c["sha"]
-    text = json.dumps(st["contract"] or {})
+    k = st["contract"] or {}
+    text = json.dumps({"proof": k.get("proof"), "live": k.get("live")})      # the commands, never the `why` prose
     rework = [p for p in fx.changed(held["sha"], c["sha"], st["item"])
               if p not in text and not any(re.search(x, p) for x in r["proof_paths"])]
     if rework:
@@ -677,6 +692,13 @@ def unhold(store, item, said, now=None):
 
 
 # ---------------------------------------------------------------- what the world does (the selftest plants these)
+
+def close_why(out):
+    """The gate's reasons are at the top, but the caller finds a refusal by its words: keep them in the cut."""
+    if "has not earned its close" in out:
+        return (out if "has not earned its close" in out[:560] else "has not earned its close: " + out)[:600]
+    return out[-400:]
+
 
 class Effects:
     """The real one. Every method here blocks, so none is called under the store lock."""
@@ -1039,7 +1061,7 @@ class Effects:
         if self.closed(item):
             return None
         out = r.stderr or r.stdout
-        return out[:600] if "has not earned its close" in out else out[-400:]     # the gate's reasons are at the top
+        return close_why(out)
 
     def closed(self, item):
         self.sync()
@@ -1303,7 +1325,9 @@ class Effects:
         return d, why
 
     def published(self, sha):
-        self.git(self.books, "fetch", "--quiet", "origin", "main")
+        """True / False, or None when origin could not be asked: a cached answer is no answer."""
+        if self.git(self.books, "fetch", "--quiet", "origin", "main").returncode != 0:
+            return None
         return self.git(self.books, "merge-base", "--is-ancestor", sha, "origin/main").returncode == 0
 
     def head(self):
@@ -1406,7 +1430,7 @@ class Effects:
             import dispatcher
             return bool(dispatcher.paused_now())
         except Exception:  # noqa: BLE001
-            return False
+            return True         # the owner's pause cannot be read: that is not "not paused"
 
     def live_check(self, line, not_before):
         import live_line
@@ -2087,7 +2111,11 @@ def step(store, fx, r, item, now, acts):
     if s == "candidate":
         c = st["candidate"]
         why = None
-        if not fx.published(c["sha"]):
+        pub = fx.published(c["sha"])
+        if pub is None:
+            acts.append({"do": "publish_unknown", "item": item})
+            return
+        if not pub:
             why = "%s is not on origin/main" % c["sha"]
         else:
             import live_line
@@ -2225,7 +2253,11 @@ def step(store, fx, r, item, now, acts):
             return
         live = (st["contract"] or {}).get("live")
         broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
-        if not broken and not fx.published(c["sha"]):
+        pub = None if broken else fx.published(c["sha"])
+        if pub is None and not broken:
+            acts.append({"do": "publish_unknown", "item": item})
+            return
+        if not broken and not pub:
             broken = "%s left origin/main" % c["sha"]
         with store.lock():
             st = store.load(item)
@@ -2236,6 +2268,7 @@ def step(store, fx, r, item, now, acts):
                 acts.append({"do": "live_broken", "item": item})
                 return
             st["status"] = "closing"
+            st.pop("close_retry", None)
             store.save(st)
         s = "closing"
 
@@ -2247,6 +2280,19 @@ def step(store, fx, r, item, now, acts):
             if fx.seat_heard(item, iso(st["started_at"])) or now - st["tomb_since"] >= r["staffing"]["tomb_max_s"]:
                 finished(store, fx, item, c, now, acts)
             return
+        if st.get("close_retry"):       # a retry is a new decision: what authorized the first try is asked again
+            live = (st["contract"] or {}).get("live")
+            broken = fx.live_check(live, fx.commit_time(c["sha"])) if live else None
+            pub = None if broken else fx.published(c["sha"])
+            if pub is None and not broken:
+                acts.append({"do": "publish_unknown", "item": item})
+                return
+            if broken or not pub:
+                with store.lock():
+                    st = store.load(item)
+                    fail(store, st, "live_broken", broken or "%s left origin/main" % c["sha"], r, now)
+                acts.append({"do": "live_broken", "item": item})
+                return
         reason = "relentless: blind PASS at %s after %d return(s): %s" % (c["sha"], st["returns"],
                                                                          (st["check"].get("reasons") or "")[:220])
         why = fx.ledger_close(item, c["sha"], reason, (st["contract"] or {}).get("live"))
@@ -2257,6 +2303,11 @@ def step(store, fx, r, item, now, acts):
             acts.append({"do": "close_refused", "item": item, "why": why})
             return
         if why:
+            if not st.get("close_retry"):
+                with store.lock():
+                    cur = store.load(item)
+                    cur["close_retry"] = True
+                    store.save(cur)
             acts.append({"do": "close_retry", "item": item, "why": why})
             return
         if st.get("foreign"):
@@ -2671,6 +2722,8 @@ def lease(store, fx, r, now, acts):
             acts.append({"do": "mem_after_clone", "gb": gb})
             if gb < r["min_mem_available_gb"]:      # the clone itself costs gigabytes
                 why = "memory %.1f GB after the clone" % gb
+            elif fx.paused():       # the pause may have come while the clone was prepared
+                why = POOL_REFUSED + ": paused while the clone was prepared"
         if not why:
             prompt = worker_prompt(st, fx.item_text(item), store.learned(item), r)
             agent = r["pilot_agent"] if st["approach"] == "pilot" else r["worker_agent"]
