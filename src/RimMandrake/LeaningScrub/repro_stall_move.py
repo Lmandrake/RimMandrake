@@ -27,6 +27,7 @@ WANDER = {None, "", "GotoWander", "Wait_Wander", "Wait_MaintainPosture", "Wait"}
 MOVE = 6.0              # cells in 300 ticks; the 10-07 move was ~17 (12,12 diagonal), a frozen Thornhold moves 0
 STEP, STEPS = 25, 12    # the item's repro: every 25 ticks for 300 ticks
 PAD = (-45, -45)
+SHARE_TOL = 4.0         # cells between the two animals' net moves for a move to count as SHARED
 SETTINGS = "RimMandrake.LeaningScrub.RM_LeaningScrubSettings"
 
 
@@ -60,6 +61,15 @@ def verdict(on, off):
         lines.append("ON  %s path %.1f net %s jobs-during-move %s" % (n, s["path"], s["net"], s["jobsDuringMove"]))
     if not moved:
         return 1, lines + ["NOT REPRODUCED: neither animal moved >= %.0f cells in 300 ticks; the job is not named" % MOVE]
+    # The item is a SHARED move: both animals, the same vector (10-07: +12,+12 each). One animal walking alone is some
+    # other mechanism (LIVE 2026-11-02: the Thornhold's RM_CompHomeTether den Goto) and names nothing about the item.
+    if len(moved) < 2:
+        return 1, lines + ["NOT SHARED: only %s moved >= %.0f cells; the item's move was both animals together, "
+                           "so the job is not named" % (moved, MOVE)]
+    a, b = on[SMALL]["net"], on[BIG]["net"]
+    if _dist(a, b) > SHARE_TOL:
+        return 1, lines + ["NOT SHARED: the two net moves %s and %s differ by more than %.0f cells; the job is not "
+                           "named" % (a, b, SHARE_TOL)]
     named = sorted(set(j for n in moved for j in on[n]["named"]))
     if not named:
         return 1, lines + ["MOVE WITHOUT A NAME: %s moved but every job sampled on a moving step was wander-family %s"
@@ -72,7 +82,11 @@ def verdict(on, off):
         s = off.get(n) or {}
         lines.append("OFF %s path %s jobs-during-move %s" % (n, s.get("path"), s.get("jobsDuringMove")))
     off_named = set(j for n in moved for j in (off.get(n) or {}).get("named", []))
-    if not off_named & set(named):
+    if "Flee" not in named:
+        # both suspects answer JobDefOf.Flee; a move under any other job is neither of them
+        lines.append("ATTRIBUTION: the job is not Flee -> neither suspect (vanilla JobGiver_AnimalFlee nor the lean "
+                     "scent); a third job giver made the move")
+    elif "Flee" not in off_named:
         lines.append("ATTRIBUTION: gone with leanScentEnabled OFF -> RM_TheLeanPatches.AnimalFlee_Postfix (lean scent)")
     else:
         lines.append("ATTRIBUTION: persists with leanScentEnabled OFF -> vanilla JobGiver_AnimalFlee (AlwaysFlee/threat), "
@@ -203,6 +217,8 @@ def selftest():
     # a move made only of wander jobs names nothing -> NOT a pass
     wand = summarise(tr(flee_pts, ["GotoWander"] * 13))
     code, lines = verdict({SMALL: held, BIG: wand}, None)
+    assert code == 1 and ("MOVE WITHOUT A NAME" in lines[-1] or "NOT SHARED" in lines[-1]), lines
+    code, lines = verdict({SMALL: wand, BIG: wand}, None)
     assert code == 1 and "MOVE WITHOUT A NAME" in lines[-1], lines
     # a missing pawn is UNMEASURED
     assert verdict({SMALL: flee}, None)[0] == 2
@@ -212,6 +228,19 @@ def selftest():
     # a job seen only while standing still is not "during the move"
     still = summarise(tr(held_pts, ["Flee"] * 13))
     assert still["jobsDuringMove"] == [] and verdict({SMALL: still, BIG: held}, None)[0] == 1
+    # LIVE 2026-11-02 run1 shape: the Thornhold alone walks a den Goto, the Shirrel wanders < MOVE -> NOT a pass
+    den = summarise(tr([(77, 80), (76, 79), (75, 78), (74, 77), (73, 76), (72, 75), (70, 74), (69, 74), (68, 74),
+                        (67, 74), (65, 75)], [None] + ["Goto"] * 10))
+    code, lines = verdict({SMALL: den, BIG: held}, {SMALL: den, BIG: held})
+    assert code == 1 and "NOT SHARED" in lines[-1], lines
+    # both move, but in different directions -> not the item's shared move
+    away = summarise(tr([(83, 80), (87, 76), (91, 72), (95, 68)], [None, "Flee", "Flee", "Flee"]))
+    code, lines = verdict({SMALL: flee, BIG: away}, None)
+    assert code == 1 and "NOT SHARED" in lines[-1], lines
+    # a shared move under a non-Flee job is attributed to neither flee suspect
+    gflee = summarise(tr(flee_pts, [None, "Goto", "Goto", "Goto"] + ["Wait_Wander"] * 9))
+    code, lines = verdict({SMALL: gflee, BIG: gflee}, {SMALL: gflee, BIG: held})
+    assert code == 0 and "neither suspect" in lines[-1], lines
     print("selftest ok")
     return 0
 

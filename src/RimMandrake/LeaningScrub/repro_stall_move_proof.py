@@ -54,6 +54,18 @@ def check_record(rec, need_named=True):
                 bad.append("%s %s: span %d ticks, not %d" % (name, kind, ticks[-1] - ticks[0], SPAN))
             if not all("job" in r and "x" in r and "z" in r for r in rows):
                 bad.append("%s %s: a sample lacks job or x/z" % (name, kind))
+    if mi.get("mapBiome") != "RM_LeaningScrub":
+        # the lean-scent suspect (RM_MapComponent_Lean.Applies) only exists on a biome carrying RM_LeanExtension:
+        # off it the scent-OFF arm cannot attribute anything (LIVE 2026-11-02 205226Z ran on TemperateForest)
+        bad.append("map biome %r, not RM_LeaningScrub: the scent suspect cannot fire there" % mi.get("mapBiome"))
+    if need_named and "scent_on" in arms:
+        # recompute the verdict from the record's own tracks: a stored verdict from an older, looser repro (LIVE
+        # 2026-11-02 gen15/run1: one animal's den Goto stored as NAMED) must not pass
+        summ = {arm: {k: R.summarise(rows) for k, rows in (arms[arm].get("tracks") or {}).items()}
+                for arm in ("scent_on", "scent_off") if arm in arms}
+        code, lines = R.verdict(summ.get("scent_on") or {}, summ.get("scent_off"))
+        if code != 0 or not any(str(l).startswith("NAMED:") for l in lines):
+            bad.append("recomputed verdict names no job: %s" % (lines[-1] if lines else code))
     v = rec.get("verdict") or {}
     if need_named and (v.get("exit") != 0 or not any(str(l).startswith("NAMED:") for l in v.get("lines", []))):
         bad.append("verdict names no job: %r" % v)
@@ -176,6 +188,16 @@ def offline():
         bad.append("check_record passed a 125-tick x 2 record")
     if not check_record(dict(rec, arms={})):
         bad.append("check_record passed a record with no arms")
+    # a lone mover (gen15/run1: the Thornhold's den Goto, the Shirrel held) whose stored verdict still says NAMED
+    lone = json.loads(json.dumps(rec))
+    for arm in lone["arms"].values():
+        rows = arm["tracks"]["RM_Shirrel"]
+        for r in rows:
+            r["x"], r["z"] = rows[0]["x"], rows[0]["z"]
+    if not any("recomputed verdict" in b for b in check_record(lone)):
+        bad.append("check_record passed a record where only one animal moved")
+    if not check_record(dict(rec, map=dict(rec["map"], mapBiome="TemperateForest"))):
+        bad.append("check_record passed a record off a Leaning Scrub map")
     bad += check_live_line()
     return bad
 
