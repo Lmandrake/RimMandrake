@@ -18,7 +18,7 @@ WHY THE ENV. Headless ArtifactData is off by default ("sdk_default_off" in the C
 session inherits CLAUDE_CODE_ENTRYPOINT=sdk-cli; so CLAUDE_CODE_ARTIFACT=1 is set and the entrypoint unset.
 ENABLE_TOOL_SEARCH=false keeps ArtifactData loaded up front (one turn fewer). ArtifactData disappears if Artifact is
 disallowed, so Artifact stays in. A `parts` write by file_path counts as a Read, so Read is allowed for the
-rows dir alone. 
+rows dir alone.
 
 COST GATE. A run whose rows match the last written rows (ignoring elapsed minutes) skips the model unless the last
 write is older than --heartbeat (20 min); so an idle fleet costs ~3 calls an hour and `updated` never ages past
@@ -135,7 +135,7 @@ def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
             if was:
                 what = "%s → %s" % (was, r["status"])
             else:
-                what = "finished %s" % r.get("glyph", "") if r["status"] not in LIVE else "started (%s)" % r["status"]
+                what = finished_words(r) if r["status"] not in LIVE else "started (%s)" % r["status"]
             changes.append("%s: %s" % (name, what.strip()))
     for i, text in enumerate(changes[:FEED_MAX]):
         writes.append({"op": "set", "collection": "feed", "doc_id": "t%d-%d" % (now, i), "data": {"at": now, "text": text}})
@@ -174,6 +174,16 @@ def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
     return writes, facts, versions.get("board/summary"), state
 
 
+def finished_words(r):
+    """A feed line's verb for a finished row: no bare glyphs (✓ reads as PASS only when a check passed)."""
+    rc = r.get("receipt") or {}
+    if r.get("status") == "Ended":
+        return "stopped reporting"
+    if rc.get("ok") is False:
+        return "finished, check FAIL" if rc.get("check") == "FAIL" else "stopped"
+    return "finished, check %s" % rc["check"] if rc.get("check") else "finished, unchecked"
+
+
 WROTE = re.compile(r'^- \w+ "([^"]+)"/"([^"]+)" \(version (\d+)\)', re.M)
 
 
@@ -190,13 +200,18 @@ def headline(rows):
         return ", ".join(out) + (" and %d more" % (len(rs) - n) if len(rs) > n else "")
     build = [r for r in rows if r["status"] == "Building"]
     check = [r for r in rows if r["status"] == "Checking"]
-    done = [r for r in rows if r["status"] not in LIVE]
+    done = [r for r in rows if r["status"] not in LIVE + ("Ended",)]  # Ended = stopped reporting, not a finish
+    lost = sum(1 for r in rows if r["status"] == "Ended")
     bits = ["Building " + names(build)] if build else ["Nothing building"]
     if check:
         bits.append("checking %d" % len(check))
     if done:
         v = [(r.get("receipt") or {}).get("check") for r in done]
-        bits.append("%d finished today (%d PASS, %d FAIL)" % (len(done), v.count("PASS"), v.count("FAIL")))
+        n_un = sum(1 for x in v if x not in ("PASS", "FAIL"))
+        bits.append("%d finished today (%d PASS, %d FAIL, %d unchecked)" % (len(done), v.count("PASS"), v.count("FAIL"),
+                                                                           n_un))
+    if lost:
+        bits.append("%d stopped reporting" % lost)
     return "; ".join(bits) + "."
 
 
@@ -363,8 +378,25 @@ def collect(root, rows_dir, prev, now=None):
     rows = dedup(rows)
     rows += ended(prev, {r["item"] for r in rows}, rows_dir)
     for r in rows:  # no position field: one row ending would shift every other row's hash and rewrite them all
-        r["short"] = fleet_watch.title_short(r["title"])
+        r["short"] = fleet_mods.display_title(r["title"])
+        r.pop("ga", None)
+    disambiguate(rows)
     return rows, got
+
+
+def disambiguate(rows):
+    """Two rows with one display title (two items both headed 'LeaningScrub stall') read as one item twice: each
+    falls back to its whole plain title, then to its item id in words. Pure; in place."""
+    for key in ("title", "item"):
+        seen = {}
+        for r in rows:
+            seen.setdefault(r["short"], []).append(r)
+        for group in seen.values():
+            if len({r["item"] for r in group}) < 2:
+                continue
+            for r in group:
+                r["short"] = fleet_watch.short(fleet_watch.de_id(r[key]), fleet_mods.TITLE_MAX) if key == "title" else \
+                    "%s (%s)" % (r["short"], fleet_watch.de_id(r["item"]))
 
 
 def add_use(rec, use):

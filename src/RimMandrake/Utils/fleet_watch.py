@@ -100,9 +100,10 @@ GENERIC_HEADS = {"experiment", "question", "investigate", "investigation", "rese
                  "proposal", "decision", "cleanup", "regression", "feature", "finding", "harness"}
 
 
-def title_short(title, n=28):
+def title_short(title, n=28, min_words=1):
     """A rimflow title -> at most n readable chars: the head before the first ':', ' — ', '(' or ';' when that head is
-    a phrase of its own, ids made words, cut at a word with '…'."""
+    a phrase of its own (at least `min_words` words; 'Full list' says nothing, so the page asks for 3), ids made words,
+    cut at a word with '…'."""
     t = " ".join(str(title or "").split())
     t = re.sub(r"^(?:\[[A-Za-z -]{2,12}\]\s*)+", "", t)
     t = re.sub(r"^(?:Ops alarm|alarm|FINDING|finding|BUG|bug|MOD|SITE|HARNESS)(?:\s*:\s*|\s+)", "", t)
@@ -113,7 +114,7 @@ def title_short(title, n=28):
         t = parts[1][:1].upper() + parts[1][1:]
         parts = re.split(r"\s*(?::\s|\s[—–-]{1,2}\s|\(|;)\s*", t, maxsplit=1)
     head = parts[0]
-    if len(head) >= 8 and (" " in head or len(parts) == 1):  # a lone path/token head says nothing: keep the rest
+    if len(head) >= 8 and (" " in head or len(parts) == 1) and (len(parts) == 1 or len(head.split()) >= min_words):  # a lone path/token head says nothing: keep the rest
         t = head
     t = de_id(t).strip(" .,:;-")
     if len(t) <= n:
@@ -332,6 +333,11 @@ def circling_now(item_dir, gen, now):
     return ""
 
 
+def attempt_words(n):
+    """Relentless attempt count -> 'attempt 3' from the second try on; '' on the first (no codes on the page)."""
+    return "attempt %d" % n if isinstance(n, int) and n >= 2 else ""
+
+
 def relentless_rows():
     """One row per Relentless worker or blind checker whose unit is alive right now."""
     now = time.time()
@@ -357,7 +363,7 @@ def relentless_rows():
                 "title": item,
                 "phase": phase,
                 "model": "",
-                "ga": "g%s·a%s" % (s.get("gen"), s.get("attempts")),
+                "attempt": attempt_words(s.get("attempts")),
                 "status": status,
                 "glyph": GLYPH[status],
                 "unit": "active",

@@ -2,35 +2,47 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Fleet Watch: one phone-first column in priority order. Data: db `parts` (one row per live or finished item),
-   `mods` (one doc per mod, 7-day window), `board/summary` + `board/factory`, `feed`. Written by fleet_refresh.py. */
+/* Fleet Watch. Phone: one column — header with today's one-line tally, Needs you, Stuck, Working, Checking, Mods, Feed.
+   Desktop (>=1000px): live state left, Mods right. Data: db `parts` (one row per live or finished item), `mods` (one
+   doc per mod + infra + cross-mod, 7 days), `board/summary` + `board/factory`, `feed`. Written by fleet_refresh.py;
+   every word and mark is derived there — this page only sorts, counts what it shows, and lays out. */
 :root{
-  --bg:#f3efe7; --panel:#fffdf8; --ink:#2a2118; --muted:#7a6a58; --line:#e2d8c8; --accent:#a0522d;
-  --ok:#3d7a3a; --run:#b7791f; --stop:#9b2c2c; --wait:#5a6b8c; --alarm:#b0306a;
+  --bg:#f3efe7; --panel:#fffdf8; --ink:#2a2118; --muted:#6f6050; --line:#e2d8c8; --accent:#a0522d;
+  --ok:#3d7a3a; --run:#a86c12; --stop:#9b2c2c; --wait:#4f6186; --alarm:#b0306a;
   --display:"Archivo",system-ui,sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#1c1712; --panel:#26201a; --ink:#efe6d8; --muted:#a8957f; --line:#3a3128; --accent:#d9895a;
-  --ok:#7cc077; --run:#e0a84a; --stop:#e07a7a; --wait:#93a6cc; --alarm:#f07fb2; color-scheme:dark}}
+  --bg:#1c1712; --panel:#26201a; --ink:#efe6d8; --muted:#ab9a85; --line:#3a3128; --accent:#e0956a;
+  --ok:#7cc077; --run:#e0a84a; --stop:#e07a7a; --wait:#9fb1d6; --alarm:#f07fb2; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#1c1712; --panel:#26201a; --ink:#efe6d8; --muted:#a8957f; --line:#3a3128; --accent:#d9895a;
-  --ok:#7cc077; --run:#e0a84a; --stop:#e07a7a; --wait:#93a6cc; --alarm:#f07fb2; color-scheme:dark}
+  --bg:#1c1712; --panel:#26201a; --ink:#efe6d8; --muted:#ab9a85; --line:#3a3128; --accent:#e0956a;
+  --ok:#7cc077; --run:#e0a84a; --stop:#e07a7a; --wait:#9fb1d6; --alarm:#f07fb2; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.45;margin:0}
-.wrap{max-width:720px;margin:0 auto;padding-block:14px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:grid;gap:14px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.4;margin:0}
+.wrap{max-width:1560px;margin:0 auto;padding-block:12px 32px;padding-left:max(12px,env(safe-area-inset-left,0px));padding-right:max(12px,env(safe-area-inset-right,0px));display:grid;gap:10px;align-items:start}
+.live{display:contents}
+#feedsec{order:9}
+@media (min-width:1000px){
+  .wrap{grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:12px 16px;padding-left:20px;padding-right:20px}
+  .top{grid-column:1/-1}
+  .live{display:grid;gap:10px;grid-column:1;align-content:start;min-width:0}
+  #modsec{grid-column:2;grid-row:2}
+}
+.top{display:grid;gap:4px;min-width:0}
 .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;font-family:var(--mono);font-size:13px;color:var(--muted)}
-.head b{font-family:var(--display);font-weight:800;font-size:20px;color:var(--ink);letter-spacing:-.01em;margin-right:4px}
+.head b{font-family:var(--display);font-weight:800;font-size:20px;color:var(--ink);letter-spacing:-.01em;margin-right:2px}
 .head .ok{color:var(--ok)} .head .bad{color:var(--alarm);font-weight:600}
 .stamp.stale{color:var(--alarm)}
-.headline{margin:0;font-size:14px;color:var(--muted)}
-section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
-h2{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 6px;display:flex;justify-content:space-between;gap:8px}
+section{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 12px;min-width:0}
+h2{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 4px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
 h2 .n{font-family:var(--mono);letter-spacing:0;text-transform:none;font-weight:500}
-#needs h2{color:var(--accent)}
-#needs p{margin:0;font-weight:500}
+#needs{display:flex;gap:10px;align-items:baseline}
+#needs h2{color:var(--accent);margin:0;flex:none}
+#needs p{margin:0;font-weight:500;min-width:0}
+#needs.quiet p{color:var(--muted);font-weight:400}
 #problems{border-color:var(--alarm)} #problems h2{color:var(--alarm)}
 ul{list-style:none;margin:0;padding:0}
-li.row{padding:5px 0;border-top:1px solid var(--line);min-width:0}
+li.row{padding:4px 0;border-top:1px solid var(--line);min-width:0}
 li.row:first-child{border-top:0}
 .l1{display:flex;align-items:baseline;gap:8px;min-width:0}
 .g{width:1.1em;flex:none;text-align:center}
@@ -40,38 +52,74 @@ li.row:first-child{border-top:0}
 .alarm .l2{-webkit-line-clamp:3}
 .alarm .g,.alarm .l2{color:var(--alarm)}
 .s-Building .g{color:var(--run)} .s-Checking .g{color:var(--wait)}
-.pass{color:var(--ok)} .fail{color:var(--stop)} .weak{color:var(--run)}
-.empty{color:var(--muted);font-size:13px}
-details.mod{border-top:1px solid var(--line);padding:6px 0}
-details.mod:first-of-type{border-top:0}
+.pass{color:var(--ok)} .fail{color:var(--stop)} .weak{color:var(--run)} .done{color:var(--muted)} .park{color:var(--wait)} .open{color:var(--muted)}
+.empty{color:var(--muted);font-size:13px;margin:0}
+@media (max-width:640px){ /* phone: a title may take two lines instead of being cut */
+  .t{white-space:normal;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow-wrap:anywhere}
+  .l1{align-items:first baseline}
+}
 summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:8px;min-width:0}
 summary::-webkit-details-marker{display:none}
 summary::before{content:"▸";color:var(--muted);flex:none;width:1.1em;text-align:center}
 details[open]>summary::before{content:"▾"}
-summary .t{font-family:var(--display);font-weight:700}
-.st{margin:3px 0 4px calc(1.1em + 8px);font-size:13px;color:var(--muted)}
+/* today's one-line tally */
+#done{font-size:14px}
+#done summary{font-weight:500}
+#done summary .x{color:var(--muted);font-weight:400;font-size:13px}
+#done[open]{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:6px 12px 8px 4px}
+#dlist{margin:4px 0 0 calc(1.1em + 8px)}
+#dinfra{margin:4px 0 0 calc(1.1em + 8px)}
+/* mods */
+#modsec h2{margin-bottom:2px}
+.legend{font-size:12px;color:var(--muted);margin:0 0 4px;display:flex;flex-wrap:wrap;gap:0 12px}
+.legend span{white-space:nowrap}
+details.mod{border-top:1px solid var(--line);padding:5px 0}
+details.mod:first-of-type{border-top:0}
+details.mod.sep{border-top:2px solid var(--line);margin-top:4px;padding-top:7px}
+.mod>summary .t{font-family:var(--display);font-weight:700}
+.mod>summary .m{max-width:60%;overflow:hidden;text-overflow:ellipsis}
+.mod>summary .m.you{color:var(--accent);font-weight:500}
+@media (max-width:640px){
+  .mod>summary{flex-wrap:wrap}
+  .mod>summary .t{flex:0 1 auto}
+  .mod>summary .m{max-width:none;flex:1 1 auto;text-align:right}
+}
+.body{margin:2px 0 2px calc(1.1em + 8px);font-size:13px}
+.st{color:var(--muted)}
 .st div{overflow-wrap:anywhere}
+.st .you{color:var(--accent);font-weight:500}
 .st .nx{color:var(--ink)}
-.tasks{margin-left:calc(1.1em + 8px)}
-.tasks li{display:flex;gap:8px;font-size:13px;min-width:0;padding:1px 0}
+.wk{font-family:var(--display);font-weight:700;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:5px 0 1px}
+.tasks li{display:flex;gap:8px;min-width:0;padding:1px 0;align-items:baseline}
 .tasks .g{width:1em}
-.tasks .ok{color:var(--ok)} .tasks .park{color:var(--wait)} .tasks .open{color:var(--muted)}
+.tasks .t{font-weight:400}
+.tasks .note{flex:none;max-width:45%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:12px}
+@media (max-width:640px){.tasks li{flex-wrap:wrap;row-gap:0}.tasks .m{order:2}.tasks .note{order:3;max-width:none;flex-basis:100%;margin-left:calc(1em + 8px);white-space:normal}}
+.grp{font-size:12px;color:var(--muted);border-top:2px solid var(--line);margin-top:4px;padding:6px 0 0}
+.grp+details.mod{border-top:0}
+@media (min-width:1000px){.quietmods{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));column-gap:22px}.quietmods>details.mod[open]{grid-column:1/-1}}
+button.more{font:inherit;font-size:13px;color:var(--accent);background:none;border:0;padding:2px 0 0 calc(1em + 8px);cursor:pointer}
 #feed li{display:flex;gap:10px;font-size:13px;padding:2px 0;min-width:0}
 #feed time{font-family:var(--mono);color:var(--muted);flex:none}
 #feed span{min-width:0;overflow-wrap:anywhere}
 details.fold>summary{font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-details.fold[open]>summary{margin-bottom:6px}
+details.fold[open]>summary{margin-bottom:4px}
 </style>
 <div class="wrap">
-  <div class="head"><b>Fleet Watch</b><span id="clock">—</span><span id="fac">factory …</span><span id="workers"></span><span id="tok"></span><span class="stamp" id="stamp">Connecting…</span></div>
-  <p class="headline" id="headline"></p>
-  <section id="needs"><h2>Needs you</h2><p id="needstext">Nothing.</p></section>
-  <section id="problems" hidden><h2>Stuck or circling <span class="n" id="np"></span></h2><ul id="plist"></ul></section>
-  <section><h2>Working <span class="n" id="nw"></span></h2><ul id="wlist"></ul></section>
-  <section id="checking" hidden><h2>Checking <span class="n" id="nc"></span></h2><ul id="clist"></ul></section>
-  <section><h2>Off the line today <span class="n" id="nd"></span></h2><ul id="dlist"></ul></section>
-  <section><h2>Mods worked on lately <span class="n">7 days</span></h2><div id="mods"><p class="empty">Waiting for data…</p></div></section>
-  <section><details class="fold"><summary>Feed</summary><ul id="feed"></ul></details></section>
+  <div class="top">
+    <div class="head"><b>Fleet Watch</b><span id="clock">—</span><span id="fac">factory …</span><span id="workers"></span><span id="tok"></span><span class="stamp" id="stamp">Connecting…</span></div>
+    <details id="done"><summary><span>Today: <span id="donesum">…</span></span></summary><ul id="dlist"></ul><p class="empty" id="dinfra"></p></details>
+  </div>
+  <div class="live">
+    <section id="needs" class="quiet"><h2>Needs you</h2><p id="needstext">Nothing.</p></section>
+    <section id="problems" hidden><h2>Stuck or circling <span class="n" id="np"></span></h2><ul id="plist"></ul></section>
+    <section id="working"><h2>Working <span class="n" id="nw"></span></h2><ul id="wlist"></ul></section>
+    <section id="checking" hidden><h2>Checking <span class="n" id="nc"></span></h2><ul id="clist"></ul></section>
+    <section id="feedsec"><details class="fold"><summary>Feed</summary><ul id="feed"></ul></details></section>
+  </div>
+  <section id="modsec"><h2>Mods worked on <span class="n">last 7 days</span></h2>
+    <p class="legend"><span><b class="pass">✓</b> finished, check PASS</span><span><b class="done">●</b> finished, not checked</span><span><b class="fail">✗</b> check FAIL</span><span><b class="open">○</b> open</span><span><b class="park">⏸</b> parked</span></p>
+    <div id="mods"><p class="empty">Waiting for data…</p></div></section>
 </div>
 <script>
 const $ = id => document.getElementById(id);
@@ -82,75 +130,110 @@ const midnight = () => { const d = new Date(); d.setHours(0,0,0,0); return d.get
 const tok = n => n == null ? "" : n >= 1e6 ? (n/1e6).toFixed(n >= 1e8 ? 0 : 1) + "M" : n >= 1e3 ? Math.round(n/1e3) + "k" : String(n);
 const mins = (a, b) => Math.max(0, Math.round(((b ?? now()) - a)/60));
 const LIVE = new Set(["Building", "Checking"]);
-let parts = [], summary = {}, factory = null, modDocs = [], openMods = new Set(), touchedMods = false;
+const SHOW = 5;  // task lines per mod before "and N more"
+let parts = [], summary = {}, factory = null, modDocs = [];
+const modOpen = {}, modDefault = {}, modMore = new Set();
 
 function line(r, metaBits, second, cls){
+  const title = r.short || r.title || r.item;
   return `<li class="row s-${esc(r.status)} ${cls||""}"><div class="l1"><span class="g">${esc(r.glyph || "•")}</span>`
-    + `<span class="t">${esc(r.short || r.title || r.item)}</span><span class="m">${metaBits.filter(Boolean).map(esc).join(" · ")}</span></div>`
+    + `<span class="t" title="${esc(r.title || title)}">${esc(title)}</span><span class="m">${metaBits.filter(Boolean).map(esc).join(" · ")}</span></div>`
     + (second ? `<div class="l2">${second}</div>` : "") + `</li>`;
 }
-function liveMeta(r){ return [r.model, mins(r.started) + "m", r.ga]; }
+function liveMeta(r){ return [r.model, mins(r.started) + "m", r.attempt]; }
 function stuckWords(r){
   const bits = [`${r.tool_calls || 0} steps`, r.stuck];
   if (r.now) bits.push(r.now);
   let s = esc(bits.join(", ").replace(/, (?=[^,]*$)/, " · "));
   const said = String(r.said || "").replace(/[*_`#>]+/g, "").replace(/\s+-\s+/g, " ").trim().split(/(?<=[.!?])\s/)[0];
-  if (said) s += `<br>${esc(said.length > 120 ? said.slice(0, 119) + "…" : said)}`;
+  if (said) s += `<br>${esc(said.length > 160 ? said.slice(0, 159) + "…" : said)}`;
   return s;
 }
 function renderParts(){
   const t0 = midnight();
   const rows = parts.filter(r => LIVE.has(r.status) || (r.finished_at || 0) >= t0).sort((a,b) => (a.started || 0) - (b.started || 0));
+  const seen = new Set();  // one item, one place: Stuck wins over Working/Checking
+  const once = r => !seen.has(r.item) && seen.add(r.item);
   const live = rows.filter(r => LIVE.has(r.status));
-  const stuck = live.filter(r => r.stuck);
-  const work = live.filter(r => !r.stuck && r.status === "Building");
-  const check = live.filter(r => !r.stuck && r.status === "Checking");
+  const stuck = live.filter(r => r.stuck).filter(once);
+  const work = live.filter(r => !r.stuck && r.status === "Building").filter(once);
+  const check = live.filter(r => !r.stuck && r.status === "Checking").filter(once);
   $("problems").hidden = !stuck.length; $("np").textContent = stuck.length || "";
   $("plist").innerHTML = stuck.map(r => line(r, liveMeta(r), stuckWords(r), "alarm")).join("");
   $("nw").textContent = work.length;
   $("wlist").innerHTML = work.length ? work.map(r => line(r, liveMeta(r))).join("") : '<li class="empty">Nobody is building right now.</li>';
   $("checking").hidden = !check.length; $("nc").textContent = check.length;
   $("clist").innerHTML = check.map(r => line(r, liveMeta(r))).join("");
-  const done = rows.filter(r => !LIVE.has(r.status)).sort((a,b) => (b.finished_at||0) - (a.finished_at||0));
-  const pass = done.filter(r => r.receipt && r.receipt.check === "PASS").length;
-  const fail = done.filter(r => r.receipt && r.receipt.check === "FAIL").length;
-  $("nd").innerHTML = done.length ? `${done.length} · <span class="pass">${pass} PASS</span> · <span class="fail">${fail} FAIL</span>` : "";
-  $("dlist").innerHTML = done.length ? done.map(r => {
+  const done = rows.filter(r => !LIVE.has(r.status) && !seen.has(r.item)).sort((a,b) => (b.finished_at||0) - (a.finished_at||0));
+  const verdict = r => (r.receipt || {}).check;
+  const fin = done.filter(r => r.status !== "Ended"), lost = done.length - fin.length;  // Ended = stopped reporting, not a finish
+  const pass = fin.filter(r => verdict(r) === "PASS").length, fail = fin.filter(r => verdict(r) === "FAIL").length;
+  const unchecked = fin.length - pass - fail;
+  $("donesum").innerHTML = (fin.length
+    ? `${fin.length} finished · <span class="pass">${pass} PASS</span> · <span class="${fail ? "fail" : ""}">${fail} FAIL</span> · ${unchecked} unchecked`
+    : `nothing finished yet`) + (lost ? ` · ${lost} stopped reporting` : "");
+  const modWork = done.filter(r => !r.infra), infra = done.length - modWork.length;
+  $("dlist").innerHTML = modWork.map(r => {
     const rc = r.receipt || {};
-    const chk = rc.check ? `<span class="${rc.check === "PASS" ? "pass" : rc.check === "FAIL" ? "fail" : "weak"}">${esc(rc.check)}</span>` : "no check";
-    const meta = [rc.commits != null ? rc.commits + (rc.commits === 1 ? " commit" : " commits") : "", rc.tokens ? tok(rc.tokens) + " tok" : ""];
-    const g = r.receipt ? (rc.ok ? "✓" : "✗") : (r.glyph || "■");
+    const chk = rc.check ? `<span class="${rc.check === "PASS" ? "pass" : rc.check === "FAIL" ? "fail" : "weak"}">check ${esc(rc.check)}</span>` : "not checked";
+    const meta = [r.where, rc.commits != null ? rc.commits + (rc.commits === 1 ? " commit" : " commits") : "", rc.tokens ? tok(rc.tokens) + " tokens" : ""];
     const second = `${chk}${rc.outcome ? " · " + esc(rc.outcome) : r.status === "Ended" ? " · stopped reporting" : ""}`;
-    return line(Object.assign({}, r, {glyph: g}), meta, second, rc.ok === false ? "bad" : "");
-  }).join("") : '<li class="empty">Nothing finished yet today.</li>';
+    const cls = rc.ok === false ? "fail" : rc.check === "PASS" ? "" : "unchecked";
+    return line(r, meta, second, cls);
+  }).join("");
+  $("dinfra").textContent = infra ? `and ${infra} infrastructure & tooling ${infra === 1 ? "finish" : "finishes"} — listed under Infrastructure & tooling in Mods.` : "";
+  $("done").hidden = false;
+}
+function modBody(m){
+  const st = [];
+  st.push(`<div>${esc([m.backlog, m.proof].filter(Boolean).join(" · "))}</div>`);
+  (m.waits || []).forEach(w => st.push(`<div class="${/^waits on you/.test(w) ? "you" : ""}">${esc(w[0].toUpperCase() + w.slice(1))}</div>`));
+  if (m.next) st.push(`<div class="nx">Next: ${esc(m.next)}</div>`);
+  const tasks = m.tasks || [];
+  const all = modMore.has(m.id), shown = all ? tasks : tasks.slice(0, SHOW);
+  const hidden = tasks.length - shown.length + (m.more || 0);
+  const li = x => `<li><span class="g ${esc(x.kind || "open")}">${esc(x.mark)}</span><span class="t" title="${esc(x.title)}">${esc(x.title)}</span>`
+    + (x.note ? `<span class="note">${esc(x.note)}</span>` : "") + (x.date ? `<span class="m">${esc(x.date)}</span>` : "") + `</li>`;
+  const more = hidden ? (all || tasks.length <= SHOW ? `<li class="empty">and ${hidden} more not listed</li>`
+                                                     : `<li><button class="more" data-more="${esc(m.id)}">and ${hidden} more</button></li>`) : "";
+  return `<div class="body"><div class="st">${st.join("")}</div>`
+    + (tasks.length ? `<div class="wk">This week · ${m.week || tasks.length}</div><ul class="tasks">${shown.map(li).join("")}${more}</ul>`
+                    : `<div class="wk">This week</div><p class="empty">No task named in this week's commits.</p>`) + `</div>`;
 }
 function renderMods(){
   const cut = now() - 7*86400;
-  const docs = modDocs.filter(m => (m.last_at || 0) >= cut).sort((a,b) => (a.infra - b.infra) || (b.last_at - a.last_at));
-  if (!touchedMods) docs.filter(m => !m.infra).slice(0, 3).forEach(m => openMods.add(m.id));
-  const mark = t => t === "✓" ? "ok" : t === "⏸" ? "park" : "open";
-  $("mods").innerHTML = docs.length ? docs.map(m => {
-    const w = (m.waits || []).join("; ");
-    const next = w ? w[0].toUpperCase() + w.slice(1) : m.next ? "Next: " + m.next : "";
-    const tally = `${m.closed ? m.closed + "✓ " : ""}${m.open ? m.open + "○ " : ""}${m.parked ? m.parked + "⏸ " : ""}`;
-    return `<details class="mod" data-id="${esc(m.id)}"${openMods.has(m.id) ? " open" : ""}><summary><span class="t">${esc(m.name)}</span>`
-      + `<span class="m">${esc(tally)}${esc(new Date(m.last_at*1000).toLocaleDateString([], {day:"numeric", month:"short"}))}</span></summary>`
-      + `<div class="st"><div>${esc(m.counts)}</div><div>${esc(m.proof)}</div>${next ? `<div class="nx">${esc(next)}</div>` : ""}</div>`
-      + `<ul class="tasks">${(m.tasks||[]).map(x => `<li><span class="g ${mark(x.mark)}">${esc(x.mark)}</span><span class="t">${esc(x.title)}</span><span class="m">${esc(x.date)}</span></li>`).join("")}`
-      + `${m.more ? `<li class="empty">and ${m.more} more</li>` : ""}</ul></details>`;
-  }).join("") : '<p class="empty">No mod work in the last 7 days.</p>';
+  const tail = m => (m.infra || m.cross) ? (m.cross ? 1 : 2) : 0;
+  const docs = modDocs.filter(m => (m.last_at || 0) >= cut)
+    .sort((a,b) => (tail(a) - tail(b)) || ((b.waits_you || 0) - (a.waits_you || 0)) || ((b.closed || 0) - (a.closed || 0)) || (b.last_at - a.last_at));
+  const one = (m, sep) => {
+    modDefault[m.id] = !m.infra && (m.closed || 0) > 0;
+    const open = m.id in modOpen ? modOpen[m.id] : modDefault[m.id];
+    return `<details class="mod${sep ? " sep" : ""}" data-id="${esc(m.id)}"${open ? " open" : ""}><summary><span class="t">${esc(m.name)}</span>`
+      + `<span class="m${m.waits_you ? " you" : ""}">${esc(m.meta || m.counts || "")}</span></summary>${modBody(m)}</details>`;
+  };
+  const isQuiet = m => !tail(m) && !m.closed && !m.waits_you;
+  const lead = docs.filter(m => !tail(m) && !isQuiet(m)), quiet = docs.filter(isQuiet), rest = docs.filter(tail);
+  // quiet mods are one line each: a grid of them on a wide screen instead of a long column
+  $("mods").innerHTML = docs.length ? lead.map(m => one(m)).join("")
+    + (quiet.length ? '<div class="grp">Touched in the last 7 days, nothing finished:</div><div class="quietmods">' + quiet.map(m => one(m)).join("") + "</div>" : "")
+    + rest.map((m, i) => one(m, i === 0)).join("")
+    : '<p class="empty">No mod work in the last 7 days.</p>';
 }
 $("mods").addEventListener("toggle", e => {
   const id = e.target.dataset && e.target.dataset.id; if (!id) return;
-  touchedMods = true; e.target.open ? openMods.add(id) : openMods.delete(id);
+  if (e.target.open === modDefault[id]) delete modOpen[id]; else modOpen[id] = e.target.open;
 }, true);
+$("mods").addEventListener("click", e => {
+  const id = e.target.dataset && e.target.dataset.more; if (!id) return;
+  modMore.add(id); renderMods();
+});
 function renderHead(){
   $("clock").textContent = hm(now());
   const f = factory;
   if (f){
     $("fac").innerHTML = f.ok ? '<span class="ok">factory ok</span>' : `<span class="bad">factory stopped${f.why ? ": " + esc(f.why) : ""}</span>`;
-    $("workers").textContent = f.running == null ? "" : `${f.running}/${f.target ?? "?"} workers`;
-    $("tok").textContent = `${tok(f.tokens_today)} tokens today (UTC)`;
+    $("workers").textContent = f.running == null ? "" : `${f.running} of ${f.target ?? "?"} workers`;
+    $("tok").textContent = f.tokens_today == null ? "" : `${tok(f.tokens_today)} tokens today (UTC)`;
   }
   const at = summary.updated || 0;
   if (at){
@@ -158,8 +241,9 @@ function renderHead(){
     $("stamp").textContent = `updated ${m < 1 ? "just now" : m + "m ago"}`;
     $("stamp").classList.toggle("stale", m > 30);  // heartbeat is 20m on a 5m timer: >30m is a dead refresher
   }
-  $("headline").textContent = summary.headline || "";
-  $("needstext").textContent = summary.needs_you || "Nothing.";
+  const needs = summary.needs_you || "";
+  $("needstext").textContent = needs || "Nothing.";
+  $("needs").classList.toggle("quiet", !needs);
 }
 function renderFeed(docs){
   const rows = docs.map(d => d.data() || {}).sort((a,b) => (b.at||0) - (a.at||0)).slice(0, 40);

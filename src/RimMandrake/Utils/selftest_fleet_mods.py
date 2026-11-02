@@ -92,7 +92,8 @@ rel = {"R_OK": {"status": "done", "done_at": now - 60, "gen": 2, "attempts": 1, 
 rc = {r["item"]: r for r in M.receipts(now, {"R_OK": cs}, rel, World(), [])}
 check("receipts: today only", set(rc) == {"R_OK", "R_BAD"})
 check("receipts: PASS row", rc["R_OK"]["receipt"] == {"ok": True, "check": "PASS", "outcome": "Exact-step speed proof.",
-                                                      "commits": 2, "tokens": 5000} and rc["R_OK"]["ga"] == "g2·a1")
+                                                      "commits": 2, "tokens": 5000} and "ga" not in rc["R_OK"])
+check("receipts: PASS row marked check-passed", rc["R_OK"]["glyph"] == "✓")
 check("receipts: FAIL row", rc["R_BAD"]["glyph"] == "✗" and rc["R_BAD"]["receipt"]["check"] == "FAIL")
 
 
@@ -125,8 +126,32 @@ check("plan: factory going not-ok writes alone", [(x["collection"], x["doc_id"])
 # headline: Python's words, the model relays them
 hl = F.headline([dict(row("A", "Building"), title="Hot springs: new defs"), row("B", "Checking"),
                  dict(row("C", "Done"), receipt={"check": "PASS"}), dict(row("D", "Done"), receipt={"check": "FAIL"})])
-check("headline from rows alone", hl == "Building Hot springs; checking 1; 2 finished today (1 PASS, 1 FAIL).")
+check("headline from rows alone", hl == "Building Hot springs; checking 1; 2 finished today (1 PASS, 1 FAIL, 0 unchecked).")
+
+# marks: a tick means a passed check; a finish with no check says so
+check("finish_mark: PASS tick, FAIL cross, unchecked dot", (M.finish_mark("PASS"), M.finish_mark("FAIL"), M.finish_mark(None),
+      M.finish_mark("WEAK"), M.finish_mark("PASS", ok=False)) == (("✓", "pass"), ("✗", "fail"), ("●", "done"), ("●", "done"),
+                                                                ("✗", "fail")))
+check("feed words: unchecked finish is not a PASS", F.finished_words({"status": "Done", "receipt": {"ok": True}}) ==
+      "finished, unchecked" and F.finished_words({"status": "Done", "receipt": {"ok": True, "check": "PASS"}}) ==
+      "finished, check PASS" and F.finished_words({"status": "Ended"}) == "stopped reporting")
+check("attempt in words, none on the first try", (W.attempt_words(1), W.attempt_words(3), W.attempt_words(None)) ==
+      ("", "attempt 3", ""))
+check("day_label: today is blank, earlier days dated", M.day_label(now - 1, now) == "" and
+      M.day_label(M.local_midnight(now) - 3600, now) != "" and M.day_label(0, now) == "")
+check("split_cross: 3+ mods (infra not counted) is cross", M.split_cross(
+      {"A": {"X", "Y", "Z"}, "B": {"X", "Y", M.INFRA}, "C": {"X"}}) == {"A"})
+check("display_title: a two-word head keeps the rest", M.display_title("Full list: dev save loads Default")
+      == "Full list: dev save loads Default" and M.display_title("Biome tier cleanup: x") == "Biome tier cleanup")
+dup = [{"item": "LS_A", "title": "LeaningScrub stall: animals made", "short": "LeaningScrub stall"},
+       {"item": "LS_B", "title": "LeaningScrub stall: animals made", "short": "LeaningScrub stall"},
+       {"item": "C", "title": "Other thing", "short": "Other thing"}]
+F.disambiguate(dup)
+check("disambiguate: one title for two items gets told apart", len({r["short"] for r in dup}) == 3
+      and dup[2]["short"] == "Other thing")
 check("headline empty fleet", F.headline([]) == "Nothing building.")
+check("headline: a row that stopped reporting is not a finish", F.headline([dict(row("E", "Ended"))]) ==
+      "Nothing building; 1 stopped reporting.")
 bw = F.board_write("H", 5, 3)
 check("board write ready-made", bw == {"op": "update", "collection": "board", "doc_id": "summary",
                                        "data": {"headline": "H", "updated": 5}, "if_version": 3})
