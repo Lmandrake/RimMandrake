@@ -1,0 +1,1 @@
+live-proof A1: python3 src/RimMandrake/Utils/live_log_check.py --never GenerateStartingPolicies --never "ReadingPolicyDatabase..ctor"

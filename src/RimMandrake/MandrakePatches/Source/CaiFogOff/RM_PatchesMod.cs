@@ -9,11 +9,14 @@ namespace RimMandrake.Patches
     public class RM_PatchesSettings : ModSettings
     {
         public static bool caiFogForcedOff = true;
+        // QUICKTEST_POLICY_NRE_FULLLIST_1: repair null-thingClass ThingDefs so a broken def cannot crash every game start.
+        public static bool nullThingClassGuard = true;
 
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Values.Look(ref caiFogForcedOff, "caiFogForcedOff", true);
+            Scribe_Values.Look(ref nullThingClassGuard, "nullThingClassGuard", true);
         }
     }
 
@@ -38,6 +41,13 @@ namespace RimMandrake.Patches
                 "'fog of war' checkbox decide (CAI's default is off). Only matters if CAI 5000 is installed.");
             l.Gap();
             l.Label(CaiFogOff.Status);
+            l.GapLine();
+            l.CheckboxLabeled("Repair ThingDefs with no thingClass", ref RM_PatchesSettings.nullThingClassGuard,
+                "A ThingDef with no thingClass (usually another mod's broken inheritance or a stale install) makes vanilla " +
+                "crash every new game, quicktest and save load while building the starting reading policies. While this is " +
+                "on, each such def is given a safe class and named, with its mod, in one red log error so the game still " +
+                "starts. Off = vanilla behaviour. Takes effect at the next game start.");
+            l.Label(NullThingClassGuard.Status);
             l.End();
             if (RM_PatchesSettings.caiFogForcedOff && !before)
                 CaiFogOff.Force("settings toggle");
