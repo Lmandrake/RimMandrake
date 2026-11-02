@@ -360,7 +360,9 @@ Names follow `design/NAMING_SCHEME_PLAN.md`. All ride the existing
 
 ## 8. Questions only the owner can answer
 
-1. **Desert temple: which kind?**
+1. **Desert temple: which kind?** *Answered by card 2026-10-19: ruined temples of several faiths as
+   mutators, plus inhabited temples with living residents. Design:
+   `design/RimMandrake/temple_ruins_several_faiths_2026-11-01.md`.*
    - (a) A Sith-tomb temple, canon Korriban-style (RSW tier, IP route).
    - (b) An invented Ash'karr cult temple (RM tier).
    - (c) Skip temples entirely.
@@ -388,6 +390,6 @@ ideas, and every idea is buildable from vanilla machinery we already load.
   1. **`RM_DerelictGeneLab` on Odyssey's procedural ruin generator**, because it teaches us the
      one vanilla technique we have not used, and every later ruin can reuse it.
   2. **The Rakatan nexus**, because it is cheap and fits the arc.
-  3. **The temple**, once the owner answers question 1.
+  3. **The temples**: question 1 is answered; see `design/RimMandrake/temple_ruins_several_faiths_2026-11-01.md`.
 - **Close the four-mutator item** `UNPORTED_MUTATORS_DECIDE_FOUR_ON_THE_STEP` for these three by
   pointing at this brief. Their replacements become new items only if the owner picks them.
