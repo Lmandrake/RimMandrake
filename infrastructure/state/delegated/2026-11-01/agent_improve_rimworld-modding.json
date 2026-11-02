@@ -1,0 +1,23 @@
+{
+ "subject": "agent_improve_rimworld-modding",
+ "item": "AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS",
+ "day": "2026-11-01",
+ "target": "rimworld-modding",
+ "path": "skills/rimworld-modding/SKILL.md",
+ "maker": "agent_improve Curator (fresh claude -p opus, no tools)",
+ "judge_model": "fresh claude -p opus, no tools, blind to the Curator's reasoning",
+ "verdict": "KEEP",
+ "reasons": "Piece [1] shows that SKILL.md sends readers to a decompiled tree that does not exist. A dead pointer in the skill text misleads every agent who reads it, so the failure recurs by construction, not as one item's quirk. The edit is a 3-line pointer fix that names the installed ilspycmd and changes no ruling or gate, and the recheck is observable in later lessons. The one soft spot is that \"as per the trap file\" assumes the ilspycmd lesson has been or will be appended to the trap files.",
+ "violated": "",
+ "cites": [
+  {
+   "path": "/home/mandrake/rm/scratch/BENCH/agent-improve-20261101-192155/infrastructure/state/lessons/20261101T133144Z-FOUNDRY-decompiled-path-missing-use-ilspycmd.md",
+   "text": "skills/rimworld-modding/SKILL.md:77 points at D:\\Luke\\dev\\reference\\rimworld-decompiled, which does not exist. ilspycmd.exe IS installed (C:\\Users\\<user>\\.dotnet\\tools\\ilspycmd.exe, v8.2): '$T -t Vers"
+  }
+ ],
+ "recheck": "No new lesson reports the missing rimworld-decompiled path, and later lessons that cite vanilla C# show it was read via rimsage or ilspycmd.",
+ "diff": "--- a/skills/rimworld-modding/SKILL.md\n+++ b/skills/rimworld-modding/SKILL.md\n@@ -74,8 +74,9 @@\n capture with no `defs/` at all, wasting the whole dump. Write `all`.\n \n \ud83d\udcce Full study: `research\\RimMandrake\\reference\\rimsage_rimcp_source_index_mcp.md`.\n-The decompiled C# it indexes is at `D:\\Luke\\dev\\reference\\rimworld-decompiled`\n-(provenance: `research\\RimMandrake\\reference\\rimworld_decompiled_source.md`).\n+\u26a0\ufe0f There is no local decompiled tree (`D:\\Luke\\dev\\reference\\rimworld-decompiled` does not exist). For C# that\n+rimsage misses, decompile on demand with `ilspycmd` (`C:\\Users\\<user>\\.dotnet\\tools\\ilspycmd.exe`, v8.2), as per\n+the trap file (provenance: `research\\RimMandrake\\reference\\rimworld_decompiled_source.md`).\n \n ---\n \n",
+ "applied_sha": "1394a96c62546e227879e7517dcbcbae81bd7c0b",
+ "tag": "agent/rimworld-modding/v1",
+ "change": "infrastructure/state/agent_improve/changes/rimworld-modding_v1.json"
+}
