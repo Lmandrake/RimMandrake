@@ -92,8 +92,53 @@ with no recurrence spends nothing past the program.
 Operations at 07:30 and the Conductor's digest). It runs gather only until steps 1 to 3 are built; switching on the
 timer is the owner's, like `v3_vs_v2`.
 
-## 4. Built now, and owed
+## 4. Ramp, versions, generalization (owner ruling 2026-11-02)
+
+The owner, 2026-11-02: *"at first there will be so many bugs and gross improvements we must do this. Then we increase
+the length of review time and the required evidence to substantiate improvement. We must avoid overfitting to one task.
+But there will be many different tasks all the time (big world problem) and we should keep different versions and
+occasionally evaluate if they are just overfitting or actually improving in generalization."*
+
+**4.1 Ramp, triggered by a measured number, never a date.** The number is the acceptance rate: applied KEEP diffs
+divided by diffs proposed, over the last 10 passes (from the verdict files in `infrastructure/state/delegated/`). The
+current level lives in `D:\ClaudeWork\rimmandrake\agent_improve\state.json`; gather reads its bar from it.
+
+| level | interval | recurrence bar (pieces in window) | window | extra evidence |
+|---|---|---|---|---|
+| L0 | daily | 2 | 7 days | none (gross bugs) |
+| L1 | every 3 days | 3, from 2 or more task kinds | 14 days | the recheck of the target's last change has passed |
+| L2 | weekly | 5, from 3 or more task kinds | 28 days | L1 plus a generalization check passed (4.3) before apply |
+
+Step up one level when the rate over the last 10 passes falls below 0.3; step back down when it rises above 0.6 (a
+new crop of bugs). At most one step per 10 passes, so the rate is measured on the level that produced it.
+
+**4.2 Versions, old ones kept and runnable.** Each applied change gets a git tag `agent/<target>/v<N>` on its commit
+(N counts per target). Any version is runnable: `agent_improve.py materialize <target> v<N> <dir>` writes the role file
+or skill folder as of that tag into a scratch dir, and a run points at it (`role_launch.py` `--instructions <path>`; a
+skill is copied into the scratch clone's `.claude/skills/`). Nothing is deleted; a revert is a new version.
+
+**4.3 Generalization check, on task KINDS the change did not come from.** A task's kind is the intent word in its item
+id (`model.INTENT_WORDS`: BUILD, REPAIR, AUDIT, ...) plus its ledger `kind`. Each change records its source kinds (the
+kinds of the items its evidence pieces came from). At L1 for every fifth change, at L2 for every change, and weekly for
+the newest version of each target:
+
+- Sample fresh from the last 14 days of the ledger: 6 closed items whose kind is NOT a source kind (held out), and 2
+  items of a source kind. Fresh each time, because the task mix keeps changing.
+- For each item, two fresh agents get the item's spec: one with the old version, one with the new, both in scratch
+  clones; each writes its plan and first step. A blind judge (sees neither version nor which is new) picks the better
+  of each pair or calls a tie, against what actually closed the item.
+- New wins or ties on the held-out 6 (wins >= losses): kept. New wins only on its source kind (source wins > losses,
+  held-out losses > wins): flagged **overfit** and reverted. New loses on both: reverted as harmful.
+- Cost bound: 16 short runs plus 8 judge calls per check, under 300k tokens; it runs only at L1 and L2.
+
+**4.4 The evidence travels with the change.** Each applied change commits
+`infrastructure/state/agent_improve/changes/<target>_v<N>.json`: the packet pieces that motivated it (paths and first
+lines), their source kinds, the diff, the Judge verdict path, the recheck, and later every generalization verdict
+(appended, never rewritten). The digest line links it.
+
+## 5. Built now, and owed
 
 Built with this design: step 0 (`agent_improve.py gather`), `selftest_agent_improve.py`, the paused schedule row.
 Owed under `AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS`: steps 1 to 3 (Curator and Judge prompts, the apply program), the
-systemd unit, and one hand-run day whose packet a human reads before the timer is enabled.
+systemd unit, section 4 (ramp state, tags and `materialize`, the generalization check,
+the change records), and one hand-run day whose packet a human reads before the timer is enabled.

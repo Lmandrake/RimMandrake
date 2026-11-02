@@ -17,7 +17,13 @@ Design: design/RimMandrake/daily_agent_improvement_2026-11-02.md (transfer audit
 3. Step 3 apply program: KEEP only, git apply --check, skills/validate_skills.py, the target's selftests, commit body
    `Delegated: technical — agent improvement <target>`, land.sh.
 4. Next-day recheck of yesterday's applied diffs; systemd unit rm-agent-improve.{service,timer}.
-5. One hand-run day whose packet a human reads; then the owner enables the timer.
+5. Ramp (design 4.1, owner 2026-11-02): state.json level L0/L1/L2, interval and evidence bar set by the measured
+   acceptance rate over the last 10 passes (< 0.3 steps up, > 0.6 steps down), never by a date; gather reads its bar.
+6. Versions (4.2): tag agent/<target>/v<N> per applied change; `agent_improve.py materialize` makes any version runnable.
+7. Generalization check (4.3): old vs new on 6 freshly sampled held-out task kinds + 2 source kinds, blind judge; wins
+   only on source kind = overfit, reverted.
+8. Evidence record (4.4): infrastructure/state/agent_improve/changes/<target>_v<N>.json committed with each change.
+9. One hand-run day whose packet a human reads; then the owner enables the timer.
 
 ## verify
 - selftest_agent_improve GREEN; a dry gather of 2026-11-01 gives <= 6 targets, agents first, <= 25 pieces each.
