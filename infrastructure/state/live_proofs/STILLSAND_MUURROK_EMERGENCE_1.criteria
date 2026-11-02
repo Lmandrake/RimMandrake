@@ -1,0 +1,2 @@
+A1 L2: on a Stillsand quicktest map, the forced RM_MuurrokEmergence visit is traced every 100 ticks (pawn census + RM_MapComponent_SandLeviathans.visits) and its end is named (arrived/went down, never arrived, turned back)
+A2 L2: forced -> >=1 RM_Muurrok at some census within 3000 ticks; not forced (control, same 3000-tick watch) -> 0 RM_Muurrok and 0 visits

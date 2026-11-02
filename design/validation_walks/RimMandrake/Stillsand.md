@@ -94,7 +94,8 @@ The dune gale
 - Carry-and-return, seeding and the emergence rows' individual toggles. → UNCOVERED: random events on a crest or an MTB; the two toggles `carryEnabled`, `seedingEnabled` are checked read/write only → settings.carryEnabled_roundtrip, settings.seedingEnabled_roundtrip
 
 Event creatures
-- Firing `RM_MuurrokEmergence` sends the "A line of glare" letter and a `RM_Muurrok` is on the map after the warning. → muurrok.muurrok_emergence_fires
+- With no incident forced, a 3000-tick watch (a census every 100 ticks) sees no new `RM_Muurrok` and no leviathan visit. → muurrok.muurrok_absent_unforced
+- Firing `RM_MuurrokEmergence` sends the "A line of glare" letter and a `RM_Muurrok` is on the map at some 100-tick census within 3000 ticks; the watch also reads the leviathan component's visit count, so a 0 names its end (never arrived / turned back). → muurrok.muurrok_emergence_fires
 - A muurrok's mirror beam, cast at a target 8 cells away under Clear weather, leaves it `Burn` (MUURROK_BEAM_NO_DAMAGE_1). → muurrok.beam_burns_target
 - With `mirrorBeamEnabled` off the beam burns nothing. → muurrok.beam_toggle_off_blocked
 - The leviathan incidents' own toggles and odds, the Visits memory, and the krayt attack. → UNCOVERED: held in private static dictionaries no tool reads; the krayt is `mandrake.rut.patches`
@@ -134,6 +135,7 @@ RULED OUT: "`jawa/world_tile_set` alone changes the biome of the current map" �
 RULED OUT: "the planted colonists survive the run" — the biome's heat killed them in the 2026-10-01 session and a map with nobody home ends the game; the site tile is set to 15 C and `_prep` spawns a colonist when none lives. Every chain spawns its own actors.
 RULED OUT: "`BiomeDef.wildAnimals` is readable through `jawa/get_defs`" — it is non-public (LIVE_SESSION_2); defs.biome_roster reads the RESOLVED roster with `jawa/biome_probe`, whose `findResults` state is `spawning`, `zeroed` or `absent`.
 RULED OUT: "`fire_incident dryRun` canFireNow tells whether an incident will fire" — it read false for both leviathan incidents before they fired, unexplained (LIVE_SESSION_2). The muurrok and the eruption are fired for real and read as state; the gale and the dust devil use dryRun only for a toggle pair whose ON arm is its own control (UNMEASURED if the ON arm is false).
+RULED OUT (STILLSAND_MUURROK_EMERGENCE_1): "one census at +2600 shows whether the muurrok came" — it arrives at +1500 and may already have gone down (fed, or >600 ticks off sand on the gravel pad: DeSpawn + PassToWorld, invisible to list_pawns) before +2600.
 RULED OUT: "a corpse of a killed pawn lingers `corpseToSkeletonDays` of real time" — the setting is set to 1 day and the clock is jumped with `jawa/time_set_ticks`, then one Long tick of play lets the scan run (it runs at `ticksGame % 2000 == 37`).
 RULED OUT: "the Return ledger is part of the RM tier" — `RM_WaterLedger` is inert without a `RM_WaterLedgerDef`, which only a tier above ships; the Mod Settings panel shows no debt rows at the RM tier.
 RULED OUT: "`jawa/mod_settings_field` reaches only static fields" — it reads both; `RM_StillsandSettings` is an instance class found through the assembly-matched Mod handle. The lookup tries every Mod handle in the assembly, so `Mod.GetSettings<T>` can log a settings-type error for the other handles; log_clean ignores lines that name `GetSettings`.

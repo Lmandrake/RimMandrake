@@ -1925,26 +1925,102 @@ def gale_chain(t):
 
 # ----------------------------------------------------------------------------- chain: the muurrok
 
+# STILLSAND_MUURROK_EMERGENCE_1. The visit is a timeline, not a state: the letter at the fire, the muurrok up at
+# +warningTicks (1500), then it may go down again (DeSpawn + PassToWorld, so list_pawns stops seeing it) as soon as it
+# is fed, burning, bored, or has spent >hardGroundGiveUpTicks (600) off sand -- and this chain's colonist stands on a
+# GRAVEL pad. One census at +2600 could therefore read 0 for a muurrok that came and went (the 2026-10-07 GREEN-MIN
+# FAIL). The census is a watch: every MUURROK_POLL_TICKS for MUURROK_WINDOW_TICKS, with the leviathan map component's
+# pending-visit count beside it, so a 0 says WHICH end it came to (never arrived / turned back / came and went).
+MUURROK_WINDOW_TICKS = 3000   # item criterion A2: >=1 RM_Muurrok within 3000 ticks of the forced incident
+MUURROK_POLL_TICKS = 100      # the shortest real stay (arrive, kill on sand, dive) spans several 30-tick component beats
+
+
+def _muurrok_ids(t):
+    """Every RM_Muurrok list_pawns reports (spawned, or a corpse): a set of ids."""
+    return set(i for i, p in _rows(t).items() if p.get("kindDef") == "RM_Muurrok")
+
+
+def _leviathan_visits(t):
+    """Pending + on-map visits in RM_MapComponent_SandLeviathans (jawa/map_comp_read renders the list as
+    '[T, T, ...]' plus ' (N total)' past 12). UNMEASURED when the component or field cannot be read."""
+    r = t.bridge_call("jawa/map_comp_read", comp="RM_MapComponent_SandLeviathans", members="visits")
+    if not _live(t):
+        return 0
+    _ok(r, "map_comp_read RM_MapComponent_SandLeviathans")
+    txt = (r.get("values") or {}).get("visits")
+    if not isinstance(txt, str) or not txt.startswith("["):
+        _unmeasured(t, "RM_MapComponent_SandLeviathans.visits unreadable: %r" % (r,))
+    m = re.search(r"\((\d+) total\)", txt)
+    return int(m.group(1)) if m else txt.count("RM_LeviathanVisit")
+
+
+def _watch_muurrok(t, before):
+    """Step MUURROK_WINDOW_TICKS in MUURROK_POLL_TICKS chunks. Returns (new ids ever seen, trace) where trace is a
+    list of [ticks since start, new muurroks on the map now, visits] -- the A1 evidence line."""
+    seen, trace, done = set(), [], 0
+    while done < MUURROK_WINDOW_TICKS:
+        t.wait_ticks(MUURROK_POLL_TICKS)
+        done += MUURROK_POLL_TICKS
+        now = _muurrok_ids(t) - before
+        seen |= now
+        trace.append([done, len(now), _leviathan_visits(t)])
+    return seen, trace
+
+
+def _muurrok_verdict(trace, seen):
+    """What a watch says about the visit's end: the cause line for a 0 (MOD), or how the muurrok came and went."""
+    if seen:
+        on = [r[0] for r in trace if r[1]]
+        gone = [r[0] for r in trace if r[0] > on[-1]]
+        return "arrived +%d, last seen +%d%s" % (on[0], on[-1], ", gone by +%d (went down)" % gone[0] if gone else "")
+    if trace and trace[-1][2] > 0:
+        return "MOD: the visit is still pending +%d after the fire (warning is 1500): it never arrived" % trace[-1][0]
+    return "MOD: the visit ended with no muurrok ever on the map (turned back: no standable entry cell?)"
+
+
+def _trace_line(trace):
+    """The watch, compressed to the polls where something changed."""
+    out, last = [], None
+    for row in trace:
+        if row[1:] != last:
+            out.append(row)
+            last = row[1:]
+    return out
+
+
 @_chain("muurrok")
 def muurrok_chain(t):
     _prep(t, "muurrok", terrain="Gravel")
     x, z = t.anchor
+    with _comp(t, "muurrok_absent_unforced"):
+        if _live(t):
+            # The control arm (criterion A2): the same watch with the incident NOT forced must see no muurrok.
+            before, v0 = _muurrok_ids(t), _leviathan_visits(t)
+            seen, trace = _watch_muurrok(t, before)
+            _STATE.setdefault("spawned", []).extend(sorted(seen))
+            _note(t, "control: new muurroks / visits over the watch", [len(seen), v0, _trace_line(trace)])
+            if seen:
+                _fail("no incident was forced and %d RM_Muurrok appeared within %d ticks: %s"
+                      % (len(seen), MUURROK_WINDOW_TICKS, sorted(seen)))
+            if max([r[2] for r in trace] + [v0]) > 0:
+                _fail("no incident was forced and the leviathan component holds a visit: %s" % _trace_line(trace))
     with _comp(t, "muurrok_emergence_fires"):
         if _live(t):
             before = _letters(t)
-            n0 = len([p for p in _rows(t).values() if p.get("kindDef") == "RM_Muurrok"])
+            ids0 = _muurrok_ids(t)
             r = t.bridge_call("jawa/fire_incident", incidentDef="RM_MuurrokEmergence")
             _ok(r, "fire_incident RM_MuurrokEmergence")
-            t.wait_ticks(2600)
+            seen, trace = _watch_muurrok(t, ids0)
             new = _new_letters(before, _letters(t))
-            mu = [i for i, p in _rows(t).items() if p.get("kindDef") == "RM_Muurrok"]
-            n1 = len(mu)
-            _STATE.setdefault("spawned", []).extend(mu)
-            _note(t, "muurrok letters / pawns before-after", [[l[0] for l in new], n0, n1])
+            _STATE.setdefault("spawned", []).extend(sorted(seen))
+            verdict = _muurrok_verdict(trace, seen)
+            _note(t, "muurrok letters / new muurroks / verdict / watch [tick, on map, visits]",
+                  [[l[0] for l in new], len(seen), verdict, _trace_line(trace)])
             if not [l for l in new if "glare" in l[0].lower()]:
                 _fail("firing RM_MuurrokEmergence sent no 'A line of glare' letter: %s" % [l[0] for l in new])
-            if n1 <= n0:
-                _fail("no RM_Muurrok on the map 2600 ticks after the incident fired (warning is 1500)")
+            if not seen:
+                _fail("no RM_Muurrok on the map at any %d-tick poll within %d ticks of the incident: %s; watch %s"
+                      % (MUURROK_POLL_TICKS, MUURROK_WINDOW_TICKS, verdict, _trace_line(trace)))
 
     def cast_at(boss, targets):
         for tid in targets:

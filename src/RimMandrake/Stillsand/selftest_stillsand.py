@@ -70,6 +70,7 @@ class Fake(object):
         self.weather, self.locked = "Clear", False
         self.letters, self.log = [], []
         self.cond, self.sched = None, []
+        self.lev_visits, self.unforced_armed = [], False   # RM_MapComponent_SandLeviathans.visits
         self._rb = _RB(self)
         self.n_errors = 0
         self.regens = 0
@@ -431,14 +432,46 @@ class Fake(object):
             return {"success": bool(cf), "canFireNow": cf, "ticksGame": 134661}
         if incidentDef == "RM_MuurrokEmergence":
             self.letter("A line of glare")
-            if "no_muurrok" not in self.b:
-                self.sched.append((self.ticks + 1500, lambda: self.add_pawn("RM_Muurrok", 10, 10)))
+            self.fire_muurrok()
         elif incidentDef == "RM_SandBusterEruption":
             self.letter("Sand Buster Eruption")
             self.new("RM_SandBusterTunnel", 60, 60)
             if "no_mound" not in self.b:
                 self.sched.append((self.ticks + 1000, lambda: self.new("RM_SandBusterMound", 60, 60)))
         return {"success": True}
+
+    def fire_muurrok(self):
+        """The real visit's timeline (RM_SandLeviathan.cs): pending 1500 ticks, then up at the entry cell, then down
+        again 700 ticks later (gave up on the gravel pad: >600 off sand). A single census at +2600, the 2026-10-07
+        harness, reads 0 here: STILLSAND_MUURROK_EMERGENCE_1."""
+        visit = {}
+        self.lev_visits.append(visit)
+        if "muurrok_never_arrives" in self.b:
+            return
+
+        def arrive():
+            if "no_muurrok" in self.b:              # turned back: no standable entry cell
+                self.lev_visits.remove(visit)
+                return
+            pid = self.add_pawn("RM_Muurrok", 10, 10)
+
+            def dive():
+                self.pawns[pid]["gone"] = True      # DeSpawn + PassToWorld: list_pawns no longer sees it
+                if visit in self.lev_visits:
+                    self.lev_visits.remove(visit)
+            self.sched.append((self.ticks + 700, dive))
+        self.sched.append((self.ticks + 1500, arrive))
+
+    def t_map_comp_read(self, comp=None, members=None, **k):
+        if comp != "RM_MapComponent_SandLeviathans":
+            return {"success": False, "message": "No map component matches '%s'." % comp}
+        if "muurrok_spawns_unforced" in self.b and not self.unforced_armed:
+            self.unforced_armed = True              # a leviathan visit nobody forced (the control must see it)
+            self.fire_muurrok()
+        body = ", ".join(["RimMandrake.Stillsand.RM_LeviathanVisit"] * min(12, len(self.lev_visits)))
+        tail = " (%d total)" % len(self.lev_visits) if len(self.lev_visits) > 12 else ""
+        return {"success": True, "compType": comp, "values": {"visits": "[" + body + "]" + tail}, "missing": [],
+                "ticksGame": self.ticks}
 
     def t_storyteller_fire(self, incidentDef=None, dryRun=True, **k):
         hours = float(self.settings["horizonWarningHours"])
@@ -741,6 +774,8 @@ BREAKS = {
     "dunes_still": ["gale.gale_phases_and_aftermath"],
     "emergence_ignores_toggle": ["gale.gale_emergence_off_quiet"],
     "no_muurrok": ["muurrok.muurrok_emergence_fires"],
+    "muurrok_never_arrives": ["muurrok.muurrok_emergence_fires"],
+    "muurrok_spawns_unforced": ["muurrok.muurrok_absent_unforced"],
     "beam_no_damage": ["muurrok.beam_burns_target"],
     "beam_ignores_toggle": ["muurrok.beam_toggle_off_blocked"],
     "no_mound": ["eruption.eruption_tunnel_then_mound"],
