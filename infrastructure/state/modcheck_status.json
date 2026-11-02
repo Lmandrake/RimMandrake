@@ -1110,15 +1110,6 @@
     "status": "RED",
     "ts": 1791234245.706697
   },
-  "RiverColors": {
-    "hash": "489d3e265040eb1bb9a2fc0e5eed109290c447abf84808d9bfb4207139c978fd",
-    "minor": null,
-    "owner_review": null,
-    "refused": null,
-    "run_id": "RiverColors@1791400643",
-    "status": "GREEN",
-    "ts": 1791400643.797851
-  },
   "RustCathedral": {
     "hash": "ea16cc8bac8588db581da96a3c11f0ca285d81ddf4110b929f5ebf414903cbc7",
     "minor": null,
@@ -1209,15 +1200,6 @@
     "run_id": "ShipVermin@1791400097",
     "status": "RED",
     "ts": 1791400097.8801033
-  },
-  "ShokkweaveEconomy": {
-    "hash": "b6539703177f283afa01d3b6c137b0da7b88b9e18c30fdf36bd7b82406a23274",
-    "minor": null,
-    "owner_review": null,
-    "refused": null,
-    "run_id": "ShokkweaveEconomy@1791400650",
-    "status": "RED",
-    "ts": 1791400650.9045937
   },
   "SleepingIce": {
     "hash": "df15a1207e87912c3f56b076e3a4b65cd60b5db2439642dad591e577cbcff482",
@@ -1568,11 +1550,16 @@
     "status": "RED",
     "ts": 1791400536.899224
   },
-  "Wasteland": {
+  "Wastes": {
     "hash": "cd15e79375fcd68436aebf2a460d71e25412efc27253d5cd76c655e8bee280e7",
     "minor": null,
     "owner_review": null,
     "refused": null,
+    "renamed_from": {
+      "old": "Wasteland",
+      "ts": 1793634916.707221,
+      "why": "NORTHSTAR_SITUATIONAL_ROLLOUT_1: mod renamed Wasteland->Wastes in 33596c33a9; the dead key crashed every situational_rerun load"
+    },
     "run_id": "Wasteland@1791481129",
     "status": "RED",
     "ts": 1791481130.3564463
