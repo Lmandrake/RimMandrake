@@ -114,6 +114,32 @@ def synthetic():
     check(status == "UNMEASURED", "an empty tree is UNMEASURED, never clean", status)
 
 
+def donor_drift():
+    """The rows are tied to the donor's own install, not only to the JSON's own donor_counts."""
+    t, dec, inv = fake()
+    donor = os.path.join(t, "donor")
+
+    def lay(defs_xml):
+        write(donor, "1.6/Defs/Fake.xml", "<Defs>%s</Defs>" % defs_xml)
+        return C.verify(dec, inv, C.tracked(t), t, donor_root=donor)
+
+    status, finds, notes = lay("<TerrainDef><defName>AB_Soil</defName></TerrainDef>")
+    check(status == "CLEAN" and not any("UNMEASURED" in n for n in notes),
+          "a donor install that matches the rows is read and passes", (status, finds, notes))
+
+    finds = lay("<TerrainDef><defName>AB_Soil</defName></TerrainDef>"
+                "<WeatherDef><defName>AB_Filler00</defName></WeatherDef>")[1]
+    check("DONOR_DRIFT WeatherDef AB_Filler00" in finds,
+          "mutant: a donor WeatherDef the rows omit is refused, though donor_counts agree with the rows", finds)
+
+    finds = lay("<WeatherDef><defName>AB_Soil</defName></WeatherDef>")[1]
+    check("DONOR_DRIFT TerrainDef AB_Soil" in finds and "DONOR_DRIFT WeatherDef AB_Soil" in finds,
+          "mutant: a row filed under the wrong donor def type is refused", finds)
+
+    finds = lay("")[1]
+    check("DONOR_DRIFT TerrainDef AB_Soil" in finds, "mutant: a row the donor does not define is refused", finds)
+
+
 def real():
     dec, inv = C.load(C.DECISIONS), C.load(C.INVENTORY)
     status, finds, notes = C.verify(dec, inv, C.tracked(C.REPO), C.REPO)
@@ -124,6 +150,7 @@ def real():
 
 def main():
     synthetic()
+    donor_drift()
     real()
     print("RESULT:", "FAIL %d" % len(FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0
