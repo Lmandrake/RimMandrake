@@ -113,8 +113,16 @@ _NOT_PLAIN = re.compile(r"<[A-Za-z/!?]|&#?[A-Za-z0-9]+;|\]\(|\]\[|^\s*\[[^\]]*\]
 
 
 def not_plain(line):
-    """NOT_PLAIN on the line as written and as rendered: fullwidth brackets fold to `[` only after NFKC."""
-    return _NOT_PLAIN.search(line) or _NOT_PLAIN.search(visible(line))
+    """NOT_PLAIN on the line as written and as rendered (fullwidth brackets fold to `[` only after NFKC), plus the
+    allow-list that ends the hunt for spellings: rendered, every bracket pair is balanced, never nested, and holds only
+    ASCII letters, digits, spaces and `:-`. So a reader can only see `[core]` where `visible()` holds `[core]` too."""
+    if _NOT_PLAIN.search(line) or _NOT_PLAIN.search(visible(line)):
+        return True
+    v = visible(line)
+    if v.count("[") != v.count("]"):
+        return True
+    groups = re.findall(r"\[([^\[\]]*)\]", v)
+    return len(groups) != v.count("[") or any(not re.fullmatch(r"[A-Za-z0-9 :-]*", g) for g in groups)
 UNREAD = "\0unread headings"      # parse_sheet's own key, never a heading name
 SECTIONS = ("his words", "does", "does not", "waived", "open", "delegated", "pruning")
 OPTIONAL_SECTIONS = ("later",)      # "Not now": v2, not in the tree. A dry walk adds `root` (its stand-in north star)

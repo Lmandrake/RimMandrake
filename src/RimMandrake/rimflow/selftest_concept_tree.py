@@ -421,6 +421,9 @@ def main():
                  "- \uff3b[co][tag]re\uff3d do goats tire?\n\n[tag]: https://example.test", "not plain bullets"),
                 ("a reference link definition alone", "- a plain open line does not block",
                  "- a plain open line does not block\n[tag]: https://example.test", "not plain bullets"),
+                ("an unbalanced bracket", "- a plain open line does not block", "- a plain ] open line", "not plain bullets"),
+                ("markup characters inside a bracket", "- a plain open line does not block", "- [co!re] do goats tire?",
+                 "not plain bullets"),
                 ("a tilde fence is refused too", "## delegated\n", "~~~\n## delegated\n", "not plain bullets"),
                 ("unknown section", "## delegated\n", "## unanswered\n- [core] do goats tire?\n## delegated\n",
                  "no section of the sheet"),
@@ -443,6 +446,11 @@ def main():
         with open(sp, "w", encoding="utf-8") as f:
             f.write(SHEET.replace("- goat_digs:", "* goat_digs:"))
         check("sheet: a star bullet answers pruning too", CT.lint(d, repo)[0] == [], CT.lint(d, repo)[0])
+        with open(sp, "w", encoding="utf-8") as f:
+            f.write(SHEET + "\n## later\n- goats that swim, v2\n")
+        with open(sp, "w", encoding="utf-8") as f:
+            f.write(SHEET.replace("- the name of the order", "- the name of the order; theft is [advisory], not a leaf"))
+        check("sheet: a plain bracket word in prose is fine (sanity)", CT.lint(d, repo)[0] == [], CT.lint(d, repo)[0])
         with open(sp, "w", encoding="utf-8") as f:
             f.write(SHEET + "\n## later\n- goats that swim, v2\n")
         check("sheet: `## later` is a section (sanity)", CT.lint(d, repo)[0] == [], CT.lint(d, repo)[0])
