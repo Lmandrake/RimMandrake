@@ -108,8 +108,8 @@ def sheet_errors(sheet, tree, floor=None):
             errs.append("sheet: no `## %s` section" % s)
     if not sheet.get("his words"):
         errs.append("sheet: `his words` is empty")
-    leaves = {x.get("id"): x for x in (tree.get("leaves") if isinstance(tree.get("leaves"), list) else []) if isinstance(x, dict)}
-    waived = {w.get("id") for w in (tree.get("waived") if isinstance(tree.get("waived"), list) else []) if isinstance(w, dict)}
+    leaves = {x.get("id"): x for x in (tree.get("leaves") if isinstance(tree.get("leaves"), list) else []) if isinstance(x, dict) and isinstance(x.get("id"), str)}
+    waived = {w.get("id") for w in (tree.get("waived") if isinstance(tree.get("waived"), list) else []) if isinstance(w, dict) and isinstance(w.get("id"), str)}
     floor_ids = {ln["id"] for ln in (floor or load_floor()[0])["lines"]}
     named = set()
     for sec, allowed in (("does", ("leaf", "floor", "waived", "advisory")), ("does not", ("leaf", "floor", "waived"))):
@@ -206,7 +206,7 @@ def leaf_errors(x, kind, tiers, root_ids):
             e("a tooling leaf's root is [\"tool\"]")
     else:
         for r in roots:
-            if r not in root_ids:
+            if not isinstance(r, str) or r not in root_ids:
                 e("root id %s is not in the north star" % r)
     words = " ".join(str(x.get(k) or "") for k in ("experience", "scenario"))
     if not str(x.get("cannot_show") or "").strip() and re.search(r"\b(worldgen|world generation|world gen)\b", words, re.I):
@@ -247,7 +247,7 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     by_id = {ln["id"]: ln for ln in floor["lines"]}
     dry = tree.get("dry_walk") is True
     for o in fl.get("off") or []:
-        ln = by_id.get(o.get("line"))
+        ln = by_id.get(o.get("line")) if isinstance(o.get("line"), str) else None
         if ln is None:
             errs.append("floor.off: no line %r" % o.get("line"))
         elif not ln["waivable"]:
@@ -257,6 +257,8 @@ def shape_errors(tree, root_ids, floor, floor_hash):
     ex = tree.get("exam_waived")
     if ex is not None and not (isinstance(ex, dict) and str(ex.get("words") or "").strip() and ex.get("ref")):
         errs.append("exam_waived needs his words and a ref")
+    if not all(isinstance(w.get("id"), str) for w in tree.get("waived") or []):
+        return errs + ["a waiver id is text"]
     seen_w = set()
     for w in tree.get("waived") or []:
         if not all(str(w.get(k) or "").strip() for k in ("id", "scope", "date", "ref")):
@@ -278,6 +280,8 @@ def shape_errors(tree, root_ids, floor, floor_hash):
         return errs + ["no leaves"]
     if not all(isinstance(x, dict) for x in leaves):
         return errs + ["a leaf is not an object"]
+    if not all(isinstance(x.get("id"), str) for x in leaves):
+        return errs + ["a leaf id is text"]
     ids = [x.get("id") for x in leaves]
     for d in sorted({i for i in ids if ids.count(i) > 1}, key=str):
         errs.append("leaf id twice: %s" % d)
@@ -380,7 +384,7 @@ def owner_events(repo):
                     ev = json.loads(line)
                 except ValueError:
                     continue
-                if ev.get("tsn"):
+                if isinstance(ev, dict) and ev.get("tsn"):
                     out[str(ev["tsn"])] = ev
     except OSError:
         pass
@@ -432,7 +436,7 @@ def gate(d, repo=REPO, floor_file=None):
             errs.append("root is not VALIDATED: %s" % (why or state))
         elif tree.get("root_hash") != cur or tree.get("root_state") != "VALIDATED":
             errs.append("tree cites a root hash that is not the walk's")
-    cov = tree.get("coverage") or {}
+    cov = tree.get("coverage") if isinstance(tree.get("coverage"), dict) else {}
     if cov.get("signed_by") != "Arbiter":
         errs.append("no Arbiter coverage signature")
     elif cov.get("tree_hash") != tree_hash(tree):
@@ -450,7 +454,7 @@ def gate(d, repo=REPO, floor_file=None):
         if why:
             errs.append("floor.off %s: %s" % (o.get("line"), why))
     ex = tree.get("exam_waived")
-    if ex:
+    if isinstance(ex, dict) and ex:
         why = his_words_problem(ev, ex.get("ref"), ex.get("words"))
         if why:
             errs.append("exam_waived: %s" % why)
@@ -466,7 +470,7 @@ def item_file_text(repo, item):
         return ""
 
 
-TREE_CITE = re.compile(r"design/concepts/[A-Za-z0-9_./-]+/tree\.json", re.I)
+TREE_CITE = re.compile(r"design/concepts/[A-Za-z0-9_./-]+/tree\.json(?![A-Za-z0-9_./-])", re.I)
 
 
 def relentless_refusal(repo, item, kind, text):

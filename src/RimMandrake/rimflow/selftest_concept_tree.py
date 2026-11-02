@@ -275,6 +275,10 @@ def main():
             ("floor is not an object", lambda t: t.update(floor="invalid"), "floor is not an object"),
             ("waived holds a non-object", lambda t: t.update(waived=["x"]), "waived is a list"),
             ("blank red", on_leaf(0, red=" "), "red missing"),
+            ("leaf id is a list", on_leaf(0, id=[]), "id is text"),
+            ("root holds a list", on_leaf(0, root=[[]]), "not in the north star"),
+            ("floor.off line is a list", lambda t: t["floor"]["off"].append(dict(line=[], words="w", ref="r")), "no line"),
+            ("waiver id is a list", lambda t: t["waived"][0].update(id=[]), "waiver id is text"),
             ("leaves is not a list", lambda t: t.update(leaves=1), "no leaves"),
             ("a repeater is no repeat", on_leaf(4, scenario="reload the save, inspect the repeater, use the reverse order"), "lacks the repeat"),
             ("no walk leaf", drop_walk, "exactly one walk"),
@@ -317,6 +321,16 @@ def main():
             except Exception as ex:
                 got = "raised %r" % ex
             check("sign: tree.json %s is refused, not raised" % junk, isinstance(got, list) and got != [], got)
+        for nm, k, v in (("coverage", "coverage", "x"), ("exam_waived", "exam_waived", "x")):
+            t = copy.deepcopy(base)
+            t[k] = v
+            write_raw(d, t)
+            try:
+                got = CT.gate(d, repo)[0]
+            except Exception as ex:
+                got = "raised %r" % ex
+            check("gate: %s=x is refused, not raised" % nm, isinstance(got, list) and got != [], got)
+        check("TREE_CITE stops at the file name", CT.TREE_CITE.findall("see design/concepts/Foo/tree.json.bak") == [])
         write_raw(d, base)
 
         # the sheet's half
