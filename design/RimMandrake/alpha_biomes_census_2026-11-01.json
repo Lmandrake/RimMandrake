@@ -1366,7 +1366,6 @@
   "AB_FineForsakenSands": "texture_or_record",
   "AB_FineForsakenSands_Polluted": "texture_or_record",
   "AB_FirevineTree": "donor_def",
-  "AB_FirevineTree_Leafless": "texture_or_record",
   "AB_ForsakenSands": "texture_or_record",
   "AB_ForsakenSands_Polluted": "texture_or_record",
   "AB_FrostLeaf": "donor_def",
