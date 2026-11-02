@@ -19,6 +19,11 @@ Built today (mod_completion 2026-11-01): 31 inventory entries, 14 work at L2+, 4
 - 2026-10-23: "the electrical plug is shown going into a pipe slot. Weird. It should favor diagonal approaches sliding underneath, to avoid confusion."
 - 2026-10-26: "find out if gimme some slack also has the same problemmatic delay with large numbers of wires and connectors."
 - 2026-11-02: "Yes, I want both poles and floor coords. No, I would not reject it, but there's no reason not to do this. It's just art and that's easy. No, I don't much care about savegame continuity, though I'd be very surprised if we needed to store things in the savegame that acted that way. Those were very strange questions given we already have these capabilities."
+- 2026-11-02: "The power strips (modern style art) or connectors (other art styles) should appear whenever there are three or four way junctions of conduit. They should appear to host many of the other lines plugging into the power strips and connectors, as the means to join the many cables."
+- 2026-11-02: "Cables should look messy and only loosely follow the conduit in the floor. It should not repeat patterns but appear like real messy cables strewn across the floor."
+- 2026-11-02: "The experience should be to make the space filled with realistically sprawling, over length extension cables just like happens in real life. Cables should pile against the wall, resist tight turns, and tend toward gently curving tangles and coils."
+- 2026-11-02: "The point is to make the game look more realistic and support the experience of scavengers, sloppy junkers, and trailer trash."
+- 2026-11-02: "The four kinds of art are intended to support different game styles. One for junkyard kludge vibe, one for deep industrial // Star Wars, one for modern day obnoxious multi colored extension cables and normal power strips, and futuristic cyberpunk style"
 
 ## does
 - [leaf:conduit_invisible] An observer sees no vanilla conduit pipe. Only cords show where power goes

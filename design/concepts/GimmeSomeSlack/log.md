@@ -170,3 +170,14 @@ Not asked, decided by the floor or his words:
 Round 1 recorded (ledger OWNER tsn 1793590546413059482). Inventory written. Round 2 prepared. Sheet redrawn.
 No tree yet: `cords_tell_truth` is an open core line, and an open core line stops the tree before it exists.
 Next sitting: record round-2 answers, then Stage 3, the tree draft and `lint`.
+
+### Sitting 2, round 2 — his answer to the S1-S6 scene cards (2026-11-02)
+He answered with guidance rather than yes/no; his words are in sheet.md `his words`. For the Designer to merge:
+- New leaf candidate: a power strip (modern) or connector (other styles) at EVERY 3- or 4-way conduit junction, with
+  the other cords visibly plugging into it. Today's `tangle` leaf only says "a heap of wires and power strips".
+- New invariant candidate: no repeating pattern; cords only loosely follow the floor conduit; resist tight turns;
+  gentle curves, tangles and coils (extends `cords_slack`).
+- The four styles now have stated purposes (junkyard kludge, deep industrial/Star Wars, modern multi-coloured
+  extension cords + power strips, futuristic cyberpunk). Style stays advisory per his earlier answer, but each style's
+  art is judged against its purpose.
+Still unanswered: the "never draw a connection that isn't there" invariant (cords_tell_truth) and gravship look.
