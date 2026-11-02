@@ -3,7 +3,8 @@
 // breaches, meandering lines and the distance/arc maths, the band-with-a-gap a ridge or canyon is drawn from, disc
 // placement for cenotes/sinkholes/spires, and the tide. Two raster checks prove what a player would feel: a ridge with a
 // gap leaves the map walkable end to end and one without does not; a crater with breaches can be walked into and one
-// without cannot. Each of those carries a planted negative, so the instrument is shown able to see a failure.
+// without cannot; a lone mountain (LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT) keeps every map edge open and most of the map
+// walkable plain, swept over sizes, radii, offsets and seeds. Each of those carries a planted negative, so the instrument is shown able to see a failure.
 // NOT covered: anything needing a Map (the workers turning these answers into elevation and terrain) - that is L3, live.
 
 using System;
@@ -44,6 +45,122 @@ namespace RimMandrake.TileFeatures.SelfTest
                 }
             }
             return false;
+        }
+
+        // Rasterise a lone mountain as RM_TileMutatorWorker_LoneMountain does (same centre offset, wobble, fit and margin),
+        // with a smooth stand-in for Perlin noise; rock[x,z] where elevation > RockElevation. fit=false skips the fit (the
+        // planted negative).
+        private static bool[,] LoneRaster(int w, int h, float radiusFrac, int offX, int offZ, int seed, bool fit, int margin,
+            out int cx, out int cz)
+        {
+            Random rng = new Random(seed);
+            int size = Math.Min(w, h);
+            cx = w / 2 + offX; cz = h / 2 + offZ;
+            float[] amps = new float[3], ph = new float[3];
+            for (int k = 0; k < 3; k++) { amps[k] = 0.04f; ph[k] = (float)(rng.NextDouble() * RM_LandformGeometry.TwoPi); }
+            float baseR = size * radiusFrac;
+            int room = Math.Min(Math.Min(cx, w - 1 - cx), Math.Min(cz, h - 1 - cz)) - margin;
+            if (fit) baseR = RM_LandformGeometry.LoneMountainFit(baseR, amps, room);
+            double a = rng.NextDouble() * 6, b = rng.NextDouble() * 6;
+            bool[,] rock = new bool[w, h];
+            for (int x = 0; x < w; x++)
+                for (int z = 0; z < h; z++)
+                {
+                    float dx = x - cx, dz = z - cz;
+                    float r = RM_LandformGeometry.WobbledRadius(baseR, (float)Math.Atan2(dz, dx), amps, ph);
+                    float n = (float)(Math.Sin(x * 0.13 + a) * Math.Cos(z * 0.11 + b));
+                    rock[x, z] = RM_LandformGeometry.LoneMountainElevation((float)Math.Sqrt(dx * dx + dz * dz), r, n)
+                                 > RM_LandformGeometry.RockElevation;
+                }
+            return rock;
+        }
+
+        private static void LoneMountain()
+        {
+            // --- the profile: rock inside t = 0.75 and none beyond t = 1.25 for any noise; bounded; flat plain far out
+            bool core = true, plain = true, bounded = true;
+            for (float t = 0f; t <= 3f; t += 0.01f)
+                for (float n = -1.5f; n <= 1.5f; n += 0.05f)
+                {
+                    float e = RM_LandformGeometry.LoneMountainElevation(t * 50f, 50f, n);
+                    if (e < 0f || e > 1f) bounded = false;
+                    if (t < 0.749f && e <= RM_LandformGeometry.RockElevation) core = false;
+                    if (t > 1.251f && e > RM_LandformGeometry.RockElevation) plain = false;
+                }
+            Check("lone mountain: rock everywhere inside 0.75 radius, whatever the noise", core);
+            Check("lone mountain: never rock beyond 1.25 radius, whatever the noise", plain);
+            Check("lone mountain: elevation stays in [0, 1] (noise clamped)", bounded);
+            Check("lone mountain: the far plain is at elevation 0 (no other high ground)",
+                Near(RM_LandformGeometry.LoneMountainElevation(150f, 50f, 1f), 0f));
+            Check("lone mountain: radius 0 makes no mountain", Near(RM_LandformGeometry.LoneMountainElevation(0f, 0f, 1f), 0f));
+            float[] am = { 0.04f, 0.04f, 0.04f };
+            Check("lone mountain: reach = baseR * (1 + sum|amp|) * 1.25", Near(RM_LandformGeometry.LoneMountainReach(40f, am), 40f * 1.12f * 1.25f));
+            Check("lone mountain: fit leaves a mountain that already fits unchanged", Near(RM_LandformGeometry.LoneMountainFit(40f, am, 60), 40f));
+            Check("lone mountain: fit shrinks a mountain to its room", Near(RM_LandformGeometry.LoneMountainReach(RM_LandformGeometry.LoneMountainFit(40f, am, 30), am), 30f));
+
+            // --- raster sweep over map sizes, radius range, the worker's extreme centre offsets and 20 seeds: the centre is
+            // rock, no rock within the margin of any edge, the mountain is a real mass, and most of the map is open plain
+            // reachable from the edge (landing room, and raiders can walk in)
+            const int margin = 6;
+            bool centreRock = true, edgesOpen = true, mass = true, roomy = true;
+            int maps = 0; double minRock = 1, maxRock = 0;
+            foreach (int size in new[] { 200, 250, 325 })
+                foreach (float rf in new[] { 0.18f, 0.22f, 0.26f })
+                    foreach (int o in new[] { -size / 10, 0, size / 10 })
+                        for (int seed = 0; seed < 20; seed++)
+                        {
+                            bool[,] rock = LoneRaster(size, size, rf, o, -o, seed, true, margin, out int cx, out int cz);
+                            maps++;
+                            if (!rock[cx, cz]) centreRock = false;
+                            int nRock = 0;
+                            bool[,] open = new bool[size, size];
+                            for (int x = 0; x < size; x++)
+                                for (int z = 0; z < size; z++)
+                                {
+                                    open[x, z] = !rock[x, z];
+                                    if (rock[x, z]) nRock++;
+                                    bool nearEdge = x < margin || z < margin || x >= size - margin || z >= size - margin;
+                                    if (nearEdge && rock[x, z]) edgesOpen = false;
+                                }
+                            double frac = (double)nRock / (size * size);
+                            minRock = Math.Min(minRock, frac); maxRock = Math.Max(maxRock, frac);
+                            if (frac < 0.03) mass = false;
+                            int reach = 0;
+                            bool[,] seen = new bool[size, size];
+                            Queue<int> q = new Queue<int>();
+                            q.Enqueue(0); seen[0, 0] = true;
+                            int[] ddx = { 1, -1, 0, 0 }, ddz = { 0, 0, 1, -1 };
+                            while (q.Count > 0)
+                            {
+                                int v = q.Dequeue(), x = v / size, z = v % size; reach++;
+                                for (int k = 0; k < 4; k++)
+                                {
+                                    int nx = x + ddx[k], nz = z + ddz[k];
+                                    if (nx < 0 || nz < 0 || nx >= size || nz >= size || seen[nx, nz] || !open[nx, nz]) continue;
+                                    seen[nx, nz] = true; q.Enqueue(nx * size + nz);
+                                }
+                            }
+                            if ((double)reach / (size * size) < 0.5) roomy = false;
+                        }
+            Check("lone mountain sweep (" + maps + " maps): the centre is always rock", centreRock);
+            Check("lone mountain sweep: no rock within " + margin + " cells of any edge", edgesOpen);
+            Check("lone mountain sweep: the mountain is a real mass (>= 3% of the map; seen "
+                  + minRock.ToString("0.000") + ".." + maxRock.ToString("0.000") + ")", mass);
+            Check("lone mountain sweep: at least half the map is open plain reachable from the corner", roomy);
+
+            // --- planted negative: the same oversized mountain without the fit reaches an edge, and the check sees it
+            bool[,] bad = LoneRaster(200, 200, 0.45f, 20, 20, 1, false, margin, out _, out _);
+            bool badEdge = false;
+            for (int i = 0; i < 200; i++)
+                for (int j = 200 - margin; j < 200; j++)
+                    if (bad[j, i] || bad[i, j]) badEdge = true;
+            Check("lone mountain planted negative: an unfitted oversized mountain reaches the edge margin (instrument sees it)", badEdge);
+            bool[,] good = LoneRaster(200, 200, 0.45f, 20, 20, 1, true, margin, out _, out _);
+            bool goodEdge = false;
+            for (int i = 0; i < 200; i++)
+                for (int j = 200 - margin; j < 200; j++)
+                    if (good[j, i] || good[i, j]) goodEdge = true;
+            Check("lone mountain: the same oversized mountain, fitted, keeps the edge margin clear", !goodEdge);
         }
 
         private static int Main()
@@ -187,6 +304,8 @@ namespace RimMandrake.TileFeatures.SelfTest
                     if (RM_LandformGeometry.TideFloods(d, 12, lv) && !RM_LandformGeometry.TideFloods(d, 12, lv + 0.05f)) mono = false;
             Check("tide: a rising level never un-floods a cell", mono);
             Check("tide: reach 0 (switched off) floods nothing", !RM_LandformGeometry.TideFloods(1, 0, 1f));
+
+            LoneMountain();
 
             Console.WriteLine();
             Console.WriteLine("landform geometry: " + pass + " passed, " + fail + " failed");

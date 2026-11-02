@@ -31,6 +31,7 @@ namespace RimMandrake.TileFeatures
             "RM_MeteorCrater", "RM_RockRidge", "RM_PebbleDunes", "RM_QuicksandDunes", "RM_DeepSnow", "RM_FleshPits",
             "RM_RelictDelta", "RM_RedDesert", "RM_ContaminatedRiver", "RM_AlluvialFan", "RM_StoneForest",
             "RM_ContaminatedReservoir", "RM_LoneIsland", "RM_SulfuricRiver", "RM_Volcano", "RM_ResurgentCaldera", "RM_ToxicCrater",
+            "RM_LoneMountain", // LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT: a Geological Landforms shape, not a VEE port
         };
 
         private const string VefExtension = "VEF.Maps.TileMutatorExtension";

@@ -154,6 +154,44 @@ namespace RimMandrake.TileFeatures
             return placed;
         }
 
+        // LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT: the lone mountain, the first Geological Landforms shape rebuilt as our
+        // own mutator. Vanilla lays rock where elevation exceeds RockElevation; the mountain's elevation falls linearly from
+        // LonePeak at its centre by LoneSlope per radius, and noise in [-1, 1] moves it by at most LoneNoise. So, whatever
+        // the noise: rock inside t = (LonePeak - RockElevation - LoneNoise) / LoneSlope = 0.75, never rock beyond
+        // (LonePeak - RockElevation + LoneNoise) / LoneSlope = 1.25, and the plain beyond falls to 0 (no other rock).
+        public const float RockElevation = 0.7f;
+        public const float LonePeak = 1.3f;
+        public const float LoneSlope = 0.6f;
+        public const float LoneNoise = 0.15f;
+
+        /// <summary>Lone mountain elevation at <paramref name="dist"/> from the centre of a mountain of (wobbled) radius
+        /// <paramref name="radius"/>, with <paramref name="noise"/> clamped to [-1, 1]; result in [0, 1].</summary>
+        public static float LoneMountainElevation(float dist, float radius, float noise)
+        {
+            if (radius <= 0f) return 0f;
+            float n = Math.Max(-1f, Math.Min(1f, noise));
+            float e = LonePeak - LoneSlope * (dist / radius) + LoneNoise * n;
+            return Math.Max(0f, Math.Min(1f, e));
+        }
+
+        /// <summary>The farthest any rock of a lone mountain can reach from its centre: the outer bound of the wobble
+        /// (baseR * (1 + sum|amp|)) times the no-rock threshold 1.25.</summary>
+        public static float LoneMountainReach(float baseR, float[] amps)
+        {
+            float s = 0f;
+            if (amps != null) foreach (float a in amps) s += Math.Abs(a);
+            return baseR * (1f + s) * (LonePeak - RockElevation + LoneNoise) / LoneSlope;
+        }
+
+        /// <summary>The lone mountain's base radius after fitting: unchanged if its reach stays within <paramref name="room"/>
+        /// cells (the centre's distance to the nearest edge, less the margin), else shrunk so the reach equals room.</summary>
+        public static float LoneMountainFit(float baseR, float[] amps, int room)
+        {
+            float reach = LoneMountainReach(baseR, amps);
+            if (reach <= room || reach <= 0f) return baseR;
+            return baseR * Math.Max(0, room) / reach;
+        }
+
         /// <summary>Tide height 0..1 over one period: 0 at low tide (tick 0), 1 at high tide (half a period).</summary>
         public static float TideLevel(long ticks, int periodTicks)
         {

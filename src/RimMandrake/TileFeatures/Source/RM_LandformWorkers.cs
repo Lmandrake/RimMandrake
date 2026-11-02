@@ -341,6 +341,48 @@ namespace RimMandrake.TileFeatures
         }
     }
 
+    /// <summary>LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT: one rock mountain rising from an open plain near the map's
+    /// centre (Geological Landforms' "lone mountain", rebuilt from its shape, no GL code). The whole map's elevation is
+    /// replaced, so no other rock stands on the map; the mountain is shrunk if its farthest possible rock would come within
+    /// EdgeMargin cells of a map edge, so every edge stays walkable.</summary>
+    public class RM_TileMutatorWorker_LoneMountain : TileMutatorWorker
+    {
+        public const int EdgeMargin = 6;
+        private IntVec3 center;
+        private float radius;
+        private float[] amps, phases;
+        private Verse.Noise.Perlin noise;
+
+        public RM_TileMutatorWorker_LoneMountain(TileMutatorDef def) : base(def)
+        {
+        }
+
+        public override void Init(Map map)
+        {
+            RM_LandformExtension ext = RM_LandformExtension.Of(def) ?? new RM_LandformExtension();
+            int size = Math.Min(map.Size.x, map.Size.z);
+            center = new IntVec3(map.Center.x + Rand.RangeInclusive(-size / 10, size / 10), 0, map.Center.z + Rand.RangeInclusive(-size / 10, size / 10));
+            amps = RM_LandformUtil.Harmonics(3, 0.12f);
+            phases = RM_LandformUtil.Phases(3);
+            radius = size * ext.radiusFraction.RandomInRange;
+            int room = Math.Min(Math.Min(center.x, map.Size.x - 1 - center.x), Math.Min(center.z, map.Size.z - 1 - center.z)) - EdgeMargin;
+            radius = RM_LandformGeometry.LoneMountainFit(radius, amps, room);
+            noise = new Verse.Noise.Perlin(0.021, 2.0, 0.5, 6, Rand.Range(0, int.MaxValue), Verse.Noise.QualityMode.Medium);
+        }
+
+        public override void GeneratePostElevationFertility(Map map)
+        {
+            MapGenFloatGrid elevation = MapGenerator.Elevation;
+            foreach (IntVec3 c in map.AllCells)
+            {
+                float dx = c.x - center.x, dz = c.z - center.z;
+                float r = RM_LandformGeometry.WobbledRadius(radius, (float)Math.Atan2(dz, dx), amps, phases);
+                elevation[c] = RM_LandformGeometry.LoneMountainElevation((float)Math.Sqrt(dx * dx + dz * dz), r,
+                    (float)noise.GetValue(c.x, 0.0, c.z));
+            }
+        }
+    }
+
     /// <summary>Line landforms (rock ridge, jagged rocks, serpentine canyons): meandering bands across the map that raise
     /// rock or carve it out, each optionally with a gap left open.</summary>
     public class RM_TileMutatorWorker_Lines : TileMutatorWorker

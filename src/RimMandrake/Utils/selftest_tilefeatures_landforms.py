@@ -15,7 +15,8 @@ Proves, offline:
   5. every def a landform def names (terrain, thing, gen step, condition) is defined by TileFeatures, by FlowWorks (the mod
      declares it as a dependency), or by the base game/DLC (checked against the game's Data folder when it is readable);
   6. a river/delta port falls back to vanilla's river and a coast port to vanilla's coast when switched off;
-  7. the Mod Settings applier's Landforms list is exactly the 29 TileFeatures ports;
+  7. the Mod Settings applier's Landforms list is exactly the 29 TileFeatures ports plus GL_SHAPES (Geological
+     Landforms shapes rebuilt as our own, LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT), each checked like a port in 3-5;
   8. no TileFeatures def names a VEE_ def (XML comments are provenance and category strings are not defs: skipped);
   9. the instrument can see: planted defects (a port removed, a VEE_ name, a typo'd extension field, an unknown worker
      class, an undefined terrain) are each caught by the same checks.
@@ -53,6 +54,9 @@ VEE_CATEGORIES = {
 VANILLA_WORKERS = {"TileMutatorWorker_Coast", "TileMutatorWorker_CoastalIsland", "TileMutatorWorker_LavaCrater",
                    "TileMutatorWorker_Patches", "TileMutatorWorker_River"}
 REUSED = {"QuicksandPits": ("RM_QuicksandPits", ENVHAZ)}
+# Geological Landforms shapes rebuilt as our own mutators (design/RimMandrake/geological_landforms_judgment_2026-11-02.md):
+# under the same Landforms switch, not VEE ports, so not in the plan's L rows.
+GL_SHAPES = {"RM_LoneMountain"}
 REF_TAGS = {"deepTerrain", "shallowTerrain", "shoreTerrain", "outerTerrain", "floorTerrain", "lipTerrain", "bankTerrain",
             "thingTerrain", "thingToSpawn", "from", "to", "terrain", "overrideRiverbankTerrain",
             "overrideCoastalBeachTerrain", "overrideLakeBeachTerrain"}
@@ -191,7 +195,7 @@ def check(rows, tf_defs, other_defs, classes, compiled, fields, applier, game_na
         if any(r.startswith("RM_") and ("TerrainDef", r) in other_defs and ("TerrainDef", r) not in tf_defs for r in refs) \
                 and "mandrake.rm.flowworks" not in about_text:
             fails.append("%s: names a FlowWorks terrain but About.xml does not depend on mandrake.rm.flowworks" % dn)
-    ports = {"RM_" + s for s, _ in rows if s not in REUSED}
+    ports = {"RM_" + s for s, _ in rows if s not in REUSED} | GL_SHAPES
     if applier != ports:
         fails.append("applier Landforms list differs from the ports: missing %s, extra %s"
                      % (sorted(ports - applier), sorted(applier - ports)))

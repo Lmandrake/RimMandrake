@@ -167,6 +167,20 @@
     <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><radiusFraction>0.24~0.32</radiusFraction><rimWidth>0.18</rimWidth><rimBreaches>2</rimBreaches><floorTerrain>RM_ImpactRegolith</floorTerrain></li></modExtensions>
   </TileMutatorDef>
 
+  <!-- LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT: Geological Landforms' lone mountain, rebuilt as our own mutator
+       (design/RimMandrake/geological_landforms_judgment_2026-11-02.md). Painted per tile, never rolled. -->
+  <TileMutatorDef>
+    <defName>RM_LoneMountain</defName>
+    <label>lone mountain</label>
+    <description>A single mountain rises from an open plain, with no other high ground in sight.</description>
+    <chanceOnNonLandmarkTile>0</chanceOnNonLandmarkTile>
+    <categories><li>Mountain</li></categories>
+    <genOrder>-200</genOrder>
+    <priority>5</priority>
+    <workerClass>RimMandrake.TileFeatures.RM_TileMutatorWorker_LoneMountain</workerClass>
+    <modExtensions><li Class="RimMandrake.TileFeatures.RM_LandformExtension"><radiusFraction>0.18~0.26</radiusFraction></li></modExtensions>
+  </TileMutatorDef>
+
   <TileMutatorDef>
     <defName>RM_RockRidge</defName>
     <label>rock ridge</label>

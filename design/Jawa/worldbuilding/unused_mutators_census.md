@@ -25,8 +25,8 @@
 - **88 distinct TileMutatorDefs currently in use** on the frozen Ash'karr world (verified from `world/ASHKARR_WORLDMAP_mutators.csv`).
 - **343 total available TileMutatorDefs** in the current 596-mod load (measured from the def dump, not estimated — corrects the ~336 first-pass guess).
 - **255 unused TileMutatorDefs** (343 − 88), full roster with label/mod/workerClass/categories/gate in `unused_mutators_full_list.csv` (Part 3).
-- **44 Geological Landforms landforms** in GL mod (30 non-disabled stock landforms, 14 disabled by Odyssey config) — all 44 are among the 255 unused (0 GL_* assigned anywhere).
-- **Zero GL_* mutators assigned** to any tile on Ash'karr today — entire GL landforms system is unused.
+- **44 Geological Landforms landforms** in GL mod (30 non-disabled stock landforms, 14 disabled by Odyssey config) — all 44 are among the 255 "unused", which for GL only means never stored on a tile.
+- **Zero GL_* mutators assigned** to any tile, by construction: GL rolls its landforms at map generation and never stores them on a tile, so this count cannot show whether GL is used. GL was retired from the full list 2026-11-02 (`design/RimMandrake/geological_landforms_judgment_2026-11-02.md`).
 - Unused-by-source: Vanilla Landmarks Expanded 110 · Geological Landforms 44 · Odyssey 42 · Alpha Biomes 40 · Star Wars Animal Collection 7 · RimStarWars Structure Injections 6 · Dark Ages: Beasts and Monsters 2 · Biome Transitions 1 · Inhabited (local) 1 · Core 1 · Map Designer 1.
 
 ---
@@ -148,7 +148,7 @@ sw_SarlaccLair            (Star Wars)
 ## Part 2: Geological Landforms Landforms
 
 **Source:** `Config\Mod_2773943594_GeologicalLandformsMod.xml` (GL mod config)  
-**GL Status on Ash'karr:** Zero GL_* mutator assignments today.
+**GL Status on Ash'karr:** zero GL_* assignments, by construction (never stored on a tile); retired from the full list 2026-11-02 (`design/RimMandrake/geological_landforms_judgment_2026-11-02.md`).
 
 ### 30 Non-Disabled GL Landforms (active for use)
 

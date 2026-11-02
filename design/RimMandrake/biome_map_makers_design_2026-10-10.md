@@ -135,13 +135,12 @@ tile floods the bowl and not a slot. Neither layer may write the other's cells a
 - **Collisions:** Odyssey's own `Valley`, `Plateau`, `Cliffs`, `Basin` and similar use their own
   categories. Ours set `overrideCategories` for the vanilla terrain-shape categories they replace
   (UNMEASURED: the exact category strings, to be read from `Data/Odyssey/Defs/TileMutators/` before
-  authoring). A tile painted with ours must not also roll a GL landform: §3 Q2.
+  authoring). GL is retired (Q2, answered), so no GL landform rolls on a painted tile.
 - **Force-placing:** at the single painting pass (`BIOME_PAINT_ONCE_AT_THE_END_1`), a
   `world/landform_paint_list.csv` (tile, landform, reason) is applied by `jawa/world_mutators_set`,
   then `world_commit`, then `world_mutators_audit` to read it back. That file is data under git and is
   the source of truth, just as the biome paint list is. **No healer:** the world is remade at the end,
-  so no existing save needs repair. If Q2 keeps GL, the paint script also strips any GL mutator from
-  those tiles.
+  so no existing save needs repair.
 - **Landform vocabulary.** The 8 proven types are Canyon, Crater, Sinkhole, LoneMountain,
   DesertPlateau, Badlands, Rift and Gorge, with Cirque and SecludedValley as candidates. v1 is §3 Q1.
 
@@ -237,9 +236,9 @@ their existing seabed generators and their shores come from `RM_SeaCoast` on nei
 6. **The paint list** is filled during the final painting pass, never before it.
 
 ### 4.2 Risks
-- **GL is active on the full list** (BiomeTransitions is retired: `biome_transitions_judgment_2026-11-01.md`). GL patches `TerrainPatchMaker` and can
-  overwrite a map-maker's terrain on any tile where it rolls a landform (§1.4). Without a decision,
-  the landform and the biome look of a tile depend on load order. That is Q2.
+- **GL is retired from the full list** (2026-11-02, `design/RimMandrake/geological_landforms_judgment_2026-11-02.md`; BiomeTransitions
+  before it: `biome_transitions_judgment_2026-11-01.md`). While it loaded, it patched `TerrainPatchMaker` and
+  could overwrite a map-maker's terrain on any tile where it rolled a landform (§1.4).
 - **`preventGenSteps` is def data.** Turning a map-maker off needs the startup re-add and a restart
   (§2.4). The settings label must say so.
 - **A silent GenStep failure.** A throwing step logs and generation continues, so a broken map-maker
@@ -259,13 +258,10 @@ their existing seabed generators and their shores come from `RM_SeaCoast` on nei
 - (b) All 8 proven types. Broader painting palette, about twice the work, and some go unused.
 - (c) Canyon only until the pilot is accepted. Fastest proof, but the painting palette stays empty longer.
 
-**Q2 — Geological Landforms on our world.**
-- (a) Keep GL, and the paint pass strips GL from every tile we give a landform or map-maker. GL
-  still decorates vanilla-biome tiles, at the cost of a strip step plus an audit.
-- (b) Retire GL from the shipped list. One source of map shape and no
-  conflicts, but vanilla-biome tiles lose GL variety.
-- (c) Keep GL everywhere and accept that it sometimes wins. No work, but our maps stop being
-  predictable.
+**Q2 — Geological Landforms on our world. Answered 2026-11-02: retired from the shipped list** under the owner's
+C06 ruling (*"If we can replicate them then yes they can go"*), by the experiment in `design/RimMandrake/geological_landforms_judgment_2026-11-02.md`.
+A "keep GL and strip it per tile" option is not possible: GL computes its landforms at map generation and never
+stores them on a tile, so no paint pass can remove one.
 
 **Q3 — Pilot biome.**
 - (a) FloodedCanyon. Canyon is its whole identity, and it already has two elevation-touching GenSteps.

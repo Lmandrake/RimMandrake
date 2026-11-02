@@ -1,0 +1,474 @@
+{
+ "coverage": {
+  "Atoll": {
+   "defs": [
+    "CoastalAtoll"
+   ],
+   "verdict": "full",
+   "where": {
+    "CoastalAtoll": "ludeon.rimworld.odyssey"
+   }
+  },
+  "Badlands": {
+   "defs": [
+    "RM_JaggedRocks",
+    "RM_StoneForest"
+   ],
+   "verdict": "partial",
+   "where": {
+    "RM_JaggedRocks": "src",
+    "RM_StoneForest": "src"
+   }
+  },
+  "Caldera": {
+   "defs": [
+    "RM_ResurgentCaldera",
+    "RM_Volcano"
+   ],
+   "verdict": "full",
+   "where": {
+    "RM_ResurgentCaldera": "src",
+    "RM_Volcano": "src"
+   }
+  },
+  "Canyon": {
+   "defs": [
+    "RM_SerpentineCanyons",
+    "Chasm"
+   ],
+   "verdict": "full",
+   "where": {
+    "Chasm": "ludeon.rimworld.odyssey",
+    "RM_SerpentineCanyons": "src"
+   }
+  },
+  "CaveEntrance": {
+   "defs": [
+    "Cavern",
+    "Caves"
+   ],
+   "verdict": "full",
+   "where": {
+    "Cavern": "ludeon.rimworld.odyssey",
+    "Caves": "ludeon.rimworld"
+   }
+  },
+  "Cirque": {
+   "defs": [
+    "Basin"
+   ],
+   "verdict": "partial",
+   "where": {
+    "Basin": "ludeon.rimworld.odyssey"
+   }
+  },
+  "CoastCorner": {
+   "defs": [
+    "Coast"
+   ],
+   "verdict": "full",
+   "where": {
+    "Coast": "ludeon.rimworld"
+   }
+  },
+  "CoveWithIsland": {
+   "defs": [
+    "Cove",
+    "Bay"
+   ],
+   "verdict": "partial",
+   "where": {
+    "Bay": "ludeon.rimworld.odyssey",
+    "Cove": "ludeon.rimworld.odyssey"
+   }
+  },
+  "Crater": {
+   "defs": [
+    "RM_MeteorCrater",
+    "RM_ToxicCrater",
+    "LavaCrater"
+   ],
+   "verdict": "full",
+   "where": {
+    "LavaCrater": "ludeon.rimworld.odyssey",
+    "RM_MeteorCrater": "src",
+    "RM_ToxicCrater": "src"
+   }
+  },
+  "DesertPlateau": {
+   "defs": [
+    "Plateau"
+   ],
+   "verdict": "full",
+   "where": {
+    "Plateau": "ludeon.rimworld.odyssey"
+   }
+  },
+  "Glacier": {
+   "defs": [],
+   "verdict": "gap",
+   "where": {}
+  },
+  "Gorge": {
+   "defs": [
+    "Chasm",
+    "RM_SerpentineCanyons"
+   ],
+   "verdict": "full",
+   "where": {
+    "Chasm": "ludeon.rimworld.odyssey",
+    "RM_SerpentineCanyons": "src"
+   }
+  },
+  "IceOasis": {
+   "defs": [
+    "Oasis"
+   ],
+   "verdict": "partial",
+   "where": {
+    "Oasis": "ludeon.rimworld.odyssey"
+   }
+  },
+  "Island": {
+   "defs": [
+    "RM_LoneIsland",
+    "CoastalIsland"
+   ],
+   "verdict": "full",
+   "where": {
+    "CoastalIsland": "ludeon.rimworld.odyssey",
+    "RM_LoneIsland": "src"
+   }
+  },
+  "Landbridge": {
+   "defs": [],
+   "verdict": "gap",
+   "where": {}
+  },
+  "LoneMountain": {
+   "defs": [
+    "RM_LoneMountain"
+   ],
+   "verdict": "full",
+   "where": {
+    "RM_LoneMountain": "src"
+   }
+  },
+  "Rift": {
+   "defs": [
+    "Crevasse",
+    "Chasm"
+   ],
+   "verdict": "full",
+   "where": {
+    "Chasm": "ludeon.rimworld.odyssey",
+    "Crevasse": "ludeon.rimworld.odyssey"
+   }
+  },
+  "River": {
+   "defs": [
+    "River"
+   ],
+   "verdict": "full",
+   "where": {
+    "River": "ludeon.rimworld"
+   }
+  },
+  "RiverConfluence": {
+   "defs": [
+    "RiverConfluence"
+   ],
+   "verdict": "full",
+   "where": {
+    "RiverConfluence": "ludeon.rimworld.odyssey"
+   }
+  },
+  "RiverDelta": {
+   "defs": [
+    "RiverDelta",
+    "RM_RelictDelta"
+   ],
+   "verdict": "full",
+   "where": {
+    "RM_RelictDelta": "src",
+    "RiverDelta": "ludeon.rimworld.odyssey"
+   }
+  },
+  "RiverIsland": {
+   "defs": [
+    "RiverIsland"
+   ],
+   "verdict": "full",
+   "where": {
+    "RiverIsland": "ludeon.rimworld.odyssey"
+   }
+  },
+  "RiverSource": {
+   "defs": [
+    "Headwater"
+   ],
+   "verdict": "full",
+   "where": {
+    "Headwater": "ludeon.rimworld.odyssey"
+   }
+  },
+  "RiverTerrain": {
+   "defs": [
+    "River"
+   ],
+   "verdict": "full",
+   "where": {
+    "River": "ludeon.rimworld"
+   }
+  },
+  "SecludedCove": {
+   "defs": [
+    "Cove",
+    "Bay"
+   ],
+   "verdict": "partial",
+   "where": {
+    "Bay": "ludeon.rimworld.odyssey",
+    "Cove": "ludeon.rimworld.odyssey"
+   }
+  },
+  "SecludedValley": {
+   "defs": [
+    "Hollow",
+    "Valley"
+   ],
+   "verdict": "full",
+   "where": {
+    "Hollow": "ludeon.rimworld.odyssey",
+    "Valley": "ludeon.rimworld.odyssey"
+   }
+  },
+  "Sinkhole": {
+   "defs": [
+    "RM_Sinkholes",
+    "RM_Cenotes"
+   ],
+   "verdict": "full",
+   "where": {
+    "RM_Cenotes": "src",
+    "RM_Sinkholes": "src"
+   }
+  },
+  "Skerry": {
+   "defs": [],
+   "verdict": "gap",
+   "where": {}
+  },
+  "SurfaceCave": {
+   "defs": [
+    "Cavern",
+    "UndergroundCave"
+   ],
+   "verdict": "full",
+   "where": {
+    "Cavern": "ludeon.rimworld.odyssey",
+    "UndergroundCave": "ludeon.rimworld"
+   }
+  },
+  "SwampHill": {
+   "defs": [],
+   "verdict": "gap",
+   "where": {}
+  },
+  "Tombolo": {
+   "defs": [],
+   "verdict": "gap",
+   "where": {}
+  }
+ },
+ "coverageCounts": {
+  "full": 20,
+  "gap": 5,
+  "partial": 5
+ },
+ "dependents": [
+  {
+   "active": false,
+   "hard": true,
+   "packageId": "biomesteam.biomescaverns"
+  },
+  {
+   "active": false,
+   "hard": true,
+   "packageId": "m00nl1ght.geologicallandforms.biometransitions"
+  },
+  {
+   "active": true,
+   "hard": false,
+   "packageId": "mandrake.rm.biomes"
+  },
+  {
+   "active": false,
+   "hard": false,
+   "packageId": "xmb.ancienturbanruins.mo"
+  }
+ ],
+ "dllReferences": {
+  "m00nl1ght.mappreview": [
+   "1.6/Lunar/Components/MapPreview.dll",
+   "1.6/Lunar/Components/MapPreviewMod.dll"
+  ],
+  "nozome.mapmodeframework": [
+   "1.6/Assemblies/MapModeFramework.dll"
+  ],
+  "smashphil.vehicleframework": [
+   "1.6/Assemblies/Vehicles.dll"
+  ]
+ },
+ "dllsScanned": 351,
+ "dump": "/mnt/d/ClaudeWork/rimmandrake/relentless/LANDFORMS_PROBE/TileMutatorDef_2026-11-02.json",
+ "dumpTileMutatorDefs": 330,
+ "glDisabledUnderOdyssey": [
+  "Archipelago",
+  "Cliff",
+  "CliffAndCoast",
+  "CliffCorner",
+  "Coast",
+  "CoastalIsland",
+  "Cove",
+  "DryLake",
+  "Fjord",
+  "Lake",
+  "LakeWithIsland",
+  "Oasis",
+  "Peninsula",
+  "Valley"
+ ],
+ "glEnabled": [
+  "Atoll",
+  "Badlands",
+  "Caldera",
+  "Canyon",
+  "CaveEntrance",
+  "Cirque",
+  "CoastCorner",
+  "CoveWithIsland",
+  "Crater",
+  "DesertPlateau",
+  "Glacier",
+  "Gorge",
+  "IceOasis",
+  "Island",
+  "Landbridge",
+  "LoneMountain",
+  "Rift",
+  "River",
+  "RiverConfluence",
+  "RiverDelta",
+  "RiverIsland",
+  "RiverSource",
+  "RiverTerrain",
+  "SecludedCove",
+  "SecludedValley",
+  "Sinkhole",
+  "Skerry",
+  "SurfaceCave",
+  "SwampHill",
+  "Tombolo"
+ ],
+ "glLandformFiles": 44,
+ "glTileMutatorDefs": [
+  "GL_Archipelago",
+  "GL_Atoll",
+  "GL_Badlands",
+  "GL_Caldera",
+  "GL_Canyon",
+  "GL_CaveEntrance",
+  "GL_Cirque",
+  "GL_Cliff",
+  "GL_CliffAndCoast",
+  "GL_CliffCorner",
+  "GL_Coast",
+  "GL_CoastCorner",
+  "GL_CoastalIsland",
+  "GL_Cove",
+  "GL_CoveWithIsland",
+  "GL_Crater",
+  "GL_DesertPlateau",
+  "GL_DryLake",
+  "GL_Fjord",
+  "GL_Glacier",
+  "GL_Gorge",
+  "GL_IceOasis",
+  "GL_Island",
+  "GL_Lake",
+  "GL_LakeWithIsland",
+  "GL_Landbridge",
+  "GL_LoneMountain",
+  "GL_Oasis",
+  "GL_Peninsula",
+  "GL_Rift",
+  "GL_River",
+  "GL_RiverConfluence",
+  "GL_RiverDelta",
+  "GL_RiverIsland",
+  "GL_RiverSource",
+  "GL_RiverTerrain",
+  "GL_SecludedCove",
+  "GL_SecludedValley",
+  "GL_Sinkhole",
+  "GL_Skerry",
+  "GL_SurfaceCave",
+  "GL_SwampHill",
+  "GL_Tombolo",
+  "GL_Valley"
+ ],
+ "item": "LANDFORMS_PROBE_REPLACE_OR_KEEP_EXPERIMENT",
+ "listAsMeasured": {
+  "active": 317,
+  "carriedGL": true,
+  "path": "/mnt/d/ClaudeWork/rimmandrake/relentless/LANDFORMS_PROBE/ModsConfig.FULL.LATEST.at_2b98d0eeba.xml"
+ },
+ "saveMutators": {
+  "byMod": {
+   "ludeon.rimworld": 2812,
+   "ludeon.rimworld.odyssey": 8228,
+   "mandrake.rm.biomes": 1035,
+   "mandrake.rsw.swbestiary": 1425,
+   "vanillaexpanded.vexploratione": 14413
+  },
+  "entries": 27913,
+  "glEntries": 0,
+  "landformDataComponent": true,
+  "landformDataNonNullLandforms": 0,
+  "landformDataTiles": 4,
+  "save": "world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws",
+  "tiles": 14483,
+  "unresolved": {}
+ },
+ "vanillaDefsNamed": [
+  "Basin",
+  "Bay",
+  "Cavern",
+  "Caves",
+  "Chasm",
+  "Coast",
+  "CoastalAtoll",
+  "CoastalIsland",
+  "Cove",
+  "Crevasse",
+  "Headwater",
+  "Hollow",
+  "LavaCrater",
+  "Oasis",
+  "Plateau",
+  "River",
+  "RiverConfluence",
+  "RiverDelta",
+  "RiverIsland",
+  "UndergroundCave",
+  "Valley"
+ ],
+ "vanillaMutatorsGlDisables": [
+  "Headwater",
+  "River",
+  "RiverConfluence",
+  "RiverDelta",
+  "RiverIsland"
+ ]
+}
