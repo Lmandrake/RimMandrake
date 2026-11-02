@@ -210,7 +210,7 @@ def rank(world, seat, target="v1", ctx=None):
             continue
         if not offerable_state(it, now):
             continue
-        if it.blocked or wait_running(it, now):
+        if block_holds(world, it, now) or wait_running(it, now):
             continue
         if target and it.target not in (None, target):
             continue
@@ -262,6 +262,61 @@ def frontier_entry(world, it):
     if b.state in SATISFIES.get(it.blocked_until or "done", ("done",)):
         return ("satisfied", b)
     return None
+
+
+# ---------------------------------------------------------------------------
+# DOES THE BLOCK STILL HOLD? (PLAN_BUILD_BLOCKED_BY_IS_TEXT_ONLY, 2026-11-02)
+# ---------------------------------------------------------------------------
+# Owner, 2026-11-02: "we need to have queued items correctly state what they are blocked on and to not ever be offered
+# to Relentless if blocked, that's just obvious and a dispatch-level question." Every offer path (`rank`, `next`'s
+# claimable list, relentless.eligible) asks THIS, never `it.blocked` alone. 🔑 A predecessor wait (`--on`, kind item)
+# and a dated one (kind time) end at READ time: the item is offered again the moment every --on id reaches its level, or
+# the date passes, with no event (the books keep the block until a claim or a close clears it; `next`/`why` still
+# name it on the frontier). A DEAD blocker never releases (`confirm`). Every other kind holds until `unblock`.
+def block_kind(it):
+    return it.blocked_kind or ("item" if it.blocked_on else "other")
+
+
+def block_ons(it):
+    """-> every item id the block waits on, the first --on first."""
+    return ((it.blocked_on,) if it.blocked_on else ()) + tuple(getattr(it, "blocked_also", ()) or ())
+
+
+def release_reason(world, it, now):
+    """-> why `it`'s block has ended by its own rule (one line), else None. None also when `it` is not blocked."""
+    if not it.blocked:
+        return None
+    kind = block_kind(it)
+    if kind == "time":
+        e = priority_list.epoch(it.blocked_lift_at)
+        return ("its date %s has passed" % it.blocked_lift_at) if e is not None and e <= now else None
+    if kind != "item" or not it.blocked_on:
+        return None
+    need = SATISFIES.get(it.blocked_until or "done", ("done",))
+    got = []
+    for on in block_ons(it):
+        b = world.items.get(on)
+        if on == it.id or b is None or b.state not in need:
+            return None
+        got.append("%s %s" % (on, b.state))
+    return "blocker reached %s: %s" % (it.blocked_until or "done", ", ".join(got))
+
+
+def block_holds(world, it, now):
+    """-> True while `it` must not be offered for its block. Pure."""
+    return bool(it.blocked) and release_reason(world, it, now) is None
+
+
+def block_line(it):
+    """-> the block as one line: the reason, then its data (kind, on, until, lift_at)."""
+    if not it.blocked:
+        return None
+    bits = ["kind %s" % block_kind(it)]
+    if block_ons(it):
+        bits.append("on %s until %s" % (", ".join(block_ons(it)), it.blocked_until or "done"))
+    if it.blocked_lift_at:
+        bits.append("lifts at %s" % it.blocked_lift_at)
+    return "%s (%s)" % (it.blocked_reason or "(no reason)", ", ".join(bits))
 
 
 def block_frontier(world, seat=None, on=None):
@@ -463,9 +518,12 @@ def why_not(world, seat, iid, target="v1", ctx=None):
         if len(fo) >= cap["per_seat"]:
             out.append("FOCUS CAP: %s holds %d focus items, the cap is %d, so no new item is offered. Finish one, "
                        "`rimflow wait` one, or `rimflow reclaim` one." % (seat, len(fo), cap["per_seat"]))
+    rel = release_reason(world, it, now)
+    if it.blocked and rel:
+        out.append("block ENDED by its own rule (%s): offered again; the claim clears it. Was: %s" % (rel, block_line(it)))
+    elif it.blocked:
+        out.append("BLOCKED: %s" % block_line(it))
     if it.blocked:
-        out.append("BLOCKED: %s%s" % (it.blocked_reason,
-                                      (" (on %s)" % it.blocked_on) if it.blocked_on else ""))
         e = frontier_entry(world, it)
         if e:
             out.append(frontier_line(it, e[0], e[1]))

@@ -18,7 +18,8 @@ import relentless as R  # noqa: E402
 
 RULES = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json")), enabled=True, share=0.5, max_workers=2,
              enrol_per_tick=50, max_queued=50, run_reserve=1000, item_spend_limit=10**7, day_spend_limit=10**9,
-             staffing=None, circling=None, walls=None)   # the machinery test runs with no wall; the wall has its own selftest
+             staffing=None, circling=None, walls=None,   # the machinery test runs with no wall; the wall has its own selftest
+             same_failure_limit=3, max_approach_changes=None)   # the ladder's machinery; the shipped 2 and its hold: selftest_relentless_block
 STAFF = dict(R.rules(os.path.join(R.HERE, "relentless_rules.json"))["staffing"], hold_s=600, stages=[3, 5, "budget"])
 FAILS = []
 
@@ -869,7 +870,7 @@ def t_real_effects():
                         pool_kinds_exclude=[], pool_ids_exclude=[]), store)
     order, w = fx.pool_order(fx.r)
     ok(isinstance(order, list) and len(w.items) > 100, "real: pool_order reads the real ledger")
-    want = {i.id for i in w.items.values() if R.eligible(i, fx.r) and i.target in (None, "v1")}
+    want = {i.id for i in w.items.values() if R.eligible(i, fx.r, w) and i.target in (None, "v1")}
     ok(want and set(order) == want, "real: the pool is every eligible item, the proposed backlog included")
     ok(fx.item_state("NO_SUCH_ITEM_X") is None, "real: item_state")
     ok(fx.paused() in (True, False, None) or isinstance(fx.paused(), str), "real: paused answers")

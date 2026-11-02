@@ -33,6 +33,8 @@ import relentless_packet  # noqa: E402
 import relentless_usage  # noqa: E402
 import relentless_wall  # noqa: E402
 import relentless_game  # noqa: E402
+import relentless_block  # noqa: E402
+import relentless_strikes  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 RULES = os.path.join(HERE, "relentless_rules.json")
@@ -71,7 +73,8 @@ NOT_AN_APPROACH = ("worker_lost", "checker_lost")       # a dead process or a si
 
 def pkg(name):
     """A rimflow module as the package imports it: priority and friends use relative imports."""
-    sys.path.insert(0, os.path.dirname(HERE))
+    if os.path.dirname(HERE) not in sys.path:      # once: a call per ledger item grew sys.path past what a forkserver child takes
+        sys.path.insert(0, os.path.dirname(HERE))
     return importlib.import_module("rimflow." + name)
 
 
@@ -238,8 +241,7 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         st["total_at_change"] = (st.get("total_at_change") or 0) + 1
         n = sum(st["failures"].get(k, 0) for k in PROOF_ENDS)
         if n >= limit:
-            st["hold"] = {"why": "%d returns and the proof still reads weak, last: %s" % (n, (detail or "")[:400]),
-                          "kind": "proof_weak", "delivered": False, "at": now}
+            relentless_strikes.hold(st, "%d returns and the proof still reads weak" % n, "proof_weak", now)
         store.attempt(st["item"], {"at": iso(now), "gen": st["gen"] - 1, "end": klass, "detail": (detail or "")[:600],
                                    "sha": (st.get("candidate") or {}).get("sha")})
         store.learn(st["item"], "- %s gen %d ended %s: %s" % (iso(now), st["gen"] - 1, klass, (detail or "")[:600]))
@@ -247,7 +249,11 @@ def fail(store, st, klass, detail, r, now, time_not_work=False):
         return
     # rotating slugs cannot dodge this: enough returns with no new sha also change the approach
     unchanged = st["total_failures"] - (st.get("total_at_change") or 0) >= r.get("unchanged_returns_limit", limit * 3)
-    if (st["failures"][klass] >= limit and not time_not_work) or unchanged:
+    if ((st["failures"][klass] >= limit and not time_not_work) or unchanged) and relentless_strikes.out_of_tacks(st, r):
+        # the ladder has been climbed: a person decides the next tack (RELENTLESS_STRIKES_HARDEN_CHANGE_TACK)
+        relentless_strikes.hold(st, "%d strikes of %s after %d approach changes: split it, redesign it, or drop it"
+                                % (st["failures"][klass], klass, st["approach_changes"]), "strikes", now)
+    elif (st["failures"][klass] >= limit and not time_not_work) or unchanged:
         st["failures"][klass] = 0
         st["total_at_change"] = st["total_failures"]
         st["approach_changes"] += 1
@@ -372,7 +378,7 @@ def contract(store, item, gen, proof, live=None, why=None, now=None, game=None):
         store.save(st)
 
 
-def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=0):
+def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=0, on=None, blocker=None):
     """`wait_hours`: what stopped the worker is time, not work (a metric's sample filling); no worker starts before then,
     and the wait is no failed approach. The same class again waits even when the worker named no wait, longer each time:
     a worker costs a million tokens to read that nothing has changed, and CLOSE_GATE_ENFORCE_DONE_IS_EARNED paid three."""
@@ -393,6 +399,18 @@ def snag(store, item, gen, klass, detail, r, section=None, now=None, wait_hours=
             st["hold"] = {"why": "delegation_policy section 2: %s: %s" % (section, (detail or "")[:600]),
                           "kind": "owner_call", "delivered": False, "at": now}
             store.attempt(item, {"at": iso(now), "gen": gen, "end": "owner_call", "detail": st["hold"]["why"]})
+            store.save(st)
+            return
+        blk = None if wait_hours else relentless_block.from_snag(klass, detail, r, on, blocker)
+        if blk:     # a blocker, not a failed approach: out of the line until the ledger block ends (relentless_block)
+            st["gen"] += 1
+            st["status"] = "stopping"
+            st["stopping_since"] = now
+            st["block_pending"] = blk
+            store.attempt(item, {"at": iso(now), "gen": gen, "end": "blocked", "detail": (detail or "")[:600],
+                                 "kind": blk["kind"], "on": blk["on"]})
+            store.learn(item, "- %s gen %d blocked (%s%s): %s" % (iso(now), gen, blk["kind"], " on " + ", ".join(blk["on"])
+                                                                  if blk["on"] else "", (detail or "")[:600]))
             store.save(st)
             return
         again = st["failures"].get(SLUG_RX.sub("_", (klass or "snag").lower()).strip("_")[:40] or "snag", 0)
@@ -729,6 +747,9 @@ def unhold(store, item, said, now=None):
         if st["hold"].get("kind") == "proof_weak":
             for k in PROOF_ENDS:
                 st["failures"].pop(k, None)
+        elif st["hold"].get("kind") == "strikes":      # his yes is a fresh count; another full ladder holds again
+            st["failures"] = {}
+            st["total_at_change"] = st["total_failures"]
         st["hold"] = None
         st["status"] = "queued"
         st["returned_at"] = now
@@ -911,7 +932,7 @@ class Effects(relentless_game.GameFx):
         # not priority.rank(): `next` offers only what a seat already took up, and the pool is the proposed backlog.
         # The same sort, so raised work and the campaign rows still go first
         words = self.seat_words()
-        pool = [it for it in w.items.values() if eligible(it, r) and it.target in (None, *targets)
+        pool = [it for it in w.items.values() if eligible(it, r, w) and it.target in (None, *targets)
                 and (it.owner != foreign_seat(r) or (words is not None and it.id not in words))]
         pool.sort(key=lambda i: (plist.position(i, orders), i.id not in bounce, model.raise_key(i), not i.this_deployment,
                                  priority._row_key(i), i.created_at or "", i.id))
@@ -958,8 +979,11 @@ class Effects(relentless_game.GameFx):
     def item_state(self, item):
         _, w = self.ledger_items()
         it = w.items.get(item)
-        return None if it is None else {"state": it.state, "lease": getattr(it, "lease", None), "needs": it.needs,
-                                        "owner": it.owner}
+        if it is None:
+            return None
+        priority = pkg("priority")
+        return {"state": it.state, "lease": getattr(it, "lease", None), "needs": it.needs, "owner": it.owner,
+                "block_holds": priority.block_holds(w, it, int(time.time())), "block": priority.block_line(it)}
 
     # the other seat: read from its tree, never pulled, never written
     def seat_words(self):
@@ -1006,7 +1030,7 @@ class Effects(relentless_game.GameFx):
         """The whole eligibility again at launch: what was true at enrol may have changed on the ledger."""
         _, w = self.ledger_items()
         it = w.items.get(item)
-        return it is not None and eligible(it, self.r) and it.target in (None, *(self.r.get("pool_targets") or ["v1"]))
+        return it is not None and eligible(it, self.r, w) and it.target in (None, *(self.r.get("pool_targets") or ["v1"]))
 
     def settle_wait(self, s):
         time.sleep(s)       # a claim that passed the guard just before the reservation reaches its shard in this time
@@ -1122,6 +1146,14 @@ class Effects(relentless_game.GameFx):
 
     def ledger_needs_owner(self, item, why):
         return self.ledger_needs(item, "owner", why)
+
+    def ledger_block(self, item, kind, ons, reason):
+        a = ["block", item, "--kind", kind, "--reason", reason[:NOTE_MAX], "--why", "relentless supervisor: a worker's snag names a blocker"]
+        for on in ons:
+            a += ["--on", on]
+        r = self.rimflow(*a)
+        self._ledger = None
+        return None if r.returncode == 0 else (r.stderr or r.stdout)[-300:]
 
     def ledger_needs(self, item, to, why):
         r = self.rimflow("needs", item, "--to", to, "--reason", why[:NOTE_MAX], "--why", "relentless supervisor")
@@ -1560,8 +1592,14 @@ def foreign_ok(it, r):
             and not re.search(cfg.get("foreign_exclude") or "(?!)", "%s %s" % (it.id, it.title or ""), re.I))
 
 
-def eligible(it, r):
-    return (it.owner in r["pool_seats"] and it.state in ("proposed", "ready") and not it.blocked
+def eligible(it, r, world=None, now=None):
+    """`world` given: a block counts only while it HOLDS (priority.block_holds: a finished predecessor or a passed
+    date releases it); without one, any block keeps the item out."""
+    if world is not None:
+        blocked = pkg("priority").block_holds(world, it, int(time.time() if now is None else now))
+    else:
+        blocked = it.blocked
+    return (it.owner in r["pool_seats"] and it.state in ("proposed", "ready") and not blocked
             and it.needs != "owner" and (it.needs in r["pool_needs"] or it.needs in relentless_game.pool_needs(r))
             and getattr(it, "kind", None) not in r.get("pool_kinds_exclude", [])
             and it.id not in r.get("pool_ids_exclude", []) and not getattr(it, "lease", None)
@@ -1595,7 +1633,9 @@ def worker_prompt(st, text, learned, r):
             "Hit a wall? `snag` and exit: the item goes back to the top with your finding. Do not ask anyone. If "
             "what stopped you is time, not work (a sample filling), say so: `snag --wait-hours N`. Only a "
             "true design/RimMandrake/delegation_policy.md section 2 call goes up: `snag --class owner_call --section "
-            "<what, quoted> ...`. `help` sends a fresh agent the failed approaches on record (refused if there are "
+            "<what, quoted> ...`. Waiting on another item, a judge, the live game or something outside: `snag --class "
+            "blocked_by_predecessor --on <ITEM>` (or `--blocker judge|live|external|owner`): the ledger records the "
+            "block and no worker is sent until it ends. `help` sends a fresh agent the failed approaches on record (refused if there are "
             "none); its options land in the state file (`relentless.py show <item>`) and in the next worker's brief.",
             "What the seats already learned is in skills: load the one your step needs, once. `clone-landing-commits` "
             "before a commit; `rimworld-modding` for defs and patches; `rimworld-deploy` before testing anything in "
@@ -1617,7 +1657,10 @@ def worker_prompt(st, text, learned, r):
                     "fix the code." % (st["proof_only"]["sha"], PROOF_DEFECT))
     elif st["approach"] == "redesign":
         head.append("REDESIGN: the same failure came back too often. Read the record below, write a DIFFERENT approach "
-                    "with `learn` before you edit anything, and change the contract with --why if it was the problem.")
+                    "with `learn` before you edit anything, and change the contract with --why if it was the problem. "
+                    "A different approach may be: deliver the item's own substance standalone; split it (file the parts "
+                    "--for BENCH, then `snag --class blocked_by_predecessor --on <first part>`); or, if no approach is "
+                    "left, `snag --class owner_call --section \"<the call>\"`. Retrying the same road is not one.")
     if st["approach"] == "pilot" and not st.get("proof_only"):
         head.append("PILOT: this needs eyes on the running thing. Run `python3 src/RimMandrake/rimflow/cli.py pilot %s`, "
                     "follow that brief yourself, and report what you saw with `learn`." % i)
@@ -1865,9 +1908,9 @@ def pool_rows(store, fx, r):
         elif status in ENDED:
             rank = 0
         elif kind == "check":
-            rank = 0 if status in ("queued", "held", "candidate") else 2
+            rank = 0 if status in ("queued", "held", "blocked", "candidate") else 2
         else:
-            rank = 1 if status in ("queued", "held", "candidate") else 2
+            rank = 1 if status in ("queued", "held", "blocked", "candidate") else 2
         rows.append({"clone": c, "item": st["item"] if st else clone_item(c), "kind": kind, "status": status, "rank": rank})
     return rows
 
@@ -2128,7 +2171,7 @@ def step(store, fx, r, item, now, acts):
                 st = store.load(item)
                 st["needs_back"] = False
                 store.save(st)
-    if s in ENDED or s == "queued":
+    if s in ENDED or s in ("queued", "blocked"):     # blocked: relentless_block.sweep moves it
         return
     if s == relentless_game.GAME:
         return relentless_game.step(store, fx, r, item, now, acts, sys.modules[__name__])
@@ -2163,7 +2206,7 @@ def step(store, fx, r, item, now, acts):
             if st["status"] != "stopping":
                 return
             st["run"] = None
-            st["status"] = "held" if st["hold"] else "queued"
+            st["status"] = "held" if st["hold"] else "blocked" if st.get("block_pending") else "queued"
             store.save(st)
         acts.append({"do": "returned", "item": item, "to": st["status"]})
         return
@@ -2694,8 +2737,8 @@ def spend_holds(store, fx, r, now, acts):
             with store.lock():
                 cur = store.load(st["item"])
                 cur["status"] = "held"
-                cur["hold"] = {"why": "item spend limit: %d of %d weighted tokens. Lift with relentless.py unhold"
-                               % (cur["spent"] + owed, limit), "kind": "spend", "delivered": False, "at": now}
+                relentless_strikes.hold(cur, "item spend limit: %d of %d weighted tokens; lift with relentless.py unhold"
+                                        % (cur["spent"] + owed, limit), "spend", now)
                 store.save(cur)
             acts.append({"do": "hold_spend", "item": st["item"]})
 
@@ -3127,6 +3170,7 @@ def tick(store=None, fx=None, r=None, now=None):
             return acts
         books_alarm(store, fx, fx.sync(), now, acts, r)
         retire(store, fx, store.states(), now, acts, r)
+        relentless_block.sweep(store, fx, now, acts, iso)
         reclaim_dead(store, fx, r, now, acts)
         release_parked(store, fx, r, now, acts)
         for final in (False, True):       # the second pass lets a return that ended this tick reach the top now
@@ -3222,6 +3266,8 @@ def main(argv=None):
             p.add_argument("--class", dest="klass", required=True)
             p.add_argument("--section")
             p.add_argument("--wait-hours", type=float, default=0, help="time, not work: no worker before then (at most %g)" % MAX_WAIT_HOURS)
+            p.add_argument("--on", action="append", help="a predecessor item it waits on (repeatable): a ledger block, out of the line")
+            p.add_argument("--blocker", choices=relentless_block.KINDS, help="what it waits on, if not an item: owner, judge, live, external")
         if name == "finish":
             p.add_argument("--sha", required=True)
             p.add_argument("--evidence", required=True)
@@ -3288,7 +3334,7 @@ def main(argv=None):
         elif a.cmd == "game-ready":
             relentless_game.ready(store, a.item, a.gen, a.text)
         elif a.cmd == "snag":
-            snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours)
+            snag(store, a.item, a.gen, a.klass, a.text, rules(), a.section, wait_hours=a.wait_hours, on=a.on, blocker=a.blocker)
         elif a.cmd == "finish":
             finish(store, a.item, a.gen, canonical_commit(a.sha), a.evidence)
         elif a.cmd == "help":

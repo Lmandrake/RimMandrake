@@ -835,7 +835,8 @@ def cmd_bench(args, seat):
               % (who, len(rows), game, him))
 
     ripe = [i for i in open_
-            if not i.blocked and i.needs == "offline" and i.state in ("proposed", "ready")]
+            if not priority.block_holds(w, i, model.epoch_now()) and i.needs == "offline"
+            and i.state in ("proposed", "ready")]
     print("\nRIPE — unblocked, offline, would move the moment someone took it: %d" % len(ripe))
     for it in ripe[:10]:
         print("  %-44s %-9s %s" % (it.id[:44], it.owner or "unassigned", (it.title or "")[:60]))
@@ -1344,7 +1345,7 @@ def _claimable(w, seat, target="v1", now=None, ctx=None):
     # offered again, here any more than in `rank()`.
     now = model.epoch_now() if now is None else now
     out = [i for i in w.items.values()
-           if i.owner == seat and i.state == "proposed" and not i.blocked
+           if i.owner == seat and i.state == "proposed" and not priority.block_holds(w, i, now)
            and (not target or i.target in (None, target))  # "" = no filter, as rank()
            and model.lease_status(i, now) != "live"]
     if ctx is not None:      # `next`: the availability rule a ranked item passes (--mode afk and needs=owner, above all)
@@ -1498,8 +1499,10 @@ def cmd_show(args, seat):
     print("%s" % (it.title or "(no title)"))
     print("owner %s   kind %s   filed %s" % (it.owner, it.kind, it.created_at))
     if it.blocked:
-        print("BLOCKED: %s%s" % (it.blocked_reason,
-                                 " (on %s)" % it.blocked_on if it.blocked_on else ""))
+        rel = priority.release_reason(w, it, model.epoch_now())
+        print("BLOCKED: %s" % priority.block_line(it))
+        print("  %s" % (("ENDED (%s): offered again; the next claim clears it." % rel) if rel
+                        else "holds: never offered (rimflow next, relentless) until it ends"))
     if it.closed_sha:
         print("closed at %s" % it.closed_sha)
     if it.live or it.live_repeats:
@@ -1889,6 +1892,9 @@ def cmd_claim(args, seat):
         w = _replay_now()
         it = w.items.get(args.id)
         now = model.epoch_now()
+        rel = priority.release_reason(w, it, now) if it is not None else None
+        if rel:     # the block ended by its own rule: the claim writes that down, so the books stop calling it blocked
+            _write_one({"seat": seat, "event": "unblock", "id": args.id, "reason": "auto: " + rel})
         if it is not None and it.state in ("proposed", "ready", "doing"):
             if tok:
                 exp = lease.expires_at(now)
@@ -1907,9 +1913,11 @@ def cmd_claim(args, seat):
     _trigger_health_rebuild()
     it = _replay_now().items.get(args.id)
     print("claim %s -> %s" % (args.id, it.state if it else "?"))
+    if rel:
+        print("unblocked %s: %s" % (args.id, rel))
     if it is not None and it.blocked:
-        print("⚠️  %s is BLOCKED: %s%s. Claimed anyway; unblock it if that is stale."
-              % (it.id, it.blocked_reason, (" (on %s)" % it.blocked_on) if it.blocked_on else ""))
+        print("⚠️  %s is BLOCKED (%s). Claimed anyway; unblock it if that is stale."
+              % (it.id, priority.block_line(it)))
     _print_lease(held)
     return 0
 
@@ -1948,8 +1956,22 @@ def cmd_block(args, seat):
     Merged histories the write path never saw are flagged at read time
     (priority.block_diagnostics, in `why` and `next --bench`)."""
     _, w = load()
-    on = getattr(args, "on", None)
+    ons = list(dict.fromkeys(getattr(args, "on", None) or []))
+    on = ons[0] if ons else None
     until = getattr(args, "until", None)
+    kind = getattr(args, "kind", None)
+    lift_at = getattr(args, "lift_at", None)
+    if kind and kind != "item" and ons:
+        die("`block --on` names predecessor items, so it is --kind item (got --kind %s)." % kind)
+    if kind == "item" and not ons:
+        die("`block --kind item` needs --on <ITEM> (the predecessor).")
+    if (kind == "time") != bool(lift_at):
+        die("`block --kind time` takes --lift-at <ISO time or YYYY-MM-DD>, and --lift-at only goes with --kind time.")
+    if lift_at:
+        e = priority_list.epoch(lift_at)
+        if e is None:
+            die("block --lift-at %r is not a date (YYYY-MM-DD or ISO time)." % lift_at)
+        lift_at = datetime.datetime.fromtimestamp(e, datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     if until and not on:
         die("`block --until` is a level OF the --on item; give --on <ITEM>.")
     cur = w.items.get(args.id)
@@ -1958,7 +1980,7 @@ def cmd_block(args, seat):
               % (cur.blocked_on or "(nothing named)",
                  (cur.blocked_until or "done") if cur.blocked_on else "-",
                  (cur.blocked_reason or "")[:100]))
-    if on:
+    for on in ons:
         tgt = w.items.get(on)
         if on == args.id:
             die("cycle refused: %s -> %s. An item cannot wait on itself." % (on, on))
@@ -1976,8 +1998,12 @@ def cmd_block(args, seat):
             if cyc:
                 die("cycle refused: %s. Nothing on it could ever finish first."
                     % " -> ".join(cyc))
+    on = ons[0] if ons else None
     ev = {"seat": seat, "event": "block", "id": args.id, "reason": args.reason, "on": on,
           "until": until if until != "done" else None}   # default stays old-reader-identical
+    for k, v in (("kind", kind), ("lift_at", lift_at), ("also_on", ons[1:] or None)):
+        if v:
+            ev[k] = v
     _emit(ev, w, quiet=True)
     after = _replay_now()
     it = after.items.get(args.id)
@@ -3900,10 +3926,15 @@ def build_parser():
     s = add("block", "something is WRONG (this is not `needs`)", cmd_block)
     s.add_argument("id")
     s.add_argument("--reason", required=True)
-    s.add_argument("--on", help="the item this waits on")
+    s.add_argument("--on", action="append",
+                   help="a predecessor item this waits on; repeat for several (all must reach --until)")
     s.add_argument("--until", choices=model.BLOCK_UNTIL,
-                   help="the level of --on that ends the wait (default done). Reaching "
-                        "it is ANNOUNCED in `next`/`why`, never applied: you unblock")
+                   help="the level of --on that ends the wait (default done). Reaching it makes the "
+                        "item offerable again at once; the next claim writes the unblock")
+    s.add_argument("--kind", choices=model.BLOCK_KINDS,
+                   help="what it waits on: item (--on), owner, judge, live (game/bridge), time (--lift-at), "
+                        "external, other. Default: item with --on, else other")
+    s.add_argument("--lift-at", dest="lift_at", help="--kind time: when the wait ends (YYYY-MM-DD or ISO time)")
 
     s = add("wait", "a dated wait on a slow external: out of focus until the date (RO2)", cmd_wait)
     s.add_argument("id")

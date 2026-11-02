@@ -245,6 +245,11 @@ STATES = ("proposed", "ready", "doing", "built", "validated",
 OPEN_STATES = ("proposed", "ready", "doing", "built", "validated")
 # `block --until`: the levels a blocker can reach that satisfy a block, cheapest first.
 BLOCK_UNTIL = ("built", "validated", "done")
+# `block --kind`: WHAT an item waits on, as data (PLAN_BUILD_BLOCKED_BY_IS_TEXT_ONLY, owner 2026-11-02: "queued items
+# correctly state what they are blocked on and ... not ever be offered to Relentless if blocked"). `item` waits on
+# --on ids (lifts at read time when they reach --until), `time` on --lift-at; the rest hold until `unblock`.
+# Unset: `item` with --on, else `other` (priority.block_kind).
+BLOCK_KINDS = ("item", "owner", "judge", "live", "time", "external", "other")
 
 # The validation ladder, cheapest first (addendum §"The levels that exist today").
 # L0 offline · L1 resolved-live on the minimal list · L2 behaviour gauntlet ·
@@ -409,7 +414,7 @@ VERBS = {
     # (priority.block_frontier), never applied: the block stays until a seat lifts it.
     # ⚠️ The CLI writes `until` only when it is not `done`, so a default block stays
     # byte-identical for old readers; a reader from step 2 on strips it (stricter, safe).
-    "block":     {"who": "owner", "req": ("reason",), "opt": ("on", "until")},
+    "block":     {"who": "owner", "req": ("reason",), "opt": ("on", "until", "kind", "lift_at", "also_on")},
     "unblock":   {"who": "owner", "req": (), "opt": ("reason",)},
     # A dated wait (RO2): the item is on a slow external until `until`, so it is neither offered nor counted as focus
     # while that date is ahead (priority.wait_running). It ends by itself; the cap on waits is priority/cli's, at write.
@@ -856,6 +861,13 @@ def _check_enums(ev):
                 "reconcile --verdict partial needs --remaining \"<what is left, one "
                 "line>\" — `next` prints that line instead of the whole spec, so the "
                 "next builder works the remainder rather than rebuilding the item.")
+    if verb == "block" and ev.get("kind") is not None and ev["kind"] not in BLOCK_KINDS:
+        raise SchemaError("block --kind must be %s (got %r)" % ("|".join(BLOCK_KINDS), ev["kind"]))
+    if verb == "block" and (ev.get("kind") == "time") != bool(ev.get("lift_at")):
+        raise SchemaError("block --kind time takes --lift-at <ISO time>, and --lift-at only goes with --kind time.")
+    if verb == "block" and ev.get("also_on") is not None and not (
+            isinstance(ev["also_on"], list) and ev.get("on") and all(isinstance(x, str) and x for x in ev["also_on"])):
+        raise SchemaError("block also_on is a list of item ids after the first --on.")
     if verb == "block" and ev.get("until") is not None:
         if ev["until"] not in BLOCK_UNTIL:
             raise SchemaError("block --until must be %s (got %r)"
@@ -1544,7 +1556,8 @@ class Item(object):
     """The projection of one item. Rebuilt from the ledger every time; never stored."""
 
     __slots__ = ("id", "title", "kind", "owner", "row", "target", "needs", "state",
-                 "blocked", "blocked_reason", "blocked_on", "blocked_until", "wait_until", "wait_reason", "started_at",
+                 "blocked", "blocked_reason", "blocked_on", "blocked_until", "blocked_kind", "blocked_also",
+                 "blocked_lift_at", "wait_until", "wait_reason", "started_at",
                  "this_deployment",
                  "created_at", "created_index", "closed_sha", "superseded_by",
                  "live", "live_broken", "live_repeats", "live_from",
@@ -1562,6 +1575,8 @@ class Item(object):
         self.state = "proposed"
         self.blocked = False
         self.blocked_reason = self.blocked_on = self.blocked_until = None
+        self.blocked_kind = self.blocked_lift_at = None
+        self.blocked_also = ()
         self.wait_until = self.wait_reason = None   # a dated wait (RO2)
         self.started_at = None                      # the last `start`: focus is read from it and the lease's `taken`
         self.this_deployment = False
@@ -2110,6 +2125,8 @@ def _finish(item, sha):
     item.held = False
     item.blocked = False
     item.blocked_reason = item.blocked_on = item.blocked_until = None
+    item.blocked_kind = item.blocked_lift_at = None
+    item.blocked_also = ()
 
 
 def is_verdict(item, run):
@@ -2244,6 +2261,8 @@ def _apply_implemented(ev, item):
         item.closed_sha = ev["sha"]
         item.blocked = False
         item.blocked_reason = item.blocked_on = item.blocked_until = None
+        item.blocked_kind = item.blocked_lift_at = None
+        item.blocked_also = ()
 
 
 def _verify_target(ev, item):
@@ -2350,9 +2369,13 @@ def _apply_item_verb(ev, index, item, seat, world):
         item.blocked = True
         item.blocked_reason, item.blocked_on = ev["reason"], ev.get("on")
         item.blocked_until = ev.get("until")        # None = done (the default)
+        item.blocked_kind, item.blocked_lift_at = ev.get("kind"), ev.get("lift_at")
+        item.blocked_also = tuple(ev.get("also_on") or ())
     elif verb == "unblock":
         item.blocked = False
         item.blocked_reason = item.blocked_on = item.blocked_until = None
+        item.blocked_kind = item.blocked_lift_at = None
+        item.blocked_also = ()
     elif verb == "verify":
         level, cid = _verify_target(ev, item)       # refuses BEFORE the run is recorded
         n = sum(1 for r in item.runs if r.config == ev["config"]) + 1
@@ -2424,6 +2447,8 @@ def _apply_item_verb(ev, index, item, seat, world):
         # closed item as stuck on something that was resolved by the close.
         item.blocked = False
         item.blocked_reason = item.blocked_on = item.blocked_until = None
+        item.blocked_kind = item.blocked_lift_at = None
+        item.blocked_also = ()
     elif verb == "drop":
         to("dropped")
         # ⚠️ SAME FIX AS `close`, same reason. Leaving `blocked`/`blocked_reason` set
@@ -2437,11 +2462,15 @@ def _apply_item_verb(ev, index, item, seat, world):
         # same way closing does.
         item.blocked = False
         item.blocked_reason = item.blocked_on = item.blocked_until = None
+        item.blocked_kind = item.blocked_lift_at = None
+        item.blocked_also = ()
     elif verb == "supersede":
         to("superseded")
         item.superseded_by = ev["by"]
         item.blocked = False
         item.blocked_reason = item.blocked_on = item.blocked_until = None
+        item.blocked_kind = item.blocked_lift_at = None
+        item.blocked_also = ()
     elif verb == "note":
         for sha in CITED_SHA_RE.findall(str(ev.get("text") or "")):
             if sha not in item.cited_shas:
