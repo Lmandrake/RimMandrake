@@ -294,6 +294,36 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(Math.Abs(temp - 40f) < 0.01f, "a room does not settle at the setting: " + temp);
                 Assert(Math.Abs(RM_MapControlMath.PerDay(5f, 30000) - 10f) < 1e-4 && RM_MapControlMath.PerDay(5f, 0) == 0f, "PerDay is wrong");
             });
+            // THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID: a dug square under one notch (WaterDlAt > 0, FillAt == 0) still holds heat.
+            Case("MapControl_thermostat_subnotch_liquid", () =>
+            {
+                const int U = 100;   // any dL-per-notch; the production call passes RM_LevelSolve.U
+                float sheet = RM_MapControlMath.ThermostatCellNotches(true, 30, false, 0, 0, U, 2f);
+                Assert(Math.Abs(sheet - 0.3f) < 1e-5, "a 0.3-notch dug sheet does not count 0.3 notches: " + sheet);
+                Assert(RM_MapControlMath.ThermostatCellNotches(true, 1, false, 0, 0, U, 2f) > 0f, "a 1 dL film counts nothing");
+                Assert(RM_MapControlMath.ThermostatCellNotches(true, 0, false, 0, 0, U, 2f) == 0f, "a dry dug square counts liquid");
+                Assert(Math.Abs(RM_MapControlMath.ThermostatCellNotches(true, 250, false, 0, 0, U, 2f) - 2.5f) < 1e-5, "2.5 notches lost its part-notch");
+                Assert(RM_MapControlMath.ThermostatCellNotches(true, 30, true, 999, 5, U, 2f) == 0.3f, "a dug square read the natural body");
+                Assert(RM_MapControlMath.ThermostatCellNotches(false, 0, false, 0, 0, U, 2f) == 0f, "dry ground counts liquid");
+                Assert(RM_MapControlMath.ThermostatCellNotches(false, 0, true, 40, 3, U, 2f) == 0.4f, "a shallow natural square does not count its dL");
+                Assert(RM_MapControlMath.ThermostatCellNotches(false, 0, true, 0, 0, U, 2f) == 2f, "a floorless natural square lost its fallback");
+                Assert(RM_MapControlMath.ThermostatCellNotches(true, 30, false, 0, 0, 0, 2f) == 0f, "a zero notch size divided");
+                // The item's scenario: a roofed bath of 0.3-notch sheets, room 21 C, setting 40 C, warms (and settles, never past).
+                float e = RM_MapControlMath.ThermostatEnergy(sheet * 9, 21f, 9, 40f, 1f);
+                Assert(e > 0f && Math.Abs(e - 3f * 0.3f * 9 * (250 / 60f)) < 1e-3, "a 0.3-notch bath takes no heat: " + e);
+                Assert(RM_MapControlMath.ThermostatEnergy(sheet, 50f, 9, 40f, 1f) < 0f, "a 0.3-notch sheet does not chill");
+                Assert(RM_MapControlMath.ThermostatEnergy(float.NaN, 10f, 9, 40f, 1f) == 0f, "NaN levels moved heat");
+                float temp = 21f;
+                for (int i = 0; i < 20000; i++) temp += RM_MapControlMath.ThermostatEnergy(sheet * 9, temp, 9, 40f, 1f) / 9f;
+                Assert(Math.Abs(temp - 40f) < 0.01f, "a thin-sheet bath does not settle at the setting: " + temp);
+                // The call site reads decilitres, never the whole-notch FillAt.
+                string th = File.ReadAllText(Path.Combine(ModRoot(), "Source", "MapControls", "RM_LiquidThermostat.cs"));
+                string hi = Between(th, "public void HeatInterval(", "protected override void AppendInspect(");
+                Assert(!hi.Contains("FillAt("), "HeatInterval still reads FillAt (whole notches only)");
+                Assert(hi.Contains("RM_MapControlMath.ThermostatCellNotches(dug, dug ? ex.WaterDlAt(c) : 0L, natural, naturalDl, floor,")
+                    && hi.Contains("RM_LevelSolve.U, NaturalCellLevels)"), "HeatInterval does not count a square by its dL");
+                Assert(hi.Contains("ex.NaturalWaterDlAt(c, out _, out floor)"), "HeatInterval does not read the natural body's dL");
+            });
             Case("MapControl_six_wiring", () =>
             {
                 string root = ModRoot();

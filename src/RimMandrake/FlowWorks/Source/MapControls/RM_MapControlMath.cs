@@ -246,10 +246,12 @@ namespace RimMandrake.FlowWorks.MapControls
 		/// <summary>Liquid thermostat: the heat (+) or chill (-) one room takes this 250-tick interval from
 		/// <paramref name="levels"/> levels of liquid the thermostat holds at <paramref name="targetC"/>. Liquid warmer
 		/// than the room warms it, colder chills it, at the liquid-heat rates, capped per room, and never past the target
-		/// (so the room settles AT the set temperature). 0 for no liquid, an empty room, or strength 0.</summary>
-		public static float ThermostatEnergy(int levels, float roomTempC, int roomCells, float targetC, float strength)
+		/// (so the room settles AT the set temperature). 0 for no liquid, an empty room, or strength 0.
+		/// <paramref name="levels"/> is in notches and may be fractional (THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID: a 0.3-notch
+		/// sheet holds heat too, as RM_LiquidHeat.Push counts it).</summary>
+		public static float ThermostatEnergy(float levels, float roomTempC, int roomCells, float targetC, float strength)
 		{
-			if (levels <= 0 || roomCells <= 0 || !(strength > 0f) || float.IsNaN(targetC) || float.IsNaN(roomTempC))
+			if (!(levels > 0f) || roomCells <= 0 || !(strength > 0f) || float.IsNaN(targetC) || float.IsNaN(roomTempC))
 			{
 				return 0f;
 			}
@@ -267,6 +269,33 @@ namespace RimMandrake.FlowWorks.MapControls
 				return Math.Min(Math.Min(e, cap), room);
 			}
 			return Math.Max(Math.Max(e, -cap), room);
+		}
+
+		/// <summary>THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID: the notches of liquid one square gives the thermostat. A dug square
+		/// counts its decilitres (<paramref name="waterDl"/> / <paramref name="dlPerNotch"/>, a part-notch included, never the
+		/// whole-notch FillAt); a natural square its pond surface over its floor (<paramref name="naturalDl"/>), or
+		/// <paramref name="naturalFallback"/> when the engine knows no floor there (RM_LiquidHeat.NaturalLevels' rule);
+		/// anything else 0.</summary>
+		public static float ThermostatCellNotches(bool excavated, long waterDl, bool source, double naturalDl, int naturalFloor,
+			int dlPerNotch, float naturalFallback)
+		{
+			if (dlPerNotch <= 0)
+			{
+				return 0f;
+			}
+			if (excavated)
+			{
+				return waterDl > 0 ? waterDl / (float)dlPerNotch : 0f;
+			}
+			if (!source)
+			{
+				return 0f;
+			}
+			if (naturalFloor <= 0)
+			{
+				return naturalFallback;
+			}
+			return naturalDl > 0 ? (float)(naturalDl / dlPerNotch) : 0f;
 		}
 
 		/// <summary>Flow meter: a level change over <paramref name="ticks"/> as levels per day (60000 ticks). 0 when no

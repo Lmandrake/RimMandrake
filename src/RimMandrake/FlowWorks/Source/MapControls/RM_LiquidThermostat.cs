@@ -22,12 +22,12 @@ namespace RimMandrake.FlowWorks.MapControls
 		public float targetC = 21f;
 		public float radius = 3f;
 
-		private int lastLevels;
+		private float lastLevels;
 		private int lastRooms;
 		private float lastEnergy;
 		private int lastOutdoorCells;
 
-		private readonly Dictionary<Room, int> levelsByRoom = new Dictionary<Room, int>();
+		private readonly Dictionary<Room, float> levelsByRoom = new Dictionary<Room, float>();
 
 		public override bool WorksOnDugChannel => false;
 		public override bool NeedsDepthEngine => false;
@@ -42,12 +42,22 @@ namespace RimMandrake.FlowWorks.MapControls
 		public void HeatInterval(RM_MapComponent_Excavation ex, float strength)
 		{
 			levelsByRoom.Clear();
-			lastLevels = lastRooms = lastOutdoorCells = 0;
-			lastEnergy = 0f;
+			lastRooms = lastOutdoorCells = 0;
+			lastLevels = lastEnergy = 0f;
 			foreach (IntVec3 c in CellsInRadius(radius))
 			{
-				int levels = ex.IsExcavated(c) ? ex.FillAt(c) : (ex.IsSourceCell(c) ? NaturalCellLevels : 0);
-				if (levels <= 0)
+				// THERMOSTAT_FIX_IGNORES_SUBNOTCH_LIQUID: decilitres, a part-notch sheet included (FillAt read 0 under a notch).
+				bool dug = ex.IsExcavated(c);
+				bool natural = !dug && ex.IsSourceCell(c);
+				double naturalDl = 0;
+				int floor = 0;
+				if (natural)
+				{
+					naturalDl = ex.NaturalWaterDlAt(c, out _, out floor);
+				}
+				float levels = RM_MapControlMath.ThermostatCellNotches(dug, dug ? ex.WaterDlAt(c) : 0L, natural, naturalDl, floor,
+					RM_LevelSolve.U, NaturalCellLevels);
+				if (!(levels > 0f))
 				{
 					continue;
 				}
@@ -70,10 +80,10 @@ namespace RimMandrake.FlowWorks.MapControls
 					lastOutdoorCells++;
 					continue;
 				}
-				levelsByRoom.TryGetValue(room, out int had);
+				levelsByRoom.TryGetValue(room, out float had);
 				levelsByRoom[room] = had + levels;
 			}
-			foreach (KeyValuePair<Room, int> kv in levelsByRoom)
+			foreach (KeyValuePair<Room, float> kv in levelsByRoom)
 			{
 				float e = RM_MapControlMath.ThermostatEnergy(kv.Value, kv.Key.Temperature, kv.Key.CellCount, targetC, strength);
 				if (e != 0f && kv.Key.PushHeat(e))
@@ -92,7 +102,7 @@ namespace RimMandrake.FlowWorks.MapControls
 			{
 				sb.AppendLine("Liquid heat is switched off in Mod Settings: no room is warmed or chilled.");
 			}
-			sb.Append("Last: " + lastLevels + " level(s) of liquid, " + lastRooms + " room(s) moved"
+			sb.Append("Last: " + lastLevels.ToString("0.##", CultureInfo.InvariantCulture) + " level(s) of liquid, " + lastRooms + " room(s) moved"
 				+ (lastOutdoorCells > 0 ? ", " + lastOutdoorCells + " wet square(s) open to the sky (no effect)" : ""));
 		}
 
@@ -121,7 +131,7 @@ namespace RimMandrake.FlowWorks.MapControls
 		{
 			return "thermostat " + ThingID + " at " + Position.x + "," + Position.z + " active=" + active
 				+ " target=" + targetC.ToString("0.#", CultureInfo.InvariantCulture)
-				+ " radius=" + radius.ToString("0.#", CultureInfo.InvariantCulture) + " levels=" + lastLevels
+				+ " radius=" + radius.ToString("0.#", CultureInfo.InvariantCulture) + " levels=" + lastLevels.ToString("0.##", CultureInfo.InvariantCulture)
 				+ " rooms=" + lastRooms + " energy=" + lastEnergy.ToString("0.##", CultureInfo.InvariantCulture)
 				+ " outdoorCells=" + lastOutdoorCells;
 		}
