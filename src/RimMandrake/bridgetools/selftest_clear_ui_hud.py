@@ -84,6 +84,18 @@ body = terrain[start:terrain.find("ConfigureAwait(false);", start)]
 check("ClearUi found", start > 0)
 check("hideHud defaults to true", re.search(r"bool hideHud = true", body) is not None)
 check("ClearUi takes the lease", "JawaBenchHudLease.Take(" in body)
+# The call must run on the DEFAULT path: guarded by a plain `if (hideHud)` (no negation,
+# no extra conjunct), its result is what hudHidden reports, it is the only Take, and
+# nothing in the body overwrites hideHud before it.
+code = re.sub(r"//[^\n]*", "", body)
+guarded = re.search(r"if\s*\(\s*hideHud\s*\)\s*hudHidden\s*=\s*JawaBenchHudLease\.Take\(\s*leaseSeconds\s*,", code)
+check("default clear_ui runs Take under a bare `if (hideHud)`", guarded is not None)
+check("Take is called exactly once in ClearUi", code.count("JawaBenchHudLease.Take(") == 1,
+      code.count("JawaBenchHudLease.Take("))
+check("ClearUi never reassigns hideHud",
+      re.search(r"(?<![=!<>])\bhideHud\s*=(?!=)", code.replace("bool hideHud = true", "")) is None)
+check("hideHud tool parameter advertises DefaultValue = true",
+      re.search(r'DefaultValue = true\)\]\s*bool hideHud = true', code) is not None)
 check("ClearUi reports hudHidden", "hudHidden," in body)
 
 lease = open(os.path.join(TOOLS, "JawaBenchHudLease.cs"), encoding="utf-8").read()
