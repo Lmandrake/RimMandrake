@@ -52,7 +52,9 @@ derived = tuple(a for a in roster if a in pred and not pred[a])
 check("NATIVES == roster non-predators", derived == S.NATIVES and derived, (derived, S.NATIVES))
 
 
-MODS = ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.biomes"]   # a donor-free running list
+MODS = ["brrainz.harmony", "ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology",
+        "ludeon.rimworld.biotech", "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey",
+        "mandrake.rm.biomes"]   # a donor-free running list with all five DLC (biome_site.DLC5)
 
 class Fake(object):
     """The lean comp answers like RM_MapComponent_Lean: SunBearingDegrees 212.5 -> HeadingDegrees 237.5 (90 - bearing,

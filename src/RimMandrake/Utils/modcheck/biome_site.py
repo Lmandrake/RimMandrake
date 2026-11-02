@@ -47,6 +47,17 @@ def running_retired(call):
     return ids, [i for i in ids if is_retired(i)]
 
 
+# Every DLC is assumed (owner 2026-09-19/25/26): a site saved without one is a fixture no test tier matches.
+DLC5 = ("ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+        "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey")
+
+
+def missing_dlc(ids):
+    """packageIds -> the DLC of DLC5 absent from them, in DLC5 order."""
+    have = {str(i).strip().lower() for i in ids}
+    return [d for d in DLC5 if d not in have]
+
+
 _NS = None
 
 
@@ -206,6 +217,9 @@ def build_site_save(s, spec, work_dir, saves_dir=None, sleep=time.sleep, probe=N
     if retired:
         raise SiteError("retired donor(s) running %s -- a site saved with them is a dead fixture; load a donor-free "
                         "tier first" % retired)
+    lack = missing_dlc(mods)
+    if lack:
+        raise SiteError("DLC not running %s -- a site is saved with all five DLC; load a tier that has them" % lack)
     rec["mods"] = mods
     rec["world"] = NS.fresh_quicktest_world(s, sleep=sleep)
     rec["colonyTile"] = _call(s, "jawa/map_info").get("tile")

@@ -34,7 +34,9 @@ check("STEPS mention the save and biome", S.SAVE in PS.STEPS and S.BIOME in PS.S
 check("plan entry prints", PS.main([]) == 0)
 
 
-MODS = ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.biomes"]   # a donor-free running list
+MODS = ["brrainz.harmony", "ludeon.rimworld", "ludeon.rimworld.royalty", "ludeon.rimworld.ideology",
+        "ludeon.rimworld.biotech", "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey",
+        "mandrake.rm.biomes"]   # a donor-free running list with all five DLC (biome_site.DLC5)
 
 class Fake(object):
     def __init__(self, natives=2, biome=S.BIOME, tile_biome=S.BIOME):

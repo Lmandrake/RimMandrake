@@ -68,7 +68,11 @@ def header_problems(path):
     if not ids:
         return ["save header unreadable: no <modIds> in the first 64 KiB of %s" % path], []
     bad = [i for i in ids if is_retired(i)]
-    return (["save header holds retired donor(s) %s" % bad] if bad else []), ids
+    P = ["save header holds retired donor(s) %s" % bad] if bad else []
+    lack = B.missing_dlc(ids)
+    if lack:
+        P.append("save header lacks DLC %s (A1: all five DLC)" % lack)
+    return P, ids
 
 
 def prove(build_if_missing=False, saves_dir=None):
