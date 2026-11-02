@@ -1,0 +1,1 @@
+An unclean WSL shutdown can leave NUL bytes in git metadata files (objects/info/alternates, .git gitdir files); os.path.realpath raises ValueError on them, which killed rm-scratch-reap 2026-11-02 03:30 PST and froze its sanity record. Any reader of git metadata must treat a NUL line as unreadable (fail closed), not crash.
