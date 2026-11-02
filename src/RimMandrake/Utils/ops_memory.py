@@ -129,16 +129,19 @@ def kind_of(key, vals, any_bool):
 
 
 def to_rates(pts):
-    """Counter [(t, v)] -> ([(t, rate per hour)], resets). A drop is a reset: the interval is skipped, not read as a
-    collapse, and counted."""
-    out, resets = [], 0
+    """Counter [(t, v)] -> ([(t, rate per hour)], resets), one rate per hour: the rise inside the hour over the time it
+    spans, so a counter read every minute that rises once an hour is not mostly zeros. A drop is a reset: the interval
+    is skipped, not read as a collapse, and counted."""
+    resets, by = 0, {}
     for (t0, v0), (t1, v1) in zip(pts, pts[1:]):
         if t1 <= t0:
             continue
         if v1 < v0:
             resets += 1
             continue
-        out.append((t1, (v1 - v0) / ((t1 - t0) / HOUR)))
+        dv, dt, _ = by.get(math.floor(t1 / HOUR), (0.0, 0.0, 0.0))
+        by[math.floor(t1 / HOUR)] = (dv + (v1 - v0), dt + (t1 - t0), t1)
+    out = [(last, dv / (dt / HOUR)) for _k, (dv, dt, last) in sorted(by.items())]
     return out, resets
 
 
@@ -164,7 +167,7 @@ def band(bvals, floors, hours=None, now_hour=None):
             rs = max(MAD_SCALE * mad(resid, 0.0), floor)
             near = [hod[h] for h in ((now_hour - 1) % 24, now_hour, (now_hour + 1) % 24) if h in hod]
             if near and max(hod.values()) - min(hod.values()) > 2 * K * rs:     # the hours differ by more than a band
-                hc = median(near)
+                hc = hod.get(now_hour, median(near))     # this hour's own level: a repeatable peak is expected
                 out = {"center": hc, "lo": hc - K * rs, "hi": hc + K * rs, "spread": rs, "kind": "same hour"}
     return out
 

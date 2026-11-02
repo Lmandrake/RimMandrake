@@ -59,6 +59,11 @@ def run(rows):
 r = run(grid(lambda t: 95.0 if t >= NOW - 24 * H else 50.0 + (t - (NOW - 7 * 24 * H)) / H * 0.1, key="t.week_used_pct"))["t.week_used_pct"]
 ok(r["kind"] == "counter" and (r.get("limit") or {}).get("h") == 0.0, "counter: level past its limit reports h=0 (%s)" % r.get("limit"))
 
+# 0b. a counter read every minute that rises once an hour has a rate of 1/h, not a median of zeros
+pts = [(i * 60.0, float(i // 60)) for i in range(0, 60 * 48)]
+rt, _rs = om.to_rates(pts)
+ok(rt and all(abs(r - 1.0) < 0.05 for _t, r in rt[1:-1]), "counter: per-minute reads of a 1/h counter rate 1/h (%s)" % [round(r, 2) for _t, r in rt[1:4]])
+
 # 1. zero MAD: a flat zero reading and a tiny wobble is not an outlier; a real jump is
 r = run(grid(lambda t: 0.001 if t >= NOW - 0.1 * H else 0.0))["t.x"]
 ok(r["state"] == "normal", "zero MAD: 0.001 after a week of zeros stays normal (got %s)" % r["state"])
