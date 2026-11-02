@@ -10230,3 +10230,7 @@
 {"seat":"BENCH","event":"start","id":"PIPE_ATLAS_REBUILD_OTHER_LOOKS_KINK","why":"relentless supervisor takes the item","ts":"2026-11-02T05:28:01Z","tsn":1793597281594210665}
 {"seat":"BENCH","event":"reassign","id":"HOT_RELEASE_FIX_OWN_WET_TERRAIN","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-02T05:30:47Z","tsn":1793597447981891819}
 {"seat":"BENCH","event":"start","id":"HOT_RELEASE_FIX_OWN_WET_TERRAIN","why":"relentless supervisor takes the item","ts":"2026-11-02T05:30:50Z","tsn":1793597450801195742}
+{"seat":"BENCH","event":"note","id":"GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD","text":"Blind rule: the Designer drafting the GSS tree must NOT read the existing GSS northstar entries, validation checklists/scripts or walk maps; it works from design/concepts/GimmeSomeSlack/{sheet,log}.md and his words only. A collector inventories the old set separately; a third reader compares.","why":"keeps the comparison meaningful","ts":"2026-11-02T05:34:54Z","tsn":1793597694911258103}
+{"seat":"BENCH","event":"lease","id":"GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD","action":"take","token":"BENCH.pid37645.154d15c4","expires":"2026-11-02T06:20:22Z","ts":"2026-11-02T05:35:22Z","tsn":1793597722908928462}
+{"seat":"BENCH","event":"claim","id":"GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD","ts":"2026-11-02T05:35:23Z","tsn":1793597723533762638}
+{"seat":"BENCH","event":"start","id":"GSS_TREE_RECONCILE_FRESH_EYES_VS_OLD","ts":"2026-11-02T05:35:24Z","tsn":1793597724191674825}
