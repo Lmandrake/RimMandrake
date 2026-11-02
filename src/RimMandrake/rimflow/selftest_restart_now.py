@@ -150,6 +150,8 @@ def test_send_message_hook():
         os.remove(SR.now_stamp_path("FOUNDRY"))
         _write(stp, {"seat_restart": {"FOUNDRY": {"state": "killed", "req_ts": T0}}})
         check(H.restarting("AGENT FOUNDRY", now=T0 + 3, sr=SR), "a restart under way (killed) holds a message")
+        _write(stp, {"seat_restart": {"FOUNDRY": {"state": "relaunched", "req_ts": T0}}})
+        check(H.restarting("AGENT FOUNDRY", now=T0 + 3, sr=SR), "relaunched but not yet awake still holds a message")
         os.remove(stp)
     finally:
         SR._schedule = saved
@@ -193,7 +195,27 @@ def test_watcher():
     check(SR.now_owed({"seat": "FOUNDRY", "req_ts": T0}, {}, T0 + 5, hold) is None, "no request, never taken: spent")
     _write(SR.request_path("FOUNDRY"), F.req(ts=T0))
     check(SR.now_owed({"seat": "FOUNDRY", "req_ts": T0}, {}, T0 + 5, hold) == "untaken", "request on disk: owed")
+    check(SR.now_owed({"seat": "FOUNDRY", "req_ts": T0}, {}, T0 + 5, hold, seats={"BENCH"}) is None,
+          "a seat no longer configured: spent at once, never ticked for now_hold_s")
     os.remove(SR.request_path("FOUNDRY"))
+    # a newer --now replaces the stamp between now-run's read and its unlink: the newer one survives
+    sp = SR.now_stamp_path("FOUNDRY")
+    _write(sp, {"seat": "FOUNDRY", "req_ts": 1.0})
+    real, reads = SR._read_json, []
+
+    def racing(path):
+        if path == sp:
+            reads.append(path)
+            return {"seat": "FOUNDRY", "req_ts": 1.0 if len(reads) == 1 else T0}
+        return real(path)
+    SR._read_json = racing
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            SR.main(["now-run", "--dry"])
+    finally:
+        SR._read_json = real
+    check(os.path.exists(sp), "now-run never removes a stamp replaced after it judged the old one spent")
+    os.remove(sp)
     _write(SR.now_stamp_path("GONE"), {"seat": "GONE", "req_ts": 1.0})
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
@@ -206,6 +228,20 @@ def test_watcher():
     check("PathExistsGlob=%h/rm/restart-now/*" in txt and "/mnt/" not in txt.split("[Path]")[1],
           "the .path unit watches the Linux-native default now_dir (drvfs never fires)")
     check(SR.now_dir() == os.environ["RM_RESTART_NOW_DIR"], "RM_RESTART_NOW_DIR overrides the stamp dir")
+
+
+def test_goodbye_and_join_keep_now():
+    old = {"killed_at": T0 - 30, "cooldown_until": T0 + 600}
+    ro = {"work": lambda seat, born: []}
+    new = {"now": True, "source": "request"}
+    check(SR._handoff_spin("BENCH", {"kind": "conductor"}, dict(new), old, ro, T0, lambda **k: None) is None,
+          "a Conductor goodbye --now inside the cooldown is his word, never cancelled as a spin")
+    check(SR._handoff_spin("FOUNDRY", {"kind": "seat"}, dict(new), old, ro, T0, lambda **k: None),
+          "a seat's --now inside the cooldown with no work done is still refused as a spin")
+    rs = {"req_ts": 1.0, "session_id": "S1", "source": "backstop_hard", "hard": True}
+    req = {"ts": T0, "session_id": "S1", "now": True, "reason": "ready"}
+    SR._join_request("FOUNDRY", {"request_max_age_s": 600}, rs, {"request": lambda seat: req}, T0 + 1, lambda **k: None)
+    check(rs.get("now") is True and rs.get("source") == "request", "a --now request joining a forced restart keeps now")
 
 
 def test_request_now():

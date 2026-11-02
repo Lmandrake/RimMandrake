@@ -38,7 +38,7 @@ def restarting(to, now=None, sr=None):
         if not (sm.name_matches(to.strip(), names) or to.strip().upper() in [seat] + [n.upper() for n in names]):
             continue
         rs = (st.get("seat_restart") or {}).get(seat) or {}
-        if rs.get("state") in ("pending", "claimed", "killed"):
+        if rs.get("state") in ("pending", "claimed", "killed", "relaunched"):   # relaunched: not yet awake
             return seat, "restart %s" % rs["state"]
         stamp = sr._read_json(sr.now_stamp_path(seat)) or {}
         req = sr._read_json(sr.request_path(seat)) or {}

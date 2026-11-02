@@ -1320,6 +1320,8 @@ def _join_request(seat, cfg, rs, ro, now, act):
         rs["cancel_after"] = float(req["input_ts"])
     if req.get("handoff") is True:
         rs["handoff"] = True
+    if req.get("now") is True:
+        rs["now"] = True    # the joined restart keeps the --now quiet and the held messages (review 2026-11-02 P2)
     if req.get("deferred") is True:
         rs["deferred"] = True
         rs.setdefault("drained", {}).update({h["id"]: h.get("desc") or "" for h in req.get("helpers") or []})
@@ -1375,7 +1377,7 @@ def _one(seat, cfg, R, st, obs, sessions, now, apply, act):
             if cur is None or cur.get("sessionId") != req.get("session_id"):
                 return _gone(seat, cfg, new, obs, ro, now, act, "request names session %s, the seat runs %s" % (
                     req.get("session_id"), (cur or {}).get("sessionId") or "none/ambiguous"))
-            spin = _handoff_spin(seat, new, rs, ro, now, act)
+            spin = _handoff_spin(seat, cfg, new, rs, ro, now, act)
             if spin:
                 return _cancel(new, seat, spin, now, act)
             new["state"] = "pending"
@@ -1641,7 +1643,7 @@ def _refused_alarm(seat, st, ro, cur, now, act):
                                                                                    str(ref.get("why"))[:300]))
 
 
-def _handoff_spin(seat, new, old, ro, now, act):
+def _handoff_spin(seat, cfg, new, old, ro, now, act):
     """-> why a handoff request is refused, or None. The cooldown guards only the backstop, and handoff.py passes a window
     with nothing in it (ALREADY HANDED OFF is rc 0), so a fresh window that hands off at once would restart for ever.
     A window made by a restart hands off inside the cooldown only if it took work; UNMEASURED refuses: no kill is safe."""
@@ -1649,6 +1651,8 @@ def _handoff_spin(seat, new, old, ro, now, act):
     until = old.get("cooldown_until") or 0
     if (new.get("handoff") is not True and new.get("now") is not True) or not born or until <= now:
         return None
+    if new.get("handoff") is not True and _goodbye(cfg, new):
+        return None     # his goodbye is his word, never a spin: --now on it changes timing only (review 2026-11-02 P1)
     work = ro["work"](seat, born) if callable(ro.get("work")) else None
     if work is not None and new_work(work, None):
         return None
@@ -2242,7 +2246,7 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         holds.append("last record time unknown")
     elif time.time() - tx["last_at"] < cfg[qk]:
         holds.append("not quiet: last record %.0f s ago < %s %d" % (time.time() - tx["last_at"], qk, cfg[qk]))
-    if rs.get("hard") or rs.get("source") in FORCED:
+    if not goodbye and (rs.get("hard") or rs.get("source") in FORCED):     # a joined goodbye needs no size (review 2026-11-02)
         size = (tx or {}).get("ctx_tokens")
         if size is None:
             holds.append("no context reading at the kill")
@@ -2916,11 +2920,12 @@ def cmd_intile(args):
 NOW_DONE = ("verified", "cancelled", "failed")
 
 
-def now_owed(stamp, st, now, hold_s, root=None):
+def now_owed(stamp, st, now, hold_s, root=None, seats=None):
     """-> why a `--now` stamp still owes a tick, or None when it is spent (delete it). Spent: its request was decided
-    (verified, cancelled, failed), it vanished untaken, or it is older than hold_s (the 120 s timer carries on)."""
+    (verified, cancelled, failed), it vanished untaken, its seat is not configured (nothing will ever take it), or it
+    is older than hold_s (the 120 s timer carries on)."""
     seat, ts = stamp.get("seat"), stamp.get("req_ts")
-    if not seat or ts is None:
+    if not seat or ts is None or (seats is not None and seat not in seats):
         return None
     if now - float(ts) >= hold_s:
         return None
@@ -2936,6 +2941,10 @@ def cmd_now_run(args):
     every spent stamp, so PathExistsGlob re-fires only for a stamp written meanwhile, never in a loop."""
     hold_s = DEFAULTS["now_hold_s"]
     t0 = time.time()
+    try:
+        seats = set(config(_schedule()))
+    except Exception:  # noqa: BLE001 - an unreadable schedule judges no seat unconfigured
+        seats = None
     while True:
         now = time.time()
         try:
@@ -2946,15 +2955,21 @@ def cmd_now_run(args):
         owed = {}
         for n in names:
             p = os.path.join(now_dir(), n)
-            why = now_owed(_read_json(p) or {}, st, now, hold_s)
+            stamp = _read_json(p) or {}
+            why = now_owed(stamp, st, now, hold_s, seats=seats)
             if why:
                 owed[n] = why
-            else:
-                try:
-                    os.remove(p)
-                except OSError:
-                    pass
-                print("[now-run] %.1fs %s stamp spent: removed" % (now - t0, n), flush=True)
+                continue
+            # a newer `--now` for the seat may have replaced the file since it was read: that one is not spent
+            # (review 2026-11-02 P2); the gap left is the re-read to the unlink, microseconds
+            if (_read_json(p) or {}).get("req_ts") != stamp.get("req_ts"):
+                owed[n] = "replaced"
+                continue
+            try:
+                os.remove(p)
+            except OSError:
+                pass
+            print("[now-run] %.1fs %s stamp spent: removed" % (now - t0, n), flush=True)
         if not owed or now - t0 > hold_s + 30:
             return 0
         print("[now-run] %.1fs tick for %s" % (now - t0, ", ".join("%s=%s" % kv for kv in sorted(owed.items()))),
@@ -2962,11 +2977,11 @@ def cmd_now_run(args):
         if args.dry:
             return 0
         try:
-            subprocess.run(["systemctl", "--user", "start", "rm-dispatcher.service"], timeout=150, capture_output=True)
+            subprocess.run(["systemctl", "--user", "start", "rm-dispatcher.service"], timeout=60, capture_output=True)
         except (OSError, subprocess.SubprocessError) as e:
             print("[now-run] tick failed: %s" % e, flush=True)
         # pending/claimed race the window's last records: tick at once; after the kill the relaunch takes its time
-        time.sleep(1 if any(w in ("untaken", "pending", "claimed") for w in owed.values()) else 5)
+        time.sleep(1 if any(w in ("untaken", "replaced", "pending", "claimed") for w in owed.values()) else 5)
 
 
 def cmd_status(args):
