@@ -56,6 +56,24 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             }
         }
 
+        // Every LiquidDef's deep and chestDeep terrain, built once after defs load (the def set never changes in a session).
+        private static HashSet<TerrainDef> suiteDeep;
+
+        private static bool SuiteDeep(TerrainDef terrain)
+        {
+            if (suiteDeep == null)
+            {
+                var set = new HashSet<TerrainDef>();
+                foreach (LiquidDef l in DefDatabase<LiquidDef>.AllDefsListForReading)
+                {
+                    if (l.terrainSuite?.deep != null) set.Add(l.terrainSuite.deep);
+                    if (l.terrainSuite?.chestDeep != null) set.Add(l.terrainSuite.chestDeep);
+                }
+                suiteDeep = set;
+            }
+            return suiteDeep.Contains(terrain);
+        }
+
         private void DoCorrosionPass()
         {
             IReadOnlyList<Pawn> pawns = map.mapPawns.AllPawnsSpawned;
@@ -74,18 +92,15 @@ namespace RimMandrake.FlowWorks.LiquidTypes
                     continue;
                 }
 
-                // "Immersion" vs "contact": the split §3 flags as native-less.
-                // Cheapest honest proxy available without a bespoke depth
-                // field of our own: WaterDeepBase-derived terrains carry
-                // Impassable passability (measured in §1's table — WaterDeep
-                // 300/Impassable vs WaterShallow 30/Standable); a drafted
-                // pawn cannot normally stand in Impassable terrain at all,
-                // so in practice only flying/swimming pawns reach it. Left
-                // as a TODO for whoever builds past the spike — this proxy
-                // is not exercised by RM_AcidShallow (Standable) in any test
-                // this spike ran.
-                LiquidDamageSpec spec = props.damageOnContact;
-                if (spec?.damageDef != null && spec.amount > 0f)
+                // "Immersion" vs "contact": chest-deep or deeper liquid immerses (RM_LiquidImmersionMath reads the
+                // terrain's passability, liquid-suite depth and canal deep tag); shallower is contact.
+                bool contactLive = props.damageOnContact?.damageDef != null && props.damageOnContact.amount > 0f;
+                bool immersionLive = props.damageOnImmersion?.damageDef != null && props.damageOnImmersion.amount > 0f;
+                bool immersing = RM_LiquidImmersionMath.IsImmersing(terrain.passability == Traversability.Impassable, SuiteDeep(terrain), terrain.tags);
+                RM_LiquidImmersionMath.Exposure exposure = RM_LiquidImmersionMath.Select(immersing, contactLive, immersionLive);
+                LiquidDamageSpec spec = exposure == RM_LiquidImmersionMath.Exposure.Immersion ? props.damageOnImmersion
+                    : exposure == RM_LiquidImmersionMath.Exposure.Contact ? props.damageOnContact : null;
+                if (spec != null)
                 {
                     DamageInfo dinfo = new DamageInfo(spec.damageDef, spec.amount, 0f, -1f, null);
                     pawn.TakeDamage(dinfo);

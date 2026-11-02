@@ -2187,6 +2187,7 @@ namespace RimMandrake.FlowWorks.SelfTest
             RiverWashChecks.Run(Case);         // FlowWorks P10: breach wash drop-failed path (RiverWashChecks.cs)
             WeirPoolChecks.Run(Case);          // WEIR_POOL_DIAGNOSE_DAMMED_AT_THE_EDGE: bank-edge slack pool (WeirPoolChecks.cs)
             GateAcidChecks.Run(Case);          // VEXXITH_USES_1: a gate sees acid in a canal fill, on the shipped defs (GateAcidChecks.cs)
+            ImmersionChecks.Run(Case);         // IMMERSION_DAMAGE_WIRE_NEVER_APPLIED: depth selects damageOnImmersion, on the shipped defs (ImmersionChecks.cs)
             SlimeChecks.Run(Case);             // SLIME_CROSSING_BUILD_SLIPPERY_SLOPE: slime slips, climb-out slides back (SlimeChecks.cs)
             HoseRulingTextChecks.Run(Case);    // hose leftovers + ruling #3 text (HoseRulingTextChecks.cs)
             PipeStyleChecks.Run(Case);         // rigid pipe looks + build-menu placement (owner rulings 2026-10-11)
