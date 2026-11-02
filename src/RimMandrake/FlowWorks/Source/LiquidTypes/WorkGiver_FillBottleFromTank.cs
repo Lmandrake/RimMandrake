@@ -38,7 +38,9 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             string refusal;
             if (RM_LiquidTankUtility.TryFindTankToDrain(pawn, t, ext.size, out tank, out liquid, out refusal, forced))
             {
-                return true;
+                // TANK_BOTTLE_FILL_FIX_IGNORES_STOCK_TARGET: the stock target of WorkGiver_FillBottle (§8.2 step 8)
+                // holds here too. Only a potable fill counts toward that stock, so only a potable fill is held back.
+                return !StockHeld(pawn, ext, liquid, forced);
             }
             if (refusal != null)
             {
@@ -61,9 +63,21 @@ namespace RimMandrake.FlowWorks.LiquidTypes
             {
                 return null;
             }
+            if (StockHeld(pawn, ext, liquid, forced))
+            {
+                return null;
+            }
             Job job = JobMaker.MakeJob(RimMandrakeFlowWorks_DefOf.RM_FillFromTankJob, t, tank);
             job.count = 1;
             return job;
+        }
+
+        /// <summary>An unasked bottle fill of potable liquid waits while the colony already has its bottles.</summary>
+        private static bool StockHeld(Pawn pawn, RM_BottledLiquidExtension ext, LiquidDef liquid, bool forced)
+        {
+            return !forced && ext.size == RM_ContainerSize.Bottle
+                && Thirst.RM_ThirstUtility.UseOf(liquid) == Thirst.RM_DrinkUse.Potable
+                && Thirst.RM_BottleStock.Deficit(pawn.Map) <= 0;
         }
     }
 }

@@ -311,6 +311,10 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(RM_ThirstMath.BottleDeficit(3, 0, 0) == 3, "can-fail: no colonists still keeps one colonist's worth");
                 string g = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "WorkGiver_FillBottle.cs"));
                 RiverSwitchFlipChecks.Has(g, @"!forced && ext\.size == RM_ContainerSize\.Bottle && Thirst\.RM_BottleStock\.Deficit\(pawn\.Map\) <= 0", "unasked bottle fills stop at the target");
+                string tk = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "WorkGiver_FillBottleFromTank.cs"));
+                RiverSwitchFlipChecks.Has(tk, @"!forced && ext\.size == RM_ContainerSize\.Bottle\s+&& Thirst\.RM_ThirstUtility\.UseOf\(liquid\) == Thirst\.RM_DrinkUse\.Potable\s+&& Thirst\.RM_BottleStock\.Deficit\(pawn\.Map\) <= 0", "TANK_BOTTLE_FILL_FIX_IGNORES_STOCK_TARGET: unasked potable fills from a tank stop at the target too");
+                RiverSwitchFlipChecks.Has(tk, @"return !StockHeld\(pawn, ext, liquid, forced\);", "the tank work giver's HasJobOnThing applies the stock gate");
+                RiverSwitchFlipChecks.Has(tk, @"if \(StockHeld\(pawn, ext, liquid, forced\)\)\s+\{\s+return null;", "the tank work giver's JobOnThing applies the stock gate");
                 string f = RiverSwitchFlipChecks.Src(Path.Combine("LiquidTypes", "JobDriver_FillBottle.cs"));
                 RiverSwitchFlipChecks.Has(f, @"for \(int i = 0; i < carried\.stackCount; i\+\+\)", "a carried batch is filled container by container");
                 RiverSwitchFlipChecks.Has(f, @"carried\.SplitOff\(made\)\.Destroy\(\);", "a pond that runs dry part-way leaves the rest empty in hand");
