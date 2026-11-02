@@ -17,3 +17,10 @@ the layout export and alias the old stuff through RM_DefAliasDef.
 - B1 L0: no def, recipe, mineable, junk pile or apparel names bronzium in the shipped load
 - B2 L0: the save check for each bronzium defName is written here, with the mapping used
 - B3 L1: one minimal-list load shows no cross-reference errors naming a bronzium def
+
+## verify
+
+The supervisor's live round runs this line on a game-up sitting (LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST). The donor junk
+pile and RSW_Durasteel must resolve first, so the load had both the donor and Armoury: a log silent about bronzium in a
+load without them is not a pass. "ronzium" matches Bronzium and bronzium in any defName, recipe or patch file.
+live-proof B3: python3 src/RimMandrake/Utils/live_def_check.py --has ThingDef/KOTOR_MineableJunk --has ThingDef/RSW_Durasteel && python3 src/RimMandrake/Utils/live_log_check.py --absent ronzium

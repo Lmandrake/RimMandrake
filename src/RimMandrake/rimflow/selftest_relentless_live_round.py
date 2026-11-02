@@ -261,6 +261,9 @@ def t_log_judge():
           G.judge("NullReferenceException in RUT_PaleMoss tick" + a, ["RUT_PaleMoss"])[0] == G.FAIL)
     check("log: the next message after an error is its own record",
           G.judge("Config error in RUT_A: bad\nRUT_PaleMoss loaded" + a, ["RUT_PaleMoss"])[0] == G.PASS)
+    check("log: a failed patch's unindented `file:` line belongs to its record (Player.log, 2026-11-01)",
+          G.judge("[M] Patch operation Verse.PatchOperationAdd(Defs/X) failed\nfile: C:\\M\\Patches\\RUT_Loot.xml" + a,
+                  ["RUT_Loot"])[0] == G.FAIL)
 
 
 def t_real_lane():

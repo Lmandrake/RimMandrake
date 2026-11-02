@@ -28,8 +28,9 @@ WARN_RE = re.compile(r"warn(ing)?s?\b", re.I)
 NONE_RE = re.compile(r"\b(0|no|zero|without)\s+(errors?|exceptions?|warnings?)\b", re.I)
 IDENT_RE = re.compile(r"\w*_\w*")
 # A line that continues the record above it (a stack trace, an inner exception, a [Ref] stub), not a message of its
-# own. Blank lines never split a record: "Exception:\n\n  defName: X" is one record.
-CONT_RE = re.compile(r"^(\s|at |\(Filename|--- |Rethrow|\[0x|\[Ref |(Verse|RimWorld|UnityEngine|System|HarmonyLib|Mono)\.\S*[:(])")
+# own. Blank lines never split a record: "Exception:\n\n  defName: X" is one record. A failed patch prints its file on
+# the next line, unindented ("file: C:\\...\\Patches\\X.xml"): without `file: ` a token naming the patch file was missed.
+CONT_RE = re.compile(r"^(\s|at |file: |\(Filename|--- |Rethrow|\[0x|\[Ref |(Verse|RimWorld|UnityEngine|System|HarmonyLib|Mono)\.\S*[:(])")
 ANCHOR = "Bridge token:"
 
 
