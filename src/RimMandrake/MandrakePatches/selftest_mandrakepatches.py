@@ -74,6 +74,83 @@ def ghost_target_ops(patch_dir):
     return out
 
 
+# CAI_FOG_SILENCE_FORCED_OFF_BY_US: every CAI 5000 member CaiFogOff.cs binds by name (const name -> member string).
+CAI_MEMBERS = {"FinderType": "CombatAI.Finder", "ModType": "CombatAI.CombatAIMod", "FinderSettingsField": "Settings",
+               "FinderModField": "Mod", "FogField": "FogOfWar_Enabled", "SightField": "NewSightSystem_Enabled",
+               "PrevFogField": "prevFogEnabled", "WriteSettingsMethod": "WriteSettings"}
+CAI_DLL = "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3673768803/1.6/Assemblies/CombatAI.dll"
+
+
+def cai_fog_problems(src, mod_src, about, srchash, cs_bytes):
+    """[problem] for the CAI fog forcer: constants, the forcing writes, the default-on setting, About, and the DLL stamp.
+    Pure function of the texts so the break checks can plant each defect."""
+    import hashlib
+    import re
+    import xml.etree.ElementTree as ET
+    out = []
+    consts = dict(re.findall(r'public const string (\w+) = "([^"]*)";', src))
+    if consts != CAI_MEMBERS:
+        out.append("CaiFogOff constants %r != CAI_MEMBERS" % consts)
+    if "fog.SetValue(settings, false);" not in src:
+        out.append("Force() no longer writes FogOfWar_Enabled=false")
+    if not re.search(r"Patch\(write,\s*prefix: new HarmonyMethod\(typeof\(CaiFogOff\), nameof\(Prefix_WriteSettings\)\)\)", src):
+        out.append("no Harmony prefix on CombatAIMod.WriteSettings")
+    if "public static void Prefix_WriteSettings() => Force(" not in src:
+        out.append("the WriteSettings prefix does not force")
+    if not re.search(r"\[StaticConstructorOnStartup\]\s*public static class CaiFogOffStartup", src) or 'CaiFogOff.Force("startup")' not in src:
+        out.append("no startup force")
+    if "public static bool caiFogForcedOff = true;" not in mod_src or 'Scribe_Values.Look(ref caiFogForcedOff, "caiFogForcedOff", true);' not in mod_src:
+        out.append("the setting is not default-on in both the field and the Scribe default")
+    if "CaiFogOff.Install();" not in mod_src:
+        out.append("the Mod constructor does not install the forcer")
+    root = ET.fromstring(about)
+    if "brrainz.harmony" not in [e.text for e in root.iterfind("modDependencies/li/packageId")]:
+        out.append("About: no Harmony modDependency")
+    if "Krkr.rule56" not in [(e.text or "").strip() for e in root.iterfind("loadAfter/li")]:
+        out.append("About: no loadAfter Krkr.rule56")
+    want = {hashlib.sha256(b).hexdigest() + " " + name for name, b in cs_bytes.items()}
+    have = {l.strip() for l in srchash.splitlines() if l.strip() and not l.startswith("#")}
+    if want != have:
+        out.append("Assemblies/RimMandrakePatches.dll.srchash does not match Source/CaiFogOff/*.cs (rebuild): %s" % sorted(want ^ have))
+    return out
+
+
+def cai_fog_check():
+    import glob
+    rd = lambda *p: open(os.path.join(HERE, *p), encoding="utf-8").read()
+    src, mod_src, about = rd("Source", "CaiFogOff", "CaiFogOff.cs"), rd("Source", "CaiFogOff", "RM_PatchesMod.cs"), rd("About", "About.xml")
+    srchash = rd("Assemblies", "RimMandrakePatches.dll.srchash")
+    cs = {"CaiFogOff/" + os.path.basename(f): open(f, "rb").read() for f in sorted(glob.glob(os.path.join(HERE, "Source", "CaiFogOff", "*.cs")))}
+    check("CAI fog forcer: shipped source, About and DLL stamp", cai_fog_problems(src, mod_src, about, srchash, cs) == [],
+          cai_fog_problems(src, mod_src, about, srchash, cs))
+    check("CAI fog forcer: RimMandrakePatches.dll is shipped", os.path.getsize(os.path.join(HERE, "Assemblies", "RimMandrakePatches.dll")) > 0)
+    breaks = [("a renamed CAI member", src.replace('"FogOfWar_Enabled"', '"FogOfWar_On"'), mod_src, about, srchash),
+              ("Force stops writing false", src.replace("fog.SetValue(settings, false);", "fog.SetValue(settings, was);"), mod_src, about, srchash),
+              ("the WriteSettings prefix is dropped", src.replace("prefix: new HarmonyMethod", "postfix: new HarmonyMethod"), mod_src, about, srchash),
+              ("the setting defaults off", src, mod_src.replace("caiFogForcedOff = true;", "caiFogForcedOff = false;"), about, srchash),
+              ("loadAfter Krkr.rule56 removed", src, mod_src, about.replace("<li>Krkr.rule56</li>", ""), srchash),
+              ("stale DLL stamp", src, mod_src, about, srchash.replace(srchash.splitlines()[-1][:8], "00000000"))]
+    for name, a, b, c, d in breaks:
+        check("break: %s is reported" % name, len(cai_fog_problems(a, b, c, d, cs)) >= 1)
+    if not os.path.exists(CAI_DLL):
+        print("skip  CAI members vs installed CombatAI.dll: %s not readable (UNMEASURED)" % CAI_DLL)
+        return
+    try:
+        import lint_harmony_targets as lht       # ECMA-335 tables via dnfile, never a string grep
+        index = {"types": lht.index_dll(CAI_DLL)}
+    except ImportError:
+        print("skip  CAI members vs installed CombatAI.dll: dnfile missing (UNMEASURED)")
+        return
+    m = CAI_MEMBERS
+    want = [(m["FinderType"], "field", m["FinderSettingsField"]), (m["FinderType"], "field", m["FinderModField"]),
+            ("CombatAI.Settings", "field", m["FogField"]), ("CombatAI.Settings", "field", m["SightField"]),
+            (m["ModType"], "field", m["PrevFogField"]), (m["ModType"], "method", m["WriteSettingsMethod"])]
+    bad = [(w, lht.has_member(index, *w)) for w in want if lht.has_member(index, *w)[0] != "OK"]
+    check("CAI members still exist in the installed CombatAI.dll", bad == [], bad)
+    check("sanity: the CombatAI.dll probe can miss a member",
+          lht.has_member(index, "CombatAI.Settings", "field", "FogOfWar_NoSuchName")[0] == "MISSING_MEMBER")
+
+
 def main():
     spec = importlib.util.spec_from_file_location("mp_v", os.path.join(HERE, "validation.py"))
     v = importlib.util.module_from_spec(spec)
@@ -81,6 +158,7 @@ def main():
     shipped = v.unguarded_ops()
     check("shipped Patches/: every top-level op guarded", shipped == [], shipped)
     anima_check()
+    cai_fog_check()
     ghosts = ghost_target_ops(os.path.join(HERE, "Patches"))
     check("shipped Patches/: no op on a mod-namespaced def sits outside a FindMod", ghosts == [], ghosts)
     fa = open(os.path.join(HERE, "Patches", "HeadSetForFA_Revive.xml"), encoding="utf-8").read()

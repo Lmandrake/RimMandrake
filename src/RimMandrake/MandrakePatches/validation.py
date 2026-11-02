@@ -7,9 +7,16 @@ for a full wave. `find src/RimMandrake/MandrakePatches -maxdepth 2 -type d`
 shows a real `Source/` with four subfolders (`GravshipAstronautFix/`,
 `PhytokinBarkHeadFix/`, `ResearchKitEastFix/`, `ToolBeltFix/`, each holding one
 offline Python art generator, not a runtime C# comp) plus a `Textures/` tree.
-Still true: no Assemblies, no ModSettings class, no Harmony patch anywhere in
-this mod -- `suite.toggles = []` still holds, every component
-`beyond_toggle=True`.
+Since CAI_FOG_SILENCE_FORCED_OFF_BY_US (2026-11-01) this mod also ships ONE
+assembly, `Assemblies/RimMandrakePatches.dll` from `Source/CaiFogOff/`: a Mod
+Settings toggle `caiFogForcedOff` (default on) and a Harmony prefix that keep
+CAI 5000's own fog of war off (owner card 2026-10-20, "Keep CAI, force its fog
+off"). MEASURED from the installed CombatAI.dll (Krkr.rule56, workshop
+3673768803, decompiled 2026-11-01): CAI's fresh-install default is
+`FogOfWar_Enabled = false` (no initializer, Scribe default false, no preset
+assigns it); only its checkbox, or a player's old config, turns it on. The
+`cai_fog_forced_off_static` chain below covers that toggle; every other
+component stays `beyond_toggle=True`.
 
 FIVE MORE ABSORBED WALK DOCS, traced this pass (VALIDATION_SCRIPT_BACKFILL_1's
 own worklist derivation): `design/validation_walks/RimMandrake/
@@ -109,7 +116,7 @@ ResearchRetag's "out of this validator's floor" note:
 from modcheck import Suite, ExpectationFailed
 
 suite = Suite("MandrakePatches")
-suite.toggles = []   # no Source/, no ModSettings -- every component beyond_toggle
+suite.toggles = ["caiFogForcedOff"]   # Source/CaiFogOff; everything else is beyond_toggle
 
 
 GUARDS = ("PatchOperationFindMod", "PatchOperationConditional")
@@ -152,6 +159,28 @@ def every_fix_is_guarded_static(t):
         if bad:
             raise ExpectationFailed("%d unguarded op(s): %s" % (len(bad), bad))
 
+
+
+@suite.chain("cai_fog_forced_off_static")
+def cai_fog_forced_off_static(t):
+    """Static: the CAI fog forcer's source, About entries, DLL stamp and every CAI member it binds by name
+    (selftest_mandrakepatches.cai_fog_problems + the installed CombatAI.dll metadata). Live (needs CAI on the list,
+    not in MINIMAL): CombatAI.Finder.Settings.FogOfWar_Enabled reads False after load with the toggle on."""
+    with t.component("cai_fog_forced_off_by_default", toggle="caiFogForcedOff"):
+        import importlib.util as _ilu
+        import glob as _glob
+        import os as _os
+        here = _os.path.dirname(_os.path.abspath(__file__))
+        spec = _ilu.spec_from_file_location("mp_st", _os.path.join(here, "selftest_mandrakepatches.py"))
+        st = _ilu.module_from_spec(spec)
+        spec.loader.exec_module(st)
+        rd = lambda *q: open(_os.path.join(here, *q), encoding="utf-8").read()
+        cs = {"CaiFogOff/" + _os.path.basename(f): open(f, "rb").read()
+              for f in sorted(_glob.glob(_os.path.join(here, "Source", "CaiFogOff", "*.cs")))}
+        bad = st.cai_fog_problems(rd("Source", "CaiFogOff", "CaiFogOff.cs"), rd("Source", "CaiFogOff", "RM_PatchesMod.cs"),
+                                  rd("About", "About.xml"), rd("Assemblies", "RimMandrakePatches.dll.srchash"), cs)
+        if bad:
+            raise ExpectationFailed("; ".join(bad))
 
 # ---- MANDRAKEPATCHES_COVERAGE_GAPS_1 (offline half, round 41) ---------------------------------------------------
 # Every leaf Replace/Add/Remove under Patches/ names a donor def by xpath and a donor mod by FindMod NAME. A patch that
