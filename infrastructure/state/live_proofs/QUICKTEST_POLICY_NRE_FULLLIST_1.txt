@@ -1,1 +1,2 @@
+# STAGING: this proof needs a FRESH launch on the owner's FULL list (modlist_swap to infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml, 316 mods incl. mandrake.rm.patches; deploy MandrakePatches). The NRE never reproduced on the minimal list (FOUNDRY note 2026-10-07), so on it A1 fails by design (run-1, 2026-11-02: 23 running vs 316).
 live-proof A1: python3 src/RimMandrake/Utils/live_log_check.py --never GenerateStartingPolicies --never "ReadingPolicyDatabase..ctor" && python3 src/RimMandrake/MandrakePatches/prove_null_thingclass_live.py < /dev/null
