@@ -1,0 +1,2 @@
+Hasleo Backup Suite Free 6.0.2: the vendor's table says Free does not clone a system disk, its binary says Free has no CLI and no backup filters, and no ignore-bad-sectors option was found. The UI still walks to the final Proceed page, so reaching that page proves nothing. For unattended clones with an unreadable cluster use wimlib VSS capture piped to apply, with exclude and restart on a read error. A pipable capture reads everything twice: it hashes all data before writing.
+home: NONE
