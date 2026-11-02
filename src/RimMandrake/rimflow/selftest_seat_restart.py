@@ -1473,6 +1473,27 @@ def test_g8b_recovery_does_not_replay_what_a_dead_window_answered():
           "G8b the wake gives the unanswered message and not the answered one (%r)" % out.getvalue()[:300])
 
 
+def test_wake_never_overwrites_a_newer_restart_record():
+    """NEGATIVE (GPT round 3): wake N must not write its record over restart N+1's, written while N read."""
+    import contextlib
+    import io
+    root = os.path.join(TMP, "wake_newer")
+    os.makedirs(os.path.join(root, "restart"))
+    old = _tx_file("wake_newer_old", [_u("1970-01-12T13:45:00Z", "goodbye", origin={"kind": "human"}, promptSource="typed")])
+    rec = {"seat": "BENCH", "session_id": "sid-old", "killed_at": T0, "req_ts": T0, "gen": "gN", "tx_path": old,
+           "tx_offset": os.path.getsize(old)}
+    SR.write_killed("BENCH", dict(rec, gen="gN1", session_id="sid-new"), root)
+    real = SR.transcript_for
+    try:
+        SR.transcript_for = lambda me, cfg: "/tx/" + me["sessionId"]
+        with contextlib.redirect_stdout(io.StringIO()):
+            SR._wake_conductor("BENCH", SR.config(bsched())["BENCH"], rec, root=root, me={"sessionId": "b"})
+    finally:
+        SR.transcript_for = real
+    got = SR._read_json(SR.killed_path("BENCH", root)) or {}
+    check(got.get("gen") == "gN1" and not got.get("woken_at"), "a wake leaves a newer restart's record alone (%s)" % got)
+
+
 def test_g8c_a_recovered_message_is_not_replayed_after_the_next_message():
     """Codex review at 96e854cc, goodbye #2: B recovers X and answers it, takes Y and dies. C gets Y, not X.
     If B died before ending a turn, C must still get X."""

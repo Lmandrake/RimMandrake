@@ -1968,6 +1968,18 @@ def write_killed(seat, rec, root=None):
     _write_json(killed_path(seat, root), rec)
 
 
+def _rewrite_own_killed(seat, rec, root=None):
+    """A wake's update of the record it read: written only while the file still holds that restart (GPT round 3: a
+    newer restart's record written meanwhile must not be replaced by an older wake's copy). -> written?"""
+    cur = _read_json(killed_path(seat, root)) or {}
+    if cur.get("gen") and cur.get("gen") != rec.get("gen"):
+        print("\n== the killed record now belongs to restart %s, not %s: this wake leaves it alone." % (
+            cur.get("gen") or "(none)", rec.get("gen") or "(none)"))
+        return False
+    write_killed(seat, rec, root)
+    return True
+
+
 def consume_request(seat, root=None, ts=None):
     """Move the request to done/ — only if it is still the one decided on (ts). The move comes first and the bytes moved
     are judged (GPT review 2026-11-01 #2): a newer request that replaced the file after the decision goes back, never
@@ -2272,6 +2284,10 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
     (empty = go). Between this and the signal there is no barrier: that gap is one /proc start read, the killed-record
     write, the pidfd open and its start re-check (milliseconds)."""
     cfg = config(sch).get(seat) or dict(DEFAULTS)
+    # the publication check first: its git calls can take minutes, and an input queued meanwhile must still meet the
+    # transcript, queue and fence reads below (GPT round 3)
+    unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat) \
+        if rs.get("source") not in FORCED else None
     path = transcript_for(sf, cfg)
     tx = tx_summary(path or "")
     holds = []
@@ -2316,10 +2332,8 @@ def recheck_at_kill(seat, sch, rs, sf, paused=paused_now, work=None, pending=pen
         nw = new_work(evs, rs.get("ticket"), drain=rs.get("deferred") is True)
         if nw and rs.get("source") not in FORCED and not goodbye:
             holds.append(_work_why(nw))
-    if rs.get("source") not in FORCED:   # an append (a helper's last, a goodbye's note) can land between verdict and kill
-        unpub = (shard or (lambda s_: unpublished_shard(s_, cfg.get("clone") or REPO)))(seat)
-        if unpub:
-            holds.append("ledger shard unpublished: %s" % unpub)
+    if unpub:                            # an append (a helper's last, a goodbye's note) can land between verdict and kill
+        holds.append("ledger shard unpublished: %s" % unpub)
     return holds
 
 
@@ -2737,7 +2751,8 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
     done = recovered_done(rec)           # read before woken_at goes: it dates the last reader's ended turn
     rec = dict({k: v for k, v in rec.items() if k not in ("woken_at", "shown")}, woken_tx=mine, prior_tx=prior,
                acked=sorted(done))
-    write_killed(seat, rec, root)        # on the chain before the read: this window's death leaves it findable
+    if not _rewrite_own_killed(seat, rec, root):   # on the chain before the read: this window's death leaves it findable
+        return
     path = rec.get("tx_path")
     off = rec.get("tx_offset")
     since = rec.get("input_ts") or rec.get("req_ts") or rec.get("killed_at") or 0
@@ -2770,8 +2785,8 @@ def _wake_conductor(seat, cfg, rec, gen=None, root=None, me=None):
         print("Answer these FIRST, before anything else.")
     for tx in blind:
         print("UNMEASURED: %s could not be read to its end. Say so to him in one line; ask what he sent that window." % tx)
-    write_killed(seat, dict(rec, woken_at=time.time(), woken_by=me.get("sessionId") or "unknown", owed=len(msgs),
-                               shown=[_msg_key(r) for r in msgs]), root)
+    _rewrite_own_killed(seat, dict(rec, woken_at=time.time(), woken_by=me.get("sessionId") or "unknown", owed=len(msgs),
+                                   shown=[_msg_key(r) for r in msgs]), root)
 
 
 FORCED = ("backstop", "backstop_hard")          # size restarts: the size must stand until the kill

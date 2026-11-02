@@ -108,8 +108,18 @@ def test_kill_time_recheck():
         h_hard = SR.recheck_at_kill("FOUNDRY", sch, dict(hard, source="backstop_hard"), sf, shard=lambda s_: None, **kw)
         h_shard = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "session_id": "sid-old", "now": True}, sf,
                                      shard=lambda s_: "1 commit unpublished", **kw)
+        # NEGATIVE (GPT round 3): a prompt queued while the slow publication check runs must still hold the kill
+        queued = []
+
+        def slow_shard(s_):
+            queued.append(1)
+            return None
+        h_late = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "session_id": "sid-old", "now": True}, sf,
+                                    shard=slow_shard, paused=lambda: None, work=lambda s_, ts: [],
+                                    pending=lambda *a: ["a queued prompt was never delivered"] if queued else [])
     finally:
         SR.tx_summary, SR.helpers_of, SR.bridge_reading, SR.final_fence = old
+    check(any("queued prompt" in h for h in h_late), "kill recheck: input queued during the shard check holds (%s)" % h_late)
     check(h_now == [], "kill recheck: --now, turn ended 5 s ago: go (%s)" % h_now)
     check(not any("context reading" in h for h in h_bye), "a goodbye joined to a hard restart needs no size reading (%s)" % h_bye)
     check(any("context reading" in h for h in h_hard), "a hard restart alone still needs one (%s)" % h_hard)
