@@ -27,8 +27,10 @@ Load rules, read from the 1.6 decompile (D:\\ClaudeWork\\rimmandrake\\decomp\\rw
              resident estimate); a smaller one is decoded whole: samples x channels x 4 bytes (float PCM, an upper
              estimate; Unity may keep 16-bit).
   atlases    StaticTextureAtlas pages baked at load from textures under 512 px that ThingDefs/ScatterableDefs insert:
-             atlas_attribution.py (rules there). Needs the def dump capture (refresh.D_DUMP) of the SAME mod set;
-             a stale dump leaves atlases UNMEASURED and --check fails.
+             atlas_attribution.py (rules there). Needs the def dump capture (refresh.D_DUMP) of the same mod set
+             in the same order; mods the list dropped since the capture (at most 5%) have their defs left out
+             and are named in the report. A dump missing a list mod, or reordered, leaves atlases UNMEASURED and
+             --check fails.
 What it does NOT see (the residual against a measurement): RenderTextures (e.g. facial animation pools), pawn
 atlases (built at runtime per pawn), AssetBundles, Core/DLC textures inside resources.assets, assemblies,
 Unity/Mono overhead.
@@ -379,12 +381,15 @@ def game_private_mb():
 def atlas_for(ids, recs, active, compression, dump_dir):
     """Atlas estimate for the list, or (None, why) when the def dump does not describe this mod set."""
     import atlas_attribution as A
-    ok, why = A.dump_matches(dump_dir, [norm_id(x) for x in ids], norm_id)
+    ok, why, dropped = A.dump_matches(dump_dir, [norm_id(x) for x in ids], norm_id)
     if not ok:
         return None, why
     idx = A.slim_index(dump_dir, os.path.join(CACHE, "atlas"))
     ordered = [(pid, recs[pid]) for pid in ids if pid in recs]
-    return A.estimate(idx, ordered, compression), why
+    est = A.estimate(idx, ordered, compression, drop=dropped)
+    if dropped:
+        why += " (%d of their defs excluded; their patches onto other defs are not undone)" % est["defs_dropped"]
+    return est, why
 
 
 def write_report(rows, recs, compression, measured, list_path, report, atlas=None, atlas_why=""):

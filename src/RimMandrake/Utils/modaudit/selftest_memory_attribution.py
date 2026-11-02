@@ -19,6 +19,7 @@ end to end:
    folder minus _m masks; a mod's own graphic class inserts nothing; a vanilla path is counted unsized
 10 atlas sanity: split bytes sum to the page bytes; a planted rule (no minifiable double insert) changes the total
 """
+import json
 import os
 import struct
 import sys
@@ -133,9 +134,28 @@ def main():
     with tempfile.TemporaryDirectory() as d:
         with open(os.path.join(d, "manifest.json"), "w") as fh:
             fh.write('{"capturedUtc": "x", "mods": [{"packageId": "B", "loadOrder": 2}, {"packageId": "a", "loadOrder": 1}]}')
-        ok(A.dump_matches(d, ["a", "b"], str.lower)[0], "9 dump in load order matches")
+        ok(A.dump_matches(d, ["a", "b"], str.lower)[:3:2] == (True, set()), "9 dump in load order matches")
         ok(not A.dump_matches(d, ["b", "a"], str.lower)[0], "9 same mods, other order: stale")
-        ok(not A.dump_matches(d, ["a"], str.lower)[0], "9 different mod set: stale")
+        ok(not A.dump_matches(d, ["a", "b", "c"], str.lower)[0], "9 list mod missing from the dump: stale")
+        got = A.dump_matches(d, ["a"], str.lower)
+        ok(not got[0], "9 dropped mod over 5%% of a 1-mod list: stale %r" % (got,))
+        lst = ["a"] + ["x%d" % i for i in range(19)]
+        with open(os.path.join(d, "manifest.json"), "w") as fh:
+            json.dump({"capturedUtc": "x", "mods": [{"packageId": p, "loadOrder": i} for i, p in
+                                                    enumerate(["a", "B_steam"] + lst[1:])]}, fh)
+        got = A.dump_matches(d, lst, lambda p: A._pid(p))
+        ok(got[0] and got[2] == {"b"} and "left out: b" in got[1], "9 one dropped mod of 20: usable %r" % (got,))
+        ok(not A.dump_matches(d, lst[1:] + ["a"], lambda p: A._pid(p))[0], "9 dropped + reordered: stale")
+    # 9 dropped mods' defs are excluded, not counted
+    idx3 = {"things": [r + ["m.a"] for r in idx["things"]] + [["Building", False, "MapMeshOnly",
+                                                               "Verse.Graphic_Single", "t/chair", None, "Cutout",
+                                                               "gone.mod_steam"]],
+            "scatter": [["t/rock/b", "gone.mod"]]}
+    e3 = A.estimate(idx3, recs, True, drop={"gone.mod"})
+    ok(e3["defs_dropped"] == 2 and e3["textures"] == e["textures"], "9 drop: 2 defs out, inserts unchanged %r" % (
+        (e3["defs_dropped"], e3["textures"]),))
+    ok(A.estimate(idx3, recs, True)["textures"] == e["textures"] + 1, "9 no drop: the scatter rock/b inserts in"
+       " Terrain")
     # 10 sanity
     ok(abs(sum(e["by_mod_mb"].values()) - e["total_mb"]) < 0.01, "10 split sums to page total")
     idx2 = {"things": [list(t) for t in idx["things"]], "scatter": []}

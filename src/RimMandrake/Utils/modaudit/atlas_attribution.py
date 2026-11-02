@@ -144,10 +144,12 @@ class Holder(object):
 
 
 def slim_index(dump_dir, cache_dir):
-    """[(group, minifiable, drawerType, graphicClass, texPath, maskPath, shaderType)] of ThingDefs + scatter paths,
-    from the def dump capture; cached by capture name (a dump is immutable once captured)."""
+    """[(group, minifiable, drawerType, graphicClass, texPath, maskPath, shaderType, packageId)] of ThingDefs, and
+    [(texturePath, packageId)] of ScatterableDefs, from the def dump capture; cached by capture name (a dump is
+    immutable once captured). packageId is the def's source mod, lowercased, so defs of mods the list dropped since
+    the capture can be left out (dump_matches)."""
     cap = os.path.basename(os.path.normpath(dump_dir))
-    cp = os.path.join(cache_dir, "atlas_index_%s.json" % cap)
+    cp = os.path.join(cache_dir, "atlas_index_v2_%s.json" % cap)
     if os.path.isfile(cp):
         try:
             return json.load(open(cp))
@@ -161,41 +163,67 @@ def slim_index(dump_dir, cache_dir):
             continue
         things.append([(d.get("is") or {}).get("category"), bool((d.get("is") or {}).get("minifiable")),
                        f.get("drawerType"), g.get("graphicClass"), g.get("texPath"), g.get("maskPath"),
-                       g.get("shaderType")])
+                       g.get("shaderType"), (d.get("packageId") or "").lower()])
     scat = []
     sp = os.path.join(dump_dir, "defs", "ScatterableDef.json")
     if os.path.isfile(sp):
-        scat = [(d.get("fields") or {}).get("texturePath") for d in json.load(open(sp))["defs"]]
-    idx = {"things": things, "scatter": [s for s in scat if s]}
+        scat = [[(d.get("fields") or {}).get("texturePath"), (d.get("packageId") or "").lower()]
+                for d in json.load(open(sp))["defs"]]
+    idx = {"things": things, "scatter": [s for s in scat if s[0]]}
     os.makedirs(cache_dir, exist_ok=True)
     with open(cp, "w") as fh:
         json.dump(idx, fh)
     return idx
 
 
+# A dump may hold mods the list has dropped since its capture: their own defs are left out (estimate(drop=)), but
+# their patches onto other mods' defs cannot be undone, so only a small drift is accepted as the same game.
+MAX_DROPPED_FRACTION = 0.05
+
+
+def _pid(p):
+    """A def's packageId as dump_matches' norm sees it (lower case, no _steam suffix)."""
+    p = (p or "").lower()
+    return p[:-6] if p.endswith("_steam") else p
+
+
 def dump_matches(dump_dir, ordered_norm, norm):
-    """True when the dump's manifest mods equal the list, in load order (a reordered list resolves defs and
-    overrides differently, so a dump of another order describes another game)."""
+    """(ok, why, dropped). ok when every list mod is in the dump and the shared mods load in the list's order (a
+    reordered list resolves defs and overrides differently, so a dump of another order describes another game).
+    dropped = dump mods absent from the list (lowercased); their defs are to be excluded. A list mod missing from
+    the dump, or more than MAX_DROPPED_FRACTION of the list dropped, is not ok."""
     try:
         m = json.load(open(os.path.join(dump_dir, "manifest.json")))
     except (OSError, ValueError):
-        return False, "no readable manifest in %s" % dump_dir
+        return False, "no readable manifest in %s" % dump_dir, set()
     dumped = [norm(x["packageId"]) for x in sorted(m.get("mods", []), key=lambda x: x.get("loadOrder", 0))]
-    if set(dumped) != set(ordered_norm):
-        return False, "dump has %d mods, list %d; %d differ" % (len(dumped), len(ordered_norm),
-                                                                 len(set(dumped) ^ set(ordered_norm)))
-    if dumped != list(ordered_norm):
-        i = next(i for i, (a, b) in enumerate(zip(dumped, ordered_norm)) if a != b)
-        return False, "dump and list hold the same mods in another order (first difference at #%d: %s vs %s)" % (
-            i + 1, dumped[i], ordered_norm[i])
-    return True, "dump %s matches the list (%d mods)" % (m.get("capturedUtc"), len(dumped))
+    listed = set(ordered_norm)
+    missing = [x for x in ordered_norm if x not in set(dumped)]
+    if missing:
+        return False, "dump %s lacks %d list mod(s), e.g. %s" % (m.get("capturedUtc"), len(missing),
+                                                                  ", ".join(missing[:3])), set()
+    dropped = [x for x in dumped if x not in listed]
+    if len(dropped) > MAX_DROPPED_FRACTION * len(ordered_norm):
+        return False, "dump has %d mods the list dropped (> %d%% of %d)" % (
+            len(dropped), MAX_DROPPED_FRACTION * 100, len(ordered_norm)), set()
+    shared = [x for x in dumped if x in listed]
+    if shared != list(ordered_norm):
+        i = next(i for i, (a, b) in enumerate(zip(shared, ordered_norm)) if a != b)
+        return False, "dump and list load the shared mods in another order (first difference at #%d: %s vs %s)" % (
+            i + 1, shared[i], ordered_norm[i]), set()
+    why = "dump %s matches the list (%d mods)" % (m.get("capturedUtc"), len(shared))
+    if dropped:
+        why += "; %d dump mod(s) the list dropped are left out: %s" % (len(dropped), ", ".join(dropped))
+    return True, why, {x.lower() for x in dropped}
 
 
-def estimate(idx, ordered_recs, compression, max_tex=MAX_TEX):
-    """Bake the pages the engine would and split their bytes by mod. Returns a dict (see keys below)."""
+def estimate(idx, ordered_recs, compression, max_tex=MAX_TEX, drop=()):
+    """Bake the pages the engine would and split their bytes by mod. Returns a dict (see keys below).
+    drop: lowercased packageIds whose defs are left out (mods the list dropped since the dump's capture)."""
     has = Holder(ordered_recs)
     queue, seen = {}, set()
-    st = {"defs_inserting": 0, "defs_foreign_class": 0, "vanilla_unsized": 0, "too_big": 0, "foreign_classes": {}}
+    st = {"defs_inserting": 0, "defs_foreign_class": 0, "vanilla_unsized": 0, "too_big": 0, "foreign_classes": {},
+          "defs_dropped": 0}
 
     def insert(group, ck, mk):
         key = (group, mk is not None)
@@ -211,7 +239,12 @@ def estimate(idx, ordered_recs, compression, max_tex=MAX_TEX):
             return
         queue.setdefault(key, []).append((ck, w[0], w[1], w[2]))
 
-    for cat, minif, drawer, gclass, tex, mpath, shader in idx["things"]:
+    drop = set(drop)
+    for row in idx["things"]:
+        cat, minif, drawer, gclass, tex, mpath, shader = row[:7]
+        if drop and len(row) > 7 and _pid(row[7]) in drop:
+            st["defs_dropped"] += 1
+            continue
         if drawer == "RealtimeOnly":
             continue
         tx = def_textures(gclass, tex, mpath, "Complex" in (shader or ""), has)
@@ -226,6 +259,11 @@ def estimate(idx, ordered_recs, compression, max_tex=MAX_TEX):
             for ck, mk in tx:
                 insert(g, ck, mk)
     for p in idx.get("scatter", []):
+        if isinstance(p, list):
+            if _pid(p[1]) in drop:
+                st["defs_dropped"] += 1
+                continue
+            p = p[0]
         insert("Terrain", p.strip("/").lower(), None)
 
     budget = (max_tex // 2) ** 2
