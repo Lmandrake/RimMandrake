@@ -163,14 +163,14 @@ namespace RimMandrake.CreatureBehaviors
             }
             geometryResolved = true;
             RM_PinnedSunExtension ext = Extension;
-            if (ext == null || Find.WorldGrid == null || !map.Tile.Valid)
+            // E and the bearing come from the planet's PlanetGeometryDef (RM_PlanetSunGeometry); the
+            // extension's own substellar point is only the fallback when no geometry def is loaded.
+            if (ext == null || !RM_PlanetSunGeometry.TrySunAt(map.Tile, ext.substellarLatitude, ext.substellarLongitude,
+                out float rawElev, out float bearingDeg))
             {
                 return;
             }
-            Vector2 longLat = Find.WorldGrid.LongLatOf(map.Tile);
-            SunGeometry(longLat.y, longLat.x, ext.substellarLatitude, ext.substellarLongitude,
-                out float bearingDeg, out float arcDeg);
-            elevationDegrees = Mathf.Clamp(90f - arcDeg, ext.minElevationDegrees, ext.maxElevationDegrees);
+            elevationDegrees = Mathf.Clamp(rawElev, ext.minElevationDegrees, ext.maxElevationDegrees);
             float b = bearingDeg * Mathf.Deg2Rad;
             // Bearing is clockwise from north toward the sun; map x = east, z = north.
             // Shadows fall directly away from the sun.

@@ -40,6 +40,7 @@ def geometry_plants():
     plants = [
         ("dark side starts inside the wall", "<nightsideBandMinArc>117</nightsideBandMinArc>", "<nightsideBandMinArc>100</nightsideBandMinArc>", "inside the wall"),
         ("wall arcs reversed", "<terminatorBandMinArc>63</terminatorBandMinArc>", "<terminatorBandMinArc>130</terminatorBandMinArc>", "0 <= min <= max"),
+        ("fixedSun not a bool", "<fixedSun>true</fixedSun>", "<fixedSun>yes</fixedSun>", "fixedSun"),
         ("substellar latitude off the globe", "<substellarLat>0</substellarLat>", "<substellarLat>120</substellarLat>", "off the globe"),
     ]
     bad = 0

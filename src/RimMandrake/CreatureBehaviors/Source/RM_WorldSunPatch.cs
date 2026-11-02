@@ -27,13 +27,13 @@ namespace RimMandrake.CreatureBehaviors
     // (its planet type drops to Default when Worldbuilder is loaded, see this item's ledger note), the disc and the lit
     // side stop turning anyway.
     //
-    // Substellar point: WeatherSuite's PlanetGeometryDef (read by name, no reference), else the first biome's
+    // Substellar point: WeatherSuite's PlanetGeometryDef (through RM_PlanetSunGeometry), else the first biome's
     // RM_PinnedSunExtension, else (0,0). Setting: worldSunPinned (off = vanilla, or the Alien Worlds sun).
     // ════════════════════════════════════════════════════════════════════
     [StaticConstructorOnStartup]
     public static class RM_WorldSunPatch
     {
-        public const string PlanetGeometryDefType = "RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef";
+        public const string PlanetGeometryDefType = RM_PlanetSunGeometry.PlanetGeometryDefType;
 
         private static Vector3? pinned;
 
@@ -64,22 +64,12 @@ namespace RimMandrake.CreatureBehaviors
             string source = "default (0,0)";
             try
             {
-                Type geo = GenTypes.GetTypeInAnyAssembly(PlanetGeometryDefType);
-                if (geo != null)
+                if (RM_PlanetSunGeometry.Loaded)
                 {
-                    FieldInfo fLat = AccessTools.Field(geo, "substellarLat"), fLon = AccessTools.Field(geo, "substellarLon");
-                    foreach (Def d in GenDefDatabase.GetAllDefsInDatabaseForDef(geo))
-                    {
-                        if (fLat != null && fLon != null)
-                        {
-                            lat = (float)fLat.GetValue(d);
-                            lon = (float)fLon.GetValue(d);
-                            source = "PlanetGeometryDef " + d.defName;
-                        }
-                        break;
-                    }
+                    RM_PlanetSunGeometry.SubstellarPoint(0f, 0f, out lat, out lon);
+                    source = "PlanetGeometryDef " + RM_PlanetSunGeometry.DefName;
                 }
-                if (source.StartsWith("default"))
+                else
                 {
                     foreach (BiomeDef b in DefDatabase<BiomeDef>.AllDefsListForReading)
                     {

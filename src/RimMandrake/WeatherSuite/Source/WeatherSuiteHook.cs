@@ -58,6 +58,15 @@ namespace RimMandrake.StarWars.WeatherSuite
         // storm wall and the aurora at once — the front guards the seam,
         // the aurora owns the dark past it.
         public float nightsideBandMinArc = 117f;
+
+        // Time of day = location (PLANET_GEOMETRY_WIDEN_SUN_STANDS_STILL;
+        // design/RimMandrake/unified_direct_sun_heat_2026-10-19.md DS7). True
+        // means the sun never moves: every map's sun stands at its tile's
+        // elevation E = 90 - arc from the substellar point, on the great-circle
+        // bearing toward it. Sun & Shade reads E and the bearing from this def
+        // (by type name, no assembly reference). False, or no def at all, means
+        // a day/night world, where Direct Sun is off. Ash'karr ships true.
+        public bool fixedSun;
     }
 
     public static class WeatherGeometryUtility

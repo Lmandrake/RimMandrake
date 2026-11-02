@@ -34,6 +34,9 @@
   (not a separately-measured number) so no map ever carries both the
   storm wall and an aurora — see WeatherSuiteHook.cs's own comment on this
   field for the reasoning.
+  fixedSun = true: Ash'karr is tidally locked, so time of day IS location
+  (design/RimMandrake/unified_direct_sun_heat_2026-10-19.md DS7). Every map's
+  sun stands still at its tile's E = 90 - arc, bearing toward (0, 0).
   ============================================================================
 -->
 <Defs>
@@ -45,6 +48,7 @@
     <terminatorBandMinArc>63</terminatorBandMinArc>
     <terminatorBandMaxArc>117</terminatorBandMaxArc>
     <nightsideBandMinArc>117</nightsideBandMinArc>
+    <fixedSun>true</fixedSun>
   </RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef>
 
 </Defs>

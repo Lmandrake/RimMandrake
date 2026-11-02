@@ -825,14 +825,14 @@ namespace RimMandrake.CreatureBehaviors
 				return;
 			}
 			RM_SunHeatExtension ext = HeatExtension;
-			if (ext == null || Find.WorldGrid == null || !map.Tile.Valid)
+			// E and the bearing come from the planet's PlanetGeometryDef (RM_PlanetSunGeometry); the
+			// extension's own substellar point is only the fallback when no geometry def is loaded.
+			if (ext == null || !RM_PlanetSunGeometry.TrySunAt(map.Tile, ext.substellarLatitude, ext.substellarLongitude,
+				out float rawElev, out float bearingDeg))
 			{
 				return;
 			}
-			Vector2 longLat = Find.WorldGrid.LongLatOf(map.Tile);
-			RM_MapComponent_PinnedSun.SunGeometry(longLat.y, longLat.x, ext.substellarLatitude, ext.substellarLongitude,
-				out float bearingDeg, out float arcDeg);
-			float elev = Mathf.Clamp(90f - arcDeg, ext.minElevationDegrees, ext.maxElevationDegrees);
+			float elev = Mathf.Clamp(rawElev, ext.minElevationDegrees, ext.maxElevationDegrees);
 			sunElevationDeg = elev;
 			if (!RM_CreatureBehaviorsSettings.directionalShadeEnabled)
 			{

@@ -3,7 +3,7 @@
 
   ws-geometry   every PlanetGeometryDef under src/ (the geometry lives in the RimUtinni wiring mod): exactly one is loaded (the mod reads
                 whichever loads first), lat/lon in range, 0 <= wall min <= wall max <= 180, and the dark side starts at or past the wall's outer
-                edge so the two bands can never overlap
+                edge so the two bands can never overlap; fixedSun (time of day = location) is literally true or false
   ws-defs       the aurora incident's gameCondition resolves and runs the maximised-aurora class; the incident targets the World (the
                 any-home-map nightside test is only sound for a world-level incident); the front is permanent-capable and off underground
   ws-kernel     the kernel is Verse-free and listed in the csproj; the slider floors in the settings window equal the kernel's vanilla constants
@@ -75,6 +75,9 @@ def main(argv):
             E("ws-geometry", f"{rel}: substellar point {v['substellarLat']},{v['substellarLon']} is off the globe")
         if not 0 <= v["terminatorBandMinArc"] <= v["terminatorBandMaxArc"] <= 180:
             E("ws-geometry", f"{rel}: wall arcs {v['terminatorBandMinArc']}..{v['terminatorBandMaxArc']} are not 0 <= min <= max <= 180")
+        fixed = (d.findtext("fixedSun") or "false").strip()
+        if fixed not in ("true", "false"):
+            E("ws-geometry", f"{rel}: fixedSun '{fixed}' is not true or false (RimWorld parses a bool from exactly those)")
         if v["nightsideBandMinArc"] < v["terminatorBandMaxArc"]:
             E("ws-geometry", f"{rel}: the dark side starts at {v['nightsideBandMinArc']}, inside the wall (ends {v['terminatorBandMaxArc']}): a tile could carry both")
 
