@@ -339,9 +339,8 @@ def collect(root, rows_dir, prev, now=None):
                    for r in got["receipts"] if r["item"] not in have]
     rows = dedup(rows)
     rows += ended(prev, {r["item"] for r in rows}, rows_dir)
-    for i, r in enumerate(rows):
+    for r in rows:  # no position field: one row ending would shift every other row's hash and rewrite them all
         r["short"] = fleet_watch.title_short(r["title"])
-        r["order"] = i
     return rows, got
 
 

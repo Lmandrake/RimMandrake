@@ -100,7 +100,7 @@ function stuckWords(r){
 }
 function renderParts(){
   const t0 = midnight();
-  const rows = parts.filter(r => LIVE.has(r.status) || (r.finished_at || 0) >= t0).sort((a,b) => (a.order ?? 99) - (b.order ?? 99));
+  const rows = parts.filter(r => LIVE.has(r.status) || (r.finished_at || 0) >= t0).sort((a,b) => (a.started || 0) - (b.started || 0));
   const live = rows.filter(r => LIVE.has(r.status));
   const stuck = live.filter(r => r.stuck);
   const work = live.filter(r => !r.stuck && r.status === "Building");

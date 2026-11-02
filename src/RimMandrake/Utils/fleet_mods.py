@@ -356,9 +356,8 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
                      "counts": "%d closed this week · %d open · %d parked" % (len(closed_week), open_n, len(parked_n)),
                      "proof": "" if m == INFRA else proof_line(m, mc, blind, now, days),
                      "next": nxt, "waits": waits[:3], "tasks": tasks[:25], "more": max(0, len(tasks) - 25)})
+    # no position field: a new mod would shift every doc's hash and rewrite all of them; the page sorts by last_at
     docs.sort(key=lambda d: (d["infra"], -d["last_at"]))
-    for n, d in enumerate(docs):
-        d["order"] = n
     return docs
 
 
