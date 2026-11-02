@@ -10370,3 +10370,5 @@
 {"seat":"BENCH","event":"start","id":"GRAFFITI_NORTHSTAR_GREEN_FULL_1","why":"relentless supervisor takes the item","ts":"2026-11-02T15:31:34Z","tsn":1793633494621798739}
 {"seat":"BENCH","event":"reassign","id":"NORTHSTAR_EVERYWHERE_PROGRAM_1","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-02T15:31:55Z","tsn":1793633515660374569}
 {"seat":"BENCH","event":"start","id":"NORTHSTAR_EVERYWHERE_PROGRAM_1","why":"relentless supervisor takes the item","ts":"2026-11-02T15:31:57Z","tsn":1793633517943857085}
+{"seat":"BENCH","event":"reassign","id":"BIOME_TIER_CLEANUP_1","to":"BENCH","reason":"relentless staffs it","why":"relentless filler takes a proposed item of the other seat","ts":"2026-11-02T15:34:54Z","tsn":1793633694817534963}
+{"seat":"BENCH","event":"start","id":"BIOME_TIER_CLEANUP_1","why":"relentless supervisor takes the item","ts":"2026-11-02T15:34:57Z","tsn":1793633697388164443}
