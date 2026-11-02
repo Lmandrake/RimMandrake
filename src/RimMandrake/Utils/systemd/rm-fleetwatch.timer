@@ -1,0 +1,11 @@
+# Every 5 minutes — see rm-fleetwatch.service.
+[Unit]
+Description=RimMandrake Fleet Watch board refresh, every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+
+[Install]
+WantedBy=timers.target
