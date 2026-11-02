@@ -103,7 +103,8 @@ goes worse, we should take it seriously and have hard conversations or debug why
 - **Record.** One row per finished full-list session (session row `mods` >= `full_list_min_mods`), appended to
   `D:\ClaudeWork\rimmandrake\game_health\history.jsonl` (outside git). ops_watch's `tps` family runs
   `game_health_check.py record` on every pass (`rm-ops-watch.timer`), so no session is missed while the timer runs.
-  An open session (no shutdown row, newest row under 30 min old) waits for the next pass.
+  A session without a shutdown row stays open until a newer session exists on disk or it has been silent 12 h (a hang
+  or a machine sleep can recover); `history.jsonl.lock` keeps two recorders from appending the same session.
 - **Row.** Load health (reached the menu, a game loaded, load seconds), end (clean shutdown or not), memory curves per
   10 min since the first game load with peak and Theil-Sen growth per hour (managed `heapMB`; private `privateMB`;
   Unity native `unityReservedMB`; GPU driver `gfxMB`), TPS (run-window ratio curve, median, first-vs-last decay at
@@ -112,8 +113,8 @@ goes worse, we should take it seriously and have hard conversations or debug why
 - **In-game fields** (`JawaBenchSessionHealth.cs`, on every `context` row, once a minute, no hook): psapi private
   bytes and working set (Mono's `Process.WorkingSet64` read 0 on every full-list session 2026-10-26..28), the Unity
   Profiler totals, `upS` (process uptime, giving load seconds at the menu row), Verse.Log's message count and cap
-  state, and error/warning entries counted from Verse.Log's own message queue (`logErrLowerBound` when the queue
-  may have evicted entries unseen). A release player reads `gfxMB` 0, so GPU memory is UNMEASURED until another
+  state, and error/warning entries counted from Verse.Log's own message queue: null until one scan succeeds, and
+  `logErrLowerBound` when the queue may have evicted entries unseen (itself a breach: over 1,000 messages a minute). A release player reads `gfxMB` 0, so GPU memory is UNMEASURED until another
   source exists. The archived Player.log is not used for error counts: it carries no stack traces, so a grep for
   `Verse.Log:Error` reads 0 on a log full of errors.
 - **Threshold to debug.** `src/RimMandrake/Utils/game_health_thresholds.json` holds the limits, each with what it

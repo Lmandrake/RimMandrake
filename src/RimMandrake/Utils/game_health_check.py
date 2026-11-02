@@ -10,7 +10,7 @@ One row per FULL-LIST game session (session row `mods` >= full_list_min_mods), r
 (<LocalLow>\JawaBench\tps\tps_<start>_<session>_<pid>_<seg>.jsonl, design/RimMandrake/tps_record.md):
 
   load   reached the menu, a game loaded, load seconds (context `upS` at the menu row; UNMEASURED before the field)
-  end    clean shutdown, or ended without one (no row for ended_after_min)
+  end    clean shutdown, or ended without one (a newer session started, or no row for ended_after_min)
   mem    managed (Mono GC heap, `heapMB`), private bytes (`privateMB`), native (Unity allocators, `unityReservedMB`),
          GPU driver (`gfxMB`): each a curve per bucket_min of time since the first game load, its peak, and its growth
          per hour (Theil-Sen) over the in-game span
@@ -144,7 +144,7 @@ def num(x):
 
 
 # ------------------------------------------------------------------ one session -> one row
-def summarize(sess, rows, bad, rules, now=None):
+def summarize(sess, rows, bad, rules, now=None, superseded=False):
     now = time.time() if now is None else now
     head = next((r for r in rows if r.get("kind") == "session"), {})
     kinds = {}
@@ -152,7 +152,9 @@ def summarize(sess, rows, bad, rules, now=None):
         kinds.setdefault(r.get("kind"), []).append(r)
     t_first, t_last = rows[0]["_t"], rows[-1]["_t"]
     shutdown = bool(kinds.get("shutdown") or kinds.get("shutdown-complete"))
-    ended = shutdown or (now - t_last) > rules["ended_after_min"] * 60
+    # a hang or a machine sleep can go quiet for a long time and recover, so silence alone ends a session only after
+    # ended_after_min; a newer session on disk means this process is gone (GPT review 2026-11-02, P2)
+    ended = shutdown or superseded or (now - t_last) > rules["ended_after_min"] * 60
     game_rows = kinds.get("game") or []
     t0 = game_rows[0]["_t"] if game_rows else None
     ctx = kinds.get("context") or []
@@ -175,7 +177,7 @@ def summarize(sess, rows, bad, rules, now=None):
         m["load.seconds"] = U("no context row carries upS (companion predates the field) or no menu row")
     m["end.clean"] = shutdown if ended else U("session still open")
     # memory curves
-    span_ok = t0 is not None and (t_last - t0) >= rules["growth_min_span_min"] * 60
+    min_span = rules["growth_min_span_min"] * 60
     bucket = rules["bucket_min"] * 60.0
     curves = {}
     for name, f in MEM_FIELDS:
@@ -189,7 +191,7 @@ def summarize(sess, rows, bad, rules, now=None):
             continue
         m["mem.%s_peak_mb" % name] = round(max(v for _, v in src), 1)
         after = sorted((t, v) for t, v in src if t0 is not None and t >= t0)
-        if span_ok and len(after) >= 3:
+        if len(after) >= 3 and after[-1][0] - after[0][0] >= min_span:     # the FIELD's own span, not the session's
             m["mem.%s_growth_mb_per_h" % name] = round(theil_sen(after) * 3600.0, 1)
         else:
             m["mem.%s_growth_mb_per_h" % name] = U("under %d min of in-game time" % rules["growth_min_span_min"])
@@ -232,12 +234,15 @@ def summarize(sess, rows, bad, rules, now=None):
         for k in ("tps.ratio_median", "tps.ratio_decay_pct"):
             m[k] = U("no run window (never unpaused)")
     # log
+    # the companion writes logErr/logWarn only once a queue scan has succeeded (null before: never a healthy zero)
     le = [(num(r.get("logErr")), num(r.get("logWarn"))) for r in ctx if num(r.get("logErr")) is not None]
+    caps = [r.get("logCapReached") for r in ctx if isinstance(r.get("logCapReached"), bool)]
+    m["log.cap_reached"] = any(caps) if caps else U("no context row carries a readable logCapReached")
     if le:
         m["log.errors"] = int(le[-1][0])
         m["log.warnings"] = int(le[-1][1] or 0)
-        cap = [r for r in ctx if r.get("logEnabled") is False]
-        m["log.cap_reached"] = bool(cap)
+        # entries evicted from Verse.Log's 1000-entry queue between two scans were never counted: the count is a floor
+        m["log.errors_lower_bound"] = any(r.get("logErrLowerBound") is True for r in ctx)
         if t0 is not None:
             cb = {}
             for r in ctx:
@@ -245,8 +250,9 @@ def summarize(sess, rows, bad, rules, now=None):
                     cb[int((r["_t"] - t0) // bucket)] = int(r["logErr"])
             curves["log_errors"] = [[k * rules["bucket_min"], v] for k, v in sorted(cb.items())]
     else:
-        for k in ("log.errors", "log.warnings", "log.cap_reached"):
-            m[k] = U("no context row carries logErr (companion predates the always-on counter)")
+        for k in ("log.errors", "log.warnings", "log.errors_lower_bound"):
+            m[k] = U("no context row carries logErr (companion predates the always-on counter, or no log scan "
+                     "succeeded)")
     row["metrics"] = m
     row["curves"] = curves
     row["curveAxis"] = "minutes since first game load; mem [min, median MB, max MB]; ratio [min, median ratio, median tps]"
@@ -290,9 +296,21 @@ def read_history(path=None):
 def record(directory=None, rules=None, path=None, dry_run=False, now=None):
     rules = rules or load_rules()
     directory = directory or os.environ.get("RM_GAME_HEALTH_TPS_DIR") or T.record_dir()
-    known = {r.get("session") for r in read_history(path)}
+    p = path or history_path()
+    if dry_run:
+        return _record(directory, rules, p, True, now)
+    os.makedirs(os.path.dirname(p), exist_ok=True)
+    import fcntl
+    with open(p + ".lock", "a") as lk:          # two overlapping recorders must not both append a session
+        fcntl.flock(lk, fcntl.LOCK_EX)
+        return _record(directory, rules, p, False, now)
+
+
+def _record(directory, rules, p, dry_run, now):
+    known = {r.get("session") for r in read_history(p)}
     new, open_, skipped = [], [], 0
-    for sess, paths in sorted(sessions_on_disk(directory).items(), key=lambda kv: os.path.basename(kv[1][0])):
+    order = sorted(sessions_on_disk(directory).items(), key=lambda kv: os.path.basename(kv[1][0]))
+    for i, (sess, paths) in enumerate(order):
         if sess in known:
             continue
         h = first_row(paths[0])
@@ -302,15 +320,24 @@ def record(directory=None, rules=None, path=None, dry_run=False, now=None):
         rows, bad = read_session(paths)
         if not rows:
             continue
-        row = summarize(sess, rows, bad, rules, now)
+        row = summarize(sess, rows, bad, rules, now, superseded=i < len(order) - 1)
         (new if row["finished"] else open_).append(row)
     if new and not dry_run:
-        p = path or history_path()
-        os.makedirs(os.path.dirname(p), exist_ok=True)
+        torn = False
+        try:
+            with open(p, "rb") as fh:
+                fh.seek(0, 2)
+                if fh.tell():
+                    fh.seek(-1, 2)
+                    torn = fh.read(1) != b"\n"
+        except FileNotFoundError:
+            pass
         with open(p, "a") as fh:
+            if torn:
+                fh.write("\n")                   # end an interrupted row so the next one is not glued to it
             for r in new:
                 fh.write(json.dumps(r, sort_keys=True, allow_nan=False) + "\n")
-    return {"dir": directory, "history": path or history_path(), "dryRun": dry_run, "recorded": new,
+    return {"dir": directory, "history": p, "dryRun": dry_run, "recorded": new,
             "open": open_, "notFullList": skipped, "known": len(known)}
 
 
@@ -358,7 +385,7 @@ def main(argv=None):
             print_rows(res["recorded"] + res["open"])
         return 0
     if args.cmd in ("report", "latest"):
-        h = read_history()
+        h = sorted(read_history(), key=lambda r: str(r.get("start")))   # a late-finalized session appends late
         if args.cmd == "latest":
             print(json.dumps(h[-1] if h else None, sort_keys=True))
             return 0

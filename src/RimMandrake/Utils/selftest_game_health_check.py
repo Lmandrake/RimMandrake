@@ -80,7 +80,7 @@ def write_session(d, rows, start=T0, pid=4242):
 
 
 RULES = G.load_rules()
-NOW = T0 + 10 * 3600
+NOW = T0 + 13 * 3600     # past ended_after_min (12 h) for a session with no shutdown and no successor
 
 with tempfile.TemporaryDirectory() as tmp:
     rec = os.path.join(tmp, "tps")
@@ -137,8 +137,51 @@ with tempfile.TemporaryDirectory() as tmp:
     dmet = res2["recorded"][0]["metrics"] if res2["recorded"] else {}
     check("ended without shutdown: end.clean False, and not a breach (a kill looks the same)",
           dmet.get("end.clean") is False and "end.clean" not in [b["key"] for b in res2["recorded"][0]["breaches"]], dmet)
+    # torn tail: an interrupted append must not glue the next row to it
+    with open(hist, "a") as fh:
+        fh.write('{"session": "torn')
+    write_session(rec, session_rows(sid="9" * 32, minutes=40), start=T0 + 4)
+    G.record(directory=rec, rules=RULES, path=hist, now=NOW)
+    check("torn tail: the next row survives an interrupted one",
+          any(r.get("session") == "9" * 32 for r in G.read_history(hist)), [r.get("session") for r in G.read_history(hist)])
+    # superseded: no shutdown, quiet for minutes only, but a newer session exists -> ended
+    rec3 = os.path.join(tmp, "tps3")
+    os.makedirs(rec3)
+    write_session(rec3, session_rows(sid="7" * 32, shutdown=False, minutes=40), start=T0)
+    write_session(rec3, session_rows(sid="8" * 32, mods=14, minutes=5), start=T0 + 3000)
+    r3 = G.record(directory=rec3, rules=RULES, path=os.path.join(tmp, "h4", "h.jsonl"), now=T0 + 3600, dry_run=True)
+    check("superseded: a session with a newer one on disk is finished, not held open",
+          [r["session"][0] for r in r3["recorded"]] == ["7"] and not r3["open"], (r3["recorded"], r3["open"]))
+    # cap, lower bound and failed scans, from the fields the companion writes
+    cap = session_rows(sid="6" * 32)
+    for r in cap:
+        if r["kind"] == "context" and r["mono"] > 3000:
+            r["logCapReached"] = True
+            r["logErrLowerBound"] = True
+    s6 = G.summarize("6" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in cap], 0, RULES, now=NOW)
+    check("log: cap from logCapReached and a lower-bound count both breach",
+          {"log.cap_reached", "log.errors_lower_bound"} <= {b["key"] for b in s6["breaches"]}, s6["breaches"])
+    noscan = session_rows(sid="5" * 32)
+    for r in noscan:
+        if r["kind"] == "context":
+            r.update(logErr=None, logWarn=None, logErrLowerBound=None, logScan="unreadable")
+    s5 = G.summarize("5" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in noscan], 0, RULES, now=NOW)
+    check("log: no successful scan is UNMEASURED, never 0 errors",
+          not G.is_m(s5["metrics"]["log.errors"]) and s5["metrics"]["log.cap_reached"] is False, s5["metrics"]["log.errors"])
+    # growth needs the FIELD's own span: private bytes for 3 minutes of a 2-hour session is not a rate
+    short = session_rows(sid="4" * 32)
+    k = 0
+    for r in short:
+        if r["kind"] == "context":
+            k += 1
+            if k > 3:
+                r.pop("privateMB", None)
+    s4 = G.summarize("4" * 32, [dict(r, _t=G.T._epoch(r["utc"])) for r in short], 0, RULES, now=NOW)
+    check("growth: 3 minutes of a field is UNMEASURED even in a long session",
+          not G.is_m(s4["metrics"]["mem.private_growth_mb_per_h"]) and G.is_m(s4["metrics"]["mem.managed_growth_mb_per_h"]),
+          s4["metrics"]["mem.private_growth_mb_per_h"])
     dry = G.record(directory=rec, rules=RULES, path=os.path.join(tmp, "h2", "x.jsonl"), dry_run=True, now=NOW)
-    check("dry-run writes nothing", len(dry["recorded"]) == 3 and not os.path.exists(os.path.join(tmp, "h2")))
+    check("dry-run writes nothing", len(dry["recorded"]) == 4 and not os.path.exists(os.path.join(tmp, "h2")))
     # breaches on synthetic extremes, one per limit kind
     big = session_rows(sid="e" * 32, heap0=7000, heap_rate_h=1500, errs_per_min=10, ratio1=1.0)
     rec2 = os.path.join(tmp, "tps2")
@@ -183,8 +226,8 @@ with tempfile.TemporaryDirectory() as tmp:
     hb = out.get("tps.health_breaches", {})
     check("ops_watch: tps.health_breaches is MEASURED 1 naming the key",
           hb.get("m") == "MEASURED" and hb.get("v") == 1 and "tps.ratio_decay_pct" in str(hb), hb)
-    check("ops_watch: game off still reads the health check", out.get("tps.ratio_median", {}).get("m") == "UNMEASURED"
-          and out.get("tps.health_sessions", {}).get("v") == 4, out.get("tps.health_sessions"))
+    check("ops_watch: game off still reads the health check (5 rows: the torn line is not a session)", out.get("tps.ratio_median", {}).get("m") == "UNMEASURED"
+          and out.get("tps.health_sessions", {}).get("v") == 5, out.get("tps.health_sessions"))
     tg = [t for t in OW.load_rules()["targets"] if t.get("key") == "tps.health_breaches"]
     check("ops_watch rules: the breach count alarms as OPS_GAME_HEALTH_DEBUG",
           tg and tg[0].get("alarm") is True and tg[0].get("name") == "OPS_GAME_HEALTH_DEBUG", tg)

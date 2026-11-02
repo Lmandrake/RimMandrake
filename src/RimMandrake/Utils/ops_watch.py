@@ -1295,7 +1295,7 @@ def game_health(now):
     try:
         with open(os.path.join(os.environ.get("RM_GAME_HEALTH_DIR", "/mnt/d/ClaudeWork/rimmandrake/game_health"),
                                "history.jsonl")) as fh:
-            out["tps.health_sessions"] = M(sum(1 for ln in fh if ln.strip()), "full-list sessions recorded")
+            out["tps.health_sessions"] = M(sum(1 for ln in fh if ln.strip().endswith("}")), "full-list sessions recorded")
     except OSError as e:
         out["tps.health_sessions"] = U("history unreadable: %s" % e)
     return out

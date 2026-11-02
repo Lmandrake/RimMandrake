@@ -13,6 +13,7 @@
 //                             Verse.Log.messageCount / reachedMaxMessagesLimit (private statics) and
 //                             Debug.unityLogger.logEnabled, each null when unreadable
 //   logErr, logWarn, logErrLowerBound
+//                             null until the first queue scan succeeds (logScan says ok | busy | unreadable); then the
 //                             error / warning entries (with repeats) seen in Verse.Log's message queue since this
 //                             process registered. logErrLowerBound = true when the queue may have evicted entries
 //                             before they were seen (full queue at the first read, or a full queue whose oldest entry
@@ -111,10 +112,12 @@ namespace JawaBench.BridgeTools
             sb.Append(",\"logMsgs\":").Append(count is int n ? n.ToString() : "null")
               .Append(",\"logCapReached\":").Append(reached is bool b ? (b ? "true" : "false") : "null");
             try { sb.Append(",\"logEnabled\":").Append(Debug.unityLogger.logEnabled ? "true" : "false"); } catch { }
-            sb.Append(",\"logScan\":\"").Append(Scan()).Append('"')
-              .Append(",\"logErr\":").Append(Interlocked.Read(ref _err))
-              .Append(",\"logWarn\":").Append(Interlocked.Read(ref _warn))
-              .Append(",\"logErrLowerBound\":").Append(_lower ? "true" : "false");
+            string scan = Scan();
+            sb.Append(",\"logScan\":\"").Append(scan).Append('"');
+            // until one scan has succeeded the counts are unknown: null, never a healthy-looking 0 (GPT review P1)
+            if (_first) sb.Append(",\"logErr\":null,\"logWarn\":null,\"logErrLowerBound\":null");
+            else sb.Append(",\"logErr\":").Append(_err).Append(",\"logWarn\":").Append(_warn)
+                   .Append(",\"logErrLowerBound\":").Append(_lower ? "true" : "false");
             return sb.ToString();
         }
 
