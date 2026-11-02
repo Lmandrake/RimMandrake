@@ -125,6 +125,8 @@ melts above freezing.
 - **Buys:** building choices tied to where you live; trading stone blocks between regions becomes real.
 - **Costs:** stuff stats per stone (numbers, not code) plus balance passes; "weathers in rain" is small
   C#. Interacts with Stonecutting Extended (active). After paint. Settings: per-stone stat tuning.
+- **Numbers (2026-11-02):** `design/RimMandrake/world_remake_2026-10-19/stone_buildstats_table.json`, held
+  against vanilla blocks and any built def by `src/RimMandrake/Utils/stone_buildstats.py check`.
 - **Risks:** balance work for every stone; each one needs art. Ice that melts must read its temperature
   from vanilla air temperature, never a biome heat rule.
 

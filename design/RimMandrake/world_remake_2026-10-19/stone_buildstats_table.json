@@ -1,0 +1,67 @@
+{
+  "_about": "Per-stone stuffProps for the new stone blocks of 12_rocks_design.md idea 4 (item STONE_BUILDSTATS_TUNE_GRANITE_GETS_RIVALS). Each stone's numbers are OVERRIDES on vanilla StoneBlocksBase, written exactly as a vanilla child block writes them (Core ThingDefs_Misc/Various_Stone.xml). The block ThingDefs are built by BIOME_STONES_DESIGN_BASALT_JOINS_THE_BAND: when it builds one, it sets that stone's defName here and copies the numbers; src/RimMandrake/Utils/stone_buildstats.py check then holds the def to this table. Salt rock's 'weathers in rain' and ice's melting are behaviour (C#), not numbers, and are out of this table.",
+  "envelope": {
+    "statBases.Mass": [0.5, 1.5],
+    "statBases.MarketValue": [0.5, 1.5],
+    "statBases.SharpDamageMultiplier": [0.35, 0.95],
+    "statBases.BluntDamageMultiplier": [0.7, 1.2],
+    "statFactors.MaxHitPoints": [0.65, 2.0],
+    "statFactors.Beauty": [0.8, 1.7],
+    "statFactors.WorkToBuild": [3.5, 7.0],
+    "statFactors.WorkToMake": [0.7, 1.6],
+    "statFactors.MarketValue": [0.25, 0.8]
+  },
+  "_envelope_why": "Bounds keep a stone inside the range of RimWorld building materials: MaxHitPoints factor from wood (0.65) to just above the hardest vanilla stone; WorkToBuild/WorkToMake within about a third of vanilla stone (5.0-6.0, 1.1-1.3).",
+  "stones": {
+    "basalt": {
+      "defName": null,
+      "identity": "heavy and tough but slow to cut",
+      "claims": [
+        {"stat": "statBases.Mass", "extreme": "max"},
+        {"stat": "statFactors.MaxHitPoints", "extreme": "max"},
+        {"stat": "statFactors.WorkToMake", "extreme": "max"},
+        {"stat": "statFactors.WorkToBuild", "extreme": "max"}
+      ],
+      "statBases": {"Mass": 1.4, "SharpDamageMultiplier": 0.6},
+      "statFactors": {"MaxHitPoints": 1.95, "Beauty": 0.9, "WorkToBuild": 6.5, "WorkToMake": 1.5},
+      "statOffsets": {}
+    },
+    "pumice": {
+      "defName": null,
+      "identity": "pumice/tuff: light, fast and weak",
+      "aliases": ["tuff"],
+      "claims": [
+        {"stat": "statBases.Mass", "extreme": "min"},
+        {"stat": "statFactors.WorkToBuild", "extreme": "min"},
+        {"stat": "statFactors.WorkToMake", "extreme": "min"}
+      ],
+      "statBases": {"Mass": 0.6, "SharpDamageMultiplier": 0.4, "BluntDamageMultiplier": 0.8},
+      "statFactors": {"MaxHitPoints": 0.95, "WorkToBuild": 4.0, "WorkToMake": 0.8},
+      "statOffsets": {}
+    },
+    "salt_rock": {
+      "defName": null,
+      "identity": "cheap (weathering in rain is behaviour, not in this table)",
+      "claims": [
+        {"stat": "statBases.MarketValue", "extreme": "min"},
+        {"stat": "statFactors.MarketValue", "extreme": "min"}
+      ],
+      "statBases": {"Mass": 1.0, "MarketValue": 0.6},
+      "statFactors": {"MarketValue": 0.3, "MaxHitPoints": 1.1, "WorkToBuild": 4.5, "WorkToMake": 0.95},
+      "statOffsets": {}
+    },
+    "obsidian": {
+      "defName": null,
+      "identity": "beautiful and brittle",
+      "claims": [
+        {"stat": "statFactors.Beauty", "extreme": "max"},
+        {"stat": "statOffsets.Beauty", "extreme": "max"},
+        {"stat": "statFactors.MaxHitPoints", "extreme": "min"},
+        {"stat": "statBases.SharpDamageMultiplier", "extreme": "max"}
+      ],
+      "statBases": {"Mass": 1.0, "MarketValue": 1.4, "SharpDamageMultiplier": 0.9, "BluntDamageMultiplier": 0.8},
+      "statFactors": {"MaxHitPoints": 0.8, "Beauty": 1.6, "WorkToMake": 1.4},
+      "statOffsets": {"Beauty": 2}
+    }
+  }
+}
