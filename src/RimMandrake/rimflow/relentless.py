@@ -2868,6 +2868,7 @@ def main(argv=None):
     sub.add_parser("wall", help="report only: what the Marker's wall would deny, from the checks' tool calls")
     p = sub.add_parser("trust")
     p.add_argument("--set", default="E1")
+    p.add_argument("--arm", help="read results_<arm>, a changed Marker's run of the same set")
     p = sub.add_parser("verdict")
     p.add_argument("--item", required=True)
     p.add_argument("--nonce", required=True)
@@ -2943,7 +2944,7 @@ def main(argv=None):
             print(json.dumps(relentless_wall.audit(store, rules(), session, relentless_seeds.tool_inputs), indent=1))
         elif a.cmd == "trust":
             import relentless_trust
-            print(relentless_trust.report(store, set_name=a.set)[1], end="")
+            print(relentless_trust.report(store, set_name=a.set, arm=a.arm)[1], end="")
         elif a.cmd == "verdict":
             verdict(store, a.item, a.nonce, a.word, a.reasons)
         elif a.cmd == "unhold":

@@ -274,6 +274,36 @@ def test_split_and_pick_are_hash_only():
     check("a picking is repeatable", S.pick_set("E1", {n: "E1" for n in tasks}, tasks, census, d, 1e12)[0] == keys)
 
 
+def test_pick_fresh_takes_only_unrun_cases():
+    d, base, fix = repo()
+    Path(d, "m.py").write_text("a = 1\nb = 2\nc = 3\nd = 4\ne = 5\n")
+    git(d, "checkout", "-q", "-f", "main")
+    t = {"base_sha": base, "prompt": "w", "criteria": "c"}
+    hid = {"fix_sha": fix, "label": None, "reworks": [], "rework_candidates": [], "fix_files": ["m.py"]}
+    tasks = {n: (dict(t, id=n, proof="p"), hid) for n in ("a", "b", "c", "e2")}
+    fixok = {"kind": "fix", "out": "green"}
+    h0 = {"kind": "hunk", "out": "green", "hunk": 0, "path": "m.py"}
+    h1 = {"kind": "hunk", "out": "red", "hunk": 1, "path": "m.py"}
+    census = {n: [fixok, h0, h1] for n in tasks}
+    split = {"a": "E1", "b": "E1", "c": "tune", "e2": "E2"}
+    old = [{"cls": "control", "task": "a"}, {"cls": "hunk_green", "task": "b", "hunk": 0}, {"cls": "all_red", "task": "c"}]
+    used = S.used_cases([old])
+    check("used cases are read by class", used == ({"a"}, {("b", 0)}, {"c"}), used)
+    keys, frame = S.pick_fresh("W1", ["E1", "tune"], split, tasks, census, d, 1e12, used)
+    cases = {(k["task"], k["cls"], k.get("hunk")) for k in keys}
+    check("no control run twice, no hunk taken twice", ("a", "control", None) not in cases
+          and ("b", "hunk_green", 0) not in cases, cases)
+    check("E2 is never drawn from", not [c for c in cases if c[0] == "e2"], cases)
+    check("fresh controls and seeds are both found", {c[1] for c in cases} >= {"control", "hunk_green", "hunk_red"}, cases)
+    check("one seed per task", len([c for c in cases if c[1] != "control"]) == len({c[0] for c in cases if c[1] != "control"}), cases)
+    check("a fresh picking is repeatable", S.pick_fresh("W1", ["E1", "tune"], split, tasks, census, d, 1e12, used)[0] == keys)
+    try:
+        S.pick_fresh("W1", ["E2"], split, tasks, census, d, 1e12, used)
+        check("E2 as a source is refused", False)
+    except SystemExit:
+        check("E2 as a source is refused", True)
+
+
 def test_assign_rare_class_first():
     capable = {"x": ["hunk_green", "hunk_red"], "y": ["hunk_green"], "z": ["hunk_green", "all_red"], "w": ["all_red", "hunk_red"]}
     got = S.assign(list(capable), capable)
@@ -388,6 +418,7 @@ def main():
     test_outcome_reads_lines()
     test_split_and_pick_are_hash_only()
     test_assign_rare_class_first()
+    test_pick_fresh_takes_only_unrun_cases()
     test_census_log()
     test_second_read_frozen()
     test_verdict_and_journal()

@@ -358,13 +358,14 @@ def in_frame(hidden, repo, now):
         and not hidden["rework_candidates"]
 
 
-def assign(tids, capable):
+def assign(tids, capable, quota=None, salt="pick|"):
     """Tasks that can serve the fewest classes go first; each goes to the class furthest from its quota. One task, one seed."""
-    got = {c: [] for c in QUOTA}
-    for tid in sorted(tids, key=lambda t: (len(capable[t]), h("pick|" + t))):
-        room = [c for c in sorted(capable[tid]) if len(got[c]) < QUOTA[c]]
+    quota = quota or QUOTA
+    got = {c: [] for c in quota}
+    for tid in sorted(tids, key=lambda t: (len(capable[t]), h(salt + t))):
+        room = [c for c in sorted(capable[tid]) if c in quota and len(got[c]) < quota[c]]
         if room:
-            got[min(room, key=lambda c: (len(got[c]) / QUOTA[c], c))].append(tid)
+            got[min(room, key=lambda c: (len(got[c]) / quota[c], c))].append(tid)
     return got
 
 
@@ -408,6 +409,61 @@ def pick_set(name, split, tasks, census, repo, now):
     return keys, frame
 
 
+FRESH_QUOTA = {"hunk_green": 14, "hunk_red": 4}
+FRESH_CONTROLS = 24
+
+
+def used_cases(keysets):
+    """-> (control tasks, (task, hunk) seeds, all_red tasks) that any picked set already holds: a Marker or a tuner saw them."""
+    ctl, hunks, whole = set(), set(), set()
+    for keys in keysets:
+        for k in keys:
+            if k["cls"] == "control":
+                ctl.add(k["task"])
+            elif k["cls"] == "all_red":
+                whole.add(k["task"])
+            elif "hunk" in k:
+                hunks.add((k["task"], k["hunk"]))
+    return ctl, hunks, whole
+
+
+def pick_fresh(name, froms, split, tasks, census, repo, now, used, quota=None, controls=FRESH_CONTROLS):
+    """-> (keys, frame) for a retest set: cases no Marker has run, from tasks of spent sets. A control is a fix never run
+    whole; a seed is a hunk no set has taken. E2 is never a source: it stays unseen until step 4. Hash order and proofs
+    only, as in pick_set."""
+    if "E2" in froms or name in froms:
+        raise SystemExit("a fresh set draws from spent sets only, never E2 or itself")
+    quota = dict(quota or FRESH_QUOTA)
+    ctl_used, hunk_used, _ = used
+    mine = sorted((t for t in split if split[t] in froms and t in tasks), key=lambda x: h("fresh|%s|%s" % (name, x)))
+    fixout = {t: next((r["out"] for r in census.get(t, []) if r["kind"] == "fix"), None) for t in mine}
+    framed = [t for t in mine if fixout[t] == "green" and in_frame(tasks[t][1], repo, now)]
+    rows, capable = {}, {}
+    for tid in framed:
+        hunks = [r for r in census[tid] if r["kind"] == "hunk" and (tid, r["hunk"]) not in hunk_used]
+        rows[tid] = {c: [r for r in hunks if r.get("out") == c.split("_")[1]] for c in quota}
+        capable[tid] = [c for c in quota if rows[tid][c]]
+    keys = []
+
+    def add(cls, tid, **kw):
+        t, hid = tasks[tid]
+        keys.append(dict(cls=cls, set=name, task=tid, base=t["base_sha"], fix=hid["fix_sha"], proof=t["proof"],
+                         words=item_words(t), **kw))
+
+    for cls, tids in assign(framed, capable, quota, "fresh|%s|" % name).items():
+        for tid in tids:
+            r = min(rows[tid][cls], key=lambda x: h("%s|%s|%s" % (name, tid, x["hunk"])))
+            add(cls, tid, hunk=r["hunk"], path=r["path"],
+                patch=next(p for i, _, p in chosen_hunks(*tasks[tid], repo)[0] if i == r["hunk"]))
+    fresh_ctl = [t for t in framed if t not in ctl_used]
+    for tid in fresh_ctl[:controls]:
+        add("control", tid)
+    frame = {"from": sorted(froms), "in_sets": len(mine), "fix_green": sum(v == "green" for v in fixout.values()),
+             "in_frame": len(framed), "fresh_controls": len(fresh_ctl),
+             "capable": {c: sum(c in x for x in capable.values()) for c in quota}}
+    return keys, frame
+
+
 def fingerprint():
     """What the measured thing is. A set is not resumed across a change of it."""
     import relentless as R
@@ -424,7 +480,12 @@ def cmd_pick(a):
         raise SystemExit("%s exists: a set's cases do not change once picked" % path)
     split = json.loads((PRIVATE / "split.json").read_text(encoding="utf-8"))["tasks"]
     tasks = {t["id"]: (t, hid) for t, hid in eligible()}
-    keys, frame = pick_set(a.set, split, tasks, census_map(), str(REPO), time.time())
+    if a.fresh_from:
+        sets = [json.loads(f.read_text(encoding="utf-8")) for f in sorted((PRIVATE / "keys").glob("*.json"))
+                if not f.name.endswith(".frame.json")]
+        keys, frame = pick_fresh(a.set, a.fresh_from, split, tasks, census_map(), str(REPO), time.time(), used_cases(sets))
+    else:
+        keys, frame = pick_set(a.set, split, tasks, census_map(), str(REPO), time.time())
     source = make_clone(WORK / "census", "w0", "relentless seed census")
     kept, dropped, print_ = [], [], fingerprint()
     for k in keys:
@@ -894,6 +955,7 @@ def main(argv=None):
     sub.add_parser("split")
     c = sub.add_parser("pick")
     c.add_argument("set")
+    c.add_argument("--fresh-from", nargs="+", help="a retest set: cases no set has run, from these spent sets (never E2)")
     c = sub.add_parser("read")
     c.add_argument("set")
     c = sub.add_parser("run")

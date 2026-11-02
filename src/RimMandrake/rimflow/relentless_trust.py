@@ -141,9 +141,9 @@ def render(c, live, label, frame=None):
     return "\n".join(lines) + "\n" + "".join("\n%s\n" % n for n in notes)
 
 
-def report(store, private=None, set_name="E1"):
+def report(store, private=None, set_name="E1", arm=None):
     private = Path(private or PRIVATE)
-    res = private / "results"
+    res = private / ("results_" + arm if arm else "results")
     kp = private / "keys" / (set_name + ".json")
     keys = json.loads(kp.read_text(encoding="utf-8")) if kp.exists() else []
     fp = private / "keys" / (set_name + ".frame.json")
@@ -164,4 +164,4 @@ def report(store, private=None, set_name="E1"):
         if f.exists():
             attempts.append([json.loads(x) for x in f.read_text(encoding="utf-8").splitlines() if x.strip()])
     c = compute(results, reads, keys)
-    return c, render(c, live_rates(states, attempts), "accepted by Judge at " + set_name, frame)
+    return c, render(c, live_rates(states, attempts), "accepted by Judge at " + set_name + (", arm " + arm if arm else ""), frame)
