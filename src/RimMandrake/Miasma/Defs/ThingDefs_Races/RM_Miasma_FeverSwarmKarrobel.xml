@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   RM_Miasma_FeverSwarmKarrobel.xml   Miasma - MIASMA_SWARM_COMPOSTER_PORT_1
-  RM_FeverSwarm (vector and the mangals' only pollinator) and RM_Karrobel (delta-loam composter), ported from the RUT_ originals. Invented, franchise-free, RM tier (Q11a). Names are working names (MIASMA_SHIPPING_NAMES_1).
+  RM_FeverSwarm (disease vector) and RM_Karrobel (delta-loam composter), ported from the RUT_ originals. Invented, franchise-free, RM tier (Q11a). Names are working names (MIASMA_SHIPPING_NAMES_1).
 -->
 <Defs>
 

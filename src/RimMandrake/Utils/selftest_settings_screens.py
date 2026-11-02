@@ -144,7 +144,7 @@ MODS = {
     "Miasma": ("RM_MiasmaMod.cs", "RM_Miasma.csproj", {
         "Biome rarity (WORLDGEN-AFFECTING)": "NewMapsOnly",
         "Warden mother young": "Now",
-        "Predators and pollination": "Now",
+        "Predators and stranding": "Now",
         "Flotsam in the root-lines": "Now",
         "Attar: still, glaze and balm": "Now",
         "Decay cells and the rotting bed": "Now",

@@ -295,14 +295,8 @@ namespace RimMandrake.EnvironmentalHazards
     //      generated while it is off — that ground stays ordinary
     //      Heavy-capable soil instead. Maps already generated keep
     //      whatever terrain they already have.
-    //  50. pollinationGateEnabled — RM_PollinationGatePatch
-    //      (MIASMA_KARRATHIL_POLLINATION_GATE_1). Off: a plant built to
-    //      require a pollinator species on the map (the Miasma's mangals and
-    //      karrathil) can spawn new individuals with no pollinator present,
-    //      same as any ordinary wild plant. On: it never rolls as a
-    //      candidate for a NEW individual anywhere the pollinator has zero
-    //      living members on that map — an already-grown stand is never
-    //      touched either way, only whether it can replace itself.
+    //  50. (retired 2026-11-02: pollinationGateEnabled, cut with the Miasma
+    //      mangals' pollination gate, FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO)
     //  51. waterAgitationEnabled — RM_MapComponent_WaterAgitation (owner
     //      ruling, SCALD_REVIEW live walk 2026-09-25: margin calm, shallow a
     //      bit agitated, deep constantly agitated). Off: terrain tagged
@@ -452,7 +446,6 @@ namespace RimMandrake.EnvironmentalHazards
         public const float WaterTruceRadiusDefault = 10f;
         public static float waterTruceRadius = WaterTruceRadiusDefault;
         public static bool groundRefusalEnabled = true;
-        public static bool pollinationGateEnabled = true;
         public static bool waterAgitationEnabled = true;
         public static float waterAgitationDensity = 1f;
         public static bool tarBelchEnabled = true;
@@ -609,7 +602,6 @@ namespace RimMandrake.EnvironmentalHazards
             Scribe_Values.Look(ref waterTruceSuppressionEnabled, "waterTruceSuppressionEnabled", true);
             Scribe_Values.Look(ref waterTruceRadius, "waterTruceRadius", WaterTruceRadiusDefault);
             Scribe_Values.Look(ref groundRefusalEnabled, "groundRefusalEnabled", true);
-            Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true);
             Scribe_Values.Look(ref waterAgitationEnabled, "waterAgitationEnabled", true);
             Scribe_Values.Look(ref waterAgitationDensity, "waterAgitationDensity", 1f);
             Scribe_Values.Look(ref tarBelchEnabled, "tarBelchEnabled", true);
@@ -914,7 +906,7 @@ namespace RimMandrake.EnvironmentalHazards
                 waterTruceRadius = Mathf.Round(list.Slider(waterTruceRadius, 3f, 25f));
                 list.GapLine();
             }
-            if (Group(list, "Rot, heat, growth and plants", RimMandrake.Shared.SettingScope.Now, new[] { "localGrowthAuraEnabled", "periodicInspirationEnabled", "acceleratedRotEnabled", "acceleratedRotItemMultiplier", "acceleratedRotCorpseMultiplier", "livingProduceHeatEnabled", "warmGroundEnabled", "warmGroundOffsetCelsius", "sheenExposureEnabled", "sunlightScaldEnabled", "leachmossEnabled", "pollinationGateEnabled", "treeFallEnabled" }))
+            if (Group(list, "Rot, heat, growth and plants", RimMandrake.Shared.SettingScope.Now, new[] { "localGrowthAuraEnabled", "periodicInspirationEnabled", "acceleratedRotEnabled", "acceleratedRotItemMultiplier", "acceleratedRotCorpseMultiplier", "livingProduceHeatEnabled", "warmGroundEnabled", "warmGroundOffsetCelsius", "sheenExposureEnabled", "sunlightScaldEnabled", "leachmossEnabled", "treeFallEnabled" }))
             {
                 list.CheckboxLabeled("Local growth aura", ref localGrowthAuraEnabled,
                     "A hediff built to slightly speed up plant growth around its carrier stops doing so.");
@@ -952,11 +944,6 @@ namespace RimMandrake.EnvironmentalHazards
                   + "offered by the wild-plant spawner, on every map immediately. Moss already growing is left "
                   + "standing; it just never re-takes an emptied cell or appears on fresh ground until this is "
                   + "back on.");
-                list.CheckboxLabeled("Pollination gate", ref pollinationGateEnabled,
-                    "A plant built to need a pollinator species on the map (the Miasma's mangals and "
-                  + "karrathil swarm) stops needing one — it can spawn new individuals with no pollinator "
-                  + "present, like any ordinary wild plant. Already-grown stands are never touched either "
-                  + "way, only whether they can replace themselves.");
                 list.CheckboxLabeled("Tree fall (crack, shatter, gnaw)", ref treeFallEnabled,
                     "A cracking giant tree stops rolling and warning, a hazard aura built to shatter trees "
                   + "stops felling them, and a creature built to gnaw one down stops seeking a trunk to chew.");

@@ -3,10 +3,10 @@
 Item MIASMA_SETTINGS_SWITCHES_1. Covers the Mod Settings only; the biome's other mechanics have no script yet.
 
 WHAT IT PROVES: every Miasma setting round-trips (set -> get -> restore) through `jawa/mod_settings_field`, and
-the three switches this item added (plantPredationEnabled, pollinationGateEnabled, strandedDeformationEnabled
-+ strandedDeformationChance) exist, default to shipped behaviour, and are Scribed and drawn.
+the switches this item added (plantPredationEnabled, strandedDeformationEnabled + strandedDeformationChance;
+the pollination gate was cut 2026-11-02, FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO) exist, default to shipped behaviour, and are Scribed and drawn.
 NOT PROVEN HERE: that the mechanic stops firing with its switch off in a quicktest (criterion of the item):
-predation needs a plant beside a wild scuttler, the gate needs a worldgen plant pass, deformation needs a
+predation needs a plant beside a wild scuttler, deformation needs a
 stranding pool. Each says UNMEASURED rather than passing.
 
 STATIC (offline): `python3 validation.py` runs static_checks() without a game.
@@ -18,7 +18,7 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 SETTINGS_TYPE = "RimMandrake.Miasma.RM_MiasmaSettings"
 DEFAULTS = {"biomeRarityFactor": 1.0, "wardenSuccessionEnabled": True, "selfTameChancePerCheck": 0.12,
-            "plantPredationEnabled": True, "pollinationGateEnabled": True,
+            "plantPredationEnabled": True,
             "strandedDeformationEnabled": True, "strandedDeformationChance": 0.25,
             "ambushFrogHunts": True, "flotsamEnabled": True, "flotsamAmount": 1.0, "youngCallEnabled": True,
             "attarEnabled": True, "decayCellsEnabled": True, "decayCellPowerMultiplier": 1.0,
@@ -56,7 +56,7 @@ def static_checks():
     pred = open(os.path.join(HERE, "Source", "RM_CompPlantPredator.cs")).read()
     if "RM_MiasmaSettings.plantPredationEnabled" not in pred:
         bad.append("RM_CompPlantPredator does not read plantPredationEnabled")
-    for needle in ("strandedDeformationChance", "RM_PollinationGateExtension", "WriteSettings"):
+    for needle in ("strandedDeformationChance", "WriteSettings"):
         if needle not in src:
             bad.append("RM_MiasmaMod.cs lacks %s" % needle)
     proj = open(os.path.join(HERE, "Source", "RM_Miasma.csproj")).read()
@@ -166,8 +166,8 @@ def static_checks():
         if not re.search(r"<%s>[\d.]+</%s>" % (r, r), biome):
             bad.append("%s not in RM_Miasma wildAnimals" % r)
     mg = open(os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_Miasma_Mangals.xml"), encoding="utf-8").read()
-    if mg.count("<pollinatorRace>RM_FeverSwarm</pollinatorRace>") != 2:
-        bad.append("RM_Thessamor and RM_Quennath must each carry the pollination gate naming RM_FeverSwarm")
+    if "PollinationGate" in mg:
+        bad.append("the pollination gate was cut (FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO); a mangal still carries it")
     for t in ("Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm_south.png", "Pawn/Animal/RM_Karrobel/RM_Karrobel_south.png",
               "Item/Resource/RM_DeltaLoam/RM_DeltaLoam_a.png"):
         if not os.path.exists(os.path.join(HERE, "Textures", "Things", *t.split("/"))):
@@ -270,7 +270,7 @@ def static_checks():
 def _build_suite():
     from modcheck import Suite, ExpectationFailed
     suite = Suite("Miasma")
-    suite.toggles = ["decayCellsEnabled", "youngCallEnabled", "attarEnabled", "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled", "mothersPriceEnabled"]
+    suite.toggles = ["decayCellsEnabled", "youngCallEnabled", "attarEnabled", "plantPredationEnabled", "strandedDeformationEnabled", "wardenSuccessionEnabled", "mothersPriceEnabled"]
 
     def _proof(t, method):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.Miasma.RM_MiasmaProof", method=method, args="current")
@@ -326,8 +326,7 @@ def _build_suite():
         with t.component("mechanics_stop_with_switch_off", beyond_toggle=True):
             if t.session is None:
                 return
-            _unmeasured(t, "predation (plant beside a wild scuttler), the pollination gate "
-                             "(worldgen plant pass) and stranded deformation (a stranding pool) each need "
+            _unmeasured(t, "predation (plant beside a wild scuttler) and stranded deformation (a stranding pool) each need "
                              "a live Miasma quicktest map")
             return
 

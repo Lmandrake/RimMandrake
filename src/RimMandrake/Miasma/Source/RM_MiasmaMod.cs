@@ -32,7 +32,7 @@ namespace RimMandrake.Miasma
     // be a settings screen that lies (SleepingIce's own reasoning, same
     // shape here). What this screen DOES carry: the worldgen-rarity slider,
     // and the switches for the mechanics this assembly implements itself
-    // (succession, young call, predation, pollination gate, deformation,
+    // (succession, young call, predation, deformation,
     // bozzuga, lastvine, attar, flotsam, decay cells, rotting bed, mother's
     // price), each defined below.
     //
@@ -58,9 +58,6 @@ namespace RimMandrake.Miasma
         // "the mechanic simply does not fire".
         // Plant predation: RM_CompPlantPredator.CompTickLong returns early.
         public static bool plantPredationEnabled = true;
-        // Pollination gate: the RM_PollinationGateExtension on the Miasma's mangals is
-        // detached from the defs (RM_MiasmaSettingsApplier), so the shared patch never gates them.
-        public static bool pollinationGateEnabled = true;
         // Stranded deformation: the stranding-pool roll's chance on the Miasma BiomeDef is
         // set to 0 when off, else to the slider (shipped 0.25).
         public static bool strandedDeformationEnabled = true;
@@ -106,7 +103,6 @@ namespace RimMandrake.Miasma
             Scribe_Values.Look(ref wardenSuccessionEnabled, "wardenSuccessionEnabled", true, true);
             Scribe_Values.Look(ref selfTameChancePerCheck, "selfTameChancePerCheck", 0.12f, true);
             Scribe_Values.Look(ref plantPredationEnabled, "plantPredationEnabled", true, true);
-            Scribe_Values.Look(ref pollinationGateEnabled, "pollinationGateEnabled", true, true);
             Scribe_Values.Look(ref strandedDeformationEnabled, "strandedDeformationEnabled", true, true);
             Scribe_Values.Look(ref strandedDeformationChance, "strandedDeformationChance", 0.25f, true);
             Scribe_Values.Look(ref ambushFrogHunts, "ambushFrogHunts", true, true);
@@ -215,16 +211,12 @@ namespace RimMandrake.Miasma
                 list.GapLine();
             }
 
-            if (Group(list, "Predators and pollination", RimMandrake.Shared.SettingScope.Now, new[] { "plantPredationEnabled", "pollinationGateEnabled", "strandedDeformationEnabled", "ambushFrogHunts", "lastvineRearingEnabled", "strandedDeformationChance" }))
+            if (Group(list, "Predators and stranding", RimMandrake.Shared.SettingScope.Now, new[] { "plantPredationEnabled", "strandedDeformationEnabled", "ambushFrogHunts", "lastvineRearingEnabled", "strandedDeformationChance" }))
             {
                 list.CheckboxLabeled("Predatory plants feed on wild scuttlers",
                     ref plantPredationEnabled,
                     "The Miasma's carnivorous plants kill wild, unfactioned scuttlers that wander "
                     + "within reach. Off: they never hunt.");
-                list.CheckboxLabeled("Pollination gate on the mangals",
-                    ref pollinationGateEnabled,
-                    "The Miasma's mangals only grow where their pollinator swarm lives. Off: they grow "
-                    + "wherever the terrain allows. Takes effect after the settings window closes.");
                 list.CheckboxLabeled("Stranded deformation",
                     ref strandedDeformationEnabled,
                     "Some creatures stranded in a drying pool are born deformed and do not thrive. "
@@ -332,9 +324,6 @@ namespace RimMandrake.Miasma
     [StaticConstructorOnStartup]
     public static class RM_MiasmaSettingsApplier
     {
-        public static readonly string[] GatedPlants = { "RM_Thessamor", "RM_Quennath" };
-        private static readonly System.Collections.Generic.Dictionary<string, DefModExtension> stashed =
-            new System.Collections.Generic.Dictionary<string, DefModExtension>();
 
         static RM_MiasmaSettingsApplier()
         {
@@ -346,7 +335,6 @@ namespace RimMandrake.Miasma
             try
             {
                 ApplyDeformation();
-                ApplyPollinationGate();
                 ApplyAttar();
                 ApplyYoungCall();
                 ApplyYoungPrice();
@@ -412,33 +400,6 @@ namespace RimMandrake.Miasma
                 if (f == null) continue;
                 f.SetValue(ext, RM_MiasmaSettings.strandedDeformationEnabled
                     ? RM_MiasmaSettings.strandedDeformationChance : 0f);
-            }
-        }
-
-        private static void ApplyPollinationGate()
-        {
-            foreach (string name in GatedPlants)
-            {
-                ThingDef plant = DefDatabase<ThingDef>.GetNamedSilentFail(name);
-                if (plant == null) continue;
-                if (!RM_MiasmaSettings.pollinationGateEnabled)
-                {
-                    if (plant.modExtensions == null) continue;
-                    for (int i = plant.modExtensions.Count - 1; i >= 0; i--)
-                    {
-                        if (plant.modExtensions[i].GetType().Name == "RM_PollinationGateExtension")
-                        {
-                            stashed[name] = plant.modExtensions[i];
-                            plant.modExtensions.RemoveAt(i);
-                        }
-                    }
-                }
-                else if (stashed.TryGetValue(name, out DefModExtension ext))
-                {
-                    if (plant.modExtensions == null) plant.modExtensions = new System.Collections.Generic.List<DefModExtension>();
-                    plant.modExtensions.Add(ext);
-                    stashed.Remove(name);
-                }
             }
         }
     }

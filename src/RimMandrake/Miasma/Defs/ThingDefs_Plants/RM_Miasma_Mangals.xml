@@ -53,11 +53,6 @@
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>true</treeLoversCareIfChopped>
     </plant>
-    <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
-        <pollinatorRace>RM_FeverSwarm</pollinatorRace>
-      </li>
-    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="TreeBase">
@@ -133,11 +128,6 @@
       <wildClusterRadius>-1</wildClusterRadius>
       <harvestTag>Standard</harvestTag>
     </plant>
-    <modExtensions>
-      <li Class="RimMandrake.EnvironmentalHazards.RM_PollinationGateExtension" MayRequire="mandrake.rm.biomes">
-        <pollinatorRace>RM_FeverSwarm</pollinatorRace>
-      </li>
-    </modExtensions>
   </ThingDef>
 
   <ThingDef ParentName="PlantBase">

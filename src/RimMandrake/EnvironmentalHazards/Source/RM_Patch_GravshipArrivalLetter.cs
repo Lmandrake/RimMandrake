@@ -17,7 +17,7 @@ namespace RimMandrake.EnvironmentalHazards
     // detection drives both mods.
     //
     // Self-contained AccessTools.Method + try/catch shape, same as
-    // RM_PollinationGatePatch/RM_Patch_LeachmossWildSpawnGate in this
+    // RM_Patch_LeachmossWildSpawnGate in this
     // assembly, rather than the central EnvironmentalHazardsMod hook in
     // BiomeGlowPatches.cs -- both patterns are live in this kit; this one
     // needs no shared cache or hot-path bail, so the smaller self-contained
