@@ -8,6 +8,7 @@
 //   outcome ResolveOutcome exhaustively and its Burst share, AgeRemoval, StaggerOpen, RainWet, SizeStep
 //   tree    TreeMoistureFactor exhaustively, Drink (litres buy days) against a day-by-day spec world, the owner's worked
 //           numbers (tree_burst_design_2026-10-17.md §3, §6b), JungleEndOfLife, ContinuousDrinkLitres
+//   burst   BurstHitAmount: the Burst hit never destroys its part, crosses the pain line or hits a near-downed pawn
 // A failing action sequence is shrunk (delta debugging) and printed as `family seed N: message | actions`.
 using System;
 using System.Collections.Generic;
@@ -758,6 +759,49 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
             return fails;
         }
 
+        // burst: BurstHitAmount (EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES) over random and edge inputs. A returned hit never
+        // destroys the part, never exceeds the roll, adds at most BurstPainMax pain and stays BurstPainHeadroom under
+        // the pain-shock line even when the engine multiplies it by damageFactor; near a downing capacity it is 0.
+        private static List<string> Burst(int n, int seed0)
+        {
+            var fails = new List<string>();
+            long hits = 0, skips = 0;
+            try
+            {
+                var rnd = new Random(seed0);
+                float[] edge = { float.NaN, float.PositiveInfinity, float.NegativeInfinity, -1f, 0f, 1e-6f, 0.5f, 1f, 1.0001f, 2f, 5f, 1e6f };
+                float R(double lo, double hi) => (float)(lo + rnd.NextDouble() * (hi - lo));
+                float E() => edge[rnd.Next(edge.Length)];
+                for (int k = 0; k < n; k++)
+                {
+                    bool ed = rnd.Next(8) == 0;
+                    float rolled = ed ? E() : R(2, 5), hp = ed ? E() : R(0, 40), df = ed ? E() : (rnd.Next(4) == 0 ? R(1, 4) : 1f);
+                    float pain = ed ? E() : R(0, 0.9), shock = ed ? E() : R(0.3, 1), ppd = ed ? E() : (rnd.Next(4) == 0 ? R(0, 0.3) : R(0, 0.02));
+                    float cm = ed ? E() : R(-0.3, 1), mm = ed ? E() : R(-0.3, 1);
+                    float a = RM_ExplosiveGrowthKernel.BurstHitAmount(rolled, hp, df, pain, shock, ppd, cm, mm);
+                    Cases++;
+                    string at = $"BurstHitAmount(rolled {rolled}, hp {hp}, df {df}, pain {pain}, shock {shock}, ppd {ppd}, cm {cm}, mm {mm}) = {a}";
+                    Check(!float.IsNaN(a) && !float.IsInfinity(a), "non-finite " + at);
+                    if (a == 0f) { skips++; continue; }
+                    hits++;
+                    Check(a >= RM_ExplosiveGrowthKernel.BurstHitMin && a <= rolled, "outside [min, roll] " + at);
+                    Check(hp - a * df >= RM_ExplosiveGrowthKernel.BurstPartReserve - 1e-4f, "part destroyed or under reserve " + at);
+                    Check(a * df * ppd <= RM_ExplosiveGrowthKernel.BurstPainMax + 1e-5f, "pain step over max " + at);
+                    Check(pain + a * df * ppd <= shock - RM_ExplosiveGrowthKernel.BurstPainHeadroom + 1e-5f, "pain shock " + at);
+                    Check(cm >= RM_ExplosiveGrowthKernel.BurstCapacityMargin && mm >= RM_ExplosiveGrowthKernel.BurstCapacityMargin, "near-downed pawn hit " + at);
+                }
+                // The consult's repro shapes, pinned: a rat-class toe (hp 2-3 with reserve) and a nearly downed pawn skip; a
+                // healthy colonist's 10-hp finger takes the whole roll.
+                Check(RM_ExplosiveGrowthKernel.BurstHitAmount(5f, 1.5f, 1f, 0f, 0.8f, 0.0625f, 0.7f, 0.85f) == 0f, "rat toe was hit");
+                Check(RM_ExplosiveGrowthKernel.BurstHitAmount(5f, 10f, 1f, 0.75f, 0.8f, 0.025f, 0.7f, 0.85f) == 0f, "pawn at the pain line was hit");
+                Check(RM_ExplosiveGrowthKernel.BurstHitAmount(5f, 10f, 1f, 0f, 0.8f, 0.025f, 0.05f, 0.85f) == 0f, "barely conscious pawn was hit");
+                Check(RM_ExplosiveGrowthKernel.BurstHitAmount(4f, 10f, 1f, 0f, 0.8f, 0.0125f, 0.7f, 0.85f) == 4f, "healthy finger did not take the roll");
+                if (n >= 1000) Check(hits > n / 10 && skips > n / 10, $"burst fuzz blind: {hits} hits, {skips} skips");
+            }
+            catch (Exception e) { fails.Add("burst: " + e.Message); }
+            return fails;
+        }
+
         public static bool Run(double scale, int? oneSeed, string only)
         {
             var sw = Stopwatch.StartNew();
@@ -774,6 +818,7 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                 ("rate", () => Rate(N(40), S(1))),
                 ("outcome", () => Outcome(N(200), S(1))),
                 ("tree", () => Tree(N(20000), S(1))),
+                ("burst", () => Burst(N(200000), S(1))),
             };
             foreach (var f in fam)
             {

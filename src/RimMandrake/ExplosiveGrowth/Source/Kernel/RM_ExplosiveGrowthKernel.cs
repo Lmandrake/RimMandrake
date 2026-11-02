@@ -81,6 +81,34 @@ namespace RimMandrake.ExplosiveGrowth
             return lastPassTick < 0 ? PassInterval : Math.Min(Math.Max(now - lastPassTick, 1), PassInterval * 8);
         }
 
+        // ── The Burst's blunt hit (EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES; 2026-09-10 ruling 1: "never downs or kills").
+        // The caller picks an OUTSIDE LEAF part that is not vital and feeds no Moving/Consciousness chain, so the hit can
+        // neither spread inward (a leaf has no inner part) nor cut a downing capacity; this caps what is left.
+        public const float BurstHitMin = 1f;          // a hit capped below this is skipped (a rat's toe: stun only)
+        public const float BurstPartReserve = 1f;     // the part keeps at least this much health: never destroyed
+        public const float BurstPainMax = 0.05f;      // most pain one hit may add (estimated, see painPerDamage)
+        public const float BurstPainHeadroom = 0.10f; // pain after the hit stays this far under the pain-shock threshold
+        public const float BurstCapacityMargin = 0.15f; // Consciousness / Moving must stand this far above min-for-capable
+
+        /// <summary>The damage the Burst may deal, or 0 to skip the hit. rolled: the 2-5 roll. partHealth: the chosen
+        /// part's remaining health. damageFactor: the most the engine may multiply the amount by (incoming-damage factor,
+        /// floored at 1). painNow / painShock: PainTotal and the PainShockThreshold stat. painPerDamage: an UPPER BOUND on
+        /// the pain one point of damage adds. consciousMargin / movingMargin: capacity level minus its min-for-capable.
+        /// Any NaN, a non-positive input where a positive is needed, or a pawn already near a downing line skips.</summary>
+        public static float BurstHitAmount(float rolled, float partHealth, float damageFactor, float painNow, float painShock,
+            float painPerDamage, float consciousMargin, float movingMargin)
+        {
+            if (!(rolled > 0f) || !(partHealth > 0f) || !(damageFactor >= 1f) || !(painNow >= 0f) || !(painShock > 0f)
+                || !(painPerDamage >= 0f) || !(consciousMargin >= BurstCapacityMargin) || !(movingMargin >= BurstCapacityMargin))
+                return 0f;
+            float painRoom = Math.Min(BurstPainMax, painShock - BurstPainHeadroom - painNow);
+            if (painRoom < 0f) return 0f;   // already at the pain line: even a painless hit is not ours to land
+            float a = Math.Min(rolled, (partHealth - BurstPartReserve) / damageFactor);
+            if (painPerDamage > 0f) a = Math.Min(a, painRoom / (painPerDamage * damageFactor));
+            if (float.IsNaN(a) || float.IsInfinity(a) || a < BurstHitMin) return 0f;
+            return a;
+        }
+
         public static float InverseLerp(float a, float b, float v)
         {
             if (a == b) return 0f;

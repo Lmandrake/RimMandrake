@@ -223,7 +223,12 @@ namespace RimMandrake.ExplosiveGrowth
 
         /// <summary>Injury+knockdown ceiling (2026-09-10 ruling 1): a light
         /// blunt hit and a short stun, never on a pawn already downed, and the
-        /// hit is skipped if it would down the pawn.</summary>
+        /// hit is skipped if it would down the pawn. "Would down" is not the
+        /// summary health (EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: a rat or a
+        /// crippled vital part sits above 50% and still dies): the hit lands on
+        /// a chosen part (BurstHitPart) and RM_ExplosiveGrowthKernel.BurstHitAmount
+        /// caps it under that part's health, the pain-shock line and the
+        /// Consciousness / Moving margins, or skips it.</summary>
         private static void HurtPawnsNear(IntVec3 c, Map map, float radius)
         {
             var hit = new List<Pawn>();
@@ -239,12 +244,50 @@ namespace RimMandrake.ExplosiveGrowth
             foreach (Pawn p in hit)
             {
                 float amount = Rand.Range(2f, 5f);
-                if (p.health.summaryHealth.SummaryHealthPercent > 0.5f)
+                BodyPartRecord part = BurstHitPart(p);
+                if (part != null)
                 {
-                    p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, amount));
+                    amount = BurstHitAmount(p, part, amount);
+                    if (amount > 0f) p.TakeDamage(new DamageInfo(DamageDefOf.Blunt, amount, hitPart: part));
                 }
                 if (!p.Dead && !p.Downed) p.stances?.stunner?.StunFor(Rand.RangeInclusive(60, 150), null, addBattleLog: false);
             }
+        }
+
+        /// <summary>Capacity chains a Burst hit must never touch: a leaf in one of these can down a pawn by losing
+        /// efficiency even when it is not destroyed. Vital tags are excluded separately (BodyPartTagDef.vital).</summary>
+        private static readonly HashSet<string> BurstSparedTags = new HashSet<string>
+        {
+            "ConsciousnessSource", "BreathingSource", "BreathingSourceCage", "BreathingPathway", "BloodPumpingSource",
+            "BloodFiltrationSource", "BloodFiltrationLiver", "BloodFiltrationKidney",
+            "MovingLimbCore", "MovingLimbSegment", "MovingLimbDigit", "Pelvis", "Spine",
+        };
+
+        /// <summary>A random un-missing OUTSIDE LEAF part (a leaf has no inner part, so blunt cannot spread inward),
+        /// carrying no vital tag and no tag of a downing chain; null = nothing safe to hit (the stun still lands).</summary>
+        public static BodyPartRecord BurstHitPart(Pawn p)
+        {
+            List<BodyPartRecord> safe = p.health.hediffSet.GetNotMissingParts(depth: BodyPartDepth.Outside)
+                .Where(r => r.parts.Count == 0 && r.def != null
+                    && (r.def.tags == null || !r.def.tags.Any(t => t != null && (t.vital || BurstSparedTags.Contains(t.defName)))))
+                .ToList();
+            return safe.Count == 0 ? null : safe.RandomElement();
+        }
+
+        /// <summary>The engine's numbers for the kernel cap. painPerDamage is an upper bound: the hediff's own pain per
+        /// severity, divided by the pawn's health scale when that is under 1, times 2 for pain-raising genes and drugs.</summary>
+        public static float BurstHitAmount(Pawn p, BodyPartRecord part, float rolled)
+        {
+            HediffSet hs = p.health.hediffSet;
+            float ppd = DamageDefOf.Blunt.hediff?.injuryProps?.painPerSeverity ?? 0.0125f;
+            if (!p.RaceProps.IsFlesh) ppd = 0f;
+            else ppd = ppd * 2f / Mathf.Min(1f, Mathf.Max(0.01f, p.HealthScale));
+            PawnCapacitiesHandler caps = p.health.capacities;
+            float conscious = caps.GetLevel(PawnCapacityDefOf.Consciousness) - PawnCapacityDefOf.Consciousness.minForCapable;
+            float moving = caps.GetLevel(PawnCapacityDefOf.Moving) - PawnCapacityDefOf.Moving.minForCapable;
+            float damageFactor = Mathf.Max(1f, p.GetStatValue(StatDefOf.IncomingDamageFactor));
+            return RM_ExplosiveGrowthKernel.BurstHitAmount(rolled, hs.GetPartHealth(part), damageFactor, hs.PainTotal,
+                p.GetStatValue(StatDefOf.PainShockThreshold), ppd, conscious, moving);
         }
 
         // ── THE TREE BURST (tree_burst_design_2026-10-17.md §4, T4): a tree's end of life, never a maturity cycle. Fired by a

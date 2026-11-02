@@ -62,6 +62,21 @@ def main():
     k = read(os.path.join("Kernel", "RM_ExplosiveGrowthKernel.cs"))
     check("EGROWTH_SOAK_FIX_DURATION_INT_WRAP: no raw now + ticks deadline left",
           re.search(r"int until = now \+", k) is None and k.count("Deadline(now, ticks)") == 2)
+    # EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES (behaviour is fuzzed in SelfTest/ExplosiveGrowthFuzz.cs burst family)
+    hurt = method_body(tr, "private static void HurtPawnsNear(")
+    check("sanity: HurtPawnsNear found", "TakeDamage" in hurt)
+    check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: no summary-health guard left", "SummaryHealthPercent" not in hurt)
+    check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: the hit names its part and its capped amount",
+          re.search(r"new DamageInfo\(DamageDefOf\.Blunt, amount, hitPart: part\)", hurt) is not None
+          and "amount = BurstHitAmount(p, part, amount);" in hurt and "if (amount > 0f)" in hurt)
+    pick = method_body(tr, "public static BodyPartRecord BurstHitPart(Pawn p)")
+    check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: part is an Outside leaf, no vital or spared tag",
+          "BodyPartDepth.Outside" in pick and "r.parts.Count == 0" in pick and "t.vital" in pick and "BurstSparedTags" in pick)
+    for tag in ("ConsciousnessSource", "MovingLimbDigit", "BloodPumpingSource", "BreathingSource"):
+        check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: %s spared" % tag, '"%s"' % tag in tr)
+    check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: cap delegates to the fuzzed kernel",
+          "RM_ExplosiveGrowthKernel.BurstHitAmount(" in method_body(tr, "public static float BurstHitAmount(Pawn p")
+          and "public static float BurstHitAmount(float rolled" in k)
     if fails:
         print("FAIL: %d failed" % len(fails))
         return 1
