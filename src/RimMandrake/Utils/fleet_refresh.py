@@ -209,7 +209,11 @@ def judge(lines, writes, board_version):
         return False, "no tool_result", use
     if res.get("is_error"):
         return False, "tool error: %s" % result_text(res)[:300], use
-    return True, (extra[0]["data"]["headline"], written_versions(result_text(res))), use
+    got = written_versions(result_text(res))
+    want = {"%s/%s" % (w["collection"], w["doc_id"]) for w in writes} | {"board/summary"}
+    if not want <= set(got):
+        return False, "result confirms %d of %d writes: %s" % (len(want & set(got)), len(want), result_text(res)[:200]), use
+    return True, (extra[0]["data"]["headline"], got), use
 
 
 SYSTEM_LIST = "Make exactly the ArtifactData calls the user asks for, nothing else, then reply OK."
@@ -242,6 +246,43 @@ def sync_versions(rows_dir):
     return (v if "board/summary" in v else None), use
 
 
+def dedup(rows):
+    """One row per item, the newest run winning: two rows on one doc_id in one batch is a version_mismatch every run
+    (a re-dispatched item has two run files; a Relentless worker can share an item with a detached helper)."""
+    best = {}
+    for r in rows:
+        if r["item"] not in best or r.get("started", 0) >= best[r["item"]].get("started", 0):
+            best[r["item"]] = r
+    return [r for r in rows if best[r["item"]] is r]
+
+
+def ended(prev, current, rows_dir):
+    """Rows that left the window while Building/Checking: rewritten once as Ended, or they freeze on the board."""
+    out = []
+    for item, status in prev.get("status", {}).items():
+        if item in current or status not in ("Building", "Checking"):
+            continue
+        r = load(os.path.join(rows_dir, item + ".json"), None)
+        if isinstance(r, dict) and r.get("item") == item:
+            out.append(dict(r, status="Ended", unit="inactive"))
+    return out
+
+
+def collect(root, rows_dir, prev):
+    titles = load(os.path.join(root, "titles.json"), {})
+    rows = fleet_watch.rows(HOURS)
+    for r in rows:
+        r["title"] = titles.get(r["item"]) or ledger_title(r["item"]) or r["item"]
+    rel = fleet_watch.relentless_rows()
+    for r in rel:  # "Relentless worker: <ID>" -> "Relentless worker: <plain title>"
+        r["title"] = "%s: %s" % (r["title"].split(": ")[0], titles.get(r["item"]) or ledger_title(r["item"]) or r["item"])
+    rows = dedup(rel + rows)
+    rows += ended(prev, {r["item"] for r in rows}, rows_dir)
+    for i, r in enumerate(rows):
+        r["order"] = i
+    return rows
+
+
 def add_use(rec, use):
     for k, x in use.items():
         rec[k] = round((rec.get(k) or 0) + (x or 0), 6)
@@ -258,17 +299,18 @@ def main():
     os.makedirs(rows_dir, exist_ok=True)
     now = int(time.time())
     fleet_watch.sh("git", "fetch", "-q", "origin")
-    titles = load(os.path.join(root, "titles.json"), {})
-    rows = fleet_watch.rows(HOURS)
-    for r in rows:
-        r["title"] = titles.get(r["item"]) or ledger_title(r["item"]) or r["item"]
-    rel = fleet_watch.relentless_rows()
-    for r in rel:  # "Relentless worker: <ID>" -> "Relentless worker: <plain title>"
-        r["title"] = "%s: %s" % (r["title"].split(": ")[0], titles.get(r["item"]) or ledger_title(r["item"]) or r["item"])
-    rows = rel + rows
-    for i, r in enumerate(rows):
-        r["order"] = i
+    rows = None
     prev = load(os.path.join(root, "state.json"), {})
+    try:
+        rows = collect(root, rows_dir, prev)
+    except Exception as e:  # one malformed run file must leave a FAILED line, not a silent dead timer
+        rows, crash = None, "row collection crashed: %s: %s" % (type(e).__name__, e)
+    if rows is None:
+        rec = {"at": now, "outcome": "FAILED", "detail": crash}
+        with open(os.path.join(root, "runs.jsonl"), "a") as f:
+            f.write(json.dumps(rec) + "\n")
+        print(json.dumps(rec))
+        return 1
     writes, facts, board_version, state = plan(rows, prev, now, rows_dir)
     if a.dry_run:
         print(prompt(writes, facts, now, board_version))
@@ -285,7 +327,7 @@ def main():
                 # first run, or someone else (the Conductor) wrote since: re-read every version, re-plan, retry once
                 try:
                     v, use = sync_versions(rows_dir)
-                except subprocess.TimeoutExpired:
+                except (subprocess.TimeoutExpired, OSError):
                     v, use = None, {}
                 add_use(rec, use)
                 if v is None:
@@ -295,8 +337,8 @@ def main():
                 writes, facts, board_version, state = plan(rows, prev, now, rows_dir)
             try:
                 ok, why, use = judge(run_claude(prompt(writes, facts, now, board_version), rows_dir), writes, board_version)
-            except subprocess.TimeoutExpired:
-                ok, why, use = False, "claude -p timed out", {}
+            except (subprocess.TimeoutExpired, OSError) as e:
+                ok, why, use = False, "claude -p did not run: %s" % type(e).__name__, {}
             add_use(rec, use)
             if ok or "version_mismatch" not in why:
                 break

@@ -38,7 +38,10 @@ def batch_call(writes, uid="u1", url=F.BOARD_URL):
     return {"type": "tool_use", "id": uid, "name": "ArtifactData", "input": {"action": "batch", "url": url, "writes": writes}}
 
 
-def ok_result(uid="u1", text='Database batch committed atomically — 2 writes:\n- set "parts"/"A" (version 4)\n- update "board"/"summary" (version 11)'):
+FULL = 'Database batch committed atomically — 2 writes:\n- set "parts"/"A" (version 4)\n- update "board"/"summary" (version 11)'
+
+
+def ok_result(uid="u1", text=FULL):
     return {"type": "tool_result", "tool_use_id": uid, "content": text}
 
 
@@ -81,6 +84,19 @@ r = F.judge(stream([batch_call(mine + [board])], [err]), mine, 10)
 check("tool error FAILED, mismatch visible", not r[0] and "version_mismatch" in r[1])
 check("no result FAILED", not F.judge(stream([batch_call(mine + [board])], []), mine, 10)[0])
 check("no call FAILED", not F.judge(stream([], []), mine, 10)[0])
+
+part = 'Database batch committed atomically — 1 write:\n- update "board"/"summary" (version 11)'
+check("unconfirmed write FAILED", not F.judge(stream([batch_call(mine + [board])], [ok_result(text=part)]), mine, 10)[0])
+
+# dedup, ended
+d = F.dedup([dict(row("A", "Stopped"), started=1), dict(row("A", "Building"), started=5), row("B", "Done")])
+check("dedup keeps newest per item", [(r["item"], r["status"]) for r in d] == [("A", "Building"), ("B", "Done")])
+import tempfile  # noqa: E402
+tmp = tempfile.mkdtemp()
+F.dump(os.path.join(tmp, "Z.json"), row("Z", "Building"))
+F.dump(os.path.join(tmp, "Y.json"), row("Y", "Done"))
+e = F.ended({"status": {"Z": "Building", "Y": "Done", "A": "Building"}}, {"A"}, tmp)
+check("vanished Building row ends once", [(r["item"], r["status"], r["unit"]) for r in e] == [("Z", "Ended", "inactive")])
 
 # version sync parse
 lst = [{"type": "tool_use", "id": "p", "name": "ArtifactData", "input": {"action": "list", "collection": "parts"}},
