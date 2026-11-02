@@ -122,5 +122,16 @@ check("plan: known docs carry if_version", all("if_version" in x for x in w3 if 
 w4, _, _, _ = F.plan([row("A", "Building")], prev, 400, "/r", [("board", "factory", {"ok": False, "tokens_today": 9})])
 check("plan: factory going not-ok writes alone", [(x["collection"], x["doc_id"]) for x in w4] == [("board", "factory")])
 
+# headline: Python's words, the model relays them
+hl = F.headline([dict(row("A", "Building"), title="Hot springs: new defs"), row("B", "Checking"),
+                 dict(row("C", "Done"), receipt={"check": "PASS"}), dict(row("D", "Done"), receipt={"check": "FAIL"})])
+check("headline from rows alone", hl == "Building Hot springs; checking 1; 2 finished today (1 PASS, 1 FAIL).")
+check("headline empty fleet", F.headline([]) == "Nothing building.")
+bw = F.board_write("H", 5, 3)
+check("board write ready-made", bw == {"op": "update", "collection": "board", "doc_id": "summary",
+                                       "data": {"headline": "H", "updated": 5}, "if_version": 3})
+check("prompt carries the board write, no model words asked", '"headline": "H"' in F.prompt([], "H", 5, 3)
+      and "HEADLINE" not in F.prompt([], "H", 5, 3))
+
 print("\n%d FAIL" % len(FAILS) if FAILS else "\nALL PASS")
 sys.exit(1 if FAILS else 0)

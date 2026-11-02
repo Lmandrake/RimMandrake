@@ -5,10 +5,11 @@ Fleet Watch is the claude.ai artifact BOARD_URL (collections `parts`, `board`, `
 refresh it from a session cron; that died with the window (FLEETWATCH_REFRESH_BUILD_OUTLIVES_ITS_WINDOW). Now:
 
   1. Python does everything deterministic: fleet_watch.py's rows, one <item>.json per row under STATE/rows, a feed
-     line per status change since the last run, a facts list for the headline.
+     line per status change since the last run, and the board/summary headline (headline(); no model words).
   2. Only the write goes through a model: one headless `claude -p` (alias `sonnet`, resolved from the environment;
      no account named here) whose tools are Artifact + ArtifactData only, told to make ONE ArtifactData batch call
-     with our writes plus a board/summary `update` carrying its own short headline. `needs_you` is never touched —
+     with our writes plus a ready-made board/summary `update` — a pure relay, so it can later be swapped for a
+     no-model write (FLEETWATCH_WRITE_SHRINK_TOKENS_TO_NEAR_ZERO). `needs_you` is never touched —
      that field is a human-facing agent's to write.
   3. Success is the TOOL RESULT, not the model's words: the call's input is checked against our writes (every part
      and feed write present, unchanged) and its tool_result must not be an error.
@@ -59,7 +60,7 @@ DISALLOWED = ("Task,Agent,ArtifactComments,Bash,CronCreate,CronDelete,CronList,D
               "ScheduleWakeup,SendMessage,Skill,TaskStop,ToolSearch,WebSearch,WebFetch,Workflow,Write,Glob,Grep,"
               "TodoWrite")
 SYSTEM = ("You relay one write to a claude.ai artifact. Make exactly ONE ArtifactData call: action \"batch\", the url "
-          "given, and the writes given, unchanged and in order, plus the one board write described. Then reply OK. "
+          "given, and the writes given, unchanged and in order. Then reply OK. "
           "Never read, list or make any other call.")
 
 
@@ -181,13 +182,34 @@ def written_versions(text):
     return {"%s/%s" % (c, d): int(v) for c, d, v in WROTE.findall(text)}
 
 
-def prompt(writes, facts, now, board_version):
-    board = '{"op":"update","collection":"board","doc_id":"summary","data":{"headline":<HEADLINE>,"updated":%d}%s}' % (
-        now, "" if board_version is None else ',"if_version":%d' % board_version)
-    return ("url: %s\n\nwrites (pass these unchanged, in order):\n%s\n\nboard write to append last: %s\n"
-            "HEADLINE: one plain sentence, at most 30 words, for the owner glancing at his phone: what is being built "
-            "and what just finished, from these facts (titles as given, no item ids, no jargon):\n- %s\n"
-            % (BOARD_URL, json.dumps(writes), board, "\n- ".join(facts)))
+def headline(rows):
+    """Pure: the board's one plain sentence, from the rows alone (no model words): what is being built, what is being
+    checked, what finished today with its PASS/FAIL tally."""
+    def names(rs, n=3):
+        out = [fleet_watch.title_short(r["title"], 44) for r in rs[:n]]
+        return ", ".join(out) + (" and %d more" % (len(rs) - n) if len(rs) > n else "")
+    build = [r for r in rows if r["status"] == "Building"]
+    check = [r for r in rows if r["status"] == "Checking"]
+    done = [r for r in rows if r["status"] not in LIVE]
+    bits = ["Building " + names(build)] if build else ["Nothing building"]
+    if check:
+        bits.append("checking %d" % len(check))
+    if done:
+        v = [(r.get("receipt") or {}).get("check") for r in done]
+        bits.append("%d finished today (%d PASS, %d FAIL)" % (len(done), v.count("PASS"), v.count("FAIL")))
+    return "; ".join(bits) + "."
+
+
+def board_write(head, now, board_version):
+    w = {"op": "update", "collection": "board", "doc_id": "summary", "data": {"headline": head, "updated": now}}
+    if board_version is not None:
+        w["if_version"] = board_version
+    return w
+
+
+def prompt(writes, head, now, board_version):
+    return ("url: %s\n\nwrites (pass these unchanged, in order):\n%s\n"
+            % (BOARD_URL, json.dumps(writes + [board_write(head, now, board_version)])))
 
 
 def run_claude(text, rows_dir, system=SYSTEM, timeout=240):
@@ -239,7 +261,7 @@ def result_text(res):
     return str(c or "")
 
 
-def judge(lines, writes, board_version):
+def judge(lines, writes, board_version, head=None):
     """-> (ok, why, usage). ok only if exactly one ArtifactData batch carried every write of ours unchanged plus one
     well-formed board write, and its tool_result was not an error."""
     calls, results, use = read_stream(lines)
@@ -254,7 +276,8 @@ def judge(lines, writes, board_version):
         return False, "writes altered in relay", use
     extra = sent[len(writes):]
     if len(extra) != 1 or extra[0].get("collection") != "board" or extra[0].get("doc_id") != "summary" \
-            or set((extra[0].get("data") or {})) != {"headline", "updated"} or extra[0].get("if_version") != board_version:
+            or set((extra[0].get("data") or {})) != {"headline", "updated"} or extra[0].get("if_version") != board_version \
+            or (head is not None and extra[0]["data"].get("headline") != head):
         return False, "board write malformed: %s" % json.dumps(extra)[:200], use
     res = results.get(batch[0].get("id"))
     if res is None:
@@ -377,7 +400,7 @@ def main():
     due = a.force or now - prev.get("mods_at", 0) >= a.mods_every
     writes, facts, board_version, state = plan(rows, prev, now, rows_dir, docs, due)
     if a.dry_run:
-        print(prompt(writes, facts, now, board_version))
+        print(prompt(writes, headline(rows), now, board_version))
         return 0
     rec = {"at": now, "rows": len(rows), "writes": len(writes),
            "mods": sum(1 for w in writes if w["collection"] == "mods")}
@@ -407,7 +430,9 @@ def main():
                 prev = dict(prev, versions=v)
                 writes, facts, board_version, state = plan(rows, prev, now, rows_dir, docs, due)
             try:
-                ok, why, use = judge(run_claude(prompt(writes, facts, now, board_version), rows_dir), writes, board_version)
+                head = headline(rows)
+                ok, why, use = judge(run_claude(prompt(writes, head, now, board_version), rows_dir), writes, board_version,
+                                     head)
             except (subprocess.TimeoutExpired, OSError) as e:
                 ok, why, use = False, "claude -p did not run: %s" % type(e).__name__, {}
             add_use(rec, use)
