@@ -55,6 +55,7 @@ namespace RimMandrake.TitanicCreatures
         public static bool Eligible(PawnKindDef k, Map map, bool t3OnMap)
         {
             if (k?.race?.race == null || map == null || !k.RaceProps.Animal || k.RaceProps.Dryad) return false;
+            if (k.race.GetModExtension<RM_TitanicExtension>()?.harnessOnly == true) return false;
             int tier = (int)TitanicTierUtility.AdultTier(k.race);
             if (tier < RM_TitanicKernel.T2) return false;
             bool optedOut = map.Biomes.Any(b => b?.GetModExtension<RM_TitanPassageExtension>()?.none == true);

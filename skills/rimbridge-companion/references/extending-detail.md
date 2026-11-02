@@ -83,3 +83,17 @@ patch to run, both assume you control the whole call graph. You don't.
 
 ⚠️ The debug log has **Auto-open ON** and reopens on any warning, obscuring screenshots.
 `shoot_planet.py` closes and re-checks up to 4 times and only shoots a clean frame.
+
+## Test races — when no real def can reach the state
+
+Some rows need a creature no vanilla race provides. Before writing a per-pawn override tool, check what the mechanic
+reads: a **def-level** property (Huge Things' titan tier reads `race.baseBodySize`) cannot be faked on one pawn, so the
+honest instrument is a harness-only race, not a tool.
+
+| mod (harness only, never shipped) | defs (ThingDef + PawnKindDef, same name) | use |
+|---|---|---|
+| `src/RimMandrake/HugeThingsTestRaces` (`mandrake.rm.hugethingstestraces`, needs `mandrake.rm.hugethings`) | `RM_TestTitanT2` (bodySize 8, T2) · `RM_TestTitanT3` (bodySize 20, T3) · `RM_TestTitanT2Control` (bodySize 8, forced out: the same-mass untiered control) | Huge Things titan rows on a minimal list; spawn with `jawa/static_call RimMandrake.TitanicCreatures.TitanValidationHooks.KillTitanAt` or any pawn-spawn tool |
+
+Deploy it with `deploy_custom_mods.py --mod HugeThingsTestRaces --apply` and put it on the test list after Huge Things;
+no biome lists these races and they carry no trade tags, so they exist only when a test spawns them. Pinned offline by
+`src/RimMandrake/Utils/selftest_hugethings_test_races.py`.

@@ -112,5 +112,130 @@ namespace RimMandrake.TitanicCreatures
             comp.DebugArriveNow();
             return PassageReport();
         }
+            // ---- TITANIC_BODYSIZE_TEST_RACE_1: probes for the T2/T3 rows, driven with the harness-only test races
+        // (src/RimMandrake/HugeThingsTestRaces: RM_TestTitanT2 bodySize 8, RM_TestTitanT3 20, RM_TestTitanT2Control 8 forced out).
+
+        private static Pawn MakeAdult(PawnKindDef kind, Map map)
+        {
+            return PawnGenerator.GeneratePawn(new PawnGenerationRequest(kind, null, PawnGenerationContext.NonPlayer, map?.Tile ?? -1,
+                allowDowned: true, fixedBiologicalAge: kind.RaceProps.lifeStageAges.Last().minAge + 1f));
+        }
+
+        /// <summary>Generates (never spawns) an adult of each comma-separated kind and reads the tier the running mod gives it.</summary>
+        public static string TierReport(string kindDefNames)
+        {
+            var sb = new StringBuilder();
+            foreach (string name in (kindDefNames ?? "").Split(','))
+            {
+                PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(name.Trim());
+                if (sb.Length > 0) sb.Append(" | ");
+                if (kind == null) { sb.Append(name.Trim()).Append(" FAIL no kind"); continue; }
+                Pawn p = MakeAdult(kind, Find.CurrentMap);
+                sb.Append(kind.defName).Append(" tier=").Append(TitanicTierUtility.GetTier(p)).Append(" adultTier=")
+                  .Append(TitanicTierUtility.AdultTier(p.def)).Append(" bodySize=").Append(p.BodySize.ToString("0.0"))
+                  .Append(" wakeComp=").Append(p.TryGetComp<CompTitanicWake>() != null);
+                p.Destroy();
+            }
+            return sb.ToString();
+        }
+
+        /// <summary>Butchers `n` generated adults of `kindDefName` at efficiency 1 under a fixed Rand seed (so two kinds of equal
+        /// mass round alike) through the real Pawn.ButcherProducts, so the yield-curve prefix runs. Returns summed meat/leather and
+        /// the kernel factor the curve should apply (1 when the tier is not T1/T2 or the curve is off).</summary>
+        public static string ButcherYieldReport(string kindDefName)
+        {
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(kindDefName);
+            if (kind == null) return "FAIL no kind " + kindDefName;
+            const int n = 6;
+            int meat = 0, leather = 0;
+            float factor = 1f;
+            TitanicTier tier = TitanicTier.None;
+            for (int i = 0; i < n; i++)
+            {
+                Pawn p = MakeAdult(kind, Find.CurrentMap);
+                tier = TitanicTierUtility.GetTier(p);
+                if (RM_HugeThingsSettings.YieldCurveActive && (tier == TitanicTier.T1 || tier == TitanicTier.T2))
+                    factor = YieldCurveUtility.SubLinearFactor(p, tier);
+                Rand.PushState(424242 + i);
+                try
+                {
+                    foreach (Thing t in p.ButcherProducts(null, 1f))
+                    {
+                        if (t.def == p.RaceProps.meatDef) meat += t.stackCount;
+                        else if (t.def == p.RaceProps.leatherDef) leather += t.stackCount;
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    return "FAIL ButcherProducts threw " + ex.GetType().Name + ": " + ex.Message;
+                }
+                finally
+                {
+                    Rand.PopState();
+                }
+                p.Destroy();
+            }
+            return kind.defName + " tier=" + tier + " n=" + n + " meat=" + meat + " leather=" + leather + " factor=" + factor.ToString("0.0000");
+        }
+
+        /// <summary>T2 wake on a thin roof and a wall: puts RoofConstructed and a wood wall on the cell east of `cell`, spawns an adult
+        /// of `kindDefName` at `cell` and moves it east through the real Thing.Position setter (the wake's trigger), then reads the
+        /// roof and the wall back. Cleans up the pawn, the wall and the roof.</summary>
+        public static string RoofWallProbe(string kindDefName, IntVec3 cell)
+        {
+            Map map = Find.CurrentMap;
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(kindDefName);
+            if (map == null || kind == null) return "FAIL no map or kind " + kindDefName;
+            IntVec3 east = cell + IntVec3.East;
+            if (!cell.InBounds(map) || !east.InBounds(map) || !cell.Walkable(map)) return "FAIL cell not usable " + cell;
+            map.roofGrid.SetRoof(east, RoofDefOf.RoofConstructed);
+            Thing wall = GenSpawn.Spawn(ThingMaker.MakeThing(ThingDefOf.Wall, ThingDefOf.WoodLog), east, map);
+            int hpBefore = wall.HitPoints;
+            Pawn p = MakeAdult(kind, map);
+            GenSpawn.Spawn(p, cell, map);
+            string tier = TitanicTierUtility.GetTier(p).ToString();
+            p.Position = east;
+            RoofDef after = east.GetRoof(map);
+            bool wallGone = wall.Destroyed;
+            int hpAfter = wallGone ? 0 : wall.HitPoints;
+            if (!p.Destroyed) p.Destroy();
+            if (!wall.Destroyed) wall.Destroy();
+            map.roofGrid.SetRoof(east, null);
+            return kind.defName + " tier=" + tier + " roofAfter=" + (after?.defName ?? "none") + " wallHpBefore=" + hpBefore
+                   + " wallHpAfter=" + hpAfter + " wallDestroyed=" + wallGone;
+        }
+
+        // Pawn_PathFollower.CostToMoveIntoCell(Pawn, IntVec3) is private static: the exact overload Patch_ThickRoofAvoidance targets.
+        private static readonly System.Reflection.MethodInfo CostMethod = HarmonyLib.AccessTools.Method(typeof(Verse.AI.Pawn_PathFollower),
+            "CostToMoveIntoCell", new[] { typeof(Pawn), typeof(IntVec3) });
+
+        private static float StepCost(Pawn p, IntVec3 c)
+        {
+            return System.Convert.ToSingle(CostMethod.Invoke(null, new object[] { p, c }));
+        }
+
+        /// <summary>Thick-roof slow-down: the step cost (Verse.AI.Pawn_PathFollower.CostToMoveIntoCell, which Patch_ThickRoofAvoidance
+        /// postfixes) into the cell east of `cell`, open and then under RoofRockThick, for a spawned adult of `kindDefName`. The
+        /// cell's original roof is put back.</summary>
+        public static string ThickRoofCostProbe(string kindDefName, IntVec3 cell)
+        {
+            Map map = Find.CurrentMap;
+            PawnKindDef kind = DefDatabase<PawnKindDef>.GetNamedSilentFail(kindDefName);
+            if (map == null || kind == null) return "FAIL no map or kind " + kindDefName;
+            if (CostMethod == null) return "FAIL Pawn_PathFollower.CostToMoveIntoCell(Pawn, IntVec3) not found";
+            IntVec3 east = cell + IntVec3.East;
+            if (!cell.InBounds(map) || !east.InBounds(map) || !east.Walkable(map)) return "FAIL cell not usable " + cell;
+            RoofDef orig = east.GetRoof(map);
+            Pawn p = MakeAdult(kind, map);
+            GenSpawn.Spawn(p, cell, map);
+            string tier = TitanicTierUtility.GetTier(p).ToString();
+            map.roofGrid.SetRoof(east, null);
+            float open = StepCost(p, east);
+            map.roofGrid.SetRoof(east, RoofDefOf.RoofRockThick);
+            float thick = StepCost(p, east);
+            map.roofGrid.SetRoof(east, orig);
+            p.Destroy();
+            return kind.defName + " tier=" + tier + " costOpen=" + open.ToString("0.0") + " costThick=" + thick.ToString("0.0");
+        }
     }
 }

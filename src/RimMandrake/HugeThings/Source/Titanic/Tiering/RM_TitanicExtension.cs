@@ -22,5 +22,9 @@ namespace RimMandrake.TitanicCreatures
         /// <summary>BIG_CREATURES_DESIGN_WALLS_AND_SLOTS §3: the creature's breadth B in cells for the walls-and-slots rule, for a
         /// body whose shape is not a square (a serpent, a whale). 0 (unset) = auto, max(1, round(sqrt(body size))).</summary>
         public int breadthCells;
+
+        /// <summary>TITANIC_BODYSIZE_TEST_RACE_1: a harness-only test race (mod HugeThingsTestRaces). Tiers as its body size says, but no
+        /// titan event ever picks it (TitanPassageUtility.Eligible), so loading the test mod cannot put a test titan into a session.</summary>
+        public bool harnessOnly;
     }
 }

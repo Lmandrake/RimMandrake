@@ -663,7 +663,7 @@ def _build_suite():
                 ("zone_cells_survive_blockers", None, "needs a stockpile staged under a footprint; offline: static patch check"),
                 ("mapgen_giants_get_trunks", None, "needs a fresh Rot map generation"),
                 ("t2_holes_thin_roofs_and_crushes_walls", "wakeRoofHolingEnabled",
-                 "needs a race of bodySize >= 8 (ours: RM_Hwelgrue, RM_Totchak, RM_Gorrask; see the walk plan) in the list"),
+                 "needs a race of bodySize >= 8 (ours: RM_Hwelgrue, RM_Totchak, RM_Gorrask; see the walk plan) in the list; LIVE in northstar/titan_test_races_live.py with the harness-only test races (mod HugeThingsTestRaces)"),
                 ("t3_titan_smashes_a_giant_plant", "giantPlantSmashEnabled",
                  "needs a T3 race (RM_Gloomcast, RM_Oommok) ordered past a Rot giant; offline: kernel fuzz `smash`, `smashstep`, `gates`"),
                 ("titan_breaks_through_a_sealed_lane", "titanClearingEnabled",
@@ -676,7 +676,7 @@ def _build_suite():
                 ("smaller_titan_goes_around_a_giant", "giantPlantSmashMinTier",
                  "needs a T1/T2 race beside a Rot giant; the trunk is an impassable edifice, so this is vanilla pathing"),
                 ("t3_corpse_becomes_a_harvest_site", "corpseSiteEnabled",
-                 "needs a bodySize >= 20 corpse and several harvest work sessions"),
+                 "needs a bodySize >= 20 corpse and several harvest work sessions; LIVE in northstar/titan_test_races_live.py with the harness-only test races (mod HugeThingsTestRaces) (site creation; harvest sessions still not driven)"),
                 ("corpse_site_draws_scavengers_that_eat", "corpseSiteScavengersEnabled",
                  "needs a T3 corpse site on a map whose biome homes a predator; drive Building_TitanicCorpseSite.DebugDailyStep with "
                  "the chance at 100% and read ScavengerCount > 0, then MeatRemaining falling by VisitorsEatenTotal; offline: titanic fuzz `visitors`"),
@@ -688,13 +688,13 @@ def _build_suite():
                  "MapComponent_TitanPassages.HasPending, DebugArriveNow, then LastArrived spawned with an ExitMapNear lord; "
                  "offline: titanic fuzz `visitors` checks the card #5 gate and the warning floor"),
                 ("butcher_yield_curve_reduces_t1_t2_yield", "yieldCurveEnabled",
-                 "needs a butcher job on a tiered corpse compared with an untiered same-mass control"),
+                 "needs a butcher job on a tiered corpse compared with an untiered same-mass control; LIVE in northstar/titan_test_races_live.py with the harness-only test races (mod HugeThingsTestRaces)"),
                 ("thick_roof_route_excluded", "roofAvoidanceEnabled",
                  "needs a roofed corridor shortcut beside an open detour (the titan must take the detour every time) and a titan "
-                 "spawned under rock that walks out; offline: titanic fuzz `crush` checks the footprint-overlap exclusion"),
+                 "spawned under rock that walks out; offline: titanic fuzz `crush` checks the footprint-overlap exclusion; LIVE in northstar/titan_test_races_live.py with the harness-only test races (mod HugeThingsTestRaces) (step cost only)"),
                 ("custom_tiers_move_the_ladder", "tierThresholdsCustom", "a startup-read setting: needs a restart between two loads"),
                 ("large_pawns_footprint_bridge", "largePawnsFootprintEnabled",
-                 "soft reflection into neku.largepawns at startup; needs that mod loaded and a multi-cell OccupiedRect read"),
+                 "soft reflection into neku.largepawns at startup; needs that mod loaded and a multi-cell OccupiedRect read (a list gap, not a bodySize gap: the test races do not help)"),
                 ("giant_plants_master_off_is_vanilla", "giantPlantsEnabled", "offline: kernel fuzz `gates`; live: the trunk chain's toggle-off case covers trunks only"),
                 ("giant_animals_master_off_is_vanilla", "giantAnimalsEnabled", "offline: kernel fuzz `gates`; live: needs the wake lane rerun with the master off")):
             with t.component(name, toggle=toggle, beyond_toggle=toggle is None):
