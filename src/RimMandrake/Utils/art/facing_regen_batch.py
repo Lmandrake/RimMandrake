@@ -124,7 +124,8 @@ def plan() -> int:
             for k in ks[1:]:
                 items[k].update(status="needs_eyes", why=f"slug {s} collides with {ks[0]} (artpipe job id)")
     BATCH.mkdir(parents=True, exist_ok=True)
-    save({"schema": 1, "rows": str(ROWS.relative_to(REPO)), "tag": TAG, "items": items})
+    save({"schema": 1, "rows": str(ROWS.relative_to(REPO)) if ROWS.is_relative_to(REPO) else str(ROWS), "tag": TAG,
+          "items": items})
     print(status())
     return 0
 
