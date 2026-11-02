@@ -28,7 +28,7 @@ owner present, and never try to capture images of flight** (CLAUDE.md).
    three-facing sets come to about 54 reviewed annotations, which is tractable. A universal detector is a
    research project.
 5. **Two independent gates per facing: a still body AND a real flap.** A body-only gate passes a set of
-   identical copies (the Beldon lesson). Built 2026-10-21 as the wing-motion gate.
+   identical copies. Built 2026-10-21 as the wing-motion gate.
 6. **Estimator failure is uncertainty, not a finding.** If ECC fails or too few features match, the result is
    UNMEASURED. APPEARANCE CHANGED is reserved for residual evidence (built 2026-10-21).
 7. **Difficult facings may use two or three approved wing-only drawings** (for example a folded or underside

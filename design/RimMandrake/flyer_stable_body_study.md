@@ -114,7 +114,7 @@ every facing. All of these must hold, measured on the exported PNGs:
 |---|---|---|
 | exported body equality | byte-identical | replaces the study's guessed IoU and colour-drift bounds; the Sketto pilot's section 6 acceptance, plate 100 % identical |
 | body localiser (ECC, features, parts) | LOCKED: at most 1 px and 0.5 deg; parts 1.5 px and 1 deg | `flier_frame_registration_audit_2026-10-20.md` |
-| wing motion | FLAPS | Beldon lesson: identical copies pass a body-only gate |
+| wing motion | FLAPS | identical copies pass a body-only gate |
 | locked share (`flyer_lock.py check`, a recipe 3 frame set) | E 0.45, S 0.25, N 0.25 | Sketto pilot: donor Sketto 0.48 / 0.41 / 0.40; owner card 2026-10-09 set S/N at 0.25, back view measures 0.260 |
 
 The identity check by eye stays: same individual in every frame, judged from stills.
