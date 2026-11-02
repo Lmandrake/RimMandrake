@@ -959,6 +959,104 @@ def suppression_off(t):
                 _fail("suppressionEnabled=false but the soak changed (%d -> %r)" % (n, rep["head"]["soaked"]))
 
 
+# --------------------------------------------------------------------------- save/load round trip (Scribe)
+
+SCRIBE_NODE_CLASS = "RimMandrake.ExplosiveGrowth.RM_MapComponent_ExplosiveGrowth"
+SCRIBE_DICTS = ("soakUntil", "suppressedUntil", "ashUntil", "charges", "rainUsed")
+SCRIBE_SAVE = "RM_EG_scribe_round_trip"
+
+
+def _scribe_node(path):
+    """(component element, ticksGame) from a .rws: the ONE map component element of ours, and the save's clock."""
+    root = ET.parse(path).getroot()
+    nodes = [e for e in root.iter("li") if e.get("Class") == SCRIBE_NODE_CLASS]
+    if len(nodes) != 1:
+        raise ExpectationFailed("%s holds %d %s elements, want 1" % (path, len(nodes), SCRIBE_NODE_CLASS))
+    tick = root.find("game/tickManager/ticksGame")
+    return nodes[0], (int(tick.text) if tick is not None and tick.text else None)
+
+
+def _scribe_counts(node):
+    """{dict label: (keys, values)} as written; a missing or IsNull node reads (None, None)."""
+    out = {}
+    for label in SCRIBE_DICTS:
+        d = node.find(label)
+        if d is None or d.get("IsNull"):
+            out[label] = (None, None)
+        else:
+            out[label] = (len(d.findall("keys/li")), len(d.findall("values/li")))
+    out["ruptures"] = (len(node.findall("ruptures/li")), None)
+    return out
+
+
+def _save_now(t, name):
+    import validation_core as V   # noqa: E402 - lazily: the offline probe never touches the Saves folder
+    r = t.session.call("rimworld/save_game", saveName=name)
+    if not (r or {}).get("success", True) or not V._wait_saved(name):
+        _unmeasured(t, "HARNESS: save_game %s did not write a settled .rws: %r" % (name, r))
+    return os.path.join(V.SAVES, name + ".rws")
+
+
+@suite.chain("scribe_round_trip")
+def scribe_round_trip(t):
+    """EGROWTH_SAVELOAD_PROVE_DICT_SCRIBE_SHARE: ExposeData shares ONE tmpKeys list across five dictionaries and tmpInts
+    across four. Safe by the engine (Scribe_Collections builds a non-Reference dictionary in LoadingVars, right after its
+    own fresh working lists load; offline: Utils/selftest_explosivegrowth_scribe_share.py). This row is the game's word:
+    populate soak, suppression and a charge with DIFFERENT counts, save A, load A, save B at the same tick: the component's
+    XML node must be byte-identical (every key, value and charge record), and the Report counts must match."""
+    x, z = t.anchor
+    with _comp(t, "scribe_dicts_survive_save_load"):
+        _prep(t, 40)
+        _arm_charge(t, _N["plant"], x, z)
+        _act(t, P_SUPPRESS, x + 12, z + 12)          # far from the charge: suppression must not defuse it
+        rep0 = _report(t)
+        if not _live(t):
+            return
+        import helpers as H   # noqa: E402 - modcheck puts its own directory on sys.path
+        import validation_core as V   # noqa: E402
+        H.pause(t.session)
+        h0 = rep0["head"]
+        if not (h0["soaked"] and h0["suppressed"] and h0["charging"]):
+            _unmeasured(t, "SITE: precondition needs soak, suppression and a charge all populated: %r" % (h0,))
+        path_a = _save_now(t, SCRIBE_SAVE)
+        node_a, tick_a = _scribe_node(path_a)
+        counts_a = _scribe_counts(node_a)
+        ld = t.session.call("rimworld/load_game", saveName=SCRIBE_SAVE)
+        ok, st = V._wait_playing(t.session)
+        if not ok:
+            _unmeasured(t, "HARNESS: load_game %s never reached Playing (%r; reply %r)" % (SCRIBE_SAVE, st, ld))
+        H.pause(t.session)
+        t.bridge_call("jawa/static_call", type="Verse.Log", method="Clear")
+        rep1 = _report(t)
+        path_b = _save_now(t, SCRIBE_SAVE + "_b")
+        node_b, tick_b = _scribe_node(path_b)
+        counts_b = _scribe_counts(node_b)
+        node_a.tail = node_b.tail = None
+        same = ET.tostring(node_a) == ET.tostring(node_b)
+        _note(t, "scribe_round_trip", {"before": h0, "after": rep1["head"], "tick_a": tick_a, "tick_b": tick_b,
+                                        "counts_a": counts_a, "counts_b": counts_b, "identical": same})
+        for name in (SCRIBE_SAVE, SCRIBE_SAVE + "_b"):   # every non-canonical save is disposable (owner 2026-10-24)
+            try:
+                os.remove(os.path.join(V.SAVES, name + ".rws"))
+            except OSError:
+                pass
+        for label in ("soakUntil", "suppressedUntil", "charges"):
+            k, v = counts_a[label]
+            if not k or k != v:
+                _fail("save A wrote %s with keys=%r values=%r (want equal and non-zero)" % (label, k, v))
+        if counts_a["soakUntil"][0] == counts_a["suppressedUntil"][0]:
+            _unmeasured(t, "SITE: soak and suppression counts are equal (%r); a swap could not show" % (counts_a,))
+        for k in ("soaked", "suppressed", "charging", "ruptures", "ashRestarts"):
+            if rep1["head"].get(k) != h0.get(k):
+                _fail("Report %s changed across save/load: %r -> %r" % (k, h0.get(k), rep1["head"].get(k)))
+        if tick_a is None or tick_a != tick_b:
+            _unmeasured(t, "HARNESS: the clock moved between save A and save B (%r -> %r); identity not comparable"
+                           % (tick_a, tick_b))
+        if not same:
+            _fail("the component node differs after save -> load -> save at the same tick: A %r, B %r"
+                  % (counts_a, counts_b))
+
+
 # --------------------------------------------------------------------------- the other tops (donor plants)
 
 def _top_chain(t, comp_on, comp_off, donor, setting, observe, expect_on, expect_off, why, pre=None):
