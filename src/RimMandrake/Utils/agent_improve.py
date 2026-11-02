@@ -1,29 +1,45 @@
 #!/usr/bin/env python3
-"""Daily agent improvement pass, step 0: gather one day's evidence per agent and per skill (no AI).
+"""Daily agent improvement pass: gather (no AI), Curator, Judge, apply, ramp.
 
 Design: design/RimMandrake/daily_agent_improvement_2026-11-02.md (item AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS).
 
     python3 src/RimMandrake/Utils/agent_improve.py gather [--day YYYY-MM-DD] [--out DIR] [--dry-run]
+    python3 src/RimMandrake/Utils/agent_improve.py run [--day D] [--apply] [--target T ...] [--force]
+    python3 src/RimMandrake/Utils/agent_improve.py ramp                # the level, the rate, the next step
+    python3 src/RimMandrake/Utils/agent_improve.py materialize <target> v<N> <dir>
 
 Reads day D's evidence (lessons filed, Relentless reject reasons, learned lines and alarms, Operations alarms, owner
 words), routes each piece to a target (a role, `relentless`, or a skill), and writes a packet for the Curator:
 <out>/<D>/packet.json and packet.md. A target is SIGNALLED only on recurrence: at least RECUR pieces in the WINDOW_DAYS
 ending on D (owner ruling LESSONS_RETIRE_INBOX_AS_QUEUE: promote on recurrence, never count the backlog). At most
-MAX_TARGETS signalled targets go in the packet, most pieces first. The Curator, the Judge and the apply step are owed.
+MAX_TARGETS signalled targets go in the packet, most pieces first.
+
+`run` is one pass: gather, then per signalled target a fresh Curator (`claude -p`, no tools) proposes at most one edit of
+at most MAX_EDIT_LINES lines, citing the packet pieces that show the failure it fixes (survey rule 3) and preferring a code
+check or tool, which it may only PROPOSE (rule 4); a different fresh Judge returns KEEP/REDO/UNSURE without seeing the
+Curator's reasoning; with --apply each KEEP is checked (`git apply --check`, validate_skills, the target's selftests),
+published with `Delegated: technical`, tagged agent/<target>/v<N>, and recorded in
+infrastructure/state/agent_improve/changes/<target>_v<N>.json. Verdicts: infrastructure/state/delegated/<D>/. The ramp
+level (design section 4.1) lives in <out>/state.json and sets gather's bar. The generalization check (4.3) is owed.
 """
 import argparse
 import calendar
+import difflib
 import glob
 import json
 import os
 import re
+import subprocess
 import sys
+import tempfile
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 sys.path.insert(0, HERE)
 import lessons  # noqa: E402  (parse_name, home_of)
+sys.path.insert(0, os.path.join(HERE, "..", "rimflow"))
+import model  # noqa: E402  (parse_name: an item id's intent word is its task kind)
 
 STORE = "/home/mandrake/rm/relentless/store"          # relentless.DEFAULT_ROOT + /store
 OPS_ALARMS = "/mnt/d/ClaudeWork/rimmandrake/ops_watch/alarms.json"
@@ -185,27 +201,61 @@ def target_entry(t, window_count, ps):
             "pieces": sorted(keep, key=lambda p: p["ts"])}
 
 
-def gather(day, src):
+ITEM_TOKEN = re.compile(r"\b[A-Z][A-Z0-9]*(?:_[A-Z0-9]+){2,}\b")
+
+
+def task_kind(p):
+    """The intent word of the first item id named in a piece (BUILD, REPAIR, ...), else None."""
+    for tok in ITEM_TOKEN.findall(p.get("text") or ""):
+        parsed = model.parse_name(re.sub(r"_\d+$", "", tok))
+        if parsed:
+            return parsed[1]
+    return None
+
+
+def gather(day, src, lv=None, changes_dir=None):
+    """lv: a LEVELS row (the ramp's bar); default L0, the constants above."""
+    lv = lv or {"level": 0, "recur": RECUR, "window_days": WINDOW_DAYS, "min_task_kinds": 0, "need_recheck": False}
     lo, hi = day_bounds(day)
     today = collect(lo, hi, src)
-    window = collect(hi - WINDOW_DAYS * 86400, hi, src)
-    counts = {}
+    window = collect(hi - lv["window_days"] * 86400, hi, src)
+    counts, tkinds = {}, {}
     for p in window:
         if p["target"]:
             counts[p["target"]] = counts.get(p["target"], 0) + 1
+            k = task_kind(p)
+            if k:
+                tkinds.setdefault(p["target"], set()).add(k)
     by_target = {}
     for p in today:
         if p["target"]:
             by_target.setdefault(p["target"], []).append(p)
-    signalled = sorted((t for t in by_target if counts.get(t, 0) >= RECUR),
+    held = {}
+    for t in by_target:
+        if counts.get(t, 0) < lv["recur"]:
+            continue
+        if len(tkinds.get(t, ())) < lv["min_task_kinds"]:
+            held[t] = "%d task kinds in window, bar %d" % (len(tkinds.get(t, ())), lv["min_task_kinds"])
+            continue
+        prior = last_change(t, changes_dir)
+        if lv["need_recheck"] and prior and prior.get("recheck_result") != "pass":
+            held[t] = "the recheck of %s is %s, not pass" % (prior.get("tag"), prior.get("recheck_result") or "unread")
+    signalled = sorted((t for t in by_target if counts.get(t, 0) >= lv["recur"] and t not in held),
                        key=lambda t: (t not in AGENTS, -counts[t], -len(by_target[t]), t))
     kept = signalled[:MAX_TARGETS]
+    targets = []
+    for t in kept:
+        e = target_entry(t, counts[t], by_target[t])
+        e["task_kinds"] = sorted(tkinds.get(t, ()))
+        e["prior"] = last_change(t, changes_dir)
+        targets.append(e)
     return {
-        "day": day, "window_days": WINDOW_DAYS, "recur": RECUR, "max_targets": MAX_TARGETS,
-        "pieces_today": len(today),
-        "targets": [target_entry(t, counts[t], by_target[t]) for t in kept],
+        "day": day, "level": lv["level"], "window_days": lv["window_days"], "recur": lv["recur"],
+        "max_targets": MAX_TARGETS, "pieces_today": len(today),
+        "targets": targets,
         "dropped_over_cap": signalled[MAX_TARGETS:],
-        "unsignalled": sorted(t for t in by_target if t not in signalled),
+        "held": held,
+        "unsignalled": sorted(t for t in by_target if counts.get(t, 0) < lv["recur"]),
         "unrouted": [p for p in today if not p["target"]],
     }
 
@@ -228,10 +278,541 @@ def render(pk):
         if len(pk["unrouted"]) > MAX_PIECES:
             L.append("(showing the newest %d of %d)" % (MAX_PIECES, len(pk["unrouted"])))
         L.append("")
+    for t, why in sorted(pk.get("held", {}).items()):
+        L.append("Held at level L%d: %s (%s)" % (pk.get("level", 0), t, why))
     L.append("Not signalled today: %s" % (", ".join(pk["unsignalled"]) or "none"))
     if pk["dropped_over_cap"]:
         L.append("Over the cap, left for tomorrow: %s" % ", ".join(pk["dropped_over_cap"]))
     return "\n".join(L) + "\n"
+
+
+# ---------------------------------------------------------------- targets, versions, ramp
+
+DELEGATED = os.path.join(REPO, "infrastructure", "state", "delegated")
+CHANGES = os.path.join(REPO, "infrastructure", "state", "agent_improve", "changes")
+ROLES = os.path.join(REPO, "src", "RimMandrake", "rimflow", "roles")
+SKILLS = os.path.join(REPO, "skills")
+RELENTLESS = "src/RimMandrake/rimflow/relentless.py"
+# rulings, grading and counting are never the pass's to edit (survey rule 4: grading parts go to the Arbiter and a human);
+# the Conductor's role carries the owner's authority. These get a proposal line only.
+PROPOSAL_ONLY_ROLES = {"arbiter", "auditor", "conductor"}
+MAX_EDIT_LINES = 15
+LEVELS = [
+    {"level": 0, "interval_days": 1, "recur": 2, "window_days": 7, "min_task_kinds": 0, "need_recheck": False,
+     "need_general": False},
+    {"level": 1, "interval_days": 3, "recur": 3, "window_days": 14, "min_task_kinds": 2, "need_recheck": True,
+     "need_general": False},
+    {"level": 2, "interval_days": 7, "recur": 5, "window_days": 28, "min_task_kinds": 3, "need_recheck": True,
+     "need_general": True},
+]
+RAMP_PASSES, RAMP_UP_BELOW, RAMP_DOWN_ABOVE = 10, 0.3, 0.6
+VERDICTS = ("KEEP", "REDO", "UNSURE")
+
+
+def resolve_target(t):
+    """-> {path (repo-relative), region (start marker, or None for the whole file), what} or None (proposal only)."""
+    if t == "relentless":
+        return {"path": RELENTLESS, "region": "def worker_prompt(", "what": "the Relentless worker brief"}
+    if t in PROPOSAL_ONLY_ROLES:
+        return None
+    if re.fullmatch(r"[a-z][a-z0-9_-]*", t or "") and os.path.isfile(os.path.join(ROLES, t + ".md")):
+        return {"path": "src/RimMandrake/rimflow/roles/%s.md" % t, "region": None, "what": "the %s role file" % t}
+    if re.fullmatch(r"[a-z][a-z0-9-]*", t or "") and os.path.isfile(os.path.join(SKILLS, t, "SKILL.md")):
+        return {"path": "skills/%s/SKILL.md" % t, "region": None, "what": "the repo skill %s" % t}
+    return None
+
+
+def region_of(text, start):
+    """The editable slice: from `start` to the next top-level def (the whole text when start is None)."""
+    if start is None:
+        return 0, len(text)
+    i = text.find(start)
+    if i < 0:
+        raise ValueError("region marker %r not found" % start)
+    j = text.find("\ndef ", i + len(start))
+    return i, (j + 1 if j >= 0 else len(text))
+
+
+def last_change(t, changes_dir=None):
+    best = None
+    for p in glob.glob(os.path.join(changes_dir or CHANGES, "%s_v*.json" % t)):
+        m = re.search(r"_v(\d+)\.json$", p)
+        try:
+            rec = json.load(open(p, encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        if m and (best is None or int(m.group(1)) > best[0]):
+            best = (int(m.group(1)), rec)
+    return best[1] if best else None
+
+
+def git(*args, cwd=None, check=True):
+    r = subprocess.run(["git"] + list(args), cwd=cwd or REPO, capture_output=True, text=True, timeout=300)
+    if check and r.returncode != 0:
+        raise RuntimeError("git %s: %s" % (" ".join(args[:2]), (r.stderr or r.stdout)[-400:]))
+    return r.stdout
+
+
+def next_version(t, changes_dir=None, cwd=None):
+    n = 0
+    for tag in git("tag", "-l", "agent/%s/v*" % t, cwd=cwd, check=False).split():
+        m = re.search(r"/v(\d+)$", tag)
+        n = max(n, int(m.group(1))) if m else n
+    prior = last_change(t, changes_dir)
+    if prior and prior.get("version"):
+        n = max(n, int(prior["version"]))
+    return n + 1
+
+
+def load_state(path):
+    try:
+        st = json.load(open(path, encoding="utf-8"))
+    except (OSError, ValueError):
+        st = {}
+    st.setdefault("level", 0)
+    st.setdefault("passes_at_last_step", 0)
+    st.setdefault("last_pass_day", None)
+    return st
+
+
+def ramp_reading(delegated_dir=None):
+    """Acceptance rate over the last RAMP_PASSES passes that proposed anything, from the committed verdict files:
+    each agent_improve_<target>.json is one proposed diff; applied when it carries applied_sha."""
+    days = {}
+    for p in glob.glob(os.path.join(delegated_dir or DELEGATED, "*", "agent_improve_*.json")):
+        try:
+            rec = json.load(open(p, encoding="utf-8"))
+        except (OSError, ValueError):
+            continue
+        d = days.setdefault(os.path.basename(os.path.dirname(p)), [0, 0])
+        d[0] += 1
+        d[1] += 1 if rec.get("applied_sha") else 0
+    last = sorted(days)[-RAMP_PASSES:]
+    proposed = sum(days[d][0] for d in last)
+    applied = sum(days[d][1] for d in last)
+    return {"passes": len(days), "window": last, "proposed": proposed, "applied": applied,
+            "rate": (applied / proposed) if proposed else None}
+
+
+def ramp_step(st, reading):
+    """At most one step per RAMP_PASSES passes; up a level (stricter) below RAMP_UP_BELOW, down above RAMP_DOWN_ABOVE."""
+    if reading["passes"] < RAMP_PASSES or reading["passes"] - st["passes_at_last_step"] < RAMP_PASSES \
+            or reading["rate"] is None:
+        return st, None
+    lvl = st["level"]
+    if reading["rate"] < RAMP_UP_BELOW and lvl < len(LEVELS) - 1:
+        lvl += 1
+    elif reading["rate"] > RAMP_DOWN_ABOVE and lvl > 0:
+        lvl -= 1
+    if lvl == st["level"]:
+        return st, None
+    step = "L%d -> L%d at rate %.2f over %d passes" % (st["level"], lvl, reading["rate"], RAMP_PASSES)
+    st = dict(st, level=lvl, passes_at_last_step=reading["passes"])
+    st.setdefault("steps", []).append({"at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), "step": step})
+    return st, step
+
+
+def due(st, day):
+    """The level's interval: a pass on `day` is due when the last pass is at least interval_days earlier."""
+    if not st.get("last_pass_day"):
+        return True
+    gap = (day_bounds(day)[0] - day_bounds(st["last_pass_day"])[0]) // 86400
+    return gap >= LEVELS[st["level"]]["interval_days"]
+
+
+# ---------------------------------------------------------------- step 1, Curator; step 2, Judge
+
+CURATOR_RULES = """Rules (from design/RimMandrake/daily_agent_improvement_2026-11-02.md and builder_agents_survey_2026-11-02.md):
+1. Evidence, not opinion. A change must fix a real failure shown by the numbered pieces; cite their numbers. No cited
+   failure, no change. "none" is a valid and common answer: most days have no change worth making.
+2. Fix order: a code check (a gate that refuses the mistake) beats a tool, which beats prompt or skill text. When a code
+   check or a tool is the right fix, answer "proposal" with fix_layer code or tool; never paper over it with text.
+3. Pointer, not paste: a text change adds or sharpens a short line that points at the existing skill, doc or tool that
+   holds the knowledge. At most %d changed lines in total. Deleting or tightening a line that misled beats adding one.
+4. Never change a ruling, a gate, a cap, a schedule, or a grading or counting rule. Never fit one item's quirk: the
+   failure must recur across the pieces.
+5. An edit's "old" is an exact substring of the TARGET TEXT, unique in it; "new" replaces it. Keep the file's style.""" % MAX_EDIT_LINES
+
+CURATOR_REPLY = """Reply with ONE JSON object and nothing else:
+{"decision": "none" | "change" | "proposal",
+ "cites": [piece numbers],
+ "fix_layer": "code" | "tool" | "prompt",
+ "why_text": "change only: why text and not a code check",
+ "edits": [{"old": "...", "new": "..."}],
+ "recheck": "change only: what the next days' evidence shows if this worked, in one line",
+ "proposal": "proposal only: the code check or tool to build, one paragraph",
+ "prior_recheck": "pass" | "fail" | "unknown"   (only when a PRIOR CHANGE is shown: did its recheck pass?)}"""
+
+
+def pieces_block(entry):
+    return "\n".join("%d. [%s] %s  (%s)" % (i, p["kind"], p["text"], p["path"]) for i, p in enumerate(entry["pieces"]))
+
+
+def curator_prompt(entry, res, text):
+    t = entry["target"]
+    head = ["You are the Curator of the RimMandrake daily agent-improvement pass. You have no tools: everything you may",
+            "use is below. Target: %s (%s)." % (t, res["what"] if res else "not editable by this pass: "
+                                               "answer none or proposal only"),
+            "", "EVIDENCE PIECES (%d in the window, %d today; kinds %s; task kinds %s):"
+            % (entry["window_count"], entry["today"], json.dumps(entry["kinds"]), entry.get("task_kinds") or "-"),
+            pieces_block(entry), ""]
+    if entry.get("prior"):
+        pr = entry["prior"]
+        head += ["PRIOR CHANGE %s (applied %s). Its recheck: %s" % (pr.get("tag"), pr.get("day"), pr.get("recheck")),
+                 "Judge from the pieces whether that recheck passed; if it failed, reverting it is a valid change.", ""]
+    if res:
+        head += ["TARGET TEXT (%s):" % res["path"], "<<<", text, ">>>", ""]
+    return "\n".join(head + [CURATOR_RULES, "", CURATOR_REPLY]) + "\n"
+
+
+JUDGE_ASK = """You are the Judge. A different agent proposed the change below to %s, from the evidence pieces shown. You
+see the evidence, the target text and the diff, not the proposer's reasoning. Decide by these written constraints:
+- It fixes a failure the cited pieces actually show, and that failure recurs (not one item's quirk). Cited: %s.
+- A code check or tool would not clearly be the better fix (code check > tool > text).
+- Pointer, not paste: short, points at where the knowledge lives; at most %d changed lines.
+- It contradicts nothing else in the target text, changes no ruling, gate, cap, schedule or grading rule.
+- The recheck is something the next days' evidence could actually show: "%s".
+Reply with ONE JSON object and nothing else:
+{"verdict": "KEEP" | "REDO" | "UNSURE", "reasons": "two or three sentences", "violated": "REDO only: the constraint"}
+KEEP only if every constraint holds; UNSURE when the constraints do not decide it."""
+
+
+def judge_prompt(entry, res, text, diff, cites, recheck):
+    return "\n".join([JUDGE_ASK % (res["what"], cites, MAX_EDIT_LINES, recheck), "",
+                      "EVIDENCE PIECES:", pieces_block(entry), "", "TARGET TEXT (%s):" % res["path"], "<<<", text,
+                      ">>>", "", "DIFF:", diff]) + "\n"
+
+
+def parse_json_reply(raw):
+    """The first JSON object in a model reply (prose or a code fence around it is tolerated)."""
+    s = str(raw or "")
+    for i, ch in enumerate(s):
+        if ch == "{":
+            try:
+                obj, _ = json.JSONDecoder().raw_decode(s[i:])
+            except ValueError:
+                continue
+            if isinstance(obj, dict):
+                return obj
+    raise ValueError("no JSON object in the reply")
+
+
+def claude_fresh(prompt, timeout=600, model_name="opus"):
+    """One fresh, tool-less `claude -p` session in an empty temp dir: no repo context, no memory, no MCP."""
+    with tempfile.TemporaryDirectory(prefix="agent_improve_") as d:
+        r = subprocess.run(["claude", "-p", "--model", model_name, "--tools", "", "--no-session-persistence",
+                            "--strict-mcp-config"], input=prompt, capture_output=True, text=True, cwd=d,
+                           timeout=timeout)
+    if r.returncode != 0 or not r.stdout.strip():
+        raise RuntimeError("claude -p exit %d: %s" % (r.returncode, (r.stderr or "")[-300:]))
+    return r.stdout
+
+
+def build_change(entry, res, full, reply):
+    """Validate a Curator reply against the packet and the target -> (new full text, diff, problems)."""
+    probs = []
+    cites = reply.get("cites") or []
+    if not cites or not all(isinstance(c, int) and 0 <= c < len(entry["pieces"]) for c in cites):
+        probs.append("cites must name piece numbers 0..%d (rule 3: a change cites the failure it fixes)"
+                     % (len(entry["pieces"]) - 1))
+    if reply.get("fix_layer") != "prompt":
+        probs.append("fix_layer %r: a code check or tool is proposed, never written as text (rule 4)"
+                     % reply.get("fix_layer"))
+    if not str(reply.get("recheck") or "").strip():
+        probs.append("no recheck line")
+    edits = reply.get("edits") or []
+    if not edits:
+        probs.append("no edits")
+    a, b = region_of(full, res["region"])
+    region = full[a:b]
+    for e in edits:
+        old, new = (e or {}).get("old"), (e or {}).get("new")
+        if not isinstance(old, str) or not isinstance(new, str) or not old:
+            probs.append("an edit lacks old/new text")
+            continue
+        if region.count(old) != 1 or full.count(old) != 1:
+            probs.append("old text not unique in the target (%d in region, %d in file): %r"
+                         % (region.count(old), full.count(old), old[:80]))
+            continue
+        region = region.replace(old, new, 1)
+    new_full = full[:a] + region + full[b:]
+    diff = "".join(difflib.unified_diff(full.splitlines(True), new_full.splitlines(True),
+                                        "a/" + res["path"], "b/" + res["path"]))
+    plus = sum(1 for ln in diff.splitlines() if ln.startswith("+") and not ln.startswith("+++"))
+    minus = sum(1 for ln in diff.splitlines() if ln.startswith("-") and not ln.startswith("---"))
+    if max(plus, minus) > MAX_EDIT_LINES:
+        probs.append("%d added / %d removed lines, cap %d" % (plus, minus, MAX_EDIT_LINES))
+    if not diff and not probs:
+        probs.append("the edits change nothing")
+    return new_full, diff, probs
+
+
+def curate_and_judge(entry, day, outdir, curator=None, judge=None, repo=None):
+    """Steps 1 and 2 for one target -> a result row. Writes the Curator and Judge replies and the diff to outdir."""
+    curator, judge, repo = curator or claude_fresh, judge or claude_fresh, repo or REPO
+    t = entry["target"]
+    res = resolve_target(t)
+    full = open(os.path.join(repo, res["path"]), encoding="utf-8").read() if res else ""
+    text = full[slice(*region_of(full, res["region"]))] if res else ""
+    row = {"target": t, "day": day, "path": res["path"] if res else None, "decision": None}
+    try:
+        raw = curator(curator_prompt(entry, res, text))
+        reply = parse_json_reply(raw)
+    except (RuntimeError, ValueError, subprocess.SubprocessError) as e:
+        row.update(decision="error", error="curator: %s" % str(e)[:300])
+        return row
+    with open(os.path.join(outdir, "%s.curator.json" % t), "w", encoding="utf-8") as f:
+        json.dump({"reply": reply, "raw": raw[-4000:]}, f, indent=1)
+    row["decision"] = reply.get("decision")
+    row["prior_recheck"] = reply.get("prior_recheck") if entry.get("prior") else None
+    if row["decision"] == "proposal":
+        row["proposal"] = str(reply.get("proposal") or "")[:1500]
+        row["fix_layer"] = reply.get("fix_layer")
+        return row
+    if row["decision"] != "change":
+        row["decision"] = "none"
+        return row
+    if not res:
+        row.update(decision="refused", problems=["target is proposal-only"])
+        return row
+    new_full, diff, probs = build_change(entry, res, full, reply)
+    if probs:
+        row.update(decision="refused", problems=probs)
+        return row
+    with open(os.path.join(outdir, "%s.diff" % t), "w", encoding="utf-8") as f:
+        f.write(diff)
+    row.update(diff=diff, cites=reply["cites"], recheck=str(reply["recheck"])[:400], why_text=reply.get("why_text"),
+               new_text=new_full)
+    try:
+        jraw = judge(judge_prompt(entry, res, text, diff, reply["cites"], row["recheck"]))
+        jv = parse_json_reply(jraw)
+    except (RuntimeError, ValueError, subprocess.SubprocessError) as e:
+        jv, jraw = {"verdict": "UNSURE", "reasons": "judge failed: %s" % str(e)[:200]}, ""
+    v = str(jv.get("verdict") or "").upper()
+    row["verdict"] = v if v in VERDICTS else "UNSURE"
+    row["judge"] = {"reasons": str(jv.get("reasons") or "")[:800], "violated": str(jv.get("violated") or "")[:400]}
+    with open(os.path.join(outdir, "%s.judge.json" % t), "w", encoding="utf-8") as f:
+        json.dump({"reply": jv, "raw": jraw[-4000:]}, f, indent=1)
+    return row
+
+
+def verdict_record(row, entry):
+    return {"subject": "agent_improve_%s" % row["target"], "item": "AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS",
+            "day": row["day"], "target": row["target"], "path": row["path"],
+            "maker": "agent_improve Curator (fresh claude -p opus, no tools)",
+            "judge_model": "fresh claude -p opus, no tools, blind to the Curator's reasoning",
+            "verdict": row["verdict"], "reasons": row["judge"]["reasons"], "violated": row["judge"]["violated"],
+            "cites": [{"path": entry["pieces"][c]["path"], "text": entry["pieces"][c]["text"]} for c in row["cites"]],
+            "recheck": row["recheck"], "diff": row["diff"], "applied_sha": None, "tag": None}
+
+
+# ---------------------------------------------------------------- step 3, apply
+
+def selftests_for(res, repo=None):
+    """The target's selftests: the worker brief's own, else every selftest that names the target's path."""
+    repo = repo or REPO
+    if res["path"] == RELENTLESS:
+        return ["src/RimMandrake/rimflow/selftest_relentless.py"]
+    needle = res["path"] if res["path"].startswith("src/") else os.path.dirname(res["path"]) + "/"
+    out = []
+    for p in sorted(glob.glob(os.path.join(repo, "src", "RimMandrake", "**", "selftest_*.py"), recursive=True)):
+        try:
+            if needle in open(p, encoding="utf-8", errors="replace").read():
+                out.append(os.path.relpath(p, repo))
+        except OSError:
+            pass
+    return out
+
+
+def run_checks(res, repo):
+    """-> list of problems; empty means the applied change passed every check."""
+    cmds = []
+    if res["path"].endswith(".py"):
+        cmds.append([sys.executable, "-m", "py_compile", res["path"]])
+    if res["path"].startswith("skills/"):
+        cmds.append([sys.executable, "skills/validate_skills.py", res["path"].split("/")[1]])
+    tests = selftests_for(res, repo)
+    if tests:
+        cmds.append([sys.executable, "src/RimMandrake/Utils/run_selftests.py", "--only"] + tests)
+    probs = []
+    for c in cmds:
+        r = subprocess.run(c, cwd=repo, capture_output=True, text=True, timeout=540)
+        if r.returncode != 0:
+            probs.append("%s exit %d: %s" % (" ".join(c[1:3]), r.returncode, (r.stdout + r.stderr)[-300:]))
+    return probs
+
+
+def apply_change(row, entry, outdir, repo=None, publish=None, changes_dir=None, delegated_dir=None, pk_level=0):
+    """KEEP only. Check, apply, test, publish with `Delegated: technical`, tag, record. Any refusal reverses the diff
+    and leaves it in outdir. -> (ok, detail)."""
+    repo = repo or REPO
+    changes_dir, delegated_dir = changes_dir or CHANGES, delegated_dir or DELEGATED
+    t, res = row["target"], resolve_target(row["target"])
+    if LEVELS[pk_level]["need_general"]:
+        return False, "level L%d needs a generalization check before apply; it is not built" % pk_level
+    if git("status", "--porcelain", "--", res["path"], cwd=repo).strip():
+        return False, "%s has uncommitted edits; refusing to mix" % res["path"]
+    dpath = os.path.join(outdir, "%s.diff" % t)
+    r = subprocess.run(["git", "apply", "--check", dpath], cwd=repo, capture_output=True, text=True, timeout=60)
+    if r.returncode != 0:
+        return False, "git apply --check: %s" % r.stderr[-300:]
+    git("apply", dpath, cwd=repo)
+    probs = run_checks(res, repo)
+    if probs:
+        git("apply", "-R", dpath, cwd=repo)
+        return False, "; ".join(probs)
+    n = next_version(t, changes_dir, cwd=repo)
+    tag = "agent/%s/v%d" % (t, n)
+    vrec = verdict_record(row, entry)
+    vpath = os.path.join(delegated_dir, row["day"], "agent_improve_%s.json" % t)
+    cpath = os.path.join(changes_dir, "%s_v%d.json" % (t, n))
+    change = {"target": t, "version": n, "tag": tag, "day": row["day"], "path": res["path"],
+              "pieces": vrec["cites"], "source_kinds": sorted({task_kind(entry["pieces"][c]) for c in row["cites"]}
+                                                             - {None}),
+              "diff": row["diff"], "verdict": os.path.relpath(vpath, repo), "recheck": row["recheck"],
+              "recheck_result": None, "rechecks": [], "generalization": []}
+    os.makedirs(os.path.dirname(cpath), exist_ok=True)
+    with open(cpath, "w", encoding="utf-8") as f:
+        json.dump(change, f, indent=1)
+    msg = ("AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS: %s v%d from %s evidence\n\n"
+           "Delegated: technical — agent improvement %s\nJudge KEEP: %s\nChange record: %s\n"
+           % (t, n, row["day"], t, os.path.relpath(vpath, repo), os.path.relpath(cpath, repo)))
+    paths = [res["path"], os.path.relpath(cpath, repo)]
+    ok, sha = (publish or publish_paths)(msg, paths, repo)
+    if not ok:
+        git("apply", "-R", dpath, cwd=repo)
+        os.remove(cpath)
+        return False, "publish: %s" % sha
+    vrec.update(applied_sha=sha, tag=tag, change=os.path.relpath(cpath, repo))
+    write_verdict(vpath, vrec)
+    git("tag", tag, sha, cwd=repo, check=False)
+    git("push", "origin", "refs/tags/%s" % tag, cwd=repo, check=False)
+    return True, "%s %s" % (tag, sha)
+
+
+def write_verdict(vpath, vrec):
+    os.makedirs(os.path.dirname(vpath), exist_ok=True)
+    with open(vpath, "w", encoding="utf-8") as f:
+        json.dump(vrec, f, indent=1)
+
+
+def publish_paths(msg, paths, repo):
+    """git add the named paths (new files need it), then ./publish -F; -> (ok, sha or the refusal)."""
+    git("add", "--", *paths, cwd=repo)
+    with tempfile.NamedTemporaryFile("w", suffix=".msg", delete=False) as f:
+        f.write(msg + "\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\n")
+    try:
+        r = subprocess.run([os.path.join(repo, "publish"), "-F", f.name] + paths, cwd=repo, capture_output=True,
+                           text=True, timeout=540)
+    finally:
+        os.unlink(f.name)
+    m = re.search(r"PUBLISHED ([0-9a-f]{7,40})", r.stdout + r.stderr)
+    return (True, m.group(1)) if r.returncode == 0 and m else (False, (r.stdout + r.stderr)[-400:])
+
+
+def record_rechecks(rows, changes_dir=None):
+    """The Curator's read of each prior change's recheck, appended to that change record. -> the records touched."""
+    touched = []
+    for row in rows:
+        if row.get("prior_recheck") not in ("pass", "fail", "unknown"):
+            continue
+        prior = last_change(row["target"], changes_dir)
+        if not prior:
+            continue
+        p = os.path.join(changes_dir or CHANGES, "%s_v%d.json" % (row["target"], prior["version"]))
+        prior.setdefault("rechecks", []).append({"day": row["day"], "result": row["prior_recheck"], "by": "curator"})
+        if row["prior_recheck"] != "unknown":
+            prior["recheck_result"] = row["prior_recheck"]
+        with open(p, "w", encoding="utf-8") as f:
+            json.dump(prior, f, indent=1)
+        touched.append(p)
+    return touched
+
+
+# ---------------------------------------------------------------- the pass
+
+def run_pass(day, out, apply=False, only=None, curator=None, judge=None, repo=None, src=None, state_path=None,
+             changes_dir=None, delegated_dir=None, publish=None, force=False):
+    state_path = state_path or os.path.join(out, "state.json")
+    st = load_state(state_path)
+    if not force and not due(st, day):
+        return {"day": day, "skipped": "level L%d runs every %d days; last pass %s"
+                % (st["level"], LEVELS[st["level"]]["interval_days"], st["last_pass_day"])}
+    pk = gather(day, src or default_src(), LEVELS[st["level"]], changes_dir)
+    d = os.path.join(out, day)
+    os.makedirs(d, exist_ok=True)
+    rows = []
+    for entry in pk["targets"]:
+        if only and entry["target"] not in only:
+            continue
+        row = curate_and_judge(entry, day, d, curator, judge, repo)
+        rows.append(row)
+        if row.get("verdict"):
+            vpath = os.path.join(delegated_dir or DELEGATED, day, "agent_improve_%s.json" % row["target"])
+            write_verdict(vpath, verdict_record(row, entry))
+            row["verdict_file"] = vpath
+        if apply and row.get("verdict") == "KEEP":
+            row["applied"], row["apply_detail"] = apply_change(row, entry, d, repo, publish, changes_dir,
+                                                               delegated_dir, st["level"])
+    touched = record_rechecks(rows, changes_dir)
+    if apply:
+        books = [r["verdict_file"] for r in rows if r.get("verdict_file")] + touched
+        if books:
+            ok, detail = (publish or publish_paths)(
+                "AGENT_IMPROVE_BUILD_JUDGED_DAILY_DIFFS: %s verdicts and rechecks\n\n"
+                "Delegated: technical — agent improvement verdicts %s\n" % (day, day),
+                [os.path.relpath(b, repo or REPO) for b in books], repo or REPO)
+            rows.append({"target": "(books)", "decision": "published" if ok else "NOT published", "day": day,
+                         "apply_detail": detail})
+    reading = ramp_reading(delegated_dir)
+    st, step = ramp_step(st, reading)
+    st["last_pass_day"] = day
+    with open(state_path, "w", encoding="utf-8") as f:
+        json.dump(st, f, indent=1)
+    summary = {"day": day, "level": pk["level"], "targets": [e["target"] for e in pk["targets"]],
+               "rows": [{k: v for k, v in r.items() if k not in ("new_text",)} for r in rows],
+               "ramp": reading, "ramp_step": step}
+    with open(os.path.join(d, "pass.json"), "w", encoding="utf-8") as f:
+        json.dump(summary, f, indent=1)
+    with open(os.path.join(d, "packet.json"), "w", encoding="utf-8") as f:
+        json.dump(pk, f, indent=1)
+    with open(os.path.join(d, "packet.md"), "w", encoding="utf-8") as f:
+        f.write(render(pk) + render_pass(summary))
+    return summary
+
+
+def render_pass(s):
+    L = ["", "## Pass results (level L%d)" % s["level"]]
+    for r in s["rows"]:
+        line = "- %s: %s" % (r["target"], r["decision"])
+        if r.get("verdict"):
+            line += ", Judge %s (%s)" % (r["verdict"], r["judge"]["reasons"][:200])
+        if "applied" in r:
+            line += ", applied: %s" % r["apply_detail"] if r["applied"] else ", NOT applied: %s" % r["apply_detail"]
+        if r.get("problems"):
+            line += ": " + "; ".join(r["problems"])
+        L.append(line)
+    props = [r for r in s["rows"] if r.get("decision") == "proposal"]
+    if props:
+        L += ["", "## Proposals (code checks, tools, non-editable targets: for the Conductor)"]
+        L += ["- %s [%s]: %s" % (r["target"], r.get("fix_layer"), r.get("proposal")) for r in props]
+    return "\n".join(L) + "\n"
+
+
+def materialize(t, version, dest, repo=None):
+    """Write the target's file as of tag agent/<t>/v<N> under dest (a skill: its whole folder)."""
+    repo = repo or REPO
+    tag = "agent/%s/%s" % (t, version)
+    res = resolve_target(t)
+    if not res:
+        raise ValueError("%s is not an editable target" % t)
+    path = os.path.dirname(res["path"]) if res["path"].startswith("skills/") else res["path"]
+    os.makedirs(dest, exist_ok=True)
+    arch = subprocess.run(["git", "archive", tag, "--", path], cwd=repo, capture_output=True, timeout=120)
+    if arch.returncode != 0:
+        raise RuntimeError(arch.stderr.decode(errors="replace")[-300:])
+    subprocess.run(["tar", "-x", "-C", dest], input=arch.stdout, check=True, timeout=120)
+    return os.path.join(dest, path)
 
 
 def default_src():
@@ -247,9 +828,36 @@ def main(argv=None):
     g.add_argument("--day", help="UTC day, default yesterday")
     g.add_argument("--out", default=OUT)
     g.add_argument("--dry-run", action="store_true", help="print the packet, write nothing")
+    r = sub.add_parser("run", help="gather, Curator, Judge; --apply also applies each KEEP")
+    r.add_argument("--day", help="UTC day, default yesterday")
+    r.add_argument("--out", default=OUT)
+    r.add_argument("--apply", action="store_true")
+    r.add_argument("--target", action="append", help="only these targets (repeatable)")
+    r.add_argument("--force", action="store_true", help="run even when the level's interval says not due")
+    sub.add_parser("ramp", help="print the level, the acceptance rate and whether a step is due")
+    m = sub.add_parser("materialize", help="write a target as of agent/<target>/v<N> into a dir")
+    m.add_argument("target")
+    m.add_argument("version")
+    m.add_argument("dest")
     a = ap.parse_args(argv)
+    if a.cmd == "ramp":
+        st = load_state(os.path.join(OUT, "state.json"))
+        rd = ramp_reading()
+        print(json.dumps({"state": st, "reading": rd, "would_step": ramp_step(st, rd)[1]}, indent=1))
+        return 0
+    if a.cmd == "materialize":
+        print(materialize(a.target, a.version, a.dest))
+        return 0
     day = a.day or time.strftime("%Y-%m-%d", time.gmtime(time.time() - 86400))
-    pk = gather(day, default_src())
+    if a.cmd == "run":
+        s = run_pass(day, a.out, apply=a.apply, only=set(a.target or ()), force=a.force)
+        print(json.dumps({k: s.get(k) for k in ("day", "skipped", "level", "targets", "ramp_step")}))
+        for row in s.get("rows", []):
+            print("%s: %s %s %s" % (row["target"], row["decision"], row.get("verdict") or "",
+                                    row.get("apply_detail") or "; ".join(row.get("problems") or [])))
+        return 0
+    lv = LEVELS[load_state(os.path.join(a.out, "state.json"))["level"]]
+    pk = gather(day, default_src(), lv)
     md = render(pk)
     if a.dry_run:
         sys.stdout.write(md)
