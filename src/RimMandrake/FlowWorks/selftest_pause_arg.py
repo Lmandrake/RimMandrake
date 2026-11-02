@@ -3,13 +3,14 @@
 
 The tool's only parameter is `pause`; an unknown kwarg such as `paused=True` is silently dropped, so the
 game is never paused and the scene runs on a moving clock (PAUSE_ARG_FIX_PAUSED_NEVER_PAUSED: three
-northstar scripts did exactly this). Scans every .py under src/RimMandrake; a mutant proves the scan sees it.
+northstar scripts did exactly this). Scans every git-tracked .py in the repo; a mutant proves the scan sees it.
 """
 import re
+import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+REPO = Path(__file__).resolve().parents[3]
 CALL = re.compile(r"""pause_game["']\s*,([^()]*(?:\([^()]*\)[^()]*)*)\)""", re.S)
 
 
@@ -25,14 +26,17 @@ def findings(text, name="<mem>"):
 
 def main():
     fails, n = [], 0
-    for p in sorted(ROOT.rglob("*.py")):
-        if p.name == Path(__file__).name:
+    tracked = subprocess.run(["git", "-C", str(REPO), "ls-files", "-z", "--", "*.py"],
+                             capture_output=True, check=True).stdout.decode().split("\0")
+    for rel in sorted(r for r in tracked if r):
+        p = REPO / rel
+        if p.name == Path(__file__).name or not p.is_file():
             continue
         t = p.read_text(errors="replace")
         if "pause_game" not in t:
             continue
         n += 1
-        fails += findings(t, str(p.relative_to(ROOT)))
+        fails += findings(t, rel)
     print("scanned %d files naming pause_game" % n)
     if n < 5:
         fails.append("sanity probe: expected >= 5 files naming pause_game, saw %d" % n)
