@@ -19,3 +19,13 @@ a looser tag match finds 6 `AA_Eyeling` rows). Grid blobs were not touched.
 - HELD, untouched (ikee ruling pending; runbook step 6): `AA_Eyeling` (BS cache x2, pawnsAlive def + kindDef, things def + kindDef) and
   `AA_EyeBody` (hediff part body). `RSW_Ikee` uses the Monkey body, so the hediff cannot be re-pointed.
 - Not done: world tile mutators (binary grid), game load of the copy (L1 does that), installing the copy.
+
+## Outcome, 2026-11-01 (item `DONOR_SAVE_ICONS_RENAME_IKEE_STILL_SULKING`)
+
+The donor-free line this note edited (`_donorfree`, `donorfree2`, `_p6b` and their AREAFIX copies) is superseded:
+the world remake replaced it and canon now points at `ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`
+(`infrastructure/state/CANONICAL_SAVE.md`). The L1 load of `donorfree2` and the in-place ikee swap are no longer owed.
+Measured offline on R3 (13,564,631 bytes; byte counts in Python, sanity probe: the same counter finds 1 of each `sw_` name
+in `_donorfree.rws`): 0 of the 6 `sw_` icon names, 0 `AA_EyeBody`, 0 `<kindDef>AA_Eyeling`, 1 `<kindDef>RSW_Ikee`.
+`AA_Eyeling` survives only as 7 list entries: 6 `Corpse_AA_Eyeling` thing filters and 1 `<animal>` row in a
+per-animal policy list. These are filter and policy rows, not things.
