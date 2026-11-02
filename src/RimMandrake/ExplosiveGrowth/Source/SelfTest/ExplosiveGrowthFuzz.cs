@@ -786,6 +786,8 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                     hits++;
                     Check(a >= RM_ExplosiveGrowthKernel.BurstHitMin && a <= rolled, "outside [min, roll] " + at);
                     Check(hp - a * df >= RM_ExplosiveGrowthKernel.BurstPartReserve - 1e-4f, "part destroyed or under reserve " + at);
+                    // Literal floor, independent of the kernel's constant: the hit leaves the part at least 1 hp (never destroyed).
+                    Check(a * df < hp && hp - a * df >= 1f - 1e-4f, "part left under 1 hp (literal reserve) " + at);
                     Check(a * df * ppd <= RM_ExplosiveGrowthKernel.BurstPainMax + 1e-5f, "pain step over max " + at);
                     Check(pain + a * df * ppd <= shock - RM_ExplosiveGrowthKernel.BurstPainHeadroom + 1e-5f, "pain shock " + at);
                     Check(cm >= RM_ExplosiveGrowthKernel.BurstCapacityMargin && mm >= RM_ExplosiveGrowthKernel.BurstCapacityMargin, "near-downed pawn hit " + at);
@@ -796,6 +798,11 @@ namespace RimMandrake.ExplosiveGrowth.SelfTest
                 Check(RM_ExplosiveGrowthKernel.BurstHitAmount(5f, 10f, 1f, 0.75f, 0.8f, 0.025f, 0.7f, 0.85f) == 0f, "pawn at the pain line was hit");
                 Check(RM_ExplosiveGrowthKernel.BurstHitAmount(5f, 10f, 1f, 0f, 0.8f, 0.025f, 0.05f, 0.85f) == 0f, "barely conscious pawn was hit");
                 Check(RM_ExplosiveGrowthKernel.BurstHitAmount(4f, 10f, 1f, 0f, 0.8f, 0.0125f, 0.7f, 0.85f) == 4f, "healthy finger did not take the roll");
+                // Part-HP cap pinned with literals (blind check 2026-11-02: a reserve of 0 let a 3-hp part take 3 and be destroyed).
+                Check(RM_ExplosiveGrowthKernel.BurstHitAmount(4f, 3f, 1f, 0f, 0.8f, 0f, 0.7f, 0.85f) <= 2f + 1e-5f, "3-hp part capped above 2");
+                Check(RM_ExplosiveGrowthKernel.BurstHitAmount(5f, 4f, 2f, 0f, 0.8f, 0f, 0.7f, 0.85f) <= 1.5f + 1e-5f, "4-hp part at x2 damage capped above 1.5");
+                Check(RM_ExplosiveGrowthKernel.BurstHitAmount(5f, 1.9f, 1f, 0f, 0.8f, 0f, 0.7f, 0.85f) == 0f, "1.9-hp part was hit");
+                Check(RM_ExplosiveGrowthKernel.BurstPartReserve >= 1f, "BurstPartReserve under 1 hp");
                 if (n >= 1000) Check(hits > n / 10 && skips > n / 10, $"burst fuzz blind: {hits} hits, {skips} skips");
             }
             catch (Exception e) { fails.Add("burst: " + e.Message); }

@@ -74,6 +74,11 @@ def main():
           "BodyPartDepth.Outside" in pick and "r.parts.Count == 0" in pick and "t.vital" in pick and "BurstSparedTags" in pick)
     for tag in ("ConsciousnessSource", "MovingLimbDigit", "BloodPumpingSource", "BreathingSource"):
         check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: %s spared" % tag, '"%s"' % tag in tr)
+    m = re.search(r"public const float BurstPartReserve = ([0-9.]+)f;", k)
+    check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: part reserve is at least 1 hp (never destroyed)",
+          m is not None and float(m.group(1)) >= 1.0, m and m.group(1))
+    check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: amount is capped by part health less the reserve",
+          "(partHealth - BurstPartReserve) / damageFactor" in method_body(k, "public static float BurstHitAmount(float rolled"))
     check("EGROWTH_BURST_FIX_NEVERDOWNS_AVERAGES: cap delegates to the fuzzed kernel",
           "RM_ExplosiveGrowthKernel.BurstHitAmount(" in method_body(tr, "public static float BurstHitAmount(Pawn p")
           and "public static float BurstHitAmount(float rolled" in k)

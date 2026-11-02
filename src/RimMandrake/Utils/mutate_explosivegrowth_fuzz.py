@@ -85,6 +85,11 @@ MUTATIONS = [
     ("dormancy: ages at full speed", "return whole + (t - whole > rand01 ? 1 : 0);", "return 0;"),
     ("rain: a drink during the rain dries", "return consumedAt < stoppedAt;", "return consumedAt == int.MinValue;"),
     ("stagger: two hours a day", "return ((now + delay) % 60000) < TicksPerHour;", "return ((now + delay) % 60000) < 2 * TicksPerHour;"),
+    ("burst: part reserve 0 (part destroyed)", "BurstPartReserve = 1f;", "BurstPartReserve = 0f;"),
+    ("burst: no part-health cap", "float a = Math.Min(rolled, (partHealth - BurstPartReserve) / damageFactor);", "float a = rolled;"),
+    ("burst: cap ignores damage factor", "(partHealth - BurstPartReserve) / damageFactor);", "(partHealth - BurstPartReserve));"),
+    ("burst: no pain cap", "if (painPerDamage > 0f) a = Math.Min(a, painRoom / (painPerDamage * damageFactor));", ""),
+    ("burst: near-downed pawn hit", "|| !(consciousMargin >= BurstCapacityMargin) || !(movingMargin >= BurstCapacityMargin))", ")"),
 ]
 
 if __name__ == "__main__":
