@@ -309,8 +309,48 @@ def t_reap_boxes():
     shutil.rmtree(d)
 
 
+def t_reap_done_boxes_early():
+    """WALLED_COPIES_REPAIR_LEAK_RETURNS_BY_EIGHT: a check that is over frees its tree in minutes, on every way it ends."""
+    d, o, s, fx = rig()
+    root = os.path.join(d, "walled")
+    r = dict(RULES, walls={"marker": {"box_root": root}}, check_max_s=1800, launch_grace_s=240,
+             disk={"box_keep_s": 86400, "box_done_grace_s": 120})
+    now = 10**6
+
+    def box(name, age, verdict=None):
+        b = os.path.join(root, name)
+        put(os.path.join(b, "tree", "f"), "x" * 100)
+        put(os.path.join(b, "nonce"), name)
+        if verdict:
+            put(os.path.join(b, "verdict.json"), json.dumps({"word": verdict, "reasons": "r", "at": now - age}))
+        os.utime(os.path.join(b, "nonce"), (now - age, now - age))
+        return b
+    boxes = {w: box("v" + w, 600, w) for w in ("PASS", "WEAK", "FAIL")}
+    expired = box("expired", 600)          # no verdict: the checker timed out, its record has moved on
+    st = R.new_state("I1", 0, "t")
+    st.update({"status": "candidate", "check": {"box": expired, "nonce": "n", "expired": True}})
+    s.save(st)
+    still = box("still", 600, "PASS")      # verdict written, the record not yet settled: still checking
+    st = R.new_state("I2", 0, "t")
+    st.update({"status": "checking", "check": {"box": still, "nonce": "n2"}})
+    s.save(st)
+    racing = box("racing", 60, "PASS")     # inside the grace: the Marker may still be writing
+    fresh = box("fresh", 600)              # no verdict, no record: make_box's window, kept to the age gate
+    inproc = box("inproc", 600, "PASS")
+    got = D.reap_boxes(s, r, now, lambda b: b == inproc)
+    for w, b in boxes.items():
+        ok(not os.path.exists(os.path.join(b, "tree")) and os.path.exists(os.path.join(b, "verdict.json")),
+           "a %s check's tree goes after the grace; its verdict stays" % w)
+    ok(not os.path.exists(os.path.join(expired, "tree")), "an expired check its record moved past frees its tree")
+    for why, b in (("still checking", still), ("inside the grace", racing), ("no verdict, no record", fresh),
+                   ("a process in it", inproc)):
+        ok(os.path.exists(os.path.join(b, "tree")), "kept: %s" % why)
+    ok(len(got) == 4 and all(w == "tree" for _, w in got), "reported: %s" % got)
+    shutil.rmtree(d)
+
+
 def main():
-    for t in (t_gone_is_removed, t_park, t_damaged_never_parked, t_reuse_warm_now, t_reuse_fetch_reaches_origin, t_clone_fetch_reaches_origin, t_no_bundle_says_why, t_warm_is_room, t_reap_boxes):
+    for t in (t_gone_is_removed, t_park, t_damaged_never_parked, t_reuse_warm_now, t_reuse_fetch_reaches_origin, t_clone_fetch_reaches_origin, t_no_bundle_says_why, t_warm_is_room, t_reap_boxes, t_reap_done_boxes_early):
         print("--", t.__name__)
         t()
     print("selftest_relentless_disk: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))

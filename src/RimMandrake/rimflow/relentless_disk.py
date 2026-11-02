@@ -88,31 +88,42 @@ def park(c, root, keep, damage=None):
 
 # ---------------------------------------------------------------- walled boxes
 
-def box_live(store):
-    """Boxes a check still reads: every box named by a record that is checking."""
-    out = set()
+def box_named(store):
+    """-> (live, ended): boxes named by a record that is checking (a check still reads them), and boxes named by one that
+    has moved on (its check is over, whatever way it ended: verdict, expiry, failure, game, closing)."""
+    live, ended = set(), set()
     for i in store.items():
         try:
             st = store.load(i)
         except (OSError, ValueError):
             continue
         chk = (st or {}).get("check") or {}
-        if chk.get("box") and st.get("status") == "checking":
-            out.add(os.path.abspath(chk["box"]))
-    return out
+        if chk.get("box"):
+            (live if st.get("status") == "checking" else ended).add(os.path.abspath(chk["box"]))
+    return live, ended - live
+
+
+def box_live(store):
+    """Boxes a check still reads: every box named by a record that is checking."""
+    return box_named(store)[0]
 
 
 def reap_boxes(store, r, now, in_use, acts=None):
-    """-> [(box, "tree"|"box")] removed. A box's tree goes once no checking record names it, no process is in it, and it is
-    older than the longest a check may run; the whole box goes after box_keep_s. Nothing younger is touched: make_box
-    writes the box before the record names it."""
+    """-> [(box, "tree"|"box")] removed. A box's tree goes once no checking record names it and no process is in it, and
+    either its check is over (the Marker wrote verdict.json, or the record that named it has moved on) and box_done_grace_s
+    has passed, or it is older than the longest a check may run (the sweep for every other way a check can end). The whole
+    box goes after box_keep_s. A box with no verdict and no record is never touched younger than that: make_box writes the
+    box before the record names it.
+    WALLED_COPIES_REPAIR_LEAK_RETURNS_BY_EIGHT: with the age gate alone, a finished check's 3.6 GB tree sat ~44 min, and at
+    ~16 checks an hour that was 12 trees, 43 GB, read as a leak."""
     prof = (r.get("walls") or {}).get("marker") or {}
     root = prof.get("box_root")
     if not root or not os.path.isdir(root):
         return []
     hold = r.get("check_max_s", 3600) + r.get("launch_grace_s", 600) + 600
     keep = (r.get("disk") or {}).get("box_keep_s", 7 * 86400)
-    live = box_live(store)
+    grace = (r.get("disk") or {}).get("box_done_grace_s", 120)
+    live, ended = box_named(store)
     out = []
     for box in sorted(glob.glob(os.path.join(root, "*"))):
         b = os.path.abspath(box)
@@ -120,7 +131,8 @@ def reap_boxes(store, r, now, in_use, acts=None):
             age = now - os.lstat(os.path.join(b, "nonce") if os.path.exists(os.path.join(b, "nonce")) else b).st_mtime
         except OSError:
             continue
-        if b in live or age < hold or in_use(b):
+        done = b in ended or os.path.exists(os.path.join(b, "verdict.json"))
+        if b in live or age < (grace if done else hold) or in_use(b):
             continue
         if age >= keep:
             if remove_tree(b) is None:
