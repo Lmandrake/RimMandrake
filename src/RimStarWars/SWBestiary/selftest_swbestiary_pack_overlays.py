@@ -8,6 +8,12 @@ Rule, per adult graphic and facing: <texPath>Pack_<facing>.png exists, is not th
 is not a byte copy of the body, has the body's aspect (same quad), and its gear lies mostly on the
 body's silhouette. Juvenile `_j` and `*_Swimming` bodies are waived by the item. Break probes prove each
 check can fail; the census must see at least 50 races and Ronto, and the group table must hold them all.
+
+Shared, fitted: every graphic the fit installed (art/pack_overlay_installed.json) must be pixel-equal to
+pack_overlay_fit.render() of its group's shared render packoverlay_<group>_v1_<facing> (artpipe state dir)
+on the body as it is NOW. A hand-painted or flat-filled Pack fails, and so does a Pack fitted to a body that
+was redrawn after the fit (re-run `pack_overlay_fit.py --apply --refit`). Every other adult Pack is named
+donor art in DONOR_PACK, so nothing reaches the gear checks by being neither.
 """
 import json
 import os
@@ -25,6 +31,8 @@ MIN_ON_BODY = 0.35     # share of gear pixels over opaque body; winged bodies ke
 MIN_COVER = 0.004      # the gear must show at play zoom
 # donor Pack art drawn for these very bodies, which rims a foreshortened back by design (looked at 2026-11-02)
 DRAWN_FOR_THE_BODY = ("swanimals/Behemoth/JawaBehemoth_f", "swanimals/Behemoth/JawaBehemoth_m")
+# drawn Pack art the fit kept (real_pack_exists), not made from the shared overlays (measured 2026-11-02)
+DONOR_PACK = DRAWN_FOR_THE_BODY + ("swanimals/Bantha/Bantha", "Things/Pawn/Animal/RM_Holcorobeus/RM_Holcorobeus")
 
 
 def check(name, cond, detail=""):
@@ -51,6 +59,11 @@ def judge(pack, body, on_body=True):
     return None
 
 
+def same(a, b):
+    """Pixel-equal RGBA pictures of the same size."""
+    return a.size == b.size and np.array_equal(np.array(a.convert("RGBA")), np.array(b.convert("RGBA")))
+
+
 def main():
     rows = fit.census()
     races = {r for r, _t in rows}
@@ -72,6 +85,60 @@ def main():
     check("probe: placeholder reddens", judge(Image.new("RGBA", (4, 4)), body) == "placeholder")
     check("probe: body copy reddens", judge(body, body) == "byte copy of the body")
     check("probe: off-body gear reddens", "off the body" in (judge(off, body) or ""))
+
+    ours = fit.fitted()
+    by_race = {r: g for g, rs in cfg["groups"].items() for r in rs}
+    try:
+        overs = fit.overlays(fit.art_state())
+    except Exception as exc:                       # the shared sources are the proof; never skip without them
+        check("shared overlay sources packoverlay_<group>_v1_<facing> readable", False, repr(exc))
+        overs = None
+    probe = None
+    if overs is not None:
+        check("all 12 shared overlay sources load", len(overs) == 12, len(overs))
+        probe = next(((race, tex) for race, tex in rows if tex in ours), None)
+    if probe:
+        race, tex = probe
+        root = fit.tex_root(tex)
+        row = (race, tex, by_race[race], root, cfg["overrides"].get(tex, {}))
+        fitted_e = fit.render(row, overs)["east"][1]
+        a = np.array(fitted_e)
+        x0, y0, x1, y1 = fitted_e.getchannel("A").getbbox()
+        flat = np.zeros_like(a)
+        flat[y0:y1, x0:x1] = (120, 80, 40, 255)    # the blind checker's mutant: one brown fill over the gear bbox
+        flat = Image.fromarray(flat, "RGBA")
+        other = (by_race[race] == "quadruped") and "biped" or "quadruped"
+        wrong = fit.render((race, tex, other, root, {}), overs)["east"][1]
+        check("probe: fit reproduces itself", same(fitted_e, fit.render(row, overs)["east"][1]))
+        check("probe: flat fill over the gear is not the shared overlay", not same(flat, fitted_e))
+        check("probe: flat fill still passes the gear checks (why the reproduction check exists)",
+              judge(flat, fit.raw_body(root, tex, "east")) is None)
+        check("probe: another group's overlay is not this group's", not same(wrong, fitted_e))
+
+    checked = reproduced = 0
+    for race, tex in rows:
+        if fit.waived(tex) or overs is None:
+            continue
+        if tex not in ours:
+            check("%s is fitted or named donor Pack art" % tex, tex in DONOR_PACK, "neither (%s)" % race)
+            continue
+        root = fit.tex_root(tex)
+        if root is None:
+            continue                               # reported by the loop below
+        row = (race, tex, by_race.get(race), root, cfg["overrides"].get(tex, {}))
+        if row[2] is None:
+            continue                               # reported by the group checks above
+        for f, (_b, want) in fit.render(row, overs).items():
+            p = os.path.join(root, tex + "Pack_%s.png" % f)
+            if not os.path.isfile(p):
+                continue                           # reported by the loop below
+            reproduced += 1
+            if not same(Image.open(p), want):
+                check("%s %s is the shared %s overlay fitted to the current body" % (tex, f, row[2]), False,
+                      "differs from pack_overlay_fit.render(); hand-made, or the body changed after the fit")
+    check("%d fitted Pack facings reproduce from the shared overlays" % reproduced,
+          reproduced >= 150 and not [x for x in FAILS if "shared" in x or "fitted or named" in x],
+          "%d reproduced" % reproduced)
 
     checked = 0
     for race, tex in rows:
