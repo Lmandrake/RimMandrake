@@ -906,9 +906,17 @@ def review_cases(td: Path, origin: Path):
         h = R.Borrows._harmless
         check(h("find: ‘/proc/1/fdinfo’: Permission denied"), "another user's dir cannot hold a borrower")
         check(h("bfs: error: /proc/1/fdinfo: Permission denied."), "and in bfs's wording")
-        mine = td / "denied_outside"
-        mine.mkdir()
-        check(not h(f"find: ‘{mine}’: Permission denied"), "a dir of ours outside the roots stays a hold")
+        # outside /tmp too: _harmless treats our own /tmp dirs as selftest residue, and td lives there when TMPDIR is unset
+        cache = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache")
+        cache.mkdir(parents=True, exist_ok=True)
+        mine = Path(tempfile.mkdtemp(prefix="rm-reap-selftest-", dir=cache)) / "denied_outside"
+        try:
+            mine.mkdir()
+            check(not any(r == mine or r in mine.parents for r in [Path("/tmp"), *R.roots()]),
+                  "the outside fixture sits under neither /tmp nor a root")
+            check(not h(f"find: ‘{mine}’: Permission denied"), "a dir of ours outside the roots stays a hold")
+        finally:
+            shutil.rmtree(mine.parent, ignore_errors=True)
         check(h(f"find: ‘{root2 / 'S'}’: Permission denied"), "a dir of ours under a root is refused with its candidate")
         check(not h("Permission denied somewhere"), "a line that names no path stays a hold")
         check(h(f"find: ‘{td}/gone_since’: Permission denied"), "a dir gone since find met it holds nothing")
