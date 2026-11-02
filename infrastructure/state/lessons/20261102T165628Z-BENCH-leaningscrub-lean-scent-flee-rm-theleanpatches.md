@@ -1,0 +1,1 @@
+LeaningScrub lean-scent flee (RM_TheLeanPatches.AnimalFlee_Postfix) has no Stall gate: wild prey flee 24 cells from any humanlike upwind on the map's fixed heading even when the wind is dead. Leading (unproven) cause of the 2026-10-07 stall shared move; stall rows need bystanders drafted/away (settle_bystanders). Checker: src/RimMandrake/LeaningScrub/check_stall_move.py
