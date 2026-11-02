@@ -83,3 +83,90 @@ Stage 0 done. Stage 1 round 1 prepared, unanswered. `sheet.md` drafted. No tree,
 Next sitting: record his answers (each verbatim via `rimflow note … --owner-said`), round 2 on the truth leaf
 (phantom cable, plug into pipe slot: does "truthful" mean M2 alone, or also "one cable per connection"?) and on the
 tangle.
+
+## Sitting 2, 2026-11-02 (run rm-role-designer-1793590441, headless, by Conductor). Stage 0 redone, round 1 recorded, round 2 prepared
+
+### His round-1 answers (Conductor window, 2026-11-02T03:32:26Z, verbatim)
+
+> "Yes, I want both poles and floor coords. No, I would not reject it, but there's no reason not to do this. It's just
+> art and that's easy. No, I don't much care about savegame continuity, though I'd be very surprised if we needed to
+> store things in the savegame that acted that way. Those were very strange questions given we already have these
+> capabilities."
+
+Recorded on the ledger: `rimflow note CONCEPT_AGENT_DESIGN_ARGUES_BEFORE_BUILDING --owner-said …`, OWNER tsn
+**1793590546413059482**. The owner filed DESIGNER_GROUNDING_FIX_ASKS_WHAT_WE_BUILT on the same words, and the role file
+now says Stage 0 inventories what is built and never asks whether to keep, cut or shrink a built capability.
+
+Mapping:
+- Ask 1 (poles): **does**. Overhead spans and downed spans become leaves; the pruning answer is "Yes, I want both".
+- Ask 2 (styles): **advisory**, not a leaf ("No, I would not reject it"). Styles stay built ("no reason not to do this").
+  The walk's `four_styles_distinguishable` and `one_run_one_style` bars stay as they are: loosening a bar is his call,
+  and his words do not ask for it.
+- Ask 3 (removal): **waived** w1, scope "I don't much care about savegame continuity", ref OWNER:1793590546413059482.
+
+What I got wrong in sitting 1: asks 1 and 2 asked him to choose about capabilities that are built and proved (masts
+and lamp masts are live-proved 2026-10-16, there are 40 style defs). I framed the sitting from the walk and his quotes,
+not from `src/` and the ledger. So the frame was wrong: a retrofit Designer asks only about what is unbuilt, unproven or
+self-contradictory. That lesson is now in the role file (17e3977ae0); it is not filed again here.
+
+### Stage 0 again: inventory of what is BUILT (measured 2026-11-02)
+
+Instrument: `python3 src/RimMandrake/Utils/mod_completion.py GimmeSomeSlack` (as of 2026-11-01), plus `src/` and the
+ledger.
+
+- **Defs:** floor cords `RM_MessyCords`; conduit in 4 styles + Modern colour variants (PowerConduit_*, WaterproofConduit_*),
+  styled PowerSwitch_* and StandingLamp_*; overhead `RM_AerialMast`, `RM_AerialLampMast`, `RM_AerialWallBracket`
+  (each in 4 styles), `RM_AerialLines`; `RM_PowerTapClamp` + HistoryEvent `RM_PowerTheftCaught`; JobDef
+  `RM_RestringSpan`; Hediff `RM_FallenWireShock`. 40 ThingStyleDefs.
+- **C#:** cord graph and section layer (`RM_MapComponent_CordGraph`, `SectionLayer_RM_MessyCords`, async lay worker);
+  `Source/Aerial/`: masts, spans, `Alert_WireDown`, power taps and `PowerTheftConsequences`, style pickers, restring job.
+- **Works / unproven** (31 inventory entries): 14 work at L2+, 4 broken, 13 unverified.
+  - Works: all 4 player ThingDefs (masts, lamp mast, bracket, tap clamp), fallen-wire shock, 9 switches.
+  - Broken (latest A2 row 2026-10-29, GSS_SWITCHES_PROVE_LAST_FOUR_STANDING): keepWiresOnGravship,
+    cutWiresOnOwnerChange, dripLoops, slideUnder.
+  - Unverified: RM_RestringSpan, autoLink, explosionsCut, kineticSway, tapsEnabled, theftGoodwill, needlessLoops,
+    breakReadout, hideHookupWires, whip, sparksOnlyOverlay, highlight, lod.
+- **Art:** 120 texture slots, 6 owner-accepted, 105 unreviewed.
+- **His walk:** L4 2026-10-16, "GimmeSomeSlack all looks great! Verified."
+- **Open items:** 20 (GSS_* and PIPE_POLE_*), 16 of them [MINOR] code-review defects. Two touch a likely leaf:
+  GSS_CORD_LOOPS_FIX_SPREAD_INTO_DOORS (slack vs impassable) and GSS_STRIP_LED_FIX_MISSED_REPAINT (live/dead).
+- **Tick cost (his 10-26 worry):** unproven. GSS_SLICE_FIX_EDGE_OVERSHOOTS_BUDGET live r9 (2026-10-27) is partial;
+  slices still overshoot the 20 ms bar on some windows.
+- **Truth of the drawing:** his 10-23 pipe-slot plug is fixed and closed (CORD_PLUG_FIX_FINDS_THE_PIPE_SLOT, 10-24).
+  His 10-16 phantom cable (GSS_CORD_SILENCE_PHANTOM_SPARK) was claimed and started 10-16 and **never closed or
+  verified**. It has no item file. Noted on that item for FOUNDRY.
+- **Not in the north star but built:** power theft with goodwill drain, the wire-down alert, the restring job, pole
+  switches. All built. None is asked about (owner 2026-11-02). Each goes on the sheet as advisory, delegated.
+
+The three ways it could fail him are unchanged (tidy, lying, cost). Now two of them are measured as open: **lying**
+(phantom cable unverified) and **cost** (slice bar partial).
+
+### Round 2 (prepared; he has not answered)
+
+Real forks only: what is unbuilt, unproven or contradicts itself.
+
+- **Claim:** the drawing never lies about the grid. Every cord joins two things on one live net. This should be a
+  leaf that every run tests, not a bug class.
+- **Attack:** your north star has no such line. You validated the mod on 10-16 the same day you saw a phantom
+  cable, so you may treat a lie as an ordinary bug to fix, not as a reason to reject the mod. A leaf adds a whole-map
+  truth check to every proof.
+- **Picture:** A (leaf): a proof run fails the build the moment a cord joins two separate nets or a dangling
+  "sparking" end shows on a live pump. B (bug class): the same picture ships, and you file it when you see it.
+- **Asks:**
+  1. If a cord ever drew a connection that is not really there, would you reject the mod, or file it as a bug?
+  2. When a wired gravship lands somewhere new, should its cords look the same as before take-off or be laid fresh?
+     (Built as switch `keepWiresOnGravship`, latest proof row broken. "This doesn't matter to me" is a full answer.)
+
+`askcheck` still crashes without tree.json (filed on CONCEPT_TREE_VET_UNTIL_ZERO_FINDINGS, sitting 1). Checked by
+hand: the only waiver, w1 savegame continuity, is not repeated by either ask.
+
+Not asked, decided by the floor or his words:
+- Tick cost: the floor's number, and his 10-26 words make it core (`cut_cost` leaf). Unproven today.
+- Power theft, wire-down alert, restring, pole switches: built; not barred in his north star; not reject-level by his
+  ask-1 answer, which names only "poles and floor coords". Delegated as advisory. He can undo that.
+- Pole switch ownership: answered already, "Their own switch." (10-22).
+
+### Result of sitting 2
+Round 1 recorded (ledger OWNER tsn 1793590546413059482). Inventory written. Round 2 prepared. Sheet redrawn.
+No tree yet: `cords_tell_truth` is an open core line, and an open core line stops the tree before it exists.
+Next sitting: record round-2 answers, then Stage 3, the tree draft and `lint`.
