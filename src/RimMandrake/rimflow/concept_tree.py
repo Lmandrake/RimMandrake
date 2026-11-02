@@ -106,9 +106,15 @@ def visible(line):
     return re.sub(r"[*_~`\\]", "", "".join(c for c in s if unicodedata.category(c) != "Cf"))
 
 
-# Markup that renders as other text: inline HTML, an entity, a link, a bracket opened inside a bracket. A sheet is plain, so
+# Markup that renders as other text: inline HTML, an entity, an inline or reference link (or its definition), a bracket
+# opened inside a bracket. A sheet is plain, so
 # a line holding any of these is refused anywhere, headings included, rather than rendered and guessed at.
-NOT_PLAIN = re.compile(r"<[A-Za-z/!?]|&#?[A-Za-z0-9]+;|\]\(|\[[^\]]*\[")
+_NOT_PLAIN = re.compile(r"<[A-Za-z/!?]|&#?[A-Za-z0-9]+;|\]\(|\]\[|^\s*\[[^\]]*\]:|\[[^\]]*\[")
+
+
+def not_plain(line):
+    """NOT_PLAIN on the line as written and as rendered: fullwidth brackets fold to `[` only after NFKC."""
+    return _NOT_PLAIN.search(line) or _NOT_PLAIN.search(visible(line))
 UNREAD = "\0unread headings"      # parse_sheet's own key, never a heading name
 SECTIONS = ("his words", "does", "does not", "waived", "open", "delegated", "pruning")
 OPTIONAL_SECTIONS = ("later",)      # "Not now": v2, not in the tree. A dry walk adds `root` (its stand-in north star)
@@ -128,7 +134,7 @@ def parse_sheet(path):
     with open(path, encoding="utf-8") as f:
         for line in f:
             m = re.match(r"^##\s+([^#(]+?)\s*(\(.*\))?\s*$", line)
-            if m and ("[" in visible(line) or NOT_PLAIN.search(line)):    # a heading's note is dropped: no tag may hide there
+            if m and ("[" in visible(line) or not_plain(line)):    # a heading's note is dropped: no tag may hide there
                 out.setdefault(UNREAD, []).append(line.rstrip("\n"))
             if m:
                 cur = m.group(1).strip().lower()
@@ -136,7 +142,7 @@ def parse_sheet(path):
             elif line.strip():
                 if (re.match(r"^\s*(`{3,}|~{3,})", line)                     # a code fence
                         or re.match(r"^\s{0,3}(=+|-{2,})\s*$", line)              # a setext underline (or a rule)
-                        or NOT_PLAIN.search(line)                                  # HTML, entity, link, nested bracket
+                        or not_plain(line)                                  # HTML, entity, link, nested bracket
                         or any(ord(c) > 127 for b in re.findall(r"\[[^\]]*\]", visible(line)) for c in b)  # homoglyph tag
                         or (re.match(r"^\s{0,3}#{1,6}(\s|$)", line) and not (cur == "" and re.match(r"^# \S", line)))):
                     out.setdefault(UNREAD, []).append(line.rstrip("\n"))
