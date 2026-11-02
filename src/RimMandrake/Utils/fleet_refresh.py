@@ -104,7 +104,7 @@ def plan(rows, prev, now, rows_dir):
         writes.append(w)
         was = old.get(r["item"])
         if old and was != r["status"]:
-            changes.append("%s: %s" % (r["title"], ("%s → %s" % (was, r["status"])) if was else "started (%s)" % r["status"]))
+            changes.append("%s: %s" % (fleet_watch.short(r["title"], 90), ("%s → %s" % (was, r["status"])) if was else "started (%s)" % r["status"]))
     for i, text in enumerate(changes):
         writes.append({"op": "set", "collection": "feed", "doc_id": "t%d-%d" % (now, i), "data": {"at": now, "text": text}})
     by = {}
