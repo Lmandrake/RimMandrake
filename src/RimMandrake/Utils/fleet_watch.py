@@ -125,6 +125,48 @@ def rows(hours):
     return out
 
 
+RELENTLESS_ITEMS = os.path.expanduser("~/rm/relentless/store/items")
+
+
+def relentless_rows():
+    """One row per Relentless worker or blind checker whose unit is alive right now."""
+    now = time.time()
+    out = []
+    for p in glob.glob(os.path.join(RELENTLESS_ITEMS, "*", "state.json")):
+        try:
+            s = json.load(open(p))
+        except (OSError, ValueError):
+            continue
+        for phase, rec, clone in (("worker", s.get("run"), s.get("clone")),
+                                  ("blind check", s.get("check"), (s.get("check") or {}).get("clone"))):
+            if not isinstance(rec, dict) or not rec.get("unit"):
+                continue
+            if unit_state(rec["unit"]) not in ("active", "activating"):
+                continue
+            t = latest_transcript(clone) if clone else None
+            calls, tool, words, last_at = read_transcript(t) if t else (0, "", "", 0.0)
+            item = s.get("item") or os.path.basename(os.path.dirname(p))
+            out.append({
+                "id": rec["unit"][-40:],
+                "item": item,
+                "title": "Relentless %s: %s" % (phase, item),
+                "model": "relentless gen %s, attempt %s" % (s.get("gen"), s.get("attempts")),
+                "status": "Checking" if phase == "blind check" else "Building",
+                "unit": "active",
+                "item_state": "doing",
+                "started": int(rec.get("at") or now),
+                "elapsed_min": int((now - (rec.get("at") or now)) / 60),
+                "tool_calls": calls,
+                "now": tool,
+                "said": words,
+                "last_activity": int(last_at) if last_at else None,
+                "commits": [],
+                "commit_count": 0,
+                "relentless": True,
+            })
+    return out
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--hours", type=float, default=12)
@@ -134,10 +176,12 @@ def main():
     a = ap.parse_args()
     if a.fetch:
         sh("git", "fetch", "-q", "origin")
-    rs = rows(a.hours)
     titles = json.load(open(a.titles)) if a.titles else {}
-    for i, r in enumerate(rs):
+    rs = rows(a.hours)
+    for r in rs:
         r["title"] = titles.get(r["item"], r["item"])
+    rs = relentless_rows() + rs
+    for i, r in enumerate(rs):
         r["order"] = i
     if a.out_dir:
         os.makedirs(a.out_dir, exist_ok=True)
