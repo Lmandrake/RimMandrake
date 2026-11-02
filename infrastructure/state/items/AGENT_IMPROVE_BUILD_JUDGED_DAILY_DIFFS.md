@@ -10,21 +10,26 @@ Design: design/RimMandrake/daily_agent_improvement_2026-11-02.md (transfer audit
   `measure` row `agent_improve` in dispatcher_schedule.json (no unit installed).
 - It is also the harvest of Relentless learned.md (107 files) and reject reasons, which nothing read before.
 
-## owed
-1. Step 1 Curator prompt (fresh claude -p, one diff <= ~15 lines per signalled target, pointer not paste, a recheck each;
-   never rulings, gates, caps, schedule, CLAUDE.md or global skills: those are proposal lines).
-2. Step 2 Judge (a different fresh agent, delegation_policy.md section 4): verdict JSON to infrastructure/state/delegated/<day>/.
-3. Step 3 apply program: KEEP only, git apply --check, skills/validate_skills.py, the target's selftests, commit body
-   `Delegated: technical — agent improvement <target>`, land.sh.
-4. Next-day recheck of yesterday's applied diffs; systemd unit rm-agent-improve.{service,timer}.
-5. Ramp (design 4.1, owner 2026-11-02): state.json level L0/L1/L2, interval and evidence bar set by the measured
-   acceptance rate over the last 10 passes (< 0.3 steps up, > 0.6 steps down), never by a date; gather reads its bar.
-6. Versions (4.2): tag agent/<target>/v<N> per applied change; `agent_improve.py materialize` makes any version runnable.
-7. Generalization check (4.3): old vs new on 6 freshly sampled held-out task kinds + 2 source kinds, blind judge; wins
-   harm on held-out kinds = overfit, reverted; no gain anywhere = reverted; source-only gain without harm = kept,
-   flagged narrow in the change record (Conductor ruling 2026-11-02).
-8. Evidence record (4.4): infrastructure/state/agent_improve/changes/<target>_v<N>.json committed with each change.
-9. One hand-run day whose packet a human reads; then the owner enables the timer.
+## built (BENCH, 2026-11-02), steps 1 to 3 and section 4 except 4.3
+- `agent_improve.py run [--apply]`:
+  - the Curator and the Judge are each a fresh `claude -p` with no tools; one diff per target, at most 15 lines a side;
+  - the edit region is the AST span for relentless.py's worker_prompt;
+  - the apply step runs check, validate_skills and the target's selftests, then commits with `Delegated: technical`,
+    tags agent/<target>/v<N>, and writes the change record and the verdict JSON;
+  - the next day's recheck folds into the change record, and a held target needs a passing recheck;
+  - the ramp (L0/L1/L2) counts committed verdicts only;
+  - `materialize` writes any tagged version into a directory.
+- Shas: 427c3c7f0e and d0e7cf984a (build), 48a6e0fbbc (apply hardened, 12 GPT rounds), 383b26a722 (selftest
+  oracles, 4 rounds). Both files are CLEAN.
+- Hand run of 2026-11-01: D:\ClaudeWork\rimmandrake\agent_improve\day1.md. One KEEP applied: 1394a96c,
+  agent/rimworld-modding/v1. Two proposals filed: RELENTLESS_CLONES_REPAIR_REMOVE_OF_GONE and
+  PROOF_HARNESS_BUILD_SAVELOAD_TRIPLET.
+- The schedule row runs `run --apply` and stays enabled:false with no unit installed: switching it on is the owner's.
+
+## owed elsewhere
+- 4.3 generalization check: AGENT_IMPROVE_BUILD_GENERALIZATION_CHECK.
+- Curator "none" with no reason: AGENT_IMPROVE_REPAIR_SILENT_NONE.
+- The rm-agent-improve.{service,timer} unit, when the owner enables the timer.
 
 ## verify
 - selftest_agent_improve GREEN; a dry gather of 2026-11-01 gives <= 6 targets, agents first, <= 25 pieces each.
