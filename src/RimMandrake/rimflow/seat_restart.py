@@ -1981,8 +1981,13 @@ def consume_request(seat, root=None, ts=None):
             os.link(dest, p)
         except FileExistsError:
             pass
-        except OSError:
-            return              # it could not go back: the only copy stays in done/, never deleted
+        except OSError:         # no hard links here: move it back unless a newer one already stands (GPT round 2)
+            if not os.path.exists(p):
+                try:
+                    os.rename(dest, p)
+                except OSError:
+                    pass        # the only copy stays in done/, never deleted
+            return
         os.remove(dest)
 
 
@@ -2974,8 +2979,8 @@ def now_owed(stamp, st, now, hold_s, root=None, seats=None):
 
 
 def now_run_reading():
-    """The file each real now-run rewrites as it ends: the `--live` reading for rm-restart-now.path (an on-demand unit
-    has no timer firing to read; every Conductor goodbye passes --now, so a live path unit refreshes it daily)."""
+    """The file each real now-run rewrites as it ends: when the watcher last ran. Not the `--live` proof: a quiet stretch
+    ages it with the watcher healthy, so the promise is `unit=rm-restart-now.path` (enabled and armed)."""
     return os.path.join(doorbell.state_dir(), "restart", "now_run_last.json")
 
 
@@ -3006,7 +3011,7 @@ def _now_run(args):
         except OSError:
             names = []
         st = _read_json(os.path.join(doorbell.state_dir(), "state.json")) or {}
-        owed = {}
+        owed, fresh = {}, False
         for n in names:
             p = os.path.join(now_dir(), n)
             if n.endswith(".tmp") or ".spent." in n:
@@ -3017,6 +3022,8 @@ def _now_run(args):
                     if now - os.path.getmtime(p) > LEFTOVER_S:
                         os.remove(p)
                         print("[now-run] %.1fs %s leftover removed" % (now - t0, n), flush=True)
+                    else:
+                        fresh = True
                 except OSError:
                     pass
                 continue
@@ -3047,8 +3054,15 @@ def _now_run(args):
                 os.remove(aside)
             except OSError:
                 pass
-        if not owed or now - t0 > hold_s + 30:
+        if now - t0 > hold_s + 30:
             return 0
+        if not owed:
+            # a fresh leftover holds PathExistsGlob true: exiting now would restart this service at once, into
+            # systemd's start limit, which fails the .path unit itself. Wait it out, no tick (GPT round 2)
+            if not fresh or args.dry:
+                return 0
+            time.sleep(5)
+            continue
         print("[now-run] %.1fs tick for %s" % (now - t0, ", ".join("%s=%s" % kv for kv in sorted(owed.items()))),
               flush=True)
         if args.dry:

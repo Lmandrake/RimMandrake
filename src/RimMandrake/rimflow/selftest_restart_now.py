@@ -286,7 +286,24 @@ def test_watcher():
     with contextlib.redirect_stdout(io.StringIO()):
         SR.main(["now-run", "--dry"])
     check(not os.path.exists(old_tmp) and os.path.exists(new_tmp), "a leftover aside/tmp file goes after LEFTOVER_S, a fresh one stays")
-    os.remove(new_tmp)
+    # NEGATIVE (GPT round 2): a fresh leftover alone must not end a real now-run while it still holds PathExistsGlob
+    # true (systemd would restart it at once, into its start limit): it waits, without ticking, until the file goes
+    naps, real_sleep, real_run = [], SR.time.sleep, SR.subprocess.run
+
+    def nap(s):
+        naps.append(s)
+        os.utime(new_tmp, (SR.time.time() - 600, SR.time.time() - 600))
+    SR.time.sleep, SR.subprocess.run = nap, lambda *a, **k: naps.append("tick")
+    try:
+        with contextlib.redirect_stdout(io.StringIO()):
+            rc = SR.main(["now-run"])
+    finally:
+        SR.time.sleep, SR.subprocess.run = real_sleep, real_run
+    check(rc == 0 and not os.path.exists(new_tmp) and naps and "tick" not in naps,
+          "a fresh leftover alone: now-run waits it out without a tick, then removes it (%r)" % naps)
+    for q in (new_tmp, SR.now_run_reading()):
+        if os.path.exists(q):
+            os.remove(q)
     _write(SR.now_stamp_path("GONE"), {"seat": "GONE", "req_ts": 1.0})
     out = io.StringIO()
     with contextlib.redirect_stdout(out):
@@ -297,7 +314,7 @@ def test_watcher():
     with contextlib.redirect_stdout(io.StringIO()):
         SR.main(["now-run"])
     check((SR._read_json(SR.now_run_reading()) or {}).get("rc") == 0,
-          "a real now-run writes the reading the rm-restart-now.path --live line reads")
+          "a real now-run writes its last-run reading")
     unit = os.path.join(HERE, "systemd", "rm-restart-now.path")
     with open(unit) as f:
         txt = f.read()

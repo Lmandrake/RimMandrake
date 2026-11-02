@@ -742,6 +742,19 @@ def test_m10_consume_only_the_request_read():
         want = 444.0 if later else 333.0
         check((SR._read_json(p) or {}).get("ts") == want,
               "M10 a replacement request is never archived unread: %s stands (%s)" % (want, SR._read_json(p)))
+    # NEGATIVE (GPT round 2): a filesystem with no hard links must not strand B in done/: it is moved back
+    with open(p, "w") as f:
+        json.dump({"ts": 555.0}, f)
+    real_link = SR.os.link
+
+    def no_link(a, b):
+        raise PermissionError(1, "no hard links")
+    SR.os.link = no_link
+    try:
+        SR.consume_request("FOUNDRY", root, ts=111.0)
+    finally:
+        SR.os.link = real_link
+    check((SR._read_json(p) or {}).get("ts") == 555.0, "M10 no hard links: the replacement request is moved back")
 
 
 # ---- GPT confirmation round 2026-10-28 (foundry_fresh/gpt/review2.md)
