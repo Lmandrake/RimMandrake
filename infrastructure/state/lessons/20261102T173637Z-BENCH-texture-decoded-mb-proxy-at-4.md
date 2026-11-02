@@ -1,0 +1,1 @@
+A texture 'decoded MB' proxy at 4 B/px over every PNG in a mod folder overstates RimWorld 1.6 VRAM ~15x: the game loads only Textures/ and DXT5-compresses (1 B/px, mips clamped by FastCompressDXT) with textureCompression on. Use src/RimMandrake/Utils/planet_atmosphere_cost.py texture_bytes() rule (Planet Atmosphere: 1131.6 MB proxy vs ~74 MB).
