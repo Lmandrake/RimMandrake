@@ -36,6 +36,8 @@ CATEGORIES = ("TerrainDef", "WeatherDef", "ThoughtDef", "BiomeDef", "TileMutator
 DECISION_WORDS = ("PORTED", "VANILLA", "DROPPED", "UNPORTED")
 MIN_TOKENS = 100  # a scan seeing fewer was blind: src/ held 223 on 2026-11-01
 TOKEN = re.compile(r"\bAB_[A-Za-z0-9_]+")
+# Its fixtures are made-up AB_ names; every other tracked file counts.
+FIXTURES = {"src/RimMandrake/Utils/selftest_alpha_biomes_census.py"}
 BINARY = (".png", ".dds", ".dll", ".pdb", ".jpg", ".jpeg", ".wav", ".ogg", ".psd", ".mp3", ".zip", ".rws")
 
 
@@ -109,7 +111,7 @@ def scan(repo, files):
     """token -> set of files (every context), plus the set of (token, file) that are live references."""
     seen, live = {}, set()
     for f in files:
-        if f.lower().endswith(BINARY):
+        if f.lower().endswith(BINARY) or f in FIXTURES:
             continue
         s = read(repo, f)
         if "AB_" not in s:
