@@ -1,0 +1,1 @@
+A1 L1: after the staging deploy, the plan for the seven wave-1 fix mods (Greentide, formerly GreentideRaidAnt, is folded into RimMandrake.Biomes) reads "Everything in sync" and exits 0: the deployed copies equal origin/main, the 67153b072 durasteel catch-all included, and the stray 0-byte UtinniPatches/Defs/IdeoSymbolDefs_placeholder is pruned

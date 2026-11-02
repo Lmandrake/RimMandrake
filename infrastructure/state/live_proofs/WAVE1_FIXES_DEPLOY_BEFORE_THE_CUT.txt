@@ -1,0 +1,5 @@
+# staging: with the game DOWN (JawaArmoury.dll cannot be replaced while it runs), plan then deploy exactly:
+#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with Doctrine --with LuminousPigment
+#   python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with Doctrine --with LuminousPigment --apply --prune
+# The plan on 2026-11-02 shows only ~ updates and ONE game-only file to prune (0-byte UtinniPatches/Defs/IdeoSymbolDefs_placeholder, never in git).
+live-proof A1: python3 src/RimMandrake/Utils/deploy_custom_mods.py --compose biomes --with Armoury --with StarWarsPatches --with ResearchRetag --with UtinniPatches --with Doctrine --with LuminousPigment
