@@ -59,7 +59,9 @@ except Exception as ex:                                    # noqa: BLE001 - an u
     check("validation.py PADS readable", False, ex)
 
 
-MODS = ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.biomes"]   # a donor-free running list
+DLC5 = ["ludeon.rimworld.royalty", "ludeon.rimworld.ideology", "ludeon.rimworld.biotech",
+        "ludeon.rimworld.anomaly", "ludeon.rimworld.odyssey"]   # A1: "all five DLC" (every DLC is assumed)
+MODS = ["brrainz.harmony", "ludeon.rimworld"] + DLC5 + ["mandrake.rm.biomes"]   # a donor-free running list
 
 class Fake(object):
     def __init__(self, natives=2, biome=S.BIOME, burn=False):
@@ -149,7 +151,9 @@ for kw, why in (({"check_ok": False}, "unclean check"), ({"fake": Fake(natives=0
         check("raises on " + why, False)
     except B.SiteError:
         check("never saved on " + why, not any(e.startswith("save:") for e in events), events)
-for mods, why in ((MODS + ["sarg.alphabiomes"], "a retired donor running"), (["", None], "an unreadable mod list")):
+for mods, why in ((MODS + ["sarg.alphabiomes"], "a retired donor running"), (["", None], "an unreadable mod list"),
+                  ([m for m in MODS if m not in DLC5], "no DLC running"),
+                  ([m for m in MODS if m != "ludeon.rimworld.odyssey"], "one DLC (odyssey) missing")):
     fk = Fake()
     fk.mods = mods
     try:
@@ -175,6 +179,11 @@ P, _ids = PS.header_problems(_hdr("ok.rws", MODS))
 check("donor-free header is clean", not P and _ids == MODS, (P, _ids))
 P, _ids = PS.header_problems(_hdr("v1.rws", MODS + ["sarg.alphabiomes", "oskarpotocki.vfe.insectoid2"]))
 check("retired donor in the header is a problem", P and "alphabiomes" in P[0], P)
+P, _ids = PS.header_problems(_hdr("nodlc.rws", [m for m in MODS if m not in DLC5]))
+check("header with none of the five DLC is a problem", bool(P), (P, _ids))
+for _d in DLC5:
+    P, _ids = PS.header_problems(_hdr("no_%s.rws" % _d.split(".")[-1], [m for m in MODS if m != _d]))
+    check("header missing %s is a problem" % _d, bool(P) and any(_d in x for x in P), (P, _ids))
 P, _ids = PS.header_problems(_hdr("empty.rws", []))
 check("empty header is a problem, never clean", P and "unreadable" in P[0], P)
 P, _ids = PS.header_problems(_st_os.path.join(_hd, "absent.rws"))
