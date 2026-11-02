@@ -30,6 +30,7 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import fleet_watch  # noqa: E402
+import owner_queue  # noqa: E402
 
 REPO = fleet_watch.REPO
 STORE = os.path.expanduser("~/rm/relentless/store")
@@ -249,8 +250,8 @@ def receipts(now, commits_by_item, rel, world, evs, detached_done=()):
                                  "commits": sum(1 for c in commits_by_item.get(item, []) if real_files(c["files"])),
                                  "tokens": s.get("spent") or None}}
     for r in detached_done:
-        if r["item"] in out or (r.get("finished_at") or 0) < since:
-            continue
+        if (r.get("finished_at") or 0) < since or (r["item"] in out and out[r["item"]]["started"] >= r.get("started", 0)):
+            continue  # the newest run (by start, as fleet_refresh.dedup judges it) speaks
         it = world.items.get(r["item"])
         v = ledger_verdict(it)
         ok = r["status"] == "Done" and v != "FAIL"
@@ -307,7 +308,7 @@ def waits_on(it, rs):
     """'you' / 'the game' / '' for an open item."""
     if it is None:
         return ""
-    if it.needs == "owner" or getattr(it, "blocked_kind", None) == "owner" or (rs or {}).get("hold") == "owner":
+    if owner_queue.is_his(it, rs):  # the same test as the board's Needs you (FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT)
         return "you"
     if (rs or {}).get("status") == "game" or getattr(it, "blocked_kind", None) == "live":
         return "the game"
@@ -367,6 +368,7 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
             named_open.setdefault(m, set()).add(iid)
     closed_at = {i: close_at(known[i], evs) for i in item_mods if known[i].state in CLOSED_STATES}
     verdicts = {i: check_of(i, known[i], rel) for i in item_mods}
+    asks = owner_queue.load_questions()  # the same plain question the board's Needs you shows
     docs = []
     for m, last in mod_last.items():
         if last < window:
@@ -398,7 +400,7 @@ def mods(now, log, world, evs, rel, mc, folders, days=DAYS):
             w = waits_on(known[i], rel.get(i))
             if w == "you":
                 waits_you += 1
-                waits.append("waits on you: %s" % display_title(known[i].title or i))
+                waits.append("waits on you: %s" % (asks.get(i) or display_title(known[i].title or i)))
             elif w:
                 waits_game += 1
         waits = waits[:3] + (["%s more %s on you" % (waits_you - 3, "waits" if waits_you == 4 else "wait")]
@@ -478,7 +480,8 @@ def gather(now, days=DAYS, detached_done=()):
         it = world.items.get(r["item"])
         r.setdefault("title", (it.title if it else "") or r["item"])
         r["where"], r["infra"] = where(r["item"], item_mods, cross, folders)
-    return {"factory": factory(now), "receipts": rec, "mods": mods(now, log, world, evs, rel, mc, folders, days)}
+    return {"factory": factory(now), "receipts": rec, "mods": mods(now, log, world, evs, rel, mc, folders, days),
+            "needs": owner_queue.needs_you(world.items, rel)}
 
 
 def where(item, item_mods, cross, folders):

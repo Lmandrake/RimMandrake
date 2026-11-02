@@ -110,7 +110,7 @@ check("plan: mod doc by file_path", w[2]["file_path"] == "/r/mods/Stillsand.json
 many = [("mods", "M%d" % i, {"id": i}) for i in range(80)]
 wc, _, _, stc = F.plan([row("R%d" % i, "Done") for i in range(45)], {"status": {"R0": "Building"}}, 100, "/r", many, True)
 check("plan: one batch stays under the 50-write limit", len(wc) <= F.MAX_WRITES)
-check("plan: unwritten rows stay unhashed for the next run", len(stc["row_hashes"]) == F.MAX_WRITES - F.FEED_MAX - 1)
+check("plan: unwritten rows stay unhashed for the next run", len(stc["row_hashes"]) == F.MAX_WRITES - F.FEED_MAX)  # no board docs here, so no slots held back
 check("plan: mods not all written -> still due next run", stc["mods_at"] == 0)
 prev = dict(st, versions={"parts/A": 1, "mods/Stillsand": 1, "board/factory": 1, "board/summary": 2})
 docs2 = [docs[0], ("board", "factory", {"ok": True, "tokens_today": 9})]

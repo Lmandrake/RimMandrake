@@ -76,6 +76,9 @@ check("missing board write FAILED", not F.judge(stream([batch_call(mine)], [ok_r
 check("wrong board version FAILED", not F.judge(stream([batch_call(mine + [board])], [ok_result()]), mine, 9)[0])
 nh = dict(board, data={"headline": "H", "updated": 1, "needs_you": "x"})
 check("headline not relayed verbatim FAILED", not F.judge(stream([batch_call(mine + [board])], [ok_result()]), mine, 10, "other")[0])
+check("wrong updated stamp FAILED", not F.judge(stream([batch_call(mine + [board])], [ok_result()]), mine, 10, None, 199)[0])
+check("summary as a set FAILED", not F.judge(stream([batch_call(mine + [dict(board, op="set")])], [ok_result()]), mine, 10)[0])
+check("right stamp ok", F.judge(stream([batch_call(mine + [board])], [ok_result()]), mine, 10, "H", 200)[0])
 check("touching needs_you FAILED", not F.judge(stream([batch_call(mine + [nh])], [ok_result()]), mine, 10)[0])
 extra = {"type": "tool_use", "id": "u0", "name": "ArtifactData", "input": {"action": "list", "collection": "parts"}}
 check("extra call FAILED", not F.judge(stream([extra, batch_call(mine + [board])], [ok_result()]), mine, 10)[0])

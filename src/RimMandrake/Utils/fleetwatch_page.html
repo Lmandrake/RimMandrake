@@ -40,6 +40,9 @@ h2 .n{font-family:var(--mono);letter-spacing:0;text-transform:none;font-weight:5
 #needs h2{color:var(--accent);margin:0;flex:none}
 #needs p{margin:0;font-weight:500;min-width:0}
 #needs.quiet p{color:var(--muted);font-weight:400}
+#needs.many{display:block} #needs.many h2{margin:0 0 4px}
+#nlist li{padding:3px 0;border-top:1px solid var(--line);font-weight:500;overflow-wrap:anywhere} #nlist li:first-child{border-top:0}
+#needs details summary{cursor:pointer;color:var(--muted);padding:3px 0}
 #problems{border-color:var(--alarm)} #problems h2{color:var(--alarm)}
 ul{list-style:none;margin:0;padding:0}
 li.row{padding:4px 0;border-top:1px solid var(--line);min-width:0}
@@ -111,7 +114,7 @@ details.fold[open]>summary{margin-bottom:4px}
     <details id="done"><summary><span>Today: <span id="donesum">…</span></span></summary><ul id="dlist"></ul><p class="empty" id="dinfra"></p></details>
   </div>
   <div class="live">
-    <section id="needs" class="quiet"><h2>Needs you</h2><p id="needstext">Nothing.</p></section>
+    <section id="needs" class="quiet"><h2>Needs you <span class="n" id="nn"></span></h2><p id="needstext">Nothing.</p><ul id="nlist"></ul><details id="nmore" hidden><summary></summary><ul id="nlist2"></ul></details></section>
     <section id="problems" hidden><h2>Stuck or circling <span class="n" id="np"></span></h2><ul id="plist"></ul></section>
     <section id="working"><h2>Working <span class="n" id="nw"></span></h2><ul id="wlist"></ul></section>
     <section id="checking" hidden><h2>Checking <span class="n" id="nc"></span></h2><ul id="clist"></ul></section>
@@ -131,7 +134,8 @@ const tok = n => n == null ? "" : n >= 1e6 ? (n/1e6).toFixed(n >= 1e8 ? 0 : 1) +
 const mins = (a, b) => Math.max(0, Math.round(((b ?? now()) - a)/60));
 const LIVE = new Set(["Building", "Checking"]);
 const SHOW = 5;  // task lines per mod before "and N more"
-let parts = [], summary = {}, factory = null, modDocs = [];
+let parts = [], summary = {}, factory = null, modDocs = [], needsDoc = null;
+const NEEDS_SHOW = 6;  // questions shown before "N more"
 const modOpen = {}, modDefault = {}, modMore = new Set();
 
 function line(r, metaBits, second, cls){
@@ -241,15 +245,24 @@ function renderHead(){
     $("stamp").textContent = `updated ${m < 1 ? "just now" : m + "m ago"}`;
     $("stamp").classList.toggle("stale", m > 30);  // heartbeat is 20m on a 5m timer: >30m is a dead refresher
   }
-  const needs = summary.needs_you || "";
-  $("needstext").textContent = needs || "Nothing.";
-  $("needs").classList.toggle("quiet", !needs);
+  // board/needs is owner_queue.needs_you(): the same test the mods' "waits on you" uses, so the two cannot disagree
+  const lines = (needsDoc && needsDoc.lines) || [];
+  const li = x => `<li>${esc(x.q)}</li>`;
+  $("nn").textContent = lines.length ? String(lines.length) : "";
+  $("needstext").textContent = lines.length ? "" : (needsDoc ? "Nothing." : (summary.needs_you || "Nothing."));
+  $("needstext").hidden = !!lines.length;
+  $("nlist").innerHTML = lines.slice(0, NEEDS_SHOW).map(li).join("");
+  $("nlist2").innerHTML = lines.slice(NEEDS_SHOW).map(li).join("");
+  $("nmore").hidden = lines.length <= NEEDS_SHOW;
+  $("nmore").querySelector("summary").textContent = `${lines.length - NEEDS_SHOW} more`;
+  $("needs").classList.toggle("quiet", !lines.length && !(!needsDoc && summary.needs_you));
+  $("needs").classList.toggle("many", !!lines.length);
 }
 function renderFeed(docs){
   const rows = docs.map(d => d.data() || {}).sort((a,b) => (b.at||0) - (a.at||0)).slice(0, 40);
   $("feed").innerHTML = rows.length ? rows.map(r => `<li><time>${hm(r.at)}</time><span>${esc(r.text)}</span></li>`).join("") : '<li class="empty">Nothing yet.</li>';
 }
-setInterval(() => { renderHead(); renderParts(); }, 30000);
+setInterval(() => { renderHead(); renderParts(); renderMods(); }, 30000);
 
 (async () => {
   const db = await claude.use("db");
@@ -260,6 +273,7 @@ setInterval(() => { renderHead(); renderParts(); }, 30000);
   db.collection("mods").onSnapshot(s => { modDocs = s.docs.map(d => d.data() || {}); renderMods(); });
   db.doc("board/summary").onSnapshot(s => { summary = s.exists ? (s.data() || {}) : {}; renderHead(); });
   db.doc("board/factory").onSnapshot(s => { factory = s.exists ? s.data() : null; renderHead(); });
+  db.doc("board/needs").onSnapshot(s => { needsDoc = s.exists ? (s.data() || {}) : null; renderHead(); });
   db.collection("feed").onSnapshot(s => renderFeed(s.docs));
 })();
 </script>

@@ -9,8 +9,9 @@ refresh it from a session cron; that died with the window (FLEETWATCH_REFRESH_BU
   2. Only the write goes through a model: one headless `claude -p` (alias `sonnet`, resolved from the environment;
      no account named here) whose tools are Artifact + ArtifactData only, told to make ONE ArtifactData batch call
      with our writes plus a ready-made board/summary `update` — a pure relay, so it can later be swapped for a
-     no-model write (FLEETWATCH_WRITE_SHRINK_TOKENS_TO_NEAR_ZERO). `needs_you` is never touched —
-     that field is a human-facing agent's to write.
+     no-model write (FLEETWATCH_WRITE_SHRINK_TOKENS_TO_NEAR_ZERO). board/summary's `needs_you` is never touched;
+     "Needs you" is the board/needs doc, owner_queue.needs_you() — the same test the mods' "waits on you" uses
+     (FLEETWATCH_NEEDS_FIX_NOTHING_WHILE_MODS_WAIT).
   3. Success is the TOOL RESULT, not the model's words: the call's input is checked against our writes (every part
      and feed write present, unchanged) and its tool_result must not be an error.
 
@@ -97,6 +98,16 @@ def row_hash(rows):
     return hashlib.sha1(json.dumps(slim, sort_keys=True).encode()).hexdigest()
 
 
+def waits_hash(mod):
+    """What a mod doc says about the owner: the part that must change together with board/needs."""
+    return row_hash([{"waits": mod.get("waits") or [], "waits_you": mod.get("waits_you") or 0}])
+
+
+def doc_hash(data):
+    """A side doc's content hash; its token count and stamp alone never count as a change."""
+    return row_hash([{k: v for k, v in data.items() if k not in ("tokens_today", "at")}])
+
+
 def doc_path(rows_dir, collection, doc_id):
     return os.path.join(rows_dir, doc_id + ".json") if collection == "parts" else \
         os.path.join(rows_dir, collection, doc_id + ".json")
@@ -110,8 +121,20 @@ def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
     The board refuses an overwrite without `if_version`, so every write to a doc we know carries its version."""
     old, versions = prev.get("status", {}), prev.get("versions", {})
     old_rh, old_dh = prev.get("row_hashes", {}), prev.get("doc_hashes", {})
-    writes, facts, changes = [], [], []
+    writes, facts, changes, capped = [], [], [], []
     rh, dh = {}, dict(old_dh)
+    n_board = sum(1 for c, _, _ in docs if c == "board")  # every board doc keeps its slot, however many rows changed
+    # a Needs you change pulls the mods along, so the header and a mod's "waits on you" never disagree for 30 min:
+    # the changed mods get their slots ahead of the rows (a row waits a run; deferred rows go first next time)
+    needs_moved = any(c == "board" and d == "needs" and doc_hash(data) != old_dh.get("board/needs") for c, d, data in docs)
+    mods_due = mods_due or needs_moved
+    # only a mod whose waits changed must ride with the header; its other news can wait for a later run
+    old_mw = prev.get("mod_waits", {})
+    mw = {d: waits_hash(data) for c, d, data in docs if c == "mods"}
+    # a mod never written says nothing yet; a published one whose waits we never recorded is unknown, so it rides
+    must = {d for d in mw if (d not in old_mw and "mods/" + d in versions) or
+            mw[d] != old_mw.get(d, waits_hash({}))} if needs_moved else set()
+    n_mods = len(must)
 
     def put(collection, doc_id):
         w = {"op": "set", "collection": collection, "doc_id": doc_id, "file_path": doc_path(rows_dir, collection, doc_id)}
@@ -119,24 +142,30 @@ def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
             w["if_version"] = versions["%s/%s" % (collection, doc_id)]
         writes.append(w)
 
-    for r in rows:
+    # rows a cap deferred last run go first, so the same busy rows cannot starve the rest run after run
+    waiting = set(prev.get("deferred", ()))
+    for r in sorted(rows, key=lambda r: r["item"] not in waiting):
         h = row_hash([r])
         if h != old_rh.get(r["item"]) or "parts/" + r["item"] not in versions:
-            if len(writes) < MAX_WRITES - FEED_MAX - 1:  # over the cap: left unhashed, so the next run writes it
+            if len(writes) < MAX_WRITES - FEED_MAX - n_board - n_mods:  # over the cap: left unhashed, so the next run writes it
                 put("parts", r["item"])
                 rh[r["item"]] = h
-            elif r["item"] in old_rh:
-                rh[r["item"]] = old_rh[r["item"]]
+            else:  # its status change waits with it: reported, and remembered, when the row is written
+                capped.append(r["item"])
+                if r["item"] in old_rh:
+                    rh[r["item"]] = old_rh[r["item"]]
+                continue
         else:
             rh[r["item"]] = h
         was = old.get(r["item"])
-        if old and was != r["status"]:
+        if "status" in prev and was != r["status"]:  # only the very first run is silent, not one after an empty fleet
             name = r.get("short") or fleet_watch.short(r["title"], 90)
             if was:
                 what = "%s → %s" % (was, r["status"])
             else:
                 what = finished_words(r) if r["status"] not in LIVE else "started (%s)" % r["status"]
             changes.append("%s: %s" % (name, what.strip()))
+    changes = prev.get("feed_pending", []) + changes  # lines past the feed's room last run go first now
     for i, text in enumerate(changes[:FEED_MAX]):
         writes.append({"op": "set", "collection": "feed", "doc_id": "t%d-%d" % (now, i), "data": {"at": now, "text": text}})
     side = []
@@ -144,19 +173,25 @@ def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
         key = "%s/%s" % (collection, doc_id)
         if collection == "mods" and not mods_due:
             continue
-        h = row_hash([{k: v for k, v in data.items() if k not in ("tokens_today", "at")}])
+        h = doc_hash(data)
         if collection != "board" and h == old_dh.get(key) and key in versions:
             continue
         side.append((collection, doc_id, h, h != old_dh.get(key)))
-    side.sort(key=lambda x: x[0] != "board")  # the factory doc first, then mods
-    mods_left = False
+    side.sort(key=lambda x: (x[0] != "board", x[1] not in must))  # board docs, then mods whose waits moved, then mods
+    mods_left, must_left = False, False
     if writes or any(c != "board" or changed for c, _, _, changed in side):
         for collection, doc_id, h, _ in side:
             if len(writes) >= MAX_WRITES:
                 mods_left = mods_left or collection == "mods"
+                must_left = must_left or (collection == "mods" and doc_id in must)
                 continue
             put(collection, doc_id)
             dh["%s/%s" % (collection, doc_id)] = h
+        if must_left:  # never a header the mods cannot match yet: board/needs waits for them
+            writes[:] = [w for w in writes if (w["collection"], w["doc_id"]) != ("board", "needs")]
+            dh.pop("board/needs", None)
+            if "board/needs" in old_dh:
+                dh["board/needs"] = old_dh["board/needs"]
     by = {}
     for r in rows:
         by.setdefault(r["status"], []).append(r.get("short") or fleet_watch.short(r["title"], 90))
@@ -168,8 +203,14 @@ def plan(rows, prev, now, rows_dir, docs=(), mods_due=False):
         facts.append("and %d more changes" % (len(changes) - 8))
     if not rows:
         facts.append("nothing is running and nothing finished today")
-    state = {"status": {r["item"]: r["status"] for r in rows}, "hash": row_hash(rows), "row_hashes": rh,
-             "doc_hashes": dh, "mods_at": now if mods_due and not mods_left else prev.get("mods_at", 0),
+    written = {"%s/%s" % (w["collection"], w["doc_id"]) for w in writes}
+    status = {r["item"]: (old.get(r["item"]) if r["item"] in capped else r["status"]) for r in rows}
+    # mods a capped run could not write are due on the very next run, whatever the schedule says
+    state = {"status": {k: v for k, v in status.items() if v is not None}, "hash": row_hash(rows), "row_hashes": rh,
+             "doc_hashes": dh, "mods_at": 0 if mods_left else now if mods_due else prev.get("mods_at", 0),
+             "deferred": sorted(capped), "feed_pending": changes[FEED_MAX:],  # drained eight a run, none dropped
+             "mod_waits": {d: (old_mw.get(d) if "mods/" + d not in written else h) for d, h in mw.items()
+                           if "mods/" + d in written or d in old_mw},
              "last_write": prev.get("last_write", 0), "versions": dict(versions)}
     return writes, facts, versions.get("board/summary"), state
 
@@ -276,7 +317,7 @@ def result_text(res):
     return str(c or "")
 
 
-def judge(lines, writes, board_version, head=None):
+def judge(lines, writes, board_version, head=None, now=None):
     """-> (ok, why, usage). ok only if exactly one ArtifactData batch carried every write of ours unchanged plus one
     well-formed board write, and its tool_result was not an error."""
     calls, results, use = read_stream(lines)
@@ -290,7 +331,8 @@ def judge(lines, writes, board_version, head=None):
     if sent[:len(writes)] != writes:
         return False, "writes altered in relay", use
     extra = sent[len(writes):]
-    if len(extra) != 1 or extra[0].get("collection") != "board" or extra[0].get("doc_id") != "summary" \
+    if len(extra) != 1 or extra[0].get("op") != "update" or extra[0].get("collection") != "board" \
+            or extra[0].get("doc_id") != "summary" or (now is not None and extra[0].get("data", {}).get("updated") != now) \
             or set((extra[0].get("data") or {})) != {"headline", "updated"} or extra[0].get("if_version") != board_version \
             or (head is not None and extra[0]["data"].get("headline") != head):
         return False, "board write malformed: %s" % json.dumps(extra)[:200], use
@@ -354,6 +396,9 @@ def ended(prev, current, rows_dir):
             continue
         r = load(os.path.join(rows_dir, item + ".json"), None)
         if isinstance(r, dict) and r.get("item") == item:
+            if r.get("status") not in ("Building", "Checking"):  # it finished, but a cap kept that off the board: its
+                out.append(r)                                    # real end goes up, never a made-up "Ended"
+                continue
             out.append(dict(r, status="Ended", unit="inactive", glyph="■", stuck="", finished_at=int(time.time())))
     return out
 
@@ -370,12 +415,11 @@ def collect(root, rows_dir, prev, now=None):
     rel = fleet_watch.relentless_rows()
     for r in rel:
         r["title"] = titles.get(r["item"]) or ledger_title(r["item"]) or r["item"]
+    det = dedup(det)  # the newest detached run per item first: an older run still Building must not hide its finish
     live = dedup(rel + [r for r in det if r["status"] == "Building"])
     got = fleet_mods.gather(now, detached_done=[r for r in det if r["status"] != "Building"])
-    have = {r["item"] for r in live}
-    rows = live + [dict(r, title=titles.get(r["item"]) or r.get("title") or r["item"])
-                   for r in got["receipts"] if r["item"] not in have]
-    rows = dedup(rows)
+    # live rows and receipts in one newest-run-wins pass: an old live row never hides a newer finish
+    rows = dedup(live + [dict(r, title=titles.get(r["item"]) or r.get("title") or r["item"]) for r in got["receipts"]])
     rows += ended(prev, {r["item"] for r in rows}, rows_dir)
     for r in rows:  # no position field: one row ending would shift every other row's hash and rewrite them all
         r["short"] = fleet_mods.display_title(r["title"])
@@ -428,13 +472,14 @@ def main():
             f.write(json.dumps(rec) + "\n")
         print(json.dumps(rec))
         return 1
-    docs = [("mods", m["id"], m) for m in got["mods"]] + [("board", "factory", got["factory"])]
+    docs = [("mods", m["id"], m) for m in got["mods"]] + [("board", "factory", got["factory"]),
+                                                          ("board", "needs", got["needs"])]
     due = a.force or now - prev.get("mods_at", 0) >= a.mods_every
     writes, facts, board_version, state = plan(rows, prev, now, rows_dir, docs, due)
     if a.dry_run:
         print(prompt(writes, headline(rows), now, board_version))
         return 0
-    rec = {"at": now, "rows": len(rows), "writes": len(writes),
+    rec = {"at": now, "rows": len(rows), "writes": len(writes), "needs_you": got["needs"]["count"],
            "mods": sum(1 for w in writes if w["collection"] == "mods")}
     if not a.force and not writes and now - prev.get("last_write", 0) < a.heartbeat:
         rec["outcome"] = "skipped: unchanged"
@@ -464,7 +509,7 @@ def main():
             try:
                 head = headline(rows)
                 ok, why, use = judge(run_claude(prompt(writes, head, now, board_version), rows_dir), writes, board_version,
-                                     head)
+                                     head, now)
             except (subprocess.TimeoutExpired, OSError) as e:
                 ok, why, use = False, "claude -p did not run: %s" % type(e).__name__, {}
             add_use(rec, use)
