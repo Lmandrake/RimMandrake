@@ -1,0 +1,171 @@
+{
+ "_comment": "PACK_OVERLAYS_BUILD_SHARED_SADDLEBAGS. group per packAnimal race (the item's survey, by body plan); pack_overlay_fit.py reads it. overrides: per texPath placement tweaks, keys cx/w/top/flip by facing, set after looking at the composite.",
+ "groups": {
+  "quadruped": [
+   "RSW_Bolotaur",
+   "RM_Aurrok",
+   "RM_Chorn",
+   "RM_Gennok",
+   "RM_Vaalok",
+   "RM_Vellak",
+   "RSW_Dalgo",
+   "RSW_Ronto",
+   "RM_TelluroxRace",
+   "RM_Aveluthia",
+   "RSW_Bantha",
+   "RSW_Jerba",
+   "RSW_Bordok",
+   "RSW_Gualaar",
+   "RSW_Mudhorn",
+   "RSW_Nerf",
+   "RSW_Runyip",
+   "RM_Tirbak",
+   "RSW_Falumpaset",
+   "RSW_Jamel",
+   "RSW_TeeMuss",
+   "RSW_Maxolotl",
+   "RSW_Narglatch",
+   "RSW_TuskCat",
+   "RSW_Behemoth",
+   "RSW_Dactillion",
+   "RSW_Uvak",
+   "RSW_CorellianHound",
+   "RSW_Dewback",
+   "RSW_Fambaa",
+   "RSW_Eopie",
+   "RSW_KellDragon",
+   "RSW_Mastmot",
+   "RSW_Orray",
+   "RSW_IthorianReek",
+   "RSW_Reek",
+   "RSW_Shaak",
+   "RSW_Skalder",
+   "RSW_Varactyl"
+  ],
+  "biped": [
+   "RSW_Blurrg",
+   "RSW_Brezak",
+   "RSW_Kaadu",
+   "RSW_Kybuck",
+   "RSW_Tauntaun",
+   "RSW_Thranta"
+  ],
+  "sixlegged": [
+   "RSW_HarvesterBeetle",
+   "RM_Moravatha",
+   "RSW_FoundryBeetle",
+   "RM_Holcorobeus",
+   "RSW_RoyalRhino",
+   "RSW_LavaFlea",
+   "VAEWaste_Megatardi"
+  ],
+  "lowlong": [
+   "RSW_Gelagrub",
+   "RSW_Sacapillar"
+  ]
+ },
+ "overrides": {
+  "Things/Pawn/Animal/RM_Aurrok/RM_Aurrok": {
+   "east": {
+    "top": -0.3
+   },
+   "south": {
+    "top": -0.1
+   },
+   "north": {
+    "top": -0.1
+   }
+  },
+  "Things/Pawn/Animal/RM_Vaalok/RM_Vaalok": {
+   "east": {
+    "top": -0.05
+   }
+  },
+  "swanimals/Uvak/Uvak": {
+   "east": {
+    "s": 0.7,
+    "top": -0.75,
+    "cx": 0.55
+   },
+   "south": {
+    "s": 0.75,
+    "top": -0.2,
+    "reach": 0.6,
+    "flat": true
+   },
+   "north": {
+    "s": 0.75,
+    "top": -0.2,
+    "reach": 0.6,
+    "flat": true
+   }
+  },
+  "swanimals/Thranta/Thranta": {
+   "east": {
+    "s": 1.3,
+    "top": 0.0
+   },
+   "south": {
+    "s": 1.3
+   },
+   "north": {
+    "s": 1.3
+   }
+  },
+  "swanimals/CorellianHound/CorellianHound": {
+   "south": {
+    "reach": 1.12,
+    "top": -0.08,
+    "s": 0.9
+   }
+  },
+  "swanimals/Bordok/Bordok": {
+   "south": {
+    "reach": 1.18,
+    "top": -0.3,
+    "s": 0.9
+   }
+  },
+  "swanimals/TeeMuss/TeeMuss": {
+   "south": {
+    "reach": 1.18,
+    "top": -0.3,
+    "s": 0.9
+   }
+  },
+  "RimStarWars/SWBestiary/Dewback/Dewback": {
+   "south": {
+    "reach": 1.1,
+    "top": -0.42,
+    "s": 0.9,
+    "cx": 0.5,
+    "flat": true
+   }
+  },
+  "swanimals/Dactillion/Dactillion": {
+   "east": {
+    "s": 0.8,
+    "top": -0.45,
+    "cx": 0.55
+   },
+   "south": {
+    "s": 0.9,
+    "top": 0.0,
+    "reach": 0.45,
+    "flat": true
+   },
+   "north": {
+    "s": 0.9,
+    "top": 0.0,
+    "reach": 0.45,
+    "flat": true
+   }
+  },
+  "Things/Pawn/Animal/RSW_Tauntaun_Canon/RSW_Tauntaun_Canon": {
+   "east": {
+    "top": -0.12,
+    "cx": 0.5
+   }
+  }
+ }
+}
