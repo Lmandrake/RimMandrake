@@ -1,0 +1,2 @@
+Hasleo Backup Suite Free 6.0.2 DOES clone a Windows system disk (Clone > Disk clone), despite its website table saying Free cannot; it shrinks the big partition to fit, gives the target new partition GUIDs, and rewrites the target's BCD and offline MountedDevices (C: -> new partition). It reported 'completed successfully' while the source logged 30 disk-7 bad-block events, so its success says nothing about file integrity: verify file by file.
+home: D:\ClaudeWork\rimmandrake\steve_diag\nvme_replacement.md
