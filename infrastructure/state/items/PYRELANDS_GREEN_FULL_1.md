@@ -12,5 +12,5 @@
 - [ ] Re-tile a 2-ring patch, then `world_tile_map_generate` to get a **freshly generated** map under
       the full list. Loading a tier-made fixture does not count.
 - [ ] Bars 1, 2 and 4 are censused on the interior tile, with a quadrant split to separate
-      biometransitions bleed from injection.
+      regional foreign flora from injection.
 - [ ] Every bar passes. The run is recorded with `rimflow verify … --config full-latest`.

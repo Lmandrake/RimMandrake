@@ -237,7 +237,7 @@ their existing seabed generators and their shores come from `RM_SeaCoast` on nei
 6. **The paint list** is filled during the final painting pass, never before it.
 
 ### 4.2 Risks
-- **GL and BiomeTransitions are active on the live list.** GL patches `TerrainPatchMaker` and can
+- **GL is active on the full list** (BiomeTransitions is retired: `biome_transitions_judgment_2026-11-01.md`). GL patches `TerrainPatchMaker` and can
   overwrite a map-maker's terrain on any tile where it rolls a landform (§1.4). Without a decision,
   the landform and the biome look of a tile depend on load order. That is Q2.
 - **`preventGenSteps` is def data.** Turning a map-maker off needs the startup re-add and a restart
@@ -262,7 +262,7 @@ their existing seabed generators and their shores come from `RM_SeaCoast` on nei
 **Q2 — Geological Landforms on our world.**
 - (a) Keep GL, and the paint pass strips GL from every tile we give a landform or map-maker. GL
   still decorates vanilla-biome tiles, at the cost of a strip step plus an audit.
-- (b) Retire GL and BiomeTransitions from the shipped list. One source of map shape and no
+- (b) Retire GL from the shipped list. One source of map shape and no
   conflicts, but vanilla-biome tiles lose GL variety.
 - (c) Keep GL everywhere and accept that it sometimes wins. No work, but our maps stop being
   predictable.

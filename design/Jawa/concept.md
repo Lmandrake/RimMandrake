@@ -67,7 +67,7 @@ Answers pointing toward broad optionality / self-sufficiency → restrict or exc
   Empire, and is the **pursuing antagonist** (as a live hostile faction).
 - **Enemy interest:** CAI-5000 (smarter AI) + Reinforced Mechanoids 2 + qualitative rosters;
   Custom difficulty tuned "fewer, heavier, smarter." No raid-point inflation, no player mech ladder.
-- **World interest:** Geological Landforms, Biome Transitions, Alpha Biomes, Ancient Urban Ruins +
+- **World interest:** Geological Landforms, Alpha Biomes, Ancient Urban Ruins +
   Dungeon Pack, Exploration Mode (world fog-of-war).
 - **Curation method (Streamer-style):** big library, small curated *surface* — Cherry Picker
   deletes off-theme functional defs; Faction/Sensible Factions controls spawns. Cosmetic library

@@ -153,7 +153,7 @@ and both landed on exactly those biomes and generate normally.
 `def.biomeWhitelist` inside its own `Init(Map)` at map generation to pick a neighbour biome. If
 the tile's biome is not in that list, `GetNeighbourTile` returns null, it logs *"No neighbour
 tile found for mixed biome tile"* and returns early **without setting `biomeGrid` or
-`secondaryBiome`** — silent degradation, not an error. Check for `MixedBiome` before repainting
+`secondaryBiome`** — and then `GenStep_Plants` and `GenStep_Animals` throw, leaving a map with no plants or animals (measured 2026-11-01; `RM_MixedBiome_Inert.xml` makes the mutator inert for us). Check for `MixedBiome` before repainting
 under it.
 
 🔑 The generalisation: **a def's declared constraint tells you where the GENERATOR would put

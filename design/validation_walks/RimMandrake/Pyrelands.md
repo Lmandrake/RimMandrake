@@ -33,7 +33,7 @@ status-hint: THE campaign fire biome; its BiomeDef is RM_Pyrelands (renamed from
    "Could not resolve cross-reference: No Verse.PawnKindDef named ... to give to
    RimWorld.BiomeAnimalRecord"
 2. [B] generate a fresh RM_Pyrelands map ON A TILE WHOSE NEIGHBOURS ARE ALSO
-   RM_Pyrelands (⚠️ m00nl1ght.geologicallandforms.biometransitions blends NEIGHBOUR biomes into a map's edge zones (owner confirmed 2026-09-17; deactivated in the live list for the R&D phase, still in ModsConfig.FULL.LATEST for play),
+   RM_Pyrelands (⚠️ m00nl1ght.geologicallandforms.biometransitions blends NEIGHBOUR biomes into a map's edge zones (owner confirmed 2026-09-17; retired from every list, `design/RimMandrake/biome_transitions_judgment_2026-11-01.md`),
    so a lone re-tiled scratch tile censuses as contaminated when it is not —
    measured 2026-09-17: 78% foreign plants, 45 alien defs led by
    GRim*/TreePalma/Areebian*, regionally zoned, on a tile ringed by GRiNDTerra

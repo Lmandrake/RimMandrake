@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BIOME_TRANSITIONS_JUDGE_VS_BAROQUE. Odyssey's MixedBiome worker only knows vanilla biomes. On one of ours it finds no
+     neighbour, leaves a null secondary biome, and GenStep_Plants and GenStep_Animals throw: a map with no plants or
+     animals, proven same-tile (design/RimMandrake/biome_transitions_judgment_2026-11-01.md). Whitelisting our biomes
+     would bring back the bleed that judgment rejects, so the mutator falls back to the default worker and does nothing. -->
+<Patch>
+  <Operation Class="PatchOperationRemove">
+    <xpath>Defs/TileMutatorDef[defName="MixedBiome"]/workerClass</xpath>
+  </Operation>
+</Patch>

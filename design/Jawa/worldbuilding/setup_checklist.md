@@ -181,7 +181,7 @@ decided-but-verify-in-game. A **DECIDED** line records the choice + where it's a
 - [ ] **Rainfall/temperature/population world sliders:** OPEN.
 - [~] **World-map fog-of-war:** RimWorld Exploration Mode (WS 2941608795) adopted — discover tiles
   gradually. DECIDED (`required_mods.md`).
-- [~] **Landform variety:** Geological Landforms + Biome Transitions + Vanilla Landmarks Expanded
+- [~] **Landform variety:** Geological Landforms + Vanilla Landmarks Expanded
   adopted (each landing feels distinct). DECIDED.
 
 ## 6. Landing site / terrain & biome (Tier 3)

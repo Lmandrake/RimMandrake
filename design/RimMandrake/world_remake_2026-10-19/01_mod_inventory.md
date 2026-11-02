@@ -165,7 +165,7 @@ Owner direction in the row where one exists; otherwise our content still hard-de
 | Advanced Biomes (Continued) | `mlie.advancedbiomes` | HARD | defs 8 names (4 unguarded in 2f); patches 15f; MayRequire 8f; FindMod 4f; About 3f; class_ref 106 (10-10) | 0 | port VolcanoSoil/WastelandAsphalt/Poison* terrain+plants used by RM_Wastes and RUT_ twins |
 | Alpha Memes | `sarg.alphamemes` | HARD | defs 7 names (6 unguarded in 1f); patches 8f; MayRequire 7f; FindMod 1f; About 3f | 0 | C01 port everything; but the 10-18 donor pass kept it STAY: TuskAttackTool, dryads, AM_ memes in faction defs |
 | Det's Xenotypes - Keshig | `det.keshig` | HARD | defs 1 names (1 unguarded in 1f); patches 4f; About 1f | 0 | UtinniPatches reskins DV_PirateKeshig; 1 unguarded weapon name |
-| Geological Landforms | `m00nl1ght.geologicallandforms` | order only | About 1f | 1: m00nl1ght.geologicallandforms.biometransitions | C06: replicate if we can, else keep (LANDFORMS_REPLICATE_OR_KEEP_EXPERIMENT) |
+| Geological Landforms | `m00nl1ght.geologicallandforms` | order only | About 1f | 1: m00nl1ght.geologicallandforms.biometransitions | C06: replicate if we can, else keep (LANDFORMS_JUDGE_REPLICATE_OR_KEEP_BIG_LIFT) |
 | GravTide | `gravtide.mod` | none | none | 0 | C03: goes once our sea-floor layer works alone |
 | More Vanilla Biomes | `zylle.morevanillabiomes` | HARD | defs 2 names (0 unguarded in 0f); patches 15f; MayRequire 2f; FindMod 2f; About 3f; class_ref 61 (10-10) | 0 | C01 port (biome content; patches + class refs on frozen RUT_ twins die at the paint) |
 | Orc Clan + Xenotype | `karew.orcclan` | soft | patches 3f; FindMod 1f; About 1f | 0 | C20: stays until ported (Gamorreans) |
@@ -181,7 +181,7 @@ Owner direction in the row where one exists; otherwise our content still hard-de
 | Vanilla Races Expanded - Saurid | `vanillaracesexpanded.saurid` | HARD | defs 1 names (11 unguarded in 1f); patches 3f; FindMod 1f; About 3f | 0 | replicate the unguarded names, then drop (registry KEEP-TEMPORA) |
 | Yayo's Combat 3 (Continued) | `mlie.yayoscombat3` | order only | About 1f | 0 | deep dive: remove, port hand/foot coverage + skill-weighted accuracy, armour wear as a StatPart |
 | Ancient urban ruins | `xmb.ancienturbanruins.mo` | soft | patches 5f; FindMod 4f; About 3f | 1: meteores.ancienturbanruinsvanillaloot.aurvl | held out of wave 1: not save-safe (placed shelf, live faction, precepts); its excision is a wave-2 item |
-| Biome Transitions | `m00nl1ght.geologicallandforms.biometransitions` | none | none | 0 | C06: may simply go with baroque biomes (BIOME_TRANSITIONS_WITH_BAROQUE_JUDGE) |
+| Biome Transitions | `m00nl1ght.geologicallandforms.biometransitions` | none | none | 0 | C06: judged, it goes (`design/RimMandrake/biome_transitions_judgment_2026-11-01.md`) |
 | RimTek DigiPal | `deon.rimtek.digipal` | none | none | 0 | C21: our own bounty-hunter item replaces it, then retire |
 | RimTek DocMate | `deon.rimtek.docmate` | none | none | 0 | C21: medical droid gets its capabilities (with bacta), then retire |
 | Vanilla Ideology Expanded - Memes and Structures | `vanillaexpanded.vmemese` | soft | defs 12 names (0 unguarded in 0f); patches 4f; MayRequire 9f; FindMod 1f; About 2f | 0 | C01 port: VME_ memes named by our faction defs (guarded) |

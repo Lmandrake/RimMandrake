@@ -181,7 +181,6 @@
       <SunnyMutator>0.05</SunnyMutator>
       <WindyMutator>0.05</WindyMutator>
       <InsectMegahive>0.01</InsectMegahive>
-      <MixedBiome>0.1</MixedBiome>
       <AncientUplink>0.02</AncientUplink>
       <AnimalHabitat>0.15</AnimalHabitat>
       <ArcheanTrees>0.01</ArcheanTrees>

@@ -264,8 +264,8 @@ site, not the mod.
 - **Why the swbestiary entry is load-bearing:** §1.3's inert `MayRequire`. Without it, seven
   wildAnimals keys dangle and GenStep_Animals NREs.
 - The **full-list** rung (GREEN full) instead uses `ModsConfig.FULL.LATEST.xml` (614 mods) and
-  accepts that biometransitions is present. On the full list, bars 1, 2 and 4 are censused **only
-  on the interior tile of a ≥ 2-ring Pyrelands patch**, and bleed is diagnosed with the quadrant
+  (biometransitions is retired from it). On the full list, bars 1, 2 and 4 are censused **only
+  on the interior tile of a ≥ 2-ring Pyrelands patch**, and foreign flora is diagnosed with the quadrant
   split. ⛔ Never run `start_debug_game_ready` on the full list (skill §1: it has crashed the
   process). ⛔ Also **do not** satisfy GREEN-full by loading a tier-made save, because that
   re-tests nothing about full-list mapgen (GPT #19). **Route:** boot the full list to menu, then

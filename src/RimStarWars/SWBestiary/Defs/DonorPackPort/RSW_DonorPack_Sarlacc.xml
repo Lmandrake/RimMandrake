@@ -245,7 +245,6 @@
       <Junkyard>0.05</Junkyard>
       <ArcheanTrees>0.01</ArcheanTrees>
       <MineralRich>0.05</MineralRich>
-      <MixedBiome>0.5</MixedBiome>
       <AncientUplink>0.02</AncientUplink>
       <Stockpile>0.05</Stockpile>
       <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
@@ -412,7 +411,6 @@
       <Junkyard>0.05</Junkyard>
       <ArcheanTrees>0.01</ArcheanTrees>
       <MineralRich>0.05</MineralRich>
-      <MixedBiome>0.5</MixedBiome>
       <AncientUplink>0.02</AncientUplink>
       <Stockpile>0.05</Stockpile>
       <AnimalLife_Increased>0.05</AnimalLife_Increased>

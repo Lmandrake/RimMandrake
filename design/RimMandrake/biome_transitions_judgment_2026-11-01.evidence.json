@@ -1,0 +1,444 @@
+{
+ "item": "BIOME_TRANSITIONS_JUDGE_VS_BAROQUE",
+ "measured": "2026-11-01",
+ "tool": "src/RimMandrake/Utils/biome_transitions_ab.py",
+ "arms": {
+  "on": "21-mod biomes list + Geological Landforms + Biome Transitions",
+  "off": "same list without Biome Transitions",
+  "fix": "off plus src/RimMandrake/TerminalBiomes/Patches/RM_MixedBiome_Inert.xml"
+ },
+ "modDelta_on_vs_off": [
+  "m00nl1ght.geologicallandforms.biometransitions"
+ ],
+ "modsOn": 23,
+ "modsOff": 22,
+ "world": {
+  "seedString": "rifle",
+  "planetCoverage": 0.3
+ },
+ "mapSize": 200,
+ "sites": [
+  {
+   "name": "border_rot_blue",
+   "a": "RM_TheRot",
+   "b": "RM_BlueDesert",
+   "mixed": false,
+   "centre": 1494
+  },
+  {
+   "name": "border_cauldron_rot",
+   "a": "RM_Cauldron",
+   "b": "RM_TheRot",
+   "mixed": false,
+   "centre": 4322
+  },
+  {
+   "name": "mixed_rot_blue",
+   "a": "RM_TheRot",
+   "b": "RM_BlueDesert",
+   "mixed": true,
+   "centre": 23609
+  },
+  {
+   "name": "control_rot",
+   "a": "RM_TheRot",
+   "b": "RM_TheRot",
+   "mixed": false,
+   "centre": 36718
+  }
+ ],
+ "results": {
+  "border_rot_blue": {
+   "a": "RM_TheRot",
+   "b": "RM_BlueDesert",
+   "mixedMutator": false,
+   "on": {
+    "plants": 9773,
+    "plantsOfCentreBiome": 9772,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      4097
+     ],
+     [
+      "RM_Glowstool",
+      1240
+     ],
+     [
+      "RM_GiantAgarilux",
+      837
+     ],
+     [
+      "RM_TollukCap",
+      825
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 632
+   },
+   "off": {
+    "plants": 16386,
+    "plantsOfCentreBiome": 16385,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      6826
+     ],
+     [
+      "RM_Glowstool",
+      2075
+     ],
+     [
+      "RM_TollukCap",
+      1419
+     ],
+     [
+      "RM_GiantAgarilux",
+      1384
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   },
+   "fix": {
+    "plants": 16296,
+    "plantsOfCentreBiome": 16295,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      6786
+     ],
+     [
+      "RM_Glowstool",
+      2071
+     ],
+     [
+      "RM_TollukCap",
+      1409
+     ],
+     [
+      "RM_GiantAgarilux",
+      1377
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   }
+  },
+  "border_cauldron_rot": {
+   "a": "RM_Cauldron",
+   "b": "RM_TheRot",
+   "mixedMutator": false,
+   "on": {
+    "plants": 13303,
+    "plantsOfCentreBiome": 7255,
+    "plantsOnlyInBiomeB": 6047,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      1913
+     ],
+     [
+      "RM_Sessarix",
+      884
+     ],
+     [
+      "RM_TwistingThornwood",
+      861
+     ],
+     [
+      "RM_Glowstool",
+      779
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 1036
+   },
+   "off": {
+    "plants": 11238,
+    "plantsOfCentreBiome": 11237,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Sessarix",
+      1574
+     ],
+     [
+      "RM_TwistingThornwood",
+      1186
+     ],
+     [
+      "RM_CrystalFlower",
+      1156
+     ],
+     [
+      "RM_RavenNettle",
+      913
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   },
+   "fix": {
+    "plants": 11238,
+    "plantsOfCentreBiome": 11237,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Sessarix",
+      1576
+     ],
+     [
+      "RM_TwistingThornwood",
+      1178
+     ],
+     [
+      "RM_CrystalFlower",
+      1156
+     ],
+     [
+      "RM_RavenNettle",
+      914
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   }
+  },
+  "mixed_rot_blue": {
+   "a": "RM_TheRot",
+   "b": "RM_BlueDesert",
+   "mixedMutator": true,
+   "on": {
+    "plants": 11165,
+    "plantsOfCentreBiome": 11164,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      4670
+     ],
+     [
+      "RM_Glowstool",
+      1434
+     ],
+     [
+      "RM_TollukCap",
+      967
+     ],
+     [
+      "RM_GiantAgarilux",
+      917
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 1084
+   },
+   "off": {
+    "plants": 1,
+    "plantsOfCentreBiome": 0,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "Plant_TreeAnima",
+      1
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   },
+   "fix": {
+    "plants": 16074,
+    "plantsOfCentreBiome": 16073,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      6714
+     ],
+     [
+      "RM_Glowstool",
+      2019
+     ],
+     [
+      "RM_TollukCap",
+      1397
+     ],
+     [
+      "RM_GiantAgarilux",
+      1340
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   }
+  },
+  "control_rot": {
+   "a": "RM_TheRot",
+   "b": "RM_TheRot",
+   "mixedMutator": false,
+   "on": {
+    "plants": 16001,
+    "plantsOfCentreBiome": 16000,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      6695
+     ],
+     [
+      "RM_Glowstool",
+      2019
+     ],
+     [
+      "RM_TollukCap",
+      1429
+     ],
+     [
+      "RM_GiantAgarilux",
+      1332
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   },
+   "off": {
+    "plants": 16054,
+    "plantsOfCentreBiome": 16053,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      6713
+     ],
+     [
+      "RM_Glowstool",
+      2023
+     ],
+     [
+      "RM_TollukCap",
+      1434
+     ],
+     [
+      "RM_GiantAgarilux",
+      1346
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   },
+   "fix": {
+    "plants": 16016,
+    "plantsOfCentreBiome": 16015,
+    "plantsOnlyInBiomeB": 0,
+    "plantsInNeither": 1,
+    "topPlants": [
+     [
+      "RM_Bryolux",
+      6712
+     ],
+     [
+      "RM_Glowstool",
+      2012
+     ],
+     [
+      "RM_TollukCap",
+      1432
+     ],
+     [
+      "RM_GiantAgarilux",
+      1332
+     ]
+    ],
+    "mixedComp": {
+     "biomeGridNull": true,
+     "secondary": []
+    },
+    "biomeGridChars": 131
+   }
+  }
+ },
+ "logOffArm": {
+  "Error in GenStep": 2,
+  "No neighbour tile found for mixed biome tile": 1,
+  "stacks": [
+   "WildPlantSpawner.CachePlantCommonalitiesIfShould via GenStep_Plants",
+   "WildAnimalSpawner.get_DesiredAnimalDensity via GenStep_Animals"
+  ]
+ },
+ "logFixArm": {
+  "Error in GenStep": 0,
+  "No neighbour tile found for mixed biome tile": 0
+ },
+ "startSaveR3": {
+  "save": "ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws",
+  "mixedBiomeTiles": 326,
+  "byBiome": {
+   "RM_Abyss": 97,
+   "RM_TheRot": 63,
+   "RM_FloodedCanyon": 42,
+   "RM_Contagion": 25,
+   "RM_Greentide": 21,
+   "RM_Webwork": 18,
+   "RM_Pyrelands": 16,
+   "RM_WeepingStones": 9,
+   "RM_GelatinousSlime": 7,
+   "RM_RustCathedral": 6,
+   "RM_TwilightSea": 5,
+   "RM_Stillsand": 3
+  },
+  "byBiomeNote": "top 12 of the export's ranking; the remainder sits on other biomes of ours"
+ },
+ "borderShareR3": {
+  "method": "six nearest tiles by lat/lon, today's paint: a size for the question, not a claim about the final planet",
+  "tiles": 21872,
+  "borderTiles": 8443
+ }
+}

@@ -115,7 +115,6 @@ D = {
 "River":            (K, "rare - the terminator ring only"),
 
 # ------------------------------------------------------------- Biome / Designer
-"GL_BiomeTransitions": (K, "technical - blends biome borders, keep for smooth edges"),
 "ZMD_NoMutator":       (K, "technical - Map Designer's empty slot, not content"),
 
 # ------------------------------------------------- Dark Ages: Beasts & Monsters
