@@ -2014,3 +2014,10 @@
 {"seat":"RUNNER","event":"spawn","name":"STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_AC90","kind":"task","needs":"offline","title":"SteveDesktop lane UNREACHABLE, unowned 45 min: ssh to SteveDesktop down since 2026-11-02T04:11:52Z: ssh: connect to host 100.115.10.14 port 22: Connection timed","for":"BENCH","from":"STEVE_STEWARD_BUILD_NO_LLM_OWNER","ts":"2026-11-02T13:06:46Z","tsn":1793624806734512276}
 {"seat":"RUNNER","event":"raise","id":"STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_AC90","reason":"steward: lane unowned 45 min (UNREACHABLE)","ts":"2026-11-02T13:06:48Z","tsn":1793624808659644724}
 {"seat":"RUNNER","event":"note","id":"OPS_TIMERS_REVIVE_1EEB","text":"timers_guard: watched timers are active again (2026-11-02T13:08:00Z)","ts":"2026-11-02T13:08:01Z","tsn":1793624881847962602}
+{"seat":"RUNNER","event":"live","id":"FOUNDRY_FANOUT_DESIGN_NO_MORE_SINGLE_FILE","result":"kept","detail":"sweep: running again","ts":"2026-11-02T13:18:03Z","tsn":1793625483721449638}
+{"seat":"RUNNER","event":"live","id":"OPS_ALARM_RETRY_AFTER_AUTH_DEATH","result":"kept","detail":"sweep: running again","ts":"2026-11-02T13:18:05Z","tsn":1793625485972917791}
+{"seat":"RUNNER","event":"live","id":"OPS_STAFFING_RESTORE_UNDER_BUDGET","result":"kept","detail":"sweep: running again","ts":"2026-11-02T13:18:08Z","tsn":1793625488179801746}
+{"seat":"RUNNER","event":"live","id":"OPS_STEVE_UNSTICK_UNCLAIMED_A00D","result":"kept","detail":"sweep: running again","ts":"2026-11-02T13:18:10Z","tsn":1793625490307053969}
+{"seat":"RUNNER","event":"live","id":"RELENTLESS_ENROL_FIX_UNPUBLISHED_RETIRED","result":"kept","detail":"sweep: running again","ts":"2026-11-02T13:18:12Z","tsn":1793625492463203780}
+{"seat":"RUNNER","event":"live","id":"RELENTLESS_OWNER_DESIGN_NEVER_LETS_GO","result":"kept","detail":"sweep: running again","ts":"2026-11-02T13:18:14Z","tsn":1793625494658505943}
+{"seat":"RUNNER","event":"live","id":"RESTART_NOW_BUILD_WINDOW_SAYS_READY","result":"kept","detail":"sweep: running again","ts":"2026-11-02T13:18:16Z","tsn":1793625496884768667}
