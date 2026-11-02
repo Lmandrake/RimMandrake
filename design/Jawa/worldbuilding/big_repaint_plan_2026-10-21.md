@@ -141,6 +141,12 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
    `python3 src/RimMandrake/Utils/remake/repaint_biomes.py build --save "<Saves>\ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws" --rename RM_NightsideIce=<new> --rename RM_Wasteland=<new> --rename RM_FloodedCanyon=RM_CrackedLands [--edits world/repaint_2026-10-21/placements.csv] --out world/repaint_2026-10-21/tiles_biome.csv`.
    Use the new names exactly as the rename commits spell them. The bar: moved = 1,506 + 1,853 + 970 tiles, and
    no refusal. Commit the CSV and its provenance file (about 400 KB).
+   **Built 2026-11-02** (`world/repaint_2026-10-21/tiles_biome.csv`, `check` PASS): moved 1,506 + 1,853. The
+   `RM_FloodedCanyon` rename is NOT in it: its defName is still `RM_FloodedCanyon` in `src/`
+   (`CRACKEDLANDS_FULL_RENAME_1` is BLOCKED), so its 970 tiles keep that name. The 10-21 dump that matched R3 is gone,
+   so the build used `--decode-by-name`, which reproduced the §1a histogram exactly. The live half (steps 6–8) is one
+   command for the bridge holder: `src/RimMandrake/Utils/remake/repaint_stamp.py` (dry run by default, `--apply`), then
+   `repaint_biomes.py verify-save`, which is the item's proof (`infrastructure/state/live_proofs/BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL.txt`).
 4. **Batch the debt removal into the same deploy** so it costs one cold load, not three:
    - delete the 25 frozen `RUT_` twin BiomeDefs (`BIOME_TWINS_RETIRE_TWENTY_FIVE_FROZEN`);
    - port `PoisonShrub` for `RUT_Umbra` and retire the three donor biome mods

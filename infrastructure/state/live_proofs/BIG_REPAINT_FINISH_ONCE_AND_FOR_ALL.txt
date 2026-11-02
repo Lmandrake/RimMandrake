@@ -1,0 +1,2 @@
+live-proof A1: python3 src/RimMandrake/Utils/remake/repaint_biomes.py verify-save "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/ASHKARR_DEV_START_2026-10-21_REPAINT.rws" --against world/repaint_2026-10-21/tiles_biome.csv
+live-proof A2: python3 src/RimMandrake/Utils/banned_factions.py check-save "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/ASHKARR_DEV_START_2026-10-21_REPAINT.rws"

@@ -1,0 +1,2 @@
+A1 L1: Saves\ASHKARR_DEV_START_2026-10-21_REPAINT.rws exists, written by src/RimMandrake/Utils/remake/repaint_stamp.py --apply from R3, and its 21,872 tiles decode by name tile-for-tile to world/repaint_2026-10-21/tiles_biome.csv (RM_SleepingIce 1,506, RM_Wastes 1,853, no RM_NightsideIce/RM_Wasteland)
+A2 L1: banned_factions.py check-save reads PASS on the REPAINT save

@@ -1,0 +1,49 @@
+{
+ "decode": "by name (base shortHash of each defName), equal to r3-2026-10-21",
+ "save": "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Saves/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws",
+ "save_mods": 325,
+ "save_sha16": "f1c87543b447bab6",
+ "dump_captured": "2026-11-02T17:59:18Z",
+ "dump_sha16": "228dc89a129afe09",
+ "renames": {
+  "RM_NightsideIce": "RM_SleepingIce",
+  "RM_Wasteland": "RM_Wastes"
+ },
+ "edits_file": null,
+ "edits": 0,
+ "moved": {
+  "RM_Wasteland->RM_Wastes": 1853,
+  "RM_NightsideIce->RM_SleepingIce": 1506
+ },
+ "renames_with_no_tiles": [],
+ "histogram": {
+  "RM_Stillsand": 3969,
+  "RUT_Umbra": 2531,
+  "RM_LongShade": 2390,
+  "RM_TheRot": 2204,
+  "RM_Wastes": 1853,
+  "RM_SleepingIce": 1506,
+  "RM_Abyss": 1135,
+  "RM_BlueDesert": 1029,
+  "RM_FloodedCanyon": 970,
+  "RM_LeaningScrub": 628,
+  "RM_TwilightSea": 607,
+  "RM_Cauldron": 546,
+  "RM_GreySea": 472,
+  "RM_TheScald": 312,
+  "RM_RustCathedral": 236,
+  "RM_Greentide": 235,
+  "RM_WeepingStones": 223,
+  "RM_Pyrelands": 222,
+  "RM_Contagion": 179,
+  "RM_Webwork": 161,
+  "RM_GelatinousSlime": 96,
+  "RM_Miasma": 93,
+  "RM_Warscar": 90,
+  "RM_TheChill": 57,
+  "RM_TheForge": 44,
+  "RM_FeverWood": 43,
+  "RM_TheSump": 41
+ },
+ "import": "jawa/world_tile_import {path:<this csv, Windows path>, apply:false, expectTiles:21872} then apply:true, then jawa/world_tile_validate on the same path, then jawa/world_commit"
+}
