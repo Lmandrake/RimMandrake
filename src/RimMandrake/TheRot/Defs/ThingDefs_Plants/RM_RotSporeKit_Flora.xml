@@ -44,6 +44,7 @@
     <pathCost>60</pathCost>
     <blockWind>false</blockWind>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 0.7, was 25 mushroom logs in 8 days; a fungus, so raw fungus instead -->
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>8</growDays>
@@ -61,6 +62,9 @@
       <dieFromToxicFallout>False</dieFromToxicFallout>
       <pollution>Any</pollution>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
+      <harvestYield>21</harvestYield>
+      <harvestTag>Standard</harvestTag>
     </plant>
     <selectable>true</selectable>
     <minifiedDef>MinifiedTree</minifiedDef>
@@ -340,6 +344,7 @@
       <preferability>RawBad</preferability>
     </ingestible>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E2/E4: 20 mushroom logs in 5 days was 4.4 silver, 0.2 nutrition, 4 logs a grow day -->
       <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
       <fertilitySensitivity>0.5</fertilitySensitivity>
       <soundHarvesting>Harvest_Tree</soundHarvesting>
@@ -363,7 +368,7 @@
       <growDays>5</growDays>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestWork>800</harvestWork>
-      <harvestYield>20</harvestYield>
+      <harvestYield>13</harvestYield>
       <wildOrder>1</wildOrder>
       <neverBlightable>true</neverBlightable>
       <harvestedThingDef>RM_MushroomLog</harvestedThingDef>
@@ -419,6 +424,7 @@
       <preferability>RawBad</preferability>
     </ingestible>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.5, was 20 mushroom logs in 5 days; a fungus, so raw fungus instead -->
       <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
       <fertilitySensitivity>0.5</fertilitySensitivity>
       <soundHarvesting>Harvest_Tree</soundHarvesting>
@@ -443,10 +449,10 @@
       <growDays>5</growDays>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestWork>800</harvestWork>
-      <harvestYield>20</harvestYield>
+      <harvestYield>13</harvestYield>
       <wildOrder>1</wildOrder>
       <neverBlightable>true</neverBlightable>
-      <harvestedThingDef>RM_MushroomLog</harvestedThingDef>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
       <harvestMinGrowth>0.40</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
       <blockAdjacentSow>true</blockAdjacentSow>
@@ -455,7 +461,7 @@
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>0</growOptimalGlow>
       <interferesWithRoof>false</interferesWithRoof>
-      <harvestTag>Wood</harvestTag>
+      <harvestTag>Standard</harvestTag>
       <visualSizeRange>1.5~2.5</visualSizeRange>
       <topWindExposure>0.05</topWindExposure>
     </plant>
@@ -569,6 +575,7 @@
       <preferability>RawBad</preferability>
     </ingestible>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.5, was 20 WoodLog in 7 days; a fungus, so raw fungus instead -->
       <lifespanDaysPerGrowDays>9</lifespanDaysPerGrowDays>
       <fertilityMin>0.1</fertilityMin>
       <fertilitySensitivity>0.7</fertilitySensitivity>
@@ -585,10 +592,10 @@
       <growDays>7</growDays>
       <dieIfLeafless>false</dieIfLeafless>
       <harvestWork>500</harvestWork>
-      <harvestYield>20</harvestYield>
+      <harvestYield>18</harvestYield>
       <wildOrder>1</wildOrder>
       <neverBlightable>true</neverBlightable>
-      <harvestedThingDef>WoodLog</harvestedThingDef>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
       <harvestMinGrowth>0.40</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
       <blockAdjacentSow>true</blockAdjacentSow>
@@ -606,7 +613,7 @@
       <growOptimalGlow>0</growOptimalGlow>
       <mustBeWildToSow>false</mustBeWildToSow>
       <interferesWithRoof>false</interferesWithRoof>
-      <harvestTag>Wood</harvestTag>
+      <harvestTag>Standard</harvestTag>
       <visualSizeRange>1.5~2.5</visualSizeRange>
       <topWindExposure>0.05</topWindExposure>
     </plant>
@@ -625,6 +632,7 @@
       <Beauty>4</Beauty>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.0, was 30 mushroom logs; a fungus, so raw fungus instead -->
       <visualSizeRange>0.6~2</visualSizeRange>
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>1000</wildClusterWeight>
@@ -640,6 +648,8 @@
         <li>SoilBasic</li>
         <li>SoilRich</li>
       </wildTerrainTags>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -1240,6 +1250,7 @@
     <selectable>true</selectable>
     <pathCost>14</pathCost>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 16 silk (4.5 silver) in 8 days -->
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>0</growOptimalGlow>
       <minGrowthTemperature>50</minGrowthTemperature>
@@ -1252,7 +1263,7 @@
       <growDays>8</growDays>
       <dieIfLeafless>true</dieIfLeafless>
       <harvestWork>300</harvestWork>
-      <harvestYield>16</harvestYield>
+      <harvestYield>7</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_MoonlessSilk</harvestedThingDef>
       <sowTags>

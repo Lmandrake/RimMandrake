@@ -56,10 +56,11 @@
       </shadowData>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 10 steel in 3 days -->
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>4</wildClusterWeight>
       <visualSizeRange>0.75~1</visualSizeRange>
-      <harvestYield>10</harvestYield>
+      <harvestYield>6</harvestYield>
       <harvestWork>250</harvestWork>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.30</harvestAfterGrowth>

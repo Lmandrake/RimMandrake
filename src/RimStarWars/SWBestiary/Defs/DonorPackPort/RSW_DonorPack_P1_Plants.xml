@@ -27,8 +27,10 @@
       <texPath>Things/Plant/RSW_Plant_HydenockTree_Wild</texPath>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 30 dye in 10 days (7.95 silver a grow day) -->
       <visualSizeRange>6~12</visualSizeRange>
       <immatureGraphicPath>Things/Plant/RSW_Plant_HydenockTree_Wild</immatureGraphicPath>
+      <harvestYield>15</harvestYield>
     </plant>
   </ThingDef>
 
@@ -43,9 +45,11 @@
       <texPath>Things/Plant/RSW_Plant_JoganTree_Wild</texPath>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E2: was 40 fruit in 10 days (10.4 silver a grow day) -->
       <visualSizeRange>5~8</visualSizeRange>
       <immatureGraphicPath>Things/Plant/RSW_Plant_JoganTree_Wild</immatureGraphicPath>
       <harvestedThingDef>RSW_RawJoganFruit</harvestedThingDef>
+      <harvestYield>15</harvestYield>
     </plant>
   </ThingDef>
 
@@ -60,8 +64,10 @@
       <texPath>Things/Plant/RSW_Plant_TookeTrap_Wild</texPath>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: one root is a full 1.0 nutrition; was 3 grow days (0.33 a day) -->
       <immatureGraphicPath>Things/Plant/RSW_Plant_TookeTrap_Wild</immatureGraphicPath>
       <harvestedThingDef>RSW_RawTookeTrapRoot</harvestedThingDef>
+      <growDays>7.5</growDays>
     </plant>
   </ThingDef>
 

@@ -30,6 +30,7 @@
     <minifiedDef>MinifiedTree</minifiedDef>
     <ingestible />
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 30 dye in 10 days (7.95 silver a grow day) -->
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>150</wildClusterWeight>
       <sowTags Inherit="False" />
@@ -43,7 +44,7 @@
       <harvestWork>310</harvestWork>
       <harvestTag>Standard</harvestTag>
       <forceIsTree>true</forceIsTree>
-      <harvestYield>30</harvestYield>
+      <harvestYield>15</harvestYield>
       <harvestedThingDef>Dye</harvestedThingDef>
       <harvestFailable>true</harvestFailable>
     </plant>

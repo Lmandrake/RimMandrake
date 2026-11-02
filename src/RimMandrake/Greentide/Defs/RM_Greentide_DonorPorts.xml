@@ -28,10 +28,11 @@
       </shadowData>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 10 berries in 3 days -->
       <wildClusterRadius>3</wildClusterRadius>
       <wildClusterWeight>4</wildClusterWeight>
       <visualSizeRange>1.5~2</visualSizeRange>
-      <harvestYield>10</harvestYield>
+      <harvestYield>8</harvestYield>
       <harvestWork>250</harvestWork>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.30</harvestAfterGrowth>

@@ -186,6 +186,7 @@
       <Flammability>0</Flammability>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 35 floatstone (8 silver) in 2 days, 140 silver a grow day -->
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>0</growOptimalGlow>
       <minGrowthTemperature>20</minGrowthTemperature>
@@ -196,7 +197,7 @@
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>2</growDays>
       <harvestedThingDef>RM_Floatstone</harvestedThingDef>
-      <harvestYield>35</harvestYield>
+      <harvestYield>1</harvestYield>
       <harvestWork>600</harvestWork>
       <harvestTag>Standard</harvestTag>
       <harvestMinGrowth>0.9</harvestMinGrowth>

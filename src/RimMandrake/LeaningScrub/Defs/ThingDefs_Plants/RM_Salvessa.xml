@@ -25,6 +25,7 @@
     <pathCost>14</pathCost>
     <ingestible />
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 10 (10 silver each) in 10 days -->
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>250</wildClusterWeight>
       <fertilityMin>0.8</fertilityMin>
@@ -36,7 +37,7 @@
       <harvestTag>Standard</harvestTag>
       <drugForHarvestPurposes>True</drugForHarvestPurposes>
       <harvestedThingDef>RM_RawSalvessa</harvestedThingDef>
-      <harvestYield>10</harvestYield>
+      <harvestYield>4</harvestYield>
       <sowMinSkill>6</sowMinSkill>
       <!-- one node, Inherit="False": PlantBase's sowTags are replaced by Ground alone (it was two sibling sowTags
            nodes; the engine's duplicate-node check misses non-adjacent twins, so it loaded, but it read as a bug) -->

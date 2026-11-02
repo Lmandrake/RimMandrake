@@ -30,6 +30,7 @@
       <Nutrition>0.35</Nutrition>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 10 berries in 3 days -->
       <minGrowthTemperature>-60</minGrowthTemperature>
       <minOptimalGrowthTemperature>-50</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>5</maxOptimalGrowthTemperature>
@@ -42,7 +43,7 @@
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>7.5</wildClusterWeight>
       <visualSizeRange>0.8~1.2</visualSizeRange>
-      <harvestYield>10</harvestYield>
+      <harvestYield>8</harvestYield>
       <harvestWork>250</harvestWork>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.30</harvestAfterGrowth>
@@ -73,6 +74,7 @@
       <Nutrition>0.35</Nutrition>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 20 hay in 3 days -->
       <minGrowthTemperature>-60</minGrowthTemperature>
       <minOptimalGrowthTemperature>-50</minOptimalGrowthTemperature>
       <maxOptimalGrowthTemperature>5</maxOptimalGrowthTemperature>
@@ -85,7 +87,7 @@
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>7.5</wildClusterWeight>
       <visualSizeRange>0.8~1.2</visualSizeRange>
-      <harvestYield>20</harvestYield>
+      <harvestYield>8</harvestYield>
       <harvestWork>250</harvestWork>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.5</harvestAfterGrowth>

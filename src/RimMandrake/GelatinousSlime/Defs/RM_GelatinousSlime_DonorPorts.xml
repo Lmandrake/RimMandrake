@@ -117,10 +117,11 @@
       <drawSize>2</drawSize>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E2: was 10 slime in 3 days -->
       <topWindExposure>0.25</topWindExposure>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>7.5</wildClusterWeight>
-      <harvestYield>10</harvestYield>
+      <harvestYield>8</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_RawSlime</harvestedThingDef>
     </plant>
@@ -162,10 +163,11 @@
       <drawSize>2</drawSize>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E2: was 10 slime in 3 days -->
       <topWindExposure>0.25</topWindExposure>
       <wildClusterRadius>4</wildClusterRadius>
       <wildClusterWeight>7.5</wildClusterWeight>
-      <harvestYield>10</harvestYield>
+      <harvestYield>8</harvestYield>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_RawSlime</harvestedThingDef>
     </plant>

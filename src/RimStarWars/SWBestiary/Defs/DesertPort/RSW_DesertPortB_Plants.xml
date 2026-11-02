@@ -20,8 +20,10 @@
       <texPath>Things/Plant/RSW_Plant_Chakroot_Wild</texPath>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E2: was 11 in 4 days (5.5 silver a grow day) -->
       <immatureGraphicPath>Things/Plant/RSW_Plant_Chakroot_Wild</immatureGraphicPath>
       <harvestedThingDef>RSW_RawChakroot</harvestedThingDef>
+      <harvestYield>8</harvestYield>
     </plant>
   </ThingDef>
 <ThingDef ParentName="RM_Salvessa">
@@ -35,8 +37,10 @@
       <texPath>swplants/Nysillin</texPath>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 10 (10 silver each) in 10 days -->
       <immatureGraphicPath>swplants/Nysillin_Immature</immatureGraphicPath>
       <harvestedThingDef>RSW_RawNysyllin</harvestedThingDef>
+      <harvestYield>4</harvestYield>
     </plant>
   </ThingDef>
 <ThingDef ParentName="RM_Thrannagourd">
@@ -50,8 +54,10 @@
       <texPath>Things/Plant/RSW_Plant_HubbaGourd_Wild</texPath>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 2 gourds (0.25 nutrition each) in 3 days -->
       <immatureGraphicPath>Things/Plant/RSW_Plant_HubbaGourd_Wild</immatureGraphicPath>
       <harvestedThingDef>RSW_RawHubbaGourd</harvestedThingDef>
+      <harvestYield>1</harvestYield>
     </plant>
   </ThingDef>
 <ThingDef ParentName="RM_Murrowbulb">

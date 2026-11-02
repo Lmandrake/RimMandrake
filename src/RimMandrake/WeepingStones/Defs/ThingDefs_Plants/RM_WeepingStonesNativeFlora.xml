@@ -328,6 +328,7 @@
       <Flammability>0.4</Flammability>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 14 gourds (0.5 nutrition each) in 26 days -->
       <fertilityMin>0.35</fertilityMin>
       <fertilitySensitivity>0.7</fertilitySensitivity>
       <growDays>26</growDays>
@@ -336,7 +337,7 @@
       <topWindExposure>0.2</topWindExposure>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_DewgourdFruit</harvestedThingDef>
-      <harvestYield>14</harvestYield>
+      <harvestYield>7</harvestYield>
       <harvestWork>400</harvestWork>
       <harvestAfterGrowth>0.85</harvestAfterGrowth>
       <sowTags>

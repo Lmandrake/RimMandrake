@@ -45,6 +45,7 @@
       <Flammability>0</Flammability>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1: was 4 pigment (12 silver) in 3 days, 16 silver a grow day -->
       <completelyIgnoreFertility>true</completelyIgnoreFertility>
       <fertilitySensitivity>0</fertilitySensitivity>
       <wildTerrainTags>
@@ -57,7 +58,7 @@
       <maxGrowthTemperature>90</maxGrowthTemperature>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_CrowncarpetFresh</harvestedThingDef>
-      <harvestYield>4</harvestYield>
+      <harvestYield>1</harvestYield>
       <harvestWork>120</harvestWork>
       <growDays>3</growDays>
       <visualSizeRange>0.5~0.9</visualSizeRange>

@@ -26,11 +26,12 @@
     <neverMultiSelect>false</neverMultiSelect>
     <ingestible />
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: one root is a full 1.0 nutrition; was 3 grow days (0.33 a day) -->
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>150</wildClusterWeight>
       <sowTags Inherit="False" />
       <sowResearchPrerequisites Inherit="False" />
-      <growDays>3</growDays>
+      <growDays>7.5</growDays>
       <growMinGlow>0.1</growMinGlow>
       <growOptimalGlow>1.0</growOptimalGlow>
       <allowAutoCut>false</allowAutoCut>

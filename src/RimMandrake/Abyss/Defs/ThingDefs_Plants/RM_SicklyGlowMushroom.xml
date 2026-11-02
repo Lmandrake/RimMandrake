@@ -25,6 +25,7 @@
       </shadowData>
     </graphicData>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3/E4: drawn 2.8, was 25 WoodLog in 2 days (12.5 logs a grow day); a mushroom, so raw fungus instead -->
       <growMinGlow>0</growMinGlow>
       <growOptimalGlow>0</growOptimalGlow>
       <visualSizeRange>2~2.8</visualSizeRange>
@@ -36,6 +37,9 @@
       <sowTags>
         <li>Ground</li>
       </sowTags>
+      <harvestedThingDef>RawFungus</harvestedThingDef>
+      <harvestYield>5</harvestYield>
+      <harvestTag>Standard</harvestTag>
     </plant>
     <comps>
       <li Class="CompProperties_Glower">

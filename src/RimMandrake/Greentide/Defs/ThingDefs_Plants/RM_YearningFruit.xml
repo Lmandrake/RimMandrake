@@ -80,6 +80,7 @@
       </outcomeDoers>
     </ingestible>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 10 fruit (0.12 nutrition each) in 7 days -->
       <fertilityMin>0.25</fertilityMin>
       <fertilitySensitivity>0.3</fertilitySensitivity>
       <growDays>7</growDays>
@@ -89,7 +90,7 @@
       <topWindExposure>0.3</topWindExposure>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_YearningFruitHarvested</harvestedThingDef>
-      <harvestYield>10</harvestYield>
+      <harvestYield>7</harvestYield>
       <harvestWork>200</harvestWork>
       <harvestAfterGrowth>0.3</harvestAfterGrowth>
       <wildClusterRadius>5</wildClusterRadius>

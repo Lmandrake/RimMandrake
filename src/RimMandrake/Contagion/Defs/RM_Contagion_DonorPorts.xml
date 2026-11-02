@@ -220,6 +220,7 @@
       <preferability>RawBad</preferability>
     </ingestible>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E4: was 25 logs in 5 days -->
     <treeCategory>Full</treeCategory>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
@@ -230,7 +231,7 @@
       <harvestWork>300</harvestWork>
       <harvestedThingDef>WoodLog</harvestedThingDef>
       <harvestTag>Wood</harvestTag>
-      <harvestYield>25</harvestYield>
+      <harvestYield>15</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <harvestFailable>false</harvestFailable>
       <visualSizeRange>2.3~3</visualSizeRange>
@@ -349,10 +350,11 @@
       <preferability>RawBad</preferability>
     </ingestible>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E2: was 15 berries in 5 days -->
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>5</growDays>
-      <harvestYield>15</harvestYield>
+      <harvestYield>13</harvestYield>
       <harvestWork>250</harvestWork>
       <harvestTag>Standard</harvestTag>
       <harvestAfterGrowth>0.5</harvestAfterGrowth>

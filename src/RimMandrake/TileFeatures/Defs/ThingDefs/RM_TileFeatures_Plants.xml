@@ -27,17 +27,20 @@
     </graphicData>
     <fillPercent>0.35</fillPercent>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.0, was 15 WoodLog -->
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>5</growDays>
       <harvestWork>210</harvestWork>
-      <harvestYield>15</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
       <maxGrowthTemperature>75</maxGrowthTemperature>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -61,17 +64,20 @@
     </graphicData>
     <fillPercent>0.35</fillPercent>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.0, was 15 WoodLog -->
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>5</growDays>
       <harvestWork>210</harvestWork>
-      <harvestYield>15</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
       <maxGrowthTemperature>75</maxGrowthTemperature>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -95,17 +101,20 @@
     </graphicData>
     <fillPercent>0.35</fillPercent>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.0, was 7 WoodLog -->
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>5</growDays>
       <harvestWork>210</harvestWork>
-      <harvestYield>7</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
       <maxGrowthTemperature>75</maxGrowthTemperature>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -129,17 +138,20 @@
     </graphicData>
     <fillPercent>0.35</fillPercent>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.0, was 15 WoodLog -->
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>5</growDays>
       <harvestWork>210</harvestWork>
-      <harvestYield>15</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
       <maxGrowthTemperature>75</maxGrowthTemperature>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -163,17 +175,20 @@
     </graphicData>
     <fillPercent>0.35</fillPercent>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.0, was 15 WoodLog -->
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>5</growDays>
       <harvestWork>210</harvestWork>
-      <harvestYield>15</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
       <maxGrowthTemperature>75</maxGrowthTemperature>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 
@@ -197,17 +212,20 @@
     </graphicData>
     <fillPercent>0.35</fillPercent>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.0, was 15 WoodLog -->
       <lifespanDaysPerGrowDays>40</lifespanDaysPerGrowDays>
       <fertilityMin>0.05</fertilityMin>
       <fertilitySensitivity>0</fertilitySensitivity>
       <growDays>5</growDays>
       <harvestWork>210</harvestWork>
-      <harvestYield>15</harvestYield>
+      <harvestYield>0</harvestYield>
       <harvestMinGrowth>0.2</harvestMinGrowth>
       <topWindExposure>0.08</topWindExposure>
       <wildClusterRadius>-1</wildClusterRadius>
       <treeLoversCareIfChopped>false</treeLoversCareIfChopped>
       <maxGrowthTemperature>75</maxGrowthTemperature>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
   </ThingDef>
 

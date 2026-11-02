@@ -17,6 +17,8 @@
     <stackLimit>75</stackLimit>
     <healthAffectsPrice>false</healthAffectsPrice>
     <statBases>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): it had no MarketValue (worth 0, unsellable) -->
+      <MarketValue>1.5</MarketValue>
       <MaxHitPoints>50</MaxHitPoints>
       <Mass>0.05</Mass>
       <Flammability>2</Flammability>

@@ -24,6 +24,7 @@
     <pathCost>14</pathCost>
     <ingestible />
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E2: was 11 in 4 days (5.5 silver a grow day) -->
       <wildClusterRadius>5</wildClusterRadius>
       <wildClusterWeight>250</wildClusterWeight>
       <sowTags Inherit="False" />
@@ -32,7 +33,7 @@
       <dieIfLeafless>true</dieIfLeafless>
       <harvestTag>Standard</harvestTag>
       <harvestedThingDef>RM_RawCrimmelroot</harvestedThingDef>
-      <harvestYield>11</harvestYield>
+      <harvestYield>8</harvestYield>
       <sowTags>
         <li>Ground</li>
         <li>Hydroponic</li>

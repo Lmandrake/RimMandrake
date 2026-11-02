@@ -30,12 +30,13 @@
       <Nutrition>1.2</Nutrition>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E1/E4: was 50 logs in 14 days -->
       <mustBeWildToSow>true</mustBeWildToSow>
       <fertilityMin>0.7</fertilityMin>
       <leaflessGraphicPath>StandIn/Things/Plants/AB_MangroveTreeLeafless</leaflessGraphicPath>
       <growDays>14</growDays>
       <harvestWork>1200</harvestWork>
-      <harvestYield>50</harvestYield>
+      <harvestYield>42</harvestYield>
       <wildClusterRadius>10</wildClusterRadius>
       <wildClusterWeight>11</wildClusterWeight>
       <visualSizeRange>2.8~3.8</visualSizeRange>
@@ -95,14 +96,17 @@
       <Nutrition>1.2</Nutrition>
     </statBases>
     <plant>
+      <!-- PLANT_ECONOMY_TUNE_EVERY_NUMBER_AT_ONCE (2026-11-01, bar: design/RimMandrake/plant_economy_rule_2026-11-01.md): E3: drawn 2.5, was 18 WoodLog -->
     <leaflessGraphicPath>StandIn/Things/Plants/AB_MangrovePalmLeafless</leaflessGraphicPath>
       <fertilityMin>0.7</fertilityMin>
       <growDays>14</growDays>
       <harvestWork>550</harvestWork>
-      <harvestYield>18</harvestYield>
+      <harvestYield>0</harvestYield>
       <wildClusterRadius>10</wildClusterRadius>
       <wildClusterWeight>11</wildClusterWeight>
       <visualSizeRange>1.8~2.5</visualSizeRange>
+      <harvestedThingDef></harvestedThingDef>
+      <harvestTag>Standard</harvestTag>
     </plant>
     <ingestible/>
     </ThingDef>
