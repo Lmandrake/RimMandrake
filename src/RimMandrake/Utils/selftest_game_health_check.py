@@ -115,6 +115,14 @@ with tempfile.TemporaryDirectory() as tmp:
           a.get("curves", {}).get("managed"))
     check("tps: decay first->last at the dominant speed ~ 45-50 %",
           40 <= (ma.get("tps.ratio_decay_pct") or 0) <= 50, ma.get("tps.ratio_decay_pct"))
+    rc = a.get("curves", {}).get("ratio") or []
+    check("tps: ratio-vs-time curve is recorded, one [minute, ratio, tps] point per 10-min bucket (120 min -> 12)",
+          len(rc) == 12 and all(isinstance(p, list) and len(p) == 3 for p in rc)
+          and [p[0] for p in rc] == [10 * k for k in range(12)], rc)
+    check("tps: ratio curve falls 1.0 -> 0.5 over time and tps ~ 60 x ratio at each point",
+          len(rc) == 12 and 0.95 <= rc[0][1] <= 1.0 and 0.5 <= rc[-1][1] <= 0.55
+          and all(rc[k][1] > rc[k + 1][1] for k in range(11))
+          and all(abs(p[2] - 60 * p[1]) <= 1.0 for p in rc), rc)
     check("tps: the long-event stall is reported apart and not judged",
           ma.get("tps.stall_max_s") == 3.0 and ma.get("tps.longevent_max_s") == 45.0,
           (ma.get("tps.stall_max_s"), ma.get("tps.longevent_max_s")))
