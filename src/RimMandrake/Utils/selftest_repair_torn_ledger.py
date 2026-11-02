@@ -2,10 +2,14 @@
 """Selftest for repair_torn_ledger.py. Never touches the real ledger — every
 case builds its own throwaway file under a tmp directory and points `repair()`
 and `find_bad_lines()` at that, never at the module's hardcoded LEDGER path."""
+import fcntl
 import json
+import os
 import shutil
 import sys
 import tempfile
+import threading
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -34,7 +38,7 @@ def write(path, lines):
 def main():
     tmp = Path(tempfile.mkdtemp(prefix="selftest_repair_torn_ledger_"))
     try:
-        # 1. A clean file has nothing to repair, in dry-run or --apply.
+        # 1. A clean file has nothing to repair (dry-run).
         p = tmp / "clean.jsonl"
         write(p, valid_lines(5))
         rc = rtl.repair(p, apply=False, owner_said=None, backup_dir=tmp / "backups1")
@@ -133,6 +137,28 @@ def main():
               rc == 0 and p5.read_bytes() == good + good, repr(p5.read_bytes()[:80]))
         check("torn multibyte line: backup holds the original bytes",
               len(baks) == 1 and baks[0].read_bytes() == orig)
+
+        # 11. A seat appending while the repair runs must not lose its event. The repair takes the same LOCK_EX
+        #     rimflow.model.append() takes; here the test holds it as the "appender", appends a good event, then lets
+        #     go — the repair must have waited and must keep that event.
+        p6 = tmp / "concurrent.jsonl"
+        write(p6, valid_lines(2) + ["<<<<<<< x\n"])
+        late = json.dumps({"seat": "FOUNDRY", "event": "note", "id": "LATE", "ts": "t9"}) + "\n"
+        fd = os.open(p6, os.O_WRONLY | os.O_APPEND)
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        rcs = []
+        t = threading.Thread(target=lambda: rcs.append(
+            rtl.repair(p6, apply=True, owner_said="lock test", backup_dir=tmp / "backups11")))
+        t.start()
+        time.sleep(0.3)
+        check("concurrent append: repair waits for the appender's lock", t.is_alive() and not rcs)
+        os.write(fd, late.encode("utf-8"))
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        os.close(fd)
+        t.join(10)
+        check("concurrent append: the late event survives the repair",
+              rcs == [0] and p6.read_text(encoding="utf-8") == "".join(valid_lines(2)) + late,
+              repr((rcs, p6.read_text(encoding="utf-8")[-80:])))
 
     finally:
         shutil.rmtree(tmp, ignore_errors=True)

@@ -1,0 +1,2 @@
+A tool that rewrites an append-only file in place (repair_torn_ledger.py) must take the SAME flock its appenders take (rimflow.model.append LOCK_EX) for the whole read-check-rewrite, and rewrite in place (truncate+write on the locked fd), never temp+rename: unlocked, an event appended between read and write vanished; renamed, an appender waiting on the old inode writes into the unlinked file. Wave 80 code review; selftest case 11 holds the lock as the appender and proves the late event survives.
+home: src/RimMandrake/Utils/repair_torn_ledger.py

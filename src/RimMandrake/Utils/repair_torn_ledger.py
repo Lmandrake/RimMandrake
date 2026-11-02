@@ -50,13 +50,13 @@ HOW TO USE IT
         --owner-said "the owner's actual words, verbatim, or your own reasoning
                        for acting under a standing authorization"
 
-Then commit deliberately:
+Then commit deliberately (with --seat, the shard ledger/events/<SEAT>.jsonl instead):
     git add infrastructure/state/ledger/events.jsonl
     git commit infrastructure/state/ledger/events.jsonl -F - <<'EOF'
     Ledger: repair torn line(s) at <describe>
     ...
     EOF
-    git push
+    ./publish
 
 🔑 This script deliberately takes NO path argument and hardcodes LEDGER below,
 the same way `rimflow.model` does — so the ledger's own path never appears as
@@ -78,7 +78,9 @@ a SEAT NAME, not a path, which keeps the rule above intact.
 """
 import conductor_authority
 import argparse
+import fcntl
 import json
+import os
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -111,19 +113,55 @@ def find_bad_lines(lines):
     return bad
 
 
+def _read_all(fd):
+    os.lseek(fd, 0, os.SEEK_SET)
+    chunks = []
+    while True:
+        b = os.read(fd, 1 << 20)
+        if not b:
+            return b"".join(chunks)
+        chunks.append(b)
+
+
+def _write_all(fd, blob):
+    view = memoryview(blob)
+    while view:
+        view = view[os.write(fd, view):]
+
+
 def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = None, per_ruling: str | None = None,
            why: str | None = None):
+    """Read, check and (with --apply) rewrite `path`, all under ONE flock on the file.
+
+    🔴 The lock is the same one `rimflow.model.append()` takes (LOCK_EX on the ledger file itself). Without it a seat
+    appending between this tool's read and its rewrite lost that event: the rewrite put back only what was read, so
+    a GOOD event vanished — the one thing this tool promises never to do (wave 80). The rewrite is IN PLACE (truncate +
+    write on the locked fd), never a rename: an appender already waiting on the old inode's lock would otherwise get it
+    after the swap and write into the unlinked file."""
     backup_dir = backup_dir if backup_dir is not None else TRANSIENT_DIR
     if not path.exists():
         print(f"REFUSING: {path} does not exist.")
         return 1
+    fd = os.open(path, os.O_RDWR if apply else os.O_RDONLY)
+    try:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_EX if apply else fcntl.LOCK_SH)
+        except OSError as e:
+            if apply:
+                print(f"REFUSING: cannot lock {path} ({e}); rewriting it unlocked could drop a concurrent append.")
+                return 1
+        return _repair_locked(fd, path, apply, owner_said, backup_dir, per_ruling, why)
+    finally:
+        os.close(fd)                     # closing the only fd on it releases the flock
 
+
+def _repair_locked(fd, path, apply, owner_said, backup_dir, per_ruling, why):
     # Only "\n" ends a ledger line (rimflow writes ensure_ascii=False, so a valid
     # event may hold a raw U+2028/U+0085/form-feed that str.splitlines() would cut
     # in two). Bytes in, bytes out: no newline translation either.
     # surrogateescape: a write torn inside a multibyte char (em-dashes are common) must be FOUND, not crash the
     # decode. Its stray bytes become lone surrogates, which find_bad_lines() rejects; the backup restores them exactly.
-    text = path.read_bytes().decode("utf-8", errors="surrogateescape")
+    text = _read_all(fd).decode("utf-8", errors="surrogateescape")
     lines = [l + "\n" for l in text.split("\n")]
     if lines[-1] == "\n":
         lines.pop()                      # text ended with "\n"
@@ -188,7 +226,10 @@ def repair(path: Path, apply: bool, owner_said: str | None, backup_dir: Path = N
     backup_path.write_bytes("".join(lines).encode("utf-8", errors="surrogateescape"))
     print(f"Backed up pre-repair file ({len(lines)} lines) to {backup_path}")
 
-    path.write_bytes("".join(kept).encode("utf-8"))
+    os.ftruncate(fd, 0)
+    os.lseek(fd, 0, os.SEEK_SET)
+    _write_all(fd, "".join(kept).encode("utf-8"))
+    os.fsync(fd)
     print(f"Wrote {len(kept)} lines to {path}.")
     print(f"\nAuthorization recorded here only: {owner_said!r}")
     print("Now commit deliberately -- see this script's module docstring for the recipe.")

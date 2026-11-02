@@ -20,7 +20,7 @@ the binary (version 2.1.229, not assumed): the `SessionStart` and
 `UserPromptSubmit` hook-output schemas each carry a `sessionTitle` field,
 described in the binary as "Set the session title". No other event has it.
 
-So the agent runs ONE command — `src/RimMandrake/Utils/set_agent_window.sh BUILD` — and both
+So the agent runs ONE command — `src/RimMandrake/Utils/set_agent_window.sh FOUNDRY` — and both
 namespaces are named: the window by the OSC escape, the conversation by this
 hook reading what that script recorded.
 
@@ -155,10 +155,13 @@ def role_dir():
 
 
 def seat_of(title):
-    """The seat named by a recorded title like "AGENT BUILD", or None.
+    """The seat named by a recorded title like "AGENT FOUNDRY", or None.
 
-    The seat is the last whitespace-separated token, so a future title format
-    that adds a detail suffix simply stops matching and injects nothing.
+    The seat is the last whitespace-separated token. A title carrying a detail
+    suffix does NOT stop matching: "AGENT FOUNDRY — log harvest" yields HARVEST,
+    which passes the shape check, and a detail ending in a real seat name would
+    yield THAT seat. That is why set_agent_window.sh keeps its detail on the
+    window and records only "AGENT <SEAT>" (wave 79, 2026-11-01).
     """
     seat = title.split()[-1].upper() if title.split() else ""
     return seat if re.fullmatch(r"[A-Z]{2,16}", seat) else None
@@ -275,7 +278,7 @@ def read_locks():
 def read_identity(title, sid):
     """Return the seat's identity file, or None. Never raises.
 
-    `title` is what set_agent_window.sh recorded, e.g. "AGENT BUILD".
+    `title` is what set_agent_window.sh recorded, e.g. "AGENT FOUNDRY".
     """
     seat = seat_of(title)
     if not seat:

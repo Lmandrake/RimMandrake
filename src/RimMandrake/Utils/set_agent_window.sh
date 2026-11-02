@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# set_agent_window.sh — name this seat, in all THREE namespaces, in one command.
+# set_agent_window.sh — name this seat's window and conversation in one command (not its messaging name).
 #
 # ⚠️ NORMALLY YOU DO NOT NEED THIS. The Windows Terminal seat profiles
 # (`src/RimMandrake/Utils/install_wt_seat_profiles.py`) export `AGENT_SEAT=<SEAT>` and launch
@@ -166,7 +166,7 @@ else
     COLOUR_NOTE="OSC 10 sent, $(seat_colour "$ROLE") — ignored by Windows Terminal; use install_wt_seat_profiles.py"
 fi
 
-# --- 2 and 3. the conversation, and the name peers message ---------------
+# --- 2. the conversation (3, the messaging name, is out of reach) --------
 # Keyed by session id, which Claude Code exports here and also puts on the hook
 # payload, so both sides agree without either guessing.
 # ⚠️ Utils/ moved from <repo>/Utils to <repo>/src/RimMandrake/Utils on 2026-08-13,
@@ -203,6 +203,6 @@ if [ -n "$SID" ]; then
     echo "  Peers still reach you at your generated name."
 else
     echo "conversation: NOT SET — CLAUDE_CODE_SESSION_ID is unset." >&2
-    echo "  The window is named, but peers cannot address you by seat and your" >&2
-    echo "  identity file will not be injected. Only the window half worked." >&2
+    echo "  The window is named, but no role was recorded: the conversation keeps" >&2
+    echo "  its name and your identity file will not be injected. Only the window half worked." >&2
 fi
