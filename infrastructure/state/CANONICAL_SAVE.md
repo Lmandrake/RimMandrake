@@ -84,6 +84,10 @@ Evidence, in order:
 - **No repaint save exists.** `ASHKARR_DEV_START_2026-10-21_REPAINT.rws` is not in the Saves folder or the backups.
   `BIG_REPAINT_FINISH_ONCE_AND_FOR_ALL` and `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS` are still `proposed`
   (filed 2026-10-21, no later events). When the repaint lands, its save replaces R3 as current.
+- **Repo copy:** `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws` is byte-identical to the Saves file (sha256
+  `2c6525bcc357f2eb…`); it replaced the stale `world/ASHKARR_DEV_START_2026-10-20.rws` (PAINT, unlocked, map 250) on
+  2026-11-02. When the repaint save lands it replaces this copy too. The one dev-start pointer is `canon.yml`
+  `planet.start_savegame`, read through `src/RimMandrake/Utils/canon_save.py`.
 - Saves written after 10-21 (Autosave-*, `RM_fw_hose_proof_*`, `rm_proof_*`) are test sites, not world saves.
 
 **`CANONICAL_ASHKARR_START_2026-09-12.rws` (the frozen file above)** stays as the record the owner froze. It is
@@ -97,9 +101,10 @@ has (repaint plan §1a).
   donor-free line from 10-15 to 10-19. The world remake replaced it, and AREAFIX2 fails on the PAINT list with an
   error storm (Orbit2 PlanetLayerDef missing; OWNER.jsonl game GOING_DOWN, 2026-10-20T07:10Z);
 - every `.rws.bak-*` beside them (pre-edit backups of the frozen file and of 10-18_DONORFREE);
-- `ASHKARR_DEV_SHIP/LANDED/FOUNDERS_2026-10-20` and the FOUNDERS `.bak-pre-founder-import`. They are the PAINT 83-mod
-  set, from before the mountains and the lock fix, with 31k donor mutators; `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS`
-  moves them out once the repaint lands;
+- `ASHKARR_DEV_SHIP/LANDED/FOUNDERS_2026-10-20` (the PAINT 83-mod set, from before the mountains and the lock fix,
+  with 31k donor mutators) were MOVED out of Saves on 2026-11-02 to `D:\ClaudeWork\backups\saves_superseded_2026-10-21\`
+  (sha256-verified copies; `REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS`). The FOUNDERS `.bak-pre-founder-import` no
+  longer existed in Saves or the backups by then;
 - `ASHKARR_FALLLINE_LABEL26_2026-09-21`, `ASHKARR_LABELSIZES_2026-09-26`, `ASHKARR_LABELSIZES_DRAWCENTERFIX_2026-09-26`
   (September label experiments on the old world).
 

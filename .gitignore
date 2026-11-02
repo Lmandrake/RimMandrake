@@ -158,6 +158,9 @@ src/RimMandrake/mapsynth/runs/
 # Owner-designated exceptions, 2026-08-27: "These are special files." Both ~20 MB.
 !world/WORLDMAP_V1_original.rws
 !world/gravship_scratch.rws
+# The one repo copy of the dev start (canon.yml planet.start_savegame), ~14 MB; item
+# REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS (owner-filed 2026-10-21). The repaint save replaces it, one name at a time.
+!world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws
 research/**/*.pdf
 vendor/salvage/**/*.dll
 # Bulk census/dump output and raw load triage: derived, transient, and large.

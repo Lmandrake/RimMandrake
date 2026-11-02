@@ -8,10 +8,11 @@ size, random rotation, centre jitter, random 2x2 atlas cell) < rivers (+0.01, da
 pollution/blend layers' mapping; the WorldTerrain shader's own span is UNMEASURED), so face grain is indicative.
 
 usage: python3 world_hill_preview.py --region "Rust Cathedral" --hills DIR --out PNG [--landmarks DIR] [--tiles 26] [--lm-scale 0.6 --lm-alpha 0.55]
-  DIR holds SmallHills/LargeHills/Mountains/Impassable.png (a 2x2 atlas each). Save: world/ASHKARR_DEV_START_2026-10-20.rws
-  with both 2026-10-20 mountain plans applied (the live hilliness after MOUNTAINS and MOUNTAINS2).
+  DIR holds SmallHills/LargeHills/Mountains/Impassable.png (a 2x2 atlas each). Save: the repo copy world/<canon start>,
+  named by canon.yml planet.start_savegame; it already carries both 2026-10-20 mountain plans (R3: 0 tiles differ).
+  Its own hilliness is drawn as saved: re-applying an old plan would revert any later hill edit.
 """
-import argparse, glob, json, os, re, sys
+import argparse, glob, os, re, sys
 import xml.etree.ElementTree as ET
 import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
@@ -20,9 +21,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "../../../.."))
 sys.path.insert(0, os.path.dirname(HERE))
 import worldview  # noqa: E402
+from canon_save import start_savegame_name  # noqa: E402
 
-SAVE = os.path.join(REPO, "world", "ASHKARR_DEV_START_2026-10-20.rws")
-PLANS = [os.path.join(REPO, "world", p) for p in ("ASHKARR_MOUNTAINS_2026-10-20_plan.json", "ASHKARR_MOUNTAINS2_2026-10-20_plan.json")]
+SAVE = os.path.join(REPO, "world", start_savegame_name())
 HILL = {2: ("SmallHills", 0.37), 3: ("LargeHills", 0.2), 4: ("Mountains", 0.08), 5: ("Impassable", 0.08)}
 RIVER_W = {"Creek": 0.32, "River": 0.46, "LargeRiver": 0.62, "HugeRiver": 0.82}
 GAME = "/mnt/c/Program Files (x86)/Steam/steamapps/common/RimWorld/Data"
@@ -73,9 +74,7 @@ def main():
     a = ap.parse_args()
 
     pv = worldview.PlanetView(SAVE)
-    hilly = pv.hilly.astype(int).copy()
-    for p in PLANS:
-        for t, h in json.load(open(p))["hilliness"].items(): hilly[int(t)] = int(h)
+    hilly = pv.hilly.astype(int)
     g = pv.geom; V = g.vec
     names = {f["index"]: f["name"] for f in pv.features}
     region = [t for t in range(pv.n) if names.get(int(pv.feature_idx[t])) == a.region]

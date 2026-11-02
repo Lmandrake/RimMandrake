@@ -191,6 +191,10 @@ From the dump's `BiomeDef` packageIds, 2026-10-21T11:18Z:
     `.bak-pre-founder-import` file to `D:\ClaudeWork\backups\saves_superseded_2026-10-21\`. Move, do not delete.
     Do it with the game down. Then delete the stale `world\ASHKARR_DEV_START_2026-10-20.rws` repo copy, and commit
     the new one in its place (under 50 MB) (`REPAINT_SAVES_RETIRE_THREE_GHOST_STARTS`).
+    **Done ahead of the repaint, 2026-11-02, against R3** (canon's start since the owner card of 2026-10-25): the three
+    ghosts are in that backups folder (the `.bak-pre-founder-import` no longer existed), and the repo copy is
+    `world/ASHKARR_DEV_START_2026-10-20_PARITY_QUIET_R3.rws`. What is left for this step when the repaint lands: commit
+    the repaint save as `world/` copy in R3's place and repoint `canon.yml` `planet.start_savegame`.
 12. Close the debt that 0 tiles depend on:
     - the VEE world layers (`VEE_WORLD_MUTATORS_DECIDE_FOURTEEN_THOUSAND`);
     - rewrite `infrastructure/state/facts/biome_paint_list.md`. It still says "not yet active" and gives
