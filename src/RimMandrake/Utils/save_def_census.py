@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """save_def_census.py -- list every defName a savegame names in <def>NAME</def> that the CURRENT mod list does not define.
 
-    python3 save_def_census.py <save.rws>... [--modsconfig PATH] [--src] [--json OUT] [--top N]
+    python3 save_def_census.py <save.rws>... [--modsconfig PATH | --mods-from-save] [--src] [--json OUT] [--top N]
     python3 save_def_census.py <save.rws> --strip-things OUT.rws [--def NAME ...]   # copy without those plant/item things
 
 Why (2026-10-19, Transient/live_testing_2026-10-19b.md): a cauldron test-site save kept 1528 `RM_TreeMartyr`
@@ -38,7 +38,7 @@ SRC = Path(__file__).resolve().parents[1]  # .../src
 SKIP_DIRS = {"languages", "textures", "sounds", "assemblies", "about", "source", "news"}
 IMPLIED = ("Frame_", "Blueprint_", "Install_", "Corpse_", "Techprint_", "Neurotrainer_")
 DEFNAME = re.compile(rb"<defName>\s*([^<\s][^<]*?)\s*</defName>")
-CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "rm_save_def_census_defs.v1.json"
+CACHE = Path(os.environ.get("XDG_CACHE_HOME", Path.home() / ".cache")) / "rm_save_def_census_defs.v2.json"
 
 
 def _old_version_dir(name: str) -> bool:
@@ -61,8 +61,25 @@ def defs_in(root: Path) -> set[str]:
     return out
 
 
-def live_defs(modsconfig: Path) -> tuple[set[str], int, list[str]]:
-    active = [li.text.strip().lower() for li in ET.parse(modsconfig).getroot().find("activeMods")]
+def _xml_sig(d: Path) -> str:
+    """Count, total size and newest mtime of every .xml under d. The folder mtimes of d, Defs/ and Patches/ were the
+    key until 2026-11-01 and went stale on a composed mod (mandrake.rm.biomes keeps its defs in LoadFolders sub-roots):
+    defs cut weeks earlier (RM_Barkwarden, RM_FurnaceHerd) still read as defined."""
+    n = size = newest = 0
+    for a, _, fs in os.walk(d):
+        for f in fs:
+            if f.lower().endswith(".xml"):
+                try:
+                    st = os.stat(os.path.join(a, f))
+                except OSError:
+                    continue
+                n, size, newest = n + 1, size + st.st_size, max(newest, int(st.st_mtime))
+    return f"{n}:{size}:{newest}"
+
+
+def live_defs(modsconfig: Path | None, active: list[str] | None = None) -> tuple[set[str], int, list[str]]:
+    if active is None:
+        active = K.modsconfig_active(modsconfig)
     idx = K.mod_index()
     missing = [p for p in active if p not in idx]
     cache = {}
@@ -76,11 +93,7 @@ def live_defs(modsconfig: Path) -> tuple[set[str], int, list[str]]:
         d = idx.get(p)
         if d is None or not d.is_dir():
             continue
-        try:
-            sig = max((x.stat().st_mtime for x in [d, d / "Defs", d / "Patches"] if x.exists()), default=0)
-        except OSError:
-            sig = 0
-        key = f"{d}|{int(sig)}"
+        key = f"{d}|{_xml_sig(d)}"
         if key not in cache:
             cache[key] = sorted(defs_in(d))
             dirty = True
@@ -172,6 +185,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("saves", nargs="+", type=Path)
     ap.add_argument("--modsconfig", type=Path, default=K.MODSCONFIG)
+    ap.add_argument("--mods-from-save", action="store_true",
+                    help="resolve against the mod list the save records, not the live ModsConfig")
     ap.add_argument("--src", action="store_true", help="also index src/ to mark src-only defs")
     ap.add_argument("--json", type=Path)
     ap.add_argument("--top", type=int, default=8)
@@ -179,7 +194,7 @@ def main(argv=None) -> int:
     ap.add_argument("--def", dest="defs", action="append", help="def to strip (default: all unresolved plain things)")
     a = ap.parse_args(argv)
 
-    known, n_active, missing = live_defs(a.modsconfig)
+    known, n_active, missing = live_defs(a.modsconfig, K.save_active(a.saves) if a.mods_from_save else None)
     probe = "Human" in known and "RM_ZZZ_NoSuchDef_Probe" not in known
     print(f"# index: {n_active} active mods ({len(missing)} not on disk), {len(known)} defNames; probe {'OK' if probe else 'FAILED'}")
     if not probe:

@@ -1,0 +1,1 @@
+save_def_census.py reports code-generated defs (Aptitude*_<Skill>, ChemicalDependency_*, AddictionImmune_* genes) as unresolved 'other refs' on every save: they are built by GeneDefGenerator at runtime, never in XML. Not dead content; ignore them or teach IMPLIED about them (seen 2026-11-01, WALK_SAVE_SILENCE_ABSENT_BIOME_OBJECTS).
