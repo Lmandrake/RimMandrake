@@ -308,6 +308,7 @@ EXEC_MUTANTS = (
     ("paid plan kept", 0, "if (RM_SalvageRuleKernel.CycleOver(planned, placedByProcess)) plans.Remove(process);", ""),
     ("switch-off still pays", 0, "if (!WreckedMachinesSettings.smeltersFollowSalvageRule)\n", "if (false)\n"),
     ("switch-off empties the plan", 0, "plans.Remove(process); // switched off during a retry", "held.stacks.Clear(); // switched off during a retry"),
+    ("inverted spawn guard", 0, "if (!plans.TryGetValue(process, out Plan held)) return;", "if (machine.Spawned) return; if (!plans.TryGetValue(process, out Plan held)) return;"),
     ("first stack paid twice", 0, "for (int i = planned - owed; i < planned; i++)", "for (int i = 0; i < planned; i++)"),
     ("remainder never placed", 0, "RM_SalvageRule.Place(held.stacks[i], machine.InteractionCell, machine.Map);", ";"),
     ("remainder off the machine", 0, "RM_SalvageRule.Place(held.stacks[i], machine.InteractionCell, machine.Map);", "RM_SalvageRule.Place(held.stacks[i], default(IntVec3), machine.Map);"),

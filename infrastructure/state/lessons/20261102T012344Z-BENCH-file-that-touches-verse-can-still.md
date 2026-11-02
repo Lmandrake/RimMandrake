@@ -1,0 +1,1 @@
+A file that touches Verse can still EXECUTE offline: compile it unmodified against a small fake engine in plain net8.0, with each mutant copied into its own namespace so one build runs them all (WreckedMachines/Source/tests/salvage_exec, selftest_salvage_rule.py). Text pins cannot see arithmetic; this can.

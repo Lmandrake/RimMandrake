@@ -104,7 +104,7 @@ namespace SalvageExec
         private static Dictionary<ThingDef, int> Smelt(Paths paths, ThingDef def, ThingDef stuff, int retries = 0)
         {
             var process = new Process { Item = def, ItemStuff = stuff };
-            return Sum(SmelterCycle(paths, process, new ThingWithComps { InteractionCell = new IntVec3(7), Map = new Map() }, retries));
+            return Sum(SmelterCycle(paths, process, new ThingWithComps { Spawned = true, InteractionCell = new IntVec3(7), Map = new Map() }, retries));
         }
 
         private static Corpse CorpseWith(Thing worn, Thing held, Thing carried)
@@ -200,7 +200,7 @@ namespace SalvageExec
             (ThingDef def, ThingDef stuff)[] loads = { (Armor, null), (Rifle, null), (Parka, Devilstrand), (Parka, Steel), (Parka, Wood), (Sculpture, null) };
             for (int i = 0; i < 300; i++)
             {
-                var corpse = new Corpse { PositionHeld = new IntVec3(3), InnerPawn = new Pawn { apparel = new Pawn_ApparelTracker(), equipment = new Pawn_EquipmentTracker(), inventory = new Pawn_InventoryTracker() } };
+                var corpse = new Corpse { Spawned = dice.Next(2) == 0, PositionHeld = new IntVec3(3), InnerPawn = new Pawn { apparel = new Pawn_ApparelTracker(), equipment = new Pawn_EquipmentTracker(), inventory = new Pawn_InventoryTracker() } };
                 if (dice.Next(4) == 0) corpse.InnerPawn.apparel = null;     // a tracker may be absent, and the other pockets still pay
                 if (dice.Next(4) == 0) corpse.InnerPawn.equipment = null;
                 if (dice.Next(4) == 0) corpse.InnerPawn.inventory = null;
@@ -241,7 +241,7 @@ namespace SalvageExec
 
             // An unsmeltable load: the process gets nothing to place, resets, and the next load starts clean on the same process.
             var process = new Process { Item = Parka, ItemStuff = Wood };
-            var machine = new ThingWithComps { InteractionCell = new IntVec3(7), Map = new Map() };
+            var machine = new ThingWithComps { Spawned = true, InteractionCell = new IntVec3(7), Map = new Map() };
             Check(SmelterCycle(paths, process, machine, 0).Count == 0, "smelter: an unsmeltable load paid");
             process.Item = Armor;
             process.ItemStuff = null;
