@@ -339,7 +339,7 @@ def reading(key, samples, fam_rows, now, floors, targets):
         if kind == "counter":           # a counter's limit is on its level; its rate per hour is that level's slope
             ttl = hours_to_limit(out["level"], cur, targets, key)
         else:
-            ttl = hours_to_limit(cur, s6 if s6 is not None else s24, targets, key)
+            ttl = hours_to_limit(meas[-1][1], s6 if s6 is not None else s24, targets, key)    # the latest reading, not the hour's median
         if ttl:
             out["limit"] = ttl
     return out
