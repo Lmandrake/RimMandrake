@@ -30,8 +30,10 @@ WHY BY NAME, NOT BY PREFIX: `AB_` is not Alpha Biomes' alone -- measured on the 
 2026-10-26T02-33-49Z, sarg.alphamemes (live) defines PreceptDef AB_MiningYield_VeryHigh. A prefix rule would
 flag a live def; the inventory cannot.
 
-SANITY: check refuses (exit 2, UNMEASURED) if an inventory is missing or holds fewer than 50 names -- a blind
-instrument must not print a clean zero.
+SANITY: check refuses (exit 2, UNMEASURED) if an inventory is missing or holds fewer than its floor -- a blind
+instrument must not print a clean zero. The floor is 50 names, or, for a small donor, half the defs a capture
+that STILL LOADS the donor attributes to it (`donorCaptureCount`, recorded by inventory --donor-capture; More
+Vanilla Biomes ships 22 parseable names against 28 in the dump, Primordial Geysers 19 against 29).
 """
 from __future__ import annotations
 
@@ -53,6 +55,14 @@ ALLOW = {
     ("src/RimMandrake/DeepDrill/Defs/RM_DeepHomeTable.xml", "AB_AlcyoniteChunk"):
         "generated from the mineral registry CSV's `retire:` binding with no homes; RM_DeepHomeRow.thing is a "
         "plain string (no cross-reference), so the row is inert. Minerals owns the CSV.",
+    ("src/RimMandrake/Wastes/Defs/MapGeneration/RM_WastesWreckField.xml", "Wasteland"):
+        "the word as a <label> and a settingsKey string of our own wreck field, not a def reference.",
+    ("src/RimMandrake/FlowWorks/Patches/Canals/FlowWorks_LadderClimbers.xml", "IronScruff_Hydrazoa"):
+        "FlowWorks is FOUNDRY's lane: an inert `or defName=` member of the ladder-climber xpath (Primordial Geysers retired 2026-11-01); LADDER_CLIMBERS_PRUNE_GHOST_GERMS removes it and this row.",
+    ("src/RimMandrake/FlowWorks/Patches/Canals/FlowWorks_LadderClimbers.xml", "IronScruff_Jellybird"):
+        "FlowWorks is FOUNDRY's lane: an inert `or defName=` member of the ladder-climber xpath (Primordial Geysers retired 2026-11-01); LADDER_CLIMBERS_PRUNE_GHOST_GERMS removes it and this row.",
+    ("src/RimMandrake/FlowWorks/Patches/Canals/FlowWorks_LadderClimbers.xml", "IronScruff_Tardigrade"):
+        "FlowWorks is FOUNDRY's lane: an inert `or defName=` member of the ladder-climber xpath (Primordial Geysers retired 2026-11-01); LADDER_CLIMBERS_PRUNE_GHOST_GERMS removes it and this row.",
 }
 
 DEFNAME_RE = re.compile(r'defName\s*=\s*["\']([^"\']+)["\']')
@@ -207,13 +217,27 @@ def scan(src, donor_names, ours=frozenset(), repo=REPO, abstracts=frozenset()):
     return hits
 
 
+def floor(inv):
+    """Fewest names a sane inventory holds: MIN_NAMES, or half the donor's own def count in a with-donor capture."""
+    n = inv.get("donorCaptureCount")
+    return min(MIN_NAMES, (n + 1) // 2) if isinstance(n, int) and n > 0 else MIN_NAMES
+
+
+def donor_count(capture, pid):
+    """How many defs a capture that loads the donor attributes to it (None if unreadable)."""
+    live = live_defnames(capture)
+    if live is None:
+        return None
+    return sum(1 for v in live.values() if (v or "").lower() == pid.lower())
+
+
 def check(pid=None, src=SRC, facts=FACTS, allow=None, repo=REPO):
     """(status, rows). status: 'UNMEASURED' | 'CLEAN' | 'HITS'. rows: dicts with file/form/name/donor/allowed."""
     allow = ALLOW if allow is None else allow
     invs = load_inventories(pid, facts)
-    if not invs or any(len(i["defs"]) + len(i["abstracts"]) < MIN_NAMES for i in invs.values()):
-        return "UNMEASURED", [{"why": "no inventory, or one under %d names: %s" % (
-            MIN_NAMES, {k: len(v["defs"]) + len(v["abstracts"]) for k, v in invs.items()})}]
+    if not invs or any(len(i["defs"]) + len(i["abstracts"]) < floor(i) for i in invs.values()):
+        return "UNMEASURED", [{"why": "no inventory, or one under its floor: %s" % (
+            {k: "%d<%d?" % (len(v["defs"]) + len(v["abstracts"]), floor(v)) for k, v in invs.items()})}]
     owner, defs, abstracts = {}, set(), set()
     for pkg, inv in invs.items():
         for n in inv["defs"] + inv["abstracts"]:
@@ -238,6 +262,9 @@ def main(argv=None):
     a_inv.add_argument("--out", default=None)
     a_inv.add_argument("--live-capture", default=None,
                        help="def dump capture taken without the donor (default: newest capture)")
+    a_inv.add_argument("--donor-capture", default=None,
+                       help="a capture that still LOADS the donor; its def count for the pid sets a small "
+                            "donor's sanity floor (half that count) instead of %d names" % MIN_NAMES)
     a_chk = sub.add_parser("check")
     a_chk.add_argument("--pid", default=None)
     a_chk.add_argument("--json", default=None)
@@ -261,8 +288,15 @@ def main(argv=None):
             print("UNMEASURED: capture %s still loads %s -- it cannot say which names are dead" % (cap, a.pid))
             return 2
         inv = drop_live(inventory(a.pid, a.root), live, os.path.basename(cap.rstrip("/")))
+        if a.donor_capture:
+            dc = donor_count(a.donor_capture, a.pid)
+            if not dc:
+                print("UNMEASURED: donor capture %s attributes no defs to %s" % (a.donor_capture, a.pid))
+                return 2
+            inv["donorCaptureCount"] = dc
+            inv["donorCapture"] = os.path.basename(a.donor_capture.rstrip("/"))
         n = len(inv["defs"]) + len(inv["abstracts"])
-        if n < MIN_NAMES:
+        if n < floor(inv):
             print("UNMEASURED: only %d names under %s -- wrong root?" % (n, a.root))
             return 2
         out = a.out or os.path.join(FACTS, a.pid + ".json")

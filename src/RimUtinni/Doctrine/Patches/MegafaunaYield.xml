@@ -12,45 +12,6 @@
      Only bodySize > 1.0 is affected. -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Advanced Biomes (Continued)</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- MutantCow MeatAmount: bodySize 2.00, base 280, yields 560 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="MutantCow"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="MutantCow"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="MutantCow"]/statBases</xpath>
-            <value><MeatAmount>280</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- MutantCow BoneAmount: bodySize 2.00, base 100, yields 200 -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="MutantCow"]/statBases/BoneAmount</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/ThingDef[defName="MutantCow"]/statBases/BoneAmount</xpath>
-              <value><BoneAmount>100</BoneAmount></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="MutantCow"]/statBases</xpath>
-              <value><BoneAmount>100</BoneAmount></value>
-            </nomatch>
-          </match>
-        </li>
-        <!-- MutantCow milkAmount: bodySize 2.00, 15 -> 8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="MutantCow"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationSequence">
     <operations>
@@ -3122,45 +3083,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Primordial Geysers</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- IronScruff_Tardigrade MeatAmount: bodySize 2.40, base 336, yields 806 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>336</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/statBases</xpath>
-            <value><MeatAmount>336</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- IronScruff_Tardigrade BoneAmount: bodySize 2.40, base 120, yields 288 -->
-        <li Class="PatchOperationFindMod">
-          <mods><li>Rim of Madness - Bones Unofficial Fix</li></mods>
-          <match Class="PatchOperationConditional">
-            <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/statBases/BoneAmount</xpath>
-            <match Class="PatchOperationReplace">
-              <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/statBases/BoneAmount</xpath>
-              <value><BoneAmount>120</BoneAmount></value>
-            </match>
-            <nomatch Class="PatchOperationAdd">
-              <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/statBases</xpath>
-              <value><BoneAmount>120</BoneAmount></value>
-            </nomatch>
-          </match>
-        </li>
-        <!-- IronScruff_Tardigrade milkAmount: bodySize 2.40, 18 -> 12 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>12</milkAmount></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>ReGrowth 2</li></mods>

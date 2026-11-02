@@ -114,30 +114,6 @@
   <!-- Alpha Biomes entries. -->
   <!-- A PatchOperationFindMod on "Alpha Biomes" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
-  <!-- Advanced Biomes (Continued) entry: Volcano. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Advanced Biomes (Continued)</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
-
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/IncidentDef[defName="MechCluster"]</xpath>
-        <value>
-          <allowedBiomes>
-            <li>Volcano</li>
-          </allowedBiomes>
-        </value>
-      </nomatch>
-
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/IncidentDef[defName="MechCluster"]/allowedBiomes</xpath>
-        <value>
-          <li>Volcano</li>
-        </value>
-      </match>
-    </match>
-  </Operation>
+  <!-- A PatchOperationFindMod on "Advanced Biomes (Continued)" (Volcano) stood here; that donor was retired 2026-11-01 (DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT) and the op deleted. -->
 
 </Patch>

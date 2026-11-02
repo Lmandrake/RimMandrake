@@ -81,11 +81,7 @@
 
         <!-- Alpha Biomes rows (2 blacklisted, 11 scored) removed 2026-10-18: donor retired, its biomes no longer load. -->
         <biomeBlacklist>
-          <li>ZBiome_CoastalDunes</li>
-          <li>ZBiome_Sandbar_NoBeach</li>
-          <li>ZBiome_Iceberg_NoBeach</li>
           <li>SeaIce</li>
-          <li>ZBiome_Marsh</li>
           <li>TropicalRainforest</li>
           <li>ColdBog</li>
           <li>TemperateSwamp</li>
@@ -93,15 +89,10 @@
           <li>Wetland</li>
           <li>Labyrinth</li>
           <li>MetalHell</li>
-          <li>Savanna</li>
-          <li>ZBiome_Grasslands</li>
           <li>Grasslands</li>
           <li>TemperateForest</li>
           <li>GlacialPlain</li>
-          <li>ZBiome_AlpineMeadow</li>
           <li>BorealForest</li>
-          <li>ZBiome_CloudForest</li>
-          <li>ZBiome_GlacialShield</li>
           <li>IceSheet</li>
           <li>Tundra</li>
         </biomeBlacklist>
@@ -112,16 +103,11 @@
           <li><key>Desert</key><value><scoreOffset>12</scoreOffset></value></li>
 
           <!-- COMMON -->
-          <li><key>ZBiome_Badlands</key><value><scoreOffset>4</scoreOffset></value></li>
           <li><key>AridShrubland</key><value><scoreOffset>4</scoreOffset></value></li>
-          <li><key>Wasteland</key><value><scoreOffset>4</scoreOffset></value></li>
 
           <!-- RARE -->
-          <li MayRequire="zylle.MoreVanillaBiomes"><key>ZBiome_DesertOasis</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>Volcano</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>LavaField</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Scarlands</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li MayRequire="ironscruff.primordialgeysers"><key>IronScruff_PrimordialGeysers</key><value><scoreOffset>-4</scoreOffset></value></li>
           <!-- RG_BoilingForest CUT 2026-08-15 — owner: "WE ARE NOT USING BOILING
                BIOME." regrowth.botr.boilingforest left the mod list in the
                585→575 descope, so this scored a def that no longer loads: it
@@ -131,7 +117,6 @@
           <li><key>BMT_EarthenDepths</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>BMT_FungalForest</key><value><scoreOffset>-4</scoreOffset></value></li>
           <li><key>Glowforest</key><value><scoreOffset>-4</scoreOffset></value></li>
-          <li><key>PoisonForest</key><value><scoreOffset>-4</scoreOffset></value></li>
         </biomeConfigs>
 
       </value>

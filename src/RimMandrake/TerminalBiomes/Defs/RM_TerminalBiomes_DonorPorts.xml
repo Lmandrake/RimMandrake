@@ -158,4 +158,24 @@
       </tags>
     <takeFootprints>True</takeFootprints>
   </TerrainDef>
+  <!-- RM_PoisonShrub: port of PoisonShrub (Advanced Biomes (Continued), Mlie.AdvancedBiomes, workshop 3541022508,
+       1.6/Defs/ThingDefs_Plants/Plants_PoisonForest.xml), plain XML copy 2026-11-01 for donor retirement
+       (DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT): the Auroral Umbra (RUT_Umbra) was the last painted biome naming it
+       (owner review 2026-09-20 moved it in, SHEET_ORPHAN_CONSUMPTION_1). Donor values kept; art is a StandIn copy of
+       the donor's AssetBundle pictures (ShrubLowA/B). -->
+  <ThingDef ParentName="BushBase">
+    <defName>RM_PoisonShrub</defName>
+    <label>poison shrub</label>
+    <description>A short shrub. Does not typically talk.</description>
+    <graphicData>
+      <texPath>StandIn/Plant/PoisonShrub</texPath>
+      <drawSize>1.15</drawSize>
+      <shadowData>
+        <volume>(0.55, 0.2, 0.2)</volume>
+      </shadowData>
+    </graphicData>
+    <plant>
+      <growDays>3</growDays>
+    </plant>
+  </ThingDef>
 </Defs>

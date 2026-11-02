@@ -73,19 +73,17 @@
          elimination per design doc §8). A carve-out on the SOAK, never on the
          top: a dry plant anywhere else still bursts. -->
     <noSoakBiomes>
-      <li>PoisonForest</li>
       <li>RM_Cauldron</li>
       <li>RUT_Cauldron</li>
       <li>RUT_ExtremeDesert</li>
     </noSoakBiomes>
 
-    <!-- EVERYDAY BANDS, campaign half. The stalled (terminator) band: PoisonForest
-         (Advanced Biomes) and the Cauldron, both tiers (sprint S0-7, agreed by card
+    <!-- EVERYDAY BANDS, campaign half. The stalled (terminator) band: the Cauldron,
+         both tiers (Advanced Biomes' PoisonForest dropped 2026-11-01, donor retired) (sprint S0-7, agreed by card
          2026-10-16 on BIOME_SPRINT_PROVE_SCRUB_SETS_PACE: "add RUT_/RM_Cauldron to the
          stalled band and keep the RUT_ExtremeDesert x4 exemption"). RUT_ExtremeDesert
          stays OUT of this list: it is held still by noSoakBiomes above (HARD BAN 4). -->
     <terminatorBiomes>
-      <li>PoisonForest</li>
       <li>RM_Cauldron</li>
       <li>RUT_Cauldron</li>
     </terminatorBiomes>

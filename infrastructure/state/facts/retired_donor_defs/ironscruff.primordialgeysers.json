@@ -1,0 +1,34 @@
+{
+ "packageId": "ironscruff.primordialgeysers",
+ "source": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/2896731795",
+ "measuredUtc": "2026-11-02T03:55:09Z",
+ "defFiles": 18,
+ "unparsed": [],
+ "defs": [
+  "ISCnidTentacles",
+  "ISMicrobeCnidarian",
+  "ISMicrobeFlatworm",
+  "ISMicrobeTardigrade",
+  "IronScruff_BacterialSoil",
+  "IronScruff_Bindweed",
+  "IronScruff_CnidTentacle",
+  "IronScruff_Flatworm",
+  "IronScruff_Hydrazoa",
+  "IronScruff_Jellybird",
+  "IronScruff_Juniper",
+  "IronScruff_LeatherGerm",
+  "IronScruff_MicrobeSqueezins",
+  "IronScruff_PrimordialGeysers",
+  "IronScruff_PrimordialGrass",
+  "IronScruff_PrimordialTallGrass",
+  "IronScruff_Tardigrade"
+ ],
+ "abstracts": [
+  "RatKindBase",
+  "RatThingBase"
+ ],
+ "alsoLive": {},
+ "liveCapture": "donor_off_capture_DBMR",
+ "donorCaptureCount": 25,
+ "donorCapture": "2026-10-28T23-26-38Z"
+}

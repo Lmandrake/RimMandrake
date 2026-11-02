@@ -76,77 +76,7 @@
 
   <!-- A PatchOperationFindMod on "Alpha Biomes" stood here; that donor was retired 2026-10-18, so it could never match again and was deleted. -->
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>More Vanilla Biomes</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
 
-        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/fishTypes</xpath>
-          <match Class="PatchOperationSequence">
-            <success>Always</success>
-            <operations>
-              <li Class="PatchOperationRemove">
-                <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/fishTypes</xpath>
-              </li>
-              <li Class="PatchOperationReplace">
-                <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/maxFishPopulation</xpath>
-                <value><maxFishPopulation>0</maxFishPopulation></value>
-              </li>
-            </operations>
-          </match>
-        </li>
-
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>Advanced Biomes (Continued)</li>
-    </mods>
-    <match Class="PatchOperationSequence">
-      <success>Always</success>
-      <operations>
-
-        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-          <xpath>/Defs/BiomeDef[defName="PoisonForest"]/fishTypes</xpath>
-          <match Class="PatchOperationSequence">
-            <success>Always</success>
-            <operations>
-              <li Class="PatchOperationRemove">
-                <xpath>/Defs/BiomeDef[defName="PoisonForest"]/fishTypes</xpath>
-              </li>
-              <li Class="PatchOperationReplace">
-                <xpath>/Defs/BiomeDef[defName="PoisonForest"]/maxFishPopulation</xpath>
-                <value><maxFishPopulation>0</maxFishPopulation></value>
-              </li>
-            </operations>
-          </match>
-        </li>
-
-        <li Class="PatchOperationConditional" MayRequire="Ludeon.RimWorld.Odyssey">
-          <xpath>/Defs/BiomeDef[defName="Volcano"]/fishTypes</xpath>
-          <match Class="PatchOperationSequence">
-            <success>Always</success>
-            <operations>
-              <li Class="PatchOperationRemove">
-                <xpath>/Defs/BiomeDef[defName="Volcano"]/fishTypes</xpath>
-              </li>
-              <li Class="PatchOperationReplace">
-                <xpath>/Defs/BiomeDef[defName="Volcano"]/maxFishPopulation</xpath>
-                <value><maxFishPopulation>0</maxFishPopulation></value>
-              </li>
-            </operations>
-          </match>
-        </li>
-
-      </operations>
-    </match>
-  </Operation>
 
   <Operation Class="PatchOperationFindMod">
     <mods>

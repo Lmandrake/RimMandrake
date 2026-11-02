@@ -8,29 +8,18 @@
        "ZBiome_Grasslands" inside the engine's C# — backwards: which biome
        steams is campaign wiring, and campaign wiring lives here.
 
-       RM_Pyrelands (mandrake.rm.pyrelands) is the mod's OWN Pyrelands biome
-       def, the one every Pyrelands content patch targets. CORRECTED 2026-09-20
-       (PYRELANDS_WRONG_BIOME_DEF_1): a 2026-09-19 comment here claimed
-       RM_Pyrelands already carried the frozen world's 222 Pyrelands tiles and
-       ZBiome_Grasslands carried zero — the opposite is independently confirmed
-       today by re-parsing `world/ASHKARR_WORLDMAP_tiles.csv` (21,872 rows):
-       ZBiome_Grasslands 222, RM_Pyrelands 0. Whether a live world_tile_set
-       switch on 2026-09-19 ever landed in that frozen CSV is unreconciled; the
-       CSV is the canonical source and the second operation below (on
-       RM_Pyrelands) is a no-op on today's world for exactly that reason.
-       ZBiome_Grasslands is zylle's More Vanilla Biomes grassland, still labelled
-       "the Pyrelands" by BiomeNames_Ashkarr.xml and carrying the world's 222
-       Pyrelands tiles today; it is patched too, conditionally, and costs
-       nothing when it eventually does not.
+       RM_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome def, the one
+       every Pyrelands content patch targets. An operation on More Vanilla Biomes'
+       ZBiome_Grasslands stood beside it until that donor was retired 2026-11-01
+       (DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT).
 
        ⚠️ Gated twice, both deliberately:
        - PatchOperationFindMod on ManyWaters, because a `Class=` naming a type
          no loaded assembly has DISCARDS THE WHOLE BiomeDef, silently, and
          takes every biome in that file with it. If ManyWaters is cut, this
          must be a no-op, not a dead grassland.
-       - PatchOperationConditional on the def itself, because
-         ZBiome_Grasslands comes from a third-party mod that may not be
-         active; a bare Add against a missing xpath is a patch error.
+       - PatchOperationConditional on the def itself; a bare Add against a
+         missing xpath is a patch error.
 
        🔑 REFACTOR, NOT A FEATURE CHANGE. Every field on
        RiverSteamBiomeExtension defaults to the value the engine used while
@@ -39,60 +28,6 @@
        old behaviour exactly. Override a field here — never in the engine — if
        the Pyrelands should ever steam differently from anywhere else. -->
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <!-- Merged into FlowWorks 2026-09-16 (FLOWWORKS_BUILD_PROGRAM_1 Phase 1).
-           PatchOperationFindMod matches ModLister.HasActiveModWithName - the mod's
-           <name>, never its packageId - so this string must track the About.xml
-           name exactly, and a stale one no-ops the whole wiring in silence. -->
-      <li>RimMandrake: FlowWorks</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
-      <match Class="PatchOperationConditional">
-        <!-- Checked against More Vanilla Biomes 1.6's own
-             Defs/BiomeDefs/ZBiome_Grasslands.xml, 2026-09-08: no
-             <modExtensions> there, so the nomatch branch is the live one.
-             The match branch exists because a SECOND <modExtensions> element
-             on one def is not a merge — the loader reads one and the other's
-             contents are silently gone. -->
-        <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
-          <value>
-            <li Class="RimMandrake.FlowWorks.ManyWaters.RiverSteamBiomeExtension" />
-          </value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
-          <value>
-            <modExtensions>
-              <li Class="RimMandrake.FlowWorks.ManyWaters.RiverSteamBiomeExtension" />
-            </modExtensions>
-          </value>
-        </nomatch>
-      </match>
-    </match>
-  </Operation>
-
-
-  <!-- RM_Pyrelands is the def every Pyrelands content patch targets — the
-       world repaint (owed, PYRELANDS_WRONG_BIOME_DEF_1 / WORLD_REMAKE_FINAL_STEP_1)
-       is what makes this the operation that does the work on the shipped world.
-       CORRECTED 2026-09-20: a same-day-earlier version of this comment (dated
-       2026-09-19, "FOUNDRY bridge wave 2") claimed the opposite of the operation
-       block above and this one — that RM_Pyrelands already held the 222 tiles
-       and ZBiome_Grasslands held zero. Re-parsing `world/ASHKARR_WORLDMAP_tiles.csv`
-       today shows RM_Pyrelands 0, ZBiome_Grasslands 222 — so today this
-       operation is the no-op and the one above (on ZBiome_Grasslands) is the one
-       doing the work. Whether the 2026-09-19 live measurement was real and later
-       reverted, or never landed in the canonical CSV, is unreconciled — flagged
-       for BENCH, not resolved here.
-
-       Both defNames stay patched, not one: whichever def the canonical CSV
-       carries on a given day, this wiring keeps working with no XML edit needed,
-       and every operation here is conditional on the def existing, so patching a
-       biome with no tiles costs nothing. -->
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>RimMandrake: FlowWorks</li>

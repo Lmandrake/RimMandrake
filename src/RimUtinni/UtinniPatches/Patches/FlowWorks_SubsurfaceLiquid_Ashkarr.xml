@@ -8,12 +8,9 @@
        drills, for what, and how richly is campaign wiring, and campaign wiring
        lives here, exactly like river steam.
 
-       RM_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome the frozen
-       world actually carries — 222 tiles, MEASURED live 2026-09-19. The second
-       operation below is the one that does the work on the shipped world.
-       ZBiome_Grasslands is zylle's More Vanilla Biomes grassland, still labelled
-       "the Pyrelands" by BiomeNames_Ashkarr.xml but carrying ZERO tiles on the
-       canonical planet; it is patched too, conditionally, and costs nothing.
+       RM_Pyrelands (mandrake.rm.pyrelands) is the Pyrelands biome def. An
+       operation on More Vanilla Biomes' ZBiome_Grasslands stood beside it until
+       that donor was retired 2026-11-01 (DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT).
 
        Two candidate liquids, both already shipped with a canal form
        (LiquidDef.canalFluid) so a drill striking either can actually pour:
@@ -33,81 +30,9 @@
        Gated twice, both deliberately (same reasoning as the river-steam
        patch): PatchOperationFindMod so a cut FlowWorks makes this a no-op
        rather than leaving a dangling modExtension reference, and
-       PatchOperationConditional on the biome def so a missing More Vanilla
-       Biomes does not throw against a missing xpath. -->
+       PatchOperationConditional on the biome def so a missing def does not
+       throw against a missing xpath. -->
 
-  <Operation Class="PatchOperationFindMod">
-    <mods>
-      <li>RimMandrake: FlowWorks</li>
-    </mods>
-    <match Class="PatchOperationConditional">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
-      <match Class="PatchOperationConditional">
-        <!-- ManyWaters_RiverSteam_Ashkarr.xml already checked this file has no
-             native <modExtensions> as of 2026-09-08, and its own patch (which
-             loads before this one, same PatchOperationFindMod gate) has since
-             ADDED one via the nomatch branch below — so by the time this
-             patch runs, <modExtensions> exists whenever FlowWorks is active.
-             Checked again here rather than assumed, because a second
-             <modExtensions> element is not a merge: the loader keeps one and
-             silently drops the other's contents. -->
-        <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
-        <match Class="PatchOperationAdd">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/modExtensions</xpath>
-          <value>
-            <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">
-              <chanceMapHasYield>0.6</chanceMapHasYield>
-              <options>
-                <li>
-                  <liquid>RM_Liquid_FreshWater</liquid>
-                  <commonality>3</commonality>
-                  <reserveUnits>600~1800</reserveUnits>
-                </li>
-                <li>
-                  <liquid>RM_Liquid_Tar</liquid>
-                  <commonality>1</commonality>
-                  <reserveUnits>400~1200</reserveUnits>
-                </li>
-              </options>
-            </li>
-          </value>
-        </match>
-        <nomatch Class="PatchOperationAdd">
-          <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]</xpath>
-          <value>
-            <modExtensions>
-              <li Class="RimMandrake.FlowWorks.Drilling.RM_SubsurfaceLiquidBiomeExtension">
-                <chanceMapHasYield>0.6</chanceMapHasYield>
-                <options>
-                  <li>
-                    <liquid>RM_Liquid_FreshWater</liquid>
-                    <commonality>3</commonality>
-                    <reserveUnits>600~1800</reserveUnits>
-                  </li>
-                  <li>
-                    <liquid>RM_Liquid_Tar</liquid>
-                    <commonality>1</commonality>
-                    <reserveUnits>400~1200</reserveUnits>
-                  </li>
-                </options>
-              </li>
-            </modExtensions>
-          </value>
-        </nomatch>
-      </match>
-    </match>
-  </Operation>
-
-
-  <!-- 🔴 RM_Pyrelands is the biome the FROZEN WORLD actually carries.
-       MEASURED live 2026-09-19 (FOUNDRY bridge wave 2) on the canonical planet
-       (seed "raven", coverage 1.0, jawa/world_tile_export over 21872 surface
-       tiles): 222 tiles are BiomeDef RM_Pyrelands and ZERO are
-       ZBiome_Grasslands. The Pyrelands live in mandrake.rm.pyrelands now; the
-       operation above was copied from the river-steam patch, which had the same
-       stale target, so no map on the shipped world could ever roll a subsurface
-       yield. Both defNames are patched and each operation is conditional on its
-       def existing, so patching a biome with no tiles costs nothing. -->
   <Operation Class="PatchOperationFindMod">
     <mods>
       <li>RimMandrake: FlowWorks</li>

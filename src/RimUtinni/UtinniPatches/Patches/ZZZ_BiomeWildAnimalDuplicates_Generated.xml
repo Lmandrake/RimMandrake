@@ -67,51 +67,9 @@
     </match>
   </Operation>
 
-  <!-- 2. AA_Eyeling x Wasteland (record 2 of 2) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals/AA_Eyeling[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals/AA_Eyeling[2]</xpath>
-    </match>
-  </Operation>
 
-  <!-- 3. AA_Eyeling x ZBiome_DesertOasis (record 2 of 2) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals/AA_Eyeling[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals/AA_Eyeling[2]</xpath>
-    </match>
-  </Operation>
 
-  <!-- 4. Gizka x ZBiome_Grasslands (record 2 of 2) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Gizka[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Gizka[2]</xpath>
-    </match>
-  </Operation>
 
-  <!-- 5. Nuna x ZBiome_Grasslands (record 2 of 2) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Nuna[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Nuna[2]</xpath>
-    </match>
-  </Operation>
 
-  <!-- 6. Orray x ZBiome_Grasslands (record 2 of 2) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Orray[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Orray[2]</xpath>
-    </match>
-  </Operation>
 
-  <!-- 7. Zeer x ZBiome_Grasslands (record 2 of 2) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Zeer[2]</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildAnimals/Zeer[2]</xpath>
-    </match>
-  </Operation>
 </Patch>

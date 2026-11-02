@@ -56,7 +56,7 @@ Where the word rules could not decide, I read the description and recorded the r
 
 - **44 owned defs** got `<altitudeLayer>FloorEmplacement</altitudeLayer>` in their own def file. These are 41 RimMandrake defs, 1 RimStarWars def (`RSW_SurraGrass`) and 4 RimUtinni defs (`RUT_DarkCrust`, `RUT_DosimeterLawn`, `RUT_Glower`, `RUT_Fuzz`).
 - **10 donor defs** are changed by patches in the mod whose biome spawns them. Each patch first tests that the def exists, so a missing donor is a silent no-op. Each donor inherits its layer from a parent def, so the patch adds the field to the def itself.
-  - `src/RimMandrake/TheForge/Patches/RM_TheForge_GroundCoverDrawLayer.xml`: `AB_TinkleGrass`, `IronScruff_PrimordialGrass`
+  - `src/RimMandrake/TheForge/Patches/RM_TheForge_GroundCoverDrawLayer.xml`: `AB_TinkleGrass`, `IronScruff_PrimordialGrass` (file deleted 2026-11-01: both donors retired, DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT)
   - `src/RimMandrake/Wastes/Patches/RM_Wastes_GroundCoverDrawLayer.xml`: `Plant_GrayGrass` (Biotech ashskal)
   - `src/RimMandrake/LeaningScrub/Patches/RM_LeaningScrub_GroundCoverDrawLayer.xml`: `RG_Plant_AridGrass`, `RG_Plant_CrimsonCushion`
   - `src/RimUtinni/UtinniPatches/Patches/RUT_GroundCoverDrawLayer.xml`: `AB_AlienGrass`, `AB_HardyGrass`, `AB_ToxiGrass`, `GRimMoss`, `RG_Plant_ToxiGrass` (spawned only by RUT biomes)

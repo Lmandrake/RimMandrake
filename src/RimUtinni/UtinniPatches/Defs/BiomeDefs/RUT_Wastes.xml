@@ -106,16 +106,6 @@
       </li>
     </diseases>
     <terrainsByFertility>
-      <li MayRequire="Mlie.AdvancedBiomes">
-        <terrain>VolcanoSoil</terrain>
-        <min>-999</min>
-        <max>0.5</max>
-      </li>
-      <li MayRequire="Mlie.AdvancedBiomes">
-        <terrain>WastelandAsphalt</terrain>
-        <min>0.5</min>
-        <max>999</max>
-      </li>
     </terrainsByFertility>
     <baseWeatherCommonalities>
       <Clear>30</Clear>

@@ -66,7 +66,7 @@ PROMISES = [
     (8, "The Monument", "RUT", "monument", "done"),
     (9, "The Rakatan Trace", "RUT", "rakatan_trace", "done"),
     (10, "The Oasis Shrine", "RUT", "oasis_shrine", "done"),
-    (11, "The Kiln", "RUT", "kiln", "done"),  # built 2026-09-18: wholly NEW TileMutatorDef (RUT_Kiln, biomeWhitelist Wasteland, MayRequire Mlie.AdvancedBiomes "Advanced Biomes (Continued)" — Wasteland is NOT in RimSage's own index, confirmed real the harder way via a validate_patch.py PatchOperationConditional probe against the live 636-mod set: 1 hit, Biomes_Wasteland.xml), same "no adoption/anchor dependency" shape as RSW_DeadCrawler. kiln.lua: Gravel dead-flat ground, one centered CraterLarge (Core, 5x5, "a small pit formed by a powerful impact or explosion"), ChunkSlagSteel/Filth_RubbleBuilding/Filth_Ash blast debris densest near the crater. No power mechanism, no walls — "hazard/atmosphere only" per the owner's own ruling text
+    (11, "The Kiln", "RUT", "kiln", "done"),  # built 2026-09-18: wholly NEW TileMutatorDef RUT_Kiln; biomeWhitelist RM_Wastes since the Advanced Biomes donor (its first Wasteland target) was retired 2026-11-01
     (12, "The Hunting Lodge", "RSW", "hunting_lodge", "done"),
     (13, "The Toll Gap", "RUT", "toll_gap", "done"),
     (14, "The Dead Beacon", "RUT", "dead_beacon", "done"),

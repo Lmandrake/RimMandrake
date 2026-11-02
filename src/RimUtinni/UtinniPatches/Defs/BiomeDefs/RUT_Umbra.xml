@@ -136,7 +136,7 @@
            rosters/the_propane_lakes.json and reached the game only through
            BiomeFlora_Ashkarr.xml's now-retired replace operation; transplanted here by
            BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
-      <PoisonShrub MayRequire="Mlie.AdvancedBiomes">0.35</PoisonShrub>  <!-- poison shrub -->
+      <RM_PoisonShrub>0.35</RM_PoisonShrub>  <!-- poison shrub: RM_ port of the retired Advanced Biomes PoisonShrub (DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT) -->
     </wildPlants>
     <wildPlantRegrowDays>1</wildPlantRegrowDays>
     <modExtensions>

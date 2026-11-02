@@ -53,37 +53,13 @@
        retired, so its nine AB_ biome ops here matched nothing and were deleted;
        the RUT_ twins carry those campaign labels. -->
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/label</xpath>
-      <value><label>the Cracked Lands</label></value>
-    </match>
-  </Operation>   <!-- was "badlands" -->
+   <!-- was "badlands" -->
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/label</xpath>
-      <value><label>the Cauldron</label></value>
-    </match>
-  </Operation>   <!-- was "poison forest" -->
+   <!-- was "poison forest" -->
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/label</xpath>
-      <value><label>the Weeping Stones</label></value>
-    </match>
-  </Operation>   <!-- was "desert oasis" -->
+   <!-- was "desert oasis" -->
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/label</xpath>
-      <value><label>the Pyrelands</label></value>
-    </match>
-  </Operation>   <!-- was "stormy savanna" -->
+   <!-- was "stormy savanna" -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="COMIGO_GreaterSwamp_Tropical"]/label</xpath>
@@ -119,13 +95,7 @@
     </match>
   </Operation>   <!-- was "scarlands" (vanilla Odyssey) - BIOME_TEXT_PORT_1 -->
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Wasteland"]/label</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="Wasteland"]/label</xpath>
-      <value><label>the Wastes</label></value>
-    </match>
-  </Operation>   <!-- was "wastes" (BiomesPlus) - BIOME_TEXT_PORT_1 -->
+   <!-- was "wastes" (BiomesPlus) - BIOME_TEXT_PORT_1 -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/BiomeDef[defName="AridShrubland"]/label</xpath>

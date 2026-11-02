@@ -43,7 +43,6 @@
     <description>A trophy hall, kennels, and a cold room for what does not keep in the heat. Something still uses the kennels.</description>
     <biomeWhitelist>
       <li>AridShrubland</li>
-      <li>ZBiome_Grasslands</li>
       <li>RM_Pyrelands</li>
     </biomeWhitelist>
     <extraGenSteps>

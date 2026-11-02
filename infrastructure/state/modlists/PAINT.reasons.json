@@ -72,12 +72,6 @@
    "of": "mandrake.rsw.armoury",
    "why": "hard dependency / class_ref of mandrake.rsw.armoury"
   },
-  "mlie.advancedbiomes": {
-   "need": "CLOSURE",
-   "kind": "dep",
-   "of": "mandrake.rut.patches",
-   "why": "hard dependency / class_ref of mandrake.rut.patches"
-  },
   "7f.alienworlds": {
    "need": "TOOL",
    "why": "generator framework Ash'karr was made with (02 sec 2)"
@@ -91,9 +85,9 @@
   },
   "biomesteam.coreframework": {
    "need": "CLOSURE",
-   "kind": "dep",
-   "of": "zylle.morevanillabiomes",
-   "why": "hard dependency / class_ref of zylle.morevanillabiomes"
+   "kind": "class_ref",
+   "of": "mandrake.rm.biomes",
+   "why": "BiomesCore.* classes named by our Defs (TheRot RM_RotSporeKit_*, LanternDeeps); first listed as a dep of zylle.morevanillabiomes, retired 2026-11-01"
   },
   "det.keshig": {
    "need": "CLOSURE",
@@ -145,12 +139,6 @@
    "kind": "dep",
    "of": "mandrake.rsw.armoury",
    "why": "hard dependency / class_ref of mandrake.rsw.armoury"
-  },
-  "zylle.morevanillabiomes": {
-   "need": "CLOSURE",
-   "kind": "dep",
-   "of": "mandrake.rut.patches",
-   "why": "hard dependency / class_ref of mandrake.rut.patches"
   },
   "oblitus.mylittleplanet": {
    "need": "TOOL",

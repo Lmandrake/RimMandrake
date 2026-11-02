@@ -54,17 +54,6 @@
   -->
 
   <!-- ============ A. dayside desert, badlands and the river jungles ============ -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildPlants</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Grasslands"]/wildPlants</xpath>
-      <value>
-        <wildPlants>
-          <RM_FE_Plant_Quickgrass>4.0</RM_FE_Plant_Quickgrass> <!-- quickgrass -->
-        </wildPlants>
-      </value>
-    </match>
-  </Operation>
 
   <!-- ============ flora exclusions - biomes a SHARED roster does not plant ============
 

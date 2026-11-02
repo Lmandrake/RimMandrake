@@ -69,8 +69,8 @@
   TARGETS AND SOURCES  [all verified against live 1.6 defs, 2026-08-10]
     Core            : Desert, ExtremeDesert, AridShrubland
                       (Data/Core/Defs/BiomeDefs/Biomes_WarmArid.xml)
-    More Vanilla B. : ZBiome_DesertOasis, ZBiome_Badlands   (WS 1931453053)
-    Advanced Biomes : Volcano  (unprefixed defName; collision-watch)
+    (More Vanilla Biomes' ZBiome_DesertOasis/ZBiome_Badlands and Advanced Biomes'
+    Volcano were targets until both donors were retired 2026-11-01.)
   ============================================================================
 -->
 <Patch>
@@ -112,41 +112,9 @@
     </match>
   </Operation>
 
-  <!-- More Vanilla Biomes: Desert Oasis -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/baseWeatherCommonalities</xpath>
-      <value>
-        <RSW_SW_Sandstorm>6</RSW_SW_Sandstorm>
-      </value>
-    </match>
-  </Operation>
 
-  <!-- More Vanilla Biomes: Badlands -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/baseWeatherCommonalities</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/baseWeatherCommonalities</xpath>
-      <value>
-        <RSW_SW_Sandstorm>8</RSW_SW_Sandstorm>
-        <RSW_SW_DrySandstorm>6</RSW_SW_DrySandstorm>
-      </value>
-    </match>
-  </Operation>
 
   <!-- ================= VOLCANIC / EXOTIC to RED FOG ================= -->
 
-  <!-- Advanced Biomes: Volcano (unprefixed defName; collision-watch) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="Volcano"]/baseWeatherCommonalities</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Volcano"]/baseWeatherCommonalities</xpath>
-      <value>
-        <RSW_SW_RedFog>8</RSW_SW_RedFog>
-        <RSW_SW_RedFoggyRain>5</RSW_SW_RedFoggyRain>
-      </value>
-    </match>
-  </Operation>
 
 </Patch>

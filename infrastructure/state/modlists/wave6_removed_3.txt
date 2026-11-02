@@ -1,0 +1,4 @@
+# Retirement Wave 6 (2026-11-01). packageId<TAB>name<TAB>why. Removed from the *.RULED_2026-10-20 profiles (AUTHORING/DEV/TEST/SHIP/PAINT) and FULL.LATEST. Item DONOR_BIOME_MODS_RETIRE_ZERO_TILES_LEFT.
+mlie.advancedbiomes	Advanced Biomes (Continued)	owner 2026-10-21 "No more donor debt"; 0 dev-world tiles; PoisonShrub ported as RM_PoisonShrub (RUT_Umbra)
+zylle.morevanillabiomes	More Vanilla Biomes	owner 2026-10-21 "No more donor debt"; 0 dev-world tiles; nothing ported
+ironscruff.primordialgeysers	Primordial Geysers	owner 2026-10-21 "No more donor debt"; 0 dev-world tiles; nothing ported

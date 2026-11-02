@@ -70,8 +70,6 @@
                                                                    roster, RUT_SeaShoreExtension, BiomeCast_Ashkarr.xml,
                                                                    WildAnimals_LeaningScrub.xml, BiomeArrivalLetters_TheSump.xml). -->
 
-    <li>IronScruff.PrimordialGeysers</li>                   <!-- IronScruff_PrimordialGeysers BiomeAnimalDanglingRefs_Fix.xml -->
-    <li>zylle.MoreVanillaBiomes</li>                        <!-- ZBiome_Badlands, ZBiome_DesertOasis -->
     <li>titans.fl</li>                                      <!-- Titan                        AnimalBiomeDuplicates_Fix.xml -->
     <li>Dark.Signs</li>                                     <!-- SignBillboard etc. (9 defs)  ThirdPartySignConfigErrors_Fix.xml -->
     <li>Nals.FacialAnimation</li>                           <!-- supplies the FaceAdjustmentDef TYPE -->
@@ -92,7 +90,6 @@
     <li>BiomesTeam.BiomesCore</li>                          <!-- BiomeCast_Ashkarr.xml -->
     <li>mandrake.rsw.droidworks</li>                        <!-- GalacticEmpire.xml, HomesteadDefenseLeague.xml -->
     <li>mandrake.rsw.swbestiary</li>                        <!-- SandFishing_CrackedLands.xml: RM_DuneCrawler, RSW_SandStalker, RM_GlassPearl, RSW_RareSandCatches -->
-    <li>Mlie.AdvancedBiomes</li>                            <!-- BiomeCast_Ashkarr.xml -->
     <li>Mlie.SpaceWorms</li>                                <!-- BiomeCast_Ashkarr.xml -->
     <li>RedMattis.BigSmall.Core</li>                        <!-- GiantWeaponWielders_Ashkarr.xml -->
     <li>Sarg.AlphaMemes</li>                                <!-- BiomeCast_Ashkarr.xml, HomesteadDefenseLeague.xml -->

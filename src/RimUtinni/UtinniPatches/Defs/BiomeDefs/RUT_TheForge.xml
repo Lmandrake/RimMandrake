@@ -170,7 +170,7 @@
            mandrake.rm.therot equivalent; this row had no MayRequire and dangled a
            cross-reference on every load. Overlaps ROTSPOREKIT_MAYREQUIRE_ORPHANED_1,
            which owns the fuller retirement sweep. -->
-      <IronScruff_PrimordialGrass MayRequire="IronScruff.PrimordialGeysers">0.35</IronScruff_PrimordialGrass>  <!-- primordial grass -->
+  <!-- primordial grass -->
       <!-- SHEET_ORPHAN_CONSUMPTION_1, owner review 2026-09-11: AG_Gamma, AG_Septimum and
            AB_GiantGamma all moved OUT of here to abyss ("to crags" / "elsewhere,
            not heat resistant") — this biome's 42-56 C floor is above their optimal band
@@ -178,8 +178,8 @@
            at the crags. The ruling landed in rosters/the_forge.json and reached the game
            only through BiomeFlora_Ashkarr.xml's now-retired replace operation;
            transplanted here by BIOMEFLORA_PATCH_WIPES_WILDPLANTS_1. -->
-      <IronScruff_PrimordialTallGrass MayRequire="IronScruff.PrimordialGeysers">0.3</IronScruff_PrimordialTallGrass>  <!-- primordial tall grass -->
-      <IronScruff_Bindweed MayRequire="IronScruff.PrimordialGeysers">0.25</IronScruff_Bindweed>  <!-- bindweed -->
+  <!-- primordial tall grass -->
+  <!-- bindweed -->
       <RM_FirevineTree>0.2</RM_FirevineTree>  <!-- firevine tree - tree -->
       <RM_HeatsinkFungus>0.2</RM_HeatsinkFungus>  <!-- heatsink fungus - tree -->
     </wildPlants>

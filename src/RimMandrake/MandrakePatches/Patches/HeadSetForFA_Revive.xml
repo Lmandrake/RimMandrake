@@ -88,8 +88,8 @@
   LOAD ORDER
   ==========
   The target def does not exist on disk. It is created by the compat project's
-  patch at load 550, and we are 562 (last), so we apply after it. As with
-  BiomeAnimalDanglingRefs_Fix, validate_patch.py will report 0 on-disk matches
+  patch at load 550, and we are 562 (last), so we apply after it. Because the
+  target is patch-created, validate_patch.py will report 0 on-disk matches
   for these xpaths. That is expected, not a silent no-op.
 
   The test xpath and the inner xpath deliberately DIFFER here: we test for the
