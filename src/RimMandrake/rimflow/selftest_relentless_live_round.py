@@ -182,8 +182,20 @@ def t_log_judge():
           G.judge("Config error in nothing\n", ["RUT_Z"])[0] == G.UNMEASURED)
 
 
+def t_real_lane():
+    """The real lane lookup imports priority as the package does (a plain `import priority` fails on its relative
+    imports, and the fakes above never reach it)."""
+    fx = R.RoundFx.__new__(R.RoundFx)
+    try:
+        got = (fx.foundry_seat("FLOWWORKS_SELFTEST_PROBE"), fx.foundry_seat("EGROSTER_SELFTEST_PROBE"))
+    except Exception as e:     # noqa: BLE001
+        got = e
+    check("lane: the real FlowWorks lane loads and names a seat for a FlowWorks id only",
+          isinstance(got, tuple) and got[0] and got[1] is None, got)
+
+
 def main():
-    for t in (t_proof_lines, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge):
+    for t in (t_proof_lines, t_candidates, t_deploy_args, t_round, t_live_tick, t_log_judge, t_real_lane):
         t()
     print("%s: %d failed" % ("FAIL" if FAILS else "PASS", len(FAILS)))
     return 1 if FAILS else 0

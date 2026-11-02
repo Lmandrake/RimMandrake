@@ -147,8 +147,12 @@ class RoundFx(L.Fx):
         return self._plans[args]
 
     def foundry_seat(self, item_id):
-        import priority
-        return priority.flowworks_seat(item_id)
+        if not hasattr(self, "_lane"):    # priority uses relative imports: load it as the package does, read the lane once
+            import importlib
+            sys.path.insert(0, os.path.dirname(HERE))
+            self._prio = importlib.import_module("rimflow.priority")
+            self._lane = self._prio.flowworks_lane()
+        return self._prio.flowworks_seat(item_id, self._lane)
 
     def folded(self):
         sys.path.insert(0, os.path.join(os.path.dirname(HERE), "Utils"))
