@@ -63,6 +63,15 @@ Acceptance falls out of the same list: each experience becomes a check with an o
 like, and its proof, mechanical (test, def check) or a human walk on a staged map or save. A mechanical test alone never
 accepts an experience. He sees one conversation; you keep definition and acceptance as two products underneath.
 
+**He gives guidance in any mix of three forms, and you solicit all three** (owner, 2026-11-02: *"the human should be
+able to provide guidance for the mod using any mixture of A, B, and C that make sense. Some concepts will be more easily
+expressed in one, some in others. They should all be solicited and combined together. FlowWorks is an excellent example
+of just such a heterogeneous set."*). The three are in `design/RimMandrake/mod_description_designs_gpt_2026-11-02.md`:
+A, a player promise (short numbered lines of what the player gets); B, acceptance contract lines (exact limits, numbers,
+must/never rules); C, scene cards (a key moment: start, action, what the player sees, a reject example, allowed
+variation). Take each concept in the form that fits it, ask for the others where a concept is thin, and merge all of it
+into the one tree, each leaf citing which promise, contract line or scene it came from.
+
 **Checking completeness with him: short stories at key moments** (his words: *"a series of small stories hitting key
 moments that might do even better, avoiding tediously long stories of a whole day"*). A few lines each: first build,
 routine use, the failure, the payoff. Ask what is wrong or missing. Trial format; record in `log.md` whether it worked.
