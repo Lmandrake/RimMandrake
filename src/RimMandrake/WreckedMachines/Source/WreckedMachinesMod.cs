@@ -82,6 +82,16 @@ namespace RimMandrake.WreckedMachines
         // forge cannot make plasteel at all.
         public static bool plasteelAlloyEnabled = true;
 
+        // ── The one salvage rule, SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY
+        // (WreckedMachinesSalvage.cs). Shipped default: ON. Automated smelters
+        // pay what the vanilla smelter pays. Off: VFE Factory's own rule.
+        public static bool smeltersFollowSalvageRule = true;
+
+        // Shipped default: ON. Cremating a corpse pays the rule for its gear,
+        // which is what Better Cremation paid before it retired. Off: vanilla,
+        // the gear burns with the corpse unless a pawn strips it first.
+        public static bool cremateWithoutStripping = true;
+
         /// <summary>The ratios the ladder uses: ordered and held inside the slider ranges, whatever the saved config says.</summary>
         public static RM_WreckedMachinesKernel.Ladder Ladder => RM_WreckedMachinesKernel.Normalize(wreckedRatio, kludgedRatio, refurbishedRatio);
 
@@ -100,6 +110,8 @@ namespace RimMandrake.WreckedMachines
             Scribe_Values.Look(ref enableSalvagedEmanators, "enableSalvagedEmanators", true, true);
             Scribe_Values.Look(ref alloyForgeProgressiveGate, "alloyForgeProgressiveGate", true, true);
             Scribe_Values.Look(ref plasteelAlloyEnabled, "plasteelAlloyEnabled", true, true);
+            Scribe_Values.Look(ref smeltersFollowSalvageRule, "smeltersFollowSalvageRule", true, true);
+            Scribe_Values.Look(ref cremateWithoutStripping, "cremateWithoutStripping", true, true);
         }
 
                 // MOD_OPTIONS_RETROFIT_1: shipped value of every public static bool/float/int setting, read from the field initialisers.
@@ -241,6 +253,26 @@ namespace RimMandrake.WreckedMachines
                 list.GapLine();
             }
 
+            if (Group(list, "Salvage", RimMandrake.Shared.SettingScope.Now, new[] { "smeltersFollowSalvageRule", "cremateWithoutStripping" }))
+            {
+                list.Label("One rule for what a finished item gives back: a quarter of each "
+                    + "smeltable material in its cost, never components.");
+                list.CheckboxLabeled(
+                    "Automated smelters follow the salvage rule",
+                    ref smeltersFollowSalvageRule,
+                    "On (shipped default): smelting apparel or a weapon in an automated "
+                    + "smelter returns exactly what the vanilla electric smelter returns. "
+                    + "Off: VFE Factory's own rule, one material only.");
+                list.CheckboxLabeled(
+                    "Cremate without stripping",
+                    ref cremateWithoutStripping,
+                    "On (shipped default): cremating a corpse returns the salvage rule's "
+                    + "yield for everything it wore, held or carried, beside the corpse. "
+                    + "Off: vanilla, the gear burns with the corpse unless a pawn strips "
+                    + "it first.");
+                list.GapLine();
+            }
+
             if (Group(list, "Architect menu (restart)", RimMandrake.Shared.SettingScope.Now, new[] { "allowDonorSmelter", "allowFullRestoration" }, "[next game start]"))
             {
                 list.CheckboxLabeled(
@@ -379,6 +411,7 @@ namespace RimMandrake.WreckedMachines
 
         static WreckedMachinesPatcher()
         {
+            RimMandrake.Shared.PatchApplier.Apply(new HarmonyLib.Harmony("mandrake.rm.wreckedmachines"), typeof(WreckedMachinesPatcher).Assembly, "WreckedMachines");
             CaptureBaseCost(KludgedTier);
             CaptureBaseCost(RefurbishedTier);
             CaptureBaseCost(RepairedTier);

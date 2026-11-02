@@ -3,6 +3,8 @@
 //             always below the original's 1.0, in-range input untouched
 //   place     where an upper grade may be built (a lower grade of ITS OWN line underneath, reinstalls free, wrecks free) against a random cell
 //   emanator  the soothe stage per grade and the strongest-in-range pick, never above the top stage, inert when wrecked
+//   salvage   the one salvage rule's arithmetic: stacks keep every unit inside the limit; a retried process cycle pays nothing until its first
+//             stack lands and then pays each remaining stack once; cremation pays only for a corpse with the toggle on
 //   scale     power output (producers only, never above the original), emanator mood, material counts and research cost under their sliders
 // A failing case prints `family seed N: message`; --fuzz-seed N replays it. PROVISIONAL: ratios 0.001 / 0.2 / 0.75 are owner-ruled defaults;
 // slider ranges (wrecked 0..0.05, kludged 0.05..0.6, refurbished 0.3..0.95) are the shipped UI.
@@ -10,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using RimMandrake.Shared;
 using RimMandrake.WreckedMachines;
 
 namespace RimMandrake.WreckedMachines.SelfTest
@@ -19,6 +22,42 @@ namespace RimMandrake.WreckedMachines.SelfTest
         public static long Cases, Steps, Allowed, Refused, Inverted, Producers;
         private static void Check(bool ok, string msg) { if (!ok) throw new Exception(msg); }
         private static float F(Random r, float lo, float hi) { return lo + (float)r.NextDouble() * (hi - lo); }
+
+        private static List<string> Salvage(int cases, int seed0)
+        {
+            var fails = new List<string>();
+            for (int c = 0; c < cases; c++)
+            {
+                int seed = seed0 + c; var r = new Random(seed); Cases++;
+                try
+                {
+                    int total = r.Next(-3, 2000), limit = r.Next(-1, 80);
+                    List<int> stacks = RM_SalvageRuleKernel.Stacks(total, limit);
+                    Check(stacks.Sum() == Math.Max(0, total), $"stacks of {total} sum to {stacks.Sum()}");
+                    Check(stacks.All(s => s > 0 && s <= Math.Max(1, limit)), $"illegal stack in {total} at limit {limit}");
+
+                    // A cycle: the process fails to place N times (full hopper, retried next tick), then places the first stack.
+                    int planned = r.Next(0, 6), retries = r.Next(0, 5), paidByUs = 0, paidByProcess = 0;
+                    bool planHeld = true;
+                    for (int t = 0; t <= retries && planHeld; t++)
+                    {
+                        Steps++;
+                        int placed = t == retries && planned > 0 ? 1 : 0;
+                        paidByProcess += placed;
+                        paidByUs += RM_SalvageRuleKernel.ExtrasOwed(planned, placed);
+                        if (RM_SalvageRuleKernel.CycleOver(planned, placed)) planHeld = false;
+                        else Check(paidByUs == 0, $"paid {paidByUs} on a retry");
+                    }
+                    Check(!planHeld, $"plan of {planned} outlived its cycle");
+                    Check(paidByProcess + paidByUs == planned, $"plan of {planned} paid {paidByProcess}+{paidByUs}");
+
+                    bool on = r.Next(2) == 0, corpse = r.Next(2) == 0;
+                    Check(RM_SalvageRuleKernel.CremationPays(on, corpse) == (on && corpse), $"cremation on={on} corpse={corpse}");
+                }
+                catch (Exception e) { fails.Add($"salvage seed {seed}: {e.Message}"); }
+            }
+            return fails;
+        }
 
         private static List<string> Ladder(int cases, int seed0)
         {
@@ -171,6 +210,7 @@ namespace RimMandrake.WreckedMachines.SelfTest
                 ("place", () => Place(N(4000), S(1))),
                 ("emanator", () => Emanator(N(2000), S(1))),
                 ("scale", () => Scale(N(3000), S(1))),
+                ("salvage", () => Salvage(N(3000), S(1))),
             };
             foreach (var f in fam)
             {

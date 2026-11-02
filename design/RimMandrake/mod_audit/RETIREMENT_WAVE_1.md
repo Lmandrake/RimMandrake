@@ -113,7 +113,7 @@ No remaining active mod hard-depends on a removed id (About `modDependencies`, b
 | `sarg.alphaskills`, `vanillaexpanded.skills` | none (`VSE_` names absent from biomes/graffiti) | 198 custom passions on 99 pawns (6 colonists), 151 AS hediffs | met by W3's passion map (§6) |
 | `mlie.largefactionbases`, `mlie.storytellerenhanced`, `font.rimesis` | none | rows; Rimesis 1 lost world component | met |
 | the convenience nine | pruned (`56958bf60`, `edd1ba89a`, `1cd5b165b`) | 0 placed things; **11 minified walls** (Minify); 2 lost components | met by W3 (walls removed from the copy) |
-| `thumb.bettercremation` | none | CLEAN | met; vanilla cremation until `SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY` |
+| `thumb.bettercremation` | none | CLEAN | met; its behaviour is now Wrecked Machines' cremate-without-stripping setting (`SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY`) |
 | `vanillaexpanded.vwe` | `WeaponTags_Renormalise` block removed (`b2e398638`); ResearchRetag rows Conditional (inert) | 5 relic precepts | met; W3 repairs the relics (§6) |
 | `vanillaquestsexpanded.ancients` | 5 files, all FindMod/Conditional except 2 Rakata backstories (string category, now unreachable) | `futureQuests` row, 1 `ignoredFactions` row | met by W3 (row removed) |
 | `sarg.alphamechs` | six failing ops removed (`b2e398638`); RimAI prerequisite restored (`1cd5b165b`) | 2 Big and Small cache rows (third-party, UNMEASURED) | met; watch the log for Big and Small |

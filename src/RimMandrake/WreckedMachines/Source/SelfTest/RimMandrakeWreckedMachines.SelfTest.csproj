@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <Compile Include="..\Kernel\RM_WreckedMachinesKernel.cs" />
+    <Compile Include="..\..\..\_Shared\SalvageRule\RM_SalvageRuleKernel.cs" Link="Shared\RM_SalvageRuleKernel.cs" />
     <Compile Include="WreckedFuzz.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>

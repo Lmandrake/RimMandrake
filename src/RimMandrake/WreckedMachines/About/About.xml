@@ -30,13 +30,21 @@ grind alone. Every ratio is tunable in Mod Settings.
 
 This mod ships its own art for all three states and does not replace or alter
 any other mod's buildings. The donor mod's original Automated Smelter ThingDef
-is left completely untouched — its stats, comps and recipes are unchanged, and
-our smelter grades still run its own processes — but it no longer
-appears in the Architect build menu, so a player cannot build a fresh one
-alongside our grades. Vanilla's own hand-run electric smelter is untouched
-and unrelated.</description>
+keeps its stats and comps, and our smelter grades still run its own processes,
+but it no longer appears in the Architect build menu, so a player cannot build
+a fresh one alongside our grades. Vanilla's own hand-run electric smelter is
+untouched.
+
+One salvage rule: apparel and weapons smelted in any automated smelter return
+exactly what the vanilla electric smelter returns, and cremating a corpse
+returns the same for what it wore, held or carried. Both are Mod Settings.</description>
 
   <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
     <li>
       <packageId>VanillaExpanded.VFEFactory</packageId>
       <displayName>Vanilla Furniture Expanded - Factory</displayName>
@@ -45,6 +53,7 @@ and unrelated.</description>
   </modDependencies>
 
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
     <li>VanillaExpanded.VFEFactory</li>
     <!-- Soft: RM_WM_AnalyseWreckedSmelter (Defs/Specials/) ParentNames

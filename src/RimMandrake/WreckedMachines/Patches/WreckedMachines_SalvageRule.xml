@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY: one salvage-yield rule (Source/WreckedMachinesSalvage.cs).
+  Both ProcessDefs are VFE Factory's, a hard dependency of this mod, so they serve the donor smelter as well as our tiers.
+  VFEFactory_SmeltMechanoid keeps its own worker: it takes a mechanoid corpse, which no other path salvages.
+  Both switches are read at run time (Mod Settings), so these two edits stay in place when a switch is off.
+-->
+<Patch>
+  <Operation Class="PatchOperationReplace">
+    <xpath>Defs/PipeSystem.ProcessDef[defName="VFEFactory_SmeltApparel" or defName="VFEFactory_SmeltWeapon"]/results/li/workerClass</xpath>
+    <value>
+      <workerClass>RimMandrake.WreckedMachines.RM_ResultWorker_SalvageRule</workerClass>
+    </value>
+  </Operation>
+  <Operation Class="PatchOperationAdd">
+    <xpath>Defs/RecipeDef[defName="CremateCorpse"]</xpath>
+    <value>
+      <workerClass>RimMandrake.WreckedMachines.RM_RecipeWorker_CremateSalvage</workerClass>
+    </value>
+  </Operation>
+</Patch>

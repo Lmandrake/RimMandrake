@@ -3,11 +3,10 @@
   <!--
     WRECKEDMACHINES_MOD_SETTINGS_1 — first assembly this mod ever ships.
 
-    🔴 NO HARMONY REFERENCE, DELIBERATELY. The settings gate real defs
-    (designationCategory, baseCost, costList, researchPrerequisites) directly
-    from a [StaticConstructorOnStartup] class — a vanilla extension point,
-    same as RimMandrake.GelatinousSlime. Nothing here patches an engine
-    method, so nothing here breaks on a game update that renames one.
+    Harmony is here for one postfix (WreckedMachinesSalvage.cs): a PipeSystem process pays one
+    ThingDef per result, and the salvage rule can return several. Every other edit stays a
+    plain def change from a [StaticConstructorOnStartup] class. Add no further patch without
+    the same reason: the seam has to be missing, not merely less convenient.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\RimMandrake\.claude\worktrees\agent-afc100cb85cd7f019\src\RimMandrake\WreckedMachines\Source\RM_WreckedMachines.csproj -c Release
@@ -44,13 +43,33 @@
     <Compile Include="..\..\_Shared\SettingsKit\SettingsKitDrawer.cs" Link="Shared\SettingsKitDrawer.cs" />
     <Compile Include="WreckedMachinesLadder.cs" />
     <Compile Include="Kernel\RM_WreckedMachinesKernel.cs" />
+    <Compile Include="WreckedMachinesSalvage.cs" />
+    <Compile Include="..\..\_Shared\SalvageRule\RM_SalvageRule.cs" Link="Shared\RM_SalvageRule.cs" />
+    <Compile Include="..\..\_Shared\SalvageRule\RM_SalvageRuleKernel.cs" Link="Shared\RM_SalvageRuleKernel.cs" />
+    <Compile Include="..\..\_Shared\HarmonyResilience\PatchApplier.cs" Link="Shared\PatchApplier.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
   </ItemGroup>
 
+  <PropertyGroup>
+    <WorkshopRoot Condition="'$(WorkshopRoot)' == ''">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</WorkshopRoot>
+  </PropertyGroup>
+
   <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="PipeSystem">
+      <HintPath>$(WorkshopRoot)\2023507013\1.6\Assemblies\PipeSystem.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="VanillaFurnitureExpandedFactory">
+      <HintPath>$(WorkshopRoot)\3686924415\1.6\Assemblies\VanillaFurnitureExpandedFactory.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
       <Private>false</Private>

@@ -77,9 +77,12 @@ PATCHER_TYPE = "RimMandrake.WreckedMachines.WreckedMachinesPatcher"
 SETTINGS = ("allowDonorSmelter", "researchCostFactor", "materialCostFactor", "skipRestorationResearch",
             "wreckedRatio", "kludgedRatio", "refurbishedRatio", "allowFullRestoration",
             "requireLowerGradeUnderneath", "enableSalvagedEmanators",
-            "alloyForgeProgressiveGate", "plasteelAlloyEnabled")
+            "alloyForgeProgressiveGate", "plasteelAlloyEnabled",
+            "smeltersFollowSalvageRule", "cremateWithoutStripping")
 # Settings read at play time rather than by Apply (PlaceWorker / ThoughtWorker).
 RUNTIME_SETTINGS = ("requireLowerGradeUnderneath", "enableSalvagedEmanators")
+# Read at play time by the workers in Source/WreckedMachinesSalvage.cs.
+SALVAGE_SETTINGS = ("smeltersFollowSalvageRule", "cremateWithoutStripping")
 GRADE_EXT = "RimMandrake.WreckedMachines.WreckedMachineGrade"
 BUILD_OVER = "RimMandrake.WreckedMachines.PlaceWorker_BuildOverLowerGrade"
 
@@ -187,13 +190,14 @@ def static_checks():
     scribed = src.split("void ExposeData", 1)[-1].split("DoWindowContents", 1)[0]
     ui = src.split("void DoWindowContents", 1)[-1].split("class WreckedMachinesMod", 1)[0]
     ladder = open(os.path.join(HERE, "Source", "WreckedMachinesLadder.cs"), encoding="utf-8").read()
+    salvage = open(os.path.join(HERE, "Source", "WreckedMachinesSalvage.cs"), encoding="utf-8").read()
     apply = src.split("public static void Apply", 1)[-1] + ladder  # LadderPatcher.Apply reads ratios via RatioFor
     for f in fields:
         if '"%s"' % f not in scribed:
             bad.append("%s is not Scribed" % f)
         if not re.search(r"\b%s\b" % f, ui):
             bad.append("%s has no control in DoWindowContents" % f)
-        reader = ladder if f in RUNTIME_SETTINGS else apply
+        reader = salvage if f in SALVAGE_SETTINGS else ladder if f in RUNTIME_SETTINGS else apply
         # The three ratios are read through the normalised WreckedMachinesSettings.Ladder property, which is
         # itself built from the raw fields (src, the settings class) - so a read of .Ladder is a read of each.
         via_ladder = (f in ("wreckedRatio", "kludgedRatio", "refurbishedRatio")
@@ -508,7 +512,7 @@ def _runtime_toggle(field):
     return chain
 
 
-for _f in RUNTIME_SETTINGS:
+for _f in RUNTIME_SETTINGS + SALVAGE_SETTINGS:
     suite.chain("setting_%s_gates_play" % _f)(_runtime_toggle(_f))
 
 

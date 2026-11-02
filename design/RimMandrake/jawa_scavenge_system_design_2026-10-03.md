@@ -415,7 +415,7 @@ Two layers, both in the `RM_` mod:
 
 **Soft** (touch the same defs or yields; warn, do not block):
 `VanillaExpanded.Recycling`, `moja.salvagerubble`, `proxyer.dismantleancientjunk`,
-`Meteores.AncientUrbanRuinsAllDeconstructible.AURAD`, `Hol.SmeltPatch`, `Thumb.BetterCremation`,
+`Meteores.AncientUrbanRuinsAllDeconstructible.AURAD`, `Hol.SmeltPatch`,
 `xelnigma.mechanoidslagtoplasteel`, `gunseeker.repairstation`, `Teiwaz.TAAJG`,
 `Memegoddess.ReplaceStuff` (its in-place replace refunds through deconstruct and would read our yield
 curve).

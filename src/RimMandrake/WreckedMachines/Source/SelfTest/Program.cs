@@ -1,6 +1,6 @@
 // WreckedMachines offline fuzz entry. Knobs (forwarded by selftest_wreckedmachines_fuzz.py): --fuzz-scale F (multiplies every case count;
 // a scale that runs 0 cases FAILS, a fuzz that checked nothing is not a pass), --fuzz-seed N (replay one seed of every family),
-// --fuzz-only NAME (ladder|place|emanator|scale).
+// --fuzz-only NAME (ladder|place|emanator|scale|salvage).
 using System;
 
 namespace RimMandrake.WreckedMachines.SelfTest

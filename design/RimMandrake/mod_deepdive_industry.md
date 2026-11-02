@@ -224,17 +224,23 @@ Our source references VFE Factory defNames in 23 files (123 token hits, includin
 
 - **References:** zero in our source. The only hits are 5 historical northstar JSON snapshots in `src/RimMandrake/GimmeSomeSlack/northstar/`, which are mod-list captures.
 - **Harmony overlap:** `src/RimMandrake/LuminousPigment/Source/GenRecipePatch.cs` also postfixes `MakeRecipeProducts`, as a pass-through enumerator. Better Cremation's postfix reads `__args` and places things directly, so the two coexist (INFERRED from both bodies).
-- **The scavenge design.** `jawa_scavenge_system_design_2026-10-03.md` lists Better Cremation as a "soft" conflict. That design (a startup conflict check) is **not built**: no class or def implements it under `src/` (MEASURED by search).
 
 ### 2.3 The real "one salvage rule" problem (INFERRED from measured code)
 
-One worn steel-and-cloth apparel can be salvaged three ways today, and each follows a different rule:
+Before the rule below, one worn steel-and-cloth apparel could be salvaged three ways, each by a different rule:
 
 1. **Strip it and smelt it at the vanilla electric smelter:** 25% of the smeltable cost list (metal only).
 2. **Smelt it on our Refurbished or Repaired smelter tier** (`VFEFactory_SmeltApparel` through `ResultWorker_Smelt`): **one** material, either its smeltable stuff or its largest non-component cost, at floor(25%) with a minimum of 1. Items with non-smeltable stuff are refused (`onlySmeltable`). **Weapons diverge the same way from the Kludged tier upward** (`VFEFactory_SmeltWeapon`), and the Repaired tier also adds `VFEFactory_SmeltMechanoid`.
 3. **Cremate the corpse unstripped (Better Cremation):** rule 1, applied without labour, plus the corpse's inventory.
 
 No path pays twice for one item, so rewards do not literally double. But the yield depends on which building you use, and that is what "one salvage rule" exists to stop.
+
+**Built (`SALVAGE_YIELD_UNIFY_THREE_RULES_TODAY`).** The rule is rule 1: `RM_SalvageRule.YieldOf` (`src/RimMandrake/_Shared/SalvageRule/RM_SalvageRule.cs`) returns `Thing.SmeltProducts` behind `Thing.Smeltable`, so the vanilla smelter is on it unpatched and the beskar postfixes apply everywhere.
+
+- **Smelter tiers:** `VFEFactory_SmeltApparel` and `VFEFactory_SmeltWeapon` take `RM_ResultWorker_SalvageRule` (`src/RimMandrake/WreckedMachines/Patches/WreckedMachines_SalvageRule.xml`). That is a ProcessDef edit, so the donor smelter aboard the ship follows it too. Mod Setting `smeltersFollowSalvageRule`, default on.
+- **Crematorium:** `CremateCorpse` takes `RM_RecipeWorker_CremateSalvage`, which pays for everything the corpse wore, held or carried. Equipped weapons are new compared with Better Cremation. Mod Setting `cremateWithoutStripping`, default on, because the crematorium is one of the rule's paths; off is vanilla.
+- **Scavenging:** no code path turns a finished item into materials today (wreck salvage rolls loot tables; the scavenger's nest is not built). `src/RimMandrake/WreckedMachines/selftest_salvage_rule.py` fails on any new direct `SmeltProducts` caller, so the next path has to take the rule.
+- **Outside the rule:** `VFEFactory_SmeltMechanoid` takes a mechanoid corpse, which no other path salvages. The conveyor crematorium's processes have no products.
 
 ### 2.4 Save, cost and removal
 
@@ -250,10 +256,10 @@ No path pays twice for one item, so rewards do not literally double. But the yie
 | option | gains | costs |
 |---|---|---|
 | **A. Keep** | Crematorium salvage stays convenient | A fourth, unruled salvage path. Unmaintainable. |
-| **B. Retire now; fold the behaviour into our own salvage rule** | Zero save risk (MEASURED). One rule to tune. | Until our rule ships, cremation returns nothing, as in vanilla. Strip-and-smelt still works. |
+| **B. Retire now; fold the behaviour into our own salvage rule** | Zero save risk (MEASURED). One rule to tune. | None left: the rule has shipped (§2.3). |
 | **C. Re-implement it as part of the rule** | Same convenience, our yields | About S: roughly 40 lines plus a settings toggle |
 
-**Recommendation: B.** Retire it at the next list edit, and write the single salvage-yield rule so apparel returns the same thing wherever it is salvaged. If the owner wants "cremate without stripping" as a convenience, it comes back as a toggle of that rule (C).
+**Ruled and done: B with C.** Better Cremation retired in wave 1, and "cremate without stripping" came back as a toggle of the single rule (§2.3).
 
 ## 3. Bones (`sihv.rombonesPort`)
 
@@ -387,8 +393,6 @@ Tickets (names passed `rimflow namecheck`; **not filed**):
 - `SHIP_FACTORY_REDESIGN_AS_WRECKED_LADDER`: hide every VFE Factory buildable. The ship carries a smelter, a machining bay and a medicine granulator; those three are migrations. The alloy forge and biofuel refinery would be new ladders, not migrations. Follow the smelter precedent. No conveyors.
 - `WRECKEDMACHINES_UNTANGLE_FROM_VFEF_CATEGORY`: give WreckedMachines its own Architect category, room role, hopper and facility defs, and the substructure `FactoryFloor` affordance, so VFE Factory becomes swappable.
 - `VFEF_REMOVAL_PROVE_ON_SAVE_COPY`: the end-state gate. Migrate the 20 placed things in a save copy and in the ship layout, untick, and load clean before retiring.
-- `CREMATION_SALVAGE_ONE_RULE`: one salvage-yield function shared by the smelter tiers, the crematorium and scavenging, so an apparel returns the same thing on every path.
-- `BETTER_CREMATION_RETIRE_AFTER_RULE`: untick `Thumb.BetterCremation`. The save has no refs (MEASURED). It can go before the rule ships if the owner accepts vanilla cremation meanwhile.
 - `BONE_RECIPES_CULL_FUEL_AND_PLASTEEL`: cut `Make_ChemfuelFromBone` and `MakeBonePlasteel`, and judge `MakeBonePlastic`.
 - `MEGAFAUNA_YIELD_HARDEN_BONEAMOUNT_GUARD`: make `gen_megafauna_yield.py` emit `BoneAmount` writes only under a Bones (or port) FindMod. Add `MayRequire` in `RUT_Race_GreentideAnt.xml`. Re-run the generator.
 - `BONE_ECONOMY_DECIDE_PORT_OR_DROP`: needs the owner. Port lean to `RM_` (desert building stock) or drop.
