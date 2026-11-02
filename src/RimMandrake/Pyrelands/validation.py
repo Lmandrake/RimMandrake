@@ -2510,7 +2510,7 @@ def gpt_hunt_plausible(t):
     _independent(t)
 
     # ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES: ProofMixedPatch stages a mixed grid on this map and reads the real candidate method and spawner.
-    with _comp(t, "allowlist_mixed_patch_keeps_grass", toggle="wildPlantAllowlistEnabled"):
+    with _comp(t, "allowlist_mixed_patch_keeps_grass", beyond_toggle=True):
         r = t.bridge_call("jawa/static_call", type="RimMandrake.Pyrelands.RM_WildPlantAllowlistProof", method="ProofMixedPatch")
         text = str((r or {}).get("result", "")) if isinstance(r, dict) else ""
         _note(t, "ProofMixedPatch", text or r)
@@ -2525,6 +2525,8 @@ def gpt_hunt_plausible(t):
             for key in ("afterEmpty", "afterForeign", "nativeSupplied", "caveGrass", "grownForeign"):
                 if int(nums.get(key, -1)) != 0:
                     _fail("mixed patch: %s is not 0: %s" % (key, text))
+            if int(nums.get("saturated", 0)) >= int(nums.get("cells", 0)):
+                _unmeasured(t, "every sampled cell read saturated, so the spawner could not have grown anything: %s" % text)
             if not int(nums.get("grown", 0)):
                 _fail("CONFIRMED: no native grass grew on the mixed cells: %s" % text)
     _independent(t)

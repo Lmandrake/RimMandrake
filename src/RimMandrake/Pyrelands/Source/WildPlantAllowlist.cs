@@ -149,12 +149,15 @@ namespace RimMandrake.Pyrelands
     /// <summary>static_call probe for ALLOWLIST_DIAGNOSE_BARE_MIXED_PATCHES. A Pyrelands tile with a mixed-biome mutator exists only after
     /// the end-of-project paint, so this stages the same state: it hands half the current Pyrelands map to a secondary biome through the
     /// vanilla MixedBiomeMapComponent, reads the real candidate method at up to 20 open cells there with the allowlist off (raw) and on
-    /// (after), asks one roofed-for-caves read, then clears those cells and runs the real CheckSpawnWildPlantAt on them.
-    /// "MIXEDPATCH cells N | rawForeign N | rawGrass N | afterEmpty N | afterForeign N | afterGrass N | nativeSupplied N | caveGrass N | grown N | bare N | secondary DEF".
-    /// rawGrass 0 with afterEmpty 0 and grown > 0 = fixed. The grid and setting are restored; grown plants are removed.</summary>
+    /// (after), asks one roofed-for-caves read, then runs the real CheckSpawnWildPlantAt on them. A mixed map's spawner saturates locally
+    /// (20-cell radius) and the grass already standing there grew at Pyrelands density, so the probe clears the small plants around one
+    /// centre in the staged half and samples inside that clearing; without it every cell reads saturated and nothing can grow.
+    /// "MIXEDPATCH cells N | rawForeign N | rawGrass N | afterEmpty N | afterForeign N | afterGrass N | nativeSupplied N | caveGrass N | grown N | grownForeign N | bare N | saturated N | secondary DEF".
+    /// rawGrass 0 with afterEmpty 0 and grown > 0 = fixed. The grid and setting are restored, grown plants removed, cleared plants respawned.</summary>
     public static class RM_WildPlantAllowlistProof
     {
         private const string Secondary = "TemperateForest";
+        private const float ClearRadius = 36f, SampleRadius = 8f;
 
         public static string ProofMixedPatch()
         {
@@ -178,7 +181,8 @@ namespace RimMandrake.Pyrelands
 
             bool wasOn = RM_PyrelandsSettings.wildPlantAllowlistEnabled;
             var grown = new List<Thing>();
-            int rawForeign = 0, rawGrass = 0, afterEmpty = 0, afterForeign = 0, afterGrass = 0, nativeSupplied = 0, caveGrass = 0, cells = 0, bare = 0;
+            var cleared = new List<KeyValuePair<IntVec3, KeyValuePair<ThingDef, float>>>();
+            int rawForeign = 0, rawGrass = 0, afterEmpty = 0, afterForeign = 0, afterGrass = 0, nativeSupplied = 0, caveGrass = 0, cells = 0, bare = 0, saturated = 0;
             try
             {
                 var grid = new bool[map.Size.x * map.Size.z];
@@ -188,13 +192,20 @@ namespace RimMandrake.Pyrelands
 
                 ThingDef ember = DefDatabase<ThingDef>.GetNamedSilentFail("RM_FE_Plant_EmberGrass");
                 var sample = new List<IntVec3>();
-                foreach (IntVec3 cell in map.AllCells.InRandomOrder())
+                var centre = new IntVec3(map.Size.x / 4, 0, map.Size.z / 2);
+                foreach (IntVec3 cell in GenRadial.RadialCellsAround(centre, Math.Min(ClearRadius, map.Size.x / 4f - 1f), true))
+                {
+                    if (!cell.InBounds(map)) continue;
+                    Plant standing = cell.GetPlant(map);
+                    if (standing == null || standing.def.plant.IsTree) continue;
+                    cleared.Add(new KeyValuePair<IntVec3, KeyValuePair<ThingDef, float>>(cell, new KeyValuePair<ThingDef, float>(standing.def, standing.Growth)));
+                    standing.Destroy();
+                }
+                foreach (IntVec3 cell in GenRadial.RadialCellsAround(centre, SampleRadius, true).InRandomOrder())
                 {
                     if (sample.Count >= 20) break;
-                    if (map.BiomeAt(cell) != secondary || cell.GetEdifice(map) != null || cell.GetCover(map) != null || cell.GetRoof(map) != null
-                        || map.fertilityGrid.FertilityAt(cell) <= 0f || cell.Fogged(map)) continue;
-                    Plant standing = cell.GetPlant(map);
-                    if (standing != null && !standing.def.plant.IsTree) standing.Destroy();
+                    if (!cell.InBounds(map) || map.BiomeAt(cell) != secondary || cell.GetEdifice(map) != null || cell.GetCover(map) != null
+                        || cell.GetRoof(map) != null || map.fertilityGrid.FertilityAt(cell) <= 0f || cell.Fogged(map)) continue;
                     if (cell.GetPlant(map) == null && ember != null && ember.CanEverPlantAt(cell, map)) sample.Add(cell);
                 }
                 cells = sample.Count;
@@ -222,6 +233,11 @@ namespace RimMandrake.Pyrelands
                     nativeSupplied = Read(home, false).Count(IsGrass) - nativeRaw;
                 }
 
+                var saturatedAt = AccessTools.Method(typeof(WildPlantSpawner), "SaturatedAt");
+                foreach (IntVec3 cell in sample)
+                {
+                    if (saturatedAt != null && (bool)saturatedAt.Invoke(map.wildPlantSpawner, new object[] { cell, 1f, false, 1000000f })) saturated++;
+                }
                 foreach (IntVec3 cell in sample)
                 {
                     for (int attempt = 0; attempt < 30 && cell.GetPlant(map) == null; attempt++)
@@ -234,7 +250,7 @@ namespace RimMandrake.Pyrelands
                 int grownCount = grown.Count, grownForeign = grown.Count(g => !IsGrass(g.def));
                 return "MIXEDPATCH cells " + cells + " | rawForeign " + rawForeign + " | rawGrass " + rawGrass + " | afterEmpty " + afterEmpty
                     + " | afterForeign " + afterForeign + " | afterGrass " + afterGrass + " | nativeSupplied " + nativeSupplied + " | caveGrass " + caveGrass
-                    + " | grown " + grownCount + " | grownForeign " + grownForeign + " | bare " + bare + " | secondary " + secondary.defName;
+                    + " | grown " + grownCount + " | grownForeign " + grownForeign + " | bare " + bare + " | saturated " + saturated + " | secondary " + secondary.defName;
             }
             finally
             {
@@ -242,6 +258,13 @@ namespace RimMandrake.Pyrelands
                 comp.biomeGrid = null;
                 comp.secondaryBiome = null;
                 foreach (Thing g in grown) if (g.Spawned) g.Destroy();
+                foreach (var row in cleared)
+                {
+                    if (row.Key.GetPlant(map) != null) continue;
+                    var back = (Plant)ThingMaker.MakeThing(row.Value.Key);
+                    back.Growth = row.Value.Value;
+                    GenSpawn.Spawn(back, row.Key, map);
+                }
             }
         }
     }
