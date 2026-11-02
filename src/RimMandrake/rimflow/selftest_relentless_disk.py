@@ -207,6 +207,46 @@ def t_reuse_fetch_reaches_origin():
        "a checker's checkout fetches a sha its clone lacks instead of opening the breaker: %s" % why)
     shutil.rmtree(d)
 
+def t_clone_fetch_reaches_origin():
+    """OPS_RELENTLESS_UNSTICK_XARX, through the door the belt uses: `scratch_clone.py clone ... --fetch` into the pool
+    root. The cause was the call site in clone() dropping --fetch on a reuse, so drive clone() itself, not pool_reuse."""
+    d, o, s, fx = rig(warm=2)
+    store = os.path.join(d, "store.git")
+    git(d, "clone", "-q", "--bare", o, store)             # the store, before the newest push reaches it
+    clones = os.path.join(d, "clones")
+    for name in ("I0", "I1"):
+        c = os.path.join(clones, name)
+        git(d, "clone", "-q", o, c)
+        fx.remove_clone({"clone": c, "item": name})
+    seed = os.path.join(d, "seed")
+    put(os.path.join(seed, "a.txt"), "published a minute ago\n")
+    git(seed, "commit", "-qam", "fresh")
+    git(seed, "push", "-q", "origin", "HEAD:main")
+    fresh = git(seed, "rev-parse", "HEAD").strip()
+    env = {"RM_POOL_ROOT": clones, "RM_OBJSTORE": store, "RM_POOL_STATE_GLOB": s.p("items", "*", "*.json"),
+           "RM_SCRATCH_ROOT": d, "RM_SEAT": "clones", "RM_OBJSTORE_STATE": os.path.join(d, "state")}
+    old = {k: os.environ.get(k) for k in env}
+    os.environ.update(env)
+    real_refresh, SC.refresh = SC.refresh, lambda *a, **k: {}     # never the real mirror
+    try:
+        rc = SC.clone("check", "NEXT", False, [], True, False)
+    finally:
+        SC.refresh = real_refresh
+        for k, v in old.items():
+            if v is None:
+                os.environ.pop(k, None)
+            else:
+                os.environ[k] = v
+    uses = [json.loads(x) for x in open(os.path.join(d, "state", "uses.jsonl"))]
+    got = os.path.join(clones, "NEXT")
+    has = subprocess.run(["git", "cat-file", "-e", fresh + "^{commit}"], cwd=got).returncode == 0 if os.path.isdir(got) else False
+    ok(rc == 0 and uses and uses[-1].get("reused") is True and uses[-1].get("fetch") is True,
+       "clone --fetch into the pool root took the reuse path: %s" % (uses[-1] if uses else None))
+    ok(has and git(got, "rev-parse", "HEAD").strip() == fresh,
+       "and clone --fetch on a reuse holds origin's newest sha and stands on it")
+    shutil.rmtree(d)
+
+
 
 class Stub:
     def __init__(self, n, warm):
@@ -270,7 +310,7 @@ def t_reap_boxes():
 
 
 def main():
-    for t in (t_gone_is_removed, t_park, t_damaged_never_parked, t_reuse_warm_now, t_reuse_fetch_reaches_origin, t_no_bundle_says_why, t_warm_is_room, t_reap_boxes):
+    for t in (t_gone_is_removed, t_park, t_damaged_never_parked, t_reuse_warm_now, t_reuse_fetch_reaches_origin, t_clone_fetch_reaches_origin, t_no_bundle_says_why, t_warm_is_room, t_reap_boxes):
         print("--", t.__name__)
         t()
     print("selftest_relentless_disk: %s" % ("FAIL %d" % len(FAILS) if FAILS else "PASS"))
