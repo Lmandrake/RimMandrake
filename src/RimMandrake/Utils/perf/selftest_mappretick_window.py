@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+"""Offline selftest of mappretick_window.verdict (MAPPRETICK_DIAGNOSE_FULL_LIST_STALL). No bridge, no game."""
+import os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import mappretick_window as W
+
+FAILS = []
+
+
+def check(name, got, want):
+    if got != want:
+        FAILS.append("%s: got %r want %r" % (name, got, want))
+
+
+def prof(pre_max, kids=None, calls=12000, as_dict=False):
+    ms = [{"method": W.PRETICK, "calls": calls, "meanUs": "250.1 us",
+           "maxUs": pre_max if not isinstance(pre_max, float) else "%.1f us" % pre_max}]
+    for name, mx in (kids or {}).items():
+        ms.append({"method": name, "calls": calls, "meanUs": "50 us", "maxUs": mx})
+    if as_dict:
+        return {"methods": {m.pop("method"): m for m in ms}}
+    return {"methods": ms}
+
+
+PF = "Verse.PathFinder:PathFinderTick"
+WP = "RimWorld.WildPlantSpawner:WildPlantSpawnerTick"
+ok = dict(ticks=10000, mods=321, map_size=325)
+
+# us() parses every rendering the profiler uses
+check("us str", W.us("8507.6 us"), 8507.6)
+check("us num", W.us(412.0), 412.0)
+check("us unavailable", W.us("unavailable: no calls timed"), None)
+check("us none", W.us(None), None)
+check("us bool", W.us(True), None)
+
+# 2026-10-27 bisect reading: MapPreTick max 8.5 ms -> NOT_REPRODUCED
+check("bisect Bcur", W.verdict(prof(8507.6, {PF: "3482.4 us", WP: "4421.3 us"}), **ok)[:2], (0, "NOT_REPRODUCED"))
+# boundary: exactly 10.5 ms is not a spike; 10.6 is
+check("edge 10.5", W.verdict(prof(10500.0), **ok)[:2], (0, "NOT_REPRODUCED"))
+check("edge 10.6 no kids", W.verdict(prof(10600.0), **ok)[:2], (1, "UNNAMED"))
+# round-10 spike, 414 ms, PathFinderTick 390 ms -> NAMED PathFinderTick
+code, word, text = W.verdict(prof(414000.0, {PF: "390000 us", WP: "2000 us"}), **ok)
+check("spike named", (code, word), (0, "NAMED"))
+check("spike names pathfinder", "PathFinderTick" in text, True)
+# dict-shaped profile is read the same way
+check("dict shape", W.verdict(prof(414000.0, {PF: "390000 us"}, as_dict=True), **ok)[:2], (0, "NAMED"))
+# share boundary: a child at exactly half names it, just under does not
+check("half", W.verdict(prof(400000.0, {PF: "200000 us"}), **ok)[:2], (0, "NAMED"))
+check("under half", W.verdict(prof(400000.0, {PF: "199999 us"}), **ok)[:2], (1, "UNNAMED"))
+# a child that is not in CHILDREN never names the spike
+check("foreign child", W.verdict(prof(400000.0, {"Verse.Foo:Bar": "399000 us"}), **ok)[:2], (1, "UNNAMED"))
+# a timed-but-zero-call child is ignored
+p = prof(400000.0, {PF: "390000 us"}); p["methods"][1]["calls"] = 0
+check("zero-call child", W.verdict(p, **ok)[:2], (1, "UNNAMED"))
+# BLIND: MapPreTick never timed / absent / no ticks
+check("blind no calls", W.verdict(prof("unavailable: no calls timed", calls=0), **ok)[:2], (1, "BLIND"))
+check("blind absent", W.verdict({"methods": []}, **ok)[:2], (1, "BLIND"))
+check("blind none profile", W.verdict(None, **ok)[:2], (1, "BLIND"))
+check("blind no ticks", W.verdict(prof(1000.0), ticks=0, mods=321, map_size=325)[:2], (1, "BLIND"))
+# wrong scene: a minimal list or a small map proves nothing about the full-list 325 stall
+check("minimal list", W.verdict(prof(1000.0), ticks=100, mods=13, map_size=325)[:2], (1, "WRONG_LIST"))
+check("mods unknown", W.verdict(prof(1000.0), ticks=100, mods=None, map_size=325)[:2], (1, "WRONG_LIST"))
+check("small map", W.verdict(prof(1000.0), ticks=100, mods=321, map_size=250)[:2], (1, "WRONG_MAP"))
+# every child name is 'Ns.Type:Method' (the profiler's allowlist grammar) and the list fits its 32-method cap
+check("child grammar", all(n.count(":") == 1 and "." in n.split(":")[0] for n in W.CHILDREN), True)
+check("cap 32", len(W.CHILDREN) + 2 <= 32, True)
+
+if FAILS:
+    print("\n".join("FAIL " + f for f in FAILS))
+    print("selftest_mappretick_window: %d FAIL" % len(FAILS))
+    sys.exit(1)
+print("selftest_mappretick_window: PASS")
