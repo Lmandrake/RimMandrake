@@ -367,7 +367,9 @@ Names follow `design/NAMING_SCHEME_PLAN.md`. All ride the existing
    - (b) An invented Ash'karr cult temple (RM tier).
    - (c) Skip temples entirely.
    - (d) Write-in.
-2. **Derelict lab floor plans: fixed or varied?**
+2. **Derelict lab floor plans: fixed or varied?** *Settled by the item title (owner card 2026-10-19, "Another
+   mutator"): varied, on vanilla's procedural ruin generator. Design:
+   `design/RimMandrake/derelict_gene_lab_mutator_2026-11-01.md`.*
    - (a) Varied per visit (vanilla procedural room table; cheaper to build, never the same twice).
    - (b) A few fixed, authored plans (like the donor; more art direction, and the player can learn
      them).
@@ -389,6 +391,8 @@ ideas, and every idea is buildable from vanilla machinery we already load.
 - **Order of work:**
   1. **`RM_DerelictGeneLab` on Odyssey's procedural ruin generator**, because it teaches us the
      one vanilla technique we have not used, and every later ruin can reuse it.
+     Design: `design/RimMandrake/derelict_gene_lab_mutator_2026-11-01.md` (a sixth sibling of
+     Odyssey's `AncientWarehouse` mutator).
   2. **The Rakatan nexus**, because it is cheap and fits the arc.
   3. **The temples**: question 1 is answered; see `design/RimMandrake/temple_ruins_several_faiths_2026-11-01.md`.
 - **Close the four-mutator item** `UNPORTED_MUTATORS_DECIDE_FOUR_ON_THE_STEP` for these three by
