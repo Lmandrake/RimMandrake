@@ -73,7 +73,7 @@
   },
   "staffing": {
     "seat": "FOUNDRY",
-    "stages": [3, 5, "budget"],
+    "stages": [5, "budget"],
     "hold_s": 3600,
     "min_verdicts": 3,
     "max_reject_share": 0.34,
