@@ -2,13 +2,13 @@
 subject: src/RimMandrake/BlueDesert  (packageId `mandrake.rm.bluedesert`)
 deps: `mandrake.rm.environmentalhazards`, `brrainz.harmony`; ships composed inside the Baroque Biomes mod (Biomes.compose.json, wave 2)
 list: baroque_wave0
-status-hint: a hydrocarbon-ice plateau biome kit — ten fuel-charge natives (dorrak, krissek, vekkit, zhaaz, vrisk, dovvik, utikka, vhaulk, murrek, ossivel), four transparent fractal flora, cold wax, blue ice and its thaw roll, the blue-ice cold rack, the Haze/ice-sand-drift/ice-fog weathers, the vhaulk's gated cistern, rime road and walk-off, the staged ablation salvage and the murrek re-seed; script = `src/RimMandrake/BlueDesert/validation.py`, plan = `northstar_plan.py`, selftest = `selftest_bluedesert.py`
+status-hint: a hydrocarbon-ice plateau biome kit — ten fuel-charge natives (dorrak, krissek, vekkit, zhaaz, vrisk, dovvik, utikka, vhaulk, murrek, ossivel), four transparent fractal flora, cold wax, blue ice and its thaw roll, the blue-ice cold rack, the Haze/ice-sand-drift/ice-fog weathers, the vhaulk's gated cistern and walk-off, the staged ablation salvage and the murrek re-seed; script = `src/RimMandrake/BlueDesert/validation.py`, plan = `northstar_plan.py`, selftest = `selftest_bluedesert.py`
 
 ## must be true
 Every line ends in `→ chain.component` (a suite component that reads the state back) or `→ UNCOVERED: why`. Sources: the mod's About.xml description, `RM_BlueDesertMod.cs` (the 18 settings), the mechanic `.cs` headers (`BlueDesertLife.cs`, `RM_VhaulkDetonation.cs`, `RM_BlueIceThaw.cs`, `RM_ColdSink.cs`, `RM_AblationSalvage.cs`, `RM_VhaulkRoad.cs`, `RM_MurrekDrift.cs`, `RM_BlueDesertWeatherTable.cs`), `BLUEDESERT_MECHANICS_BUILD_1`, `BLUEDESERT_GPT_ENRICHMENT_1`, `LOAD_ERRORS_FAUNA_FLORA_1` (044381748).
 
 Load and wiring
-- Every def this mod ships (the biome, ten races and kinds, eight flora, the charge hediffs, the Haze carrier and film, three weathers, blue ice and its mineable, cold wax, the rack, the meltwater can, the melt recipe, the rime road, three salvage incidents, sounds, the halo effecter, the burrow job) resolves in the live game; none is silently discarded for a missing comp or extension type. → defs.defs_resolve
+- Every def this mod ships (the biome, ten races and kinds, eight flora, the charge hediffs, the Haze carrier and film, three weathers, blue ice and its mineable, cold wax, the rack, the meltwater can, the melt recipe, three salvage incidents, sounds, the halo effecter, the burrow job) resolves in the live game; none is silently discarded for a missing comp or extension type. → defs.defs_resolve
 - `RM_BlueDesert` runs Clear plus the three ruled weathers (Haze, ice-sand drift, ice fog) and carries no commonality for fog, rain, thunder or snow. → defs.biome_weather_table
 - `RM_BlueDesert` carries the Haze carrier condition in `biomeMapConditions` (the film reaches a real Blue Desert map). → defs.biome_carrier_condition
 - `RM_BlueDesert` has `animalDensity` and `plantDensity` above 0 and all ten natives and four flora read `spawning` in the resolved biome roster. → defs.biome_roster_and_density
@@ -94,7 +94,7 @@ validated-hash:
 "An alien expanse of beautiful blue locking ancient secrets from the depths of time. Mine slowly and carefully or risk your own passion's heat turning everything into a bomb."
 (typed by the owner, 2026-10-20)
 
-DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned. The visual questions (does the krissek's halo read as blue fire, do the flora read as transparent, does the rime road read as pressed ice) are his to rule.
+DRAFT, binds nothing. This mod has no owner-ruled experience bars yet; the intended-function lines above are the functional script's coverage and are agent-owned. The visual questions (does the krissek's halo read as blue fire, do the flora read as transparent) are his to rule.
 
 ## anti-guessing notes
 - SUSPECTED, source-read and awaiting the live run: `krissek_blast.krissek_off_quiet` goes red. `RM_KrissekCharge` (and the eight other non-vhaulk charge hediffs) carry the vanilla `HediffCompProperties_ExplodeOnDeath`, which never reads `RM_BlueDesertSettings`, while the Mod Settings text says natives "die like an ordinary animal" with the toggle off. Only the death-action worker (krissek, `RUT_BurnerAscendant`) and the dorrak hump-kill honour it. The check reads what the player sees (does the killer's neighbour burn), so it goes red for the reported reason.

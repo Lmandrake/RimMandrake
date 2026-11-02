@@ -166,7 +166,7 @@ def static_checks():
         if not re.search(r"<%s>[\d.]+</%s>" % (r, r), biome):
             bad.append("%s not in RM_Miasma wildAnimals" % r)
     mg = open(os.path.join(HERE, "Defs", "ThingDefs_Plants", "RM_Miasma_Mangals.xml"), encoding="utf-8").read()
-    if "PollinationGate" in mg:
+    if "PollinationGate" in mg:  # guard: the gate was cut 2026-11-02
         bad.append("the pollination gate was cut (FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO); a mangal still carries it")
     for t in ("Pawn/Animal/RM_FeverSwarm/RM_FeverSwarm_south.png", "Pawn/Animal/RM_Karrobel/RM_Karrobel_south.png",
               "Item/Resource/RM_DeltaLoam/RM_DeltaLoam_a.png"):

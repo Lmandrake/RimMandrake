@@ -145,26 +145,39 @@ These items got notes instead of being dropped:
 - `BLUEDESERT_MECHANICS_BUILD_1`
 - `BIOME_MECHANICS_JUDGE_FLUFF_ON_TRIAL`
 
-## North-star text for him to revise (hash-bound; not edited)
+## North-star text corrected, offered for validation
 
-- `design/validation_walks/RimMandrake/BlueDesert.md` `## north star` still asks "does the rime road read as pressed ice". The pressed rime road was cut.
+- `design/validation_walks/RimMandrake/BlueDesert.md` named the pressed rime road (cut above) in three places: the status hint, the def list in `## must be true`, and the visual question "does the rime road read as pressed ice" in `## north star`. All three were removed on 2026-11-02 (`FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO`). The north star was `DRAFT` with no validated hash, so no validation was broken. **It is offered to him for validation as it now reads:** his experience line and two visual questions, the krissek's halo as blue fire and the flora as transparent.
 
-## Rows that ask him (left untouched)
+## Decided 2026-11-02 under "I cut, you veto" (the eight rows that asked him)
 
-- **Abyss #6, Etchfall:** "ask owner if it is wanted".
-- **Fever Wood #11, Hive sealing:** "merge with item 10 under one ask".
-- **Lantern Deeps #12, slick and blinker:** "ask on slick and blinker".
-- **Miasma #M6, warden mother succession:** simplify/ask.
-- **Miasma #M12, plant predators, pollination gate and composter:** simplify/ask.
-- **The Rot #R3, swallowed ship core:** simplify/ask.
-- **Wasteland #7, gripper theft:** "simplify or ask".
-- **Wasteland #11, Throat Cask:** "remove from Wasteland scope and ask". It is RimUtinni campaign content, and `STENCHLANDS_THROAT_CASK_1` awaits him.
-- **Rites, already v2 per `design/RimMandrake/v2_nine_rituals.md` and not touched:**
-  - Nightside Ice #10 (Cold Ledger)
-  - Warscar #17 (Open Boast)
-  - Weeping Stones #11 (Refused Toll)
-  - Webwork W12 (Felled Noon)
-  - Pyrelands #15 (shovel; its only consumer is a rite)
+These rows were decided by the agent under his card rather than asked (`FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO`). **To veto,** name the row.
+
+### Cut
+
+- **Lantern Deeps #12, the blinker's flash** (`3f4593400`). **What:** removed the flash-and-dazzle comp (`RM_CompFlashOnHurt`), the `RM_BlinkerFlare` light, the `RM_BlinkerDazzled` hediff, the `blinkerFlashEnabled` setting, the `ProofBlinker` proof and its validation component. **What stays:** the blinker itself, as a plain animal with its art and roster weight; the slick and the knocker. **Why:** the row's opinion was "keep knocker, ask on slick and blinker", and the blinker "barely" changes a player decision. **Restore:** `git revert 3f4593400`, then rebuild with `python3 src/RimMandrake/Utils/winbuild.py LanternDeeps`.
+- **Miasma #M12, the mangal pollination gate** (`66fc3c2b1`). **What:** removed the `RM_PollinationGateExtension` from `RM_Thessamor` and `RM_Quennath`, the shared `RM_PollinationGatePatch` and extension class in EnvironmentalHazards, and both settings that switched it (`pollinationGateEnabled` in Miasma and in EnvironmentalHazards). **What stays:** the plant predators eating scuttlers, the karrobel composting into delta loam, and the fever swarm. **Why:** the row's own reason, "ecology gates that are invisible to the player". Of the three, the gate is the one a player cannot see; the other two leave things he can see. **Restore:** `git revert 66fc3c2b1`, then rebuild EnvironmentalHazards and Miasma.
+
+### Kept
+
+- **Abyss #6, Etchfall.** It is the biome's one pressure that changes what you build ("roof everything"), the etchcap fungus and tholin chemfuel depend on it, and it is the "staying too long wears at you" half of his line.
+- **Fever Wood #10 and #11, the kurreth hive and its sealing.** The hive is the map's one "how deep do I go" place, and items 6, 12 and 13 depend on it. The sealing is 117 lines and makes a retreat-route decision inside it. With the kurreth theft and the column camp already cut, the hive is what is left of the kurreth.
+- **Lantern Deeps #12, the slick.** A fuel trail that a spark runs like a fuse is a real decision: keep fire away from where slicks walk. Its live check is still red (`slick_lays_fuel` FAIL, 2026-10-05). That is owed proof, not a reason to cut it.
+- **Miasma #M6, warden mother succession.** His line is "a nursery … every surge brings orphans", and her young succeeding her is that nursery's long game. M4 (mother's price, "the clearest decision in the biome") voids succession, so cutting M6 would hollow M4.
+- **The Rot #R3, swallowed ship core.** He already engaged with it: his card of 2026-10-22 on its campaign tiles was "wait for the paint". It is the "generous" half of his line, because it gives you sites.
+- **Wasteland #7, gripper theft.** Built and proven (the gripper chain passed 7 of 7 on 2026-10-08), with no live check owed. Cutting it saves no test burden.
+
+### Moved out of scope
+
+- **Wasteland #11, Throat Cask.** It stays as built, but it is no longer counted as Wasteland content. It ships in the RimUtinni companion `src/RimUtinni/WasteRun` as campaign content, and the Wasteland walk does not cite it. **Correction:** this digest said `STENCHLANDS_THROAT_CASK_1` awaited him. That was wrong: the item is done, closed at `f6a8a6016`.
+
+## Rites, already v2 per `design/RimMandrake/v2_nine_rituals.md` (left untouched)
+
+- Nightside Ice #10 (Cold Ledger)
+- Warscar #17 (Open Boast)
+- Weeping Stones #11 (Refused Toll)
+- Webwork W12 (Felled Noon)
+- Pyrelands #15 (shovel; its only consumer is a rite)
 
 ## Skipped: the row was stale or wrong, or a standing ruling covers it
 
