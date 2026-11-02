@@ -199,6 +199,7 @@ def test_restart_once_then_twice_dead():
     c.w.t += 3600
     c.tick()
     ok(len(c.w.notes) == 2, "a standing alarm repeats after realarm_min")
+    ok(len(c.w.__dict__.get("told_rows", [])) == 1, "the told ledger hears the alarm once, not on every re-alarm")
     # a person relaunches: the budget comes back
     c.launcher((c.w.t + 10, "ARM RUNNING ralph_a task x"))
     c.w.t += 60

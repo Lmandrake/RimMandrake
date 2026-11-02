@@ -238,6 +238,9 @@ def main() -> int:
         sha = git(seat, "rev-parse", "--short", "HEAD")
         rc, out = run(seat, "--dry-run", "--superseded", "0000000")
         check(rc == 1, "another commit's name frees nothing")
+        for bad in ("", sha[:1]):
+            rc, out = run(seat, "--dry-run", "--superseded", bad)
+            check(rc == 1 and "does not name exactly one commit" in out, "--superseded %r frees nothing: %s" % (bad, out[-120:]))
         rc, out = run(seat, "--superseded", sha)
         check(rc == 0 and "unpublished" not in Path(seat, shard).read_text() and "named superseded" in out, "a named commit goes: " + out[-120:])
         check(git(seat, "branch", "--list", "backup/*") != "", "the backup branch keeps it")

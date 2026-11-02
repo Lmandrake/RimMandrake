@@ -449,13 +449,22 @@ def plan(g: Git, superseded: tuple = ()) -> dict:
     if head == up:
         return p
     # 1. local commits must already be upstream
+    # 🔴 A --superseded name resolves to ONE commit or the sync refuses. It was a bare prefix match, so an empty value
+    # (`--superseded "$SHA"` with SHA unset) or a one-letter one waved through every unlanded local commit (wave 81).
+    named = set()
+    for x in superseded:
+        full = g.run("rev-parse", "--verify", "--quiet", f"{x}^{{commit}}", check=False).strip() \
+            if len(x) >= 7 and all(ch in "0123456789abcdef" for ch in x.lower()) else ""
+        if not full:
+            raise Refused(f"--superseded {x!r} does not name exactly one commit (give at least 7 hex digits of a real sha)")
+        named.add(full)
     cherry = {ln[2:].split()[0]: ln[0] for ln in g.lines("cherry", up, head)}
     for c in g.lines("rev-list", "--reverse", f"{up}..{head}"):
         subj = g.run("show", "-s", "--format=%h %s", c).strip()
         if cherry.get(c) == "-":
             p["local"].append((subj, "patch-equivalent"))
             continue
-        if any(c.startswith(x) for x in superseded):    # a person's word, not a proof: the backup branch keeps it
+        if c in named:                    # a person's word, not a proof: the backup branch keeps it
             p["local"].append((subj, "named superseded"))
             continue
         parents = g.run("rev-list", "--parents", "-n1", c).split()[1:]

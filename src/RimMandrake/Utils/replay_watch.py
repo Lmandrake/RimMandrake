@@ -469,13 +469,14 @@ class World:
         return r.returncode == 0, ((r.stdout or "") + (r.stderr or "")).strip()[-200:]
 
     def told(self, kind, why, now):
-        """The incident ledger hears an alarm the first time it is told (OP3). A ledger that fails costs no sink."""
+        """The incident ledger hears an alarm the first time it is told (OP3). A ledger that fails costs no sink.
+        The schedule's `incident.enabled` switch is honoured (its doc: "Off: nothing rings, opens or stamps")."""
         rf = str(Path(__file__).resolve().parent.parent / "rimflow")
         if rf not in sys.path:
             sys.path.insert(0, rf)
         try:
             import incident as IN
-            IN.signal({"incident": {"enabled": True}}, kind, why, now)
+            IN.signal(json.loads(Path(self.cfg["schedule"]).read_text("utf-8")), kind, why, now)
         except Exception as e:  # noqa: BLE001
             print("replay_watch: told ledger: %s: %s" % (type(e).__name__, str(e)[:160]), file=sys.stderr)
 
