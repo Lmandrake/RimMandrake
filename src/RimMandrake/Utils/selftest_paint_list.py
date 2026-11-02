@@ -16,8 +16,9 @@ member is infrastructure/state/modlists/PAINT.reasons.json. Checks:
   4. dependency closure: every member's hard modDependency (v1.6 included) is a member;
   5. every non-TOOL member is on FULL.LATEST (the dev list) -- a mod retired from the game is retired from PAINT;
   6. no member is a packageId folded into the composed mandrake.rm.biomes.
-Probes (the instrument can see): an injected unexplained member, a dropped dependency, and a stale defref edge each
-fail the same checks. Offline: reads src/, the committed modlists and mod_facts.jsonl only.
+Probes (the instrument can see), each required to raise its own failure message: an injected unexplained member, a
+reason row for a non-member, a bad need value, a dropped ludeon id, a retired (not-on-LATEST) WORLD member, a dropped
+dependency, a synthetic v1.6-only About dependency left out of the list, and a stale defref edge. Offline: reads src/, the committed modlists and mod_facts.jsonl only.
 
     python3 src/RimMandrake/Utils/selftest_paint_list.py
 """
@@ -177,19 +178,47 @@ def main():
     for b in bad:
         print("   ", b)
     fails += bool(bad)
-    # probes: each must FAIL, or the instrument cannot see what it claims to check
-    probes = []
-    probes.append(("unexplained member", check(members + ["probe.unexplained"], reasons, latest | {"probe.unexplained"}, w)))
+    # probes: each must FAIL with its OWN message, or the instrument cannot see what it claims to check
+    probes = []  # (name, failures, substring that must appear in one failure)
+    probes.append(("unexplained member", check(members + ["probe.unexplained"], reasons,
+                                               latest | {"probe.unexplained"}, w),
+                   "UNEXPLAINED member probe.unexplained"))
+    extra = dict(reasons, **{"probe.nonmember": {"need": "WORLD", "why": "probe"}})
+    probes.append(("reason for non-member", check(members, extra, latest, w), "REASON for non-member probe.nonmember"))
+    some = next(p for p, r in reasons.items() if r.get("need") == "WORLD" and p in members)
+    badneed = dict(reasons, **{some: dict(reasons[some], need="BOGUS")})
+    probes.append(("bad need value on %s" % some, check(members, badneed, latest, w), "%s: need 'BOGUS'" % some))
+    lud = "ludeon.rimworld.odyssey"
+    probes.append(("dropped %s" % lud, check([m for m in members if m != lud],
+                                             {k: v for k, v in reasons.items() if k != lud}, latest, w),
+                   "DLC missing: %s" % lud))
+    probes.append(("retired WORLD member", check(members + ["probe.retired"],
+                                                 dict(reasons, **{"probe.retired": {"need": "WORLD", "why": "probe"}}),
+                                                 latest, w),
+                   "probe.retired: not on FULL.LATEST"))
     dep = next(p for p, r in reasons.items() if r.get("kind") == "dep" and p in hard_deps(r["of"], w))
     probes.append(("dropped dependency %s" % dep, check([m for m in members if m != dep],
-                                                      {k: v for k, v in reasons.items() if k != dep}, latest, w)))
+                                                      {k: v for k, v in reasons.items() if k != dep}, latest, w),
+                   "CLOSURE gap: %s hard-depends on %s" % (reasons[dep]["of"], dep)))
+    # a v1.6-only About dependency (no plain modDependencies entry) must reach the closure check
+    host = next(p for p in members if p in w[1] and p.startswith("mandrake."))
+    v16 = ET.fromstring("<ModMetaData><modDependencies/><modDependenciesByVersion><v1.5><li><packageId>"
+                        "probe.v15only</packageId></li></v1.5><v1.6><li><packageId>Probe.V16Only</packageId></li>"
+                        "</v1.6></modDependenciesByVersion></ModMetaData>")
+    got = about_deps(v16)
+    w16 = (w[0], dict(w[1], **{host: w[1][host] | got}), w[2], w[3])
+    res16 = check(members, reasons, latest, w16)
+    if "probe.v15only" in got:
+        res16 = []  # a v1.5-only dep leaking into the 1.6 closure is its own defect: make the probe fail
+    probes.append(("v1.6-only About dependency on %s" % host, res16,
+                   "CLOSURE gap: %s hard-depends on probe.v16only" % host))
     dref = next(p for p, r in reasons.items() if r.get("kind") == "defref" and p in members)
     stale = dict(reasons)
     stale[dref] = dict(reasons[dref], **{"def": "RM_ProbeNoSuchDef_ZZ"})
-    probes.append(("stale defref %s" % dref, check(members, stale, latest, w)))
-    for name, res in probes:
-        ok = bool(res)
-        print("%s  probe %s -> %d failure(s)" % ("PASS" if ok else "FAIL", name, len(res)))
+    probes.append(("stale defref %s" % dref, check(members, stale, latest, w), "%s: STALE edge" % dref))
+    for name, res, want in probes:
+        ok = any(want in b for b in res)
+        print("%s  probe %s -> %d failure(s), wanted %r" % ("PASS" if ok else "FAIL", name, len(res), want))
         fails += not ok
     print("RESULT", "PASS" if not fails else "FAIL")
     return 1 if fails else 0
