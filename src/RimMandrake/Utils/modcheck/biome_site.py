@@ -33,6 +33,20 @@ class SiteError(AssertionError):
     pass
 
 
+def running_retired(call):
+    """The running game's packageIds (jawa/running_mods) -> (ids, retired ones). Raises SiteError when the list is
+    unreadable: an empty read is the instrument going blind, never "no donor". A site saved with a retired donor in the
+    header is a dead fixture (leaningscrub_v1 and contagion_v1 both were; v1 leaningscrub died in FinalizeLoading)."""
+    from retired_mods import is_retired
+    r = call("jawa/running_mods", details=False, assembly="") or {}
+    ids = [x.strip().lower() for x in (r.get("packageIds") or []) if isinstance(x, str) and x.strip()]
+    ids = ids or [str(m["packageId"]).strip().lower() for m in (r.get("mods") or []) if isinstance(m, dict)
+                  and str(m.get("packageId") or "").strip()]
+    if not ids:
+        raise SiteError("jawa/running_mods unreadable: %s" % str(r)[:200])
+    return ids, [i for i in ids if is_retired(i)]
+
+
 _NS = None
 
 
@@ -188,6 +202,11 @@ def build_site_save(s, spec, work_dir, saves_dir=None, sleep=time.sleep, probe=N
     if spec.SAVE + ".rws" in TS.saves_stat(saves_dir):
         raise SiteError("%s.rws exists -- bump SAVE in site_spec.py and SITES (a site save is never overwritten)" % spec.SAVE)
     rec = {"site": spec.SITE, "save": spec.SAVE, "utc": TS._now(), "head": TS._head()}
+    mods, retired = running_retired(s.call)
+    if retired:
+        raise SiteError("retired donor(s) running %s -- a site saved with them is a dead fixture; load a donor-free "
+                        "tier first" % retired)
+    rec["mods"] = mods
     rec["world"] = NS.fresh_quicktest_world(s, sleep=sleep)
     rec["colonyTile"] = _call(s, "jawa/map_info").get("tile")
     rec["pick"] = choose_tile(s, spec, os.path.join(work_dir, "%s_site" % spec.SITE), rec["colonyTile"])
@@ -216,7 +235,7 @@ def build_site_save(s, spec, work_dir, saves_dir=None, sleep=time.sleep, probe=N
     mi = _call(s, "jawa/map_info")
     entry = {"save": spec.SAVE, "tile": mi.get("tile"), "mapId": mi.get("mapId"), "biome": mi.get("mapBiome"),
              "builtUtc": rec["utc"], "head": rec["head"], "profile": spec.PROFILE, "census": rec["census"],
-             "outdoorAtSave": mi.get("outdoorTempNow"), "bytes": rec["saved"]["bytes"]}
+             "outdoorAtSave": mi.get("outdoorTempNow"), "bytes": rec["saved"]["bytes"], "mods": mods}
     TS.write_registry(spec.SITE, entry)            # load_site reads tile/mapId from the registry
     # The reload is the one reliable entry path (it cures the black generated-map render, Pyrelands §3.4):
     # load the save back from the main menu and read it back clean before the site counts as built.

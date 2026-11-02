@@ -20,7 +20,7 @@ Repulsor's off-Contagion half is a different code path, and the Unfinished spawn
 
 TWO STARTS, ONE SUITE (item CONTAGION_ARMS_UNTANGLE_SITE_ALREADY_SICK). The suite runs whole on either
   - a stock map (a quicktest, or the `calm` saved site): as above; or
-  - the saved Contagion site (test_site_saves.py load contagion, RM_TestSite_contagion_v1), already sick.
+  - the saved Contagion site (test_site_saves.py load contagion, RM_TestSite_contagion_v2), already sick.
 Only two components need a stock map: repulsor_clear.site_ready_baseline (the Repulsor's other code path)
 and site.retile_to_contagion (its control: the map must NOT read Contagion before the retile). Both call
 _off_contagion first, which on a sick start re-tiles the map's own tile to OFF_BIOME. That is faithful:

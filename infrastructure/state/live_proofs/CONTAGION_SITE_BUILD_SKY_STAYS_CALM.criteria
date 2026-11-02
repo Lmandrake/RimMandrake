@@ -1,0 +1,2 @@
+A1 L2: on a donor-free tier (no retired_mods.json packageId running; all five DLC), RM_TestSite_contagion_v2.rws exists in Saves (built by biome_site.build_site_save if missing: map RM_Contagion, a native alive, BurnActive False before the save) and its <modIds> header names no retired donor
+A2 L2: RM_TestSite_contagion_v2 loaded from the main menu reads verified (check_map clean, no FinalizeLoading error), biome RM_Contagion, >=1 native alive, RM_MapComponent_ContagionSky.BurnActive False

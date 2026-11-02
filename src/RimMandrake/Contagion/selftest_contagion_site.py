@@ -59,12 +59,16 @@ except Exception as ex:                                    # noqa: BLE001 - an u
     check("validation.py PADS readable", False, ex)
 
 
+MODS = ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.biomes"]   # a donor-free running list
+
 class Fake(object):
     def __init__(self, natives=2, biome=S.BIOME, burn=False):
         self.log, self.natives, self.biome, self.burn = [], natives, biome, burn
 
     def call(self, tool, **p):
         self.log.append(tool)
+        if tool == "jawa/running_mods":
+            return {"success": True, "packageIds": list(getattr(self, "mods", None) or MODS)}
         if tool == "jawa/map_info":
             return {"tile": 77, "mapId": 4, "mapBiome": self.biome, "outdoorTempNow": 25.0}
         if tool == "jawa/world_tile_set":
@@ -145,6 +149,36 @@ for kw, why in (({"check_ok": False}, "unclean check"), ({"fake": Fake(natives=0
         check("raises on " + why, False)
     except B.SiteError:
         check("never saved on " + why, not any(e.startswith("save:") for e in events), events)
+for mods, why in ((MODS + ["sarg.alphabiomes"], "a retired donor running"), (["", None], "an unreadable mod list")):
+    fk = Fake()
+    fk.mods = mods
+    try:
+        run(fake=fk)
+        check("raises on " + why, False)
+    except B.SiteError:
+        check("nothing built on " + why, not events and "jawa/world_tile_set" not in fk.log, (events, fk.log))
+check("registry entry records the running mods", rec.get("mods") == MODS, rec.get("mods"))
+check("SITES row and site_spec agree on v2", TS.SITES[S.SITE]["save"] == S.SAVE == "RM_TestSite_contagion_v2",
+      (TS.SITES[S.SITE]["save"], S.SAVE))
+_hd = tempfile.mkdtemp(prefix="cg_hdr_")
+_st_atexit.register(_st_shutil.rmtree, _hd, True)
+
+
+def _hdr(name, ids):
+    f = _st_os.path.join(_hd, name)
+    with open(f, "w", encoding="utf-8") as fh:
+        fh.write("<savegame><meta><modIds>%s</modIds></meta></savegame>" % "".join("<li>%s</li>" % i for i in ids))
+    return f
+
+
+P, _ids = PS.header_problems(_hdr("ok.rws", MODS))
+check("donor-free header is clean", not P and _ids == MODS, (P, _ids))
+P, _ids = PS.header_problems(_hdr("v1.rws", MODS + ["sarg.alphabiomes", "oskarpotocki.vfe.insectoid2"]))
+check("retired donor in the header is a problem", P and "alphabiomes" in P[0], P)
+P, _ids = PS.header_problems(_hdr("empty.rws", []))
+check("empty header is a problem, never clean", P and "unreadable" in P[0], P)
+P, _ids = PS.header_problems(_st_os.path.join(_hd, "absent.rws"))
+check("missing save is a problem", P and "no save" in P[0], P)
 rec = run(burn_on_reload=True)
 check("Burn on reload -> loadVerified False", rec.get("verified") is False
       and events[-1] == "registry:%s:False" % S.SITE, events)

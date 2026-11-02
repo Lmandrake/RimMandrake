@@ -49,6 +49,8 @@ derived = tuple(a for a in roster if a in pred and not pred[a])
 check("NATIVES == roster non-predators", derived == S.NATIVES and derived, (derived, S.NATIVES))
 
 
+MODS = ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.biomes"]   # a donor-free running list
+
 class Fake(object):
     """heading: what the lean comp holds (-1 = never locked). lock_on_downwind: Downwind's getter locks it to 237.5.
     reload_heading: what a reload restores (None = the save carried it)."""
@@ -58,6 +60,8 @@ class Fake(object):
 
     def call(self, tool, **p):
         self.log.append(tool)
+        if tool == "jawa/running_mods":
+            return {"success": True, "packageIds": list(getattr(self, "mods", None) or MODS)}
         if tool == "jawa/map_info":
             return {"tile": 77, "mapId": 4, "mapBiome": self.biome, "outdoorTempNow": 18.0}
         if tool == "jawa/world_tile_set":

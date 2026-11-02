@@ -34,12 +34,16 @@ check("STEPS mention the save and biome", S.SAVE in PS.STEPS and S.BIOME in PS.S
 check("plan entry prints", PS.main([]) == 0)
 
 
+MODS = ["brrainz.harmony", "ludeon.rimworld", "mandrake.rm.biomes"]   # a donor-free running list
+
 class Fake(object):
     def __init__(self, natives=2, biome=S.BIOME, tile_biome=S.BIOME):
         self.log, self.natives, self.biome, self.tile_biome = [], natives, biome, tile_biome
 
     def call(self, tool, **p):
         self.log.append(tool)
+        if tool == "jawa/running_mods":
+            return {"success": True, "packageIds": list(getattr(self, "mods", None) or MODS)}
         if tool == "jawa/map_info":
             return {"tile": 77, "mapId": 4, "mapBiome": self.biome, "outdoorTempNow": 12.0}
         if tool == "jawa/world_tile_set":

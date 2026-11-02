@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build, clean, save and register the Contagion saved test site (RM_TestSite_contagion_v1). LIVE ONLY, bridge holder.
+"""Build, clean, save and register the Contagion saved test site (RM_TestSite_contagion_v2). LIVE ONLY, bridge holder.
 
 BIOME_SPRINT_PROVE_SCRUB_SETS_PACE (kickoff packet §1.2). Data: site_spec.py. Recipe: Utils/modcheck/biome_site.py
 (Cauldron's steps, shared). Contagion's own read-back: no Burn may be active at the save or after the reload (a site
@@ -8,6 +8,7 @@ that loads into a Burn is not a calm baseline), read off RM_MapComponent_Contagi
     python3    src/RimMandrake/Contagion/prep_site.py --plan                      # offline: print the recipe
     python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py build contagion  # LIVE: build + save + register
     python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py load contagion   # LIVE: load + read-back
+    python.exe src/RimMandrake/Contagion/prep_site.py --prove [--build-if-missing]  # LIVE: the item's proof (exit 0/1)
 
 Preconditions (the live round's, not checked here): the game is up on the `biomes_sprint` tier with the composite
 deployed (preflight_contagion.py O-TIER / O-DEPLOY PASS), the bridge held by the running seat.
@@ -53,10 +54,60 @@ stock-map components take it off the biome themselves and put it back.
 """
 
 
+def header_problems(path):
+    """The saved file's own mod header (<meta><modIds>) -> problems: missing file, unreadable header, a retired donor
+    (CONTAGION_SITE_BUILD_SKY_STAYS_CALM: v1 carried sarg.alphabiomes + vfe.insectoid2 and was a dead fixture)."""
+    import re
+    from retired_mods import is_retired
+    if not os.path.isfile(path):
+        return ["no save file %s" % path], []
+    with open(path, encoding="utf-8", errors="replace") as f:
+        head = f.read(65536)
+    m = re.search(r"<modIds>(.*?)</modIds>", head, re.S)
+    ids = [x.strip().lower() for x in re.findall(r"<li>(.*?)</li>", m.group(1))] if m else []
+    if not ids:
+        return ["save header unreadable: no <modIds> in the first 64 KiB of %s" % path], []
+    bad = [i for i in ids if is_retired(i)]
+    return (["save header holds retired donor(s) %s" % bad] if bad else []), ids
+
+
+def prove(build_if_missing=False, saves_dir=None):
+    """LIVE, bridge holder, game up on a donor-free tier. A1: the site save exists (built now if missing and asked)
+    with a donor-free header. A2: a load from the main menu reads verified, biome RM_Contagion, a native alive, no Burn.
+    -> (exit code, receipt)."""
+    import test_site_saves as TS
+    if saves_dir is None:
+        from game_paths import SAVES as saves_dir
+    rec = {"save": S.SAVE, "utc": TS._now()}
+    path = os.path.join(saves_dir, S.SAVE + ".rws")
+    from northstar_driver.session import FastSession
+    with FastSession(strict=False) as s:
+        if build_if_missing and not os.path.isfile(path):
+            work = os.path.join(B.ROOT, "Transient", "test_site_saves")
+            os.makedirs(work, exist_ok=True)
+            rec["build"] = {"verified": build_site_save(s, work).get("verified")}
+        rec["A1"], rec["mods"] = header_problems(path)
+        if not rec["A1"]:
+            ld = TS.load_site(s.call, S.SITE)
+            extra, rec["census"] = site_problems(s.call, "reload")
+            rec["A2"] = list(ld.get("problems") or []) + extra
+        else:
+            rec["A2"] = ["not loaded: A1 failed"]
+    return (0 if not rec["A1"] and not rec["A2"] else 1), rec
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--plan", action="store_true", help="print the recipe; touch nothing (the default)")
-    ap.parse_args(argv)
+    ap.add_argument("--prove", action="store_true", help="LIVE: A1 donor-free save on disk + A2 verified calm reload")
+    ap.add_argument("--build-if-missing", action="store_true", help="with --prove: build the site first if no save")
+    a = ap.parse_args(argv)
+    if a.prove:
+        import json
+        code, rec = prove(a.build_if_missing)
+        print(json.dumps({k: rec.get(k) for k in ("save", "build", "A1", "A2", "census")}, default=str)[:2000])
+        print("%s %s" % ("PROVEN" if code == 0 else "NOT PROVEN", S.SAVE))
+        return code
     print(STEPS)
     print("Build it with: python.exe src/RimMandrake/Utils/modcheck/test_site_saves.py build contagion")
     return 0
