@@ -135,6 +135,15 @@ namespace JawaBench.BridgeTools
                     catch { }
                 }
 
+                // WORLD_NULLTEX_FLOOD_HUNT_STACKLESS_SO_FAR: the null GUI.DrawTexture stack recorder,
+                // armed from first contact so a load that follows is caught (JawaBenchNullTextureProbe.cs).
+                try { JawaBenchNullTextureProbe.Install(); }
+                catch (Exception ne)
+                {
+                    try { Log.Warning("[JawaBench] null-texture probe install threw: " + ne.Message); }
+                    catch { }
+                }
+
                 // REVIEW SIGNS (owner 2026-10-15). The review-label drawer and its save/load sidecar hooks, so a
                 // review save loaded after any jawa/ call comes back with its signs (JawaBenchReviewLabels.cs).
                 try { JawaBenchReviewLabelDrawer.Install(); }

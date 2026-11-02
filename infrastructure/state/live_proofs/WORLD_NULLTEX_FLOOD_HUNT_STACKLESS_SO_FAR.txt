@@ -1,0 +1,2 @@
+live-proof A1: python3 src/RimMandrake/bridgetools/nulltex_probe.py --live A1
+live-proof A2: python3 src/RimMandrake/bridgetools/nulltex_probe.py --live A2
