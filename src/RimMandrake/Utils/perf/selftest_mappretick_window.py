@@ -25,7 +25,7 @@ def prof(pre_max, kids=None, calls=12000, as_dict=False):
 
 PF = "Verse.PathFinder:PathFinderTick"
 WP = "RimWorld.WildPlantSpawner:WildPlantSpawnerTick"
-ok = dict(ticks=10000, mods=321, map_size=325)
+ok = dict(ticks=10000, mods=321, map_size=325, biome="RUT_TheRot", tile=96532)
 
 # us() parses every rendering the profiler uses
 check("us str", W.us("8507.6 us"), 8507.6)
@@ -57,11 +57,20 @@ check("zero-call child", W.verdict(p, **ok)[:2], (1, "UNNAMED"))
 check("blind no calls", W.verdict(prof("unavailable: no calls timed", calls=0), **ok)[:2], (1, "BLIND"))
 check("blind absent", W.verdict({"methods": []}, **ok)[:2], (1, "BLIND"))
 check("blind none profile", W.verdict(None, **ok)[:2], (1, "BLIND"))
-check("blind no ticks", W.verdict(prof(1000.0), ticks=0, mods=321, map_size=325)[:2], (1, "BLIND"))
+check("blind no ticks", W.verdict(prof(1000.0), ticks=0, mods=321, map_size=325, biome="RUT_TheRot", tile=96532)[:2], (1, "BLIND"))
 # wrong scene: a minimal list or a small map proves nothing about the full-list 325 stall
-check("minimal list", W.verdict(prof(1000.0), ticks=100, mods=13, map_size=325)[:2], (1, "WRONG_LIST"))
-check("mods unknown", W.verdict(prof(1000.0), ticks=100, mods=None, map_size=325)[:2], (1, "WRONG_LIST"))
-check("small map", W.verdict(prof(1000.0), ticks=100, mods=321, map_size=250)[:2], (1, "WRONG_MAP"))
+check("minimal list", W.verdict(prof(1000.0), ticks=100, mods=13, map_size=325, biome="RUT_TheRot", tile=96532)[:2], (1, "WRONG_LIST"))
+check("mods unknown", W.verdict(prof(1000.0), ticks=100, mods=None, map_size=325, biome="RUT_TheRot", tile=96532)[:2], (1, "WRONG_LIST"))
+check("small map", W.verdict(prof(1000.0), ticks=100, mods=321, map_size=250, biome="RUT_TheRot", tile=96532)[:2], (1, "WRONG_MAP"))
+# wrong scene, pinned: the round-10 map is RUT_TheRot at tile 96532; any other wide map proves nothing
+sc = dict(ticks=100, mods=321, map_size=325)
+check("other biome", W.verdict(prof(1000.0), biome="RUT_Basin", tile=96532, **sc)[:2], (1, "WRONG_MAP"))
+check("biome unknown", W.verdict(prof(1000.0), biome=None, tile=96532, **sc)[:2], (1, "WRONG_MAP"))
+check("other tile", W.verdict(prof(1000.0), biome="RUT_TheRot", tile=96533, **sc)[:2], (1, "WRONG_MAP"))
+check("tile unknown", W.verdict(prof(1000.0), biome="RUT_TheRot", tile=None, **sc)[:2], (1, "WRONG_MAP"))
+check("other scene spike", W.verdict(prof(414000.0, {PF: "390000 us"}), biome="RUT_Basin", tile=1, **sc)[:2], (1, "WRONG_MAP"))
+check("pinned scene", W.verdict(prof(1000.0), biome="RUT_TheRot", tile=96532, **sc)[:2], (0, "NOT_REPRODUCED"))
+check("pin constants", (W.BIOME, W.TILE), ("RUT_TheRot", 96532))
 # every child name is 'Ns.Type:Method' (the profiler's allowlist grammar) and the list fits its 32-method cap
 check("child grammar", all(n.count(":") == 1 and "." in n.split(":")[0] for n in W.CHILDREN), True)
 check("cap 32", len(W.CHILDREN) + 2 <= 32, True)

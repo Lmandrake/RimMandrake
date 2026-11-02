@@ -9,7 +9,8 @@ named (NAMED: one timed child's own max is at least half of MapPreTick's max).
 
 Exit 0 = NOT_REPRODUCED or NAMED. Exit 1 = UNNAMED (a spike no timed child explains: Harmony patches on MapPreTick and
 the GC count change are printed as suspects), BLIND (MapPreTick never timed, profiler refused, no ticks), or a wrong
-scene (fewer than --min-mods running mods, no map of --size). The verdict is a pure function, selftested offline
+scene (fewer than --min-mods running mods, no map of --size, or a map whose biome is not RUT_TheRot or whose tile
+is not --tile). The verdict is a pure function, selftested offline
 (selftest_mappretick_window.py).
 
 Live (Windows Python; the bridge is the supervisor's to lease):
@@ -23,6 +24,8 @@ profiler refuses is listed under `refused` and simply not timed (it can then nev
 import argparse, json, os, re, sys, time
 
 THRESHOLD_MS = 10.5
+BIOME = "RUT_TheRot"      # the round-10 scene's biome
+TILE = 96532              # the round-10 RM_PerfSite tile
 SHARE = 0.5
 PRETICK = "Verse.Map:MapPreTick"
 CHILDREN = (
@@ -63,12 +66,19 @@ def rows(profile):
     return {(m.get("method") or m.get("name") or ""): m for m in ms}
 
 
-def verdict(profile, ticks, mods, map_size, *, min_mods=300, size=325, threshold_ms=THRESHOLD_MS, share=SHARE):
-    """-> (exit_code, word, text). Pure: profile is jawa/health_profile's `profile` object."""
+def verdict(profile, ticks, mods, map_size, biome, tile, *, min_mods=300, size=325, want_biome=BIOME, want_tile=TILE,
+            threshold_ms=THRESHOLD_MS, share=SHARE):
+    """-> (exit_code, word, text). Pure: profile is jawa/health_profile's `profile` object; biome is the measured
+    map's mapBiome defName and tile its world tile (jawa/map_info). Only the round-10 scene counts: a map of
+    another biome or tile is WRONG_MAP however wide it is."""
     if mods is None or mods < min_mods:
         return 1, "WRONG_LIST", "running mods %s < %d: not the full list" % (mods, min_mods)
     if map_size is None or map_size < size:
         return 1, "WRONG_MAP", "measured map is %s wide, needs >= %d" % (map_size, size)
+    if biome != want_biome:
+        return 1, "WRONG_MAP", "measured map's biome is %s, needs %s" % (biome, want_biome)
+    if tile != want_tile:
+        return 1, "WRONG_MAP", "measured map sits on tile %s, needs %s" % (tile, want_tile)
     if not ticks or ticks <= 0:
         return 1, "BLIND", "the game did not tick during the window (ticks=%s)" % ticks
     r = rows(profile)
@@ -139,7 +149,7 @@ def _live(a):
             for m in maps():
                 c("jawa/set_current_map", {"mapId": m.get("mapId")})
                 mi = c("jawa/map_info")
-                if (mi.get("sizeX") or 0) >= a.size:
+                if (mi.get("sizeX") or 0) >= a.size and mi.get("tile") == a.tile:
                     return mi
             return None
 
@@ -213,7 +223,8 @@ def _live(a):
             m = r.get(name)
             if m and m.get("calls"):
                 say("  %-62s calls=%-7s meanUs=%-10s maxUs=%s" % (name, m.get("calls"), m.get("meanUs"), m.get("maxUs")))
-        code, word, text = verdict(prof, dk, mods, size, min_mods=a.min_mods, size=a.size)
+        code, word, text = verdict(prof, dk, mods, size, (mi or {}).get("mapBiome"), (mi or {}).get("tile"),
+                                   min_mods=a.min_mods, size=a.size, want_tile=a.tile)
         if word == "UNNAMED":
             text += "; suspects: harmony=%s gcDelta=%s" % (suspects or "none", gcd)
         say("VERDICT", word, text)
@@ -222,7 +233,7 @@ def _live(a):
             stamp = time.strftime("%Y%m%d_%H%M%S")
             with open(os.path.join(a.out, "mappretick_window_%s.json" % stamp), "w", encoding="utf-8") as f:
                 json.dump({"lines": out, "profile": prof, "ticks": dk, "wall": dt, "gcDelta": gcd, "mods": mods,
-                           "mapSize": size, "harmony": suspects, "verdict": [code, word, text]}, f, default=str, indent=1)
+                           "mapSize": size, "biome": (mi or {}).get("mapBiome"), "tile": (mi or {}).get("tile"), "harmony": suspects, "verdict": [code, word, text]}, f, default=str, indent=1)
         return code
 
 
