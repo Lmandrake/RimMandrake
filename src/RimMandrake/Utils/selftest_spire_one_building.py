@@ -4,7 +4,7 @@
 Offline. Reads the shipped defs and source, runs the layout audit against the committed XML, compiles and
 runs the real SpireEntryKernel.cs and SpireEntry.cs (against engine stand-ins) through the
 StructureInjectionsRUT selftest, then plants one defect at a time in a copy and requires the checks to catch
-it, source defects by compiling and running the copy.
+it, source defects by compiling and running the copy. The one-site scan walks every tier's xml, not this mod's.
 
     python3 src/RimMandrake/Utils/selftest_spire_one_building.py [--static-only]
 """
@@ -25,6 +25,9 @@ SOURCE = os.path.join(MOD, "Source")
 LAYOUT = os.path.join(SPIRE, "StructureLayoutDefs_Spire.xml")
 AUDIT = os.path.join(SOURCE, "Spire", "audit_spire_layout.py")
 LANDMARKS = os.path.join(REPO, "src", "RimUtinni", "UtinniPatches", "Defs", "LandmarkDefs")
+# Every tier's mods: a second dark tower in a sibling mod is a second dark tower on the world.
+TREE_ROOTS = ("RimUtinni", "RimMandrake", "RimStarWars")
+SPIRE_NAMED = re.compile("spire|tower|ashfall", re.I)
 SELFTEST = os.path.join(SOURCE, "SelfTest", "StructureInjectionsRUT.SelfTest.csproj")
 ATTITUDE = os.path.join(REPO, "src", "RimMandrake", "RustCathedral", "Source", "Hum", "RM_MapComponent_BiomeAttitude.cs")
 DOTNET_CANDIDATES = ["/mnt/c/Users/Mandrake/.dotnet/dotnet.exe", "/mnt/c/Program Files/dotnet/dotnet.exe"]
@@ -65,6 +68,11 @@ def text(path):
 
 def uncommented(path):
     return re.sub(r"<!--.*?-->", "", text(path), flags=re.S)
+
+
+def code_only(path):
+    """C# with its comments gone, so a line commented out does not read as a line that runs."""
+    return re.sub(r"/\*.*?\*/|//[^\n]*", "", text(path), flags=re.S)
 
 
 def stage_reads_minus_one_off_cathedral(source):
@@ -113,6 +121,75 @@ def def_pins(defs, landmarks):
     check(weights == ["0"], "the generator can roll no Spire, commonality 0: %s" % weights)
 
 
+def settings_pins(source):
+    """The compiled half runs a stand-in Settings class with its own default; these read the file that ships."""
+    real = code_only(os.path.join(source, "StructureInjectionsRUTSettings.cs"))
+    check("public static bool spireEntryGated = true;" in real, "the real Settings field ships the gate on")
+    scribes = re.findall(r"Scribe_Values\.Look\(ref spireEntryGated,[^;]*;", real)
+    check(scribes == ['Scribe_Values.Look(ref spireEntryGated, "spireEntryGated", true);'],
+          "a save with no value loads the gate on: %s" % scribes)
+    reset = re.search(r"static void ResetAll\(\)\s*\{(.*?)\}", real, re.S)
+    check(bool(reset) and "spireEntryGated = true;" in reset.group(1), "reset puts the gate back on")
+    writes = []
+    for base, dirs, names in os.walk(source):
+        dirs[:] = [n for n in dirs if n not in ("SelfTest", "obj", "bin")]
+        for name in names:
+            if name.endswith(".cs"):
+                writes += re.findall(r"\bspireEntryGated\s*=(?!=)\s*([^;]*);", code_only(os.path.join(base, name)))
+    check(writes == ["true", "true"], "only the field and the reset assign the setting: %s" % writes)
+
+
+def roof_pins(source):
+    """The compiled half never runs this step, and without it a pod or a shell comes in past the seal."""
+    roof = code_only(os.path.join(source, "Spire", "GenStep_SpireRoof.cs"))
+    check("class GenStep_SpireRoof : GenStep" in roof, "the roof step is a GenStep")
+    check('GetNamed("RUT_SpireHullWall")' in roof and "ThingsOfDef(hull)" in roof, "the roof step measures the hull")
+    for line in ("minX = System.Math.Min(minX, c.x);", "minZ = System.Math.Min(minZ, c.z);",
+                 "maxX = System.Math.Max(maxX, c.x);", "maxZ = System.Math.Max(maxZ, c.z);"):
+        check(line in roof, "the rect reaches every wall: %s" % line)
+    check(re.search(r"foreach \(IntVec3 c in CellRect\.FromLimits\(minX, minZ, maxX, maxZ\)\)\s*\{\s*"
+                    r"map\.roofGrid\.SetRoof\(c, RoofDefOf\.RoofRockThick\);\s*\}", roof),
+          "every cell of the hull rect takes thick rock roof")
+
+
+def tree_scan(roots):
+    """Every def of the three kinds in every xml under the roots, Defs and Patches alike, by element."""
+    found = {"SitePartDef": [], "KCSG.StructureLayoutDef": [], "LandmarkDef": []}
+    unread, stale, builders = [], [], []
+    for root in roots:
+        for path in xml_files(root):
+            try:
+                parsed = ET.parse(path).getroot()
+            except ET.ParseError:
+                unread.append(path)
+                continue
+            for tag, seen in found.items():
+                seen += [(root, e.findtext("defName"), e.findtext("label")) for e in parsed.iter(tag)]
+            body = uncommented(path)
+            stale += [n for n in OLD_NAMES if n in body]
+            if "<li>RUT_Spire_HighCommand</li>" in body:
+                builders.append(os.path.basename(path))
+    return found, unread, stale, builders
+
+
+def tree_checks(extra=()):
+    """A dark tower anywhere in the tree fails, under any of these names, in defName or label."""
+    roots = [os.path.join(REPO, "src", r) for r in TREE_ROOTS]
+    found, unread, stale, builders = tree_scan(roots + list(extra))
+    check(not unread, "every xml in the tree parses, so none hides a site: %s" % unread)
+    # Sanity probe: the walk must see all three tiers, or "one Spire" only means it looked in one place.
+    check(all(any(seen[0] == r for seen in found["LandmarkDef"]) for r in roots),
+          "probe: the scan sees landmarks in all three tiers (%d)" % len(found["LandmarkDef"]))
+    check(len(found["SitePartDef"]) >= 10 and len({s[0] for s in found["SitePartDef"]}) >= 2,
+          "probe: the scan sees site parts across tiers (%d)" % len(found["SitePartDef"]))
+    want = {"SitePartDef": "RUT_SpireSite", "KCSG.StructureLayoutDef": "RUT_Spire_HighCommand", "LandmarkDef": "RUT_AshfallSpire"}
+    for tag, name in want.items():
+        hits = [s[1] for s in found[tag] if SPIRE_NAMED.search(s[1] or "") or SPIRE_NAMED.search(s[2] or "")]
+        check(hits == [name], "in all of src, the one %s of the Spire is %s: %s" % (tag, name, hits))
+    check(builders == ["SitePartDefs_Spire.xml"], "in all of src, one site builds the Spire's layout: %s" % builders)
+    check(not stale, "in all of src, no xml carries an old dungeon name: %s" % sorted(set(stale)))
+
+
 def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
     sites = named(defs, "SitePartDef")
     # Sanity probe: the parse must see the sibling dungeons' sites before it may report one Spire.
@@ -140,6 +217,8 @@ def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
     check('Class="RimMandrake.Utinni.StructureInjectionsRUT.CompProperties_SpireSeal"' in seal_xml, "the seal is the trust gate")
     check("<deconstructible>false</deconstructible>" in seal_xml, "the seal cannot be deconstructed")
     def_pins(defs, landmarks)
+    settings_pins(source)
+    roof_pins(source)
 
     entry = text(os.path.join(source, "Spire", "SpireEntry.cs"))
     kernel = text(os.path.join(source, "Spire", "SpireEntryKernel.cs"))
@@ -156,7 +235,7 @@ def static_checks(defs=DEFS, source=SOURCE, landmarks=LANDMARKS):
     check(not stage_reads_minus_one_off_cathedral(attitude.replace("GetDef() == null ? -1 : comp.stage", "stage ?? -1")),
           "the GetStage pin catches the old read")
     csproj = text(os.path.join(source, "RimMandrake.Utinni.StructureInjectionsRUT.csproj"))
-    for name in ("Spire\\SpireEntryKernel.cs", "Spire\\SpireEntry.cs", "Spire\\GenStep_SpireRoof.cs"):
+    for name in ("Spire\\SpireEntryKernel.cs", "Spire\\SpireEntry.cs", "Spire\\GenStep_SpireRoof.cs", "StructureInjectionsRUTSettings.cs"):
         check(name in csproj, "the mod compiles %s" % name)
 
     codes = ET.parse(os.path.join(defs, "Spire", "ThingDefs_Items", "RUT_RakatanCommandCodes.xml")).getroot()
@@ -196,6 +275,8 @@ def layout_checks():
             check(audit(path).returncode != 0, "audit catches: %s" % name)
 
 
+SETTINGS = "Source/StructureInjectionsRUTSettings.cs"
+ROOF = "Source/Spire/GenStep_SpireRoof.cs"
 SEAL_DEF = "Defs/Spire/ThingDefs_Buildings/RUT_SpireSeal.xml"
 SYMBOL_DEFS = "Defs/Spire/SymbolDefs_Spire.xml"
 LANDMARK_DEF = "RUT_AshfallSpire.xml"
@@ -224,6 +305,19 @@ def plant_static():
         ("the command console builds nothing of ours", SYMBOL_DEFS, "<thing>RUT_SpireCommandConsole</thing>", "<thing>Steel</thing>"),
         ("the generator may scatter Spires", LANDMARK_DEF, "<commonality>0</commonality>", "<commonality>1</commonality>"),
         ("commonality left to its default", LANDMARK_DEF, "<commonality>0</commonality>", ""),
+        ("the gate ships off in the real field", SETTINGS, "public static bool spireEntryGated = true;", "public static bool spireEntryGated = false;"),
+        ("a save loads the gate off", SETTINGS, '"spireEntryGated", true);', '"spireEntryGated", false);'),
+        ("the Scribe line gone", SETTINGS, 'Scribe_Values.Look(ref spireEntryGated, "spireEntryGated", true);', ""),
+        ("the Scribe line commented out", SETTINGS, 'Scribe_Values.Look(ref spireEntryGated', '// Scribe_Values.Look(ref spireEntryGated'),
+        ("reset turns the gate off", SETTINGS, "            spireEntryGated = true;", "            spireEntryGated = false;"),
+        ("some other code turns the gate off", "Source/Spire/SpireEntry.cs", "public static bool SealOpens =>",
+         "static bool off = StructureInjectionsRUTSettings.spireEntryGated = false;\n        public static bool SealOpens =>"),
+        ("the roof line deleted", ROOF, "map.roofGrid.SetRoof(c, RoofDefOf.RoofRockThick);", ""),
+        ("the roof line commented out", ROOF, "map.roofGrid.SetRoof(c,", "// map.roofGrid.SetRoof(c,"),
+        ("a thin roof a pod goes through", ROOF, "RoofDefOf.RoofRockThick", "RoofDefOf.RoofConstructed"),
+        ("the roof short of the far wall", ROOF, "maxZ = System.Math.Max(maxZ, c.z);", ""),
+        ("the roof over some other rect", ROOF, "CellRect.FromLimits(minX, minZ, maxX, maxZ)", "CellRect.FromLimits(minX, minZ, maxX, minZ)"),
+        ("the roof measures the wrong thing", ROOF, 'GetNamed("RUT_SpireHullWall")', 'GetNamed("RUT_SpireSeal")'),
     ]
     with tempfile.TemporaryDirectory() as d:
         copy = os.path.join(d, "mod")
@@ -256,6 +350,52 @@ def plant_static():
                 f.write(good)
 
 
+SITE_DEF = "<Defs><SitePartDef><defName>%s</defName>%s</SitePartDef></Defs>"
+TREE_PLANTS = [
+    ("a dark-tower site in a sibling Utinni mod", "RimUtinni/UtinniPatches/Defs/Spare_Mutant.xml", SITE_DEF % ("RUT_DarkTowerSite", "")),
+    ("a tower site in a Mandrake mod", "RimMandrake/Atlas/Defs/Spare_Mutant.xml", SITE_DEF % ("RM_ScaldTowerSite", "")),
+    ("a tower site in a Star Wars mod", "RimStarWars/Spare/Defs/Spare_Mutant.xml", SITE_DEF % ("RSW_TowerSite", "")),
+    ("a tower site named only in its label", "RimMandrake/Atlas/Defs/Spare_Mutant.xml", SITE_DEF % ("RM_ScaldKeep", "<label>the dark tower</label>")),
+    ("a tower site added by a patch", "RimUtinni/UtinniPatches/Patches/Spare_Mutant.xml",
+     '<Patch><Operation Class="PatchOperationAdd"><xpath>Defs</xpath><value><SitePartDef><defName>RUT_DarkTowerSite</defName>'
+     "</SitePartDef></value></Operation></Patch>"),
+    ("a quiet site that builds the Spire's layout", "RimMandrake/Atlas/Defs/Spare_Mutant.xml",
+     SITE_DEF % ("RM_QuietSite", "<li>RUT_Spire_HighCommand</li>")),
+    ("a second tower layout in a sibling mod", "RimUtinni/UtinniPatches/Defs/Spare_Mutant.xml",
+     "<Defs><KCSG.StructureLayoutDef><defName>RUT_ScaldTower_Keep</defName></KCSG.StructureLayoutDef></Defs>"),
+    ("a second tower landmark in a sibling mod", "RimMandrake/Atlas/Defs/Spare_Mutant.xml",
+     "<Defs><LandmarkDef><defName>RM_DarkTower</defName></LandmarkDef></Defs>"),
+    ("an old dungeon name in a sibling mod", "RimUtinni/UtinniPatches/Defs/Spare_Mutant.xml",
+     "<Defs><ThingDef><defName>RUT_DarkTowerGate</defName></ThingDef></Defs>"),
+    ("a file the scan cannot read", "RimUtinni/UtinniPatches/Defs/Spare_Mutant.xml", "<Defs><SitePartDef>"),
+]
+
+
+def plant_tree():
+    """Each sibling file, scanned as one more mod beside the real tree, must turn tree_checks red."""
+    with tempfile.TemporaryDirectory() as d:
+        def run_with_plant():
+            saved, failures[:] = failures[:], []
+            stdout, sys.stdout = sys.stdout, open(os.devnull, "w")
+            try:
+                tree_checks([d])
+            finally:
+                sys.stdout.close()
+                sys.stdout = stdout
+            red, failures[:] = list(failures), saved
+            return red
+
+        red = run_with_plant()
+        check(not red, "control: the scan with an empty sibling is green: %s" % red)
+        for name, rel, body in TREE_PLANTS:
+            path = os.path.join(d, rel)
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(body)
+            check(run_with_plant(), "tree scan catches: %s" % name)
+            os.remove(path)
+
+
 EXPECTED_SPIRE_LINES = 20
 COMPILED_PLANTS = [
     ("the gate inverted", "Spire/SpireEntry.cs", "&& SpireEntry.SealOpens", "&& !SpireEntry.SealOpens"),
@@ -277,7 +417,12 @@ def find_dotnet():
 
 
 def run_project(dotnet, project):
-    return subprocess.run([dotnet, "run", "--project", project, "-c", "Release"], capture_output=True, text=True)
+    # WSL interop can drop the launch of a Windows exe (seen 2026-11-02): nothing ran, so that alone may retry.
+    for _ in range(3):
+        out = subprocess.run([dotnet, "run", "--project", project, "-c", "Release"], capture_output=True, text=True)
+        if "UtilAcceptVsock" not in out.stderr or out.stdout.strip():
+            break
+    return out
 
 
 def kernel_run():
@@ -331,8 +476,10 @@ def compiled_plants():
 
 def main():
     static_checks()
+    tree_checks()
     layout_checks()
     plant_static()
+    plant_tree()
     if "--static-only" not in sys.argv:
         kernel_run()
         compiled_plants()
