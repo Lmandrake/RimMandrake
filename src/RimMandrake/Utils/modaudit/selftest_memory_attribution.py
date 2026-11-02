@@ -12,6 +12,12 @@ end to end:
  6 a synthetic mod: a 1.6 override replaces the root copy (counted once), a .png beside a same-named .dds is
    skipped, a 1.5-only texture is not loaded, a 64x62 png stays RGBA32, a big .ogg is streamed
  7 sanity: a planted wrong rule (override counted twice) would change the total - the walk can see the difference
+ 8 atlas pages (atlas_attribution, from StaticTextureAtlas): page size by NextPowerOfTwo(sqrt*1.05), the taller
+   retry, colour mips floor(log2(w/512))+1, DXT 1 B/px vs RGBA 4, mask page 1 mip
+ 9 atlas insertion: RealtimeOnly inserts nothing; Building+minifiable inserts twice (Building and Item); >=512 px
+   is refused; a later mod's override wins the path; Multi takes _north/_east/_south/_west; Collection takes the
+   folder minus _m masks; a mod's own graphic class inserts nothing; a vanilla path is counted unsized
+10 atlas sanity: split bytes sum to the page bytes; a planted rule (no minifiable double insert) changes the total
 """
 import os
 import struct
@@ -22,6 +28,7 @@ import zlib
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import memory_attribution as M  # noqa: E402
+import atlas_attribution as A  # noqa: E402
 
 FAILS = []
 
@@ -88,13 +95,57 @@ def main():
         ok(r["tex_files"] == 3 and r["dds"] == 1 and r["tex_rgba"] == 1 and r["tex_dxt"] == 1, "6 counts %r" % r)
         ok(r["snd_files"] == 2 and r["snd_streamed"] == 1, "6 audio %r" % r)
         ok(r["folders"] == ["1.6", ""], "6 folders %r" % r["folders"])
+        ok(r["tex_dims"].get("a") == [1024, 1024] and r["tex_dims"].get("odd") == [64, 62]
+           and "old" not in r["tex_dims"], "6 tex_dims for the atlas pass %r" % r["tex_dims"])
         planted = want + 64 * 64 * 4 / 3.0 / M.MB
         ok(abs(planted - want) * M.MB > 1000, "7 sanity: double-counted override is visible")
+    # 8 pages
+    ok(A.page_size([(64, 64)] * 4) == (256, 64), "8 4x64^2: w NPOT(128*1.05)=256, h NPOT(16384/256)=64 %r"
+       % (A.page_size([(64, 64)] * 4),))
+    ok(A.page_size([(300, 300)] * 3) == (1024, 512), "8 taller retry: 3x300 in 1024x256 overflows -> 1024x512 %r"
+       % (A.page_size([(300, 300)] * 3),))
+    ok(A.page_bytes(2048, 1024, True, False) == 2048 * 1024 + 1024 * 512 + 512 * 256, "8 colour mips: 3 levels at 2048")
+    ok(A.page_bytes(256, 64, True, False) == 256 * 64, "8 narrow page keeps 1 level")
+    ok(A.page_bytes(2048, 1024, False, True) == 2048 * 1024 * 4, "8 mask: RGBA 4 B/px, 1 mip")
+    # 9 insertion
+    recs = [("m.a", {"tex_dims": {"t/chair": [64, 64], "t/big": [512, 64], "t/pot_north": [32, 32],
+                                  "t/pot_east": [32, 32], "t/pot_south": [32, 32], "t/rock/a": [16, 16],
+                                  "t/rock/a_m": [16, 16], "t/rock/b": [16, 16], "t/x": [8, 8]}}),
+            ("m.b", {"tex_dims": {"t/chair": [128, 128]}})]
+    idx = {"things": [["Building", True, "MapMeshOnly", "Verse.Graphic_Single", "T/Chair", None, "Cutout"],
+                      ["Item", False, "RealtimeOnly", "Verse.Graphic_Single", "t/x", None, "Cutout"],
+                      ["Item", False, "MapMeshOnly", "Verse.Graphic_Single", "t/big", None, "Cutout"],
+                      ["Building", False, "MapMeshOnly", "Verse.Graphic_Multi", "t/pot", None, "Cutout"],
+                      ["Item", False, "MapMeshOnly", "Verse.Graphic_Random", "t/rock", None, "Cutout"],
+                      ["Item", False, "MapMeshOnly", "Mod.Graphic_Own", "t/x", None, "Cutout"],
+                      ["Plant", False, "MapMeshOnly", "Verse.Graphic_Single", "Things/Vanilla", None, "Cutout"]],
+           "scatter": []}
+    e = A.estimate(idx, recs, True)
+    ok(e["textures"] == 7, "9 7 inserts: chair x2 groups, 3 pot dirs, rock a+b (not a_m): %d" % e["textures"])
+    ok(e["too_big"] == 1 and e["defs_foreign_class"] == 1 and e["vanilla_unsized"] == 1, "9 refusals %r" % {
+        k: e[k] for k in ("too_big", "defs_foreign_class", "vanilla_unsized")})
+    ok(set(e["by_mod_mb"]) == {"m.a", "m.b"} and e["by_mod_mb"]["m.b"] > e["by_mod_mb"]["m.a"] * 0.5,
+       "9 override: m.b's 128 px chair wins %r" % e["by_mod_mb"])
+    ok({(p["group"], p["textures"]) for p in e["pages"]} == {("Building", 4), ("Item", 3)}, "9 pages %r" % e["pages"])
+    h2 = A.Holder([("m", {"tex_dims": {"c/p_north": [8, 8], "c/p_northm": [8, 8], "c/q": [8, 8], "c/q_m": [8, 8]}})])
+    got = sorted(A.def_textures("Verse.Graphic_Random", "c", None, True, h2))
+    ok(got == [("c/p_north", "c/p_northm"), ("c/q", "c/q_m")], "9 collection masks: <dir>m and _m %r" % got)
+    with tempfile.TemporaryDirectory() as d:
+        with open(os.path.join(d, "manifest.json"), "w") as fh:
+            fh.write('{"capturedUtc": "x", "mods": [{"packageId": "B", "loadOrder": 2}, {"packageId": "a", "loadOrder": 1}]}')
+        ok(A.dump_matches(d, ["a", "b"], str.lower)[0], "9 dump in load order matches")
+        ok(not A.dump_matches(d, ["b", "a"], str.lower)[0], "9 same mods, other order: stale")
+        ok(not A.dump_matches(d, ["a"], str.lower)[0], "9 different mod set: stale")
+    # 10 sanity
+    ok(abs(sum(e["by_mod_mb"].values()) - e["total_mb"]) < 0.01, "10 split sums to page total")
+    idx2 = {"things": [list(t) for t in idx["things"]], "scatter": []}
+    idx2["things"][0][1] = False
+    ok(A.estimate(idx2, recs, True)["textures"] == 6, "10 planted: no minifiable double insert is visible")
     if FAILS:
         for f in FAILS:
             print("FAIL", f)
         return 1
-    print("selftest_memory_attribution: PASS (7 groups)")
+    print("selftest_memory_attribution: PASS (10 groups)")
     return 0
 
 

@@ -10,19 +10,28 @@ rules, read from the decompile (`D:\ClaudeWork\rimmandrake\decomp\rw16\all\Verse
 (overrides replace), PNG decoded then made non-readable and DXT5-compressed (1 B/px) when both sides are a
 multiple of 4 and Prefs `textureCompression` is on (it is, on Archmagi), else RGBA32 (4 B/px), mips x 4/3; DDS
 payload as-is; audio files <= 300 KB decoded whole (float PCM upper estimate), larger ones streamed.
+Static atlases: `atlas_attribution.py` replays `GlobalTextureAtlasManager.BakeStaticAtlases` from the live def dump
+(capture 2026-11-02T17:59:18Z, the same 317 mods): every ThingDef with graphicData and drawerType != RealtimeOnly
+inserts its graphic's textures under 512 px into its category's group (Building + minifiable also into Item),
+ScatterableDefs into Terrain; per (group, mask) the textures fill pages of (maxTextureSize/2)^2 px sized by
+`CalcRectsForAtlasNew`, RGBA32 then DXT5 with floor(log2(w/512))+1 mips; a page's bytes go to mods by pixel share.
+The atlas is EXTRA memory: the source textures stay loaded. maxTextureSize 16384 is assumed, not read.
 These are ESTIMATES from disk, not measurements.
 
 ## Results
 
-| list | mods | textures | decoded audio | attributed |
-|---|---|---|---|---|
-| FULL.LATEST at 2026-10-10 (git `e6d99502af`, the item's 551-list; today's folders) | 542 resolved | 10.4 GB (1.3 GB of it RGBA32) | 1.14 GB | **11.5 GB** |
-| FULL.LATEST now (317 ids after the retirement waves) | 316 resolved | 5.6 GB (0.5 GB RGBA32) | 0.75 GB | **6.4 GB** |
+| list | mods | textures | decoded audio | static atlases | attributed |
+|---|---|---|---|---|---|
+| FULL.LATEST at 2026-10-10 (git `e6d99502af`, the item's 551-list; today's folders) | 542 resolved | 10.4 GB (1.3 GB of it RGBA32) | 1.14 GB | UNMEASURED (no def dump of that list exists) | **11.5 GB** + atlases |
+| FULL.LATEST now (317 ids after the retirement waves) | 316 resolved | 5.6 GB (0.5 GB RGBA32) | 0.75 GB | 0.81 GB (10 pages, 6331 mod textures) | **7.2 GB** |
 
 Findings:
 
 1. **Loose mod content explains under half of the native share.** 11.5 GB attributed against ~25 GB native leaves
-   **>= 13 GB the disk cannot attribute**: StaticTextureAtlas bakes, RenderTexture pools (facial animation pools never
+   about 13 GB unexplained. **Static atlases are not it:** on today's list they cost 0.81 GB, 11% on top of the
+   loose textures (the biggest shares: `mandrake.rm.biomes` 134 MB, `vanillaexpanded.vfepropsanddecor` 105 MB,
+   `sarg.alphamemes` 75 MB). Scaled by the same ratio, the 551-list's atlases were roughly 1-1.5 GB, an
+   extrapolation, not a measurement. **That leaves >= 11 GB the disk cannot attribute**: RenderTexture pools (facial animation pools never
    release: `design/RimMandrake/mod_deepdive_faces.md`), AssetBundles (~0.5 GB on disk across the list, DLCs
    included), Core/DLC textures in resources.assets, Unity/Mono native overhead. Whether GPU texture memory lands in
    private bytes at all depends on the driver, so even the 11.5 GB is an upper bound on its private-bytes share.
@@ -32,7 +41,7 @@ Findings:
 3. **The tail is long.** On the 551-list the top 20 mods hold about half of the attribution; no single mod
    exceeds 0.9 GB. Ours lead: `mandrake.rm.biomes` 0.85 GB, `mandrake.rsw.armoury` 0.78 GB,
    `mandrake.rsw.swbestiary` 0.50 GB textures + up to 0.33 GB decoded audio.
-4. **The retirement waves already halved it** (11.5 -> 6.4 GB attributed); a fresh measurement on today's list is
+4. **The retirement waves already halved it** (11.5 -> 6.4 GB of textures + audio); a fresh measurement on today's list is
    the live clause A1 (`infrastructure/state/live_proofs/FULL_LIST_MEMORY_AUDIT_THIRTY_GB_PRIVATE.txt`).
 5. **Cheap wins if memory ever matters:** textures with a side not a multiple of 4 stay uncompressed at 4x the
    cost (1.3 GB on the 551-list, 0.5 GB now; e.g. `redmattis.bigsmall.core` 135 MB, `sihv.rombonesport` 120 MB

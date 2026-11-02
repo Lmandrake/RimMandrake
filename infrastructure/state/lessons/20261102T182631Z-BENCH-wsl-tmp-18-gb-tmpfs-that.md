@@ -1,0 +1,1 @@
+WSL /tmp is an 18 GB tmpfs that other agents' scratch clones fill (vhrpj/vhrp_tree/gnfm ~15 GB on 2026-11-02): cp of a 245 MB def dump into /tmp failed ENOSPC. Read big artifacts in place or stage under D:\ClaudeWork.

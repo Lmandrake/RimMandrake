@@ -26,8 +26,12 @@ Load rules, read from the 1.6 decompile (D:\\ClaudeWork\\rimmandrake\\decomp\\rw
   audio      .ogg/.wav/.mp3 under Sounds/: a file over 307200 bytes is streamed (ShouldStreamAudioClipFromFile, no
              resident estimate); a smaller one is decoded whole: samples x channels x 4 bytes (float PCM, an upper
              estimate; Unity may keep 16-bit).
-What it does NOT see (the residual against a measurement): StaticTextureAtlas bakes, RenderTextures (e.g. facial
-animation pools), AssetBundles, Core/DLC textures inside resources.assets, assemblies, Unity/Mono overhead.
+  atlases    StaticTextureAtlas pages baked at load from textures under 512 px that ThingDefs/ScatterableDefs insert:
+             atlas_attribution.py (rules there). Needs the def dump capture (refresh.D_DUMP) of the SAME mod set;
+             a stale dump leaves atlases UNMEASURED and --check fails.
+What it does NOT see (the residual against a measurement): RenderTextures (e.g. facial animation pools), pawn
+atlases (built at runtime per pawn), AssetBundles, Core/DLC textures inside resources.assets, assemblies,
+Unity/Mono overhead.
 Whether GPU texture memory lands in the process's private bytes depends on the driver (WDDM); the report says so.
 
 Cache: ~/.cache/rm_modaudit/mem/<packageId>.json (derived; outside git). Report: Transient/memory_attribution.md.
@@ -46,7 +50,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", "..", ".."))
 CACHE = os.path.expanduser("~/.cache/rm_modaudit/mem")
-SCHEMA = 1
+SCHEMA = 3
 VERSION = (1, 6)
 TEX_EXT = (".png", ".jpg", ".jpeg", ".psd", ".dds")
 SND_EXT = (".ogg", ".wav", ".mp3")
@@ -260,10 +264,11 @@ def collect(folder, active, compression):
                     key = os.path.relpath(p, base).replace("\\", "/")
                     if key not in seen:
                         seen[key] = p
+    dims = {}
     dds_keys = {k[:-4].lower() for k in seen_tex if k.lower().endswith(".dds")}
     for key, p in seen_tex.items():
         ext = os.path.splitext(key)[1].lower()
-        if ext != ".dds" and os.path.splitext(key)[0].lower() in dds_keys:
+        if ext != ".dds" and key[:-4].lower() in dds_keys:  # engine: Substring(0, Length - 4) + ".dds"
             continue
         try:
             size = os.path.getsize(p)
@@ -273,6 +278,7 @@ def collect(folder, active, compression):
         if ext == ".dds":
             b = dds_bytes(p, size)
             rec["dds"] += 1
+            d = image_dims(p)
         else:
             d = image_dims(p)
             if d is None:
@@ -284,6 +290,12 @@ def collect(folder, active, compression):
             else:
                 rec["tex_rgba"] += 1
                 rec["tex_rgba_mb"] += b / MB
+        if not key.lower().startswith("textures/"):
+            continue  # a Sounds/ hit cannot reach here; guard keeps the atlas key shape honest
+        # atlas_attribution reads this: ContentFinder path (under Textures/, no extension) -> pixel dims
+        # seen_tex is in descending folder priority and case-sensitive like GetAllFilesForMod; lower-casing for the
+        # lookup must not let a lower-priority Foo/foo twin overwrite the winner, so the first one stays
+        dims.setdefault(os.path.splitext(key.split("/", 1)[1])[0].lower(), list(d) if d else [0, 0])
         rec["tex_files"] += 1
         rec["tex_mb"] += b / MB
         big.append((round(b / MB, 2), key))
@@ -299,6 +311,7 @@ def collect(folder, active, compression):
         rec["snd_mb"] += b / MB
     big.sort(reverse=True)
     rec["largest"] = big[:5]
+    rec["tex_dims"] = dims
     for k in ("tex_mb", "tex_rgba_mb", "snd_mb"):
         rec[k] = round(rec[k], 2)
     return rec
@@ -363,39 +376,72 @@ def game_private_mb():
     return vals or None
 
 
-def write_report(rows, recs, compression, measured, list_path, report):
+def atlas_for(ids, recs, active, compression, dump_dir):
+    """Atlas estimate for the list, or (None, why) when the def dump does not describe this mod set."""
+    import atlas_attribution as A
+    ok, why = A.dump_matches(dump_dir, [norm_id(x) for x in ids], norm_id)
+    if not ok:
+        return None, why
+    idx = A.slim_index(dump_dir, os.path.join(CACHE, "atlas"))
+    ordered = [(pid, recs[pid]) for pid in ids if pid in recs]
+    return A.estimate(idx, ordered, compression), why
+
+
+def write_report(rows, recs, compression, measured, list_path, report, atlas=None, atlas_why=""):
+    by_atlas = (atlas or {}).get("by_mod_mb", {})
     tot_tex = sum(r.get("tex_mb", 0) for r in recs.values())
     tot_snd = sum(r.get("snd_mb", 0) for r in recs.values())
+    tot_atl = atlas["total_mb"] if atlas else 0.0
     tot_rgba = sum(r.get("tex_rgba_mb", 0) for r in recs.values())
-    ranked = sorted(recs.items(), key=lambda kv: -(kv[1].get("tex_mb", 0) + kv[1].get("snd_mb", 0)))
+    ranked = sorted(recs.items(), key=lambda kv: -(kv[1].get("tex_mb", 0) + kv[1].get("snd_mb", 0)
+                                                   + by_atlas.get(kv[0], 0)))
     L = ["# Native memory attribution by mod (ESTIMATE)", "",
          "Generated %s by `src/RimMandrake/Utils/modaudit/memory_attribution.py`; list `%s` (%d ids, %d attributed);"
          " Prefs textureCompression=%s. Rules: see the script docstring (from the 1.6 decompile)." % (
              time.strftime("%Y-%m-%d %H:%M"), list_path, len(rows), len(recs), compression), "",
          "- textures: **%.1f GB** (of which %.1f GB stay RGBA32 because a side is not a multiple of 4)" % (
              tot_tex / 1024, tot_rgba / 1024),
-         "- decoded audio: **%.2f GB** (files <= 300 KB, float PCM upper estimate)" % (tot_snd / 1024),
-         "- total attributed: **%.1f GB**" % ((tot_tex + tot_snd) / 1024)]
+         "- decoded audio: **%.2f GB** (files <= 300 KB, float PCM upper estimate)" % (tot_snd / 1024)]
+    if atlas:
+        mod_atl = sum(by_atlas.values())
+        L += ["- static atlases: **%.2f GB** in %d pages holding %d mod textures (%s); %.2f GB of it split to mods"
+              " by pixel share. Not sized: %d vanilla/DLC paths (resources.assets/bundles), %d ThingDefs with a"
+              " mod graphic class that inserts nothing here (top: %s), %d textures >= 512 px" % (
+                  tot_atl / 1024, len(atlas["pages"]), atlas["textures"], atlas_why, mod_atl / 1024,
+                  atlas["vanilla_unsized"], atlas["defs_foreign_class"],
+                  ", ".join("%s %d" % kv for kv in list(atlas["foreign_classes"].items())[:3]), atlas["too_big"])]
+        groups = {}
+        for pg in atlas["pages"]:
+            g = groups.setdefault("%s%s" % (pg["group"], "+mask" if pg["mask"] else ""), [0, 0.0, []])
+            g[0] += 1
+            g[1] += pg["mb"]
+            g[2].append("%dx%d" % (pg["w"], pg["h"]))
+        L += ["  - %s: %d page(s), %.0f MB (%s)" % (k, v[0], v[1], ", ".join(v[2][:6])) for k, v in sorted(groups.items())]
+    else:
+        L.append("- static atlases: UNMEASURED (%s)" % atlas_why)
+    L.append("- total attributed: **%.1f GB**" % ((tot_tex + tot_snd + tot_atl) / 1024))
+    tot_all = tot_tex + tot_snd + tot_atl
     if measured:
         L.append("- MEASURED game private bytes now: %s MB (health_observer); attribution / private = %.0f%%;"
                  " unattributed residual %.1f GB" % (", ".join("%.0f" % m for m in measured),
-                                                    100.0 * (tot_tex + tot_snd) / max(measured),
-                                                    (max(measured) - tot_tex - tot_snd) / 1024))
+                                                    100.0 * tot_all / max(measured),
+                                                    (max(measured) - tot_all) / 1024))
     else:
         L.append("- game private bytes: UNMEASURED (no --reconcile, or no game process)")
-    L += ["", "Unattributed by design: static atlases, RenderTextures, AssetBundles, resources.assets, assemblies,"
+    L += ["", "Unattributed by design: pawn atlases, RenderTextures, AssetBundles, resources.assets, assemblies,"
           " Mono/Unity overhead. GPU texture memory counts in private bytes only where the driver backs it there.", "",
-          "| # | packageId | tex GB | RGBA32 MB | tex files | audio MB | biggest texture |",
-          "|---|---|---|---|---|---|---|"]
+          "| # | packageId | tex GB | atlas MB | RGBA32 MB | tex files | audio MB | biggest texture |",
+          "|---|---|---|---|---|---|---|---|"]
     for i, (pid, r) in enumerate(ranked[:60], 1):
         big = r.get("largest") or []
-        L.append("| %d | `%s` | %.2f | %.0f | %d | %.0f | %s |" % (
-            i, pid, r.get("tex_mb", 0) / 1024, r.get("tex_rgba_mb", 0), r.get("tex_files", 0), r.get("snd_mb", 0),
+        L.append("| %d | `%s` | %.2f | %s | %.0f | %d | %.0f | %s |" % (
+            i, pid, r.get("tex_mb", 0) / 1024, ("%.0f" % by_atlas.get(pid, 0)) if atlas else "UNMEASURED",
+            r.get("tex_rgba_mb", 0), r.get("tex_files", 0), r.get("snd_mb", 0),
             ("`%s` %.0f MB" % (big[0][1], big[0][0])) if big else ""))
     os.makedirs(os.path.dirname(os.path.abspath(report)), exist_ok=True)
     with open(report, "w") as fh:
         fh.write("\n".join(L) + "\n")
-    return tot_tex, tot_snd
+    return tot_tex, tot_snd, tot_atl
 
 
 def main(argv=None):
@@ -405,6 +451,7 @@ def main(argv=None):
     ap.add_argument("--reconcile", action="store_true")
     ap.add_argument("--list", default=LIST_XML, help="a ModsConfig-shaped file (default: the FULL.LATEST tier list)")
     ap.add_argument("--report", default=REPORT)
+    ap.add_argument("--dump", default=None, help="def dump capture dir (default: refresh.D_DUMP, the live capture)")
     a = ap.parse_args(argv)
     compression = compression_pref()
     if compression is None:
@@ -435,10 +482,23 @@ def main(argv=None):
     if missing:
         print("INCOMPLETE - re-run to resume")
         return 1
+    dump = a.dump
+    if dump is None:
+        sys.path.insert(1, os.path.dirname(HERE))
+        import game_paths
+        dump = game_paths.DEF_DUMP
+    atlas, atlas_why = atlas_for(ids, recs, active, compression, dump)
     measured = game_private_mb() if a.reconcile else None
-    tex, snd = write_report(rows, recs, compression, measured, a.list, a.report)
-    print("textures %.1f GB + decoded audio %.2f GB = %.1f GB attributed; report %s" % (
-        tex / 1024, snd / 1024, (tex + snd) / 1024, a.report))
+    tex, snd, atl = write_report(rows, recs, compression, measured, a.list, a.report, atlas, atlas_why)
+    print("textures %.1f GB + decoded audio %.2f GB + static atlases %s = %.1f GB attributed; report %s" % (
+        tex / 1024, snd / 1024, ("%.2f GB" % (atl / 1024)) if atlas else "UNMEASURED", (tex + snd + atl) / 1024,
+        a.report))
+    if a.check and atlas is None:
+        print("CHECK FAIL: static atlases UNMEASURED - %s (re-capture the def dump for this list)" % atlas_why)
+        return 1
+    if a.check and atlas["textures"] < 100:
+        print("SANITY FAIL: fewer than 100 mod textures in atlas pages on a full list - the atlas pass cannot see")
+        return 1
     if a.reconcile and not measured:
         print("RECONCILE FAILED: no game private bytes read")
         return 1
