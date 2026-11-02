@@ -82,7 +82,6 @@ namespace RimMandrake.LanternDeeps
         public static bool galuushRoofFallEnabled = true;       // live: a galuush killed hot brings its roof down
         // LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1
         public static bool slickTrailEnabled = true;            // live: slicks leave burning-fuse fuel trails
-        public static bool blinkerFlashEnabled = true;          // live: a hurt blinker flashes and dazzles
         public static bool knockerAlarmEnabled = true;          // live: knockers drum at a failing roof
         public static float knockerWarningFactor = 2f;          // a tame knocker lengthens collapse warnings
         // LANTERNDEEPS_HYDROCARBON_WAVE3_BUILD_1
@@ -226,7 +225,6 @@ namespace RimMandrake.LanternDeeps
             Scribe_Values.Look(ref collapseWarningTicks, "collapseWarningTicks", 900);
             Scribe_Values.Look(ref galuushRoofFallEnabled, "galuushRoofFallEnabled", true);
             Scribe_Values.Look(ref slickTrailEnabled, "slickTrailEnabled", true);
-            Scribe_Values.Look(ref blinkerFlashEnabled, "blinkerFlashEnabled", true);
             Scribe_Values.Look(ref knockerAlarmEnabled, "knockerAlarmEnabled", true);
             Scribe_Values.Look(ref knockerWarningFactor, "knockerWarningFactor", 2f);
             Scribe_Values.Look(ref hushHidingEnabled, "hushHidingEnabled", true);
@@ -400,7 +398,7 @@ namespace RimMandrake.LanternDeeps
                 list.GapLine();
             }
 
-            if (Group(list, "Methane, the Creep and Cleavers", RimMandrake.Shared.SettingScope.Now, new[] { "hydrocarbonIgnitionEnabled", "creepEnabled", "cleavingEnabled", "galuushRoofFallEnabled", "slickTrailEnabled", "blinkerFlashEnabled", "creepGrowthMultiplier", "cleaverMapCap" }))
+            if (Group(list, "Methane, the Creep and Cleavers", RimMandrake.Shared.SettingScope.Now, new[] { "hydrocarbonIgnitionEnabled", "creepEnabled", "cleavingEnabled", "galuushRoofFallEnabled", "slickTrailEnabled", "creepGrowthMultiplier", "cleaverMapCap" }))
             {
                 list.CheckboxLabeled("Methane bodies ignite when killed hot", ref hydrocarbonIgnitionEnabled,
                     "On: a drifter or a galuush killed by fire, a burn, a bullet or a blast detonates (the galuush fills its chamber); "
@@ -426,9 +424,6 @@ namespace RimMandrake.LanternDeeps
                 list.CheckboxLabeled("Slicks leave fuel trails", ref slickTrailEnabled,
                     "On: every cell a slick crosses is left wet with fuel that does not evaporate in the cold; one spark runs the corridor "
                   + "like a fuse. Off: no trail. Safe mid-game.");
-                list.CheckboxLabeled("A hurt blinker flashes", ref blinkerFlashEnabled,
-                    "On: a blinker that is hurt flashes: everything that can see it is dazzled for a few seconds and the chamber is lit "
-                  + "for a breath, which draws what light draws. Off: no flash. Safe mid-game.");
                 list.GapLine();
             }
 

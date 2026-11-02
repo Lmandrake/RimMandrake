@@ -564,13 +564,12 @@ def aurora_collapse(t):
 @suite.chain("hydrocarbon_wave2")
 def hydrocarbon_wave2(t):
     """LANTERNDEEPS_HYDROCARBON_WAVE2_BUILD_1: slick, blinker, knocker load; a slick leaves fuel on the cells it leaves; a
-    blinker's flash puts up its flare and dazzles a beast beside it; a knocker hears a roof held for its warning. Run in a
-    Deep (the knocker needs the collapse component). Not proven here: a spark running a slick trail, predators drawn to a
-    flash, the tame knocker's longer warning window."""
+    knocker hears a roof held for its warning. Run in a Deep (the knocker needs the collapse component). The blinker's
+    flash was cut 2026-11-02 (FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO); it is a plain animal. Not proven here: a spark running
+    a slick trail, the tame knocker's longer warning window."""
     WP = "RimMandrake.LanternDeeps.RM_HydrocarbonWave2Proof"
     with t.component("wave2_defs_loaded", beyond_toggle=True):
-        for d in ("ThingDef/RM_Slick", "ThingDef/RM_Blinker", "ThingDef/RM_Knocker", "ThingDef/RM_BlinkerFlare",
-                  "HediffDef/RM_BlinkerDazzled"):
+        for d in ("ThingDef/RM_Slick", "ThingDef/RM_Blinker", "ThingDef/RM_Knocker"):
             r = t.bridge_call("jawa/get_defs", defs=d)
             if t._guard() and (not r or not r.get("success") or r.get("foundCount") != 1):
                 raise ExpectationFailed("def did not load: %s -> %r" % (d, r))
@@ -581,12 +580,6 @@ def hydrocarbon_wave2(t):
         m = re.search(r"moved=(\d+) fuelCells=(\d+)", res)
         if t._guard() and (not m or int(m.group(1)) == 0 or int(m.group(2)) == 0):
             raise ExpectationFailed("no fuel trail: %r" % res)
-    with t.component("blinker_flashes", toggle="blinkerFlashEnabled"):
-        res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofBlinker", args="go") or {}).get("result", ""))
-        if _deep_prereq_missing(t, res):
-            return
-        if t._guard() and "flare=True" not in res:
-            raise ExpectationFailed("no flash: %r" % res)
     with t.component("knocker_hears_failing_roof", toggle="knockerAlarmEnabled"):
         res = str((t.bridge_call("jawa/static_call", type=WP, method="ProofKnocker", args="go") or {}).get("result", ""))
         if _deep_prereq_missing(t, res):

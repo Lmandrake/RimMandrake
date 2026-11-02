@@ -4,7 +4,8 @@
   Slick, blinker, knocker: three more of the twelve ruled hydrocarbon animals (owner: "Yes all 7
   and ensure hydrocarbon"). Concepts: rosters/lantern_deeps_repopulation_proposals.md §5, §8, §11.
   Same premises as wave 1: RM_HydrocarbonBloodExtension, Filth_Fuel for blood, no meat or leather,
-  fuel-class butcher products. Mechanics: Source/RM_HydrocarbonWave2.cs. Art: artpipe
+  fuel-class butcher products. Mechanics: Source/RM_HydrocarbonWave2.cs (slick and knocker; the
+  blinker's flash was cut 2026-11-02, FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO, and it is a plain animal). Art: artpipe
   RM_<Name>_south/east/north at the art's own drawsizes (slick 1.6, blinker 1.0, knocker 1.1).
 -->
 <Defs>
@@ -101,7 +102,7 @@
   <ThingDef ParentName="AnimalThingBase">
     <defName>RM_Blinker</defName>
     <label>blinker</label>
-    <description>A soft upright teardrop of pale translucent blue, about a metre tall, walking on two thin trailing arms like crutches. Where a face would be is a single large lens-window with the yellow interior showing through it, and a third shorter arm held over it like a hand over a torch. Hurt or cornered it flings the arm wide and flashes: everything that can see it is dazzled, and for a breath the whole chamber is lit.</description>
+    <description>A soft upright teardrop of pale translucent blue, about a metre tall, walking on two thin trailing arms like crutches. Where a face would be is a single large lens-window with the yellow interior showing through it, and a third shorter arm held over it like a hand over a torch.</description>
     <modExtensions>
       <li Class="RimMandrake.CreatureBehaviors.RM_HydrocarbonBloodExtension" />
     </modExtensions>
@@ -147,14 +148,6 @@
     <butcherProducts>
       <Chemfuel>6</Chemfuel>
     </butcherProducts>
-    <comps>
-      <li Class="RimMandrake.LanternDeeps.RM_CompProperties_FlashOnHurt">
-        <flare>RM_BlinkerFlare</flare>
-        <dazzle>RM_BlinkerDazzled</dazzle>
-        <dazzleRadius>8</dazzleRadius>
-        <cooldownTicks>600</cooldownTicks>
-      </li>
-    </comps>
   </ThingDef>
 
   <PawnKindDef ParentName="AnimalKindBase">
@@ -277,49 +270,5 @@
       </li>
     </lifeStages>
   </PawnKindDef>
-
-  <ThingDef>
-    <defName>RM_BlinkerFlare</defName>
-    <label>blinker flash</label>
-    <description>The light of a blinker's flash, gone in a breath.</description>
-    <thingClass>ThingWithComps</thingClass>
-    <category>Ethereal</category>
-    <altitudeLayer>MoteOverhead</altitudeLayer>
-    <drawerType>None</drawerType>
-    <tickerType>Normal</tickerType>
-    <useHitPoints>false</useHitPoints>
-    <selectable>false</selectable>
-    <rotatable>false</rotatable>
-    <comps>
-      <li Class="CompProperties_Glower">
-        <glowRadius>20</glowRadius>
-        <glowColor>(235,245,255,0)</glowColor>
-      </li>
-      <li Class="CompProperties_Lifespan">
-        <lifespanTicks>90</lifespanTicks>
-      </li>
-    </comps>
-  </ThingDef>
-
-  <HediffDef>
-    <defName>RM_BlinkerDazzled</defName>
-    <label>dazzled</label>
-    <description>Looked straight into a blinker's flash: half-blind for a few seconds.</description>
-    <hediffClass>HediffWithComps</hediffClass>
-    <isBad>true</isBad>
-    <comps>
-      <li Class="HediffCompProperties_Disappears">
-        <disappearsAfterTicks>300</disappearsAfterTicks>
-        <showRemainingTime>true</showRemainingTime>
-      </li>
-    </comps>
-    <stages>
-      <li>
-        <capMods>
-          <li><capacity>Sight</capacity><offset>-0.6</offset></li>
-        </capMods>
-      </li>
-    </stages>
-  </HediffDef>
 
 </Defs>

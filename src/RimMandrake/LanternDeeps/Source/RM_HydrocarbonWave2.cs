@@ -14,9 +14,8 @@ namespace RimMandrake.LanternDeeps
     //
     //  RM_CompTrailFilth   the slick sweats pentane: each cell it leaves gets Filth_Fuel, which is
     //                      vanilla flammable filth, so a spark runs the corridor like a fuse.
-    //  RM_CompFlashOnHurt  the blinker, hurt, flashes: a short-lived radius-20 glower thing (the ruled
-    //                      light-draw answers it with no extra code) and RM_BlinkerDazzled on every
-    //                      other pawn within 8 that can see it.
+    //  (the blinker's flash-and-dazzle comp was cut 2026-11-02, FLUFF_ASKS_DECIDE_EIGHT_UNDER_VETO;
+    //   the blinker is a plain animal now)
     //  RM_CompKnocker      the knocker hears rock before it fails: when the Deep's collapse warning
     //                      (RM_MapComponent_DeepCollapse) holds cells within 15 it drums, flees the
     //                      cells, and a tame one names the danger. A tame knocker on the map also
@@ -74,87 +73,6 @@ namespace RimMandrake.LanternDeeps
                 return false;
             }
             return Rand.Chance(p.chance) && FilthMaker.TryMakeFilth(left, parent.Map, p.filth);
-        }
-    }
-
-    public class RM_CompProperties_FlashOnHurt : CompProperties
-    {
-        public ThingDef flare;
-        public HediffDef dazzle;
-        public float dazzleRadius = 8f;
-        public int cooldownTicks = 600;
-
-        public RM_CompProperties_FlashOnHurt()
-        {
-            compClass = typeof(RM_CompFlashOnHurt);
-        }
-    }
-
-    public class RM_CompFlashOnHurt : ThingComp
-    {
-        public int lastFlashTick = -999999;
-
-        private RM_CompProperties_FlashOnHurt Props => (RM_CompProperties_FlashOnHurt)props;
-
-        public override void PostExposeData()
-        {
-            base.PostExposeData();
-            Scribe_Values.Look(ref lastFlashTick, "lastFlashTick", -999999);
-        }
-
-        public override void PostPostApplyDamage(DamageInfo dinfo, float totalDamageDealt)
-        {
-            base.PostPostApplyDamage(dinfo, totalDamageDealt);
-            if (!LanternDeepsSettings.blinkerFlashEnabled || totalDamageDealt <= 0f || !parent.Spawned)
-            {
-                return;
-            }
-            int now = Find.TickManager.TicksGame;
-            if (now - lastFlashTick < Props.cooldownTicks)
-            {
-                return;
-            }
-            lastFlashTick = now;
-            Flash();
-        }
-
-        public int Flash()
-        {
-            Map map = parent.Map;
-            IntVec3 at = parent.Position;
-            if (Props.flare != null)
-            {
-                GenSpawn.Spawn(ThingMaker.MakeThing(Props.flare), at, map);
-            }
-            FleckMaker.ThrowLightningGlow(at.ToVector3Shifted(), map, 6f);
-            int dazzled = 0;
-            if (Props.dazzle == null)
-            {
-                return 0;
-            }
-            foreach (Pawn p in map.mapPawns.AllPawnsSpawned.ToList())
-            {
-                if (p == parent || p.def == parent.def || p.Dead || p.Position.DistanceTo(at) > Props.dazzleRadius)
-                {
-                    continue;
-                }
-                // "every other pawn within 8 that can see it": awake, in line of sight, and not blind
-                if (!p.Awake() || !p.health.capacities.CapableOf(PawnCapacityDefOf.Sight) || !GenSight.LineOfSight(p.Position, at, map))
-                {
-                    continue;
-                }
-                Hediff h = p.health.hediffSet.GetFirstHediffOfDef(Props.dazzle);
-                if (h == null)
-                {
-                    p.health.AddHediff(Props.dazzle);
-                }
-                else
-                {
-                    h.TryGetComp<HediffComp_Disappears>()?.ResetElapsedTicks();
-                }
-                dazzled++;
-            }
-            return dazzled;
         }
     }
 
@@ -303,30 +221,6 @@ namespace RimMandrake.LanternDeeps
                 }
             }
             return "moved=" + moved + " fuelCells=" + filth + " comp=" + (comp != null);
-        }
-
-        // Spawns a blinker beside a muffalo and flashes it.
-        public static string ProofBlinker(string unused)
-        {
-            Pawn p = Spawn("RM_Blinker", out string err);
-            if (p == null)
-            {
-                return err;
-            }
-            PawnKindDef muff = DefDatabase<PawnKindDef>.GetNamedSilentFail("Muffalo");
-            if (muff != null && CellFinder.TryFindRandomCellNear(p.Position, p.Map, 3, c => c.Standable(p.Map) && GenSight.LineOfSight(c, p.Position, p.Map), out IntVec3 near))
-            {
-                GenSpawn.Spawn(PawnGenerator.GeneratePawn(muff), near, p.Map);
-            }
-            RM_CompFlashOnHurt comp = p.TryGetComp<RM_CompFlashOnHurt>();
-            if (comp == null)
-            {
-                return "no comp";
-            }
-            int dazzled = comp.Flash();
-            ThingDef flare = ((RM_CompProperties_FlashOnHurt)comp.props).flare;
-            bool flareUp = flare != null && p.Position.GetFirstThing(p.Map, flare) != null;
-            return "dazzled=" + dazzled + " flare=" + flareUp;
         }
 
         // Holds a roof cell for its warning beside a knocker and lets it hear.
