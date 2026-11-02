@@ -1,2 +1,2 @@
-live-proof A1: python.exe "$(wslpath -w src/RimMandrake/Contagion/prep_site.py)" --prove --build-if-missing < /dev/null
-live-proof A2: python.exe "$(wslpath -w src/RimMandrake/Contagion/prep_site.py)" --prove < /dev/null
+live-proof A1: python.exe src/RimMandrake/Contagion/prep_site.py --prove --build-if-missing < /dev/null
+live-proof A2: python.exe src/RimMandrake/Contagion/prep_site.py --prove < /dev/null
