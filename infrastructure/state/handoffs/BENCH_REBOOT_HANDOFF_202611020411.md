@@ -42,6 +42,11 @@ The Conductor log `D:\ClaudeWork\rimmandrake\conductor\log.md` (entry 2026-11-02
 - `VALIDATION_V2_IDENTITY_WIRE_READS_ZERO` — not started by this window (helper or Relentless work on the BENCH seat); NEXT: leave it to the queue
 - `WARLAB_SPECIMENS_DESIGN_BREAKOUT_CHOICE` — not started by this window (helper or Relentless work on the BENCH seat); NEXT: leave it to the queue
 
+- `RELENTLESS_REDESIGN_VERDICT_FAIL_CLOSED` — design + bridge fix on main, live_identity.py draft untested in D:\ClaudeWork\rimmandrake\relentless_design_probe\wip; NEXT: test the draft, then rebuild relentless_live per the design
+- `LIVE_PROOFS_POPULATE_CLEAN_BUILDS_FIRST` — enrolled in Relentless (1 of 52 eligible criteria has a proof line); NEXT: leave it to Relentless and read its proof-line count
+- `STEVE_LANE_UNSTICK_OFFLINE_UNOWNED_6D94` — Steve offline: hangs at BIOS POST, owner pulls the Samsung tomorrow; NEXT: when Steve is back on Tailscale, confirm C: is the Kingston and restore WSL + keepalive
+- `CELL_RECT_SHOT_FIX_COLONIST_BAR_PHOTOBOMBS` — not started by this window (a helper or Relentless took it on the BENCH seat); NEXT: leave it to the queue
+
 ## Traps learned
 
 <!-- Instruments that lied, silent failures, commands that ate their own input. ONE line each, ending with where it now lives -- file it with `lessons.py add` the moment it is learned, then cite `(filed: lessons)` or `(see: <item/doc>)`. Never re-explain a trap that is already recorded somewhere durable. -->
