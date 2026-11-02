@@ -808,6 +808,37 @@ def main():
         check(died is None and wj.get("epoch") == base + 32000 + W.L1_S
               and str((wj.get("incident") or {}).get("error") or "").startswith(W.LEDGER_ERR),
               "VHRP: the watcher writes steward_watch.json with its blind ladder: %s %s" % (died, wj.get("incident")))
+        # a fault pass whose incident already holds an item reads claim_cover (capped_cover) before escalate()
+        S.dump(dict(sj, epoch=base + 32050, fault=True, incident=dict(inc, item="VHRP_PROBE_ITEM", level=1,
+                                                                       error=None)), T.q("steward.json"))
+        try:
+            step(base + 32100)
+            died = None
+        except Exception as e:      # noqa: BLE001
+            died = e
+        sj = T.read_json(T.q("steward.json")) or {}
+        check(died is None and sj.get("epoch") == base + 32100,
+              "VHRP: a fault pass with an incident item writes steward.json on a torn ledger: %s" % died)
+        # retire() replays the ledger per item: it must hand the items back, not raise
+        try:
+            left, died = W.retire(["VHRP_PROBE_ITEM"], "w", base + 32150), None
+        except Exception as e:      # noqa: BLE001
+            left, died = None, e
+        check(died is None and left == ["VHRP_PROBE_ITEM"],
+              "VHRP: retire keeps its items on a torn ledger: %s %s" % (died, left))
+        # the watcher's retire of a recovered incident's items runs before steward_watch.json is written
+        S.dump(dict(sj, epoch=base + 32190), T.q("steward.json"))
+        S.dump({"first_seen": base, "epoch": base + 32100, "incident": None, "to_retire": ["VHRP_PROBE_ITEM"]},
+               T.q("steward_watch.json"))
+        try:
+            W.watch_pass(now=base + 32200)
+            died = None
+        except Exception as e:      # noqa: BLE001
+            died = e
+        wj = T.read_json(T.q("steward_watch.json")) or {}
+        check(died is None and wj.get("epoch") == base + 32200 and wj.get("to_retire") == ["VHRP_PROBE_ITEM"],
+              "VHRP: a watch pass with items to retire writes steward_watch.json on a torn ledger: %s %s"
+              % (died, wj.get("to_retire")))
         os.remove(torn)
         S.dump({"first_seen": base, "epoch": base + 32000, "incident": None}, T.q("steward_watch.json"))
         rec = step(base + 32700)
