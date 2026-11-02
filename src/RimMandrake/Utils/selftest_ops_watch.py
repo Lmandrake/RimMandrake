@@ -310,6 +310,31 @@ wj(Q / "steward_watch.json", {"epoch": NOW - 40 * 60, "incident": {"item": None}
 s = OW.c_steve(NOW, RULES, {})
 check("steve: dead watcher, unfiled incident -> the stall is reported, not UNMEASURED",
       abs((s["steve.unowned_stall_min"]["v"] or 0) - 50) < 0.2, s["steve.unowned_stall_min"])
+# OPS_STEVE_UNSTICK_VHRP: a torn ledger blinds the ladder; the steward and watcher now keep writing, so the
+# blind ladder itself must read as nobody escalating, never as an owned incident or an unknown
+_blind = {"item": None, "level": 0, "error": "ledger unreadable: DISPATCHER.jsonl line 620 is not valid JSON"}
+wj(Q / "steward_watch.json", {"epoch": NOW - 30, "incident": _blind})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: steward silent 50 min, watcher alive but its ladder blind on the ledger -> unowned 50",
+      s["steve.unowned_stall_min"]["m"] == "MEASURED" and abs((s["steve.unowned_stall_min"]["v"] or 0) - 50) < 0.2
+      and "blind" in (s["steve.unowned_stall_min"].get("x") or {}).get("why", ""), s["steve.unowned_stall_min"])
+wj(Q / "steward_watch.json", {"epoch": NOW - 30, "incident": {"item": None, "level": 0, "error": None}})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: steward silent, watcher alive on a working ladder -> not a stall (unknown, never alarmed)",
+      s["steve.unowned_stall_min"]["v"] is None, s["steve.unowned_stall_min"])
+wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": True, "incident": _blind,
+                        "since": OW.iso(NOW - 45 * 60)})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: a 45 min fault whose incident's ladder is blind on the ledger -> unowned 45",
+      abs((s["steve.unowned_stall_min"]["v"] or 0) - 45) < 0.2, s["steve.unowned_stall_min"])
+wj(Q / "steward.json", {"epoch": NOW - 60, "state": "UNREACHABLE", "fault": True,
+                        "incident": dict(_blind, item="STEVE_LANE_UNSTICK_AB12"), "since": OW.iso(NOW - 45 * 60)})
+s = OW.c_steve(NOW, RULES, {})
+check("steve: a ledger error on an incident that already holds an item is still owned -> 0",
+      s["steve.unowned_stall_min"]["v"] == 0.0, s["steve.unowned_stall_min"])
+check("steve: ladder_blind wants the steward's exact prefix and no item",
+      OW.ladder_blind(_blind) and not OW.ladder_blind({"item": None, "error": "no receiver: x"})
+      and not OW.ladder_blind("ledger unreadable: x") and not OW.ladder_blind(None), "")
 _pc_real = sys.modules.get("pulse_core")
 _led_items = {"OPEN_ONE": types.SimpleNamespace(open=True), "SHUT_ONE": types.SimpleNamespace(open=False)}
 _pc = types.ModuleType("pulse_core")

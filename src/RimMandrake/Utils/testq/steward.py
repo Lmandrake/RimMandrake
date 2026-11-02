@@ -107,6 +107,7 @@ MANUAL_PAUSE_S = 3600                       # section 6.1: "a pause with neither
 CLAIM_HOLD_S = 7200                         # a claim without a lease pauses the clock this long
 LOCK_WAIT_S = 30                            # a pass waits this long for the other pass, then skips
 STALE_S = 300                               # the watcher: steward.json older than this
+LEDGER_ERR = "ledger unreadable: "          # inc["error"] prefix; ops_watch counts it as nobody escalating
 HARNESS_CAUSES = {"HARNESS", "DEPLOY", "SYNC", "SOURCE_SHA_MISSING", "BLOCKED_SELECTION"}
 TAG = {"UNREACHABLE": "OFFLINE", "QUARANTINE": "QUARANTINE", "PAUSED": "PAUSED", "READY": "STALLED",
        "BRAKED": "BRAKED", "IDLE_EMPTY": "IDLE", "STALE_HEARTBEAT": "STALLED", "TICK_STOPPED": "STALLED"}
@@ -569,13 +570,26 @@ def maybe_wake(inc, ls, now, src="steward"):
     return inc["wake"]
 
 
+class LedgerUnreadable(Exception):
+    """The ledger could not be read (a torn shard after an unclean stop: OPS_STEVE_UNSTICK_VHRP). A pass that meets it
+    still writes its heartbeat; the ladder records the error on the incident and retries next pass."""
+
+
+def read_events(model):
+    """model.read() -> events; a LedgerError becomes LedgerUnreadable, so no pass dies before its heartbeat."""
+    try:
+        return model.read()
+    except model.LedgerError as e:
+        raise LedgerUnreadable(str(e)) from e
+
+
 def world():
     """The replayed ledger (production: every shard; a selftest: RIMFLOW_LEDGER)."""
     if RIMFLOW_DIR not in sys.path:
         sys.path.insert(0, os.path.dirname(RIMFLOW_DIR))
     from rimflow import model
     model.EVENTS = os.environ.get("RIMFLOW_LEDGER") or model.EVENTS
-    return model, model.replay(model.read())
+    return model, model.replay(read_events(model))
 
 
 # ---------------------------------------------------------------- the clock and the escalation ladder
@@ -613,8 +627,12 @@ def claim_pauses(inc, now, w=None):
 
 def capped_cover(inc, a, b):
     """claim_cover over [A, B] for INC's item, capped so one incident never pauses for more than CLAIM_HOLD_S in all;
-    -> the seconds paused, added to inc["claim_paused_s"]."""
-    c = min(claim_cover(inc.get("item"), a, b), max(0, CLAIM_HOLD_S - inc.get("claim_paused_s", 0)))
+    -> the seconds paused, added to inc["claim_paused_s"]. An unreadable ledger pauses nothing: the clock runs."""
+    try:
+        cover = claim_cover(inc.get("item"), a, b)
+    except LedgerUnreadable:
+        cover = 0
+    c = min(cover, max(0, CLAIM_HOLD_S - inc.get("claim_paused_s", 0)))
     inc["claim_paused_s"] = inc.get("claim_paused_s", 0) + c
     return c
 
@@ -660,7 +678,7 @@ def claim_cover(item_id, a, b, w=None):
         if t is not None:
             segs.append((t, _window(world.items.get(item_id), model)))
 
-    model.replay(model.read(), observe=observe)
+    model.replay(read_events(model), observe=observe)
     total = 0
     for k, (t, win) in enumerate(segs):
         if win is None:
@@ -717,8 +735,12 @@ def retire(items, why, now):
     STEWARD_FIX_LEAVES_THE_LIGHTS_ON). An item a seat holds, by a claim or by having started it (the relentless
     supervisor starts without claiming), is left to that seat; a refused drop is retried next pass."""
     left = []
-    for item in items:
-        w = world()
+    for k, item in enumerate(items):
+        try:
+            w = world()
+        except LedgerUnreadable as e:
+            jlog({"ts": iso(now), "event": "retire_failed", "item": item, "error": (LEDGER_ERR + str(e))[:200]})
+            return left + list(items[k:])
         if not item_open(item, w):
             continue
         if claim_holds(item, now, w) or (w[1].items[item].state == "doing" and not abandoned(item, now, w)):
@@ -740,7 +762,17 @@ def jlog(rec):
 
 def escalate(inc, ls, now, last_item, src="steward"):
     """Advance INC up the ladder by its unowned clock. -> the item the incident escalated (or None). Each rung is
-    recorded in the incident only once its ledger write succeeded, so a refused write is retried next pass."""
+    recorded in the incident only once its ledger write succeeded, so a refused write is retried next pass. An
+    unreadable ledger is that refusal too: inc["error"] says so and the pass goes on to write its heartbeat."""
+    try:
+        return _escalate(inc, ls, now, last_item, src)
+    except LedgerUnreadable as e:
+        inc["error"] = (LEDGER_ERR + str(e))[:200]
+        jlog({"ts": iso(now), "event": "escalate_failed", "by": src, "error": inc["error"]})
+        return None
+
+
+def _escalate(inc, ls, now, last_item, src):
     u = inc["unowned_s"]
     if u < L1_S:
         return None

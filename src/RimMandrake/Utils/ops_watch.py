@@ -617,6 +617,13 @@ def incident_unowned(inc):
     return it is None or not it.open
 
 
+def ladder_blind(inc):
+    """True when a steward incident's ladder cannot run because the ledger is unreadable (testq/steward.py LEDGER_ERR,
+    a torn shard after an unclean stop: OPS_STEVE_UNSTICK_VHRP) and it holds no item: nobody is escalating."""
+    return isinstance(inc, dict) and not inc.get("item") and \
+        str(inc.get("error") or "").startswith("ledger unreadable: ")
+
+
 def c_steve(now, rules, ctx):
     out = {}
     sj = read_json(qhome() / "steward.json")
@@ -656,10 +663,16 @@ def c_steve(now, rules, ctx):
         # escalating it until RUNNING, so a closed item is re-raised, not abandoned
         if fault_min and fault_min > 0 and not sj.get("incident"):
             nobody.append(("fault %s for %.0f min with no steward incident" % (st, fault_min), fault_min))
+        elif fault_min and fault_min > 0 and ladder_blind(sj.get("incident")):
+            nobody.append(("fault %s for %.0f min, the steward's ladder blind: %s" % (
+                st, fault_min, str(sj["incident"]["error"])[:120]), fault_min))
         # both silent, nothing is left to re-raise: here an unfiled, unknown or closed item owns nothing
         if hb > 30 and (wage is None or wage > 30) and (not wj.get("incident") or incident_unowned(wj["incident"])):
             nobody.append(("steward silent %.0f min and its watcher silent %s" % (
                 hb, "(never ran)" if wage is None else "%.0f min" % wage), hb))
+        elif hb > 30 and ladder_blind(wj.get("incident")):     # the watcher runs but cannot escalate
+            nobody.append(("steward silent %.0f min and its watcher's ladder blind: %s" % (
+                hb, str(wj["incident"]["error"])[:120]), hb))
         if fault_min is None and not nobody:
             out["steve.unowned_stall_min"] = U("steward state stale or a fault of unknown duration: whether a stall is "
                                                "owned is unknown")

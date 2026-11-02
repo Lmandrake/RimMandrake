@@ -765,6 +765,55 @@ def main():
         step(base + 31000)
         step(base + 31700)
         check(len(events("spawn")) == n1, "a lost steward.json does not mint a second item while one is open")
+        # OPS_STEVE_UNSTICK_VHRP: a torn ledger shard (NULs after an unclean stop) once killed the steward AND its
+        # watcher inside escalate() before either wrote its heartbeat, for 87 min; both must keep writing
+        torn = os.path.join(tmp, "ledger", "events", "TORN.jsonl")
+        with open(torn, "w") as f:
+            f.write("\0" * 64 + "\n")
+        try:
+            W.world()
+            check(False, "VHRP control: the torn shard makes the ledger unreadable")
+        except W.LedgerUnreadable:
+            check(True, "VHRP control: the torn shard makes the ledger unreadable")
+        sj0 = T.read_json(T.q("steward.json")) or {}
+        inc0 = dict(sj0.get("incident") or {}, item=None, level=0, error=None, unowned_s=W.L1_S + 60)
+        S.dump(dict(sj0, incident=inc0), T.q("steward.json"))
+        n_sp = len(events("spawn"))
+        try:
+            rec = step(base + 32000)
+            died = None
+        except Exception as e:      # noqa: BLE001 -- the defect under test
+            rec, died = None, e
+        sj = T.read_json(T.q("steward.json")) or {}
+        inc = sj.get("incident") or {}
+        check(died is None and sj.get("epoch") == base + 32000 and sj.get("fault") is True,
+              "VHRP: a torn ledger does not stop the steward writing steward.json: %s %s" % (died, sj.get("state")))
+        check(str(inc.get("error") or "").startswith(W.LEDGER_ERR) and not inc.get("item")
+              and len(events("spawn")) == n_sp,
+              "VHRP: the blind ladder is on the incident, no item claimed: %s" % inc.get("error"))
+        S.dump(dict(sj, epoch=base + 32000 - 2 * W.STALE_S - 400), T.q("steward.json"))
+        real_rt = W.restart_tick
+        W.restart_tick = lambda: "exit 0"
+        try:
+            S.dump({"first_seen": base, "epoch": base + 32000, "incident": {
+                "state": "STALE_HEARTBEAT", "since": W.iso(base + 31000), "unowned_s": 0, "level": 0, "item": None,
+                "owner_item": None, "restarted": "already"}}, T.q("steward_watch.json"))
+            try:
+                wst, died = W.watch_pass(now=base + 32000 + W.L1_S), None
+            except Exception as e:  # noqa: BLE001
+                wst, died = None, e
+        finally:
+            W.restart_tick = real_rt
+        wj = T.read_json(T.q("steward_watch.json")) or {}
+        check(died is None and wj.get("epoch") == base + 32000 + W.L1_S
+              and str((wj.get("incident") or {}).get("error") or "").startswith(W.LEDGER_ERR),
+              "VHRP: the watcher writes steward_watch.json with its blind ladder: %s %s" % (died, wj.get("incident")))
+        os.remove(torn)
+        S.dump({"first_seen": base, "epoch": base + 32000, "incident": None}, T.q("steward_watch.json"))
+        rec = step(base + 32700)
+        inc = (rec or {}).get("incident") or {}
+        check(not inc.get("error") and inc.get("item") and inc.get("level", 0) >= 1,
+              "VHRP: a readable ledger again lets the ladder climb and clears the error: %s" % inc)
         # ------------------------------------------------ units
         units = T.UNITS["testq-tick.service"]
         order = [units.find(x) for x in ("testq.py tick", "testq.py fill", "testq.py steward", "ingest.py")]
