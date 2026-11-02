@@ -4,6 +4,8 @@
 VALIDATION_V2_IDENTITY_WIRE_READS_ZERO: both scripts wrote neither `run_identity` nor `situational`, so
 required_checks_report counted 0 proven. No game here: validation_v2 runs its own --mock tier, proof_all runs main()
 with its blocks stubbed, and the fingerprint is stubbed at mod_fingerprint (its own logic: selftest_run_identity).
+Both scripts also run on their DEFAULT wiring, the one a real live run takes: run_live with mock=False and no `identity`
+argument, proof_all with its own _RI. The bug this item names lives in that default, so nothing above mod_fingerprint is faked.
 """
 import argparse
 import contextlib
@@ -114,6 +116,14 @@ def main():
         with contextlib.redirect_stdout(io.StringIO()):
             res0 = V2.run_live(copy.copy(a))
         check("v2 --mock default: no identity (a mock tests no deployed code)", res0["run_identity"] is None, res0["run_identity"])
+        # the default wiring of a real live run: mock=False and no `identity`, so run_identity_module() supplies the module
+        calls0 = []
+        RI.mod_fingerprint = fake_fp(calls0)
+        with contextlib.redirect_stdout(io.StringIO()):
+            live = V2.run_live(argparse.Namespace(**dict(vars(a), mock=False)), B=mock_bridge(V2))
+        check("v2 default: the live branch ran", live["mode"] == "live", live["mode"])
+        identity_shape(live, "FlowWorks", 2, calls0, "v2 default")
+        check("v2 default: situational recorded", isinstance(live.get("situational"), dict), live.get("situational"))
         calls = []
         RI.mod_fingerprint = fake_fp(calls)
         with contextlib.redirect_stdout(io.StringIO()):
@@ -160,8 +170,7 @@ def main():
             def restore(self):
                 pass
 
-        PA.Proof = P
-        PA._RI = lambda: RI
+        PA.Proof = P                   # PA._RI stays the real one: its import is the wiring under test
         out = os.path.join(tmp, "proof_all_r.json")
         calls4 = []
         RI.mod_fingerprint = fake_fp(calls4)
@@ -170,6 +179,7 @@ def main():
         check("proof_all main ran", rc == 0, rc)
         pa = json.load(open(out, encoding="utf-8"))
         identity_shape(pa, PA.V.MOD, 2, calls4, "proof_all")
+        check("proof_all: no identity error swallowed", "run_identity_error" not in pa, pa.get("run_identity_error"))
         check("proof_all: situational bland + companion", pa.get("situational", {}).get("bland") is True and
               pa["situational"].get("companion") is True, pa.get("situational"))
         check("proof_all: the report counts it proven", proven(pa, PA.V.MOD, tmp, "paok")[0]["proven"] > 0)
