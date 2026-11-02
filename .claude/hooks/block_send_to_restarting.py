@@ -17,6 +17,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.environ.get("CLAUDE_PROJECT_DIR") or os.path.dirname(os.path.dirname(HERE))
 RIMFLOW = os.path.join(ROOT, "src", "RimMandrake", "rimflow")
 
+STALE_S = 900   # a restart record unmoved this long holds nothing (review 2026-11-02: it blocked for ever)
+
 REASON = (
     "Held: {name} is being restarted ({why}). A message now would reopen the turn it just ended, or die with the old "
     "window. Resend it to the fresh window once it has woken: `python3 src/RimMandrake/rimflow/seat_restart.py status` "
@@ -39,7 +41,11 @@ def restarting(to, now=None, sr=None):
             continue
         rs = (st.get("seat_restart") or {}).get(seat) or {}
         if rs.get("state") in ("pending", "claimed", "killed", "relaunched"):   # relaunched: not yet awake
-            return seat, "restart %s" % rs["state"]
+            moved = max([float(v) for k, v in rs.items() if (k in ("ts", "req_ts") or k.endswith("_at"))
+                         and isinstance(v, (int, float))] or [0])
+            if now - moved < STALE_S:
+                return seat, "restart %s" % rs["state"]
+            # a state untouched for STALE_S is a Dispatcher that stopped mid-restart, not a restart: let it through
         stamp = sr._read_json(sr.now_stamp_path(seat)) or {}
         req = sr._read_json(sr.request_path(seat)) or {}
         for rec, label in ((stamp, "said ready (--now)"), (req, "restart requested")):

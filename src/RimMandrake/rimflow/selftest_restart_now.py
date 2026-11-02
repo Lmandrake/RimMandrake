@@ -102,11 +102,17 @@ def test_kill_time_recheck():
         h_now = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "session_id": "sid-old", "now": True}, sf,
                                    shard=lambda s_: None, **kw)
         h_plain = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "session_id": "sid-old"}, sf, **kw)
+        hard = {"ts": T0, "session_id": "sid-old", "hard": True, "now": True}
+        h_bye = SR.recheck_at_kill("FOUNDRY", F.sched(kind="conductor"), dict(hard, source="request"), sf,
+                                   shard=lambda s_: None, **kw)
+        h_hard = SR.recheck_at_kill("FOUNDRY", sch, dict(hard, source="backstop_hard"), sf, shard=lambda s_: None, **kw)
         h_shard = SR.recheck_at_kill("FOUNDRY", sch, {"ts": T0, "session_id": "sid-old", "now": True}, sf,
                                      shard=lambda s_: "1 commit unpublished", **kw)
     finally:
         SR.tx_summary, SR.helpers_of, SR.bridge_reading, SR.final_fence = old
     check(h_now == [], "kill recheck: --now, turn ended 5 s ago: go (%s)" % h_now)
+    check(not any("context reading" in h for h in h_bye), "a goodbye joined to a hard restart needs no size reading (%s)" % h_bye)
+    check(any("context reading" in h for h in h_hard), "a hard restart alone still needs one (%s)" % h_hard)
     check(any("quiet_s" in h for h in h_plain), "kill recheck: plain request 5 s after its turn: held on quiet_s (%s)" % h_plain)
     check(any("unpublished" in h for h in h_shard), "kill recheck: --now rechecks the shard (%s)" % h_shard)
 
@@ -152,6 +158,8 @@ def test_send_message_hook():
         check(H.restarting("AGENT FOUNDRY", now=T0 + 3, sr=SR), "a restart under way (killed) holds a message")
         _write(stp, {"seat_restart": {"FOUNDRY": {"state": "relaunched", "req_ts": T0}}})
         check(H.restarting("AGENT FOUNDRY", now=T0 + 3, sr=SR), "relaunched but not yet awake still holds a message")
+        check(H.restarting("AGENT FOUNDRY", now=T0 + 365 * 86400, sr=SR) is None,
+              "a restart record unmoved for a year holds nothing (a stopped Dispatcher never strands messages)")
         os.remove(stp)
     finally:
         SR._schedule = saved
@@ -198,23 +206,24 @@ def test_watcher():
     check(SR.now_owed({"seat": "FOUNDRY", "req_ts": T0}, {}, T0 + 5, hold, seats={"BENCH"}) is None,
           "a seat no longer configured: spent at once, never ticked for now_hold_s")
     os.remove(SR.request_path("FOUNDRY"))
-    # a newer --now replaces the stamp between now-run's read and its unlink: the newer one survives
+    # a newer --now really replaces the file on disk at the last moment, just before now-run retires the old one
     sp = SR.now_stamp_path("FOUNDRY")
     _write(sp, {"seat": "FOUNDRY", "req_ts": 1.0})
-    real, reads = SR._read_json, []
+    real = SR.os.rename
 
-    def racing(path):
-        if path == sp:
-            reads.append(path)
-            return {"seat": "FOUNDRY", "req_ts": 1.0 if len(reads) == 1 else T0}
-        return real(path)
-    SR._read_json = racing
+    def racing(src, dst):
+        if src == sp:
+            _write(sp, {"seat": "FOUNDRY", "req_ts": T0})
+        return real(src, dst)
+    SR.os.rename = racing
     try:
         with contextlib.redirect_stdout(io.StringIO()):
             SR.main(["now-run", "--dry"])
     finally:
-        SR._read_json = real
-    check(os.path.exists(sp), "now-run never removes a stamp replaced after it judged the old one spent")
+        SR.os.rename = real
+    left = sorted(os.listdir(SR.now_dir()))
+    check((SR._read_json(sp) or {}).get("req_ts") == T0 and left == ["FOUNDRY"],
+          "now-run never removes a stamp replaced on disk after it judged the old one spent (%s)" % left)
     os.remove(sp)
     _write(SR.now_stamp_path("GONE"), {"seat": "GONE", "req_ts": 1.0})
     out = io.StringIO()

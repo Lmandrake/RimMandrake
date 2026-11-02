@@ -2954,22 +2954,33 @@ def cmd_now_run(args):
         st = _read_json(os.path.join(doorbell.state_dir(), "state.json")) or {}
         owed = {}
         for n in names:
+            if n.endswith(".tmp") or ".spent." in n:
+                continue        # a writer's half-made stamp (_write_json) or one being retired below
             p = os.path.join(now_dir(), n)
             stamp = _read_json(p) or {}
             why = now_owed(stamp, st, now, hold_s, seats=seats)
             if why:
                 owed[n] = why
                 continue
-            # a newer `--now` for the seat may have replaced the file since it was read: that one is not spent
-            # (review 2026-11-02 P2); the gap left is the re-read to the unlink, microseconds
-            if (_read_json(p) or {}).get("req_ts") != stamp.get("req_ts"):
-                owed[n] = "replaced"
-                continue
+            # a newer `--now` may replace the file after it was judged (review 2026-11-02, twice): move it aside
+            # atomically and judge the bytes moved; a newer one goes back unless a newer still has taken its place
+            aside = "%s.spent.%d" % (p, os.getpid())
             try:
-                os.remove(p)
+                os.rename(p, aside)
+            except OSError:
+                continue
+            if (_read_json(aside) or {}).get("req_ts") != stamp.get("req_ts"):
+                try:
+                    os.link(aside, p)   # never overwrites: EEXIST means a newer stamp is there already
+                except OSError:
+                    pass
+                owed[n] = "replaced"
+            else:
+                print("[now-run] %.1fs %s stamp spent: removed" % (now - t0, n), flush=True)
+            try:
+                os.remove(aside)
             except OSError:
                 pass
-            print("[now-run] %.1fs %s stamp spent: removed" % (now - t0, n), flush=True)
         if not owed or now - t0 > hold_s + 30:
             return 0
         print("[now-run] %.1fs tick for %s" % (now - t0, ", ".join("%s=%s" % kv for kv in sorted(owed.items()))),
