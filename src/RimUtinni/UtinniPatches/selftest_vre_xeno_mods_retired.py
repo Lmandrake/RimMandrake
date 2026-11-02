@@ -6,18 +6,18 @@ VRE_Animakin, VRE_Poluxkin) that their own assemblies name, so Cherry Picker can
 the three mods (NONSW_XENOTYPES_SCOPE_1). Reds if:
   * a current tier list (modlists/ModsConfig.*.RULED_2026-10-20.xml, ModsConfig.FULL.LATEST.xml) activates one;
   * Patches/VREArchon_MortisRename.xml (the Archon text patch) still exists;
-  * an About.xml of ours lists one in modDependencies, or UtinniPatches' About still names Archon (its only
+  * an About.xml of ours names one in modDependencies, loadAfter, loadBefore or any element, or UtinniPatches' About still names Archon (its only
     Archon patch was MortisRename);
   * a src .xml names one of their mod names / packageIds in a patch that is not FindMod- or MayRequire-guarded
     (a FindMod <mods> block or a MayRequire attribute is the guard; anything else would fire without the mod);
   * a src .xml names one of THEIR defs (defNames read from the mods' own Workshop Defs) that we do not define,
     unguarded (VRE_ShortPregnancy, the Jawa xenotype's gene, is absorbed into StarWarsRaces under its own name);
-  * the canonical start save (canon.yml planet.start_savegame) instances (`<def>X</def>`, streamed) a def of theirs
-    that we do not define. Names in a filter or ignore list are tolerated (the loader drops a missing list entry).
+  * the canonical start save (canon.yml planet.start_savegame) names, as any element text or tag, a def of theirs
+    we do not define, or holds a Class= of their assemblies; filter allowedDefs and ignored* <li> entries tolerated.
 Sanity probes: each tier list must parse with >50 active mods incl. ludeon.rimworld; the mods must yield >=100 defs
 incl. VRE_Archon; the save must show >1000 `<def>`. Mutants (an injected archon line, an unguarded op, an unguarded
 gene ref, the absorb removed) must go red. UNMEASURED (exit 2) if the Workshop copies or the save are unreadable.
-Exit 0 pass, 1 fail, 2 UNMEASURED (save unreadable).
+Exit 0 pass, 1 fail, 2 UNMEASURED (save unreadable). The save scan is iterparse over any tag (gen 3), not <def> only.
 """
 import glob
 import os
@@ -133,19 +133,66 @@ def def_ref_findings(xml_text, theirs, ours):
     return out
 
 
-def save_findings(path, theirs, ours):
-    """Streams the save. Their defs instanced (`<def>X</def>`) that we do not define; blind below 1000 <def>."""
-    n, bad = 0, set()
-    pat = re.compile(r"<def>([\w.]+)</def>")
-    with open(path, encoding="utf-8", errors="replace") as fh:
-        for line in fh:
-            for m in pat.finditer(line):
-                n += 1
-                if m.group(1) in theirs and m.group(1) not in ours:
-                    bad.add(m.group(1))
+TOLERATED_LISTS = ("allowedDefs", "disallowedDefs")    # a ThingFilter's def lists; plus any ignored* list
+
+
+def mod_namespaces():
+    """C# namespaces of their assemblies: each DLL's stem without '-' (VREArchon, VanillaRacesExpandedFungoid, ...)."""
+    return sorted({f.stem.replace("-", "") for wid in MOD_DIRS for f in (WORKSHOP / wid).rglob("*.dll")})
+
+
+def save_findings(path, theirs, ours, spaces):
+    """Streams the save (iterparse). Findings: a def of theirs we do not define, as ANY element's text or tag
+    (<def>, <xenotype>, <kindDef>, ...), except an <li> of a filter allowedDefs/disallowedDefs or an ignored* list
+    (the loader drops a missing list entry); and any Class= in one of their assemblies' namespaces (the scribed
+    object needs their DLL). Blind below 1000 <def>."""
+    n, bad, stack = 0, set(), []
+    for ev, el in ET.iterparse(str(path), events=("start", "end")):
+        if ev == "start":
+            stack.append(el.tag)
+            c = el.get("Class") or ""
+            if c.split(".")[0] in spaces:
+                bad.add("Class=%s" % c)
+            continue
+        stack.pop()
+        txt = (el.text or "").strip()
+        if el.tag == "def":
+            n += 1
+        parent = stack[-1] if stack else ""
+        tolerated = el.tag == "li" and (parent in TOLERATED_LISTS or parent.startswith("ignored"))
+        for name in (txt, el.tag):
+            if name in theirs and name not in ours and not tolerated:
+                bad.add("<%s>%s" % ("/".join(stack[-2:] + [el.tag]), name))
+        el.clear()
     if n <= 1000:
         return ["instrument blind: %d <def>" % n]
     return sorted(bad)
+
+
+def save_mutants(theirs, ours, spaces):
+    """Synthetic saves: each clause must go red, the tolerated list entries must not."""
+    import tempfile
+    filler = "<def>Steel</def>" * 1001
+    cases = {
+        "xenotype tag": ("<pawn><genes><xenotype>VRE_Archon</xenotype></genes></pawn>", True),
+        "kindDef tag": ("<pawn><kindDef>ArchonWarrior</kindDef></pawn>", True),
+        "def tag": ("<li><def>VRE_Archon</def></li>", True),
+        "their def as a tag name": ("<map><VRE_Archon>1</VRE_Archon></map>", True),
+        "their assembly Class": ('<components><li Class="VREArchon.GameComponent_TranscendentPawns" /></components>', True),
+        "filter/ignore list entries tolerated": (
+            "<filter><allowedDefs><li>VREA_Apparel_Archoplate</li></allowedDefs></filter>"
+            "<c><ignoredFactions><li>VRE_Archons</li></ignoredFactions></c>", False),
+    }
+    out = {}
+    for label, (body, want_red) in cases.items():
+        with tempfile.NamedTemporaryFile("w", suffix=".rws", delete=False) as fh:
+            fh.write("<savegame><game>%s%s</game></savegame>" % (filler, body))
+        try:
+            got = save_findings(fh.name, theirs, ours, spaces)
+        finally:
+            os.unlink(fh.name)
+        out[label] = (got != []) == want_red, got
+    return out
 
 
 def start_save():
@@ -168,15 +215,25 @@ def main():
     # 2. the Archon text patch is gone
     check("MortisRename deleted", not (HERE / "Patches" / "VREArchon_MortisRename.xml").exists())
 
-    # 3. About.xml
-    for about in sorted(glob.glob(str(ROOT / "src" / "**" / "About" / "About.xml"), recursive=True)):
-        r = ET.parse(about).getroot()
-        deps = [(e.text or "").strip().lower() for e in r.iter("packageId")]
-        deps += [(li.text or "").strip().lower() for md in r.iter("modDependencies") for li in md]
-        bad = [p for p in PIDS if p in deps and r.findtext("packageId", "").strip().lower() != p]
-        check("no hard dep %s" % os.path.relpath(about, ROOT), bad == [], bad)
+    # 3. About.xml: no element of ours (modDependencies, loadAfter, loadBefore, ...) names a retired mod
+    def about_findings(xml_text):
+        r = ET.fromstring(xml_text.encode())
+        own = r.findtext("packageId", "").strip().lower()
+        return ["<%s>%s" % (e.tag, (e.text or "").strip()) for e in r.iter()
+                if ((e.text or "").strip().lower() in PIDS or (e.text or "").strip() in NAMES)
+                and (e.text or "").strip().lower() != own]
+    abouts = sorted(glob.glob(str(ROOT / "src" / "**" / "About" / "About.xml"), recursive=True))
+    check("sanity: About.xml files found", len(abouts) >= 10, len(abouts))
+    for about in abouts:
+        bad = about_findings(Path(about).read_text(encoding="utf-8"))
+        check("no dep or load hint %s" % os.path.relpath(about, ROOT), bad == [], bad)
     ut = (HERE / "About" / "About.xml").read_text(encoding="utf-8")
     check("UtinniPatches About names no Archon", "vanillaracesexpanded.archon" not in ut.lower())
+    for tag in ("loadAfter", "loadBefore", "modDependencies"):
+        li = "<li>vanillaracesexpanded.fungoid</li>" if tag != "modDependencies" else \
+            "<li><packageId>vanillaracesexpanded.fungoid</packageId></li>"
+        m = ut.replace("</ModMetaData>", "<%s>%s</%s></ModMetaData>" % (tag, li, tag), 1)
+        check("mutant: a %s entry reds" % tag, m != ut and about_findings(m) != [], about_findings(m))
 
     # 4. every src patch naming the mods is guarded
     hits = []
@@ -224,9 +281,14 @@ def main():
     if sp is None or not sp.exists():
         print("UNMEASURED  start save not readable: %s" % sp)
         return 2
-    sf = save_findings(sp, theirs, ours)
-    check("start save %s: every instanced def of theirs is ours" % sp.name, sf == [], sf)
-    check("mutant: their def unabsorbed reds", save_findings(sp, theirs, ours - {"VRE_ShortPregnancy"}) != [])
+    spaces = mod_namespaces()
+    check("sanity: their assembly namespaces read", "VREArchon" in spaces and len(spaces) >= 3, spaces)
+    sf = save_findings(sp, theirs, ours, spaces)
+    check("start save %s: names no def or class of theirs" % sp.name, sf == [], sf)
+    check("mutant: their def unabsorbed reds",
+          any("VRE_ShortPregnancy" in f for f in save_findings(sp, theirs, ours - {"VRE_ShortPregnancy"}, spaces)))
+    for label, (ok, got) in save_mutants(theirs, ours, spaces).items():
+        check("save mutant: %s" % label, ok, got)
 
     print("FAIL %d: %s" % (len(FAILS), FAILS) if FAILS else "PASS")
     return 1 if FAILS else 0
