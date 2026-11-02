@@ -76,8 +76,7 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
      *"We can steal their traps rather than setting them off... maybe also their sandbags,
      anti-tank traps, fences, etc. Yes to turrets"*, ruled **REDEPLOY, DEGRADED** by card.
      - The spec names this "the light minify — steal the unstealable, bounded".
-     - It is **not built and has no open item** (searched `src/`, `design/`,
-       `infrastructure/state/items/`).
+     - It is **not built**; its item is `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY`.
      - Vanilla leaves `Turret_Autocannon`, `Turret_Sniper`, `Turret_RocketswarmLauncher`,
        `Barricade`, `Sandbags`, `Fence` and `FenceGate` non-minifiable (measured: 100 of 249
        player-buildable vanilla buildings carry no `minifiedDef`). MinifyEverything is what
@@ -139,6 +138,8 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
     `SALVAGE_MINIFY_DESIGN_HAULER_OR_SCRAP` (§6), which also absorbs the battlefield-capture
     category list of `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY`, so both features share one rule for
     "what can be lifted".
+  - **Decided:** `design/RimMandrake/salvage_lift_policy_2026-11-01.md` picks the route per category and holds the one
+    list (`salvage_lift_policy.json`).
   - The wave does not wait for this design: after the cut, vanilla's own minifiable set (149 of
     249 player buildables) plus our explicit `minifiedDef`s (177 hits, 76 files) is what moves.
 
@@ -302,8 +303,8 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
 | Pull items from storage onto belts (Belt Extractors) | **no**: hauling is a cost | — | — | — | — |
 | Pipe ammo into turrets (Turret Pipeline) | **no**: removes rearm cost; second flow engine | vanilla `RearmTurrets`/`CompRefuelable` stays as is | — | 0 | none |
 | Manual turret rearming as a hauling job | **yes** | **vanilla**: keep every turret of ours on `CompRefuelable` with a real item | Armoury doctrine check only | 0 | a future turret def without ammo silently deletes the cost (lint, §5 step 6) |
-| Uninstall enemy turrets, sandbags, barricades, fences and traps; reinstall **degraded** (MinifyEverything, ruled feature) | **yes** (owner 2026-08-31) | XML: `minifiedDef`+`thingCategories` on a fixed category list. C#: one comp that marks a building *captured* when it is uninstalled while not built by us, and on reinstall knocks it down a WreckedMachines grade (HP fraction + quality step) | `mandrake.rm.wreckedmachines` (the grade ladder already exists: WRECKED/KLUDGED/REFURBISHED) | M | enemy buildings need claiming first (`Designator_Uninstall` refuses non-player faction unless `alwaysUninstallable`), which matches "unseen/pacified map"; minified multi-cell turret graphics |
-| Move a short list of ship/camp fixtures (MinifyEverything) | **yes**, narrow | XML patch adding `minifiedDef` to: Cooler, HydroponicsBasin, CommsConsole, HiTechResearchBench, FabricationBench, ChemfuelPoweredGenerator, WoodFiredGenerator, MoisturePump, Odyssey ChemfuelTank. Per-def Mod Settings toggle. Plus an audit of our own `src/` buildings that should move | `mandrake.rm.patches` (game-generic) | S | Cooler is a wall-slot building (`canPlaceOverWall`); minifying it must not leave a hole in a hull. Test install over a wall |
+| Uninstall enemy turrets, sandbags, barricades, fences and traps; reinstall **degraded** (MinifyEverything, ruled feature) | **yes** (owner 2026-08-31) | The lift pass of `salvage_lift_policy_2026-11-01.md` sets `minifiedDef`+`thingCategories` by category. C#: one comp that marks a building *captured* when it is uninstalled while not built by us, and on reinstall knocks it down a WreckedMachines grade (HP fraction + quality step) | `mandrake.rm.wreckedmachines` (the grade ladder already exists: WRECKED/KLUDGED/REFURBISHED) | M | enemy buildings need claiming first (`Designator_Uninstall` refuses non-player faction unless `alwaysUninstallable`), which matches "unseen/pacified map"; minified multi-cell turret graphics |
+| Move a short list of ship/camp fixtures (MinifyEverything) | **yes**, narrow | The `SHIP_FIXTURE` category of the lift pass: Cooler, HydroponicsBasin, CommsConsole, HiTechResearchBench, FabricationBench, ChemfuelPoweredGenerator, WoodFiredGenerator, MoisturePump, Odyssey ChemfuelTank. Per-def Mod Settings toggle. Plus an audit of our own `src/` buildings that should move | `mandrake.rm.patches` (game-generic) | S | Cooler is a wall-slot building (`canPlaceOverWall`); minifying it must not leave a hole in a hull. Test install over a wall |
 | Minify walls, doors, conduits, vents, large generators (MinifyEverything) | **no**: hull moves with the ship; leaving big kit behind is the loop | — | — | — | — |
 | Lights and benches off when nobody is there (LightsOut) | **yes**: fuel is life | small comp `RM_CompIdlePowerDown`: rare-tick room check (no awake humanlike in the room, after a delay) → implements `IThingGlower.ShouldBeLitNow` = false (vanilla `CompGlower` honours it) + `CompGlower.UpdateLit`, and sets `CompPowerTrader.PowerOutput` to standby (the vanilla `GrowthVat` idiom). Added by patch to vanilla lamps and our fixtures by **explicit def list, never name match**; a Keep-On gizmo | game-generic. Recommended: a new tiny RM mod or `mandrake.rm.luminouspigment`'s sibling; it must link `_Shared/LightLedger` so it coexists with the compositor | S–M | double-writer with Atmospheric: resolve by making the comp *only* a LightLedger modifier owner (`cap:idle` = 0) if the compositor is live; `PowerOn` must stay true or flick logic breaks |
 | Bench standby power, TV, Biotech vats (LightsOut) | **no**: mechanitor/genes out; benches are few | — | — | — | — |
@@ -351,8 +352,8 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
 2. **`SAVE_WALLS_EXCISE_MINIFIED`** (S): remove the 11 minified walls from the canonical save while
    MinifyEverything is still loaded. Back up first; use a bridge destroy or a binary-mode save edit
    with a size check.
-3. **`SHIP_FIXTURES_WIDEN_MINIFY`** (S): XML allowlist plus settings toggle, the nine ship fixtures only (§1.3 e). This is the cheapest
-   win, and the owner can strike items from the list.
+3. **`SHIP_FIXTURES_WIDEN_MINIFY`** (S): the nine ship fixtures through the lift pass (`LIFT_PASS_BUILD_ONE_LIST`), plus a settings
+   toggle (§1.3 e).
 4. **`IDLE_LIGHTS_BUILD_POWERDOWN`** (S–M): the comp, wired through LightLedger; ships with its
    first validation script per the debug-process rule.
 5. **`BATTLEFIELD_CAPTURE_BUILD_REDEPLOY`** (M): the category minify plus the captured→degraded
@@ -361,16 +362,15 @@ tanks". Danger is qualitative, never an arms race. Static killboxes are forbidde
    tiers carries `CompRefuelable` with a real fuel item.
 7. **`ION_TURRET_BUILD_STUNNER`** (S, optional): only after the owner says yes to a player turret.
 
-## 6. Tickets to file (not filed; names pass `rimflow namecheck`)
+## 6. Tickets (names pass `rimflow namecheck`; the three lift items are filed, see `salvage_lift_policy_2026-11-01.md`)
 
 | Name | Seat | Scope |
 |---|---|---|
 | `CONVENIENCE_CUT_PRUNE_LEFTOVERS` | FOUNDRY | §3 rows: Armoury generators (`gen_armoury_patch.py`, `gen_turret_doctrine.py`) and `About.xml` loadAfters; ResearchRetag rows; LuminousPigment LightsOut compat + prove script + validation bar + spec §8 row; `modset_builder.py` strings |
 | `SAVE_WALLS_EXCISE_MINIFIED` | FOUNDRY (bridge) | 11 `MinifiedThing(Wall)` in `CANONICAL_ASHKARR_START_2026-09-12.rws` |
-| `SHIP_FIXTURES_WIDEN_MINIFY` | FOUNDRY | allowlist patch in `mandrake.rm.patches` + settings; audit our own `src/` buildables lacking `minifiedDef` |
-| `SALVAGE_MINIFY_DESIGN_HAULER_OR_SCRAP` | FOUNDRY (design; owner judges) | §1.3 e: which buildings the Salvage action may lift, per category minify-and-reinstall vs scrap-for-yield; hauler droid role; one list shared with battlefield capture |
+| `SHIP_FIXTURES_WIDEN_MINIFY` | filed | the `SHIP_FIXTURE` category + settings; audit our own `src/` buildables against the rules |
 | `IDLE_LIGHTS_BUILD_POWERDOWN` | FOUNDRY | `RM_CompIdlePowerDown` per §2; explicit def list; LightLedger link |
-| `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY` | FOUNDRY | trap_renaissance §2b: category list, claim→uninstall path, degraded reinstall via the WreckedMachines grade |
+| `BATTLEFIELD_CAPTURE_BUILD_REDEPLOY` | filed | trap_renaissance §2b: claim→uninstall path, degraded reinstall via the WreckedMachines grade; its category list is the shared one |
 | `ION_TURRET_BUILD_STUNNER` | BENCH (owner question first) | optional single-target ion turret in JawaIonWeapons |
 
 ## 7. GPT review disposition
@@ -401,9 +401,10 @@ prompt would have asked about:**
   through `GraphicUtility.ExtractInnerGraphicFor`. That unwraps only Random, Cluster, Appearances,
   Genepack and MealVariants graphics, not a linked graphic, and then it calls `GetCopy` with a
   scaled draw size.
-  - A wall's graphic is linked, so without MinifyEverything's `get_Graphic` postfix the minified
-    wall will at least draw wrongly, and may error each frame. This is INFERRED from the code path,
-    not observed.
+  - A wall's graphic is linked, and without MinifyEverything's `get_Graphic` postfix a minified one
+    is unproven: `GetCopy` runs only on a multi-cell thing, so a 1×1 crate may simply draw one atlas
+    tile. INFERRED from the code path, not observed; `LIFT_PASS_BUILD_ONE_LIST` proves it for
+    sandbags and fences.
   - That supports purging them **before** the cut (step 2), not after.
 - **Idle lights.** `CompGlower.ShouldBeLitNow` honours any comp that implements `IThingGlower`. So
   the comp can darken a light without touching `PowerOn`, which keeps `CompFlickable` and the

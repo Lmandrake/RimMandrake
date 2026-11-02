@@ -68,10 +68,9 @@ fuel nodes and other unconventional 'trap' nodes."
   pacified map (Ishko: get away clean); theology unchanged: `↑Rekko`
   (a better home) + `↑Mob'Unloo` (something for nothing), §8b prices getting
   caught. `↑Ozzik` on a turret take (dominion's instrument, taken intact).
-- The MinifyEverything overlap note survives only as a build fact: that mod
-  already grants broad minification of ordinary buildings; THIS feature is
-  specifically the combat/deployable category vanilla and MinifyEverything
-  treat as untouchable, plus the trap-lift verb.
+- Minify Everything is retired. Lifting these categories is the shared list in
+  `design/RimMandrake/salvage_lift_policy_2026-11-01.md`; the trap-lift verb is
+  this feature's own.
 
 ## 3. Absorption tier (patches, not frameworks)
 
@@ -144,6 +143,5 @@ cunning register is ours alone.
   blast? **90-second quicktest, not a load.**
 - "Jawa-buildable" research gates are UNMEASURED until RESEARCH_TREE_
   NORMALIZATION_1 (gated on droids landing) settles the whitelist.
-- ~~Trap-sense option~~ RULED: §2 Option C (both, layered). Remaining owed
-  ruling: the minify whitelist/denylist curation (§2b) — needs the buildings
-  inventory in front of us, its own sitting.
+- ~~Trap-sense option~~ RULED: §2 Option C (both, layered). What can be lifted is
+  the category list of `design/RimMandrake/salvage_lift_policy_2026-11-01.md`.

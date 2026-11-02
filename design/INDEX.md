@@ -794,6 +794,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `companion_handshake.md` | Companion handshake, campaign/test profiles and stale-target guards | — |
 | `conductor_briefing_2026-10-28.md` | Conductor Briefing and the goodbye lifecycle | — |
 | `convenience_replacements.md` | Convenience/automation mods: what we keep by building it ourselves | — |
+| `salvage_lift_policy_2026-11-01.md` | What Salvage may lift: minify or scrap per category, the hauler droid, the one list shared with battlefield capture | — |
 | `csuite_brief_2026-10-26.md` | The integrator layer — the owner's brief, verbatim (2026-10-26, ~19:40 PDT) | — |
 | `csuite_design_2026-10-26.md` | The C-suite layer: what sits above Bench and Foundry (design, 2026-10-26) | — |
 | `debug_process.md` | How we debug — debug through the script, leave the harness behind | — |
