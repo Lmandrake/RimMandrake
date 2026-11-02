@@ -54,9 +54,6 @@
       <graphicClass>Graphic_Multi</graphicClass>
       <drawSize>(3.5,1.5)</drawSize>
       <color>(170,200,225)</color>
-      <shadowData>
-        <volume>(2.6, 0.5, 0.9)</volume>
-      </shadowData>
       <damageData>
         <cornerTL>Damage/Corner</cornerTL>
         <cornerTR>Damage/Corner</cornerTR>

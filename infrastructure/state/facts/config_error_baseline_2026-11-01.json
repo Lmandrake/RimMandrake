@@ -240,13 +240,6 @@
    "note": "As guy762_bowcaster_ceremonial."
   },
   {
-   "pattern": "Config error in RM_IceMelter: graphicData defines a shadowInfo",
-   "kind": "configerror",
-   "class": "ours-open-bug",
-   "expectCount": 2,
-   "note": "FlowWorks, FOUNDRY's lane: filed ICEMELTER_SHADOW_FIX_DOUBLE_BOOKED_SHADE."
-  },
-  {
    "pattern": "has duplicate thingCategory",
    "kind": "configerror",
    "class": "ours-fixed",

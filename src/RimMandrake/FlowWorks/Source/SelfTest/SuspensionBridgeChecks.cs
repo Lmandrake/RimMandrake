@@ -266,8 +266,8 @@ namespace RimMandrake.FlowWorks.SelfTest
                 Assert(!defs.Contains("ComponentIndustrial"), "can-fail: no tower, deck, anchor, railing or jetty costs a component");
                 Assert(ModFile("Defs", "Pits", "ThingDefs", "RM_Drawbridge.xml").Contains("<ComponentIndustrial>"),
                     "the drawbridge winch keeps its components (circuitry)");
-                Assert(td.Contains("<placingDraggableDimensions>1</placingDraggableDimensions>"),
-                    "the tower drags like a wall, so a row of them goes down across the hole in one drag");
+                Assert(!defs.Contains("placingDraggableDimensions"),
+                    "can-fail: placingDraggableDimensions is no ThingDef field (XML error at load 2026-10-29); the tower row's drag is the designator's");
                 Assert(designator.Contains("RM_SuspensionMath.PartialTowerRefusal(towers)") && designator.Contains("RM_SuspensionMath.FullWidthTowers(towers)"),
                     "can-fail: the plain drag refuses a short tower row and keeps only full rows as supports");
                 string compSrc = Src("Pits", "Suspension", "RM_MapComponent_SuspensionBridges.cs");

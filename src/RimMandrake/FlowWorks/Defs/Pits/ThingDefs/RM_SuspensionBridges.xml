@@ -516,7 +516,6 @@
          components (was 6), one tower per lane (a W-wide bridge needs W towers side by side, RM_SuspensionMath.FullWidthTowers),
          so a tower built from steel is 300 steel + 12,000 work and a 4-wide row is 1,200 steel + 48,000 work. Mod Settings
          "Tower cost multiplier" (0.25 to 4) scales both (RM_SuspensionTowerCost). -->
-    <placingDraggableDimensions>1</placingDraggableDimensions>
     <costStuffCount>200</costStuffCount>
     <costList>
       <Steel>100</Steel>
